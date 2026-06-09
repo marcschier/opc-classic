@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -11,14 +11,12 @@ using Opc.Classic.Cpx.Dcom;
 namespace Opc.Classic.Mcp.Sessions;
 
 /// <summary>Holds OPC Batch wire proxies.</summary>
-public sealed class BatchClientState : IAsyncDisposable
-{
+public sealed class BatchClientState : IAsyncDisposable {
     private readonly bool _ownsChannel;
     private bool _disposed;
 
     /// <summary>Creates Batch client state over an existing call channel.</summary>
-    public BatchClientState(string host, string? progId, Guid? clsid, ICallChannel channel, bool ownsChannel)
-    {
+    public BatchClientState(string host, string? progId, Guid? clsid, ICallChannel channel, bool ownsChannel) {
         ArgumentException.ThrowIfNullOrWhiteSpace(host);
         ArgumentNullException.ThrowIfNull(channel);
 
@@ -54,18 +52,14 @@ public sealed class BatchClientState : IAsyncDisposable
     public IOPCEnumerationSetsClientProxy EnumerationSets { get; }
 
     /// <inheritdoc />
-    public async ValueTask DisposeAsync()
-    {
-        if (_disposed)
-        {
+    public async ValueTask DisposeAsync() {
+        if (_disposed) {
             return;
         }
 
         _disposed = true;
-        if (_ownsChannel)
-        {
-            switch (Channel)
-            {
+        if (_ownsChannel) {
+            switch (Channel) {
                 case IAsyncDisposable asyncDisposable:
                     await asyncDisposable.DisposeAsync().ConfigureAwait(false);
                     break;
@@ -78,15 +72,13 @@ public sealed class BatchClientState : IAsyncDisposable
 }
 
 /// <summary>Holds OPC Commands wire proxies and poll state.</summary>
-public sealed class CommandsClientState : IAsyncDisposable
-{
+public sealed class CommandsClientState : IAsyncDisposable {
     private readonly ICallChannel _channel;
     private readonly bool _ownsChannel;
     private bool _disposed;
 
     /// <summary>Creates Commands client state over an existing call channel.</summary>
-    public CommandsClientState(string host, string? progId, Guid? clsid, ICallChannel channel, bool ownsChannel)
-    {
+    public CommandsClientState(string host, string? progId, Guid? clsid, ICallChannel channel, bool ownsChannel) {
         ArgumentException.ThrowIfNullOrWhiteSpace(host);
         ArgumentNullException.ThrowIfNull(channel);
 
@@ -118,19 +110,15 @@ public sealed class CommandsClientState : IAsyncDisposable
     public ConcurrentDictionary<string, CommandsInvocationContext> Invocations { get; } = new(StringComparer.Ordinal);
 
     /// <inheritdoc />
-    public async ValueTask DisposeAsync()
-    {
-        if (_disposed)
-        {
+    public async ValueTask DisposeAsync() {
+        if (_disposed) {
             return;
         }
 
         _disposed = true;
         Invocations.Clear();
-        if (_ownsChannel)
-        {
-            switch (_channel)
-            {
+        if (_ownsChannel) {
+            switch (_channel) {
                 case IAsyncDisposable asyncDisposable:
                     await asyncDisposable.DisposeAsync().ConfigureAwait(false);
                     break;
@@ -143,11 +131,9 @@ public sealed class CommandsClientState : IAsyncDisposable
 }
 
 /// <summary>Tracks an asynchronous Commands invocation for MCP polling.</summary>
-public sealed class CommandsInvocationContext
-{
+public sealed class CommandsInvocationContext {
     /// <summary>Creates a Commands invocation context.</summary>
-    public CommandsInvocationContext(string invocationId, string commandName, string commandNamespace, string targetId, DateTimeOffset createdAt)
-    {
+    public CommandsInvocationContext(string invocationId, string commandName, string commandNamespace, string targetId, DateTimeOffset createdAt) {
         ArgumentException.ThrowIfNullOrWhiteSpace(invocationId);
         InvocationId = invocationId;
         CommandName = commandName;
@@ -179,15 +165,13 @@ public sealed class CommandsInvocationContext
 }
 
 /// <summary>Holds OPC Complex Data wire proxies.</summary>
-public sealed class CpxClientState : IAsyncDisposable
-{
+public sealed class CpxClientState : IAsyncDisposable {
     private readonly ICallChannel _channel;
     private readonly bool _ownsChannel;
     private bool _disposed;
 
     /// <summary>Creates CPX client state over an existing call channel.</summary>
-    public CpxClientState(string host, string? progId, Guid? clsid, ICallChannel channel, bool ownsChannel)
-    {
+    public CpxClientState(string host, string? progId, Guid? clsid, ICallChannel channel, bool ownsChannel) {
         ArgumentException.ThrowIfNullOrWhiteSpace(host);
         ArgumentNullException.ThrowIfNull(channel);
 
@@ -220,18 +204,14 @@ public sealed class CpxClientState : IAsyncDisposable
     public IOPCTypeLibraryClientProxy TypeLibrary { get; }
 
     /// <inheritdoc />
-    public async ValueTask DisposeAsync()
-    {
-        if (_disposed)
-        {
+    public async ValueTask DisposeAsync() {
+        if (_disposed) {
             return;
         }
 
         _disposed = true;
-        if (_ownsChannel)
-        {
-            switch (_channel)
-            {
+        if (_ownsChannel) {
+            switch (_channel) {
                 case IAsyncDisposable asyncDisposable:
                     await asyncDisposable.DisposeAsync().ConfigureAwait(false);
                     break;

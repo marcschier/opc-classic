@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -13,8 +13,7 @@ using Opc.Classic.Ndr;
 namespace Opc.Classic.Dx.Ndr;
 
 /// <summary>Registry of OPC DX structure codecs enabled for generated and hand-written proxies.</summary>
-public static class NdrOpcDxCodecRegistry
-{
+public static class NdrOpcDxCodecRegistry {
     /// <summary>The 16 OPC DX codec entries covered by the DX 1.00 configuration and status structures.</summary>
     public static IReadOnlyList<string> RegisteredCodecNames { get; } = new[]
     {
@@ -38,11 +37,9 @@ public static class NdrOpcDxCodecRegistry
 }
 
 /// <summary>NDR codec for <c>OpcDxItemIdentifier</c>.</summary>
-public static class NdrOpcDxItemIdentifierCodec
-{
+public static class NdrOpcDxItemIdentifierCodec {
     /// <summary>Writes an item identifier.</summary>
-    public static void Write(ref NdrWriter writer, DxItemIdentifier value)
-    {
+    public static void Write(ref NdrWriter writer, DxItemIdentifier value) {
         ArgumentNullException.ThrowIfNull(value);
 
         writer.WriteUnicodeStringPtr(value.ItemPath);
@@ -52,8 +49,7 @@ public static class NdrOpcDxItemIdentifierCodec
     }
 
     /// <summary>Reads an item identifier.</summary>
-    public static DxItemIdentifier Read(ref NdrReader reader)
-    {
+    public static DxItemIdentifier Read(ref NdrReader reader) {
         string? itemPath = reader.ReadUnicodeStringPtr();
         string? itemName = reader.ReadUnicodeStringPtr();
         string? version = reader.ReadUnicodeStringPtr();
@@ -63,11 +59,9 @@ public static class NdrOpcDxItemIdentifierCodec
 }
 
 /// <summary>NDR codec for <c>OpcDxIdentifiedResult</c>.</summary>
-public static class NdrOpcDxIdentifiedResultCodec
-{
+public static class NdrOpcDxIdentifiedResultCodec {
     /// <summary>Writes an identified result.</summary>
-    public static void Write(ref NdrWriter writer, DxIdentifiedResult value)
-    {
+    public static void Write(ref NdrWriter writer, DxIdentifiedResult value) {
         ArgumentNullException.ThrowIfNull(value);
 
         writer.WriteUnicodeStringPtr(value.ItemPath);
@@ -77,8 +71,7 @@ public static class NdrOpcDxIdentifiedResultCodec
     }
 
     /// <summary>Reads an identified result.</summary>
-    public static DxIdentifiedResult Read(ref NdrReader reader)
-    {
+    public static DxIdentifiedResult Read(ref NdrReader reader) {
         string? itemPath = reader.ReadUnicodeStringPtr();
         string? itemName = reader.ReadUnicodeStringPtr();
         string? version = reader.ReadUnicodeStringPtr();
@@ -88,11 +81,9 @@ public static class NdrOpcDxIdentifiedResultCodec
 }
 
 /// <summary>NDR codec for <c>OpcDxGeneralResponse</c>.</summary>
-public static class NdrOpcDxGeneralResponseCodec
-{
+public static class NdrOpcDxGeneralResponseCodec {
     /// <summary>Writes a general response.</summary>
-    public static void Write(ref NdrWriter writer, DxGeneralResponse value)
-    {
+    public static void Write(ref NdrWriter writer, DxGeneralResponse value) {
         ArgumentNullException.ThrowIfNull(value);
 
         writer.WriteUnicodeStringPtr(value.ConfigurationVersion);
@@ -101,8 +92,7 @@ public static class NdrOpcDxGeneralResponseCodec
     }
 
     /// <summary>Reads a general response.</summary>
-    public static DxGeneralResponse Read(ref NdrReader reader)
-    {
+    public static DxGeneralResponse Read(ref NdrReader reader) {
         string? configurationVersion = reader.ReadUnicodeStringPtr();
         DxIdentifiedResult[] results = NdrOpcDxIdentifiedResultArrayCodec.Read(ref reader);
         int reserved = unchecked((int)reader.ReadUInt32());
@@ -111,11 +101,9 @@ public static class NdrOpcDxGeneralResponseCodec
 }
 
 /// <summary>NDR codec for <c>OpcDxSourceServer</c>.</summary>
-public static class NdrOpcDxSourceServerCodec
-{
+public static class NdrOpcDxSourceServerCodec {
     /// <summary>Writes a source server.</summary>
-    public static void Write(ref NdrWriter writer, DxSourceServer value)
-    {
+    public static void Write(ref NdrWriter writer, DxSourceServer value) {
         ArgumentNullException.ThrowIfNull(value);
 
         writer.WriteUInt32(unchecked((uint)value.Mask));
@@ -131,8 +119,7 @@ public static class NdrOpcDxSourceServerCodec
     }
 
     /// <summary>Reads a source server.</summary>
-    public static DxSourceServer Read(ref NdrReader reader)
-    {
+    public static DxSourceServer Read(ref NdrReader reader) {
         var mask = (DxMask)reader.ReadUInt32();
         string? itemPath = reader.ReadUnicodeStringPtr();
         string? itemName = reader.ReadUnicodeStringPtr();
@@ -161,11 +148,9 @@ public static class NdrOpcDxSourceServerCodec
 }
 
 /// <summary>NDR codec for <c>OpcDxConnection</c>.</summary>
-public static class NdrOpcDxConnectionCodec
-{
+public static class NdrOpcDxConnectionCodec {
     /// <summary>Writes a DX connection.</summary>
-    public static void Write(ref NdrWriter writer, DxConnection value)
-    {
+    public static void Write(ref NdrWriter writer, DxConnection value) {
         ArgumentNullException.ThrowIfNull(value);
 
         writer.WriteUInt32(unchecked((uint)value.Mask));
@@ -194,8 +179,7 @@ public static class NdrOpcDxConnectionCodec
     }
 
     /// <summary>Reads a DX connection.</summary>
-    public static DxConnection Read(ref NdrReader reader)
-    {
+    public static DxConnection Read(ref NdrReader reader) {
         var mask = (DxMask)reader.ReadUInt32();
         string? itemPath = reader.ReadUnicodeStringPtr();
         string? itemName = reader.ReadUnicodeStringPtr();
@@ -250,11 +234,9 @@ public static class NdrOpcDxConnectionCodec
 }
 
 /// <summary>NDR codec for OPC DX <c>OPCError</c>.</summary>
-public static class NdrOpcDxErrorCodec
-{
+public static class NdrOpcDxErrorCodec {
     /// <summary>Writes an OPC DX error.</summary>
-    public static void Write(ref NdrWriter writer, DxError value)
-    {
+    public static void Write(ref NdrWriter writer, DxError value) {
         ArgumentNullException.ThrowIfNull(value);
 
         writer.WriteInt32(value.Id.Code);
@@ -262,8 +244,7 @@ public static class NdrOpcDxErrorCodec
     }
 
     /// <summary>Reads an OPC DX error.</summary>
-    public static DxError Read(ref NdrReader reader)
-    {
+    public static DxError Read(ref NdrReader reader) {
         int code = reader.ReadInt32();
         string? text = reader.ReadUnicodeStringPtr();
         return new DxError(new OpcResultId(code, text), text);
@@ -271,11 +252,9 @@ public static class NdrOpcDxErrorCodec
 }
 
 /// <summary>NDR codec for OPC DX <c>DXQuality</c>.</summary>
-public static class NdrOpcDxQualityCodec
-{
+public static class NdrOpcDxQualityCodec {
     /// <summary>Writes DX quality.</summary>
-    public static void Write(ref NdrWriter writer, DxQuality value)
-    {
+    public static void Write(ref NdrWriter writer, DxQuality value) {
         ArgumentNullException.ThrowIfNull(value);
 
         writer.WriteUInt32((uint)value.Quality);
@@ -284,8 +263,7 @@ public static class NdrOpcDxQualityCodec
     }
 
     /// <summary>Reads DX quality.</summary>
-    public static DxQuality Read(ref NdrReader reader)
-    {
+    public static DxQuality Read(ref NdrReader reader) {
         var quality = (DxQualityStatus)reader.ReadUInt32();
         var limitBits = (DxLimitStatus)reader.ReadUInt32();
         ulong vendorBits = reader.ReadUInt64();
@@ -294,11 +272,9 @@ public static class NdrOpcDxQualityCodec
 }
 
 /// <summary>NDR codec for OPC DX <c>ServerStatus</c>.</summary>
-public static class NdrOpcDxServerStatusCodec
-{
+public static class NdrOpcDxServerStatusCodec {
     /// <summary>Writes server status.</summary>
-    public static void Write(ref NdrWriter writer, DxServerStatus value)
-    {
+    public static void Write(ref NdrWriter writer, DxServerStatus value) {
         ArgumentNullException.ThrowIfNull(value);
 
         writer.WriteUInt32((uint)value.ServerState);
@@ -313,8 +289,7 @@ public static class NdrOpcDxServerStatusCodec
     }
 
     /// <summary>Reads server status.</summary>
-    public static DxServerStatus Read(ref NdrReader reader)
-    {
+    public static DxServerStatus Read(ref NdrReader reader) {
         var serverState = (DxServerState)reader.ReadUInt32();
         string? configurationVersion = reader.ReadUnicodeStringPtr();
         uint dxConnectionCount = reader.ReadUInt32();
@@ -338,11 +313,9 @@ public static class NdrOpcDxServerStatusCodec
 }
 
 /// <summary>NDR codec for OPC DX <c>DXConnectionStatus</c>.</summary>
-public static class NdrOpcDxConnectionStatusCodec
-{
+public static class NdrOpcDxConnectionStatusCodec {
     /// <summary>Writes connection status.</summary>
-    public static void Write(ref NdrWriter writer, DxConnectionStatus value)
-    {
+    public static void Write(ref NdrWriter writer, DxConnectionStatus value) {
         ArgumentNullException.ThrowIfNull(value);
 
         writer.WriteUInt32((uint)value.DxConnectionState);
@@ -366,8 +339,7 @@ public static class NdrOpcDxConnectionStatusCodec
     }
 
     /// <summary>Reads connection status.</summary>
-    public static DxConnectionStatus Read(ref NdrReader reader)
-    {
+    public static DxConnectionStatus Read(ref NdrReader reader) {
         var state = (DxConnectionState)reader.ReadUInt32();
         OpcVariant writeValue = reader.ReadVariant();
         DateTimeOffset writeTimestamp = NdrOpcDxCodecHelpers.ReadFileTime(ref reader);
@@ -409,11 +381,9 @@ public static class NdrOpcDxConnectionStatusCodec
 }
 
 /// <summary>NDR codec for OPC DX <c>DXSourceServerStatus</c>.</summary>
-public static class NdrOpcDxSourceServerStatusCodec
-{
+public static class NdrOpcDxSourceServerStatusCodec {
     /// <summary>Writes source-server status.</summary>
-    public static void Write(ref NdrWriter writer, DxSourceServerStatus value)
-    {
+    public static void Write(ref NdrWriter writer, DxSourceServerStatus value) {
         ArgumentNullException.ThrowIfNull(value);
 
         writer.WriteUInt32((uint)value.ConnectStatus);
@@ -428,8 +398,7 @@ public static class NdrOpcDxSourceServerStatusCodec
     }
 
     /// <summary>Reads source-server status.</summary>
-    public static DxSourceServerStatus Read(ref NdrReader reader)
-    {
+    public static DxSourceServerStatus Read(ref NdrReader reader) {
         var connectStatus = (DxConnectStatus)reader.ReadUInt32();
         int errorId = reader.ReadInt32();
         string? errorDiagnostic = reader.ReadUnicodeStringPtr();
@@ -453,26 +422,21 @@ public static class NdrOpcDxSourceServerStatusCodec
 }
 
 /// <summary>NDR codec for counted LPWSTR arrays used by OPC DX structures.</summary>
-public static class NdrOpcDxStringArrayCodec
-{
+public static class NdrOpcDxStringArrayCodec {
     /// <summary>Writes a counted string array.</summary>
-    public static void Write(ref NdrWriter writer, string?[]? values)
-    {
+    public static void Write(ref NdrWriter writer, string?[]? values) {
         values ??= Array.Empty<string?>();
         writer.WriteUInt32(unchecked((uint)values.Length));
-        foreach (var value in values)
-        {
+        foreach (var value in values) {
             writer.WriteUnicodeStringPtr(value);
         }
     }
 
     /// <summary>Reads a counted string array.</summary>
-    public static string[] Read(ref NdrReader reader)
-    {
+    public static string[] Read(ref NdrReader reader) {
         int count = NdrOpcDxCodecHelpers.ReadCount(ref reader, "string array");
         var values = new string[count];
-        for (var i = 0; i < count; i++)
-        {
+        for (var i = 0; i < count; i++) {
             values[i] = reader.ReadUnicodeStringPtr() ?? string.Empty;
         }
 
@@ -481,26 +445,21 @@ public static class NdrOpcDxStringArrayCodec
 }
 
 /// <summary>NDR codec for counted HRESULT arrays.</summary>
-public static class NdrOpcDxInt32ArrayCodec
-{
+public static class NdrOpcDxInt32ArrayCodec {
     /// <summary>Writes a counted HRESULT array.</summary>
-    public static void Write(ref NdrWriter writer, int[]? values)
-    {
+    public static void Write(ref NdrWriter writer, int[]? values) {
         values ??= Array.Empty<int>();
         writer.WriteUInt32(unchecked((uint)values.Length));
-        foreach (int value in values)
-        {
+        foreach (int value in values) {
             writer.WriteInt32(value);
         }
     }
 
     /// <summary>Reads a counted HRESULT array.</summary>
-    public static int[] Read(ref NdrReader reader)
-    {
+    public static int[] Read(ref NdrReader reader) {
         int count = NdrOpcDxCodecHelpers.ReadCount(ref reader, "HRESULT array");
         var values = new int[count];
-        for (var i = 0; i < count; i++)
-        {
+        for (var i = 0; i < count; i++) {
             values[i] = reader.ReadInt32();
         }
 
@@ -509,26 +468,21 @@ public static class NdrOpcDxInt32ArrayCodec
 }
 
 /// <summary>NDR codec for counted <see cref="DxItemIdentifier" /> arrays.</summary>
-public static class NdrOpcDxItemIdentifierArrayCodec
-{
+public static class NdrOpcDxItemIdentifierArrayCodec {
     /// <summary>Writes item identifiers.</summary>
-    public static void Write(ref NdrWriter writer, DxItemIdentifier[]? values)
-    {
+    public static void Write(ref NdrWriter writer, DxItemIdentifier[]? values) {
         values ??= Array.Empty<DxItemIdentifier>();
         writer.WriteUInt32(unchecked((uint)values.Length));
-        foreach (var value in values)
-        {
+        foreach (var value in values) {
             NdrOpcDxItemIdentifierCodec.Write(ref writer, value);
         }
     }
 
     /// <summary>Reads item identifiers.</summary>
-    public static DxItemIdentifier[] Read(ref NdrReader reader)
-    {
+    public static DxItemIdentifier[] Read(ref NdrReader reader) {
         int count = NdrOpcDxCodecHelpers.ReadCount(ref reader, "item identifier array");
         var values = new DxItemIdentifier[count];
-        for (var i = 0; i < count; i++)
-        {
+        for (var i = 0; i < count; i++) {
             values[i] = NdrOpcDxItemIdentifierCodec.Read(ref reader);
         }
 
@@ -537,26 +491,21 @@ public static class NdrOpcDxItemIdentifierArrayCodec
 }
 
 /// <summary>NDR codec for counted <see cref="DxIdentifiedResult" /> arrays.</summary>
-public static class NdrOpcDxIdentifiedResultArrayCodec
-{
+public static class NdrOpcDxIdentifiedResultArrayCodec {
     /// <summary>Writes identified results.</summary>
-    public static void Write(ref NdrWriter writer, DxIdentifiedResult[]? values)
-    {
+    public static void Write(ref NdrWriter writer, DxIdentifiedResult[]? values) {
         values ??= Array.Empty<DxIdentifiedResult>();
         writer.WriteUInt32(unchecked((uint)values.Length));
-        foreach (var value in values)
-        {
+        foreach (var value in values) {
             NdrOpcDxIdentifiedResultCodec.Write(ref writer, value);
         }
     }
 
     /// <summary>Reads identified results.</summary>
-    public static DxIdentifiedResult[] Read(ref NdrReader reader)
-    {
+    public static DxIdentifiedResult[] Read(ref NdrReader reader) {
         int count = NdrOpcDxCodecHelpers.ReadCount(ref reader, "identified result array");
         var values = new DxIdentifiedResult[count];
-        for (var i = 0; i < count; i++)
-        {
+        for (var i = 0; i < count; i++) {
             values[i] = NdrOpcDxIdentifiedResultCodec.Read(ref reader);
         }
 
@@ -565,26 +514,21 @@ public static class NdrOpcDxIdentifiedResultArrayCodec
 }
 
 /// <summary>NDR codec for counted <see cref="DxSourceServer" /> arrays.</summary>
-public static class NdrOpcDxSourceServerArrayCodec
-{
+public static class NdrOpcDxSourceServerArrayCodec {
     /// <summary>Writes source servers.</summary>
-    public static void Write(ref NdrWriter writer, DxSourceServer[]? values)
-    {
+    public static void Write(ref NdrWriter writer, DxSourceServer[]? values) {
         values ??= Array.Empty<DxSourceServer>();
         writer.WriteUInt32(unchecked((uint)values.Length));
-        foreach (var value in values)
-        {
+        foreach (var value in values) {
             NdrOpcDxSourceServerCodec.Write(ref writer, value);
         }
     }
 
     /// <summary>Reads source servers.</summary>
-    public static DxSourceServer[] Read(ref NdrReader reader)
-    {
+    public static DxSourceServer[] Read(ref NdrReader reader) {
         int count = NdrOpcDxCodecHelpers.ReadCount(ref reader, "source server array");
         var values = new DxSourceServer[count];
-        for (var i = 0; i < count; i++)
-        {
+        for (var i = 0; i < count; i++) {
             values[i] = NdrOpcDxSourceServerCodec.Read(ref reader);
         }
 
@@ -593,26 +537,21 @@ public static class NdrOpcDxSourceServerArrayCodec
 }
 
 /// <summary>NDR codec for counted <see cref="DxConnection" /> arrays.</summary>
-public static class NdrOpcDxConnectionArrayCodec
-{
+public static class NdrOpcDxConnectionArrayCodec {
     /// <summary>Writes DX connections.</summary>
-    public static void Write(ref NdrWriter writer, DxConnection[]? values)
-    {
+    public static void Write(ref NdrWriter writer, DxConnection[]? values) {
         values ??= Array.Empty<DxConnection>();
         writer.WriteUInt32(unchecked((uint)values.Length));
-        foreach (var value in values)
-        {
+        foreach (var value in values) {
             NdrOpcDxConnectionCodec.Write(ref writer, value);
         }
     }
 
     /// <summary>Reads DX connections.</summary>
-    public static DxConnection[] Read(ref NdrReader reader)
-    {
+    public static DxConnection[] Read(ref NdrReader reader) {
         int count = NdrOpcDxCodecHelpers.ReadCount(ref reader, "DX connection array");
         var values = new DxConnection[count];
-        for (var i = 0; i < count; i++)
-        {
+        for (var i = 0; i < count; i++) {
             values[i] = NdrOpcDxConnectionCodec.Read(ref reader);
         }
 
@@ -620,16 +559,13 @@ public static class NdrOpcDxConnectionArrayCodec
     }
 }
 
-internal static class NdrOpcDxCodecHelpers
-{
+internal static class NdrOpcDxCodecHelpers {
     internal const int Win32BoolTrue = unchecked((int)0xFFFFFFFFu);
     private const long FileTimeEpochOffsetTicks = 504911232000000000L;
 
-    internal static int ReadCount(ref NdrReader reader, string description)
-    {
+    internal static int ReadCount(ref NdrReader reader, string description) {
         uint count = reader.ReadUInt32();
-        if (count > int.MaxValue)
-        {
+        if (count > int.MaxValue) {
             throw new InvalidDataException($"OPC DX {description} count {count} is too large.");
         }
 
@@ -639,8 +575,7 @@ internal static class NdrOpcDxCodecHelpers
     internal static void WriteFileTime(ref NdrWriter writer, DateTimeOffset value) =>
         writer.WriteFileTime(value.UtcTicks - FileTimeEpochOffsetTicks);
 
-    internal static DateTimeOffset ReadFileTime(ref NdrReader reader)
-    {
+    internal static DateTimeOffset ReadFileTime(ref NdrReader reader) {
         long fileTimeTicks = reader.ReadFileTime();
         return new DateTimeOffset(fileTimeTicks + FileTimeEpochOffsetTicks, TimeSpan.Zero);
     }

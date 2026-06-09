@@ -1,6 +1,7 @@
-// SPDX-License-Identifier: MIT
+﻿// SPDX-License-Identifier: MIT
 
-namespace Opc.Classic.Dcom.Rpc.pdu; 
+namespace Opc.Classic.Dcom.Rpc.pdu;
+
 /// <summary>
 /// Orphan
 /// </summary>

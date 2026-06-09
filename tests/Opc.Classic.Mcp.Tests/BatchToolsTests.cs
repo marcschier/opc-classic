@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -14,11 +14,9 @@ using TUnit.Core;
 
 namespace Opc.Classic.Mcp.Tests;
 
-public sealed class BatchToolsTests
-{
+public sealed class BatchToolsTests {
     [Test]
-    public async Task Batch_tools_query_summaries_status_and_disconnect_via_mcp_client()
-    {
+    public async Task Batch_tools_query_summaries_status_and_disconnect_via_mcp_client() {
         var syntheticBatch = new SyntheticBatchServer();
         string channelName = "batch-" + Guid.NewGuid().ToString("N");
         using IDisposable registration = InMemoryBatchConnectionRegistry.Register(channelName, syntheticBatch.Channel);
@@ -27,8 +25,7 @@ public sealed class BatchToolsTests
 
         OpcResultDto connected = await server.CallToolAsync<OpcResultDto>(
             "opcclassic.batch.connect",
-            new Dictionary<string, object>
-            {
+            new Dictionary<string, object> {
                 ["sessionId"] = session.SessionId,
                 ["connectionString"] = "inmemory://" + channelName,
             }).ConfigureAwait(false);
@@ -37,8 +34,7 @@ public sealed class BatchToolsTests
             new Dictionary<string, object> { ["sessionId"] = session.SessionId }).ConfigureAwait(false);
         OpcBatchSummaryDto[] summaries = await server.CallToolAsync<OpcBatchSummaryDto[]>(
             "opcclassic.batch.query_batch_summaries",
-            new Dictionary<string, object>
-            {
+            new Dictionary<string, object> {
                 ["sessionId"] = session.SessionId,
                 ["id"] = "B-2026",
                 ["executionState"] = "RUNNING",
@@ -58,8 +54,7 @@ public sealed class BatchToolsTests
     }
 
     [Test]
-    public async Task Batch_tools_query_enumeration_sets_values_and_lists_via_mcp_client()
-    {
+    public async Task Batch_tools_query_enumeration_sets_values_and_lists_via_mcp_client() {
         var syntheticBatch = new SyntheticBatchServer();
         string channelName = "batch-" + Guid.NewGuid().ToString("N");
         using IDisposable registration = InMemoryBatchConnectionRegistry.Register(channelName, syntheticBatch.Channel);
@@ -67,8 +62,7 @@ public sealed class BatchToolsTests
         OpcSessionDto session = await server.CallToolAsync<OpcSessionDto>("opcclassic.session.create", []).ConfigureAwait(false);
         _ = await server.CallToolAsync<OpcResultDto>(
             "opcclassic.batch.connect",
-            new Dictionary<string, object>
-            {
+            new Dictionary<string, object> {
                 ["sessionId"] = session.SessionId,
                 ["connectionString"] = "inmemory://" + channelName,
             }).ConfigureAwait(false);
@@ -78,16 +72,14 @@ public sealed class BatchToolsTests
             new Dictionary<string, object> { ["sessionId"] = session.SessionId }).ConfigureAwait(false);
         OpcBatchEnumerationDto state = await server.CallToolAsync<OpcBatchEnumerationDto>(
             "opcclassic.batch.query_enumeration",
-            new Dictionary<string, object>
-            {
+            new Dictionary<string, object> {
                 ["sessionId"] = session.SessionId,
                 ["enumerationSetId"] = 2,
                 ["enumerationValue"] = 1,
             }).ConfigureAwait(false);
         OpcBatchEnumerationDto[] states = await server.CallToolAsync<OpcBatchEnumerationDto[]>(
             "opcclassic.batch.query_enumeration_list",
-            new Dictionary<string, object>
-            {
+            new Dictionary<string, object> {
                 ["sessionId"] = session.SessionId,
                 ["enumerationSetId"] = 2,
             }).ConfigureAwait(false);
@@ -97,8 +89,7 @@ public sealed class BatchToolsTests
         await Assert.That(states.Select(static value => value.Name)).Contains("COMPLETE");
     }
 
-    private sealed class SyntheticBatchServer
-    {
+    private sealed class SyntheticBatchServer {
         private readonly OpcBatchSummary[] _summaries =
         [
             new("B-2026-001", "First batch", "Batch.B-2026-001", "MR-1", 10.5f, "kg", "RUNNING", "AUTOMATIC", new DateTimeOffset(2026, 1, 1, 0, 0, 0, TimeSpan.Zero), new DateTimeOffset(2026, 1, 1, 1, 0, 0, TimeSpan.Zero)),
@@ -112,25 +103,20 @@ public sealed class BatchToolsTests
 
         public OpcBatchSummaryFilter? ObservedFilter { get; private set; }
 
-        private Task<NdrCallResult> DispatchAsync(Guid interfaceId, int opnum, ReadOnlyMemory<byte> requestPayload, CancellationToken cancellationToken)
-        {
+        private Task<NdrCallResult> DispatchAsync(Guid interfaceId, int opnum, ReadOnlyMemory<byte> requestPayload, CancellationToken cancellationToken) {
             cancellationToken.ThrowIfCancellationRequested();
-            if (interfaceId == IOPCBatchServer.InterfaceId)
-            {
-                if (opnum == IOPCBatchServer.Opnums.GetDelimiterAsync)
-                {
+            if (interfaceId == IOPCBatchServer.InterfaceId) {
+                if (opnum == IOPCBatchServer.Opnums.GetDelimiterAsync) {
                     return Result((ref NdrWriter writer) => writer.WriteUnicodeStringPtr("/"));
                 }
 
-                if (opnum == IOPCBatchServer.Opnums.CreateEnumeratorAsync)
-                {
+                if (opnum == IOPCBatchServer.Opnums.CreateEnumeratorAsync) {
                     _position = 0;
                     return Task.FromResult(new NdrCallResult(0, EncodeObjRef(IEnumOPCBatchSummary.InterfaceId)));
                 }
             }
 
-            if (interfaceId == IOPCBatchServer2.InterfaceId && opnum == IOPCBatchServer2.Opnums.CreateFilteredEnumeratorAsync)
-            {
+            if (interfaceId == IOPCBatchServer2.InterfaceId && opnum == IOPCBatchServer2.Opnums.CreateFilteredEnumeratorAsync) {
                 var reader = new NdrReader(requestPayload.Span);
                 _ = reader.ReadGuid();
                 ObservedFilter = NdrOpcBatchSummaryFilterCodec.Read(ref reader);
@@ -139,43 +125,35 @@ public sealed class BatchToolsTests
                 return Task.FromResult(new NdrCallResult(0, EncodeObjRef(IEnumOPCBatchSummary.InterfaceId)));
             }
 
-            if (interfaceId == IEnumOPCBatchSummary.InterfaceId && opnum == IEnumOPCBatchSummary.Opnums.NextAsync)
-            {
+            if (interfaceId == IEnumOPCBatchSummary.InterfaceId && opnum == IEnumOPCBatchSummary.Opnums.NextAsync) {
                 var reader = new NdrReader(requestPayload.Span);
                 int count = reader.ReadInt32();
                 OpcBatchSummary[] page = _summaries.Skip(_position).Take(count).ToArray();
                 _position += page.Length;
-                return Result((ref NdrWriter writer) =>
-                {
+                return Result((ref NdrWriter writer) => {
                     writer.WriteUInt32((uint)page.Length);
-                    foreach (OpcBatchSummary summary in page)
-                    {
+                    foreach (OpcBatchSummary summary in page) {
                         NdrOpcBatchSummaryCodec.Write(ref writer, summary);
                     }
                 });
             }
 
-            if (interfaceId == IOPCEnumerationSets.InterfaceId)
-            {
+            if (interfaceId == IOPCEnumerationSets.InterfaceId) {
                 return DispatchEnumerationSets(opnum, requestPayload);
             }
 
             return Task.FromResult(new NdrCallResult(OpcResultId.NotImplemented.Code, ReadOnlyMemory<byte>.Empty));
         }
 
-        private static Task<NdrCallResult> DispatchEnumerationSets(int opnum, ReadOnlyMemory<byte> requestPayload)
-        {
-            if (opnum == IOPCEnumerationSets.Opnums.QueryEnumerationSetsAsync)
-            {
-                return Result((ref NdrWriter writer) =>
-                {
+        private static Task<NdrCallResult> DispatchEnumerationSets(int opnum, ReadOnlyMemory<byte> requestPayload) {
+            if (opnum == IOPCEnumerationSets.Opnums.QueryEnumerationSetsAsync) {
+                return Result((ref NdrWriter writer) => {
                     WriteInt32Array(ref writer, 0, 2);
                     WriteStringArray(ref writer, "OPCB_ENUM_PHYS", "OPCB_ENUM_STATE");
                 });
             }
 
-            if (opnum == IOPCEnumerationSets.Opnums.QueryEnumerationAsync)
-            {
+            if (opnum == IOPCEnumerationSets.Opnums.QueryEnumerationAsync) {
                 var reader = new NdrReader(requestPayload.Span);
                 int setId = reader.ReadInt32();
                 int value = reader.ReadInt32();
@@ -183,10 +161,8 @@ public sealed class BatchToolsTests
                 return Result((ref NdrWriter writer) => writer.WriteUnicodeStringPtr(name));
             }
 
-            if (opnum == IOPCEnumerationSets.Opnums.QueryEnumerationListAsync)
-            {
-                return Result((ref NdrWriter writer) =>
-                {
+            if (opnum == IOPCEnumerationSets.Opnums.QueryEnumerationListAsync) {
+                return Result((ref NdrWriter writer) => {
                     WriteInt32Array(ref writer, 0, 1, 2);
                     WriteStringArray(ref writer, "IDLE", "RUNNING", "COMPLETE");
                 });
@@ -200,8 +176,7 @@ public sealed class BatchToolsTests
 
     private delegate void NdrWriteAction(ref NdrWriter writer);
 
-    private static ReadOnlyMemory<byte> EncodeObjRef(Guid iid) => WritePayload((ref NdrWriter writer) =>
-    {
+    private static ReadOnlyMemory<byte> EncodeObjRef(Guid iid) => WritePayload((ref NdrWriter writer) => {
         writer.WriteUInt32(0x574F454Du);
         writer.WriteUInt32(0x00000001u);
         writer.WriteGuid(iid);
@@ -214,28 +189,23 @@ public sealed class BatchToolsTests
         writer.WriteUInt16(0);
     });
 
-    private static ReadOnlyMemory<byte> WritePayload(NdrWriteAction write, int capacity = 4096)
-    {
+    private static ReadOnlyMemory<byte> WritePayload(NdrWriteAction write, int capacity = 4096) {
         var buffer = new byte[capacity];
         var writer = new NdrWriter(buffer);
         write(ref writer);
         return buffer[..writer.Position];
     }
 
-    private static void WriteInt32Array(ref NdrWriter writer, params int[] values)
-    {
+    private static void WriteInt32Array(ref NdrWriter writer, params int[] values) {
         writer.WriteUInt32((uint)values.Length);
-        foreach (int value in values)
-        {
+        foreach (int value in values) {
             writer.WriteInt32(value);
         }
     }
 
-    private static void WriteStringArray(ref NdrWriter writer, params string[] values)
-    {
+    private static void WriteStringArray(ref NdrWriter writer, params string[] values) {
         writer.WriteUInt32((uint)values.Length);
-        foreach (string value in values)
-        {
+        foreach (string value in values) {
             writer.WriteUnicodeStringPtr(value);
         }
     }

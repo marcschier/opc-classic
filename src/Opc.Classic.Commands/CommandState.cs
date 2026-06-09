@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -8,8 +8,7 @@ namespace Opc.Classic.Commands;
 /// <summary>
 /// OPC Commands invocation state values.
 /// </summary>
-public enum CommandState
-{
+public enum CommandState {
     /// <summary>The invocation exists but has not been queued.</summary>
     Created = 1,
 

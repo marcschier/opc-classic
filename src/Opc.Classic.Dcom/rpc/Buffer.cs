@@ -1,8 +1,9 @@
-// SPDX-License-Identifier: MIT
+﻿// SPDX-License-Identifier: MIT
 
 using System;
 
-namespace Opc.Classic.Dcom.Rpc; 
+namespace Opc.Classic.Dcom.Rpc;
+
 /// <summary>
 /// Generic buffer
 /// </summary>

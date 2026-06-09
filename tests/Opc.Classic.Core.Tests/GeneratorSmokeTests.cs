@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -13,8 +13,7 @@ using TUnit.Core;
 
 namespace Opc.Classic.Tests;
 
-public sealed class GeneratorSmokeTests
-{
+public sealed class GeneratorSmokeTests {
     // Indirect through a helper method so the TUnit constant-assertion analyzer
     // doesn't reject the test — the consts are inherently fixed but
     // demonstrating the generator pipeline is alive needs an assertion against
@@ -23,14 +22,12 @@ public sealed class GeneratorSmokeTests
     private static string ReadDescription() => ClassicGeneratorMarker.Description;
 
     [Test]
-    public async Task GeneratedMarker_HasExpectedVersion()
-    {
+    public async Task GeneratedMarker_HasExpectedVersion() {
         await Assert.That(ReadVersion()).IsEqualTo("0.2.0-dev");
     }
 
     [Test]
-    public async Task GeneratedMarker_HasDescription()
-    {
+    public async Task GeneratedMarker_HasDescription() {
         await Assert.That(ReadDescription()).Contains("Phase 4A.1");
     }
 }

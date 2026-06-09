@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -14,8 +14,7 @@ using TUnit.Core;
 
 namespace Opc.Classic.Generators.Tests;
 
-public sealed class OpcProxyGeneratorTests
-{
+public sealed class OpcProxyGeneratorTests {
     private const string SampleSource = """
         using System.Threading;
         using System.Threading.Tasks;
@@ -35,8 +34,7 @@ public sealed class OpcProxyGeneratorTests
         """;
 
     [Test]
-    public async Task Generator_RunsWithoutDiagnostics_OnPartialOpcInterface()
-    {
+    public async Task Generator_RunsWithoutDiagnostics_OnPartialOpcInterface() {
         GeneratorRunResult result = RunGenerator(SampleSource, out Compilation outputCompilation, out ImmutableArray<Diagnostic> driverDiagnostics);
 
         await Assert.That(driverDiagnostics.Length).IsEqualTo(0);
@@ -45,16 +43,14 @@ public sealed class OpcProxyGeneratorTests
     }
 
     [Test]
-    public async Task GeneratedProxy_DeclaresPartialClientProxyClass()
-    {
+    public async Task GeneratedProxy_DeclaresPartialClientProxyClass() {
         string generated = GeneratedProxySource(SampleSource);
 
         await Assert.That(generated).Contains("partial class ITestProxyClientProxy : ITestProxy");
     }
 
     [Test]
-    public async Task GeneratedProxy_DeclaresCallChannelFieldAndConstructor()
-    {
+    public async Task GeneratedProxy_DeclaresCallChannelFieldAndConstructor() {
         string generated = GeneratedProxySource(SampleSource);
 
         await Assert.That(generated).Contains("private readonly global::Opc.Classic.ICallChannel _channel;");
@@ -63,8 +59,7 @@ public sealed class OpcProxyGeneratorTests
     }
 
     [Test]
-    public async Task GeneratedProxy_StubsEveryMethodWithNotImplementedException()
-    {
+    public async Task GeneratedProxy_StubsEveryMethodWithNotImplementedException() {
         string generated = GeneratedProxySource(SampleSource);
 
         await Assert.That(generated).Contains("per-method shim for 'ITestProxy.ReadAsync' TBD");
@@ -74,8 +69,7 @@ public sealed class OpcProxyGeneratorTests
     }
 
     [Test]
-    public async Task GeneratedProxy_MatchesAsyncMethodSignatures()
-    {
+    public async Task GeneratedProxy_MatchesAsyncMethodSignatures() {
         string generated = GeneratedProxySource(SampleSource);
 
         await Assert.That(generated).Contains("public global::System.Threading.Tasks.Task<int> ReadAsync(int id, global::System.Threading.CancellationToken ct)");
@@ -84,8 +78,7 @@ public sealed class OpcProxyGeneratorTests
     }
 
     [Test]
-    public async Task NonPartialInterface_ReportsOpcgen004Diagnostic()
-    {
+    public async Task NonPartialInterface_ReportsOpcgen004Diagnostic() {
         const string source = """
             using System.Threading.Tasks;
             using Opc.Classic.Generators;
@@ -106,14 +99,12 @@ public sealed class OpcProxyGeneratorTests
         await Assert.That(result.Diagnostics.Any(static diagnostic => diagnostic.Id == "OPCGEN004")).IsTrue();
     }
 
-    private static string GeneratedProxySource(string source)
-    {
+    private static string GeneratedProxySource(string source) {
         GeneratorRunResult result = RunGenerator(source, out _, out _);
         return result.GeneratedSources.Single(static generated => generated.HintName.EndsWith(".OpcProxy.g.cs", StringComparison.Ordinal)).SourceText.ToString();
     }
 
-    private static GeneratorRunResult RunGenerator(string source, out Compilation outputCompilation, out ImmutableArray<Diagnostic> driverDiagnostics)
-    {
+    private static GeneratorRunResult RunGenerator(string source, out Compilation outputCompilation, out ImmutableArray<Diagnostic> driverDiagnostics) {
         var compilation = CreateCompilation(source);
         ISourceGenerator[] generators =
         [
@@ -128,8 +119,7 @@ public sealed class OpcProxyGeneratorTests
             result.Diagnostics.Any(static diagnostic => diagnostic.Id is "OPCGEN004" or "OPCGEN005"));
     }
 
-    private static CSharpCompilation CreateCompilation(string source)
-    {
+    private static CSharpCompilation CreateCompilation(string source) {
         return CSharpCompilation.Create(
             assemblyName: "OpcProxyGeneratorTestAssembly",
             syntaxTrees: [CSharpSyntaxTree.ParseText(source, ParseOptions())],
@@ -139,13 +129,10 @@ public sealed class OpcProxyGeneratorTests
 
     private static CSharpParseOptions ParseOptions() => CSharpParseOptions.Default.WithLanguageVersion(LanguageVersion.Latest);
 
-    private static IEnumerable<MetadataReference> References()
-    {
+    private static IEnumerable<MetadataReference> References() {
         string? trustedPlatformAssemblies = AppContext.GetData("TRUSTED_PLATFORM_ASSEMBLIES") as string;
-        if (!string.IsNullOrEmpty(trustedPlatformAssemblies))
-        {
-            foreach (var path in trustedPlatformAssemblies.Split(Path.PathSeparator))
-            {
+        if (!string.IsNullOrEmpty(trustedPlatformAssemblies)) {
+            foreach (var path in trustedPlatformAssemblies.Split(Path.PathSeparator)) {
                 yield return MetadataReference.CreateFromFile(path);
             }
         }
@@ -153,12 +140,10 @@ public sealed class OpcProxyGeneratorTests
         yield return MetadataReference.CreateFromFile(typeof(ICallChannel).Assembly.Location);
     }
 
-    private static int CountOccurrences(string text, string value)
-    {
+    private static int CountOccurrences(string text, string value) {
         int count = 0;
         int index = 0;
-        while ((index = text.IndexOf(value, index, StringComparison.Ordinal)) >= 0)
-        {
+        while ((index = text.IndexOf(value, index, StringComparison.Ordinal)) >= 0) {
             count++;
             index += value.Length;
         }

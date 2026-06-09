@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -26,8 +26,7 @@ namespace Opc.Classic;
 /// a string-formatted CLSID (e.g. <c>{F8582CF2-88FB-11D0-B850-00C0F0104305}</c>).
 /// </para>
 /// </remarks>
-public sealed class OpcUrl : IEquatable<OpcUrl>
-{
+public sealed class OpcUrl : IEquatable<OpcUrl> {
     /// <summary>The full original URL string.</summary>
     public string Original { get; }
 
@@ -46,8 +45,7 @@ public sealed class OpcUrl : IEquatable<OpcUrl>
     /// <summary>True if <see cref="ServerId"/> is a string-formatted CLSID.</summary>
     public bool IsClsid { get; }
 
-    private OpcUrl(string original, OpcUrlScheme scheme, string host, int port, string serverId, bool isClsid)
-    {
+    private OpcUrl(string original, OpcUrlScheme scheme, string host, int port, string serverId, bool isClsid) {
         Original = original;
         Scheme = scheme;
         Host = host;
@@ -66,8 +64,7 @@ public sealed class OpcUrl : IEquatable<OpcUrl>
     [SuppressMessage(
         "Design", "CA1054:URI-like parameters should not be strings",
         Justification = "OPC URL schemes are not registered with System.Uri; parsing the raw string preserves OPC-specific semantics across platforms.")]
-    public static OpcUrl Parse(string url)
-    {
+    public static OpcUrl Parse(string url) {
         ArgumentNullException.ThrowIfNull(url);
         return TryParse(url, out var parsed)
             ? parsed!
@@ -82,28 +79,23 @@ public sealed class OpcUrl : IEquatable<OpcUrl>
     [SuppressMessage(
         "Design", "CA1054:URI-like parameters should not be strings",
         Justification = "OPC URL schemes are not registered with System.Uri; parsing the raw string preserves OPC-specific semantics across platforms.")]
-    public static bool TryParse(string? url, out OpcUrl? result)
-    {
+    public static bool TryParse(string? url, out OpcUrl? result) {
         result = null;
-        if (string.IsNullOrEmpty(url))
-        {
+        if (string.IsNullOrEmpty(url)) {
             return false;
         }
 
         var schemeEnd = url.IndexOf("://", StringComparison.Ordinal);
-        if (schemeEnd < 0 || !TryParseScheme(url[..schemeEnd], out var scheme))
-        {
+        if (schemeEnd < 0 || !TryParseScheme(url[..schemeEnd], out var scheme)) {
             return false;
         }
 
         var rest = url[(schemeEnd + 3)..];
-        if (!TrySplitAuthorityAndPath(rest, out var authority, out var path))
-        {
+        if (!TrySplitAuthorityAndPath(rest, out var authority, out var path)) {
             return false;
         }
 
-        if (!TrySplitHostAndPort(authority, out var host, out var port))
-        {
+        if (!TrySplitHostAndPort(authority, out var host, out var port)) {
             return false;
         }
 
@@ -111,53 +103,44 @@ public sealed class OpcUrl : IEquatable<OpcUrl>
         return true;
     }
 
-    private static bool TrySplitAuthorityAndPath(string rest, out string authority, out string path)
-    {
+    private static bool TrySplitAuthorityAndPath(string rest, out string authority, out string path) {
         authority = string.Empty;
         path = string.Empty;
-        if (rest.Length == 0)
-        {
+        if (rest.Length == 0) {
             return false;
         }
         var pathStart = rest.IndexOf('/');
-        if (pathStart < 0)
-        {
+        if (pathStart < 0) {
             return false; // path is required
         }
         authority = rest[..pathStart];
         path = rest[(pathStart + 1)..];
         var queryStart = path.IndexOf('?', StringComparison.Ordinal);
-        if (queryStart >= 0)
-        {
+        if (queryStart >= 0) {
             path = path[..queryStart];
         }
         return path.Length != 0;
     }
 
-    private static bool TrySplitHostAndPort(string authority, out string host, out int port)
-    {
+    private static bool TrySplitHostAndPort(string authority, out string host, out int port) {
         host = authority;
         port = 0;
         var portStart = authority.LastIndexOf(':');
-        if (portStart <= 0 || authority.IndexOf(':', StringComparison.Ordinal) != portStart)
-        {
+        if (portStart <= 0 || authority.IndexOf(':', StringComparison.Ordinal) != portStart) {
             return true;
         }
         host = authority[..portStart];
         var portText = authority[(portStart + 1)..];
         if (!int.TryParse(portText, System.Globalization.NumberStyles.None,
                 System.Globalization.CultureInfo.InvariantCulture, out port)
-            || port is <= 0 or > 65535)
-        {
+            || port is <= 0 or > 65535) {
             return false;
         }
         return true;
     }
 
-    private static bool TryParseScheme(string text, out OpcUrlScheme scheme)
-    {
-        switch (text.ToLowerInvariant())
-        {
+    private static bool TryParseScheme(string text, out OpcUrlScheme scheme) {
+        switch (text.ToLowerInvariant()) {
             case "opcda": scheme = OpcUrlScheme.Da; return true;
             case "opcae": scheme = OpcUrlScheme.Ae; return true;
             case "opchda": scheme = OpcUrlScheme.Hda; return true;
@@ -167,11 +150,9 @@ public sealed class OpcUrl : IEquatable<OpcUrl>
         }
     }
 
-    private static bool LooksLikeClsid(string text)
-    {
+    private static bool LooksLikeClsid(string text) {
         // {XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX} — 38 chars with braces; 36 without.
-        if (text.Length == 38 && text[0] == '{' && text[^1] == '}')
-        {
+        if (text.Length == 38 && text[0] == '{' && text[^1] == '}') {
             return Guid.TryParseExact(text, "B", out _);
         }
         return text.Length == 36 && Guid.TryParseExact(text, "D", out _);

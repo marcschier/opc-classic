@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -21,20 +21,17 @@ using TUnit.Core;
 
 namespace Opc.Classic.Dcom.Tests.Remoting;
 
-public sealed class IRemUnknownProxyTests
-{
+public sealed class IRemUnknownProxyTests {
     private static readonly Guid IRemUnknownIid = new("00000131-0000-0000-c000-000000000046");
     private static readonly Guid SampleRipid = new("11111111-2222-3333-4444-555555555555");
     private static readonly Guid Iid1 = new("39C13A4D-011E-11D0-9675-0020AFD8ADB3");
     private static readonly Guid Iid2 = new("39C13A50-011E-11D0-9675-0020AFD8ADB3");
 
     [Test]
-    public async Task RemQueryInterface_routes_to_IRemUnknown_at_opnum_3()
-    {
+    public async Task RemQueryInterface_routes_to_IRemUnknown_at_opnum_3() {
         Guid observedIid = Guid.Empty;
         int observedOpnum = -1;
-        var channel = new InMemoryCallChannel((iid, opnum, _, _) =>
-        {
+        var channel = new InMemoryCallChannel((iid, opnum, _, _) => {
             observedIid = iid;
             observedOpnum = opnum;
             byte[] payload = new byte[8];
@@ -57,11 +54,9 @@ public sealed class IRemUnknownProxyTests
     }
 
     [Test]
-    public async Task RemQueryInterface_request_body_carries_ripid_cRefs_cIids_iids_array()
-    {
+    public async Task RemQueryInterface_request_body_carries_ripid_cRefs_cIids_iids_array() {
         ReadOnlyMemory<byte> captured = ReadOnlyMemory<byte>.Empty;
-        var channel = new InMemoryCallChannel((_, _, payload, _) =>
-        {
+        var channel = new InMemoryCallChannel((_, _, payload, _) => {
             captured = payload.ToArray();
             byte[] response = new byte[8];
             System.Buffers.Binary.BinaryPrimitives.WriteUInt32LittleEndian(response.AsSpan(0, 4), 0x00020000u);
@@ -94,8 +89,7 @@ public sealed class IRemUnknownProxyTests
     }
 
     [Test]
-    public async Task RemQueryInterface_decodes_REMQIRESULT_array_with_referent_prefix()
-    {
+    public async Task RemQueryInterface_decodes_REMQIRESULT_array_with_referent_prefix() {
         var expected1 = new OpcRemQIResult(hresult: 0, flags: 0, publicRefs: 5, oxid: 0xAAAA, oid: 0xBBBB, ipid: Iid1);
         var expected2 = new OpcRemQIResult(hresult: unchecked((int)0x80004002u), flags: 0, publicRefs: 0, oxid: 0, oid: 0, ipid: Guid.Empty);
 

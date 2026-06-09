@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -20,13 +20,11 @@ using V20SyncIOClientProxy = Opc.Classic.Da.V20.Dcom.IOPCSyncIOClientProxy;
 
 namespace Opc.Classic.Da.Tests.Dcom;
 
-public sealed class IOPCAdditionalDaProxyTests
-{
+public sealed class IOPCAdditionalDaProxyTests {
     private delegate void NdrWriteAction(ref NdrWriter writer);
 
     [Test]
-    public async Task GroupState_GetState_invokes_channel_with_correct_metadata_and_decodes_state()
-    {
+    public async Task GroupState_GetState_invokes_channel_with_correct_metadata_and_decodes_state() {
         var expected = new OpcGroupState(
             ClientHandle: 0x1234,
             ServerHandle: 0x5678,
@@ -40,8 +38,7 @@ public sealed class IOPCAdditionalDaProxyTests
         int observedOpnum = -1;
         ReadOnlyMemory<byte> responsePayload = WritePayload((ref NdrWriter writer) =>
             NdrOpcGroupStateCodec.Write(ref writer, expected));
-        var channel = new InMemoryCallChannel((iid, opnum, _, _) =>
-        {
+        var channel = new InMemoryCallChannel((iid, opnum, _, _) => {
             observedIid = iid;
             observedOpnum = opnum;
             return Task.FromResult(new NdrCallResult(0, responsePayload));
@@ -57,13 +54,11 @@ public sealed class IOPCAdditionalDaProxyTests
     }
 
     [Test]
-    public async Task GroupState_SetName_invokes_channel_with_correct_metadata_and_encodes_payload()
-    {
+    public async Task GroupState_SetName_invokes_channel_with_correct_metadata_and_encodes_payload() {
         Guid observedIid = Guid.Empty;
         int observedOpnum = -1;
         int observedPayloadLength = -1;
-        var channel = new InMemoryCallChannel((iid, opnum, payload, _) =>
-        {
+        var channel = new InMemoryCallChannel((iid, opnum, payload, _) => {
             observedIid = iid;
             observedOpnum = opnum;
             observedPayloadLength = payload.Length;
@@ -80,8 +75,7 @@ public sealed class IOPCAdditionalDaProxyTests
     }
 
     [Test]
-    public async Task GroupState_SetName_failure_throws_OpcException()
-    {
+    public async Task GroupState_SetName_failure_throws_OpcException() {
         int eFail = EFail();
         var channel = new InMemoryCallChannel((_, _, _, _) =>
             Task.FromResult(new NdrCallResult(eFail, ReadOnlyMemory<byte>.Empty)));
@@ -94,12 +88,10 @@ public sealed class IOPCAdditionalDaProxyTests
     }
 
     [Test]
-    public async Task ItemIO_WriteVqt_invokes_channel_with_correct_metadata_and_decodes_errors()
-    {
+    public async Task ItemIO_WriteVqt_invokes_channel_with_correct_metadata_and_decodes_errors() {
         Guid observedIid = Guid.Empty;
         int observedOpnum = -1;
-        var channel = new InMemoryCallChannel((iid, opnum, _, _) =>
-        {
+        var channel = new InMemoryCallChannel((iid, opnum, _, _) => {
             observedIid = iid;
             observedOpnum = opnum;
             return Task.FromResult(new NdrCallResult(0, EncodeUniqueInt32Array(0)));
@@ -117,12 +109,10 @@ public sealed class IOPCAdditionalDaProxyTests
     }
 
     [Test]
-    public async Task Browse_GetProperties_invokes_channel_with_correct_metadata_and_decodes_properties()
-    {
+    public async Task Browse_GetProperties_invokes_channel_with_correct_metadata_and_decodes_properties() {
         Guid observedIid = Guid.Empty;
         int observedOpnum = -1;
-        ReadOnlyMemory<byte> responsePayload = WritePayload((ref NdrWriter writer) =>
-        {
+        ReadOnlyMemory<byte> responsePayload = WritePayload((ref NdrWriter writer) => {
             NdrOpcBrowseResponseDecoder.WriteItemPropertiesConformantArray(
                 ref writer,
                 [new OpcItemProperties(0, [
@@ -135,8 +125,7 @@ public sealed class IOPCAdditionalDaProxyTests
                         0),
                 ])]);
         });
-        var channel = new InMemoryCallChannel((iid, opnum, _, _) =>
-        {
+        var channel = new InMemoryCallChannel((iid, opnum, _, _) => {
             observedIid = iid;
             observedOpnum = opnum;
             return Task.FromResult(new NdrCallResult(0, responsePayload));
@@ -159,8 +148,7 @@ public sealed class IOPCAdditionalDaProxyTests
     }
 
     [Test]
-    public async Task Browse_GetProperties_decodes_non_null_property_pointer_when_num_properties_is_zero()
-    {
+    public async Task Browse_GetProperties_decodes_non_null_property_pointer_when_num_properties_is_zero() {
         OpcItemPropertyResult property = new(
             VarType.VT_I4,
             100,
@@ -168,8 +156,7 @@ public sealed class IOPCAdditionalDaProxyTests
             "Value",
             OpcVariant.FromInt32(88),
             0);
-        ReadOnlyMemory<byte> responsePayload = WritePayload((ref NdrWriter writer) =>
-        {
+        ReadOnlyMemory<byte> responsePayload = WritePayload((ref NdrWriter writer) => {
             writer.WriteUniquePointerReferent(true);     // ppItemProperties outer referent
             writer.WriteUInt32(1);                        // max_count of OPCITEMPROPERTIES array
             writer.WriteInt32(0);                         // hrErrorId
@@ -197,12 +184,10 @@ public sealed class IOPCAdditionalDaProxyTests
     }
 
     [Test]
-    public async Task BrowseServerAddressSpace_GetItemId_invokes_channel_with_correct_metadata()
-    {
+    public async Task BrowseServerAddressSpace_GetItemId_invokes_channel_with_correct_metadata() {
         Guid observedIid = Guid.Empty;
         int observedOpnum = -1;
-        var channel = new InMemoryCallChannel((iid, opnum, _, _) =>
-        {
+        var channel = new InMemoryCallChannel((iid, opnum, _, _) => {
             observedIid = iid;
             observedOpnum = opnum;
             return Task.FromResult(new NdrCallResult(0, EncodeString("Channel1.Device1.Tag1")));
@@ -217,12 +202,10 @@ public sealed class IOPCAdditionalDaProxyTests
     }
 
     [Test]
-    public async Task ItemMgt_SetActiveState_invokes_channel_with_correct_metadata_and_decodes_errors()
-    {
+    public async Task ItemMgt_SetActiveState_invokes_channel_with_correct_metadata_and_decodes_errors() {
         Guid observedIid = Guid.Empty;
         int observedOpnum = -1;
-        var channel = new InMemoryCallChannel((iid, opnum, _, _) =>
-        {
+        var channel = new InMemoryCallChannel((iid, opnum, _, _) => {
             observedIid = iid;
             observedOpnum = opnum;
             return Task.FromResult(new NdrCallResult(0, EncodeUniqueInt32Array(0)));
@@ -238,12 +221,10 @@ public sealed class IOPCAdditionalDaProxyTests
     }
 
     [Test]
-    public async Task SyncIO_Write_invokes_channel_with_correct_metadata_and_decodes_errors()
-    {
+    public async Task SyncIO_Write_invokes_channel_with_correct_metadata_and_decodes_errors() {
         Guid observedIid = Guid.Empty;
         int observedOpnum = -1;
-        var channel = new InMemoryCallChannel((iid, opnum, _, _) =>
-        {
+        var channel = new InMemoryCallChannel((iid, opnum, _, _) => {
             observedIid = iid;
             observedOpnum = opnum;
             return Task.FromResult(new NdrCallResult(0, EncodeUniqueInt32Array(0)));
@@ -259,12 +240,10 @@ public sealed class IOPCAdditionalDaProxyTests
     }
 
     [Test]
-    public async Task SyncIO2_WriteVqt_invokes_channel_with_correct_metadata_and_decodes_errors()
-    {
+    public async Task SyncIO2_WriteVqt_invokes_channel_with_correct_metadata_and_decodes_errors() {
         Guid observedIid = Guid.Empty;
         int observedOpnum = -1;
-        var channel = new InMemoryCallChannel((iid, opnum, _, _) =>
-        {
+        var channel = new InMemoryCallChannel((iid, opnum, _, _) => {
             observedIid = iid;
             observedOpnum = opnum;
             return Task.FromResult(new NdrCallResult(0, EncodeUniqueInt32Array(0)));
@@ -280,12 +259,10 @@ public sealed class IOPCAdditionalDaProxyTests
     }
 
     [Test]
-    public async Task AsyncIO2_GetEnable_invokes_channel_with_correct_metadata_and_decodes_boolean()
-    {
+    public async Task AsyncIO2_GetEnable_invokes_channel_with_correct_metadata_and_decodes_boolean() {
         Guid observedIid = Guid.Empty;
         int observedOpnum = -1;
-        var channel = new InMemoryCallChannel((iid, opnum, _, _) =>
-        {
+        var channel = new InMemoryCallChannel((iid, opnum, _, _) => {
             observedIid = iid;
             observedOpnum = opnum;
             return Task.FromResult(new NdrCallResult(0, EncodeBoolean(true)));
@@ -300,12 +277,10 @@ public sealed class IOPCAdditionalDaProxyTests
     }
 
     [Test]
-    public async Task AsyncIO3_RefreshMaxAge_invokes_channel_with_correct_metadata_and_decodes_cancel_id()
-    {
+    public async Task AsyncIO3_RefreshMaxAge_invokes_channel_with_correct_metadata_and_decodes_cancel_id() {
         Guid observedIid = Guid.Empty;
         int observedOpnum = -1;
-        var channel = new InMemoryCallChannel((iid, opnum, _, _) =>
-        {
+        var channel = new InMemoryCallChannel((iid, opnum, _, _) => {
             observedIid = iid;
             observedOpnum = opnum;
             return Task.FromResult(new NdrCallResult(0, EncodeInt32(0x1234)));
@@ -320,12 +295,10 @@ public sealed class IOPCAdditionalDaProxyTests
     }
 
     [Test]
-    public async Task DataCallback_OnCancelComplete_invokes_channel_with_correct_metadata()
-    {
+    public async Task DataCallback_OnCancelComplete_invokes_channel_with_correct_metadata() {
         Guid observedIid = Guid.Empty;
         int observedOpnum = -1;
-        var channel = new InMemoryCallChannel((iid, opnum, _, _) =>
-        {
+        var channel = new InMemoryCallChannel((iid, opnum, _, _) => {
             observedIid = iid;
             observedOpnum = opnum;
             return Task.FromResult(new NdrCallResult(0, ReadOnlyMemory<byte>.Empty));
@@ -339,13 +312,11 @@ public sealed class IOPCAdditionalDaProxyTests
     }
 
     [Test]
-    public async Task ConnectionPoint_GetConnectionInterface_invokes_channel_with_correct_metadata()
-    {
+    public async Task ConnectionPoint_GetConnectionInterface_invokes_channel_with_correct_metadata() {
         Guid expected = IOPCDataCallback.InterfaceId;
         Guid observedIid = Guid.Empty;
         int observedOpnum = -1;
-        var channel = new InMemoryCallChannel((iid, opnum, _, _) =>
-        {
+        var channel = new InMemoryCallChannel((iid, opnum, _, _) => {
             observedIid = iid;
             observedOpnum = opnum;
             return Task.FromResult(new NdrCallResult(0, EncodeGuid(expected)));
@@ -360,8 +331,7 @@ public sealed class IOPCAdditionalDaProxyTests
     }
 
     [Test]
-    public async Task ConnectionPoint_Advise_and_Unadvise_round_trip_sink_and_cookie()
-    {
+    public async Task ConnectionPoint_Advise_and_Unadvise_round_trip_sink_and_cookie() {
         var sink = new OpcInterfaceRef(
             IOPCDataCallback.InterfaceId,
             flags: 1,
@@ -374,13 +344,11 @@ public sealed class IOPCAdditionalDaProxyTests
         IOpcInterfaceRef? observedSink = null;
         int observedCookie = 0;
         int calls = 0;
-        var channel = new InMemoryCallChannel((iid, opnum, payload, _) =>
-        {
+        var channel = new InMemoryCallChannel((iid, opnum, payload, _) => {
             Ensure(iid == IConnectionPoint.InterfaceId);
             calls++;
             var reader = new NdrReader(payload.Span);
-            if (opnum == IConnectionPoint.Opnums.AdviseAsync)
-            {
+            if (opnum == IConnectionPoint.Opnums.AdviseAsync) {
                 observedSink = OpcInterfaceRefCodec.Read(ref reader);
                 return Task.FromResult(new NdrCallResult(0, EncodeInt32(0x1234)));
             }
@@ -403,34 +371,28 @@ public sealed class IOPCAdditionalDaProxyTests
     }
 
     [Test]
-    public async Task Common_methods_round_trip_locale_error_text_and_client_name()
-    {
+    public async Task Common_methods_round_trip_locale_error_text_and_client_name() {
         int calls = 0;
         bool setLocaleObserved = false;
         bool setClientNameObserved = false;
-        var channel = new InMemoryCallChannel((iid, opnum, payload, _) =>
-        {
+        var channel = new InMemoryCallChannel((iid, opnum, payload, _) => {
             Ensure(iid == IOPCCommon.InterfaceId);
             calls++;
             var reader = new NdrReader(payload.Span);
-            if (opnum == IOPCCommon.Opnums.SetLocaleIdAsync)
-            {
+            if (opnum == IOPCCommon.Opnums.SetLocaleIdAsync) {
                 setLocaleObserved = reader.ReadInt32() == 0x0407;
                 return Task.FromResult(new NdrCallResult(0, ReadOnlyMemory<byte>.Empty));
             }
 
-            if (opnum == IOPCCommon.Opnums.GetLocaleIdAsync)
-            {
+            if (opnum == IOPCCommon.Opnums.GetLocaleIdAsync) {
                 return Task.FromResult(new NdrCallResult(0, EncodeInt32(0x0409)));
             }
 
-            if (opnum == IOPCCommon.Opnums.QueryAvailableLocaleIdsAsync)
-            {
+            if (opnum == IOPCCommon.Opnums.QueryAvailableLocaleIdsAsync) {
                 return Task.FromResult(new NdrCallResult(0, EncodeInt32Array(0x0409, 0x0407)));
             }
 
-            if (opnum == IOPCCommon.Opnums.GetErrorStringAsync)
-            {
+            if (opnum == IOPCCommon.Opnums.GetErrorStringAsync) {
                 Ensure(reader.ReadInt32() == unchecked((int)0x80004005u));
                 return Task.FromResult(new NdrCallResult(0, EncodeString("Failure")));
             }
@@ -456,11 +418,9 @@ public sealed class IOPCAdditionalDaProxyTests
     }
 
     [Test]
-    public async Task ShutdownRequest_invokes_channel_with_reason()
-    {
+    public async Task ShutdownRequest_invokes_channel_with_reason() {
         string? observedReason = null;
-        var channel = new InMemoryCallChannel((iid, opnum, payload, _) =>
-        {
+        var channel = new InMemoryCallChannel((iid, opnum, payload, _) => {
             Ensure(iid == IOPCShutdown.InterfaceId);
             Ensure(opnum == IOPCShutdown.Opnums.ShutdownRequestAsync);
             var reader = new NdrReader(payload.Span);
@@ -475,13 +435,11 @@ public sealed class IOPCAdditionalDaProxyTests
     }
 
     [Test]
-    public async Task EnumGuid_Next_invokes_channel_with_correct_metadata_and_decodes_guids()
-    {
+    public async Task EnumGuid_Next_invokes_channel_with_correct_metadata_and_decodes_guids() {
         Guid expected = Guid.Parse("39C13A4D-011E-11D0-9675-0020AFD8ADB3");
         Guid observedIid = Guid.Empty;
         int observedOpnum = -1;
-        var channel = new InMemoryCallChannel((iid, opnum, _, _) =>
-        {
+        var channel = new InMemoryCallChannel((iid, opnum, _, _) => {
             observedIid = iid;
             observedOpnum = opnum;
             return Task.FromResult(new NdrCallResult(0, EncodeGuidArray(expected)));
@@ -497,13 +455,11 @@ public sealed class IOPCAdditionalDaProxyTests
     }
 
     [Test]
-    public async Task ServerList_ClsidFromProgId_invokes_channel_with_correct_metadata()
-    {
+    public async Task ServerList_ClsidFromProgId_invokes_channel_with_correct_metadata() {
         Guid expected = Guid.Parse("39C13A4D-011E-11D0-9675-0020AFD8ADB3");
         Guid observedIid = Guid.Empty;
         int observedOpnum = -1;
-        var channel = new InMemoryCallChannel((iid, opnum, _, _) =>
-        {
+        var channel = new InMemoryCallChannel((iid, opnum, _, _) => {
             observedIid = iid;
             observedOpnum = opnum;
             return Task.FromResult(new NdrCallResult(0, EncodeGuid(expected)));
@@ -518,13 +474,11 @@ public sealed class IOPCAdditionalDaProxyTests
     }
 
     [Test]
-    public async Task ServerList2_ClsidFromProgId_invokes_channel_with_correct_metadata()
-    {
+    public async Task ServerList2_ClsidFromProgId_invokes_channel_with_correct_metadata() {
         Guid expected = Guid.Parse("39C13A4D-011E-11D0-9675-0020AFD8ADB3");
         Guid observedIid = Guid.Empty;
         int observedOpnum = -1;
-        var channel = new InMemoryCallChannel((iid, opnum, _, _) =>
-        {
+        var channel = new InMemoryCallChannel((iid, opnum, _, _) => {
             observedIid = iid;
             observedOpnum = opnum;
             return Task.FromResult(new NdrCallResult(0, EncodeGuid(expected)));
@@ -539,13 +493,11 @@ public sealed class IOPCAdditionalDaProxyTests
     }
 
     [Test]
-    public async Task V20SyncIO_Read_invokes_channel_with_correct_metadata_and_decodes_states_and_errors()
-    {
+    public async Task V20SyncIO_Read_invokes_channel_with_correct_metadata_and_decodes_states_and_errors() {
         Guid observedIid = Guid.Empty;
         int observedOpnum = -1;
         var expected = new OpcItemState(10, DateTimeOffset.UnixEpoch, new OpcQuality(192), OpcVariant.FromInt32(42));
-        var channel = new InMemoryCallChannel((iid, opnum, payload, _) =>
-        {
+        var channel = new InMemoryCallChannel((iid, opnum, payload, _) => {
             observedIid = iid;
             observedOpnum = opnum;
             var reader = new NdrReader(payload.Span);
@@ -564,12 +516,10 @@ public sealed class IOPCAdditionalDaProxyTests
     }
 
     [Test]
-    public async Task V20SyncIO_Write_invokes_channel_with_correct_metadata_and_decodes_errors()
-    {
+    public async Task V20SyncIO_Write_invokes_channel_with_correct_metadata_and_decodes_errors() {
         Guid observedIid = Guid.Empty;
         int observedOpnum = -1;
-        var channel = new InMemoryCallChannel((iid, opnum, _, _) =>
-        {
+        var channel = new InMemoryCallChannel((iid, opnum, _, _) => {
             observedIid = iid;
             observedOpnum = opnum;
             return Task.FromResult(new NdrCallResult(0, EncodeInt32Array(0)));
@@ -585,12 +535,10 @@ public sealed class IOPCAdditionalDaProxyTests
     }
 
     [Test]
-    public async Task V20AsyncIO_Refresh_invokes_channel_with_correct_metadata_and_decodes_transaction_id()
-    {
+    public async Task V20AsyncIO_Refresh_invokes_channel_with_correct_metadata_and_decodes_transaction_id() {
         Guid observedIid = Guid.Empty;
         int observedOpnum = -1;
-        var channel = new InMemoryCallChannel((iid, opnum, _, _) =>
-        {
+        var channel = new InMemoryCallChannel((iid, opnum, _, _) => {
             observedIid = iid;
             observedOpnum = opnum;
             return Task.FromResult(new NdrCallResult(0, EncodeInt32(0x5678)));
@@ -604,8 +552,7 @@ public sealed class IOPCAdditionalDaProxyTests
         await Assert.That(transactionId).IsEqualTo(0x5678);
     }
 
-    private static ReadOnlyMemory<byte> WritePayload(NdrWriteAction write, int capacity = 1024)
-    {
+    private static ReadOnlyMemory<byte> WritePayload(NdrWriteAction write, int capacity = 1024) {
         var buffer = new byte[capacity];
         var writer = new NdrWriter(buffer);
         write(ref writer);
@@ -617,11 +564,9 @@ public sealed class IOPCAdditionalDaProxyTests
     private static ReadOnlyMemory<byte> EncodeGuid(Guid value) => WritePayload((ref NdrWriter writer) =>
         writer.WriteGuid(value));
 
-    private static ReadOnlyMemory<byte> EncodeGuidArray(params Guid[] values) => WritePayload((ref NdrWriter writer) =>
-    {
+    private static ReadOnlyMemory<byte> EncodeGuidArray(params Guid[] values) => WritePayload((ref NdrWriter writer) => {
         writer.WriteUInt32((uint)values.Length);
-        foreach (Guid value in values)
-        {
+        foreach (Guid value in values) {
             writer.WriteGuid(value);
         }
     });
@@ -629,11 +574,9 @@ public sealed class IOPCAdditionalDaProxyTests
     private static ReadOnlyMemory<byte> EncodeInt32(int value) => WritePayload((ref NdrWriter writer) =>
         writer.WriteInt32(value));
 
-    private static ReadOnlyMemory<byte> EncodeInt32Array(params int[] values) => WritePayload((ref NdrWriter writer) =>
-    {
+    private static ReadOnlyMemory<byte> EncodeInt32Array(params int[] values) => WritePayload((ref NdrWriter writer) => {
         writer.WriteUInt32((uint)values.Length);
-        foreach (int value in values)
-        {
+        foreach (int value in values) {
             writer.WriteInt32(value);
         }
     });
@@ -642,18 +585,15 @@ public sealed class IOPCAdditionalDaProxyTests
     /// Encodes a unique-pointer-prefixed conformant Int32 array for <c>[out, size_is(,N)] HRESULT**</c> wire shape.
     /// Use for response payloads where the C# proxy carries <c>[OpcUniquePointer]</c> on the array.
     /// </summary>
-    private static ReadOnlyMemory<byte> EncodeUniqueInt32Array(params int[] values) => WritePayload((ref NdrWriter writer) =>
-    {
+    private static ReadOnlyMemory<byte> EncodeUniqueInt32Array(params int[] values) => WritePayload((ref NdrWriter writer) => {
         writer.WriteUniquePointerReferent(true);    // unique-pointer referent (non-null)
         writer.WriteUInt32((uint)values.Length);    // max_count
-        foreach (int value in values)
-        {
+        foreach (int value in values) {
             writer.WriteInt32(value);
         }
     });
 
-    private static ReadOnlyMemory<byte> EncodeItemStates(OpcItemState state, int error) => WritePayload((ref NdrWriter writer) =>
-    {
+    private static ReadOnlyMemory<byte> EncodeItemStates(OpcItemState state, int error) => WritePayload((ref NdrWriter writer) => {
         writer.WriteUInt32(1);
         NdrOpcItemStateCodec.Write(ref writer, state);
         writer.WriteUInt32(1);
@@ -663,10 +603,8 @@ public sealed class IOPCAdditionalDaProxyTests
     private static ReadOnlyMemory<byte> EncodeString(string value) => WritePayload((ref NdrWriter writer) =>
         writer.WriteUnicodeStringPtr(value));
 
-    private static void Ensure(bool condition)
-    {
-        if (!condition)
-        {
+    private static void Ensure(bool condition) {
+        if (!condition) {
             throw new InvalidOperationException("Unexpected NDR payload.");
         }
     }
@@ -674,18 +612,14 @@ public sealed class IOPCAdditionalDaProxyTests
     private static int EFail() => unchecked((int)0x80004005u);
 
     private static async Task<TException> CaptureAsync<TException>(Func<Task> action)
-        where TException : Exception
-    {
-        try
-        {
+        where TException : Exception {
+        try {
             await action().ConfigureAwait(false);
         }
-        catch (TException exception)
-        {
+        catch (TException exception) {
             return exception;
         }
-        catch (Exception exception)
-        {
+        catch (Exception exception) {
             throw new InvalidOperationException($"Expected {typeof(TException).Name}, but caught {exception.GetType().Name}.", exception);
         }
 

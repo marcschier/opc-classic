@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -18,19 +18,16 @@ namespace Opc.Classic.Hda;
 /// <c>NOW [+|- &lt;number&gt;&lt;unit&gt;]...</c> where unit is one of
 /// <c>S M H D W MO Y</c>. Example: <c>"NOW-1H"</c>, <c>"NOW-7D+12H"</c>.
 /// </remarks>
-public readonly struct HdaTime : IEquatable<HdaTime>
-{
+public readonly struct HdaTime : IEquatable<HdaTime> {
     private readonly DateTimeOffset _absolute;
     private readonly string? _relative;
 
-    private HdaTime(DateTimeOffset absolute)
-    {
+    private HdaTime(DateTimeOffset absolute) {
         _absolute = absolute;
         _relative = null;
     }
 
-    private HdaTime(string relative)
-    {
+    private HdaTime(string relative) {
         _absolute = default;
         _relative = relative;
     }
@@ -42,10 +39,8 @@ public readonly struct HdaTime : IEquatable<HdaTime>
     /// The absolute UTC timestamp this represents. For relative times, this is
     /// the result of evaluating the expression at <paramref name="evaluationTime"/>.
     /// </summary>
-    public DateTimeOffset ResolveAt(DateTimeOffset evaluationTime)
-    {
-        if (_relative is null)
-        {
+    public DateTimeOffset ResolveAt(DateTimeOffset evaluationTime) {
+        if (_relative is null) {
             return _absolute;
         }
         return ResolveRelative(_relative, evaluationTime);
@@ -58,12 +53,10 @@ public readonly struct HdaTime : IEquatable<HdaTime>
     public static HdaTime Absolute(DateTimeOffset utc) => new(utc.ToUniversalTime());
 
     /// <summary>Create a relative HDA time from an expression like <c>"NOW-1H"</c>.</summary>
-    public static HdaTime Relative(string expression)
-    {
+    public static HdaTime Relative(string expression) {
         ArgumentNullException.ThrowIfNull(expression);
         var trimmed = expression.Trim();
-        if (trimmed.Length == 0)
-        {
+        if (trimmed.Length == 0) {
             throw new ArgumentException("Relative expression cannot be empty.", nameof(expression));
         }
         // Validate by parsing — throws FormatException on bad input.
@@ -95,21 +88,17 @@ public readonly struct HdaTime : IEquatable<HdaTime>
     public override string ToString() =>
         _relative ?? _absolute.ToString("o", CultureInfo.InvariantCulture);
 
-    private static DateTimeOffset ResolveRelative(string expression, DateTimeOffset now)
-    {
+    private static DateTimeOffset ResolveRelative(string expression, DateTimeOffset now) {
         var s = expression.AsSpan().Trim();
         const string NowPrefix = "NOW";
-        if (!s.StartsWith(NowPrefix, StringComparison.OrdinalIgnoreCase))
-        {
+        if (!s.StartsWith(NowPrefix, StringComparison.OrdinalIgnoreCase)) {
             throw new FormatException(
                 $"HDA relative time must start with 'NOW'. Got '{expression}'.");
         }
         s = s[NowPrefix.Length..].Trim();
         var current = now;
-        while (!s.IsEmpty)
-        {
-            var sign = s[0] switch
-            {
+        while (!s.IsEmpty) {
+            var sign = s[0] switch {
                 '+' => +1,
                 '-' => -1,
                 _ => throw new FormatException(
@@ -117,29 +106,24 @@ public readonly struct HdaTime : IEquatable<HdaTime>
             };
             s = s[1..];
             var digits = 0;
-            while (digits < s.Length && char.IsDigit(s[digits]))
-            {
+            while (digits < s.Length && char.IsDigit(s[digits])) {
                 digits++;
             }
-            if (digits == 0)
-            {
+            if (digits == 0) {
                 throw new FormatException($"Expected number in '{expression}'.");
             }
             var n = int.Parse(s[..digits], CultureInfo.InvariantCulture);
             s = s[digits..];
             var unitEnd = 0;
-            while (unitEnd < s.Length && char.IsLetter(s[unitEnd]))
-            {
+            while (unitEnd < s.Length && char.IsLetter(s[unitEnd])) {
                 unitEnd++;
             }
-            if (unitEnd == 0)
-            {
+            if (unitEnd == 0) {
                 throw new FormatException($"Expected time unit in '{expression}'.");
             }
             var unit = s[..unitEnd].ToString().ToUpperInvariant();
             s = s[unitEnd..].Trim();
-            current = unit switch
-            {
+            current = unit switch {
                 "S" => current.AddSeconds(sign * n),
                 "M" => current.AddMinutes(sign * n),
                 "H" => current.AddHours(sign * n),

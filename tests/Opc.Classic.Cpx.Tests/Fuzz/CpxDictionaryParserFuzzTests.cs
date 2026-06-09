@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -13,8 +13,7 @@ using TUnit.Core;
 
 namespace Opc.Classic.Cpx.Tests.Fuzz;
 
-public sealed class CpxDictionaryParserFuzzTests
-{
+public sealed class CpxDictionaryParserFuzzTests {
     private static readonly Type[] AllowedDictionaryParseExceptions =
     [
         typeof(InvalidDataException),
@@ -28,11 +27,9 @@ public sealed class CpxDictionaryParserFuzzTests
 
     [Test]
     [Category("Fuzz")]
-    public async Task OpcBinaryDictionaryParser_Parse_RandomBytes_DoesNotCrash()
-    {
+    public async Task OpcBinaryDictionaryParser_Parse_RandomBytes_DoesNotCrash() {
         int exercised = 0;
-        FuzzHarness.BytesEdgeWeighted.Sample(bytes =>
-        {
+        FuzzHarness.BytesEdgeWeighted.Sample(bytes => {
             exercised++;
             FuzzHarness.AssertParseDoesNotCrash(
                 bytes,
@@ -51,8 +48,7 @@ public sealed class CpxDictionaryParserFuzzTests
     [Arguments(64)]
     [Arguments(128)]
     [Arguments(256)]
-    public async Task OpcBinaryDictionaryParser_Parse_DeepNestedTypes_BoundedOrRejected(int levels)
-    {
+    public async Task OpcBinaryDictionaryParser_Parse_DeepNestedTypes_BoundedOrRejected(int levels) {
         byte[] input = Encoding.UTF8.GetBytes(CreateDeepNestedDictionary(levels));
 
         FuzzHarness.AssertParseDoesNotCrash(
@@ -66,8 +62,7 @@ public sealed class CpxDictionaryParserFuzzTests
 
     [Test]
     [Category("Fuzz")]
-    public async Task OpcBinaryDictionaryParser_Parse_TypeRefCycle_BoundedOrRejected()
-    {
+    public async Task OpcBinaryDictionaryParser_Parse_TypeRefCycle_BoundedOrRejected() {
         byte[] input = Encoding.UTF8.GetBytes("""
             <TypeDictionary xmlns="http://opcfoundation.org/OPCBinary/1.0/">
               <TypeDescription TypeID="TypeA">
@@ -90,11 +85,9 @@ public sealed class CpxDictionaryParserFuzzTests
 
     [Test]
     [Category("Fuzz")]
-    public async Task OpcBinaryDictionaryParser_Parse_Corpus_DoesNotCrash()
-    {
+    public async Task OpcBinaryDictionaryParser_Parse_Corpus_DoesNotCrash() {
         int exercised = 0;
-        foreach (object[] row in FuzzHarness.LoadCorpus("CpxDictionary"))
-        {
+        foreach (object[] row in FuzzHarness.LoadCorpus("CpxDictionary")) {
             exercised++;
             var bytes = (byte[])row[0];
             FuzzHarness.AssertParseDoesNotCrash(
@@ -106,28 +99,22 @@ public sealed class CpxDictionaryParserFuzzTests
         await Assert.That(exercised).IsGreaterThanOrEqualTo(0);
     }
 
-    private static void AssertDictionaryContains(TypeDictionary dictionary, string typeId)
-    {
-        if (dictionary.TryGetByTypeId(typeId) is null)
-        {
+    private static void AssertDictionaryContains(TypeDictionary dictionary, string typeId) {
+        if (dictionary.TryGetByTypeId(typeId) is null) {
             throw new InvalidDataException($"Dictionary did not contain expected TypeID '{typeId}'.");
         }
     }
 
-    private static string CreateDeepNestedDictionary(int levels)
-    {
+    private static string CreateDeepNestedDictionary(int levels) {
         var builder = new StringBuilder();
         builder.AppendLine("""<TypeDictionary xmlns="http://opcfoundation.org/OPCBinary/1.0/">""");
-        for (int i = 0; i < levels; i++)
-        {
+        for (int i = 0; i < levels; i++) {
             builder.Append(CultureInvariant($"  <TypeDescription TypeID=\"Type{i}\">"));
             builder.AppendLine();
-            if (i == levels - 1)
-            {
+            if (i == levels - 1) {
                 builder.AppendLine("""    <Integer Name="Value" xsi:type="Int32" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" />""");
             }
-            else
-            {
+            else {
                 builder.AppendLine(CultureInvariant($"    <TypeReference Name=\"Next\" TypeID=\"Type{i + 1}\" />"));
             }
 

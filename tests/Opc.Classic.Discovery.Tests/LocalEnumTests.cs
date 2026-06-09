@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -16,11 +16,9 @@ using TUnit.Core;
 
 namespace Opc.Classic.Discovery.Tests;
 
-public sealed class LocalEnumTests
-{
+public sealed class LocalEnumTests {
     [Test]
-    public async Task LocalEnum_yields_entries_from_configuration()
-    {
+    public async Task LocalEnum_yields_entries_from_configuration() {
         var configured = new OpcServerEntry(
             Guid.Parse("10138C2C-0000-0000-0000-000000000001"),
             "Matrikon.OPC.Simulation.1",
@@ -41,8 +39,7 @@ public sealed class LocalEnumTests
     }
 
     [Test]
-    public async Task LocalEnum_empty_configuration_yields_no_entries()
-    {
+    public async Task LocalEnum_empty_configuration_yields_no_entries() {
         var discovery = new LocalEnum(CreateConfiguration(), includeWindowsRegistry: false);
 
         var entries = await ToListAsync(discovery);
@@ -51,8 +48,7 @@ public sealed class LocalEnumTests
     }
 
     [Test]
-    public async Task OpcServerEntry_record_equality()
-    {
+    public async Task OpcServerEntry_record_equality() {
         var categories = Array.Empty<Guid>();
         var first = new OpcServerEntry(
             Guid.Parse("10138C2C-0000-0000-0000-000000000002"),
@@ -71,8 +67,7 @@ public sealed class LocalEnumTests
     }
 
     [Test]
-    public async Task IDiscovery_contract_compiles()
-    {
+    public async Task IDiscovery_contract_compiles() {
         IOpcDiscovery[] implementations =
         {
             new LocalEnum(Array.Empty<OpcServerEntry>(), includeWindowsRegistry: false),
@@ -84,24 +79,20 @@ public sealed class LocalEnumTests
         await Assert.That(implementations.All(static discovery => discovery is not null)).IsTrue();
     }
 
-    private static async Task<List<OpcServerEntry>> ToListAsync(IOpcDiscovery discovery)
-    {
+    private static async Task<List<OpcServerEntry>> ToListAsync(IOpcDiscovery discovery) {
         var entries = new List<OpcServerEntry>();
-        await foreach (var entry in discovery.DiscoverAsync())
-        {
+        await foreach (var entry in discovery.DiscoverAsync()) {
             entries.Add(entry);
         }
 
         return entries;
     }
 
-    private static IConfiguration CreateConfiguration(params OpcServerEntry[] entries)
-    {
+    private static IConfiguration CreateConfiguration(params OpcServerEntry[] entries) {
         var root = new InMemoryConfigurationSection(string.Empty, string.Empty);
         var servers = root.GetOrAddSection("Opc.Classic").GetOrAddSection("Servers");
 
-        for (var i = 0; i < entries.Length; i++)
-        {
+        for (var i = 0; i < entries.Length; i++) {
             var entry = entries[i];
             var section = servers.GetOrAddSection(i.ToString(CultureInfo.InvariantCulture));
             section.GetOrAddSection("Clsid").Value = entry.Clsid.ToString("D");
@@ -110,8 +101,7 @@ public sealed class LocalEnumTests
             section.GetOrAddSection("Host").Value = entry.Host;
 
             var categories = section.GetOrAddSection("SupportedCategories");
-            for (var categoryIndex = 0; categoryIndex < entry.SupportedCategories.Count; categoryIndex++)
-            {
+            for (var categoryIndex = 0; categoryIndex < entry.SupportedCategories.Count; categoryIndex++) {
                 categories.GetOrAddSection(categoryIndex.ToString(CultureInfo.InvariantCulture)).Value =
                     entry.SupportedCategories[categoryIndex].ToString("D");
             }
@@ -120,12 +110,10 @@ public sealed class LocalEnumTests
         return root;
     }
 
-    private sealed class InMemoryConfigurationSection : IConfigurationSection
-    {
+    private sealed class InMemoryConfigurationSection : IConfigurationSection {
         private readonly List<InMemoryConfigurationSection> _children = new();
 
-        public InMemoryConfigurationSection(string key, string path)
-        {
+        public InMemoryConfigurationSection(string key, string path) {
             Key = key;
             Path = path;
         }
@@ -136,8 +124,7 @@ public sealed class LocalEnumTests
 
         public string? Value { get; set; }
 
-        public string? this[string key]
-        {
+        public string? this[string key] {
             get => GetSection(key).Value;
             set => GetOrAddSection(key).Value = value;
         }
@@ -146,15 +133,12 @@ public sealed class LocalEnumTests
 
         public IChangeToken GetReloadToken() => NoopChangeToken.Instance;
 
-        public IConfigurationSection GetSection(string key)
-        {
+        public IConfigurationSection GetSection(string key) {
             var current = this;
-            foreach (var segment in key.Split(':', StringSplitOptions.RemoveEmptyEntries))
-            {
+            foreach (var segment in key.Split(':', StringSplitOptions.RemoveEmptyEntries)) {
                 var next = current._children.FirstOrDefault(child =>
                     string.Equals(child.Key, segment, StringComparison.OrdinalIgnoreCase));
-                if (next is null)
-                {
+                if (next is null) {
                     return new InMemoryConfigurationSection(segment, CreateChildPath(current.Path, segment));
                 }
 
@@ -164,15 +148,12 @@ public sealed class LocalEnumTests
             return current;
         }
 
-        public InMemoryConfigurationSection GetOrAddSection(string key)
-        {
+        public InMemoryConfigurationSection GetOrAddSection(string key) {
             var current = this;
-            foreach (var segment in key.Split(':', StringSplitOptions.RemoveEmptyEntries))
-            {
+            foreach (var segment in key.Split(':', StringSplitOptions.RemoveEmptyEntries)) {
                 var next = current._children.FirstOrDefault(child =>
                     string.Equals(child.Key, segment, StringComparison.OrdinalIgnoreCase));
-                if (next is null)
-                {
+                if (next is null) {
                     next = new InMemoryConfigurationSection(segment, CreateChildPath(current.Path, segment));
                     current._children.Add(next);
                 }
@@ -187,8 +168,7 @@ public sealed class LocalEnumTests
             string.IsNullOrEmpty(parentPath) ? key : string.Concat(parentPath, ":", key);
     }
 
-    private sealed class NoopChangeToken : IChangeToken
-    {
+    private sealed class NoopChangeToken : IChangeToken {
         public static NoopChangeToken Instance { get; } = new();
 
         public bool HasChanged => false;
@@ -198,12 +178,10 @@ public sealed class LocalEnumTests
         public IDisposable RegisterChangeCallback(Action<object?> callback, object? state) => NoopDisposable.Instance;
     }
 
-    private sealed class NoopDisposable : IDisposable
-    {
+    private sealed class NoopDisposable : IDisposable {
         public static NoopDisposable Instance { get; } = new();
 
-        public void Dispose()
-        {
+        public void Dispose() {
         }
     }
 }

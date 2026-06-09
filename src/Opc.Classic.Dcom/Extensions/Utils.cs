@@ -2,7 +2,7 @@
 // 
 // 
 
-namespace System; 
+namespace System;
 
 /// <summary>
 /// Utils

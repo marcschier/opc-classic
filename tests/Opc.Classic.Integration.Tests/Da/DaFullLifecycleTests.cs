@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -23,8 +23,7 @@ using TUnit.Core;
 
 namespace Opc.Classic.Integration.Tests.Da;
 
-public sealed class DaFullLifecycleTests
-{
+public sealed class DaFullLifecycleTests {
     private const int CacheDataSource = 1;
     private const int DeviceDataSource = 2;
     private const int ClientGroupHandle = 0xDA300;
@@ -32,8 +31,7 @@ public sealed class DaFullLifecycleTests
 
     [Test]
     [Category("Da.FullLifecycle")]
-    public async Task DaFullLifecycle_managed_client_exercises_group_lifecycle_over_loopback_tcp()
-    {
+    public async Task DaFullLifecycle_managed_client_exercises_group_lifecycle_over_loopback_tcp() {
         using var timeout = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current!.CancellationToken);
         timeout.CancelAfter(TimeSpan.FromSeconds(10));
         CancellationToken cancellationToken = timeout.Token;
@@ -44,8 +42,7 @@ public sealed class DaFullLifecycleTests
         OpcDaServerHost host = provider.GetRequiredService<OpcDaServerHost>();
 
         await host.StartAsync(cancellationToken);
-        try
-        {
+        try {
             await using DcomCallChannel serverChannel = await ConnectRootAsync(host, cancellationToken);
             var server = new IOPCServerClientProxy(serverChannel);
 
@@ -151,8 +148,7 @@ public sealed class DaFullLifecycleTests
 
             await server.RemoveGroupAsync(serverGroupHandle, force: true, cancellationToken);
         }
-        finally
-        {
+        finally {
             await host.StopAsync(CancellationToken.None);
         }
     }
@@ -160,8 +156,7 @@ public sealed class DaFullLifecycleTests
     private static ServiceProvider BuildServiceProvider(
         InMemoryAddressSpace addressSpace,
         IReadOnlyDictionary<string, OpcVariant> values,
-        CallbackEndpointAccessor callbackEndpoint)
-    {
+        CallbackEndpointAccessor callbackEndpoint) {
         var services = new ServiceCollection();
         services.AddLogging();
         services.AddSingleton<IOpcAddressSpace>(addressSpace);
@@ -172,8 +167,7 @@ public sealed class DaFullLifecycleTests
         services.AddSingleton<IOpcDaServer>(static sp => sp.GetRequiredService<LifecycleDaServer>());
         services.AddSingleton<OpcDaServerHost>();
         services.AddSingleton<IOpcServerHost>(static sp => sp.GetRequiredService<OpcDaServerHost>());
-        services.Configure<OpcDaServerOptions>(static options =>
-        {
+        services.Configure<OpcDaServerOptions>(static options => {
             options.Clsid = Guid.NewGuid();
             options.ProgId = "Opc.Classic.Integration.DaFullLifecycle.1";
             options.FriendlyName = "DA full lifecycle integration test server";
@@ -182,15 +176,13 @@ public sealed class DaFullLifecycleTests
         return services.BuildServiceProvider();
     }
 
-    private static (InMemoryAddressSpace AddressSpace, IReadOnlyDictionary<string, OpcVariant> Values) CreateAddressSpace()
-    {
+    private static (InMemoryAddressSpace AddressSpace, IReadOnlyDictionary<string, OpcVariant> Values) CreateAddressSpace() {
         var addressSpace = new InMemoryAddressSpace("Random", "Bucket");
         addressSpace.AddItem("Random", "Int");
         addressSpace.AddItem("Random", "Real");
         addressSpace.AddItem("Bucket", "Int");
 
-        IReadOnlyDictionary<string, OpcVariant> values = new Dictionary<string, OpcVariant>(StringComparer.Ordinal)
-        {
+        IReadOnlyDictionary<string, OpcVariant> values = new Dictionary<string, OpcVariant>(StringComparer.Ordinal) {
             ["Random.Int"] = OpcVariant.FromInt32(17),
             ["Random.Real"] = OpcVariant.FromDouble(3.25d),
             ["Bucket.Int"] = OpcVariant.FromInt32(0),
@@ -198,8 +190,7 @@ public sealed class DaFullLifecycleTests
         return (addressSpace, values);
     }
 
-    private static async Task<DcomCallChannel> ConnectRootAsync(OpcDaServerHost host, CancellationToken cancellationToken)
-    {
+    private static async Task<DcomCallChannel> ConnectRootAsync(OpcDaServerHost host, CancellationToken cancellationToken) {
         var endpoint = (IPEndPoint?)host.LocalEndpoint
             ?? throw new InvalidOperationException("Host did not expose a bound endpoint after StartAsync.");
         return await DcomCallChannelFactory.ConnectTcpAsync(
@@ -212,8 +203,7 @@ public sealed class DaFullLifecycleTests
     private static async Task<DcomCallChannel> ConnectObjectAsync(
         OpcDaServerHost host,
         Guid objectIpid,
-        CancellationToken cancellationToken)
-    {
+        CancellationToken cancellationToken) {
         var endpoint = (IPEndPoint?)host.LocalEndpoint
             ?? throw new InvalidOperationException("Host did not expose a bound endpoint after StartAsync.");
         TcpClientTransport transport = await TcpClientTransport.ConnectAsync(
@@ -223,8 +213,7 @@ public sealed class DaFullLifecycleTests
         return new DcomCallChannel(transport, NoOpAuthContext.Instance, objectIpid);
     }
 
-    private static async Task<IOpcInterfaceRef> FindConnectionPointAsync(ICallChannel channel, CancellationToken cancellationToken)
-    {
+    private static async Task<IOpcInterfaceRef> FindConnectionPointAsync(ICallChannel channel, CancellationToken cancellationToken) {
         var buffer = new byte[16];
         var writer = new NdrWriter(buffer);
         writer.WriteGuid(IOPCDataCallback.InterfaceId);
@@ -233,8 +222,7 @@ public sealed class DaFullLifecycleTests
             IConnectionPointContainer.Opnums.FindConnectionPointAsync,
             buffer.AsMemory(0, writer.Position).ToArray(),
             cancellationToken);
-        if (result.IsFailure)
-        {
+        if (result.IsFailure) {
             throw new OpcException(new OpcResultId(result.Hresult, null));
         }
 
@@ -242,8 +230,7 @@ public sealed class DaFullLifecycleTests
         return OpcInterfaceRefCodec.Read(ref reader);
     }
 
-    private static OpcServerListener StartCallbackListener(IOPCDataCallback callback, CancellationToken cancellationToken)
-    {
+    private static OpcServerListener StartCallbackListener(IOPCDataCallback callback, CancellationToken cancellationToken) {
         var endpoint = new TcpServerEndpoint(new IPEndPoint(IPAddress.Loopback, 0));
         var dispatcher = new IOPCDataCallbackServerDispatcher(callback);
         var processor = new RpcServerConnectionProcessor(
@@ -266,20 +253,17 @@ public sealed class DaFullLifecycleTests
 
     private static bool IsSuccess(int hresult) => new OpcResultId(hresult, null).IsSuccess;
 
-    private sealed class CallbackEndpointAccessor
-    {
+    private sealed class CallbackEndpointAccessor {
         public IPEndPoint? Endpoint { get; set; }
     }
 
-    private sealed class LifecycleItemCatalog
-    {
+    private sealed class LifecycleItemCatalog {
         public LifecycleItemCatalog(IReadOnlyDictionary<string, OpcVariant> values) => Values = values;
 
         public IReadOnlyDictionary<string, OpcVariant> Values { get; }
     }
 
-    private sealed class LifecycleDaServer : IOpcDaServer
-    {
+    private sealed class LifecycleDaServer : IOpcDaServer {
         private static readonly DateTimeOffset StartTime = DateTimeOffset.UtcNow;
         private readonly object _gate = new();
         private readonly OpcObjectRegistry _registry;
@@ -291,25 +275,21 @@ public sealed class DaFullLifecycleTests
         public LifecycleDaServer(
             OpcObjectRegistry registry,
             LifecycleItemCatalog catalog,
-            CallbackEndpointAccessor callbackEndpoint)
-        {
+            CallbackEndpointAccessor callbackEndpoint) {
             _registry = registry;
             _catalog = catalog;
             _callbackEndpoint = callbackEndpoint;
         }
 
-        public Task<OpcServerStatus> GetStatusAsync(CancellationToken cancellationToken = default)
-        {
+        public Task<OpcServerStatus> GetStatusAsync(CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             int groupCount;
-            lock (_gate)
-            {
+            lock (_gate) {
                 groupCount = _groups.Count;
             }
 
             var now = DateTimeOffset.UtcNow;
-            return Task.FromResult(new OpcServerStatus
-            {
+            return Task.FromResult(new OpcServerStatus {
                 Spec = OpcStatusSpec.Da,
                 StartTime = StartTime,
                 CurrentTime = now,
@@ -328,8 +308,7 @@ public sealed class DaFullLifecycleTests
             int requestedUpdateRate,
             int clientHandle,
             int localeId,
-            CancellationToken cancellationToken = default)
-        {
+            CancellationToken cancellationToken = default) {
             GroupEntry entry = await AddGroupCoreAsync(
                 name,
                 active,
@@ -355,8 +334,7 @@ public sealed class DaFullLifecycleTests
             out int serverGroupHandle,
             out int revisedUpdateRate,
             out IOpcInterfaceRef group,
-            CancellationToken cancellationToken)
-        {
+            CancellationToken cancellationToken) {
             GroupEntry entry = AddGroupCoreAsync(
                 name,
                 active,
@@ -374,14 +352,11 @@ public sealed class DaFullLifecycleTests
             return Task.CompletedTask;
         }
 
-        public Task RemoveGroupAsync(int serverGroupHandle, bool force, CancellationToken cancellationToken = default)
-        {
+        public Task RemoveGroupAsync(int serverGroupHandle, bool force, CancellationToken cancellationToken = default) {
             _ = force;
             cancellationToken.ThrowIfCancellationRequested();
-            lock (_gate)
-            {
-                if (_groups.Remove(serverGroupHandle, out GroupEntry? entry))
-                {
+            lock (_gate) {
+                if (_groups.Remove(serverGroupHandle, out GroupEntry? entry)) {
                     _registry.Unregister(entry.Ipid);
                 }
             }
@@ -389,22 +364,17 @@ public sealed class DaFullLifecycleTests
             return Task.CompletedTask;
         }
 
-        public Task<string> GetErrorStringAsync(int errorCode, int localeId, CancellationToken cancellationToken = default)
-        {
+        public Task<string> GetErrorStringAsync(int errorCode, int localeId, CancellationToken cancellationToken = default) {
             _ = localeId;
             cancellationToken.ThrowIfCancellationRequested();
             return Task.FromResult($"0x{errorCode:X8}");
         }
 
-        Task<IOpcInterfaceRef> IOPCServer.GetGroupByNameAsync(string name, Guid requestedInterfaceId, CancellationToken cancellationToken)
-        {
+        Task<IOpcInterfaceRef> IOPCServer.GetGroupByNameAsync(string name, Guid requestedInterfaceId, CancellationToken cancellationToken) {
             cancellationToken.ThrowIfCancellationRequested();
-            lock (_gate)
-            {
-                foreach (GroupEntry entry in _groups.Values)
-                {
-                    if (string.Equals(entry.Group.Name, name, StringComparison.Ordinal))
-                    {
+            lock (_gate) {
+                foreach (GroupEntry entry in _groups.Values) {
+                    if (string.Equals(entry.Group.Name, name, StringComparison.Ordinal)) {
                         return Task.FromResult(CreateGroupRef(requestedInterfaceId, entry));
                     }
                 }
@@ -413,8 +383,7 @@ public sealed class DaFullLifecycleTests
             throw new OpcException(OpcResultId.UnknownPath);
         }
 
-        Task<IOpcInterfaceRef> IOPCServer.CreateGroupEnumeratorAsync(int scope, Guid requestedInterfaceId, CancellationToken cancellationToken)
-        {
+        Task<IOpcInterfaceRef> IOPCServer.CreateGroupEnumeratorAsync(int scope, Guid requestedInterfaceId, CancellationToken cancellationToken) {
             _ = scope;
             _ = requestedInterfaceId;
             cancellationToken.ThrowIfCancellationRequested();
@@ -430,8 +399,7 @@ public sealed class DaFullLifecycleTests
             float percentDeadband,
             int localeId,
             Guid requestedInterfaceId,
-            CancellationToken cancellationToken)
-        {
+            CancellationToken cancellationToken) {
             _ = requestedInterfaceId;
             ArgumentException.ThrowIfNullOrWhiteSpace(name);
             cancellationToken.ThrowIfCancellationRequested();
@@ -448,8 +416,7 @@ public sealed class DaFullLifecycleTests
                 _catalog,
                 _callbackEndpoint);
 
-            var dispatchers = new Dictionary<Guid, IOpcServerDispatcher>
-            {
+            var dispatchers = new Dictionary<Guid, IOpcServerDispatcher> {
                 [IOPCGroupStateMgt.InterfaceId] = new IOPCGroupStateMgtServerDispatcher(group),
                 [IOPCItemMgt.InterfaceId] = new IOPCItemMgtServerDispatcher(group),
                 [IOPCSyncIO.InterfaceId] = new IOPCSyncIOServerDispatcher(group),
@@ -461,8 +428,7 @@ public sealed class DaFullLifecycleTests
             group.SetIpid(ipid);
             var entry = new GroupEntry(group.ServerHandle, group, ipid);
 
-            lock (_gate)
-            {
+            lock (_gate) {
                 _groups[group.ServerHandle] = entry;
             }
 
@@ -484,8 +450,7 @@ public sealed class DaFullLifecycleTests
     }
 
     private sealed class LifecycleGroup : IOPCGroupStateMgt, IOPCItemMgt, IOPCSyncIO, IOPCAsyncIO2,
-        IConnectionPointContainer, IConnectionPoint
-    {
+        IConnectionPointContainer, IConnectionPoint {
         private readonly object _gate = new();
         private readonly LifecycleItemCatalog _catalog;
         private readonly CallbackEndpointAccessor _callbackEndpoint;
@@ -507,8 +472,7 @@ public sealed class DaFullLifecycleTests
             float percentDeadband,
             int localeId,
             LifecycleItemCatalog catalog,
-            CallbackEndpointAccessor callbackEndpoint)
-        {
+            CallbackEndpointAccessor callbackEndpoint) {
             Name = name;
             ServerHandle = serverHandle;
             ClientHandle = clientHandle;
@@ -539,8 +503,7 @@ public sealed class DaFullLifecycleTests
 
         public void SetIpid(Guid ipid) => _ipid = ipid;
 
-        public Task<OpcGroupState> GetStateAsync(CancellationToken cancellationToken = default)
-        {
+        public Task<OpcGroupState> GetStateAsync(CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             return Task.FromResult(new OpcGroupState(
                 ClientHandle,
@@ -561,8 +524,7 @@ public sealed class DaFullLifecycleTests
             int localeId,
             int clientGroupHandle,
             out int revisedUpdateRate,
-            CancellationToken cancellationToken = default)
-        {
+            CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             UpdateRate = requestedUpdateRate;
             Active = active;
@@ -574,16 +536,14 @@ public sealed class DaFullLifecycleTests
             return Task.CompletedTask;
         }
 
-        public Task SetNameAsync(string name, CancellationToken cancellationToken = default)
-        {
+        public Task SetNameAsync(string name, CancellationToken cancellationToken = default) {
             ArgumentException.ThrowIfNullOrWhiteSpace(name);
             cancellationToken.ThrowIfCancellationRequested();
             Name = name;
             return Task.CompletedTask;
         }
 
-        public Task<IOpcInterfaceRef> CloneGroupAsync(string name, Guid requestedInterfaceId, CancellationToken cancellationToken = default)
-        {
+        public Task<IOpcInterfaceRef> CloneGroupAsync(string name, Guid requestedInterfaceId, CancellationToken cancellationToken = default) {
             _ = name;
             _ = requestedInterfaceId;
             cancellationToken.ThrowIfCancellationRequested();
@@ -594,20 +554,16 @@ public sealed class DaFullLifecycleTests
             OpcItemDef[] itemDefinitions,
             out OpcItemResult[] addResults,
             out int[] errors,
-            CancellationToken cancellationToken = default)
-        {
+            CancellationToken cancellationToken = default) {
             ArgumentNullException.ThrowIfNull(itemDefinitions);
             cancellationToken.ThrowIfCancellationRequested();
             addResults = new OpcItemResult[itemDefinitions.Length];
             errors = new int[itemDefinitions.Length];
 
-            lock (_gate)
-            {
-                for (int i = 0; i < itemDefinitions.Length; i++)
-                {
+            lock (_gate) {
+                for (int i = 0; i < itemDefinitions.Length; i++) {
                     OpcItemDef definition = itemDefinitions[i];
-                    if (definition.ItemId is null || !_catalog.Values.TryGetValue(definition.ItemId, out OpcVariant initialValue))
-                    {
+                    if (definition.ItemId is null || !_catalog.Values.TryGetValue(definition.ItemId, out OpcVariant initialValue)) {
                         addResults[i] = new OpcItemResult(0, VarType.VT_EMPTY, 0, []);
                         errors[i] = OpcResultId.UnknownItemId.Code;
                         continue;
@@ -636,19 +592,16 @@ public sealed class DaFullLifecycleTests
             bool blobUpdate,
             out OpcItemResult[] validationResults,
             out int[] errors,
-            CancellationToken cancellationToken = default)
-        {
+            CancellationToken cancellationToken = default) {
             _ = blobUpdate;
             ArgumentNullException.ThrowIfNull(itemDefinitions);
             cancellationToken.ThrowIfCancellationRequested();
             validationResults = new OpcItemResult[itemDefinitions.Length];
             errors = new int[itemDefinitions.Length];
 
-            for (int i = 0; i < itemDefinitions.Length; i++)
-            {
+            for (int i = 0; i < itemDefinitions.Length; i++) {
                 OpcItemDef definition = itemDefinitions[i];
-                if (definition.ItemId is null || !_catalog.Values.TryGetValue(definition.ItemId, out OpcVariant value))
-                {
+                if (definition.ItemId is null || !_catalog.Values.TryGetValue(definition.ItemId, out OpcVariant value)) {
                     validationResults[i] = new OpcItemResult(0, VarType.VT_EMPTY, 0, []);
                     errors[i] = OpcResultId.UnknownItemId.Code;
                     continue;
@@ -661,15 +614,12 @@ public sealed class DaFullLifecycleTests
             return Task.CompletedTask;
         }
 
-        public Task<int[]> RemoveItemsAsync(int[] serverHandles, CancellationToken cancellationToken = default)
-        {
+        public Task<int[]> RemoveItemsAsync(int[] serverHandles, CancellationToken cancellationToken = default) {
             ArgumentNullException.ThrowIfNull(serverHandles);
             cancellationToken.ThrowIfCancellationRequested();
             var errors = new int[serverHandles.Length];
-            lock (_gate)
-            {
-                for (int i = 0; i < serverHandles.Length; i++)
-                {
+            lock (_gate) {
+                for (int i = 0; i < serverHandles.Length; i++) {
                     errors[i] = _items.Remove(serverHandles[i])
                         ? OpcResultId.Ok.Code
                         : OpcResultId.InvalidHandle.Code;
@@ -679,22 +629,17 @@ public sealed class DaFullLifecycleTests
             return Task.FromResult(errors);
         }
 
-        public Task<int[]> SetActiveStateAsync(int[] serverHandles, bool active, CancellationToken cancellationToken = default)
-        {
+        public Task<int[]> SetActiveStateAsync(int[] serverHandles, bool active, CancellationToken cancellationToken = default) {
             ArgumentNullException.ThrowIfNull(serverHandles);
             cancellationToken.ThrowIfCancellationRequested();
             var errors = new int[serverHandles.Length];
-            lock (_gate)
-            {
-                for (int i = 0; i < serverHandles.Length; i++)
-                {
-                    if (_items.TryGetValue(serverHandles[i], out TrackedItem? item))
-                    {
+            lock (_gate) {
+                for (int i = 0; i < serverHandles.Length; i++) {
+                    if (_items.TryGetValue(serverHandles[i], out TrackedItem? item)) {
                         item.Active = active;
                         errors[i] = OpcResultId.Ok.Code;
                     }
-                    else
-                    {
+                    else {
                         errors[i] = OpcResultId.InvalidHandle.Code;
                     }
                 }
@@ -703,23 +648,18 @@ public sealed class DaFullLifecycleTests
             return Task.FromResult(errors);
         }
 
-        public Task<int[]> SetClientHandlesAsync(int[] serverHandles, int[] clientHandles, CancellationToken cancellationToken = default)
-        {
+        public Task<int[]> SetClientHandlesAsync(int[] serverHandles, int[] clientHandles, CancellationToken cancellationToken = default) {
             ArgumentNullException.ThrowIfNull(serverHandles);
             ArgumentNullException.ThrowIfNull(clientHandles);
             cancellationToken.ThrowIfCancellationRequested();
             var errors = new int[serverHandles.Length];
-            lock (_gate)
-            {
-                for (int i = 0; i < serverHandles.Length; i++)
-                {
-                    if (i < clientHandles.Length && _items.TryGetValue(serverHandles[i], out TrackedItem? item))
-                    {
+            lock (_gate) {
+                for (int i = 0; i < serverHandles.Length; i++) {
+                    if (i < clientHandles.Length && _items.TryGetValue(serverHandles[i], out TrackedItem? item)) {
                         item.ClientHandle = clientHandles[i];
                         errors[i] = OpcResultId.Ok.Code;
                     }
-                    else
-                    {
+                    else {
                         errors[i] = OpcResultId.InvalidHandle.Code;
                     }
                 }
@@ -728,8 +668,7 @@ public sealed class DaFullLifecycleTests
             return Task.FromResult(errors);
         }
 
-        public Task<int[]> SetDatatypesAsync(int[] serverHandles, ushort[] requestedDataTypes, CancellationToken cancellationToken = default)
-        {
+        public Task<int[]> SetDatatypesAsync(int[] serverHandles, ushort[] requestedDataTypes, CancellationToken cancellationToken = default) {
             ArgumentNullException.ThrowIfNull(serverHandles);
             ArgumentNullException.ThrowIfNull(requestedDataTypes);
             cancellationToken.ThrowIfCancellationRequested();
@@ -737,8 +676,7 @@ public sealed class DaFullLifecycleTests
             return Task.FromResult(errors);
         }
 
-        public Task<IOpcInterfaceRef> CreateEnumeratorAsync(Guid requestedInterfaceId, CancellationToken cancellationToken = default)
-        {
+        public Task<IOpcInterfaceRef> CreateEnumeratorAsync(Guid requestedInterfaceId, CancellationToken cancellationToken = default) {
             _ = requestedInterfaceId;
             cancellationToken.ThrowIfCancellationRequested();
             return Task.FromException<IOpcInterfaceRef>(new OpcException(OpcResultId.NotImplemented));
@@ -748,25 +686,20 @@ public sealed class DaFullLifecycleTests
             int dataSource,
             int[] serverHandles,
             out int[] errors,
-            CancellationToken cancellationToken = default)
-        {
+            CancellationToken cancellationToken = default) {
             _ = dataSource;
             ArgumentNullException.ThrowIfNull(serverHandles);
             cancellationToken.ThrowIfCancellationRequested();
             var states = new OpcItemState[serverHandles.Length];
             errors = new int[serverHandles.Length];
 
-            lock (_gate)
-            {
-                for (int i = 0; i < serverHandles.Length; i++)
-                {
-                    if (_items.TryGetValue(serverHandles[i], out TrackedItem? item))
-                    {
+            lock (_gate) {
+                for (int i = 0; i < serverHandles.Length; i++) {
+                    if (_items.TryGetValue(serverHandles[i], out TrackedItem? item)) {
                         states[i] = item.ToState();
                         errors[i] = OpcResultId.Ok.Code;
                     }
-                    else
-                    {
+                    else {
                         states[i] = new OpcItemState(0, DateTimeOffset.UtcNow, OpcQuality.Bad, OpcVariant.Empty);
                         errors[i] = OpcResultId.InvalidHandle.Code;
                     }
@@ -776,24 +709,19 @@ public sealed class DaFullLifecycleTests
             return Task.FromResult(states);
         }
 
-        public Task<int[]> WriteAsync(int[] serverHandles, OpcVariant[] values, CancellationToken cancellationToken = default)
-        {
+        public Task<int[]> WriteAsync(int[] serverHandles, OpcVariant[] values, CancellationToken cancellationToken = default) {
             ArgumentNullException.ThrowIfNull(serverHandles);
             ArgumentNullException.ThrowIfNull(values);
             cancellationToken.ThrowIfCancellationRequested();
             var errors = new int[serverHandles.Length];
-            lock (_gate)
-            {
-                for (int i = 0; i < serverHandles.Length; i++)
-                {
-                    if (i < values.Length && _items.TryGetValue(serverHandles[i], out TrackedItem? item))
-                    {
+            lock (_gate) {
+                for (int i = 0; i < serverHandles.Length; i++) {
+                    if (i < values.Length && _items.TryGetValue(serverHandles[i], out TrackedItem? item)) {
                         item.Value = values[i];
                         item.Timestamp = DateTimeOffset.UtcNow;
                         errors[i] = OpcResultId.Ok.Code;
                     }
-                    else
-                    {
+                    else {
                         errors[i] = OpcResultId.InvalidHandle.Code;
                     }
                 }
@@ -806,8 +734,7 @@ public sealed class DaFullLifecycleTests
             int[] serverHandles,
             int transactionId,
             out int[] errors,
-            CancellationToken cancellationToken)
-        {
+            CancellationToken cancellationToken) {
             _ = transactionId;
             ArgumentNullException.ThrowIfNull(serverHandles);
             cancellationToken.ThrowIfCancellationRequested();
@@ -820,70 +747,59 @@ public sealed class DaFullLifecycleTests
             OpcVariant[] values,
             int transactionId,
             out int[] errors,
-            CancellationToken cancellationToken)
-        {
+            CancellationToken cancellationToken) {
             _ = transactionId;
             errors = WriteAsync(serverHandles, values, cancellationToken).GetAwaiter().GetResult();
             return Task.FromResult(Interlocked.Increment(ref _nextCancelId));
         }
 
-        public async Task<int> Refresh2Async(int dataSource, int transactionId, CancellationToken cancellationToken = default)
-        {
+        public async Task<int> Refresh2Async(int dataSource, int transactionId, CancellationToken cancellationToken = default) {
             _ = dataSource;
             cancellationToken.ThrowIfCancellationRequested();
             int cancelId = Interlocked.Increment(ref _nextCancelId);
-            if (!_callbacksEnabled)
-            {
+            if (!_callbacksEnabled) {
                 return cancelId;
             }
 
             IOpcInterfaceRef[] sinks;
             DataChangeSnapshot snapshot;
-            lock (_gate)
-            {
+            lock (_gate) {
                 sinks = _sinks.Values.ToArray();
                 snapshot = BuildDataChangeSnapshot(transactionId);
             }
 
-            foreach (IOpcInterfaceRef sink in sinks)
-            {
+            foreach (IOpcInterfaceRef sink in sinks) {
                 await PublishDataChangeAsync(sink, snapshot, cancellationToken);
             }
 
             return cancelId;
         }
 
-        public Task Cancel2Async(int cancelId, CancellationToken cancellationToken = default)
-        {
+        public Task Cancel2Async(int cancelId, CancellationToken cancellationToken = default) {
             _ = cancelId;
             cancellationToken.ThrowIfCancellationRequested();
             return Task.CompletedTask;
         }
 
-        public Task SetEnableAsync(bool enabled, CancellationToken cancellationToken = default)
-        {
+        public Task SetEnableAsync(bool enabled, CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             _callbacksEnabled = enabled;
             return Task.CompletedTask;
         }
 
-        public Task<bool> GetEnableAsync(CancellationToken cancellationToken = default)
-        {
+        public Task<bool> GetEnableAsync(CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             return Task.FromResult(_callbacksEnabled);
         }
 
-        public Task<IOpcInterfaceRef> EnumConnectionPointsAsync(CancellationToken cancellationToken = default)
-        {
+        public Task<IOpcInterfaceRef> EnumConnectionPointsAsync(CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             return Task.FromException<IOpcInterfaceRef>(new OpcException(OpcResultId.NotImplemented));
         }
 
-        public Task<IOpcInterfaceRef> FindConnectionPointAsync(Guid iid, CancellationToken cancellationToken = default)
-        {
+        public Task<IOpcInterfaceRef> FindConnectionPointAsync(Guid iid, CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
-            if (iid != IOPCDataCallback.InterfaceId)
-            {
+            if (iid != IOPCDataCallback.InterfaceId) {
                 throw new OpcException(new OpcResultId(unchecked((int)0x80040200), "CONNECT_E_NOCONNECTION"));
             }
 
@@ -898,37 +814,30 @@ public sealed class DaFullLifecycleTests
                 resolverBindings: Array.Empty<ushort>()));
         }
 
-        public Task<Guid> GetConnectionInterfaceAsync(CancellationToken cancellationToken = default)
-        {
+        public Task<Guid> GetConnectionInterfaceAsync(CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             return Task.FromResult(IOPCDataCallback.InterfaceId);
         }
 
-        public Task<int> AdviseAsync(IOpcInterfaceRef sink, CancellationToken cancellationToken = default)
-        {
+        public Task<int> AdviseAsync(IOpcInterfaceRef sink, CancellationToken cancellationToken = default) {
             ArgumentNullException.ThrowIfNull(sink);
             cancellationToken.ThrowIfCancellationRequested();
-            if (sink.Iid != IOPCDataCallback.InterfaceId)
-            {
+            if (sink.Iid != IOPCDataCallback.InterfaceId) {
                 throw new OpcException(new OpcResultId(unchecked((int)0x80040202), "CONNECT_E_CANNOTCONNECT"));
             }
 
             int cookie = Interlocked.Increment(ref _nextCookie);
-            lock (_gate)
-            {
+            lock (_gate) {
                 _sinks[cookie] = sink;
             }
 
             return Task.FromResult(cookie);
         }
 
-        public Task UnadviseAsync(int cookie, CancellationToken cancellationToken = default)
-        {
+        public Task UnadviseAsync(int cookie, CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
-            lock (_gate)
-            {
-                if (_sinks.Remove(cookie))
-                {
+            lock (_gate) {
+                if (_sinks.Remove(cookie)) {
                     return Task.CompletedTask;
                 }
             }
@@ -936,8 +845,7 @@ public sealed class DaFullLifecycleTests
             throw new OpcException(new OpcResultId(unchecked((int)0x80040200), "CONNECT_E_NOCONNECTION"));
         }
 
-        private DataChangeSnapshot BuildDataChangeSnapshot(int transactionId)
-        {
+        private DataChangeSnapshot BuildDataChangeSnapshot(int transactionId) {
             TrackedItem[] activeItems = _items.Values
                 .Where(static item => item.Active)
                 .OrderBy(static item => item.ServerHandle)
@@ -957,10 +865,8 @@ public sealed class DaFullLifecycleTests
         private async Task PublishDataChangeAsync(
             IOpcInterfaceRef sink,
             DataChangeSnapshot snapshot,
-            CancellationToken cancellationToken)
-        {
-            if (sink.Iid != IOPCDataCallback.InterfaceId)
-            {
+            CancellationToken cancellationToken) {
+            if (sink.Iid != IOPCDataCallback.InterfaceId) {
                 return;
             }
 
@@ -986,8 +892,7 @@ public sealed class DaFullLifecycleTests
         }
     }
 
-    private sealed class TrackedItem
-    {
+    private sealed class TrackedItem {
         public TrackedItem(
             int serverHandle,
             string itemId,
@@ -995,8 +900,7 @@ public sealed class DaFullLifecycleTests
             bool active,
             VarType canonicalDataType,
             OpcVariant value,
-            DateTimeOffset timestamp)
-        {
+            DateTimeOffset timestamp) {
             ServerHandle = serverHandle;
             ItemId = itemId;
             ClientHandle = clientHandle;
@@ -1023,8 +927,7 @@ public sealed class DaFullLifecycleTests
         public OpcItemState ToState() => new(ClientHandle, Timestamp, OpcQuality.Good, Value);
     }
 
-    private sealed class RecordingDataCallback : IOPCDataCallback
-    {
+    private sealed class RecordingDataCallback : IOPCDataCallback {
         private readonly TaskCompletionSource<DataChangeSnapshot> _dataChange = new(TaskCreationOptions.RunContinuationsAsynchronously);
 
         public Task<DataChangeSnapshot> WaitForDataChangeAsync(CancellationToken cancellationToken) =>
@@ -1040,8 +943,7 @@ public sealed class DaFullLifecycleTests
             ushort[] qualities,
             long[] timestamps,
             int[] errors,
-            CancellationToken cancellationToken = default)
-        {
+            CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             _dataChange.TrySetResult(new DataChangeSnapshot(
                 transactionId,
@@ -1066,8 +968,7 @@ public sealed class DaFullLifecycleTests
             ushort[] qualities,
             long[] timestamps,
             int[] errors,
-            CancellationToken cancellationToken = default)
-        {
+            CancellationToken cancellationToken = default) {
             _ = transactionId;
             _ = groupHandle;
             _ = masterQuality;
@@ -1087,8 +988,7 @@ public sealed class DaFullLifecycleTests
             int masterError,
             int[] clientHandles,
             int[] errors,
-            CancellationToken cancellationToken = default)
-        {
+            CancellationToken cancellationToken = default) {
             _ = transactionId;
             _ = groupHandle;
             _ = masterError;
@@ -1098,8 +998,7 @@ public sealed class DaFullLifecycleTests
             return Task.CompletedTask;
         }
 
-        public Task OnCancelCompleteAsync(int transactionId, int groupHandle, CancellationToken cancellationToken = default)
-        {
+        public Task OnCancelCompleteAsync(int transactionId, int groupHandle, CancellationToken cancellationToken = default) {
             _ = transactionId;
             _ = groupHandle;
             cancellationToken.ThrowIfCancellationRequested();

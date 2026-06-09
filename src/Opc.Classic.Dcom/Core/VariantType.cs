@@ -1,8 +1,9 @@
-// SPDX-License-Identifier: MIT
+﻿// SPDX-License-Identifier: MIT
 
 using System;
 
-namespace Opc.Classic.Dcom.Core; 
+namespace Opc.Classic.Dcom.Core;
+
 /// <summary>
 /// Variant type
 /// </summary>

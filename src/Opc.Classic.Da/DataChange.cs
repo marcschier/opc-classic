@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -19,8 +19,7 @@ namespace Opc.Classic.Da;
 /// metrics, transactional updates) at the callback granularity rather than
 /// the per-item one.
 /// </remarks>
-public sealed class DataChange
-{
+public sealed class DataChange {
     /// <summary>
     /// Transaction ID set by the server when responding to an explicit
     /// asynchronous request (Refresh). Zero for spontaneous updates.

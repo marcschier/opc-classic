@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -50,8 +50,7 @@ namespace Opc.Classic.Da.Hosting.Windows;
 /// </para>
 /// </remarks>
 [SupportedOSPlatform("windows")]
-public static unsafe class OpcDaGroupCcw
-{
+public static unsafe class OpcDaGroupCcw {
     internal const int S_OK = 0;
     internal const int E_NOINTERFACE = unchecked((int)0x80004002);
     internal const int E_INVALIDARG = unchecked((int)0x80070057);
@@ -65,8 +64,7 @@ public static unsafe class OpcDaGroupCcw
     internal static readonly ConcurrentDictionary<IntPtr, CcwSession> s_tearoffs = new();
 
     /// <summary>Builds a CCW around <paramref name="group"/> and returns the IUnknown identity pointer with refcount = 1.</summary>
-    public static IntPtr Create(OpcDaGroup group)
-    {
+    public static IntPtr Create(OpcDaGroup group) {
         ArgumentNullException.ThrowIfNull(group);
 
         var handle = GCHandle.Alloc(group, GCHandleType.Normal);
@@ -102,10 +100,8 @@ public static unsafe class OpcDaGroupCcw
     internal static CcwSession? ResolveSession(IntPtr tearoff) =>
         s_tearoffs.TryGetValue(tearoff, out CcwSession? session) ? session : null;
 
-    internal static int ReturnTearoff(CcwSession session, IntPtr tearoff, IntPtr* ppv)
-    {
-        if (ppv == null || tearoff == IntPtr.Zero)
-        {
+    internal static int ReturnTearoff(CcwSession session, IntPtr tearoff, IntPtr* ppv) {
+        if (ppv == null || tearoff == IntPtr.Zero) {
             return E_INVALIDARG;
         }
 
@@ -114,8 +110,7 @@ public static unsafe class OpcDaGroupCcw
         return S_OK;
     }
 
-    private static void AllocateSessionTearoffs(CcwSession session)
-    {
+    private static void AllocateSessionTearoffs(CcwSession session) {
         session.UnknownVtable = AllocateUnknownVtable();
         session.GroupStateMgtVtable = AllocateGroupStateMgt2Vtable();
         session.ItemMgtVtable = AllocateItemMgtVtable();
@@ -137,8 +132,7 @@ public static unsafe class OpcDaGroupCcw
         session.ConnectionPointContainerTearoff = AllocateTearoff(session.ConnectionPointContainerVtable);
     }
 
-    private static void RegisterSessionTearoffs(CcwSession session)
-    {
+    private static void RegisterSessionTearoffs(CcwSession session) {
         RegisterTearoff(session.UnknownTearoff, session);
         RegisterTearoff(session.GroupStateMgtTearoff, session);
         RegisterTearoff(session.ItemMgtTearoff, session);
@@ -153,8 +147,7 @@ public static unsafe class OpcDaGroupCcw
     private static void RegisterTearoff(IntPtr tearoff, CcwSession session) => s_tearoffs[tearoff] = session;
 
     [SuppressMessage("Reliability", "CA2018:Buffer size argument matches element count", Justification = "Explicit byte size.")]
-    private static IntPtr* AllocateUnknownVtable()
-    {
+    private static IntPtr* AllocateUnknownVtable() {
         IntPtr* v = (IntPtr*)NativeMemory.Alloc((nuint)(3 * sizeof(IntPtr)));
         v[0] = (IntPtr)(delegate* unmanaged<IntPtr, Guid*, IntPtr*, int>)&QueryInterface;
         v[1] = (IntPtr)(delegate* unmanaged<IntPtr, uint>)&AddRef;
@@ -163,8 +156,7 @@ public static unsafe class OpcDaGroupCcw
     }
 
     [SuppressMessage("Reliability", "CA2018:Buffer size argument matches element count", Justification = "Explicit byte size.")]
-    private static IntPtr* AllocateGroupStateMgt2Vtable()
-    {
+    private static IntPtr* AllocateGroupStateMgt2Vtable() {
         // 3 IUnknown + 4 IOPCGroupStateMgt + 2 IOPCGroupStateMgt2 = 9 slots
         IntPtr* v = (IntPtr*)NativeMemory.Alloc((nuint)(9 * sizeof(IntPtr)));
         v[0] = (IntPtr)(delegate* unmanaged<IntPtr, Guid*, IntPtr*, int>)&QueryInterface;
@@ -180,8 +172,7 @@ public static unsafe class OpcDaGroupCcw
     }
 
     [SuppressMessage("Reliability", "CA2018:Buffer size argument matches element count", Justification = "Explicit byte size.")]
-    private static IntPtr* AllocateItemMgtVtable()
-    {
+    private static IntPtr* AllocateItemMgtVtable() {
         // 3 IUnknown + 7 IOPCItemMgt = 10 slots
         IntPtr* v = (IntPtr*)NativeMemory.Alloc((nuint)(10 * sizeof(IntPtr)));
         v[0] = (IntPtr)(delegate* unmanaged<IntPtr, Guid*, IntPtr*, int>)&QueryInterface;
@@ -198,8 +189,7 @@ public static unsafe class OpcDaGroupCcw
     }
 
     [SuppressMessage("Reliability", "CA2018:Buffer size argument matches element count", Justification = "Explicit byte size.")]
-    private static IntPtr* AllocateSyncIoVtable()
-    {
+    private static IntPtr* AllocateSyncIoVtable() {
         // 3 IUnknown + 2 IOPCSyncIO = 5 slots
         IntPtr* v = (IntPtr*)NativeMemory.Alloc((nuint)(5 * sizeof(IntPtr)));
         FillUnknownSlots(v);
@@ -209,8 +199,7 @@ public static unsafe class OpcDaGroupCcw
     }
 
     [SuppressMessage("Reliability", "CA2018:Buffer size argument matches element count", Justification = "Explicit byte size.")]
-    private static IntPtr* AllocateSyncIo2Vtable()
-    {
+    private static IntPtr* AllocateSyncIo2Vtable() {
         // 3 IUnknown + 2 IOPCSyncIO + 2 IOPCSyncIO2 = 7 slots
         IntPtr* v = (IntPtr*)NativeMemory.Alloc((nuint)(7 * sizeof(IntPtr)));
         FillUnknownSlots(v);
@@ -222,8 +211,7 @@ public static unsafe class OpcDaGroupCcw
     }
 
     [SuppressMessage("Reliability", "CA2018:Buffer size argument matches element count", Justification = "Explicit byte size.")]
-    private static IntPtr* AllocateAsyncIo2Vtable()
-    {
+    private static IntPtr* AllocateAsyncIo2Vtable() {
         // 3 IUnknown + 6 IOPCAsyncIO2 + one compatibility GetConnectionPointContainer slot = 10 slots
         IntPtr* v = (IntPtr*)NativeMemory.Alloc((nuint)(10 * sizeof(IntPtr)));
         FillUnknownSlots(v);
@@ -233,8 +221,7 @@ public static unsafe class OpcDaGroupCcw
     }
 
     [SuppressMessage("Reliability", "CA2018:Buffer size argument matches element count", Justification = "Explicit byte size.")]
-    private static IntPtr* AllocateAsyncIo3Vtable()
-    {
+    private static IntPtr* AllocateAsyncIo3Vtable() {
         // 3 IUnknown + IOPCAsyncIO2 slots + 3 IOPCAsyncIO3 slots + compatibility slot = 13 slots
         IntPtr* v = (IntPtr*)NativeMemory.Alloc((nuint)(13 * sizeof(IntPtr)));
         FillUnknownSlots(v);
@@ -247,8 +234,7 @@ public static unsafe class OpcDaGroupCcw
     }
 
     [SuppressMessage("Reliability", "CA2018:Buffer size argument matches element count", Justification = "Explicit byte size.")]
-    private static IntPtr* AllocateConnectionPointVtable()
-    {
+    private static IntPtr* AllocateConnectionPointVtable() {
         // 3 IUnknown + 5 IConnectionPoint = 8 slots
         IntPtr* v = (IntPtr*)NativeMemory.Alloc((nuint)(8 * sizeof(IntPtr)));
         FillUnknownSlots(v);
@@ -261,8 +247,7 @@ public static unsafe class OpcDaGroupCcw
     }
 
     [SuppressMessage("Reliability", "CA2018:Buffer size argument matches element count", Justification = "Explicit byte size.")]
-    private static IntPtr* AllocateConnectionPointContainerVtable()
-    {
+    private static IntPtr* AllocateConnectionPointContainerVtable() {
         // 3 IUnknown + 2 IConnectionPointContainer = 5 slots
         IntPtr* v = (IntPtr*)NativeMemory.Alloc((nuint)(5 * sizeof(IntPtr)));
         FillUnknownSlots(v);
@@ -271,15 +256,13 @@ public static unsafe class OpcDaGroupCcw
         return v;
     }
 
-    private static void FillUnknownSlots(IntPtr* v)
-    {
+    private static void FillUnknownSlots(IntPtr* v) {
         v[0] = (IntPtr)(delegate* unmanaged<IntPtr, Guid*, IntPtr*, int>)&QueryInterface;
         v[1] = (IntPtr)(delegate* unmanaged<IntPtr, uint>)&AddRef;
         v[2] = (IntPtr)(delegate* unmanaged<IntPtr, uint>)&Release;
     }
 
-    private static void FillAsyncIo2Slots(IntPtr* v)
-    {
+    private static void FillAsyncIo2Slots(IntPtr* v) {
         v[3] = (IntPtr)(delegate* unmanaged<IntPtr, uint, IntPtr, uint, uint*, IntPtr*, int>)&OpcDaGroupCcwAsyncIoMethods.Read;
         v[4] = (IntPtr)(delegate* unmanaged<IntPtr, uint, IntPtr, IntPtr, uint, uint*, IntPtr*, int>)&OpcDaGroupCcwAsyncIoMethods.Write;
         v[5] = (IntPtr)(delegate* unmanaged<IntPtr, uint, uint, uint*, int>)&OpcDaGroupCcwAsyncIoMethods.Refresh2;
@@ -289,34 +272,28 @@ public static unsafe class OpcDaGroupCcw
     }
 
     [SuppressMessage("Reliability", "CA2018:Buffer size argument matches element count", Justification = "Explicit byte size.")]
-    private static IntPtr AllocateTearoff(IntPtr* vtable)
-    {
+    private static IntPtr AllocateTearoff(IntPtr* vtable) {
         IntPtr* instance = (IntPtr*)NativeMemory.Alloc((nuint)sizeof(IntPtr));
         instance[0] = (IntPtr)vtable;
         return (IntPtr)instance;
     }
 
     [UnmanagedCallersOnly]
-    private static int QueryInterface(IntPtr pThis, Guid* riid, IntPtr* ppv)
-    {
-        if (ppv == null)
-        {
+    private static int QueryInterface(IntPtr pThis, Guid* riid, IntPtr* ppv) {
+        if (ppv == null) {
             return E_INVALIDARG;
         }
-        if (riid == null)
-        {
+        if (riid == null) {
             *ppv = IntPtr.Zero;
             return E_INVALIDARG;
         }
-        if (!s_tearoffs.TryGetValue(pThis, out CcwSession? session))
-        {
+        if (!s_tearoffs.TryGetValue(pThis, out CcwSession? session)) {
             *ppv = IntPtr.Zero;
             return E_NOINTERFACE;
         }
 
         IntPtr target = ResolveTearoff(session, *riid);
-        if (target == IntPtr.Zero)
-        {
+        if (target == IntPtr.Zero) {
             *ppv = IntPtr.Zero;
             return E_NOINTERFACE;
         }
@@ -326,77 +303,60 @@ public static unsafe class OpcDaGroupCcw
         return S_OK;
     }
 
-    private static IntPtr ResolveTearoff(CcwSession session, Guid iid)
-    {
-        if (iid == IID_IUnknown)
-        {
+    private static IntPtr ResolveTearoff(CcwSession session, Guid iid) {
+        if (iid == IID_IUnknown) {
             return session.UnknownTearoff;
         }
-        if (iid == IOPCGroupStateMgt.InterfaceId || iid == IOPCGroupStateMgt2.InterfaceId)
-        {
+        if (iid == IOPCGroupStateMgt.InterfaceId || iid == IOPCGroupStateMgt2.InterfaceId) {
             return session.GroupStateMgtTearoff;
         }
-        if (iid == IOPCItemMgt.InterfaceId)
-        {
+        if (iid == IOPCItemMgt.InterfaceId) {
             return session.ItemMgtTearoff;
         }
-        if (iid == IOPCSyncIO.InterfaceId)
-        {
+        if (iid == IOPCSyncIO.InterfaceId) {
             return session.SyncIoTearoff;
         }
-        if (iid == IOPCSyncIO2.InterfaceId)
-        {
+        if (iid == IOPCSyncIO2.InterfaceId) {
             return session.SyncIo2Tearoff;
         }
-        if (iid == IOPCAsyncIO2.InterfaceId)
-        {
+        if (iid == IOPCAsyncIO2.InterfaceId) {
             return session.AsyncIo2Tearoff;
         }
-        if (iid == IOPCAsyncIO3.InterfaceId)
-        {
+        if (iid == IOPCAsyncIO3.InterfaceId) {
             return session.AsyncIo3Tearoff;
         }
-        if (iid == IConnectionPoint.InterfaceId)
-        {
+        if (iid == IConnectionPoint.InterfaceId) {
             return session.ConnectionPointTearoff;
         }
-        if (iid == IConnectionPointContainer.InterfaceId)
-        {
+        if (iid == IConnectionPointContainer.InterfaceId) {
             return session.ConnectionPointContainerTearoff;
         }
         return IntPtr.Zero;
     }
 
     [UnmanagedCallersOnly]
-    private static uint AddRef(IntPtr pThis)
-    {
-        if (!s_tearoffs.TryGetValue(pThis, out CcwSession? session))
-        {
+    private static uint AddRef(IntPtr pThis) {
+        if (!s_tearoffs.TryGetValue(pThis, out CcwSession? session)) {
             return 1;
         }
         return (uint)Interlocked.Increment(ref session.RefCount);
     }
 
     [UnmanagedCallersOnly]
-    private static uint Release(IntPtr pThis)
-    {
-        if (!s_tearoffs.TryGetValue(pThis, out CcwSession? session))
-        {
+    private static uint Release(IntPtr pThis) {
+        if (!s_tearoffs.TryGetValue(pThis, out CcwSession? session)) {
             return 0;
         }
         long next = Interlocked.Decrement(ref session.RefCount);
-        if (next > 0)
-        {
+        if (next > 0) {
             return (uint)next;
         }
         DisposeSession(session);
         return 0;
     }
 
-    private static void DisposeSession(CcwSession session)
-    {
-        if (Interlocked.Exchange(ref session.Disposed, 1) != 0)
-        {
+    private static void DisposeSession(CcwSession session) {
+        if (Interlocked.Exchange(ref session.Disposed, 1) != 0) {
             return;
         }
 
@@ -404,14 +364,12 @@ public static unsafe class OpcDaGroupCcw
         RemoveSessionTearoffs(session);
         FreeSessionTearoffs(session);
         FreeSessionVtables(session);
-        if (session.GroupHandle.IsAllocated)
-        {
+        if (session.GroupHandle.IsAllocated) {
             session.GroupHandle.Free();
         }
     }
 
-    private static void RemoveSessionTearoffs(CcwSession session)
-    {
+    private static void RemoveSessionTearoffs(CcwSession session) {
         RemoveTearoff(session.UnknownTearoff);
         RemoveTearoff(session.GroupStateMgtTearoff);
         RemoveTearoff(session.ItemMgtTearoff);
@@ -425,17 +383,14 @@ public static unsafe class OpcDaGroupCcw
 
     private static void RemoveTearoff(IntPtr tearoff) => s_tearoffs.TryRemove(tearoff, out _);
 
-    private static void DisposeScmSinks(CcwSession session)
-    {
-        foreach (OpcDataCallbackProxy sink in session.ScmSinks.Values)
-        {
+    private static void DisposeScmSinks(CcwSession session) {
+        foreach (OpcDataCallbackProxy sink in session.ScmSinks.Values) {
             sink.Dispose();
         }
         session.ScmSinks.Clear();
     }
 
-    private static void FreeSessionTearoffs(CcwSession session)
-    {
+    private static void FreeSessionTearoffs(CcwSession session) {
         FreeTearoff(session.UnknownTearoff);
         FreeTearoff(session.GroupStateMgtTearoff);
         FreeTearoff(session.ItemMgtTearoff);
@@ -447,8 +402,7 @@ public static unsafe class OpcDaGroupCcw
         FreeTearoff(session.ConnectionPointContainerTearoff);
     }
 
-    private static void FreeSessionVtables(CcwSession session)
-    {
+    private static void FreeSessionVtables(CcwSession session) {
         FreeVtable(session.UnknownVtable);
         FreeVtable(session.GroupStateMgtVtable);
         FreeVtable(session.ItemMgtVtable);
@@ -460,27 +414,21 @@ public static unsafe class OpcDaGroupCcw
         FreeVtable(session.ConnectionPointContainerVtable);
     }
 
-    private static void FreeTearoff(IntPtr tearoff)
-    {
-        if (tearoff != IntPtr.Zero)
-        {
+    private static void FreeTearoff(IntPtr tearoff) {
+        if (tearoff != IntPtr.Zero) {
             NativeMemory.Free((void*)tearoff);
         }
     }
 
-    private static void FreeVtable(IntPtr* vtable)
-    {
-        if (vtable != null)
-        {
+    private static void FreeVtable(IntPtr* vtable) {
+        if (vtable != null) {
             NativeMemory.Free(vtable);
         }
     }
 
     /// <summary>Shared state across all tearoffs of one CCW.</summary>
-    internal sealed class CcwSession
-    {
-        public CcwSession(GCHandle groupHandle)
-        {
+    internal sealed class CcwSession {
+        public CcwSession(GCHandle groupHandle) {
             GroupHandle = groupHandle;
         }
 

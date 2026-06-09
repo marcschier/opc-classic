@@ -1,8 +1,9 @@
-// SPDX-License-Identifier: MIT
+﻿// SPDX-License-Identifier: MIT
 
 using Opc.Classic.Dcom.Rpc.Core;
 
-namespace Opc.Classic.Dcom.Rpc; 
+namespace Opc.Classic.Dcom.Rpc;
+
 /// <summary>
 /// Presentation exception
 /// </summary>

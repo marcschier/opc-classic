@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -9,15 +9,13 @@ using TUnit.Core;
 
 namespace Opc.Classic.Dcom.Kerberos.Tests;
 
-public sealed class Rfc4121MicTokenTests
-{
+public sealed class Rfc4121MicTokenTests {
     private static readonly byte[] Aes256Key = KerberosTestHex.FromHex(
         "00112233445566778899AABBCCDDEEFF" +
         "102132435465768798A9BACBDCEDFE0F");
 
     [Test]
-    public async Task GetMic_and_VerifyMic_round_trip()
-    {
+    public async Task GetMic_and_VerifyMic_round_trip() {
         var session = new KerberosSession(Aes256Key, EncryptionType.AES256_CTS_HMAC_SHA1_96);
         byte[] data = [0xDE, 0xAD, 0xBE, 0xEF];
 
@@ -28,8 +26,7 @@ public sealed class Rfc4121MicTokenTests
     }
 
     [Test]
-    public async Task GetMic_token_has_RFC4121_MIC_token_id_and_filler()
-    {
+    public async Task GetMic_token_has_RFC4121_MIC_token_id_and_filler() {
         var session = new KerberosSession(Aes256Key, EncryptionType.AES256_CTS_HMAC_SHA1_96);
 
         byte[] mic = session.GetMic([0x01, 0x02]);
@@ -45,8 +42,7 @@ public sealed class Rfc4121MicTokenTests
     }
 
     [Test]
-    public async Task VerifyMic_returns_false_for_tampered_data()
-    {
+    public async Task VerifyMic_returns_false_for_tampered_data() {
         var session = new KerberosSession(Aes256Key, EncryptionType.AES256_CTS_HMAC_SHA1_96);
         byte[] mic = session.GetMic([0x01, 0x02, 0x03]);
 

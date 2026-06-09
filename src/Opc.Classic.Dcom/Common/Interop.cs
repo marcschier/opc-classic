@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: MIT
+﻿// SPDX-License-Identifier: MIT
 
 using Opc.Classic.Dcom.Internal;
 using SharpCifs.Util.Sharpen;
@@ -10,7 +10,8 @@ using System.Globalization;
 using System.IO;
 using System.Net.Sockets;
 
-namespace Opc.Classic.Dcom.Common; 
+namespace Opc.Classic.Dcom.Common;
+
 /// <summary>
 /// Class implemented for defining system wide changes.
 /// <para><b>Note</b>: Methods starting with <i>internal_</i>

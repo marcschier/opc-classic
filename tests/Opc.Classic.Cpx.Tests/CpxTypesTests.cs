@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -11,11 +11,9 @@ using TUnit.Core;
 
 namespace Opc.Classic.Cpx.Tests;
 
-public sealed class TypeDescriptionTests
-{
+public sealed class TypeDescriptionTests {
     [Test]
-    public async Task ValueEquality_IncludesFieldSequence()
-    {
+    public async Task ValueEquality_IncludesFieldSequence() {
         var first = new TypeDescription(
             "MotorStatus",
             "ns=vendor;MotorStatus",
@@ -43,8 +41,7 @@ public sealed class TypeDescriptionTests
     }
 
     [Test]
-    public async Task Constructor_RejectsInvalidIdentityOrType()
-    {
+    public async Task Constructor_RejectsInvalidIdentityOrType() {
         await Assert.That(() => { _ = new TypeDescription("", "id", TypeKind.Int32, isComplex: false); })
             .Throws<ArgumentException>();
 
@@ -57,8 +54,7 @@ public sealed class TypeDescriptionTests
     }
 
     [Test]
-    public async Task TypeField_NormalizesOptionalStrings_AndRejectsNegativeCounts()
-    {
+    public async Task TypeField_NormalizesOptionalStrings_AndRejectsNegativeCounts() {
         var field = new TypeField("Nested", TypeKind.StructReference, "  ", ElementCountFieldName: "Count");
 
         await Assert.That(field.TypeId).IsNull();
@@ -69,17 +65,14 @@ public sealed class TypeDescriptionTests
     }
 }
 
-public sealed class InstanceDescriptionTests
-{
+public sealed class InstanceDescriptionTests {
     [Test]
-    public async Task ValueEquality_IncludesFieldValuesRegardlessOfDictionaryOrder()
-    {
+    public async Task ValueEquality_IncludesFieldValuesRegardlessOfDictionaryOrder() {
         var first = new InstanceDescription(
             "Channel1.Device1.Motor",
             "MotorStatus",
             isComplex: true,
-            new Dictionary<string, object?>
-            {
+            new Dictionary<string, object?> {
                 ["Running"] = true,
                 ["Speed"] = 1200.0,
             },
@@ -89,8 +82,7 @@ public sealed class InstanceDescriptionTests
             "Channel1.Device1.Motor",
             "MotorStatus",
             isComplex: true,
-            new Dictionary<string, object?>
-            {
+            new Dictionary<string, object?> {
                 ["Speed"] = 1200.0,
                 ["Running"] = true,
             },
@@ -105,8 +97,7 @@ public sealed class InstanceDescriptionTests
     }
 
     [Test]
-    public async Task Constructor_RejectsInvalidIdentifiers()
-    {
+    public async Task Constructor_RejectsInvalidIdentifiers() {
         await Assert.That(() => { _ = new InstanceDescription("", "Type", isComplex: true); })
             .Throws<ArgumentException>();
 
@@ -118,11 +109,9 @@ public sealed class InstanceDescriptionTests
     }
 }
 
-public sealed class TypeDictionaryTests
-{
+public sealed class TypeDictionaryTests {
     [Test]
-    public async Task FromTypes_LookupByNameAndTypeIdSucceeds()
-    {
+    public async Task FromTypes_LookupByNameAndTypeIdSucceeds() {
         var simple = new TypeDescription("Temperature", "TemperatureType", TypeKind.Double, isComplex: false);
         var complex = new TypeDescription(
             "MotorStatus",
@@ -141,8 +130,7 @@ public sealed class TypeDictionaryTests
     }
 
     [Test]
-    public async Task Lookup_IsCaseSensitive()
-    {
+    public async Task Lookup_IsCaseSensitive() {
         var dict = TypeDictionary.FromTypes(new TypeDescription("Capital", "CapitalType", TypeKind.String, isComplex: false));
 
         await Assert.That(dict.Contains("Capital")).IsTrue();
@@ -150,8 +138,7 @@ public sealed class TypeDictionaryTests
     }
 
     [Test]
-    public async Task Constructor_RejectsDuplicateNamesAndTypeIds()
-    {
+    public async Task Constructor_RejectsDuplicateNamesAndTypeIds() {
         var duplicateNameA = new TypeDescription("Same", "A", TypeKind.Int16, isComplex: false);
         var duplicateNameB = new TypeDescription("Same", "B", TypeKind.Int32, isComplex: false);
         var duplicateIdA = new TypeDescription("A", "SameId", TypeKind.Int16, isComplex: false);
@@ -165,25 +152,21 @@ public sealed class TypeDictionaryTests
     }
 }
 
-public sealed class DcomInterfaceIdTests
-{
+public sealed class DcomInterfaceIdTests {
     [Test]
-    public async Task IOPCComplexDataItem_InterfaceId_MatchesSpec()
-    {
+    public async Task IOPCComplexDataItem_InterfaceId_MatchesSpec() {
         var expected = new Guid("7ECE6649-2C1E-494A-BB99-22D36FB3B0C3");
         await Assert.That(IOPCComplexDataItem.InterfaceId).IsEqualTo(expected);
     }
 
     [Test]
-    public async Task IOPCComplexDataItem2_InterfaceId_MatchesSpec()
-    {
+    public async Task IOPCComplexDataItem2_InterfaceId_MatchesSpec() {
         var expected = new Guid("44F68398-60AF-4F02-9442-172D058CB16F");
         await Assert.That(IOPCComplexDataItem2.InterfaceId).IsEqualTo(expected);
     }
 
     [Test]
-    public async Task IOPCTypeLibrary_InterfaceId_MatchesSpec()
-    {
+    public async Task IOPCTypeLibrary_InterfaceId_MatchesSpec() {
         var expected = new Guid("B8C1B2C6-ACB7-4B7B-87B5-6EAC2CF63C31");
         await Assert.That(IOPCTypeLibrary.InterfaceId).IsEqualTo(expected);
     }

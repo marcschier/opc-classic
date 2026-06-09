@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -10,19 +10,15 @@ using System.Linq;
 
 namespace Opc.Classic.Integration.Tests.CompatMatrix;
 
-internal static class CompatMatrixProbe
-{
-    public static bool ShouldSkipNet10ServerToNativeClient(out string reason)
-    {
-        if (!OperatingSystem.IsWindows())
-        {
+internal static class CompatMatrixProbe {
+    public static bool ShouldSkipNet10ServerToNativeClient(out string reason) {
+        if (!OperatingSystem.IsWindows()) {
             reason = "Compat matrix tests require Windows to run native COM clients";
             return true;
         }
 
         var candidates = GetNativeSampleClientCandidates().ToArray();
-        if (!candidates.Any(File.Exists))
-        {
+        if (!candidates.Any(File.Exists)) {
             reason = "Native sample client not found at any expected path: "
                 + string.Join(", ", candidates)
                 + " (Phase 14A workflow must build the COM sample client first)";
@@ -37,8 +33,7 @@ internal static class CompatMatrixProbe
         GetNativeSampleClientCandidates().FirstOrDefault(File.Exists)
         ?? GetNativeSampleClientCandidates().First();
 
-    private static IEnumerable<string> GetNativeSampleClientCandidates()
-    {
+    private static IEnumerable<string> GetNativeSampleClientCandidates() {
         var repoRoot = Path.GetFullPath(Path.Combine(
             AppContext.BaseDirectory,
             "..",

@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -8,8 +8,7 @@ namespace Opc.Classic.Security;
 /// <summary>
 /// OPC Security impersonation levels used by <c>IOPCSecurityNT::QueryMinImpersonationLevel</c>.
 /// </summary>
-public enum OpcImpersonationLevel
-{
+public enum OpcImpersonationLevel {
     /// <summary>Use the COM default impersonation level.</summary>
     Default = 0,
 

@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -14,15 +14,12 @@ using TUnit.Core;
 
 namespace Opc.Classic.Mcp.Tests;
 
-public sealed class McpCaptureToolsTests
-{
+public sealed class McpCaptureToolsTests {
     [Test]
-    public async Task CaptureSessionDto_From_Maps_session_metadata()
-    {
+    public async Task CaptureSessionDto_From_Maps_session_metadata() {
         string folder = CreateScratchFolder();
         string rawPcapPath = Path.Combine(folder, "trace.pcap");
-        var source = new SyntheticCaptureSource(rawPcapPath)
-        {
+        var source = new SyntheticCaptureSource(rawPcapPath) {
             PacketCount = 3,
             ByteCount = 512,
         };
@@ -53,8 +50,7 @@ public sealed class McpCaptureToolsTests
     }
 
     [Test]
-    public async Task CaptureTools_ListCaptures_Filters_active_and_completed_sessions()
-    {
+    public async Task CaptureTools_ListCaptures_Filters_active_and_completed_sessions() {
         await using CaptureSessionManager manager = CreateManager();
         var tools = new CaptureTools(manager);
         CaptureSession session = await manager.CreateAndStartAsync(
@@ -80,8 +76,7 @@ public sealed class McpCaptureToolsTests
     }
 
     [Test]
-    public async Task CaptureTools_TailCapture_RunningSessionWithNoPackets_ReturnsEmptyWindow_NotDone()
-    {
+    public async Task CaptureTools_TailCapture_RunningSessionWithNoPackets_ReturnsEmptyWindow_NotDone() {
         await using CaptureSessionManager manager = CreateManager();
         var tools = new CaptureTools(manager);
         CaptureSession session = await manager.CreateAndStartAsync(
@@ -103,8 +98,7 @@ public sealed class McpCaptureToolsTests
     }
 
     [Test]
-    public async Task CaptureTools_TailCapture_AfterStop_ReportsDoneTrue()
-    {
+    public async Task CaptureTools_TailCapture_AfterStop_ReportsDoneTrue() {
         await using CaptureSessionManager manager = CreateManager();
         var tools = new CaptureTools(manager);
         CaptureSession session = await manager.CreateAndStartAsync(
@@ -122,8 +116,7 @@ public sealed class McpCaptureToolsTests
     }
 
     [Test]
-    public async Task CaptureTools_TailCapture_UnknownSession_ThrowsMcpException()
-    {
+    public async Task CaptureTools_TailCapture_UnknownSession_ThrowsMcpException() {
         await using CaptureSessionManager manager = CreateManager();
         var tools = new CaptureTools(manager);
 
@@ -133,8 +126,7 @@ public sealed class McpCaptureToolsTests
     }
 
     [Test]
-    public async Task CaptureTools_StartCapture_NtlmSessionKeyHex_ValidatesLength()
-    {
+    public async Task CaptureTools_StartCapture_NtlmSessionKeyHex_ValidatesLength() {
         await using CaptureSessionManager manager = CreateManager();
         var tools = new CaptureTools(manager);
 
@@ -152,8 +144,7 @@ public sealed class McpCaptureToolsTests
     }
 
     [Test]
-    public async Task CaptureTools_GetCapture_Returns_pcap_path_and_empty_summaries_without_decoding_live_traffic()
-    {
+    public async Task CaptureTools_GetCapture_Returns_pcap_path_and_empty_summaries_without_decoding_live_traffic() {
         await using CaptureSessionManager manager = CreateManager();
         string rawPcapPath = Path.Combine(AppContext.BaseDirectory, "synthetic-capture.pcap");
         var tools = new CaptureTools(manager);
@@ -180,8 +171,7 @@ public sealed class McpCaptureToolsTests
     }
 
     [Test]
-    public async Task CaptureTools_Invalid_session_or_state_inputs_throw_mcp_exceptions()
-    {
+    public async Task CaptureTools_Invalid_session_or_state_inputs_throw_mcp_exceptions() {
         await using CaptureSessionManager manager = CreateManager();
         var tools = new CaptureTools(manager);
 
@@ -191,8 +181,7 @@ public sealed class McpCaptureToolsTests
     }
 
     [Test]
-    public async Task CaptureTools_DecodePdu_Strips_hex_formatting_and_rejects_odd_nibbles()
-    {
+    public async Task CaptureTools_DecodePdu_Strips_hex_formatting_and_rejects_odd_nibbles() {
         await using CaptureSessionManager manager = CreateManager();
         var tools = new CaptureTools(manager);
 
@@ -204,21 +193,18 @@ public sealed class McpCaptureToolsTests
         await Assert.That(() => tools.DecodePdu("0x0")).Throws<McpException>();
     }
 
-    private static CaptureSessionManager CreateManager()
-    {
+    private static CaptureSessionManager CreateManager() {
         string root = CreateScratchFolder();
         return new CaptureSessionManager(root, maxActiveSessions: 2, maxRetainedSessions: 4);
     }
 
-    private static string CreateScratchFolder()
-    {
+    private static string CreateScratchFolder() {
         string folder = Path.Combine(AppContext.BaseDirectory, "McpCaptureToolsTests", Guid.NewGuid().ToString("N"));
         Directory.CreateDirectory(folder);
         return folder;
     }
 
-    private sealed class SyntheticCaptureSource : ICaptureSource
-    {
+    private sealed class SyntheticCaptureSource : ICaptureSource {
         private readonly string? _rawPcapPath;
 
         public SyntheticCaptureSource(string? rawPcapPath) => _rawPcapPath = rawPcapPath;
@@ -231,23 +217,20 @@ public sealed class McpCaptureToolsTests
 
         public CaptureStartRequest? StartRequest { get; private set; }
 
-        public Task StartAsync(CaptureStartRequest request, CancellationToken cancellationToken)
-        {
+        public Task StartAsync(CaptureStartRequest request, CancellationToken cancellationToken) {
             cancellationToken.ThrowIfCancellationRequested();
             StartRequest = request;
             return Task.CompletedTask;
         }
 
-        public Task StopAsync(CancellationToken cancellationToken)
-        {
+        public Task StopAsync(CancellationToken cancellationToken) {
             cancellationToken.ThrowIfCancellationRequested();
             return Task.CompletedTask;
         }
 
         public async IAsyncEnumerable<CapturedPacket> ReadAllAsync(
             long? maxPackets,
-            [EnumeratorCancellation] CancellationToken cancellationToken)
-        {
+            [EnumeratorCancellation] CancellationToken cancellationToken) {
             _ = maxPackets;
             cancellationToken.ThrowIfCancellationRequested();
             await Task.CompletedTask;

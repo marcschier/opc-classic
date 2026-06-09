@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -12,10 +12,8 @@ using TUnit.Assertions;
 
 namespace Opc.Classic.Dcom.Smb.Tests.Pcap;
 
-public abstract class PcapFixtureBase
-{
-    protected static async Task<Smb2PcapReplayer.ReplayResult> ReplayNegotiateFixtureAsync(string fixtureFileName)
-    {
+public abstract class PcapFixtureBase {
+    protected static async Task<Smb2PcapReplayer.ReplayResult> ReplayNegotiateFixtureAsync(string fixtureFileName) {
         var replayer = Smb2PcapReplayer.FromFile(GetFixturePath(fixtureFileName));
         Smb2PcapReplayer.ReplayResult result = await replayer.ReplayNegotiateAsync("pcap-fixture");
 
@@ -28,8 +26,7 @@ public abstract class PcapFixtureBase
         string fixtureFileName,
         Smb2Dialect expectedDialect,
         bool expectedSigningRequired,
-        bool expectedEncryptionSupported)
-    {
+        bool expectedEncryptionSupported) {
         Smb2PcapReplayer.ReplayResult result = await ReplayNegotiateFixtureAsync(fixtureFileName);
         await Assert.That(result.NegotiatedDialect).IsEqualTo(expectedDialect);
         await Assert.That(result.SigningRequired).IsEqualTo(expectedSigningRequired);
@@ -39,23 +36,18 @@ public abstract class PcapFixtureBase
 
     private static string GetFixturePath(
         string fixtureFileName,
-        [CallerFilePath] string sourceFilePath = "")
-    {
+        [CallerFilePath] string sourceFilePath = "") {
         string? sourceDirectory = Path.GetDirectoryName(sourceFilePath);
-        if (sourceDirectory is not null)
-        {
+        if (sourceDirectory is not null) {
             string sourcePath = Path.Combine(sourceDirectory, "Fixtures", fixtureFileName);
-            if (File.Exists(sourcePath))
-            {
+            if (File.Exists(sourcePath)) {
                 return sourcePath;
             }
         }
 
-        for (var directory = new DirectoryInfo(AppContext.BaseDirectory); directory != null; directory = directory.Parent)
-        {
+        for (var directory = new DirectoryInfo(AppContext.BaseDirectory); directory != null; directory = directory.Parent) {
             string localPath = Path.Combine(directory.FullName, "Pcap", "Fixtures", fixtureFileName);
-            if (File.Exists(localPath))
-            {
+            if (File.Exists(localPath)) {
                 return localPath;
             }
 
@@ -66,8 +58,7 @@ public abstract class PcapFixtureBase
                 "Pcap",
                 "Fixtures",
                 fixtureFileName);
-            if (File.Exists(repoPath))
-            {
+            if (File.Exists(repoPath)) {
                 return repoPath;
             }
         }

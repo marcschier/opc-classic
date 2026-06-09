@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -9,8 +9,7 @@ namespace Opc.Classic.Ae;
 /// A node in an OPC AE event-area browse tree (returned by
 /// <see cref="IAeServer.BrowseAreasAsync"/>).
 /// </summary>
-public sealed class AreaBrowseElement
-{
+public sealed class AreaBrowseElement {
     /// <summary>Short display name of this area or source.</summary>
     public string Name { get; init; } = string.Empty;
 

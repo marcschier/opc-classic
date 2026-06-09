@@ -120,8 +120,7 @@ public sealed class DcomCallChannelFactory {
         int port,
         IAuthContext authContext,
         IReadOnlyList<Guid>? preBindIids,
-        CancellationToken cancellationToken = default)
-    {
+        CancellationToken cancellationToken = default) {
         ArgumentException.ThrowIfNullOrEmpty(host);
         ArgumentNullException.ThrowIfNull(authContext);
 

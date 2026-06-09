@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: MIT
+﻿// SPDX-License-Identifier: MIT
 
 namespace Opc.Classic.Dcom.Test {
     using Opc.Classic.Dcom.Common;
@@ -43,7 +43,7 @@ namespace Opc.Classic.Dcom.Test {
             callObject = new CallBuilder {
                 Opnum = 0
             };
-            callObject.AddOutParamAsObject(new ComString(InteropFlags.FLAG_REPRESENTATION_STRING_BSTR), 
+            callObject.AddOutParamAsObject(new ComString(InteropFlags.FLAG_REPRESENTATION_STRING_BSTR),
                 InteropFlags.FLAG_NULL);
             result = folder.Call(callObject);
             Console.WriteLine("Current Folder: " + result[0]);

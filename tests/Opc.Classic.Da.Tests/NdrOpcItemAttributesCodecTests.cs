@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -12,30 +12,26 @@ using TUnit.Core;
 
 namespace Opc.Classic.Da.Tests;
 
-public sealed class NdrOpcItemAttributesCodecTests
-{
+public sealed class NdrOpcItemAttributesCodecTests {
     private const int OpcEuTypeNone = 0;
     private const int OpcEuTypeAnalog = 1;
 
     private delegate void NdrWriteAction(ref NdrWriter w);
 
-    private static byte[] WriteOne(NdrWriteAction write, int capacity = 1024)
-    {
+    private static byte[] WriteOne(NdrWriteAction write, int capacity = 1024) {
         var buf = new byte[capacity];
         var w = new NdrWriter(buf);
         write(ref w);
         return buf[..w.Position];
     }
 
-    private static OpcItemAttributes ReadOne(byte[] bytes)
-    {
+    private static OpcItemAttributes ReadOne(byte[] bytes) {
         var r = new NdrReader(bytes);
         return NdrOpcItemAttributesCodec.Read(ref r);
     }
 
     [Test]
-    public async Task RoundTrip_TypicalActiveDoubleItem()
-    {
+    public async Task RoundTrip_TypicalActiveDoubleItem() {
         var input = new OpcItemAttributes(
             AccessPath: string.Empty,
             ItemId: "Channel1.Device1.Tag1",
@@ -65,8 +61,7 @@ public sealed class NdrOpcItemAttributesCodecTests
     }
 
     [Test]
-    public async Task RoundTrip_AnalogEuRangeSafeArray()
-    {
+    public async Task RoundTrip_AnalogEuRangeSafeArray() {
         var range = OpcSafeArray.OfDouble(new[] { 0.0, 100.0 });
         var euInfo = OpcVariant.FromSafeArray(range);
         var input = new OpcItemAttributes(
@@ -94,8 +89,7 @@ public sealed class NdrOpcItemAttributesCodecTests
     }
 
     [Test]
-    public async Task RoundTrip_NullStringsAndEmptyBlob()
-    {
+    public async Task RoundTrip_NullStringsAndEmptyBlob() {
         var input = new OpcItemAttributes(
             AccessPath: null,
             ItemId: null,
@@ -119,8 +113,7 @@ public sealed class NdrOpcItemAttributesCodecTests
     }
 
     [Test]
-    public async Task RoundTrip_LargeBlobAndAccessRightsBitmask()
-    {
+    public async Task RoundTrip_LargeBlobAndAccessRightsBitmask() {
         byte[] blob = Enumerable.Range(0, 256)
             .Select(i => unchecked((byte)((i * 37 + 13) & 0xFF)))
             .ToArray();
@@ -146,8 +139,7 @@ public sealed class NdrOpcItemAttributesCodecTests
     }
 
     [Test]
-    public async Task ClientHandle_LayoutFollowsTwoLpwstrsAndWin32Bool()
-    {
+    public async Task ClientHandle_LayoutFollowsTwoLpwstrsAndWin32Bool() {
         var input = new OpcItemAttributes(
             AccessPath: "AP",
             ItemId: "ID",
@@ -169,8 +161,7 @@ public sealed class NdrOpcItemAttributesCodecTests
     }
 
     [Test]
-    public async Task DataTypeVtypes_AreConsecutiveUInt16sWithoutReservedPadding()
-    {
+    public async Task DataTypeVtypes_AreConsecutiveUInt16sWithoutReservedPadding() {
         var input = new OpcItemAttributes(
             AccessPath: null,
             ItemId: null,
@@ -192,8 +183,7 @@ public sealed class NdrOpcItemAttributesCodecTests
         await Assert.That(canonicalOffset - requestedOffset).IsEqualTo(2);
     }
 
-    private static (int ActiveWire, uint ClientHandleWire) ReadActiveAndClientHandleAfterStrings(byte[] bytes)
-    {
+    private static (int ActiveWire, uint ClientHandleWire) ReadActiveAndClientHandleAfterStrings(byte[] bytes) {
         // OPCITEMATTRIBUTES inline layout (post-AG2): two 4-byte unique-pointer
         // referents (szAccessPath, szItemID) then INT32 bActive then UINT32 hClient.
         var r = new NdrReader(bytes);
@@ -204,8 +194,7 @@ public sealed class NdrOpcItemAttributesCodecTests
         return (activeWire, clientHandleWire);
     }
 
-    private static (ushort Requested, ushort Canonical, int RequestedOffset, int CanonicalOffset) ReadDataTypeVtypes(byte[] bytes)
-    {
+    private static (ushort Requested, ushort Canonical, int RequestedOffset, int CanonicalOffset) ReadDataTypeVtypes(byte[] bytes) {
         // OPCITEMATTRIBUTES inline layout: 2 string refs + bActive + hClient + hServer
         // + dwAccessRights + dwBlobSize + pBlob_ref + vtRequested + vtCanonical (+ dwEUType + VARIANT).
         var r = new NdrReader(bytes);

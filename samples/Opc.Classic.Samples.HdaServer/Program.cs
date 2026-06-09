@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: MIT
+﻿// SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 
 using Microsoft.Extensions.DependencyInjection;
@@ -10,16 +10,14 @@ using Opc.Classic.Hosting.Windows;
 
 namespace Opc.Classic.Samples.HdaServer;
 
-internal static class Program
-{
+internal static class Program {
     private static readonly Guid SampleClsid = new("A2BBEA4E-F1C6-469B-8D71-89767DCD2D48");
     private const string SampleProgId = "Opc.Classic.Samples.HdaServer.1";
     private const string SampleFriendlyName = "Opc.Classic Sample HDA Server";
     private const string SampleAssemblyName = "Opc.Classic.Samples.HdaServer";
     private const string SampleTypeName = "Opc.Classic.Samples.HdaServer.SampleHdaServer";
 
-    public static async Task<int> Main(string[] args)
-    {
+    public static async Task<int> Main(string[] args) {
         ArgumentNullException.ThrowIfNull(args);
 
         var registration = new OpcClsidRegistration(
@@ -33,8 +31,7 @@ internal static class Program
             OpcComponentCategories.OpcHdaServer10,
         ];
 
-        if (SampleServerRegistrationCommand.TryHandle(args, registration, implementedCategories, out int registrationExitCode))
-        {
+        if (SampleServerRegistrationCommand.TryHandle(args, registration, implementedCategories, out int registrationExitCode)) {
             return registrationExitCode;
         }
 
@@ -54,8 +51,7 @@ internal static class Program
         var builder = Host.CreateApplicationBuilder(args);
 
         builder.Logging.ClearProviders();
-        builder.Logging.AddSimpleConsole(static opt =>
-        {
+        builder.Logging.AddSimpleConsole(static opt => {
             opt.SingleLine = true;
             opt.TimestampFormat = "HH:mm:ss ";
         });
@@ -63,8 +59,7 @@ internal static class Program
         builder.Services.AddClassicServer();
         builder.Services.AddClassicClsidRegistry(builder.Configuration);
         builder.Services.AddSingleton<HistoricalDataStore>();
-        builder.Services.AddOpcHdaServer<SampleHdaServer>(opt =>
-        {
+        builder.Services.AddOpcHdaServer<SampleHdaServer>(opt => {
             opt.Clsid = SampleClsid;
             opt.ProgId = SampleProgId;
             opt.FriendlyName = SampleFriendlyName;
@@ -74,19 +69,15 @@ internal static class Program
         var host = builder.Build();
 
         uint comClassObjectCookie = 0;
-        if (embedded && OperatingSystem.IsWindows())
-        {
+        if (embedded && OperatingSystem.IsWindows()) {
             comClassObjectCookie = RegisterScmFactory(host.Services);
         }
 
-        try
-        {
+        try {
             await host.RunAsync().ConfigureAwait(false);
         }
-        finally
-        {
-            if (embedded && OperatingSystem.IsWindows() && comClassObjectCookie != 0)
-            {
+        finally {
+            if (embedded && OperatingSystem.IsWindows() && comClassObjectCookie != 0) {
                 ComClassObjectRegistrar.RevokeClassObject(comClassObjectCookie);
                 ComClassObjectRegistrar.Uninitialize();
             }
@@ -96,8 +87,7 @@ internal static class Program
     }
 
     [System.Runtime.Versioning.SupportedOSPlatform("windows")]
-    private static uint RegisterScmFactory(IServiceProvider services)
-    {
+    private static uint RegisterScmFactory(IServiceProvider services) {
         var serverImpl = services.GetRequiredService<IOpcHdaServer>();
         ComClassObjectRegistrar.InitializeMultithreaded();
         uint cookie = ComClassObjectRegistrar.RegisterClassObject(

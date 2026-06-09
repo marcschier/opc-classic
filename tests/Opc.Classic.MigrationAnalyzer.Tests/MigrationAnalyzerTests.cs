@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -16,116 +16,100 @@ using TUnit.Core;
 
 namespace Opc.Classic.MigrationAnalyzer.Tests;
 
-public sealed class MigrationAnalyzerTests
-{
+public sealed class MigrationAnalyzerTests {
     [Test]
-    public async Task LegacyServerCreation_reports_OCMDA001()
-    {
+    public async Task LegacyServerCreation_reports_OCMDA001() {
         ImmutableArray<Diagnostic> diagnostics = await DiagnosticsAsync(new OcmDa01_LegacyServerCreation(), LegacyServerCreationSource);
         await Assert.That(diagnostics.Single().Id).IsEqualTo("OCMDA001");
     }
 
     [Test]
-    public async Task LegacyServerCreation_code_fix_connects_async_with_await_using()
-    {
+    public async Task LegacyServerCreation_code_fix_connects_async_with_await_using() {
         string fixedSource = await ApplyCodeFixAsync(new OcmDa01_LegacyServerCreation(), new OcmDa01_LegacyServerCreationCodeFix(), LegacyServerCreationSource);
         await Assert.That(fixedSource).Contains("await using var server = await OpcDaClient.ConnectAsync(url, options);");
         await Assert.That(fixedSource).Contains("using Opc.Classic.Da;");
     }
 
     [Test]
-    public async Task LegacyBrowse_reports_OCMDA002()
-    {
+    public async Task LegacyBrowse_reports_OCMDA002() {
         ImmutableArray<Diagnostic> diagnostics = await DiagnosticsAsync(new OcmDa02_LegacyBrowse(), LegacyBrowseSource);
         await Assert.That(diagnostics.Single().Id).IsEqualTo("OCMDA002");
     }
 
     [Test]
-    public async Task LegacyBrowse_code_fix_uses_browse_async_with_cancellation_token()
-    {
+    public async Task LegacyBrowse_code_fix_uses_browse_async_with_cancellation_token() {
         string fixedSource = await ApplyCodeFixAsync(new OcmDa02_LegacyBrowse(), new OcmDa02_LegacyBrowseCodeFix(), LegacyBrowseSource);
         await Assert.That(fixedSource).Contains("await server.BrowseAsync(itemId, filters, ct)");
         await Assert.That(fixedSource).Contains("CancellationToken ct = default");
     }
 
     [Test]
-    public async Task LegacyRead_reports_OCMDA003()
-    {
+    public async Task LegacyRead_reports_OCMDA003() {
         ImmutableArray<Diagnostic> diagnostics = await DiagnosticsAsync(new OcmDa03_LegacyRead(), LegacyReadSource);
         await Assert.That(diagnostics.Single().Id).IsEqualTo("OCMDA003");
     }
 
     [Test]
-    public async Task LegacyRead_code_fix_uses_read_async_with_cancellation_token()
-    {
+    public async Task LegacyRead_code_fix_uses_read_async_with_cancellation_token() {
         string fixedSource = await ApplyCodeFixAsync(new OcmDa03_LegacyRead(), new OcmDa03_LegacyReadCodeFix(), LegacyReadSource);
         await Assert.That(fixedSource).Contains("await group.ReadAsync(items, ct)");
         await Assert.That(fixedSource).Contains("async Task ReadValues");
     }
 
     [Test]
-    public async Task LegacyEventSubscription_reports_OCMAE001()
-    {
+    public async Task LegacyEventSubscription_reports_OCMAE001() {
         ImmutableArray<Diagnostic> diagnostics = await DiagnosticsAsync(new OcmAe01_LegacyEventSubscription(), LegacyEventSubscriptionSource);
         await Assert.That(diagnostics.Single().Id).IsEqualTo("OCMAE001");
     }
 
     [Test]
-    public async Task LegacyEventSubscription_code_fix_uses_await_foreach()
-    {
+    public async Task LegacyEventSubscription_code_fix_uses_await_foreach() {
         string fixedSource = await ApplyCodeFixAsync(new OcmAe01_LegacyEventSubscription(), new OcmAe01_LegacyEventSubscriptionCodeFix(), LegacyEventSubscriptionSource);
         await Assert.That(fixedSource).Contains("await foreach (OpcEventNotification notification in server.SubscribeAsync(ct))");
         await Assert.That(fixedSource).Contains("await handler.HandleAsync(notification, ct);");
     }
 
     [Test]
-    public async Task LegacySyncReadRaw_reports_OCMHDA001()
-    {
+    public async Task LegacySyncReadRaw_reports_OCMHDA001() {
         ImmutableArray<Diagnostic> diagnostics = await DiagnosticsAsync(new OcmHda01_LegacySyncReadRaw(), LegacySyncReadRawSource);
         await Assert.That(diagnostics.Single().Id).IsEqualTo("OCMHDA001");
     }
 
     [Test]
-    public async Task LegacySyncReadRaw_code_fix_uses_read_raw_async()
-    {
+    public async Task LegacySyncReadRaw_code_fix_uses_read_raw_async() {
         string fixedSource = await ApplyCodeFixAsync(new OcmHda01_LegacySyncReadRaw(), new OcmHda01_LegacySyncReadRawCodeFix(), LegacySyncReadRawSource);
         await Assert.That(fixedSource).Contains("await historian.ReadRawAsync(itemId, start, end, ct)");
         await Assert.That(fixedSource).Contains("using Opc.Classic.Hda;");
     }
 
     [Test]
-    public async Task UsingOpcRcw_reports_OCMGEN001()
-    {
+    public async Task UsingOpcRcw_reports_OCMGEN001() {
         ImmutableArray<Diagnostic> diagnostics = await DiagnosticsAsync(new OcmGeneral01_UsingOpcRcw(), UsingOpcRcwSource);
         await Assert.That(diagnostics.Single().Id).IsEqualTo("OCMGEN001");
     }
 
     [Test]
-    public async Task UsingOpcRcw_code_fix_rewrites_namespace()
-    {
+    public async Task UsingOpcRcw_code_fix_rewrites_namespace() {
         string fixedSource = await ApplyCodeFixAsync(new OcmGeneral01_UsingOpcRcw(), new OcmGeneral01_UsingOpcRcwCodeFix(), UsingOpcRcwSource);
         await Assert.That(fixedSource).Contains("using Opc.Classic.Da;");
         await Assert.That(fixedSource).DoesNotContain("using OpcRcw.Da;");
     }
 
     [Test]
-    public async Task ManualVariant_reports_OCMGEN002()
-    {
+    public async Task ManualVariant_reports_OCMGEN002() {
         ImmutableArray<Diagnostic> diagnostics = await DiagnosticsAsync(new OcmGeneral02_ManualVariant(), ManualVariantSource);
         await Assert.That(diagnostics.Single().Id).IsEqualTo("OCMGEN002");
     }
 
     [Test]
-    public async Task ManualVariant_code_fix_uses_opc_variant_factory()
-    {
+    public async Task ManualVariant_code_fix_uses_opc_variant_factory() {
         string fixedSource = await ApplyCodeFixAsync(new OcmGeneral02_ManualVariant(), new OcmGeneral02_ManualVariantCodeFix(), ManualVariantSource);
         await Assert.That(fixedSource).Contains("OpcVariant.FromObject(value)");
         await Assert.That(fixedSource).Contains("using Opc.Classic.Core;");
     }
 
     [Test]
-    public async Task OpcClassic_usage_does_not_report_false_positives()
-    {
+    public async Task OpcClassic_usage_does_not_report_false_positives() {
         DiagnosticAnalyzer[] analyzers =
         [
             new OcmDa01_LegacyServerCreation(),
@@ -137,8 +121,7 @@ public sealed class MigrationAnalyzerTests
             new OcmGeneral02_ManualVariant(),
         ];
 
-        foreach (DiagnosticAnalyzer analyzer in analyzers)
-        {
+        foreach (DiagnosticAnalyzer analyzer in analyzers) {
             ImmutableArray<Diagnostic> diagnostics = await DiagnosticsAsync(analyzer, OpcClassicSource);
             await Assert.That(diagnostics.Length).IsEqualTo(0);
         }
@@ -335,15 +318,13 @@ public sealed class MigrationAnalyzerTests
         }
         """;
 
-    private static async Task<ImmutableArray<Diagnostic>> DiagnosticsAsync(DiagnosticAnalyzer analyzer, string source)
-    {
+    private static async Task<ImmutableArray<Diagnostic>> DiagnosticsAsync(DiagnosticAnalyzer analyzer, string source) {
         CSharpCompilation compilation = CreateCompilation(source);
         CompilationWithAnalyzers compilationWithAnalyzers = compilation.WithAnalyzers(ImmutableArray.Create(analyzer));
         return await compilationWithAnalyzers.GetAnalyzerDiagnosticsAsync();
     }
 
-    private static async Task<string> ApplyCodeFixAsync(DiagnosticAnalyzer analyzer, CodeFixProvider codeFix, string source)
-    {
+    private static async Task<string> ApplyCodeFixAsync(DiagnosticAnalyzer analyzer, CodeFixProvider codeFix, string source) {
         using var workspace = new AdhocWorkspace();
         Project project = workspace
             .AddProject("MigrationAnalyzerCodeFixTest", LanguageNames.CSharp)
@@ -376,16 +357,13 @@ public sealed class MigrationAnalyzerTests
 
     private static CSharpParseOptions ParseOptions() => CSharpParseOptions.Default.WithLanguageVersion(LanguageVersion.Latest);
 
-    private static IEnumerable<MetadataReference> References()
-    {
+    private static IEnumerable<MetadataReference> References() {
         string? trustedPlatformAssemblies = AppContext.GetData("TRUSTED_PLATFORM_ASSEMBLIES") as string;
-        if (string.IsNullOrEmpty(trustedPlatformAssemblies))
-        {
+        if (string.IsNullOrEmpty(trustedPlatformAssemblies)) {
             yield break;
         }
 
-        foreach (string path in trustedPlatformAssemblies.Split(Path.PathSeparator))
-        {
+        foreach (string path in trustedPlatformAssemblies.Split(Path.PathSeparator)) {
             yield return MetadataReference.CreateFromFile(path);
         }
     }

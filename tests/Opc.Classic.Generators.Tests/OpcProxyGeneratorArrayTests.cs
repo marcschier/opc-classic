@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -15,8 +15,7 @@ using TUnit.Core;
 
 namespace Opc.Classic.Generators.Tests;
 
-public sealed class OpcProxyGeneratorArrayTests
-{
+public sealed class OpcProxyGeneratorArrayTests {
     private const string SampleSource = """
         using Opc.Classic;
         using Opc.Classic.Da;
@@ -40,8 +39,7 @@ public sealed class OpcProxyGeneratorArrayTests
         """;
 
     [Test]
-    public async Task GetHandlesAsync_decodes_int32_conformant_array()
-    {
+    public async Task GetHandlesAsync_decodes_int32_conformant_array() {
         string method = GeneratedMethodSection("GetHandlesAsync");
 
         await Assert.That(method).Contains("var __opcResponseValue0Count = (int)__opcReader.ReadUInt32();");
@@ -52,8 +50,7 @@ public sealed class OpcProxyGeneratorArrayTests
     }
 
     [Test]
-    public async Task WriteIntArrayAsync_encodes_int32_conformant_array()
-    {
+    public async Task WriteIntArrayAsync_encodes_int32_conformant_array() {
         string method = GeneratedMethodSection("WriteIntArrayAsync");
 
         await Assert.That(method).Contains("__opcWriter.WriteUInt32((uint)(handles?.Length ?? 0));");
@@ -63,8 +60,7 @@ public sealed class OpcProxyGeneratorArrayTests
     }
 
     [Test]
-    public async Task ReadAllAsync_encodes_primitive_array_and_decodes_complex_array()
-    {
+    public async Task ReadAllAsync_encodes_primitive_array_and_decodes_complex_array() {
         string method = GeneratedMethodSection("ReadAllAsync");
 
         await Assert.That(method).Contains("__opcWriter.WriteUInt32((uint)(serverHandles?.Length ?? 0));");
@@ -75,8 +71,7 @@ public sealed class OpcProxyGeneratorArrayTests
     }
 
     [Test]
-    public async Task GetItemIDsAsync_decodes_string_conformant_array()
-    {
+    public async Task GetItemIDsAsync_decodes_string_conformant_array() {
         string method = GeneratedMethodSection("GetItemIDsAsync");
 
         await Assert.That(method).Contains("var __opcResponseValue0Count = (int)__opcReader.ReadUInt32();");
@@ -86,8 +81,7 @@ public sealed class OpcProxyGeneratorArrayTests
     }
 
     [Test]
-    public async Task ArrayOfUnregisteredType_falls_back_to_empty_payload_placeholder()
-    {
+    public async Task ArrayOfUnregisteredType_falls_back_to_empty_payload_placeholder() {
         string method = GeneratedMethodSection("MethodReturningArrayOfUnregisteredTypeAsync");
 
         await Assert.That(method).Contains("global::System.ReadOnlyMemory<byte>.Empty");
@@ -95,8 +89,7 @@ public sealed class OpcProxyGeneratorArrayTests
         await Assert.That(method.Contains("ReadUInt32()", StringComparison.Ordinal)).IsFalse();
     }
 
-    private static string GeneratedMethodSection(string methodName)
-    {
+    private static string GeneratedMethodSection(string methodName) {
         GeneratorDriverRunResult result = RunGenerator(SampleSource, out Compilation outputCompilation, out _);
         ThrowIfCompilationHasErrors(outputCompilation);
         return MethodSection(GeneratedProxySource(result), methodName);
@@ -107,22 +100,18 @@ public sealed class OpcProxyGeneratorArrayTests
             .Single(static generated => generated.HintName.EndsWith(".OpcProxy.g.cs", StringComparison.Ordinal))
             .SourceText.ToString();
 
-    private static void ThrowIfCompilationHasErrors(Compilation compilation)
-    {
+    private static void ThrowIfCompilationHasErrors(Compilation compilation) {
         var errors = compilation.GetDiagnostics()
             .Where(static diagnostic => diagnostic.Severity == DiagnosticSeverity.Error)
             .ToArray();
-        if (errors.Length > 0)
-        {
+        if (errors.Length > 0) {
             throw new InvalidOperationException(string.Join(Environment.NewLine, errors.Select(static error => error.ToString())));
         }
     }
 
-    private static string MethodSection(string generated, string methodName)
-    {
+    private static string MethodSection(string generated, string methodName) {
         int methodNameIndex = generated.IndexOf(methodName + "(", StringComparison.Ordinal);
-        if (methodNameIndex < 0)
-        {
+        if (methodNameIndex < 0) {
             throw new InvalidOperationException($"Generated method '{methodName}' was not found.");
         }
 
@@ -134,16 +123,14 @@ public sealed class OpcProxyGeneratorArrayTests
             ? nextMethod
             : generated.IndexOf("\n    }", methodNameIndex, StringComparison.Ordinal);
 
-        if (methodEnd < 0)
-        {
+        if (methodEnd < 0) {
             methodEnd = generated.Length;
         }
 
         return generated.Substring(methodStart, methodEnd - methodStart);
     }
 
-    private static GeneratorDriverRunResult RunGenerator(string source, out Compilation outputCompilation, out ImmutableArray<Diagnostic> driverDiagnostics)
-    {
+    private static GeneratorDriverRunResult RunGenerator(string source, out Compilation outputCompilation, out ImmutableArray<Diagnostic> driverDiagnostics) {
         var compilation = CreateCompilation(source);
         ISourceGenerator[] generators =
         [
@@ -156,8 +143,7 @@ public sealed class OpcProxyGeneratorArrayTests
         return driver.GetRunResult();
     }
 
-    private static CSharpCompilation CreateCompilation(string source)
-    {
+    private static CSharpCompilation CreateCompilation(string source) {
         return CSharpCompilation.Create(
             assemblyName: "OpcProxyGeneratorArrayTestAssembly",
             syntaxTrees: [CSharpSyntaxTree.ParseText(source, ParseOptions())],
@@ -167,13 +153,10 @@ public sealed class OpcProxyGeneratorArrayTests
 
     private static CSharpParseOptions ParseOptions() => CSharpParseOptions.Default.WithLanguageVersion(LanguageVersion.Latest);
 
-    private static IEnumerable<MetadataReference> References()
-    {
+    private static IEnumerable<MetadataReference> References() {
         string? trustedPlatformAssemblies = AppContext.GetData("TRUSTED_PLATFORM_ASSEMBLIES") as string;
-        if (!string.IsNullOrEmpty(trustedPlatformAssemblies))
-        {
-            foreach (var path in trustedPlatformAssemblies.Split(Path.PathSeparator))
-            {
+        if (!string.IsNullOrEmpty(trustedPlatformAssemblies)) {
+            foreach (var path in trustedPlatformAssemblies.Split(Path.PathSeparator)) {
                 yield return MetadataReference.CreateFromFile(path);
             }
         }

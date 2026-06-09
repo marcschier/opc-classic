@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -19,8 +19,7 @@ namespace Opc.Classic.Batch.Dcom;
 
 /// <summary><c>IOPCBatchServer</c> — Batch 1.0 top-level browse/enumeration interface (IID_IOPCBatchServer).</summary>
 [OpcInterface("8BB4ED50-B314-11D3-B3EA-00C04F8ECEAA")]
-public partial interface IOPCBatchServer
-{
+public partial interface IOPCBatchServer {
     /// <summary><c>IOPCBatchServer::GetDelimiter</c> (opnum 3).</summary>
     [OpcMethod(3)]
     Task<string> GetDelimiterAsync(CancellationToken cancellationToken = default);
@@ -32,8 +31,7 @@ public partial interface IOPCBatchServer
 
 /// <summary><c>IOPCBatchServer2</c> — Batch 2.0 filtered batch-summary enumeration interface (IID_IOPCBatchServer2).</summary>
 [OpcInterface("895A78CF-B0C5-11D4-A0B7-000102A980B1")]
-public partial interface IOPCBatchServer2
-{
+public partial interface IOPCBatchServer2 {
     /// <summary><c>IOPCBatchServer2::CreateFilteredEnumerator</c> (opnum 3).</summary>
     [OpcMethod(3)]
     Task<IOpcInterfaceRef> CreateFilteredEnumeratorAsync(Guid riid, OpcBatchSummaryFilter filter, string model, CancellationToken cancellationToken = default);
@@ -41,8 +39,7 @@ public partial interface IOPCBatchServer2
 
 /// <summary><c>IEnumOPCBatchSummary</c> — enumeration of batch summaries (IID_IEnumOPCBatchSummary).</summary>
 [OpcInterface("A8080DA2-E23E-11D2-AFA7-00C04F539421")]
-public partial interface IEnumOPCBatchSummary
-{
+public partial interface IEnumOPCBatchSummary {
     /// <summary><c>IEnumOPCBatchSummary::Next</c> (opnum 3).</summary>
     [OpcMethod(3)]
     Task<OpcBatchSummary[]> NextAsync(int count, CancellationToken cancellationToken = default);
@@ -68,8 +65,7 @@ public partial interface IEnumOPCBatchSummary
 [OpcInterface("A8080DA3-E23E-11D2-AFA7-00C04F539421")]
 [GenerateOpcProxy]
 [OpcGenerateServerDispatch]
-public partial interface IOPCEnumerationSets
-{
+public partial interface IOPCEnumerationSets {
     /// <summary><c>IOPCEnumerationSets::QueryEnumerationSets</c> (opnum 3).</summary>
     [OpcMethod(3)]
     [OpcGenerateMultiOutRecord]

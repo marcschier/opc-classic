@@ -1,10 +1,11 @@
-// SPDX-License-Identifier: MIT
+﻿// SPDX-License-Identifier: MIT
 
 using Opc.Classic.Dcom.Internal;
 using Opc.Classic.Dcom.Rpc;
 using System.Threading;
 
-namespace Opc.Classic.Dcom.Transport; 
+namespace Opc.Classic.Dcom.Transport;
+
 /// <summary>
 /// Transport factory
 /// </summary>

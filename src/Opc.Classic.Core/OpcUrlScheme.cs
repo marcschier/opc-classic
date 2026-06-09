@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -6,8 +6,7 @@
 namespace Opc.Classic;
 
 /// <summary>The OPC Classic URL scheme.</summary>
-public enum OpcUrlScheme
-{
+public enum OpcUrlScheme {
     /// <summary><c>opcda://</c> — OPC Data Access (DA 2.x / 3.0).</summary>
     Da,
     /// <summary><c>opcae://</c> — OPC Alarms &amp; Events.</summary>

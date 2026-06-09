@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -13,8 +13,7 @@ namespace Opc.Classic.Hosting;
 /// Foundation IDL definitions in <c>external\inc\opcda_i.c</c>,
 /// <c>opc_ae_i.c</c>, <c>opchda_i.c</c>, <c>OpcDx_i.c</c>, and <c>opcbc_i.c</c>.
 /// </summary>
-public static class OpcComponentCategories
-{
+public static class OpcComponentCategories {
     /// <summary><c>CATID_OPCDAServer10</c> — OPC Data Access Servers Version 1.0.</summary>
     public static readonly OpcComponentCategory OpcDaServer10 = new(
         Guid.Parse("63D5F430-CFE4-11d1-B2C8-0060083BA1FB"),

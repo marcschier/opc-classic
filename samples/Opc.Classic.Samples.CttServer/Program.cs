@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: MIT
+﻿// SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 
 using Microsoft.Extensions.DependencyInjection;
@@ -10,16 +10,14 @@ using Opc.Classic.Hosting.Windows;
 
 namespace Opc.Classic.Samples.CttServer;
 
-internal static class Program
-{
+internal static class Program {
     private static readonly Guid SampleClsid = new("8F7C1B14-9A6E-4E4D-B5E6-5B7DCC1F2B3A");
     private const string SampleProgId = "Opc.Classic.DaSample.1";
     private const string SampleFriendlyName = "Opc.Classic CTT Sample DA Server";
     private const string SampleAssemblyName = "Opc.Classic.Samples.CttServer";
     private const string SampleTypeName = "Opc.Classic.Samples.CttServer.CttDaServer";
 
-    public static async Task<int> Main(string[] args)
-    {
+    public static async Task<int> Main(string[] args) {
         ArgumentNullException.ThrowIfNull(args);
 
         var registration = new OpcClsidRegistration(
@@ -34,8 +32,7 @@ internal static class Program
             OpcComponentCategories.OpcDaServer30,
         ];
 
-        if (SampleServerRegistrationCommand.TryHandle(args, registration, implementedCategories, out int registrationExitCode))
-        {
+        if (SampleServerRegistrationCommand.TryHandle(args, registration, implementedCategories, out int registrationExitCode)) {
             return registrationExitCode;
         }
 
@@ -55,16 +52,14 @@ internal static class Program
         var builder = Host.CreateApplicationBuilder(args);
 
         builder.Logging.ClearProviders();
-        builder.Logging.AddSimpleConsole(static opt =>
-        {
+        builder.Logging.AddSimpleConsole(static opt => {
             opt.SingleLine = true;
             opt.TimestampFormat = "HH:mm:ss ";
         });
 
         builder.Services.AddClassicServer();
         builder.Services.AddClassicClsidRegistry(builder.Configuration);
-        builder.Services.AddOpcDaServer<CttDaServer>(opt =>
-        {
+        builder.Services.AddOpcDaServer<CttDaServer>(opt => {
             opt.Clsid = SampleClsid;
             opt.ProgId = SampleProgId;
             opt.FriendlyName = SampleFriendlyName;
@@ -74,19 +69,15 @@ internal static class Program
         var host = builder.Build();
 
         uint comClassObjectCookie = 0;
-        if (embedded && OperatingSystem.IsWindows())
-        {
+        if (embedded && OperatingSystem.IsWindows()) {
             comClassObjectCookie = RegisterScmFactory(host.Services);
         }
 
-        try
-        {
+        try {
             await host.RunAsync().ConfigureAwait(false);
         }
-        finally
-        {
-            if (embedded && OperatingSystem.IsWindows() && comClassObjectCookie != 0)
-            {
+        finally {
+            if (embedded && OperatingSystem.IsWindows() && comClassObjectCookie != 0) {
                 ComClassObjectRegistrar.RevokeClassObject(comClassObjectCookie);
                 ComClassObjectRegistrar.Uninitialize();
             }
@@ -96,8 +87,7 @@ internal static class Program
     }
 
     [System.Runtime.Versioning.SupportedOSPlatform("windows")]
-    private static uint RegisterScmFactory(IServiceProvider services)
-    {
+    private static uint RegisterScmFactory(IServiceProvider services) {
         // Resolve the managed server instance from DI, build a CCW factory
         // that hands out an OpcDaServerCcw backed by it, and register the
         // class object with SCM via the ocom-6 callback overload.

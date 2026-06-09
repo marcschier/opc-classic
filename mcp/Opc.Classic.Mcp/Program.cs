@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: MIT
+﻿// SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 
 using System.IO;
@@ -13,8 +13,7 @@ var builder = Host.CreateApplicationBuilder(args);
 
 // All logs go to stderr because stdio MCP transports use stdout for protocol traffic.
 builder.Logging.ClearProviders();
-builder.Logging.AddConsole(static o =>
-{
+builder.Logging.AddConsole(static o => {
     o.LogToStandardErrorThreshold = LogLevel.Trace;
 });
 

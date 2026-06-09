@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -21,8 +21,7 @@ namespace Opc.Classic.Mcp.Capture.Tests;
 ///   - HMAC-MD5 + RC4 + SigningPt2 verifier composition,
 ///   - per-direction sequence counter increments.
 /// </summary>
-public sealed class NtlmPassiveUnwrapperTests
-{
+public sealed class NtlmPassiveUnwrapperTests {
     private const NtlmFlags Flags = NtlmPassiveUnwrapper.DefaultFlags;
     // 16-byte deterministic test session key (NOT random) so failing
     // tests print stable diagnostics. Not a real Windows key.
@@ -33,16 +32,14 @@ public sealed class NtlmPassiveUnwrapperTests
     };
 
     [Test]
-    public async Task Ctor_RejectsWrongSizeSessionKey()
-    {
+    public async Task Ctor_RejectsWrongSizeSessionKey() {
         await Assert.That(() => new NtlmPassiveUnwrapper(new byte[15])).Throws<ArgumentException>();
         await Assert.That(() => new NtlmPassiveUnwrapper(new byte[17])).Throws<ArgumentException>();
         await Assert.That(() => new NtlmPassiveUnwrapper(Array.Empty<byte>())).Throws<ArgumentException>();
     }
 
     [Test]
-    public async Task Ctor_RejectsProtectionLevelBelowIntegrity()
-    {
+    public async Task Ctor_RejectsProtectionLevelBelowIntegrity() {
         await Assert.That(() =>
             new NtlmPassiveUnwrapper(s_testSessionKey, Flags, ProtectionLevel.PROTECTION_LEVEL_NONE))
             .Throws<ArgumentException>();
@@ -55,8 +52,7 @@ public sealed class NtlmPassiveUnwrapperTests
     }
 
     [Test]
-    public async Task Disabled_AlwaysReturnsDisabledStatus_AndLeavesBufferUntouched()
-    {
+    public async Task Disabled_AlwaysReturnsDisabledStatus_AndLeavesBufferUntouched() {
         NtlmPassiveUnwrapper unwrapper = NtlmPassiveUnwrapper.Disabled;
         byte[] stub = [1, 2, 3, 4, 5];
         byte[] copy = (byte[])stub.Clone();
@@ -71,8 +67,7 @@ public sealed class NtlmPassiveUnwrapperTests
     }
 
     [Test]
-    public async Task TryUnwrap_AuthTrailerWrongLength_ReturnsInvalidTrailerLength()
-    {
+    public async Task TryUnwrap_AuthTrailerWrongLength_ReturnsInvalidTrailerLength() {
         using var unwrapper = new NtlmPassiveUnwrapper(s_testSessionKey, Flags);
         byte[] stub = new byte[32];
         byte[] tooShort = new byte[15];
@@ -86,8 +81,7 @@ public sealed class NtlmPassiveUnwrapperTests
     }
 
     [Test]
-    public async Task RoundTrip_ClientToServer_PrivacyMode_DecryptsAndVerifies()
-    {
+    public async Task RoundTrip_ClientToServer_PrivacyMode_DecryptsAndVerifies() {
         // Produce a sealed-and-signed PDU body using the production NTLMv2-mode
         // signing path (Ntlm1 with ExtendedSessionSecurity + KeyExch + Seal).
         (byte[] cipherStub, byte[] trailer) = SealOutgoing(
@@ -106,8 +100,7 @@ public sealed class NtlmPassiveUnwrapperTests
     }
 
     [Test]
-    public async Task RoundTrip_ServerToClient_PrivacyMode_DecryptsAndVerifies()
-    {
+    public async Task RoundTrip_ServerToClient_PrivacyMode_DecryptsAndVerifies() {
         (byte[] cipherStub, byte[] trailer) = SealOutgoing(
             sessionKey: s_testSessionKey,
             plaintext: BuildPlaintext(48),
@@ -123,8 +116,7 @@ public sealed class NtlmPassiveUnwrapperTests
     }
 
     [Test]
-    public async Task RoundTrip_TwoPdusInSequence_BothDecryptAndCounterAdvancesPerDirection()
-    {
+    public async Task RoundTrip_TwoPdusInSequence_BothDecryptAndCounterAdvancesPerDirection() {
         byte[] plain1 = BuildPlaintext(40);
         byte[] plain2 = BuildPlaintext(72);
         // Use a single Ntlm1 producer so its internal counter advances 0 -> 1 -> 2.
@@ -146,16 +138,14 @@ public sealed class NtlmPassiveUnwrapperTests
     }
 
     [Test]
-    public async Task TryUnwrap_WrongSessionKey_ReturnsSignatureMismatch_DoesNotAdvanceCounter()
-    {
+    public async Task TryUnwrap_WrongSessionKey_ReturnsSignatureMismatch_DoesNotAdvanceCounter() {
         (byte[] cipherStub, byte[] trailer) = SealOutgoing(
             sessionKey: s_testSessionKey,
             plaintext: BuildPlaintext(32),
             isServer: false);
 
         var wrongKey = new byte[16];
-        for (int i = 0; i < 16; i++)
-        {
+        for (int i = 0; i < 16; i++) {
             wrongKey[i] = 0xAA;
         }
 
@@ -170,8 +160,7 @@ public sealed class NtlmPassiveUnwrapperTests
     }
 
     [Test]
-    public async Task TryUnwrap_SkippedPdu_NextUnwrapFailsWithSignatureMismatch_DocumentsCounterDriftLimitation()
-    {
+    public async Task TryUnwrap_SkippedPdu_NextUnwrapFailsWithSignatureMismatch_DocumentsCounterDriftLimitation() {
         // Producer emits 3 PDUs with counters 0, 1, 2.
 #pragma warning disable CS0618
         var producer = new Ntlm1(Flags, (byte[])s_testSessionKey.Clone(), isServer: false);
@@ -190,8 +179,7 @@ public sealed class NtlmPassiveUnwrapperTests
     }
 
     [Test]
-    public async Task TryUnwrap_AfterDispose_ThrowsObjectDisposedException()
-    {
+    public async Task TryUnwrap_AfterDispose_ThrowsObjectDisposedException() {
         var unwrapper = new NtlmPassiveUnwrapper(s_testSessionKey, Flags);
         unwrapper.Dispose();
         await Assert.That(() => unwrapper.TryUnwrap(
@@ -201,8 +189,7 @@ public sealed class NtlmPassiveUnwrapperTests
     }
 
     [Test]
-    public async Task Dispose_IsIdempotent()
-    {
+    public async Task Dispose_IsIdempotent() {
         var unwrapper = new NtlmPassiveUnwrapper(s_testSessionKey, Flags);
         unwrapper.Dispose();
         unwrapper.Dispose();
@@ -214,8 +201,7 @@ public sealed class NtlmPassiveUnwrapperTests
     }
 
     [Test]
-    public async Task Disabled_DisposeIsNoOp()
-    {
+    public async Task Disabled_DisposeIsNoOp() {
         NtlmPassiveUnwrapper.Disabled.Dispose();
         // The singleton must remain usable after dispose (we never actually
         // dispose its keys — they are all-zero stubs anyway).
@@ -224,11 +210,9 @@ public sealed class NtlmPassiveUnwrapperTests
         await Assert.That(result.Status).IsEqualTo(NtlmUnwrapStatus.Disabled);
     }
 
-    private static byte[] BuildPlaintext(int length)
-    {
+    private static byte[] BuildPlaintext(int length) {
         var data = new byte[length];
-        for (int i = 0; i < length; i++)
-        {
+        for (int i = 0; i < length; i++) {
             data[i] = (byte)(i * 7 + 3);
         }
         return data;
@@ -239,8 +223,7 @@ public sealed class NtlmPassiveUnwrapperTests
     /// (starting at counter 0) and returns (ciphertext, auth-trailer).
     /// </summary>
     private static (byte[] CipherStub, byte[] Trailer) SealOutgoing(
-        byte[] sessionKey, byte[] plaintext, bool isServer)
-    {
+        byte[] sessionKey, byte[] plaintext, bool isServer) {
 #pragma warning disable CS0618 // Ntlm1 [Obsolete] is intentional in this passive-unwrap test
         var producer = new Ntlm1(Flags, (byte[])sessionKey.Clone(), isServer);
 #pragma warning restore CS0618

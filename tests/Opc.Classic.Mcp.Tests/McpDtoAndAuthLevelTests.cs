@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -13,11 +13,9 @@ using TUnit.Core;
 
 namespace Opc.Classic.Mcp.Tests;
 
-public sealed class McpDtoAndAuthLevelTests
-{
+public sealed class McpDtoAndAuthLevelTests {
     [Test]
-    public async Task OpcHdaWriteValueDto_Construction_and_equality_preserve_values()
-    {
+    public async Task OpcHdaWriteValueDto_Construction_and_equality_preserve_values() {
         DateTimeOffset timestamp = DateTimeOffset.Parse("2026-06-07T19:15:30.1234567+00:00", CultureInfo.InvariantCulture);
         var dto = new OpcHdaWriteValueDto(17, timestamp, 42.25d, 192);
         var same = new OpcHdaWriteValueDto(17, timestamp, 42.25d, 192);
@@ -32,8 +30,7 @@ public sealed class McpDtoAndAuthLevelTests
     }
 
     [Test]
-    public async Task OpcHdaWriteAnnotationDto_Construction_and_equality_preserve_values()
-    {
+    public async Task OpcHdaWriteAnnotationDto_Construction_and_equality_preserve_values() {
         DateTimeOffset timestamp = DateTimeOffset.Parse("2026-06-07T20:00:00+00:00", CultureInfo.InvariantCulture);
         DateTimeOffset annotationTime = DateTimeOffset.Parse("2026-06-07T20:01:02+00:00", CultureInfo.InvariantCulture);
         var dto = new OpcHdaWriteAnnotationDto(22, timestamp, "verified by shift lead", "DOMAIN\\operator", annotationTime);
@@ -50,8 +47,7 @@ public sealed class McpDtoAndAuthLevelTests
     }
 
     [Test]
-    public async Task CaptureInterfaceDto_Construction_and_equality_preserve_values()
-    {
+    public async Task CaptureInterfaceDto_Construction_and_equality_preserve_values() {
         string[] addresses = ["127.0.0.1", "::1"];
         var dto = new CaptureInterfaceDto(
             "\\Device\\NPF_Loopback",
@@ -98,24 +94,21 @@ public sealed class McpDtoAndAuthLevelTests
     [Arguments("4", OpcProtectionLevel.Packet)]
     [Arguments("5", OpcProtectionLevel.Integrity)]
     [Arguments("6", OpcProtectionLevel.Privacy)]
-    public async Task OpcMcpAuthLevel_ParseOrDefault_Maps_supported_values(string value, OpcProtectionLevel expected)
-    {
+    public async Task OpcMcpAuthLevel_ParseOrDefault_Maps_supported_values(string value, OpcProtectionLevel expected) {
         OpcProtectionLevel actual = InvokeAuthLevelParseOrDefault(value);
 
         await Assert.That(actual).IsEqualTo(expected);
     }
 
     [Test]
-    public async Task OpcMcpAuthLevel_ParseOrDefault_Defaults_blank_values_to_integrity()
-    {
+    public async Task OpcMcpAuthLevel_ParseOrDefault_Defaults_blank_values_to_integrity() {
         await Assert.That(InvokeAuthLevelParseOrDefault(null)).IsEqualTo(OpcProtectionLevel.Integrity);
         await Assert.That(InvokeAuthLevelParseOrDefault(string.Empty)).IsEqualTo(OpcProtectionLevel.Integrity);
         await Assert.That(InvokeAuthLevelParseOrDefault("   ")).IsEqualTo(OpcProtectionLevel.Integrity);
     }
 
     [Test]
-    public async Task OpcMcpAuthLevel_IsSpecified_Returns_false_only_for_null_or_whitespace()
-    {
+    public async Task OpcMcpAuthLevel_IsSpecified_Returns_false_only_for_null_or_whitespace() {
         await Assert.That(InvokeAuthLevelIsSpecified(null)).IsFalse();
         await Assert.That(InvokeAuthLevelIsSpecified(string.Empty)).IsFalse();
         await Assert.That(InvokeAuthLevelIsSpecified(" \t ")).IsFalse();
@@ -123,8 +116,7 @@ public sealed class McpDtoAndAuthLevelTests
     }
 
     [Test]
-    public async Task OpcMcpAuthLevel_ParseOrDefault_Unsupported_value_throws_argument_exception()
-    {
+    public async Task OpcMcpAuthLevel_ParseOrDefault_Unsupported_value_throws_argument_exception() {
         await Assert.That(() => InvokeAuthLevelParseOrDefault("signed-only")).Throws<ArgumentException>();
     }
 
@@ -134,16 +126,13 @@ public sealed class McpDtoAndAuthLevelTests
     private static bool InvokeAuthLevelIsSpecified(string? authLevel) =>
         InvokeStatic<bool>("OpcMcpAuthLevel", "IsSpecified", authLevel);
 
-    private static T InvokeStatic<T>(string typeName, string methodName, params object?[] args)
-    {
+    private static T InvokeStatic<T>(string typeName, string methodName, params object?[] args) {
         Type type = typeof(CaptureTools).Assembly.GetType("Opc.Classic.Mcp.Tools." + typeName, throwOnError: true)!;
         MethodInfo method = type.GetMethod(methodName, BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic)!;
-        try
-        {
+        try {
             return (T)method.Invoke(null, args)!;
         }
-        catch (TargetInvocationException ex) when (ex.InnerException is not null)
-        {
+        catch (TargetInvocationException ex) when (ex.InnerException is not null) {
             ExceptionDispatchInfo.Capture(ex.InnerException).Throw();
             throw;
         }

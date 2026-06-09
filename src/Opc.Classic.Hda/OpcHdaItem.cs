@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -12,8 +12,7 @@ namespace Opc.Classic.Hda;
 /// values for one historical item, optionally aggregated. Returned by
 /// <c>IOPCHDA_SyncRead</c> and friends.
 /// </summary>
-public sealed record OpcHdaItem
-{
+public sealed record OpcHdaItem {
     /// <summary>Constructor — validates the three parallel arrays have the same length.</summary>
     /// <param name="clientHandle">Client correlation handle.</param>
     /// <param name="aggregateHandle">Aggregate ID (0 = no aggregate applied).</param>
@@ -25,13 +24,11 @@ public sealed record OpcHdaItem
         int aggregateHandle,
         DateTimeOffset[] timestamps,
         uint[] qualities,
-        OpcVariant[] values)
-    {
+        OpcVariant[] values) {
         ArgumentNullException.ThrowIfNull(timestamps);
         ArgumentNullException.ThrowIfNull(qualities);
         ArgumentNullException.ThrowIfNull(values);
-        if (timestamps.Length != qualities.Length || qualities.Length != values.Length)
-        {
+        if (timestamps.Length != qualities.Length || qualities.Length != values.Length) {
             throw new ArgumentException(
                 $"Parallel arrays must have equal length: timestamps={timestamps.Length}, qualities={qualities.Length}, values={values.Length}.",
                 nameof(values));

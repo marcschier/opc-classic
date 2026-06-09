@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -33,8 +33,7 @@ namespace Opc.Classic.Da;
 ///   <item><description><strong>5000+ — Vendor-specific.</strong></description></item>
 /// </list>
 /// </remarks>
-public readonly record struct PropertyID(int Code, string? Name = null)
-{
+public readonly record struct PropertyID(int Code, string? Name = null) {
     /// <inheritdoc />
     public override string ToString() =>
         Name is null ? Code.ToString(System.Globalization.CultureInfo.InvariantCulture)

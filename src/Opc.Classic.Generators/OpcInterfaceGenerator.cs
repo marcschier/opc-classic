@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -38,8 +38,7 @@ namespace Opc.Classic.Generators;
 /// strongly-typed <c>InterfaceId</c> static property.
 /// </summary>
 [Generator(LanguageNames.CSharp)]
-public sealed class OpcInterfaceGenerator : IIncrementalGenerator
-{
+public sealed class OpcInterfaceGenerator : IIncrementalGenerator {
     private const string AttributeNamespace = "Opc.Classic.Generators";
     private const string AttributeName = "OpcInterfaceAttribute";
     private const string AttributeFullName = AttributeNamespace + "." + AttributeName;
@@ -128,8 +127,7 @@ namespace Opc.Classic.Generators
         helpLinkUri: DiagnosticsHelpLinkUri);
 
     /// <inheritdoc />
-    public void Initialize(IncrementalGeneratorInitializationContext context)
-    {
+    public void Initialize(IncrementalGeneratorInitializationContext context) {
         context.RegisterPostInitializationOutput(ctx =>
             ctx.AddSource(
                 hintName: "OpcInterfaceAttribute.g.cs",
@@ -143,15 +141,12 @@ namespace Opc.Classic.Generators
         context.RegisterSourceOutput(candidates, Emit);
     }
 
-    private static InterfaceModel? Transform(GeneratorAttributeSyntaxContext ctx)
-    {
-        if (ctx.TargetSymbol is not INamedTypeSymbol symbol)
-        {
+    private static InterfaceModel? Transform(GeneratorAttributeSyntaxContext ctx) {
+        if (ctx.TargetSymbol is not INamedTypeSymbol symbol) {
             return null;
         }
 
-        if (ctx.TargetNode is not InterfaceDeclarationSyntax syntax)
-        {
+        if (ctx.TargetNode is not InterfaceDeclarationSyntax syntax) {
             return null;
         }
 
@@ -161,10 +156,8 @@ namespace Opc.Classic.Generators
             : null;
 
         bool isPartial = false;
-        foreach (var modifier in syntax.Modifiers)
-        {
-            if (modifier.IsKind(Microsoft.CodeAnalysis.CSharp.SyntaxKind.PartialKeyword))
-            {
+        foreach (var modifier in syntax.Modifiers) {
+            if (modifier.IsKind(Microsoft.CodeAnalysis.CSharp.SyntaxKind.PartialKeyword)) {
                 isPartial = true;
                 break;
             }
@@ -185,28 +178,22 @@ namespace Opc.Classic.Generators
             methods: methods);
     }
 
-    private static System.Collections.Immutable.ImmutableArray<OpcMethodInfo> CollectOpcMethods(INamedTypeSymbol interfaceSymbol)
-    {
+    private static System.Collections.Immutable.ImmutableArray<OpcMethodInfo> CollectOpcMethods(INamedTypeSymbol interfaceSymbol) {
         var builder = System.Collections.Immutable.ImmutableArray.CreateBuilder<OpcMethodInfo>();
-        foreach (var member in interfaceSymbol.GetMembers())
-        {
-            if (member is not IMethodSymbol method)
-            {
+        foreach (var member in interfaceSymbol.GetMembers()) {
+            if (member is not IMethodSymbol method) {
                 continue;
             }
 
-            foreach (var attr in method.GetAttributes())
-            {
+            foreach (var attr in method.GetAttributes()) {
                 string? fullName = attr.AttributeClass?.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat)
                     ?.Replace("global::", string.Empty);
-                if (!string.Equals(fullName, MethodAttributeFullName, System.StringComparison.Ordinal))
-                {
+                if (!string.Equals(fullName, MethodAttributeFullName, System.StringComparison.Ordinal)) {
                     continue;
                 }
 
                 if (attr.ConstructorArguments.Length != 1 ||
-                    attr.ConstructorArguments[0].Value is not int opnum)
-                {
+                    attr.ConstructorArguments[0].Value is not int opnum) {
                     continue;
                 }
 
@@ -217,23 +204,19 @@ namespace Opc.Classic.Generators
         return builder.ToImmutable();
     }
 
-    private static void Emit(SourceProductionContext spc, InterfaceModel? maybeModel)
-    {
-        if (maybeModel is null)
-        {
+    private static void Emit(SourceProductionContext spc, InterfaceModel? maybeModel) {
+        if (maybeModel is null) {
             return;
         }
 
         InterfaceModel model = maybeModel;
 
-        if (!model.IsPartial)
-        {
+        if (!model.IsPartial) {
             spc.ReportDiagnostic(Diagnostic.Create(NotPartialDescriptor, model.Location, model.FullyQualifiedName));
             return;
         }
 
-        if (string.IsNullOrWhiteSpace(model.Iid) || !System.Guid.TryParse(model.Iid, out _))
-        {
+        if (string.IsNullOrWhiteSpace(model.Iid) || !System.Guid.TryParse(model.Iid, out _)) {
             spc.ReportDiagnostic(Diagnostic.Create(InvalidGuidDescriptor, model.Location, model.FullyQualifiedName, model.Iid ?? "<null>"));
             return;
         }
@@ -244,8 +227,7 @@ namespace Opc.Classic.Generators
         sb.AppendLine();
 
         bool hasNamespace = !string.IsNullOrEmpty(model.Namespace);
-        if (hasNamespace)
-        {
+        if (hasNamespace) {
             sb.Append("namespace ").Append(model.Namespace).AppendLine();
             sb.AppendLine("{");
         }
@@ -258,15 +240,13 @@ namespace Opc.Classic.Generators
           .Append(model.Iid)
           .AppendLine("\");");
 
-        if (!EmitOpnums(spc, model, sb))
-        {
+        if (!EmitOpnums(spc, model, sb)) {
             return;
         }
 
         sb.AppendLine("    }");
 
-        if (hasNamespace)
-        {
+        if (hasNamespace) {
             sb.AppendLine("}");
         }
 
@@ -274,19 +254,15 @@ namespace Opc.Classic.Generators
         spc.AddSource(hint, SourceText.From(sb.ToString(), Encoding.UTF8));
     }
 
-    private static bool EmitOpnums(SourceProductionContext spc, InterfaceModel model, StringBuilder sb)
-    {
-        if (model.Methods.IsDefaultOrEmpty)
-        {
+    private static bool EmitOpnums(SourceProductionContext spc, InterfaceModel model, StringBuilder sb) {
+        if (model.Methods.IsDefaultOrEmpty) {
             return true;
         }
 
         // Detect duplicate opnum values — DCE/RPC requires per-interface uniqueness.
         var seen = new System.Collections.Generic.Dictionary<int, string>();
-        foreach (var m in model.Methods)
-        {
-            if (seen.TryGetValue(m.Opnum, out var firstName))
-            {
+        foreach (var m in model.Methods) {
+            if (seen.TryGetValue(m.Opnum, out var firstName)) {
                 spc.ReportDiagnostic(Diagnostic.Create(
                     DuplicateOpnumDescriptor, model.Location,
                     model.FullyQualifiedName, m.Opnum, firstName, m.Name));
@@ -299,26 +275,22 @@ namespace Opc.Classic.Generators
         sb.AppendLine("        /// <summary>DCE/RPC opnums for the methods on this interface.</summary>");
         sb.AppendLine("        public static class Opnums");
         sb.AppendLine("        {");
-        foreach (var m in model.Methods)
-        {
+        foreach (var m in model.Methods) {
             sb.Append("            public const int ").Append(m.Name).Append(" = ").Append(m.Opnum).AppendLine(";");
         }
         sb.AppendLine("        }");
         return true;
     }
 
-    private static string AccessibilityKeyword(Accessibility accessibility) => accessibility switch
-    {
+    private static string AccessibilityKeyword(Accessibility accessibility) => accessibility switch {
         Accessibility.Public => "public",
         Accessibility.Internal => "internal",
         Accessibility.NotApplicable => "internal",
         _ => "internal",
     };
 
-    private sealed class OpcMethodInfo
-    {
-        public OpcMethodInfo(string name, int opnum)
-        {
+    private sealed class OpcMethodInfo {
+        public OpcMethodInfo(string name, int opnum) {
             Name = name;
             Opnum = opnum;
         }
@@ -327,10 +299,8 @@ namespace Opc.Classic.Generators
         public int Opnum { get; }
     }
 
-    private sealed class InterfaceModel
-    {
-        public InterfaceModel(string fullyQualifiedName, string? @namespace, string name, Accessibility accessibility, string? iid, bool isPartial, Location location, System.Collections.Immutable.ImmutableArray<OpcMethodInfo> methods)
-        {
+    private sealed class InterfaceModel {
+        public InterfaceModel(string fullyQualifiedName, string? @namespace, string name, Accessibility accessibility, string? iid, bool isPartial, Location location, System.Collections.Immutable.ImmutableArray<OpcMethodInfo> methods) {
             FullyQualifiedName = fullyQualifiedName;
             Namespace = @namespace;
             Name = name;

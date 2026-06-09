@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -17,8 +17,7 @@ namespace Opc.Classic.Da.Hosting;
 /// + IOPCSyncIO/AsyncIO calls onto this interface; the user's implementation
 /// returns server status, manages groups, and serves item values.
 /// </summary>
-public interface IOpcDaServer : IOPCServer
-{
+public interface IOpcDaServer : IOPCServer {
     /// <summary>Gets the server runtime status snapshot.</summary>
     new Task<OpcServerStatus> GetStatusAsync(CancellationToken cancellationToken = default);
 
@@ -85,8 +84,7 @@ public interface IOpcDaServer : IOPCServer
         out int serverGroupHandle,
         out int revisedUpdateRate,
         out IOpcInterfaceRef group,
-        CancellationToken cancellationToken)
-    {
+        CancellationToken cancellationToken) {
         _ = name;
         _ = active;
         _ = requestedUpdateRate;
@@ -102,15 +100,13 @@ public interface IOpcDaServer : IOPCServer
         return Task.FromException(new NotSupportedException("Override the full IOPCServer.AddGroupAsync signature to return an OPC group interface pointer."));
     }
 
-    Task<IOpcInterfaceRef> IOPCServer.GetGroupByNameAsync(string name, Guid requestedInterfaceId, CancellationToken cancellationToken)
-    {
+    Task<IOpcInterfaceRef> IOPCServer.GetGroupByNameAsync(string name, Guid requestedInterfaceId, CancellationToken cancellationToken) {
         ArgumentException.ThrowIfNullOrWhiteSpace(name);
         cancellationToken.ThrowIfCancellationRequested();
         return Task.FromResult(CreateSyntheticInterfaceRef(requestedInterfaceId, name.GetHashCode(StringComparison.Ordinal)));
     }
 
-    Task<IOpcInterfaceRef> IOPCServer.CreateGroupEnumeratorAsync(int scope, Guid requestedInterfaceId, CancellationToken cancellationToken)
-    {
+    Task<IOpcInterfaceRef> IOPCServer.CreateGroupEnumeratorAsync(int scope, Guid requestedInterfaceId, CancellationToken cancellationToken) {
         _ = scope;
         cancellationToken.ThrowIfCancellationRequested();
         return Task.FromResult(CreateSyntheticInterfaceRef(requestedInterfaceId, 0));

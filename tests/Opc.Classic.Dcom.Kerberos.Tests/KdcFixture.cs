@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -16,8 +16,7 @@ using TUnit.Core.Interfaces;
 
 namespace Opc.Classic.Dcom.Kerberos.Tests;
 
-public sealed class KdcFixture : IAsyncInitializer, IAsyncDisposable
-{
+public sealed class KdcFixture : IAsyncInitializer, IAsyncDisposable {
     public const string RunEnvironmentVariable = "OPC_CLASSIC_RUN_KDC_TESTS";
     public const string RealmName = "OPCCLASSIC.LOCAL";
     public const string TestUserName = "testuser";
@@ -60,16 +59,13 @@ public sealed class KdcFixture : IAsyncInitializer, IAsyncDisposable
 
     public bool IsAvailable => SkipReason is null;
 
-    public async Task InitializeAsync()
-    {
-        if (!string.Equals(Environment.GetEnvironmentVariable(RunEnvironmentVariable), "1", StringComparison.Ordinal))
-        {
+    public async Task InitializeAsync() {
+        if (!string.Equals(Environment.GetEnvironmentVariable(RunEnvironmentVariable), "1", StringComparison.Ordinal)) {
             SkipReason = $"Requires Docker — set {RunEnvironmentVariable}=1 to enable.";
             return;
         }
 
-        if (!IsDockerDaemonAvailable())
-        {
+        if (!IsDockerDaemonAvailable()) {
             SkipReason = $"Requires Docker — set {RunEnvironmentVariable}=1 to enable and start Docker.";
             return;
         }
@@ -108,21 +104,17 @@ public sealed class KdcFixture : IAsyncInitializer, IAsyncDisposable
 
     public IDisposable UseKrb5Config() => new EnvironmentVariableScope("KRB5_CONFIG", Krb5ConfPath);
 
-    public async ValueTask DisposeAsync()
-    {
-        if (_container is not null)
-        {
+    public async ValueTask DisposeAsync() {
+        if (_container is not null) {
             await _container.DisposeAsync().ConfigureAwait(false);
         }
 
-        if (_imageName is not null)
-        {
+        if (_imageName is not null) {
             await RunProcessAsync("docker", ["image", "rm", "-f", _imageName], TimeSpan.FromMinutes(1), CancellationToken.None, throwOnError: false)
                 .ConfigureAwait(false);
         }
 
-        if (_keytabDirectory is not null && Directory.Exists(_keytabDirectory))
-        {
+        if (_keytabDirectory is not null && Directory.Exists(_keytabDirectory)) {
             Directory.Delete(_keytabDirectory, recursive: true);
         }
     }
@@ -145,10 +137,8 @@ public sealed class KdcFixture : IAsyncInitializer, IAsyncDisposable
         "    .opcclassic.local = OPCCLASSIC.LOCAL\n" +
         "    opcclassic.local = OPCCLASSIC.LOCAL\n";
 
-    private async Task<KeyTable> ReadKeytabAsync(string containerPath, string fileName)
-    {
-        if (_container is null || _keytabDirectory is null)
-        {
+    private async Task<KeyTable> ReadKeytabAsync(string containerPath, string fileName) {
+        if (_container is null || _keytabDirectory is null) {
             throw new InvalidOperationException("The KDC fixture is not initialized.");
         }
 
@@ -156,24 +146,20 @@ public sealed class KdcFixture : IAsyncInitializer, IAsyncDisposable
         string hostPath = Path.Combine(_keytabDirectory, fileName);
         await File.WriteAllBytesAsync(hostPath, keytabBytes).ConfigureAwait(false);
 
-        if (fileName.Equals("testuser.keytab", StringComparison.Ordinal))
-        {
+        if (fileName.Equals("testuser.keytab", StringComparison.Ordinal)) {
             TestUserKeytabPath = hostPath;
         }
 
         return new KeyTable(keytabBytes);
     }
 
-    private static string FindKdcDockerfileDirectory()
-    {
+    private static string FindKdcDockerfileDirectory() {
         var directory = new DirectoryInfo(AppContext.BaseDirectory);
-        while (directory is not null && !File.Exists(Path.Combine(directory.FullName, "Opc.Classic.slnx")))
-        {
+        while (directory is not null && !File.Exists(Path.Combine(directory.FullName, "Opc.Classic.slnx"))) {
             directory = directory.Parent;
         }
 
-        if (directory is null)
-        {
+        if (directory is null) {
             throw new DirectoryNotFoundException("Could not locate repository root containing Opc.Classic.slnx.");
         }
 
@@ -183,15 +169,12 @@ public sealed class KdcFixture : IAsyncInitializer, IAsyncDisposable
     private static Task BuildImageAsync(string imageName, string dockerfileDirectory, CancellationToken cancellationToken) =>
         RunProcessAsync("docker", ["build", "-t", imageName, dockerfileDirectory], TimeSpan.FromMinutes(5), cancellationToken);
 
-    private static bool IsDockerDaemonAvailable()
-    {
-        try
-        {
+    private static bool IsDockerDaemonAvailable() {
+        try {
             RunProcessAsync("docker", ["info", "--format", "{{.ServerVersion}}"], TimeSpan.FromSeconds(5), CancellationToken.None).GetAwaiter().GetResult();
             return true;
         }
-        catch
-        {
+        catch {
             return false;
         }
     }
@@ -201,16 +184,13 @@ public sealed class KdcFixture : IAsyncInitializer, IAsyncDisposable
         string[] arguments,
         TimeSpan timeout,
         CancellationToken cancellationToken,
-        bool throwOnError = true)
-    {
+        bool throwOnError = true) {
         using var timeoutCts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
         timeoutCts.CancelAfter(timeout);
 
         var output = new StringBuilder();
-        using var process = new Process
-        {
-            StartInfo = new ProcessStartInfo
-            {
+        using var process = new Process {
+            StartInfo = new ProcessStartInfo {
                 FileName = fileName,
                 RedirectStandardError = true,
                 RedirectStandardOutput = true,
@@ -220,8 +200,7 @@ public sealed class KdcFixture : IAsyncInitializer, IAsyncDisposable
             EnableRaisingEvents = true,
         };
 
-        foreach (string argument in arguments)
-        {
+        foreach (string argument in arguments) {
             process.StartInfo.ArgumentList.Add(argument);
         }
 
@@ -232,63 +211,50 @@ public sealed class KdcFixture : IAsyncInitializer, IAsyncDisposable
         process.BeginOutputReadLine();
         process.BeginErrorReadLine();
 
-        try
-        {
+        try {
             await process.WaitForExitAsync(timeoutCts.Token).ConfigureAwait(false);
         }
-        catch (OperationCanceledException) when (timeoutCts.IsCancellationRequested)
-        {
+        catch (OperationCanceledException) when (timeoutCts.IsCancellationRequested) {
             TryKill(process);
-            if (throwOnError)
-            {
+            if (throwOnError) {
                 throw new TimeoutException($"{fileName} {string.Join(' ', arguments)} timed out after {timeout}.");
             }
 
             return;
         }
 
-        if (throwOnError && process.ExitCode != 0)
-        {
+        if (throwOnError && process.ExitCode != 0) {
             throw new InvalidOperationException($"{fileName} {string.Join(' ', arguments)} failed with exit code {process.ExitCode}: {output}");
         }
     }
 
-    private static void AppendLine(StringBuilder builder, string? value)
-    {
-        if (value is not null)
-        {
+    private static void AppendLine(StringBuilder builder, string? value) {
+        if (value is not null) {
             builder.AppendLine(value);
         }
     }
 
-    private static void TryKill(Process process)
-    {
-        try
-        {
-            if (!process.HasExited)
-            {
+    private static void TryKill(Process process) {
+        try {
+            if (!process.HasExited) {
                 process.Kill(entireProcessTree: true);
             }
         }
-        catch (InvalidOperationException)
-        {
+        catch (InvalidOperationException) {
         }
     }
 
-    private sealed class EnvironmentVariableScope : IDisposable
-    {
+    private sealed class EnvironmentVariableScope : IDisposable {
         private readonly string _name;
         private readonly string? _previousValue;
 
-        public EnvironmentVariableScope(string name, string value)
-        {
+        public EnvironmentVariableScope(string name, string value) {
             _name = name;
             _previousValue = Environment.GetEnvironmentVariable(name);
             Environment.SetEnvironmentVariable(name, value);
         }
 
-        public void Dispose()
-        {
+        public void Dispose() {
             Environment.SetEnvironmentVariable(_name, _previousValue);
         }
     }

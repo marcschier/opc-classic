@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -12,78 +12,61 @@ using TUnit.Core;
 namespace Opc.Classic.Dcom.Tests;
 
 [NotInParallel]
-public sealed class DcomTimingsTests
-{
+public sealed class DcomTimingsTests {
     [Test]
-    public async Task Default_PingPeriod_is_spec_mandated_80_seconds()
-    {
+    public async Task Default_PingPeriod_is_spec_mandated_80_seconds() {
         ResetTimings();
-        try
-        {
+        try {
             await Assert.That(DcomTimings.PingPeriod).IsEqualTo(TimeSpan.FromSeconds(80));
         }
-        finally
-        {
+        finally {
             ResetTimings();
         }
     }
 
     [Test]
-    public async Task Default_ObjectExpiryPeriod_is_two_ping_periods()
-    {
+    public async Task Default_ObjectExpiryPeriod_is_two_ping_periods() {
         ResetTimings();
-        try
-        {
+        try {
             await Assert.That(DcomTimings.ObjectExpiryPeriod).IsEqualTo(TimeSpan.FromSeconds(160));
         }
-        finally
-        {
+        finally {
             ResetTimings();
         }
     }
 
     [Test]
-    public async Task Setting_PingPeriod_to_zero_throws()
-    {
+    public async Task Setting_PingPeriod_to_zero_throws() {
         ResetTimings();
-        try
-        {
-            await Assert.That(() =>
-            {
+        try {
+            await Assert.That(() => {
                 DcomTimings.PingPeriod = TimeSpan.Zero;
             }).Throws<ArgumentOutOfRangeException>();
         }
-        finally
-        {
+        finally {
             ResetTimings();
         }
     }
 
     [Test]
-    public async Task Setting_ObjectExpiryPeriod_below_two_ping_periods_throws()
-    {
+    public async Task Setting_ObjectExpiryPeriod_below_two_ping_periods_throws() {
         ResetTimings();
-        try
-        {
+        try {
             DcomTimings.PingPeriod = TimeSpan.FromSeconds(10);
 
-            await Assert.That(() =>
-            {
+            await Assert.That(() => {
                 DcomTimings.ObjectExpiryPeriod = TimeSpan.FromSeconds(19);
             }).Throws<ArgumentException>();
         }
-        finally
-        {
+        finally {
             ResetTimings();
         }
     }
 
     [Test]
-    public async Task ObjectId_expires_after_configured_ObjectExpiryPeriod_without_ping()
-    {
+    public async Task ObjectId_expires_after_configured_ObjectExpiryPeriod_without_ping() {
         ResetTimings();
-        try
-        {
+        try {
             var timeProvider = new ManualTimeProvider(new DateTimeOffset(2026, 1, 1, 0, 0, 0, TimeSpan.Zero));
             SetTimeProvider(timeProvider);
             DcomTimings.PingPeriod = TimeSpan.FromSeconds(1);
@@ -97,14 +80,12 @@ public sealed class DcomTimingsTests
 
             await Assert.That(HasExpired(oid)).IsTrue();
         }
-        finally
-        {
+        finally {
             ResetTimings();
         }
     }
 
-    private static object CreateObjectId()
-    {
+    private static object CreateObjectId() {
         var objectIdType = typeof(DcomTimings).Assembly.GetType("Opc.Classic.Dcom.Core.ObjectId", throwOnError: true)!;
         var constructor = objectIdType.GetConstructor(
             BindingFlags.Instance | BindingFlags.NonPublic,
@@ -115,30 +96,25 @@ public sealed class DcomTimingsTests
         return constructor.Invoke([new byte[] { 1, 2, 3, 4, 5, 6, 7, 8 }, false]);
     }
 
-    private static bool HasExpired(object objectId)
-    {
+    private static bool HasExpired(object objectId) {
         var method = objectId.GetType().GetMethod("HasExpired", BindingFlags.Instance | BindingFlags.NonPublic)!;
         return (bool)method.Invoke(objectId, null)!;
     }
 
-    private static void SetTimeProvider(TimeProvider timeProvider)
-    {
+    private static void SetTimeProvider(TimeProvider timeProvider) {
         var property = typeof(DcomTimings).GetProperty("TimeProvider", BindingFlags.Static | BindingFlags.NonPublic)!;
         property.SetValue(null, timeProvider);
     }
 
-    private static void ResetTimings()
-    {
+    private static void ResetTimings() {
         var method = typeof(DcomTimings).GetMethod("ResetForTesting", BindingFlags.Static | BindingFlags.NonPublic)!;
         method.Invoke(null, null);
     }
 
-    private sealed class ManualTimeProvider : TimeProvider
-    {
+    private sealed class ManualTimeProvider : TimeProvider {
         private DateTimeOffset _utcNow;
 
-        public ManualTimeProvider(DateTimeOffset utcNow)
-        {
+        public ManualTimeProvider(DateTimeOffset utcNow) {
             _utcNow = utcNow;
         }
 

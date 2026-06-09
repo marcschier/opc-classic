@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -16,8 +16,7 @@ namespace Opc.Classic;
 /// Fields that are spec-specific carry sensible defaults (typically zero) when
 /// inapplicable to the originating server. Use <see cref="Spec"/> to disambiguate.
 /// </remarks>
-public sealed class OpcServerStatus
-{
+public sealed class OpcServerStatus {
     /// <summary>The OPC specification that produced this status.</summary>
     public OpcStatusSpec Spec { get; init; }
 

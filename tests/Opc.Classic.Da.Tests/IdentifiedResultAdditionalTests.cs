@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -10,11 +10,9 @@ using TUnit.Assertions.AssertConditions.Throws;
 
 namespace Opc.Classic.Da.Tests;
 
-public sealed class IdentifiedResultAdditionalTests
-{
+public sealed class IdentifiedResultAdditionalTests {
     [Test]
-    public async Task Constructor_WithItemNameAndPath_PopulatesIdentifierAndDefaults()
-    {
+    public async Task Constructor_WithItemNameAndPath_PopulatesIdentifierAndDefaults() {
         var result = new IdentifiedResult("Area1.Motor.Speed", "PLC1");
 
         await Assert.That(result.ItemName).IsEqualTo("Area1.Motor.Speed");
@@ -26,10 +24,8 @@ public sealed class IdentifiedResultAdditionalTests
     }
 
     [Test]
-    public async Task CopyConstructor_CopiesItemNameAndPathOnly()
-    {
-        var item = new Item("Tank.Level", "LineA")
-        {
+    public async Task CopyConstructor_CopiesItemNameAndPathOnly() {
+        var item = new Item("Tank.Level", "LineA") {
             ClientHandle = 77,
             RequestedDataType = typeof(double),
             DeadbandPercent = 1.25f,
@@ -46,10 +42,8 @@ public sealed class IdentifiedResultAdditionalTests
     }
 
     [Test]
-    public async Task Initializers_PreserveResultIdCodeAndDiagnosticInfo()
-    {
-        var result = new IdentifiedResult("Valve.Command", "Unit1")
-        {
+    public async Task Initializers_PreserveResultIdCodeAndDiagnosticInfo() {
+        var result = new IdentifiedResult("Valve.Command", "Unit1") {
             ClientHandle = 123,
             ResultId = OpcResultId.InvalidHandle,
             DiagnosticInfo = "server handle rejected",
@@ -62,16 +56,13 @@ public sealed class IdentifiedResultAdditionalTests
     }
 
     [Test]
-    public async Task Equality_UsesIdentifierFieldsAndIgnoresResultPayload()
-    {
-        var left = new IdentifiedResult("Item.A", "Path")
-        {
+    public async Task Equality_UsesIdentifierFieldsAndIgnoresResultPayload() {
+        var left = new IdentifiedResult("Item.A", "Path") {
             ClientHandle = 1,
             ResultId = OpcResultId.Ok,
             DiagnosticInfo = "ok",
         };
-        var right = new IdentifiedResult("Item.A", "Path")
-        {
+        var right = new IdentifiedResult("Item.A", "Path") {
             ClientHandle = 999,
             ResultId = OpcResultId.BadRights,
             DiagnosticInfo = "denied",
@@ -86,8 +77,7 @@ public sealed class IdentifiedResultAdditionalTests
     }
 
     [Test]
-    public async Task Constructors_NullIdentifierArguments_ThrowArgumentNullException()
-    {
+    public async Task Constructors_NullIdentifierArguments_ThrowArgumentNullException() {
         await Assert.That(() => new IdentifiedResult(null!))
             .Throws<ArgumentNullException>();
         await Assert.That(() => new IdentifiedResult((ItemIdentifier)null!))

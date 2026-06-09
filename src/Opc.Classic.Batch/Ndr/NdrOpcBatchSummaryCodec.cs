@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -28,13 +28,11 @@ namespace Opc.Classic.Batch.Ndr;
 ///     FILETIME  ftActualEndTime
 /// </code>
 /// </remarks>
-public static class NdrOpcBatchSummaryCodec
-{
+public static class NdrOpcBatchSummaryCodec {
     private const long FileTimeEpochOffsetTicks = 504911232000000000L; // 1601-01-01 UTC in .NET ticks
 
     /// <summary>Encodes a single OPCBATCHSUMMARY in NDR.</summary>
-    public static void Write(ref NdrWriter writer, OpcBatchSummary summary)
-    {
+    public static void Write(ref NdrWriter writer, OpcBatchSummary summary) {
         ArgumentNullException.ThrowIfNull(summary);
 
         writer.WriteUnicodeStringPtr(summary.Id);
@@ -50,8 +48,7 @@ public static class NdrOpcBatchSummaryCodec
     }
 
     /// <summary>Decodes a single OPCBATCHSUMMARY from NDR.</summary>
-    public static OpcBatchSummary Read(ref NdrReader reader)
-    {
+    public static OpcBatchSummary Read(ref NdrReader reader) {
         string? id = reader.ReadUnicodeStringPtr();
         string? description = reader.ReadUnicodeStringPtr();
         string? opcItemId = reader.ReadUnicodeStringPtr();
@@ -79,11 +76,9 @@ public static class NdrOpcBatchSummaryCodec
     private static long ToFileTime(DateTimeOffset value) =>
         value.UtcTicks - FileTimeEpochOffsetTicks;
 
-    private static DateTimeOffset ReadAndDecodeFileTime(ref NdrReader reader, string fieldName)
-    {
+    private static DateTimeOffset ReadAndDecodeFileTime(ref NdrReader reader, string fieldName) {
         long raw = reader.ReadFileTime();
-        if (FileTimeHelper.TryFromFileTime(raw, out DateTimeOffset value))
-        {
+        if (FileTimeHelper.TryFromFileTime(raw, out DateTimeOffset value)) {
             return value;
         }
         throw new InvalidDataException(

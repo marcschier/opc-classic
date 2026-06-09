@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -48,8 +48,7 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable {
     /// <param name="transport">The connected async transport.</param>
     /// <param name="authContext">The authentication context for bind and packet protection.</param>
     public DcomCallChannel(IAsyncTransport transport, IAuthContext authContext)
-        : this(transport, authContext, objectIpid: null, preBindIids: null)
-    {
+        : this(transport, authContext, objectIpid: null, preBindIids: null) {
     }
 
     /// <summary>Initializes a new instance with presentation contexts to include in the first bind.</summary>
@@ -60,8 +59,7 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable {
         IAsyncTransport transport,
         IAuthContext authContext,
         IReadOnlyList<Guid> preBindIids)
-        : this(transport, authContext, objectIpid: null, preBindIids)
-    {
+        : this(transport, authContext, objectIpid: null, preBindIids) {
     }
 
     /// <summary>Initializes a channel that routes calls to a specific DCOM object IPID.</summary>
@@ -69,10 +67,8 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable {
     /// <param name="authContext">The authentication context for bind and packet protection.</param>
     /// <param name="objectIpid">The object IPID to place in request PDUs.</param>
     public DcomCallChannel(IAsyncTransport transport, IAuthContext authContext, Guid objectIpid)
-        : this(transport, authContext, (Guid?)objectIpid, preBindIids: null)
-    {
-        if (objectIpid == Guid.Empty)
-        {
+        : this(transport, authContext, (Guid?)objectIpid, preBindIids: null) {
+        if (objectIpid == Guid.Empty) {
             throw new ArgumentException("Object IPID must not be empty.", nameof(objectIpid));
         }
     }
@@ -87,10 +83,8 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable {
         IAuthContext authContext,
         Guid objectIpid,
         IReadOnlyList<Guid> preBindIids)
-        : this(transport, authContext, (Guid?)objectIpid, preBindIids)
-    {
-        if (objectIpid == Guid.Empty)
-        {
+        : this(transport, authContext, (Guid?)objectIpid, preBindIids) {
+        if (objectIpid == Guid.Empty) {
             throw new ArgumentException("Object IPID must not be empty.", nameof(objectIpid));
         }
     }
@@ -116,14 +110,11 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable {
     /// caller obtains additional IPIDs via DCOM activation with multiple
     /// requested IIDs, then calls this to associate each IID with its IPID.
     /// </summary>
-    public void RegisterInterfaceIpid(Guid interfaceId, Guid ipid)
-    {
-        if (interfaceId == Guid.Empty)
-        {
+    public void RegisterInterfaceIpid(Guid interfaceId, Guid ipid) {
+        if (interfaceId == Guid.Empty) {
             throw new ArgumentException("InterfaceId must not be empty.", nameof(interfaceId));
         }
-        if (ipid == Guid.Empty)
-        {
+        if (ipid == Guid.Empty) {
             throw new ArgumentException("IPID must not be empty.", nameof(ipid));
         }
         _interfaceIpids[interfaceId] = ipid;

@@ -1,8 +1,9 @@
-// SPDX-License-Identifier: MIT
+﻿// SPDX-License-Identifier: MIT
 
 using Opc.Classic.Dcom.Internal;
 
-namespace Opc.Classic.Dcom.Rpc.Ncacn_Np; 
+namespace Opc.Classic.Dcom.Rpc.Ncacn_Np;
+
 /// <summary>
 /// Transport factory
 /// </summary>

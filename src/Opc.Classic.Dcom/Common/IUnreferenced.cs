@@ -1,8 +1,9 @@
-// SPDX-License-Identifier: MIT
+﻿// SPDX-License-Identifier: MIT
 
 using Opc.Classic.Dcom.Core;
 
-namespace Opc.Classic.Dcom.Common; 
+namespace Opc.Classic.Dcom.Common;
+
 /// <summary>
 /// Implement this interface receive notifications for <code><see cref="IComObject"/></code>s when
 /// they get garbage collected. This also means that the actual interface reference on

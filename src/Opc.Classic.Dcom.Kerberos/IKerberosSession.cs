@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -10,8 +10,7 @@ namespace Opc.Classic.Dcom.Kerberos;
 /// <summary>
 /// Kerberos GSS-API per-message protection context.
 /// </summary>
-public interface IKerberosSession
-{
+public interface IKerberosSession {
     /// <summary>
     /// Protects a plaintext message as an RFC 4121 Wrap token.
     /// </summary>

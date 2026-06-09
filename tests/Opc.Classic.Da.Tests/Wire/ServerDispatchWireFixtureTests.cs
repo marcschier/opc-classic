@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -21,8 +21,7 @@ using TUnit.Core;
 
 namespace Opc.Classic.Da.Tests.Wire;
 
-public sealed class ServerDispatchWireFixtureTests
-{
+public sealed class ServerDispatchWireFixtureTests {
     /// <summary>
     /// IConnectionPoint::GetConnectionInterface response: a single GUID
     /// (16 bytes) emitted with no leading referent / max_count. Confirms the
@@ -30,8 +29,7 @@ public sealed class ServerDispatchWireFixtureTests
     /// reads <see cref="NdrReader.ReadGuid"/> directly).
     /// </summary>
     [Test]
-    public async Task ConnectionPoint_GetConnectionInterface_EmitsBareGuid()
-    {
+    public async Task ConnectionPoint_GetConnectionInterface_EmitsBareGuid() {
         var iid = Guid.Parse("39C13A70-011E-11D0-9675-0020AFD8ADB3"); // IID_IOPCDataCallback
         var impl = new StubConnectionPoint { ConnectionIid = iid };
         var dispatcher = new IConnectionPointServerDispatcher(impl);
@@ -46,14 +44,12 @@ public sealed class ServerDispatchWireFixtureTests
         byte[] payload = result.Payload.ToArray();
         await Assert.That(payload.Length).IsEqualTo(16);
         byte[] expected = iid.ToByteArray();
-        for (int i = 0; i < 16; i++)
-        {
+        for (int i = 0; i < 16; i++) {
             await Assert.That(payload[i]).IsEqualTo(expected[i]);
         }
     }
 
-    private sealed class StubConnectionPoint : IConnectionPoint
-    {
+    private sealed class StubConnectionPoint : IConnectionPoint {
         public Guid ConnectionIid { get; set; }
         public int NextCookie { get; set; }
 

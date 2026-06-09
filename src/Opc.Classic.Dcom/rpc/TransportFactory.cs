@@ -1,9 +1,10 @@
-// SPDX-License-Identifier: MIT
+﻿// SPDX-License-Identifier: MIT
 
 using Opc.Classic.Dcom.Internal;
 using SharpCifs.Util.Sharpen;
 
-namespace Opc.Classic.Dcom.Rpc; 
+namespace Opc.Classic.Dcom.Rpc;
+
 /// <summary>
 /// Transport factory
 /// </summary>

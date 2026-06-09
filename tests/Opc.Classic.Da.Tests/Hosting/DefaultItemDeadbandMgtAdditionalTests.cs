@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -12,11 +12,9 @@ using TUnit.Assertions.AssertConditions.Throws;
 
 namespace Opc.Classic.Da.Tests.Hosting;
 
-public sealed class DefaultItemDeadbandMgtAdditionalTests
-{
+public sealed class DefaultItemDeadbandMgtAdditionalTests {
     [Test]
-    public async Task SetItemDeadband_ReturnsNotSupportedForEveryHandleAndAcceptsNullDeadbands()
-    {
+    public async Task SetItemDeadband_ReturnsNotSupportedForEveryHandleAndAcceptsNullDeadbands() {
         var manager = new DefaultItemDeadbandMgt();
 
         int[] errors = await manager.SetItemDeadbandAsync([10, 20, 30], null!, TestContext.Current!.CancellationToken);
@@ -30,8 +28,7 @@ public sealed class DefaultItemDeadbandMgtAdditionalTests
     }
 
     [Test]
-    public async Task GetItemDeadband_ReturnsZeroDeadbandsAndNotSetErrors()
-    {
+    public async Task GetItemDeadband_ReturnsZeroDeadbandsAndNotSetErrors() {
         var manager = new DefaultItemDeadbandMgt();
 
         await manager.GetItemDeadbandAsync(
@@ -49,8 +46,7 @@ public sealed class DefaultItemDeadbandMgtAdditionalTests
     }
 
     [Test]
-    public async Task ClearItemDeadband_ReturnsNotSetForEveryHandle()
-    {
+    public async Task ClearItemDeadband_ReturnsNotSetForEveryHandle() {
         var manager = new DefaultItemDeadbandMgt();
 
         int[] errors = await manager.ClearItemDeadbandAsync([5, 6], TestContext.Current!.CancellationToken);
@@ -63,8 +59,7 @@ public sealed class DefaultItemDeadbandMgtAdditionalTests
     }
 
     [Test]
-    public async Task Methods_WithEmptyHandles_ReturnEmptyArrays()
-    {
+    public async Task Methods_WithEmptyHandles_ReturnEmptyArrays() {
         var manager = new DefaultItemDeadbandMgt();
 
         int[] setErrors = await manager.SetItemDeadbandAsync([], [], TestContext.Current!.CancellationToken);
@@ -82,8 +77,7 @@ public sealed class DefaultItemDeadbandMgtAdditionalTests
     }
 
     [Test]
-    public async Task Methods_NullServerHandles_ThrowArgumentNullException()
-    {
+    public async Task Methods_NullServerHandles_ThrowArgumentNullException() {
         var manager = new DefaultItemDeadbandMgt();
 
         await Assert.That(() => manager.SetItemDeadbandAsync(null!, [], TestContext.Current!.CancellationToken))
@@ -95,8 +89,7 @@ public sealed class DefaultItemDeadbandMgtAdditionalTests
     }
 
     [Test]
-    public async Task Methods_CanceledToken_ThrowOperationCanceledException()
-    {
+    public async Task Methods_CanceledToken_ThrowOperationCanceledException() {
         var manager = new DefaultItemDeadbandMgt();
         using var cts = new CancellationTokenSource();
         cts.Cancel();

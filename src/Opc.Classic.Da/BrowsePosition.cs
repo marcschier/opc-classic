@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -18,8 +18,7 @@ namespace Opc.Classic.Da;
 /// means the browse is fully drained — no further calls are needed.
 /// </para>
 /// </remarks>
-public sealed class BrowsePosition
-{
+public sealed class BrowsePosition {
     /// <summary>The server-side continuation point.</summary>
     public string ContinuationPoint { get; init; } = string.Empty;
 

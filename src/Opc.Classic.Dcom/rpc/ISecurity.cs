@@ -1,9 +1,10 @@
-// SPDX-License-Identifier: MIT
+﻿// SPDX-License-Identifier: MIT
 
 using System.IO;
 using Opc.Classic.Dcom.Internal.LegacyNdr;
 
-namespace Opc.Classic.Dcom.Rpc; 
+namespace Opc.Classic.Dcom.Rpc;
+
 /// <summary>
 /// Security interface
 /// </summary>

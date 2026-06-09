@@ -1,9 +1,10 @@
-// SPDX-License-Identifier: MIT
+﻿// SPDX-License-Identifier: MIT
 
 using Opc.Classic.Dcom.Common;
 using Opc.Classic.Dcom.Internal.LegacyNdr;
 
-namespace Opc.Classic.Dcom.Registry; 
+namespace Opc.Classic.Dcom.Registry;
+
 /// <inheritdoc/>
 public class OpenHKU : NdrOp {
 

@@ -1,11 +1,12 @@
-// SPDX-License-Identifier: MIT
+﻿// SPDX-License-Identifier: MIT
 
 using Opc.Classic.Dcom.Internal.LegacyNdr;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Opc.Classic.Dcom.Core; 
+namespace Opc.Classic.Dcom.Core;
+
 /// <summary>
 /// Class representing a Marshalled Interface Pointer. You will never
 /// use the members of this class directly, but always as an implementation

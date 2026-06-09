@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -12,8 +12,7 @@ namespace Opc.Classic.Da;
 /// <c>IOPCItemProperties::GetItemProperties</c> or
 /// <c>IOPCBrowse::GetProperties</c> rows.
 /// </summary>
-public sealed class ItemProperty
-{
+public sealed class ItemProperty {
     /// <summary>The property identifier.</summary>
     public PropertyID PropertyId { get; init; }
 

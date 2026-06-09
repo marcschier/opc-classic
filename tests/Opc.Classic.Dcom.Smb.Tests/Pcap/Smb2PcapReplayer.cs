@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -12,8 +12,7 @@ using Opc.Classic.Dcom.Smb;
 
 namespace Opc.Classic.Dcom.Smb.Tests.Pcap;
 
-public sealed class Smb2PcapReplayer
-{
+public sealed class Smb2PcapReplayer {
     private const int HeaderSize = 64;
     private const int NegotiateClientGuidOffset = HeaderSize + 12;
     private const uint Smb2FlagsServerToRedir = 0x00000001;
@@ -27,8 +26,7 @@ public sealed class Smb2PcapReplayer
 
     public async Task<ReplayResult> ReplayNegotiateAsync(
         string host,
-        CancellationToken cancellationToken = default)
-    {
+        CancellationToken cancellationToken = default) {
         await using var transport = new ReplayTransport(_packets);
         await using var connection = new Smb2Connection(new Smb2ConnectionOptions(host), transport);
         Smb2NegotiateResponse response = await connection.NegotiateAsync(cancellationToken);
@@ -46,8 +44,7 @@ public sealed class Smb2PcapReplayer
         ushort SecurityMode,
         uint Capabilities,
         int MatchedClientPackets,
-        int FedServerPackets)
-    {
+        int FedServerPackets) {
         private const ushort SigningRequiredMask = 0x0002;
         private const uint EncryptionCapabilityMask = 0x00000040;
 
@@ -56,8 +53,7 @@ public sealed class Smb2PcapReplayer
         public bool EncryptionSupported => (Capabilities & EncryptionCapabilityMask) != 0;
     }
 
-    private sealed class ReplayTransport : ISmb2Transport
-    {
+    private sealed class ReplayTransport : ISmb2Transport {
         private readonly IReadOnlyList<PcapFileReader.Smb2Packet> _packets;
         private int _nextPacket;
 
@@ -68,8 +64,7 @@ public sealed class Smb2PcapReplayer
 
         public int FedServerPackets { get; private set; }
 
-        public Task SendAsync(ReadOnlyMemory<byte> packet, CancellationToken cancellationToken)
-        {
+        public Task SendAsync(ReadOnlyMemory<byte> packet, CancellationToken cancellationToken) {
             cancellationToken.ThrowIfCancellationRequested();
             PcapFileReader.Smb2Packet expected = TakeNext(PcapFileReader.PacketDirection.ClientToServer);
             CompareClientPacket(expected.Payload.Span, packet.Span);
@@ -77,8 +72,7 @@ public sealed class Smb2PcapReplayer
             return Task.CompletedTask;
         }
 
-        public Task<ReadOnlyMemory<byte>> ReceiveAsync(CancellationToken cancellationToken)
-        {
+        public Task<ReadOnlyMemory<byte>> ReceiveAsync(CancellationToken cancellationToken) {
             cancellationToken.ThrowIfCancellationRequested();
             PcapFileReader.Smb2Packet packet = TakeNext(PcapFileReader.PacketDirection.ServerToClient);
             FedServerPackets++;
@@ -87,24 +81,19 @@ public sealed class Smb2PcapReplayer
 
         public ValueTask DisposeAsync() => ValueTask.CompletedTask;
 
-        public void AssertConsumed()
-        {
-            if (_nextPacket != _packets.Count)
-            {
+        public void AssertConsumed() {
+            if (_nextPacket != _packets.Count) {
                 throw new InvalidOperationException($"Replay consumed {_nextPacket} of {_packets.Count} SMB2 fixture packets.");
             }
         }
 
-        private PcapFileReader.Smb2Packet TakeNext(PcapFileReader.PacketDirection direction)
-        {
-            if (_nextPacket >= _packets.Count)
-            {
+        private PcapFileReader.Smb2Packet TakeNext(PcapFileReader.PacketDirection direction) {
+            if (_nextPacket >= _packets.Count) {
                 throw new InvalidOperationException($"Replay expected a {direction} packet, but the fixture is exhausted.");
             }
 
             PcapFileReader.Smb2Packet packet = _packets[_nextPacket];
-            if (packet.Direction != direction)
-            {
+            if (packet.Direction != direction) {
                 throw new InvalidOperationException(
                     $"Replay expected a {direction} packet at index {_nextPacket}, but fixture has {packet.Direction}.");
             }
@@ -114,18 +103,14 @@ public sealed class Smb2PcapReplayer
         }
     }
 
-    private static void CompareClientPacket(ReadOnlySpan<byte> expected, ReadOnlySpan<byte> actual)
-    {
-        if (expected.Length != actual.Length)
-        {
+    private static void CompareClientPacket(ReadOnlySpan<byte> expected, ReadOnlySpan<byte> actual) {
+        if (expected.Length != actual.Length) {
             throw new InvalidOperationException(
                 $"Client packet length mismatch: expected {expected.Length} bytes, actual {actual.Length} bytes.");
         }
 
-        for (int offset = 0; offset < expected.Length; offset++)
-        {
-            if (expected[offset] == actual[offset] || ShouldIgnoreClientByte(expected, actual, offset))
-            {
+        for (int offset = 0; offset < expected.Length; offset++) {
+            if (expected[offset] == actual[offset] || ShouldIgnoreClientByte(expected, actual, offset)) {
                 continue;
             }
 
@@ -140,14 +125,12 @@ public sealed class Smb2PcapReplayer
         IsNegotiateRequest(expected) &&
         IsNegotiateRequest(actual);
 
-    private static bool IsNegotiateRequest(ReadOnlySpan<byte> packet)
-    {
+    private static bool IsNegotiateRequest(ReadOnlySpan<byte> packet) {
         if (packet.Length < HeaderSize + 36 ||
             packet[0] != 0xFE ||
             packet[1] != (byte)'S' ||
             packet[2] != (byte)'M' ||
-            packet[3] != (byte)'B')
-        {
+            packet[3] != (byte)'B') {
             return false;
         }
 

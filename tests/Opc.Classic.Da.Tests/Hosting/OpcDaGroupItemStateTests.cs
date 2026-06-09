@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -19,11 +19,9 @@ namespace Opc.Classic.Da.Tests.Hosting;
 /// fields. Default-impl behaviour (return-not-set-for-every-handle) is
 /// preserved when no per-item override has been set.
 /// </summary>
-public sealed class OpcDaGroupItemStateTests
-{
+public sealed class OpcDaGroupItemStateTests {
     [Test]
-    public async Task SetItemDeadband_then_GetItemDeadband_round_trips_through_item_state()
-    {
+    public async Task SetItemDeadband_then_GetItemDeadband_round_trips_through_item_state() {
         OpcDaGroup group = CreateGroup();
         int handle = await AddItem(group, "Tag.A");
         IOPCItemDeadbandMgt mgr = group;
@@ -38,8 +36,7 @@ public sealed class OpcDaGroupItemStateTests
     }
 
     [Test]
-    public async Task SetItemDeadband_with_out_of_range_value_returns_OPC_E_RANGE()
-    {
+    public async Task SetItemDeadband_with_out_of_range_value_returns_OPC_E_RANGE() {
         OpcDaGroup group = CreateGroup();
         int handle = await AddItem(group, "Tag.A");
         IOPCItemDeadbandMgt mgr = group;
@@ -51,8 +48,7 @@ public sealed class OpcDaGroupItemStateTests
     }
 
     [Test]
-    public async Task GetItemDeadband_before_set_returns_OPC_E_DEADBANDNOTSET()
-    {
+    public async Task GetItemDeadband_before_set_returns_OPC_E_DEADBANDNOTSET() {
         OpcDaGroup group = CreateGroup();
         int handle = await AddItem(group, "Tag.A");
         IOPCItemDeadbandMgt mgr = group;
@@ -63,8 +59,7 @@ public sealed class OpcDaGroupItemStateTests
     }
 
     [Test]
-    public async Task ClearItemDeadband_resets_to_null()
-    {
+    public async Task ClearItemDeadband_resets_to_null() {
         OpcDaGroup group = CreateGroup();
         int handle = await AddItem(group, "Tag.A");
         IOPCItemDeadbandMgt mgr = group;
@@ -77,8 +72,7 @@ public sealed class OpcDaGroupItemStateTests
     }
 
     [Test]
-    public async Task SetItemDeadband_for_unknown_handle_returns_OPC_E_INVALIDHANDLE()
-    {
+    public async Task SetItemDeadband_for_unknown_handle_returns_OPC_E_INVALIDHANDLE() {
         OpcDaGroup group = CreateGroup();
         IOPCItemDeadbandMgt mgr = group;
 
@@ -88,8 +82,7 @@ public sealed class OpcDaGroupItemStateTests
     }
 
     [Test]
-    public async Task SetItemSamplingRate_round_trips_through_item_state()
-    {
+    public async Task SetItemSamplingRate_round_trips_through_item_state() {
         OpcDaGroup group = CreateGroup();
         int handle = await AddItem(group, "Tag.A");
         IOPCItemSamplingMgt mgr = group;
@@ -104,8 +97,7 @@ public sealed class OpcDaGroupItemStateTests
     }
 
     [Test]
-    public async Task GetItemSamplingRate_before_set_returns_OPC_E_RATENOTSET()
-    {
+    public async Task GetItemSamplingRate_before_set_returns_OPC_E_RATENOTSET() {
         OpcDaGroup group = CreateGroup();
         int handle = await AddItem(group, "Tag.A");
         IOPCItemSamplingMgt mgr = group;
@@ -116,8 +108,7 @@ public sealed class OpcDaGroupItemStateTests
     }
 
     [Test]
-    public async Task ClearItemSamplingRate_resets_to_null()
-    {
+    public async Task ClearItemSamplingRate_resets_to_null() {
         OpcDaGroup group = CreateGroup();
         int handle = await AddItem(group, "Tag.A");
         IOPCItemSamplingMgt mgr = group;
@@ -130,8 +121,7 @@ public sealed class OpcDaGroupItemStateTests
     }
 
     [Test]
-    public async Task SetItemBufferEnable_round_trips_through_item_state()
-    {
+    public async Task SetItemBufferEnable_round_trips_through_item_state() {
         OpcDaGroup group = CreateGroup();
         int handle = await AddItem(group, "Tag.A");
         IOPCItemSamplingMgt mgr = group;
@@ -144,8 +134,7 @@ public sealed class OpcDaGroupItemStateTests
         await Assert.That(readErrors[0]).IsEqualTo(OpcResultId.Ok.Code);
     }
 
-    private static async Task<int> AddItem(OpcDaGroup group, string itemId)
-    {
+    private static async Task<int> AddItem(OpcDaGroup group, string itemId) {
         var defs = new[] { new OpcItemDef("", itemId, true, 1, null, VarType.VT_I4) };
         await group.AddItemsAsync(defs, out OpcItemResult[] results, out _, TestContext.Current!.CancellationToken);
         return results[0].ServerHandle;

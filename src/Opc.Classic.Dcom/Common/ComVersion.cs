@@ -1,8 +1,9 @@
-// SPDX-License-Identifier: MIT
+﻿// SPDX-License-Identifier: MIT
 
 using System;
 
-namespace Opc.Classic.Dcom.Common; 
+namespace Opc.Classic.Dcom.Common;
+
 /// <summary>
 /// Framework Internal.
 /// This class represents the <code>COM</code> version of the currently

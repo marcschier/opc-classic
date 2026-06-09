@@ -1,10 +1,11 @@
-// SPDX-License-Identifier: MIT
+﻿// SPDX-License-Identifier: MIT
 
 using Opc.Classic.Dcom.Common;
 using Opc.Classic.Dcom.Core;
 using Opc.Classic.Dcom.Automation;
 
-namespace Opc.Classic.Dcom; 
+namespace Opc.Classic.Dcom;
+
 /// <summary>
 /// Factory class for creating COM objects.
 /// Sample Usage:

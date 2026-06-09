@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -17,11 +17,9 @@ using TUnit.Core;
 
 namespace Opc.Classic.Tests.Transport;
 
-public sealed class AsyncTransportTests
-{
+public sealed class AsyncTransportTests {
     [Test]
-    public async Task InMemoryAsyncTransport_round_trips_bytes_via_pipes()
-    {
+    public async Task InMemoryAsyncTransport_round_trips_bytes_via_pipes() {
         await using var transport = new InMemoryAsyncTransport();
         byte[] payload = [0x01, 0x02, 0x03, 0x04];
 
@@ -35,8 +33,7 @@ public sealed class AsyncTransportTests
     }
 
     [Test]
-    public async Task InMemoryAsyncTransport_FlushAsync_advances_outbound_reader()
-    {
+    public async Task InMemoryAsyncTransport_FlushAsync_advances_outbound_reader() {
         await using var transport = new InMemoryAsyncTransport();
         byte[] payload = [0x10, 0x20, 0x30];
 
@@ -53,8 +50,7 @@ public sealed class AsyncTransportTests
     }
 
     [Test]
-    public async Task InMemoryAsyncTransport_DisposeAsync_completes_writers()
-    {
+    public async Task InMemoryAsyncTransport_DisposeAsync_completes_writers() {
         var transport = new InMemoryAsyncTransport();
 
         await transport.DisposeAsync();
@@ -69,8 +65,7 @@ public sealed class AsyncTransportTests
     }
 
     [Test]
-    public async Task IAsyncTransport_RemoteEndpoint_is_set()
-    {
+    public async Task IAsyncTransport_RemoteEndpoint_is_set() {
         await using InMemoryAsyncTransport transport = new();
 
         var endpoint = transport.RemoteEndpoint as IPEndPoint;
@@ -81,8 +76,7 @@ public sealed class AsyncTransportTests
     }
 
     [Test]
-    public async Task IAsyncTransport_contract_is_AOT_clean()
-    {
+    public async Task IAsyncTransport_contract_is_AOT_clean() {
         Type[] contractTypes =
         [
             typeof(IAsyncTransport),
@@ -100,10 +94,8 @@ public sealed class AsyncTransportTests
             .Select(static assemblyName => assemblyName.Name ?? string.Empty)
             .ToArray();
 
-        foreach (Type contractType in contractTypes)
-        {
-            foreach (Type disallowedAttribute in disallowedAttributes)
-            {
+        foreach (Type contractType in contractTypes) {
+            foreach (Type disallowedAttribute in disallowedAttributes) {
                 int attributeCount = contractType.GetCustomAttributes(disallowedAttribute, inherit: false).Length;
                 await Assert.That(attributeCount).IsEqualTo(0);
             }

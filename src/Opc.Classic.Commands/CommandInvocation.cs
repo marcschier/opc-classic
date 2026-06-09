@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -16,8 +16,7 @@ public sealed record CommandInvocation(
     string ServerName,
     CommandState State,
     int Hresult,
-    DateTimeOffset StateTimestamp)
-{
+    DateTimeOffset StateTimestamp) {
     /// <summary>Server identifier associated with the command invocation.</summary>
     public string ServerName { get; init; } = ServerName ?? throw new ArgumentNullException(nameof(ServerName));
 }

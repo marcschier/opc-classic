@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -15,8 +15,7 @@ namespace Opc.Classic.Mcp.Capture;
 /// <c>opcclassic.capture.summarize</c> roll-ups (top IIDs, top opnums,
 /// top fault codes, top IPIDs).
 /// </summary>
-public sealed record class DecodedOpcPdu
-{
+public sealed record class DecodedOpcPdu {
     /// <summary>UTC timestamp of the frame that completed this PDU.</summary>
     public required DateTimeOffset Timestamp { get; init; }
 

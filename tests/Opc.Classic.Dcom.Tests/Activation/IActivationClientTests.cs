@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -12,21 +12,18 @@ using TUnit.Core;
 
 namespace Opc.Classic.Dcom.Tests.Activation;
 
-public sealed class IActivationClientTests
-{
+public sealed class IActivationClientTests {
     private static readonly Guid TestClsid = new("00112233-4455-6677-8899-AABBCCDDEEFF");
     private static readonly Guid IidIUnknown = new("00000000-0000-0000-C000-000000000046");
 
     [Test]
-    public async Task RemoteActivationAsync_serializes_request_and_decodes_response()
-    {
+    public async Task RemoteActivationAsync_serializes_request_and_decodes_response() {
         RemoteActivationRequest? received = null;
         byte[] objRef = { 0x4d, 0x45, 0x4f, 0x57, 0x01, 0x00, 0x00, 0x00 };
         byte[] oxidBindings = CreateDualStringArray();
         var ipid = new Guid("11111111-2222-3333-4444-555555555555");
         var channel = new InMemoryCallChannelBuilder()
-            .Register(OpcGuids.IID_IActivation, 0, (_, _, payload, cancellationToken) =>
-            {
+            .Register(OpcGuids.IID_IActivation, 0, (_, _, payload, cancellationToken) => {
                 cancellationToken.ThrowIfCancellationRequested();
                 received = IActivationCodec.DecodeRemoteActivationRequest(payload.Span);
                 var response = new RemoteActivationResponse(
@@ -35,8 +32,7 @@ public sealed class IActivationClientTests
                     ipid,
                     6,
                     (5, 1),
-                    new[] { new RemoteActivationInterfaceResult(0, objRef) })
-                {
+                    new[] { new RemoteActivationInterfaceResult(0, objRef) }) {
                     OxidBindings = oxidBindings,
                 };
                 return Task.FromResult(new NdrCallResult(0, IActivationCodec.EncodeRemoteActivationResponse(response)));
@@ -70,15 +66,13 @@ public sealed class IActivationClientTests
     }
 
     [Test]
-    public async Task Codec_round_trips_request_fields()
-    {
+    public async Task Codec_round_trips_request_fields() {
         var request = new RemoteActivationRequest(
             TestClsid,
             new[] { IidIUnknown, new Guid("00020400-0000-0000-C000-000000000046") },
             ClientImpLevel: 3,
             Mode: 0,
-            RequestedProtocolSequences: new ushort[] { 7 })
-        {
+            RequestedProtocolSequences: new ushort[] { 7 }) {
             ObjectName = "object-name",
             ObjectStorage = new byte[] { 0x4d, 0x45, 0x4f, 0x57 },
         };
@@ -97,30 +91,25 @@ public sealed class IActivationClientTests
     }
 
     [Test]
-    public async Task RemoteActivationAsync_empty_iid_array_throws()
-    {
+    public async Task RemoteActivationAsync_empty_iid_array_throws() {
         var client = new ActivationClient(new InMemoryCallChannelBuilder().Build());
 
-        await Assert.That(async () =>
-        {
+        await Assert.That(async () => {
             _ = await client.RemoteActivationAsync(TestClsid, new[] { "ncacn_ip_tcp" }, string.Empty, Array.Empty<Guid>());
         }).Throws<ArgumentException>();
     }
 
     [Test]
-    public async Task RemoteActivationAsync_malformed_protocol_sequence_throws()
-    {
+    public async Task RemoteActivationAsync_malformed_protocol_sequence_throws() {
         var client = new ActivationClient(new InMemoryCallChannelBuilder().Build());
 
-        await Assert.That(async () =>
-        {
+        await Assert.That(async () => {
             _ = await client.RemoteActivationAsync(TestClsid, new[] { "ncacn_http" }, string.Empty, new[] { IidIUnknown });
         }).Throws<ArgumentException>();
     }
 
     [Test]
-    public async Task EncodeRemoteActivationRequest_known_input_matches_wire_layout()
-    {
+    public async Task EncodeRemoteActivationRequest_known_input_matches_wire_layout() {
         var request = new RemoteActivationRequest(
             TestClsid,
             new[] { IidIUnknown },
@@ -145,8 +134,7 @@ public sealed class IActivationClientTests
             "0700");
     }
 
-    private static byte[] CreateDualStringArray()
-    {
+    private static byte[] CreateDualStringArray() {
         return new byte[]
         {
             0x02, 0x00,

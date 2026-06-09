@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -20,8 +20,7 @@ namespace Opc.Classic;
 /// Values sourced from <c>external/inc/opcae_er.h</c>.
 /// </para>
 /// </remarks>
-public static class OpcAeResultId
-{
+public static class OpcAeResultId {
     /// <summary><c>OPC_S_ALREADYACKED</c> (0x00040200) — condition was already acknowledged.</summary>
     public static OpcResultId AlreadyAcked { get; } = new(0x00040200, "OPC_S_ALREADYACKED");
 

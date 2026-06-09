@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -18,36 +18,30 @@ using TUnit.Core;
 
 namespace Opc.Classic.Mcp.Capture.Tests;
 
-public sealed class OfflinePcapReplayTests
-{
+public sealed class OfflinePcapReplayTests {
     private const int EthernetLinkType = 1;
     private static readonly Guid s_interfaceId = Guid.Parse("22222222-3333-4444-5555-666666666666");
     private static readonly DateTimeOffset s_timestamp = new(2026, 6, 7, 12, 34, 56, TimeSpan.Zero);
 
     [Test, NotInParallel, Category("Integration")]
-    public async Task ReadAllAsync_OfflinePcapFile_ReplaysAndDecodesDceRpcBindFrame()
-    {
+    public async Task ReadAllAsync_OfflinePcapFile_ReplaysAndDecodesDceRpcBindFrame() {
         string directory = CreateArtifactDirectory();
-        try
-        {
+        try {
             byte[] frame = NewTcpFrame(NewBindPayload(callId: 42));
             string pcapPath = Path.Combine(directory, "capture.pcap");
             WritePcapFile(pcapPath, s_timestamp, frame);
             var source = new PcapCaptureSource(directory);
 
             List<CapturedPacket> packets;
-            try
-            {
+            try {
                 packets = await source.ReadAllAsync(null, TestContext.Current!.CancellationToken).ToListAsync();
             }
-            catch (Exception ex) when (IsNativePcapUnavailable(ex))
-            {
+            catch (Exception ex) when (IsNativePcapUnavailable(ex)) {
                 string reason = $"Offline pcap replay requires native libpcap/Npcap: {ex.GetType().Name}: {ex.Message}";
                 await Assert.That(reason).IsNotEqualTo(string.Empty);
                 return;
             }
-            finally
-            {
+            finally {
                 await source.DisposeAsync();
             }
 
@@ -70,16 +64,13 @@ public sealed class OfflinePcapReplayTests
             await Assert.That(decoded[0].ContextList[0].MajorVersion).IsEqualTo(1);
             await Assert.That(decoded[0].ContextList[0].MinorVersion).IsEqualTo(0);
         }
-        finally
-        {
+        finally {
             DeleteIfExists(directory);
         }
     }
 
-    private static byte[] NewBindPayload(int callId)
-    {
-        var pdu = new BindPdu
-        {
+    private static byte[] NewBindPayload(int callId) {
+        var pdu = new BindPdu {
             CallId = callId,
             AssociationGroupId = 0,
             MaxTransmitFragment = ConnectionOrientedPdu.MUST_RECEIVE_FRAGMENT_SIZE,
@@ -95,8 +86,7 @@ public sealed class OfflinePcapReplayTests
         return PduCodec.EncodePdu(pdu, ConnectionOrientedPdu.MUST_RECEIVE_FRAGMENT_SIZE);
     }
 
-    private static byte[] NewTcpFrame(byte[] tcpPayload)
-    {
+    private static byte[] NewTcpFrame(byte[] tcpPayload) {
         byte[] frame = new byte[14 + 20 + 20 + tcpPayload.Length];
 
         frame[0] = 0x00;
@@ -140,8 +130,7 @@ public sealed class OfflinePcapReplayTests
         return frame;
     }
 
-    private static void WritePcapFile(string path, DateTimeOffset timestamp, byte[] frame)
-    {
+    private static void WritePcapFile(string path, DateTimeOffset timestamp, byte[] frame) {
         using var stream = File.Open(path, FileMode.Create, FileAccess.Write, FileShare.Read);
         Span<byte> header = stackalloc byte[24];
         BinaryPrimitives.WriteUInt32LittleEndian(header[..4], 0xA1B2C3D4);
@@ -159,17 +148,13 @@ public sealed class OfflinePcapReplayTests
         stream.Write(frame);
     }
 
-    private static bool IsNativePcapUnavailable(Exception exception)
-    {
-        for (Exception? current = exception; current is not null; current = current.InnerException)
-        {
-            if (current is DllNotFoundException or TypeInitializationException)
-            {
+    private static bool IsNativePcapUnavailable(Exception exception) {
+        for (Exception? current = exception; current is not null; current = current.InnerException) {
+            if (current is DllNotFoundException or TypeInitializationException) {
                 return true;
             }
 
-            if (current is PcapException && IsNativePcapFailureMessage(current.Message))
-            {
+            if (current is PcapException && IsNativePcapFailureMessage(current.Message)) {
                 return true;
             }
         }
@@ -182,8 +167,7 @@ public sealed class OfflinePcapReplayTests
         || message.Contains("Npcap", StringComparison.OrdinalIgnoreCase)
         || message.Contains("wpcap", StringComparison.OrdinalIgnoreCase);
 
-    private static string CreateArtifactDirectory()
-    {
+    private static string CreateArtifactDirectory() {
         string path = Path.Combine(
             AppContext.BaseDirectory,
             "OfflinePcapReplayTests-" + Guid.NewGuid().ToString("N"));
@@ -191,10 +175,8 @@ public sealed class OfflinePcapReplayTests
         return path;
     }
 
-    private static void DeleteIfExists(string path)
-    {
-        if (Directory.Exists(path))
-        {
+    private static void DeleteIfExists(string path) {
+        if (Directory.Exists(path)) {
             Directory.Delete(path, recursive: true);
         }
     }

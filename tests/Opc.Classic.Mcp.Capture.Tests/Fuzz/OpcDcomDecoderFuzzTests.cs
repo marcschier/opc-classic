@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -18,8 +18,7 @@ using TUnit.Core;
 
 namespace Opc.Classic.Mcp.Capture.Tests.Fuzz;
 
-public sealed class OpcDcomDecoderFuzzTests
-{
+public sealed class OpcDcomDecoderFuzzTests {
     private const int NullLinkType = 0;
     private const int EthernetLinkType = 1;
     private const string Surface = "OpcDcomDecoder";
@@ -35,15 +34,12 @@ public sealed class OpcDcomDecoderFuzzTests
     ];
 
     [Test, Category("Fuzz")]
-    public async Task OpcDcomDecoder_DecodeAll_RandomCapturedPacket_DoesNotCrash()
-    {
+    public async Task OpcDcomDecoder_DecodeAll_RandomCapturedPacket_DoesNotCrash() {
         int sampled = 0;
         FuzzFinding? finding = null;
 
-        FuzzHarness.BytesEdgeWeighted.Sample(bytes =>
-        {
-            if (finding is not null)
-            {
+        FuzzHarness.BytesEdgeWeighted.Sample(bytes => {
+            if (finding is not null) {
                 return;
             }
 
@@ -57,8 +53,7 @@ public sealed class OpcDcomDecoderFuzzTests
             finding = TryAssertDecoderDoesNotCrash(bytes, _ => Decode(packet), nameof(OpcDcomDecoder_DecodeAll_RandomCapturedPacket_DoesNotCrash));
         }, iter: FuzzHarness.Iterations, threads: 1);
 
-        if (finding is not null)
-        {
+        if (finding is not null) {
             SaveCorpusAndSkip(finding.Value.Input, finding.Value.Scenario, finding.Value.Exception);
         }
 
@@ -66,22 +61,18 @@ public sealed class OpcDcomDecoderFuzzTests
     }
 
     [Test, Category("Fuzz")]
-    public async Task OpcDcomDecoder_DecodeAll_TruncatedEthernetFrame_BoundedOrRejected()
-    {
+    public async Task OpcDcomDecoder_DecodeAll_TruncatedEthernetFrame_BoundedOrRejected() {
         byte[] frame = NewTcpFrame(NewBindPayload(callId: 42));
         int checkedFrames = 0;
 
-        for (int length = 1; length <= 60; length++)
-        {
+        for (int length = 1; length <= 60; length++) {
             byte[] truncated = frame[..length];
             AssertDecoderDoesNotCrash(
                 truncated,
                 static input => Decode(NewPacket(input.ToArray(), input.Length, EthernetLinkType, s_baseTimestamp)),
                 nameof(OpcDcomDecoder_DecodeAll_TruncatedEthernetFrame_BoundedOrRejected),
-                static decoded =>
-                {
-                    if (decoded.Count != 0)
-                    {
+                static decoded => {
+                    if (decoded.Count != 0) {
                         throw new InvalidOperationException($"Truncated Ethernet frame decoded {decoded.Count} DCE/RPC frame(s).");
                     }
                 });
@@ -92,8 +83,7 @@ public sealed class OpcDcomDecoderFuzzTests
     }
 
     [Test, Category("Fuzz")]
-    public async Task OpcDcomDecoder_DecodeAll_OversizedIpLength_BoundedOrRejected()
-    {
+    public async Task OpcDcomDecoder_DecodeAll_OversizedIpLength_BoundedOrRejected() {
         byte[] frame = NewTcpFrame(NewBindPayload(callId: 43));
         BinaryPrimitives.WriteUInt16BigEndian(frame.AsSpan(14 + 2, 2), 0xFFFF);
         byte[] boundedFrame = frame[..60];
@@ -109,16 +99,13 @@ public sealed class OpcDcomDecoderFuzzTests
     }
 
     [Test, Category("Fuzz")]
-    public async Task OpcDcomDecoder_DecodeAll_MutatedValidFrame_DoesNotCrash()
-    {
+    public async Task OpcDcomDecoder_DecodeAll_MutatedValidFrame_DoesNotCrash() {
         byte[] frame = NewTcpFrame(NewBindPayload(callId: 44));
         int sampled = 0;
         FuzzFinding? finding = null;
 
-        FuzzHarness.MutateValid(frame).Sample(mutated =>
-        {
-            if (finding is not null)
-            {
+        FuzzHarness.MutateValid(frame).Sample(mutated => {
+            if (finding is not null) {
                 return;
             }
 
@@ -127,8 +114,7 @@ public sealed class OpcDcomDecoderFuzzTests
             finding = TryAssertDecoderDoesNotCrash(mutated, _ => Decode(packet), nameof(OpcDcomDecoder_DecodeAll_MutatedValidFrame_DoesNotCrash));
         }, iter: FuzzHarness.Iterations, threads: 1);
 
-        if (finding is not null)
-        {
+        if (finding is not null) {
             SaveCorpusAndSkip(finding.Value.Input, finding.Value.Scenario, finding.Value.Exception);
         }
 
@@ -136,23 +122,19 @@ public sealed class OpcDcomDecoderFuzzTests
     }
 
     [Test, Category("Fuzz")]
-    public async Task OpcDcomDecoder_DecodeAll_TruncatedPcapRecord_BoundedOrRejected()
-    {
+    public async Task OpcDcomDecoder_DecodeAll_TruncatedPcapRecord_BoundedOrRejected() {
         byte[] frame = NewTcpFrame(NewBindPayload(callId: 45));
         byte[] snapped = frame[..Math.Min(frame.Length, 64)];
         int checkedRecords = 0;
 
-        foreach (int originalLength in new[] { 1, snapped.Length - 1, snapped.Length, snapped.Length + 1, 1024 * 1024 })
-        {
+        foreach (int originalLength in new[] { 1, snapped.Length - 1, snapped.Length, snapped.Length + 1, 1024 * 1024 }) {
             CapturedPacket packet = NewPacket(snapped, originalLength, EthernetLinkType, s_baseTimestamp);
             AssertDecoderDoesNotCrash(
                 snapped,
                 _ => Decode(packet),
                 $"{nameof(OpcDcomDecoder_DecodeAll_TruncatedPcapRecord_BoundedOrRejected)} originalLength={originalLength}",
-                static decoded =>
-                {
-                    if (decoded.Count > 1)
-                    {
+                static decoded => {
+                    if (decoded.Count > 1) {
                         throw new InvalidOperationException($"CapturedPacket length mismatch decoded {decoded.Count} DCE/RPC frame(s).");
                     }
                 });
@@ -163,12 +145,10 @@ public sealed class OpcDcomDecoderFuzzTests
     }
 
     [Test, Category("Fuzz")]
-    public async Task OpcDcomDecoder_DecodeAll_CorpusReplay_DoesNotCrash()
-    {
+    public async Task OpcDcomDecoder_DecodeAll_CorpusReplay_DoesNotCrash() {
         int replayed = 0;
 
-        foreach (object[] row in FuzzHarness.LoadCorpus(Surface))
-        {
+        foreach (object[] row in FuzzHarness.LoadCorpus(Surface)) {
             byte[] corpus = (byte[])row[0];
             CapturedPacket packet = NewPacket(corpus, corpus.Length, EthernetLinkType, s_baseTimestamp);
             AssertDecoderDoesNotCrash(corpus, _ => Decode(packet), nameof(OpcDcomDecoder_DecodeAll_CorpusReplay_DoesNotCrash));
@@ -187,11 +167,9 @@ public sealed class OpcDcomDecoderFuzzTests
         ReadOnlyMemory<byte> input,
         Func<ReadOnlyMemory<byte>, IReadOnlyList<DecodedOpcPdu>> parse,
         string scenario,
-        Action<IReadOnlyList<DecodedOpcPdu>>? resultInvariant = null)
-    {
+        Action<IReadOnlyList<DecodedOpcPdu>>? resultInvariant = null) {
         FuzzFinding? finding = TryAssertDecoderDoesNotCrash(input, parse, scenario, resultInvariant);
-        if (finding is not null)
-        {
+        if (finding is not null) {
             SaveCorpusAndSkip(finding.Value.Input, finding.Value.Scenario, finding.Value.Exception);
         }
     }
@@ -200,10 +178,8 @@ public sealed class OpcDcomDecoderFuzzTests
         ReadOnlyMemory<byte> input,
         Func<ReadOnlyMemory<byte>, IReadOnlyList<DecodedOpcPdu>> parse,
         string scenario,
-        Action<IReadOnlyList<DecodedOpcPdu>>? resultInvariant = null)
-    {
-        try
-        {
+        Action<IReadOnlyList<DecodedOpcPdu>>? resultInvariant = null) {
+        try {
             FuzzHarness.AssertParseDoesNotCrash(
                 input,
                 parse,
@@ -211,16 +187,14 @@ public sealed class OpcDcomDecoderFuzzTests
                 resultInvariant,
                 timeoutMs: 1_000);
         }
-        catch (InvalidOperationException ex)
-        {
+        catch (InvalidOperationException ex) {
             return new FuzzFinding(input.ToArray(), scenario, ex);
         }
 
         return null;
     }
 
-    private static void SaveCorpusAndSkip(ReadOnlyMemory<byte> input, string scenario, Exception exception)
-    {
+    private static void SaveCorpusAndSkip(ReadOnlyMemory<byte> input, string scenario, Exception exception) {
         string directory = Path.Combine(FindRepositoryRoot(), "tests", "_Fixtures", "Fuzz", Surface);
         Directory.CreateDirectory(directory);
 
@@ -243,10 +217,8 @@ public sealed class OpcDcomDecoderFuzzTests
         Skip.Test($"Captured unexpected OpcDcomDecoder fuzz input in {corpusPath}: {exception.GetType().Name}");
     }
 
-    private static byte[] NewBindPayload(int callId)
-    {
-        var pdu = new BindPdu
-        {
+    private static byte[] NewBindPayload(int callId) {
+        var pdu = new BindPdu {
             CallId = callId,
             AssociationGroupId = 0,
             MaxTransmitFragment = ConnectionOrientedPdu.MUST_RECEIVE_FRAGMENT_SIZE,
@@ -262,8 +234,7 @@ public sealed class OpcDcomDecoderFuzzTests
         return PduCodec.EncodePdu(pdu, ConnectionOrientedPdu.MUST_RECEIVE_FRAGMENT_SIZE);
     }
 
-    private static byte[] NewTcpFrame(byte[] tcpPayload)
-    {
+    private static byte[] NewTcpFrame(byte[] tcpPayload) {
         byte[] frame = new byte[14 + 20 + 20 + tcpPayload.Length];
 
         frame[0] = 0x00;
@@ -307,13 +278,10 @@ public sealed class OpcDcomDecoderFuzzTests
         return frame;
     }
 
-    private static string FindRepositoryRoot()
-    {
+    private static string FindRepositoryRoot() {
         var directory = new DirectoryInfo(Directory.GetCurrentDirectory());
-        while (directory is not null)
-        {
-            if (File.Exists(Path.Combine(directory.FullName, "Opc.Classic.slnx")))
-            {
+        while (directory is not null) {
+            if (File.Exists(Path.Combine(directory.FullName, "Opc.Classic.slnx"))) {
                 return directory.FullName;
             }
 

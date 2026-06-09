@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -8,8 +8,7 @@ namespace Opc.Classic.Dcom.Kerberos.Spnego;
 /// <summary>
 /// Well-known SPNEGO and negotiated mechanism object identifiers.
 /// </summary>
-public static class SpnegoOids
-{
+public static class SpnegoOids {
     /// <summary>
     /// SPNEGO pseudo-mechanism object identifier.
     /// </summary>

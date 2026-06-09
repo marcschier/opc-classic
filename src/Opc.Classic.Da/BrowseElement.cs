@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -18,8 +18,7 @@ namespace Opc.Classic.Da;
 /// a leaf (<see cref="IsItem"/>); DA 3.0 servers may report both flags for the
 /// same element, indicating a tag that also has child tags.
 /// </remarks>
-public sealed class BrowseElement
-{
+public sealed class BrowseElement {
     /// <summary>Short display name (last component of the path).</summary>
     public string Name { get; init; } = string.Empty;
 
@@ -55,10 +54,8 @@ public sealed class BrowseElement
     public IReadOnlyList<ItemProperty> Properties { get; init; } = Array.Empty<ItemProperty>();
 
     /// <inheritdoc />
-    public override string ToString()
-    {
-        var kind = (IsItem, HasChildren) switch
-        {
+    public override string ToString() {
+        var kind = (IsItem, HasChildren) switch {
             (true, true) => "item+branch",
             (true, false) => "item",
             (false, true) => "branch",

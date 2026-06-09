@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -25,8 +25,7 @@ using LegacyRemoteActivationResponse = Opc.Classic.Dcom.Activation.RemoteActivat
 
 namespace Opc.Classic.Dcom.Tests.Activation;
 
-public sealed class ActivationServerTests
-{
+public sealed class ActivationServerTests {
     private const int REGDB_E_CLASSNOTREG = unchecked((int)0x80040154u);
     private const int E_ACCESSDENIED = unchecked((int)0x80070005u);
     private const int E_INVALIDARG = unchecked((int)0x80070057u);
@@ -34,12 +33,10 @@ public sealed class ActivationServerTests
     private static readonly Guid IidIUnknown = OpcGuids.IID_IUnknown;
 
     [Test]
-    public async Task RemoteActivation_via_rpc_processor_activates_known_clsid_and_returns_objref()
-    {
+    public async Task RemoteActivation_via_rpc_processor_activates_known_clsid_and_returns_objref() {
         LegacyActivationServer legacy = CreateLegacyServer(TestClsid, IidIUnknown);
         var processor = new RpcServerConnectionProcessor(
-            new Dictionary<Guid, IOpcServerDispatcher>
-            {
+            new Dictionary<Guid, IOpcServerDispatcher> {
                 [ActivationServer.InterfaceId] = new ActivationServer(legacy),
             });
         await using var transport = new InMemoryAsyncTransport();
@@ -74,8 +71,7 @@ public sealed class ActivationServerTests
     }
 
     [Test]
-    public async Task RemoteActivation_unknown_clsid_returns_class_not_registered_in_body()
-    {
+    public async Task RemoteActivation_unknown_clsid_returns_class_not_registered_in_body() {
         var legacy = new LegacyActivationServer(new RemoteSCMActivatorServer(new InMemoryClsidRegistry()));
         var request = new LegacyRemoteActivationRequest(
             Guid.NewGuid(),
@@ -96,8 +92,7 @@ public sealed class ActivationServerTests
     }
 
     [Test]
-    public async Task RemoteActivation_malformed_body_returns_fault_and_logs_error()
-    {
+    public async Task RemoteActivation_malformed_body_returns_fault_and_logs_error() {
         var logger = new RecordingLogger();
         LegacyActivationServer legacy = CreateLegacyServer(TestClsid, IidIUnknown);
 
@@ -113,8 +108,7 @@ public sealed class ActivationServerTests
     }
 
     [Test]
-    public async Task RemoteActivation_anonymous_dispatch_is_rejected_before_activation()
-    {
+    public async Task RemoteActivation_anonymous_dispatch_is_rejected_before_activation() {
         var server = new ThrowingActivationServer();
         byte[] requestPayload = IActivationCodec.EncodeRemoteActivationRequest(new LegacyRemoteActivationRequest(
             TestClsid,
@@ -135,11 +129,9 @@ public sealed class ActivationServerTests
     }
 
     [Test]
-    public async Task ActivationClient_and_ActivationServer_agree_on_wire_payload_layout()
-    {
+    public async Task ActivationClient_and_ActivationServer_agree_on_wire_payload_layout() {
         LegacyRemoteActivationRequest? received = null;
-        var server = new CapturingActivationServer(request =>
-        {
+        var server = new CapturingActivationServer(request => {
             received = request;
             return new LegacyRemoteActivationResponse(
                 0,
@@ -147,14 +139,12 @@ public sealed class ActivationServerTests
                 new Guid("22222222-3333-4444-5555-666666666666"),
                 5,
                 (5, 1),
-                new[] { new RemoteActivationInterfaceResult(0, new byte[] { 0x4d, 0x45, 0x4f, 0x57 }) })
-            {
+                new[] { new RemoteActivationInterfaceResult(0, new byte[] { 0x4d, 0x45, 0x4f, 0x57 }) }) {
                 OxidBindings = new byte[] { 0x02, 0x00, 0x01, 0x00, 0x07, 0x00, 0x00, 0x00 },
             };
         });
         var channel = new InMemoryCallChannelBuilder()
-            .Register(ActivationServer.InterfaceId, 0, async (_, _, payload, cancellationToken) =>
-            {
+            .Register(ActivationServer.InterfaceId, 0, async (_, _, payload, cancellationToken) => {
                 DispatchResult dispatch = await ActivationServer.DispatchRemoteActivationAsync(
                     server,
                     payload,
@@ -181,8 +171,7 @@ public sealed class ActivationServerTests
         await Assert.That(response.AuthnHint).IsEqualTo(5u);
     }
 
-    private static LegacyActivationServer CreateLegacyServer(Guid clsid, Guid iid)
-    {
+    private static LegacyActivationServer CreateLegacyServer(Guid clsid, Guid iid) {
         var factories = new ClassFactoryRegistry();
         factories.Register(
             clsid,
@@ -194,24 +183,21 @@ public sealed class ActivationServerTests
 
     private static async Task RunProcessorAndShutdown(
         RpcServerConnectionProcessor processor,
-        InMemoryAsyncTransport transport)
-    {
+        InMemoryAsyncTransport transport) {
         await WritePduToInbound(transport, new ShutdownPdu { CallId = int.MaxValue });
         await processor.ProcessConnectionAsync(transport, TestContext.Current!.CancellationToken)
             .AsTask()
             .WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current!.CancellationToken);
     }
 
-    private static async Task WritePduToInbound(InMemoryAsyncTransport transport, ConnectionOrientedPdu pdu)
-    {
+    private static async Task WritePduToInbound(InMemoryAsyncTransport transport, ConnectionOrientedPdu pdu) {
         byte[] frame = PduCodec.EncodePdu(pdu, ConnectionOrientedPdu.MUST_RECEIVE_FRAGMENT_SIZE);
         await transport.WriteInboundAsync(frame);
     }
 
     private static async Task WriteFrameWithAuthVerifier(
         InMemoryAsyncTransport transport,
-        ConnectionOrientedPdu pdu)
-    {
+        ConnectionOrientedPdu pdu) {
         const int authBodyLength = 16;
         byte[] frame = PduCodec.EncodePdu(pdu, ConnectionOrientedPdu.MUST_RECEIVE_FRAGMENT_SIZE);
         int padding = PaddingTo(frame.Length, 4);
@@ -228,12 +214,10 @@ public sealed class ActivationServerTests
     }
 
     private static async Task<T> ReadOutboundPduAs<T>(InMemoryAsyncTransport transport)
-        where T : ConnectionOrientedPdu
-    {
+        where T : ConnectionOrientedPdu {
         byte[] frame = await PduCodec.ReadPduFrameAsync(transport.ReadOutbound, TestContext.Current!.CancellationToken);
         ConnectionOrientedPdu pdu = PduCodec.DecodePdu(frame);
-        if (pdu is T typed)
-        {
+        if (pdu is T typed) {
             return typed;
         }
 
@@ -241,8 +225,7 @@ public sealed class ActivationServerTests
     }
 
     private static BindPdu NewBindForInterface(Guid interfaceId, int contextId, int callId) =>
-        new()
-        {
+        new() {
             CallId = callId,
             AssociationGroupId = 0,
             MaxTransmitFragment = ConnectionOrientedPdu.MUST_RECEIVE_FRAGMENT_SIZE,
@@ -250,11 +233,9 @@ public sealed class ActivationServerTests
             ContextList = [new PresentationContext(contextId, new PresentationSyntax(new UUID(interfaceId.ToString("D")), 0, 0))],
         };
 
-    private static RequestCoPdu NewRequest(int contextId, int opnum, int callId, byte[] payload)
-    {
+    private static RequestCoPdu NewRequest(int contextId, int opnum, int callId, byte[] payload) {
         byte[] stub = OrpcEnvelope.BuildRequestStub(payload, Guid.NewGuid());
-        return new RequestCoPdu
-        {
+        return new RequestCoPdu {
             CallId = callId,
             ContextId = contextId,
             Opnum = opnum,
@@ -263,8 +244,7 @@ public sealed class ActivationServerTests
         };
     }
 
-    private static int PaddingTo(int length, int alignment)
-    {
+    private static int PaddingTo(int length, int alignment) {
         int remainder = length % alignment;
         return remainder == 0 ? 0 : alignment - remainder;
     }
@@ -278,31 +258,26 @@ public sealed class ActivationServerTests
     private static Guid ReadObjRefIpid(ReadOnlySpan<byte> objRef) =>
         new(objRef.Slice(48, 16));
 
-    private sealed class TestComObject
-    {
+    private sealed class TestComObject {
     }
 
-    private sealed class ThrowingActivationServer : IActivationServer
-    {
+    private sealed class ThrowingActivationServer : IActivationServer {
         public bool WasCalled { get; private set; }
 
-        public Task<int> RemoteActivationAsync(Guid clsid, Guid requestedIid, CancellationToken cancellationToken = default)
-        {
+        public Task<int> RemoteActivationAsync(Guid clsid, Guid requestedIid, CancellationToken cancellationToken = default) {
             WasCalled = true;
             throw new InvalidOperationException("Activation should have been rejected before this method was called.");
         }
 
         public Task<LegacyRemoteActivationResponse> RemoteActivationAsync(
             LegacyRemoteActivationRequest request,
-            CancellationToken cancellationToken = default)
-        {
+            CancellationToken cancellationToken = default) {
             WasCalled = true;
             throw new InvalidOperationException("Activation should have been rejected before this method was called.");
         }
     }
 
-    private sealed class CapturingActivationServer : IActivationServer
-    {
+    private sealed class CapturingActivationServer : IActivationServer {
         private readonly Func<LegacyRemoteActivationRequest, LegacyRemoteActivationResponse> _handler;
 
         public CapturingActivationServer(Func<LegacyRemoteActivationRequest, LegacyRemoteActivationResponse> handler) =>
@@ -317,8 +292,7 @@ public sealed class ActivationServerTests
             Task.FromResult(_handler(request));
     }
 
-    private sealed class RecordingLogger : ILogger
-    {
+    private sealed class RecordingLogger : ILogger {
         private readonly List<string> _messages = new();
 
         public IDisposable BeginScope<TState>(TState state)
@@ -331,20 +305,17 @@ public sealed class ActivationServerTests
             EventId eventId,
             TState state,
             Exception? exception,
-            Func<TState, Exception?, string> formatter)
-        {
+            Func<TState, Exception?, string> formatter) {
             _messages.Add(formatter(state, exception));
         }
 
         public bool Contains(string value) =>
             _messages.Exists(message => message.Contains(value, StringComparison.OrdinalIgnoreCase));
 
-        private sealed class NullScope : IDisposable
-        {
+        private sealed class NullScope : IDisposable {
             public static NullScope Instance { get; } = new();
 
-            public void Dispose()
-            {
+            public void Dispose() {
             }
         }
     }

@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -22,8 +22,7 @@ namespace Opc.Classic.Hda.Dcom;
 [OpcInterface("1F1217B0-DEE0-11D2-A5E5-000086339399")]
 [GenerateOpcProxy]
 [OpcGenerateServerDispatch]
-public partial interface IOPCHDA_Server
-{
+public partial interface IOPCHDA_Server {
     /// <summary><c>IOPCHDA_Server::GetItemAttributes</c> (opnum 3).</summary>
     [OpcMethod(3)]
     Task GetItemAttributesAsync(out int[] attributeIds, out string[] attributeNames, out string[] attributeDescriptions, out int[] attributeDataTypes, CancellationToken cancellationToken = default);
@@ -55,8 +54,7 @@ public partial interface IOPCHDA_Server
 /// <summary><c>IOPCHDA_Browser</c> — HDA address-space browse (IID_IOPCHDA_Browser).</summary>
 [OpcInterface("1F1217B1-DEE0-11D2-A5E5-000086339399")]
 [GenerateOpcProxy]
-public partial interface IOPCHDA_Browser
-{
+public partial interface IOPCHDA_Browser {
     /// <summary><c>IOPCHDA_Browser::GetEnum</c> (opnum 3).</summary>
     [OpcMethod(3)]
     Task<IOpcInterfaceRef> GetEnumAsync(int browseType, CancellationToken cancellationToken = default);
@@ -78,8 +76,7 @@ public partial interface IOPCHDA_Browser
 [OpcInterface("1F1217B2-DEE0-11D2-A5E5-000086339399")]
 [GenerateOpcProxy]
 [OpcGenerateServerDispatch]
-public partial interface IOPCHDA_SyncRead
-{
+public partial interface IOPCHDA_SyncRead {
     /// <summary><c>IOPCHDA_SyncRead::ReadRaw</c> (opnum 3).</summary>
     [OpcMethod(3)]
     [return: OpcUniquePointer]
@@ -110,8 +107,7 @@ public partial interface IOPCHDA_SyncRead
 [OpcInterface("1F1217B3-DEE0-11D2-A5E5-000086339399")]
 [GenerateOpcProxy]
 [OpcGenerateServerDispatch]
-public partial interface IOPCHDA_SyncUpdate
-{
+public partial interface IOPCHDA_SyncUpdate {
     /// <summary><c>IOPCHDA_SyncUpdate::QueryCapabilities</c> (opnum 3).</summary>
     [OpcMethod(3)]
     Task<int> QueryCapabilitiesAsync(CancellationToken cancellationToken = default);
@@ -146,8 +142,7 @@ public partial interface IOPCHDA_SyncUpdate
 [OpcInterface("1F1217B4-DEE0-11D2-A5E5-000086339399")]
 [GenerateOpcProxy]
 [OpcGenerateServerDispatch]
-public partial interface IOPCHDA_SyncAnnotations
-{
+public partial interface IOPCHDA_SyncAnnotations {
     /// <summary><c>IOPCHDA_SyncAnnotations::QueryCapabilities</c> (opnum 3).</summary>
     [OpcMethod(3)]
     Task<int> QueryCapabilitiesAsync(CancellationToken cancellationToken = default);
@@ -167,8 +162,7 @@ public partial interface IOPCHDA_SyncAnnotations
 [OpcInterface("1F1217B5-DEE0-11D2-A5E5-000086339399")]
 [GenerateOpcProxy]
 [OpcGenerateServerDispatch]
-public partial interface IOPCHDA_AsyncRead
-{
+public partial interface IOPCHDA_AsyncRead {
     /// <summary><c>IOPCHDA_AsyncRead::ReadRaw</c> (opnum 3).</summary>
     [OpcMethod(3)]
     Task<int> ReadRawAsync(int transactionId, OpcHdaTime startTime, OpcHdaTime endTime, int maxValues, bool bounds, [OpcEmitArrayCount] int[] serverHandles, CancellationToken cancellationToken = default);
@@ -206,8 +200,7 @@ public partial interface IOPCHDA_AsyncRead
 [OpcInterface("1F1217B6-DEE0-11D2-A5E5-000086339399")]
 [GenerateOpcProxy]
 [OpcGenerateServerDispatch]
-public partial interface IOPCHDA_AsyncUpdate
-{
+public partial interface IOPCHDA_AsyncUpdate {
     /// <summary><c>IOPCHDA_AsyncUpdate::QueryCapabilities</c> (opnum 3).</summary>
     [OpcMethod(3)]
     Task<int> QueryCapabilitiesAsync(CancellationToken cancellationToken = default);
@@ -241,8 +234,7 @@ public partial interface IOPCHDA_AsyncUpdate
 [OpcInterface("1F1217B7-DEE0-11D2-A5E5-000086339399")]
 [GenerateOpcProxy]
 [OpcGenerateServerDispatch]
-public partial interface IOPCHDA_AsyncAnnotations
-{
+public partial interface IOPCHDA_AsyncAnnotations {
     /// <summary><c>IOPCHDA_AsyncAnnotations::QueryCapabilities</c> (opnum 3).</summary>
     [OpcMethod(3)]
     Task<int> QueryCapabilitiesAsync(CancellationToken cancellationToken = default);
@@ -264,8 +256,7 @@ public partial interface IOPCHDA_AsyncAnnotations
 [OpcInterface("1F1217B8-DEE0-11D2-A5E5-000086339399")]
 [GenerateOpcProxy]
 [OpcGenerateServerDispatch]
-public partial interface IOPCHDA_Playback
-{
+public partial interface IOPCHDA_Playback {
     /// <summary><c>IOPCHDA_Playback::ReadRawWithUpdate</c> (opnum 3).</summary>
     [OpcMethod(3)]
     Task<int> ReadRawWithUpdateAsync(int transactionId, OpcHdaTime startTime, OpcHdaTime endTime, int maxValues, long updateDurationFileTime, long updateIntervalFileTime, [OpcEmitArrayCount] int[] serverHandles, CancellationToken cancellationToken = default);
@@ -284,8 +275,7 @@ public partial interface IOPCHDA_Playback
 [OpcInterface("1F1217B9-DEE0-11D2-A5E5-000086339399")]
 [GenerateOpcProxy]
 [OpcGenerateServerDispatch]
-public partial interface IOPCHDA_DataCallback
-{
+public partial interface IOPCHDA_DataCallback {
     /// <summary><c>IOPCHDA_DataCallback::OnDataChange</c> (opnum 3).</summary>
     [OpcMethod(3)]
     Task OnDataChangeAsync(int transactionId, int status, OpcHdaItem[] itemValues, int[] errors, CancellationToken cancellationToken = default);

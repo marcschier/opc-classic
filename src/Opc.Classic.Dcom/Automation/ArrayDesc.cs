@@ -1,9 +1,10 @@
-// SPDX-License-Identifier: MIT
+﻿// SPDX-License-Identifier: MIT
 
 using Opc.Classic.Dcom.Core;
 using System;
 
-namespace Opc.Classic.Dcom.Automation; 
+namespace Opc.Classic.Dcom.Automation;
+
 /// <summary>
 /// Implements the <i>ARRAYDESC</i> structure of COM Automation.
 /// Definition from MSDN: <i> Contained within the TYPEDESC, which describes the

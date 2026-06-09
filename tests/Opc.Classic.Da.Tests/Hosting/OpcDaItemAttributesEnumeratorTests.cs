@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -20,11 +20,9 @@ namespace Opc.Classic.Da.Tests.Hosting;
 /// Tests for the stateful <see cref="OpcDaItemAttributesEnumerator"/> +
 /// the OpcDaGroup.CreateEnumeratorAsync registry integration.
 /// </summary>
-public sealed class OpcDaItemAttributesEnumeratorTests
-{
+public sealed class OpcDaItemAttributesEnumeratorTests {
     [Test]
-    public async Task NextAsync_returns_batches_until_exhausted()
-    {
+    public async Task NextAsync_returns_batches_until_exhausted() {
         OpcItemAttributes[] snapshot = BuildSnapshot(5);
         var enumerator = new OpcDaItemAttributesEnumerator(snapshot);
 
@@ -44,8 +42,7 @@ public sealed class OpcDaItemAttributesEnumeratorTests
     }
 
     [Test]
-    public async Task NextAsync_zero_or_negative_count_returns_empty_array()
-    {
+    public async Task NextAsync_zero_or_negative_count_returns_empty_array() {
         var enumerator = new OpcDaItemAttributesEnumerator(BuildSnapshot(2));
 
         await enumerator.NextAsync(0, out OpcItemAttributes[] zero, out int zeroFetched, TestContext.Current!.CancellationToken);
@@ -59,8 +56,7 @@ public sealed class OpcDaItemAttributesEnumeratorTests
     }
 
     [Test]
-    public async Task SkipAsync_advances_cursor()
-    {
+    public async Task SkipAsync_advances_cursor() {
         var enumerator = new OpcDaItemAttributesEnumerator(BuildSnapshot(5));
 
         await enumerator.SkipAsync(2, TestContext.Current!.CancellationToken);
@@ -71,8 +67,7 @@ public sealed class OpcDaItemAttributesEnumeratorTests
     }
 
     [Test]
-    public async Task SkipAsync_beyond_end_clamps_at_length()
-    {
+    public async Task SkipAsync_beyond_end_clamps_at_length() {
         var enumerator = new OpcDaItemAttributesEnumerator(BuildSnapshot(3));
 
         await enumerator.SkipAsync(99, TestContext.Current!.CancellationToken);
@@ -84,8 +79,7 @@ public sealed class OpcDaItemAttributesEnumeratorTests
     }
 
     [Test]
-    public async Task ResetAsync_returns_cursor_to_zero()
-    {
+    public async Task ResetAsync_returns_cursor_to_zero() {
         var enumerator = new OpcDaItemAttributesEnumerator(BuildSnapshot(3));
         await enumerator.NextAsync(2, out OpcItemAttributes[] _, out int _, TestContext.Current!.CancellationToken);
 
@@ -97,8 +91,7 @@ public sealed class OpcDaItemAttributesEnumeratorTests
     }
 
     [Test]
-    public async Task NextAsync_LastBatchReportsTrueFetchedCount()
-    {
+    public async Task NextAsync_LastBatchReportsTrueFetchedCount() {
         // Snapshot size 3, request 5 → fetched=3, array length=3.
         var enumerator = new OpcDaItemAttributesEnumerator(BuildSnapshot(3));
 
@@ -109,8 +102,7 @@ public sealed class OpcDaItemAttributesEnumeratorTests
     }
 
     [Test]
-    public async Task CloneAsync_returns_interface_ref_with_correct_iid()
-    {
+    public async Task CloneAsync_returns_interface_ref_with_correct_iid() {
         var enumerator = new OpcDaItemAttributesEnumerator(BuildSnapshot(3));
 
         IOpcInterfaceRef cloneRef = await enumerator.CloneAsync(TestContext.Current!.CancellationToken);
@@ -120,8 +112,7 @@ public sealed class OpcDaItemAttributesEnumeratorTests
     }
 
     [Test]
-    public async Task CloneAsync_registers_with_registry_when_attached()
-    {
+    public async Task CloneAsync_registers_with_registry_when_attached() {
         var registry = new OpcObjectRegistry();
         var enumerator = new OpcDaItemAttributesEnumerator(BuildSnapshot(3), registry);
 
@@ -132,8 +123,7 @@ public sealed class OpcDaItemAttributesEnumeratorTests
     }
 
     [Test]
-    public async Task OpcDaGroup_CreateEnumeratorAsync_registers_enumerator_when_registry_attached()
-    {
+    public async Task OpcDaGroup_CreateEnumeratorAsync_registers_enumerator_when_registry_attached() {
         var registry = new OpcObjectRegistry();
         var group = new OpcDaGroup("g", 1, 1, true, 1000, 0, 0f, 1033, registry);
         // Add 2 items so the snapshot is non-empty

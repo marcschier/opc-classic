@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -12,8 +12,7 @@ namespace Opc.Classic.Hda;
 /// The historical values returned for a single item by a read-raw,
 /// read-processed, or read-at-time call.
 /// </summary>
-public sealed class HdaReadResult
-{
+public sealed class HdaReadResult {
     /// <summary>The item these values belong to.</summary>
     public string ItemId { get; init; } = string.Empty;
 

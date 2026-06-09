@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: MIT
+﻿// SPDX-License-Identifier: MIT
 
 using Opc.Classic.Dcom.Transport;
 using Opc.Classic.Dcom.Rpc;
@@ -8,7 +8,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace Opc.Classic.Dcom.Core; 
+namespace Opc.Classic.Dcom.Core;
+
 /// <summary>
 /// Class only used for Oxid ping requests between the Java client and the COM server.
 /// This is not for reverse operations i.e COM client and server. That is handled

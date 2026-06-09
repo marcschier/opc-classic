@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -10,10 +10,8 @@ using System.Xml;
 
 namespace Opc.Classic.Xml.Serialization;
 
-internal static class XmlDaValueSerializer
-{
-    public static void WriteValueElement(XmlWriter writer, XmlDaValue value)
-    {
+internal static class XmlDaValueSerializer {
+    public static void WriteValueElement(XmlWriter writer, XmlDaValue value) {
         ArgumentNullException.ThrowIfNull(writer);
         ArgumentNullException.ThrowIfNull(value);
 
@@ -23,15 +21,13 @@ internal static class XmlDaValueSerializer
         writer.WriteEndElement();
     }
 
-    public static XmlDaValue ReadValue(XmlReader reader)
-    {
+    public static XmlDaValue ReadValue(XmlReader reader) {
         ArgumentNullException.ThrowIfNull(reader);
 
         string xsiType = reader.GetAttribute("type", XmlDaConstants.XsiNamespace) ?? string.Empty;
         string localType = GetLocalType(xsiType);
 
-        return localType switch
-        {
+        return localType switch {
             "ArrayOfByte" => XmlDaValue.OfArrayOfByte(ReadArray(reader, XmlConvert.ToSByte)),
             "ArrayOfShort" => XmlDaValue.OfArrayOfShort(ReadArray(reader, XmlConvert.ToInt16)),
             "ArrayOfInt" => XmlDaValue.OfArrayOfInt(ReadArray(reader, XmlConvert.ToInt32)),
@@ -46,11 +42,9 @@ internal static class XmlDaValueSerializer
         };
     }
 
-    private static XmlDaValue ReadScalarValue(XmlReader reader, string localType)
-    {
+    private static XmlDaValue ReadScalarValue(XmlReader reader, string localType) {
         string content = reader.ReadElementContentAsString();
-        return localType switch
-        {
+        return localType switch {
             "string" => XmlDaValue.OfString(content),
             "byte" => XmlDaValue.OfInt8(XmlConvert.ToSByte(content)),
             "unsignedByte" => XmlDaValue.OfUInt8(XmlConvert.ToByte(content)),
@@ -75,10 +69,8 @@ internal static class XmlDaValueSerializer
         };
     }
 
-    private static void WriteValueType(XmlWriter writer, XmlDaValueType type)
-    {
-        string? xsiType = type switch
-        {
+    private static void WriteValueType(XmlWriter writer, XmlDaValueType type) {
+        string? xsiType = type switch {
             XmlDaValueType.String => "xsd:string",
             XmlDaValueType.Int8 => "xsd:byte",
             XmlDaValueType.UInt8 => "xsd:unsignedByte",
@@ -110,16 +102,13 @@ internal static class XmlDaValueSerializer
             _ => null,
         };
 
-        if (!string.IsNullOrEmpty(xsiType))
-        {
+        if (!string.IsNullOrEmpty(xsiType)) {
             writer.WriteAttributeString("type", XmlDaConstants.XsiNamespace, xsiType);
         }
     }
 
-    private static void WriteValueContent(XmlWriter writer, XmlDaValue value)
-    {
-        switch (value.Type)
-        {
+    private static void WriteValueContent(XmlWriter writer, XmlDaValue value) {
+        switch (value.Type) {
             case XmlDaValueType.ArrayOfByte:
                 WriteArray(writer, "byte", (sbyte[])value.Boxed!, static v => v.ToString(CultureInfo.InvariantCulture));
                 break;
@@ -157,60 +146,47 @@ internal static class XmlDaValueSerializer
         }
     }
 
-    private static void WriteArray<T>(XmlWriter writer, string elementName, T[] values, Func<T, string> format)
-    {
-        foreach (T value in values)
-        {
+    private static void WriteArray<T>(XmlWriter writer, string elementName, T[] values, Func<T, string> format) {
+        foreach (T value in values) {
             writer.WriteElementString(elementName, XmlDaConstants.XmlDaNamespace, format(value));
         }
     }
 
-    private static void WriteStringArray(XmlWriter writer, string?[] values)
-    {
-        foreach (string? value in values)
-        {
+    private static void WriteStringArray(XmlWriter writer, string?[] values) {
+        foreach (string? value in values) {
             writer.WriteStartElement("string", XmlDaConstants.XmlDaNamespace);
-            if (value is null)
-            {
+            if (value is null) {
                 writer.WriteAttributeString("nil", XmlDaConstants.XsiNamespace, "true");
             }
-            else
-            {
+            else {
                 writer.WriteString(value);
             }
             writer.WriteEndElement();
         }
     }
 
-    private static T[] ReadArray<T>(XmlReader reader, Func<string, T> parse)
-    {
+    private static T[] ReadArray<T>(XmlReader reader, Func<string, T> parse) {
         var values = new List<T>();
-        if (reader.IsEmptyElement)
-        {
+        if (reader.IsEmptyElement) {
             reader.Read();
             return values.ToArray();
         }
 
         int valueDepth = reader.Depth;
         bool alreadyAdvanced = false;
-        while (true)
-        {
-            if (!alreadyAdvanced && !reader.Read())
-            {
+        while (true) {
+            if (!alreadyAdvanced && !reader.Read()) {
                 break;
             }
             alreadyAdvanced = false;
-            if (reader.Depth <= valueDepth)
-            {
+            if (reader.Depth <= valueDepth) {
                 break;
             }
-            if (reader.NodeType != XmlNodeType.Element)
-            {
+            if (reader.NodeType != XmlNodeType.Element) {
                 continue;
             }
 
-            if (IsNil(reader))
-            {
+            if (IsNil(reader)) {
                 reader.Skip();
                 alreadyAdvanced = true;
                 continue;
@@ -223,35 +199,28 @@ internal static class XmlDaValueSerializer
         return values.ToArray();
     }
 
-    private static string?[] ReadStringArray(XmlReader reader)
-    {
+    private static string?[] ReadStringArray(XmlReader reader) {
         var values = new List<string?>();
-        if (reader.IsEmptyElement)
-        {
+        if (reader.IsEmptyElement) {
             reader.Read();
             return values.ToArray();
         }
 
         int valueDepth = reader.Depth;
         bool alreadyAdvanced = false;
-        while (true)
-        {
-            if (!alreadyAdvanced && !reader.Read())
-            {
+        while (true) {
+            if (!alreadyAdvanced && !reader.Read()) {
                 break;
             }
             alreadyAdvanced = false;
-            if (reader.Depth <= valueDepth)
-            {
+            if (reader.Depth <= valueDepth) {
                 break;
             }
-            if (reader.NodeType != XmlNodeType.Element)
-            {
+            if (reader.NodeType != XmlNodeType.Element) {
                 continue;
             }
 
-            if (IsNil(reader))
-            {
+            if (IsNil(reader)) {
                 values.Add(null);
                 reader.Skip();
                 alreadyAdvanced = true;
@@ -265,45 +234,37 @@ internal static class XmlDaValueSerializer
         return values.ToArray();
     }
 
-    private static bool IsNil(XmlReader reader)
-    {
+    private static bool IsNil(XmlReader reader) {
         string? nil = reader.GetAttribute("nil", XmlDaConstants.XsiNamespace);
         return string.Equals(nil, "true", StringComparison.OrdinalIgnoreCase) || string.Equals(nil, "1", StringComparison.Ordinal);
     }
 
-    private static string GetLocalType(string xsiType)
-    {
+    private static string GetLocalType(string xsiType) {
         int colon = xsiType.LastIndexOf(':');
         return colon >= 0 ? xsiType[(colon + 1)..] : xsiType;
     }
 
-    private static string ResolveQNameNamespace(XmlReader reader, string value)
-    {
+    private static string ResolveQNameNamespace(XmlReader reader, string value) {
         int colon = value.IndexOf(':', StringComparison.Ordinal);
-        if (colon <= 0)
-        {
+        if (colon <= 0) {
             return string.Empty;
         }
 
         return reader.LookupNamespace(value[..colon]) ?? string.Empty;
     }
 
-    private static TimeOnly ParseTime(string value)
-    {
+    private static TimeOnly ParseTime(string value) {
         string text = StripTimeZone(value, dateLength: 0);
         return TimeOnly.Parse(text, CultureInfo.InvariantCulture, DateTimeStyles.None);
     }
 
-    private static DateOnly ParseDate(string value)
-    {
+    private static DateOnly ParseDate(string value) {
         string text = StripTimeZone(value, dateLength: 10);
         return DateOnly.ParseExact(text, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None);
     }
 
-    private static string StripTimeZone(string value, int dateLength)
-    {
-        if (value.EndsWith('Z'))
-        {
+    private static string StripTimeZone(string value, int dateLength) {
+        if (value.EndsWith('Z')) {
             return value[..^1];
         }
 

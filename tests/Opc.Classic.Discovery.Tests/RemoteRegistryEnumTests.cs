@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -14,13 +14,11 @@ using TUnit.Core;
 
 namespace Opc.Classic.Discovery.Tests;
 
-public sealed class RemoteRegistryEnumTests
-{
+public sealed class RemoteRegistryEnumTests {
     private const string Host = "opc-host";
 
     [Test]
-    public async Task RemoteRegistryEnum_yields_servers_from_winreg_transport()
-    {
+    public async Task RemoteRegistryEnum_yields_servers_from_winreg_transport() {
         var clsid = Guid.Parse("10138C2C-0000-0000-0000-000000000021");
         var registry = new FakeRemoteRegistryReader();
         AddOpcServerRegistration(
@@ -46,8 +44,7 @@ public sealed class RemoteRegistryEnumTests
     }
 
     [Test]
-    public async Task RemoteRegistryEnum_returns_empty_when_host_unreachable()
-    {
+    public async Task RemoteRegistryEnum_returns_empty_when_host_unreachable() {
         var logger = new RecordingLogger<RemoteRegistryEnum>();
         var discovery = new RemoteRegistryEnum(
             Host,
@@ -64,8 +61,7 @@ public sealed class RemoteRegistryEnumTests
     }
 
     [Test]
-    public async Task RemoteRegistryEnum_returns_empty_when_access_denied()
-    {
+    public async Task RemoteRegistryEnum_returns_empty_when_access_denied() {
         var logger = new RecordingLogger<RemoteRegistryEnum>();
         var discovery = new RemoteRegistryEnum(
             Host,
@@ -82,8 +78,7 @@ public sealed class RemoteRegistryEnumTests
     }
 
     [Test]
-    public async Task RemoteRegistryEnum_returns_empty_when_no_servers_are_registered()
-    {
+    public async Task RemoteRegistryEnum_returns_empty_when_no_servers_are_registered() {
         var registry = new FakeRemoteRegistryReader()
             .AddKey(@"SOFTWARE\Classes\CLSID")
             .AddKey($@"SOFTWARE\Classes\Component Categories\{OpcGuids.CATID_OPCDAServer20:B}\Implementations");
@@ -98,11 +93,9 @@ public sealed class RemoteRegistryEnumTests
         await Assert.That(registry.IsDisposed).IsTrue();
     }
 
-    private static async Task<List<OpcServerEntry>> ToListAsync(IOpcDiscovery discovery)
-    {
+    private static async Task<List<OpcServerEntry>> ToListAsync(IOpcDiscovery discovery) {
         var entries = new List<OpcServerEntry>();
-        await foreach (var entry in discovery.DiscoverAsync())
-        {
+        await foreach (var entry in discovery.DiscoverAsync()) {
             entries.Add(entry);
         }
 
@@ -114,8 +107,7 @@ public sealed class RemoteRegistryEnumTests
         Guid clsid,
         string progId,
         string friendlyName,
-        Guid categoryId)
-    {
+        Guid categoryId) {
         var clsidText = clsid.ToString("B");
         var clsidKeyPath = $@"SOFTWARE\Classes\CLSID\{clsidText}";
         var opcServerPath = $@"{clsidKeyPath}\OPCServer";
@@ -131,28 +123,23 @@ public sealed class RemoteRegistryEnumTests
             .AddKey(categoryImplementationPath);
     }
 
-    private sealed class FakeRemoteRegistryReaderFactory : IRemoteRegistryReaderFactory
-    {
+    private sealed class FakeRemoteRegistryReaderFactory : IRemoteRegistryReaderFactory {
         private readonly IRemoteRegistryReader? _reader;
         private readonly Exception? _exception;
 
-        public FakeRemoteRegistryReaderFactory(IRemoteRegistryReader reader)
-        {
+        public FakeRemoteRegistryReaderFactory(IRemoteRegistryReader reader) {
             _reader = reader;
         }
 
-        public FakeRemoteRegistryReaderFactory(Exception exception)
-        {
+        public FakeRemoteRegistryReaderFactory(Exception exception) {
             _exception = exception;
         }
 
         public string? OpenedHost { get; private set; }
 
-        public IRemoteRegistryReader Open(string host, NetworkCredential credentials)
-        {
+        public IRemoteRegistryReader Open(string host, NetworkCredential credentials) {
             OpenedHost = host;
-            if (_exception is not null)
-            {
+            if (_exception is not null) {
                 throw _exception;
             }
 
@@ -160,20 +147,17 @@ public sealed class RemoteRegistryEnumTests
         }
     }
 
-    private sealed class FakeRemoteRegistryReader : IRemoteRegistryReader
-    {
+    private sealed class FakeRemoteRegistryReader : IRemoteRegistryReader {
         private readonly Dictionary<string, FakeRegistryKey> _keys = new(StringComparer.OrdinalIgnoreCase);
 
         public bool IsDisposed { get; private set; }
 
-        public FakeRemoteRegistryReader AddKey(string keyPath)
-        {
+        public FakeRemoteRegistryReader AddKey(string keyPath) {
             _ = GetOrAddKey(Normalize(keyPath));
             return this;
         }
 
-        public FakeRemoteRegistryReader AddStringValue(string keyPath, string? valueName, string value)
-        {
+        public FakeRemoteRegistryReader AddStringValue(string keyPath, string? valueName, string value) {
             GetOrAddKey(Normalize(keyPath)).Values[ValueName(valueName)] = value;
             return this;
         }
@@ -193,10 +177,8 @@ public sealed class RemoteRegistryEnumTests
 
         public void Dispose() => IsDisposed = true;
 
-        private FakeRegistryKey GetOrAddKey(string keyPath)
-        {
-            if (_keys.TryGetValue(keyPath, out var key))
-            {
+        private FakeRegistryKey GetOrAddKey(string keyPath) {
+            if (_keys.TryGetValue(keyPath, out var key)) {
                 return key;
             }
 
@@ -204,8 +186,7 @@ public sealed class RemoteRegistryEnumTests
             _keys.Add(keyPath, key);
 
             var separatorIndex = keyPath.LastIndexOf("\\", StringComparison.Ordinal);
-            if (separatorIndex > 0)
-            {
+            if (separatorIndex > 0) {
                 var parentPath = keyPath[..separatorIndex];
                 var subKeyName = keyPath[(separatorIndex + 1)..];
                 GetOrAddKey(parentPath).AddSubKey(subKeyName);
@@ -219,25 +200,21 @@ public sealed class RemoteRegistryEnumTests
         private static string ValueName(string? valueName) => valueName ?? string.Empty;
     }
 
-    private sealed class FakeRegistryKey
-    {
+    private sealed class FakeRegistryKey {
         private readonly List<string> _subKeyNames = new();
 
         public IReadOnlyList<string> SubKeyNames => _subKeyNames;
 
         public Dictionary<string, string> Values { get; } = new(StringComparer.OrdinalIgnoreCase);
 
-        public void AddSubKey(string name)
-        {
-            if (!_subKeyNames.Any(subKeyName => string.Equals(subKeyName, name, StringComparison.OrdinalIgnoreCase)))
-            {
+        public void AddSubKey(string name) {
+            if (!_subKeyNames.Any(subKeyName => string.Equals(subKeyName, name, StringComparison.OrdinalIgnoreCase))) {
                 _subKeyNames.Add(name);
             }
         }
     }
 
-    private sealed class RecordingLogger<T> : ILogger<T>
-    {
+    private sealed class RecordingLogger<T> : ILogger<T> {
         public List<LogRecord> Records { get; } = new();
 
         public IDisposable BeginScope<TState>(TState state)
@@ -250,20 +227,17 @@ public sealed class RemoteRegistryEnumTests
             EventId eventId,
             TState state,
             Exception? exception,
-            Func<TState, Exception?, string> formatter)
-        {
+            Func<TState, Exception?, string> formatter) {
             Records.Add(new LogRecord(logLevel, eventId, formatter(state, exception), exception));
         }
     }
 
     private sealed record LogRecord(LogLevel LogLevel, EventId EventId, string Message, Exception? Exception);
 
-    private sealed class NoopDisposable : IDisposable
-    {
+    private sealed class NoopDisposable : IDisposable {
         public static NoopDisposable Instance { get; } = new();
 
-        public void Dispose()
-        {
+        public void Dispose() {
         }
     }
 }

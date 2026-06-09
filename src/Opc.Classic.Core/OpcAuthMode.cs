@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -8,8 +8,7 @@ namespace Opc.Classic;
 /// <summary>
 /// Authentication mechanism to use when connecting to a remote DCOM OPC server.
 /// </summary>
-public enum OpcAuthMode
-{
+public enum OpcAuthMode {
     /// <summary>
     /// No authentication — the server must accept anonymous connections.
     /// Almost never works against hardened Windows DCOM servers. Useful only

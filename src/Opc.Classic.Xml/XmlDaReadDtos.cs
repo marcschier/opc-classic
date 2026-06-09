@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -38,8 +38,7 @@ public sealed record XmlDaItemValueResult(
     XmlDaValue? Value,
     OpcQuality Quality,
     DateTimeOffset? Timestamp,
-    string? ResultId)
-{
+    string? ResultId) {
     /// <summary>Type-safe interpretation of <see cref="ResultId"/>.</summary>
     public XmlDaErrorCode ResultCode => XmlDaErrorCodes.ParseResultId(ResultId);
 }

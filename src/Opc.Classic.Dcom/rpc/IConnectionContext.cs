@@ -1,11 +1,12 @@
-// SPDX-License-Identifier: MIT
+﻿// SPDX-License-Identifier: MIT
 
 using Opc.Classic.Dcom.Internal;
 using Opc.Classic.Dcom.Rpc.Core;
 using SharpCifs.Util.Sharpen;
 using System.IO;
 
-namespace Opc.Classic.Dcom.Rpc; 
+namespace Opc.Classic.Dcom.Rpc;
+
 /// <summary>
 /// Connection context
 /// </summary>

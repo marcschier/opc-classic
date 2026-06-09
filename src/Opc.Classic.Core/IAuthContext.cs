@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -10,8 +10,7 @@ namespace Opc.Classic;
 /// <summary>
 /// Authentication context used by DCOM call channels while binding and protecting DCE/RPC PDUs.
 /// </summary>
-public interface IAuthContext
-{
+public interface IAuthContext {
     /// <summary>Builds the NTLM/Kerberos type1/AP-REQ token for the bind PDU.</summary>
     /// <returns>The initial authentication token, or an empty array when unauthenticated.</returns>
     byte[] BuildInitialToken();

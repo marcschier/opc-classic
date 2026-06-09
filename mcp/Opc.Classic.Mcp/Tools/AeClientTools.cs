@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -29,8 +29,7 @@ using Opc.Classic.Transport;
 namespace Opc.Classic.Mcp.Tools;
 
 /// <summary>Creates AE client state for a session.</summary>
-public interface IOpcAeConnectionFactory
-{
+public interface IOpcAeConnectionFactory {
     /// <summary>Connects to an AE server and returns a client state object.</summary>
     Task<AeClientState> ConnectAsync(AeConnectionRequest request, CancellationToken cancellationToken = default);
 }
@@ -47,13 +46,11 @@ public sealed record AeConnectionRequest(
     string? AuthLevel = null);
 
 /// <summary>Registers in-memory AE call channels for MCP tests and loopback scenarios.</summary>
-public static class InMemoryAeConnectionRegistry
-{
+public static class InMemoryAeConnectionRegistry {
     private static readonly ConcurrentDictionary<string, InMemoryAeConnection> Channels = new(StringComparer.OrdinalIgnoreCase);
 
     /// <summary>Registers an in-memory AE call channel by name.</summary>
-    public static IDisposable Register(string name, ICallChannel channel, IAeServer? managedServer = null)
-    {
+    public static IDisposable Register(string name, ICallChannel channel, IAeServer? managedServer = null) {
         ArgumentException.ThrowIfNullOrWhiteSpace(name);
         ArgumentNullException.ThrowIfNull(channel);
 
@@ -63,17 +60,14 @@ public static class InMemoryAeConnectionRegistry
 
     internal static bool TryGet(string name, out InMemoryAeConnection connection) => Channels.TryGetValue(name, out connection!);
 
-    private sealed class Registration : IDisposable
-    {
+    private sealed class Registration : IDisposable {
         private readonly string _name;
         private bool _disposed;
 
         public Registration(string name) => _name = name;
 
-        public void Dispose()
-        {
-            if (_disposed)
-            {
+        public void Dispose() {
+            if (_disposed) {
                 return;
             }
 
@@ -87,14 +81,12 @@ public static class InMemoryAeConnectionRegistry
 public sealed record InMemoryAeConnection(ICallChannel Channel, IAeServer? ManagedServer);
 
 /// <summary>MCP tools for OPC AE client operations.</summary>
-public sealed class AeClientTools
-{
+public sealed class AeClientTools {
     private readonly IOpcSessionManager _sessionManager;
     private readonly IOpcAeConnectionFactory _connectionFactory;
 
     /// <summary>Creates the AE client tool set.</summary>
-    public AeClientTools(IOpcSessionManager sessionManager, IEnumerable<IOpcAeConnectionFactory> connectionFactories)
-    {
+    public AeClientTools(IOpcSessionManager sessionManager, IEnumerable<IOpcAeConnectionFactory> connectionFactories) {
         _sessionManager = sessionManager ?? throw new ArgumentNullException(nameof(sessionManager));
         ArgumentNullException.ThrowIfNull(connectionFactories);
         _connectionFactory = connectionFactories.FirstOrDefault() ?? new DefaultOpcAeConnectionFactory();
@@ -122,8 +114,7 @@ public sealed class AeClientTools
         string? connectionString = null,
         [Description(OpcMcpAuthLevel.Description)]
         string? authLevel = null,
-        CancellationToken cancellationToken = default)
-    {
+        CancellationToken cancellationToken = default) {
         OpcSession session = _sessionManager.GetSession(sessionId);
         AeClientState client = await _connectionFactory.ConnectAsync(
             new AeConnectionRequest(host, progId, clsid, username, password, useKerberos, connectionString, authLevel),
@@ -131,8 +122,7 @@ public sealed class AeClientTools
 
         AeClientState? existing = session.AeClient;
         session.AeClient = client;
-        if (existing is not null)
-        {
+        if (existing is not null) {
             await existing.DisposeAsync().ConfigureAwait(false);
         }
 
@@ -147,8 +137,7 @@ public sealed class AeClientTools
     public async Task<OpcServerStatusDto> GetStatus(
         [Description("The sessionId returned by opcclassic.session.create and connected with opcclassic.ae.connect.")]
         string sessionId,
-        CancellationToken cancellationToken = default)
-    {
+        CancellationToken cancellationToken = default) {
         AeClientState client = GetAeClient(sessionId);
         OpcServerStatus status = await GetStatusAsync(client, cancellationToken).ConfigureAwait(false);
         return ToStatusDto(status);
@@ -162,17 +151,14 @@ public sealed class AeClientTools
         string sessionId,
         [Description("Qualified area name to browse below. Use an empty string for the root.")]
         string areaQualifiedName = "",
-        CancellationToken cancellationToken = default)
-    {
+        CancellationToken cancellationToken = default) {
         AeClientState client = GetAeClient(sessionId);
-        if (client.ManagedServer is null)
-        {
+        if (client.ManagedServer is null) {
             return [];
         }
 
         var elements = new List<OpcAreaBrowseElementDto>();
-        await foreach (AreaBrowseElement element in client.ManagedServer.BrowseAreasAsync(areaQualifiedName ?? string.Empty, cancellationToken).ConfigureAwait(false))
-        {
+        await foreach (AreaBrowseElement element in client.ManagedServer.BrowseAreasAsync(areaQualifiedName ?? string.Empty, cancellationToken).ConfigureAwait(false)) {
             elements.Add(new OpcAreaBrowseElementDto(element.Name, element.QualifiedName, element.IsArea, element.IsSource));
         }
 
@@ -187,20 +173,17 @@ public sealed class AeClientTools
         string sessionId,
         [Description("Event type filter: all, simple, tracking, condition, or a comma-separated combination.")]
         string eventTypes = "all",
-        CancellationToken cancellationToken = default)
-    {
+        CancellationToken cancellationToken = default) {
         AeClientState client = GetAeClient(sessionId);
         EventType parsed = ParseEventTypes(eventTypes);
-        try
-        {
+        try {
             await client.EventServer.QueryEventCategoriesAsync((int)parsed, out int[] categories, out string[] descriptions, cancellationToken).ConfigureAwait(false);
             return categories.Select((category, index) => new OpcEventCategoryDto(
                 category,
                 index < descriptions.Length ? descriptions[index] : string.Empty,
                 parsed.ToString())).ToArray();
         }
-        catch (OpcException ex) when (client.ManagedServer is not null && ex.ResultId.Code == OpcResultId.NotImplemented.Code)
-        {
+        catch (OpcException ex) when (client.ManagedServer is not null && ex.ResultId.Code == OpcResultId.NotImplemented.Code) {
             IReadOnlyList<uint> categories = await client.ManagedServer.QueryEventCategoriesAsync(parsed, cancellationToken).ConfigureAwait(false);
             return categories.Select(category => new OpcEventCategoryDto(unchecked((int)category), string.Empty, parsed.ToString())).ToArray();
         }
@@ -214,8 +197,7 @@ public sealed class AeClientTools
         string sessionId,
         [Description("Server-defined event category ID returned by opcclassic.ae.query_event_categories.")]
         int eventCategory,
-        CancellationToken cancellationToken = default)
-    {
+        CancellationToken cancellationToken = default) {
         AeClientState client = GetAeClient(sessionId);
         await client.EventServer.QueryEventAttributesAsync(eventCategory, out int[] ids, out string[] descriptions, out ushort[] types, cancellationToken).ConfigureAwait(false);
         return ids.Select((id, index) => new OpcEventAttributeDto(
@@ -239,8 +221,7 @@ public sealed class AeClientTools
         int maxBufferSize = 0,
         [Description("Client subscription handle echoed by callbacks. Defaults to a generated positive handle when 0.")]
         int clientSubscription = 0,
-        CancellationToken cancellationToken = default)
-    {
+        CancellationToken cancellationToken = default) {
         AeClientState client = GetAeClient(sessionId);
         string subscriptionId = Guid.NewGuid().ToString("N");
         int clientHandle = clientSubscription == 0 ? Environment.TickCount & int.MaxValue : clientSubscription;
@@ -248,12 +229,10 @@ public sealed class AeClientTools
         int revisedBuffer = bufferTimeMs;
         int revisedMax = maxBufferSize;
 
-        if (client.ManagedServer is not null)
-        {
+        if (client.ManagedServer is not null) {
             managedSubscription = await client.ManagedServer.CreateSubscriptionAsync(active, bufferTimeMs, maxBufferSize, cancellationToken).ConfigureAwait(false);
         }
-        else
-        {
+        else {
             await client.EventServer.CreateEventSubscriptionAsync(
                 active,
                 bufferTimeMs,
@@ -268,8 +247,7 @@ public sealed class AeClientTools
 
         var context = new AeSubscriptionContext(subscriptionId, clientHandle, active, bufferTimeMs, maxBufferSize, revisedBuffer, revisedMax, managedSubscription);
         client.Subscriptions[subscriptionId] = context;
-        if (managedSubscription is not null)
-        {
+        if (managedSubscription is not null) {
             context.PumpTask = Task.Run(() => PumpEventsAsync(context), CancellationToken.None);
         }
 
@@ -296,12 +274,10 @@ public sealed class AeClientTools
         string[]? areas = null,
         [Description("Optional source names to include. Empty means all sources.")]
         string[]? sources = null,
-        CancellationToken cancellationToken = default)
-    {
+        CancellationToken cancellationToken = default) {
         AeClientState client = GetAeClient(sessionId);
         AeSubscriptionContext context = GetSubscription(client, subscriptionId);
-        var filter = new SubscriptionFilter
-        {
+        var filter = new SubscriptionFilter {
             EventTypes = ParseEventTypes(eventTypes),
             EventCategories = (eventCategories ?? []).Select(static category => unchecked((uint)category)).ToArray(),
             MinSeverity = minSeverity,
@@ -311,12 +287,10 @@ public sealed class AeClientTools
         };
         context.Filter = filter;
 
-        if (context.Subscription is not null)
-        {
+        if (context.Subscription is not null) {
             await context.Subscription.SetFilterAsync(filter, cancellationToken).ConfigureAwait(false);
         }
-        else
-        {
+        else {
             await client.SubscriptionMgt.SetFilterAsync(
                 (int)filter.EventTypes,
                 filter.EventCategories.Select(static category => unchecked((int)category)).ToArray(),
@@ -342,26 +316,21 @@ public sealed class AeClientTools
         int maxNotifications = 0,
         [Description("Milliseconds to wait for at least one event when the queue is empty.")]
         int waitMilliseconds = 100,
-        CancellationToken cancellationToken = default)
-    {
+        CancellationToken cancellationToken = default) {
         AeSubscriptionContext context = GetSubscription(GetAeClient(sessionId), subscriptionId);
-        if (waitMilliseconds > 0 && context.Events.Reader.Count == 0)
-        {
+        if (waitMilliseconds > 0 && context.Events.Reader.Count == 0) {
             using var waitCts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, context.Cancellation.Token);
             waitCts.CancelAfter(TimeSpan.FromMilliseconds(waitMilliseconds));
-            try
-            {
+            try {
                 _ = await context.Events.Reader.WaitToReadAsync(waitCts.Token).ConfigureAwait(false);
             }
-            catch (OperationCanceledException) when (waitCts.IsCancellationRequested)
-            {
+            catch (OperationCanceledException) when (waitCts.IsCancellationRequested) {
             }
         }
 
         int limit = maxNotifications <= 0 ? int.MaxValue : maxNotifications;
         var events = new List<OpcEventNotificationDto>();
-        while (events.Count < limit && context.Events.Reader.TryRead(out OpcEventNotification? notification))
-        {
+        while (events.Count < limit && context.Events.Reader.TryRead(out OpcEventNotification? notification)) {
             events.Add(ToEventDto(notification));
         }
 
@@ -376,16 +345,13 @@ public sealed class AeClientTools
         string sessionId,
         [Description("Subscription identifier returned by opcclassic.ae.create_subscription.")]
         string subscriptionId,
-        CancellationToken cancellationToken = default)
-    {
+        CancellationToken cancellationToken = default) {
         AeClientState client = GetAeClient(sessionId);
         AeSubscriptionContext context = GetSubscription(client, subscriptionId);
-        if (context.Subscription is not null)
-        {
+        if (context.Subscription is not null) {
             await context.Subscription.RefreshAsync(cancellationToken).ConfigureAwait(false);
         }
-        else
-        {
+        else {
             await client.SubscriptionMgt.RefreshAsync(context.ClientSubscription, cancellationToken).ConfigureAwait(false);
         }
 
@@ -410,11 +376,9 @@ public sealed class AeClientTools
         DateTimeOffset? activeTime = null,
         [Description("Optional AE cookie for DCOM acknowledgements. Use the event Cookie returned by poll_events.")]
         int cookie = 0,
-        CancellationToken cancellationToken = default)
-    {
+        CancellationToken cancellationToken = default) {
         AeClientState client = GetAeClient(sessionId);
-        if (client.ManagedServer is not null)
-        {
+        if (client.ManagedServer is not null) {
             IReadOnlyList<AckResult> results = await client.ManagedServer.AcknowledgeAsync(actor, comment, [new ConditionRef(source, conditionName)], cancellationToken).ConfigureAwait(false);
             return results.Select(static result => new OpcResultDto(result.ResultId.Code, DescribeHResult(result.ResultId.Code), result.ResultId.IsSuccess, ItemName: result.Condition.ToString())).ToArray();
         }
@@ -444,8 +408,7 @@ public sealed class AeClientTools
         string conditionName,
         [Description("Optional event attribute IDs whose current values should be returned.")]
         int[]? attributeIds = null,
-        CancellationToken cancellationToken = default)
-    {
+        CancellationToken cancellationToken = default) {
         AeClientState client = GetAeClient(sessionId);
         OpcConditionState state = await client.EventServer.GetConditionStateAsync(source, conditionName, attributeIds ?? [], cancellationToken).ConfigureAwait(false);
         return ToConditionStateDto(state, attributeIds ?? []);
@@ -458,11 +421,9 @@ public sealed class AeClientTools
         [Description("The connected OPC Classic sessionId.")]
         string sessionId,
         [Description("Subscription identifier returned by opcclassic.ae.create_subscription.")]
-        string subscriptionId)
-    {
+        string subscriptionId) {
         AeClientState client = GetAeClient(sessionId);
-        if (!client.Subscriptions.TryRemove(subscriptionId, out AeSubscriptionContext? context))
-        {
+        if (!client.Subscriptions.TryRemove(subscriptionId, out AeSubscriptionContext? context)) {
             return new OpcResultDto(1, $"AE subscription '{subscriptionId}' was not found.", Succeeded: false, SubscriptionId: subscriptionId);
         }
 
@@ -475,13 +436,11 @@ public sealed class AeClientTools
     [Description("Disconnects the session from its OPC AE server and releases AE subscriptions and channels.")]
     public async Task<OpcResultDto> Disconnect(
         [Description("The connected OPC Classic sessionId.")]
-        string sessionId)
-    {
+        string sessionId) {
         OpcSession session = _sessionManager.GetSession(sessionId);
         AeClientState? client = session.AeClient;
         session.AeClient = null;
-        if (client is not null)
-        {
+        if (client is not null) {
             await client.DisposeAsync().ConfigureAwait(false);
             return new OpcResultDto(0, "AE client disconnected.", Succeeded: true);
         }
@@ -489,8 +448,7 @@ public sealed class AeClientTools
         return new OpcResultDto(1, "AE client was not connected.", Succeeded: false);
     }
 
-    private AeClientState GetAeClient(string sessionId)
-    {
+    private AeClientState GetAeClient(string sessionId) {
         OpcSession session = _sessionManager.GetSession(sessionId);
         return session.AeClient ?? throw new McpException($"Session '{sessionId}' is not connected to an OPC AE server. Call opcclassic.ae.connect first.");
     }
@@ -500,17 +458,13 @@ public sealed class AeClientTools
             ? subscription
             : throw new McpException($"AE subscription '{subscriptionId}' was not found.");
 
-    private static async Task PumpEventsAsync(AeSubscriptionContext context)
-    {
-        try
-        {
-            await foreach (EventNotification notification in context.Subscription!.Events.WithCancellation(context.Cancellation.Token).ConfigureAwait(false))
-            {
+    private static async Task PumpEventsAsync(AeSubscriptionContext context) {
+        try {
+            await foreach (EventNotification notification in context.Subscription!.Events.WithCancellation(context.Cancellation.Token).ConfigureAwait(false)) {
                 await context.Events.Writer.WriteAsync(ToRawNotification(notification), context.Cancellation.Token).ConfigureAwait(false);
             }
         }
-        catch (OperationCanceledException)
-        {
+        catch (OperationCanceledException) {
         }
     }
 
@@ -544,8 +498,7 @@ public sealed class AeClientTools
             status.MaxReturnValues,
             status.IsOperational);
 
-    private static OpcEventNotification ToRawNotification(EventNotification notification)
-    {
+    private static OpcEventNotification ToRawNotification(EventNotification notification) {
         OpcVariant[] attributes = notification.Attributes.Values.Select(ToVariantObject).ToArray();
         return new OpcEventNotification(
             changeMask: 0,
@@ -609,11 +562,9 @@ public sealed class AeClientTools
             state.SubConditionDescriptions,
             ToAttributeDtos(state.EventAttributes, attributeIds, state.Errors));
 
-    private static IReadOnlyList<OpcEventAttributeValueDto> ToAttributeDtos(IReadOnlyList<OpcVariant> values, IReadOnlyList<int>? attributeIds, IReadOnlyList<int>? errors)
-    {
+    private static IReadOnlyList<OpcEventAttributeValueDto> ToAttributeDtos(IReadOnlyList<OpcVariant> values, IReadOnlyList<int>? attributeIds, IReadOnlyList<int>? errors) {
         var results = new List<OpcEventAttributeValueDto>(values.Count);
-        for (int i = 0; i < values.Count; i++)
-        {
+        for (int i = 0; i < values.Count; i++) {
             int hresult = errors is not null && i < errors.Count ? errors[i] : OpcResultId.Ok.Code;
             results.Add(new OpcEventAttributeValueDto(
                 attributeIds is not null && i < attributeIds.Count ? attributeIds[i] : null,
@@ -626,18 +577,14 @@ public sealed class AeClientTools
         return results;
     }
 
-    private static EventType ParseEventTypes(string? eventTypes)
-    {
-        if (string.IsNullOrWhiteSpace(eventTypes) || eventTypes.Equals("all", StringComparison.OrdinalIgnoreCase))
-        {
+    private static EventType ParseEventTypes(string? eventTypes) {
+        if (string.IsNullOrWhiteSpace(eventTypes) || eventTypes.Equals("all", StringComparison.OrdinalIgnoreCase)) {
             return EventType.All;
         }
 
         EventType result = EventType.None;
-        foreach (string token in eventTypes.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))
-        {
-            result |= token.ToLowerInvariant() switch
-            {
+        foreach (string token in eventTypes.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)) {
+            result |= token.ToLowerInvariant() switch {
                 "simple" => EventType.Simple,
                 "tracking" => EventType.Tracking,
                 "condition" or "conditions" => EventType.Condition,
@@ -650,26 +597,21 @@ public sealed class AeClientTools
         return result == EventType.None ? EventType.All : result;
     }
 
-    private static OpcVariant ToVariantObject(object? value)
-    {
-        try
-        {
+    private static OpcVariant ToVariantObject(object? value) {
+        try {
             return value is JsonElement element ? ToVariant(element) : OpcVariantConverter.FromObject(NormalizeInputValue(value));
         }
-        catch (ArgumentException)
-        {
+        catch (ArgumentException) {
             return OpcVariant.FromString(value?.ToString() ?? string.Empty);
         }
     }
 
-    private static object? NormalizeInputValue(object? value) => value switch
-    {
+    private static object? NormalizeInputValue(object? value) => value switch {
         DateTimeOffset dto => dto.UtcDateTime,
         _ => value,
     };
 
-    internal static OpcVariant ToVariant(JsonElement value) => value.ValueKind switch
-    {
+    internal static OpcVariant ToVariant(JsonElement value) => value.ValueKind switch {
         JsonValueKind.Null or JsonValueKind.Undefined => OpcVariant.Null,
         JsonValueKind.True => OpcVariant.FromBoolean(true),
         JsonValueKind.False => OpcVariant.FromBoolean(false),
@@ -680,28 +622,23 @@ public sealed class AeClientTools
         _ => OpcVariant.FromString(value.GetRawText()),
     };
 
-    internal static OpcVariant StringToVariant(string? value)
-    {
-        if (value is null)
-        {
+    internal static OpcVariant StringToVariant(string? value) {
+        if (value is null) {
             return OpcVariant.Null;
         }
 
-        if (DateTime.TryParse(value, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal, out DateTime dateTime))
-        {
+        if (DateTime.TryParse(value, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal, out DateTime dateTime)) {
             return OpcVariant.FromDate(dateTime);
         }
 
-        if (Guid.TryParse(value, out Guid guid))
-        {
+        if (Guid.TryParse(value, out Guid guid)) {
             return OpcVariant.FromClsid(guid);
         }
 
         return OpcVariant.FromString(value);
     }
 
-    internal static object? NormalizeValue(object? value) => value switch
-    {
+    internal static object? NormalizeValue(object? value) => value switch {
         DateTime dateTime => DateTime.SpecifyKind(dateTime, DateTimeKind.Utc),
         DateTimeOffset dateTimeOffset => dateTimeOffset.UtcDateTime,
         OpcVariant variant => NormalizeValue(OpcVariantConverter.ToObject(variant)),
@@ -709,17 +646,14 @@ public sealed class AeClientTools
         _ => value,
     };
 
-    internal static string DescribeHResult(int hresult) => hresult switch
-    {
+    internal static string DescribeHResult(int hresult) => hresult switch {
         0 => "S_OK",
         1 => "S_FALSE",
         _ => new OpcResultId(hresult, null).ToString(),
     };
 
-    private sealed class DefaultOpcAeConnectionFactory : IOpcAeConnectionFactory
-    {
-        public async Task<AeClientState> ConnectAsync(AeConnectionRequest request, CancellationToken cancellationToken = default)
-        {
+    private sealed class DefaultOpcAeConnectionFactory : IOpcAeConnectionFactory {
+        public async Task<AeClientState> ConnectAsync(AeConnectionRequest request, CancellationToken cancellationToken = default) {
             ArgumentNullException.ThrowIfNull(request);
             OpcMcpDcomConnectionRequest normalized = OpcMcpDcomConnectionHelper.NormalizeRequest(
                 request.Host,
@@ -733,10 +667,8 @@ public sealed class AeClientTools
                 "opcae");
 
             string? inMemoryKey = OpcMcpDcomConnectionHelper.TryGetInMemoryKey(normalized.ConnectionString);
-            if (inMemoryKey is not null)
-            {
-                if (!InMemoryAeConnectionRegistry.TryGet(inMemoryKey, out InMemoryAeConnection connection))
-                {
+            if (inMemoryKey is not null) {
+                if (!InMemoryAeConnectionRegistry.TryGet(inMemoryKey, out InMemoryAeConnection connection)) {
                     throw new McpException($"No in-memory AE channel is registered for '{inMemoryKey}'.");
                 }
 
@@ -753,8 +685,7 @@ public sealed class AeClientTools
             // scenarios where the protocol stub (opcae_ps.dll) is undesirable
             // or unavailable. External OPC AE servers still need the standard
             // DCOM activation path below.
-            if (OpcMcpDcomConnectionHelper.TryGetTcpEndpoint(normalized.ConnectionString, out string tcpHost, out int tcpPort))
-            {
+            if (OpcMcpDcomConnectionHelper.TryGetTcpEndpoint(normalized.ConnectionString, out string tcpHost, out int tcpPort)) {
                 TcpClientTransport tcpTransport = await TcpClientTransport.ConnectAsync(tcpHost, tcpPort, cancellationToken).ConfigureAwait(false);
                 var tcpChannel = new DcomCallChannel(tcpTransport, NoOpAuthContext.Instance);
                 return new AeClientState(
@@ -790,8 +721,7 @@ internal sealed record OpcMcpDcomConnectionRequest(
     string? ConnectionString,
     string? AuthLevel = null);
 
-internal static class OpcMcpDcomConnectionHelper
-{
+internal static class OpcMcpDcomConnectionHelper {
     private const int EndpointMapperPort = 135;
     private const int RemoteCreateInstanceOpnum = 4;
     private const int ClassContext = 0x14;
@@ -812,31 +742,24 @@ internal static class OpcMcpDcomConnectionHelper
         bool useKerberos,
         string? connectionString,
         string? authLevel,
-        string opcScheme)
-    {
+        string opcScheme) {
         string normalizedHost = string.IsNullOrWhiteSpace(host) ? "localhost" : host.Trim();
         string? normalizedProgId = NormalizeText(progId);
         string? normalizedClsid = NormalizeText(clsid);
         string? normalizedConnectionString = NormalizeText(connectionString);
-        if (normalizedConnectionString is not null && Uri.TryCreate(normalizedConnectionString, UriKind.Absolute, out Uri? uri))
-        {
-            if (uri.Scheme.Equals("inmemory", StringComparison.OrdinalIgnoreCase))
-            {
+        if (normalizedConnectionString is not null && Uri.TryCreate(normalizedConnectionString, UriKind.Absolute, out Uri? uri)) {
+            if (uri.Scheme.Equals("inmemory", StringComparison.OrdinalIgnoreCase)) {
                 return new OpcMcpDcomConnectionRequest(normalizedHost, normalizedProgId, normalizedClsid, username, password, useKerberos, normalizedConnectionString, authLevel);
             }
 
-            if (uri.Scheme.Equals("dcom", StringComparison.OrdinalIgnoreCase) || uri.Scheme.Equals(opcScheme, StringComparison.OrdinalIgnoreCase))
-            {
+            if (uri.Scheme.Equals("dcom", StringComparison.OrdinalIgnoreCase) || uri.Scheme.Equals(opcScheme, StringComparison.OrdinalIgnoreCase)) {
                 normalizedHost = string.IsNullOrWhiteSpace(uri.Host) ? normalizedHost : uri.Host;
                 string pathValue = uri.AbsolutePath.Trim('/');
-                if (!string.IsNullOrWhiteSpace(pathValue))
-                {
-                    if (Guid.TryParse(pathValue, out _))
-                    {
+                if (!string.IsNullOrWhiteSpace(pathValue)) {
+                    if (Guid.TryParse(pathValue, out _)) {
                         normalizedClsid = pathValue;
                     }
-                    else
-                    {
+                    else {
                         normalizedProgId = pathValue;
                     }
                 }
@@ -846,16 +769,13 @@ internal static class OpcMcpDcomConnectionHelper
         return new OpcMcpDcomConnectionRequest(normalizedHost, normalizedProgId, normalizedClsid, username, password, useKerberos, normalizedConnectionString, authLevel);
     }
 
-    public static string? TryGetInMemoryKey(string? connectionString)
-    {
-        if (string.IsNullOrWhiteSpace(connectionString))
-        {
+    public static string? TryGetInMemoryKey(string? connectionString) {
+        if (string.IsNullOrWhiteSpace(connectionString)) {
             return null;
         }
 
         if (Uri.TryCreate(connectionString, UriKind.Absolute, out Uri? uri)
-            && uri.Scheme.Equals("inmemory", StringComparison.OrdinalIgnoreCase))
-        {
+            && uri.Scheme.Equals("inmemory", StringComparison.OrdinalIgnoreCase)) {
             string key = uri.Host + uri.AbsolutePath.Trim('/');
             return string.IsNullOrWhiteSpace(key) ? null : key;
         }
@@ -883,27 +803,22 @@ internal static class OpcMcpDcomConnectionHelper
     /// those, use the <c>opcae://</c> / <c>opcda://</c> / <c>opchda://</c>
     /// schemes (or bare <c>progId</c> / <c>clsid</c>) instead.
     /// </remarks>
-    public static bool TryGetTcpEndpoint(string? connectionString, out string host, out int port)
-    {
+    public static bool TryGetTcpEndpoint(string? connectionString, out string host, out int port) {
         host = string.Empty;
         port = 0;
-        if (string.IsNullOrWhiteSpace(connectionString))
-        {
+        if (string.IsNullOrWhiteSpace(connectionString)) {
             return false;
         }
 
-        if (!Uri.TryCreate(connectionString, UriKind.Absolute, out Uri? uri))
-        {
+        if (!Uri.TryCreate(connectionString, UriKind.Absolute, out Uri? uri)) {
             return false;
         }
 
-        if (!uri.Scheme.Equals("tcp", StringComparison.OrdinalIgnoreCase))
-        {
+        if (!uri.Scheme.Equals("tcp", StringComparison.OrdinalIgnoreCase)) {
             return false;
         }
 
-        if (string.IsNullOrWhiteSpace(uri.Host) || uri.Port <= 0 || uri.Port > 65535)
-        {
+        if (string.IsNullOrWhiteSpace(uri.Host) || uri.Port <= 0 || uri.Port > 65535) {
             return false;
         }
 
@@ -918,8 +833,7 @@ internal static class OpcMcpDcomConnectionHelper
         Guid[] categoryIds,
         string opcScheme,
         CancellationToken cancellationToken,
-        Guid[]? additionalIids = null)
-    {
+        Guid[]? additionalIids = null) {
         Guid clsid = await ResolveClsidAsync(request, categoryIds, opcScheme, cancellationToken).ConfigureAwait(false);
         // Use the legacy IActivation::RemoteActivation (opnum 0) path rather than
         // the newer IRemoteSCMActivator::RemoteCreateInstance (opnum 4). The former
@@ -930,8 +844,7 @@ internal static class OpcMcpDcomConnectionHelper
         // against many real-world OPC servers). Matches the DA-side pattern in
         // DaClientTools.DefaultOpcDaConnectionFactory.ConnectAsync.
         Opc.Classic.Dcom.Activation.ActivationClient? activationClient = null;
-        try
-        {
+        try {
             IAuthContext activationAuth = CreateAuthContext(request, clsid, opcScheme);
             activationClient = await Opc.Classic.Dcom.Activation.ActivationClient.ConnectTcpAsync(
                 request.Host, activationAuth, cancellationToken).ConfigureAwait(false);
@@ -941,18 +854,14 @@ internal static class OpcMcpDcomConnectionHelper
             // distinct IPIDs per interface so subsequent AlterContext for
             // tearoff interfaces succeeds. Mirrors the DA pattern (6+ IIDs).
             var iidList = new List<Guid> { requestedIid };
-            if (additionalIids is not null)
-            {
-                foreach (Guid extra in additionalIids)
-                {
-                    if (extra != Guid.Empty && extra != requestedIid && !iidList.Contains(extra))
-                    {
+            if (additionalIids is not null) {
+                foreach (Guid extra in additionalIids) {
+                    if (extra != Guid.Empty && extra != requestedIid && !iidList.Contains(extra)) {
                         iidList.Add(extra);
                     }
                 }
             }
-            if (requestedIid != IID_IUnknown && !iidList.Contains(IID_IUnknown))
-            {
+            if (requestedIid != IID_IUnknown && !iidList.Contains(IID_IUnknown)) {
                 iidList.Add(IID_IUnknown);
             }
             Guid[] requestedIids = iidList.ToArray();
@@ -964,24 +873,20 @@ internal static class OpcMcpDcomConnectionHelper
                     requestedIids,
                     cancellationToken).ConfigureAwait(false);
 
-            if (activation.Hresult != 0)
-            {
+            if (activation.Hresult != 0) {
                 throw new InvalidOperationException(
                     $"IActivation::RemoteActivation returned HRESULT 0x{unchecked((uint)activation.Hresult):X8}.");
             }
-            if (activation.InterfaceResults is null || activation.InterfaceResults.Count == 0)
-            {
+            if (activation.InterfaceResults is null || activation.InterfaceResults.Count == 0) {
                 throw new InvalidOperationException("IActivation::RemoteActivation returned no per-IID results.");
             }
             var primary = activation.InterfaceResults[0];
-            if (primary.Hresult != 0 || primary.ObjRef.Length == 0)
-            {
+            if (primary.Hresult != 0 || primary.ObjRef.Length == 0) {
                 throw new InvalidOperationException(
                     $"IActivation::RemoteActivation did not return an OBJREF for {requestedIid:D} (per-IID HRESULT 0x{unchecked((uint)primary.Hresult):X8}).");
             }
 
-            if (!TryDecodeObjRef(primary.ObjRef.Span, out IOpcInterfaceRef? serverRef))
-            {
+            if (!TryDecodeObjRef(primary.ObjRef.Span, out IOpcInterfaceRef? serverRef)) {
                 throw new InvalidOperationException("IActivation::RemoteActivation returned an OBJREF that could not be decoded.");
             }
 
@@ -991,8 +896,7 @@ internal static class OpcMcpDcomConnectionHelper
             IAuthContext serverAuth = CreateAuthContext(request, clsid, opcScheme);
             var transportFactory = new TcpSocketTransportFactory();
             ICallChannel serverChannel;
-            if (!serverRef!.Ipid.Equals(Guid.Empty))
-            {
+            if (!serverRef!.Ipid.Equals(Guid.Empty)) {
                 var transport = await transportFactory.ConnectAsync(endpoint, cancellationToken).ConfigureAwait(false);
                 serverChannel = new DcomCallChannel(
                     transport,
@@ -1000,8 +904,7 @@ internal static class OpcMcpDcomConnectionHelper
                     serverRef.Ipid,
                     requestedIids);
             }
-            else
-            {
+            else {
                 var channelFactory = new DcomCallChannelFactory(new TcpSocketTransportFactory());
                 serverChannel = await channelFactory.ConnectAsync(
                     endpoint,
@@ -1013,24 +916,19 @@ internal static class OpcMcpDcomConnectionHelper
 
             // Register IRemUnknown routing so QueryInterface / Release path works.
             if (serverChannel is DcomCallChannel routableChannel
-                && !activation.IpidRemUnknown.Equals(Guid.Empty))
-            {
+                && !activation.IpidRemUnknown.Equals(Guid.Empty)) {
                 routableChannel.RegisterInterfaceIpid(IRemUnknown.InterfaceId, activation.IpidRemUnknown);
             }
 
             // Register per-IID IPIDs so subsequent AlterContext requests for
             // tearoff interfaces route to the matching server-side IPID.
-            if (serverChannel is DcomCallChannel multiIidChannel)
-            {
-                for (int i = 0; i < activation.InterfaceResults.Count && i < requestedIids.Length; i++)
-                {
+            if (serverChannel is DcomCallChannel multiIidChannel) {
+                for (int i = 0; i < activation.InterfaceResults.Count && i < requestedIids.Length; i++) {
                     var ir = activation.InterfaceResults[i];
-                    if (ir.Hresult != 0 || ir.ObjRef.Length == 0)
-                    {
+                    if (ir.Hresult != 0 || ir.ObjRef.Length == 0) {
                         continue;
                     }
-                    if (!TryDecodeObjRef(ir.ObjRef.Span, out IOpcInterfaceRef? ifaceRef) || ifaceRef!.Ipid.Equals(Guid.Empty))
-                    {
+                    if (!TryDecodeObjRef(ir.ObjRef.Span, out IOpcInterfaceRef? ifaceRef) || ifaceRef!.Ipid.Equals(Guid.Empty)) {
                         continue;
                     }
                     multiIidChannel.RegisterInterfaceIpid(requestedIids[i], ifaceRef.Ipid);
@@ -1039,65 +937,54 @@ internal static class OpcMcpDcomConnectionHelper
 
             return (serverChannel, clsid);
         }
-        finally
-        {
-            if (activationClient is not null)
-            {
+        finally {
+            if (activationClient is not null) {
                 await activationClient.DisposeAsync().ConfigureAwait(false);
             }
         }
     }
 
-    private static EndPoint? ResolveObjectEndpointFromOxidBindings(string fallbackHost, ReadOnlySpan<byte> oxidBindings)
-    {
+    private static EndPoint? ResolveObjectEndpointFromOxidBindings(string fallbackHost, ReadOnlySpan<byte> oxidBindings) {
         // Mirror of DaClientTools.DefaultOpcDaConnectionFactory.ResolveObjectEndpointFromOxidBindings.
         // Walks the DUALSTRINGARRAY in the activation response to find the first
         // ncacn_ip_tcp entry that carries an explicit [port] suffix (the OXID
         // resolver's own entry is port-less and gets skipped).
-        if (oxidBindings.Length < 4)
-        {
+        if (oxidBindings.Length < 4) {
             return null;
         }
 
         ushort secOffset = BinaryPrimitives.ReadUInt16LittleEndian(oxidBindings.Slice(2));
         int idx = 4;
         int entriesConsumed = 2;
-        while (idx + 2 <= oxidBindings.Length && entriesConsumed < secOffset)
-        {
+        while (idx + 2 <= oxidBindings.Length && entriesConsumed < secOffset) {
             ushort tower = BinaryPrimitives.ReadUInt16LittleEndian(oxidBindings.Slice(idx));
             idx += 2;
             entriesConsumed++;
-            if (tower == 0)
-            {
+            if (tower == 0) {
                 return null;
             }
             var sb = new System.Text.StringBuilder();
-            while (idx + 2 <= oxidBindings.Length && entriesConsumed < secOffset)
-            {
+            while (idx + 2 <= oxidBindings.Length && entriesConsumed < secOffset) {
                 ushort ch = BinaryPrimitives.ReadUInt16LittleEndian(oxidBindings.Slice(idx));
                 idx += 2;
                 entriesConsumed++;
                 if (ch == 0) break;
                 sb.Append((char)ch);
             }
-            if (tower != TcpTowerId)
-            {
+            if (tower != TcpTowerId) {
                 continue;
             }
             string address = sb.ToString();
             int bracket = address.LastIndexOf('[');
-            if (bracket < 0 || !address.EndsWith(']'))
-            {
+            if (bracket < 0 || !address.EndsWith(']')) {
                 continue;
             }
             string portStr = address.Substring(bracket + 1, address.Length - bracket - 2);
-            if (!int.TryParse(portStr, System.Globalization.NumberStyles.None, System.Globalization.CultureInfo.InvariantCulture, out int port))
-            {
+            if (!int.TryParse(portStr, System.Globalization.NumberStyles.None, System.Globalization.CultureInfo.InvariantCulture, out int port)) {
                 continue;
             }
             string host = address.Substring(0, bracket);
-            if (string.IsNullOrWhiteSpace(host))
-            {
+            if (string.IsNullOrWhiteSpace(host)) {
                 host = fallbackHost;
             }
             return new DnsEndPoint(host, port);
@@ -1109,20 +996,16 @@ internal static class OpcMcpDcomConnectionHelper
         OpcMcpDcomConnectionRequest request,
         Guid[] categoryIds,
         string opcScheme,
-        CancellationToken cancellationToken)
-    {
-        if (Guid.TryParse(request.Clsid, out Guid clsid))
-        {
+        CancellationToken cancellationToken) {
+        if (Guid.TryParse(request.Clsid, out Guid clsid)) {
             return clsid;
         }
 
-        if (Guid.TryParse(request.ProgId, out clsid))
-        {
+        if (Guid.TryParse(request.ProgId, out clsid)) {
             return clsid;
         }
 
-        if (string.IsNullOrWhiteSpace(request.ProgId))
-        {
+        if (string.IsNullOrWhiteSpace(request.ProgId)) {
             throw new McpException("Provide an OPC server ProgID, CLSID, or connectionString.");
         }
 
@@ -1143,8 +1026,7 @@ internal static class OpcMcpDcomConnectionHelper
         return match?.ClassId ?? throw new McpException($"OPC ProgID '{request.ProgId}' was not found on host '{request.Host}'.");
     }
 
-    private static IAuthContext CreateAuthContext(OpcMcpDcomConnectionRequest request, Guid clsid, string opcScheme)
-    {
+    private static IAuthContext CreateAuthContext(OpcMcpDcomConnectionRequest request, Guid clsid, string opcScheme) {
         NetworkCredential? credentials = CreateCredential(request.Username, request.Password);
         OpcUrl url = OpcUrl.Parse($"{opcScheme}://{request.Host}/{(request.ProgId ?? clsid.ToString("D"))}");
         OpcProtectionLevel protectionLevel = OpcMcpAuthLevel.ParseOrDefault(request.AuthLevel);
@@ -1165,8 +1047,7 @@ internal static class OpcMcpDcomConnectionHelper
         return NtlmAuthentication.CreateAuthContext(connectData);
     }
 
-    private static OpcConnectData? CreateDiscoveryConnectData(OpcMcpDcomConnectionRequest request, string opcScheme)
-    {
+    private static OpcConnectData? CreateDiscoveryConnectData(OpcMcpDcomConnectionRequest request, string opcScheme) {
         NetworkCredential? credentials = CreateCredential(request.Username, request.Password);
         OpcProtectionLevel protectionLevel = OpcMcpAuthLevel.ParseOrDefault(request.AuthLevel);
         OpcUrl url = OpcUrl.Parse($"{opcScheme}://{request.Host}/OPC.ServerList.1");
@@ -1174,8 +1055,7 @@ internal static class OpcMcpDcomConnectionHelper
         // no credentials are supplied, default to Windows SSO so the discovery
         // bind+activation use a valid logon token. This mirrors the main
         // server connection in CreateAuthContext.
-        if (credentials is null)
-        {
+        if (credentials is null) {
             return OpcConnectData.WithWindowsSso(url, protectionLevel);
         }
 
@@ -1184,18 +1064,15 @@ internal static class OpcMcpDcomConnectionHelper
             : OpcConnectData.WithNtlmV2(url, credentials, protectionLevel);
     }
 
-    private static NetworkCredential? CreateCredential(string? username, string? password)
-    {
-        if (string.IsNullOrWhiteSpace(username))
-        {
+    private static NetworkCredential? CreateCredential(string? username, string? password) {
+        if (string.IsNullOrWhiteSpace(username)) {
             return null;
         }
 
         string user = username.Trim();
         string domain = string.Empty;
         int slash = user.IndexOf('\\', StringComparison.Ordinal);
-        if (slash > 0 && slash < user.Length - 1)
-        {
+        if (slash > 0 && slash < user.Length - 1) {
             domain = user[..slash];
             user = user[(slash + 1)..];
         }
@@ -1207,8 +1084,7 @@ internal static class OpcMcpDcomConnectionHelper
         string host,
         Guid clsid,
         Guid requestedIid,
-        OpcProtectionLevel activationProtectionLevel)
-    {
+        OpcProtectionLevel activationProtectionLevel) {
         var activationProperties = new ActivationProperties(
             new SpecialPropertiesData(ActivationComVersion.V5_6, Mode: 0, ClassContext, requestedIid, Array.Empty<int>()),
             new InstanceInfo(clsid, requestedIid, ClassContext, Mode: 0),
@@ -1217,8 +1093,7 @@ internal static class OpcMcpDcomConnectionHelper
             new SecurityInfo(ToActivationAuthenticationLevel(activationProtectionLevel), ImpersonationLevel: 3, Capabilities: 0));
         byte[] encodedProperties = ActivationInfoCodec.Encode(activationProperties);
 
-        return WritePayload((ref NdrWriter writer) =>
-        {
+        return WritePayload((ref NdrWriter writer) => {
             writer.WriteGuid(clsid);
             writer.WriteGuid(requestedIid);
             writer.WriteUInt32(1);
@@ -1234,109 +1109,89 @@ internal static class OpcMcpDcomConnectionHelper
     private static int ToActivationAuthenticationLevel(OpcProtectionLevel protectionLevel) =>
         (int)NormalizeActivationProtection(protectionLevel);
 
-    private static IOpcInterfaceRef DecodeRemoteCreateInstanceResponse(NdrCallResult result)
-    {
+    private static IOpcInterfaceRef DecodeRemoteCreateInstanceResponse(NdrCallResult result) {
         OpcException.ThrowIfFailed(new OpcResultId(result.Hresult, null), "IRemoteSCMActivator::RemoteCreateInstance");
-        if (result.ResponsePayload.IsEmpty)
-        {
+        if (result.ResponsePayload.IsEmpty) {
             throw new InvalidOperationException("RemoteCreateInstance did not return an OPC OBJREF.");
         }
 
         ReadOnlySpan<byte> response = result.ResponsePayload.Span;
-        if (TryDecodeObjRef(response, out IOpcInterfaceRef? directObjRef))
-        {
+        if (TryDecodeObjRef(response, out IOpcInterfaceRef? directObjRef)) {
             return directObjRef!;
         }
 
-        if (TryDecodeActivationProperties(response, out IOpcInterfaceRef? activationObjRef))
-        {
+        if (TryDecodeActivationProperties(response, out IOpcInterfaceRef? activationObjRef)) {
             return activationObjRef!;
         }
 
         return DecodeLengthPrefixedObjRef(response);
     }
 
-    private static IOpcInterfaceRef DecodeLengthPrefixedObjRef(ReadOnlySpan<byte> response)
-    {
+    private static IOpcInterfaceRef DecodeLengthPrefixedObjRef(ReadOnlySpan<byte> response) {
         var reader = new NdrReader(response);
         int innerHresult = reader.ReadInt32();
         OpcException.ThrowIfFailed(new OpcResultId(innerHresult, null), "IRemoteSCMActivator::RemoteCreateInstance");
         uint objRefLength = reader.ReadUInt32();
-        if (objRefLength > reader.RemainingBytes)
-        {
+        if (objRefLength > reader.RemainingBytes) {
             throw new InvalidOperationException("RemoteCreateInstance OBJREF length exceeds the remaining response payload.");
         }
 
         byte[] objRefBytes = reader.ReadRawBytes((int)objRefLength).ToArray();
-        if (TryDecodeObjRef(objRefBytes, out IOpcInterfaceRef? objRef))
-        {
+        if (TryDecodeObjRef(objRefBytes, out IOpcInterfaceRef? objRef)) {
             return objRef!;
         }
 
         throw new InvalidOperationException("RemoteCreateInstance returned an invalid OPC OBJREF.");
     }
 
-    private static bool TryDecodeActivationProperties(ReadOnlySpan<byte> response, out IOpcInterfaceRef? objRef)
-    {
+    private static bool TryDecodeActivationProperties(ReadOnlySpan<byte> response, out IOpcInterfaceRef? objRef) {
         objRef = null;
         if (!ActivationInfoCodec.TryDecode(response, out ActivationProperties properties)
-            || properties.ScmReplyInfo?.ObjRef is not { Length: > 0 } objRefBytes)
-        {
+            || properties.ScmReplyInfo?.ObjRef is not { Length: > 0 } objRefBytes) {
             return false;
         }
 
         return TryDecodeObjRef(objRefBytes, out objRef);
     }
 
-    private static bool TryDecodeObjRef(ReadOnlySpan<byte> payload, out IOpcInterfaceRef? objRef)
-    {
+    private static bool TryDecodeObjRef(ReadOnlySpan<byte> payload, out IOpcInterfaceRef? objRef) {
         objRef = null;
-        if (payload.Length < sizeof(uint) || BinaryPrimitives.ReadUInt32LittleEndian(payload) != ObjRefSignature)
-        {
+        if (payload.Length < sizeof(uint) || BinaryPrimitives.ReadUInt32LittleEndian(payload) != ObjRefSignature) {
             return false;
         }
 
-        try
-        {
+        try {
             var reader = new NdrReader(payload);
             objRef = OpcInterfaceRefCodec.Read(ref reader);
             return true;
         }
-        catch (ArgumentException)
-        {
+        catch (ArgumentException) {
             return false;
         }
-        catch (InvalidOperationException)
-        {
+        catch (InvalidOperationException) {
             return false;
         }
     }
 
-    private static EndPoint ResolveObjectEndpoint(string fallbackHost, IOpcInterfaceRef interfaceRef)
-    {
-        if (TryFindTcpBinding(interfaceRef.ResolverBindings, out string? host, out int port))
-        {
+    private static EndPoint ResolveObjectEndpoint(string fallbackHost, IOpcInterfaceRef interfaceRef) {
+        if (TryFindTcpBinding(interfaceRef.ResolverBindings, out string? host, out int port)) {
             return new DnsEndPoint(string.IsNullOrWhiteSpace(host) ? fallbackHost : host, port);
         }
 
         return new DnsEndPoint(fallbackHost, EndpointMapperPort);
     }
 
-    private static bool TryFindTcpBinding(IReadOnlyList<ushort> entries, out string? host, out int port)
-    {
+    private static bool TryFindTcpBinding(IReadOnlyList<ushort> entries, out string? host, out int port) {
         host = null;
         port = EndpointMapperPort;
-        for (int index = 0; index < entries.Count;)
-        {
+        for (int index = 0; index < entries.Count;) {
             ushort towerId = entries[index++];
-            if (towerId == 0)
-            {
+            if (towerId == 0) {
                 return false;
             }
 
             string networkAddress = ReadNullTerminatedString(entries, ref index);
-            if (towerId != TcpTowerId)
-            {
+            if (towerId != TcpTowerId) {
                 continue;
             }
 
@@ -1347,15 +1202,12 @@ internal static class OpcMcpDcomConnectionHelper
         return false;
     }
 
-    private static string ReadNullTerminatedString(IReadOnlyList<ushort> entries, ref int index)
-    {
+    private static string ReadNullTerminatedString(IReadOnlyList<ushort> entries, ref int index) {
         var chars = new char[Math.Max(0, entries.Count - index)];
         int length = 0;
-        while (index < entries.Count)
-        {
+        while (index < entries.Count) {
             ushort value = entries[index++];
-            if (value == 0)
-            {
+            if (value == 0) {
                 break;
             }
 
@@ -1365,48 +1217,39 @@ internal static class OpcMcpDcomConnectionHelper
         return new string(chars, 0, length);
     }
 
-    private static void ParseNetworkAddress(string networkAddress, out string? host, out int port)
-    {
+    private static void ParseNetworkAddress(string networkAddress, out string? host, out int port) {
         host = networkAddress;
         port = EndpointMapperPort;
         int bracketStart = networkAddress.LastIndexOf('[');
-        if (bracketStart < 0 || !networkAddress.EndsWith("]", StringComparison.Ordinal))
-        {
+        if (bracketStart < 0 || !networkAddress.EndsWith("]", StringComparison.Ordinal)) {
             return;
         }
 
         string portText = networkAddress.Substring(bracketStart + 1, networkAddress.Length - bracketStart - 2);
-        if (int.TryParse(portText, NumberStyles.None, CultureInfo.InvariantCulture, out int parsedPort) && parsedPort is > 0 and <= 65535)
-        {
+        if (int.TryParse(portText, NumberStyles.None, CultureInfo.InvariantCulture, out int parsedPort) && parsedPort is > 0 and <= 65535) {
             port = parsedPort;
             host = networkAddress[..bracketStart];
         }
     }
 
-    private static byte[] WritePayload(NdrWriteAction action)
-    {
+    private static byte[] WritePayload(NdrWriteAction action) {
         ArgumentNullException.ThrowIfNull(action);
-        for (int size = DefaultPayloadSize; size <= MaximumPayloadSize; size *= 2)
-        {
+        for (int size = DefaultPayloadSize; size <= MaximumPayloadSize; size *= 2) {
             var buffer = new byte[size];
             var writer = new NdrWriter(buffer);
-            try
-            {
+            try {
                 action(ref writer);
                 return buffer.AsSpan(0, writer.Position).ToArray();
             }
-            catch (InvalidOperationException) when (size < MaximumPayloadSize)
-            {
+            catch (InvalidOperationException) when (size < MaximumPayloadSize) {
             }
         }
 
         throw new InvalidOperationException("Unable to encode the RemoteCreateInstance payload.");
     }
 
-    private static async ValueTask DisposeChannelAsync(ICallChannel? channel)
-    {
-        switch (channel)
-        {
+    private static async ValueTask DisposeChannelAsync(ICallChannel? channel) {
+        switch (channel) {
             case IAsyncDisposable asyncDisposable:
                 await asyncDisposable.DisposeAsync().ConfigureAwait(false);
                 break;
@@ -1420,16 +1263,12 @@ internal static class OpcMcpDcomConnectionHelper
 
     private delegate void NdrWriteAction(ref NdrWriter writer);
 
-    private sealed class TcpSocketTransportFactory : IAsyncTransportFactory
-    {
-        public async ValueTask<IAsyncTransport> ConnectAsync(EndPoint endpoint, CancellationToken cancellationToken = default)
-        {
+    private sealed class TcpSocketTransportFactory : IAsyncTransportFactory {
+        public async ValueTask<IAsyncTransport> ConnectAsync(EndPoint endpoint, CancellationToken cancellationToken = default) {
             ArgumentNullException.ThrowIfNull(endpoint);
             var client = new TcpClient();
-            try
-            {
-                switch (endpoint)
-                {
+            try {
+                switch (endpoint) {
                     case DnsEndPoint dns:
                         await client.ConnectAsync(dns.Host, dns.Port, cancellationToken).ConfigureAwait(false);
                         break;
@@ -1442,21 +1281,18 @@ internal static class OpcMcpDcomConnectionHelper
 
                 return new TcpSocketTransport(client);
             }
-            catch
-            {
+            catch {
                 client.Dispose();
                 throw;
             }
         }
     }
 
-    private sealed class TcpSocketTransport : IAsyncTransport
-    {
+    private sealed class TcpSocketTransport : IAsyncTransport {
         private readonly TcpClient _client;
         private readonly NetworkStream _stream;
 
-        public TcpSocketTransport(TcpClient client)
-        {
+        public TcpSocketTransport(TcpClient client) {
             _client = client ?? throw new ArgumentNullException(nameof(client));
             _stream = client.GetStream();
             Input = PipeReader.Create(_stream);
@@ -1473,8 +1309,7 @@ internal static class OpcMcpDcomConnectionHelper
         public async ValueTask FlushAsync(CancellationToken cancellationToken = default) =>
             await Output.FlushAsync(cancellationToken).ConfigureAwait(false);
 
-        public async ValueTask DisposeAsync()
-        {
+        public async ValueTask DisposeAsync() {
             await Input.CompleteAsync().ConfigureAwait(false);
             await Output.CompleteAsync().ConfigureAwait(false);
             await _stream.DisposeAsync().ConfigureAwait(false);

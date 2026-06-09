@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -34,8 +34,7 @@ namespace Opc.Classic.Mcp.Capture;
 /// <see cref="SemaphoreSlim"/> for the LRU eviction critical section.
 /// </para>
 /// </remarks>
-public sealed class CaptureSessionManager : IAsyncDisposable
-{
+public sealed class CaptureSessionManager : IAsyncDisposable {
     private const int kDefaultMaxActiveSessions = 8;
     private const int kDefaultMaxRetainedSessions = 32;
 
@@ -54,8 +53,7 @@ public sealed class CaptureSessionManager : IAsyncDisposable
         string scratchRoot,
         ILogger? logger = null,
         int maxActiveSessions = kDefaultMaxActiveSessions,
-        int maxRetainedSessions = kDefaultMaxRetainedSessions)
-    {
+        int maxRetainedSessions = kDefaultMaxRetainedSessions) {
         ArgumentException.ThrowIfNullOrEmpty(scratchRoot);
         ArgumentOutOfRangeException.ThrowIfLessThan(maxActiveSessions, 1);
         ArgumentOutOfRangeException.ThrowIfLessThan(maxRetainedSessions, maxActiveSessions);
@@ -77,15 +75,11 @@ public sealed class CaptureSessionManager : IAsyncDisposable
     public int Count => _sessions.Count;
 
     /// <summary>Currently Running or Starting sessions.</summary>
-    public int ActiveCount
-    {
-        get
-        {
+    public int ActiveCount {
+        get {
             int active = 0;
-            foreach (CaptureSession s in _sessions.Values)
-            {
-                if (s.State is CaptureSessionState.Starting or CaptureSessionState.Running)
-                {
+            foreach (CaptureSession s in _sessions.Values) {
+                if (s.State is CaptureSessionState.Starting or CaptureSessionState.Running) {
                     active++;
                 }
             }
@@ -103,15 +97,13 @@ public sealed class CaptureSessionManager : IAsyncDisposable
         string sourceName,
         Func<string, ICaptureSource> sourceFactory,
         CaptureStartRequest request,
-        CancellationToken cancellationToken)
-    {
+        CancellationToken cancellationToken) {
         ObjectDisposedException.ThrowIf(_disposed != 0, this);
         ArgumentException.ThrowIfNullOrEmpty(sourceName);
         ArgumentNullException.ThrowIfNull(sourceFactory);
         ArgumentNullException.ThrowIfNull(request);
 
-        if (ActiveCount >= MaxActiveSessions)
-        {
+        if (ActiveCount >= MaxActiveSessions) {
             throw new CaptureException(
                 $"Capture session limit reached ({MaxActiveSessions} active). Stop an existing session before starting another.");
         }
@@ -124,20 +116,17 @@ public sealed class CaptureSessionManager : IAsyncDisposable
 
         ICaptureSource source = sourceFactory(folder);
         var session = new CaptureSession(id, sourceName, source, folder, request, _logger);
-        if (!_sessions.TryAdd(id, session))
-        {
+        if (!_sessions.TryAdd(id, session)) {
             // Astronomically unlikely; surface clearly rather than overwrite.
             await session.DisposeAsync().ConfigureAwait(false);
             throw new CaptureException("CaptureSessionManager could not allocate a fresh session id.");
         }
 
-        try
-        {
+        try {
             await session.StartAsync(cancellationToken).ConfigureAwait(false);
             return session;
         }
-        catch
-        {
+        catch {
             _sessions.TryRemove(id, out _);
             await session.DisposeAsync().ConfigureAwait(false);
             throw;
@@ -145,11 +134,9 @@ public sealed class CaptureSessionManager : IAsyncDisposable
     }
 
     /// <summary>Looks up a session by id. Touches it for LRU bookkeeping.</summary>
-    public bool TryGet(string id, out CaptureSession session)
-    {
+    public bool TryGet(string id, out CaptureSession session) {
         ArgumentException.ThrowIfNullOrEmpty(id);
-        if (_sessions.TryGetValue(id, out CaptureSession? found))
-        {
+        if (_sessions.TryGetValue(id, out CaptureSession? found)) {
             found.Touch();
             session = found;
             return true;
@@ -160,18 +147,14 @@ public sealed class CaptureSessionManager : IAsyncDisposable
     }
 
     /// <summary>Enumerates sessions, optionally filtered by state.</summary>
-    public IReadOnlyList<CaptureSession> List(CaptureSessionState? state = null)
-    {
-        if (state is null)
-        {
+    public IReadOnlyList<CaptureSession> List(CaptureSessionState? state = null) {
+        if (state is null) {
             return _sessions.Values.ToArray();
         }
 
         var filtered = new List<CaptureSession>();
-        foreach (CaptureSession s in _sessions.Values)
-        {
-            if (s.State == state)
-            {
+        foreach (CaptureSession s in _sessions.Values) {
+            if (s.State == state) {
                 filtered.Add(s);
             }
         }
@@ -185,20 +168,16 @@ public sealed class CaptureSessionManager : IAsyncDisposable
     /// </summary>
     [SuppressMessage("Design", "CA1031:Do not catch general exception types",
         Justification = "Stop failure already logged by the session; the dispose path must run regardless.")]
-    public async Task<bool> RemoveAsync(string id, CancellationToken cancellationToken)
-    {
+    public async Task<bool> RemoveAsync(string id, CancellationToken cancellationToken) {
         ArgumentException.ThrowIfNullOrEmpty(id);
-        if (!_sessions.TryRemove(id, out CaptureSession? session))
-        {
+        if (!_sessions.TryRemove(id, out CaptureSession? session)) {
             return false;
         }
 
-        try
-        {
+        try {
             await session.StopAsync(cancellationToken).ConfigureAwait(false);
         }
-        catch
-        {
+        catch {
             // Stop failure already logged by the session; proceed to dispose.
         }
 
@@ -206,44 +185,35 @@ public sealed class CaptureSessionManager : IAsyncDisposable
         return true;
     }
 
-    private async Task EnsureRetentionCapAsync(CancellationToken cancellationToken)
-    {
-        if (_sessions.Count < MaxRetainedSessions)
-        {
+    private async Task EnsureRetentionCapAsync(CancellationToken cancellationToken) {
+        if (_sessions.Count < MaxRetainedSessions) {
             return;
         }
 
         await _evictionLock.WaitAsync(cancellationToken).ConfigureAwait(false);
-        try
-        {
-            while (_sessions.Count >= MaxRetainedSessions)
-            {
+        try {
+            while (_sessions.Count >= MaxRetainedSessions) {
                 CaptureSession? oldest = null;
-                foreach (CaptureSession s in _sessions.Values)
-                {
-                    if (s.State is CaptureSessionState.Starting or CaptureSessionState.Running)
-                    {
+                foreach (CaptureSession s in _sessions.Values) {
+                    if (s.State is CaptureSessionState.Starting or CaptureSessionState.Running) {
                         // Don't evict active sessions; the active-session cap
                         // catches the all-active corner case before we get here.
                         continue;
                     }
 
-                    if (oldest is null || s.LastTouchedAt < oldest.LastTouchedAt)
-                    {
+                    if (oldest is null || s.LastTouchedAt < oldest.LastTouchedAt) {
                         oldest = s;
                     }
                 }
 
-                if (oldest is null)
-                {
+                if (oldest is null) {
                     // All sessions are Running/Starting and at the retention cap —
                     // the caller's active-session cap check will surface a clearer
                     // message; bail out so we don't deadlock.
                     return;
                 }
 
-                if (_logger.IsEnabled(LogLevel.Information))
-                {
+                if (_logger.IsEnabled(LogLevel.Information)) {
                     _logger.LogInformation(
                         "Capture session {SessionId} evicted (LRU; touched {Touched}).",
                         oldest.Id, oldest.LastTouchedAt);
@@ -253,8 +223,7 @@ public sealed class CaptureSessionManager : IAsyncDisposable
                 await oldest.DisposeAsync().ConfigureAwait(false);
             }
         }
-        finally
-        {
+        finally {
             _evictionLock.Release();
         }
     }
@@ -262,21 +231,16 @@ public sealed class CaptureSessionManager : IAsyncDisposable
     /// <inheritdoc/>
     [SuppressMessage("Design", "CA1031:Do not catch general exception types",
         Justification = "Dispose path must release every session regardless of individual stop errors; sessions already logged failures.")]
-    public async ValueTask DisposeAsync()
-    {
-        if (Interlocked.Exchange(ref _disposed, 1) != 0)
-        {
+    public async ValueTask DisposeAsync() {
+        if (Interlocked.Exchange(ref _disposed, 1) != 0) {
             return;
         }
 
-        foreach (CaptureSession session in _sessions.Values)
-        {
-            try
-            {
+        foreach (CaptureSession session in _sessions.Values) {
+            try {
                 await session.StopAsync(CancellationToken.None).ConfigureAwait(false);
             }
-            catch
-            {
+            catch {
                 // Logged by the session.
             }
 

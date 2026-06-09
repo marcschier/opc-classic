@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -16,8 +16,7 @@ namespace Opc.Classic.Dcom.Winreg;
 /// <summary>
 /// Minimal asynchronous client for the MS-RRP WINREG named-pipe interface.
 /// </summary>
-public sealed class WinRegClient : IAsyncDisposable
-{
+public sealed class WinRegClient : IAsyncDisposable {
     /// <summary>Default named pipe endpoint for WINREG over SMB.</summary>
     public const string PipeName = "winreg";
 
@@ -39,8 +38,7 @@ public sealed class WinRegClient : IAsyncDisposable
         string userName,
         string password,
         string domain = "TESTDOMAIN",
-        CancellationToken cancellationToken = default)
-    {
+        CancellationToken cancellationToken = default) {
         ArgumentException.ThrowIfNullOrWhiteSpace(host);
         ArgumentException.ThrowIfNullOrWhiteSpace(userName);
         ArgumentNullException.ThrowIfNull(password);
@@ -58,8 +56,7 @@ public sealed class WinRegClient : IAsyncDisposable
     public Task<string[]> EnumKeyAsync(
         PolicyHandle handle,
         int index,
-        CancellationToken cancellationToken = default)
-    {
+        CancellationToken cancellationToken = default) {
         ArgumentNullException.ThrowIfNull(handle);
         ArgumentOutOfRangeException.ThrowIfNegative(index);
 
@@ -67,33 +64,27 @@ public sealed class WinRegClient : IAsyncDisposable
     }
 
     /// <summary>Calls <c>BaseRegCloseKey</c> (opnum 5) for the supplied handle.</summary>
-    public Task CloseKeyAsync(PolicyHandle handle, CancellationToken cancellationToken = default)
-    {
+    public Task CloseKeyAsync(PolicyHandle handle, CancellationToken cancellationToken = default) {
         ArgumentNullException.ThrowIfNull(handle);
         return InvokeAsync(registry => registry.CloseKey(handle), cancellationToken);
     }
 
     /// <inheritdoc />
-    public async ValueTask DisposeAsync()
-    {
-        if (_disposed)
-        {
+    public async ValueTask DisposeAsync() {
+        if (_disposed) {
             return;
         }
 
         await _callLock.WaitAsync().ConfigureAwait(false);
-        try
-        {
-            if (_disposed)
-            {
+        try {
+            if (_disposed) {
                 return;
             }
 
             _disposed = true;
             _registry.Dispose();
         }
-        finally
-        {
+        finally {
             _callLock.Release();
             _callLock.Dispose();
         }
@@ -101,57 +92,46 @@ public sealed class WinRegClient : IAsyncDisposable
 
     private async Task<T> InvokeAsync<T>(
         Func<RegistryStub, T> operation,
-        CancellationToken cancellationToken)
-    {
+        CancellationToken cancellationToken) {
         ArgumentNullException.ThrowIfNull(operation);
         cancellationToken.ThrowIfCancellationRequested();
 
         await _callLock.WaitAsync(cancellationToken).ConfigureAwait(false);
-        try
-        {
+        try {
             ObjectDisposedException.ThrowIf(_disposed, this);
             return await Task.Run(() => operation(_registry), cancellationToken).ConfigureAwait(false);
         }
-        finally
-        {
+        finally {
             _callLock.Release();
         }
     }
 
     private async Task InvokeAsync(
         Action<RegistryStub> operation,
-        CancellationToken cancellationToken)
-    {
+        CancellationToken cancellationToken) {
         ArgumentNullException.ThrowIfNull(operation);
         cancellationToken.ThrowIfCancellationRequested();
 
         await _callLock.WaitAsync(cancellationToken).ConfigureAwait(false);
-        try
-        {
+        try {
             ObjectDisposedException.ThrowIf(_disposed, this);
             await Task.Run(() => operation(_registry), cancellationToken).ConfigureAwait(false);
         }
-        finally
-        {
+        finally {
             _callLock.Release();
         }
     }
 
-    private sealed class DisposableRegistryStub : RegistryStub, IDisposable
-    {
+    private sealed class DisposableRegistryStub : RegistryStub, IDisposable {
         public DisposableRegistryStub(IAuthInfo authInfo, string serverName)
-            : base(authInfo, serverName)
-        {
+            : base(authInfo, serverName) {
         }
 
-        public void Dispose()
-        {
-            try
-            {
+        public void Dispose() {
+            try {
                 Detach();
             }
-            catch (IOException)
-            {
+            catch (IOException) {
             }
         }
     }

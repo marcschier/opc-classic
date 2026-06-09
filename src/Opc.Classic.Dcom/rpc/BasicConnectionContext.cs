@@ -1,11 +1,12 @@
-// SPDX-License-Identifier: MIT
+﻿// SPDX-License-Identifier: MIT
 
 using Opc.Classic.Dcom.Internal;
 using Opc.Classic.Dcom.Rpc.Core;
 using Opc.Classic.Dcom.Rpc.pdu;
 using System.Globalization;
 
-namespace Opc.Classic.Dcom.Rpc; 
+namespace Opc.Classic.Dcom.Rpc;
+
 /// <summary>
 /// Basic connection context
 /// </summary>

@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -19,64 +19,51 @@ namespace Opc.Classic.Da.Tests.Hosting.Windows;
 
 /// <summary>Windows-only unit tests for <see cref="OpcDataCallbackProxy"/>.</summary>
 [SupportedOSPlatform("windows")]
-public sealed class OpcDataCallbackProxyTests
-{
+public sealed class OpcDataCallbackProxyTests {
     [Test]
-    public async Task Construction_succeeds_when_client_supports_IOPCDataCallback()
-    {
-        if (!OperatingSystem.IsWindows())
-        {
+    public async Task Construction_succeeds_when_client_supports_IOPCDataCallback() {
+        if (!OperatingSystem.IsWindows()) {
             return;
         }
 
         IntPtr stub = Helpers.CreateStub(supportsDataCallback: true);
-        try
-        {
+        try {
             using var proxy = new OpcDataCallbackProxy(stub);
 
             await Assert.That(proxy).IsNotNull();
             await Assert.That(Helpers.GetReferenceCount(stub)).IsEqualTo(2L);
         }
-        finally
-        {
+        finally {
             Helpers.DestroyStub(stub);
         }
     }
 
     [Test]
-    public async Task Construction_throws_when_client_lacks_IOPCDataCallback()
-    {
-        if (!OperatingSystem.IsWindows())
-        {
+    public async Task Construction_throws_when_client_lacks_IOPCDataCallback() {
+        if (!OperatingSystem.IsWindows()) {
             return;
         }
 
         IntPtr stub = Helpers.CreateStub(supportsDataCallback: false);
-        try
-        {
-            await Assert.That(() =>
-            {
+        try {
+            await Assert.That(() => {
                 using var proxy = new OpcDataCallbackProxy(stub);
             }).Throws<COMException>();
             await Assert.That(Helpers.GetReferenceCount(stub)).IsEqualTo(1L);
         }
-        finally
-        {
+        finally {
             Helpers.DestroyStub(stub);
         }
     }
 
     [Test]
-    public async Task OnCancelComplete_invokes_opnum_6_with_payload_values()
-    {
-        if (!OperatingSystem.IsWindows())
-        {
+    public async Task OnCancelComplete_invokes_opnum_6_with_payload_values() {
+        if (!OperatingSystem.IsWindows()) {
             return;
         }
 
         IntPtr stub = Helpers.CreateStub(supportsDataCallback: true);
-        try
-        {
+        try {
             using var proxy = new OpcDataCallbackProxy(stub);
             proxy.OnCancelComplete(new OpcDaGroup.CancelCompletePayload(123, 456));
 
@@ -85,23 +72,19 @@ public sealed class OpcDataCallbackProxyTests
             await Assert.That(invocation.TransactionId).IsEqualTo(123U);
             await Assert.That(invocation.GroupHandle).IsEqualTo(456U);
         }
-        finally
-        {
+        finally {
             Helpers.DestroyStub(stub);
         }
     }
 
     [Test]
-    public async Task OnDataChange_writes_correct_handle_count_to_stub_vtable()
-    {
-        if (!OperatingSystem.IsWindows())
-        {
+    public async Task OnDataChange_writes_correct_handle_count_to_stub_vtable() {
+        if (!OperatingSystem.IsWindows()) {
             return;
         }
 
         IntPtr stub = Helpers.CreateStub(supportsDataCallback: true);
-        try
-        {
+        try {
             using var proxy = new OpcDataCallbackProxy(stub);
             proxy.OnDataChange(new OpcDaGroup.DataChangePayload(
                 10,
@@ -124,23 +107,19 @@ public sealed class OpcDataCallbackProxyTests
             await Assert.That(invocation.Timestamps).IsEquivalentTo(new[] { 123456789L, 987654321L });
             await Assert.That(invocation.Errors).IsEquivalentTo(new[] { 0, unchecked((int)0x80004005) });
         }
-        finally
-        {
+        finally {
             Helpers.DestroyStub(stub);
         }
     }
 
     [Test]
-    public async Task OnDataChange_with_VT_I4_value_passes_through()
-    {
-        if (!OperatingSystem.IsWindows())
-        {
+    public async Task OnDataChange_with_VT_I4_value_passes_through() {
+        if (!OperatingSystem.IsWindows()) {
             return;
         }
 
         IntPtr stub = Helpers.CreateStub(supportsDataCallback: true);
-        try
-        {
+        try {
             using var proxy = new OpcDataCallbackProxy(stub);
             proxy.OnDataChange(CreateSingleValuePayload(OpcVariant.FromInt32(42)));
 
@@ -148,23 +127,19 @@ public sealed class OpcDataCallbackProxyTests
             await Assert.That(actual.Type).IsEqualTo(VarType.VT_I4);
             await Assert.That(actual.AsInt32()).IsEqualTo(42);
         }
-        finally
-        {
+        finally {
             Helpers.DestroyStub(stub);
         }
     }
 
     [Test]
-    public async Task OnDataChange_with_VT_BSTR_value_passes_through()
-    {
-        if (!OperatingSystem.IsWindows())
-        {
+    public async Task OnDataChange_with_VT_BSTR_value_passes_through() {
+        if (!OperatingSystem.IsWindows()) {
             return;
         }
 
         IntPtr stub = Helpers.CreateStub(supportsDataCallback: true);
-        try
-        {
+        try {
             using var proxy = new OpcDataCallbackProxy(stub);
             proxy.OnDataChange(CreateSingleValuePayload(OpcVariant.FromString("hello")));
 
@@ -172,23 +147,19 @@ public sealed class OpcDataCallbackProxyTests
             await Assert.That(actual.Type).IsEqualTo(VarType.VT_BSTR);
             await Assert.That(actual.AsString()).IsEqualTo("hello");
         }
-        finally
-        {
+        finally {
             Helpers.DestroyStub(stub);
         }
     }
 
     [Test]
-    public async Task OnDataChange_with_empty_payload_count_zero()
-    {
-        if (!OperatingSystem.IsWindows())
-        {
+    public async Task OnDataChange_with_empty_payload_count_zero() {
+        if (!OperatingSystem.IsWindows()) {
             return;
         }
 
         IntPtr stub = Helpers.CreateStub(supportsDataCallback: true);
-        try
-        {
+        try {
             using var proxy = new OpcDataCallbackProxy(stub);
             proxy.OnDataChange(new OpcDaGroup.DataChangePayload(
                 1,
@@ -208,23 +179,19 @@ public sealed class OpcDataCallbackProxyTests
             await Assert.That(invocation.ErrorsWasNull).IsTrue();
             await Assert.That(invocation.Values).IsEquivalentTo(Array.Empty<OpcVariant>());
         }
-        finally
-        {
+        finally {
             Helpers.DestroyStub(stub);
         }
     }
 
     [Test]
-    public async Task OnReadComplete_invokes_vtable_slot_4()
-    {
-        if (!OperatingSystem.IsWindows())
-        {
+    public async Task OnReadComplete_invokes_vtable_slot_4() {
+        if (!OperatingSystem.IsWindows()) {
             return;
         }
 
         IntPtr stub = Helpers.CreateStub(supportsDataCallback: true);
-        try
-        {
+        try {
             using var proxy = new OpcDataCallbackProxy(stub);
             proxy.OnReadComplete(CreateSingleValuePayload(OpcVariant.FromInt32(7)));
 
@@ -233,23 +200,19 @@ public sealed class OpcDataCallbackProxyTests
             await Assert.That(invocation.Values[0]).IsEqualTo(OpcVariant.FromInt32(7));
             await Assert.That(invocation.ClientHandles).IsEquivalentTo(new[] { 1001 });
         }
-        finally
-        {
+        finally {
             Helpers.DestroyStub(stub);
         }
     }
 
     [Test]
-    public async Task OnWriteComplete_invokes_vtable_slot_5_with_handles_and_errors()
-    {
-        if (!OperatingSystem.IsWindows())
-        {
+    public async Task OnWriteComplete_invokes_vtable_slot_5_with_handles_and_errors() {
+        if (!OperatingSystem.IsWindows()) {
             return;
         }
 
         IntPtr stub = Helpers.CreateStub(supportsDataCallback: true);
-        try
-        {
+        try {
             using var proxy = new OpcDataCallbackProxy(stub);
             int[] errors = [0, unchecked((int)0x80070005)];
             proxy.OnWriteComplete(11, 22, unchecked((int)0x80004005), [301, 302], errors);
@@ -262,23 +225,19 @@ public sealed class OpcDataCallbackProxyTests
             await Assert.That(invocation.ClientHandles).IsEquivalentTo(new[] { 301, 302 });
             await Assert.That(invocation.Errors).IsEquivalentTo(errors);
         }
-        finally
-        {
+        finally {
             Helpers.DestroyStub(stub);
         }
     }
 
     [Test]
-    public async Task OnDataChange_frees_all_CoTaskMem_allocations_after_callback()
-    {
-        if (!OperatingSystem.IsWindows())
-        {
+    public async Task OnDataChange_frees_all_CoTaskMem_allocations_after_callback() {
+        if (!OperatingSystem.IsWindows()) {
             return;
         }
 
         IntPtr stub = Helpers.CreateStub(supportsDataCallback: true);
-        try
-        {
+        try {
             using var proxy = new OpcDataCallbackProxy(stub);
             proxy.OnDataChange(CreateSingleValuePayload(OpcVariant.FromString("pinned")));
 
@@ -286,8 +245,7 @@ public sealed class OpcDataCallbackProxyTests
             await Assert.That(invocation.Values[0].AsString()).IsEqualTo("pinned");
             await Assert.That(Helpers.GetObservedBstrCount(stub)).IsEqualTo(1L);
         }
-        finally
-        {
+        finally {
             Helpers.DestroyStub(stub);
         }
     }
@@ -305,16 +263,13 @@ public sealed class OpcDataCallbackProxyTests
             [0]);
 
     [Test]
-    public async Task Dispose_releases_held_IOPCDataCallback_pointer()
-    {
-        if (!OperatingSystem.IsWindows())
-        {
+    public async Task Dispose_releases_held_IOPCDataCallback_pointer() {
+        if (!OperatingSystem.IsWindows()) {
             return;
         }
 
         IntPtr stub = Helpers.CreateStub(supportsDataCallback: true);
-        try
-        {
+        try {
             var proxy = new OpcDataCallbackProxy(stub);
             await Assert.That(Helpers.GetReferenceCount(stub)).IsEqualTo(2L);
 
@@ -322,14 +277,12 @@ public sealed class OpcDataCallbackProxyTests
 
             await Assert.That(Helpers.GetReferenceCount(stub)).IsEqualTo(1L);
         }
-        finally
-        {
+        finally {
             Helpers.DestroyStub(stub);
         }
     }
 
-    private static unsafe class Helpers
-    {
+    private static unsafe class Helpers {
         private const int S_OK = 0;
         private const int E_FAIL = unchecked((int)0x80004005);
         private const int E_NOINTERFACE = unchecked((int)0x80004002);
@@ -360,8 +313,7 @@ public sealed class OpcDataCallbackProxyTests
             bool ValuesWasNull,
             bool QualitiesWasNull,
             bool TimestampsWasNull,
-            bool ErrorsWasNull)
-        {
+            bool ErrorsWasNull) {
             internal static DataCallbackInvocation Empty { get; } = new(
                 0,
                 0,
@@ -390,8 +342,7 @@ public sealed class OpcDataCallbackProxyTests
             int[] ClientHandles,
             int[] Errors,
             bool ClientItemsWasNull,
-            bool ErrorsWasNull)
-        {
+            bool ErrorsWasNull) {
             internal static WriteCallbackInvocation Empty { get; } = new(
                 0,
                 0,
@@ -404,18 +355,15 @@ public sealed class OpcDataCallbackProxyTests
                 true);
         }
 
-        internal static IntPtr CreateStub(bool supportsDataCallback)
-        {
+        internal static IntPtr CreateStub(bool supportsDataCallback) {
             IntPtr* vtable = AllocateVtable();
             IntPtr instance = AllocateInstance(vtable);
             s_sessions[instance] = new StubSession(vtable, supportsDataCallback);
             return instance;
         }
 
-        internal static void DestroyStub(IntPtr stub)
-        {
-            if (!s_sessions.TryRemove(stub, out StubSession? session))
-            {
+        internal static void DestroyStub(IntPtr stub) {
+            if (!s_sessions.TryRemove(stub, out StubSession? session)) {
                 return;
             }
 
@@ -449,8 +397,7 @@ public sealed class OpcDataCallbackProxyTests
                 : 0L;
 
         [SuppressMessage("Reliability", "CA2018", Justification = "Explicit byte size.")]
-        private static IntPtr* AllocateVtable()
-        {
+        private static IntPtr* AllocateVtable() {
             IntPtr* vtable = (IntPtr*)NativeMemory.Alloc((nuint)(VtableSlotCount * sizeof(IntPtr)));
             vtable[0] = (IntPtr)(delegate* unmanaged<IntPtr, Guid*, IntPtr*, int>)&QueryInterface;
             vtable[1] = (IntPtr)(delegate* unmanaged<IntPtr, uint>)&AddRef;
@@ -463,28 +410,23 @@ public sealed class OpcDataCallbackProxyTests
         }
 
         [SuppressMessage("Reliability", "CA2018", Justification = "Explicit byte size.")]
-        private static IntPtr AllocateInstance(IntPtr* vtable)
-        {
+        private static IntPtr AllocateInstance(IntPtr* vtable) {
             IntPtr* instance = (IntPtr*)NativeMemory.Alloc((nuint)sizeof(IntPtr));
             instance[0] = (IntPtr)vtable;
             return (IntPtr)instance;
         }
 
         [UnmanagedCallersOnly]
-        private static int QueryInterface(IntPtr pThis, Guid* riid, IntPtr* ppv)
-        {
-            if (ppv == null)
-            {
+        private static int QueryInterface(IntPtr pThis, Guid* riid, IntPtr* ppv) {
+            if (ppv == null) {
                 return E_POINTER;
             }
-            if (!s_sessions.TryGetValue(pThis, out StubSession? session) || riid == null)
-            {
+            if (!s_sessions.TryGetValue(pThis, out StubSession? session) || riid == null) {
                 *ppv = IntPtr.Zero;
                 return E_NOINTERFACE;
             }
 
-            if (*riid == s_iidUnknown || (session.SupportsDataCallback && *riid == s_iidDataCallback))
-            {
+            if (*riid == s_iidUnknown || (session.SupportsDataCallback && *riid == s_iidDataCallback)) {
                 *ppv = pThis;
                 Interlocked.Increment(ref session.RefCount);
                 return S_OK;
@@ -495,20 +437,16 @@ public sealed class OpcDataCallbackProxyTests
         }
 
         [UnmanagedCallersOnly]
-        private static uint AddRef(IntPtr pThis)
-        {
-            if (!s_sessions.TryGetValue(pThis, out StubSession? session))
-            {
+        private static uint AddRef(IntPtr pThis) {
+            if (!s_sessions.TryGetValue(pThis, out StubSession? session)) {
                 return 1;
             }
             return (uint)Interlocked.Increment(ref session.RefCount);
         }
 
         [UnmanagedCallersOnly]
-        private static uint Release(IntPtr pThis)
-        {
-            if (!s_sessions.TryGetValue(pThis, out StubSession? session))
-            {
+        private static uint Release(IntPtr pThis) {
+            if (!s_sessions.TryGetValue(pThis, out StubSession? session)) {
                 return 0;
             }
             return (uint)Interlocked.Decrement(ref session.RefCount);
@@ -527,10 +465,8 @@ public sealed class OpcDataCallbackProxyTests
             IntPtr values,
             IntPtr qualities,
             IntPtr timestamps,
-            IntPtr errors)
-        {
-            try
-            {
+            IntPtr errors) {
+            try {
                 return RecordDataChange(
                     pThis,
                     3,
@@ -545,8 +481,7 @@ public sealed class OpcDataCallbackProxyTests
                     timestamps,
                     errors);
             }
-            catch
-            {
+            catch {
                 return E_FAIL;
             }
         }
@@ -564,10 +499,8 @@ public sealed class OpcDataCallbackProxyTests
             IntPtr values,
             IntPtr qualities,
             IntPtr timestamps,
-            IntPtr errors)
-        {
-            try
-            {
+            IntPtr errors) {
+            try {
                 return RecordDataChange(
                     pThis,
                     4,
@@ -582,8 +515,7 @@ public sealed class OpcDataCallbackProxyTests
                     timestamps,
                     errors);
             }
-            catch
-            {
+            catch {
                 return E_FAIL;
             }
         }
@@ -597,10 +529,8 @@ public sealed class OpcDataCallbackProxyTests
             int masterError,
             uint count,
             IntPtr clientItems,
-            IntPtr errors)
-        {
-            try
-            {
+            IntPtr errors) {
+            try {
                 return RecordWriteComplete(
                     pThis,
                     transactionId,
@@ -610,8 +540,7 @@ public sealed class OpcDataCallbackProxyTests
                     clientItems,
                     errors);
             }
-            catch
-            {
+            catch {
                 return E_FAIL;
             }
         }
@@ -632,10 +561,8 @@ public sealed class OpcDataCallbackProxyTests
             IntPtr values,
             IntPtr qualities,
             IntPtr timestamps,
-            IntPtr errors)
-        {
-            if (!s_sessions.TryGetValue(pThis, out StubSession? session))
-            {
+            IntPtr errors) {
+            if (!s_sessions.TryGetValue(pThis, out StubSession? session)) {
                 return E_NOINTERFACE;
             }
             int itemCount = checked((int)count);
@@ -667,10 +594,8 @@ public sealed class OpcDataCallbackProxyTests
             int masterError,
             uint count,
             IntPtr clientItems,
-            IntPtr errors)
-        {
-            if (!s_sessions.TryGetValue(pThis, out StubSession? session))
-            {
+            IntPtr errors) {
+            if (!s_sessions.TryGetValue(pThis, out StubSession? session)) {
                 return E_NOINTERFACE;
             }
             int itemCount = checked((int)count);
@@ -688,57 +613,47 @@ public sealed class OpcDataCallbackProxyTests
             return S_OK;
         }
 
-        private static int Record(IntPtr pThis, int opnum, uint transactionId, uint groupHandle)
-        {
-            if (!s_sessions.TryGetValue(pThis, out StubSession? session))
-            {
+        private static int Record(IntPtr pThis, int opnum, uint transactionId, uint groupHandle) {
+            if (!s_sessions.TryGetValue(pThis, out StubSession? session)) {
                 return E_NOINTERFACE;
             }
             session.LastInvocation = new Invocation(opnum, transactionId, groupHandle);
             return S_OK;
         }
 
-        private static int[] ReadInt32Array(IntPtr ptr, int count)
-        {
+        private static int[] ReadInt32Array(IntPtr ptr, int count) {
             EnsureNativeArrayPointer(ptr, count);
             var values = new int[count];
-            if (count > 0)
-            {
+            if (count > 0) {
                 Marshal.Copy(ptr, values, 0, count);
             }
             return values;
         }
 
-        private static ushort[] ReadUInt16Array(IntPtr ptr, int count)
-        {
+        private static ushort[] ReadUInt16Array(IntPtr ptr, int count) {
             EnsureNativeArrayPointer(ptr, count);
             var values = new ushort[count];
             ushort* source = (ushort*)ptr;
-            for (int i = 0; i < count; i++)
-            {
+            for (int i = 0; i < count; i++) {
                 values[i] = source[i];
             }
             return values;
         }
 
-        private static long[] ReadInt64Array(IntPtr ptr, int count)
-        {
+        private static long[] ReadInt64Array(IntPtr ptr, int count) {
             EnsureNativeArrayPointer(ptr, count);
             var values = new long[count];
-            if (count > 0)
-            {
+            if (count > 0) {
                 Marshal.Copy(ptr, values, 0, count);
             }
             return values;
         }
 
-        private static OpcVariant[] ReadVariantArray(IntPtr ptr, int count, StubSession session)
-        {
+        private static OpcVariant[] ReadVariantArray(IntPtr ptr, int count, StubSession session) {
             EnsureNativeArrayPointer(ptr, count);
             var values = new OpcVariant[count];
             int variantSize = ComVariantMarshaler.VariantSize;
-            for (int i = 0; i < count; i++)
-            {
+            for (int i = 0; i < count; i++) {
                 IntPtr slot = ptr + (i * variantSize);
                 ObserveBstrIfPresent(slot, session);
                 values[i] = ComVariantMarshaler.ReadVariant(slot);
@@ -746,29 +661,23 @@ public sealed class OpcDataCallbackProxyTests
             return values;
         }
 
-        private static void ObserveBstrIfPresent(IntPtr variantPtr, StubSession session)
-        {
-            if (unchecked((ushort)Marshal.ReadInt16(variantPtr)) != VtBstr)
-            {
+        private static void ObserveBstrIfPresent(IntPtr variantPtr, StubSession session) {
+            if (unchecked((ushort)Marshal.ReadInt16(variantPtr)) != VtBstr) {
                 return;
             }
             IntPtr bstr = Marshal.ReadIntPtr(variantPtr, VariantValueOffset);
-            if (bstr != IntPtr.Zero)
-            {
+            if (bstr != IntPtr.Zero) {
                 Interlocked.Increment(ref session.ObservedBstrCount);
             }
         }
 
-        private static void EnsureNativeArrayPointer(IntPtr ptr, int count)
-        {
-            if (count > 0 && ptr == IntPtr.Zero)
-            {
+        private static void EnsureNativeArrayPointer(IntPtr ptr, int count) {
+            if (count > 0 && ptr == IntPtr.Zero) {
                 throw new InvalidOperationException("Native array pointer is null for a non-empty payload.");
             }
         }
 
-        private sealed class StubSession(IntPtr* vtable, bool supportsDataCallback)
-        {
+        private sealed class StubSession(IntPtr* vtable, bool supportsDataCallback) {
             internal readonly IntPtr* Vtable = vtable;
             internal readonly bool SupportsDataCallback = supportsDataCallback;
             internal long ObservedBstrCount;

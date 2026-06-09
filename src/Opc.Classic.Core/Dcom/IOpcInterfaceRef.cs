@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -14,8 +14,7 @@ namespace Opc.Classic.Dcom;
 /// <remarks>
 /// A future DCOM call-channel factory can resolve this handle to a channel for the returned sub-object.
 /// </remarks>
-public interface IOpcInterfaceRef
-{
+public interface IOpcInterfaceRef {
     /// <summary>Interface identifier carried by the OBJREF iid field.</summary>
     Guid Iid { get; }
 

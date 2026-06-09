@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -20,8 +20,7 @@ namespace Opc.Classic;
 /// the base type. For example, a VT_ARRAY|VT_I4 represents a SAFEARRAY of
 /// 32-bit signed integers.
 /// </remarks>
-public enum VarType : ushort
-{
+public enum VarType : ushort {
     /// <summary>Nothing set yet.</summary>
     VT_EMPTY = 0,
     /// <summary>SQL-style null.</summary>
@@ -122,8 +121,7 @@ public enum VarType : ushort
 }
 
 /// <summary>Bit-mask helpers for the modifier flags in <see cref="VarType"/>.</summary>
-public static class VarTypeMask
-{
+public static class VarTypeMask {
     /// <summary>Bit mask isolating the base type (lower 12 bits).</summary>
     public const ushort BaseType = 0x0FFF;
 

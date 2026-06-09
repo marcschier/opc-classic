@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -11,11 +11,9 @@ using TUnit.Core;
 
 namespace Opc.Classic.PropertyTests.Codecs;
 
-public sealed class NdrPrimitivesRoundTripTests
-{
+public sealed class NdrPrimitivesRoundTripTests {
     [Test]
-    public Task Byte_RoundTrips()
-    {
+    public Task Byte_RoundTrips() {
         Gen.Byte.Sample(value => CodecProperty.RoundTripsByEquals(
             value,
             static (ref NdrWriter writer, byte v) => writer.WriteByte(v),
@@ -24,8 +22,7 @@ public sealed class NdrPrimitivesRoundTripTests
     }
 
     [Test]
-    public Task SByte_RoundTrips()
-    {
+    public Task SByte_RoundTrips() {
         Gen.SByte.Sample(value => CodecProperty.RoundTripsByEquals(
             value,
             static (ref NdrWriter writer, sbyte v) => writer.WriteInt8(v),
@@ -34,8 +31,7 @@ public sealed class NdrPrimitivesRoundTripTests
     }
 
     [Test]
-    public Task Int16_RoundTrips()
-    {
+    public Task Int16_RoundTrips() {
         Gen.Short.Sample(value => CodecProperty.RoundTripsByEquals(
             value,
             static (ref NdrWriter writer, short v) => writer.WriteInt16(v),
@@ -44,8 +40,7 @@ public sealed class NdrPrimitivesRoundTripTests
     }
 
     [Test]
-    public Task UInt16_RoundTrips()
-    {
+    public Task UInt16_RoundTrips() {
         Gen.UShort.Sample(value => CodecProperty.RoundTripsByEquals(
             value,
             static (ref NdrWriter writer, ushort v) => writer.WriteUInt16(v),
@@ -54,8 +49,7 @@ public sealed class NdrPrimitivesRoundTripTests
     }
 
     [Test]
-    public Task Int32_RoundTrips()
-    {
+    public Task Int32_RoundTrips() {
         Gen.Int.Sample(value => CodecProperty.RoundTripsByEquals(
             value,
             static (ref NdrWriter writer, int v) => writer.WriteInt32(v),
@@ -64,8 +58,7 @@ public sealed class NdrPrimitivesRoundTripTests
     }
 
     [Test]
-    public Task UInt32_RoundTrips()
-    {
+    public Task UInt32_RoundTrips() {
         Gen.UInt.Sample(value => CodecProperty.RoundTripsByEquals(
             value,
             static (ref NdrWriter writer, uint v) => writer.WriteUInt32(v),
@@ -74,8 +67,7 @@ public sealed class NdrPrimitivesRoundTripTests
     }
 
     [Test]
-    public Task Int64_RoundTrips()
-    {
+    public Task Int64_RoundTrips() {
         Gen.Long.Sample(value => CodecProperty.RoundTripsByEquals(
             value,
             static (ref NdrWriter writer, long v) => writer.WriteInt64(v),
@@ -84,8 +76,7 @@ public sealed class NdrPrimitivesRoundTripTests
     }
 
     [Test]
-    public Task UInt64_RoundTrips()
-    {
+    public Task UInt64_RoundTrips() {
         Gen.ULong.Sample(value => CodecProperty.RoundTripsByEquals(
             value,
             static (ref NdrWriter writer, ulong v) => writer.WriteUInt64(v),
@@ -94,8 +85,7 @@ public sealed class NdrPrimitivesRoundTripTests
     }
 
     [Test]
-    public Task Single_RoundTrips_BitExactly()
-    {
+    public Task Single_RoundTrips_BitExactly() {
         Gen.Single.Sample(value => CodecProperty.RoundTrips(
             value,
             static (ref NdrWriter writer, float v) => writer.WriteSingle(v),
@@ -106,8 +96,7 @@ public sealed class NdrPrimitivesRoundTripTests
     }
 
     [Test]
-    public Task Double_RoundTrips_BitExactly()
-    {
+    public Task Double_RoundTrips_BitExactly() {
         Gen.Double.Sample(value => CodecProperty.RoundTrips(
             value,
             static (ref NdrWriter writer, double v) => writer.WriteDouble(v),
@@ -118,8 +107,7 @@ public sealed class NdrPrimitivesRoundTripTests
     }
 
     [Test]
-    public Task Boolean_RoundTrips()
-    {
+    public Task Boolean_RoundTrips() {
         Gen.Bool.Sample(value => CodecProperty.RoundTripsByEquals(
             value,
             static (ref NdrWriter writer, bool v) => writer.WriteBoolean(v),
@@ -128,8 +116,7 @@ public sealed class NdrPrimitivesRoundTripTests
     }
 
     [Test]
-    public Task Guid_RoundTrips()
-    {
+    public Task Guid_RoundTrips() {
         Gen.Guid.Sample(value => CodecProperty.RoundTripsByEquals(
             value,
             static (ref NdrWriter writer, Guid v) => writer.WriteGuid(v),
@@ -138,8 +125,7 @@ public sealed class NdrPrimitivesRoundTripTests
     }
 
     [Test]
-    public Task FileTime_RoundTrips_AllEightBytes()
-    {
+    public Task FileTime_RoundTrips_AllEightBytes() {
         Gen.Long.Sample(value => CodecProperty.RoundTripsByEquals(
             value,
             static (ref NdrWriter writer, long v) => writer.WriteFileTime(v),
@@ -148,8 +134,7 @@ public sealed class NdrPrimitivesRoundTripTests
     }
 
     [Test]
-    public Task Lpwstr_RoundTrips_RandomUnicode()
-    {
+    public Task Lpwstr_RoundTrips_RandomUnicode() {
         CodecProperty.MediumStringGen.Sample(value => CodecProperty.RoundTripsByEquals(
             value,
             static (ref NdrWriter writer, string v) => writer.WriteUnicodeString(v),
@@ -159,10 +144,8 @@ public sealed class NdrPrimitivesRoundTripTests
     }
 
     [Test]
-    public Task Lpwstr_RoundTrips_LongSurrogatePatterns()
-    {
-        Gen.Int[0, 65535].Sample(length =>
-        {
+    public Task Lpwstr_RoundTrips_LongSurrogatePatterns() {
+        Gen.Int[0, 65535].Sample(length => {
             string value = BuildUnicodePattern(length);
             return CodecProperty.RoundTripsByEquals(
                 value,
@@ -174,8 +157,7 @@ public sealed class NdrPrimitivesRoundTripTests
     }
 
     [Test]
-    public Task LpwstrPointer_RoundTrips_NullAndUnicode()
-    {
+    public Task LpwstrPointer_RoundTrips_NullAndUnicode() {
         CodecProperty.NullableShortStringGen.Sample(value => CodecProperty.RoundTripsByEquals(
             value,
             static (ref NdrWriter writer, string? v) => writer.WriteUnicodeStringPtr(v),
@@ -184,18 +166,14 @@ public sealed class NdrPrimitivesRoundTripTests
     }
 
     [Test]
-    public Task Bstr_RoundTrips_NullAndUnicode()
-    {
+    public Task Bstr_RoundTrips_NullAndUnicode() {
         CodecProperty.NullableShortStringGen.Sample(value => CodecProperty.RoundTripsByEquals(
             value,
-            static (ref NdrWriter writer, string? v) =>
-            {
-                if (v is null)
-                {
+            static (ref NdrWriter writer, string? v) => {
+                if (v is null) {
                     writer.WriteNullBstr();
                 }
-                else
-                {
+                else {
                     writer.WriteBstr(v);
                 }
             },
@@ -203,21 +181,17 @@ public sealed class NdrPrimitivesRoundTripTests
         return Task.CompletedTask;
     }
 
-    private static string BuildUnicodePattern(int length)
-    {
+    private static string BuildUnicodePattern(int length) {
         var chars = new char[length];
         int position = 0;
-        while (position < length)
-        {
-            if (position + 1 < length && (position % 5) == 0)
-            {
+        while (position < length) {
+            if (position + 1 < length && (position % 5) == 0) {
                 chars[position++] = '\uD83D';
                 chars[position++] = '\uDE00';
                 continue;
             }
 
-            chars[position] = (position % 6) switch
-            {
+            chars[position] = (position % 6) switch {
                 0 => '\0',
                 1 => 'A',
                 2 => 'Ω',

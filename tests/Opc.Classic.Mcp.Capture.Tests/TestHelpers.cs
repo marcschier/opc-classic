@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -13,8 +13,7 @@ using Opc.Classic.Mcp.Capture;
 
 namespace Opc.Classic.Mcp.Capture.Tests;
 
-internal sealed class FakeCaptureSource : ICaptureSource
-{
+internal sealed class FakeCaptureSource : ICaptureSource {
     public List<CapturedPacket> Packets { get; } = [];
     public CaptureException? StartException { get; set; }
     public CaptureException? StopException { get; set; }
@@ -27,13 +26,10 @@ internal sealed class FakeCaptureSource : ICaptureSource
 
     public long PacketCount => Packets.Count;
 
-    public long ByteCount
-    {
-        get
-        {
+    public long ByteCount {
+        get {
             long total = 0;
-            foreach (CapturedPacket packet in Packets)
-            {
+            foreach (CapturedPacket packet in Packets) {
                 total += packet.OriginalLength;
             }
 
@@ -41,25 +37,21 @@ internal sealed class FakeCaptureSource : ICaptureSource
         }
     }
 
-    public Task StartAsync(CaptureStartRequest request, CancellationToken cancellationToken)
-    {
+    public Task StartAsync(CaptureStartRequest request, CancellationToken cancellationToken) {
         cancellationToken.ThrowIfCancellationRequested();
         StartCallCount++;
         LastStartRequest = request;
-        if (StartException is not null)
-        {
+        if (StartException is not null) {
             throw StartException;
         }
 
         return Task.CompletedTask;
     }
 
-    public Task StopAsync(CancellationToken cancellationToken)
-    {
+    public Task StopAsync(CancellationToken cancellationToken) {
         cancellationToken.ThrowIfCancellationRequested();
         StopCallCount++;
-        if (StopException is not null)
-        {
+        if (StopException is not null) {
             throw StopException;
         }
 
@@ -68,15 +60,12 @@ internal sealed class FakeCaptureSource : ICaptureSource
 
     public async IAsyncEnumerable<CapturedPacket> ReadAllAsync(
         long? maxPackets,
-        [EnumeratorCancellation] CancellationToken cancellationToken)
-    {
+        [EnumeratorCancellation] CancellationToken cancellationToken) {
         long limit = maxPackets ?? long.MaxValue;
         long emitted = 0;
-        foreach (CapturedPacket packet in Packets)
-        {
+        foreach (CapturedPacket packet in Packets) {
             cancellationToken.ThrowIfCancellationRequested();
-            if (emitted >= limit)
-            {
+            if (emitted >= limit) {
                 yield break;
             }
 
@@ -88,17 +77,14 @@ internal sealed class FakeCaptureSource : ICaptureSource
 
     public string? GetRawPcapFilePath() => RawPcapFilePath;
 
-    public ValueTask DisposeAsync()
-    {
+    public ValueTask DisposeAsync() {
         DisposeCallCount++;
         return ValueTask.CompletedTask;
     }
 }
 
-internal static class TestDirectories
-{
-    public static string CreateUniqueTempDirectory()
-    {
+internal static class TestDirectories {
+    public static string CreateUniqueTempDirectory() {
         string path = Path.Combine(
             Path.GetTempPath(),
             "OpcClassicMcpCaptureTests-" + Guid.NewGuid().ToString("N"));
@@ -106,24 +92,19 @@ internal static class TestDirectories
         return path;
     }
 
-    public static void DeleteIfExists(string path)
-    {
-        if (Directory.Exists(path))
-        {
+    public static void DeleteIfExists(string path) {
+        if (Directory.Exists(path)) {
             Directory.Delete(path, recursive: true);
         }
     }
 }
 
-internal static class AsyncEnumerableTestExtensions
-{
+internal static class AsyncEnumerableTestExtensions {
     public static async Task<List<T>> ToListAsync<T>(
         this IAsyncEnumerable<T> source,
-        CancellationToken cancellationToken = default)
-    {
+        CancellationToken cancellationToken = default) {
         var values = new List<T>();
-        await foreach (T value in source.WithCancellation(cancellationToken))
-        {
+        await foreach (T value in source.WithCancellation(cancellationToken)) {
             values.Add(value);
         }
 

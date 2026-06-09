@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -12,8 +12,7 @@ using Opc.Classic.Dcom.Transport;
 namespace Opc.Classic.Dcom.Activation;
 
 /// <summary>TCP-capable client for legacy <c>IActivation::RemoteActivation</c> (opnum 0).</summary>
-public sealed class ActivationClient : IActivationClient, IAsyncDisposable
-{
+public sealed class ActivationClient : IActivationClient, IAsyncDisposable {
     private const int EndpointMapperPort = 135;
     private const int RemoteActivationOpnum = 0;
     private const uint DefaultClientImpersonationLevel = 3;
@@ -27,12 +26,10 @@ public sealed class ActivationClient : IActivationClient, IAsyncDisposable
 
     /// <summary>Creates a client over an existing DCOM call channel.</summary>
     public ActivationClient(ICallChannel channel)
-        : this(channel, null)
-    {
+        : this(channel, null) {
     }
 
-    private ActivationClient(ICallChannel channel, IAsyncDisposable? ownedChannel)
-    {
+    private ActivationClient(ICallChannel channel, IAsyncDisposable? ownedChannel) {
         _channel = channel ?? throw new ArgumentNullException(nameof(channel));
         _ownedChannel = ownedChannel;
     }
@@ -55,12 +52,10 @@ public sealed class ActivationClient : IActivationClient, IAsyncDisposable
         string host,
         int port,
         IAuthContext authContext,
-        CancellationToken cancellationToken = default)
-    {
+        CancellationToken cancellationToken = default) {
         ArgumentException.ThrowIfNullOrWhiteSpace(host);
         ArgumentNullException.ThrowIfNull(authContext);
-        if (port is < 1 or > 65535)
-        {
+        if (port is < 1 or > 65535) {
             throw new ArgumentOutOfRangeException(nameof(port), port, "TCP port must be in the range [1, 65535].");
         }
 
@@ -74,8 +69,7 @@ public sealed class ActivationClient : IActivationClient, IAsyncDisposable
         string[] protseqs,
         string? objectStorage,
         Guid[] iids,
-        CancellationToken cancellationToken = default)
-    {
+        CancellationToken cancellationToken = default) {
         ArgumentNullException.ThrowIfNull(protseqs);
         ArgumentNullException.ThrowIfNull(iids);
 
@@ -85,8 +79,7 @@ public sealed class ActivationClient : IActivationClient, IAsyncDisposable
             CopyIids(iids),
             DefaultClientImpersonationLevel,
             DefaultMode,
-            protocolSequences)
-        {
+            protocolSequences) {
             ObjectName = string.IsNullOrEmpty(objectStorage) ? null : objectStorage,
         };
         return RemoteActivationAsync(request, cancellationToken);
@@ -95,8 +88,7 @@ public sealed class ActivationClient : IActivationClient, IAsyncDisposable
     /// <inheritdoc />
     public async Task<RemoteActivationResponse> RemoteActivationAsync(
         RemoteActivationRequest request,
-        CancellationToken cancellationToken = default)
-    {
+        CancellationToken cancellationToken = default) {
         ArgumentNullException.ThrowIfNull(request);
         cancellationToken.ThrowIfCancellationRequested();
 
@@ -107,8 +99,7 @@ public sealed class ActivationClient : IActivationClient, IAsyncDisposable
             payload,
             cancellationToken).ConfigureAwait(false);
 
-        if (result.IsFailure)
-        {
+        if (result.IsFailure) {
             throw new InvalidOperationException($"IActivation::RemoteActivation RPC fault 0x{unchecked((uint)result.Hresult):X8}.");
         }
 
@@ -116,34 +107,27 @@ public sealed class ActivationClient : IActivationClient, IAsyncDisposable
     }
 
     /// <inheritdoc />
-    public async ValueTask DisposeAsync()
-    {
-        if (_ownedChannel is not null)
-        {
+    public async ValueTask DisposeAsync() {
+        if (_ownedChannel is not null) {
             await _ownedChannel.DisposeAsync().ConfigureAwait(false);
         }
     }
 
-    private static ushort[] NormalizeProtocolSequences(IReadOnlyList<string> protseqs)
-    {
-        if (protseqs.Count == 0)
-        {
+    private static ushort[] NormalizeProtocolSequences(IReadOnlyList<string> protseqs) {
+        if (protseqs.Count == 0) {
             throw new ArgumentException("At least one RPC protocol sequence is required.", nameof(protseqs));
         }
 
         var normalized = new ushort[protseqs.Count];
-        for (int i = 0; i < protseqs.Count; i++)
-        {
+        for (int i = 0; i < protseqs.Count; i++) {
             normalized[i] = NormalizeProtocolSequence(protseqs[i]);
         }
 
         return normalized;
     }
 
-    private static ushort NormalizeProtocolSequence(string protseq)
-    {
-        if (string.IsNullOrWhiteSpace(protseq))
-        {
+    private static ushort NormalizeProtocolSequence(string protseq) {
+        if (string.IsNullOrWhiteSpace(protseq)) {
             throw new ArgumentException("RPC protocol sequence cannot be empty.", nameof(protseq));
         }
 
@@ -151,19 +135,16 @@ public sealed class ActivationClient : IActivationClient, IAsyncDisposable
         if (value.Equals("ncacn_ip_tcp", StringComparison.OrdinalIgnoreCase)
             || value.Equals("ip_tcp", StringComparison.OrdinalIgnoreCase)
             || value.Equals("tcp", StringComparison.OrdinalIgnoreCase)
-            || value.Equals("7", StringComparison.Ordinal))
-        {
+            || value.Equals("7", StringComparison.Ordinal)) {
             return RpcProtocolSequenceTcp;
         }
 
         throw new ArgumentException($"Unsupported RPC protocol sequence '{protseq}'. Only ncacn_ip_tcp is supported by the TCP activation client.", nameof(protseq));
     }
 
-    private static Guid[] CopyIids(IReadOnlyList<Guid> iids)
-    {
+    private static Guid[] CopyIids(IReadOnlyList<Guid> iids) {
         var copy = new Guid[iids.Count];
-        for (int i = 0; i < iids.Count; i++)
-        {
+        for (int i = 0; i < iids.Count; i++) {
             copy[i] = iids[i];
         }
 

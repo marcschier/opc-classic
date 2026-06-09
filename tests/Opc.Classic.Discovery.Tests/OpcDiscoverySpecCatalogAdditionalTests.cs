@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -8,11 +8,9 @@ using TUnit.Core;
 
 namespace Opc.Classic.Discovery.Tests;
 
-public sealed class OpcDiscoverySpecCatalogAdditionalTests
-{
+public sealed class OpcDiscoverySpecCatalogAdditionalTests {
     [Test]
-    public async Task Discovery_catalog_Exposes_concrete_iids_in_bind_order()
-    {
+    public async Task Discovery_catalog_Exposes_concrete_iids_in_bind_order() {
         IReadOnlyList<Guid> discovery = OpcDiscoverySpecCatalog.Discovery;
 
         await Assert.That(discovery.Count).IsEqualTo(6);
@@ -25,8 +23,7 @@ public sealed class OpcDiscoverySpecCatalogAdditionalTests
     }
 
     [Test]
-    public async Task IOPCEnumGUIDClientProxy_Exposes_concrete_iid_and_opnums()
-    {
+    public async Task IOPCEnumGUIDClientProxy_Exposes_concrete_iid_and_opnums() {
         int next = ReadOpnum(nameof(IOPCEnumGUIDClientProxy.Opnums.Next));
         int skip = ReadOpnum(nameof(IOPCEnumGUIDClientProxy.Opnums.Skip));
         int reset = ReadOpnum(nameof(IOPCEnumGUIDClientProxy.Opnums.Reset));
@@ -40,8 +37,7 @@ public sealed class OpcDiscoverySpecCatalogAdditionalTests
     }
 
     [Test]
-    public async Task OpcEnumGuidNextResult_Construction_and_equality_preserve_values()
-    {
+    public async Task OpcEnumGuidNextResult_Construction_and_equality_preserve_values() {
         Guid[] classIds =
         [
             Guid.Parse("10138C2C-0000-0000-0000-00000000D001"),

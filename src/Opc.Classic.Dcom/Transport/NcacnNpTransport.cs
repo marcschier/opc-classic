@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -19,8 +19,7 @@ namespace Opc.Classic.Dcom.Transport;
 /// <summary>
 /// Pipelines-backed DCE/RPC transport over SMB2 named pipes (<c>ncacn_np</c>).
 /// </summary>
-public sealed class NcacnNpTransport : IAsyncTransport
-{
+public sealed class NcacnNpTransport : IAsyncTransport {
     private const int Auth3PduType = 0x10;
     private const int PduTypeOffset = 2;
     private const int PduFlagsOffset = 3;
@@ -34,8 +33,7 @@ public sealed class NcacnNpTransport : IAsyncTransport
     private readonly int _maxReadFragment;
     private bool _disposed;
 
-    private NcacnNpTransport(NcacnNpEndPoint endpoint, Smb2RpcTransportAdapter adapter)
-    {
+    private NcacnNpTransport(NcacnNpEndPoint endpoint, Smb2RpcTransportAdapter adapter) {
         RemoteEndpoint = endpoint ?? throw new ArgumentNullException(nameof(endpoint));
         _adapter = adapter ?? throw new ArgumentNullException(nameof(adapter));
         _maxReadFragment = ConnectionOrientedPdu.MUST_RECEIVE_FRAGMENT_SIZE;
@@ -56,8 +54,7 @@ public sealed class NcacnNpTransport : IAsyncTransport
         IAuthContext smbAuthContext,
         int maxSmb2MessageSize = 0x1FFFF,
         Smb2TransportConnector? transportConnector = null,
-        CancellationToken cancellationToken = default)
-    {
+        CancellationToken cancellationToken = default) {
         ArgumentNullException.ThrowIfNull(endpoint);
         ArgumentNullException.ThrowIfNull(smbAuthContext);
 
@@ -75,8 +72,7 @@ public sealed class NcacnNpTransport : IAsyncTransport
             .UsePort(endpoint.Port)
             .UseMaxSmb2MessageSize(maxSmb2MessageSize);
 
-        if (transportConnector is not null)
-        {
+        if (transportConnector is not null) {
             builder.UseTransportConnector(transportConnector);
         }
 
@@ -85,28 +81,23 @@ public sealed class NcacnNpTransport : IAsyncTransport
     }
 
     /// <inheritdoc />
-    public async ValueTask FlushAsync(CancellationToken cancellationToken = default)
-    {
+    public async ValueTask FlushAsync(CancellationToken cancellationToken = default) {
         ObjectDisposedException.ThrowIf(_disposed, this);
         await _flushLock.WaitAsync(cancellationToken).ConfigureAwait(false);
-        try
-        {
+        try {
             FlushResult flush = await _output.Writer.FlushAsync(cancellationToken).ConfigureAwait(false);
-            if (flush.IsCanceled)
-            {
+            if (flush.IsCanceled) {
                 return;
             }
 
             ReadResult read = await _output.Reader.ReadAsync(cancellationToken).ConfigureAwait(false);
             byte[] request = read.Buffer.ToArray();
             _output.Reader.AdvanceTo(read.Buffer.End);
-            if (request.Length == 0)
-            {
+            if (request.Length == 0) {
                 return;
             }
 
-            if (IsWriteOnlyPdu(request))
-            {
+            if (IsWriteOnlyPdu(request)) {
                 await _adapter.WriteAsync(request, cancellationToken).ConfigureAwait(false);
                 return;
             }
@@ -117,17 +108,14 @@ public sealed class NcacnNpTransport : IAsyncTransport
                 cancellationToken).ConfigureAwait(false);
             await WriteResponseFragmentsAsync(response, cancellationToken).ConfigureAwait(false);
         }
-        finally
-        {
+        finally {
             _flushLock.Release();
         }
     }
 
     /// <inheritdoc />
-    public async ValueTask DisposeAsync()
-    {
-        if (_disposed)
-        {
+    public async ValueTask DisposeAsync() {
+        if (_disposed) {
             return;
         }
 
@@ -140,19 +128,15 @@ public sealed class NcacnNpTransport : IAsyncTransport
         await _adapter.DisposeAsync().ConfigureAwait(false);
     }
 
-    private static NtlmsspBlobProvider CreateBlobProvider(IAuthContext authContext)
-    {
+    private static NtlmsspBlobProvider CreateBlobProvider(IAuthContext authContext) {
         var initialSent = false;
-        return serverBlob =>
-        {
-            if (!initialSent)
-            {
+        return serverBlob => {
+            if (!initialSent) {
                 initialSent = true;
                 return authContext.BuildInitialToken();
             }
 
-            if (serverBlob.IsEmpty)
-            {
+            if (serverBlob.IsEmpty) {
                 return null;
             }
 
@@ -168,14 +152,11 @@ public sealed class NcacnNpTransport : IAsyncTransport
 
     private async ValueTask WriteResponseFragmentsAsync(
         ReadOnlyMemory<byte> response,
-        CancellationToken cancellationToken)
-    {
-        while (true)
-        {
+        CancellationToken cancellationToken) {
+        while (true) {
             await _input.Writer.WriteAsync(response, cancellationToken).ConfigureAwait(false);
             await _input.Writer.FlushAsync(cancellationToken).ConfigureAwait(false);
-            if (IsLastFragment(response.Span))
-            {
+            if (IsLastFragment(response.Span)) {
                 return;
             }
 

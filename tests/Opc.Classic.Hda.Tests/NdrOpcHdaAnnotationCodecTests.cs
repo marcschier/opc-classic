@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -11,27 +11,23 @@ using TUnit.Core;
 
 namespace Opc.Classic.Hda.Tests;
 
-public sealed class NdrOpcHdaAnnotationCodecTests
-{
+public sealed class NdrOpcHdaAnnotationCodecTests {
     private delegate void NdrWriteAction(ref NdrWriter w);
 
-    private static byte[] WriteOne(NdrWriteAction write, int capacity = 4096)
-    {
+    private static byte[] WriteOne(NdrWriteAction write, int capacity = 4096) {
         var buf = new byte[capacity];
         var w = new NdrWriter(buf);
         write(ref w);
         return buf[..w.Position];
     }
 
-    private static OpcHdaAnnotation ReadOne(byte[] bytes)
-    {
+    private static OpcHdaAnnotation ReadOne(byte[] bytes) {
         var r = new NdrReader(bytes);
         return NdrOpcHdaAnnotationCodec.Read(ref r);
     }
 
     [Test]
-    public async Task RoundTrip_TwoAnnotationSeries_WithUnicodeUsers()
-    {
+    public async Task RoundTrip_TwoAnnotationSeries_WithUnicodeUsers() {
         var input = new OpcHdaAnnotation(
             clientHandle: 42,
             timestamps: new[]
@@ -59,8 +55,7 @@ public sealed class NdrOpcHdaAnnotationCodecTests
     }
 
     [Test]
-    public async Task RoundTrip_EmptySeries()
-    {
+    public async Task RoundTrip_EmptySeries() {
         var input = new OpcHdaAnnotation(
             clientHandle: 1,
             timestamps: Array.Empty<DateTimeOffset>(),
@@ -77,8 +72,7 @@ public sealed class NdrOpcHdaAnnotationCodecTests
     }
 
     [Test]
-    public async Task RoundTrip_WithNullUserNames()
-    {
+    public async Task RoundTrip_WithNullUserNames() {
         var input = new OpcHdaAnnotation(
             clientHandle: 7,
             timestamps: new[]
@@ -102,11 +96,9 @@ public sealed class NdrOpcHdaAnnotationCodecTests
     }
 
     [Test]
-    public async Task ConstructorRejectsArrayLengthMismatch()
-    {
+    public async Task ConstructorRejectsArrayLengthMismatch() {
         bool threw = false;
-        try
-        {
+        try {
             _ = new OpcHdaAnnotation(
                 clientHandle: 1,
                 timestamps: new DateTimeOffset[2],

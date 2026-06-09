@@ -1,10 +1,11 @@
-// SPDX-License-Identifier: MIT
+﻿// SPDX-License-Identifier: MIT
 
 using Opc.Classic.Dcom.Common;
 using Opc.Classic.Dcom;
 using Opc.Classic.Dcom.Automation;
 
-namespace Opc.Classic.Dcom.Core; 
+namespace Opc.Classic.Dcom.Core;
+
 /// <summary>
 /// <para> Represents a Windows COM Object. Instances of this interface can
 /// be retrieved by the following ways only :

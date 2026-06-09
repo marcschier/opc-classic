@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -19,8 +19,7 @@ namespace Opc.Classic.Ae.Hosting;
 /// <summary>
 /// AE-specific <see cref="IOpcServerHost"/> implementation for managed in-process servers.
 /// </summary>
-public sealed class OpcAeServerHost : IOpcServerHost, IDisposable, IAsyncDisposable
-{
+public sealed class OpcAeServerHost : IOpcServerHost, IDisposable, IAsyncDisposable {
     private static readonly Action<ILogger, Guid, string, Exception?> StartingHost = LoggerMessage.Define<Guid, string>(
         LogLevel.Information,
         new EventId(1, nameof(StartingHost)),
@@ -45,8 +44,7 @@ public sealed class OpcAeServerHost : IOpcServerHost, IDisposable, IAsyncDisposa
     public OpcAeServerHost(
         IOpcAeServer serverImpl,
         IOptions<OpcAeServerOptions> options,
-        ILogger<OpcAeServerHost> logger)
-    {
+        ILogger<OpcAeServerHost> logger) {
         _serverImpl = serverImpl ?? throw new ArgumentNullException(nameof(serverImpl));
         _options = options?.Value ?? throw new ArgumentNullException(nameof(options));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -70,33 +68,27 @@ public sealed class OpcAeServerHost : IOpcServerHost, IDisposable, IAsyncDisposa
     public EndPoint? LocalEndpoint => _listener?.LocalEndpoint;
 
     /// <inheritdoc />
-    public Task StartAsync(CancellationToken cancellationToken)
-    {
+    public Task StartAsync(CancellationToken cancellationToken) {
         StartingHost(_logger, _options.Clsid, _options.ProgId, null);
 
         IPEndPoint listenEndpoint = ListenAddressParser.Parse(_options.ListenAddress ?? "127.0.0.1:0");
         var endpoint = new TcpServerEndpoint(listenEndpoint);
-        var dispatchers = new Dictionary<Guid, IOpcServerDispatcher>
-        {
+        var dispatchers = new Dictionary<Guid, IOpcServerDispatcher> {
             [IOPCEventServer.InterfaceId] = new IOPCEventServerServerDispatcher(_serverImpl),
         };
 
         // Register additional AE interface dispatchers when the impl provides
         // them (AE 1.10 extensions + subscription / browser tearoffs).
-        if (_serverImpl is IOPCEventServer2 eventServer2)
-        {
+        if (_serverImpl is IOPCEventServer2 eventServer2) {
             dispatchers[IOPCEventServer2.InterfaceId] = new IOPCEventServer2ServerDispatcher(eventServer2);
         }
-        if (_serverImpl is IOPCEventSubscriptionMgt subscriptionMgt)
-        {
+        if (_serverImpl is IOPCEventSubscriptionMgt subscriptionMgt) {
             dispatchers[IOPCEventSubscriptionMgt.InterfaceId] = new IOPCEventSubscriptionMgtServerDispatcher(subscriptionMgt);
         }
-        if (_serverImpl is IOPCEventSubscriptionMgt2 subscriptionMgt2)
-        {
+        if (_serverImpl is IOPCEventSubscriptionMgt2 subscriptionMgt2) {
             dispatchers[IOPCEventSubscriptionMgt2.InterfaceId] = new IOPCEventSubscriptionMgt2ServerDispatcher(subscriptionMgt2);
         }
-        if (_serverImpl is IOPCEventAreaBrowser areaBrowser)
-        {
+        if (_serverImpl is IOPCEventAreaBrowser areaBrowser) {
             dispatchers[IOPCEventAreaBrowser.InterfaceId] = new IOPCEventAreaBrowserServerDispatcher(areaBrowser);
         }
 
@@ -109,14 +101,12 @@ public sealed class OpcAeServerHost : IOpcServerHost, IDisposable, IAsyncDisposa
     }
 
     /// <inheritdoc />
-    public async Task StopAsync(CancellationToken cancellationToken)
-    {
+    public async Task StopAsync(CancellationToken cancellationToken) {
         StoppingHost(_logger, _options.Clsid, null);
 
         OpcServerListener? listener = _listener;
         _listener = null;
-        if (listener is not null)
-        {
+        if (listener is not null) {
             await listener.DisposeAsync().ConfigureAwait(false);
         }
     }
@@ -125,8 +115,7 @@ public sealed class OpcAeServerHost : IOpcServerHost, IDisposable, IAsyncDisposa
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
         "Usage", "VSTHRD002:Avoid problematic synchronous waits",
         Justification = "IDisposable is synchronous; the underlying StopAsync is async.")]
-    public void Dispose()
-    {
+    public void Dispose() {
         StopAsync(CancellationToken.None).GetAwaiter().GetResult();
     }
 

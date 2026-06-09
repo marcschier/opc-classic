@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -9,11 +9,9 @@ using TUnit.Core;
 
 namespace Opc.Classic.Dx.Tests;
 
-public sealed class DxConnectionTests
-{
+public sealed class DxConnectionTests {
     [Test]
-    public async Task RecordEquality_MatchesEquivalentConnection()
-    {
+    public async Task RecordEquality_MatchesEquivalentConnection() {
         var connection = new DxConnection(
             "Tank1_to_HMI",
             description: "Tank level mirror",
@@ -30,18 +28,15 @@ public sealed class DxConnectionTests
     }
 
     [Test]
-    public async Task Constructor_NegativeUpdateRate_Throws()
-    {
+    public async Task Constructor_NegativeUpdateRate_Throws() {
         await Assert.That(() => new DxConnection("BadRate", updateRateMilliseconds: -1))
             .Throws<ArgumentOutOfRangeException>();
     }
 }
 
-public sealed class DxGeneralResponseTests
-{
+public sealed class DxGeneralResponseTests {
     [Test]
-    public async Task Constructor_WithNoErrors_UsesEmptyErrorsArray()
-    {
+    public async Task Constructor_WithNoErrors_UsesEmptyErrorsArray() {
         var response = new DxGeneralResponse("cfg-1");
         var errorCount = response.Errors.Length;
 
@@ -50,11 +45,9 @@ public sealed class DxGeneralResponseTests
     }
 }
 
-public sealed class DxSourceServerTests
-{
+public sealed class DxSourceServerTests {
     [Test]
-    public async Task RecordRoundTrip_PreservesSourceServerFields()
-    {
+    public async Task RecordRoundTrip_PreservesSourceServerFields() {
         var source = new DxSourceServer(
             "PLC1",
             "opcda://plc1.plant1/Vendor.OPC.1",
@@ -69,11 +62,9 @@ public sealed class DxSourceServerTests
     }
 }
 
-public sealed class DxQueryParametersTests
-{
+public sealed class DxQueryParametersTests {
     [Test]
-    public async Task Constructor_AssignsBrowseQueryFields()
-    {
+    public async Task Constructor_AssignsBrowseQueryFields() {
         var query = new DxQueryParameters(
             new DxBrowsePath("Area1/Tank1"),
             recursive: true,

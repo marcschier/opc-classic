@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -22,8 +22,7 @@ namespace Opc.Classic.Da.Hosting.Windows;
 /// implementation using <see cref="ComVariantMarshaler"/> for VARIANT slots.
 /// </remarks>
 [SupportedOSPlatform("windows")]
-internal static unsafe class OpcDaGroupCcwSyncIoMethods
-{
+internal static unsafe class OpcDaGroupCcwSyncIoMethods {
     private const int OpcItemStateVariantOffset = 16;
     private const int OpcItemVqtTrailerSize = 24;
 
@@ -33,20 +32,16 @@ internal static unsafe class OpcDaGroupCcwSyncIoMethods
 
     [UnmanagedCallersOnly]
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
-    public static int Read(IntPtr pThis, uint dwSource, uint dwCount, IntPtr phServer, IntPtr* ppItemValues, IntPtr* ppErrors)
-    {
+    public static int Read(IntPtr pThis, uint dwSource, uint dwCount, IntPtr phServer, IntPtr* ppItemValues, IntPtr* ppErrors) {
         ZeroOut(ppItemValues);
         ZeroOut(ppErrors);
-        if (!HasHandleOutArgs(dwCount, phServer, ppItemValues, ppErrors))
-        {
+        if (!HasHandleOutArgs(dwCount, phServer, ppItemValues, ppErrors)) {
             return OpcDaGroupCcw.E_INVALIDARG;
         }
-        if (!TryResolveGroup(pThis, out OpcDaGroup? group))
-        {
+        if (!TryResolveGroup(pThis, out OpcDaGroup? group)) {
             return OpcDaGroupCcw.E_FAIL;
         }
-        try
-        {
+        try {
             int count = checked((int)dwCount);
             int[] handles = ReadInt32Array(phServer, count);
 #pragma warning disable VSTHRD002
@@ -56,27 +51,22 @@ internal static unsafe class OpcDaGroupCcwSyncIoMethods
             AssignReadOuts(ppItemValues, ppErrors, states, errors);
             return OpcDaGroupCcw.S_OK;
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             return MapHResult(ex);
         }
     }
 
     [UnmanagedCallersOnly]
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
-    public static int Write(IntPtr pThis, uint dwCount, IntPtr phServer, IntPtr pItemValues, IntPtr* ppErrors)
-    {
+    public static int Write(IntPtr pThis, uint dwCount, IntPtr phServer, IntPtr pItemValues, IntPtr* ppErrors) {
         ZeroOut(ppErrors);
-        if (!HasWriteArgs(dwCount, phServer, pItemValues, ppErrors))
-        {
+        if (!HasWriteArgs(dwCount, phServer, pItemValues, ppErrors)) {
             return OpcDaGroupCcw.E_INVALIDARG;
         }
-        if (!TryResolveGroup(pThis, out OpcDaGroup? group))
-        {
+        if (!TryResolveGroup(pThis, out OpcDaGroup? group)) {
             return OpcDaGroupCcw.E_FAIL;
         }
-        try
-        {
+        try {
             int count = checked((int)dwCount);
             int[] handles = ReadInt32Array(phServer, count);
             OpcVariant[] values = ReadVariantArray(pItemValues, count);
@@ -86,8 +76,7 @@ internal static unsafe class OpcDaGroupCcwSyncIoMethods
             *ppErrors = AllocateInt32Array(errors);
             return OpcDaGroupCcw.S_OK;
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             return MapHResult(ex);
         }
     }
@@ -102,19 +91,15 @@ internal static unsafe class OpcDaGroupCcwSyncIoMethods
         IntPtr* ppvValues,
         IntPtr* ppwQualities,
         IntPtr* ppftTimeStamps,
-        IntPtr* ppErrors)
-    {
+        IntPtr* ppErrors) {
         ZeroReadMaxAgeOuts(ppvValues, ppwQualities, ppftTimeStamps, ppErrors);
-        if (!HasReadMaxAgeArgs(dwCount, phServer, pdwMaxAge, ppvValues, ppwQualities, ppftTimeStamps, ppErrors))
-        {
+        if (!HasReadMaxAgeArgs(dwCount, phServer, pdwMaxAge, ppvValues, ppwQualities, ppftTimeStamps, ppErrors)) {
             return OpcDaGroupCcw.E_INVALIDARG;
         }
-        if (!TryResolveGroup(pThis, out OpcDaGroup? group))
-        {
+        if (!TryResolveGroup(pThis, out OpcDaGroup? group)) {
             return OpcDaGroupCcw.E_FAIL;
         }
-        try
-        {
+        try {
             int count = checked((int)dwCount);
             int[] handles = ReadInt32Array(phServer, count);
             int[] maxAges = ReadInt32Array(pdwMaxAge, count);
@@ -125,27 +110,22 @@ internal static unsafe class OpcDaGroupCcwSyncIoMethods
             AssignReadMaxAgeOuts(ppvValues, ppwQualities, ppftTimeStamps, ppErrors, values, qualities, timestamps, errors);
             return OpcDaGroupCcw.S_OK;
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             return MapHResult(ex);
         }
     }
 
     [UnmanagedCallersOnly]
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
-    public static int WriteVqt(IntPtr pThis, uint dwCount, IntPtr phServer, IntPtr pItemVqt, IntPtr* ppErrors)
-    {
+    public static int WriteVqt(IntPtr pThis, uint dwCount, IntPtr phServer, IntPtr pItemVqt, IntPtr* ppErrors) {
         ZeroOut(ppErrors);
-        if (!HasWriteArgs(dwCount, phServer, pItemVqt, ppErrors))
-        {
+        if (!HasWriteArgs(dwCount, phServer, pItemVqt, ppErrors)) {
             return OpcDaGroupCcw.E_INVALIDARG;
         }
-        if (!TryResolveGroup(pThis, out OpcDaGroup? group))
-        {
+        if (!TryResolveGroup(pThis, out OpcDaGroup? group)) {
             return OpcDaGroupCcw.E_FAIL;
         }
-        try
-        {
+        try {
             int count = checked((int)dwCount);
             int[] handles = ReadInt32Array(phServer, count);
             OpcItemVqt[] values = ReadOpcItemVqtArray(pItemVqt, count);
@@ -155,20 +135,17 @@ internal static unsafe class OpcDaGroupCcwSyncIoMethods
             *ppErrors = AllocateInt32Array(errors);
             return OpcDaGroupCcw.S_OK;
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             return MapHResult(ex);
         }
     }
 
-    private static bool TryResolveGroup(IntPtr pThis, out OpcDaGroup? group)
-    {
+    private static bool TryResolveGroup(IntPtr pThis, out OpcDaGroup? group) {
         group = OpcDaGroupCcw.ResolveGroup(pThis);
         return group is not null;
     }
 
-    private static int MapHResult(Exception ex) => ex switch
-    {
+    private static int MapHResult(Exception ex) => ex switch {
         OpcException opcEx => opcEx.ResultId.Code,
         ArgumentNullException => OpcDaGroupCcw.E_INVALIDARG,
         ArgumentException => OpcDaGroupCcw.E_INVALIDARG,
@@ -192,12 +169,10 @@ internal static unsafe class OpcDaGroupCcwSyncIoMethods
         HasHandleOutArgs(count, handles, values, errors) && qualities != null && timestamps != null &&
         (count == 0 || maxAges != IntPtr.Zero);
 
-    private static void AssignReadOuts(IntPtr* ppItemValues, IntPtr* ppErrors, OpcItemState[] states, int[] errors)
-    {
+    private static void AssignReadOuts(IntPtr* ppItemValues, IntPtr* ppErrors, OpcItemState[] states, int[] errors) {
         IntPtr itemValuesPtr = IntPtr.Zero;
         IntPtr errorsPtr = IntPtr.Zero;
-        try
-        {
+        try {
             itemValuesPtr = AllocateOpcItemStateArray(states);
             errorsPtr = AllocateInt32Array(errors);
             *ppItemValues = itemValuesPtr;
@@ -205,8 +180,7 @@ internal static unsafe class OpcDaGroupCcwSyncIoMethods
             itemValuesPtr = IntPtr.Zero;
             errorsPtr = IntPtr.Zero;
         }
-        finally
-        {
+        finally {
             FreeOpcItemStateArray(itemValuesPtr, states.Length);
             Marshal.FreeCoTaskMem(errorsPtr);
         }
@@ -220,14 +194,12 @@ internal static unsafe class OpcDaGroupCcwSyncIoMethods
         OpcVariant[] values,
         ushort[] qualities,
         long[] timestamps,
-        int[] errors)
-    {
+        int[] errors) {
         IntPtr valuesPtr = IntPtr.Zero;
         IntPtr qualitiesPtr = IntPtr.Zero;
         IntPtr timestampsPtr = IntPtr.Zero;
         IntPtr errorsPtr = IntPtr.Zero;
-        try
-        {
+        try {
             valuesPtr = AllocateVariantArray(values);
             qualitiesPtr = AllocateUInt16Array(qualities);
             timestampsPtr = AllocateInt64Array(timestamps);
@@ -235,8 +207,7 @@ internal static unsafe class OpcDaGroupCcwSyncIoMethods
             AssignReadMaxAgePointers(ppvValues, ppwQualities, ppftTimeStamps, ppErrors, valuesPtr, qualitiesPtr, timestampsPtr, errorsPtr);
             valuesPtr = qualitiesPtr = timestampsPtr = errorsPtr = IntPtr.Zero;
         }
-        finally
-        {
+        finally {
             FreeVariantArray(valuesPtr, values.Length);
             FreeCoTaskMem(qualitiesPtr, timestampsPtr, errorsPtr);
         }
@@ -250,48 +221,40 @@ internal static unsafe class OpcDaGroupCcwSyncIoMethods
         IntPtr valuesPtr,
         IntPtr qualitiesPtr,
         IntPtr timestampsPtr,
-        IntPtr errorsPtr)
-    {
+        IntPtr errorsPtr) {
         *ppvValues = valuesPtr;
         *ppwQualities = qualitiesPtr;
         *ppftTimeStamps = timestampsPtr;
         *ppErrors = errorsPtr;
     }
 
-    private static int[] ReadInt32Array(IntPtr ptr, int count)
-    {
+    private static int[] ReadInt32Array(IntPtr ptr, int count) {
         var values = new int[count];
-        if (count > 0)
-        {
+        if (count > 0) {
             Marshal.Copy(ptr, values, 0, count);
         }
         return values;
     }
 
-    private static OpcVariant[] ReadVariantArray(IntPtr ptr, int count)
-    {
+    private static OpcVariant[] ReadVariantArray(IntPtr ptr, int count) {
         var values = new OpcVariant[count];
         int variantSize = ComVariantMarshaler.VariantSize;
-        for (int i = 0; i < count; i++)
-        {
+        for (int i = 0; i < count; i++) {
             values[i] = ComVariantMarshaler.ReadVariant(IntPtr.Add(ptr, checked(i * variantSize)));
         }
         return values;
     }
 
-    private static OpcItemVqt[] ReadOpcItemVqtArray(IntPtr ptr, int count)
-    {
+    private static OpcItemVqt[] ReadOpcItemVqtArray(IntPtr ptr, int count) {
         var values = new OpcItemVqt[count];
         int size = OpcItemVqtSize;
-        for (int i = 0; i < count; i++)
-        {
+        for (int i = 0; i < count; i++) {
             values[i] = ReadOpcItemVqt(IntPtr.Add(ptr, checked(i * size)));
         }
         return values;
     }
 
-    private static OpcItemVqt ReadOpcItemVqt(IntPtr slot)
-    {
+    private static OpcItemVqt ReadOpcItemVqt(IntPtr slot) {
         int variantSize = ComVariantMarshaler.VariantSize;
         OpcVariant value = ComVariantMarshaler.ReadVariant(slot);
         bool qualitySpecified = Marshal.ReadInt32(slot, variantSize) != 0;
@@ -303,29 +266,24 @@ internal static unsafe class OpcDaGroupCcwSyncIoMethods
     }
 
     [SuppressMessage("Reliability", "CA2018", Justification = "Explicit byte size.")]
-    private static IntPtr AllocateOpcItemStateArray(OpcItemState[] states)
-    {
+    private static IntPtr AllocateOpcItemStateArray(OpcItemState[] states) {
         int size = OpcItemStateSize;
         int byteCount = Math.Max(1, checked(states.Length * size));
         IntPtr ptr = Marshal.AllocCoTaskMem(byteCount);
         int written = 0;
-        try
-        {
-            for (; written < states.Length; written++)
-            {
+        try {
+            for (; written < states.Length; written++) {
                 WriteOpcItemState(IntPtr.Add(ptr, checked(written * size)), states[written]);
             }
             return ptr;
         }
-        catch
-        {
+        catch {
             FreeOpcItemStateArray(ptr, written);
             throw;
         }
     }
 
-    private static void WriteOpcItemState(IntPtr slot, OpcItemState state)
-    {
+    private static void WriteOpcItemState(IntPtr slot, OpcItemState state) {
         Marshal.WriteInt32(slot, state.ClientHandle);
         Marshal.WriteInt64(slot, 4, state.Timestamp.ToFileTime());
         Marshal.WriteInt16(slot, 12, unchecked((short)state.Quality.RawValue));
@@ -334,108 +292,88 @@ internal static unsafe class OpcDaGroupCcwSyncIoMethods
     }
 
     [SuppressMessage("Reliability", "CA2018", Justification = "Explicit byte size.")]
-    private static IntPtr AllocateVariantArray(OpcVariant[] values)
-    {
+    private static IntPtr AllocateVariantArray(OpcVariant[] values) {
         int variantSize = ComVariantMarshaler.VariantSize;
         int byteCount = Math.Max(1, checked(values.Length * variantSize));
         IntPtr ptr = Marshal.AllocCoTaskMem(byteCount);
         int written = 0;
-        try
-        {
-            for (; written < values.Length; written++)
-            {
+        try {
+            for (; written < values.Length; written++) {
                 ComVariantMarshaler.WriteVariant(IntPtr.Add(ptr, checked(written * variantSize)), values[written]);
             }
             return ptr;
         }
-        catch
-        {
+        catch {
             FreeVariantArray(ptr, written);
             throw;
         }
     }
 
     [SuppressMessage("Reliability", "CA2018", Justification = "Explicit byte size.")]
-    private static IntPtr AllocateInt32Array(int[] values)
-    {
+    private static IntPtr AllocateInt32Array(int[] values) {
         int byteCount = Math.Max(1, checked(values.Length * sizeof(int)));
         IntPtr ptr = Marshal.AllocCoTaskMem(byteCount);
-        if (values.Length > 0)
-        {
+        if (values.Length > 0) {
             Marshal.Copy(values, 0, ptr, values.Length);
         }
         return ptr;
     }
 
     [SuppressMessage("Reliability", "CA2018", Justification = "Explicit byte size.")]
-    private static IntPtr AllocateUInt16Array(ushort[] values)
-    {
+    private static IntPtr AllocateUInt16Array(ushort[] values) {
         int byteCount = Math.Max(1, checked(values.Length * sizeof(ushort)));
         IntPtr ptr = Marshal.AllocCoTaskMem(byteCount);
-        for (int i = 0; i < values.Length; i++)
-        {
+        for (int i = 0; i < values.Length; i++) {
             Marshal.WriteInt16(ptr, checked(i * sizeof(ushort)), unchecked((short)values[i]));
         }
         return ptr;
     }
 
     [SuppressMessage("Reliability", "CA2018", Justification = "Explicit byte size.")]
-    private static IntPtr AllocateInt64Array(long[] values)
-    {
+    private static IntPtr AllocateInt64Array(long[] values) {
         int byteCount = Math.Max(1, checked(values.Length * sizeof(long)));
         IntPtr ptr = Marshal.AllocCoTaskMem(byteCount);
         Marshal.Copy(values, 0, ptr, values.Length);
         return ptr;
     }
 
-    private static void FreeOpcItemStateArray(IntPtr ptr, int count)
-    {
-        if (ptr == IntPtr.Zero)
-        {
+    private static void FreeOpcItemStateArray(IntPtr ptr, int count) {
+        if (ptr == IntPtr.Zero) {
             return;
         }
         int size = OpcItemStateSize;
-        for (int i = 0; i < count; i++)
-        {
+        for (int i = 0; i < count; i++) {
             ComVariantMarshaler.ClearVariant(IntPtr.Add(ptr, checked(i * size + OpcItemStateVariantOffset)));
         }
         Marshal.FreeCoTaskMem(ptr);
     }
 
-    private static void FreeVariantArray(IntPtr ptr, int count)
-    {
-        if (ptr == IntPtr.Zero)
-        {
+    private static void FreeVariantArray(IntPtr ptr, int count) {
+        if (ptr == IntPtr.Zero) {
             return;
         }
         int variantSize = ComVariantMarshaler.VariantSize;
-        for (int i = 0; i < count; i++)
-        {
+        for (int i = 0; i < count; i++) {
             ComVariantMarshaler.ClearVariant(IntPtr.Add(ptr, checked(i * variantSize)));
         }
         Marshal.FreeCoTaskMem(ptr);
     }
 
-    private static void FreeCoTaskMem(params IntPtr[] pointers)
-    {
-        foreach (IntPtr pointer in pointers)
-        {
+    private static void FreeCoTaskMem(params IntPtr[] pointers) {
+        foreach (IntPtr pointer in pointers) {
             Marshal.FreeCoTaskMem(pointer);
         }
     }
 
-    private static void ZeroReadMaxAgeOuts(IntPtr* values, IntPtr* qualities, IntPtr* timestamps, IntPtr* errors)
-    {
+    private static void ZeroReadMaxAgeOuts(IntPtr* values, IntPtr* qualities, IntPtr* timestamps, IntPtr* errors) {
         ZeroOut(values);
         ZeroOut(qualities);
         ZeroOut(timestamps);
         ZeroOut(errors);
     }
 
-    private static void ZeroOut(IntPtr* ppv)
-    {
-        if (ppv != null)
-        {
+    private static void ZeroOut(IntPtr* ppv) {
+        if (ppv != null) {
             *ppv = IntPtr.Zero;
         }
     }

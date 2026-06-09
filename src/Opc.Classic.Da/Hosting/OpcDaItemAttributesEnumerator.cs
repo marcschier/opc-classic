@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -37,8 +37,7 @@ namespace Opc.Classic.Da.Hosting;
 /// Clients that want fresh data must call <c>CreateEnumerator</c> again.
 /// </para>
 /// </remarks>
-public sealed class OpcDaItemAttributesEnumerator : IEnumOPCItemAttributes
-{
+public sealed class OpcDaItemAttributesEnumerator : IEnumOPCItemAttributes {
     private readonly OpcItemAttributes[] _snapshot;
     private readonly OpcObjectRegistry? _registry;
     private int _cursor;
@@ -46,8 +45,7 @@ public sealed class OpcDaItemAttributesEnumerator : IEnumOPCItemAttributes
     /// <summary>Initializes a new enumerator over the supplied snapshot.</summary>
     /// <param name="snapshot">The full item attributes array; iteration starts at index 0.</param>
     /// <param name="registry">Optional registry used to register clones (<see cref="CloneAsync"/>); when null, clones return a synthetic ref.</param>
-    public OpcDaItemAttributesEnumerator(OpcItemAttributes[] snapshot, OpcObjectRegistry? registry = null)
-    {
+    public OpcDaItemAttributesEnumerator(OpcItemAttributes[] snapshot, OpcObjectRegistry? registry = null) {
         ArgumentNullException.ThrowIfNull(snapshot);
         _snapshot = snapshot;
         _registry = registry;
@@ -65,11 +63,9 @@ public sealed class OpcDaItemAttributesEnumerator : IEnumOPCItemAttributes
         int count,
         out OpcItemAttributes[] attributes,
         out int fetchedCount,
-        CancellationToken cancellationToken = default)
-    {
+        CancellationToken cancellationToken = default) {
         cancellationToken.ThrowIfCancellationRequested();
-        if (count <= 0)
-        {
+        if (count <= 0) {
             attributes = Array.Empty<OpcItemAttributes>();
             fetchedCount = 0;
             return Task.CompletedTask;
@@ -77,8 +73,7 @@ public sealed class OpcDaItemAttributesEnumerator : IEnumOPCItemAttributes
 
         int available = Math.Max(0, _snapshot.Length - _cursor);
         int take = Math.Min(count, available);
-        if (take == 0)
-        {
+        if (take == 0) {
             attributes = Array.Empty<OpcItemAttributes>();
             fetchedCount = 0;
             return Task.CompletedTask;
@@ -93,42 +88,35 @@ public sealed class OpcDaItemAttributesEnumerator : IEnumOPCItemAttributes
     }
 
     /// <inheritdoc />
-    public Task SkipAsync(int count, CancellationToken cancellationToken = default)
-    {
+    public Task SkipAsync(int count, CancellationToken cancellationToken = default) {
         cancellationToken.ThrowIfCancellationRequested();
-        if (count > 0)
-        {
+        if (count > 0) {
             _cursor = Math.Min(_cursor + count, _snapshot.Length);
         }
         return Task.CompletedTask;
     }
 
     /// <inheritdoc />
-    public Task ResetAsync(CancellationToken cancellationToken = default)
-    {
+    public Task ResetAsync(CancellationToken cancellationToken = default) {
         cancellationToken.ThrowIfCancellationRequested();
         _cursor = 0;
         return Task.CompletedTask;
     }
 
     /// <inheritdoc />
-    public Task<IOpcInterfaceRef> CloneAsync(CancellationToken cancellationToken = default)
-    {
+    public Task<IOpcInterfaceRef> CloneAsync(CancellationToken cancellationToken = default) {
         cancellationToken.ThrowIfCancellationRequested();
 
         var clone = new OpcDaItemAttributesEnumerator(_snapshot, _registry) { _cursor = _cursor };
 
         Guid ipid;
-        if (_registry is not null)
-        {
-            var dispatchers = new Dictionary<Guid, IOpcServerDispatcher>
-            {
+        if (_registry is not null) {
+            var dispatchers = new Dictionary<Guid, IOpcServerDispatcher> {
                 [IEnumOPCItemAttributes.InterfaceId] = new IEnumOPCItemAttributesServerDispatcher(clone),
             };
             ipid = _registry.Register(dispatchers);
         }
-        else
-        {
+        else {
             ipid = Guid.CreateVersion7();
         }
 

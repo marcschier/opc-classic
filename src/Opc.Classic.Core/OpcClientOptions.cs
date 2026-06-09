@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -9,8 +9,7 @@ namespace Opc.Classic;
 /// Client-side configuration for the Opc.Classic stack: operation timeout
 /// + future fields (retry policy, circuit-breaker config).
 /// </summary>
-public sealed record OpcClientOptions
-{
+public sealed record OpcClientOptions {
     /// <summary>
     /// Default per-operation timeout. Applied to every InvokeAsync that
     /// doesn't pass its own CancellationToken with a deadline. Defaults

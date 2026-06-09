@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: MIT
+﻿// SPDX-License-Identifier: MIT
 
 using Opc.Classic.Dcom.Internal;
 using SharpCifs.Util.Sharpen;
@@ -12,7 +12,8 @@ using System.IO;
 using System;
 using System.Web;
 
-namespace Opc.Classic.Dcom.Registry.Smb; 
+namespace Opc.Classic.Dcom.Registry.Smb;
+
 /// <summary>
 /// Registry strub
 /// </summary>

@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -18,16 +18,14 @@ public sealed record SpnegoNegTokenResp(
     SpnegoNegState? NegState,
     string? SupportedMech,
     ReadOnlyMemory<byte>? ResponseToken,
-    ReadOnlyMemory<byte>? MechListMic)
-{
+    ReadOnlyMemory<byte>? MechListMic) {
     /// <summary>
     /// Verifies this response's mechListMIC over the exact encoded MechTypeList bytes.
     /// </summary>
     /// <param name="mechListBytes">Exact DER bytes of the original MechTypeList SEQUENCE.</param>
     /// <param name="micProvider">The negotiated inner mechanism MIC provider.</param>
     /// <returns><see langword="true" /> when the mechListMIC is present and valid.</returns>
-    public bool VerifyMechListMic(ReadOnlySpan<byte> mechListBytes, IGssMicProvider micProvider)
-    {
+    public bool VerifyMechListMic(ReadOnlySpan<byte> mechListBytes, IGssMicProvider micProvider) {
         ArgumentNullException.ThrowIfNull(micProvider);
 
         return MechListMic.HasValue && micProvider.VerifyMic(mechListBytes, MechListMic.Value.Span);

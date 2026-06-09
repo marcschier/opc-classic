@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -21,8 +21,7 @@ namespace Opc.Classic.Discovery;
 /// <summary>
 /// Default OPCEnum channel factory for DCOM over ncacn_ip_tcp.
 /// </summary>
-public sealed class DcomOpcEnumCallChannelFactory : IOpcEnumCallChannelFactory
-{
+public sealed class DcomOpcEnumCallChannelFactory : IOpcEnumCallChannelFactory {
     private const int EndpointMapperPort = 135;
     private const ushort TcpTowerId = 0x07;
 
@@ -34,8 +33,7 @@ public sealed class DcomOpcEnumCallChannelFactory : IOpcEnumCallChannelFactory
         : this(
             new DcomCallChannelFactory(new TcpSocketTransportFactory()),
             static () => NoOpAuthContext.Instance,
-            OpcProtectionLevel.Integrity)
-    {
+            OpcProtectionLevel.Integrity) {
     }
 
     /// <summary>Creates a DCOM channel factory from OPC connection authentication settings.</summary>
@@ -43,24 +41,21 @@ public sealed class DcomOpcEnumCallChannelFactory : IOpcEnumCallChannelFactory
         : this(
             new DcomCallChannelFactory(new TcpSocketTransportFactory()),
             CreateAuthContextFactory(connectData),
-            NormalizeActivationProtection(connectData.ProtectionLevel))
-    {
+            NormalizeActivationProtection(connectData.ProtectionLevel)) {
     }
 
     /// <summary>Creates a DCOM channel factory with injectable transport and authentication.</summary>
     public DcomOpcEnumCallChannelFactory(
         DcomCallChannelFactory channelFactory,
         Func<IAuthContext> authContextFactory)
-        : this(channelFactory, authContextFactory, OpcProtectionLevel.Integrity)
-    {
+        : this(channelFactory, authContextFactory, OpcProtectionLevel.Integrity) {
     }
 
     /// <summary>Creates a DCOM channel factory with injectable transport, authentication, and activation protection.</summary>
     public DcomOpcEnumCallChannelFactory(
         DcomCallChannelFactory channelFactory,
         Func<IAuthContext> authContextFactory,
-        OpcProtectionLevel activationProtectionLevel)
-    {
+        OpcProtectionLevel activationProtectionLevel) {
         ArgumentNullException.ThrowIfNull(channelFactory);
         ArgumentNullException.ThrowIfNull(authContextFactory);
 
@@ -75,8 +70,7 @@ public sealed class DcomOpcEnumCallChannelFactory : IOpcEnumCallChannelFactory
     /// <inheritdoc />
     public ValueTask<ICallChannel> CreateActivationChannelAsync(
         string host,
-        CancellationToken cancellationToken = default)
-    {
+        CancellationToken cancellationToken = default) {
         ArgumentException.ThrowIfNullOrWhiteSpace(host);
 
         // Activation channel binds the RPC endpoint mapper (port 135) which only
@@ -99,8 +93,7 @@ public sealed class DcomOpcEnumCallChannelFactory : IOpcEnumCallChannelFactory
         IOpcInterfaceRef interfaceRef,
         Guid interfaceId,
         ReadOnlyMemory<byte> oxidBindings,
-        CancellationToken cancellationToken = default)
-    {
+        CancellationToken cancellationToken = default) {
         ArgumentException.ThrowIfNullOrWhiteSpace(host);
         ArgumentNullException.ThrowIfNull(interfaceRef);
 
@@ -118,51 +111,43 @@ public sealed class DcomOpcEnumCallChannelFactory : IOpcEnumCallChannelFactory
     private async ValueTask<ICallChannel> ConnectActivatedAsync(EndPoint endpoint, Guid objectIpid, IReadOnlyList<Guid> preBindIids, CancellationToken cancellationToken) =>
         await _channelFactory.ConnectActivatedAsync(endpoint, _authContextFactory(), objectIpid, preBindIids, cancellationToken).ConfigureAwait(false);
 
-    private static DnsEndPoint ResolveDataPortEndpoint(string fallbackHost, IOpcInterfaceRef interfaceRef, ReadOnlyMemory<byte> oxidBindings)
-    {
+    private static DnsEndPoint ResolveDataPortEndpoint(string fallbackHost, IOpcInterfaceRef interfaceRef, ReadOnlyMemory<byte> oxidBindings) {
         // The OBJREF's own ResolverBindings carry only the OXID-resolver address
         // (typically port 135 / the RPC endpoint mapper) and lack the data-port
         // suffix. Prefer the OXID-level DUALSTRINGARRAY returned by the activation
         // call when available — it includes the per-interface data port (e.g.
         // ncacn_ip_tcp:HOST[57539]) and lets us bind the activated object directly.
         if (!oxidBindings.IsEmpty
-            && TryResolveDataPortFromOxidBindings(fallbackHost, oxidBindings.Span, out DnsEndPoint? dataPortEndpoint))
-        {
+            && TryResolveDataPortFromOxidBindings(fallbackHost, oxidBindings.Span, out DnsEndPoint? dataPortEndpoint)) {
             return dataPortEndpoint!;
         }
 
         return ResolveObjectEndpoint(fallbackHost, interfaceRef);
     }
 
-    private static bool TryResolveDataPortFromOxidBindings(string fallbackHost, ReadOnlySpan<byte> bindings, out DnsEndPoint? endpoint)
-    {
+    private static bool TryResolveDataPortFromOxidBindings(string fallbackHost, ReadOnlySpan<byte> bindings, out DnsEndPoint? endpoint) {
         endpoint = null;
-        if (bindings.Length < 4)
-        {
+        if (bindings.Length < 4) {
             return false;
         }
 
         ushort secOffset = System.Buffers.Binary.BinaryPrimitives.ReadUInt16LittleEndian(bindings.Slice(2));
         int idx = 4;
         int entriesConsumed = 2;
-        while (idx + 2 <= bindings.Length && entriesConsumed < secOffset)
-        {
+        while (idx + 2 <= bindings.Length && entriesConsumed < secOffset) {
             ushort tower = System.Buffers.Binary.BinaryPrimitives.ReadUInt16LittleEndian(bindings.Slice(idx));
             idx += 2;
             entriesConsumed++;
-            if (tower == 0)
-            {
+            if (tower == 0) {
                 return false;
             }
 
             string address = ReadNullTerminatedWideString(bindings, ref idx, ref entriesConsumed, secOffset);
-            if (tower != TcpTowerId)
-            {
+            if (tower != TcpTowerId) {
                 continue;
             }
 
-            if (TryParseHostPort(address, fallbackHost, out string host, out int port))
-            {
+            if (TryParseHostPort(address, fallbackHost, out string host, out int port)) {
                 endpoint = new DnsEndPoint(host, port);
                 return true;
             }
@@ -171,16 +156,13 @@ public sealed class DcomOpcEnumCallChannelFactory : IOpcEnumCallChannelFactory
         return false;
     }
 
-    private static string ReadNullTerminatedWideString(ReadOnlySpan<byte> bindings, ref int idx, ref int entriesConsumed, ushort secOffset)
-    {
+    private static string ReadNullTerminatedWideString(ReadOnlySpan<byte> bindings, ref int idx, ref int entriesConsumed, ushort secOffset) {
         var sb = new System.Text.StringBuilder();
-        while (idx + 2 <= bindings.Length && entriesConsumed < secOffset)
-        {
+        while (idx + 2 <= bindings.Length && entriesConsumed < secOffset) {
             ushort ch = System.Buffers.Binary.BinaryPrimitives.ReadUInt16LittleEndian(bindings.Slice(idx));
             idx += 2;
             entriesConsumed++;
-            if (ch == 0)
-            {
+            if (ch == 0) {
                 break;
             }
 
@@ -190,25 +172,21 @@ public sealed class DcomOpcEnumCallChannelFactory : IOpcEnumCallChannelFactory
         return sb.ToString();
     }
 
-    private static bool TryParseHostPort(string address, string fallbackHost, out string host, out int port)
-    {
+    private static bool TryParseHostPort(string address, string fallbackHost, out string host, out int port) {
         host = string.Empty;
         port = 0;
         int bracket = address.LastIndexOf('[');
-        if (bracket < 0 || !address.EndsWith(']'))
-        {
+        if (bracket < 0 || !address.EndsWith(']')) {
             return false;
         }
 
         string portText = address.Substring(bracket + 1, address.Length - bracket - 2);
-        if (!int.TryParse(portText, System.Globalization.NumberStyles.None, System.Globalization.CultureInfo.InvariantCulture, out port))
-        {
+        if (!int.TryParse(portText, System.Globalization.NumberStyles.None, System.Globalization.CultureInfo.InvariantCulture, out port)) {
             return false;
         }
 
         host = address.Substring(0, bracket);
-        if (string.IsNullOrWhiteSpace(host))
-        {
+        if (string.IsNullOrWhiteSpace(host)) {
             host = fallbackHost;
         }
 
@@ -218,15 +196,13 @@ public sealed class DcomOpcEnumCallChannelFactory : IOpcEnumCallChannelFactory
     private Task<ICallChannel> ConnectAsync(EndPoint endpoint, Guid clsidToActivate, IReadOnlyList<Guid>? preBindIids, CancellationToken cancellationToken) =>
         _channelFactory.ConnectAsync(endpoint, clsidToActivate, _authContextFactory(), preBindIids, cancellationToken);
 
-    private static Func<IAuthContext> CreateAuthContextFactory(OpcConnectData connectData)
-    {
+    private static Func<IAuthContext> CreateAuthContextFactory(OpcConnectData connectData) {
         ArgumentNullException.ThrowIfNull(connectData);
         OpcConnectData activationConnectData = NormalizeConnectData(connectData);
         return () => NtlmAuthentication.CreateAuthContext(activationConnectData);
     }
 
-    private static OpcConnectData NormalizeConnectData(OpcConnectData connectData)
-    {
+    private static OpcConnectData NormalizeConnectData(OpcConnectData connectData) {
         OpcProtectionLevel activationProtection = NormalizeActivationProtection(connectData.ProtectionLevel);
         return activationProtection == connectData.ProtectionLevel
             ? connectData
@@ -242,10 +218,8 @@ public sealed class DcomOpcEnumCallChannelFactory : IOpcEnumCallChannelFactory
     private static OpcProtectionLevel NormalizeActivationProtection(OpcProtectionLevel protectionLevel) =>
         protectionLevel == OpcProtectionLevel.Privacy ? OpcProtectionLevel.Privacy : OpcProtectionLevel.Integrity;
 
-    private static DnsEndPoint ResolveObjectEndpoint(string fallbackHost, IOpcInterfaceRef interfaceRef)
-    {
-        if (TryFindTcpBinding(interfaceRef.ResolverBindings, out string? host, out int port))
-        {
+    private static DnsEndPoint ResolveObjectEndpoint(string fallbackHost, IOpcInterfaceRef interfaceRef) {
+        if (TryFindTcpBinding(interfaceRef.ResolverBindings, out string? host, out int port)) {
             return new DnsEndPoint(string.IsNullOrWhiteSpace(host) ? fallbackHost : host, port);
         }
 
@@ -255,22 +229,18 @@ public sealed class DcomOpcEnumCallChannelFactory : IOpcEnumCallChannelFactory
     private static bool TryFindTcpBinding(
         System.Collections.Generic.IReadOnlyList<ushort> entries,
         out string? host,
-        out int port)
-    {
+        out int port) {
         host = null;
         port = EndpointMapperPort;
 
-        for (int index = 0; index < entries.Count;)
-        {
+        for (int index = 0; index < entries.Count;) {
             ushort towerId = entries[index++];
-            if (towerId == 0)
-            {
+            if (towerId == 0) {
                 return false;
             }
 
             string networkAddress = ReadNullTerminatedString(entries, ref index);
-            if (towerId != TcpTowerId)
-            {
+            if (towerId != TcpTowerId) {
                 continue;
             }
 
@@ -281,15 +251,12 @@ public sealed class DcomOpcEnumCallChannelFactory : IOpcEnumCallChannelFactory
         return false;
     }
 
-    private static string ReadNullTerminatedString(System.Collections.Generic.IReadOnlyList<ushort> entries, ref int index)
-    {
+    private static string ReadNullTerminatedString(System.Collections.Generic.IReadOnlyList<ushort> entries, ref int index) {
         var chars = new char[Math.Max(0, entries.Count - index)];
         int length = 0;
-        while (index < entries.Count)
-        {
+        while (index < entries.Count) {
             ushort value = entries[index++];
-            if (value == 0)
-            {
+            if (value == 0) {
                 break;
             }
 
@@ -299,39 +266,32 @@ public sealed class DcomOpcEnumCallChannelFactory : IOpcEnumCallChannelFactory
         return new string(chars, 0, length);
     }
 
-    private static void ParseNetworkAddress(string networkAddress, out string? host, out int port)
-    {
+    private static void ParseNetworkAddress(string networkAddress, out string? host, out int port) {
         host = networkAddress;
         port = EndpointMapperPort;
 
         int bracketStart = networkAddress.LastIndexOf('[');
-        if (bracketStart < 0 || !networkAddress.EndsWith(']'))
-        {
+        if (bracketStart < 0 || !networkAddress.EndsWith(']')) {
             return;
         }
 
         string portText = networkAddress.Substring(bracketStart + 1, networkAddress.Length - bracketStart - 2);
         if (int.TryParse(portText, NumberStyles.None, CultureInfo.InvariantCulture, out int parsedPort)
-            && parsedPort is > 0 and <= 65535)
-        {
+            && parsedPort is > 0 and <= 65535) {
             port = parsedPort;
             host = networkAddress[..bracketStart];
         }
     }
 
-    private sealed class TcpSocketTransportFactory : IAsyncTransportFactory
-    {
+    private sealed class TcpSocketTransportFactory : IAsyncTransportFactory {
         public async ValueTask<IAsyncTransport> ConnectAsync(
             EndPoint endpoint,
-            CancellationToken cancellationToken = default)
-        {
+            CancellationToken cancellationToken = default) {
             ArgumentNullException.ThrowIfNull(endpoint);
 
             var client = new TcpClient();
-            try
-            {
-                switch (endpoint)
-                {
+            try {
+                switch (endpoint) {
                     case DnsEndPoint dns:
                         await client.ConnectAsync(dns.Host, dns.Port, cancellationToken).ConfigureAwait(false);
                         break;
@@ -344,21 +304,18 @@ public sealed class DcomOpcEnumCallChannelFactory : IOpcEnumCallChannelFactory
 
                 return new TcpSocketTransport(client);
             }
-            catch
-            {
+            catch {
                 client.Dispose();
                 throw;
             }
         }
     }
 
-    private sealed class TcpSocketTransport : IAsyncTransport
-    {
+    private sealed class TcpSocketTransport : IAsyncTransport {
         private readonly TcpClient _client;
         private readonly NetworkStream _stream;
 
-        public TcpSocketTransport(TcpClient client)
-        {
+        public TcpSocketTransport(TcpClient client) {
             _client = client ?? throw new ArgumentNullException(nameof(client));
             _stream = client.GetStream();
             Input = PipeReader.Create(_stream);
@@ -375,8 +332,7 @@ public sealed class DcomOpcEnumCallChannelFactory : IOpcEnumCallChannelFactory
         public async ValueTask FlushAsync(CancellationToken cancellationToken = default) =>
             await Output.FlushAsync(cancellationToken).ConfigureAwait(false);
 
-        public async ValueTask DisposeAsync()
-        {
+        public async ValueTask DisposeAsync() {
             await Input.CompleteAsync().ConfigureAwait(false);
             await Output.CompleteAsync().ConfigureAwait(false);
             await _stream.DisposeAsync().ConfigureAwait(false);

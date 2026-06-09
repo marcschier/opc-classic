@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -11,8 +11,7 @@ using TUnit.Core;
 
 namespace Opc.Classic.SnapshotTests.Codecs;
 
-public sealed class VariantSnapshotTests
-{
+public sealed class VariantSnapshotTests {
     [Test]
     public async Task VtI4_42_encodes_to_stable_bytes() =>
         await VerifyVariant("OpcVariant", "VT_I4(42)", OpcVariant.FromInt32(42));
@@ -58,15 +57,12 @@ public sealed class VariantSnapshotTests
         await VerifyVariant("OpcVariant", "VT_BYREF|VT_I4(42)", OpcVariant.FromByRef(VarType.VT_I4, 42));
 
     [Test]
-    public async Task VtRecord_encodes_to_stable_bytes()
-    {
+    public async Task VtRecord_encodes_to_stable_bytes() {
         RecordInfoRegistry.Register(CodecFixtures.SampleRecordInfo);
-        try
-        {
+        try {
             await VerifyVariant("OpcVariant", "VT_RECORD(SampleRecord)", OpcVariant.FromRecord(CodecFixtures.SampleRecordValue()));
         }
-        finally
-        {
+        finally {
             _ = RecordInfoRegistry.Unregister(CodecFixtures.SampleRecordInfo.Id);
         }
     }

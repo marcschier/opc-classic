@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -6,8 +6,7 @@
 namespace Opc.Classic;
 
 /// <summary>The OPC quality top-level category (bits 0-1 of the DA quality WORD).</summary>
-public enum OpcQualityKind
-{
+public enum OpcQualityKind {
     /// <summary>Bad: the value is not useful (sensor failure, comms loss, ...).</summary>
     Bad = 0,
     /// <summary>Uncertain: the value is not known to be correct.</summary>

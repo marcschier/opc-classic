@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -6,8 +6,7 @@
 namespace Opc.Classic;
 
 /// <summary>Identifies which OPC specification produced an <see cref="OpcServerStatus"/>.</summary>
-public enum OpcStatusSpec
-{
+public enum OpcStatusSpec {
     /// <summary>Source is unknown (default / uninitialized).</summary>
     Unknown = 0,
     /// <summary>OPC Data Access — <c>OPCSERVERSTATUS</c>.</summary>

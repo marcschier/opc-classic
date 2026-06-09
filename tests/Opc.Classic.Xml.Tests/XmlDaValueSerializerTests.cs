@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -14,10 +14,8 @@ using TUnit.Core;
 
 namespace Opc.Classic.Xml.Tests;
 
-public sealed class XmlDaValueSerializerTests
-{
-    private static XmlDaValue RoundTrip(XmlDaValue value)
-    {
+public sealed class XmlDaValueSerializerTests {
+    private static XmlDaValue RoundTrip(XmlDaValue value) {
         string requestXml = SerializeWriteValue(value);
         string valueElement = ExtractValueElement(requestXml);
         string responseXml = $$"""
@@ -44,11 +42,9 @@ public sealed class XmlDaValueSerializerTests
         return ReadSerializer.ReadResponse(reader).Items[0].Value!;
     }
 
-    private static string SerializeWriteValue(XmlDaValue value)
-    {
+    private static string SerializeWriteValue(XmlDaValue value) {
         using var ms = new MemoryStream();
-        using (var writer = new SoapEnvelopeWriter(ms))
-        {
+        using (var writer = new SoapEnvelopeWriter(ms)) {
             WriteSerializer.WriteRequest(writer, new XmlDaWriteRequest(
                 new XmlDaRequestHeader(null, null),
                 new[] { new XmlDaWriteItem("Tag1", null, value) }));
@@ -57,12 +53,10 @@ public sealed class XmlDaValueSerializerTests
         return Encoding.UTF8.GetString(ms.ToArray());
     }
 
-    private static string ExtractValueElement(string xml)
-    {
+    private static string ExtractValueElement(string xml) {
         int start = xml.IndexOf("<Value", StringComparison.Ordinal);
         int end = xml.IndexOf("</Value>", start, StringComparison.Ordinal);
-        if (start < 0 || end < 0)
-        {
+        if (start < 0 || end < 0) {
             throw new InvalidDataException("Serialized XML did not contain a Value element.");
         }
 
@@ -70,8 +64,7 @@ public sealed class XmlDaValueSerializerTests
     }
 
     [Test]
-    public async Task ArrayOfByte_RoundTrips()
-    {
+    public async Task ArrayOfByte_RoundTrips() {
         var parsed = RoundTrip(XmlDaValue.OfArrayOfByte(new sbyte[] { -128, 0, 127 }));
 
         await Assert.That(parsed.Type).IsEqualTo(XmlDaValueType.ArrayOfByte);
@@ -79,8 +72,7 @@ public sealed class XmlDaValueSerializerTests
     }
 
     [Test]
-    public async Task ArrayOfShort_RoundTrips()
-    {
+    public async Task ArrayOfShort_RoundTrips() {
         var parsed = RoundTrip(XmlDaValue.OfArrayOfShort(new short[] { -123, 0, 456 }));
 
         await Assert.That(parsed.Type).IsEqualTo(XmlDaValueType.ArrayOfShort);
@@ -88,8 +80,7 @@ public sealed class XmlDaValueSerializerTests
     }
 
     [Test]
-    public async Task ArrayOfInt_RoundTrips()
-    {
+    public async Task ArrayOfInt_RoundTrips() {
         var parsed = RoundTrip(XmlDaValue.OfArrayOfInt(new[] { -1, 0, 123456 }));
 
         await Assert.That(parsed.Type).IsEqualTo(XmlDaValueType.ArrayOfInt);
@@ -97,8 +88,7 @@ public sealed class XmlDaValueSerializerTests
     }
 
     [Test]
-    public async Task ArrayOfLong_RoundTrips()
-    {
+    public async Task ArrayOfLong_RoundTrips() {
         var parsed = RoundTrip(XmlDaValue.OfArrayOfLong(new[] { -1L, 0L, 9_000_000_000L }));
 
         await Assert.That(parsed.Type).IsEqualTo(XmlDaValueType.ArrayOfLong);
@@ -106,8 +96,7 @@ public sealed class XmlDaValueSerializerTests
     }
 
     [Test]
-    public async Task ArrayOfFloat_RoundTrips()
-    {
+    public async Task ArrayOfFloat_RoundTrips() {
         var parsed = RoundTrip(XmlDaValue.OfArrayOfFloat(new[] { -1.25f, 0f, 3.5f }));
 
         await Assert.That(parsed.Type).IsEqualTo(XmlDaValueType.ArrayOfFloat);
@@ -115,8 +104,7 @@ public sealed class XmlDaValueSerializerTests
     }
 
     [Test]
-    public async Task ArrayOfDouble_RoundTrips()
-    {
+    public async Task ArrayOfDouble_RoundTrips() {
         var parsed = RoundTrip(XmlDaValue.OfArrayOfDouble(new[] { -1.25d, 0d, 3.5d }));
 
         await Assert.That(parsed.Type).IsEqualTo(XmlDaValueType.ArrayOfDouble);
@@ -124,8 +112,7 @@ public sealed class XmlDaValueSerializerTests
     }
 
     [Test]
-    public async Task ArrayOfString_RoundTrips()
-    {
+    public async Task ArrayOfString_RoundTrips() {
         var parsed = RoundTrip(XmlDaValue.OfArrayOfString(new string?[] { "alpha", null, "gamma" }));
 
         await Assert.That(parsed.Type).IsEqualTo(XmlDaValueType.ArrayOfString);
@@ -133,8 +120,7 @@ public sealed class XmlDaValueSerializerTests
     }
 
     [Test]
-    public async Task ArrayOfBool_RoundTrips()
-    {
+    public async Task ArrayOfBool_RoundTrips() {
         var parsed = RoundTrip(XmlDaValue.OfArrayOfBool(new[] { true, false, true }));
 
         await Assert.That(parsed.Type).IsEqualTo(XmlDaValueType.ArrayOfBoolean);
@@ -142,8 +128,7 @@ public sealed class XmlDaValueSerializerTests
     }
 
     [Test]
-    public async Task ArrayOfDateTime_RoundTrips()
-    {
+    public async Task ArrayOfDateTime_RoundTrips() {
         var values = new[]
         {
             new DateTimeOffset(2026, 5, 22, 3, 0, 0, TimeSpan.Zero),
@@ -157,8 +142,7 @@ public sealed class XmlDaValueSerializerTests
     }
 
     [Test]
-    public async Task Base64Binary_RoundTrips()
-    {
+    public async Task Base64Binary_RoundTrips() {
         var parsed = RoundTrip(XmlDaValue.OfBase64Binary(new byte[] { 0, 1, 2, 255 }));
 
         await Assert.That(parsed.Type).IsEqualTo(XmlDaValueType.Base64Binary);
@@ -166,8 +150,7 @@ public sealed class XmlDaValueSerializerTests
     }
 
     [Test]
-    public async Task Decimal_RoundTrips()
-    {
+    public async Task Decimal_RoundTrips() {
         var parsed = RoundTrip(XmlDaValue.OfDecimal(123.456m));
 
         await Assert.That(parsed.Type).IsEqualTo(XmlDaValueType.Decimal);
@@ -175,8 +158,7 @@ public sealed class XmlDaValueSerializerTests
     }
 
     [Test]
-    public async Task Time_RoundTrips()
-    {
+    public async Task Time_RoundTrips() {
         var expected = new TimeOnly(12, 34, 56);
         var parsed = RoundTrip(XmlDaValue.OfTime(expected));
 
@@ -185,8 +167,7 @@ public sealed class XmlDaValueSerializerTests
     }
 
     [Test]
-    public async Task Date_RoundTrips()
-    {
+    public async Task Date_RoundTrips() {
         var expected = new DateOnly(2026, 5, 22);
         var parsed = RoundTrip(XmlDaValue.OfDate(expected));
 
@@ -195,8 +176,7 @@ public sealed class XmlDaValueSerializerTests
     }
 
     [Test]
-    public async Task Duration_RoundTrips()
-    {
+    public async Task Duration_RoundTrips() {
         var expected = TimeSpan.FromDays(1) + TimeSpan.FromMinutes(90);
         var parsed = RoundTrip(XmlDaValue.OfDuration(expected));
 
@@ -205,8 +185,7 @@ public sealed class XmlDaValueSerializerTests
     }
 
     [Test]
-    public async Task QName_RoundTrips()
-    {
+    public async Task QName_RoundTrips() {
         var parsed = RoundTrip(XmlDaValue.OfQName(new XmlQualifiedName("S_CLAMP")));
 
         await Assert.That(parsed.Type).IsEqualTo(XmlDaValueType.QName);

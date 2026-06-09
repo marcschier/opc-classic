@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -22,11 +22,9 @@ namespace Opc.Classic.Da.Ndr;
 ///     OPCITEMPROPERTIES   ItemProperties
 /// </code>
 /// </remarks>
-public static class NdrOpcBrowseElementCodec
-{
+public static class NdrOpcBrowseElementCodec {
     /// <summary>Encodes a single OPCBROWSEELEMENT in NDR.</summary>
-    public static void Write(ref NdrWriter writer, OpcBrowseElementResult element)
-    {
+    public static void Write(ref NdrWriter writer, OpcBrowseElementResult element) {
         ArgumentNullException.ThrowIfNull(element);
 
         writer.WriteUnicodeStringPtr(element.Name);
@@ -37,8 +35,7 @@ public static class NdrOpcBrowseElementCodec
     }
 
     /// <summary>Decodes a single OPCBROWSEELEMENT from NDR.</summary>
-    public static OpcBrowseElementResult Read(ref NdrReader reader)
-    {
+    public static OpcBrowseElementResult Read(ref NdrReader reader) {
         string? name = reader.ReadUnicodeStringPtr();
         string? itemId = reader.ReadUnicodeStringPtr();
         uint flagValue = reader.ReadUInt32();

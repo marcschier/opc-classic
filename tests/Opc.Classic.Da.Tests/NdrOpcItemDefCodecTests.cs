@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -12,27 +12,23 @@ using TUnit.Core;
 
 namespace Opc.Classic.Da.Tests;
 
-public sealed class NdrOpcItemDefCodecTests
-{
+public sealed class NdrOpcItemDefCodecTests {
     private delegate void NdrWriteAction(ref NdrWriter w);
 
-    private static byte[] WriteOne(NdrWriteAction write, int capacity = 256)
-    {
+    private static byte[] WriteOne(NdrWriteAction write, int capacity = 256) {
         var buf = new byte[capacity];
         var w = new NdrWriter(buf);
         write(ref w);
         return buf[..w.Position];
     }
 
-    private static OpcItemDef ReadOne(byte[] bytes)
-    {
+    private static OpcItemDef ReadOne(byte[] bytes) {
         var r = new NdrReader(bytes);
         return NdrOpcItemDefCodec.Read(ref r);
     }
 
     [Test]
-    public async Task RoundTrip_TypicalActiveItem()
-    {
+    public async Task RoundTrip_TypicalActiveItem() {
         var input = new OpcItemDef(
             AccessPath: string.Empty,
             ItemId: "Channel1.Device1.Tag1",
@@ -49,8 +45,7 @@ public sealed class NdrOpcItemDefCodecTests
     }
 
     [Test]
-    public async Task ConformantArray_RoundTripsDeferredPointerPile()
-    {
+    public async Task ConformantArray_RoundTripsDeferredPointerPile() {
         OpcItemDef[] input =
         [
             new OpcItemDef(null, "Bucket Brigade.Int4", true, 1, [], VarType.VT_EMPTY),
@@ -68,8 +63,7 @@ public sealed class NdrOpcItemDefCodecTests
     }
 
     [Test]
-    public async Task RoundTrip_NullAccessPath()
-    {
+    public async Task RoundTrip_NullAccessPath() {
         var input = new OpcItemDef(
             AccessPath: null,
             ItemId: "Tag1",
@@ -85,8 +79,7 @@ public sealed class NdrOpcItemDefCodecTests
     }
 
     [Test]
-    public async Task RoundTrip_NonAsciiItemId()
-    {
+    public async Task RoundTrip_NonAsciiItemId() {
         var input = new OpcItemDef(
             AccessPath: string.Empty,
             ItemId: "Müller.Device.温度",
@@ -100,8 +93,7 @@ public sealed class NdrOpcItemDefCodecTests
     }
 
     [Test]
-    public async Task ActiveTrue_EmitsWin32BoolOne_OnWire()
-    {
+    public async Task ActiveTrue_EmitsWin32BoolOne_OnWire() {
         var input = new OpcItemDef(
             AccessPath: string.Empty,
             ItemId: "T",
@@ -118,8 +110,7 @@ public sealed class NdrOpcItemDefCodecTests
     }
 
     [Test]
-    public async Task ActiveFalse_RoundTrip()
-    {
+    public async Task ActiveFalse_RoundTrip() {
         var input = new OpcItemDef(
             AccessPath: string.Empty,
             ItemId: "T",
@@ -132,8 +123,7 @@ public sealed class NdrOpcItemDefCodecTests
     }
 
     [Test]
-    public async Task RoundTrip_WithBlobPayload()
-    {
+    public async Task RoundTrip_WithBlobPayload() {
         var blob = new byte[] { 0xDE, 0xAD, 0xBE, 0xEF };
         var input = new OpcItemDef(
             AccessPath: string.Empty,

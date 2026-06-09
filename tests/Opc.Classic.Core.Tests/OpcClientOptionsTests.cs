@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -8,11 +8,9 @@ using TUnit.Core;
 
 namespace Opc.Classic.Tests;
 
-public sealed class OpcClientOptionsTests
-{
+public sealed class OpcClientOptionsTests {
     [Test]
-    public async Task OpcClientOptions_default_timeout_is_30_seconds()
-    {
+    public async Task OpcClientOptions_default_timeout_is_30_seconds() {
         var options = new OpcClientOptions();
 
         await Assert.That(options.OperationTimeout).IsEqualTo(TimeSpan.FromSeconds(30));
@@ -20,8 +18,7 @@ public sealed class OpcClientOptionsTests
     }
 
     [Test]
-    public async Task OpcClientOptions_with_expression_creates_new_options()
-    {
+    public async Task OpcClientOptions_with_expression_creates_new_options() {
         var options = new OpcClientOptions { OperationTimeout = TimeSpan.FromSeconds(30) };
         var updated = options with { OperationTimeout = TimeSpan.FromSeconds(60) };
 

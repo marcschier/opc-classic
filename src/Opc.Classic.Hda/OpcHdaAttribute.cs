@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -14,8 +14,7 @@ namespace Opc.Classic.Hda;
 /// values for one item attribute. Returned by
 /// <c>IOPCHDA_SyncRead::ReadAttribute</c>.
 /// </summary>
-public sealed record OpcHdaAttribute
-{
+public sealed record OpcHdaAttribute {
     /// <summary>Constructor — validates the parallel arrays have the same length.</summary>
     /// <param name="clientHandle">Client correlation handle.</param>
     /// <param name="attributeId">The HDA attribute being read (1=DataType, 2=Description, 100..=vendor).</param>
@@ -25,12 +24,10 @@ public sealed record OpcHdaAttribute
         int clientHandle,
         int attributeId,
         DateTimeOffset[] timestamps,
-        OpcVariant[] values)
-    {
+        OpcVariant[] values) {
         ArgumentNullException.ThrowIfNull(timestamps);
         ArgumentNullException.ThrowIfNull(values);
-        if (timestamps.Length != values.Length)
-        {
+        if (timestamps.Length != values.Length) {
             throw new ArgumentException(
                 $"Parallel arrays must have equal length: timestamps={timestamps.Length}, values={values.Length}.",
                 nameof(values));

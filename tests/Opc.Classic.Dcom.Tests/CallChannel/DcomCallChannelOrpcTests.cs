@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -23,11 +23,9 @@ using TUnit.Core;
 
 namespace Opc.Classic.Dcom.Tests;
 
-public sealed class DcomCallChannelOrpcTests
-{
+public sealed class DcomCallChannelOrpcTests {
     [Test]
-    public async Task InvokeAsync_writes_OrpcThis_before_user_payload()
-    {
+    public async Task InvokeAsync_writes_OrpcThis_before_user_payload() {
         await using var transport = new InMemoryAsyncTransport();
         byte[] requestPayload = [0x10, 0x11, 0x12, 0x13];
         await transport.WriteInboundAsync(CreateBindAckBytes());
@@ -49,8 +47,7 @@ public sealed class DcomCallChannelOrpcTests
     }
 
     [Test]
-    public async Task InvokeAsync_reads_OrpcThat_before_user_response()
-    {
+    public async Task InvokeAsync_reads_OrpcThat_before_user_response() {
         await using var transport = new InMemoryAsyncTransport();
         byte[] responsePayload = [0x21, 0x22, 0x23, 0x24];
         await transport.WriteInboundAsync(CreateBindAckBytes());
@@ -64,8 +61,7 @@ public sealed class DcomCallChannelOrpcTests
     }
 
     [Test]
-    public async Task InvokeAsync_reuses_causality_id_for_nested_logical_calls()
-    {
+    public async Task InvokeAsync_reuses_causality_id_for_nested_logical_calls() {
         await using var transport = new InMemoryAsyncTransport();
         await transport.WriteInboundAsync(CreateBindAckBytes());
         await transport.WriteInboundAsync(CreateResponseBytes([]));
@@ -87,8 +83,7 @@ public sealed class DcomCallChannelOrpcTests
     }
 
     [Test]
-    public async Task InvokeAsync_reuses_parent_causality_context()
-    {
+    public async Task InvokeAsync_reuses_parent_causality_context() {
         await using var transport = new InMemoryAsyncTransport();
         await transport.WriteInboundAsync(CreateBindAckBytes());
         await transport.WriteInboundAsync(CreateResponseBytes([]));
@@ -107,30 +102,25 @@ public sealed class DcomCallChannelOrpcTests
     private static Task<NdrCallResult> InvokeNestedAsync(DcomCallChannel channel, Guid interfaceId) =>
         channel.InvokeAsync(interfaceId, 6, ReadOnlyMemory<byte>.Empty);
 
-    private static OrpcThis ReadOrpcThis(RequestCoPdu request)
-    {
+    private static OrpcThis ReadOrpcThis(RequestCoPdu request) {
         var reader = new NdrReader(request.Stub);
         return OrpcThis.Read(ref reader);
     }
 
-    private static async Task<RequestCoPdu> ReadSingleOutboundRequestAsync(InMemoryAsyncTransport transport)
-    {
+    private static async Task<RequestCoPdu> ReadSingleOutboundRequestAsync(InMemoryAsyncTransport transport) {
         IReadOnlyList<RequestCoPdu> requests = await ReadOutboundRequestsAsync(transport);
         await Assert.That(requests.Count).IsEqualTo(1);
         return requests[0];
     }
 
-    private static async Task<IReadOnlyList<RequestCoPdu>> ReadOutboundRequestsAsync(InMemoryAsyncTransport transport)
-    {
+    private static async Task<IReadOnlyList<RequestCoPdu>> ReadOutboundRequestsAsync(InMemoryAsyncTransport transport) {
         ReadResult result = await transport.ReadOutbound.ReadAsync();
         byte[] outbound = result.Buffer.ToArray();
         transport.ReadOutbound.AdvanceTo(result.Buffer.End);
 
         var requests = new List<RequestCoPdu>();
-        foreach (ConnectionOrientedPdu pdu in DecodePdus(outbound))
-        {
-            if (pdu is RequestCoPdu request)
-            {
+        foreach (ConnectionOrientedPdu pdu in DecodePdus(outbound)) {
+            if (pdu is RequestCoPdu request) {
                 requests.Add(request);
             }
         }
@@ -138,11 +128,9 @@ public sealed class DcomCallChannelOrpcTests
         return requests;
     }
 
-    private static IEnumerable<ConnectionOrientedPdu> DecodePdus(byte[] bytes)
-    {
+    private static IEnumerable<ConnectionOrientedPdu> DecodePdus(byte[] bytes) {
         int offset = 0;
-        while (offset < bytes.Length)
-        {
+        while (offset < bytes.Length) {
             int fragmentLength = BinaryPrimitives.ReadUInt16LittleEndian(
                 bytes.AsSpan(offset + ConnectionOrientedPdu.FRAG_LENGTH_OFFSET, sizeof(ushort)));
             byte[] frame = bytes.AsSpan(offset, fragmentLength).ToArray();
@@ -151,11 +139,9 @@ public sealed class DcomCallChannelOrpcTests
         }
     }
 
-    private static ConnectionOrientedPdu DecodePdu(byte[] bytes)
-    {
+    private static ConnectionOrientedPdu DecodePdu(byte[] bytes) {
         byte type = bytes[ConnectionOrientedPdu.TYPE_OFFSET];
-        ConnectionOrientedPdu pdu = type switch
-        {
+        ConnectionOrientedPdu pdu = type switch {
             RequestCoPdu.REQUEST_TYPE => new RequestCoPdu(),
             BindPdu.BIND_TYPE => new BindPdu(),
             _ => throw new InvalidOperationException($"Unexpected outbound PDU type 0x{type:X2}."),
@@ -167,10 +153,8 @@ public sealed class DcomCallChannelOrpcTests
         return pdu;
     }
 
-    private static byte[] CreateBindAckBytes()
-    {
-        var bindAck = new BindAcknowledgePdu
-        {
+    private static byte[] CreateBindAckBytes() {
+        var bindAck = new BindAcknowledgePdu {
             AssociationGroupId = 1,
             CallId = 1,
             MaxReceiveFragment = ConnectionOrientedPdu.MUST_RECEIVE_FRAGMENT_SIZE,
@@ -182,11 +166,9 @@ public sealed class DcomCallChannelOrpcTests
         return EncodePdu(bindAck);
     }
 
-    private static byte[] CreateResponseBytes(byte[] responsePayload)
-    {
+    private static byte[] CreateResponseBytes(byte[] responsePayload) {
         byte[] responseStub = CreateResponseStub(responsePayload);
-        var response = new ResponseCoPdu
-        {
+        var response = new ResponseCoPdu {
             AllocationHint = responseStub.Length,
             CallId = 2,
             ContextId = 0,
@@ -197,8 +179,7 @@ public sealed class DcomCallChannelOrpcTests
         return EncodePdu(response);
     }
 
-    private static byte[] CreateResponseStub(byte[] responsePayload)
-    {
+    private static byte[] CreateResponseStub(byte[] responsePayload) {
         byte[] stub = new byte[OrpcThat.NullExtensionsWireSize + responsePayload.Length];
         var writer = new NdrWriter(stub);
         new OrpcThat().Write(ref writer);
@@ -206,8 +187,7 @@ public sealed class DcomCallChannelOrpcTests
         return stub;
     }
 
-    private static byte[] EncodePdu(ConnectionOrientedPdu pdu)
-    {
+    private static byte[] EncodePdu(ConnectionOrientedPdu pdu) {
         var ndr = new NdrCodec { Format = pdu.Format };
         var buffer = new NdrBuffer(new byte[ConnectionOrientedPdu.MUST_RECEIVE_FRAGMENT_SIZE], 0);
         pdu.Encode(ndr, buffer);

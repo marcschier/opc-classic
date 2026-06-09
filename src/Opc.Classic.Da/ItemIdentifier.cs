@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -15,8 +15,7 @@ namespace Opc.Classic.Da;
 /// The base shape consumed by all DA APIs that reference an item without
 /// carrying value/quality data.
 /// </remarks>
-public class ItemIdentifier : IEquatable<ItemIdentifier>
-{
+public class ItemIdentifier : IEquatable<ItemIdentifier> {
     /// <summary>Construct an identifier.</summary>
     /// <param name="itemName">
     /// Fully-qualified item name as the server understands it (e.g.
@@ -26,8 +25,7 @@ public class ItemIdentifier : IEquatable<ItemIdentifier>
     /// Optional access path. Use for servers that distinguish multiple
     /// access routes to the same item; <see langword="null"/> otherwise.
     /// </param>
-    public ItemIdentifier(string itemName, string? path = null)
-    {
+    public ItemIdentifier(string itemName, string? path = null) {
         ArgumentNullException.ThrowIfNull(itemName);
         ItemName = itemName;
         Path = path;

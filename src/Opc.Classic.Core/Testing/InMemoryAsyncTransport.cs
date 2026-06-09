@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -18,8 +18,7 @@ namespace Opc.Classic.Testing;
 /// <see cref="WriteInboundAsync"/>), one for outbound (test reads via
 /// <see cref="ReadOutbound"/>).
 /// </summary>
-public sealed class InMemoryAsyncTransport : IAsyncTransport
-{
+public sealed class InMemoryAsyncTransport : IAsyncTransport {
     private readonly Pipe _inbound = new();
     private readonly Pipe _outbound = new();
 
@@ -33,8 +32,7 @@ public sealed class InMemoryAsyncTransport : IAsyncTransport
     public PipeWriter Output => _outbound.Writer;
 
     /// <inheritdoc />
-    public async ValueTask FlushAsync(CancellationToken cancellationToken = default)
-    {
+    public async ValueTask FlushAsync(CancellationToken cancellationToken = default) {
         await _outbound.Writer.FlushAsync(cancellationToken).ConfigureAwait(false);
     }
 
@@ -47,14 +45,12 @@ public sealed class InMemoryAsyncTransport : IAsyncTransport
     /// <returns>A task that completes after bytes are written.</returns>
     public async ValueTask WriteInboundAsync(
         ReadOnlyMemory<byte> data,
-        CancellationToken cancellationToken = default)
-    {
+        CancellationToken cancellationToken = default) {
         await _inbound.Writer.WriteAsync(data, cancellationToken).ConfigureAwait(false);
     }
 
     /// <inheritdoc />
-    public async ValueTask DisposeAsync()
-    {
+    public async ValueTask DisposeAsync() {
         await _inbound.Writer.CompleteAsync().ConfigureAwait(false);
         await _outbound.Writer.CompleteAsync().ConfigureAwait(false);
     }

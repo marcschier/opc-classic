@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -16,8 +16,7 @@ namespace Opc.Classic.Xml;
 /// accessors return <see langword="null"/> when the requested .NET type
 /// doesn't match the carrier <see cref="Type"/>.
 /// </summary>
-public sealed record XmlDaValue
-{
+public sealed record XmlDaValue {
     /// <summary>Creates an unknown-type carrier preserving the raw text only.</summary>
     public static XmlDaValue Unknown(string rawText) =>
         new() { Type = XmlDaValueType.Unknown, RawText = rawText, Boxed = null };
@@ -91,11 +90,9 @@ public sealed record XmlDaValue
         new() { Type = XmlDaValueType.Duration, RawText = XmlConvert.ToString(value), Boxed = value };
 
     /// <summary>Creates an XML Schema QName value from lexical text.</summary>
-    public static XmlDaValue OfQName(string lexicalValue)
-    {
+    public static XmlDaValue OfQName(string lexicalValue) {
         ArgumentNullException.ThrowIfNull(lexicalValue);
-        return new()
-        {
+        return new() {
             Type = XmlDaValueType.QName,
             RawText = lexicalValue,
             Boxed = CreateQualifiedName(lexicalValue, string.Empty),
@@ -103,64 +100,55 @@ public sealed record XmlDaValue
     }
 
     /// <summary>Creates an XML Schema QName value.</summary>
-    public static XmlDaValue OfQName(XmlQualifiedName value)
-    {
+    public static XmlDaValue OfQName(XmlQualifiedName value) {
         ArgumentNullException.ThrowIfNull(value);
         return new() { Type = XmlDaValueType.QName, RawText = value.Name, Boxed = value };
     }
 
     /// <summary>Creates an XML-DA ArrayOfByte value.</summary>
-    public static XmlDaValue OfArrayOfByte(sbyte[] values)
-    {
+    public static XmlDaValue OfArrayOfByte(sbyte[] values) {
         var copy = CloneArray(values);
         return new() { Type = XmlDaValueType.ArrayOfByte, RawText = Join(copy), Boxed = copy };
     }
 
     /// <summary>Creates an XML-DA ArrayOfShort value.</summary>
-    public static XmlDaValue OfArrayOfShort(short[] values)
-    {
+    public static XmlDaValue OfArrayOfShort(short[] values) {
         var copy = CloneArray(values);
         return new() { Type = XmlDaValueType.ArrayOfShort, RawText = Join(copy), Boxed = copy };
     }
 
     /// <summary>Creates an XML-DA ArrayOfInt value.</summary>
-    public static XmlDaValue OfArrayOfInt(int[] values)
-    {
+    public static XmlDaValue OfArrayOfInt(int[] values) {
         var copy = CloneArray(values);
         return new() { Type = XmlDaValueType.ArrayOfInt, RawText = Join(copy), Boxed = copy };
     }
 
     /// <summary>Creates an XML-DA ArrayOfLong value.</summary>
-    public static XmlDaValue OfArrayOfLong(long[] values)
-    {
+    public static XmlDaValue OfArrayOfLong(long[] values) {
         var copy = CloneArray(values);
         return new() { Type = XmlDaValueType.ArrayOfLong, RawText = Join(copy), Boxed = copy };
     }
 
     /// <summary>Creates an XML-DA ArrayOfFloat value.</summary>
-    public static XmlDaValue OfArrayOfFloat(float[] values)
-    {
+    public static XmlDaValue OfArrayOfFloat(float[] values) {
         var copy = CloneArray(values);
         return new() { Type = XmlDaValueType.ArrayOfFloat, RawText = Join(copy, XmlConvert.ToString), Boxed = copy };
     }
 
     /// <summary>Creates an XML-DA ArrayOfDouble value.</summary>
-    public static XmlDaValue OfArrayOfDouble(double[] values)
-    {
+    public static XmlDaValue OfArrayOfDouble(double[] values) {
         var copy = CloneArray(values);
         return new() { Type = XmlDaValueType.ArrayOfDouble, RawText = Join(copy, XmlConvert.ToString), Boxed = copy };
     }
 
     /// <summary>Creates an XML-DA ArrayOfString value.</summary>
-    public static XmlDaValue OfArrayOfString(string?[] values)
-    {
+    public static XmlDaValue OfArrayOfString(string?[] values) {
         var copy = CloneArray(values);
         return new() { Type = XmlDaValueType.ArrayOfString, RawText = string.Join(" ", copy), Boxed = copy };
     }
 
     /// <summary>Creates an XML-DA ArrayOfBoolean value.</summary>
-    public static XmlDaValue OfArrayOfBoolean(bool[] values)
-    {
+    public static XmlDaValue OfArrayOfBoolean(bool[] values) {
         var copy = CloneArray(values);
         return new() { Type = XmlDaValueType.ArrayOfBoolean, RawText = Join(copy, static v => v ? "true" : "false"), Boxed = copy };
     }
@@ -169,11 +157,9 @@ public sealed record XmlDaValue
     public static XmlDaValue OfArrayOfBool(bool[] values) => OfArrayOfBoolean(values);
 
     /// <summary>Creates an XML-DA ArrayOfDateTime value.</summary>
-    public static XmlDaValue OfArrayOfDateTime(DateTimeOffset[] values)
-    {
+    public static XmlDaValue OfArrayOfDateTime(DateTimeOffset[] values) {
         var copy = CloneArray(values);
-        return new()
-        {
+        return new() {
             Type = XmlDaValueType.ArrayOfDateTime,
             RawText = Join(copy, static v => v.UtcDateTime.ToString("o", CultureInfo.InvariantCulture)),
             Boxed = copy,
@@ -181,8 +167,7 @@ public sealed record XmlDaValue
     }
 
     /// <summary>Creates an XML Schema base64Binary value.</summary>
-    public static XmlDaValue OfBase64Binary(byte[] values)
-    {
+    public static XmlDaValue OfBase64Binary(byte[] values) {
         var copy = CloneArray(values);
         return new() { Type = XmlDaValueType.Base64Binary, RawText = Convert.ToBase64String(copy), Boxed = copy };
     }
@@ -295,8 +280,7 @@ public sealed record XmlDaValue
     private T[]? AsArray<T>(XmlDaValueType expectedType) =>
         Type == expectedType && Boxed is T[] values ? values.ToArray() : null;
 
-    private static T[] CloneArray<T>(T[] values)
-    {
+    private static T[] CloneArray<T>(T[] values) {
         ArgumentNullException.ThrowIfNull(values);
         return values.ToArray();
     }
@@ -307,8 +291,7 @@ public sealed record XmlDaValue
     private static string Join<T>(T[] values, Func<T, string> format) =>
         string.Join(" ", values.Select(format));
 
-    private static XmlQualifiedName CreateQualifiedName(string lexicalValue, string namespaceUri)
-    {
+    private static XmlQualifiedName CreateQualifiedName(string lexicalValue, string namespaceUri) {
         int colon = lexicalValue.LastIndexOf(':');
         string localName = colon >= 0 ? lexicalValue[(colon + 1)..] : lexicalValue;
         return new XmlQualifiedName(localName, namespaceUri);

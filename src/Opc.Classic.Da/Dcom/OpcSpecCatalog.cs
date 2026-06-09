@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -12,8 +12,7 @@ namespace Opc.Classic.Da.Dcom;
 /// <summary>
 /// Per-spec OPC DA interface set used to seed DCE/RPC presentation contexts.
 /// </summary>
-public static class OpcSpecCatalog
-{
+public static class OpcSpecCatalog {
     private static readonly Guid[] s_da =
     {
         IOPCServer.InterfaceId,

@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -9,13 +9,11 @@ using Opc.Classic.Testing;
 
 namespace Opc.Classic.Integration.Tests.Support;
 
-internal sealed class StubDaServer : IOpcDaServer
-{
+internal sealed class StubDaServer : IOpcDaServer {
     private readonly HashSet<string> _knownItemIds;
     private readonly string _errorPrefix;
 
-    public StubDaServer(string vendorInfo, IEnumerable<string>? knownItemIds = null, string errorPrefix = "Stub error")
-    {
+    public StubDaServer(string vendorInfo, IEnumerable<string>? knownItemIds = null, string errorPrefix = "Stub error") {
         VendorInfo = vendorInfo;
         _knownItemIds = new HashSet<string>(knownItemIds ?? [], StringComparer.OrdinalIgnoreCase);
         _errorPrefix = errorPrefix;
@@ -44,11 +42,9 @@ internal sealed class StubDaServer : IOpcDaServer
 
     public bool HasTag(string itemId) => _knownItemIds.Contains(itemId);
 
-    public Task<OpcServerStatus> GetStatusAsync(CancellationToken cancellationToken = default)
-    {
+    public Task<OpcServerStatus> GetStatusAsync(CancellationToken cancellationToken = default) {
         cancellationToken.ThrowIfCancellationRequested();
-        return Task.FromResult(new OpcServerStatus
-        {
+        return Task.FromResult(new OpcServerStatus {
             Spec = OpcStatusSpec.Da,
             StartTime = DateTimeOffset.UnixEpoch,
             CurrentTime = DateTimeOffset.UtcNow,
@@ -67,27 +63,23 @@ internal sealed class StubDaServer : IOpcDaServer
         int requestedUpdateRate,
         int clientHandle,
         int localeId,
-        CancellationToken cancellationToken = default)
-    {
+        CancellationToken cancellationToken = default) {
         cancellationToken.ThrowIfCancellationRequested();
         return Task.FromResult(clientHandle + 1000);
     }
 
-    public Task RemoveGroupAsync(int serverGroupHandle, bool force, CancellationToken cancellationToken = default)
-    {
+    public Task RemoveGroupAsync(int serverGroupHandle, bool force, CancellationToken cancellationToken = default) {
         cancellationToken.ThrowIfCancellationRequested();
         RemovedGroups.Add(new RemovedGroup(serverGroupHandle, force));
         return Task.CompletedTask;
     }
 
-    public Task<string> GetErrorStringAsync(int errorCode, int localeId, CancellationToken cancellationToken = default)
-    {
+    public Task<string> GetErrorStringAsync(int errorCode, int localeId, CancellationToken cancellationToken = default) {
         cancellationToken.ThrowIfCancellationRequested();
         return Task.FromResult($"{_errorPrefix} 0x{errorCode:X8} locale=0x{localeId:X4}");
     }
 
-    public static (IOPCServerClientProxy Proxy, InMemoryCallChannel Channel) CreateLoopbackProxy(IOpcDaServer server)
-    {
+    public static (IOPCServerClientProxy Proxy, InMemoryCallChannel Channel) CreateLoopbackProxy(IOpcDaServer server) {
         var dispatcher = new OpcDaServerDispatcher(server);
         var channel = new InMemoryCallChannel((iid, opnum, payload, ct) =>
             dispatcher.DispatchAsync(iid, opnum, payload, ct));

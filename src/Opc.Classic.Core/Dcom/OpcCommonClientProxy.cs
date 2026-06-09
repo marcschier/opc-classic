@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -11,8 +11,7 @@ using Opc.Classic.Ndr;
 namespace Opc.Classic.Dcom;
 
 /// <summary>Managed proxy for the OPC Common <c>IOPCCommon</c> debug/metadata methods.</summary>
-public sealed class OpcCommonClientProxy
-{
+public sealed class OpcCommonClientProxy {
     private const int DefaultPayloadSize = 256;
     private const int MaximumPayloadSize = 8192;
 
@@ -29,8 +28,7 @@ public sealed class OpcCommonClientProxy
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
         "Design", "CA1034:Nested types should not be visible",
         Justification = "Opnums is the conventional nested constants table for proxy classes across the Opc.Classic.* code base and matches the shape emitted by OpcInterfaceGenerator.")]
-    public static class Opnums
-    {
+    public static class Opnums {
         /// <summary><c>IOPCCommon::SetClientName</c> operation number.</summary>
         public const int SetClientName = 7;
     }
@@ -38,8 +36,7 @@ public sealed class OpcCommonClientProxy
     /// <summary>
     /// Sets the optional client name that servers may use for diagnostics and debugging metadata.
     /// </summary>
-    public async Task SetClientNameAsync(string clientName, CancellationToken cancellationToken = default)
-    {
+    public async Task SetClientNameAsync(string clientName, CancellationToken cancellationToken = default) {
         ArgumentNullException.ThrowIfNull(clientName);
 
         byte[] payload = WritePayload((ref NdrWriter writer) => writer.WriteUnicodeStringPtr(clientName));
@@ -51,21 +48,17 @@ public sealed class OpcCommonClientProxy
         OpcException.ThrowIfFailed(new OpcResultId(result.Hresult, null), "IOPCCommon::SetClientName");
     }
 
-    internal static byte[] WritePayload(NdrWriteAction action)
-    {
+    internal static byte[] WritePayload(NdrWriteAction action) {
         ArgumentNullException.ThrowIfNull(action);
 
-        for (int size = DefaultPayloadSize; size <= MaximumPayloadSize; size *= 2)
-        {
+        for (int size = DefaultPayloadSize; size <= MaximumPayloadSize; size *= 2) {
             var buffer = new byte[size];
             var writer = new NdrWriter(buffer);
-            try
-            {
+            try {
                 action(ref writer);
                 return buffer.AsSpan(0, writer.Position).ToArray();
             }
-            catch (InvalidOperationException) when (size < MaximumPayloadSize)
-            {
+            catch (InvalidOperationException) when (size < MaximumPayloadSize) {
             }
         }
 

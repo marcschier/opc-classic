@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -10,12 +10,10 @@ using TUnit.Core;
 
 namespace Opc.Classic.Tests.Integration.Matrikon;
 
-public sealed class MatrikonDaConformanceTests
-{
+public sealed class MatrikonDaConformanceTests {
     [Test]
     [Category("MatrikonConformance.Loopback")]
-    public async Task Matrikon_tag_tree_loopback_reports_running_status()
-    {
+    public async Task Matrikon_tag_tree_loopback_reports_running_status() {
         var serverImpl = StubDaServer.MatrikonSimulation();
         var (proxy, channel) = StubDaServer.CreateLoopbackProxy(serverImpl);
 
@@ -41,10 +39,8 @@ public sealed class MatrikonDaConformanceTests
     }
 
     [Test, Category("MatrikonConformance")]
-    public async Task GetStatus_returns_running()
-    {
-        if (MatrikonServerProbe.ShouldSkip(out _))
-        {
+    public async Task GetStatus_returns_running() {
+        if (MatrikonServerProbe.ShouldSkip(out _)) {
             return;
         }
 
@@ -54,10 +50,8 @@ public sealed class MatrikonDaConformanceTests
     }
 
     [Test, Category("MatrikonConformance")]
-    public async Task Read_Random_Int4_returns_value_with_Good_quality()
-    {
-        if (MatrikonServerProbe.ShouldSkip(out _))
-        {
+    public async Task Read_Random_Int4_returns_value_with_Good_quality() {
+        if (MatrikonServerProbe.ShouldSkip(out _)) {
             return;
         }
 
@@ -68,10 +62,8 @@ public sealed class MatrikonDaConformanceTests
     }
 
     [Test, Category("MatrikonConformance")]
-    public async Task BucketBrigade_Boolean_can_be_written_then_read_back()
-    {
-        if (MatrikonServerProbe.ShouldSkip(out _))
-        {
+    public async Task BucketBrigade_Boolean_can_be_written_then_read_back() {
+        if (MatrikonServerProbe.ShouldSkip(out _)) {
             return;
         }
 
@@ -82,10 +74,8 @@ public sealed class MatrikonDaConformanceTests
     }
 
     [Test, Category("MatrikonConformance")]
-    public async Task ReadError_Int1_returns_OPC_E_BADRIGHTS()
-    {
-        if (MatrikonServerProbe.ShouldSkip(out _))
-        {
+    public async Task ReadError_Int1_returns_OPC_E_BADRIGHTS() {
+        if (MatrikonServerProbe.ShouldSkip(out _)) {
             return;
         }
 
@@ -96,10 +86,8 @@ public sealed class MatrikonDaConformanceTests
     }
 
     [Test, Category("MatrikonConformance")]
-    public async Task Subscription_on_Random_Real4_delivers_OnDataChange()
-    {
-        if (MatrikonServerProbe.ShouldSkip(out _))
-        {
+    public async Task Subscription_on_Random_Real4_delivers_OnDataChange() {
+        if (MatrikonServerProbe.ShouldSkip(out _)) {
             return;
         }
 
@@ -109,8 +97,7 @@ public sealed class MatrikonDaConformanceTests
         await Assert.That(StubDaServer.MatrikonSimulation().HasTag("Random.Real4")).IsTrue();
     }
 
-    private static async Task AssertMatrikonScaffoldReadyAsync<TInterface, TProxy>(string methodName, int expectedOpnum)
-    {
+    private static async Task AssertMatrikonScaffoldReadyAsync<TInterface, TProxy>(string methodName, int expectedOpnum) {
         await Assert.That(ConformanceMetadata.HasCategory(typeof(MatrikonDaConformanceTests), methodName, "MatrikonConformance")).IsTrue();
         await Assert.That(ConformanceMetadata.ReadType<TInterface>()).IsNotNull();
         await Assert.That(ConformanceMetadata.ReadType<TProxy>()).IsNotNull();
@@ -118,11 +105,9 @@ public sealed class MatrikonDaConformanceTests
         await Assert.That(ConformanceMetadata.ReadInt32(expectedOpnum)).IsGreaterThan(0);
     }
 
-    private static async Task AssertMatrikonProbeAsync()
-    {
+    private static async Task AssertMatrikonProbeAsync() {
         var shouldSkip = MatrikonServerProbe.ShouldSkip(out var reason);
-        if (shouldSkip)
-        {
+        if (shouldSkip) {
             await Assert.That(reason.Length).IsGreaterThan(0);
             return;
         }

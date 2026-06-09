@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -65,8 +65,7 @@ namespace Opc.Classic.Da.Hosting.Windows;
 /// </para>
 /// </remarks>
 [SupportedOSPlatform("windows")]
-public static unsafe class ComVariantMarshaler
-{
+public static unsafe class ComVariantMarshaler {
     private const ushort VT_EMPTY = 0;
     private const ushort VT_NULL = 1;
     private const ushort VT_I2 = 2;
@@ -96,10 +95,8 @@ public static unsafe class ComVariantMarshaler
     public static int VariantSize => IntPtr.Size == 8 ? 24 : 16;
 
     /// <summary>Writes an empty VARIANT (vt = VT_EMPTY, value bits zero) at <paramref name="dest"/>.</summary>
-    public static void WriteEmpty(IntPtr dest)
-    {
-        if (dest == IntPtr.Zero)
-        {
+    public static void WriteEmpty(IntPtr dest) {
+        if (dest == IntPtr.Zero) {
             return;
         }
         NativeMemory.Clear((void*)dest, (nuint)VariantSize);
@@ -108,18 +105,15 @@ public static unsafe class ComVariantMarshaler
     /// <summary>Marshals <paramref name="variant"/> into the VARIANT slot at <paramref name="dest"/>.</summary>
     /// <remarks>Caller-allocated VARIANT slot. Any heap allocations (BSTR / SAFEARRAY) become
     /// the caller's responsibility to free via <see cref="ClearVariant"/>.</remarks>
-    public static void WriteVariant(IntPtr dest, OpcVariant variant)
-    {
-        if (dest == IntPtr.Zero)
-        {
+    public static void WriteVariant(IntPtr dest, OpcVariant variant) {
+        if (dest == IntPtr.Zero) {
             return;
         }
         WriteEmpty(dest);
         ushort vt = (ushort)variant.Type;
         Marshal.WriteInt16(dest, (short)vt);
 
-        if ((vt & VT_ARRAY) != 0)
-        {
+        if ((vt & VT_ARRAY) != 0) {
             WriteSafeArrayPayload(dest, variant);
             return;
         }
@@ -127,15 +121,12 @@ public static unsafe class ComVariantMarshaler
     }
 
     /// <summary>Reads a managed <see cref="OpcVariant"/> from the VARIANT slot at <paramref name="src"/>.</summary>
-    public static OpcVariant ReadVariant(IntPtr src)
-    {
-        if (src == IntPtr.Zero)
-        {
+    public static OpcVariant ReadVariant(IntPtr src) {
+        if (src == IntPtr.Zero) {
             return OpcVariant.Empty;
         }
         ushort vt = (ushort)Marshal.ReadInt16(src);
-        if ((vt & VT_ARRAY) != 0)
-        {
+        if ((vt & VT_ARRAY) != 0) {
             return ReadSafeArrayPayload(src, vt);
         }
         return ReadScalarPayload(src, vt);
@@ -143,26 +134,20 @@ public static unsafe class ComVariantMarshaler
 
     /// <summary>Frees BSTR / SAFEARRAY heap allocations referenced by the VARIANT slot at <paramref name="ptr"/>.</summary>
     /// <remarks>After this call the slot's vt is set to VT_EMPTY. Equivalent to <c>VariantClear</c>.</remarks>
-    public static void ClearVariant(IntPtr ptr)
-    {
-        if (ptr == IntPtr.Zero)
-        {
+    public static void ClearVariant(IntPtr ptr) {
+        if (ptr == IntPtr.Zero) {
             return;
         }
         ushort vt = (ushort)Marshal.ReadInt16(ptr);
-        if (vt == VT_BSTR)
-        {
+        if (vt == VT_BSTR) {
             IntPtr bstr = Marshal.ReadIntPtr(ptr, ValueOffset);
-            if (bstr != IntPtr.Zero)
-            {
+            if (bstr != IntPtr.Zero) {
                 Marshal.FreeBSTR(bstr);
             }
         }
-        else if ((vt & VT_ARRAY) != 0)
-        {
+        else if ((vt & VT_ARRAY) != 0) {
             IntPtr safeArrayPtr = Marshal.ReadIntPtr(ptr, ValueOffset);
-            if (safeArrayPtr != IntPtr.Zero)
-            {
+            if (safeArrayPtr != IntPtr.Zero) {
                 FreeSafeArray(safeArrayPtr, (ushort)(vt & ~VT_ARRAY));
             }
         }
@@ -181,11 +166,9 @@ public static unsafe class ComVariantMarshaler
 
     [SuppressMessage("Design", "CA1502:Avoid excessive complexity",
         Justification = "VARIANT scalar dispatch fundamentally requires one branch per VARENUM code.")]
-    private static void WriteScalarPayload(IntPtr dest, ushort vt, object? boxed)
-    {
+    private static void WriteScalarPayload(IntPtr dest, ushort vt, object? boxed) {
         IntPtr value = dest + ValueOffset;
-        switch (vt)
-        {
+        switch (vt) {
             case VT_I1:
                 Marshal.WriteByte(value, (byte)(sbyte)(boxed ?? (sbyte)0));
                 break;
@@ -240,11 +223,9 @@ public static unsafe class ComVariantMarshaler
 
     [SuppressMessage("Design", "CA1502:Avoid excessive complexity",
         Justification = "VARIANT scalar dispatch fundamentally requires one branch per VARENUM code.")]
-    private static OpcVariant ReadScalarPayload(IntPtr src, ushort vt)
-    {
+    private static OpcVariant ReadScalarPayload(IntPtr src, ushort vt) {
         IntPtr value = src + ValueOffset;
-        return vt switch
-        {
+        return vt switch {
             VT_EMPTY => OpcVariant.Empty,
             VT_NULL => OpcVariant.Null,
             VT_I1 => OpcVariant.FromInt8((sbyte)Marshal.ReadByte(value)),
@@ -265,11 +246,9 @@ public static unsafe class ComVariantMarshaler
         };
     }
 
-    private static void WriteSafeArrayPayload(IntPtr dest, OpcVariant variant)
-    {
+    private static void WriteSafeArrayPayload(IntPtr dest, OpcVariant variant) {
         OpcSafeArray? array = variant.AsSafeArray();
-        if (array is null || array.Data.Length == 0)
-        {
+        if (array is null || array.Data.Length == 0) {
             Marshal.WriteIntPtr(dest, ValueOffset, IntPtr.Zero);
             return;
         }
@@ -277,11 +256,9 @@ public static unsafe class ComVariantMarshaler
         Marshal.WriteIntPtr(dest, ValueOffset, safeArrayPtr);
     }
 
-    private static OpcVariant ReadSafeArrayPayload(IntPtr src, ushort vt)
-    {
+    private static OpcVariant ReadSafeArrayPayload(IntPtr src, ushort vt) {
         IntPtr safeArrayPtr = Marshal.ReadIntPtr(src, ValueOffset);
-        if (safeArrayPtr == IntPtr.Zero)
-        {
+        if (safeArrayPtr == IntPtr.Zero) {
             return OpcVariant.Empty;
         }
         ushort baseVt = (ushort)(vt & ~VT_ARRAY);
@@ -291,8 +268,7 @@ public static unsafe class ComVariantMarshaler
 
     [SuppressMessage("Reliability", "CA2018:Buffer size argument matches element count",
         Justification = "Explicit byte size; one SAFEARRAY descriptor + cElements * cbElements data buffer.")]
-    private static IntPtr AllocateSafeArray(OpcSafeArray array)
-    {
+    private static IntPtr AllocateSafeArray(OpcSafeArray array) {
         ushort baseVt = (ushort)array.ElementType;
         uint elementSize = (uint)ElementSizeOf(baseVt);
         uint count = (uint)array.Data.Length;
@@ -324,40 +300,32 @@ public static unsafe class ComVariantMarshaler
         return descriptor;
     }
 
-    private static OpcSafeArray ReadSafeArray(IntPtr descriptor, ushort baseVt)
-    {
+    private static OpcSafeArray ReadSafeArray(IntPtr descriptor, ushort baseVt) {
         int cDims = Marshal.ReadInt16(descriptor, 0);
-        if (cDims != 1)
-        {
+        if (cDims != 1) {
             return new OpcSafeArray((VarType)baseVt, BuildEmptyTypedArray(baseVt));
         }
         int pvDataOffset = 8 + IntPtr.Size;
         int boundsOffset = pvDataOffset + IntPtr.Size;
         uint count = (uint)Marshal.ReadInt32(descriptor, boundsOffset);
         IntPtr dataBuffer = Marshal.ReadIntPtr(descriptor, pvDataOffset);
-        if (dataBuffer == IntPtr.Zero || count == 0)
-        {
+        if (dataBuffer == IntPtr.Zero || count == 0) {
             return new OpcSafeArray((VarType)baseVt, BuildEmptyTypedArray(baseVt));
         }
         Array elements = ReadSafeArrayData(dataBuffer, baseVt, count);
         return new OpcSafeArray((VarType)baseVt, elements);
     }
 
-    private static void FreeSafeArray(IntPtr descriptor, ushort baseVt)
-    {
+    private static void FreeSafeArray(IntPtr descriptor, ushort baseVt) {
         int pvDataOffset = 8 + IntPtr.Size;
         int boundsOffset = pvDataOffset + IntPtr.Size;
         IntPtr dataBuffer = Marshal.ReadIntPtr(descriptor, pvDataOffset);
-        if (dataBuffer != IntPtr.Zero)
-        {
-            if (baseVt == VT_BSTR)
-            {
+        if (dataBuffer != IntPtr.Zero) {
+            if (baseVt == VT_BSTR) {
                 uint count = (uint)Marshal.ReadInt32(descriptor, boundsOffset);
-                for (uint i = 0; i < count; i++)
-                {
+                for (uint i = 0; i < count; i++) {
                     IntPtr bstr = Marshal.ReadIntPtr(dataBuffer, (int)(i * (uint)IntPtr.Size));
-                    if (bstr != IntPtr.Zero)
-                    {
+                    if (bstr != IntPtr.Zero) {
                         Marshal.FreeBSTR(bstr);
                     }
                 }
@@ -367,8 +335,7 @@ public static unsafe class ComVariantMarshaler
         Marshal.FreeCoTaskMem(descriptor);
     }
 
-    private static Array BuildEmptyTypedArray(ushort baseVt) => baseVt switch
-    {
+    private static Array BuildEmptyTypedArray(ushort baseVt) => baseVt switch {
         VT_I1 => Array.Empty<sbyte>(),
         VT_UI1 => Array.Empty<byte>(),
         VT_I2 => Array.Empty<short>(),
@@ -385,8 +352,7 @@ public static unsafe class ComVariantMarshaler
         _ => Array.Empty<object>(),
     };
 
-    private static int ElementSizeOf(ushort baseVt) => baseVt switch
-    {
+    private static int ElementSizeOf(ushort baseVt) => baseVt switch {
         VT_I1 or VT_UI1 => 1,
         VT_I2 or VT_UI2 or VT_BOOL => 2,
         VT_I4 or VT_UI4 or VT_ERROR or VT_R4 => 4,
@@ -397,15 +363,12 @@ public static unsafe class ComVariantMarshaler
 
     [SuppressMessage("Design", "CA1502:Avoid excessive complexity",
         Justification = "SAFEARRAY element-dispatch fundamentally requires one branch per VARENUM code.")]
-    private static void WriteSafeArrayData(IntPtr dataBuffer, OpcSafeArray array, ushort baseVt, uint elementSize)
-    {
+    private static void WriteSafeArrayData(IntPtr dataBuffer, OpcSafeArray array, ushort baseVt, uint elementSize) {
         Array data = array.Data;
-        for (int i = 0; i < data.Length; i++)
-        {
+        for (int i = 0; i < data.Length; i++) {
             IntPtr slot = dataBuffer + (int)(i * elementSize);
             object? value = data.GetValue(i);
-            switch (baseVt)
-            {
+            switch (baseVt) {
                 case VT_I1: Marshal.WriteByte(slot, (byte)(sbyte)(value ?? (sbyte)0)); break;
                 case VT_UI1: Marshal.WriteByte(slot, (byte)(value ?? (byte)0)); break;
                 case VT_I2: Marshal.WriteInt16(slot, (short)(value ?? (short)0)); break;
@@ -426,11 +389,9 @@ public static unsafe class ComVariantMarshaler
 
     [SuppressMessage("Design", "CA1502:Avoid excessive complexity",
         Justification = "SAFEARRAY element-dispatch fundamentally requires one branch per VARENUM code.")]
-    private static Array ReadSafeArrayData(IntPtr dataBuffer, ushort baseVt, uint count)
-    {
+    private static Array ReadSafeArrayData(IntPtr dataBuffer, ushort baseVt, uint count) {
         uint elementSize = (uint)ElementSizeOf(baseVt);
-        Array result = baseVt switch
-        {
+        Array result = baseVt switch {
             VT_I1 => new sbyte[count],
             VT_UI1 => new byte[count],
             VT_I2 => new short[count],
@@ -446,11 +407,9 @@ public static unsafe class ComVariantMarshaler
             VT_BSTR => new string[count],
             _ => new object?[count],
         };
-        for (uint i = 0; i < count; i++)
-        {
+        for (uint i = 0; i < count; i++) {
             IntPtr slot = dataBuffer + (int)(i * elementSize);
-            object? value = baseVt switch
-            {
+            object? value = baseVt switch {
                 VT_I1 => (sbyte)Marshal.ReadByte(slot),
                 VT_UI1 => Marshal.ReadByte(slot),
                 VT_I2 => Marshal.ReadInt16(slot),

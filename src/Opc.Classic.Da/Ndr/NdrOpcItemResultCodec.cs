@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -30,30 +30,25 @@ namespace Opc.Classic.Da.Ndr;
 ///       BYTE[dwBlobSize] conformant byte array (max_count + bytes)
 /// </code>
 /// </remarks>
-public static class NdrOpcItemResultCodec
-{
+public static class NdrOpcItemResultCodec {
     /// <summary>Encodes a conformant OPCITEMRESULT array using DCE/RPC deferred-pointer pile layout, including the outer unique-pointer referent.</summary>
     /// <remarks>
     /// Self-contained encoder for <c>[out, size_is(,N)] OPCITEMRESULT**</c> wire shape:
     /// emits the unique-pointer referent (or 0 for null/empty) followed by max_count + N inline + N deferred.
     /// Caller must NOT pre-emit the referent.
     /// </remarks>
-    public static void WriteConformantArray(ref NdrWriter writer, OpcItemResult[]? results)
-    {
-        if (results is null || results.Length == 0)
-        {
+    public static void WriteConformantArray(ref NdrWriter writer, OpcItemResult[]? results) {
+        if (results is null || results.Length == 0) {
             writer.WriteUniquePointerReferent(false);  // null referent
             return;
         }
 
         writer.WriteUniquePointerReferent(true);
         writer.WriteUInt32((uint)results.Length);
-        foreach (OpcItemResult result in results)
-        {
+        foreach (OpcItemResult result in results) {
             WriteInline(ref writer, result);
         }
-        foreach (OpcItemResult result in results)
-        {
+        foreach (OpcItemResult result in results) {
             WriteDeferred(ref writer, result);
         }
     }
@@ -65,10 +60,8 @@ public static class NdrOpcItemResultCodec
     /// referent returns <see cref="Array.Empty{T}"/>. Otherwise reads <c>max_count</c> + N inline
     /// parts + N deferred parts. Caller must NOT pre-consume the referent.
     /// </remarks>
-    public static OpcItemResult[] ReadConformantArray(ref NdrReader reader)
-    {
-        if (!reader.TryReadReferentId(out _))
-        {
+    public static OpcItemResult[] ReadConformantArray(ref NdrReader reader) {
+        if (!reader.TryReadReferentId(out _)) {
             return [];
         }
         uint maxCount = reader.ReadUInt32();
@@ -76,14 +69,12 @@ public static class NdrOpcItemResultCodec
         if (count <= 0) { return []; }
 
         var inlineParts = new ItemResultInline[count];
-        for (int i = 0; i < count; i++)
-        {
+        for (int i = 0; i < count; i++) {
             inlineParts[i] = ReadInline(ref reader);
         }
 
         var result = new OpcItemResult[count];
-        for (int i = 0; i < count; i++)
-        {
+        for (int i = 0; i < count; i++) {
             result[i] = ApplyDeferred(ref reader, inlineParts[i]);
         }
 
@@ -91,8 +82,7 @@ public static class NdrOpcItemResultCodec
     }
 
     /// <summary>Encodes a single OPCITEMRESULT in NDR using the inline + deferred shape.</summary>
-    public static void Write(ref NdrWriter writer, OpcItemResult result)
-    {
+    public static void Write(ref NdrWriter writer, OpcItemResult result) {
         ArgumentNullException.ThrowIfNull(result);
 
         WriteInline(ref writer, result);
@@ -100,14 +90,12 @@ public static class NdrOpcItemResultCodec
     }
 
     /// <summary>Decodes a single OPCITEMRESULT from NDR using the inline + deferred shape.</summary>
-    public static OpcItemResult Read(ref NdrReader reader)
-    {
+    public static OpcItemResult Read(ref NdrReader reader) {
         ItemResultInline inlinePart = ReadInline(ref reader);
         return ApplyDeferred(ref reader, inlinePart);
     }
 
-    private static void WriteInline(ref NdrWriter writer, OpcItemResult result)
-    {
+    private static void WriteInline(ref NdrWriter writer, OpcItemResult result) {
         ArgumentNullException.ThrowIfNull(result);
 
         byte[] blob = result.Blob ?? [];
@@ -119,16 +107,13 @@ public static class NdrOpcItemResultCodec
         writer.WriteUniquePointerReferent(blob.Length > 0);
     }
 
-    private static void WriteDeferred(ref NdrWriter writer, OpcItemResult result)
-    {
-        if (result.Blob is { Length: > 0 } blob)
-        {
+    private static void WriteDeferred(ref NdrWriter writer, OpcItemResult result) {
+        if (result.Blob is { Length: > 0 } blob) {
             writer.WriteConformantByteArray(blob);
         }
     }
 
-    private static ItemResultInline ReadInline(ref NdrReader reader)
-    {
+    private static ItemResultInline ReadInline(ref NdrReader reader) {
         uint hServer = reader.ReadUInt32();
         var vtCanonical = (VarType)reader.ReadUInt16();
         _ = reader.ReadUInt16();                        // wReserved
@@ -138,8 +123,7 @@ public static class NdrOpcItemResultCodec
         return new ItemResultInline(hServer, vtCanonical, dwAccessRights, blobRef);
     }
 
-    private static OpcItemResult ApplyDeferred(ref NdrReader reader, ItemResultInline inlinePart)
-    {
+    private static OpcItemResult ApplyDeferred(ref NdrReader reader, ItemResultInline inlinePart) {
         byte[] blob = inlinePart.BlobRef == 0u ? [] : reader.ReadConformantByteArray();
         return new OpcItemResult(
             ServerHandle: unchecked((int)inlinePart.ServerHandle),

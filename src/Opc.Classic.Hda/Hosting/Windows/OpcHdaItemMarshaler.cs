@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -14,8 +14,7 @@ namespace Opc.Classic.Hda.Hosting.Windows;
 
 /// <summary>Native OPCHDA_* allocation helpers for Windows HDA CCWs.</summary>
 [SupportedOSPlatform("windows")]
-internal static unsafe class OpcHdaItemMarshaler
-{
+internal static unsafe class OpcHdaItemMarshaler {
     private static int PointerAlignedAfterThreeDwords => Align(3 * sizeof(int), IntPtr.Size);
     private static int PointerAlignedAfterTwoDwords => Align(2 * sizeof(int), IntPtr.Size);
     private static int HdaTimeStringOffset => IntPtr.Size == 8 ? 8 : 4;
@@ -26,21 +25,17 @@ internal static unsafe class OpcHdaItemMarshaler
     public static int ModifiedItemSize => PointerAlignedAfterTwoDwords + (6 * IntPtr.Size);
     public static int AnnotationSize => PointerAlignedAfterTwoDwords + (4 * IntPtr.Size);
 
-    public static OpcHdaTime ReadHdaTime(IntPtr ptr)
-    {
-        if (ptr == IntPtr.Zero)
-        {
+    public static OpcHdaTime ReadHdaTime(IntPtr ptr) {
+        if (ptr == IntPtr.Zero) {
             throw new ArgumentException("OPCHDA_TIME pointer is null.", nameof(ptr));
         }
 
         bool isString = Marshal.ReadInt32(ptr) != 0;
         IntPtr stringPtr = Marshal.ReadIntPtr(ptr, HdaTimeStringOffset);
         long fileTime = Marshal.ReadInt64(ptr, HdaTimeFileTimeOffset);
-        if (isString)
-        {
+        if (isString) {
             string? expression = Marshal.PtrToStringUni(stringPtr);
-            if (string.IsNullOrEmpty(expression))
-            {
+            if (string.IsNullOrEmpty(expression)) {
                 throw new ArgumentException("OPCHDA_TIME string expression is null or empty.", nameof(ptr));
             }
 
@@ -50,22 +45,18 @@ internal static unsafe class OpcHdaItemMarshaler
         return OpcHdaTime.FromTimestamp(DateTimeOffset.FromFileTime(fileTime));
     }
 
-    public static int[] ReadInt32Array(IntPtr ptr, int count)
-    {
+    public static int[] ReadInt32Array(IntPtr ptr, int count) {
         var values = new int[count];
-        if (count > 0)
-        {
+        if (count > 0) {
             Marshal.Copy(ptr, values, 0, count);
         }
 
         return values;
     }
 
-    public static long[] ReadFileTimeArray(IntPtr ptr, int count)
-    {
+    public static long[] ReadFileTimeArray(IntPtr ptr, int count) {
         var values = new long[count];
-        for (int i = 0; i < count; i++)
-        {
+        for (int i = 0; i < count; i++) {
             long value = Marshal.ReadInt64(ptr, checked(i * sizeof(long)));
             _ = DateTimeOffset.FromFileTime(value);
             values[i] = value;
@@ -74,11 +65,9 @@ internal static unsafe class OpcHdaItemMarshaler
         return values;
     }
 
-    public static IntPtr AllocateInt32Array(int[] values)
-    {
+    public static IntPtr AllocateInt32Array(int[] values) {
         ArgumentNullException.ThrowIfNull(values);
-        if (values.Length == 0)
-        {
+        if (values.Length == 0) {
             return IntPtr.Zero;
         }
 
@@ -88,191 +77,154 @@ internal static unsafe class OpcHdaItemMarshaler
     }
 
     [SuppressMessage("Reliability", "CA2018:Buffer size argument matches element count", Justification = "Explicit byte size.")]
-    public static IntPtr AllocateItemArray(OpcHdaItem[] items)
-    {
+    public static IntPtr AllocateItemArray(OpcHdaItem[] items) {
         ArgumentNullException.ThrowIfNull(items);
-        if (items.Length == 0)
-        {
+        if (items.Length == 0) {
             return IntPtr.Zero;
         }
 
         IntPtr ptr = Marshal.AllocCoTaskMem(checked(items.Length * ItemSize));
         NativeMemory.Clear((void*)ptr, (nuint)checked(items.Length * ItemSize));
         bool completed = false;
-        try
-        {
-            for (int i = 0; i < items.Length; i++)
-            {
+        try {
+            for (int i = 0; i < items.Length; i++) {
                 WriteItem(IntPtr.Add(ptr, checked(i * ItemSize)), items[i]);
             }
 
             completed = true;
             return ptr;
         }
-        finally
-        {
-            if (!completed)
-            {
+        finally {
+            if (!completed) {
                 FreeItemArray(ptr, items.Length);
             }
         }
     }
 
     [SuppressMessage("Reliability", "CA2018:Buffer size argument matches element count", Justification = "Explicit byte size.")]
-    public static IntPtr AllocateModifiedItemArray(OpcHdaModifiedItem[] items)
-    {
+    public static IntPtr AllocateModifiedItemArray(OpcHdaModifiedItem[] items) {
         ArgumentNullException.ThrowIfNull(items);
-        if (items.Length == 0)
-        {
+        if (items.Length == 0) {
             return IntPtr.Zero;
         }
 
         IntPtr ptr = Marshal.AllocCoTaskMem(checked(items.Length * ModifiedItemSize));
         NativeMemory.Clear((void*)ptr, (nuint)checked(items.Length * ModifiedItemSize));
         bool completed = false;
-        try
-        {
-            for (int i = 0; i < items.Length; i++)
-            {
+        try {
+            for (int i = 0; i < items.Length; i++) {
                 WriteModifiedItem(IntPtr.Add(ptr, checked(i * ModifiedItemSize)), items[i]);
             }
 
             completed = true;
             return ptr;
         }
-        finally
-        {
-            if (!completed)
-            {
+        finally {
+            if (!completed) {
                 FreeModifiedItemArray(ptr, items.Length);
             }
         }
     }
 
     [SuppressMessage("Reliability", "CA2018:Buffer size argument matches element count", Justification = "Explicit byte size.")]
-    public static IntPtr AllocateAttributeArray(OpcHdaAttribute[] attributes)
-    {
+    public static IntPtr AllocateAttributeArray(OpcHdaAttribute[] attributes) {
         ArgumentNullException.ThrowIfNull(attributes);
-        if (attributes.Length == 0)
-        {
+        if (attributes.Length == 0) {
             return IntPtr.Zero;
         }
 
         IntPtr ptr = Marshal.AllocCoTaskMem(checked(attributes.Length * AttributeSize));
         NativeMemory.Clear((void*)ptr, (nuint)checked(attributes.Length * AttributeSize));
         bool completed = false;
-        try
-        {
-            for (int i = 0; i < attributes.Length; i++)
-            {
+        try {
+            for (int i = 0; i < attributes.Length; i++) {
                 WriteAttribute(IntPtr.Add(ptr, checked(i * AttributeSize)), attributes[i]);
             }
 
             completed = true;
             return ptr;
         }
-        finally
-        {
-            if (!completed)
-            {
+        finally {
+            if (!completed) {
                 FreeAttributeArray(ptr, attributes.Length);
             }
         }
     }
 
     [SuppressMessage("Reliability", "CA2018:Buffer size argument matches element count", Justification = "Explicit byte size.")]
-    public static IntPtr AllocateAnnotationArray(OpcHdaAnnotation[] annotations)
-    {
+    public static IntPtr AllocateAnnotationArray(OpcHdaAnnotation[] annotations) {
         ArgumentNullException.ThrowIfNull(annotations);
-        if (annotations.Length == 0)
-        {
+        if (annotations.Length == 0) {
             return IntPtr.Zero;
         }
 
         IntPtr ptr = Marshal.AllocCoTaskMem(checked(annotations.Length * AnnotationSize));
         NativeMemory.Clear((void*)ptr, (nuint)checked(annotations.Length * AnnotationSize));
         bool completed = false;
-        try
-        {
-            for (int i = 0; i < annotations.Length; i++)
-            {
+        try {
+            for (int i = 0; i < annotations.Length; i++) {
                 WriteAnnotation(IntPtr.Add(ptr, checked(i * AnnotationSize)), annotations[i]);
             }
 
             completed = true;
             return ptr;
         }
-        finally
-        {
-            if (!completed)
-            {
+        finally {
+            if (!completed) {
                 FreeAnnotationArray(ptr, annotations.Length);
             }
         }
     }
 
-    public static void FreeItemArray(IntPtr ptr, int count)
-    {
-        if (ptr == IntPtr.Zero)
-        {
+    public static void FreeItemArray(IntPtr ptr, int count) {
+        if (ptr == IntPtr.Zero) {
             return;
         }
 
-        for (int i = 0; i < count; i++)
-        {
+        for (int i = 0; i < count; i++) {
             FreeItem(IntPtr.Add(ptr, checked(i * ItemSize)));
         }
 
         Marshal.FreeCoTaskMem(ptr);
     }
 
-    public static void FreeModifiedItemArray(IntPtr ptr, int count)
-    {
-        if (ptr == IntPtr.Zero)
-        {
+    public static void FreeModifiedItemArray(IntPtr ptr, int count) {
+        if (ptr == IntPtr.Zero) {
             return;
         }
 
-        for (int i = 0; i < count; i++)
-        {
+        for (int i = 0; i < count; i++) {
             FreeModifiedItem(IntPtr.Add(ptr, checked(i * ModifiedItemSize)));
         }
 
         Marshal.FreeCoTaskMem(ptr);
     }
 
-    public static void FreeAttributeArray(IntPtr ptr, int count)
-    {
-        if (ptr == IntPtr.Zero)
-        {
+    public static void FreeAttributeArray(IntPtr ptr, int count) {
+        if (ptr == IntPtr.Zero) {
             return;
         }
 
-        for (int i = 0; i < count; i++)
-        {
+        for (int i = 0; i < count; i++) {
             FreeAttribute(IntPtr.Add(ptr, checked(i * AttributeSize)));
         }
 
         Marshal.FreeCoTaskMem(ptr);
     }
 
-    public static void FreeAnnotationArray(IntPtr ptr, int count)
-    {
-        if (ptr == IntPtr.Zero)
-        {
+    public static void FreeAnnotationArray(IntPtr ptr, int count) {
+        if (ptr == IntPtr.Zero) {
             return;
         }
 
-        for (int i = 0; i < count; i++)
-        {
+        for (int i = 0; i < count; i++) {
             FreeAnnotation(IntPtr.Add(ptr, checked(i * AnnotationSize)));
         }
 
         Marshal.FreeCoTaskMem(ptr);
     }
 
-    private static void WriteItem(IntPtr slot, OpcHdaItem item)
-    {
+    private static void WriteItem(IntPtr slot, OpcHdaItem item) {
         ArgumentNullException.ThrowIfNull(item);
         int count = item.Timestamps.Length;
         Marshal.WriteInt32(slot, 0, item.ClientHandle);
@@ -283,8 +235,7 @@ internal static unsafe class OpcHdaItemMarshaler
         WritePointer(slot, PointerAlignedAfterThreeDwords + (2 * IntPtr.Size), AllocateVariantArray(item.Values));
     }
 
-    private static void WriteModifiedItem(IntPtr slot, OpcHdaModifiedItem item)
-    {
+    private static void WriteModifiedItem(IntPtr slot, OpcHdaModifiedItem item) {
         ArgumentNullException.ThrowIfNull(item);
         int count = item.Timestamps.Length;
         Marshal.WriteInt32(slot, 0, item.ClientHandle);
@@ -298,8 +249,7 @@ internal static unsafe class OpcHdaItemMarshaler
         WritePointer(slot, offset + (5 * IntPtr.Size), AllocateStringPointerArray(item.Users));
     }
 
-    private static void WriteAttribute(IntPtr slot, OpcHdaAttribute attribute)
-    {
+    private static void WriteAttribute(IntPtr slot, OpcHdaAttribute attribute) {
         ArgumentNullException.ThrowIfNull(attribute);
         int count = attribute.Timestamps.Length;
         Marshal.WriteInt32(slot, 0, attribute.ClientHandle);
@@ -309,8 +259,7 @@ internal static unsafe class OpcHdaItemMarshaler
         WritePointer(slot, PointerAlignedAfterThreeDwords + IntPtr.Size, AllocateVariantArray(attribute.Values));
     }
 
-    private static void WriteAnnotation(IntPtr slot, OpcHdaAnnotation annotation)
-    {
+    private static void WriteAnnotation(IntPtr slot, OpcHdaAnnotation annotation) {
         ArgumentNullException.ThrowIfNull(annotation);
         int count = annotation.Timestamps.Length;
         Marshal.WriteInt32(slot, 0, annotation.ClientHandle);
@@ -322,8 +271,7 @@ internal static unsafe class OpcHdaItemMarshaler
         WritePointer(slot, offset + (3 * IntPtr.Size), AllocateStringPointerArray(annotation.Users));
     }
 
-    private static void FreeItem(IntPtr slot)
-    {
+    private static void FreeItem(IntPtr slot) {
         int count = Math.Max(0, Marshal.ReadInt32(slot, 8));
         int offset = PointerAlignedAfterThreeDwords;
         Marshal.FreeCoTaskMem(ReadPointer(slot, offset));
@@ -331,8 +279,7 @@ internal static unsafe class OpcHdaItemMarshaler
         FreeVariantArray(ReadPointer(slot, offset + (2 * IntPtr.Size)), count);
     }
 
-    private static void FreeModifiedItem(IntPtr slot)
-    {
+    private static void FreeModifiedItem(IntPtr slot) {
         int count = Math.Max(0, Marshal.ReadInt32(slot, 4));
         int offset = PointerAlignedAfterTwoDwords;
         Marshal.FreeCoTaskMem(ReadPointer(slot, offset));
@@ -343,16 +290,14 @@ internal static unsafe class OpcHdaItemMarshaler
         FreeStringPointerArray(ReadPointer(slot, offset + (5 * IntPtr.Size)), count);
     }
 
-    private static void FreeAttribute(IntPtr slot)
-    {
+    private static void FreeAttribute(IntPtr slot) {
         int count = Math.Max(0, Marshal.ReadInt32(slot, 4));
         int offset = PointerAlignedAfterThreeDwords;
         Marshal.FreeCoTaskMem(ReadPointer(slot, offset));
         FreeVariantArray(ReadPointer(slot, offset + IntPtr.Size), count);
     }
 
-    private static void FreeAnnotation(IntPtr slot)
-    {
+    private static void FreeAnnotation(IntPtr slot) {
         int count = Math.Max(0, Marshal.ReadInt32(slot, 4));
         int offset = PointerAlignedAfterTwoDwords;
         Marshal.FreeCoTaskMem(ReadPointer(slot, offset));
@@ -362,16 +307,13 @@ internal static unsafe class OpcHdaItemMarshaler
     }
 
     [SuppressMessage("Reliability", "CA2018:Buffer size argument matches element count", Justification = "Explicit byte size.")]
-    private static IntPtr AllocateFileTimeArray(DateTimeOffset[] values)
-    {
-        if (values.Length == 0)
-        {
+    private static IntPtr AllocateFileTimeArray(DateTimeOffset[] values) {
+        if (values.Length == 0) {
             return IntPtr.Zero;
         }
 
         IntPtr ptr = Marshal.AllocCoTaskMem(checked(values.Length * sizeof(long)));
-        for (int i = 0; i < values.Length; i++)
-        {
+        for (int i = 0; i < values.Length; i++) {
             Marshal.WriteInt64(ptr, checked(i * sizeof(long)), ToFileTime(values[i]));
         }
 
@@ -379,16 +321,13 @@ internal static unsafe class OpcHdaItemMarshaler
     }
 
     [SuppressMessage("Reliability", "CA2018:Buffer size argument matches element count", Justification = "Explicit byte size.")]
-    private static IntPtr AllocateUInt32Array(uint[] values)
-    {
-        if (values.Length == 0)
-        {
+    private static IntPtr AllocateUInt32Array(uint[] values) {
+        if (values.Length == 0) {
             return IntPtr.Zero;
         }
 
         IntPtr ptr = Marshal.AllocCoTaskMem(checked(values.Length * sizeof(int)));
-        for (int i = 0; i < values.Length; i++)
-        {
+        for (int i = 0; i < values.Length; i++) {
             Marshal.WriteInt32(ptr, checked(i * sizeof(int)), unchecked((int)values[i]));
         }
 
@@ -396,10 +335,8 @@ internal static unsafe class OpcHdaItemMarshaler
     }
 
     [SuppressMessage("Reliability", "CA2018:Buffer size argument matches element count", Justification = "Explicit byte size.")]
-    private static IntPtr AllocateVariantArray(OpcVariant[] values)
-    {
-        if (values.Length == 0)
-        {
+    private static IntPtr AllocateVariantArray(OpcVariant[] values) {
+        if (values.Length == 0) {
             return IntPtr.Zero;
         }
 
@@ -407,80 +344,64 @@ internal static unsafe class OpcHdaItemMarshaler
         IntPtr ptr = Marshal.AllocCoTaskMem(checked(values.Length * variantSize));
         NativeMemory.Clear((void*)ptr, (nuint)checked(values.Length * variantSize));
         bool completed = false;
-        try
-        {
-            for (int i = 0; i < values.Length; i++)
-            {
+        try {
+            for (int i = 0; i < values.Length; i++) {
                 OpcHdaVariantMarshaler.WriteVariant(IntPtr.Add(ptr, checked(i * variantSize)), values[i]);
             }
 
             completed = true;
             return ptr;
         }
-        finally
-        {
-            if (!completed)
-            {
+        finally {
+            if (!completed) {
                 FreeVariantArray(ptr, values.Length);
             }
         }
     }
 
     [SuppressMessage("Reliability", "CA2018:Buffer size argument matches element count", Justification = "Explicit byte size.")]
-    private static IntPtr AllocateStringPointerArray(string?[] values)
-    {
-        if (values.Length == 0)
-        {
+    private static IntPtr AllocateStringPointerArray(string?[] values) {
+        if (values.Length == 0) {
             return IntPtr.Zero;
         }
 
         IntPtr ptr = Marshal.AllocCoTaskMem(checked(values.Length * IntPtr.Size));
         NativeMemory.Clear((void*)ptr, (nuint)checked(values.Length * IntPtr.Size));
         bool completed = false;
-        try
-        {
-            for (int i = 0; i < values.Length; i++)
-            {
+        try {
+            for (int i = 0; i < values.Length; i++) {
                 WritePointer(ptr, i * IntPtr.Size, values[i] is null ? IntPtr.Zero : Marshal.StringToCoTaskMemUni(values[i]));
             }
 
             completed = true;
             return ptr;
         }
-        finally
-        {
-            if (!completed)
-            {
+        finally {
+            if (!completed) {
                 FreeStringPointerArray(ptr, values.Length);
             }
         }
     }
 
-    private static void FreeVariantArray(IntPtr ptr, int count)
-    {
-        if (ptr == IntPtr.Zero)
-        {
+    private static void FreeVariantArray(IntPtr ptr, int count) {
+        if (ptr == IntPtr.Zero) {
             return;
         }
 
         int variantSize = OpcHdaVariantMarshaler.VariantSize;
-        for (int i = 0; i < count; i++)
-        {
+        for (int i = 0; i < count; i++) {
             OpcHdaVariantMarshaler.ClearVariant(IntPtr.Add(ptr, checked(i * variantSize)));
         }
 
         Marshal.FreeCoTaskMem(ptr);
     }
 
-    private static void FreeStringPointerArray(IntPtr ptr, int count)
-    {
-        if (ptr == IntPtr.Zero)
-        {
+    private static void FreeStringPointerArray(IntPtr ptr, int count) {
+        if (ptr == IntPtr.Zero) {
             return;
         }
 
-        for (int i = 0; i < count; i++)
-        {
+        for (int i = 0; i < count; i++) {
             Marshal.FreeCoTaskMem(ReadPointer(ptr, checked(i * IntPtr.Size)));
         }
 
@@ -498,8 +419,7 @@ internal static unsafe class OpcHdaItemMarshaler
 
 /// <summary>OAUT VARIANT writer for HDA native CCW buffers.</summary>
 [SupportedOSPlatform("windows")]
-internal static unsafe class OpcHdaVariantMarshaler
-{
+internal static unsafe class OpcHdaVariantMarshaler {
     private const ushort VT_EMPTY = 0;
     private const ushort VT_NULL = 1;
     private const ushort VT_I2 = 2;
@@ -524,18 +444,15 @@ internal static unsafe class OpcHdaVariantMarshaler
 
     public static int VariantSize => IntPtr.Size == 8 ? 24 : 16;
 
-    public static void WriteVariant(IntPtr dest, OpcVariant variant)
-    {
-        if (dest == IntPtr.Zero)
-        {
+    public static void WriteVariant(IntPtr dest, OpcVariant variant) {
+        if (dest == IntPtr.Zero) {
             return;
         }
 
         WriteEmpty(dest);
         ushort vt = (ushort)variant.Type;
         Marshal.WriteInt16(dest, unchecked((short)vt));
-        if ((vt & VT_ARRAY) != 0)
-        {
+        if ((vt & VT_ARRAY) != 0) {
             WriteSafeArrayPayload(dest, variant);
             return;
         }
@@ -543,27 +460,21 @@ internal static unsafe class OpcHdaVariantMarshaler
         WriteScalarPayload(dest, vt, variant.Boxed);
     }
 
-    public static void ClearVariant(IntPtr ptr)
-    {
-        if (ptr == IntPtr.Zero)
-        {
+    public static void ClearVariant(IntPtr ptr) {
+        if (ptr == IntPtr.Zero) {
             return;
         }
 
         ushort vt = unchecked((ushort)Marshal.ReadInt16(ptr));
-        if (vt == VT_BSTR)
-        {
+        if (vt == VT_BSTR) {
             IntPtr bstr = Marshal.ReadIntPtr(ptr, ValueOffset);
-            if (bstr != IntPtr.Zero)
-            {
+            if (bstr != IntPtr.Zero) {
                 Marshal.FreeBSTR(bstr);
             }
         }
-        else if ((vt & VT_ARRAY) != 0)
-        {
+        else if ((vt & VT_ARRAY) != 0) {
             IntPtr safeArray = Marshal.ReadIntPtr(ptr, ValueOffset);
-            if (safeArray != IntPtr.Zero)
-            {
+            if (safeArray != IntPtr.Zero) {
                 FreeSafeArray(safeArray, (ushort)(vt & ~VT_ARRAY));
             }
         }
@@ -576,11 +487,9 @@ internal static unsafe class OpcHdaVariantMarshaler
     private static void WriteEmpty(IntPtr dest) => NativeMemory.Clear((void*)dest, (nuint)VariantSize);
 
     [SuppressMessage("Design", "CA1502:Avoid excessive complexity", Justification = "VARIANT scalar dispatch requires one branch per VARENUM code.")]
-    private static void WriteScalarPayload(IntPtr dest, ushort vt, object? boxed)
-    {
+    private static void WriteScalarPayload(IntPtr dest, ushort vt, object? boxed) {
         IntPtr value = dest + ValueOffset;
-        switch (vt)
-        {
+        switch (vt) {
             case VT_I1:
                 Marshal.WriteByte(value, unchecked((byte)(sbyte)(boxed ?? (sbyte)0)));
                 break;
@@ -631,15 +540,13 @@ internal static unsafe class OpcHdaVariantMarshaler
         }
     }
 
-    private static void WriteSafeArrayPayload(IntPtr dest, OpcVariant variant)
-    {
+    private static void WriteSafeArrayPayload(IntPtr dest, OpcVariant variant) {
         OpcSafeArray? array = variant.AsSafeArray();
         Marshal.WriteIntPtr(dest, ValueOffset, array is null || array.Data.Length == 0 ? IntPtr.Zero : AllocateSafeArray(array));
     }
 
     [SuppressMessage("Reliability", "CA2018:Buffer size argument matches element count", Justification = "Explicit byte sizes for descriptor and data buffers.")]
-    private static IntPtr AllocateSafeArray(OpcSafeArray array)
-    {
+    private static IntPtr AllocateSafeArray(OpcSafeArray array) {
         ushort baseVt = (ushort)array.ElementType;
         uint elementSize = (uint)ElementSizeOf(baseVt);
         uint count = unchecked((uint)array.Data.Length);
@@ -659,21 +566,16 @@ internal static unsafe class OpcHdaVariantMarshaler
         return descriptor;
     }
 
-    private static void FreeSafeArray(IntPtr descriptor, ushort baseVt)
-    {
+    private static void FreeSafeArray(IntPtr descriptor, ushort baseVt) {
         int pvDataOffset = 8 + IntPtr.Size;
         int boundsOffset = pvDataOffset + IntPtr.Size;
         IntPtr dataBuffer = Marshal.ReadIntPtr(descriptor, pvDataOffset);
-        if (dataBuffer != IntPtr.Zero)
-        {
-            if (baseVt == VT_BSTR)
-            {
+        if (dataBuffer != IntPtr.Zero) {
+            if (baseVt == VT_BSTR) {
                 int count = Marshal.ReadInt32(descriptor, boundsOffset);
-                for (int i = 0; i < count; i++)
-                {
+                for (int i = 0; i < count; i++) {
                     IntPtr bstr = Marshal.ReadIntPtr(dataBuffer, checked(i * IntPtr.Size));
-                    if (bstr != IntPtr.Zero)
-                    {
+                    if (bstr != IntPtr.Zero) {
                         Marshal.FreeBSTR(bstr);
                     }
                 }
@@ -685,8 +587,7 @@ internal static unsafe class OpcHdaVariantMarshaler
         Marshal.FreeCoTaskMem(descriptor);
     }
 
-    private static int ElementSizeOf(ushort baseVt) => baseVt switch
-    {
+    private static int ElementSizeOf(ushort baseVt) => baseVt switch {
         VT_I1 or VT_UI1 => 1,
         VT_I2 or VT_UI2 or VT_BOOL => 2,
         VT_I4 or VT_UI4 or VT_INT or VT_UINT or VT_ERROR or VT_R4 => 4,
@@ -696,15 +597,12 @@ internal static unsafe class OpcHdaVariantMarshaler
     };
 
     [SuppressMessage("Design", "CA1502:Avoid excessive complexity", Justification = "SAFEARRAY element dispatch requires one branch per VARENUM code.")]
-    private static void WriteSafeArrayData(IntPtr dataBuffer, OpcSafeArray array, ushort baseVt, uint elementSize)
-    {
+    private static void WriteSafeArrayData(IntPtr dataBuffer, OpcSafeArray array, ushort baseVt, uint elementSize) {
         Array data = array.Data;
-        for (int i = 0; i < data.Length; i++)
-        {
+        for (int i = 0; i < data.Length; i++) {
             IntPtr slot = dataBuffer + checked((int)(i * elementSize));
             object? value = data.GetValue(i);
-            switch (baseVt)
-            {
+            switch (baseVt) {
                 case VT_I1: Marshal.WriteByte(slot, unchecked((byte)(sbyte)(value ?? (sbyte)0))); break;
                 case VT_UI1: Marshal.WriteByte(slot, (byte)(value ?? (byte)0)); break;
                 case VT_I2: Marshal.WriteInt16(slot, (short)(value ?? (short)0)); break;

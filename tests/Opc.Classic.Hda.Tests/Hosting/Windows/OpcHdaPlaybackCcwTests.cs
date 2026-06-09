@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -20,18 +20,15 @@ using TUnit.Core;
 namespace Opc.Classic.Hda.Tests.Hosting.Windows;
 
 [SupportedOSPlatform("windows")]
-public sealed class OpcHdaPlaybackCcwTests
-{
+public sealed class OpcHdaPlaybackCcwTests {
     private const int S_OK = 0;
     private const int E_FAIL = unchecked((int)0x80004005);
     private const int E_INVALIDARG = unchecked((int)0x80070057);
     private static readonly Guid IID_IUnknown = Guid.Parse("00000000-0000-0000-C000-000000000046");
 
     [Test]
-    public async Task ReadRawWithUpdate_streams_playback_callbacks()
-    {
-        if (!OperatingSystem.IsWindows())
-        {
+    public async Task ReadRawWithUpdate_streams_playback_callbacks() {
+        if (!OperatingSystem.IsWindows()) {
             return;
         }
 
@@ -56,10 +53,8 @@ public sealed class OpcHdaPlaybackCcwTests
     }
 
     [Test]
-    public async Task ReadProcessedWithUpdate_streams_playback_callbacks()
-    {
-        if (!OperatingSystem.IsWindows())
-        {
+    public async Task ReadProcessedWithUpdate_streams_playback_callbacks() {
+        if (!OperatingSystem.IsWindows()) {
             return;
         }
 
@@ -85,10 +80,8 @@ public sealed class OpcHdaPlaybackCcwTests
     }
 
     [Test]
-    public async Task Cancel_stops_mid_stream_and_fires_cancel_complete()
-    {
-        if (!OperatingSystem.IsWindows())
-        {
+    public async Task Cancel_stops_mid_stream_and_fires_cancel_complete() {
+        if (!OperatingSystem.IsWindows()) {
             return;
         }
 
@@ -116,10 +109,8 @@ public sealed class OpcHdaPlaybackCcwTests
     }
 
     [Test]
-    public async Task Playback_methods_reject_count_zero_and_unknown_cancel_id()
-    {
-        if (!OperatingSystem.IsWindows())
-        {
+    public async Task Playback_methods_reject_count_zero_and_unknown_cancel_id() {
+        if (!OperatingSystem.IsWindows()) {
             return;
         }
 
@@ -142,22 +133,19 @@ public sealed class OpcHdaPlaybackCcwTests
         await Assert.That(cancelHr).IsEqualTo(E_FAIL);
     }
 
-    private sealed class PlaybackServer : IOpcHdaServer, IOPCHDA_SyncRead
-    {
+    private sealed class PlaybackServer : IOpcHdaServer, IOPCHDA_SyncRead {
         public Task<OpcServerStatus> GetStatusAsync(CancellationToken cancellationToken = default) =>
             Task.FromResult(new OpcServerStatus { Spec = OpcStatusSpec.Hda });
 
         public Task<int[]> ValidateItemIdsAsync(string[] itemIds, CancellationToken cancellationToken = default) =>
             Task.FromResult(new int[itemIds.Length]);
 
-        public Task<OpcHdaItem[]> ReadRawAsync(OpcHdaTime startTime, OpcHdaTime endTime, int maxValues, bool bounds, int[] serverHandles, CancellationToken cancellationToken = default)
-        {
+        public Task<OpcHdaItem[]> ReadRawAsync(OpcHdaTime startTime, OpcHdaTime endTime, int maxValues, bool bounds, int[] serverHandles, CancellationToken cancellationToken = default) {
             _ = startTime; _ = endTime; _ = maxValues; _ = bounds;
             return Task.FromResult(serverHandles.Select(handle => Item(handle, 0)).ToArray());
         }
 
-        public Task<OpcHdaItem[]> ReadProcessedAsync(OpcHdaTime startTime, OpcHdaTime endTime, long resampleIntervalFileTime, int[] serverHandles, int[] aggregateIds, CancellationToken cancellationToken = default)
-        {
+        public Task<OpcHdaItem[]> ReadProcessedAsync(OpcHdaTime startTime, OpcHdaTime endTime, long resampleIntervalFileTime, int[] serverHandles, int[] aggregateIds, CancellationToken cancellationToken = default) {
             _ = startTime; _ = endTime; _ = resampleIntervalFileTime;
             return Task.FromResult(serverHandles.Select((handle, i) => Item(handle, aggregateIds[i])).ToArray());
         }
@@ -166,15 +154,13 @@ public sealed class OpcHdaPlaybackCcwTests
         public Task<OpcHdaModifiedItem[]> ReadModifiedAsync(OpcHdaTime startTime, OpcHdaTime endTime, int maxValues, int[] serverHandles, CancellationToken cancellationToken = default) => Task.FromResult(Array.Empty<OpcHdaModifiedItem>());
         public Task<OpcHdaAttribute[]> ReadAttributeAsync(OpcHdaTime startTime, OpcHdaTime endTime, int serverHandle, int[] attributeIds, CancellationToken cancellationToken = default) => Task.FromResult(Array.Empty<OpcHdaAttribute>());
 
-        private static OpcHdaItem Item(int handle, int aggregate)
-        {
+        private static OpcHdaItem Item(int handle, int aggregate) {
             DateTimeOffset now = DateTimeOffset.UtcNow;
             return new OpcHdaItem(handle, aggregate, [now], [(uint)OpcQuality.Good.RawValue], [OpcVariant.FromDouble(handle)]);
         }
     }
 
-    private static class Native
-    {
+    private static class Native {
         private static int HdaTimeSize => IntPtr.Size == 8 ? 24 : 16;
         private static int HdaTimeFileTimeOffset => IntPtr.Size == 8 ? 16 : 8;
 
@@ -195,8 +181,7 @@ public sealed class OpcHdaPlaybackCcwTests
         internal sealed class CoTaskMemBlock : IDisposable { private CoTaskMemBlock(IntPtr pointer) => Pointer = pointer; public IntPtr Pointer { get; } public static CoTaskMemBlock Allocate(int byteCount) { IntPtr ptr = Marshal.AllocCoTaskMem(byteCount); for (int i = 0; i < byteCount; i++) { Marshal.WriteByte(ptr, i, 0); } return new CoTaskMemBlock(ptr); } public void Dispose() => Marshal.FreeCoTaskMem(Pointer); }
     }
 
-    private sealed class CallbackCcw : IDisposable
-    {
+    private sealed class CallbackCcw : IDisposable {
         private static readonly ConcurrentDictionary<IntPtr, CallbackCcw> s_instances = new();
         private static readonly QueryInterfaceCallback s_queryInterface = QueryInterface;
         private static readonly RefCountCallback s_addRef = AddRef;
@@ -210,8 +195,7 @@ public sealed class OpcHdaPlaybackCcwTests
         private int _cancelId;
         private int _transactionId;
 
-        public CallbackCcw()
-        {
+        public CallbackCcw() {
             _vtable = Marshal.AllocCoTaskMem(12 * IntPtr.Size);
             WriteSlot(0, s_queryInterface); WriteSlot(1, s_addRef); WriteSlot(2, s_release); WriteSlot(3, s_ignoredItems); WriteSlot(4, s_ignoredItems); WriteSlot(5, s_ignoredItems); WriteSlot(6, s_ignoredAttribute); WriteSlot(7, s_ignoredItems); WriteSlot(8, s_ignoredItems); WriteSlot(9, s_onPlayback); WriteSlot(10, s_ignoredItems); WriteSlot(11, s_onCancelComplete);
             Pointer = Marshal.AllocCoTaskMem(IntPtr.Size);

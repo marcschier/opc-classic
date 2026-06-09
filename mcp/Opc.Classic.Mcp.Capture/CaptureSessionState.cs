@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -9,8 +9,7 @@ namespace Opc.Classic.Mcp.Capture;
 /// Lifecycle state of a capture session as observed via the MCP tool
 /// surface.
 /// </summary>
-public enum CaptureSessionState
-{
+public enum CaptureSessionState {
     /// <summary>The session has been allocated but <see cref="ICaptureSource.StartAsync"/> hasn't completed yet.</summary>
     Starting,
 

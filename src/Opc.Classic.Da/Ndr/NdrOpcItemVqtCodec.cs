@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -30,15 +30,13 @@ namespace Opc.Classic.Da.Ndr;
 /// The FILETIME alignment is 4 (NDR rule for the {DWORD, DWORD} pair),
 /// not 8, even though the value is a 64-bit count of 100-ns intervals.
 /// </remarks>
-public static class NdrOpcItemVqtCodec
-{
+public static class NdrOpcItemVqtCodec {
     private const int Win32BoolTrue = unchecked((int)0xFFFFFFFFu); // -1 / TRUE
     private const int Win32BoolFalse = 0;
     private const long FileTimeEpochOffsetTicks = 504911232000000000L; // 1601-01-01 UTC in DateTimeOffset.Ticks
 
     /// <summary>Encodes a single OPCITEMVQT in NDR.</summary>
-    public static void Write(ref NdrWriter writer, OpcItemVqt vqt)
-    {
+    public static void Write(ref NdrWriter writer, OpcItemVqt vqt) {
         ArgumentNullException.ThrowIfNull(vqt);
 
         writer.WriteVariant(vqt.Value);
@@ -57,8 +55,7 @@ public static class NdrOpcItemVqtCodec
     }
 
     /// <summary>Decodes a single OPCITEMVQT from NDR.</summary>
-    public static OpcItemVqt Read(ref NdrReader reader)
-    {
+    public static OpcItemVqt Read(ref NdrReader reader) {
         OpcVariant value = reader.ReadVariant();
 
         int bQuality = reader.ReadInt32();
@@ -71,25 +68,21 @@ public static class NdrOpcItemVqtCodec
 
         OpcQuality? quality = bQuality != 0 ? new OpcQuality(wQuality) : null;
         DateTimeOffset? timestamp;
-        if (bTimestamp != 0)
-        {
-            if (!FileTimeHelper.TryFromFileTime(fileTimeTicks, out DateTimeOffset decoded))
-            {
+        if (bTimestamp != 0) {
+            if (!FileTimeHelper.TryFromFileTime(fileTimeTicks, out DateTimeOffset decoded)) {
                 throw new InvalidDataException(
                     $"OPCITEMVQT.ftTimeStamp FILETIME value 0x{fileTimeTicks:X16} ({fileTimeTicks}) cannot be expressed as a DateTimeOffset (out of range 1601-01-01..9999-12-31)." + reader.FormatContext());
             }
             timestamp = decoded;
         }
-        else
-        {
+        else {
             timestamp = null;
         }
 
         return new OpcItemVqt(value, quality, timestamp);
     }
 
-    private static long ToFileTime(DateTimeOffset value)
-    {
+    private static long ToFileTime(DateTimeOffset value) {
         // FILETIME is 100-ns intervals since 1601-01-01 UTC.
         long utcTicks = value.UtcTicks;
         return utcTicks - FileTimeEpochOffsetTicks;

@@ -1,6 +1,6 @@
-// SPDX-License-Identifier: MIT
+﻿// SPDX-License-Identifier: MIT
 
-namespace Opc.Classic.Dcom.Common; 
+namespace Opc.Classic.Dcom.Common;
 
 /// <summary>
 /// Default implementation of <code>IAuthInfo</code>.

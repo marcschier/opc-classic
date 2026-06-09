@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -13,18 +13,15 @@ using TUnit.Core;
 
 namespace Opc.Classic.Security.Tests.Dcom;
 
-public sealed class IOPCSecurityProxyTests
-{
+public sealed class IOPCSecurityProxyTests {
     private delegate void NdrWriteAction(ref NdrWriter writer);
 
     [Test]
-    public async Task SecurityNT_IsAvailable_decodes_boolean()
-    {
+    public async Task SecurityNT_IsAvailable_decodes_boolean() {
         Guid observedIid = Guid.Empty;
         int observedOpnum = -1;
         ReadOnlyMemory<byte> responsePayload = WritePayload((ref NdrWriter writer) => writer.WriteInt32(-1));
-        var channel = new InMemoryCallChannel((iid, opnum, _, _) =>
-        {
+        var channel = new InMemoryCallChannel((iid, opnum, _, _) => {
             observedIid = iid;
             observedOpnum = opnum;
             return Task.FromResult(new NdrCallResult(0, responsePayload));
@@ -40,13 +37,11 @@ public sealed class IOPCSecurityProxyTests
     }
 
     [Test]
-    public async Task SecurityPrivate_Logon_encodes_credentials()
-    {
+    public async Task SecurityPrivate_Logon_encodes_credentials() {
         Guid observedIid = Guid.Empty;
         int observedOpnum = -1;
         int observedPayloadLength = -1;
-        var channel = new InMemoryCallChannel((iid, opnum, payload, _) =>
-        {
+        var channel = new InMemoryCallChannel((iid, opnum, payload, _) => {
             observedIid = iid;
             observedOpnum = opnum;
             observedPayloadLength = payload.Length;
@@ -62,8 +57,7 @@ public sealed class IOPCSecurityProxyTests
         await Assert.That(observedPayloadLength).IsGreaterThan(0);
     }
 
-    private static ReadOnlyMemory<byte> WritePayload(NdrWriteAction write, int capacity = 128)
-    {
+    private static ReadOnlyMemory<byte> WritePayload(NdrWriteAction write, int capacity = 128) {
         var buffer = new byte[capacity];
         var writer = new NdrWriter(buffer);
         write(ref writer);

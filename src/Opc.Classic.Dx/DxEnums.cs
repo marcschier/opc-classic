@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -11,8 +11,7 @@ using System;
 namespace Opc.Classic.Dx;
 
 /// <summary>OPC DX 1.00 source-server interface type identifiers.</summary>
-public enum DxServerType
-{
+public enum DxServerType {
     /// <summary>The source-server type is not known.</summary>
     Unknown = 0,
 
@@ -33,8 +32,7 @@ public enum DxServerType
 }
 
 /// <summary>OPC DX 1.00 server state values from §4.2.2.</summary>
-public enum DxServerState
-{
+public enum DxServerState {
     /// <summary>The server state is not known.</summary>
     Unknown = 0,
 
@@ -61,8 +59,7 @@ public enum DxServerState
 }
 
 /// <summary>OPC DX 1.00 connection runtime state values from §4.3.2.19.1.</summary>
-public enum DxConnectionState
-{
+public enum DxConnectionState {
     /// <summary>The connection state is not known.</summary>
     Unknown = 0,
 
@@ -86,8 +83,7 @@ public enum DxConnectionState
 }
 
 /// <summary>OPC DX 1.00 source-server connection status values from §4.4.1.6.1.</summary>
-public enum DxConnectStatus
-{
+public enum DxConnectStatus {
     /// <summary>The connection status is not known.</summary>
     Unknown = 0,
 
@@ -105,8 +101,7 @@ public enum DxConnectStatus
 }
 
 /// <summary>OPC DX quality status names from §4.3.2.19.4.</summary>
-public enum DxQualityStatus
-{
+public enum DxQualityStatus {
     /// <summary>The quality status is not known.</summary>
     Unknown = 0,
 
@@ -157,8 +152,7 @@ public enum DxQualityStatus
 }
 
 /// <summary>OPC DX quality limit bit names from §4.3.2.19.4.</summary>
-public enum DxLimitStatus
-{
+public enum DxLimitStatus {
     /// <summary>No limit condition.</summary>
     None = 0,
 
@@ -174,8 +168,7 @@ public enum DxLimitStatus
 
 /// <summary>OPC DX <c>OpcDxMask</c> optional-field presence bits.</summary>
 [Flags]
-public enum DxMask
-{
+public enum DxMask {
     /// <summary>No optional fields are present.</summary>
     None = 0x0,
 

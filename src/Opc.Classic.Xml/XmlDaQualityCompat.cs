@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -12,8 +12,7 @@ namespace Opc.Classic.Xml;
 /// type (same 8-bit packing); XML-DA timestamps map to .NET
 /// <see cref="System.DateTimeOffset"/>.
 /// </summary>
-public static class XmlDaQualityCompat
-{
+public static class XmlDaQualityCompat {
     /// <summary>
     /// Converts a managed <see cref="OpcQuality"/> into its XML-DA wire
     /// representation: a single byte where bits 6-7 are kind, bits 4-5

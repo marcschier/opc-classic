@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -10,13 +10,10 @@ using TUnit.Core;
 
 namespace Opc.Classic.Integration.Tests;
 
-public sealed class KerberosKdcFixtureTests
-{
+public sealed class KerberosKdcFixtureTests {
     [Test, NotInParallel]
-    public async Task KerberosKdcFixture_starts_and_exposes_realm()
-    {
-        if (!IsDockerAvailable())
-        {
+    public async Task KerberosKdcFixture_starts_and_exposes_realm() {
+        if (!IsDockerAvailable()) {
             return;
         }
 
@@ -27,12 +24,9 @@ public sealed class KerberosKdcFixtureTests
         await Assert.That(kdc.Port).IsGreaterThan(0);
     }
 
-    private static bool IsDockerAvailable()
-    {
-        try
-        {
-            using var process = Process.Start(new ProcessStartInfo
-            {
+    private static bool IsDockerAvailable() {
+        try {
+            using var process = Process.Start(new ProcessStartInfo {
                 FileName = "docker",
                 Arguments = "info",
                 RedirectStandardOutput = true,
@@ -41,21 +35,18 @@ public sealed class KerberosKdcFixtureTests
                 CreateNoWindow = true,
             });
 
-            if (process is null)
-            {
+            if (process is null) {
                 return false;
             }
 
-            if (!process.WaitForExit(2000))
-            {
+            if (!process.WaitForExit(2000)) {
                 process.Kill(entireProcessTree: true);
                 return false;
             }
 
             return process.ExitCode == 0;
         }
-        catch
-        {
+        catch {
             return false;
         }
     }

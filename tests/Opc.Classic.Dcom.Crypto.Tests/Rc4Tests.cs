@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -12,8 +12,7 @@ using TUnit.Core;
 
 namespace Opc.Classic.Dcom.Crypto.Tests;
 
-public sealed class Rc4Tests
-{
+public sealed class Rc4Tests {
     // RFC 6229 §2.1 — RC4 test vectors. Inputs are all-zero plaintext;
     // outputs are the keystream bytes at offset 0..15.
 
@@ -23,8 +22,7 @@ public sealed class Rc4Tests
     [Arguments("0102030405060708", "97ab8a1bf0afb96132f2f67258da15a8")]                      // 64-bit key
     [Arguments("0102030405060708090a", "ede3b04643e586cc907dc21851709902")]                  // 80-bit key
     [Arguments("0102030405060708090a0b0c0d0e0f10", "9ac7cc9a609d1ef7b2932899cde41b97")]      // 128-bit key
-    public async Task FirstSixteenBytes_MatchRfc6229Vector(string keyHex, string expectedHex)
-    {
+    public async Task FirstSixteenBytes_MatchRfc6229Vector(string keyHex, string expectedHex) {
         var key = Convert.FromHexString(keyHex);
         var input = new byte[16]; // all zeros — RC4(0) == keystream
         var output = new Rc4(key).Process(input);
@@ -33,8 +31,7 @@ public sealed class Rc4Tests
     }
 
     [Test]
-    public async Task Rc4_IsInverse_OfItself()
-    {
+    public async Task Rc4_IsInverse_OfItself() {
         // RC4 is symmetric: encrypt(encrypt(x)) == x with the same key.
         var key = "TheBestSecretKey"u8.ToArray();
         var plaintext = "Attack at dawn"u8.ToArray();
@@ -47,8 +44,7 @@ public sealed class Rc4Tests
     }
 
     [Test]
-    public async Task XorInPlace_MatchesProcess()
-    {
+    public async Task XorInPlace_MatchesProcess() {
         var key = Convert.FromHexString("0102030405");
         var data1 = new byte[32];
         var data2 = new byte[32];
@@ -63,8 +59,7 @@ public sealed class Rc4Tests
     }
 
     [Test]
-    public async Task ProcessOnZeros_StreamRemainsConsistent_Across_Boundary()
-    {
+    public async Task ProcessOnZeros_StreamRemainsConsistent_Across_Boundary() {
         // RFC 6229 confirms bytes [0..15] for the 40-bit key (already tested).
         // This complementary test validates that the keystream is continuous
         // across the 16-byte boundary by checking that processing two 16-byte
@@ -86,8 +81,7 @@ public sealed class Rc4Tests
     }
 
     [Test]
-    public async Task BcCompat_RC4Engine_MatchesStaticRc4()
-    {
+    public async Task BcCompat_RC4Engine_MatchesStaticRc4() {
         // The BC-shape RC4Engine wrapper must produce identical output to the
         // direct Rc4 class for the same key + input.
         var key = Convert.FromHexString("0102030405");
@@ -105,8 +99,7 @@ public sealed class Rc4Tests
     }
 
     [Test]
-    public async Task BcCompat_ReturnByte_IsByteWiseProcess()
-    {
+    public async Task BcCompat_ReturnByte_IsByteWiseProcess() {
         var key = Convert.FromHexString("0102030405060708");
         var input = "Bytewise stream"u8.ToArray();
 
@@ -115,8 +108,7 @@ public sealed class Rc4Tests
         var engine = new RC4Engine();
         engine.Init(forEncryption: true, new KeyParameter(key));
         var bytewise = new byte[input.Length];
-        for (var i = 0; i < input.Length; i++)
-        {
+        for (var i = 0; i < input.Length; i++) {
             bytewise[i] = engine.ReturnByte(input[i]);
         }
 

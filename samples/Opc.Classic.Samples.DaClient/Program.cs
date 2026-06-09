@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: MIT
+﻿// SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 
 #pragma warning disable CA1062
@@ -24,14 +24,11 @@ using Opc.Classic.Testing;
 
 namespace Opc.Classic.Samples.DaClient;
 
-internal static class Program
-{
-    public static async Task<int> Main(string[] args)
-    {
+internal static class Program {
+    public static async Task<int> Main(string[] args) {
         HostApplicationBuilder builder = Host.CreateApplicationBuilder(args);
         builder.Logging.ClearProviders();
-        builder.Logging.AddSimpleConsole(static options =>
-        {
+        builder.Logging.AddSimpleConsole(static options => {
             options.SingleLine = true;
             options.TimestampFormat = "HH:mm:ss ";
         });
@@ -47,12 +44,10 @@ internal static class Program
             ? $"Connecting over TCP to {remoteHost}:{remotePort}"
             : "Running in-process via InMemoryCallChannel + LoopbackDaServer");
 
-        if (useTcp)
-        {
+        if (useTcp) {
             AddTcpDaClient(builder.Services, remoteHost!, remotePort);
         }
-        else
-        {
+        else {
             AddLoopbackDaClient(builder.Services);
         }
 
@@ -62,8 +57,7 @@ internal static class Program
         return 0;
     }
 
-    private static void AddTcpDaClient(IServiceCollection services, string remoteHost, int remotePort)
-    {
+    private static void AddTcpDaClient(IServiceCollection services, string remoteHost, int remotePort) {
         services.AddSingleton<DcomCallChannel>(_ =>
             DcomCallChannelFactory.ConnectTcpAsync(remoteHost, remotePort, NoOpAuthContext.Instance)
                 .GetAwaiter()
@@ -73,8 +67,7 @@ internal static class Program
         services.AddSingleton<IDaServer, LoopbackDaClient>();
     }
 
-    private static void AddLoopbackDaClient(IServiceCollection services)
-    {
+    private static void AddLoopbackDaClient(IServiceCollection services) {
         services.AddSingleton<TagStore>();
         services.AddSingleton<LoopbackDaServer>();
         services.AddSingleton<IOpcDaServer>(static sp => sp.GetRequiredService<LoopbackDaServer>());
@@ -86,38 +79,31 @@ internal static class Program
     }
 }
 
-public sealed class DemoWorker : BackgroundService
-{
+public sealed class DemoWorker : BackgroundService {
     private readonly IDaServer _client;
     private readonly IHostApplicationLifetime _lifetime;
     private readonly ILogger<DemoWorker> _logger;
 
-    public DemoWorker(IDaServer client, IHostApplicationLifetime lifetime, ILogger<DemoWorker> logger)
-    {
+    public DemoWorker(IDaServer client, IHostApplicationLifetime lifetime, ILogger<DemoWorker> logger) {
         _client = client ?? throw new ArgumentNullException(nameof(client));
         _lifetime = lifetime ?? throw new ArgumentNullException(nameof(lifetime));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
-    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
-    {
-        try
-        {
+    protected override async Task ExecuteAsync(CancellationToken stoppingToken) {
+        try {
             await RunAsync(stoppingToken).ConfigureAwait(false);
         }
-        finally
-        {
+        finally {
             _lifetime.StopApplication();
         }
     }
 
-    private async Task RunAsync(CancellationToken ct)
-    {
+    private async Task RunAsync(CancellationToken ct) {
         OpcServerStatus status = await _client.GetStatusAsync(ct).ConfigureAwait(false);
         _logger.LogInformation("Connected to {Vendor}", status.VendorInfo);
 
-        await foreach (BrowseElement element in _client.BrowseAsync(string.Empty, BrowseFilters.All, ct).ConfigureAwait(false))
-        {
+        await foreach (BrowseElement element in _client.BrowseAsync(string.Empty, BrowseFilters.All, ct).ConfigureAwait(false)) {
             _logger.LogInformation("Browse: {Name} item={ItemName}", element.Name, element.ItemName);
         }
 
@@ -128,8 +114,7 @@ public sealed class DemoWorker : BackgroundService
             new Item("Plant.PumpRunning") { ClientHandle = 1003 },
         };
 
-        await using IDaSubscription group = await _client.CreateSubscriptionAsync(new SubscriptionState
-        {
+        await using IDaSubscription group = await _client.CreateSubscriptionAsync(new SubscriptionState {
             Name = "da-client-demo",
             ClientHandle = 5000,
             UpdateRateMs = 250,
@@ -138,14 +123,12 @@ public sealed class DemoWorker : BackgroundService
         }, ct).ConfigureAwait(false);
 
         IReadOnlyList<IdentifiedResult> addResults = await group.AddItemsAsync(items, ct).ConfigureAwait(false);
-        foreach (IdentifiedResult result in addResults)
-        {
+        foreach (IdentifiedResult result in addResults) {
             _logger.LogInformation("Added {Item} result={Result}", result.ItemName, result.ResultId);
         }
 
         IReadOnlyList<ItemValueResult> values = await group.ReadAsync(items.Select(static item => item.ClientHandle).ToArray(), fromCache: true, ct).ConfigureAwait(false);
-        foreach (ItemValueResult value in values)
-        {
+        foreach (ItemValueResult value in values) {
             _logger.LogInformation("Read {Item}: {Value} {Quality}", value.ItemName, value.Value, value.Quality);
         }
 
@@ -155,18 +138,15 @@ public sealed class DemoWorker : BackgroundService
         await _client.DisposeAsync().ConfigureAwait(false);
     }
 
-    private async Task LogOneCallbackAsync(IDaSubscription group, CancellationToken ct)
-    {
-        await foreach (DataChange change in group.DataChanges.WithCancellation(ct).ConfigureAwait(false))
-        {
+    private async Task LogOneCallbackAsync(IDaSubscription group, CancellationToken ct) {
+        await foreach (DataChange change in group.DataChanges.WithCancellation(ct).ConfigureAwait(false)) {
             _logger.LogInformation("Callback transaction={TransactionId} count={Count}", change.TransactionId, change.Items.Count);
             return;
         }
     }
 }
 
-public sealed class LoopbackDaClient : IDaServer
-{
+public sealed class LoopbackDaClient : IDaServer {
     private const int CacheDataSource = 1;
     private const int DeviceDataSource = 2;
 
@@ -181,8 +161,7 @@ public sealed class LoopbackDaClient : IDaServer
     private readonly InMemoryCallChannel? _inMemoryChannel;
     private bool _disposed;
 
-    public LoopbackDaClient(IOPCServer serverProxy, ICallChannel channel, ILogger<LoopbackDaClient> logger)
-    {
+    public LoopbackDaClient(IOPCServer serverProxy, ICallChannel channel, ILogger<LoopbackDaClient> logger) {
         ArgumentNullException.ThrowIfNull(channel);
         _serverProxy = serverProxy ?? throw new ArgumentNullException(nameof(serverProxy));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -198,8 +177,7 @@ public sealed class LoopbackDaClient : IDaServer
         LoopbackDaServer server,
         InMemoryCallChannel channel,
         ILogger<LoopbackDaClient> logger)
-        : this(serverProxy, channel, logger)
-    {
+        : this(serverProxy, channel, logger) {
         _server = server ?? throw new ArgumentNullException(nameof(server));
         _inMemoryChannel = channel;
     }
@@ -211,15 +189,13 @@ public sealed class LoopbackDaClient : IDaServer
     public Task<OpcServerStatus> GetStatusAsync(CancellationToken cancellationToken = default) =>
         _serverProxy.GetStatusAsync(cancellationToken);
 
-    public Task SetLocaleAsync(int localeId, CancellationToken cancellationToken = default)
-    {
+    public Task SetLocaleAsync(int localeId, CancellationToken cancellationToken = default) {
         cancellationToken.ThrowIfCancellationRequested();
         LocaleId = localeId;
         return Task.CompletedTask;
     }
 
-    public Task<IReadOnlyList<int>> GetSupportedLocalesAsync(CancellationToken cancellationToken = default)
-    {
+    public Task<IReadOnlyList<int>> GetSupportedLocalesAsync(CancellationToken cancellationToken = default) {
         cancellationToken.ThrowIfCancellationRequested();
         return Task.FromResult<IReadOnlyList<int>>(new[] { 0x0409 });
     }
@@ -233,13 +209,10 @@ public sealed class LoopbackDaClient : IDaServer
     public async IAsyncEnumerable<BrowseElement> BrowseAsync(
         string itemPath,
         BrowseFilters filters = BrowseFilters.All,
-        [EnumeratorCancellation] CancellationToken cancellationToken = default)
-    {
+        [EnumeratorCancellation] CancellationToken cancellationToken = default) {
         ArgumentNullException.ThrowIfNull(itemPath);
-        if (_server is not null)
-        {
-            foreach (BrowseElement element in _server.Browse(itemPath, filters))
-            {
+        if (_server is not null) {
+            foreach (BrowseElement element in _server.Browse(itemPath, filters)) {
                 cancellationToken.ThrowIfCancellationRequested();
                 await Task.CompletedTask.ConfigureAwait(false);
                 yield return element;
@@ -250,8 +223,7 @@ public sealed class LoopbackDaClient : IDaServer
 
         string? continuationPoint = null;
         bool moreElements;
-        do
-        {
+        do {
             await _browseProxy.BrowseAsync(
                 itemPath,
                 ref continuationPoint,
@@ -266,19 +238,16 @@ public sealed class LoopbackDaClient : IDaServer
                 out OpcBrowseElementResult[] browseElements,
                 cancellationToken).ConfigureAwait(false);
 
-            foreach (OpcBrowseElementResult element in browseElements)
-            {
+            foreach (OpcBrowseElementResult element in browseElements) {
                 yield return ToBrowseElement(element);
             }
         }
         while (moreElements && !string.IsNullOrEmpty(continuationPoint));
     }
 
-    public async Task<IReadOnlyList<ItemValueResult>> ReadAsync(IReadOnlyList<Item> items, CancellationToken cancellationToken = default)
-    {
+    public async Task<IReadOnlyList<ItemValueResult>> ReadAsync(IReadOnlyList<Item> items, CancellationToken cancellationToken = default) {
         ArgumentNullException.ThrowIfNull(items);
-        if (_server is not null)
-        {
+        if (_server is not null) {
             return await _server.ReadAsync(items, cancellationToken).ConfigureAwait(false);
         }
 
@@ -288,11 +257,9 @@ public sealed class LoopbackDaClient : IDaServer
         return ToValueResults(items, values, qualities, timestamps, errors);
     }
 
-    public async Task<IReadOnlyList<IdentifiedResult>> WriteAsync(IReadOnlyList<ItemValue> values, CancellationToken cancellationToken = default)
-    {
+    public async Task<IReadOnlyList<IdentifiedResult>> WriteAsync(IReadOnlyList<ItemValue> values, CancellationToken cancellationToken = default) {
         ArgumentNullException.ThrowIfNull(values);
-        if (_server is not null)
-        {
+        if (_server is not null) {
             return await _server.WriteAsync(values, cancellationToken).ConfigureAwait(false);
         }
 
@@ -302,11 +269,9 @@ public sealed class LoopbackDaClient : IDaServer
         return ToIdentifiedResults(values, errors);
     }
 
-    public async Task<IReadOnlyList<IdentifiedResult>> ValidateItemsAsync(IReadOnlyList<Item> items, CancellationToken cancellationToken = default)
-    {
+    public async Task<IReadOnlyList<IdentifiedResult>> ValidateItemsAsync(IReadOnlyList<Item> items, CancellationToken cancellationToken = default) {
         ArgumentNullException.ThrowIfNull(items);
-        if (_server is not null)
-        {
+        if (_server is not null) {
             return await _server.ValidateAsync(items, cancellationToken).ConfigureAwait(false);
         }
 
@@ -318,12 +283,10 @@ public sealed class LoopbackDaClient : IDaServer
         IReadOnlyList<ItemIdentifier> itemIds,
         IReadOnlyList<PropertyID> propertyIds,
         bool returnValues,
-        CancellationToken cancellationToken = default)
-    {
+        CancellationToken cancellationToken = default) {
         ArgumentNullException.ThrowIfNull(itemIds);
         ArgumentNullException.ThrowIfNull(propertyIds);
-        if (_server is not null)
-        {
+        if (_server is not null) {
             return await _server.GetPropertiesAsync(itemIds, propertyIds, returnValues, cancellationToken).ConfigureAwait(false);
         }
 
@@ -333,11 +296,9 @@ public sealed class LoopbackDaClient : IDaServer
         return ToPropertyResults(itemIds, properties);
     }
 
-    public async Task<IDaSubscription> CreateSubscriptionAsync(SubscriptionState state, CancellationToken cancellationToken = default)
-    {
+    public async Task<IDaSubscription> CreateSubscriptionAsync(SubscriptionState state, CancellationToken cancellationToken = default) {
         ArgumentNullException.ThrowIfNull(state);
-        if (_server is not null)
-        {
+        if (_server is not null) {
             int handle = await _server.AddGroupAsync(state.Name ?? "da-client-demo", state.Active, state.UpdateRateMs, state.ClientHandle, state.LocaleId, cancellationToken).ConfigureAwait(false);
             return new LoopbackDaSubscription(_server, _serverProxy, handle, state);
         }
@@ -358,13 +319,10 @@ public sealed class LoopbackDaClient : IDaServer
         return new DcomDaSubscription(_serverProxy, _itemMgtProxy, _syncIoProxy, serverGroupHandle, state);
     }
 
-    public ValueTask DisposeAsync()
-    {
-        if (!_disposed)
-        {
+    public ValueTask DisposeAsync() {
+        if (!_disposed) {
             _disposed = true;
-            if (_inMemoryChannel is not null)
-            {
+            if (_inMemoryChannel is not null) {
                 _logger.LogInformation("In-memory DA call count: {CallCount}", _inMemoryChannel.CallLog.Count);
             }
 
@@ -374,8 +332,7 @@ public sealed class LoopbackDaClient : IDaServer
         return ValueTask.CompletedTask;
     }
 
-    private static BrowseElement ToBrowseElement(OpcBrowseElementResult element) => new()
-    {
+    private static BrowseElement ToBrowseElement(OpcBrowseElementResult element) => new() {
         Name = element.Name ?? element.ItemId ?? string.Empty,
         ItemName = element.ItemId ?? string.Empty,
         IsItem = element.IsItem,
@@ -384,11 +341,9 @@ public sealed class LoopbackDaClient : IDaServer
     };
 
     private static IReadOnlyList<ItemPropertyResult> ToPropertyResults(IReadOnlyList<ItemIdentifier> itemIds, OpcItemProperties[] properties) =>
-        itemIds.Select((item, index) =>
-        {
+        itemIds.Select((item, index) => {
             OpcItemProperties propertySet = index < properties.Length ? properties[index] : new OpcItemProperties(OpcResultId.Fail.Code, []);
-            return new ItemPropertyResult
-            {
+            return new ItemPropertyResult {
                 ItemName = item.ItemName,
                 ItemPath = item.Path,
                 ResultId = new OpcResultId(propertySet.ErrorId, null),
@@ -397,8 +352,7 @@ public sealed class LoopbackDaClient : IDaServer
         }).ToArray();
 
     private static IReadOnlyList<ItemProperty> ToItemProperties(OpcItemPropertyResult[] properties) =>
-        properties.Select(static property => new ItemProperty
-        {
+        properties.Select(static property => new ItemProperty {
             PropertyId = new PropertyID(property.PropertyId, property.Description),
             Description = property.Description ?? string.Empty,
             Value = OpcVariantConverter.ToObject(property.Value),
@@ -407,8 +361,7 @@ public sealed class LoopbackDaClient : IDaServer
         }).ToArray();
 
     private static IReadOnlyList<ItemValueResult> ToValueResults(IReadOnlyList<Item> items, OpcVariant[] values, ushort[] qualities, long[] timestamps, int[] errors) =>
-        items.Select((item, index) => new ItemValueResult(item.ItemName, item.Path)
-        {
+        items.Select((item, index) => new ItemValueResult(item.ItemName, item.Path) {
             ClientHandle = item.ClientHandle,
             Value = index < values.Length ? OpcVariantConverter.ToObject(values[index]) : null,
             Quality = index < qualities.Length ? new OpcQuality(qualities[index]) : OpcQuality.Bad,
@@ -417,8 +370,7 @@ public sealed class LoopbackDaClient : IDaServer
         }).ToArray();
 
     private static IReadOnlyList<IdentifiedResult> ToIdentifiedResults(IReadOnlyList<ItemIdentifier> items, int[] errors) =>
-        items.Select((item, index) => new IdentifiedResult(item)
-        {
+        items.Select((item, index) => new IdentifiedResult(item) {
             ClientHandle = item is Item typedItem ? typedItem.ClientHandle : 0,
             ResultId = new OpcResultId(index < errors.Length ? errors[index] : OpcResultId.Fail.Code, null),
         }).ToArray();
@@ -433,8 +385,7 @@ public sealed class LoopbackDaClient : IDaServer
             value.Timestamp == default ? null : value.Timestamp);
 }
 
-public sealed class LoopbackDaServer : IOpcDaServer
-{
+public sealed class LoopbackDaServer : IOpcDaServer {
     private static readonly DateTimeOffset StartTime = DateTimeOffset.UtcNow;
     private readonly Dictionary<int, string> _groups = new();
     private readonly TagStore _tags;
@@ -442,15 +393,13 @@ public sealed class LoopbackDaServer : IOpcDaServer
 
     public LoopbackDaServer(TagStore tags) => _tags = tags ?? throw new ArgumentNullException(nameof(tags));
 
-    public Task<OpcServerStatus> GetStatusAsync(CancellationToken cancellationToken = default)
-    {
+    public Task<OpcServerStatus> GetStatusAsync(CancellationToken cancellationToken = default) {
         cancellationToken.ThrowIfCancellationRequested();
         DateTimeOffset now = DateTimeOffset.UtcNow;
         return Task.FromResult(new OpcServerStatus { Spec = OpcStatusSpec.Da, StartTime = StartTime, CurrentTime = now, LastUpdateTime = now, State = OpcServerState.Running, GroupCount = _groups.Count, BandWidth = 0, ServerVersion = new Version(1, 0, 0), VendorInfo = "Opc.Classic DA client loopback server" });
     }
 
-    public Task<int> AddGroupAsync(string name, bool active, int requestedUpdateRate, int clientHandle, int localeId, CancellationToken cancellationToken = default)
-    {
+    public Task<int> AddGroupAsync(string name, bool active, int requestedUpdateRate, int clientHandle, int localeId, CancellationToken cancellationToken = default) {
         ArgumentNullException.ThrowIfNull(name);
         cancellationToken.ThrowIfCancellationRequested();
         _ = active; _ = requestedUpdateRate; _ = clientHandle; _ = localeId;
@@ -471,8 +420,7 @@ public sealed class LoopbackDaServer : IOpcDaServer
         out int serverGroupHandle,
         out int revisedUpdateRate,
         out IOpcInterfaceRef group,
-        CancellationToken cancellationToken = default)
-    {
+        CancellationToken cancellationToken = default) {
         _ = timeBias; _ = percentDeadband;
         serverGroupHandle = Interlocked.Increment(ref _nextGroupHandle);
         revisedUpdateRate = requestedUpdateRate;
@@ -481,16 +429,14 @@ public sealed class LoopbackDaServer : IOpcDaServer
         return Task.CompletedTask;
     }
 
-    public Task RemoveGroupAsync(int serverGroupHandle, bool force, CancellationToken cancellationToken = default)
-    {
+    public Task RemoveGroupAsync(int serverGroupHandle, bool force, CancellationToken cancellationToken = default) {
         cancellationToken.ThrowIfCancellationRequested();
         _ = force;
         _groups.Remove(serverGroupHandle);
         return Task.CompletedTask;
     }
 
-    public Task<string> GetErrorStringAsync(int errorCode, int localeId, CancellationToken cancellationToken = default)
-    {
+    public Task<string> GetErrorStringAsync(int errorCode, int localeId, CancellationToken cancellationToken = default) {
         cancellationToken.ThrowIfCancellationRequested();
         return Task.FromResult($"Error 0x{errorCode:X8} locale=0x{localeId:X4}");
     }
@@ -502,8 +448,7 @@ public sealed class LoopbackDaServer : IOpcDaServer
     public Task<IReadOnlyList<ItemPropertyResult>> GetPropertiesAsync(IReadOnlyList<ItemIdentifier> itemIds, IReadOnlyList<PropertyID> propertyIds, bool returnValues, CancellationToken ct) => Task.FromResult<IReadOnlyList<ItemPropertyResult>>(Array.Empty<ItemPropertyResult>());
 }
 
-public sealed class LoopbackDaSubscription : IDaSubscription
-{
+public sealed class LoopbackDaSubscription : IDaSubscription {
     private readonly List<DataChange> _changes = [];
     private readonly SemaphoreSlim _signal = new(0);
     private readonly Dictionary<int, Item> _items = new();
@@ -513,8 +458,7 @@ public sealed class LoopbackDaSubscription : IDaSubscription
     private bool _disposed;
     private int _nextTransaction;
 
-    public LoopbackDaSubscription(LoopbackDaServer server, IOPCServer serverProxy, int serverGroupHandle, SubscriptionState state)
-    {
+    public LoopbackDaSubscription(LoopbackDaServer server, IOPCServer serverProxy, int serverGroupHandle, SubscriptionState state) {
         _server = server ?? throw new ArgumentNullException(nameof(server));
         _serverProxy = serverProxy ?? throw new ArgumentNullException(nameof(serverProxy));
         _serverGroupHandle = serverGroupHandle;
@@ -530,8 +474,7 @@ public sealed class LoopbackDaSubscription : IDaSubscription
     public Task<IReadOnlyList<ItemValueResult>> ReadAsync(IReadOnlyList<int> serverHandles, bool fromCache, CancellationToken cancellationToken = default) => _server.ReadAsync(serverHandles.Select(handle => _items[handle]).ToArray(), cancellationToken);
     public Task<IReadOnlyList<IdentifiedResult>> WriteAsync(IReadOnlyList<int> serverHandles, IReadOnlyList<object?> values, CancellationToken cancellationToken = default) => Task.FromResult<IReadOnlyList<IdentifiedResult>>(Array.Empty<IdentifiedResult>());
 
-    public async Task<int> RefreshAsync(bool fromCache, CancellationToken cancellationToken = default)
-    {
+    public async Task<int> RefreshAsync(bool fromCache, CancellationToken cancellationToken = default) {
         int transaction = Interlocked.Increment(ref _nextTransaction);
         IReadOnlyList<ItemValueResult> values = await _server.ReadAsync(_items.Values.ToArray(), cancellationToken).ConfigureAwait(false);
         _changes.Add(new DataChange { TransactionId = transaction, Items = values });
@@ -539,8 +482,7 @@ public sealed class LoopbackDaSubscription : IDaSubscription
         return transaction;
     }
 
-    public async ValueTask DisposeAsync()
-    {
+    public async ValueTask DisposeAsync() {
         if (_disposed) return;
         _disposed = true;
         _signal.Release();
@@ -548,29 +490,23 @@ public sealed class LoopbackDaSubscription : IDaSubscription
         _signal.Dispose();
     }
 
-    private async IAsyncEnumerable<DataChange> ReadChangesAsync([EnumeratorCancellation] CancellationToken ct = default)
-    {
-        while (true)
-        {
+    private async IAsyncEnumerable<DataChange> ReadChangesAsync([EnumeratorCancellation] CancellationToken ct = default) {
+        while (true) {
             await _signal.WaitAsync(ct).ConfigureAwait(false);
-            if (_changes.Count > 0)
-            {
+            if (_changes.Count > 0) {
                 DataChange change = _changes[0];
                 _changes.RemoveAt(0);
                 yield return change;
             }
-            else if (_disposed)
-            {
+            else if (_disposed) {
                 yield break;
             }
         }
     }
 }
 
-public sealed class TagStore
-{
-    private readonly Dictionary<string, Func<object?>> _tags = new(StringComparer.Ordinal)
-    {
+public sealed class TagStore {
+    private readonly Dictionary<string, Func<object?>> _tags = new(StringComparer.Ordinal) {
         ["Plant.Temperature"] = static () => Math.Round(20.0D + (DateTimeOffset.UtcNow.Second / 10.0D), 2),
         ["Plant.Pressure"] = static () => Math.Round(1.0D + (DateTimeOffset.UtcNow.Millisecond / 1000.0D), 3),
         ["Plant.PumpRunning"] = static () => DateTimeOffset.UtcNow.Second % 2 == 0,
@@ -578,8 +514,7 @@ public sealed class TagStore
 
     public bool Contains(string itemName) => _tags.ContainsKey(itemName);
 
-    public IReadOnlyList<BrowseElement> Browse(string itemPath, BrowseFilters filters)
-    {
+    public IReadOnlyList<BrowseElement> Browse(string itemPath, BrowseFilters filters) {
         _ = itemPath; _ = filters;
         return _tags.Keys.Select(static item => new BrowseElement { Name = item, ItemName = item, IsItem = true }).ToArray();
     }

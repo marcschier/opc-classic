@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -9,8 +9,7 @@ using TUnit.Core;
 
 namespace Opc.Classic.Dcom.Kerberos.Tests;
 
-public sealed class SpnegoNegTokenRespTests
-{
+public sealed class SpnegoNegTokenRespTests {
     private static readonly byte[] SigningKey =
     [
         0x10, 0x11, 0x12, 0x13,
@@ -20,8 +19,7 @@ public sealed class SpnegoNegTokenRespTests
     ];
 
     [Test]
-    public async Task EncodeNegTokenResp_with_all_fields_round_trips()
-    {
+    public async Task EncodeNegTokenResp_with_all_fields_round_trips() {
         byte[] responseToken = [0x01, 0x02, 0x03];
         byte[] mechListMic = [0x04, 0x05, 0x06, 0x07];
         var response = new SpnegoNegTokenResp(
@@ -43,8 +41,7 @@ public sealed class SpnegoNegTokenRespTests
     }
 
     [Test]
-    public async Task EncodeNegTokenResp_with_only_negState_omits_other_fields()
-    {
+    public async Task EncodeNegTokenResp_with_only_negState_omits_other_fields() {
         var response = new SpnegoNegTokenResp(SpnegoNegState.RequestMic, null, null, null);
 
         var encoded = SpnegoEncoder.EncodeNegTokenResp(response);
@@ -58,8 +55,7 @@ public sealed class SpnegoNegTokenRespTests
     }
 
     [Test]
-    public async Task EncodeNegTokenResp_with_mechListMIC_verifies_with_matching_provider()
-    {
+    public async Task EncodeNegTokenResp_with_mechListMIC_verifies_with_matching_provider() {
         var mechListBytes = SpnegoEncoder.EncodeMechTypeList([SpnegoOids.KerberosV5, SpnegoOids.Ntlmssp]);
         var micProvider = new NtlmMicProvider(SigningKey);
         var response = new SpnegoNegTokenResp(SpnegoNegState.AcceptCompleted, SpnegoOids.Ntlmssp, null, null);
@@ -72,8 +68,7 @@ public sealed class SpnegoNegTokenRespTests
     }
 
     [Test]
-    public async Task VerifyMechListMic_with_tampered_mic_fails()
-    {
+    public async Task VerifyMechListMic_with_tampered_mic_fails() {
         var mechListBytes = SpnegoEncoder.EncodeMechTypeList([SpnegoOids.KerberosV5, SpnegoOids.Ntlmssp]);
         var micProvider = new NtlmMicProvider(SigningKey);
         var encoded = SpnegoEncoder.EncodeNegTokenResp(
@@ -89,8 +84,7 @@ public sealed class SpnegoNegTokenRespTests
     }
 
     [Test]
-    public async Task VerifyMechListMic_with_tampered_mechList_fails()
-    {
+    public async Task VerifyMechListMic_with_tampered_mechList_fails() {
         var mechListBytes = SpnegoEncoder.EncodeMechTypeList([SpnegoOids.KerberosV5, SpnegoOids.Ntlmssp]);
         var micProvider = new NtlmMicProvider(SigningKey);
         var encoded = SpnegoEncoder.EncodeNegTokenResp(
@@ -105,8 +99,7 @@ public sealed class SpnegoNegTokenRespTests
     }
 
     [Test]
-    public async Task EncodeNegTokenResp_known_answer_round_trips_byte_exactly()
-    {
+    public async Task EncodeNegTokenResp_known_answer_round_trips_byte_exactly() {
         byte[] knownGood =
         [
             0xA1, 0x1A,
@@ -129,8 +122,7 @@ public sealed class SpnegoNegTokenRespTests
     }
 
     [Test]
-    public async Task DecodeNegTokenInit_captures_exact_mechList_sequence_bytes()
-    {
+    public async Task DecodeNegTokenInit_captures_exact_mechList_sequence_bytes() {
         byte[] apReq = [0x60, 0x61, 0x62];
         var init = SpnegoTokenBuilder.CreateKerberosPreferredInit(apReq);
         var encoded = SpnegoEncoder.EncodeNegTokenInit(init);

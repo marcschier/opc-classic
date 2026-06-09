@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -35,8 +35,7 @@ public sealed record XmlDaWriteItemResult(
     string ItemName,
     string? ClientItemHandle,
     string? ResultId,
-    string? ErrorText)
-{
+    string? ErrorText) {
     /// <summary>Type-safe interpretation of <see cref="ResultId"/>.</summary>
     public XmlDaErrorCode ResultCode => XmlDaErrorCodes.ParseResultId(ResultId);
 }

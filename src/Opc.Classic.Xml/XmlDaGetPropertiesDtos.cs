@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -35,8 +35,7 @@ public sealed record XmlDaPropertyValue(
     string Name,
     string? Description,
     XmlDaValue? Value,
-    string? ResultId)
-{
+    string? ResultId) {
     /// <summary>Type-safe interpretation of <see cref="ResultId"/>.</summary>
     public XmlDaErrorCode ResultCode => XmlDaErrorCodes.ParseResultId(ResultId);
 }
@@ -50,8 +49,7 @@ public sealed record XmlDaItemPropertyList(
     string ItemName,
     string ItemPath,
     IReadOnlyList<XmlDaPropertyValue> Properties,
-    string? ResultId)
-{
+    string? ResultId) {
     /// <summary>Type-safe interpretation of <see cref="ResultId"/>.</summary>
     public XmlDaErrorCode ResultCode => XmlDaErrorCodes.ParseResultId(ResultId);
 }

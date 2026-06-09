@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -16,15 +16,13 @@ namespace Opc.Classic.Da.Hosting;
 /// <c>OPC_E_RATENOTSET</c> / <c>OPC_E_NOBUFFERING</c> for every handle so
 /// DA 3.0 clients see a deterministic "feature absent" response.
 /// </summary>
-public sealed class DefaultItemSamplingMgt : IOPCItemSamplingMgt
-{
+public sealed class DefaultItemSamplingMgt : IOPCItemSamplingMgt {
     public Task SetItemSamplingRateAsync(
         int[] serverHandles,
         int[] requestedSamplingRates,
         out int[] revisedSamplingRates,
         out int[] errors,
-        CancellationToken cancellationToken = default)
-    {
+        CancellationToken cancellationToken = default) {
         ArgumentNullException.ThrowIfNull(serverHandles);
         ArgumentNullException.ThrowIfNull(requestedSamplingRates);
         cancellationToken.ThrowIfCancellationRequested();
@@ -37,8 +35,7 @@ public sealed class DefaultItemSamplingMgt : IOPCItemSamplingMgt
         int[] serverHandles,
         out int[] samplingRates,
         out int[] errors,
-        CancellationToken cancellationToken = default)
-    {
+        CancellationToken cancellationToken = default) {
         ArgumentNullException.ThrowIfNull(serverHandles);
         cancellationToken.ThrowIfCancellationRequested();
         samplingRates = new int[serverHandles.Length];
@@ -46,15 +43,13 @@ public sealed class DefaultItemSamplingMgt : IOPCItemSamplingMgt
         return Task.CompletedTask;
     }
 
-    public Task<int[]> ClearItemSamplingRateAsync(int[] serverHandles, CancellationToken cancellationToken = default)
-    {
+    public Task<int[]> ClearItemSamplingRateAsync(int[] serverHandles, CancellationToken cancellationToken = default) {
         ArgumentNullException.ThrowIfNull(serverHandles);
         cancellationToken.ThrowIfCancellationRequested();
         return Task.FromResult(FillErrors(serverHandles.Length, OpcResultId.RateNotSet.Code));
     }
 
-    public Task<int[]> SetItemBufferEnableAsync(int[] serverHandles, bool[] enabled, CancellationToken cancellationToken = default)
-    {
+    public Task<int[]> SetItemBufferEnableAsync(int[] serverHandles, bool[] enabled, CancellationToken cancellationToken = default) {
         ArgumentNullException.ThrowIfNull(serverHandles);
         _ = enabled;
         cancellationToken.ThrowIfCancellationRequested();
@@ -65,8 +60,7 @@ public sealed class DefaultItemSamplingMgt : IOPCItemSamplingMgt
         int[] serverHandles,
         out bool[] enabled,
         out int[] errors,
-        CancellationToken cancellationToken = default)
-    {
+        CancellationToken cancellationToken = default) {
         ArgumentNullException.ThrowIfNull(serverHandles);
         cancellationToken.ThrowIfCancellationRequested();
         enabled = new bool[serverHandles.Length];
@@ -74,8 +68,7 @@ public sealed class DefaultItemSamplingMgt : IOPCItemSamplingMgt
         return Task.CompletedTask;
     }
 
-    private static int[] FillErrors(int length, int code)
-    {
+    private static int[] FillErrors(int length, int code) {
         var errors = new int[length];
         Array.Fill(errors, code);
         return errors;

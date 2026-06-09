@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -16,8 +16,7 @@ using Opc.Classic.Hosting;
 namespace Opc.Classic.Dcom.Activation;
 
 /// <summary>Server-side dispatcher for legacy <c>IActivation::RemoteActivation</c>.</summary>
-public sealed class ActivationServer : IRpcRequestContextDispatcher
-{
+public sealed class ActivationServer : IRpcRequestContextDispatcher {
     private const int RemoteActivationOpnum = 0;
     private const int E_ACCESSDENIED = unchecked((int)0x80070005u);
     private const int E_INVALIDARG = unchecked((int)0x80070057u);
@@ -39,22 +38,19 @@ public sealed class ActivationServer : IRpcRequestContextDispatcher
     private readonly ILogger _logger;
 
     /// <summary>Initializes a dispatcher backed by a decoded legacy activation server.</summary>
-    public ActivationServer(IActivationServer activationServer, ILogger? logger = null)
-    {
+    public ActivationServer(IActivationServer activationServer, ILogger? logger = null) {
         _activationServer = activationServer ?? throw new ArgumentNullException(nameof(activationServer));
         _logger = logger ?? NullLogger.Instance;
     }
 
     /// <summary>Initializes a dispatcher backed by the modern activation implementation.</summary>
     public ActivationServer(RemoteSCMActivatorServer modernActivator, ILogger? logger = null)
-        : this(new LegacyActivationServer(modernActivator ?? throw new ArgumentNullException(nameof(modernActivator))), logger)
-    {
+        : this(new LegacyActivationServer(modernActivator ?? throw new ArgumentNullException(nameof(modernActivator))), logger) {
     }
 
     /// <summary>Initializes a dispatcher backed by managed class factories.</summary>
     public ActivationServer(ClassFactoryRegistry classFactories, ILogger? logger = null)
-        : this(new RemoteSCMActivatorServer(classFactories ?? throw new ArgumentNullException(nameof(classFactories))), logger)
-    {
+        : this(new RemoteSCMActivatorServer(classFactories ?? throw new ArgumentNullException(nameof(classFactories))), logger) {
     }
 
     /// <summary>Gets the legacy activation interface IID.</summary>
@@ -64,8 +60,7 @@ public sealed class ActivationServer : IRpcRequestContextDispatcher
     public static void Register(
         IDictionary<Guid, IOpcServerDispatcher> dispatchers,
         IActivationServer activationServer,
-        ILogger? logger = null)
-    {
+        ILogger? logger = null) {
         ArgumentNullException.ThrowIfNull(dispatchers);
         dispatchers[InterfaceId] = new ActivationServer(activationServer, logger);
     }
@@ -74,8 +69,7 @@ public sealed class ActivationServer : IRpcRequestContextDispatcher
     public static void Register(
         IDictionary<Guid, IOpcServerDispatcher> dispatchers,
         RemoteSCMActivatorServer modernActivator,
-        ILogger? logger = null)
-    {
+        ILogger? logger = null) {
         ArgumentNullException.ThrowIfNull(dispatchers);
         dispatchers[InterfaceId] = new ActivationServer(modernActivator, logger);
     }
@@ -102,8 +96,7 @@ public sealed class ActivationServer : IRpcRequestContextDispatcher
         bool isAuthenticated,
         OpcProtectionLevel protectionLevel,
         ILogger? logger = null,
-        CancellationToken cancellationToken = default)
-    {
+        CancellationToken cancellationToken = default) {
         ArgumentNullException.ThrowIfNull(activationServer);
         logger ??= NullLogger.Instance;
         cancellationToken.ThrowIfCancellationRequested();
@@ -111,19 +104,16 @@ public sealed class ActivationServer : IRpcRequestContextDispatcher
         // Legacy IActivation has a history of remote-code-execution CVEs (for example MS03-026).
         // Enforce the threat-model minimum for privileged activation before invoking class factories:
         // docs\security\THREAT_MODEL.md §1.5 and §3.1 require authenticated, integrity-protected activation.
-        if (!isAuthenticated || protectionLevel < RequiredActivationProtectionLevel)
-        {
+        if (!isAuthenticated || protectionLevel < RequiredActivationProtectionLevel) {
             AuthenticationRejected(logger, protectionLevel, null);
             return DispatchResult.Fault(E_ACCESSDENIED);
         }
 
         RemoteActivationRequest request;
-        try
-        {
+        try {
             request = IActivationCodec.DecodeRemoteActivationRequest(requestPayload.Span);
         }
-        catch (Exception ex) when (ex is InvalidOperationException or ArgumentException or OverflowException)
-        {
+        catch (Exception ex) when (ex is InvalidOperationException or ArgumentException or OverflowException) {
             MalformedRequest(logger, ex);
             return DispatchResult.Fault(E_INVALIDARG);
         }
@@ -157,10 +147,8 @@ public sealed class ActivationServer : IRpcRequestContextDispatcher
         ReadOnlyMemory<byte> requestPayload,
         bool isAuthenticated,
         OpcProtectionLevel protectionLevel,
-        CancellationToken cancellationToken)
-    {
-        if (opnum != RemoteActivationOpnum)
-        {
+        CancellationToken cancellationToken) {
+        if (opnum != RemoteActivationOpnum) {
             return ValueTask.FromResult(DispatchResult.NotImplemented(opnum));
         }
 

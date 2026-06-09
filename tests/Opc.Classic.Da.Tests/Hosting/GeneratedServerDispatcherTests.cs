@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -32,15 +32,13 @@ namespace Opc.Classic.Da.Tests.Hosting;
 /// wireup). Per-interface unit tests for those interfaces are tracked as
 /// a follow-up.
 /// </remarks>
-public sealed class GeneratedServerDispatcherTests
-{
+public sealed class GeneratedServerDispatcherTests {
     private delegate void NdrWriteAction(ref NdrWriter writer);
 
     // ===== IOPCCommon =====
 
     [Test]
-    public async Task IOPCCommon_SetLocaleId_dispatches_to_implementation()
-    {
+    public async Task IOPCCommon_SetLocaleId_dispatches_to_implementation() {
         var impl = new StubCommon();
         var dispatcher = new IOPCCommonServerDispatcher(impl);
         byte[] payload = WritePayload((ref NdrWriter writer) => writer.WriteInt32(1033));
@@ -53,8 +51,7 @@ public sealed class GeneratedServerDispatcherTests
     }
 
     [Test]
-    public async Task IOPCCommon_GetLocaleId_returns_current_locale_in_payload()
-    {
+    public async Task IOPCCommon_GetLocaleId_returns_current_locale_in_payload() {
         var impl = new StubCommon { CurrentLocaleId = 2052 };
         var dispatcher = new IOPCCommonServerDispatcher(impl);
 
@@ -69,8 +66,7 @@ public sealed class GeneratedServerDispatcherTests
     }
 
     [Test]
-    public async Task IOPCCommon_unknown_opnum_returns_E_NOTIMPL()
-    {
+    public async Task IOPCCommon_unknown_opnum_returns_E_NOTIMPL() {
         var dispatcher = new IOPCCommonServerDispatcher(new StubCommon());
 
         DispatchResult result = await dispatcher.DispatchAsync(
@@ -85,10 +81,8 @@ public sealed class GeneratedServerDispatcherTests
     // ===== IOPCGroupStateMgt =====
 
     [Test]
-    public async Task IOPCGroupStateMgt_GetState_returns_current_state()
-    {
-        var impl = new StubGroupStateMgt
-        {
+    public async Task IOPCGroupStateMgt_GetState_returns_current_state() {
+        var impl = new StubGroupStateMgt {
             CurrentState = new OpcGroupState(
                 ClientHandle: 7,
                 ServerHandle: 42,
@@ -111,8 +105,7 @@ public sealed class GeneratedServerDispatcherTests
     }
 
     [Test]
-    public async Task IOPCGroupStateMgt_SetName_dispatches_to_implementation()
-    {
+    public async Task IOPCGroupStateMgt_SetName_dispatches_to_implementation() {
         var impl = new StubGroupStateMgt();
         var dispatcher = new IOPCGroupStateMgtServerDispatcher(impl);
         byte[] payload = WritePayload((ref NdrWriter writer) => writer.WriteUnicodeStringPtr("Renamed"));
@@ -125,8 +118,7 @@ public sealed class GeneratedServerDispatcherTests
     }
 
     [Test]
-    public async Task IOPCGroupStateMgt_unknown_opnum_returns_E_NOTIMPL()
-    {
+    public async Task IOPCGroupStateMgt_unknown_opnum_returns_E_NOTIMPL() {
         var dispatcher = new IOPCGroupStateMgtServerDispatcher(new StubGroupStateMgt());
 
         DispatchResult result = await dispatcher.DispatchAsync(
@@ -138,8 +130,7 @@ public sealed class GeneratedServerDispatcherTests
     // ===== IOPCGroupStateMgt2 =====
 
     [Test]
-    public async Task IOPCGroupStateMgt2_SetKeepAlive_returns_previous_value()
-    {
+    public async Task IOPCGroupStateMgt2_SetKeepAlive_returns_previous_value() {
         var impl = new StubGroupStateMgt2 { CurrentKeepAlive = 1000 };
         var dispatcher = new IOPCGroupStateMgt2ServerDispatcher(impl);
         byte[] payload = WritePayload((ref NdrWriter writer) => writer.WriteInt32(5000));
@@ -154,8 +145,7 @@ public sealed class GeneratedServerDispatcherTests
     }
 
     [Test]
-    public async Task IOPCGroupStateMgt2_GetKeepAlive_returns_current_value()
-    {
+    public async Task IOPCGroupStateMgt2_GetKeepAlive_returns_current_value() {
         var impl = new StubGroupStateMgt2 { CurrentKeepAlive = 3500 };
         var dispatcher = new IOPCGroupStateMgt2ServerDispatcher(impl);
 
@@ -172,8 +162,7 @@ public sealed class GeneratedServerDispatcherTests
     // ===== IConnectionPoint =====
 
     [Test]
-    public async Task IConnectionPoint_GetConnectionInterface_returns_iid()
-    {
+    public async Task IConnectionPoint_GetConnectionInterface_returns_iid() {
         Guid expectedIid = Guid.Parse("39C13A70-011E-11D0-9675-0020AFD8ADB3"); // IID_IOPCDataCallback
         var impl = new StubConnectionPoint { ConnectionIid = expectedIid };
         var dispatcher = new IConnectionPointServerDispatcher(impl);
@@ -190,8 +179,7 @@ public sealed class GeneratedServerDispatcherTests
     }
 
     [Test]
-    public async Task IConnectionPoint_Unadvise_dispatches_cookie()
-    {
+    public async Task IConnectionPoint_Unadvise_dispatches_cookie() {
         var impl = new StubConnectionPoint();
         var dispatcher = new IConnectionPointServerDispatcher(impl);
         byte[] payload = WritePayload((ref NdrWriter writer) => writer.WriteInt32(42));
@@ -206,12 +194,10 @@ public sealed class GeneratedServerDispatcherTests
     // ===== IOPCItemIO =====
 
     [Test]
-    public async Task IOPCItemIO_WriteVqt_dispatches_with_item_ids()
-    {
+    public async Task IOPCItemIO_WriteVqt_dispatches_with_item_ids() {
         var impl = new StubItemIO();
         var dispatcher = new IOPCItemIOServerDispatcher(impl);
-        byte[] payload = WritePayload((ref NdrWriter writer) =>
-        {
+        byte[] payload = WritePayload((ref NdrWriter writer) => {
             // [in] DWORD dwCount = 1 (sibling count for itemIds, emitted before
             // the conformant array via [OpcEmitArrayCount]).
             writer.WriteInt32(1);
@@ -240,8 +226,7 @@ public sealed class GeneratedServerDispatcherTests
     }
 
     [Test]
-    public async Task IOPCItemIO_unknown_opnum_returns_E_NOTIMPL()
-    {
+    public async Task IOPCItemIO_unknown_opnum_returns_E_NOTIMPL() {
         var dispatcher = new IOPCItemIOServerDispatcher(new StubItemIO());
 
         DispatchResult result = await dispatcher.DispatchAsync(99, ReadOnlyMemory<byte>.Empty, CancellationToken.None);
@@ -252,10 +237,8 @@ public sealed class GeneratedServerDispatcherTests
     // ===== IOPCEnumGUID =====
 
     [Test]
-    public async Task IOPCEnumGUID_Next_returns_count_and_guids()
-    {
-        var impl = new StubEnumGuid
-        {
+    public async Task IOPCEnumGUID_Next_returns_count_and_guids() {
+        var impl = new StubEnumGuid {
             NextGuids = [Guid.Parse("11111111-1111-1111-1111-111111111111")],
         };
         var dispatcher = new IOPCEnumGUIDServerDispatcher(impl);
@@ -269,8 +252,7 @@ public sealed class GeneratedServerDispatcherTests
     }
 
     [Test]
-    public async Task IOPCEnumGUID_Reset_dispatches()
-    {
+    public async Task IOPCEnumGUID_Reset_dispatches() {
         var impl = new StubEnumGuid();
         var dispatcher = new IOPCEnumGUIDServerDispatcher(impl);
 
@@ -284,8 +266,7 @@ public sealed class GeneratedServerDispatcherTests
     // ===== IOPCServerList =====
 
     [Test]
-    public async Task IOPCServerList_ClsidFromProgId_dispatches_with_string()
-    {
+    public async Task IOPCServerList_ClsidFromProgId_dispatches_with_string() {
         Guid expected = Guid.Parse("12345678-1234-1234-1234-123456789012");
         var impl = new StubServerList { LookupResult = expected };
         var dispatcher = new IOPCServerListServerDispatcher(impl);
@@ -304,8 +285,7 @@ public sealed class GeneratedServerDispatcherTests
     // ===== IOPCShutdown =====
 
     [Test]
-    public async Task IOPCShutdown_ShutdownRequest_dispatches_with_reason_string()
-    {
+    public async Task IOPCShutdown_ShutdownRequest_dispatches_with_reason_string() {
         var impl = new StubShutdown();
         var dispatcher = new IOPCShutdownServerDispatcher(impl);
         byte[] payload = WritePayload((ref NdrWriter writer) => writer.WriteUnicodeStringPtr("Server going down for maintenance"));
@@ -318,8 +298,7 @@ public sealed class GeneratedServerDispatcherTests
     }
 
     [Test]
-    public async Task IOPCShutdown_unknown_opnum_returns_E_NOTIMPL()
-    {
+    public async Task IOPCShutdown_unknown_opnum_returns_E_NOTIMPL() {
         var dispatcher = new IOPCShutdownServerDispatcher(new StubShutdown());
 
         DispatchResult result = await dispatcher.DispatchAsync(99, ReadOnlyMemory<byte>.Empty, CancellationToken.None);
@@ -329,28 +308,24 @@ public sealed class GeneratedServerDispatcherTests
 
     // ===== helpers =====
 
-    private static byte[] WritePayload(NdrWriteAction action)
-    {
+    private static byte[] WritePayload(NdrWriteAction action) {
         byte[] buffer = new byte[1024];
         var writer = new NdrWriter(buffer);
         action(ref writer);
         return buffer.AsSpan(0, writer.Position).ToArray();
     }
 
-    private static int ReadInt32(ReadOnlyMemory<byte> payload)
-    {
+    private static int ReadInt32(ReadOnlyMemory<byte> payload) {
         var reader = new NdrReader(payload.Span);
         return reader.ReadInt32();
     }
 
-    private sealed class StubCommon : IOPCCommon
-    {
+    private sealed class StubCommon : IOPCCommon {
         public int LastLocaleId { get; private set; }
 
         public int CurrentLocaleId { get; set; }
 
-        public Task SetLocaleIdAsync(int localeId, CancellationToken cancellationToken = default)
-        {
+        public Task SetLocaleIdAsync(int localeId, CancellationToken cancellationToken = default) {
             LastLocaleId = localeId;
             return Task.CompletedTask;
         }
@@ -368,30 +343,26 @@ public sealed class GeneratedServerDispatcherTests
             Task.CompletedTask;
     }
 
-    private sealed class StubGroupStateMgt : IOPCGroupStateMgt
-    {
+    private sealed class StubGroupStateMgt : IOPCGroupStateMgt {
         public int GetStateCallCount { get; private set; }
 
         public string? LastSetName { get; private set; }
 
         public OpcGroupState? CurrentState { get; set; }
 
-        public Task<OpcGroupState> GetStateAsync(CancellationToken cancellationToken = default)
-        {
+        public Task<OpcGroupState> GetStateAsync(CancellationToken cancellationToken = default) {
             GetStateCallCount++;
             return Task.FromResult(CurrentState ?? new OpcGroupState(0, 0, "", false, 0, 0, 0f, 0));
         }
 
         public Task SetStateAsync(int requestedUpdateRate, bool active, int timeBias, float percentDeadband,
             int localeId, int clientGroupHandle, out int revisedUpdateRate,
-            CancellationToken cancellationToken = default)
-        {
+            CancellationToken cancellationToken = default) {
             revisedUpdateRate = requestedUpdateRate;
             return Task.CompletedTask;
         }
 
-        public Task SetNameAsync(string name, CancellationToken cancellationToken = default)
-        {
+        public Task SetNameAsync(string name, CancellationToken cancellationToken = default) {
             LastSetName = name;
             return Task.CompletedTask;
         }
@@ -403,12 +374,10 @@ public sealed class GeneratedServerDispatcherTests
                 ipid: Guid.NewGuid(), securityOffset: 0, resolverBindings: Array.Empty<ushort>()));
     }
 
-    private sealed class StubGroupStateMgt2 : IOPCGroupStateMgt2
-    {
+    private sealed class StubGroupStateMgt2 : IOPCGroupStateMgt2 {
         public int CurrentKeepAlive { get; set; }
 
-        public Task<int> SetKeepAliveAsync(int keepAliveTime, CancellationToken cancellationToken = default)
-        {
+        public Task<int> SetKeepAliveAsync(int keepAliveTime, CancellationToken cancellationToken = default) {
             int previous = CurrentKeepAlive;
             CurrentKeepAlive = keepAliveTime;
             return Task.FromResult(previous);
@@ -418,8 +387,7 @@ public sealed class GeneratedServerDispatcherTests
             Task.FromResult(CurrentKeepAlive);
     }
 
-    private sealed class StubConnectionPoint : IConnectionPoint
-    {
+    private sealed class StubConnectionPoint : IConnectionPoint {
         public Guid ConnectionIid { get; set; }
 
         public int LastUnadvisedCookie { get; private set; }
@@ -430,32 +398,27 @@ public sealed class GeneratedServerDispatcherTests
         public Task<int> AdviseAsync(Opc.Classic.Dcom.IOpcInterfaceRef sink, CancellationToken cancellationToken = default) =>
             Task.FromResult(1);
 
-        public Task UnadviseAsync(int cookie, CancellationToken cancellationToken = default)
-        {
+        public Task UnadviseAsync(int cookie, CancellationToken cancellationToken = default) {
             LastUnadvisedCookie = cookie;
             return Task.CompletedTask;
         }
     }
 
-    private sealed class StubShutdown : IOPCShutdown
-    {
+    private sealed class StubShutdown : IOPCShutdown {
         public string? LastReason { get; private set; }
 
-        public Task ShutdownRequestAsync(string reason, CancellationToken cancellationToken = default)
-        {
+        public Task ShutdownRequestAsync(string reason, CancellationToken cancellationToken = default) {
             LastReason = reason;
             return Task.CompletedTask;
         }
     }
 
-    private sealed class StubItemIO : IOPCItemIO
-    {
+    private sealed class StubItemIO : IOPCItemIO {
         public string[] LastItemIds { get; private set; } = Array.Empty<string>();
 
         public Task ReadAsync(string[] itemIds, int[] maxAges,
             out OpcVariant[] values, out ushort[] qualities, out long[] timestamps, out int[] errors,
-            CancellationToken cancellationToken = default)
-        {
+            CancellationToken cancellationToken = default) {
             LastItemIds = itemIds;
             values = new OpcVariant[itemIds.Length];
             qualities = new ushort[itemIds.Length];
@@ -464,23 +427,20 @@ public sealed class GeneratedServerDispatcherTests
             return Task.CompletedTask;
         }
 
-        public Task<int[]> WriteVqtAsync(string[] itemIds, OpcItemVqt[] values, CancellationToken cancellationToken = default)
-        {
+        public Task<int[]> WriteVqtAsync(string[] itemIds, OpcItemVqt[] values, CancellationToken cancellationToken = default) {
             LastItemIds = itemIds;
             return Task.FromResult(new int[itemIds.Length]);
         }
     }
 
-    private sealed class StubEnumGuid : IOPCEnumGUID
-    {
+    private sealed class StubEnumGuid : IOPCEnumGUID {
         public int LastNextCount { get; private set; }
 
         public int ResetCallCount { get; private set; }
 
         public Guid[] NextGuids { get; set; } = Array.Empty<Guid>();
 
-        public Task<Guid[]> NextAsync(int count, CancellationToken cancellationToken = default)
-        {
+        public Task<Guid[]> NextAsync(int count, CancellationToken cancellationToken = default) {
             LastNextCount = count;
             return Task.FromResult(NextGuids);
         }
@@ -488,21 +448,18 @@ public sealed class GeneratedServerDispatcherTests
         public Task SkipAsync(int count, CancellationToken cancellationToken = default) =>
             Task.CompletedTask;
 
-        public Task ResetAsync(CancellationToken cancellationToken = default)
-        {
+        public Task ResetAsync(CancellationToken cancellationToken = default) {
             ResetCallCount++;
             return Task.CompletedTask;
         }
     }
 
-    private sealed class StubServerList : IOPCServerList
-    {
+    private sealed class StubServerList : IOPCServerList {
         public string? LastProgId { get; private set; }
 
         public Guid LookupResult { get; set; }
 
-        public Task<Guid> ClsidFromProgIdAsync(string progId, CancellationToken cancellationToken = default)
-        {
+        public Task<Guid> ClsidFromProgIdAsync(string progId, CancellationToken cancellationToken = default) {
             LastProgId = progId;
             return Task.FromResult(LookupResult);
         }
@@ -518,8 +475,7 @@ public sealed class GeneratedServerDispatcherTests
             Guid clsid,
             out string progId,
             out string userType,
-            CancellationToken cancellationToken = default)
-        {
+            CancellationToken cancellationToken = default) {
             progId = "Stub.ProgId";
             userType = "Stub.UserType";
             return Task.CompletedTask;

@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -10,10 +10,8 @@ namespace Opc.Classic.Hosting;
 
 /// <summary>Result returned by a server-side OPC dispatcher.</summary>
 [StructLayout(LayoutKind.Auto)]
-public readonly struct DispatchResult
-{
-    private DispatchResult(ReadOnlyMemory<byte> payload, int hresult)
-    {
+public readonly struct DispatchResult {
+    private DispatchResult(ReadOnlyMemory<byte> payload, int hresult) {
         Payload = payload;
         Hresult = hresult;
     }
@@ -31,8 +29,7 @@ public readonly struct DispatchResult
     public bool IsFailure => !IsSuccess;
 
     /// <summary>Creates a successful dispatch result.</summary>
-    public static DispatchResult Success(byte[] payload, int hr = 0)
-    {
+    public static DispatchResult Success(byte[] payload, int hr = 0) {
         ArgumentNullException.ThrowIfNull(payload);
         return new DispatchResult(payload, hr);
     }
@@ -42,8 +39,7 @@ public readonly struct DispatchResult
         new(payload, hr);
 
     /// <summary>Creates an <c>E_NOTIMPL</c> dispatch result for an unknown or unsupported opnum.</summary>
-    public static DispatchResult NotImplemented(int opnum)
-    {
+    public static DispatchResult NotImplemented(int opnum) {
         _ = opnum;
         return new DispatchResult(ReadOnlyMemory<byte>.Empty, OpcResultId.NotImplemented.Code);
     }

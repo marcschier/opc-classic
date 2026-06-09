@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -15,11 +15,9 @@ namespace Opc.Classic.Xml.Serialization;
 /// <summary>
 /// AOT-safe serializer for the OPC XML-DA 1.0 <c>Write</c> operation.
 /// </summary>
-public static class WriteSerializer
-{
+public static class WriteSerializer {
     /// <summary>Writes a complete SOAP envelope carrying a <c>Write</c> request.</summary>
-    public static void WriteRequest(SoapEnvelopeWriter writer, XmlDaWriteRequest request)
-    {
+    public static void WriteRequest(SoapEnvelopeWriter writer, XmlDaWriteRequest request) {
         ArgumentNullException.ThrowIfNull(writer);
         ArgumentNullException.ThrowIfNull(request);
         ArgumentNullException.ThrowIfNull(request.Items);
@@ -28,12 +26,10 @@ public static class WriteSerializer
         writer.WriteBodyStart();
         writer.WriteOperationStart("Write");
 
-        if (!string.IsNullOrEmpty(request.Header.LocaleId))
-        {
+        if (!string.IsNullOrEmpty(request.Header.LocaleId)) {
             writer.Writer.WriteAttributeString("LocaleID", request.Header.LocaleId);
         }
-        if (!string.IsNullOrEmpty(request.Header.ClientRequestHandle))
-        {
+        if (!string.IsNullOrEmpty(request.Header.ClientRequestHandle)) {
             writer.Writer.WriteAttributeString("ClientRequestHandle", request.Header.ClientRequestHandle);
         }
 
@@ -46,8 +42,7 @@ public static class WriteSerializer
         writer.Writer.WriteEndElement();
 
         writer.Writer.WriteStartElement("ItemList", XmlDaConstants.XmlDaNamespace);
-        foreach (var item in request.Items)
-        {
+        foreach (var item in request.Items) {
             WriteRequestItem(writer.Writer, item);
         }
         writer.Writer.WriteEndElement();
@@ -58,12 +53,10 @@ public static class WriteSerializer
         writer.Flush();
     }
 
-    private static void WriteRequestItem(XmlWriter xw, XmlDaWriteItem item)
-    {
+    private static void WriteRequestItem(XmlWriter xw, XmlDaWriteItem item) {
         xw.WriteStartElement("Items", XmlDaConstants.XmlDaNamespace);
         xw.WriteAttributeString("ItemName", item.ItemName);
-        if (!string.IsNullOrEmpty(item.ClientItemHandle))
-        {
+        if (!string.IsNullOrEmpty(item.ClientItemHandle)) {
             xw.WriteAttributeString("ClientItemHandle", item.ClientItemHandle);
         }
 
@@ -76,13 +69,11 @@ public static class WriteSerializer
     /// Reads a SOAP-wrapped <c>WriteResponse</c> and returns the decoded
     /// <see cref="XmlDaWriteResponse"/>. Throws on malformed payloads.
     /// </summary>
-    public static XmlDaWriteResponse ReadResponse(SoapEnvelopeReader reader)
-    {
+    public static XmlDaWriteResponse ReadResponse(SoapEnvelopeReader reader) {
         ArgumentNullException.ThrowIfNull(reader);
 
         string operationName = reader.AdvanceToOperationResponse();
-        if (!string.Equals(operationName, "WriteResponse", StringComparison.Ordinal))
-        {
+        if (!string.Equals(operationName, "WriteResponse", StringComparison.Ordinal)) {
             throw new InvalidDataException(
                 $"Expected WriteResponse but found '{operationName}'.");
         }
@@ -91,29 +82,23 @@ public static class WriteSerializer
         var items = new List<XmlDaWriteItemResult>();
 
         var r = reader.Reader;
-        if (r.IsEmptyElement)
-        {
+        if (r.IsEmptyElement) {
             return new XmlDaWriteResponse(serverState, items);
         }
 
         int responseDepth = r.Depth;
-        while (r.Read() && r.Depth > responseDepth)
-        {
-            if (r.NodeType != XmlNodeType.Element)
-            {
+        while (r.Read() && r.Depth > responseDepth) {
+            if (r.NodeType != XmlNodeType.Element) {
                 continue;
             }
 
-            if (string.Equals(r.LocalName, "WriteResult", StringComparison.Ordinal))
-            {
+            if (string.Equals(r.LocalName, "WriteResult", StringComparison.Ordinal)) {
                 string? stateAttr = r.GetAttribute("ServerState");
-                if (!string.IsNullOrEmpty(stateAttr))
-                {
+                if (!string.IsNullOrEmpty(stateAttr)) {
                     serverState = ParseServerState(stateAttr);
                 }
             }
-            else if (string.Equals(r.LocalName, "RItemList", StringComparison.Ordinal))
-            {
+            else if (string.Equals(r.LocalName, "RItemList", StringComparison.Ordinal)) {
                 ReadItemList(r, items);
             }
         }
@@ -121,60 +106,48 @@ public static class WriteSerializer
         return new XmlDaWriteResponse(serverState, items);
     }
 
-    private static void ReadItemList(XmlReader r, List<XmlDaWriteItemResult> items)
-    {
-        if (r.IsEmptyElement)
-        {
+    private static void ReadItemList(XmlReader r, List<XmlDaWriteItemResult> items) {
+        if (r.IsEmptyElement) {
             return;
         }
 
         int listDepth = r.Depth;
-        while (r.Read() && r.Depth > listDepth)
-        {
-            if (r.NodeType != XmlNodeType.Element)
-            {
+        while (r.Read() && r.Depth > listDepth) {
+            if (r.NodeType != XmlNodeType.Element) {
                 continue;
             }
 
-            if (string.Equals(r.LocalName, "Items", StringComparison.Ordinal))
-            {
+            if (string.Equals(r.LocalName, "Items", StringComparison.Ordinal)) {
                 items.Add(ReadOneItem(r));
             }
-            else
-            {
+            else {
                 r.Skip();
             }
         }
     }
 
-    private static XmlDaWriteItemResult ReadOneItem(XmlReader r)
-    {
+    private static XmlDaWriteItemResult ReadOneItem(XmlReader r) {
         string itemName = r.GetAttribute("ItemName") ?? string.Empty;
         string? clientHandle = r.GetAttribute("ClientItemHandle");
         string? resultId = r.GetAttribute("ResultID");
         string? errorText = null;
 
-        if (!r.IsEmptyElement)
-        {
+        if (!r.IsEmptyElement) {
             int itemDepth = r.Depth;
             bool alreadyAdvanced = false;
-            while (true)
-            {
-                if (!alreadyAdvanced)
-                {
+            while (true) {
+                if (!alreadyAdvanced) {
                     if (!r.Read()) { break; }
                 }
                 alreadyAdvanced = false;
                 if (r.Depth <= itemDepth) { break; }
                 if (r.NodeType != XmlNodeType.Element) { continue; }
 
-                if (string.Equals(r.LocalName, "ErrorText", StringComparison.Ordinal))
-                {
+                if (string.Equals(r.LocalName, "ErrorText", StringComparison.Ordinal)) {
                     errorText = r.ReadElementContentAsString();
                     alreadyAdvanced = true;
                 }
-                else
-                {
+                else {
                     r.Skip();
                     alreadyAdvanced = true;
                 }
@@ -184,8 +157,7 @@ public static class WriteSerializer
         return new XmlDaWriteItemResult(itemName, clientHandle, resultId, errorText);
     }
 
-    private static XmlDaServerState ParseServerState(string value) => value switch
-    {
+    private static XmlDaServerState ParseServerState(string value) => value switch {
         "running" => XmlDaServerState.Running,
         "failed" => XmlDaServerState.Failed,
         "noConfig" => XmlDaServerState.NoConfig,

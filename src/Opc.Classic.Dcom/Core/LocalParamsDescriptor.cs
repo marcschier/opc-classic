@@ -1,9 +1,10 @@
-// SPDX-License-Identifier: MIT
+﻿// SPDX-License-Identifier: MIT
 
 using Opc.Classic.Dcom.Internal.LegacyNdr;
 using System;
 
-namespace Opc.Classic.Dcom.Core; 
+namespace Opc.Classic.Dcom.Core;
+
 /// <summary>
 /// Provides a way to express parameters for a particular method.
 /// These are only <code>[in]</code> parameters, the <code>[out]</code>

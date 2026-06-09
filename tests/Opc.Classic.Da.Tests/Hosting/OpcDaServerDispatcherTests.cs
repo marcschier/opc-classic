@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -16,13 +16,11 @@ using TUnit.Core;
 
 namespace Opc.Classic.Da.Tests.Hosting;
 
-public sealed class OpcDaServerDispatcherTests
-{
+public sealed class OpcDaServerDispatcherTests {
     private delegate void NdrWriteAction(ref NdrWriter writer);
 
     [Test]
-    public async Task DispatchGetStatus_calls_server_and_returns_status()
-    {
+    public async Task DispatchGetStatus_calls_server_and_returns_status() {
         var server = new StubDaServer { Status = BuildStatus() };
         var dispatcher = new OpcDaServerDispatcher(server);
 
@@ -41,11 +39,9 @@ public sealed class OpcDaServerDispatcherTests
     }
 
     [Test]
-    public async Task DispatchGetStatus_HRESULT_propagates_through_NdrCallResult()
-    {
+    public async Task DispatchGetStatus_HRESULT_propagates_through_NdrCallResult() {
         int expectedHresult = ReadFailHresult();
-        var server = new StubDaServer
-        {
+        var server = new StubDaServer {
             GetStatusException = new OpcException(new OpcResultId(expectedHresult, "E_FAIL")),
         };
         var dispatcher = new OpcDaServerDispatcher(server);
@@ -61,12 +57,10 @@ public sealed class OpcDaServerDispatcherTests
     }
 
     [Test]
-    public async Task DispatchRemoveGroup_decodes_params_correctly()
-    {
+    public async Task DispatchRemoveGroup_decodes_params_correctly() {
         var server = new StubDaServer();
         var dispatcher = new OpcDaServerDispatcher(server);
-        byte[] request = WritePayload((ref NdrWriter writer) =>
-        {
+        byte[] request = WritePayload((ref NdrWriter writer) => {
             writer.WriteInt32(1234);
             writer.WriteInt32(-1);
         });
@@ -84,8 +78,7 @@ public sealed class OpcDaServerDispatcherTests
     }
 
     [Test]
-    public async Task DispatchUnknownOpnum_returns_E_NOTIMPL()
-    {
+    public async Task DispatchUnknownOpnum_returns_E_NOTIMPL() {
         var dispatcher = new OpcDaServerDispatcher(new StubDaServer());
 
         NdrCallResult result = await dispatcher.DispatchAsync(
@@ -99,8 +92,7 @@ public sealed class OpcDaServerDispatcherTests
     }
 
     [Test]
-    public async Task DispatchUnknownInterface_returns_E_NOTIMPL()
-    {
+    public async Task DispatchUnknownInterface_returns_E_NOTIMPL() {
         var dispatcher = new OpcDaServerDispatcher(new StubDaServer());
 
         NdrCallResult result = await dispatcher.DispatchAsync(
@@ -114,12 +106,10 @@ public sealed class OpcDaServerDispatcherTests
     }
 
     [Test]
-    public async Task DispatchGetErrorString_decodes_params_and_encodes_response()
-    {
+    public async Task DispatchGetErrorString_decodes_params_and_encodes_response() {
         var server = new StubDaServer { ErrorString = ReadErrorString() };
         var dispatcher = new OpcDaServerDispatcher(server);
-        byte[] request = WritePayload((ref NdrWriter writer) =>
-        {
+        byte[] request = WritePayload((ref NdrWriter writer) => {
             writer.WriteInt32(ReadFailHresult());
             writer.WriteInt32(1033);
         });
@@ -137,16 +127,14 @@ public sealed class OpcDaServerDispatcherTests
         await Assert.That(decoded).IsEqualTo(ReadErrorString());
     }
 
-    private static byte[] WritePayload(NdrWriteAction write, int capacity = 512)
-    {
+    private static byte[] WritePayload(NdrWriteAction write, int capacity = 512) {
         var buffer = new byte[capacity];
         var writer = new NdrWriter(buffer);
         write(ref writer);
         return buffer[..writer.Position];
     }
 
-    private static OpcServerStatus ReadStatus(ReadOnlyMemory<byte> payload)
-    {
+    private static OpcServerStatus ReadStatus(ReadOnlyMemory<byte> payload) {
         var reader = new NdrReader(payload.Span);
         // Server emits OPCSERVERSTATUS as a unique pointer (referent + struct) per
         // IDL [out] T**; skip the referent before invoking the struct codec.
@@ -154,14 +142,12 @@ public sealed class OpcDaServerDispatcherTests
         return NdrOpcServerStatusCodec.Read(ref reader);
     }
 
-    private static string? ReadString(ReadOnlyMemory<byte> payload)
-    {
+    private static string? ReadString(ReadOnlyMemory<byte> payload) {
         var reader = new NdrReader(payload.Span);
         return reader.ReadUnicodeStringPtr();
     }
 
-    private static OpcServerStatus BuildStatus() => new()
-    {
+    private static OpcServerStatus BuildStatus() => new() {
         Spec = OpcStatusSpec.Da,
         StartTime = DateTimeOffset.UnixEpoch,
         CurrentTime = DateTimeOffset.UnixEpoch.AddSeconds(1),
@@ -183,8 +169,7 @@ public sealed class OpcDaServerDispatcherTests
 
     private static string ReadErrorString() => "The operation failed.";
 
-    private sealed class StubDaServer : IOpcDaServer
-    {
+    private sealed class StubDaServer : IOpcDaServer {
         public OpcServerStatus Status { get; init; } = BuildStatus();
 
         public OpcException? GetStatusException { get; init; }
@@ -203,11 +188,9 @@ public sealed class OpcDaServerDispatcherTests
 
         public int LastLocaleId { get; private set; }
 
-        public Task<OpcServerStatus> GetStatusAsync(CancellationToken cancellationToken = default)
-        {
+        public Task<OpcServerStatus> GetStatusAsync(CancellationToken cancellationToken = default) {
             GetStatusCallCount++;
-            if (GetStatusException is not null)
-            {
+            if (GetStatusException is not null) {
                 throw GetStatusException;
             }
 
@@ -226,8 +209,7 @@ public sealed class OpcDaServerDispatcherTests
         public Task RemoveGroupAsync(
             int serverGroupHandle,
             bool force,
-            CancellationToken cancellationToken = default)
-        {
+            CancellationToken cancellationToken = default) {
             RemoveGroupCallCount++;
             LastRemovedGroupHandle = serverGroupHandle;
             LastRemoveGroupForce = force;
@@ -237,8 +219,7 @@ public sealed class OpcDaServerDispatcherTests
         public Task<string> GetErrorStringAsync(
             int errorCode,
             int localeId,
-            CancellationToken cancellationToken = default)
-        {
+            CancellationToken cancellationToken = default) {
             LastErrorCode = errorCode;
             LastLocaleId = localeId;
             return Task.FromResult(ErrorString);

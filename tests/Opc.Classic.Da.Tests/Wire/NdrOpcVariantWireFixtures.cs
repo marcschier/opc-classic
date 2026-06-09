@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -15,13 +15,11 @@ using TUnit.Core;
 
 namespace Opc.Classic.Da.Tests.Wire;
 
-public sealed class NdrOpcVariantWireFixtures
-{
+public sealed class NdrOpcVariantWireFixtures {
     private delegate void NdrWriteAction(ref NdrWriter w);
 
     [Test]
-    public async Task VT_I4_emits_16_byte_header_plus_4_byte_int_payload()
-    {
+    public async Task VT_I4_emits_16_byte_header_plus_4_byte_int_payload() {
         OpcVariant v = OpcVariant.FromInt32(42);
         byte[] wire = WriteOne((ref NdrWriter w) => w.WriteVariant(v));
 
@@ -43,8 +41,7 @@ public sealed class NdrOpcVariantWireFixtures
     }
 
     [Test]
-    public async Task VT_R4_emits_4_byte_single_payload()
-    {
+    public async Task VT_R4_emits_4_byte_single_payload() {
         OpcVariant v = OpcVariant.FromSingle(1.5f);
         byte[] wire = WriteOne((ref NdrWriter w) => w.WriteVariant(v));
 
@@ -56,8 +53,7 @@ public sealed class NdrOpcVariantWireFixtures
     }
 
     [Test]
-    public async Task VT_R8_emits_8_byte_double_payload_8_aligned()
-    {
+    public async Task VT_R8_emits_8_byte_double_payload_8_aligned() {
         OpcVariant v = OpcVariant.FromDouble(2.5);
         byte[] wire = WriteOne((ref NdrWriter w) => w.WriteVariant(v));
 
@@ -73,8 +69,7 @@ public sealed class NdrOpcVariantWireFixtures
     }
 
     [Test]
-    public async Task VT_BOOL_TRUE_emits_minus_one_word()
-    {
+    public async Task VT_BOOL_TRUE_emits_minus_one_word() {
         OpcVariant v = OpcVariant.FromBoolean(true);
         byte[] wire = WriteOne((ref NdrWriter w) => w.WriteVariant(v));
 
@@ -86,8 +81,7 @@ public sealed class NdrOpcVariantWireFixtures
     }
 
     [Test]
-    public async Task VT_BSTR_emits_referent_plus_flagged_word_blob()
-    {
+    public async Task VT_BSTR_emits_referent_plus_flagged_word_blob() {
         OpcVariant v = OpcVariant.FromString("X");
         byte[] wire = WriteOne((ref NdrWriter w) => w.WriteVariant(v));
 
@@ -108,8 +102,7 @@ public sealed class NdrOpcVariantWireFixtures
     }
 
     [Test]
-    public async Task VT_UI1_emits_1_byte_payload()
-    {
+    public async Task VT_UI1_emits_1_byte_payload() {
         OpcVariant v = OpcVariant.FromUInt8(0xFE);
         byte[] wire = WriteOne((ref NdrWriter w) => w.WriteVariant(v));
 
@@ -119,8 +112,7 @@ public sealed class NdrOpcVariantWireFixtures
     }
 
     [Test]
-    public async Task VT_I4_round_trips_through_pinned_layout()
-    {
+    public async Task VT_I4_round_trips_through_pinned_layout() {
         OpcVariant expected = OpcVariant.FromInt32(0x12345678);
         byte[] wire = WriteOne((ref NdrWriter w) => w.WriteVariant(expected));
 
@@ -131,8 +123,7 @@ public sealed class NdrOpcVariantWireFixtures
     }
 
     [Test]
-    public async Task VT_BSTR_round_trips_through_pinned_layout()
-    {
+    public async Task VT_BSTR_round_trips_through_pinned_layout() {
         OpcVariant expected = OpcVariant.FromString("Random.String");
         byte[] wire = WriteOne((ref NdrWriter w) => w.WriteVariant(expected));
 
@@ -142,8 +133,7 @@ public sealed class NdrOpcVariantWireFixtures
         await Assert.That((string)actual.Boxed!).IsEqualTo("Random.String");
     }
 
-    private static byte[] WriteOne(NdrWriteAction write, int capacity = 256)
-    {
+    private static byte[] WriteOne(NdrWriteAction write, int capacity = 256) {
         var buf = new byte[capacity];
         var w = new NdrWriter(buf);
         write(ref w);

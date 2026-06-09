@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -16,12 +16,10 @@ using TUnit.Assertions.AssertConditions.Throws;
 
 namespace Opc.Classic.Batch.Tests;
 
-public sealed class BatchFileTimeFuzzTests
-{
+public sealed class BatchFileTimeFuzzTests {
     private delegate void NdrWriteAction(ref NdrWriter writer);
 
-    private static byte[] WriteOne(NdrWriteAction write, int capacity = 1_024)
-    {
+    private static byte[] WriteOne(NdrWriteAction write, int capacity = 1_024) {
         var buf = new byte[capacity];
         var writer = new NdrWriter(buf);
         write(ref writer);
@@ -31,10 +29,8 @@ public sealed class BatchFileTimeFuzzTests
     [Test]
     [Arguments(-1L)]
     [Arguments(long.MaxValue)]
-    public async Task BatchSummary_ActualStartTime_OutOfRange_ThrowsAndNamesField(long bogus)
-    {
-        byte[] wire = WriteOne((ref NdrWriter w) =>
-        {
+    public async Task BatchSummary_ActualStartTime_OutOfRange_ThrowsAndNamesField(long bogus) {
+        byte[] wire = WriteOne((ref NdrWriter w) => {
             // Match NdrOpcBatchSummaryCodec.Read layout (strings + scalars then 2 FILETIMEs)
             w.WriteUnicodeStringPtr("id");
             w.WriteUnicodeStringPtr("desc");
@@ -48,14 +44,12 @@ public sealed class BatchFileTimeFuzzTests
             w.WriteFileTime(0L);                 // ftActualEndTime
         });
 
-        try
-        {
+        try {
             var reader = new NdrReader(wire);
             _ = NdrOpcBatchSummaryCodec.Read(ref reader);
             throw new Exception("expected InvalidDataException");
         }
-        catch (InvalidDataException ex)
-        {
+        catch (InvalidDataException ex) {
             await Assert.That(ex.Message).Contains("OPCBATCHSUMMARY.ftActualStartTime");
         }
     }
@@ -63,10 +57,8 @@ public sealed class BatchFileTimeFuzzTests
     [Test]
     [Arguments(-1L)]
     [Arguments(long.MaxValue)]
-    public async Task BatchSummaryFilter_MinStartTime_OutOfRange_ThrowsAndNamesField(long bogus)
-    {
-        byte[] wire = WriteOne((ref NdrWriter w) =>
-        {
+    public async Task BatchSummaryFilter_MinStartTime_OutOfRange_ThrowsAndNamesField(long bogus) {
+        byte[] wire = WriteOne((ref NdrWriter w) => {
             // Match NdrOpcBatchSummaryFilterCodec.Read layout (9 strings/scalars then 4 FILETIMEs)
             w.WriteUnicodeStringPtr("id");
             w.WriteUnicodeStringPtr("desc");
@@ -83,14 +75,12 @@ public sealed class BatchFileTimeFuzzTests
             w.WriteFileTime(0L);                 // ftMaxEndTime
         });
 
-        try
-        {
+        try {
             var reader = new NdrReader(wire);
             _ = NdrOpcBatchSummaryFilterCodec.Read(ref reader);
             throw new Exception("expected InvalidDataException");
         }
-        catch (InvalidDataException ex)
-        {
+        catch (InvalidDataException ex) {
             await Assert.That(ex.Message).Contains("OPCBATCHSUMMARYFILTER.ftMinStartTime");
         }
     }

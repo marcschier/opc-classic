@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -12,28 +12,23 @@ using TUnit.Core;
 
 namespace Opc.Classic.Xml.Tests;
 
-public sealed class SubscriptionPolledRefreshSerializerTests
-{
-    private static string SerializeRequest(XmlDaSubscriptionPolledRefreshRequest req)
-    {
+public sealed class SubscriptionPolledRefreshSerializerTests {
+    private static string SerializeRequest(XmlDaSubscriptionPolledRefreshRequest req) {
         using var ms = new MemoryStream();
-        using (var w = new SoapEnvelopeWriter(ms))
-        {
+        using (var w = new SoapEnvelopeWriter(ms)) {
             SubscriptionPolledRefreshSerializer.WriteRequest(w, req);
         }
         return Encoding.UTF8.GetString(ms.ToArray());
     }
 
-    private static XmlDaSubscriptionPolledRefreshResponse Deserialize(string xml)
-    {
+    private static XmlDaSubscriptionPolledRefreshResponse Deserialize(string xml) {
         using var ms = new MemoryStream(Encoding.UTF8.GetBytes(xml));
         using var r = new SoapEnvelopeReader(ms);
         return SubscriptionPolledRefreshSerializer.ReadResponse(r);
     }
 
     [Test]
-    public async Task Request_EmitsMultipleServerSubHandles()
-    {
+    public async Task Request_EmitsMultipleServerSubHandles() {
         var xml = SerializeRequest(new XmlDaSubscriptionPolledRefreshRequest(
             new XmlDaRequestHeader(null, null),
             new[] { "sub-1", "sub-2", "sub-3" }));
@@ -43,8 +38,7 @@ public sealed class SubscriptionPolledRefreshSerializerTests
     }
 
     [Test]
-    public async Task Request_EmitsWaitTime_AndReturnAllItems()
-    {
+    public async Task Request_EmitsWaitTime_AndReturnAllItems() {
         var xml = SerializeRequest(new XmlDaSubscriptionPolledRefreshRequest(
             new XmlDaRequestHeader(null, null),
             new[] { "sub-x" },
@@ -55,8 +49,7 @@ public sealed class SubscriptionPolledRefreshSerializerTests
     }
 
     [Test]
-    public async Task Request_EmitsHoldTime_WhenSet()
-    {
+    public async Task Request_EmitsHoldTime_WhenSet() {
         var holdTime = new DateTimeOffset(2026, 5, 22, 10, 30, 0, TimeSpan.Zero);
         var xml = SerializeRequest(new XmlDaSubscriptionPolledRefreshRequest(
             new XmlDaRequestHeader(null, null),
@@ -66,8 +59,7 @@ public sealed class SubscriptionPolledRefreshSerializerTests
     }
 
     [Test]
-    public async Task Response_DecodesPerSubscriptionItemLists()
-    {
+    public async Task Response_DecodesPerSubscriptionItemLists() {
         const string xml = """
             <?xml version="1.0"?>
             <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
@@ -95,8 +87,7 @@ public sealed class SubscriptionPolledRefreshSerializerTests
     }
 
     [Test]
-    public async Task Response_DecodesInvalidServerSubHandles()
-    {
+    public async Task Response_DecodesInvalidServerSubHandles() {
         const string xml = """
             <?xml version="1.0"?>
             <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
@@ -116,8 +107,7 @@ public sealed class SubscriptionPolledRefreshSerializerTests
     }
 
     [Test]
-    public async Task Response_DecodesDataBufferOverflow_Flag()
-    {
+    public async Task Response_DecodesDataBufferOverflow_Flag() {
         const string xml = """
             <?xml version="1.0"?>
             <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
@@ -133,8 +123,7 @@ public sealed class SubscriptionPolledRefreshSerializerTests
     }
 
     [Test]
-    public async Task Response_RejectsWrongOperation()
-    {
+    public async Task Response_RejectsWrongOperation() {
         const string xml = """
             <?xml version="1.0"?>
             <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">

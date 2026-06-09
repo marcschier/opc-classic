@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -11,8 +11,7 @@ using TUnit.Core;
 
 namespace Opc.Classic.SnapshotTests.Codecs;
 
-public sealed class PrimitivesSnapshotTests
-{
+public sealed class PrimitivesSnapshotTests {
     [Test]
     public async Task Boolean_true_encodes_to_stable_ndr_bytes() =>
         await Verify("NdrBoolean", "true", static (ref NdrWriter writer) => writer.WriteBoolean(true));

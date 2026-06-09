@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -18,12 +18,10 @@ using TUnit.Core;
 
 namespace Opc.Classic.Integration.Tests.CompatMatrix;
 
-public sealed class HdaManagedClientOverTransportTests
-{
+public sealed class HdaManagedClientOverTransportTests {
     [Test]
     [Category("CompatMatrix.Loopback")]
-    public async Task Hda_managed_client_round_trips_GetStatus_over_real_listener()
-    {
+    public async Task Hda_managed_client_round_trips_GetStatus_over_real_listener() {
         using var timeout = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current!.CancellationToken);
         timeout.CancelAfter(TimeSpan.FromSeconds(10));
         CancellationToken cancellationToken = timeout.Token;
@@ -33,8 +31,7 @@ public sealed class HdaManagedClientOverTransportTests
         OpcHdaServerHost host = ResolveHost(provider);
 
         await host.StartAsync(cancellationToken);
-        try
-        {
+        try {
             await using DcomCallChannel channel = await ConnectClientAsync(host, cancellationToken);
             var proxy = new IOPCHDA_ServerClientProxy(channel);
 
@@ -46,16 +43,14 @@ public sealed class HdaManagedClientOverTransportTests
             await Assert.That(status.MaxReturnValues).IsEqualTo(500);
             await Assert.That(stub.StatusCallCount).IsEqualTo(1);
         }
-        finally
-        {
+        finally {
             await host.StopAsync(CancellationToken.None);
         }
     }
 
     [Test]
     [Category("CompatMatrix.Loopback")]
-    public async Task Hda_managed_client_round_trips_metadata_and_validate_item_ids_over_real_listener()
-    {
+    public async Task Hda_managed_client_round_trips_metadata_and_validate_item_ids_over_real_listener() {
         using var timeout = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current!.CancellationToken);
         timeout.CancelAfter(TimeSpan.FromSeconds(10));
         CancellationToken cancellationToken = timeout.Token;
@@ -65,8 +60,7 @@ public sealed class HdaManagedClientOverTransportTests
         OpcHdaServerHost host = ResolveHost(provider);
 
         await host.StartAsync(cancellationToken);
-        try
-        {
+        try {
             await using DcomCallChannel channel = await ConnectClientAsync(host, cancellationToken);
             var proxy = new IOPCHDA_ServerClientProxy(channel);
 
@@ -89,16 +83,14 @@ public sealed class HdaManagedClientOverTransportTests
             await Assert.That(stub.AttributeCallCount).IsEqualTo(1);
             await Assert.That(stub.ValidateCallCount).IsEqualTo(1);
         }
-        finally
-        {
+        finally {
             await host.StopAsync(CancellationToken.None);
         }
     }
 
     [Test]
     [Category("CompatMatrix.Loopback")]
-    public async Task Hda_managed_client_two_back_to_back_calls_share_connection()
-    {
+    public async Task Hda_managed_client_two_back_to_back_calls_share_connection() {
         using var timeout = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current!.CancellationToken);
         timeout.CancelAfter(TimeSpan.FromSeconds(10));
         CancellationToken cancellationToken = timeout.Token;
@@ -108,8 +100,7 @@ public sealed class HdaManagedClientOverTransportTests
         OpcHdaServerHost host = ResolveHost(provider);
 
         await host.StartAsync(cancellationToken);
-        try
-        {
+        try {
             await using DcomCallChannel channel = await ConnectClientAsync(host, cancellationToken);
             var proxy = new IOPCHDA_ServerClientProxy(channel);
 
@@ -121,22 +112,19 @@ public sealed class HdaManagedClientOverTransportTests
             await Assert.That(stub.StatusCallCount).IsEqualTo(1);
             await Assert.That(stub.ValidateCallCount).IsEqualTo(1);
         }
-        finally
-        {
+        finally {
             await host.StopAsync(CancellationToken.None);
         }
     }
 
-    private static ServiceProvider BuildServiceProvider(StubHdaServer server)
-    {
+    private static ServiceProvider BuildServiceProvider(StubHdaServer server) {
         var services = new ServiceCollection();
         services.AddLogging();
         services.AddSingleton<IOpcHdaServer>(server);
         services.AddSingleton<OpcObjectRegistry>();
         services.AddSingleton<OpcHdaServerHost>();
         services.AddSingleton<IOpcServerHost>(static sp => sp.GetRequiredService<OpcHdaServerHost>());
-        services.Configure<OpcHdaServerOptions>(static options =>
-        {
+        services.Configure<OpcHdaServerOptions>(static options => {
             options.Clsid = Guid.NewGuid();
             options.ProgId = "Managed.Hda.Compat.1";
             options.FriendlyName = "Managed HDA transport test server";
@@ -150,8 +138,7 @@ public sealed class HdaManagedClientOverTransportTests
 
     private static async Task<DcomCallChannel> ConnectClientAsync(
         OpcHdaServerHost host,
-        CancellationToken cancellationToken)
-    {
+        CancellationToken cancellationToken) {
         var endpoint = (IPEndPoint?)host.LocalEndpoint
             ?? throw new InvalidOperationException("Host did not expose a bound endpoint after StartAsync.");
         TcpClientTransport transport = await TcpClientTransport.ConnectAsync(

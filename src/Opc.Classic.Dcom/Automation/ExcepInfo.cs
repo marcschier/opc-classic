@@ -1,6 +1,6 @@
-// SPDX-License-Identifier: MIT
+﻿// SPDX-License-Identifier: MIT
 
-namespace Opc.Classic.Dcom.Automation; 
+namespace Opc.Classic.Dcom.Automation;
 
 /// <summary>
 /// Exposes error code, exception source, exception description and

@@ -1,11 +1,12 @@
-// SPDX-License-Identifier: MIT
+﻿// SPDX-License-Identifier: MIT
 
 using Opc.Classic.Dcom.Common;
 using Opc.Classic.Dcom.Registry.Smb;
 using SharpCifs.Util.Sharpen;
 using System.Threading;
 
-namespace Opc.Classic.Dcom.Registry; 
+namespace Opc.Classic.Dcom.Registry;
+
 /// <summary>
 /// Factory to get an implementation of <code>IRegistry</code>.
 /// This interface uses "Windows Remote Registry" and "Server"

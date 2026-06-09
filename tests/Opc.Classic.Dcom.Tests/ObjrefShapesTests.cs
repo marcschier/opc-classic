@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -11,8 +11,7 @@ using TUnit.Core;
 
 namespace Opc.Classic.Dcom.Tests;
 
-public sealed class ObjrefShapesTests
-{
+public sealed class ObjrefShapesTests {
     private const string Iid = "11111111-2222-3333-4455-66778899aabb";
     private const string Ipid = "aaaaaaaa-bbbb-cccc-ddee-ff0011223344";
     private const string HandlerClsid = "12345678-1234-5678-90ab-cdef01234567";
@@ -27,10 +26,8 @@ public sealed class ObjrefShapesTests
     private static readonly byte[] ObjRefSignature = [0x4d, 0x45, 0x4f, 0x57];
 
     [Test]
-    public async Task RoundTrip_standard_objref()
-    {
-        byte[] encoded = BuildObjRef(ObjRefStandard, ndr =>
-        {
+    public async Task RoundTrip_standard_objref() {
+        byte[] encoded = BuildObjRef(ObjRefStandard, ndr => {
             WriteStdObjRef(ndr);
             WriteDualStringArray(ndr);
         });
@@ -43,10 +40,8 @@ public sealed class ObjrefShapesTests
     }
 
     [Test]
-    public async Task RoundTrip_handler_objref()
-    {
-        byte[] encoded = BuildObjRef(ObjRefHandler, ndr =>
-        {
+    public async Task RoundTrip_handler_objref() {
+        byte[] encoded = BuildObjRef(ObjRefHandler, ndr => {
             WriteStdObjRef(ndr);
             InterfacePointerBody.WriteUuid(ndr, HandlerClsid, "test handler clsid");
             WriteDualStringArray(ndr);
@@ -62,13 +57,11 @@ public sealed class ObjrefShapesTests
     }
 
     [Test]
-    public async Task RoundTrip_custom_objref()
-    {
+    public async Task RoundTrip_custom_objref() {
         byte[] payload = [0xde, 0xad, 0xbe, 0xef, 0x01, 0x02];
         const int cbExtension = 0x12345678;
         const int reserved = unchecked((int)0xaabbccdd);
-        byte[] encoded = BuildObjRef(ObjRefCustom, ndr =>
-        {
+        byte[] encoded = BuildObjRef(ObjRefCustom, ndr => {
             InterfacePointerBody.WriteUuid(ndr, CustomClsid, "test custom clsid");
             ndr.WriteUnsignedLong(cbExtension);
             ndr.WriteUnsignedLong(reserved);
@@ -90,17 +83,14 @@ public sealed class ObjrefShapesTests
     [Test]
     [Arguments(0)]
     [Arguments(2)]
-    public async Task RoundTrip_extended_objref(int extensionCount)
-    {
-        byte[] encoded = BuildObjRef(ObjRefExtended, ndr =>
-        {
+    public async Task RoundTrip_extended_objref(int extensionCount) {
+        byte[] encoded = BuildObjRef(ObjRefExtended, ndr => {
             WriteStdObjRef(ndr);
             ndr.WriteUnsignedLong(ExtendedSignature);
             WriteDualStringArray(ndr);
             ndr.WriteUnsignedLong(extensionCount);
             ndr.WriteUnsignedLong(ExtendedSignature);
-            for (int i = 0; i < extensionCount; i++)
-            {
+            for (int i = 0; i < extensionCount; i++) {
                 WriteExtension(ndr, i);
             }
         });
@@ -117,8 +107,7 @@ public sealed class ObjrefShapesTests
     }
 
     [Test]
-    public async Task Unknown_flag_returns_unknown_body_with_raw_bytes()
-    {
+    public async Task Unknown_flag_returns_unknown_body_with_raw_bytes() {
         byte[] raw = [0x10, 0x20, 0x30, 0x40, 0x50];
         byte[] encoded = BuildObjRef(0x10, ndr => ndr.WriteOctetArray(raw, 0, raw.Length));
 
@@ -131,21 +120,18 @@ public sealed class ObjrefShapesTests
         await Assert.That(Encode(decoded)).IsEquivalentTo(encoded);
     }
 
-    private static InterfacePointerBody Decode(byte[] encoded)
-    {
+    private static InterfacePointerBody Decode(byte[] encoded) {
         var ndr = CreateReader(encoded);
         return InterfacePointerBody.Decode(ndr, 0);
     }
 
-    private static byte[] Encode(InterfacePointerBody body)
-    {
+    private static byte[] Encode(InterfacePointerBody body) {
         var ndr = CreateWriter();
         body.Encode(ndr, 0);
         return ToArray(ndr);
     }
 
-    private static byte[] BuildObjRef(int objectType, Action<NdrCodec> writeBody)
-    {
+    private static byte[] BuildObjRef(int objectType, Action<NdrCodec> writeBody) {
         var ndr = CreateWriter();
         ndr.WriteOctetArray(ObjRefSignature, 0, 4);
         ndr.WriteUnsignedLong(objectType);
@@ -154,8 +140,7 @@ public sealed class ObjrefShapesTests
         return WithLengthPrefix(ToArray(ndr));
     }
 
-    private static void WriteStdObjRef(NdrCodec ndr)
-    {
+    private static void WriteStdObjRef(NdrCodec ndr) {
         ndr.WriteUnsignedLong(SorfNoping);
         ndr.WriteUnsignedLong(5);
         byte[] oxid = [0x01, 0x23, 0x45, 0x67, 0x89, 0xab, 0xcd, 0xef];
@@ -165,8 +150,7 @@ public sealed class ObjrefShapesTests
         InterfacePointerBody.WriteUuid(ndr, Ipid, "test ipid");
     }
 
-    private static void WriteDualStringArray(NdrCodec ndr)
-    {
+    private static void WriteDualStringArray(NdrCodec ndr) {
         const string networkAddress = "127.0.0.1[13579]";
         int stringBindingLength = 2 + (networkAddress.Length * 2) + 2;
         int securityOffsetBytes = stringBindingLength + 2;
@@ -176,8 +160,7 @@ public sealed class ObjrefShapesTests
         ndr.WriteUnsignedShort(entryBytes / 2);
         ndr.WriteUnsignedShort(securityOffsetBytes / 2);
         ndr.WriteUnsignedShort(0x07);
-        foreach (char ch in networkAddress)
-        {
+        foreach (char ch in networkAddress) {
             ndr.WriteUnsignedShort(ch);
         }
         ndr.WriteUnsignedShort(0);
@@ -188,8 +171,7 @@ public sealed class ObjrefShapesTests
         ndr.WriteUnsignedShort(0);
     }
 
-    private static void WriteExtension(NdrCodec ndr, int index)
-    {
+    private static void WriteExtension(NdrCodec ndr, int index) {
         string id = index == 0
             ? "aaaaaaaa-0000-0000-0000-000000000001"
             : "bbbbbbbb-0000-0000-0000-000000000002";
@@ -204,8 +186,7 @@ public sealed class ObjrefShapesTests
         ndr.WriteOctetArray(rounded, 0, rounded.Length);
     }
 
-    private static byte[] WithLengthPrefix(byte[] objRef)
-    {
+    private static byte[] WithLengthPrefix(byte[] objRef) {
         byte[] encoded = new byte[8 + objRef.Length];
         BinaryPrimitives.WriteInt32LittleEndian(encoded.AsSpan(0, 4), objRef.Length);
         BinaryPrimitives.WriteInt32LittleEndian(encoded.AsSpan(4, 4), objRef.Length);
@@ -213,10 +194,8 @@ public sealed class ObjrefShapesTests
         return encoded;
     }
 
-    private static NdrCodec CreateReader(byte[] bytes)
-    {
-        var buffer = new NdrBuffer(bytes, 0)
-        {
+    private static NdrCodec CreateReader(byte[] bytes) {
+        var buffer = new NdrBuffer(bytes, 0) {
             Length = bytes.Length,
         };
         return new NdrCodec { Buffer = buffer };

@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -18,8 +18,7 @@ namespace Opc.Classic.PropertyTests.Codecs;
 internal delegate void NdrValueWriter<T>(ref NdrWriter writer, T value);
 internal delegate T NdrValueReader<T>(ref NdrReader reader);
 
-internal static class CodecProperty
-{
+internal static class CodecProperty {
     internal const int SampleIterations = 100;
 
     private const int InitialCapacity = 4096;
@@ -64,8 +63,7 @@ internal static class CodecProperty
         OpcServerState.NoConfig,
     ];
 
-    static CodecProperty()
-    {
+    static CodecProperty() {
         RecordInfoRegistry.Register(RecordInfo);
     }
 
@@ -230,8 +228,7 @@ internal static class CodecProperty
     internal static readonly Gen<OpcServerStatus> DaServerStatusGen =
         Gen.Select(UtcDateTimeOffsetGen, UtcDateTimeOffsetGen, UtcDateTimeOffsetGen, ServerStateGen, VersionGen,
             Gen.Int[0, 10_000], Gen.Int[0, 10_000], ShortStringGen,
-            (start, current, lastUpdate, state, version, groupCount, bandWidth, vendorInfo) => new OpcServerStatus
-            {
+            (start, current, lastUpdate, state, version, groupCount, bandWidth, vendorInfo) => new OpcServerStatus {
                 Spec = OpcStatusSpec.Da,
                 StartTime = start,
                 CurrentTime = current,
@@ -245,8 +242,7 @@ internal static class CodecProperty
 
     internal static readonly Gen<OpcServerStatus> AeServerStatusGen =
         Gen.Select(UtcDateTimeOffsetGen, UtcDateTimeOffsetGen, UtcDateTimeOffsetGen, ServerStateGen, VersionGen, ShortStringGen,
-            (start, current, lastUpdate, state, version, vendorInfo) => new OpcServerStatus
-            {
+            (start, current, lastUpdate, state, version, vendorInfo) => new OpcServerStatus {
                 Spec = OpcStatusSpec.Ae,
                 StartTime = start,
                 CurrentTime = current,
@@ -259,8 +255,7 @@ internal static class CodecProperty
     internal static readonly Gen<OpcServerStatus> HdaServerStatusGen =
         Gen.Select(UtcDateTimeOffsetGen, UtcDateTimeOffsetGen, HdaRoundTrippableStateGen, VersionGen,
             Gen.Int[0, 100_000], ShortStringGen,
-            (start, current, state, version, maxReturnValues, vendorInfo) => new OpcServerStatus
-            {
+            (start, current, state, version, maxReturnValues, vendorInfo) => new OpcServerStatus {
                 Spec = OpcStatusSpec.Hda,
                 StartTime = start,
                 CurrentTime = current,
@@ -442,19 +437,15 @@ internal static class CodecProperty
             minEnd,
             maxEnd);
 
-    internal static T RoundTrip<T>(T value, NdrValueWriter<T> write, NdrValueReader<T> read, int capacity = InitialCapacity)
-    {
-        for (int currentCapacity = capacity; currentCapacity <= MaxCapacity; currentCapacity *= 2)
-        {
+    internal static T RoundTrip<T>(T value, NdrValueWriter<T> write, NdrValueReader<T> read, int capacity = InitialCapacity) {
+        for (int currentCapacity = capacity; currentCapacity <= MaxCapacity; currentCapacity *= 2) {
             var buffer = new byte[currentCapacity];
             var writer = new NdrWriter(buffer);
-            try
-            {
+            try {
                 write(ref writer, value);
                 var reader = new NdrReader(buffer.AsSpan(0, writer.Position));
                 T decoded = read(ref reader);
-                if (reader.Position != reader.Length)
-                {
+                if (reader.Position != reader.Length) {
                     throw new InvalidOperationException(
                         $"NDR reader left {reader.Length - reader.Position} trailing bytes unread.");
                 }
@@ -462,8 +453,7 @@ internal static class CodecProperty
             }
             catch (InvalidOperationException ex) when (
                 currentCapacity < MaxCapacity &&
-                ex.Message.Contains("buffer overflow", StringComparison.OrdinalIgnoreCase))
-            {
+                ex.Message.Contains("buffer overflow", StringComparison.OrdinalIgnoreCase)) {
                 // Retry with a larger buffer for generated long strings or arrays.
             }
         }
@@ -491,24 +481,19 @@ internal static class CodecProperty
         NdrValueWriter<T> writeOne,
         NdrValueReader<T> readOne,
         Func<T, T, bool> equals,
-        int capacity = InitialCapacity)
-    {
+        int capacity = InitialCapacity) {
         T[] decoded = RoundTrip(
             values,
-            static (ref NdrWriter writer, T[] array, NdrValueWriter<T> elementWriter) =>
-            {
+            static (ref NdrWriter writer, T[] array, NdrValueWriter<T> elementWriter) => {
                 writer.WriteConformanceHeader(array.Length);
-                for (int i = 0; i < array.Length; i++)
-                {
+                for (int i = 0; i < array.Length; i++) {
                     elementWriter(ref writer, array[i]);
                 }
             },
-            static (ref NdrReader reader, NdrValueReader<T> elementReader) =>
-            {
+            static (ref NdrReader reader, NdrValueReader<T> elementReader) => {
                 int count = reader.ReadConformanceHeader();
                 var array = new T[count];
-                for (int i = 0; i < count; i++)
-                {
+                for (int i = 0; i < count; i++) {
                     array[i] = elementReader(ref reader);
                 }
                 return array;
@@ -520,43 +505,34 @@ internal static class CodecProperty
         return SequenceEqual(values, decoded, equals);
     }
 
-    internal static bool VariantWriteIsUnsupported(OpcVariant value)
-    {
-        try
-        {
+    internal static bool VariantWriteIsUnsupported(OpcVariant value) {
+        try {
             _ = RoundTrip(value, static (ref NdrWriter writer, OpcVariant variant) => writer.WriteVariant(variant),
                 static (ref NdrReader reader) => reader.ReadVariant());
             return false;
         }
-        catch (InvalidOperationException ex)
-        {
+        catch (InvalidOperationException ex) {
             return ex.Message.Contains("not supported", StringComparison.OrdinalIgnoreCase);
         }
     }
 
-    internal static int VariantDepth(OpcVariant value)
-    {
-        if (value.Type == VarType.VT_VARIANT && value.Boxed is OpcVariant nested)
-        {
+    internal static int VariantDepth(OpcVariant value) {
+        if (value.Type == VarType.VT_VARIANT && value.Boxed is OpcVariant nested) {
             return 1 + VariantDepth(nested);
         }
-        if (value.Boxed is OpcSafeArray array && array.ElementType == VarType.VT_VARIANT)
-        {
+        if (value.Boxed is OpcSafeArray array && array.ElementType == VarType.VT_VARIANT) {
             var values = (OpcVariant[])array.Data;
             return values.Length == 0 ? 1 : 1 + values.Max(VariantDepth);
         }
         return 1;
     }
 
-    internal static bool VariantEquals(OpcVariant left, OpcVariant right)
-    {
-        if (left.Type != right.Type)
-        {
+    internal static bool VariantEquals(OpcVariant left, OpcVariant right) {
+        if (left.Type != right.Type) {
             return false;
         }
 
-        return (left.Boxed, right.Boxed) switch
-        {
+        return (left.Boxed, right.Boxed) switch {
             (OpcSafeArray a, OpcSafeArray b) => SafeArrayEquals(a, b),
             (OpcRecordValue a, OpcRecordValue b) => RecordValueEquals(a, b),
             (null, null) => true,
@@ -564,63 +540,50 @@ internal static class CodecProperty
         };
     }
 
-    internal static bool SafeArrayEquals(OpcSafeArray left, OpcSafeArray right)
-    {
-        if (left.ElementType != right.ElementType || left.Features != right.Features)
-        {
+    internal static bool SafeArrayEquals(OpcSafeArray left, OpcSafeArray right) {
+        if (left.ElementType != right.ElementType || left.Features != right.Features) {
             return false;
         }
-        if (!left.Lengths.SequenceEqual(right.Lengths) || !left.LowerBounds.SequenceEqual(right.LowerBounds))
-        {
+        if (!left.Lengths.SequenceEqual(right.Lengths) || !left.LowerBounds.SequenceEqual(right.LowerBounds)) {
             return false;
         }
-        if (left.Data.Length != right.Data.Length)
-        {
+        if (left.Data.Length != right.Data.Length) {
             return false;
         }
 
-        for (int i = 0; i < left.Data.Length; i++)
-        {
+        for (int i = 0; i < left.Data.Length; i++) {
             object? l = left.Data.GetValue(i);
             object? r = right.Data.GetValue(i);
-            bool equal = (l, r) switch
-            {
+            bool equal = (l, r) switch {
                 (OpcVariant lv, OpcVariant rv) => VariantEquals(lv, rv),
                 (OpcRecordValue lv, OpcRecordValue rv) => RecordValueEquals(lv, rv),
                 (null, null) => true,
                 _ => Equals(l, r),
             };
-            if (!equal)
-            {
+            if (!equal) {
                 return false;
             }
         }
         return true;
     }
 
-    internal static bool RecordValueEquals(OpcRecordValue? left, OpcRecordValue? right)
-    {
-        if (left is null || right is null)
-        {
+    internal static bool RecordValueEquals(OpcRecordValue? left, OpcRecordValue? right) {
+        if (left is null || right is null) {
             return left is null && right is null;
         }
-        if (left.RecordInfoId != right.RecordInfoId || left.Values.Count != right.Values.Count)
-        {
+        if (left.RecordInfoId != right.RecordInfoId || left.Values.Count != right.Values.Count) {
             return false;
         }
-        for (int i = 0; i < left.Values.Count; i++)
-        {
+        for (int i = 0; i < left.Values.Count; i++) {
             object? l = left.Values[i];
             object? r = right.Values[i];
-            bool equal = (l, r) switch
-            {
+            bool equal = (l, r) switch {
                 (OpcVariant lv, OpcVariant rv) => VariantEquals(lv, rv),
                 (OpcRecordValue lv, OpcRecordValue rv) => RecordValueEquals(lv, rv),
                 (null, null) => true,
                 _ => Equals(l, r),
             };
-            if (!equal)
-            {
+            if (!equal) {
                 return false;
             }
         }
@@ -634,16 +597,12 @@ internal static class CodecProperty
         (!left.HasValue && !right.HasValue) ||
         (left.HasValue && right.HasValue && DateTimeOffsetEquals(left.Value, right.Value));
 
-    internal static bool SequenceEqual<T>(T[] left, T[] right, Func<T, T, bool> equals)
-    {
-        if (left.Length != right.Length)
-        {
+    internal static bool SequenceEqual<T>(T[] left, T[] right, Func<T, T, bool> equals) {
+        if (left.Length != right.Length) {
             return false;
         }
-        for (int i = 0; i < left.Length; i++)
-        {
-            if (!equals(left[i], right[i]))
-            {
+        for (int i = 0; i < left.Length; i++) {
+            if (!equals(left[i], right[i])) {
                 return false;
             }
         }
@@ -842,8 +801,7 @@ internal static class CodecProperty
         ReadWithArg<TArg2, TValue> read,
         TArg1 writeArg,
         TArg2 readArg,
-        int capacity)
-    {
+        int capacity) {
         return RoundTrip<TValue>(
             value,
             (ref NdrWriter writer, TValue v) => write(ref writer, v, writeArg),

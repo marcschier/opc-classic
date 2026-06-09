@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -31,8 +31,7 @@ namespace Opc.Classic.Da.Dcom;
 [OpcInterface("39C13A4D-011E-11D0-9675-0020AFD8ADB3")]
 [GenerateOpcProxy]
 [OpcGenerateServerDispatch]
-public partial interface IOPCServer
-{
+public partial interface IOPCServer {
     /// <summary>
     /// <c>IOPCServer::AddGroup</c> (opnum 3). Creates a group and returns the requested group interface pointer.
     /// </summary>
@@ -108,8 +107,7 @@ public partial interface IOPCServer
 [OpcInterface("F31DFDE2-07B6-11D2-B2D8-0060083BA1FB")]
 [GenerateOpcProxy]
 [OpcGenerateServerDispatch]
-public partial interface IOPCCommon
-{
+public partial interface IOPCCommon {
     /// <summary>
     /// <c>IOPCCommon::SetLocaleID</c> (opnum 3). Sets the locale used for localized server strings.
     /// </summary>
@@ -145,8 +143,7 @@ public partial interface IOPCCommon
 [OpcInterface("39227004-A18F-4B57-8B0A-5235670F4468")]
 [GenerateOpcProxy]
 [OpcGenerateServerDispatch]
-public partial interface IOPCBrowse
-{
+public partial interface IOPCBrowse {
     /// <summary>
     /// <c>IOPCBrowse::GetProperties</c> (opnum 3). Returns DA 3.0 property bags for the requested items.
     /// </summary>
@@ -181,8 +178,7 @@ public partial interface IOPCBrowse
 [OpcInterface("39C13A4F-011E-11D0-9675-0020AFD8ADB3")]
 [GenerateOpcProxy]
 [OpcGenerateServerDispatch]
-public partial interface IOPCBrowseServerAddressSpace
-{
+public partial interface IOPCBrowseServerAddressSpace {
     /// <summary>
     /// <c>IOPCBrowseServerAddressSpace::QueryOrganization</c> (opnum 3). Returns flat or hierarchical namespace shape.
     /// </summary>
@@ -223,8 +219,7 @@ public partial interface IOPCBrowseServerAddressSpace
 [OpcInterface("39C13A72-011E-11D0-9675-0020AFD8ADB3")]
 [GenerateOpcProxy]
 [OpcGenerateServerDispatch]
-public partial interface IOPCItemProperties
-{
+public partial interface IOPCItemProperties {
     /// <summary>
     /// <c>IOPCItemProperties::QueryAvailableProperties</c> (opnum 3). Lists properties available for an item.
     /// </summary>
@@ -266,8 +261,7 @@ public partial interface IOPCItemProperties
 [OpcInterface("5946DA93-8B39-4EC8-AB3D-AA73DF5BC86F")]
 [GenerateOpcProxy]
 [OpcGenerateServerDispatch]
-public partial interface IOPCItemDeadbandMgt
-{
+public partial interface IOPCItemDeadbandMgt {
     /// <summary>
     /// <c>IOPCItemDeadbandMgt::SetItemDeadband</c> (opnum 3). Sets per-item percent deadbands.
     /// </summary>
@@ -298,8 +292,7 @@ public partial interface IOPCItemDeadbandMgt
 [OpcInterface("3E22D313-F08B-41A5-86C8-95E95CB49FFC")]
 [GenerateOpcProxy]
 [OpcGenerateServerDispatch]
-public partial interface IOPCItemSamplingMgt
-{
+public partial interface IOPCItemSamplingMgt {
     /// <summary>
     /// <c>IOPCItemSamplingMgt::SetItemSamplingRate</c> (opnum 3). Sets requested per-item sampling rates.
     /// </summary>
@@ -353,8 +346,7 @@ public partial interface IOPCItemSamplingMgt
 [OpcInterface("85C0B427-2893-4CBC-BD78-E5FC5146F08F")]
 [GenerateOpcProxy]
 [OpcGenerateServerDispatch]
-public partial interface IOPCItemIO
-{
+public partial interface IOPCItemIO {
     /// <summary>
     /// <c>IOPCItemIO::Read</c> (opnum 3). Reads item values by item ID and max age.
     /// </summary>
@@ -408,8 +400,7 @@ public partial interface IOPCItemIO
 [OpcInterface("39C13A54-011E-11D0-9675-0020AFD8ADB3")]
 [GenerateOpcProxy]
 [OpcGenerateServerDispatch]
-public partial interface IOPCItemMgt
-{
+public partial interface IOPCItemMgt {
     /// <summary>
     /// <c>IOPCItemMgt::AddItems</c> (opnum 3). Adds items to a group.
     /// </summary>
@@ -472,8 +463,7 @@ public partial interface IOPCItemMgt
 [OpcInterface("39C13A50-011E-11D0-9675-0020AFD8ADB3")]
 [GenerateOpcProxy]
 [OpcGenerateServerDispatch]
-public partial interface IOPCGroupStateMgt
-{
+public partial interface IOPCGroupStateMgt {
     /// <summary>
     /// <c>IOPCGroupStateMgt::GetState</c> (opnum 3). Returns the group's current state snapshot.
     /// </summary>
@@ -512,8 +502,7 @@ public partial interface IOPCGroupStateMgt
 [OpcInterface("8E368666-D72E-4F78-87ED-647611C61C9F")]
 [GenerateOpcProxy]
 [OpcGenerateServerDispatch]
-public partial interface IOPCGroupStateMgt2
-{
+public partial interface IOPCGroupStateMgt2 {
     /// <summary>
     /// <c>IOPCGroupStateMgt2::SetKeepAlive</c> (opnum 7). Sets the group keep-alive period.
     /// </summary>
@@ -530,8 +519,7 @@ public partial interface IOPCGroupStateMgt2
 /// <summary><c>IOPCSyncIO</c> — DA 2.x synchronous read/write (IID_IOPCSyncIO).</summary>
 [OpcInterface("39C13A52-011E-11D0-9675-0020AFD8ADB3")]
 [OpcGenerateServerDispatch]
-public partial interface IOPCSyncIO
-{
+public partial interface IOPCSyncIO {
     /// <summary>
     /// <c>IOPCSyncIO::Read</c> (opnum 3). Reads item states and per-item HRESULTs.
     /// </summary>
@@ -559,8 +547,7 @@ public partial interface IOPCSyncIO
 [OpcInterface("730F5F0F-55B1-4C81-9E18-FF8A0904E1FA")]
 [GenerateOpcProxy]
 [OpcGenerateServerDispatch]
-public partial interface IOPCSyncIO2
-{
+public partial interface IOPCSyncIO2 {
     /// <summary>
     /// <c>IOPCSyncIO2::Read</c> (opnum 3). Reads item states and per-item HRESULTs.
     /// </summary>
@@ -605,8 +592,7 @@ public partial interface IOPCSyncIO2
 [OpcInterface("39C13A71-011E-11D0-9675-0020AFD8ADB3")]
 [GenerateOpcProxy]
 [OpcGenerateServerDispatch]
-public partial interface IOPCAsyncIO2
-{
+public partial interface IOPCAsyncIO2 {
     /// <summary>
     /// <c>IOPCAsyncIO2::Read</c> (opnum 3). Starts an async read and returns cancel ID plus per-item HRESULTs.
     /// </summary>
@@ -658,8 +644,7 @@ public partial interface IOPCAsyncIO2
 [OpcInterface("0967B97B-36EF-423E-B6F8-6BFF1E40D39D")]
 [GenerateOpcProxy]
 [OpcGenerateServerDispatch]
-public partial interface IOPCAsyncIO3
-{
+public partial interface IOPCAsyncIO3 {
     /// <summary>
     /// <c>IOPCAsyncIO3::Refresh2</c> (opnum 5). Starts an async refresh and returns the cancel ID.
     /// </summary>
@@ -717,8 +702,7 @@ public partial interface IOPCAsyncIO3
 [OpcInterface("39C13A55-011E-11D0-9675-0020AFD8ADB3")]
 [GenerateOpcProxy]
 [OpcGenerateServerDispatch]
-public partial interface IEnumOPCItemAttributes
-{
+public partial interface IEnumOPCItemAttributes {
     /// <summary>
     /// <c>IEnumOPCItemAttributes::Next</c> (opnum 3). Returns up to <paramref name="count"/>
     /// item attributes plus the actual count fetched. <c>fetchedCount == 0</c> signals
@@ -763,8 +747,7 @@ public partial interface IEnumOPCItemAttributes
 /// <summary><c>IConnectionPointContainer</c> — enumerates connection points (IID_IConnectionPointContainer).</summary>
 [OpcInterface("B196B284-BAB4-101A-B69C-00AA00341D07")]
 [OpcGenerateServerDispatch]
-public partial interface IConnectionPointContainer
-{
+public partial interface IConnectionPointContainer {
     /// <summary>
     /// <c>IConnectionPointContainer::EnumConnectionPoints</c> (opnum 3).
     /// Returns an enumerator (<c>IEnumConnectionPoints</c>) over all connection
@@ -785,8 +768,7 @@ public partial interface IConnectionPointContainer
 /// <summary><c>IConnectionPoint</c> — the subscription sink-binding interface (IID_IConnectionPoint).</summary>
 [OpcInterface("B196B286-BAB4-101A-B69C-00AA00341D07")]
 [OpcGenerateServerDispatch]
-public partial interface IConnectionPoint
-{
+public partial interface IConnectionPoint {
     /// <summary>
     /// <c>IConnectionPoint::GetConnectionInterface</c> (opnum 3). Returns the outbound callback IID for this point.
     /// </summary>
@@ -812,8 +794,7 @@ public partial interface IConnectionPoint
 [OpcInterface("F31DFDE1-07B6-11D2-B2D8-0060083BA1FB")]
 [GenerateOpcProxy]
 [OpcGenerateServerDispatch]
-public partial interface IOPCShutdown
-{
+public partial interface IOPCShutdown {
     /// <summary>
     /// <c>IOPCShutdown::ShutdownRequest</c> (opnum 3). Notifies the client that the server is shutting down.
     /// </summary>
@@ -825,8 +806,7 @@ public partial interface IOPCShutdown
 [OpcInterface("39C13A70-011E-11D0-9675-0020AFD8ADB3")]
 [GenerateOpcProxy]
 [OpcGenerateServerDispatch]
-public partial interface IOPCDataCallback
-{
+public partial interface IOPCDataCallback {
     /// <summary>
     /// <c>IOPCDataCallback::OnDataChange</c> (opnum 3). Delivers sampled values from an active subscription.
     /// </summary>
@@ -882,8 +862,7 @@ public partial interface IOPCDataCallback
 [OpcInterface("55C382C8-21C7-4E88-96C1-BECFB1E3F483")]
 [GenerateOpcProxy]
 [OpcGenerateServerDispatch]
-public partial interface IOPCEnumGUID
-{
+public partial interface IOPCEnumGUID {
     /// <summary>
     /// <c>IOPCEnumGUID::Next</c> (opnum 3). Returns up to the requested number of GUIDs.
     /// </summary>
@@ -909,8 +888,7 @@ public partial interface IOPCEnumGUID
 [OpcInterface("13486D50-4821-11D2-A494-3CB306C10000")]
 [GenerateOpcProxy]
 [OpcGenerateServerDispatch]
-public partial interface IOPCServerList
-{
+public partial interface IOPCServerList {
     /// <summary>
     /// <c>IOPCServerList::EnumClassesOfCategories</c> (opnum 3). Returns an enumerator
     /// (<c>IEnumGUID</c>) over server CLSIDs that implement <paramref name="implementedCategories"/>
@@ -958,8 +936,7 @@ public partial interface IOPCServerList
 [OpcInterface("9DD0B56C-AD9E-43EE-8305-487F3188BF7A")]
 [GenerateOpcProxy]
 [OpcGenerateServerDispatch]
-public partial interface IOPCServerList2
-{
+public partial interface IOPCServerList2 {
     /// <summary>
     /// <c>IOPCServerList2::EnumClassesOfCategories</c> (opnum 3). Returns an enumerator
     /// (<c>IOPCEnumGUID</c>) over server CLSIDs that implement

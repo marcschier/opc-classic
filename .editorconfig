@@ -57,7 +57,25 @@ csharp_space_after_keywords_in_control_flow_statements = true
 csharp_space_after_comma = true
 csharp_space_between_method_call_name_and_opening_parenthesis = false
 
-# Naming — _camelCase for private instance fields
+# Naming — _camelCase for private instance fields ONLY.
+# The editorconfig naming-rule engine matches rules top-to-bottom; the
+# first rule that applies to a symbol wins. We declare two rules so the
+# IDE1006 analyzer doesn't false-positive on:
+#   - `private const` fields (PascalCase per C# convention)
+#   - `private static readonly` fields (PascalCase or s_camelCase or UPPER_SNAKE
+#     IDL identifiers like IID_IOPCServerList2 that must stay as-is for spec
+#     readability — see the IDL-names note in copilot-instructions.md)
+# By matching static/const FIRST with severity=none we silently accept any
+# naming for those, then the second rule enforces _camelCase on remaining
+# (i.e. instance) private fields only.
+dotnet_naming_rule.private_static_or_const_fields_any.severity = none
+dotnet_naming_rule.private_static_or_const_fields_any.symbols = private_static_or_const_fields
+dotnet_naming_rule.private_static_or_const_fields_any.style = any_style
+dotnet_naming_symbols.private_static_or_const_fields.applicable_kinds = field
+dotnet_naming_symbols.private_static_or_const_fields.applicable_accessibilities = private,internal,protected,protected_internal,private_protected
+dotnet_naming_symbols.private_static_or_const_fields.required_modifiers = static
+dotnet_naming_style.any_style.capitalization = pascal_case
+
 dotnet_naming_rule.private_fields_underscored.severity = warning
 dotnet_naming_rule.private_fields_underscored.symbols = private_fields
 dotnet_naming_rule.private_fields_underscored.style = underscore_camel

@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -25,11 +25,9 @@ namespace Opc.Classic.Da.Ndr;
 ///     UINT32   dwReserved (0)
 /// </code>
 /// </remarks>
-public static class NdrOpcItemPropertyCodec
-{
+public static class NdrOpcItemPropertyCodec {
     /// <summary>Encodes a single OPCITEMPROPERTY in NDR.</summary>
-    public static void Write(ref NdrWriter writer, OpcItemPropertyResult prop)
-    {
+    public static void Write(ref NdrWriter writer, OpcItemPropertyResult prop) {
         ArgumentNullException.ThrowIfNull(prop);
 
         writer.WriteUInt16((ushort)prop.DataType);
@@ -43,8 +41,7 @@ public static class NdrOpcItemPropertyCodec
     }
 
     /// <summary>Decodes a single OPCITEMPROPERTY from NDR.</summary>
-    public static OpcItemPropertyResult Read(ref NdrReader reader)
-    {
+    public static OpcItemPropertyResult Read(ref NdrReader reader) {
         var vt = (VarType)reader.ReadUInt16();
         _ = reader.ReadUInt16();   // wReserved
         uint propertyId = reader.ReadUInt32();

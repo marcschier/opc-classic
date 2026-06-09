@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -15,8 +15,7 @@ using TUnit.Core;
 
 namespace Opc.Classic.PropertyTests.Fuzz.Ndr;
 
-public sealed class NdrReaderFuzzTests
-{
+public sealed class NdrReaderFuzzTests {
     private static readonly Type[] AllowedNdrExceptions =
     [
         typeof(InvalidDataException),
@@ -28,13 +27,11 @@ public sealed class NdrReaderFuzzTests
 
     [Test]
     [Category("Fuzz")]
-    public async Task NdrReader_ReadUnicodeString_RandomBytes_DoesNotCrash()
-    {
+    public async Task NdrReader_ReadUnicodeString_RandomBytes_DoesNotCrash() {
         FuzzHarness.BytesEdgeWeighted.Sample(
             static input => FuzzHarness.AssertParseDoesNotCrash(
                 input,
-                static string (ReadOnlyMemory<byte> bytes) =>
-                {
+                static string (ReadOnlyMemory<byte> bytes) => {
                     var reader = new NdrReader(bytes.Span);
                     return reader.ReadUnicodeString();
                 },
@@ -48,13 +45,11 @@ public sealed class NdrReaderFuzzTests
 
     [Test]
     [Category("Fuzz")]
-    public async Task NdrReader_ReadBstr_RandomBytes_DoesNotCrash()
-    {
+    public async Task NdrReader_ReadBstr_RandomBytes_DoesNotCrash() {
         FuzzHarness.BytesEdgeWeighted.Sample(
             static input => FuzzHarness.AssertParseDoesNotCrash(
                 input,
-                static string? (ReadOnlyMemory<byte> bytes) =>
-                {
+                static string? (ReadOnlyMemory<byte> bytes) => {
                     var reader = new NdrReader(bytes.Span);
                     return reader.ReadBstr();
                 },
@@ -68,13 +63,11 @@ public sealed class NdrReaderFuzzTests
 
     [Test]
     [Category("Fuzz")]
-    public async Task NdrReader_ReadConformanceHeader_RandomBytes_DoesNotCrash()
-    {
+    public async Task NdrReader_ReadConformanceHeader_RandomBytes_DoesNotCrash() {
         FuzzHarness.BytesEdgeWeighted.Sample(
             static input => FuzzHarness.AssertParseDoesNotCrash(
                 input,
-                static int (ReadOnlyMemory<byte> bytes) =>
-                {
+                static int (ReadOnlyMemory<byte> bytes) => {
                     var reader = new NdrReader(bytes.Span);
                     return reader.ReadConformanceHeader();
                 },
@@ -88,13 +81,11 @@ public sealed class NdrReaderFuzzTests
 
     [Test]
     [Category("Fuzz")]
-    public async Task NdrReader_ReadInterfacePointer_RandomBytes_DoesNotCrash()
-    {
+    public async Task NdrReader_ReadInterfacePointer_RandomBytes_DoesNotCrash() {
         FuzzHarness.BytesEdgeWeighted.Sample(
             static input => FuzzHarness.AssertParseDoesNotCrash(
                 input,
-                static IOpcInterfaceRef? (ReadOnlyMemory<byte> bytes) =>
-                {
+                static IOpcInterfaceRef? (ReadOnlyMemory<byte> bytes) => {
                     var reader = new NdrReader(bytes.Span);
                     return OpcMInterfacePointerCodec.Read(ref reader);
                 },
@@ -108,13 +99,11 @@ public sealed class NdrReaderFuzzTests
 
     [Test]
     [Category("Fuzz")]
-    public async Task NdrReader_ReadGuid_RandomBytes_DoesNotCrash()
-    {
+    public async Task NdrReader_ReadGuid_RandomBytes_DoesNotCrash() {
         FuzzHarness.BytesEdgeWeighted.Sample(
             static input => FuzzHarness.AssertParseDoesNotCrash(
                 input,
-                static Guid (ReadOnlyMemory<byte> bytes) =>
-                {
+                static Guid (ReadOnlyMemory<byte> bytes) => {
                     var reader = new NdrReader(bytes.Span);
                     return reader.ReadGuid();
                 },
@@ -128,15 +117,13 @@ public sealed class NdrReaderFuzzTests
 
     [Test]
     [Category("Fuzz")]
-    public async Task NdrReader_ReadUnicodeString_MutatedValid_DoesNotCrash()
-    {
+    public async Task NdrReader_ReadUnicodeString_MutatedValid_DoesNotCrash() {
         byte[] valid = WriteUnicodeString("FZ-2 \u2713");
 
         FuzzHarness.MutateValid(valid).Sample(
             static input => FuzzHarness.AssertParseDoesNotCrash(
                 input,
-                static string (ReadOnlyMemory<byte> bytes) =>
-                {
+                static string (ReadOnlyMemory<byte> bytes) => {
                     var reader = new NdrReader(bytes.Span);
                     return reader.ReadUnicodeString();
                 },
@@ -150,8 +137,7 @@ public sealed class NdrReaderFuzzTests
 
     [Test]
     [Category("Fuzz")]
-    public async Task NdrReader_LengthHeader_OverlargeConformance_RejectedOrBounded()
-    {
+    public async Task NdrReader_LengthHeader_OverlargeConformance_RejectedOrBounded() {
         byte[] input = UInt32s(uint.MaxValue / 2, 0, uint.MaxValue / 2);
         await Assert.That((Action)(() => _ = ReadUnicodeString(input))).Throws<Exception>();
         AssertDocumentedRejection(input, ReadUnicodeString);
@@ -159,8 +145,7 @@ public sealed class NdrReaderFuzzTests
 
     [Test]
     [Category("Fuzz")]
-    public async Task NdrReader_LengthHeader_NegativeOffset_Rejected()
-    {
+    public async Task NdrReader_LengthHeader_NegativeOffset_Rejected() {
         byte[] intMaxOffset = UInt32s(1, int.MaxValue, 1);
         byte[] overflowingOffset = UInt32s(uint.MaxValue, uint.MaxValue - 1, 4);
 
@@ -172,16 +157,14 @@ public sealed class NdrReaderFuzzTests
 
     [Test]
     [Category("Fuzz")]
-    public async Task NdrReader_LengthHeader_ActualExceedsMax_Rejected()
-    {
+    public async Task NdrReader_LengthHeader_ActualExceedsMax_Rejected() {
         byte[] input = UInt32s(1, 0, 2);
 
         await Assert.That((Action)(() => _ = ReadUnicodeString(input))).Throws<Exception>();
         AssertDocumentedRejection(input, ReadUnicodeString);
     }
 
-    private static string ReadUnicodeString(ReadOnlyMemory<byte> input)
-    {
+    private static string ReadUnicodeString(ReadOnlyMemory<byte> input) {
         var reader = new NdrReader(input.Span);
         return reader.ReadUnicodeString();
     }
@@ -189,19 +172,16 @@ public sealed class NdrReaderFuzzTests
     private static void AssertDocumentedRejection<T>(ReadOnlyMemory<byte> input, Func<ReadOnlyMemory<byte>, T> parse) =>
         FuzzHarness.AssertParseDoesNotCrash(input, parse, AllowedNdrExceptions);
 
-    private static byte[] WriteUnicodeString(string value)
-    {
+    private static byte[] WriteUnicodeString(string value) {
         byte[] buffer = new byte[256];
         var writer = new NdrWriter(buffer);
         writer.WriteUnicodeString(value);
         return buffer.AsSpan(0, writer.Position).ToArray();
     }
 
-    private static byte[] UInt32s(params uint[] values)
-    {
+    private static byte[] UInt32s(params uint[] values) {
         byte[] buffer = new byte[values.Length * sizeof(uint)];
-        for (int i = 0; i < values.Length; i++)
-        {
+        for (int i = 0; i < values.Length; i++) {
             BinaryPrimitives.WriteUInt32LittleEndian(buffer.AsSpan(i * sizeof(uint)), values[i]);
         }
 

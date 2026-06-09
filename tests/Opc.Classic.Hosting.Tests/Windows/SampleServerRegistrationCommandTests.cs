@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -23,11 +23,9 @@ namespace Opc.Classic.Hosting.Tests.Windows;
 /// and that the underlying <see cref="WindowsComRegistration"/> is invoked
 /// with the right hive / view selection.
 /// </summary>
-public sealed class SampleServerRegistrationCommandTests
-{
+public sealed class SampleServerRegistrationCommandTests {
     [Test]
-    public async Task TryHandle_ReturnsFalse_WhenNoFlag()
-    {
+    public async Task TryHandle_ReturnsFalse_WhenNoFlag() {
         OpcClsidRegistration registration = NewRegistration();
         bool handled = SampleServerRegistrationCommand.TryHandle(
             ["--something-else", "--unrelated"],
@@ -43,8 +41,7 @@ public sealed class SampleServerRegistrationCommandTests
     }
 
     [Test]
-    public async Task TryHandle_ReturnsExitCode2_WhenBothFlagsPresent()
-    {
+    public async Task TryHandle_ReturnsExitCode2_WhenBothFlagsPresent() {
         OpcClsidRegistration registration = NewRegistration();
         bool handled = SampleServerRegistrationCommand.TryHandle(
             ["--register", "--unregister"],
@@ -64,25 +61,21 @@ public sealed class SampleServerRegistrationCommandTests
     [Arguments("/Embedding")]
     [Arguments("-embedding")]
     [Arguments("/EMBEDDING")]
-    public async Task HasEmbeddingFlag_AcceptsAllVariants(string flag)
-    {
+    public async Task HasEmbeddingFlag_AcceptsAllVariants(string flag) {
         bool result = SampleServerRegistrationCommand.HasEmbeddingFlag([flag]);
         await Assert.That(result).IsTrue();
     }
 
     [Test]
-    public async Task HasEmbeddingFlag_ReturnsFalse_WhenAbsent()
-    {
+    public async Task HasEmbeddingFlag_ReturnsFalse_WhenAbsent() {
         bool result = SampleServerRegistrationCommand.HasEmbeddingFlag(["--unrelated"]);
         await Assert.That(result).IsFalse();
     }
 
     [Test]
-    public async Task TryHandle_NullArgs_Throws()
-    {
+    public async Task TryHandle_NullArgs_Throws() {
         OpcClsidRegistration registration = NewRegistration();
-        await Assert.That(() =>
-        {
+        await Assert.That(() => {
             _ = SampleServerRegistrationCommand.TryHandle(
                 null!,
                 registration,
@@ -94,16 +87,13 @@ public sealed class SampleServerRegistrationCommandTests
     [Test]
     [NotInParallel]
     [SupportedOSPlatform("windows")]
-    public async Task TryHandle_Register_WritesRegistryEntries_HkcuView()
-    {
-        if (!OperatingSystem.IsWindows())
-        {
+    public async Task TryHandle_Register_WritesRegistryEntries_HkcuView() {
+        if (!OperatingSystem.IsWindows()) {
             return;
         }
 
         OpcClsidRegistration registration = NewRegistration();
-        try
-        {
+        try {
             bool handled = SampleServerRegistrationCommand.TryHandle(
                 ["--register", "--registry-hive=hkcu"],
                 registration,
@@ -125,8 +115,7 @@ public sealed class SampleServerRegistrationCommandTests
             using RegistryKey? localServer = clsidKey!.OpenSubKey("LocalServer32");
             await Assert.That(localServer).IsNotNull();
         }
-        finally
-        {
+        finally {
             WindowsComRegistration.UnregisterLocalServer(registration, RegistryHive.CurrentUser);
             CleanupSharedCategoryDescription(OpcComponentCategories.OpcDaServer20.CategoryId);
             CleanupSharedCategoryDescription(OpcComponentCategories.OpcDaServer30.CategoryId);
@@ -136,10 +125,8 @@ public sealed class SampleServerRegistrationCommandTests
     [Test]
     [NotInParallel]
     [SupportedOSPlatform("windows")]
-    public async Task TryHandle_Unregister_RemovesRegistryEntries_HkcuView()
-    {
-        if (!OperatingSystem.IsWindows())
-        {
+    public async Task TryHandle_Unregister_RemovesRegistryEntries_HkcuView() {
+        if (!OperatingSystem.IsWindows()) {
             return;
         }
 
@@ -149,8 +136,7 @@ public sealed class SampleServerRegistrationCommandTests
             OpcComponentCategories.OpcDaServer20,
         ];
 
-        try
-        {
+        try {
             _ = SampleServerRegistrationCommand.TryHandle(
                 ["--register", "--registry-hive=hkcu"],
                 registration,
@@ -173,8 +159,7 @@ public sealed class SampleServerRegistrationCommandTests
             using RegistryKey? clsidKey = classes?.OpenSubKey($"CLSID\\{{{registration.Clsid:D}}}");
             await Assert.That(clsidKey).IsNull();
         }
-        finally
-        {
+        finally {
             WindowsComRegistration.UnregisterLocalServer(registration, RegistryHive.CurrentUser);
             CleanupSharedCategoryDescription(OpcComponentCategories.OpcDaServer20.CategoryId);
         }
@@ -182,10 +167,8 @@ public sealed class SampleServerRegistrationCommandTests
 
     [Test]
     [SupportedOSPlatform("windows")]
-    public async Task TryHandle_Register_ReturnsExitCode4_WhenHiveValueIsInvalid()
-    {
-        if (!OperatingSystem.IsWindows())
-        {
+    public async Task TryHandle_Register_ReturnsExitCode4_WhenHiveValueIsInvalid() {
+        if (!OperatingSystem.IsWindows()) {
             return;
         }
 
@@ -202,10 +185,8 @@ public sealed class SampleServerRegistrationCommandTests
 
     [Test]
     [SupportedOSPlatform("windows")]
-    public async Task TryHandle_Register_ReturnsExitCode4_WhenViewValueIsInvalid()
-    {
-        if (!OperatingSystem.IsWindows())
-        {
+    public async Task TryHandle_Register_ReturnsExitCode4_WhenViewValueIsInvalid() {
+        if (!OperatingSystem.IsWindows()) {
             return;
         }
 
@@ -221,10 +202,8 @@ public sealed class SampleServerRegistrationCommandTests
     }
 
     [SupportedOSPlatform("windows")]
-    private static void CleanupSharedCategoryDescription(Guid catId)
-    {
-        foreach (RegistryView view in new[] { RegistryView.Registry32, RegistryView.Registry64 })
-        {
+    private static void CleanupSharedCategoryDescription(Guid catId) {
+        foreach (RegistryView view in new[] { RegistryView.Registry32, RegistryView.Registry64 }) {
             using RegistryKey baseKey = RegistryKey.OpenBaseKey(RegistryHive.CurrentUser, view);
             using RegistryKey? classes = baseKey.OpenSubKey(@"Software\Classes", writable: true);
             using RegistryKey? categories = classes?.OpenSubKey("Component Categories", writable: true);
@@ -232,8 +211,7 @@ public sealed class SampleServerRegistrationCommandTests
         }
     }
 
-    private static OpcClsidRegistration NewRegistration()
-    {
+    private static OpcClsidRegistration NewRegistration() {
         Guid clsid = Guid.CreateVersion7();
         string suffix = clsid.ToString("N", CultureInfo.InvariantCulture)[..8];
         return new OpcClsidRegistration(

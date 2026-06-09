@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: MIT
+﻿// SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 
 using System.Collections.Concurrent;
@@ -11,8 +11,7 @@ using Opc.Classic.Samples.HdaServer;
 
 namespace Opc.Classic.Samples.HdaClient;
 
-internal sealed class LoopbackHdaCallRouter
-{
+internal sealed class LoopbackHdaCallRouter {
     private const int ResponseBufferSize = 64 * 1024;
     private const int GetHistorianStatusOpnum = 5;
     private const int AnnotationReadCapability = 1;
@@ -27,8 +26,7 @@ internal sealed class LoopbackHdaCallRouter
     private readonly HdaAnnotationResult[] _annotations;
     private int _nextServerHandle = 1000;
 
-    public LoopbackHdaCallRouter(IOpcHdaServer server, HistoricalDataStore store)
-    {
+    public LoopbackHdaCallRouter(IOpcHdaServer server, HistoricalDataStore store) {
         _server = server ?? throw new ArgumentNullException(nameof(server));
         _store = store ?? throw new ArgumentNullException(nameof(store));
         _annotations =
@@ -54,27 +52,22 @@ internal sealed class LoopbackHdaCallRouter
         Guid interfaceId,
         int opnum,
         ReadOnlyMemory<byte> requestPayload,
-        CancellationToken cancellationToken)
-    {
+        CancellationToken cancellationToken) {
         cancellationToken.ThrowIfCancellationRequested();
 
-        if (interfaceId == IOPCHDA_Server.InterfaceId)
-        {
+        if (interfaceId == IOPCHDA_Server.InterfaceId) {
             return DispatchServerAsync(opnum, requestPayload, cancellationToken);
         }
 
-        if (interfaceId == IOPCHDA_SyncRead.InterfaceId)
-        {
+        if (interfaceId == IOPCHDA_SyncRead.InterfaceId) {
             return DispatchSyncReadAsync(opnum, requestPayload, cancellationToken);
         }
 
-        if (interfaceId == IOPCHDA_AsyncRead.InterfaceId)
-        {
+        if (interfaceId == IOPCHDA_AsyncRead.InterfaceId) {
             return DispatchAsyncReadAsync(opnum, requestPayload, cancellationToken);
         }
 
-        if (interfaceId == IOPCHDA_SyncAnnotations.InterfaceId)
-        {
+        if (interfaceId == IOPCHDA_SyncAnnotations.InterfaceId) {
             return DispatchSyncAnnotationsAsync(opnum, requestPayload);
         }
 
@@ -83,8 +76,7 @@ internal sealed class LoopbackHdaCallRouter
 
     public IReadOnlyCollection<string> ItemIds => _store.ItemIds;
 
-    public IReadOnlyList<HdaAnnotationResult> ReadAnnotations(IReadOnlyList<string> itemIds)
-    {
+    public IReadOnlyList<HdaAnnotationResult> ReadAnnotations(IReadOnlyList<string> itemIds) {
         ArgumentNullException.ThrowIfNull(itemIds);
 
         return itemIds
@@ -94,24 +86,18 @@ internal sealed class LoopbackHdaCallRouter
             .ToArray();
     }
 
-    public IEnumerable<HdaBrowseElement> Browse(string itemIdPrefix, HdaBrowseType browseType)
-    {
-        if (string.IsNullOrWhiteSpace(itemIdPrefix))
-        {
-            if (browseType is HdaBrowseType.Branch or HdaBrowseType.Flat)
-            {
-                yield return new HdaBrowseElement
-                {
+    public IEnumerable<HdaBrowseElement> Browse(string itemIdPrefix, HdaBrowseType browseType) {
+        if (string.IsNullOrWhiteSpace(itemIdPrefix)) {
+            if (browseType is HdaBrowseType.Branch or HdaBrowseType.Flat) {
+                yield return new HdaBrowseElement {
                     Name = "Sensor",
                     ItemId = "Sensor",
                     BrowseType = HdaBrowseType.Branch,
                 };
             }
 
-            if (browseType is HdaBrowseType.Leaf or HdaBrowseType.Flat)
-            {
-                foreach (string itemId in _store.ItemIds.Order(StringComparer.OrdinalIgnoreCase))
-                {
+            if (browseType is HdaBrowseType.Leaf or HdaBrowseType.Flat) {
+                foreach (string itemId in _store.ItemIds.Order(StringComparer.OrdinalIgnoreCase)) {
                     yield return CreateLeaf(itemId);
                 }
             }
@@ -119,17 +105,14 @@ internal sealed class LoopbackHdaCallRouter
             yield break;
         }
 
-        if (itemIdPrefix.Equals("Sensor", StringComparison.OrdinalIgnoreCase) && browseType != HdaBrowseType.Branch)
-        {
-            foreach (string itemId in _store.ItemIds.Order(StringComparer.OrdinalIgnoreCase))
-            {
+        if (itemIdPrefix.Equals("Sensor", StringComparison.OrdinalIgnoreCase) && browseType != HdaBrowseType.Branch) {
+            foreach (string itemId in _store.ItemIds.Order(StringComparer.OrdinalIgnoreCase)) {
                 yield return CreateLeaf(itemId);
             }
         }
     }
 
-    private static HdaBrowseElement CreateLeaf(string itemId) => new()
-    {
+    private static HdaBrowseElement CreateLeaf(string itemId) => new() {
         Name = itemId[(itemId.LastIndexOf('.') + 1)..],
         ItemId = itemId,
         BrowseType = HdaBrowseType.Leaf,
@@ -138,8 +121,7 @@ internal sealed class LoopbackHdaCallRouter
     private Task<NdrCallResult> DispatchServerAsync(
         int opnum,
         ReadOnlyMemory<byte> requestPayload,
-        CancellationToken cancellationToken) => opnum switch
-        {
+        CancellationToken cancellationToken) => opnum switch {
             GetHistorianStatusOpnum => DispatchGetStatusAsync(cancellationToken),
             IOPCHDA_Server.Opnums.GetItemHandlesAsync => Task.FromResult(DispatchGetItemHandles(requestPayload)),
             IOPCHDA_Server.Opnums.ReleaseItemHandlesAsync => Task.FromResult(DispatchReleaseItemHandles(requestPayload)),
@@ -147,23 +129,19 @@ internal sealed class LoopbackHdaCallRouter
             _ => Task.FromResult(NotImplemented()),
         };
 
-    private async Task<NdrCallResult> DispatchGetStatusAsync(CancellationToken cancellationToken)
-    {
+    private async Task<NdrCallResult> DispatchGetStatusAsync(CancellationToken cancellationToken) {
         OpcServerStatus status = await _server.GetStatusAsync(cancellationToken).ConfigureAwait(false);
         return Ok(WritePayload((ref NdrWriter writer) => WriteHistorianStatus(ref writer, status)));
     }
 
-    private NdrCallResult DispatchGetItemHandles(ReadOnlyMemory<byte> requestPayload)
-    {
+    private NdrCallResult DispatchGetItemHandles(ReadOnlyMemory<byte> requestPayload) {
         var reader = new NdrReader(requestPayload.Span);
         string[] itemIds = ReadStringArray(ref reader);
         int[] clientHandles = ReadInt32Array(ref reader);
         var serverHandles = new int[itemIds.Length];
 
-        for (int index = 0; index < itemIds.Length; index++)
-        {
-            if (!_store.Contains(itemIds[index]))
-            {
+        for (int index = 0; index < itemIds.Length; index++) {
+            if (!_store.Contains(itemIds[index])) {
                 continue;
             }
 
@@ -176,14 +154,12 @@ internal sealed class LoopbackHdaCallRouter
         return Ok(WritePayload((ref NdrWriter writer) => WriteInt32Array(ref writer, serverHandles)));
     }
 
-    private NdrCallResult DispatchReleaseItemHandles(ReadOnlyMemory<byte> requestPayload)
-    {
+    private NdrCallResult DispatchReleaseItemHandles(ReadOnlyMemory<byte> requestPayload) {
         var reader = new NdrReader(requestPayload.Span);
         int[] serverHandles = ReadInt32Array(ref reader);
         var results = new int[serverHandles.Length];
 
-        for (int index = 0; index < serverHandles.Length; index++)
-        {
+        for (int index = 0; index < serverHandles.Length; index++) {
             results[index] = _registrations.TryRemove(serverHandles[index], out _)
                 ? OpcResultId.Ok.Code
                 : OpcResultId.InvalidHandle.Code;
@@ -194,8 +170,7 @@ internal sealed class LoopbackHdaCallRouter
 
     private async Task<NdrCallResult> DispatchValidateItemIdsAsync(
         ReadOnlyMemory<byte> requestPayload,
-        CancellationToken cancellationToken)
-    {
+        CancellationToken cancellationToken) {
         var reader = new NdrReader(requestPayload.Span);
         string[] itemIds = ReadStringArray(ref reader);
         int[] results = await _server.ValidateItemIdsAsync(itemIds, cancellationToken).ConfigureAwait(false);
@@ -205,8 +180,7 @@ internal sealed class LoopbackHdaCallRouter
     private Task<NdrCallResult> DispatchSyncReadAsync(
         int opnum,
         ReadOnlyMemory<byte> requestPayload,
-        CancellationToken cancellationToken) => opnum switch
-        {
+        CancellationToken cancellationToken) => opnum switch {
             IOPCHDA_SyncRead.Opnums.ReadRawAsync => DispatchReadRawAsync(requestPayload, cancellationToken),
             IOPCHDA_SyncRead.Opnums.ReadProcessedAsync => DispatchReadProcessedAsync(requestPayload, cancellationToken),
             _ => Task.FromResult(NotImplemented()),
@@ -214,8 +188,7 @@ internal sealed class LoopbackHdaCallRouter
 
     private async Task<NdrCallResult> DispatchReadRawAsync(
         ReadOnlyMemory<byte> requestPayload,
-        CancellationToken cancellationToken)
-    {
+        CancellationToken cancellationToken) {
         var reader = new NdrReader(requestPayload.Span);
         OpcHdaTime startTime = NdrOpcHdaTimeCodec.Read(ref reader);
         OpcHdaTime endTime = NdrOpcHdaTimeCodec.Read(ref reader);
@@ -234,8 +207,7 @@ internal sealed class LoopbackHdaCallRouter
 
     private async Task<NdrCallResult> DispatchReadProcessedAsync(
         ReadOnlyMemory<byte> requestPayload,
-        CancellationToken cancellationToken)
-    {
+        CancellationToken cancellationToken) {
         var reader = new NdrReader(requestPayload.Span);
         OpcHdaTime startTime = NdrOpcHdaTimeCodec.Read(ref reader);
         OpcHdaTime endTime = NdrOpcHdaTimeCodec.Read(ref reader);
@@ -244,8 +216,7 @@ internal sealed class LoopbackHdaCallRouter
         int[] aggregateIds = ReadInt32Array(ref reader);
         var correlatedItems = new OpcHdaItem[serverHandles.Length];
 
-        for (int index = 0; index < serverHandles.Length; index++)
-        {
+        for (int index = 0; index < serverHandles.Length; index++) {
             string itemId = ResolveItemId(serverHandles[index]);
             HdaAggregate aggregate = index < aggregateIds.Length ? (HdaAggregate)aggregateIds[index] : HdaAggregate.Average;
             OpcHdaItem[] items = await _server.ReadProcessedAsync(
@@ -264,8 +235,7 @@ internal sealed class LoopbackHdaCallRouter
     private static Task<NdrCallResult> DispatchAsyncReadAsync(
         int opnum,
         ReadOnlyMemory<byte> requestPayload,
-        CancellationToken cancellationToken) => opnum switch
-        {
+        CancellationToken cancellationToken) => opnum switch {
             IOPCHDA_AsyncRead.Opnums.ReadRawAsync => DispatchAsyncReadRawAsync(requestPayload, cancellationToken),
             IOPCHDA_AsyncRead.Opnums.ReadProcessedAsync => DispatchAsyncReadProcessedAsync(requestPayload, cancellationToken),
             IOPCHDA_AsyncRead.Opnums.CancelAsync => Task.FromResult(DispatchAsyncCancel(requestPayload)),
@@ -274,8 +244,7 @@ internal sealed class LoopbackHdaCallRouter
 
     private static async Task<NdrCallResult> DispatchAsyncReadRawAsync(
         ReadOnlyMemory<byte> requestPayload,
-        CancellationToken cancellationToken)
-    {
+        CancellationToken cancellationToken) {
         var reader = new NdrReader(requestPayload.Span);
         int transactionId = reader.ReadInt32();
         _ = NdrOpcHdaTimeCodec.Read(ref reader);
@@ -290,8 +259,7 @@ internal sealed class LoopbackHdaCallRouter
 
     private static async Task<NdrCallResult> DispatchAsyncReadProcessedAsync(
         ReadOnlyMemory<byte> requestPayload,
-        CancellationToken cancellationToken)
-    {
+        CancellationToken cancellationToken) {
         var reader = new NdrReader(requestPayload.Span);
         int transactionId = reader.ReadInt32();
         _ = NdrOpcHdaTimeCodec.Read(ref reader);
@@ -304,26 +272,22 @@ internal sealed class LoopbackHdaCallRouter
         return Ok(WritePayload((ref NdrWriter writer) => writer.WriteInt32(transactionId + AsyncCancelIdOffset)));
     }
 
-    private static NdrCallResult DispatchAsyncCancel(ReadOnlyMemory<byte> requestPayload)
-    {
+    private static NdrCallResult DispatchAsyncCancel(ReadOnlyMemory<byte> requestPayload) {
         var reader = new NdrReader(requestPayload.Span);
         _ = reader.ReadInt32();
         return Ok(ReadOnlyMemory<byte>.Empty);
     }
 
-    private static Task<NdrCallResult> DispatchSyncAnnotationsAsync(int opnum, ReadOnlyMemory<byte> requestPayload)
-    {
+    private static Task<NdrCallResult> DispatchSyncAnnotationsAsync(int opnum, ReadOnlyMemory<byte> requestPayload) {
         _ = requestPayload;
         return Task.FromResult(opnum == IOPCHDA_SyncAnnotations.Opnums.QueryCapabilitiesAsync
             ? Ok(WritePayload((ref NdrWriter writer) => writer.WriteInt32(AnnotationReadCapability)))
             : NotImplemented());
     }
 
-    private string[] ResolveItemIds(int[] serverHandles)
-    {
+    private string[] ResolveItemIds(int[] serverHandles) {
         var itemIds = new string[serverHandles.Length];
-        for (int index = 0; index < itemIds.Length; index++)
-        {
+        for (int index = 0; index < itemIds.Length; index++) {
             itemIds[index] = ResolveItemId(serverHandles[index]);
         }
 
@@ -335,19 +299,16 @@ internal sealed class LoopbackHdaCallRouter
             ? registration.ItemId
             : string.Empty;
 
-    private OpcHdaItem[] ReassignClientHandles(OpcHdaItem[] items, int[] serverHandles)
-    {
+    private OpcHdaItem[] ReassignClientHandles(OpcHdaItem[] items, int[] serverHandles) {
         var correlatedItems = new OpcHdaItem[items.Length];
-        for (int index = 0; index < items.Length; index++)
-        {
+        for (int index = 0; index < items.Length; index++) {
             correlatedItems[index] = ReassignClientHandle(items[index], serverHandles[index]);
         }
 
         return correlatedItems;
     }
 
-    private OpcHdaItem ReassignClientHandle(OpcHdaItem item, int serverHandle)
-    {
+    private OpcHdaItem ReassignClientHandle(OpcHdaItem item, int serverHandle) {
         int clientHandle = _registrations.TryGetValue(serverHandle, out ItemRegistration registration)
             ? registration.ClientHandle
             : item.ClientHandle;
@@ -355,50 +316,41 @@ internal sealed class LoopbackHdaCallRouter
         return new OpcHdaItem(clientHandle, item.AggregateHandle, item.Timestamps, item.Qualities, item.Values);
     }
 
-    private static string[] ReadStringArray(ref NdrReader reader)
-    {
+    private static string[] ReadStringArray(ref NdrReader reader) {
         int count = checked((int)reader.ReadUInt32());
         var values = new string[count];
-        for (int index = 0; index < values.Length; index++)
-        {
+        for (int index = 0; index < values.Length; index++) {
             values[index] = reader.ReadUnicodeStringPtr() ?? string.Empty;
         }
 
         return values;
     }
 
-    private static int[] ReadInt32Array(ref NdrReader reader)
-    {
+    private static int[] ReadInt32Array(ref NdrReader reader) {
         int count = checked((int)reader.ReadUInt32());
         var values = new int[count];
-        for (int index = 0; index < values.Length; index++)
-        {
+        for (int index = 0; index < values.Length; index++) {
             values[index] = reader.ReadInt32();
         }
 
         return values;
     }
 
-    private static void WriteInt32Array(ref NdrWriter writer, ReadOnlySpan<int> values)
-    {
+    private static void WriteInt32Array(ref NdrWriter writer, ReadOnlySpan<int> values) {
         writer.WriteUInt32(unchecked((uint)values.Length));
-        foreach (int value in values)
-        {
+        foreach (int value in values) {
             writer.WriteInt32(value);
         }
     }
 
-    private static void WriteItemArray(ref NdrWriter writer, ReadOnlySpan<OpcHdaItem> items)
-    {
+    private static void WriteItemArray(ref NdrWriter writer, ReadOnlySpan<OpcHdaItem> items) {
         writer.WriteUInt32(unchecked((uint)items.Length));
-        foreach (OpcHdaItem item in items)
-        {
+        foreach (OpcHdaItem item in items) {
             NdrOpcHdaItemCodec.Write(ref writer, item);
         }
     }
 
-    private static void WriteHistorianStatus(ref NdrWriter writer, OpcServerStatus status)
-    {
+    private static void WriteHistorianStatus(ref NdrWriter writer, OpcServerStatus status) {
         writer.WriteUInt32(ToHistorianStatus(status.State));
         writer.WriteFileTime(ToFileTime(status.CurrentTime));
         writer.WriteFileTime(ToFileTime(status.StartTime));
@@ -411,8 +363,7 @@ internal sealed class LoopbackHdaCallRouter
         writer.WriteUnicodeStringPtr(status.VendorInfo);
     }
 
-    private static uint ToHistorianStatus(OpcServerState state) => state switch
-    {
+    private static uint ToHistorianStatus(OpcServerState state) => state switch {
         OpcServerState.Running => 1u,
         OpcServerState.Failed or OpcServerState.CommFault => 2u,
         _ => 3u,
@@ -425,8 +376,7 @@ internal sealed class LoopbackHdaCallRouter
 
     private static NdrCallResult NotImplemented() => new(OpcResultId.NotImplemented.Code, ReadOnlyMemory<byte>.Empty);
 
-    private static ReadOnlyMemory<byte> WritePayload(NdrWriteAction write)
-    {
+    private static ReadOnlyMemory<byte> WritePayload(NdrWriteAction write) {
         var buffer = new byte[ResponseBufferSize];
         var writer = new NdrWriter(buffer);
         write(ref writer);

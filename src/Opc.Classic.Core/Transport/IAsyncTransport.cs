@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -16,8 +16,7 @@ namespace Opc.Classic.Transport;
 /// ncacn_ip_tcp. Replaces the legacy <c>Opc.Classic.Dcom.Rpc.ITransport</c>
 /// in the Phase 2C end-to-end refactor.
 /// </summary>
-public interface IAsyncTransport : IAsyncDisposable
-{
+public interface IAsyncTransport : IAsyncDisposable {
     /// <summary>Gets the remote network endpoint associated with this transport.</summary>
     EndPoint RemoteEndpoint { get; }
 

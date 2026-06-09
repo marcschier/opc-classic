@@ -1,9 +1,10 @@
-// SPDX-License-Identifier: MIT
+﻿// SPDX-License-Identifier: MIT
 
 using Opc.Classic.Dcom.Core;
 using System;
 
-namespace Opc.Classic.Dcom.Automation; 
+namespace Opc.Classic.Dcom.Automation;
+
 /// <summary>
 /// Implements the <i>TYPEATTR</i> structure of COM Automation and
 /// contains attributes of an ITypeInfo.

@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -10,8 +10,7 @@ namespace Opc.Classic.Dcom.Kerberos.Spnego;
 /// <summary>
 /// Convenience factory for common SPNEGO tokens.
 /// </summary>
-public static class SpnegoTokenBuilder
-{
+public static class SpnegoTokenBuilder {
     private static readonly string[] KerberosPreferredMechTypes = [SpnegoOids.KerberosV5, SpnegoOids.Ntlmssp];
 
     /// <summary>
@@ -28,8 +27,7 @@ public static class SpnegoTokenBuilder
     /// <param name="kerberosApReq">Kerberos AP-REQ token to carry as the optimistic mechanism token.</param>
     /// <param name="mechListBytes">Exact DER bytes of the MechTypeList SEQUENCE.</param>
     /// <returns>The DER-encoded SPNEGO initial context token.</returns>
-    public static byte[] BuildInitToken(ReadOnlyMemory<byte> kerberosApReq, out byte[] mechListBytes)
-    {
+    public static byte[] BuildInitToken(ReadOnlyMemory<byte> kerberosApReq, out byte[] mechListBytes) {
         var init = CreateKerberosPreferredInit(kerberosApReq);
         mechListBytes = init.MechListBytes.ToArray();
         return SpnegoEncoder.EncodeNegTokenInit(init);

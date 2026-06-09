@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -12,27 +12,23 @@ using TUnit.Core;
 
 namespace Opc.Classic.Da.Tests;
 
-public sealed class NdrOpcItemVqtCodecTests
-{
+public sealed class NdrOpcItemVqtCodecTests {
     private delegate void NdrWriteAction(ref NdrWriter w);
 
-    private static byte[] WriteOne(NdrWriteAction write, int capacity = 256)
-    {
+    private static byte[] WriteOne(NdrWriteAction write, int capacity = 256) {
         var buf = new byte[capacity];
         var w = new NdrWriter(buf);
         write(ref w);
         return buf[..w.Position];
     }
 
-    private static OpcItemVqt ReadOne(byte[] bytes)
-    {
+    private static OpcItemVqt ReadOne(byte[] bytes) {
         var r = new NdrReader(bytes);
         return NdrOpcItemVqtCodec.Read(ref r);
     }
 
     [Test]
-    public async Task RoundTrip_ValueOnly_NoQualityNoTimestamp()
-    {
+    public async Task RoundTrip_ValueOnly_NoQualityNoTimestamp() {
         var input = new OpcItemVqt(OpcVariant.FromDouble(42.5));
         var bytes = WriteOne((ref NdrWriter w) => NdrOpcItemVqtCodec.Write(ref w, input));
         var back = ReadOne(bytes);
@@ -42,8 +38,7 @@ public sealed class NdrOpcItemVqtCodecTests
     }
 
     [Test]
-    public async Task RoundTrip_WithQuality()
-    {
+    public async Task RoundTrip_WithQuality() {
         var input = new OpcItemVqt(
             OpcVariant.FromInt32(123),
             Quality: OpcQuality.Good);
@@ -56,8 +51,7 @@ public sealed class NdrOpcItemVqtCodecTests
     }
 
     [Test]
-    public async Task RoundTrip_WithTimestamp()
-    {
+    public async Task RoundTrip_WithTimestamp() {
         var ts = new DateTimeOffset(2026, 5, 22, 10, 30, 0, TimeSpan.Zero);
         var input = new OpcItemVqt(
             OpcVariant.FromInt32(7),
@@ -69,8 +63,7 @@ public sealed class NdrOpcItemVqtCodecTests
     }
 
     [Test]
-    public async Task RoundTrip_WithQualityAndTimestamp()
-    {
+    public async Task RoundTrip_WithQualityAndTimestamp() {
         var ts = new DateTimeOffset(2026, 5, 22, 12, 0, 0, TimeSpan.Zero);
         var input = new OpcItemVqt(
             OpcVariant.FromString("hello"),
@@ -84,8 +77,7 @@ public sealed class NdrOpcItemVqtCodecTests
     }
 
     [Test]
-    public async Task QualitySpecified_WireUsesWin32BoolMinusOne()
-    {
+    public async Task QualitySpecified_WireUsesWin32BoolMinusOne() {
         var input = new OpcItemVqt(OpcVariant.FromInt32(1), Quality: OpcQuality.Good);
         var bytes = WriteOne((ref NdrWriter w) => NdrOpcItemVqtCodec.Write(ref w, input));
         // wireVARIANT for VT_I4 = 16 hdr + 4 ULONG discriminator + 4 body = 24 bytes.
@@ -97,8 +89,7 @@ public sealed class NdrOpcItemVqtCodecTests
     }
 
     [Test]
-    public async Task QualityNotSpecified_WireUsesZeroBool_AndZeroQuality()
-    {
+    public async Task QualityNotSpecified_WireUsesZeroBool_AndZeroQuality() {
         var input = new OpcItemVqt(OpcVariant.FromInt32(1));
         var bytes = WriteOne((ref NdrWriter w) => NdrOpcItemVqtCodec.Write(ref w, input));
         // wireVARIANT for VT_I4 = 24 bytes (header + discriminator + body).

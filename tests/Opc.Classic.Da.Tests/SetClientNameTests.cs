@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -18,11 +18,9 @@ using TUnit.Core;
 
 namespace Opc.Classic.Da.Tests;
 
-public sealed class SetClientNameTests
-{
+public sealed class SetClientNameTests {
     [Test]
-    public async Task Client_round_trip_delivers_name_to_server()
-    {
+    public async Task Client_round_trip_delivers_name_to_server() {
         var server = new RecordingDaServer();
         var dispatcher = new OpcDaServerDispatcher(server);
         var channel = new InMemoryCallChannel((iid, opnum, payload, cancellationToken) =>
@@ -36,8 +34,7 @@ public sealed class SetClientNameTests
     }
 
     [Test]
-    public async Task Multiple_calls_update_stored_name()
-    {
+    public async Task Multiple_calls_update_stored_name() {
         var server = new RecordingDaServer();
         var dispatcher = new OpcDaServerDispatcher(server);
         var channel = new InMemoryCallChannel((iid, opnum, payload, cancellationToken) =>
@@ -52,8 +49,7 @@ public sealed class SetClientNameTests
     }
 
     [Test]
-    public async Task Default_implementer_noop_succeeds()
-    {
+    public async Task Default_implementer_noop_succeeds() {
         IDaServer server = new DefaultDaServer();
 
         bool completed = false;
@@ -65,10 +61,8 @@ public sealed class SetClientNameTests
 
     [Test]
     [SupportedOSPlatform("windows")]
-    public async Task Windows_ccw_SetClientName_forwards_to_managed_server()
-    {
-        if (!OperatingSystem.IsWindows())
-        {
+    public async Task Windows_ccw_SetClientName_forwards_to_managed_server() {
+        if (!OperatingSystem.IsWindows()) {
             return;
         }
 
@@ -87,33 +81,27 @@ public sealed class SetClientNameTests
 
     private static string ReadCcwClientName() => "ccw-client";
 
-    private static unsafe int InvokeCcwSetClientName(IntPtr ccw, string clientName)
-    {
+    private static unsafe int InvokeCcwSetClientName(IntPtr ccw, string clientName) {
         IntPtr* vtable = *(IntPtr**)ccw;
         var setClientName = (delegate* unmanaged<IntPtr, IntPtr, int>)vtable[7];
         IntPtr namePtr = Marshal.StringToCoTaskMemUni(clientName);
-        try
-        {
+        try {
             return setClientName(ccw, namePtr);
         }
-        finally
-        {
+        finally {
             Marshal.FreeCoTaskMem(namePtr);
         }
     }
 
-    private sealed class LoopbackDaServerClient : IDaServer
-    {
+    private sealed class LoopbackDaServerClient : IDaServer {
         private readonly IOPCCommonClientProxy _commonProxy;
 
-        public LoopbackDaServerClient(InMemoryCallChannel channel)
-        {
+        public LoopbackDaServerClient(InMemoryCallChannel channel) {
             ArgumentNullException.ThrowIfNull(channel);
             _commonProxy = new IOPCCommonClientProxy(channel);
         }
 
-        public event EventHandler<ServerShutdownEventArgs>? ServerShutdown
-        {
+        public event EventHandler<ServerShutdownEventArgs>? ServerShutdown {
             add { }
             remove { }
         }
@@ -138,8 +126,7 @@ public sealed class SetClientNameTests
         public async IAsyncEnumerable<BrowseElement> BrowseAsync(
             string itemPath,
             BrowseFilters filters = BrowseFilters.All,
-            [EnumeratorCancellation] CancellationToken cancellationToken = default)
-        {
+            [EnumeratorCancellation] CancellationToken cancellationToken = default) {
             _ = itemPath; _ = filters;
             cancellationToken.ThrowIfCancellationRequested();
             await Task.CompletedTask.ConfigureAwait(false);
@@ -169,20 +156,17 @@ public sealed class SetClientNameTests
             ValueTask.CompletedTask;
     }
 
-    private sealed class RecordingDaServer : IOpcDaServer, IDaServer
-    {
+    private sealed class RecordingDaServer : IOpcDaServer, IDaServer {
         public string ClientName { get; private set; } = string.Empty;
 
-        public event EventHandler<ServerShutdownEventArgs>? ServerShutdown
-        {
+        public event EventHandler<ServerShutdownEventArgs>? ServerShutdown {
             add { }
             remove { }
         }
 
         public int LocaleId => 0;
 
-        public Task SetClientNameAsync(string clientName, CancellationToken cancellationToken = default)
-        {
+        public Task SetClientNameAsync(string clientName, CancellationToken cancellationToken = default) {
             ClientName = clientName;
             return Task.CompletedTask;
         }
@@ -217,8 +201,7 @@ public sealed class SetClientNameTests
         public async IAsyncEnumerable<BrowseElement> BrowseAsync(
             string itemPath,
             BrowseFilters filters = BrowseFilters.All,
-            [EnumeratorCancellation] CancellationToken cancellationToken = default)
-        {
+            [EnumeratorCancellation] CancellationToken cancellationToken = default) {
             _ = itemPath; _ = filters;
             cancellationToken.ThrowIfCancellationRequested();
             await Task.CompletedTask.ConfigureAwait(false);
@@ -248,10 +231,8 @@ public sealed class SetClientNameTests
             ValueTask.CompletedTask;
     }
 
-    private sealed class DefaultDaServer : IDaServer
-    {
-        public event EventHandler<ServerShutdownEventArgs>? ServerShutdown
-        {
+    private sealed class DefaultDaServer : IDaServer {
+        public event EventHandler<ServerShutdownEventArgs>? ServerShutdown {
             add { }
             remove { }
         }
@@ -273,8 +254,7 @@ public sealed class SetClientNameTests
         public async IAsyncEnumerable<BrowseElement> BrowseAsync(
             string itemPath,
             BrowseFilters filters = BrowseFilters.All,
-            [EnumeratorCancellation] CancellationToken cancellationToken = default)
-        {
+            [EnumeratorCancellation] CancellationToken cancellationToken = default) {
             _ = itemPath; _ = filters;
             cancellationToken.ThrowIfCancellationRequested();
             await Task.CompletedTask.ConfigureAwait(false);
@@ -304,8 +284,7 @@ public sealed class SetClientNameTests
             ValueTask.CompletedTask;
     }
 
-    private sealed class EmptySubscription : IDaSubscription
-    {
+    private sealed class EmptySubscription : IDaSubscription {
         public SubscriptionState State => new();
 
         public IAsyncEnumerable<DataChange> DataChanges => EmptyDataChanges();
@@ -334,8 +313,7 @@ public sealed class SetClientNameTests
         public ValueTask DisposeAsync() =>
             ValueTask.CompletedTask;
 
-        private static async IAsyncEnumerable<DataChange> EmptyDataChanges()
-        {
+        private static async IAsyncEnumerable<DataChange> EmptyDataChanges() {
             await Task.CompletedTask.ConfigureAwait(false);
             yield break;
         }

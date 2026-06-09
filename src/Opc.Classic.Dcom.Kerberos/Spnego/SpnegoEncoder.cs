@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -12,15 +12,13 @@ namespace Opc.Classic.Dcom.Kerberos.Spnego;
 /// <summary>
 /// Encodes RFC 4178 SPNEGO negotiation tokens.
 /// </summary>
-public static class SpnegoEncoder
-{
+public static class SpnegoEncoder {
     /// <summary>
     /// Encodes a NegTokenInit in the RFC 2743 InitialContextToken envelope for SPNEGO.
     /// </summary>
     /// <param name="init">Initial negotiation fields.</param>
     /// <returns>The DER-encoded SPNEGO initial context token.</returns>
-    public static byte[] EncodeNegTokenInit(SpnegoNegTokenInit init)
-    {
+    public static byte[] EncodeNegTokenInit(SpnegoNegTokenInit init) {
         ArgumentNullException.ThrowIfNull(init);
 
         var negTokenInit = new AsnWriter(AsnEncodingRules.DER);
@@ -31,13 +29,11 @@ public static class SpnegoEncoder
         negTokenInit.WriteEncodedValue(EncodeMechTypeList(init.MechTypes));
         negTokenInit.PopSequence(mechTypesTag);
 
-        if (!init.MechToken.IsEmpty)
-        {
+        if (!init.MechToken.IsEmpty) {
             WriteOctetStringField(negTokenInit, 2, init.MechToken);
         }
 
-        if (init.MechListMic.HasValue && !init.MechListMic.Value.IsEmpty)
-        {
+        if (init.MechListMic.HasValue && !init.MechListMic.Value.IsEmpty) {
             WriteOctetStringField(negTokenInit, 3, init.MechListMic.Value);
         }
 
@@ -64,36 +60,31 @@ public static class SpnegoEncoder
     /// </summary>
     /// <param name="response">Response negotiation fields.</param>
     /// <returns>The DER-encoded SPNEGO negTokenResp negotiation token.</returns>
-    public static byte[] EncodeNegTokenResp(SpnegoNegTokenResp response)
-    {
+    public static byte[] EncodeNegTokenResp(SpnegoNegTokenResp response) {
         ArgumentNullException.ThrowIfNull(response);
 
         var body = new AsnWriter(AsnEncodingRules.DER);
         body.PushSequence();
 
-        if (response.NegState.HasValue)
-        {
+        if (response.NegState.HasValue) {
             var negStateTag = new Asn1Tag(TagClass.ContextSpecific, 0, isConstructed: true);
             body.PushSequence(negStateTag);
             body.WriteEnumeratedValue(response.NegState.GetValueOrDefault());
             body.PopSequence(negStateTag);
         }
 
-        if (!string.IsNullOrEmpty(response.SupportedMech))
-        {
+        if (!string.IsNullOrEmpty(response.SupportedMech)) {
             var supportedMechTag = new Asn1Tag(TagClass.ContextSpecific, 1, isConstructed: true);
             body.PushSequence(supportedMechTag);
             body.WriteObjectIdentifier(response.SupportedMech);
             body.PopSequence(supportedMechTag);
         }
 
-        if (response.ResponseToken.HasValue)
-        {
+        if (response.ResponseToken.HasValue) {
             WriteOctetStringField(body, 2, response.ResponseToken.Value);
         }
 
-        if (response.MechListMic.HasValue)
-        {
+        if (response.MechListMic.HasValue) {
             WriteOctetStringField(body, 3, response.MechListMic.Value);
         }
 
@@ -117,8 +108,7 @@ public static class SpnegoEncoder
     public static byte[] EncodeNegTokenResp(
         SpnegoNegTokenResp response,
         ReadOnlySpan<byte> mechListBytes,
-        IGssMicProvider micProvider)
-    {
+        IGssMicProvider micProvider) {
         ArgumentNullException.ThrowIfNull(response);
         ArgumentNullException.ThrowIfNull(micProvider);
 
@@ -130,14 +120,12 @@ public static class SpnegoEncoder
     /// </summary>
     /// <param name="mechTypes">Mechanism object identifiers in initiator preference order.</param>
     /// <returns>The exact DER-encoded MechTypeList SEQUENCE.</returns>
-    public static byte[] EncodeMechTypeList(IEnumerable<string> mechTypes)
-    {
+    public static byte[] EncodeMechTypeList(IEnumerable<string> mechTypes) {
         ArgumentNullException.ThrowIfNull(mechTypes);
 
         var writer = new AsnWriter(AsnEncodingRules.DER);
         writer.PushSequence();
-        foreach (var mechType in mechTypes)
-        {
+        foreach (var mechType in mechTypes) {
             ArgumentNullException.ThrowIfNull(mechType);
 
             writer.WriteObjectIdentifier(mechType);
@@ -147,8 +135,7 @@ public static class SpnegoEncoder
         return writer.Encode();
     }
 
-    private static void WriteOctetStringField(AsnWriter writer, int tagValue, ReadOnlyMemory<byte> value)
-    {
+    private static void WriteOctetStringField(AsnWriter writer, int tagValue, ReadOnlyMemory<byte> value) {
         var tag = new Asn1Tag(TagClass.ContextSpecific, tagValue, isConstructed: true);
         writer.PushSequence(tag);
         writer.WriteOctetString(value.Span);

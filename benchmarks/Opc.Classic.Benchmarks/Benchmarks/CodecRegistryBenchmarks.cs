@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -8,21 +8,18 @@ using BenchmarkDotNet.Attributes;
 namespace Opc.Classic.Benchmarks.Benchmarks;
 
 [MemoryDiagnoser]
-public class CodecRegistryBenchmarks
-{
+public class CodecRegistryBenchmarks {
     private LocalCodecRegistry _warmRegistry = new();
 
     [GlobalSetup]
-    public void GlobalSetup()
-    {
+    public void GlobalSetup() {
         _warmRegistry = new LocalCodecRegistry();
         _ = _warmRegistry.Get(typeof(int));
         _ = _warmRegistry.Get(typeof(OpcVariant));
     }
 
     [Benchmark]
-    public CodecEntry ColdPrimitiveLookup()
-    {
+    public CodecEntry ColdPrimitiveLookup() {
         var registry = new LocalCodecRegistry();
         return registry.Get(typeof(int));
     }
@@ -31,8 +28,7 @@ public class CodecRegistryBenchmarks
     public CodecEntry WarmPrimitiveLookup() => _warmRegistry.Get(typeof(int));
 
     [Benchmark]
-    public CodecEntry ColdStructLookup()
-    {
+    public CodecEntry ColdStructLookup() {
         var registry = new LocalCodecRegistry();
         return registry.Get(typeof(OpcVariant));
     }
@@ -42,14 +38,11 @@ public class CodecRegistryBenchmarks
 
     public readonly record struct CodecEntry(string Encoder, string Decoder);
 
-    private sealed class LocalCodecRegistry
-    {
+    private sealed class LocalCodecRegistry {
         private readonly Dictionary<Type, CodecEntry> _cache = [];
 
-        public CodecEntry Get(Type type)
-        {
-            if (_cache.TryGetValue(type, out CodecEntry entry))
-            {
+        public CodecEntry Get(Type type) {
+            if (_cache.TryGetValue(type, out CodecEntry entry)) {
                 return entry;
             }
 
@@ -58,15 +51,12 @@ public class CodecRegistryBenchmarks
             return entry;
         }
 
-        private static CodecEntry CreateEntry(Type type)
-        {
-            if (type == typeof(int))
-            {
+        private static CodecEntry CreateEntry(Type type) {
+            if (type == typeof(int)) {
                 return new CodecEntry("NdrWriter.WriteInt32", "NdrReader.ReadInt32");
             }
 
-            if (type == typeof(OpcVariant))
-            {
+            if (type == typeof(OpcVariant)) {
                 return new CodecEntry("NdrVariantExtensions.WriteVariant", "NdrVariantExtensions.ReadVariant");
             }
 

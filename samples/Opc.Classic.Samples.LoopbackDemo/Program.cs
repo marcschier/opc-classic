@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: MIT
+﻿// SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 
 using Microsoft.Extensions.DependencyInjection;
@@ -10,24 +10,20 @@ using Opc.Classic.Testing;
 
 namespace Opc.Classic.Samples.LoopbackDemo;
 
-internal static class Program
-{
-    public static async Task<int> Main(string[] args)
-    {
+internal static class Program {
+    public static async Task<int> Main(string[] args) {
         HostApplicationBuilder builder = Host.CreateApplicationBuilder(args);
 
         builder.Logging.ClearProviders();
         builder.Logging.SetMinimumLevel(LogLevel.Warning);
-        builder.Logging.AddSimpleConsole(static options =>
-        {
+        builder.Logging.AddSimpleConsole(static options => {
             options.SingleLine = true;
             options.TimestampFormat = "HH:mm:ss ";
         });
 
         builder.Services.AddClassicServer();
         builder.Services.AddSingleton<LoopbackTagStore>();
-        builder.Services.AddOpcDaServer<SampleDaServer>(static options =>
-        {
+        builder.Services.AddOpcDaServer<SampleDaServer>(static options => {
             options.Clsid = new Guid("14E7FD8D-15D3-43F3-8D2F-93B41DA8D7B5");
             options.ProgId = "Opc.Classic.Samples.LoopbackDemo.1";
             options.FriendlyName = "Opc.Classic Loopback Demo DA Server";

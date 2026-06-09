@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -21,8 +21,7 @@ namespace Opc.Classic.Discovery;
 /// Declaring the full Discovery IID set in the initial bind avoids that class
 /// of failure.
 /// </remarks>
-public static class OpcDiscoverySpecCatalog
-{
+public static class OpcDiscoverySpecCatalog {
     private static readonly Guid[] s_discovery =
     {
         OpcGuids.IID_IOPCServerList2,

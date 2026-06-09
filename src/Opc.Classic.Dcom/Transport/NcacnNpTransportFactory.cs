@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -15,8 +15,7 @@ using Opc.Classic.Transport;
 namespace Opc.Classic.Dcom.Transport;
 
 /// <summary>Factory that creates <see cref="NcacnNpTransport" /> instances for <see cref="NcacnNpEndPoint" /> values.</summary>
-public sealed class NcacnNpTransportFactory : IAsyncTransportFactory
-{
+public sealed class NcacnNpTransportFactory : IAsyncTransportFactory {
     private readonly IAuthContext _smbAuthContext;
     private readonly int _maxSmb2MessageSize;
     private readonly Smb2TransportConnector? _transportConnector;
@@ -25,8 +24,7 @@ public sealed class NcacnNpTransportFactory : IAsyncTransportFactory
     public NcacnNpTransportFactory(
         IAuthContext smbAuthContext,
         PropertyBag? properties = null,
-        Smb2TransportConnector? transportConnector = null)
-    {
+        Smb2TransportConnector? transportConnector = null) {
         _smbAuthContext = smbAuthContext ?? throw new ArgumentNullException(nameof(smbAuthContext));
         _maxSmb2MessageSize = RpcTransportQuotas.GetInt32(
             properties,
@@ -39,11 +37,9 @@ public sealed class NcacnNpTransportFactory : IAsyncTransportFactory
     /// <inheritdoc />
     public async ValueTask<IAsyncTransport> ConnectAsync(
         EndPoint endpoint,
-        CancellationToken cancellationToken = default)
-    {
+        CancellationToken cancellationToken = default) {
         ArgumentNullException.ThrowIfNull(endpoint);
-        if (endpoint is not NcacnNpEndPoint namedPipeEndpoint)
-        {
+        if (endpoint is not NcacnNpEndPoint namedPipeEndpoint) {
             throw new NotSupportedException($"Endpoint type '{endpoint.GetType().FullName}' is not an ncacn_np endpoint.");
         }
 

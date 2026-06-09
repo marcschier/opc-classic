@@ -1,8 +1,9 @@
-// SPDX-License-Identifier: MIT
+﻿// SPDX-License-Identifier: MIT
 
 using System;
 
-namespace Opc.Classic.Dcom.Automation; 
+namespace Opc.Classic.Dcom.Automation;
+
 /// <summary>
 /// Implements the <i>IMPLTYPEFLAGS</i> structure of COM Automation.
 /// </summary>

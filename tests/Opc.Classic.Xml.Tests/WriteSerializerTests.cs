@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -11,28 +11,23 @@ using TUnit.Core;
 
 namespace Opc.Classic.Xml.Tests;
 
-public sealed class WriteSerializerTests
-{
-    private static string SerializeRequest(XmlDaWriteRequest req)
-    {
+public sealed class WriteSerializerTests {
+    private static string SerializeRequest(XmlDaWriteRequest req) {
         using var ms = new MemoryStream();
-        using (var w = new SoapEnvelopeWriter(ms))
-        {
+        using (var w = new SoapEnvelopeWriter(ms)) {
             WriteSerializer.WriteRequest(w, req);
         }
         return Encoding.UTF8.GetString(ms.ToArray());
     }
 
-    private static XmlDaWriteResponse Deserialize(string xml)
-    {
+    private static XmlDaWriteResponse Deserialize(string xml) {
         using var ms = new MemoryStream(Encoding.UTF8.GetBytes(xml));
         using var r = new SoapEnvelopeReader(ms);
         return WriteSerializer.ReadResponse(r);
     }
 
     [Test]
-    public async Task Request_EmitsValueElementWithXsiType_Double()
-    {
+    public async Task Request_EmitsValueElementWithXsiType_Double() {
         var xml = SerializeRequest(new XmlDaWriteRequest(
             new XmlDaRequestHeader(null, null),
             new[] { new XmlDaWriteItem("Tag1", "h1", XmlDaValue.OfDouble(42.5)) }));
@@ -42,8 +37,7 @@ public sealed class WriteSerializerTests
     }
 
     [Test]
-    public async Task Request_EmitsValueElementWithXsiType_Boolean()
-    {
+    public async Task Request_EmitsValueElementWithXsiType_Boolean() {
         var xml = SerializeRequest(new XmlDaWriteRequest(
             new XmlDaRequestHeader(null, null),
             new[] { new XmlDaWriteItem("Switch", null, XmlDaValue.OfBoolean(true)) }));
@@ -53,8 +47,7 @@ public sealed class WriteSerializerTests
     }
 
     [Test]
-    public async Task Request_EmitsValueElementWithXsiType_Int()
-    {
+    public async Task Request_EmitsValueElementWithXsiType_Int() {
         var xml = SerializeRequest(new XmlDaWriteRequest(
             new XmlDaRequestHeader(null, null),
             new[] { new XmlDaWriteItem("Counter", null, XmlDaValue.OfInt32(99)) }));
@@ -64,8 +57,7 @@ public sealed class WriteSerializerTests
     }
 
     [Test]
-    public async Task Request_EmitsValueElementWithXsiType_String()
-    {
+    public async Task Request_EmitsValueElementWithXsiType_String() {
         var xml = SerializeRequest(new XmlDaWriteRequest(
             new XmlDaRequestHeader(null, null),
             new[] { new XmlDaWriteItem("Label", null, XmlDaValue.OfString("hello")) }));
@@ -75,8 +67,7 @@ public sealed class WriteSerializerTests
     }
 
     [Test]
-    public async Task Request_EmitsReturnValuesOnReply_True()
-    {
+    public async Task Request_EmitsReturnValuesOnReply_True() {
         var xml = SerializeRequest(new XmlDaWriteRequest(
             new XmlDaRequestHeader(null, null),
             new[] { new XmlDaWriteItem("Tag1", null, XmlDaValue.OfInt32(1)) },
@@ -86,8 +77,7 @@ public sealed class WriteSerializerTests
     }
 
     [Test]
-    public async Task Request_EmitsClientHandle_AndOmitsWhenEmpty()
-    {
+    public async Task Request_EmitsClientHandle_AndOmitsWhenEmpty() {
         var withHandle = SerializeRequest(new XmlDaWriteRequest(
             new XmlDaRequestHeader(null, null),
             new[] { new XmlDaWriteItem("Tag1", "h-42", XmlDaValue.OfInt32(1)) }));
@@ -100,8 +90,7 @@ public sealed class WriteSerializerTests
     }
 
     [Test]
-    public async Task Response_DecodesPerItemResultId_AndServerState()
-    {
+    public async Task Response_DecodesPerItemResultId_AndServerState() {
         const string xml = """
             <?xml version="1.0"?>
             <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
@@ -128,8 +117,7 @@ public sealed class WriteSerializerTests
     }
 
     [Test]
-    public async Task Response_HandlesEmptyResponseList()
-    {
+    public async Task Response_HandlesEmptyResponseList() {
         const string xml = """
             <?xml version="1.0"?>
             <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
@@ -146,8 +134,7 @@ public sealed class WriteSerializerTests
     }
 
     [Test]
-    public async Task Response_RejectsWrongOperation()
-    {
+    public async Task Response_RejectsWrongOperation() {
         const string xml = """
             <?xml version="1.0"?>
             <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">

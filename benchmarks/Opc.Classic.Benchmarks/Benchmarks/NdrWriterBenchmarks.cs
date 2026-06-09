@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -10,8 +10,7 @@ using Opc.Classic.Ndr;
 namespace Opc.Classic.Benchmarks.Benchmarks;
 
 [MemoryDiagnoser]
-public class NdrWriterBenchmarks
-{
+public class NdrWriterBenchmarks {
     private const long FileTimeSeed = 133_485_408_000_000_000L;
 
     private byte[] _buffer = [];
@@ -25,8 +24,7 @@ public class NdrWriterBenchmarks
     public int Scale { get; set; }
 
     [GlobalSetup]
-    public void GlobalSetup()
-    {
+    public void GlobalSetup() {
         _uint32Values = CreateUInt32Values(Scale);
         _doubleValues = CreateDoubleValues(Scale);
         _fileTimeValues = CreateFileTimeValues(Scale);
@@ -38,12 +36,10 @@ public class NdrWriterBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int WriteUInt32Naive()
-    {
+    public int WriteUInt32Naive() {
         int position = 0;
         Span<byte> span = _buffer;
-        for (int i = 0; i < _uint32Values.Length; i++)
-        {
+        for (int i = 0; i < _uint32Values.Length; i++) {
             BinaryPrimitives.WriteUInt32LittleEndian(span.Slice(position, 4), _uint32Values[i]);
             position += 4;
         }
@@ -52,11 +48,9 @@ public class NdrWriterBenchmarks
     }
 
     [Benchmark]
-    public int WriteUInt32()
-    {
+    public int WriteUInt32() {
         var writer = new NdrWriter(_buffer);
-        for (int i = 0; i < _uint32Values.Length; i++)
-        {
+        for (int i = 0; i < _uint32Values.Length; i++) {
             writer.WriteUInt32(_uint32Values[i]);
         }
 
@@ -64,8 +58,7 @@ public class NdrWriterBenchmarks
     }
 
     [Benchmark]
-    public int WriteStringNaive()
-    {
+    public int WriteStringNaive() {
         int position = 0;
         Span<byte> span = _buffer;
         int countWithNul = _stringValue.Length + 1;
@@ -76,8 +69,7 @@ public class NdrWriterBenchmarks
         BinaryPrimitives.WriteUInt32LittleEndian(span.Slice(position, 4), unchecked((uint)countWithNul));
         position += 4;
 
-        for (int i = 0; i < _stringValue.Length; i++)
-        {
+        for (int i = 0; i < _stringValue.Length; i++) {
             BinaryPrimitives.WriteUInt16LittleEndian(span.Slice(position, 2), _stringValue[i]);
             position += 2;
         }
@@ -87,22 +79,19 @@ public class NdrWriterBenchmarks
     }
 
     [Benchmark]
-    public int WriteString()
-    {
+    public int WriteString() {
         var writer = new NdrWriter(_buffer);
         writer.WriteUnicodeString(_stringValue);
         return writer.Position;
     }
 
     [Benchmark]
-    public int WriteByteArrayNaive()
-    {
+    public int WriteByteArrayNaive() {
         int position = 0;
         Span<byte> span = _buffer;
         BinaryPrimitives.WriteUInt32LittleEndian(span.Slice(position, 4), unchecked((uint)_byteArray.Length));
         position += 4;
-        for (int i = 0; i < _byteArray.Length; i++)
-        {
+        for (int i = 0; i < _byteArray.Length; i++) {
             span[position++] = _byteArray[i];
         }
 
@@ -110,19 +99,16 @@ public class NdrWriterBenchmarks
     }
 
     [Benchmark]
-    public int WriteByteArray()
-    {
+    public int WriteByteArray() {
         var writer = new NdrWriter(_buffer);
         writer.WriteConformantByteArray(_byteArray);
         return writer.Position;
     }
 
     [Benchmark]
-    public int WriteDouble()
-    {
+    public int WriteDouble() {
         var writer = new NdrWriter(_buffer);
-        for (int i = 0; i < _doubleValues.Length; i++)
-        {
+        for (int i = 0; i < _doubleValues.Length; i++) {
             writer.WriteDouble(_doubleValues[i]);
         }
 
@@ -130,81 +116,67 @@ public class NdrWriterBenchmarks
     }
 
     [Benchmark]
-    public int WriteFileTime()
-    {
+    public int WriteFileTime() {
         var writer = new NdrWriter(_buffer);
-        for (int i = 0; i < _fileTimeValues.Length; i++)
-        {
+        for (int i = 0; i < _fileTimeValues.Length; i++) {
             writer.WriteFileTime(_fileTimeValues[i]);
         }
 
         return writer.Position;
     }
 
-    private static uint[] CreateUInt32Values(int count)
-    {
+    private static uint[] CreateUInt32Values(int count) {
         var values = new uint[count];
-        for (int i = 0; i < values.Length; i++)
-        {
+        for (int i = 0; i < values.Length; i++) {
             values[i] = unchecked(0x9E37_79B9u + (uint)i);
         }
 
         return values;
     }
 
-    private static double[] CreateDoubleValues(int count)
-    {
+    private static double[] CreateDoubleValues(int count) {
         var values = new double[count];
-        for (int i = 0; i < values.Length; i++)
-        {
+        for (int i = 0; i < values.Length; i++) {
             values[i] = Math.PI * (i + 1) / 17.0;
         }
 
         return values;
     }
 
-    private static long[] CreateFileTimeValues(int count)
-    {
+    private static long[] CreateFileTimeValues(int count) {
         var values = new long[count];
-        for (int i = 0; i < values.Length; i++)
-        {
+        for (int i = 0; i < values.Length; i++) {
             values[i] = FileTimeSeed + i * 10_000L;
         }
 
         return values;
     }
 
-    private static byte[] CreateByteArray(int count)
-    {
+    private static byte[] CreateByteArray(int count) {
         var values = new byte[count];
-        for (int i = 0; i < values.Length; i++)
-        {
+        for (int i = 0; i < values.Length; i++) {
             values[i] = unchecked((byte)(i * 31 + 7));
         }
 
         return values;
     }
 
-    private static string CreateString(int length)
-    {
+    private static string CreateString(int length) {
         var chars = new char[length];
-        for (int i = 0; i < chars.Length; i++)
-        {
+        for (int i = 0; i < chars.Length; i++) {
             chars[i] = (char)('A' + i % 26);
         }
 
         return new string(chars);
     }
 
-    private static int MapByteArrayLength(int scale) => scale switch
-    {
+    private static int MapByteArrayLength(int scale) => scale switch {
         1 => 16,
         100 => 1_024,
         _ => 64 * 1_024,
     };
 
-    private static int MapStringLength(int scale) => scale switch
-    {
+    private static int MapStringLength(int scale) => scale switch {
         1 => 16,
         100 => 256,
         _ => 4_096,

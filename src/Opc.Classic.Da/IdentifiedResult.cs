@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -11,16 +11,14 @@ namespace Opc.Classic.Da;
 /// The outcome of an operation identified by item but not carrying a value
 /// payload — write results, validate results, item-add results, etc.
 /// </summary>
-public sealed class IdentifiedResult : ItemIdentifier
-{
+public sealed class IdentifiedResult : ItemIdentifier {
     /// <summary>Construct.</summary>
     public IdentifiedResult(string itemName, string? path = null) : base(itemName, path) { }
 
     /// <summary>Copy-construct from an identifier.</summary>
     public IdentifiedResult(ItemIdentifier identifier) : base(
         (identifier ?? throw new ArgumentNullException(nameof(identifier))).ItemName,
-        identifier.Path)
-    { }
+        identifier.Path) { }
 
     /// <summary>Client handle as set on the originating <see cref="Item"/>.</summary>
     public int ClientHandle { get; init; }

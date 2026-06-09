@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -12,8 +12,7 @@ namespace Opc.Classic.Dcom.Kerberos;
 /// <summary>
 /// Abstraction over per-connection Kerberos AP-REQ / AP-REP handshake state.
 /// </summary>
-public interface IKerberosConnectionContext
-{
+public interface IKerberosConnectionContext {
     /// <summary>
     /// Acquires an AP-REQ token for the configured service principal.
     /// </summary>

@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -12,8 +12,7 @@ namespace Opc.Classic.Xml;
 /// <summary>
 /// <c>BrowseFilter</c> values from the XML-DA spec.
 /// </summary>
-public enum XmlDaBrowseFilter
-{
+public enum XmlDaBrowseFilter {
     /// <summary>Return both branches and leaves.</summary>
     All = 0,
 

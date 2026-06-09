@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -12,8 +12,7 @@ using Opc.Classic.Hda.Hosting;
 
 namespace Opc.Classic.Integration.Tests.Support;
 
-internal sealed class StubHdaServer : IOpcHdaServer
-{
+internal sealed class StubHdaServer : IOpcHdaServer {
     private int _statusCallCount;
     private int _attributeCallCount;
     private int _validateCallCount;
@@ -35,8 +34,7 @@ internal sealed class StubHdaServer : IOpcHdaServer
         out string[] attributeNames,
         out string[] attributeDescriptions,
         out int[] attributeDataTypes,
-        CancellationToken cancellationToken = default)
-    {
+        CancellationToken cancellationToken = default) {
         cancellationToken.ThrowIfCancellationRequested();
         Interlocked.Increment(ref _attributeCallCount);
         attributeIds = [1, 2];
@@ -50,8 +48,7 @@ internal sealed class StubHdaServer : IOpcHdaServer
         out int[] aggregateIds,
         out string[] aggregateNames,
         out string[] aggregateDescriptions,
-        CancellationToken cancellationToken = default)
-    {
+        CancellationToken cancellationToken = default) {
         cancellationToken.ThrowIfCancellationRequested();
         aggregateIds = [1, 4];
         aggregateNames = ["Interpolative", "Average"];
@@ -59,12 +56,10 @@ internal sealed class StubHdaServer : IOpcHdaServer
         return Task.CompletedTask;
     }
 
-    public Task<OpcServerStatus> GetStatusAsync(CancellationToken cancellationToken = default)
-    {
+    public Task<OpcServerStatus> GetStatusAsync(CancellationToken cancellationToken = default) {
         cancellationToken.ThrowIfCancellationRequested();
         Interlocked.Increment(ref _statusCallCount);
-        return Task.FromResult(new OpcServerStatus
-        {
+        return Task.FromResult(new OpcServerStatus {
             Spec = OpcStatusSpec.Hda,
             StartTime = DateTimeOffset.UnixEpoch,
             CurrentTime = DateTimeOffset.UnixEpoch.AddSeconds(10),
@@ -79,23 +74,20 @@ internal sealed class StubHdaServer : IOpcHdaServer
     public Task<int[]> GetItemHandlesAsync(
         string[] itemIds,
         int[] clientHandles,
-        CancellationToken cancellationToken = default)
-    {
+        CancellationToken cancellationToken = default) {
         cancellationToken.ThrowIfCancellationRequested();
         LastItemIds = itemIds;
         LastClientHandles = clientHandles;
         return Task.FromResult(itemIds.Select(static (_, index) => 501 + index).ToArray());
     }
 
-    public Task<int[]> ReleaseItemHandlesAsync(int[] serverHandles, CancellationToken cancellationToken = default)
-    {
+    public Task<int[]> ReleaseItemHandlesAsync(int[] serverHandles, CancellationToken cancellationToken = default) {
         cancellationToken.ThrowIfCancellationRequested();
         LastReleasedHandles = serverHandles;
         return Task.FromResult(serverHandles.Select(static _ => OpcResultId.Ok.Code).ToArray());
     }
 
-    public Task<int[]> ValidateItemIdsAsync(string[] itemIds, CancellationToken cancellationToken = default)
-    {
+    public Task<int[]> ValidateItemIdsAsync(string[] itemIds, CancellationToken cancellationToken = default) {
         cancellationToken.ThrowIfCancellationRequested();
         Interlocked.Increment(ref _validateCallCount);
         LastItemIds = itemIds;

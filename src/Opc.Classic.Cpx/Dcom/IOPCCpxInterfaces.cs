@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -21,8 +21,7 @@ namespace Opc.Classic.Cpx.Dcom;
 [OpcInterface("7ECE6649-2C1E-494A-BB99-22D36FB3B0C3")]
 [GenerateOpcProxy]
 [OpcGenerateServerDispatch]
-public partial interface IOPCComplexDataItem
-{
+public partial interface IOPCComplexDataItem {
     /// <summary><c>IOPCComplexDataItem::GetTypeItemID</c> (opnum 3).</summary>
     [OpcMethod(3)]
     Task<string> GetTypeItemIDAsync(string itemId, CancellationToken cancellationToken = default);
@@ -44,8 +43,7 @@ public partial interface IOPCComplexDataItem
 [OpcInterface("44F68398-60AF-4F02-9442-172D058CB16F")]
 [GenerateOpcProxy]
 [OpcGenerateServerDispatch]
-public partial interface IOPCComplexDataItem2
-{
+public partial interface IOPCComplexDataItem2 {
     /// <summary><c>IOPCComplexDataItem2::GetTypeID</c> (opnum 3).</summary>
     [OpcMethod(3)]
     Task<Guid> GetTypeIDAsync(string itemId, CancellationToken cancellationToken = default);
@@ -63,8 +61,7 @@ public partial interface IOPCComplexDataItem2
 [OpcInterface("B8C1B2C6-ACB7-4B7B-87B5-6EAC2CF63C31")]
 [GenerateOpcProxy]
 [OpcGenerateServerDispatch]
-public partial interface IOPCTypeLibrary
-{
+public partial interface IOPCTypeLibrary {
     /// <summary><c>IOPCTypeLibrary::GetDictionary</c> (opnum 3).</summary>
     [OpcMethod(3)]
     Task<string> GetDictionaryAsync(string dictionaryId, CancellationToken cancellationToken = default);

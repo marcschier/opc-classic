@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -10,11 +10,9 @@ using TUnit.Assertions.AssertConditions.Throws;
 
 namespace Opc.Classic.Da.Tests;
 
-public sealed class OpcItemPropertiesAdditionalTests
-{
+public sealed class OpcItemPropertiesAdditionalTests {
     [Test]
-    public async Task Constructor_PreservesErrorIdAndPropertyArrayReference()
-    {
+    public async Task Constructor_PreservesErrorIdAndPropertyArrayReference() {
         OpcItemPropertyResult[] properties =
         [
             new(
@@ -44,8 +42,7 @@ public sealed class OpcItemPropertiesAdditionalTests
     }
 
     [Test]
-    public async Task WithExpression_ReplacesPropertiesThroughInitSetter()
-    {
+    public async Task WithExpression_ReplacesPropertiesThroughInitSetter() {
         var original = new OpcItemProperties(0, Array.Empty<OpcItemPropertyResult>());
         OpcItemPropertyResult[] replacement =
         [
@@ -58,8 +55,7 @@ public sealed class OpcItemPropertiesAdditionalTests
                 ErrorId: 0),
         ];
 
-        OpcItemProperties updated = original with
-        {
+        OpcItemProperties updated = original with {
             ErrorId = OpcResultId.Ok.Code,
             Properties = replacement,
         };
@@ -71,8 +67,7 @@ public sealed class OpcItemPropertiesAdditionalTests
     }
 
     [Test]
-    public async Task RecordEquality_UsesArrayReferenceForProperties()
-    {
+    public async Task RecordEquality_UsesArrayReferenceForProperties() {
         OpcItemPropertyResult[] shared = new OpcItemPropertyResult[0];
         var left = new OpcItemProperties(0, shared);
         var sameArray = new OpcItemProperties(0, shared);
@@ -86,8 +81,7 @@ public sealed class OpcItemPropertiesAdditionalTests
     }
 
     [Test]
-    public async Task NullProperties_InConstructorOrInitSetter_ThrowArgumentNullException()
-    {
+    public async Task NullProperties_InConstructorOrInitSetter_ThrowArgumentNullException() {
         var original = new OpcItemProperties(0, Array.Empty<OpcItemPropertyResult>());
 
         await Assert.That(() => new OpcItemProperties(0, null!))

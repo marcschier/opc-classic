@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -18,8 +18,7 @@ namespace Opc.Classic.Ae;
 /// <see langword="null"/> for simple events; <see cref="AckRequired"/> /
 /// <see cref="ActiveTime"/> are only meaningful for condition events.
 /// </remarks>
-public sealed class EventNotification
-{
+public sealed class EventNotification {
     /// <summary>Identifier of the event source (item name or area name).</summary>
     public required string Source { get; init; }
 

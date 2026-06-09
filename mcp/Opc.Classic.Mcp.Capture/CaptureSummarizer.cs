@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -16,8 +16,7 @@ namespace Opc.Classic.Mcp.Capture;
 /// <see cref="OpcDcomDecoder.DecodeAll"/>. Backs
 /// <c>opcclassic.capture.summarize</c>.
 /// </summary>
-public sealed record class CaptureSummary
-{
+public sealed record class CaptureSummary {
     public required string SessionId { get; init; }
     public required long PduCount { get; init; }
     public required double DurationSeconds { get; init; }
@@ -35,13 +34,11 @@ public sealed record class CaptureSummary
 public sealed record class TopEntry(string Key, long Count);
 
 /// <summary>Builds <see cref="CaptureSummary"/> from a decoded-PDU stream.</summary>
-public static class CaptureSummarizer
-{
+public static class CaptureSummarizer {
     private const int kDefaultTop = 10;
 
     /// <summary>Build a summary; top-N defaults to 10 entries per category.</summary>
-    public static CaptureSummary Summarize(string sessionId, IEnumerable<DecodedOpcPdu> pdus, int top = kDefaultTop)
-    {
+    public static CaptureSummary Summarize(string sessionId, IEnumerable<DecodedOpcPdu> pdus, int top = kDefaultTop) {
         ArgumentException.ThrowIfNullOrEmpty(sessionId);
         ArgumentNullException.ThrowIfNull(pdus);
         ArgumentOutOfRangeException.ThrowIfLessThan(top, 1);
@@ -59,24 +56,20 @@ public static class CaptureSummarizer
         DateTimeOffset? min = null;
         DateTimeOffset? max = null;
 
-        foreach (DecodedOpcPdu pdu in pdus)
-        {
+        foreach (DecodedOpcPdu pdu in pdus) {
             count++;
             Increment(pduTypes, pdu.PduType);
             if (pdu.SourceEndpoint is { Length: > 0 }) Increment(sources, pdu.SourceEndpoint);
             if (pdu.DestinationEndpoint is { Length: > 0 }) Increment(destinations, pdu.DestinationEndpoint);
             if (pdu.InterfaceId is Guid iid && iid != Guid.Empty) Increment(interfaces, iid.ToString("D", CultureInfo.InvariantCulture));
-            if (pdu is { PduType: "request", InterfaceId: Guid riid, Opnum: int opnum })
-            {
+            if (pdu is { PduType: "request", InterfaceId: Guid riid, Opnum: int opnum }) {
                 string label = string.Create(CultureInfo.InvariantCulture, $"{riid:D}/op{opnum}");
                 Increment(opnums, label);
             }
             if (pdu.ObjectIpid is Guid ipid && ipid != Guid.Empty) Increment(ipids, ipid.ToString("D", CultureInfo.InvariantCulture));
             if (pdu.FaultStatus is int fault) Increment(faults, "0x" + fault.ToString("X8", CultureInfo.InvariantCulture));
-            foreach (PresentationResultInfo r in pdu.ResultList)
-            {
-                if (!string.Equals(r.Result, "ACCEPTANCE", StringComparison.Ordinal))
-                {
+            foreach (PresentationResultInfo r in pdu.ResultList) {
+                if (!string.Equals(r.Result, "ACCEPTANCE", StringComparison.Ordinal)) {
                     string label = string.Create(CultureInfo.InvariantCulture, $"{r.Result};{r.Reason}");
                     Increment(rejects, label);
                 }
@@ -88,8 +81,7 @@ public static class CaptureSummarizer
 
         double durationSeconds = (min is null || max is null) ? 0.0 : (max.Value - min.Value).TotalSeconds;
 
-        return new CaptureSummary
-        {
+        return new CaptureSummary {
             SessionId = sessionId,
             PduCount = count,
             DurationSeconds = durationSeconds,
@@ -104,20 +96,16 @@ public static class CaptureSummarizer
         };
     }
 
-    private static void Increment(Dictionary<string, long> map, string key)
-    {
-        if (map.TryGetValue(key, out long count))
-        {
+    private static void Increment(Dictionary<string, long> map, string key) {
+        if (map.TryGetValue(key, out long count)) {
             map[key] = count + 1;
             return;
         }
         map[key] = 1;
     }
 
-    private static IReadOnlyList<TopEntry> TopN(Dictionary<string, long> map, int top)
-    {
-        if (map.Count == 0)
-        {
+    private static IReadOnlyList<TopEntry> TopN(Dictionary<string, long> map, int top) {
+        if (map.Count == 0) {
             return Array.Empty<TopEntry>();
         }
         return map

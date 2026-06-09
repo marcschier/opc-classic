@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -21,8 +21,7 @@ namespace Opc.Classic.Discovery;
 /// <summary>
 /// OPCEnum (OPC.ServerList.1) DCOM discovery client.
 /// </summary>
-public sealed class OpcEnumClient : IOpcDiscovery
-{
+public sealed class OpcEnumClient : IOpcDiscovery {
     private const int RemoteCreateInstanceOpnum = 4;
     private const int LegacyRemoteActivationOpnum = 0;
     private const int EnumerationBatchSize = 64;
@@ -51,16 +50,14 @@ public sealed class OpcEnumClient : IOpcDiscovery
 
     /// <summary>Initializes an OPCEnum client from an OPC URL.</summary>
     public OpcEnumClient(OpcUrl serverListUrl)
-        : this(serverListUrl, new DcomOpcEnumCallChannelFactory(), null)
-    {
+        : this(serverListUrl, new DcomOpcEnumCallChannelFactory(), null) {
     }
 
     /// <summary>Initializes an OPCEnum client from an OPC URL and injectable DCOM channel factory.</summary>
     public OpcEnumClient(
         OpcUrl serverListUrl,
         IOpcEnumCallChannelFactory channelFactory,
-        IEnumerable<Guid>? categoryIds = null)
-    {
+        IEnumerable<Guid>? categoryIds = null) {
         ArgumentNullException.ThrowIfNull(serverListUrl);
         ArgumentNullException.ThrowIfNull(channelFactory);
 
@@ -76,8 +73,7 @@ public sealed class OpcEnumClient : IOpcDiscovery
         string host,
         IOpcEnumCallChannelFactory channelFactory,
         IEnumerable<Guid>? categoryIds = null)
-        : this(OpcUrl.Parse($"opcda://{NormalizeHost(host)}/OPC.ServerList.1"), channelFactory, categoryIds)
-    {
+        : this(OpcUrl.Parse($"opcda://{NormalizeHost(host)}/OPC.ServerList.1"), channelFactory, categoryIds) {
     }
 
     /// <summary>The default OPCEnum category IDs used by discovery.</summary>
@@ -97,19 +93,16 @@ public sealed class OpcEnumClient : IOpcDiscovery
     public async Task<OpcServerDescriptor[]> EnumerateAsync(
         string? host = null,
         IEnumerable<Guid>? categories = null,
-        CancellationToken cancellationToken = default)
-    {
+        CancellationToken cancellationToken = default) {
         string targetHost = string.IsNullOrWhiteSpace(host) ? Host : NormalizeHost(host);
         Guid[] requestedCategories = categories is null ? CopyCategories(_categoryIds) : NormalizeCategories(categories);
-        if (requestedCategories.Length == 0)
-        {
+        if (requestedCategories.Length == 0) {
             return Array.Empty<OpcServerDescriptor>();
         }
 
         ActivatedServerList activated = await ActivateServerListAsync(targetHost, cancellationToken).ConfigureAwait(false);
         ICallChannel? serverListChannel = null;
-        try
-        {
+        try {
             Guid serverListIid = activated.SupportsServerList2 ? OpcGuids.IID_IOPCServerList2 : OpcGuids.IID_IOPCServerList;
             serverListChannel = await _channelFactory.CreateObjectChannelAsync(
                 targetHost,
@@ -118,14 +111,11 @@ public sealed class OpcEnumClient : IOpcDiscovery
                 activated.OxidBindings,
                 cancellationToken).ConfigureAwait(false);
 
-            if (activated.SupportsServerList2)
-            {
-                try
-                {
+            if (activated.SupportsServerList2) {
+                try {
                     return await EnumerateWithServerList2Async(targetHost, serverListChannel, requestedCategories, activated.OxidBindings, cancellationToken).ConfigureAwait(false);
                 }
-                catch (InvalidOperationException ex) when (IsBindRejectionForUnsupportedAbstractSyntax(ex, OpcGuids.IID_IOPCServerList2))
-                {
+                catch (InvalidOperationException ex) when (IsBindRejectionForUnsupportedAbstractSyntax(ex, OpcGuids.IID_IOPCServerList2)) {
                     // OPCEnum's activator marshaled an OBJREF claiming IOPCServerList2
                     // support, but the underlying RPC server rejects the bind for that
                     // specific IID (common with older OPC Core Components installs that
@@ -146,32 +136,27 @@ public sealed class OpcEnumClient : IOpcDiscovery
 
             return await EnumerateWithServerListAsync(targetHost, serverListChannel, requestedCategories, activated.OxidBindings, cancellationToken).ConfigureAwait(false);
         }
-        finally
-        {
+        finally {
             await DisposeChannelAsync(serverListChannel).ConfigureAwait(false);
         }
     }
 
-    private static bool IsBindRejectionForUnsupportedAbstractSyntax(InvalidOperationException ex)
-    {
+    private static bool IsBindRejectionForUnsupportedAbstractSyntax(InvalidOperationException ex) {
         return IsBindRejectionForUnsupportedAbstractSyntax(ex, expectedIid: null);
     }
 
-    private static bool IsBindRejectionForUnsupportedAbstractSyntax(InvalidOperationException ex, Guid? expectedIid)
-    {
+    private static bool IsBindRejectionForUnsupportedAbstractSyntax(InvalidOperationException ex, Guid? expectedIid) {
         // BindAck for an unsupported IID surfaces as
         // 'Presentation context rejected for IID <iid>: PROVIDER_REJECTION; ABSTRACT_SYNTAX_NOT_SUPPORTED.'
         // from DcomCallChannel.EnsurePresentationContextAsync. Match by substring so we
         // don't accidentally downgrade on unrelated InvalidOperationException paths.
         string message = ex.Message ?? string.Empty;
         if (!message.Contains("Presentation context rejected", StringComparison.Ordinal)
-            || !message.Contains("ABSTRACT_SYNTAX_NOT_SUPPORTED", StringComparison.Ordinal))
-        {
+            || !message.Contains("ABSTRACT_SYNTAX_NOT_SUPPORTED", StringComparison.Ordinal)) {
             return false;
         }
 
-        if (expectedIid is null)
-        {
+        if (expectedIid is null) {
             return true;
         }
 
@@ -187,12 +172,10 @@ public sealed class OpcEnumClient : IOpcDiscovery
     /// <inheritdoc />
     public async IAsyncEnumerable<OpcServerEntry> DiscoverAsync(
         string? host = null,
-        [EnumeratorCancellation] CancellationToken cancellationToken = default)
-    {
+        [EnumeratorCancellation] CancellationToken cancellationToken = default) {
         string targetHost = string.IsNullOrWhiteSpace(host) ? Host : NormalizeHost(host);
         OpcServerDescriptor[] descriptors = await EnumerateAsync(targetHost, null, cancellationToken).ConfigureAwait(false);
-        foreach (OpcServerDescriptor descriptor in descriptors)
-        {
+        foreach (OpcServerDescriptor descriptor in descriptors) {
             cancellationToken.ThrowIfCancellationRequested();
             yield return new OpcServerEntry(
                 descriptor.ClassId,
@@ -208,8 +191,7 @@ public sealed class OpcEnumClient : IOpcDiscovery
         ICallChannel serverListChannel,
         Guid[] requestedCategories,
         ReadOnlyMemory<byte> oxidBindings,
-        CancellationToken cancellationToken)
-    {
+        CancellationToken cancellationToken) {
         var serverList = new IOPCServerList2ClientProxy(serverListChannel);
         CategoryMerge merge = await EnumerateClassesAsync(
             host,
@@ -219,8 +201,7 @@ public sealed class OpcEnumClient : IOpcDiscovery
             cancellationToken).ConfigureAwait(false);
 
         var descriptors = new List<OpcServerDescriptor>(merge.ClassIds.Count);
-        foreach (Guid classId in merge.ClassIds)
-        {
+        foreach (Guid classId in merge.ClassIds) {
             cancellationToken.ThrowIfCancellationRequested();
             OpcServerListClassDetails details = await serverList.GetClassDetailsAsync(classId, cancellationToken).ConfigureAwait(false);
             descriptors.Add(CreateDescriptor(classId, details.ProgId, details.UserType, details.VerIndProgId, merge.CategoriesByClassId[classId]));
@@ -234,8 +215,7 @@ public sealed class OpcEnumClient : IOpcDiscovery
         ICallChannel serverListChannel,
         Guid[] requestedCategories,
         ReadOnlyMemory<byte> oxidBindings,
-        CancellationToken cancellationToken)
-    {
+        CancellationToken cancellationToken) {
         var serverList = new IOPCServerListClientProxy(serverListChannel);
         CategoryMerge merge = await EnumerateClassesAsync(
             host,
@@ -245,8 +225,7 @@ public sealed class OpcEnumClient : IOpcDiscovery
             cancellationToken).ConfigureAwait(false);
 
         var descriptors = new List<OpcServerDescriptor>(merge.ClassIds.Count);
-        foreach (Guid classId in merge.ClassIds)
-        {
+        foreach (Guid classId in merge.ClassIds) {
             cancellationToken.ThrowIfCancellationRequested();
             OpcServerListClassDetails details = await serverList.GetClassDetailsAsync(classId, cancellationToken).ConfigureAwait(false);
             descriptors.Add(CreateDescriptor(classId, details.ProgId, details.UserType, null, merge.CategoriesByClassId[classId]));
@@ -260,18 +239,15 @@ public sealed class OpcEnumClient : IOpcDiscovery
         IReadOnlyList<Guid> requestedCategories,
         Func<Guid, CancellationToken, Task<IOpcInterfaceRef>> enumFactory,
         ReadOnlyMemory<byte> oxidBindings,
-        CancellationToken cancellationToken)
-    {
+        CancellationToken cancellationToken) {
         var classIds = new List<Guid>();
         var categoriesByClassId = new Dictionary<Guid, List<Guid>>();
 
-        foreach (Guid category in requestedCategories)
-        {
+        foreach (Guid category in requestedCategories) {
             cancellationToken.ThrowIfCancellationRequested();
             IOpcInterfaceRef enumRef = await enumFactory(category, cancellationToken).ConfigureAwait(false);
             ICallChannel? enumChannel = null;
-            try
-            {
+            try {
                 // The enumerator returned by EnumClassesOfCategories lives on the
                 // same OXID as the parent IOPCServerList(2) object — both run in
                 // the OPCEnum process. Reuse the parent's OXID bindings so the
@@ -286,8 +262,7 @@ public sealed class OpcEnumClient : IOpcDiscovery
                 var enumerator = new IOPCEnumGUIDClientProxy(enumChannel);
                 await AddEnumeratedClassIdsAsync(enumerator, category, classIds, categoriesByClassId, cancellationToken).ConfigureAwait(false);
             }
-            finally
-            {
+            finally {
                 await DisposeChannelAsync(enumChannel).ConfigureAwait(false);
             }
         }
@@ -300,51 +275,41 @@ public sealed class OpcEnumClient : IOpcDiscovery
         Guid category,
         List<Guid> classIds,
         Dictionary<Guid, List<Guid>> categoriesByClassId,
-        CancellationToken cancellationToken)
-    {
-        while (true)
-        {
+        CancellationToken cancellationToken) {
+        while (true) {
             cancellationToken.ThrowIfCancellationRequested();
             OpcEnumGuidNextResult next = await enumerator.NextAsync(EnumerationBatchSize, cancellationToken).ConfigureAwait(false);
-            if (next.Fetched <= 0 || next.ClassIds.Length == 0)
-            {
+            if (next.Fetched <= 0 || next.ClassIds.Length == 0) {
                 break;
             }
 
             int count = Math.Min(next.Fetched, next.ClassIds.Length);
-            for (int i = 0; i < count; i++)
-            {
+            for (int i = 0; i < count; i++) {
                 Guid classId = next.ClassIds[i];
-                if (!categoriesByClassId.TryGetValue(classId, out List<Guid>? categories))
-                {
+                if (!categoriesByClassId.TryGetValue(classId, out List<Guid>? categories)) {
                     categories = new List<Guid>();
                     categoriesByClassId.Add(classId, categories);
                     classIds.Add(classId);
                 }
 
-                if (!categories.Contains(category))
-                {
+                if (!categories.Contains(category)) {
                     categories.Add(category);
                 }
             }
 
-            if (next.Fetched < EnumerationBatchSize)
-            {
+            if (next.Fetched < EnumerationBatchSize) {
                 break;
             }
         }
     }
 
-    private async Task<ActivatedServerList> ActivateServerListAsync(string host, CancellationToken cancellationToken)
-    {
-        try
-        {
+    private async Task<ActivatedServerList> ActivateServerListAsync(string host, CancellationToken cancellationToken) {
+        try {
             ActivationOutcome serverList2 = await RemoteCreateInstanceAsync(host, OpcGuids.IID_IOPCServerList2, cancellationToken)
                 .ConfigureAwait(false);
             return new ActivatedServerList(serverList2.InterfaceRef, serverList2.OxidBindings, SupportsServerList2: true);
         }
-        catch (OpcException ex) when (ex.ResultId.Code == ENoInterface)
-        {
+        catch (OpcException ex) when (ex.ResultId.Code == ENoInterface) {
             ActivationOutcome serverList = await RemoteCreateInstanceAsync(host, OpcGuids.IID_IOPCServerList, cancellationToken)
                 .ConfigureAwait(false);
             return new ActivatedServerList(serverList.InterfaceRef, serverList.OxidBindings, SupportsServerList2: false);
@@ -354,11 +319,9 @@ public sealed class OpcEnumClient : IOpcDiscovery
     private async Task<ActivationOutcome> RemoteCreateInstanceAsync(
         string host,
         Guid requestedIid,
-        CancellationToken cancellationToken)
-    {
+        CancellationToken cancellationToken) {
         ICallChannel? activationChannel = null;
-        try
-        {
+        try {
             activationChannel = await _channelFactory.CreateActivationChannelAsync(host, cancellationToken).ConfigureAwait(false);
             byte[] payload = EncodeRemoteCreateInstanceRequest(host, OpcGuids.CLSID_OpcEnum, requestedIid, _activationProtectionLevel);
             NdrCallResult result = await activationChannel.InvokeAsync(
@@ -369,12 +332,10 @@ public sealed class OpcEnumClient : IOpcDiscovery
             IOpcInterfaceRef objRef = DecodeRemoteCreateInstanceResponse(result);
             return new ActivationOutcome(objRef, ReadOnlyMemory<byte>.Empty);
         }
-        catch (InvalidOperationException ex) when (ShouldFallbackToLegacyActivation(ex))
-        {
+        catch (InvalidOperationException ex) when (ShouldFallbackToLegacyActivation(ex)) {
             return await LegacyRemoteActivationAsync(host, requestedIid, cancellationToken).ConfigureAwait(false);
         }
-        finally
-        {
+        finally {
             await DisposeChannelAsync(activationChannel).ConfigureAwait(false);
         }
     }
@@ -382,11 +343,9 @@ public sealed class OpcEnumClient : IOpcDiscovery
     private async Task<ActivationOutcome> LegacyRemoteActivationAsync(
         string host,
         Guid requestedIid,
-        CancellationToken cancellationToken)
-    {
+        CancellationToken cancellationToken) {
         ICallChannel? activationChannel = null;
-        try
-        {
+        try {
             activationChannel = await _channelFactory.CreateActivationChannelAsync(host, cancellationToken).ConfigureAwait(false);
             var request = new Opc.Classic.Dcom.Activation.RemoteActivationRequest(
                 OpcGuids.CLSID_OpcEnum,
@@ -402,8 +361,7 @@ public sealed class OpcEnumClient : IOpcDiscovery
                 cancellationToken).ConfigureAwait(false);
             return DecodeLegacyRemoteActivationResponse(result);
         }
-        finally
-        {
+        finally {
             await DisposeChannelAsync(activationChannel).ConfigureAwait(false);
         }
     }
@@ -425,8 +383,7 @@ public sealed class OpcEnumClient : IOpcDiscovery
         string host,
         Guid clsid,
         Guid requestedIid,
-        OpcProtectionLevel activationProtectionLevel)
-    {
+        OpcProtectionLevel activationProtectionLevel) {
         var activationProperties = new ActivationProperties(
             new SpecialPropertiesData(ActivationComVersion.V5_6, Mode: 0, ClassContext, requestedIid, Array.Empty<int>()),
             new InstanceInfo(clsid, requestedIid, ClassContext, Mode: 0),
@@ -435,8 +392,7 @@ public sealed class OpcEnumClient : IOpcDiscovery
             new SecurityInfo(ToActivationAuthenticationLevel(activationProtectionLevel), ImpersonationLevel: 3, Capabilities: 0));
         byte[] encodedProperties = ActivationInfoCodec.Encode(activationProperties);
 
-        return WritePayload((ref NdrWriter writer) =>
-        {
+        return WritePayload((ref NdrWriter writer) => {
             writer.WriteGuid(clsid);
             writer.WriteGuid(requestedIid);
             writer.WriteUInt32(1);
@@ -452,27 +408,23 @@ public sealed class OpcEnumClient : IOpcDiscovery
     private static int ToActivationAuthenticationLevel(OpcProtectionLevel protectionLevel) =>
         (int)NormalizeActivationProtection(protectionLevel);
 
-    private static ActivationOutcome DecodeLegacyRemoteActivationResponse(NdrCallResult result)
-    {
+    private static ActivationOutcome DecodeLegacyRemoteActivationResponse(NdrCallResult result) {
         ThrowIfFailed(result.Hresult, "IActivation::RemoteActivation");
         var response = Opc.Classic.Dcom.Activation.IActivationCodec.DecodeRemoteActivationResponse(
             result.ResponsePayload.Span,
             expectedInterfaceCount: 1);
         ThrowIfFailed(response.Hresult, "IActivation::RemoteActivation");
-        if (response.InterfaceResults.Count == 0)
-        {
+        if (response.InterfaceResults.Count == 0) {
             throw new InvalidOperationException("IActivation::RemoteActivation returned no OPCEnum interface results.");
         }
 
         Opc.Classic.Dcom.Activation.RemoteActivationInterfaceResult interfaceResult = response.InterfaceResults[0];
         ThrowIfFailed(interfaceResult.Hresult, "IActivation::RemoteActivation");
-        if (interfaceResult.ObjRef.IsEmpty)
-        {
+        if (interfaceResult.ObjRef.IsEmpty) {
             throw new InvalidOperationException("IActivation::RemoteActivation returned no OPCEnum OBJREF.");
         }
 
-        if (TryDecodeObjRef(interfaceResult.ObjRef.Span, out IOpcInterfaceRef? objRef))
-        {
+        if (TryDecodeObjRef(interfaceResult.ObjRef.Span, out IOpcInterfaceRef? objRef)) {
             return new ActivationOutcome(objRef!, response.OxidBindings);
         }
 
@@ -482,18 +434,15 @@ public sealed class OpcEnumClient : IOpcDiscovery
     private static bool ShouldFallbackToLegacyActivation(InvalidOperationException exception) =>
         exception.Message.Contains("IRemoteSCMActivator::RemoteCreateInstance", StringComparison.Ordinal);
 
-    private static IOpcInterfaceRef DecodeRemoteCreateInstanceResponse(NdrCallResult result)
-    {
+    private static IOpcInterfaceRef DecodeRemoteCreateInstanceResponse(NdrCallResult result) {
         ThrowIfFailed(result.Hresult, "IRemoteSCMActivator::RemoteCreateInstance");
-        if (result.ResponsePayload.IsEmpty)
-        {
+        if (result.ResponsePayload.IsEmpty) {
             // Empty payload after RPC success usually means the call surfaced an RPC
             // fault PDU whose status code DcomCallChannel placed in result.Hresult.
             // Surface a clearer error so operators don't chase an OBJREF-format issue
             // when the real problem is anonymous activation being refused.
             int rpcFault = result.Hresult;
-            string hint = rpcFault switch
-            {
+            string hint = rpcFault switch {
                 0 => "no RPC fault status; the SCM may have returned an empty activation result.",
                 0x00000005 => "rpc_s_access_denied (0x05) - supply NTLMv2/Kerberos credentials with sufficient DCOM Launch/Access permission for OPCEnum (the OPC.ServerList AppID).",
                 _ => $"RPC fault status 0x{rpcFault:X8}.",
@@ -502,113 +451,92 @@ public sealed class OpcEnumClient : IOpcDiscovery
         }
 
         ReadOnlySpan<byte> response = result.ResponsePayload.Span;
-        if (TryDecodeObjRef(response, out IOpcInterfaceRef? directObjRef))
-        {
+        if (TryDecodeObjRef(response, out IOpcInterfaceRef? directObjRef)) {
             return directObjRef!;
         }
 
-        if (TryDecodeActivationProperties(response, out IOpcInterfaceRef? activationObjRef))
-        {
+        if (TryDecodeActivationProperties(response, out IOpcInterfaceRef? activationObjRef)) {
             return activationObjRef!;
         }
 
         return DecodeLengthPrefixedObjRef(response);
     }
 
-    private static IOpcInterfaceRef DecodeLengthPrefixedObjRef(ReadOnlySpan<byte> response)
-    {
+    private static IOpcInterfaceRef DecodeLengthPrefixedObjRef(ReadOnlySpan<byte> response) {
         var reader = new NdrReader(response);
         int innerHresult = reader.ReadInt32();
         ThrowIfFailed(innerHresult, "IRemoteSCMActivator::RemoteCreateInstance");
-        if (reader.RemainingBytes < sizeof(uint))
-        {
+        if (reader.RemainingBytes < sizeof(uint)) {
             throw new InvalidOperationException("RemoteCreateInstance response did not include a length-prefixed OBJREF.");
         }
 
         uint objRefLength = reader.ReadUInt32();
-        if (objRefLength > reader.RemainingBytes)
-        {
+        if (objRefLength > reader.RemainingBytes) {
             throw new InvalidOperationException("RemoteCreateInstance OBJREF length exceeds the remaining response payload.");
         }
 
         byte[] objRefBytes = reader.ReadRawBytes((int)objRefLength).ToArray();
-        if (TryDecodeObjRef(objRefBytes, out IOpcInterfaceRef? objRef))
-        {
+        if (TryDecodeObjRef(objRefBytes, out IOpcInterfaceRef? objRef)) {
             return objRef!;
         }
 
         throw new InvalidOperationException("RemoteCreateInstance returned an invalid OPCEnum OBJREF.");
     }
 
-    private static bool TryDecodeActivationProperties(ReadOnlySpan<byte> response, out IOpcInterfaceRef? objRef)
-    {
+    private static bool TryDecodeActivationProperties(ReadOnlySpan<byte> response, out IOpcInterfaceRef? objRef) {
         objRef = null;
         if (!ActivationInfoCodec.TryDecode(response, out ActivationProperties properties)
-            || properties.ScmReplyInfo?.ObjRef is not { Length: > 0 } objRefBytes)
-        {
+            || properties.ScmReplyInfo?.ObjRef is not { Length: > 0 } objRefBytes) {
             return false;
         }
 
         return TryDecodeObjRef(objRefBytes, out objRef);
     }
 
-    private static bool TryDecodeObjRef(ReadOnlySpan<byte> payload, out IOpcInterfaceRef? objRef)
-    {
+    private static bool TryDecodeObjRef(ReadOnlySpan<byte> payload, out IOpcInterfaceRef? objRef) {
         objRef = null;
-        if (payload.Length < sizeof(uint) || BinaryPrimitives.ReadUInt32LittleEndian(payload) != ObjRefSignature)
-        {
+        if (payload.Length < sizeof(uint) || BinaryPrimitives.ReadUInt32LittleEndian(payload) != ObjRefSignature) {
             return false;
         }
 
-        try
-        {
+        try {
             var reader = new NdrReader(payload);
             objRef = OpcInterfaceRefCodec.Read(ref reader);
             return true;
         }
-        catch (ArgumentException)
-        {
+        catch (ArgumentException) {
             return false;
         }
-        catch (InvalidOperationException)
-        {
+        catch (InvalidOperationException) {
             return false;
         }
     }
 
-    private static byte[] WritePayload(NdrWriteAction action)
-    {
+    private static byte[] WritePayload(NdrWriteAction action) {
         ArgumentNullException.ThrowIfNull(action);
 
-        for (int size = DefaultPayloadSize; size <= MaximumPayloadSize; size *= 2)
-        {
+        for (int size = DefaultPayloadSize; size <= MaximumPayloadSize; size *= 2) {
             var buffer = new byte[size];
             var writer = new NdrWriter(buffer);
-            try
-            {
+            try {
                 action(ref writer);
                 return buffer.AsSpan(0, writer.Position).ToArray();
             }
-            catch (InvalidOperationException) when (size < MaximumPayloadSize)
-            {
+            catch (InvalidOperationException) when (size < MaximumPayloadSize) {
             }
         }
 
         throw new InvalidOperationException("Unable to encode the RemoteCreateInstance payload.");
     }
 
-    private static Guid[] NormalizeCategories(IEnumerable<Guid>? categories)
-    {
-        if (categories is null)
-        {
+    private static Guid[] NormalizeCategories(IEnumerable<Guid>? categories) {
+        if (categories is null) {
             return CopyCategories(DefaultCategoryIdsArray);
         }
 
         var distinct = new List<Guid>();
-        foreach (Guid category in categories)
-        {
-            if (category != Guid.Empty && !distinct.Contains(category))
-            {
+        foreach (Guid category in categories) {
+            if (category != Guid.Empty && !distinct.Contains(category)) {
                 distinct.Add(category);
             }
         }
@@ -616,11 +544,9 @@ public sealed class OpcEnumClient : IOpcDiscovery
         return distinct.ToArray();
     }
 
-    private static Guid[] CopyCategories(IReadOnlyList<Guid> categories)
-    {
+    private static Guid[] CopyCategories(IReadOnlyList<Guid> categories) {
         var copy = new Guid[categories.Count];
-        for (int i = 0; i < categories.Count; i++)
-        {
+        for (int i = 0; i < categories.Count; i++) {
             copy[i] = categories[i];
         }
 
@@ -633,10 +559,8 @@ public sealed class OpcEnumClient : IOpcDiscovery
     private static void ThrowIfFailed(int hresult, string operationDescription) =>
         OpcException.ThrowIfFailed(new OpcResultId(hresult, null), operationDescription);
 
-    private static async ValueTask DisposeChannelAsync(ICallChannel? channel)
-    {
-        switch (channel)
-        {
+    private static async ValueTask DisposeChannelAsync(ICallChannel? channel) {
+        switch (channel) {
             case IAsyncDisposable asyncDisposable:
                 await asyncDisposable.DisposeAsync().ConfigureAwait(false);
                 break;

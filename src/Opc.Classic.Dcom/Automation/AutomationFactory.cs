@@ -1,10 +1,11 @@
-// SPDX-License-Identifier: MIT
+﻿// SPDX-License-Identifier: MIT
 
 
 using Opc.Classic.Dcom.Common;
 using Opc.Classic.Dcom.Core;
 
-namespace Opc.Classic.Dcom.Automation; 
+namespace Opc.Classic.Dcom.Automation;
+
 /// <summary>
 /// Creates automation related objects.
 /// Internal Factory, to be used only by the framework.

@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -32,17 +32,14 @@ namespace Opc.Classic.Dcom;
 /// <c>iid_is(riid)</c> can carry an arbitrary IID at runtime).
 /// </para>
 /// </remarks>
-public static class OpcMInterfacePointerCodec
-{
+public static class OpcMInterfacePointerCodec {
     /// <summary>
     /// Decodes a unique-pointer-prefixed MInterfacePointer. Returns <see langword="null"/>
     /// when the on-wire pointer is NULL (referent_id == 0).
     /// </summary>
-    public static IOpcInterfaceRef? Read(ref NdrReader reader)
-    {
+    public static IOpcInterfaceRef? Read(ref NdrReader reader) {
         uint referent = reader.ReadUInt32();
-        if (referent == 0u)
-        {
+        if (referent == 0u) {
             return null;
         }
 
@@ -55,8 +52,7 @@ public static class OpcMInterfacePointerCodec
         // actual struct field — the first is the conformance header.
         _ = reader.ReadUInt32();           // max_count (= ulCntData per spec)
         uint cbData = reader.ReadUInt32(); // ulCntData
-        if (cbData == 0u)
-        {
+        if (cbData == 0u) {
             return null;
         }
 
@@ -79,10 +75,8 @@ public static class OpcMInterfacePointerCodec
     /// Encodes a unique-pointer-prefixed MInterfacePointer. A null
     /// <paramref name="interfaceRef"/> emits a single zero referent UInt32.
     /// </summary>
-    public static void Write(ref NdrWriter writer, IOpcInterfaceRef? interfaceRef)
-    {
-        if (interfaceRef is null)
-        {
+    public static void Write(ref NdrWriter writer, IOpcInterfaceRef? interfaceRef) {
+        if (interfaceRef is null) {
             writer.WriteUInt32(0u);
             return;
         }
@@ -93,8 +87,7 @@ public static class OpcMInterfacePointerCodec
         // forbid passing a stackalloc-backed Span across ref struct boundaries.
         const int InitialBufferSize = 1024;
         byte[] scratch = System.Buffers.ArrayPool<byte>.Shared.Rent(InitialBufferSize);
-        try
-        {
+        try {
             var innerWriter = new NdrWriter(scratch.AsSpan());
             OpcInterfaceRefCodec.Write(ref innerWriter, interfaceRef);
             int objrefLength = innerWriter.Position;
@@ -104,8 +97,7 @@ public static class OpcMInterfacePointerCodec
             writer.WriteUInt32((uint)objrefLength);     // ulCntData
             writer.WriteRawBytes(scratch.AsSpan(0, objrefLength));
         }
-        finally
-        {
+        finally {
             System.Buffers.ArrayPool<byte>.Shared.Return(scratch);
         }
     }

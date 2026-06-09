@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -14,15 +14,13 @@ namespace Opc.Classic.Ae.Ndr;
 /// <summary>
 /// NDR encoder / decoder for OPC AE's <c>ONEVENTSTRUCT</c> notification payload.
 /// </summary>
-public static class NdrOpcEventNotificationCodec
-{
+public static class NdrOpcEventNotificationCodec {
     private const int Win32BoolTrue = unchecked((int)0xFFFFFFFFu);
     private const int Win32BoolFalse = 0;
     private const long FileTimeEpochOffsetTicks = 504911232000000000L;
 
     /// <summary>Encodes a single ONEVENTSTRUCT in NDR.</summary>
-    public static void Write(ref NdrWriter writer, OpcEventNotification notification)
-    {
+    public static void Write(ref NdrWriter writer, OpcEventNotification notification) {
         ArgumentNullException.ThrowIfNull(notification);
 
         writer.WriteUInt16(notification.ChangeMask);
@@ -45,8 +43,7 @@ public static class NdrOpcEventNotificationCodec
     }
 
     /// <summary>Decodes a single ONEVENTSTRUCT from NDR.</summary>
-    public static OpcEventNotification Read(ref NdrReader reader)
-    {
+    public static OpcEventNotification Read(ref NdrReader reader) {
         ushort changeMask = reader.ReadUInt16();
         ushort newState = reader.ReadUInt16();
         string? source = reader.ReadUnicodeStringPtr();
@@ -84,40 +81,33 @@ public static class NdrOpcEventNotificationCodec
             actorId);
     }
 
-    private static void WriteEventAttributes(ref NdrWriter writer, OpcVariant[] attributes)
-    {
+    private static void WriteEventAttributes(ref NdrWriter writer, OpcVariant[] attributes) {
         int count = attributes.Length;
         writer.WriteUInt32(unchecked((uint)count));
         writer.WriteUInt32(unchecked((uint)count));
-        for (int i = 0; i < count; i++)
-        {
+        for (int i = 0; i < count; i++) {
             writer.WriteVariant(attributes[i]);
         }
     }
 
-    private static OpcVariant[] ReadEventAttributes(ref NdrReader reader)
-    {
+    private static OpcVariant[] ReadEventAttributes(ref NdrReader reader) {
         uint rawCount = reader.ReadUInt32();
         int count = ToInt32Count(rawCount, "dwNumEventAttrs");
         uint conformance = reader.ReadUInt32();
-        if (conformance != rawCount)
-        {
+        if (conformance != rawCount) {
             throw new InvalidDataException(
                 $"ONEVENTSTRUCT pEventAttributes conformance {conformance} did not match dwNumEventAttrs {rawCount}.");
         }
 
         var attributes = new OpcVariant[count];
-        for (int i = 0; i < count; i++)
-        {
+        for (int i = 0; i < count; i++) {
             attributes[i] = reader.ReadVariant();
         }
         return attributes;
     }
 
-    private static int ToInt32Count(uint count, string fieldName)
-    {
-        if (count > (uint)int.MaxValue)
-        {
+    private static int ToInt32Count(uint count, string fieldName) {
+        if (count > (uint)int.MaxValue) {
             throw new InvalidDataException($"ONEVENTSTRUCT {fieldName} {count} too large.");
         }
         return unchecked((int)count);
@@ -125,11 +115,9 @@ public static class NdrOpcEventNotificationCodec
 
     private static long ToFileTime(DateTimeOffset value) => value.UtcTicks - FileTimeEpochOffsetTicks;
 
-    private static DateTimeOffset ReadAndDecodeFileTime(ref NdrReader reader, string fieldName)
-    {
+    private static DateTimeOffset ReadAndDecodeFileTime(ref NdrReader reader, string fieldName) {
         long raw = reader.ReadFileTime();
-        if (FileTimeHelper.TryFromFileTime(raw, out DateTimeOffset value))
-        {
+        if (FileTimeHelper.TryFromFileTime(raw, out DateTimeOffset value)) {
             return value;
         }
         throw new InvalidDataException(

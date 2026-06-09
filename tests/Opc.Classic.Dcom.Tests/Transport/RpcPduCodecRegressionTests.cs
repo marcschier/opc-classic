@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -14,11 +14,9 @@ using TUnit.Core;
 
 namespace Opc.Classic.Dcom.Tests.Transport;
 
-public sealed class RpcPduCodecRegressionTests
-{
+public sealed class RpcPduCodecRegressionTests {
     [Test]
-    public async Task Auth3Pdu_Encode_WritesHeaderAndZeroBody()
-    {
+    public async Task Auth3Pdu_Encode_WritesHeaderAndZeroBody() {
         var pdu = new Auth3Pdu { CallId = 0 };
 
         byte[] encoded = PduCodec.EncodePdu(pdu, ConnectionOrientedPdu.MUST_RECEIVE_FRAGMENT_SIZE);
@@ -28,8 +26,7 @@ public sealed class RpcPduCodecRegressionTests
     }
 
     [Test]
-    public async Task Auth3Pdu_Decode_RoundTripsHeaderFields()
-    {
+    public async Task Auth3Pdu_Decode_RoundTripsHeaderFields() {
         byte[] encoded = Convert.FromHexString("0500100310000000140000007856341200000000");
 
         var decoded = (Auth3Pdu)PduCodec.DecodePdu(encoded);
@@ -41,10 +38,8 @@ public sealed class RpcPduCodecRegressionTests
     }
 
     [Test]
-    public async Task FaultCoPdu_EncodeWithStub_WritesAlignedBodyAndStub()
-    {
-        var pdu = new FaultCoPdu
-        {
+    public async Task FaultCoPdu_EncodeWithStub_WritesAlignedBodyAndStub() {
+        var pdu = new FaultCoPdu {
             CallId = 0x01020304,
             AllocationHint = 0x11223344,
             ContextId = 0x5566,
@@ -71,8 +66,7 @@ public sealed class RpcPduCodecRegressionTests
     }
 
     [Test]
-    public async Task FaultCoPdu_DecodeWithStub_RoundTripsFields()
-    {
+    public async Task FaultCoPdu_DecodeWithStub_RoundTripsFields() {
         byte[] encoded = Convert.FromHexString(
             "05000303" +
             "10000000" +
@@ -96,11 +90,9 @@ public sealed class RpcPduCodecRegressionTests
     }
 
     [Test]
-    public async Task FaultCoPdu_GetFragments_SplitsStubAndFlags()
-    {
+    public async Task FaultCoPdu_GetFragments_SplitsStubAndFlags() {
         byte[] stub = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19];
-        var pdu = new FaultCoPdu
-        {
+        var pdu = new FaultCoPdu {
             CallId = 9,
             AllocationHint = stub.Length,
             Stub = stub,
@@ -121,11 +113,9 @@ public sealed class RpcPduCodecRegressionTests
     }
 
     [Test]
-    public async Task FaultCoPdu_Reassemble_CombinesFragmentStubsAndHints()
-    {
+    public async Task FaultCoPdu_Reassemble_CombinesFragmentStubsAndHints() {
         byte[] stub = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-        var pdu = new FaultCoPdu
-        {
+        var pdu = new FaultCoPdu {
             CallId = 7,
             AllocationHint = stub.Length,
             Stub = stub,
@@ -141,10 +131,8 @@ public sealed class RpcPduCodecRegressionTests
     }
 
     [Test]
-    public async Task FaultCoPdu_GetFragments_SmallStubReturnsOriginalPdu()
-    {
-        var pdu = new FaultCoPdu
-        {
+    public async Task FaultCoPdu_GetFragments_SmallStubReturnsOriginalPdu() {
+        var pdu = new FaultCoPdu {
             AllocationHint = 3,
             Stub = [1, 2, 3],
         };
@@ -157,8 +145,7 @@ public sealed class RpcPduCodecRegressionTests
     }
 
     [Test]
-    public async Task FaultCoPdu_ReassembleEmptyIterator_ThrowsIOException()
-    {
+    public async Task FaultCoPdu_ReassembleEmptyIterator_ThrowsIOException() {
         var pdu = new FaultCoPdu();
 
         IOException exception = Capture<IOException>(() =>
@@ -168,8 +155,7 @@ public sealed class RpcPduCodecRegressionTests
     }
 
     [Test]
-    public async Task ConnectionOrientedPdu_SetFlag_TogglesSingleFlag()
-    {
+    public async Task ConnectionOrientedPdu_SetFlag_TogglesSingleFlag() {
         var pdu = new Auth3Pdu { Flags = ConnectionOrientedPdu.PFC_FIRST_FRAG };
 
         pdu.SetFlag(ConnectionOrientedPdu.PFC_LAST_FRAG, true);
@@ -180,8 +166,7 @@ public sealed class RpcPduCodecRegressionTests
     }
 
     [Test]
-    public async Task PduCodec_TryGetFragmentLengthRejectsHeaderWithShortAdvertisedLength()
-    {
+    public async Task PduCodec_TryGetFragmentLengthRejectsHeaderWithShortAdvertisedLength() {
         byte[] frame = Convert.FromHexString("05001003100000000F00000000000000");
 
         bool ok = PduCodec.TryGetFragmentLength(new System.Buffers.ReadOnlySequence<byte>(frame), out int length);
@@ -190,12 +175,10 @@ public sealed class RpcPduCodecRegressionTests
         await Assert.That(length).IsEqualTo(15);
     }
 
-    private static List<FaultCoPdu> CollectFragments(FaultCoPdu pdu, int fragmentSize)
-    {
+    private static List<FaultCoPdu> CollectFragments(FaultCoPdu pdu, int fragmentSize) {
         var fragments = new List<FaultCoPdu>();
         Iterator<ConnectionOrientedPdu> iterator = pdu.GetFragments(fragmentSize);
-        while (iterator.HasNext())
-        {
+        while (iterator.HasNext()) {
             fragments.Add((FaultCoPdu)iterator.Next());
         }
 
@@ -203,14 +186,11 @@ public sealed class RpcPduCodecRegressionTests
     }
 
     private static TException Capture<TException>(Action action)
-        where TException : Exception
-    {
-        try
-        {
+        where TException : Exception {
+        try {
             action();
         }
-        catch (TException exception)
-        {
+        catch (TException exception) {
             return exception;
         }
 

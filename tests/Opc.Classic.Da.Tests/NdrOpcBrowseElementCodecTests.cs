@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -11,26 +11,22 @@ using TUnit.Core;
 
 namespace Opc.Classic.Da.Tests;
 
-public sealed class NdrOpcBrowseElementCodecTests
-{
+public sealed class NdrOpcBrowseElementCodecTests {
     private delegate void NdrWriteAction(ref NdrWriter w);
 
-    private static byte[] WriteOne(NdrWriteAction write, int capacity = 2048)
-    {
+    private static byte[] WriteOne(NdrWriteAction write, int capacity = 2048) {
         var buf = new byte[capacity];
         var w = new NdrWriter(buf);
         write(ref w);
         return buf[..w.Position];
     }
 
-    private static OpcBrowseElementResult ReadOne(byte[] bytes)
-    {
+    private static OpcBrowseElementResult ReadOne(byte[] bytes) {
         var r = new NdrReader(bytes);
         return NdrOpcBrowseElementCodec.Read(ref r);
     }
 
-    private static (uint FlagValue, uint Reserved) ReadWireFlagAndReserved(byte[] bytes)
-    {
+    private static (uint FlagValue, uint Reserved) ReadWireFlagAndReserved(byte[] bytes) {
         var r = new NdrReader(bytes);
         _ = r.ReadUnicodeStringPtr();
         _ = r.ReadUnicodeStringPtr();
@@ -43,8 +39,7 @@ public sealed class NdrOpcBrowseElementCodecTests
         new(ErrorId: 0, Properties: Array.Empty<OpcItemPropertyResult>());
 
     [Test]
-    public async Task RoundTrip_LeafItem_EmptyProperties()
-    {
+    public async Task RoundTrip_LeafItem_EmptyProperties() {
         var input = new OpcBrowseElementResult(
             Name: "Tag1",
             ItemId: "Group1.Tag1",
@@ -74,8 +69,7 @@ public sealed class NdrOpcBrowseElementCodecTests
     }
 
     [Test]
-    public async Task RoundTrip_Branch_EmptyProperties()
-    {
+    public async Task RoundTrip_Branch_EmptyProperties() {
         var input = new OpcBrowseElementResult(
             Name: "Group1",
             ItemId: "Group1",
@@ -105,8 +99,7 @@ public sealed class NdrOpcBrowseElementCodecTests
     }
 
     [Test]
-    public async Task RoundTrip_ItemWithTwoProperties()
-    {
+    public async Task RoundTrip_ItemWithTwoProperties() {
         var input = new OpcBrowseElementResult(
             Name: "Tag1",
             ItemId: "Group1.Tag1",
@@ -158,8 +151,7 @@ public sealed class NdrOpcBrowseElementCodecTests
     }
 
     [Test]
-    public async Task RoundTrip_NullName_EmptyItemId()
-    {
+    public async Task RoundTrip_NullName_EmptyItemId() {
         var input = new OpcBrowseElementResult(
             Name: null,
             ItemId: string.Empty,

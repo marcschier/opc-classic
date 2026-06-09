@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -24,8 +24,7 @@ namespace Opc.Classic;
 /// heterogeneous VARIANT.
 /// </para>
 /// </remarks>
-public sealed record OpcSafeArray
-{
+public sealed record OpcSafeArray {
     /// <summary>Constructs a SAFEARRAY descriptor.</summary>
     /// <param name="elementType">The element VARTYPE.</param>
     /// <param name="data">The element data as a 1-D array. For multi-dimensional logical shapes, callers row-major-pack into a 1-D array sized as the product of <paramref name="lengths"/>.</param>
@@ -37,8 +36,7 @@ public sealed record OpcSafeArray
         Array data,
         int[]? lengths = null,
         int[]? lowerBounds = null,
-        SafeArrayFeatures features = SafeArrayFeatures.HaveVartype)
-    {
+        SafeArrayFeatures features = SafeArrayFeatures.HaveVartype) {
         ArgumentNullException.ThrowIfNull(data);
 
         ElementType = elementType;
@@ -51,41 +49,34 @@ public sealed record OpcSafeArray
             ? new int[_lengths.Length]
             : (int[])lowerBounds.Clone();
 
-        if (_lengths.Length == 0)
-        {
+        if (_lengths.Length == 0) {
             throw new ArgumentException("SAFEARRAY rank must be at least 1.", nameof(lengths));
         }
-        if (_lengths.Length > 256)
-        {
+        if (_lengths.Length > 256) {
             throw new ArgumentOutOfRangeException(nameof(lengths), _lengths.Length, "SAFEARRAY rank must not exceed 256.");
         }
-        if (VarTypeMask.IsArray(elementType) || VarTypeMask.IsByRef(elementType))
-        {
+        if (VarTypeMask.IsArray(elementType) || VarTypeMask.IsByRef(elementType)) {
             throw new ArgumentException("SAFEARRAY element type must not include VT_ARRAY or VT_BYREF modifiers.", nameof(elementType));
         }
 
         ValidateFeatures(elementType, features);
 
-        if (_lengths.Length != _lowerBounds.Length)
-        {
+        if (_lengths.Length != _lowerBounds.Length) {
             throw new ArgumentException(
                 $"Lengths.Length ({_lengths.Length}) must equal LowerBounds.Length ({_lowerBounds.Length}).",
                 nameof(lowerBounds));
         }
 
         long product = 1;
-        for (int i = 0; i < _lengths.Length; i++)
-        {
-            if (_lengths[i] < 0)
-            {
+        for (int i = 0; i < _lengths.Length; i++) {
+            if (_lengths[i] < 0) {
                 throw new ArgumentOutOfRangeException(nameof(lengths),
                     $"Dimension {i} has negative length {_lengths[i]}.");
             }
             product *= _lengths[i];
         }
 
-        if (product != data.Length)
-        {
+        if (product != data.Length) {
             throw new ArgumentException(
                 $"Product of Lengths ({product}) must equal data.Length ({data.Length}).",
                 nameof(data));
@@ -146,74 +137,56 @@ public sealed record OpcSafeArray
     public static OpcSafeArray OfVariant(OpcVariant[] values) =>
         new(VarType.VT_VARIANT, values, features: SafeArrayFeatures.HaveVartype | SafeArrayFeatures.Variant);
 
-    private static void ValidateFeatures(VarType elementType, SafeArrayFeatures features)
-    {
-        if ((features & SafeArrayFeatures.Variant) != SafeArrayFeatures.None && elementType != VarType.VT_VARIANT)
-        {
+    private static void ValidateFeatures(VarType elementType, SafeArrayFeatures features) {
+        if ((features & SafeArrayFeatures.Variant) != SafeArrayFeatures.None && elementType != VarType.VT_VARIANT) {
             throw new ArgumentException("FADF_VARIANT requires VT_VARIANT elements.", nameof(features));
         }
-        if ((features & SafeArrayFeatures.Bstr) != SafeArrayFeatures.None && elementType != VarType.VT_BSTR)
-        {
+        if ((features & SafeArrayFeatures.Bstr) != SafeArrayFeatures.None && elementType != VarType.VT_BSTR) {
             throw new ArgumentException("FADF_BSTR requires VT_BSTR elements.", nameof(features));
         }
-        if ((features & SafeArrayFeatures.Record) != SafeArrayFeatures.None && elementType != VarType.VT_RECORD)
-        {
+        if ((features & SafeArrayFeatures.Record) != SafeArrayFeatures.None && elementType != VarType.VT_RECORD) {
             throw new ArgumentException("FADF_RECORD requires VT_RECORD elements.", nameof(features));
         }
-        if ((features & SafeArrayFeatures.Unknown) != SafeArrayFeatures.None && elementType != VarType.VT_UNKNOWN)
-        {
+        if ((features & SafeArrayFeatures.Unknown) != SafeArrayFeatures.None && elementType != VarType.VT_UNKNOWN) {
             throw new ArgumentException("FADF_UNKNOWN requires VT_UNKNOWN elements.", nameof(features));
         }
-        if ((features & SafeArrayFeatures.Dispatch) != SafeArrayFeatures.None && elementType != VarType.VT_DISPATCH)
-        {
+        if ((features & SafeArrayFeatures.Dispatch) != SafeArrayFeatures.None && elementType != VarType.VT_DISPATCH) {
             throw new ArgumentException("FADF_DISPATCH requires VT_DISPATCH elements.", nameof(features));
         }
-        if ((features & SafeArrayFeatures.HaveIID) != SafeArrayFeatures.None && elementType != VarType.VT_UNKNOWN && elementType != VarType.VT_DISPATCH)
-        {
+        if ((features & SafeArrayFeatures.HaveIID) != SafeArrayFeatures.None && elementType != VarType.VT_UNKNOWN && elementType != VarType.VT_DISPATCH) {
             throw new ArgumentException("FADF_HAVEIID requires VT_UNKNOWN or VT_DISPATCH elements.", nameof(features));
         }
     }
 
     /// <inheritdoc />
-    public bool Equals(OpcSafeArray? other)
-    {
-        if (other is null)
-        {
+    public bool Equals(OpcSafeArray? other) {
+        if (other is null) {
             return false;
         }
-        if (ReferenceEquals(this, other))
-        {
+        if (ReferenceEquals(this, other)) {
             return true;
         }
-        if (ElementType != other.ElementType || Features != other.Features)
-        {
+        if (ElementType != other.ElementType || Features != other.Features) {
             return false;
         }
-        if (_lengths.Length != other._lengths.Length)
-        {
+        if (_lengths.Length != other._lengths.Length) {
             return false;
         }
-        for (int i = 0; i < _lengths.Length; i++)
-        {
-            if (_lengths[i] != other._lengths[i])
-            {
+        for (int i = 0; i < _lengths.Length; i++) {
+            if (_lengths[i] != other._lengths[i]) {
                 return false;
             }
-            if (_lowerBounds[i] != other._lowerBounds[i])
-            {
+            if (_lowerBounds[i] != other._lowerBounds[i]) {
                 return false;
             }
         }
-        if (Data.Length != other.Data.Length)
-        {
+        if (Data.Length != other.Data.Length) {
             return false;
         }
-        for (int i = 0; i < Data.Length; i++)
-        {
+        for (int i = 0; i < Data.Length; i++) {
             object? a = Data.GetValue(i);
             object? b = other.Data.GetValue(i);
-            if (!Equals(a, b))
-            {
+            if (!Equals(a, b)) {
                 return false;
             }
         }
@@ -221,14 +194,12 @@ public sealed record OpcSafeArray
     }
 
     /// <inheritdoc />
-    public override int GetHashCode()
-    {
+    public override int GetHashCode() {
         var hc = new HashCode();
         hc.Add(ElementType);
         hc.Add(Features);
         hc.Add(Data.Length);
-        for (int i = 0; i < _lengths.Length; i++)
-        {
+        for (int i = 0; i < _lengths.Length; i++) {
             hc.Add(_lengths[i]);
             hc.Add(_lowerBounds[i]);
         }

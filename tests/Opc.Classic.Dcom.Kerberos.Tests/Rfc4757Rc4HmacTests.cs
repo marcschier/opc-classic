@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -10,13 +10,11 @@ using TUnit.Core;
 
 namespace Opc.Classic.Dcom.Kerberos.Tests;
 
-public sealed class Rfc4757Rc4HmacTests
-{
+public sealed class Rfc4757Rc4HmacTests {
     private static readonly byte[] Rfc4757FooStringToKey = KerberosTestHex.FromHex("AC8E657F83DF82BEEA5D43BDAF7800CC");
 
     [Test]
-    public async Task Rfc4757_section_2_String2Key_foo_vector_is_accepted_as_RC4_session_key()
-    {
+    public async Task Rfc4757_section_2_String2Key_foo_vector_is_accepted_as_RC4_session_key() {
         var session = new KerberosSession(Rfc4757FooStringToKey, EncryptionType.RC4_HMAC_NT);
 
         byte[] token = session.WrapMessage([0x01, 0x02, 0x03], confidential: false);
@@ -26,8 +24,7 @@ public sealed class Rfc4757Rc4HmacTests
     }
 
     [Test]
-    public async Task Rfc4757_HMAC_MD5_MIC_derivation_matches_expected_checksum()
-    {
+    public async Task Rfc4757_HMAC_MD5_MIC_derivation_matches_expected_checksum() {
         var session = new KerberosSession(Rfc4757FooStringToKey, EncryptionType.RC4_HMAC_NT);
 
         byte[] mic = session.GetMic([0x01, 0x02, 0x03]);
@@ -37,8 +34,7 @@ public sealed class Rfc4757Rc4HmacTests
     }
 
     [Test]
-    public async Task Rc4Hmac_wrap_privacy_round_trips()
-    {
+    public async Task Rc4Hmac_wrap_privacy_round_trips() {
         var session = new KerberosSession(Rfc4757FooStringToKey, EncryptionType.RC4_HMAC_NT);
         byte[] plaintext = [0x41, 0x42, 0x43, 0x44];
 

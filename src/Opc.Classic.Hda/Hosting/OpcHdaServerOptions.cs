@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -8,8 +8,7 @@ using System;
 namespace Opc.Classic.Hda.Hosting;
 
 /// <summary>Configuration for a managed OPC HDA server host.</summary>
-public sealed record OpcHdaServerOptions
-{
+public sealed record OpcHdaServerOptions {
     /// <summary>Gets the COM class identifier exposed to OPC HDA clients.</summary>
     public required Guid Clsid { get; set; }
 

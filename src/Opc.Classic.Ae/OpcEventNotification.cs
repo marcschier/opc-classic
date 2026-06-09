@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -10,8 +10,7 @@ namespace Opc.Classic.Ae;
 /// <summary>
 /// Managed projection of OPC AE's <c>ONEVENTSTRUCT</c> notification payload.
 /// </summary>
-public sealed record OpcEventNotification
-{
+public sealed record OpcEventNotification {
     /// <summary>Constructor for the immutable event notification payload.</summary>
     public OpcEventNotification(
         ushort changeMask,
@@ -29,8 +28,7 @@ public sealed record OpcEventNotification
         DateTimeOffset activeTime,
         uint cookie,
         OpcVariant[] eventAttributes,
-        string? actorId)
-    {
+        string? actorId) {
         ArgumentNullException.ThrowIfNull(eventAttributes);
 
         ChangeMask = changeMask;

@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -24,18 +24,14 @@ namespace Opc.Classic.Hosting.Tests.Windows;
 /// </summary>
 [SupportedOSPlatform("windows")]
 [NotInParallel]
-public sealed class WindowsComRegistrationTests
-{
+public sealed class WindowsComRegistrationTests {
     [Test]
-    public async Task RegisterLocalServer_WritesAllExpectedKeys()
-    {
-        if (!OperatingSystem.IsWindows())
-        {
+    public async Task RegisterLocalServer_WritesAllExpectedKeys() {
+        if (!OperatingSystem.IsWindows()) {
             return;
         }
 
-        await RunWindowsAsync(static (registration, exePath) =>
-        {
+        await RunWindowsAsync(static (registration, exePath) => {
             string clsidKeyPath = ClsidKeyPath(registration);
             using RegistryKey hkcuClasses = OpenHkcuClasses(RegistryView.Registry64);
             using RegistryKey? clsidKey = hkcuClasses.OpenSubKey(clsidKeyPath);
@@ -64,15 +60,12 @@ public sealed class WindowsComRegistrationTests
     }
 
     [Test]
-    public async Task RegisterLocalServer_WritesAppIdAsNamedValueNotSubkey()
-    {
-        if (!OperatingSystem.IsWindows())
-        {
+    public async Task RegisterLocalServer_WritesAppIdAsNamedValueNotSubkey() {
+        if (!OperatingSystem.IsWindows()) {
             return;
         }
 
-        await RunWindowsAsync(static (registration, _) =>
-        {
+        await RunWindowsAsync(static (registration, _) => {
             using RegistryKey hkcuClasses = OpenHkcuClasses(RegistryView.Registry64);
             using RegistryKey? clsidKey = hkcuClasses.OpenSubKey(ClsidKeyPath(registration));
             Assert(clsidKey is not null, "CLSID key missing");
@@ -89,15 +82,12 @@ public sealed class WindowsComRegistrationTests
     }
 
     [Test]
-    public async Task RegisterLocalServer_WritesImplementedCategoriesAndComponentCategoryDescriptions()
-    {
-        if (!OperatingSystem.IsWindows())
-        {
+    public async Task RegisterLocalServer_WritesImplementedCategoriesAndComponentCategoryDescriptions() {
+        if (!OperatingSystem.IsWindows()) {
             return;
         }
 
-        await RunWindowsAsync(static (registration, _) =>
-        {
+        await RunWindowsAsync(static (registration, _) => {
             using RegistryKey hkcuClasses = OpenHkcuClasses(RegistryView.Registry64);
 
             using RegistryKey? clsidKey = hkcuClasses.OpenSubKey(ClsidKeyPath(registration));
@@ -123,15 +113,12 @@ public sealed class WindowsComRegistrationTests
     }
 
     [Test]
-    public async Task RegisterLocalServer_WritesProgIdAndVersionIndependentProgIdReverseAliases()
-    {
-        if (!OperatingSystem.IsWindows())
-        {
+    public async Task RegisterLocalServer_WritesProgIdAndVersionIndependentProgIdReverseAliases() {
+        if (!OperatingSystem.IsWindows()) {
             return;
         }
 
-        await RunWindowsAsync(static (registration, _) =>
-        {
+        await RunWindowsAsync(static (registration, _) => {
             using RegistryKey hkcuClasses = OpenHkcuClasses(RegistryView.Registry64);
 
             using RegistryKey? versionedProgId = hkcuClasses.OpenSubKey(registration.ProgId);
@@ -168,17 +155,14 @@ public sealed class WindowsComRegistrationTests
     }
 
     [Test]
-    public async Task UnregisterLocalServer_RemovesPerServerKeysAndLeavesComponentCategoriesAlone()
-    {
-        if (!OperatingSystem.IsWindows())
-        {
+    public async Task UnregisterLocalServer_RemovesPerServerKeysAndLeavesComponentCategoriesAlone() {
+        if (!OperatingSystem.IsWindows()) {
             return;
         }
 
         OpcClsidRegistration registration = NewRegistration();
         string exePath = TestExePath();
-        try
-        {
+        try {
             WindowsComRegistration.RegisterLocalServer(
                 registration,
                 exePath,
@@ -209,8 +193,7 @@ public sealed class WindowsComRegistrationTests
             Assert(categoriesRoot?.OpenSubKey($"{da20}\\409") is not null,
                 "Component Categories description should not be removed on unregister");
         }
-        finally
-        {
+        finally {
             // Best-effort cleanup if the test failed partway through
             WindowsComRegistration.UnregisterLocalServer(registration, RegistryHive.CurrentUser);
             CleanupSharedCategoryDescription(OpcComponentCategories.OpcDaServer20.CategoryId);
@@ -220,17 +203,13 @@ public sealed class WindowsComRegistrationTests
     }
 
     [Test]
-    public async Task RegisterLocalServer_WritesToBothRegistryViewsByDefault()
-    {
-        if (!OperatingSystem.IsWindows())
-        {
+    public async Task RegisterLocalServer_WritesToBothRegistryViewsByDefault() {
+        if (!OperatingSystem.IsWindows()) {
             return;
         }
 
-        await RunWindowsAsync(static (registration, _) =>
-        {
-            foreach (RegistryView view in new[] { RegistryView.Registry32, RegistryView.Registry64 })
-            {
+        await RunWindowsAsync(static (registration, _) => {
+            foreach (RegistryView view in new[] { RegistryView.Registry32, RegistryView.Registry64 }) {
                 using RegistryKey hkcuClasses = OpenHkcuClasses(view);
                 Assert(hkcuClasses.OpenSubKey(ClsidKeyPath(registration)) is not null,
                     $"CLSID key missing in {view} view");
@@ -239,17 +218,14 @@ public sealed class WindowsComRegistrationTests
     }
 
     [Test]
-    public async Task RegisterLocalServer_IsIdempotent()
-    {
-        if (!OperatingSystem.IsWindows())
-        {
+    public async Task RegisterLocalServer_IsIdempotent() {
+        if (!OperatingSystem.IsWindows()) {
             return;
         }
 
         OpcClsidRegistration registration = NewRegistration();
         string exePath = TestExePath();
-        try
-        {
+        try {
             WindowsComRegistration.RegisterLocalServer(
                 registration,
                 exePath,
@@ -270,8 +246,7 @@ public sealed class WindowsComRegistrationTests
                 StringComparison.Ordinal),
                 "AppID named value should match after double-register");
         }
-        finally
-        {
+        finally {
             WindowsComRegistration.UnregisterLocalServer(registration, RegistryHive.CurrentUser);
         }
 
@@ -281,14 +256,12 @@ public sealed class WindowsComRegistrationTests
     // ----- helpers -----
 
     [SupportedOSPlatform("windows")]
-    private static async Task RunWindowsAsync(Action<OpcClsidRegistration, string> verify)
-    {
+    private static async Task RunWindowsAsync(Action<OpcClsidRegistration, string> verify) {
         OpcClsidRegistration registration = NewRegistration();
         string exePath = TestExePath();
         Guid sharedCategory = OpcComponentCategories.OpcDaServer20.CategoryId;
 
-        try
-        {
+        try {
             WindowsComRegistration.RegisterLocalServer(
                 registration,
                 exePath,
@@ -302,8 +275,7 @@ public sealed class WindowsComRegistrationTests
 
             verify(registration, exePath);
         }
-        finally
-        {
+        finally {
             WindowsComRegistration.UnregisterLocalServer(registration, RegistryHive.CurrentUser);
             CleanupSharedCategoryDescription(sharedCategory);
             CleanupSharedCategoryDescription(OpcComponentCategories.OpcDaServer30.CategoryId);
@@ -313,10 +285,8 @@ public sealed class WindowsComRegistrationTests
     }
 
     [SupportedOSPlatform("windows")]
-    private static void CleanupSharedCategoryDescription(Guid catId)
-    {
-        foreach (RegistryView view in new[] { RegistryView.Registry32, RegistryView.Registry64 })
-        {
+    private static void CleanupSharedCategoryDescription(Guid catId) {
+        foreach (RegistryView view in new[] { RegistryView.Registry32, RegistryView.Registry64 }) {
             using RegistryKey baseKey = RegistryKey.OpenBaseKey(RegistryHive.CurrentUser, view);
             using RegistryKey? classes = baseKey.OpenSubKey(@"Software\Classes", writable: true);
             using RegistryKey? categories = classes?.OpenSubKey("Component Categories", writable: true);
@@ -325,15 +295,13 @@ public sealed class WindowsComRegistrationTests
     }
 
     [SupportedOSPlatform("windows")]
-    private static RegistryKey OpenHkcuClasses(RegistryView view)
-    {
+    private static RegistryKey OpenHkcuClasses(RegistryView view) {
         RegistryKey baseKey = RegistryKey.OpenBaseKey(RegistryHive.CurrentUser, view);
         return baseKey.OpenSubKey(@"Software\Classes")
             ?? throw new InvalidOperationException("HKCU\\Software\\Classes missing.");
     }
 
-    private static OpcClsidRegistration NewRegistration()
-    {
+    private static OpcClsidRegistration NewRegistration() {
         Guid clsid = Guid.CreateVersion7();
         string suffix = clsid.ToString("N", CultureInfo.InvariantCulture)[..8];
         string progId = $"Test.OpcClassic.{suffix}.1";
@@ -353,16 +321,13 @@ public sealed class WindowsComRegistrationTests
     private static string ClsidKeyPath(OpcClsidRegistration registration) =>
         $"CLSID\\{{{registration.Clsid:D}}}";
 
-    private static string VersionIndependent(string progId)
-    {
+    private static string VersionIndependent(string progId) {
         int dot = progId.LastIndexOf('.');
         return dot > 0 ? progId[..dot] : progId;
     }
 
-    private static void Assert(bool condition, string message)
-    {
-        if (!condition)
-        {
+    private static void Assert(bool condition, string message) {
+        if (!condition) {
             throw new InvalidOperationException(message);
         }
     }

@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -11,33 +11,28 @@ using TUnit.Core;
 
 namespace Opc.Classic.Batch.Tests;
 
-public sealed class NdrOpcBatchSummaryFilterCodecTests
-{
+public sealed class NdrOpcBatchSummaryFilterCodecTests {
     private delegate void NdrWriteAction(ref NdrWriter w);
 
-    private static byte[] WriteOne(NdrWriteAction write, int capacity = 1024)
-    {
+    private static byte[] WriteOne(NdrWriteAction write, int capacity = 1024) {
         var buf = new byte[capacity];
         var w = new NdrWriter(buf);
         write(ref w);
         return buf[..w.Position];
     }
 
-    private static OpcBatchSummaryFilter ReadOne(byte[] bytes)
-    {
+    private static OpcBatchSummaryFilter ReadOne(byte[] bytes) {
         var r = new NdrReader(bytes);
         return NdrOpcBatchSummaryFilterCodec.Read(ref r);
     }
 
-    private static OpcBatchSummaryFilter RoundTrip(OpcBatchSummaryFilter input)
-    {
+    private static OpcBatchSummaryFilter RoundTrip(OpcBatchSummaryFilter input) {
         var bytes = WriteOne((ref NdrWriter w) => NdrOpcBatchSummaryFilterCodec.Write(ref w, input));
         return ReadOne(bytes);
     }
 
     [Test]
-    public async Task RoundTrip_WideOpenFilter()
-    {
+    public async Task RoundTrip_WideOpenFilter() {
         var minTime = DateTimeOffset.UnixEpoch.AddYears(-50);
         var maxTime = DateTimeOffset.UnixEpoch.AddYears(100);
         var input = new OpcBatchSummaryFilter(
@@ -61,8 +56,7 @@ public sealed class NdrOpcBatchSummaryFilterCodecTests
     }
 
     [Test]
-    public async Task RoundTrip_NarrowTimeWindow()
-    {
+    public async Task RoundTrip_NarrowTimeWindow() {
         var startMin = new DateTimeOffset(2026, 5, 22, 10, 0, 0, TimeSpan.Zero);
         var startMax = startMin.AddHours(1);
         var endMin = new DateTimeOffset(2026, 5, 22, 12, 0, 0, TimeSpan.Zero);
@@ -88,8 +82,7 @@ public sealed class NdrOpcBatchSummaryFilterCodecTests
     }
 
     [Test]
-    public async Task RoundTrip_RealisticBatchSizeRange()
-    {
+    public async Task RoundTrip_RealisticBatchSizeRange() {
         var input = new OpcBatchSummaryFilter(
             Id: "Batch",
             Description: "blend",
@@ -113,8 +106,7 @@ public sealed class NdrOpcBatchSummaryFilterCodecTests
     }
 
     [Test]
-    public async Task RoundTrip_AllEmptyStrings()
-    {
+    public async Task RoundTrip_AllEmptyStrings() {
         // FILETIME = Epoch (1601-01-01 UTC) is the natural "zero" wire value
         // for OPC Batch timestamp fields. DateTimeOffset.MinValue would round-trip
         // through a negative FILETIME which the strict decode (Track AW) rejects

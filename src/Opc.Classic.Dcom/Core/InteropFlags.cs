@@ -1,6 +1,6 @@
-// SPDX-License-Identifier: MIT
+﻿// SPDX-License-Identifier: MIT
 
-namespace Opc.Classic.Dcom.Core; 
+namespace Opc.Classic.Dcom.Core;
 
 /// <summary>
 /// Class representing various flags used in the system.

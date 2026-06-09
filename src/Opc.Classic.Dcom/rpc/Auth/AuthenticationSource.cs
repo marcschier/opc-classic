@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: MIT
+﻿// SPDX-License-Identifier: MIT
 //
 // Phase 2H: replaced the original Java SPI / META-INF/services service-loader
 // (incompatible with NativeAOT because it uses runtime ClassLoader / Type.GetType
@@ -14,7 +14,8 @@ using System;
 using System.IO;
 using System.Threading;
 
-namespace Opc.Classic.Dcom.Rpc.Auth.ntlm; 
+namespace Opc.Classic.Dcom.Rpc.Auth.ntlm;
+
 /// <summary>
 /// Server-side NTLM authentication source. Consumer-pluggable: an
 /// implementation validates incoming NTLM credentials against the

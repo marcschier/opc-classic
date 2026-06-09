@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -9,8 +9,7 @@ using System.Text;
 namespace Opc.Classic.Dx;
 
 /// <summary>Builds canonical OPC DX database item paths using the <c>/DX/{X}/{Y}</c> convention.</summary>
-public static class DxNamespace
-{
+public static class DxNamespace {
     /// <summary>DX path separator.</summary>
     public const string Separator = "/";
 
@@ -42,16 +41,13 @@ public static class DxNamespace
     public static string SourceServersRootPath => Join(SourceServersRootSegment);
 
     /// <summary>Builds a canonical path under <c>/DX</c>.</summary>
-    public static string Join(params string?[] segments)
-    {
+    public static string Join(params string?[] segments) {
         var builder = new StringBuilder(RootPath);
-        if (segments is null)
-        {
+        if (segments is null) {
             return builder.ToString();
         }
 
-        foreach (var segment in segments)
-        {
+        foreach (var segment in segments) {
             AppendSegment(builder, segment);
         }
 
@@ -59,15 +55,13 @@ public static class DxNamespace
     }
 
     /// <summary>Builds a connection path under <c>/DX/DXConnectionsRoot</c>.</summary>
-    public static string ConnectionPath(params string?[] browsePathAndName)
-    {
+    public static string ConnectionPath(params string?[] browsePathAndName) {
         browsePathAndName ??= Array.Empty<string?>();
         return Join(Prepend(ConnectionsRootSegment, browsePathAndName));
     }
 
     /// <summary>Builds a connection status path under <c>/DX/DXConnectionsRoot</c>.</summary>
-    public static string ConnectionStatusPath(params string?[] browsePathAndName)
-    {
+    public static string ConnectionStatusPath(params string?[] browsePathAndName) {
         browsePathAndName ??= Array.Empty<string?>();
         return Join(Append(Prepend(ConnectionsRootSegment, browsePathAndName), StatusSegment));
     }
@@ -80,17 +74,13 @@ public static class DxNamespace
     public static string SourceServerStatusPath(string sourceServerName) =>
         Join(SourceServersRootSegment, sourceServerName, StatusSegment);
 
-    private static void AppendSegment(StringBuilder builder, string? segment)
-    {
-        if (string.IsNullOrWhiteSpace(segment))
-        {
+    private static void AppendSegment(StringBuilder builder, string? segment) {
+        if (string.IsNullOrWhiteSpace(segment)) {
             return;
         }
 
-        foreach (var part in segment.Split('/', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))
-        {
-            if (part.Length == 0 || string.Equals(part, RootSegment, StringComparison.OrdinalIgnoreCase))
-            {
+        foreach (var part in segment.Split('/', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)) {
+            if (part.Length == 0 || string.Equals(part, RootSegment, StringComparison.OrdinalIgnoreCase)) {
                 continue;
             }
 
@@ -98,16 +88,14 @@ public static class DxNamespace
         }
     }
 
-    private static string?[] Prepend(string head, string?[] tail)
-    {
+    private static string?[] Prepend(string head, string?[] tail) {
         var result = new string?[tail.Length + 1];
         result[0] = head;
         Array.Copy(tail, 0, result, 1, tail.Length);
         return result;
     }
 
-    private static string?[] Append(string?[] head, string tail)
-    {
+    private static string?[] Append(string?[] head, string tail) {
         var result = new string?[head.Length + 1];
         Array.Copy(head, result, head.Length);
         result[^1] = tail;

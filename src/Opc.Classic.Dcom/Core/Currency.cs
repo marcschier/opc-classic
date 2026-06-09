@@ -1,9 +1,10 @@
-// SPDX-License-Identifier: MIT
+﻿// SPDX-License-Identifier: MIT
 
 using System;
 using System.Globalization;
 
-namespace Opc.Classic.Dcom.Core; 
+namespace Opc.Classic.Dcom.Core;
+
 /// <summary>
 /// Definition from MSDN: encapsulates the CURRENCY data type used
 /// in Automation. CURRENCY is implemented as an 8-byte, two's-complement

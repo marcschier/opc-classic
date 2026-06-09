@@ -1,11 +1,12 @@
-// SPDX-License-Identifier: MIT
+﻿// SPDX-License-Identifier: MIT
 
 using System;
 using System.Collections.Generic;
 using Opc.Classic.Dcom.Internal.LegacyNdr;
 using System.Linq;
 
-namespace Opc.Classic.Dcom.Core; 
+namespace Opc.Classic.Dcom.Core;
+
 /// <summary>
 /// Represents array of network address and security bindings.
 /// </summary>

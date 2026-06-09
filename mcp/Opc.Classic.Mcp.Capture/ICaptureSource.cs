@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -22,8 +22,7 @@ namespace Opc.Classic.Mcp.Capture;
 /// replay. <see cref="DisposeAsync"/> releases the source-internal
 /// storage.
 /// </remarks>
-public interface ICaptureSource : IAsyncDisposable
-{
+public interface ICaptureSource : IAsyncDisposable {
     /// <summary>
     /// Captured packet count seen so far (live).
     /// </summary>

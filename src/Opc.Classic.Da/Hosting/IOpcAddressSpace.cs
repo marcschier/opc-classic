@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -28,8 +28,7 @@ namespace Opc.Classic.Da.Hosting;
 /// <see cref="IsHierarchical"/> property feeds <c>QueryOrganization</c>.
 /// </para>
 /// </remarks>
-public interface IOpcAddressSpace
-{
+public interface IOpcAddressSpace {
     /// <summary>
     /// Returns <see langword="true"/> for a hierarchical namespace
     /// (OPCNS_HIERARCHIAL = 2), <see langword="false"/> for FLAT (OPCNS_FLAT = 1).

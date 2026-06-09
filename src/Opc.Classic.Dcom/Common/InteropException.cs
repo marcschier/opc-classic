@@ -1,8 +1,9 @@
-// SPDX-License-Identifier: MIT
+﻿// SPDX-License-Identifier: MIT
 
 using System;
 
-namespace Opc.Classic.Dcom.Common; 
+namespace Opc.Classic.Dcom.Common;
+
 /// <summary>
 /// Exception class for the framework. Developers are expected to catch
 /// or re-throw these exceptions and not create one themselves.

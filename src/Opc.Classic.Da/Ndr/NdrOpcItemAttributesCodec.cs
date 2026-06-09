@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -39,36 +39,29 @@ namespace Opc.Classic.Da.Ndr;
 ///       VARIANT body                            (handled by NdrVariantExtensions)
 /// </code>
 /// </remarks>
-public static class NdrOpcItemAttributesCodec
-{
+public static class NdrOpcItemAttributesCodec {
     private const int Win32BoolTrue = unchecked((int)0xFFFFFFFFu);
 
     /// <summary>Encodes a conformant OPCITEMATTRIBUTES array using DCE/RPC deferred-pointer pile layout, including the outer unique-pointer referent.</summary>
-    public static void WriteConformantArray(ref NdrWriter writer, OpcItemAttributes[]? attributes)
-    {
-        if (attributes is null || attributes.Length == 0)
-        {
+    public static void WriteConformantArray(ref NdrWriter writer, OpcItemAttributes[]? attributes) {
+        if (attributes is null || attributes.Length == 0) {
             writer.WriteUniquePointerReferent(false);
             return;
         }
 
         writer.WriteUniquePointerReferent(true);
         writer.WriteUInt32((uint)attributes.Length);
-        foreach (OpcItemAttributes attr in attributes)
-        {
+        foreach (OpcItemAttributes attr in attributes) {
             WriteInline(ref writer, attr);
         }
-        foreach (OpcItemAttributes attr in attributes)
-        {
+        foreach (OpcItemAttributes attr in attributes) {
             WriteDeferred(ref writer, attr);
         }
     }
 
     /// <summary>Decodes a conformant OPCITEMATTRIBUTES array using DCE/RPC deferred-pointer pile layout, including the outer unique-pointer referent.</summary>
-    public static OpcItemAttributes[] ReadConformantArray(ref NdrReader reader)
-    {
-        if (!reader.TryReadReferentId(out _))
-        {
+    public static OpcItemAttributes[] ReadConformantArray(ref NdrReader reader) {
+        if (!reader.TryReadReferentId(out _)) {
             return [];
         }
         uint maxCount = reader.ReadUInt32();
@@ -76,14 +69,12 @@ public static class NdrOpcItemAttributesCodec
         if (count <= 0) { return []; }
 
         var inlineParts = new ItemAttributesInline[count];
-        for (int i = 0; i < count; i++)
-        {
+        for (int i = 0; i < count; i++) {
             inlineParts[i] = ReadInline(ref reader);
         }
 
         var result = new OpcItemAttributes[count];
-        for (int i = 0; i < count; i++)
-        {
+        for (int i = 0; i < count; i++) {
             result[i] = ApplyDeferred(ref reader, inlineParts[i]);
         }
 
@@ -91,8 +82,7 @@ public static class NdrOpcItemAttributesCodec
     }
 
     /// <summary>Encodes a single OPCITEMATTRIBUTES in NDR using the inline + deferred shape.</summary>
-    public static void Write(ref NdrWriter writer, OpcItemAttributes attributes)
-    {
+    public static void Write(ref NdrWriter writer, OpcItemAttributes attributes) {
         ArgumentNullException.ThrowIfNull(attributes);
 
         WriteInline(ref writer, attributes);
@@ -100,14 +90,12 @@ public static class NdrOpcItemAttributesCodec
     }
 
     /// <summary>Decodes a single OPCITEMATTRIBUTES from NDR using the inline + deferred shape.</summary>
-    public static OpcItemAttributes Read(ref NdrReader reader)
-    {
+    public static OpcItemAttributes Read(ref NdrReader reader) {
         ItemAttributesInline inlinePart = ReadInline(ref reader);
         return ApplyDeferred(ref reader, inlinePart);
     }
 
-    private static void WriteInline(ref NdrWriter writer, OpcItemAttributes attributes)
-    {
+    private static void WriteInline(ref NdrWriter writer, OpcItemAttributes attributes) {
         ArgumentNullException.ThrowIfNull(attributes);
 
         byte[] blob = attributes.Blob ?? [];
@@ -125,24 +113,19 @@ public static class NdrOpcItemAttributesCodec
         writer.WriteVariant(attributes.EUInfo);
     }
 
-    private static void WriteDeferred(ref NdrWriter writer, OpcItemAttributes attributes)
-    {
-        if (attributes.AccessPath is not null)
-        {
+    private static void WriteDeferred(ref NdrWriter writer, OpcItemAttributes attributes) {
+        if (attributes.AccessPath is not null) {
             writer.WriteUnicodeString(attributes.AccessPath);
         }
-        if (attributes.ItemId is not null)
-        {
+        if (attributes.ItemId is not null) {
             writer.WriteUnicodeString(attributes.ItemId);
         }
-        if (attributes.Blob is { Length: > 0 } blob)
-        {
+        if (attributes.Blob is { Length: > 0 } blob) {
             writer.WriteConformantByteArray(blob);
         }
     }
 
-    private static ItemAttributesInline ReadInline(ref NdrReader reader)
-    {
+    private static ItemAttributesInline ReadInline(ref NdrReader reader) {
         uint accessPathRef = reader.ReadUInt32();
         uint itemIdRef = reader.ReadUInt32();
         int bActive = reader.ReadInt32();
@@ -158,8 +141,7 @@ public static class NdrOpcItemAttributesCodec
         return new ItemAttributesInline(accessPathRef, itemIdRef, bActive, hClient, hServer, dwAccessRights, blobRef, vtRequested, vtCanonical, dwEUType, euInfo);
     }
 
-    private static OpcItemAttributes ApplyDeferred(ref NdrReader reader, ItemAttributesInline inlinePart)
-    {
+    private static OpcItemAttributes ApplyDeferred(ref NdrReader reader, ItemAttributesInline inlinePart) {
         string? accessPath = inlinePart.AccessPathRef == 0u ? null : reader.ReadUnicodeString();
         string? itemId = inlinePart.ItemIdRef == 0u ? null : reader.ReadUnicodeString();
         byte[] blob = inlinePart.BlobRef == 0u ? [] : reader.ReadConformantByteArray();

@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -20,8 +20,7 @@ namespace Opc.Classic;
 /// — equality, hash, and pattern-matching come for free.
 /// </para>
 /// </remarks>
-public readonly record struct OpcResultId(int Code, string? Description)
-{
+public readonly record struct OpcResultId(int Code, string? Description) {
     /// <summary>The HRESULT severity bit (bit 31): true => failure.</summary>
     public bool IsFailure => (Code & unchecked((int)0x80000000)) != 0;
 
@@ -128,8 +127,7 @@ public readonly record struct OpcResultId(int Code, string? Description)
     /// <summary><c>OPC_E_NOTSUPPORTED</c> (0xC0040406) — operation not supported by this server.</summary>
     public static OpcResultId NotSupported { get; } = new(unchecked((int)0xC0040406u), "OPC_E_NOTSUPPORTED");
 
-    public override string ToString()
-    {
+    public override string ToString() {
         var hex = $"0x{Code:X8}";
         return Description is null ? hex : $"{hex} ({Description})";
     }

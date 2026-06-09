@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: MIT
+﻿// SPDX-License-Identifier: MIT
 
 using Opc.Classic.Dcom.Crypto;
 using Opc.Classic.Dcom.Internal.Ntlm;
@@ -7,7 +7,8 @@ using System;
 using System.Linq;
 using System.Security.Cryptography;
 
-namespace Opc.Classic.Dcom.Rpc.Auth.ntlm; 
+namespace Opc.Classic.Dcom.Rpc.Auth.ntlm;
+
 /// <summary>
 /// Key factory for lan manager
 /// </summary>

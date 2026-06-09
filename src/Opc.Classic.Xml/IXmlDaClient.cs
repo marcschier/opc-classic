@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -13,8 +13,7 @@ namespace Opc.Classic.Xml;
 /// (<see cref="HttpXmlDaClient"/>) speaks SOAP-over-HTTP; alternate impls
 /// can shim in-memory transports for testing or layered architectures.
 /// </summary>
-public interface IXmlDaClient
-{
+public interface IXmlDaClient {
     /// <summary>
     /// Sends a <c>GetStatus</c> request and returns the server's status.
     /// </summary>

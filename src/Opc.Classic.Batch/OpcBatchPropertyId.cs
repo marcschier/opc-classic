@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -8,8 +8,7 @@ namespace Opc.Classic.Batch;
 /// <summary>
 /// OPC Batch 2.00 DA item property identifiers defined by Appendix A's <c>OPCBatchProps.h</c>.
 /// </summary>
-public static class OpcBatchPropertyId
-{
+public static class OpcBatchPropertyId {
     private const string VariesVarType = "<varies>";
 
     /// <summary><c>OPC_PROP_B_ID</c> (400) — item name, equipment ID, batch ID, internal ID, or alias used to build the qualified item ID (VT_BSTR).</summary>
@@ -254,15 +253,13 @@ public static class OpcBatchPropertyId
     /// </summary>
     /// <param name="propertyId">The Batch property ID.</param>
     /// <returns>The standard description, or <see langword="null"/> when <paramref name="propertyId"/> is not a Batch-defined property ID.</returns>
-    public static string? GetDescription(int propertyId) => propertyId switch
-    {
+    public static string? GetDescription(int propertyId) => propertyId switch {
         >= Id and <= BatchSize => GetDescription400To439(propertyId),
         >= Priority and <= TrainList2Schema => GetDescription440To478(propertyId),
         _ => null,
     };
 
-    private static string? GetDescription400To439(int propertyId) => propertyId switch
-    {
+    private static string? GetDescription400To439(int propertyId) => propertyId switch {
         Id => "Item name, equipment ID, batch ID, internal ID, or alias used to build the qualified item ID.",
         Value => "Item value derived from OPC Data Access property ID 2.",
         AccessRights => "Item access rights derived from OPC Data Access property ID 5.",
@@ -306,8 +303,7 @@ public static class OpcBatchPropertyId
         _ => null,
     };
 
-    private static string? GetDescription440To478(int propertyId) => propertyId switch
-    {
+    private static string? GetDescription440To478(int propertyId) => propertyId switch {
         Priority => "Relative processing priority, where lower numbers have higher priority.",
         ExecutionState => "Current execution state using the vendor's state names.",
         Iec61512State => "Execution state using IEC 61512-1 example state names, using OPCB_ENUM_STATE.",
@@ -355,15 +351,13 @@ public static class OpcBatchPropertyId
     /// </summary>
     /// <param name="propertyId">The Batch property ID.</param>
     /// <returns>The VARTYPE expression from the specification, or <see langword="null"/> when <paramref name="propertyId"/> is not a Batch-defined property ID.</returns>
-    public static string? GetExpectedVarType(int propertyId) => propertyId switch
-    {
+    public static string? GetExpectedVarType(int propertyId) => propertyId switch {
         >= Id and <= BatchSize => GetExpectedVarType400To439(propertyId),
         >= Priority and <= TrainList2Schema => GetExpectedVarType440To478(propertyId),
         _ => null,
     };
 
-    private static string? GetExpectedVarType400To439(int propertyId) => propertyId switch
-    {
+    private static string? GetExpectedVarType400To439(int propertyId) => propertyId switch {
         Id => "VT_BSTR",
         Value => VariesVarType,
         AccessRights => "VT_I4",
@@ -407,8 +401,7 @@ public static class OpcBatchPropertyId
         _ => null,
     };
 
-    private static string? GetExpectedVarType440To478(int propertyId) => propertyId switch
-    {
+    private static string? GetExpectedVarType440To478(int propertyId) => propertyId switch {
         Priority => "VT_I4",
         ExecutionState => "VT_BSTR",
         Iec61512State => "VT_I4",

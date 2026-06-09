@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -20,8 +20,7 @@ namespace Opc.Classic.Cpx;
 /// <see cref="TypeDescription"/> entries AOT-clean while the CPX XML and
 /// OPCBinary codecs parse and consume type-system dictionaries.
 /// </remarks>
-public sealed record TypeDictionary
-{
+public sealed record TypeDictionary {
     /// <summary>The OPC DA type-system identifier for XML Schema dictionaries.</summary>
     public const string XmlSchemaTypeSystemId = "XMLSchema";
 
@@ -43,8 +42,7 @@ public sealed record TypeDictionary
 
     /// <summary>Create an unnamed dictionary with the supplied types.</summary>
     public TypeDictionary(IEnumerable<TypeDescription> types)
-        : this(string.Empty, types)
-    {
+        : this(string.Empty, types) {
     }
 
     /// <summary>Create a dictionary with the supplied metadata and types.</summary>
@@ -54,22 +52,18 @@ public sealed record TypeDictionary
         bool defaultBigEndian = true,
         string defaultStringEncoding = DefaultOpcBinaryStringEncoding,
         int defaultCharWidth = 2,
-        string defaultFloatFormat = DefaultOpcBinaryFloatFormat)
-    {
+        string defaultFloatFormat = DefaultOpcBinaryFloatFormat) {
         ArgumentNullException.ThrowIfNull(types);
 
-        if (string.IsNullOrWhiteSpace(defaultStringEncoding))
-        {
+        if (string.IsNullOrWhiteSpace(defaultStringEncoding)) {
             throw new ArgumentException("A type dictionary must have a non-empty default string encoding.", nameof(defaultStringEncoding));
         }
 
-        if (defaultCharWidth <= 0)
-        {
+        if (defaultCharWidth <= 0) {
             throw new ArgumentOutOfRangeException(nameof(defaultCharWidth), defaultCharWidth, "Default character width must be positive.");
         }
 
-        if (string.IsNullOrWhiteSpace(defaultFloatFormat))
-        {
+        if (string.IsNullOrWhiteSpace(defaultFloatFormat)) {
             throw new ArgumentException("A type dictionary must have a non-empty default float format.", nameof(defaultFloatFormat));
         }
 
@@ -83,15 +77,12 @@ public sealed record TypeDictionary
         _typesByName = new Dictionary<string, TypeDescription>(StringComparer.Ordinal);
         _typesById = new Dictionary<string, TypeDescription>(StringComparer.Ordinal);
 
-        foreach (var type in _types)
-        {
-            if (!_typesByName.TryAdd(type.Name, type))
-            {
+        foreach (var type in _types) {
+            if (!_typesByName.TryAdd(type.Name, type)) {
                 throw new ArgumentException($"Duplicate type description name '{type.Name}'.", nameof(types));
             }
 
-            if (!_typesById.TryAdd(type.TypeId, type))
-            {
+            if (!_typesById.TryAdd(type.TypeId, type)) {
                 throw new ArgumentException($"Duplicate type description identifier '{type.TypeId}'.", nameof(types));
             }
         }
@@ -122,22 +113,19 @@ public sealed record TypeDictionary
         new(types);
 
     /// <summary>Look up a type description by name. Returns <see langword="null"/> when not found.</summary>
-    public TypeDescription? TryGet(string name)
-    {
+    public TypeDescription? TryGet(string name) {
         ArgumentNullException.ThrowIfNull(name);
         return _typesByName.TryGetValue(name, out var type) ? type : null;
     }
 
     /// <summary>Look up a type description by type identifier. Returns <see langword="null"/> when not found.</summary>
-    public TypeDescription? TryGetByTypeId(string typeId)
-    {
+    public TypeDescription? TryGetByTypeId(string typeId) {
         ArgumentNullException.ThrowIfNull(typeId);
         return _typesById.TryGetValue(typeId, out var type) ? type : null;
     }
 
     /// <summary>True if this dictionary defines a type with <paramref name="name"/>.</summary>
-    public bool Contains(string name)
-    {
+    public bool Contains(string name) {
         ArgumentNullException.ThrowIfNull(name);
         return _typesByName.ContainsKey(name);
     }
@@ -153,8 +141,7 @@ public sealed record TypeDictionary
         && _types.SequenceEqual(other._types);
 
     /// <inheritdoc />
-    public override int GetHashCode()
-    {
+    public override int GetHashCode() {
         var hash = new HashCode();
         hash.Add(Name, StringComparer.Ordinal);
         hash.Add(DefaultBigEndian);
@@ -162,8 +149,7 @@ public sealed record TypeDictionary
         hash.Add(DefaultCharWidth);
         hash.Add(DefaultFloatFormat, StringComparer.Ordinal);
 
-        foreach (var type in _types)
-        {
+        foreach (var type in _types) {
             hash.Add(type);
         }
 

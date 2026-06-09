@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -15,16 +15,14 @@ namespace Opc.Classic.Hosting;
 /// <summary>
 /// Service registration helpers for OPC Classic hosting integration.
 /// </summary>
-public static class ClassicHostingServiceCollectionExtensions
-{
+public static class ClassicHostingServiceCollectionExtensions {
     /// <summary>
     /// Registers <see cref="IClsidRegistry"/> as a singleton bound to the
     /// <c>Opc.Classic:Servers</c> configuration section.
     /// </summary>
     public static IServiceCollection AddClassicClsidRegistry(
         this IServiceCollection services,
-        IConfiguration configuration)
-    {
+        IConfiguration configuration) {
         ArgumentNullException.ThrowIfNull(services);
         ArgumentNullException.ThrowIfNull(configuration);
         services.AddSingleton<IClsidRegistry>(_ => ConfigurationClsidRegistry.FromConfiguration(configuration));
@@ -35,8 +33,7 @@ public static class ClassicHostingServiceCollectionExtensions
     /// Registers the OPC Classic hosted service that drives lifecycle of all
     /// <see cref="IOpcServerHost"/> instances registered in the container.
     /// </summary>
-    public static IServiceCollection AddClassicServer(this IServiceCollection services)
-    {
+    public static IServiceCollection AddClassicServer(this IServiceCollection services) {
         ArgumentNullException.ThrowIfNull(services);
         services.AddHostedService<ClassicHostedService>();
         return services;
@@ -46,8 +43,7 @@ public static class ClassicHostingServiceCollectionExtensions
     public static IServiceCollection AddOpcAeServer<
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] T>(
         this IServiceCollection services)
-        where T : class, IOpcServerHost
-    {
+        where T : class, IOpcServerHost {
         ArgumentNullException.ThrowIfNull(services);
         services.AddSingleton<IOpcServerHost, T>();
         return services;
@@ -57,8 +53,7 @@ public static class ClassicHostingServiceCollectionExtensions
     public static IServiceCollection AddOpcHdaServer<
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] T>(
         this IServiceCollection services)
-        where T : class, IOpcServerHost
-    {
+        where T : class, IOpcServerHost {
         ArgumentNullException.ThrowIfNull(services);
         services.AddSingleton<IOpcServerHost, T>();
         return services;

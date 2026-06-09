@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -10,8 +10,7 @@ using System;
 namespace Opc.Classic.Dx;
 
 /// <summary>Controls which DX browse nodes a query should return.</summary>
-public enum DxBrowseFilter
-{
+public enum DxBrowseFilter {
     /// <summary>Return all matching browse nodes.</summary>
     All = 0,
 
@@ -26,11 +25,9 @@ public enum DxBrowseFilter
 }
 
 /// <summary>Path within the DX browse hierarchy.</summary>
-public readonly record struct DxBrowsePath
-{
+public readonly record struct DxBrowsePath {
     /// <summary>Constructs a browse path.</summary>
-    public DxBrowsePath(string path)
-    {
+    public DxBrowsePath(string path) {
         ArgumentException.ThrowIfNullOrWhiteSpace(path);
         Path = path;
     }
@@ -49,16 +46,14 @@ public sealed record DxItemQuery(
     string? Version = null);
 
 /// <summary>Query parameters used to browse or operate on matching DX entities.</summary>
-public sealed record DxQueryParameters
-{
+public sealed record DxQueryParameters {
     /// <summary>Constructs DX query parameters.</summary>
     public DxQueryParameters(
         DxBrowsePath? browsePath = null,
         bool recursive = false,
         DxConnection[]? connectionMasks = null,
         DxBrowseFilter browseFilter = DxBrowseFilter.All,
-        DxItemQuery? itemQuery = null)
-    {
+        DxItemQuery? itemQuery = null) {
         BrowsePath = browsePath;
         Recursive = recursive;
         ConnectionMasks = NormalizeConnectionMasks(connectionMasks);
@@ -81,16 +76,13 @@ public sealed record DxQueryParameters
     /// <summary>Optional item identifier query for source-server operations.</summary>
     public DxItemQuery? ItemQuery { get; init; }
 
-    private static DxConnection[] NormalizeConnectionMasks(DxConnection[]? connectionMasks)
-    {
-        if (connectionMasks is null || connectionMasks.Length == 0)
-        {
+    private static DxConnection[] NormalizeConnectionMasks(DxConnection[]? connectionMasks) {
+        if (connectionMasks is null || connectionMasks.Length == 0) {
             return Array.Empty<DxConnection>();
         }
 
         var copy = new DxConnection[connectionMasks.Length];
-        for (var i = 0; i < connectionMasks.Length; i++)
-        {
+        for (var i = 0; i < connectionMasks.Length; i++) {
             var mask = connectionMasks[i];
             ArgumentNullException.ThrowIfNull(mask);
             copy[i] = mask;

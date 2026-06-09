@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -12,12 +12,10 @@ using TUnit.Core;
 
 namespace Opc.Classic.Tests;
 
-public sealed class NdrArrayTests
-{
+public sealed class NdrArrayTests {
     private delegate void NdrWriteAction(ref NdrWriter w);
 
-    private static byte[] WriteOne(NdrWriteAction write, int capacity = 256)
-    {
+    private static byte[] WriteOne(NdrWriteAction write, int capacity = 256) {
         var buf = new byte[capacity];
         var w = new NdrWriter(buf);
         write(ref w);
@@ -25,8 +23,7 @@ public sealed class NdrArrayTests
     }
 
     [Test]
-    public async Task ByteArray_RoundTrips()
-    {
+    public async Task ByteArray_RoundTrips() {
         var input = new byte[] { 0xDE, 0xAD, 0xBE, 0xEF, 0x42 };
         var bytes = WriteOne((ref NdrWriter w) => w.WriteConformantByteArray(input));
         byte[] read;
@@ -40,8 +37,7 @@ public sealed class NdrArrayTests
     }
 
     [Test]
-    public async Task ByteArray_Empty_RoundTrips()
-    {
+    public async Task ByteArray_Empty_RoundTrips() {
         var bytes = WriteOne((ref NdrWriter w) => w.WriteConformantByteArray(ReadOnlySpan<byte>.Empty));
         byte[] read;
         {
@@ -53,8 +49,7 @@ public sealed class NdrArrayTests
     }
 
     [Test]
-    public async Task Int16Array_RoundTrips()
-    {
+    public async Task Int16Array_RoundTrips() {
         var input = new short[] { -32768, -1, 0, 1, 32767 };
         var bytes = WriteOne((ref NdrWriter w) => w.WriteConformantInt16Array(input));
         short[] read;
@@ -66,8 +61,7 @@ public sealed class NdrArrayTests
     }
 
     [Test]
-    public async Task UInt16Array_RoundTrips()
-    {
+    public async Task UInt16Array_RoundTrips() {
         var input = new ushort[] { 0, 1, 0xCAFE, 0xFFFF };
         var bytes = WriteOne((ref NdrWriter w) => w.WriteConformantUInt16Array(input));
         ushort[] read;
@@ -79,8 +73,7 @@ public sealed class NdrArrayTests
     }
 
     [Test]
-    public async Task Int32Array_RoundTrips()
-    {
+    public async Task Int32Array_RoundTrips() {
         var input = new int[] { int.MinValue, -1, 0, 1, int.MaxValue, unchecked((int)0xC0040001u) };
         var bytes = WriteOne((ref NdrWriter w) => w.WriteConformantInt32Array(input));
         int[] read;
@@ -94,8 +87,7 @@ public sealed class NdrArrayTests
     }
 
     [Test]
-    public async Task UInt32Array_RoundTrips()
-    {
+    public async Task UInt32Array_RoundTrips() {
         var input = new uint[] { 0, 1, 0xDEADBEEFu, 0xFFFFFFFFu };
         var bytes = WriteOne((ref NdrWriter w) => w.WriteConformantUInt32Array(input));
         uint[] read;
@@ -107,11 +99,9 @@ public sealed class NdrArrayTests
     }
 
     [Test]
-    public async Task Int64Array_RoundTrips_WithAlignment()
-    {
+    public async Task Int64Array_RoundTrips_WithAlignment() {
         var input = new long[] { long.MinValue, -1L, 0L, 0x0102030405060708L, long.MaxValue };
-        var bytes = WriteOne((ref NdrWriter w) =>
-        {
+        var bytes = WriteOne((ref NdrWriter w) => {
             // Force unaligned start so the array header alignment matters.
             w.WriteByte(0x01);
             w.WriteConformantInt64Array(input);
@@ -128,8 +118,7 @@ public sealed class NdrArrayTests
     }
 
     [Test]
-    public async Task SingleArray_RoundTrips()
-    {
+    public async Task SingleArray_RoundTrips() {
         var input = new float[] { float.MinValue, -0.5f, 0f, 0.5f, float.MaxValue };
         var bytes = WriteOne((ref NdrWriter w) => w.WriteConformantSingleArray(input));
         float[] read;
@@ -141,8 +130,7 @@ public sealed class NdrArrayTests
     }
 
     [Test]
-    public async Task DoubleArray_RoundTrips()
-    {
+    public async Task DoubleArray_RoundTrips() {
         var input = new double[] { double.MinValue, -1.5, 0, 1.5, 3.141592653589793, double.MaxValue };
         var bytes = WriteOne((ref NdrWriter w) => w.WriteConformantDoubleArray(input));
         double[] read;
@@ -154,8 +142,7 @@ public sealed class NdrArrayTests
     }
 
     [Test]
-    public async Task GuidArray_RoundTrips()
-    {
+    public async Task GuidArray_RoundTrips() {
         var input = new[]
         {
             new Guid("39C13A4D-011E-11D0-9675-0020AFD8ADB3"),
@@ -174,8 +161,7 @@ public sealed class NdrArrayTests
     }
 
     [Test]
-    public async Task DoubleArray_LargeBuffer_RoundTrips()
-    {
+    public async Task DoubleArray_LargeBuffer_RoundTrips() {
         var input = Enumerable.Range(0, 100).Select(i => i * 0.5).ToArray();
         var bytes = WriteOne((ref NdrWriter w) => w.WriteConformantDoubleArray(input), capacity: 4096);
         double[] read;
@@ -188,12 +174,10 @@ public sealed class NdrArrayTests
     }
 
     [Test]
-    public async Task MixedArrays_RoundTrip()
-    {
+    public async Task MixedArrays_RoundTrip() {
         var ints = new int[] { 1, 2, 3 };
         var doubles = new double[] { 1.1, 2.2, 3.3 };
-        var bytes = WriteOne((ref NdrWriter w) =>
-        {
+        var bytes = WriteOne((ref NdrWriter w) => {
             w.WriteConformantInt32Array(ints);
             w.WriteConformantDoubleArray(doubles);
         });

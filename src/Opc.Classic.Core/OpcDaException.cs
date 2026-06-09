@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -8,8 +8,7 @@ using System;
 namespace Opc.Classic;
 
 /// <summary>OPC Data Access (DA) specification errors.</summary>
-public sealed class OpcDaException : OpcException
-{
+public sealed class OpcDaException : OpcException {
     public OpcDaException() { }
     public OpcDaException(string message) : base(message) { }
     public OpcDaException(string message, Exception innerException) : base(message, innerException) { }

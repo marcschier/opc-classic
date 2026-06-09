@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -8,11 +8,9 @@ using System;
 namespace Opc.Classic;
 
 /// <summary>A named field in an optional VT_RECORD type description.</summary>
-public readonly record struct OpcRecordField
-{
+public readonly record struct OpcRecordField {
     /// <summary>Creates a record field descriptor.</summary>
-    public OpcRecordField(string name, VarType type)
-    {
+    public OpcRecordField(string name, VarType type) {
         ArgumentException.ThrowIfNullOrWhiteSpace(name);
         Name = name;
         Type = type;

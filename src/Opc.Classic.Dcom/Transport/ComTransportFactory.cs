@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: MIT
+﻿// SPDX-License-Identifier: MIT
 
 using Opc.Classic.Dcom.Internal;
 using Opc.Classic.Dcom.Common;
@@ -7,7 +7,8 @@ using SharpCifs.Util.Sharpen;
 using System.IO;
 using System.Threading;
 
-namespace Opc.Classic.Dcom.Transport; 
+namespace Opc.Classic.Dcom.Transport;
+
 /// <summary>
 /// Factory for <seealso cref="ComTransport"/>
 /// </summary>

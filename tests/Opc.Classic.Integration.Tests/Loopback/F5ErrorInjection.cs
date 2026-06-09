@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -12,11 +12,9 @@ using TUnit.Core;
 
 namespace Opc.Classic.Integration.Tests.Loopback;
 
-public sealed class F5ErrorInjection
-{
+public sealed class F5ErrorInjection {
     [Test]
-    public async Task GetStatus_hresult_failure_from_InMemoryCallChannel_surfaces_as_OpcException()
-    {
+    public async Task GetStatus_hresult_failure_from_InMemoryCallChannel_surfaces_as_OpcException() {
         var expectedHresult = unchecked((int)0xC0040007u);
         var channel = new InMemoryCallChannel((_, _, _, _) =>
             Task.FromResult(new NdrCallResult(expectedHresult, ReadOnlyMemory<byte>.Empty)));
@@ -28,18 +26,14 @@ public sealed class F5ErrorInjection
     }
 
     private static async Task<TException> CaptureAsync<TException>(Func<Task> action)
-        where TException : Exception
-    {
-        try
-        {
+        where TException : Exception {
+        try {
             await action().ConfigureAwait(false);
         }
-        catch (TException exception)
-        {
+        catch (TException exception) {
             return exception;
         }
-        catch (Exception exception)
-        {
+        catch (Exception exception) {
             throw new InvalidOperationException($"Expected {typeof(TException).Name}, but caught {exception.GetType().Name}.", exception);
         }
 

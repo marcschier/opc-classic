@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -15,8 +15,7 @@ namespace Opc.Classic.Ae.Hosting.Windows;
 
 /// <summary>Outbound Windows COM proxy for a client-supplied <c>IOPCEventSink</c>.</summary>
 [SupportedOSPlatform("windows")]
-public sealed unsafe class OpcAeEventSinkProxy : IOPCEventSink, IDisposable
-{
+public sealed unsafe class OpcAeEventSinkProxy : IOPCEventSink, IDisposable {
     private const int E_NOINTERFACE = unchecked((int)0x80004002);
     private const int E_POINTER = unchecked((int)0x80004003);
     private const int Win32BoolTrue = unchecked((int)0xFFFFFFFFu);
@@ -31,28 +30,22 @@ public sealed unsafe class OpcAeEventSinkProxy : IOPCEventSink, IDisposable
     /// <summary>Initializes a new proxy from a client-supplied <c>IUnknown</c> pointer.</summary>
     /// <param name="clientUnknown">Client sink <c>IUnknown</c> pointer.</param>
     /// <exception cref="COMException">Thrown when the pointer is null or does not support <c>IOPCEventSink</c>.</exception>
-    public OpcAeEventSinkProxy(IntPtr clientUnknown)
-    {
-        if (clientUnknown == IntPtr.Zero)
-        {
+    public OpcAeEventSinkProxy(IntPtr clientUnknown) {
+        if (clientUnknown == IntPtr.Zero) {
             throw new COMException("Client IUnknown pointer is null.", E_POINTER);
         }
 
         InvokeAddRef(clientUnknown);
-        try
-        {
+        try {
             _sinkPtr = QueryInterface(clientUnknown, s_iidEventSink, "Client sink does not implement IOPCEventSink.");
         }
-        finally
-        {
+        finally {
             InvokeRelease(clientUnknown);
         }
     }
 
-    internal IntPtr AddRefCallbackUnknown()
-    {
-        lock (_syncRoot)
-        {
+    internal IntPtr AddRefCallbackUnknown() {
+        lock (_syncRoot) {
             IntPtr sinkPtr = _sinkPtr;
             ObjectDisposedException.ThrowIf(sinkPtr == IntPtr.Zero, this);
             return QueryInterface(sinkPtr, s_iidUnknown, "Client sink does not expose IUnknown.");
@@ -65,23 +58,20 @@ public sealed unsafe class OpcAeEventSinkProxy : IOPCEventSink, IDisposable
         bool refresh,
         bool lastRefresh,
         OpcEventNotification[] events,
-        CancellationToken cancellationToken = default)
-    {
+        CancellationToken cancellationToken = default) {
         cancellationToken.ThrowIfCancellationRequested();
         OnEvent(clientSubscription, refresh, lastRefresh, events);
         return Task.CompletedTask;
     }
 
     /// <summary>Calls <c>IOPCEventSink::OnEvent</c> (opnum 3).</summary>
-    public void OnEvent(int clientSubscription, bool refresh, bool lastRefresh, OpcEventNotification[] events)
-    {
+    public void OnEvent(int clientSubscription, bool refresh, bool lastRefresh, OpcEventNotification[] events) {
         ArgumentNullException.ThrowIfNull(events);
         IntPtr sinkPtr = GetSinkPtr();
         IntPtr* vtable = *(IntPtr**)sinkPtr;
         var onEvent = (delegate* unmanaged<IntPtr, uint, int, int, uint, IntPtr, int>)vtable[3];
         IntPtr eventsPtr = IntPtr.Zero;
-        try
-        {
+        try {
             eventsPtr = AllocateEventArray(events);
             int hr = onEvent(
                 sinkPtr,
@@ -92,74 +82,62 @@ public sealed unsafe class OpcAeEventSinkProxy : IOPCEventSink, IDisposable
                 eventsPtr);
             ThrowIfFailed(hr, "IOPCEventSink::OnEvent");
         }
-        finally
-        {
+        finally {
             FreeEventArray(eventsPtr, events.Length);
         }
     }
 
     /// <summary>Releases the held <c>IOPCEventSink</c> pointer.</summary>
-    public void Dispose()
-    {
+    public void Dispose() {
         IntPtr sinkPtr;
-        lock (_syncRoot)
-        {
+        lock (_syncRoot) {
             sinkPtr = _sinkPtr;
             _sinkPtr = IntPtr.Zero;
         }
 
-        if (sinkPtr != IntPtr.Zero)
-        {
+        if (sinkPtr != IntPtr.Zero) {
             InvokeRelease(sinkPtr);
         }
 
         GC.SuppressFinalize(this);
     }
 
-    private static IntPtr QueryInterface(IntPtr instance, Guid iid, string failureMessage)
-    {
+    private static IntPtr QueryInterface(IntPtr instance, Guid iid, string failureMessage) {
         IntPtr* vtable = *(IntPtr**)instance;
         var queryInterface = (delegate* unmanaged<IntPtr, Guid*, IntPtr*, int>)vtable[0];
         Guid local = iid;
         IntPtr returned = IntPtr.Zero;
         int hr = queryInterface(instance, &local, &returned);
-        if (hr < 0)
-        {
+        if (hr < 0) {
             throw new COMException(failureMessage, hr);
         }
-        if (returned == IntPtr.Zero)
-        {
+        if (returned == IntPtr.Zero) {
             throw new COMException(failureMessage, E_NOINTERFACE);
         }
         return returned;
     }
 
-    private static void InvokeAddRef(IntPtr unknown)
-    {
+    private static void InvokeAddRef(IntPtr unknown) {
         IntPtr* vtable = *(IntPtr**)unknown;
         var addRef = (delegate* unmanaged<IntPtr, uint>)vtable[1];
         _ = addRef(unknown);
     }
 
-    private static void InvokeRelease(IntPtr unknown)
-    {
+    private static void InvokeRelease(IntPtr unknown) {
         IntPtr* vtable = *(IntPtr**)unknown;
         var release = (delegate* unmanaged<IntPtr, uint>)vtable[2];
         _ = release(unknown);
     }
 
-    private IntPtr GetSinkPtr()
-    {
+    private IntPtr GetSinkPtr() {
         IntPtr sinkPtr = _sinkPtr;
         ObjectDisposedException.ThrowIf(sinkPtr == IntPtr.Zero, this);
         return sinkPtr;
     }
 
     [SuppressMessage("Reliability", "CA2018", Justification = "Explicit byte size.")]
-    private static IntPtr AllocateEventArray(OpcEventNotification[] events)
-    {
-        if (events.Length == 0)
-        {
+    private static IntPtr AllocateEventArray(OpcEventNotification[] events) {
+        if (events.Length == 0) {
             return IntPtr.Zero;
         }
 
@@ -167,27 +145,22 @@ public sealed unsafe class OpcAeEventSinkProxy : IOPCEventSink, IDisposable
         IntPtr ptr = Marshal.AllocCoTaskMem(checked(events.Length * structSize));
         NativeMemory.Clear((void*)ptr, (nuint)(events.Length * structSize));
         bool completed = false;
-        try
-        {
+        try {
             byte* basePtr = (byte*)ptr;
-            for (int i = 0; i < events.Length; i++)
-            {
+            for (int i = 0; i < events.Length; i++) {
                 WriteEvent((ONEVENTSTRUCT_NATIVE*)(basePtr + (i * structSize)), events[i]);
             }
             completed = true;
             return ptr;
         }
-        finally
-        {
-            if (!completed)
-            {
+        finally {
+            if (!completed) {
                 FreeEventArray(ptr, events.Length);
             }
         }
     }
 
-    private static void WriteEvent(ONEVENTSTRUCT_NATIVE* target, OpcEventNotification notification)
-    {
+    private static void WriteEvent(ONEVENTSTRUCT_NATIVE* target, OpcEventNotification notification) {
         ArgumentNullException.ThrowIfNull(notification);
         target->wChangeMask = notification.ChangeMask;
         target->wNewState = notification.NewState;
@@ -212,17 +185,14 @@ public sealed unsafe class OpcAeEventSinkProxy : IOPCEventSink, IDisposable
     private static IntPtr AllocateBstr(string? value) =>
         value is null ? IntPtr.Zero : Marshal.StringToBSTR(value);
 
-    private static void FreeEventArray(IntPtr ptr, int count)
-    {
-        if (ptr == IntPtr.Zero)
-        {
+    private static void FreeEventArray(IntPtr ptr, int count) {
+        if (ptr == IntPtr.Zero) {
             return;
         }
 
         int structSize = sizeof(ONEVENTSTRUCT_NATIVE);
         byte* basePtr = (byte*)ptr;
-        for (int i = 0; i < count; i++)
-        {
+        for (int i = 0; i < count; i++) {
             ONEVENTSTRUCT_NATIVE* item = (ONEVENTSTRUCT_NATIVE*)(basePtr + (i * structSize));
             FreeBstr(item->szSource);
             FreeBstr(item->szMessage);
@@ -234,25 +204,20 @@ public sealed unsafe class OpcAeEventSinkProxy : IOPCEventSink, IDisposable
         Marshal.FreeCoTaskMem(ptr);
     }
 
-    private static void FreeBstr(IntPtr value)
-    {
-        if (value != IntPtr.Zero)
-        {
+    private static void FreeBstr(IntPtr value) {
+        if (value != IntPtr.Zero) {
             Marshal.FreeBSTR(value);
         }
     }
 
-    private static void ThrowIfFailed(int hr, string method)
-    {
-        if (hr < 0)
-        {
+    private static void ThrowIfFailed(int hr, string method) {
+        if (hr < 0) {
             throw new COMException($"{method} failed.", hr);
         }
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    private struct ONEVENTSTRUCT_NATIVE
-    {
+    private struct ONEVENTSTRUCT_NATIVE {
         public ushort wChangeMask;
         public ushort wNewState;
         public IntPtr szSource;
@@ -273,8 +238,7 @@ public sealed unsafe class OpcAeEventSinkProxy : IOPCEventSink, IDisposable
         public IntPtr szActorID;
     }
 
-    private static class VariantMarshaler
-    {
+    private static class VariantMarshaler {
         private const ushort VT_EMPTY = 0;
         private const ushort VT_NULL = 1;
         private const ushort VT_I2 = 2;
@@ -295,11 +259,9 @@ public sealed unsafe class OpcAeEventSinkProxy : IOPCEventSink, IDisposable
 
         private static int VariantSize => IntPtr.Size == 8 ? 24 : 16;
 
-        internal static IntPtr AllocateVariantArray(OpcVariant[] values)
-        {
+        internal static IntPtr AllocateVariantArray(OpcVariant[] values) {
             ArgumentNullException.ThrowIfNull(values);
-            if (values.Length == 0)
-            {
+            if (values.Length == 0) {
                 return IntPtr.Zero;
             }
 
@@ -307,34 +269,27 @@ public sealed unsafe class OpcAeEventSinkProxy : IOPCEventSink, IDisposable
             IntPtr ptr = Marshal.AllocCoTaskMem(checked(values.Length * variantSize));
             NativeMemory.Clear((void*)ptr, (nuint)(values.Length * variantSize));
             bool completed = false;
-            try
-            {
-                for (int i = 0; i < values.Length; i++)
-                {
+            try {
+                for (int i = 0; i < values.Length; i++) {
                     WriteVariant(ptr + (i * variantSize), values[i]);
                 }
                 completed = true;
                 return ptr;
             }
-            finally
-            {
-                if (!completed)
-                {
+            finally {
+                if (!completed) {
                     FreeVariantArray(ptr, values.Length);
                 }
             }
         }
 
-        internal static void FreeVariantArray(IntPtr ptr, int count)
-        {
-            if (ptr == IntPtr.Zero)
-            {
+        internal static void FreeVariantArray(IntPtr ptr, int count) {
+            if (ptr == IntPtr.Zero) {
                 return;
             }
 
             int variantSize = VariantSize;
-            for (int i = 0; i < count; i++)
-            {
+            for (int i = 0; i < count; i++) {
                 ClearVariant(ptr + (i * variantSize));
             }
             Marshal.FreeCoTaskMem(ptr);
@@ -342,35 +297,28 @@ public sealed unsafe class OpcAeEventSinkProxy : IOPCEventSink, IDisposable
 
         private static int ValueOffset => 8;
 
-        private static void WriteVariant(IntPtr dest, OpcVariant variant)
-        {
+        private static void WriteVariant(IntPtr dest, OpcVariant variant) {
             NativeMemory.Clear((void*)dest, (nuint)VariantSize);
             ushort vt = (ushort)variant.Type;
             Marshal.WriteInt16(dest, (short)vt);
-            if ((vt & VT_ARRAY) != 0)
-            {
+            if ((vt & VT_ARRAY) != 0) {
                 WriteSafeArrayPayload(dest, variant);
                 return;
             }
             WriteScalarPayload(dest, vt, variant.Boxed);
         }
 
-        private static void ClearVariant(IntPtr ptr)
-        {
+        private static void ClearVariant(IntPtr ptr) {
             ushort vt = unchecked((ushort)Marshal.ReadInt16(ptr));
-            if (vt == VT_BSTR)
-            {
+            if (vt == VT_BSTR) {
                 IntPtr bstr = Marshal.ReadIntPtr(ptr, ValueOffset);
-                if (bstr != IntPtr.Zero)
-                {
+                if (bstr != IntPtr.Zero) {
                     Marshal.FreeBSTR(bstr);
                 }
             }
-            else if ((vt & VT_ARRAY) != 0)
-            {
+            else if ((vt & VT_ARRAY) != 0) {
                 IntPtr safeArrayPtr = Marshal.ReadIntPtr(ptr, ValueOffset);
-                if (safeArrayPtr != IntPtr.Zero)
-                {
+                if (safeArrayPtr != IntPtr.Zero) {
                     FreeSafeArray(safeArrayPtr, (ushort)(vt & ~VT_ARRAY));
                 }
             }
@@ -378,11 +326,9 @@ public sealed unsafe class OpcAeEventSinkProxy : IOPCEventSink, IDisposable
         }
 
         [SuppressMessage("Design", "CA1502:Avoid excessive complexity", Justification = "VARIANT scalar dispatch requires one branch per VARENUM code.")]
-        private static void WriteScalarPayload(IntPtr dest, ushort vt, object? boxed)
-        {
+        private static void WriteScalarPayload(IntPtr dest, ushort vt, object? boxed) {
             IntPtr value = dest + ValueOffset;
-            switch (vt)
-            {
+            switch (vt) {
                 case VT_I1:
                     Marshal.WriteByte(value, (byte)(sbyte)(boxed ?? (sbyte)0));
                     break;
@@ -431,11 +377,9 @@ public sealed unsafe class OpcAeEventSinkProxy : IOPCEventSink, IDisposable
             }
         }
 
-        private static void WriteSafeArrayPayload(IntPtr dest, OpcVariant variant)
-        {
+        private static void WriteSafeArrayPayload(IntPtr dest, OpcVariant variant) {
             OpcSafeArray? array = variant.AsSafeArray();
-            if (array is null || array.Data.Length == 0)
-            {
+            if (array is null || array.Data.Length == 0) {
                 Marshal.WriteIntPtr(dest, ValueOffset, IntPtr.Zero);
                 return;
             }
@@ -443,8 +387,7 @@ public sealed unsafe class OpcAeEventSinkProxy : IOPCEventSink, IDisposable
         }
 
         [SuppressMessage("Reliability", "CA2018", Justification = "Explicit byte size.")]
-        private static IntPtr AllocateSafeArray(OpcSafeArray array)
-        {
+        private static IntPtr AllocateSafeArray(OpcSafeArray array) {
             ushort baseVt = (ushort)array.ElementType;
             uint elementSize = (uint)ElementSizeOf(baseVt);
             uint count = (uint)array.Data.Length;
@@ -465,21 +408,16 @@ public sealed unsafe class OpcAeEventSinkProxy : IOPCEventSink, IDisposable
             return descriptor;
         }
 
-        private static void FreeSafeArray(IntPtr descriptor, ushort baseVt)
-        {
+        private static void FreeSafeArray(IntPtr descriptor, ushort baseVt) {
             int pvDataOffset = 8 + IntPtr.Size;
             int boundsOffset = pvDataOffset + IntPtr.Size;
             IntPtr dataBuffer = Marshal.ReadIntPtr(descriptor, pvDataOffset);
-            if (dataBuffer != IntPtr.Zero)
-            {
-                if (baseVt == VT_BSTR)
-                {
+            if (dataBuffer != IntPtr.Zero) {
+                if (baseVt == VT_BSTR) {
                     uint count = unchecked((uint)Marshal.ReadInt32(descriptor, boundsOffset));
-                    for (uint i = 0; i < count; i++)
-                    {
+                    for (uint i = 0; i < count; i++) {
                         IntPtr bstr = Marshal.ReadIntPtr(dataBuffer, checked((int)(i * (uint)IntPtr.Size)));
-                        if (bstr != IntPtr.Zero)
-                        {
+                        if (bstr != IntPtr.Zero) {
                             Marshal.FreeBSTR(bstr);
                         }
                     }
@@ -489,8 +427,7 @@ public sealed unsafe class OpcAeEventSinkProxy : IOPCEventSink, IDisposable
             Marshal.FreeCoTaskMem(descriptor);
         }
 
-        private static int ElementSizeOf(ushort baseVt) => baseVt switch
-        {
+        private static int ElementSizeOf(ushort baseVt) => baseVt switch {
             VT_I1 or VT_UI1 => 1,
             VT_I2 or VT_UI2 or VT_BOOL => 2,
             VT_I4 or VT_UI4 or VT_ERROR or VT_R4 => 4,
@@ -500,15 +437,12 @@ public sealed unsafe class OpcAeEventSinkProxy : IOPCEventSink, IDisposable
         };
 
         [SuppressMessage("Design", "CA1502:Avoid excessive complexity", Justification = "SAFEARRAY element dispatch requires one branch per VARENUM code.")]
-        private static void WriteSafeArrayData(IntPtr dataBuffer, OpcSafeArray array, ushort baseVt, uint elementSize)
-        {
+        private static void WriteSafeArrayData(IntPtr dataBuffer, OpcSafeArray array, ushort baseVt, uint elementSize) {
             Array data = array.Data;
-            for (int i = 0; i < data.Length; i++)
-            {
+            for (int i = 0; i < data.Length; i++) {
                 IntPtr slot = dataBuffer + checked((int)(i * elementSize));
                 object? value = data.GetValue(i);
-                switch (baseVt)
-                {
+                switch (baseVt) {
                     case VT_I1: Marshal.WriteByte(slot, (byte)(sbyte)(value ?? (sbyte)0)); break;
                     case VT_UI1: Marshal.WriteByte(slot, (byte)(value ?? (byte)0)); break;
                     case VT_I2: Marshal.WriteInt16(slot, (short)(value ?? (short)0)); break;

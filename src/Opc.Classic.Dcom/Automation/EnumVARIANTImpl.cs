@@ -1,9 +1,10 @@
-// SPDX-License-Identifier: MIT
+﻿// SPDX-License-Identifier: MIT
 
 
 using Opc.Classic.Dcom.Core;
 
-namespace Opc.Classic.Dcom.Automation; 
+namespace Opc.Classic.Dcom.Automation;
+
 /// <summary>
 /// Enum variant
 /// </summary>

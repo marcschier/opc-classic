@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -34,8 +34,7 @@ namespace Opc.Classic.Ae.Hosting.Windows;
 /// </para>
 /// </remarks>
 [SupportedOSPlatform("windows")]
-public static unsafe class OpcAeServerCcw
-{
+public static unsafe class OpcAeServerCcw {
     internal const int S_OK = 0;
     internal const int E_NOINTERFACE = unchecked((int)0x80004002);
     internal const int E_INVALIDARG = unchecked((int)0x80070057);
@@ -49,11 +48,9 @@ public static unsafe class OpcAeServerCcw
 
     /// <summary>Builds a CCW around <paramref name="server"/> for the requested IID with refcount = 1.</summary>
     /// <returns>A CCW tearoff pointer, or <see cref="IntPtr.Zero"/> if the IID isn't supported.</returns>
-    public static IntPtr Create(IOpcAeServer server, Guid requestedIid)
-    {
+    public static IntPtr Create(IOpcAeServer server, Guid requestedIid) {
         ArgumentNullException.ThrowIfNull(server);
-        if (!SupportsInterface(requestedIid))
-        {
+        if (!SupportsInterface(requestedIid)) {
             return IntPtr.Zero;
         }
 
@@ -85,11 +82,9 @@ public static unsafe class OpcAeServerCcw
 
     /// <summary>Builds a dispatcher-backed CCW for tests and hosts that already route AE calls.</summary>
     /// <returns>A CCW tearoff pointer, or <see cref="IntPtr.Zero"/> if the IID isn't supported.</returns>
-    public static IntPtr Create(IOpcAeServerDispatcher dispatcher, Guid requestedIid)
-    {
+    public static IntPtr Create(IOpcAeServerDispatcher dispatcher, Guid requestedIid) {
         ArgumentNullException.ThrowIfNull(dispatcher);
-        if (!SupportsInterface(requestedIid))
-        {
+        if (!SupportsInterface(requestedIid)) {
             return IntPtr.Zero;
         }
 
@@ -151,16 +146,14 @@ public static unsafe class OpcAeServerCcw
             : null;
 
     [SuppressMessage("Reliability", "CA2018:Buffer size argument matches element count", Justification = "Explicit byte size.")]
-    private static IntPtr* AllocateUnknownVtable()
-    {
+    private static IntPtr* AllocateUnknownVtable() {
         IntPtr* v = (IntPtr*)NativeMemory.Alloc((nuint)(3 * sizeof(IntPtr)));
         FillUnknownSlots(v);
         return v;
     }
 
     [SuppressMessage("Reliability", "CA2018:Buffer size argument matches element count", Justification = "Explicit byte size.")]
-    private static IntPtr* AllocateEventServerVtable()
-    {
+    private static IntPtr* AllocateEventServerVtable() {
         // 3 IUnknown + 16 IOPCEventServer methods (opnums 3..18) = 19 slots.
         IntPtr* v = (IntPtr*)NativeMemory.Alloc((nuint)(19 * sizeof(IntPtr)));
         FillUnknownSlots(v);
@@ -184,8 +177,7 @@ public static unsafe class OpcAeServerCcw
     }
 
     [SuppressMessage("Reliability", "CA2018:Buffer size argument matches element count", Justification = "Explicit byte size.")]
-    private static IntPtr* AllocateSubscriptionMgtVtable()
-    {
+    private static IntPtr* AllocateSubscriptionMgtVtable() {
         // 3 IUnknown + 8 IOPCEventSubscriptionMgt methods (opnums 3..10) = 11 slots.
         IntPtr* v = (IntPtr*)NativeMemory.Alloc((nuint)(11 * sizeof(IntPtr)));
         FillUnknownSlots(v);
@@ -200,42 +192,35 @@ public static unsafe class OpcAeServerCcw
         return v;
     }
 
-    private static void FillUnknownSlots(IntPtr* v)
-    {
+    private static void FillUnknownSlots(IntPtr* v) {
         v[0] = (IntPtr)(delegate* unmanaged<IntPtr, Guid*, IntPtr*, int>)&QueryInterface;
         v[1] = (IntPtr)(delegate* unmanaged<IntPtr, uint>)&AddRef;
         v[2] = (IntPtr)(delegate* unmanaged<IntPtr, uint>)&Release;
     }
 
     [SuppressMessage("Reliability", "CA2018:Buffer size argument matches element count", Justification = "Explicit byte size.")]
-    private static IntPtr AllocateTearoff(IntPtr* vtable)
-    {
+    private static IntPtr AllocateTearoff(IntPtr* vtable) {
         IntPtr* instance = (IntPtr*)NativeMemory.Alloc((nuint)sizeof(IntPtr));
         instance[0] = (IntPtr)vtable;
         return (IntPtr)instance;
     }
 
     [UnmanagedCallersOnly]
-    private static int QueryInterface(IntPtr pThis, Guid* riid, IntPtr* ppv)
-    {
-        if (ppv == null)
-        {
+    private static int QueryInterface(IntPtr pThis, Guid* riid, IntPtr* ppv) {
+        if (ppv == null) {
             return E_INVALIDARG;
         }
-        if (riid == null)
-        {
+        if (riid == null) {
             *ppv = IntPtr.Zero;
             return E_INVALIDARG;
         }
-        if (!s_tearoffs.TryGetValue(pThis, out CcwSession? session))
-        {
+        if (!s_tearoffs.TryGetValue(pThis, out CcwSession? session)) {
             *ppv = IntPtr.Zero;
             return E_NOINTERFACE;
         }
 
         IntPtr target = ResolveTearoff(session, *riid);
-        if (target == IntPtr.Zero)
-        {
+        if (target == IntPtr.Zero) {
             *ppv = IntPtr.Zero;
             return E_NOINTERFACE;
         }
@@ -245,53 +230,42 @@ public static unsafe class OpcAeServerCcw
         return S_OK;
     }
 
-    private static IntPtr ResolveTearoff(CcwSession session, Guid iid)
-    {
-        if (iid == IID_IUnknown)
-        {
+    private static IntPtr ResolveTearoff(CcwSession session, Guid iid) {
+        if (iid == IID_IUnknown) {
             return session.UnknownTearoff;
         }
-        if (iid == IOPCEventServer.InterfaceId)
-        {
+        if (iid == IOPCEventServer.InterfaceId) {
             return session.EventServerTearoff;
         }
-        if (iid == IOPCEventSubscriptionMgt.InterfaceId)
-        {
+        if (iid == IOPCEventSubscriptionMgt.InterfaceId) {
             return session.SubscriptionMgtTearoff;
         }
         return IntPtr.Zero;
     }
 
     [UnmanagedCallersOnly]
-    private static uint AddRef(IntPtr pThis)
-    {
-        if (!s_tearoffs.TryGetValue(pThis, out CcwSession? session))
-        {
+    private static uint AddRef(IntPtr pThis) {
+        if (!s_tearoffs.TryGetValue(pThis, out CcwSession? session)) {
             return 1;
         }
         return (uint)Interlocked.Increment(ref session.RefCount);
     }
 
     [UnmanagedCallersOnly]
-    private static uint Release(IntPtr pThis)
-    {
-        if (!s_tearoffs.TryGetValue(pThis, out CcwSession? session))
-        {
+    private static uint Release(IntPtr pThis) {
+        if (!s_tearoffs.TryGetValue(pThis, out CcwSession? session)) {
             return 0;
         }
         long next = Interlocked.Decrement(ref session.RefCount);
-        if (next > 0)
-        {
+        if (next > 0) {
             return (uint)next;
         }
         DisposeSession(session);
         return 0;
     }
 
-    private static void DisposeSession(CcwSession session)
-    {
-        if (Interlocked.Exchange(ref session.Disposed, 1) != 0)
-        {
+    private static void DisposeSession(CcwSession session) {
+        if (Interlocked.Exchange(ref session.Disposed, 1) != 0) {
             return;
         }
         s_tearoffs.TryRemove(session.UnknownTearoff, out _);
@@ -299,53 +273,41 @@ public static unsafe class OpcAeServerCcw
         s_tearoffs.TryRemove(session.SubscriptionMgtTearoff, out _);
         FreeTearoffs(session);
         FreeVtables(session);
-        if (session.ServerHandle.IsAllocated)
-        {
+        if (session.ServerHandle.IsAllocated) {
             session.ServerHandle.Free();
         }
-        if (session.DispatcherHandle.IsAllocated)
-        {
+        if (session.DispatcherHandle.IsAllocated) {
             session.DispatcherHandle.Free();
         }
     }
 
-    private static void FreeTearoffs(CcwSession session)
-    {
-        if (session.UnknownTearoff != IntPtr.Zero)
-        {
+    private static void FreeTearoffs(CcwSession session) {
+        if (session.UnknownTearoff != IntPtr.Zero) {
             NativeMemory.Free((void*)session.UnknownTearoff);
         }
-        if (session.EventServerTearoff != IntPtr.Zero)
-        {
+        if (session.EventServerTearoff != IntPtr.Zero) {
             NativeMemory.Free((void*)session.EventServerTearoff);
         }
-        if (session.SubscriptionMgtTearoff != IntPtr.Zero)
-        {
+        if (session.SubscriptionMgtTearoff != IntPtr.Zero) {
             NativeMemory.Free((void*)session.SubscriptionMgtTearoff);
         }
     }
 
-    private static void FreeVtables(CcwSession session)
-    {
-        if (session.UnknownVtable != null)
-        {
+    private static void FreeVtables(CcwSession session) {
+        if (session.UnknownVtable != null) {
             NativeMemory.Free(session.UnknownVtable);
         }
-        if (session.EventServerVtable != null)
-        {
+        if (session.EventServerVtable != null) {
             NativeMemory.Free(session.EventServerVtable);
         }
-        if (session.SubscriptionMgtVtable != null)
-        {
+        if (session.SubscriptionMgtVtable != null) {
             NativeMemory.Free(session.SubscriptionMgtVtable);
         }
     }
 
     /// <summary>Shared state across all tearoffs of one CCW.</summary>
-    internal sealed class CcwSession
-    {
-        public CcwSession(GCHandle serverHandle, GCHandle dispatcherHandle)
-        {
+    internal sealed class CcwSession {
+        public CcwSession(GCHandle serverHandle, GCHandle dispatcherHandle) {
             ServerHandle = serverHandle;
             DispatcherHandle = dispatcherHandle;
         }

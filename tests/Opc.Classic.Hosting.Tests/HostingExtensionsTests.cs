@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -15,11 +15,9 @@ using TUnit.Core;
 
 namespace Opc.Classic.Hosting.Tests;
 
-public sealed class HostingExtensionsTests
-{
+public sealed class HostingExtensionsTests {
     [Test]
-    public async Task AddClassicServer_registers_hosted_service()
-    {
+    public async Task AddClassicServer_registers_hosted_service() {
         var services = new ServiceCollection();
         services.AddSingleton<ILogger<ClassicHostedService>>(NoopLogger<ClassicHostedService>.Instance);
 
@@ -32,8 +30,7 @@ public sealed class HostingExtensionsTests
     }
 
     [Test]
-    public async Task AddOpcAeServer_registers_IOpcServerHost()
-    {
+    public async Task AddOpcAeServer_registers_IOpcServerHost() {
         var services = new ServiceCollection();
 
         services.AddOpcAeServer<TestOpcServerHost>();
@@ -45,8 +42,7 @@ public sealed class HostingExtensionsTests
     }
 
     [Test]
-    public async Task ClassicHostedService_starts_and_stops_all_hosts()
-    {
+    public async Task ClassicHostedService_starts_and_stops_all_hosts() {
         var first = new TestOpcServerHost { SpecName = "DA", Registration = CreateRegistration("Vendor.First.1") };
         var second = new TestOpcServerHost { SpecName = "AE", Registration = CreateRegistration("Vendor.Second.1") };
         var service = new ClassicHostedService([first, second], NoopLogger<ClassicHostedService>.Instance);
@@ -61,8 +57,7 @@ public sealed class HostingExtensionsTests
     }
 
     [Test]
-    public async Task AddOpcAeServer_can_be_called_multiple_times()
-    {
+    public async Task AddOpcAeServer_can_be_called_multiple_times() {
         var services = new ServiceCollection();
 
         services.AddOpcAeServer<TestOpcServerHost>();
@@ -83,20 +78,16 @@ public sealed class HostingExtensionsTests
             "Vendor.Server",
             "Vendor.Server.ServerClass");
 
-    private sealed class TestServiceProvider : IServiceProvider
-    {
+    private sealed class TestServiceProvider : IServiceProvider {
         private readonly IReadOnlyList<ServiceDescriptor> _descriptors;
         private readonly Dictionary<ServiceDescriptor, object?> _singletons = new();
 
-        public TestServiceProvider(IEnumerable<ServiceDescriptor> descriptors)
-        {
+        public TestServiceProvider(IEnumerable<ServiceDescriptor> descriptors) {
             _descriptors = descriptors.ToArray();
         }
 
-        public object? GetService(Type serviceType)
-        {
-            if (serviceType.IsGenericType && serviceType.GetGenericTypeDefinition() == typeof(IEnumerable<>))
-            {
+        public object? GetService(Type serviceType) {
+            if (serviceType.IsGenericType && serviceType.GetGenericTypeDefinition() == typeof(IEnumerable<>)) {
                 return GetServices(serviceType.GetGenericArguments()[0]);
             }
 
@@ -104,28 +95,23 @@ public sealed class HostingExtensionsTests
             return descriptor is null ? null : GetService(descriptor);
         }
 
-        private Array GetServices(Type serviceType)
-        {
+        private Array GetServices(Type serviceType) {
             var descriptors = _descriptors.Where(candidate => candidate.ServiceType == serviceType).ToArray();
             var services = Array.CreateInstance(serviceType, descriptors.Length);
 
-            for (var i = 0; i < descriptors.Length; i++)
-            {
+            for (var i = 0; i < descriptors.Length; i++) {
                 services.SetValue(GetService(descriptors[i]), i);
             }
 
             return services;
         }
 
-        private object? GetService(ServiceDescriptor descriptor)
-        {
-            if (descriptor.Lifetime != ServiceLifetime.Singleton)
-            {
+        private object? GetService(ServiceDescriptor descriptor) {
+            if (descriptor.Lifetime != ServiceLifetime.Singleton) {
                 return CreateService(descriptor);
             }
 
-            if (_singletons.TryGetValue(descriptor, out var service))
-            {
+            if (_singletons.TryGetValue(descriptor, out var service)) {
                 return service;
             }
 
@@ -134,31 +120,26 @@ public sealed class HostingExtensionsTests
             return service;
         }
 
-        private object? CreateService(ServiceDescriptor descriptor)
-        {
-            if (descriptor.ImplementationInstance is not null)
-            {
+        private object? CreateService(ServiceDescriptor descriptor) {
+            if (descriptor.ImplementationInstance is not null) {
                 return descriptor.ImplementationInstance;
             }
 
-            if (descriptor.ImplementationFactory is not null)
-            {
+            if (descriptor.ImplementationFactory is not null) {
                 return descriptor.ImplementationFactory(this);
             }
 
             return descriptor.ImplementationType is null ? null : CreateImplementation(descriptor.ImplementationType);
         }
 
-        private object CreateImplementation(Type implementationType)
-        {
+        private object CreateImplementation(Type implementationType) {
             var constructor = implementationType.GetConstructors()
                 .OrderByDescending(candidate => candidate.GetParameters().Length)
                 .First();
             var parameters = constructor.GetParameters();
             var arguments = new object?[parameters.Length];
 
-            for (var i = 0; i < parameters.Length; i++)
-            {
+            for (var i = 0; i < parameters.Length; i++) {
                 arguments[i] = GetService(parameters[i].ParameterType)
                     ?? throw new InvalidOperationException($"Could not resolve {parameters[i].ParameterType}.");
             }
@@ -167,8 +148,7 @@ public sealed class HostingExtensionsTests
         }
     }
 
-    private sealed class TestOpcServerHost : IOpcServerHost
-    {
+    private sealed class TestOpcServerHost : IOpcServerHost {
         public string SpecName { get; init; } = "Test";
 
         public OpcClsidRegistration Registration { get; init; } = CreateRegistration("Vendor.Test.1");
@@ -177,21 +157,18 @@ public sealed class HostingExtensionsTests
 
         public bool Stopped { get; private set; }
 
-        public Task StartAsync(CancellationToken cancellationToken)
-        {
+        public Task StartAsync(CancellationToken cancellationToken) {
             Started = true;
             return Task.CompletedTask;
         }
 
-        public Task StopAsync(CancellationToken cancellationToken)
-        {
+        public Task StopAsync(CancellationToken cancellationToken) {
             Stopped = true;
             return Task.CompletedTask;
         }
     }
 
-    private sealed class SecondTestOpcServerHost : IOpcServerHost
-    {
+    private sealed class SecondTestOpcServerHost : IOpcServerHost {
         public string SpecName { get; init; } = "SecondTest";
 
         public OpcClsidRegistration Registration { get; init; } = CreateRegistration("Vendor.SecondTest.1");
@@ -201,8 +178,7 @@ public sealed class HostingExtensionsTests
         public Task StopAsync(CancellationToken cancellationToken) => Task.CompletedTask;
     }
 
-    private sealed class NoopLogger<T> : ILogger<T>
-    {
+    private sealed class NoopLogger<T> : ILogger<T> {
         public static NoopLogger<T> Instance { get; } = new();
 
         public IDisposable? BeginScope<TState>(TState state)
@@ -216,8 +192,7 @@ public sealed class HostingExtensionsTests
             EventId eventId,
             TState state,
             Exception? exception,
-            Func<TState, Exception?, string> formatter)
-        {
+            Func<TState, Exception?, string> formatter) {
         }
     }
 }

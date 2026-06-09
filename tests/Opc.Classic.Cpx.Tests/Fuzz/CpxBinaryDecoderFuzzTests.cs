@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -12,8 +12,7 @@ using TUnit.Core;
 
 namespace Opc.Classic.Cpx.Tests.Fuzz;
 
-public sealed class CpxBinaryDecoderFuzzTests
-{
+public sealed class CpxBinaryDecoderFuzzTests {
     private static readonly Type[] AllowedBinaryDecodeExceptions =
     [
         typeof(InvalidDataException),
@@ -51,11 +50,9 @@ public sealed class CpxBinaryDecoderFuzzTests
 
     [Test]
     [Category("Fuzz")]
-    public async Task OpcBinaryDecoder_Decode_RandomBytes_DoesNotCrash()
-    {
+    public async Task OpcBinaryDecoder_Decode_RandomBytes_DoesNotCrash() {
         int exercised = 0;
-        FuzzHarness.BytesEdgeWeighted.Sample(bytes =>
-        {
+        FuzzHarness.BytesEdgeWeighted.Sample(bytes => {
             exercised++;
             FuzzHarness.AssertParseDoesNotCrash(
                 bytes,
@@ -68,11 +65,9 @@ public sealed class CpxBinaryDecoderFuzzTests
 
     [Test]
     [Category("Fuzz")]
-    public async Task OpcBinaryDecoder_Decode_MutatedValidPayload_DoesNotCrash()
-    {
+    public async Task OpcBinaryDecoder_Decode_MutatedValidPayload_DoesNotCrash() {
         int exercised = 0;
-        FuzzHarness.MutateValid(ValidPayload).Sample(bytes =>
-        {
+        FuzzHarness.MutateValid(ValidPayload).Sample(bytes => {
             exercised++;
             FuzzHarness.AssertParseDoesNotCrash(
                 bytes,
@@ -85,11 +80,9 @@ public sealed class CpxBinaryDecoderFuzzTests
 
     [Test]
     [Category("Fuzz")]
-    public async Task OpcBinaryDecoder_Decode_Corpus_DoesNotCrash()
-    {
+    public async Task OpcBinaryDecoder_Decode_Corpus_DoesNotCrash() {
         int exercised = 0;
-        foreach (object[] row in FuzzHarness.LoadCorpus("CpxBinary"))
-        {
+        foreach (object[] row in FuzzHarness.LoadCorpus("CpxBinary")) {
             exercised++;
             var bytes = (byte[])row[0];
             FuzzHarness.AssertParseDoesNotCrash(

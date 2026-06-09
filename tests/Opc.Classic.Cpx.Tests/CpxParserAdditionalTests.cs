@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -9,11 +9,9 @@ using TUnit.Assertions.AssertConditions.Throws;
 
 namespace Opc.Classic.Cpx.Tests;
 
-public sealed class CpxParserAdditionalTests
-{
+public sealed class CpxParserAdditionalTests {
     [Test]
-    public async Task OpcBinaryDictionaryParser_ParsesSingleTypeDescriptionRootAndFieldOptions()
-    {
+    public async Task OpcBinaryDictionaryParser_ParsesSingleTypeDescriptionRootAndFieldOptions() {
         const string xml = """
             <TypeDescription xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                              TypeID="Packet"
@@ -44,8 +42,7 @@ public sealed class CpxParserAdditionalTests
     }
 
     [Test]
-    public async Task OpcBinaryDictionaryParser_ParsesNamespacedTypesAndLittleEndianFieldOverride()
-    {
+    public async Task OpcBinaryDictionaryParser_ParsesNamespacedTypesAndLittleEndianFieldOverride() {
         const string xml = """
             <opc:TypeDictionary xmlns:opc="http://opcfoundation.org/OPCBinary/1.0/"
                                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -67,8 +64,7 @@ public sealed class CpxParserAdditionalTests
     }
 
     [Test]
-    public async Task OpcBinaryDictionaryParser_InvalidDocuments_ThrowFormatException()
-    {
+    public async Task OpcBinaryDictionaryParser_InvalidDocuments_ThrowFormatException() {
         await Assert.That(() => OpcBinaryDictionaryParser.Parse("<Root />"))
             .Throws<FormatException>();
         await Assert.That(() => OpcBinaryDictionaryParser.Parse("<TypeDictionary Name=\"Empty\" />"))
@@ -82,8 +78,7 @@ public sealed class CpxParserAdditionalTests
     }
 
     [Test]
-    public async Task XmlSchemaParser_ParsesNamedComplexTypesChoiceAllAndNumericArrays()
-    {
+    public async Task XmlSchemaParser_ParsesNamedComplexTypesChoiceAllAndNumericArrays() {
         const string schema = """
             <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
                        xmlns:tns="http://example.com/cpx"
@@ -130,8 +125,7 @@ public sealed class CpxParserAdditionalTests
     }
 
     [Test]
-    public async Task XmlSchemaParser_InvalidSchemaRoots_ThrowFormatException()
-    {
+    public async Task XmlSchemaParser_InvalidSchemaRoots_ThrowFormatException() {
         await Assert.That(() => XmlSchemaParser.Parse("<notSchema />"))
             .Throws<FormatException>();
         await Assert.That(() => XmlSchemaParser.Parse("<xs:schema xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" />"))

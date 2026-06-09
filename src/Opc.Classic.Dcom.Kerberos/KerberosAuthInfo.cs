@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -8,8 +8,7 @@ namespace Opc.Classic.Dcom.Kerberos;
 /// <summary>
 /// Kerberos authentication configuration for a DCOM connection.
 /// </summary>
-public sealed record KerberosAuthInfo : IKerberosAuthInfo
-{
+public sealed record KerberosAuthInfo : IKerberosAuthInfo {
     /// <summary>
     /// Initializes a new instance of the <see cref="KerberosAuthInfo" /> record.
     /// </summary>
@@ -25,8 +24,7 @@ public sealed record KerberosAuthInfo : IKerberosAuthInfo
         string username,
         string? domain,
         string? password,
-        string? keytabPath)
-    {
+        string? keytabPath) {
         ArgumentException.ThrowIfNullOrWhiteSpace(realm);
         ArgumentException.ThrowIfNullOrWhiteSpace(spn);
         ArgumentException.ThrowIfNullOrWhiteSpace(username);

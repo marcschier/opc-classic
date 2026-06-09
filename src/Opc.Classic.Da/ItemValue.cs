@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -17,16 +17,14 @@ namespace Opc.Classic.Da;
 /// type. The DA 2.x quality WORD is decoded into <see cref="Quality"/>;
 /// the FILETIME is decoded into <see cref="Timestamp"/>.
 /// </remarks>
-public class ItemValue : ItemIdentifier
-{
+public class ItemValue : ItemIdentifier {
     /// <summary>Construct.</summary>
     public ItemValue(string itemName, string? path = null) : base(itemName, path) { }
 
     /// <summary>Copy-construct from a bare identifier.</summary>
     public ItemValue(ItemIdentifier identifier) : base(
         (identifier ?? throw new ArgumentNullException(nameof(identifier))).ItemName,
-        identifier.Path)
-    { }
+        identifier.Path) { }
 
     /// <summary>
     /// Client handle as set on the originating <see cref="Item"/>.

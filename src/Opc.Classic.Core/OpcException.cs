@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -18,40 +18,33 @@ namespace Opc.Classic;
 /// — the <see cref="OpcResultId.Description"/> carries the server's text from
 /// <c>IOPCServer::GetErrorString</c> when available.
 /// </remarks>
-public class OpcException : Exception
-{
+public class OpcException : Exception {
     /// <summary>The OPC HRESULT result-ID that caused this exception.</summary>
     public OpcResultId ResultId { get; }
 
-    public OpcException()
-    {
+    public OpcException() {
         ResultId = OpcResultId.Fail;
     }
 
-    public OpcException(string message) : base(message)
-    {
+    public OpcException(string message) : base(message) {
         ResultId = OpcResultId.Fail;
     }
 
     public OpcException(string message, Exception innerException)
-        : base(message, innerException)
-    {
+        : base(message, innerException) {
         ResultId = OpcResultId.Fail;
     }
 
-    public OpcException(OpcResultId resultId) : base(resultId.ToString())
-    {
+    public OpcException(OpcResultId resultId) : base(resultId.ToString()) {
         ResultId = resultId;
     }
 
-    public OpcException(OpcResultId resultId, string message) : base(message)
-    {
+    public OpcException(OpcResultId resultId, string message) : base(message) {
         ResultId = resultId;
     }
 
     public OpcException(OpcResultId resultId, string message, Exception innerException)
-        : base(message, innerException)
-    {
+        : base(message, innerException) {
         ResultId = resultId;
     }
 
@@ -59,10 +52,8 @@ public class OpcException : Exception
     /// Throws an <see cref="OpcException"/> if <paramref name="resultId"/>
     /// indicates failure. Returns the resultId unchanged for chaining on success.
     /// </summary>
-    public static OpcResultId ThrowIfFailed(OpcResultId resultId, string? operationDescription = null)
-    {
-        if (resultId.IsFailure)
-        {
+    public static OpcResultId ThrowIfFailed(OpcResultId resultId, string? operationDescription = null) {
+        if (resultId.IsFailure) {
             var message = operationDescription is null
                 ? resultId.ToString()
                 : $"{operationDescription} failed: {resultId}";

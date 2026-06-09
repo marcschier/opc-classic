@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: MIT
+﻿// SPDX-License-Identifier: MIT
 
 using Opc.Classic.Dcom.Internal;
 using Opc.Classic.Dcom.Common;
@@ -8,7 +8,8 @@ using Opc.Classic.Dcom.Internal.LegacyNdr;
 using System.IO;
 using System.Net.Sockets;
 
-namespace Opc.Classic.Dcom.Transport; 
+namespace Opc.Classic.Dcom.Transport;
+
 /// <summary>
 /// Transport
 /// </summary>

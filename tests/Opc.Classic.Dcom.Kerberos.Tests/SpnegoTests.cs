@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -10,11 +10,9 @@ using TUnit.Core;
 
 namespace Opc.Classic.Dcom.Kerberos.Tests;
 
-public sealed class SpnegoTests
-{
+public sealed class SpnegoTests {
     [Test]
-    public async Task DecodeNegTokenResp_round_trips_response_constructed_with_AsnWriter()
-    {
+    public async Task DecodeNegTokenResp_round_trips_response_constructed_with_AsnWriter() {
         byte[] responseToken = [0x01, 0x02, 0x03];
         byte[] mechListMic = [0x04, 0x05];
         var encoded = EncodeNegTokenResp(
@@ -35,8 +33,7 @@ public sealed class SpnegoTests
     }
 
     [Test]
-    public async Task DecodeNegTokenResp_decodes_known_der_continuation_token()
-    {
+    public async Task DecodeNegTokenResp_decodes_known_der_continuation_token() {
         byte[] knownGood =
         [
             0xA1, 0x1A,
@@ -57,8 +54,7 @@ public sealed class SpnegoTests
     }
 
     [Test]
-    public async Task BuildInitToken_starts_with_initial_context_token_and_contains_spnego_oid()
-    {
+    public async Task BuildInitToken_starts_with_initial_context_token_and_contains_spnego_oid() {
         var token = SpnegoTokenBuilder.BuildInitToken(new byte[] { 0x60, 0x61, 0x62 });
         byte[] spnegoOid = [0x06, 0x06, 0x2B, 0x06, 0x01, 0x05, 0x05, 0x02];
 
@@ -67,8 +63,7 @@ public sealed class SpnegoTests
     }
 
     [Test]
-    public async Task Mechanism_oid_constants_match_rfc_values()
-    {
+    public async Task Mechanism_oid_constants_match_rfc_values() {
         await Assert.That(ReadSpnegoOid()).IsEqualTo("1.3.6.1.5.5.2");
         await Assert.That(ReadKerberosV5Oid()).IsEqualTo("1.2.840.113554.1.2.2");
         await Assert.That(ReadNtlmsspOid()).IsEqualTo("1.3.6.1.4.1.311.2.2.10");
@@ -84,8 +79,7 @@ public sealed class SpnegoTests
         SpnegoNegState negState,
         string supportedMech,
         ReadOnlySpan<byte> responseToken,
-        ReadOnlySpan<byte> mechListMic)
-    {
+        ReadOnlySpan<byte> mechListMic) {
         var body = new AsnWriter(AsnEncodingRules.DER);
         body.PushSequence();
 
@@ -119,8 +113,7 @@ public sealed class SpnegoTests
         return negotiationToken.Encode();
     }
 
-    private static bool ContainsSubsequence(ReadOnlySpan<byte> haystack, ReadOnlySpan<byte> needle)
-    {
+    private static bool ContainsSubsequence(ReadOnlySpan<byte> haystack, ReadOnlySpan<byte> needle) {
         return haystack.IndexOf(needle) >= 0;
     }
 }

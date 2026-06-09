@@ -1,8 +1,9 @@
-// SPDX-License-Identifier: MIT
+﻿// SPDX-License-Identifier: MIT
 
 using Opc.Classic.Dcom.Common;
 
-namespace Opc.Classic.Dcom.Registry; 
+namespace Opc.Classic.Dcom.Registry;
+
 /// <summary>
 /// Perform C-R-U-D on the Windows Registry.
 /// This interface uses "Windows Remote Registry" and "Server" services

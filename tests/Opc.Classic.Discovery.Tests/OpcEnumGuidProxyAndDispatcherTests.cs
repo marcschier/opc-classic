@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -17,19 +17,16 @@ using TUnit.Core;
 
 namespace Opc.Classic.Discovery.Tests;
 
-public sealed class OpcEnumGuidProxyAndDispatcherTests
-{
+public sealed class OpcEnumGuidProxyAndDispatcherTests {
     private static readonly Guid FirstGuid = Guid.Parse("10138C2C-0000-0000-0000-000000000101");
     private static readonly Guid SecondGuid = Guid.Parse("10138C2C-0000-0000-0000-000000000102");
 
     [Test]
-    public async Task ClientProxy_SkipAsync_InvokesSkipOpnumAndEncodesCount()
-    {
+    public async Task ClientProxy_SkipAsync_InvokesSkipOpnumAndEncodesCount() {
         Guid observedIid = Guid.Empty;
         int observedOpnum = -1;
         int observedCount = -1;
-        var channel = new InMemoryCallChannel((iid, opnum, payload, _) =>
-        {
+        var channel = new InMemoryCallChannel((iid, opnum, payload, _) => {
             observedIid = iid;
             observedOpnum = opnum;
             var reader = new NdrReader(payload.Span);
@@ -46,11 +43,9 @@ public sealed class OpcEnumGuidProxyAndDispatcherTests
     }
 
     [Test]
-    public async Task ClientProxy_ResetAsync_InvokesResetOpnum()
-    {
+    public async Task ClientProxy_ResetAsync_InvokesResetOpnum() {
         int observedOpnum = -1;
-        var channel = new InMemoryCallChannel((_, opnum, payload, _) =>
-        {
+        var channel = new InMemoryCallChannel((_, opnum, payload, _) => {
             observedOpnum = opnum;
             return Task.FromResult(new NdrCallResult(OpcResultId.Ok.Code, payload));
         });
@@ -62,11 +57,9 @@ public sealed class OpcEnumGuidProxyAndDispatcherTests
     }
 
     [Test]
-    public async Task ClientProxy_CloneAsync_DecodesInterfaceReference()
-    {
+    public async Task ClientProxy_CloneAsync_DecodesInterfaceReference() {
         IOpcInterfaceRef expected = CreateInterfaceRef();
-        var channel = new InMemoryCallChannel((_, opnum, _, _) =>
-        {
+        var channel = new InMemoryCallChannel((_, opnum, _, _) => {
             ReadOnlyMemory<byte> response = opnum == IOPCEnumGUIDClientProxy.Opnums.Clone
                 ? EncodeInterfaceRef(expected)
                 : ReadOnlyMemory<byte>.Empty;
@@ -82,8 +75,7 @@ public sealed class OpcEnumGuidProxyAndDispatcherTests
     }
 
     [Test]
-    public async Task Dispatcher_Next_EncodesFetchedGuidsAndPartialHresult()
-    {
+    public async Task Dispatcher_Next_EncodesFetchedGuidsAndPartialHresult() {
         var server = new StubEnumGuidServer([FirstGuid, SecondGuid]);
         var dispatcher = new IOPCEnumGUIDServerDispatcher(server);
 
@@ -101,8 +93,7 @@ public sealed class OpcEnumGuidProxyAndDispatcherTests
     }
 
     [Test]
-    public async Task Dispatcher_SkipResetAndClone_DelegateToServer()
-    {
+    public async Task Dispatcher_SkipResetAndClone_DelegateToServer() {
         var server = new StubEnumGuidServer([FirstGuid, SecondGuid]) { CloneRef = CreateInterfaceRef() };
         var dispatcher = new IOPCEnumGUIDServerDispatcher(server);
 
@@ -127,8 +118,7 @@ public sealed class OpcEnumGuidProxyAndDispatcherTests
     }
 
     [Test]
-    public async Task Dispatcher_UnknownOpnum_ReturnsNotImplemented()
-    {
+    public async Task Dispatcher_UnknownOpnum_ReturnsNotImplemented() {
         var dispatcher = new IOPCEnumGUIDServerDispatcher(new StubEnumGuidServer([]));
 
         DispatchResult result = await dispatcher.DispatchAsync(999, ReadOnlyMemory<byte>.Empty, CancellationToken.None);
@@ -142,14 +132,12 @@ public sealed class OpcEnumGuidProxyAndDispatcherTests
     private static ReadOnlyMemory<byte> EncodeInterfaceRef(IOpcInterfaceRef interfaceRef) =>
         WritePayload((ref NdrWriter writer) => OpcInterfaceRefCodec.Write(ref writer, interfaceRef));
 
-    private static IOpcInterfaceRef DecodeInterfaceRef(ReadOnlyMemory<byte> payload)
-    {
+    private static IOpcInterfaceRef DecodeInterfaceRef(ReadOnlyMemory<byte> payload) {
         var reader = new NdrReader(payload.Span);
         return OpcInterfaceRefCodec.Read(ref reader);
     }
 
-    private static byte[] WritePayload(NdrWriteAction write)
-    {
+    private static byte[] WritePayload(NdrWriteAction write) {
         var buffer = new byte[512];
         var writer = new NdrWriter(buffer);
         write(ref writer);
@@ -168,8 +156,7 @@ public sealed class OpcEnumGuidProxyAndDispatcherTests
 
     private delegate void NdrWriteAction(ref NdrWriter writer);
 
-    private sealed class StubEnumGuidServer : IOPCEnumGUIDServer
-    {
+    private sealed class StubEnumGuidServer : IOPCEnumGUIDServer {
         private readonly IReadOnlyList<Guid> _classIds;
         private int _index;
 
@@ -180,27 +167,23 @@ public sealed class OpcEnumGuidProxyAndDispatcherTests
 
         public int ResetCount { get; private set; }
 
-        public Task<OpcEnumGuidNextResult> NextAsync(int count, CancellationToken cancellationToken = default)
-        {
+        public Task<OpcEnumGuidNextResult> NextAsync(int count, CancellationToken cancellationToken = default) {
             int fetched = Math.Min(count, _classIds.Count - _index);
             var result = new Guid[fetched];
-            for (int i = 0; i < fetched; i++)
-            {
+            for (int i = 0; i < fetched; i++) {
                 result[i] = _classIds[_index++];
             }
 
             return Task.FromResult(new OpcEnumGuidNextResult(result, fetched));
         }
 
-        public Task<int> SkipAsync(int count, CancellationToken cancellationToken = default)
-        {
+        public Task<int> SkipAsync(int count, CancellationToken cancellationToken = default) {
             int skipped = Math.Min(count, _classIds.Count - _index);
             _index += skipped;
             return Task.FromResult(skipped);
         }
 
-        public Task ResetAsync(CancellationToken cancellationToken = default)
-        {
+        public Task ResetAsync(CancellationToken cancellationToken = default) {
             ResetCount++;
             _index = 0;
             return Task.CompletedTask;

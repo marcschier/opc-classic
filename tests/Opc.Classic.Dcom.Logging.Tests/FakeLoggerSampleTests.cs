@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -11,17 +11,14 @@ using TUnit.Core;
 
 namespace Opc.Classic.Dcom.Logging.Tests;
 
-public sealed class FakeLoggerSampleTests
-{
+public sealed class FakeLoggerSampleTests {
     [Test, NotInParallel]
-    public async Task FakeLogger_captures_emitted_log_lines()
-    {
+    public async Task FakeLogger_captures_emitted_log_lines() {
         var provider = new FakeLoggerProvider();
         using var loggerFactory = LoggerFactory.Create(builder => builder.AddProvider(provider));
 
         LogHost.ConfigureFactory(loggerFactory);
-        try
-        {
+        try {
             Log.Logger.Information("hello {Name}", "world");
 
             var collector = provider.Collector;
@@ -29,8 +26,7 @@ public sealed class FakeLoggerSampleTests
             var lastEntry = collector.LatestRecord;
             await Assert.That(lastEntry.Message).Contains("hello");
         }
-        finally
-        {
+        finally {
             LogHost.ConfigureFactory(NullLoggerFactory.Instance);
         }
     }

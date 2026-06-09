@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: MIT
+﻿// SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 
 using Microsoft.Extensions.Hosting;
@@ -6,8 +6,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Opc.Classic.Samples.AeServer;
 
-public sealed class EventEmitter : BackgroundService
-{
+public sealed class EventEmitter : BackgroundService {
     private const int ErrorEveryTicks = 3;
     private const int ConditionEveryTicks = 2;
     private const string SimpleEventType = "Simple";
@@ -38,31 +37,25 @@ public sealed class EventEmitter : BackgroundService
 
     private readonly ILogger<EventEmitter> _logger;
 
-    public EventEmitter(ILogger<EventEmitter> logger)
-    {
+    public EventEmitter(ILogger<EventEmitter> logger) {
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
-    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
-    {
+    protected override async Task ExecuteAsync(CancellationToken stoppingToken) {
         using var timer = new PeriodicTimer(EventPeriod);
         var tick = 0;
         var conditionActive = false;
 
-        try
-        {
-            while (await timer.WaitForNextTickAsync(stoppingToken).ConfigureAwait(false))
-            {
+        try {
+            while (await timer.WaitForNextTickAsync(stoppingToken).ConfigureAwait(false)) {
                 tick++;
                 HeartbeatEventFired(_logger, "Server.Heartbeat", SimpleEventType, InfoSeverity, null);
 
-                if (tick % ErrorEveryTicks == 0)
-                {
+                if (tick % ErrorEveryTicks == 0) {
                     ErrorEventFired(_logger, "Server.Errors", SimpleEventType, ErrorSeverity, null);
                 }
 
-                if (tick % ConditionEveryTicks == 0)
-                {
+                if (tick % ConditionEveryTicks == 0) {
                     conditionActive = !conditionActive;
                     ConditionTransitionFired(
                         _logger,
@@ -75,8 +68,7 @@ public sealed class EventEmitter : BackgroundService
                 }
             }
         }
-        catch (OperationCanceledException) when (stoppingToken.IsCancellationRequested)
-        {
+        catch (OperationCanceledException) when (stoppingToken.IsCancellationRequested) {
         }
     }
 }

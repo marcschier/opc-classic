@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -18,8 +18,7 @@ namespace Opc.Classic.Generators;
 
 /// <summary>Emits AOT-safe server-side NDR dispatchers for OPC interface projections.</summary>
 [Generator(LanguageNames.CSharp)]
-public sealed class OpcServerDispatchGenerator : IIncrementalGenerator
-{
+public sealed class OpcServerDispatchGenerator : IIncrementalGenerator {
     private const string AttributeNamespace = "Opc.Classic.Generators";
     private const string AttributeName = "OpcGenerateServerDispatchAttribute";
     private const string AttributeFullName = AttributeNamespace + "." + AttributeName;
@@ -151,8 +150,7 @@ namespace Opc.Classic.Generators
         helpLinkUri: DiagnosticsHelpLinkUri);
 
     /// <inheritdoc />
-    public void Initialize(IncrementalGeneratorInitializationContext context)
-    {
+    public void Initialize(IncrementalGeneratorInitializationContext context) {
         context.RegisterPostInitializationOutput(ctx =>
             ctx.AddSource(
                 hintName: "OpcGenerateServerDispatchAttribute.g.cs",
@@ -166,18 +164,14 @@ namespace Opc.Classic.Generators
         context.RegisterSourceOutput(candidates, Emit);
     }
 
-    private static InterfaceModel? Transform(GeneratorAttributeSyntaxContext ctx)
-    {
-        if (ctx.TargetSymbol is not INamedTypeSymbol symbol || ctx.TargetNode is not InterfaceDeclarationSyntax syntax)
-        {
+    private static InterfaceModel? Transform(GeneratorAttributeSyntaxContext ctx) {
+        if (ctx.TargetSymbol is not INamedTypeSymbol symbol || ctx.TargetNode is not InterfaceDeclarationSyntax syntax) {
             return null;
         }
 
         bool isPartial = false;
-        foreach (var modifier in syntax.Modifiers)
-        {
-            if (modifier.IsKind(SyntaxKind.PartialKeyword))
-            {
+        foreach (var modifier in syntax.Modifiers) {
+            if (modifier.IsKind(SyntaxKind.PartialKeyword)) {
                 isPartial = true;
                 break;
             }
@@ -198,13 +192,10 @@ namespace Opc.Classic.Generators
             methods: CollectMethods(symbol));
     }
 
-    private static ImmutableArray<MethodModel> CollectMethods(INamedTypeSymbol interfaceSymbol)
-    {
+    private static ImmutableArray<MethodModel> CollectMethods(INamedTypeSymbol interfaceSymbol) {
         var builder = ImmutableArray.CreateBuilder<MethodModel>();
-        foreach (var member in interfaceSymbol.GetMembers())
-        {
-            if (member is IMethodSymbol { MethodKind: MethodKind.Ordinary } method && TryGetOpcMethodOpnum(method, out int opnum))
-            {
+        foreach (var member in interfaceSymbol.GetMembers()) {
+            if (member is IMethodSymbol { MethodKind: MethodKind.Ordinary } method && TryGetOpcMethodOpnum(method, out int opnum)) {
                 builder.Add(CreateMethodModel(method, opnum));
             }
         }
@@ -212,18 +203,15 @@ namespace Opc.Classic.Generators
         return builder.ToImmutable();
     }
 
-    private static MethodModel CreateMethodModel(IMethodSymbol method, int opnum)
-    {
+    private static MethodModel CreateMethodModel(IMethodSymbol method, int opnum) {
         var parameterNames = ImmutableArray.CreateBuilder<string>();
         var parameters = ImmutableArray.CreateBuilder<ParameterModel>();
         string? cancellationTokenParameterName = null;
-        foreach (var parameter in method.Parameters)
-        {
+        foreach (var parameter in method.Parameters) {
             string escapedName = EscapeIdentifier(parameter.Name);
             parameterNames.Add(escapedName);
             bool isCancellationToken = string.Equals(parameter.Type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat), "global::System.Threading.CancellationToken", System.StringComparison.Ordinal);
-            if (cancellationTokenParameterName is null && isCancellationToken)
-            {
+            if (cancellationTokenParameterName is null && isCancellationToken) {
                 cancellationTokenParameterName = escapedName;
             }
 
@@ -284,101 +272,79 @@ namespace Opc.Classic.Generators
             method.Locations.IsDefaultOrEmpty ? Location.None : method.Locations[0]);
     }
 
-    private static void DetectUniquePointer(IParameterSymbol parameter, out bool isUniquePointer, out string? underlyingValueType)
-    {
+    private static void DetectUniquePointer(IParameterSymbol parameter, out bool isUniquePointer, out string? underlyingValueType) {
         isUniquePointer = false;
         underlyingValueType = null;
         if (parameter.Type is INamedTypeSymbol namedType
             && namedType.IsGenericType
             && namedType.OriginalDefinition is { } orig
             && string.Equals(orig.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat), "global::System.Nullable<T>", System.StringComparison.Ordinal)
-            && namedType.TypeArguments.Length == 1)
-        {
+            && namedType.TypeArguments.Length == 1) {
             isUniquePointer = true;
             underlyingValueType = namedType.TypeArguments[0].ToDisplayString(CodecTypeDisplayFormat);
         }
-        foreach (var attr in parameter.GetAttributes())
-        {
+        foreach (var attr in parameter.GetAttributes()) {
             if (attr.AttributeClass is null) { continue; }
-            if (string.Equals(attr.AttributeClass.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat), "global::" + OpcUniquePointerAttributeFullName, System.StringComparison.Ordinal))
-            {
+            if (string.Equals(attr.AttributeClass.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat), "global::" + OpcUniquePointerAttributeFullName, System.StringComparison.Ordinal)) {
                 isUniquePointer = true;
             }
         }
     }
 
-    private static bool HasReturnUniquePointerAttribute(IMethodSymbol method)
-    {
-        foreach (var attr in method.GetReturnTypeAttributes())
-        {
+    private static bool HasReturnUniquePointerAttribute(IMethodSymbol method) {
+        foreach (var attr in method.GetReturnTypeAttributes()) {
             if (attr.AttributeClass is null) { continue; }
-            if (string.Equals(attr.AttributeClass.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat), "global::" + OpcUniquePointerAttributeFullName, System.StringComparison.Ordinal))
-            {
+            if (string.Equals(attr.AttributeClass.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat), "global::" + OpcUniquePointerAttributeFullName, System.StringComparison.Ordinal)) {
                 return true;
             }
         }
         return false;
     }
 
-    private static bool HasEmitArrayCountAttribute(IParameterSymbol parameter)
-    {
-        foreach (var attr in parameter.GetAttributes())
-        {
+    private static bool HasEmitArrayCountAttribute(IParameterSymbol parameter) {
+        foreach (var attr in parameter.GetAttributes()) {
             if (attr.AttributeClass is null) { continue; }
-            if (string.Equals(attr.AttributeClass.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat), "global::" + OpcEmitArrayCountAttributeFullName, System.StringComparison.Ordinal))
-            {
+            if (string.Equals(attr.AttributeClass.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat), "global::" + OpcEmitArrayCountAttributeFullName, System.StringComparison.Ordinal)) {
                 return true;
             }
         }
         return false;
     }
 
-    private static bool HasDeferredElementsAttribute(IParameterSymbol parameter)
-    {
-        foreach (var attr in parameter.GetAttributes())
-        {
+    private static bool HasDeferredElementsAttribute(IParameterSymbol parameter) {
+        foreach (var attr in parameter.GetAttributes()) {
             if (attr.AttributeClass is null) { continue; }
-            if (string.Equals(attr.AttributeClass.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat), "global::" + OpcDeferredElementsAttributeFullName, System.StringComparison.Ordinal))
-            {
+            if (string.Equals(attr.AttributeClass.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat), "global::" + OpcDeferredElementsAttributeFullName, System.StringComparison.Ordinal)) {
                 return true;
             }
         }
         return false;
     }
 
-    private static bool HasFileTimeElementsAttribute(IParameterSymbol parameter)
-    {
-        foreach (var attr in parameter.GetAttributes())
-        {
+    private static bool HasFileTimeElementsAttribute(IParameterSymbol parameter) {
+        foreach (var attr in parameter.GetAttributes()) {
             if (attr.AttributeClass is null) { continue; }
-            if (string.Equals(attr.AttributeClass.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat), "global::" + OpcFileTimeElementsAttributeFullName, System.StringComparison.Ordinal))
-            {
+            if (string.Equals(attr.AttributeClass.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat), "global::" + OpcFileTimeElementsAttributeFullName, System.StringComparison.Ordinal)) {
                 return true;
             }
         }
         return false;
     }
 
-    private static bool HasVariantElementsAttribute(IParameterSymbol parameter)
-    {
-        foreach (var attr in parameter.GetAttributes())
-        {
+    private static bool HasVariantElementsAttribute(IParameterSymbol parameter) {
+        foreach (var attr in parameter.GetAttributes()) {
             if (attr.AttributeClass is null) { continue; }
-            if (string.Equals(attr.AttributeClass.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat), "global::" + OpcVariantElementsAttributeFullName, System.StringComparison.Ordinal))
-            {
+            if (string.Equals(attr.AttributeClass.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat), "global::" + OpcVariantElementsAttributeFullName, System.StringComparison.Ordinal)) {
                 return true;
             }
         }
         return false;
     }
 
-    private static bool HasRefStringAttribute(IParameterSymbol parameter)
-    {
-        foreach (var attr in parameter.GetAttributes())
-        {
+    private static bool HasRefStringAttribute(IParameterSymbol parameter) {
+        foreach (var attr in parameter.GetAttributes()) {
             if (attr.AttributeClass is null) { continue; }
-            if (string.Equals(attr.AttributeClass.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat), "global::" + OpcRefStringAttributeFullName, System.StringComparison.Ordinal))
-            {
+            if (string.Equals(attr.AttributeClass.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat), "global::" + OpcRefStringAttributeFullName, System.StringComparison.Ordinal)) {
                 return true;
             }
         }
@@ -390,33 +356,26 @@ namespace Opc.Classic.Generators
             ? symbol.ContainingNamespace.ToDisplayString()
             : null;
 
-    private static void Emit(SourceProductionContext spc, InterfaceModel? maybeModel)
-    {
-        if (maybeModel is null)
-        {
+    private static void Emit(SourceProductionContext spc, InterfaceModel? maybeModel) {
+        if (maybeModel is null) {
             return;
         }
 
         InterfaceModel model = maybeModel;
-        if (!model.IsPartial)
-        {
+        if (!model.IsPartial) {
             spc.ReportDiagnostic(Diagnostic.Create(NotPartialDescriptor, model.Location, model.FullyQualifiedName));
             return;
         }
 
-        if (!model.HasOpcInterfaceAttribute)
-        {
+        if (!model.HasOpcInterfaceAttribute) {
             spc.ReportDiagnostic(Diagnostic.Create(MissingOpcInterfaceDescriptor, model.Location, model.FullyQualifiedName));
         }
 
-        foreach (var method in model.Methods)
-        {
-            if (method.UnsupportedSignatureReason is not null)
-            {
+        foreach (var method in model.Methods) {
+            if (method.UnsupportedSignatureReason is not null) {
                 spc.ReportDiagnostic(Diagnostic.Create(UnsupportedSignatureDescriptor, method.Location, method.Name, method.UnsupportedSignatureReason));
             }
-            else if (method.UnsupportedMarshallingType is not null)
-            {
+            else if (method.UnsupportedMarshallingType is not null) {
                 DiagnosticDescriptor descriptor = method.UnsupportedMarshallingKind == UnsupportedMarshallingKind.Parameter
                     ? UnsupportedParameterDescriptor
                     : UnsupportedReturnDescriptor;
@@ -436,8 +395,7 @@ namespace Opc.Classic.Generators
 
         bool hasNamespace = !string.IsNullOrEmpty(model.Namespace);
         string indent = hasNamespace ? "    " : string.Empty;
-        if (hasNamespace)
-        {
+        if (hasNamespace) {
             sb.Append("namespace ").Append(model.Namespace).AppendLine();
             sb.AppendLine("{");
         }
@@ -456,15 +414,13 @@ namespace Opc.Classic.Generators
         sb.Append(indent).AppendLine("    }");
         sb.AppendLine();
         EmitDispatchMethod(sb, indent, model);
-        foreach (var method in model.Methods)
-        {
+        foreach (var method in model.Methods) {
             sb.AppendLine();
             EmitMethodDispatcher(sb, indent, method);
         }
 
         sb.Append(indent).AppendLine("}");
-        if (hasNamespace)
-        {
+        if (hasNamespace) {
             sb.AppendLine("}");
         }
 
@@ -472,12 +428,10 @@ namespace Opc.Classic.Generators
         spc.AddSource(hint, SourceText.From(sb.ToString(), Encoding.UTF8));
     }
 
-    private static void EmitDispatchMethod(StringBuilder sb, string indent, InterfaceModel model)
-    {
+    private static void EmitDispatchMethod(StringBuilder sb, string indent, InterfaceModel model) {
         bool hasMethods = model.Methods.Length > 0;
         sb.Append(indent).Append("    public ");
-        if (hasMethods)
-        {
+        if (hasMethods) {
             sb.Append("async ");
         }
 
@@ -486,8 +440,7 @@ namespace Opc.Classic.Generators
         sb.Append(indent).AppendLine("        global::System.ReadOnlyMemory<byte> requestPayload,");
         sb.Append(indent).AppendLine("        global::System.Threading.CancellationToken cancellationToken = default)");
         sb.Append(indent).AppendLine("    {");
-        if (!hasMethods)
-        {
+        if (!hasMethods) {
             sb.Append(indent).AppendLine("        _ = requestPayload;");
             sb.Append(indent).AppendLine("        _ = cancellationToken;");
             sb.Append(indent).AppendLine("        return new global::System.Threading.Tasks.ValueTask<global::Opc.Classic.Hosting.DispatchResult>(global::Opc.Classic.Hosting.DispatchResult.NotImplemented(opnum));");
@@ -499,8 +452,7 @@ namespace Opc.Classic.Generators
         sb.Append(indent).AppendLine("        {");
         sb.Append(indent).AppendLine("            switch (opnum)");
         sb.Append(indent).AppendLine("            {");
-        foreach (var method in model.Methods)
-        {
+        foreach (var method in model.Methods) {
             sb.Append(indent).Append("                case ").Append(method.Opnum.ToString(CultureInfo.InvariantCulture)).Append(": return await ")
                 .Append(DispatchMethodName(method)).AppendLine("(requestPayload, cancellationToken).ConfigureAwait(false);");
         }
@@ -515,10 +467,8 @@ namespace Opc.Classic.Generators
         sb.Append(indent).AppendLine("    }");
     }
 
-    private static void EmitMethodDispatcher(StringBuilder sb, string indent, MethodModel method)
-    {
-        if (!method.IsFullyMarshallable)
-        {
+    private static void EmitMethodDispatcher(StringBuilder sb, string indent, MethodModel method) {
+        if (!method.IsFullyMarshallable) {
             sb.Append(indent).Append("    private static global::System.Threading.Tasks.ValueTask<global::Opc.Classic.Hosting.DispatchResult> ").Append(DispatchMethodName(method)).AppendLine("(");
             sb.Append(indent).AppendLine("        global::System.ReadOnlyMemory<byte> requestPayload,");
             sb.Append(indent).AppendLine("        global::System.Threading.CancellationToken cancellationToken)");
@@ -542,47 +492,38 @@ namespace Opc.Classic.Generators
         sb.Append(indent).AppendLine("    }");
         sb.AppendLine();
         EmitCoreMethod(sb, indent, method);
-        if (ResponseItemCount(method) > 0)
-        {
+        if (ResponseItemCount(method) > 0) {
             sb.AppendLine();
             EmitEncodeResponseMethod(sb, indent, method);
         }
     }
 
-    private static void EmitDecodeRequest(StringBuilder sb, string indent, MethodModel method)
-    {
+    private static void EmitDecodeRequest(StringBuilder sb, string indent, MethodModel method) {
         bool hasRequestValues = HasRequestValues(method);
         string readerLocal = UniqueLocalName(method.ParameterNames, "__opcReader");
-        if (hasRequestValues)
-        {
+        if (hasRequestValues) {
             sb.Append(indent).Append("        var ").Append(readerLocal).Append(" = new global::Opc.Classic.Ndr.NdrReader(requestPayload.Span);").AppendLine();
         }
-        else
-        {
+        else {
             sb.Append(indent).AppendLine("        _ = requestPayload;");
         }
 
-        foreach (var parameter in method.Parameters)
-        {
-            if (parameter.IsRequestValue)
-            {
+        foreach (var parameter in method.Parameters) {
+            if (parameter.IsRequestValue) {
                 // Sibling-count first if [OpcEmitArrayCount] is present —
                 // mirror of the proxy's request encoder so the dispatcher
                 // consumes the count before reading the array body.
-                if (parameter.EmitArrayCount)
-                {
+                if (parameter.EmitArrayCount) {
                     sb.Append(indent).Append("        _ = ").Append(readerLocal).AppendLine(".ReadUInt32();");
                 }
-                if (parameter.RefString && IsStringMarshallingType(parameter.MarshallingType))
-                {
+                if (parameter.RefString && IsStringMarshallingType(parameter.MarshallingType)) {
                     sb.Append(indent).Append("        var ").Append(parameter.Name).Append(" = ").Append(readerLocal).AppendLine(".ReadUnicodeString();");
                     continue;
                 }
                 // [OpcVariantElements] on a request parameter: read max_count
                 // + N per-element wireVARIANT bodies. Mirror of the proxy
                 // request encoder for IDL [in, size_is(N)] VARIANT*.
-                if (parameter.VariantElements && IsVariantArrayMarshallingType(parameter.MarshallingType))
-                {
+                if (parameter.VariantElements && IsVariantArrayMarshallingType(parameter.MarshallingType)) {
                     string countLocal = parameter.Name + "Count";
                     string idxLocal = parameter.Name + "Idx";
                     sb.Append(indent).Append("        int ").Append(countLocal).Append(" = (int)").Append(readerLocal).AppendLine(".ReadUInt32();");
@@ -602,12 +543,10 @@ namespace Opc.Classic.Generators
                 // the max_count; if the outer referent is NULL the array is
                 // entirely absent on the wire (proxy writes only the
                 // referent), so we synthesise an empty array.
-                if (parameter.DeferredElements && string.Equals(parameter.MarshallingType, "global::System.String[]", System.StringComparison.Ordinal))
-                {
+                if (parameter.DeferredElements && string.Equals(parameter.MarshallingType, "global::System.String[]", System.StringComparison.Ordinal)) {
                     string countLocal = parameter.Name + "Count";
                     string idxLocal = parameter.Name + "Idx";
-                    if (parameter.IsUniquePointer)
-                    {
+                    if (parameter.IsUniquePointer) {
                         string refLocal = parameter.Name + "Ref";
                         sb.Append(indent).Append("        uint ").Append(refLocal).Append(" = ").Append(readerLocal).AppendLine(".ReadUInt32();");
                         sb.Append(indent).Append("        global::System.String[] ").Append(parameter.Name).AppendLine(";");
@@ -653,20 +592,17 @@ namespace Opc.Classic.Generators
         string.Equals(marshallingType, "global::System.String", System.StringComparison.Ordinal) ||
         string.Equals(marshallingType, "global::System.String?", System.StringComparison.Ordinal);
 
-    private static void EmitCoreMethod(StringBuilder sb, string indent, MethodModel method)
-    {
+    private static void EmitCoreMethod(StringBuilder sb, string indent, MethodModel method) {
         sb.Append(indent).Append("    private async global::System.Threading.Tasks.ValueTask<global::Opc.Classic.Hosting.DispatchResult> ").Append(CoreMethodName(method)).Append('(');
         AppendCoreParameters(sb, method);
         sb.AppendLine(")");
         sb.Append(indent).AppendLine("    {");
         EmitOutLocalDeclarations(sb, indent, method);
         EmitCallImpl(sb, indent, method);
-        if (ResponseItemCount(method) == 0)
-        {
+        if (ResponseItemCount(method) == 0) {
             sb.Append(indent).AppendLine("        return global::Opc.Classic.Hosting.DispatchResult.Success(global::System.Array.Empty<byte>(), global::Opc.Classic.OpcResultId.Ok.Code);");
         }
-        else
-        {
+        else {
             sb.Append(indent).Append("        return ").Append(EncodeResponseName(method)).Append('(');
             AppendEncodeArguments(sb, method);
             sb.AppendLine(");");
@@ -675,56 +611,44 @@ namespace Opc.Classic.Generators
         sb.Append(indent).AppendLine("    }");
     }
 
-    private static void EmitOutLocalDeclarations(StringBuilder sb, string indent, MethodModel method)
-    {
-        foreach (var parameter in method.Parameters)
-        {
-            if (!parameter.IsCancellationToken && parameter.RefKind == RefKind.Out)
-            {
+    private static void EmitOutLocalDeclarations(StringBuilder sb, string indent, MethodModel method) {
+        foreach (var parameter in method.Parameters) {
+            if (!parameter.IsCancellationToken && parameter.RefKind == RefKind.Out) {
                 sb.Append(indent).Append("        ").Append(parameter.DeclaredType).Append(' ').Append(parameter.Name).AppendLine(";");
             }
         }
     }
 
-    private static void EmitCallImpl(StringBuilder sb, string indent, MethodModel method)
-    {
+    private static void EmitCallImpl(StringBuilder sb, string indent, MethodModel method) {
         string taskLocal = UniqueLocalName(method.ParameterNames, "__opcTask");
         sb.Append(indent).Append("        var ").Append(taskLocal).Append(" = _impl.").Append(method.Name).Append('(');
         AppendCallArguments(sb, method);
         sb.AppendLine(");");
-        if (method.TaskReturnKind == TaskReturnKind.TaskOfT)
-        {
+        if (method.TaskReturnKind == TaskReturnKind.TaskOfT) {
             string returnLocal = ReturnValueLocal(method);
             sb.Append(indent).Append("        var ").Append(returnLocal).Append(" = await ").Append(taskLocal).AppendLine(".ConfigureAwait(false);");
         }
-        else
-        {
+        else {
             sb.Append(indent).Append("        await ").Append(taskLocal).AppendLine(".ConfigureAwait(false);");
         }
     }
 
-    private static void AppendCallArguments(StringBuilder sb, MethodModel method)
-    {
-        for (int i = 0; i < method.Parameters.Length; i++)
-        {
-            if (i > 0)
-            {
+    private static void AppendCallArguments(StringBuilder sb, MethodModel method) {
+        for (int i = 0; i < method.Parameters.Length; i++) {
+            if (i > 0) {
                 sb.Append(", ");
             }
 
             ParameterModel parameter = method.Parameters[i];
-            if (parameter.IsCancellationToken)
-            {
+            if (parameter.IsCancellationToken) {
                 sb.Append("cancellationToken");
                 continue;
             }
 
-            if (parameter.RefKind == RefKind.Ref)
-            {
+            if (parameter.RefKind == RefKind.Ref) {
                 sb.Append("ref ");
             }
-            else if (parameter.RefKind == RefKind.Out)
-            {
+            else if (parameter.RefKind == RefKind.Out) {
                 sb.Append("out ");
             }
 
@@ -732,8 +656,7 @@ namespace Opc.Classic.Generators
         }
     }
 
-    private static void EmitEncodeResponseMethod(StringBuilder sb, string indent, MethodModel method)
-    {
+    private static void EmitEncodeResponseMethod(StringBuilder sb, string indent, MethodModel method) {
         sb.Append(indent).Append("    private static global::Opc.Classic.Hosting.DispatchResult ").Append(EncodeResponseName(method)).Append('(');
         AppendEncodeParameters(sb, method);
         sb.AppendLine(")");
@@ -744,37 +667,30 @@ namespace Opc.Classic.Generators
         sb.Append(indent).AppendLine("        try");
         sb.Append(indent).AppendLine("        {");
         sb.Append(indent).Append("            var ").Append(writerLocal).Append(" = new global::Opc.Classic.Ndr.NdrWriter(new global::System.Span<byte>(").Append(bufferLocal).AppendLine(", 0, InitialResponseBufferSize));");
-        if (method.TaskReturnKind == TaskReturnKind.TaskOfT)
-        {
+        if (method.TaskReturnKind == TaskReturnKind.TaskOfT) {
             EmitCodecWrite(sb, indent + "            ", writerLocal, method.TaskResultMarshallingType!, ReturnValueLocal(method), method, isUniquePointer: method.TaskResultIsUniquePointer, underlyingValueType: null);
         }
 
-        foreach (var parameter in method.Parameters)
-        {
-            if (parameter.IsResponseValue)
-            {
+        foreach (var parameter in method.Parameters) {
+            if (parameter.IsResponseValue) {
                 // [out, size_is(,N)] FILETIME** with [OpcFileTimeElements]
                 // tag: each element is 2x DWORD (4-byte aligned).
-                if (parameter.FileTimeElements && IsLongArrayMarshallingType(parameter.MarshallingType))
-                {
-                    if (parameter.IsUniquePointer)
-                    {
+                if (parameter.FileTimeElements && IsLongArrayMarshallingType(parameter.MarshallingType)) {
+                    if (parameter.IsUniquePointer) {
                         sb.Append(indent).Append("            ").Append(writerLocal).Append(".WriteUniquePointerReferent(").Append(parameter.Name).AppendLine(" is not null);");
                         sb.Append(indent).Append("            if (").Append(parameter.Name).AppendLine(" is not null)");
                         sb.Append(indent).AppendLine("            {");
                         sb.Append(indent).Append("                ").Append(writerLocal).Append(".WriteConformantFileTimeArray(").Append(parameter.Name).AppendLine(");");
                         sb.Append(indent).AppendLine("            }");
                     }
-                    else
-                    {
+                    else {
                         sb.Append(indent).Append("            ").Append(writerLocal).Append(".WriteConformantFileTimeArray(").Append(parameter.Name).AppendLine(");");
                     }
                     continue;
                 }
                 // [out, size_is(,N)] VARIANT** with [OpcVariantElements]
                 // tag: MS-OAUT 2.2.29.2 transmission form per element.
-                if (parameter.VariantElements && IsVariantArrayMarshallingType(parameter.MarshallingType))
-                {
+                if (parameter.VariantElements && IsVariantArrayMarshallingType(parameter.MarshallingType)) {
                     EmitDispatchVariantElementsArrayWrite(sb, indent + "            ", writerLocal, parameter.Name, parameter.IsUniquePointer);
                     continue;
                 }
@@ -791,37 +707,31 @@ namespace Opc.Classic.Generators
         sb.Append(indent).AppendLine("    }");
     }
 
-    private static void EmitCodecWrite(StringBuilder sb, string statementIndent, string writerLocal, string marshallingType, string valueExpression, MethodModel method, bool isUniquePointer = false, string? underlyingValueType = null)
-    {
+    private static void EmitCodecWrite(StringBuilder sb, string statementIndent, string writerLocal, string marshallingType, string valueExpression, MethodModel method, bool isUniquePointer = false, string? underlyingValueType = null) {
         // NDR unique pointer (DCE 1.1 §14.3.10): emit 4-byte referent ID before
         // the value. Used for IDL outputs declared as [out] T** (e.g. GetStatus's
         // ppServerStatus) so the wire layout matches what real DCOM clients
         // expect when calling into our managed server.
-        if (isUniquePointer)
-        {
+        if (isUniquePointer) {
             // [out, iid_is(riid)] LPUNKNOWN *ppUnk is wire-encoded as a unique
             // pointer to MInterfacePointer (MS-DCOM §2.2.1.10). Route through
             // OpcMInterfacePointerCodec which emits referent + cbData + OBJREF
             // (vs. OpcInterfaceRefCodec which writes only the OBJREF bytes).
-            if (string.Equals(marshallingType, "global::Opc.Classic.Dcom.IOpcInterfaceRef", System.StringComparison.Ordinal))
-            {
+            if (string.Equals(marshallingType, "global::Opc.Classic.Dcom.IOpcInterfaceRef", System.StringComparison.Ordinal)) {
                 sb.Append(statementIndent).Append("global::Opc.Classic.Dcom.OpcMInterfacePointerCodec.Write(ref ").Append(writerLocal).Append(", ").Append(valueExpression).AppendLine(");");
                 return;
             }
 
             string codecKey = underlyingValueType ?? marshallingType;
-            if (TryGetCodec(codecKey, method.DeclaringNamespace, out var underlyingCodec) && !underlyingCodec.IsArray)
-            {
-                if (underlyingValueType is not null)
-                {
+            if (TryGetCodec(codecKey, method.DeclaringNamespace, out var underlyingCodec) && !underlyingCodec.IsArray) {
+                if (underlyingValueType is not null) {
                     sb.Append(statementIndent).Append(writerLocal).Append(".WriteUniquePointerReferent(").Append(valueExpression).AppendLine(".HasValue);");
                     sb.Append(statementIndent).Append("if (").Append(valueExpression).AppendLine(".HasValue)");
                     sb.Append(statementIndent).AppendLine("{");
                     sb.Append(statementIndent).Append("    ").Append(FormatWriteExpression(underlyingCodec, writerLocal, valueExpression + ".Value")).AppendLine(";");
                     sb.Append(statementIndent).AppendLine("}");
                 }
-                else
-                {
+                else {
                     sb.Append(statementIndent).Append(writerLocal).AppendLine(".WriteUniquePointerReferent(true);");
                     sb.Append(statementIndent).Append(FormatWriteExpression(underlyingCodec, writerLocal, valueExpression)).AppendLine(";");
                 }
@@ -829,22 +739,18 @@ namespace Opc.Classic.Generators
             }
         }
 
-        if (TryGetCodec(marshallingType, method.DeclaringNamespace, out var codec))
-        {
-            if (codec.IsArray)
-            {
+        if (TryGetCodec(marshallingType, method.DeclaringNamespace, out var codec)) {
+            if (codec.IsArray) {
                 // Codecs with nested deferred-pointer elements use the
                 // matching deferred-pile encoder.
                 string? deferredHelper = TryGetDeferredPileArrayHelperWrite(codec.ArrayElementType);
-                if (deferredHelper is not null)
-                {
+                if (deferredHelper is not null) {
                     sb.Append(statementIndent).Append(deferredHelper).Append("(ref ").Append(writerLocal).Append(", ").Append(valueExpression).AppendLine(");");
                     return;
                 }
                 // [out] T** unique-pointer-prefixed conformant array. Emit
                 // referent + (max_count + elements) so the proxy can decode it.
-                if (isUniquePointer)
-                {
+                if (isUniquePointer) {
                     sb.Append(statementIndent).Append(writerLocal).Append(".WriteUniquePointerReferent(").Append(valueExpression).AppendLine(" is not null);");
                     sb.Append(statementIndent).Append("if (").Append(valueExpression).AppendLine(" is not null)");
                     sb.Append(statementIndent).AppendLine("{");
@@ -863,8 +769,7 @@ namespace Opc.Classic.Generators
         sb.Append(statementIndent).Append(writerLocal).AppendLine(".WriteRawBytes(global::System.ReadOnlySpan<byte>.Empty);");
     }
 
-    private static string? TryGetDeferredPileArrayHelperWrite(string? arrayElementType) => arrayElementType switch
-    {
+    private static string? TryGetDeferredPileArrayHelperWrite(string? arrayElementType) => arrayElementType switch {
         "global::Opc.Classic.Da.OpcBrowseElementResult" =>
             "global::Opc.Classic.Da.Ndr.NdrOpcBrowseResponseDecoder.WriteConformantArrayWithReferent",
         "global::Opc.Classic.Da.OpcItemProperties" =>
@@ -884,8 +789,7 @@ namespace Opc.Classic.Generators
         _ => null,
     };
 
-    private static void EmitArrayCodecWrite(StringBuilder sb, string statementIndent, string writerLocal, string valueExpression, CodecEmitter codec, ImmutableArray<string> parameterNames)
-    {
+    private static void EmitArrayCodecWrite(StringBuilder sb, string statementIndent, string writerLocal, string valueExpression, CodecEmitter codec, ImmutableArray<string> parameterNames) {
         string itemLocal = UniqueLocalName(parameterNames, "__opcItem", writerLocal, valueExpression);
         sb.Append(statementIndent).Append(writerLocal).Append(".WriteUInt32((uint)(").Append(valueExpression).AppendLine("?.Length ?? 0));");
         sb.Append(statementIndent).Append("if (").Append(valueExpression).AppendLine(" != null)");
@@ -904,10 +808,8 @@ namespace Opc.Classic.Generators
     private static bool IsVariantArrayMarshallingType(string marshallingType) =>
         string.Equals(marshallingType, "global::Opc.Classic.OpcVariant[]", System.StringComparison.Ordinal);
 
-    private static void EmitDispatchVariantElementsArrayWrite(StringBuilder sb, string statementIndent, string writerLocal, string valueExpression, bool isUniquePointer)
-    {
-        if (isUniquePointer)
-        {
+    private static void EmitDispatchVariantElementsArrayWrite(StringBuilder sb, string statementIndent, string writerLocal, string valueExpression, bool isUniquePointer) {
+        if (isUniquePointer) {
             sb.Append(statementIndent).Append(writerLocal).Append(".WriteUniquePointerReferent(").Append(valueExpression).AppendLine(" is not null);");
             sb.Append(statementIndent).Append("if (").Append(valueExpression).AppendLine(" is not null)");
             sb.Append(statementIndent).AppendLine("{");
@@ -941,10 +843,8 @@ namespace Opc.Classic.Generators
         sb.Append(statementIndent).AppendLine("}");
     }
 
-    private static void EmitCodecReadLocal(StringBuilder sb, string statementIndent, string readerLocal, MethodModel method, string declaredType, string marshallingType, bool isOpcInterface, bool isUniquePointer, string? underlyingValueType, string targetLocal, bool fileTimeElements = false)
-    {
-        if (isOpcInterface)
-        {
+    private static void EmitCodecReadLocal(StringBuilder sb, string statementIndent, string readerLocal, MethodModel method, string declaredType, string marshallingType, bool isOpcInterface, bool isUniquePointer, string? underlyingValueType, string targetLocal, bool fileTimeElements = false) {
+        if (isOpcInterface) {
             string interfaceRead = isUniquePointer
                 ? FormatMInterfacePointerReadExpression(readerLocal, declaredType)
                 : FormatInterfaceReadExpression(readerLocal, declaredType);
@@ -958,19 +858,15 @@ namespace Opc.Classic.Generators
         // [OpcUniquePointer] parameters the C# type can't represent null so we
         // always read the value (since the client should always emit a non-null
         // referent for them).
-        if (isUniquePointer)
-        {
+        if (isUniquePointer) {
             string codecKey = underlyingValueType ?? marshallingType;
-            if (TryGetCodec(codecKey, method.DeclaringNamespace, out var underlyingCodec) && !underlyingCodec.IsArray)
-            {
-                if (underlyingValueType is not null)
-                {
+            if (TryGetCodec(codecKey, method.DeclaringNamespace, out var underlyingCodec) && !underlyingCodec.IsArray) {
+                if (underlyingValueType is not null) {
                     string referentLocal = UniqueLocalName(method.ParameterNames, targetLocal + "Ref", readerLocal, targetLocal);
                     sb.Append(statementIndent).Append("uint ").Append(referentLocal).Append(" = ").Append(readerLocal).AppendLine(".ReadUInt32();");
                     sb.Append(statementIndent).Append(declaredType).Append(' ').Append(targetLocal).Append(" = ").Append(referentLocal).Append(" != 0u ? ").Append(FormatReadExpression(underlyingCodec, readerLocal)).AppendLine(" : null;");
                 }
-                else
-                {
+                else {
                     sb.Append(statementIndent).Append("_ = ").Append(readerLocal).AppendLine(".ReadUInt32();");
                     sb.Append(statementIndent).Append("var ").Append(targetLocal).Append(" = ").Append(FormatReadExpression(underlyingCodec, readerLocal)).AppendLine(";");
                 }
@@ -978,16 +874,13 @@ namespace Opc.Classic.Generators
             }
         }
 
-        if (TryGetCodec(marshallingType, method.DeclaringNamespace, out var codec))
-        {
-            if (codec.IsArray)
-            {
+        if (TryGetCodec(marshallingType, method.DeclaringNamespace, out var codec)) {
+            if (codec.IsArray) {
                 // [in] T** unique-pointer-prefixed conformant array. Read the
                 // 4-byte referent; if non-zero, read max_count + elements. If
                 // zero (NULL), set the target to an empty array — the proxy
                 // writes only the referent in that case (per DCE 1.1 §14.3.10).
-                if (isUniquePointer)
-                {
+                if (isUniquePointer) {
                     string refLocal = UniqueLocalName(method.ParameterNames, targetLocal + "Ref", readerLocal, targetLocal);
                     sb.Append(statementIndent).Append("uint ").Append(refLocal).Append(" = ").Append(readerLocal).AppendLine(".ReadUInt32();");
                     sb.Append(statementIndent).Append(codec.ArrayElementType).Append("[] ").Append(targetLocal).AppendLine(";");
@@ -1015,14 +908,12 @@ namespace Opc.Classic.Generators
         sb.Append(statementIndent).Append(declaredType).Append(' ').Append(targetLocal).AppendLine(" = default!;");
     }
 
-    private static void EmitArrayCodecReadLocal(StringBuilder sb, string statementIndent, string readerLocal, CodecEmitter codec, ImmutableArray<string> parameterNames, string targetLocal, bool fileTimeElements = false)
-    {
+    private static void EmitArrayCodecReadLocal(StringBuilder sb, string statementIndent, string readerLocal, CodecEmitter codec, ImmutableArray<string> parameterNames, string targetLocal, bool fileTimeElements = false) {
         string countLocal = UniqueLocalName(parameterNames, targetLocal + "Count", readerLocal, targetLocal);
         string arrayLocal = UniqueLocalName(parameterNames, targetLocal + "Array", readerLocal, targetLocal, countLocal);
         string indexLocal = UniqueLocalName(parameterNames, targetLocal + "Index", readerLocal, targetLocal, countLocal, arrayLocal);
         string? deferredPileReadHelper = TryGetDeferredPileArrayHelperRead(codec.ArrayElementType);
-        if (deferredPileReadHelper is not null)
-        {
+        if (deferredPileReadHelper is not null) {
             sb.Append(statementIndent).Append("var ").Append(targetLocal).Append(" = ").Append(deferredPileReadHelper).Append("(ref ").Append(readerLocal).AppendLine(");");
             return;
         }
@@ -1043,8 +934,7 @@ namespace Opc.Classic.Generators
         sb.Append(statementIndent).Append("var ").Append(targetLocal).Append(" = ").Append(arrayLocal).AppendLine(";");
     }
 
-    private static string? TryGetDeferredPileArrayHelperRead(string? arrayElementType) => arrayElementType switch
-    {
+    private static string? TryGetDeferredPileArrayHelperRead(string? arrayElementType) => arrayElementType switch {
         "global::Opc.Classic.Da.OpcItemDef" =>
             "global::Opc.Classic.Da.Ndr.NdrOpcItemDefCodec.ReadConformantArray",
         "global::Opc.Classic.Da.OpcItemResult" =>
@@ -1054,12 +944,9 @@ namespace Opc.Classic.Generators
         _ => null,
     };
 
-    private static bool HasRequestValues(MethodModel method)
-    {
-        foreach (var parameter in method.Parameters)
-        {
-            if (parameter.IsRequestValue)
-            {
+    private static bool HasRequestValues(MethodModel method) {
+        foreach (var parameter in method.Parameters) {
+            if (parameter.IsRequestValue) {
                 return true;
             }
         }
@@ -1067,13 +954,10 @@ namespace Opc.Classic.Generators
         return false;
     }
 
-    private static int ResponseItemCount(MethodModel method)
-    {
+    private static int ResponseItemCount(MethodModel method) {
         int count = method.TaskReturnKind == TaskReturnKind.TaskOfT ? 1 : 0;
-        foreach (var parameter in method.Parameters)
-        {
-            if (parameter.IsResponseValue)
-            {
+        foreach (var parameter in method.Parameters) {
+            if (parameter.IsResponseValue) {
                 count++;
             }
         }
@@ -1089,13 +973,10 @@ namespace Opc.Classic.Generators
 
     private static string ReturnValueLocal(MethodModel method) => UniqueLocalName(method.ParameterNames, "__opcReturnValue");
 
-    private static void AppendCoreParameters(StringBuilder sb, MethodModel method)
-    {
+    private static void AppendCoreParameters(StringBuilder sb, MethodModel method) {
         bool first = true;
-        foreach (var parameter in method.Parameters)
-        {
-            if (!parameter.IsRequestValue)
-            {
+        foreach (var parameter in method.Parameters) {
+            if (!parameter.IsRequestValue) {
                 continue;
             }
 
@@ -1107,13 +988,10 @@ namespace Opc.Classic.Generators
         sb.Append("global::System.Threading.CancellationToken cancellationToken");
     }
 
-    private static void AppendCoreArguments(StringBuilder sb, MethodModel method)
-    {
+    private static void AppendCoreArguments(StringBuilder sb, MethodModel method) {
         bool first = true;
-        foreach (var parameter in method.Parameters)
-        {
-            if (!parameter.IsRequestValue)
-            {
+        foreach (var parameter in method.Parameters) {
+            if (!parameter.IsRequestValue) {
                 continue;
             }
 
@@ -1125,19 +1003,15 @@ namespace Opc.Classic.Generators
         sb.Append("cancellationToken");
     }
 
-    private static void AppendEncodeParameters(StringBuilder sb, MethodModel method)
-    {
+    private static void AppendEncodeParameters(StringBuilder sb, MethodModel method) {
         bool first = true;
-        if (method.TaskReturnKind == TaskReturnKind.TaskOfT)
-        {
+        if (method.TaskReturnKind == TaskReturnKind.TaskOfT) {
             AppendParameterSeparator(sb, ref first);
             sb.Append(method.TaskResultType).Append(' ').Append(ReturnValueLocal(method));
         }
 
-        foreach (var parameter in method.Parameters)
-        {
-            if (!parameter.IsResponseValue)
-            {
+        foreach (var parameter in method.Parameters) {
+            if (!parameter.IsResponseValue) {
                 continue;
             }
 
@@ -1146,19 +1020,15 @@ namespace Opc.Classic.Generators
         }
     }
 
-    private static void AppendEncodeArguments(StringBuilder sb, MethodModel method)
-    {
+    private static void AppendEncodeArguments(StringBuilder sb, MethodModel method) {
         bool first = true;
-        if (method.TaskReturnKind == TaskReturnKind.TaskOfT)
-        {
+        if (method.TaskReturnKind == TaskReturnKind.TaskOfT) {
             AppendParameterSeparator(sb, ref first);
             sb.Append(ReturnValueLocal(method));
         }
 
-        foreach (var parameter in method.Parameters)
-        {
-            if (!parameter.IsResponseValue)
-            {
+        foreach (var parameter in method.Parameters) {
+            if (!parameter.IsResponseValue) {
                 continue;
             }
 
@@ -1167,10 +1037,8 @@ namespace Opc.Classic.Generators
         }
     }
 
-    private static void AppendParameterSeparator(StringBuilder sb, ref bool first)
-    {
-        if (!first)
-        {
+    private static void AppendParameterSeparator(StringBuilder sb, ref bool first) {
+        if (!first) {
             sb.Append(", ");
         }
 
@@ -1184,23 +1052,18 @@ namespace Opc.Classic.Generators
         bool taskResultIsOpcInterface,
         string? declaringNamespace,
         out UnsupportedMarshallingKind unsupportedMarshallingKind,
-        out string? unsupportedParameterName)
-    {
+        out string? unsupportedParameterName) {
         unsupportedMarshallingKind = UnsupportedMarshallingKind.None;
         unsupportedParameterName = null;
-        foreach (var parameter in parameters)
-        {
-            if (parameter.IsCancellationToken)
-            {
+        foreach (var parameter in parameters) {
+            if (parameter.IsCancellationToken) {
                 continue;
             }
 
-            if (parameter.IsRequestValue && !CanReadType(parameter.MarshallingType, parameter.IsOpcInterface, declaringNamespace))
-            {
+            if (parameter.IsRequestValue && !CanReadType(parameter.MarshallingType, parameter.IsOpcInterface, declaringNamespace)) {
                 if (parameter.IsUniquePointer
                     && parameter.UnderlyingValueType is { } underlyingRead
-                    && CanReadType(underlyingRead, isOpcInterface: false, declaringNamespace))
-                {
+                    && CanReadType(underlyingRead, isOpcInterface: false, declaringNamespace)) {
                     continue;
                 }
                 unsupportedMarshallingKind = UnsupportedMarshallingKind.Parameter;
@@ -1208,12 +1071,10 @@ namespace Opc.Classic.Generators
                 return parameter.MarshallingType;
             }
 
-            if (parameter.IsResponseValue && !CanWriteType(parameter.MarshallingType, parameter.IsOpcInterface, declaringNamespace))
-            {
+            if (parameter.IsResponseValue && !CanWriteType(parameter.MarshallingType, parameter.IsOpcInterface, declaringNamespace)) {
                 if (parameter.IsUniquePointer
                     && parameter.UnderlyingValueType is { } underlyingWrite
-                    && CanWriteType(underlyingWrite, isOpcInterface: false, declaringNamespace))
-                {
+                    && CanWriteType(underlyingWrite, isOpcInterface: false, declaringNamespace)) {
                     continue;
                 }
                 unsupportedMarshallingKind = UnsupportedMarshallingKind.Response;
@@ -1223,8 +1084,7 @@ namespace Opc.Classic.Generators
         }
 
         if (taskReturnKind == TaskReturnKind.TaskOfT &&
-            (taskResultMarshallingType is null || !CanWriteType(taskResultMarshallingType, taskResultIsOpcInterface, declaringNamespace)))
-        {
+            (taskResultMarshallingType is null || !CanWriteType(taskResultMarshallingType, taskResultIsOpcInterface, declaringNamespace))) {
             unsupportedMarshallingKind = UnsupportedMarshallingKind.Response;
             return taskResultMarshallingType ?? "<unknown>";
         }
@@ -1238,27 +1098,22 @@ namespace Opc.Classic.Generators
     private static bool CanWriteType(string typeName, bool isOpcInterface, string? declaringNamespace) =>
         !isOpcInterface && TryGetCodec(typeName, declaringNamespace, out _);
 
-    private static bool TryGetCodec(string typeName, string? declaringNamespace, out CodecEmitter codec)
-    {
+    private static bool TryGetCodec(string typeName, string? declaringNamespace, out CodecEmitter codec) {
         if (TryGetArrayElementTypeName(typeName, out string elementTypeName) &&
             !TryGetArrayElementTypeName(elementTypeName, out _) &&
             TryGetCodec(elementTypeName, declaringNamespace, out var elementCodec) &&
-            !elementCodec.IsArray)
-        {
+            !elementCodec.IsArray) {
             codec = CodecEmitter.Array(elementTypeName, elementCodec);
             return true;
         }
 
-        if (string.Equals(typeName, "global::Opc.Classic.OpcServerStatus", System.StringComparison.Ordinal))
-        {
-            if (IsAeNamespace(declaringNamespace))
-            {
+        if (string.Equals(typeName, "global::Opc.Classic.OpcServerStatus", System.StringComparison.Ordinal)) {
+            if (IsAeNamespace(declaringNamespace)) {
                 codec = AeServerStatusCodec;
                 return true;
             }
 
-            if (IsHdaNamespace(declaringNamespace))
-            {
+            if (IsHdaNamespace(declaringNamespace)) {
                 codec = HdaServerStatusCodec;
                 return true;
             }
@@ -1267,10 +1122,8 @@ namespace Opc.Classic.Generators
         return Codecs.TryGetValue(typeName, out codec);
     }
 
-    private static bool TryGetArrayElementTypeName(string typeName, out string elementTypeName)
-    {
-        if (typeName.EndsWith("[]", System.StringComparison.Ordinal))
-        {
+    private static bool TryGetArrayElementTypeName(string typeName, out string elementTypeName) {
+        if (typeName.EndsWith("[]", System.StringComparison.Ordinal)) {
             elementTypeName = typeName.Substring(0, typeName.Length - 2);
             return true;
         }
@@ -1288,22 +1141,18 @@ namespace Opc.Classic.Generators
     private static string FormatReadExpression(CodecEmitter codec, string readerLocal) =>
         codec.ReadExpression.Replace("{Reader}", readerLocal);
 
-    private static string FormatInterfaceReadExpression(string readerLocal, string declaredType)
-    {
+    private static string FormatInterfaceReadExpression(string readerLocal, string declaredType) {
         string readExpression = "global::Opc.Classic.Dcom.OpcInterfaceRefCodec.Read(ref " + readerLocal + ")";
-        if (string.Equals(declaredType, "global::Opc.Classic.Dcom.IOpcInterfaceRef", System.StringComparison.Ordinal))
-        {
+        if (string.Equals(declaredType, "global::Opc.Classic.Dcom.IOpcInterfaceRef", System.StringComparison.Ordinal)) {
             return readExpression;
         }
 
         return "(" + declaredType + ")(object)" + readExpression;
     }
 
-    private static string FormatMInterfacePointerReadExpression(string readerLocal, string declaredType)
-    {
+    private static string FormatMInterfacePointerReadExpression(string readerLocal, string declaredType) {
         string readExpression = "global::Opc.Classic.Dcom.OpcMInterfacePointerCodec.Read(ref " + readerLocal + ")!";
-        if (string.Equals(declaredType, "global::Opc.Classic.Dcom.IOpcInterfaceRef", System.StringComparison.Ordinal))
-        {
+        if (string.Equals(declaredType, "global::Opc.Classic.Dcom.IOpcInterfaceRef", System.StringComparison.Ordinal)) {
             return readExpression;
         }
 
@@ -1318,24 +1167,20 @@ namespace Opc.Classic.Generators
         string.Equals(declaringNamespace, "Opc.Classic.Hda", System.StringComparison.Ordinal) ||
         (declaringNamespace != null && declaringNamespace.StartsWith("Opc.Classic.Hda.", System.StringComparison.Ordinal));
 
-    private static TaskReturnKind ClassifyTaskReturn(ITypeSymbol returnType, out string? taskResultType, out string? taskResultMarshallingType)
-    {
+    private static TaskReturnKind ClassifyTaskReturn(ITypeSymbol returnType, out string? taskResultType, out string? taskResultMarshallingType) {
         taskResultType = null;
         taskResultMarshallingType = null;
         if (returnType is not INamedTypeSymbol namedType ||
             !string.Equals(namedType.Name, "Task", System.StringComparison.Ordinal) ||
-            !string.Equals(namedType.ContainingNamespace.ToDisplayString(), "System.Threading.Tasks", System.StringComparison.Ordinal))
-        {
+            !string.Equals(namedType.ContainingNamespace.ToDisplayString(), "System.Threading.Tasks", System.StringComparison.Ordinal)) {
             return TaskReturnKind.Unsupported;
         }
 
-        if (namedType.Arity == 0)
-        {
+        if (namedType.Arity == 0) {
             return TaskReturnKind.Task;
         }
 
-        if (namedType.Arity == 1)
-        {
+        if (namedType.Arity == 1) {
             taskResultType = namedType.TypeArguments[0].ToDisplayString(TypeDisplayFormat);
             taskResultMarshallingType = namedType.TypeArguments[0].ToDisplayString(CodecTypeDisplayFormat);
             return TaskReturnKind.TaskOfT;
@@ -1344,28 +1189,22 @@ namespace Opc.Classic.Generators
         return TaskReturnKind.Unsupported;
     }
 
-    private static string? UnsupportedSignatureReason(IMethodSymbol method, TaskReturnKind taskReturnKind)
-    {
-        if (method.TypeParameters.Length > 0)
-        {
+    private static string? UnsupportedSignatureReason(IMethodSymbol method, TaskReturnKind taskReturnKind) {
+        if (method.TypeParameters.Length > 0) {
             return "generic methods are not supported";
         }
 
-        if (taskReturnKind == TaskReturnKind.Unsupported)
-        {
+        if (taskReturnKind == TaskReturnKind.Unsupported) {
             return "method must return System.Threading.Tasks.Task or System.Threading.Tasks.Task<T>";
         }
 
         return null;
     }
 
-    private static bool HasOpcInterfaceAttribute(INamedTypeSymbol symbol)
-    {
-        foreach (var attr in symbol.GetAttributes())
-        {
+    private static bool HasOpcInterfaceAttribute(INamedTypeSymbol symbol) {
+        foreach (var attr in symbol.GetAttributes()) {
             string? fullName = attr.AttributeClass?.ToDisplayString(TypeDisplayFormat)?.Replace("global::", string.Empty);
-            if (string.Equals(fullName, OpcInterfaceAttributeFullName, System.StringComparison.Ordinal))
-            {
+            if (string.Equals(fullName, OpcInterfaceAttributeFullName, System.StringComparison.Ordinal)) {
                 return true;
             }
         }
@@ -1373,18 +1212,14 @@ namespace Opc.Classic.Generators
         return false;
     }
 
-    private static bool TryGetOpcMethodOpnum(IMethodSymbol method, out int opnum)
-    {
-        foreach (var attr in method.GetAttributes())
-        {
+    private static bool TryGetOpcMethodOpnum(IMethodSymbol method, out int opnum) {
+        foreach (var attr in method.GetAttributes()) {
             string? fullName = attr.AttributeClass?.ToDisplayString(TypeDisplayFormat)?.Replace("global::", string.Empty);
-            if (!string.Equals(fullName, OpcMethodAttributeFullName, System.StringComparison.Ordinal))
-            {
+            if (!string.Equals(fullName, OpcMethodAttributeFullName, System.StringComparison.Ordinal)) {
                 continue;
             }
 
-            if (attr.ConstructorArguments.Length == 1 && attr.ConstructorArguments[0].Value is int value)
-            {
+            if (attr.ConstructorArguments.Length == 1 && attr.ConstructorArguments[0].Value is int value) {
                 opnum = value;
                 return true;
             }
@@ -1397,11 +1232,9 @@ namespace Opc.Classic.Generators
     private static bool IsOpcInterfaceType(ITypeSymbol symbol) =>
         symbol is INamedTypeSymbol { TypeKind: TypeKind.Interface } namedType && HasOpcInterfaceAttribute(namedType);
 
-    private static bool TryGetTaskResultSymbol(ITypeSymbol returnType, out ITypeSymbol resultType)
-    {
+    private static bool TryGetTaskResultSymbol(ITypeSymbol returnType, out ITypeSymbol resultType) {
         if (returnType is INamedTypeSymbol { Name: "Task", Arity: 1 } namedType &&
-            string.Equals(namedType.ContainingNamespace.ToDisplayString(), "System.Threading.Tasks", System.StringComparison.Ordinal))
-        {
+            string.Equals(namedType.ContainingNamespace.ToDisplayString(), "System.Threading.Tasks", System.StringComparison.Ordinal)) {
             resultType = namedType.TypeArguments[0];
             return true;
         }
@@ -1410,19 +1243,15 @@ namespace Opc.Classic.Generators
         return false;
     }
 
-    private static string TypeParameterList(ImmutableArray<ITypeParameterSymbol> typeParameters)
-    {
-        if (typeParameters.IsDefaultOrEmpty)
-        {
+    private static string TypeParameterList(ImmutableArray<ITypeParameterSymbol> typeParameters) {
+        if (typeParameters.IsDefaultOrEmpty) {
             return string.Empty;
         }
 
         var sb = new StringBuilder();
         sb.Append('<');
-        for (int i = 0; i < typeParameters.Length; i++)
-        {
-            if (i > 0)
-            {
+        for (int i = 0; i < typeParameters.Length; i++) {
+            if (i > 0) {
                 sb.Append(", ");
             }
 
@@ -1433,19 +1262,15 @@ namespace Opc.Classic.Generators
         return sb.ToString();
     }
 
-    private static string ConstraintClauses(ImmutableArray<ITypeParameterSymbol> typeParameters)
-    {
-        if (typeParameters.IsDefaultOrEmpty)
-        {
+    private static string ConstraintClauses(ImmutableArray<ITypeParameterSymbol> typeParameters) {
+        if (typeParameters.IsDefaultOrEmpty) {
             return string.Empty;
         }
 
         var sb = new StringBuilder();
-        foreach (var typeParameter in typeParameters)
-        {
+        foreach (var typeParameter in typeParameters) {
             string constraints = Constraints(typeParameter);
-            if (constraints.Length > 0)
-            {
+            if (constraints.Length > 0) {
                 sb.Append(" where ").Append(typeParameter.Name).Append(" : ").Append(constraints);
             }
         }
@@ -1453,56 +1278,45 @@ namespace Opc.Classic.Generators
         return sb.ToString();
     }
 
-    private static string Constraints(ITypeParameterSymbol typeParameter)
-    {
+    private static string Constraints(ITypeParameterSymbol typeParameter) {
         var constraints = new List<string>();
-        if (typeParameter.HasUnmanagedTypeConstraint)
-        {
+        if (typeParameter.HasUnmanagedTypeConstraint) {
             constraints.Add("unmanaged");
         }
-        else if (typeParameter.HasValueTypeConstraint)
-        {
+        else if (typeParameter.HasValueTypeConstraint) {
             constraints.Add("struct");
         }
-        else if (typeParameter.HasReferenceTypeConstraint)
-        {
+        else if (typeParameter.HasReferenceTypeConstraint) {
             constraints.Add(typeParameter.ReferenceTypeConstraintNullableAnnotation == NullableAnnotation.Annotated ? "class?" : "class");
         }
-        else if (typeParameter.HasNotNullConstraint)
-        {
+        else if (typeParameter.HasNotNullConstraint) {
             constraints.Add("notnull");
         }
 
-        foreach (var constraintType in typeParameter.ConstraintTypes)
-        {
+        foreach (var constraintType in typeParameter.ConstraintTypes) {
             constraints.Add(constraintType.ToDisplayString(TypeDisplayFormat));
         }
 
-        if (typeParameter.HasConstructorConstraint && !typeParameter.HasValueTypeConstraint && !typeParameter.HasUnmanagedTypeConstraint)
-        {
+        if (typeParameter.HasConstructorConstraint && !typeParameter.HasValueTypeConstraint && !typeParameter.HasUnmanagedTypeConstraint) {
             constraints.Add("new()");
         }
 
         return string.Join(", ", constraints);
     }
 
-    private static string ToPascalCase(string name)
-    {
+    private static string ToPascalCase(string name) {
         string unescaped = name.StartsWith("@", System.StringComparison.Ordinal) ? name.Substring(1) : name;
-        if (unescaped.Length == 0)
-        {
+        if (unescaped.Length == 0) {
             return "Value";
         }
 
         return char.ToUpperInvariant(unescaped[0]) + unescaped.Substring(1);
     }
 
-    private static string UniqueLocalName(ImmutableArray<string> parameterNames, string preferredName, params string[] additionalNames)
-    {
+    private static string UniqueLocalName(ImmutableArray<string> parameterNames, string preferredName, params string[] additionalNames) {
         string candidate = preferredName;
         int suffix = 0;
-        while (NameMatches(parameterNames, candidate) || NameMatches(additionalNames, candidate))
-        {
+        while (NameMatches(parameterNames, candidate) || NameMatches(additionalNames, candidate)) {
             suffix++;
             candidate = preferredName + suffix.ToString(CultureInfo.InvariantCulture);
         }
@@ -1510,12 +1324,9 @@ namespace Opc.Classic.Generators
         return candidate;
     }
 
-    private static bool NameMatches(IEnumerable<string> names, string candidate)
-    {
-        foreach (var name in names)
-        {
-            if (string.Equals(name, candidate, System.StringComparison.Ordinal))
-            {
+    private static bool NameMatches(IEnumerable<string> names, string candidate) {
+        foreach (var name in names) {
+            if (string.Equals(name, candidate, System.StringComparison.Ordinal)) {
                 return true;
             }
         }
@@ -1523,8 +1334,7 @@ namespace Opc.Classic.Generators
         return false;
     }
 
-    private static string AccessibilityKeyword(Accessibility accessibility) => accessibility switch
-    {
+    private static string AccessibilityKeyword(Accessibility accessibility) => accessibility switch {
         Accessibility.Public => "public",
         Accessibility.Internal => "internal",
         Accessibility.NotApplicable => "internal",
@@ -1536,29 +1346,24 @@ namespace Opc.Classic.Generators
             ? "@" + name
             : name;
 
-    private enum UnsupportedMarshallingKind
-    {
+    private enum UnsupportedMarshallingKind {
         None,
         Parameter,
         Response,
     }
 
-    private enum TaskReturnKind
-    {
+    private enum TaskReturnKind {
         Unsupported,
         Task,
         TaskOfT,
     }
 
-    private readonly struct CodecEmitter
-    {
+    private readonly struct CodecEmitter {
         public CodecEmitter(string writeExpression, string readExpression)
-            : this(writeExpression, readExpression, null)
-        {
+            : this(writeExpression, readExpression, null) {
         }
 
-        private CodecEmitter(string writeExpression, string readExpression, string? arrayElementType)
-        {
+        private CodecEmitter(string writeExpression, string readExpression, string? arrayElementType) {
             WriteExpression = writeExpression;
             ReadExpression = readExpression;
             ArrayElementType = arrayElementType;
@@ -1573,10 +1378,8 @@ namespace Opc.Classic.Generators
             new CodecEmitter(elementCodec.WriteExpression, elementCodec.ReadExpression, elementTypeName);
     }
 
-    private sealed class ParameterModel
-    {
-        public ParameterModel(string name, string resultMemberName, string declaredType, string marshallingType, bool isCancellationToken, RefKind refKind, bool isOpcInterface, bool isUniquePointer = false, string? underlyingValueType = null, bool emitArrayCount = false, bool fileTimeElements = false, bool variantElements = false, bool refString = false, bool deferredElements = false)
-        {
+    private sealed class ParameterModel {
+        public ParameterModel(string name, string resultMemberName, string declaredType, string marshallingType, bool isCancellationToken, RefKind refKind, bool isOpcInterface, bool isUniquePointer = false, string? underlyingValueType = null, bool emitArrayCount = false, bool fileTimeElements = false, bool variantElements = false, bool refString = false, bool deferredElements = false) {
             Name = name;
             ResultMemberName = resultMemberName;
             DeclaredType = declaredType;
@@ -1613,8 +1416,7 @@ namespace Opc.Classic.Generators
         public bool IsResponseValue => !IsCancellationToken && (RefKind == RefKind.Out || RefKind == RefKind.Ref);
     }
 
-    private sealed class MethodModel
-    {
+    private sealed class MethodModel {
         public MethodModel(
             string name,
             int opnum,
@@ -1631,8 +1433,7 @@ namespace Opc.Classic.Generators
             string? unsupportedParameterName,
             string? cancellationTokenParameterName,
             string? declaringNamespace,
-            Location location)
-        {
+            Location location) {
             Name = name;
             Opnum = opnum;
             Parameters = parameters;
@@ -1672,10 +1473,8 @@ namespace Opc.Classic.Generators
         public bool IsFullyMarshallable { get; }
     }
 
-    private sealed class InterfaceModel
-    {
-        public InterfaceModel(string fullyQualifiedName, string? @namespace, string name, Accessibility accessibility, string typeParameterList, string typeParameterConstraints, bool isPartial, bool hasOpcInterfaceAttribute, Location location, ImmutableArray<MethodModel> methods)
-        {
+    private sealed class InterfaceModel {
+        public InterfaceModel(string fullyQualifiedName, string? @namespace, string name, Accessibility accessibility, string typeParameterList, string typeParameterConstraints, bool isPartial, bool hasOpcInterfaceAttribute, Location location, ImmutableArray<MethodModel> methods) {
             FullyQualifiedName = fullyQualifiedName;
             Namespace = @namespace;
             Name = name;

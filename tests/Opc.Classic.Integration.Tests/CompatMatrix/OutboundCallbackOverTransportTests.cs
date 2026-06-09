@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -58,12 +58,10 @@ namespace Opc.Classic.Integration.Tests.CompatMatrix;
 ///   wiring. The infrastructure here is the building block.</item>
 /// </list>
 /// </remarks>
-public sealed class OutboundCallbackOverTransportTests
-{
+public sealed class OutboundCallbackOverTransportTests {
     [Test]
     [Category("CompatMatrix.Loopback")]
-    public async Task Outbound_OnCancelComplete_delivers_to_client_side_sink()
-    {
+    public async Task Outbound_OnCancelComplete_delivers_to_client_side_sink() {
         var sink = new RecordingDataCallback();
         await using var sinkListener = StartSinkListener(sink);
         var sinkEndpoint = (IPEndPoint)sinkListener.LocalEndpoint;
@@ -83,8 +81,7 @@ public sealed class OutboundCallbackOverTransportTests
 
     [Test]
     [Category("CompatMatrix.Loopback")]
-    public async Task Outbound_OnWriteComplete_delivers_per_item_errors()
-    {
+    public async Task Outbound_OnWriteComplete_delivers_per_item_errors() {
         var sink = new RecordingDataCallback();
         await using var sinkListener = StartSinkListener(sink);
         var sinkEndpoint = (IPEndPoint)sinkListener.LocalEndpoint;
@@ -109,8 +106,7 @@ public sealed class OutboundCallbackOverTransportTests
 
     [Test]
     [Category("CompatMatrix.Loopback")]
-    public async Task Multiple_outbound_callbacks_share_one_channel()
-    {
+    public async Task Multiple_outbound_callbacks_share_one_channel() {
         var sink = new RecordingDataCallback();
         await using var sinkListener = StartSinkListener(sink);
         var sinkEndpoint = (IPEndPoint)sinkListener.LocalEndpoint;
@@ -128,8 +124,7 @@ public sealed class OutboundCallbackOverTransportTests
 
     // ----- helpers -----
 
-    private static OpcServerListener StartSinkListener(IOPCDataCallback sink)
-    {
+    private static OpcServerListener StartSinkListener(IOPCDataCallback sink) {
         var endpoint = new TcpServerEndpoint(new IPEndPoint(IPAddress.Loopback, 0));
         var dispatcher = new IOPCDataCallbackServerDispatcher(sink);
         var processor = new RpcServerConnectionProcessor(
@@ -139,8 +134,7 @@ public sealed class OutboundCallbackOverTransportTests
         return listener;
     }
 
-    private static async Task<Opc.Classic.Dcom.Transport.DcomCallChannel> ConnectAsync(IPEndPoint endpoint)
-    {
+    private static async Task<Opc.Classic.Dcom.Transport.DcomCallChannel> ConnectAsync(IPEndPoint endpoint) {
         var client = new TcpClient();
         await client.ConnectAsync(endpoint.Address, endpoint.Port, TestContext.Current!.CancellationToken);
         return new Opc.Classic.Dcom.Transport.DcomCallChannel(
@@ -148,8 +142,7 @@ public sealed class OutboundCallbackOverTransportTests
             new Opc.Classic.NoOpAuthContext());
     }
 
-    private sealed class RecordingDataCallback : IOPCDataCallback
-    {
+    private sealed class RecordingDataCallback : IOPCDataCallback {
         public int OnCancelCompleteCallCount { get; private set; }
 
         public int LastTransactionId { get; private set; }
@@ -174,8 +167,7 @@ public sealed class OutboundCallbackOverTransportTests
 
         public Task OnWriteCompleteAsync(
             int transactionId, int groupHandle, int masterError,
-            int[] clientHandles, int[] errors, CancellationToken cancellationToken = default)
-        {
+            int[] clientHandles, int[] errors, CancellationToken cancellationToken = default) {
             LastTransactionId = transactionId;
             LastGroupHandle = groupHandle;
             LastClientHandles = clientHandles;
@@ -183,8 +175,7 @@ public sealed class OutboundCallbackOverTransportTests
             return Task.CompletedTask;
         }
 
-        public Task OnCancelCompleteAsync(int transactionId, int groupHandle, CancellationToken cancellationToken = default)
-        {
+        public Task OnCancelCompleteAsync(int transactionId, int groupHandle, CancellationToken cancellationToken = default) {
             OnCancelCompleteCallCount++;
             LastTransactionId = transactionId;
             LastGroupHandle = groupHandle;
@@ -192,13 +183,11 @@ public sealed class OutboundCallbackOverTransportTests
         }
     }
 
-    private sealed class TcpClientTransport : IAsyncTransport
-    {
+    private sealed class TcpClientTransport : IAsyncTransport {
         private readonly TcpClient _client;
         private readonly NetworkStream _stream;
 
-        public TcpClientTransport(TcpClient client)
-        {
+        public TcpClientTransport(TcpClient client) {
             _client = client;
             _stream = client.GetStream();
             Input = PipeReader.Create(_stream);
@@ -215,8 +204,7 @@ public sealed class OutboundCallbackOverTransportTests
         public async ValueTask FlushAsync(CancellationToken cancellationToken = default) =>
             await Output.FlushAsync(cancellationToken).ConfigureAwait(false);
 
-        public async ValueTask DisposeAsync()
-        {
+        public async ValueTask DisposeAsync() {
             await Input.CompleteAsync().ConfigureAwait(false);
             await Output.CompleteAsync().ConfigureAwait(false);
             await _stream.DisposeAsync().ConfigureAwait(false);

@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -19,8 +19,7 @@ namespace Opc.Classic.Hda.Hosting.Windows;
 
 /// <summary>Single-tearoff Windows CCW for OPC HDA <c>IOPCHDA_Browser</c>.</summary>
 [SupportedOSPlatform("windows")]
-public static unsafe class OpcHdaBrowserCcw
-{
+public static unsafe class OpcHdaBrowserCcw {
     internal const int S_OK = 0;
     internal const int S_FALSE = 1;
     internal const int E_NOINTERFACE = unchecked((int)0x80004002);
@@ -31,8 +30,7 @@ public static unsafe class OpcHdaBrowserCcw
     private static readonly ConcurrentDictionary<IntPtr, CcwEntry> s_entries = new();
 
     /// <summary>Creates an <c>IOPCHDA_Browser</c> CCW with refcount = 1.</summary>
-    public static IntPtr Create(IOpcHdaServerDispatcher dispatcher, IReadOnlyList<OpcHdaBrowseFilter> filters)
-    {
+    public static IntPtr Create(IOpcHdaServerDispatcher dispatcher, IReadOnlyList<OpcHdaBrowseFilter> filters) {
         ArgumentNullException.ThrowIfNull(dispatcher);
         ArgumentNullException.ThrowIfNull(filters);
 
@@ -56,8 +54,7 @@ public static unsafe class OpcHdaBrowserCcw
             : null;
 
     [SuppressMessage("Reliability", "CA2018:Buffer size argument matches element count", Justification = "Explicit byte size.")]
-    private static IntPtr* AllocateVtable()
-    {
+    private static IntPtr* AllocateVtable() {
         IntPtr* v = (IntPtr*)NativeMemory.Alloc((nuint)(7 * sizeof(IntPtr)));
         v[0] = (IntPtr)(delegate* unmanaged<IntPtr, Guid*, IntPtr*, int>)&QueryInterface;
         v[1] = (IntPtr)(delegate* unmanaged<IntPtr, uint>)&AddRef;
@@ -70,28 +67,23 @@ public static unsafe class OpcHdaBrowserCcw
     }
 
     [SuppressMessage("Reliability", "CA2018:Buffer size argument matches element count", Justification = "Explicit byte size.")]
-    private static IntPtr AllocateInstance(IntPtr* vtable)
-    {
+    private static IntPtr AllocateInstance(IntPtr* vtable) {
         IntPtr* instance = (IntPtr*)NativeMemory.Alloc((nuint)sizeof(IntPtr));
         instance[0] = (IntPtr)vtable;
         return (IntPtr)instance;
     }
 
     [UnmanagedCallersOnly]
-    private static int QueryInterface(IntPtr pThis, Guid* riid, IntPtr* ppv)
-    {
-        if (ppv == null)
-        {
+    private static int QueryInterface(IntPtr pThis, Guid* riid, IntPtr* ppv) {
+        if (ppv == null) {
             return E_INVALIDARG;
         }
 
         *ppv = IntPtr.Zero;
-        if (riid == null || !s_entries.TryGetValue(pThis, out CcwEntry? entry))
-        {
+        if (riid == null || !s_entries.TryGetValue(pThis, out CcwEntry? entry)) {
             return riid == null ? E_INVALIDARG : E_NOINTERFACE;
         }
-        if (*riid != IID_IUnknown && *riid != IOPCHDA_Browser.InterfaceId)
-        {
+        if (*riid != IID_IUnknown && *riid != IOPCHDA_Browser.InterfaceId) {
             return E_NOINTERFACE;
         }
 
@@ -101,10 +93,8 @@ public static unsafe class OpcHdaBrowserCcw
     }
 
     [UnmanagedCallersOnly]
-    private static uint AddRef(IntPtr pThis)
-    {
-        if (!s_entries.TryGetValue(pThis, out CcwEntry? entry))
-        {
+    private static uint AddRef(IntPtr pThis) {
+        if (!s_entries.TryGetValue(pThis, out CcwEntry? entry)) {
             return 1;
         }
 
@@ -112,16 +102,13 @@ public static unsafe class OpcHdaBrowserCcw
     }
 
     [UnmanagedCallersOnly]
-    private static uint Release(IntPtr pThis)
-    {
-        if (!s_entries.TryGetValue(pThis, out CcwEntry? entry))
-        {
+    private static uint Release(IntPtr pThis) {
+        if (!s_entries.TryGetValue(pThis, out CcwEntry? entry)) {
             return 0;
         }
 
         long next = Interlocked.Decrement(ref entry.RefCount);
-        if (next > 0)
-        {
+        if (next > 0) {
             return (uint)next;
         }
 
@@ -129,40 +116,33 @@ public static unsafe class OpcHdaBrowserCcw
         return 0;
     }
 
-    private static void DisposeEntry(IntPtr instance, CcwEntry entry)
-    {
-        if (Interlocked.Exchange(ref entry.Disposed, 1) != 0)
-        {
+    private static void DisposeEntry(IntPtr instance, CcwEntry entry) {
+        if (Interlocked.Exchange(ref entry.Disposed, 1) != 0) {
             return;
         }
 
         s_entries.TryRemove(instance, out _);
         NativeMemory.Free((void*)instance);
         NativeMemory.Free(entry.Vtable);
-        if (entry.StateHandle.IsAllocated)
-        {
+        if (entry.StateHandle.IsAllocated) {
             entry.StateHandle.Free();
         }
     }
 
-    private static OpcHdaBrowseFilter[] CopyFilters(IReadOnlyList<OpcHdaBrowseFilter> filters)
-    {
+    private static OpcHdaBrowseFilter[] CopyFilters(IReadOnlyList<OpcHdaBrowseFilter> filters) {
         var copy = new OpcHdaBrowseFilter[filters.Count];
-        for (int i = 0; i < filters.Count; i++)
-        {
+        for (int i = 0; i < filters.Count; i++) {
             copy[i] = filters[i];
         }
 
         return copy;
     }
 
-    internal sealed class BrowserState
-    {
+    internal sealed class BrowserState {
         private readonly Lock _lock = new();
         private string _branchPosition = string.Empty;
 
-        public BrowserState(IOpcHdaServerDispatcher dispatcher, OpcHdaBrowseFilter[] filters)
-        {
+        public BrowserState(IOpcHdaServerDispatcher dispatcher, OpcHdaBrowseFilter[] filters) {
             Dispatcher = dispatcher;
             Filters = filters;
         }
@@ -171,27 +151,21 @@ public static unsafe class OpcHdaBrowserCcw
 
         public OpcHdaBrowseFilter[] Filters { get; }
 
-        public string GetBranchPosition()
-        {
-            lock (_lock)
-            {
+        public string GetBranchPosition() {
+            lock (_lock) {
                 return _branchPosition;
             }
         }
 
-        public void SetBranchPosition(string branchPosition)
-        {
-            lock (_lock)
-            {
+        public void SetBranchPosition(string branchPosition) {
+            lock (_lock) {
                 _branchPosition = branchPosition;
             }
         }
     }
 
-    private sealed class CcwEntry
-    {
-        public CcwEntry(GCHandle stateHandle, IntPtr* vtable)
-        {
+    private sealed class CcwEntry {
+        public CcwEntry(GCHandle stateHandle, IntPtr* vtable) {
             StateHandle = stateHandle;
             Vtable = vtable;
         }
@@ -205,28 +179,22 @@ public static unsafe class OpcHdaBrowserCcw
 
 /// <summary>Method bodies for <see cref="OpcHdaBrowserCcw" />.</summary>
 [SupportedOSPlatform("windows")]
-internal static unsafe class OpcHdaBrowserCcwMethods
-{
+internal static unsafe class OpcHdaBrowserCcwMethods {
     [UnmanagedCallersOnly]
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
-    public static int GetEnum(IntPtr pThis, uint dwBrowseType, IntPtr* ppIEnumString)
-    {
+    public static int GetEnum(IntPtr pThis, uint dwBrowseType, IntPtr* ppIEnumString) {
         ZeroOut(ppIEnumString);
-        if (ppIEnumString == null)
-        {
+        if (ppIEnumString == null) {
             return OpcHdaBrowserCcw.E_INVALIDARG;
         }
-        if (!TryResolve(pThis, out OpcHdaBrowserCcw.BrowserState? state))
-        {
+        if (!TryResolve(pThis, out OpcHdaBrowserCcw.BrowserState? state)) {
             return OpcHdaBrowserCcw.E_FAIL;
         }
-        if (!TryMapBrowseType(dwBrowseType, out HdaBrowseType browseType))
-        {
+        if (!TryMapBrowseType(dwBrowseType, out HdaBrowseType browseType)) {
             return OpcHdaBrowserCcw.E_INVALIDARG;
         }
 
-        try
-        {
+        try {
             string branchPosition = state!.GetBranchPosition();
 #pragma warning disable VSTHRD002
             IReadOnlyList<string> values = state.Dispatcher.BrowseAsync(
@@ -238,27 +206,22 @@ internal static unsafe class OpcHdaBrowserCcwMethods
             *ppIEnumString = OpcHdaEnumStringCcw.Create(values);
             return OpcHdaBrowserCcw.S_OK;
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             return MapHResult(ex);
         }
     }
 
     [UnmanagedCallersOnly]
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
-    public static int ChangeBrowsePosition(IntPtr pThis, uint dwBrowseDirection, IntPtr szString)
-    {
-        if (!TryResolve(pThis, out OpcHdaBrowserCcw.BrowserState? state))
-        {
+    public static int ChangeBrowsePosition(IntPtr pThis, uint dwBrowseDirection, IntPtr szString) {
+        if (!TryResolve(pThis, out OpcHdaBrowserCcw.BrowserState? state)) {
             return OpcHdaBrowserCcw.E_FAIL;
         }
-        if (!IsValidBrowseDirection(dwBrowseDirection))
-        {
+        if (!IsValidBrowseDirection(dwBrowseDirection)) {
             return OpcHdaBrowserCcw.E_INVALIDARG;
         }
 
-        try
-        {
+        try {
             string browseString = ReadInputString(szString);
             string currentPosition = state!.GetBranchPosition();
 #pragma warning disable VSTHRD002
@@ -271,28 +234,23 @@ internal static unsafe class OpcHdaBrowserCcwMethods
             state.SetBranchPosition(nextPosition ?? string.Empty);
             return OpcHdaBrowserCcw.S_OK;
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             return MapHResult(ex);
         }
     }
 
     [UnmanagedCallersOnly]
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
-    public static int GetItemID(IntPtr pThis, IntPtr szNode, IntPtr* pszItemID)
-    {
+    public static int GetItemID(IntPtr pThis, IntPtr szNode, IntPtr* pszItemID) {
         ZeroOut(pszItemID);
-        if (pszItemID == null || szNode == IntPtr.Zero)
-        {
+        if (pszItemID == null || szNode == IntPtr.Zero) {
             return OpcHdaBrowserCcw.E_INVALIDARG;
         }
-        if (!TryResolve(pThis, out OpcHdaBrowserCcw.BrowserState? state))
-        {
+        if (!TryResolve(pThis, out OpcHdaBrowserCcw.BrowserState? state)) {
             return OpcHdaBrowserCcw.E_FAIL;
         }
 
-        try
-        {
+        try {
             string branchPosition = state!.GetBranchPosition();
             string node = ReadInputString(szNode);
 #pragma warning disable VSTHRD002
@@ -302,28 +260,23 @@ internal static unsafe class OpcHdaBrowserCcwMethods
             *pszItemID = AllocateBstr(itemId);
             return OpcHdaBrowserCcw.S_OK;
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             return MapHResult(ex);
         }
     }
 
     [UnmanagedCallersOnly]
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
-    public static int GetBranchPosition(IntPtr pThis, IntPtr* pszBranchPos)
-    {
+    public static int GetBranchPosition(IntPtr pThis, IntPtr* pszBranchPos) {
         ZeroOut(pszBranchPos);
-        if (pszBranchPos == null)
-        {
+        if (pszBranchPos == null) {
             return OpcHdaBrowserCcw.E_INVALIDARG;
         }
-        if (!TryResolve(pThis, out OpcHdaBrowserCcw.BrowserState? state))
-        {
+        if (!TryResolve(pThis, out OpcHdaBrowserCcw.BrowserState? state)) {
             return OpcHdaBrowserCcw.E_FAIL;
         }
 
-        try
-        {
+        try {
             string branchPosition = state!.GetBranchPosition();
 #pragma warning disable VSTHRD002
             string value = state.Dispatcher.GetBranchPositionAsync(branchPosition, CancellationToken.None)
@@ -332,22 +285,18 @@ internal static unsafe class OpcHdaBrowserCcwMethods
             *pszBranchPos = AllocateBstr(value);
             return OpcHdaBrowserCcw.S_OK;
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             return MapHResult(ex);
         }
     }
 
-    private static bool TryResolve(IntPtr pThis, out OpcHdaBrowserCcw.BrowserState? state)
-    {
+    private static bool TryResolve(IntPtr pThis, out OpcHdaBrowserCcw.BrowserState? state) {
         state = OpcHdaBrowserCcw.ResolveState(pThis);
         return state is not null;
     }
 
-    private static bool TryMapBrowseType(uint value, out HdaBrowseType browseType)
-    {
-        browseType = value switch
-        {
+    private static bool TryMapBrowseType(uint value, out HdaBrowseType browseType) {
+        browseType = value switch {
             1 => HdaBrowseType.Branch,
             2 => HdaBrowseType.Leaf,
             3 => HdaBrowseType.Flat,
@@ -364,32 +313,27 @@ internal static unsafe class OpcHdaBrowserCcwMethods
 
     private static IntPtr AllocateBstr(string? value) => Marshal.StringToBSTR(value ?? string.Empty);
 
-    private static int MapHResult(Exception ex) => ex switch
-    {
+    private static int MapHResult(Exception ex) => ex switch {
         OpcException opcEx => opcEx.ResultId.Code,
         ArgumentException => OpcHdaBrowserCcw.E_INVALIDARG,
         _ => OpcHdaBrowserCcw.E_FAIL,
     };
 
-    private static void ZeroOut(IntPtr* pp)
-    {
-        if (pp != null)
-        {
+    private static void ZeroOut(IntPtr* pp) {
+        if (pp != null) {
             *pp = IntPtr.Zero;
         }
     }
 }
 
 [SupportedOSPlatform("windows")]
-internal static unsafe class OpcHdaEnumStringCcw
-{
+internal static unsafe class OpcHdaEnumStringCcw {
     private static readonly Guid s_iidIUnknown = Guid.Parse("00000000-0000-0000-C000-000000000046");
     private static readonly ConcurrentDictionary<IntPtr, CcwEntry> s_entries = new();
 
     public static IntPtr Create(IReadOnlyList<string> values) => Create(values, 0);
 
-    private static IntPtr Create(IReadOnlyList<string> values, int position)
-    {
+    private static IntPtr Create(IReadOnlyList<string> values, int position) {
         ArgumentNullException.ThrowIfNull(values);
 
         var state = new EnumStringState(CopyValues(values), position);
@@ -406,8 +350,7 @@ internal static unsafe class OpcHdaEnumStringCcw
             : null;
 
     [SuppressMessage("Reliability", "CA2018:Buffer size argument matches element count", Justification = "Explicit byte size.")]
-    private static IntPtr* AllocateVtable()
-    {
+    private static IntPtr* AllocateVtable() {
         IntPtr* v = (IntPtr*)NativeMemory.Alloc((nuint)(7 * sizeof(IntPtr)));
         v[0] = (IntPtr)(delegate* unmanaged<IntPtr, Guid*, IntPtr*, int>)&QueryInterface;
         v[1] = (IntPtr)(delegate* unmanaged<IntPtr, uint>)&AddRef;
@@ -420,28 +363,23 @@ internal static unsafe class OpcHdaEnumStringCcw
     }
 
     [SuppressMessage("Reliability", "CA2018:Buffer size argument matches element count", Justification = "Explicit byte size.")]
-    private static IntPtr AllocateInstance(IntPtr* vtable)
-    {
+    private static IntPtr AllocateInstance(IntPtr* vtable) {
         IntPtr* instance = (IntPtr*)NativeMemory.Alloc((nuint)sizeof(IntPtr));
         instance[0] = (IntPtr)vtable;
         return (IntPtr)instance;
     }
 
     [UnmanagedCallersOnly]
-    private static int QueryInterface(IntPtr pThis, Guid* riid, IntPtr* ppv)
-    {
-        if (ppv == null)
-        {
+    private static int QueryInterface(IntPtr pThis, Guid* riid, IntPtr* ppv) {
+        if (ppv == null) {
             return OpcHdaBrowserCcw.E_INVALIDARG;
         }
 
         *ppv = IntPtr.Zero;
-        if (riid == null || !s_entries.TryGetValue(pThis, out CcwEntry? entry))
-        {
+        if (riid == null || !s_entries.TryGetValue(pThis, out CcwEntry? entry)) {
             return riid == null ? OpcHdaBrowserCcw.E_INVALIDARG : OpcHdaBrowserCcw.E_NOINTERFACE;
         }
-        if (*riid != s_iidIUnknown && *riid != OpcGuids.IID_IEnumString)
-        {
+        if (*riid != s_iidIUnknown && *riid != OpcGuids.IID_IEnumString) {
             return OpcHdaBrowserCcw.E_NOINTERFACE;
         }
 
@@ -451,10 +389,8 @@ internal static unsafe class OpcHdaEnumStringCcw
     }
 
     [UnmanagedCallersOnly]
-    private static uint AddRef(IntPtr pThis)
-    {
-        if (!s_entries.TryGetValue(pThis, out CcwEntry? entry))
-        {
+    private static uint AddRef(IntPtr pThis) {
+        if (!s_entries.TryGetValue(pThis, out CcwEntry? entry)) {
             return 1;
         }
 
@@ -462,16 +398,13 @@ internal static unsafe class OpcHdaEnumStringCcw
     }
 
     [UnmanagedCallersOnly]
-    private static uint Release(IntPtr pThis)
-    {
-        if (!s_entries.TryGetValue(pThis, out CcwEntry? entry))
-        {
+    private static uint Release(IntPtr pThis) {
+        if (!s_entries.TryGetValue(pThis, out CcwEntry? entry)) {
             return 0;
         }
 
         long next = Interlocked.Decrement(ref entry.RefCount);
-        if (next > 0)
-        {
+        if (next > 0) {
             return (uint)next;
         }
 
@@ -479,12 +412,10 @@ internal static unsafe class OpcHdaEnumStringCcw
         return 0;
     }
 
-    internal static IntPtr Clone(EnumStringState state)
-    {
+    internal static IntPtr Clone(EnumStringState state) {
         int position;
         string[] values;
-        lock (state.Lock)
-        {
+        lock (state.Lock) {
             position = state.Position;
             values = state.Values;
         }
@@ -492,37 +423,30 @@ internal static unsafe class OpcHdaEnumStringCcw
         return Create(values, position);
     }
 
-    private static void DisposeEntry(IntPtr instance, CcwEntry entry)
-    {
-        if (Interlocked.Exchange(ref entry.Disposed, 1) != 0)
-        {
+    private static void DisposeEntry(IntPtr instance, CcwEntry entry) {
+        if (Interlocked.Exchange(ref entry.Disposed, 1) != 0) {
             return;
         }
 
         s_entries.TryRemove(instance, out _);
         NativeMemory.Free((void*)instance);
         NativeMemory.Free(entry.Vtable);
-        if (entry.StateHandle.IsAllocated)
-        {
+        if (entry.StateHandle.IsAllocated) {
             entry.StateHandle.Free();
         }
     }
 
-    private static string[] CopyValues(IReadOnlyList<string> values)
-    {
+    private static string[] CopyValues(IReadOnlyList<string> values) {
         var copy = new string[values.Count];
-        for (int i = 0; i < values.Count; i++)
-        {
+        for (int i = 0; i < values.Count; i++) {
             copy[i] = values[i] ?? string.Empty;
         }
 
         return copy;
     }
 
-    internal sealed class EnumStringState
-    {
-        public EnumStringState(string[] values, int position)
-        {
+    internal sealed class EnumStringState {
+        public EnumStringState(string[] values, int position) {
             Values = values;
             Position = Math.Clamp(position, 0, values.Length);
         }
@@ -532,10 +456,8 @@ internal static unsafe class OpcHdaEnumStringCcw
         public int Position { get; set; }
     }
 
-    private sealed class CcwEntry
-    {
-        public CcwEntry(GCHandle stateHandle, IntPtr* vtable)
-        {
+    private sealed class CcwEntry {
+        public CcwEntry(GCHandle stateHandle, IntPtr* vtable) {
             StateHandle = stateHandle;
             Vtable = vtable;
         }
@@ -548,86 +470,68 @@ internal static unsafe class OpcHdaEnumStringCcw
 }
 
 [SupportedOSPlatform("windows")]
-internal static unsafe class OpcHdaEnumStringCcwMethods
-{
+internal static unsafe class OpcHdaEnumStringCcwMethods {
     [UnmanagedCallersOnly]
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
-    public static int Next(IntPtr pThis, uint celt, IntPtr rgelt, uint* pceltFetched)
-    {
-        if (pceltFetched != null)
-        {
+    public static int Next(IntPtr pThis, uint celt, IntPtr rgelt, uint* pceltFetched) {
+        if (pceltFetched != null) {
             *pceltFetched = 0;
         }
-        if (rgelt == IntPtr.Zero || (celt > 1 && pceltFetched == null))
-        {
+        if (rgelt == IntPtr.Zero || (celt > 1 && pceltFetched == null)) {
             return OpcHdaBrowserCcw.E_INVALIDARG;
         }
-        if (!TryResolve(pThis, out OpcHdaEnumStringCcw.EnumStringState? state))
-        {
+        if (!TryResolve(pThis, out OpcHdaEnumStringCcw.EnumStringState? state)) {
             return OpcHdaBrowserCcw.E_FAIL;
         }
 
-        try
-        {
+        try {
             uint fetched = 0;
-            lock (state!.Lock)
-            {
-                while (fetched < celt && state.Position < state.Values.Length)
-                {
+            lock (state!.Lock) {
+                while (fetched < celt && state.Position < state.Values.Length) {
                     Marshal.WriteIntPtr(rgelt, checked((int)fetched) * IntPtr.Size, AllocateLpwStr(state.Values[state.Position]));
                     state.Position++;
                     fetched++;
                 }
             }
 
-            if (pceltFetched != null)
-            {
+            if (pceltFetched != null) {
                 *pceltFetched = fetched;
             }
 
             return fetched == celt ? OpcHdaBrowserCcw.S_OK : OpcHdaBrowserCcw.S_FALSE;
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             return MapHResult(ex);
         }
     }
 
     [UnmanagedCallersOnly]
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
-    public static int Skip(IntPtr pThis, uint celt)
-    {
-        if (!TryResolve(pThis, out OpcHdaEnumStringCcw.EnumStringState? state))
-        {
+    public static int Skip(IntPtr pThis, uint celt) {
+        if (!TryResolve(pThis, out OpcHdaEnumStringCcw.EnumStringState? state)) {
             return OpcHdaBrowserCcw.E_FAIL;
         }
 
-        try
-        {
-            lock (state!.Lock)
-            {
+        try {
+            lock (state!.Lock) {
                 int requested = celt > int.MaxValue ? int.MaxValue : (int)celt;
                 int available = state.Values.Length - state.Position;
                 state.Position += Math.Min(requested, available);
                 return requested <= available ? OpcHdaBrowserCcw.S_OK : OpcHdaBrowserCcw.S_FALSE;
             }
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             return MapHResult(ex);
         }
     }
 
     [UnmanagedCallersOnly]
-    public static int Reset(IntPtr pThis)
-    {
-        if (!TryResolve(pThis, out OpcHdaEnumStringCcw.EnumStringState? state))
-        {
+    public static int Reset(IntPtr pThis) {
+        if (!TryResolve(pThis, out OpcHdaEnumStringCcw.EnumStringState? state)) {
             return OpcHdaBrowserCcw.E_FAIL;
         }
 
-        lock (state!.Lock)
-        {
+        lock (state!.Lock) {
             state.Position = 0;
         }
 
@@ -636,55 +540,45 @@ internal static unsafe class OpcHdaEnumStringCcwMethods
 
     [UnmanagedCallersOnly]
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
-    public static int Clone(IntPtr pThis, IntPtr* ppEnum)
-    {
+    public static int Clone(IntPtr pThis, IntPtr* ppEnum) {
         ZeroOut(ppEnum);
-        if (ppEnum == null)
-        {
+        if (ppEnum == null) {
             return OpcHdaBrowserCcw.E_INVALIDARG;
         }
-        if (!TryResolve(pThis, out OpcHdaEnumStringCcw.EnumStringState? state))
-        {
+        if (!TryResolve(pThis, out OpcHdaEnumStringCcw.EnumStringState? state)) {
             return OpcHdaBrowserCcw.E_FAIL;
         }
 
-        try
-        {
+        try {
             *ppEnum = OpcHdaEnumStringCcw.Clone(state!);
             return OpcHdaBrowserCcw.S_OK;
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             return MapHResult(ex);
         }
     }
 
-    private static bool TryResolve(IntPtr pThis, out OpcHdaEnumStringCcw.EnumStringState? state)
-    {
+    private static bool TryResolve(IntPtr pThis, out OpcHdaEnumStringCcw.EnumStringState? state) {
         state = OpcHdaEnumStringCcw.ResolveState(pThis);
         return state is not null;
     }
 
     private static IntPtr AllocateLpwStr(string value) => Marshal.StringToCoTaskMemUni(value);
 
-    private static int MapHResult(Exception ex) => ex switch
-    {
+    private static int MapHResult(Exception ex) => ex switch {
         OpcException opcEx => opcEx.ResultId.Code,
         ArgumentException => OpcHdaBrowserCcw.E_INVALIDARG,
         _ => OpcHdaBrowserCcw.E_FAIL,
     };
 
-    private static void ZeroOut(IntPtr* pp)
-    {
-        if (pp != null)
-        {
+    private static void ZeroOut(IntPtr* pp) {
+        if (pp != null) {
             *pp = IntPtr.Zero;
         }
     }
 }
 
-internal static class NativeHdaVariantReader
-{
+internal static class NativeHdaVariantReader {
     private const ushort VT_EMPTY = 0;
     private const ushort VT_NULL = 1;
     private const ushort VT_I2 = 2;
@@ -711,23 +605,19 @@ internal static class NativeHdaVariantReader
 
     public static int VariantSize => IntPtr.Size == 8 ? 24 : 16;
 
-    public static bool TryRead(IntPtr source, out OpcVariant value)
-    {
+    public static bool TryRead(IntPtr source, out OpcVariant value) {
         value = OpcVariant.Empty;
-        if (source == IntPtr.Zero)
-        {
+        if (source == IntPtr.Zero) {
             return false;
         }
 
         ushort vt = unchecked((ushort)Marshal.ReadInt16(source));
-        if ((vt & (VT_ARRAY | VT_BYREF)) != 0)
-        {
+        if ((vt & (VT_ARRAY | VT_BYREF)) != 0) {
             return false;
         }
 
         IntPtr payload = source + 8;
-        value = vt switch
-        {
+        value = vt switch {
             VT_EMPTY => OpcVariant.Empty,
             VT_NULL => OpcVariant.Null,
             VT_I1 => OpcVariant.FromInt8(unchecked((sbyte)Marshal.ReadByte(payload))),

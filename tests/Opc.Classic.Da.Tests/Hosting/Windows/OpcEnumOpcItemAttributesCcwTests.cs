@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -17,17 +17,14 @@ namespace Opc.Classic.Da.Tests.Hosting.Windows;
 /// Windows-only tests for the IEnumOPCItemAttributes CCW.
 /// </summary>
 [SupportedOSPlatform("windows")]
-public sealed class OpcEnumOpcItemAttributesCcwTests
-{
+public sealed class OpcEnumOpcItemAttributesCcwTests {
     private const int S_OK = 0;
 
     private static readonly Guid IID_IUnknown = Guid.Parse("00000000-0000-0000-C000-000000000046");
 
     [Test]
-    public async Task Create_and_QueryInterface_return_expected_interfaces()
-    {
-        if (!OperatingSystem.IsWindows())
-        {
+    public async Task Create_and_QueryInterface_return_expected_interfaces() {
+        if (!OperatingSystem.IsWindows()) {
             return;
         }
 
@@ -41,10 +38,8 @@ public sealed class OpcEnumOpcItemAttributesCcwTests
     }
 
     [Test]
-    public async Task Release_to_zero_cleans_up_entry()
-    {
-        if (!OperatingSystem.IsWindows())
-        {
+    public async Task Release_to_zero_cleans_up_entry() {
+        if (!OperatingSystem.IsWindows()) {
             return;
         }
 
@@ -55,10 +50,8 @@ public sealed class OpcEnumOpcItemAttributesCcwTests
     }
 
     [Test]
-    public async Task Skip_and_Reset_round_trip_to_first_item()
-    {
-        if (!OperatingSystem.IsWindows())
-        {
+    public async Task Skip_and_Reset_round_trip_to_first_item() {
+        if (!OperatingSystem.IsWindows()) {
             return;
         }
 
@@ -77,10 +70,8 @@ public sealed class OpcEnumOpcItemAttributesCcwTests
     }
 
     [Test]
-    public async Task Next_round_trips_empty_EUInfo_variant()
-    {
-        if (!OperatingSystem.IsWindows())
-        {
+    public async Task Next_round_trips_empty_EUInfo_variant() {
+        if (!OperatingSystem.IsWindows()) {
             return;
         }
 
@@ -93,10 +84,8 @@ public sealed class OpcEnumOpcItemAttributesCcwTests
     }
 
     [Test]
-    public async Task Clone_returns_nonzero_distinct_ccw()
-    {
-        if (!OperatingSystem.IsWindows())
-        {
+    public async Task Clone_returns_nonzero_distinct_ccw() {
+        if (!OperatingSystem.IsWindows()) {
             return;
         }
 
@@ -114,11 +103,9 @@ public sealed class OpcEnumOpcItemAttributesCcwTests
     private static OpcItemAttributes[] BuildSnapshot(int count) =>
         BuildSnapshot(count, static _ => OpcVariant.Empty);
 
-    private static OpcItemAttributes[] BuildSnapshot(int count, Func<int, OpcVariant> euInfoFactory)
-    {
+    private static OpcItemAttributes[] BuildSnapshot(int count, Func<int, OpcVariant> euInfoFactory) {
         var snapshot = new OpcItemAttributes[count];
-        for (int i = 0; i < count; i++)
-        {
+        for (int i = 0; i < count; i++) {
             snapshot[i] = new OpcItemAttributes(
                 AccessPath: "",
                 ItemId: $"Tag.{i}",
@@ -135,8 +122,7 @@ public sealed class OpcEnumOpcItemAttributesCcwTests
         return snapshot;
     }
 
-    private static unsafe class Helpers
-    {
+    private static unsafe class Helpers {
         internal readonly record struct EnumNextResult(int Hr, uint Fetched, string?[] ItemIds, OpcVariant[] EUInfos);
 
         private const int Int32Size = 4;
@@ -160,8 +146,7 @@ public sealed class OpcEnumOpcItemAttributesCcwTests
         private static readonly int s_vEUInfoOffset = s_dwEUTypeOffset + Int32Size;
         private static readonly int s_opcItemAttributesSize = s_vEUInfoOffset + VariantSlotStride;
 
-        internal static IntPtr InvokeQI(IntPtr ccw, Guid iid)
-        {
+        internal static IntPtr InvokeQI(IntPtr ccw, Guid iid) {
             IntPtr* vtable = *(IntPtr**)ccw;
             var qi = (delegate* unmanaged<IntPtr, Guid*, IntPtr*, int>)vtable[0];
             Guid local = iid;
@@ -170,29 +155,25 @@ public sealed class OpcEnumOpcItemAttributesCcwTests
             return hr == S_OK ? returned : IntPtr.Zero;
         }
 
-        internal static void InvokeRelease(IntPtr ccw)
-        {
+        internal static void InvokeRelease(IntPtr ccw) {
             IntPtr* vtable = *(IntPtr**)ccw;
             var release = (delegate* unmanaged<IntPtr, uint>)vtable[2];
             release(ccw);
         }
 
-        internal static int InvokeSkip(IntPtr ccw, uint count)
-        {
+        internal static int InvokeSkip(IntPtr ccw, uint count) {
             IntPtr* vtable = *(IntPtr**)ccw;
             var skip = (delegate* unmanaged<IntPtr, uint, int>)vtable[4];
             return skip(ccw, count);
         }
 
-        internal static int InvokeReset(IntPtr ccw)
-        {
+        internal static int InvokeReset(IntPtr ccw) {
             IntPtr* vtable = *(IntPtr**)ccw;
             var reset = (delegate* unmanaged<IntPtr, int>)vtable[5];
             return reset(ccw);
         }
 
-        internal static (int Hr, IntPtr Clone) InvokeClone(IntPtr ccw)
-        {
+        internal static (int Hr, IntPtr Clone) InvokeClone(IntPtr ccw) {
             IntPtr* vtable = *(IntPtr**)ccw;
             var clone = (delegate* unmanaged<IntPtr, IntPtr*, int>)vtable[6];
             IntPtr ppEnum;
@@ -200,8 +181,7 @@ public sealed class OpcEnumOpcItemAttributesCcwTests
             return (hr, ppEnum);
         }
 
-        internal static EnumNextResult InvokeNext(IntPtr ccw, uint count)
-        {
+        internal static EnumNextResult InvokeNext(IntPtr ccw, uint count) {
             IntPtr* vtable = *(IntPtr**)ccw;
             var next = (delegate* unmanaged<IntPtr, uint, IntPtr*, uint*, int>)vtable[3];
             IntPtr ppItems;
@@ -211,35 +191,29 @@ public sealed class OpcEnumOpcItemAttributesCcwTests
             return new EnumNextResult(hr, fetched, itemIds, euInfos);
         }
 
-        private static (string?[] ItemIds, OpcVariant[] EUInfos) ReadItemsAndFree(IntPtr ptr, int count)
-        {
+        private static (string?[] ItemIds, OpcVariant[] EUInfos) ReadItemsAndFree(IntPtr ptr, int count) {
             var itemIds = new string?[count];
             var euInfos = new OpcVariant[count];
-            for (int i = 0; i < count && ptr != IntPtr.Zero; i++)
-            {
+            for (int i = 0; i < count && ptr != IntPtr.Zero; i++) {
                 IntPtr slot = IntPtr.Add(ptr, i * s_opcItemAttributesSize);
                 itemIds[i] = Marshal.PtrToStringUni(Marshal.ReadIntPtr(slot, s_szItemIdOffset));
                 euInfos[i] = ComVariantMarshaler.ReadVariant(IntPtr.Add(slot, s_vEUInfoOffset));
             }
-            if (ptr != IntPtr.Zero)
-            {
+            if (ptr != IntPtr.Zero) {
                 FreeNativeAttributes(ptr, count);
             }
             Marshal.FreeCoTaskMem(ptr);
             return (itemIds, euInfos);
         }
 
-        private static void FreeNativeAttributes(IntPtr ptr, int count)
-        {
-            for (int i = 0; i < count; i++)
-            {
+        private static void FreeNativeAttributes(IntPtr ptr, int count) {
+            for (int i = 0; i < count; i++) {
                 IntPtr slot = IntPtr.Add(ptr, i * s_opcItemAttributesSize);
                 Marshal.FreeCoTaskMem(Marshal.ReadIntPtr(slot, SzAccessPathOffset));
                 Marshal.FreeCoTaskMem(Marshal.ReadIntPtr(slot, s_szItemIdOffset));
                 Marshal.FreeCoTaskMem(Marshal.ReadIntPtr(slot, s_pBlobOffset));
             }
-            for (int i = 0; i < count; i++)
-            {
+            for (int i = 0; i < count; i++) {
                 ComVariantMarshaler.ClearVariant(IntPtr.Add(ptr, (i * s_opcItemAttributesSize) + s_vEUInfoOffset));
             }
         }

@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -10,8 +10,7 @@ using Opc.Classic.Hda;
 
 namespace Opc.Classic.SnapshotTests.Support;
 
-internal static class CodecFixtures
-{
+internal static class CodecFixtures {
     public static DateTimeOffset BaseTime { get; } = new(2024, 1, 1, 0, 0, 0, TimeSpan.Zero);
 
     public static OpcRecordInfo SampleRecordInfo { get; } = new(
@@ -109,8 +108,7 @@ internal static class CodecFixtures
             PercentDeadband: 0.25f,
             LocaleId: 0x0409);
 
-    public static OpcServerStatus DaServerStatus() => new()
-    {
+    public static OpcServerStatus DaServerStatus() => new() {
         Spec = OpcStatusSpec.Da,
         StartTime = BaseTime,
         CurrentTime = BaseTime.AddHours(3),
@@ -168,8 +166,7 @@ internal static class CodecFixtures
     public static OpcHdaTime HdaTime() =>
         OpcHdaTime.FromString("NOW-1H");
 
-    public static OpcServerStatus HdaServerStatus() => new()
-    {
+    public static OpcServerStatus HdaServerStatus() => new() {
         Spec = OpcStatusSpec.Hda,
         StartTime = BaseTime,
         CurrentTime = BaseTime.AddHours(4),
@@ -179,8 +176,7 @@ internal static class CodecFixtures
         VendorInfo = "Acme HDA Server",
     };
 
-    public static OpcServerStatus AeServerStatus() => new()
-    {
+    public static OpcServerStatus AeServerStatus() => new() {
         Spec = OpcStatusSpec.Ae,
         StartTime = BaseTime,
         CurrentTime = BaseTime.AddHours(5),

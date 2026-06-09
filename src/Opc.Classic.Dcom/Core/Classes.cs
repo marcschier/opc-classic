@@ -1,6 +1,7 @@
-// SPDX-License-Identifier: MIT
+﻿// SPDX-License-Identifier: MIT
 
-namespace Opc.Classic.Dcom; 
+namespace Opc.Classic.Dcom;
+
 /// <summary>
 /// Class identifiers
 /// </summary>

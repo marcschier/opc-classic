@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -11,11 +11,9 @@ using TUnit.Core;
 
 namespace Opc.Classic.Dcom.Smb.Tests;
 
-public sealed class Smb2TreeMessagesTests
-{
+public sealed class Smb2TreeMessagesTests {
     [Test]
-    public async Task TreeConnectRequest_WriteTo_EncodesUnicodePath()
-    {
+    public async Task TreeConnectRequest_WriteTo_EncodesUnicodePath() {
         const string Path = @"\\server\IPC$";
         var req = new Smb2TreeConnectRequest(Path);
         byte[] buf = new byte[128];
@@ -37,8 +35,7 @@ public sealed class Smb2TreeMessagesTests
     }
 
     [Test]
-    public async Task TreeConnectResponse_Read_ParsesShareTypeAndMaximalAccess()
-    {
+    public async Task TreeConnectResponse_Read_ParsesShareTypeAndMaximalAccess() {
         byte[] buf = new byte[16];
         BinaryPrimitives.WriteUInt16LittleEndian(buf.AsSpan(0), 16);
         buf[2] = 0x02;

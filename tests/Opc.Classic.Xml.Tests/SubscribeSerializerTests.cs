@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -13,28 +13,23 @@ using TUnit.Core;
 
 namespace Opc.Classic.Xml.Tests;
 
-public sealed class SubscribeSerializerTests
-{
-    private static string SerializeRequest(XmlDaSubscribeRequest req)
-    {
+public sealed class SubscribeSerializerTests {
+    private static string SerializeRequest(XmlDaSubscribeRequest req) {
         using var ms = new MemoryStream();
-        using (var w = new SoapEnvelopeWriter(ms))
-        {
+        using (var w = new SoapEnvelopeWriter(ms)) {
             SubscribeSerializer.WriteRequest(w, req);
         }
         return Encoding.UTF8.GetString(ms.ToArray());
     }
 
-    private static XmlDaSubscribeResponse Deserialize(string xml)
-    {
+    private static XmlDaSubscribeResponse Deserialize(string xml) {
         using var ms = new MemoryStream(Encoding.UTF8.GetBytes(xml));
         using var r = new SoapEnvelopeReader(ms);
         return SubscribeSerializer.ReadResponse(r);
     }
 
     [Test]
-    public async Task Request_EmitsItemsWithIndividualRates()
-    {
+    public async Task Request_EmitsItemsWithIndividualRates() {
         var xml = SerializeRequest(new XmlDaSubscribeRequest(
             new XmlDaRequestHeader(null, null),
             new[]
@@ -53,8 +48,7 @@ public sealed class SubscribeSerializerTests
     }
 
     [Test]
-    public async Task Request_EmitsTopLevelRequestedSamplingRate()
-    {
+    public async Task Request_EmitsTopLevelRequestedSamplingRate() {
         var xml = SerializeRequest(new XmlDaSubscribeRequest(
             new XmlDaRequestHeader(null, null),
             new[] { new XmlDaSubscribeItem("Tag1", null) },
@@ -63,8 +57,7 @@ public sealed class SubscribeSerializerTests
     }
 
     [Test]
-    public async Task Request_EmitsReturnValuesOnReply_AndPingRate()
-    {
+    public async Task Request_EmitsReturnValuesOnReply_AndPingRate() {
         var xml = SerializeRequest(new XmlDaSubscribeRequest(
             new XmlDaRequestHeader(null, null),
             new[] { new XmlDaSubscribeItem("Tag1", null) },
@@ -75,8 +68,7 @@ public sealed class SubscribeSerializerTests
     }
 
     [Test]
-    public async Task Request_EmitsEnableBuffering()
-    {
+    public async Task Request_EmitsEnableBuffering() {
         var xml = SerializeRequest(new XmlDaSubscribeRequest(
             new XmlDaRequestHeader(null, null),
             new[] { new XmlDaSubscribeItem("Tag1", null) },
@@ -85,8 +77,7 @@ public sealed class SubscribeSerializerTests
     }
 
     [Test]
-    public async Task Response_DecodesServerSubHandle_AndRevisedRate()
-    {
+    public async Task Response_DecodesServerSubHandle_AndRevisedRate() {
         const string xml = """
             <?xml version="1.0"?>
             <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
@@ -106,8 +97,7 @@ public sealed class SubscribeSerializerTests
     }
 
     [Test]
-    public async Task Response_DecodesInitialItemValues_WhenPresent()
-    {
+    public async Task Response_DecodesInitialItemValues_WhenPresent() {
         const string xml = """
             <?xml version="1.0"?>
             <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
@@ -137,8 +127,7 @@ public sealed class SubscribeSerializerTests
     }
 
     [Test]
-    public async Task Response_RejectsWrongOperation()
-    {
+    public async Task Response_RejectsWrongOperation() {
         const string xml = """
             <?xml version="1.0"?>
             <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">

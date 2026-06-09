@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -20,12 +20,10 @@ using TUnit.Assertions.AssertConditions.Throws;
 
 namespace Opc.Classic.Da.Tests;
 
-public sealed class DaFileTimeFuzzTests
-{
+public sealed class DaFileTimeFuzzTests {
     private delegate void NdrWriteAction(ref NdrWriter writer);
 
-    private static byte[] WriteOne(NdrWriteAction write, int capacity = 256)
-    {
+    private static byte[] WriteOne(NdrWriteAction write, int capacity = 256) {
         var buf = new byte[capacity];
         var writer = new NdrWriter(buf);
         write(ref writer);
@@ -33,10 +31,8 @@ public sealed class DaFileTimeFuzzTests
     }
 
     [Test]
-    public async Task ItemState_FileTime_Zero_Yields1601Epoch()
-    {
-        byte[] wire = WriteOne((ref NdrWriter w) =>
-        {
+    public async Task ItemState_FileTime_Zero_Yields1601Epoch() {
+        byte[] wire = WriteOne((ref NdrWriter w) => {
             w.WriteUInt32(42);                   // hClient
             w.WriteFileTime(0L);                 // ftTimeStamp (Epoch)
             w.WriteUInt16(0xC0);                 // wQuality
@@ -55,10 +51,8 @@ public sealed class DaFileTimeFuzzTests
     [Arguments(-1L)]
     [Arguments(long.MinValue)]
     [Arguments(long.MaxValue)]
-    public async Task ItemState_FileTime_OutOfRange_ThrowsInvalidDataException(long bogusFileTime)
-    {
-        byte[] wire = WriteOne((ref NdrWriter w) =>
-        {
+    public async Task ItemState_FileTime_OutOfRange_ThrowsInvalidDataException(long bogusFileTime) {
+        byte[] wire = WriteOne((ref NdrWriter w) => {
             w.WriteUInt32(0);
             w.WriteFileTime(bogusFileTime);
             w.WriteUInt16(0);
@@ -66,18 +60,15 @@ public sealed class DaFileTimeFuzzTests
             w.WriteUniquePointerReferent(true); NdrVariantExtensions.WriteVariant(ref w, OpcVariant.Empty);
         });
 
-        await Assert.That(() =>
-        {
+        await Assert.That(() => {
             var reader = new NdrReader(wire);
             _ = NdrOpcItemStateCodec.Read(ref reader);
         }).Throws<InvalidDataException>();
     }
 
     [Test]
-    public async Task ItemState_FileTime_ErrorMessageNamesField()
-    {
-        byte[] wire = WriteOne((ref NdrWriter w) =>
-        {
+    public async Task ItemState_FileTime_ErrorMessageNamesField() {
+        byte[] wire = WriteOne((ref NdrWriter w) => {
             w.WriteUInt32(0);
             w.WriteFileTime(-1L);
             w.WriteUInt16(0);
@@ -85,24 +76,20 @@ public sealed class DaFileTimeFuzzTests
             w.WriteUniquePointerReferent(true); NdrVariantExtensions.WriteVariant(ref w, OpcVariant.Empty);
         });
 
-        try
-        {
+        try {
             var reader = new NdrReader(wire);
             _ = NdrOpcItemStateCodec.Read(ref reader);
             throw new Exception("expected InvalidDataException");
         }
-        catch (InvalidDataException ex)
-        {
+        catch (InvalidDataException ex) {
             await Assert.That(ex.Message).Contains("OPCITEMSTATE.ftTimeStamp");
             await Assert.That(ex.Message).Contains("Wire context");
         }
     }
 
     [Test]
-    public async Task ItemVqt_FileTime_OutOfRange_WithBTimestampSet_ThrowsInvalidDataException()
-    {
-        byte[] wire = WriteOne((ref NdrWriter w) =>
-        {
+    public async Task ItemVqt_FileTime_OutOfRange_WithBTimestampSet_ThrowsInvalidDataException() {
+        byte[] wire = WriteOne((ref NdrWriter w) => {
             // VARIANT body
             NdrVariantExtensions.WriteVariant(ref w, OpcVariant.FromInt32(7));
             w.WriteInt32(1);                     // bQuality = true
@@ -113,25 +100,21 @@ public sealed class DaFileTimeFuzzTests
             w.WriteFileTime(long.MaxValue);      // bogus timestamp
         });
 
-        try
-        {
+        try {
             var reader = new NdrReader(wire);
             _ = NdrOpcItemVqtCodec.Read(ref reader);
             throw new Exception("expected InvalidDataException");
         }
-        catch (InvalidDataException ex)
-        {
+        catch (InvalidDataException ex) {
             await Assert.That(ex.Message).Contains("OPCITEMVQT.ftTimeStamp");
         }
     }
 
     [Test]
-    public async Task ItemVqt_FileTime_OutOfRange_WithBTimestampClear_DoesNotThrow()
-    {
+    public async Task ItemVqt_FileTime_OutOfRange_WithBTimestampClear_DoesNotThrow() {
         // When bTimestamp is 0 the codec MUST NOT decode the raw FILETIME at all
         // (consumer should never look at it). Verify the bogus value is harmless.
-        byte[] wire = WriteOne((ref NdrWriter w) =>
-        {
+        byte[] wire = WriteOne((ref NdrWriter w) => {
             NdrVariantExtensions.WriteVariant(ref w, OpcVariant.FromInt32(7));
             w.WriteInt32(0);                     // bQuality = false
             w.WriteUInt16(0);

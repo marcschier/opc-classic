@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -12,8 +12,7 @@ namespace Opc.Classic.Hda;
 /// Annotations returned for a single item by
 /// <see cref="IHdaServer.ReadAnnotationsAsync"/>.
 /// </summary>
-public sealed class HdaAnnotationResult
-{
+public sealed class HdaAnnotationResult {
     /// <summary>The item these annotations belong to.</summary>
     public string ItemId { get; init; } = string.Empty;
 

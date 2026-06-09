@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -9,23 +9,19 @@ using System.Collections.Generic;
 namespace Opc.Classic;
 
 /// <summary>Immutable <see cref="IRecordInfo"/> implementation for custom VT_RECORD layouts.</summary>
-public sealed class OpcRecordInfo : IRecordInfo
-{
+public sealed class OpcRecordInfo : IRecordInfo {
     private readonly IReadOnlyList<OpcRecordField> _fields;
 
     /// <summary>Creates a record layout descriptor.</summary>
-    public OpcRecordInfo(Guid id, string name, IReadOnlyList<OpcRecordField> fields)
-    {
-        if (id == Guid.Empty)
-        {
+    public OpcRecordInfo(Guid id, string name, IReadOnlyList<OpcRecordField> fields) {
+        if (id == Guid.Empty) {
             throw new ArgumentException("Record info id must not be empty.", nameof(id));
         }
         ArgumentException.ThrowIfNullOrWhiteSpace(name);
         ArgumentNullException.ThrowIfNull(fields);
 
         var copy = new OpcRecordField[fields.Count];
-        for (int i = 0; i < fields.Count; i++)
-        {
+        for (int i = 0; i < fields.Count; i++) {
             copy[i] = fields[i];
         }
 

@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -28,15 +28,12 @@ using TUnit.Core;
 
 namespace Opc.Classic.Da.Tests.Wire;
 
-public sealed class RequestWireFixtureTests
-{
+public sealed class RequestWireFixtureTests {
     private static async Task<byte[]> CaptureRequestAsync(
         Func<ICallChannel, Task> invoke,
-        ReadOnlyMemory<byte> response = default)
-    {
+        ReadOnlyMemory<byte> response = default) {
         byte[] captured = Array.Empty<byte>();
-        var channel = new InMemoryCallChannel((_, _, payload, _) =>
-        {
+        var channel = new InMemoryCallChannel((_, _, payload, _) => {
             captured = payload.ToArray();
             return Task.FromResult(new NdrCallResult(0, response));
         });
@@ -52,13 +49,11 @@ public sealed class RequestWireFixtureTests
     /// [in, size_is] VARIANT*</c>. Two-handle write of VT_I4 values 42 and 7.
     /// </summary>
     [Test]
-    public async Task SyncIO_Write_TwoHandles_TwoInt32_EncodesCanonicalShape()
-    {
+    public async Task SyncIO_Write_TwoHandles_TwoInt32_EncodesCanonicalShape() {
         // Response = unique-pointer-to-HRESULT[2] = referent + max_count + 2 ints.
         var response = new byte[] { 0x00, 0x00, 0x02, 0x00, 0x02, 0x00, 0x00, 0x00, 0, 0, 0, 0, 0, 0, 0, 0 };
 
-        byte[] request = await CaptureRequestAsync(channel =>
-        {
+        byte[] request = await CaptureRequestAsync(channel => {
             var proxy = new IOPCSyncIOClientProxy(channel);
             return proxy.WriteAsync(
                 new[] { 100, 101 },
@@ -99,13 +94,11 @@ public sealed class RequestWireFixtureTests
     /// [in, size_is] OPCHANDLE*</c>. dataSource=1 (cache), one handle.
     /// </summary>
     [Test]
-    public async Task SyncIO_Read_FromCache_SingleHandle_EncodesCanonicalShape()
-    {
+    public async Task SyncIO_Read_FromCache_SingleHandle_EncodesCanonicalShape() {
         // Response = referent + max_count + 1 OPCITEMSTATE + referent + max_count + 1 HRESULT.
         var response = new byte[80];
 
-        byte[] request = await CaptureRequestAsync(channel =>
-        {
+        byte[] request = await CaptureRequestAsync(channel => {
             var proxy = new IOPCSyncIOClientProxy(channel);
             int[] errors;
             return proxy.ReadAsync(dataSource: 1, serverHandles: new[] { 0x12345678 }, out errors, CancellationToken.None);
@@ -131,13 +124,11 @@ public sealed class RequestWireFixtureTests
     /// Two items (Bucket Brigade.Int4, Bucket Brigade.String) with clientHandles 1 + 2.
     /// </summary>
     [Test]
-    public async Task ItemMgt_AddItems_TwoBucketBrigadeItems_EncodesCanonicalShape()
-    {
+    public async Task ItemMgt_AddItems_TwoBucketBrigadeItems_EncodesCanonicalShape() {
         // Synthesize a minimal response: ppAddResults (null referent) + ppErrors (null referent).
         var response = new byte[] { 0, 0, 0, 0, 0, 0, 0, 0 };
 
-        byte[] request = await CaptureRequestAsync(channel =>
-        {
+        byte[] request = await CaptureRequestAsync(channel => {
             var proxy = new IOPCItemMgtClientProxy(channel);
             return proxy.AddItemsAsync(
                 new[]

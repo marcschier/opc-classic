@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -14,8 +14,7 @@ using TUnit.Core;
 
 namespace Opc.Classic.Generators.Tests;
 
-public sealed class OpcProxyGeneratorBodyTests
-{
+public sealed class OpcProxyGeneratorBodyTests {
     private const string SampleSource = """
         using Opc.Classic.Generators;
         using System.Threading;
@@ -37,8 +36,7 @@ public sealed class OpcProxyGeneratorBodyTests
         """;
 
     [Test]
-    public async Task DoNothingAsync_emits_invoke_async_no_result()
-    {
+    public async Task DoNothingAsync_emits_invoke_async_no_result() {
         string method = GeneratedMethodSection("DoNothingAsync");
 
         await Assert.That(method).Contains("InvokeAsync(");
@@ -48,8 +46,7 @@ public sealed class OpcProxyGeneratorBodyTests
     }
 
     [Test]
-    public async Task ReadAsync_emits_invoke_async_with_int_marshalling()
-    {
+    public async Task ReadAsync_emits_invoke_async_with_int_marshalling() {
         string method = GeneratedMethodSection("ReadAsync");
 
         await Assert.That(method).Contains("InvokeAsync(");
@@ -60,8 +57,7 @@ public sealed class OpcProxyGeneratorBodyTests
     }
 
     [Test]
-    public async Task GetNameAsync_uses_CancellationToken_None()
-    {
+    public async Task GetNameAsync_uses_CancellationToken_None() {
         string method = GeneratedMethodSection("GetNameAsync");
 
         await Assert.That(method).Contains("global::System.Threading.CancellationToken.None");
@@ -69,8 +65,7 @@ public sealed class OpcProxyGeneratorBodyTests
     }
 
     [Test]
-    public async Task WithoutOpcMethodAsync_keeps_NotImplementedException_stub()
-    {
+    public async Task WithoutOpcMethodAsync_keeps_NotImplementedException_stub() {
         string method = GeneratedMethodSection("WithoutOpcMethodAsync");
 
         await Assert.That(method).Contains("NotImplementedException");
@@ -78,8 +73,7 @@ public sealed class OpcProxyGeneratorBodyTests
     }
 
     [Test]
-    public async Task SyncMethod_keeps_NotImplementedException_stub()
-    {
+    public async Task SyncMethod_keeps_NotImplementedException_stub() {
         string method = GeneratedMethodSection("SyncMethod");
 
         await Assert.That(method).Contains("NotImplementedException");
@@ -87,8 +81,7 @@ public sealed class OpcProxyGeneratorBodyTests
     }
 
     [Test]
-    public async Task BadAsync_with_out_param_decodes_response_without_OPCGEN006()
-    {
+    public async Task BadAsync_with_out_param_decodes_response_without_OPCGEN006() {
         GeneratorDriverRunResult result = RunGenerator(SampleSource, out Compilation outputCompilation, out ImmutableArray<Diagnostic> driverDiagnostics);
         ThrowIfCompilationHasErrors(outputCompilation);
         string generated = GeneratedProxySource(result);
@@ -102,8 +95,7 @@ public sealed class OpcProxyGeneratorBodyTests
         await Assert.That(diagnostics.Any(static diagnostic => diagnostic.Id == "OPCGEN006")).IsFalse();
     }
 
-    private static string GeneratedMethodSection(string methodName)
-    {
+    private static string GeneratedMethodSection(string methodName) {
         GeneratorDriverRunResult result = RunGenerator(SampleSource, out Compilation outputCompilation, out _);
         ThrowIfCompilationHasErrors(outputCompilation);
         return MethodSection(GeneratedProxySource(result), methodName);
@@ -114,22 +106,18 @@ public sealed class OpcProxyGeneratorBodyTests
             .Single(static generated => generated.HintName.EndsWith(".OpcProxy.g.cs", StringComparison.Ordinal))
             .SourceText.ToString();
 
-    private static void ThrowIfCompilationHasErrors(Compilation compilation)
-    {
+    private static void ThrowIfCompilationHasErrors(Compilation compilation) {
         var errors = compilation.GetDiagnostics()
             .Where(static diagnostic => diagnostic.Severity == DiagnosticSeverity.Error)
             .ToArray();
-        if (errors.Length > 0)
-        {
+        if (errors.Length > 0) {
             throw new InvalidOperationException(string.Join(Environment.NewLine, errors.Select(static error => error.ToString())));
         }
     }
 
-    private static string MethodSection(string generated, string methodName)
-    {
+    private static string MethodSection(string generated, string methodName) {
         int methodNameIndex = generated.IndexOf(methodName + "(", StringComparison.Ordinal);
-        if (methodNameIndex < 0)
-        {
+        if (methodNameIndex < 0) {
             throw new InvalidOperationException($"Generated method '{methodName}' was not found.");
         }
 
@@ -141,16 +129,14 @@ public sealed class OpcProxyGeneratorBodyTests
             ? nextMethod
             : generated.IndexOf("\n    }", methodNameIndex, StringComparison.Ordinal);
 
-        if (methodEnd < 0)
-        {
+        if (methodEnd < 0) {
             methodEnd = generated.Length;
         }
 
         return generated.Substring(methodStart, methodEnd - methodStart);
     }
 
-    private static GeneratorDriverRunResult RunGenerator(string source, out Compilation outputCompilation, out ImmutableArray<Diagnostic> driverDiagnostics)
-    {
+    private static GeneratorDriverRunResult RunGenerator(string source, out Compilation outputCompilation, out ImmutableArray<Diagnostic> driverDiagnostics) {
         var compilation = CreateCompilation(source);
         ISourceGenerator[] generators =
         [
@@ -163,8 +149,7 @@ public sealed class OpcProxyGeneratorBodyTests
         return driver.GetRunResult();
     }
 
-    private static CSharpCompilation CreateCompilation(string source)
-    {
+    private static CSharpCompilation CreateCompilation(string source) {
         return CSharpCompilation.Create(
             assemblyName: "OpcProxyGeneratorBodyTestAssembly",
             syntaxTrees: [CSharpSyntaxTree.ParseText(source, ParseOptions())],
@@ -174,13 +159,10 @@ public sealed class OpcProxyGeneratorBodyTests
 
     private static CSharpParseOptions ParseOptions() => CSharpParseOptions.Default.WithLanguageVersion(LanguageVersion.Latest);
 
-    private static IEnumerable<MetadataReference> References()
-    {
+    private static IEnumerable<MetadataReference> References() {
         string? trustedPlatformAssemblies = AppContext.GetData("TRUSTED_PLATFORM_ASSEMBLIES") as string;
-        if (!string.IsNullOrEmpty(trustedPlatformAssemblies))
-        {
-            foreach (var path in trustedPlatformAssemblies.Split(Path.PathSeparator))
-            {
+        if (!string.IsNullOrEmpty(trustedPlatformAssemblies)) {
+            foreach (var path in trustedPlatformAssemblies.Split(Path.PathSeparator)) {
                 yield return MetadataReference.CreateFromFile(path);
             }
         }

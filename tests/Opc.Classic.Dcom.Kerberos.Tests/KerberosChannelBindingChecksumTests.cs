@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -13,11 +13,9 @@ using TUnit.Core;
 
 namespace Opc.Classic.Dcom.Kerberos.Tests;
 
-public sealed class KerberosChannelBindingChecksumTests
-{
+public sealed class KerberosChannelBindingChecksumTests {
     [Test]
-    public async Task Create_EncodesMsKileGssChecksumWithChannelBindingHash()
-    {
+    public async Task Create_EncodesMsKileGssChecksumWithChannelBindingHash() {
         byte[] channelBindingsHash = Convert.FromHexString("00112233445566778899AABBCCDDEEFF");
 
         KrbChecksum checksum = KerberosChannelBindingChecksum.Create(
@@ -31,8 +29,7 @@ public sealed class KerberosChannelBindingChecksumTests
     }
 
     [Test]
-    public async Task KerberosConnectionContext_RequestServiceTicketCarriesChannelBindingChecksum()
-    {
+    public async Task KerberosConnectionContext_RequestServiceTicketCarriesChannelBindingChecksum() {
         byte[] channelBindingsHash = Convert.FromHexString("FFEEDDCCBBAA99887766554433221100");
         var authInfo = new KerberosAuthInfo("EXAMPLE.COM", "RPCSS/server.example.com", "alice", null, "password", null);
 
@@ -46,8 +43,7 @@ public sealed class KerberosChannelBindingChecksumTests
     }
 
     [Test]
-    public async Task KerberosConnectionContext_NoChannelBindingLeavesAuthenticatorChecksumUnset()
-    {
+    public async Task KerberosConnectionContext_NoChannelBindingLeavesAuthenticatorChecksumUnset() {
         var authInfo = new KerberosAuthInfo("EXAMPLE.COM", "RPCSS/server.example.com", "alice", null, "password", null);
 
         RequestServiceTicket request = CreateRequestServiceTicket(authInfo, channelBindingsHash: null);
@@ -57,8 +53,7 @@ public sealed class KerberosChannelBindingChecksumTests
 
     private static RequestServiceTicket CreateRequestServiceTicket(
         KerberosAuthInfo authInfo,
-        ReadOnlyMemory<byte>? channelBindingsHash)
-    {
+        ReadOnlyMemory<byte>? channelBindingsHash) {
         MethodInfo method = typeof(KerberosConnectionContext).GetMethod(
             "CreateRequestServiceTicket",
             BindingFlags.Static | BindingFlags.NonPublic)!;

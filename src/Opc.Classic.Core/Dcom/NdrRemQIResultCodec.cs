@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -22,11 +22,9 @@ namespace Opc.Classic.Dcom;
 /// 4 (HRESULT) + 4 (flags) + 4 (cPublicRefs) + 8 (OXID) + 8 (OID) + 16 (IPID)
 /// = 44 bytes per element. NdrWriter auto-aligns the 8-byte OXID/OID writes.
 /// </remarks>
-public static class NdrRemQIResultCodec
-{
+public static class NdrRemQIResultCodec {
     /// <summary>Encodes a single REMQIRESULT (used by managed-server loopback fakes).</summary>
-    public static void Write(ref NdrWriter writer, OpcRemQIResult result)
-    {
+    public static void Write(ref NdrWriter writer, OpcRemQIResult result) {
         ArgumentNullException.ThrowIfNull(result);
 
         writer.WriteInt32(result.Hresult);
@@ -38,8 +36,7 @@ public static class NdrRemQIResultCodec
     }
 
     /// <summary>Decodes a single REMQIRESULT element.</summary>
-    public static OpcRemQIResult Read(ref NdrReader reader)
-    {
+    public static OpcRemQIResult Read(ref NdrReader reader) {
         int hresult = reader.ReadInt32();
         uint flags = reader.ReadUInt32();
         uint publicRefs = reader.ReadUInt32();

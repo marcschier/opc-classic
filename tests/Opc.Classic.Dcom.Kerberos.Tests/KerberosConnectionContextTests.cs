@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -9,21 +9,17 @@ using TUnit.Core;
 
 namespace Opc.Classic.Dcom.Kerberos.Tests;
 
-public sealed class KerberosConnectionContextTests
-{
+public sealed class KerberosConnectionContextTests {
     [Test]
-    public async Task KerberosConnectionContext_AcquireApRequest_requires_password_or_keytab()
-    {
+    public async Task KerberosConnectionContext_AcquireApRequest_requires_password_or_keytab() {
         var authInfo = new KerberosAuthInfo("EXAMPLE.COM", "RPCSS/server.example.com", "alice", null, null, null);
         var context = new KerberosConnectionContext(authInfo);
 
         Exception? thrown = null;
-        try
-        {
+        try {
             _ = await context.AcquireApRequestAsync();
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             thrown = ex;
         }
 

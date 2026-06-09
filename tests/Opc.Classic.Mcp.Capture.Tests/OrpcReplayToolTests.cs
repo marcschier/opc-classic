@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -9,21 +9,18 @@ using TUnit.Core;
 
 namespace Opc.Classic.Mcp.Capture.Tests;
 
-public sealed class OrpcReplayToolTests
-{
+public sealed class OrpcReplayToolTests {
     private static readonly Guid s_iid = Guid.Parse("11111111-2222-3333-4444-555555555555");
 
     [Test]
-    public async Task Replay_NullPduSequence_Throws()
-    {
+    public async Task Replay_NullPduSequence_Throws() {
         var tool = new OrpcReplayTool();
 
         await Assert.That(() => tool.Replay(null!)).Throws<ArgumentNullException>();
     }
 
     [Test]
-    public async Task Replay_MixedPdus_CountsSucceededSkippedAndBuildsConcreteKeys()
-    {
+    public async Task Replay_MixedPdus_CountsSucceededSkippedAndBuildsConcreteKeys() {
         var tool = new OrpcReplayTool();
         DecodedOpcPdu[] pdus =
         [
@@ -50,8 +47,7 @@ public sealed class OrpcReplayToolTests
     }
 
     [Test]
-    public async Task TryReplayBody_EmptyAndNonEmptyBodies_ReturnExpectedResults()
-    {
+    public async Task TryReplayBody_EmptyAndNonEmptyBodies_ReturnExpectedResults() {
         var tool = new OrpcReplayTool();
 
         bool emptyOk = tool.TryReplayBody(ReadOnlyMemory<byte>.Empty, out string? emptyError);
@@ -64,10 +60,8 @@ public sealed class OrpcReplayToolTests
     }
 
     [Test]
-    public async Task ReplayKeyStats_DefaultsAndMutableCounters_Work()
-    {
-        var stats = new ReplayKeyStats("iid/op1/request")
-        {
+    public async Task ReplayKeyStats_DefaultsAndMutableCounters_Work() {
+        var stats = new ReplayKeyStats("iid/op1/request") {
             SucceededCount = 2,
             FailedCount = 1,
             SkippedCount = 3,
@@ -87,8 +81,7 @@ public sealed class OrpcReplayToolTests
         int? responseStubLength = null,
         int? opnum = null,
         Guid? interfaceId = null)
-        => new()
-        {
+        => new() {
             Timestamp = DateTimeOffset.UnixEpoch,
             PduType = pduType,
             RequestStubLength = requestStubLength,

@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: MIT
+﻿// SPDX-License-Identifier: MIT
 
 using Opc.Classic;
 using Opc.Classic.Dcom.Internal;
@@ -16,7 +16,8 @@ using System.Net;
 using System.Security;
 using System.Security.Cryptography;
 
-namespace Opc.Classic.Dcom.Rpc.Auth.ntlm; 
+namespace Opc.Classic.Dcom.Rpc.Auth.ntlm;
+
 /// <summary>
 /// Ntlm auth
 /// </summary>

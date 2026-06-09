@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: MIT
+﻿// SPDX-License-Identifier: MIT
 
 using Opc.Classic.Dcom.Rpc.Core;
 using Opc.Classic.Dcom.Rpc.pdu;
@@ -8,7 +8,8 @@ using SharpCifs.Util.Sharpen;
 using System;
 using System.IO;
 
-namespace Opc.Classic.Dcom.Rpc; 
+namespace Opc.Classic.Dcom.Rpc;
+
 /// <summary>
 /// Default connection object
 /// </summary>
@@ -142,7 +143,7 @@ public class DefaultConnection : IConnection {
         var read = true;
 
         if (_bytesRemainingInRecieveBuffer) {
-            
+
             // receiver buffer always falls on the boundary of a new Fragment.
             //
             // Earlier code commented out: 2-byte packets caused this logic to fail

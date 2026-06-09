@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: MIT
+﻿// SPDX-License-Identifier: MIT
 
 using Opc.Classic.Dcom.Internal;
 using Opc.Classic.Dcom.Internal.LegacyNdr;
@@ -6,7 +6,8 @@ using SharpCifs.Util.Sharpen;
 using System;
 using System.IO;
 
-namespace Opc.Classic.Dcom.Rpc.pdu; 
+namespace Opc.Classic.Dcom.Rpc.pdu;
+
 /// <summary>
 /// Response pdu
 /// </summary>

@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -12,27 +12,23 @@ using TUnit.Core;
 
 namespace Opc.Classic.Hda.Tests;
 
-public sealed class NdrOpcHdaAttributeCodecTests
-{
+public sealed class NdrOpcHdaAttributeCodecTests {
     private delegate void NdrWriteAction(ref NdrWriter w);
 
-    private static byte[] WriteOne(NdrWriteAction write, int capacity = 1024)
-    {
+    private static byte[] WriteOne(NdrWriteAction write, int capacity = 1024) {
         var buf = new byte[capacity];
         var w = new NdrWriter(buf);
         write(ref w);
         return buf[..w.Position];
     }
 
-    private static OpcHdaAttribute ReadOne(byte[] bytes)
-    {
+    private static OpcHdaAttribute ReadOne(byte[] bytes) {
         var r = new NdrReader(bytes);
         return NdrOpcHdaAttributeCodec.Read(ref r);
     }
 
     [Test]
-    public async Task RoundTrip_TwoIntValues()
-    {
+    public async Task RoundTrip_TwoIntValues() {
         var input = new OpcHdaAttribute(
             clientHandle: 42,
             attributeId: 1,
@@ -51,8 +47,7 @@ public sealed class NdrOpcHdaAttributeCodecTests
     }
 
     [Test]
-    public async Task RoundTrip_Empty()
-    {
+    public async Task RoundTrip_Empty() {
         var input = new OpcHdaAttribute(
             clientHandle: 1,
             attributeId: 2,
@@ -64,8 +59,7 @@ public sealed class NdrOpcHdaAttributeCodecTests
     }
 
     [Test]
-    public async Task RoundTrip_WithBstrValues()
-    {
+    public async Task RoundTrip_WithBstrValues() {
         var input = new OpcHdaAttribute(
             clientHandle: 1,
             attributeId: 2,
@@ -77,11 +71,9 @@ public sealed class NdrOpcHdaAttributeCodecTests
     }
 
     [Test]
-    public async Task ConstructorRejectsArrayLengthMismatch()
-    {
+    public async Task ConstructorRejectsArrayLengthMismatch() {
         bool threw = false;
-        try
-        {
+        try {
             _ = new OpcHdaAttribute(
                 clientHandle: 1,
                 attributeId: 1,

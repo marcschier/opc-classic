@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -15,95 +15,79 @@ using TUnit.Core;
 
 namespace Opc.Classic.Da.Tests;
 
-public sealed class DcomInterfaceIdTests
-{
+public sealed class DcomInterfaceIdTests {
     [Test]
-    public async Task IOPCServer_InterfaceId_MatchesOpcGuids()
-    {
+    public async Task IOPCServer_InterfaceId_MatchesOpcGuids() {
         await Assert.That(IOPCServer.InterfaceId).IsEqualTo(OpcGuids.IID_IOPCServer);
     }
 
     [Test]
-    public async Task IOPCCommon_InterfaceId_MatchesOpcGuids()
-    {
+    public async Task IOPCCommon_InterfaceId_MatchesOpcGuids() {
         await Assert.That(IOPCCommon.InterfaceId).IsEqualTo(OpcGuids.IID_IOPCCommon);
     }
 
     [Test]
-    public async Task IOPCBrowse_InterfaceId_MatchesOpcGuids()
-    {
+    public async Task IOPCBrowse_InterfaceId_MatchesOpcGuids() {
         await Assert.That(IOPCBrowse.InterfaceId).IsEqualTo(OpcGuids.IID_IOPCBrowse);
     }
 
     [Test]
-    public async Task IOPCBrowseServerAddressSpace_InterfaceId_MatchesOpcGuids()
-    {
+    public async Task IOPCBrowseServerAddressSpace_InterfaceId_MatchesOpcGuids() {
         await Assert.That(IOPCBrowseServerAddressSpace.InterfaceId).IsEqualTo(OpcGuids.IID_IOPCBrowseServerAddressSpace);
     }
 
     [Test]
-    public async Task IOPCItemProperties_InterfaceId_MatchesOpcGuids()
-    {
+    public async Task IOPCItemProperties_InterfaceId_MatchesOpcGuids() {
         await Assert.That(IOPCItemProperties.InterfaceId).IsEqualTo(OpcGuids.IID_IOPCItemProperties);
     }
 
     [Test]
-    public async Task IOPCItemIO_InterfaceId_MatchesOpcGuids()
-    {
+    public async Task IOPCItemIO_InterfaceId_MatchesOpcGuids() {
         await Assert.That(IOPCItemIO.InterfaceId).IsEqualTo(OpcGuids.IID_IOPCItemIO);
     }
 
     [Test]
-    public async Task IOPCItemMgt_InterfaceId_MatchesOpcGuids()
-    {
+    public async Task IOPCItemMgt_InterfaceId_MatchesOpcGuids() {
         await Assert.That(IOPCItemMgt.InterfaceId).IsEqualTo(OpcGuids.IID_IOPCItemMgt);
     }
 
     [Test]
-    public async Task IOPCGroupStateMgt_InterfaceId_MatchesOpcGuids()
-    {
+    public async Task IOPCGroupStateMgt_InterfaceId_MatchesOpcGuids() {
         await Assert.That(IOPCGroupStateMgt.InterfaceId).IsEqualTo(OpcGuids.IID_IOPCGroupStateMgt);
     }
 
     [Test]
-    public async Task IOPCGroupStateMgt2_InterfaceId_MatchesOpcGuids()
-    {
+    public async Task IOPCGroupStateMgt2_InterfaceId_MatchesOpcGuids() {
         await Assert.That(IOPCGroupStateMgt2.InterfaceId).IsEqualTo(OpcGuids.IID_IOPCGroupStateMgt2);
     }
 
     [Test]
-    public async Task IOPCSyncIO_InterfaceId_MatchesOpcGuids()
-    {
+    public async Task IOPCSyncIO_InterfaceId_MatchesOpcGuids() {
         await Assert.That(IOPCSyncIO.InterfaceId).IsEqualTo(OpcGuids.IID_IOPCSyncIO);
     }
 
     [Test]
-    public async Task IOPCSyncIO2_InterfaceId_MatchesOpcGuids()
-    {
+    public async Task IOPCSyncIO2_InterfaceId_MatchesOpcGuids() {
         await Assert.That(IOPCSyncIO2.InterfaceId).IsEqualTo(OpcGuids.IID_IOPCSyncIO2);
     }
 
     [Test]
-    public async Task IOPCAsyncIO2_InterfaceId_MatchesOpcGuids()
-    {
+    public async Task IOPCAsyncIO2_InterfaceId_MatchesOpcGuids() {
         await Assert.That(IOPCAsyncIO2.InterfaceId).IsEqualTo(OpcGuids.IID_IOPCAsyncIO2);
     }
 
     [Test]
-    public async Task IOPCShutdown_InterfaceId_MatchesOpcGuids()
-    {
+    public async Task IOPCShutdown_InterfaceId_MatchesOpcGuids() {
         await Assert.That(IOPCShutdown.InterfaceId).IsEqualTo(OpcGuids.IID_IOPCShutdown);
     }
 
     [Test]
-    public async Task IConnectionPoint_InterfaceId_MatchesOpcGuids()
-    {
+    public async Task IConnectionPoint_InterfaceId_MatchesOpcGuids() {
         await Assert.That(IConnectionPoint.InterfaceId).IsEqualTo(OpcGuids.IID_IConnectionPoint);
     }
 
     [Test]
-    public async Task IOPCDataCallback_InterfaceId_MatchesOpcGuids()
-    {
+    public async Task IOPCDataCallback_InterfaceId_MatchesOpcGuids() {
         await Assert.That(IOPCDataCallback.InterfaceId).IsEqualTo(OpcGuids.IID_IOPCDataCallback);
     }
 }

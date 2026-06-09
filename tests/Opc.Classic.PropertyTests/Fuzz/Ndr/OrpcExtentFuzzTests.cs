@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -15,8 +15,7 @@ using TUnit.Core;
 
 namespace Opc.Classic.PropertyTests.Fuzz.Ndr;
 
-public sealed class OrpcExtentFuzzTests
-{
+public sealed class OrpcExtentFuzzTests {
     private static readonly Type[] AllowedOrpcExceptions =
     [
         typeof(InvalidDataException),
@@ -28,13 +27,11 @@ public sealed class OrpcExtentFuzzTests
 
     [Test]
     [Category("Fuzz")]
-    public async Task OrpcExtentArrayCodec_Read_RandomBytes_DoesNotCrash()
-    {
+    public async Task OrpcExtentArrayCodec_Read_RandomBytes_DoesNotCrash() {
         FuzzHarness.BytesEdgeWeighted.Sample(
             static input => FuzzHarness.AssertParseDoesNotCrash(
                 input,
-                static OrpcThat (ReadOnlyMemory<byte> bytes) =>
-                {
+                static OrpcThat (ReadOnlyMemory<byte> bytes) => {
                     var reader = new NdrReader(bytes.Span);
                     return OrpcThat.Read(ref reader);
                 },
@@ -48,10 +45,8 @@ public sealed class OrpcExtentFuzzTests
 
     [Test]
     [Category("Fuzz")]
-    public async Task OrpcExtentArrayCodec_Read_MutatedValid_DoesNotCrash()
-    {
-        byte[] valid = WriteOrpcThat(new OrpcThat
-        {
+    public async Task OrpcExtentArrayCodec_Read_MutatedValid_DoesNotCrash() {
+        byte[] valid = WriteOrpcThat(new OrpcThat {
             Extensions =
             [
                 new OrpcExtent(new Guid("00112233-4455-6677-8899-aabbccddeeff"), new byte[] { 1, 2, 3, 4, 5 }),
@@ -61,8 +56,7 @@ public sealed class OrpcExtentFuzzTests
         FuzzHarness.MutateValid(valid).Sample(
             static input => FuzzHarness.AssertParseDoesNotCrash(
                 input,
-                static OrpcThat (ReadOnlyMemory<byte> bytes) =>
-                {
+                static OrpcThat (ReadOnlyMemory<byte> bytes) => {
                     var reader = new NdrReader(bytes.Span);
                     return OrpcThat.Read(ref reader);
                 },
@@ -76,37 +70,32 @@ public sealed class OrpcExtentFuzzTests
 
     [Test]
     [Category("Fuzz")]
-    public async Task OrpcExtentArrayCodec_Read_ExtentCountVsBodyLength_Bounded()
-    {
+    public async Task OrpcExtentArrayCodec_Read_ExtentCountVsBodyLength_Bounded() {
         byte[] input = OrpcThatWithExtentCount(0x10000000u);
 
         await Assert.That((Action)(() => _ = ReadOrpcThat(input))).Throws<Exception>();
         FuzzHarness.AssertParseDoesNotCrash(
             input,
-            static OrpcThat (ReadOnlyMemory<byte> bytes) =>
-            {
+            static OrpcThat (ReadOnlyMemory<byte> bytes) => {
                 var reader = new NdrReader(bytes.Span);
                 return OrpcThat.Read(ref reader);
             },
             AllowedOrpcExceptions);
     }
 
-    private static OrpcThat ReadOrpcThat(ReadOnlyMemory<byte> input)
-    {
+    private static OrpcThat ReadOrpcThat(ReadOnlyMemory<byte> input) {
         var reader = new NdrReader(input.Span);
         return OrpcThat.Read(ref reader);
     }
 
-    private static byte[] WriteOrpcThat(OrpcThat value)
-    {
+    private static byte[] WriteOrpcThat(OrpcThat value) {
         byte[] buffer = new byte[256];
         var writer = new NdrWriter(buffer);
         value.Write(ref writer);
         return buffer.AsSpan(0, writer.Position).ToArray();
     }
 
-    private static byte[] OrpcThatWithExtentCount(uint extentCount)
-    {
+    private static byte[] OrpcThatWithExtentCount(uint extentCount) {
         byte[] buffer = new byte[20];
         BinaryPrimitives.WriteUInt32LittleEndian(buffer.AsSpan(0), 0u);
         BinaryPrimitives.WriteUInt32LittleEndian(buffer.AsSpan(4), 0x00020000u);

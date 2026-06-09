@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: MIT
+﻿// SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 
 using Microsoft.Extensions.DependencyInjection;
@@ -12,15 +12,12 @@ using Opc.Classic.Testing;
 
 namespace Opc.Classic.Samples.HdaClient;
 
-internal static class Program
-{
-    public static async Task<int> Main(string[] args)
-    {
+internal static class Program {
+    public static async Task<int> Main(string[] args) {
         var host = Host.CreateApplicationBuilder(args);
 
         host.Logging.ClearProviders();
-        host.Logging.AddSimpleConsole(static opt =>
-        {
+        host.Logging.AddSimpleConsole(static opt => {
             opt.SingleLine = true;
             opt.TimestampFormat = "HH:mm:ss ";
         });
@@ -36,12 +33,10 @@ internal static class Program
             ? $"Connecting over TCP to {remoteHost}:{remotePort}"
             : "Running in-process via InMemoryCallChannel + LoopbackDaServer");
 
-        if (useTcp)
-        {
+        if (useTcp) {
             AddTcpHdaClient(host.Services, remoteHost!, remotePort);
         }
-        else
-        {
+        else {
             AddLoopbackHdaClient(host.Services);
         }
 
@@ -51,8 +46,7 @@ internal static class Program
         return 0;
     }
 
-    private static void AddTcpHdaClient(IServiceCollection services, string remoteHost, int remotePort)
-    {
+    private static void AddTcpHdaClient(IServiceCollection services, string remoteHost, int remotePort) {
         services.AddSingleton<DcomCallChannel>(_ =>
             DcomCallChannelFactory.ConnectTcpAsync(remoteHost, remotePort, NoOpAuthContext.Instance)
                 .GetAwaiter()
@@ -61,8 +55,7 @@ internal static class Program
         services.AddSingleton<LoopbackHdaClient>();
     }
 
-    private static void AddLoopbackHdaClient(IServiceCollection services)
-    {
+    private static void AddLoopbackHdaClient(IServiceCollection services) {
         services.AddSingleton<HistoricalDataStore>();
         services.AddSingleton<IOpcHdaServer, SampleHdaServer>();
         services.AddSingleton<LoopbackHdaCallRouter>();

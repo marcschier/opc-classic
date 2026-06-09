@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -13,8 +13,7 @@ namespace Opc.Classic.Ae.Hosting.Windows;
 
 /// <summary>Helpers for OPC AE Windows CCW CoTaskMem array marshaling.</summary>
 [SupportedOSPlatform("windows")]
-internal static unsafe class OpcAeArrayMarshaler
-{
+internal static unsafe class OpcAeArrayMarshaler {
     private const ushort VT_EMPTY = 0;
     private const ushort VT_NULL = 1;
     private const ushort VT_I2 = 2;
@@ -36,67 +35,55 @@ internal static unsafe class OpcAeArrayMarshaler
 
     public static int VariantSize => IntPtr.Size == 8 ? 24 : 16;
 
-    public static void AllocateBstrArray(IReadOnlyList<string?> strings, out int count, out IntPtr arrayPtr)
-    {
+    public static void AllocateBstrArray(IReadOnlyList<string?> strings, out int count, out IntPtr arrayPtr) {
         ArgumentNullException.ThrowIfNull(strings);
         count = strings.Count;
-        if (count == 0)
-        {
+        if (count == 0) {
             arrayPtr = IntPtr.Zero;
             return;
         }
 
         arrayPtr = Marshal.AllocCoTaskMem(checked((count + 1) * IntPtr.Size));
-        for (int i = 0; i <= count; i++)
-        {
+        for (int i = 0; i <= count; i++) {
             Marshal.WriteIntPtr(arrayPtr, i * IntPtr.Size, IntPtr.Zero);
         }
 
-        try
-        {
-            for (int i = 0; i < count; i++)
-            {
+        try {
+            for (int i = 0; i < count; i++) {
                 Marshal.WriteIntPtr(arrayPtr, i * IntPtr.Size, Marshal.StringToBSTR(strings[i] ?? string.Empty));
             }
         }
-        catch
-        {
+        catch {
             FreeBstrArray(arrayPtr, count);
             arrayPtr = IntPtr.Zero;
             throw;
         }
     }
 
-    public static void AllocateDwordArray(IReadOnlyList<int> values, out int count, out IntPtr arrayPtr)
-    {
+    public static void AllocateDwordArray(IReadOnlyList<int> values, out int count, out IntPtr arrayPtr) {
         ArgumentNullException.ThrowIfNull(values);
         count = values.Count;
-        if (count == 0)
-        {
+        if (count == 0) {
             arrayPtr = IntPtr.Zero;
             return;
         }
 
         arrayPtr = Marshal.AllocCoTaskMem(checked(count * sizeof(int)));
-        for (int i = 0; i < count; i++)
-        {
+        for (int i = 0; i < count; i++) {
             Marshal.WriteInt32(arrayPtr, i * sizeof(int), values[i]);
         }
     }
 
-    public static void AllocateUInt16Array(IReadOnlyList<ushort> values, out int count, out IntPtr arrayPtr)
-    {
+    public static void AllocateUInt16Array(IReadOnlyList<ushort> values, out int count, out IntPtr arrayPtr) {
         ArgumentNullException.ThrowIfNull(values);
         count = values.Count;
-        if (count == 0)
-        {
+        if (count == 0) {
             arrayPtr = IntPtr.Zero;
             return;
         }
 
         arrayPtr = Marshal.AllocCoTaskMem(checked(count * sizeof(ushort)));
-        for (int i = 0; i < count; i++)
-        {
+        for (int i = 0; i < count; i++) {
             Marshal.WriteInt16(arrayPtr, i * sizeof(ushort), unchecked((short)values[i]));
         }
     }
@@ -104,88 +91,72 @@ internal static unsafe class OpcAeArrayMarshaler
     public static void AllocateHResultArray(IReadOnlyList<int> hresults, out int count, out IntPtr arrayPtr) =>
         AllocateDwordArray(hresults, out count, out arrayPtr);
 
-    public static void AllocateGuidArray(IReadOnlyList<Guid> guids, out int count, out IntPtr arrayPtr)
-    {
+    public static void AllocateGuidArray(IReadOnlyList<Guid> guids, out int count, out IntPtr arrayPtr) {
         ArgumentNullException.ThrowIfNull(guids);
         count = guids.Count;
-        if (count == 0)
-        {
+        if (count == 0) {
             arrayPtr = IntPtr.Zero;
             return;
         }
 
         arrayPtr = Marshal.AllocCoTaskMem(checked(count * sizeof(Guid)));
         Guid* destination = (Guid*)arrayPtr;
-        for (int i = 0; i < count; i++)
-        {
+        for (int i = 0; i < count; i++) {
             destination[i] = guids[i];
         }
     }
 
-    public static string[] ReadBstrArray(IntPtr arrayPtr, int count)
-    {
+    public static string[] ReadBstrArray(IntPtr arrayPtr, int count) {
         ArgumentOutOfRangeException.ThrowIfNegative(count);
-        if (count == 0)
-        {
+        if (count == 0) {
             return [];
         }
-        if (arrayPtr == IntPtr.Zero)
-        {
+        if (arrayPtr == IntPtr.Zero) {
             throw new ArgumentNullException(nameof(arrayPtr));
         }
 
         var values = new string[count];
-        for (int i = 0; i < count; i++)
-        {
+        for (int i = 0; i < count; i++) {
             IntPtr valuePtr = Marshal.ReadIntPtr(arrayPtr, i * IntPtr.Size);
             values[i] = valuePtr == IntPtr.Zero ? string.Empty : Marshal.PtrToStringBSTR(valuePtr) ?? string.Empty;
         }
         return values;
     }
 
-    internal static int[] ReadDwordArray(IntPtr arrayPtr, int count)
-    {
+    internal static int[] ReadDwordArray(IntPtr arrayPtr, int count) {
         ArgumentOutOfRangeException.ThrowIfNegative(count);
-        if (count == 0)
-        {
+        if (count == 0) {
             return [];
         }
-        if (arrayPtr == IntPtr.Zero)
-        {
+        if (arrayPtr == IntPtr.Zero) {
             throw new ArgumentNullException(nameof(arrayPtr));
         }
 
         var values = new int[count];
-        for (int i = 0; i < count; i++)
-        {
+        for (int i = 0; i < count; i++) {
             values[i] = Marshal.ReadInt32(arrayPtr, i * sizeof(int));
         }
         return values;
     }
 
-    internal static long[] ReadFileTimeArray(IntPtr arrayPtr, int count)
-    {
+    internal static long[] ReadFileTimeArray(IntPtr arrayPtr, int count) {
         ArgumentOutOfRangeException.ThrowIfNegative(count);
-        if (count == 0)
-        {
+        if (count == 0) {
             return [];
         }
-        if (arrayPtr == IntPtr.Zero)
-        {
+        if (arrayPtr == IntPtr.Zero) {
             throw new ArgumentNullException(nameof(arrayPtr));
         }
 
         var values = new long[count];
-        for (int i = 0; i < count; i++)
-        {
+        for (int i = 0; i < count; i++) {
             values[i] = Marshal.ReadInt64(arrayPtr, i * sizeof(long));
         }
         return values;
     }
 
     [SuppressMessage("Maintainability", "MA0051:Method is too long", Justification = "Native OPCCONDITIONSTATE allocation owns correlated cleanup state.")]
-    internal static IntPtr AllocateConditionState(OpcConditionState state)
-    {
+    internal static IntPtr AllocateConditionState(OpcConditionState state) {
         ArgumentNullException.ThrowIfNull(state);
 
         IntPtr activeSubConditionPtr = IntPtr.Zero;
@@ -201,8 +172,7 @@ internal static unsafe class OpcAeArrayMarshaler
         IntPtr errorsPtr = IntPtr.Zero;
         IntPtr statePtr = IntPtr.Zero;
 
-        try
-        {
+        try {
             activeSubConditionPtr = AllocateBstr(state.ActiveSubCondition);
             activeDefinitionPtr = AllocateBstr(state.ActiveSubConditionDefinition);
             activeDescriptionPtr = AllocateBstr(state.ActiveSubConditionDescription);
@@ -219,8 +189,7 @@ internal static unsafe class OpcAeArrayMarshaler
             AllocateHResultArray(state.Errors, out int errorCount, out errorsPtr);
             EnsureSameLength(eventAttributeCount, errorCount, nameof(state.Errors));
 
-            var native = new OPCCONDITIONSTATE_NATIVE
-            {
+            var native = new OPCCONDITIONSTATE_NATIVE {
                 wState = state.State,
                 wReserved1 = 0,
                 szActiveSubCondition = activeSubConditionPtr,
@@ -260,8 +229,7 @@ internal static unsafe class OpcAeArrayMarshaler
             errorsPtr = IntPtr.Zero;
             return statePtr;
         }
-        catch
-        {
+        catch {
             FreeBstr(activeSubConditionPtr);
             FreeBstr(activeDefinitionPtr);
             FreeBstr(activeDescriptionPtr);
@@ -278,67 +246,54 @@ internal static unsafe class OpcAeArrayMarshaler
         }
     }
 
-    internal static void FreeCoTaskMem(IntPtr ptr)
-    {
-        if (ptr != IntPtr.Zero)
-        {
+    internal static void FreeCoTaskMem(IntPtr ptr) {
+        if (ptr != IntPtr.Zero) {
             Marshal.FreeCoTaskMem(ptr);
         }
     }
 
-    internal static void FreeBstrArray(IntPtr arrayPtr, int count)
-    {
-        if (arrayPtr == IntPtr.Zero)
-        {
+    internal static void FreeBstrArray(IntPtr arrayPtr, int count) {
+        if (arrayPtr == IntPtr.Zero) {
             return;
         }
 
-        for (int i = 0; i < count; i++)
-        {
+        for (int i = 0; i < count; i++) {
             FreeBstr(Marshal.ReadIntPtr(arrayPtr, i * IntPtr.Size));
         }
         Marshal.FreeCoTaskMem(arrayPtr);
     }
 
-    internal static void FreeVariantArray(IntPtr arrayPtr, int count)
-    {
-        if (arrayPtr == IntPtr.Zero)
-        {
+    internal static void FreeVariantArray(IntPtr arrayPtr, int count) {
+        if (arrayPtr == IntPtr.Zero) {
             return;
         }
 
         int variantSize = VariantSize;
-        for (int i = 0; i < count; i++)
-        {
+        for (int i = 0; i < count; i++) {
             ClearVariant(arrayPtr + (i * variantSize));
         }
         Marshal.FreeCoTaskMem(arrayPtr);
     }
 
-    private static void AllocateUInt32Array(IReadOnlyList<uint> values, out int count, out IntPtr arrayPtr)
-    {
+    private static void AllocateUInt32Array(IReadOnlyList<uint> values, out int count, out IntPtr arrayPtr) {
         ArgumentNullException.ThrowIfNull(values);
         count = values.Count;
-        if (count == 0)
-        {
+        if (count == 0) {
             arrayPtr = IntPtr.Zero;
             return;
         }
 
         arrayPtr = Marshal.AllocCoTaskMem(checked(count * sizeof(int)));
-        for (int i = 0; i < count; i++)
-        {
+        for (int i = 0; i < count; i++) {
             Marshal.WriteInt32(arrayPtr, i * sizeof(int), unchecked((int)values[i]));
         }
     }
 
     [SuppressMessage("Reliability", "CA2018:Buffer size argument matches element count", Justification = "Explicit byte size.")]
-    private static void AllocateVariantArray(IReadOnlyList<OpcVariant> values, out int count, out IntPtr arrayPtr)
-    {
+    private static void AllocateVariantArray(IReadOnlyList<OpcVariant> values, out int count, out IntPtr arrayPtr) {
         ArgumentNullException.ThrowIfNull(values);
         count = values.Count;
-        if (count == 0)
-        {
+        if (count == 0) {
             arrayPtr = IntPtr.Zero;
             return;
         }
@@ -346,15 +301,12 @@ internal static unsafe class OpcAeArrayMarshaler
         int variantSize = VariantSize;
         arrayPtr = Marshal.AllocCoTaskMem(checked(count * variantSize));
         NativeMemory.Clear((void*)arrayPtr, (nuint)(count * variantSize));
-        try
-        {
-            for (int i = 0; i < count; i++)
-            {
+        try {
+            for (int i = 0; i < count; i++) {
                 WriteVariant(arrayPtr + (i * variantSize), values[i]);
             }
         }
-        catch
-        {
+        catch {
             FreeVariantArray(arrayPtr, count);
             arrayPtr = IntPtr.Zero;
             throw;
@@ -364,18 +316,14 @@ internal static unsafe class OpcAeArrayMarshaler
     private static IntPtr AllocateBstr(string? value) =>
         value is null ? IntPtr.Zero : Marshal.StringToBSTR(value);
 
-    private static void FreeBstr(IntPtr ptr)
-    {
-        if (ptr != IntPtr.Zero)
-        {
+    private static void FreeBstr(IntPtr ptr) {
+        if (ptr != IntPtr.Zero) {
             Marshal.FreeBSTR(ptr);
         }
     }
 
-    private static void EnsureSameLength(int expected, int actual, string arrayName)
-    {
-        if (actual != expected)
-        {
+    private static void EnsureSameLength(int expected, int actual, string arrayName) {
+        if (actual != expected) {
             throw new ArgumentException($"{arrayName} length {actual} must equal {expected}.", arrayName);
         }
     }
@@ -384,31 +332,25 @@ internal static unsafe class OpcAeArrayMarshaler
 
     private static int ValueOffset => 8;
 
-    private static void WriteVariant(IntPtr dest, OpcVariant variant)
-    {
+    private static void WriteVariant(IntPtr dest, OpcVariant variant) {
         NativeMemory.Clear((void*)dest, (nuint)VariantSize);
         ushort vt = (ushort)variant.Type;
         Marshal.WriteInt16(dest, unchecked((short)vt));
-        if ((vt & VT_ARRAY) != 0)
-        {
+        if ((vt & VT_ARRAY) != 0) {
             WriteSafeArrayPayload(dest, variant);
             return;
         }
         WriteScalarPayload(dest, vt, variant.Boxed);
     }
 
-    private static void ClearVariant(IntPtr ptr)
-    {
+    private static void ClearVariant(IntPtr ptr) {
         ushort vt = unchecked((ushort)Marshal.ReadInt16(ptr));
-        if (vt == VT_BSTR)
-        {
+        if (vt == VT_BSTR) {
             FreeBstr(Marshal.ReadIntPtr(ptr, ValueOffset));
         }
-        else if ((vt & VT_ARRAY) != 0)
-        {
+        else if ((vt & VT_ARRAY) != 0) {
             IntPtr safeArrayPtr = Marshal.ReadIntPtr(ptr, ValueOffset);
-            if (safeArrayPtr != IntPtr.Zero)
-            {
+            if (safeArrayPtr != IntPtr.Zero) {
                 FreeSafeArray(safeArrayPtr, unchecked((ushort)(vt & ~VT_ARRAY)));
             }
         }
@@ -416,11 +358,9 @@ internal static unsafe class OpcAeArrayMarshaler
     }
 
     [SuppressMessage("Design", "CA1502:Avoid excessive complexity", Justification = "VARIANT scalar dispatch requires one branch per VARENUM code.")]
-    private static void WriteScalarPayload(IntPtr dest, ushort vt, object? boxed)
-    {
+    private static void WriteScalarPayload(IntPtr dest, ushort vt, object? boxed) {
         IntPtr value = dest + ValueOffset;
-        switch (vt)
-        {
+        switch (vt) {
             case VT_I1:
                 Marshal.WriteByte(value, unchecked((byte)(sbyte)(boxed ?? (sbyte)0)));
                 break;
@@ -468,11 +408,9 @@ internal static unsafe class OpcAeArrayMarshaler
         }
     }
 
-    private static void WriteSafeArrayPayload(IntPtr dest, OpcVariant variant)
-    {
+    private static void WriteSafeArrayPayload(IntPtr dest, OpcVariant variant) {
         OpcSafeArray? array = variant.AsSafeArray();
-        if (array is null || array.Data.Length == 0)
-        {
+        if (array is null || array.Data.Length == 0) {
             Marshal.WriteIntPtr(dest, ValueOffset, IntPtr.Zero);
             return;
         }
@@ -480,8 +418,7 @@ internal static unsafe class OpcAeArrayMarshaler
     }
 
     [SuppressMessage("Reliability", "CA2018:Buffer size argument matches element count", Justification = "Explicit SAFEARRAY descriptor and data byte sizes.")]
-    private static IntPtr AllocateSafeArray(OpcSafeArray array)
-    {
+    private static IntPtr AllocateSafeArray(OpcSafeArray array) {
         ushort baseVt = (ushort)array.ElementType;
         int elementSize = ElementSizeOf(baseVt);
         int count = array.Data.Length;
@@ -491,8 +428,7 @@ internal static unsafe class OpcAeArrayMarshaler
         IntPtr descriptor = IntPtr.Zero;
         IntPtr dataBuffer = IntPtr.Zero;
 
-        try
-        {
+        try {
             descriptor = Marshal.AllocCoTaskMem(descriptorSize);
             NativeMemory.Clear((void*)descriptor, (nuint)descriptorSize);
             dataBuffer = Marshal.AllocCoTaskMem(checked(elementSize * count));
@@ -508,26 +444,21 @@ internal static unsafe class OpcAeArrayMarshaler
             dataBuffer = IntPtr.Zero;
             return descriptor;
         }
-        catch
-        {
+        catch {
             FreeCoTaskMem(dataBuffer);
             FreeCoTaskMem(descriptor);
             throw;
         }
     }
 
-    private static void FreeSafeArray(IntPtr descriptor, ushort baseVt)
-    {
+    private static void FreeSafeArray(IntPtr descriptor, ushort baseVt) {
         int pvDataOffset = 8 + IntPtr.Size;
         int boundsOffset = pvDataOffset + IntPtr.Size;
         IntPtr dataBuffer = Marshal.ReadIntPtr(descriptor, pvDataOffset);
-        if (dataBuffer != IntPtr.Zero)
-        {
-            if (baseVt == VT_BSTR)
-            {
+        if (dataBuffer != IntPtr.Zero) {
+            if (baseVt == VT_BSTR) {
                 int count = Marshal.ReadInt32(descriptor, boundsOffset);
-                for (int i = 0; i < count; i++)
-                {
+                for (int i = 0; i < count; i++) {
                     FreeBstr(Marshal.ReadIntPtr(dataBuffer, i * IntPtr.Size));
                 }
             }
@@ -536,8 +467,7 @@ internal static unsafe class OpcAeArrayMarshaler
         Marshal.FreeCoTaskMem(descriptor);
     }
 
-    private static int ElementSizeOf(ushort baseVt) => baseVt switch
-    {
+    private static int ElementSizeOf(ushort baseVt) => baseVt switch {
         VT_I1 or VT_UI1 => 1,
         VT_I2 or VT_UI2 or VT_BOOL => 2,
         VT_I4 or VT_UI4 or VT_ERROR or VT_R4 => 4,
@@ -547,15 +477,12 @@ internal static unsafe class OpcAeArrayMarshaler
     };
 
     [SuppressMessage("Design", "CA1502:Avoid excessive complexity", Justification = "SAFEARRAY element dispatch requires one branch per VARENUM code.")]
-    private static void WriteSafeArrayData(IntPtr dataBuffer, OpcSafeArray array, ushort baseVt, int elementSize)
-    {
+    private static void WriteSafeArrayData(IntPtr dataBuffer, OpcSafeArray array, ushort baseVt, int elementSize) {
         Array data = array.Data;
-        for (int i = 0; i < data.Length; i++)
-        {
+        for (int i = 0; i < data.Length; i++) {
             IntPtr slot = dataBuffer + (i * elementSize);
             object? value = data.GetValue(i);
-            switch (baseVt)
-            {
+            switch (baseVt) {
                 case VT_I1: Marshal.WriteByte(slot, unchecked((byte)(sbyte)(value ?? (sbyte)0))); break;
                 case VT_UI1: Marshal.WriteByte(slot, (byte)(value ?? (byte)0)); break;
                 case VT_I2: Marshal.WriteInt16(slot, (short)(value ?? (short)0)); break;
@@ -578,8 +505,7 @@ internal static unsafe class OpcAeArrayMarshaler
     // A packed layout puts pointers at unaligned offsets and Windows DCOM's
     // proxy/stub reads garbage when marshalling the response.
     [StructLayout(LayoutKind.Sequential)]
-    private struct OPCCONDITIONSTATE_NATIVE
-    {
+    private struct OPCCONDITIONSTATE_NATIVE {
         public ushort wState;
         public ushort wReserved1;
         public IntPtr szActiveSubCondition;

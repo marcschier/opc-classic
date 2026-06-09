@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -10,8 +10,7 @@ using Opc.Classic.Hosting;
 
 namespace Opc.Classic.Dcom.Transport;
 
-public interface IRpcRequestContextDispatcher : IOpcServerDispatcher
-{
+public interface IRpcRequestContextDispatcher : IOpcServerDispatcher {
     ValueTask<DispatchResult> DispatchAsync(
         int opnum,
         ReadOnlyMemory<byte> requestPayload,

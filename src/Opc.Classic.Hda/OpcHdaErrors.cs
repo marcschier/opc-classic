@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -14,8 +14,7 @@ namespace Opc.Classic.Hda;
 /// The OPC Foundation header names these <c>OPC_E_*</c>/<c>OPC_S_*</c>. This type exposes
 /// HDA-scoped <c>OPCHDA_*</c> aliases and matching header-name aliases for interop code.
 /// </remarks>
-public static class OpcHdaErrors
-{
+public static class OpcHdaErrors {
     /// <summary><c>OPC_E_MAXEXCEEDED</c>: maximum value count exceeds the server limit.</summary>
     public const int OPCHDA_E_MAXEXCEEDED = unchecked((int)0xC0041001u);
 

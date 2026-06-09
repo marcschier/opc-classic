@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -8,8 +8,7 @@ using Opc.Classic.Mcp.Dtos;
 namespace Opc.Classic.Mcp.Sessions;
 
 /// <summary>Manages long-lived OPC Classic sessions for MCP tools.</summary>
-public interface IOpcSessionManager
-{
+public interface IOpcSessionManager {
     /// <summary>Creates a new OPC Classic session.</summary>
     OpcSession CreateSession(TimeSpan? idleExpiry = null);
 

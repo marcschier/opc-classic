@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -29,8 +29,7 @@ namespace Opc.Classic.Dcom.Transport;
 /// 16-bit fragment-length field at offset 8 is honored when reading from a
 /// <see cref="PipeReader" />.
 /// </remarks>
-public static class PduCodec
-{
+public static class PduCodec {
     /// <summary>
     /// Reads exactly one full DCE/RPC fragment from <paramref name="input" />,
     /// honoring the fragment-length field of the common header.
@@ -39,35 +38,27 @@ public static class PduCodec
     /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>The bytes of a single fragment (header + body + optional auth verifier).</returns>
     /// <exception cref="EndOfStreamException">If the input completes before a full fragment arrives.</exception>
-    public static async ValueTask<byte[]> ReadPduFrameAsync(PipeReader input, CancellationToken cancellationToken)
-    {
+    public static async ValueTask<byte[]> ReadPduFrameAsync(PipeReader input, CancellationToken cancellationToken) {
         ArgumentNullException.ThrowIfNull(input);
 
-        while (true)
-        {
+        while (true) {
             ReadResult result = await input.ReadAsync(cancellationToken).ConfigureAwait(false);
             ReadOnlySequence<byte> buffer = result.Buffer;
-            try
-            {
-                if (TryGetFragmentLength(buffer, out int fragmentLength) && buffer.Length >= fragmentLength)
-                {
+            try {
+                if (TryGetFragmentLength(buffer, out int fragmentLength) && buffer.Length >= fragmentLength) {
                     ReadOnlySequence<byte> frame = buffer.Slice(0, fragmentLength);
                     return frame.ToArray();
                 }
 
-                if (result.IsCompleted)
-                {
+                if (result.IsCompleted) {
                     throw new EndOfStreamException("Transport completed before a full DCE/RPC PDU arrived.");
                 }
             }
-            finally
-            {
-                if (TryGetFragmentLength(buffer, out int fragmentLength) && buffer.Length >= fragmentLength)
-                {
+            finally {
+                if (TryGetFragmentLength(buffer, out int fragmentLength) && buffer.Length >= fragmentLength) {
                     input.AdvanceTo(buffer.GetPosition(fragmentLength));
                 }
-                else
-                {
+                else {
                     input.AdvanceTo(buffer.Start, buffer.End);
                 }
             }
@@ -79,11 +70,9 @@ public static class PduCodec
     /// least the DCE/RPC common header and yields the advertised fragment
     /// length out of it.
     /// </summary>
-    public static bool TryGetFragmentLength(ReadOnlySequence<byte> buffer, out int fragmentLength)
-    {
+    public static bool TryGetFragmentLength(ReadOnlySequence<byte> buffer, out int fragmentLength) {
         fragmentLength = 0;
-        if (buffer.Length < ConnectionOrientedPdu.HEADER_LENGTH)
-        {
+        if (buffer.Length < ConnectionOrientedPdu.HEADER_LENGTH) {
             return false;
         }
 
@@ -100,17 +89,14 @@ public static class PduCodec
     /// <param name="bytes">The fragment bytes.</param>
     /// <returns>The decoded PDU.</returns>
     /// <exception cref="InvalidOperationException">If the PDU type is unknown.</exception>
-    public static ConnectionOrientedPdu DecodePdu(byte[] bytes)
-    {
+    public static ConnectionOrientedPdu DecodePdu(byte[] bytes) {
         ArgumentNullException.ThrowIfNull(bytes);
-        if (bytes.Length < ConnectionOrientedPdu.HEADER_LENGTH)
-        {
+        if (bytes.Length < ConnectionOrientedPdu.HEADER_LENGTH) {
             throw new InvalidOperationException("DCE/RPC frame is shorter than the common header.");
         }
 
         byte type = bytes[ConnectionOrientedPdu.TYPE_OFFSET];
-        ConnectionOrientedPdu pdu = type switch
-        {
+        ConnectionOrientedPdu pdu = type switch {
             RequestCoPdu.REQUEST_TYPE => new RequestCoPdu(),
             ResponseCoPdu.RESPONSE_TYPE => new ResponseCoPdu(),
             FaultCoPdu.FAULT_TYPE => new FaultCoPdu(),
@@ -141,8 +127,7 @@ public static class PduCodec
     /// The maximum transmit fragment size negotiated for this connection.
     /// Determines the working buffer capacity.
     /// </param>
-    public static byte[] EncodePdu(ConnectionOrientedPdu pdu, int maxTransmitFragment)
-    {
+    public static byte[] EncodePdu(ConnectionOrientedPdu pdu, int maxTransmitFragment) {
         ArgumentNullException.ThrowIfNull(pdu);
         int capacity = Math.Max(maxTransmitFragment, ConnectionOrientedPdu.MUST_RECEIVE_FRAGMENT_SIZE);
         var ndr = new NdrCodec { Format = pdu.Format };

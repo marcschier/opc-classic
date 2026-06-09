@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -15,15 +15,12 @@ using TUnit.Core;
 namespace Opc.Classic.Ae.Tests.Hosting.Windows;
 
 [SupportedOSPlatform("windows")]
-public sealed class OpcAeEventFilterMarshalingTests
-{
+public sealed class OpcAeEventFilterMarshalingTests {
     private const int S_OK = 0;
 
     [Test]
-    public async Task SetFilter_then_GetFilter_roundtrips_full_BSTR_payload()
-    {
-        if (!OperatingSystem.IsWindows())
-        {
+    public async Task SetFilter_then_GetFilter_roundtrips_full_BSTR_payload() {
+        if (!OperatingSystem.IsWindows()) {
             return;
         }
 
@@ -57,8 +54,7 @@ public sealed class OpcAeEventFilterMarshalingTests
         await Assert.That(result.ObservedBstrCount).IsEqualTo(4);
     }
 
-    private sealed class RecordingSubscription : IOPCEventSubscriptionMgt
-    {
+    private sealed class RecordingSubscription : IOPCEventSubscriptionMgt {
         public int EventType { get; private set; }
         public int[] Categories { get; private set; } = [];
         public int LowSeverity { get; private set; }
@@ -66,8 +62,7 @@ public sealed class OpcAeEventFilterMarshalingTests
         public string[] Areas { get; private set; } = [];
         public string[] Sources { get; private set; } = [];
 
-        public Task SetFilterAsync(int eventType, int[] eventCategories, int lowSeverity, int highSeverity, string[] areas, string[] sources, CancellationToken cancellationToken = default)
-        {
+        public Task SetFilterAsync(int eventType, int[] eventCategories, int lowSeverity, int highSeverity, string[] areas, string[] sources, CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             EventType = eventType;
             Categories = eventCategories;
@@ -78,8 +73,7 @@ public sealed class OpcAeEventFilterMarshalingTests
             return Task.CompletedTask;
         }
 
-        public Task GetFilterAsync(out int eventType, out int[] eventCategories, out int lowSeverity, out int highSeverity, out string[] areas, out string[] sources, CancellationToken cancellationToken = default)
-        {
+        public Task GetFilterAsync(out int eventType, out int[] eventCategories, out int lowSeverity, out int highSeverity, out string[] areas, out string[] sources, CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             eventType = EventType;
             eventCategories = Categories;
@@ -95,8 +89,7 @@ public sealed class OpcAeEventFilterMarshalingTests
         public Task RefreshAsync(int connection, CancellationToken cancellationToken = default) => Task.CompletedTask;
         public Task CancelRefreshAsync(int connection, CancellationToken cancellationToken = default) => Task.CompletedTask;
 
-        public Task GetStateAsync(out bool active, out int bufferTime, out int maxSize, out int clientSubscription, CancellationToken cancellationToken = default)
-        {
+        public Task GetStateAsync(out bool active, out int bufferTime, out int maxSize, out int clientSubscription, CancellationToken cancellationToken = default) {
             active = true;
             bufferTime = 0;
             maxSize = 0;
@@ -104,8 +97,7 @@ public sealed class OpcAeEventFilterMarshalingTests
             return Task.CompletedTask;
         }
 
-        public Task SetStateAsync(bool active, int bufferTime, int maxSize, int clientSubscription, out int revisedBufferTime, out int revisedMaxSize, CancellationToken cancellationToken = default)
-        {
+        public Task SetStateAsync(bool active, int bufferTime, int maxSize, int clientSubscription, out int revisedBufferTime, out int revisedMaxSize, CancellationToken cancellationToken = default) {
             _ = active;
             revisedBufferTime = bufferTime;
             revisedMaxSize = maxSize;
@@ -113,30 +105,25 @@ public sealed class OpcAeEventFilterMarshalingTests
         }
     }
 
-    private static class FilterHelpers
-    {
+    private static class FilterHelpers {
         internal readonly record struct FilterResult(int Hr, int EventType, int[] Categories, int LowSeverity, int HighSeverity, string[] Areas, string[] Sources, int ObservedBstrCount);
 
-        internal static int InvokeSetFilter(IntPtr subscription, int eventType, int[] categories, int lowSeverity, int highSeverity, string[] areas, string[] sources)
-        {
+        internal static int InvokeSetFilter(IntPtr subscription, int eventType, int[] categories, int lowSeverity, int highSeverity, string[] areas, string[] sources) {
             SetFilterDelegate setFilter = GetMethod<SetFilterDelegate>(subscription, 3);
             IntPtr categoriesPtr = AllocateInt32Array(categories);
             IntPtr areasPtr = AllocateBstrPointerArray(areas);
             IntPtr sourcesPtr = AllocateBstrPointerArray(sources);
-            try
-            {
+            try {
                 return setFilter(subscription, eventType, categories.Length, categoriesPtr, lowSeverity, highSeverity, areas.Length, areasPtr, sources.Length, sourcesPtr);
             }
-            finally
-            {
+            finally {
                 FreeCoTaskMem(categoriesPtr);
                 FreeBstrPointerArray(areasPtr, areas.Length);
                 FreeBstrPointerArray(sourcesPtr, sources.Length);
             }
         }
 
-        internal static FilterResult InvokeGetFilter(IntPtr subscription)
-        {
+        internal static FilterResult InvokeGetFilter(IntPtr subscription) {
             GetFilterDelegate getFilter = GetMethod<GetFilterDelegate>(subscription, 4);
             IntPtr pEventType = Marshal.AllocCoTaskMem(sizeof(int));
             IntPtr pCategoryCount = Marshal.AllocCoTaskMem(sizeof(int));
@@ -147,8 +134,7 @@ public sealed class OpcAeEventFilterMarshalingTests
             IntPtr categoriesPtr = IntPtr.Zero;
             IntPtr areasPtr = IntPtr.Zero;
             IntPtr sourcesPtr = IntPtr.Zero;
-            try
-            {
+            try {
                 int hr = getFilter(subscription, pEventType, pCategoryCount, out categoriesPtr, pLowSeverity, pHighSeverity, pAreaCount, out areasPtr, pSourceCount, out sourcesPtr);
                 int categoryCount = Marshal.ReadInt32(pCategoryCount);
                 int areaCount = Marshal.ReadInt32(pAreaCount);
@@ -165,8 +151,7 @@ public sealed class OpcAeEventFilterMarshalingTests
                     sources,
                     CountBstrPointers(areasPtr) + CountBstrPointers(sourcesPtr));
             }
-            finally
-            {
+            finally {
                 Marshal.FreeCoTaskMem(pEventType);
                 Marshal.FreeCoTaskMem(pCategoryCount);
                 Marshal.FreeCoTaskMem(pLowSeverity);
@@ -179,10 +164,8 @@ public sealed class OpcAeEventFilterMarshalingTests
             }
         }
 
-        private static IntPtr AllocateInt32Array(int[] values)
-        {
-            if (values.Length == 0)
-            {
+        private static IntPtr AllocateInt32Array(int[] values) {
+            if (values.Length == 0) {
                 return IntPtr.Zero;
             }
             IntPtr ptr = Marshal.AllocCoTaskMem(values.Length * sizeof(int));
@@ -190,24 +173,19 @@ public sealed class OpcAeEventFilterMarshalingTests
             return ptr;
         }
 
-        private static IntPtr AllocateBstrPointerArray(string[] values)
-        {
-            if (values.Length == 0)
-            {
+        private static IntPtr AllocateBstrPointerArray(string[] values) {
+            if (values.Length == 0) {
                 return IntPtr.Zero;
             }
             IntPtr ptr = Marshal.AllocCoTaskMem(values.Length * IntPtr.Size);
-            for (int i = 0; i < values.Length; i++)
-            {
+            for (int i = 0; i < values.Length; i++) {
                 Marshal.WriteIntPtr(ptr, i * IntPtr.Size, Marshal.StringToBSTR(values[i]));
             }
             return ptr;
         }
 
-        private static int[] ReadInt32Array(IntPtr ptr, int count)
-        {
-            if (count == 0)
-            {
+        private static int[] ReadInt32Array(IntPtr ptr, int count) {
+            if (count == 0) {
                 return [];
             }
             var values = new int[count];
@@ -215,62 +193,49 @@ public sealed class OpcAeEventFilterMarshalingTests
             return values;
         }
 
-        private static string[] ReadBstrPointerArray(IntPtr ptr, int count)
-        {
-            if (count == 0)
-            {
+        private static string[] ReadBstrPointerArray(IntPtr ptr, int count) {
+            if (count == 0) {
                 return [];
             }
             var values = new string[count];
-            for (int i = 0; i < count; i++)
-            {
+            for (int i = 0; i < count; i++) {
                 values[i] = Marshal.PtrToStringBSTR(Marshal.ReadIntPtr(ptr, i * IntPtr.Size)) ?? string.Empty;
             }
             return values;
         }
 
-        private static int CountBstrPointers(IntPtr ptr)
-        {
-            if (ptr == IntPtr.Zero)
-            {
+        private static int CountBstrPointers(IntPtr ptr) {
+            if (ptr == IntPtr.Zero) {
                 return 0;
             }
             int count = 0;
-            while (Marshal.ReadIntPtr(ptr, count * IntPtr.Size) != IntPtr.Zero)
-            {
+            while (Marshal.ReadIntPtr(ptr, count * IntPtr.Size) != IntPtr.Zero) {
                 count++;
             }
             return count;
         }
 
-        private static void FreeBstrPointerArray(IntPtr ptr, int count)
-        {
-            if (ptr == IntPtr.Zero)
-            {
+        private static void FreeBstrPointerArray(IntPtr ptr, int count) {
+            if (ptr == IntPtr.Zero) {
                 return;
             }
-            for (int i = 0; i < count; i++)
-            {
+            for (int i = 0; i < count; i++) {
                 IntPtr bstr = Marshal.ReadIntPtr(ptr, i * IntPtr.Size);
-                if (bstr != IntPtr.Zero)
-                {
+                if (bstr != IntPtr.Zero) {
                     Marshal.FreeBSTR(bstr);
                 }
             }
             Marshal.FreeCoTaskMem(ptr);
         }
 
-        private static void FreeCoTaskMem(IntPtr ptr)
-        {
-            if (ptr != IntPtr.Zero)
-            {
+        private static void FreeCoTaskMem(IntPtr ptr) {
+            if (ptr != IntPtr.Zero) {
                 Marshal.FreeCoTaskMem(ptr);
             }
         }
 
         private static T GetMethod<T>(IntPtr tearoff, int slot)
-            where T : Delegate
-        {
+            where T : Delegate {
             IntPtr vtable = Marshal.ReadIntPtr(tearoff);
             IntPtr method = Marshal.ReadIntPtr(vtable, slot * IntPtr.Size);
             return Marshal.GetDelegateForFunctionPointer<T>(method);

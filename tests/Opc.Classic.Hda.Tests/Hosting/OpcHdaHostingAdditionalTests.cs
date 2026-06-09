@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -18,14 +18,11 @@ using TUnit.Core;
 
 namespace Opc.Classic.Hda.Tests.Hosting;
 
-public sealed class OpcHdaHostingAdditionalTests
-{
+public sealed class OpcHdaHostingAdditionalTests {
     [Test]
-    public async Task AddOpcHdaServer_RegistersServerHostAndOptions_ResolvesExpectedConcreteTypes()
-    {
+    public async Task AddOpcHdaServer_RegistersServerHostAndOptions_ResolvesExpectedConcreteTypes() {
         var clsid = Guid.Parse("aaaaaaaa-0000-0000-0000-0000000000da");
-        var options = new OpcHdaServerOptions
-        {
+        var options = new OpcHdaServerOptions {
             Clsid = clsid,
             ProgId = "Opc.Classic.Tests.Hda.1",
             FriendlyName = "HDA DI test server",
@@ -33,8 +30,7 @@ public sealed class OpcHdaHostingAdditionalTests
         };
         var services = new ServiceCollection();
 
-        services.AddOpcHdaServer<MinimalHdaServer>(configured =>
-        {
+        services.AddOpcHdaServer<MinimalHdaServer>(configured => {
             configured.Clsid = options.Clsid;
             configured.ProgId = options.ProgId;
             configured.FriendlyName = options.FriendlyName;
@@ -64,13 +60,11 @@ public sealed class OpcHdaHostingAdditionalTests
     }
 
     [Test]
-    public async Task OpcHdaServerHost_RegistrationAndStopBeforeStart_AreCrossPlatformAndDoNotOpenListener()
-    {
+    public async Task OpcHdaServerHost_RegistrationAndStopBeforeStart_AreCrossPlatformAndDoNotOpenListener() {
         var clsid = Guid.Parse("bbbbbbbb-0000-0000-0000-0000000000da");
         var host = new OpcHdaServerHost(
             new MinimalHdaServer(),
-            Options.Create(new OpcHdaServerOptions
-            {
+            Options.Create(new OpcHdaServerOptions {
                 Clsid = clsid,
                 ProgId = "Opc.Classic.Tests.Hda.Host.1",
                 FriendlyName = "HDA host lifecycle",
@@ -91,11 +85,9 @@ public sealed class OpcHdaHostingAdditionalTests
     }
 
     [Test]
-    public async Task OpcHdaServerHost_ConstructorNullArguments_ThrowArgumentNullException()
-    {
+    public async Task OpcHdaServerHost_ConstructorNullArguments_ThrowArgumentNullException() {
         var server = new MinimalHdaServer();
-        IOptions<OpcHdaServerOptions> options = Options.Create(new OpcHdaServerOptions
-        {
+        IOptions<OpcHdaServerOptions> options = Options.Create(new OpcHdaServerOptions {
             Clsid = Guid.Parse("cccccccc-0000-0000-0000-0000000000da"),
             ProgId = "Opc.Classic.Tests.Hda.Null.1",
         });
@@ -117,25 +109,20 @@ public sealed class OpcHdaHostingAdditionalTests
         new(server, options, logger);
 
     private static TException Capture<TException>(Func<object> action)
-        where TException : Exception
-    {
-        try
-        {
+        where TException : Exception {
+        try {
             _ = action();
         }
-        catch (TException exception)
-        {
+        catch (TException exception) {
             return exception;
         }
 
         throw new InvalidOperationException($"Expected {typeof(TException).Name}.");
     }
 
-    private sealed class MinimalHdaServer : IOpcHdaServer
-    {
+    private sealed class MinimalHdaServer : IOpcHdaServer {
         public Task<OpcServerStatus> GetStatusAsync(CancellationToken cancellationToken = default) =>
-            Task.FromResult(new OpcServerStatus
-            {
+            Task.FromResult(new OpcServerStatus {
                 Spec = OpcStatusSpec.Hda,
                 State = OpcServerState.Running,
                 MaxReturnValues = 100,
@@ -146,31 +133,25 @@ public sealed class OpcHdaHostingAdditionalTests
             Task.FromResult(itemIds.Select(static _ => OpcResultId.Ok.Code).ToArray());
     }
 
-    private sealed class TestServiceProvider : IServiceProvider
-    {
+    private sealed class TestServiceProvider : IServiceProvider {
         private readonly IReadOnlyList<ServiceDescriptor> _descriptors;
         private readonly Dictionary<ServiceDescriptor, object?> _singletons = new();
 
-        public TestServiceProvider(IEnumerable<ServiceDescriptor> descriptors)
-        {
+        public TestServiceProvider(IEnumerable<ServiceDescriptor> descriptors) {
             _descriptors = descriptors.ToArray();
         }
 
-        public object? GetService(Type serviceType)
-        {
+        public object? GetService(Type serviceType) {
             ServiceDescriptor? descriptor = _descriptors.LastOrDefault(candidate => candidate.ServiceType == serviceType);
             return descriptor is null ? null : GetService(descriptor);
         }
 
-        private object? GetService(ServiceDescriptor descriptor)
-        {
-            if (descriptor.Lifetime != ServiceLifetime.Singleton)
-            {
+        private object? GetService(ServiceDescriptor descriptor) {
+            if (descriptor.Lifetime != ServiceLifetime.Singleton) {
                 return CreateService(descriptor);
             }
 
-            if (_singletons.TryGetValue(descriptor, out object? instance))
-            {
+            if (_singletons.TryGetValue(descriptor, out object? instance)) {
                 return instance;
             }
 
@@ -179,23 +160,19 @@ public sealed class OpcHdaHostingAdditionalTests
             return instance;
         }
 
-        private object? CreateService(ServiceDescriptor descriptor)
-        {
-            if (descriptor.ImplementationInstance is not null)
-            {
+        private object? CreateService(ServiceDescriptor descriptor) {
+            if (descriptor.ImplementationInstance is not null) {
                 return descriptor.ImplementationInstance;
             }
 
-            if (descriptor.ImplementationFactory is not null)
-            {
+            if (descriptor.ImplementationFactory is not null) {
                 return descriptor.ImplementationFactory(this);
             }
 
             return descriptor.ImplementationType is null ? null : CreateImplementation(descriptor.ImplementationType);
         }
 
-        private object CreateImplementation(Type implementationType)
-        {
+        private object CreateImplementation(Type implementationType) {
             var constructor = implementationType.GetConstructors()
                 .OrderByDescending(candidate => candidate.GetParameters().Length)
                 .First();

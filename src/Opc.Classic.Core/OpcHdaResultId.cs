@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -16,8 +16,7 @@ namespace Opc.Classic;
 /// Values sourced from <c>external/inc/OpcHda_Error.h</c>.
 /// </para>
 /// </remarks>
-public static class OpcHdaResultId
-{
+public static class OpcHdaResultId {
     /// <summary><c>OPC_E_MAXEXCEEDED</c> (0xC0041001) — too many values requested (e.g., past server's NumValues max).</summary>
     public static OpcResultId MaxExceeded { get; } = new(unchecked((int)0xC0041001u), "OPC_E_MAXEXCEEDED");
 

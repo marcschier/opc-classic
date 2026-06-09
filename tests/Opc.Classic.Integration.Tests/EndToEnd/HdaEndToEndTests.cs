@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -16,11 +16,9 @@ using TUnit.Core;
 
 namespace Opc.Classic.Integration.Tests.EndToEnd;
 
-public sealed class HdaEndToEndTests
-{
+public sealed class HdaEndToEndTests {
     [Test, Category("EndToEnd")]
-    public async Task ConnectAndGetHistorianStatus_Then_StatusFieldsFlowBack()
-    {
+    public async Task ConnectAndGetHistorianStatus_Then_StatusFieldsFlowBack() {
         var pipeline = new HdaEndToEndPipeline();
 
         OpcServerStatus status = await pipeline.Server.GetStatusAsync(CancellationToken.None);
@@ -38,8 +36,7 @@ public sealed class HdaEndToEndTests
     }
 
     [Test, Category("EndToEnd")]
-    public async Task ValidateItemIDs_Then_PerItemResultsRoundTrip()
-    {
+    public async Task ValidateItemIDs_Then_PerItemResultsRoundTrip() {
         var pipeline = new HdaEndToEndPipeline();
         string[] itemIds = ["Sensor.Temperature", "Sensor.Pressure", "Missing.Sensor"];
 
@@ -55,8 +52,7 @@ public sealed class HdaEndToEndTests
     }
 
     [Test, Category("EndToEnd")]
-    public async Task SyncReadRawValues_Then_TimestampsQualityAndValuesRoundTrip()
-    {
+    public async Task SyncReadRawValues_Then_TimestampsQualityAndValuesRoundTrip() {
         var pipeline = new HdaEndToEndPipeline();
         string itemId = "Sensor.Temperature";
         DateTimeOffset start = pipeline.Store.StartTime;
@@ -83,8 +79,7 @@ public sealed class HdaEndToEndTests
         await Assert.That(items[0].Timestamps.Length).IsEqualTo(3);
         await Assert.That(items[0].Qualities.Length).IsEqualTo(3);
         await Assert.That(items[0].Values.Length).IsEqualTo(3);
-        for (int i = 0; i < expected.Length; i++)
-        {
+        for (int i = 0; i < expected.Length; i++) {
             await Assert.That(items[0].Timestamps[i]).IsEqualTo(expected[i].Time);
             await Assert.That(items[0].Qualities[i]).IsEqualTo(OpcQuality.Good.RawValue);
             await Assert.That(items[0].Values[i].Type).IsEqualTo(VarType.VT_R8);
@@ -96,8 +91,7 @@ public sealed class HdaEndToEndTests
     }
 
     [Test, Category("EndToEnd")]
-    public async Task SyncReadProcessedAverage_Then_AggregateCodeAndValuesRoundTrip()
-    {
+    public async Task SyncReadProcessedAverage_Then_AggregateCodeAndValuesRoundTrip() {
         var pipeline = new HdaEndToEndPipeline();
         string itemId = "Sensor.FlowRate";
         DateTimeOffset start = pipeline.Store.StartTime;
@@ -130,8 +124,7 @@ public sealed class HdaEndToEndTests
     }
 
     [Test, Category("EndToEnd")]
-    public async Task ReadAnnotations_Then_ItemAnnotationsAreReturned()
-    {
+    public async Task ReadAnnotations_Then_ItemAnnotationsAreReturned() {
         var pipeline = new HdaEndToEndPipeline();
         string itemId = "Sensor.Temperature";
         _ = await pipeline.Server.GetItemHandlesAsync([itemId], [0x703], CancellationToken.None);
@@ -152,8 +145,7 @@ public sealed class HdaEndToEndTests
     }
 
     [Test, Category("EndToEnd")]
-    public async Task Browse_Then_HdaHierarchyIsReturned()
-    {
+    public async Task Browse_Then_HdaHierarchyIsReturned() {
         var pipeline = new HdaEndToEndPipeline();
 
         HdaBrowseWireElement[] root = await pipeline.BrowseViaWireAsync(string.Empty, HdaBrowseType.Flat, CancellationToken.None);
@@ -177,8 +169,7 @@ public sealed class HdaEndToEndTests
     }
 
     [Test, Category("EndToEnd")]
-    public async Task ReleaseItemHandles_Then_ServerHandleCleanupReturnsPerItemResults()
-    {
+    public async Task ReleaseItemHandles_Then_ServerHandleCleanupReturnsPerItemResults() {
         var pipeline = new HdaEndToEndPipeline();
         int[] handles = await pipeline.Server.GetItemHandlesAsync(["Sensor.Temperature", "Sensor.Pressure"], [0x704, 0x705], CancellationToken.None);
 
@@ -194,8 +185,7 @@ public sealed class HdaEndToEndTests
     }
 
     [Test, Category("EndToEnd")]
-    public async Task ServerMetadata_Then_ItemAttributesAndAggregatesRoundTrip()
-    {
+    public async Task ServerMetadata_Then_ItemAttributesAndAggregatesRoundTrip() {
         var channel = new InMemoryCallChannel(new OpcHdaServerDispatcher(new ServerMetadataImpl()).DispatchAsync);
         var client = new IOPCHDA_ServerClientProxy(channel);
 
@@ -222,8 +212,7 @@ public sealed class HdaEndToEndTests
     }
 
     [Test, Category("EndToEnd")]
-    public async Task SyncReadMethods_Then_AllReadShapesRoundTrip()
-    {
+    public async Task SyncReadMethods_Then_AllReadShapesRoundTrip() {
         var channel = ChannelFor(IOPCHDA_SyncRead.InterfaceId, new SyncReadRoundTripImpl().DispatchAsync);
         var client = new IOPCHDA_SyncReadClientProxy(channel);
         long atTime = EndToEndNdr.ToFileTime(SampleTimestamp());
@@ -249,8 +238,7 @@ public sealed class HdaEndToEndTests
     }
 
     [Test, Category("EndToEnd")]
-    public async Task SyncUpdateMethods_Then_CapabilitiesAndPerItemResultsRoundTrip()
-    {
+    public async Task SyncUpdateMethods_Then_CapabilitiesAndPerItemResultsRoundTrip() {
         var channel = ChannelFor(IOPCHDA_SyncUpdate.InterfaceId, new SyncUpdateRoundTripImpl().DispatchAsync);
         var client = new IOPCHDA_SyncUpdateClientProxy(channel);
         long timestamp = EndToEndNdr.ToFileTime(SampleTimestamp());
@@ -273,8 +261,7 @@ public sealed class HdaEndToEndTests
     }
 
     [Test, Category("EndToEnd")]
-    public async Task SyncAnnotationsMethods_Then_CapabilitiesReadAndInsertRoundTrip()
-    {
+    public async Task SyncAnnotationsMethods_Then_CapabilitiesReadAndInsertRoundTrip() {
         var channel = ChannelFor(IOPCHDA_SyncAnnotations.InterfaceId, new SyncAnnotationsRoundTripImpl().DispatchAsync);
         var client = new IOPCHDA_SyncAnnotationsClientProxy(channel);
         OpcHdaAnnotation annotation = SampleAnnotation();
@@ -294,8 +281,7 @@ public sealed class HdaEndToEndTests
     }
 
     [Test, Category("EndToEnd")]
-    public async Task AsyncReadMethods_Then_TransactionAndCancelIdsRoundTrip()
-    {
+    public async Task AsyncReadMethods_Then_TransactionAndCancelIdsRoundTrip() {
         var impl = new AsyncReadRoundTripImpl();
         var channel = ChannelFor(IOPCHDA_AsyncRead.InterfaceId, impl.DispatchAsync);
         var client = new IOPCHDA_AsyncReadClientProxy(channel);
@@ -322,8 +308,7 @@ public sealed class HdaEndToEndTests
     }
 
     [Test, Category("EndToEnd")]
-    public async Task AsyncUpdateMethods_Then_TransactionAndCancelIdsRoundTrip()
-    {
+    public async Task AsyncUpdateMethods_Then_TransactionAndCancelIdsRoundTrip() {
         var impl = new AsyncUpdateRoundTripImpl();
         var channel = ChannelFor(IOPCHDA_AsyncUpdate.InterfaceId, impl.DispatchAsync);
         var client = new IOPCHDA_AsyncUpdateClientProxy(channel);
@@ -349,8 +334,7 @@ public sealed class HdaEndToEndTests
     }
 
     [Test, Category("EndToEnd")]
-    public async Task AsyncAnnotationsMethods_Then_ReadInsertAndCancelRoundTrip()
-    {
+    public async Task AsyncAnnotationsMethods_Then_ReadInsertAndCancelRoundTrip() {
         var impl = new AsyncAnnotationsRoundTripImpl();
         var channel = ChannelFor(IOPCHDA_AsyncAnnotations.InterfaceId, impl.DispatchAsync);
         var client = new IOPCHDA_AsyncAnnotationsClientProxy(channel);
@@ -368,8 +352,7 @@ public sealed class HdaEndToEndTests
     }
 
     [Test, Category("EndToEnd")]
-    public async Task PlaybackMethods_Then_RawProcessedAndCancelRoundTrip()
-    {
+    public async Task PlaybackMethods_Then_RawProcessedAndCancelRoundTrip() {
         var impl = new PlaybackRoundTripImpl();
         var channel = ChannelFor(IOPCHDA_Playback.InterfaceId, impl.DispatchAsync);
         var client = new IOPCHDA_PlaybackClientProxy(channel);
@@ -388,8 +371,7 @@ public sealed class HdaEndToEndTests
     }
 
     [Test, Category("EndToEnd")]
-    public async Task BrowserMethods_Then_GeneratedProxyDecodesEnumAndNames()
-    {
+    public async Task BrowserMethods_Then_GeneratedProxyDecodesEnumAndNames() {
         var channel = BrowserChannel();
         var client = new IOPCHDA_BrowserClientProxy(channel);
 
@@ -409,8 +391,7 @@ public sealed class HdaEndToEndTests
     }
 
     [Test, Category("EndToEnd")]
-    public async Task DataCallbackDelivery_Then_AllCallbackMethodsReachSink()
-    {
+    public async Task DataCallbackDelivery_Then_AllCallbackMethodsReachSink() {
         var sink = new DataCallbackSink();
         var channel = ChannelFor(IOPCHDA_DataCallback.InterfaceId, new IOPCHDA_DataCallbackServerDispatcher(sink).DispatchAsync);
         var client = new IOPCHDA_DataCallbackClientProxy(channel);
@@ -440,10 +421,8 @@ public sealed class HdaEndToEndTests
     private static InMemoryCallChannel ChannelFor(
         Guid interfaceId,
         Func<int, ReadOnlyMemory<byte>, CancellationToken, ValueTask<DispatchResult>> dispatch) =>
-        new((iid, opnum, payload, cancellationToken) =>
-        {
-            if (iid != interfaceId)
-            {
+        new((iid, opnum, payload, cancellationToken) => {
+            if (iid != interfaceId) {
                 return Task.FromResult(NotImplemented());
             }
 
@@ -451,17 +430,14 @@ public sealed class HdaEndToEndTests
         });
 
     private static InMemoryCallChannel BrowserChannel() =>
-        new((iid, opnum, payload, cancellationToken) =>
-        {
+        new((iid, opnum, payload, cancellationToken) => {
             cancellationToken.ThrowIfCancellationRequested();
-            if (iid != IOPCHDA_Browser.InterfaceId)
-            {
+            if (iid != IOPCHDA_Browser.InterfaceId) {
                 return Task.FromResult(NotImplemented());
             }
 
             var reader = new NdrReader(payload.Span);
-            ReadOnlyMemory<byte> response = opnum switch
-            {
+            ReadOnlyMemory<byte> response = opnum switch {
                 IOPCHDA_Browser.Opnums.GetEnumAsync => ReadBrowserTypeAndWriteEnumRef(ref reader),
                 IOPCHDA_Browser.Opnums.ChangeBrowsePositionAsync => ReadBrowsePositionAndWriteEmpty(ref reader),
                 IOPCHDA_Browser.Opnums.GetItemIDAsync => ReadNodeAndWriteItemId(ref reader),
@@ -472,40 +448,34 @@ public sealed class HdaEndToEndTests
             return Task.FromResult(new NdrCallResult(opnum is >= 3 and <= 6 ? OpcResultId.Ok.Code : OpcResultId.NotImplemented.Code, response));
         });
 
-    private static ReadOnlyMemory<byte> ReadBrowserTypeAndWriteEnumRef(ref NdrReader reader)
-    {
+    private static ReadOnlyMemory<byte> ReadBrowserTypeAndWriteEnumRef(ref NdrReader reader) {
         int browseType = reader.ReadInt32();
-        if (browseType != (int)HdaBrowseType.Flat)
-        {
+        if (browseType != (int)HdaBrowseType.Flat) {
             return ReadOnlyMemory<byte>.Empty;
         }
 
         return WritePayload(WriteEnumStringRef);
     }
 
-    private static ReadOnlyMemory<byte> ReadBrowsePositionAndWriteEmpty(ref NdrReader reader)
-    {
+    private static ReadOnlyMemory<byte> ReadBrowsePositionAndWriteEmpty(ref NdrReader reader) {
         _ = reader.ReadInt32();
         _ = reader.ReadUnicodeStringPtr();
         return ReadOnlyMemory<byte>.Empty;
     }
 
-    private static ReadOnlyMemory<byte> ReadNodeAndWriteItemId(ref NdrReader reader)
-    {
+    private static ReadOnlyMemory<byte> ReadNodeAndWriteItemId(ref NdrReader reader) {
         string node = reader.ReadUnicodeStringPtr() ?? string.Empty;
         return WritePayload((ref NdrWriter writer) => writer.WriteUnicodeStringPtr("Sensor." + node));
     }
 
-    private static ReadOnlyMemory<byte> WritePayload(NdrWriteAction write, int capacity = 8192)
-    {
+    private static ReadOnlyMemory<byte> WritePayload(NdrWriteAction write, int capacity = 8192) {
         var buffer = new byte[capacity];
         var writer = new NdrWriter(buffer);
         write(ref writer);
         return buffer.AsMemory(0, writer.Position).ToArray();
     }
 
-    private static void WriteEnumStringRef(ref NdrWriter writer)
-    {
+    private static void WriteEnumStringRef(ref NdrWriter writer) {
         writer.WriteUInt32(0x574F454Du);
         writer.WriteUInt32(1u);
         writer.WriteGuid(OpcGuids.IID_IEnumString);
@@ -564,13 +534,10 @@ public sealed class HdaEndToEndTests
             [SampleTimestamp().AddMinutes(1)],
             ["historian"]);
 
-    private sealed class ServerMetadataImpl : IOpcHdaServer
-    {
-        public Task<OpcServerStatus> GetStatusAsync(CancellationToken cancellationToken = default)
-        {
+    private sealed class ServerMetadataImpl : IOpcHdaServer {
+        public Task<OpcServerStatus> GetStatusAsync(CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
-            return Task.FromResult(new OpcServerStatus
-            {
+            return Task.FromResult(new OpcServerStatus {
                 Spec = OpcStatusSpec.Hda,
                 State = OpcServerState.Running,
                 StartTime = SampleTimestamp().AddHours(-1),
@@ -581,20 +548,17 @@ public sealed class HdaEndToEndTests
             });
         }
 
-        public Task<int[]> ValidateItemIdsAsync(string[] itemIds, CancellationToken cancellationToken = default)
-        {
+        public Task<int[]> ValidateItemIdsAsync(string[] itemIds, CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             return Task.FromResult(itemIds.Select(static _ => OpcResultId.Ok.Code).ToArray());
         }
 
-        public Task<int[]> GetItemHandlesAsync(string[] itemIds, int[] clientHandles, CancellationToken cancellationToken = default)
-        {
+        public Task<int[]> GetItemHandlesAsync(string[] itemIds, int[] clientHandles, CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             return Task.FromResult(itemIds.Select(static (_, index) => 500 + index).ToArray());
         }
 
-        public Task<int[]> ReleaseItemHandlesAsync(int[] serverHandles, CancellationToken cancellationToken = default)
-        {
+        public Task<int[]> ReleaseItemHandlesAsync(int[] serverHandles, CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             return Task.FromResult(serverHandles.Select(static _ => OpcResultId.Ok.Code).ToArray());
         }
@@ -604,8 +568,7 @@ public sealed class HdaEndToEndTests
             out string[] attributeNames,
             out string[] attributeDescriptions,
             out int[] attributeDataTypes,
-            CancellationToken cancellationToken = default)
-        {
+            CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             attributeIds = [1, 2, 3, 4, 5];
             attributeNames = ["DataType", "Description", "EngUnits", "Stepped", "Archiving"];
@@ -618,8 +581,7 @@ public sealed class HdaEndToEndTests
             out int[] aggregateIds,
             out string[] aggregateNames,
             out string[] aggregateDescriptions,
-            CancellationToken cancellationToken = default)
-        {
+            CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             aggregateIds = [(int)HdaAggregate.Interpolative, (int)HdaAggregate.Average, (int)HdaAggregate.TimeAverage];
             aggregateNames = ["Interpolative", "Average", "TimeAverage"];
@@ -628,8 +590,7 @@ public sealed class HdaEndToEndTests
         }
     }
 
-    private sealed class SyncReadRoundTripImpl : IOPCHDA_SyncRead
-    {
+    private sealed class SyncReadRoundTripImpl : IOPCHDA_SyncRead {
         private readonly IOPCHDA_SyncReadServerDispatcher _dispatcher;
 
         public SyncReadRoundTripImpl() =>
@@ -638,8 +599,7 @@ public sealed class HdaEndToEndTests
         public ValueTask<DispatchResult> DispatchAsync(int opnum, ReadOnlyMemory<byte> payload, CancellationToken cancellationToken) =>
             _dispatcher.DispatchAsync(opnum, payload, cancellationToken);
 
-        public Task<OpcHdaItem[]> ReadRawAsync(OpcHdaTime startTime, OpcHdaTime endTime, int maxValues, bool bounds, int[] serverHandles, CancellationToken cancellationToken = default)
-        {
+        public Task<OpcHdaItem[]> ReadRawAsync(OpcHdaTime startTime, OpcHdaTime endTime, int maxValues, bool bounds, int[] serverHandles, CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             _ = startTime;
             _ = endTime;
@@ -648,8 +608,7 @@ public sealed class HdaEndToEndTests
             return Task.FromResult(new[] { SampleItem(serverHandles[0], value: 10.5) });
         }
 
-        public Task<OpcHdaItem[]> ReadProcessedAsync(OpcHdaTime startTime, OpcHdaTime endTime, long resampleIntervalFileTime, int[] serverHandles, int[] aggregateIds, CancellationToken cancellationToken = default)
-        {
+        public Task<OpcHdaItem[]> ReadProcessedAsync(OpcHdaTime startTime, OpcHdaTime endTime, long resampleIntervalFileTime, int[] serverHandles, int[] aggregateIds, CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             _ = startTime;
             _ = endTime;
@@ -657,8 +616,7 @@ public sealed class HdaEndToEndTests
             return Task.FromResult(new[] { SampleItem(serverHandles[0], aggregateIds[0], 20.5) });
         }
 
-        public Task<OpcHdaItem[]> ReadAtTimeAsync(long[] timestampFileTimes, int[] serverHandles, CancellationToken cancellationToken = default)
-        {
+        public Task<OpcHdaItem[]> ReadAtTimeAsync(long[] timestampFileTimes, int[] serverHandles, CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             return Task.FromResult(new[]
             {
@@ -671,8 +629,7 @@ public sealed class HdaEndToEndTests
             });
         }
 
-        public Task<OpcHdaModifiedItem[]> ReadModifiedAsync(OpcHdaTime startTime, OpcHdaTime endTime, int maxValues, int[] serverHandles, CancellationToken cancellationToken = default)
-        {
+        public Task<OpcHdaModifiedItem[]> ReadModifiedAsync(OpcHdaTime startTime, OpcHdaTime endTime, int maxValues, int[] serverHandles, CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             _ = startTime;
             _ = endTime;
@@ -681,8 +638,7 @@ public sealed class HdaEndToEndTests
             return Task.FromResult(new[] { SampleModifiedItem() });
         }
 
-        public Task<OpcHdaAttribute[]> ReadAttributeAsync(OpcHdaTime startTime, OpcHdaTime endTime, int serverHandle, int[] attributeIds, CancellationToken cancellationToken = default)
-        {
+        public Task<OpcHdaAttribute[]> ReadAttributeAsync(OpcHdaTime startTime, OpcHdaTime endTime, int serverHandle, int[] attributeIds, CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             _ = startTime;
             _ = endTime;
@@ -691,8 +647,7 @@ public sealed class HdaEndToEndTests
         }
     }
 
-    private sealed class SyncUpdateRoundTripImpl : IOPCHDA_SyncUpdate
-    {
+    private sealed class SyncUpdateRoundTripImpl : IOPCHDA_SyncUpdate {
         private readonly IOPCHDA_SyncUpdateServerDispatcher _dispatcher;
 
         public SyncUpdateRoundTripImpl() =>
@@ -701,14 +656,12 @@ public sealed class HdaEndToEndTests
         public ValueTask<DispatchResult> DispatchAsync(int opnum, ReadOnlyMemory<byte> payload, CancellationToken cancellationToken) =>
             _dispatcher.DispatchAsync(opnum, payload, cancellationToken);
 
-        public Task<int> QueryCapabilitiesAsync(CancellationToken cancellationToken = default)
-        {
+        public Task<int> QueryCapabilitiesAsync(CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             return Task.FromResult(0x1F);
         }
 
-        public Task<int[]> InsertAsync(int[] serverHandles, long[] timestampFileTimes, OpcVariant[] dataValues, int[] qualities, CancellationToken cancellationToken = default)
-        {
+        public Task<int[]> InsertAsync(int[] serverHandles, long[] timestampFileTimes, OpcVariant[] dataValues, int[] qualities, CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             _ = timestampFileTimes;
             _ = dataValues;
@@ -716,8 +669,7 @@ public sealed class HdaEndToEndTests
             return Task.FromResult(serverHandles.Select(static _ => OpcHdaErrors.OPCHDA_S_INSERTED).ToArray());
         }
 
-        public Task<int[]> ReplaceAsync(int[] serverHandles, long[] timestampFileTimes, OpcVariant[] dataValues, int[] qualities, CancellationToken cancellationToken = default)
-        {
+        public Task<int[]> ReplaceAsync(int[] serverHandles, long[] timestampFileTimes, OpcVariant[] dataValues, int[] qualities, CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             _ = timestampFileTimes;
             _ = dataValues;
@@ -725,8 +677,7 @@ public sealed class HdaEndToEndTests
             return Task.FromResult(serverHandles.Select(static _ => OpcHdaErrors.OPCHDA_S_REPLACED).ToArray());
         }
 
-        public Task<int[]> InsertReplaceAsync(int[] serverHandles, long[] timestampFileTimes, OpcVariant[] dataValues, int[] qualities, CancellationToken cancellationToken = default)
-        {
+        public Task<int[]> InsertReplaceAsync(int[] serverHandles, long[] timestampFileTimes, OpcVariant[] dataValues, int[] qualities, CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             _ = timestampFileTimes;
             _ = dataValues;
@@ -734,24 +685,21 @@ public sealed class HdaEndToEndTests
             return Task.FromResult(serverHandles.Select(static _ => OpcResultId.Ok.Code).ToArray());
         }
 
-        public Task<int[]> DeleteRawAsync(OpcHdaTime startTime, OpcHdaTime endTime, int[] serverHandles, CancellationToken cancellationToken = default)
-        {
+        public Task<int[]> DeleteRawAsync(OpcHdaTime startTime, OpcHdaTime endTime, int[] serverHandles, CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             _ = startTime;
             _ = endTime;
             return Task.FromResult(serverHandles.Select(static _ => OpcResultId.Ok.Code).ToArray());
         }
 
-        public Task<int[]> DeleteAtTimeAsync(int[] serverHandles, long[] timestampFileTimes, CancellationToken cancellationToken = default)
-        {
+        public Task<int[]> DeleteAtTimeAsync(int[] serverHandles, long[] timestampFileTimes, CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             _ = timestampFileTimes;
             return Task.FromResult(serverHandles.Select(static _ => OpcHdaErrors.OPCHDA_E_NODATAEXISTS).ToArray());
         }
     }
 
-    private sealed class SyncAnnotationsRoundTripImpl : IOPCHDA_SyncAnnotations
-    {
+    private sealed class SyncAnnotationsRoundTripImpl : IOPCHDA_SyncAnnotations {
         private readonly IOPCHDA_SyncAnnotationsServerDispatcher _dispatcher;
 
         public SyncAnnotationsRoundTripImpl() =>
@@ -760,14 +708,12 @@ public sealed class HdaEndToEndTests
         public ValueTask<DispatchResult> DispatchAsync(int opnum, ReadOnlyMemory<byte> payload, CancellationToken cancellationToken) =>
             _dispatcher.DispatchAsync(opnum, payload, cancellationToken);
 
-        public Task<int> QueryCapabilitiesAsync(CancellationToken cancellationToken = default)
-        {
+        public Task<int> QueryCapabilitiesAsync(CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             return Task.FromResult(0x03);
         }
 
-        public Task<OpcHdaAnnotation[]> ReadAsync(OpcHdaTime startTime, OpcHdaTime endTime, int[] serverHandles, CancellationToken cancellationToken = default)
-        {
+        public Task<OpcHdaAnnotation[]> ReadAsync(OpcHdaTime startTime, OpcHdaTime endTime, int[] serverHandles, CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             _ = startTime;
             _ = endTime;
@@ -775,8 +721,7 @@ public sealed class HdaEndToEndTests
             return Task.FromResult(new[] { SampleAnnotation() });
         }
 
-        public Task<int[]> InsertAsync(int[] serverHandles, long[] timestampFileTimes, OpcHdaAnnotation[] annotationValues, CancellationToken cancellationToken = default)
-        {
+        public Task<int[]> InsertAsync(int[] serverHandles, long[] timestampFileTimes, OpcHdaAnnotation[] annotationValues, CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             _ = timestampFileTimes;
             _ = annotationValues;
@@ -784,8 +729,7 @@ public sealed class HdaEndToEndTests
         }
     }
 
-    private sealed class AsyncReadRoundTripImpl : IOPCHDA_AsyncRead
-    {
+    private sealed class AsyncReadRoundTripImpl : IOPCHDA_AsyncRead {
         private readonly IOPCHDA_AsyncReadServerDispatcher _dispatcher;
 
         public AsyncReadRoundTripImpl() =>
@@ -796,8 +740,7 @@ public sealed class HdaEndToEndTests
         public ValueTask<DispatchResult> DispatchAsync(int opnum, ReadOnlyMemory<byte> payload, CancellationToken cancellationToken) =>
             _dispatcher.DispatchAsync(opnum, payload, cancellationToken);
 
-        public Task<int> ReadRawAsync(int transactionId, OpcHdaTime startTime, OpcHdaTime endTime, int maxValues, bool bounds, int[] serverHandles, CancellationToken cancellationToken = default)
-        {
+        public Task<int> ReadRawAsync(int transactionId, OpcHdaTime startTime, OpcHdaTime endTime, int maxValues, bool bounds, int[] serverHandles, CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             _ = startTime;
             _ = endTime;
@@ -807,8 +750,7 @@ public sealed class HdaEndToEndTests
             return Task.FromResult(transactionId + 1000);
         }
 
-        public Task<int> AdviseRawAsync(int transactionId, OpcHdaTime startTime, long updateIntervalFileTime, int[] serverHandles, CancellationToken cancellationToken = default)
-        {
+        public Task<int> AdviseRawAsync(int transactionId, OpcHdaTime startTime, long updateIntervalFileTime, int[] serverHandles, CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             _ = startTime;
             _ = updateIntervalFileTime;
@@ -816,8 +758,7 @@ public sealed class HdaEndToEndTests
             return Task.FromResult(transactionId + 1000);
         }
 
-        public Task<int> ReadProcessedAsync(int transactionId, OpcHdaTime startTime, OpcHdaTime endTime, long resampleIntervalFileTime, int[] serverHandles, int[] aggregateIds, CancellationToken cancellationToken = default)
-        {
+        public Task<int> ReadProcessedAsync(int transactionId, OpcHdaTime startTime, OpcHdaTime endTime, long resampleIntervalFileTime, int[] serverHandles, int[] aggregateIds, CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             _ = startTime;
             _ = endTime;
@@ -827,8 +768,7 @@ public sealed class HdaEndToEndTests
             return Task.FromResult(transactionId + 1000);
         }
 
-        public Task<int> AdviseProcessedAsync(int transactionId, OpcHdaTime startTime, long resampleIntervalFileTime, int[] serverHandles, int[] aggregateIds, int intervalCount, CancellationToken cancellationToken = default)
-        {
+        public Task<int> AdviseProcessedAsync(int transactionId, OpcHdaTime startTime, long resampleIntervalFileTime, int[] serverHandles, int[] aggregateIds, int intervalCount, CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             _ = startTime;
             _ = resampleIntervalFileTime;
@@ -838,16 +778,14 @@ public sealed class HdaEndToEndTests
             return Task.FromResult(transactionId + 1000);
         }
 
-        public Task<int> ReadAtTimeAsync(int transactionId, long[] timestampFileTimes, int[] serverHandles, CancellationToken cancellationToken = default)
-        {
+        public Task<int> ReadAtTimeAsync(int transactionId, long[] timestampFileTimes, int[] serverHandles, CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             _ = timestampFileTimes;
             _ = serverHandles;
             return Task.FromResult(transactionId + 1000);
         }
 
-        public Task<int> ReadModifiedAsync(int transactionId, OpcHdaTime startTime, OpcHdaTime endTime, int maxValues, int[] serverHandles, CancellationToken cancellationToken = default)
-        {
+        public Task<int> ReadModifiedAsync(int transactionId, OpcHdaTime startTime, OpcHdaTime endTime, int maxValues, int[] serverHandles, CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             _ = startTime;
             _ = endTime;
@@ -856,8 +794,7 @@ public sealed class HdaEndToEndTests
             return Task.FromResult(transactionId + 1000);
         }
 
-        public Task<int> ReadAttributeAsync(int transactionId, OpcHdaTime startTime, OpcHdaTime endTime, int serverHandle, int[] attributeIds, CancellationToken cancellationToken = default)
-        {
+        public Task<int> ReadAttributeAsync(int transactionId, OpcHdaTime startTime, OpcHdaTime endTime, int serverHandle, int[] attributeIds, CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             _ = startTime;
             _ = endTime;
@@ -866,16 +803,14 @@ public sealed class HdaEndToEndTests
             return Task.FromResult(transactionId + 1000);
         }
 
-        public Task CancelAsync(int cancelId, CancellationToken cancellationToken = default)
-        {
+        public Task CancelAsync(int cancelId, CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             CancelledId = cancelId;
             return Task.CompletedTask;
         }
     }
 
-    private sealed class AsyncUpdateRoundTripImpl : IOPCHDA_AsyncUpdate
-    {
+    private sealed class AsyncUpdateRoundTripImpl : IOPCHDA_AsyncUpdate {
         private readonly IOPCHDA_AsyncUpdateServerDispatcher _dispatcher;
 
         public AsyncUpdateRoundTripImpl() =>
@@ -886,8 +821,7 @@ public sealed class HdaEndToEndTests
         public ValueTask<DispatchResult> DispatchAsync(int opnum, ReadOnlyMemory<byte> payload, CancellationToken cancellationToken) =>
             _dispatcher.DispatchAsync(opnum, payload, cancellationToken);
 
-        public Task<int> QueryCapabilitiesAsync(CancellationToken cancellationToken = default)
-        {
+        public Task<int> QueryCapabilitiesAsync(CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             return Task.FromResult(0x1F);
         }
@@ -901,8 +835,7 @@ public sealed class HdaEndToEndTests
         public Task<int> InsertReplaceAsync(int transactionId, int[] serverHandles, long[] timestampFileTimes, OpcVariant[] dataValues, int[] qualities, CancellationToken cancellationToken = default) =>
             CompleteAsync(transactionId, serverHandles, timestampFileTimes, dataValues, qualities, cancellationToken);
 
-        public Task<int> DeleteRawAsync(int transactionId, OpcHdaTime startTime, OpcHdaTime endTime, int[] serverHandles, CancellationToken cancellationToken = default)
-        {
+        public Task<int> DeleteRawAsync(int transactionId, OpcHdaTime startTime, OpcHdaTime endTime, int[] serverHandles, CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             _ = startTime;
             _ = endTime;
@@ -910,23 +843,20 @@ public sealed class HdaEndToEndTests
             return Task.FromResult(transactionId + 2000);
         }
 
-        public Task<int> DeleteAtTimeAsync(int transactionId, int[] serverHandles, long[] timestampFileTimes, CancellationToken cancellationToken = default)
-        {
+        public Task<int> DeleteAtTimeAsync(int transactionId, int[] serverHandles, long[] timestampFileTimes, CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             _ = serverHandles;
             _ = timestampFileTimes;
             return Task.FromResult(transactionId + 2000);
         }
 
-        public Task CancelAsync(int cancelId, CancellationToken cancellationToken = default)
-        {
+        public Task CancelAsync(int cancelId, CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             CancelledId = cancelId;
             return Task.CompletedTask;
         }
 
-        private static Task<int> CompleteAsync(int transactionId, int[] serverHandles, long[] timestampFileTimes, OpcVariant[] dataValues, int[] qualities, CancellationToken cancellationToken)
-        {
+        private static Task<int> CompleteAsync(int transactionId, int[] serverHandles, long[] timestampFileTimes, OpcVariant[] dataValues, int[] qualities, CancellationToken cancellationToken) {
             cancellationToken.ThrowIfCancellationRequested();
             _ = serverHandles;
             _ = timestampFileTimes;
@@ -936,8 +866,7 @@ public sealed class HdaEndToEndTests
         }
     }
 
-    private sealed class AsyncAnnotationsRoundTripImpl : IOPCHDA_AsyncAnnotations
-    {
+    private sealed class AsyncAnnotationsRoundTripImpl : IOPCHDA_AsyncAnnotations {
         private readonly IOPCHDA_AsyncAnnotationsServerDispatcher _dispatcher;
 
         public AsyncAnnotationsRoundTripImpl() =>
@@ -948,14 +877,12 @@ public sealed class HdaEndToEndTests
         public ValueTask<DispatchResult> DispatchAsync(int opnum, ReadOnlyMemory<byte> payload, CancellationToken cancellationToken) =>
             _dispatcher.DispatchAsync(opnum, payload, cancellationToken);
 
-        public Task<int> QueryCapabilitiesAsync(CancellationToken cancellationToken = default)
-        {
+        public Task<int> QueryCapabilitiesAsync(CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             return Task.FromResult(0x03);
         }
 
-        public Task<int> ReadAsync(int transactionId, OpcHdaTime startTime, OpcHdaTime endTime, int[] serverHandles, CancellationToken cancellationToken = default)
-        {
+        public Task<int> ReadAsync(int transactionId, OpcHdaTime startTime, OpcHdaTime endTime, int[] serverHandles, CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             _ = startTime;
             _ = endTime;
@@ -963,8 +890,7 @@ public sealed class HdaEndToEndTests
             return Task.FromResult(transactionId + 3000);
         }
 
-        public Task<int> InsertAsync(int transactionId, int[] serverHandles, long[] timestampFileTimes, OpcHdaAnnotation[] annotationValues, CancellationToken cancellationToken = default)
-        {
+        public Task<int> InsertAsync(int transactionId, int[] serverHandles, long[] timestampFileTimes, OpcHdaAnnotation[] annotationValues, CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             _ = serverHandles;
             _ = timestampFileTimes;
@@ -972,16 +898,14 @@ public sealed class HdaEndToEndTests
             return Task.FromResult(transactionId + 3000);
         }
 
-        public Task CancelAsync(int cancelId, CancellationToken cancellationToken = default)
-        {
+        public Task CancelAsync(int cancelId, CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             CancelledId = cancelId;
             return Task.CompletedTask;
         }
     }
 
-    private sealed class PlaybackRoundTripImpl : IOPCHDA_Playback
-    {
+    private sealed class PlaybackRoundTripImpl : IOPCHDA_Playback {
         private readonly IOPCHDA_PlaybackServerDispatcher _dispatcher;
 
         public PlaybackRoundTripImpl() =>
@@ -992,8 +916,7 @@ public sealed class HdaEndToEndTests
         public ValueTask<DispatchResult> DispatchAsync(int opnum, ReadOnlyMemory<byte> payload, CancellationToken cancellationToken) =>
             _dispatcher.DispatchAsync(opnum, payload, cancellationToken);
 
-        public Task<int> ReadRawWithUpdateAsync(int transactionId, OpcHdaTime startTime, OpcHdaTime endTime, int maxValues, long updateDurationFileTime, long updateIntervalFileTime, int[] serverHandles, CancellationToken cancellationToken = default)
-        {
+        public Task<int> ReadRawWithUpdateAsync(int transactionId, OpcHdaTime startTime, OpcHdaTime endTime, int maxValues, long updateDurationFileTime, long updateIntervalFileTime, int[] serverHandles, CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             _ = startTime;
             _ = endTime;
@@ -1004,8 +927,7 @@ public sealed class HdaEndToEndTests
             return Task.FromResult(transactionId + 4000);
         }
 
-        public Task<int> ReadProcessedWithUpdateAsync(int transactionId, OpcHdaTime startTime, OpcHdaTime endTime, long resampleIntervalFileTime, int intervalCount, long updateIntervalFileTime, int[] serverHandles, int[] aggregateIds, CancellationToken cancellationToken = default)
-        {
+        public Task<int> ReadProcessedWithUpdateAsync(int transactionId, OpcHdaTime startTime, OpcHdaTime endTime, long resampleIntervalFileTime, int intervalCount, long updateIntervalFileTime, int[] serverHandles, int[] aggregateIds, CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             _ = startTime;
             _ = endTime;
@@ -1017,16 +939,14 @@ public sealed class HdaEndToEndTests
             return Task.FromResult(transactionId + 4000);
         }
 
-        public Task CancelAsync(int cancelId, CancellationToken cancellationToken = default)
-        {
+        public Task CancelAsync(int cancelId, CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             CancelledId = cancelId;
             return Task.CompletedTask;
         }
     }
 
-    private sealed class DataCallbackSink : IOPCHDA_DataCallback
-    {
+    private sealed class DataCallbackSink : IOPCHDA_DataCallback {
         public int DataChangeTransactionId { get; private set; }
 
         public double? ReadCompleteValue { get; private set; }
@@ -1045,8 +965,7 @@ public sealed class HdaEndToEndTests
 
         public int CancelId { get; private set; }
 
-        public Task OnDataChangeAsync(int transactionId, int status, OpcHdaItem[] itemValues, int[] errors, CancellationToken cancellationToken = default)
-        {
+        public Task OnDataChangeAsync(int transactionId, int status, OpcHdaItem[] itemValues, int[] errors, CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             _ = status;
             _ = itemValues;
@@ -1055,8 +974,7 @@ public sealed class HdaEndToEndTests
             return Task.CompletedTask;
         }
 
-        public Task OnReadCompleteAsync(int transactionId, int status, OpcHdaItem[] itemValues, int[] errors, CancellationToken cancellationToken = default)
-        {
+        public Task OnReadCompleteAsync(int transactionId, int status, OpcHdaItem[] itemValues, int[] errors, CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             _ = transactionId;
             _ = status;
@@ -1065,8 +983,7 @@ public sealed class HdaEndToEndTests
             return Task.CompletedTask;
         }
 
-        public Task OnReadModifiedCompleteAsync(int transactionId, int status, OpcHdaModifiedItem[] itemValues, int[] errors, CancellationToken cancellationToken = default)
-        {
+        public Task OnReadModifiedCompleteAsync(int transactionId, int status, OpcHdaModifiedItem[] itemValues, int[] errors, CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             _ = transactionId;
             _ = status;
@@ -1075,8 +992,7 @@ public sealed class HdaEndToEndTests
             return Task.CompletedTask;
         }
 
-        public Task OnReadAttributeCompleteAsync(int transactionId, int status, int clientHandle, OpcHdaAttribute[] attributeValues, int[] errors, CancellationToken cancellationToken = default)
-        {
+        public Task OnReadAttributeCompleteAsync(int transactionId, int status, int clientHandle, OpcHdaAttribute[] attributeValues, int[] errors, CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             _ = transactionId;
             _ = status;
@@ -1086,8 +1002,7 @@ public sealed class HdaEndToEndTests
             return Task.CompletedTask;
         }
 
-        public Task OnReadAnnotationsAsync(int transactionId, int status, OpcHdaAnnotation[] annotationValues, int[] errors, CancellationToken cancellationToken = default)
-        {
+        public Task OnReadAnnotationsAsync(int transactionId, int status, OpcHdaAnnotation[] annotationValues, int[] errors, CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             _ = transactionId;
             _ = status;
@@ -1096,8 +1011,7 @@ public sealed class HdaEndToEndTests
             return Task.CompletedTask;
         }
 
-        public Task OnInsertAnnotationsAsync(int transactionId, int status, int[] clientHandles, int[] errors, CancellationToken cancellationToken = default)
-        {
+        public Task OnInsertAnnotationsAsync(int transactionId, int status, int[] clientHandles, int[] errors, CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             _ = transactionId;
             _ = status;
@@ -1106,8 +1020,7 @@ public sealed class HdaEndToEndTests
             return Task.CompletedTask;
         }
 
-        public Task OnPlaybackAsync(int transactionId, int status, OpcHdaItem[] itemValues, int[] errors, CancellationToken cancellationToken = default)
-        {
+        public Task OnPlaybackAsync(int transactionId, int status, OpcHdaItem[] itemValues, int[] errors, CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             _ = transactionId;
             _ = status;
@@ -1116,8 +1029,7 @@ public sealed class HdaEndToEndTests
             return Task.CompletedTask;
         }
 
-        public Task OnUpdateCompleteAsync(int transactionId, int status, int[] clientHandles, int[] errors, CancellationToken cancellationToken = default)
-        {
+        public Task OnUpdateCompleteAsync(int transactionId, int status, int[] clientHandles, int[] errors, CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             _ = transactionId;
             _ = status;
@@ -1126,8 +1038,7 @@ public sealed class HdaEndToEndTests
             return Task.CompletedTask;
         }
 
-        public Task OnCancelCompleteAsync(int cancelId, CancellationToken cancellationToken = default)
-        {
+        public Task OnCancelCompleteAsync(int cancelId, CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             CancelId = cancelId;
             return Task.CompletedTask;

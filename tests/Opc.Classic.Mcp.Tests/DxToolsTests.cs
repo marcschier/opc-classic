@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -11,11 +11,9 @@ using TUnit.Core;
 
 namespace Opc.Classic.Mcp.Tests;
 
-public sealed class DxToolsTests
-{
+public sealed class DxToolsTests {
     [Test]
-    public async Task Dx_connect_status_and_source_servers_round_trip_via_mcp_client()
-    {
+    public async Task Dx_connect_status_and_source_servers_round_trip_via_mcp_client() {
         var dx = new SyntheticDxClient();
         string name = "dx-" + Guid.NewGuid().ToString("N");
         using IDisposable registration = InMemoryDxConnectionRegistry.Register(name, dx);
@@ -24,8 +22,7 @@ public sealed class DxToolsTests
 
         OpcSessionDto connected = await server.CallToolAsync<OpcSessionDto>(
             "opcclassic.dx.connect",
-            new Dictionary<string, object>
-            {
+            new Dictionary<string, object> {
                 ["sessionId"] = session.SessionId,
                 ["connectionString"] = "inmemory://" + name,
             }).ConfigureAwait(false);
@@ -34,8 +31,7 @@ public sealed class DxToolsTests
             new Dictionary<string, object> { ["sessionId"] = session.SessionId }).ConfigureAwait(false);
         OpcResultDto added = await server.CallToolAsync<OpcResultDto>(
             "opcclassic.dx.add_source_server",
-            new Dictionary<string, object>
-            {
+            new Dictionary<string, object> {
                 ["sessionId"] = session.SessionId,
                 ["sourceServer"] = new OpcDxSourceServerDto("PLC1", "opcda://plc1/Vendor.OPC.1", "Primary PLC"),
             }).ConfigureAwait(false);
@@ -44,8 +40,7 @@ public sealed class DxToolsTests
             new Dictionary<string, object> { ["sessionId"] = session.SessionId }).ConfigureAwait(false);
         OpcResultDto modified = await server.CallToolAsync<OpcResultDto>(
             "opcclassic.dx.modify_source_server",
-            new Dictionary<string, object>
-            {
+            new Dictionary<string, object> {
                 ["sessionId"] = session.SessionId,
                 ["sourceServer"] = new OpcDxSourceServerDto("PLC1", "opcda://plc1/Vendor.OPC.2", "Modified PLC"),
             }).ConfigureAwait(false);
@@ -58,8 +53,7 @@ public sealed class DxToolsTests
     }
 
     [Test]
-    public async Task Dx_connection_lifecycle_round_trips_via_mcp_client()
-    {
+    public async Task Dx_connection_lifecycle_round_trips_via_mcp_client() {
         var dx = new SyntheticDxClient();
         string name = "dx-" + Guid.NewGuid().ToString("N");
         using IDisposable registration = InMemoryDxConnectionRegistry.Register(name, dx);
@@ -67,8 +61,7 @@ public sealed class DxToolsTests
         OpcSessionDto session = await server.CallToolAsync<OpcSessionDto>("opcclassic.session.create", []).ConfigureAwait(false);
         _ = await server.CallToolAsync<OpcSessionDto>(
             "opcclassic.dx.connect",
-            new Dictionary<string, object>
-            {
+            new Dictionary<string, object> {
                 ["sessionId"] = session.SessionId,
                 ["connectionString"] = "inmemory://" + name,
             }).ConfigureAwait(false);
@@ -82,8 +75,7 @@ public sealed class DxToolsTests
             UpdateRateMilliseconds: 1000);
         OpcResultDto added = await server.CallToolAsync<OpcResultDto>(
             "opcclassic.dx.add_connection",
-            new Dictionary<string, object>
-            {
+            new Dictionary<string, object> {
                 ["sessionId"] = session.SessionId,
                 ["connection"] = connection,
             }).ConfigureAwait(false);
@@ -92,23 +84,20 @@ public sealed class DxToolsTests
             new Dictionary<string, object> { ["sessionId"] = session.SessionId }).ConfigureAwait(false);
         OpcResultDto modified = await server.CallToolAsync<OpcResultDto>(
             "opcclassic.dx.modify_connection",
-            new Dictionary<string, object>
-            {
+            new Dictionary<string, object> {
                 ["sessionId"] = session.SessionId,
                 ["connection"] = connection with { Description = "Modified" },
             }).ConfigureAwait(false);
         OpcResultDto updated = await server.CallToolAsync<OpcResultDto>(
             "opcclassic.dx.update_connection",
-            new Dictionary<string, object>
-            {
+            new Dictionary<string, object> {
                 ["sessionId"] = session.SessionId,
                 ["connectionName"] = "C1",
                 ["connection"] = connection with { UpdateRateMilliseconds = 250 },
             }).ConfigureAwait(false);
         OpcResultDto deleted = await server.CallToolAsync<OpcResultDto>(
             "opcclassic.dx.delete_connection",
-            new Dictionary<string, object>
-            {
+            new Dictionary<string, object> {
                 ["sessionId"] = session.SessionId,
                 ["connectionName"] = "C1",
             }).ConfigureAwait(false);
@@ -122,8 +111,7 @@ public sealed class DxToolsTests
     }
 
     [Test]
-    public async Task Dx_reset_and_disconnect_round_trip_via_mcp_client()
-    {
+    public async Task Dx_reset_and_disconnect_round_trip_via_mcp_client() {
         var dx = new SyntheticDxClient();
         string name = "dx-" + Guid.NewGuid().ToString("N");
         using IDisposable registration = InMemoryDxConnectionRegistry.Register(name, dx);
@@ -131,23 +119,20 @@ public sealed class DxToolsTests
         OpcSessionDto session = await server.CallToolAsync<OpcSessionDto>("opcclassic.session.create", []).ConfigureAwait(false);
         _ = await server.CallToolAsync<OpcSessionDto>(
             "opcclassic.dx.connect",
-            new Dictionary<string, object>
-            {
+            new Dictionary<string, object> {
                 ["sessionId"] = session.SessionId,
                 ["connectionString"] = "inmemory://" + name,
             }).ConfigureAwait(false);
         _ = await server.CallToolAsync<OpcResultDto>(
             "opcclassic.dx.add_connection",
-            new Dictionary<string, object>
-            {
+            new Dictionary<string, object> {
                 ["sessionId"] = session.SessionId,
                 ["connection"] = new OpcDxConnectionDto(Name: "C1", SourceServerName: "PLC1"),
             }).ConfigureAwait(false);
 
         OpcResultDto reset = await server.CallToolAsync<OpcResultDto>(
             "opcclassic.dx.reset_configuration",
-            new Dictionary<string, object>
-            {
+            new Dictionary<string, object> {
                 ["sessionId"] = session.SessionId,
                 ["configurationVersion"] = "cfg-1",
             }).ConfigureAwait(false);
@@ -162,8 +147,7 @@ public sealed class DxToolsTests
     }
 }
 
-internal sealed class SyntheticDxClient : IOpcDxClient
-{
+internal sealed class SyntheticDxClient : IOpcDxClient {
     private readonly Dictionary<string, DxConnection> _connections = new(StringComparer.Ordinal);
     private readonly Dictionary<string, DxSourceServer> _sources = new(StringComparer.Ordinal);
 
@@ -171,18 +155,15 @@ internal sealed class SyntheticDxClient : IOpcDxClient
 
     public int ConnectionCount => _connections.Count;
 
-    public ValueTask DisposeAsync()
-    {
+    public ValueTask DisposeAsync() {
         Disposed = true;
         return ValueTask.CompletedTask;
     }
 
-    public Task<OpcServerStatus> GetStatusAsync(CancellationToken cancellationToken = default)
-    {
+    public Task<OpcServerStatus> GetStatusAsync(CancellationToken cancellationToken = default) {
         cancellationToken.ThrowIfCancellationRequested();
         DateTimeOffset now = DateTimeOffset.UtcNow;
-        return Task.FromResult(new OpcServerStatus
-        {
+        return Task.FromResult(new OpcServerStatus {
             Spec = OpcStatusSpec.Dx,
             StartTime = DateTimeOffset.UnixEpoch,
             CurrentTime = now,
@@ -194,39 +175,33 @@ internal sealed class SyntheticDxClient : IOpcDxClient
         });
     }
 
-    public Task<IReadOnlyList<string>> QueryConnectionNamesAsync(string browsePath, IReadOnlyList<string> connectionMasks, bool recursive, CancellationToken cancellationToken = default)
-    {
+    public Task<IReadOnlyList<string>> QueryConnectionNamesAsync(string browsePath, IReadOnlyList<string> connectionMasks, bool recursive, CancellationToken cancellationToken = default) {
         _ = browsePath;
         _ = recursive;
         cancellationToken.ThrowIfCancellationRequested();
         IEnumerable<string> names = _connections.Keys.Order(StringComparer.Ordinal);
-        if (connectionMasks.Count > 0)
-        {
+        if (connectionMasks.Count > 0) {
             names = names.Where(name => connectionMasks.Contains(name, StringComparer.Ordinal));
         }
 
         return Task.FromResult<IReadOnlyList<string>>(names.ToArray());
     }
 
-    public Task<IReadOnlyList<DxSourceServer>> QuerySourceServersAsync(CancellationToken cancellationToken = default)
-    {
+    public Task<IReadOnlyList<DxSourceServer>> QuerySourceServersAsync(CancellationToken cancellationToken = default) {
         cancellationToken.ThrowIfCancellationRequested();
         return Task.FromResult<IReadOnlyList<DxSourceServer>>(_sources.Values.OrderBy(static source => source.Name, StringComparer.Ordinal).ToArray());
     }
 
-    public Task<OpcResultId> AddConnectionAsync(DxConnection connection, CancellationToken cancellationToken = default)
-    {
+    public Task<OpcResultId> AddConnectionAsync(DxConnection connection, CancellationToken cancellationToken = default) {
         cancellationToken.ThrowIfCancellationRequested();
         _connections[connection.Name ?? string.Empty] = connection;
         return Task.FromResult(OpcResultId.Ok);
     }
 
-    public Task<OpcResultId> ModifyConnectionAsync(DxConnection connection, CancellationToken cancellationToken = default)
-    {
+    public Task<OpcResultId> ModifyConnectionAsync(DxConnection connection, CancellationToken cancellationToken = default) {
         cancellationToken.ThrowIfCancellationRequested();
         string name = connection.Name ?? string.Empty;
-        if (!_connections.ContainsKey(name))
-        {
+        if (!_connections.ContainsKey(name)) {
             return Task.FromResult(OpcResultId.UnknownItemId);
         }
 
@@ -234,13 +209,11 @@ internal sealed class SyntheticDxClient : IOpcDxClient
         return Task.FromResult(OpcResultId.Ok);
     }
 
-    public Task<OpcResultId> UpdateConnectionAsync(string browsePath, string connectionName, bool recursive, DxConnection connectionDefinition, CancellationToken cancellationToken = default)
-    {
+    public Task<OpcResultId> UpdateConnectionAsync(string browsePath, string connectionName, bool recursive, DxConnection connectionDefinition, CancellationToken cancellationToken = default) {
         _ = browsePath;
         _ = recursive;
         cancellationToken.ThrowIfCancellationRequested();
-        if (!_connections.ContainsKey(connectionName))
-        {
+        if (!_connections.ContainsKey(connectionName)) {
             return Task.FromResult(OpcResultId.UnknownItemId);
         }
 
@@ -248,8 +221,7 @@ internal sealed class SyntheticDxClient : IOpcDxClient
         return Task.FromResult(OpcResultId.Ok);
     }
 
-    public Task<OpcResultId> DeleteConnectionAsync(string browsePath, string connectionName, bool recursive, CancellationToken cancellationToken = default)
-    {
+    public Task<OpcResultId> DeleteConnectionAsync(string browsePath, string connectionName, bool recursive, CancellationToken cancellationToken = default) {
         _ = browsePath;
         _ = recursive;
         cancellationToken.ThrowIfCancellationRequested();
@@ -257,19 +229,16 @@ internal sealed class SyntheticDxClient : IOpcDxClient
         return Task.FromResult(OpcResultId.Ok);
     }
 
-    public Task<OpcResultId> AddSourceServerAsync(DxSourceServer sourceServer, CancellationToken cancellationToken = default)
-    {
+    public Task<OpcResultId> AddSourceServerAsync(DxSourceServer sourceServer, CancellationToken cancellationToken = default) {
         cancellationToken.ThrowIfCancellationRequested();
         _sources[sourceServer.Name ?? string.Empty] = sourceServer;
         return Task.FromResult(OpcResultId.Ok);
     }
 
-    public Task<OpcResultId> ModifySourceServerAsync(DxSourceServer sourceServer, CancellationToken cancellationToken = default)
-    {
+    public Task<OpcResultId> ModifySourceServerAsync(DxSourceServer sourceServer, CancellationToken cancellationToken = default) {
         cancellationToken.ThrowIfCancellationRequested();
         string name = sourceServer.Name ?? string.Empty;
-        if (!_sources.ContainsKey(name))
-        {
+        if (!_sources.ContainsKey(name)) {
             return Task.FromResult(OpcResultId.UnknownItemId);
         }
 
@@ -277,8 +246,7 @@ internal sealed class SyntheticDxClient : IOpcDxClient
         return Task.FromResult(OpcResultId.Ok);
     }
 
-    public Task<string> ResetConfigurationAsync(string configurationVersion, CancellationToken cancellationToken = default)
-    {
+    public Task<string> ResetConfigurationAsync(string configurationVersion, CancellationToken cancellationToken = default) {
         cancellationToken.ThrowIfCancellationRequested();
         _connections.Clear();
         _sources.Clear();

@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -14,8 +14,7 @@ using Opc.Classic.Mcp.Sessions;
 namespace Opc.Classic.Mcp.Tools;
 
 /// <summary>MCP tools for OPC Complex Data (CPX) metadata operations.</summary>
-public sealed class CpxTools
-{
+public sealed class CpxTools {
     private static readonly string[] SupportedTypeSystemIds = [TypeDictionary.OpcBinaryTypeSystemId, TypeDictionary.XmlSchemaTypeSystemId];
     private readonly IOpcSessionManager _sessionManager;
 
@@ -31,8 +30,7 @@ public sealed class CpxTools
         string sessionId,
         [Description("The DA item ID whose complex-data metadata should be queried.")]
         string itemId,
-        CancellationToken cancellationToken = default)
-    {
+        CancellationToken cancellationToken = default) {
         ArgumentException.ThrowIfNullOrWhiteSpace(itemId);
         CpxClientState client = GetCpxClient(sessionId);
         Guid typeId = await client.ComplexDataItem2.GetTypeIDAsync(itemId, cancellationToken).ConfigureAwait(false);
@@ -67,8 +65,7 @@ public sealed class CpxTools
         [Description("The sessionId returned by opcclassic.session.create and connected with opcclassic.da.connect.")]
         string sessionId,
         [Description("Type system identifier. Accepted values include OPCBinary, binary, XMLSchema, xml, and schema.")]
-        string typeSystemId = TypeDictionary.OpcBinaryTypeSystemId)
-    {
+        string typeSystemId = TypeDictionary.OpcBinaryTypeSystemId) {
         _ = GetCpxClient(sessionId);
         string normalized = NormalizeTypeSystemId(typeSystemId);
         bool supported = SupportedTypeSystemIds.Contains(normalized, StringComparer.Ordinal);
@@ -84,8 +81,7 @@ public sealed class CpxTools
         string sessionId,
         [Description("Dictionary identifier returned by opcclassic.cpx.get_complex_type.")]
         string dictionaryId,
-        CancellationToken cancellationToken = default)
-    {
+        CancellationToken cancellationToken = default) {
         ArgumentException.ThrowIfNullOrWhiteSpace(dictionaryId);
         CpxClientState client = GetCpxClient(sessionId);
         string dictionary = await client.TypeLibrary.GetDictionaryAsync(dictionaryId, cancellationToken).ConfigureAwait(false);
@@ -99,11 +95,9 @@ public sealed class CpxTools
             parsed.ParseError);
     }
 
-    private CpxClientState GetCpxClient(string sessionId)
-    {
+    private CpxClientState GetCpxClient(string sessionId) {
         OpcSession session = _sessionManager.GetSession(sessionId);
-        if (session.CpxClient is { } existing)
-        {
+        if (session.CpxClient is { } existing) {
             return existing;
         }
 
@@ -114,84 +108,65 @@ public sealed class CpxTools
         return cpxClient;
     }
 
-    private static async Task<string?> GetOptionalStringAsync(Func<CancellationToken, Task<string>> action, CancellationToken cancellationToken)
-    {
-        try
-        {
+    private static async Task<string?> GetOptionalStringAsync(Func<CancellationToken, Task<string>> action, CancellationToken cancellationToken) {
+        try {
             return await action(cancellationToken).ConfigureAwait(false);
         }
-        catch (OpcException ex) when (ex.ResultId.Code == OpcResultId.NotImplemented.Code)
-        {
+        catch (OpcException ex) when (ex.ResultId.Code == OpcResultId.NotImplemented.Code) {
             return null;
         }
     }
 
-    private static async Task<string[]> GetOptionalStringArrayAsync(Func<CancellationToken, Task<string[]>> action, CancellationToken cancellationToken)
-    {
-        try
-        {
+    private static async Task<string[]> GetOptionalStringArrayAsync(Func<CancellationToken, Task<string[]>> action, CancellationToken cancellationToken) {
+        try {
             return await action(cancellationToken).ConfigureAwait(false);
         }
-        catch (OpcException ex) when (ex.ResultId.Code == OpcResultId.NotImplemented.Code)
-        {
+        catch (OpcException ex) when (ex.ResultId.Code == OpcResultId.NotImplemented.Code) {
             return [];
         }
     }
 
-    private static string NormalizeTypeSystemId(string? typeSystemId)
-    {
+    private static string NormalizeTypeSystemId(string? typeSystemId) {
         string value = string.IsNullOrWhiteSpace(typeSystemId) ? TypeDictionary.OpcBinaryTypeSystemId : typeSystemId.Trim();
-        return value.ToLowerInvariant() switch
-        {
+        return value.ToLowerInvariant() switch {
             "binary" or "opc-binary" or "opc_binary" or "opcbinary" => TypeDictionary.OpcBinaryTypeSystemId,
             "xml" or "schema" or "xml-schema" or "xml_schema" or "xmlschema" => TypeDictionary.XmlSchemaTypeSystemId,
             _ => value,
         };
     }
 
-    private static ParsedDictionary ParseDictionary(string dictionary)
-    {
-        if (string.IsNullOrWhiteSpace(dictionary))
-        {
+    private static ParsedDictionary ParseDictionary(string dictionary) {
+        if (string.IsNullOrWhiteSpace(dictionary)) {
             return new ParsedDictionary(TypeDictionary.OpcBinaryTypeSystemId, null, [], "Dictionary is empty.");
         }
 
-        try
-        {
+        try {
             TypeDictionary parsed = OpcBinaryDictionaryParser.Parse(dictionary);
             return new ParsedDictionary(TypeDictionary.OpcBinaryTypeSystemId, parsed.Name, ToTypeDtos(parsed), null);
         }
-        catch (ArgumentException ex)
-        {
+        catch (ArgumentException ex) {
             return ParseXmlSchemaDictionary(dictionary, ex.Message);
         }
-        catch (FormatException ex)
-        {
+        catch (FormatException ex) {
             return ParseXmlSchemaDictionary(dictionary, ex.Message);
         }
-        catch (XmlException ex)
-        {
+        catch (XmlException ex) {
             return ParseXmlSchemaDictionary(dictionary, ex.Message);
         }
     }
 
-    private static ParsedDictionary ParseXmlSchemaDictionary(string dictionary, string binaryParseError)
-    {
-        try
-        {
+    private static ParsedDictionary ParseXmlSchemaDictionary(string dictionary, string binaryParseError) {
+        try {
             TypeDictionary parsed = XmlSchemaParser.Parse(dictionary);
             return new ParsedDictionary(TypeDictionary.XmlSchemaTypeSystemId, parsed.Name, ToTypeDtos(parsed), null);
         }
-        catch (ArgumentException ex)
-        {
+        catch (ArgumentException ex) {
             return new ParsedDictionary(TypeDictionary.XmlSchemaTypeSystemId, null, [], $"OPCBinary parse failed: {binaryParseError}; XMLSchema parse failed: {ex.Message}");
         }
-        catch (FormatException ex)
-        {
+        catch (FormatException ex) {
             return new ParsedDictionary(TypeDictionary.XmlSchemaTypeSystemId, null, [], $"OPCBinary parse failed: {binaryParseError}; XMLSchema parse failed: {ex.Message}");
         }
-        catch (XmlException ex)
-        {
+        catch (XmlException ex) {
             return new ParsedDictionary(TypeDictionary.XmlSchemaTypeSystemId, null, [], $"OPCBinary parse failed: {binaryParseError}; XMLSchema parse failed: {ex.Message}");
         }
     }

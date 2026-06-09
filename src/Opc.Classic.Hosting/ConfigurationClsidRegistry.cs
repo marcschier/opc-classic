@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -12,8 +12,7 @@ namespace Opc.Classic.Hosting;
 /// <summary>
 /// Creates CLSID registries from Microsoft.Extensions.Configuration data.
 /// </summary>
-public static class ConfigurationClsidRegistry
-{
+public static class ConfigurationClsidRegistry {
     /// <summary>
     /// Binds a list of <see cref="OpcClsidRegistration"/> entries from the configuration
     /// section <c>"Opc.Classic:Servers"</c>:
@@ -25,8 +24,7 @@ public static class ConfigurationClsidRegistry
     /// }
     /// </code>
     /// </summary>
-    public static InMemoryClsidRegistry FromConfiguration(IConfiguration configuration)
-    {
+    public static InMemoryClsidRegistry FromConfiguration(IConfiguration configuration) {
         ArgumentNullException.ThrowIfNull(configuration);
         var registrations = configuration.GetSection("Opc.Classic:Servers")
             .Get<List<OpcClsidRegistration>>()

@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: MIT
+﻿// SPDX-License-Identifier: MIT
 
 using Opc.Classic.Dcom.Common;
 using Opc.Classic.Dcom.Rpc.Core;
@@ -6,7 +6,8 @@ using Opc.Classic.Dcom.Internal;
 using Opc.Classic.Dcom.Internal.LegacyNdr;
 using System.Collections.Generic;
 
-namespace Opc.Classic.Dcom.Core; 
+namespace Opc.Classic.Dcom.Core;
+
 /// <summary>
 /// Partially implements IOxIDResolver client calls, used only for ResolveOxid.
 /// </summary>

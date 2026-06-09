@@ -1,9 +1,10 @@
-// SPDX-License-Identifier: MIT
+﻿// SPDX-License-Identifier: MIT
 
 using Opc.Classic.Dcom.Internal.LegacyNdr;
 using Opc.Classic.Dcom.Rpc.Core;
 
-namespace Opc.Classic.Dcom.Rpc.pdu; 
+namespace Opc.Classic.Dcom.Rpc.pdu;
+
 /// <summary>
 /// Bind nack
 /// </summary>

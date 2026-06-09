@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -15,8 +15,7 @@ using TUnit.Core;
 
 namespace Opc.Classic.Discovery.Tests.Fuzz;
 
-public sealed class OpcEnumResponseFuzzTests
-{
+public sealed class OpcEnumResponseFuzzTests {
     private static readonly Type[] AllowedOpcEnumDecodeExceptions =
     [
         typeof(InvalidDataException),
@@ -26,8 +25,7 @@ public sealed class OpcEnumResponseFuzzTests
         typeof(InvalidOperationException),
     ];
 
-    private static readonly byte[] ValidResponse = WritePayload(static (ref NdrWriter writer) =>
-    {
+    private static readonly byte[] ValidResponse = WritePayload(static (ref NdrWriter writer) => {
         writer.WriteUInt32(1);
         writer.WriteUInt32(0);
         writer.WriteUInt32(1);
@@ -37,11 +35,9 @@ public sealed class OpcEnumResponseFuzzTests
 
     [Test]
     [Category("Fuzz")]
-    public async Task OpcEnum_ServerListResponse_Decode_RandomBytes_DoesNotCrash()
-    {
+    public async Task OpcEnum_ServerListResponse_Decode_RandomBytes_DoesNotCrash() {
         int exercised = 0;
-        FuzzHarness.BytesEdgeWeighted.Sample(bytes =>
-        {
+        FuzzHarness.BytesEdgeWeighted.Sample(bytes => {
             exercised++;
             FuzzHarness.AssertParseDoesNotCrash(
                 bytes,
@@ -54,11 +50,9 @@ public sealed class OpcEnumResponseFuzzTests
 
     [Test]
     [Category("Fuzz")]
-    public async Task OpcEnum_ServerListResponse_Decode_MutatedValid_DoesNotCrash()
-    {
+    public async Task OpcEnum_ServerListResponse_Decode_MutatedValid_DoesNotCrash() {
         int exercised = 0;
-        FuzzHarness.MutateValid(ValidResponse).Sample(bytes =>
-        {
+        FuzzHarness.MutateValid(ValidResponse).Sample(bytes => {
             exercised++;
             FuzzHarness.AssertParseDoesNotCrash(
                 bytes,
@@ -71,10 +65,8 @@ public sealed class OpcEnumResponseFuzzTests
 
     [Test]
     [Category("Fuzz")]
-    public async Task OpcEnum_ServerListResponse_Decode_OverlargeCount_Bounded()
-    {
-        byte[] input = WritePayload(static (ref NdrWriter writer) =>
-        {
+    public async Task OpcEnum_ServerListResponse_Decode_OverlargeCount_Bounded() {
+        byte[] input = WritePayload(static (ref NdrWriter writer) => {
             writer.WriteUInt32(int.MaxValue);
             writer.WriteUInt32(0);
             writer.WriteUInt32(int.MaxValue);
@@ -88,24 +80,21 @@ public sealed class OpcEnumResponseFuzzTests
         await Assert.That(input.Length).IsGreaterThan(0);
     }
 
-    private static OpcEnumGuidNextResult DecodeServerListResponse(ReadOnlyMemory<byte> payload)
-    {
+    private static OpcEnumGuidNextResult DecodeServerListResponse(ReadOnlyMemory<byte> payload) {
         var proxy = new IOPCEnumGUIDClientProxy(new FixedResponseCallChannel(payload.ToArray()));
         return proxy.NextAsync(1).GetAwaiter().GetResult();
     }
 
     private delegate void NdrWriteAction(ref NdrWriter writer);
 
-    private static byte[] WritePayload(NdrWriteAction action)
-    {
+    private static byte[] WritePayload(NdrWriteAction action) {
         var buffer = new byte[256];
         var writer = new NdrWriter(buffer);
         action(ref writer);
         return buffer.AsSpan(0, writer.Position).ToArray();
     }
 
-    private sealed class FixedResponseCallChannel(byte[] responsePayload) : ICallChannel
-    {
+    private sealed class FixedResponseCallChannel(byte[] responsePayload) : ICallChannel {
         public Task<NdrCallResult> InvokeAsync(
             Guid interfaceId,
             int opnum,

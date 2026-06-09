@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: MIT
+﻿// SPDX-License-Identifier: MIT
 using Opc.Classic.Dcom.Internal;
 using Opc.Classic.Dcom.Common;
 using Opc.Classic.Dcom.Transport;
@@ -8,7 +8,8 @@ using System;
 using System.IO;
 using System.Globalization;
 
-namespace Opc.Classic.Dcom.Core; 
+namespace Opc.Classic.Dcom.Core;
+
 /// <summary>
 /// Represents unknown server
 /// </summary>

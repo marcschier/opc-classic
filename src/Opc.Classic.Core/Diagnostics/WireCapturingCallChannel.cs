@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -27,16 +27,14 @@ namespace Opc.Classic.Diagnostics;
 /// engineer opens it cold. Failures during write are swallowed (the
 /// diagnostic must not change call semantics on failure).
 /// </remarks>
-public sealed class WireCapturingCallChannel : ICallChannel
-{
+public sealed class WireCapturingCallChannel : ICallChannel {
     private readonly ICallChannel _inner;
     private readonly string _directory;
     private readonly string _contextTag;
     private long _sequence;
 
     /// <summary>Creates a new capturing decorator.</summary>
-    public WireCapturingCallChannel(ICallChannel inner, string directory, string contextTag)
-    {
+    public WireCapturingCallChannel(ICallChannel inner, string directory, string contextTag) {
         ArgumentNullException.ThrowIfNull(inner);
         ArgumentNullException.ThrowIfNull(directory);
         ArgumentNullException.ThrowIfNull(contextTag);
@@ -51,8 +49,7 @@ public sealed class WireCapturingCallChannel : ICallChannel
         Guid interfaceId,
         int opnum,
         ReadOnlyMemory<byte> requestPayload,
-        CancellationToken cancellationToken = default)
-    {
+        CancellationToken cancellationToken = default) {
         long seq = Interlocked.Increment(ref _sequence);
         NdrCallResult result = await _inner.InvokeAsync(interfaceId, opnum, requestPayload, cancellationToken)
             .ConfigureAwait(false);
@@ -63,10 +60,8 @@ public sealed class WireCapturingCallChannel : ICallChannel
     [SuppressMessage("Design", "CA1031:Do not catch general exception types",
         Justification = "Capture is a diagnostic; failures must not propagate into call semantics.")]
     private void TryCapture(long sequence, Guid interfaceId, int opnum,
-        ReadOnlyMemory<byte> requestPayload, NdrCallResult result)
-    {
-        try
-        {
+        ReadOnlyMemory<byte> requestPayload, NdrCallResult result) {
+        try {
             Directory.CreateDirectory(_directory);
             string timestamp = DateTime.UtcNow.ToString("yyyyMMddTHHmmss.fff", CultureInfo.InvariantCulture);
             string fileName = string.Format(
@@ -91,40 +86,32 @@ public sealed class WireCapturingCallChannel : ICallChannel
 
             File.WriteAllText(path, sb.ToString());
         }
-        catch
-        {
+        catch {
             // intentionally swallowed — diagnostic write must never alter call behavior.
         }
     }
 
-    private static void AppendHexDump(StringBuilder sb, ReadOnlySpan<byte> bytes)
-    {
-        if (bytes.IsEmpty)
-        {
+    private static void AppendHexDump(StringBuilder sb, ReadOnlySpan<byte> bytes) {
+        if (bytes.IsEmpty) {
             sb.Append("  (empty)\n");
             return;
         }
 
         const int RowBytes = 16;
-        for (int row = 0; row < bytes.Length; row += RowBytes)
-        {
+        for (int row = 0; row < bytes.Length; row += RowBytes) {
             sb.Append(row.ToString("X4", CultureInfo.InvariantCulture)).Append(":  ");
             int rowEnd = Math.Min(row + RowBytes, bytes.Length);
-            for (int col = row; col < row + RowBytes; col++)
-            {
-                if (col < rowEnd)
-                {
+            for (int col = row; col < row + RowBytes; col++) {
+                if (col < rowEnd) {
                     sb.Append(bytes[col].ToString("x2", CultureInfo.InvariantCulture)).Append(' ');
                 }
-                else
-                {
+                else {
                     sb.Append("   ");
                 }
                 if (col == row + 7) { sb.Append(' '); }
             }
             sb.Append(' ');
-            for (int col = row; col < rowEnd; col++)
-            {
+            for (int col = row; col < rowEnd; col++) {
                 byte b = bytes[col];
                 sb.Append(b >= 0x20 && b < 0x7F ? (char)b : '.');
             }
@@ -132,18 +119,14 @@ public sealed class WireCapturingCallChannel : ICallChannel
         }
     }
 
-    private static string SanitizeForFilename(string value)
-    {
+    private static string SanitizeForFilename(string value) {
         char[] invalid = Path.GetInvalidFileNameChars();
         var sb = new StringBuilder(value.Length);
-        foreach (char c in value)
-        {
-            if (Array.IndexOf(invalid, c) >= 0 || c == ' ')
-            {
+        foreach (char c in value) {
+            if (Array.IndexOf(invalid, c) >= 0 || c == ' ') {
                 sb.Append('-');
             }
-            else
-            {
+            else {
                 sb.Append(c);
             }
         }

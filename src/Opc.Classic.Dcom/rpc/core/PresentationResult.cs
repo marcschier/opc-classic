@@ -1,10 +1,11 @@
-// SPDX-License-Identifier: MIT
+﻿// SPDX-License-Identifier: MIT
 
 using Opc.Classic.Dcom.Internal;
 using Opc.Classic.Dcom.Internal.LegacyNdr;
 using System.Text;
 
-namespace Opc.Classic.Dcom.Rpc.Core; 
+namespace Opc.Classic.Dcom.Rpc.Core;
+
 /// <summary>
 /// Presentation result
 /// </summary>

@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -11,13 +11,11 @@ using TUnit.Core;
 namespace Opc.Classic.Dcom.Smb.Tests.Fixtures.Winreg;
 
 [NotInParallel]
-public sealed class WinregFixtureReplayTests
-{
+public sealed class WinregFixtureReplayTests {
     private static readonly byte[] s_expectedHandle = Enumerable.Range(1, 20).Select(static value => (byte)value).ToArray();
 
     [Test]
-    public async Task OpenLocalMachine_request_marshals_to_canonical_bytes()
-    {
+    public async Task OpenLocalMachine_request_marshals_to_canonical_bytes() {
         var expectedRequest = MockWinregServer.ReadFixture("openlocalmachine_request.bin");
         var (client, server) = MockWinregServer.CreateClient(
             "openlocalmachine_request.bin",
@@ -30,8 +28,7 @@ public sealed class WinregFixtureReplayTests
     }
 
     [Test]
-    public async Task OpenLocalMachine_response_unmarshals_to_valid_policy_handle()
-    {
+    public async Task OpenLocalMachine_response_unmarshals_to_valid_policy_handle() {
         var (client, server) = MockWinregServer.CreateClient(
             "openlocalmachine_request.bin",
             "openlocalmachine_response.bin");
@@ -44,8 +41,7 @@ public sealed class WinregFixtureReplayTests
     }
 
     [Test]
-    public async Task BaseRegEnumKey_response_unmarshals_subkey_name()
-    {
+    public async Task BaseRegEnumKey_response_unmarshals_subkey_name() {
         var (client, server) = MockWinregServer.CreateClient(
             "enumkey_request.bin",
             "enumkey_response.bin");
@@ -58,8 +54,7 @@ public sealed class WinregFixtureReplayTests
         server.AssertCompleted();
     }
 
-    private static PolicyHandle CreatePolicyHandle()
-    {
+    private static PolicyHandle CreatePolicyHandle() {
         var handle = new PolicyHandle(false);
         Array.Copy(s_expectedHandle, 0, handle.Handle, 0, s_expectedHandle.Length);
         return handle;

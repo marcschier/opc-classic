@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -66,8 +66,7 @@ public sealed record DataChangeNotification(
 /// the queue contract is testable in isolation.
 /// </para>
 /// </remarks>
-public sealed class DaDataCallbackSink : IOPCDataCallback, IDisposable
-{
+public sealed class DaDataCallbackSink : IOPCDataCallback, IDisposable {
     /// <summary>Default queue capacity if the caller does not specify one.</summary>
     public const int DefaultCapacity = 1024;
 
@@ -83,20 +82,16 @@ public sealed class DaDataCallbackSink : IOPCDataCallback, IDisposable
 
     /// <summary>Creates a sink with the default capacity (<see cref="DefaultCapacity"/>).</summary>
     public DaDataCallbackSink()
-        : this(DefaultCapacity, clock: null)
-    {
+        : this(DefaultCapacity, clock: null) {
     }
 
     /// <summary>Creates a sink with the supplied capacity and optional clock override (for tests).</summary>
-    public DaDataCallbackSink(int capacity, Func<DateTimeOffset>? clock)
-    {
-        if (capacity < 1)
-        {
+    public DaDataCallbackSink(int capacity, Func<DateTimeOffset>? clock) {
+        if (capacity < 1) {
             throw new ArgumentOutOfRangeException(nameof(capacity), capacity, "Capacity must be at least 1.");
         }
 
-        _queue = Channel.CreateBounded<DataChangeNotification>(new BoundedChannelOptions(capacity)
-        {
+        _queue = Channel.CreateBounded<DataChangeNotification>(new BoundedChannelOptions(capacity) {
             FullMode = BoundedChannelFullMode.DropOldest,
             SingleReader = false,
             SingleWriter = false,
@@ -137,34 +132,28 @@ public sealed class DaDataCallbackSink : IOPCDataCallback, IDisposable
     /// in full.
     /// </para>
     /// </remarks>
-    public IReadOnlyList<DataChangeItem> DrainItems(int maxItems)
-    {
+    public IReadOnlyList<DataChangeItem> DrainItems(int maxItems) {
         ObjectDisposedException.ThrowIf(_disposed, this);
         bool unbounded = maxItems <= 0;
         var drained = new List<DataChangeItem>(unbounded ? 16 : maxItems);
-        while (unbounded || drained.Count < maxItems)
-        {
-            if (!_queue.Reader.TryRead(out DataChangeNotification? batch))
-            {
+        while (unbounded || drained.Count < maxItems) {
+            if (!_queue.Reader.TryRead(out DataChangeNotification? batch)) {
                 break;
             }
 
             int batchCount = batch.Items.Count;
             int remainingSlots = unbounded ? batchCount : maxItems - drained.Count;
             int takeCount = batchCount <= remainingSlots ? batchCount : remainingSlots;
-            for (int i = 0; i < takeCount; i++)
-            {
+            for (int i = 0; i < takeCount; i++) {
                 drained.Add(batch.Items[i]);
             }
 
-            if (takeCount < batchCount)
-            {
+            if (takeCount < batchCount) {
                 // Re-queue the unread tail at the head of the channel so the next
                 // poll picks up exactly where this drain stopped. Bounded
                 // drop-oldest semantics tolerate the round-trip.
                 var leftover = new List<DataChangeItem>(batchCount - takeCount);
-                for (int i = takeCount; i < batchCount; i++)
-                {
+                for (int i = takeCount; i < batchCount; i++) {
                     leftover.Add(batch.Items[i]);
                 }
 
@@ -175,8 +164,7 @@ public sealed class DaDataCallbackSink : IOPCDataCallback, IDisposable
                     batch.MasterError,
                     leftover,
                     batch.ReceivedAt);
-                if (!_queue.Writer.TryWrite(partial))
-                {
+                if (!_queue.Writer.TryWrite(partial)) {
                     Interlocked.Increment(ref _droppedNotifications);
                 }
 
@@ -198,8 +186,7 @@ public sealed class DaDataCallbackSink : IOPCDataCallback, IDisposable
         ushort[] qualities,
         long[] timestamps,
         int[] errors,
-        CancellationToken cancellationToken = default)
-    {
+        CancellationToken cancellationToken = default) {
         EnqueueBatch(transactionId, groupHandle, masterQuality, masterError, clientHandles, values, qualities, timestamps, errors);
         Interlocked.Increment(ref _onDataChangeCount);
         return Task.CompletedTask;
@@ -216,8 +203,7 @@ public sealed class DaDataCallbackSink : IOPCDataCallback, IDisposable
         ushort[] qualities,
         long[] timestamps,
         int[] errors,
-        CancellationToken cancellationToken = default)
-    {
+        CancellationToken cancellationToken = default) {
         EnqueueBatch(transactionId, groupHandle, masterQuality, masterError, clientHandles, values, qualities, timestamps, errors);
         Interlocked.Increment(ref _onReadCompleteCount);
         return Task.CompletedTask;
@@ -230,24 +216,20 @@ public sealed class DaDataCallbackSink : IOPCDataCallback, IDisposable
         int masterError,
         int[] clientHandles,
         int[] errors,
-        CancellationToken cancellationToken = default)
-    {
+        CancellationToken cancellationToken = default) {
         Interlocked.Increment(ref _onWriteCompleteCount);
         return Task.CompletedTask;
     }
 
     /// <inheritdoc/>
-    public Task OnCancelCompleteAsync(int transactionId, int groupHandle, CancellationToken cancellationToken = default)
-    {
+    public Task OnCancelCompleteAsync(int transactionId, int groupHandle, CancellationToken cancellationToken = default) {
         Interlocked.Increment(ref _onCancelCompleteCount);
         return Task.CompletedTask;
     }
 
     /// <summary>Completes the channel writer; further enqueue attempts are dropped.</summary>
-    public void Dispose()
-    {
-        if (_disposed)
-        {
+    public void Dispose() {
+        if (_disposed) {
             return;
         }
 
@@ -264,8 +246,7 @@ public sealed class DaDataCallbackSink : IOPCDataCallback, IDisposable
         OpcVariant[] values,
         ushort[] qualities,
         long[] timestamps,
-        int[] errors)
-    {
+        int[] errors) {
         ArgumentNullException.ThrowIfNull(clientHandles);
         ArgumentNullException.ThrowIfNull(values);
         ArgumentNullException.ThrowIfNull(qualities);
@@ -273,8 +254,7 @@ public sealed class DaDataCallbackSink : IOPCDataCallback, IDisposable
         ArgumentNullException.ThrowIfNull(errors);
 
         int count = clientHandles.Length;
-        if (values.Length != count || qualities.Length != count || timestamps.Length != count || errors.Length != count)
-        {
+        if (values.Length != count || qualities.Length != count || timestamps.Length != count || errors.Length != count) {
             throw new ArgumentException(
                 "DataCallback array lengths must match (clientHandles=" + clientHandles.Length
                 + " values=" + values.Length
@@ -285,8 +265,7 @@ public sealed class DaDataCallbackSink : IOPCDataCallback, IDisposable
         }
 
         var items = new List<DataChangeItem>(count);
-        for (int i = 0; i < count; i++)
-        {
+        for (int i = 0; i < count; i++) {
             items.Add(new DataChangeItem(
                 clientHandles[i],
                 values[i],
@@ -303,8 +282,7 @@ public sealed class DaDataCallbackSink : IOPCDataCallback, IDisposable
             items,
             _clock());
 
-        if (_disposed)
-        {
+        if (_disposed) {
             return;
         }
 
@@ -314,14 +292,12 @@ public sealed class DaDataCallbackSink : IOPCDataCallback, IDisposable
         // drain but acceptable for a best-effort diagnostic — the counter
         // never under-reports for the steady-state "queue is full" case.
         bool wasAtCapacity = _queue.Reader.CanCount && _queue.Reader.Count >= _capacity;
-        if (!_queue.Writer.TryWrite(notification))
-        {
+        if (!_queue.Writer.TryWrite(notification)) {
             Interlocked.Increment(ref _droppedNotifications);
             return;
         }
 
-        if (wasAtCapacity)
-        {
+        if (wasAtCapacity) {
             Interlocked.Increment(ref _droppedNotifications);
         }
     }

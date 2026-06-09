@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -15,21 +15,17 @@ using TUnit.Core;
 
 namespace Opc.Classic.Hda.Tests;
 
-public sealed class HdaBrowseElementTests
-{
+public sealed class HdaBrowseElementTests {
     [Test]
-    public async Task Default_HasEmptyNameAndItemId()
-    {
+    public async Task Default_HasEmptyNameAndItemId() {
         var e = new HdaBrowseElement();
         await Assert.That(e.Name).IsEqualTo(string.Empty);
         await Assert.That(e.ItemId).IsEqualTo(string.Empty);
     }
 
     [Test]
-    public async Task Initializer_AssignsAllFields()
-    {
-        var e = new HdaBrowseElement
-        {
+    public async Task Initializer_AssignsAllFields() {
+        var e = new HdaBrowseElement {
             Name = "Tank1",
             ItemId = "Plant1.Tank1",
             BrowseType = HdaBrowseType.Leaf,
@@ -40,11 +36,9 @@ public sealed class HdaBrowseElementTests
     }
 }
 
-public sealed class HdaReadResultTests
-{
+public sealed class HdaReadResultTests {
     [Test]
-    public async Task Default_HasOkResultAndEmptyValues()
-    {
+    public async Task Default_HasOkResultAndEmptyValues() {
         var r = new HdaReadResult();
         await Assert.That(r.ResultId).IsEqualTo(OpcResultId.Ok);
         await Assert.That(r.Values.Count).IsEqualTo(0);
@@ -52,20 +46,17 @@ public sealed class HdaReadResultTests
     }
 
     [Test]
-    public async Task Paged_HasContinuationHandle()
-    {
+    public async Task Paged_HasContinuationHandle() {
         var r = new HdaReadResult { ContinuationHandle = 42 };
         await Assert.That(r.ContinuationHandle).IsEqualTo(42);
     }
 }
 
-internal sealed class FakeHdaServer : IHdaServer
-{
+internal sealed class FakeHdaServer : IHdaServer {
     public event EventHandler<EventArgs>? ServerShutdown;
 
     public Task<OpcServerStatus> GetStatusAsync(CancellationToken ct = default) =>
-        Task.FromResult(new OpcServerStatus
-        {
+        Task.FromResult(new OpcServerStatus {
             Spec = OpcStatusSpec.Hda,
             State = OpcServerState.Running,
             VendorInfo = "FakeHdaServer",
@@ -74,8 +65,7 @@ internal sealed class FakeHdaServer : IHdaServer
 
     public async IAsyncEnumerable<HdaBrowseElement> BrowseAsync(
         string itemIdPrefix, HdaBrowseType browseType,
-        [EnumeratorCancellation] CancellationToken ct = default)
-    {
+        [EnumeratorCancellation] CancellationToken ct = default) {
         await Task.Yield();
         yield return new HdaBrowseElement { Name = "Tank1", ItemId = "Tank1", BrowseType = HdaBrowseType.Leaf };
         yield return new HdaBrowseElement { Name = "Tank2", ItemId = "Tank2", BrowseType = HdaBrowseType.Leaf };
@@ -90,8 +80,7 @@ internal sealed class FakeHdaServer : IHdaServer
     public Task<IReadOnlyList<HdaReadResult>> ReadRawAsync(
         IReadOnlyList<string> itemIds, HdaTime startTime, HdaTime endTime,
         int maxValuesPerItem, bool includeBounds, CancellationToken ct = default) =>
-        Task.FromResult<IReadOnlyList<HdaReadResult>>(itemIds.Select(id => new HdaReadResult
-        {
+        Task.FromResult<IReadOnlyList<HdaReadResult>>(itemIds.Select(id => new HdaReadResult {
             ItemId = id,
             Values = new[]
             {
@@ -103,8 +92,7 @@ internal sealed class FakeHdaServer : IHdaServer
     public Task<IReadOnlyList<HdaReadResult>> ReadProcessedAsync(
         IReadOnlyList<AggregateRequest> requests, HdaTime startTime, HdaTime endTime,
         TimeSpan resampleInterval, CancellationToken ct = default) =>
-        Task.FromResult<IReadOnlyList<HdaReadResult>>(requests.Select(r => new HdaReadResult
-        {
+        Task.FromResult<IReadOnlyList<HdaReadResult>>(requests.Select(r => new HdaReadResult {
             ItemId = r.ItemId,
             Values = new[]
             {
@@ -115,8 +103,7 @@ internal sealed class FakeHdaServer : IHdaServer
     public Task<IReadOnlyList<HdaReadResult>> ReadAtTimeAsync(
         IReadOnlyList<string> itemIds, IReadOnlyList<DateTimeOffset> timestamps,
         CancellationToken ct = default) =>
-        Task.FromResult<IReadOnlyList<HdaReadResult>>(itemIds.Select(id => new HdaReadResult
-        {
+        Task.FromResult<IReadOnlyList<HdaReadResult>>(itemIds.Select(id => new HdaReadResult {
             ItemId = id,
             Values = timestamps.Select(ts => new HdaItemValue { Timestamp = ts, Value = 0.0, Quality = OpcQuality.Good }).ToList(),
         }).ToList());
@@ -124,8 +111,7 @@ internal sealed class FakeHdaServer : IHdaServer
     public Task<IReadOnlyList<HdaAnnotationResult>> ReadAnnotationsAsync(
         IReadOnlyList<string> itemIds, HdaTime startTime, HdaTime endTime,
         CancellationToken ct = default) =>
-        Task.FromResult<IReadOnlyList<HdaAnnotationResult>>(itemIds.Select(id => new HdaAnnotationResult
-        {
+        Task.FromResult<IReadOnlyList<HdaAnnotationResult>>(itemIds.Select(id => new HdaAnnotationResult {
             ItemId = id,
             Annotations = new[]
             {
@@ -138,18 +124,15 @@ internal sealed class FakeHdaServer : IHdaServer
         int maxValuesPerItem, CancellationToken ct = default) =>
         Task.FromResult<IReadOnlyList<HdaReadResult>>(itemIds.Select(id => new HdaReadResult { ItemId = id }).ToList());
 
-    public ValueTask DisposeAsync()
-    {
+    public ValueTask DisposeAsync() {
         ServerShutdown?.Invoke(this, EventArgs.Empty);
         return ValueTask.CompletedTask;
     }
 }
 
-public sealed class IHdaServerContractTests
-{
+public sealed class IHdaServerContractTests {
     [Test]
-    public async Task GetStatusAsync_ReturnsHdaStatus()
-    {
+    public async Task GetStatusAsync_ReturnsHdaStatus() {
         await using var server = new FakeHdaServer();
         var status = await server.GetStatusAsync();
         await Assert.That(status.Spec).IsEqualTo(OpcStatusSpec.Hda);
@@ -157,20 +140,17 @@ public sealed class IHdaServerContractTests
     }
 
     [Test]
-    public async Task BrowseAsync_StreamsElements()
-    {
+    public async Task BrowseAsync_StreamsElements() {
         await using var server = new FakeHdaServer();
         var count = 0;
-        await foreach (var _ in server.BrowseAsync(string.Empty, HdaBrowseType.Leaf))
-        {
+        await foreach (var _ in server.BrowseAsync(string.Empty, HdaBrowseType.Leaf)) {
             count++;
         }
         await Assert.That(count).IsEqualTo(2);
     }
 
     [Test]
-    public async Task GetSupportedAggregatesAsync_ReturnsList()
-    {
+    public async Task GetSupportedAggregatesAsync_ReturnsList() {
         await using var server = new FakeHdaServer();
         var aggregates = await server.GetSupportedAggregatesAsync();
         await Assert.That(aggregates.Count).IsEqualTo(4);
@@ -178,8 +158,7 @@ public sealed class IHdaServerContractTests
     }
 
     [Test]
-    public async Task ReadRawAsync_ReturnsPerItemValues()
-    {
+    public async Task ReadRawAsync_ReturnsPerItemValues() {
         await using var server = new FakeHdaServer();
         var results = await server.ReadRawAsync(
             new[] { "Tag1", "Tag2" },
@@ -193,8 +172,7 @@ public sealed class IHdaServerContractTests
     }
 
     [Test]
-    public async Task ReadProcessedAsync_PerAggregateResults()
-    {
+    public async Task ReadProcessedAsync_PerAggregateResults() {
         await using var server = new FakeHdaServer();
         var requests = new[]
         {
@@ -210,8 +188,7 @@ public sealed class IHdaServerContractTests
     }
 
     [Test]
-    public async Task ReadAtTimeAsync_ReturnsValueAtEachTimestamp()
-    {
+    public async Task ReadAtTimeAsync_ReturnsValueAtEachTimestamp() {
         await using var server = new FakeHdaServer();
         var timestamps = new[]
         {
@@ -225,8 +202,7 @@ public sealed class IHdaServerContractTests
     }
 
     [Test]
-    public async Task ReadAnnotationsAsync_ReturnsAnnotations()
-    {
+    public async Task ReadAnnotationsAsync_ReturnsAnnotations() {
         await using var server = new FakeHdaServer();
         var results = await server.ReadAnnotationsAsync(
             new[] { "Tag1" },

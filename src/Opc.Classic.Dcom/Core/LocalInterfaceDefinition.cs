@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: MIT
+﻿// SPDX-License-Identifier: MIT
 
 using Opc.Classic.Dcom.Common;
 using SharpCifs.Util.Sharpen;
@@ -7,7 +7,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Globalization;
 
-namespace Opc.Classic.Dcom.Core; 
+namespace Opc.Classic.Dcom.Core;
+
 /// <summary>
 /// Forms the definition of a COM interface to be used in callbacks.
 /// Method overloads are <b>not</b> allowed.

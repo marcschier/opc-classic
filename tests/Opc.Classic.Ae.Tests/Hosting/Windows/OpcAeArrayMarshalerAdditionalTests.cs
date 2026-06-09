@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -15,15 +15,12 @@ using TUnit.Core;
 
 namespace Opc.Classic.Ae.Tests.Hosting.Windows;
 
-public sealed class OpcAeArrayMarshalerAdditionalTests
-{
+public sealed class OpcAeArrayMarshalerAdditionalTests {
     private const int S_OK = 0;
 
     [Test]
-    public async Task AllocateBstrArray_ConcreteStrings_RoundTripsAndAppendsNullSentinel()
-    {
-        if (!OperatingSystem.IsWindows())
-        {
+    public async Task AllocateBstrArray_ConcreteStrings_RoundTripsAndAppendsNullSentinel() {
+        if (!OperatingSystem.IsWindows()) {
             return;
         }
 
@@ -31,8 +28,7 @@ public sealed class OpcAeArrayMarshalerAdditionalTests
         IntPtr arrayPtr = IntPtr.Zero;
         object?[] args = [new string?[] { "Area", null, "Source" }, count, arrayPtr];
 
-        try
-        {
+        try {
             GetArrayMarshalerMethod("AllocateBstrArray").Invoke(null, args);
             count = (int)args[1]!;
             arrayPtr = (IntPtr)args[2]!;
@@ -43,17 +39,14 @@ public sealed class OpcAeArrayMarshalerAdditionalTests
             await Assert.That(values).IsEquivalentTo(["Area", string.Empty, "Source"]);
             await Assert.That(sentinel).IsEqualTo(IntPtr.Zero);
         }
-        finally
-        {
+        finally {
             GetArrayMarshalerMethod("FreeBstrArray").Invoke(null, [arrayPtr, count]);
         }
     }
 
     [Test]
-    public async Task AllocateDwordAndGuidArrays_ConcreteValues_UseExpectedNativeLayout()
-    {
-        if (!OperatingSystem.IsWindows())
-        {
+    public async Task AllocateDwordAndGuidArrays_ConcreteValues_UseExpectedNativeLayout() {
+        if (!OperatingSystem.IsWindows()) {
             return;
         }
 
@@ -64,8 +57,7 @@ public sealed class OpcAeArrayMarshalerAdditionalTests
         Guid first = Guid.Parse("11111111-2222-3333-4444-555555555555");
         Guid second = Guid.Parse("aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee");
 
-        try
-        {
+        try {
             object?[] dwordArgs = [new[] { 42, -1, 700 }, dwordCount, dwordPtr];
             GetArrayMarshalerMethod("AllocateDwordArray").Invoke(null, dwordArgs);
             dwordCount = (int)dwordArgs[1]!;
@@ -85,26 +77,22 @@ public sealed class OpcAeArrayMarshalerAdditionalTests
             await Assert.That(firstNative).IsEqualTo(first);
             await Assert.That(secondNative).IsEqualTo(second);
         }
-        finally
-        {
+        finally {
             GetArrayMarshalerMethod("FreeCoTaskMem").Invoke(null, [dwordPtr]);
             GetArrayMarshalerMethod("FreeCoTaskMem").Invoke(null, [guidPtr]);
         }
     }
 
     [Test]
-    public async Task OpcEnumStringCcw_NextSkipResetAndClone_ReturnConcreteEnumeratorState()
-    {
-        if (!OperatingSystem.IsWindows())
-        {
+    public async Task OpcEnumStringCcw_NextSkipResetAndClone_ReturnConcreteEnumeratorState() {
+        if (!OperatingSystem.IsWindows()) {
             return;
         }
 
         IntPtr enumerator = CreateEnumString(["One", "Two", "Three"]);
         IntPtr clone = IntPtr.Zero;
         IntPtr slots = Marshal.AllocCoTaskMem(2 * IntPtr.Size);
-        try
-        {
+        try {
             ClearSlots(slots, 2);
             int nextHr = GetMethod<NextDelegate>(enumerator, 3)(enumerator, 2, slots, out uint fetched);
             string[] firstBatch = ReadAndFreeLpwStrSlots(slots, 2);
@@ -128,10 +116,8 @@ public sealed class OpcAeArrayMarshalerAdditionalTests
             await Assert.That(cloneFetched).IsEqualTo(2u);
             await Assert.That(cloneBatch).IsEquivalentTo(["Two", "Three"]);
         }
-        finally
-        {
-            if (clone != IntPtr.Zero)
-            {
+        finally {
+            if (clone != IntPtr.Zero) {
                 _ = GetMethod<ReleaseDelegate>(clone, 2)(clone);
             }
             _ = GetMethod<ReleaseDelegate>(enumerator, 2)(enumerator);
@@ -149,8 +135,7 @@ public sealed class OpcAeArrayMarshalerAdditionalTests
     private static Type EnumStringCcwType =>
         typeof(OpcAeServerCcw).Assembly.GetType("Opc.Classic.Ae.Hosting.Windows.OpcEnumStringCcw", throwOnError: true)!;
 
-    private static IntPtr CreateEnumString(IReadOnlyList<string> values)
-    {
+    private static IntPtr CreateEnumString(IReadOnlyList<string> values) {
         MethodInfo create = EnumStringCcwType.GetMethod(
             "Create",
             BindingFlags.Public | BindingFlags.Static,
@@ -162,30 +147,24 @@ public sealed class OpcAeArrayMarshalerAdditionalTests
     }
 
     private static T GetMethod<T>(IntPtr instance, int slot)
-        where T : Delegate
-    {
+        where T : Delegate {
         IntPtr vtable = Marshal.ReadIntPtr(instance);
         IntPtr method = Marshal.ReadIntPtr(vtable, slot * IntPtr.Size);
         return Marshal.GetDelegateForFunctionPointer<T>(method);
     }
 
-    private static void ClearSlots(IntPtr slots, int count)
-    {
-        for (int i = 0; i < count; i++)
-        {
+    private static void ClearSlots(IntPtr slots, int count) {
+        for (int i = 0; i < count; i++) {
             Marshal.WriteIntPtr(slots, i * IntPtr.Size, IntPtr.Zero);
         }
     }
 
-    private static string[] ReadAndFreeLpwStrSlots(IntPtr slots, int count)
-    {
+    private static string[] ReadAndFreeLpwStrSlots(IntPtr slots, int count) {
         var values = new string[count];
-        for (int i = 0; i < count; i++)
-        {
+        for (int i = 0; i < count; i++) {
             IntPtr valuePtr = Marshal.ReadIntPtr(slots, i * IntPtr.Size);
             values[i] = valuePtr == IntPtr.Zero ? string.Empty : Marshal.PtrToStringUni(valuePtr) ?? string.Empty;
-            if (valuePtr != IntPtr.Zero)
-            {
+            if (valuePtr != IntPtr.Zero) {
                 Marshal.FreeCoTaskMem(valuePtr);
                 Marshal.WriteIntPtr(slots, i * IntPtr.Size, IntPtr.Zero);
             }

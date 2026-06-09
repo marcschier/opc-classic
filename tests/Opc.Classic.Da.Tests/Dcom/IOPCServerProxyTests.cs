@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -13,27 +13,22 @@ using TUnit.Core;
 
 namespace Opc.Classic.Da.Tests.Dcom;
 
-public sealed class IOPCServerProxyTests
-{
+public sealed class IOPCServerProxyTests {
     [Test]
-    public async Task GetStatus_invokes_channel_with_correct_metadata()
-    {
+    public async Task GetStatus_invokes_channel_with_correct_metadata() {
         Guid observedIid = Guid.Empty;
         int observedOpnum = -1;
-        var channel = new InMemoryCallChannel((iid, opnum, _, _) =>
-        {
+        var channel = new InMemoryCallChannel((iid, opnum, _, _) => {
             observedIid = iid;
             observedOpnum = opnum;
             return Task.FromResult(new NdrCallResult(0, ReadOnlyMemory<byte>.Empty));
         });
 
         var proxy = new IOPCServerClientProxy(channel);
-        try
-        {
+        try {
             _ = await proxy.GetStatusAsync(CancellationToken.None);
         }
-        catch
-        {
+        catch {
             // Empty payloads may not decode to OpcServerStatus; this test verifies channel wiring.
         }
 
@@ -42,8 +37,7 @@ public sealed class IOPCServerProxyTests
     }
 
     [Test]
-    public async Task RemoveGroup_failure_throws_OpcException()
-    {
+    public async Task RemoveGroup_failure_throws_OpcException() {
         const int E_FAIL = unchecked((int)0x80004005u);
         var channel = new InMemoryCallChannel(static (_, _, _, _) =>
             Task.FromResult(new NdrCallResult(E_FAIL, ReadOnlyMemory<byte>.Empty)));
@@ -55,22 +49,18 @@ public sealed class IOPCServerProxyTests
     }
 
     [Test]
-    public async Task GetErrorString_encodes_two_int_params()
-    {
+    public async Task GetErrorString_encodes_two_int_params() {
         ReadOnlyMemory<byte> capturedPayload = ReadOnlyMemory<byte>.Empty;
-        var channel = new InMemoryCallChannel((_, _, payload, _) =>
-        {
+        var channel = new InMemoryCallChannel((_, _, payload, _) => {
             capturedPayload = payload.ToArray();
             return Task.FromResult(new NdrCallResult(0, ReadOnlyMemory<byte>.Empty));
         });
 
         var proxy = new IOPCServerClientProxy(channel);
-        try
-        {
+        try {
             _ = await proxy.GetErrorStringAsync(0x12345678, 0x0409, CancellationToken.None);
         }
-        catch
-        {
+        catch {
             // Empty payloads may not decode to string; this test verifies request encoding.
         }
 
@@ -83,18 +73,14 @@ public sealed class IOPCServerProxyTests
     }
 
     private static async Task<TException> CaptureAsync<TException>(Func<Task> action)
-        where TException : Exception
-    {
-        try
-        {
+        where TException : Exception {
+        try {
             await action().ConfigureAwait(false);
         }
-        catch (TException exception)
-        {
+        catch (TException exception) {
             return exception;
         }
-        catch (Exception exception)
-        {
+        catch (Exception exception) {
             throw new InvalidOperationException($"Expected {typeof(TException).Name}, but caught {exception.GetType().Name}.", exception);
         }
 

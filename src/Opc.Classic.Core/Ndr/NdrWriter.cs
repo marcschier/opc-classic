@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -41,15 +41,13 @@ namespace Opc.Classic.Ndr;
 /// position. All writes are little-endian and self-aligning per NDR rules.
 /// </remarks>
 [StructLayout(LayoutKind.Auto)]
-public ref struct NdrWriter
-{
+public ref struct NdrWriter {
     private readonly Span<byte> _buffer;
     private int _position;
     private uint _nextReferentId;
 
     /// <summary>Creates a new writer over the supplied buffer.</summary>
-    public NdrWriter(Span<byte> buffer)
-    {
+    public NdrWriter(Span<byte> buffer) {
         _buffer = buffer;
         _position = 0;
         _nextReferentId = 0x00020000u;  // matches DCE/RPC conventional starting referent
@@ -68,16 +66,13 @@ public ref struct NdrWriter
     /// Aligns the position to the given power-of-two boundary by padding with
     /// zero bytes. <paramref name="boundary"/> must be one of {1, 2, 4, 8}.
     /// </summary>
-    public void AlignTo(int boundary)
-    {
-        if (boundary != 1 && boundary != 2 && boundary != 4 && boundary != 8)
-        {
+    public void AlignTo(int boundary) {
+        if (boundary != 1 && boundary != 2 && boundary != 4 && boundary != 8) {
             throw new ArgumentOutOfRangeException(nameof(boundary), boundary, "Alignment must be 1, 2, 4, or 8.");
         }
 
         int misaligned = _position & (boundary - 1);
-        if (misaligned == 0)
-        {
+        if (misaligned == 0) {
             return;
         }
 
@@ -88,8 +83,7 @@ public ref struct NdrWriter
     }
 
     /// <summary>Writes a single byte (no alignment required — byte is 1-aligned).</summary>
-    public void WriteByte(byte value)
-    {
+    public void WriteByte(byte value) {
         EnsureCapacity(1);
         _buffer[_position] = value;
         _position += 1;
@@ -105,8 +99,7 @@ public ref struct NdrWriter
     public void WriteUInt8(byte value) => WriteByte(value);
 
     /// <summary>Writes a little-endian signed 16-bit integer, aligned to 2.</summary>
-    public void WriteInt16(short value)
-    {
+    public void WriteInt16(short value) {
         AlignTo(2);
         EnsureCapacity(2);
         BinaryPrimitives.WriteInt16LittleEndian(_buffer.Slice(_position, 2), value);
@@ -114,8 +107,7 @@ public ref struct NdrWriter
     }
 
     /// <summary>Writes a little-endian unsigned 16-bit integer, aligned to 2.</summary>
-    public void WriteUInt16(ushort value)
-    {
+    public void WriteUInt16(ushort value) {
         AlignTo(2);
         EnsureCapacity(2);
         BinaryPrimitives.WriteUInt16LittleEndian(_buffer.Slice(_position, 2), value);
@@ -123,8 +115,7 @@ public ref struct NdrWriter
     }
 
     /// <summary>Writes a little-endian signed 32-bit integer, aligned to 4.</summary>
-    public void WriteInt32(int value)
-    {
+    public void WriteInt32(int value) {
         AlignTo(4);
         EnsureCapacity(4);
         BinaryPrimitives.WriteInt32LittleEndian(_buffer.Slice(_position, 4), value);
@@ -132,8 +123,7 @@ public ref struct NdrWriter
     }
 
     /// <summary>Writes a little-endian unsigned 32-bit integer, aligned to 4.</summary>
-    public void WriteUInt32(uint value)
-    {
+    public void WriteUInt32(uint value) {
         AlignTo(4);
         EnsureCapacity(4);
         BinaryPrimitives.WriteUInt32LittleEndian(_buffer.Slice(_position, 4), value);
@@ -141,8 +131,7 @@ public ref struct NdrWriter
     }
 
     /// <summary>Writes a little-endian signed 64-bit integer, aligned to 8.</summary>
-    public void WriteInt64(long value)
-    {
+    public void WriteInt64(long value) {
         AlignTo(8);
         EnsureCapacity(8);
         BinaryPrimitives.WriteInt64LittleEndian(_buffer.Slice(_position, 8), value);
@@ -150,8 +139,7 @@ public ref struct NdrWriter
     }
 
     /// <summary>Writes a little-endian unsigned 64-bit integer, aligned to 8.</summary>
-    public void WriteUInt64(ulong value)
-    {
+    public void WriteUInt64(ulong value) {
         AlignTo(8);
         EnsureCapacity(8);
         BinaryPrimitives.WriteUInt64LittleEndian(_buffer.Slice(_position, 8), value);
@@ -159,8 +147,7 @@ public ref struct NdrWriter
     }
 
     /// <summary>Writes a single-precision IEEE-754 float, aligned to 4.</summary>
-    public void WriteSingle(float value)
-    {
+    public void WriteSingle(float value) {
         AlignTo(4);
         EnsureCapacity(4);
         BinaryPrimitives.WriteSingleLittleEndian(_buffer.Slice(_position, 4), value);
@@ -168,8 +155,7 @@ public ref struct NdrWriter
     }
 
     /// <summary>Writes a double-precision IEEE-754 float, aligned to 8.</summary>
-    public void WriteDouble(double value)
-    {
+    public void WriteDouble(double value) {
         AlignTo(8);
         EnsureCapacity(8);
         BinaryPrimitives.WriteDoubleLittleEndian(_buffer.Slice(_position, 8), value);
@@ -182,8 +168,7 @@ public ref struct NdrWriter
     /// scalar). The first 8 bytes are the little-endian-encoded Data1/Data2/Data3;
     /// the Data4 byte array follows in declaration order.
     /// </summary>
-    public void WriteGuid(Guid value)
-    {
+    public void WriteGuid(Guid value) {
         AlignTo(4);
         EnsureCapacity(16);
         // Guid.TryWriteBytes already emits the GUID in the DCE/NDR-compatible
@@ -191,8 +176,7 @@ public ref struct NdrWriter
         // serializes Data1/Data2/Data3 in host endianness on LE platforms,
         // which matches NDR's little-endian wire format).
         bool ok = value.TryWriteBytes(_buffer.Slice(_position, 16));
-        if (!ok)
-        {
+        if (!ok) {
             throw new InvalidOperationException("Guid.TryWriteBytes failed unexpectedly.");
         }
         _position += 16;
@@ -207,8 +191,7 @@ public ref struct NdrWriter
     /// FILETIME on the NDR wire is NOT an Int64 — it is two consecutive
     /// 32-bit fields per the FILETIME struct, so the alignment is 4 not 8.
     /// </remarks>
-    public void WriteFileTime(long fileTime100ns)
-    {
+    public void WriteFileTime(long fileTime100ns) {
         AlignTo(4);
         EnsureCapacity(8);
         uint low = unchecked((uint)(fileTime100ns & 0xFFFFFFFFu));
@@ -223,10 +206,8 @@ public ref struct NdrWriter
     /// equal to the maximum element count. Conformant arrays embed this
     /// header at the array's start. Aligned to 4.
     /// </summary>
-    public void WriteConformanceHeader(int count)
-    {
-        if (count < 0)
-        {
+    public void WriteConformanceHeader(int count) {
+        if (count < 0) {
             throw new ArgumentOutOfRangeException(nameof(count), count, "Conformance count must be non-negative.");
         }
         WriteUInt32(unchecked((uint)count));
@@ -236,8 +217,7 @@ public ref struct NdrWriter
     /// Writes a referent ID for a unique pointer. Returns the ID assigned.
     /// Zero referent IDs encode a null pointer.
     /// </summary>
-    public uint WriteReferentId()
-    {
+    public uint WriteReferentId() {
         uint id = _nextReferentId;
         _nextReferentId += 4;
         WriteUInt32(id);
@@ -254,14 +234,11 @@ public ref struct NdrWriter
     /// emission so that multiple sibling unique pointers don't share the same
     /// referent ID (the receiver would otherwise treat them as aliases).
     /// </summary>
-    public void WriteUniquePointerReferent(bool nonNull)
-    {
-        if (nonNull)
-        {
+    public void WriteUniquePointerReferent(bool nonNull) {
+        if (nonNull) {
             _ = WriteReferentId();
         }
-        else
-        {
+        else {
             WriteUInt32(0u);
         }
     }
@@ -269,8 +246,7 @@ public ref struct NdrWriter
     /// <summary>
     /// Writes a span of raw bytes verbatim (no alignment, no length prefix).
     /// </summary>
-    public void WriteRawBytes(ReadOnlySpan<byte> source)
-    {
+    public void WriteRawBytes(ReadOnlySpan<byte> source) {
         EnsureCapacity(source.Length);
         source.CopyTo(_buffer.Slice(_position, source.Length));
         _position += source.Length;
@@ -286,8 +262,7 @@ public ref struct NdrWriter
     /// per DCOM convention; pass the string without a terminator and we add
     /// the +1.
     /// </summary>
-    public void WriteUnicodeString(ReadOnlySpan<char> value)
-    {
+    public void WriteUnicodeString(ReadOnlySpan<char> value) {
         AlignTo(4);
         int countWithNul = value.Length + 1;
         WriteUInt32(unchecked((uint)countWithNul)); // max_count
@@ -295,8 +270,7 @@ public ref struct NdrWriter
         WriteUInt32(unchecked((uint)countWithNul)); // actual_count
 
         EnsureCapacity(countWithNul * 2);
-        for (int i = 0; i < value.Length; i++)
-        {
+        for (int i = 0; i < value.Length; i++) {
             BinaryPrimitives.WriteUInt16LittleEndian(_buffer.Slice(_position, 2), value[i]);
             _position += 2;
         }
@@ -314,8 +288,7 @@ public ref struct NdrWriter
     ///     uint clSize       (count of UInt16 elements — char count, no terminator)
     ///     ushort[clSize] chars
     /// </summary>
-    public void WriteBstr(ReadOnlySpan<char> value)
-    {
+    public void WriteBstr(ReadOnlySpan<char> value) {
         uint referent = WriteReferentId();
         _ = referent;
         // FLAGGED_WORD_BLOB per MS-OAUT 2.2.23: max_count (conformant array
@@ -326,8 +299,7 @@ public ref struct NdrWriter
         WriteUInt32(clSize * 2u);  // cBytes — informational byte count
         WriteUInt32(clSize);
         EnsureCapacity(value.Length * 2);
-        for (int i = 0; i < value.Length; i++)
-        {
+        for (int i = 0; i < value.Length; i++) {
             BinaryPrimitives.WriteUInt16LittleEndian(_buffer.Slice(_position, 2), value[i]);
             _position += 2;
         }
@@ -340,10 +312,8 @@ public ref struct NdrWriter
     /// Writes a unique-pointer LPWSTR — a referent ID followed by the
     /// conformant-variant string body (or a single zero referent for null).
     /// </summary>
-    public void WriteUnicodeStringPtr(string? value)
-    {
-        if (value is null)
-        {
+    public void WriteUnicodeStringPtr(string? value) {
+        if (value is null) {
             WriteNullReferent();
             return;
         }
@@ -357,70 +327,59 @@ public ref struct NdrWriter
     /// Writes a conformant array of bytes: 4-byte count + raw bytes
     /// (no element alignment since bytes are 1-aligned).
     /// </summary>
-    public void WriteConformantByteArray(ReadOnlySpan<byte> values)
-    {
+    public void WriteConformantByteArray(ReadOnlySpan<byte> values) {
         WriteConformanceHeader(values.Length);
         WriteRawBytes(values);
     }
 
     /// <summary>Writes a conformant array of Int16 values.</summary>
-    public void WriteConformantInt16Array(ReadOnlySpan<short> values)
-    {
+    public void WriteConformantInt16Array(ReadOnlySpan<short> values) {
         WriteConformanceHeader(values.Length);
         AlignTo(2);
         EnsureCapacity(values.Length * 2);
-        for (int i = 0; i < values.Length; i++)
-        {
+        for (int i = 0; i < values.Length; i++) {
             BinaryPrimitives.WriteInt16LittleEndian(_buffer.Slice(_position, 2), values[i]);
             _position += 2;
         }
     }
 
     /// <summary>Writes a conformant array of UInt16 values.</summary>
-    public void WriteConformantUInt16Array(ReadOnlySpan<ushort> values)
-    {
+    public void WriteConformantUInt16Array(ReadOnlySpan<ushort> values) {
         WriteConformanceHeader(values.Length);
         AlignTo(2);
         EnsureCapacity(values.Length * 2);
-        for (int i = 0; i < values.Length; i++)
-        {
+        for (int i = 0; i < values.Length; i++) {
             BinaryPrimitives.WriteUInt16LittleEndian(_buffer.Slice(_position, 2), values[i]);
             _position += 2;
         }
     }
 
     /// <summary>Writes a conformant array of Int32 values.</summary>
-    public void WriteConformantInt32Array(ReadOnlySpan<int> values)
-    {
+    public void WriteConformantInt32Array(ReadOnlySpan<int> values) {
         WriteConformanceHeader(values.Length);
         EnsureCapacity(values.Length * 4);
-        for (int i = 0; i < values.Length; i++)
-        {
+        for (int i = 0; i < values.Length; i++) {
             BinaryPrimitives.WriteInt32LittleEndian(_buffer.Slice(_position, 4), values[i]);
             _position += 4;
         }
     }
 
     /// <summary>Writes a conformant array of UInt32 values.</summary>
-    public void WriteConformantUInt32Array(ReadOnlySpan<uint> values)
-    {
+    public void WriteConformantUInt32Array(ReadOnlySpan<uint> values) {
         WriteConformanceHeader(values.Length);
         EnsureCapacity(values.Length * 4);
-        for (int i = 0; i < values.Length; i++)
-        {
+        for (int i = 0; i < values.Length; i++) {
             BinaryPrimitives.WriteUInt32LittleEndian(_buffer.Slice(_position, 4), values[i]);
             _position += 4;
         }
     }
 
     /// <summary>Writes a conformant array of Int64 values.</summary>
-    public void WriteConformantInt64Array(ReadOnlySpan<long> values)
-    {
+    public void WriteConformantInt64Array(ReadOnlySpan<long> values) {
         WriteConformanceHeader(values.Length);
         AlignTo(8);
         EnsureCapacity(values.Length * 8);
-        for (int i = 0; i < values.Length; i++)
-        {
+        for (int i = 0; i < values.Length; i++) {
             BinaryPrimitives.WriteInt64LittleEndian(_buffer.Slice(_position, 8), values[i]);
             _position += 8;
         }
@@ -433,12 +392,10 @@ public ref struct NdrWriter
     /// <c>[size_is(N)] FILETIME *p</c> arrays in IOPCItemIO::Read,
     /// IOPCSyncIO::Read, etc.
     /// </summary>
-    public void WriteConformantFileTimeArray(ReadOnlySpan<long> values)
-    {
+    public void WriteConformantFileTimeArray(ReadOnlySpan<long> values) {
         WriteConformanceHeader(values.Length);
         EnsureCapacity(values.Length * 8);
-        for (int i = 0; i < values.Length; i++)
-        {
+        for (int i = 0; i < values.Length; i++) {
             uint low = unchecked((uint)(values[i] & 0xFFFFFFFFu));
             uint high = unchecked((uint)((values[i] >> 32) & 0xFFFFFFFFu));
             BinaryPrimitives.WriteUInt32LittleEndian(_buffer.Slice(_position, 4), low);
@@ -448,41 +405,34 @@ public ref struct NdrWriter
     }
 
     /// <summary>Writes a conformant array of Single (float) values.</summary>
-    public void WriteConformantSingleArray(ReadOnlySpan<float> values)
-    {
+    public void WriteConformantSingleArray(ReadOnlySpan<float> values) {
         WriteConformanceHeader(values.Length);
         EnsureCapacity(values.Length * 4);
-        for (int i = 0; i < values.Length; i++)
-        {
+        for (int i = 0; i < values.Length; i++) {
             BinaryPrimitives.WriteSingleLittleEndian(_buffer.Slice(_position, 4), values[i]);
             _position += 4;
         }
     }
 
     /// <summary>Writes a conformant array of Double values.</summary>
-    public void WriteConformantDoubleArray(ReadOnlySpan<double> values)
-    {
+    public void WriteConformantDoubleArray(ReadOnlySpan<double> values) {
         WriteConformanceHeader(values.Length);
         AlignTo(8);
         EnsureCapacity(values.Length * 8);
-        for (int i = 0; i < values.Length; i++)
-        {
+        for (int i = 0; i < values.Length; i++) {
             BinaryPrimitives.WriteDoubleLittleEndian(_buffer.Slice(_position, 8), values[i]);
             _position += 8;
         }
     }
 
     /// <summary>Writes a conformant array of Guid values (each 16 bytes, aligned to 4).</summary>
-    public void WriteConformantGuidArray(ReadOnlySpan<Guid> values)
-    {
+    public void WriteConformantGuidArray(ReadOnlySpan<Guid> values) {
         WriteConformanceHeader(values.Length);
         AlignTo(4);
         EnsureCapacity(values.Length * 16);
-        for (int i = 0; i < values.Length; i++)
-        {
+        for (int i = 0; i < values.Length; i++) {
             bool ok = values[i].TryWriteBytes(_buffer.Slice(_position, 16));
-            if (!ok)
-            {
+            if (!ok) {
                 throw new InvalidOperationException("Guid.TryWriteBytes failed unexpectedly.");
             }
             _position += 16;
@@ -490,10 +440,8 @@ public ref struct NdrWriter
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private void EnsureCapacity(int additionalBytes)
-    {
-        if (_position + additionalBytes > _buffer.Length)
-        {
+    private void EnsureCapacity(int additionalBytes) {
+        if (_position + additionalBytes > _buffer.Length) {
             throw new InvalidOperationException(
                 $"NdrWriter buffer overflow: need {additionalBytes} bytes at position {_position} but only {_buffer.Length - _position} remain.");
         }

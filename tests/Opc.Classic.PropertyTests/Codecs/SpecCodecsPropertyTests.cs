@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -19,11 +19,9 @@ using TUnit.Core;
 
 namespace Opc.Classic.PropertyTests.Codecs;
 
-public sealed class SpecCodecsPropertyTests
-{
+public sealed class SpecCodecsPropertyTests {
     [Test]
-    public Task DaOpcServerStatus_RoundTrips()
-    {
+    public Task DaOpcServerStatus_RoundTrips() {
         CodecProperty.DaServerStatusGen.Sample(value => RoundTrips(
             value,
             static (ref NdrWriter writer, OpcServerStatus status) => NdrOpcServerStatusCodec.Write(ref writer, status),
@@ -33,8 +31,7 @@ public sealed class SpecCodecsPropertyTests
     }
 
     [Test]
-    public Task DaOpcItemState_RoundTrips()
-    {
+    public Task DaOpcItemState_RoundTrips() {
         CodecProperty.OpcItemStateGen.Sample(value => RoundTrips(
             value,
             static (ref NdrWriter writer, OpcItemState item) => NdrOpcItemStateCodec.Write(ref writer, item),
@@ -44,8 +41,7 @@ public sealed class SpecCodecsPropertyTests
     }
 
     [Test]
-    public Task DaOpcItemResult_RoundTrips()
-    {
+    public Task DaOpcItemResult_RoundTrips() {
         CodecProperty.OpcItemResultGen.Sample(value => RoundTrips(
             value,
             static (ref NdrWriter writer, OpcItemResult item) => NdrOpcItemResultCodec.Write(ref writer, item),
@@ -55,8 +51,7 @@ public sealed class SpecCodecsPropertyTests
     }
 
     [Test]
-    public Task DaOpcItemProperty_RoundTrips()
-    {
+    public Task DaOpcItemProperty_RoundTrips() {
         CodecProperty.OpcItemPropertyResultGen.Sample(value => RoundTrips(
             value,
             static (ref NdrWriter writer, OpcItemPropertyResult item) => NdrOpcItemPropertyCodec.Write(ref writer, item),
@@ -66,8 +61,7 @@ public sealed class SpecCodecsPropertyTests
     }
 
     [Test]
-    public Task DaOpcItemProperties_RoundTrips()
-    {
+    public Task DaOpcItemProperties_RoundTrips() {
         CodecProperty.OpcItemPropertiesGen.Sample(value => RoundTrips(
             value,
             static (ref NdrWriter writer, OpcItemProperties item) => NdrOpcItemPropertiesCodec.Write(ref writer, item),
@@ -77,8 +71,7 @@ public sealed class SpecCodecsPropertyTests
     }
 
     [Test]
-    public Task DaOpcBrowseElement_RoundTrips()
-    {
+    public Task DaOpcBrowseElement_RoundTrips() {
         CodecProperty.OpcBrowseElementResultGen.Sample(value => RoundTrips(
             value,
             static (ref NdrWriter writer, OpcBrowseElementResult item) => NdrOpcBrowseElementCodec.Write(ref writer, item),
@@ -88,8 +81,7 @@ public sealed class SpecCodecsPropertyTests
     }
 
     [Test]
-    public Task DaOpcItemDef_RoundTrips()
-    {
+    public Task DaOpcItemDef_RoundTrips() {
         CodecProperty.OpcItemDefGen.Sample(value => RoundTrips(
             value,
             static (ref NdrWriter writer, OpcItemDef item) => NdrOpcItemDefCodec.Write(ref writer, item),
@@ -99,8 +91,7 @@ public sealed class SpecCodecsPropertyTests
     }
 
     [Test]
-    public Task DaOpcItemAttributes_RoundTrips()
-    {
+    public Task DaOpcItemAttributes_RoundTrips() {
         CodecProperty.OpcItemAttributesGen.Sample(value => RoundTrips(
             value,
             static (ref NdrWriter writer, OpcItemAttributes item) => NdrOpcItemAttributesCodec.Write(ref writer, item),
@@ -110,8 +101,7 @@ public sealed class SpecCodecsPropertyTests
     }
 
     [Test]
-    public Task DaOpcGroupState_RoundTrips()
-    {
+    public Task DaOpcGroupState_RoundTrips() {
         CodecProperty.OpcGroupStateGen.Sample(value => RoundTrips(
             value,
             static (ref NdrWriter writer, OpcGroupState item) => NdrOpcGroupStateCodec.Write(ref writer, item),
@@ -121,8 +111,7 @@ public sealed class SpecCodecsPropertyTests
     }
 
     [Test]
-    public Task DaOpcItemVqt_RoundTrips()
-    {
+    public Task DaOpcItemVqt_RoundTrips() {
         CodecProperty.OpcItemVqtGen.Sample(value => RoundTrips(
             value,
             static (ref NdrWriter writer, OpcItemVqt item) => NdrOpcItemVqtCodec.Write(ref writer, item),
@@ -132,8 +121,7 @@ public sealed class SpecCodecsPropertyTests
     }
 
     [Test]
-    public Task AeOpcEventServerStatus_RoundTrips()
-    {
+    public Task AeOpcEventServerStatus_RoundTrips() {
         CodecProperty.AeServerStatusGen.Sample(value => RoundTrips(
             value,
             static (ref NdrWriter writer, OpcServerStatus status) => NdrOpcEventServerStatusCodec.Write(ref writer, status),
@@ -143,8 +131,7 @@ public sealed class SpecCodecsPropertyTests
     }
 
     [Test]
-    public Task AeOpcConditionState_RoundTrips()
-    {
+    public Task AeOpcConditionState_RoundTrips() {
         CodecProperty.OpcConditionStateGen.Sample(value => RoundTrips(
             value,
             static (ref NdrWriter writer, OpcConditionState item) => NdrOpcConditionStateCodec.Write(ref writer, item),
@@ -154,8 +141,7 @@ public sealed class SpecCodecsPropertyTests
     }
 
     [Test]
-    public Task AeOpcEventNotification_RoundTrips()
-    {
+    public Task AeOpcEventNotification_RoundTrips() {
         CodecProperty.OpcEventNotificationGen.Sample(value => RoundTrips(
             value,
             static (ref NdrWriter writer, OpcEventNotification item) => NdrOpcEventNotificationCodec.Write(ref writer, item),
@@ -165,8 +151,7 @@ public sealed class SpecCodecsPropertyTests
     }
 
     [Test]
-    public Task HdaOpcHdaTime_RoundTrips()
-    {
+    public Task HdaOpcHdaTime_RoundTrips() {
         CodecProperty.OpcHdaTimeGen.Sample(value => RoundTrips(
             value,
             static (ref NdrWriter writer, OpcHdaTime item) => NdrOpcHdaTimeCodec.Write(ref writer, item),
@@ -176,8 +161,7 @@ public sealed class SpecCodecsPropertyTests
     }
 
     [Test]
-    public Task HdaOpcServerStatus_RoundTrips()
-    {
+    public Task HdaOpcServerStatus_RoundTrips() {
         CodecProperty.HdaServerStatusGen.Sample(value => RoundTrips(
             value,
             static (ref NdrWriter writer, OpcServerStatus status) => NdrOpcHdaServerStatusCodec.Write(ref writer, status),
@@ -187,8 +171,7 @@ public sealed class SpecCodecsPropertyTests
     }
 
     [Test]
-    public Task HdaOpcHdaItem_RoundTrips()
-    {
+    public Task HdaOpcHdaItem_RoundTrips() {
         CodecProperty.OpcHdaItemGen.Sample(value => RoundTrips(
             value,
             static (ref NdrWriter writer, OpcHdaItem item) => NdrOpcHdaItemCodec.Write(ref writer, item),
@@ -198,8 +181,7 @@ public sealed class SpecCodecsPropertyTests
     }
 
     [Test]
-    public Task HdaOpcHdaAttribute_RoundTrips()
-    {
+    public Task HdaOpcHdaAttribute_RoundTrips() {
         CodecProperty.OpcHdaAttributeGen.Sample(value => RoundTrips(
             value,
             static (ref NdrWriter writer, OpcHdaAttribute item) => NdrOpcHdaAttributeCodec.Write(ref writer, item),
@@ -209,8 +191,7 @@ public sealed class SpecCodecsPropertyTests
     }
 
     [Test]
-    public Task HdaOpcHdaModifiedItem_RoundTrips()
-    {
+    public Task HdaOpcHdaModifiedItem_RoundTrips() {
         CodecProperty.OpcHdaModifiedItemGen.Sample(value => RoundTrips(
             value,
             static (ref NdrWriter writer, OpcHdaModifiedItem item) => NdrOpcHdaModifiedItemCodec.Write(ref writer, item),
@@ -220,8 +201,7 @@ public sealed class SpecCodecsPropertyTests
     }
 
     [Test]
-    public Task HdaOpcHdaAnnotation_RoundTrips()
-    {
+    public Task HdaOpcHdaAnnotation_RoundTrips() {
         CodecProperty.OpcHdaAnnotationGen.Sample(value => RoundTrips(
             value,
             static (ref NdrWriter writer, OpcHdaAnnotation item) => NdrOpcHdaAnnotationCodec.Write(ref writer, item),
@@ -231,8 +211,7 @@ public sealed class SpecCodecsPropertyTests
     }
 
     [Test]
-    public Task BatchOpcBatchSummary_RoundTrips()
-    {
+    public Task BatchOpcBatchSummary_RoundTrips() {
         CodecProperty.OpcBatchSummaryGen.Sample(value => RoundTrips(
             value,
             static (ref NdrWriter writer, OpcBatchSummary item) => NdrOpcBatchSummaryCodec.Write(ref writer, item),
@@ -242,8 +221,7 @@ public sealed class SpecCodecsPropertyTests
     }
 
     [Test]
-    public Task BatchOpcBatchSummaryFilter_RoundTrips()
-    {
+    public Task BatchOpcBatchSummaryFilter_RoundTrips() {
         CodecProperty.OpcBatchSummaryFilterGen.Sample(value => RoundTrips(
             value,
             static (ref NdrWriter writer, OpcBatchSummaryFilter item) => NdrOpcBatchSummaryFilterCodec.Write(ref writer, item),

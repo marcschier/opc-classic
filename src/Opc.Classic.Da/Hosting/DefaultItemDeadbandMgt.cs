@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -15,10 +15,8 @@ namespace Opc.Classic.Da.Hosting;
 /// per-item deadband). Returns <c>OPC_E_DEADBANDNOTSUPPORTED</c> for every
 /// handle so DA 3.0 clients see a deterministic "feature absent" response.
 /// </summary>
-public sealed class DefaultItemDeadbandMgt : IOPCItemDeadbandMgt
-{
-    public Task<int[]> SetItemDeadbandAsync(int[] serverHandles, float[] percentDeadbands, CancellationToken cancellationToken = default)
-    {
+public sealed class DefaultItemDeadbandMgt : IOPCItemDeadbandMgt {
+    public Task<int[]> SetItemDeadbandAsync(int[] serverHandles, float[] percentDeadbands, CancellationToken cancellationToken = default) {
         ArgumentNullException.ThrowIfNull(serverHandles);
         _ = percentDeadbands;
         cancellationToken.ThrowIfCancellationRequested();
@@ -29,8 +27,7 @@ public sealed class DefaultItemDeadbandMgt : IOPCItemDeadbandMgt
         int[] serverHandles,
         out float[] percentDeadbands,
         out int[] errors,
-        CancellationToken cancellationToken = default)
-    {
+        CancellationToken cancellationToken = default) {
         ArgumentNullException.ThrowIfNull(serverHandles);
         cancellationToken.ThrowIfCancellationRequested();
         percentDeadbands = new float[serverHandles.Length];
@@ -38,15 +35,13 @@ public sealed class DefaultItemDeadbandMgt : IOPCItemDeadbandMgt
         return Task.CompletedTask;
     }
 
-    public Task<int[]> ClearItemDeadbandAsync(int[] serverHandles, CancellationToken cancellationToken = default)
-    {
+    public Task<int[]> ClearItemDeadbandAsync(int[] serverHandles, CancellationToken cancellationToken = default) {
         ArgumentNullException.ThrowIfNull(serverHandles);
         cancellationToken.ThrowIfCancellationRequested();
         return Task.FromResult(FillErrors(serverHandles.Length, OpcResultId.DeadbandNotSet.Code));
     }
 
-    private static int[] FillErrors(int length, int code)
-    {
+    private static int[] FillErrors(int length, int code) {
         var errors = new int[length];
         Array.Fill(errors, code);
         return errors;

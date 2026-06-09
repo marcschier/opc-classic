@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -20,8 +20,7 @@ namespace Opc.Classic.Dx;
 /// inside the DX server as it bridges between source servers and the local
 /// target server.
 /// </remarks>
-public interface IDxServer : IAsyncDisposable
-{
+public interface IDxServer : IAsyncDisposable {
     /// <summary>Raised when the server emits a shutdown notification.</summary>
     event EventHandler<EventArgs>? ServerShutdown;
 

@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -11,13 +11,10 @@ using TUnit.Core;
 
 namespace Opc.Classic.Hosting.Tests.Windows;
 
-public sealed class ComClassObjectRegistrarSmokeTests
-{
+public sealed class ComClassObjectRegistrarSmokeTests {
     [Test, NotInParallel]
-    public async Task Register_resume_revoke_lifecycle_succeeds_on_windows()
-    {
-        if (!OperatingSystem.IsWindows())
-        {
+    public async Task Register_resume_revoke_lifecycle_succeeds_on_windows() {
+        if (!OperatingSystem.IsWindows()) {
             string reason = GetNonWindowsSkipReason();
             await Assert.That(reason).IsNotEqualTo(string.Empty);
             return;
@@ -32,16 +29,13 @@ public sealed class ComClassObjectRegistrarSmokeTests
     }
 
     [SupportedOSPlatform("windows")]
-    private static RegistrarResult RunRegistrarLifecycleOnDedicatedMtaThread()
-    {
+    private static RegistrarResult RunRegistrarLifecycleOnDedicatedMtaThread() {
         uint cookie = 0;
         Exception? exception = null;
-        var thread = new Thread(() =>
-        {
+        var thread = new Thread(() => {
             bool initialized = false;
             uint registeredCookie = 0;
-            try
-            {
+            try {
                 ComClassObjectRegistrar.InitializeMultithreaded();
                 initialized = true;
                 registeredCookie = ComClassObjectRegistrar.RegisterClassObject(Guid.NewGuid(), suspended: true);
@@ -50,31 +44,24 @@ public sealed class ComClassObjectRegistrarSmokeTests
                 ComClassObjectRegistrar.RevokeClassObject(registeredCookie);
                 registeredCookie = 0;
             }
-            catch (Exception ex)
-            {
+            catch (Exception ex) {
                 exception = ex;
             }
-            finally
-            {
-                if (registeredCookie != 0)
-                {
-                    try
-                    {
+            finally {
+                if (registeredCookie != 0) {
+                    try {
                         ComClassObjectRegistrar.RevokeClassObject(registeredCookie);
                     }
-                    catch (Exception ex)
-                    {
+                    catch (Exception ex) {
                         exception ??= ex;
                     }
                 }
 
-                if (initialized)
-                {
+                if (initialized) {
                     ComClassObjectRegistrar.Uninitialize();
                 }
             }
-        })
-        {
+        }) {
             IsBackground = true,
         };
 

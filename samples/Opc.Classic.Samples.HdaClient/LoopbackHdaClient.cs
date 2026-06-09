@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: MIT
+﻿// SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 
 using System.Runtime.CompilerServices;
@@ -9,8 +9,7 @@ using Opc.Classic.Testing;
 
 namespace Opc.Classic.Samples.HdaClient;
 
-internal sealed class LoopbackHdaClient : IAsyncDisposable
-{
+internal sealed class LoopbackHdaClient : IAsyncDisposable {
     private readonly LoopbackHdaCallRouter? _router;
     private readonly ICallChannel _channel;
     private readonly IOPCHDA_ServerClientProxy _server;
@@ -19,8 +18,7 @@ internal sealed class LoopbackHdaClient : IAsyncDisposable
     private readonly IOPCHDA_AsyncReadClientProxy _asyncRead;
     private bool _connected;
 
-    public LoopbackHdaClient(ICallChannel channel)
-    {
+    public LoopbackHdaClient(ICallChannel channel) {
         _channel = channel ?? throw new ArgumentNullException(nameof(channel));
         _server = new IOPCHDA_ServerClientProxy(_channel);
         _syncRead = new IOPCHDA_SyncReadClientProxy(_channel);
@@ -29,27 +27,23 @@ internal sealed class LoopbackHdaClient : IAsyncDisposable
     }
 
     public LoopbackHdaClient(LoopbackHdaCallRouter router, InMemoryCallChannel channel)
-        : this(channel)
-    {
+        : this(channel) {
         _router = router ?? throw new ArgumentNullException(nameof(router));
     }
 
-    public ValueTask ConnectAsync(CancellationToken cancellationToken = default)
-    {
+    public ValueTask ConnectAsync(CancellationToken cancellationToken = default) {
         cancellationToken.ThrowIfCancellationRequested();
         _connected = true;
         return ValueTask.CompletedTask;
     }
 
-    public ValueTask DisconnectAsync(CancellationToken cancellationToken = default)
-    {
+    public ValueTask DisconnectAsync(CancellationToken cancellationToken = default) {
         cancellationToken.ThrowIfCancellationRequested();
         _connected = false;
         return ValueTask.CompletedTask;
     }
 
-    public async Task<OpcServerStatus> GetStatusAsync(CancellationToken cancellationToken = default)
-    {
+    public async Task<OpcServerStatus> GetStatusAsync(CancellationToken cancellationToken = default) {
         EnsureConnected();
         return await _server.GetStatusAsync(cancellationToken).ConfigureAwait(false);
     }
@@ -57,15 +51,13 @@ internal sealed class LoopbackHdaClient : IAsyncDisposable
     public async IAsyncEnumerable<HdaBrowseElement> BrowseAsync(
         string itemIdPrefix,
         HdaBrowseType browseType,
-        [EnumeratorCancellation] CancellationToken cancellationToken = default)
-    {
+        [EnumeratorCancellation] CancellationToken cancellationToken = default) {
         EnsureConnected();
         await Task.Yield();
         IEnumerable<HdaBrowseElement> elements = _router is not null
             ? _router.Browse(itemIdPrefix, browseType)
             : BrowseFallback(itemIdPrefix, browseType);
-        foreach (HdaBrowseElement element in elements)
-        {
+        foreach (HdaBrowseElement element in elements) {
             cancellationToken.ThrowIfCancellationRequested();
             yield return element;
         }
@@ -73,8 +65,7 @@ internal sealed class LoopbackHdaClient : IAsyncDisposable
 
     public Task<int[]> GetItemHandlesAsync(
         IReadOnlyList<string> itemIds,
-        CancellationToken cancellationToken = default)
-    {
+        CancellationToken cancellationToken = default) {
         ArgumentNullException.ThrowIfNull(itemIds);
         EnsureConnected();
 
@@ -83,8 +74,7 @@ internal sealed class LoopbackHdaClient : IAsyncDisposable
         return _server.GetItemHandlesAsync(itemIdArray, clientHandles, cancellationToken);
     }
 
-    public Task<int[]> ReleaseItemHandlesAsync(int[] serverHandles, CancellationToken cancellationToken = default)
-    {
+    public Task<int[]> ReleaseItemHandlesAsync(int[] serverHandles, CancellationToken cancellationToken = default) {
         ArgumentNullException.ThrowIfNull(serverHandles);
         EnsureConnected();
         return _server.ReleaseItemHandlesAsync(serverHandles, cancellationToken);
@@ -96,8 +86,7 @@ internal sealed class LoopbackHdaClient : IAsyncDisposable
         int maxValuesPerItem,
         bool includeBounds,
         int[] serverHandles,
-        CancellationToken cancellationToken = default)
-    {
+        CancellationToken cancellationToken = default) {
         ArgumentNullException.ThrowIfNull(serverHandles);
         EnsureConnected();
         return _syncRead.ReadRawAsync(
@@ -115,8 +104,7 @@ internal sealed class LoopbackHdaClient : IAsyncDisposable
         TimeSpan resampleInterval,
         HdaAggregate aggregate,
         int[] serverHandles,
-        CancellationToken cancellationToken = default)
-    {
+        CancellationToken cancellationToken = default) {
         ArgumentNullException.ThrowIfNull(serverHandles);
         EnsureConnected();
         int[] aggregateIds = Enumerable.Repeat((int)aggregate, serverHandles.Length).ToArray();
@@ -129,8 +117,7 @@ internal sealed class LoopbackHdaClient : IAsyncDisposable
             cancellationToken);
     }
 
-    public Task<int> QueryAnnotationCapabilitiesAsync(CancellationToken cancellationToken = default)
-    {
+    public Task<int> QueryAnnotationCapabilitiesAsync(CancellationToken cancellationToken = default) {
         EnsureConnected();
         return _syncAnnotations.QueryCapabilitiesAsync(cancellationToken);
     }
@@ -139,8 +126,7 @@ internal sealed class LoopbackHdaClient : IAsyncDisposable
         IReadOnlyList<string> itemIds,
         HdaTime startTime,
         HdaTime endTime,
-        CancellationToken cancellationToken = default)
-    {
+        CancellationToken cancellationToken = default) {
         ArgumentNullException.ThrowIfNull(itemIds);
         EnsureConnected();
         cancellationToken.ThrowIfCancellationRequested();
@@ -158,8 +144,7 @@ internal sealed class LoopbackHdaClient : IAsyncDisposable
         int maxValuesPerItem,
         bool includeBounds,
         int[] serverHandles,
-        CancellationToken cancellationToken = default)
-    {
+        CancellationToken cancellationToken = default) {
         ArgumentNullException.ThrowIfNull(serverHandles);
         EnsureConnected();
         return _asyncRead.ReadRawAsync(
@@ -174,39 +159,31 @@ internal sealed class LoopbackHdaClient : IAsyncDisposable
 
     public ValueTask DisposeAsync() => ValueTask.CompletedTask;
 
-    private void EnsureConnected()
-    {
-        if (!_connected)
-        {
+    private void EnsureConnected() {
+        if (!_connected) {
             throw new InvalidOperationException("Connect before using the HDA loopback client.");
         }
     }
 
-    private static IEnumerable<HdaBrowseElement> BrowseFallback(string itemIdPrefix, HdaBrowseType browseType)
-    {
-        if (string.IsNullOrWhiteSpace(itemIdPrefix))
-        {
-            if (browseType is HdaBrowseType.Branch or HdaBrowseType.Flat)
-            {
+    private static IEnumerable<HdaBrowseElement> BrowseFallback(string itemIdPrefix, HdaBrowseType browseType) {
+        if (string.IsNullOrWhiteSpace(itemIdPrefix)) {
+            if (browseType is HdaBrowseType.Branch or HdaBrowseType.Flat) {
                 yield return new HdaBrowseElement { Name = "Sensor", ItemId = "Sensor", BrowseType = HdaBrowseType.Branch };
             }
 
-            if (browseType is HdaBrowseType.Leaf or HdaBrowseType.Flat)
-            {
+            if (browseType is HdaBrowseType.Leaf or HdaBrowseType.Flat) {
                 yield return CreateLeaf("Sensor.Temperature");
             }
 
             yield break;
         }
 
-        if (itemIdPrefix.Equals("Sensor", StringComparison.OrdinalIgnoreCase) && browseType != HdaBrowseType.Branch)
-        {
+        if (itemIdPrefix.Equals("Sensor", StringComparison.OrdinalIgnoreCase) && browseType != HdaBrowseType.Branch) {
             yield return CreateLeaf("Sensor.Temperature");
         }
     }
 
-    private static HdaBrowseElement CreateLeaf(string itemId) => new()
-    {
+    private static HdaBrowseElement CreateLeaf(string itemId) => new() {
         Name = itemId[(itemId.LastIndexOf('.') + 1)..],
         ItemId = itemId,
         BrowseType = HdaBrowseType.Leaf,

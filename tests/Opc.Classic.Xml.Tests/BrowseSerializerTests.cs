@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -11,28 +11,23 @@ using TUnit.Core;
 
 namespace Opc.Classic.Xml.Tests;
 
-public sealed class BrowseSerializerTests
-{
-    private static string SerializeRequest(XmlDaBrowseRequest req)
-    {
+public sealed class BrowseSerializerTests {
+    private static string SerializeRequest(XmlDaBrowseRequest req) {
         using var ms = new MemoryStream();
-        using (var w = new SoapEnvelopeWriter(ms))
-        {
+        using (var w = new SoapEnvelopeWriter(ms)) {
             BrowseSerializer.WriteRequest(w, req);
         }
         return Encoding.UTF8.GetString(ms.ToArray());
     }
 
-    private static XmlDaBrowseResponse Deserialize(string xml)
-    {
+    private static XmlDaBrowseResponse Deserialize(string xml) {
         using var ms = new MemoryStream(Encoding.UTF8.GetBytes(xml));
         using var r = new SoapEnvelopeReader(ms);
         return BrowseSerializer.ReadResponse(r);
     }
 
     [Test]
-    public async Task Request_EmitsBrowseElement_WithItemNameAndFilter()
-    {
+    public async Task Request_EmitsBrowseElement_WithItemNameAndFilter() {
         var xml = SerializeRequest(new XmlDaBrowseRequest(
             new XmlDaRequestHeader(null, null),
             ItemName: "Channel1.Device1",
@@ -44,16 +39,14 @@ public sealed class BrowseSerializerTests
     }
 
     [Test]
-    public async Task Request_EmitsAllFilter_AsDefault()
-    {
+    public async Task Request_EmitsAllFilter_AsDefault() {
         var xml = SerializeRequest(new XmlDaBrowseRequest(
             new XmlDaRequestHeader(null, null)));
         await Assert.That(xml).Contains("BrowseFilter=\"all\"");
     }
 
     [Test]
-    public async Task Request_EmitsBranchFilter()
-    {
+    public async Task Request_EmitsBranchFilter() {
         var xml = SerializeRequest(new XmlDaBrowseRequest(
             new XmlDaRequestHeader(null, null),
             BrowseFilter: XmlDaBrowseFilter.Branch));
@@ -61,8 +54,7 @@ public sealed class BrowseSerializerTests
     }
 
     [Test]
-    public async Task Request_EmitsMaxElementsReturned_WhenNonZero()
-    {
+    public async Task Request_EmitsMaxElementsReturned_WhenNonZero() {
         var xml = SerializeRequest(new XmlDaBrowseRequest(
             new XmlDaRequestHeader(null, null),
             MaxElementsReturned: 250));
@@ -70,8 +62,7 @@ public sealed class BrowseSerializerTests
     }
 
     [Test]
-    public async Task Request_EmitsContinuationPoint_ForPaging()
-    {
+    public async Task Request_EmitsContinuationPoint_ForPaging() {
         var xml = SerializeRequest(new XmlDaBrowseRequest(
             new XmlDaRequestHeader(null, null),
             ContinuationPoint: "opaque-token-abc"));
@@ -79,8 +70,7 @@ public sealed class BrowseSerializerTests
     }
 
     [Test]
-    public async Task Response_DecodesElements_WithFlags()
-    {
+    public async Task Response_DecodesElements_WithFlags() {
         const string xml = """
             <?xml version="1.0"?>
             <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
@@ -110,8 +100,7 @@ public sealed class BrowseSerializerTests
     }
 
     [Test]
-    public async Task Response_DecodesContinuationPoint_AndMoreElements()
-    {
+    public async Task Response_DecodesContinuationPoint_AndMoreElements() {
         const string xml = """
             <?xml version="1.0"?>
             <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
@@ -131,8 +120,7 @@ public sealed class BrowseSerializerTests
     }
 
     [Test]
-    public async Task Response_HandlesEmptyElements()
-    {
+    public async Task Response_HandlesEmptyElements() {
         const string xml = """
             <?xml version="1.0"?>
             <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
@@ -149,8 +137,7 @@ public sealed class BrowseSerializerTests
     }
 
     [Test]
-    public async Task Response_RejectsWrongOperation()
-    {
+    public async Task Response_RejectsWrongOperation() {
         const string xml = """
             <?xml version="1.0"?>
             <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">

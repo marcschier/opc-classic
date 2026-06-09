@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: MIT
+﻿// SPDX-License-Identifier: MIT
 
 using Opc.Classic.Dcom.Common;
 using Opc.Classic.Dcom.Rpc.Core;
@@ -11,6 +11,7 @@ using System.Linq;
 #pragma warning disable MA0051 // Legacy DCOM protocol methods are intentionally kept intact during analyzer cleanup.
 
 namespace Opc.Classic.Dcom.Core;
+
 [Serializable]
 internal sealed class OrpcThat {
 

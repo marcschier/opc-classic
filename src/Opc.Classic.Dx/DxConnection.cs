@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -16,8 +16,7 @@ namespace Opc.Classic.Dx;
 /// <c>OpcDxConnection</c>. NDR codecs will map those fields to/from the mask in
 /// Phase 9A-followup.
 /// </remarks>
-public sealed record DxConnection
-{
+public sealed record DxConnection {
     /// <summary>Constructs a DX connection definition or query mask.</summary>
     public DxConnection(
         string? name = null,
@@ -42,20 +41,16 @@ public sealed record DxConnection
         int? updateRateMilliseconds = null,
         float? deadbandPercent = null,
         string? vendorData = null,
-        int mask = 0)
-    {
-        if (sourceItemQueueSize is < 0)
-        {
+        int mask = 0) {
+        if (sourceItemQueueSize is < 0) {
             throw new ArgumentOutOfRangeException(nameof(sourceItemQueueSize));
         }
 
-        if (updateRateMilliseconds is < 0)
-        {
+        if (updateRateMilliseconds is < 0) {
             throw new ArgumentOutOfRangeException(nameof(updateRateMilliseconds));
         }
 
-        if (deadbandPercent is < 0 or > 100)
-        {
+        if (deadbandPercent is < 0 or > 100) {
             throw new ArgumentOutOfRangeException(nameof(deadbandPercent));
         }
 
@@ -153,16 +148,13 @@ public sealed record DxConnection
     /// <summary>Opaque vendor-defined connection data.</summary>
     public string? VendorData { get; init; }
 
-    private static string[] NormalizeBrowsePaths(string[]? browsePaths)
-    {
-        if (browsePaths is null || browsePaths.Length == 0)
-        {
+    private static string[] NormalizeBrowsePaths(string[]? browsePaths) {
+        if (browsePaths is null || browsePaths.Length == 0) {
             return Array.Empty<string>();
         }
 
         var copy = new string[browsePaths.Length];
-        for (var i = 0; i < browsePaths.Length; i++)
-        {
+        for (var i = 0; i < browsePaths.Length; i++) {
             var path = browsePaths[i];
             ArgumentException.ThrowIfNullOrWhiteSpace(path);
             copy[i] = path;
@@ -171,8 +163,7 @@ public sealed record DxConnection
         return copy;
     }
 
-    private static int ComputeMask(DxConnection connection)
-    {
+    private static int ComputeMask(DxConnection connection) {
         var mask = DxMask.None;
         AddIf(!string.IsNullOrEmpty(connection.ItemPath), DxMask.ItemPath, ref mask);
         AddIf(!string.IsNullOrEmpty(connection.ItemName), DxMask.ItemName, ref mask);
@@ -199,10 +190,8 @@ public sealed record DxConnection
         return (int)mask;
     }
 
-    private static void AddIf(bool condition, DxMask value, ref DxMask mask)
-    {
-        if (condition)
-        {
+    private static void AddIf(bool condition, DxMask value, ref DxMask mask) {
+        if (condition) {
             mask |= value;
         }
     }

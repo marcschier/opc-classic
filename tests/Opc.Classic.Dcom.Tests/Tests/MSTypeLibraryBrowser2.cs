@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: MIT
+﻿// SPDX-License-Identifier: MIT
 
 namespace Opc.Classic.Dcom.Test {
     using Opc.Classic.Dcom.Common;
@@ -47,7 +47,7 @@ namespace Opc.Classic.Dcom.Test {
                 ITypeInfo ptempInfo = null;
                 TypeAttr pTempAttr = null;
                 if (typeAttr.typekind != TypeKind.TKIND_DISPATCH && typeAttr.typekind != TypeKind.TKIND_COCLASS) {
-                   // var p = 0;
+                    // var p = 0;
                 }
 
                 if (typeAttr.typekind == TypeKind.TKIND_COCLASS) {

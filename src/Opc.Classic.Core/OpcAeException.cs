@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -8,8 +8,7 @@ using System;
 namespace Opc.Classic;
 
 /// <summary>OPC Alarms &amp; Events (AE) specification errors.</summary>
-public sealed class OpcAeException : OpcException
-{
+public sealed class OpcAeException : OpcException {
     public OpcAeException() { }
     public OpcAeException(string message) : base(message) { }
     public OpcAeException(string message, Exception innerException) : base(message, innerException) { }

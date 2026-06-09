@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -9,8 +9,7 @@ namespace Opc.Classic;
 /// OPC server runtime state, as reported by the <c>OPCSERVERSTATUS::dwServerState</c>
 /// field (DA), <c>OPCEVENTSERVERSTATUS</c> (AE), and <c>OPCHDA_SERVERSTATUS</c> (HDA).
 /// </summary>
-public enum OpcServerState
-{
+public enum OpcServerState {
     /// <summary>The state is not known (no GetStatus call has succeeded yet).</summary>
     Unknown = 0,
 

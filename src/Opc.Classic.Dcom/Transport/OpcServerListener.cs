@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -38,8 +38,7 @@ namespace Opc.Classic.Dcom.Transport;
 /// <see cref="StopAsync"/> can wait for them to drain.
 /// </para>
 /// </remarks>
-public sealed class OpcServerListener : IAsyncDisposable
-{
+public sealed class OpcServerListener : IAsyncDisposable {
     private static readonly Action<ILogger, EndPoint, Exception?> ListenerStarting =
         LoggerMessage.Define<EndPoint>(LogLevel.Information, new EventId(1, nameof(ListenerStarting)),
             "OpcServerListener: starting accept loop on {Endpoint}");
@@ -72,8 +71,7 @@ public sealed class OpcServerListener : IAsyncDisposable
     public OpcServerListener(
         IAsyncEndpoint endpoint,
         RpcServerConnectionProcessor processor,
-        ILogger? logger = null)
-    {
+        ILogger? logger = null) {
         ArgumentNullException.ThrowIfNull(endpoint);
         ArgumentNullException.ThrowIfNull(processor);
         _endpoint = endpoint;
@@ -92,16 +90,13 @@ public sealed class OpcServerListener : IAsyncDisposable
     /// background task until <see cref="StopAsync"/> or the
     /// <paramref name="cancellationToken"/> fires.
     /// </summary>
-    public async Task StartAsync(CancellationToken cancellationToken)
-    {
+    public async Task StartAsync(CancellationToken cancellationToken) {
         ObjectDisposedException.ThrowIf(_disposed, this);
 
         await _lifecycleLock.WaitAsync(cancellationToken).ConfigureAwait(false);
-        try
-        {
+        try {
             ObjectDisposedException.ThrowIf(_disposed, this);
-            if (_acceptLoop is not null)
-            {
+            if (_acceptLoop is not null) {
                 throw new InvalidOperationException("OpcServerListener is already started.");
             }
 
@@ -110,8 +105,7 @@ public sealed class OpcServerListener : IAsyncDisposable
             CancellationToken loopToken = _cts.Token;
             _acceptLoop = Task.Run(() => AcceptLoopAsync(loopToken), CancellationToken.None);
         }
-        finally
-        {
+        finally {
             _lifecycleLock.Release();
         }
     }
@@ -121,10 +115,8 @@ public sealed class OpcServerListener : IAsyncDisposable
     /// drain (bounded by <paramref name="cancellationToken"/>), and
     /// disposes the underlying endpoint.
     /// </summary>
-    public async Task StopAsync(CancellationToken cancellationToken)
-    {
-        if (_disposed)
-        {
+    public async Task StopAsync(CancellationToken cancellationToken) {
+        if (_disposed) {
             return;
         }
 
@@ -136,10 +128,8 @@ public sealed class OpcServerListener : IAsyncDisposable
         CancellationTokenSource? cts;
         Task? acceptLoop;
         await _lifecycleLock.WaitAsync(cancellationToken).ConfigureAwait(false);
-        try
-        {
-            if (_disposed)
-            {
+        try {
+            if (_disposed) {
                 return;
             }
 
@@ -149,42 +139,33 @@ public sealed class OpcServerListener : IAsyncDisposable
             _cts = null;
             _acceptLoop = null;
         }
-        finally
-        {
+        finally {
             _lifecycleLock.Release();
         }
 
         await DrainAfterStopAsync(cts, acceptLoop, cancellationToken).ConfigureAwait(false);
     }
 
-    private async Task DrainAfterStopAsync(CancellationTokenSource? cts, Task? acceptLoop, CancellationToken cancellationToken)
-    {
-        if (cts is not null)
-        {
+    private async Task DrainAfterStopAsync(CancellationTokenSource? cts, Task? acceptLoop, CancellationToken cancellationToken) {
+        if (cts is not null) {
             await cts.CancelAsync().ConfigureAwait(false);
         }
 
-        if (acceptLoop is not null)
-        {
-            try
-            {
+        if (acceptLoop is not null) {
+            try {
                 await acceptLoop.WaitAsync(cancellationToken).ConfigureAwait(false);
             }
-            catch (OperationCanceledException)
-            {
+            catch (OperationCanceledException) {
                 // Bounded by the caller's cancellation token.
             }
         }
 
         Task[] outstanding = _inFlight.Keys.ToArray();
-        if (outstanding.Length > 0)
-        {
-            try
-            {
+        if (outstanding.Length > 0) {
+            try {
                 await Task.WhenAll(outstanding).WaitAsync(cancellationToken).ConfigureAwait(false);
             }
-            catch (OperationCanceledException)
-            {
+            catch (OperationCanceledException) {
                 // Drain best-effort; remaining connections are dropped by endpoint dispose.
             }
         }
@@ -193,19 +174,15 @@ public sealed class OpcServerListener : IAsyncDisposable
     }
 
     /// <inheritdoc />
-    public async ValueTask DisposeAsync()
-    {
-        if (_disposed)
-        {
+    public async ValueTask DisposeAsync() {
+        if (_disposed) {
             return;
         }
 
-        try
-        {
+        try {
             await StopAsync(CancellationToken.None).ConfigureAwait(false);
         }
-        finally
-        {
+        finally {
             _disposed = true;
             await _endpoint.DisposeAsync().ConfigureAwait(false);
             // Lifecycle lock intentionally NOT disposed: a lifecycle-bound
@@ -216,15 +193,12 @@ public sealed class OpcServerListener : IAsyncDisposable
         }
     }
 
-    private async Task AcceptLoopAsync(CancellationToken cancellationToken)
-    {
-        try
-        {
+    private async Task AcceptLoopAsync(CancellationToken cancellationToken) {
+        try {
             await foreach (IAsyncTransport transport in _endpoint
                 .AcceptConnectionsAsync(cancellationToken)
                 .WithCancellation(cancellationToken)
-                .ConfigureAwait(false))
-            {
+                .ConfigureAwait(false)) {
                 IAsyncTransport capturedTransport = transport;
                 Task connectionTask = Task.Run(
                     () => RunConnectionAsync(capturedTransport, cancellationToken),
@@ -238,30 +212,23 @@ public sealed class OpcServerListener : IAsyncDisposable
                     TaskScheduler.Default);
             }
         }
-        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
-        {
+        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested) {
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             AcceptLoopFailed(_logger, _endpoint.LocalEndpoint, ex);
         }
     }
 
-    private async Task RunConnectionAsync(IAsyncTransport transport, CancellationToken cancellationToken)
-    {
-        try
-        {
+    private async Task RunConnectionAsync(IAsyncTransport transport, CancellationToken cancellationToken) {
+        try {
             await _processor.ProcessConnectionAsync(transport, cancellationToken).ConfigureAwait(false);
         }
-        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
-        {
+        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested) {
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             ConnectionProcessorFailed(_logger, transport.RemoteEndpoint, ex);
         }
-        finally
-        {
+        finally {
             await transport.DisposeAsync().ConfigureAwait(false);
         }
     }

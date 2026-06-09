@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -10,20 +10,17 @@ using TUnit.Core;
 
 namespace Opc.Classic.Ae.Tests;
 
-public sealed class NdrOpcEventNotificationCodecTests
-{
+public sealed class NdrOpcEventNotificationCodecTests {
     private delegate void NdrWriteAction(ref NdrWriter w);
 
-    private static byte[] WriteOne(NdrWriteAction write, int capacity = 1024)
-    {
+    private static byte[] WriteOne(NdrWriteAction write, int capacity = 1024) {
         var buf = new byte[capacity];
         var w = new NdrWriter(buf);
         write(ref w);
         return buf[..w.Position];
     }
 
-    private static OpcEventNotification ReadOne(byte[] bytes)
-    {
+    private static OpcEventNotification ReadOne(byte[] bytes) {
         var r = new NdrReader(bytes);
         return NdrOpcEventNotificationCodec.Read(ref r);
     }
@@ -60,8 +57,7 @@ public sealed class NdrOpcEventNotificationCodecTests
             actorId: actorId);
 
     [Test]
-    public async Task RoundTrip_TypicalAlarmEventWithAttributes()
-    {
+    public async Task RoundTrip_TypicalAlarmEventWithAttributes() {
         var input = MakeNotification();
         var bytes = WriteOne((ref NdrWriter w) => NdrOpcEventNotificationCodec.Write(ref w, input), 2048);
         var back = ReadOne(bytes);
@@ -86,8 +82,7 @@ public sealed class NdrOpcEventNotificationCodecTests
     }
 
     [Test]
-    public async Task RoundTrip_EmptyAttributes()
-    {
+    public async Task RoundTrip_EmptyAttributes() {
         var input = MakeNotification(eventAttributes: Array.Empty<OpcVariant>());
         var bytes = WriteOne((ref NdrWriter w) => NdrOpcEventNotificationCodec.Write(ref w, input), 2048);
         var back = ReadOne(bytes);
@@ -98,8 +93,7 @@ public sealed class NdrOpcEventNotificationCodecTests
     }
 
     [Test]
-    public async Task RoundTrip_NullOptionalStrings()
-    {
+    public async Task RoundTrip_NullOptionalStrings() {
         var input = MakeNotification(
             eventAttributes: new[] { OpcVariant.Empty },
             source: null,
@@ -120,8 +114,7 @@ public sealed class NdrOpcEventNotificationCodecTests
     }
 
     [Test]
-    public async Task RoundTrip_AckRequiredFalse()
-    {
+    public async Task RoundTrip_AckRequiredFalse() {
         var input = MakeNotification(ackRequired: false);
         var bytes = WriteOne((ref NdrWriter w) => NdrOpcEventNotificationCodec.Write(ref w, input), 2048);
         var back = ReadOne(bytes);
@@ -132,8 +125,7 @@ public sealed class NdrOpcEventNotificationCodecTests
     [Test]
     [Arguments(true, 0xFF)]
     [Arguments(false, 0x00)]
-    public async Task AckRequired_WireUsesWin32BoolMinusOneOrZero(bool ackRequired, int expectedByte)
-    {
+    public async Task AckRequired_WireUsesWin32BoolMinusOneOrZero(bool ackRequired, int expectedByte) {
         var input = MakeNotification(ackRequired: ackRequired, eventAttributes: Array.Empty<OpcVariant>());
         var bytes = WriteOne((ref NdrWriter w) => NdrOpcEventNotificationCodec.Write(ref w, input), 2048);
         int offset = FindAckRequiredOffset(bytes);
@@ -145,8 +137,7 @@ public sealed class NdrOpcEventNotificationCodecTests
         await Assert.That(bytes[offset + 3]).IsEqualTo(expected);
     }
 
-    private static int FindAckRequiredOffset(byte[] bytes)
-    {
+    private static int FindAckRequiredOffset(byte[] bytes) {
         var r = new NdrReader(bytes);
         _ = r.ReadUInt16();
         _ = r.ReadUInt16();

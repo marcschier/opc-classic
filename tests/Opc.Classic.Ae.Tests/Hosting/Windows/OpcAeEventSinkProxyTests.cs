@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -19,15 +19,12 @@ using TUnit.Core;
 namespace Opc.Classic.Ae.Tests.Hosting.Windows;
 
 [SupportedOSPlatform("windows")]
-public sealed class OpcAeEventSinkProxyTests
-{
+public sealed class OpcAeEventSinkProxyTests {
     private const int S_OK = 0;
 
     [Test]
-    public async Task Advise_fire_events_and_unadvise_stops_delivery()
-    {
-        if (!OperatingSystem.IsWindows())
-        {
+    public async Task Advise_fire_events_and_unadvise_stops_delivery() {
+        if (!OperatingSystem.IsWindows()) {
             return;
         }
 
@@ -35,8 +32,7 @@ public sealed class OpcAeEventSinkProxyTests
         IntPtr subscription = OpcAeEventSinkTestHelpers.CreateSubscription(dispatcher);
         IntPtr connectionPoint = OpcAeEventSinkTestHelpers.FindEventConnectionPoint(subscription);
         IntPtr sink = OpcAeEventSinkTestHelpers.CreateSinkStub();
-        try
-        {
+        try {
             (int adviseHr, uint cookie) = OpcAeEventSinkTestHelpers.Advise(connectionPoint, sink);
             await Assert.That(adviseHr).IsEqualTo(S_OK);
             await Assert.That(OpcAeSubscriptionCcw.GetScmSinkCount(subscription)).IsEqualTo(1);
@@ -62,15 +58,13 @@ public sealed class OpcAeEventSinkProxyTests
             await dispatcher.FireAsync(refresh: false, lastRefresh: false, notifications, CancellationToken.None);
             await Assert.That(OpcAeEventSinkTestHelpers.GetInvocations(sink).Length).IsEqualTo(1);
         }
-        finally
-        {
+        finally {
             OpcAeEventSinkTestHelpers.DestroySinkStub(sink);
         }
     }
 }
 
-internal class RecordingAeDispatcher : IOpcAeServerDispatcher, IOPCEventSubscriptionMgt, IOpcAeEventSinkRegistration
-{
+internal class RecordingAeDispatcher : IOpcAeServerDispatcher, IOPCEventSubscriptionMgt, IOpcAeEventSinkRegistration {
     private readonly ConcurrentDictionary<int, IOPCEventSink> _sinks = new();
     private int _nextCookie;
 
@@ -87,8 +81,7 @@ internal class RecordingAeDispatcher : IOpcAeServerDispatcher, IOPCEventSubscrip
         Guid requestedInterfaceId,
         out int revisedBufferTime,
         out int revisedMaxSize,
-        CancellationToken cancellationToken = default)
-    {
+        CancellationToken cancellationToken = default) {
         cancellationToken.ThrowIfCancellationRequested();
         _ = active;
         _ = requestedInterfaceId;
@@ -98,25 +91,21 @@ internal class RecordingAeDispatcher : IOpcAeServerDispatcher, IOPCEventSubscrip
         return Task.FromResult<IOPCEventSubscriptionMgt>(this);
     }
 
-    public Task<int> AdviseEventSinkAsync(IOPCEventSink sink, CancellationToken cancellationToken = default)
-    {
+    public Task<int> AdviseEventSinkAsync(IOPCEventSink sink, CancellationToken cancellationToken = default) {
         cancellationToken.ThrowIfCancellationRequested();
         int cookie = Interlocked.Increment(ref _nextCookie);
         _sinks[cookie] = sink;
         return Task.FromResult(cookie);
     }
 
-    public Task UnadviseEventSinkAsync(int connection, CancellationToken cancellationToken = default)
-    {
+    public Task UnadviseEventSinkAsync(int connection, CancellationToken cancellationToken = default) {
         cancellationToken.ThrowIfCancellationRequested();
         _sinks.TryRemove(connection, out _);
         return Task.CompletedTask;
     }
 
-    public async Task FireAsync(bool refresh, bool lastRefresh, OpcEventNotification[] notifications, CancellationToken cancellationToken)
-    {
-        foreach (IOPCEventSink sink in _sinks.Values)
-        {
+    public async Task FireAsync(bool refresh, bool lastRefresh, OpcEventNotification[] notifications, CancellationToken cancellationToken) {
+        foreach (IOPCEventSink sink in _sinks.Values) {
             await sink.OnEventAsync(ClientSubscription, refresh, lastRefresh, notifications, cancellationToken).ConfigureAwait(false);
         }
     }
@@ -124,8 +113,7 @@ internal class RecordingAeDispatcher : IOpcAeServerDispatcher, IOPCEventSubscrip
     public Task SetFilterAsync(int eventType, int[] eventCategories, int lowSeverity, int highSeverity, string[] areas, string[] sources, CancellationToken cancellationToken = default) =>
         Task.CompletedTask;
 
-    public Task GetFilterAsync(out int eventType, out int[] eventCategories, out int lowSeverity, out int highSeverity, out string[] areas, out string[] sources, CancellationToken cancellationToken = default)
-    {
+    public Task GetFilterAsync(out int eventType, out int[] eventCategories, out int lowSeverity, out int highSeverity, out string[] areas, out string[] sources, CancellationToken cancellationToken = default) {
         eventType = (int)EventType.All;
         eventCategories = [];
         lowSeverity = 0;
@@ -147,8 +135,7 @@ internal class RecordingAeDispatcher : IOpcAeServerDispatcher, IOPCEventSubscrip
     public virtual Task CancelRefreshAsync(int connection, CancellationToken cancellationToken = default) =>
         Task.CompletedTask;
 
-    public Task GetStateAsync(out bool active, out int bufferTime, out int maxSize, out int clientSubscription, CancellationToken cancellationToken = default)
-    {
+    public Task GetStateAsync(out bool active, out int bufferTime, out int maxSize, out int clientSubscription, CancellationToken cancellationToken = default) {
         active = true;
         bufferTime = 100;
         maxSize = 10;
@@ -156,8 +143,7 @@ internal class RecordingAeDispatcher : IOpcAeServerDispatcher, IOPCEventSubscrip
         return Task.CompletedTask;
     }
 
-    public Task SetStateAsync(bool active, int bufferTime, int maxSize, int clientSubscription, out int revisedBufferTime, out int revisedMaxSize, CancellationToken cancellationToken = default)
-    {
+    public Task SetStateAsync(bool active, int bufferTime, int maxSize, int clientSubscription, out int revisedBufferTime, out int revisedMaxSize, CancellationToken cancellationToken = default) {
         _ = active;
         ClientSubscription = clientSubscription;
         revisedBufferTime = bufferTime;
@@ -170,8 +156,7 @@ internal class RecordingAeDispatcher : IOpcAeServerDispatcher, IOPCEventSubscrip
 }
 
 [SupportedOSPlatform("windows")]
-internal static unsafe class OpcAeEventSinkTestHelpers
-{
+internal static unsafe class OpcAeEventSinkTestHelpers {
     private const int S_OK = 0;
     private const int E_NOINTERFACE = unchecked((int)0x80004002);
     private const int E_POINTER = unchecked((int)0x80004003);
@@ -208,100 +193,83 @@ internal static unsafe class OpcAeEventSinkTestHelpers
         OpcVariant[] Attributes,
         string? ActorId);
 
-    internal static IntPtr CreateSinkStub(bool supportsEventSink = true)
-    {
+    internal static IntPtr CreateSinkStub(bool supportsEventSink = true) {
         IntPtr* vtable = AllocateSinkVtable();
         IntPtr instance = AllocateInstance(vtable);
         s_sinkStubs[instance] = new SinkStubSession(vtable, supportsEventSink);
         return instance;
     }
 
-    internal static void DestroySinkStub(IntPtr sink)
-    {
-        if (!s_sinkStubs.TryRemove(sink, out SinkStubSession? session))
-        {
+    internal static void DestroySinkStub(IntPtr sink) {
+        if (!s_sinkStubs.TryRemove(sink, out SinkStubSession? session)) {
             return;
         }
         NativeMemory.Free((void*)sink);
         NativeMemory.Free(session.Vtable);
     }
 
-    internal static EventCallbackInvocation[] GetInvocations(IntPtr sink)
-    {
-        if (!s_sinkStubs.TryGetValue(sink, out SinkStubSession? session))
-        {
+    internal static EventCallbackInvocation[] GetInvocations(IntPtr sink) {
+        if (!s_sinkStubs.TryGetValue(sink, out SinkStubSession? session)) {
             return [];
         }
-        lock (session.Gate)
-        {
+        lock (session.Gate) {
             return session.Invocations.ToArray();
         }
     }
 
-    internal static IntPtr CreateSubscription(IOpcAeServerDispatcher dispatcher)
-    {
+    internal static IntPtr CreateSubscription(IOpcAeServerDispatcher dispatcher) {
         IntPtr ccw = OpcAeServerCcw.Create(dispatcher, s_iidUnknown);
         IntPtr eventServer = QueryInterface(ccw, IOPCEventServer.InterfaceId);
         CreateEventSubscriptionDelegate create = GetMethod<CreateEventSubscriptionDelegate>(eventServer, 4);
         Guid iid = IOPCEventSubscriptionMgt.InterfaceId;
         IntPtr pRevisedBufferTime = Marshal.AllocCoTaskMem(sizeof(int));
         IntPtr pRevisedMaxSize = Marshal.AllocCoTaskMem(sizeof(int));
-        try
-        {
+        try {
             int hr = create(eventServer, 1, 100, 10, 0xAA01, ref iid, out IntPtr subscription, pRevisedBufferTime, pRevisedMaxSize);
-            if (hr != S_OK)
-            {
+            if (hr != S_OK) {
                 throw new InvalidOperationException($"CreateEventSubscription failed with 0x{hr:X8}.");
             }
             return subscription;
         }
-        finally
-        {
+        finally {
             Marshal.FreeCoTaskMem(pRevisedBufferTime);
             Marshal.FreeCoTaskMem(pRevisedMaxSize);
         }
     }
 
-    internal static IntPtr FindEventConnectionPoint(IntPtr subscription)
-    {
+    internal static IntPtr FindEventConnectionPoint(IntPtr subscription) {
         IntPtr cpc = QueryInterface(subscription, OpcGuids.IID_IConnectionPointContainer);
         FindConnectionPointDelegate find = GetMethod<FindConnectionPointDelegate>(cpc, 4);
         Guid iid = IOPCEventSink.InterfaceId;
         int hr = find(cpc, ref iid, out IntPtr connectionPoint);
-        if (hr != S_OK)
-        {
+        if (hr != S_OK) {
             throw new InvalidOperationException($"FindConnectionPoint failed with 0x{hr:X8}.");
         }
         return connectionPoint;
     }
 
-    internal static (int Hr, uint Cookie) Advise(IntPtr connectionPoint, IntPtr sink)
-    {
+    internal static (int Hr, uint Cookie) Advise(IntPtr connectionPoint, IntPtr sink) {
         AdviseDelegate advise = GetMethod<AdviseDelegate>(connectionPoint, 5);
         int hr = advise(connectionPoint, sink, out uint cookie);
         return (hr, cookie);
     }
 
-    internal static int Unadvise(IntPtr connectionPoint, uint cookie)
-    {
+    internal static int Unadvise(IntPtr connectionPoint, uint cookie) {
         UnadviseDelegate unadvise = GetMethod<UnadviseDelegate>(connectionPoint, 6);
         return unadvise(connectionPoint, cookie);
     }
 
-    internal static int InvokeRefresh(IntPtr subscription, int connection)
-    {
+    internal static int InvokeRefresh(IntPtr subscription, int connection) {
         RefreshDelegate refresh = GetMethod<RefreshDelegate>(subscription, 7);
         return refresh(subscription, connection);
     }
 
-    internal static int InvokeCancelRefresh(IntPtr subscription, int connection)
-    {
+    internal static int InvokeCancelRefresh(IntPtr subscription, int connection) {
         CancelRefreshDelegate cancel = GetMethod<CancelRefreshDelegate>(subscription, 8);
         return cancel(subscription, connection);
     }
 
-    internal static OpcEventNotification[] CreateNotifications()
-    {
+    internal static OpcEventNotification[] CreateNotifications() {
         DateTimeOffset now = new(2026, 1, 2, 3, 4, 5, TimeSpan.Zero);
         return
         [
@@ -312,8 +280,7 @@ internal static unsafe class OpcAeEventSinkTestHelpers
     }
 
     [SuppressMessage("Reliability", "CA2018", Justification = "Explicit byte size.")]
-    private static IntPtr* AllocateSinkVtable()
-    {
+    private static IntPtr* AllocateSinkVtable() {
         IntPtr* vtable = (IntPtr*)NativeMemory.Alloc((nuint)(SinkVtableSlotCount * sizeof(IntPtr)));
         vtable[0] = (IntPtr)(delegate* unmanaged<IntPtr, Guid*, IntPtr*, int>)&SinkQueryInterface;
         vtable[1] = (IntPtr)(delegate* unmanaged<IntPtr, uint>)&SinkAddRef;
@@ -323,27 +290,22 @@ internal static unsafe class OpcAeEventSinkTestHelpers
     }
 
     [SuppressMessage("Reliability", "CA2018", Justification = "Explicit byte size.")]
-    private static IntPtr AllocateInstance(IntPtr* vtable)
-    {
+    private static IntPtr AllocateInstance(IntPtr* vtable) {
         IntPtr* instance = (IntPtr*)NativeMemory.Alloc((nuint)sizeof(IntPtr));
         instance[0] = (IntPtr)vtable;
         return (IntPtr)instance;
     }
 
     [UnmanagedCallersOnly]
-    private static int SinkQueryInterface(IntPtr pThis, Guid* riid, IntPtr* ppv)
-    {
-        if (ppv == null)
-        {
+    private static int SinkQueryInterface(IntPtr pThis, Guid* riid, IntPtr* ppv) {
+        if (ppv == null) {
             return E_POINTER;
         }
-        if (!s_sinkStubs.TryGetValue(pThis, out SinkStubSession? session) || riid == null)
-        {
+        if (!s_sinkStubs.TryGetValue(pThis, out SinkStubSession? session) || riid == null) {
             *ppv = IntPtr.Zero;
             return E_NOINTERFACE;
         }
-        if (*riid == s_iidUnknown || (session.SupportsEventSink && *riid == IOPCEventSink.InterfaceId))
-        {
+        if (*riid == s_iidUnknown || (session.SupportsEventSink && *riid == IOPCEventSink.InterfaceId)) {
             *ppv = pThis;
             Interlocked.Increment(ref session.RefCount);
             return S_OK;
@@ -366,12 +328,9 @@ internal static unsafe class OpcAeEventSinkTestHelpers
 
     [UnmanagedCallersOnly]
     [SuppressMessage("Design", "CA1031", Justification = "Cross-unmanaged-boundary catch.")]
-    private static int SinkOnEvent(IntPtr pThis, uint clientSubscription, int refresh, int lastRefresh, uint count, IntPtr events)
-    {
-        try
-        {
-            if (!s_sinkStubs.TryGetValue(pThis, out SinkStubSession? session))
-            {
+    private static int SinkOnEvent(IntPtr pThis, uint clientSubscription, int refresh, int lastRefresh, uint count, IntPtr events) {
+        try {
+            if (!s_sinkStubs.TryGetValue(pThis, out SinkStubSession? session)) {
                 return E_NOINTERFACE;
             }
             var invocation = new EventCallbackInvocation(
@@ -379,29 +338,24 @@ internal static unsafe class OpcAeEventSinkTestHelpers
                 refresh != 0,
                 lastRefresh != 0,
                 ReadEvents(events, checked((int)count)));
-            lock (session.Gate)
-            {
+            lock (session.Gate) {
                 session.Invocations.Add(invocation);
             }
             return S_OK;
         }
-        catch
-        {
+        catch {
             return unchecked((int)0x80004005);
         }
     }
 
-    private static ReceivedEvent[] ReadEvents(IntPtr events, int count)
-    {
-        if (count == 0)
-        {
+    private static ReceivedEvent[] ReadEvents(IntPtr events, int count) {
+        if (count == 0) {
             return [];
         }
         var result = new ReceivedEvent[count];
         int structSize = sizeof(NativeOneEventStruct);
         byte* basePtr = (byte*)events;
-        for (int i = 0; i < count; i++)
-        {
+        for (int i = 0; i < count; i++) {
             NativeOneEventStruct* native = (NativeOneEventStruct*)(basePtr + (i * structSize));
             result[i] = new ReceivedEvent(
                 native->wChangeMask,
@@ -427,27 +381,22 @@ internal static unsafe class OpcAeEventSinkTestHelpers
     private static string? ReadBstr(IntPtr value) =>
         value == IntPtr.Zero ? null : Marshal.PtrToStringBSTR(value);
 
-    private static OpcVariant[] ReadVariants(IntPtr values, int count)
-    {
-        if (count == 0)
-        {
+    private static OpcVariant[] ReadVariants(IntPtr values, int count) {
+        if (count == 0) {
             return [];
         }
         var result = new OpcVariant[count];
         int variantSize = IntPtr.Size == 8 ? 24 : 16;
-        for (int i = 0; i < count; i++)
-        {
+        for (int i = 0; i < count; i++) {
             result[i] = ReadVariant(values + (i * variantSize));
         }
         return result;
     }
 
-    private static OpcVariant ReadVariant(IntPtr value)
-    {
+    private static OpcVariant ReadVariant(IntPtr value) {
         ushort vt = unchecked((ushort)Marshal.ReadInt16(value));
         IntPtr payload = value + VariantValueOffset;
-        return vt switch
-        {
+        return vt switch {
             VtEmpty => OpcVariant.Empty,
             VtNull => OpcVariant.Null,
             VtI4 => OpcVariant.FromInt32(Marshal.ReadInt32(payload)),
@@ -459,28 +408,24 @@ internal static unsafe class OpcAeEventSinkTestHelpers
         };
     }
 
-    private static IntPtr QueryInterface(IntPtr unknown, Guid iid)
-    {
+    private static IntPtr QueryInterface(IntPtr unknown, Guid iid) {
         QueryInterfaceDelegate qi = GetMethod<QueryInterfaceDelegate>(unknown, 0);
         int hr = qi(unknown, ref iid, out IntPtr returned);
-        if (hr != S_OK)
-        {
+        if (hr != S_OK) {
             throw new InvalidOperationException($"QueryInterface failed with 0x{hr:X8}.");
         }
         return returned;
     }
 
     private static T GetMethod<T>(IntPtr tearoff, int slot)
-        where T : Delegate
-    {
+        where T : Delegate {
         IntPtr vtable = Marshal.ReadIntPtr(tearoff);
         IntPtr method = Marshal.ReadIntPtr(vtable, slot * IntPtr.Size);
         return Marshal.GetDelegateForFunctionPointer<T>(method);
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    private struct NativeOneEventStruct
-    {
+    private struct NativeOneEventStruct {
         public ushort wChangeMask;
         public ushort wNewState;
         public IntPtr szSource;
@@ -501,10 +446,8 @@ internal static unsafe class OpcAeEventSinkTestHelpers
         public IntPtr szActorID;
     }
 
-    private sealed class SinkStubSession
-    {
-        public SinkStubSession(IntPtr* vtable, bool supportsEventSink)
-        {
+    private sealed class SinkStubSession {
+        public SinkStubSession(IntPtr* vtable, bool supportsEventSink) {
             Vtable = vtable;
             SupportsEventSink = supportsEventSink;
         }

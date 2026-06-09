@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -10,13 +10,11 @@ using TUnit.Core;
 
 namespace Opc.Classic.Dcom.Kerberos.Tests;
 
-public sealed class Rfc4121WrapTokenTests
-{
+public sealed class Rfc4121WrapTokenTests {
     private static readonly byte[] Aes128Key = KerberosTestHex.FromHex("00112233445566778899AABBCCDDEEFF");
 
     [Test]
-    public async Task Wrap_integrity_token_has_RFC4121_header_fields()
-    {
+    public async Task Wrap_integrity_token_has_RFC4121_header_fields() {
         var session = new KerberosSession(Aes128Key, EncryptionType.AES128_CTS_HMAC_SHA1_96);
         byte[] token = session.WrapMessage([0x01, 0x02, 0x03], confidential: false);
 
@@ -29,8 +27,7 @@ public sealed class Rfc4121WrapTokenTests
     }
 
     [Test]
-    public async Task Wrap_privacy_token_has_sealed_flag_and_round_trips()
-    {
+    public async Task Wrap_privacy_token_has_sealed_flag_and_round_trips() {
         var session = new KerberosSession(Aes128Key, EncryptionType.AES128_CTS_HMAC_SHA1_96);
         byte[] plaintext = [0x10, 0x20, 0x30, 0x40];
 
@@ -44,8 +41,7 @@ public sealed class Rfc4121WrapTokenTests
     }
 
     [Test]
-    public async Task Wrap_integrity_only_round_trips_without_confidentiality()
-    {
+    public async Task Wrap_integrity_only_round_trips_without_confidentiality() {
         var session = new KerberosSession(Aes128Key, EncryptionType.AES128_CTS_HMAC_SHA1_96);
         byte[] plaintext = [0x41, 0x42, 0x43, 0x44, 0x45];
 
@@ -57,8 +53,7 @@ public sealed class Rfc4121WrapTokenTests
     }
 
     [Test]
-    public async Task Wrap_and_mic_tokens_use_distinct_RFC4121_token_ids()
-    {
+    public async Task Wrap_and_mic_tokens_use_distinct_RFC4121_token_ids() {
         var session = new KerberosSession(Aes128Key, EncryptionType.AES128_CTS_HMAC_SHA1_96);
 
         byte[] wrap = session.WrapMessage([0x01], confidential: false);

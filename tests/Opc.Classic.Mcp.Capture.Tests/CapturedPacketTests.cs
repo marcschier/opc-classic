@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -11,15 +11,12 @@ using TUnit.Core;
 
 namespace Opc.Classic.Mcp.Capture.Tests;
 
-public sealed class CapturedPacketTests
-{
+public sealed class CapturedPacketTests {
     [Test]
-    public async Task RecordEquality_SameMemoryAndAnnotations_AreEqual()
-    {
+    public async Task RecordEquality_SameMemoryAndAnnotations_AreEqual() {
         byte[] bytes = [0x01, 0x02, 0x03];
         var timestamp = new DateTimeOffset(2026, 6, 7, 12, 0, 0, TimeSpan.Zero);
-        IReadOnlyDictionary<string, string?> annotations = new Dictionary<string, string?>
-        {
+        IReadOnlyDictionary<string, string?> annotations = new Dictionary<string, string?> {
             ["source_file"] = "call.hex",
         };
         var left = new CapturedPacket(timestamp, bytes.Length, bytes, 1, annotations);
@@ -31,8 +28,7 @@ public sealed class CapturedPacketTests
     }
 
     [Test]
-    public async Task WithExpression_ChangesOnlyRequestedProperty()
-    {
+    public async Task WithExpression_ChangesOnlyRequestedProperty() {
         byte[] bytes = [0xAA];
         var timestamp = new DateTimeOffset(2026, 6, 7, 12, 0, 0, TimeSpan.Zero);
         var packet = new CapturedPacket(timestamp, 64, bytes, 101, new Dictionary<string, string?>());

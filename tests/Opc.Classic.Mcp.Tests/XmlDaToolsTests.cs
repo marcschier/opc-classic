@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -12,11 +12,9 @@ using TUnit.Core;
 
 namespace Opc.Classic.Mcp.Tests;
 
-public sealed class XmlDaToolsTests
-{
+public sealed class XmlDaToolsTests {
     [Test]
-    public async Task XmlDa_connect_status_and_browse_round_trip_via_mcp_client()
-    {
+    public async Task XmlDa_connect_status_and_browse_round_trip_via_mcp_client() {
         var xmlDa = new SyntheticXmlDaClient();
         string name = "xmlda-" + Guid.NewGuid().ToString("N");
         using IDisposable registration = InMemoryXmlDaConnectionRegistry.Register(name, xmlDa);
@@ -25,8 +23,7 @@ public sealed class XmlDaToolsTests
 
         OpcResultDto connected = await server.CallToolAsync<OpcResultDto>(
             "opcclassic.xmlda.connect",
-            new Dictionary<string, object>
-            {
+            new Dictionary<string, object> {
                 ["sessionId"] = session.SessionId,
                 ["endpointUrl"] = "inmemory://" + name,
             }).ConfigureAwait(false);
@@ -43,8 +40,7 @@ public sealed class XmlDaToolsTests
     }
 
     [Test]
-    public async Task XmlDa_get_properties_read_and_write_round_trip_via_mcp_client()
-    {
+    public async Task XmlDa_get_properties_read_and_write_round_trip_via_mcp_client() {
         var xmlDa = new SyntheticXmlDaClient();
         string name = "xmlda-" + Guid.NewGuid().ToString("N");
         using IDisposable registration = InMemoryXmlDaConnectionRegistry.Register(name, xmlDa);
@@ -52,38 +48,33 @@ public sealed class XmlDaToolsTests
         OpcSessionDto session = await server.CallToolAsync<OpcSessionDto>("opcclassic.session.create", []).ConfigureAwait(false);
         _ = await server.CallToolAsync<OpcResultDto>(
             "opcclassic.xmlda.connect",
-            new Dictionary<string, object>
-            {
+            new Dictionary<string, object> {
                 ["sessionId"] = session.SessionId,
                 ["endpointUrl"] = "inmemory://" + name,
             }).ConfigureAwait(false);
 
         OpcXmlDaGetPropertiesResponseDto properties = await server.CallToolAsync<OpcXmlDaGetPropertiesResponseDto>(
             "opcclassic.xmlda.get_properties",
-            new Dictionary<string, object>
-            {
+            new Dictionary<string, object> {
                 ["sessionId"] = session.SessionId,
                 ["itemNames"] = new[] { "Plant.Temperature" },
                 ["returnPropertyValues"] = true,
             }).ConfigureAwait(false);
         OpcXmlDaItemValueDto[] initialRead = await server.CallToolAsync<OpcXmlDaItemValueDto[]>(
             "opcclassic.xmlda.read",
-            new Dictionary<string, object>
-            {
+            new Dictionary<string, object> {
                 ["sessionId"] = session.SessionId,
                 ["items"] = new[] { new OpcXmlDaReadItemDto("Plant.Temperature", "c1") },
             }).ConfigureAwait(false);
         OpcXmlDaWriteResultDto[] write = await server.CallToolAsync<OpcXmlDaWriteResultDto[]>(
             "opcclassic.xmlda.write",
-            new Dictionary<string, object>
-            {
+            new Dictionary<string, object> {
                 ["sessionId"] = session.SessionId,
                 ["items"] = new[] { new OpcXmlDaWriteItemDto("Plant.Temperature", 42.5, "c1") },
             }).ConfigureAwait(false);
         OpcXmlDaItemValueDto[] afterWrite = await server.CallToolAsync<OpcXmlDaItemValueDto[]>(
             "opcclassic.xmlda.read",
-            new Dictionary<string, object>
-            {
+            new Dictionary<string, object> {
                 ["sessionId"] = session.SessionId,
                 ["items"] = new[] { new OpcXmlDaReadItemDto("Plant.Temperature", "c1") },
             }).ConfigureAwait(false);
@@ -95,8 +86,7 @@ public sealed class XmlDaToolsTests
     }
 
     [Test]
-    public async Task XmlDa_subscribe_poll_and_cancel_round_trip_via_mcp_client()
-    {
+    public async Task XmlDa_subscribe_poll_and_cancel_round_trip_via_mcp_client() {
         var xmlDa = new SyntheticXmlDaClient();
         string name = "xmlda-" + Guid.NewGuid().ToString("N");
         using IDisposable registration = InMemoryXmlDaConnectionRegistry.Register(name, xmlDa);
@@ -104,32 +94,28 @@ public sealed class XmlDaToolsTests
         OpcSessionDto session = await server.CallToolAsync<OpcSessionDto>("opcclassic.session.create", []).ConfigureAwait(false);
         _ = await server.CallToolAsync<OpcResultDto>(
             "opcclassic.xmlda.connect",
-            new Dictionary<string, object>
-            {
+            new Dictionary<string, object> {
                 ["sessionId"] = session.SessionId,
                 ["endpointUrl"] = "inmemory://" + name,
             }).ConfigureAwait(false);
 
         OpcXmlDaSubscriptionDto subscription = await server.CallToolAsync<OpcXmlDaSubscriptionDto>(
             "opcclassic.xmlda.subscribe",
-            new Dictionary<string, object>
-            {
+            new Dictionary<string, object> {
                 ["sessionId"] = session.SessionId,
                 ["items"] = new[] { new OpcXmlDaSubscribeItemDto("Plant.Temperature", "s1") },
                 ["returnValuesOnReply"] = true,
             }).ConfigureAwait(false);
         OpcXmlDaSubscriptionPollDto poll = await server.CallToolAsync<OpcXmlDaSubscriptionPollDto>(
             "opcclassic.xmlda.poll_subscription",
-            new Dictionary<string, object>
-            {
+            new Dictionary<string, object> {
                 ["sessionId"] = session.SessionId,
                 ["serverSubHandles"] = new[] { subscription.ServerSubHandle },
                 ["returnAllItems"] = true,
             }).ConfigureAwait(false);
         OpcResultDto cancel = await server.CallToolAsync<OpcResultDto>(
             "opcclassic.xmlda.cancel_subscription",
-            new Dictionary<string, object>
-            {
+            new Dictionary<string, object> {
                 ["sessionId"] = session.SessionId,
                 ["serverSubHandle"] = subscription.ServerSubHandle,
             }).ConfigureAwait(false);
@@ -141,8 +127,7 @@ public sealed class XmlDaToolsTests
     }
 
     [Test]
-    public async Task XmlDa_disconnect_round_trip_via_mcp_client()
-    {
+    public async Task XmlDa_disconnect_round_trip_via_mcp_client() {
         var xmlDa = new SyntheticXmlDaClient();
         string name = "xmlda-" + Guid.NewGuid().ToString("N");
         using IDisposable registration = InMemoryXmlDaConnectionRegistry.Register(name, xmlDa);
@@ -150,8 +135,7 @@ public sealed class XmlDaToolsTests
         OpcSessionDto session = await server.CallToolAsync<OpcSessionDto>("opcclassic.session.create", []).ConfigureAwait(false);
         _ = await server.CallToolAsync<OpcResultDto>(
             "opcclassic.xmlda.connect",
-            new Dictionary<string, object>
-            {
+            new Dictionary<string, object> {
                 ["sessionId"] = session.SessionId,
                 ["endpointUrl"] = "inmemory://" + name,
             }).ConfigureAwait(false);
@@ -166,10 +150,8 @@ public sealed class XmlDaToolsTests
     private static double GetDouble(object? value) => ((JsonElement)value!).GetDouble();
 }
 
-internal sealed class SyntheticXmlDaClient : IXmlDaClient
-{
-    private readonly Dictionary<string, XmlDaValue> _values = new(StringComparer.Ordinal)
-    {
+internal sealed class SyntheticXmlDaClient : IXmlDaClient {
+    private readonly Dictionary<string, XmlDaValue> _values = new(StringComparer.Ordinal) {
         ["Plant.Temperature"] = XmlDaValue.OfDouble(21.5),
         ["Plant.Running"] = XmlDaValue.OfBoolean(true),
     };
@@ -178,8 +160,7 @@ internal sealed class SyntheticXmlDaClient : IXmlDaClient
 
     public int SubscriptionCount => _subscriptions.Count;
 
-    public Task<XmlDaServerStatus> GetStatusAsync(XmlDaRequestHeader header, CancellationToken cancellationToken = default)
-    {
+    public Task<XmlDaServerStatus> GetStatusAsync(XmlDaRequestHeader header, CancellationToken cancellationToken = default) {
         _ = header;
         cancellationToken.ThrowIfCancellationRequested();
         return Task.FromResult(new XmlDaServerStatus(
@@ -192,19 +173,16 @@ internal sealed class SyntheticXmlDaClient : IXmlDaClient
             StatusInfo: null));
     }
 
-    public Task<XmlDaReadResponse> ReadAsync(XmlDaReadRequest request, CancellationToken cancellationToken = default)
-    {
+    public Task<XmlDaReadResponse> ReadAsync(XmlDaReadRequest request, CancellationToken cancellationToken = default) {
         cancellationToken.ThrowIfCancellationRequested();
         return Task.FromResult(new XmlDaReadResponse(
             XmlDaServerState.Running,
             request.Items.Select(item => ToValueResult(item.ItemName, item.ClientItemHandle)).ToArray()));
     }
 
-    public Task<XmlDaWriteResponse> WriteAsync(XmlDaWriteRequest request, CancellationToken cancellationToken = default)
-    {
+    public Task<XmlDaWriteResponse> WriteAsync(XmlDaWriteRequest request, CancellationToken cancellationToken = default) {
         cancellationToken.ThrowIfCancellationRequested();
-        foreach (XmlDaWriteItem item in request.Items)
-        {
+        foreach (XmlDaWriteItem item in request.Items) {
             _values[item.ItemName] = item.Value;
         }
 
@@ -213,8 +191,7 @@ internal sealed class SyntheticXmlDaClient : IXmlDaClient
             request.Items.Select(static item => new XmlDaWriteItemResult(item.ItemName, item.ClientItemHandle, null, null)).ToArray()));
     }
 
-    public Task<XmlDaBrowseResponse> BrowseAsync(XmlDaBrowseRequest request, CancellationToken cancellationToken = default)
-    {
+    public Task<XmlDaBrowseResponse> BrowseAsync(XmlDaBrowseRequest request, CancellationToken cancellationToken = default) {
         _ = request;
         cancellationToken.ThrowIfCancellationRequested();
         XmlDaBrowseElement[] elements = _values.Keys
@@ -224,8 +201,7 @@ internal sealed class SyntheticXmlDaClient : IXmlDaClient
         return Task.FromResult(new XmlDaBrowseResponse(XmlDaServerState.Running, elements, string.Empty, MoreElements: false));
     }
 
-    public Task<XmlDaSubscribeResponse> SubscribeAsync(XmlDaSubscribeRequest request, CancellationToken cancellationToken = default)
-    {
+    public Task<XmlDaSubscribeResponse> SubscribeAsync(XmlDaSubscribeRequest request, CancellationToken cancellationToken = default) {
         cancellationToken.ThrowIfCancellationRequested();
         string handle = "sub-" + Interlocked.Increment(ref _nextSubscription).ToString(CultureInfo.InvariantCulture);
         string[] itemNames = request.Items.Select(static item => item.ItemName).ToArray();
@@ -236,15 +212,12 @@ internal sealed class SyntheticXmlDaClient : IXmlDaClient
         return Task.FromResult(new XmlDaSubscribeResponse(XmlDaServerState.Running, handle, request.RequestedSamplingRate, values));
     }
 
-    public Task<XmlDaSubscriptionPolledRefreshResponse> SubscriptionPolledRefreshAsync(XmlDaSubscriptionPolledRefreshRequest request, CancellationToken cancellationToken = default)
-    {
+    public Task<XmlDaSubscriptionPolledRefreshResponse> SubscriptionPolledRefreshAsync(XmlDaSubscriptionPolledRefreshRequest request, CancellationToken cancellationToken = default) {
         cancellationToken.ThrowIfCancellationRequested();
         var invalid = new List<string>();
         var lists = new List<XmlDaSubscriptionItemList>();
-        foreach (string handle in request.ServerSubHandles)
-        {
-            if (!_subscriptions.TryGetValue(handle, out string[]? itemNames))
-            {
+        foreach (string handle in request.ServerSubHandles) {
+            if (!_subscriptions.TryGetValue(handle, out string[]? itemNames)) {
                 invalid.Add(handle);
                 continue;
             }
@@ -255,15 +228,13 @@ internal sealed class SyntheticXmlDaClient : IXmlDaClient
         return Task.FromResult(new XmlDaSubscriptionPolledRefreshResponse(XmlDaServerState.Running, DataBufferOverflow: false, invalid, lists));
     }
 
-    public Task<XmlDaSubscriptionCancelResponse> SubscriptionCancelAsync(XmlDaSubscriptionCancelRequest request, CancellationToken cancellationToken = default)
-    {
+    public Task<XmlDaSubscriptionCancelResponse> SubscriptionCancelAsync(XmlDaSubscriptionCancelRequest request, CancellationToken cancellationToken = default) {
         cancellationToken.ThrowIfCancellationRequested();
         _subscriptions.Remove(request.ServerSubHandle);
         return Task.FromResult(new XmlDaSubscriptionCancelResponse(request.ClientRequestHandle));
     }
 
-    public Task<XmlDaGetPropertiesResponse> GetPropertiesAsync(XmlDaGetPropertiesRequest request, CancellationToken cancellationToken = default)
-    {
+    public Task<XmlDaGetPropertiesResponse> GetPropertiesAsync(XmlDaGetPropertiesRequest request, CancellationToken cancellationToken = default) {
         cancellationToken.ThrowIfCancellationRequested();
         XmlDaItemPropertyList[] lists = request.ItemNames.Select(itemName => new XmlDaItemPropertyList(
             itemName,
@@ -273,10 +244,8 @@ internal sealed class SyntheticXmlDaClient : IXmlDaClient
         return Task.FromResult(new XmlDaGetPropertiesResponse(XmlDaServerState.Running, lists));
     }
 
-    private XmlDaItemValueResult ToValueResult(string itemName, string? clientHandle)
-    {
-        if (!_values.TryGetValue(itemName, out XmlDaValue? value))
-        {
+    private XmlDaItemValueResult ToValueResult(string itemName, string? clientHandle) {
+        if (!_values.TryGetValue(itemName, out XmlDaValue? value)) {
             return new XmlDaItemValueResult(itemName, clientHandle, null, OpcQuality.Bad, DateTimeOffset.UtcNow, XmlDaErrorCodes.ToResultId(XmlDaErrorCode.UnknownItemId));
         }
 

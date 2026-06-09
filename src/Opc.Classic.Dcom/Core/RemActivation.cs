@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: MIT
+﻿// SPDX-License-Identifier: MIT
 
 using Opc.Classic.Dcom.Internal.LegacyNdr;
 using SharpCifs.Util.Sharpen;
@@ -12,6 +12,7 @@ using Opc.Classic.Dcom.Rpc;
 #pragma warning disable MA0051 // Legacy DCOM protocol methods are intentionally kept intact during analyzer cleanup.
 
 namespace Opc.Classic.Dcom.Core;
+
 internal sealed class RemActivation : NdrOp, IServerActivation {
 
     /// <summary>

@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -18,8 +18,7 @@ namespace Opc.Classic.Hda;
 public sealed record OpcHdaTime(
     bool IsStringExpression,
     string? StringExpression,
-    DateTimeOffset Timestamp)
-{
+    DateTimeOffset Timestamp) {
     /// <summary>Creates an OPCHDA_TIME carrying a server-evaluated expression.</summary>
     public static OpcHdaTime FromString(string expression) =>
         new(IsStringExpression: true, StringExpression: expression, Timestamp: default);

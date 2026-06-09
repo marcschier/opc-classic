@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -16,8 +16,7 @@ namespace Opc.Classic;
 /// for this reason; <see cref="Connect"/> remains an opt-in for unhardened
 /// legacy targets.
 /// </remarks>
-public enum OpcProtectionLevel
-{
+public enum OpcProtectionLevel {
     /// <summary>
     /// Default level — let the runtime choose. Maps to <see cref="Integrity"/>
     /// when used as the <see cref="OpcConnectData.ProtectionLevel"/> default.

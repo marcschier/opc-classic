@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -9,8 +9,7 @@ namespace Opc.Classic.Xml;
 /// Server state codes from the OPC XML-DA 1.0 spec (<c>serverState</c>
 /// element in <c>GetStatusResponse</c>).
 /// </summary>
-public enum XmlDaServerState
-{
+public enum XmlDaServerState {
     /// <summary><c>running</c> — server is operating normally.</summary>
     Running = 0,
 

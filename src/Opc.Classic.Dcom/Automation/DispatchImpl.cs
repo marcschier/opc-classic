@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: MIT
+﻿// SPDX-License-Identifier: MIT
 
 
 using Opc.Classic.Dcom.Common;
@@ -12,7 +12,8 @@ using System.Linq;
 
 #pragma warning disable MA0051 // OLE Automation marshaling methods intentionally mirror wire structures.
 
-namespace Opc.Classic.Dcom.Automation; 
+namespace Opc.Classic.Dcom.Automation;
+
 /// <summary>
 /// Dispatch implementation
 /// </summary>

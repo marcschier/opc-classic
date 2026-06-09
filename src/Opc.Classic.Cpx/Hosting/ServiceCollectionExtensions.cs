@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -12,13 +12,11 @@ using Opc.Classic.Da.Hosting;
 namespace Opc.Classic.Cpx.Hosting;
 
 /// <summary>Service registration helpers for CPX-enabled managed DA hosts.</summary>
-public static class ServiceCollectionExtensions
-{
+public static class ServiceCollectionExtensions {
     /// <summary>Registers CPX address-space and item-property decorators.</summary>
     public static IServiceCollection AddOpcCpxAddressSpace(
         this IServiceCollection services,
-        Action<OpcCpxOptions> configure)
-    {
+        Action<OpcCpxOptions> configure) {
         ArgumentNullException.ThrowIfNull(services);
         ArgumentNullException.ThrowIfNull(configure);
 
@@ -32,11 +30,9 @@ public static class ServiceCollectionExtensions
         return services;
     }
 
-    private static void DecorateAddressSpace(IServiceCollection services)
-    {
+    private static void DecorateAddressSpace(IServiceCollection services) {
         var index = FindLast(services, typeof(IOpcAddressSpace));
-        if (index < 0)
-        {
+        if (index < 0) {
             services.AddSingleton<IOpcAddressSpace>(static provider =>
                 new OpcCpxAddressSpace(new FlatHierarchicalNamespace(), provider.GetRequiredService<OpcCpxOptions>()));
             return;
@@ -51,11 +47,9 @@ public static class ServiceCollectionExtensions
             descriptor.Lifetime);
     }
 
-    private static void DecorateItemPropertyProvider(IServiceCollection services)
-    {
+    private static void DecorateItemPropertyProvider(IServiceCollection services) {
         var index = FindLast(services, typeof(IOpcItemPropertyProvider));
-        if (index < 0)
-        {
+        if (index < 0) {
             services.AddSingleton<IOpcItemPropertyProvider>(static provider =>
                 new OpcCpxItemProperties(provider.GetRequiredService<OpcCpxOptions>()));
             return;
@@ -70,12 +64,9 @@ public static class ServiceCollectionExtensions
             descriptor.Lifetime);
     }
 
-    private static int FindLast(IServiceCollection services, Type serviceType)
-    {
-        for (var i = services.Count - 1; i >= 0; i--)
-        {
-            if (services[i].ServiceType == serviceType)
-            {
+    private static int FindLast(IServiceCollection services, Type serviceType) {
+        for (var i = services.Count - 1; i >= 0; i--) {
+            if (services[i].ServiceType == serviceType) {
                 return i;
             }
         }
@@ -83,21 +74,17 @@ public static class ServiceCollectionExtensions
         return -1;
     }
 
-    private static object CreateOriginalService(IServiceProvider provider, ServiceDescriptor descriptor)
-    {
-        if (descriptor.ImplementationInstance is not null)
-        {
+    private static object CreateOriginalService(IServiceProvider provider, ServiceDescriptor descriptor) {
+        if (descriptor.ImplementationInstance is not null) {
             return descriptor.ImplementationInstance;
         }
 
-        if (descriptor.ImplementationFactory is not null)
-        {
+        if (descriptor.ImplementationFactory is not null) {
             return descriptor.ImplementationFactory(provider)
                 ?? throw new InvalidOperationException("The decorated service factory returned null.");
         }
 
-        if (descriptor.ImplementationType is not null)
-        {
+        if (descriptor.ImplementationType is not null) {
             return ActivatorUtilities.CreateInstance(provider, descriptor.ImplementationType);
         }
 

@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -10,11 +10,9 @@ using TUnit.Core;
 
 namespace Opc.Classic.Dcom.Smb.Tests;
 
-public sealed class Smb2SignerTests
-{
+public sealed class Smb2SignerTests {
     [Test]
-    public async Task HmacSha256_Smb202KnownAnswer_TruncatesTo16Bytes()
-    {
+    public async Task HmacSha256_Smb202KnownAnswer_TruncatesTo16Bytes() {
         byte[] sessionKey = Convert.FromHexString("000102030405060708090A0B0C0D0E0F");
         byte[] message = CreateSignedTreeConnectSkeleton();
         byte[] expected = Convert.FromHexString("D5ED1480CCC1569BD4A4FDE120192EF7");
@@ -27,8 +25,7 @@ public sealed class Smb2SignerTests
     }
 
     [Test]
-    public async Task AesCmac_NistSp80038BKnownAnswer_Matches16ByteTag()
-    {
+    public async Task AesCmac_NistSp80038BKnownAnswer_Matches16ByteTag() {
         byte[] key = Convert.FromHexString("2B7E151628AED2A6ABF7158809CF4F3C");
         byte[] message = Convert.FromHexString("6BC1BEE22E409F96E93D7E117393172A");
         byte[] expected = Convert.FromHexString("070A16B46B4D4144F79BDD9DD04A287C");
@@ -40,8 +37,7 @@ public sealed class Smb2SignerTests
     }
 
     [Test]
-    public async Task Smb3Kdf_Smb300KnownAnswer_DerivesSigningKey()
-    {
+    public async Task Smb3Kdf_Smb300KnownAnswer_DerivesSigningKey() {
         byte[] sessionKey = Convert.FromHexString("000102030405060708090A0B0C0D0E0F");
         byte[] expected = Convert.FromHexString("D3AE02925B058C68B16D609099D64D16");
 
@@ -51,8 +47,7 @@ public sealed class Smb2SignerTests
     }
 
     [Test]
-    public async Task SignThenVerify_RoundTrips()
-    {
+    public async Task SignThenVerify_RoundTrips() {
         byte[] sessionKey = Convert.FromHexString("101112131415161718191A1B1C1D1E1F");
         byte[] message = CreateSignedTreeConnectSkeleton();
         var signer = new Smb2Signer(sessionKey, Smb2SigningAlgorithm.HmacSha256);
@@ -64,8 +59,7 @@ public sealed class Smb2SignerTests
     }
 
     [Test]
-    public async Task Verify_RejectsTamperedMessage()
-    {
+    public async Task Verify_RejectsTamperedMessage() {
         byte[] sessionKey = Convert.FromHexString("202122232425262728292A2B2C2D2E2F");
         byte[] message = CreateSignedTreeConnectSkeleton();
         var signer = new Smb2Signer(sessionKey, Smb2SigningAlgorithm.HmacSha256);
@@ -77,8 +71,7 @@ public sealed class Smb2SignerTests
     }
 
     [Test]
-    public async Task Verify_RejectsWrongKey()
-    {
+    public async Task Verify_RejectsWrongKey() {
         byte[] signingKey = Convert.FromHexString("303132333435363738393A3B3C3D3E3F");
         byte[] verifyingKey = Convert.FromHexString("404142434445464748494A4B4C4D4E4F");
         byte[] message = CreateSignedTreeConnectSkeleton();
@@ -89,8 +82,7 @@ public sealed class Smb2SignerTests
         await Assert.That(verifier.VerifySignature(message)).IsFalse();
     }
 
-    private static byte[] CreateSignedTreeConnectSkeleton()
-    {
+    private static byte[] CreateSignedTreeConnectSkeleton() {
         byte[] message = new byte[64 + 8];
         var header = new Smb2PacketHeader(
             CreditCharge: 1,

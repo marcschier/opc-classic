@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: MIT
+﻿// SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 
 using Microsoft.Extensions.Logging;
@@ -8,8 +8,7 @@ using Opc.Classic.Dcom;
 
 namespace Opc.Classic.Samples.DaServer;
 
-public sealed class SampleDaServer : IOpcDaServer
-{
+public sealed class SampleDaServer : IOpcDaServer {
     private static readonly Action<ILogger, Exception?> GetStatusMessage = LoggerMessage.Define(
         LogLevel.Information,
         new EventId(1, nameof(GetStatusAsync)),
@@ -30,18 +29,15 @@ public sealed class SampleDaServer : IOpcDaServer
     private readonly ILogger<SampleDaServer> _logger;
     private readonly TagTree _tags;
 
-    public SampleDaServer(TagTree tags, ILogger<SampleDaServer> logger)
-    {
+    public SampleDaServer(TagTree tags, ILogger<SampleDaServer> logger) {
         _tags = tags ?? throw new ArgumentNullException(nameof(tags));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
-    public Task<OpcServerStatus> GetStatusAsync(CancellationToken cancellationToken = default)
-    {
+    public Task<OpcServerStatus> GetStatusAsync(CancellationToken cancellationToken = default) {
         GetStatusMessage(_logger, null);
         var now = DateTimeOffset.UtcNow;
-        var status = new OpcServerStatus
-        {
+        var status = new OpcServerStatus {
             Spec = OpcStatusSpec.Da,
             StartTime = StartTime,
             CurrentTime = now,
@@ -62,8 +58,7 @@ public sealed class SampleDaServer : IOpcDaServer
         int requestedUpdateRate,
         int clientHandle,
         int localeId,
-        CancellationToken cancellationToken = default)
-    {
+        CancellationToken cancellationToken = default) {
         ArgumentNullException.ThrowIfNull(name);
         AddGroupMessage(_logger, name, active, requestedUpdateRate, null);
         return Task.FromResult(unchecked(clientHandle + 0x1000));
@@ -81,8 +76,7 @@ public sealed class SampleDaServer : IOpcDaServer
         out int serverGroupHandle,
         out int revisedUpdateRate,
         out IOpcInterfaceRef group,
-        CancellationToken cancellationToken = default)
-    {
+        CancellationToken cancellationToken = default) {
         _ = timeBias;
         _ = percentDeadband;
         serverGroupHandle = clientGroupHandle + 0x1000;
@@ -94,8 +88,7 @@ public sealed class SampleDaServer : IOpcDaServer
     public Task RemoveGroupAsync(
         int serverGroupHandle,
         bool force,
-        CancellationToken cancellationToken = default)
-    {
+        CancellationToken cancellationToken = default) {
         RemoveGroupMessage(_logger, serverGroupHandle, force, null);
         return Task.CompletedTask;
     }
@@ -103,8 +96,7 @@ public sealed class SampleDaServer : IOpcDaServer
     public Task<string> GetErrorStringAsync(
         int errorCode,
         int localeId,
-        CancellationToken cancellationToken = default)
-    {
+        CancellationToken cancellationToken = default) {
         return Task.FromResult($"Opc.Classic Sample DA error: 0x{errorCode:X8}");
     }
 

@@ -1,6 +1,6 @@
-// SPDX-License-Identifier: MIT
+﻿// SPDX-License-Identifier: MIT
 
-namespace Opc.Classic.Dcom.Registry; 
+namespace Opc.Classic.Dcom.Registry;
 
 /// <summary>
 /// Policy handle for each key.

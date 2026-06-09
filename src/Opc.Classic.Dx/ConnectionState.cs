@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -6,8 +6,7 @@
 namespace Opc.Classic.Dx;
 
 /// <summary>Connection state per OPC DX 1.0 §4.1 (CONNECTION_STATE enum).</summary>
-public enum ConnectionState
-{
+public enum ConnectionState {
     /// <summary>Initial state — connection is configured but not yet connecting.</summary>
     Initial = 0,
     /// <summary>Connecting to the source server.</summary>

@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -8,8 +8,7 @@ using System;
 namespace Opc.Classic;
 
 /// <summary>OPC Data eXchange (DX) specification errors.</summary>
-public sealed class OpcDxException : OpcException
-{
+public sealed class OpcDxException : OpcException {
     public OpcDxException() { }
     public OpcDxException(string message) : base(message) { }
     public OpcDxException(string message, Exception innerException) : base(message, innerException) { }

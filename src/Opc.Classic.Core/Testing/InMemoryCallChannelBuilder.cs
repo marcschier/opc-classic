@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -13,13 +13,11 @@ namespace Opc.Classic.Testing;
 /// <summary>
 /// Builds <see cref="InMemoryCallChannel" /> instances that route calls by interface ID and opnum.
 /// </summary>
-public sealed class InMemoryCallChannelBuilder
-{
+public sealed class InMemoryCallChannelBuilder {
     private const int ENotImpl = unchecked((int)0x80004001u);
 
     private readonly Dictionary<CallKey, InMemoryCallHandler> _handlers = new();
-    private InMemoryCallHandler _fallback = static (_, _, _, cancellationToken) =>
-    {
+    private InMemoryCallHandler _fallback = static (_, _, _, cancellationToken) => {
         cancellationToken.ThrowIfCancellationRequested();
         return Task.FromResult(new NdrCallResult(ENotImpl, ReadOnlyMemory<byte>.Empty));
     };
@@ -32,8 +30,7 @@ public sealed class InMemoryCallChannelBuilder
     /// <param name="handler">The handler to invoke for the matching call.</param>
     /// <returns>This builder instance.</returns>
     /// <exception cref="ArgumentNullException"><paramref name="handler" /> is <see langword="null" />.</exception>
-    public InMemoryCallChannelBuilder Register(Guid interfaceId, int opnum, InMemoryCallHandler handler)
-    {
+    public InMemoryCallChannelBuilder Register(Guid interfaceId, int opnum, InMemoryCallHandler handler) {
         ArgumentNullException.ThrowIfNull(handler);
 
         _handlers[new CallKey(interfaceId, opnum)] = handler;
@@ -46,8 +43,7 @@ public sealed class InMemoryCallChannelBuilder
     /// <param name="handler">The fallback handler.</param>
     /// <returns>This builder instance.</returns>
     /// <exception cref="ArgumentNullException"><paramref name="handler" /> is <see langword="null" />.</exception>
-    public InMemoryCallChannelBuilder WithFallback(InMemoryCallHandler handler)
-    {
+    public InMemoryCallChannelBuilder WithFallback(InMemoryCallHandler handler) {
         ArgumentNullException.ThrowIfNull(handler);
 
         _fallback = handler;
@@ -59,10 +55,8 @@ public sealed class InMemoryCallChannelBuilder
     /// </summary>
     /// <param name="fallbackResult">The fallback result to return.</param>
     /// <returns>This builder instance.</returns>
-    public InMemoryCallChannelBuilder WithFallback(NdrCallResult fallbackResult)
-    {
-        _fallback = (_, _, _, cancellationToken) =>
-        {
+    public InMemoryCallChannelBuilder WithFallback(NdrCallResult fallbackResult) {
+        _fallback = (_, _, _, cancellationToken) => {
             cancellationToken.ThrowIfCancellationRequested();
             return Task.FromResult(fallbackResult);
         };
@@ -73,15 +67,12 @@ public sealed class InMemoryCallChannelBuilder
     /// Creates an <see cref="InMemoryCallChannel" /> using the current registrations and fallback.
     /// </summary>
     /// <returns>A configured in-memory call channel.</returns>
-    public InMemoryCallChannel Build()
-    {
+    public InMemoryCallChannel Build() {
         var handlers = new Dictionary<CallKey, InMemoryCallHandler>(_handlers);
         InMemoryCallHandler fallback = _fallback;
 
-        return new InMemoryCallChannel((interfaceId, opnum, requestPayload, cancellationToken) =>
-        {
-            if (handlers.TryGetValue(new CallKey(interfaceId, opnum), out InMemoryCallHandler? handler))
-            {
+        return new InMemoryCallChannel((interfaceId, opnum, requestPayload, cancellationToken) => {
+            if (handlers.TryGetValue(new CallKey(interfaceId, opnum), out InMemoryCallHandler? handler)) {
                 return handler(interfaceId, opnum, requestPayload, cancellationToken);
             }
 

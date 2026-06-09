@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -17,8 +17,7 @@ namespace Opc.Classic;
 /// AOT-cleanliness. For hot paths handling large array values, the
 /// SAFEARRAY-specific helpers (forthcoming) bypass per-element boxing.
 /// </remarks>
-public readonly record struct OpcVariant
-{
+public readonly record struct OpcVariant {
     /// <summary>The empty variant (vt = VT_EMPTY).</summary>
     public static OpcVariant Empty { get; } = new(VarType.VT_EMPTY, null);
 
@@ -26,8 +25,7 @@ public readonly record struct OpcVariant
     public static OpcVariant Null { get; } = new(VarType.VT_NULL, null);
 
     /// <summary>Constructs a variant with the given type and (boxed) value.</summary>
-    public OpcVariant(VarType type, object? boxed)
-    {
+    public OpcVariant(VarType type, object? boxed) {
         Type = type;
         Boxed = boxed;
     }
@@ -103,8 +101,7 @@ public readonly record struct OpcVariant
         new((VarType)(((ushort)baseType & ~(ushort)VarType.VT_BYREF) | (ushort)VarType.VT_BYREF), boxed);
 
     /// <summary>Creates a VT_RECORD variant for a registered record layout.</summary>
-    public static OpcVariant FromRecord(OpcRecordValue record)
-    {
+    public static OpcVariant FromRecord(OpcRecordValue record) {
         ArgumentNullException.ThrowIfNull(record);
         return new OpcVariant(VarType.VT_RECORD, record);
     }
@@ -114,8 +111,7 @@ public readonly record struct OpcVariant
     /// OR'd with the SAFEARRAY's element type, and the boxed value is the
     /// <see cref="OpcSafeArray"/> itself.
     /// </summary>
-    public static OpcVariant FromSafeArray(OpcSafeArray array)
-    {
+    public static OpcVariant FromSafeArray(OpcSafeArray array) {
         ArgumentNullException.ThrowIfNull(array);
         return new OpcVariant(
             (VarType)((ushort)array.ElementType | (ushort)VarType.VT_ARRAY),

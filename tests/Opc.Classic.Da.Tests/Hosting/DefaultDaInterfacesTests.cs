@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -18,11 +18,9 @@ namespace Opc.Classic.Da.Tests.Hosting;
 /// every conformant DA server presents the interface set even when the
 /// user's IOpcDaServer doesn't explicitly implement them.
 /// </summary>
-public sealed class DefaultDaInterfacesTests
-{
+public sealed class DefaultDaInterfacesTests {
     [Test]
-    public async Task DefaultBrowseServerAddressSpace_QueryOrganization_returns_flat()
-    {
+    public async Task DefaultBrowseServerAddressSpace_QueryOrganization_returns_flat() {
         var browse = new DefaultBrowseServerAddressSpace();
 
         int organization = await browse.QueryOrganizationAsync(TestContext.Current!.CancellationToken);
@@ -31,8 +29,7 @@ public sealed class DefaultDaInterfacesTests
     }
 
     [Test]
-    public async Task DefaultBrowseServerAddressSpace_GetItemID_returns_input()
-    {
+    public async Task DefaultBrowseServerAddressSpace_GetItemID_returns_input() {
         var browse = new DefaultBrowseServerAddressSpace();
 
         string itemId = await browse.GetItemIdAsync("Tag.A", TestContext.Current!.CancellationToken);
@@ -41,8 +38,7 @@ public sealed class DefaultDaInterfacesTests
     }
 
     [Test]
-    public async Task DefaultBrowseServerAddressSpace_ChangeBrowsePosition_throws_NotSupported()
-    {
+    public async Task DefaultBrowseServerAddressSpace_ChangeBrowsePosition_throws_NotSupported() {
         var browse = new DefaultBrowseServerAddressSpace();
 
         OpcException? ex = await Assert.That(async () =>
@@ -54,8 +50,7 @@ public sealed class DefaultDaInterfacesTests
     }
 
     [Test]
-    public async Task DefaultItemProperties_QueryAvailableProperties_returns_OPC_standard_set()
-    {
+    public async Task DefaultItemProperties_QueryAvailableProperties_returns_OPC_standard_set() {
         var props = new DefaultItemProperties();
 
         await props.QueryAvailablePropertiesAsync(
@@ -72,8 +67,7 @@ public sealed class DefaultDaInterfacesTests
     }
 
     [Test]
-    public async Task DefaultItemProperties_GetItemProperties_returns_OPC_E_INVALID_PID()
-    {
+    public async Task DefaultItemProperties_GetItemProperties_returns_OPC_E_INVALID_PID() {
         var props = new DefaultItemProperties();
         int[] requestedIds = new[] { 100, 101, 102 };
 
@@ -90,8 +84,7 @@ public sealed class DefaultDaInterfacesTests
     }
 
     [Test]
-    public async Task DefaultBrowse_GetProperties_returns_one_entry_per_item()
-    {
+    public async Task DefaultBrowse_GetProperties_returns_one_entry_per_item() {
         var browse = new DefaultBrowse();
         string[] itemIds = new[] { "Tag.A", "Tag.B" };
 
@@ -106,8 +99,7 @@ public sealed class DefaultDaInterfacesTests
     }
 
     [Test]
-    public async Task DefaultBrowse_Browse_returns_no_elements()
-    {
+    public async Task DefaultBrowse_Browse_returns_no_elements() {
         var browse = new DefaultBrowse();
         string? continuation = null;
 
@@ -130,8 +122,7 @@ public sealed class DefaultDaInterfacesTests
     }
 
     [Test]
-    public async Task DefaultItemDeadbandMgt_SetItemDeadband_returns_DEADBANDNOTSUPPORTED_per_handle()
-    {
+    public async Task DefaultItemDeadbandMgt_SetItemDeadband_returns_DEADBANDNOTSUPPORTED_per_handle() {
         var d = new DefaultItemDeadbandMgt();
         int[] handles = new[] { 1, 2, 3 };
         float[] deadbands = new[] { 0.5f, 1.0f, 2.0f };
@@ -143,8 +134,7 @@ public sealed class DefaultDaInterfacesTests
     }
 
     [Test]
-    public async Task DefaultItemSamplingMgt_SetItemSamplingRate_returns_RATENOTSET_per_handle()
-    {
+    public async Task DefaultItemSamplingMgt_SetItemSamplingRate_returns_RATENOTSET_per_handle() {
         var s = new DefaultItemSamplingMgt();
         int[] handles = new[] { 1, 2 };
         int[] rates = new[] { 100, 200 };
@@ -161,8 +151,7 @@ public sealed class DefaultDaInterfacesTests
     }
 
     [Test]
-    public async Task DefaultItemSamplingMgt_SetItemBufferEnable_returns_NOBUFFERING_per_handle()
-    {
+    public async Task DefaultItemSamplingMgt_SetItemBufferEnable_returns_NOBUFFERING_per_handle() {
         var s = new DefaultItemSamplingMgt();
         int[] handles = new[] { 1 };
         bool[] enabled = new[] { true };

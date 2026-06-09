@@ -1,6 +1,7 @@
-// SPDX-License-Identifier: MIT
+﻿// SPDX-License-Identifier: MIT
 
-namespace Opc.Classic.Dcom.Rpc.Core; 
+namespace Opc.Classic.Dcom.Rpc.Core;
+
 /// <summary>
 /// Presentation result code
 /// </summary>

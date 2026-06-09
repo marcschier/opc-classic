@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -24,11 +24,9 @@ using TUnit.Core;
 
 namespace Opc.Classic.Dcom.Tests.Transport;
 
-public sealed class NcacnNpTransportTests
-{
+public sealed class NcacnNpTransportTests {
     [Test]
-    public async Task ConnectAsync_opens_pipe_and_round_trips_payload()
-    {
+    public async Task ConnectAsync_opens_pipe_and_round_trips_payload() {
         var mock = CreateOpenPipeServer();
         byte[] request = CreateRpcPdu(0x31, 0x32, 0x33);
         byte[] response = CreateRpcPdu(0x41, 0x42, 0x43, 0x44);
@@ -53,8 +51,7 @@ public sealed class NcacnNpTransportTests
     }
 
     [Test]
-    public async Task LegacyRpcTransport_uses_smb2_adapter()
-    {
+    public async Task LegacyRpcTransport_uses_smb2_adapter() {
         var mock = CreateOpenPipeServer();
         byte[] request = CreateRpcPdu(0x55, 0x56);
         byte[] response = CreateRpcPdu(0x65, 0x66, 0x67);
@@ -81,8 +78,7 @@ public sealed class NcacnNpTransportTests
     }
 
     [Test]
-    public async Task ConnectAsync_propagates_smb2_message_quota()
-    {
+    public async Task ConnectAsync_propagates_smb2_message_quota() {
         var mock = CreateOpenPipeServer();
         mock.OnStatus(Smb2Command.Close);
         mock.OnStatus(Smb2Command.TreeDisconnect);
@@ -90,8 +86,7 @@ public sealed class NcacnNpTransportTests
         var properties = new PropertyBag();
         properties.SetProperty("rpc.maxSmb2MessageSize", 4096);
         int capturedQuota = 0;
-        Smb2TransportConnector connector = (host, port, maxSmb2MessageSize, cancellationToken) =>
-        {
+        Smb2TransportConnector connector = (host, port, maxSmb2MessageSize, cancellationToken) => {
             _ = host;
             _ = port;
             _ = cancellationToken;
@@ -111,14 +106,12 @@ public sealed class NcacnNpTransportTests
     [Arguments("\\PIPE\\winreg")]
     [Arguments("\\pipe\\winreg")]
     [Arguments("\\PIPE\\\\winreg")]
-    public async Task NormalizePipeName_accepts_pipe_prefix_variants(string endpoint)
-    {
+    public async Task NormalizePipeName_accepts_pipe_prefix_variants(string endpoint) {
         await Assert.That(NcacnNpEndPoint.NormalizePipeName(endpoint)).IsEqualTo("winreg");
     }
 
     [Test]
-    public async Task DisposeAsync_closes_pipe_tree_session_and_transport()
-    {
+    public async Task DisposeAsync_closes_pipe_tree_session_and_transport() {
         var mock = CreateOpenPipeServer();
         mock.OnStatus(Smb2Command.Close);
         mock.OnStatus(Smb2Command.TreeDisconnect);
@@ -133,8 +126,7 @@ public sealed class NcacnNpTransportTests
         await Assert.That(mock.SentCommands.Contains(Smb2Command.Logoff)).IsTrue();
     }
 
-    private static async ValueTask<IAsyncTransport> ConnectAsync(MockSmb2Transport mock, string pipeEndpoint)
-    {
+    private static async ValueTask<IAsyncTransport> ConnectAsync(MockSmb2Transport mock, string pipeEndpoint) {
         var factory = new NcacnNpTransportFactory(
             NoOpAuthContext.Instance,
             transportConnector: (_, _, _, _) => Task.FromResult<ISmb2Transport>(mock));
@@ -143,8 +135,7 @@ public sealed class NcacnNpTransportTests
             TestContext.Current!.CancellationToken);
     }
 
-    private static MockSmb2Transport CreateOpenPipeServer()
-    {
+    private static MockSmb2Transport CreateOpenPipeServer() {
         var mock = new MockSmb2Transport();
         mock.OnNegotiate();
         mock.OnSessionSetupSuccess(sessionId: 0x1122334455667788UL);
@@ -155,8 +146,7 @@ public sealed class NcacnNpTransportTests
         return mock;
     }
 
-    private static byte[] CreateRpcPdu(params byte[] body)
-    {
+    private static byte[] CreateRpcPdu(params byte[] body) {
         byte[] pdu = new byte[4 + body.Length];
         pdu[0] = 5;
         pdu[1] = 0;
@@ -166,8 +156,7 @@ public sealed class NcacnNpTransportTests
         return pdu;
     }
 
-    private sealed class MockSmb2Transport : ISmb2Transport
-    {
+    private sealed class MockSmb2Transport : ISmb2Transport {
         private const int HeaderSize = 64;
         private const uint FlagsServerToRedir = 0x00000001;
 
@@ -183,10 +172,8 @@ public sealed class NcacnNpTransportTests
 
         public bool IsDisposed { get; private set; }
 
-        public void OnNegotiate()
-        {
-            _responders.Enqueue((header, _) =>
-            {
+        public void OnNegotiate() {
+            _responders.Enqueue((header, _) => {
                 byte[] response = CreateResponsePacket(header, 72);
                 int bodyOffset = HeaderSize;
                 BinaryPrimitives.WriteUInt16LittleEndian(response.AsSpan(bodyOffset + 0), 65);
@@ -204,10 +191,8 @@ public sealed class NcacnNpTransportTests
             });
         }
 
-        public void OnSessionSetupSuccess(ulong sessionId)
-        {
-            _responders.Enqueue((header, _) =>
-            {
+        public void OnSessionSetupSuccess(ulong sessionId) {
+            _responders.Enqueue((header, _) => {
                 byte[] response = CreateResponsePacket(header with { SessionId = sessionId }, 16);
                 int bodyOffset = HeaderSize;
                 BinaryPrimitives.WriteUInt16LittleEndian(response.AsSpan(bodyOffset + 0), 9);
@@ -218,10 +203,8 @@ public sealed class NcacnNpTransportTests
             });
         }
 
-        public void OnTreeConnectSuccess(uint treeId)
-        {
-            _responders.Enqueue((header, _) =>
-            {
+        public void OnTreeConnectSuccess(uint treeId) {
+            _responders.Enqueue((header, _) => {
                 byte[] response = CreateResponsePacket(header with { TreeId = treeId }, 16);
                 int bodyOffset = HeaderSize;
                 BinaryPrimitives.WriteUInt16LittleEndian(response.AsSpan(bodyOffset + 0), 16);
@@ -233,10 +216,8 @@ public sealed class NcacnNpTransportTests
             });
         }
 
-        public void OnCreateSuccess(ulong fileIdPersistent, ulong fileIdVolatile)
-        {
-            _responders.Enqueue((header, request) =>
-            {
+        public void OnCreateSuccess(ulong fileIdPersistent, ulong fileIdVolatile) {
+            _responders.Enqueue((header, request) => {
                 int nameOffset = BinaryPrimitives.ReadUInt16LittleEndian(request.AsSpan(HeaderSize + 44));
                 int nameLength = BinaryPrimitives.ReadUInt16LittleEndian(request.AsSpan(HeaderSize + 46));
                 OpenedPipeName = Encoding.Unicode.GetString(request.AsSpan(nameOffset, nameLength));
@@ -250,10 +231,8 @@ public sealed class NcacnNpTransportTests
             });
         }
 
-        public void OnIoctlTransceive(byte[] output)
-        {
-            _responders.Enqueue((header, request) =>
-            {
+        public void OnIoctlTransceive(byte[] output) {
+            _responders.Enqueue((header, request) => {
                 int inputOffset = checked((int)BinaryPrimitives.ReadUInt32LittleEndian(request.AsSpan(HeaderSize + 24)));
                 int inputCount = checked((int)BinaryPrimitives.ReadUInt32LittleEndian(request.AsSpan(HeaderSize + 28)));
                 LastTransceivePayload = request.AsSpan(inputOffset, inputCount).ToArray();
@@ -272,12 +251,9 @@ public sealed class NcacnNpTransportTests
             });
         }
 
-        public void OnStatus(Smb2Command expectedCommand)
-        {
-            _responders.Enqueue((header, _) =>
-            {
-                if (header.Command != expectedCommand)
-                {
+        public void OnStatus(Smb2Command expectedCommand) {
+            _responders.Enqueue((header, _) => {
+                if (header.Command != expectedCommand) {
                     throw new InvalidOperationException($"Expected SMB2 {expectedCommand}, got {header.Command}.");
                 }
 
@@ -287,8 +263,7 @@ public sealed class NcacnNpTransportTests
             });
         }
 
-        public Task SendAsync(ReadOnlyMemory<byte> packet, CancellationToken cancellationToken)
-        {
+        public Task SendAsync(ReadOnlyMemory<byte> packet, CancellationToken cancellationToken) {
             _ = cancellationToken;
             _lastRequestPacket = packet.ToArray();
             _lastRequestHeader = Smb2PacketHeader.Read(packet.Span);
@@ -296,28 +271,23 @@ public sealed class NcacnNpTransportTests
             return Task.CompletedTask;
         }
 
-        public Task<ReadOnlyMemory<byte>> ReceiveAsync(CancellationToken cancellationToken)
-        {
+        public Task<ReadOnlyMemory<byte>> ReceiveAsync(CancellationToken cancellationToken) {
             _ = cancellationToken;
-            if (_responders.Count == 0)
-            {
+            if (_responders.Count == 0) {
                 throw new InvalidOperationException("No queued SMB2 response.");
             }
 
             return Task.FromResult(_responders.Dequeue()(_lastRequestHeader, _lastRequestPacket));
         }
 
-        public ValueTask DisposeAsync()
-        {
+        public ValueTask DisposeAsync() {
             IsDisposed = true;
             return ValueTask.CompletedTask;
         }
 
-        private static byte[] CreateResponsePacket(Smb2PacketHeader requestHeader, int bodyLength)
-        {
+        private static byte[] CreateResponsePacket(Smb2PacketHeader requestHeader, int bodyLength) {
             byte[] response = new byte[HeaderSize + bodyLength];
-            var responseHeader = requestHeader with
-            {
+            var responseHeader = requestHeader with {
                 Status = 0,
                 Flags = FlagsServerToRedir,
             };

@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -37,8 +37,7 @@ namespace Opc.Classic.Hosting.Windows;
 /// both hives, so OPCEnum / OpcTestClient see entries from either path.
 /// </para>
 /// </remarks>
-public static class SampleServerRegistrationCommand
-{
+public static class SampleServerRegistrationCommand {
     /// <summary>
     /// Inspects <paramref name="args"/> for <c>--register</c> /
     /// <c>--unregister</c> and, if present, executes the requested registry
@@ -80,8 +79,7 @@ public static class SampleServerRegistrationCommand
         string[] args,
         OpcClsidRegistration registration,
         IReadOnlyList<OpcComponentCategory> implementedCategories,
-        out int exitCode)
-    {
+        out int exitCode) {
         ArgumentNullException.ThrowIfNull(args);
         ArgumentNullException.ThrowIfNull(registration);
         ArgumentNullException.ThrowIfNull(implementedCategories);
@@ -89,33 +87,28 @@ public static class SampleServerRegistrationCommand
         exitCode = 0;
         bool register = HasFlag(args, "--register");
         bool unregister = HasFlag(args, "--unregister");
-        if (!register && !unregister)
-        {
+        if (!register && !unregister) {
             return false;
         }
 
-        if (register && unregister)
-        {
+        if (register && unregister) {
             Console.Error.WriteLine("Specify only one of --register or --unregister.");
             exitCode = 2;
             return true;
         }
 
-        if (!OperatingSystem.IsWindows())
-        {
+        if (!OperatingSystem.IsWindows()) {
             Console.Error.WriteLine(
                 "COM registration requires Windows; current OS is not supported.");
             exitCode = 3;
             return true;
         }
 
-        try
-        {
+        try {
             ExecuteWindowsRegistration(args, register, registration, implementedCategories);
             return true;
         }
-        catch (ArgumentException ex)
-        {
+        catch (ArgumentException ex) {
             Console.Error.WriteLine(ex.Message);
             exitCode = 4;
             return true;
@@ -127,16 +120,14 @@ public static class SampleServerRegistrationCommand
         string[] args,
         bool register,
         OpcClsidRegistration registration,
-        IReadOnlyList<OpcComponentCategory> implementedCategories)
-    {
+        IReadOnlyList<OpcComponentCategory> implementedCategories) {
         RegistryHive hive = ParseHive(GetFlagValue(args, "--registry-hive"));
         IReadOnlyList<RegistryView>? views = ParseViews(GetFlagValue(args, "--registry-view"));
 
         string viewsDescription = DescribeViews(views);
         string clsidText = registration.Clsid.ToString("B", CultureInfo.InvariantCulture);
 
-        if (register)
-        {
+        if (register) {
             string exePath = Environment.ProcessPath
                 ?? throw new InvalidOperationException(
                     "Environment.ProcessPath is unavailable; cannot resolve executable path for registration.");
@@ -151,8 +142,7 @@ public static class SampleServerRegistrationCommand
             Console.WriteLine(
                 $"Registered {registration.ProgId} ({clsidText}) under {hive}\\Software\\Classes ({viewsDescription}).");
         }
-        else
-        {
+        else {
             WindowsComRegistration.UnregisterLocalServer(
                 registration,
                 hive,
@@ -173,43 +163,33 @@ public static class SampleServerRegistrationCommand
     /// only when this flag is present, so direct console launches don't
     /// pollute the SCM registry.
     /// </summary>
-    public static bool HasEmbeddingFlag(string[] args)
-    {
+    public static bool HasEmbeddingFlag(string[] args) {
         ArgumentNullException.ThrowIfNull(args);
-        foreach (string arg in args)
-        {
+        foreach (string arg in args) {
             if (string.Equals(arg, "-Embedding", StringComparison.OrdinalIgnoreCase)
-                || string.Equals(arg, "/Embedding", StringComparison.OrdinalIgnoreCase))
-            {
+                || string.Equals(arg, "/Embedding", StringComparison.OrdinalIgnoreCase)) {
                 return true;
             }
         }
         return false;
     }
 
-    private static bool HasFlag(string[] args, string flag)
-    {
-        foreach (string arg in args)
-        {
-            if (string.Equals(arg, flag, StringComparison.Ordinal))
-            {
+    private static bool HasFlag(string[] args, string flag) {
+        foreach (string arg in args) {
+            if (string.Equals(arg, flag, StringComparison.Ordinal)) {
                 return true;
             }
-            if (arg.StartsWith(flag + "=", StringComparison.Ordinal))
-            {
+            if (arg.StartsWith(flag + "=", StringComparison.Ordinal)) {
                 return true;
             }
         }
         return false;
     }
 
-    private static string? GetFlagValue(string[] args, string flag)
-    {
+    private static string? GetFlagValue(string[] args, string flag) {
         string prefix = flag + "=";
-        foreach (string arg in args)
-        {
-            if (arg.StartsWith(prefix, StringComparison.Ordinal))
-            {
+        foreach (string arg in args) {
+            if (arg.StartsWith(prefix, StringComparison.Ordinal)) {
                 return arg[prefix.Length..];
             }
         }
@@ -217,8 +197,7 @@ public static class SampleServerRegistrationCommand
     }
 
     [SupportedOSPlatform("windows")]
-    private static RegistryHive ParseHive(string? value) => value?.ToLowerInvariant() switch
-    {
+    private static RegistryHive ParseHive(string? value) => value?.ToLowerInvariant() switch {
         null or "" or "hklm" or "localmachine" => RegistryHive.LocalMachine,
         "hkcu" or "currentuser" => RegistryHive.CurrentUser,
         _ => throw new ArgumentException(
@@ -226,8 +205,7 @@ public static class SampleServerRegistrationCommand
     };
 
     [SupportedOSPlatform("windows")]
-    private static IReadOnlyList<RegistryView>? ParseViews(string? value) => value?.ToLowerInvariant() switch
-    {
+    private static IReadOnlyList<RegistryView>? ParseViews(string? value) => value?.ToLowerInvariant() switch {
         null or "" or "both" or "all" => null,
         "32" or "registry32" => [RegistryView.Registry32],
         "64" or "registry64" => [RegistryView.Registry64],
@@ -236,10 +214,8 @@ public static class SampleServerRegistrationCommand
     };
 
     [SupportedOSPlatform("windows")]
-    private static string DescribeViews(IReadOnlyList<RegistryView>? views)
-    {
-        if (views is null || views.Count == 0)
-        {
+    private static string DescribeViews(IReadOnlyList<RegistryView>? views) {
+        if (views is null || views.Count == 0) {
             return "views: 32+64";
         }
         return "views: " + string.Join('+', views);

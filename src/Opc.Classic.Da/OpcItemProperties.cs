@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -13,16 +13,13 @@ namespace Opc.Classic.Da;
 /// </summary>
 /// <param name="ErrorId">HRESULT — 0 on success; nonzero when the item-level property lookup failed.</param>
 /// <param name="Properties">Per-property results; empty when no properties were returned.</param>
-public sealed record OpcItemProperties(int ErrorId, OpcItemPropertyResult[] Properties)
-{
+public sealed record OpcItemProperties(int ErrorId, OpcItemPropertyResult[] Properties) {
     private OpcItemPropertyResult[] _properties = Properties ?? throw new ArgumentNullException(nameof(Properties));
 
     /// <summary>Per-property results; empty when no properties were returned.</summary>
-    public OpcItemPropertyResult[] Properties
-    {
+    public OpcItemPropertyResult[] Properties {
         get => _properties;
-        init
-        {
+        init {
             ArgumentNullException.ThrowIfNull(value);
             _properties = value;
         }

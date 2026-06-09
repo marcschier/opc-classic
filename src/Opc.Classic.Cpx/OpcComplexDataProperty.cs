@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -8,8 +8,7 @@ namespace Opc.Classic.Cpx;
 /// <summary>
 /// OPC Complex Data item property identifiers defined by CPX 1.00 §3.3.
 /// </summary>
-public static class OpcComplexDataProperty
-{
+public static class OpcComplexDataProperty {
     /// <summary>600 — identifies the type system, for example <c>XMLSchema</c> or <c>OPCBinary</c>.</summary>
     public const int TypeSystemId = 600;
 

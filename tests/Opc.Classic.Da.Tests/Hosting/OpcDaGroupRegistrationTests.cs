@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -23,11 +23,9 @@ namespace Opc.Classic.Da.Tests.Hosting;
 /// <see cref="IOpcInterfaceRef"/> carrying the assigned IPID. The mirror of
 /// what <c>CttDaServer</c> does in the sample.
 /// </summary>
-public sealed class OpcDaGroupRegistrationTests
-{
+public sealed class OpcDaGroupRegistrationTests {
     [Test]
-    public async Task AddGroup_registers_group_with_OpcObjectRegistry()
-    {
+    public async Task AddGroup_registers_group_with_OpcObjectRegistry() {
         var registry = new OpcObjectRegistry();
         var server = new GroupTrackingServer(registry);
 
@@ -55,8 +53,7 @@ public sealed class OpcDaGroupRegistrationTests
     }
 
     [Test]
-    public async Task RemoveGroup_unregisters_from_OpcObjectRegistry()
-    {
+    public async Task RemoveGroup_unregisters_from_OpcObjectRegistry() {
         var registry = new OpcObjectRegistry();
         var server = new GroupTrackingServer(registry);
 
@@ -73,8 +70,7 @@ public sealed class OpcDaGroupRegistrationTests
     }
 
     [Test]
-    public async Task GetStatusAsync_GroupCount_reflects_added_and_removed_groups()
-    {
+    public async Task GetStatusAsync_GroupCount_reflects_added_and_removed_groups() {
         var registry = new OpcObjectRegistry();
         var server = new GroupTrackingServer(registry);
 
@@ -108,8 +104,7 @@ public sealed class OpcDaGroupRegistrationTests
     /// the samples assembly which has no test project; we mirror its
     /// AddGroup/RemoveGroup wireup pattern here to lock the architecture.)
     /// </summary>
-    private sealed class GroupTrackingServer : IOpcDaServer
-    {
+    private sealed class GroupTrackingServer : IOpcDaServer {
         private readonly OpcObjectRegistry _registry;
         private readonly Dictionary<int, (OpcDaGroup Group, Guid Ipid)> _groups = new();
         private int _nextServerHandle = 1000;
@@ -117,8 +112,7 @@ public sealed class OpcDaGroupRegistrationTests
         public GroupTrackingServer(OpcObjectRegistry registry) { _registry = registry; }
 
         public Task<OpcServerStatus> GetStatusAsync(CancellationToken cancellationToken = default) =>
-            Task.FromResult(new OpcServerStatus
-            {
+            Task.FromResult(new OpcServerStatus {
                 Spec = OpcStatusSpec.Da,
                 StartTime = DateTimeOffset.UnixEpoch,
                 CurrentTime = DateTimeOffset.UnixEpoch,
@@ -136,15 +130,13 @@ public sealed class OpcDaGroupRegistrationTests
             string name, bool active, int requestedUpdateRate, int clientGroupHandle,
             int timeBias, float percentDeadband, int localeId, Guid requestedInterfaceId,
             out int serverGroupHandle, out int revisedUpdateRate, out IOpcInterfaceRef group,
-            CancellationToken cancellationToken)
-        {
+            CancellationToken cancellationToken) {
             cancellationToken.ThrowIfCancellationRequested();
             int handle = Interlocked.Increment(ref _nextServerHandle);
             var managedGroup = new OpcDaGroup(name, handle, clientGroupHandle, active,
                 requestedUpdateRate, timeBias, percentDeadband, localeId);
 
-            var dispatchers = new Dictionary<Guid, IOpcServerDispatcher>
-            {
+            var dispatchers = new Dictionary<Guid, IOpcServerDispatcher> {
                 [IOPCGroupStateMgt.InterfaceId] = new IOPCGroupStateMgtServerDispatcher(managedGroup),
                 [IOPCGroupStateMgt2.InterfaceId] = new IOPCGroupStateMgt2ServerDispatcher(managedGroup),
             };
@@ -165,10 +157,8 @@ public sealed class OpcDaGroupRegistrationTests
             return Task.CompletedTask;
         }
 
-        public Task RemoveGroupAsync(int serverGroupHandle, bool force, CancellationToken cancellationToken = default)
-        {
-            if (_groups.TryGetValue(serverGroupHandle, out var entry))
-            {
+        public Task RemoveGroupAsync(int serverGroupHandle, bool force, CancellationToken cancellationToken = default) {
+            if (_groups.TryGetValue(serverGroupHandle, out var entry)) {
                 _registry.Unregister(entry.Ipid);
                 _groups.Remove(serverGroupHandle);
             }

@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -11,8 +11,7 @@ namespace Opc.Classic.Xml;
 /// The XML-DA value-type discriminator written on the <c>xsi:type</c>
 /// attribute of a <c>&lt;Value&gt;</c> element.
 /// </summary>
-public enum XmlDaValueType
-{
+public enum XmlDaValueType {
     /// <summary>Unknown / unsupported xsi:type — raw text preserved in <see cref="XmlDaValue.RawText"/>.</summary>
     Unknown = 0,
 

@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -12,8 +12,7 @@ namespace Opc.Classic.Hosting;
 /// Contract every per-spec server host (DA, AE, HDA, ...) implements.
 /// The hosting infrastructure manages lifecycle via Microsoft.Extensions.Hosting.IHostedService.
 /// </summary>
-public interface IOpcServerHost
-{
+public interface IOpcServerHost {
     /// <summary>Gets the OPC Classic specification name implemented by this host.</summary>
     string SpecName { get; }
 

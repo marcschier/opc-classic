@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: MIT
+﻿// SPDX-License-Identifier: MIT
 
 using Opc.Classic.Dcom.Common;
 using Opc.Classic.Dcom.Internal.LegacyNdr;
@@ -6,7 +6,8 @@ using SharpCifs.Util.Sharpen;
 using System;
 using System.Collections.Generic;
 
-namespace Opc.Classic.Dcom.Core; 
+namespace Opc.Classic.Dcom.Core;
+
 /// <summary>
 /// This class represents the <code>Union</code> data type.
 /// Its usage is dictated by the discriminant

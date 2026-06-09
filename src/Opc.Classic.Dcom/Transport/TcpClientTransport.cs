@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -32,8 +32,7 @@ namespace Opc.Classic.Dcom.Transport;
 /// to get the full DCOM-over-IP wire path.
 /// </para>
 /// </remarks>
-public sealed class TcpClientTransport : IAsyncTransport, IAsyncDisposable
-{
+public sealed class TcpClientTransport : IAsyncTransport, IAsyncDisposable {
     private readonly TcpClient _client;
     private readonly NetworkStream _stream;
     private int _disposed;
@@ -43,11 +42,9 @@ public sealed class TcpClientTransport : IAsyncTransport, IAsyncDisposable
     /// <see cref="IAsyncTransport"/>. The transport takes ownership of
     /// the client; do not access the client directly after construction.
     /// </summary>
-    public TcpClientTransport(TcpClient client)
-    {
+    public TcpClientTransport(TcpClient client) {
         ArgumentNullException.ThrowIfNull(client);
-        if (!client.Connected)
-        {
+        if (!client.Connected) {
             throw new ArgumentException("TcpClient must be connected before constructing the transport.", nameof(client));
         }
         _client = client;
@@ -71,10 +68,8 @@ public sealed class TcpClientTransport : IAsyncTransport, IAsyncDisposable
         await Output.FlushAsync(cancellationToken).ConfigureAwait(false);
 
     /// <inheritdoc />
-    public async ValueTask DisposeAsync()
-    {
-        if (Interlocked.Exchange(ref _disposed, 1) != 0)
-        {
+    public async ValueTask DisposeAsync() {
+        if (Interlocked.Exchange(ref _disposed, 1) != 0) {
             return;
         }
         await Input.CompleteAsync().ConfigureAwait(false);
@@ -95,21 +90,17 @@ public sealed class TcpClientTransport : IAsyncTransport, IAsyncDisposable
     public static async Task<TcpClientTransport> ConnectAsync(
         string host,
         int port,
-        CancellationToken cancellationToken = default)
-    {
+        CancellationToken cancellationToken = default) {
         ArgumentException.ThrowIfNullOrEmpty(host);
-        if (port < 1 || port > 65535)
-        {
+        if (port < 1 || port > 65535) {
             throw new ArgumentOutOfRangeException(nameof(port), port, "TCP port must be in the range [1, 65535].");
         }
         var client = new TcpClient();
-        try
-        {
+        try {
             await client.ConnectAsync(host, port, cancellationToken).ConfigureAwait(false);
             return new TcpClientTransport(client);
         }
-        catch
-        {
+        catch {
             client.Dispose();
             throw;
         }

@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -16,11 +16,9 @@ using TUnit.Assertions.AssertConditions.Throws;
 
 namespace Opc.Classic.Mcp.Tests;
 
-public sealed class DaDataCallbackSinkTests
-{
+public sealed class DaDataCallbackSinkTests {
     [Test]
-    public async Task OnDataChange_enqueues_batch_with_per_item_payload()
-    {
+    public async Task OnDataChange_enqueues_batch_with_per_item_payload() {
         using var sink = new DaDataCallbackSink();
 
         await sink.OnDataChangeAsync(
@@ -47,8 +45,7 @@ public sealed class DaDataCallbackSinkTests
     }
 
     [Test]
-    public async Task OnReadComplete_enqueues_and_increments_its_own_counter()
-    {
+    public async Task OnReadComplete_enqueues_and_increments_its_own_counter() {
         using var sink = new DaDataCallbackSink();
 
         await sink.OnReadCompleteAsync(
@@ -69,8 +66,7 @@ public sealed class DaDataCallbackSinkTests
     }
 
     [Test]
-    public async Task OnWriteComplete_and_OnCancelComplete_increment_counters_but_do_not_enqueue()
-    {
+    public async Task OnWriteComplete_and_OnCancelComplete_increment_counters_but_do_not_enqueue() {
         using var sink = new DaDataCallbackSink();
 
         await sink.OnWriteCompleteAsync(
@@ -92,8 +88,7 @@ public sealed class DaDataCallbackSinkTests
     }
 
     [Test]
-    public async Task Mismatched_array_lengths_throw_argument_exception()
-    {
+    public async Task Mismatched_array_lengths_throw_argument_exception() {
         using var sink = new DaDataCallbackSink();
 
         await Assert.ThrowsAsync<ArgumentException>(async () => await sink.OnDataChangeAsync(
@@ -117,8 +112,7 @@ public sealed class DaDataCallbackSinkTests
     }
 
     [Test]
-    public async Task DrainItems_with_max_caps_returned_items_and_requeues_remainder()
-    {
+    public async Task DrainItems_with_max_caps_returned_items_and_requeues_remainder() {
         using var sink = new DaDataCallbackSink();
 
         long ts = DateTimeOffset.UtcNow.ToFileTime();
@@ -144,12 +138,10 @@ public sealed class DaDataCallbackSinkTests
     }
 
     [Test]
-    public async Task DrainItems_returns_items_across_multiple_batches_in_fifo_order()
-    {
+    public async Task DrainItems_returns_items_across_multiple_batches_in_fifo_order() {
         using var sink = new DaDataCallbackSink();
         long ts = DateTimeOffset.UtcNow.ToFileTime();
-        for (int batch = 0; batch < 3; batch++)
-        {
+        for (int batch = 0; batch < 3; batch++) {
             await sink.OnDataChangeAsync(
                 transactionId: batch, groupHandle: 7, masterQuality: 0, masterError: 0,
                 clientHandles: [batch * 10 + 1, batch * 10 + 2],
@@ -171,8 +163,7 @@ public sealed class DaDataCallbackSinkTests
     }
 
     [Test]
-    public async Task Bounded_queue_drops_oldest_when_capacity_exceeded()
-    {
+    public async Task Bounded_queue_drops_oldest_when_capacity_exceeded() {
         using var sink = new DaDataCallbackSink(capacity: 2, clock: null);
         long ts = DateTimeOffset.UtcNow.ToFileTime();
 
@@ -201,16 +192,14 @@ public sealed class DaDataCallbackSinkTests
     }
 
     [Test]
-    public async Task Drain_after_dispose_throws()
-    {
+    public async Task Drain_after_dispose_throws() {
         var sink = new DaDataCallbackSink();
         sink.Dispose();
         await Assert.That(() => { _ = sink.DrainItems(0); }).Throws<ObjectDisposedException>();
     }
 
     [Test]
-    public async Task Enqueue_after_dispose_silently_no_ops()
-    {
+    public async Task Enqueue_after_dispose_silently_no_ops() {
         var sink = new DaDataCallbackSink();
         sink.Dispose();
 
@@ -228,8 +217,7 @@ public sealed class DaDataCallbackSinkTests
     }
 
     [Test]
-    public async Task Timestamp_is_decoded_from_file_time()
-    {
+    public async Task Timestamp_is_decoded_from_file_time() {
         using var sink = new DaDataCallbackSink();
         var expected = new DateTimeOffset(2025, 11, 19, 14, 30, 0, TimeSpan.Zero);
         long fileTime = expected.ToFileTime();

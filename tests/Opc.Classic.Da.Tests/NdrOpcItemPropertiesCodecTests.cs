@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -11,27 +11,23 @@ using TUnit.Core;
 
 namespace Opc.Classic.Da.Tests;
 
-public sealed class NdrOpcItemPropertiesCodecTests
-{
+public sealed class NdrOpcItemPropertiesCodecTests {
     private delegate void NdrWriteAction(ref NdrWriter w);
 
-    private static byte[] WriteOne(NdrWriteAction write, int capacity = 1024)
-    {
+    private static byte[] WriteOne(NdrWriteAction write, int capacity = 1024) {
         var buf = new byte[capacity];
         var w = new NdrWriter(buf);
         write(ref w);
         return buf[..w.Position];
     }
 
-    private static OpcItemProperties ReadOne(byte[] bytes)
-    {
+    private static OpcItemProperties ReadOne(byte[] bytes) {
         var r = new NdrReader(bytes);
         return NdrOpcItemPropertiesCodec.Read(ref r);
     }
 
     [Test]
-    public async Task RoundTrip_ZeroProperties_Success()
-    {
+    public async Task RoundTrip_ZeroProperties_Success() {
         var input = new OpcItemProperties(
             ErrorId: 0,
             Properties: Array.Empty<OpcItemPropertyResult>());
@@ -56,8 +52,7 @@ public sealed class NdrOpcItemPropertiesCodecTests
     }
 
     [Test]
-    public async Task RoundTrip_TwoSuccessProperties()
-    {
+    public async Task RoundTrip_TwoSuccessProperties() {
         var input = new OpcItemProperties(
             ErrorId: 0,
             Properties:
@@ -104,8 +99,7 @@ public sealed class NdrOpcItemPropertiesCodecTests
     }
 
     [Test]
-    public async Task Read_UsesPItemPropertiesConformanceCount_WhenDwNumPropertiesDiffers()
-    {
+    public async Task Read_UsesPItemPropertiesConformanceCount_WhenDwNumPropertiesDiffers() {
         OpcItemPropertyResult property = new(
             DataType: VarType.VT_I4,
             PropertyId: 100,
@@ -113,8 +107,7 @@ public sealed class NdrOpcItemPropertiesCodecTests
             Description: null,
             Value: OpcVariant.FromInt32(88),
             ErrorId: 0);
-        byte[] bytes = WriteOne((ref NdrWriter w) =>
-        {
+        byte[] bytes = WriteOne((ref NdrWriter w) => {
             w.WriteInt32(0);
             w.WriteUInt32(0);
             w.WriteUInt32(1);
@@ -130,8 +123,7 @@ public sealed class NdrOpcItemPropertiesCodecTests
     }
 
     [Test]
-    public async Task RoundTrip_MixedPerElementErrorCodes()
-    {
+    public async Task RoundTrip_MixedPerElementErrorCodes() {
         int invalidPropertyId = unchecked((int)0xC0040203u);
         var input = new OpcItemProperties(
             ErrorId: 0,
@@ -178,8 +170,7 @@ public sealed class NdrOpcItemPropertiesCodecTests
     }
 
     [Test]
-    public async Task RoundTrip_UnknownItemId_WithEmptyProperties()
-    {
+    public async Task RoundTrip_UnknownItemId_WithEmptyProperties() {
         int unknownItemId = unchecked((int)0xC0040007u);
         var input = new OpcItemProperties(
             ErrorId: unknownItemId,

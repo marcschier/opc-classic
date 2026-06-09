@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -10,11 +10,9 @@ using TUnit.Core;
 
 namespace Opc.Classic.Mcp.Capture.Tests;
 
-public sealed class HexFormatBridgeTests
-{
+public sealed class HexFormatBridgeTests {
     [Test]
-    public async Task Constructor_NullOrEmptyArguments_Throw()
-    {
+    public async Task Constructor_NullOrEmptyArguments_Throw() {
         await Assert.That(() => new HexFormatBridge(null!, "tag")).Throws<ArgumentNullException>();
         await Assert.That(() => new HexFormatBridge(string.Empty, "tag")).Throws<ArgumentException>();
         await Assert.That(() => new HexFormatBridge("captures", null!)).Throws<ArgumentNullException>();
@@ -22,11 +20,9 @@ public sealed class HexFormatBridgeTests
     }
 
     [Test]
-    public async Task Write_NullRequestAndResponse_ReturnsNullAndCreatesNoFiles()
-    {
+    public async Task Write_NullRequestAndResponse_ReturnsNullAndCreatesNoFiles() {
         string directory = TestDirectories.CreateUniqueTempDirectory();
-        try
-        {
+        try {
             var bridge = new HexFormatBridge(directory, "context");
 
             string? path = bridge.Write(null, ReadOnlyMemory<byte>.Empty, null, ReadOnlyMemory<byte>.Empty);
@@ -34,23 +30,19 @@ public sealed class HexFormatBridgeTests
             await Assert.That(path).IsNull();
             await Assert.That(Directory.GetFiles(directory, "*.hex").Length).IsEqualTo(0);
         }
-        finally
-        {
+        finally {
             TestDirectories.DeleteIfExists(directory);
         }
     }
 
     [Test]
-    public async Task Write_RequestAndResponse_WritesExpectedFilenameAndContent()
-    {
+    public async Task Write_RequestAndResponse_WritesExpectedFilenameAndContent() {
         string directory = TestDirectories.CreateUniqueTempDirectory();
-        try
-        {
+        try {
             Guid iid = Guid.Parse("11111111-2222-3333-4444-555555555555");
             Guid ipid = Guid.Parse("aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee");
             var timestamp = new DateTimeOffset(2026, 1, 2, 3, 4, 5, 678, TimeSpan.Zero);
-            var request = new DecodedOpcPdu
-            {
+            var request = new DecodedOpcPdu {
                 Timestamp = timestamp,
                 PduType = "request",
                 CallId = 77,
@@ -58,8 +50,7 @@ public sealed class HexFormatBridgeTests
                 ObjectIpid = ipid,
                 Opnum = 12,
             };
-            var response = request with
-            {
+            var response = request with {
                 PduType = "response",
                 Hresult = unchecked((int)0x80004005),
             };
@@ -91,21 +82,17 @@ public sealed class HexFormatBridgeTests
             await Assert.That(content).Contains("## response (3 bytes)");
             await Assert.That(content).Contains("0000: fe dc ba ");
         }
-        finally
-        {
+        finally {
             TestDirectories.DeleteIfExists(directory);
         }
     }
 
     [Test]
-    public async Task Write_ContextTagWithUnsafeCharacters_ReplacesThemWithDashesInFilenameAndBanner()
-    {
+    public async Task Write_ContextTagWithUnsafeCharacters_ReplacesThemWithDashesInFilenameAndBanner() {
         string directory = TestDirectories.CreateUniqueTempDirectory();
-        try
-        {
+        try {
             Guid iid = Guid.Parse("22222222-3333-4444-5555-666666666666");
-            var request = new DecodedOpcPdu
-            {
+            var request = new DecodedOpcPdu {
                 Timestamp = new DateTimeOffset(2026, 1, 2, 3, 4, 5, TimeSpan.Zero),
                 PduType = "request",
                 InterfaceId = iid,
@@ -121,8 +108,7 @@ public sealed class HexFormatBridgeTests
             string content = await File.ReadAllTextAsync(path!, TestContext.Current!.CancellationToken);
             await Assert.That(content).Contains("# context: bad-tag-with-spaces");
         }
-        finally
-        {
+        finally {
             TestDirectories.DeleteIfExists(directory);
         }
     }

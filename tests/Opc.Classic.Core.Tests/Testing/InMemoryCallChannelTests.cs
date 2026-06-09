@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -12,11 +12,9 @@ using TUnit.Core;
 
 namespace Opc.Classic.Tests;
 
-public sealed class InMemoryCallChannelTests
-{
+public sealed class InMemoryCallChannelTests {
     [Test]
-    public async Task InvokeAsync_ForwardsToHandler()
-    {
+    public async Task InvokeAsync_ForwardsToHandler() {
         var expectedInterfaceId = new Guid("39C13A4D-011E-11D0-9675-0020AFD8ADB3");
         byte[] request = [0x01, 0x02, 0x03];
         using var cts = new CancellationTokenSource();
@@ -27,8 +25,7 @@ public sealed class InMemoryCallChannelTests
         byte[] actualPayload = [];
         CancellationToken actualToken = default;
 
-        var channel = new InMemoryCallChannel((interfaceId, opnum, requestPayload, cancellationToken) =>
-        {
+        var channel = new InMemoryCallChannel((interfaceId, opnum, requestPayload, cancellationToken) => {
             called = true;
             actualInterfaceId = interfaceId;
             actualOpnum = opnum;
@@ -49,8 +46,7 @@ public sealed class InMemoryCallChannelTests
     }
 
     [Test]
-    public async Task InvokeAsync_ReturnsHandlerResult()
-    {
+    public async Task InvokeAsync_ReturnsHandlerResult() {
         byte[] responsePayload = [0x10, 0x20, 0x30];
         var expected = new NdrCallResult(unchecked((int)0xC0040007u), responsePayload);
         var channel = new InMemoryCallChannel((_, _, _, _) => Task.FromResult(expected));
@@ -63,20 +59,16 @@ public sealed class InMemoryCallChannelTests
     }
 
     [Test]
-    public async Task InvokeAsync_PropagatesHandlerException()
-    {
-        var channel = new InMemoryCallChannel((_, _, _, _) =>
-        {
+    public async Task InvokeAsync_PropagatesHandlerException() {
+        var channel = new InMemoryCallChannel((_, _, _, _) => {
             throw new TimeoutException("simulated transport timeout");
         });
 
         bool threw = false;
-        try
-        {
+        try {
             await channel.InvokeAsync(Guid.Empty, 1, ReadOnlyMemory<byte>.Empty);
         }
-        catch (TimeoutException)
-        {
+        catch (TimeoutException) {
             threw = true;
         }
 
@@ -84,8 +76,7 @@ public sealed class InMemoryCallChannelTests
     }
 
     [Test]
-    public async Task CallLog_RecordsEachCall()
-    {
+    public async Task CallLog_RecordsEachCall() {
         var channel = new InMemoryCallChannel((_, _, _, _) =>
             Task.FromResult(new NdrCallResult(0, ReadOnlyMemory<byte>.Empty)));
         var firstInterfaceId = new Guid("00000000-0000-0000-0000-000000000001");
@@ -110,11 +101,9 @@ public sealed class InMemoryCallChannelTests
     }
 
     [Test]
-    public async Task CancellationToken_IsObserved()
-    {
+    public async Task CancellationToken_IsObserved() {
         bool handlerCalled = false;
-        var channel = new InMemoryCallChannel((_, _, _, _) =>
-        {
+        var channel = new InMemoryCallChannel((_, _, _, _) => {
             handlerCalled = true;
             return Task.FromResult(new NdrCallResult(0, ReadOnlyMemory<byte>.Empty));
         });
@@ -122,12 +111,10 @@ public sealed class InMemoryCallChannelTests
         await cts.CancelAsync();
 
         bool threw = false;
-        try
-        {
+        try {
             await channel.InvokeAsync(Guid.Empty, 1, ReadOnlyMemory<byte>.Empty, cts.Token);
         }
-        catch (OperationCanceledException)
-        {
+        catch (OperationCanceledException) {
             threw = true;
         }
 
@@ -137,19 +124,16 @@ public sealed class InMemoryCallChannelTests
     }
 
     [Test]
-    public async Task Builder_RegistersPerIidOpnumHandler()
-    {
+    public async Task Builder_RegistersPerIidOpnumHandler() {
         var interfaceId = new Guid("10000000-0000-0000-0000-000000000001");
         int registeredCalls = 0;
         int fallbackCalls = 0;
         var channel = new InMemoryCallChannelBuilder()
-            .Register(interfaceId, 3, (_, _, _, _) =>
-            {
+            .Register(interfaceId, 3, (_, _, _, _) => {
                 registeredCalls++;
                 return Task.FromResult(new NdrCallResult(123, new byte[] { 0xAA }));
             })
-            .WithFallback((_, _, _, _) =>
-            {
+            .WithFallback((_, _, _, _) => {
                 fallbackCalls++;
                 return Task.FromResult(new NdrCallResult(456, new byte[] { 0xBB }));
             })
@@ -167,8 +151,7 @@ public sealed class InMemoryCallChannelTests
     }
 
     [Test]
-    public async Task Builder_FallbackReturnsENotImplByDefault()
-    {
+    public async Task Builder_FallbackReturnsENotImplByDefault() {
         const int eNotImpl = unchecked((int)0x80004001u);
         var channel = new InMemoryCallChannelBuilder().Build();
 
@@ -179,8 +162,7 @@ public sealed class InMemoryCallChannelTests
     }
 
     [Test]
-    public async Task InMemoryCallChannel_SatisfiesICallChannelContract()
-    {
+    public async Task InMemoryCallChannel_SatisfiesICallChannelContract() {
         InMemoryCallChannel channel = new((_, _, _, _) =>
             Task.FromResult(new NdrCallResult(0, ReadOnlyMemory<byte>.Empty)));
 

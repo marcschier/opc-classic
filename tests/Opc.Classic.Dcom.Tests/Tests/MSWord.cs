@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: MIT
+﻿// SPDX-License-Identifier: MIT
 
 namespace Opc.Classic.Dcom.Test {
     using System;
@@ -8,38 +8,33 @@ namespace Opc.Classic.Dcom.Test {
     using Opc.Classic.Dcom;
     using Opc.Classic.Dcom.Common;
 
-    public class MSWord
-    {
+    public class MSWord {
         private readonly ComServer _comStub;
         private IDispatch _dispatch;
         private IComObject _unknown;
 
 
-        public MSWord(string address, string[] args)
-        {
+        public MSWord(string address, string[] args) {
             var session = Session.CreateSession(args[1], args[2], args[3]);
             session.UseSessionSecurity(true);
             _comStub = new ComServer(ProgId.ValueOf("Word.Application"), address, session);
         }
 
 
-        public void StartWord()
-        {
+        public void StartWord() {
             _unknown = _comStub.CreateInstance();
-            _dispatch = (IDispatch) ObjectFactory.NarrowObject(_unknown.QueryInterface(Interfaces.IID_IDispatch));
+            _dispatch = (IDispatch)ObjectFactory.NarrowObject(_unknown.QueryInterface(Interfaces.IID_IDispatch));
         }
 
 
-        public void ShowWord()
-        {
+        public void ShowWord() {
             var dispId = _dispatch.GetIDsOfNames("Visible");
             var variant = new Variant(true);
             _dispatch.Put(dispId, variant);
         }
 
 
-        public void PerformOp()
-        {
+        public void PerformOp() {
             Interop.IsCoClassAutoCollection = true;
 
             Console.WriteLine(_dispatch.Get("Version").ObjectAsString.String);
@@ -47,24 +42,24 @@ namespace Opc.Classic.Dcom.Test {
             var variant = _dispatch.Get("Documents");
 
             Console.WriteLine("Open document...");
-            var documents = (IDispatch) ObjectFactory.NarrowObject(variant.ObjectAsComObject);
+            var documents = (IDispatch)ObjectFactory.NarrowObject(variant.ObjectAsComObject);
             var filePath = new ComString("c:\\temp\\test.doc");
-            var variant2 = documents.CallMethodA("open", new object[] {filePath, Variant.CreateOPTIONAL_PARAM(), Variant.CreateOPTIONAL_PARAM(), Variant.CreateOPTIONAL_PARAM(),Variant.CreateOPTIONAL_PARAM(),Variant.CreateOPTIONAL_PARAM(),Variant.CreateOPTIONAL_PARAM(),Variant.CreateOPTIONAL_PARAM(),Variant.CreateOPTIONAL_PARAM(),Variant.CreateOPTIONAL_PARAM(),Variant.CreateOPTIONAL_PARAM(),Variant.CreateOPTIONAL_PARAM(),Variant.CreateOPTIONAL_PARAM(),Variant.CreateOPTIONAL_PARAM(), Variant.CreateOPTIONAL_PARAM()});
+            var variant2 = documents.CallMethodA("open", new object[] { filePath, Variant.CreateOPTIONAL_PARAM(), Variant.CreateOPTIONAL_PARAM(), Variant.CreateOPTIONAL_PARAM(), Variant.CreateOPTIONAL_PARAM(), Variant.CreateOPTIONAL_PARAM(), Variant.CreateOPTIONAL_PARAM(), Variant.CreateOPTIONAL_PARAM(), Variant.CreateOPTIONAL_PARAM(), Variant.CreateOPTIONAL_PARAM(), Variant.CreateOPTIONAL_PARAM(), Variant.CreateOPTIONAL_PARAM(), Variant.CreateOPTIONAL_PARAM(), Variant.CreateOPTIONAL_PARAM(), Variant.CreateOPTIONAL_PARAM() });
 
             Console.WriteLine("doc opened");
             //10
             Sleep(10);
 
             Console.WriteLine("Get content...");
-            var document = (IDispatch) ObjectFactory.NarrowObject(variant2[0].ObjectAsComObject);
+            var document = (IDispatch)ObjectFactory.NarrowObject(variant2[0].ObjectAsComObject);
             variant = document.Get("Content");
-            var range = (IDispatch) ObjectFactory.NarrowObject(variant.ObjectAsComObject);
+            var range = (IDispatch)ObjectFactory.NarrowObject(variant.ObjectAsComObject);
 
             //10
             Sleep(10);
             Console.WriteLine("Running find...");
             variant = range.Get("Find");
-            var find = (IDispatch) ObjectFactory.NarrowObject(variant.ObjectAsComObject);
+            var find = (IDispatch)ObjectFactory.NarrowObject(variant.ObjectAsComObject);
 
             //2
             Sleep(5);
@@ -72,7 +67,7 @@ namespace Opc.Classic.Dcom.Test {
             Console.WriteLine("Running execute...");
             var findString = new ComString("ow");
             var replaceString = new ComString("igh");
-            find.CallMethodA("Execute", new object[] {findString.VariantByRef, Variant.CreateOPTIONAL_PARAM(), Variant.CreateOPTIONAL_PARAM(), Variant.CreateOPTIONAL_PARAM(), Variant.CreateOPTIONAL_PARAM(), Variant.CreateOPTIONAL_PARAM(), Variant.CreateOPTIONAL_PARAM(), Variant.CreateOPTIONAL_PARAM(), Variant.CreateOPTIONAL_PARAM(), replaceString.VariantByRef, Variant.CreateOPTIONAL_PARAM(), Variant.CreateOPTIONAL_PARAM(), Variant.CreateOPTIONAL_PARAM(), Variant.CreateOPTIONAL_PARAM(), Variant.CreateOPTIONAL_PARAM()});
+            find.CallMethodA("Execute", new object[] { findString.VariantByRef, Variant.CreateOPTIONAL_PARAM(), Variant.CreateOPTIONAL_PARAM(), Variant.CreateOPTIONAL_PARAM(), Variant.CreateOPTIONAL_PARAM(), Variant.CreateOPTIONAL_PARAM(), Variant.CreateOPTIONAL_PARAM(), Variant.CreateOPTIONAL_PARAM(), Variant.CreateOPTIONAL_PARAM(), replaceString.VariantByRef, Variant.CreateOPTIONAL_PARAM(), Variant.CreateOPTIONAL_PARAM(), Variant.CreateOPTIONAL_PARAM(), Variant.CreateOPTIONAL_PARAM(), Variant.CreateOPTIONAL_PARAM() });
 
             //1
             Sleep(2);
@@ -82,27 +77,22 @@ namespace Opc.Classic.Dcom.Test {
 
         }
 
-        private void Sleep(int minutes)
-        {
+        private void Sleep(int minutes) {
             Console.WriteLine("Sleeping " + minutes + " minute(s)...");
             Thread.Sleep(minutes * 60 * 1000);
         }
 
         /// <exception cref="InteropException"> </exception>
-        private void QuitAndDestroy()
-        {
+        private void QuitAndDestroy() {
             Console.WriteLine("Quit...");
-            _dispatch.CallMethod("Quit", new object[] {new Variant(-1, true), Variant.CreateOPTIONAL_PARAM(), Variant.CreateOPTIONAL_PARAM()});
+            _dispatch.CallMethod("Quit", new object[] { new Variant(-1, true), Variant.CreateOPTIONAL_PARAM(), Variant.CreateOPTIONAL_PARAM() });
             Session.DestroySession(_dispatch.AssociatedSession);
         }
 
-        public static void RunTest(string[] args)
-        {
+        public static void RunTest(string[] args) {
 
-            try
-            {
-                if (args.Length < 4)
-                {
+            try {
+                if (args.Length < 4) {
                     Console.WriteLine("Please provide address domain username password");
                     return;
                 }
@@ -112,15 +102,14 @@ namespace Opc.Classic.Dcom.Test {
                 test.StartWord();
                 test.ShowWord();
 
-    //            for (int i = 0; i < 10; i++) {
-                    test.PerformOp();
-    //            }
+                //            for (int i = 0; i < 10; i++) {
+                test.PerformOp();
+                //            }
 
                 test.QuitAndDestroy();
 
             }
-            catch (Exception e)
-            {
+            catch (Exception e) {
                 // TODO Auto-generated catch block
                 Console.WriteLine(e.ToString());
                 Console.Write(e.StackTrace);

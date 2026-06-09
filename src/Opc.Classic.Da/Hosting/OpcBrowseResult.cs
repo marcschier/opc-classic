@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -14,8 +14,7 @@ namespace Opc.Classic.Da.Hosting;
 /// </summary>
 public sealed record OpcBrowseResult(
     IReadOnlyList<string> Branches,
-    IReadOnlyList<string> Items)
-{
+    IReadOnlyList<string> Items) {
     /// <summary>Empty result.</summary>
     public static OpcBrowseResult Empty { get; } = new(Array.Empty<string>(), Array.Empty<string>());
 }

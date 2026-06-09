@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -15,18 +15,14 @@ internal readonly record struct Smb2SessionSetupRequest(
     uint Capabilities,
     uint Channel,
     ulong PreviousSessionId,
-    ReadOnlyMemory<byte> SecurityBlob)
-{
-    public int WriteTo(Span<byte> destination)
-    {
+    ReadOnlyMemory<byte> SecurityBlob) {
+    public int WriteTo(Span<byte> destination) {
         const int FixedSize = 24;
-        if (SecurityBlob.Length > ushort.MaxValue)
-        {
+        if (SecurityBlob.Length > ushort.MaxValue) {
             throw new InvalidOperationException("SESSION_SETUP SecurityBlob exceeds 65535 bytes.");
         }
         int total = FixedSize + SecurityBlob.Length;
-        if (destination.Length < total)
-        {
+        if (destination.Length < total) {
             throw new ArgumentException("Destination too small for SMB2 SESSION_SETUP request.", nameof(destination));
         }
 
@@ -40,8 +36,7 @@ internal readonly record struct Smb2SessionSetupRequest(
         BinaryPrimitives.WriteUInt16LittleEndian(destination[14..], (ushort)SecurityBlob.Length);
         BinaryPrimitives.WriteUInt64LittleEndian(destination[16..], PreviousSessionId);
 
-        if (!SecurityBlob.IsEmpty)
-        {
+        if (!SecurityBlob.IsEmpty) {
             SecurityBlob.Span.CopyTo(destination.Slice(FixedSize, SecurityBlob.Length));
         }
         return total;
@@ -51,19 +46,15 @@ internal readonly record struct Smb2SessionSetupRequest(
 /// <summary>SMB2 SESSION_SETUP response body, per [MS-SMB2] §2.2.6.</summary>
 internal readonly record struct Smb2SessionSetupResponse(
     ushort SessionFlags,
-    ReadOnlyMemory<byte> SecurityBlob)
-{
-    public static Smb2SessionSetupResponse Read(ReadOnlySpan<byte> source)
-    {
+    ReadOnlyMemory<byte> SecurityBlob) {
+    public static Smb2SessionSetupResponse Read(ReadOnlySpan<byte> source) {
         Smb2MessageBounds.EnsureBodyWithinDefaultQuota(source, "SMB2 SESSION_SETUP response");
-        if (source.Length < 8)
-        {
+        if (source.Length < 8) {
             throw new Smb2ProtocolException("SMB2 SESSION_SETUP response too short.");
         }
 
         ushort structureSize = BinaryPrimitives.ReadUInt16LittleEndian(source);
-        if (structureSize != 9)
-        {
+        if (structureSize != 9) {
             throw new Smb2ProtocolException($"Unexpected SESSION_SETUP StructureSize {structureSize}; expected 9.");
         }
 
@@ -72,12 +63,10 @@ internal readonly record struct Smb2SessionSetupResponse(
         ushort secBlobLength = BinaryPrimitives.ReadUInt16LittleEndian(source[6..]);
 
         byte[] securityBlob;
-        if (secBlobLength == 0)
-        {
+        if (secBlobLength == 0) {
             securityBlob = Array.Empty<byte>();
         }
-        else
-        {
+        else {
             securityBlob = Smb2MessageBounds.GetPayloadSlice(
                 source,
                 secBlobOffset,

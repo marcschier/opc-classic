@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: MIT
+﻿// SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 
 using System.Collections.Concurrent;
@@ -11,8 +11,7 @@ using Opc.Classic.Hosting;
 
 namespace Opc.Classic.Samples.CttServer;
 
-public sealed class CttDaServer : IOpcDaServer
-{
+public sealed class CttDaServer : IOpcDaServer {
     private static readonly Action<ILogger, Exception?> GetStatusMessage = LoggerMessage.Define(
         LogLevel.Information,
         new EventId(1, nameof(GetStatusAsync)),
@@ -43,18 +42,15 @@ public sealed class CttDaServer : IOpcDaServer
     // in logs while still being correct.
     private int _nextServerHandle = 1_000_000;
 
-    public CttDaServer(OpcObjectRegistry objectRegistry, ILogger<CttDaServer> logger)
-    {
+    public CttDaServer(OpcObjectRegistry objectRegistry, ILogger<CttDaServer> logger) {
         _objectRegistry = objectRegistry ?? throw new ArgumentNullException(nameof(objectRegistry));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
-    public Task<OpcServerStatus> GetStatusAsync(CancellationToken cancellationToken = default)
-    {
+    public Task<OpcServerStatus> GetStatusAsync(CancellationToken cancellationToken = default) {
         GetStatusMessage(_logger, null);
         var now = DateTimeOffset.UtcNow;
-        var status = new OpcServerStatus
-        {
+        var status = new OpcServerStatus {
             Spec = OpcStatusSpec.Da,
             StartTime = StartupTime,
             CurrentTime = now,
@@ -75,8 +71,7 @@ public sealed class CttDaServer : IOpcDaServer
         int requestedUpdateRate,
         int clientHandle,
         int localeId,
-        CancellationToken cancellationToken = default)
-    {
+        CancellationToken cancellationToken = default) {
         ArgumentNullException.ThrowIfNull(name);
         AddGroupMessage(_logger, name, active, requestedUpdateRate, null);
 
@@ -97,8 +92,7 @@ public sealed class CttDaServer : IOpcDaServer
         out int serverGroupHandle,
         out int revisedUpdateRate,
         out IOpcInterfaceRef group,
-        CancellationToken cancellationToken)
-    {
+        CancellationToken cancellationToken) {
         ArgumentNullException.ThrowIfNull(name);
         cancellationToken.ThrowIfCancellationRequested();
         AddGroupMessage(_logger, name, active, requestedUpdateRate, null);
@@ -113,8 +107,7 @@ public sealed class CttDaServer : IOpcDaServer
         // *ServerDispatcher wrappers around the OpcDaGroup type; additional
         // interfaces (IOPCItemMgt, IOPCSyncIO, ...) plug in here in follow-up
         // commits.
-        var dispatchers = new Dictionary<Guid, IOpcServerDispatcher>
-        {
+        var dispatchers = new Dictionary<Guid, IOpcServerDispatcher> {
             [IOPCGroupStateMgt.InterfaceId] = new IOPCGroupStateMgtServerDispatcher(managedGroup),
             [IOPCGroupStateMgt2.InterfaceId] = new IOPCGroupStateMgt2ServerDispatcher(managedGroup),
             [IOPCItemMgt.InterfaceId] = new IOPCItemMgtServerDispatcher(managedGroup),
@@ -129,14 +122,12 @@ public sealed class CttDaServer : IOpcDaServer
         };
         Guid ipid = _objectRegistry.Register(dispatchers);
 
-        if (_groups.TryGetValue(managedGroup.ServerHandle, out GroupEntry? existing))
-        {
+        if (_groups.TryGetValue(managedGroup.ServerHandle, out GroupEntry? existing)) {
             // Won't happen with a monotonic counter, but defend against rollover.
             existing.Ipid = ipid;
             existing.Group = managedGroup;
         }
-        else
-        {
+        else {
             _groups[managedGroup.ServerHandle] = new GroupEntry(managedGroup, ipid);
         }
 
@@ -155,11 +146,9 @@ public sealed class CttDaServer : IOpcDaServer
     public Task RemoveGroupAsync(
         int serverGroupHandle,
         bool force,
-        CancellationToken cancellationToken = default)
-    {
+        CancellationToken cancellationToken = default) {
         RemoveGroupMessage(_logger, serverGroupHandle, null);
-        if (_groups.TryRemove(serverGroupHandle, out GroupEntry? entry))
-        {
+        if (_groups.TryRemove(serverGroupHandle, out GroupEntry? entry)) {
             _objectRegistry.Unregister(entry.Ipid);
         }
         return Task.CompletedTask;
@@ -168,19 +157,15 @@ public sealed class CttDaServer : IOpcDaServer
     public Task<string> GetErrorStringAsync(
         int errorCode,
         int localeId,
-        CancellationToken cancellationToken = default)
-    {
+        CancellationToken cancellationToken = default) {
         return Task.FromResult($"Opc.Classic CTT sample error: 0x{errorCode:X8}");
     }
 
-    Task<IOpcInterfaceRef> IOPCServer.GetGroupByNameAsync(string name, Guid requestedInterfaceId, CancellationToken cancellationToken)
-    {
+    Task<IOpcInterfaceRef> IOPCServer.GetGroupByNameAsync(string name, Guid requestedInterfaceId, CancellationToken cancellationToken) {
         ArgumentException.ThrowIfNullOrWhiteSpace(name);
         cancellationToken.ThrowIfCancellationRequested();
-        foreach (GroupEntry entry in _groups.Values)
-        {
-            if (string.Equals(entry.Group.Name, name, StringComparison.Ordinal))
-            {
+        foreach (GroupEntry entry in _groups.Values) {
+            if (string.Equals(entry.Group.Name, name, StringComparison.Ordinal)) {
                 return Task.FromResult<IOpcInterfaceRef>(new OpcInterfaceRef(
                     iid: requestedInterfaceId,
                     flags: 0,
@@ -195,8 +180,7 @@ public sealed class CttDaServer : IOpcDaServer
         throw new OpcException(OpcResultId.UnknownPath);
     }
 
-    Task<IOpcInterfaceRef> IOPCServer.CreateGroupEnumeratorAsync(int scope, Guid requestedInterfaceId, CancellationToken cancellationToken)
-    {
+    Task<IOpcInterfaceRef> IOPCServer.CreateGroupEnumeratorAsync(int scope, Guid requestedInterfaceId, CancellationToken cancellationToken) {
         _ = scope; // OPC_ENUM_PUBLIC / OPC_ENUM_PRIVATE / OPC_ENUM_ALL — single namespace today
         cancellationToken.ThrowIfCancellationRequested();
         // Register a fresh IEnumUnknown-like enumerator IPID for the snapshot of groups.
@@ -213,22 +197,18 @@ public sealed class CttDaServer : IOpcDaServer
     }
 
     /// <inheritdoc />
-    public Task<OpcDaGroup?> ResolveGroupAsync(int serverHandle, CancellationToken cancellationToken = default)
-    {
+    public Task<OpcDaGroup?> ResolveGroupAsync(int serverHandle, CancellationToken cancellationToken = default) {
         cancellationToken.ThrowIfCancellationRequested();
         return Task.FromResult<OpcDaGroup?>(
             _groups.TryGetValue(serverHandle, out GroupEntry? entry) ? entry.Group : null);
     }
 
     /// <inheritdoc />
-    public Task<OpcDaGroup?> ResolveGroupByNameAsync(string name, CancellationToken cancellationToken = default)
-    {
+    public Task<OpcDaGroup?> ResolveGroupByNameAsync(string name, CancellationToken cancellationToken = default) {
         ArgumentException.ThrowIfNullOrWhiteSpace(name);
         cancellationToken.ThrowIfCancellationRequested();
-        foreach (GroupEntry entry in _groups.Values)
-        {
-            if (string.Equals(entry.Group.Name, name, StringComparison.Ordinal))
-            {
+        foreach (GroupEntry entry in _groups.Values) {
+            if (string.Equals(entry.Group.Name, name, StringComparison.Ordinal)) {
                 return Task.FromResult<OpcDaGroup?>(entry.Group);
             }
         }
@@ -249,8 +229,7 @@ public sealed class CttDaServer : IOpcDaServer
         int requestedUpdateRate,
         int timeBias,
         float percentDeadband,
-        int localeId)
-    {
+        int localeId) {
         int serverHandle = Interlocked.Increment(ref _nextServerHandle);
         return new OpcDaGroup(
             name: name,
@@ -264,10 +243,8 @@ public sealed class CttDaServer : IOpcDaServer
             objectRegistry: _objectRegistry);
     }
 
-    private sealed class GroupEntry
-    {
-        public GroupEntry(OpcDaGroup group, Guid ipid)
-        {
+    private sealed class GroupEntry {
+        public GroupEntry(OpcDaGroup group, Guid ipid) {
             Group = group;
             Ipid = ipid;
         }

@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -12,8 +12,7 @@ namespace Opc.Classic.Security;
 /// for embedding in NTLMv2's MsvAvChannelBindings AV-pair or Kerberos's
 /// KRB_AP_CHKSUM_TYPE_GSS authenticator checksum.
 /// </summary>
-public static class ChannelBindingsHash
-{
+public static class ChannelBindingsHash {
     /// <summary>
     /// Serializes a <see cref="ChannelBindings" /> struct per RFC 2744 §3.11 and
     /// returns its MD5 hash. The wire layout is:
@@ -29,8 +28,7 @@ public static class ChannelBindingsHash
     /// </list>
     /// All UINT32s are little-endian.
     /// </summary>
-    public static byte[] Compute(ChannelBindings bindings)
-    {
+    public static byte[] Compute(ChannelBindings bindings) {
         System.ArgumentNullException.ThrowIfNull(bindings);
 
         int totalLen = checked(4 + 4 + bindings.InitiatorAddress.Length
@@ -39,8 +37,7 @@ public static class ChannelBindingsHash
         var buffer = new byte[totalLen];
         int offset = 0;
 
-        void WriteU32(uint value)
-        {
+        void WriteU32(uint value) {
             System.Buffers.Binary.BinaryPrimitives.WriteUInt32LittleEndian(buffer.AsSpan(offset, 4), value);
             offset += 4;
         }

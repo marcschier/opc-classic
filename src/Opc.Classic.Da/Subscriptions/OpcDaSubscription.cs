@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -16,8 +16,7 @@ namespace Opc.Classic.Da;
 /// <summary>
 /// Placeholder for the LocalCoClass-backed OPC DA subscription sink implementation.
 /// </summary>
-public sealed class OpcDaSubscription : IOpcDaSubscription
-{
+public sealed class OpcDaSubscription : IOpcDaSubscription {
     /// <inheritdoc />
     public IAsyncEnumerable<OpcDaDataChange> DataChanges(CancellationToken ct = default) =>
         throw new NotImplementedException();

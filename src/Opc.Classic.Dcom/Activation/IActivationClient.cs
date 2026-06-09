@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -10,8 +10,7 @@ using System.Threading.Tasks;
 namespace Opc.Classic.Dcom.Activation;
 
 /// <summary>Client contract for legacy <c>IActivation::RemoteActivation</c>.</summary>
-public interface IActivationClient
-{
+public interface IActivationClient {
     /// <summary>Invokes <c>IActivation::RemoteActivation</c> using protocol sequence names.</summary>
     Task<RemoteActivationResponse> RemoteActivationAsync(
         Guid clsid,

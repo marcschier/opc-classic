@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -11,11 +11,9 @@ using TUnit.Core;
 
 namespace Opc.Classic.Mcp.Capture.Tests;
 
-public sealed class CaptureSessionTests
-{
+public sealed class CaptureSessionTests {
     [Test]
-    public async Task Constructor_InvalidArguments_Throw()
-    {
+    public async Task Constructor_InvalidArguments_Throw() {
         var source = new FakeCaptureSource();
         var request = new CaptureStartRequest();
 
@@ -30,11 +28,9 @@ public sealed class CaptureSessionTests
     }
 
     [Test]
-    public async Task StartAsync_SourceSucceeds_TransitionsToRunningAndRecordsMetadata()
-    {
+    public async Task StartAsync_SourceSucceeds_TransitionsToRunningAndRecordsMetadata() {
         string directory = TestDirectories.CreateUniqueTempDirectory();
-        try
-        {
+        try {
             var request = new CaptureStartRequest(InterfaceName: "lo");
             var source = new FakeCaptureSource();
             var session = new CaptureSession("session-id", "fake", source, directory, request);
@@ -51,18 +47,15 @@ public sealed class CaptureSessionTests
             await Assert.That(session.LastTouchedAt >= before).IsTrue();
             await session.DisposeAsync();
         }
-        finally
-        {
+        finally {
             TestDirectories.DeleteIfExists(directory);
         }
     }
 
     [Test]
-    public async Task StopAsync_RunningSession_TransitionsToCompletedAndIsIdempotent()
-    {
+    public async Task StopAsync_RunningSession_TransitionsToCompletedAndIsIdempotent() {
         string directory = TestDirectories.CreateUniqueTempDirectory();
-        try
-        {
+        try {
             var source = new FakeCaptureSource();
             var session = new CaptureSession("session-id", "fake", source, directory, new CaptureStartRequest());
             await session.StartAsync(TestContext.Current!.CancellationToken);
@@ -75,20 +68,16 @@ public sealed class CaptureSessionTests
             await Assert.That(source.StopCallCount).IsEqualTo(1);
             await session.DisposeAsync();
         }
-        finally
-        {
+        finally {
             TestDirectories.DeleteIfExists(directory);
         }
     }
 
     [Test]
-    public async Task StartAsync_SourceThrows_TransitionsToFailedAndStoresError()
-    {
+    public async Task StartAsync_SourceThrows_TransitionsToFailedAndStoresError() {
         string directory = TestDirectories.CreateUniqueTempDirectory();
-        try
-        {
-            var source = new FakeCaptureSource
-            {
+        try {
+            var source = new FakeCaptureSource {
                 StartException = new CaptureException("start failed"),
             };
             var session = new CaptureSession("session-id", "fake", source, directory, new CaptureStartRequest());
@@ -101,18 +90,15 @@ public sealed class CaptureSessionTests
             await Assert.That(source.StartCallCount).IsEqualTo(1);
             await session.DisposeAsync();
         }
-        finally
-        {
+        finally {
             TestDirectories.DeleteIfExists(directory);
         }
     }
 
     [Test]
-    public async Task StopAsync_SourceThrows_TransitionsToFailedAndStoresError()
-    {
+    public async Task StopAsync_SourceThrows_TransitionsToFailedAndStoresError() {
         string directory = TestDirectories.CreateUniqueTempDirectory();
-        try
-        {
+        try {
             var source = new FakeCaptureSource();
             var session = new CaptureSession("session-id", "fake", source, directory, new CaptureStartRequest());
             await session.StartAsync(TestContext.Current!.CancellationToken);
@@ -126,15 +112,13 @@ public sealed class CaptureSessionTests
             await Assert.That(source.StopCallCount).IsEqualTo(1);
             await session.DisposeAsync();
         }
-        finally
-        {
+        finally {
             TestDirectories.DeleteIfExists(directory);
         }
     }
 
     [Test]
-    public async Task DisposeAsync_DisposesSourceDeletesFolderAndMarksDisposed()
-    {
+    public async Task DisposeAsync_DisposesSourceDeletesFolderAndMarksDisposed() {
         string directory = TestDirectories.CreateUniqueTempDirectory();
         string marker = Path.Combine(directory, "marker.txt");
         await File.WriteAllTextAsync(marker, "delete me", TestContext.Current!.CancellationToken);
@@ -150,11 +134,9 @@ public sealed class CaptureSessionTests
     }
 
     [Test]
-    public async Task StopAsync_CompletedOrFailedSession_DoesNotCallSourceAgain()
-    {
+    public async Task StopAsync_CompletedOrFailedSession_DoesNotCallSourceAgain() {
         string directory = TestDirectories.CreateUniqueTempDirectory();
-        try
-        {
+        try {
             var source = new FakeCaptureSource();
             var session = new CaptureSession("session-id", "fake", source, directory, new CaptureStartRequest());
             await session.StartAsync(TestContext.Current!.CancellationToken);
@@ -166,8 +148,7 @@ public sealed class CaptureSessionTests
             await Assert.That(session.State).IsEqualTo(CaptureSessionState.Completed);
             await session.DisposeAsync();
         }
-        finally
-        {
+        finally {
             TestDirectories.DeleteIfExists(directory);
         }
     }

@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -12,8 +12,7 @@ using TUnit.Core;
 
 namespace Opc.Classic.PropertyTests.Codecs;
 
-public sealed class OpcSafeArrayPropertyTests
-{
+public sealed class OpcSafeArrayPropertyTests {
     private static readonly SafeArrayFeatures[] ScalarFeatureBits =
     [
         SafeArrayFeatures.Auto,
@@ -24,52 +23,44 @@ public sealed class OpcSafeArrayPropertyTests
     ];
 
     [Test]
-    public Task OneDimensionalInt32_RoundTrips_WithRandomLowerBounds()
-    {
+    public Task OneDimensionalInt32_RoundTrips_WithRandomLowerBounds() {
         OneDimensionalInt32Gen.Sample(value => SafeArrayRoundTrips(value), iter: CodecProperty.SampleIterations);
         return Task.CompletedTask;
     }
 
     [Test]
-    public Task TwoDimensionalDouble_RoundTrips_WithRandomBounds()
-    {
+    public Task TwoDimensionalDouble_RoundTrips_WithRandomBounds() {
         TwoDimensionalDoubleGen.Sample(value => SafeArrayRoundTrips(value), iter: CodecProperty.SampleIterations);
         return Task.CompletedTask;
     }
 
     [Test]
-    public Task ThreeDimensionalBstr_RoundTrips_WithRandomBounds()
-    {
+    public Task ThreeDimensionalBstr_RoundTrips_WithRandomBounds() {
         ThreeDimensionalBstrGen.Sample(value => SafeArrayRoundTrips(value), iter: CodecProperty.SampleIterations);
         return Task.CompletedTask;
     }
 
     [Test]
-    public Task ScalarFadfFeatureCombinations_RoundTrip()
-    {
+    public Task ScalarFadfFeatureCombinations_RoundTrip() {
         ScalarFeatureSafeArrayGen.Sample(value => SafeArrayRoundTrips(value), iter: CodecProperty.SampleIterations);
         return Task.CompletedTask;
     }
 
     [Test]
-    public Task BstrFadfFeatureCombinations_RoundTrip()
-    {
+    public Task BstrFadfFeatureCombinations_RoundTrip() {
         BstrFeatureSafeArrayGen.Sample(value => SafeArrayRoundTrips(value), iter: CodecProperty.SampleIterations);
         return Task.CompletedTask;
     }
 
     [Test]
-    public Task VariantAndRecordFadfFeatureCombinations_RoundTrip()
-    {
+    public Task VariantAndRecordFadfFeatureCombinations_RoundTrip() {
         VariantOrRecordFeatureSafeArrayGen.Sample(value => SafeArrayRoundTrips(value), iter: CodecProperty.SampleIterations);
         return Task.CompletedTask;
     }
 
     [Test]
-    public Task EdgeElementCounts_ZeroOneAndLarge_RoundTrip()
-    {
-        Gen.Int.Array[1024].Sample(values =>
-        {
+    public Task EdgeElementCounts_ZeroOneAndLarge_RoundTrip() {
+        Gen.Int.Array[1024].Sample(values => {
             var zero = new OpcSafeArray(VarType.VT_I4, Array.Empty<int>(), [0], [0], SafeArrayFeatures.HaveVartype);
             var one = new OpcSafeArray(VarType.VT_I4, new[] { values[0] }, [1], [-1], SafeArrayFeatures.HaveVartype);
             var large = new OpcSafeArray(VarType.VT_I4, values, [values.Length], [int.MinValue], SafeArrayFeatures.HaveVartype);
@@ -142,13 +133,10 @@ public sealed class OpcSafeArrayPropertyTests
         CodecProperty.SafeArrayEquals,
         capacity);
 
-    private static SafeArrayFeatures FeaturesFromMask(int mask, SafeArrayFeatures[] bits)
-    {
+    private static SafeArrayFeatures FeaturesFromMask(int mask, SafeArrayFeatures[] bits) {
         SafeArrayFeatures features = SafeArrayFeatures.None;
-        for (int i = 0; i < bits.Length; i++)
-        {
-            if ((mask & (1 << i)) != 0)
-            {
+        for (int i = 0; i < bits.Length; i++) {
+            if ((mask & (1 << i)) != 0) {
                 features |= bits[i];
             }
         }

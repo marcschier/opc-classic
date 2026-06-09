@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -17,8 +17,7 @@ namespace Opc.Classic.Da.Hosting;
 /// limits, EU bounds, etc.). IDs 5000+ are server-private. This class
 /// publishes the OPC-defined set (1-12) only.
 /// </remarks>
-public static class OpcStandardProperties
-{
+public static class OpcStandardProperties {
     /// <summary>Property ID 1 = item canonical data type (VT_I2).</summary>
     public const int CanonicalDataType = 1;
 

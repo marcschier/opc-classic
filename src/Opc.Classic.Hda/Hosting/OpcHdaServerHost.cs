@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -19,8 +19,7 @@ namespace Opc.Classic.Hda.Hosting;
 /// <summary>
 /// HDA-specific <see cref="IOpcServerHost"/> implementation for managed in-process servers.
 /// </summary>
-public sealed class OpcHdaServerHost : IOpcServerHost, IDisposable, IAsyncDisposable
-{
+public sealed class OpcHdaServerHost : IOpcServerHost, IDisposable, IAsyncDisposable {
     private static readonly Action<ILogger, Guid, string, Exception?> StartingHost = LoggerMessage.Define<Guid, string>(
         LogLevel.Information,
         new EventId(1, nameof(StartingHost)),
@@ -45,8 +44,7 @@ public sealed class OpcHdaServerHost : IOpcServerHost, IDisposable, IAsyncDispos
     public OpcHdaServerHost(
         IOpcHdaServer serverImpl,
         IOptions<OpcHdaServerOptions> options,
-        ILogger<OpcHdaServerHost> logger)
-    {
+        ILogger<OpcHdaServerHost> logger) {
         _serverImpl = serverImpl ?? throw new ArgumentNullException(nameof(serverImpl));
         _options = options?.Value ?? throw new ArgumentNullException(nameof(options));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -70,49 +68,40 @@ public sealed class OpcHdaServerHost : IOpcServerHost, IDisposable, IAsyncDispos
     public EndPoint? LocalEndpoint => _listener?.LocalEndpoint;
 
     /// <inheritdoc />
-    public Task StartAsync(CancellationToken cancellationToken)
-    {
+    public Task StartAsync(CancellationToken cancellationToken) {
         StartingHost(_logger, _options.Clsid, _options.ProgId, null);
 
         IPEndPoint listenEndpoint = ListenAddressParser.Parse(_options.ListenAddress ?? "127.0.0.1:0");
         var endpoint = new TcpServerEndpoint(listenEndpoint);
-        var dispatchers = new Dictionary<Guid, IOpcServerDispatcher>
-        {
+        var dispatchers = new Dictionary<Guid, IOpcServerDispatcher> {
             [IOPCHDA_Server.InterfaceId] = new IOPCHDA_ServerServerDispatcher(_serverImpl),
         };
 
         // Register additional HDA interface dispatchers when the user impl
         // provides them. Each dispatcher reads the request, calls the matching
         // method on the impl, and encodes the response per the OPC HDA 1.20 IDL.
-        if (_serverImpl is IOPCHDA_SyncRead syncRead)
-        {
+        if (_serverImpl is IOPCHDA_SyncRead syncRead) {
             dispatchers[IOPCHDA_SyncRead.InterfaceId] = new IOPCHDA_SyncReadServerDispatcher(syncRead);
         }
-        if (_serverImpl is IOPCHDA_SyncUpdate syncUpdate)
-        {
+        if (_serverImpl is IOPCHDA_SyncUpdate syncUpdate) {
             dispatchers[IOPCHDA_SyncUpdate.InterfaceId] = new IOPCHDA_SyncUpdateServerDispatcher(syncUpdate);
         }
-        if (_serverImpl is IOPCHDA_SyncAnnotations syncAnnotations)
-        {
+        if (_serverImpl is IOPCHDA_SyncAnnotations syncAnnotations) {
             dispatchers[IOPCHDA_SyncAnnotations.InterfaceId] = new IOPCHDA_SyncAnnotationsServerDispatcher(syncAnnotations);
         }
         // IOPCHDA_Browser: per-instance browser objects are created by
         // IOPCHDA_Server::CreateBrowse and tracked via per-IPID dispatch
         // (sub-object pattern); skipped at root level for now.
-        if (_serverImpl is IOPCHDA_AsyncRead asyncRead)
-        {
+        if (_serverImpl is IOPCHDA_AsyncRead asyncRead) {
             dispatchers[IOPCHDA_AsyncRead.InterfaceId] = new IOPCHDA_AsyncReadServerDispatcher(asyncRead);
         }
-        if (_serverImpl is IOPCHDA_AsyncUpdate asyncUpdate)
-        {
+        if (_serverImpl is IOPCHDA_AsyncUpdate asyncUpdate) {
             dispatchers[IOPCHDA_AsyncUpdate.InterfaceId] = new IOPCHDA_AsyncUpdateServerDispatcher(asyncUpdate);
         }
-        if (_serverImpl is IOPCHDA_AsyncAnnotations asyncAnnotations)
-        {
+        if (_serverImpl is IOPCHDA_AsyncAnnotations asyncAnnotations) {
             dispatchers[IOPCHDA_AsyncAnnotations.InterfaceId] = new IOPCHDA_AsyncAnnotationsServerDispatcher(asyncAnnotations);
         }
-        if (_serverImpl is IOPCHDA_Playback playback)
-        {
+        if (_serverImpl is IOPCHDA_Playback playback) {
             dispatchers[IOPCHDA_Playback.InterfaceId] = new IOPCHDA_PlaybackServerDispatcher(playback);
         }
 
@@ -125,14 +114,12 @@ public sealed class OpcHdaServerHost : IOpcServerHost, IDisposable, IAsyncDispos
     }
 
     /// <inheritdoc />
-    public async Task StopAsync(CancellationToken cancellationToken)
-    {
+    public async Task StopAsync(CancellationToken cancellationToken) {
         StoppingHost(_logger, _options.Clsid, null);
 
         OpcServerListener? listener = _listener;
         _listener = null;
-        if (listener is not null)
-        {
+        if (listener is not null) {
             await listener.DisposeAsync().ConfigureAwait(false);
         }
     }
@@ -141,8 +128,7 @@ public sealed class OpcHdaServerHost : IOpcServerHost, IDisposable, IAsyncDispos
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
         "Usage", "VSTHRD002:Avoid problematic synchronous waits",
         Justification = "IDisposable is synchronous; the underlying StopAsync is async.")]
-    public void Dispose()
-    {
+    public void Dispose() {
         StopAsync(CancellationToken.None).GetAwaiter().GetResult();
     }
 

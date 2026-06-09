@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -11,8 +11,7 @@ using Opc.Classic.Ae.Dcom;
 namespace Opc.Classic.Ae.Hosting;
 
 /// <summary>Contract implemented by user code to provide an in-process managed AE server.</summary>
-public interface IOpcAeServer : IOPCEventServer
-{
+public interface IOpcAeServer : IOPCEventServer {
     /// <summary>Gets the AE server runtime status snapshot.</summary>
     new Task<OpcServerStatus> GetStatusAsync(CancellationToken cancellationToken = default);
 
@@ -105,21 +104,18 @@ public interface IOpcAeServer : IOPCEventServer
 
     private static OpcException NotImplemented() => new(OpcResultId.NotImplemented);
 
-    private static OpcException NotImplemented<T>(out T value)
-    {
+    private static OpcException NotImplemented<T>(out T value) {
         value = default!;
         return NotImplemented();
     }
 
-    private static OpcException NotImplemented<T1, T2>(out T1 value1, out T2 value2)
-    {
+    private static OpcException NotImplemented<T1, T2>(out T1 value1, out T2 value2) {
         value1 = default!;
         value2 = default!;
         return NotImplemented();
     }
 
-    private static OpcException NotImplemented<T1, T2, T3>(out T1 value1, out T2 value2, out T3 value3)
-    {
+    private static OpcException NotImplemented<T1, T2, T3>(out T1 value1, out T2 value2, out T3 value3) {
         value1 = default!;
         value2 = default!;
         value3 = default!;

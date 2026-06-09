@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -9,11 +9,9 @@ using TUnit.Core;
 
 namespace Opc.Classic.Dcom.Tests;
 
-public sealed class DispatchTableTests
-{
+public sealed class DispatchTableTests {
     [Test]
-    public async Task DelegateDispatchTable_returns_dispatcher_for_registered_method()
-    {
+    public async Task DelegateDispatchTable_returns_dispatcher_for_registered_method() {
         var target = new DispatchTarget();
         var iid = Guid.NewGuid();
         var table = CreateDispatchTable(iid, 7, args => target.Echo((string)args[0]));
@@ -25,8 +23,7 @@ public sealed class DispatchTableTests
     }
 
     [Test]
-    public async Task DelegateDispatchTable_returns_false_for_unregistered_iid_opnum()
-    {
+    public async Task DelegateDispatchTable_returns_false_for_unregistered_iid_opnum() {
         var target = new DispatchTarget();
         var iid = Guid.NewGuid();
         var table = CreateDispatchTable(iid, 7, args => target.Echo((string)args[0]));
@@ -38,8 +35,7 @@ public sealed class DispatchTableTests
     }
 
     [Test]
-    public async Task DelegateDispatchTable_dispatcher_calls_target_method()
-    {
+    public async Task DelegateDispatchTable_dispatcher_calls_target_method() {
         var target = new DispatchTarget();
         var iid = Guid.NewGuid();
         var table = CreateDispatchTable(iid, 7, args => target.Echo((string)args[0]));
@@ -50,8 +46,7 @@ public sealed class DispatchTableTests
         await Assert.That(result).IsEqualTo("echo:payload");
     }
 
-    private static object CreateDispatchTable(Guid iid, int opnum, Func<object[], object?> dispatcher)
-    {
+    private static object CreateDispatchTable(Guid iid, int opnum, Func<object[], object?> dispatcher) {
         var tableType = typeof(LocalCoClass).Assembly.GetType(
             "Opc.Classic.Dcom.Core.DelegateDispatchTable", throwOnError: true)!;
         var registrationType = typeof(ValueTuple<Guid, int, Func<object[], object?>>);
@@ -65,8 +60,7 @@ public sealed class DispatchTableTests
         object table,
         Guid iid,
         int opnum,
-        out Func<object[], object?>? dispatcher)
-    {
+        out Func<object[], object?>? dispatcher) {
         var method = table.GetType().GetMethod(nameof(TryGetDispatcher))!;
         object?[] args = new object?[] { iid, opnum, null };
         var found = (bool)method.Invoke(table, args)!;
@@ -74,8 +68,7 @@ public sealed class DispatchTableTests
         return found;
     }
 
-    private sealed class DispatchTarget
-    {
+    private sealed class DispatchTarget {
         public string Echo(string value) => $"echo:{value}";
     }
 }

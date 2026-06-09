@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -8,16 +8,14 @@ using TUnit.Core;
 
 namespace Opc.Classic.Cpx.Tests;
 
-public sealed class OpcBinaryBitStringTests
-{
+public sealed class OpcBinaryBitStringTests {
     [Test]
     [Arguments(3)]
     [Arguments(7)]
     [Arguments(11)]
     [Arguments(17)]
     [Arguments(33)]
-    public async Task OpcBinaryEncoderDecoder_RoundTripsNonByteAlignedBitString(int bitCount)
-    {
+    public async Task OpcBinaryEncoderDecoder_RoundTripsNonByteAlignedBitString(int bitCount) {
         var type = new TypeDescription(
             "BitStringContainer",
             "BitStringContainer",
@@ -30,8 +28,7 @@ public sealed class OpcBinaryBitStringTests
                 new TypeField("Suffix", TypeKind.UInt8),
             });
         var bits = CreatePattern(bitCount);
-        var value = CreateValue(type, new Dictionary<string, object?>
-        {
+        var value = CreateValue(type, new Dictionary<string, object?> {
             ["Prefix"] = (byte)0xA5,
             ["Bits"] = bits,
             ["Suffix"] = (byte)0x5A,
@@ -50,8 +47,7 @@ public sealed class OpcBinaryBitStringTests
     }
 
     [Test]
-    public async Task OpcBinaryEncoderDecoder_AccumulatesConsecutiveBitStringsBeforePadding()
-    {
+    public async Task OpcBinaryEncoderDecoder_AccumulatesConsecutiveBitStringsBeforePadding() {
         var type = new TypeDescription(
             "SplitBits",
             "SplitBits",
@@ -65,8 +61,7 @@ public sealed class OpcBinaryBitStringTests
             });
         var first = new byte[] { 0b1010_0000 };
         var second = new byte[] { 0b1101_1000 };
-        var value = CreateValue(type, new Dictionary<string, object?>
-        {
+        var value = CreateValue(type, new Dictionary<string, object?> {
             ["First"] = first,
             ["Second"] = second,
             ["Trailing"] = (byte)0x42,
@@ -82,13 +77,10 @@ public sealed class OpcBinaryBitStringTests
         await Assert.That(decodedSecond).IsEquivalentTo(second);
     }
 
-    private static byte[] CreatePattern(int bitCount)
-    {
+    private static byte[] CreatePattern(int bitCount) {
         var bytes = new byte[(bitCount + 7) / 8];
-        for (var bitIndex = 0; bitIndex < bitCount; bitIndex++)
-        {
-            if (bitIndex % 3 != 1)
-            {
+        for (var bitIndex = 0; bitIndex < bitCount; bitIndex++) {
+            if (bitIndex % 3 != 1) {
                 bytes[bitIndex / 8] |= (byte)(1 << (7 - (bitIndex % 8)));
             }
         }
@@ -97,8 +89,7 @@ public sealed class OpcBinaryBitStringTests
     }
 
     private static ComplexValue CreateValue(TypeDescription type, IReadOnlyDictionary<string, object?> fields) =>
-        new()
-        {
+        new() {
             Type = new StructType { Name = type.Name },
             Fields = fields,
         };

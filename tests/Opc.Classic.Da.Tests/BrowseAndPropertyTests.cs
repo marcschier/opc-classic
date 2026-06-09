@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -10,13 +10,11 @@ using TUnit.Core;
 
 namespace Opc.Classic.Da.Tests;
 
-public sealed class BrowseFiltersTests
-{
+public sealed class BrowseFiltersTests {
     private static int ValueOf(BrowseFilters f) => (int)f;
 
     [Test]
-    public async Task FilterValues_MatchOpcDaWireValues()
-    {
+    public async Task FilterValues_MatchOpcDaWireValues() {
         // OPC DA 3.0 OPCBROWSEFILTER enum.
         await Assert.That(ValueOf(BrowseFilters.All)).IsEqualTo(1);
         await Assert.That(ValueOf(BrowseFilters.Branch)).IsEqualTo(2);
@@ -24,11 +22,9 @@ public sealed class BrowseFiltersTests
     }
 }
 
-public sealed class BrowseElementTests
-{
+public sealed class BrowseElementTests {
     [Test]
-    public async Task Default_HasEmptyNameAndItemName()
-    {
+    public async Task Default_HasEmptyNameAndItemName() {
         var e = new BrowseElement();
         await Assert.That(e.Name).IsEqualTo(string.Empty);
         await Assert.That(e.ItemName).IsEqualTo(string.Empty);
@@ -38,10 +34,8 @@ public sealed class BrowseElementTests
     }
 
     [Test]
-    public async Task ItemAndBranch_BothFlagsHonoredByToString()
-    {
-        var e = new BrowseElement
-        {
+    public async Task ItemAndBranch_BothFlagsHonoredByToString() {
+        var e = new BrowseElement {
             Name = "Tank",
             ItemName = "Plant.Tank",
             IsItem = true,
@@ -51,41 +45,35 @@ public sealed class BrowseElementTests
     }
 
     [Test]
-    public async Task LeafOnly_ToStringHasItemTag()
-    {
+    public async Task LeafOnly_ToStringHasItemTag() {
         var e = new BrowseElement { Name = "Temp", IsItem = true, HasChildren = false };
         await Assert.That(e.ToString()).Contains("item");
         await Assert.That(e.ToString()).DoesNotContain("branch");
     }
 
     [Test]
-    public async Task BranchOnly_ToStringHasBranchTag()
-    {
+    public async Task BranchOnly_ToStringHasBranchTag() {
         var e = new BrowseElement { Name = "Plant", IsItem = false, HasChildren = true };
         await Assert.That(e.ToString()).Contains("branch");
         await Assert.That(e.ToString()).DoesNotContain("item+");
     }
 }
 
-public sealed class BrowsePositionTests
-{
+public sealed class BrowsePositionTests {
     [Test]
-    public async Task Completed_IsTerminal()
-    {
+    public async Task Completed_IsTerminal() {
         await Assert.That(BrowsePosition.Completed.IsCompleted).IsTrue();
         await Assert.That(BrowsePosition.Completed.IsTerminal).IsTrue();
     }
 
     [Test]
-    public async Task EmptyContinuationPoint_IsTerminalEvenWithoutCompletedFlag()
-    {
+    public async Task EmptyContinuationPoint_IsTerminalEvenWithoutCompletedFlag() {
         var p = new BrowsePosition { ContinuationPoint = string.Empty };
         await Assert.That(p.IsTerminal).IsTrue();
     }
 
     [Test]
-    public async Task NonEmptyContinuationPoint_NotTerminal()
-    {
+    public async Task NonEmptyContinuationPoint_NotTerminal() {
         var p = new BrowsePosition { ContinuationPoint = "next-page-token" };
         await Assert.That(p.IsTerminal).IsFalse();
         await Assert.That(p.IsCompleted).IsFalse();
@@ -93,11 +81,9 @@ public sealed class BrowsePositionTests
     }
 }
 
-public sealed class PropertyIdTests
-{
+public sealed class PropertyIdTests {
     [Test]
-    public async Task MandatoryProperties_HaveExpectedCodes_1Through8()
-    {
+    public async Task MandatoryProperties_HaveExpectedCodes_1Through8() {
         await Assert.That(PropertyID.DataType.Code).IsEqualTo(1);
         await Assert.That(PropertyID.Value.Code).IsEqualTo(2);
         await Assert.That(PropertyID.Quality.Code).IsEqualTo(3);
@@ -109,8 +95,7 @@ public sealed class PropertyIdTests
     }
 
     [Test]
-    public async Task RecommendedProperties_HaveExpectedCodes_100Plus()
-    {
+    public async Task RecommendedProperties_HaveExpectedCodes_100Plus() {
         await Assert.That(PropertyID.EuUnits.Code).IsEqualTo(100);
         await Assert.That(PropertyID.Description.Code).IsEqualTo(101);
         await Assert.That(PropertyID.HighEu.Code).IsEqualTo(102);
@@ -121,8 +106,7 @@ public sealed class PropertyIdTests
     }
 
     [Test]
-    public async Task RecordEquality_IsByCode()
-    {
+    public async Task RecordEquality_IsByCode() {
         var a = new PropertyID(2);
         var b = new PropertyID(2);
         var c = new PropertyID(3);
@@ -133,28 +117,23 @@ public sealed class PropertyIdTests
     }
 
     [Test]
-    public async Task ToString_FormatsCodeAndName()
-    {
+    public async Task ToString_FormatsCodeAndName() {
         await Assert.That(PropertyID.Value.ToString()).IsEqualTo("2: Item Value");
         await Assert.That(new PropertyID(9999).ToString()).IsEqualTo("9999");
     }
 }
 
-public sealed class ItemPropertyTests
-{
+public sealed class ItemPropertyTests {
     [Test]
-    public async Task Default_ResultIdIsOk()
-    {
+    public async Task Default_ResultIdIsOk() {
         var p = new ItemProperty();
         await Assert.That(p.ResultId).IsEqualTo(OpcResultId.Ok);
         await Assert.That(p.Description).IsEqualTo(string.Empty);
     }
 
     [Test]
-    public async Task Initializer_AssignsAllFields()
-    {
-        var p = new ItemProperty
-        {
+    public async Task Initializer_AssignsAllFields() {
+        var p = new ItemProperty {
             PropertyId = PropertyID.EuUnits,
             Description = "Engineering units",
             DataType = typeof(string),
@@ -169,21 +148,17 @@ public sealed class ItemPropertyTests
     }
 }
 
-public sealed class ItemPropertyResultTests
-{
+public sealed class ItemPropertyResultTests {
     [Test]
-    public async Task Default_HasEmptyProperties()
-    {
+    public async Task Default_HasEmptyProperties() {
         var c = new ItemPropertyResult();
         await Assert.That(c.Properties.Count).IsEqualTo(0);
         await Assert.That(c.ResultId).IsEqualTo(OpcResultId.Ok);
     }
 
     [Test]
-    public async Task Initializer_AssignsAllFields()
-    {
-        var c = new ItemPropertyResult
-        {
+    public async Task Initializer_AssignsAllFields() {
+        var c = new ItemPropertyResult {
             ItemName = "Tank.Temp",
             ItemPath = "Plant1",
             ResultId = OpcResultId.Ok,

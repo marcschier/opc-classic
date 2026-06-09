@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -14,19 +14,16 @@ using TUnit.Core;
 
 namespace Opc.Classic.Hda.Tests.Dcom;
 
-public sealed class IOPCHdaProxyTests
-{
+public sealed class IOPCHdaProxyTests {
     private delegate void NdrWriteAction(ref NdrWriter writer);
 
     [Test]
-    public async Task SyncRead_ReadRaw_invokes_channel_with_correct_metadata_and_decodes_array()
-    {
+    public async Task SyncRead_ReadRaw_invokes_channel_with_correct_metadata_and_decodes_array() {
         Guid observedIid = Guid.Empty;
         int observedOpnum = -1;
         int observedPayloadLength = -1;
         ReadOnlyMemory<byte> responsePayload = WritePayload((ref NdrWriter writer) => writer.WriteUInt32(0));
-        var channel = new InMemoryCallChannel((iid, opnum, payload, _) =>
-        {
+        var channel = new InMemoryCallChannel((iid, opnum, payload, _) => {
             observedIid = iid;
             observedOpnum = opnum;
             observedPayloadLength = payload.Length;
@@ -50,13 +47,11 @@ public sealed class IOPCHdaProxyTests
     }
 
     [Test]
-    public async Task AsyncRead_AdviseRaw_returns_cancel_id()
-    {
+    public async Task AsyncRead_AdviseRaw_returns_cancel_id() {
         Guid observedIid = Guid.Empty;
         int observedOpnum = -1;
         ReadOnlyMemory<byte> responsePayload = WritePayload((ref NdrWriter writer) => writer.WriteInt32(77));
-        var channel = new InMemoryCallChannel((iid, opnum, _, _) =>
-        {
+        var channel = new InMemoryCallChannel((iid, opnum, _, _) => {
             observedIid = iid;
             observedOpnum = opnum;
             return Task.FromResult(new NdrCallResult(0, responsePayload));
@@ -76,8 +71,7 @@ public sealed class IOPCHdaProxyTests
         await Assert.That(cancelId).IsEqualTo(77);
     }
 
-    private static ReadOnlyMemory<byte> WritePayload(NdrWriteAction write, int capacity = 1024)
-    {
+    private static ReadOnlyMemory<byte> WritePayload(NdrWriteAction write, int capacity = 1024) {
         var buffer = new byte[capacity];
         var writer = new NdrWriter(buffer);
         write(ref writer);

@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -17,8 +17,7 @@ namespace Opc.Classic.Dx.Dcom;
 
 /// <summary><c>IOPCConfiguration</c> — DX server-to-server configuration (IID_IOPCConfiguration).</summary>
 [OpcInterface("C130D281-F4AA-4779-8846-C2C4CB444F2A")]
-public partial interface IOPCConfiguration
-{
+public partial interface IOPCConfiguration {
     /// <summary><c>IOPCConfiguration::GetServers</c> (opnum 3).</summary>
     [OpcMethod(3)]
     Task<DxSourceServer[]> QuerySourceServersAsync(CancellationToken cancellationToken = default);
@@ -75,8 +74,7 @@ public partial interface IOPCConfiguration
 [OpcInterface("D5D8F8E9-6F45-43F2-B19E-3FAE3DA88A7C")]
 [GenerateOpcProxy]
 [OpcGenerateServerDispatch]
-public partial interface IOPCDXServer
-{
+public partial interface IOPCDXServer {
     /// <summary><c>IOPCDXServer::GetServerName</c> (opnum 3).</summary>
     [OpcMethod(3)]
     Task<string> GetServerNameAsync(CancellationToken cancellationToken = default);

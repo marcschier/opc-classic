@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -14,19 +14,15 @@ namespace Opc.Classic.Mcp.Capture;
 /// interface, exceeded session caps, ...).
 /// </summary>
 [Serializable]
-public sealed class CaptureException : Exception
-{
-    public CaptureException()
-    {
+public sealed class CaptureException : Exception {
+    public CaptureException() {
     }
 
     public CaptureException(string message)
-        : base(message)
-    {
+        : base(message) {
     }
 
     public CaptureException(string message, Exception innerException)
-        : base(message, innerException)
-    {
+        : base(message, innerException) {
     }
 }

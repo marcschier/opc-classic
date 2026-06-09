@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -12,8 +12,7 @@ namespace Opc.Classic.Transport;
 /// <summary>
 /// Creates pipelines-backed DCE/RPC transports for remote endpoints.
 /// </summary>
-public interface IAsyncTransportFactory
-{
+public interface IAsyncTransportFactory {
     /// <summary>Connects to a remote DCE/RPC endpoint.</summary>
     /// <param name="endpoint">The remote endpoint to connect to.</param>
     /// <param name="cancellationToken">Cancellation token.</param>

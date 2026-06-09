@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -21,13 +21,11 @@ using TUnit.Core;
 
 namespace Opc.Classic.Integration.Tests.EndToEnd;
 
-public sealed class CrossSpecEndToEndTests
-{
+public sealed class CrossSpecEndToEndTests {
     private const ushort MsvAvChannelBindings = 0x000A;
 
     [Test, Category("EndToEnd")]
-    public async Task CausalityPropagation_Then_DaCallInsideAeHandlerUsesSameGuid()
-    {
+    public async Task CausalityPropagation_Then_DaCallInsideAeHandlerUsesSameGuid() {
         var daPipeline = new DaEndToEndPipeline();
         var daChannel = new OrpcTrackingInMemoryChannel(daPipeline.Channel.InvokeAsync);
         var daProxy = new IOPCServerClientProxy(daChannel.Channel);
@@ -59,8 +57,7 @@ public sealed class CrossSpecEndToEndTests
     }
 
     [Test, Category("EndToEnd")]
-    public async Task OrpcThisAndThatRoundTrip_Then_EnvelopeIsWrittenAndParsed()
-    {
+    public async Task OrpcThisAndThatRoundTrip_Then_EnvelopeIsWrittenAndParsed() {
         var daPipeline = new DaEndToEndPipeline();
         var channel = new OrpcTrackingInMemoryChannel(daPipeline.Channel.InvokeAsync);
         var proxy = new IOPCServerClientProxy(channel.Channel);
@@ -80,8 +77,7 @@ public sealed class CrossSpecEndToEndTests
     }
 
     [Test, Category("EndToEnd")]
-    public async Task NtlmMicPropagation_Then_AuthenticateMicFlowsThrough()
-    {
+    public async Task NtlmMicPropagation_Then_AuthenticateMicFlowsThrough() {
         Type3Message type3 = CreateNtlmType3(channelBindingsHash: null, out NtlmAuthentication server);
         byte[] authenticate = type3.ToByteArray();
         InvokeCreateSecurityWhenServer(server, type3, authenticate);
@@ -103,8 +99,7 @@ public sealed class CrossSpecEndToEndTests
     }
 
     [Test, Category("EndToEnd")]
-    public async Task ChannelBindingToken_Then_CbtBytesFlowIntoAuthenticateMessage()
-    {
+    public async Task ChannelBindingToken_Then_CbtBytesFlowIntoAuthenticateMessage() {
         byte[] channelBindingToken = ChannelBindingsHash.Compute(new ChannelBindings(
             InitiatorAddrType: 0,
             InitiatorAddress: ReadOnlyMemory<byte>.Empty,
@@ -130,8 +125,7 @@ public sealed class CrossSpecEndToEndTests
         await Assert.That(call.Opnum).IsEqualTo(IOPCServer.Opnums.GetStatusAsync);
     }
 
-    private static Type3Message CreateNtlmType3(byte[]? channelBindingsHash, out NtlmAuthentication server)
-    {
+    private static Type3Message CreateNtlmType3(byte[]? channelBindingsHash, out NtlmAuthentication server) {
         var client = CreateAuthentication(channelBindingsHash);
         server = CreateAuthentication(channelBindingsHash: null);
         Type1Message type1 = client.CreateType1();
@@ -139,8 +133,7 @@ public sealed class CrossSpecEndToEndTests
         return client.CreateType3(type2);
     }
 
-    private static NtlmAuthentication CreateAuthentication(byte[]? channelBindingsHash)
-    {
+    private static NtlmAuthentication CreateAuthentication(byte[]? channelBindingsHash) {
         var properties = new PropertyBag();
         properties.SetProperty("rpc.ntlm.lanManagerKey", "false");
         properties.SetProperty("rpc.ntlm.sign", "true");
@@ -154,36 +147,30 @@ public sealed class CrossSpecEndToEndTests
         properties.SetProperty("rpc.ntlm.domain", "DOMAIN");
         properties.SetProperty(Opc.Classic.Dcom.Rpc.Security.USERNAME, "User");
         properties.SetProperty(Opc.Classic.Dcom.Rpc.Security.PASSWORD, "Password");
-        if (channelBindingsHash is not null)
-        {
+        if (channelBindingsHash is not null) {
             properties.SetProperty("rpc.ntlm.channelBindingsHash", channelBindingsHash);
         }
 
         return new NtlmAuthentication(properties);
     }
 
-    private static bool TryGetNtlmV2AvPair(byte[] ntResponse, ushort avId, out byte[] value)
-    {
+    private static bool TryGetNtlmV2AvPair(byte[] ntResponse, ushort avId, out byte[] value) {
         const int ntProofLength = 16;
         const int avPairsOffsetInBlob = 28;
         int offset = ntProofLength + avPairsOffsetInBlob;
-        while (offset + 4 <= ntResponse.Length)
-        {
+        while (offset + 4 <= ntResponse.Length) {
             ushort currentAvId = BinaryPrimitives.ReadUInt16LittleEndian(ntResponse.AsSpan(offset, sizeof(ushort)));
             ushort length = BinaryPrimitives.ReadUInt16LittleEndian(ntResponse.AsSpan(offset + sizeof(ushort), sizeof(ushort)));
             offset += 4;
-            if (length > ntResponse.Length - offset)
-            {
+            if (length > ntResponse.Length - offset) {
                 break;
             }
 
-            if (currentAvId == 0)
-            {
+            if (currentAvId == 0) {
                 break;
             }
 
-            if (currentAvId == avId)
-            {
+            if (currentAvId == avId) {
                 value = ntResponse.AsSpan(offset, length).ToArray();
                 return true;
             }
@@ -195,35 +182,30 @@ public sealed class CrossSpecEndToEndTests
         return false;
     }
 
-    private static void InvokeCreateSecurityWhenServer(NtlmAuthentication authentication, Type3Message type3, byte[] authenticate)
-    {
+    private static void InvokeCreateSecurityWhenServer(NtlmAuthentication authentication, Type3Message type3, byte[] authenticate) {
         MethodInfo method = typeof(NtlmAuthentication).GetMethod(
             "CreateSecurityWhenServerWithMic",
             BindingFlags.Instance | BindingFlags.NonPublic,
             binder: null,
             types: [typeof(object), typeof(byte[])],
             modifiers: null)!;
-        try
-        {
+        try {
             method.Invoke(authentication, [type3, authenticate]);
         }
-        catch (TargetInvocationException ex) when (ex.InnerException is not null)
-        {
+        catch (TargetInvocationException ex) when (ex.InnerException is not null) {
             ExceptionDispatchInfo.Capture(ex.InnerException).Throw();
             throw;
         }
     }
 
-    private sealed class NestedAeServer : IOpcAeServer
-    {
+    private sealed class NestedAeServer : IOpcAeServer {
         private readonly IOPCServer _daServer;
 
         public NestedAeServer(IOPCServer daServer) => _daServer = daServer;
 
         public Guid ObservedCausalityId { get; private set; }
 
-        public Task<OpcServerStatus> GetStatusAsync(CancellationToken cancellationToken = default) => Task.FromResult(new OpcServerStatus
-        {
+        public Task<OpcServerStatus> GetStatusAsync(CancellationToken cancellationToken = default) => Task.FromResult(new OpcServerStatus {
             Spec = OpcStatusSpec.Ae,
             StartTime = DateTimeOffset.UnixEpoch,
             CurrentTime = DateTimeOffset.UnixEpoch.AddSeconds(1),
@@ -243,8 +225,7 @@ public sealed class CrossSpecEndToEndTests
             string[] conditionNames,
             long[] activeTimes,
             int[] cookies,
-            CancellationToken cancellationToken = default)
-        {
+            CancellationToken cancellationToken = default) {
             _ = dwCount;
             _ = acknowledgerId;
             _ = comment;

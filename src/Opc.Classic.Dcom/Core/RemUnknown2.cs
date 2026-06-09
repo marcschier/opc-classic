@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: MIT
+﻿// SPDX-License-Identifier: MIT
 using Opc.Classic.Dcom.Internal.LegacyNdr;
 using Opc.Classic.Dcom.Common;
 using Opc.Classic.Dcom.Rpc.Core;
@@ -6,7 +6,8 @@ using Opc.Classic.Dcom.Internal;
 using System.Collections.Generic;
 using SharpCifs.Util.Sharpen;
 
-namespace Opc.Classic.Dcom.Core; 
+namespace Opc.Classic.Dcom.Core;
+
 /// <summary>
 /// Remote unknown
 /// </summary>

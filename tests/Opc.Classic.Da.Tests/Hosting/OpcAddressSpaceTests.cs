@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -16,11 +16,9 @@ namespace Opc.Classic.Da.Tests.Hosting;
 /// DefaultBrowseServerAddressSpace (DA 2.x), DefaultBrowse (DA 3.0), and
 /// DefaultItemProperties with the canonical OPC-standard property bag.
 /// </summary>
-public sealed class OpcAddressSpaceTests
-{
+public sealed class OpcAddressSpaceTests {
     [Test]
-    public async Task FlatHierarchicalNamespace_IsHierarchical_is_false()
-    {
+    public async Task FlatHierarchicalNamespace_IsHierarchical_is_false() {
         var space = new FlatHierarchicalNamespace();
         OpcBrowseResult result = await space.BrowseAsync(null, OpcBrowseElementKind.All, TestContext.Current!.CancellationToken);
 
@@ -30,16 +28,14 @@ public sealed class OpcAddressSpaceTests
     }
 
     [Test]
-    public async Task FlatHierarchicalNamespace_GetItemId_echoes_input()
-    {
+    public async Task FlatHierarchicalNamespace_GetItemId_echoes_input() {
         var space = new FlatHierarchicalNamespace();
         string id = await space.GetItemIdAsync("any", "Tag.A", TestContext.Current!.CancellationToken);
         await Assert.That(id).IsEqualTo("Tag.A");
     }
 
     [Test]
-    public async Task InMemoryAddressSpace_returns_root_branches()
-    {
+    public async Task InMemoryAddressSpace_returns_root_branches() {
         var space = new InMemoryAddressSpace("Plant", "Diagnostics");
         OpcBrowseResult result = await space.BrowseAsync(null, OpcBrowseElementKind.All, TestContext.Current!.CancellationToken);
 
@@ -49,8 +45,7 @@ public sealed class OpcAddressSpaceTests
     }
 
     [Test]
-    public async Task InMemoryAddressSpace_AddItem_under_root_appears_in_browse()
-    {
+    public async Task InMemoryAddressSpace_AddItem_under_root_appears_in_browse() {
         var space = new InMemoryAddressSpace();
         space.AddItem(string.Empty, "Tag.A");
 
@@ -60,8 +55,7 @@ public sealed class OpcAddressSpaceTests
     }
 
     [Test]
-    public async Task InMemoryAddressSpace_AddItem_under_nested_branch_creates_hierarchy()
-    {
+    public async Task InMemoryAddressSpace_AddItem_under_nested_branch_creates_hierarchy() {
         var space = new InMemoryAddressSpace();
         space.AddBranch("Plant.Cooling.Pumps");
         space.AddItem("Plant.Cooling.Pumps", "Pump1.Status");
@@ -74,8 +68,7 @@ public sealed class OpcAddressSpaceTests
     }
 
     [Test]
-    public async Task InMemoryAddressSpace_GetItemId_concats_branch_path()
-    {
+    public async Task InMemoryAddressSpace_GetItemId_concats_branch_path() {
         var space = new InMemoryAddressSpace();
 
         string id = await space.GetItemIdAsync("Plant.Cooling", "Pump1", TestContext.Current!.CancellationToken);
@@ -84,8 +77,7 @@ public sealed class OpcAddressSpaceTests
     }
 
     [Test]
-    public async Task DefaultBrowseServerAddressSpace_with_hierarchical_space_reports_OPCNS_HIERARCHIAL()
-    {
+    public async Task DefaultBrowseServerAddressSpace_with_hierarchical_space_reports_OPCNS_HIERARCHIAL() {
         var space = new InMemoryAddressSpace("Plant");
         var browse = new DefaultBrowseServerAddressSpace(space);
 
@@ -95,8 +87,7 @@ public sealed class OpcAddressSpaceTests
     }
 
     [Test]
-    public async Task DefaultBrowseServerAddressSpace_ChangeBrowsePosition_DOWN_navigates_into_branch()
-    {
+    public async Task DefaultBrowseServerAddressSpace_ChangeBrowsePosition_DOWN_navigates_into_branch() {
         var space = new InMemoryAddressSpace("Plant");
         space.AddItem("Plant", "Tag.A");
         var browse = new DefaultBrowseServerAddressSpace(space);
@@ -109,8 +100,7 @@ public sealed class OpcAddressSpaceTests
     }
 
     [Test]
-    public async Task DefaultBrowseServerAddressSpace_ChangeBrowsePosition_UP_pops_branch()
-    {
+    public async Task DefaultBrowseServerAddressSpace_ChangeBrowsePosition_UP_pops_branch() {
         var space = new InMemoryAddressSpace("Plant.Cooling");
         var browse = new DefaultBrowseServerAddressSpace(space);
         await browse.ChangeBrowsePositionAsync(browseDirection: 1, "Plant", TestContext.Current!.CancellationToken);
@@ -122,8 +112,7 @@ public sealed class OpcAddressSpaceTests
     }
 
     [Test]
-    public async Task DefaultBrowseServerAddressSpace_ChangeBrowsePosition_TO_absolute_position()
-    {
+    public async Task DefaultBrowseServerAddressSpace_ChangeBrowsePosition_TO_absolute_position() {
         var space = new InMemoryAddressSpace("Plant.Cooling");
         var browse = new DefaultBrowseServerAddressSpace(space);
 
@@ -133,8 +122,7 @@ public sealed class OpcAddressSpaceTests
     }
 
     [Test]
-    public async Task DefaultBrowseServerAddressSpace_GetItemId_uses_current_browse_position()
-    {
+    public async Task DefaultBrowseServerAddressSpace_GetItemId_uses_current_browse_position() {
         var space = new InMemoryAddressSpace("Plant");
         var browse = new DefaultBrowseServerAddressSpace(space);
         await browse.ChangeBrowsePositionAsync(browseDirection: 2, "Plant", TestContext.Current!.CancellationToken);
@@ -145,8 +133,7 @@ public sealed class OpcAddressSpaceTests
     }
 
     [Test]
-    public async Task DefaultBrowse_returns_branches_and_items_from_address_space()
-    {
+    public async Task DefaultBrowse_returns_branches_and_items_from_address_space() {
         var space = new InMemoryAddressSpace("Plant");
         space.AddItem("Plant", "Tag.A");
         space.AddItem("Plant", "Tag.B");
@@ -175,11 +162,9 @@ public sealed class OpcAddressSpaceTests
     }
 
     [Test]
-    public async Task DefaultBrowse_truncates_to_maxElementsReturned_and_sets_moreElements()
-    {
+    public async Task DefaultBrowse_truncates_to_maxElementsReturned_and_sets_moreElements() {
         var space = new InMemoryAddressSpace("Plant");
-        for (int i = 0; i < 10; i++)
-        {
+        for (int i = 0; i < 10; i++) {
             space.AddItem("Plant", $"Tag.{i}");
         }
         var browse = new DefaultBrowse(space);
@@ -204,8 +189,7 @@ public sealed class OpcAddressSpaceTests
     }
 
     [Test]
-    public async Task DefaultItemProperties_QueryAvailableProperties_returns_OPC_standard_set()
-    {
+    public async Task DefaultItemProperties_QueryAvailableProperties_returns_OPC_standard_set() {
         var props = new DefaultItemProperties();
 
         await props.QueryAvailablePropertiesAsync(
@@ -225,8 +209,7 @@ public sealed class OpcAddressSpaceTests
     }
 
     [Test]
-    public async Task DefaultItemProperties_with_custom_provider_returns_provider_values()
-    {
+    public async Task DefaultItemProperties_with_custom_provider_returns_provider_values() {
         var provider = new InMemoryPropertyProvider();
         provider.Set("Tag.A", OpcStandardProperties.CanonicalDataType, new OpcVariant(VarType.VT_I2, (short)VarType.VT_R8));
         var props = new DefaultItemProperties(provider);
@@ -243,8 +226,7 @@ public sealed class OpcAddressSpaceTests
         await Assert.That(errors[1]).IsEqualTo(OpcResultId.InvalidPid.Code);
     }
 
-    private sealed class InMemoryPropertyProvider : IOpcItemPropertyProvider
-    {
+    private sealed class InMemoryPropertyProvider : IOpcItemPropertyProvider {
         private readonly System.Collections.Generic.Dictionary<(string ItemId, int Pid), OpcVariant> _values = new();
 
         public void Set(string itemId, int propertyId, OpcVariant value) =>

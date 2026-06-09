@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -14,13 +14,10 @@ using TUnit.Core;
 
 namespace Opc.Classic.Integration.Tests.Loopback;
 
-public sealed class F1DaRoundTrip
-{
+public sealed class F1DaRoundTrip {
     [Test]
-    public async Task GetStatus_round_trips_through_InMemoryCallChannel()
-    {
-        var expected = new OpcServerStatus
-        {
+    public async Task GetStatus_round_trips_through_InMemoryCallChannel() {
+        var expected = new OpcServerStatus {
             Spec = OpcStatusSpec.Da,
             StartTime = new DateTimeOffset(2026, 5, 22, 8, 0, 0, TimeSpan.Zero),
             CurrentTime = new DateTimeOffset(2026, 5, 22, 8, 1, 0, TimeSpan.Zero),
@@ -36,8 +33,7 @@ public sealed class F1DaRoundTrip
         var observedOpnum = -1;
         var observedPayloadLength = -1;
 
-        var channel = new InMemoryCallChannel((interfaceId, opnum, payload, _) =>
-        {
+        var channel = new InMemoryCallChannel((interfaceId, opnum, payload, _) => {
             observedInterfaceId = interfaceId;
             observedOpnum = opnum;
             observedPayloadLength = payload.Length;
@@ -63,16 +59,14 @@ public sealed class F1DaRoundTrip
     }
 
     [Test]
-    public async Task RemoveGroup_round_trips_with_success_status()
-    {
+    public async Task RemoveGroup_round_trips_with_success_status() {
         var expectedServerGroupHandle = 42;
         var expectedForce = true;
         var observedInterfaceId = Guid.Empty;
         var observedOpnum = -1;
         ReadOnlyMemory<byte> capturedPayload = ReadOnlyMemory<byte>.Empty;
 
-        var channel = new InMemoryCallChannel((interfaceId, opnum, payload, _) =>
-        {
+        var channel = new InMemoryCallChannel((interfaceId, opnum, payload, _) => {
             observedInterfaceId = interfaceId;
             observedOpnum = opnum;
             capturedPayload = payload.ToArray();
@@ -91,8 +85,7 @@ public sealed class F1DaRoundTrip
         await Assert.That(channel.CallLog.Count).IsEqualTo(expectedCallCount);
     }
 
-    private static ReadOnlyMemory<byte> EncodeStatus(OpcServerStatus status)
-    {
+    private static ReadOnlyMemory<byte> EncodeStatus(OpcServerStatus status) {
         var buffer = new byte[512];
         var writer = new NdrWriter(buffer);
         // IOPCServer::GetStatus declares [out] OPCSERVERSTATUS **ppServerStatus,
@@ -105,8 +98,7 @@ public sealed class F1DaRoundTrip
         return buffer.AsMemory(0, writer.Position).ToArray();
     }
 
-    private static (int ServerGroupHandle, bool Force) DecodeRemoveGroupRequest(ReadOnlySpan<byte> payload)
-    {
+    private static (int ServerGroupHandle, bool Force) DecodeRemoveGroupRequest(ReadOnlySpan<byte> payload) {
         var reader = new NdrReader(payload);
         var serverGroupHandle = reader.ReadInt32();
         var force = reader.ReadInt32() != 0;

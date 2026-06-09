@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -37,15 +37,13 @@ namespace Opc.Classic.Xml.Serialization;
 /// <summary>
 /// AOT-safe serializer for the OPC XML-DA 1.0 <c>GetStatus</c> operation.
 /// </summary>
-public static class GetStatusSerializer
-{
+public static class GetStatusSerializer {
     /// <summary>
     /// Writes a complete SOAP envelope carrying a <c>GetStatus</c> request
     /// (request body is empty other than the LocaleID / ClientRequestHandle
     /// attributes inherited from <see cref="XmlDaRequestHeader"/>).
     /// </summary>
-    public static void WriteRequest(SoapEnvelopeWriter writer, XmlDaRequestHeader header)
-    {
+    public static void WriteRequest(SoapEnvelopeWriter writer, XmlDaRequestHeader header) {
         ArgumentNullException.ThrowIfNull(writer);
         ArgumentNullException.ThrowIfNull(header);
 
@@ -53,13 +51,11 @@ public static class GetStatusSerializer
         writer.WriteBodyStart();
         writer.WriteOperationStart("GetStatus");
 
-        if (!string.IsNullOrEmpty(header.LocaleId))
-        {
+        if (!string.IsNullOrEmpty(header.LocaleId)) {
             writer.Writer.WriteAttributeString("LocaleID", header.LocaleId);
         }
 
-        if (!string.IsNullOrEmpty(header.ClientRequestHandle))
-        {
+        if (!string.IsNullOrEmpty(header.ClientRequestHandle)) {
             writer.Writer.WriteAttributeString("ClientRequestHandle", header.ClientRequestHandle);
         }
 
@@ -75,13 +71,11 @@ public static class GetStatusSerializer
     /// <see cref="InvalidDataException"/> if the response is malformed or
     /// is a SOAP Fault.
     /// </summary>
-    public static XmlDaServerStatus ReadResponse(SoapEnvelopeReader reader)
-    {
+    public static XmlDaServerStatus ReadResponse(SoapEnvelopeReader reader) {
         ArgumentNullException.ThrowIfNull(reader);
 
         string operationName = reader.AdvanceToOperationResponse();
-        if (!string.Equals(operationName, "GetStatusResponse", StringComparison.Ordinal))
-        {
+        if (!string.Equals(operationName, "GetStatusResponse", StringComparison.Ordinal)) {
             throw new InvalidDataException(
                 $"Expected GetStatusResponse but found '{operationName}'.");
         }
@@ -98,26 +92,20 @@ public static class GetStatusSerializer
         string? statusInfo = null;
 
         // We're positioned on <GetStatusResponse>. Walk its descendants.
-        if (!r.IsEmptyElement)
-        {
+        if (!r.IsEmptyElement) {
             int responseDepth = r.Depth;
-            while (r.Read() && r.Depth > responseDepth)
-            {
-                if (r.NodeType != XmlNodeType.Element)
-                {
+            while (r.Read() && r.Depth > responseDepth) {
+                if (r.NodeType != XmlNodeType.Element) {
                     continue;
                 }
 
-                if (string.Equals(r.LocalName, "GetStatusResult", StringComparison.Ordinal))
-                {
+                if (string.Equals(r.LocalName, "GetStatusResult", StringComparison.Ordinal)) {
                     string? stateAttr = r.GetAttribute("ServerState");
-                    if (!string.IsNullOrEmpty(stateAttr))
-                    {
+                    if (!string.IsNullOrEmpty(stateAttr)) {
                         serverState = ParseServerState(stateAttr);
                     }
                 }
-                else if (string.Equals(r.LocalName, "Status", StringComparison.Ordinal))
-                {
+                else if (string.Equals(r.LocalName, "Status", StringComparison.Ordinal)) {
                     ReadStatusElement(r, ref startTime, ref productVersion, ref vendorInfo,
                         supportedLocales, supportedInterfaceVersions, ref statusInfo);
                 }
@@ -141,21 +129,18 @@ public static class GetStatusSerializer
         ref string vendorInfo,
         List<string> supportedLocales,
         List<string> supportedInterfaceVersions,
-        ref string? statusInfo)
-    {
+        ref string? statusInfo) {
         string? startAttr = r.GetAttribute("StartTime");
         if (!string.IsNullOrEmpty(startAttr) &&
             DateTimeOffset.TryParse(startAttr, CultureInfo.InvariantCulture,
-                DateTimeStyles.RoundtripKind, out var parsedStart))
-        {
+                DateTimeStyles.RoundtripKind, out var parsedStart)) {
             startTime = parsedStart;
         }
 
         productVersion = r.GetAttribute("ProductVersion") ?? string.Empty;
         vendorInfo = r.GetAttribute("VendorInfo") ?? string.Empty;
 
-        if (r.IsEmptyElement)
-        {
+        if (r.IsEmptyElement) {
             return;
         }
 
@@ -166,67 +151,55 @@ public static class GetStatusSerializer
         XmlReader r,
         List<string> supportedLocales,
         List<string> supportedInterfaceVersions,
-        ref string? statusInfo)
-    {
+        ref string? statusInfo) {
         // ReadElementContentAsString advances past the end tag, so we use an
         // 'alreadyAdvanced' flag to avoid double-reading and skipping siblings.
         int statusDepth = r.Depth;
         bool alreadyAdvanced = false;
 
-        while (true)
-        {
-            if (!alreadyAdvanced)
-            {
-                if (!r.Read())
-                {
+        while (true) {
+            if (!alreadyAdvanced) {
+                if (!r.Read()) {
                     break;
                 }
             }
             alreadyAdvanced = false;
 
-            if (r.Depth <= statusDepth)
-            {
+            if (r.Depth <= statusDepth) {
                 break;
             }
 
-            if (r.NodeType != XmlNodeType.Element)
-            {
+            if (r.NodeType != XmlNodeType.Element) {
                 continue;
             }
 
-            if (string.Equals(r.LocalName, "SupportedLocaleIDs", StringComparison.Ordinal))
-            {
+            if (string.Equals(r.LocalName, "SupportedLocaleIDs", StringComparison.Ordinal)) {
                 supportedLocales.Add(r.ReadElementContentAsString());
                 alreadyAdvanced = true;
             }
-            else if (string.Equals(r.LocalName, "SupportedInterfaceVersions", StringComparison.Ordinal))
-            {
+            else if (string.Equals(r.LocalName, "SupportedInterfaceVersions", StringComparison.Ordinal)) {
                 supportedInterfaceVersions.Add(r.ReadElementContentAsString());
                 alreadyAdvanced = true;
             }
-            else if (string.Equals(r.LocalName, "StatusInfo", StringComparison.Ordinal))
-            {
+            else if (string.Equals(r.LocalName, "StatusInfo", StringComparison.Ordinal)) {
                 statusInfo = r.ReadElementContentAsString();
                 alreadyAdvanced = true;
             }
-            else
-            {
+            else {
                 r.Skip();
                 alreadyAdvanced = true;
             }
         }
     }
 
-    private static XmlDaServerState ParseServerState(string value)
-    {
-        return value switch
-        {
-            "running"    => XmlDaServerState.Running,
-            "failed"     => XmlDaServerState.Failed,
-            "noConfig"   => XmlDaServerState.NoConfig,
-            "suspended"  => XmlDaServerState.Suspended,
-            "test"       => XmlDaServerState.Test,
-            "commFault"  => XmlDaServerState.CommFault,
+    private static XmlDaServerState ParseServerState(string value) {
+        return value switch {
+            "running" => XmlDaServerState.Running,
+            "failed" => XmlDaServerState.Failed,
+            "noConfig" => XmlDaServerState.NoConfig,
+            "suspended" => XmlDaServerState.Suspended,
+            "test" => XmlDaServerState.Test,
+            "commFault" => XmlDaServerState.CommFault,
             _ => throw new InvalidDataException(
                 $"Unknown XML-DA serverState value '{value}'."),
         };

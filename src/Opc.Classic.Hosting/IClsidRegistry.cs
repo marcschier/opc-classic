@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -12,8 +12,7 @@ namespace Opc.Classic.Hosting;
 /// Cross-platform CLSID registry. Resolves a CLSID to the (assembly, type)
 /// implementing it, plus optional ProgID alias.
 /// </summary>
-public interface IClsidRegistry
-{
+public interface IClsidRegistry {
     /// <summary>Resolves a CLSID to its server registration.</summary>
     bool TryResolve(Guid clsid, out OpcClsidRegistration registration);
 

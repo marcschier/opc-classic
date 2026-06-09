@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -11,8 +11,7 @@ using Opc.Classic.Mcp.Sessions;
 namespace Opc.Classic.Mcp.Tools;
 
 /// <summary>MCP tools for OPC Classic session lifecycle management.</summary>
-public sealed class SessionTools
-{
+public sealed class SessionTools {
     private readonly IOpcSessionManager _sessionManager;
 
     /// <summary>Creates the session tool set.</summary>
@@ -24,8 +23,7 @@ public sealed class SessionTools
     [Description("Creates an OPC Classic MCP session and returns the sessionId used by discovery and DA tools.")]
     public OpcSessionDto CreateSession(
         [Description("Optional idle timeout in seconds. If omitted, the session expires after 30 minutes of inactivity.")]
-        int? idleExpirySeconds = null)
-    {
+        int? idleExpirySeconds = null) {
         TimeSpan? expiry = idleExpirySeconds is null ? null : TimeSpan.FromSeconds(idleExpirySeconds.Value);
         OpcSession session = _sessionManager.CreateSession(expiry);
         return ToDto(session);
@@ -36,8 +34,7 @@ public sealed class SessionTools
     [Description("Closes an OPC Classic MCP session, releasing all DA groups, subscriptions, clients, and channels.")]
     public OpcResultDto CloseSession(
         [Description("The sessionId returned by opcclassic.session.create.")]
-        string sessionId)
-    {
+        string sessionId) {
         bool closed = _sessionManager.CloseSession(sessionId);
         return closed
             ? new OpcResultDto(0, $"Session '{sessionId}' closed.", Succeeded: true)
@@ -49,8 +46,7 @@ public sealed class SessionTools
     [Description("Lists active OPC Classic MCP sessions, including expiry and DA connection state.")]
     public IReadOnlyList<OpcSessionDto> ListSessions() => _sessionManager.ListSessions();
 
-    private static OpcSessionDto ToDto(OpcSession session)
-    {
+    private static OpcSessionDto ToDto(OpcSession session) {
         DaClientState? da = session.DaClient;
         return new OpcSessionDto(
             session.SessionId,

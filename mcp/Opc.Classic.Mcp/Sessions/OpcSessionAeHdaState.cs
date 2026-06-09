@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -13,15 +13,13 @@ using Opc.Classic.Hda.Dcom;
 namespace Opc.Classic.Mcp.Sessions;
 
 /// <summary>Holds OPC AE wire proxies and poll-based subscription queues.</summary>
-public sealed class AeClientState : IAsyncDisposable
-{
+public sealed class AeClientState : IAsyncDisposable {
     private readonly ICallChannel _channel;
     private readonly bool _ownsChannel;
     private bool _disposed;
 
     /// <summary>Creates AE client state over an existing call channel.</summary>
-    public AeClientState(string host, string? progId, Guid? clsid, ICallChannel channel, bool ownsChannel, IAeServer? managedServer = null)
-    {
+    public AeClientState(string host, string? progId, Guid? clsid, ICallChannel channel, bool ownsChannel, IAeServer? managedServer = null) {
         ArgumentException.ThrowIfNullOrWhiteSpace(host);
         ArgumentNullException.ThrowIfNull(channel);
 
@@ -69,24 +67,19 @@ public sealed class AeClientState : IAsyncDisposable
     public ConcurrentDictionary<string, AeSubscriptionContext> Subscriptions { get; } = new(StringComparer.Ordinal);
 
     /// <inheritdoc />
-    public async ValueTask DisposeAsync()
-    {
-        if (_disposed)
-        {
+    public async ValueTask DisposeAsync() {
+        if (_disposed) {
             return;
         }
 
         _disposed = true;
-        foreach (AeSubscriptionContext subscription in Subscriptions.Values)
-        {
+        foreach (AeSubscriptionContext subscription in Subscriptions.Values) {
             await subscription.DisposeAsync().ConfigureAwait(false);
         }
 
         Subscriptions.Clear();
-        if (_ownsChannel)
-        {
-            switch (_channel)
-            {
+        if (_ownsChannel) {
+            switch (_channel) {
                 case IAsyncDisposable asyncDisposable:
                     await asyncDisposable.DisposeAsync().ConfigureAwait(false);
                     break;
@@ -99,13 +92,11 @@ public sealed class AeClientState : IAsyncDisposable
 }
 
 /// <summary>Tracks an AE subscription and its MCP poll queue.</summary>
-public sealed class AeSubscriptionContext : IAsyncDisposable
-{
+public sealed class AeSubscriptionContext : IAsyncDisposable {
     private bool _disposed;
 
     /// <summary>Creates an AE subscription context.</summary>
-    public AeSubscriptionContext(string subscriptionId, int clientSubscription, bool active, int bufferTimeMs, int maxBufferSize, int revisedBufferTimeMs, int revisedMaxBufferSize, IAeSubscription? subscription)
-    {
+    public AeSubscriptionContext(string subscriptionId, int clientSubscription, bool active, int bufferTimeMs, int maxBufferSize, int revisedBufferTimeMs, int revisedMaxBufferSize, IAeSubscription? subscription) {
         ArgumentException.ThrowIfNullOrWhiteSpace(subscriptionId);
         SubscriptionId = subscriptionId;
         ClientSubscription = clientSubscription;
@@ -154,29 +145,23 @@ public sealed class AeSubscriptionContext : IAsyncDisposable
     public Task? PumpTask { get; set; }
 
     /// <inheritdoc />
-    public async ValueTask DisposeAsync()
-    {
-        if (_disposed)
-        {
+    public async ValueTask DisposeAsync() {
+        if (_disposed) {
             return;
         }
 
         _disposed = true;
         Cancellation.Cancel();
         Events.Writer.TryComplete();
-        if (Subscription is not null)
-        {
+        if (Subscription is not null) {
             await Subscription.DisposeAsync().ConfigureAwait(false);
         }
 
-        if (PumpTask is not null)
-        {
-            try
-            {
+        if (PumpTask is not null) {
+            try {
                 await PumpTask.ConfigureAwait(false);
             }
-            catch (OperationCanceledException)
-            {
+            catch (OperationCanceledException) {
             }
         }
 
@@ -185,15 +170,13 @@ public sealed class AeSubscriptionContext : IAsyncDisposable
 }
 
 /// <summary>Holds OPC HDA wire proxies and item handles.</summary>
-public sealed class HdaClientState : IAsyncDisposable
-{
+public sealed class HdaClientState : IAsyncDisposable {
     private readonly ICallChannel _channel;
     private readonly bool _ownsChannel;
     private bool _disposed;
 
     /// <summary>Creates HDA client state over an existing call channel.</summary>
-    public HdaClientState(string host, string? progId, Guid? clsid, ICallChannel channel, bool ownsChannel, IHdaServer? managedServer = null)
-    {
+    public HdaClientState(string host, string? progId, Guid? clsid, ICallChannel channel, bool ownsChannel, IHdaServer? managedServer = null) {
         ArgumentException.ThrowIfNullOrWhiteSpace(host);
         ArgumentNullException.ThrowIfNull(channel);
 
@@ -241,19 +224,15 @@ public sealed class HdaClientState : IAsyncDisposable
     public ConcurrentDictionary<int, HdaItemHandleContext> ItemHandles { get; } = new();
 
     /// <inheritdoc />
-    public async ValueTask DisposeAsync()
-    {
-        if (_disposed)
-        {
+    public async ValueTask DisposeAsync() {
+        if (_disposed) {
             return;
         }
 
         _disposed = true;
         ItemHandles.Clear();
-        if (_ownsChannel)
-        {
-            switch (_channel)
-            {
+        if (_ownsChannel) {
+            switch (_channel) {
                 case IAsyncDisposable asyncDisposable:
                     await asyncDisposable.DisposeAsync().ConfigureAwait(false);
                     break;

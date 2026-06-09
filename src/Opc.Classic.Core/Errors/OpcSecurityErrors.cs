@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -10,8 +10,7 @@ namespace Opc.Classic;
 /// <summary>
 /// Spec-defined HRESULT constants for OPC Security 1.00 (<c>OpcErrSec.h</c>).
 /// </summary>
-public static class OpcSecurityErrors
-{
+public static class OpcSecurityErrors {
     /// <summary><c>OPC_E_PRIVATE_ACTIVE</c> (0xC0040301) — private OPC credentials are already active.</summary>
     public const int OPC_E_PRIVATE_ACTIVE = unchecked((int)0xC0040301u);
 

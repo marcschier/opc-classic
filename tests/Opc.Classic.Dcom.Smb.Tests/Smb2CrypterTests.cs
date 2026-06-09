@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -10,13 +10,11 @@ using TUnit.Core;
 
 namespace Opc.Classic.Dcom.Smb.Tests;
 
-public sealed class Smb2CrypterTests
-{
+public sealed class Smb2CrypterTests {
     private const ulong SessionId = 0x0102030405060708UL;
 
     [Test]
-    public async Task AesCcm_KnownAnswer_ProducesTransformHeaderAndCiphertext()
-    {
+    public async Task AesCcm_KnownAnswer_ProducesTransformHeaderAndCiphertext() {
         byte[] key = Convert.FromHexString("000102030405060708090A0B0C0D0E0F");
         byte[] nonce = Convert.FromHexString("101112131415161718191A");
         byte[] expected = Convert.FromHexString(
@@ -30,8 +28,7 @@ public sealed class Smb2CrypterTests
     }
 
     [Test]
-    public async Task AesGcm_KnownAnswer_ProducesTransformHeaderAndCiphertext()
-    {
+    public async Task AesGcm_KnownAnswer_ProducesTransformHeaderAndCiphertext() {
         byte[] key = Convert.FromHexString("202122232425262728292A2B2C2D2E2F");
         byte[] nonce = Convert.FromHexString("303132333435363738393A3B");
         byte[] expected = Convert.FromHexString(
@@ -45,8 +42,7 @@ public sealed class Smb2CrypterTests
     }
 
     [Test]
-    public async Task Smb3Kdf_Smb300KnownAnswer_DerivesEncryptionAndDecryptionKeys()
-    {
+    public async Task Smb3Kdf_Smb300KnownAnswer_DerivesEncryptionAndDecryptionKeys() {
         byte[] sessionKey = Convert.FromHexString("000102030405060708090A0B0C0D0E0F");
         byte[] expectedEncryptionKey = Convert.FromHexString("86EFCAD258778BC261FB4584AC60F5C1");
         byte[] expectedDecryptionKey = Convert.FromHexString("7471AF66CBAC2334799A8F81BBA69B84");
@@ -59,12 +55,10 @@ public sealed class Smb2CrypterTests
     }
 
     [Test]
-    public async Task Smb3Kdf_Smb311KnownAnswer_DerivesDirectionalCipherKeys()
-    {
+    public async Task Smb3Kdf_Smb311KnownAnswer_DerivesDirectionalCipherKeys() {
         byte[] sessionKey = Convert.FromHexString("000102030405060708090A0B0C0D0E0F");
         byte[] preauthHash = new byte[64];
-        for (int i = 0; i < preauthHash.Length; i++)
-        {
+        for (int i = 0; i < preauthHash.Length; i++) {
             preauthHash[i] = (byte)i;
         }
         byte[] expectedEncryptionKey = Convert.FromHexString("421F424EB573336F616F4385D774587F");
@@ -78,8 +72,7 @@ public sealed class Smb2CrypterTests
     }
 
     [Test]
-    public async Task EncryptThenDecrypt_RoundTrips()
-    {
+    public async Task EncryptThenDecrypt_RoundTrips() {
         byte[] key = Convert.FromHexString("404142434445464748494A4B4C4D4E4F");
         byte[] nonce = Convert.FromHexString("505152535455565758595A5B");
         byte[] plaintext = CreatePlaintextMessage();
@@ -92,8 +85,7 @@ public sealed class Smb2CrypterTests
     }
 
     [Test]
-    public async Task Decrypt_RejectsTamperedCiphertext()
-    {
+    public async Task Decrypt_RejectsTamperedCiphertext() {
         var crypter = CreateCcmCrypter(out byte[] encrypted);
         encrypted[^1] ^= 0x01;
 
@@ -101,8 +93,7 @@ public sealed class Smb2CrypterTests
     }
 
     [Test]
-    public async Task Decrypt_RejectsTamperedNonce()
-    {
+    public async Task Decrypt_RejectsTamperedNonce() {
         var crypter = CreateCcmCrypter(out byte[] encrypted);
         encrypted[20] ^= 0x01;
 
@@ -110,8 +101,7 @@ public sealed class Smb2CrypterTests
     }
 
     [Test]
-    public async Task Decrypt_RejectsWrongKey()
-    {
+    public async Task Decrypt_RejectsWrongKey() {
         _ = CreateCcmCrypter(out byte[] encrypted);
         var wrongKeyCrypter = new Smb2Crypter(
             Convert.FromHexString("606162636465666768696A6B6C6D6E6F"),
@@ -121,16 +111,14 @@ public sealed class Smb2CrypterTests
     }
 
     [Test]
-    public async Task Decrypt_RejectsTamperedTransformHeaderSessionId()
-    {
+    public async Task Decrypt_RejectsTamperedTransformHeaderSessionId() {
         var crypter = CreateCcmCrypter(out byte[] encrypted);
         encrypted[44] ^= 0x01;
 
         await AssertDecryptRejectedAsync(crypter, encrypted);
     }
 
-    private static Smb2Crypter CreateCcmCrypter(out byte[] encrypted)
-    {
+    private static Smb2Crypter CreateCcmCrypter(out byte[] encrypted) {
         byte[] key = Convert.FromHexString("000102030405060708090A0B0C0D0E0F");
         byte[] nonce = Convert.FromHexString("101112131415161718191A");
         var crypter = new Smb2Crypter(key, Smb2EncryptionAlgorithm.AesCcm);
@@ -138,23 +126,19 @@ public sealed class Smb2CrypterTests
         return crypter;
     }
 
-    private static async Task AssertDecryptRejectedAsync(Smb2Crypter crypter, byte[] encrypted)
-    {
+    private static async Task AssertDecryptRejectedAsync(Smb2Crypter crypter, byte[] encrypted) {
         bool threw = false;
-        try
-        {
+        try {
             _ = crypter.DecryptMessage(encrypted, SessionId);
         }
-        catch (Smb2ProtocolException)
-        {
+        catch (Smb2ProtocolException) {
             threw = true;
         }
 
         await Assert.That(threw).IsTrue();
     }
 
-    private static byte[] CreatePlaintextMessage()
-    {
+    private static byte[] CreatePlaintextMessage() {
         byte[] message = new byte[64 + 8];
         var header = new Smb2PacketHeader(
             CreditCharge: 1,

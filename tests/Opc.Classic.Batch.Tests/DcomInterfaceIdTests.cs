@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -9,32 +9,27 @@ using TUnit.Core;
 
 namespace Opc.Classic.Batch.Tests;
 
-public sealed class DcomInterfaceIdTests
-{
+public sealed class DcomInterfaceIdTests {
     [Test]
-    public async Task IOPCBatchServer_InterfaceId_IsEmitted()
-    {
+    public async Task IOPCBatchServer_InterfaceId_IsEmitted() {
         await Assert.That(ReadIOPCBatchServerInterfaceId()).IsNotEqualTo(ReadEmptyGuid());
         await Assert.That(ReadIOPCBatchServerInterfaceId()).IsEqualTo(ReadExpectedIOPCBatchServerInterfaceId());
     }
 
     [Test]
-    public async Task IOPCBatchServer2_InterfaceId_IsEmitted()
-    {
+    public async Task IOPCBatchServer2_InterfaceId_IsEmitted() {
         await Assert.That(ReadIOPCBatchServer2InterfaceId()).IsNotEqualTo(ReadEmptyGuid());
         await Assert.That(ReadIOPCBatchServer2InterfaceId()).IsEqualTo(ReadExpectedIOPCBatchServer2InterfaceId());
     }
 
     [Test]
-    public async Task IEnumOPCBatchSummary_InterfaceId_IsEmitted()
-    {
+    public async Task IEnumOPCBatchSummary_InterfaceId_IsEmitted() {
         await Assert.That(ReadIEnumOPCBatchSummaryInterfaceId()).IsNotEqualTo(ReadEmptyGuid());
         await Assert.That(ReadIEnumOPCBatchSummaryInterfaceId()).IsEqualTo(ReadExpectedIEnumOPCBatchSummaryInterfaceId());
     }
 
     [Test]
-    public async Task IOPCEnumerationSets_InterfaceId_IsEmitted()
-    {
+    public async Task IOPCEnumerationSets_InterfaceId_IsEmitted() {
         await Assert.That(ReadIOPCEnumerationSetsInterfaceId()).IsNotEqualTo(ReadEmptyGuid());
         await Assert.That(ReadIOPCEnumerationSetsInterfaceId()).IsEqualTo(ReadExpectedIOPCEnumerationSetsInterfaceId());
     }

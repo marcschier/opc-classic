@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: MIT
+﻿// SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 
 using Microsoft.Extensions.Hosting;
@@ -7,8 +7,7 @@ using Opc.Classic.Hda;
 
 namespace Opc.Classic.Samples.HdaClient;
 
-internal sealed class HdaClientDemo : BackgroundService
-{
+internal sealed class HdaClientDemo : BackgroundService {
     private static readonly string[] DemoItemIds = ["Sensor.Temperature"];
     private static readonly HdaTime DemoStart = HdaTime.Relative("NOW-10M");
     private static readonly HdaTime DemoEnd = HdaTime.Now;
@@ -75,18 +74,15 @@ internal sealed class HdaClientDemo : BackgroundService
     public HdaClientDemo(
         LoopbackHdaClient client,
         ILogger<HdaClientDemo> logger,
-        IHostApplicationLifetime lifetime)
-    {
+        IHostApplicationLifetime lifetime) {
         _client = client ?? throw new ArgumentNullException(nameof(client));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         _lifetime = lifetime ?? throw new ArgumentNullException(nameof(lifetime));
     }
 
-    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
-    {
+    protected override async Task ExecuteAsync(CancellationToken stoppingToken) {
         int[] serverHandles = [];
-        try
-        {
+        try {
             await _client.ConnectAsync(stoppingToken).ConfigureAwait(false);
             ConnectedMessage(_logger, null);
 
@@ -96,8 +92,7 @@ internal sealed class HdaClientDemo : BackgroundService
             await BrowseAsync(stoppingToken).ConfigureAwait(false);
 
             serverHandles = await _client.GetItemHandlesAsync(DemoItemIds, stoppingToken).ConfigureAwait(false);
-            for (int index = 0; index < DemoItemIds.Length; index++)
-            {
+            for (int index = 0; index < DemoItemIds.Length; index++) {
                 HandleMessage(_logger, DemoItemIds[index], serverHandles[index], null);
             }
 
@@ -106,10 +101,8 @@ internal sealed class HdaClientDemo : BackgroundService
             await ReadAnnotationsAsync(stoppingToken).ConfigureAwait(false);
             await DemonstrateAsyncReadCancellationAsync(serverHandles, stoppingToken).ConfigureAwait(false);
         }
-        finally
-        {
-            if (serverHandles.Length > 0)
-            {
+        finally {
+            if (serverHandles.Length > 0) {
                 _ = await _client.ReleaseItemHandlesAsync(serverHandles, CancellationToken.None).ConfigureAwait(false);
             }
 
@@ -119,21 +112,17 @@ internal sealed class HdaClientDemo : BackgroundService
         }
     }
 
-    private async Task BrowseAsync(CancellationToken cancellationToken)
-    {
-        await foreach (HdaBrowseElement branch in _client.BrowseAsync(string.Empty, HdaBrowseType.Branch, cancellationToken).ConfigureAwait(false))
-        {
+    private async Task BrowseAsync(CancellationToken cancellationToken) {
+        await foreach (HdaBrowseElement branch in _client.BrowseAsync(string.Empty, HdaBrowseType.Branch, cancellationToken).ConfigureAwait(false)) {
             BrowseMessage(_logger, branch.BrowseType.ToString(), branch.ItemId, null);
         }
 
-        await foreach (HdaBrowseElement leaf in _client.BrowseAsync("Sensor", HdaBrowseType.Leaf, cancellationToken).ConfigureAwait(false))
-        {
+        await foreach (HdaBrowseElement leaf in _client.BrowseAsync("Sensor", HdaBrowseType.Leaf, cancellationToken).ConfigureAwait(false)) {
             BrowseMessage(_logger, leaf.BrowseType.ToString(), leaf.ItemId, null);
         }
     }
 
-    private async Task ReadRawAsync(int[] serverHandles, CancellationToken cancellationToken)
-    {
+    private async Task ReadRawAsync(int[] serverHandles, CancellationToken cancellationToken) {
         OpcHdaItem[] rawItems = await _client.ReadRawWithSyncReadAsync(
             DemoStart,
             DemoEnd,
@@ -142,12 +131,10 @@ internal sealed class HdaClientDemo : BackgroundService
             serverHandles,
             cancellationToken).ConfigureAwait(false);
 
-        for (int itemIndex = 0; itemIndex < rawItems.Length; itemIndex++)
-        {
+        for (int itemIndex = 0; itemIndex < rawItems.Length; itemIndex++) {
             OpcHdaItem item = rawItems[itemIndex];
             string itemId = DemoItemIds[itemIndex];
-            for (int valueIndex = 0; valueIndex < item.Values.Length; valueIndex++)
-            {
+            for (int valueIndex = 0; valueIndex < item.Values.Length; valueIndex++) {
                 RawValueMessage(
                     _logger,
                     itemId,
@@ -159,8 +146,7 @@ internal sealed class HdaClientDemo : BackgroundService
         }
     }
 
-    private async Task ReadProcessedAsync(int[] serverHandles, CancellationToken cancellationToken)
-    {
+    private async Task ReadProcessedAsync(int[] serverHandles, CancellationToken cancellationToken) {
         OpcHdaItem[] processedItems = await _client.ReadProcessedWithSyncReadAsync(
             DemoStart,
             DemoEnd,
@@ -169,12 +155,10 @@ internal sealed class HdaClientDemo : BackgroundService
             serverHandles,
             cancellationToken).ConfigureAwait(false);
 
-        for (int itemIndex = 0; itemIndex < processedItems.Length; itemIndex++)
-        {
+        for (int itemIndex = 0; itemIndex < processedItems.Length; itemIndex++) {
             OpcHdaItem item = processedItems[itemIndex];
             string itemId = DemoItemIds[itemIndex];
-            for (int valueIndex = 0; valueIndex < item.Values.Length; valueIndex++)
-            {
+            for (int valueIndex = 0; valueIndex < item.Values.Length; valueIndex++) {
                 ProcessedValueMessage(
                     _logger,
                     itemId,
@@ -186,8 +170,7 @@ internal sealed class HdaClientDemo : BackgroundService
         }
     }
 
-    private async Task ReadAnnotationsAsync(CancellationToken cancellationToken)
-    {
+    private async Task ReadAnnotationsAsync(CancellationToken cancellationToken) {
         int capabilities = await _client.QueryAnnotationCapabilitiesAsync(cancellationToken).ConfigureAwait(false);
         AnnotationCapabilitiesMessage(_logger, capabilities, null);
         SyncAnnotationsReadUnavailableMessage(_logger, null);
@@ -198,10 +181,8 @@ internal sealed class HdaClientDemo : BackgroundService
             DemoEnd,
             cancellationToken).ConfigureAwait(false);
 
-        foreach (HdaAnnotationResult result in results)
-        {
-            foreach (HdaAnnotation annotation in result.Annotations)
-            {
+        foreach (HdaAnnotationResult result in results) {
+            foreach (HdaAnnotation annotation in result.Annotations) {
                 AnnotationMessage(
                     _logger,
                     result.ItemId,
@@ -213,13 +194,11 @@ internal sealed class HdaClientDemo : BackgroundService
         }
     }
 
-    private async Task DemonstrateAsyncReadCancellationAsync(int[] serverHandles, CancellationToken cancellationToken)
-    {
+    private async Task DemonstrateAsyncReadCancellationAsync(int[] serverHandles, CancellationToken cancellationToken) {
         using var cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
         cts.CancelAfter(TimeSpan.FromMilliseconds(100));
 
-        try
-        {
+        try {
             _ = await _client.BeginAsyncReadRawAsync(
                 transactionId: 42,
                 DemoStart,
@@ -229,8 +208,7 @@ internal sealed class HdaClientDemo : BackgroundService
                 serverHandles,
                 cts.Token).ConfigureAwait(false);
         }
-        catch (OperationCanceledException) when (cts.IsCancellationRequested)
-        {
+        catch (OperationCanceledException) when (cts.IsCancellationRequested) {
             AsyncReadCancelledMessage(_logger, null);
         }
     }

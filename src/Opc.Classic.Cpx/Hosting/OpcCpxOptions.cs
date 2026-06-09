@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -9,8 +9,7 @@ using System.Collections.Generic;
 namespace Opc.Classic.Cpx.Hosting;
 
 /// <summary>Configuration used by CPX DA-hosting helpers.</summary>
-public sealed class OpcCpxOptions
-{
+public sealed class OpcCpxOptions {
     private readonly List<DictionaryRegistration> _dictionaries = new();
     private readonly List<ComplexItemRegistration> _complexItems = new();
 
@@ -27,8 +26,7 @@ public sealed class OpcCpxOptions
         TypeDictionary dictionary,
         string? dictionaryValue = null,
         IReadOnlyDictionary<string, string>? typeDescriptionValues = null,
-        string? dictionarySegment = null)
-    {
+        string? dictionarySegment = null) {
         _dictionaries.Add(new DictionaryRegistration(
             typeSystemId,
             dictionaryId,
@@ -49,8 +47,7 @@ public sealed class OpcCpxOptions
         string? writeBehavior = null,
         string? unconvertedItemId = null,
         string? unfilteredItemId = null,
-        string? dataFilterValue = null)
-    {
+        string? dataFilterValue = null) {
         _complexItems.Add(new ComplexItemRegistration(
             itemId,
             typeSystemId,
@@ -64,13 +61,10 @@ public sealed class OpcCpxOptions
         return this;
     }
 
-    internal bool TryGetDictionary(string typeSystemId, string dictionaryId, out DictionaryRegistration registration)
-    {
-        foreach (var candidate in _dictionaries)
-        {
+    internal bool TryGetDictionary(string typeSystemId, string dictionaryId, out DictionaryRegistration registration) {
+        foreach (var candidate in _dictionaries) {
             if (StringComparer.Ordinal.Equals(candidate.TypeSystemId, typeSystemId)
-                && StringComparer.Ordinal.Equals(candidate.DictionaryId, dictionaryId))
-            {
+                && StringComparer.Ordinal.Equals(candidate.DictionaryId, dictionaryId)) {
                 registration = candidate;
                 return true;
             }
@@ -80,13 +74,10 @@ public sealed class OpcCpxOptions
         return false;
     }
 
-    internal bool TryGetDictionaryBySegment(string typeSystemId, string dictionarySegment, out DictionaryRegistration registration)
-    {
-        foreach (var candidate in _dictionaries)
-        {
+    internal bool TryGetDictionaryBySegment(string typeSystemId, string dictionarySegment, out DictionaryRegistration registration) {
+        foreach (var candidate in _dictionaries) {
             if (StringComparer.Ordinal.Equals(candidate.TypeSystemId, typeSystemId)
-                && StringComparer.Ordinal.Equals(candidate.DictionarySegment, dictionarySegment))
-            {
+                && StringComparer.Ordinal.Equals(candidate.DictionarySegment, dictionarySegment)) {
                 registration = candidate;
                 return true;
             }
@@ -96,12 +87,9 @@ public sealed class OpcCpxOptions
         return false;
     }
 
-    internal bool TryGetComplexItem(string itemId, out ComplexItemRegistration registration)
-    {
-        foreach (var candidate in _complexItems)
-        {
-            if (StringComparer.Ordinal.Equals(candidate.ItemId, itemId))
-            {
+    internal bool TryGetComplexItem(string itemId, out ComplexItemRegistration registration) {
+        foreach (var candidate in _complexItems) {
+            if (StringComparer.Ordinal.Equals(candidate.ItemId, itemId)) {
                 registration = candidate;
                 return true;
             }
@@ -112,8 +100,7 @@ public sealed class OpcCpxOptions
     }
 
     /// <summary>A dictionary exposed under <c>/CPX/{TypeSystem}/{Dictionary}</c>.</summary>
-    public sealed class DictionaryRegistration
-    {
+    public sealed class DictionaryRegistration {
         private readonly Dictionary<string, string> _typeDescriptionValues;
 
         internal DictionaryRegistration(
@@ -122,8 +109,7 @@ public sealed class OpcCpxOptions
             TypeDictionary dictionary,
             string? dictionaryValue,
             IReadOnlyDictionary<string, string>? typeDescriptionValues,
-            string? dictionarySegment)
-        {
+            string? dictionarySegment) {
             ArgumentException.ThrowIfNullOrWhiteSpace(typeSystemId);
             ArgumentException.ThrowIfNullOrWhiteSpace(dictionaryId);
             ArgumentNullException.ThrowIfNull(dictionary);
@@ -160,16 +146,13 @@ public sealed class OpcCpxOptions
         internal bool TryGetTypeDescriptionValue(string typeId, out string value) =>
             _typeDescriptionValues.TryGetValue(typeId, out value!);
 
-        private static Dictionary<string, string> CopyTypeDescriptions(IReadOnlyDictionary<string, string>? values)
-        {
+        private static Dictionary<string, string> CopyTypeDescriptions(IReadOnlyDictionary<string, string>? values) {
             var copy = new Dictionary<string, string>(StringComparer.Ordinal);
-            if (values is null)
-            {
+            if (values is null) {
                 return copy;
             }
 
-            foreach (var pair in values)
-            {
+            foreach (var pair in values) {
                 ArgumentException.ThrowIfNullOrWhiteSpace(pair.Key, nameof(values));
                 ArgumentException.ThrowIfNullOrWhiteSpace(pair.Value, nameof(values));
                 copy.Add(pair.Key, pair.Value);
@@ -180,8 +163,7 @@ public sealed class OpcCpxOptions
     }
 
     /// <summary>A DA item that publishes CPX properties 600-609.</summary>
-    public sealed class ComplexItemRegistration
-    {
+    public sealed class ComplexItemRegistration {
         internal ComplexItemRegistration(
             string itemId,
             string typeSystemId,
@@ -191,8 +173,7 @@ public sealed class OpcCpxOptions
             string? writeBehavior,
             string? unconvertedItemId,
             string? unfilteredItemId,
-            string? dataFilterValue)
-        {
+            string? dataFilterValue) {
             ArgumentException.ThrowIfNullOrWhiteSpace(itemId);
             ArgumentException.ThrowIfNullOrWhiteSpace(typeSystemId);
             ArgumentException.ThrowIfNullOrWhiteSpace(dictionaryId);

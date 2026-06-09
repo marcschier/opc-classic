@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -13,23 +13,19 @@ using TUnit.Core;
 
 namespace Opc.Classic.Commands.Tests.Dcom;
 
-public sealed class IOPCCommandsProxyTests
-{
+public sealed class IOPCCommandsProxyTests {
     private delegate void NdrWriteAction(ref NdrWriter writer);
 
     [Test]
-    public async Task CommandInformation_ListCommands_invokes_channel_and_decodes_string_array()
-    {
+    public async Task CommandInformation_ListCommands_invokes_channel_and_decodes_string_array() {
         Guid observedIid = Guid.Empty;
         int observedOpnum = -1;
-        ReadOnlyMemory<byte> responsePayload = WritePayload((ref NdrWriter writer) =>
-        {
+        ReadOnlyMemory<byte> responsePayload = WritePayload((ref NdrWriter writer) => {
             writer.WriteUInt32(2);
             writer.WriteUnicodeStringPtr("Start");
             writer.WriteUnicodeStringPtr("Stop");
         });
-        var channel = new InMemoryCallChannel((iid, opnum, _, _) =>
-        {
+        var channel = new InMemoryCallChannel((iid, opnum, _, _) => {
             observedIid = iid;
             observedOpnum = opnum;
             return Task.FromResult(new NdrCallResult(0, responsePayload));
@@ -46,13 +42,11 @@ public sealed class IOPCCommandsProxyTests
     }
 
     [Test]
-    public async Task CommandExecution_Control_encodes_payload_and_uses_opnum()
-    {
+    public async Task CommandExecution_Control_encodes_payload_and_uses_opnum() {
         Guid observedIid = Guid.Empty;
         int observedOpnum = -1;
         int observedPayloadLength = -1;
-        var channel = new InMemoryCallChannel((iid, opnum, payload, _) =>
-        {
+        var channel = new InMemoryCallChannel((iid, opnum, payload, _) => {
             observedIid = iid;
             observedOpnum = opnum;
             observedPayloadLength = payload.Length;
@@ -68,8 +62,7 @@ public sealed class IOPCCommandsProxyTests
         await Assert.That(observedPayloadLength).IsGreaterThan(0);
     }
 
-    private static ReadOnlyMemory<byte> WritePayload(NdrWriteAction write, int capacity = 512)
-    {
+    private static ReadOnlyMemory<byte> WritePayload(NdrWriteAction write, int capacity = 512) {
         var buffer = new byte[capacity];
         var writer = new NdrWriter(buffer);
         write(ref writer);

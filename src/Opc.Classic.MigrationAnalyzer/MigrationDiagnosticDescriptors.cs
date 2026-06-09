@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -7,8 +7,7 @@ using Microsoft.CodeAnalysis;
 
 namespace Opc.Classic.MigrationAnalyzer;
 
-internal static class MigrationDiagnosticDescriptors
-{
+internal static class MigrationDiagnosticDescriptors {
     public const string Category = "Opc.Classic.Migration";
 
     public static readonly DiagnosticDescriptor LegacyServerCreation = Create(

@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -18,8 +18,7 @@ namespace Opc.Classic.Cpx;
 /// <c>typeSystemID</c>, <c>dictionaryID</c>, and <c>typeID</c>. This record
 /// gathers those identifiers with field values decoded by a CPX type-system codec.
 /// </remarks>
-public sealed record InstanceDescription
-{
+public sealed record InstanceDescription {
     private readonly Dictionary<string, object?> _fieldValues;
 
     /// <summary>Create an item instance description.</summary>
@@ -29,20 +28,16 @@ public sealed record InstanceDescription
         bool isComplex,
         IReadOnlyDictionary<string, object?>? fieldValues = null,
         string? dictionaryId = null,
-        string typeSystemId = TypeDictionary.OpcBinaryTypeSystemId)
-    {
-        if (string.IsNullOrWhiteSpace(itemId))
-        {
+        string typeSystemId = TypeDictionary.OpcBinaryTypeSystemId) {
+        if (string.IsNullOrWhiteSpace(itemId)) {
             throw new ArgumentException("An instance description must have a non-empty item identifier.", nameof(itemId));
         }
 
-        if (string.IsNullOrWhiteSpace(typeId))
-        {
+        if (string.IsNullOrWhiteSpace(typeId)) {
             throw new ArgumentException("An instance description must have a non-empty type identifier.", nameof(typeId));
         }
 
-        if (string.IsNullOrWhiteSpace(typeSystemId))
-        {
+        if (string.IsNullOrWhiteSpace(typeSystemId)) {
             throw new ArgumentException("An instance description must have a non-empty type system identifier.", nameof(typeSystemId));
         }
 
@@ -77,10 +72,8 @@ public sealed record InstanceDescription
     public object? this[string fieldName] => FieldValues[fieldName];
 
     /// <summary>Try to read a field value with a strongly typed cast.</summary>
-    public bool TryGet<T>(string fieldName, out T value)
-    {
-        if (FieldValues.TryGetValue(fieldName, out var raw) && raw is T typed)
-        {
+    public bool TryGet<T>(string fieldName, out T value) {
+        if (FieldValues.TryGetValue(fieldName, out var raw) && raw is T typed) {
             value = typed;
             return true;
         }
@@ -100,8 +93,7 @@ public sealed record InstanceDescription
         && FieldValuesEqual(other);
 
     /// <inheritdoc />
-    public override int GetHashCode()
-    {
+    public override int GetHashCode() {
         var hash = new HashCode();
         hash.Add(ItemId, StringComparer.Ordinal);
         hash.Add(TypeId, StringComparer.Ordinal);
@@ -109,8 +101,7 @@ public sealed record InstanceDescription
         hash.Add(DictionaryId, StringComparer.Ordinal);
         hash.Add(IsComplex);
 
-        foreach (var pair in _fieldValues.OrderBy(static pair => pair.Key, StringComparer.Ordinal))
-        {
+        foreach (var pair in _fieldValues.OrderBy(static pair => pair.Key, StringComparer.Ordinal)) {
             hash.Add(pair.Key, StringComparer.Ordinal);
             hash.Add(pair.Value);
         }
@@ -118,18 +109,14 @@ public sealed record InstanceDescription
         return hash.ToHashCode();
     }
 
-    private bool FieldValuesEqual(InstanceDescription other)
-    {
-        if (_fieldValues.Count != other._fieldValues.Count)
-        {
+    private bool FieldValuesEqual(InstanceDescription other) {
+        if (_fieldValues.Count != other._fieldValues.Count) {
             return false;
         }
 
-        foreach (var pair in _fieldValues)
-        {
+        foreach (var pair in _fieldValues) {
             if (!other._fieldValues.TryGetValue(pair.Key, out var otherValue)
-                || !EqualityComparer<object?>.Default.Equals(pair.Value, otherValue))
-            {
+                || !EqualityComparer<object?>.Default.Equals(pair.Value, otherValue)) {
                 return false;
             }
         }
@@ -137,19 +124,15 @@ public sealed record InstanceDescription
         return true;
     }
 
-    private static Dictionary<string, object?> CopyFieldValues(IReadOnlyDictionary<string, object?>? fieldValues)
-    {
+    private static Dictionary<string, object?> CopyFieldValues(IReadOnlyDictionary<string, object?>? fieldValues) {
         var copy = new Dictionary<string, object?>(StringComparer.Ordinal);
 
-        if (fieldValues is null)
-        {
+        if (fieldValues is null) {
             return copy;
         }
 
-        foreach (var pair in fieldValues)
-        {
-            if (string.IsNullOrWhiteSpace(pair.Key))
-            {
+        foreach (var pair in fieldValues) {
+            if (string.IsNullOrWhiteSpace(pair.Key)) {
                 throw new ArgumentException("Field value keys must be non-empty field names.", nameof(fieldValues));
             }
 

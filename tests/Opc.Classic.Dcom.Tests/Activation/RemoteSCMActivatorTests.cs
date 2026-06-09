@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -12,19 +12,16 @@ using TUnit.Core;
 
 namespace Opc.Classic.Dcom.Tests.Activation;
 
-public sealed class RemoteSCMActivatorTests
-{
+public sealed class RemoteSCMActivatorTests {
     private const int CO_E_CLASSSTRING = unchecked((int)0x800401F3u);
     private static readonly Guid IidIClassFactory = Guid.Parse("00000001-0000-0000-C000-000000000046");
 
     [Test]
-    public async Task RemoteCreateInstance_registered_factory_returns_standard_objref()
-    {
+    public async Task RemoteCreateInstance_registered_factory_returns_standard_objref() {
         Guid clsid = Guid.NewGuid();
         Guid iid = Guid.NewGuid();
         var registry = new ClassFactoryRegistry();
-        registry.Register(clsid, context =>
-        {
+        registry.Register(clsid, context => {
             var definition = new LocalInterfaceDefinition(context.RequestedIid.ToString(), isDispInterface: false);
             return new ClassFactoryActivationResult(new TestServer(), definition);
         });
@@ -32,8 +29,7 @@ public sealed class RemoteSCMActivatorTests
         ActivationProperties properties = CreateActivationProperties(clsid, iid);
 
         RemoteCreateInstanceResponse response = await server.RemoteCreateInstanceAsync(
-            new RemoteCreateInstanceRequest(clsid, iid, [7])
-            {
+            new RemoteCreateInstanceRequest(clsid, iid, [7]) {
                 RawActivationProperties = ActivationInfoCodec.Encode(properties),
             });
 
@@ -53,8 +49,7 @@ public sealed class RemoteSCMActivatorTests
     }
 
     [Test]
-    public async Task RemoteCreateInstance_unknown_clsid_returns_CO_E_CLASSSTRING()
-    {
+    public async Task RemoteCreateInstance_unknown_clsid_returns_CO_E_CLASSSTRING() {
         var server = new RemoteSCMActivatorServer(new ClassFactoryRegistry());
         var request = new RemoteCreateInstanceRequest(Guid.NewGuid(), Guid.NewGuid(), [7]);
 
@@ -65,8 +60,7 @@ public sealed class RemoteSCMActivatorTests
     }
 
     [Test]
-    public async Task RemoteGetClassObject_registered_factory_returns_class_factory_objref()
-    {
+    public async Task RemoteGetClassObject_registered_factory_returns_class_factory_objref() {
         Guid clsid = Guid.NewGuid();
         var registry = new ClassFactoryRegistry();
         registry.Register(clsid, _ => new TestServer());
@@ -87,8 +81,7 @@ public sealed class RemoteSCMActivatorTests
     }
 
     [Test]
-    public async Task Activation_properties_round_trip_all_activation_sub_properties()
-    {
+    public async Task Activation_properties_round_trip_all_activation_sub_properties() {
         Guid clsid = Guid.NewGuid();
         Guid iid = Guid.NewGuid();
         var replyObjRef = new byte[] { 0x4d, 0x45, 0x4f, 0x57 };
@@ -123,13 +116,11 @@ public sealed class RemoteSCMActivatorTests
         null,
         new SecurityInfo(AuthenticationLevel: 6, ImpersonationLevel: 3, Capabilities: 0));
 
-    private static IOpcInterfaceRef DecodeObjRef(byte[] objRef)
-    {
+    private static IOpcInterfaceRef DecodeObjRef(byte[] objRef) {
         var reader = new NdrReader(objRef);
         return OpcInterfaceRefCodec.Read(ref reader);
     }
 
-    private sealed class TestServer
-    {
+    private sealed class TestServer {
     }
 }

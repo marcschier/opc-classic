@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -8,8 +8,7 @@ namespace Opc.Classic.Dcom.Kerberos.Spnego;
 /// <summary>
 /// SPNEGO negotiation result state values from RFC 4178.
 /// </summary>
-public enum SpnegoNegState
-{
+public enum SpnegoNegState {
     /// <summary>
     /// Authentication completed successfully.
     /// </summary>

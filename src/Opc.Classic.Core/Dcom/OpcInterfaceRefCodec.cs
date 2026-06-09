@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -11,25 +11,21 @@ namespace Opc.Classic.Dcom;
 /// <summary>
 /// NDR codec for DCOM OBJREF_STANDARD interface pointers.
 /// </summary>
-public static class OpcInterfaceRefCodec
-{
+public static class OpcInterfaceRefCodec {
     private const uint ObjRefSignature = 0x574F454D;
     private const uint ObjRefStandard = 0x00000001;
 
     /// <summary>
     /// Decodes an OBJREF_STANDARD payload (MEOW + STDOBJREF + DUALSTRINGARRAY).
     /// </summary>
-    public static IOpcInterfaceRef Read(ref NdrReader reader)
-    {
+    public static IOpcInterfaceRef Read(ref NdrReader reader) {
         uint signature = reader.ReadUInt32();
-        if (signature != ObjRefSignature)
-        {
+        if (signature != ObjRefSignature) {
             throw new InvalidOperationException("DCOM OBJREF did not start with the MEOW signature.");
         }
 
         uint objectReferenceType = reader.ReadUInt32();
-        if (objectReferenceType != ObjRefStandard)
-        {
+        if (objectReferenceType != ObjRefStandard) {
             throw new InvalidOperationException("Only OBJREF_STANDARD interface pointers are supported.");
         }
 
@@ -41,14 +37,12 @@ public static class OpcInterfaceRefCodec
         Guid ipid = reader.ReadGuid();
         ushort entryCount = reader.ReadUInt16();
         ushort securityOffset = reader.ReadUInt16();
-        if (entryCount > reader.RemainingBytes / 2)
-        {
+        if (entryCount > reader.RemainingBytes / 2) {
             throw new InvalidOperationException("DCOM DUALSTRINGARRAY entry count exceeds the remaining response payload.");
         }
 
         var resolverBindings = new ushort[entryCount];
-        for (int i = 0; i < resolverBindings.Length; i++)
-        {
+        for (int i = 0; i < resolverBindings.Length; i++) {
             resolverBindings[i] = reader.ReadUInt16();
         }
 
@@ -58,12 +52,10 @@ public static class OpcInterfaceRefCodec
     /// <summary>
     /// Encodes an OBJREF_STANDARD payload (MEOW + STDOBJREF + DUALSTRINGARRAY).
     /// </summary>
-    public static void Write(ref NdrWriter writer, IOpcInterfaceRef interfaceRef)
-    {
+    public static void Write(ref NdrWriter writer, IOpcInterfaceRef interfaceRef) {
         ArgumentNullException.ThrowIfNull(interfaceRef);
 
-        if (interfaceRef.ResolverBindings.Count > ushort.MaxValue)
-        {
+        if (interfaceRef.ResolverBindings.Count > ushort.MaxValue) {
             throw new ArgumentException("DCOM DUALSTRINGARRAY entry count exceeds UInt16.MaxValue.", nameof(interfaceRef));
         }
 
@@ -77,8 +69,7 @@ public static class OpcInterfaceRefCodec
         writer.WriteGuid(interfaceRef.Ipid);
         writer.WriteUInt16((ushort)interfaceRef.ResolverBindings.Count);
         writer.WriteUInt16(interfaceRef.SecurityOffset);
-        for (int i = 0; i < interfaceRef.ResolverBindings.Count; i++)
-        {
+        for (int i = 0; i < interfaceRef.ResolverBindings.Count; i++) {
             writer.WriteUInt16(interfaceRef.ResolverBindings[i]);
         }
     }

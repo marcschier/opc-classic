@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -16,16 +16,14 @@ namespace Opc.Classic.Tests.Fixtures;
 /// Run as <c>await using var kdc = await KerberosKdcFixture.StartAsync();</c>
 /// and use <c>kdc.Realm</c>, <c>kdc.Kdc</c> for client configuration.
 /// </summary>
-public sealed class KerberosKdcFixture : IAsyncDisposable
-{
+public sealed class KerberosKdcFixture : IAsyncDisposable {
     private const string Image = "gcavalcante8808/krb5-server:latest";
     private const int KdcPort = 88;
     private const string MasterPassword = "testcontainers";
 
     private readonly IContainer _container;
 
-    private KerberosKdcFixture(IContainer container, string realm)
-    {
+    private KerberosKdcFixture(IContainer container, string realm) {
         _container = container;
         Realm = realm;
     }
@@ -40,8 +38,7 @@ public sealed class KerberosKdcFixture : IAsyncDisposable
 
     public static async Task<KerberosKdcFixture> StartAsync(
         string realm = "EXAMPLE.COM",
-        CancellationToken cancellationToken = default)
-    {
+        CancellationToken cancellationToken = default) {
         var container = new ContainerBuilder()
             .WithImage(Image)
             .WithPortBinding(KdcPort, true)
@@ -55,8 +52,7 @@ public sealed class KerberosKdcFixture : IAsyncDisposable
         return new KerberosKdcFixture(container, realm);
     }
 
-    public async ValueTask DisposeAsync()
-    {
+    public async ValueTask DisposeAsync() {
         await _container.DisposeAsync().ConfigureAwait(false);
     }
 }

@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: MIT
+﻿// SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 
 using Microsoft.Extensions.DependencyInjection;
@@ -10,16 +10,14 @@ using Opc.Classic.Hosting.Windows;
 
 namespace Opc.Classic.Samples.AeServer;
 
-internal static class Program
-{
+internal static class Program {
     private static readonly Guid SampleClsid = new("C4BF6E70-3BA2-4F9C-AE3D-8F6C1D9F2B4F");
     private const string SampleProgId = "Opc.Classic.Samples.AeServer.1";
     private const string SampleFriendlyName = "Opc.Classic Sample AE Server";
     private const string SampleAssemblyName = "Opc.Classic.Samples.AeServer";
     private const string SampleTypeName = "Opc.Classic.Samples.AeServer.SampleAeServer";
 
-    public static async Task<int> Main(string[] args)
-    {
+    public static async Task<int> Main(string[] args) {
         ArgumentNullException.ThrowIfNull(args);
 
         var registration = new OpcClsidRegistration(
@@ -33,8 +31,7 @@ internal static class Program
             OpcComponentCategories.OpcAeServer10,
         ];
 
-        if (SampleServerRegistrationCommand.TryHandle(args, registration, implementedCategories, out int registrationExitCode))
-        {
+        if (SampleServerRegistrationCommand.TryHandle(args, registration, implementedCategories, out int registrationExitCode)) {
             return registrationExitCode;
         }
 
@@ -54,16 +51,14 @@ internal static class Program
         var builder = Host.CreateApplicationBuilder(args);
 
         builder.Logging.ClearProviders();
-        builder.Logging.AddSimpleConsole(static opt =>
-        {
+        builder.Logging.AddSimpleConsole(static opt => {
             opt.SingleLine = true;
             opt.TimestampFormat = "HH:mm:ss ";
         });
 
         builder.Services.AddClassicServer();
         builder.Services.AddClassicClsidRegistry(builder.Configuration);
-        builder.Services.AddOpcAeServer<SampleAeServer>(opt =>
-        {
+        builder.Services.AddOpcAeServer<SampleAeServer>(opt => {
             opt.Clsid = SampleClsid;
             opt.ProgId = SampleProgId;
             opt.FriendlyName = SampleFriendlyName;
@@ -74,19 +69,15 @@ internal static class Program
         var host = builder.Build();
 
         uint comClassObjectCookie = 0;
-        if (embedded && OperatingSystem.IsWindows())
-        {
+        if (embedded && OperatingSystem.IsWindows()) {
             comClassObjectCookie = RegisterScmFactory(host.Services);
         }
 
-        try
-        {
+        try {
             await host.RunAsync().ConfigureAwait(false);
         }
-        finally
-        {
-            if (embedded && OperatingSystem.IsWindows() && comClassObjectCookie != 0)
-            {
+        finally {
+            if (embedded && OperatingSystem.IsWindows() && comClassObjectCookie != 0) {
                 ComClassObjectRegistrar.RevokeClassObject(comClassObjectCookie);
                 ComClassObjectRegistrar.Uninitialize();
             }
@@ -96,8 +87,7 @@ internal static class Program
     }
 
     [System.Runtime.Versioning.SupportedOSPlatform("windows")]
-    private static uint RegisterScmFactory(IServiceProvider services)
-    {
+    private static uint RegisterScmFactory(IServiceProvider services) {
         var serverImpl = services.GetRequiredService<IOpcAeServer>();
         ComClassObjectRegistrar.InitializeMultithreaded();
         uint cookie = ComClassObjectRegistrar.RegisterClassObject(

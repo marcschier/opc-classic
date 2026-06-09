@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: MIT
+﻿// SPDX-License-Identifier: MIT
 
 using Opc.Classic.Dcom.Common;
 using Opc.Classic.Dcom.Automation;
@@ -151,7 +151,7 @@ internal sealed class VariantBody {
 
                 if (_is2Dimensional) {
                     var obj3 = (Array)retVal.ArrayInstance; // these will all be variants
-                                                               // correct the array here, i.e reform the 2 dimensional array before returning back.
+                                                            // correct the array here, i.e reform the 2 dimensional array before returning back.
                     var safeArrayBound = (ComArray)_safeArrayStruct.GetMember(8);
 
                     var safeArrayBound2 = (Struct[])safeArrayBound.ArrayInstance;

@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -11,19 +11,16 @@ using TUnit.Assertions.AssertConditions.Throws;
 
 namespace Opc.Classic.Da.Tests;
 
-public sealed class ItemIdentifierTests
-{
+public sealed class ItemIdentifierTests {
     [Test]
-    public async Task Construct_WithItemName_PathDefaultsToNull()
-    {
+    public async Task Construct_WithItemName_PathDefaultsToNull() {
         var id = new ItemIdentifier("PLC1.MotorSpeed");
         await Assert.That(id.ItemName).IsEqualTo("PLC1.MotorSpeed");
         await Assert.That(id.Path).IsNull();
     }
 
     [Test]
-    public async Task RecordEquality_IsByItemNameAndPath()
-    {
+    public async Task RecordEquality_IsByItemNameAndPath() {
         var a = new ItemIdentifier("X", "Path");
         var b = new ItemIdentifier("X", "Path");
         var c = new ItemIdentifier("X", "Other");
@@ -34,23 +31,19 @@ public sealed class ItemIdentifierTests
     }
 
     [Test]
-    public async Task ToString_NoPath_JustItemName()
-    {
+    public async Task ToString_NoPath_JustItemName() {
         await Assert.That(new ItemIdentifier("X").ToString()).IsEqualTo("X");
     }
 
     [Test]
-    public async Task ToString_WithPath_ConcatenatesWithDoubleColon()
-    {
+    public async Task ToString_WithPath_ConcatenatesWithDoubleColon() {
         await Assert.That(new ItemIdentifier("X", "P").ToString()).IsEqualTo("P::X");
     }
 }
 
-public sealed class ItemTests
-{
+public sealed class ItemTests {
     [Test]
-    public async Task Construct_FromName_AllOptionsDefault()
-    {
+    public async Task Construct_FromName_AllOptionsDefault() {
         var item = new Item("X");
         await Assert.That(item.ItemName).IsEqualTo("X");
         await Assert.That(item.ClientHandle).IsEqualTo(0);
@@ -60,10 +53,8 @@ public sealed class ItemTests
     }
 
     [Test]
-    public async Task InitializerSyntax_AssignsAllFields()
-    {
-        var item = new Item("X")
-        {
+    public async Task InitializerSyntax_AssignsAllFields() {
+        var item = new Item("X") {
             ClientHandle = 42,
             RequestedDataType = typeof(double),
             DeadbandPercent = 1.5f,
@@ -76,28 +67,23 @@ public sealed class ItemTests
     }
 
     [Test]
-    public async Task CopyConstructor_FromIdentifier_Throws_OnNull()
-    {
+    public async Task CopyConstructor_FromIdentifier_Throws_OnNull() {
         await Assert.That(() => { _ = new Item(null!); })
             .Throws<ArgumentNullException>();
     }
 }
 
-public sealed class ItemValueTests
-{
+public sealed class ItemValueTests {
     [Test]
-    public async Task QualityDefaultsToBad()
-    {
+    public async Task QualityDefaultsToBad() {
         var v = new ItemValue("X");
         await Assert.That(v.Quality.Quality).IsEqualTo(OpcQualityKind.Bad);
     }
 
     [Test]
-    public async Task InitializerSyntax_AssignsAllFields()
-    {
+    public async Task InitializerSyntax_AssignsAllFields() {
         var ts = new DateTimeOffset(2026, 5, 21, 12, 0, 0, TimeSpan.Zero);
-        var v = new ItemValue("X")
-        {
+        var v = new ItemValue("X") {
             ClientHandle = 7,
             Value = 42.0,
             Quality = OpcQuality.Good,
@@ -110,21 +96,17 @@ public sealed class ItemValueTests
     }
 }
 
-public sealed class ItemValueResultTests
-{
+public sealed class ItemValueResultTests {
     [Test]
-    public async Task DefaultResultId_IsOk()
-    {
+    public async Task DefaultResultId_IsOk() {
         var r = new ItemValueResult("X");
         await Assert.That(r.ResultId).IsEqualTo(OpcResultId.Ok);
     }
 
     [Test]
-    public async Task CopyFromItemValue_PreservesFields()
-    {
+    public async Task CopyFromItemValue_PreservesFields() {
         var ts = new DateTimeOffset(2026, 5, 21, 12, 0, 0, TimeSpan.Zero);
-        var src = new ItemValue("X", "P")
-        {
+        var src = new ItemValue("X", "P") {
             ClientHandle = 3,
             Value = "hello",
             Quality = OpcQuality.Uncertain,
@@ -142,20 +124,16 @@ public sealed class ItemValueResultTests
     }
 }
 
-public sealed class IdentifiedResultTests
-{
+public sealed class IdentifiedResultTests {
     [Test]
-    public async Task DefaultResultId_IsOk()
-    {
+    public async Task DefaultResultId_IsOk() {
         var r = new IdentifiedResult("X");
         await Assert.That(r.ResultId).IsEqualTo(OpcResultId.Ok);
     }
 
     [Test]
-    public async Task InitializerSyntax_AssignsAllFields()
-    {
-        var r = new IdentifiedResult("X")
-        {
+    public async Task InitializerSyntax_AssignsAllFields() {
+        var r = new IdentifiedResult("X") {
             ClientHandle = 9,
             ResultId = OpcResultId.BadRights,
             DiagnosticInfo = "no write access",
@@ -166,11 +144,9 @@ public sealed class IdentifiedResultTests
     }
 }
 
-public sealed class SubscriptionStateTests
-{
+public sealed class SubscriptionStateTests {
     [Test]
-    public async Task Default_ActiveTrue_RatesZero()
-    {
+    public async Task Default_ActiveTrue_RatesZero() {
         var s = new SubscriptionState();
         await Assert.That(s.Active).IsTrue();
         await Assert.That(s.UpdateRateMs).IsEqualTo(0);
@@ -179,24 +155,21 @@ public sealed class SubscriptionStateTests
     }
 
     [Test]
-    public async Task At_OneSecond_SetsUpdateRate1000Ms()
-    {
+    public async Task At_OneSecond_SetsUpdateRate1000Ms() {
         var s = SubscriptionState.At(TimeSpan.FromSeconds(1));
         await Assert.That(s.UpdateRateMs).IsEqualTo(1000);
         await Assert.That(s.Active).IsTrue();
     }
 
     [Test]
-    public async Task At_Inactive_SetsActiveFalse()
-    {
+    public async Task At_Inactive_SetsActiveFalse() {
         var s = SubscriptionState.At(TimeSpan.FromMilliseconds(500), active: false);
         await Assert.That(s.UpdateRateMs).IsEqualTo(500);
         await Assert.That(s.Active).IsFalse();
     }
 
     [Test]
-    public async Task At_ZeroOrNegativeRate_Throws()
-    {
+    public async Task At_ZeroOrNegativeRate_Throws() {
         await Assert.That(() => { _ = SubscriptionState.At(TimeSpan.Zero); })
             .Throws<ArgumentOutOfRangeException>();
         await Assert.That(() => { _ = SubscriptionState.At(TimeSpan.FromSeconds(-1)); })

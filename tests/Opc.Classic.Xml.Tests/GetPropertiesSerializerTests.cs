@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -11,28 +11,23 @@ using TUnit.Core;
 
 namespace Opc.Classic.Xml.Tests;
 
-public sealed class GetPropertiesSerializerTests
-{
-    private static string SerializeRequest(XmlDaGetPropertiesRequest req)
-    {
+public sealed class GetPropertiesSerializerTests {
+    private static string SerializeRequest(XmlDaGetPropertiesRequest req) {
         using var ms = new MemoryStream();
-        using (var w = new SoapEnvelopeWriter(ms))
-        {
+        using (var w = new SoapEnvelopeWriter(ms)) {
             GetPropertiesSerializer.WriteRequest(w, req);
         }
         return Encoding.UTF8.GetString(ms.ToArray());
     }
 
-    private static XmlDaGetPropertiesResponse Deserialize(string xml)
-    {
+    private static XmlDaGetPropertiesResponse Deserialize(string xml) {
         using var ms = new MemoryStream(Encoding.UTF8.GetBytes(xml));
         using var r = new SoapEnvelopeReader(ms);
         return GetPropertiesSerializer.ReadResponse(r);
     }
 
     [Test]
-    public async Task Request_EmitsItemIDsAndPropertyNames()
-    {
+    public async Task Request_EmitsItemIDsAndPropertyNames() {
         var xml = SerializeRequest(new XmlDaGetPropertiesRequest(
             new XmlDaRequestHeader(null, null),
             ItemPath: "",
@@ -47,8 +42,7 @@ public sealed class GetPropertiesSerializerTests
     }
 
     [Test]
-    public async Task Request_EmitsRequestFlags()
-    {
+    public async Task Request_EmitsRequestFlags() {
         var xml = SerializeRequest(new XmlDaGetPropertiesRequest(
             new XmlDaRequestHeader(null, null),
             ItemPath: "",
@@ -63,8 +57,7 @@ public sealed class GetPropertiesSerializerTests
     }
 
     [Test]
-    public async Task Response_DecodesPropertiesWithValues()
-    {
+    public async Task Response_DecodesPropertiesWithValues() {
         const string xml = """
             <?xml version="1.0"?>
             <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
@@ -100,8 +93,7 @@ public sealed class GetPropertiesSerializerTests
     }
 
     [Test]
-    public async Task Response_DecodesMultiplePropertyLists()
-    {
+    public async Task Response_DecodesMultiplePropertyLists() {
         const string xml = """
             <?xml version="1.0"?>
             <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
@@ -127,8 +119,7 @@ public sealed class GetPropertiesSerializerTests
     }
 
     [Test]
-    public async Task Response_DecodesPerItemResultId()
-    {
+    public async Task Response_DecodesPerItemResultId() {
         const string xml = """
             <?xml version="1.0"?>
             <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
@@ -146,8 +137,7 @@ public sealed class GetPropertiesSerializerTests
     }
 
     [Test]
-    public async Task Response_DecodesPropertyWithoutValue_WhenNotRequested()
-    {
+    public async Task Response_DecodesPropertyWithoutValue_WhenNotRequested() {
         const string xml = """
             <?xml version="1.0"?>
             <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
@@ -169,8 +159,7 @@ public sealed class GetPropertiesSerializerTests
     }
 
     [Test]
-    public async Task Response_RejectsWrongOperation()
-    {
+    public async Task Response_RejectsWrongOperation() {
         const string xml = """
             <?xml version="1.0"?>
             <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">

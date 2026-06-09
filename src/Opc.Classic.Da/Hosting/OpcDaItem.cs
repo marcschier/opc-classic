@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -15,8 +15,7 @@ namespace Opc.Classic.Da.Hosting;
 /// and <c>Write</c> through the IOPC interfaces; <c>Read</c> returns a
 /// snapshot of the current value/quality/timestamp.
 /// </summary>
-public sealed class OpcDaItem
-{
+public sealed class OpcDaItem {
     private readonly Lock _lock = new();
     private OpcVariant _value;
     private ushort _quality;
@@ -35,8 +34,7 @@ public sealed class OpcDaItem
         string? accessPath,
         int clientHandle,
         bool active,
-        ushort requestedDatatype)
-    {
+        ushort requestedDatatype) {
         ArgumentException.ThrowIfNullOrWhiteSpace(itemId);
         ServerHandle = serverHandle;
         ItemId = itemId;
@@ -59,22 +57,19 @@ public sealed class OpcDaItem
     public string? AccessPath { get; }
 
     /// <summary>Client-side handle to echo back in callbacks.</summary>
-    public int ClientHandle
-    {
+    public int ClientHandle {
         get { lock (_lock) { return _clientHandle; } }
         set { lock (_lock) { _clientHandle = value; } }
     }
 
     /// <summary>Whether this item is currently sampled/published.</summary>
-    public bool Active
-    {
+    public bool Active {
         get { lock (_lock) { return _active; } }
         set { lock (_lock) { _active = value; } }
     }
 
     /// <summary>The client's requested VARTYPE for reads/writes.</summary>
-    public ushort RequestedDatatype
-    {
+    public ushort RequestedDatatype {
         get { lock (_lock) { return _requestedDatatype; } }
         set { lock (_lock) { _requestedDatatype = value; } }
     }
@@ -84,8 +79,7 @@ public sealed class OpcDaItem
     /// if the group's <see cref="OpcDaGroup.PercentDeadband"/> applies. <c>SetItemDeadband</c> sets;
     /// <c>ClearItemDeadband</c> returns to null. Per OPC DA 3.0 §5.8.
     /// </summary>
-    public float? PercentDeadband
-    {
+    public float? PercentDeadband {
         get { lock (_lock) { return _percentDeadband; } }
         set { lock (_lock) { _percentDeadband = value; } }
     }
@@ -95,8 +89,7 @@ public sealed class OpcDaItem
     /// <see langword="null"/> if the group's update rate applies. <c>SetItemSamplingRate</c> sets;
     /// <c>ClearItemSamplingRate</c> returns to null. Per OPC DA 3.0 §5.9.
     /// </summary>
-    public int? SamplingRate
-    {
+    public int? SamplingRate {
         get { lock (_lock) { return _samplingRate; } }
         set { lock (_lock) { _samplingRate = value; } }
     }
@@ -104,17 +97,14 @@ public sealed class OpcDaItem
     /// <summary>
     /// Whether per-item value buffering is enabled (<see cref="IOPCItemSamplingMgt"/>). Default false.
     /// </summary>
-    public bool BufferEnabled
-    {
+    public bool BufferEnabled {
         get { lock (_lock) { return _bufferEnabled; } }
         set { lock (_lock) { _bufferEnabled = value; } }
     }
 
     /// <summary>Gets a snapshot of the current value+quality+timestamp.</summary>
-    public OpcItemState GetSnapshot()
-    {
-        lock (_lock)
-        {
+    public OpcItemState GetSnapshot() {
+        lock (_lock) {
             return new OpcItemState(
                 ClientHandle: _clientHandle,
                 Timestamp: _timestamp,
@@ -124,10 +114,8 @@ public sealed class OpcDaItem
     }
 
     /// <summary>Atomically updates the value+quality+timestamp (server writes from the simulator or from caller writes).</summary>
-    public void Update(OpcVariant value, ushort quality, DateTimeOffset timestamp)
-    {
-        lock (_lock)
-        {
+    public void Update(OpcVariant value, ushort quality, DateTimeOffset timestamp) {
+        lock (_lock) {
             _value = value;
             _quality = quality;
             _timestamp = timestamp;

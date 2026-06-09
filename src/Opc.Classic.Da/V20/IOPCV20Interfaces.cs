@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: MIT
+﻿// SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
 // OPC Data Access 2.05a backward-compatibility interfaces.
@@ -25,8 +25,7 @@ namespace Opc.Classic.Da.V20.Dcom;
 [OpcInterface("39C13A52-011E-11D0-9675-0020AFD8ADB3")]
 [GenerateOpcProxy]
 [OpcGenerateServerDispatch]
-public partial interface IOPCSyncIO
-{
+public partial interface IOPCSyncIO {
     /// <summary>
     /// <c>IOPCSyncIO::Read</c> (opnum 3). Reads item states and per-item HRESULTs.
     /// </summary>
@@ -51,8 +50,7 @@ public partial interface IOPCSyncIO
 [OpcInterface("39C13A53-011E-11D0-9675-0020AFD8ADB3")]
 [GenerateOpcProxy]
 [OpcGenerateServerDispatch]
-public partial interface IOPCAsyncIO
-{
+public partial interface IOPCAsyncIO {
     /// <summary>
     /// <c>IOPCAsyncIO::Refresh</c> (opnum 5). Starts an async refresh and returns the transaction ID.
     /// </summary>

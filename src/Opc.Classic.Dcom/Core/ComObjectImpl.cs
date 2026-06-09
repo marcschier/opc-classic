@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: MIT
+﻿// SPDX-License-Identifier: MIT
 
 using Opc.Classic.Dcom.Common;
 using Opc.Classic.Dcom.Rpc.Core;
@@ -7,7 +7,8 @@ using SharpCifs.Util.Sharpen;
 using System;
 using System.Collections.Generic;
 
-namespace Opc.Classic.Dcom.Core; 
+namespace Opc.Classic.Dcom.Core;
+
 /// <summary>
 /// Implementation for <see cref="IComObject"/>.
 /// There is a 1 to 1 mapping between this and a <code>COM</code> interface.

@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -34,8 +34,7 @@ namespace Opc.Classic.Da.Hosting;
 /// calls may concurrently fan out to the same sink instance.
 /// </para>
 /// </remarks>
-public interface IOpcDataCallbackSink : IDisposable
-{
+public interface IOpcDataCallbackSink : IDisposable {
     /// <summary>Delivers an OnDataChange callback (opnum 3).</summary>
     void OnDataChange(OpcDaGroup.DataChangePayload payload);
 

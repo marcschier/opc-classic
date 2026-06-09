@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -39,11 +39,9 @@ using TUnit.Assertions.AssertConditions.Throws;
 
 namespace Opc.Classic.Mcp.Tests;
 
-public sealed class DaCallbackEndpointIntegrationTests
-{
+public sealed class DaCallbackEndpointIntegrationTests {
     [Test]
-    public async Task StartAsync_BindsToLoopback_ByDefault()
-    {
+    public async Task StartAsync_BindsToLoopback_ByDefault() {
         await using var endpoint = new DaCallbackEndpoint();
         await endpoint.StartAsync(TestContext.Current!.CancellationToken).ConfigureAwait(false);
 
@@ -55,8 +53,7 @@ public sealed class DaCallbackEndpointIntegrationTests
     }
 
     [Test]
-    public async Task RegisterSink_AssignsFreshIpidPerSink_AndCountIncrements()
-    {
+    public async Task RegisterSink_AssignsFreshIpidPerSink_AndCountIncrements() {
         await using var endpoint = new DaCallbackEndpoint();
         await endpoint.StartAsync(TestContext.Current!.CancellationToken).ConfigureAwait(false);
 
@@ -77,8 +74,7 @@ public sealed class DaCallbackEndpointIntegrationTests
     }
 
     [Test]
-    public async Task RegisterSink_BeforeStart_Throws()
-    {
+    public async Task RegisterSink_BeforeStart_Throws() {
         await using var endpoint = new DaCallbackEndpoint();
         var sink = new DaDataCallbackSink();
         await Assert.That(() => { _ = endpoint.RegisterSink(sink); })
@@ -86,16 +82,14 @@ public sealed class DaCallbackEndpointIntegrationTests
     }
 
     [Test]
-    public async Task BuildSinkObjRef_BeforeStart_Throws()
-    {
+    public async Task BuildSinkObjRef_BeforeStart_Throws() {
         await using var endpoint = new DaCallbackEndpoint();
         await Assert.That(() => { _ = endpoint.BuildSinkObjRef(Guid.NewGuid()); })
             .Throws<InvalidOperationException>();
     }
 
     [Test]
-    public async Task BuildSinkObjRef_UnknownIpid_Throws()
-    {
+    public async Task BuildSinkObjRef_UnknownIpid_Throws() {
         await using var endpoint = new DaCallbackEndpoint();
         await endpoint.StartAsync(TestContext.Current!.CancellationToken).ConfigureAwait(false);
         await Assert.That(() => { _ = endpoint.BuildSinkObjRef(Guid.NewGuid()); })
@@ -103,8 +97,7 @@ public sealed class DaCallbackEndpointIntegrationTests
     }
 
     [Test]
-    public async Task BuildSinkObjRef_EncodesIidAndIpidAndTcpBinding()
-    {
+    public async Task BuildSinkObjRef_EncodesIidAndIpidAndTcpBinding() {
         await using var endpoint = new DaCallbackEndpoint();
         await endpoint.StartAsync(TestContext.Current!.CancellationToken).ConfigureAwait(false);
 
@@ -128,8 +121,7 @@ public sealed class DaCallbackEndpointIntegrationTests
     }
 
     [Test]
-    public async Task InboundOnDataChange_RoutedByIpid_ReachesRegisteredSink()
-    {
+    public async Task InboundOnDataChange_RoutedByIpid_ReachesRegisteredSink() {
         // 1. Stand up the loopback callback endpoint.
         await using var endpoint = new DaCallbackEndpoint();
         await endpoint.StartAsync(TestContext.Current!.CancellationToken).ConfigureAwait(false);
@@ -166,8 +158,7 @@ public sealed class DaCallbackEndpointIntegrationTests
     }
 
     [Test]
-    public async Task InboundOnDataChange_DeliversPayloadToSinkAndDrains()
-    {
+    public async Task InboundOnDataChange_DeliversPayloadToSinkAndDrains() {
         // Exercises the payload-heavy IOPCDataCallback::OnDataChange path
         // (opnum 3) end-to-end: per-item VARIANT array, qualities, FILETIMEs,
         // errors. Verifies the sink enqueues a DataChangeNotification that
@@ -221,8 +212,7 @@ public sealed class DaCallbackEndpointIntegrationTests
     }
 
     [Test]
-    public async Task StopAsync_IsIdempotent()
-    {
+    public async Task StopAsync_IsIdempotent() {
         var endpoint = new DaCallbackEndpoint();
         await endpoint.StartAsync(TestContext.Current!.CancellationToken).ConfigureAwait(false);
         await endpoint.StopAsync(CancellationToken.None).ConfigureAwait(false);
@@ -232,8 +222,7 @@ public sealed class DaCallbackEndpointIntegrationTests
     }
 
     [Test]
-    public async Task StartAsync_IsIdempotent()
-    {
+    public async Task StartAsync_IsIdempotent() {
         await using var endpoint = new DaCallbackEndpoint();
         await endpoint.StartAsync(TestContext.Current!.CancellationToken).ConfigureAwait(false);
         IPEndPoint first = endpoint.LocalEndpoint!;
@@ -242,20 +231,17 @@ public sealed class DaCallbackEndpointIntegrationTests
         await Assert.That(second.Port).IsEqualTo(first.Port);
     }
 
-    private static async Task<DcomCallChannel> ConnectChannelAsync(IPEndPoint endpoint)
-    {
+    private static async Task<DcomCallChannel> ConnectChannelAsync(IPEndPoint endpoint) {
         var client = new TcpClient();
         await client.ConnectAsync(endpoint.Address, endpoint.Port, TestContext.Current!.CancellationToken).ConfigureAwait(false);
         return new DcomCallChannel(new TcpClientTransport(client), new NoOpAuthContext());
     }
 
-    private sealed class TcpClientTransport : IAsyncTransport
-    {
+    private sealed class TcpClientTransport : IAsyncTransport {
         private readonly TcpClient _client;
         private readonly NetworkStream _stream;
 
-        public TcpClientTransport(TcpClient client)
-        {
+        public TcpClientTransport(TcpClient client) {
             _client = client;
             _stream = client.GetStream();
             Input = PipeReader.Create(_stream);
@@ -270,8 +256,7 @@ public sealed class DaCallbackEndpointIntegrationTests
         public async ValueTask FlushAsync(CancellationToken cancellationToken = default) =>
             await Output.FlushAsync(cancellationToken).ConfigureAwait(false);
 
-        public async ValueTask DisposeAsync()
-        {
+        public async ValueTask DisposeAsync() {
             await Input.CompleteAsync().ConfigureAwait(false);
             await Output.CompleteAsync().ConfigureAwait(false);
             await _stream.DisposeAsync().ConfigureAwait(false);

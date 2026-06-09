@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: MIT
+﻿// SPDX-License-Identifier: MIT
 
 using Opc.Classic.Dcom.Common;
 using Opc.Classic.Dcom.Internal;
@@ -7,7 +7,8 @@ using SharpCifs.Util.Sharpen;
 using System;
 using System.Collections.Generic;
 
-namespace Opc.Classic.Dcom.Core; 
+namespace Opc.Classic.Dcom.Core;
+
 /// <summary>
 /// Internal Framework Helper class. Do not use outside of framework.
 /// </summary>

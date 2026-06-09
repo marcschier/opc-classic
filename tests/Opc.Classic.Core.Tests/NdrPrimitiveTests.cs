@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -16,27 +16,22 @@ using TUnit.Core;
 
 namespace Opc.Classic.Tests;
 
-public sealed class NdrPrimitiveTests
-{
+public sealed class NdrPrimitiveTests {
     private delegate void NdrWriteAction(ref NdrWriter w);
 
-    private static byte[] WriteOne(NdrWriteAction write, int capacity = 64)
-    {
+    private static byte[] WriteOne(NdrWriteAction write, int capacity = 64) {
         var buf = new byte[capacity];
         var w = new NdrWriter(buf);
         write(ref w);
         return buf[..w.Position];
     }
 
-    private static void Throws<T>(Action action) where T : Exception
-    {
-        try
-        {
+    private static void Throws<T>(Action action) where T : Exception {
+        try {
             action();
             throw new InvalidOperationException("expected " + typeof(T).Name + " but none was thrown");
         }
-        catch (T)
-        {
+        catch (T) {
             // expected
         }
     }
@@ -44,16 +39,14 @@ public sealed class NdrPrimitiveTests
     // -------- Byte / Boolean --------
 
     [Test]
-    public async Task WriteByte_ProducesSingleByteAtPositionZero()
-    {
+    public async Task WriteByte_ProducesSingleByteAtPositionZero() {
         var bytes = WriteOne((ref NdrWriter w) => w.WriteByte(0xAB));
         await Assert.That(bytes.Length).IsEqualTo(1);
         await Assert.That(bytes[0]).IsEqualTo((byte)0xAB);
     }
 
     [Test]
-    public async Task ReadByte_RoundTrips()
-    {
+    public async Task ReadByte_RoundTrips() {
         var bytes = WriteOne((ref NdrWriter w) => w.WriteByte(0x7F));
         byte read;
         {
@@ -64,8 +57,7 @@ public sealed class NdrPrimitiveTests
     }
 
     [Test]
-    public async Task Boolean_RoundTrips_True()
-    {
+    public async Task Boolean_RoundTrips_True() {
         var bytes = WriteOne((ref NdrWriter w) => w.WriteBoolean(true));
         bool read;
         {
@@ -77,8 +69,7 @@ public sealed class NdrPrimitiveTests
     }
 
     [Test]
-    public async Task Boolean_RoundTrips_False()
-    {
+    public async Task Boolean_RoundTrips_False() {
         var bytes = WriteOne((ref NdrWriter w) => w.WriteBoolean(false));
         await Assert.That(bytes[0]).IsEqualTo((byte)0);
     }
@@ -86,8 +77,7 @@ public sealed class NdrPrimitiveTests
     // -------- Integers (little-endian + alignment) --------
 
     [Test]
-    public async Task Int32_IsLittleEndian()
-    {
+    public async Task Int32_IsLittleEndian() {
         var bytes = WriteOne((ref NdrWriter w) => w.WriteInt32(0x12345678));
         await Assert.That(bytes[0]).IsEqualTo((byte)0x78);
         await Assert.That(bytes[1]).IsEqualTo((byte)0x56);
@@ -96,10 +86,8 @@ public sealed class NdrPrimitiveTests
     }
 
     [Test]
-    public async Task Int32_AlignsTo4_AfterByte()
-    {
-        var bytes = WriteOne((ref NdrWriter w) =>
-        {
+    public async Task Int32_AlignsTo4_AfterByte() {
+        var bytes = WriteOne((ref NdrWriter w) => {
             w.WriteByte(0x01);
             w.WriteInt32(0x44332211);
         });
@@ -113,10 +101,8 @@ public sealed class NdrPrimitiveTests
     }
 
     [Test]
-    public async Task Int32_RoundTrips_WithAlignment()
-    {
-        var bytes = WriteOne((ref NdrWriter w) =>
-        {
+    public async Task Int32_RoundTrips_WithAlignment() {
+        var bytes = WriteOne((ref NdrWriter w) => {
             w.WriteByte(0x01);
             w.WriteInt32(unchecked((int)0xDEADBEEFu));
         });
@@ -132,10 +118,8 @@ public sealed class NdrPrimitiveTests
     }
 
     [Test]
-    public async Task UInt16_AlignsTo2_RoundTrips()
-    {
-        var bytes = WriteOne((ref NdrWriter w) =>
-        {
+    public async Task UInt16_AlignsTo2_RoundTrips() {
+        var bytes = WriteOne((ref NdrWriter w) => {
             w.WriteByte(0xFF);
             w.WriteUInt16(0xCAFE);
         });
@@ -152,10 +136,8 @@ public sealed class NdrPrimitiveTests
     }
 
     [Test]
-    public async Task Int64_AlignsTo8_RoundTrips()
-    {
-        var bytes = WriteOne((ref NdrWriter w) =>
-        {
+    public async Task Int64_AlignsTo8_RoundTrips() {
+        var bytes = WriteOne((ref NdrWriter w) => {
             w.WriteByte(0x42);
             w.WriteInt64(0x0102030405060708L);
         });
@@ -172,8 +154,7 @@ public sealed class NdrPrimitiveTests
     }
 
     [Test]
-    public async Task UInt32_NegativeBitPattern_RoundTrips()
-    {
+    public async Task UInt32_NegativeBitPattern_RoundTrips() {
         var bytes = WriteOne((ref NdrWriter w) => w.WriteUInt32(0xFFFFFFFFu));
         uint read;
         {
@@ -186,8 +167,7 @@ public sealed class NdrPrimitiveTests
     // -------- Floats --------
 
     [Test]
-    public async Task Single_RoundTrips()
-    {
+    public async Task Single_RoundTrips() {
         var bytes = WriteOne((ref NdrWriter w) => w.WriteSingle(3.14159f));
         float read;
         {
@@ -198,8 +178,7 @@ public sealed class NdrPrimitiveTests
     }
 
     [Test]
-    public async Task Double_RoundTrips()
-    {
+    public async Task Double_RoundTrips() {
         var bytes = WriteOne((ref NdrWriter w) => w.WriteDouble(2.71828182845904));
         double read;
         {
@@ -210,10 +189,8 @@ public sealed class NdrPrimitiveTests
     }
 
     [Test]
-    public async Task Double_AlignsTo8()
-    {
-        var bytes = WriteOne((ref NdrWriter w) =>
-        {
+    public async Task Double_AlignsTo8() {
+        var bytes = WriteOne((ref NdrWriter w) => {
             w.WriteInt32(0x11223344);
             w.WriteDouble(1.0);
         });
@@ -223,8 +200,7 @@ public sealed class NdrPrimitiveTests
     // -------- GUID + FILETIME --------
 
     [Test]
-    public async Task Guid_RoundTrips()
-    {
+    public async Task Guid_RoundTrips() {
         var input = new Guid("39C13A4D-011E-11D0-9675-0020AFD8ADB3");
         var bytes = WriteOne((ref NdrWriter w) => w.WriteGuid(input));
         Guid read;
@@ -237,8 +213,7 @@ public sealed class NdrPrimitiveTests
     }
 
     [Test]
-    public async Task FileTime_RoundTrips_AsTwoLittleEndianHalves()
-    {
+    public async Task FileTime_RoundTrips_AsTwoLittleEndianHalves() {
         const long ticks = 0x01D9_1234_5678_9ABC;
         var bytes = WriteOne((ref NdrWriter w) => w.WriteFileTime(ticks));
         long read;
@@ -251,10 +226,8 @@ public sealed class NdrPrimitiveTests
     }
 
     [Test]
-    public async Task FileTime_AlignsTo4_NotTo8()
-    {
-        var bytes = WriteOne((ref NdrWriter w) =>
-        {
+    public async Task FileTime_AlignsTo4_NotTo8() {
+        var bytes = WriteOne((ref NdrWriter w) => {
             w.WriteByte(0xFF);
             w.WriteFileTime(0x0123456789ABCDEFL);
         });
@@ -264,8 +237,7 @@ public sealed class NdrPrimitiveTests
     // -------- Conformance header --------
 
     [Test]
-    public async Task ConformanceHeader_WritesAsUInt32()
-    {
+    public async Task ConformanceHeader_WritesAsUInt32() {
         var bytes = WriteOne((ref NdrWriter w) => w.WriteConformanceHeader(42));
         int read;
         {
@@ -277,10 +249,8 @@ public sealed class NdrPrimitiveTests
     }
 
     [Test]
-    public async Task ConformanceHeader_Negative_Throws()
-    {
-        Throws<ArgumentOutOfRangeException>(() =>
-        {
+    public async Task ConformanceHeader_Negative_Throws() {
+        Throws<ArgumentOutOfRangeException>(() => {
             var buf = new byte[16];
             var w = new NdrWriter(buf);
             w.WriteConformanceHeader(-1);
@@ -291,8 +261,7 @@ public sealed class NdrPrimitiveTests
     // -------- Referent IDs --------
 
     [Test]
-    public async Task ReferentId_NonZero_StartsAtConventionalValue()
-    {
+    public async Task ReferentId_NonZero_StartsAtConventionalValue() {
         var bytes = WriteOne((ref NdrWriter w) => w.WriteReferentId());
         bool nonNull;
         uint id;
@@ -305,10 +274,8 @@ public sealed class NdrPrimitiveTests
     }
 
     [Test]
-    public async Task ReferentId_AssignsIncrementingValues()
-    {
-        var bytes = WriteOne((ref NdrWriter w) =>
-        {
+    public async Task ReferentId_AssignsIncrementingValues() {
+        var bytes = WriteOne((ref NdrWriter w) => {
             w.WriteReferentId();
             w.WriteReferentId();
         });
@@ -322,8 +289,7 @@ public sealed class NdrPrimitiveTests
     }
 
     [Test]
-    public async Task NullReferent_DecodesAsNull()
-    {
+    public async Task NullReferent_DecodesAsNull() {
         var bytes = WriteOne((ref NdrWriter w) => w.WriteNullReferent());
         bool nonNull;
         uint id;
@@ -338,8 +304,7 @@ public sealed class NdrPrimitiveTests
     // -------- Unicode string --------
 
     [Test]
-    public async Task UnicodeString_RoundTrips_BasicAscii()
-    {
+    public async Task UnicodeString_RoundTrips_BasicAscii() {
         var bytes = WriteOne((ref NdrWriter w) => w.WriteUnicodeString("Hello"));
         string read;
         {
@@ -350,8 +315,7 @@ public sealed class NdrPrimitiveTests
     }
 
     [Test]
-    public async Task UnicodeString_EmptyString_RoundTrips()
-    {
+    public async Task UnicodeString_EmptyString_RoundTrips() {
         var bytes = WriteOne((ref NdrWriter w) => w.WriteUnicodeString(string.Empty));
         string read;
         {
@@ -362,8 +326,7 @@ public sealed class NdrPrimitiveTests
     }
 
     [Test]
-    public async Task UnicodeString_NonAscii_RoundTrips()
-    {
+    public async Task UnicodeString_NonAscii_RoundTrips() {
         var input = "Ä-中文-🙂";
         var bytes = WriteOne((ref NdrWriter w) => w.WriteUnicodeString(input), capacity: 128);
         string read;
@@ -375,8 +338,7 @@ public sealed class NdrPrimitiveTests
     }
 
     [Test]
-    public async Task UnicodeString_IncludesNullTerminatorOnWire()
-    {
+    public async Task UnicodeString_IncludesNullTerminatorOnWire() {
         var bytes = WriteOne((ref NdrWriter w) => w.WriteUnicodeString("AB"));
         await Assert.That(bytes.Length).IsEqualTo(18);
         await Assert.That(BitConverter.ToUInt32(bytes, 0)).IsEqualTo(3u);
@@ -388,10 +350,8 @@ public sealed class NdrPrimitiveTests
     // -------- Buffer overflow detection --------
 
     [Test]
-    public async Task WriteInt32_BufferTooSmall_Throws()
-    {
-        Throws<InvalidOperationException>(() =>
-        {
+    public async Task WriteInt32_BufferTooSmall_Throws() {
+        Throws<InvalidOperationException>(() => {
             var buf = new byte[2];
             var w = new NdrWriter(buf);
             w.WriteInt32(123);
@@ -400,10 +360,8 @@ public sealed class NdrPrimitiveTests
     }
 
     [Test]
-    public async Task ReadInt32_PastEnd_Throws()
-    {
-        Throws<InvalidOperationException>(() =>
-        {
+    public async Task ReadInt32_PastEnd_Throws() {
+        Throws<InvalidOperationException>(() => {
             var r = new NdrReader(new byte[] { 0x01, 0x02 });
             _ = r.ReadInt32();
         });
@@ -413,10 +371,8 @@ public sealed class NdrPrimitiveTests
     // -------- Alignment edge cases --------
 
     [Test]
-    public async Task AlignTo_InvalidBoundary_Throws()
-    {
-        Throws<ArgumentOutOfRangeException>(() =>
-        {
+    public async Task AlignTo_InvalidBoundary_Throws() {
+        Throws<ArgumentOutOfRangeException>(() => {
             var buf = new byte[16];
             var w = new NdrWriter(buf);
             w.AlignTo(3);
@@ -425,10 +381,8 @@ public sealed class NdrPrimitiveTests
     }
 
     [Test]
-    public async Task AlignTo_AlreadyAligned_DoesNothing()
-    {
-        var bytes = WriteOne((ref NdrWriter w) =>
-        {
+    public async Task AlignTo_AlreadyAligned_DoesNothing() {
+        var bytes = WriteOne((ref NdrWriter w) => {
             w.WriteInt32(1);
             w.AlignTo(4);
             w.WriteInt32(2);
@@ -437,8 +391,7 @@ public sealed class NdrPrimitiveTests
     }
 
     [Test]
-    public async Task Position_TracksWrites()
-    {
+    public async Task Position_TracksWrites() {
         var buf = new byte[64];
         int p1, p2, p3;
         {
@@ -455,13 +408,11 @@ public sealed class NdrPrimitiveTests
     // -------- Composite round-trip --------
 
     [Test]
-    public async Task CompositeStructure_RoundTrips()
-    {
+    public async Task CompositeStructure_RoundTrips() {
         var inputGuid = new Guid("11223344-5566-7788-99AA-BBCCDDEEFF00");
         const long inputTime = 0x01_DA_AB_CD_EF_01_23_45;
 
-        var bytes = WriteOne((ref NdrWriter w) =>
-        {
+        var bytes = WriteOne((ref NdrWriter w) => {
             w.WriteByte(0x01);
             w.WriteInt32(unchecked((int)0xC0040001u));
             w.WriteGuid(inputGuid);

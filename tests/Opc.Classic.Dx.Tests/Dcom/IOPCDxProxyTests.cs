@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -15,18 +15,15 @@ using TUnit.Core;
 
 namespace Opc.Classic.Dx.Tests.Dcom;
 
-public sealed class IOPCDxProxyTests
-{
+public sealed class IOPCDxProxyTests {
     private delegate void NdrWriteAction(ref NdrWriter writer);
 
     [Test]
-    public async Task DXServer_GetVersion_invokes_channel_and_decodes_string()
-    {
+    public async Task DXServer_GetVersion_invokes_channel_and_decodes_string() {
         Guid observedIid = Guid.Empty;
         int observedOpnum = -1;
         ReadOnlyMemory<byte> responsePayload = WritePayload((ref NdrWriter writer) => writer.WriteUnicodeStringPtr("1.0"));
-        var channel = new InMemoryCallChannel((iid, opnum, _, _) =>
-        {
+        var channel = new InMemoryCallChannel((iid, opnum, _, _) => {
             observedIid = iid;
             observedOpnum = opnum;
             return Task.FromResult(new NdrCallResult(0, responsePayload));
@@ -42,14 +39,12 @@ public sealed class IOPCDxProxyTests
     }
 
     [Test]
-    public async Task Configuration_ResetConfiguration_encodes_version_and_decodes_new_version()
-    {
+    public async Task Configuration_ResetConfiguration_encodes_version_and_decodes_new_version() {
         Guid observedIid = Guid.Empty;
         int observedOpnum = -1;
         int observedPayloadLength = -1;
         ReadOnlyMemory<byte> responsePayload = WritePayload((ref NdrWriter writer) => writer.WriteUnicodeStringPtr("v2"));
-        var channel = new InMemoryCallChannel((iid, opnum, payload, _) =>
-        {
+        var channel = new InMemoryCallChannel((iid, opnum, payload, _) => {
             observedIid = iid;
             observedOpnum = opnum;
             observedPayloadLength = payload.Length;
@@ -67,16 +62,14 @@ public sealed class IOPCDxProxyTests
     }
 
     [Test]
-    public async Task Configuration_AddDXConnections_encodes_connection_array_and_decodes_response()
-    {
+    public async Task Configuration_AddDXConnections_encodes_connection_array_and_decodes_response() {
         Guid observedIid = Guid.Empty;
         int observedOpnum = -1;
         DxConnection[] observedConnections = Array.Empty<DxConnection>();
         ReadOnlyMemory<byte> responsePayload = WritePayload(
             (ref NdrWriter writer) => NdrOpcDxGeneralResponseCodec.Write(ref writer, new DxGeneralResponse("cfg-4")),
             capacity: 2048);
-        var channel = new InMemoryCallChannel((iid, opnum, payload, _) =>
-        {
+        var channel = new InMemoryCallChannel((iid, opnum, payload, _) => {
             observedIid = iid;
             observedOpnum = opnum;
             var reader = new NdrReader(payload.Span);
@@ -94,14 +87,12 @@ public sealed class IOPCDxProxyTests
     }
 
     [Test]
-    public async Task Configuration_QuerySourceServers_decodes_source_server_array()
-    {
+    public async Task Configuration_QuerySourceServers_decodes_source_server_array() {
         int observedPayloadLength = -1;
         ReadOnlyMemory<byte> responsePayload = WritePayload(
             (ref NdrWriter writer) => NdrOpcDxSourceServerArrayCodec.Write(ref writer, new[] { new DxSourceServer("PLC1", "opcda://plc1/Vendor.OPC.1") }),
             capacity: 2048);
-        var channel = new InMemoryCallChannel((_, _, payload, _) =>
-        {
+        var channel = new InMemoryCallChannel((_, _, payload, _) => {
             observedPayloadLength = payload.Length;
             return Task.FromResult(new NdrCallResult(0, responsePayload));
         });
@@ -115,18 +106,15 @@ public sealed class IOPCDxProxyTests
     }
 
     [Test]
-    public async Task Configuration_UpdateDXConnections_decodes_errors_and_general_response()
-    {
+    public async Task Configuration_UpdateDXConnections_decodes_errors_and_general_response() {
         string? observedBrowsePath = null;
         bool observedRecursive = false;
         DxConnection? observedDefinition = null;
-        ReadOnlyMemory<byte> responsePayload = WritePayload((ref NdrWriter writer) =>
-        {
+        ReadOnlyMemory<byte> responsePayload = WritePayload((ref NdrWriter writer) => {
             NdrOpcDxInt32ArrayCodec.Write(ref writer, new[] { OpcDxError.E_VERSION_MISMATCH.Code });
             NdrOpcDxGeneralResponseCodec.Write(ref writer, new DxGeneralResponse("cfg-5"));
         }, capacity: 4096);
-        var channel = new InMemoryCallChannel((_, _, payload, _) =>
-        {
+        var channel = new InMemoryCallChannel((_, _, payload, _) => {
             var reader = new NdrReader(payload.Span);
             observedBrowsePath = reader.ReadUnicodeStringPtr();
             _ = NdrOpcDxConnectionArrayCodec.Read(ref reader);
@@ -150,8 +138,7 @@ public sealed class IOPCDxProxyTests
         await Assert.That(result.Response.ConfigurationVersion).IsEqualTo("cfg-5");
     }
 
-    private static ReadOnlyMemory<byte> WritePayload(NdrWriteAction write, int capacity = 512)
-    {
+    private static ReadOnlyMemory<byte> WritePayload(NdrWriteAction write, int capacity = 512) {
         var buffer = new byte[capacity];
         var writer = new NdrWriter(buffer);
         write(ref writer);

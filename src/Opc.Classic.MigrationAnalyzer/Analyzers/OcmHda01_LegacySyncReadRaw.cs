@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -13,15 +13,12 @@ using Microsoft.CodeAnalysis.Diagnostics;
 namespace Opc.Classic.MigrationAnalyzer.Analyzers;
 
 [DiagnosticAnalyzer(LanguageNames.CSharp)]
-public sealed class OcmHda01_LegacySyncReadRaw : DiagnosticAnalyzer
-{
+public sealed class OcmHda01_LegacySyncReadRaw : DiagnosticAnalyzer {
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
         ImmutableArray.Create(MigrationDiagnosticDescriptors.LegacySyncReadRaw);
 
-    public override void Initialize(AnalysisContext context)
-    {
-        if (context is null)
-        {
+    public override void Initialize(AnalysisContext context) {
+        if (context is null) {
             throw new ArgumentNullException(nameof(context));
         }
 
@@ -30,12 +27,10 @@ public sealed class OcmHda01_LegacySyncReadRaw : DiagnosticAnalyzer
         context.RegisterSyntaxNodeAction(AnalyzeInvocation, SyntaxKind.InvocationExpression);
     }
 
-    private static void AnalyzeInvocation(SyntaxNodeAnalysisContext context)
-    {
+    private static void AnalyzeInvocation(SyntaxNodeAnalysisContext context) {
         var invocation = (InvocationExpressionSyntax)context.Node;
         if (!string.Equals(LegacySyntaxFacts.GetInvocationName(invocation), "SyncReadRaw", StringComparison.Ordinal) ||
-            !LegacySyntaxFacts.IsLegacyInvocationReceiver(invocation, context.SemanticModel))
-        {
+            !LegacySyntaxFacts.IsLegacyInvocationReceiver(invocation, context.SemanticModel)) {
             return;
         }
 

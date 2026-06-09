@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -16,11 +16,9 @@ using TUnit.Core;
 
 namespace Opc.Classic.Ae.Tests.Hosting;
 
-public sealed class OpcAeServerDispatcherTests
-{
+public sealed class OpcAeServerDispatcherTests {
     [Test]
-    public async Task DispatchGetStatus_calls_server_and_returns_status()
-    {
+    public async Task DispatchGetStatus_calls_server_and_returns_status() {
         var server = new StubAeServer();
         var dispatcher = new OpcAeServerDispatcher(server);
 
@@ -41,8 +39,7 @@ public sealed class OpcAeServerDispatcherTests
     }
 
     [Test]
-    public async Task DispatchQueryAvailableFilters_returns_filter_mask()
-    {
+    public async Task DispatchQueryAvailableFilters_returns_filter_mask() {
         var server = new StubAeServer { FilterMask = 7 };
         var dispatcher = new OpcAeServerDispatcher(server);
 
@@ -61,8 +58,7 @@ public sealed class OpcAeServerDispatcherTests
 
     private static string ReadVendorInfo() => "AE Dispatcher Test Server";
 
-    private static OpcServerStatus BuildStatus() => new()
-    {
+    private static OpcServerStatus BuildStatus() => new() {
         Spec = OpcStatusSpec.Ae,
         StartTime = DateTimeOffset.UnixEpoch,
         CurrentTime = DateTimeOffset.UnixEpoch.AddSeconds(1),
@@ -72,22 +68,19 @@ public sealed class OpcAeServerDispatcherTests
         VendorInfo = ReadVendorInfo(),
     };
 
-    private sealed class StubAeServer : IOpcAeServer
-    {
+    private sealed class StubAeServer : IOpcAeServer {
         public int FilterMask { get; init; }
 
         public int GetStatusCallCount { get; private set; }
 
         public int QueryAvailableFiltersCallCount { get; private set; }
 
-        public Task<OpcServerStatus> GetStatusAsync(CancellationToken cancellationToken = default)
-        {
+        public Task<OpcServerStatus> GetStatusAsync(CancellationToken cancellationToken = default) {
             GetStatusCallCount++;
             return Task.FromResult(BuildStatus());
         }
 
-        public Task<int> QueryAvailableFiltersAsync(CancellationToken cancellationToken = default)
-        {
+        public Task<int> QueryAvailableFiltersAsync(CancellationToken cancellationToken = default) {
             QueryAvailableFiltersCallCount++;
             return Task.FromResult(FilterMask);
         }

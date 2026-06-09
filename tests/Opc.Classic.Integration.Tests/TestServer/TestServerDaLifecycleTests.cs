@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -31,13 +31,11 @@ namespace Opc.Classic.Tests.Integration.TestServer;
 /// path).
 /// </para>
 /// </remarks>
-public sealed class TestServerDaLifecycleTests
-{
+public sealed class TestServerDaLifecycleTests {
     private const string LiveCategory = "LiveTestServer";
 
     [Test, Category(LiveCategory)]
-    public async Task TestServer_clsid_and_progid_match_upstream_constants()
-    {
+    public async Task TestServer_clsid_and_progid_match_upstream_constants() {
         // Scaffold assertion: confirms the well-known CLSID/ProgID match
         // the upstream `external/redist/samples/OpcTestServer/OpcTestServer.cpp`
         // declarations. Catches accidental drift if upstream rev-bumps the GUID.
@@ -50,10 +48,8 @@ public sealed class TestServerDaLifecycleTests
     }
 
     [Test, Category(LiveCategory)]
-    public async Task TestServer_da_lifecycle_via_mcp_driver()
-    {
-        if (TestServerProbe.ShouldSkip(out var reason))
-        {
+    public async Task TestServer_da_lifecycle_via_mcp_driver() {
+        if (TestServerProbe.ShouldSkip(out var reason)) {
             // Soft-skip with a non-empty reason so the test result captures
             // why the live exercise didn't run.
             await Assert.That(reason.Length).IsGreaterThan(0);
@@ -82,8 +78,7 @@ public sealed class TestServerDaLifecycleTests
         // Drives the full Connect -> GetStatus -> ReadItemsById flow
         // against the registered TestServer using the same in-tree
         // managed Opc.Classic stack that the user invokes manually.
-        var psi = new ProcessStartInfo("python", $"\"{script}\" --testserver")
-        {
+        var psi = new ProcessStartInfo("python", $"\"{script}\" --testserver") {
             WorkingDirectory = repoRoot,
             RedirectStandardOutput = true,
             RedirectStandardError = true,
@@ -94,8 +89,7 @@ public sealed class TestServerDaLifecycleTests
         var stdoutTask = proc.StandardOutput.ReadToEndAsync();
         var stderrTask = proc.StandardError.ReadToEndAsync();
         var timedOut = !proc.WaitForExit(180_000);
-        if (timedOut)
-        {
+        if (timedOut) {
             try { proc.Kill(entireProcessTree: true); } catch { /* ignore */ }
             throw new TimeoutException(
                 "mcp_driver.py --testserver exceeded 180s. The TestServer is likely " +

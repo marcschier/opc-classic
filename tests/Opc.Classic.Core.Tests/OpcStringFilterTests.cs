@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -8,8 +8,7 @@ using TUnit.Core;
 
 namespace Opc.Classic.Tests;
 
-public sealed class OpcStringFilterTests
-{
+public sealed class OpcStringFilterTests {
     [Test]
     [Arguments("Pump01", "Pump01", false, true)]
     [Arguments("Pump01", "Pump*", false, true)]
@@ -49,8 +48,7 @@ public sealed class OpcStringFilterTests
         string value,
         string pattern,
         bool caseSensitive,
-        bool expected)
-    {
+        bool expected) {
         bool actual = OpcStringFilter.MatchPattern(value, pattern, caseSensitive);
 
         await Assert.That(actual).IsEqualTo(expected);

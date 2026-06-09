@@ -1,8 +1,9 @@
-// SPDX-License-Identifier: MIT
+﻿// SPDX-License-Identifier: MIT
 
 using System;
 
-namespace Opc.Classic.Dcom.Registry; 
+namespace Opc.Classic.Dcom.Registry;
+
 /// <summary>
 /// Registry options
 /// </summary>

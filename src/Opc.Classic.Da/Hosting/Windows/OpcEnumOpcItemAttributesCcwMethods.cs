@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -16,58 +16,46 @@ namespace Opc.Classic.Da.Hosting.Windows;
 /// Method bodies for the <see cref="OpcEnumOpcItemAttributesCcw"/> vtable.
 /// </summary>
 [SupportedOSPlatform("windows")]
-internal static unsafe class OpcEnumOpcItemAttributesCcwMethods
-{
+internal static unsafe class OpcEnumOpcItemAttributesCcwMethods {
     [UnmanagedCallersOnly]
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
-    public static int Next(IntPtr pThis, uint dwNumAttributes, IntPtr* ppItemArray, uint* pdwNumAttributes)
-    {
-        if (ppItemArray != null)
-        {
+    public static int Next(IntPtr pThis, uint dwNumAttributes, IntPtr* ppItemArray, uint* pdwNumAttributes) {
+        if (ppItemArray != null) {
             *ppItemArray = IntPtr.Zero;
         }
-        if (pdwNumAttributes != null)
-        {
+        if (pdwNumAttributes != null) {
             *pdwNumAttributes = 0;
         }
-        if (ppItemArray == null)
-        {
+        if (ppItemArray == null) {
             return OpcEnumOpcItemAttributesCcw.E_INVALIDARG;
         }
-        if (!TryResolve(pThis, out OpcDaItemAttributesEnumerator? enumerator))
-        {
+        if (!TryResolve(pThis, out OpcDaItemAttributesEnumerator? enumerator)) {
             return OpcEnumOpcItemAttributesCcw.E_FAIL;
         }
 
-        try
-        {
+        try {
             int requested = dwNumAttributes > int.MaxValue ? int.MaxValue : (int)dwNumAttributes;
 #pragma warning disable VSTHRD002
             enumerator!.NextAsync(requested, out OpcItemAttributes[] attributes, out int fetched, CancellationToken.None).GetAwaiter().GetResult();
 #pragma warning restore VSTHRD002
             *ppItemArray = AllocateOpcItemAttributesArray(attributes);
-            if (pdwNumAttributes != null)
-            {
+            if (pdwNumAttributes != null) {
                 *pdwNumAttributes = (uint)fetched;
             }
             return fetched == requested ? OpcEnumOpcItemAttributesCcw.S_OK : OpcEnumOpcItemAttributesCcw.S_FALSE;
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             return MapHResult(ex);
         }
     }
 
     [UnmanagedCallersOnly]
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
-    public static int Skip(IntPtr pThis, uint celt)
-    {
-        if (!TryResolve(pThis, out OpcDaItemAttributesEnumerator? enumerator))
-        {
+    public static int Skip(IntPtr pThis, uint celt) {
+        if (!TryResolve(pThis, out OpcDaItemAttributesEnumerator? enumerator)) {
             return OpcEnumOpcItemAttributesCcw.E_FAIL;
         }
-        try
-        {
+        try {
             int requested = celt > int.MaxValue ? int.MaxValue : (int)celt;
             long target = (long)enumerator!.Position + requested;
 #pragma warning disable VSTHRD002
@@ -77,57 +65,46 @@ internal static unsafe class OpcEnumOpcItemAttributesCcwMethods
                 ? OpcEnumOpcItemAttributesCcw.S_OK
                 : OpcEnumOpcItemAttributesCcw.S_FALSE;
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             return MapHResult(ex);
         }
     }
 
     [UnmanagedCallersOnly]
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
-    public static int Reset(IntPtr pThis)
-    {
-        if (!TryResolve(pThis, out OpcDaItemAttributesEnumerator? enumerator))
-        {
+    public static int Reset(IntPtr pThis) {
+        if (!TryResolve(pThis, out OpcDaItemAttributesEnumerator? enumerator)) {
             return OpcEnumOpcItemAttributesCcw.E_FAIL;
         }
-        try
-        {
+        try {
 #pragma warning disable VSTHRD002
             enumerator!.ResetAsync(CancellationToken.None).GetAwaiter().GetResult();
 #pragma warning restore VSTHRD002
             return OpcEnumOpcItemAttributesCcw.S_OK;
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             return MapHResult(ex);
         }
     }
 
     [UnmanagedCallersOnly]
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
-    public static int Clone(IntPtr pThis, IntPtr* ppEnum)
-    {
-        if (ppEnum != null)
-        {
+    public static int Clone(IntPtr pThis, IntPtr* ppEnum) {
+        if (ppEnum != null) {
             *ppEnum = IntPtr.Zero;
         }
-        if (ppEnum == null)
-        {
+        if (ppEnum == null) {
             return OpcEnumOpcItemAttributesCcw.E_INVALIDARG;
         }
-        if (!TryResolve(pThis, out OpcDaItemAttributesEnumerator? enumerator))
-        {
+        if (!TryResolve(pThis, out OpcDaItemAttributesEnumerator? enumerator)) {
             return OpcEnumOpcItemAttributesCcw.E_FAIL;
         }
-        try
-        {
+        try {
             OpcDaItemAttributesEnumerator clone = CloneEnumeratorForCcw(enumerator!);
             *ppEnum = OpcEnumOpcItemAttributesCcw.Create(clone);
             return OpcEnumOpcItemAttributesCcw.S_OK;
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             return MapHResult(ex);
         }
     }
@@ -157,22 +134,19 @@ internal static unsafe class OpcEnumOpcItemAttributesCcwMethods
         ? ComVariantMarshaler.VariantSize - VariantSlotStride
         : 0;
 
-    private static bool TryResolve(IntPtr pThis, out OpcDaItemAttributesEnumerator? enumerator)
-    {
+    private static bool TryResolve(IntPtr pThis, out OpcDaItemAttributesEnumerator? enumerator) {
         enumerator = OpcEnumOpcItemAttributesCcw.ResolveEnumerator(pThis);
         return enumerator is not null;
     }
 
-    private static int MapHResult(Exception ex) => ex switch
-    {
+    private static int MapHResult(Exception ex) => ex switch {
         OpcException opcEx => opcEx.ResultId.Code,
         ArgumentNullException => OpcEnumOpcItemAttributesCcw.E_INVALIDARG,
         ArgumentException => OpcEnumOpcItemAttributesCcw.E_INVALIDARG,
         _ => OpcEnumOpcItemAttributesCcw.E_FAIL,
     };
 
-    private static OpcDaItemAttributesEnumerator CloneEnumeratorForCcw(OpcDaItemAttributesEnumerator enumerator)
-    {
+    private static OpcDaItemAttributesEnumerator CloneEnumeratorForCcw(OpcDaItemAttributesEnumerator enumerator) {
         int position = enumerator.Position;
 #pragma warning disable VSTHRD002
         enumerator.ResetAsync(CancellationToken.None).GetAwaiter().GetResult();
@@ -185,10 +159,8 @@ internal static unsafe class OpcEnumOpcItemAttributesCcwMethods
         return clone;
     }
 
-    private static IntPtr AllocateOpcItemAttributesArray(OpcItemAttributes[] attributes)
-    {
-        if (attributes.Length == 0)
-        {
+    private static IntPtr AllocateOpcItemAttributesArray(OpcItemAttributes[] attributes) {
+        if (attributes.Length == 0) {
             return IntPtr.Zero;
         }
         int byteCount = checked((attributes.Length * s_opcItemAttributesSize) + s_variantTailPadding);
@@ -196,24 +168,20 @@ internal static unsafe class OpcEnumOpcItemAttributesCcwMethods
         NativeMemory.Clear((void*)ptr, (nuint)byteCount);
 
         int slotsTouched = 0;
-        try
-        {
-            for (int i = 0; i < attributes.Length; i++)
-            {
+        try {
+            for (int i = 0; i < attributes.Length; i++) {
                 slotsTouched = i + 1;
                 WriteNativeAttribute(IntPtr.Add(ptr, i * s_opcItemAttributesSize), attributes[i]);
             }
             return ptr;
         }
-        catch
-        {
+        catch {
             FreeNativeAttributesArray(ptr, slotsTouched);
             throw;
         }
     }
 
-    private static void WriteNativeAttribute(IntPtr destination, OpcItemAttributes attributes)
-    {
+    private static void WriteNativeAttribute(IntPtr destination, OpcItemAttributes attributes) {
         byte[] blob = attributes.Blob ?? Array.Empty<byte>();
 
         Marshal.WriteIntPtr(destination, SzAccessPathOffset, AllocateLpwStr(attributes.AccessPath));
@@ -230,27 +198,22 @@ internal static unsafe class OpcEnumOpcItemAttributesCcwMethods
         ComVariantMarshaler.WriteVariant(IntPtr.Add(destination, s_vEUInfoOffset), attributes.EUInfo);
     }
 
-    private static void FreeNativeAttributesArray(IntPtr ptr, int count)
-    {
-        for (int i = 0; i < count; i++)
-        {
+    private static void FreeNativeAttributesArray(IntPtr ptr, int count) {
+        for (int i = 0; i < count; i++) {
             IntPtr slot = IntPtr.Add(ptr, i * s_opcItemAttributesSize);
             Marshal.FreeCoTaskMem(Marshal.ReadIntPtr(slot, SzAccessPathOffset));
             Marshal.FreeCoTaskMem(Marshal.ReadIntPtr(slot, s_szItemIdOffset));
             Marshal.FreeCoTaskMem(Marshal.ReadIntPtr(slot, s_pBlobOffset));
         }
         // Clear variants after pointer fields so x64 VARIANT tail bytes cannot hide a later slot allocation.
-        for (int i = 0; i < count; i++)
-        {
+        for (int i = 0; i < count; i++) {
             ComVariantMarshaler.ClearVariant(IntPtr.Add(ptr, (i * s_opcItemAttributesSize) + s_vEUInfoOffset));
         }
         Marshal.FreeCoTaskMem(ptr);
     }
 
-    private static IntPtr AllocateLpwStr(string? value)
-    {
-        if (value is null)
-        {
+    private static IntPtr AllocateLpwStr(string? value) {
+        if (value is null) {
             return IntPtr.Zero;
         }
         int byteCount = (value.Length + 1) * sizeof(char);
@@ -260,10 +223,8 @@ internal static unsafe class OpcEnumOpcItemAttributesCcwMethods
         return ptr;
     }
 
-    private static IntPtr AllocateBlob(byte[] blob)
-    {
-        if (blob.Length == 0)
-        {
+    private static IntPtr AllocateBlob(byte[] blob) {
+        if (blob.Length == 0) {
             return IntPtr.Zero;
         }
         IntPtr ptr = Marshal.AllocCoTaskMem(blob.Length);

@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -33,13 +33,11 @@ namespace Opc.Classic.Integration.Tests.EndToEnd;
 
 internal delegate void NdrWriteAction(ref NdrWriter writer);
 
-internal static class EndToEndNdr
-{
+internal static class EndToEndNdr {
     private const int DefaultBufferSize = 128 * 1024;
     private const long FileTimeEpochOffsetTicks = 504911232000000000L;
 
-    public static ReadOnlyMemory<byte> Write(NdrWriteAction write, int capacity = DefaultBufferSize)
-    {
+    public static ReadOnlyMemory<byte> Write(NdrWriteAction write, int capacity = DefaultBufferSize) {
         ArgumentNullException.ThrowIfNull(write);
         var buffer = new byte[capacity];
         var writer = new NdrWriter(buffer);
@@ -47,63 +45,51 @@ internal static class EndToEndNdr
         return buffer.AsMemory(0, writer.Position).ToArray();
     }
 
-    public static void WriteInt32Array(ref NdrWriter writer, IReadOnlyList<int> values)
-    {
+    public static void WriteInt32Array(ref NdrWriter writer, IReadOnlyList<int> values) {
         writer.WriteUInt32(unchecked((uint)values.Count));
-        foreach (int value in values)
-        {
+        foreach (int value in values) {
             writer.WriteInt32(value);
         }
     }
 
-    public static int[] ReadInt32Array(ref NdrReader reader)
-    {
+    public static int[] ReadInt32Array(ref NdrReader reader) {
         int count = checked((int)reader.ReadUInt32());
         var values = new int[count];
-        for (int i = 0; i < values.Length; i++)
-        {
+        for (int i = 0; i < values.Length; i++) {
             values[i] = reader.ReadInt32();
         }
 
         return values;
     }
 
-    public static void WriteStringArray(ref NdrWriter writer, IReadOnlyList<string> values)
-    {
+    public static void WriteStringArray(ref NdrWriter writer, IReadOnlyList<string> values) {
         writer.WriteUInt32(unchecked((uint)values.Count));
-        foreach (string value in values)
-        {
+        foreach (string value in values) {
             writer.WriteUnicodeStringPtr(value);
         }
     }
 
-    public static string[] ReadStringArray(ref NdrReader reader)
-    {
+    public static string[] ReadStringArray(ref NdrReader reader) {
         int count = checked((int)reader.ReadUInt32());
         var values = new string[count];
-        for (int i = 0; i < values.Length; i++)
-        {
+        for (int i = 0; i < values.Length; i++) {
             values[i] = reader.ReadUnicodeStringPtr() ?? string.Empty;
         }
 
         return values;
     }
 
-    public static void WriteVariantArray(ref NdrWriter writer, IReadOnlyList<OpcVariant> values)
-    {
+    public static void WriteVariantArray(ref NdrWriter writer, IReadOnlyList<OpcVariant> values) {
         writer.WriteUInt32(unchecked((uint)values.Count));
-        foreach (OpcVariant value in values)
-        {
+        foreach (OpcVariant value in values) {
             writer.WriteVariant(value);
         }
     }
 
-    public static OpcVariant[] ReadVariantArray(ref NdrReader reader)
-    {
+    public static OpcVariant[] ReadVariantArray(ref NdrReader reader) {
         int count = checked((int)reader.ReadUInt32());
         var values = new OpcVariant[count];
-        for (int i = 0; i < values.Length; i++)
-        {
+        for (int i = 0; i < values.Length; i++) {
             values[i] = reader.ReadVariant();
         }
 
@@ -115,8 +101,7 @@ internal static class EndToEndNdr
     public static DateTimeOffset FromFileTime(long fileTimeTicks) => new(fileTimeTicks + FileTimeEpochOffsetTicks, TimeSpan.Zero);
 }
 
-internal static class DispatchResultExtensions
-{
+internal static class DispatchResultExtensions {
     public static async Task<NdrCallResult> ToCallResultAsync(this ValueTask<DispatchResult> dispatch) =>
         (await dispatch.ConfigureAwait(false)).ToNdrCallResult();
 }
@@ -140,8 +125,7 @@ internal sealed record DaReadResult(
 
 internal sealed record DaWriteObservation(int ServerHandle, OpcVariant Value, int Error);
 
-internal sealed class DaEndToEndPipeline
-{
+internal sealed class DaEndToEndPipeline {
     private const int AddGroupOpnum = 3;
     private const int HierarchicalOrganization = 1;
     private const int DataSourceCache = 1;
@@ -161,8 +145,7 @@ internal sealed class DaEndToEndPipeline
     private int _nextItemHandle = 3000;
     private int _currentGroupHandle;
 
-    public DaEndToEndPipeline()
-    {
+    public DaEndToEndPipeline() {
         _sampleServer = new SampleDaServer(_tags, NullLogger<SampleDaServer>.Instance);
         _serverDispatcher = new OpcDaServerDispatcher(_sampleServer);
         _groupStateDispatcher = new IOPCGroupStateMgtServerDispatcher(new GroupStateImpl(this));
@@ -203,29 +186,22 @@ internal sealed class DaEndToEndPipeline
 
     public IReadOnlyList<DaWriteObservation> LastWrites { get; private set; } = Array.Empty<DaWriteObservation>();
 
-    public int GroupCount
-    {
-        get
-        {
-            lock (_gate)
-            {
+    public int GroupCount {
+        get {
+            lock (_gate) {
                 return _groups.Count;
             }
         }
     }
 
-    public bool GroupExists(int groupHandle)
-    {
-        lock (_gate)
-        {
+    public bool GroupExists(int groupHandle) {
+        lock (_gate) {
             return _groups.ContainsKey(groupHandle);
         }
     }
 
-    public bool IsItemActive(int serverHandle)
-    {
-        lock (_gate)
-        {
+    public bool IsItemActive(int serverHandle) {
+        lock (_gate) {
             return FindItemCore(serverHandle)?.Active ?? false;
         }
     }
@@ -236,8 +212,7 @@ internal sealed class DaEndToEndPipeline
         int requestedUpdateRate,
         int clientHandle,
         int localeId,
-        CancellationToken cancellationToken)
-    {
+        CancellationToken cancellationToken) {
         await Server.AddGroupAsync(
             name,
             active,
@@ -257,10 +232,8 @@ internal sealed class DaEndToEndPipeline
     public async Task<DaAddItemResult[]> AddItemsViaWireAsync(
         int groupHandle,
         IReadOnlyList<(string ItemId, int ClientHandle)> items,
-        CancellationToken cancellationToken)
-    {
-        if (!GroupExists(groupHandle))
-        {
+        CancellationToken cancellationToken) {
+        if (!GroupExists(groupHandle)) {
             throw new OpcException(OpcResultId.InvalidHandle);
         }
 
@@ -271,8 +244,7 @@ internal sealed class DaEndToEndPipeline
             .ConfigureAwait(false);
 
         var results = new DaAddItemResult[items.Count];
-        for (int i = 0; i < results.Length; i++)
-        {
+        for (int i = 0; i < results.Length; i++) {
             OpcItemResult itemResult = itemResults[i];
             results[i] = new DaAddItemResult(
                 items[i].ItemId,
@@ -286,15 +258,13 @@ internal sealed class DaEndToEndPipeline
         return results;
     }
 
-    public async Task<DaReadResult[]> ReadViaWireAsync(IReadOnlyList<DaAddItemResult> items, CancellationToken cancellationToken)
-    {
+    public async Task<DaReadResult[]> ReadViaWireAsync(IReadOnlyList<DaAddItemResult> items, CancellationToken cancellationToken) {
         int[] serverHandles = items.Select(static item => item.ServerHandle).ToArray();
         OpcItemState[] states = await SyncIo.ReadAsync(DataSourceCache, serverHandles, out int[] errors, cancellationToken)
             .ConfigureAwait(false);
 
         var results = new DaReadResult[items.Count];
-        for (int i = 0; i < results.Length; i++)
-        {
+        for (int i = 0; i < results.Length; i++) {
             OpcItemState state = states[i];
             results[i] = new DaReadResult(
                 items[i].ItemId,
@@ -309,8 +279,7 @@ internal sealed class DaEndToEndPipeline
         return results;
     }
 
-    public Task<string[]> BrowseItemsViaWireAsync(CancellationToken cancellationToken)
-    {
+    public Task<string[]> BrowseItemsViaWireAsync(CancellationToken cancellationToken) {
         cancellationToken.ThrowIfCancellationRequested();
         return Task.FromResult(_tags.Tags.Keys.Order(StringComparer.Ordinal).ToArray());
     }
@@ -319,46 +288,37 @@ internal sealed class DaEndToEndPipeline
         Guid interfaceId,
         int opnum,
         ReadOnlyMemory<byte> requestPayload,
-        CancellationToken cancellationToken)
-    {
+        CancellationToken cancellationToken) {
         cancellationToken.ThrowIfCancellationRequested();
-        if (interfaceId == IOPCServer.InterfaceId)
-        {
+        if (interfaceId == IOPCServer.InterfaceId) {
             return DispatchServerAsync(opnum, requestPayload, cancellationToken);
         }
 
-        if (interfaceId == IOPCGroupStateMgt.InterfaceId)
-        {
+        if (interfaceId == IOPCGroupStateMgt.InterfaceId) {
             return _groupStateDispatcher.DispatchAsync(opnum, requestPayload, cancellationToken).ToCallResultAsync();
         }
 
-        if (interfaceId == IOPCGroupStateMgt2.InterfaceId)
-        {
+        if (interfaceId == IOPCGroupStateMgt2.InterfaceId) {
             return _groupState2Dispatcher.DispatchAsync(opnum, requestPayload, cancellationToken).ToCallResultAsync();
         }
 
-        if (interfaceId == IOPCItemMgt.InterfaceId)
-        {
+        if (interfaceId == IOPCItemMgt.InterfaceId) {
             return _itemMgtDispatcher.DispatchAsync(opnum, requestPayload, cancellationToken).ToCallResultAsync();
         }
 
-        if (interfaceId == IOPCSyncIO.InterfaceId)
-        {
+        if (interfaceId == IOPCSyncIO.InterfaceId) {
             return _syncIoDispatcher.DispatchAsync(opnum, requestPayload, cancellationToken).ToCallResultAsync();
         }
 
-        if (interfaceId == IOPCSyncIO2.InterfaceId)
-        {
+        if (interfaceId == IOPCSyncIO2.InterfaceId) {
             return _syncIo2Dispatcher.DispatchAsync(opnum, requestPayload, cancellationToken).ToCallResultAsync();
         }
 
-        if (interfaceId == IOPCAsyncIO2.InterfaceId)
-        {
+        if (interfaceId == IOPCAsyncIO2.InterfaceId) {
             return _asyncIo2Dispatcher.DispatchAsync(opnum, requestPayload, cancellationToken).ToCallResultAsync();
         }
 
-        if (interfaceId == IOPCBrowseServerAddressSpace.InterfaceId)
-        {
+        if (interfaceId == IOPCBrowseServerAddressSpace.InterfaceId) {
             return _browseDispatcher.DispatchAsync(opnum, requestPayload, cancellationToken).ToCallResultAsync();
         }
 
@@ -368,8 +328,7 @@ internal sealed class DaEndToEndPipeline
     private Task<NdrCallResult> DispatchServerAsync(
         int opnum,
         ReadOnlyMemory<byte> requestPayload,
-        CancellationToken cancellationToken) => opnum switch
-        {
+        CancellationToken cancellationToken) => opnum switch {
             AddGroupOpnum or IOPCServer.Opnums.GetStatusAsync or IOPCServer.Opnums.GetErrorStringAsync or IOPCServer.Opnums.RemoveGroupAsync or IOPCServer.Opnums.GetGroupByNameAsync or IOPCServer.Opnums.CreateGroupEnumeratorAsync =>
                 DispatchTopLevelServerAsync(opnum, requestPayload, cancellationToken),
             _ => Task.FromResult(NotImplemented()),
@@ -378,15 +337,13 @@ internal sealed class DaEndToEndPipeline
     private async Task<NdrCallResult> DispatchTopLevelServerAsync(
         int opnum,
         ReadOnlyMemory<byte> requestPayload,
-        CancellationToken cancellationToken)
-    {
+        CancellationToken cancellationToken) {
         NdrCallResult result = await _serverDispatcher.DispatchAsync(
             IOPCServer.InterfaceId,
             opnum,
             requestPayload,
             cancellationToken).ConfigureAwait(false);
-        if (opnum == IOPCServer.Opnums.AddGroupAsync && result.IsSuccess)
-        {
+        if (opnum == IOPCServer.Opnums.AddGroupAsync && result.IsSuccess) {
             var requestReader = new NdrReader(requestPayload.Span);
             // [OpcRefString] on AddGroup.name → bare conformant-varying
             // string (no referent prefix) per DCE 1.1 §4.2.2.7 top-level
@@ -406,21 +363,17 @@ internal sealed class DaEndToEndPipeline
             var responseReader = new NdrReader(result.ResponsePayload.Span);
             int serverHandle = responseReader.ReadInt32();
             _ = responseReader.ReadInt32();
-            lock (_gate)
-            {
+            lock (_gate) {
                 _groups[serverHandle] = new DaGroup(serverHandle, name, active, requestedUpdateRate, clientHandle, localeId);
                 _currentGroupHandle = serverHandle;
             }
         }
-        else if (opnum == IOPCServer.Opnums.RemoveGroupAsync && result.IsSuccess)
-        {
+        else if (opnum == IOPCServer.Opnums.RemoveGroupAsync && result.IsSuccess) {
             var reader = new NdrReader(requestPayload.Span);
             int serverGroupHandle = reader.ReadInt32();
-            lock (_gate)
-            {
+            lock (_gate) {
                 _groups.Remove(serverGroupHandle);
-                if (_currentGroupHandle == serverGroupHandle)
-                {
+                if (_currentGroupHandle == serverGroupHandle) {
                     _currentGroupHandle = 0;
                 }
             }
@@ -431,8 +384,7 @@ internal sealed class DaEndToEndPipeline
 
     private async Task<NdrCallResult> DispatchAddGroupAsync(
         ReadOnlyMemory<byte> requestPayload,
-        CancellationToken cancellationToken)
-    {
+        CancellationToken cancellationToken) {
         var reader = new NdrReader(requestPayload.Span);
         string name = reader.ReadUnicodeStringPtr() ?? "EndToEnd";
         bool active = reader.ReadInt32() != 0;
@@ -448,8 +400,7 @@ internal sealed class DaEndToEndPipeline
             localeId,
             cancellationToken).ConfigureAwait(false);
 
-        lock (_gate)
-        {
+        lock (_gate) {
             _groups[serverHandle] = new DaGroup(serverHandle, name, active, requestedUpdateRate, clientHandle, localeId);
             _currentGroupHandle = serverHandle;
         }
@@ -457,8 +408,7 @@ internal sealed class DaEndToEndPipeline
         return Ok(EndToEndNdr.Write((ref NdrWriter writer) => writer.WriteInt32(serverHandle)));
     }
 
-    private Task<NdrCallResult> DispatchAddItemsAsync(ReadOnlyMemory<byte> requestPayload, CancellationToken cancellationToken)
-    {
+    private Task<NdrCallResult> DispatchAddItemsAsync(ReadOnlyMemory<byte> requestPayload, CancellationToken cancellationToken) {
         cancellationToken.ThrowIfCancellationRequested();
         var reader = new NdrReader(requestPayload.Span);
         int groupHandle = reader.ReadInt32();
@@ -466,22 +416,18 @@ internal sealed class DaEndToEndPipeline
         var results = new List<OpcItemResult>(count);
         var errors = new List<int>(count);
 
-        lock (_gate)
-        {
+        lock (_gate) {
             bool groupFound = _groups.TryGetValue(groupHandle, out DaGroup? group);
-            for (int i = 0; i < count; i++)
-            {
+            for (int i = 0; i < count; i++) {
                 OpcItemDef item = NdrOpcItemDefCodec.Read(ref reader);
                 string itemId = item.ItemId ?? string.Empty;
-                if (!groupFound || group is null)
-                {
+                if (!groupFound || group is null) {
                     results.Add(new OpcItemResult(0, VarType.VT_EMPTY, 0, Array.Empty<byte>()));
                     errors.Add(OpcResultId.InvalidHandle.Code);
                     continue;
                 }
 
-                if (!_tags.Tags.TryGetValue(itemId, out ITagSource? source))
-                {
+                if (!_tags.Tags.TryGetValue(itemId, out ITagSource? source)) {
                     results.Add(new OpcItemResult(0, VarType.VT_EMPTY, 0, Array.Empty<byte>()));
                     errors.Add(OpcResultId.UnknownItemId.Code);
                     continue;
@@ -495,11 +441,9 @@ internal sealed class DaEndToEndPipeline
             }
         }
 
-        ReadOnlyMemory<byte> response = EndToEndNdr.Write((ref NdrWriter writer) =>
-        {
+        ReadOnlyMemory<byte> response = EndToEndNdr.Write((ref NdrWriter writer) => {
             writer.WriteUInt32(unchecked((uint)results.Count));
-            foreach (OpcItemResult result in results)
-            {
+            foreach (OpcItemResult result in results) {
                 NdrOpcItemResultCodec.Write(ref writer, result);
             }
 
@@ -508,8 +452,7 @@ internal sealed class DaEndToEndPipeline
         return Task.FromResult(Ok(response));
     }
 
-    private Task<NdrCallResult> DispatchReadAsync(ReadOnlyMemory<byte> requestPayload, CancellationToken cancellationToken)
-    {
+    private Task<NdrCallResult> DispatchReadAsync(ReadOnlyMemory<byte> requestPayload, CancellationToken cancellationToken) {
         cancellationToken.ThrowIfCancellationRequested();
         var reader = new NdrReader(requestPayload.Span);
         _ = reader.ReadInt32();
@@ -517,25 +460,20 @@ internal sealed class DaEndToEndPipeline
         var states = new List<OpcItemState>(serverHandles.Length);
         var errors = new List<int>(serverHandles.Length);
 
-        foreach (int serverHandle in serverHandles)
-        {
-            if (TryReadState(serverHandle, out OpcItemState? state, out int error) && state is not null)
-            {
+        foreach (int serverHandle in serverHandles) {
+            if (TryReadState(serverHandle, out OpcItemState? state, out int error) && state is not null) {
                 states.Add(state);
             }
-            else
-            {
+            else {
                 states.Add(new OpcItemState(0, DateTimeOffset.UtcNow, OpcQuality.Bad, OpcVariant.Empty));
             }
 
             errors.Add(error);
         }
 
-        ReadOnlyMemory<byte> response = EndToEndNdr.Write((ref NdrWriter writer) =>
-        {
+        ReadOnlyMemory<byte> response = EndToEndNdr.Write((ref NdrWriter writer) => {
             writer.WriteUInt32(unchecked((uint)states.Count));
-            foreach (OpcItemState state in states)
-            {
+            foreach (OpcItemState state in states) {
                 NdrOpcItemStateCodec.Write(ref writer, state);
             }
 
@@ -544,19 +482,15 @@ internal sealed class DaEndToEndPipeline
         return Task.FromResult(Ok(response));
     }
 
-    private Task<NdrCallResult> DispatchBrowseItemsAsync(CancellationToken cancellationToken)
-    {
+    private Task<NdrCallResult> DispatchBrowseItemsAsync(CancellationToken cancellationToken) {
         cancellationToken.ThrowIfCancellationRequested();
         string[] itemIds = _tags.Tags.Keys.Order(StringComparer.Ordinal).ToArray();
         return Task.FromResult(Ok(EndToEndNdr.Write((ref NdrWriter writer) => EndToEndNdr.WriteStringArray(ref writer, itemIds))));
     }
 
-    private OpcGroupState CurrentGroupState()
-    {
-        lock (_gate)
-        {
-            if (_currentGroupHandle == 0 || !_groups.TryGetValue(_currentGroupHandle, out DaGroup? group))
-            {
+    private OpcGroupState CurrentGroupState() {
+        lock (_gate) {
+            if (_currentGroupHandle == 0 || !_groups.TryGetValue(_currentGroupHandle, out DaGroup? group)) {
                 throw new OpcException(OpcResultId.InvalidHandle);
             }
 
@@ -572,16 +506,12 @@ internal sealed class DaEndToEndPipeline
         }
     }
 
-    private int[] SetItemActiveState(int[] serverHandles, bool active)
-    {
+    private int[] SetItemActiveState(int[] serverHandles, bool active) {
         var errors = new int[serverHandles.Length];
-        lock (_gate)
-        {
-            for (int i = 0; i < serverHandles.Length; i++)
-            {
+        lock (_gate) {
+            for (int i = 0; i < serverHandles.Length; i++) {
                 DaItemBinding? item = FindItemCore(serverHandles[i]);
-                if (item is null)
-                {
+                if (item is null) {
                     errors[i] = OpcResultId.InvalidHandle.Code;
                     continue;
                 }
@@ -594,14 +524,11 @@ internal sealed class DaEndToEndPipeline
         return errors;
     }
 
-    private int[] WriteValues(int[] serverHandles, OpcVariant[] values)
-    {
+    private int[] WriteValues(int[] serverHandles, OpcVariant[] values) {
         var errors = new int[serverHandles.Length];
         var observations = new DaWriteObservation[serverHandles.Length];
-        lock (_gate)
-        {
-            for (int i = 0; i < serverHandles.Length; i++)
-            {
+        lock (_gate) {
+            for (int i = 0; i < serverHandles.Length; i++) {
                 OpcVariant value = i < values.Length ? values[i] : OpcVariant.Empty;
                 errors[i] = TryWriteValueCore(serverHandles[i], value) ? OpcResultId.Ok.Code : OpcResultId.BadRights.Code;
                 observations[i] = new DaWriteObservation(serverHandles[i], value, errors[i]);
@@ -612,20 +539,16 @@ internal sealed class DaEndToEndPipeline
         return errors;
     }
 
-    private bool TryReadState(int serverHandle, out OpcItemState? state, out int error)
-    {
-        lock (_gate)
-        {
+    private bool TryReadState(int serverHandle, out OpcItemState? state, out int error) {
+        lock (_gate) {
             DaItemBinding? item = FindItemCore(serverHandle);
-            if (item is null)
-            {
+            if (item is null) {
                 state = null;
                 error = OpcResultId.InvalidHandle.Code;
                 return false;
             }
 
-            if (!_tags.Tags.TryGetValue(item.ItemId, out ITagSource? source))
-            {
+            if (!_tags.Tags.TryGetValue(item.ItemId, out ITagSource? source)) {
                 state = null;
                 error = OpcResultId.UnknownItemId.Code;
                 return false;
@@ -637,20 +560,16 @@ internal sealed class DaEndToEndPipeline
         }
     }
 
-    private bool TryWriteValueCore(int serverHandle, OpcVariant value)
-    {
+    private bool TryWriteValueCore(int serverHandle, OpcVariant value) {
         DaItemBinding? item = FindItemCore(serverHandle);
         return item is not null
             && _tags.Tags.TryGetValue(item.ItemId, out ITagSource? source)
             && source.TryWrite(value.Boxed);
     }
 
-    private DaItemBinding? FindItemCore(int serverHandle)
-    {
-        foreach (DaGroup group in _groups.Values)
-        {
-            if (group.Items.TryGetValue(serverHandle, out DaItemBinding? item))
-            {
+    private DaItemBinding? FindItemCore(int serverHandle) {
+        foreach (DaGroup group in _groups.Values) {
+            if (group.Items.TryGetValue(serverHandle, out DaItemBinding? item)) {
                 return item;
             }
         }
@@ -658,14 +577,11 @@ internal sealed class DaEndToEndPipeline
         return null;
     }
 
-    private static VarType GuessCanonicalType(ITagSource source)
-    {
-        try
-        {
+    private static VarType GuessCanonicalType(ITagSource source) {
+        try {
             return ToVariant(source.Read()).Type;
         }
-        catch (OpcException)
-        {
+        catch (OpcException) {
             return VarType.VT_EMPTY;
         }
     }
@@ -673,8 +589,7 @@ internal sealed class DaEndToEndPipeline
     private static int GuessAccessRights(string itemId) =>
         itemId.StartsWith("Bucket Brigade.", StringComparison.Ordinal) ? 0x3 : 0x1;
 
-    private static OpcVariant ToVariant(object? value) => value switch
-    {
+    private static OpcVariant ToVariant(object? value) => value switch {
         null => OpcVariant.Empty,
         bool typed => OpcVariant.FromBoolean(typed),
         byte typed => OpcVariant.FromUInt8(typed),
@@ -693,20 +608,15 @@ internal sealed class DaEndToEndPipeline
 
     private static NdrCallResult NotImplemented() => new(OpcResultId.NotImplemented.Code, ReadOnlyMemory<byte>.Empty);
 
-    private static void ThrowIfFailure(NdrCallResult result)
-    {
-        if (result.IsFailure)
-        {
+    private static void ThrowIfFailure(NdrCallResult result) {
+        if (result.IsFailure) {
             throw new OpcException(new OpcResultId(result.Hresult, null));
         }
     }
 
-    private int UpdateCurrentGroupState(int requestedUpdateRate, bool active, int timeBias, float percentDeadband, int localeId, int clientGroupHandle)
-    {
-        lock (_gate)
-        {
-            if (_currentGroupHandle == 0 || !_groups.TryGetValue(_currentGroupHandle, out DaGroup? group))
-            {
+    private int UpdateCurrentGroupState(int requestedUpdateRate, bool active, int timeBias, float percentDeadband, int localeId, int clientGroupHandle) {
+        lock (_gate) {
+            if (_currentGroupHandle == 0 || !_groups.TryGetValue(_currentGroupHandle, out DaGroup? group)) {
                 throw new OpcException(OpcResultId.InvalidHandle);
             }
 
@@ -720,12 +630,9 @@ internal sealed class DaEndToEndPipeline
         }
     }
 
-    private void RenameCurrentGroup(string name)
-    {
-        lock (_gate)
-        {
-            if (_currentGroupHandle == 0 || !_groups.TryGetValue(_currentGroupHandle, out DaGroup? group))
-            {
+    private void RenameCurrentGroup(string name) {
+        lock (_gate) {
+            if (_currentGroupHandle == 0 || !_groups.TryGetValue(_currentGroupHandle, out DaGroup? group)) {
                 throw new OpcException(OpcResultId.InvalidHandle);
             }
 
@@ -733,24 +640,19 @@ internal sealed class DaEndToEndPipeline
         }
     }
 
-    private IOpcInterfaceRef CloneCurrentGroup(string name, Guid requestedInterfaceId)
-    {
-        lock (_gate)
-        {
-            if (_currentGroupHandle == 0 || !_groups.TryGetValue(_currentGroupHandle, out DaGroup? source))
-            {
+    private IOpcInterfaceRef CloneCurrentGroup(string name, Guid requestedInterfaceId) {
+        lock (_gate) {
+            if (_currentGroupHandle == 0 || !_groups.TryGetValue(_currentGroupHandle, out DaGroup? source)) {
                 throw new OpcException(OpcResultId.InvalidHandle);
             }
 
             int cloneHandle = source.ServerHandle + 10_000;
-            var clone = new DaGroup(cloneHandle, name, source.Active, source.UpdateRate, source.ClientHandle, source.LocaleId)
-            {
+            var clone = new DaGroup(cloneHandle, name, source.Active, source.UpdateRate, source.ClientHandle, source.LocaleId) {
                 TimeBias = source.TimeBias,
                 PercentDeadband = source.PercentDeadband,
                 KeepAlive = source.KeepAlive,
             };
-            foreach (var item in source.Items)
-            {
+            foreach (var item in source.Items) {
                 clone.Items[item.Key] = new DaItemBinding(item.Value.ServerHandle, item.Value.ItemId, item.Value.ClientHandle, item.Value.Active);
             }
 
@@ -759,12 +661,9 @@ internal sealed class DaEndToEndPipeline
         }
     }
 
-    private int SetCurrentGroupKeepAlive(int keepAliveTime)
-    {
-        lock (_gate)
-        {
-            if (_currentGroupHandle == 0 || !_groups.TryGetValue(_currentGroupHandle, out DaGroup? group))
-            {
+    private int SetCurrentGroupKeepAlive(int keepAliveTime) {
+        lock (_gate) {
+            if (_currentGroupHandle == 0 || !_groups.TryGetValue(_currentGroupHandle, out DaGroup? group)) {
                 throw new OpcException(OpcResultId.InvalidHandle);
             }
 
@@ -773,12 +672,9 @@ internal sealed class DaEndToEndPipeline
         }
     }
 
-    private int GetCurrentGroupKeepAlive()
-    {
-        lock (_gate)
-        {
-            if (_currentGroupHandle == 0 || !_groups.TryGetValue(_currentGroupHandle, out DaGroup? group))
-            {
+    private int GetCurrentGroupKeepAlive() {
+        lock (_gate) {
+            if (_currentGroupHandle == 0 || !_groups.TryGetValue(_currentGroupHandle, out DaGroup? group)) {
                 throw new OpcException(OpcResultId.InvalidHandle);
             }
 
@@ -786,35 +682,29 @@ internal sealed class DaEndToEndPipeline
         }
     }
 
-    private (OpcItemResult[] Results, int[] Errors) AddItemsToCurrentGroup(OpcItemDef[] itemDefinitions, bool add)
-    {
+    private (OpcItemResult[] Results, int[] Errors) AddItemsToCurrentGroup(OpcItemDef[] itemDefinitions, bool add) {
         var results = new OpcItemResult[itemDefinitions.Length];
         var errors = new int[itemDefinitions.Length];
-        lock (_gate)
-        {
+        lock (_gate) {
             DaGroup? group = null;
             bool groupFound = _currentGroupHandle != 0 && _groups.TryGetValue(_currentGroupHandle, out group);
-            for (int i = 0; i < itemDefinitions.Length; i++)
-            {
+            for (int i = 0; i < itemDefinitions.Length; i++) {
                 OpcItemDef item = itemDefinitions[i];
                 string itemId = item.ItemId ?? string.Empty;
-                if (!groupFound || group is null)
-                {
+                if (!groupFound || group is null) {
                     results[i] = new OpcItemResult(0, VarType.VT_EMPTY, 0, Array.Empty<byte>());
                     errors[i] = OpcResultId.InvalidHandle.Code;
                     continue;
                 }
 
-                if (!_tags.Tags.TryGetValue(itemId, out ITagSource? source))
-                {
+                if (!_tags.Tags.TryGetValue(itemId, out ITagSource? source)) {
                     results[i] = new OpcItemResult(0, VarType.VT_EMPTY, 0, Array.Empty<byte>());
                     errors[i] = OpcResultId.UnknownItemId.Code;
                     continue;
                 }
 
                 int serverHandle = add ? ++_nextItemHandle : 0;
-                if (add)
-                {
+                if (add) {
                     group.Items[serverHandle] = new DaItemBinding(serverHandle, itemId, item.ClientHandle, item.Active);
                 }
 
@@ -826,16 +716,12 @@ internal sealed class DaEndToEndPipeline
         return (results, errors);
     }
 
-    private int[] SetClientHandles(int[] serverHandles, int[] clientHandles)
-    {
+    private int[] SetClientHandles(int[] serverHandles, int[] clientHandles) {
         var errors = new int[serverHandles.Length];
-        lock (_gate)
-        {
-            for (int i = 0; i < serverHandles.Length; i++)
-            {
+        lock (_gate) {
+            for (int i = 0; i < serverHandles.Length; i++) {
                 DaItemBinding? item = FindItemCore(serverHandles[i]);
-                if (item is null)
-                {
+                if (item is null) {
                     errors[i] = OpcResultId.InvalidHandle.Code;
                     continue;
                 }
@@ -848,18 +734,14 @@ internal sealed class DaEndToEndPipeline
         return errors;
     }
 
-    private OpcItemState[] ReadStates(int[] serverHandles, out int[] errors)
-    {
+    private OpcItemState[] ReadStates(int[] serverHandles, out int[] errors) {
         var states = new OpcItemState[serverHandles.Length];
         errors = new int[serverHandles.Length];
-        for (int i = 0; i < serverHandles.Length; i++)
-        {
-            if (TryReadState(serverHandles[i], out OpcItemState? state, out int error) && state is not null)
-            {
+        for (int i = 0; i < serverHandles.Length; i++) {
+            if (TryReadState(serverHandles[i], out OpcItemState? state, out int error) && state is not null) {
                 states[i] = state;
             }
-            else
-            {
+            else {
                 states[i] = new OpcItemState(0, DateTimeOffset.UtcNow, OpcQuality.Bad, OpcVariant.Empty);
             }
 
@@ -869,10 +751,8 @@ internal sealed class DaEndToEndPipeline
         return states;
     }
 
-    private sealed class DaGroup
-    {
-        public DaGroup(int serverHandle, string name, bool active, int updateRate, int clientHandle, int localeId)
-        {
+    private sealed class DaGroup {
+        public DaGroup(int serverHandle, string name, bool active, int updateRate, int clientHandle, int localeId) {
             ServerHandle = serverHandle;
             Name = name;
             Active = active;
@@ -902,10 +782,8 @@ internal sealed class DaEndToEndPipeline
         public Dictionary<int, DaItemBinding> Items { get; } = new();
     }
 
-    private sealed class DaItemBinding
-    {
-        public DaItemBinding(int serverHandle, string itemId, int clientHandle, bool active)
-        {
+    private sealed class DaItemBinding {
+        public DaItemBinding(int serverHandle, string itemId, int clientHandle, bool active) {
             ServerHandle = serverHandle;
             ItemId = itemId;
             ClientHandle = clientHandle;
@@ -921,14 +799,12 @@ internal sealed class DaEndToEndPipeline
         public bool Active { get; set; }
     }
 
-    private sealed class GroupStateImpl : IOPCGroupStateMgt
-    {
+    private sealed class GroupStateImpl : IOPCGroupStateMgt {
         private readonly DaEndToEndPipeline _pipeline;
 
         public GroupStateImpl(DaEndToEndPipeline pipeline) => _pipeline = pipeline;
 
-        public Task<OpcGroupState> GetStateAsync(CancellationToken cancellationToken = default)
-        {
+        public Task<OpcGroupState> GetStateAsync(CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             return Task.FromResult(_pipeline.CurrentGroupState());
         }
@@ -941,50 +817,43 @@ internal sealed class DaEndToEndPipeline
             int localeId,
             int clientGroupHandle,
             out int revisedUpdateRate,
-            CancellationToken cancellationToken = default)
-        {
+            CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             revisedUpdateRate = _pipeline.UpdateCurrentGroupState(requestedUpdateRate, active, timeBias, percentDeadband, localeId, clientGroupHandle);
             return Task.CompletedTask;
         }
 
-        public Task SetNameAsync(string name, CancellationToken cancellationToken = default)
-        {
+        public Task SetNameAsync(string name, CancellationToken cancellationToken = default) {
             ArgumentException.ThrowIfNullOrWhiteSpace(name);
             cancellationToken.ThrowIfCancellationRequested();
             _pipeline.RenameCurrentGroup(name);
             return Task.CompletedTask;
         }
 
-        public Task<IOpcInterfaceRef> CloneGroupAsync(string name, Guid requestedInterfaceId, CancellationToken cancellationToken = default)
-        {
+        public Task<IOpcInterfaceRef> CloneGroupAsync(string name, Guid requestedInterfaceId, CancellationToken cancellationToken = default) {
             ArgumentException.ThrowIfNullOrWhiteSpace(name);
             cancellationToken.ThrowIfCancellationRequested();
             return Task.FromResult(_pipeline.CloneCurrentGroup(name, requestedInterfaceId));
         }
     }
 
-    private sealed class GroupState2Impl : IOPCGroupStateMgt2
-    {
+    private sealed class GroupState2Impl : IOPCGroupStateMgt2 {
         private readonly DaEndToEndPipeline _pipeline;
 
         public GroupState2Impl(DaEndToEndPipeline pipeline) => _pipeline = pipeline;
 
-        public Task<int> SetKeepAliveAsync(int keepAliveTime, CancellationToken cancellationToken = default)
-        {
+        public Task<int> SetKeepAliveAsync(int keepAliveTime, CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             return Task.FromResult(_pipeline.SetCurrentGroupKeepAlive(keepAliveTime));
         }
 
-        public Task<int> GetKeepAliveAsync(CancellationToken cancellationToken = default)
-        {
+        public Task<int> GetKeepAliveAsync(CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             return Task.FromResult(_pipeline.GetCurrentGroupKeepAlive());
         }
     }
 
-    private sealed class ItemMgtImpl : IOPCItemMgt
-    {
+    private sealed class ItemMgtImpl : IOPCItemMgt {
         private readonly DaEndToEndPipeline _pipeline;
 
         public ItemMgtImpl(DaEndToEndPipeline pipeline) => _pipeline = pipeline;
@@ -993,8 +862,7 @@ internal sealed class DaEndToEndPipeline
             OpcItemDef[] itemDefinitions,
             out OpcItemResult[] addResults,
             out int[] errors,
-            CancellationToken cancellationToken = default)
-        {
+            CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             (addResults, errors) = _pipeline.AddItemsToCurrentGroup(itemDefinitions, add: true);
             return Task.CompletedTask;
@@ -1005,48 +873,41 @@ internal sealed class DaEndToEndPipeline
             bool blobUpdate,
             out OpcItemResult[] validationResults,
             out int[] errors,
-            CancellationToken cancellationToken = default)
-        {
+            CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             _ = blobUpdate;
             (validationResults, errors) = _pipeline.AddItemsToCurrentGroup(itemDefinitions, add: false);
             return Task.CompletedTask;
         }
 
-        public Task<int[]> RemoveItemsAsync(int[] serverHandles, CancellationToken cancellationToken = default)
-        {
+        public Task<int[]> RemoveItemsAsync(int[] serverHandles, CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             return Task.FromResult(serverHandles.Select(_ => OpcResultId.Ok.Code).ToArray());
         }
 
-        public Task<int[]> SetActiveStateAsync(int[] serverHandles, bool active, CancellationToken cancellationToken = default)
-        {
+        public Task<int[]> SetActiveStateAsync(int[] serverHandles, bool active, CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             return Task.FromResult(_pipeline.SetItemActiveState(serverHandles, active));
         }
 
-        public Task<int[]> SetClientHandlesAsync(int[] serverHandles, int[] clientHandles, CancellationToken cancellationToken = default)
-        {
+        public Task<int[]> SetClientHandlesAsync(int[] serverHandles, int[] clientHandles, CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             return Task.FromResult(_pipeline.SetClientHandles(serverHandles, clientHandles));
         }
 
-        public Task<int[]> SetDatatypesAsync(int[] serverHandles, ushort[] requestedDataTypes, CancellationToken cancellationToken = default)
-        {
+        public Task<int[]> SetDatatypesAsync(int[] serverHandles, ushort[] requestedDataTypes, CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             _ = requestedDataTypes;
             return Task.FromResult(serverHandles.Select(_ => OpcResultId.Ok.Code).ToArray());
         }
 
-        public Task<IOpcInterfaceRef> CreateEnumeratorAsync(Guid requestedInterfaceId, CancellationToken cancellationToken = default)
-        {
+        public Task<IOpcInterfaceRef> CreateEnumeratorAsync(Guid requestedInterfaceId, CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             return Task.FromResult(CreateSyntheticInterfaceRef(requestedInterfaceId, _pipeline._currentGroupHandle));
         }
     }
 
-    private sealed class SyncIoImpl : IOPCSyncIO
-    {
+    private sealed class SyncIoImpl : IOPCSyncIO {
         private readonly DaEndToEndPipeline _pipeline;
 
         public SyncIoImpl(DaEndToEndPipeline pipeline) => _pipeline = pipeline;
@@ -1055,41 +916,35 @@ internal sealed class DaEndToEndPipeline
             int dataSource,
             int[] serverHandles,
             out int[] errors,
-            CancellationToken cancellationToken = default)
-        {
+            CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             _ = dataSource;
             return Task.FromResult(_pipeline.ReadStates(serverHandles, out errors));
         }
 
-        public Task<int[]> WriteAsync(int[] serverHandles, OpcVariant[] values, CancellationToken cancellationToken = default)
-        {
+        public Task<int[]> WriteAsync(int[] serverHandles, OpcVariant[] values, CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             return Task.FromResult(_pipeline.WriteValues(serverHandles, values));
         }
     }
 
-    private sealed class SyncIo2Impl : IOPCSyncIO2
-    {
+    private sealed class SyncIo2Impl : IOPCSyncIO2 {
         private readonly DaEndToEndPipeline _pipeline;
 
         public SyncIo2Impl(DaEndToEndPipeline pipeline) => _pipeline = pipeline;
 
-        public Task<OpcItemState[]> ReadAsync(int dataSource, int[] serverHandles, out int[] errors, CancellationToken cancellationToken = default)
-        {
+        public Task<OpcItemState[]> ReadAsync(int dataSource, int[] serverHandles, out int[] errors, CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             _ = dataSource;
             return Task.FromResult(_pipeline.ReadStates(serverHandles, out errors));
         }
 
-        public Task<int[]> WriteAsync(int[] serverHandles, OpcVariant[] values, CancellationToken cancellationToken = default)
-        {
+        public Task<int[]> WriteAsync(int[] serverHandles, OpcVariant[] values, CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             return Task.FromResult(_pipeline.WriteValues(serverHandles, values));
         }
 
-        public Task ReadMaxAgeAsync(int[] serverHandles, int[] maxAges, out OpcVariant[] values, out ushort[] qualities, out long[] timestamps, out int[] errors, CancellationToken cancellationToken = default)
-        {
+        public Task ReadMaxAgeAsync(int[] serverHandles, int[] maxAges, out OpcVariant[] values, out ushort[] qualities, out long[] timestamps, out int[] errors, CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             _ = maxAges;
             OpcItemState[] states = _pipeline.ReadStates(serverHandles, out errors);
@@ -1099,88 +954,76 @@ internal sealed class DaEndToEndPipeline
             return Task.CompletedTask;
         }
 
-        public Task<int[]> WriteVqtAsync(int[] serverHandles, OpcItemVqt[] values, CancellationToken cancellationToken = default)
-        {
+        public Task<int[]> WriteVqtAsync(int[] serverHandles, OpcItemVqt[] values, CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             return Task.FromResult(_pipeline.WriteValues(serverHandles, values.Select(static v => v.Value).ToArray()));
         }
     }
 
-    private sealed class AsyncIo2Impl : IOPCAsyncIO2
-    {
+    private sealed class AsyncIo2Impl : IOPCAsyncIO2 {
         private readonly DaEndToEndPipeline _pipeline;
         private int _nextCancelId = 7000;
 
         public AsyncIo2Impl(DaEndToEndPipeline pipeline) => _pipeline = pipeline;
 
-        public Task<int> ReadAsync(int[] serverHandles, int transactionId, out int[] errors, CancellationToken cancellationToken = default)
-        {
+        public Task<int> ReadAsync(int[] serverHandles, int transactionId, out int[] errors, CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             _ = transactionId;
             _ = _pipeline.ReadStates(serverHandles, out errors);
             return Task.FromResult(Interlocked.Increment(ref _nextCancelId));
         }
 
-        public Task<int> WriteAsync(int[] serverHandles, OpcVariant[] values, int transactionId, out int[] errors, CancellationToken cancellationToken = default)
-        {
+        public Task<int> WriteAsync(int[] serverHandles, OpcVariant[] values, int transactionId, out int[] errors, CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             _ = transactionId;
             errors = _pipeline.WriteValues(serverHandles, values);
             return Task.FromResult(Interlocked.Increment(ref _nextCancelId));
         }
 
-        public Task<int> Refresh2Async(int dataSource, int transactionId, CancellationToken cancellationToken = default)
-        {
+        public Task<int> Refresh2Async(int dataSource, int transactionId, CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             _ = dataSource;
             _ = transactionId;
             return Task.FromResult(Interlocked.Increment(ref _nextCancelId));
         }
 
-        public Task Cancel2Async(int cancelId, CancellationToken cancellationToken = default)
-        {
+        public Task Cancel2Async(int cancelId, CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             _ = cancelId;
             return Task.CompletedTask;
         }
 
-        public Task SetEnableAsync(bool enabled, CancellationToken cancellationToken = default)
-        {
+        public Task SetEnableAsync(bool enabled, CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             _ = enabled;
             return Task.CompletedTask;
         }
 
-        public Task<bool> GetEnableAsync(CancellationToken cancellationToken = default)
-        {
+        public Task<bool> GetEnableAsync(CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             return Task.FromResult(true);
         }
     }
 
-    private sealed class BrowseImpl : IOPCBrowseServerAddressSpace
-    {
+    private sealed class BrowseImpl : IOPCBrowseServerAddressSpace {
         private readonly DaEndToEndPipeline _pipeline;
         private string _position = string.Empty;
 
         public BrowseImpl(DaEndToEndPipeline pipeline) => _pipeline = pipeline;
 
-        public Task<int> QueryOrganizationAsync(CancellationToken cancellationToken = default)
-        {
+        public Task<int> QueryOrganizationAsync(CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             return Task.FromResult(HierarchicalOrganization);
         }
 
-        public Task ChangeBrowsePositionAsync(int browseDirection, string browsePosition, CancellationToken cancellationToken = default)
-        {
+        public Task ChangeBrowsePositionAsync(int browseDirection, string browsePosition, CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             _ = browseDirection;
             _position = browsePosition;
             return Task.CompletedTask;
         }
 
-        public Task<IOpcInterfaceRef> BrowseOpcItemIdsAsync(int browseFilterType, string filterCriteria, ushort dataTypeFilter, int accessRightsFilter, CancellationToken cancellationToken = default)
-        {
+        public Task<IOpcInterfaceRef> BrowseOpcItemIdsAsync(int browseFilterType, string filterCriteria, ushort dataTypeFilter, int accessRightsFilter, CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             _ = browseFilterType;
             _ = filterCriteria;
@@ -1189,16 +1032,14 @@ internal sealed class DaEndToEndPipeline
             return Task.FromResult(CreateSyntheticInterfaceRef(OpcGuids.IID_IEnumString, _pipeline._tags.Tags.Count));
         }
 
-        public Task<string> GetItemIdAsync(string itemDataId, CancellationToken cancellationToken = default)
-        {
+        public Task<string> GetItemIdAsync(string itemDataId, CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             string candidate = string.IsNullOrEmpty(_position) ? itemDataId : _position + "." + itemDataId;
             string itemId = _pipeline._tags.Tags.ContainsKey(candidate) ? candidate : itemDataId;
             return Task.FromResult(itemId);
         }
 
-        public Task<IOpcInterfaceRef> BrowseAccessPathsAsync(string itemId, CancellationToken cancellationToken = default)
-        {
+        public Task<IOpcInterfaceRef> BrowseAccessPathsAsync(string itemId, CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             _ = itemId;
             return Task.FromResult(CreateSyntheticInterfaceRef(OpcGuids.IID_IEnumString, 1));
@@ -1227,8 +1068,7 @@ internal sealed record AeAckObservation(
     string[] Sources,
     string[] ConditionNames);
 
-internal sealed class AeEndToEndPipeline
-{
+internal sealed class AeEndToEndPipeline {
     private const int CreateEventSubscriptionOpnum = 4;
     private const int BrowseAreasOpnum = 4;
 
@@ -1242,8 +1082,7 @@ internal sealed class AeEndToEndPipeline
     private readonly Dictionary<int, AeSubscription> _subscriptions = new();
     private int _nextSubscriptionHandle = 9000;
 
-    public AeEndToEndPipeline()
-    {
+    public AeEndToEndPipeline() {
         _serverImpl = new AeServerImpl(new SampleAeServer(NullLogger<SampleAeServer>.Instance));
         _serverDispatcher = new OpcAeServerDispatcher(_serverImpl);
         _server2Dispatcher = new IOPCEventServer2ServerDispatcher(new AeServer2Impl());
@@ -1272,12 +1111,9 @@ internal sealed class AeEndToEndPipeline
 
     public AeAckObservation? LastAck => _serverImpl.LastAck;
 
-    public int ActiveSubscriptionCount
-    {
-        get
-        {
-            lock (_gate)
-            {
+    public int ActiveSubscriptionCount {
+        get {
+            lock (_gate) {
                 return _subscriptions.Count;
             }
         }
@@ -1289,10 +1125,8 @@ internal sealed class AeEndToEndPipeline
         int maxSize,
         int clientHandle,
         AeEventSink sink,
-        CancellationToken cancellationToken)
-    {
-        ReadOnlyMemory<byte> payload = EndToEndNdr.Write((ref NdrWriter writer) =>
-        {
+        CancellationToken cancellationToken) {
+        ReadOnlyMemory<byte> payload = EndToEndNdr.Write((ref NdrWriter writer) => {
             writer.WriteInt32(active ? -1 : 0);
             writer.WriteInt32(bufferTime);
             writer.WriteInt32(maxSize);
@@ -1309,19 +1143,16 @@ internal sealed class AeEndToEndPipeline
         int serverHandle = reader.ReadInt32();
         int revisedBufferTime = reader.ReadInt32();
         int revisedMaxSize = reader.ReadInt32();
-        lock (_gate)
-        {
+        lock (_gate) {
             _subscriptions[serverHandle] = new AeSubscription(serverHandle, clientHandle, sink);
         }
 
         return new AeSubscriptionHandle(serverHandle, clientHandle, revisedBufferTime, revisedMaxSize);
     }
 
-    public async Task EmitEventAsync(int subscriptionHandle, OpcEventNotification notification, CancellationToken cancellationToken)
-    {
+    public async Task EmitEventAsync(int subscriptionHandle, OpcEventNotification notification, CancellationToken cancellationToken) {
         AeSubscription subscription;
-        lock (_gate)
-        {
+        lock (_gate) {
             subscription = _subscriptions[subscriptionHandle];
         }
 
@@ -1330,8 +1161,7 @@ internal sealed class AeEndToEndPipeline
             .ConfigureAwait(false);
     }
 
-    public async Task<string[]> BrowseAreasViaWireAsync(CancellationToken cancellationToken)
-    {
+    public async Task<string[]> BrowseAreasViaWireAsync(CancellationToken cancellationToken) {
         NdrCallResult result = await Channel.InvokeAsync(
             IOPCEventAreaBrowser.InterfaceId,
             BrowseAreasOpnum,
@@ -1342,41 +1172,33 @@ internal sealed class AeEndToEndPipeline
         return EndToEndNdr.ReadStringArray(ref reader);
     }
 
-    public bool CleanupSubscription(int subscriptionHandle)
-    {
-        lock (_gate)
-        {
+    public bool CleanupSubscription(int subscriptionHandle) {
+        lock (_gate) {
             return _subscriptions.Remove(subscriptionHandle);
         }
     }
 
-    private Task<NdrCallResult> DispatchAsync(Guid interfaceId, int opnum, ReadOnlyMemory<byte> requestPayload, CancellationToken cancellationToken)
-    {
+    private Task<NdrCallResult> DispatchAsync(Guid interfaceId, int opnum, ReadOnlyMemory<byte> requestPayload, CancellationToken cancellationToken) {
         cancellationToken.ThrowIfCancellationRequested();
-        if (interfaceId == IOPCEventServer.InterfaceId)
-        {
+        if (interfaceId == IOPCEventServer.InterfaceId) {
             return opnum == CreateEventSubscriptionOpnum
                 ? DispatchCreateEventSubscriptionAsync(requestPayload, cancellationToken)
                 : _serverDispatcher.DispatchAsync(interfaceId, opnum, requestPayload, cancellationToken);
         }
 
-        if (interfaceId == IOPCEventServer2.InterfaceId)
-        {
+        if (interfaceId == IOPCEventServer2.InterfaceId) {
             return _server2Dispatcher.DispatchAsync(opnum, requestPayload, cancellationToken).ToCallResultAsync();
         }
 
-        if (interfaceId == IOPCEventSubscriptionMgt.InterfaceId)
-        {
+        if (interfaceId == IOPCEventSubscriptionMgt.InterfaceId) {
             return _subscriptionDispatcher.DispatchAsync(opnum, requestPayload, cancellationToken).ToCallResultAsync();
         }
 
-        if (interfaceId == IOPCEventSubscriptionMgt2.InterfaceId)
-        {
+        if (interfaceId == IOPCEventSubscriptionMgt2.InterfaceId) {
             return _subscriptionMgt2Dispatcher.DispatchAsync(opnum, requestPayload, cancellationToken).ToCallResultAsync();
         }
 
-        if (interfaceId == IOPCEventAreaBrowser.InterfaceId)
-        {
+        if (interfaceId == IOPCEventAreaBrowser.InterfaceId) {
             return opnum == BrowseAreasOpnum
                 ? DispatchBrowseAreasAsync(cancellationToken)
                 : _areaBrowserDispatcher.DispatchAsync(opnum, requestPayload, cancellationToken).ToCallResultAsync();
@@ -1385,8 +1207,7 @@ internal sealed class AeEndToEndPipeline
         return Task.FromResult(NotImplemented());
     }
 
-    private Task<NdrCallResult> DispatchCreateEventSubscriptionAsync(ReadOnlyMemory<byte> requestPayload, CancellationToken cancellationToken)
-    {
+    private Task<NdrCallResult> DispatchCreateEventSubscriptionAsync(ReadOnlyMemory<byte> requestPayload, CancellationToken cancellationToken) {
         cancellationToken.ThrowIfCancellationRequested();
         var reader = new NdrReader(requestPayload.Span);
         _ = reader.ReadInt32() != 0;
@@ -1397,8 +1218,7 @@ internal sealed class AeEndToEndPipeline
         int revisedBufferTime = Math.Max(bufferTime, 250);
         int revisedMaxSize = Math.Max(maxSize, 1);
         _ = clientHandle;
-        ReadOnlyMemory<byte> response = EndToEndNdr.Write((ref NdrWriter writer) =>
-        {
+        ReadOnlyMemory<byte> response = EndToEndNdr.Write((ref NdrWriter writer) => {
             writer.WriteInt32(serverHandle);
             writer.WriteInt32(revisedBufferTime);
             writer.WriteInt32(revisedMaxSize);
@@ -1406,8 +1226,7 @@ internal sealed class AeEndToEndPipeline
         return Task.FromResult(Ok(response));
     }
 
-    private static Task<NdrCallResult> DispatchBrowseAreasAsync(CancellationToken cancellationToken)
-    {
+    private static Task<NdrCallResult> DispatchBrowseAreasAsync(CancellationToken cancellationToken) {
         cancellationToken.ThrowIfCancellationRequested();
         string[] areas = ["Plant1", "Plant1.AreaA", "Plant1.AreaB"];
         return Task.FromResult(Ok(EndToEndNdr.Write((ref NdrWriter writer) => EndToEndNdr.WriteStringArray(ref writer, areas))));
@@ -1417,18 +1236,15 @@ internal sealed class AeEndToEndPipeline
 
     private static NdrCallResult NotImplemented() => new(OpcResultId.NotImplemented.Code, ReadOnlyMemory<byte>.Empty);
 
-    private static void ThrowIfFailure(NdrCallResult result)
-    {
-        if (result.IsFailure)
-        {
+    private static void ThrowIfFailure(NdrCallResult result) {
+        if (result.IsFailure) {
             throw new OpcException(new OpcResultId(result.Hresult, null));
         }
     }
 
     private sealed record AeSubscription(int ServerHandle, int ClientHandle, AeEventSink Sink);
 
-    private sealed class AeServerImpl : IOpcAeServer
-    {
+    private sealed class AeServerImpl : IOpcAeServer {
         private readonly SampleAeServer _sample;
 
         public AeServerImpl(SampleAeServer sample) => _sample = sample;
@@ -1445,8 +1261,7 @@ internal sealed class AeEndToEndPipeline
             int eventType,
             out int[] eventCategories,
             out string[] eventCategoryDescriptions,
-            CancellationToken cancellationToken = default)
-        {
+            CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             _ = eventType;
             eventCategories = [0x1001, 0x1002, 0x1003];
@@ -1454,21 +1269,18 @@ internal sealed class AeEndToEndPipeline
             return Task.CompletedTask;
         }
 
-        public Task<string[]> QueryConditionNamesAsync(int eventCategory, CancellationToken cancellationToken = default)
-        {
+        public Task<string[]> QueryConditionNamesAsync(int eventCategory, CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             _ = eventCategory;
             return Task.FromResult(new[] { "LevelHigh", "PressureLow" });
         }
 
-        public Task<string[]> QuerySubConditionNamesAsync(string conditionName, CancellationToken cancellationToken = default)
-        {
+        public Task<string[]> QuerySubConditionNamesAsync(string conditionName, CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             return Task.FromResult(conditionName == "LevelHigh" ? ["Hi", "HiHi"] : Array.Empty<string>());
         }
 
-        public Task<string[]> QuerySourceConditionsAsync(string source, CancellationToken cancellationToken = default)
-        {
+        public Task<string[]> QuerySourceConditionsAsync(string source, CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             _ = source;
             return Task.FromResult(new[] { "LevelHigh" });
@@ -1479,8 +1291,7 @@ internal sealed class AeEndToEndPipeline
             out int[] attributeIds,
             out string[] attributeDescriptions,
             out ushort[] attributeTypes,
-            CancellationToken cancellationToken = default)
-        {
+            CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             _ = eventCategory;
             attributeIds = [10, 11];
@@ -1498,8 +1309,7 @@ internal sealed class AeEndToEndPipeline
             out string[] attributeItemIds,
             out string[] nodeNames,
             out Guid[] classIds,
-            CancellationToken cancellationToken = default)
-        {
+            CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             _ = eventCategory;
             _ = conditionName;
@@ -1514,8 +1324,7 @@ internal sealed class AeEndToEndPipeline
             string source,
             string conditionName,
             int[] attributeIds,
-            CancellationToken cancellationToken = default)
-        {
+            CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             _ = source;
             _ = conditionName;
@@ -1540,29 +1349,25 @@ internal sealed class AeEndToEndPipeline
                 errors: attributeIds.Select(static _ => OpcResultId.Ok.Code).ToArray()));
         }
 
-        public Task EnableConditionByAreaAsync(string[] areas, CancellationToken cancellationToken = default)
-        {
+        public Task EnableConditionByAreaAsync(string[] areas, CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             _ = areas;
             return Task.CompletedTask;
         }
 
-        public Task EnableConditionBySourceAsync(string[] sources, CancellationToken cancellationToken = default)
-        {
+        public Task EnableConditionBySourceAsync(string[] sources, CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             _ = sources;
             return Task.CompletedTask;
         }
 
-        public Task DisableConditionByAreaAsync(string[] areas, CancellationToken cancellationToken = default)
-        {
+        public Task DisableConditionByAreaAsync(string[] areas, CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             _ = areas;
             return Task.CompletedTask;
         }
 
-        public Task DisableConditionBySourceAsync(string[] sources, CancellationToken cancellationToken = default)
-        {
+        public Task DisableConditionBySourceAsync(string[] sources, CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             _ = sources;
             return Task.CompletedTask;
@@ -1576,8 +1381,7 @@ internal sealed class AeEndToEndPipeline
             string[] conditionNames,
             long[] activeTimes,
             int[] cookies,
-            CancellationToken cancellationToken = default)
-        {
+            CancellationToken cancellationToken = default) {
             _ = dwCount;
             cancellationToken.ThrowIfCancellationRequested();
             LastAck = new AeAckObservation(acknowledgerId, comment, activeTimes, cookies, sources, conditionNames);
@@ -1585,28 +1389,23 @@ internal sealed class AeEndToEndPipeline
         }
     }
 
-    private sealed class AeServer2Impl : IOPCEventServer2
-    {
-        public Task<int[]> EnableConditionByArea2Async(string[] areas, CancellationToken cancellationToken = default)
-        {
+    private sealed class AeServer2Impl : IOPCEventServer2 {
+        public Task<int[]> EnableConditionByArea2Async(string[] areas, CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             return Task.FromResult(AreaResults(areas));
         }
 
-        public Task<int[]> EnableConditionBySource2Async(string[] sources, CancellationToken cancellationToken = default)
-        {
+        public Task<int[]> EnableConditionBySource2Async(string[] sources, CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             return Task.FromResult(sources.Select(static _ => OpcResultId.Ok.Code).ToArray());
         }
 
-        public Task<int[]> DisableConditionByArea2Async(string[] areas, CancellationToken cancellationToken = default)
-        {
+        public Task<int[]> DisableConditionByArea2Async(string[] areas, CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             return Task.FromResult(AreaResults(areas));
         }
 
-        public Task<int[]> DisableConditionBySource2Async(string[] sources, CancellationToken cancellationToken = default)
-        {
+        public Task<int[]> DisableConditionBySource2Async(string[] sources, CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             return Task.FromResult(sources.Select(static _ => OpcResultId.Ok.Code).ToArray());
         }
@@ -1616,8 +1415,7 @@ internal sealed class AeEndToEndPipeline
             out bool[] enabled,
             out bool[] effectivelyEnabled,
             out int[] errors,
-            CancellationToken cancellationToken = default)
-        {
+            CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             enabled = areas.Select(static area => area != "Missing").ToArray();
             effectivelyEnabled = areas.Select(static area => area != "Missing").ToArray();
@@ -1630,8 +1428,7 @@ internal sealed class AeEndToEndPipeline
             out bool[] enabled,
             out bool[] effectivelyEnabled,
             out int[] errors,
-            CancellationToken cancellationToken = default)
-        {
+            CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             enabled = sources.Select(static source => source != "Missing").ToArray();
             effectivelyEnabled = sources.Select(static source => source != "Missing").ToArray();
@@ -1643,8 +1440,7 @@ internal sealed class AeEndToEndPipeline
             areas.Select(static area => area == "Missing" ? OpcResultId.InvalidArg.Code : OpcResultId.Ok.Code).ToArray();
     }
 
-    private sealed class SubscriptionMgtImpl : IOPCEventSubscriptionMgt
-    {
+    private sealed class SubscriptionMgtImpl : IOPCEventSubscriptionMgt {
         private readonly AeEndToEndPipeline _pipeline;
         private int _eventType = 0x1F;
         private int[] _eventCategories = [0x1001, 0x1002];
@@ -1670,8 +1466,7 @@ internal sealed class AeEndToEndPipeline
             int highSeverity,
             string[] areas,
             string[] sources,
-            CancellationToken cancellationToken = default)
-        {
+            CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             _eventType = eventType;
             _eventCategories = eventCategories;
@@ -1689,8 +1484,7 @@ internal sealed class AeEndToEndPipeline
             out int highSeverity,
             out string[] areas,
             out string[] sources,
-            CancellationToken cancellationToken = default)
-        {
+            CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             eventType = _eventType;
             eventCategories = _eventCategories;
@@ -1701,30 +1495,26 @@ internal sealed class AeEndToEndPipeline
             return Task.CompletedTask;
         }
 
-        public Task SetReturnedAttributesAsync(int eventCategory, int[] attributeIds, CancellationToken cancellationToken = default)
-        {
+        public Task SetReturnedAttributesAsync(int eventCategory, int[] attributeIds, CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             _ = eventCategory;
             _returnedAttributes = attributeIds;
             return Task.CompletedTask;
         }
 
-        public Task<int[]> GetReturnedAttributesAsync(int eventCategory, CancellationToken cancellationToken = default)
-        {
+        public Task<int[]> GetReturnedAttributesAsync(int eventCategory, CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             _ = eventCategory;
             return Task.FromResult(_returnedAttributes);
         }
 
-        public Task RefreshAsync(int connection, CancellationToken cancellationToken = default)
-        {
+        public Task RefreshAsync(int connection, CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             _ = connection;
             return Task.CompletedTask;
         }
 
-        public Task CancelRefreshAsync(int connection, CancellationToken cancellationToken = default)
-        {
+        public Task CancelRefreshAsync(int connection, CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             _lastCanceledConnection = connection;
             _ = _pipeline;
@@ -1736,8 +1526,7 @@ internal sealed class AeEndToEndPipeline
             out int bufferTime,
             out int maxSize,
             out int clientSubscription,
-            CancellationToken cancellationToken = default)
-        {
+            CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             active = _active;
             bufferTime = _bufferTime;
@@ -1753,8 +1542,7 @@ internal sealed class AeEndToEndPipeline
             int clientSubscription,
             out int revisedBufferTime,
             out int revisedMaxSize,
-            CancellationToken cancellationToken = default)
-        {
+            CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             _active = active;
             _bufferTime = Math.Max(bufferTime, 250);
@@ -1766,30 +1554,25 @@ internal sealed class AeEndToEndPipeline
         }
     }
 
-    private sealed class SubscriptionMgt2Impl : IOPCEventSubscriptionMgt2
-    {
+    private sealed class SubscriptionMgt2Impl : IOPCEventSubscriptionMgt2 {
         private int _keepAlive = 1000;
 
-        public Task<int> SetKeepAliveAsync(int keepAliveTime, CancellationToken cancellationToken = default)
-        {
+        public Task<int> SetKeepAliveAsync(int keepAliveTime, CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             _keepAlive = Math.Max(keepAliveTime, 1000);
             return Task.FromResult(_keepAlive);
         }
 
-        public Task<int> GetKeepAliveAsync(CancellationToken cancellationToken = default)
-        {
+        public Task<int> GetKeepAliveAsync(CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             return Task.FromResult(_keepAlive);
         }
     }
 
-    private sealed class AreaBrowserImpl : IOPCEventAreaBrowser
-    {
+    private sealed class AreaBrowserImpl : IOPCEventAreaBrowser {
         private string _position = string.Empty;
 
-        public Task ChangeBrowsePositionAsync(int browseDirection, string? position, CancellationToken cancellationToken = default)
-        {
+        public Task ChangeBrowsePositionAsync(int browseDirection, string? position, CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             _ = browseDirection;
             _position = position ?? string.Empty;
@@ -1800,8 +1583,7 @@ internal sealed class AeEndToEndPipeline
             int browseFilterType,
             string filterCriteria,
             out IEnumString enumString,
-            CancellationToken cancellationToken = default)
-        {
+            CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             _ = browseFilterType;
             _ = filterCriteria;
@@ -1809,15 +1591,13 @@ internal sealed class AeEndToEndPipeline
             throw new OpcException(OpcResultId.NotImplemented);
         }
 
-        public Task<string> GetQualifiedAreaNameAsync(string areaName, CancellationToken cancellationToken = default)
-        {
+        public Task<string> GetQualifiedAreaNameAsync(string areaName, CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             string qualified = string.IsNullOrEmpty(_position) ? areaName : _position + "." + areaName;
             return Task.FromResult(qualified);
         }
 
-        public Task<string> GetQualifiedSourceNameAsync(string sourceName, CancellationToken cancellationToken = default)
-        {
+        public Task<string> GetQualifiedSourceNameAsync(string sourceName, CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             string qualified = string.IsNullOrEmpty(_position) ? sourceName : _position + "." + sourceName;
             return Task.FromResult(qualified);
@@ -1825,13 +1605,11 @@ internal sealed class AeEndToEndPipeline
     }
 }
 
-internal sealed class AeEventSink
-{
+internal sealed class AeEventSink {
     private readonly Channel<OpcEventNotification> _events = System.Threading.Channels.Channel.CreateUnbounded<OpcEventNotification>();
     private readonly IOPCEventSinkServerDispatcher _dispatcher;
 
-    public AeEventSink()
-    {
+    public AeEventSink() {
         _dispatcher = new IOPCEventSinkServerDispatcher(new SinkImpl(_events));
         Channel = new InMemoryCallChannel((interfaceId, opnum, payload, cancellationToken) =>
             interfaceId == IOPCEventSink.InterfaceId
@@ -1842,19 +1620,15 @@ internal sealed class AeEventSink
     public InMemoryCallChannel Channel { get; }
 
     public async IAsyncEnumerable<OpcEventNotification> ReadAllAsync(
-        [EnumeratorCancellation] CancellationToken cancellationToken = default)
-    {
-        while (await _events.Reader.WaitToReadAsync(cancellationToken).ConfigureAwait(false))
-        {
-            while (_events.Reader.TryRead(out OpcEventNotification? item))
-            {
+        [EnumeratorCancellation] CancellationToken cancellationToken = default) {
+        while (await _events.Reader.WaitToReadAsync(cancellationToken).ConfigureAwait(false)) {
+            while (_events.Reader.TryRead(out OpcEventNotification? item)) {
                 yield return item;
             }
         }
     }
 
-    private sealed class SinkImpl : IOPCEventSink
-    {
+    private sealed class SinkImpl : IOPCEventSink {
         private readonly Channel<OpcEventNotification> _events;
 
         public SinkImpl(Channel<OpcEventNotification> events) => _events = events;
@@ -1864,14 +1638,12 @@ internal sealed class AeEventSink
             bool refresh,
             bool lastRefresh,
             OpcEventNotification[] events,
-            CancellationToken cancellationToken = default)
-        {
+            CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             _ = clientSubscription;
             _ = refresh;
             _ = lastRefresh;
-            foreach (OpcEventNotification item in events)
-            {
+            foreach (OpcEventNotification item in events) {
                 _events.Writer.TryWrite(item);
             }
 
@@ -1884,8 +1656,7 @@ internal sealed record HdaAnnotationWireResult(string ItemId, HdaAnnotation[] An
 
 internal sealed record HdaBrowseWireElement(string Name, string ItemId, HdaBrowseType BrowseType);
 
-internal sealed class HdaEndToEndPipeline
-{
+internal sealed class HdaEndToEndPipeline {
     private const int ReadAnnotationsOpnum = 4;
     private const int BrowseOpnum = 3;
 
@@ -1894,8 +1665,7 @@ internal sealed class HdaEndToEndPipeline
     private readonly IOPCHDA_SyncReadServerDispatcher _syncReadDispatcher;
     private readonly IOPCHDA_SyncAnnotationsServerDispatcher _syncAnnotationsDispatcher;
 
-    public HdaEndToEndPipeline()
-    {
+    public HdaEndToEndPipeline() {
         Store = new HistoricalDataStore();
         _serverImpl = new HdaServerImpl(Store, new SampleHdaServer(Store, NullLogger<SampleHdaServer>.Instance));
         _serverDispatcher = new OpcHdaServerDispatcher(_serverImpl);
@@ -1921,8 +1691,7 @@ internal sealed class HdaEndToEndPipeline
 
     public async Task<HdaAnnotationWireResult[]> ReadAnnotationsViaWireAsync(
         IReadOnlyList<string> itemIds,
-        CancellationToken cancellationToken)
-    {
+        CancellationToken cancellationToken) {
         ReadOnlyMemory<byte> payload = EndToEndNdr.Write((ref NdrWriter writer) => EndToEndNdr.WriteStringArray(ref writer, itemIds));
         NdrCallResult result = await Channel.InvokeAsync(
             IOPCHDA_SyncAnnotations.InterfaceId,
@@ -1934,20 +1703,16 @@ internal sealed class HdaEndToEndPipeline
         var reader = new NdrReader(result.ResponsePayload.Span);
         int count = checked((int)reader.ReadUInt32());
         var annotations = new OpcHdaAnnotation[count];
-        for (int i = 0; i < annotations.Length; i++)
-        {
+        for (int i = 0; i < annotations.Length; i++) {
             annotations[i] = NdrOpcHdaAnnotationCodec.Read(ref reader);
         }
 
         int[] errors = EndToEndNdr.ReadInt32Array(ref reader);
         var results = new HdaAnnotationWireResult[count];
-        for (int i = 0; i < results.Length; i++)
-        {
+        for (int i = 0; i < results.Length; i++) {
             var hdaAnnotations = new HdaAnnotation[annotations[i].Annotations.Length];
-            for (int j = 0; j < hdaAnnotations.Length; j++)
-            {
-                hdaAnnotations[j] = new HdaAnnotation
-                {
+            for (int j = 0; j < hdaAnnotations.Length; j++) {
+                hdaAnnotations[j] = new HdaAnnotation {
                     Timestamp = annotations[i].Timestamps[j],
                     AnnotationTime = annotations[i].AnnotationTimes[j],
                     AnnotationText = annotations[i].Annotations[j] ?? string.Empty,
@@ -1964,10 +1729,8 @@ internal sealed class HdaEndToEndPipeline
     public async Task<HdaBrowseWireElement[]> BrowseViaWireAsync(
         string itemIdPrefix,
         HdaBrowseType browseType,
-        CancellationToken cancellationToken)
-    {
-        ReadOnlyMemory<byte> payload = EndToEndNdr.Write((ref NdrWriter writer) =>
-        {
+        CancellationToken cancellationToken) {
+        ReadOnlyMemory<byte> payload = EndToEndNdr.Write((ref NdrWriter writer) => {
             writer.WriteUnicodeStringPtr(itemIdPrefix);
             writer.WriteInt32((int)browseType);
         });
@@ -1980,8 +1743,7 @@ internal sealed class HdaEndToEndPipeline
         var reader = new NdrReader(result.ResponsePayload.Span);
         int count = checked((int)reader.ReadUInt32());
         var elements = new HdaBrowseWireElement[count];
-        for (int i = 0; i < elements.Length; i++)
-        {
+        for (int i = 0; i < elements.Length; i++) {
             string name = reader.ReadUnicodeStringPtr() ?? string.Empty;
             string itemId = reader.ReadUnicodeStringPtr() ?? string.Empty;
             var type = (HdaBrowseType)reader.ReadInt32();
@@ -1991,46 +1753,38 @@ internal sealed class HdaEndToEndPipeline
         return elements;
     }
 
-    private Task<NdrCallResult> DispatchAsync(Guid interfaceId, int opnum, ReadOnlyMemory<byte> requestPayload, CancellationToken cancellationToken)
-    {
+    private Task<NdrCallResult> DispatchAsync(Guid interfaceId, int opnum, ReadOnlyMemory<byte> requestPayload, CancellationToken cancellationToken) {
         cancellationToken.ThrowIfCancellationRequested();
-        if (interfaceId == IOPCHDA_Server.InterfaceId)
-        {
+        if (interfaceId == IOPCHDA_Server.InterfaceId) {
             return _serverDispatcher.DispatchAsync(interfaceId, opnum, requestPayload, cancellationToken);
         }
 
-        if (interfaceId == IOPCHDA_SyncRead.InterfaceId)
-        {
+        if (interfaceId == IOPCHDA_SyncRead.InterfaceId) {
             return _syncReadDispatcher.DispatchAsync(opnum, requestPayload, cancellationToken).ToCallResultAsync();
         }
 
-        if (interfaceId == IOPCHDA_SyncAnnotations.InterfaceId)
-        {
+        if (interfaceId == IOPCHDA_SyncAnnotations.InterfaceId) {
             return opnum == ReadAnnotationsOpnum
                 ? DispatchReadAnnotationsAsync(requestPayload, cancellationToken)
                 : _syncAnnotationsDispatcher.DispatchAsync(opnum, requestPayload, cancellationToken).ToCallResultAsync();
         }
 
-        if (interfaceId == IOPCHDA_Browser.InterfaceId && opnum == BrowseOpnum)
-        {
+        if (interfaceId == IOPCHDA_Browser.InterfaceId && opnum == BrowseOpnum) {
             return DispatchBrowseAsync(requestPayload, cancellationToken);
         }
 
         return Task.FromResult(NotImplemented());
     }
 
-    private Task<NdrCallResult> DispatchReadAnnotationsAsync(ReadOnlyMemory<byte> requestPayload, CancellationToken cancellationToken)
-    {
+    private Task<NdrCallResult> DispatchReadAnnotationsAsync(ReadOnlyMemory<byte> requestPayload, CancellationToken cancellationToken) {
         cancellationToken.ThrowIfCancellationRequested();
         var reader = new NdrReader(requestPayload.Span);
         string[] itemIds = EndToEndNdr.ReadStringArray(ref reader);
         var annotations = itemIds.Select(itemId => _serverImpl.GetAnnotations(itemId)).ToArray();
         var errors = itemIds.Select(_ => OpcResultId.Ok.Code).ToArray();
-        ReadOnlyMemory<byte> response = EndToEndNdr.Write((ref NdrWriter writer) =>
-        {
+        ReadOnlyMemory<byte> response = EndToEndNdr.Write((ref NdrWriter writer) => {
             writer.WriteUInt32(unchecked((uint)annotations.Length));
-            foreach (OpcHdaAnnotation annotation in annotations)
-            {
+            foreach (OpcHdaAnnotation annotation in annotations) {
                 NdrOpcHdaAnnotationCodec.Write(ref writer, annotation);
             }
 
@@ -2039,18 +1793,15 @@ internal sealed class HdaEndToEndPipeline
         return Task.FromResult(Ok(response));
     }
 
-    private Task<NdrCallResult> DispatchBrowseAsync(ReadOnlyMemory<byte> requestPayload, CancellationToken cancellationToken)
-    {
+    private Task<NdrCallResult> DispatchBrowseAsync(ReadOnlyMemory<byte> requestPayload, CancellationToken cancellationToken) {
         cancellationToken.ThrowIfCancellationRequested();
         var reader = new NdrReader(requestPayload.Span);
         string prefix = reader.ReadUnicodeStringPtr() ?? string.Empty;
         var browseType = (HdaBrowseType)reader.ReadInt32();
         HdaBrowseWireElement[] elements = _serverImpl.Browse(prefix, browseType).ToArray();
-        ReadOnlyMemory<byte> response = EndToEndNdr.Write((ref NdrWriter writer) =>
-        {
+        ReadOnlyMemory<byte> response = EndToEndNdr.Write((ref NdrWriter writer) => {
             writer.WriteUInt32(unchecked((uint)elements.Length));
-            foreach (HdaBrowseWireElement element in elements)
-            {
+            foreach (HdaBrowseWireElement element in elements) {
                 writer.WriteUnicodeStringPtr(element.Name);
                 writer.WriteUnicodeStringPtr(element.ItemId);
                 writer.WriteInt32((int)element.BrowseType);
@@ -2063,23 +1814,19 @@ internal sealed class HdaEndToEndPipeline
 
     private static NdrCallResult NotImplemented() => new(OpcResultId.NotImplemented.Code, ReadOnlyMemory<byte>.Empty);
 
-    private static void ThrowIfFailure(NdrCallResult result)
-    {
-        if (result.IsFailure)
-        {
+    private static void ThrowIfFailure(NdrCallResult result) {
+        if (result.IsFailure) {
             throw new OpcException(new OpcResultId(result.Hresult, null));
         }
     }
 
-    private sealed class HdaServerImpl : IOpcHdaServer
-    {
+    private sealed class HdaServerImpl : IOpcHdaServer {
         private readonly HistoricalDataStore _store;
         private readonly SampleHdaServer _sample;
         private readonly ConcurrentDictionary<int, HandleRegistration> _registrations = new();
         private int _nextServerHandle = 1100;
 
-        public HdaServerImpl(HistoricalDataStore store, SampleHdaServer sample)
-        {
+        public HdaServerImpl(HistoricalDataStore store, SampleHdaServer sample) {
             _store = store;
             _sample = sample;
         }
@@ -2092,14 +1839,11 @@ internal sealed class HdaEndToEndPipeline
         public Task<int[]> ValidateItemIdsAsync(string[] itemIds, CancellationToken cancellationToken = default) =>
             _sample.ValidateItemIdsAsync(itemIds, cancellationToken);
 
-        public Task<int[]> GetItemHandlesAsync(string[] itemIds, int[] clientHandles, CancellationToken cancellationToken = default)
-        {
+        public Task<int[]> GetItemHandlesAsync(string[] itemIds, int[] clientHandles, CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             var handles = new int[itemIds.Length];
-            for (int i = 0; i < itemIds.Length; i++)
-            {
-                if (!_store.Contains(itemIds[i]))
-                {
+            for (int i = 0; i < itemIds.Length; i++) {
+                if (!_store.Contains(itemIds[i])) {
                     continue;
                 }
 
@@ -2112,12 +1856,10 @@ internal sealed class HdaEndToEndPipeline
             return Task.FromResult(handles);
         }
 
-        public Task<int[]> ReleaseItemHandlesAsync(int[] serverHandles, CancellationToken cancellationToken = default)
-        {
+        public Task<int[]> ReleaseItemHandlesAsync(int[] serverHandles, CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             var results = new int[serverHandles.Length];
-            for (int i = 0; i < serverHandles.Length; i++)
-            {
+            for (int i = 0; i < serverHandles.Length; i++) {
                 results[i] = _registrations.TryRemove(serverHandles[i], out _)
                     ? OpcResultId.Ok.Code
                     : OpcResultId.InvalidHandle.Code;
@@ -2131,8 +1873,7 @@ internal sealed class HdaEndToEndPipeline
             OpcHdaTime startTime,
             OpcHdaTime endTime,
             int maxValues,
-            CancellationToken cancellationToken)
-        {
+            CancellationToken cancellationToken) {
             string[] itemIds = serverHandles.Select(ResolveItemId).ToArray();
             return ReadAndReassignAsync(
                 serverHandles,
@@ -2145,11 +1886,9 @@ internal sealed class HdaEndToEndPipeline
             OpcHdaTime startTime,
             OpcHdaTime endTime,
             TimeSpan resampleInterval,
-            CancellationToken cancellationToken)
-        {
+            CancellationToken cancellationToken) {
             var items = new OpcHdaItem[serverHandles.Length];
-            for (int i = 0; i < serverHandles.Length; i++)
-            {
+            for (int i = 0; i < serverHandles.Length; i++) {
                 string itemId = ResolveItemId(serverHandles[i]);
                 var aggregate = i < aggregateIds.Length ? (HdaAggregate)aggregateIds[i] : HdaAggregate.Average;
                 LastProcessedAggregate = aggregate;
@@ -2166,12 +1905,10 @@ internal sealed class HdaEndToEndPipeline
             return items;
         }
 
-        public OpcHdaAnnotation GetAnnotations(string itemId)
-        {
+        public OpcHdaAnnotation GetAnnotations(string itemId) {
             int clientHandle = _registrations.FirstOrDefault(pair =>
                 string.Equals(pair.Value.ItemId, itemId, StringComparison.OrdinalIgnoreCase)).Value.ClientHandle;
-            if (clientHandle == 0)
-            {
+            if (clientHandle == 0) {
                 clientHandle = 1;
             }
 
@@ -2184,19 +1921,14 @@ internal sealed class HdaEndToEndPipeline
                 ["operator.e2e"]);
         }
 
-        public IEnumerable<HdaBrowseWireElement> Browse(string itemIdPrefix, HdaBrowseType browseType)
-        {
-            if (string.IsNullOrWhiteSpace(itemIdPrefix))
-            {
-                if (browseType is HdaBrowseType.Branch or HdaBrowseType.Flat)
-                {
+        public IEnumerable<HdaBrowseWireElement> Browse(string itemIdPrefix, HdaBrowseType browseType) {
+            if (string.IsNullOrWhiteSpace(itemIdPrefix)) {
+                if (browseType is HdaBrowseType.Branch or HdaBrowseType.Flat) {
                     yield return new HdaBrowseWireElement("Sensor", "Sensor", HdaBrowseType.Branch);
                 }
 
-                if (browseType is HdaBrowseType.Leaf or HdaBrowseType.Flat)
-                {
-                    foreach (string itemId in _store.ItemIds.Order(StringComparer.OrdinalIgnoreCase))
-                    {
+                if (browseType is HdaBrowseType.Leaf or HdaBrowseType.Flat) {
+                    foreach (string itemId in _store.ItemIds.Order(StringComparer.OrdinalIgnoreCase)) {
                         yield return CreateLeaf(itemId);
                     }
                 }
@@ -2204,36 +1936,30 @@ internal sealed class HdaEndToEndPipeline
                 yield break;
             }
 
-            if (browseType != HdaBrowseType.Branch)
-            {
+            if (browseType != HdaBrowseType.Branch) {
                 // Filter leaves to those that live under the requested
                 // prefix (e.g. "Sensor" returns only "Sensor.*" leaves,
                 // not the Random.* leaves at the same root level).
                 string prefix = itemIdPrefix + ".";
-                foreach (string itemId in _store.ItemIds.Order(StringComparer.OrdinalIgnoreCase))
-                {
-                    if (itemId.StartsWith(prefix, StringComparison.OrdinalIgnoreCase))
-                    {
+                foreach (string itemId in _store.ItemIds.Order(StringComparer.OrdinalIgnoreCase)) {
+                    if (itemId.StartsWith(prefix, StringComparison.OrdinalIgnoreCase)) {
                         yield return CreateLeaf(itemId);
                     }
                 }
             }
         }
 
-        private async Task<OpcHdaItem[]> ReadAndReassignAsync(int[] serverHandles, Task<OpcHdaItem[]> readTask)
-        {
+        private async Task<OpcHdaItem[]> ReadAndReassignAsync(int[] serverHandles, Task<OpcHdaItem[]> readTask) {
             OpcHdaItem[] items = await readTask.ConfigureAwait(false);
             var correlated = new OpcHdaItem[items.Length];
-            for (int i = 0; i < items.Length; i++)
-            {
+            for (int i = 0; i < items.Length; i++) {
                 correlated[i] = ReassignClientHandle(items[i], serverHandles[i]);
             }
 
             return correlated;
         }
 
-        private OpcHdaItem ReassignClientHandle(OpcHdaItem item, int serverHandle)
-        {
+        private OpcHdaItem ReassignClientHandle(OpcHdaItem item, int serverHandle) {
             int clientHandle = _registrations.TryGetValue(serverHandle, out HandleRegistration registration)
                 ? registration.ClientHandle
                 : item.ClientHandle;
@@ -2251,8 +1977,7 @@ internal sealed class HdaEndToEndPipeline
         private readonly record struct HandleRegistration(string ItemId, int ClientHandle);
     }
 
-    private sealed class SyncReadImpl : IOPCHDA_SyncRead
-    {
+    private sealed class SyncReadImpl : IOPCHDA_SyncRead {
         private readonly HdaServerImpl _server;
 
         public SyncReadImpl(HdaServerImpl server) => _server = server;
@@ -2263,8 +1988,7 @@ internal sealed class HdaEndToEndPipeline
             int maxValues,
             bool bounds,
             int[] serverHandles,
-            CancellationToken cancellationToken = default)
-        {
+            CancellationToken cancellationToken = default) {
             _ = bounds;
             return _server.ReadRawByHandleAsync(serverHandles, startTime, endTime, maxValues, cancellationToken);
         }
@@ -2275,14 +1999,12 @@ internal sealed class HdaEndToEndPipeline
             long resampleIntervalFileTime,
             int[] serverHandles,
             int[] aggregateIds,
-            CancellationToken cancellationToken = default)
-        {
+            CancellationToken cancellationToken = default) {
             TimeSpan interval = TimeSpan.FromTicks(Math.Abs(resampleIntervalFileTime));
             return _server.ReadProcessedByHandleAsync(serverHandles, aggregateIds, startTime, endTime, interval, cancellationToken);
         }
 
-        public Task<OpcHdaItem[]> ReadAtTimeAsync(long[] timestampFileTimes, int[] serverHandles, CancellationToken cancellationToken = default)
-        {
+        public Task<OpcHdaItem[]> ReadAtTimeAsync(long[] timestampFileTimes, int[] serverHandles, CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             _ = timestampFileTimes;
             _ = serverHandles;
@@ -2294,8 +2016,7 @@ internal sealed class HdaEndToEndPipeline
             OpcHdaTime endTime,
             int maxValues,
             int[] serverHandles,
-            CancellationToken cancellationToken = default)
-        {
+            CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             _ = startTime;
             _ = endTime;
@@ -2309,8 +2030,7 @@ internal sealed class HdaEndToEndPipeline
             OpcHdaTime endTime,
             int serverHandle,
             int[] attributeIds,
-            CancellationToken cancellationToken = default)
-        {
+            CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             _ = startTime;
             _ = endTime;
@@ -2320,10 +2040,8 @@ internal sealed class HdaEndToEndPipeline
         }
     }
 
-    private sealed class SyncAnnotationsImpl : IOPCHDA_SyncAnnotations
-    {
-        public Task<int> QueryCapabilitiesAsync(CancellationToken cancellationToken = default)
-        {
+    private sealed class SyncAnnotationsImpl : IOPCHDA_SyncAnnotations {
+        public Task<int> QueryCapabilitiesAsync(CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             return Task.FromResult(1);
         }
@@ -2332,8 +2050,7 @@ internal sealed class HdaEndToEndPipeline
             OpcHdaTime startTime,
             OpcHdaTime endTime,
             int[] serverHandles,
-            CancellationToken cancellationToken = default)
-        {
+            CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             _ = startTime;
             _ = endTime;
@@ -2345,8 +2062,7 @@ internal sealed class HdaEndToEndPipeline
             int[] serverHandles,
             long[] timestampFileTimes,
             OpcHdaAnnotation[] annotationValues,
-            CancellationToken cancellationToken = default)
-        {
+            CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             _ = timestampFileTimes;
             _ = annotationValues;
@@ -2367,8 +2083,7 @@ internal sealed record ObservedOrpcCall(
 
 internal sealed record FakeAuthContext(bool MicRequired, byte[]? Mic, byte[]? ChannelBindingToken);
 
-internal sealed class OrpcTrackingInMemoryChannel
-{
+internal sealed class OrpcTrackingInMemoryChannel {
     private readonly InMemoryCallChannel _channel;
     private readonly Func<Guid, int, ReadOnlyMemory<byte>, CancellationToken, Task<NdrCallResult>> _serverHandler;
     private readonly FakeAuthContext? _authContext;
@@ -2376,8 +2091,7 @@ internal sealed class OrpcTrackingInMemoryChannel
 
     public OrpcTrackingInMemoryChannel(
         Func<Guid, int, ReadOnlyMemory<byte>, CancellationToken, Task<NdrCallResult>> serverHandler,
-        FakeAuthContext? authContext = null)
-    {
+        FakeAuthContext? authContext = null) {
         _serverHandler = serverHandler;
         _authContext = authContext;
         _channel = new InMemoryCallChannel(InvokeWithOrpcAsync);
@@ -2391,14 +2105,12 @@ internal sealed class OrpcTrackingInMemoryChannel
         Guid interfaceId,
         int opnum,
         ReadOnlyMemory<byte> requestPayload,
-        CancellationToken cancellationToken)
-    {
+        CancellationToken cancellationToken) {
         cancellationToken.ThrowIfCancellationRequested();
         using IDisposable clientCausalityScope = CausalityContext.BeginCall();
         Guid causalityId = CausalityContext.Current.Value.GetValueOrDefault();
 
-        ReadOnlyMemory<byte> requestFrame = EndToEndNdr.Write((ref NdrWriter writer) =>
-        {
+        ReadOnlyMemory<byte> requestFrame = EndToEndNdr.Write((ref NdrWriter writer) => {
             new OrpcThis { CausalityId = causalityId }.Write(ref writer);
             writer.WriteRawBytes(requestPayload.Span);
         });
@@ -2408,13 +2120,11 @@ internal sealed class OrpcTrackingInMemoryChannel
         byte[] userRequest = requestFrame.Span[requestReader.Position..].ToArray();
 
         NdrCallResult serverResult;
-        using (CausalityContext.BeginCall(orpcThis.CausalityId))
-        {
+        using (CausalityContext.BeginCall(orpcThis.CausalityId)) {
             serverResult = await _serverHandler(interfaceId, opnum, userRequest, cancellationToken).ConfigureAwait(false);
         }
 
-        ReadOnlyMemory<byte> responseFrame = EndToEndNdr.Write((ref NdrWriter writer) =>
-        {
+        ReadOnlyMemory<byte> responseFrame = EndToEndNdr.Write((ref NdrWriter writer) => {
             new OrpcThat { Flags = 0x1u }.Write(ref writer);
             writer.WriteRawBytes(serverResult.ResponsePayload.Span);
         });
@@ -2436,8 +2146,7 @@ internal sealed class OrpcTrackingInMemoryChannel
     }
 }
 
-internal sealed class DisposableCallChannel : ICallChannel, IDisposable
-{
+internal sealed class DisposableCallChannel : ICallChannel, IDisposable {
     private readonly InMemoryCallChannel _inner;
     private volatile bool _disposed;
 
@@ -2449,16 +2158,13 @@ internal sealed class DisposableCallChannel : ICallChannel, IDisposable
         Guid interfaceId,
         int opnum,
         ReadOnlyMemory<byte> requestPayload,
-        CancellationToken cancellationToken = default)
-    {
-        if (_disposed)
-        {
+        CancellationToken cancellationToken = default) {
+        if (_disposed) {
             throw new ObjectDisposedException(nameof(DisposableCallChannel), "The in-memory call channel has been disposed.");
         }
 
         NdrCallResult result = await _inner.InvokeAsync(interfaceId, opnum, requestPayload, cancellationToken).ConfigureAwait(false);
-        if (_disposed)
-        {
+        if (_disposed) {
             throw new ObjectDisposedException(nameof(DisposableCallChannel), "The in-memory call channel was disposed while the call was in-flight.");
         }
 

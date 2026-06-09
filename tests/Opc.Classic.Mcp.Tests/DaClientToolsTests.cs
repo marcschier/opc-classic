@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -18,11 +18,9 @@ using TUnit.Core;
 
 namespace Opc.Classic.Mcp.Tests;
 
-public sealed class DaClientToolsTests
-{
+public sealed class DaClientToolsTests {
     [Test]
-    public async Task Da_tools_exercise_browse_group_items_sync_io_subscription_and_remove_via_mcp_client()
-    {
+    public async Task Da_tools_exercise_browse_group_items_sync_io_subscription_and_remove_via_mcp_client() {
         var syntheticDa = new SyntheticDaServer();
         string channelName = "da-" + Guid.NewGuid().ToString("N");
         using IDisposable registration = InMemoryDaConnectionRegistry.Register(channelName, syntheticDa.Channel);
@@ -31,8 +29,7 @@ public sealed class DaClientToolsTests
 
         OpcSessionDto connected = await server.CallToolAsync<OpcSessionDto>(
             "opcclassic.da.connect",
-            new Dictionary<string, object>
-            {
+            new Dictionary<string, object> {
                 ["sessionId"] = session.SessionId,
                 ["connectionString"] = "inmemory://" + channelName,
             }).ConfigureAwait(false);
@@ -44,8 +41,7 @@ public sealed class DaClientToolsTests
             new Dictionary<string, object> { ["sessionId"] = session.SessionId }).ConfigureAwait(false);
         OpcBrowseElementDto[] properties = await server.CallToolAsync<OpcBrowseElementDto[]>(
             "opcclassic.da.get_properties",
-            new Dictionary<string, object>
-            {
+            new Dictionary<string, object> {
                 ["sessionId"] = session.SessionId,
                 ["itemIds"] = new[] { "Plant.Temperature" },
                 ["propertyIds"] = new[] { 1, 2, 3 },
@@ -53,8 +49,7 @@ public sealed class DaClientToolsTests
             }).ConfigureAwait(false);
         OpcGroupStateDto group = await server.CallToolAsync<OpcGroupStateDto>(
             "opcclassic.da.add_group",
-            new Dictionary<string, object>
-            {
+            new Dictionary<string, object> {
                 ["sessionId"] = session.SessionId,
                 ["name"] = "mcp-test-group",
                 ["clientHandle"] = 500,
@@ -62,8 +57,7 @@ public sealed class DaClientToolsTests
             }).ConfigureAwait(false);
         OpcResultDto[] addResults = await server.CallToolAsync<OpcResultDto[]>(
             "opcclassic.da.add_items",
-            new Dictionary<string, object>
-            {
+            new Dictionary<string, object> {
                 ["sessionId"] = session.SessionId,
                 ["groupHandle"] = group.ServerGroupHandle,
                 ["itemIds"] = new[] { "Plant.Temperature", "Bucket Brigade.Boolean" },
@@ -72,16 +66,14 @@ public sealed class DaClientToolsTests
         int[] serverHandles = addResults.Select(static result => result.ServerHandle.GetValueOrDefault()).ToArray();
         OpcItemValueDto[] initialRead = await server.CallToolAsync<OpcItemValueDto[]>(
             "opcclassic.da.read_sync",
-            new Dictionary<string, object>
-            {
+            new Dictionary<string, object> {
                 ["sessionId"] = session.SessionId,
                 ["groupHandle"] = group.ServerGroupHandle,
                 ["serverHandles"] = serverHandles,
             }).ConfigureAwait(false);
         OpcResultDto[] writeResults = await server.CallToolAsync<OpcResultDto[]>(
             "opcclassic.da.write_sync",
-            new Dictionary<string, object>
-            {
+            new Dictionary<string, object> {
                 ["sessionId"] = session.SessionId,
                 ["groupHandle"] = group.ServerGroupHandle,
                 ["serverHandles"] = serverHandles,
@@ -89,30 +81,26 @@ public sealed class DaClientToolsTests
             }).ConfigureAwait(false);
         OpcItemValueDto[] afterWrite = await server.CallToolAsync<OpcItemValueDto[]>(
             "opcclassic.da.read_sync",
-            new Dictionary<string, object>
-            {
+            new Dictionary<string, object> {
                 ["sessionId"] = session.SessionId,
                 ["groupHandle"] = group.ServerGroupHandle,
                 ["serverHandles"] = serverHandles,
             }).ConfigureAwait(false);
         OpcResultDto subscription = await server.CallToolAsync<OpcResultDto>(
             "opcclassic.da.subscribe",
-            new Dictionary<string, object>
-            {
+            new Dictionary<string, object> {
                 ["sessionId"] = session.SessionId,
                 ["groupHandle"] = group.ServerGroupHandle,
             }).ConfigureAwait(false);
         OpcItemValueDto[] polled = await server.CallToolAsync<OpcItemValueDto[]>(
             "opcclassic.da.poll_subscription",
-            new Dictionary<string, object>
-            {
+            new Dictionary<string, object> {
                 ["sessionId"] = session.SessionId,
                 ["subscriptionId"] = subscription.SubscriptionId!,
             }).ConfigureAwait(false);
         OpcResultDto removed = await server.CallToolAsync<OpcResultDto>(
             "opcclassic.da.remove_group",
-            new Dictionary<string, object>
-            {
+            new Dictionary<string, object> {
                 ["sessionId"] = session.SessionId,
                 ["groupHandle"] = group.ServerGroupHandle,
             }).ConfigureAwait(false);
@@ -133,8 +121,7 @@ public sealed class DaClientToolsTests
     }
 
     [Test]
-    public async Task Da_error_string_and_disconnect_round_trip_via_mcp_client()
-    {
+    public async Task Da_error_string_and_disconnect_round_trip_via_mcp_client() {
         var syntheticDa = new SyntheticDaServer();
         string channelName = "da-" + Guid.NewGuid().ToString("N");
         using IDisposable registration = InMemoryDaConnectionRegistry.Register(channelName, syntheticDa.Channel);
@@ -142,16 +129,14 @@ public sealed class DaClientToolsTests
         OpcSessionDto session = await server.CallToolAsync<OpcSessionDto>("opcclassic.session.create", []).ConfigureAwait(false);
         _ = await server.CallToolAsync<OpcSessionDto>(
             "opcclassic.da.connect",
-            new Dictionary<string, object>
-            {
+            new Dictionary<string, object> {
                 ["sessionId"] = session.SessionId,
                 ["connectionString"] = "inmemory://" + channelName,
             }).ConfigureAwait(false);
 
         OpcResultDto error = await server.CallToolAsync<OpcResultDto>(
             "opcclassic.da.get_error_string",
-            new Dictionary<string, object>
-            {
+            new Dictionary<string, object> {
                 ["sessionId"] = session.SessionId,
                 ["hresult"] = OpcResultId.BadRights.Code,
                 ["localeId"] = 1033,
@@ -170,11 +155,9 @@ public sealed class DaClientToolsTests
     private static bool GetBoolean(object? value) => ((JsonElement)value!).GetBoolean();
 }
 
-internal sealed class SyntheticDaServer : IOpcDaServer, IOPCBrowse, IOPCItemMgt, IOPCSyncIO, IOPCAsyncIO2
-{
+internal sealed class SyntheticDaServer : IOpcDaServer, IOPCBrowse, IOPCItemMgt, IOPCSyncIO, IOPCAsyncIO2 {
     private readonly object _gate = new();
-    private readonly Dictionary<string, OpcVariant> _values = new(StringComparer.Ordinal)
-    {
+    private readonly Dictionary<string, OpcVariant> _values = new(StringComparer.Ordinal) {
         ["Plant.Temperature"] = OpcVariant.FromDouble(21.5),
         ["Bucket Brigade.Boolean"] = OpcVariant.FromBoolean(false),
     };
@@ -190,8 +173,7 @@ internal sealed class SyntheticDaServer : IOpcDaServer, IOPCBrowse, IOPCItemMgt,
     private int _currentGroupHandle;
     private bool _asyncEnabled;
 
-    public SyntheticDaServer()
-    {
+    public SyntheticDaServer() {
         _serverDispatcher = new OpcDaServerDispatcher(this);
         _browseDispatcher = new IOPCBrowseServerDispatcher(this);
         _itemMgtDispatcher = new IOPCItemMgtServerDispatcher(this);
@@ -202,23 +184,18 @@ internal sealed class SyntheticDaServer : IOpcDaServer, IOPCBrowse, IOPCItemMgt,
 
     public InMemoryCallChannel Channel { get; }
 
-    public int GroupCount
-    {
-        get
-        {
-            lock (_gate)
-            {
+    public int GroupCount {
+        get {
+            lock (_gate) {
                 return _groups.Count;
             }
         }
     }
 
-    public Task<OpcServerStatus> GetStatusAsync(CancellationToken cancellationToken = default)
-    {
+    public Task<OpcServerStatus> GetStatusAsync(CancellationToken cancellationToken = default) {
         cancellationToken.ThrowIfCancellationRequested();
         DateTimeOffset now = DateTimeOffset.UtcNow;
-        return Task.FromResult(new OpcServerStatus
-        {
+        return Task.FromResult(new OpcServerStatus {
             Spec = OpcStatusSpec.Da,
             StartTime = DateTimeOffset.UnixEpoch,
             CurrentTime = now,
@@ -231,12 +208,10 @@ internal sealed class SyntheticDaServer : IOpcDaServer, IOPCBrowse, IOPCItemMgt,
         });
     }
 
-    public Task<int> AddGroupAsync(string name, bool active, int requestedUpdateRate, int clientHandle, int localeId, CancellationToken cancellationToken = default)
-    {
+    public Task<int> AddGroupAsync(string name, bool active, int requestedUpdateRate, int clientHandle, int localeId, CancellationToken cancellationToken = default) {
         cancellationToken.ThrowIfCancellationRequested();
         int handle = Interlocked.Increment(ref _nextGroupHandle);
-        lock (_gate)
-        {
+        lock (_gate) {
             _groups[handle] = new SyntheticGroup(handle, name, active, requestedUpdateRate, clientHandle, localeId);
             _currentGroupHandle = handle;
         }
@@ -244,16 +219,13 @@ internal sealed class SyntheticDaServer : IOpcDaServer, IOPCBrowse, IOPCItemMgt,
         return Task.FromResult(handle);
     }
 
-    public Task AddGroupAsync(string name, bool active, int requestedUpdateRate, int clientGroupHandle, int timeBias, float percentDeadband, int localeId, Guid requestedInterfaceId, out int serverGroupHandle, out int revisedUpdateRate, out IOpcInterfaceRef group, CancellationToken cancellationToken = default)
-    {
+    public Task AddGroupAsync(string name, bool active, int requestedUpdateRate, int clientGroupHandle, int timeBias, float percentDeadband, int localeId, Guid requestedInterfaceId, out int serverGroupHandle, out int revisedUpdateRate, out IOpcInterfaceRef group, CancellationToken cancellationToken = default) {
         cancellationToken.ThrowIfCancellationRequested();
         serverGroupHandle = Interlocked.Increment(ref _nextGroupHandle);
         revisedUpdateRate = requestedUpdateRate;
         group = CreateSyntheticInterfaceRef(requestedInterfaceId, serverGroupHandle);
-        lock (_gate)
-        {
-            _groups[serverGroupHandle] = new SyntheticGroup(serverGroupHandle, name, active, requestedUpdateRate, clientGroupHandle, localeId)
-            {
+        lock (_gate) {
+            _groups[serverGroupHandle] = new SyntheticGroup(serverGroupHandle, name, active, requestedUpdateRate, clientGroupHandle, localeId) {
                 TimeBias = timeBias,
                 PercentDeadband = percentDeadband,
             };
@@ -263,15 +235,12 @@ internal sealed class SyntheticDaServer : IOpcDaServer, IOPCBrowse, IOPCItemMgt,
         return Task.CompletedTask;
     }
 
-    public Task RemoveGroupAsync(int serverGroupHandle, bool force, CancellationToken cancellationToken = default)
-    {
+    public Task RemoveGroupAsync(int serverGroupHandle, bool force, CancellationToken cancellationToken = default) {
         _ = force;
         cancellationToken.ThrowIfCancellationRequested();
-        lock (_gate)
-        {
+        lock (_gate) {
             _groups.Remove(serverGroupHandle);
-            if (_currentGroupHandle == serverGroupHandle)
-            {
+            if (_currentGroupHandle == serverGroupHandle) {
                 _currentGroupHandle = 0;
             }
         }
@@ -279,14 +248,12 @@ internal sealed class SyntheticDaServer : IOpcDaServer, IOPCBrowse, IOPCItemMgt,
         return Task.CompletedTask;
     }
 
-    public Task<string> GetErrorStringAsync(int errorCode, int localeId, CancellationToken cancellationToken = default)
-    {
+    public Task<string> GetErrorStringAsync(int errorCode, int localeId, CancellationToken cancellationToken = default) {
         cancellationToken.ThrowIfCancellationRequested();
         return Task.FromResult($"Synthetic error 0x{errorCode:X8} locale={localeId}");
     }
 
-    public Task<OpcItemProperties[]> GetPropertiesAsync(string[] itemIds, bool returnPropertyValues, int[] propertyIds, CancellationToken cancellationToken = default)
-    {
+    public Task<OpcItemProperties[]> GetPropertiesAsync(string[] itemIds, bool returnPropertyValues, int[] propertyIds, CancellationToken cancellationToken = default) {
         cancellationToken.ThrowIfCancellationRequested();
         int[] requested = propertyIds.Length == 0 ? [1, 2, 3] : propertyIds;
         return Task.FromResult(itemIds.Select(itemId => new OpcItemProperties(0, requested.Select(id => new OpcItemPropertyResult(
@@ -298,8 +265,7 @@ internal sealed class SyntheticDaServer : IOpcDaServer, IOPCBrowse, IOPCItemMgt,
             ErrorId: 0)).ToArray())).ToArray());
     }
 
-    public Task BrowseAsync(string itemId, ref string? continuationPoint, int maxElementsReturned, int browseFilter, string elementNameFilter, string vendorFilter, bool returnAllProperties, bool returnPropertyValues, int[] propertyIds, out bool moreElements, out OpcBrowseElementResult[] browseElements, CancellationToken cancellationToken = default)
-    {
+    public Task BrowseAsync(string itemId, ref string? continuationPoint, int maxElementsReturned, int browseFilter, string elementNameFilter, string vendorFilter, bool returnAllProperties, bool returnPropertyValues, int[] propertyIds, out bool moreElements, out OpcBrowseElementResult[] browseElements, CancellationToken cancellationToken = default) {
         _ = itemId;
         _ = continuationPoint;
         _ = maxElementsReturned;
@@ -319,27 +285,22 @@ internal sealed class SyntheticDaServer : IOpcDaServer, IOPCBrowse, IOPCItemMgt,
         return Task.CompletedTask;
     }
 
-    public Task AddItemsAsync(OpcItemDef[] itemDefinitions, out OpcItemResult[] addResults, out int[] errors, CancellationToken cancellationToken = default)
-    {
+    public Task AddItemsAsync(OpcItemDef[] itemDefinitions, out OpcItemResult[] addResults, out int[] errors, CancellationToken cancellationToken = default) {
         cancellationToken.ThrowIfCancellationRequested();
         addResults = new OpcItemResult[itemDefinitions.Length];
         errors = new int[itemDefinitions.Length];
-        lock (_gate)
-        {
+        lock (_gate) {
             SyntheticGroup? group = null;
             bool hasGroup = _currentGroupHandle != 0 && _groups.TryGetValue(_currentGroupHandle, out group);
-            for (int i = 0; i < itemDefinitions.Length; i++)
-            {
+            for (int i = 0; i < itemDefinitions.Length; i++) {
                 string itemId = itemDefinitions[i].ItemId ?? string.Empty;
-                if (!hasGroup || group is null)
-                {
+                if (!hasGroup || group is null) {
                     addResults[i] = new OpcItemResult(0, VarType.VT_EMPTY, 0, []);
                     errors[i] = OpcResultId.InvalidHandle.Code;
                     continue;
                 }
 
-                if (!_values.TryGetValue(itemId, out OpcVariant value))
-                {
+                if (!_values.TryGetValue(itemId, out OpcVariant value)) {
                     addResults[i] = new OpcItemResult(0, VarType.VT_EMPTY, 0, []);
                     errors[i] = OpcResultId.UnknownItemId.Code;
                     continue;
@@ -355,8 +316,7 @@ internal sealed class SyntheticDaServer : IOpcDaServer, IOPCBrowse, IOPCItemMgt,
         return Task.CompletedTask;
     }
 
-    public Task ValidateItemsAsync(OpcItemDef[] itemDefinitions, bool blobUpdate, out OpcItemResult[] validationResults, out int[] errors, CancellationToken cancellationToken = default)
-    {
+    public Task ValidateItemsAsync(OpcItemDef[] itemDefinitions, bool blobUpdate, out OpcItemResult[] validationResults, out int[] errors, CancellationToken cancellationToken = default) {
         _ = blobUpdate;
         cancellationToken.ThrowIfCancellationRequested();
         validationResults = itemDefinitions.Select(definition => new OpcItemResult(0, _values.TryGetValue(definition.ItemId ?? string.Empty, out OpcVariant value) ? value.Type : VarType.VT_EMPTY, 3, [])).ToArray();
@@ -364,15 +324,11 @@ internal sealed class SyntheticDaServer : IOpcDaServer, IOPCBrowse, IOPCItemMgt,
         return Task.CompletedTask;
     }
 
-    public Task<int[]> RemoveItemsAsync(int[] serverHandles, CancellationToken cancellationToken = default)
-    {
+    public Task<int[]> RemoveItemsAsync(int[] serverHandles, CancellationToken cancellationToken = default) {
         cancellationToken.ThrowIfCancellationRequested();
-        lock (_gate)
-        {
-            foreach (SyntheticGroup group in _groups.Values)
-            {
-                foreach (int handle in serverHandles)
-                {
+        lock (_gate) {
+            foreach (SyntheticGroup group in _groups.Values) {
+                foreach (int handle in serverHandles) {
                     group.Items.Remove(handle);
                 }
             }
@@ -381,49 +337,40 @@ internal sealed class SyntheticDaServer : IOpcDaServer, IOPCBrowse, IOPCItemMgt,
         return Task.FromResult(serverHandles.Select(static _ => OpcResultId.Ok.Code).ToArray());
     }
 
-    public Task<int[]> SetActiveStateAsync(int[] serverHandles, bool active, CancellationToken cancellationToken = default)
-    {
+    public Task<int[]> SetActiveStateAsync(int[] serverHandles, bool active, CancellationToken cancellationToken = default) {
         _ = active;
         cancellationToken.ThrowIfCancellationRequested();
         return Task.FromResult(serverHandles.Select(static _ => OpcResultId.Ok.Code).ToArray());
     }
 
-    public Task<int[]> SetClientHandlesAsync(int[] serverHandles, int[] clientHandles, CancellationToken cancellationToken = default)
-    {
+    public Task<int[]> SetClientHandlesAsync(int[] serverHandles, int[] clientHandles, CancellationToken cancellationToken = default) {
         cancellationToken.ThrowIfCancellationRequested();
         return Task.FromResult(serverHandles.Select(static _ => OpcResultId.Ok.Code).ToArray());
     }
 
-    public Task<int[]> SetDatatypesAsync(int[] serverHandles, ushort[] requestedDataTypes, CancellationToken cancellationToken = default)
-    {
+    public Task<int[]> SetDatatypesAsync(int[] serverHandles, ushort[] requestedDataTypes, CancellationToken cancellationToken = default) {
         _ = requestedDataTypes;
         cancellationToken.ThrowIfCancellationRequested();
         return Task.FromResult(serverHandles.Select(static _ => OpcResultId.Ok.Code).ToArray());
     }
 
-    public Task<IOpcInterfaceRef> CreateEnumeratorAsync(Guid requestedInterfaceId, CancellationToken cancellationToken = default)
-    {
+    public Task<IOpcInterfaceRef> CreateEnumeratorAsync(Guid requestedInterfaceId, CancellationToken cancellationToken = default) {
         cancellationToken.ThrowIfCancellationRequested();
         return Task.FromResult(CreateSyntheticInterfaceRef(requestedInterfaceId, _currentGroupHandle));
     }
 
-    public Task<OpcItemState[]> ReadAsync(int dataSource, int[] serverHandles, out int[] errors, CancellationToken cancellationToken = default)
-    {
+    public Task<OpcItemState[]> ReadAsync(int dataSource, int[] serverHandles, out int[] errors, CancellationToken cancellationToken = default) {
         _ = dataSource;
         cancellationToken.ThrowIfCancellationRequested();
         OpcItemState[] states = new OpcItemState[serverHandles.Length];
         errors = new int[serverHandles.Length];
-        lock (_gate)
-        {
-            for (int i = 0; i < serverHandles.Length; i++)
-            {
-                if (TryFindItem(serverHandles[i], out SyntheticItem? item) && item is not null && _values.TryGetValue(item.ItemId, out OpcVariant value))
-                {
+        lock (_gate) {
+            for (int i = 0; i < serverHandles.Length; i++) {
+                if (TryFindItem(serverHandles[i], out SyntheticItem? item) && item is not null && _values.TryGetValue(item.ItemId, out OpcVariant value)) {
                     states[i] = new OpcItemState(item.ClientHandle, DateTimeOffset.UtcNow, OpcQuality.Good, value);
                     errors[i] = OpcResultId.Ok.Code;
                 }
-                else
-                {
+                else {
                     states[i] = new OpcItemState(0, DateTimeOffset.UtcNow, OpcQuality.Bad, OpcVariant.Empty);
                     errors[i] = OpcResultId.InvalidHandle.Code;
                 }
@@ -433,21 +380,16 @@ internal sealed class SyntheticDaServer : IOpcDaServer, IOPCBrowse, IOPCItemMgt,
         return Task.FromResult(states);
     }
 
-    public Task<int[]> WriteAsync(int[] serverHandles, OpcVariant[] values, CancellationToken cancellationToken = default)
-    {
+    public Task<int[]> WriteAsync(int[] serverHandles, OpcVariant[] values, CancellationToken cancellationToken = default) {
         cancellationToken.ThrowIfCancellationRequested();
         int[] errors = new int[serverHandles.Length];
-        lock (_gate)
-        {
-            for (int i = 0; i < serverHandles.Length; i++)
-            {
-                if (TryFindItem(serverHandles[i], out SyntheticItem? item) && item is not null && i < values.Length)
-                {
+        lock (_gate) {
+            for (int i = 0; i < serverHandles.Length; i++) {
+                if (TryFindItem(serverHandles[i], out SyntheticItem? item) && item is not null && i < values.Length) {
                     _values[item.ItemId] = values[i];
                     errors[i] = OpcResultId.Ok.Code;
                 }
-                else
-                {
+                else {
                     errors[i] = OpcResultId.InvalidHandle.Code;
                 }
             }
@@ -456,84 +398,69 @@ internal sealed class SyntheticDaServer : IOpcDaServer, IOPCBrowse, IOPCItemMgt,
         return Task.FromResult(errors);
     }
 
-    public Task<int> ReadAsync(int[] serverHandles, int transactionId, out int[] errors, CancellationToken cancellationToken = default)
-    {
+    public Task<int> ReadAsync(int[] serverHandles, int transactionId, out int[] errors, CancellationToken cancellationToken = default) {
         _ = transactionId;
         _ = ReadAsync(1, serverHandles, out errors, cancellationToken);
         return Task.FromResult(Interlocked.Increment(ref _nextCancelId));
     }
 
-    public Task<int> WriteAsync(int[] serverHandles, OpcVariant[] values, int transactionId, out int[] errors, CancellationToken cancellationToken = default)
-    {
+    public Task<int> WriteAsync(int[] serverHandles, OpcVariant[] values, int transactionId, out int[] errors, CancellationToken cancellationToken = default) {
         _ = transactionId;
         errors = WriteAsync(serverHandles, values, cancellationToken).GetAwaiter().GetResult();
         return Task.FromResult(Interlocked.Increment(ref _nextCancelId));
     }
 
-    public Task<int> Refresh2Async(int dataSource, int transactionId, CancellationToken cancellationToken = default)
-    {
+    public Task<int> Refresh2Async(int dataSource, int transactionId, CancellationToken cancellationToken = default) {
         _ = dataSource;
         _ = transactionId;
         cancellationToken.ThrowIfCancellationRequested();
         return Task.FromResult(Interlocked.Increment(ref _nextCancelId));
     }
 
-    public Task Cancel2Async(int cancelId, CancellationToken cancellationToken = default)
-    {
+    public Task Cancel2Async(int cancelId, CancellationToken cancellationToken = default) {
         _ = cancelId;
         cancellationToken.ThrowIfCancellationRequested();
         return Task.CompletedTask;
     }
 
-    public Task SetEnableAsync(bool enabled, CancellationToken cancellationToken = default)
-    {
+    public Task SetEnableAsync(bool enabled, CancellationToken cancellationToken = default) {
         cancellationToken.ThrowIfCancellationRequested();
         _asyncEnabled = enabled;
         return Task.CompletedTask;
     }
 
-    public Task<bool> GetEnableAsync(CancellationToken cancellationToken = default)
-    {
+    public Task<bool> GetEnableAsync(CancellationToken cancellationToken = default) {
         cancellationToken.ThrowIfCancellationRequested();
         return Task.FromResult(_asyncEnabled);
     }
 
-    private Task<NdrCallResult> DispatchAsync(Guid interfaceId, int opnum, ReadOnlyMemory<byte> requestPayload, CancellationToken cancellationToken)
-    {
-        if (interfaceId == IOPCServer.InterfaceId)
-        {
+    private Task<NdrCallResult> DispatchAsync(Guid interfaceId, int opnum, ReadOnlyMemory<byte> requestPayload, CancellationToken cancellationToken) {
+        if (interfaceId == IOPCServer.InterfaceId) {
             return _serverDispatcher.DispatchAsync(interfaceId, opnum, requestPayload, cancellationToken);
         }
 
-        if (interfaceId == IOPCBrowse.InterfaceId)
-        {
+        if (interfaceId == IOPCBrowse.InterfaceId) {
             return ToCallResultAsync(_browseDispatcher.DispatchAsync(opnum, requestPayload, cancellationToken));
         }
 
-        if (interfaceId == IOPCItemMgt.InterfaceId)
-        {
+        if (interfaceId == IOPCItemMgt.InterfaceId) {
             return ToCallResultAsync(_itemMgtDispatcher.DispatchAsync(opnum, requestPayload, cancellationToken));
         }
 
-        if (interfaceId == IOPCSyncIO.InterfaceId)
-        {
+        if (interfaceId == IOPCSyncIO.InterfaceId) {
             return ToCallResultAsync(_syncIoDispatcher.DispatchAsync(opnum, requestPayload, cancellationToken));
         }
 
-        if (interfaceId == IOPCAsyncIO2.InterfaceId)
-        {
+        if (interfaceId == IOPCAsyncIO2.InterfaceId) {
             return ToCallResultAsync(_asyncIoDispatcher.DispatchAsync(opnum, requestPayload, cancellationToken));
         }
 
         return Task.FromResult(new NdrCallResult(OpcResultId.NotImplemented.Code, ReadOnlyMemory<byte>.Empty));
     }
 
-    private bool TryFindItem(int serverHandle, out SyntheticItem? item)
-    {
-        foreach (SyntheticGroup group in _groups.Values)
-        {
-            if (group.Items.TryGetValue(serverHandle, out item))
-            {
+    private bool TryFindItem(int serverHandle, out SyntheticItem? item) {
+        foreach (SyntheticGroup group in _groups.Values) {
+            if (group.Items.TryGetValue(serverHandle, out item)) {
                 return true;
             }
         }
@@ -556,10 +483,8 @@ internal sealed class SyntheticDaServer : IOpcDaServer, IOPCBrowse, IOPCItemMgt,
             securityOffset: 0,
             resolverBindings: Array.Empty<ushort>());
 
-    private sealed class SyntheticGroup
-    {
-        public SyntheticGroup(int serverHandle, string name, bool active, int updateRate, int clientHandle, int localeId)
-        {
+    private sealed class SyntheticGroup {
+        public SyntheticGroup(int serverHandle, string name, bool active, int updateRate, int clientHandle, int localeId) {
             ServerHandle = serverHandle;
             Name = name;
             Active = active;

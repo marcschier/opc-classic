@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -13,31 +13,26 @@ using TUnit.Core;
 
 namespace Opc.Classic.Hda.Tests;
 
-public sealed class NdrOpcHdaItemCodecTests
-{
+public sealed class NdrOpcHdaItemCodecTests {
     private delegate void NdrWriteAction(ref NdrWriter w);
 
-    private static byte[] WriteOne(NdrWriteAction write, int capacity = 1024)
-    {
+    private static byte[] WriteOne(NdrWriteAction write, int capacity = 1024) {
         var buf = new byte[capacity];
         var w = new NdrWriter(buf);
         write(ref w);
         return buf[..w.Position];
     }
 
-    private static OpcHdaItem ReadOne(byte[] bytes)
-    {
+    private static OpcHdaItem ReadOne(byte[] bytes) {
         var r = new NdrReader(bytes);
         return NdrOpcHdaItemCodec.Read(ref r);
     }
 
-    private static OpcHdaItem MakeSample(int count = 3)
-    {
+    private static OpcHdaItem MakeSample(int count = 3) {
         var timestamps = new DateTimeOffset[count];
         var qualities = new uint[count];
         var values = new OpcVariant[count];
-        for (int i = 0; i < count; i++)
-        {
+        for (int i = 0; i < count; i++) {
             timestamps[i] = new DateTimeOffset(2026, 5, 22, 10, i, 0, TimeSpan.Zero);
             qualities[i] = 192;  // HDA quality "Good"
             values[i] = OpcVariant.FromDouble(100.0 + i);
@@ -46,8 +41,7 @@ public sealed class NdrOpcHdaItemCodecTests
     }
 
     [Test]
-    public async Task RoundTrip_ThreeDoubleValues()
-    {
+    public async Task RoundTrip_ThreeDoubleValues() {
         var input = MakeSample(3);
         var bytes = WriteOne((ref NdrWriter w) => NdrOpcHdaItemCodec.Write(ref w, input));
         var back = ReadOne(bytes);
@@ -58,8 +52,7 @@ public sealed class NdrOpcHdaItemCodecTests
     }
 
     [Test]
-    public async Task RoundTrip_SingleValue()
-    {
+    public async Task RoundTrip_SingleValue() {
         var input = MakeSample(1);
         var bytes = WriteOne((ref NdrWriter w) => NdrOpcHdaItemCodec.Write(ref w, input));
         var back = ReadOne(bytes);
@@ -68,8 +61,7 @@ public sealed class NdrOpcHdaItemCodecTests
     }
 
     [Test]
-    public async Task RoundTrip_EmptySeries()
-    {
+    public async Task RoundTrip_EmptySeries() {
         var input = new OpcHdaItem(
             clientHandle: 1,
             aggregateHandle: 0,
@@ -82,11 +74,9 @@ public sealed class NdrOpcHdaItemCodecTests
     }
 
     [Test]
-    public async Task ConstructorRejectsArrayLengthMismatch()
-    {
+    public async Task ConstructorRejectsArrayLengthMismatch() {
         bool threw = false;
-        try
-        {
+        try {
             _ = new OpcHdaItem(
                 clientHandle: 1,
                 aggregateHandle: 0,
@@ -99,8 +89,7 @@ public sealed class NdrOpcHdaItemCodecTests
     }
 
     [Test]
-    public async Task RoundTrip_MixedVariantTypes()
-    {
+    public async Task RoundTrip_MixedVariantTypes() {
         var input = new OpcHdaItem(
             clientHandle: 7,
             aggregateHandle: 0,
@@ -118,8 +107,7 @@ public sealed class NdrOpcHdaItemCodecTests
     }
 
     [Test]
-    public async Task RoundTrip_AggregateHandlePreserved()
-    {
+    public async Task RoundTrip_AggregateHandlePreserved() {
         var input = new OpcHdaItem(
             clientHandle: 1,
             aggregateHandle: 17,
@@ -134,11 +122,9 @@ public sealed class NdrOpcHdaItemCodecTests
     [Test]
     [Arguments(10_000)]
     [Arguments(100_000)]
-    public async Task RoundTrip_SafeArrayDoubleVariant_PreservesLargeArrays(int sampleCount)
-    {
+    public async Task RoundTrip_SafeArrayDoubleVariant_PreservesLargeArrays(int sampleCount) {
         var doubles = new double[sampleCount];
-        for (int i = 0; i < doubles.Length; i++)
-        {
+        for (int i = 0; i < doubles.Length; i++) {
             doubles[i] = i + 0.25d;
         }
 

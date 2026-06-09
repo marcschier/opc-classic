@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -24,8 +24,7 @@ public sealed record RemoteActivationResponse(
     Guid IpidRemUnknown,
     uint AuthnHint,
     (ushort Major, ushort Minor) ServerVersion,
-    IReadOnlyList<RemoteActivationInterfaceResult> InterfaceResults)
-{
+    IReadOnlyList<RemoteActivationInterfaceResult> InterfaceResults) {
     /// <summary>Encoded DUALSTRINGARRAY of OXID resolver bindings.</summary>
     public ReadOnlyMemory<byte> OxidBindings { get; init; }
 }

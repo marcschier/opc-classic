@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -9,11 +9,9 @@ using TUnit.Core;
 
 namespace Opc.Classic.Hda.Tests;
 
-public sealed class OpcHdaErrorsTests
-{
+public sealed class OpcHdaErrorsTests {
     [Test]
-    public async Task Constants_MatchOpcFoundationHeader()
-    {
+    public async Task Constants_MatchOpcFoundationHeader() {
         await Assert.That(OpcHdaErrors.OPCHDA_E_MAXEXCEEDED).IsEqualTo(unchecked((int)0xC0041001u));
         await Assert.That(OpcHdaErrors.OPCHDA_S_NODATA).IsEqualTo(0x40041002);
         await Assert.That(OpcHdaErrors.OPCHDA_S_MOREDATA).IsEqualTo(0x40041003);
@@ -32,8 +30,7 @@ public sealed class OpcHdaErrorsTests
     }
 
     [Test]
-    public async Task HeaderNameAliases_MatchHdaScopedConstants()
-    {
+    public async Task HeaderNameAliases_MatchHdaScopedConstants() {
         await Assert.That(OpcHdaErrors.OPC_E_MAXEXCEEDED).IsEqualTo(OpcHdaErrors.OPCHDA_E_MAXEXCEEDED);
         await Assert.That(OpcHdaErrors.OPC_S_NODATA).IsEqualTo(OpcHdaErrors.OPCHDA_S_NODATA);
         await Assert.That(OpcHdaErrors.OPC_S_MOREDATA).IsEqualTo(OpcHdaErrors.OPCHDA_S_MOREDATA);

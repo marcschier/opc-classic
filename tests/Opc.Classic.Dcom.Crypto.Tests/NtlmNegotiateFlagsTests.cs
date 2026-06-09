@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: MIT
+﻿// SPDX-License-Identifier: MIT
 
 using System;
 using System.Buffers.Binary;
@@ -16,8 +16,7 @@ using TUnit.Core;
 
 namespace Opc.Classic.Dcom.Crypto.Tests;
 
-public sealed class NtlmNegotiateFlagsTests
-{
+public sealed class NtlmNegotiateFlagsTests {
     private const string User = "User";
     private const string Domain = "Domain";
     private const string Password = "Password";
@@ -44,8 +43,7 @@ public sealed class NtlmNegotiateFlagsTests
         string expectedClientSigningKey,
         string expectedServerSigningKey,
         string expectedClientSealingKey,
-        string expectedServerSealingKey)
-    {
+        string expectedServerSealingKey) {
         var flags = BuildFlags(sign, seal, keyExchange, extendedSessionSecurity: true, keyBits);
         var security = CreateNtlm1(flags, ExportedSessionKey, isServer: false);
 
@@ -67,8 +65,7 @@ public sealed class NtlmNegotiateFlagsTests
         bool sign,
         bool seal,
         bool keyExchange,
-        int keyBits)
-    {
+        int keyBits) {
         var flags = BuildFlags(sign, seal, keyExchange, extendedSessionSecurity: false, keyBits);
         var security = CreateNtlm1(flags, ExportedSessionKey, isServer: false);
 
@@ -86,8 +83,7 @@ public sealed class NtlmNegotiateFlagsTests
     [Test]
     [Arguments(false)]
     [Arguments(true)]
-    public async Task MsNlmp3452And3453_SignOnlyAndSealModes_ProtectPayloadDifferently(bool keyExchange)
-    {
+    public async Task MsNlmp3452And3453_SignOnlyAndSealModes_ProtectPayloadDifferently(bool keyExchange) {
         var signOnlyFlags = BuildFlags(sign: true, seal: false, keyExchange, extendedSessionSecurity: true, keyBits: 128);
         var sealFlags = BuildFlags(sign: true, seal: true, keyExchange, extendedSessionSecurity: true, keyBits: 128);
 
@@ -105,8 +101,7 @@ public sealed class NtlmNegotiateFlagsTests
     /// session key during negotiation and controls RC4 wrapping of the extended-session-security checksum.
     /// </summary>
     [Test]
-    public async Task MsNlmp3451And3452_KeyExchangeFlag_SelectsSecondaryKeyAndChecksumWrapping()
-    {
+    public async Task MsNlmp3451And3452_KeyExchangeFlag_SelectsSecondaryKeyAndChecksumWrapping() {
         var withoutKeyExchange = BuildFlags(sign: true, seal: false, keyExchange: false, extendedSessionSecurity: true, keyBits: 128);
         var withKeyExchange = BuildFlags(sign: true, seal: false, keyExchange: true, extendedSessionSecurity: true, keyBits: 128);
         var unwrappedSignature = CreateUnwrappedEssSignature(GetSecurityField(CreateNtlm1(withoutKeyExchange, ExportedSessionKey, isServer: false), "_clientSigningKey"));
@@ -125,8 +120,7 @@ public sealed class NtlmNegotiateFlagsTests
     [Test]
     [Arguments(false)]
     [Arguments(true)]
-    public async Task MsNlmp3451_Ntlm1Handshake_UsesSecondarySessionKeyOnlyWhenKeyExchangeNegotiated(bool keyExchange)
-    {
+    public async Task MsNlmp3451_Ntlm1Handshake_UsesSecondarySessionKeyOnlyWhenKeyExchangeNegotiated(bool keyExchange) {
         var client = CreateAuthentication(keyExchange);
         var server = CreateAuthentication(keyExchange);
 
@@ -145,51 +139,42 @@ public sealed class NtlmNegotiateFlagsTests
             .IsEqualTo(ToHex(GetSecurityField(server.Security, "_serverSigningKey")));
     }
 
-    private static NtlmFlags BuildFlags(bool sign, bool seal, bool keyExchange, bool extendedSessionSecurity, int keyBits)
-    {
+    private static NtlmFlags BuildFlags(bool sign, bool seal, bool keyExchange, bool extendedSessionSecurity, int keyBits) {
         var flags = NtlmFlags.NtlmsspNegotiateUnicode | NtlmFlags.NtlmsspNegotiateNtlm;
-        if (sign || seal)
-        {
+        if (sign || seal) {
             flags |= NtlmFlags.NtlmsspNegotiateSign;
         }
 
-        if (seal)
-        {
+        if (seal) {
             flags |= NtlmFlags.NtlmsspNegotiateSeal;
         }
 
-        if (keyExchange)
-        {
+        if (keyExchange) {
             flags |= NtlmFlags.NtlmsspNegotiateKeyExch;
         }
 
-        if (extendedSessionSecurity)
-        {
+        if (extendedSessionSecurity) {
             flags |= NtlmFlags.NtlmsspNegotiateExtendedSessionSecurity;
         }
 
-        if (keyBits >= 56)
-        {
+        if (keyBits >= 56) {
             flags |= NtlmFlags.NtlmsspNegotiate56;
         }
 
-        if (keyBits >= 128)
-        {
+        if (keyBits >= 128) {
             flags |= NtlmFlags.NtlmsspNegotiate128;
         }
 
         return flags;
     }
 
-    private static ISecurity CreateNtlm1(NtlmFlags flags, byte[] exportedSessionKey, bool isServer)
-    {
+    private static ISecurity CreateNtlm1(NtlmFlags flags, byte[] exportedSessionKey, bool isServer) {
 #pragma warning disable CS0618 // NTLMv1 fallback is intentionally covered by these compatibility tests.
         return new Ntlm1(flags, exportedSessionKey, isServer);
 #pragma warning restore CS0618
     }
 
-    private static (byte[] ProtectedPayload, byte[] Verifier, byte[] Buffer) Protect(NtlmFlags flags)
-    {
+    private static (byte[] ProtectedPayload, byte[] Verifier, byte[] Buffer) Protect(NtlmFlags flags) {
         var security = CreateNtlm1(flags, ExportedSessionKey, isServer: false);
         var buffer = new byte[Payload.Length + security.VerifierLength];
         Payload.CopyTo(buffer.AsSpan());
@@ -200,8 +185,7 @@ public sealed class NtlmNegotiateFlagsTests
         return (buffer.AsSpan(0, Payload.Length).ToArray(), buffer.AsSpan(Payload.Length, security.VerifierLength).ToArray(), buffer);
     }
 
-    private static byte[] Unprotect(NtlmFlags flags, byte[] protectedBuffer)
-    {
+    private static byte[] Unprotect(NtlmFlags flags, byte[] protectedBuffer) {
         var security = CreateNtlm1(flags, ExportedSessionKey, isServer: true);
         var buffer = (byte[])protectedBuffer.Clone();
         var ndr = new NdrCodec { Buffer = new NdrBuffer(buffer, 0) };
@@ -211,8 +195,7 @@ public sealed class NtlmNegotiateFlagsTests
         return buffer.AsSpan(0, Payload.Length).ToArray();
     }
 
-    private static byte[] CreateUnwrappedEssSignature(byte[] signingKey)
-    {
+    private static byte[] CreateUnwrappedEssSignature(byte[] signingKey) {
         var seqNumPlusData = new byte[sizeof(int) + Payload.Length];
         BinaryPrimitives.WriteInt32LittleEndian(seqNumPlusData.AsSpan(0, sizeof(int)), 0);
         Payload.CopyTo(seqNumPlusData.AsSpan(sizeof(int)));
@@ -225,8 +208,7 @@ public sealed class NtlmNegotiateFlagsTests
         return signature;
     }
 
-    private static NtlmAuthentication CreateAuthentication(bool keyExchange)
-    {
+    private static NtlmAuthentication CreateAuthentication(bool keyExchange) {
         var properties = new PropertyBag();
         properties.SetProperty("rpc.ntlm.lanManagerKey", "false");
         properties.SetProperty("rpc.ntlm.sign", "true");
@@ -243,29 +225,24 @@ public sealed class NtlmNegotiateFlagsTests
         return new NtlmAuthentication(properties);
     }
 
-    private static void InvokeCreateSecurityWhenServer(NtlmAuthentication authentication, Type3Message type3)
-    {
+    private static void InvokeCreateSecurityWhenServer(NtlmAuthentication authentication, Type3Message type3) {
         var method = typeof(NtlmAuthentication).GetMethod(
             "CreateSecurityWhenServer", BindingFlags.Instance | BindingFlags.NonPublic)!;
-        try
-        {
+        try {
             method.Invoke(authentication, new object[] { type3 });
         }
-        catch (TargetInvocationException ex) when (ex.InnerException != null)
-        {
+        catch (TargetInvocationException ex) when (ex.InnerException != null) {
             ExceptionDispatchInfo.Capture(ex.InnerException).Throw();
             throw;
         }
     }
 
-    private static byte[] GetSecurityField(ISecurity security, string fieldName)
-    {
+    private static byte[] GetSecurityField(ISecurity security, string fieldName) {
         var field = security.GetType().GetField(fieldName, BindingFlags.Instance | BindingFlags.NonPublic)!;
         return (byte[])field.GetValue(security)!;
     }
 
-    private static byte[] GetCipherState(ISecurity security, string fieldName)
-    {
+    private static byte[] GetCipherState(ISecurity security, string fieldName) {
         var field = security.GetType().GetField(fieldName, BindingFlags.Instance | BindingFlags.NonPublic)!;
         var cipher = field.GetValue(security)!;
         var rc4Field = cipher.GetType().GetField("_cipher", BindingFlags.Instance | BindingFlags.NonPublic)!;
@@ -275,8 +252,7 @@ public sealed class NtlmNegotiateFlagsTests
 
     private static byte[] CreateRc4State(string keyHex) => GetRc4State(new Rc4(Convert.FromHexString(keyHex)));
 
-    private static byte[] GetRc4State(object rc4)
-    {
+    private static byte[] GetRc4State(object rc4) {
         var stateField = rc4.GetType().GetField("_s", BindingFlags.Instance | BindingFlags.NonPublic)!;
         return ((byte[])stateField.GetValue(rc4)!).ToArray();
     }

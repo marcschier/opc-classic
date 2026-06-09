@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -49,15 +49,13 @@ namespace Opc.Classic.Mcp.Capture;
 /// the file is still self-describing.
 /// </para>
 /// </remarks>
-public sealed class HexFormatBridge
-{
+public sealed class HexFormatBridge {
     private readonly ILogger _logger;
     private readonly string _directory;
     private readonly string _contextTag;
     private long _sequence;
 
-    public HexFormatBridge(string directory, string contextTag, ILogger? logger = null)
-    {
+    public HexFormatBridge(string directory, string contextTag, ILogger? logger = null) {
         ArgumentException.ThrowIfNullOrEmpty(directory);
         ArgumentException.ThrowIfNullOrEmpty(contextTag);
         _directory = directory;
@@ -71,11 +69,9 @@ public sealed class HexFormatBridge
     /// captured.
     /// </summary>
     public string? Write(DecodedOpcPdu? request, ReadOnlyMemory<byte> requestStub,
-        DecodedOpcPdu? response, ReadOnlyMemory<byte> responseStub)
-    {
+        DecodedOpcPdu? response, ReadOnlyMemory<byte> responseStub) {
         DecodedOpcPdu? source = request ?? response;
-        if (source is null)
-        {
+        if (source is null) {
             return null;
         }
 
@@ -87,10 +83,8 @@ public sealed class HexFormatBridge
         Justification = "Hex-bridge writes are diagnostic; capture-time failures must not propagate.")]
     private string? TryCapture(long sequence, DecodedOpcPdu source,
         ReadOnlyMemory<byte> requestStub,
-        DecodedOpcPdu? response, ReadOnlyMemory<byte> responseStub)
-    {
-        try
-        {
+        DecodedOpcPdu? response, ReadOnlyMemory<byte> responseStub) {
+        try {
             Directory.CreateDirectory(_directory);
             string timestamp = source.Timestamp.UtcDateTime.ToString("yyyyMMddTHHmmss.fff", CultureInfo.InvariantCulture);
             int opnum = source.Opnum ?? response?.Opnum ?? -1;
@@ -106,14 +100,12 @@ public sealed class HexFormatBridge
             sb.Append("# context: ").Append(_contextTag).Append('\n');
             sb.Append("# iid: ").Append(iid.ToString("D", CultureInfo.InvariantCulture)).Append('\n');
             sb.Append("# opnum: ").Append(opnum.ToString(CultureInfo.InvariantCulture)).Append('\n');
-            if (response?.Hresult is int hr)
-            {
+            if (response?.Hresult is int hr) {
                 sb.Append("# hresult: 0x").Append(hr.ToString("X8", CultureInfo.InvariantCulture)).Append('\n');
             }
             sb.Append("# timestamp_utc: ").Append(source.Timestamp.ToString("O", CultureInfo.InvariantCulture)).Append('\n');
             sb.Append("# call_id: ").Append(source.CallId.ToString(CultureInfo.InvariantCulture)).Append('\n');
-            if (source.ObjectIpid is Guid ipid && ipid != Guid.Empty)
-            {
+            if (source.ObjectIpid is Guid ipid && ipid != Guid.Empty) {
                 sb.Append("# object_ipid: ").Append(ipid.ToString("D", CultureInfo.InvariantCulture)).Append('\n');
             }
             sb.Append('\n');
@@ -125,37 +117,30 @@ public sealed class HexFormatBridge
             File.WriteAllText(path, sb.ToString());
             return path;
         }
-        catch (Exception ex)
-        {
-            if (_logger.IsEnabled(LogLevel.Warning))
-            {
+        catch (Exception ex) {
+            if (_logger.IsEnabled(LogLevel.Warning)) {
                 _logger.LogWarning(ex, "HexFormatBridge: failed to write capture file under {Directory}.", _directory);
             }
             return null;
         }
     }
 
-    private static void AppendSection(StringBuilder sb, string label, ReadOnlySpan<byte> bytes)
-    {
+    private static void AppendSection(StringBuilder sb, string label, ReadOnlySpan<byte> bytes) {
         sb.Append("## ").Append(label).Append(" (").Append(bytes.Length.ToString(CultureInfo.InvariantCulture)).Append(" bytes)\n");
         const int kRow = 16;
-        for (int offset = 0; offset < bytes.Length; offset += kRow)
-        {
+        for (int offset = 0; offset < bytes.Length; offset += kRow) {
             int take = Math.Min(kRow, bytes.Length - offset);
             sb.Append(offset.ToString("X4", CultureInfo.InvariantCulture)).Append(": ");
-            for (int j = 0; j < take; j++)
-            {
+            for (int j = 0; j < take; j++) {
                 sb.Append(bytes[offset + j].ToString("x2", CultureInfo.InvariantCulture)).Append(' ');
             }
             sb.Append('\n');
         }
     }
 
-    private static string SanitizeForFilename(string tag)
-    {
+    private static string SanitizeForFilename(string tag) {
         var sb = new StringBuilder(tag.Length);
-        foreach (char c in tag)
-        {
+        foreach (char c in tag) {
             sb.Append(char.IsLetterOrDigit(c) || c == '-' || c == '_' || c == '.' ? c : '-');
         }
         return sb.ToString();

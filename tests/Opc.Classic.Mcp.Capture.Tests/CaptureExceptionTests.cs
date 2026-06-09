@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -9,11 +9,9 @@ using TUnit.Core;
 
 namespace Opc.Classic.Mcp.Capture.Tests;
 
-public sealed class CaptureExceptionTests
-{
+public sealed class CaptureExceptionTests {
     [Test]
-    public async Task Constructor_Parameterless_SetsDefaultMessageAndNoInnerException()
-    {
+    public async Task Constructor_Parameterless_SetsDefaultMessageAndNoInnerException() {
         var exception = new CaptureException();
 
         await Assert.That(exception.Message).Contains(nameof(CaptureException));
@@ -21,8 +19,7 @@ public sealed class CaptureExceptionTests
     }
 
     [Test]
-    public async Task Constructor_Message_SetsMessageAndNoInnerException()
-    {
+    public async Task Constructor_Message_SetsMessageAndNoInnerException() {
         var exception = new CaptureException("missing capture privilege");
 
         await Assert.That(exception.Message).IsEqualTo("missing capture privilege");
@@ -30,8 +27,7 @@ public sealed class CaptureExceptionTests
     }
 
     [Test]
-    public async Task Constructor_MessageAndInner_SetsBothProperties()
-    {
+    public async Task Constructor_MessageAndInner_SetsBothProperties() {
         var inner = new InvalidOperationException("inner failure");
         var exception = new CaptureException("outer failure", inner);
 
