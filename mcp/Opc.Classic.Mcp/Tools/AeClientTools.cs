@@ -102,7 +102,7 @@ public sealed class AeClientTools
 
     /// <summary>Connects a session to an OPC AE server.</summary>
     [McpServerTool(Name = "opcclassic.ae.connect", ReadOnly = false, Idempotent = true, Destructive = false, OpenWorld = true)]
-    [Description("Connects an existing MCP session to an OPC AE server using DCOM or an in-memory test channel.")]
+    [Description("Connects an existing MCP session to an OPC AE server using DCOM, a tcp://host:port managed-listener direct connect, or an in-memory test channel.")]
     public async Task<OpcResultDto> Connect(
         [Description("The sessionId returned by opcclassic.session.create.")]
         string sessionId,
@@ -118,7 +118,7 @@ public sealed class AeClientTools
         string? password = null,
         [Description("True to request Kerberos/SPNEGO authentication instead of NTLMv2 when credentials are supplied.")]
         bool useKerberos = false,
-        [Description("Optional connection string. Use inmemory://name for a registered InMemoryCallChannel, or opcae://host/ProgID for DCOM.")]
+        [Description("Optional connection string. Use inmemory://name for a registered InMemoryCallChannel, tcp://host:port to bypass DCOM and talk directly to a managed OpcAeServerHost TCP listener, or opcae://host/ProgID for DCOM activation.")]
         string? connectionString = null,
         [Description(OpcMcpAuthLevel.Description)]
         string? authLevel = null,
@@ -743,6 +743,28 @@ public sealed class AeClientTools
                 return new AeClientState("inmemory", normalized.ProgId ?? inMemoryKey, Guid.Empty, connection.Channel, ownsChannel: false, connection.ManagedServer);
             }
 
+            // tcp://host:port -- managed-listener direct connect. Bypasses the
+            // DCOM activation handshake (no SCM, no OPCEnum, no CoCreateInstance),
+            // talks straight to OpcAeServerHost over a raw TCP socket. The
+            // server-side routes incoming requests by interface UUID via its
+            // RpcServerConnectionProcessor dispatch table -- no CLSID/IPID
+            // negotiation is needed on either side. Use this for the in-repo
+            // samples-ae-managed matrix profile and equivalent loopback / dev
+            // scenarios where the protocol stub (opcae_ps.dll) is undesirable
+            // or unavailable. External OPC AE servers still need the standard
+            // DCOM activation path below.
+            if (OpcMcpDcomConnectionHelper.TryGetTcpEndpoint(normalized.ConnectionString, out string tcpHost, out int tcpPort))
+            {
+                TcpClientTransport tcpTransport = await TcpClientTransport.ConnectAsync(tcpHost, tcpPort, cancellationToken).ConfigureAwait(false);
+                var tcpChannel = new DcomCallChannel(tcpTransport, NoOpAuthContext.Instance);
+                return new AeClientState(
+                    tcpHost,
+                    normalized.ProgId ?? $"tcp://{tcpHost}:{tcpPort}",
+                    Guid.Empty,
+                    tcpChannel,
+                    ownsChannel: true);
+            }
+
             (ICallChannel channel, Guid clsid) = await OpcMcpDcomConnectionHelper.ConnectDcomAsync(
                 normalized,
                 IOPCEventServer.InterfaceId,
@@ -842,6 +864,52 @@ internal static class OpcMcpDcomConnectionHelper
         return connectionString.StartsWith(prefix, StringComparison.OrdinalIgnoreCase)
             ? connectionString[prefix.Length..].Trim('/')
             : null;
+    }
+
+    /// <summary>
+    /// Parses a <c>tcp://host:port</c> connection string used for the
+    /// "managed TCP listener" connect mode that bypasses DCOM activation
+    /// (no SCM/OPCEnum/CoCreateInstance handshake). Returns false for any
+    /// other scheme or a missing/invalid port.
+    /// </summary>
+    /// <remarks>
+    /// This mode is intended for in-repo managed sample servers that host
+    /// the protocol via <c>OpcAeServerHost</c> / <c>OpcHdaServerHost</c> /
+    /// <c>OpcDaServerHost</c> over a TCP listener on a known port. The
+    /// client just opens a raw <c>TcpClientTransport</c> + <c>DcomCallChannel</c>
+    /// and routes by interface ID — there is no CLSID/IPID activation step.
+    /// External / native OPC servers (Matrikon, OPC Foundation CTT/TestServer,
+    /// vendor CCWs registered with the OS SCM) DO need DCOM activation; for
+    /// those, use the <c>opcae://</c> / <c>opcda://</c> / <c>opchda://</c>
+    /// schemes (or bare <c>progId</c> / <c>clsid</c>) instead.
+    /// </remarks>
+    public static bool TryGetTcpEndpoint(string? connectionString, out string host, out int port)
+    {
+        host = string.Empty;
+        port = 0;
+        if (string.IsNullOrWhiteSpace(connectionString))
+        {
+            return false;
+        }
+
+        if (!Uri.TryCreate(connectionString, UriKind.Absolute, out Uri? uri))
+        {
+            return false;
+        }
+
+        if (!uri.Scheme.Equals("tcp", StringComparison.OrdinalIgnoreCase))
+        {
+            return false;
+        }
+
+        if (string.IsNullOrWhiteSpace(uri.Host) || uri.Port <= 0 || uri.Port > 65535)
+        {
+            return false;
+        }
+
+        host = uri.Host;
+        port = uri.Port;
+        return true;
     }
 
     public static async Task<(ICallChannel Channel, Guid Clsid)> ConnectDcomAsync(

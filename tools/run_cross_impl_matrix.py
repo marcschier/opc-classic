@@ -108,6 +108,22 @@ PROFILE_TARGETS: dict[str, dict[str, str]] = {
         "clsid": "C4BF6E70-3BA2-4F9C-AE3D-8F6C1D9F2B4F",
         "progid": "Opc.Classic.Samples.AeServer.1",
     },
+    # samples-ae-managed connects directly to the AE sample's managed TCP
+    # listener instead of going through the OS SCM + opcae_ps.dll native
+    # MIDL stub. The probe driver passes `--ae-connection-string
+    # tcp://127.0.0.1:<port>` and the MCP AE connect tool short-circuits
+    # to a TcpClientTransport + DcomCallChannel. Used to validate the AE
+    # condition-state / ack-condition round-trip without the opcae_ps.dll
+    # native marshaller (which is the unfixable blocker for the
+    # `samples-ae` native-CCW profile). The sample server reads its bind
+    # port from OPC_CLASSIC_LISTEN_ADDRESS / OPC_CLASSIC_SAMPLE_PORT; the
+    # runner sets 127.0.0.1:51301 when starting this profile.
+    "samples-ae-managed": {
+        "kind": "ae",
+        "clsid": "C4BF6E70-3BA2-4F9C-AE3D-8F6C1D9F2B4F",
+        "progid": "Opc.Classic.Samples.AeServer.1",
+        "connection_string": "tcp://127.0.0.1:51301",
+    },
     "security-da": {
         "kind": "da",
         "clsid": "5A0DA9C7-56D2-4768-9CB3-6FC5E57B6D51",
@@ -228,6 +244,7 @@ def run_profile(args: argparse.Namespace, profile: str, overrides: dict[str, str
     target = PROFILE_TARGETS[profile]
     kind = target["kind"]
     clsid = overrides.get(profile, target["clsid"])
+    connection_string = target.get("connection_string")
 
     cmd = [
         sys.executable,
@@ -236,7 +253,16 @@ def run_profile(args: argparse.Namespace, profile: str, overrides: dict[str, str
         "--expect-matrix", profile,
         "--request-timeout", str(args.request_timeout),
     ]
-    if args.use_clsid:
+    # Profile targets fall into three connection modes:
+    #   1. connection_string set: TCP-direct / inmemory / explicit URL.
+    #      Pass via --<kind>-connection-string; do NOT also pass CLSID/ProgID
+    #      so the MCP connect tool routes via the URL parser cleanly.
+    #   2. --use-clsid: DCOM activation via CLSID (for vendor servers where
+    #      OPCEnum is unreliable).
+    #   3. default: DCOM activation via ProgID (the normal sample path).
+    if connection_string:
+        cmd += [f"--{kind}-connection-string", connection_string]
+    elif args.use_clsid:
         cmd += [f"--{kind}-clsid", clsid]
     else:
         cmd += [f"--{kind}-progid", target["progid"]]
@@ -253,7 +279,8 @@ def run_profile(args: argparse.Namespace, profile: str, overrides: dict[str, str
         os.makedirs(cap_dir, exist_ok=True)
         cmd += ["--save-wire-payloads", cap_dir]
 
-    print(f"==> running profile '{profile}' ({clsid if args.use_clsid else target['progid']})", file=sys.stderr)
+    target_label = connection_string or (clsid if args.use_clsid else target["progid"])
+    print(f"==> running profile '{profile}' ({target_label})", file=sys.stderr)
     # Capture stdout (for the JSON result) but PASS THROUGH stderr in real
     # time. The MCP server's diagnostic logs go to stderr and we want them
     # visible while the probe runs so that activation hangs / auth failures

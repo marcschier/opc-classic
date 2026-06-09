@@ -317,6 +317,27 @@ def _ae_matrix() -> dict[str, str]:
     return matrix
 
 
+def _ae_managed_matrix() -> dict[str, str]:
+    """AE matrix for the `samples-ae-managed` profile.
+
+    Identical to `_ae_matrix()` except that the two AE tools waived on the
+    native-CCW + opcae_ps.dll path become real PASS expectations on the
+    managed-listener path. The managed TCP listener routes calls through
+    the source-generated dispatchers (no native MIDL stub on the wire),
+    so `GetConditionState` / `AckCondition` round-trip cleanly through the
+    managed AE dispatcher implemented by SampleAeServer. The managed-
+    listener path is connected by feeding `--ae-connection-string
+    tcp://host:port` to the probe driver, which lands at the
+    `tcp://`-scheme branch in `DefaultOpcAeConnectionFactory.ConnectAsync`.
+    The native-CCW profile (`samples-ae`) keeps the EXPECTED_FAIL waiver
+    as the conformance reference per `docs/CONFORMANCE.md` AE section.
+    """
+    matrix = _ae_matrix()
+    matrix["opcclassic.ae.get_condition_state"] = "PASS"
+    matrix["opcclassic.ae.ack_condition"] = "PASS"
+    return matrix
+
+
 def _security_da_matrix() -> dict[str, str]:
     """OpcSecurityServer = DA 2.05a + DA 3.0 IOPCItemIO + IOPCSecurityNT + IOPCSecurityPrivate.
 
@@ -337,6 +358,7 @@ PROFILES: dict[str, dict[str, str]] = {
     "ctt-da": _da_3_matrix(),
     "samples-hda": _hda_matrix(),
     "samples-ae": _ae_matrix(),
+    "samples-ae-managed": _ae_managed_matrix(),
     "security-da": _security_da_matrix(),
 }
 

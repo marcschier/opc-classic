@@ -109,6 +109,38 @@ public sealed class McpConnectionHelperTests
     }
 
     [Test]
+    [Arguments("tcp://127.0.0.1:51301", "127.0.0.1", 51301)]
+    [Arguments("tcp://localhost:5000", "localhost", 5000)]
+    [Arguments("TCP://example.com:65535", "example.com", 65535)]
+    public async Task OpcMcpDcomConnectionHelper_TryGetTcpEndpoint_Parses_supported_forms(string connectionString, string expectedHost, int expectedPort)
+    {
+        object?[] args = [connectionString, null, 0];
+        bool ok = InvokeStaticWithOut<bool>("OpcMcpDcomConnectionHelper", "TryGetTcpEndpoint", args);
+        await Assert.That(ok).IsTrue();
+        await Assert.That((string)args[1]!).IsEqualTo(expectedHost);
+        await Assert.That((int)args[2]!).IsEqualTo(expectedPort);
+    }
+
+    [Test]
+    [Arguments(null)]
+    [Arguments("")]
+    [Arguments("   ")]
+    [Arguments("inmemory://loopback")]
+    [Arguments("opcae://host/Vendor.Server.1")]
+    [Arguments("dcom://host/Vendor.Server.1")]
+    [Arguments("tcp://")]
+    [Arguments("tcp://hostonly")]
+    [Arguments("not-a-uri")]
+    public async Task OpcMcpDcomConnectionHelper_TryGetTcpEndpoint_Returns_false_for_non_tcp_or_invalid(string? connectionString)
+    {
+        object?[] args = [connectionString, null, 0];
+        bool ok = InvokeStaticWithOut<bool>("OpcMcpDcomConnectionHelper", "TryGetTcpEndpoint", args);
+        await Assert.That(ok).IsFalse();
+        await Assert.That((string)args[1]!).IsEqualTo(string.Empty);
+        await Assert.That((int)args[2]!).IsEqualTo(0);
+    }
+
+    [Test]
     public async Task OpcClassicDcomConnectionFactory_TryGetInMemoryKey_Parses_uri_and_prefixed_forms()
     {
         await Assert.That(InvokeStatic<string?>("OpcClassicDcomConnectionFactory", "TryGetInMemoryKey", "inmemory://batch-loop")).IsEqualTo("batch-loop");
@@ -146,6 +178,22 @@ public sealed class McpConnectionHelperTests
         try
         {
             return (T)method.Invoke(null, args)!;
+        }
+        catch (TargetInvocationException ex) when (ex.InnerException is not null)
+        {
+            ExceptionDispatchInfo.Capture(ex.InnerException).Throw();
+            throw;
+        }
+    }
+
+    private static T InvokeStaticWithOut<T>(string typeName, string methodName, object?[] args)
+    {
+        Type type = GetToolType(typeName);
+        MethodInfo method = type.GetMethod(methodName, BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic)!;
+        try
+        {
+            object? result = method.Invoke(null, args);
+            return (T)result!;
         }
         catch (TargetInvocationException ex) when (ex.InnerException is not null)
         {
