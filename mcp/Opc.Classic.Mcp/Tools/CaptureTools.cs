@@ -124,8 +124,15 @@ public sealed class CaptureTools
         int? maxDurationSeconds = null,
         [Description("Optional explicit list of OPC server data ports. When set AND bpfFilter is null, narrows the default port-range filter to 'tcp and (port 135 or port P1 or port P2 …)'. Reduces captured noise dramatically when the target server ports are known (look them up via opcclassic.discovery.list_servers + opcclassic.da.connect, or read them from your operator run-book).")]
         int[]? serverPorts = null,
+        [Description("DEVELOPER-ONLY. Optional 32-character hex-encoded 16-byte NTLMv2 session key for opt-in auth-trailer unwrap of sign/seal-protected DCOM traffic. Never log or persist the key. Capture MUST start BEFORE the NTLM Type3 handshake or per-direction sequence counters will drift and unwrap will fail. The wire-level NtlmPassiveUnwrapper is usable from offline pcap-analysis scripts today; full in-decoder integration (decoder reads auth_length from frame, extracts trailer, surfaces NtlmUnwrapStatus on each DecodedOpcPdu) is tracked as a CA9-c follow-up — passing this param today validates + plumbs the key but does not yet decrypt PDUs inline.")]
+        string? ntlmSessionKeyHex = null,
         CancellationToken cancellationToken = default)
     {
+        byte[]? sessionKey = null;
+        if (!string.IsNullOrWhiteSpace(ntlmSessionKeyHex))
+        {
+            sessionKey = ParseNtlmSessionKey(ntlmSessionKeyHex);
+        }
         try
         {
             CaptureSession session = await _manager.CreateAndStartAsync(
@@ -138,7 +145,8 @@ public sealed class CaptureTools
                     MaxBytes: maxBytes,
                     MaxPackets: maxPackets,
                     MaxDurationSeconds: maxDurationSeconds,
-                    ServerPorts: serverPorts),
+                    ServerPorts: serverPorts,
+                    NtlmSessionKey: sessionKey),
                 cancellationToken).ConfigureAwait(false);
             return CaptureSessionDto.From(session);
         }
@@ -146,6 +154,50 @@ public sealed class CaptureTools
         {
             throw new McpException(ex.Message);
         }
+    }
+
+    /// <summary>
+    /// Parses a 32-hex-char NTLM session key into a 16-byte array.
+    /// Strict on length + hex-character validity so the operator gets
+    /// an actionable error before the capture even starts.
+    /// </summary>
+    private static byte[] ParseNtlmSessionKey(string hex)
+    {
+        ArgumentNullException.ThrowIfNull(hex);
+        // Accept optional 0x prefix, strip whitespace + separators.
+        string cleaned = StripHexFormatting(hex);
+        if (cleaned.Length != 32)
+        {
+            throw new McpException(
+                $"ntlmSessionKeyHex must be exactly 32 hex characters (16 bytes); got {cleaned.Length}.");
+        }
+        try
+        {
+            return Convert.FromHexString(cleaned);
+        }
+        catch (FormatException ex)
+        {
+            throw new McpException($"ntlmSessionKeyHex contains non-hex characters: {ex.Message}");
+        }
+    }
+
+    private static string StripHexFormatting(string hex)
+    {
+        const string prefix = "0x";
+        ReadOnlySpan<char> input = hex.AsSpan();
+        if (input.StartsWith(prefix, StringComparison.OrdinalIgnoreCase))
+        {
+            input = input[prefix.Length..];
+        }
+        var sb = new StringBuilder(input.Length);
+        foreach (char c in input)
+        {
+            if (!char.IsWhiteSpace(c) && c != ':' && c != '-' && c != ',' && c != ';')
+            {
+                sb.Append(c);
+            }
+        }
+        return sb.ToString();
     }
 
     /// <summary>Stops a capture session and finalises the trace.</summary>

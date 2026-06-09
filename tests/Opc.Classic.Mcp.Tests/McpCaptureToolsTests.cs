@@ -133,6 +133,25 @@ public sealed class McpCaptureToolsTests
     }
 
     [Test]
+    public async Task CaptureTools_StartCapture_NtlmSessionKeyHex_ValidatesLength()
+    {
+        await using CaptureSessionManager manager = CreateManager();
+        var tools = new CaptureTools(manager);
+
+        // 31 hex chars = 15.5 bytes (invalid length)
+        await Assert.That(async () => await tools.StartCapture(
+            interfaceName: "lo",
+            ntlmSessionKeyHex: "0123456789ABCDEF0123456789ABCDE",
+            cancellationToken: CancellationToken.None)).Throws<McpException>();
+
+        // Non-hex char in payload
+        await Assert.That(async () => await tools.StartCapture(
+            interfaceName: "lo",
+            ntlmSessionKeyHex: "ZZZZ56789ABCDEF0123456789ABCDEF0",
+            cancellationToken: CancellationToken.None)).Throws<McpException>();
+    }
+
+    [Test]
     public async Task CaptureTools_GetCapture_Returns_pcap_path_and_empty_summaries_without_decoding_live_traffic()
     {
         await using CaptureSessionManager manager = CreateManager();

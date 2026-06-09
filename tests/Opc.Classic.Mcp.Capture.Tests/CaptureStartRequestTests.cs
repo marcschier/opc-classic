@@ -39,6 +39,34 @@ public sealed class CaptureStartRequestTests
     }
 
     [Test]
+    public async Task Constructor_NtlmSessionKey_IsPersisted_AndRedactedInToString()
+    {
+        var key = new byte[16];
+        for (int i = 0; i < 16; i++) { key[i] = (byte)(0xC0 + i); }
+        var request = new CaptureStartRequest(InterfaceName: "lo", NtlmSessionKey: key);
+
+        await Assert.That(request.NtlmSessionKey).IsNotNull();
+        await Assert.That(request.NtlmSessionKey!.Length).IsEqualTo(16);
+
+        string str = request.ToString();
+        // Redaction: the raw bytes (e.g. C0, C1, ...) MUST NOT appear; "REDACTED" MUST.
+        await Assert.That(str).Contains("REDACTED");
+        await Assert.That(str).Contains("16 bytes");
+        await Assert.That(str).DoesNotContain("C0");
+        await Assert.That(str).DoesNotContain("0xC0");
+    }
+
+    [Test]
+    public async Task Constructor_NullNtlmSessionKey_TostringSaysNull()
+    {
+        var request = new CaptureStartRequest(InterfaceName: "lo");
+        string str = request.ToString();
+
+        await Assert.That(str).Contains("NtlmSessionKey = null");
+        await Assert.That(str).DoesNotContain("REDACTED");
+    }
+
+    [Test]
     public async Task WithExpression_ReplacesSelectedValuesAndPreservesRecordValueEquality()
     {
         var original = new CaptureStartRequest(InterfaceName: "eth0", MaxPackets: 10);

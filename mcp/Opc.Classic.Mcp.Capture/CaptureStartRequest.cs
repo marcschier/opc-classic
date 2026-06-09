@@ -56,6 +56,21 @@ namespace Opc.Classic.Mcp.Capture;
 /// port must be a positive 1..65535 value; duplicates are tolerated
 /// and de-duplicated before composing.
 /// </param>
+/// <param name="NtlmSessionKey">
+/// Optional 16-byte NTLMv2 session key for the developer-only
+/// auth-trailer unwrap path (see <see cref="NtlmPassiveUnwrapper"/>).
+/// When non-null AND the captured traffic was sign/seal-protected
+/// with NTLMv2, the capture engine will attempt to decrypt + verify
+/// the auth trailer on every captured Request/Response PDU and
+/// surface the outcome via <c>DecodedOpcPdu.AuthUnwrapStatus</c>.
+/// SECURITY: developer-only / authorised-traffic-only. Never log or
+/// persist the key. Capture must start BEFORE the NTLM Type3
+/// handshake or per-direction counters will drift. The full
+/// integration into the decoder's byte-level frame parsing is a
+/// follow-up (the wire-side helper at
+/// <see cref="NtlmPassiveUnwrapper.TryUnwrap"/> is usable directly
+/// today by offline pcap-analysis scripts).
+/// </param>
 public sealed record class CaptureStartRequest(
     string? InterfaceName = null,
     string? BpfFilter = null,
@@ -64,4 +79,30 @@ public sealed record class CaptureStartRequest(
     long? MaxPackets = null,
     int? MaxDurationSeconds = null,
     string? ReplaySourceDirectory = null,
-    IReadOnlyList<int>? ServerPorts = null);
+    IReadOnlyList<int>? ServerPorts = null,
+    byte[]? NtlmSessionKey = null)
+{
+    /// <summary>
+    /// Custom <see cref="ToString"/> that REDACTS the
+    /// <see cref="NtlmSessionKey"/> byte array. The default
+    /// record-auto-generated ToString would dump the raw key bytes —
+    /// which we MUST NOT do because the key is equivalent to the
+    /// session secret protecting authenticated DCOM traffic.
+    /// </summary>
+    public override string ToString()
+    {
+        string keyDescriptor = NtlmSessionKey is null
+            ? "null"
+            : $"REDACTED[{NtlmSessionKey.Length} bytes]";
+        return $"{nameof(CaptureStartRequest)} {{ "
+            + $"{nameof(InterfaceName)} = {InterfaceName ?? "null"}, "
+            + $"{nameof(BpfFilter)} = {BpfFilter ?? "null"}, "
+            + $"{nameof(Promiscuous)} = {Promiscuous}, "
+            + $"{nameof(MaxBytes)} = {MaxBytes?.ToString() ?? "null"}, "
+            + $"{nameof(MaxPackets)} = {MaxPackets?.ToString() ?? "null"}, "
+            + $"{nameof(MaxDurationSeconds)} = {MaxDurationSeconds?.ToString() ?? "null"}, "
+            + $"{nameof(ReplaySourceDirectory)} = {ReplaySourceDirectory ?? "null"}, "
+            + $"{nameof(ServerPorts)} = {(ServerPorts is null ? "null" : "[" + string.Join(",", ServerPorts) + "]")}, "
+            + $"{nameof(NtlmSessionKey)} = {keyDescriptor} }}";
+    }
+}

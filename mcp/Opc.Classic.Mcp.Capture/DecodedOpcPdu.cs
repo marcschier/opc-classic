@@ -78,6 +78,24 @@ public sealed record class DecodedOpcPdu
     public IReadOnlyList<PresentationResultInfo> ResultList { get; init; } = Array.Empty<PresentationResultInfo>();
 
     /// <summary>
+    /// NTLM auth-trailer unwrap status when an
+    /// <see cref="NtlmPassiveUnwrapper"/> was configured on the
+    /// <see cref="OpcDcomDecoder"/> and the PDU carried a non-zero
+    /// auth_length. Null when no unwrapper was configured OR the PDU
+    /// had no auth trailer (e.g. bind / bind-ack / unprotected
+    /// connections). Round-trip values mirror <see cref="NtlmUnwrapStatus"/>.
+    /// </summary>
+    public string? AuthUnwrapStatus { get; init; }
+
+    /// <summary>
+    /// Operator-friendly reason populated alongside
+    /// <see cref="AuthUnwrapStatus"/> when unwrap fails (e.g. wrong
+    /// session key, mid-session capture / counter drift). Null on
+    /// success or when no unwrap was attempted.
+    /// </summary>
+    public string? AuthUnwrapReason { get; init; }
+
+    /// <summary>
     /// Source-supplied annotation set carried through from the
     /// <see cref="CapturedPacket"/> (for example file metadata from a
     /// hex-source replay).
