@@ -136,7 +136,7 @@ else
 }
 ```
 
-## Usage (MCP tool — preview)
+## Usage (MCP tool)
 
 The `opcclassic.capture.start` MCP tool accepts an optional
 `ntlmSessionKeyHex` parameter (a 32-character hex-encoded 16-byte
@@ -145,13 +145,29 @@ separators are stripped). The key is validated for length and hex
 character set up-front; an actionable `McpException` is thrown
 before the capture even starts when validation fails.
 
-The key is plumbed through to the capture session today, but the
-**in-decoder integration that extracts auth trailers from each
-captured frame and populates
-`DecodedOpcPdu.AuthUnwrapStatus` is a follow-up**. Until that lands,
-passing `ntlmSessionKeyHex` validates + plumbs the key but does not
-yet decrypt PDUs inline — use the direct API above (or the Wireshark
-NTLMSSP secrets table) for now.
+When set, the per-session `OpcDcomDecoder` (used by
+`opcclassic.capture.tail`, `opcclassic.capture.get`, and
+`opcclassic.capture.summarize`) automatically unwraps the
+sign/seal-protected Request / Response / Fault PDUs inline. Each
+decoded PDU surfaces the outcome via the new
+`DecodedOpcPdu.AuthUnwrapStatus` and `DecodedOpcPdu.AuthUnwrapReason`
+fields:
+
+- `"Decrypted"` — body decrypted + signature verified (privacy mode);
+  the projected PDU's stub reflects the plaintext bytes.
+- `"IntegrityVerified"` — signature verified (integrity-only mode); body left as-is.
+- `"SignatureMismatch"` — verifier did not match; reason explains the likely cause
+  (wrong key, capture started after Type3 handshake, etc.).
+- `"InvalidTrailerLength"` — auth_length field is inconsistent with frame size.
+- `null` — no unwrap attempted (no key configured, PDU has no auth
+  trailer, or auth scheme is SPNEGO / Kerberos rather than NTLM).
+
+Direction detection is heuristic: the side that sends the first Bind
+PDU on a flow is treated as the DCOM client; subsequent
+Request / Response PDUs on the bidirectional flow are unwrapped with
+the matching per-direction sub-key + counter. If the capture starts
+AFTER the Bind, the unwrap returns `SignatureMismatch` with a
+"Direction unknown" reason.
 
 ## Wire-level reference
 
@@ -188,7 +204,32 @@ the protection level is privacy; by 8 bytes for integrity-only).
 - `NtlmPassiveUnwrapper` source: `mcp/Opc.Classic.Mcp.Capture/NtlmPassiveUnwrapper.cs`
 - Unit tests + round-trip vs production `Ntlm1.ProcessOutgoing`:
   `tests/Opc.Classic.Mcp.Capture.Tests/NtlmPassiveUnwrapperTests.cs`
+- In-decoder integration (`OpcDcomDecoder.TryUnwrapInPlace` +
+  `FlowState.KnownDirection`):
+  `mcp/Opc.Classic.Mcp.Capture/OpcDcomDecoder.cs`
+- Decoder integration tests (sealed-frame round-trip via
+  `BuildSealedFramePerCodebase`):
+  `tests/Opc.Classic.Mcp.Capture.Tests/OpcDcomDecoderTests.cs`
 - MCP tool parameter: `opcclassic.capture.start --ntlmSessionKeyHex`
   in `mcp/Opc.Classic.Mcp/Tools/CaptureTools.cs`
 - Redacting `ToString()` on `CaptureStartRequest`:
   `mcp/Opc.Classic.Mcp.Capture/CaptureStartRequest.cs`
+
+## Wire-format compatibility caveat
+
+The in-decoder unwrap path matches the **production receiver's wire
+expectation** (`DcomCallChannel.VerifyPacketProtection`): plaintext
+common header on the wire, RC4-sealed body between common header
+and auth verifier header, plaintext auth verifier header, 16-byte
+NTLM auth value as the trailer. The HMAC covers the body only
+(starting at offset 16).
+
+This matches the typical NTLMSSP wire format used by Windows-side
+DCOM peers in the field. If you encounter `SignatureMismatch` on
+traffic from a peer that uses a different signing region (e.g.
+covering the common header per a strict reading of MS-RPCE §13.3 or
+the sender side of this codebase's
+`DcomCallChannel.ApplyPacketProtectionCore`), the unwrapper today
+will not recover the plaintext — investigate the peer's exact
+signing-region convention and file an issue if you need a
+configurable variant.
