@@ -7,7 +7,10 @@ in parallel:
 
 - **nuget.org** — `Opc.Classic.*` NuGet packages (conditional on `NUGET_API_KEY`).
 - **GitHub Packages NuGet feed** — same packages mirrored to `https://nuget.pkg.github.com/marcschier/index.json` (always-on, uses `GITHUB_TOKEN`).
-- **GHCR (`ghcr.io`)** — Docker image `ghcr.io/marcschier/opc-classic-managed:<version>` (always-on, uses `GITHUB_TOKEN`). The C-built reference images (`opc-c-server`, `opc-c-client`) are publishable on demand via the `publish_reference_images` workflow_dispatch input.
+- **GHCR (`ghcr.io`)** — Docker images (always-on, uses `GITHUB_TOKEN`, all images cosign-signed keyless):
+  - `ghcr.io/marcschier/opc-classic-managed:<version>` — **Windows** container variant (`windowsservercore:ltsc2022`); built for users registering the managed server through the Windows SCM.
+  - `ghcr.io/marcschier/opc-classic-managed-linux:<version>` — **Linux** multi-arch (`linux/amd64`+`linux/arm64`, `noble-chiseled`) variant; the preferred choice when the consumer only needs the managed TCP RPC listener (the managed code is fully cross-platform; no Windows COM dependency at runtime).
+  - The C-built reference images (`opc-c-server`, `opc-c-client`) are publishable on demand via the `publish_reference_images` workflow_dispatch input.
 
 ## Versioning and cadence
 
@@ -132,14 +135,36 @@ Where `%GITHUB_PACKAGES_TOKEN%` is a Personal Access Token with `read:packages` 
 dotnet add package Opc.Classic.Core --version 1.0.0-rc.11 --source github-marcschier
 ```
 
-### Docker image (GHCR)
+### Docker images (GHCR)
 
-GHCR allows anonymous reads for public images (no PAT needed for `docker pull`):
+GHCR allows anonymous reads for public images (no PAT needed for `docker pull`).
+
+**Linux (preferred for non-Windows consumers; multi-arch amd64+arm64):**
+
+```bash
+docker pull ghcr.io/marcschier/opc-classic-managed-linux:1.0.0-rc.11
+docker pull ghcr.io/marcschier/opc-classic-managed-linux:latest  # stable releases only
+```
+
+**Windows (when the consumer needs Windows SCM-style registration):**
 
 ```powershell
 docker pull ghcr.io/marcschier/opc-classic-managed:1.0.0-rc.11
 docker pull ghcr.io/marcschier/opc-classic-managed:latest  # stable releases only
 ```
+
+#### Verifying cosign signatures
+
+Every Docker image push from the release workflow is signed via cosign keyless (Sigstore Rekor transparency log + GHCR `.sig` co-located artifact). Verify before deploying production:
+
+```bash
+cosign verify \
+  --certificate-identity-regexp 'https://github.com/marcschier/opc-classic/\.github/workflows/release\.yml@.*' \
+  --certificate-oidc-issuer 'https://token.actions.githubusercontent.com' \
+  ghcr.io/marcschier/opc-classic-managed-linux:1.0.0-rc.11
+```
+
+Same command shape verifies the Windows variant (`opc-classic-managed`) and the optional reference images (`opc-classic-c-server`, `opc-classic-c-client`). On success, cosign prints the signing certificate and Rekor transparency-log entry; on signature failure it exits non-zero.
 
 ## Package install smoke checks
 
@@ -169,14 +194,13 @@ dotnet nuget push .\.nupkg\*.nupkg --source https://nuget.pkg.github.com/marcsch
 - Confirm the GitHub Release links to the expected tag and artifacts.
 - Confirm nuget.org lists all expected `Opc.Classic.*` packages and symbol packages.
 - Confirm the GitHub Packages NuGet feed lists the same packages (visit `https://github.com/marcschier/opc-classic/packages` or query the feed directly).
-- Confirm `ghcr.io/marcschier/opc-classic-managed:<version>` is pullable (and `:latest` for stable releases).
+- Confirm `ghcr.io/marcschier/opc-classic-managed:<version>` (Windows) and `ghcr.io/marcschier/opc-classic-managed-linux:<version>` (Linux multi-arch) are pullable (and `:latest` for stable releases).
+- Verify the cosign keyless signature on each pushed image with the command shape documented under "Docker images (GHCR)". A signature-verification failure blocks promotion.
 - Confirm the package install smoke project restores and builds.
 - Record CTT, Docker test fleet, live NTLMv2, and audit report locations in the release notes when applicable.
 
 ## Future enhancements (tracked separately)
 
-- **Cosign keyless image signing** — the release workflow already has `id-token: write`, so adding `cosign sign --yes ghcr.io/marcschier/opc-classic-managed@<digest>` after the push is a small follow-up. Tracks transparency-log entry per release. Not implemented yet.
 - **NuGet package code-signing** — would require a code-signing cert; out of scope for the current public-release flow. Strong-name assembly identity via `build/Opc.Classic.snk` is already in place.
-- **Broader Docker image set** — `opc-managed` is the only distributable today. The fleet's C-built reference images (`opc-c-server`, `opc-c-client`) ship on demand via `publish_reference_images: true`. The test/fixture images (`opc-ctt`, `opc-testserver`, `opc-testclient`, `samba`) are intentionally not published.
-- **Linux variant of `opc-managed`** — the managed code is fully cross-platform, so a Linux-based image would dramatically cheapen the Docker build runner. The current Windows-container choice mirrors the legacy expectation that OPC Classic servers run on Windows DCOM hosts.
+- **Broader Docker image set** — `opc-managed` (Windows + Linux variants) is the only distributable today. The fleet's C-built reference images (`opc-c-server`, `opc-c-client`) ship on demand via `publish_reference_images: true`. The test/fixture images (`opc-ctt`, `opc-testserver`, `opc-testclient`, `samba`) are intentionally not published.
 
