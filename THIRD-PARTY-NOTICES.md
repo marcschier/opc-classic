@@ -127,7 +127,12 @@ Opc.Classic .NET is licensed under MIT. See [LICENSE](LICENSE).
 - Subfolders:
   - `external/inc/` — OPC IDL/headers used by the Docker C-server and C-client builds
   - `external/redist/` — OPC COM Core Components readme PDF and vendored CoreComponents sources
-  - `external/private/docs/` — spec markdown (auto-generated from PDFs) and Microsoft Open Specifications used for cross-reference
   - `external/redist/samples/` — OPC Foundation native C++ sample servers used by conformance validation
   - `external/redist/` — pruned/restructured vendoring of the OPC-Classic-CoreComponents repository (MIT-licensed); see entry above
 - Status: Used for IDL definitions, redistributable inputs, conformance validation, and developer reference; do not redistribute outside the rights granted by the OPC Foundation
+
+### Spec reference markdown (extracted to private companion repo)
+- Source: OPC Foundation specification PDFs + Microsoft Open Specifications
+- Location: [`marcschier/opc-classic-docs`](https://github.com/marcschier/opc-classic-docs) (private)
+- License: OPC Foundation specification distribution terms + Microsoft Open Specifications Promise (see `NOTICES.md` in that repo)
+- Status: Internal reference only. The mirrors were extracted from `external/private/docs/` of this repo in commit `(see Changelog [Unreleased] Removed)` to keep this repo lean.

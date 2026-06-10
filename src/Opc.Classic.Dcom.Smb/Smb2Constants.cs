@@ -2,8 +2,9 @@
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
-// Wire constants for [MS-SMB2]. Section references in comments target the
-// vendored spec under external/private/docs/MS-SMB2.md.
+// Wire constants for [MS-SMB2]. Section references in comments target
+// MS-SMB2.md in the private companion repo marcschier/opc-classic-docs
+// (formerly vendored under external/private/docs/MS-SMB2.md).
 //
 
 namespace Opc.Classic.Dcom.Smb;

@@ -50,6 +50,21 @@ test fleet authoring, and a matrix-driver process-cleanup hardening.
 
 ### Removed
 
+- **Spec reference markdown extracted to private companion repo.**
+  The 408 files previously under `external/private/docs/` (10 OPC
+  Foundation specification mirrors + 29 Microsoft Open Specifications
+  mirrors + 368 PNG figure assets, ~21.9 MB) are now hosted at
+  [`marcschier/opc-classic-docs`](https://github.com/marcschier/opc-classic-docs)
+  (PRIVATE; access via OPC Foundation distribution terms +
+  Microsoft Open Specifications Promise per the repo's `NOTICES.md`).
+  Empty parent `external/private/` directory deleted alongside.
+
+  Reference updates in this repo (6 files): `README.md`,
+  `CONTRIBUTING.md`, `.github/copilot-instructions.md`,
+  `docs/ARCHITECTURE.md`, `THIRD-PARTY-NOTICES.md`, and
+  `src/Opc.Classic.Dcom.Smb/Smb2Constants.cs` now point at the
+  private companion repo instead of the deleted local path.
+
 - **OPC CTT integration scrubbed.** The vendored OPC Compliance Test
   Tool v2.0.15 installer set (`external/private/ctt/` — 6 MSIs + 2 HTML
   + readme.txt, ~13.5 MB), the `external/docker/opc-ctt/` Windows-

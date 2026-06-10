@@ -28,7 +28,7 @@ dotnet test Opc.Classic.slnx
 | `docs\` | Plain Markdown architecture, adoption, cookbook, tutorials, security, migration, architecture diagrams, conformance, release, and roadmap docs. |
 | `external\docker\` | Windows-container test fleet for managed server and native C server/client interop. |
 | `external\redist\samples\` | OPC Foundation native C++ sample servers and test applications used as conformance references. Do not casually rewrite or relicense them. |
-| `external\` | OPC Foundation redistributables, IDL, headers, `external\private\docs`, and native sample assets used as conformance inputs. |
+| `external\` | OPC Foundation redistributables, IDL, headers, and native sample assets used as conformance inputs. |
 
 The portable stack must not introduce Windows-only COM runtime dependencies such as `[ComImport]`, RCW activation, or `ole32.dll` P/Invoke.
 
