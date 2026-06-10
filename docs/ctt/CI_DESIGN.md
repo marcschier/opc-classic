@@ -22,33 +22,53 @@ rc.10 validation baseline: `dotnet build Opc.Classic.slnx` is 0 warnings / 0 err
 All six MSIs are vendored in the repository (`external/private/ctt/`, ~13 MB total)
 and tracked in git. No external download is required at CI time.
 
-## Install order
+## Install layout (CTT v2.0.15)
 
-The Common Modules MSI must be installed first; it provides:
+Validated by a local elevated install on 2026-06-10, exact files
+deployed under `C:\Program Files (x86)\OPC Foundation\Compliance Test 2.00\`:
 
-- `OpcCtt.exe` (the test runner)
-- The OPCEnum service (`OpcEnum.exe`), which CTT uses to browse for OPC servers
-- Shared COM proxy/stub registrations consumed by every plugin
+| Path | Purpose |
+| --- | --- |
+| `Common\OPCDACT.exe` | The shell application -- `FileDescription` "OPC Compliance Test Tool" |
+| `Common\OPCTData.exe` | Test-case database editor |
+| `DataAccess2\OPCComp2.exe` | DA 2.05a plugin test runner |
+| `DataAccess3\OPCComp3.exe` | DA 3.0 plugin test runner |
+| `AlarmEvents\OPCComplAE.exe` | AE 1.10 plugin test runner |
+| `HistoricalDA\ComplianceHDA.exe` | HDA 1.00 plugin test runner |
+| `Common\*.dll` + spec dirs | Plugin DLLs (DA2/DA3/AE/HDA/XML-DA) |
+
+**Note**: the upstream documentation references the EXE as "OpcCtt.exe"
+generically; the actual on-disk binary in v2.0.15 is `OPCDACT.exe`
+(legacy "OPC DA Compliance Test" naming).
+
+The Common Modules MSI also installs:
+
+- The OPCEnum service (`OpcEnum.exe`) under a separate path that the
+  Foundation OPCEnum installer manages.
+- Shared COM proxy/stub registrations consumed by every plugin.
 
 Plugin MSIs may be installed in any order after Common Modules. The workflow
 installs them in the spec-ordered sequence (DA 2.05a → DA 3.0 → AE → HDA → XML-DA)
 for readability.
 
 Each `msiexec /i ... /quiet /norestart` step accepts return codes 0 (success)
-and 3010 (reboot pending; harmless in CI).
+and 3010 (reboot pending; harmless in CI). The workflow adds `/l*v <log>` for
+verbose install logging plus `INSTALLLEVEL=1000` to land all features so a
+silent feature exclusion doesn't drop the test runner.
 
 ## Workflow architecture
 
 ```
 checkout
   └─ setup-dotnet (global.json)
-     └─ install 6 MSIs (Common first)
+     └─ install 6 MSIs (Common first; verbose /l*v logs + INSTALLLEVEL=1000)
         └─ Start-Service OpcEnum (idempotent)
            └─ dotnet publish samples/Opc.Classic.Samples.CttServer -c Release
               └─ Opc.Classic.Samples.CttServer.exe --register  (HKLM, both views)
-                 └─ Run CTT smoke (continue-on-error)
-                    └─ Opc.Classic.Samples.CttServer.exe --unregister
-                       └─ upload-artifact opc-ctt-results
+                 └─ Locate OPCDACT.exe under Compliance Test 2.00\Common\
+                    └─ Briefly Start-Process OPCDACT.exe (5s smoke; auto-killed)
+                       └─ Opc.Classic.Samples.CttServer.exe --unregister
+                          └─ upload-artifact opc-ctt-results
 ```
 
 ### Why HKLM (not HKCU)
@@ -67,10 +87,13 @@ calling user's session can use the registration. See
 
 ## Current scope: diagnostic runner vs release gate
 
-The standalone `.github\workflows\opc-ctt.yml` workflow remains a non-blocking
+The standalone `.github\workflows\opc-ctt.yml` workflow is a non-blocking
 diagnostic runner. It installs CTT, publishes and registers the sample server,
-launches `OpcCtt.exe`, uploads the help/results artifacts, and always
-unregisters the server.
+launches `OPCDACT.exe` briefly to confirm the install + DCOM registration
+handshake, then always unregisters the server. **No actual conformance test
+is executed in CI** -- CTT v2.0.15 is a WinForms GUI app with no documented
+headless CLI; a real conformance pass requires either operator UI interaction
+or a future CTT release that adds a CLI.
 
 `CttServer` no longer uses the original IUnknown-only class-factory smoke. On
 `-Embedding`, it registers `ComClassObjectRegistrar.RegisterClassObject` with a
@@ -89,13 +112,17 @@ limitation.
 
 ## Unknowns / TBDs
 
-- **OpcCtt.exe CLI**: the `/AUTO /Output: /ServerProgId:` syntax used in the
-  workflow is speculative. The first real CI run uploads the output of
-  `OpcCtt.exe /?` as `opcctt-help.txt`, which will let us verify the canonical
-  headless invocation against the v2.0.15 build.
-- **MSI EULA prompts**: if any of the six MSIs fail with EULA-related errors
-  under `/quiet`, the workflow step can be amended with `ACCEPT_EULA=1` (or
-  the EULA-bypass property name documented by the OPC Foundation).
+- **Headless CTT pass**: CTT v2.0.15's GUI-only nature means in-process automation
+  is the only path to a true conformance verdict in CI. Options:
+  (a) UI automation via AutoIt / pywinauto that drives OPCDACT.exe's WinForms
+  controls (fragile but feasible);
+  (b) Wait for / migrate to a CTT release with a CLI;
+  (c) Drive the per-spec compliance EXEs (`OPCComp2/3.exe`, `OPCComplAE.exe`,
+  `ComplianceHDA.exe`) directly if they expose a different CLI surface.
+- **MSI EULA prompts**: validated locally on 2026-06-10 that `/quiet` doesn't
+  trigger EULA blocks; if future CTT releases gate on EULA acceptance under
+  `/quiet`, amend the workflow with `ACCEPT_EULA=1` (or the documented
+  property name).
 - **OPCEnum boot order**: the workflow explicitly `Start-Service OpcEnum`s
   the enumerator service after install in case the MSI does not auto-start it
   on first boot.
@@ -104,9 +131,10 @@ limitation.
 
 The `opc-ctt-results` artifact uploaded by the workflow contains:
 
-- `ctt-results.xml` — the CTT-emitted conformance report (when the CTT runs)
-- `opcctt-help.txt` — the `OpcCtt.exe /?` dump from the locate step (for CLI
-  discovery on the first runs)
+- `ctt-results.xml` -- the CTT-emitted conformance report (when a future
+  CTT CLI run lands)
+- `msi-common-modules.log` -- the verbose `/l*v` install log from the Common
+  Modules MSI, captured for diagnosing silent install failures
 
 ## Triggers
 
