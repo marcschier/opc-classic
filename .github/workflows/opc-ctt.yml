@@ -36,11 +36,24 @@ jobs:
         shell: pwsh
         run: |
           $msi = Resolve-Path 'external/private/ctt/OPC CTT Common Modules 2.0.15.msi'
-          Write-Host "Installing $msi"
-          $p = Start-Process msiexec -ArgumentList '/i', "`"$msi`"", '/quiet', '/norestart' -Wait -PassThru -NoNewWindow
+          $log = "$env:RUNNER_TEMP\msi-common-modules.log"
+          Write-Host "Installing $msi (log: $log)"
+          # /l*v emits a verbose install log; we upload it as an artifact so a
+          # silent install failure (e.g. blocked feature, missing prerequisite)
+          # is diagnosable post-run. INSTALLLEVEL=1000 selects all features so
+          # we don't silently end up with the install excluding OpcCtt.exe.
+          $p = Start-Process msiexec -ArgumentList '/i', "`"$msi`"", '/quiet', '/norestart', '/l*v', "`"$log`"", 'INSTALLLEVEL=1000' -Wait -PassThru -NoNewWindow
+          Write-Host "msiexec exit code: $($p.ExitCode)"
           if ($p.ExitCode -ne 0 -and $p.ExitCode -ne 3010) {
+            if (Test-Path $log) { Get-Content $log -Tail 80 | ForEach-Object { Write-Host "[log] $_" } }
             throw "msiexec failed with exit code $($p.ExitCode)"
           }
+          # Sanity: show where the MSI actually deployed files (recursive
+          # search for OpcCtt.exe + the installed OPC Foundation tree shape).
+          Write-Host '--- C:\Program Files\OPC Foundation\ ---'
+          Get-ChildItem 'C:\Program Files\OPC Foundation\' -Recurse -Depth 4 -ErrorAction SilentlyContinue | Select-Object FullName | Format-Table -AutoSize -Wrap
+          Write-Host '--- C:\Program Files (x86)\OPC Foundation\ ---'
+          Get-ChildItem 'C:\Program Files (x86)\OPC Foundation\' -Recurse -Depth 4 -ErrorAction SilentlyContinue | Select-Object FullName | Format-Table -AutoSize -Wrap
 
       - name: Install CTT Data Access 2.05a Plugin
         shell: pwsh
@@ -136,11 +149,26 @@ jobs:
             if (Test-Path $c) { $found = $c; break }
           }
           if (-not $found) {
-            Write-Host "::warning::OpcCtt.exe was not found in any expected install path"
-            Get-ChildItem "$env:ProgramFiles\OPC Foundation" -Recurse -Filter 'OpcCtt.exe' -ErrorAction SilentlyContinue | ForEach-Object { Write-Host "Found candidate: $($_.FullName)" }
-            Get-ChildItem "${env:ProgramFiles(x86)}\OPC Foundation" -Recurse -Filter 'OpcCtt.exe' -ErrorAction SilentlyContinue | ForEach-Object { Write-Host "Found candidate: $($_.FullName)" }
-            echo "found=" >> $env:GITHUB_OUTPUT
-            exit 0
+            Write-Host "::warning::OpcCtt.exe was not found in any expected install path. Searching entire C:\..."
+            # Whole-drive scan: if the MSI installed the EXE under a path we
+            # don't expect, the recursive search finds it; if it's truly
+            # absent, the silent install dropped the feature.
+            $allHits = Get-ChildItem C:\ -Recurse -Filter 'OpcCtt.exe' -ErrorAction SilentlyContinue
+            if ($allHits) {
+              foreach ($h in $allHits) {
+                Write-Host "Found candidate: $($h.FullName)"
+              }
+              $found = $allHits[0].FullName
+            } else {
+              Write-Host "::warning::OpcCtt.exe is not installed anywhere on C:\ -- the Common Modules MSI succeeded silently but did not deploy the test-runner EXE."
+              # Show the OPC Foundation tree shape so we know what DID install.
+              Write-Host '--- C:\Program Files\OPC Foundation\ tree ---'
+              Get-ChildItem 'C:\Program Files\OPC Foundation\' -Recurse -ErrorAction SilentlyContinue | Select-Object FullName | Format-Table -AutoSize -Wrap
+              Write-Host '--- C:\Program Files (x86)\OPC Foundation\ tree ---'
+              Get-ChildItem 'C:\Program Files (x86)\OPC Foundation\' -Recurse -ErrorAction SilentlyContinue | Select-Object FullName | Format-Table -AutoSize -Wrap
+              echo "found=" >> $env:GITHUB_OUTPUT
+              exit 0
+            }
           }
           echo "found=$found" >> $env:GITHUB_OUTPUT
           Write-Host "OpcCtt.exe located at: $found"
@@ -181,4 +209,5 @@ jobs:
           path: |
             ${{ runner.temp }}/ctt-results.xml
             ${{ runner.temp }}/opcctt-help.txt
+            ${{ runner.temp }}/msi-common-modules.log
           if-no-files-found: warn

@@ -159,15 +159,59 @@ jobs:
         shell: pwsh
         run: dotnet build mcp\Opc.Classic.Mcp\Opc.Classic.Mcp.csproj --nologo -v:m
 
+      - name: Install Npcap (required for capture.list_interfaces)
+        shell: pwsh
+        run: |
+          # Npcap provides wpcap.dll which the capture engine loads via
+          # SharpPcap. Without it, opcclassic.capture.* tools regress with
+          # 'Unable to load DLL wpcap'. choco's npcap package installs in
+          # WinPcap-compatible mode by default which is what we need.
+          choco install npcap --version 1.79 --yes --no-progress --params '/winpcap_mode=yes /admin_only=no'
+          if ($LASTEXITCODE -ne 0) {
+            Write-Host "::warning::Npcap install failed (exit $LASTEXITCODE); capture.* tools will regress"
+          }
+
+      - name: Install OPCEnum service for discovery tools
+        shell: pwsh
+        run: |
+          # OPCEnum is the OPC Foundation server-enumeration service that
+          # opcclassic.discovery.enumerate_servers dials over DCOM. The CTT
+          # Common Modules MSI bundles it; install it standalone here so the
+          # discovery tools work without the full CTT install.
+          $msi = Resolve-Path 'external/private/ctt/OPC CTT Common Modules 2.0.15.msi'
+          $log = "$env:RUNNER_TEMP\msi-opcenum.log"
+          Write-Host "Installing $msi (log: $log)"
+          $p = Start-Process msiexec -ArgumentList '/i', "`"$msi`"", '/quiet', '/norestart', '/l*v', "`"$log`"", 'INSTALLLEVEL=1000' -Wait -PassThru -NoNewWindow
+          Write-Host "msiexec exit code: $($p.ExitCode)"
+          if ($p.ExitCode -ne 0 -and $p.ExitCode -ne 3010) {
+            if (Test-Path $log) { Get-Content $log -Tail 60 | ForEach-Object { Write-Host "[log] $_" } }
+            Write-Host "::warning::OPCEnum install failed (exit $($p.ExitCode)); discovery.enumerate_servers will regress"
+          }
+          # Start the OPCEnum service if it landed.
+          $svc = Get-Service -Name OpcEnum -ErrorAction SilentlyContinue
+          if ($svc -and $svc.Status -ne 'Running') {
+            Start-Service OpcEnum
+            Write-Host "Started OpcEnum service"
+          } elseif (-not $svc) {
+            Write-Host "::warning::OpcEnum service not registered; discovery.enumerate_servers will regress"
+          }
+
       - name: Run cross-impl matrix (sample servers only)
         shell: pwsh
         # Exclude the testserver + matrikon profiles because they need
         # external prerequisites (TestServer install + BH3 ACL grant;
         # Matrikon vendor binary on a different host). The sample-only
         # subset validates everything we own end-to-end.
+        #
+        # -HklmRegister + -UseClsid: the CI runner runs as administrative
+        # so HKLM is writable; CLSID-based activation bypasses ProgID
+        # resolution via OPCEnum (which we still try to install above,
+        # but it's a defense-in-depth fallback).
         run: |
           .\tools\run-cross-impl-matrix.ps1 `
             -Profile samples-da,ctt-da,samples-ae,samples-hda,security-da `
+            -HklmRegister `
+            -UseClsid `
             -OutputDir matrix-out
 
       - name: Upload cross-impl matrix reports
