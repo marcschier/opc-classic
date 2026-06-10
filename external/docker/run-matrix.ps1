@@ -56,12 +56,34 @@ if (-not $SkipBuild) {
             $buildServices += 'testserver'
         }
 
-        docker compose --file $compose --profile interactive build @buildServices
+        # mcr.microsoft.com transient pull failures (rate-limit / CDN edge
+        # blocks) are common from windows-2022 GH Actions runners.
+        # Retry up to 3 times with backoff; fall through to the original
+        # exit code on persistent failure.
+        $maxAttempts = 3
+        for ($attempt = 1; $attempt -le $maxAttempts; $attempt++) {
+            docker compose --file $compose --profile interactive build @buildServices
+            if ($LASTEXITCODE -eq 0) { break }
+            if ($attempt -lt $maxAttempts) {
+                $delay = 15 * $attempt
+                Write-Host "==> docker compose build failed (exit $LASTEXITCODE); retrying in ${delay}s (attempt $($attempt + 1)/$maxAttempts)..." -ForegroundColor Yellow
+                Start-Sleep -Seconds $delay
+            }
+        }
     }
 
     if ($runTestServer) {
         Invoke-Step 'Building OPC Foundation TestClient image from testserver artifacts' {
-            docker compose --file $compose --profile interactive build testclient
+            $maxAttempts = 3
+            for ($attempt = 1; $attempt -le $maxAttempts; $attempt++) {
+                docker compose --file $compose --profile interactive build testclient
+                if ($LASTEXITCODE -eq 0) { break }
+                if ($attempt -lt $maxAttempts) {
+                    $delay = 15 * $attempt
+                    Write-Host "==> docker compose build testclient failed (exit $LASTEXITCODE); retrying in ${delay}s (attempt $($attempt + 1)/$maxAttempts)..." -ForegroundColor Yellow
+                    Start-Sleep -Seconds $delay
+                }
+            }
         }
     }
 }

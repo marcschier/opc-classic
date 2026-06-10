@@ -167,11 +167,7 @@ jobs:
         # subset validates everything we own end-to-end.
         run: |
           .\tools\run-cross-impl-matrix.ps1 `
-            -Profile samples-da `
-            -Profile ctt-da `
-            -Profile samples-ae `
-            -Profile samples-hda `
-            -Profile security-da `
+            -Profile samples-da,ctt-da,samples-ae,samples-hda,security-da `
             -OutputDir matrix-out
 
       - name: Upload cross-impl matrix reports
