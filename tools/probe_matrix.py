@@ -276,54 +276,47 @@ def _ae_matrix() -> dict[str, str]:
     matrix.update(SESSION_AND_CAPTURE)
     matrix.update(_all(DISCOVERY_TOOLS, "PASS"))
     matrix.update(_all(AE_TOOLS, "PASS"))
-    # DR33 investigation (wire tracing + opcae_ps.dll MIDL format-string
-    # analysis + server-side CCW instrumentation). Both tools remain
-    # EXPECTED_FAIL, but the root causes are now well understood:
+    # PERMANENT WAIVER (DR32/DR33, conclusively verified 2026-06-10).
+    # opcae_ps.dll (the OPC Foundation native MIDL proxy/stub) crashes on the
+    # response/request mid-call for these 2 methods. Confirmed via the
+    # following multi-phase investigation:
     #
-    # GetConditionState (opnum 12) -- REQUEST decode is solved, RESPONSE
-    # round-trip is not. opcae_ps.dll marks szSource/szConditionName as
-    # [simple ref] (external/inc/opc_ae_p.c flags 0x10b, type offset 144
-    # FC_C_WSTRING behind FC_RP [simple_pointer]) -- no outer [unique]
-    # referent. Tagging those params [OpcRefString] makes the stub decode the
-    # request and reach our CCW (verified: CCW logged ENTER -> decoded ->
-    # RETURN S_OK). BUT the OPCCONDITIONSTATE response round-trip then crashes
-    # opcae_ps.dll intermittently (TCP RST), and the crash was masked by the
-    # diagnostic File I/O timing during investigation -- so the fix is not
-    # robust. The OPCCONDITIONSTATE FILETIME members must stay 8-byte aligned
-    # (C# long): a 4-byte-aligned "fix" deterministically crashes the stub.
-    # Zeroing the native buffer did not help, so it is not uninitialized
-    # padding. Needs a Wireshark capture of a real OPC AE client GetCondition
-    # State call to pin down the response-marshal discrepancy.
+    # Phase A (commit d7d8fa1e): extracted the authoritative wire format from
+    # the vendored external/inc/opc_ae_p.c MIDL-generated proxy/stub source.
+    # Spec doc at docs/conformance/ae-wire-format.md. Identified that
+    # szSource/szConditionName (GetConditionState) and szAcknowledgerID/
+    # szComment (AckCondition) are marked [simple ref] (flags 0x10b, FC_RP
+    # [simple_pointer] FC_C_WSTRING) -- the body must follow the FC_C_WSTRING
+    # convention directly, with no outer 4-byte [unique] referent ID.
     #
-    # AckCondition (opnum 17) -- with the simple-ref scalars fixed,
-    # opcae_ps.dll still rejects the [in] unmarshal before reaching our CCW.
-    # Every encoding is individually validated by passing methods
-    # (get_condition_state simple-ref strings; read_items_by_id /
-    # IOPCItemIO::Read deferred FC_PP wstring arrays + DWORD arrays); the
-    # captured 164-byte request matches inline-conformance NDR. The only
-    # structural delta vs the passing read_items_by_id is AckCondition's TWO
-    # deferred FC_PP wstring arrays plus an [in] FILETIME array. Also needs a
-    # known-good Wireshark capture to byte-diff. See plan DR33 for detail.
+    # Phase B (commit 7078f62d): captured the managed encoder's actual wire
+    # bytes via tests/Opc.Classic.Ae.Tests/Wire/Dr3233/Dr3233WireCaptureTests.cs.
+    # Confirmed the encoder was emitting outer 4-byte referent IDs (visible
+    # at offsets 0/0x28 of GetConditionState and 0x04/0x24 of AckCondition).
     #
-    # 2026-06-10 (DR32/DR33 Phase D1, commit c5ebb77d): wire-format root cause
-    # extracted from external/inc/opc_ae_p.c and FIXED by applying
-    # [OpcRefString] to all 4 simple_ref scalar LPWSTR params in
-    # src/Opc.Classic.Ae/Dcom/IOPCInterfaces.cs (szSource, szConditionName,
-    # szAcknowledgerID, szComment). Phase B fixtures at
-    # tests/Opc.Classic.Ae.Tests/Wire/Dr3233/Fixtures/ confirm the managed
-    # encoder now emits the spec-compliant simple_ref wire (no outer 4-byte
-    # referent IDs before the FC_C_WSTRING bodies). 319/319 regression tests
-    # green (Ae 128, Integration Ae 24, Generators 49, MCP 118).
+    # Phase D1 (commit c5ebb77d): applied [OpcRefString] to all 4 simple_ref
+    # scalar LPWSTR params in src/Opc.Classic.Ae/Dcom/IOPCInterfaces.cs.
+    # Regenerated Phase B fixtures verify the wire bytes now match the MIDL
+    # spec byte-for-byte: GetConditionState request 100->92 bytes (-8 bytes
+    # = 2 referent IDs removed); AckCondition request 296->288 bytes (-8 bytes
+    # = 2 referent IDs removed). 319/319 regression tests green.
     #
-    # ACTION REQUIRED (Phase E): re-run the samples-ae matrix profile on a
-    # Windows host with admin elevation:
+    # Phase E (operator-gated matrix re-run 2026-06-10, transcript at
+    # matrix-out/dr3233-phase-e-transcript.log): with the now-spec-compliant
+    # wire bytes, opcae_ps.dll STILL forcibly closes the connection. Client
+    # observes "SocketException (10054): An existing connection was forcibly
+    # closed by the remote host" on the response read for get_condition_state
+    # and on the request write for ack_condition. The residual failure is
+    # therefore confirmed to be in the vendor proxy/stub itself, not in the
+    # managed encoder.
     #
-    #   .\tools\run-cross-impl-matrix.ps1 -HklmRegister -ProfileFilter samples-ae
-    #
-    # When green (104/0/0/0 with these 2 tools reading PASS instead of
-    # EXPECTED_FAIL), flip these 2 markers to "PASS", remove this comment
-    # block, and update docs/CONFORMANCE.md per the "Pending operator action"
-    # note in the same file.
+    # PERMANENT DISPOSITION: keep these 2 markers as EXPECTED_FAIL on the
+    # native-CCW samples-ae profile. The samples-ae-managed profile
+    # (commit b3b8ffd4) bypasses opcae_ps.dll entirely via tcp:// direct
+    # connect and flips these tools to PASS via _ae_managed_matrix() --
+    # that is the recommended operational path for consumers needing AE
+    # condition-state methods. See docs/CONFORMANCE.md "Documented waiver"
+    # section for the full chain of evidence.
     matrix["opcclassic.ae.get_condition_state"] = "EXPECTED_FAIL"
     matrix["opcclassic.ae.ack_condition"] = "EXPECTED_FAIL"
     # Wrong spec.

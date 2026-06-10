@@ -149,6 +149,42 @@ test fleet authoring, and a matrix-driver process-cleanup hardening.
 
 ### Fixed
 
+- **DR32/DR33 real-fix campaign — `[OpcRefString]` on AE simple_ref scalars
+  + Phase E conclusive vendor-bug finding** (commits `d7d8fa1e`, `7078f62d`,
+  `63fecfb2`, `c5ebb77d`, `ac6d8891`, `d9f25d84`). 6-phase investigation
+  closed out the long-standing DR32/DR33 wire-format gap on the
+  `samples-ae` native-CCW path. **Phase A** extracted the authoritative
+  wire format from the vendored `external/inc/opc_ae_p.c` MIDL proxy/stub
+  source into a 392-line spec at `docs/conformance/ae-wire-format.md`.
+  **Phase B** captured the managed encoder's actual bytes into
+  byte-for-byte regression fixtures at
+  `tests/Opc.Classic.Ae.Tests/Wire/Dr3233/Fixtures/`. **Phase C** byte-diff
+  identified the ONLY discrepancy: 4 simple_ref scalar LPWSTR params
+  were emitting outer 4-byte referent IDs that don't belong on the wire.
+  **Phase D1** applied `[OpcRefString]` to GetConditionState.source +
+  .conditionName + AckCondition.acknowledgerId + .comment in
+  `src/Opc.Classic.Ae/Dcom/IOPCInterfaces.cs`. Regenerated Phase B
+  fixtures verify the wire bytes now match the MIDL spec byte-by-byte
+  (GetConditionState request 100→92 bytes; AckCondition request 296→288
+  bytes). **Phase E** (operator-gated matrix re-run on a Windows host
+  with admin elevation) confirmed that even with spec-compliant wire
+  bytes `opcae_ps.dll` STILL forcibly closes the connection mid-call —
+  proving the residual failure is in the vendor proxy/stub itself, not
+  in the managed encoder. EXPECTED_FAIL waivers therefore remain
+  PERMANENT on the native-CCW `samples-ae` profile; the
+  `samples-ae-managed` profile (commit `b3b8ffd4`) bypasses
+  `opcae_ps.dll` and is the recommended operational path. Phase E also
+  surfaced 2 unrelated regressions: `AeClientState.DisposeAsync` now
+  defensively catches `ObjectDisposedException`/`IOException` around
+  subscription teardown + channel dispose (the DCOM peer sends TCP RST
+  after the call so the socket is already gone by disconnect), and
+  `tools/probe_servers.py` gained a curated `capture.tail` ProbeSpec
+  analogous to `capture.get`/`capture.summarize` (the auto-probe
+  fallback was injecting the OPC session id instead of the capture
+  session id). 319/319 regression tests green (Ae 128, Integration
+  Ae 3, MCP 118, Generators 49, probe_matrix smoke 15). Disposition
+  documented in `docs/CONFORMANCE.md` AE waiver section; all 4 DR32/
+  DR33 blocked todos closed.
 - **OpcDcomDecoder rejects truncated Ethernet inputs cleanly** (commit
   `3db24c20`). Fuzz finding (Track FZ-5): the MCP capture decoder threw
   raw `IndexOutOfRangeException` on malformed/truncated Ethernet frames.

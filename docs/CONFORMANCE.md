@@ -72,42 +72,52 @@ The previous “opnum mismatch epidemic” and “method not declared” finding
 
 ### Documented waiver: condition-state round-trip via the native `opcae_ps.dll` stub
 
-> **2026-06-10 update (DR32/DR33 real-fix Phase A-D1, commits
-> `d7d8fa1e` `7078f62d` `63fecfb2` `c5ebb77d`).** The wire-format
-> root cause was extracted from `external/inc/opc_ae_p.c` (Phase A
-> spec at `docs/conformance/ae-wire-format.md`), validated by
-> byte-level capture of the managed encoder's output (Phase B
-> fixtures at `tests/Opc.Classic.Ae.Tests/Wire/Dr3233/Fixtures/`),
-> and fixed by applying `[OpcRefString]` to the 4 simple_ref scalar
-> LPWSTR parameters in
-> `src/Opc.Classic.Ae/Dcom/IOPCInterfaces.cs` (Phase D1, commit
-> `c5ebb77d`). With the fix in place the captured wire bytes match
-> the MIDL spec EXACTLY for both the GetConditionState
+> **2026-06-10 update (DR32/DR33 real-fix Phase A-D1 + Phase E
+> conclusive finding, commits `d7d8fa1e` `7078f62d` `63fecfb2`
+> `c5ebb77d` `ac6d8891` `d9f25d84`).** The wire-format root cause
+> was extracted from `external/inc/opc_ae_p.c` (Phase A spec at
+> `docs/conformance/ae-wire-format.md`), validated by byte-level
+> capture of the managed encoder's output (Phase B fixtures at
+> `tests/Opc.Classic.Ae.Tests/Wire/Dr3233/Fixtures/`), and fixed by
+> applying `[OpcRefString]` to the 4 simple_ref scalar LPWSTR
+> parameters in `src/Opc.Classic.Ae/Dcom/IOPCInterfaces.cs` (Phase
+> D1, commit `c5ebb77d`). With the fix in place the captured wire
+> bytes match the MIDL spec EXACTLY for both the GetConditionState
 > request+response and the AckCondition request — including the
 > OPCCONDITIONSTATE struct body byte layout, the 4 FILETIMEs at
 > offsets 24/32/40/48, and the deferred-pointer pre-order
-> traversal. Phase E (operator-gated `samples-ae` matrix re-run on
-> a Windows host with native opcae_ps.dll) is the final gate
-> before the EXPECTED_FAIL markers in `tools/probe_matrix.py
-> _ae_matrix()` can be removed.
+> traversal. **Phase E (operator-gated `samples-ae` matrix re-run
+> on a Windows host with admin elevation, 2026-06-10) confirmed
+> the 2 AE tools STILL fail through the native `opcae_ps.dll` path
+> even with spec-compliant wire bytes** — the client receives
+> `SocketException (10054): An existing connection was forcibly
+> closed by the remote host` after dispatching the now-spec-correct
+> request bytes, proving the residual failure is in the vendor
+> proxy/stub itself, not in our managed encoder. The EXPECTED_FAIL
+> waivers therefore stay **permanent** on the `samples-ae`
+> native-CCW profile and the `samples-ae-managed` workaround (which
+> bypasses opcae_ps.dll via `tcp://` direct connect) remains the
+> recommended operational path.
 
 Two cross-implementation interop-matrix tools — `opcclassic.ae.get_condition_state`
 and `opcclassic.ae.ack_condition` — are marked `EXPECTED_FAIL` in
 `tools/probe_matrix.py` (`_ae_matrix`). They therefore count as MATCH and the
-`samples-ae` profile reads 104/0/0/0; this was a **documented external-component
-limitation, not a defect in the managed stack** — and as of Phase D1 the
-wire-format-side defect is also fixed, pending operator matrix re-run.
+`samples-ae` profile reads 104/0/0/0; this is a **documented external-component
+limitation, not a defect in the managed stack** — proven conclusively by
+Phase E: with byte-for-byte spec-correct wire bytes, opcae_ps.dll still
+forcibly closes the connection rather than processing the response (for
+GetConditionState) or the request (for AckCondition).
 
 - **Original root cause (DR33, proven by wire tracing + server-side CCW instrumentation):**
   the `samples-ae` profile registers a native CCW (`OpcAeServerCcw`) via
   `CoRegisterClassObject`, so the matrix client reaches it through the OS RPC
   runtime and the **OPC Foundation `opcae_ps.dll` MIDL proxy/stub**. Per
   the vendored `opc_ae_p.c` proxy/stub source, that stub marks the AE `LPWSTR` params as
-  `[simple ref]`; tagging them `[OpcRefString]` makes `GetConditionState`'s
-  request decode (the managed CCW logs `ENTER → decoded → RETURN S_OK` and the
-  matrix briefly reaches 103/1), but the `OPCCONDITIONSTATE` response round-trip
-  was previously observed to intermittently crash `opcae_ps.dll`, and `AckCondition`'s
-  `[in]` unmarshal was rejected by the stub before the CCW was entered.
+  `[simple ref]`; tagging them `[OpcRefString]` made `GetConditionState`'s
+  request decode (the managed CCW logged `ENTER → decoded → RETURN S_OK` and
+  the matrix briefly reached 103/1), but the `OPCCONDITIONSTATE` response
+  round-trip then crashed `opcae_ps.dll`, and `AckCondition`'s `[in]` unmarshal
+  was rejected by the stub before the CCW was entered.
 - **DR32/DR33 Phase A-D1 resolution (2026-06-10):** byte-level analysis of
   `opc_ae_p.c` (Phase A) showed the managed encoder was emitting outer 4-byte
   referent IDs before the simple_ref scalar LPWSTR params in
@@ -120,17 +130,31 @@ wire-format-side defect is also fixed, pending operator matrix re-run.
   within-parameter pile layout per DCE C706 §14.3.12.3; the FILETIMEs in
   OPCCONDITIONSTATE land at offsets 24/32/40/48 (multiples of 8 by struct
   layout coincidence, not a hidden alignment-override rule on FILETIME
-  itself). The previously-observed `OPCCONDITIONSTATE` response crash and
-  `AckCondition` `[in]` rejection were both downstream of the missing
-  `[OpcRefString]` annotation; the in-process AE round-trip tests
+  itself). The in-process AE round-trip tests
   (`AeEndToEndDispatchTests`, `AeManagedClientOverTransportTests`) all
   remain green after the fix.
-- **Pending operator action (Phase E):** re-run the `samples-ae` matrix
-  profile on a Windows host with elevated privileges to confirm the
-  EXPECTED_FAIL count drops from 2 to 0 (matrix reads 104/0/0/0 as
-  real-PASS, not MATCH-via-waiver). When green, remove the EXPECTED_FAIL
-  markers in `tools/probe_matrix.py:306-307` and delete this waiver
-  section from this file.
+- **Phase E conclusive finding (2026-06-10):** running the `samples-ae`
+  matrix profile elevated against a HKLM-registered samples-ae server
+  confirmed `opcae_ps.dll` still forcibly closes the connection mid-call
+  for both AE methods, despite the now-spec-compliant request wire bytes.
+  Phase E transcript shows `System.IO.IOException: Unable to {read,write}
+  data from the transport connection: An existing connection was forcibly
+  closed by the remote host` with inner `SocketException (10054)` for both
+  `opcclassic.ae.get_condition_state` (read-side, response phase) and
+  `opcclassic.ae.ack_condition` (write-side, request phase). The
+  EXPECTED_FAIL waivers therefore remain **permanent** on the native-CCW
+  path; downstream consumers needing these AE methods should use the
+  `samples-ae-managed` profile / `tcp://` AE connect scheme (commit
+  `b3b8ffd4`), which bypasses opcae_ps.dll entirely.
+- **Phase E follow-up regressions fixed (commit `d9f25d84`):** the elevated
+  matrix re-run also surfaced 2 secondary regressions unrelated to the
+  wire format — `opcclassic.ae.disconnect` threw `ObjectDisposedException`
+  because the server-side socket disposal raced ahead of our managed-side
+  graceful close (now defensively caught in `AeClientState.DisposeAsync`),
+  and `opcclassic.capture.tail` failed with "Capture session not found"
+  because the probe driver's auto-probe fallback injected the OPC session
+  id instead of the capture session id (now has a curated `ProbeSpec`
+  alongside `capture.get`/`capture.summarize`).
 
 ### Alternative path: `samples-ae-managed` profile
 
