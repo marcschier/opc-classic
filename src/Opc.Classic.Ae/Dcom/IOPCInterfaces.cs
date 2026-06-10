@@ -100,22 +100,24 @@ public partial interface IOPCEventServer {
 
     /// <summary><c>IOPCEventServer::GetConditionState</c> (opnum 12). Returns a condition-state snapshot.</summary>
     /// <remarks>
-    /// Per <c>external/inc/opc_ae_p.c</c> the OS COM proxy/stub <c>opcae_ps.dll</c>
-    /// marks <c>szSource</c>/<c>szConditionName</c> as <c>[simple ref]</c>
-    /// (flags <c>0x10b</c>). Applying <see cref="OpcRefStringAttribute"/>
-    /// emits the spec-compliant wire (bare conformant-varying string body,
-    /// no outer referent) but currently triggers a server-side connection
-    /// drop after the call completes — likely because the OS RPC stack
-    /// expects the same disconnect handshake as the unique-pointer path and
-    /// our managed listener tears down differently. Tracked as DR32 gap;
-    /// matrix marks these two tools <c>EXPECTED_FAIL</c> in
-    /// <c>tools/probe_matrix.py</c>.
+    /// Per <c>external/inc/opc_ae_p.c:564-612</c> + <c>TypeFormatString[144]</c>,
+    /// <c>opcae_ps.dll</c> marks <c>szSource</c>/<c>szConditionName</c> as
+    /// <c>FC_RP [simple_pointer] → FC_C_WSTRING</c> (flag <c>0x10b</c>) —
+    /// NO outer <c>[unique]</c> referent before the conformant-varying string
+    /// body. <see cref="OpcRefStringAttribute"/> applied to both parameters
+    /// emits the spec-compliant simple_ref wire (DR32/DR33 Phase D1; see
+    /// <c>docs/conformance/ae-wire-format.md</c> for the byte-level diff
+    /// against the captured Phase B fixtures at
+    /// <c>tests/Opc.Classic.Ae.Tests/Wire/Dr3233/Fixtures/</c>). The previous
+    /// "server-side connection drop" investigation reverted this fix; the
+    /// real-fix work in DR32/DR33 re-applies it with full byte-level
+    /// validation.
     /// </remarks>
     [OpcMethod(12)]
     [return: OpcUniquePointer]
     Task<OpcConditionState> GetConditionStateAsync(
-        string source,
-        string conditionName,
+        [OpcRefString] string source,
+        [OpcRefString] string conditionName,
         [OpcEmitArrayCount] int[] attributeIds,
         CancellationToken cancellationToken = default);
 
@@ -140,19 +142,24 @@ public partial interface IOPCEventServer {
     /// IDL signature: <c>HRESULT AckCondition(DWORD dwCount, LPWSTR szAcknowledgerID,
     /// LPWSTR szComment, [size_is(N)] LPWSTR *pszSource, [size_is(N)] LPWSTR *pszConditionName,
     /// [size_is(N)] FILETIME *pftActiveTime, [size_is(N)] DWORD *pdwCookie, ...)</c>.
-    /// Per <c>external/inc/opc_ae_p.c</c> the OS COM proxy/stub <c>opcae_ps.dll</c>
-    /// marks every LPWSTR / LPWSTR* parameter as <c>[simple ref]</c> (flags
-    /// <c>0x10b</c>) — no outer <c>[unique]</c> referent precedes the body.
-    /// Applying <see cref="OpcRefStringAttribute"/> to the LPWSTR scalars
-    /// produces a spec-compliant wire but triggers a server-side connection
-    /// drop after the call (see DR32 note on GetConditionState).
+    /// Per <c>external/inc/opc_ae_p.c:742-808</c> + <c>TypeFormatString[144]</c>,
+    /// <c>opcae_ps.dll</c> marks <c>szAcknowledgerID</c>/<c>szComment</c> as
+    /// <c>FC_RP [simple_pointer] → FC_C_WSTRING</c> (flag <c>0x10b</c>) — NO
+    /// outer <c>[unique]</c> referent before the FC_C_WSTRING body.
+    /// <see cref="OpcRefStringAttribute"/> on both scalars emits the
+    /// spec-compliant simple_ref wire (DR32/DR33 Phase D1). The array
+    /// params <c>pszSource</c>/<c>pszConditionName</c> already carry
+    /// <see cref="OpcDeferredElementsAttribute"/>; the deferred-pile
+    /// layout (max + N referents + N bodies, all within the parameter
+    /// block) is correctly emitted by the existing generator path —
+    /// see <c>docs/conformance/ae-wire-format.md</c> "Non-Diff" sections.
     /// </remarks>
     [OpcMethod(17)]
     [return: OpcUniquePointer]
     Task<int[]> AckConditionAsync(
         int dwCount,
-        string acknowledgerId,
-        string comment,
+        [OpcRefString] string acknowledgerId,
+        [OpcRefString] string comment,
         [OpcDeferredElements] string[] sources,
         [OpcDeferredElements] string[] conditionNames,
         [OpcFileTimeElements] long[] activeTimes,
