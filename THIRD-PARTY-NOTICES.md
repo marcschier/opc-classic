@@ -117,7 +117,7 @@ Opc.Classic .NET is licensed under MIT. See [LICENSE](LICENSE).
 - Status: Used only as a conformance reference; no redistribution
 
 ### external/redist/ (vendored OPC-Classic-CoreComponents sources)
-- Source: OPC Foundation [OPC-Classic-CoreComponents](https://github.com/OPCFoundation/OPC-Classic-CoreComponents) repository (pruned/restructured vendoring; see `external/redist/VENDORED.md` for snapshot freshness + re-sync workflow)
+- Source: OPC Foundation [OPC-Classic-CoreComponents](https://github.com/OPCFoundation/OPC-Classic-CoreComponents) repository (pruned/restructured vendoring; see `external/redist/README.md` for folder layout, local divergences, and vendoring rationale)
 - License: OPC Foundation MIT License 1.00 (per-source-file headers); `LICENSE.md` at the vendor root is the umbrella OPC Foundation specification license
 - Status: Vendored so the native C++ DA 2.05a TestServer + proxy/stub DLLs can be built without an external clone (see `docs/interop/testserver.md`). Not redistributed in the published Opc.Classic NuGet packages.
 

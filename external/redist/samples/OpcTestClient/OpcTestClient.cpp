@@ -295,7 +295,7 @@ static void RunLifecycle(IOPCServer* pServer)
 // Track AB6 / Opc.Classic divergence: upstream version of this function
 // only called GetStatus. Re-syncing with upstream OPC-Classic-CoreComponents
 // requires re-applying the RunLifecycle call below — see
-// external/redist/VENDORED.md.
+// external/redist/README.md.
 
 static void ConnectAndGetStatus(REFCLSID clsid)
 {

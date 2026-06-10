@@ -49,7 +49,7 @@ Current rc.10 baseline: **10 sample apps** and **2113 passed / 12 skipped / 0 fa
 
 ## Specification coverage
 
-- [Architecture diagrams](architecture/01-high-level-architecture.md) — 10 Mermaid diagrams
+- [Architecture diagrams](architecture/diagrams.md) — 10 Mermaid diagrams
 - [Generator diagnostics](generators/diagnostics.md) — OPCGEN*+ OCM* reference
 - [XML-DA status](CONFORMANCE.md#opc-xml-da-101)
 - [Roadmap](ROADMAP.md) — delivered rc.* work, release gates, and beyond

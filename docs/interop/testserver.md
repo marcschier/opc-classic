@@ -26,10 +26,9 @@ built without an external clone. Key paths:
 | `src/Include/` | Shared headers (CATID GUIDs, error codes). |
 | `CMakeLists.txt`, `cmake/` | Upstream CMake harness — invoked by `external\tools\build-testserver.ps1`. |
 | `external/docker/` | Windows Server Core 2022 + VS 2022 build-tools docker harness for reproducible builds without a local VS install. |
-| `build.ps1`, `docker-build.ps1` | One-shot build entry points (native + docker). |
+| `build.ps1` | One-shot build entry point. |
 
-See `external/redist/VENDORED.md` for the snapshot provenance and
-re-sync workflow. The OPC Foundation MIT License 1.00 grant lives in
+See `external/redist/README.md` for the folder layout, local divergences, and vendoring rationale. The OPC Foundation MIT License 1.00 grant lives in
 the file headers; `LICENSE.md` at the vendor root is the umbrella
 OPC Foundation license that governs the broader specification suite.
 
@@ -68,18 +67,6 @@ cd external\redist
 
 Builds **all** native targets for both platforms and installs outputs under
 `out\`. MSI packaging was removed from the vendored tree.
-
-### Option 3 — Docker (fully reproducible, no local VS)
-
-```powershell
-cd external\redist
-.\docker-build.ps1
-```
-
-Requires Docker Desktop with **Windows containers** enabled. The
-image (~10 GB) builds VS 2022 build tools inside
-`mcr.microsoft.com/windows/servercore:ltsc2022` and emits the same
-artifacts as the native build to the `out/` directory.
 
 ## Installation / registration
 

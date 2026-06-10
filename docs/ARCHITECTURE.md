@@ -351,14 +351,14 @@ The `docs/architecture/` folder contains the diagram suite and topic-deep narrat
 
 The diagrams describe the current `Opc.Classic.*` architecture: source-generated client proxies and server dispatchers, `ICallChannel` with in-memory and DCOM implementations, channel-level NTLM/Kerberos/SPNEGO/CBT, NativeAOT-compatible libraries, and coverage across DA, AE, HDA, Batch, Commands, Security, DX, Cpx, and Discovery.
 
-1. [`architecture/01-high-level-architecture.md`](architecture/01-high-level-architecture.md) — top-level client, generated proxy, `ICallChannel`, DCOM/in-memory channels, NDR, `TcpClientTransport`, and managed listener shape.
-2. [`architecture/02-call-shim-flow.md`](architecture/02-call-shim-flow.md) — outbound generated proxy call sequence for `IOPCServer::GetStatus`.
-3. [`architecture/03-server-dispatch-flow.md`](architecture/03-server-dispatch-flow.md) — inbound TCP listener, `RpcServerConnectionProcessor`, optional `OpcObjectRegistry`, `OpcDaServerDispatcher`, and `IOpcDaServer` routing.
-4. [`architecture/04-ntlm-handshake.md`](architecture/04-ntlm-handshake.md) — NTLMSSP NEGOTIATE, CHALLENGE, AUTHENTICATE, and CBT computation.
-5. [`architecture/05-kerberos-handshake.md`](architecture/05-kerberos-handshake.md) — Kerberos AP-REQ/AP-REP mutual authentication and GSS-API protection seam.
-6. [`architecture/06-spnego-negotiation.md`](architecture/06-spnego-negotiation.md) — NegTokenInit, NegTokenResp, mechanism selection, and MIC handling.
-7. [`architecture/07-discovery-flow.md`](architecture/07-discovery-flow.md) — OPCEnum / `IOPCServerList` and remote-registry discovery strategies.
-8. [`architecture/08-source-generator-pipeline.md`](architecture/08-source-generator-pipeline.md) — attributes, Roslyn generators, codec table, and emitted proxies and dispatchers.
-9. [`architecture/09-subscription-data-flow.md`](architecture/09-subscription-data-flow.md) — DA group, item activation, sampling, `IOpcDataCallbackSink`, and callback delivery.
-10. [`architecture/10-aot-trimming-shape.md`](architecture/10-aot-trimming-shape.md) — AOT-visible static code, analyzers, banned APIs, DCOM channel shape, and canary publish.
+1. [`architecture/diagrams.md#high-level-architecture`](architecture/diagrams.md#high-level-architecture) — top-level client, generated proxy, `ICallChannel`, DCOM/in-memory channels, NDR, `TcpClientTransport`, and managed listener shape.
+2. [`architecture/diagrams.md#call-shim-flow`](architecture/diagrams.md#call-shim-flow) — outbound generated proxy call sequence for `IOPCServer::GetStatus`.
+3. [`architecture/diagrams.md#server-dispatch-flow`](architecture/diagrams.md#server-dispatch-flow) — inbound TCP listener, `RpcServerConnectionProcessor`, optional `OpcObjectRegistry`, `OpcDaServerDispatcher`, and `IOpcDaServer` routing.
+4. [`architecture/diagrams.md#ntlm-handshake`](architecture/diagrams.md#ntlm-handshake) — NTLMSSP NEGOTIATE, CHALLENGE, AUTHENTICATE, and CBT computation.
+5. [`architecture/diagrams.md#kerberos-handshake`](architecture/diagrams.md#kerberos-handshake) — Kerberos AP-REQ/AP-REP mutual authentication and GSS-API protection seam.
+6. [`architecture/diagrams.md#spnego-negotiation`](architecture/diagrams.md#spnego-negotiation) — NegTokenInit, NegTokenResp, mechanism selection, and MIC handling.
+7. [`architecture/diagrams.md#discovery-flow`](architecture/diagrams.md#discovery-flow) — OPCEnum / `IOPCServerList` and remote-registry discovery strategies.
+8. [`architecture/diagrams.md#source-generator-pipeline`](architecture/diagrams.md#source-generator-pipeline) — attributes, Roslyn generators, codec table, and emitted proxies and dispatchers.
+9. [`architecture/diagrams.md#subscription-data-flow`](architecture/diagrams.md#subscription-data-flow) — DA group, item activation, sampling, `IOpcDataCallbackSink`, and callback delivery.
+10. [`architecture/diagrams.md#aot-and-trimming-shape`](architecture/diagrams.md#aot-and-trimming-shape) — AOT-visible static code, analyzers, banned APIs, DCOM channel shape, and canary publish.
 11. [`architecture/ndr-pointer-marshaling.md`](architecture/ndr-pointer-marshaling.md) — NDR unique-pointer shape model, `[OpcUniquePointer]` and `[return: OpcUniquePointer]`, real-DCOM wire compatibility.

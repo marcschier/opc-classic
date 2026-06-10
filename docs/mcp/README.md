@@ -34,10 +34,10 @@ For local development from this repository, point your MCP client at `dotnet run
 
 | Client | Config file | Guide |
 | --- | --- | --- |
-| Claude Desktop | `%APPDATA%\Claude\claude_desktop_config.json` | [Claude Desktop](integration/claude-desktop.md) |
-| Cursor | `.cursor\mcp.json` or `~\.cursor\mcp.json` | [Cursor](integration/cursor.md) |
-| VS Code Copilot Chat | `.vscode\mcp.json` | [VS Code Copilot Chat](integration/vscode-copilot.md) |
-| GitHub Copilot CLI | `.copilot\mcp.json` | [GitHub Copilot CLI](integration/copilot-cli.md) |
+| Claude Desktop | `%APPDATA%\Claude\claude_desktop_config.json` | [Claude Desktop](integrations.md#claude-desktop) |
+| Cursor | `.cursor\mcp.json` or `~\.cursor\mcp.json` | [Cursor](integrations.md#cursor) |
+| VS Code Copilot Chat | `.vscode\mcp.json` | [VS Code Copilot Chat](integrations.md#vs-code-copilot-chat) |
+| GitHub Copilot CLI | `.copilot\mcp.json` | [GitHub Copilot CLI](integrations.md#github-copilot-cli) |
 
 ### Minimal stdio server command
 
