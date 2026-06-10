@@ -149,23 +149,33 @@ jobs:
             if (Test-Path $c) { $found = $c; break }
           }
           if (-not $found) {
-            Write-Host "::warning::OpcCtt.exe was not found in any expected install path. Searching entire C:\..."
-            # Whole-drive scan: if the MSI installed the EXE under a path we
-            # don't expect, the recursive search finds it; if it's truly
-            # absent, the silent install dropped the feature.
-            $allHits = Get-ChildItem C:\ -Recurse -Filter 'OpcCtt.exe' -ErrorAction SilentlyContinue
+            Write-Host "::warning::OpcCtt.exe not in any expected install path"
+            # Limited search: only the OPC Foundation tree under both Program
+            # Files roots PLUS C:\OPC* (some MSIs install there). Full C:\
+            # recursive scan was too slow on the GH Actions runner.
+            $searchRoots = @(
+              "$env:ProgramFiles\OPC Foundation",
+              "${env:ProgramFiles(x86)}\OPC Foundation",
+              'C:\OPC',
+              'C:\Program Files\Common Files\OPC Foundation',
+              'C:\Program Files (x86)\Common Files\OPC Foundation'
+            ) | Where-Object { Test-Path $_ }
+            $allHits = @()
+            foreach ($r in $searchRoots) {
+              $allHits += Get-ChildItem $r -Recurse -Filter 'OpcCtt.exe' -ErrorAction SilentlyContinue
+            }
             if ($allHits) {
               foreach ($h in $allHits) {
                 Write-Host "Found candidate: $($h.FullName)"
               }
               $found = $allHits[0].FullName
             } else {
-              Write-Host "::warning::OpcCtt.exe is not installed anywhere on C:\ -- the Common Modules MSI succeeded silently but did not deploy the test-runner EXE."
-              # Show the OPC Foundation tree shape so we know what DID install.
-              Write-Host '--- C:\Program Files\OPC Foundation\ tree ---'
-              Get-ChildItem 'C:\Program Files\OPC Foundation\' -Recurse -ErrorAction SilentlyContinue | Select-Object FullName | Format-Table -AutoSize -Wrap
-              Write-Host '--- C:\Program Files (x86)\OPC Foundation\ tree ---'
-              Get-ChildItem 'C:\Program Files (x86)\OPC Foundation\' -Recurse -ErrorAction SilentlyContinue | Select-Object FullName | Format-Table -AutoSize -Wrap
+              Write-Host "::warning::OpcCtt.exe absent from all OPC Foundation install trees -- the Common Modules MSI succeeded silently but did not deploy the test runner."
+              # Show what DID install so a human can triage post-run.
+              foreach ($r in $searchRoots) {
+                Write-Host "--- $r tree ---"
+                Get-ChildItem $r -Recurse -ErrorAction SilentlyContinue | Select-Object FullName | Format-Table -AutoSize -Wrap
+              }
               echo "found=" >> $env:GITHUB_OUTPUT
               exit 0
             }
