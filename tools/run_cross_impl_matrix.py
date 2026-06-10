@@ -45,8 +45,10 @@ import argparse
 import json
 import os
 import shutil
+import socket
 import subprocess
 import sys
+import time
 from typing import Optional
 
 _HERE = os.path.dirname(os.path.abspath(__file__))
@@ -240,6 +242,129 @@ if ($stopped.Count -gt 0) {{ $stopped -join ', ' }}
         print(f"Stopped leftover process(es) {reason}: {stopped}", file=sys.stderr)
 
 
+# Profiles whose probe driver uses a tcp:// connection_string require a
+# pre-started managed sample listener bound to the URI's host:port. The
+# matrix runner spawns the corresponding sample EXE with
+# OPC_CLASSIC_LISTEN_ADDRESS=<host>:<port> just before invoking
+# probe_servers.py, then tears it down in the same profile's finally.
+# Bound to OS-assigned port 0 would defeat the purpose -- the probe
+# driver hardcodes the port in connection_string. Sample EXEs live under
+# samples/<assembly>/bin/Debug/net10.0/<assembly>.exe (matches the
+# `dotnet build` defaults that the matrix wrapper produces).
+TCP_LISTENER_SAMPLE_EXES: dict[str, str] = {
+    "samples-ae-managed": os.path.join(
+        _REPO, "samples", "Opc.Classic.Samples.AeServer",
+        "bin", "Debug", "net10.0", "Opc.Classic.Samples.AeServer.exe"),
+}
+
+
+def _parse_tcp_endpoint(connection_string: str | None) -> tuple[str, int] | None:
+    """Return (host, port) for tcp:// URIs; None otherwise. Mirrors the
+    MCP-side OpcMcpDcomConnectionHelper.TryGetTcpEndpoint logic."""
+    if not connection_string:
+        return None
+    if "://" not in connection_string:
+        return None
+    scheme, rest = connection_string.split("://", 1)
+    if scheme.lower() != "tcp":
+        return None
+    if not rest or "/" in rest.rstrip("/"):
+        rest = rest.split("/", 1)[0]
+    if ":" not in rest:
+        return None
+    host, port_text = rest.rsplit(":", 1)
+    try:
+        port = int(port_text)
+    except ValueError:
+        return None
+    if port <= 0 or port > 65535 or not host:
+        return None
+    return host, port
+
+
+def _wait_for_tcp_listener(host: str, port: int, timeout_seconds: float) -> bool:
+    """Block until host:port accepts a TCP connection or timeout expires."""
+    deadline = time.monotonic() + timeout_seconds
+    probe_host = "127.0.0.1" if host in ("0.0.0.0", "localhost") else host
+    last_error: Exception | None = None
+    while time.monotonic() < deadline:
+        try:
+            with socket.create_connection((probe_host, port), timeout=1.0):
+                return True
+        except OSError as ex:
+            last_error = ex
+            time.sleep(0.2)
+    if last_error is not None:
+        print(f"Sample listener {host}:{port} never came up: {last_error}", file=sys.stderr)
+    return False
+
+
+def start_tcp_listener_sample(profile: str, target: dict[str, str]) -> subprocess.Popen | None:
+    """Spawn the sample EXE configured for a tcp:// connection_string and
+    wait for the port to listen. Returns the Popen handle (caller is
+    responsible for terminate+wait in a finally), or None when the
+    profile doesn't need a sample listener (no tcp:// connection_string
+    or no curated EXE mapping)."""
+    connection_string = target.get("connection_string")
+    endpoint = _parse_tcp_endpoint(connection_string)
+    if endpoint is None:
+        return None
+    exe = TCP_LISTENER_SAMPLE_EXES.get(profile)
+    if exe is None:
+        return None
+    if not os.path.exists(exe):
+        print(
+            f"Sample EXE for {profile} not found at {exe}; "
+            "run `dotnet build` on the sample first.",
+            file=sys.stderr,
+        )
+        return None
+    host, port = endpoint
+    env = os.environ.copy()
+    env["OPC_CLASSIC_LISTEN_ADDRESS"] = f"{host}:{port}"
+    print(f"==> starting sample listener for '{profile}' ({exe} on {host}:{port})", file=sys.stderr)
+    proc = subprocess.Popen(
+        [exe],
+        cwd=os.path.dirname(exe),
+        stdin=subprocess.DEVNULL,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+        env=env,
+        creationflags=(subprocess.CREATE_NEW_PROCESS_GROUP if os.name == "nt" else 0),
+    )
+    if not _wait_for_tcp_listener(host, port, timeout_seconds=15.0):
+        try:
+            proc.terminate()
+            proc.wait(timeout=5)
+        except Exception:
+            try:
+                proc.kill()
+            except Exception:
+                pass
+        return None
+    return proc
+
+
+def stop_tcp_listener_sample(proc: subprocess.Popen | None, profile: str) -> None:
+    if proc is None:
+        return
+    try:
+        proc.terminate()
+        proc.wait(timeout=5)
+        print(f"==> stopped sample listener for '{profile}' (exit {proc.returncode})", file=sys.stderr)
+    except subprocess.TimeoutExpired:
+        try:
+            proc.kill()
+            proc.wait(timeout=5)
+        except Exception:
+            pass
+    except Exception:
+        try:
+            proc.kill()
+        except Exception:
+            pass
+
+
 def run_profile(args: argparse.Namespace, profile: str, overrides: dict[str, str]) -> dict[str, object]:
     target = PROFILE_TARGETS[profile]
     kind = target["kind"]
@@ -281,18 +406,26 @@ def run_profile(args: argparse.Namespace, profile: str, overrides: dict[str, str
 
     target_label = connection_string or (clsid if args.use_clsid else target["progid"])
     print(f"==> running profile '{profile}' ({target_label})", file=sys.stderr)
-    # Capture stdout (for the JSON result) but PASS THROUGH stderr in real
-    # time. The MCP server's diagnostic logs go to stderr and we want them
-    # visible while the probe runs so that activation hangs / auth failures
-    # surface live instead of being buried in a post-run dump.
-    result = subprocess.run(
-        cmd,
-        cwd=_REPO,
-        stdout=subprocess.PIPE,
-        stderr=None,  # inherit parent stderr -> visible in real time
-        text=True,
-        check=False,
-    )
+    # Profiles that drive the AE/HDA/DA sample via tcp:// need an
+    # explicit long-running listener -- the SCM activation path is
+    # bypassed by design, so registration alone doesn't bind a port.
+    sample_listener = start_tcp_listener_sample(profile, target)
+    try:
+        # Capture stdout (for the JSON result) but PASS THROUGH stderr in real
+        # time. The MCP server's diagnostic logs go to stderr and we want them
+        # visible while the probe runs so that activation hangs / auth failures
+        # surface live instead of being buried in a post-run dump.
+        result = subprocess.run(
+            cmd,
+            cwd=_REPO,
+            stdout=subprocess.PIPE,
+            stderr=None,  # inherit parent stderr -> visible in real time
+            text=True,
+            check=False,
+        )
+    finally:
+        stop_tcp_listener_sample(sample_listener, profile)
+
     try:
         payload = json.loads(result.stdout)
     except json.JSONDecodeError as ex:
