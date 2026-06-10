@@ -74,18 +74,42 @@ public sealed class AeClientState : IAsyncDisposable {
 
         _disposed = true;
         foreach (AeSubscriptionContext subscription in Subscriptions.Values) {
-            await subscription.DisposeAsync().ConfigureAwait(false);
+            try {
+                await subscription.DisposeAsync().ConfigureAwait(false);
+            }
+            catch (ObjectDisposedException) {
+                // Underlying socket was already closed (e.g. by a server-side
+                // disconnect after a sign/seal-protected call); subscription
+                // teardown can't write a graceful unsubscribe. Treat as
+                // already-disposed.
+            }
+            catch (System.IO.IOException) {
+                // Same as above — the connection went away under us mid-call.
+            }
         }
 
         Subscriptions.Clear();
         if (_ownsChannel) {
-            switch (_channel) {
-                case IAsyncDisposable asyncDisposable:
-                    await asyncDisposable.DisposeAsync().ConfigureAwait(false);
-                    break;
-                case IDisposable disposable:
-                    disposable.Dispose();
-                    break;
+            try {
+                switch (_channel) {
+                    case IAsyncDisposable asyncDisposable:
+                        await asyncDisposable.DisposeAsync().ConfigureAwait(false);
+                        break;
+                    case IDisposable disposable:
+                        disposable.Dispose();
+                        break;
+                }
+            }
+            catch (ObjectDisposedException) {
+                // The DCOM peer (e.g. opcae_ps.dll on the samples-ae native-CCW
+                // path) frequently sends a TCP RST after the response is
+                // dispatched. By the time the MCP layer calls disconnect, the
+                // socket is already disposed and any graceful-close write
+                // would throw. The session-level state is already cleaned up;
+                // swallow and return.
+            }
+            catch (System.IO.IOException) {
+                // Same rationale — connection went away under us.
             }
         }
     }

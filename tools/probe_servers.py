@@ -369,6 +369,7 @@ def probe_specs() -> list[ProbeSpec]:
         ProbeSpec("opcclassic.capture.start", capture_start_args, after_capture_start),
         ProbeSpec("opcclassic.capture.list", lambda r: {}),
         ProbeSpec("opcclassic.capture.stop", capture_session_args),
+        ProbeSpec("opcclassic.capture.tail", lambda r: {**capture_session_args(r), "max": 50, "sinceIndex": 0}),
         ProbeSpec("opcclassic.capture.get", lambda r: {**capture_session_args(r), "format": "json", "maxPdus": 50}),
         ProbeSpec("opcclassic.capture.summarize", lambda r: {**capture_session_args(r), "top": 5}),
         ProbeSpec("opcclassic.capture.replay", capture_session_args),
