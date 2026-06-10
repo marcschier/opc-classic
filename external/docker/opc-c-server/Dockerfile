@@ -10,7 +10,7 @@
 # The build stage compiles a hand-rolled native OPC DA smoke server from
 # external/docker/opc-c-server/build/opc-sample-server.cpp.
 
-FROM mcr.microsoft.com/dotnet/framework/sdk:4.8.1-windowsservercore-ltsc2022 AS build
+FROM mcr.microsoft.com/dotnet/framework/sdk:4.8.1-20260414-windowsservercore-ltsc2022 AS build
 
 SHELL ["powershell", "-NoProfile", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
 

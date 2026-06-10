@@ -161,14 +161,27 @@ jobs:
 
       - name: Install Npcap (required for capture.list_interfaces)
         shell: pwsh
+        continue-on-error: true
         run: |
-          # Npcap provides wpcap.dll which the capture engine loads via
-          # SharpPcap. Without it, opcclassic.capture.* tools regress with
-          # 'Unable to load DLL wpcap'. choco's npcap package installs in
-          # WinPcap-compatible mode by default which is what we need.
-          choco install npcap --version 1.79 --yes --no-progress --params '/winpcap_mode=yes /admin_only=no'
-          if ($LASTEXITCODE -ne 0) {
-            Write-Host "::warning::Npcap install failed (exit $LASTEXITCODE); capture.* tools will regress"
+          # Npcap provides wpcap.dll which SharpPcap loads. The chocolatey
+          # community feed does NOT ship npcap (commercial-licensed); pull
+          # the redistributable installer directly from npcap.com and use
+          # its silent-install flags (/S). winpcap_mode=yes installs
+          # wpcap.dll under C:\Windows\System32\Npcap\ on PATH so SharpPcap
+          # finds it without code changes. admin_only=no opens the driver
+          # to non-admin processes (the MCP host launched by probe_servers
+          # runs as the runner user).
+          $url = 'https://npcap.com/dist/npcap-1.79.exe'
+          $exe = "$env:RUNNER_TEMP\npcap-1.79.exe"
+          Invoke-WebRequest -Uri $url -OutFile $exe -UseBasicParsing
+          Write-Host "Downloaded Npcap installer: $((Get-Item $exe).Length) bytes"
+          $p = Start-Process $exe -ArgumentList '/S', '/winpcap_mode=yes', '/admin_only=no' -Wait -PassThru -NoNewWindow
+          Write-Host "Npcap install exit code: $($p.ExitCode)"
+          if ($p.ExitCode -ne 0) {
+            Write-Host "::warning::Npcap install failed (exit $($p.ExitCode)); capture.* tools will regress"
+          } else {
+            Write-Host "Npcap install OK -- wpcap.dll under:"
+            Get-ChildItem 'C:\Windows\System32\Npcap\wpcap.dll', 'C:\Windows\SysWOW64\Npcap\wpcap.dll' -ErrorAction SilentlyContinue | Select-Object FullName
           }
 
       - name: Install OPCEnum service for discovery tools

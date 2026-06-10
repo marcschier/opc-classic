@@ -8,7 +8,7 @@
 # Container ENTRYPOINT: client.ps1 invokes opc-test.exe with the ProgID +
 # TargetHost forwarded from docker compose env / run args.
 
-FROM mcr.microsoft.com/dotnet/framework/sdk:4.8.1-windowsservercore-ltsc2022 AS build
+FROM mcr.microsoft.com/dotnet/framework/sdk:4.8.1-20260414-windowsservercore-ltsc2022 AS build
 
 SHELL ["powershell", "-NoProfile", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
 
