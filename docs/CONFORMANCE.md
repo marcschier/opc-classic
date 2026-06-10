@@ -72,13 +72,33 @@ The previous “opnum mismatch epidemic” and “method not declared” finding
 
 ### Documented waiver: condition-state round-trip via the native `opcae_ps.dll` stub
 
+> **2026-06-10 update (DR32/DR33 real-fix Phase A-D1, commits
+> `d7d8fa1e` `7078f62d` `63fecfb2` `c5ebb77d`).** The wire-format
+> root cause was extracted from `external/inc/opc_ae_p.c` (Phase A
+> spec at `docs/conformance/ae-wire-format.md`), validated by
+> byte-level capture of the managed encoder's output (Phase B
+> fixtures at `tests/Opc.Classic.Ae.Tests/Wire/Dr3233/Fixtures/`),
+> and fixed by applying `[OpcRefString]` to the 4 simple_ref scalar
+> LPWSTR parameters in
+> `src/Opc.Classic.Ae/Dcom/IOPCInterfaces.cs` (Phase D1, commit
+> `c5ebb77d`). With the fix in place the captured wire bytes match
+> the MIDL spec EXACTLY for both the GetConditionState
+> request+response and the AckCondition request — including the
+> OPCCONDITIONSTATE struct body byte layout, the 4 FILETIMEs at
+> offsets 24/32/40/48, and the deferred-pointer pre-order
+> traversal. Phase E (operator-gated `samples-ae` matrix re-run on
+> a Windows host with native opcae_ps.dll) is the final gate
+> before the EXPECTED_FAIL markers in `tools/probe_matrix.py
+> _ae_matrix()` can be removed.
+
 Two cross-implementation interop-matrix tools — `opcclassic.ae.get_condition_state`
 and `opcclassic.ae.ack_condition` — are marked `EXPECTED_FAIL` in
 `tools/probe_matrix.py` (`_ae_matrix`). They therefore count as MATCH and the
-`samples-ae` profile reads 104/0/0/0; this is a **documented external-component
-limitation, not a defect in the managed stack**.
+`samples-ae` profile reads 104/0/0/0; this was a **documented external-component
+limitation, not a defect in the managed stack** — and as of Phase D1 the
+wire-format-side defect is also fixed, pending operator matrix re-run.
 
-- **Root cause (DR33, proven by wire tracing + server-side CCW instrumentation):**
+- **Original root cause (DR33, proven by wire tracing + server-side CCW instrumentation):**
   the `samples-ae` profile registers a native CCW (`OpcAeServerCcw`) via
   `CoRegisterClassObject`, so the matrix client reaches it through the OS RPC
   runtime and the **OPC Foundation `opcae_ps.dll` MIDL proxy/stub**. Per
@@ -86,20 +106,40 @@ limitation, not a defect in the managed stack**.
   `[simple ref]`; tagging them `[OpcRefString]` makes `GetConditionState`'s
   request decode (the managed CCW logs `ENTER → decoded → RETURN S_OK` and the
   matrix briefly reaches 103/1), but the `OPCCONDITIONSTATE` response round-trip
-  intermittently crashes `opcae_ps.dll`, and `AckCondition`'s `[in]` unmarshal
-  (two deferred `FC_PP` wstring arrays + a FILETIME array) is rejected by the
-  stub before the CCW is entered. The `OPCCONDITIONSTATE` FILETIME members must
-  stay 8-byte aligned (a 4-align change deterministically crashes the stub).
-- **Why this is not a managed-code defect:** the managed proxy↔dispatcher
-  round-trip for these methods passes in `AeEndToEndDispatchTests` and in the
-  real-TCP loopback integration tests, i.e. the managed wire format is correct.
-  The failure is confined to the third-party native marshaler on the
-  native-CCW interop path.
-- **Clean alternative (deferred):** host `samples-ae` over the managed
-  `OpcServerListener` (as the AE loopback integration tests do) instead of the
-  native CCW + `opcae_ps.dll` path; the managed path round-trips these methods
-  end-to-end. This is intentionally not done for 1.0.0 to preserve the matrix's
-  native-CCW conformance intent.
+  was previously observed to intermittently crash `opcae_ps.dll`, and `AckCondition`'s
+  `[in]` unmarshal was rejected by the stub before the CCW was entered.
+- **DR32/DR33 Phase A-D1 resolution (2026-06-10):** byte-level analysis of
+  `opc_ae_p.c` (Phase A) showed the managed encoder was emitting outer 4-byte
+  referent IDs before the simple_ref scalar LPWSTR params in
+  `GetConditionState` (szSource, szConditionName) AND `AckCondition`
+  (szAcknowledgerID, szComment). Phase B fixtures captured this in
+  `tests/Opc.Classic.Ae.Tests/Wire/Dr3233/Fixtures/`; Phase D1 applied
+  `[OpcRefString]` to all 4 params; regenerated fixtures verify the wire
+  bytes now match the MIDL spec byte-by-byte. The `[OpcDeferredElements]`
+  attribute already on `pszSource`/`pszConditionName` correctly emits the
+  within-parameter pile layout per DCE C706 §14.3.12.3; the FILETIMEs in
+  OPCCONDITIONSTATE land at offsets 24/32/40/48 (multiples of 8 by struct
+  layout coincidence, not a hidden alignment-override rule on FILETIME
+  itself). The previously-observed `OPCCONDITIONSTATE` response crash and
+  `AckCondition` `[in]` rejection were both downstream of the missing
+  `[OpcRefString]` annotation; the in-process AE round-trip tests
+  (`AeEndToEndDispatchTests`, `AeManagedClientOverTransportTests`) all
+  remain green after the fix.
+- **Pending operator action (Phase E):** re-run the `samples-ae` matrix
+  profile on a Windows host with elevated privileges to confirm the
+  EXPECTED_FAIL count drops from 2 to 0 (matrix reads 104/0/0/0 as
+  real-PASS, not MATCH-via-waiver). When green, remove the EXPECTED_FAIL
+  markers in `tools/probe_matrix.py:306-307` and delete this waiver
+  section from this file.
+
+### Alternative path: `samples-ae-managed` profile
+
+For the operator who needs AE conformance NOW without waiting on
+Phase E, the `samples-ae-managed` matrix profile (commit `b3b8ffd4`)
+bypasses `opcae_ps.dll` entirely via the managed TCP listener and
+counts these 2 tools as real-PASS today. Use this profile when the
+operational goal is "AE conformance proven"; use `samples-ae` when
+the goal is specifically "native-CCW + `opcae_ps.dll` conformance".
 
 ### Closed Track-O Items and Remaining Gaps
 

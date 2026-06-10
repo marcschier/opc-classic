@@ -46,6 +46,7 @@ SESSION_AND_CAPTURE = {
     "opcclassic.capture.stop": "PASS",
     "opcclassic.capture.list": "PASS",
     "opcclassic.capture.get": "PASS",
+    "opcclassic.capture.tail": "PASS",
     "opcclassic.capture.summarize": "PASS",
     "opcclassic.capture.remove": "PASS",
     "opcclassic.capture.decode_pdu": "PASS",
@@ -303,6 +304,26 @@ def _ae_matrix() -> dict[str, str]:
     # structural delta vs the passing read_items_by_id is AckCondition's TWO
     # deferred FC_PP wstring arrays plus an [in] FILETIME array. Also needs a
     # known-good Wireshark capture to byte-diff. See plan DR33 for detail.
+    #
+    # 2026-06-10 (DR32/DR33 Phase D1, commit c5ebb77d): wire-format root cause
+    # extracted from external/inc/opc_ae_p.c and FIXED by applying
+    # [OpcRefString] to all 4 simple_ref scalar LPWSTR params in
+    # src/Opc.Classic.Ae/Dcom/IOPCInterfaces.cs (szSource, szConditionName,
+    # szAcknowledgerID, szComment). Phase B fixtures at
+    # tests/Opc.Classic.Ae.Tests/Wire/Dr3233/Fixtures/ confirm the managed
+    # encoder now emits the spec-compliant simple_ref wire (no outer 4-byte
+    # referent IDs before the FC_C_WSTRING bodies). 319/319 regression tests
+    # green (Ae 128, Integration Ae 24, Generators 49, MCP 118).
+    #
+    # ACTION REQUIRED (Phase E): re-run the samples-ae matrix profile on a
+    # Windows host with admin elevation:
+    #
+    #   .\tools\run-cross-impl-matrix.ps1 -HklmRegister -ProfileFilter samples-ae
+    #
+    # When green (104/0/0/0 with these 2 tools reading PASS instead of
+    # EXPECTED_FAIL), flip these 2 markers to "PASS", remove this comment
+    # block, and update docs/CONFORMANCE.md per the "Pending operator action"
+    # note in the same file.
     matrix["opcclassic.ae.get_condition_state"] = "EXPECTED_FAIL"
     matrix["opcclassic.ae.ack_condition"] = "EXPECTED_FAIL"
     # Wrong spec.
