@@ -390,3 +390,186 @@ Phase D can proceed with confidence.
   + pointer layout (offsets 1304-1390)
 - `external/inc/opc_ae_p.c:2762-2820` — AckCondition array type
   defs (offsets 1396-1458)
+
+---
+
+# Phase C — Byte-diff vs Phase B fixtures (managed-encoder output)
+
+> **Updated 2026-06-10.** Phase B captured the EXACT bytes the
+> managed proxy emits today for these three flows; the fixtures
+> live at `tests/Opc.Classic.Ae.Tests/Wire/Dr3233/Fixtures/`. This
+> section diffs those captures against the Phase A spec and
+> identifies the precise byte-level discrepancies.
+
+## Diff #1 — GetConditionState request: spurious outer referent on simple_ref strings
+
+**Managed output (`get_condition_state.hex` request, 100 bytes):**
+```
+0000: 00 00 02 00       ← ⚠ outer referent ID for szSource (0x00020000)
+0004: 0C 00 00 00       ← max_count = 12
+0008: 00 00 00 00       ← offset = 0
+000C: 0C 00 00 00       ← actual_count = 12
+0010: 52 00 61 00 ...   ← "Random.Int4\0" (12 wide chars)
+0028: 04 00 02 00       ← ⚠ outer referent ID for szConditionName (0x00020004)
+002C: 0B 00 00 00       ← max_count = 11
+                          ... etc.
+0050: 03 00 00 00       ← dwNumEventAttrs = 3
+0054: 03 00 00 00       ← pdwAttributeIDs max_count = 3 (no outer ref — correct!)
+0058: 01 02 03 ...      ← attribute IDs
+```
+
+**Phase A spec says:** `szSource` and `szConditionName` are
+**FC_RP [simple_pointer]** (TypeFormatString[144], flag 0x10b
+"simple ref"). The wire MUST NOT include an outer 4-byte
+referent ID before the FC_C_WSTRING body.
+
+**Bug location:** the managed source-generator emits a `[unique]`
+LPWSTR wire format (outer referent ID + body) for parameters
+that are declared as bare `string` in the C# interface. Without
+`[OpcRefString]`, the simple_ref wire shape is not produced.
+
+**Fix candidate (D1):** apply `[OpcRefString]` to both
+parameters in `src/Opc.Classic.Ae/Dcom/IOPCInterfaces.cs` line
+116-120.
+
+## Diff #2 — AckCondition request: spurious outer referent on simple_ref scalars
+
+**Managed output (`ack_condition.hex` request, 296 bytes):**
+```
+0000: 02 00 00 00       ← dwCount = 2 (correct)
+0004: 00 00 02 00       ← ⚠ outer referent ID for szAcknowledgerID (0x00020000)
+0008: 0A 00 00 00       ← max_count = 10 ("operator1\0")
+                          ... etc.
+0024: 04 00 02 00       ← ⚠ outer referent ID for szComment (0x00020004)
+0028: 0E 00 00 00       ← max_count = 14 ("scheduled ack\0")
+                          ... etc.
+0054: 02 00 00 00       ← pszSource max_count = 2 (no outer ref — correct, simple_ref array)
+0058: 08 00 02 00       ← pszSource[0] FC_UP referent ID
+005C: 0C 00 02 00       ← pszSource[1] FC_UP referent ID
+0060: 0C 00 00 00 ...   ← pszSource[0] body ("Random.Int4")
+0084: 0D 00 00 00 ...   ← pszSource[1] body ("Random.Real8")
+00AC: 02 00 00 00       ← pszConditionName max_count = 2 (no outer ref — correct)
+00B0: 10 00 02 00       ← pszConditionName[0] FC_UP referent ID
+00B4: 14 00 02 00       ← pszConditionName[1] FC_UP referent ID
+00B8-0107: pszConditionName bodies
+0108: 02 00 00 00       ← pftActiveTime max_count = 2
+010C-011B: 2 × inline FILETIMEs (8 bytes each, 4-aligned)
+011C: 02 00 00 00       ← pdwCookie max_count = 2
+0120-0127: 2 × inline DWORDs
+```
+
+**Phase A spec says:** `szAcknowledgerID` and `szComment` are
+**FC_RP [simple_pointer]** (TypeFormatString[144], flag 0x10b).
+NO outer referent ID before the FC_C_WSTRING body.
+
+**Same bug as Diff #1:** missing `[OpcRefString]` on the C#
+parameter declarations causes the generator to emit the
+`[unique]` wire shape instead of simple_ref.
+
+**Fix candidate (D1):** apply `[OpcRefString]` to
+`acknowledgerId` and `comment` in
+`src/Opc.Classic.Ae/Dcom/IOPCInterfaces.cs` line 152-160.
+
+## Non-Diff — AckCondition array marshaling is CORRECT
+
+**Original Phase A hypothesis WAS WRONG:** the "cross-array
+deferred-body ordering between pszSource and pszConditionName"
+hypothesis turned out to NOT be a bug.
+
+**Re-analysis:** the MIDL spec emits FC_PP deferred bodies
+INSIDE each parameter's marshal block (after that param's
+conformance + referent IDs), NOT cross-param. The generator's
+current `[OpcDeferredElements]` implementation
+(`src/Opc.Classic.Generators/OpcProxyGenerator.cs:946-963`) does
+exactly this — two passes within the same parameter:
+
+```csharp
+// Pass 1: per-element referent IDs
+for (int idx = 0; idx < parameter.Length; idx++) {
+    writer.WriteUniquePointerReferent(parameter[idx] is not null);
+}
+// Pass 2: per-element wstring bodies (in same block)
+for (int idx = 0; idx < parameter.Length; idx++) {
+    if (parameter[idx] is string idxStr) {
+        writer.WriteUnicodeString(idxStr);
+    }
+}
+```
+
+This matches the DCE C706 §14.3.12.3 within-parameter pile
+layout. Phase B byte capture confirms the bodies follow the
+referents within the same param's section, with the next
+param's conformance starting immediately after. **NO
+cross-param reordering is required.**
+
+## Non-Diff — pftActiveTime + pdwCookie inline placement is CORRECT
+
+**Original Phase A hypothesis WAS WRONG:** the "pftActiveTime
+inline-vs-deferred treatment" hypothesis was speculation, not a
+bug.
+
+**Re-analysis:** `FC_CARRAY` of `FC_EMBEDDED_COMPLEX` (FILETIME)
+or `FC_LONG` (DWORD) is purely inline by spec — no deferred
+bodies. The managed encoder emits these correctly: max_count +
+inline value-type elements, no FC_PP / no deferred section.
+
+## Pending — GetConditionState RESPONSE byte-diff
+
+The OPCCONDITIONSTATE response is 540 bytes; full byte-diff
+against the Phase A spec layout (96-byte struct body + deferred
+strings + 6 deferred arrays) is left to a follow-up checkpoint
+WITHIN Phase D when we observe whether D1 (`[OpcRefString]` on
+the request) is sufficient to make the request decode AND the
+response side becomes byte-correct.
+
+**Hypothesis (carrying forward from Phase A):** the response
+side bug noted by existing investigation may be unrelated to
+the request-side simple_ref bug. The two were observed together
+because the old investigation reverted [OpcRefString] when the
+response crashed, but the REQUEST bug remained as well. With D1
+applied, the request decode will be correct; if the response
+still crashes, it's a separate bug to chase.
+
+## Hard-gate decision
+
+**Phase C clears the hard gate.** The discrepancies identified
+are:
+
+1. **Generator does not emit simple_ref wire format when the
+   `[OpcRefString]` attribute is absent on a `string` param** —
+   this is an annotation gap, NOT a generator-architecture
+   problem. The fix is annotating 4 parameters in
+   `IOPCInterfaces.cs`.
+
+2. **Previously-hypothesized deferred-body ordering bugs DID NOT
+   manifest** — the generator's `[OpcDeferredElements]` path
+   correctly emits the within-parameter pile layout. No
+   generator change needed for `AckCondition` array params (they
+   already carry `[OpcDeferredElements]`).
+
+3. **OPCCONDITIONSTATE response side** is left as a Phase D2
+   investigation gate. If D1 (`[OpcRefString]` on request side)
+   is sufficient to clear the matrix, no further work is needed.
+   If D1 makes the request decode succeed but the response still
+   crashes, D2 will diff the response bytes vs the Phase A spec
+   layout.
+
+**Phase D proceeds with high confidence on D1 (`[OpcRefString]`
+on 4 scalar params), and a wait-and-see gate on D2 (response
+investigation).**
+
+## Risk re-assessment vs the open-question defaults
+
+- **Regression risk** (default: revert + narrower retry): D1 is
+  a pure annotation change on 4 parameters in one file. Risk of
+  regressing OTHER methods is low because `[OpcRefString]`
+  affects only the annotated parameter's wire format.
+- **Architecture risk** (default: stop and report): NO
+  generator-architecture changes are now expected. The
+  previously-feared deferred-body-ordering rework is unneeded.
+- **opcae_ps.dll bug-hunting** (default: report finding, keep
+  waiver): if D1 + response investigation both fail, the
+  remaining failures are documented downstream-vendor bugs and
+  the waiver stays in place. Phase D will produce evidence for
+  this verdict either way.
+
