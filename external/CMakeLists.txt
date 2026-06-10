@@ -316,7 +316,7 @@ endif() # x64 only
 # ============================================================================
 if(OPC_BUILD_TESTS)
 
-# Native OPC Foundation test apps live under this redist samples/ tree
+# Native OPC Foundation test apps live under this samples/ tree
 # (OpcTestServer / OpcTestClient). build-testserver.ps1 passes
 # -DOPC_TEST_SAMPLES_DIR explicitly.
 set(OPC_TEST_SAMPLES_DIR "${CMAKE_CURRENT_SOURCE_DIR}/samples"

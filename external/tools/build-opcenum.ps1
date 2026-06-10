@@ -2,17 +2,17 @@
 <#
 .SYNOPSIS
     Build the OPC Foundation OpcEnum service (x86) from the vendored
-    external/redist/ tree using CMake + MSVC.
+    external/ tree using CMake + MSVC.
 
 .DESCRIPTION
     OpcEnum.exe is the OPC Foundation server-enumeration service used
     by OPC Classic clients to browse for installed servers via DCOM.
-    The CMake project at external/redist/CMakeLists.txt declares an
+    The CMake project at external/CMakeLists.txt declares an
     x86-only `OpcEnum` target built from
-    external/redist/src/Common/ServerEnumerator/. This helper wraps
+    external/src/Common/ServerEnumerator/. This helper wraps
     the configure + build step and produces:
 
-      external/redist/build/x86/Release/OpcEnum.exe
+      external/build/x86/Release/OpcEnum.exe
 
     Registration (run elevated, after build):
 
@@ -56,7 +56,7 @@ param(
 
 $ErrorActionPreference = 'Stop'
 $repoRoot = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
-$sourceDir = Join-Path $repoRoot 'external\redist'
+$sourceDir = Join-Path $repoRoot 'external'
 $buildDir  = Join-Path $sourceDir 'build\x86'
 
 if (-not (Test-Path $sourceDir)) {

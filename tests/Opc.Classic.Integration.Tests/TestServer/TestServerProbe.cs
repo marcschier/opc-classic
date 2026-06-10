@@ -1,4 +1,4 @@
-﻿//
+//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -7,7 +7,7 @@ namespace Opc.Classic.Tests.Integration.TestServer;
 
 internal static class TestServerProbe {
     /// <summary>OPC Foundation TestServer x64 CLSID (per
-    /// <c>external/redist/samples/OpcTestServer/OpcTestServer.cpp</c>).</summary>
+    /// <c>external/samples/OpcTestServer/OpcTestServer.cpp</c>).</summary>
     public const string TestServerClsid = "F8582CF9-88FB-11DA-A5ED-0060B0692061";
 
     /// <summary>Matching ProgID emitted by <c>OpcTestServer_x64.exe /regserver</c>

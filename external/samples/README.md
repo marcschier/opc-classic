@@ -14,7 +14,7 @@ This folder contains the OPC Foundation's official C++ sample server sources for
 - `SampleClient/Da/Simple Client/` — DA test client for Windows COM client → net10 server compatibility
 - `Shared/Utils/` — common C++ helpers used by the native sample projects
 
-No legacy `.sln` files are currently preserved under `external/redist/samples/`; the native
+No legacy `.sln` files are currently preserved under `external/samples/`; the native
 servers are built by invoking the actual `.vcxproj` files directly.
 
 ## Build
@@ -26,7 +26,7 @@ Requires:
 - OPC Foundation Core Components available on the host (provides
   `opcproxy.dll` for marshalling and OpcEnum). The redistributable installers
   are no longer vendored; build/register the CoreComponents tree under
-  `external\redist` or install the official OPC Foundation package
+  `external` or install the official OPC Foundation package
   externally.
 - C++ desktop workload with ATL/MFC components
 
@@ -34,30 +34,30 @@ Build steps (the projects include OPC headers from `external\inc`):
 
 ```cmd
 :: From Developer Command Prompt for VS 2022:
-set SOLUTIONDIR=%CD%\external\redist\samples\
-msbuild "external\redist\samples\SampleServer\Da\Server\OpcDaServer.vcxproj" /p:Configuration=Release /p:Platform=Win32 /p:SolutionDir="%SOLUTIONDIR%" /p:PlatformToolset=v143 /p:WindowsTargetPlatformVersion=10.0 /m
-msbuild "external\redist\samples\SampleServer\Ae\OpcAeServer.vcxproj" /p:Configuration=Release /p:Platform=Win32 /p:SolutionDir="%SOLUTIONDIR%" /p:PlatformToolset=v143 /p:WindowsTargetPlatformVersion=10.0 /m
-msbuild "external\redist\samples\SampleServer\Hda\Server\OpcHdaServer.vcxproj" /p:Configuration=Release /p:Platform=Win32 /p:SolutionDir="%SOLUTIONDIR%" /p:PlatformToolset=v143 /p:WindowsTargetPlatformVersion=10.0 /m
+set SOLUTIONDIR=%CD%\external\samples\
+msbuild "external\samples\SampleServer\Da\Server\OpcDaServer.vcxproj" /p:Configuration=Release /p:Platform=Win32 /p:SolutionDir="%SOLUTIONDIR%" /p:PlatformToolset=v143 /p:WindowsTargetPlatformVersion=10.0 /m
+msbuild "external\samples\SampleServer\Ae\OpcAeServer.vcxproj" /p:Configuration=Release /p:Platform=Win32 /p:SolutionDir="%SOLUTIONDIR%" /p:PlatformToolset=v143 /p:WindowsTargetPlatformVersion=10.0 /m
+msbuild "external\samples\SampleServer\Hda\Server\OpcHdaServer.vcxproj" /p:Configuration=Release /p:Platform=Win32 /p:SolutionDir="%SOLUTIONDIR%" /p:PlatformToolset=v143 /p:WindowsTargetPlatformVersion=10.0 /m
 ```
 
 The projects emit EXEs under:
 
 ```text
-external\redist\samples\BuildOutput\bin\servers\Win32\Release\
+external\samples\BuildOutput\bin\servers\Win32\Release\
 ```
 
 Register the built EXEs:
 
 ```cmd
-external\redist\samples\regserver.cmd
+external\samples\regserver.cmd
 ```
 
 or manually:
 
 ```cmd
-external\redist\samples\BuildOutput\bin\servers\Win32\Release\OpcDaServer.exe /RegServer
-external\redist\samples\BuildOutput\bin\servers\Win32\Release\OpcAeServer.exe /RegServer
-external\redist\samples\BuildOutput\bin\servers\Win32\Release\OpcHdaServer.exe /RegServer
+external\samples\BuildOutput\bin\servers\Win32\Release\OpcDaServer.exe /RegServer
+external\samples\BuildOutput\bin\servers\Win32\Release\OpcAeServer.exe /RegServer
+external\samples\BuildOutput\bin\servers\Win32\Release\OpcHdaServer.exe /RegServer
 ```
 
 ## CLSID/ProgID inventory
@@ -70,7 +70,7 @@ After build + registration, the following CLSIDs are registered:
 | `OPCSample.OPCEventServer.1` | `{65168852-5783-11D1-84A0-00608CB8A7E9}` | OPC Event Server Sample | AE Sample |
 | `OPCSample.OpcHdaServer.1` | `{6A5EEDEC-1509-4627-997F-993CCB65AB7C}` | OPC Historical Data Access 1.20 Sample Server | HDA Sample |
 
-DA and HDA derive their ProgIDs in `external/redist/samples/Shared/Utils/COpcClassFactory.cpp`
+DA and HDA derive their ProgIDs in `external/samples/Shared/Utils/COpcClassFactory.cpp`
 from `OPC_DECLARE_APPLICATION(OPCSample, ...)` plus
 `OPC_CLASS_TABLE_ENTRY(..., 1, ...)`. Their CLSIDs come from the coclass
 `uuid(...)` declarations in `OpcDaServer.idl` and `OpcHdaServer.idl`.

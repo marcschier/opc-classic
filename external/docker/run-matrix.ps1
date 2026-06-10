@@ -15,7 +15,7 @@
 # Usage:
 #   external/docker/run-matrix.ps1                        # build + start
 #   external/docker/run-matrix.ps1 -SkipBuild             # use existing images
-#   external/docker/run-matrix.ps1 -IncludeTestServer     # also start OpcTestServer_x64 (requires external/redist)
+#   external/docker/run-matrix.ps1 -IncludeTestServer     # also start OpcTestServer_x64 (requires external)
 #   external/docker/run-matrix.ps1 -SkipBuild -SkipUp     # just verify config
 
 [CmdletBinding()]

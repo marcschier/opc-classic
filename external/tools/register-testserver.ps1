@@ -36,7 +36,7 @@
 
 .PARAMETER ExePath
     Full path to OpcTestServer_x64.exe (default: looks for it under
-    external\redist\build\x64\Release\, the vendored CMake output
+    external\build\x64\Release\, the vendored CMake output
     produced by external\tools\build-testserver.ps1). The sibling proxy/stub
     DLLs and OpcTestServer_x64.config.xml are expected alongside.
 
@@ -67,7 +67,7 @@ function Test-IsAdministrator {
 
 function Resolve-DefaultTestServerPath {
     $repoRoot = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
-    $candidate = Join-Path $repoRoot 'external\redist\build\x64\Release\OpcTestServer_x64.exe'
+    $candidate = Join-Path $repoRoot 'external\build\x64\Release\OpcTestServer_x64.exe'
     if (Test-Path -LiteralPath $candidate) {
         return $candidate
     }
@@ -312,8 +312,8 @@ function Copy-TestServerConfig {
     # CO_E_SERVER_EXEC_FAILURE during DCOM activation.
     #
     # The CMake build only copies/renames this file via `cmake --install` (rule
-    # at external/redist/CMakeLists.txt); a plain `cmake --build` step
-    # leaves the source file at external/redist/samples/OpcTestServer/
+    # at external/CMakeLists.txt); a plain `cmake --build` step
+    # leaves the source file at external/samples/OpcTestServer/
     # OpcTestServer.config.xml. Look for it in both locations.
     $configName = 'OpcTestServer_x64.config.xml'
     $destination = Join-Path $ExeDirectory $configName

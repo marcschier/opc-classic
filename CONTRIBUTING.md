@@ -27,7 +27,7 @@ dotnet test Opc.Classic.slnx
 | `samples\` | Ten runnable managed samples for DA/AE/HDA clients and servers, loopback, an additional managed DA sample (CttServer), the OPC Security reference server, and AOT publishing. |
 | `docs\` | Plain Markdown architecture, adoption, cookbook, tutorials, security, migration, architecture diagrams, conformance, release, and roadmap docs. |
 | `external\docker\` | Windows-container test fleet for managed server and native C server/client interop. |
-| `external\redist\samples\` | OPC Foundation native C++ sample servers and test applications used as conformance references. Do not casually rewrite or relicense them. |
+| `external\samples\` | OPC Foundation native C++ sample servers and test applications used as conformance references. Do not casually rewrite or relicense them. |
 | `external\` | OPC Foundation redistributables, IDL, headers, and native sample assets used as conformance inputs. |
 
 The portable stack must not introduce Windows-only COM runtime dependencies such as `[ComImport]`, RCW activation, or `ole32.dll` P/Invoke.
@@ -186,7 +186,7 @@ Use clear commit messages. Do not use PowerShell here-strings for commit message
 The CI matrix includes Windows conformance coverage that can:
 
 1. install OPC Foundation Core Components,
-2. build preserved native C++ OPC sample servers under `external\redist\samples\`,
+2. build preserved native C++ OPC sample servers under `external\samples\`,
 3. register them via the vendored `regserver.cmd` COM-registration helper,
 4. run managed native-conformance subsets against those servers.
 

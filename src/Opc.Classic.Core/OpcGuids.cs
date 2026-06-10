@@ -1,4 +1,4 @@
-﻿//
+//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -8,7 +8,7 @@
 //
 // Identifier naming preserves the OPC Foundation IDL convention exactly
 // (IID_*, CLSID_*, CATID_*) — consumers grep / cross-reference these against
-// the canonical OPC specs and the native C++ samples preserved under external/redist/samples/.
+// the canonical OPC specs and the native C++ samples preserved under external/samples/.
 // CA1707 (no underscores) is suppressed for this file only.
 //
 

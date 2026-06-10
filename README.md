@@ -54,7 +54,7 @@ Walk through the [first DA client tutorial](docs/tutorials/01-build-your-first-d
 | [`samples/`](samples/) | Ten runnable apps — three DA/AE/HDA servers, three clients, a loopback demo, an additional managed DA sample (CttServer), the OPC Security sample server, and a NativeAOT canary. |
 | [`docs/`](docs/README.md) | Documentation hub: architecture, adoption, tutorials, cookbook, migration analyzer, security, conformance, roadmap, and architecture diagrams. |
 | [`external/docker/`](external/docker/README.md) | Windows Docker test fleet — managed-server image, C-built native server/client images, OPC Foundation TestServer/TestClient images, `docker-compose.test.yml`. |
-| [`external/`](external/) | OPC Foundation conformance assets: `external/inc`, `external/redist`, and native C++ sample servers/test apps in `external/redist/samples`. |
+| [`external/`](external/) | OPC Foundation conformance assets: `external/inc`, `external`, and native C++ sample servers/test apps in `external/samples`. |
 | [`.github/`](.github/) | Build, Docker test fleet, and release workflows. |
 
 ## Samples

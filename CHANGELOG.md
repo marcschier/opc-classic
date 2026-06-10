@@ -78,7 +78,7 @@ test fleet authoring, and a matrix-driver process-cleanup hardening.
 
   **Replaced with**: `external/tools/build-opcenum.ps1` builds the
   OpcEnum service directly from the vendored
-  `external/redist/src/Common/ServerEnumerator/` source (x86 CMake
+  `external/src/Common/ServerEnumerator/` source (x86 CMake
   target). The OpcEnum.exe binary supports `/Service` for Windows
   service registration (verified in OpcEnum.cpp:513), and the
   `docker-test-fleet.yml` cross-impl-matrix step now sources OPCEnum
@@ -161,6 +161,19 @@ test fleet authoring, and a matrix-driver process-cleanup hardening.
   limitations / reviewer checklist) for the external `rw-e4` review.
 
 ### Changed
+
+- **Repository restructure: `external/redist/` flattened up to `external/`.**
+  The CMake build tree at `external/redist/` (CoreComponents sources +
+  samples + cmake/ helpers + build scripts) was moved one level up into
+  `external/` directly, dropping the redundant `redist/` directory. All
+  ~37 reference files updated (build/test workflows, build helper
+  scripts in `external/tools/`, docker compose + container scripts,
+  docs, integration tests, source comments). `external/.gitignore`
+  updated to drop the `redist/` prefix from `build/**`, `out/**`,
+  `.vs/**` rules. The vendored CMake target paths (`OpcEnum`,
+  `OpcTestServer`, `OpcTestClient`, 8 proxy/stub DLLs) are unchanged
+  -- only the working directory passed to `cmake -S` shifted from
+  `external/redist` to `external`.
 
 - **Repository restructure: `ext/` → `external/`** (commits `52773c1c`,
   `f40cf2a5`). Renamed `ext/` → `external/`; flattened

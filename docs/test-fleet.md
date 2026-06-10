@@ -15,8 +15,8 @@ docker network create --driver l2bridge --subnet 10.0.1.0/24 --gateway 10.0.1.1 
 external\docker\run-matrix.ps1
 ```
 
-Add the OPC Foundation TestServer reference cells when `external\redist` is
-vendored or `external\redist\build\x64\Release` has been restored from CI:
+Add the OPC Foundation TestServer reference cells when `external` is
+vendored or `external\build\x64\Release` has been restored from CI:
 
 ```pwsh
 external\docker\run-matrix.ps1 -IncludeTestServer
@@ -55,7 +55,7 @@ docker compose --file external\docker\docker-compose.test.yml --profile interact
 
 The `opc-testserver` image builds `OpcTestServer_x64.exe`,
 `OpcTestClient_x64.exe`, `OpcCategoryManager.exe`, and the eight proxy/stub DLLs
-from `external\redist`. The `opc-testclient` image copies its executable and
+from `external`. The `opc-testclient` image copies its executable and
 DLLs from the `opc-classic/testserver` image so the slow CMake build is not
 repeated.
 
@@ -131,8 +131,8 @@ The rc.10 repository baseline outside the Windows-container gate is **0 build wa
 
 `.github/workflows/docker-test-fleet.yml` runs the matrix monthly on
 `windows-2022` and can also be started manually with `workflow_dispatch`. When
-`external\redist` is present, the workflow restores/saves
-`external\redist\build\x64\Release` with `actions/cache` and runs
+`external` is present, the workflow restores/saves
+`external\build\x64\Release` with `actions/cache` and runs
 `external\docker\run-matrix.ps1 -IncludeTestServer`; otherwise the TestServer/TestClient
 cells soft-skip and the managed server smoke still runs. Inspect runs via:
 
@@ -147,7 +147,7 @@ gh run download <run-id> --name docker-test-fleet-results
 - **Cannot run on Linux Docker**: Windows containers require a Windows
   kernel host. Use GitHub Actions' `windows-2022` runner for CI.
 - **CoreComponents cache is best-effort**: CI caches
-  `external\redist\build\x64\Release`, but a source/toolchain hash change
+  `external\build\x64\Release`, but a source/toolchain hash change
   still triggers a cold rebuild.
 - **TestServer/TestClient validation is environment-blocked**: the
   scaffolding is additive and syntax-checked here, but the CoreComponents build

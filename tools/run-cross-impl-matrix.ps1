@@ -63,7 +63,7 @@
 .EXAMPLE
     # Elevated PowerShell required:
     .\tools\run-cross-impl-matrix.ps1 -HklmRegister
-    & external\redist\build\x64\Release\OpcTestClient_x64.exe
+    & external\build\x64\Release\OpcTestClient_x64.exe
 
     HKLM-register every sample server so OPCEnum can enumerate them,
     then run the Foundation OpcTestClient_x64.exe to verify the

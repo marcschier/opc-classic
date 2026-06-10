@@ -1,4 +1,4 @@
-﻿//
+//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -13,8 +13,8 @@ namespace Opc.Classic.Tests.Integration.Native;
 public sealed class OpcSampleHdaServerConformanceTests {
     private const string SampleProgId = "OPCSample.OpcHdaServer.1";
     private static readonly Guid SampleClsid = new("6A5EEDEC-1509-4627-997F-993CCB65AB7C");
-    // ProgID is derived by external/redist/samples/SampleServer/Hda/Server/OpcHdaServer.cpp registration macros.
-    // CLSID is the coclass OpcHdaServer uuid in external/redist/samples/SampleServer/Hda/Server/OpcHdaServer.idl.
+    // ProgID is derived by external/samples/SampleServer/Hda/Server/OpcHdaServer.cpp registration macros.
+    // CLSID is the coclass OpcHdaServer uuid in external/samples/SampleServer/Hda/Server/OpcHdaServer.idl.
 
     [Test]
     [Category("NativeConformance")]

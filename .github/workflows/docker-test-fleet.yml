@@ -30,11 +30,11 @@ jobs:
         id: corecomponents
         shell: pwsh
         run: |
-          $root = "$env:GITHUB_WORKSPACE\external\redist"
+          $root = "$env:GITHUB_WORKSPACE\external"
           $required = @(
             "$root\CMakeLists.txt",
-            "$env:GITHUB_WORKSPACE\external\redist\samples\OpcTestServer\OpcTestServer.cpp",
-            "$env:GITHUB_WORKSPACE\external\redist\samples\OpcTestClient\OpcTestClient.cpp"
+            "$env:GITHUB_WORKSPACE\external\samples\OpcTestServer\OpcTestServer.cpp",
+            "$env:GITHUB_WORKSPACE\external\samples\OpcTestClient\OpcTestClient.cpp"
           )
           $missing = $required | Where-Object { -not (Test-Path $_) }
           if ($missing.Count -gt 0) {
@@ -49,8 +49,8 @@ jobs:
         id: corecomponents-cache
         uses: actions/cache@v4
         with:
-          path: external/redist/build/x64/Release
-          key: corecomponents-ltsc2022-vs2022-${{ runner.os }}-${{ hashFiles('external/redist/CMakeLists.txt', 'external/redist/cmake/**', 'external/redist/src/**', 'external/redist/samples/OpcTestServer/**', 'external/redist/samples/OpcTestClient/**', 'external/tools/build-testserver.ps1', 'external/docker/opc-testserver/Dockerfile') }}
+          path: external/build/x64/Release
+          key: corecomponents-ltsc2022-vs2022-${{ runner.os }}-${{ hashFiles('external/CMakeLists.txt', 'external/cmake/**', 'external/src/**', 'external/samples/OpcTestServer/**', 'external/samples/OpcTestClient/**', 'external/tools/build-testserver.ps1', 'external/docker/opc-testserver/Dockerfile') }}
           restore-keys: |
             corecomponents-ltsc2022-vs2022-${{ runner.os }}-
 
@@ -58,7 +58,7 @@ jobs:
         if: steps.corecomponents.outputs.present == 'true'
         shell: pwsh
         run: |
-          $release = "$env:GITHUB_WORKSPACE\external\redist\build\x64\Release"
+          $release = "$env:GITHUB_WORKSPACE\external\build\x64\Release"
           $required = @(
             'OpcTestServer_x64.exe',
             'OpcTestClient_x64.exe',
@@ -122,7 +122,7 @@ jobs:
     #
     # Gated on workflow_dispatch so the matrix only runs when an operator
     # explicitly triggers it. The TestServer/TestClient Docker containers are
-    # covered by the standard fleet cadence above when external/redist is
+    # covered by the standard fleet cadence above when external is
     # available; this job remains sample-server-only.
     runs-on: windows-2022
     if: github.event_name == 'workflow_dispatch' && github.repository == 'marcschier/opc-classic'
@@ -190,11 +190,11 @@ jobs:
           # OPCEnum is the OPC Foundation server-enumeration service that
           # opcclassic.discovery.enumerate_servers dials over DCOM. Build
           # OpcEnum.exe from the vendored source under
-          # external/redist/src/Common/ServerEnumerator/ (x86 binary; see
+          # external/src/Common/ServerEnumerator/ (x86 binary; see
           # external/tools/build-opcenum.ps1 for details), then install
           # it as a Windows service via OpcEnum.exe /Service.
           .\external\tools\build-opcenum.ps1 -Configuration Release
-          $exe = Resolve-Path 'external\redist\build\x86\Release\OpcEnum.exe'
+          $exe = Resolve-Path 'external\build\x86\Release\OpcEnum.exe'
           Write-Host "Registering OpcEnum service: $exe /Service"
           $p = Start-Process $exe -ArgumentList '/Service' -Wait -PassThru -NoNewWindow
           Write-Host "OpcEnum /Service exit code: $($p.ExitCode)"

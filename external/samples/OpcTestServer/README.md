@@ -7,5 +7,5 @@ Copyright (c) 2026 Opc.Classic .NET Contributors
 
 This directory contains the native OPC Foundation-derived C++ TestServer
 sources relocated from CoreComponents. They are built by
-`external/redist` CMake through `external/tools/build-testserver.ps1` and the
+`external` CMake through `external/tools/build-testserver.ps1` and the
 Docker test fleet, not as a standalone project.

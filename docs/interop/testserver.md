@@ -6,12 +6,12 @@ are MIT-licensed and source-traceable — when our managed proxy fails a
 call against TestServer we can debug into the MIDL-generated stub to see
 exactly which byte rejected it.
 
-## What's in `external/redist/`
+## What's in `external/`
 
 The entire OPC Foundation
 [OPC-Classic-CoreComponents](https://github.com/OPCFoundation/OPC-Classic-CoreComponents)
 repository is vendored in pruned/restructured form under
-`external/redist/` so the native TestServer + proxy/stub DLLs can be
+`external/` so the native TestServer + proxy/stub DLLs can be
 built without an external clone. Key paths:
 
 | Path | Purpose |
@@ -28,7 +28,7 @@ built without an external clone. Key paths:
 | `external/docker/` | Windows Server Core 2022 + VS 2022 build-tools docker harness for reproducible builds without a local VS install. |
 | `build.ps1` | One-shot build entry point. |
 
-See `external/redist/README.md` for the folder layout, local divergences, and vendoring rationale. The OPC Foundation MIT License 1.00 grant lives in
+See `external/README.md` for the folder layout, local divergences, and vendoring rationale. The OPC Foundation MIT License 1.00 grant lives in
 the file headers; `LICENSE.md` at the vendor root is the umbrella
 OPC Foundation license that governs the broader specification suite.
 
@@ -49,10 +49,10 @@ Both register under the `OPC DA 2.05a Test Server` ProgID prefix.
 ```
 
 The script discovers VS's bundled CMake (or any cmake.exe on PATH),
-configures `external\redist\build\x64`, and builds the
+configures `external\build\x64`, and builds the
 `OpcTestServer`, `OpcTestClient`, `OpcCategoryManager`, `opccomn_ps`
 and `opcproxy` targets. Output lands in
-`external\redist\build\x64\Release\`.
+`external\build\x64\Release\`.
 
 Prerequisites: Visual Studio 2022 17.14+ (Desktop development with
 C++ + ATL + Win11 SDK + MSVC v14.44 or later), CMake 3.20+ (bundled
@@ -61,7 +61,7 @@ with VS).
 ### Option 2 — upstream `build.ps1` directly
 
 ```powershell
-cd external\redist
+cd external
 .\build.ps1
 ```
 
@@ -94,7 +94,7 @@ The script performs the no-MSI setup needed for x64 DCOM activation:
    AppID + Implemented Categories for DA 1.0, DA 2.0, and DA 3.0).
 
 Defaults to looking for the EXE and sibling proxy/stub DLLs under
-`external\redist\build\x64\Release\`; pass `-ExePath` to override.
+`external\build\x64\Release\`; pass `-ExePath` to override.
 
 To remove the TestServer entries and the System32 proxy/stub DLLs
 copied by this script: `.\external\tools\register-testserver.ps1 -Unregister`.

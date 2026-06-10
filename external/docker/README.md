@@ -6,7 +6,7 @@ implementation against:
 - A **native (C-built) OPC DA smoke server** — hand-rolled in `external\docker\opc-c-server\build\` with OPC Foundation headers.
 - A **native (C-built) OPC DA smoke client** — hand-rolled in `external\docker\opc-c-client\build\` with OPC Foundation headers.
 - The **OPC Foundation TestServer/TestClient x64 pair** — built from the
-  vendored `external\redist` CMake tree and gated behind
+  vendored `external` CMake tree and gated behind
   `external\docker\run-matrix.ps1 -IncludeTestServer`.
 
 The managed `Opc.Classic.Samples.CttServer` runs beside the native C and OPC
@@ -21,7 +21,7 @@ be tested on a single Windows host. The rc.10 baseline is 0 build warnings/error
 | `opc-classic/managed` | ✅ Ready — publishes `Opc.Classic.Samples.CttServer` and registers `Opc.Classic.DaSample.1` |
 | `opc-classic/c-server` | ✅ Ready — builds the hand-rolled native DA smoke server (`opc_exe.exe`) from `opc-sample-server.cpp` |
 | `opc-classic/c-client` | ✅ Ready — builds the hand-rolled native DA smoke client (`opc-test.exe`) from `opc-test.cpp` |
-| `opc-classic/testserver` | 🧱 Scaffolded — builds OPC Foundation `OpcTestServer_x64.exe` from `external\redist`; validate on a Windows Docker host |
+| `opc-classic/testserver` | 🧱 Scaffolded — builds OPC Foundation `OpcTestServer_x64.exe` from `external`; validate on a Windows Docker host |
 | `opc-classic/testclient` | 🧱 Scaffolded — copies `OpcTestClient_x64.exe` from the testserver image; validate on a Windows Docker host |
 | `docker-compose.test.yml` | ✅ Ready — orchestrates the five images on `opc-test-net` |
 | `.github/workflows/docker-test-fleet.yml` | ✅ Ready — CI entry point for the fleet |
@@ -59,9 +59,9 @@ The `opc-classic/managed` container runs `Opc.Classic.Samples.CttServer` with th
   installs VS Build Tools in a Server Core layer).
 - **One `l2bridge` Docker network** named `opc-test-net` (created on first
   `external/docker/run-matrix.ps1` invocation).
-- **Optional `external\redist` vendor tree** for
+- **Optional `external` vendor tree** for
   `opc-classic/testserver` and `opc-classic/testclient`. OPERATOR: if the tree
-  is omitted locally, restore `external\redist\build\x64\Release` from CI or
+  is omitted locally, restore `external\build\x64\Release` from CI or
   build the TestServer image on a machine with the vendored sources.
 
 ## Quick start
@@ -73,7 +73,7 @@ docker compose --file external/docker/docker-compose.test.yml --profile interact
 ```
 
 This includes `opc-classic/testserver` and `opc-classic/testclient`, so it
-requires `external\redist`. To keep the historical three-image smoke path,
+requires `external`. To keep the historical three-image smoke path,
 use `external\docker\run-matrix.ps1` without `-IncludeTestServer`.
 
 ### Bring the server fleet up

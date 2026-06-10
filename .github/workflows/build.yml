@@ -241,11 +241,11 @@ jobs:
           $msbuild = & $vswhere -latest -requires Microsoft.Component.MSBuild -find MSBuild\**\Bin\MSBuild.exe | Select-Object -First 1
           if (-not $msbuild) { Write-Warning "MSBuild missing"; exit 0 }
 
-          $solutionDir = "$env:GITHUB_WORKSPACE\external\redist\samples\"
+          $solutionDir = "$env:GITHUB_WORKSPACE\external\samples\"
           $projects = @(
-            "$env:GITHUB_WORKSPACE\external\redist\samples\SampleServer\Da\Server\OpcDaServer.vcxproj",
-            "$env:GITHUB_WORKSPACE\external\redist\samples\SampleServer\Ae\OpcAeServer.vcxproj",
-            "$env:GITHUB_WORKSPACE\external\redist\samples\SampleServer\Hda\Server\OpcHdaServer.vcxproj"
+            "$env:GITHUB_WORKSPACE\external\samples\SampleServer\Da\Server\OpcDaServer.vcxproj",
+            "$env:GITHUB_WORKSPACE\external\samples\SampleServer\Ae\OpcAeServer.vcxproj",
+            "$env:GITHUB_WORKSPACE\external\samples\SampleServer\Hda\Server\OpcHdaServer.vcxproj"
           )
 
           foreach ($project in $projects) {
@@ -270,11 +270,11 @@ jobs:
       - name: Register native COM sample servers
         shell: pwsh
         run: |
-          $regCmd = "$env:GITHUB_WORKSPACE\external\redist\samples\regserver.cmd"
+          $regCmd = "$env:GITHUB_WORKSPACE\external\samples\regserver.cmd"
           if (Test-Path $regCmd) {
             & cmd /c $regCmd
           } else {
-            Write-Warning "external/redist/samples/regserver.cmd not found - skipping registration"
+            Write-Warning "external/samples/regserver.cmd not found - skipping registration"
           }
         if: success()
 

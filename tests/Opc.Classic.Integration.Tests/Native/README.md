@@ -19,11 +19,11 @@ in-process before a real native DCOM endpoint is available.
 
 2. Locally on Windows, make the OPC Foundation Core Components available
    (places `opcproxy.dll` etc.; the redistributable installers are no longer
-   vendored, so build/register `external\redist` or install the
+   vendored, so build/register `external` or install the
    official package externally), build the native `.vcxproj` sample servers as
    documented in the vendored native samples README, and register them:
    ```cmd
-   .\external\redist\samples\regserver.cmd
+   .\external\samples\regserver.cmd
    ```
 
 3. Run only the conformance subset:

@@ -25,7 +25,7 @@ The managed components are NativeAOT-compatible, MIT licensed, and exposed throu
 - User application code that consumes or implements OPC interfaces.
 - The underlying TLS stack and certificate validation path, delegated to .NET and the hosting application.
 - Network infrastructure: routing, firewalling, KDC placement, DNS, and NTP.
-- Native OPC Foundation sample servers under `external\redist\samples\` and redistributable inputs under `external\redist\`; they are conformance references, not portable runtime surface.
+- Native OPC Foundation sample servers under `external\samples\` and redistributable inputs under `external\`; they are conformance references, not portable runtime surface.
 
 ### 1.3 Trust boundaries
 

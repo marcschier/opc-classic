@@ -2,12 +2,12 @@
 <#
 .SYNOPSIS
     Build the OPC Foundation TestServer (x64) from the vendored
-    external/redist/ tree using CMake + MSVC.
+    external/ tree using CMake + MSVC.
 
 .DESCRIPTION
     Wraps the upstream OPC-Classic-CoreComponents CMake harness so the
     native TestServer + supporting proxy/stub DLLs can be built without
-    an external clone. Produces (under external/redist/build/x64/Release/):
+    an external clone. Produces (under external/build/x64/Release/):
       OpcTestServer_x64.exe + OpcTestServer_x64.config.xml
       OpcTestClient_x64.exe
       OpcCategoryManager.exe
@@ -40,7 +40,7 @@ param(
 
 $ErrorActionPreference = 'Stop'
 $repoRoot = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
-$sourceDir = Join-Path $repoRoot 'external\redist'
+$sourceDir = Join-Path $repoRoot 'external'
 $buildDir  = Join-Path $sourceDir 'build\x64'
 $samplesDir = Join-Path $sourceDir 'samples'
 

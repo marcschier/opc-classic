@@ -1,4 +1,4 @@
-﻿//
+//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -13,7 +13,7 @@ namespace Opc.Classic.Tests.Integration.Native;
 public sealed class OpcSampleAeServerConformanceTests {
     private const string SampleProgId = "OPCSample.OPCEventServer.1";
     private static readonly Guid SampleClsid = new("65168852-5783-11D1-84A0-00608CB8A7E9");
-    // ProgID and CLSID match external/redist/samples/SampleServer/Ae/OPCEventServer.rgs.
+    // ProgID and CLSID match external/samples/SampleServer/Ae/OPCEventServer.rgs.
 
     [Test]
     [Category("NativeConformance")]

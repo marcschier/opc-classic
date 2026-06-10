@@ -26,7 +26,7 @@ The architecture is designed around three constraints:
 +------------------------------------------------------------------------+
 ```
 
-The portable runtime is pure managed code. Windows-specific features, such as local COM registry writes for native client activation, are isolated behind platform-guarded components. The repository also keeps OPC Foundation C++ sample servers in `external/redist/samples/` and redistributable inputs in `external/redist/` as conformance assets; they are not part of the portable runtime libraries. Spec reference markdown (OPC Foundation + Microsoft Open Specifications mirrors) lives in the private companion repo `marcschier/opc-classic-docs`.
+The portable runtime is pure managed code. Windows-specific features, such as local COM registry writes for native client activation, are isolated behind platform-guarded components. The repository also keeps OPC Foundation C++ sample servers in `external/samples/` and redistributable inputs in `external/` as conformance assets; they are not part of the portable runtime libraries. Spec reference markdown (OPC Foundation + Microsoft Open Specifications mirrors) lives in the private companion repo `marcschier/opc-classic-docs`.
 
 | Area | Current state |
 | --- | --- |

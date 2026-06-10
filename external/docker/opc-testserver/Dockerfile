@@ -8,10 +8,10 @@
 #   2. runtime stage: servercore + TestServer/TestClient/category manager +
 #      the full proxy/stub DLL set + no-MSI DCOM registration on boot.
 #
-# OPERATOR: external/redist and external/redist/samples/OpcTestServer|OpcTestClient
+# OPERATOR: external and external/samples/OpcTestServer|OpcTestClient
 # must be present in the Docker build context. If
 # this vendor tree is intentionally omitted, build the artifacts out-of-band and
-# restore external/redist/build/x64/Release via CI/cache before
+# restore external/build/x64/Release via CI/cache before
 # building.
 # OPERATOR: the VS Build Tools install is slow (~30 min on a cold builder).
 # Keep Docker layer caching and the GitHub Actions CoreComponents cache enabled.
@@ -22,12 +22,12 @@ SHELL ["powershell", "-NoProfile", "-Command", "$ErrorActionPreference = 'Stop';
 
 WORKDIR C:/src
 
-COPY external/redist C:/src/external/redist
-COPY external/redist/samples/OpcTestServer C:/src/external/redist/samples/OpcTestServer
-COPY external/redist/samples/OpcTestClient C:/src/external/redist/samples/OpcTestClient
+COPY external C:/src/external
+COPY external/samples/OpcTestServer C:/src/external/samples/OpcTestServer
+COPY external/samples/OpcTestClient C:/src/external/samples/OpcTestClient
 COPY external/tools/build-testserver.ps1 C:/src/external/tools/build-testserver.ps1
 
-RUN $release = 'C:/src/external/redist/build/x64/Release'; `
+RUN $release = 'C:/src/external/build/x64/Release'; `
     $required = @( `
         'OpcTestServer_x64.exe', `
         'OpcTestClient_x64.exe', `
@@ -66,7 +66,7 @@ RUN $release = 'C:/src/external/redist/build/x64/Release'; `
     }; `
     $configCandidates = @( `
         (Join-Path $release 'OpcTestServer_x64.config.xml'), `
-        'C:/src/external/redist/samples/OpcTestServer/OpcTestServer.config.xml' `
+        'C:/src/external/samples/OpcTestServer/OpcTestServer.config.xml' `
     ); `
     $configSource = $configCandidates | Where-Object { Test-Path -LiteralPath $_ } | Select-Object -First 1; `
     if (-not $configSource) { throw 'OpcTestServer_x64.config.xml/OpcTestServer.config.xml not found in CoreComponents output or source tree.' }; `
