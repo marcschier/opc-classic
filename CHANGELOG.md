@@ -149,6 +149,48 @@ test fleet authoring, and a matrix-driver process-cleanup hardening.
 
 ### Fixed
 
+- **CI workflow campaign for bl1 + bl2** (commits `e878bc18`,
+  `21265d7e`, `b911d5a5`, `947f2bd9`, `68d7c641`, `db01573d`). End-to-end
+  diagnosis + fixes for two long-standing operator-gated workflows:
+  - **bl2 — Docker test fleet** (.github/workflows/docker-test-fleet.yml):
+    cross-impl-matrix step was failing on CI with 18-27 regressions per
+    profile due to (1) PS array binding error
+    (`-Profile A -Profile B ...` rejected; fixed via comma syntax in
+    `21265d7e`), (2) `mcr.microsoft.com` transient registry pull block
+    (added 3-attempt retry+backoff in run-matrix.ps1, `21265d7e`),
+    (3) MS dotnet/framework/sdk image rolling forward to VS Build Tools
+    v18/toolset v180 with no v143 props files (pinned to dated tag
+    `4.8.1-20260414-windowsservercore-ltsc2022` in `947f2bd9`),
+    (4) chocolatey community feed lacks the `npcap` package (replaced
+    with direct download from npcap.com + `/S /winpcap_mode=yes
+    /admin_only=no` silent flags in `947f2bd9`), (5) no OPCEnum service
+    on the runner cascading to discovery + ProgID-resolution failures
+    (added standalone Common Modules MSI install step + `-HklmRegister
+    -UseClsid` to the matrix invocation in `b911d5a5`). Bonus:
+    `e878bc18` made the matrix runner auto-start the AE sample's TCP
+    listener for `samples-ae-managed` (previously operator-gated).
+    Validated locally (elevated) on 2026-06-10: 5 profiles
+    × 105 MATCH / 0 REGRESSION on samples-da, ctt-da, samples-ae,
+    samples-hda, security-da -- matching the dt2 baseline. The
+    docker-test-fleet Docker-image-build job still needs CI dispatch
+    to validate the VS toolset image pin (Docker Desktop locally is
+    Linux-mode; switching to Windows is operator action).
+  - **bl1 — OPC CTT conformance** (.github/workflows/opc-ctt.yml):
+    workflow exited 0 historically but never actually ran CTT because
+    it looked for `OpcCtt.exe` under `\OPC Foundation\OPC Compliance
+    Test Tool\` -- a path that does not exist. Local elevated install
+    on 2026-06-10 surfaced the real layout: CTT v2.0.15 installs to
+    `\OPC Foundation\Compliance Test 2.00\Common\OPCDACT.exe` (legacy
+    "OPC DA Compliance Test" filename; FileVersion-info confirms it is
+    the OPC Compliance Test Tool shell). Workflow + docs/ctt/CI_DESIGN.md
+    rewritten to use the real path (commit `db01573d`). Additional
+    finding: CTT v2.0.15 is a WinForms GUI app with no documented
+    headless CLI; the speculative `/AUTO /Output: /ServerProgId:` was
+    fiction. The workflow's CTT step is now an explicit install + DCOM
+    handshake smoke (5s GUI launch then stop), NOT a conformance pass.
+    A real headless CTT pass needs UI automation (AutoIt/pywinauto) or
+    a future CTT release with a CLI -- tracked in CI_DESIGN's
+    Unknowns/TBDs section.
 - **DR32/DR33 real-fix campaign — `[OpcRefString]` on AE simple_ref scalars
   + Phase E conclusive vendor-bug finding** (commits `d7d8fa1e`, `7078f62d`,
   `63fecfb2`, `c5ebb77d`, `ac6d8891`, `d9f25d84`). 6-phase investigation
