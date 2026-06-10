@@ -25,7 +25,7 @@ internal static class NativeServerProbe {
         }
 
         if (!IsRegistered(progId)) {
-            reason = $"Native server {progId} is not registered (Phase 14A workflow must install OpcCoreComponents.exe + run external/samples/regserver.cmd)";
+            reason = $"Native server {progId} is not registered (Phase 14A workflow must install OpcCoreComponents.exe + run interop/samples/regserver.cmd)";
             return true;
         }
 
@@ -40,7 +40,7 @@ internal static class NativeServerProbe {
         }
 
         if (!TryGetRegisteredClsid(progId, out var actualClsid)) {
-            reason = $"Native server {progId} is not registered (Phase 14A workflow must install OpcCoreComponents.exe + run external/samples/regserver.cmd)";
+            reason = $"Native server {progId} is not registered (Phase 14A workflow must install OpcCoreComponents.exe + run interop/samples/regserver.cmd)";
             return true;
         }
 

@@ -23,7 +23,7 @@ in-process before a real native DCOM endpoint is available.
    official package externally), build the native `.vcxproj` sample servers as
    documented in the vendored native samples README, and register them:
    ```cmd
-   .\external\samples\regserver.cmd
+   .\interop\samples\regserver.cmd
    ```
 
 3. Run only the conformance subset:

@@ -34,6 +34,6 @@ AOT settings here are appropriate.
 
 ## Adopter cookbook
 
-See [`docs/interop/network-capture.md`](../../docs/interop/network-capture.md)
+See [`interop/docs/network-capture.md`](../../interop/docs/network-capture.md)
 for the end-to-end capture / decode / replay walkthrough, privilege
 requirements, BPF filter examples, and Wireshark integration.

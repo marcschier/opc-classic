@@ -16,7 +16,7 @@ opc-classic/
 ├── tests/                        TUnit projects on Microsoft.Testing.Platform
 ├── samples/                      10 sample apps: DA/AE/HDA servers + clients, LoopbackDemo, CttServer (additional managed DA sample), OpcSecurityServer, AotCanary
 ├── docs/                         plain Markdown documentation hub and topic pages
-├── external/                     OPC Foundation IDL (`external/inc`), redistributables (`external`), and native C++ samples/test apps (`external/samples`); spec reference markdown lives in the private `marcschier/opc-classic-docs` repo
+├── interop/                     OPC Foundation IDL (`interop/inc`), redistributables (`external`), and native C++ samples/test apps (`interop/samples`); spec reference markdown lives in the private `marcschier/opc-classic-docs` repo
 │   └── docker/                   Windows-container managed/native interop test fleet
 ├── .github/workflows/            build, release, and Docker test fleet workflows
 ├── Opc.Classic.slnx              .NET 10 XML solution format
@@ -25,7 +25,7 @@ opc-classic/
 └── README.md
 ```
 
-`external/` retains its upstream notices and is used for conformance validation. Project source is MIT licensed.
+`interop/` retains its upstream notices and is used for conformance validation. Project source is MIT licensed.
 
 ## Build / test / run
 

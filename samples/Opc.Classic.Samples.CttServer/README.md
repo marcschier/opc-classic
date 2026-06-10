@@ -65,7 +65,7 @@ Unregister removes the per-server tree but leaves the shared `Component Categori
 
 ## Docker integration
 
-The Windows-container test fleet publishes this project into `opc-classic/managed`; see `samples\README.docker.md` and `external\docker\README.md` for the compose workflow.
+The Windows-container test fleet publishes this project into `opc-classic/managed`; see `samples\README.docker.md` and `interop\docker\README.md` for the compose workflow.
 
 ## COM SCM activation (-Embedding)
 

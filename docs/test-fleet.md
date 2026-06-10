@@ -1,8 +1,8 @@
 # Docker test fleet — adopter cookbook
 
-How to use the `external/docker/` fleet for end-to-end DCOM testing of the managed
-implementation. For the architectural overview see [`external/docker/README.md`](../external/docker/README.md).
-The fleet contains five Windows-container targets from `external/docker/docker-compose.test.yml`:
+How to use the `interop/docker/` fleet for end-to-end DCOM testing of the managed
+implementation. For the architectural overview see [`interop/docker/README.md`](../interop/docker/README.md).
+The fleet contains five Windows-container targets from `interop/docker/docker-compose.test.yml`:
 `c-server`, `managed-server`, `testserver`, `c-client`, and `testclient`.
 
 ## Common workflows
@@ -12,14 +12,14 @@ The fleet contains five Windows-container targets from `external/docker/docker-c
 ```pwsh
 # From the repo root, on a Windows host with Docker Desktop in Windows mode:
 docker network create --driver l2bridge --subnet 10.0.1.0/24 --gateway 10.0.1.1 opc-test-net
-external\docker\run-matrix.ps1
+interop\docker\run-matrix.ps1
 ```
 
 Add the OPC Foundation TestServer reference cells when `external` is
-vendored or `external\build\x64\Release` has been restored from CI:
+vendored or `interop\build\x64\Release` has been restored from CI:
 
 ```pwsh
-external\docker\run-matrix.ps1 -IncludeTestServer
+interop\docker\run-matrix.ps1 -IncludeTestServer
 ```
 
 This also brings up the `opc-classic/testserver` container so the
@@ -29,11 +29,11 @@ This also brings up the `opc-classic/testserver` container so the
 ### 2. Drive the managed server from a native C client
 
 The `opc-c-client` image builds the hand-rolled DA client MVP from
-`external/docker/opc-c-client/build/opc-test.cpp` and can target the managed server:
+`interop/docker/opc-c-client/build/opc-test.cpp` and can target the managed server:
 
 ```pwsh
-docker compose --file external\docker\docker-compose.test.yml up -d managed-server
-docker compose --file external\docker\docker-compose.test.yml --profile interactive run --rm c-client `
+docker compose --file interop\docker\docker-compose.test.yml up -d managed-server
+docker compose --file interop\docker\docker-compose.test.yml --profile interactive run --rm c-client `
     -ProgId Opc.Classic.DaSample.1 `
     -TargetHost opc-classic-managed
 ```
@@ -41,12 +41,12 @@ docker compose --file external\docker\docker-compose.test.yml --profile interact
 ### 3. Smoke the native C server/client MVPs
 
 The `opc-c-server` image builds the hand-rolled DA server MVP from
-`external/docker/opc-c-server/build/opc-sample-server.cpp`; the `opc-c-client` image can
+`interop/docker/opc-c-server/build/opc-sample-server.cpp`; the `opc-c-client` image can
 be pointed at it on the same `opc-test-net` l2bridge network.
 
 ```pwsh
-docker compose --file external\docker\docker-compose.test.yml up -d c-server
-docker compose --file external\docker\docker-compose.test.yml --profile interactive run --rm c-client `
+docker compose --file interop\docker\docker-compose.test.yml up -d c-server
+docker compose --file interop\docker\docker-compose.test.yml --profile interactive run --rm c-client `
     -ProgId Opc.SampleServer.1 `
     -TargetHost opc-classic-c-server
 ```
@@ -60,13 +60,13 @@ DLLs from the `opc-classic/testserver` image so the slow CMake build is not
 repeated.
 
 ```pwsh
-docker compose --file external\docker\docker-compose.test.yml build testserver
-docker compose --file external\docker\docker-compose.test.yml build testclient
-docker compose --file external\docker\docker-compose.test.yml up -d testserver
-docker compose --file external\docker\docker-compose.test.yml --profile interactive run --rm testclient `
+docker compose --file interop\docker\docker-compose.test.yml build testserver
+docker compose --file interop\docker\docker-compose.test.yml build testclient
+docker compose --file interop\docker\docker-compose.test.yml up -d testserver
+docker compose --file interop\docker\docker-compose.test.yml --profile interactive run --rm testclient `
     -TargetHost opc-classic-testserver `
     -ProgId OpcTestServer_x64.1
-docker compose --file external\docker\docker-compose.test.yml down
+docker compose --file interop\docker\docker-compose.test.yml down
 ```
 
 OPERATOR: the `testclient` shim uses the DCOM `RemoteServerName` AppID value
@@ -132,8 +132,8 @@ The rc.10 repository baseline outside the Windows-container gate is **0 build wa
 `.github/workflows/docker-test-fleet.yml` runs the matrix monthly on
 `windows-2022` and can also be started manually with `workflow_dispatch`. When
 `external` is present, the workflow restores/saves
-`external\build\x64\Release` with `actions/cache` and runs
-`external\docker\run-matrix.ps1 -IncludeTestServer`; otherwise the TestServer/TestClient
+`interop\build\x64\Release` with `actions/cache` and runs
+`interop\docker\run-matrix.ps1 -IncludeTestServer`; otherwise the TestServer/TestClient
 cells soft-skip and the managed server smoke still runs. Inspect runs via:
 
 ```pwsh
@@ -147,7 +147,7 @@ gh run download <run-id> --name docker-test-fleet-results
 - **Cannot run on Linux Docker**: Windows containers require a Windows
   kernel host. Use GitHub Actions' `windows-2022` runner for CI.
 - **CoreComponents cache is best-effort**: CI caches
-  `external\build\x64\Release`, but a source/toolchain hash change
+  `interop\build\x64\Release`, but a source/toolchain hash change
   still triggers a cold rebuild.
 - **TestServer/TestClient validation is environment-blocked**: the
   scaffolding is additive and syntax-checked here, but the CoreComponents build

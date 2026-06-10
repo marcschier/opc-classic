@@ -592,7 +592,7 @@ def capture_session_args(runner: ProbeRunner) -> dict[str, Any]:
 # stub body) used as a benign decode_pdu probe payload. Decoded by
 # OpcDcomDecoder unconditionally -- a zero-byte input or null-padded
 # input would fail at the codec layer. This is a real frame from
-# docs/interop/wire-captures/.
+# interop/docs/wire-captures/.
 _SAMPLE_PDU_HEX = (
     "0500020310000000180000000100000000000000000000000000000000000000"
 )
@@ -742,7 +742,7 @@ def parse_args() -> argparse.Namespace:
         default=None,
         help="Directory to write per-call NDR request+response hex dumps. "
              "Sets OPCCLASSIC_WIRE_CAPTURE_DIR on the spawned MCP server. "
-             "See docs/interop/wire-captures/README.md.",
+             "See interop/docs/wire-captures/README.md.",
     )
 
     parser.add_argument(

@@ -74,7 +74,7 @@ The previous “opnum mismatch epidemic” and “method not declared” finding
 > **2026-06-10 update (DR32/DR33 real-fix Phase A-D1 + Phase E
 > conclusive finding, commits `d7d8fa1e` `7078f62d` `63fecfb2`
 > `c5ebb77d` `ac6d8891` `d9f25d84`).** The wire-format root cause
-> was extracted from `external/inc/opc_ae_p.c` (Phase A spec at
+> was extracted from `interop/inc/opc_ae_p.c` (Phase A spec at
 > `docs/conformance/ae-wire-format.md`), validated by byte-level
 > capture of the managed encoder's output (Phase B fixtures at
 > `tests/Opc.Classic.Ae.Tests/Wire/Dr3233/Fixtures/`), and fixed by

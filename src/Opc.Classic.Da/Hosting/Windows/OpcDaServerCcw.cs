@@ -1,4 +1,4 @@
-﻿//
+//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -845,7 +845,7 @@ public static unsafe class OpcDaServerCcw {
 
     /// <summary>
     /// Native marshalling of <c>OPCSERVERSTATUS</c> as defined in
-    /// <c>external\inc\opcda.h</c> (MIDL-generated). LayoutKind.Sequential with
+    /// <c>interop\inc\opcda.h</c> (MIDL-generated). LayoutKind.Sequential with
     /// default packing (natural alignment) matches MIDL's default on x64,
     /// where <c>szVendorInfo</c> (LPWSTR = pointer) needs 8-byte alignment.
     /// A non-default <c>Pack</c> value would put the pointer at an

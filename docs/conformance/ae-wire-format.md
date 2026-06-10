@@ -5,7 +5,7 @@
 > native `opcae_ps.dll` MIDL proxy/stub expects for
 > `IOPCEventServer::GetConditionState` (opnum 12) and
 > `IOPCEventServer::AckCondition` (opnum 17). Source: the
-> vendored `external/inc/opc_ae_p.c` (119 KB of MIDL-generated
+> vendored `interop/inc/opc_ae_p.c` (119 KB of MIDL-generated
 > proxy/stub C source). Cited byte-by-byte against
 > ProcFormatString + TypeFormatString offsets in that file.
 >
@@ -56,7 +56,7 @@
 
 ## GetConditionState (opnum 12)
 
-### Method signature (from `external/inc/opc_ae.idl:206-212`)
+### Method signature (from `interop/inc/opc_ae.idl:206-212`)
 
 ```idl
 HRESULT GetConditionState (
@@ -229,7 +229,7 @@ validate in Phase C against actual managed-encoder output):
 
 ## AckCondition (opnum 17)
 
-### Method signature (from `external/inc/opc_ae.idl:235-244`)
+### Method signature (from `interop/inc/opc_ae.idl:235-244`)
 
 ```idl
 HRESULT AckCondition(
@@ -375,20 +375,20 @@ Phase D can proceed with confidence.
 
 ## Source citations
 
-- `external/inc/opc_ae.idl:206-212` — GetConditionState IDL signature
-- `external/inc/opc_ae.idl:235-244` — AckCondition IDL signature
-- `external/inc/opc_ae.idl:106-131` — OPCCONDITIONSTATE struct IDL
-- `external/inc/opc_ae_p.c:564-612` — GetConditionState ProcFormatString
-- `external/inc/opc_ae_p.c:742-808` — AckCondition ProcFormatString
-- `external/inc/opc_ae_p.c:1734-1888` — TypeFormatString offsets 0-200
+- `interop/inc/opc_ae.idl:206-212` — GetConditionState IDL signature
+- `interop/inc/opc_ae.idl:235-244` — AckCondition IDL signature
+- `interop/inc/opc_ae.idl:106-131` — OPCCONDITIONSTATE struct IDL
+- `interop/inc/opc_ae_p.c:564-612` — GetConditionState ProcFormatString
+- `interop/inc/opc_ae_p.c:742-808` — AckCondition ProcFormatString
+- `interop/inc/opc_ae_p.c:1734-1888` — TypeFormatString offsets 0-200
   (FILETIME at 10, szSource/szConditionName at 144, pdwAttributeIDs
   carray at 242, ppConditionState marshal at 252→256)
-- `external/inc/opc_ae_p.c:1888-2010` — TypeFormatString offsets
+- `interop/inc/opc_ae_p.c:1888-2010` — TypeFormatString offsets
   240-340 (pdwCookie+pftActiveTime+pszSource/pszConditionName carrays
   at 1396/1430/1448, OPCCONDITIONSTATE outer at 1304)
-- `external/inc/opc_ae_p.c:2680-2750` — OPCCONDITIONSTATE struct body
+- `interop/inc/opc_ae_p.c:2680-2750` — OPCCONDITIONSTATE struct body
   + pointer layout (offsets 1304-1390)
-- `external/inc/opc_ae_p.c:2762-2820` — AckCondition array type
+- `interop/inc/opc_ae_p.c:2762-2820` — AckCondition array type
   defs (offsets 1396-1458)
 
 ---

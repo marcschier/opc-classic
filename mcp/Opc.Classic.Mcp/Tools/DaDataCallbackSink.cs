@@ -1,4 +1,4 @@
-﻿//
+//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -60,7 +60,7 @@ public sealed record DataChangeNotification(
 /// <para>
 /// Production inbound-callback wiring (an <c>OpcServerListener</c> hosting an
 /// <c>IOPCDataCallbackServerDispatcher</c> with this sink as the
-/// implementation) is still deferred — see <c>docs/interop/da-callbacks.md</c>
+/// implementation) is still deferred — see <c>interop/docs/da-callbacks.md</c>
 /// for the AP track status. Today the sink is constructed eagerly when
 /// <c>opcclassic.da.subscribe</c> creates a <c>DaSubscriptionContext</c> so
 /// the queue contract is testable in isolation.

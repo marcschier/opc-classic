@@ -20,14 +20,14 @@ namespace Opc.Classic.Tests.Integration.TestServer;
 /// These tests are gated by <see cref="TestServerProbe.ShouldSkip"/> —
 /// they soft-skip when the TestServer CLSID
 /// <c>{F8582CF9-88FB-11DA-A5ED-0060B0692061}</c> is not registered on
-/// the host. To enable: build via <c>external\tools\build-testserver.ps1</c>
-/// and register via <c>external\tools\register-testserver.ps1</c> (elevated).
+/// the host. To enable: build via <c>interop\tools\build-testserver.ps1</c>
+/// and register via <c>interop\tools\register-testserver.ps1</c> (elevated).
 /// </para>
 /// <para>
 /// Live activation against the locally built TestServer may also fail
 /// with <c>CO_E_SERVER_EXEC_FAILURE</c> until the proxy/stub DLLs are
 /// system-installed via the upstream MSI (see
-/// <c>docs/interop/testserver.md</c> for the recommended install
+/// <c>interop/docs/testserver.md</c> for the recommended install
 /// path).
 /// </para>
 /// </remarks>
@@ -37,7 +37,7 @@ public sealed class TestServerDaLifecycleTests {
     [Test, Category(LiveCategory)]
     public async Task TestServer_clsid_and_progid_match_upstream_constants() {
         // Scaffold assertion: confirms the well-known CLSID/ProgID match
-        // the upstream `external/samples/OpcTestServer/OpcTestServer.cpp`
+        // the upstream `interop/samples/OpcTestServer/OpcTestServer.cpp`
         // declarations. Catches accidental drift if upstream rev-bumps the GUID.
         await Assert.That(ConformanceMetadata.ReadString(TestServerProbe.TestServerClsid)).IsEqualTo("F8582CF9-88FB-11DA-A5ED-0060B0692061");
         await Assert.That(ConformanceMetadata.ReadString(TestServerProbe.TestServerProgId)).IsEqualTo("OpcTestServer_x64.1");
@@ -93,7 +93,7 @@ public sealed class TestServerDaLifecycleTests {
             try { proc.Kill(entireProcessTree: true); } catch { /* ignore */ }
             throw new TimeoutException(
                 "mcp_driver.py --testserver exceeded 180s. The TestServer is likely " +
-                "blocked by CO_E_SERVER_EXEC_FAILURE — see docs/interop/testserver.md " +
+                "blocked by CO_E_SERVER_EXEC_FAILURE — see interop/docs/testserver.md " +
                 "for the MSI install path that unblocks DCOM SCM activation.");
         }
         var stdout = await stdoutTask.ConfigureAwait(false);

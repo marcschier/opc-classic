@@ -1,4 +1,4 @@
-﻿//
+//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -10,7 +10,7 @@ namespace Opc.Classic.Hosting;
 /// <summary>
 /// Standard OPC Foundation component-category identifiers (CATIDs) for the OPC
 /// Classic server specifications. Values are verified against the published OPC
-/// Foundation IDL definitions in <c>external\inc\opcda_i.c</c>,
+/// Foundation IDL definitions in <c>interop\inc\opcda_i.c</c>,
 /// <c>opc_ae_i.c</c>, <c>opchda_i.c</c>, <c>OpcDx_i.c</c>, and <c>opcbc_i.c</c>.
 /// </summary>
 public static class OpcComponentCategories {

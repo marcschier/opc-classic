@@ -1,4 +1,4 @@
-﻿//
+//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -100,7 +100,7 @@ public partial interface IOPCEventServer {
 
     /// <summary><c>IOPCEventServer::GetConditionState</c> (opnum 12). Returns a condition-state snapshot.</summary>
     /// <remarks>
-    /// Per <c>external/inc/opc_ae_p.c:564-612</c> + <c>TypeFormatString[144]</c>,
+    /// Per <c>interop/inc/opc_ae_p.c:564-612</c> + <c>TypeFormatString[144]</c>,
     /// <c>opcae_ps.dll</c> marks <c>szSource</c>/<c>szConditionName</c> as
     /// <c>FC_RP [simple_pointer] → FC_C_WSTRING</c> (flag <c>0x10b</c>) —
     /// NO outer <c>[unique]</c> referent before the conformant-varying string
@@ -142,7 +142,7 @@ public partial interface IOPCEventServer {
     /// IDL signature: <c>HRESULT AckCondition(DWORD dwCount, LPWSTR szAcknowledgerID,
     /// LPWSTR szComment, [size_is(N)] LPWSTR *pszSource, [size_is(N)] LPWSTR *pszConditionName,
     /// [size_is(N)] FILETIME *pftActiveTime, [size_is(N)] DWORD *pdwCookie, ...)</c>.
-    /// Per <c>external/inc/opc_ae_p.c:742-808</c> + <c>TypeFormatString[144]</c>,
+    /// Per <c>interop/inc/opc_ae_p.c:742-808</c> + <c>TypeFormatString[144]</c>,
     /// <c>opcae_ps.dll</c> marks <c>szAcknowledgerID</c>/<c>szComment</c> as
     /// <c>FC_RP [simple_pointer] → FC_C_WSTRING</c> (flag <c>0x10b</c>) — NO
     /// outer <c>[unique]</c> referent before the FC_C_WSTRING body.

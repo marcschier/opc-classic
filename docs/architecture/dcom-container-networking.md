@@ -49,7 +49,7 @@ docker network create `
     opc-test-net
 ```
 
-Containers are assigned fixed IPs in `external\docker\docker-compose.test.yml` so the
+Containers are assigned fixed IPs in `interop\docker\docker-compose.test.yml` so the
 DCOM bindings advertise stable, peer-routable addresses.
 
 ### Functional managed DCOM-over-IP sample path (Track E)
@@ -151,7 +151,7 @@ when the fleet needs production-style authenticated DCOM.
 
 - [MS-DCOM] §2.2.19 — DUALSTRINGARRAY format
 - [MS-RPCE] §3.1.1.5 — ncacn_ip_tcp endpoint allocation
-- `external\docker\opc-managed\dcom-test-acls.reg` — the source of truth for our ACL relaxations
+- `interop\docker\opc-managed\dcom-test-acls.reg` — the source of truth for our ACL relaxations
 - `samples\README.docker.md` — functional managed DCOM-over-IP sample topology
 - `src\Opc.Classic.Dcom\Transport\DcomCallChannelFactory.cs` — direct TCP client helper used by the samples
 - [DcomContainerSample](https://github.com/wazzzaatosh/DcomContainerSample) — reference repo

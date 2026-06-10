@@ -26,7 +26,7 @@ mark them as PASS).
 
 This module is imported by tools/probe_servers.py.
 
-Profile docs: docs/interop/probe-coverage.md.
+Profile docs: interop/docs/probe-coverage.md.
 """
 
 from __future__ import annotations
@@ -282,7 +282,7 @@ def _ae_matrix() -> dict[str, str]:
     # following multi-phase investigation:
     #
     # Phase A (commit d7d8fa1e): extracted the authoritative wire format from
-    # the vendored external/inc/opc_ae_p.c MIDL-generated proxy/stub source.
+    # the vendored interop/inc/opc_ae_p.c MIDL-generated proxy/stub source.
     # Spec doc at docs/conformance/ae-wire-format.md. Identified that
     # szSource/szConditionName (GetConditionState) and szAcknowledgerID/
     # szComment (AckCondition) are marked [simple ref] (flags 0x10b, FC_RP

@@ -1,4 +1,4 @@
-﻿//
+//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -17,7 +17,7 @@ namespace Opc.Classic;
 /// <c>IOPCBrowse</c> is a DA code. Surfaces in this static class are
 /// labelled with their AE meaning.
 /// <para>
-/// Values sourced from <c>external/inc/opcae_er.h</c>.
+/// Values sourced from <c>interop/inc/opcae_er.h</c>.
 /// </para>
 /// </remarks>
 public static class OpcAeResultId {

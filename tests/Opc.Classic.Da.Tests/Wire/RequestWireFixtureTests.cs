@@ -1,4 +1,4 @@
-﻿//
+//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -10,7 +10,7 @@
 // Authoring conventions:
 // - Use realistic inputs that mirror the live probe (Bucket Brigade.Int4,
 //   Test.Int32) so a developer can compare a failing fixture against a
-//   docs/interop/wire-captures/*.hex artifact byte-for-byte.
+//   interop/docs/wire-captures/*.hex artifact byte-for-byte.
 // - Capture the request payload via a handler closure rather than the
 //   InMemoryCall log (the log only records payload length).
 // - Assert the exact byte[] — never a "decodes back correctly" round-trip.

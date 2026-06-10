@@ -7,11 +7,11 @@ namespace Opc.Classic.Tests.Integration.TestServer;
 
 internal static class TestServerProbe {
     /// <summary>OPC Foundation TestServer x64 CLSID (per
-    /// <c>external/samples/OpcTestServer/OpcTestServer.cpp</c>).</summary>
+    /// <c>interop/samples/OpcTestServer/OpcTestServer.cpp</c>).</summary>
     public const string TestServerClsid = "F8582CF9-88FB-11DA-A5ED-0060B0692061";
 
     /// <summary>Matching ProgID emitted by <c>OpcTestServer_x64.exe /regserver</c>
-    /// or by <c>external\tools\register-testserver.ps1</c>.</summary>
+    /// or by <c>interop\tools\register-testserver.ps1</c>.</summary>
     public const string TestServerProgId = "OpcTestServer_x64.1";
 
     /// <summary>The three items exposed by <c>OpcTestServer.config.xml</c>.</summary>
@@ -29,7 +29,7 @@ internal static class TestServerProbe {
 
         if (!string.Equals(System.Environment.GetEnvironmentVariable("OPC_CLASSIC_LIVE_TESTSERVER"), "1", StringComparison.Ordinal)) {
             reason = "Set OPC_CLASSIC_LIVE_TESTSERVER=1 to opt into live TestServer activation tests (default off because " +
-                     "DCOM SCM activation requires elevated TestServer and proxy/stub registration — see docs/interop/testserver.md).";
+                     "DCOM SCM activation requires elevated TestServer and proxy/stub registration — see interop/docs/testserver.md).";
             return true;
         }
 

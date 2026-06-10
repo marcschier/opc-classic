@@ -33,7 +33,7 @@ jobs:
         run: dotnet build tests/Opc.Classic.Integration.Tests --configuration Release --no-restore
 
       - name: Start Samba fixture
-        run: docker compose -f external/docker/samba/docker-compose.yml up -d --build
+        run: docker compose -f interop/docker/samba/docker-compose.yml up -d --build
 
       - name: Wait for Samba health
         shell: bash
@@ -60,4 +60,4 @@ jobs:
 
       - name: Stop Samba fixture
         if: always()
-        run: docker compose -f external/docker/samba/docker-compose.yml down -v
+        run: docker compose -f interop/docker/samba/docker-compose.yml down -v

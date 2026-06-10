@@ -1,4 +1,4 @@
-﻿//
+//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -217,7 +217,7 @@ public sealed class DaClientState : IAsyncDisposable {
     /// Disposed by <see cref="DisposeAsync"/>. Not auto-started by Subscribe;
     /// production callback bring-up against real OPC servers needs
     /// <c>IObjectExporter</c> OXID-resolution support which is tracked under
-    /// AP1/AP2/AP4 — see <c>docs/interop/da-callbacks.md</c>.
+    /// AP1/AP2/AP4 — see <c>interop/docs/da-callbacks.md</c>.
     /// </summary>
     public Tools.DaCallbackEndpoint? CallbackEndpoint { get; private set; }
 

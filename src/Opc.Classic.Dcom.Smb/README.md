@@ -20,7 +20,7 @@ Minimal, MIT-licensed, AOT-clean SMB2 client tightly scoped to the named-pipe op
 | RPC adapter/builder — `Smb2RpcTransportAdapter`, `Smb2RpcTransportBuilder`, `SmbRpcAddress` | ✅ sync bridge for legacy `ITransport` callers |
 | NTLMSSP blob threading into SESSION_SETUP | ✅ Carrier API (`NtlmsspBlobProvider`) — actual NTLM Type 1/2/3 generation comes from `src\Opc.Classic.Dcom\rpc\Auth\` |
 | WINREG replay validation | ✅ captured request/response fixtures under `tests\Opc.Classic.Dcom.Smb.Tests\Fixtures\Winreg\` |
-| Samba WINREG smoke | ✅ `external\docker\samba` fixture + `.github\workflows\samba-smoke.yml` gated by `OPC_CLASSIC_INTEGRATION_SAMBA=1` |
+| Samba WINREG smoke | ✅ `interop\docker\samba` fixture + `.github\workflows\samba-smoke.yml` gated by `OPC_CLASSIC_INTEGRATION_SAMBA=1` |
 | SMB2 signing (HMAC-SHA256 for SMB 2.0.2/2.1; AES-CMAC for SMB 3.x) | ✅ signs outgoing PDUs and verifies signed responses when SessionKey is supplied |
 | SMB2 encryption (AES-128-CCM/GCM for SMB 3.x) | ⏳ deferred |
 

@@ -219,7 +219,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: .
-          file: external/docker/opc-managed/Dockerfile
+          file: interop/docker/opc-managed/Dockerfile
           push: true
           tags: ${{ steps.tags.outputs.managed_tags }}
           labels: |
@@ -250,7 +250,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: .
-          file: external/docker/opc-c-server/Dockerfile
+          file: interop/docker/opc-c-server/Dockerfile
           push: true
           tags: ${{ steps.tags.outputs.cserver_tags }}
           labels: |
@@ -274,7 +274,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: .
-          file: external/docker/opc-c-client/Dockerfile
+          file: interop/docker/opc-c-client/Dockerfile
           push: true
           tags: ${{ steps.tags.outputs.cclient_tags }}
           labels: |
@@ -342,7 +342,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: .
-          file: external/docker/opc-managed/Dockerfile.linux
+          file: interop/docker/opc-managed/Dockerfile.linux
           push: true
           platforms: linux/amd64,linux/arm64
           tags: ${{ steps.tags.outputs.linux_tags }}

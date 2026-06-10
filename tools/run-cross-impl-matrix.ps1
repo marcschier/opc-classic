@@ -17,7 +17,7 @@
       - Python 3.10+ on PATH.
       - Sample servers built (`dotnet build` of samples/).
       - For TestServer profile: requires the TestServer DCOM ACL grant from
-        `external/tools/grant-testserver-acl.ps1` to have run elevated once.
+        `interop/tools/grant-testserver-acl.ps1` to have run elevated once.
 
 .PARAMETER Profile
     Restrict to specific profiles. May be repeated. Default: every profile.
@@ -63,7 +63,7 @@
 .EXAMPLE
     # Elevated PowerShell required:
     .\tools\run-cross-impl-matrix.ps1 -HklmRegister
-    & external\build\x64\Release\OpcTestClient_x64.exe
+    & interop\build\x64\Release\OpcTestClient_x64.exe
 
     HKLM-register every sample server so OPCEnum can enumerate them,
     then run the Foundation OpcTestClient_x64.exe to verify the

@@ -1,10 +1,10 @@
-﻿//
+//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
 // OPC HDA DCOM-projection interfaces. [GenerateOpcProxy] and
 // [OpcGenerateServerDispatch] are applied broadly; [OpcMethod] opnums
-// follow external\inc\opchda.idl exactly (IUnknown slots 0-2).
+// follow interop\inc\opchda.idl exactly (IUnknown slots 0-2).
 //
 
 #pragma warning disable CA1707 // OPC IDL naming preserved (IOPCHDA_Server with underscore)

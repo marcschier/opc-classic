@@ -1,4 +1,4 @@
-﻿//
+//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -15,7 +15,7 @@ namespace Opc.Classic.Da.Tests.Wire.Replay;
 /// <summary>
 /// Loader for the per-call hex dumps emitted by
 /// <c>Opc.Classic.Diagnostics.WireCapturingCallChannel</c>. Format is
-/// documented in <c>docs/interop/wire-captures/README.md</c>: a small
+/// documented in <c>interop/docs/wire-captures/README.md</c>: a small
 /// banner of <c># key: value</c> metadata, then <c>## request (N bytes)</c>
 /// and <c>## response (N bytes)</c> sections each containing offset-prefixed
 /// hex rows.

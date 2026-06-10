@@ -1,4 +1,4 @@
-﻿//
+//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -40,7 +40,7 @@ namespace Opc.Classic.Mcp.Tools;
 /// environment-variable opt-in for routable binds. Production
 /// inbound-callback bring-up against external OPC servers requires
 /// <c>IObjectExporter</c> OXID-resolution support which is tracked
-/// separately as AP1/AP2/AP4 — see <c>docs/interop/da-callbacks.md</c>.
+/// separately as AP1/AP2/AP4 — see <c>interop/docs/da-callbacks.md</c>.
 /// </para>
 /// </remarks>
 public sealed class DaCallbackEndpoint : IAsyncDisposable {

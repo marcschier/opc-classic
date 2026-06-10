@@ -111,28 +111,28 @@ Opc.Classic .NET is licensed under MIT. See [LICENSE](LICENSE).
 
 ## Reference / Conformance Assets (NOT redistributed in built packages)
 
-### external/samples/ (native C++ OPC Foundation sample servers)
+### interop/samples/ (native C++ OPC Foundation sample servers)
 - Source: OPC Foundation
 - License: OPC Foundation sample license (older Sample Server SDK) — preserved verbatim in the original files
 - Status: Used only as a conformance reference; no redistribution
 
-### external/ (vendored OPC-Classic-CoreComponents sources)
-- Source: OPC Foundation [OPC-Classic-CoreComponents](https://github.com/OPCFoundation/OPC-Classic-CoreComponents) repository (pruned/restructured vendoring; see `external/README.md` for folder layout, local divergences, and vendoring rationale)
+### interop/ (vendored OPC-Classic-CoreComponents sources)
+- Source: OPC Foundation [OPC-Classic-CoreComponents](https://github.com/OPCFoundation/OPC-Classic-CoreComponents) repository (pruned/restructured vendoring; see `interop/README.md` for folder layout, local divergences, and vendoring rationale)
 - License: OPC Foundation MIT License 1.00 (per-source-file headers); `LICENSE.md` at the vendor root is the umbrella OPC Foundation specification license
-- Status: Vendored so the native C++ DA 2.05a TestServer + proxy/stub DLLs can be built without an external clone (see `docs/interop/testserver.md`). Not redistributed in the published Opc.Classic NuGet packages.
+- Status: Vendored so the native C++ DA 2.05a TestServer + proxy/stub DLLs can be built without an external clone (see `interop/docs/testserver.md`). Not redistributed in the published Opc.Classic NuGet packages.
 
-### external/ (OPC Foundation reference + redistributable assets)
+### interop/ (OPC Foundation reference + redistributable assets)
 - Source: OPC Foundation
 - License: OPC Foundation specification, sample, and SDK terms preserved in-place
 - Subfolders:
-  - `external/inc/` — OPC IDL/headers used by the Docker C-server and C-client builds
-  - `external/` — OPC COM Core Components readme PDF and vendored CoreComponents sources
-  - `external/samples/` — OPC Foundation native C++ sample servers used by conformance validation
-  - `external/` — pruned/restructured vendoring of the OPC-Classic-CoreComponents repository (MIT-licensed); see entry above
+  - `interop/inc/` — OPC IDL/headers used by the Docker C-server and C-client builds
+  - `interop/` — OPC COM Core Components readme PDF and vendored CoreComponents sources
+  - `interop/samples/` — OPC Foundation native C++ sample servers used by conformance validation
+  - `interop/` — pruned/restructured vendoring of the OPC-Classic-CoreComponents repository (MIT-licensed); see entry above
 - Status: Used for IDL definitions, redistributable inputs, conformance validation, and developer reference; do not redistribute outside the rights granted by the OPC Foundation
 
 ### Spec reference markdown (extracted to private companion repo)
 - Source: OPC Foundation specification PDFs + Microsoft Open Specifications
 - Location: [`marcschier/opc-classic-docs`](https://github.com/marcschier/opc-classic-docs) (private)
 - License: OPC Foundation specification distribution terms + Microsoft Open Specifications Promise (see `NOTICES.md` in that repo)
-- Status: Internal reference only. The mirrors were extracted from `external/private/docs/` of this repo in commit `(see Changelog [Unreleased] Removed)` to keep this repo lean.
+- Status: Internal reference only. The mirrors were extracted from `interop/private/docs/` of this repo in commit `(see Changelog [Unreleased] Removed)` to keep this repo lean.

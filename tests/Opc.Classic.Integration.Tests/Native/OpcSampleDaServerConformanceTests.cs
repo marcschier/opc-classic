@@ -13,8 +13,8 @@ namespace Opc.Classic.Tests.Integration.Native;
 public sealed class OpcSampleDaServerConformanceTests {
     private const string SampleProgId = "OPCSample.OpcDaServer.1";
     private static readonly Guid SampleClsid = new("625C49A1-BE1C-45D7-9A8A-14BEDCF5CE6C");
-    // ProgID is derived by external/samples/SampleServer/Da/Server/OpcDaServer.cpp registration macros.
-    // CLSID is the coclass OpcDaServer uuid in external/samples/SampleServer/Da/Server/OpcDaServer.idl.
+    // ProgID is derived by interop/samples/SampleServer/Da/Server/OpcDaServer.cpp registration macros.
+    // CLSID is the coclass OpcDaServer uuid in interop/samples/SampleServer/Da/Server/OpcDaServer.idl.
 
     internal static Func<string, CancellationToken, Task<ICallChannel>>? ConnectAsync { get; set; }
 

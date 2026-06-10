@@ -33,8 +33,8 @@ jobs:
           $root = "$env:GITHUB_WORKSPACE\external"
           $required = @(
             "$root\CMakeLists.txt",
-            "$env:GITHUB_WORKSPACE\external\samples\OpcTestServer\OpcTestServer.cpp",
-            "$env:GITHUB_WORKSPACE\external\samples\OpcTestClient\OpcTestClient.cpp"
+            "$env:GITHUB_WORKSPACE\interop\samples\OpcTestServer\OpcTestServer.cpp",
+            "$env:GITHUB_WORKSPACE\interop\samples\OpcTestClient\OpcTestClient.cpp"
           )
           $missing = $required | Where-Object { -not (Test-Path $_) }
           if ($missing.Count -gt 0) {
@@ -49,8 +49,8 @@ jobs:
         id: corecomponents-cache
         uses: actions/cache@v4
         with:
-          path: external/build/x64/Release
-          key: corecomponents-ltsc2022-vs2022-${{ runner.os }}-${{ hashFiles('external/CMakeLists.txt', 'external/cmake/**', 'external/src/**', 'external/samples/OpcTestServer/**', 'external/samples/OpcTestClient/**', 'external/tools/build-testserver.ps1', 'external/docker/opc-testserver/Dockerfile') }}
+          path: interop/build/x64/Release
+          key: corecomponents-ltsc2022-vs2022-${{ runner.os }}-${{ hashFiles('interop/CMakeLists.txt', 'interop/cmake/**', 'interop/src/**', 'interop/samples/OpcTestServer/**', 'interop/samples/OpcTestClient/**', 'interop/tools/build-testserver.ps1', 'interop/docker/opc-testserver/Dockerfile') }}
           restore-keys: |
             corecomponents-ltsc2022-vs2022-${{ runner.os }}-
 
@@ -58,7 +58,7 @@ jobs:
         if: steps.corecomponents.outputs.present == 'true'
         shell: pwsh
         run: |
-          $release = "$env:GITHUB_WORKSPACE\external\build\x64\Release"
+          $release = "$env:GITHUB_WORKSPACE\interop\build\x64\Release"
           $required = @(
             'OpcTestServer_x64.exe',
             'OpcTestClient_x64.exe',
@@ -75,7 +75,7 @@ jobs:
           $missing = $required | Where-Object { -not (Test-Path (Join-Path $release $_)) }
           if ($missing.Count -gt 0) {
             Write-Host "CoreComponents cache miss; building Release artifacts on the Windows runner."
-            .\external\tools\build-testserver.ps1 -Configuration Release
+            .\interop\tools\build-testserver.ps1 -Configuration Release
           } else {
             Write-Host "CoreComponents Release artifacts already present."
           }
@@ -98,10 +98,10 @@ jobs:
         shell: pwsh
         run: |
           if ('${{ steps.corecomponents.outputs.present }}' -eq 'true') {
-            external/docker/run-matrix.ps1 -SkipBuild:$false -IncludeTestServer
+            interop/docker/run-matrix.ps1 -SkipBuild:$false -IncludeTestServer
           } else {
             Write-Warning 'CoreComponents missing; running existing managed-only Docker fleet smoke.'
-            external/docker/run-matrix.ps1 -SkipBuild:$false -OnlyManaged
+            interop/docker/run-matrix.ps1 -SkipBuild:$false -OnlyManaged
           }
 
       - name: Upload Docker fleet matrix results
@@ -109,7 +109,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: docker-test-fleet-results
-          path: external/docker/results/*.xml
+          path: interop/docker/results/*.xml
           if-no-files-found: warn
 
   cross-impl-matrix:
@@ -190,11 +190,11 @@ jobs:
           # OPCEnum is the OPC Foundation server-enumeration service that
           # opcclassic.discovery.enumerate_servers dials over DCOM. Build
           # OpcEnum.exe from the vendored source under
-          # external/src/Common/ServerEnumerator/ (x86 binary; see
-          # external/tools/build-opcenum.ps1 for details), then install
+          # interop/src/Common/ServerEnumerator/ (x86 binary; see
+          # interop/tools/build-opcenum.ps1 for details), then install
           # it as a Windows service via OpcEnum.exe /Service.
-          .\external\tools\build-opcenum.ps1 -Configuration Release
-          $exe = Resolve-Path 'external\build\x86\Release\OpcEnum.exe'
+          .\interop\tools\build-opcenum.ps1 -Configuration Release
+          $exe = Resolve-Path 'interop\build\x86\Release\OpcEnum.exe'
           Write-Host "Registering OpcEnum service: $exe /Service"
           $p = Start-Process $exe -ArgumentList '/Service' -Wait -PassThru -NoNewWindow
           Write-Host "OpcEnum /Service exit code: $($p.ExitCode)"

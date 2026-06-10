@@ -148,7 +148,7 @@ def main() -> int:
                         help="Shortcut: target the OPC Foundation DA 2.05a TestServer (x64) at "
                              "CLSID F8582CF9-88FB-11DA-A5ED-0060B0692061. Build with "
                              "tools\\build-testserver.ps1 and register with "
-                             "tools\\register-testserver.ps1 - see docs/interop/testserver.md.")
+                             "tools\\register-testserver.ps1 - see interop/docs/testserver.md.")
     parser.add_argument("--username", default=None)
     parser.add_argument("--password", default=None)
     parser.add_argument("--no-sso", action="store_true",

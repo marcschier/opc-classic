@@ -162,6 +162,27 @@ test fleet authoring, and a matrix-driver process-cleanup hardening.
 
 ### Changed
 
+- **Repository restructure: `external/` → `interop/` + `docs/interop/` → `interop/docs/`.**
+  Renamed the top-level `external/` directory (vendored OPC Foundation
+  build tree, Docker fleet, build helper scripts, CMake project) to
+  `interop/` since "external" conflated "third-party vendored code" with
+  "interop testing harness" -- everything under this directory exists
+  specifically to support cross-implementation interop validation. The
+  separate `docs/interop/` (interop-specific markdown: testserver
+  registration spec, opcenum auth notes, cross-impl matrix doc, wire
+  capture documentation, probe coverage notes) moved into
+  `interop/docs/` so the interop bookkeeping lives alongside the harness
+  it documents.
+  - 640 git-detected renames (full subtree moves verbatim) + 87
+    modifications to reference files.
+  - Affected: ~80 files (workflows, helper scripts, Dockerfiles, docs,
+    tests, source comments, sample READMEs, generated probe artifacts).
+  - `interop/.gitignore` paths unchanged after the rename
+    (`build/**`, `out/**`, `.vs/**` still target the right dirs).
+  - The vendored CMake project, all build scripts (`build-testserver.ps1`,
+    `build-opcenum.ps1`, `build.ps1`), and the docker-compose service
+    graph continue to work unchanged -- only paths shift.
+
 - **Repository restructure: `external/redist/` flattened up to `external/`.**
   The CMake build tree at `external/redist/` (CoreComponents sources +
   samples + cmake/ helpers + build scripts) was moved one level up into
