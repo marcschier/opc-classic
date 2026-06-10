@@ -76,6 +76,41 @@ exist for the contributors who need to extend the surface.
 
 ## Future work after 1.0.0
 
+### Capture engine enhancements (CA9)
+
+Post-1.0 follow-ups to the CA1–CA8 capture engine ([`mcp/Opc.Classic.Mcp.Capture/`](../mcp/Opc.Classic.Mcp.Capture/), MCP tools at `opcclassic.capture.*`). Tracked in the closed `ca9-followups` todo; deferred to a future release.
+
+- **CA9.1 — Per-spec auto-discover.** Plug the capture engine into
+  [`OpcEnumClient.ActivateServerListAsync`](../src/Opc.Classic.Discovery/OpcEnumClient.cs)
+  so `opcclassic.capture.start` can optionally take a target ProgID/CLSID,
+  enumerate the activated DCOM endpoint via OPCEnum, learn the
+  SCM-assigned data port, and tighten the BPF filter mid-capture to that
+  specific port (currently the operator hand-supplies `serverPorts`).
+  Requires: new `targetProgId`/`targetClsid` params on
+  `CaptureStartRequest`, a `OpcEnumClient` integration call inside
+  `CaptureSession.StartAsync`, and pcap mid-capture `SetFilter` plumbing
+  on `PcapCaptureSource`.
+- **CA9.2 — Live-stream MCP transport.** Push decoded-PDU events as MCP
+  `notifications/message` over the existing stdio transport so a client
+  can subscribe to a running capture instead of polling `capture.tail`.
+  Requires: a new `opcclassic.capture.subscribe` tool that registers a
+  subscription cursor, an `INotifyingCaptureSink` plumbed through
+  `CaptureSession`, and per-session notification dispatch + back-pressure
+  policy.
+- **CA9.3 — Authn-trailer unwrap (opt-in).** Developer-scenario decode of
+  PKT_INTEGRITY / PKT_PRIVACY auth trailers when the operator supplies
+  a known NTLM session key. Behind an opt-in flag (`--unwrap-auth` or
+  equivalent) and prominently warned in docs: revealing wire payload of
+  privacy-protected RPC calls is a sensitive operation. Requires: a
+  `NtlmSessionKey` input on `capture.decode_pdu`/`capture.tail`/
+  `capture.replay`, a `NtlmAuthTrailerUnwrapper` helper that re-uses
+  the existing
+  [`src/Opc.Classic.Dcom/rpc/Auth/`](../src/Opc.Classic.Dcom/rpc/Auth/)
+  unwrappers (passive mode, no session key derivation), and a doc
+  section in `docs/security/THREAT_MODEL.md` covering the security
+  implications.
+
+
 - **Additional COM interface-pointer return codecs** (post-Track BJ1)
   for enumerators, browse objects, event subscriptions, class
   factories, and connection points beyond the current release-scope.
