@@ -264,8 +264,13 @@ public sealed class Dr3233WireCaptureTests
 
     private static string StripTimestampLine(string capture)
     {
-        var sb = new StringBuilder(capture.Length);
-        foreach (string line in capture.Split('\n'))
+        // Normalize CRLF -> LF up-front so the line-by-line filtering produces
+        // a consistent canonical form regardless of whether the fixture file
+        // was checked out with CRLF (Windows default for text=auto) or LF
+        // (e.g. on Linux/macOS CI runners).
+        string normalized = capture.Replace("\r\n", "\n", StringComparison.Ordinal).Replace('\r', '\n');
+        var sb = new StringBuilder(normalized.Length);
+        foreach (string line in normalized.Split('\n'))
         {
             if (line.StartsWith("# timestamp_utc:", StringComparison.Ordinal))
             {
