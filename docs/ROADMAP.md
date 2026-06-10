@@ -23,7 +23,6 @@ This document tracks what's planned beyond the current release. For implemented 
 - [x] Matrikon `IOPCItemProperties::GetProperties` decode (Track AY+ — `6a8f32ce`); `OPCITEMSTATE` decode (Track AY++ — `7fce8b45`); live 26/95 OK probe baseline against Matrikon Simulation Server.
 - [x] Production inbound `IOPCDataCallback` listener bring-up (AP1/AP2/AP4 closed by Track BI — `41e30ca7`): `IObjectExporterDispatcher` registered at the well-known IID on the `DaCallbackEndpoint`, `DaClientTools.Subscribe` wires the Advise/Unadvise cycle. **Note**: Matrikon-specific group-channel limitation for IConnectionPoint documented in `docs/interop/da-callbacks.md`; production push-callback delivery against Matrikon needs a follow-up per-group channel that pre-binds IConnectionPoint(Container).
 - [x] TestServer registration spec + script alignment (Track BH1+BH2+BH3 — `9d6ed944`): canonical WiX-derived `docs/interop/testserver-registration-spec.md`; `external/tools/register-testserver.ps1` mirrors the full 8-DLL MSI install order; `external/tools/grant-testserver-acl.ps1` automates the DCOM Launch/Access ACL grant that is the actual cause of `CO_E_SERVER_EXEC_FAILURE`.
-- [ ] OPC CTT smoke green on a Windows Docker host (`release-100-tag`).
 - [ ] NTLMv2 wire verification against a live Windows Server / AD lab (`rw-e1-ntlmv2-realserver`).
 - [ ] External third-party NTLMSSP crypto/security audit (`rw-e4-ntlm-audit`).
 
@@ -70,7 +69,7 @@ exist for the contributors who need to extend the surface.
 
 ### Compatibility and conformance gaps
 
-- The Docker test fleet source and build wiring are in place, but Windows-container execution and CTT triage are still required before the final tag.
+- The Docker test fleet source and build wiring are in place, but Windows-container execution and triage are still required before the final tag.
 - Live Windows Server / Active Directory NTLMv2 verification remains outside the sandbox.
 - External third-party NTLMSSP crypto/security review remains outside the sandbox.
 

@@ -16,7 +16,7 @@ builds it with MSBuild and emits `C:/out/opc_exe.exe`; use
 `IOPCGroupStateMgt`, `IOPCItemMgt`, and `IOPCSyncIO` on top of
 `external/inc/opcda.h` / `opccomn.h`. It uses `CoRegisterClassObject` for
 out-of-process activation, self-registers `OPC.SampleServer.1`, and exposes the
-`Sin`, `Square`, and `Random` sample tags for CTT smoke.
+`Sin`, `Square`, and `Random` sample tags for interop smoke runs.
 
 Browsing, async I/O, subscriptions, and item/group enumerators intentionally
 return `E_NOTIMPL` in this MVP.

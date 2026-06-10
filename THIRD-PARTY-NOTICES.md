@@ -123,10 +123,9 @@ Opc.Classic .NET is licensed under MIT. See [LICENSE](LICENSE).
 
 ### external/ (OPC Foundation reference + redistributable assets)
 - Source: OPC Foundation
-- License: OPC Foundation specification, sample, and CTT installer terms preserved in-place
+- License: OPC Foundation specification, sample, and SDK terms preserved in-place
 - Subfolders:
   - `external/inc/` — OPC IDL/headers used by the Docker C-server and C-client builds
-  - `external/private/ctt/` — vendored OPC Compliance Test Tool installers
   - `external/redist/` — OPC COM Core Components readme PDF and vendored CoreComponents sources
   - `external/private/docs/` — spec markdown (auto-generated from PDFs) and Microsoft Open Specifications used for cross-reference
   - `external/redist/samples/` — OPC Foundation native C++ sample servers used by conformance validation

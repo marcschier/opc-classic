@@ -32,7 +32,7 @@ namespace Opc.Classic.Hosting.Windows;
 /// and returns a CCW pointer (or <see cref="IntPtr.Zero"/> for
 /// <see cref="E_NOINTERFACE"/>). The previous parameterless overload remains for
 /// callers that only need to satisfy SCM's "class object registered" expectation
-/// without actually dispatching activations (the original <c>ctt-2</c> smoke).
+/// without actually dispatching activations (used by the earlier smoke harnesses).
 /// </para>
 /// <para>
 /// All COM interop here is written in raw <c>unsafe</c> code that is compatible with

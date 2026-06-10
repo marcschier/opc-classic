@@ -1,6 +1,6 @@
 # Opc.Classic conformance
 
-This document consolidates the OPC Classic specification coverage reviews, XML-DA client status, cross-cutting conformance themes, and OPC Compliance Test Tool (CTT) guidance for `Opc.Classic` so implementers can assess protocol coverage, remaining gaps, validation evidence, and release gates from one place.
+This document consolidates the OPC Classic specification coverage reviews, XML-DA client status, and cross-cutting conformance themes for `Opc.Classic` so implementers can assess protocol coverage, remaining gaps, validation evidence, and release gates from one place.
 
 ## Contents
 
@@ -16,7 +16,6 @@ This document consolidates the OPC Classic specification coverage reviews, XML-D
 - [OPC Security 1.00](#opc-security-100)
 - [OPC XML-DA 1.01](#opc-xml-da-101)
 - [Cross-cutting themes](#cross-cutting-themes)
-- [OPC CTT conformance](#opc-ctt-conformance)
 
 ## Spec coverage overview
 
@@ -33,10 +32,10 @@ The former per-spec review set compared each OPC specification's protocol surfac
 | [OPC Batch 2.00](#opc-batch-200) | Batch | 4/4 interfaces and 11/11 methods projected; batch summary/filter codecs, Batch error constants, and `OpcBatchPropertyId` metadata for IDs 400-478 are present. | Server namespace/property population semantics remain implementation work for Batch servers. |
 | [OPC Common 1.10](#opc-common-110) | Common (locale, shutdown, server-list) | `IOPCCommon`, `IOPCShutdown`, `IOPCServerList(2)`, `IOPCEnumGUID`, `OpcStringFilter`, and `IDaServer.SetClientNameAsync` are covered. | All convenience helpers shipped; no open gaps. |
 | [OPC Complex Data 1.00](#opc-complex-data-100) | Complex Data | Interface projections, CPX property IDs/HRESULTs, OPCBinary/XMLSchema parsers, XML serialization, OPCBinary encode/decode including BitString, `OpcCpxAddressSpace`, and `OpcCpxItemProperties` are implemented. | Type-conversion and data-filter execution remain server-specific runtime work. |
-| [OPC DA 2.05a](#opc-da-205a) | DA (V20 back-compat + modern DCOM) | V20 remains a minimal compatibility shim; the modern DCOM surface covers DA 2.05a including `IOPCServer`, `IOPCCommon`, group/item management, sync/async I/O, browsing, properties, callbacks, connection points, and full lifecycle loopback coverage. | Remaining caveats are mostly V20-scope and CTT/native interop hardening, not missing modern DCOM methods. |
-| [OPC DA 3.00](#opc-da-300) | DA (flagship) | DA 3.0 DCOM projections and default hosting helpers cover browse, item I/O, group keep-alive, sync/async VQT and max-age I/O, deadband, sampling, callbacks, item enumeration, continuation points, and `vEUInfo` loopback paths. | Remaining DA work is CTT/native edge hardening and optional custom deadband/sampling policy samples. |
+| [OPC DA 2.05a](#opc-da-205a) | DA (V20 back-compat + modern DCOM) | V20 remains a minimal compatibility shim; the modern DCOM surface covers DA 2.05a including `IOPCServer`, `IOPCCommon`, group/item management, sync/async I/O, browsing, properties, callbacks, connection points, and full lifecycle loopback coverage. | Remaining caveats are mostly V20-scope and native interop hardening, not missing modern DCOM methods. |
+| [OPC DA 3.00](#opc-da-300) | DA (flagship) | DA 3.0 DCOM projections and default hosting helpers cover browse, item I/O, group keep-alive, sync/async VQT and max-age I/O, deadband, sampling, callbacks, item enumeration, continuation points, and `vEUInfo` loopback paths. | Remaining DA work is native interop edge hardening and optional custom deadband/sampling policy samples. |
 | [OPC DX 1.00](#opc-dx-100) | Data eXchange | `IOPCConfiguration` has a complete hand-written client proxy backed by DX structure codecs, status records, enums, namespace helpers, and error constants. | DX server runtime/DA bridge, persistence, and live data-transfer state machine are not implemented. |
-| [OPC HDA 1.20](#opc-hda-120) | Historical Data Access | 56/56 methods and 5/5 codecs are declared; CCW now covers browser, sync/async read, sync/async update, playback, annotation insert, and raw/processed advise paths. | Remaining items are server-policy concerns such as aggregate semantics, relative time parsing, persistence, connection-point enumeration stubs, and CTT stress coverage. |
+| [OPC HDA 1.20](#opc-hda-120) | Historical Data Access | 56/56 methods and 5/5 codecs are declared; CCW now covers browser, sync/async read, sync/async update, playback, annotation insert, and raw/processed advise paths. | Remaining items are server-policy concerns such as aggregate semantics, relative time parsing, persistence, and connection-point enumeration stubs. |
 | [OPC Security 1.00](#opc-security-100) | Security | 6/6 methods across `IOPCSecurityNT` and `IOPCSecurityPrivate` are projected and tested. | Reference sample server (`samples/Opc.Classic.Samples.OpcSecurityServer`) ships in this release. |
 | [OPC XML-DA 1.01](#opc-xml-da-101) | XML-DA (SOAP transport) | Client supports all 8 operations, SOAP 1.1, scalar/extended scalar values, array values, base64Binary, quality, errors, and polled subscriptions. | XML-DA server hosting and SOAP 1.2 are not implemented. |
 
@@ -680,7 +679,7 @@ Current Windows CCW item and I/O tests exercise the marshaling paths that were p
 ### Recommendations
 
 1. Keep V20 docs explicit about its intentionally minimal scope.
-2. Continue adding CTT/native interop coverage for Windows CCW edge cases.
+2. Continue adding native interop coverage for Windows CCW edge cases.
 3. ✅ End-to-end DA 2.x client/server scenarios now combine group creation, item addition, sync reads, async callbacks, and group removal in `tests/Opc.Classic.Integration.Tests/Da/DaFullLifecycleTests.cs:1-1120`.
 4. Add public convenience wrappers only where adoption feedback shows raw DCOM projections are too low-level.
 
@@ -688,7 +687,7 @@ Current Windows CCW item and I/O tests exercise the marshaling paths that were p
 
 ### Conclusion
 
-The modern DA DCOM surface now provides full DA 2.05a coverage. The older findings that `IOPCCommon`, `IOPCShutdown`, group/item management, synchronous reads, connection points, and item enumerators were missing or deferred no longer apply. Remaining caveats should be framed around V20 compatibility scope and integration/CTT hardening.
+The modern DA DCOM surface now provides full DA 2.05a coverage. The older findings that `IOPCCommon`, `IOPCShutdown`, group/item management, synchronous reads, connection points, and item enumerators were missing or deferred no longer apply. Remaining caveats should be framed around V20 compatibility scope and integration hardening.
 
 ## OPC DA 3.00
 
@@ -747,7 +746,7 @@ The earlier DA 3.0 review listed `AddGroup`, `AddItems`, `SetState`, `ReadMaxAge
    The DA 3.0 deadband/sampling interfaces and dispatch paths are present. Custom server policies and sample behavior beyond the default helper remain optional implementation work.
 
 2. **Windows CCW/native interop breadth**
-   DA has broad CCW coverage, but continued CTT testing is still needed for uncommon edge cases such as public groups, alternate access paths, and complex `vEUInfo` values.
+   DA has broad CCW coverage, but continued interop testing is still needed for uncommon edge cases such as public groups, alternate access paths, and complex `vEUInfo` values.
 
 3. **Higher-level convenience APIs**
    Some low-level DCOM methods are projected directly rather than wrapped by higher-level abstractions. This is intentional to preserve spec fidelity.
@@ -771,7 +770,7 @@ Current tests cover the major areas that were formerly listed as missing:
 
 Recommended next tests:
 
-1. ✅ Full CTT-style group lifecycle: `AddGroup` → `AddItems` → sync read/write → async callback → `RemoveGroup` (`tests/Opc.Classic.Integration.Tests/Da/DaFullLifecycleTests.cs:1-1120`).
+1. ✅ Full DA group lifecycle: `AddGroup` → `AddItems` → sync read/write → async callback → `RemoveGroup` (`tests/Opc.Classic.Integration.Tests/Da/DaFullLifecycleTests.cs:1-1120`).
 2. ✅ DA 3.0 `IOPCBrowse` continuation-point scenarios against hierarchical and flat namespaces (`tests/Opc.Classic.Integration.Tests/Da/DaBrowseContinuationPointTests.cs:1-363`).
 3. Item deadband/sampling custom policy implementations beyond the default helper behavior.
 4. ✅ Managed DCOM loopback tests for `vEUInfo` engineering-unit arrays and uncommon VARIANT types (`tests/Opc.Classic.Integration.Tests/Da/DaEnumOpcItemAttributesVeuInfoTests.cs:1-404`).
@@ -943,7 +942,7 @@ DX is no longer codec-blocked. The current library is ready for DX configuration
 
 **Overall compliance**: **Full DCOM declaration/proxy/dispatcher coverage; Windows CCW now covers browser creation, HDA sync/async reads, sync/async update, playback, annotation insert, and async advise**.
 
-Earlier claims that HDA was fully production-ready through all paths are too broad. The DCOM projection is complete, and the Windows CCW now has native `OPCHDA_ITEM[]`/`OPCHDA_ATTRIBUTE[]`/`OPCHDA_MODIFIEDITEM[]`/`OPCHDA_ANNOTATION[]` marshaling for history reads, annotation inserts, raw/processed advise updates, update operations, and playback callbacks. Remaining concerns are connection-point enumeration stubs plus server-policy semantics such as aggregate calculations, relative time parsing, persistence, and CTT stress coverage.
+Earlier claims that HDA was fully production-ready through all paths are too broad. The DCOM projection is complete, and the Windows CCW now has native `OPCHDA_ITEM[]`/`OPCHDA_ATTRIBUTE[]`/`OPCHDA_MODIFIEDITEM[]`/`OPCHDA_ANNOTATION[]` marshaling for history reads, annotation inserts, raw/processed advise updates, update operations, and playback callbacks. Remaining concerns are connection-point enumeration stubs plus server-policy semantics such as aggregate calculations, relative time parsing, and persistence.
 
 ---
 
@@ -1012,7 +1011,7 @@ The interfaces and codecs are present, but aggregate calculations, update polici
 
 ##### 2. Extended conformance scenarios
 
-Run OPC Foundation CTT coverage against the Windows CCWs, especially callback ordering, cancellation races, and server-specific update policies.
+Run targeted interop coverage against the Windows CCWs, especially callback ordering, cancellation races, and server-specific update policies.
 
 ---
 
@@ -1031,7 +1030,7 @@ Run OPC Foundation CTT coverage against the Windows CCWs, especially callback or
 Recommended additions:
 
 1. Aggregate calculation, annotation persistence, update, playback, and relative time parser tests for any sample/reference HDA server.
-2. CTT-driven callback ordering and cancellation stress tests.
+2. Targeted callback ordering and cancellation stress tests.
 
 ---
 
@@ -1041,7 +1040,7 @@ Recommended additions:
 | --- | --- | --- |
 | `IOPCHDA_Server` | ✅ DCOM, ✅ CCW real bodies | Includes browser creation |
 | `IOPCHDA_SyncRead` | ✅ DCOM, ✅ CCW real bodies | Native HDA item/attribute/modified marshaling covered |
-| Async callback pattern | ✅ DCOM projection, ✅ CCW read/advise/annotation/update/playback callbacks | Callback ordering and stress coverage remain CTT tasks |
+| Async callback pattern | ✅ DCOM projection, ✅ CCW read/advise/annotation/update/playback callbacks | Callback ordering and stress coverage remain follow-up interop tasks |
 | `IOPCHDA_Browser` or DA browse | ✅ DCOM declaration, ✅ native browser CCW | Browser cursor methods covered |
 | Optional update/annotation/playback interfaces | ✅ DCOM declarations, ✅ update/annotation/playback CCWs | Server-specific semantics pending |
 
@@ -1049,7 +1048,7 @@ Recommended additions:
 
 ### Conclusion
 
-HDA should be described as declaration- and codec-complete for the managed DCOM path, with Windows CCWs covering read, update, annotation, advise, and playback surfaces. Remaining work is server-specific behavior and CTT stress coverage, not missing HDA interface declarations.
+HDA should be described as declaration- and codec-complete for the managed DCOM path, with Windows CCWs covering read, update, annotation, advise, and playback surfaces. Remaining work is server-specific behavior and interop stress coverage, not missing HDA interface declarations.
 
 ## OPC Security 1.00
 
@@ -1930,136 +1929,3 @@ Earlier reviews flagged missing CPX, DX, HDA, Batch, XML-DA array, and DA VARIAN
 
 See [Spec coverage overview](#spec-coverage-overview) for the repository-wide baseline.
 
-
-## OPC CTT conformance
-
-The OPC Foundation's Compliance Test Tool (CTT) is the canonical conformance
-suite for OPC Classic servers. This document describes how to validate an
-`Opc.Classic`-based server against the CTT, both in CI and on a local Windows
-workstation.
-
-For the CI workflow's internal architecture (install order, registry hive
-choice, scope-boundary rationale), see `docs/ctt/CI_DESIGN.md`. For the
-Windows-container fleet that runs managed/native combinations, see
-[`external/docker/README.md`](../external/docker/README.md) and [test-fleet.md](test-fleet.md).
-
-### Scope of this gate
-
-| Server under test | `samples/Opc.Classic.Samples.CttServer/` |
-| --- | --- |
-| ProgID | `Opc.Classic.DaSample.1` |
-| CLSID | `{8F7C1B14-9A6E-4E4D-B5E6-5B7DCC1F2B3A}` |
-| CI workflows | `.github/workflows/opc-ctt.yml`, `.github/workflows/docker-test-fleet.yml` |
-| Artifacts | `opc-ctt-results`, `docker-test-fleet-results` |
-
-### Prerequisites
-
-1. **Windows**. The CTT is a 32-bit native COM application; it has no Linux
-   or macOS equivalent.
-2. **The vendored CTT installers**, already tracked in `external/private/ctt/` as six
-   MSIs (~13 MB total). The CI workflow consumes these directly; local runs
-   install them with the same commands documented below.
-3. **A published Release build** of `Opc.Classic.Samples.CttServer`.
-4. **Administrative privileges** for an HKLM registration (recommended for
-   CTT runs). Per-user HKCU registration is supported for developer
-   workflows without elevation but only the calling user can then discover
-   the server.
-5. **Windows Docker host** for the release-gating fleet smoke. Create the
-   `opc-test-net` l2bridge network as described in `external/docker/README.md`.
-
-### CI flow
-
-`.github/workflows/opc-ctt.yml` runs on `windows-2022` and:
-
-1. Installs the six vendored CTT MSIs via `msiexec /i ... /quiet /norestart`,
-   Common Modules first, then plugins in spec order
-2. Starts the OPCEnum service (the OPC server enumerator)
-3. Publishes `Opc.Classic.Samples.CttServer` Release
-4. Registers the managed server under HKLM via the `--register` CLI
-5. Locates `OpcCtt.exe` and dumps its `/?` help output as a diagnostic
-6. Runs CTT against `Opc.Classic.DaSample.1`
-7. Unregisters the server
-8. Uploads `ctt-results.xml` + the CLI help dump as `opc-ctt-results`
-
-`.github/workflows/docker-test-fleet.yml` builds the Windows-container fleet and
-runs the managed CTT smoke through `external/docker/run-matrix.ps1 -OnlyManaged`. The CTT
-release gate remains open until that report is green on a Windows Docker host.
-
-### Local-run cookbook
-
-#### One-time setup
-
-Install the six CTT MSIs from `external/private/ctt/` (run elevated PowerShell):
-
-```pwsh
-$installers = @(
-  'external/private/ctt/OPC CTT Common Modules 2.0.15.msi',
-  'external/private/ctt/OPC CTT DataAccess2 Modules 2.0.22.msi',
-  'external/private/ctt/OPC CTT DataAccess3 Modules 1.0.18.msi',
-  'external/private/ctt/OPC CTT AlarmEvents Modules 1.0.14.msi',
-  'external/private/ctt/OPC CTT Historical DA Modules 1.0.8.msi',
-  'external/private/ctt/OPC CTT XMLDA Modules 1.0.8.msi'
-)
-foreach ($msi in $installers) {
-  Start-Process msiexec -ArgumentList '/i', "`"$msi`"", '/quiet', '/norestart' -Wait
-}
-```
-
-#### Per-run cycle
-
-```pwsh
-# Build the managed sample server
-dotnet publish samples\Opc.Classic.Samples.CttServer -c Release
-
-$exe = 'samples\Opc.Classic.Samples.CttServer\bin\Release\net10.0\publish\Opc.Classic.Samples.CttServer.exe'
-
-# Register the server. For a local dev box without admin rights, swap
-# to --registry-hive=hkcu.
-& $exe --register
-
-# Launch the CTT and target Opc.Classic.DaSample.1 (interactive GUI; or pass
-# the headless flags documented by the OPC Foundation for v2.0.15)
-& "${env:ProgramFiles(x86)}\OPC Foundation\OPC Compliance Test Tool\OpcCtt.exe"
-
-# Clean up
-& $exe --unregister
-```
-
-#### Trade-offs: HKLM vs HKCU
-
-| Hive | Privilege | Visible to | Recommended use |
-| --- | --- | --- | --- |
-| `HKLM` (default) | Administrator | All users, including services | CI, production deployments |
-| `HKCU` (`--registry-hive=hkcu`) | None | The calling user only | Local dev, when admin is unavailable |
-
-### Current state
-
-The current repository validation baseline is summarized in [Spec coverage overview](#spec-coverage-overview).
-
-`Opc.Classic.Samples.CttServer` now has the release-scope Windows CCW and managed
-DCOM paths wired:
-
-- ✅ OPCEnum/direct CLSID discovery and SCM launch/registration plumbing
-- ✅ `IClassFactory` + `IOPCServer` raw-vtable CCW (`OpcDaServerCcw`) with real
-  per-method bodies for the release scope
-- ✅ `OpcDaGroupCcw` multi-tearoff coverage for group state, item management,
-  sync/async I/O, and connection points
-- ✅ real `OPCITEMDEF` / `OPCITEMRESULT`, `VARIANT`, `SAFEARRAY`, `BSTR`,
-  `FILETIME`, and callback marshaling where needed for the DA path
-- ✅ DA address-space browse/properties/default deadband/sampling support through
-  `IOpcAddressSpace`, default implementations, and namespaced continuation tokens
-
-The remaining blocker is not a known `E_NOINTERFACE` implementation stub; it is
-Windows Docker / CTT execution and triage. The final tag requires a green CTT
-smoke report archived with the release artifacts.
-
-The XML report is kept alongside the release artifacts for auditability.
-
-### Related documentation
-
-- `docs/ctt/CI_DESIGN.md` — CI workflow internals
-- `external/docker/README.md` — Windows Docker test fleet overview
-- `docs/test-fleet.md` — adopter cookbook for the Docker fleet
-- `samples/Opc.Classic.Samples.CttServer/README.md` — sample-level CLI documentation
-- `src/Opc.Classic.Hosting/Windows/README.md` — Windows COM registration internals
-- `external/private/ctt/readme.txt` — original OPC Foundation CTT inventory

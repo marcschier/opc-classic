@@ -13,7 +13,7 @@ namespace Opc.Classic.Samples.CttServer;
 internal static class Program {
     private static readonly Guid SampleClsid = new("8F7C1B14-9A6E-4E4D-B5E6-5B7DCC1F2B3A");
     private const string SampleProgId = "Opc.Classic.DaSample.1";
-    private const string SampleFriendlyName = "Opc.Classic CTT Sample DA Server";
+    private const string SampleFriendlyName = "Opc.Classic DA Sample (CttServer)";
     private const string SampleAssemblyName = "Opc.Classic.Samples.CttServer";
     private const string SampleTypeName = "Opc.Classic.Samples.CttServer.CttDaServer";
 

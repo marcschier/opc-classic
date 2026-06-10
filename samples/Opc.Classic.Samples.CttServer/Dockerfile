@@ -29,8 +29,8 @@ FROM --platform=$TARGETPLATFORM mcr.microsoft.com/dotnet/runtime:10.0-noble-chis
 WORKDIR /app
 
 LABEL maintainer="Opc.Classic .NET Contributors" \
-      org.opencontainers.image.title="Opc.Classic CTT DA Server sample" \
-      org.opencontainers.image.description="Containerized OPC Classic CTT-compatible DA server sample." \
+      org.opencontainers.image.title="Opc.Classic CttServer DA sample" \
+      org.opencontainers.image.description="Containerized OPC Classic managed DA sample server (CttServer)." \
       org.opencontainers.image.source="https://github.com/marcschier/opc-classic" \
       org.opencontainers.image.licenses="MIT" \
       org.opencontainers.image.authors="Opc.Classic .NET Contributors"

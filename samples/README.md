@@ -1,8 +1,8 @@
 # Opc.Classic samples
 
-This folder contains ten runnable apps demonstrating the `Opc.Classic.*` stack — four managed servers, three clients, an in-process loopback, the OPC CTT sample server, and the NativeAOT canary.
+This folder contains ten runnable apps demonstrating the `Opc.Classic.*` stack — four managed servers, three clients, an in-process loopback, an additional managed DA sample (CttServer), and the NativeAOT canary.
 
-Each sample folder ships its own `README.md` with run instructions. DA/AE/HDA/CTT/Security sample servers bind `OPC_CLASSIC_SAMPLE_PORT` on `0.0.0.0` by default, and the DA/AE/HDA sample clients dial TCP when `OPC_CLASSIC_SERVER_HOST` + `OPC_CLASSIC_SERVER_PORT` are set (otherwise they fall back to the in-process channel for local dev).
+Each sample folder ships its own `README.md` with run instructions. DA/AE/HDA/CttServer/Security sample servers bind `OPC_CLASSIC_SAMPLE_PORT` on `0.0.0.0` by default, and the DA/AE/HDA sample clients dial TCP when `OPC_CLASSIC_SERVER_HOST` + `OPC_CLASSIC_SERVER_PORT` are set (otherwise they fall back to the in-process channel for local dev).
 
 ## Sample map
 
@@ -16,7 +16,7 @@ Each sample folder ships its own `README.md` with run instructions. DA/AE/HDA/CT
 | [`Opc.Classic.Samples.AeClient/`](Opc.Classic.Samples.AeClient/README.md) | AE client subscription + event acknowledgement. |
 | [`Opc.Classic.Samples.HdaClient/`](Opc.Classic.Samples.HdaClient/README.md) | HDA client reads, aggregates, annotations, updates. |
 | [`Opc.Classic.Samples.LoopbackDemo/`](Opc.Classic.Samples.LoopbackDemo/) | In-process DA client/server loopback through the managed channel stack. |
-| [`Opc.Classic.Samples.CttServer/`](Opc.Classic.Samples.CttServer/README.md) | Minimal CTT-oriented managed DA server registered as `Opc.Classic.DaSample.1`. |
+| [`Opc.Classic.Samples.CttServer/`](Opc.Classic.Samples.CttServer/README.md) | Additional managed DA sample registered as `Opc.Classic.DaSample.1` (different CLSID from `samples-da`). |
 | [`Opc.Classic.Samples.AotCanary/`](Opc.Classic.Samples.AotCanary/) | NativeAOT publish verification used in CI. |
 
 ## Sample container deployment
@@ -27,7 +27,7 @@ The DA/AE/HDA sample server/client pairs are designed to interop over DCOM-over-
 
 | Variable | Default | Used by |
 | --- | --- | --- |
-| `OPC_CLASSIC_SAMPLE_PORT` | DA=51300, AE=51301, HDA=51302, CTT=51303, Security=51304 | Sample servers — port to bind on `0.0.0.0`. |
+| `OPC_CLASSIC_SAMPLE_PORT` | DA=51300, AE=51301, HDA=51302, CttServer=51303, Security=51304 | Sample servers — port to bind on `0.0.0.0`. |
 | `OPC_CLASSIC_LISTEN_ADDRESS` | (unset) | Optional explicit `host:port` bind for sample servers (overrides the sample-port default). |
 | `OPC_CLASSIC_SERVER_HOST` | (unset) | Sample clients — when set with `OPC_CLASSIC_SERVER_PORT`, dial TCP. |
 | `OPC_CLASSIC_SERVER_PORT` | (unset) | Sample clients — TCP port of the remote sample server. |

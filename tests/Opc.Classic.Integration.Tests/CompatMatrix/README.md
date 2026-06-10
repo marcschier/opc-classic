@@ -28,4 +28,4 @@ The Windows COM client -> net10 server process-launch tests still require a nati
 
 ## Status
 
-The folder now has real loopback TCP coverage for managed client -> managed server, plus native-client readiness scaffolds. rc.10 also closes the Windows CCW array/update/playback gaps in the AE and HDA hosting test suites. Still need validation of native-client activation handoff and final CTT/native-client orchestration.
+The folder now has real loopback TCP coverage for managed client -> managed server, plus native-client readiness scaffolds. rc.10 also closes the Windows CCW array/update/playback gaps in the AE and HDA hosting test suites. Still need validation of native-client activation handoff and final native-client orchestration.

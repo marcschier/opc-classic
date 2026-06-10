@@ -5,7 +5,7 @@ $ErrorActionPreference = 'Stop'
 
 Write-Host '== opc-classic/c-server init =='
 
-# Start OPCEnum so the CTT and other clients can browse for us.
+# Start OPCEnum so OPC clients can browse for us.
 $opcEnum = Get-Service -Name OpcEnum -ErrorAction SilentlyContinue
 if ($opcEnum -and $opcEnum.Status -ne 'Running') {
     Start-Service OpcEnum

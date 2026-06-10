@@ -1,6 +1,9 @@
-# Opc.Classic CTT Sample Server
+# Opc.Classic.Samples.CttServer
 
-Managed DA server used by the OPC Compliance Test Tool workflow.
+Additional managed DA sample server (different CLSID from
+`samples-da`). Useful as a second DA target for the cross-impl matrix
+and Windows-container fleet so two managed DA servers can be
+registered side-by-side on the same host.
 
 ## Run
 
@@ -14,7 +17,7 @@ Set `OPC_CLASSIC_SAMPLE_PORT` to change the default port or `OPC_CLASSIC_LISTEN_
 
 The `CttDaServer` surface includes:
 
-- `GetStatus` -> Running, vendor "Opc.Classic .NET CTT Sample"
+- `GetStatus` -> Running, vendor "Opc.Classic .NET DA Sample"
 - `AddGroup` -> creates a tracked `OpcDaGroup`, returns a server handle, and registers group dispatchers/IPIDs for follow-up calls
 - `RemoveGroup` -> unregisters tracked group state
 - `GetGroupByName` -> resolves a tracked group by name
@@ -45,7 +48,7 @@ samples\Opc.Classic.Samples.CttServer\bin\Release\net10.0\publish\Opc.Classic.Sa
 Default registration:
 
 - `--registry-hive=hklm` — system-wide under `HKLM\Software\Classes` (admin required)
-- `--registry-view=both` — writes to both `Registry32` and `Registry64` views so that 32-bit OPC clients (including OPC CTT v2.0.15) can discover the server on a 64-bit OS
+- `--registry-view=both` — writes to both `Registry32` and `Registry64` views so that 32-bit OPC clients can discover the server on a 64-bit OS
 
 Registration writes the standard out-of-process COM keys:
 
@@ -60,9 +63,9 @@ Registration writes the standard out-of-process COM keys:
 
 Unregister removes the per-server tree but leaves the shared `Component Categories` description subtree intact.
 
-## CI and Docker integration
+## Docker integration
 
-`.github\workflows\opc-ctt.yml` invokes this sample via `dotnet run` before the CTT runs. The Windows-container test fleet publishes this project into `opc-classic/managed`; see `samples\README.docker.md` and `external\docker\README.md` for the compose workflow.
+The Windows-container test fleet publishes this project into `opc-classic/managed`; see `samples\README.docker.md` and `external\docker\README.md` for the compose workflow.
 
 ## COM SCM activation (-Embedding)
 
@@ -75,9 +78,9 @@ When launched by Windows COM SCM via the `LocalServer32` registration, the EXE i
 5. Runs the hosted service
 6. Revokes the class object on shutdown via `CoRevokeClassObject` + `CoUninitialize`
 
-The Windows CCW path now returns real `IOPCServer` pointers for supported IIDs and routes `AddGroup`, `GetStatus`, `GetErrorString`, `GetGroupByName`, and `RemoveGroup` into the managed server. `CreateGroupEnumerator` and broader CTT coverage remain incremental follow-ups.
+The Windows CCW path returns real `IOPCServer` pointers for supported IIDs and routes `AddGroup`, `GetStatus`, `GetErrorString`, `GetGroupByName`, and `RemoveGroup` into the managed server.
 
 ## Source files
 
 - `Program.cs` — listen-address selection, COM registration CLI, and SCM `-Embedding` integration.
-- `CttDaServer.cs` — managed DA server and group registry used by the CTT workflow.
+- `CttDaServer.cs` — managed DA server and group registry.

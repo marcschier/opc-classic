@@ -14,11 +14,11 @@ opc-classic/
 │   ├── Opc.Classic.Generators/   source generators for OPC interfaces, proxies, dispatchers, and diagnostics
 │   └── Opc.Classic.*             per-spec runtime assemblies
 ├── tests/                        TUnit projects on Microsoft.Testing.Platform
-├── samples/                      9 sample apps: 3 servers, 3 clients, LoopbackDemo, CttServer, AotCanary
+├── samples/                      10 sample apps: DA/AE/HDA servers + clients, LoopbackDemo, CttServer (additional managed DA sample), OpcSecurityServer, AotCanary
 ├── docs/                         plain Markdown documentation hub and topic pages
-├── external/                     OPC Foundation IDL (`external/inc`), redistributables (`external/redist`), CTT installers (`external/private/ctt`), spec reference (`external/private/docs`), and native C++ samples/test apps (`external/redist/samples`)
-│   └── docker/                   Windows-container CTT + managed/native interop test fleet
-├── .github/workflows/            build, CTT, release, and conformance workflows
+├── external/                     OPC Foundation IDL (`external/inc`), redistributables (`external/redist`), spec reference (`external/private/docs`), and native C++ samples/test apps (`external/redist/samples`)
+│   └── docker/                   Windows-container managed/native interop test fleet
+├── .github/workflows/            build, release, and Docker test fleet workflows
 ├── Opc.Classic.slnx              .NET 10 XML solution format
 ├── global.json                   pins .NET 10 SDK >= 10.0.100
 ├── LICENSE                       MIT license

@@ -20,7 +20,7 @@ in parallel:
 - Do not reuse release tags. If a package must be replaced, cut a higher version.
 - Package IDs and namespaces remain under `Opc.Classic.*`.
 - The Docker image tag tracks the release version. `:latest` moves only on **stable** releases (no `-<prerelease>` suffix).
-- Stable `1.0.0` follows the release-candidate soak only after CI, package install, OPC CTT, live NTLMv2, and external audit gates are green or explicitly waived by maintainers.
+- Stable `1.0.0` follows the release-candidate soak only after CI, package install, live NTLMv2, and external audit gates are green or explicitly waived by maintainers.
 
 ## Release readiness checklist
 
@@ -99,8 +99,6 @@ The manual input must match an existing release tag and the tag format accepted 
 | --- | --- | --- |
 | `GITHUB_TOKEN` | Auto-issued per workflow; used to push to **GitHub Packages NuGet feed** and **GHCR Docker registry**. No setup needed. | Auto |
 | `NUGET_API_KEY` | nuget.org API key used by `dotnet nuget push`. When absent, the nuget.org push step is skipped (GitHub Packages and GHCR pushes still proceed). | Optional |
-
-The CTT workflows use vendored installers from `external\private\ctt\`; no `OPC_CTT_INSTALLER_URL` secret is required in the current tree.
 
 ## Consuming the published packages and image
 
@@ -197,10 +195,10 @@ dotnet nuget push .\.nupkg\*.nupkg --source https://nuget.pkg.github.com/marcsch
 - Confirm `ghcr.io/marcschier/opc-classic-managed:<version>` (Windows) and `ghcr.io/marcschier/opc-classic-managed-linux:<version>` (Linux multi-arch) are pullable (and `:latest` for stable releases).
 - Verify the cosign keyless signature on each pushed image with the command shape documented under "Docker images (GHCR)". A signature-verification failure blocks promotion.
 - Confirm the package install smoke project restores and builds.
-- Record CTT, Docker test fleet, live NTLMv2, and audit report locations in the release notes when applicable.
+- Record Docker test fleet, live NTLMv2, and audit report locations in the release notes when applicable.
 
 ## Future enhancements (tracked separately)
 
 - **NuGet package code-signing** — would require a code-signing cert; out of scope for the current public-release flow. Strong-name assembly identity via `build/Opc.Classic.snk` is already in place.
-- **Broader Docker image set** — `opc-managed` (Windows + Linux variants) is the only distributable today. The fleet's C-built reference images (`opc-c-server`, `opc-c-client`) ship on demand via `publish_reference_images: true`. The test/fixture images (`opc-ctt`, `opc-testserver`, `opc-testclient`, `samba`) are intentionally not published.
+- **Broader Docker image set** — `opc-managed` (Windows + Linux variants) is the only distributable today. The fleet's C-built reference images (`opc-c-server`, `opc-c-client`) ship on demand via `publish_reference_images: true`. The test/fixture images (`opc-testserver`, `opc-testclient`, `samba`) are intentionally not published.
 

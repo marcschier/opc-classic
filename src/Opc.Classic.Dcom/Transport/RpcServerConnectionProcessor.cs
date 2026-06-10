@@ -40,7 +40,7 @@ namespace Opc.Classic.Dcom.Transport;
 /// <c>AUTH_LENGTH_OFFSET</c> non-zero) are accepted only by dispatchers
 /// that explicitly consume the RPC request context. The relaxed DCOM ACLs
 /// in the fleet's <c>dcom-test-acls.reg</c> still permit anonymous calls
-/// for the CTT-against-managed-server scenarios; full NTLM/Kerberos
+/// for the managed-server smoke scenarios; full NTLM/Kerberos
 /// server-side verifier validation remains a deliberate follow-up
 /// (ocom-7's spike).
 /// </para>

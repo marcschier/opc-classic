@@ -17,7 +17,7 @@ namespace Opc.Classic.Hosting.Windows;
 /// </summary>
 /// <remarks>
 /// <para>
-/// OPC Classic clients (CTT, OPCEnum, OpcDaAutomation) discover servers through the
+/// OPC Classic clients (OPCEnum, OpcDaAutomation, and other tooling) discover servers through the
 /// standard Windows COM registry layout under <c>HKCR\CLSID</c>, <c>HKCR\AppID</c>,
 /// the ProgID alias keys, and <c>HKCR\Component Categories</c>. <c>HKCR</c> itself is
 /// a merged view of <c>HKLM\Software\Classes</c> (system-wide) and
@@ -26,7 +26,7 @@ namespace Opc.Classic.Hosting.Windows;
 /// the per-user hive (e.g. tests via <see cref="RegistryHive.CurrentUser"/>).
 /// </para>
 /// <para>
-/// The OPC CTT v2.0.15 (and most published OPC Classic clients) ship as 32-bit binaries.
+/// Many published OPC Classic clients ship as 32-bit binaries.
 /// On a 64-bit OS, Windows redirects their registry reads to the WoW6432Node view.
 /// To make a single managed publish discoverable by both 32-bit and 64-bit clients the
 /// default behaviour writes to both <see cref="RegistryView.Registry32"/> and
@@ -55,7 +55,7 @@ public static class WindowsComRegistration {
     /// <param name="views">
     /// Registry views to write. Passing <see langword="null"/> writes to both
     /// <see cref="RegistryView.Registry32"/> and <see cref="RegistryView.Registry64"/>,
-    /// which is the recommended setting for OPC Classic servers (the OPC CTT and most
+    /// which is the recommended setting for OPC Classic servers (most
     /// published OPC Classic clients are 32-bit binaries that read from the 32-bit view).
     /// </param>
     /// <param name="implementedCategories">

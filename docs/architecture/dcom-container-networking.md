@@ -54,10 +54,10 @@ DCOM bindings advertise stable, peer-routable addresses.
 
 ### Functional managed DCOM-over-IP sample path (Track E)
 
-The sample DA, AE, HDA, CTT, and OPC Security servers support direct
+The sample DA, AE, HDA, CttServer, and OPC Security servers support direct
 DCOM-over-IP listeners without Windows SCM endpoint mapping. Server samples bind
 `OPC_CLASSIC_SAMPLE_PORT` on `0.0.0.0` (defaults DA=51300, AE=51301,
-HDA=51302, CTT=51303, Security=51304), and DA/AE/HDA client samples dial
+HDA=51302, CttServer=51303, Security=51304), and DA/AE/HDA client samples dial
 `OPC_CLASSIC_SERVER_HOST` / `OPC_CLASSIC_SERVER_PORT` through
 `DcomCallChannelFactory.ConnectTcpAsync` and `TcpClientTransport`. When those
 environment variables are absent, clients keep their original in-process
@@ -151,7 +151,7 @@ when the fleet needs production-style authenticated DCOM.
 
 - [MS-DCOM] §2.2.19 — DUALSTRINGARRAY format
 - [MS-RPCE] §3.1.1.5 — ncacn_ip_tcp endpoint allocation
-- `external\docker\opc-ctt\dcom-test-acls.reg` — the source of truth for our ACL relaxations
+- `external\docker\opc-managed\dcom-test-acls.reg` — the source of truth for our ACL relaxations
 - `samples\README.docker.md` — functional managed DCOM-over-IP sample topology
 - `src\Opc.Classic.Dcom\Transport\DcomCallChannelFactory.cs` — direct TCP client helper used by the samples
 - [DcomContainerSample](https://github.com/wazzzaatosh/DcomContainerSample) — reference repo

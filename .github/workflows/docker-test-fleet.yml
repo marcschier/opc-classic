@@ -104,7 +104,7 @@ jobs:
             external/docker/run-matrix.ps1 -SkipBuild:$false -OnlyManaged
           }
 
-      - name: Upload CTT matrix results
+      - name: Upload Docker fleet matrix results
         if: always()
         uses: actions/upload-artifact@v4
         with:
@@ -184,23 +184,23 @@ jobs:
             Get-ChildItem 'C:\Windows\System32\Npcap\wpcap.dll', 'C:\Windows\SysWOW64\Npcap\wpcap.dll' -ErrorAction SilentlyContinue | Select-Object FullName
           }
 
-      - name: Install OPCEnum service for discovery tools
+      - name: Build + register OpcEnum service (vendored source)
         shell: pwsh
         run: |
           # OPCEnum is the OPC Foundation server-enumeration service that
-          # opcclassic.discovery.enumerate_servers dials over DCOM. The CTT
-          # Common Modules MSI bundles it; install it standalone here so the
-          # discovery tools work without the full CTT install.
-          $msi = Resolve-Path 'external/private/ctt/OPC CTT Common Modules 2.0.15.msi'
-          $log = "$env:RUNNER_TEMP\msi-opcenum.log"
-          Write-Host "Installing $msi (log: $log)"
-          $p = Start-Process msiexec -ArgumentList '/i', "`"$msi`"", '/quiet', '/norestart', '/l*v', "`"$log`"", 'INSTALLLEVEL=1000' -Wait -PassThru -NoNewWindow
-          Write-Host "msiexec exit code: $($p.ExitCode)"
-          if ($p.ExitCode -ne 0 -and $p.ExitCode -ne 3010) {
-            if (Test-Path $log) { Get-Content $log -Tail 60 | ForEach-Object { Write-Host "[log] $_" } }
-            Write-Host "::warning::OPCEnum install failed (exit $($p.ExitCode)); discovery.enumerate_servers will regress"
+          # opcclassic.discovery.enumerate_servers dials over DCOM. Build
+          # OpcEnum.exe from the vendored source under
+          # external/redist/src/Common/ServerEnumerator/ (x86 binary; see
+          # external/tools/build-opcenum.ps1 for details), then install
+          # it as a Windows service via OpcEnum.exe /Service.
+          .\external\tools\build-opcenum.ps1 -Configuration Release
+          $exe = Resolve-Path 'external\redist\build\x86\Release\OpcEnum.exe'
+          Write-Host "Registering OpcEnum service: $exe /Service"
+          $p = Start-Process $exe -ArgumentList '/Service' -Wait -PassThru -NoNewWindow
+          Write-Host "OpcEnum /Service exit code: $($p.ExitCode)"
+          if ($p.ExitCode -ne 0) {
+            Write-Host "::warning::OpcEnum /Service registration failed (exit $($p.ExitCode)); discovery.enumerate_servers will regress"
           }
-          # Start the OPCEnum service if it landed.
           $svc = Get-Service -Name OpcEnum -ErrorAction SilentlyContinue
           if ($svc -and $svc.Status -ne 'Running') {
             Start-Service OpcEnum
@@ -218,8 +218,9 @@ jobs:
         #
         # -HklmRegister + -UseClsid: the CI runner runs as administrative
         # so HKLM is writable; CLSID-based activation bypasses ProgID
-        # resolution via OPCEnum (which we still try to install above,
-        # but it's a defense-in-depth fallback).
+        # resolution via OPCEnum (still installed by the build step
+        # above, but -UseClsid keeps activation working defense-in-depth
+        # if the OpcEnum build / install ever fails).
         run: |
           .\tools\run-cross-impl-matrix.ps1 `
             -Profile samples-da,ctt-da,samples-ae,samples-hda,security-da `

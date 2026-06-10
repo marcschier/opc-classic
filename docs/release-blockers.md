@@ -12,6 +12,5 @@ These are the remaining gates before tagging `1.0.0` FINAL. Implemented release-
 
 | Gate | Status | Notes |
 | --- | --- | --- |
-| OPC CTT smoke on Windows Docker host | Open | Run the Docker CTT fleet and archive the green report with release artifacts. |
 | NTLMv2 wire verification against live Windows Server / AD lab | Open | Requires a real Windows/AD environment outside the repository sandbox. |
 | External third-party NTLMSSP crypto/security audit | Open | Schedule and record the audit outcome or explicit maintainer waiver before FINAL. |

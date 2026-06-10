@@ -49,7 +49,7 @@ For an in-process variant of the same architecture (single container, no network
 | `opcclassic/aeclient:local` | `samples/Opc.Classic.Samples.AeClient/Dockerfile` | none | `DOTNET_ENVIRONMENT=Production`, `OPC_CLASSIC_SERVER_HOST=aeserver`, `OPC_CLASSIC_SERVER_PORT=51301` | AE client dials `aeserver:51301` over TCP. |
 | `opcclassic/hdaserver:local` | `samples/Opc.Classic.Samples.HdaServer/Dockerfile` | `51302/tcp` | `DOTNET_ENVIRONMENT=Production`, `OPC_CLASSIC_SAMPLE_PORT=51302` | HDA server binds `0.0.0.0:51302`. |
 | `opcclassic/hdaclient:local` | `samples/Opc.Classic.Samples.HdaClient/Dockerfile` | none | `DOTNET_ENVIRONMENT=Production`, `OPC_CLASSIC_SERVER_HOST=hdaserver`, `OPC_CLASSIC_SERVER_PORT=51302` | HDA client dials `hdaserver:51302` over TCP. |
-| `opcclassic/cttserver:local` | `samples/Opc.Classic.Samples.CttServer/Dockerfile` | `51303/tcp` | `DOTNET_ENVIRONMENT=Production`, `OPC_CLASSIC_SAMPLE_PORT=51303` | Manual CTT-compatible DA server image; not included in the multi-container Compose file. |
+| `opcclassic/cttserver:local` | `samples/Opc.Classic.Samples.CttServer/Dockerfile` | `51303/tcp` | `DOTNET_ENVIRONMENT=Production`, `OPC_CLASSIC_SAMPLE_PORT=51303` | Additional managed DA sample image (different CLSID from samples-da); not included in the multi-container Compose file. |
 | source-only `OpcSecurityServer` | none | `51304/tcp` when run manually | `OPC_CLASSIC_SAMPLE_PORT=51304` | OPC Security 1.00 reference DA server; no Dockerfile yet. |
 | `opcclassic/loopbackdemo:local` | `samples/Opc.Classic.Samples.LoopbackDemo/Dockerfile` | none | `DOTNET_ENVIRONMENT=Production` | Single-container DA loopback demo (in-process, no network). |
 

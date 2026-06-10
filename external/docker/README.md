@@ -3,8 +3,6 @@
 Windows containers for end-to-end DCOM interop testing of the managed
 implementation against:
 
-- The **OPC Compliance Test Tool (CTT)** v2.0.15 + 5 plugins (DA 2.05a, DA 3.0,
-  AE, HDA, XML-DA) — installed from the six vendored MSIs in `external/private/ctt/`.
 - A **native (C-built) OPC DA smoke server** — hand-rolled in `external\docker\opc-c-server\build\` with OPC Foundation headers.
 - A **native (C-built) OPC DA smoke client** — hand-rolled in `external\docker\opc-c-client\build\` with OPC Foundation headers.
 - The **OPC Foundation TestServer/TestClient x64 pair** — built from the
@@ -20,20 +18,19 @@ be tested on a single Windows host. The rc.10 baseline is 0 build warnings/error
 
 | Container | Status |
 | --- | --- |
-| `opc-classic/ctt` | ✅ Ready — installs CTT v2.0.15 + plugins and runs `run-ctt.ps1` |
 | `opc-classic/managed` | ✅ Ready — publishes `Opc.Classic.Samples.CttServer` and registers `Opc.Classic.DaSample.1` |
 | `opc-classic/c-server` | ✅ Ready — builds the hand-rolled native DA smoke server (`opc_exe.exe`) from `opc-sample-server.cpp` |
 | `opc-classic/c-client` | ✅ Ready — builds the hand-rolled native DA smoke client (`opc-test.exe`) from `opc-test.cpp` |
 | `opc-classic/testserver` | 🧱 Scaffolded — builds OPC Foundation `OpcTestServer_x64.exe` from `external\redist`; validate on a Windows Docker host |
 | `opc-classic/testclient` | 🧱 Scaffolded — copies `OpcTestClient_x64.exe` from the testserver image; validate on a Windows Docker host |
-| `docker-compose.test.yml` | ✅ Ready — orchestrates all six images on `opc-test-net` |
+| `docker-compose.test.yml` | ✅ Ready — orchestrates the five images on `opc-test-net` |
 | `.github/workflows/docker-test-fleet.yml` | ✅ Ready — CI entry point for the fleet |
 
 The native C server/client images now build real MVP binaries. Their entrypoint scripts still retain missing-binary checks so failed local builds are easy to debug with `docker exec`.
 
 ## Sample roster
 
-The repository now carries 10 sample apps: DaServer, DaClient, AeServer, AeClient, HdaServer, HdaClient, LoopbackDemo, CttServer, AotCanary, and OpcSecurityServer. The Docker fleet uses CttServer for managed DA/CTT coverage; the Linux sample Compose files cover the DA/AE/HDA pairs plus LoopbackDemo, while OpcSecurityServer runs from source on port 51304.
+The repository carries 10 sample apps: DaServer, DaClient, AeServer, AeClient, HdaServer, HdaClient, LoopbackDemo, CttServer, AotCanary, and OpcSecurityServer. The Docker fleet uses CttServer for managed DA coverage; the Linux sample Compose files cover the DA/AE/HDA pairs plus LoopbackDemo, while OpcSecurityServer runs from source on port 51304.
 
 ## Managed-server state
 
@@ -76,24 +73,16 @@ docker compose --file external/docker/docker-compose.test.yml --profile interact
 ```
 
 This includes `opc-classic/testserver` and `opc-classic/testclient`, so it
-requires `external\redist`. To keep the historical four-image smoke path,
+requires `external\redist`. To keep the historical three-image smoke path,
 use `external\docker\run-matrix.ps1` without `-IncludeTestServer`.
 
-### Run the CTT matrix smoke
+### Bring the server fleet up
 
 ```pwsh
 external/docker/run-matrix.ps1
-# Produces:
-#   external/docker/results/ctt-native.xml   — CTT vs OPC.SampleServer.1 (native baseline)
-#   external/docker/results/ctt-managed.xml  — CTT vs Opc.Classic.DaSample.1 (SUT)
-```
-
-Add the OPC Foundation TestServer/TestClient reference cells:
-
-```pwsh
-external/docker/run-matrix.ps1 -IncludeTestServer
-# Also produces:
-#   external/docker/results/ctt-testserver.xml — CTT vs OpcTestServer_x64.1
+# Builds + starts the c-server + managed-server containers (and optionally
+# testserver with -IncludeTestServer). Servers stay up so an interactive
+# client can attach via the c-client / testclient profiles.
 ```
 
 ### Open an interactive c-client shell
@@ -106,22 +95,13 @@ external/docker/run-interactive.ps1
 
 ## Containers
 
-### `opc-classic/ctt`
-
-The OPC Compliance Test Tool with all five plugins pre-installed and the
-OPCEnum service auto-starting. The ENTRYPOINT is a PowerShell shim
-(`run-ctt.ps1`) that takes `-ProgId` + `-TargetHost` and emits an XML
-conformance report.
-
-See `external/docker/opc-ctt/README.md` for details.
-
 ### `opc-classic/managed`
 
 The managed `Opc.Classic.Samples.CttServer`, registered under `HKLM\Software\Classes\CLSID\{...}` on container startup via `--register --registry-hive=hklm`. When SCM launches the EXE with `-Embedding`, `ComClassObjectRegistrar` delegates `IClassFactory::CreateInstance` to `OpcDaServerCcw.Create`, so supported activations receive a real `IOPCServer` CCW backed by `CttDaServer`.
 
 ### `opc-classic/c-server`
 
-Builds and runs the hand-rolled native OPC DA smoke server (`opc_exe.exe`) from `external\docker\opc-c-server\build\opc-sample-server.cpp`. It self-registers `OPC.SampleServer.1`, exposes `Sin`, `Square`, and `Random`, and implements the DA root/group interfaces needed for CTT smoke.
+Builds and runs the hand-rolled native OPC DA smoke server (`opc_exe.exe`) from `external\docker\opc-c-server\build\opc-sample-server.cpp`. It self-registers `OPC.SampleServer.1`, exposes `Sin`, `Square`, and `Random`, and implements the DA root/group interfaces.
 
 ### `opc-classic/c-client`
 
@@ -164,7 +144,6 @@ Containers get fixed IPs:
 | `opc-classic-c-server` | 10.0.1.10 |
 | `opc-classic-managed` | 10.0.1.11 |
 | `opc-classic-testserver` | 10.0.1.12 |
-| `opc-classic-ctt` | 10.0.1.20 |
 | `opc-classic-c-client` | 10.0.1.21 |
 | `opc-classic-testclient` | 10.0.1.22 |
 
@@ -188,9 +167,6 @@ disposable test rig but **must never be applied to a production host**.
 
 ## Known gaps
 
-- **CTT CLI flags**: the `OpcCtt.exe /AUTO /Output: /ServerProgId: /TargetHost:`
-  invocation in `run-ctt.ps1` is the best-guess syntax until we verify against
-  the v2.0.15 help output (also a known TODO in `.github/workflows/opc-ctt.yml`).
 - **TestServer/TestClient scaffold**: CoreComponents builds and DCOM
   `RemoteServerName` redirection cannot be validated without a Windows Docker
   host. OPERATOR: run `external\docker\run-matrix.ps1 -IncludeTestServer` and tune the
@@ -205,4 +181,3 @@ disposable test rig but **must never be applied to a production host**.
 
 - `docs\test-fleet.md` — adopter cookbook (debugging, capture, common errors)
 - `docs\architecture\dcom-container-networking.md` — l2bridge / transparent / NAT trade-offs
-- `docs\ctt\CI_DESIGN.md` — CI workflow internals (sister doc for the non-fleet CTT job)

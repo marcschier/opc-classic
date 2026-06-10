@@ -120,13 +120,13 @@ If you use `Microsoft.Extensions.Configuration`, double underscores map to secti
 
 ## Repository sample container convention
 
-The repository samples use one TCP environment convention. Containerized DA/AE/HDA pairs exercise DCOM-over-IP between client/server containers. Server samples read `OPC_CLASSIC_SAMPLE_PORT` and default to DA `51300`, AE `51301`, HDA `51302`, CTT `51303`, and OpcSecurityServer `51304`; `OPC_CLASSIC_LISTEN_ADDRESS` overrides the full bind address when you need more than `0.0.0.0:<port>`. Client samples read `OPC_CLASSIC_SERVER_HOST` and `OPC_CLASSIC_SERVER_PORT`; when both are present they call `DcomCallChannelFactory.ConnectTcpAsync` over `TcpClientTransport`, and when absent they fall back to the in-process `InMemoryCallChannel` path for local development.
+The repository samples use one TCP environment convention. Containerized DA/AE/HDA pairs exercise DCOM-over-IP between client/server containers. Server samples read `OPC_CLASSIC_SAMPLE_PORT` and default to DA `51300`, AE `51301`, HDA `51302`, CttServer `51303`, and OpcSecurityServer `51304`; `OPC_CLASSIC_LISTEN_ADDRESS` overrides the full bind address when you need more than `0.0.0.0:<port>`. Client samples read `OPC_CLASSIC_SERVER_HOST` and `OPC_CLASSIC_SERVER_PORT`; when both are present they call `DcomCallChannelFactory.ConnectTcpAsync` over `TcpClientTransport`, and when absent they fall back to the in-process `InMemoryCallChannel` path for local development.
 
 ```powershell
 docker compose -f samples\docker-compose.yml up
 ```
 
-The sample Compose file sets `OPC_CLASSIC_SERVER_HOST` to service DNS names (`daserver`, `aeserver`, `hdaserver`) and ports `51300`-`51302`. CTT and OpcSecurityServer use the same server port convention when run directly, but they are not part of that multi-container client/server Compose topology. See [../../samples/README.docker.md](../../samples/README.docker.md) before copying sample port numbers into production; real Windows DCOM targets may still require endpoint mapper and constrained dynamic RPC ports.
+The sample Compose file sets `OPC_CLASSIC_SERVER_HOST` to service DNS names (`daserver`, `aeserver`, `hdaserver`) and ports `51300`-`51302`. CttServer and OpcSecurityServer use the same server port convention when run directly, but they are not part of that multi-container client/server Compose topology. See [../../samples/README.docker.md](../../samples/README.docker.md) before copying sample port numbers into production; real Windows DCOM targets may still require endpoint mapper and constrained dynamic RPC ports.
 
 ## Kerberos on Linux
 

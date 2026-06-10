@@ -23,7 +23,7 @@ These recipes use the current `Opc.Classic.*` package and namespace names. They 
 - `samples\Opc.Classic.Samples.HdaServer` — managed HDA sample server.
 - `samples\Opc.Classic.Samples.HdaClient` — HDA query/playback client flow.
 - `samples\Opc.Classic.Samples.LoopbackDemo` — in-memory generated proxy/dispatcher loopback.
-- `samples\Opc.Classic.Samples.CttServer` — managed DA CTT workflow target registered as `Opc.Classic.DaSample.1`.
+- `samples\Opc.Classic.Samples.CttServer` — additional managed DA sample registered as `Opc.Classic.DaSample.1` (different CLSID from samples-da).
 - `samples\Opc.Classic.Samples.AotCanary` — NativeAOT publish smoke test.
 
 See also [Architecture](../ARCHITECTURE.md), [Adoption guide](../ADOPTION.md) and [sample Docker guide](../../samples/README.docker.md).

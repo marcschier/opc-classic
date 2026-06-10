@@ -1,21 +1,27 @@
 # SPDX-License-Identifier: MIT
 # Copyright (c) 2026 Opc.Classic .NET Contributors
 #
-# Build all fleet images and run the CTT smoke matrix:
-#   - CTT vs native (C-built) server: baseline reference run
-#   - CTT vs managed server: the actual interop validation
+# Build the Windows-container fleet and bring the server containers up
+# for interactive interop testing (OpcTestClient_x64 against
+# OpcTestServer_x64, OpcTestClient against managed-server, etc.).
+#
+# This used to be a conformance smoke matrix driven by the OPC
+# Compliance Test Tool (CTT). The CTT integration was removed in
+# 2026-06-10 because CTT v2.0.15 is GUI-only with no documented
+# headless CLI -- no CI-friendly conformance verdict was possible.
+# The remaining server containers are still useful for interactive
+# interop runs and for the cross-impl-matrix python driver.
 #
 # Usage:
-#   external/docker/run-matrix.ps1                        # build + run both smokes
+#   external/docker/run-matrix.ps1                        # build + start
 #   external/docker/run-matrix.ps1 -SkipBuild             # use existing images
-#   external/docker/run-matrix.ps1 -OnlyManaged           # only the managed-server smoke
-#   external/docker/run-matrix.ps1 -IncludeTestServer     # also smoke OpcTestServer_x64.1 (requires external/redist)
+#   external/docker/run-matrix.ps1 -IncludeTestServer     # also start OpcTestServer_x64 (requires external/redist)
+#   external/docker/run-matrix.ps1 -SkipBuild -SkipUp     # just verify config
 
 [CmdletBinding()]
 param(
     [switch] $SkipBuild,
-    [switch] $OnlyManaged,
-    [switch] $OnlyNative,
+    [switch] $SkipUp,
     [switch] $IncludeTestServer
 )
 
@@ -23,7 +29,6 @@ $ErrorActionPreference = 'Stop'
 $root = Split-Path -Parent $PSCommandPath
 $compose = "$root/docker-compose.test.yml"
 $results = "$root/results"
-$runTestServer = $IncludeTestServer -and -not $OnlyManaged
 
 if (-not (Test-Path $results)) {
     New-Item -ItemType Directory -Path $results -Force | Out-Null
@@ -51,8 +56,8 @@ if (-not $existing) {
 # 1. Build (unless skipped).
 if (-not $SkipBuild) {
     Invoke-Step 'Building fleet images' {
-        $buildServices = @('c-server', 'managed-server', 'ctt', 'c-client')
-        if ($runTestServer) {
+        $buildServices = @('c-server', 'managed-server', 'c-client')
+        if ($IncludeTestServer) {
             $buildServices += 'testserver'
         }
 
@@ -72,7 +77,7 @@ if (-not $SkipBuild) {
         }
     }
 
-    if ($runTestServer) {
+    if ($IncludeTestServer) {
         Invoke-Step 'Building OPC Foundation TestClient image from testserver artifacts' {
             $maxAttempts = 3
             for ($attempt = 1; $attempt -le $maxAttempts; $attempt++) {
@@ -88,59 +93,32 @@ if (-not $SkipBuild) {
     }
 }
 
-# 2. Bring up the servers (always; CTT runs against them).
-Invoke-Step 'Starting server containers' {
-    $serverServices = @('c-server', 'managed-server')
-    if ($runTestServer) {
-        $serverServices += 'testserver'
+# 2. Bring up the servers so interactive clients can attach.
+if (-not $SkipUp) {
+    Invoke-Step 'Starting server containers' {
+        $serverServices = @('c-server', 'managed-server')
+        if ($IncludeTestServer) {
+            $serverServices += 'testserver'
+        }
+        docker compose --file $compose up -d @serverServices
     }
 
-    docker compose --file $compose up -d @serverServices
-}
-
-try {
-    # 3. Give the servers a moment to register their CLSIDs.
     Write-Host 'Waiting 15 seconds for DCOM registration to settle...' -ForegroundColor DarkGray
     Start-Sleep -Seconds 15
 
-    # 4. Run the matrix.
-    if (-not $OnlyManaged) {
-        Invoke-Step 'CTT vs native (C-built) server [baseline]' {
-            docker compose --file $compose run --rm ctt `
-                -ProgId OPC.SampleServer.1 `
-                -TargetHost opc-classic-c-server `
-                -OutputPath C:/results/ctt-native.xml
-        }
+    Write-Host ''
+    Write-Host '== Servers up ==' -ForegroundColor Green
+    Write-Host '  c-server         (Opc.Classic.DaSample.1 via native C build)        opc-classic-c-server'
+    Write-Host '  managed-server   (Opc.Classic.DaSample.1 via managed DA stack)      opc-classic-managed'
+    if ($IncludeTestServer) {
+        Write-Host '  testserver       (OpcTestServer_x64.1 via vendored CMake build)    opc-classic-testserver'
     }
-    if ($runTestServer) {
-        Invoke-Step 'CTT vs OPC Foundation TestServer [reference]' {
-            docker compose --file $compose run --rm ctt `
-                -ProgId OpcTestServer_x64.1 `
-                -TargetHost opc-classic-testserver `
-                -OutputPath C:/results/ctt-testserver.xml
-        }
-        Invoke-Step 'OpcTestClient vs OPC Foundation TestServer [reference]' {
-            docker compose --file $compose run --rm testclient `
-                -ProgId OpcTestServer_x64.1 `
-                -TargetHost opc-classic-testserver
-        }
+    Write-Host ''
+    Write-Host 'Run an interactive client against one of these hosts via:'
+    Write-Host '  docker compose --file external/docker/docker-compose.test.yml --profile interactive run --rm c-client'
+    if ($IncludeTestServer) {
+        Write-Host '  docker compose --file external/docker/docker-compose.test.yml --profile interactive run --rm testclient'
     }
-    if (-not $OnlyNative) {
-        Invoke-Step 'CTT vs managed server [SUT]' {
-            docker compose --file $compose run --rm ctt `
-                -ProgId Opc.Classic.DaSample.1 `
-                -TargetHost opc-classic-managed `
-                -OutputPath C:/results/ctt-managed.xml
-        }
-    }
+    Write-Host 'Tear down with:'
+    Write-Host '  docker compose --file external/docker/docker-compose.test.yml down'
 }
-finally {
-    Invoke-Step 'Tearing down server containers' {
-        docker compose --file $compose down
-    }
-}
-
-Write-Host ''
-Write-Host '== Matrix complete ==' -ForegroundColor Green
-Write-Host "Results: $results"
-Get-ChildItem $results -Filter '*.xml' | ForEach-Object { Write-Host "  $($_.Name)  ($($_.Length) bytes)" }

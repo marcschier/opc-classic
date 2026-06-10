@@ -1,8 +1,8 @@
 # escape=`
 
 # opc-classic/managed — managed Opc.Classic.Samples.CttServer in a Windows
-# container suitable for cross-container DCOM with the C-built reference
-# server/client and the CTT.
+# container suitable for cross-container DCOM interop with the C-built
+# reference server/client and the OPC Foundation TestClient.
 #
 # Note: a separate Dockerfile from the Linux variant at
 # samples/Opc.Classic.Samples.CttServer/Dockerfile because:

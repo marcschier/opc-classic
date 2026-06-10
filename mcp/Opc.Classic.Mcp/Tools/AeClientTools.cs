@@ -798,7 +798,7 @@ internal static class OpcMcpDcomConnectionHelper {
     /// <c>OpcDaServerHost</c> over a TCP listener on a known port. The
     /// client just opens a raw <c>TcpClientTransport</c> + <c>DcomCallChannel</c>
     /// and routes by interface ID — there is no CLSID/IPID activation step.
-    /// External / native OPC servers (Matrikon, OPC Foundation CTT/TestServer,
+    /// External / native OPC servers (Matrikon, OPC Foundation TestServer,
     /// vendor CCWs registered with the OS SCM) DO need DCOM activation; for
     /// those, use the <c>opcae://</c> / <c>opcda://</c> / <c>opchda://</c>
     /// schemes (or bare <c>progId</c> / <c>clsid</c>) instead.

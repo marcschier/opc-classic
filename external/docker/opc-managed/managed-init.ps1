@@ -11,7 +11,7 @@ $exe = 'C:/app/Opc.Classic.Samples.CttServer.exe'
 
 Write-Host '== opc-classic/managed init =='
 
-# Start OPCEnum so the CTT (in a peer container) can browse for our server.
+# Start OPCEnum so OPC clients on the network can browse for our server.
 $opcEnum = Get-Service -Name OpcEnum -ErrorAction SilentlyContinue
 if ($opcEnum -and $opcEnum.Status -ne 'Running') {
     Start-Service OpcEnum
@@ -25,7 +25,7 @@ if ($LASTEXITCODE -ne 0) {
 }
 
 try {
-    Write-Host '-- Running managed CttServer'
+    Write-Host '-- Running managed DA sample server'
     & $exe
 }
 finally {

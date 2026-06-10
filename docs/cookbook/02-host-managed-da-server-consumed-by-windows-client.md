@@ -4,7 +4,7 @@
 
 Run a managed OPC DA server on Linux, macOS, or Windows while Windows DA clients connect through Classic DA COM interfaces.
 
-The reference sample is `samples\Opc.Classic.Samples.DaServer`. It uses `AddClassicServer`, `AddClassicClsidRegistry`, and `AddOpcDaServer<T>`, registers `Opc.Classic.Samples.DaServer.1`, and reads `OPC_CLASSIC_SAMPLE_PORT` (default `51300`) or `OPC_CLASSIC_LISTEN_ADDRESS`. Related samples cover AE, HDA, loopback, CTT, OPC Security, and AOT scenarios; container conventions are in [../../samples/README.docker.md](../../samples/README.docker.md).
+The reference sample is `samples\Opc.Classic.Samples.DaServer`. It uses `AddClassicServer`, `AddClassicClsidRegistry`, and `AddOpcDaServer<T>`, registers `Opc.Classic.Samples.DaServer.1`, and reads `OPC_CLASSIC_SAMPLE_PORT` (default `51300`) or `OPC_CLASSIC_LISTEN_ADDRESS`. Related samples cover AE, HDA, loopback, an additional managed DA target (CttServer), OPC Security, and AOT scenarios; container conventions are in [../../samples/README.docker.md](../../samples/README.docker.md).
 
 ## Hosting shape
 
@@ -75,5 +75,5 @@ Native COM clients require normal Windows COM registration, DCOM permissions, fi
 ## Validation aids
 
 - `samples\Opc.Classic.Samples.DaServer` — hosted managed DA server.
-- `samples\Opc.Classic.Samples.CttServer` — DA shape for CTT workflows.
+- `samples\Opc.Classic.Samples.CttServer` — additional managed DA sample (different CLSID from samples-da).
 - `samples\Opc.Classic.Samples.LoopbackDemo` — generated proxy/dispatcher loopback without Windows COM registration.

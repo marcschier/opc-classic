@@ -31,7 +31,7 @@ Writes the standard Windows COM registry tree for an out-of-process server:
 | `RegistryView.Registry32` | 32-bit (WoW6432Node) clients on 64-bit Windows |
 | `RegistryView.Registry64` | 64-bit clients |
 
-The OPC CTT v2.0.15 ships as 32-bit. To make a single managed publish discoverable by both 32-bit and 64-bit clients on a 64-bit OS, the default behaviour (passing `views: null`) writes to both views.
+Many published OPC Classic clients ship as 32-bit. To make a single managed publish discoverable by both 32-bit and 64-bit clients on a 64-bit OS, the default behaviour (passing `views: null`) writes to both views.
 
 ## ComClassObjectRegistrar
 

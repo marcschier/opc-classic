@@ -1,7 +1,7 @@
 /*
  * SPDX-License-Identifier: MIT
  * Copyright (c) 2026 Opc.Classic .NET Contributors
- * Minimal native OPC DA 2.05a out-of-process smoke server for docker CTT runs.
+ * Minimal native OPC DA 2.05a out-of-process smoke server for docker interop runs.
  */
 #define WIN32_LEAN_AND_MEAN
 #define NOMINMAX

@@ -308,7 +308,7 @@ All nine OPC Classic areas targeted by the repository are implemented in the cur
 
 | Area | Current support |
 | --- | --- |
-| DA | Managed client/server contracts, generated DCOM projections, hosting, subscriptions, `IOpcAddressSpace`-backed browse/properties, read/write, data-change callbacks, Windows CCWs, DA client/server samples, CTT server. |
+| DA | Managed client/server contracts, generated DCOM projections, hosting, subscriptions, `IOpcAddressSpace`-backed browse/properties, read/write, data-change callbacks, Windows CCWs, DA client/server samples. |
 | AE | Managed event server/client contracts, generated projections, subscriptions, event categories, condition/event models, AE client/server samples. |
 | HDA | Managed historical APIs, generated projections, sync/async read/update/annotation/playback surfaces, HDA client/server samples. |
 | Batch | Batch summaries, filters, state/type models, enumerations, generated projections. |
@@ -333,7 +333,7 @@ The sample suite contains 10 apps:
 | `samples/Opc.Classic.Samples.HdaServer` | Managed HDA historical data server. |
 | `samples/Opc.Classic.Samples.HdaClient` | HDA query and playback client pattern. |
 | `samples/Opc.Classic.Samples.LoopbackDemo` | In-memory generated proxy/dispatcher loopback for DA. |
-| `samples/Opc.Classic.Samples.CttServer` | DA server shape for OPC CTT workflows. |
+| `samples/Opc.Classic.Samples.CttServer` | Additional managed DA sample (different CLSID from samples-da). |
 | `samples/Opc.Classic.Samples.OpcSecurityServer` | OPC Security reference server and ACL semantics. |
 | `samples/Opc.Classic.Samples.AotCanary` | NativeAOT publish smoke test for consumer applications. |
 

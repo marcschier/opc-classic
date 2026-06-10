@@ -32,7 +32,7 @@ public sealed class CttDaServer : IOpcDaServer {
     private readonly ILogger<CttDaServer> _logger;
     private readonly OpcObjectRegistry _objectRegistry;
 
-    // Per-CTT-instance group state. Keyed by server-assigned handle. The same
+    // Per-instance group state. Keyed by server-assigned handle. The same
     // entry is tracked in _groupIpids (handle -> IPID) so RemoveGroup can
     // unregister from the OpcObjectRegistry without an extra lookup.
     private readonly ConcurrentDictionary<int, GroupEntry> _groups = new();
@@ -59,7 +59,7 @@ public sealed class CttDaServer : IOpcDaServer {
             GroupCount = _groups.Count,
             BandWidth = 0,
             ServerVersion = new Version(1, 0, 0),
-            VendorInfo = "Opc.Classic .NET CTT Sample",
+            VendorInfo = "Opc.Classic .NET DA Sample",
         };
 
         return Task.FromResult(status);
@@ -158,7 +158,7 @@ public sealed class CttDaServer : IOpcDaServer {
         int errorCode,
         int localeId,
         CancellationToken cancellationToken = default) {
-        return Task.FromResult($"Opc.Classic CTT sample error: 0x{errorCode:X8}");
+        return Task.FromResult($"Opc.Classic DA sample error: 0x{errorCode:X8}");
     }
 
     Task<IOpcInterfaceRef> IOPCServer.GetGroupByNameAsync(string name, Guid requestedInterfaceId, CancellationToken cancellationToken) {

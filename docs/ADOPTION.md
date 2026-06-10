@@ -448,6 +448,6 @@ The sample suite contains 10 runnable apps.
 | `samples/Opc.Classic.Samples.HdaClient` | HDA query/playback client flow. |
 | `samples/Opc.Classic.Samples.HdaServer` | Managed HDA historical server hosting. |
 | `samples/Opc.Classic.Samples.LoopbackDemo` | In-memory generated proxy/dispatcher loopback. |
-| `samples/Opc.Classic.Samples.CttServer` | DA server shape for OPC CTT workflows. |
+| `samples/Opc.Classic.Samples.CttServer` | Additional managed DA sample (different CLSID from samples-da). |
 | `samples/Opc.Classic.Samples.OpcSecurityServer` | OPC Security reference server and ACL semantics. |
 | `samples/Opc.Classic.Samples.AotCanary` | NativeAOT publish validation. |

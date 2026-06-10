@@ -48,6 +48,46 @@ deferred DCOM paths, two large `external/` tree restructures, a
 security-focused fuzz campaign that surfaced and fixed a real bug, the docker
 test fleet authoring, and a matrix-driver process-cleanup hardening.
 
+### Removed
+
+- **OPC CTT integration scrubbed.** The vendored OPC Compliance Test
+  Tool v2.0.15 installer set (`external/private/ctt/` — 6 MSIs + 2 HTML
+  + readme.txt, ~13.5 MB), the `external/docker/opc-ctt/` Windows-
+  container image, the `.github/workflows/opc-ctt.yml` workflow, and
+  the `docs/ctt/CI_DESIGN.md` doc are all removed. Background: the bl1
+  investigation on 2026-06-10 confirmed CTT v2.0.15 is a WinForms
+  GUI-only app with no documented headless CLI -- no CI-friendly
+  conformance verdict was ever possible. The OpcCtt.exe shell could
+  only be launched + immediately stopped, which made the workflow a
+  no-op cost center.
+
+  **Replaced with**: `external/tools/build-opcenum.ps1` builds the
+  OpcEnum service directly from the vendored
+  `external/redist/src/Common/ServerEnumerator/` source (x86 CMake
+  target). The OpcEnum.exe binary supports `/Service` for Windows
+  service registration (verified in OpcEnum.cpp:513), and the
+  `docker-test-fleet.yml` cross-impl-matrix step now sources OPCEnum
+  from this build instead of the CTT Common Modules MSI.
+
+  **Kept** (per user feedback during the scrub):
+  - `samples/Opc.Classic.Samples.CttServer/` -- reframed as an
+    "additional managed DA sample (different CLSID from samples-da)"
+    rather than a CTT target. Same CLSID `8F7C1B14-...` and ProgID
+    `Opc.Classic.DaSample.1`; useful as a second DA coverage row in
+    the cross-impl matrix.
+  - `ctt-da` matrix profile -- still exercised by the
+    `cross-impl-matrix` CI step and by `tools/run-cross-impl-matrix.ps1`.
+  - `external/docker/opc-managed/` -- container now packages
+    `Opc.Classic.Samples.CttServer.exe` purely as a managed DA target
+    for c-client / testclient interop testing (entrypoint comments
+    updated to drop the CTT framing).
+
+  **CHANGELOG historical entries preserved.** The `[1.0.0-rc.*]` and
+  `[1.0.0]` blocks that describe past CTT work (e.g., the DR32/DR33
+  campaign, Track BH's TestServer registration spec, the CTT smoke
+  alongside the Docker fleet) remain intact because rewriting history
+  would lose context. Only this `Removed` block is new.
+
 ### Added
 
 - **Track CV — broad unit-test coverage sweep** (commit `7f8381a9`). New

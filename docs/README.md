@@ -23,7 +23,7 @@ Current rc.10 baseline: **10 sample apps** and **2113 passed / 12 skipped / 0 fa
 - [Performance tuning](tutorials/08-performance-tuning.md)
 - [Troubleshooting](tutorials/09-troubleshooting-and-diagnostics.md)
 - [AOT + trimming](tutorials/10-aot-and-trimming.md)
-- [Docker test fleet cookbook](test-fleet.md) — Windows-container CTT and native/managed interop workflows
+- [Docker test fleet cookbook](test-fleet.md) — Windows-container native/managed interop workflows
 
 ## Tools / Integrations
 
@@ -52,7 +52,6 @@ Current rc.10 baseline: **10 sample apps** and **2113 passed / 12 skipped / 0 fa
 - [Architecture diagrams](architecture/01-high-level-architecture.md) — 10 Mermaid diagrams
 - [Generator diagnostics](generators/diagnostics.md) — OPCGEN*+ OCM* reference
 - [XML-DA status](CONFORMANCE.md#opc-xml-da-101)
-- [OPC CTT conformance](CONFORMANCE.md#opc-ctt-conformance)
 - [Roadmap](ROADMAP.md) — delivered rc.* work, release gates, and beyond
 
 ## For Contributors

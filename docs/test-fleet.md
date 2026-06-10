@@ -2,21 +2,18 @@
 
 How to use the `external/docker/` fleet for end-to-end DCOM testing of the managed
 implementation. For the architectural overview see [`external/docker/README.md`](../external/docker/README.md).
-The fleet contains six Windows-container targets from `external/docker/docker-compose.test.yml`:
-`c-server`, `managed-server`, `testserver`, `ctt`, `c-client`, and `testclient`.
+The fleet contains five Windows-container targets from `external/docker/docker-compose.test.yml`:
+`c-server`, `managed-server`, `testserver`, `c-client`, and `testclient`.
 
 ## Common workflows
 
-### 1. Smoke the managed CttServer against the CTT
+### 1. Bring the managed server up for interactive testing
 
 ```pwsh
 # From the repo root, on a Windows host with Docker Desktop in Windows mode:
 docker network create --driver l2bridge --subnet 10.0.1.0/24 --gateway 10.0.1.1 opc-test-net
-external\docker\run-matrix.ps1 -OnlyManaged
+external\docker\run-matrix.ps1
 ```
-
-Result: `external/docker/results/ctt-managed.xml` — open in a text viewer or the CTT
-report viewer.
 
 Add the OPC Foundation TestServer reference cells when `external\redist` is
 vendored or `external\redist\build\x64\Release` has been restored from CI:
@@ -25,9 +22,9 @@ vendored or `external\redist\build\x64\Release` has been restored from CI:
 external\docker\run-matrix.ps1 -IncludeTestServer
 ```
 
-This adds `external/docker/results/ctt-testserver.xml` and runs
-`OpcTestClient_x64.exe` from the `opc-classic/testclient` image against
-`OpcTestServer_x64.1` on `opc-classic-testserver`.
+This also brings up the `opc-classic/testserver` container so the
+`opc-classic/testclient` image can hit `OpcTestServer_x64.1` on
+`opc-classic-testserver`.
 
 ### 2. Drive the managed server from a native C client
 
@@ -36,7 +33,7 @@ The `opc-c-client` image builds the hand-rolled DA client MVP from
 
 ```pwsh
 docker compose --file external\docker\docker-compose.test.yml up -d managed-server
-docker compose --file external\docker\docker-compose.test.yml run --rm c-client `
+docker compose --file external\docker\docker-compose.test.yml --profile interactive run --rm c-client `
     -ProgId Opc.Classic.DaSample.1 `
     -TargetHost opc-classic-managed
 ```
@@ -49,7 +46,7 @@ be pointed at it on the same `opc-test-net` l2bridge network.
 
 ```pwsh
 docker compose --file external\docker\docker-compose.test.yml up -d c-server
-docker compose --file external\docker\docker-compose.test.yml run --rm c-client `
+docker compose --file external\docker\docker-compose.test.yml --profile interactive run --rm c-client `
     -ProgId Opc.SampleServer.1 `
     -TargetHost opc-classic-c-server
 ```
@@ -66,7 +63,7 @@ repeated.
 docker compose --file external\docker\docker-compose.test.yml build testserver
 docker compose --file external\docker\docker-compose.test.yml build testclient
 docker compose --file external\docker\docker-compose.test.yml up -d testserver
-docker compose --file external\docker\docker-compose.test.yml run --rm testclient `
+docker compose --file external\docker\docker-compose.test.yml --profile interactive run --rm testclient `
     -TargetHost opc-classic-testserver `
     -ProgId OpcTestServer_x64.1
 docker compose --file external\docker\docker-compose.test.yml down
@@ -79,15 +76,15 @@ client flags if the upstream client adds them.
 
 ## Debugging
 
-### "Access denied" from the CTT or c-client against the managed server
+### "Access denied" from a client against the managed server
 
-Symptoms: `OpcCtt.exe` reports `0x80070005 (E_ACCESSDENIED)`; the c-client
-fails its `CoCreateInstanceEx` call.
+Symptoms: a C client or the Foundation `OpcTestClient_x64.exe` reports
+`0x80070005 (E_ACCESSDENIED)`; the c-client fails its `CoCreateInstanceEx` call.
 
 Causes / fixes:
 
-1. **Registry view mismatch**: the CTT is 32-bit on a 64-bit Windows host,
-   so it reads from `HKLM\Software\Wow6432Node\Classes\CLSID`. Confirm the
+1. **Registry view mismatch**: 32-bit Foundation tooling on a 64-bit Windows host
+   reads from `HKLM\Software\Wow6432Node\Classes\CLSID`. Confirm the
    managed server was registered with `--registry-view=both` (the default)
    so both views see the CLSID.
 2. **OPCEnum not running**: `docker exec opc-classic-managed Get-Service OpcEnum`
@@ -97,16 +94,6 @@ Causes / fixes:
 4. **DCOM ACLs not applied**: `docker exec opc-classic-managed reg query
    "HKLM\SOFTWARE\Microsoft\Ole" /v EnableDCOM` should print `Y`. If not,
    the `dcom-test-acls.reg` import failed during build.
-
-### CTT hangs / times out
-
-The PowerShell shim has a `-TimeoutSeconds 1800` default. Override with
-`-TimeoutSeconds 3600` for slow conformance suites. If the CTT consistently
-hangs at startup, dump the help output to verify the CLI flags:
-
-```pwsh
-docker run --rm opc-classic/ctt -Help
-```
 
 ### Capturing DCOM wire traffic
 
@@ -147,7 +134,7 @@ The rc.10 repository baseline outside the Windows-container gate is **0 build wa
 `external\redist` is present, the workflow restores/saves
 `external\redist\build\x64\Release` with `actions/cache` and runs
 `external\docker\run-matrix.ps1 -IncludeTestServer`; otherwise the TestServer/TestClient
-cells soft-skip and the existing managed smoke still runs. Inspect runs via:
+cells soft-skip and the managed server smoke still runs. Inspect runs via:
 
 ```pwsh
 gh run list --workflow=docker-test-fleet.yml
@@ -159,13 +146,9 @@ gh run download <run-id> --name docker-test-fleet-results
 
 - **Cannot run on Linux Docker**: Windows containers require a Windows
   kernel host. Use GitHub Actions' `windows-2022` runner for CI.
-- **CTT MSI redistribution**: the vendored CTT installers are OPC Foundation
-  member-only. The `opc-classic/ctt` image bakes them in; don't publish to
-  a public registry without OPC Foundation approval.
 - **CoreComponents cache is best-effort**: CI caches
   `external\redist\build\x64\Release`, but a source/toolchain hash change
   still triggers a cold rebuild.
-- **Validation is environment-blocked**: the managed CTT smoke and native C server/client interop paths have source, project files, and Dockerfiles wired, but compiling/running them still requires a Windows Docker host.
-- **TestServer/TestClient validation is environment-blocked**: the BH4-BH7
+- **TestServer/TestClient validation is environment-blocked**: the
   scaffolding is additive and syntax-checked here, but the CoreComponents build
   and DCOM redirection must be validated on a Windows Docker host.
