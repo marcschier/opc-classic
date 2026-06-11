@@ -1636,9 +1636,11 @@ internal static class OpcHdaServerCcwDataChangePump
         catch (ObjectDisposedException) when (cancellationToken.IsCancellationRequested)
         {
         }
+#pragma warning disable RCS1075 // HDA data-change callback dispatch; cleanup path swallows callback-handler faults so a single broken sink doesn't kill the pump
         catch (Exception)
         {
         }
+#pragma warning restore RCS1075
         finally
         {
             OpcHdaServerCcwMethods.RemovePendingOperationForPump(session, cancelId);

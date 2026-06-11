@@ -18,4 +18,12 @@ public class ProviderException : RpcException
         base(message)
     {
     }
+
+    public ProviderException(string? message, Exception? innerException) : base(message, innerException)
+    {
+    }
+
+    public ProviderException(string? message, int hresult) : base(message, hresult)
+    {
+    }
 }

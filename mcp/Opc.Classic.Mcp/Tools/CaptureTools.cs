@@ -78,7 +78,9 @@ public sealed class CaptureTools
         {
             string? linkType = null;
             try { linkType = d.LinkType.ToString(); }
+#pragma warning disable RCS1075 // SharpPcap LinkType throws PcapException before the device is opened — best-effort probe in the discovery path
             catch (Exception) { /* device LinkType only known after open */ }
+#pragma warning restore RCS1075
 
             var addresses = new List<string>();
             try
@@ -95,7 +97,9 @@ public sealed class CaptureTools
                     }
                 }
             }
+#pragma warning disable RCS1075 // SharpPcap Addresses enumeration can throw on Linux/Windows for individual NICs — tolerate per-NIC failures
             catch (Exception) { /* tolerate address enumeration failures on individual NICs */ }
+#pragma warning restore RCS1075
 
             result.Add(new CaptureInterfaceDto(
                 Name: d.Name ?? string.Empty,

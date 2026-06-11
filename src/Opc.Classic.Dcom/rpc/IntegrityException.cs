@@ -15,4 +15,12 @@ public class IntegrityException : RpcException
     public IntegrityException(string message) : base(message)
     {
     }
+
+    public IntegrityException(string? message, Exception? innerException) : base(message, innerException)
+    {
+    }
+
+    public IntegrityException(string? message, int hresult) : base(message, hresult)
+    {
+    }
 }

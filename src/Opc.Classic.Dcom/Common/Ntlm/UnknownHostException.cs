@@ -14,4 +14,8 @@ public sealed class UnknownHostException : Exception
         : base(message)
     {
     }
+
+    public UnknownHostException(string? message, Exception? innerException) : base(message, innerException)
+    {
+    }
 }

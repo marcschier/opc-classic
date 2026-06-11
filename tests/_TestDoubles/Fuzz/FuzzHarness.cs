@@ -422,6 +422,18 @@ public static class FuzzHarness
         return null;
     }
 
-    private sealed class FuzzHarnessFailureException(string message, Exception? innerException)
-        : InvalidOperationException(message, innerException);
+    private sealed class FuzzHarnessFailureException : InvalidOperationException
+    {
+        public FuzzHarnessFailureException()
+        {
+        }
+
+        public FuzzHarnessFailureException(string? message) : base(message)
+        {
+        }
+
+        public FuzzHarnessFailureException(string? message, Exception? innerException) : base(message, innerException)
+        {
+        }
+    }
 }

@@ -93,6 +93,18 @@ public class InteropException : Exception
         _message = message;
     }
 
+    public InteropException() : base()
+    {
+    }
+
+    public InteropException(string? message) : base(message)
+    {
+    }
+
+    public InteropException(string? message, Exception? innerException) : base(message, innerException)
+    {
+    }
+
     /// <summary>
     /// Returns the localized error messages.
     /// </summary>

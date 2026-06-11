@@ -1,5 +1,8 @@
 <Project>
 
+  <!-- Inherit Roslynator analyzer + future cross-tree settings from the repo-root Directory.Build.props. -->
+  <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)..'))" />
+
   <!--
     Applies to every src/*/*.csproj. Sibling tests/Directory.Build.props applies
     to test projects (which intentionally are NOT AOT-strict per the libs_only

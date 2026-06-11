@@ -113,11 +113,13 @@ internal sealed class ComTransport : ITransport, IDisposable
             {
                 Close();
             }
+#pragma warning disable RCS1075 // Best-effort close after a failed I/O operation; the original IOException is re-thrown unchanged
 #pragma warning disable RECS0022 // A catch clause that catches System.Exception and has an empty body
             catch (Exception)
             { // ignored
-#pragma warning restore RECS0022 // A catch clause that catches System.Exception and has an empty body
             }
+#pragma warning restore RECS0022
+#pragma warning restore RCS1075
             throw;
         }
     }

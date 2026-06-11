@@ -21,7 +21,7 @@ public class PresentationException : BindException
     /// Create
     /// </summary>
     /// <param name="message"></param>
-    public PresentationException(string message) :
+    public PresentationException(string? message) :
         base(message)
     {
     }
@@ -33,6 +33,26 @@ public class PresentationException : BindException
     /// <param name="result"></param>
     public PresentationException(string message, PresentationResult result) :
         base(ToString(message, result))
+    {
+    }
+
+    public PresentationException(string message, pdu.BindNoAcknowledgeReason rejectReason) : base(message, rejectReason)
+    {
+    }
+
+    /// <summary>
+    /// Create with inner exception
+    /// </summary>
+    public PresentationException(string? message, Exception? innerException) :
+        base(message, innerException)
+    {
+    }
+
+    /// <summary>
+    /// Create with HRESULT
+    /// </summary>
+    public PresentationException(string? message, int hresult) :
+        base(message, hresult)
     {
     }
 

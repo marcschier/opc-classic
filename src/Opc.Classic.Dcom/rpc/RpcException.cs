@@ -19,4 +19,12 @@ public class RpcException : IOException
     public RpcException(string message) : base(message)
     {
     }
+
+    public RpcException(string? message, Exception? innerException) : base(message, innerException)
+    {
+    }
+
+    public RpcException(string? message, int hresult) : base(message, hresult)
+    {
+    }
 }

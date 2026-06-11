@@ -19,6 +19,54 @@ public sealed class AutomationException : InteropException
     {
     }
 
+    public AutomationException(int errorCode, string message) : base(errorCode, message)
+    {
+    }
+
+    public AutomationException(ErrorCode errorCode, string message) : base(errorCode, message)
+    {
+    }
+
+    public AutomationException(int errorCode) : base(errorCode)
+    {
+    }
+
+    public AutomationException(ErrorCode errorCode) : base(errorCode)
+    {
+    }
+
+    public AutomationException(int errorCode, Exception cause) : base(errorCode, cause)
+    {
+    }
+
+    public AutomationException(ErrorCode errorCode, Exception cause) : base(errorCode, cause)
+    {
+    }
+
+    public AutomationException(InteropRuntimeException exception) : base(exception)
+    {
+    }
+
+    public AutomationException(int errorCode, string message, Exception cause) : base(errorCode, message, cause)
+    {
+    }
+
+    public AutomationException(ErrorCode errorCode, string message, Exception cause) : base(errorCode, message, cause)
+    {
+    }
+
+    public AutomationException() : base()
+    {
+    }
+
+    public AutomationException(string? message) : base(message)
+    {
+    }
+
+    public AutomationException(string? message, Exception? innerException) : base(message, innerException)
+    {
+    }
+
     /// <summary>
     /// Exception information
     /// </summary>

@@ -25,6 +25,14 @@ public class BindException : RpcException
     {
     }
 
+    public BindException(string? message, Exception? innerException) : base(message, innerException)
+    {
+    }
+
+    public BindException(string? message, int hresult) : base(message, hresult)
+    {
+    }
+
     /// <summary>
     /// Combine to string
     /// </summary>

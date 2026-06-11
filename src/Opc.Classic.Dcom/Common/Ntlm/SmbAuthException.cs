@@ -12,4 +12,12 @@ public sealed class SmbAuthException : SmbException
         : base(message)
     {
     }
+
+    public SmbAuthException(string message, Exception innerException) : base(message, innerException)
+    {
+    }
+
+    public SmbAuthException(string? message, int hresult) : base(message, hresult)
+    {
+    }
 }

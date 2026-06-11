@@ -1,5 +1,8 @@
 <Project>
 
+  <!-- Inherit Roslynator analyzer + future cross-tree settings from the repo-root Directory.Build.props. -->
+  <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)..'))" />
+
   <!--
     Applies to every tests/*/*.csproj. Per the implementation plan's libs_only
     NativeAOT scope, test projects are NOT AOT-strict — they may use reflection-

@@ -32,6 +32,7 @@
     <PackageVersion Include="Microsoft.CodeAnalysis.BannedApiAnalyzers" Version="3.3.4" />
     <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="8.0.0" />
     <PackageVersion Include="Microsoft.VisualStudio.Threading.Analyzers" Version="17.13.61" />
+    <PackageVersion Include="Roslynator.Analyzers" Version="4.15.0" />
   </ItemGroup>
 
   <ItemGroup Label="Roslyn (only consumed by the source-generator project — netstandard2.0 build-time)">
@@ -54,6 +55,10 @@
   <ItemGroup Label="Network capture (mcp/Opc.Classic.Mcp.Capture consumes these; not used by src/ AOT-strict assemblies)">
     <PackageVersion Include="SharpPcap" Version="6.3.1" />
     <PackageVersion Include="PacketDotNet" Version="1.4.8" />
+  </ItemGroup>
+
+  <ItemGroup Label="Benchmark harness (benchmarks/Opc.Classic.Benchmarks consumes this)">
+    <PackageVersion Include="BenchmarkDotNet" Version="0.14.0" />
   </ItemGroup>
 
   <ItemGroup Label="Historical transitional package versions">

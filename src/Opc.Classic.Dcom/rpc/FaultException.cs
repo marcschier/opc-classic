@@ -58,6 +58,14 @@ public class FaultException : RpcException
         Stub = stub;
     }
 
+    public FaultException(string? message, Exception? innerException) : base(message, innerException)
+    {
+    }
+
+    public FaultException(string? message, int hresult) : base(message, hresult)
+    {
+    }
+
     /// <summary>
     /// Convert to string
     /// </summary>

@@ -20,5 +20,9 @@ public class SmbException : IOException
     {
     }
 
+    public SmbException(string? message, int hresult) : base(message, hresult)
+    {
+    }
+
     public virtual int GetNtStatus() => HResult;
 }

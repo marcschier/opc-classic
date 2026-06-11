@@ -1,0 +1,13 @@
+<Project>
+  <!--
+    Repo-root Directory.Packages.props. Re-exports the central package
+    versions from src/Directory.Packages.props so every project in the
+    repository (src/, tests/, samples/, mcp/, benchmarks/) participates
+    in Central Package Management.
+
+    Per-tree files under src/, tests/, mcp/, samples/Opc.Classic.Samples.*/
+    that need extra versions either import this file directly or import
+    src/Directory.Packages.props (transitively the same set).
+  -->
+  <Import Project="src\Directory.Packages.props" />
+</Project>

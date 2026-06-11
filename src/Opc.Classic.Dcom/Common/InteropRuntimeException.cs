@@ -38,6 +38,18 @@ public sealed class InteropRuntimeException : Exception
     public InteropRuntimeException(int hresult, params object[] parameters) :
         this(hresult) => Parameters = parameters;
 
+    public InteropRuntimeException() : base()
+    {
+    }
+
+    public InteropRuntimeException(string? message) : base(message)
+    {
+    }
+
+    public InteropRuntimeException(string? message, Exception? innerException) : base(message, innerException)
+    {
+    }
+
     /// <summary>
     /// Params
     /// </summary>
