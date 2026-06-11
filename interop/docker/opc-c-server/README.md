@@ -9,6 +9,6 @@ docker build --file interop/docker/opc-c-server/Dockerfile --tag opc-classic/c-s
 docker run --rm --network opc-test-net opc-classic/c-server
 ```
 
-The image compiles `interop\docker\opc-c-server\build\opc-sample-server.cpp` against headers from `interop\inc`, registers `OPC.SampleServer.1`, and exposes the DCOM endpoint mapper plus the pinned dynamic range `49152-49200`.
+The image compiles opc-sample-server against headers from `inc`, registers `OPC.SampleServer.1`, and exposes the DCOM endpoint mapper plus the pinned dynamic range `49152-49200`.
 
-See `build\README.md` for the native project details and `interop\docker\README.md` for the full fleet.
+See `build\README.md` for the native project details and `docker` for the full fleet.

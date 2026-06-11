@@ -21,7 +21,7 @@ Core types:
 - `NtlmAuthentication.CreateAuthContext` is in `Opc.Classic.Dcom.Rpc.Auth.ntlm`.
 - `HttpXmlDaClient` is in `Opc.Classic.Xml`.
 
-Verified source references: `src\Opc.Classic.Core\OpcProtectionLevel.cs`, `src\Opc.Classic.Core\OpcConnectData.cs`, `src\Opc.Classic.Core\OpcAuthMode.cs`, `src\Opc.Classic.Core\OpcClientOptions.cs`, and `src\Opc.Classic.Core\IAuthContext.cs`. `OpcClientOptions` currently carries operation timeout and circuit-breaker settings; packet protection is configured on `OpcConnectData`.
+Verified source references: `OpcProtectionLevel`, `OpcConnectData`, `OpcAuthMode`, `OpcClientOptions`, and `IAuthContext`. `OpcClientOptions` currently carries operation timeout and circuit-breaker settings; packet protection is configured on `OpcConnectData`.
 
 ## DCOM client: select packet privacy
 

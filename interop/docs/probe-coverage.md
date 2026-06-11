@@ -9,14 +9,14 @@ Server profiles exercised:
   (vendor MSI install).
 - **OPC Foundation TestServer x64**: CLSID
   `F8582CF9-88FB-11DA-A5ED-0060B0692061` (built via
-  [build-testserver.ps1](../tools/build-testserver.ps1); no MSI).
+  build-testserver; no MSI).
 
 ## Headline numbers
 
 | Profile | Result | Notes |
 | --- | --- | --- |
 | Matrikon | 25/95 OK (70 FAIL) | All DA tools pass with `--da-clsid F8582CF2-88FB-11D0-B850-00C0F0104305` (direct activation). The `--da-progid` path fails because OPCEnum's data port rejects `IOPCServerList2` and `IOPCServerList` binds with `PROVIDER_REJECTION; ABSTRACT_SYNTAX_NOT_SUPPORTED` ([Issue D](#issue-d-opcenum-data-port-bind-rejects-iopcserverlist2)). |
-| TestServer | 104/104 MATCH, 0 REGRESSION, 0 UNEXPECTED_PASS, 0 MISSING | Full cross-impl matrix green end-to-end via [run-cross-impl-matrix.ps1](../../tools/run-cross-impl-matrix.ps1) `-Profile testserver`. Foundation `OpcTestClient_x64.exe` also activates and runs the full DA 2.x lifecycle exerciser (GetStatus, AddGroup, AddItems, read/write). |
+| TestServer | 104/104 MATCH, 0 REGRESSION, 0 UNEXPECTED_PASS, 0 MISSING | Full cross-impl matrix green end-to-end via run-cross-impl-matrix `-Profile testserver`. Foundation `OpcTestClient_x64.exe` also activates and runs the full DA 2.x lifecycle exerciser (GetStatus, AddGroup, AddItems, read/write). |
 
 DA `get_properties`, `read_sync`, and `poll_subscription` work end-to-end
 against Matrikon. The NDR VARIANT decoder handles the embedded `[unique]`
@@ -31,8 +31,8 @@ between two CLSIDs that should be identical but aren't:
 
 | Source | UUID | Where |
 | --- | --- | --- |
-| IDL `coclass OpcTestServer_x64` | `F8582CF8-...` | vendored OPC Foundation TestServer `OpcTestServer.idl:45` |
-| `OPC_IMPLEMENT_LOCAL_SERVER` GUID | `F8582CF9-...` | vendored OPC Foundation TestServer `OpcTestServer.cpp:53` |
+| IDL `coclass OpcTestServer_x64` | `F8582CF8-...` | vendored OPC Foundation TestServer `OpcTestServer` |
+| `OPC_IMPLEMENT_LOCAL_SERVER` GUID | `F8582CF9-...` | vendored OPC Foundation TestServer `OpcTestServer` |
 
 The class table macro `OPC_CLASS_TABLE_ENTRY(COpcTestServer, OpcTestServer_x64, ...)`
 expands to `__uuidof(OpcTestServer_x64)`, which resolves to the IDL coclass UUID
@@ -46,7 +46,7 @@ subsequent activation, `RegisterFromFiles` reads `<CLSID>=F8582CF8` and
 registers the class factory under F8582CF8. SCM waits for F8582CF9. They
 never meet, SCM times out, returns `CO_E_SERVER_EXEC_FAILURE` (0x80080005).
 
-**Workaround**: [register-testserver.ps1](../tools/register-testserver.ps1)
+**Workaround**: register-testserver
 patches the `<CLSID>` element of `OpcTestServer_x64.config.xml` after copying
 it alongside the EXE. After patching, `pClasses[0].pClsid` becomes F8582CF9
 and the class factory registers under the SCM-expected CLSID.
@@ -55,15 +55,15 @@ Validated by:
 
 - Foundation `OpcTestClient_x64.exe` successfully `CoCreateInstance` +
   `GetStatus` + `AddGroup` + `AddItem`.
-- [run-cross-impl-matrix.ps1](../../tools/run-cross-impl-matrix.ps1)
+- run-cross-impl-matrix
   `-Profile testserver` reports 104 MATCH / 0 REGRESSION /
   0 UNEXPECTED_PASS / 0 MISSING.
 
 ## TestServer (DA 2.05a + DA 3.0): per-tool outcome
 
-After applying [register-testserver.ps1](../tools/register-testserver.ps1)
+After applying register-testserver
 (Issue E workaround) and the DCOM ACL grant via
-[grant-testserver-acl.ps1](../tools/grant-testserver-acl.ps1), every
+grant-testserver-acl, every
 applicable MCP tool passes against TestServer. The matrix invocation is:
 
 ```powershell
@@ -139,7 +139,7 @@ that the simulation server does not register. The probe consequently:
 
 ### Issue A: AlterContext PROVIDER_REJECTION on per-spec sub-IIDs (resolved)
 
-`src/Opc.Classic.Dcom/Transport/DcomCallChannel.cs::AlterContextAsync` used
+`DcomCallChannel` used
 to send a single-IID `alter_context_req` with the new interface IID
 (`IOPCItemProperties` / `IOPCItemMgt` / `IOPCSyncIO` / `IOPCAsyncIO2`).
 Matrikon (and most production OPC servers) rejected those rebinds because
@@ -159,7 +159,7 @@ catalog to those specs is the open follow-up.
 Locally built TestServer EXE activation fails with HRESULT `0x80080005` and
 DCOM event log 10010 ("server did not register with DCOM within the
 required timeout") on a fresh install. The fix is to run
-[grant-testserver-acl.ps1](../tools/grant-testserver-acl.ps1) once after
+grant-testserver-acl once after
 the EXE is registered, which writes the DCOM AppID Launch/Access SD for
 the TestServer CLSID. Combined with the Issue E config-XML patch above,
 the matrix reaches 104/104.
@@ -174,7 +174,7 @@ and upgrades weak activation protection to
 identity DCOM Launch/Activation and Access permissions on the OPCEnum
 AppID `{13486D44-4821-11D2-A494-3CB306C10000}` (note: AppID is distinct
 from the CLSID `{13486D51-4821-11D2-A494-3CB306C10000}`, differing in
-one hex digit). [grant-opcenum-acl.ps1](../tools/grant-opcenum-acl.ps1)
+one hex digit). grant-opcenum-acl
 automates this once per host.
 
 ### Issue D: OPCEnum **data-port bind** rejects IOPCServerList(2)

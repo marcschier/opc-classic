@@ -49,7 +49,7 @@ docker network create `
     opc-test-net
 ```
 
-Containers are assigned fixed IPs in `interop\docker\docker-compose.test.yml` so the
+Containers are assigned fixed IPs in docker-compose.test so the
 DCOM bindings advertise stable, peer-routable addresses.
 
 ### Functional managed DCOM-over-IP sample path
@@ -65,8 +65,8 @@ environment variables are absent, clients keep their original in-process
 
 This DCOM-over-IP path is separate from the Windows COM/OXID dynamic-port path below:
 it uses a known TCP port on the managed listener instead of SCM activation plus
-endpoint-mapper-discovered object bindings. See `samples\README.docker.md` for
-the DA/AE/HDA compose topology and `samples\README.md` for the full sample port table.
+endpoint-mapper-discovered object bindings. See README.docker sample for
+the DA/AE/HDA compose topology and samples sample for the full sample port table.
 
 ### Trade-offs
 
@@ -151,8 +151,8 @@ when the fleet needs production-style authenticated DCOM.
 
 - [MS-DCOM] §2.2.19 — DUALSTRINGARRAY format
 - [MS-RPCE] §3.1.1.5 — ncacn_ip_tcp endpoint allocation
-- `interop\docker\opc-managed\dcom-test-acls.reg` — the source of truth for our ACL relaxations
-- `samples\README.docker.md` — functional managed DCOM-over-IP sample topology
-- `src\Opc.Classic.Dcom\Transport\DcomCallChannelFactory.cs` — direct TCP client helper used by the samples
+- dcom-test-acls — the source of truth for our ACL relaxations
+- README.docker sample — functional managed DCOM-over-IP sample topology
+- `DcomCallChannelFactory` — direct TCP client helper used by the samples
 - [DcomContainerSample](https://github.com/wazzzaatosh/DcomContainerSample) — reference repo
 - [windows-containers-AD](https://github.com/plooploops/windows-containers-AD) — gMSA setup for the production-style path

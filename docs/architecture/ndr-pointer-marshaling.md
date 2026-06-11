@@ -155,7 +155,7 @@ Scope-limited; tracked as follow-up work:
 - **`IRemUnknown::RemQueryInterface`** — `IID 00000131-…`,
   opnum 3. Use to obtain new IPIDs on an existing OXID (e.g. QI from
   `IOPCGroupStateMgt` to `IOPCSyncIO`/`IOPCItemMgt` after `AddGroup`).
-  Generated proxy lives in `src/Opc.Classic.Dcom/Remoting/IRemUnknown.cs`;
+  Generated proxy lives in `IRemUnknown`;
   returned `OpcRemQIResult[]` carries the per-IID HRESULT + STDOBJREF
   (flags + cPublicRefs + OXID + OID + IPID) per MS-DCOM §2.2.19. The
   `ipidRemUnknown` value to use for the call is returned by
@@ -163,7 +163,7 @@ Scope-limited; tracked as follow-up work:
 
 ## Wire-format regression net
 
-`tests/Opc.Classic.Da.Tests/Wire/` pins byte-shape fixtures for the
+Wire tests pins byte-shape fixtures for the
 methods that have shipped:
 
 - `NdrOpcServerStatusWireFixtures` — OPCSERVERSTATUS layout and the
@@ -178,7 +178,7 @@ methods that have shipped:
 - `NdrOpcVariantWireFixtures` — _wireVARIANT layout per MS-OAUT §2.2.29
   for VT_I4, VT_R4, VT_R8, VT_BOOL, VT_BSTR, VT_UI1.
 
-`tests/Opc.Classic.Dcom.Tests/Remoting/IRemUnknownProxyTests.cs` does
+`IRemUnknownProxyTests` does
 the same for IRemUnknown::RemQueryInterface request body + REMQIRESULT
 array response.
 
@@ -217,6 +217,6 @@ against the IDL signature:
 When in doubt, capture a Wireshark trace of a Windows OPC client
 calling the method against the same server and compare byte-by-byte
 against the generated request/response. The fixtures under
-`tests/Opc.Classic.Da.Tests/Wire/` codify known-good wire bytes for the
+Wire tests codify known-good wire bytes for the
 most common methods so regressions are caught at unit-test time rather
 than at Matrikon-integration time.

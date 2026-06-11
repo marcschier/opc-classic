@@ -13,7 +13,7 @@ datatype `VT_I2`, value, quality `VT_I2`, timestamp `VT_FILETIME`,
 access rights `VT_I4`, scan rate `VT_R4`, EU type `VT_I4`) round-trips
 byte-perfect through the per-element VARIANT codec via 5 synthetic
 fixture tests in
-[`tests/Opc.Classic.Da.Tests/Wire/GetItemPropertiesStandardSetFixtureTests.cs`](../../tests/Opc.Classic.Da.Tests/Wire/GetItemPropertiesStandardSetFixtureTests.cs).
+`GetItemPropertiesStandardSetFixtureTests`.
 
 **If the live Matrikon variant fails despite spec-compliant fixtures
 passing, the bug is vendor-specific padding — not spec-compliant
@@ -27,9 +27,9 @@ Shipped scaffolding that makes this cheap:
   ends with a hex window centered on the failing offset (via
   `NdrReader.FormatContext()`).
 - Opt-in wire capture via `OPCCLASSIC_WIRE_CAPTURE_DIR` env var (or
-  the `--save-wire-payloads <dir>` flag on `tools/probe_servers.py`).
+  the `--save-wire-payloads <dir>` flag on probe servers tool).
 - `WireCaptureFile` parser
-  ([`tests/Opc.Classic.Da.Tests/Wire/Replay/WireCaptureFile.cs`](../../tests/Opc.Classic.Da.Tests/Wire/Replay/WireCaptureFile.cs))
+  (WireCaptureFile tests)
   that turns a captured `.hex` file back into a `byte[]` for direct
   codec replay.
 - Every NDR FILETIME decoder uses `FileTimeHelper.TryFromFileTime` +
@@ -199,7 +199,7 @@ The next iteration (automated) will:
   variation (typically: extra padding before a length-prefixed string,
   or a non-canonical `clSize`/`rpcReserved` shape).
 - Add the captured file as a permanent regression fixture under
-  `interop/docs/wire-captures/`.
+  wire-captures.
 
 ## Out of scope (don't do these)
 
@@ -313,7 +313,7 @@ Full solution test sweep: **all green** (0 failures across 17 test projects).
 ## Wire-replay findings against Matrikon (analysis archive)
 
 The live capture against Matrikon OPC Simulation Server lives at
-[`tests/Opc.Classic.Da.Tests/Wire/Fixtures/matrikon-getproperties-random-int4.hex`](../../tests/Opc.Classic.Da.Tests/Wire/Fixtures/matrikon-getproperties-random-int4.hex).
+matrikon-getproperties-random-int4 tests.
 The `MatrikonGetPropertiesReplayTests.Replay_decodes_response_through_browse_decoder`
 test reproduces the historical failure deterministically off-line, and
 proves the post-fix decoder handles the wire shape correctly:
@@ -413,11 +413,11 @@ decoder branch without ground truth risks shipping a guess.
   including the `get_properties` failure mode.
 - [Wire captures](wire-captures/README.md) — capture format reference
   and replay helper documentation.
-- [OPCEnum DCOM auth](opcenum-auth.md) — `interop/tools/grant-opcenum-acl.ps1`
+- [OPCEnum DCOM auth](opcenum-auth.md) — grant-opcenum-acl
   helper used in prerequisites.
-- [`tests/Opc.Classic.Da.Tests/Wire/GetItemPropertiesStandardSetFixtureTests.cs`](../../tests/Opc.Classic.Da.Tests/Wire/GetItemPropertiesStandardSetFixtureTests.cs)
+- `GetItemPropertiesStandardSetFixtureTests`
   — the AT2 synthetic fixtures to diff against.
-- [`tests/Opc.Classic.Da.Tests/Wire/Replay/WireCaptureFile.cs`](../../tests/Opc.Classic.Da.Tests/Wire/Replay/WireCaptureFile.cs)
+- WireCaptureFile tests
   — the parser that turns a captured `.hex` back into a `byte[]`.
 - OPC DA 3.00 §6.5 in the vendored `OPC-DA-3.00.md` spec — the
   `IOPCItemProperties` interface specification.

@@ -5,10 +5,10 @@
 
 ## Protocol and parser checks
 
-- [ ] Are all NTLM security-buffer length/offset fields validated before slicing in `NtlmMessage`, `Type1Message`, `Type2Message`, and `Type3Message`? Cross-check FZ-1 coverage in `tests\Opc.Classic.PropertyTests\Fuzz\Network\NtlmFuzzTests.cs`.
-- [ ] Does MIC computation cover exactly `NEGOTIATE_MESSAGE || CHALLENGE_MESSAGE || AUTHENTICATE_MESSAGE-with-zeroed-MIC` per [MS-NLMP]? Review `src\Opc.Classic.Dcom\Common\Ntlm\NtlmMic.cs` and `Type3Message.ToByteArrayWithMic`.
-- [ ] Does server verification reject Type3 tampering, MIC mismatch, wrong password, and CBT mismatch? Start with `tests\Opc.Classic.Integration.Tests\EndToEnd\NtlmHandshakeProtocolTests.cs`.
-- [ ] Does the parser reject downgrade to NTLMv1 unless `rpc.ntlm.allowV1=true` is explicitly set? Check `NtlmAuthentication.cs:67-70` and `NtlmDefaultsTests.cs`.
+- [ ] Are all NTLM security-buffer length/offset fields validated before slicing in `NtlmMessage`, `Type1Message`, `Type2Message`, and `Type3Message`? Cross-check FZ-1 coverage in `NtlmFuzzTests`.
+- [ ] Does MIC computation cover exactly `NEGOTIATE_MESSAGE || CHALLENGE_MESSAGE || AUTHENTICATE_MESSAGE-with-zeroed-MIC` per [MS-NLMP]? Review `NtlmMic` and `Type3Message.ToByteArrayWithMic`.
+- [ ] Does server verification reject Type3 tampering, MIC mismatch, wrong password, and CBT mismatch? Start with `NtlmHandshakeProtocolTests`.
+- [ ] Does the parser reject downgrade to NTLMv1 unless `rpc.ntlm.allowV1=true` is explicitly set? Check `NtlmAuthentication` and `NtlmDefaultsTests.cs`.
 - [ ] Are malformed AV pairs handled without over-read, infinite loop, or unexpected exception type? Review `NtlmAvPairs.TryGet`, `AddOrReplace`, and fuzz cases.
 
 ## Crypto and key schedule checks

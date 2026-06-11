@@ -4,7 +4,7 @@
 > `opcae_ps.dll` MIDL proxy/stub expects for
 > `IOPCEventServer::GetConditionState` (opnum 12) and
 > `IOPCEventServer::AckCondition` (opnum 17). Source: the
-> vendored `interop/inc/opc_ae_p.c` (119 KB of MIDL-generated
+> vendored `opc_ae_p` (119 KB of MIDL-generated
 > proxy/stub C source). Cited byte-by-byte against
 > ProcFormatString + TypeFormatString offsets in that file.
 >
@@ -53,7 +53,7 @@
 
 ## GetConditionState (opnum 12)
 
-### Method signature (from `interop/inc/opc_ae.idl:206-212`)
+### Method signature
 
 ```idl
 HRESULT GetConditionState (
@@ -224,7 +224,7 @@ Candidate root causes:
 
 ## AckCondition (opnum 17)
 
-### Method signature (from `interop/inc/opc_ae.idl:235-244`)
+### Method signature
 
 ```idl
 HRESULT AckCondition(
@@ -372,27 +372,27 @@ attribute coverage.
 
 ## Source citations
 
-- `interop/inc/opc_ae.idl:206-212` — GetConditionState IDL signature
-- `interop/inc/opc_ae.idl:235-244` — AckCondition IDL signature
-- `interop/inc/opc_ae.idl:106-131` — OPCCONDITIONSTATE struct IDL
-- `interop/inc/opc_ae_p.c:564-612` — GetConditionState ProcFormatString
-- `interop/inc/opc_ae_p.c:742-808` — AckCondition ProcFormatString
-- `interop/inc/opc_ae_p.c:1734-1888` — TypeFormatString offsets 0-200
+- `opc_ae` — GetConditionState IDL signature
+- `opc_ae` — AckCondition IDL signature
+- `opc_ae` — OPCCONDITIONSTATE struct IDL
+- `opc_ae_p` — GetConditionState ProcFormatString
+- `opc_ae_p` — AckCondition ProcFormatString
+- `opc_ae_p` — TypeFormatString offsets 0-200
   (FILETIME at 10, szSource/szConditionName at 144, pdwAttributeIDs
   carray at 242, ppConditionState marshal at 252→256)
-- `interop/inc/opc_ae_p.c:1888-2010` — TypeFormatString offsets
+- `opc_ae_p` — TypeFormatString offsets
   240-340 (pdwCookie+pftActiveTime+pszSource/pszConditionName carrays
   at 1396/1430/1448, OPCCONDITIONSTATE outer at 1304)
-- `interop/inc/opc_ae_p.c:2680-2750` — OPCCONDITIONSTATE struct body
+- `opc_ae_p` — OPCCONDITIONSTATE struct body
   + pointer layout (offsets 1304-1390)
-- `interop/inc/opc_ae_p.c:2762-2820` — AckCondition array type
+- `opc_ae_p` — AckCondition array type
   defs (offsets 1396-1458)
 
 ---
 
 # Byte-diff vs managed-encoder fixtures
 
-The fixtures live at `tests/Opc.Classic.Ae.Tests/Wire/Dr3233/Fixtures/`.
+The fixtures live with the AE wire-format tests.
 This section diffs those captures against the spec layouts above and
 identifies the precise byte-level discrepancies.
 
@@ -424,7 +424,7 @@ that are declared as bare `string` in the C# interface. Without
 `[OpcRefString]`, the simple_ref wire shape is not produced.
 
 **Fix:** apply `[OpcRefString]` to both parameters in
-`src/Opc.Classic.Ae/Dcom/IOPCInterfaces.cs` line 116-120.
+`IOPCInterfaces` line 116-120.
 
 ## Diff #2 — AckCondition request: spurious outer referent on simple_ref scalars
 
@@ -461,7 +461,7 @@ parameter declarations causes the generator to emit the
 `[unique]` wire shape instead of simple_ref.
 
 **Fix:** apply `[OpcRefString]` to `acknowledgerId` and `comment`
-in `src/Opc.Classic.Ae/Dcom/IOPCInterfaces.cs` line 152-160.
+in `IOPCInterfaces` line 152-160.
 
 ## Non-Diff — AckCondition array marshaling is CORRECT
 
@@ -471,8 +471,7 @@ pszConditionName" was not a bug.
 **Re-analysis:** the MIDL spec emits FC_PP deferred bodies
 INSIDE each parameter's marshal block (after that param's
 conformance + referent IDs), NOT cross-param. The generator's
-current `[OpcDeferredElements]` implementation
-(`src/Opc.Classic.Generators/OpcProxyGenerator.cs:946-963`) does
+current `[OpcDeferredElements]` implementation does
 exactly this — two passes within the same parameter:
 
 ```csharp
@@ -555,4 +554,3 @@ are:
   response investigation both fail, the remaining failures are
   documented downstream-vendor bugs and the waiver stays in
   place.
-

@@ -211,7 +211,7 @@ Track these metrics before changing code:
 - HDA samples returned per query;
 - CPU split between auth, NDR, and application processing.
 
-Use the repository benchmark project (`benchmarks\Opc.Classic.Benchmarks`) for microbenchmarks around `NdrWriter`, `NdrReader`, `OpcVariant`, `OpcSafeArray`, codec registries, and call-channel overhead. Keep additional application-specific benchmarks in CI for regression detection.
+Use the repository benchmark project for microbenchmarks around `NdrWriter`, `NdrReader`, `OpcVariant`, `OpcSafeArray`, codec registries, and call-channel overhead. Keep additional application-specific benchmarks in CI for regression detection.
 
 ## Pitfalls
 
@@ -224,7 +224,7 @@ Use the repository benchmark project (`benchmarks\Opc.Classic.Benchmarks`) for m
 
 ## Building a repeatable benchmark harness
 
-Start with `benchmarks\Opc.Classic.Benchmarks`, then create a small local harness for payloads unique to your application. Benchmark three layers separately: pure codec encode/decode, in-memory call-channel round trips, and real server calls. Mixing them together makes results hard to interpret. A codec benchmark should not open sockets; a network benchmark should not allocate random item lists every iteration.
+Start with Opc.Classic benchmark, then create a small local harness for payloads unique to your application. Benchmark three layers separately: pure codec encode/decode, in-memory call-channel round trips, and real server calls. Mixing them together makes results hard to interpret. A codec benchmark should not open sockets; a network benchmark should not allocate random item lists every iteration.
 
 Representative payloads are more important than synthetic extremes. Include a DA read of 10 items, 100 items, and 1000 items; an HDA raw response with 100 and 10,000 samples; an AE event burst with simple, tracking, and condition events; and a callback batch with good and failed item rows. Keep payloads in source-controlled fixtures so regressions are comparable.
 
@@ -275,7 +275,7 @@ Also schedule periodic drills. Run the tutorial scenario in a staging environmen
 - OPC DA 3.00 for group, item, and callback batch semantics.
 - OPC HDA 1.20 for aggregate and continuation behavior.
 - [MS-RPCE] for packet fragmentation and authentication verifier overhead.
-- Repository files: `src\Opc.Classic.Core\Ndr\NdrWriter.cs`, `NdrReader.cs`, `src\Opc.Classic.Generators\OpcProxyGenerator.cs`, and per-spec hosting dispatchers.
+- Repository files: `NdrWriter`, `NdrReader.cs`, `OpcProxyGenerator`, and per-spec hosting dispatchers.
 
 
 

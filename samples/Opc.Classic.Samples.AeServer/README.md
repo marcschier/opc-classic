@@ -1,6 +1,6 @@
 # Opc.Classic Sample AE Server
 
-Managed OPC AE sample server mirroring the native `interop\samples\SampleServer\Ae` simulation loop with a small synthetic event tree.
+Managed OPC AE sample server mirroring the native `Ae` simulation loop with a small synthetic event tree.
 
 ## Event tree
 
@@ -30,4 +30,4 @@ Scaffold-grade. `SampleAeServer` implements `GetStatusAsync` and `QueryAvailable
 - `SampleAeServer.cs` — managed AE server status/filter surface.
 - `EventEmitter.cs` — logged synthetic event loop.
 
-For the compose-orchestrated container demo, see `samples\README.docker.md`.
+For the compose-orchestrated container demo, see README.docker sample.

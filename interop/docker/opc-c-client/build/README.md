@@ -2,7 +2,7 @@
 
 This folder ships a small native C++ OPC DA client (`opc-test.cpp`, ~190
 lines) that compiles via MSBuild/MSVC into `opc-test.exe`. The container
-ENTRYPOINT (`interop/docker/opc-c-client/client.ps1`) invokes the binary with
+ENTRYPOINT invokes the binary with
 `<prog-id>` + `<target-host>` arguments forwarded from `docker compose`
 or `docker run`.
 
@@ -31,8 +31,8 @@ docker run --rm --network opc-test-net opc-classic/c-client `
 
 ## See also
 
-- `interop/docker/opc-c-client/Dockerfile` — current image definition (build wired)
-- `interop/docker/opc-c-client/client.ps1` — runtime entrypoint
-- `interop/docker/opc-c-client/build/opc-test.cpp` — MVP client source
-- `interop/docker/opc-c-client/build/opc-test.vcxproj` — MSBuild project
-- `interop/docker/opc-c-server/build/README.md` — sister build for the server side
+- `Dockerfile` — current image definition (build wired)
+- `client` — runtime entrypoint
+- opc-test — MVP client source
+- opc-test — MSBuild project
+- `build` — sister build for the server side

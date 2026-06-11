@@ -5,8 +5,8 @@ The `opcclassic.capture.*` MCP tool set lets an MCP-aware client
 DCOM-over-IP traffic, decode the DCE/RPC PDU stream against our
 existing `PduCodec` + `OrpcEnvelope` + `NdrReader`, and feed the
 result back into the same offline diagnostic pipeline used by
-`tools/probe_servers.py --save-wire-payloads` and the replay tests
-under `tests/Opc.Classic.Da.Tests/Wire/Replay/`.
+probe servers tool and the replay tests
+under Replay tests.
 
 This unblocks debugging that otherwise required hand-crafting test
 fixtures from stack traces: any failing live interaction can be
@@ -133,9 +133,9 @@ captures, replay tests, and probe-driver wire dumps interoperable.
   application-layer per-call dumps from our managed client. The
   capture engine writes the same format for matched request/response
   pairs found in live traffic.
-- [Replay harness](../../tests/Opc.Classic.Da.Tests/Wire/Replay/WireCaptureFile.cs)
+- Replay harness
   — turns `.hex` dumps back into `byte[]` for regression tests.
-- [`PduCodec`](../../src/Opc.Classic.Dcom/Transport/PduCodec.cs) +
-  [`OrpcEnvelope`](../../src/Opc.Classic.Dcom/Transport/OrpcEnvelope.cs)
+- `PduCodec` +
+  `OrpcEnvelope`
   — the same codecs used by our managed client + server, exercised by
   the capture decoder so any fix here also fixes the live code path.

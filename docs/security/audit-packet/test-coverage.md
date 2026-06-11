@@ -3,7 +3,7 @@
 
 # NTLMSSP test coverage
 
-## Unit tests: `tests\Opc.Classic.Dcom.Crypto.Tests\`
+## Unit tests: Opc.Classic.Dcom.Crypto tests
 
 | File | Tests | High-value invariant |
 | --- | ---: | --- |
@@ -20,9 +20,9 @@
 
 | File | Tests | High-value invariant |
 | --- | ---: | --- |
-| `tests\Opc.Classic.Dcom.Tests\Tests\NtlmDefaultsTests.cs` | 4 | `rpc.ntlm.ntlmv2` and `rpc.ntlm.ntlm2` default true; NTLMv1 without explicit opt-in throws. |
+| `NtlmDefaultsTests` | 4 | `rpc.ntlm.ntlmv2` and `rpc.ntlm.ntlm2` default true; NTLMv1 without explicit opt-in throws. |
 
-## Property tests: `tests\Opc.Classic.PropertyTests\`
+## Property tests: Opc.Classic tests
 
 | File | Tests | High-value invariant |
 | --- | ---: | --- |
@@ -32,17 +32,17 @@
 
 | File | Cases | Allowed exception set / invariant |
 | --- | ---: | --- |
-| `tests\Opc.Classic.PropertyTests\Fuzz\Network\NtlmFuzzTests.cs` | 9 methods / 13 surfaces including corpus replay | Random and mutated Type1/Type2/Type3, AV-pair scans, and MIC verification must not escape `InvalidDataException`, `ArgumentException`, `ArgumentOutOfRangeException`, `FormatException`, or `EndOfStreamException`. |
+| `NtlmFuzzTests` | 9 methods / 13 surfaces including corpus replay | Random and mutated Type1/Type2/Type3, AV-pair scans, and MIC verification must not escape `InvalidDataException`, `ArgumentException`, `ArgumentOutOfRangeException`, `FormatException`, or `EndOfStreamException`. |
 
 The parent threat model records the same NTLM fuzz surface at `docs\security\THREAT_MODEL.md:238`.
 
 ## Handshake fixture tests
 
-`tests\Opc.Classic.Dcom.Crypto.Tests\Fixtures\Ntlm\NtlmHandshakeFixtureTests.cs` has 5 tests. Highest-value invariant: `authenticate.bin` round-trips NT response, LM response, identity fields, encrypted session key, and [MS-NLMP] sample flag semantics.
+`NtlmHandshakeFixtureTests` has 5 tests. Highest-value invariant: `authenticate.bin` round-trips NT response, LM response, identity fields, encrypted session key, and [MS-NLMP] sample flag semantics.
 
 ## Integration tests
 
-`tests\Opc.Classic.Integration.Tests\EndToEnd\NtlmHandshakeProtocolTests.cs` has 6 `[Test, Category("EndToEnd")]` methods. Highest-value invariants:
+`NtlmHandshakeProtocolTests` has 6 `[Test, Category("EndToEnd")]` methods. Highest-value invariants:
 
 - Type1 has expected NTLMSSP header and negotiated NTLMv2/sign/seal/key-exchange flags.
 - Type2 carries challenge, target-info, and MIC-request AV flag.
@@ -55,9 +55,9 @@ The parent threat model records the same NTLM fuzz surface at `docs\security\THR
 
 | File | Tests | High-value invariant |
 | --- | ---: | --- |
-| `tests\Opc.Classic.Core.Tests\Security\ChannelBindingsTests.cs` | 4 | RFC 2744 serialized empty struct hash is stable; `tls-server-end-point:` application data prefix is exact; hash length is 16. |
-| `tests\Opc.Classic.Dcom.Tests\ChannelBindingTlsTests.cs` | 6 | Fixed SHA-256/SHA-384 certificates produce expected CBT application data; NTLM Type3 includes CBT AV pair; server verifies matching CBT; SslStream loopback extracts certificate CBT. |
+| `ChannelBindingsTests` | 4 | RFC 2744 serialized empty struct hash is stable; `tls-server-end-point:` application data prefix is exact; hash length is 16. |
+| `ChannelBindingTlsTests` | 6 | Fixed SHA-256/SHA-384 certificates produce expected CBT application data; NTLM Type3 includes CBT AV pair; server verifies matching CBT; SslStream loopback extracts certificate CBT. |
 
 ## Adjacent but out-of-scope
 
-- `tests\Opc.Classic.Dcom.Kerberos.Tests\KerberosChannelBindingChecksumTests.cs` and `Rfc4757Rc4HmacTests.cs` cover Kerberos/SPNEGO-adjacent crypto, not NTLMSSP itself.
+- `KerberosChannelBindingChecksumTests` and `Rfc4757Rc4HmacTests.cs` cover Kerberos/SPNEGO-adjacent crypto, not NTLMSSP itself.

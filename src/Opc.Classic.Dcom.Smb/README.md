@@ -18,9 +18,9 @@ Minimal, MIT-licensed, AOT-clean SMB2 client tightly scoped to the named-pipe op
 | Connection state machine — `Smb2Connection` | ✅ |
 | Named-pipe handle — `Smb2NamedPipe` (`TransceiveAsync`) | ✅ |
 | RPC adapter/builder — `Smb2RpcTransportAdapter`, `Smb2RpcTransportBuilder`, `SmbRpcAddress` | ✅ sync bridge for legacy `ITransport` callers |
-| NTLMSSP blob threading into SESSION_SETUP | ✅ Carrier API (`NtlmsspBlobProvider`) — actual NTLM Type 1/2/3 generation comes from `src\Opc.Classic.Dcom\rpc\Auth\` |
-| WINREG replay validation | ✅ captured request/response fixtures under `tests\Opc.Classic.Dcom.Smb.Tests\Fixtures\Winreg\` |
-| Samba WINREG smoke | ✅ `interop\docker\samba` fixture + `.github\workflows\samba-smoke.yml` gated by `OPC_CLASSIC_INTEGRATION_SAMBA=1` |
+| NTLMSSP blob threading into SESSION_SETUP | ✅ Carrier API (`NtlmsspBlobProvider`) — actual NTLM Type 1/2/3 generation comes from `Auth` |
+| WINREG replay validation | ✅ captured request/response fixtures under Winreg tests |
+| Samba WINREG smoke | ✅ `samba` fixture + `.github\workflows\samba-smoke.yml` gated by `OPC_CLASSIC_INTEGRATION_SAMBA=1` |
 | SMB2 signing (HMAC-SHA256 for SMB 2.0.2/2.1; AES-CMAC for SMB 3.x) | ✅ signs outgoing PDUs and verifies signed responses when SessionKey is supplied |
 | SMB2 encryption (AES-128-CCM/GCM for SMB 3.x) | ⏳ deferred |
 
@@ -77,14 +77,14 @@ All section references in source-file comments target the vendored Microsoft Ope
 - `MS-CIFS.md` — NetBIOS-over-TCP framing
 - `MS-RPCE.md §2.1.1.2` — RPC over SMB framing rules
 - `MS-FSCC.md` — FSCTL codes
-- `MS-NLMP.md` — NTLMSSP (consumed indirectly via `src\Opc.Classic.Dcom\rpc\Auth\`)
+- `MS-NLMP.md` — NTLMSSP
 - `MS-ERREF.md` — NTSTATUS values
 
 ## Testing and fixtures
 
-- `tests\Opc.Classic.Dcom.Smb.Tests\` — codec round-trip, state-machine, address parser, adapter, and mock-transport tests.
-- `tests\Opc.Classic.Dcom.Smb.Tests\Fixtures\Winreg\` — captured WINREG bind/open/enumerate request-response fixtures replayed by `WinregFixtureReplayTests`.
-- `tests\Opc.Classic.Integration.Tests\Winreg\WinRegSambaSmokeTests.cs` — opt-in Samba real-server smoke used by `.github\workflows\samba-smoke.yml`.
+- Opc.Classic.Dcom.Smb tests — codec round-trip, state-machine, address parser, adapter, and mock-transport tests.
+- Winreg tests — captured WINREG bind/open/enumerate request-response fixtures replayed by `WinregFixtureReplayTests`.
+- `WinRegSambaSmokeTests` — opt-in Samba real-server smoke used by `.github\workflows\samba-smoke.yml`.
 - `FIXTURES.md` — fixture capture/redaction guidance and current fixture inventory.
 
 ## License

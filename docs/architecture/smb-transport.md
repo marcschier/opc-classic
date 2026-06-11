@@ -11,20 +11,20 @@ server:
 
 This repository implements `ncacn_ip_tcp` end-to-end and now ships the focused
 `ncacn_np` client path required by OPC Classic discovery and legacy activation.
-The legacy `src\Opc.Classic.Dcom\rpc\ncacn_np\RpcTransport.cs` and local
+The legacy `RpcTransport` and local
 SharpCifs compatibility shims still exist for older call sites, but the active
-wire path is `src\Opc.Classic.Dcom.Smb\` plus
-`src\Opc.Classic.Dcom\Transport\NcacnNpTransport.cs`.
+wire path is `Opc.Classic.Dcom` plus
+`NcacnNpTransport`.
 
 The SMB path includes `Smb2Connection`, `TcpSmb2Transport`, `Smb2NamedPipe`,
 `Smb2RpcTransportAdapter`, SMB2 signing (`Smb2Signer`), SMB 3.x encryption
 (`Smb2Crypter`), WINREG client coverage, and the `ncacn_np` transport wire-up.
 WINREG round-trips against a Samba container are covered end-to-end in
-`tests\Opc.Classic.Integration.Tests\Winreg\`, and byte-level fixture replay
-lives under `tests\Opc.Classic.Dcom.Smb.Tests\Fixtures\Winreg\`.
+Winreg tests, and byte-level fixture replay
+lives under Winreg tests.
 
 Consumers still handle remote-registry failures gracefully:
-`src\Opc.Classic.Discovery\RemoteRegistryEnum.cs` logs `"Remote-registry
+`RemoteRegistryEnum` logs `"Remote-registry
 enumeration failed for host {Host}; returning no OPC servers. Consider using
 OpcEnumClient (OPC.ServerList.1) instead."` and returns an empty list.
 
@@ -65,8 +65,8 @@ The hard problem is the SMB protocol itself. The options below were considered:
 The recommended path is **option B** — a hand-rolled, AOT-clean, MIT-licensed
 SMB2 client tightly scoped to the named-pipe operations OPC Classic needs.
 The SMB2 client surface, `ncacn_np` wire-up, signing, encryption, and Samba
-end-to-end smoke are all implemented in `src\Opc.Classic.Dcom.Smb\` and
-`src\Opc.Classic.Dcom\Transport\NcacnNpTransport.cs`.
+end-to-end smoke are all implemented in `Opc.Classic.Dcom` and
+`NcacnNpTransport`.
 
 ## Sub-protocol surface required from SMB2
 
@@ -92,17 +92,17 @@ Only the connection / session / file / pipe primitives are needed:
 | Component | Status | Output |
 | --- | --- | --- |
 | Architecture docs | ✅ Done | this document |
-| SMB2 client | ✅ Landed | `src\Opc.Classic.Dcom.Smb\` with SMB2 negotiate/session/tree/pipe primitives, `TcpSmb2Transport`, and `Smb2RpcTransportAdapter` |
+| SMB2 client | ✅ Landed | `Opc.Classic.Dcom` with SMB2 negotiate/session/tree/pipe primitives, `TcpSmb2Transport`, and `Smb2RpcTransportAdapter` |
 | SMB signing + encryption | ✅ Landed | SMB2 signing (HMAC-SHA256/AES-CMAC) and SMB3 encryption (AES-128-CCM/GCM transforms) are implemented for encryption-required server smoke |
-| `ncacn_np` transport | ✅ Landed | functional `ncacn_np` transport backed by `src\Opc.Classic.Dcom\Transport\NcacnNpTransport.cs` |
+| `ncacn_np` transport | ✅ Landed | functional `ncacn_np` transport backed by `NcacnNpTransport` |
 | WINREG end-to-end smoke | ✅ Landed | Samba container fixture, no-env soft-skip TUnit smoke (`WinRegSambaSmokeTests`), fixture replay (`WinregFixtureReplayTests`), and CI coverage prove SMB ↔ ncacn_np ↔ WINREG RPC |
-| Legacy `IActivation` interface | ✅ Landed | client + server-side dispatcher for pre-XP-SP2 interop in `src\Opc.Classic.Dcom\Activation\` |
+| Legacy `IActivation` interface | ✅ Landed | client + server-side dispatcher for pre-XP-SP2 interop in `Activation` |
 | Cross-platform CI matrix | ✅ Landed | Ubuntu + macOS + Windows restore/build/test matrix in `.github\workflows\build.yml` |
-| PCAP-based wire fixtures | ⚠️ Harness landed | replay harness shipped; real-world redacted PCAP captures are still pending at `tests\Opc.Classic.Dcom.Smb.Tests\Pcap\Fixtures\` |
+| PCAP-based wire fixtures | ⚠️ Harness landed | replay harness shipped; real-world redacted PCAP captures are still pending |
 
 ## See also
 
 - `docs\architecture\activation-transports.md` — TCP vs SMB activation paths
-- `src\Opc.Classic.Dcom.Smb\README.md` — SMB2 project public surface
-- `samples\Opc.Classic.Samples.CttServer\README.md` — current Windows-only registration cookbook
+- `Opc.Classic.Dcom.Smb` — SMB2 project public surface
+- CttServer sample — current Windows-only registration cookbook
 - `MS-SMB2.md` etc. — vendored Microsoft specs

@@ -26,7 +26,7 @@ The architecture is designed around three constraints:
 +------------------------------------------------------------------------+
 ```
 
-The portable runtime is pure managed code. Windows-specific features, such as local COM registry writes for native client activation, are isolated behind platform-guarded components. The repository also keeps OPC Foundation C++ sample servers in `interop/samples/` and redistributable inputs in `interop/` as conformance assets; they are not part of the portable runtime libraries. Spec reference markdown (OPC Foundation + Microsoft Open Specifications mirrors) lives in the private companion repo `marcschier/opc-classic-docs`.
+The portable runtime is pure managed code. Windows-specific features, such as local COM registry writes for native client activation, are isolated behind platform-guarded components. The repository also keeps OPC Foundation C++ sample servers in `samples` and redistributable inputs in `interop/` as conformance assets; they are not part of the portable runtime libraries. Spec reference markdown (OPC Foundation + Microsoft Open Specifications mirrors) lives in the private companion repo `marcschier/opc-classic-docs`.
 
 | Area | Current state |
 | --- | --- |
@@ -326,16 +326,16 @@ The sample suite contains 10 apps:
 
 | Sample | Purpose |
 | --- | --- |
-| `samples/Opc.Classic.Samples.DaServer` | Managed DA server with a tag tree and hosting registration. |
-| `samples/Opc.Classic.Samples.DaClient` | DA client flow using generated proxies and the managed DA abstraction. |
-| `samples/Opc.Classic.Samples.AeServer` | Managed AE event source and hosting pattern. |
-| `samples/Opc.Classic.Samples.AeClient` | AE subscription and event consumption pattern. |
-| `samples/Opc.Classic.Samples.HdaServer` | Managed HDA historical data server. |
-| `samples/Opc.Classic.Samples.HdaClient` | HDA query and playback client pattern. |
-| `samples/Opc.Classic.Samples.LoopbackDemo` | In-memory generated proxy/dispatcher loopback for DA. |
-| `samples/Opc.Classic.Samples.CttServer` | Additional managed DA sample (different CLSID from samples-da). |
-| `samples/Opc.Classic.Samples.OpcSecurityServer` | OPC Security reference server and ACL semantics. |
-| `samples/Opc.Classic.Samples.AotCanary` | NativeAOT publish smoke test for consumer applications. |
+| Opc.Classic.Samples sample | Managed DA server with a tag tree and hosting registration. |
+| Opc.Classic.Samples sample | DA client flow using generated proxies and the managed DA abstraction. |
+| Opc.Classic.Samples sample | Managed AE event source and hosting pattern. |
+| Opc.Classic.Samples sample | AE subscription and event consumption pattern. |
+| Opc.Classic.Samples sample | Managed HDA historical data server. |
+| Opc.Classic.Samples sample | HDA query and playback client pattern. |
+| Opc.Classic.Samples sample | In-memory generated proxy/dispatcher loopback for DA. |
+| Opc.Classic.Samples sample | Additional managed DA sample (different CLSID from samples-da). |
+| Opc.Classic.Samples sample | OPC Security reference server and ACL semantics. |
+| Opc.Classic.Samples sample | NativeAOT publish smoke test for consumer applications. |
 
 ## 12. Related architecture documents
 

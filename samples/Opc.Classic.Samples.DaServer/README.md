@@ -1,6 +1,6 @@
 # Opc.Classic.Samples.DaServer
 
-Managed OPC DA sample server that mirrors the well-known Matrikon Simulation-style tag tree and the preserved `interop\samples\SampleServer\Da\` reference.
+Managed OPC DA sample server that mirrors the well-known Matrikon Simulation-style tag tree and the preserved `Da` reference.
 
 ## Tags
 
@@ -28,4 +28,4 @@ With no environment variables set, the server listens on `0.0.0.0:51300`. Set `O
 - `SampleDaServer.cs` — managed `IOpcDaServer` implementation.
 - `TagTree.cs` — Matrikon-style sample tag catalog and value simulation.
 
-For the compose-orchestrated container demo, see `samples\README.docker.md`.
+For the compose-orchestrated container demo, see README.docker sample.

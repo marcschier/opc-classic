@@ -69,4 +69,4 @@ Create or update the repository or CLI workspace file `.copilot\mcp.json` with:
 
 ## Credentials and environment
 
-No environment variable is required to launch the server. For real credentials, do not put literal passwords in this JSON. Prefer your client or operating-system secret store, then have the agent provide credentials to connect/logon tools only when needed. If you use the optional `mcp\Opc.Classic.Mcp\appsettings.template.json` convention, set the referenced password variables such as `OPC_CLASSIC_PLANTHIST_PASSWORD` in the environment used to launch the MCP client.
+No environment variable is required to launch the server. For real credentials, do not put literal passwords in this JSON. Prefer your client or operating-system secret store, then have the agent provide credentials to connect/logon tools only when needed. If you use the optional `appsettings.template` convention, set the referenced password variables such as `OPC_CLASSIC_PLANTHIST_PASSWORD` in the environment used to launch the MCP client.

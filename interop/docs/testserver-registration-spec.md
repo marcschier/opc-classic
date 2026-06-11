@@ -5,9 +5,9 @@ category, and self-registration step needed when installing the OPC
 Foundation `OpcTestServer_x64.exe` and the proxy/stub DLLs required for
 DCOM marshalling. It is derived from the upstream installer manifests
 (local WiX/MSI packaging is not vendored). It is the source-of-truth
-reference for auditing `interop/tools/register-testserver.ps1` and the
+reference for auditing register-testserver and the
 suspected `CO_E_SERVER_EXEC_FAILURE` root cause (Issue B in
-`interop/docs/probe-coverage.md`).
+probe-coverage).
 
 ## Source artifacts audited
 
@@ -50,19 +50,19 @@ install into `System32`.**
 
 | Field        | Value                                            | Source                         |
 | ------------ | ------------------------------------------------ | ------------------------------ |
-| TypeLib UUID | `F8582CF7-88FB-11DA-A5ED-0060B0692061`           | `OpcTestServer.idl:36`         |
-| coclass UUID | `F8582CF8-88FB-11DA-A5ED-0060B0692061`           | `OpcTestServer.idl:45`         |
-| **CLSID**    | **`F8582CF9-88FB-11DA-A5ED-0060B0692061`**       | `OpcTestServer.cpp:50` (`OPC_IMPLEMENT_LOCAL_SERVER`) |
-| Category     | `CATID_OPCDAServer20` (`63D5F432-CFE4-11D1-B2C8-0060083BA1FB`) | `OpcTestServer.cpp:46` (`OPC_CATEGORY_TABLE_ENTRY`) |
+| TypeLib UUID | `F8582CF7-88FB-11DA-A5ED-0060B0692061`           | `OpcTestServer`         |
+| coclass UUID | `F8582CF8-88FB-11DA-A5ED-0060B0692061`           | `OpcTestServer`         |
+| **CLSID**    | **`F8582CF9-88FB-11DA-A5ED-0060B0692061`**       | `OpcTestServer` (`OPC_IMPLEMENT_LOCAL_SERVER`) |
+| Category     | `CATID_OPCDAServer20` (`63D5F432-CFE4-11D1-B2C8-0060083BA1FB`) | `OpcTestServer` (`OPC_CATEGORY_TABLE_ENTRY`) |
 | ProgID       | **`OpcTestServer_x64.1`** (verified against `HKLM\SOFTWARE\Classes\CLSID\{F8582CF9-...}\ProgID` after `/RegServer`; macro expansion in `OpcUtilityClasses` does NOT prepend `OPC.`) | macros expand at compile time  |
-| Description  | `"OPC DA 2.05a Test Server (x64)"`               | `OpcTestServer.cpp:42`         |
+| Description  | `"OPC DA 2.05a Test Server (x64)"`               | `OpcTestServer`         |
 
 The corresponding x86 build uses `F8582CF4-...` (CLSID) and
 `F8582CF3-...` (coclass UUID).
 
 > ⚠️ **`probe-coverage.md` correction note:** the headline says
 > `OPC Foundation TestServer x64: CLSID F8582CF9-...` — confirmed correct
-> against `OpcTestServer.cpp:50`. (The IDL coclass UUID `F8582CF8` is the
+> against `OpcTestServer`. (The IDL coclass UUID `F8582CF8` is the
 > TypeLib-side identifier, NOT the runtime CLSID; do not confuse the two.)
 
 ## What `/RegServer` actually writes (inferred from the OPC_ macros)
@@ -164,7 +164,7 @@ IIDs (via TypeLib imports) — so `opccomn_ps.dll` must be registered FIRST.
 Otherwise the dependent DLLs will fail to load their type library
 references when registering.
 
-## What our `interop/tools/register-testserver.ps1` does TODAY (script-only path)
+## What our register-testserver does TODAY (script-only path)
 
 From `D:\git\marcschier\opc-classic\interop\tools\register-testserver.ps1`:
 
@@ -185,7 +185,7 @@ From `D:\git\marcschier\opc-classic\interop\tools\register-testserver.ps1`:
 | 3 | `OpcCategoryManager.exe /RegServer`         | Yes (deferred CustomAction, SYSTEM)       | Not run                               | **Gap — x64 category enumeration needs it (used by the category-resolution helpers in OPCEnum)** |
 | 4 | `OpcTestServer_x64.exe /RegServer`          | Yes (deferred CustomAction, SYSTEM)       | Yes                                   | ✅ Match     |
 | 5 | `OpcTestServer_x64.config.xml` deployed alongside the EXE | Yes (`comp_OpcTestServerConfig`)          | Not copied                            | **Likely gap — the EXE may load this on startup; without it the EXE could fail to initialize and never register its class factory (could cause `CO_E_SERVER_EXEC_FAILURE`)** |
-| 6 | `OpcTestServer_x64.exe` path stability      | Stable (`Common Files\OPC Foundation\Bin\`) | Build directory (`interop\build\x64\Release\`) | **Risk — if the path contains characters DCOM SCM can't handle, or if SYSTEM lacks read access, activation fails. Build dir is typically OK but worth verifying.** |
+| 6 | `OpcTestServer_x64.exe` path stability      | Stable (`Common Files\OPC Foundation\Bin\`) | Build directory | **Risk — if the path contains characters DCOM SCM can't handle, or if SYSTEM lacks read access, activation fails. Build dir is typically OK but worth verifying.** |
 | 7 | Registry entries written by `/RegServer`    | CLSID + LocalServer32 + ProgID + AppID + TypeLib + Implemented Categories | Same (the EXE writes them itself)     | ✅ Match (the EXE does the work; script just invokes /RegServer) |
 | 8 | DCOM AppID `LaunchPermission` / `AccessPermission` | None written (SCM defaults apply)         | None written                          | ✅ Match     |
 | 9 | DCOM AppID `RunAs`                          | None written                              | None written                          | ✅ Match (means activation uses default "Launching User") |
@@ -208,8 +208,8 @@ the suspected causes ranked by likelihood:
    (no DCOM involved) succeeds — the EXE stays alive and registers
    its class factory normally. So the EXE itself is healthy; the
    failure is in the SCM activation path.
-   **Fix surface**: a new helper `interop/tools/grant-testserver-acl.ps1`
-   modeled on `interop/tools/grant-opcenum-acl.ps1` that writes a permissive
+   **Fix surface**: a new helper grant-testserver-acl
+   modeled on grant-opcenum-acl that writes a permissive
    `LaunchPermission` + `AccessPermission` SD on the TestServer AppID
    (CLSID `{F8582CF9-...}`).
 2. **Missing `OpcTestServer_x64.config.xml`** alongside the EXE. BH2's
@@ -245,7 +245,7 @@ the suspected causes ranked by likelihood:
    from `opcsec_ps` back to `opccomn_ps`).
 5. Document the divergence from the installer `Common Files\OPC Foundation\Bin\`
    install path (System32 is acceptable but non-standard).
-6. Add a unit test under `tests/Opc.Classic.Tools.Tests/` (new project
+6. Add a unit test under Opc.Classic.Tools tests (new project
    if needed) that parses the script and asserts each installer-cited entry
    from the table above is covered.
 
@@ -264,7 +264,7 @@ the post-install state is:
   `MergeModule.wxs:88-94`); the x64 MSI installs the x86 merge module
   which provides OpcEnum on the SysWOW64 side.
 
-`interop/tools/register-testserver.ps1` is a no-MSI shortcut for developer
+register-testserver is a no-MSI shortcut for developer
 machines. The BH2 fixes above bring it to functional parity with the
 MSI for the **TestServer-only DA case**; full multi-spec marshalling
 would also require the additional proxy/stub registrations from the
@@ -327,7 +327,7 @@ prevents it from successfully registering its class factory with SCM
 within the required timeout window, regardless of which DCOM client is
 attempting activation. The issue persists across:
 
-- Fresh `interop/tools/build-testserver.ps1 -Clean` builds.
+- Fresh build-testserver builds.
 - Both binary builds present on the dev box.
 - HKLM-only registration (after HKCU shadow removal).
 - Both Microsoft's native DCOM client and our managed client.
@@ -348,13 +348,13 @@ server in the cross-impl matrix. Foundation `OpcTestClient_x64.exe` and
 our managed MCP probe both successfully activate Matrikon end-to-end.
 Matrikon is the only DA server currently demonstrating full activation
 on this dev box. The `testserver` profile in
-[`tools/probe_matrix.py`](../../tools/probe_matrix.py) remains the
+probe matrix tool remains the
 "strict" reference for when TestServer activation is fixed upstream,
 but the `matrikon` profile is the practical baseline.
 
 ### Diagnostic helper: `OPC_CLASSIC_DCOM_WIRE_DUMP=1`
 
-`src/Opc.Classic.Dcom/Transport/DcomCallChannel.cs` honors the
+`DcomCallChannel` honors the
 `OPC_CLASSIC_DCOM_WIRE_DUMP=1` environment variable. When set on the
 MCP process, every DCE/RPC BIND, ALTER_CONTEXT, and REQUEST/RESPONSE
 exchange writes a `[bind-trace]` or `[wire]` line to stderr, including

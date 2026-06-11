@@ -1,7 +1,7 @@
 # OPC DA `IOPCDataCallback` push delivery
 
 `opcclassic.da.subscribe` creates poll-style subscriptions. The
-[`IOPCDataCallback`](../../src/Opc.Classic.Da/Dcom/IOPCInterfaces.cs)
+`IOPCDataCallback`
 interface (IID `39C13A70-011E-11D0-9675-0020AFD8ADB3`) gives a real OPC DA
 server a way to push `OnDataChange`, `OnReadComplete`, `OnWriteComplete`,
 and `OnCancelComplete` notifications back to the client. This document
@@ -52,8 +52,8 @@ deferred, and what the production callback-bind path requires.
 | AP2 | Construct `IOpcInterfaceRef` for sink (TCP string binding + fresh IPID/OXID/OID) + pass to `IConnectionPointClientProxy.Advise(sink)` + track cookie | **Done** — `OpcSinkObjRefBuilder` builds the OBJREF; `Subscribe` calls `Advise` + stores `AdviseCookie` on `DaSubscriptionContext`; `RemoveGroup`/`Dispose` calls `Unadvise` |
 | AP3 | `DataChangeNotification` queue + bounded `Channel<T>` sink + `poll_subscription` drain-first-then-pull | **Done** |
 | AP4 | Accept Matrikon callback-bind PDU auth via existing `RpcServerConnectionProcessor` + `Spnego` | **Done** — loopback test proves the dispatch path; production callback delivery against Matrikon is gated on the IConnectionPoint group-channel work documented in "Known limitation" below |
-| AP5 | Synthetic in-process test of sink + queue + drain mapping | **Done** (`tests/Opc.Classic.Mcp.Tests/DaDataCallbackSinkTests.cs`) |
-| AP5b | In-process loopback Advise / OnDataChange integration test | **Done** (`tests/Opc.Classic.Mcp.Tests/DaCallbackEndpointIntegrationTests.cs`) |
+| AP5 | Synthetic in-process test of sink + queue + drain mapping | **Done** |
+| AP5b | In-process loopback Advise / OnDataChange integration test | **Done** |
 | AP6 | Documentation | **This document** |
 
 ## Loopback scaffolding
@@ -63,7 +63,7 @@ The wire-side infrastructure for AP1/AP2/AP4 is exposed as
 `DaClientTools.Subscribe` does **not** auto-bind a listener or call
 `Advise`. The hand-off points are:
 
-- [`DaCallbackEndpoint`](../../mcp/Opc.Classic.Mcp/Tools/DaCallbackEndpoint.cs)
+- `DaCallbackEndpoint`
   — loopback-only inbound listener (`IPAddress.Loopback` bind; no
   environment-variable override). `StartAsync` lazily binds to a dynamic
   TCP port. `RegisterSink(IOPCDataCallback)` returns a fresh IPID;
@@ -71,13 +71,13 @@ The wire-side infrastructure for AP1/AP2/AP4 is exposed as
   the `IOpcInterfaceRef` to hand to
   `IConnectionPoint::Advise`. All public methods serialize lifecycle
   changes through a `SemaphoreSlim`.
-- [`OpcSinkObjRefBuilder`](../../mcp/Opc.Classic.Mcp/Tools/OpcSinkObjRefBuilder.cs)
+- `OpcSinkObjRefBuilder`
   — constructs the `OBJREF_STANDARD` interface pointer: caller-supplied
   IID + IPID, fresh OXID + OID, a single TCP DUALSTRINGARRAY string
   binding (`"host[port]"`, tower id `0x07`), and a single WinNT NTLM
   security binding (auth service `0x000A`, authz service
   `RPC_C_AUTHZ_NONE = 0xFFFF`).
-- [`DaClientState.GetOrCreateCallbackEndpointAsync`](../../mcp/Opc.Classic.Mcp/Sessions/OpcSession.cs)
+- `DaClientState.GetOrCreateCallbackEndpointAsync`
   — race-safe lazy accessor that returns one started endpoint per
   client; the endpoint is disposed by `DaClientState.DisposeAsync`.
 
@@ -86,7 +86,7 @@ The wire-side infrastructure for AP1/AP2/AP4 is exposed as
 The listener-side gaps are closed:
 
 1. **`IObjectExporter` OXID resolver** — ✅:
-   `IObjectExporterDispatcher` (`src/Opc.Classic.Dcom/Transport/IObjectExporterDispatcher.cs`)
+   `IObjectExporterDispatcher`
    implements opnums 1-5 (SimplePing, ComplexPing, ServerAlive,
    ResolveOxid2, ServerAlive2). `DaCallbackEndpoint.StartAsync`
    registers it in the listener's root dispatcher map at IID
@@ -135,7 +135,7 @@ callback delivery against Matrikon DA needs the follow-up.
 
 ## Sink contract
 
-The sink ([`DaDataCallbackSink`](../../mcp/Opc.Classic.Mcp/Tools/DaDataCallbackSink.cs))
+The sink (`DaDataCallbackSink`)
 is bounded with drop-oldest semantics so a stalled MCP client cannot
 unbound the queue. The default capacity is **1024 notification batches**
 (`DataChangeNotification.DefaultCapacity`).
@@ -168,7 +168,7 @@ For production push delivery the MCP host needs:
    `IOPCDataCallback`, OXID/OID/IPID are fresh GUIDs, and whose
    `ResolverBindings` include a TCP string binding for the listener's
    `IP:port`. See
-   [`OpcInterfaceRefCodec`](../../src/Opc.Classic.Core/Dcom/OpcInterfaceRefCodec.cs)
+   `OpcInterfaceRefCodec`
    for the wire encoding.
 3. **Advise**: pass the OBJREF to `IConnectionPointClientProxy.AdviseAsync(sink)`
    and store the returned cookie on the subscription so `Unadvise(cookie)`
@@ -184,13 +184,13 @@ For production push delivery the MCP host needs:
 ### Wire-level proof
 
 The loopback test
-[`OutboundCallbackOverTransportTests.cs`](../../tests/Opc.Classic.Integration.Tests/CompatMatrix/OutboundCallbackOverTransportTests.cs)
+`OutboundCallbackOverTransportTests`
 demonstrates a managed outbound proxy calling `OnCancelComplete`,
 `OnWriteComplete`, and arbitrary repeated callbacks against a managed
 in-process sink listener using `OpcServerListener` +
 `RpcServerConnectionProcessor` + `IOPCDataCallbackServerDispatcher`. The
 sample
-[`samples/Opc.Classic.Samples.LoopbackDemo/LoopbackDaClient.cs`](../../samples/Opc.Classic.Samples.LoopbackDemo/LoopbackDaClient.cs)
+LoopbackDaClient sample
 demonstrates the full Advise → OnDataChange → channel-drain pattern with
 `InMemoryCallChannel`. AP1/AP2/AP4 connect these proven primitives to the
 real MCP DA flow.
@@ -209,14 +209,14 @@ For Matrikon Simulation Server to reach the MCP host's listener:
    the callback CLSID's AppID. See
    [`opcenum-auth.md`](opcenum-auth.md) for the equivalent OPCEnum-side
    recipe and the
-   [`grant-opcenum-acl.ps1`](../../interop/tools/grant-opcenum-acl.ps1) helper.
+   grant-opcenum-acl helper.
 4. **Authentication compatibility**: Matrikon's outbound callback uses
    the auth level it was Advised under. The MCP listener must accept the
    same auth level (PKT_INTEGRITY by default).
 
 ## Probe
 
-A future `tools/probe_servers.py --use-callbacks` flag will:
+A future probe servers tool flag will:
 
 1. Turn off pull-mode polling.
 2. Subscribe with the callback sink wired up.
@@ -228,7 +228,7 @@ The probe flag is gated on AP1/AP2 production wiring.
 ## Testing notes
 
 The synthetic test suite at
-[`DaDataCallbackSinkTests.cs`](../../tests/Opc.Classic.Mcp.Tests/DaDataCallbackSinkTests.cs)
+`DaDataCallbackSinkTests`
 covers:
 
 - `OnDataChangeAsync` and `OnReadCompleteAsync` enqueue per-item batches.

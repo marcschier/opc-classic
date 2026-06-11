@@ -37,4 +37,4 @@ dotnet run --project samples\Opc.Classic.Samples.DaClient\Opc.Classic.Samples.Da
 - `Program.cs` — host setup, in-process/TCP selection, demo worker, loopback server and subscription.
 - `DcomDaSubscription.cs` — DA subscription adapter used when the client connects over TCP.
 
-For the compose-orchestrated container demo, see `samples\README.docker.md`.
+For the compose-orchestrated container demo, see README.docker sample.

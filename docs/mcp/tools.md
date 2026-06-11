@@ -1,6 +1,6 @@
 # Opc.Classic.Mcp tool reference
 
-This reference is generated from the MCP tool metadata in `mcp\Opc.Classic.Mcp\Tools\*.cs`: `[McpServerTool]` names, `[Description]` text, and public method signatures.
+This reference is generated from the MCP tool metadata in Tools compatibility helpers: `[McpServerTool]` names, `[Description]` text, and public method signatures.
 
 | Sub-spec | Tools |
 | --- | ---: |

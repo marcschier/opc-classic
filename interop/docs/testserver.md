@@ -16,19 +16,19 @@ built without an external clone. Key paths:
 
 | Path | Purpose |
 |------|---------|
-| Vendored OPC Foundation TestServer `COpcTestServer.{h,cpp}` | Server class derived from `COpcDaServer` (in `src/Shared/SampleServerClasses/`). Exposes `IOPCServer` / `IOPCBrowseServerAddressSpace` / `IOPCItemProperties` on the server object and `IOPCItemMgt` / `IOPCSyncIO` / `IOPCAsyncIO2` / `IOPCGroupStateMgt` on the group object. |
+| Vendored OPC Foundation TestServer `COpcTestServer.{h,cpp}` | Server class derived from `COpcDaServer`. Exposes `IOPCServer` / `IOPCBrowseServerAddressSpace` / `IOPCItemProperties` on the server object and `IOPCItemMgt` / `IOPCSyncIO` / `IOPCAsyncIO2` / `IOPCGroupStateMgt` on the group object. |
 | Vendored OPC Foundation TestServer `COpcTestGroup.h` | Group class derived from `COpcDaGroup`. |
 | Vendored OPC Foundation TestServer `OpcTestServer.{cpp,idl,rc}` | Local-server entry point (`_tWinMain`), per-bitness CLSIDs, MIDL IDL for the empty server interface. |
 | Vendored OPC Foundation TestServer `OpcTestServer.config.xml` | 3-item address space: `Test.Int32` (=42), `Test.Float` (=3.14159), `Test.String` ("OPC Test"), each carrying property 6 (Item Quality) = 100. |
 | Vendored OPC Foundation TestClient `OpcTestClient.cpp` | 179-line console exerciser — enumerates DA 2.0 servers via OpcEnum, calls `GetStatus` on each. |
-| `src/Shared/` | Sample server scaffolding TestServer derives from (`OpcUtilityClasses`, `SampleServerClasses`, `SampleDevice`, `SampleServer205`). |
-| `src/Common/`, `src/DataAccess/`, `src/Security/` | Per-spec IDLs + proxy/stub builds for `opccomn_ps.dll`, `opcproxy.dll`, `opcsec_ps.dll` (the DLLs the TestServer's COM activation needs for marshalling). |
-| `src/Include/` | Shared headers (CATID GUIDs, error codes). |
-| `CMakeLists.txt`, `cmake/` | Upstream CMake harness — invoked by `interop\tools\build-testserver.ps1`. |
-| `interop/docker/` | Windows Server Core 2022 + VS 2022 build-tools docker harness for reproducible builds without a local VS install. |
+| `Shared` | Sample server scaffolding TestServer derives from (`OpcUtilityClasses`, `SampleServerClasses`, `SampleDevice`, `SampleServer205`). |
+| `Common`, `DataAccess`, `Security` | Per-spec IDLs + proxy/stub builds for `opccomn_ps.dll`, `opcproxy.dll`, `opcsec_ps.dll` (the DLLs the TestServer's COM activation needs for marshalling). |
+| `Include` | Shared headers (CATID GUIDs, error codes). |
+| `CMakeLists.txt`, `cmake/` | Upstream CMake harness — invoked by build-testserver. |
+| `docker` | Windows Server Core 2022 + VS 2022 build-tools docker harness for reproducible builds without a local VS install. |
 | `build.ps1` | One-shot build entry point. |
 
-See `interop/README.md` for the folder layout, local divergences, and vendoring rationale. The OPC Foundation MIT License 1.00 grant lives in
+See `interop` for the folder layout, local divergences, and vendoring rationale. The OPC Foundation MIT License 1.00 grant lives in
 the file headers; `LICENSE.md` at the vendor root is the umbrella
 OPC Foundation license that governs the broader specification suite.
 
@@ -41,7 +41,7 @@ Both register under the `OPC DA 2.05a Test Server` ProgID prefix.
 
 ## Building
 
-### Option 1 — `interop\tools\build-testserver.ps1` (recommended)
+### Option 1 — build-testserver (recommended)
 
 ```powershell
 .\interop\tools\build-testserver.ps1            # Release x64
@@ -49,10 +49,10 @@ Both register under the `OPC DA 2.05a Test Server` ProgID prefix.
 ```
 
 The script discovers VS's bundled CMake (or any cmake.exe on PATH),
-configures `interop\build\x64`, and builds the
+configures `x64`, and builds the
 `OpcTestServer`, `OpcTestClient`, `OpcCategoryManager`, `opccomn_ps`
 and `opcproxy` targets. Output lands in
-`interop\build\x64\Release\`.
+`Release`.
 
 Prerequisites: Visual Studio 2022 17.14+ (Desktop development with
 C++ + ATL + Win11 SDK + MSVC v14.44 or later), CMake 3.20+ (bundled
@@ -76,7 +76,7 @@ use the local no-MSI registration path below, or install the official OPC
 Foundation Core Components package externally when validating a machine-wide
 deployment.
 
-### `interop\tools\register-testserver.ps1` (local x64, no MSI)
+### register-testserver (local x64, no MSI)
 
 ```powershell
 # From an ELEVATED 64-bit PowerShell window:
@@ -94,7 +94,7 @@ The script performs the no-MSI setup needed for x64 DCOM activation:
    AppID + Implemented Categories for DA 1.0, DA 2.0, and DA 3.0).
 
 Defaults to looking for the EXE and sibling proxy/stub DLLs under
-`interop\build\x64\Release\`; pass `-ExePath` to override.
+`Release`; pass `-ExePath` to override.
 
 To remove the TestServer entries and the System32 proxy/stub DLLs
 copied by this script: `.\interop\tools\register-testserver.ps1 -Unregister`.
@@ -137,7 +137,7 @@ AppID via `dcomcnfg.exe`.
 
 ### Known residual blocker: `CO_E_SERVER_EXEC_FAILURE` after no-MSI registration
 
-Even when `interop/tools/register-testserver.ps1` completes successfully — proxy/stub
+Even when register-testserver completes successfully — proxy/stub
 DLLs are copied into `%SystemRoot%\System32`, `regsvr32` reports no error,
 `OpcTestServer_x64.exe /regserver` exits 0, and the HKLM CLSID/AppID/Implemented
 Categories entries exist — DCOM SCM can still time out with
@@ -186,7 +186,7 @@ generated DCOM endpoints implementing the same OPC IDL).
 
 ## Running against the managed Opc.Classic stack
 
-Once the TestServer is registered, the same `mcp/mcp_driver.py`
+Once the TestServer is registered, the same `mcp_driver`
 script that targets Matrikon works against TestServer — just point at
 the x64 CLSID:
 

@@ -16,12 +16,12 @@ can be attributed to a single code change.
 
 | Class | Hot path | Why it matters |
 | --- | --- | --- |
-| [`CodecRegistryBenchmarks`](Opc.Classic.Benchmarks/Benchmarks/CodecRegistryBenchmarks.cs) | `OpcCodecRegistry` primitive + struct codec lookup (cold vs warm cache) | Every NDR encode/decode resolves a codec via `OpcCodecRegistry.GetCodec<T>()`; a regression in the cache fast-path slows down EVERY OPC call. |
-| [`NdrReaderBenchmarks`](Opc.Classic.Benchmarks/Benchmarks/NdrReaderBenchmarks.cs) | `NdrReader.Read{UInt32,String,ByteArray,Double,FileTime}` vs naive implementations | The reader runs on every inbound response; UInt32 + String dominate (header fields + payload strings). The "Naive" variants document the speedup vs an unoptimized reference impl. |
-| [`NdrWriterBenchmarks`](Opc.Classic.Benchmarks/Benchmarks/NdrWriterBenchmarks.cs) | `NdrWriter.Write{UInt32,String,ByteArray,Double,FileTime}` vs naive implementations | The writer runs on every outbound request; same UInt32 + String dominance as the reader. |
-| [`OpcVariantBenchmarks`](Opc.Classic.Benchmarks/Benchmarks/OpcVariantBenchmarks.cs) | `OpcVariant` wire-format encode / decode / round-trip | Every DA item read/write goes through `OpcVariant`; the type-dispatch table is on the critical path of `IOPCSyncIO::Read`/`Write`. |
-| [`OpcSafeArrayBenchmarks`](Opc.Classic.Benchmarks/Benchmarks/OpcSafeArrayBenchmarks.cs) | `OpcSafeArray` wire-format encode / decode / round-trip | Multi-item batches (e.g., 1000-item reads) marshal via `OpcSafeArray`; element-loop efficiency directly drives subscription throughput. |
-| [`DcomCallChannelBenchmarks`](Opc.Classic.Benchmarks/Benchmarks/DcomCallChannelBenchmarks.cs) | Full `DcomCallChannel.InvokeAsync` round-trip through an in-memory loopback channel (`IOPCServer::GetStatus`) | End-to-end allocations per RPC call. This is the integration-level number that surfaces regressions in the bind/alter/request PDU codec path or in the loopback transport's allocator. |
+| `CodecRegistryBenchmarks` | `OpcCodecRegistry` primitive + struct codec lookup (cold vs warm cache) | Every NDR encode/decode resolves a codec via `OpcCodecRegistry.GetCodec<T>()`; a regression in the cache fast-path slows down EVERY OPC call. |
+| `NdrReaderBenchmarks` | `NdrReader.Read{UInt32,String,ByteArray,Double,FileTime}` vs naive implementations | The reader runs on every inbound response; UInt32 + String dominate (header fields + payload strings). The "Naive" variants document the speedup vs an unoptimized reference impl. |
+| `NdrWriterBenchmarks` | `NdrWriter.Write{UInt32,String,ByteArray,Double,FileTime}` vs naive implementations | The writer runs on every outbound request; same UInt32 + String dominance as the reader. |
+| `OpcVariantBenchmarks` | `OpcVariant` wire-format encode / decode / round-trip | Every DA item read/write goes through `OpcVariant`; the type-dispatch table is on the critical path of `IOPCSyncIO::Read`/`Write`. |
+| `OpcSafeArrayBenchmarks` | `OpcSafeArray` wire-format encode / decode / round-trip | Multi-item batches (e.g., 1000-item reads) marshal via `OpcSafeArray`; element-loop efficiency directly drives subscription throughput. |
+| `DcomCallChannelBenchmarks` | Full `DcomCallChannel.InvokeAsync` round-trip through an in-memory loopback channel (`IOPCServer::GetStatus`) | End-to-end allocations per RPC call. This is the integration-level number that surfaces regressions in the bind/alter/request PDU codec path or in the loopback transport's allocator. |
 
 ## Running
 

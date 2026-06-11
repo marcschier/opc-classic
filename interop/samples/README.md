@@ -14,7 +14,7 @@ This folder contains the OPC Foundation's official C++ sample server sources for
 - `SampleClient/Da/Simple Client/` — DA test client for Windows COM client → net10 server compatibility
 - `Shared/Utils/` — common C++ helpers used by the native sample projects
 
-No legacy `.sln` files are currently preserved under `interop/samples/`; the native
+No legacy `.sln` files are currently preserved under `samples`; the native
 servers are built by invoking the actual `.vcxproj` files directly.
 
 ## Build
@@ -30,7 +30,7 @@ Requires:
   externally.
 - C++ desktop workload with ATL/MFC components
 
-Build steps (the projects include OPC headers from `interop\inc`):
+Build steps:
 
 ```cmd
 :: From Developer Command Prompt for VS 2022:
@@ -70,7 +70,7 @@ After build + registration, the following CLSIDs are registered:
 | `OPCSample.OPCEventServer.1` | `{65168852-5783-11D1-84A0-00608CB8A7E9}` | OPC Event Server Sample | AE Sample |
 | `OPCSample.OpcHdaServer.1` | `{6A5EEDEC-1509-4627-997F-993CCB65AB7C}` | OPC Historical Data Access 1.20 Sample Server | HDA Sample |
 
-DA and HDA derive their ProgIDs in `interop/samples/Shared/Utils/COpcClassFactory.cpp`
+DA and HDA derive their ProgIDs in `COpcClassFactory`
 from `OPC_DECLARE_APPLICATION(OPCSample, ...)` plus
 `OPC_CLASS_TABLE_ENTRY(..., 1, ...)`. Their CLSIDs come from the coclass
 `uuid(...)` declarations in `OpcDaServer.idl` and `OpcHdaServer.idl`.
@@ -80,5 +80,5 @@ AE registers `OPCSample.OPCEventServer.1` and
 
 ## Test connection
 
-`tests/Opc.Classic.Integration.Tests/Native/` uses these ProgIDs and CLSIDs via `NativeServerProbe.ShouldSkip(progId, clsid, out reason)`. Tests soft-skip
+Native tests uses these ProgIDs and CLSIDs via `NativeServerProbe.ShouldSkip(progId, clsid, out reason)`. Tests soft-skip
 on non-Windows, when the servers aren't registered, or when the registered ProgID maps to an unexpected CLSID.

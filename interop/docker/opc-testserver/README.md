@@ -7,7 +7,7 @@ vendored OPC Foundation `external` tree.
 
 - Windows Docker host using Windows containers.
 - `external` present in the build context.
-- `opc-test-net` l2bridge network from `interop\docker\README.md`.
+- `opc-test-net` l2bridge network from `docker`.
 - OPERATOR: verify the Visual Studio Build Tools component IDs in the
   Dockerfile against the host's current VS 2022 bootstrapper if the cold build
   fails.
@@ -20,12 +20,12 @@ docker run --rm --network opc-test-net --hostname opc-classic-testserver opc-cla
 ```
 
 The cold Docker build installs VS Build Tools 2022 with VCTools, ATL, and CMake
-and runs `interop\tools\build-testserver.ps1 -Configuration Release`. Subsequent builds
+and runs build-testserver. Subsequent builds
 should reuse Docker layers or the CI cache for
-`interop\build\x64\Release`.
+`Release`.
 
 At startup, `server-init.ps1` imports the shared DCOM ACL policy, invokes
-`interop\tools\register-testserver.ps1` for the no-MSI registration path, starts
+register-testserver for the no-MSI registration path, starts
 `OpcTestServer_x64.exe`, and unregisters on shutdown.
 
 The registered ProgID is `OpcTestServer_x64.1`; the CLSID is

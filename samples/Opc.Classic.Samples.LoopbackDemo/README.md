@@ -47,4 +47,4 @@ Expected output shows:
 - `SampleDaServer.cs` / `LoopbackTagStore.cs` — in-process DA server and tag data.
 - `LoopbackModels.cs` / `LoopbackNdr.cs` — DTOs and NDR helpers used by the demo.
 
-For the compose-orchestrated multi-container sample flow, see `samples\README.docker.md`.
+For the compose-orchestrated multi-container sample flow, see README.docker sample.

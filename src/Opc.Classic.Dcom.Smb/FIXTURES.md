@@ -8,7 +8,7 @@ Hand-built byte sequences derived from the field layout tables in the vendored `
 
 ## (2) Captured WINREG fixtures — capture and replay
 
-Captured DCE/RPC-over-named-pipe bytes live under `tests\Opc.Classic.Dcom.Smb.Tests\Fixtures\Winreg\`:
+Captured DCE/RPC-over-named-pipe bytes live under Winreg tests:
 
 - `bind_response.bin`
 - `openlocalmachine_request.bin`
@@ -16,7 +16,7 @@ Captured DCE/RPC-over-named-pipe bytes live under `tests\Opc.Classic.Dcom.Smb.Te
 - `enumkey_request.bin`
 - `enumkey_response.bin`
 
-A readable SMB2 negotiate golden fixture also lives at `tests\Opc.Classic.Dcom.Smb.Tests\Pcap\Fixtures\negotiate-smb2-1.txt` for the PCAP replay harness.
+A readable SMB2 negotiate golden fixture also lives at negotiate-smb2-1 tests for the PCAP replay harness.
 
 `WinregFixtureReplayTests` loads these files through `MockWinregServer.ReadFixture(...)`, replays the bind/request/response sequence, canonicalizes call IDs and NDR referents, and asserts that the managed `RegistryStub` marshals/unmarshals the same bytes.
 
@@ -29,7 +29,7 @@ A readable SMB2 negotiate golden fixture also lives at `tests\Opc.Classic.Dcom.S
 
 ### Bake into the test project
 
-For each captured `.bin` file, place it under the appropriate `tests\Opc.Classic.Dcom.Smb.Tests\Fixtures\...` subfolder and load it with the folder-specific helper (currently `MockWinregServer.ReadFixture(...)`). Keep canonicalization local to the fixture family so volatile fields are explicit in the replay test.
+For each captured `.bin` file, place it under the appropriate .. tests subfolder and load it with the folder-specific helper (currently `MockWinregServer.ReadFixture(...)`). Keep canonicalization local to the fixture family so volatile fields are explicit in the replay test.
 
 ### Privacy / redaction notes
 

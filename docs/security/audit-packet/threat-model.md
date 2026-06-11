@@ -23,12 +23,12 @@ The NTLM flow in `docs\security\THREAT_MODEL.md:114-145` has credentials enterin
 
 Implementation anchors listed there are:
 
-- `src\Opc.Classic.Dcom\Common\Ntlm\Type1Message.cs`
-- `src\Opc.Classic.Dcom\Common\Ntlm\Type2Message.cs`
-- `src\Opc.Classic.Dcom\Common\Ntlm\Type3Message.cs`
-- `src\Opc.Classic.Dcom\rpc\Auth\NtlmAuthentication.cs`
-- `src\Opc.Classic.Dcom\rpc\Auth\NTLMKeyFactory.cs`
-- `src\Opc.Classic.Dcom\rpc\Auth\Ntlm1.cs`
+- `Type1Message`
+- `Type2Message`
+- `Type3Message`
+- `NtlmAuthentication`
+- `NTLMKeyFactory`
+- `Ntlm1`
 
 ## Attacker model
 
@@ -48,12 +48,12 @@ Implementation anchors listed there are:
 
 ## STRIDE evidence to cross-check
 
-- Spoofing: NTLMv2 default, CBT support, but NTLM is not Kerberos-style mutual authentication (`docs\security\THREAT_MODEL.md:180`, `191`).
+- Spoofing: NTLMv2 default, CBT support, but NTLM is not Kerberos-style mutual authentication.
 - Tampering: parsers validate signatures, message types, lengths, security-buffer bounds, MIC, and CBT (`docs\security\THREAT_MODEL.md:192`).
-- Information disclosure: privacy mode exists, but credentials are still supplied as strings (`docs\security\THREAT_MODEL.md:183`, `194`).
+- Information disclosure: privacy mode exists, but credentials are still supplied as strings.
 - DoS: malformed token parsing has bounds checks but still needs token-size ceilings and rate limits (`docs\security\THREAT_MODEL.md:195`).
 - Elevation of privilege: NTLMv1 downgrade is blocked by default (`docs\security\THREAT_MODEL.md:196`).
 
 ## Fuzz coverage extract
 
-The NTLM fuzz row is `docs\security\THREAT_MODEL.md:238`: Type1/Type2/Type3, AV pairs, and MIC are fuzzed by `tests\Opc.Classic.PropertyTests\Fuzz\Network\NtlmFuzzTests.cs`; allowed parser exceptions are `InvalidDataException`, `ArgumentException`, `ArgumentOutOfRangeException`, `FormatException`, and `EndOfStreamException`.
+The NTLM fuzz row is `docs\security\THREAT_MODEL.md:238`: Type1/Type2/Type3, AV pairs, and MIC are fuzzed by `NtlmFuzzTests`; allowed parser exceptions are `InvalidDataException`, `ArgumentException`, `ArgumentOutOfRangeException`, `FormatException`, and `EndOfStreamException`.

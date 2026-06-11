@@ -22,7 +22,7 @@ This document tracks what's planned beyond the current release. For implemented 
 - [x] `IOPCDataCallback` subscription queue surface + bounded sink + drain-or-pull.
 - [x] Matrikon `IOPCItemProperties::GetProperties` decode; `OPCITEMSTATE` decode; live 26/95 OK probe baseline against Matrikon Simulation Server.
 - [x] Production inbound `IOPCDataCallback` listener bring-up: `IObjectExporterDispatcher` registered at the well-known IID on the `DaCallbackEndpoint`, `DaClientTools.Subscribe` wires the Advise/Unadvise cycle. **Note**: Matrikon-specific group-channel limitation for `IConnectionPoint` documented in [interop/docs/da-callbacks.md](../interop/docs/da-callbacks.md); production push-callback delivery against Matrikon needs a follow-up per-group channel that pre-binds `IConnectionPoint(Container)`.
-- [x] TestServer registration spec + script alignment: canonical WiX-derived [testserver-registration-spec.md](../interop/docs/testserver-registration-spec.md); [register-testserver.ps1](../interop/tools/register-testserver.ps1) mirrors the full 8-DLL MSI install order; [grant-testserver-acl.ps1](../interop/tools/grant-testserver-acl.ps1) automates the DCOM Launch/Access ACL grant that is the actual cause of `CO_E_SERVER_EXEC_FAILURE`.
+- [x] TestServer registration spec + script alignment: canonical WiX-derived [testserver-registration-spec.md](../interop/docs/testserver-registration-spec.md); register-testserver mirrors the full 8-DLL MSI install order; grant-testserver-acl automates the DCOM Launch/Access ACL grant that is the actual cause of `CO_E_SERVER_EXEC_FAILURE`.
 - [ ] NTLMv2 wire verification against a live Windows Server / AD lab (`rw-e1-ntlmv2-realserver`).
 - [ ] External third-party NTLMSSP crypto/security audit (`rw-e4-ntlm-audit`).
 
@@ -77,10 +77,10 @@ contributors who need to extend the surface.
 
 ### Capture engine enhancements (CA9)
 
-Post-1.0 follow-ups to the CA1–CA8 capture engine ([`mcp/Opc.Classic.Mcp.Capture/`](../mcp/Opc.Classic.Mcp.Capture/), MCP tools at `opcclassic.capture.*`). Tracked in the closed `ca9-followups` todo; deferred to a future release.
+Post-1.0 follow-ups to the CA1–CA8 capture engine (`Opc.Classic.Mcp`, MCP tools at `opcclassic.capture.*`). Tracked in the closed `ca9-followups` todo; deferred to a future release.
 
 - **CA9.1 — Per-spec auto-discover.** Plug the capture engine into
-  [`OpcEnumClient.ActivateServerListAsync`](../src/Opc.Classic.Discovery/OpcEnumClient.cs)
+  `OpcEnumClient.ActivateServerListAsync`
   so `opcclassic.capture.start` can optionally take a target ProgID/CLSID,
   enumerate the activated DCOM endpoint via OPCEnum, learn the
   SCM-assigned data port, and tighten the BPF filter mid-capture to that
@@ -104,7 +104,7 @@ Post-1.0 follow-ups to the CA1–CA8 capture engine ([`mcp/Opc.Classic.Mcp.Captu
   `NtlmSessionKey` input on `capture.decode_pdu`/`capture.tail`/
   `capture.replay`, a `NtlmAuthTrailerUnwrapper` helper that re-uses
   the existing
-  [`src/Opc.Classic.Dcom/rpc/Auth/`](../src/Opc.Classic.Dcom/rpc/Auth/)
+  `Auth`
   unwrappers (passive mode, no session key derivation), and a doc
   section in `docs/security/THREAT_MODEL.md` covering the security
   implications.

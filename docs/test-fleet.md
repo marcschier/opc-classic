@@ -1,8 +1,8 @@
 # Docker test fleet — adopter cookbook
 
-How to use the `interop/docker/` fleet for end-to-end DCOM testing of the managed
-implementation. For the architectural overview see [`interop/docker/README.md`](../interop/docker/README.md).
-The fleet contains five Windows-container targets from `interop/docker/docker-compose.test.yml`:
+How to use the `docker` fleet for end-to-end DCOM testing of the managed
+implementation. For the architectural overview see [`docker`](../interop/docker/README.md).
+The fleet contains five Windows-container targets from docker-compose.test:
 `c-server`, `managed-server`, `testserver`, `c-client`, and `testclient`.
 
 ## Common workflows
@@ -16,7 +16,7 @@ interop\docker\run-matrix.ps1
 ```
 
 Add the OPC Foundation TestServer reference cells when `external` is
-vendored or `interop\build\x64\Release` has been restored from CI:
+vendored or `Release` has been restored from CI:
 
 ```pwsh
 interop\docker\run-matrix.ps1 -IncludeTestServer
@@ -29,7 +29,7 @@ This also brings up the `opc-classic/testserver` container so the
 ### 2. Drive the managed server from a native C client
 
 The `opc-c-client` image builds the hand-rolled DA client MVP from
-`interop/docker/opc-c-client/build/opc-test.cpp` and can target the managed server:
+opc-test and can target the managed server:
 
 ```pwsh
 docker compose --file interop\docker\docker-compose.test.yml up -d managed-server
@@ -41,7 +41,7 @@ docker compose --file interop\docker\docker-compose.test.yml --profile interacti
 ### 3. Smoke the native C server/client MVPs
 
 The `opc-c-server` image builds the hand-rolled DA server MVP from
-`interop/docker/opc-c-server/build/opc-sample-server.cpp`; the `opc-c-client` image can
+opc-sample-server; the `opc-c-client` image can
 be pointed at it on the same `opc-test-net` l2bridge network.
 
 ```pwsh
@@ -132,8 +132,8 @@ The rc.10 repository baseline outside the Windows-container gate is **0 build wa
 `.github/workflows/docker-test-fleet.yml` runs the matrix monthly on
 `windows-2022` and can also be started manually with `workflow_dispatch`. When
 `external` is present, the workflow restores/saves
-`interop\build\x64\Release` with `actions/cache` and runs
-`interop\docker\run-matrix.ps1 -IncludeTestServer`; otherwise the TestServer/TestClient
+`Release` with `actions/cache` and runs
+run-matrix; otherwise the TestServer/TestClient
 cells soft-skip and the managed server smoke still runs. Inspect runs via:
 
 ```pwsh
@@ -147,7 +147,7 @@ gh run download <run-id> --name docker-test-fleet-results
 - **Cannot run on Linux Docker**: Windows containers require a Windows
   kernel host. Use GitHub Actions' `windows-2022` runner for CI.
 - **CoreComponents cache is best-effort**: CI caches
-  `interop\build\x64\Release`, but a source/toolchain hash change
+  `Release`, but a source/toolchain hash change
   still triggers a cold rebuild.
 - **TestServer/TestClient validation is environment-blocked**: the
   scaffolding is additive and syntax-checked here, but the CoreComponents build

@@ -38,4 +38,4 @@ dotnet run --project samples\Opc.Classic.Samples.HdaClient
 - `LoopbackHdaClient.cs` — HDA client facade over generated proxies.
 - `LoopbackHdaCallRouter.cs` — in-process NDR router used by the default path.
 
-For the compose-orchestrated container demo, see `samples\README.docker.md`.
+For the compose-orchestrated container demo, see README.docker sample.

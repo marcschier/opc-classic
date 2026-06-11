@@ -34,7 +34,7 @@ Do not rely on disabling DCOM hardening. Configure AppID permissions and use pac
 
 ## Grant OPCEnum ACLs without `dcomcnfg`
 
-`interop/tools/grant-opcenum-acl.ps1` automates the manual steps above by reading
+grant-opcenum-acl automates the manual steps above by reading
 the OPCEnum AppID's existing `AccessPermission` and `LaunchPermission`
 REG_BINARY security descriptors, appending an
 `(A;;CCDCLCSWRP;;;<SID>)` ACE for the supplied account, and writing the

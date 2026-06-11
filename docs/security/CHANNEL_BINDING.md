@@ -31,13 +31,13 @@ sequenceDiagram
 | TLS 1.2 or unspecified, certificate signed with SHA-384/SHA-512 | Matching stronger SHA family |
 | TLS 1.2 or unspecified, SHA-256/SHA-1/MD5/unknown signature | SHA-256 floor |
 
-Source: `src\Opc.Classic.Core\Security\ChannelBindingsFactory.cs`.
+Source: `ChannelBindingsFactory`.
 
 ## RFC 2744 GSS channel-bindings hash
 
 `ChannelBindingsHash.Compute` serializes the GSS channel-bindings structure as little-endian address types, lengths, addresses, and application data, then returns the required 16-byte MD5 checksum used by MS-NLMP and MS-KILE. `ForTlsServerCert` is the convenience path for DER certificates.
 
-Source: `src\Opc.Classic.Core\Security\ChannelBindingsHash.cs`.
+Source: `ChannelBindingsHash`.
 
 ## MS-NLMP AV_PAIR encoding
 
@@ -51,7 +51,7 @@ NTLMv2 carries CBT in the NTLMv2 client challenge target-info AV_PAIR list insid
 
 When a TLS channel binding hash is configured, `NtlmAuthentication.CreateType3` inserts or replaces that AV_PAIR before generating the NTLMv2 proof and MIC. The server-side verifier validates the returned AV_PAIR against the expected TLS endpoint hash. Without TLS, the pair is omitted (or a peer may send an all-zero value per MS-NLMP 3.1.5.1.2).
 
-Source: `src\Opc.Classic.Dcom\rpc\Auth\NtlmAuthentication.cs`.
+Source: `NtlmAuthentication`.
 
 ## MS-KILE GSS-CB encoding
 
@@ -59,8 +59,8 @@ Kerberos carries CBT in the AP-REQ authenticator checksum. The checksum type is 
 
 `KerberosConnectionContext` attaches that checksum to the `RequestServiceTicket` so Kerberos.NET emits it into the AP-REQ authenticator before SPNEGO wrapping. SPNEGO preserves the offered mechanism list bytes so `mechListMIC` verification covers the same channel-bound Kerberos context.
 
-Source: `src\Opc.Classic.Dcom.Kerberos\KerberosChannelBindingChecksum.cs`, `src\Opc.Classic.Dcom.Kerberos\KerberosConnectionContext.cs`, and `src\Opc.Classic.Dcom.Kerberos\KerberosAuthContext.cs`.
+Source: `KerberosChannelBindingChecksum`, `KerberosConnectionContext`, and `KerberosAuthContext`.
 
 ## Tests
 
-Coverage lives in `tests\Opc.Classic.Core.Tests\Security\ChannelBindingsTests.cs`, `tests\Opc.Classic.Dcom.Tests\ChannelBindingTlsTests.cs`, `tests\Opc.Classic.Dcom.Kerberos.Tests\KerberosChannelBindingChecksumTests.cs`, `KerberosAuthContextTests.cs`, and `KerberosKdcIntegrationTests.cs`. It covers fixed SHA-256/SHA-384 certificate vectors, `SslStream` loopback extraction, NTLM AUTHENTICATE AV_PAIR insertion and no-TLS behavior, NTLM server verification, Kerberos GSS checksum encoding, and KDC-backed CBT tamper rejection.
+Coverage lives in `ChannelBindingsTests`, `ChannelBindingTlsTests`, `KerberosChannelBindingChecksumTests`, `KerberosAuthContextTests.cs`, and `KerberosKdcIntegrationTests.cs`. It covers fixed SHA-256/SHA-384 certificate vectors, `SslStream` loopback extraction, NTLM AUTHENTICATE AV_PAIR insertion and no-TLS behavior, NTLM server verification, Kerberos GSS checksum encoding, and KDC-backed CBT tamper rejection.

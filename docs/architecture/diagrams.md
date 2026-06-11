@@ -45,15 +45,15 @@ flowchart TB
 
 ### Where to read more
 
-- [`src\Opc.Classic.Da\IDaServer.cs:33`](../../src/Opc.Classic.Da/IDaServer.cs#L33-L100), [`src\Opc.Classic.Ae\IAeServer.cs:16`](../../src/Opc.Classic.Ae/IAeServer.cs#L16-L65), and [`src\Opc.Classic.Hda\IHdaServer.cs:22`](../../src/Opc.Classic.Hda/IHdaServer.cs#L22-L90) define the managed facade shapes.
-- [`src\Opc.Classic.Core\ICallChannel.cs:29`](../../src/Opc.Classic.Core/ICallChannel.cs#L29-L50) defines the transport-agnostic generated-proxy contract.
-- [`src\Opc.Classic.Dcom\Transport\DcomCallChannel.cs:27`](../../src/Opc.Classic.Dcom/Transport/DcomCallChannel.cs#L27-L94) implements `ICallChannel` over DCE/RPC PDUs.
-- [`src\Opc.Classic.Core\Testing\InMemoryCallChannel.cs:22`](../../src/Opc.Classic.Core/Testing/InMemoryCallChannel.cs#L22-L55) implements the managed loopback channel.
-- [`src\Opc.Classic.Core\Ndr\NdrWriter.cs:36`](../../src/Opc.Classic.Core/Ndr/NdrWriter.cs#L36-L59) and [`src\Opc.Classic.Core\Ndr\NdrReader.cs:17`](../../src/Opc.Classic.Core/Ndr/NdrReader.cs#L17-L40) are the span-based NDR primitives.
-- [`src\Opc.Classic.Core\Transport\IAsyncTransport.cs:14`](../../src/Opc.Classic.Core/Transport/IAsyncTransport.cs#L14-L34) describes the pipelines-backed transport contract.
-- [`src\Opc.Classic.Dcom\Transport\TcpClientTransport.cs:35`](../../src/Opc.Classic.Dcom/Transport/TcpClientTransport.cs#L35-L117) and [`DcomCallChannelFactory.cs:58`](../../src/Opc.Classic.Dcom/Transport/DcomCallChannelFactory.cs#L58-L69) implement the direct TCP client path.
-- [`src\Opc.Classic.Dcom\Transport\OpcServerListener.cs:41`](../../src/Opc.Classic.Dcom/Transport/OpcServerListener.cs#L41-L114) and [`RpcServerConnectionProcessor.cs:61`](../../src/Opc.Classic.Dcom/Transport/RpcServerConnectionProcessor.cs#L61-L120) implement the managed listener path.
-- See also [`docs\ARCHITECTURE.md:35`](../ARCHITECTURE.md#L35-L63) and [`docs\ADOPTION.md:37`](../ADOPTION.md#L37-L79).
+- `IDaServer`, `IAeServer`, and `IHdaServer` define the managed facade shapes.
+- `ICallChannel` defines the transport-agnostic generated-proxy contract.
+- `DcomCallChannel` implements `ICallChannel` over DCE/RPC PDUs.
+- `InMemoryCallChannel` implements the managed loopback channel.
+- `NdrWriter` and `NdrReader` are the span-based NDR primitives.
+- `IAsyncTransport` describes the pipelines-backed transport contract.
+- `TcpClientTransport` and `DcomCallChannelFactory` implement the direct TCP client path.
+- `OpcServerListener` and `RpcServerConnectionProcessor` implement the managed listener path.
+- See also [`docs\ARCHITECTURE.md`](../ARCHITECTURE.md#L35-L63) and [`docs\ADOPTION.md`](../ADOPTION.md#L37-L79).
 
 ## Call shim flow
 
@@ -107,13 +107,13 @@ sequenceDiagram
 
 ### Where to read more
 
-- [`src\Opc.Classic.Da\Dcom\IOPCInterfaces.cs:29`](../../src/Opc.Classic.Da/Dcom/IOPCInterfaces.cs#L29-L45) defines `IOPCServer::GetStatus` with `[OpcMethod(6)]`.
-- [`src\Opc.Classic.Generators\OpcProxyGenerator.cs:543`](../../src/Opc.Classic.Generators/OpcProxyGenerator.cs#L543-L620) emits marshalled `InvokeAsync` bodies.
-- [`src\Opc.Classic.Generators\OpcProxyGenerator.cs:692`](../../src/Opc.Classic.Generators/OpcProxyGenerator.cs#L692-L760) emits codec writes and response reads from the generator codec table.
-- [`src\Opc.Classic.Core\ICallChannel.cs:45`](../../src/Opc.Classic.Core/ICallChannel.cs#L45-L49) is the generated-shim call seam.
-- [`src\Opc.Classic.Dcom\Transport\DcomCallChannel.cs:55`](../../src/Opc.Classic.Dcom/Transport/DcomCallChannel.cs#L55-L94) sends the DCE/RPC request and maps response or fault PDUs into `NdrCallResult`.
-- [`src\Opc.Classic.Dcom\Transport\TcpClientTransport.cs:95`](../../src/Opc.Classic.Dcom/Transport/TcpClientTransport.cs#L95-L117) and [`DcomCallChannelFactory.cs:58`](../../src/Opc.Classic.Dcom/Transport/DcomCallChannelFactory.cs#L58-L69) are the direct TCP transport entry points.
-- See also [`docs\ARCHITECTURE.md:157`](../ARCHITECTURE.md#L157-L168) and [`docs\ADOPTION.md:39`](../ADOPTION.md#L39-L79).
+- `IOPCInterfaces` defines `IOPCServer::GetStatus` with `[OpcMethod(6)]`.
+- `OpcProxyGenerator` emits marshalled `InvokeAsync` bodies.
+- `OpcProxyGenerator` emits codec writes and response reads from the generator codec table.
+- `ICallChannel` is the generated-shim call seam.
+- `DcomCallChannel` sends the DCE/RPC request and maps response or fault PDUs into `NdrCallResult`.
+- `TcpClientTransport` and `DcomCallChannelFactory` are the direct TCP transport entry points.
+- See also [`docs\ARCHITECTURE.md`](../ARCHITECTURE.md#L157-L168) and [`docs\ADOPTION.md`](../ADOPTION.md#L39-L79).
 
 ## Server dispatch flow
 
@@ -167,15 +167,15 @@ sequenceDiagram
 
 ### Where to read more
 
-- [`src\Opc.Classic.Dcom\Transport\OpcServerListener.cs:41`](../../src/Opc.Classic.Dcom/Transport/OpcServerListener.cs#L41-L114) owns the TCP accept loop for managed servers.
-- [`src\Opc.Classic.Dcom\Transport\RpcServerConnectionProcessor.cs:61`](../../src/Opc.Classic.Dcom/Transport/RpcServerConnectionProcessor.cs#L61-L120) reads PDUs and routes requests to dispatchers.
-- [`src\Opc.Classic.Dcom\Transport\OpcObjectRegistry.cs:39`](../../src/Opc.Classic.Dcom/Transport/OpcObjectRegistry.cs#L39-L113) maps IPIDs to per-object dispatcher sets.
-- [`src\Opc.Classic.Da\Hosting\OpcDaServerDispatcher.cs:13`](../../src/Opc.Classic.Da/Hosting/OpcDaServerDispatcher.cs#L13-L36) defines the DA adapter that delegates to the generated dispatcher.
-- [`src\Opc.Classic.Generators\OpcServerDispatchGenerator.cs:350`](../../src/Opc.Classic.Generators/OpcServerDispatchGenerator.cs#L350-L390) emits the generated opnum switch.
-- [`src\Opc.Classic.Generators\OpcServerDispatchGenerator.cs:427`](../../src/Opc.Classic.Generators/OpcServerDispatchGenerator.cs#L427-L559) emits request decoding, implementation calls, and response encoding.
-- [`src\Opc.Classic.Da\Hosting\IOpcDaServer.cs:18`](../../src/Opc.Classic.Da/Hosting/IOpcDaServer.cs#L18-L43) is the managed implementation contract the dispatcher calls.
-- [`src\Opc.Classic.Ae\Hosting\OpcAeServerDispatcher.cs:13`](../../src/Opc.Classic.Ae/Hosting/OpcAeServerDispatcher.cs#L13-L36) and [`src\Opc.Classic.Hda\Hosting\OpcHdaServerDispatcher.cs:13`](../../src/Opc.Classic.Hda/Hosting/OpcHdaServerDispatcher.cs#L13-L36) follow the same adapter shape for AE and HDA.
-- See also [`docs\ARCHITECTURE.md:170`](../ARCHITECTURE.md#L170-L200).
+- `OpcServerListener` owns the TCP accept loop for managed servers.
+- `RpcServerConnectionProcessor` reads PDUs and routes requests to dispatchers.
+- `OpcObjectRegistry` maps IPIDs to per-object dispatcher sets.
+- `OpcDaServerDispatcher` defines the DA adapter that delegates to the generated dispatcher.
+- `OpcServerDispatchGenerator` emits the generated opnum switch.
+- `OpcServerDispatchGenerator` emits request decoding, implementation calls, and response encoding.
+- `IOpcDaServer` is the managed implementation contract the dispatcher calls.
+- `OpcAeServerDispatcher` and `OpcHdaServerDispatcher` follow the same adapter shape for AE and HDA.
+- See also [`docs\ARCHITECTURE.md`](../ARCHITECTURE.md#L170-L200).
 
 ## NTLM handshake
 
@@ -213,11 +213,11 @@ sequenceDiagram
 
 ### Where to read more
 
-- [`src\Opc.Classic.Core\IAuthContext.cs:13`](../../src/Opc.Classic.Core/IAuthContext.cs#L13-L39) defines the authentication seam used by DCOM channels.
-- [`src\Opc.Classic.Dcom\rpc\Auth\NtlmAuthentication.cs:155`](../../src/Opc.Classic.Dcom/rpc/Auth/NtlmAuthentication.cs#L155-L220) adapts NTLM to `IAuthContext`, including `BuildInitialToken`, `ProcessChallengeToken`, `SignAndSeal`, and `VerifyAndUnseal`.
-- [`src\Opc.Classic.Dcom\Common\Ntlm\Type1Message.cs:9`](../../src/Opc.Classic.Dcom/Common/Ntlm/Type1Message.cs#L9-L95), [`Type2Message.cs:9`](../../src/Opc.Classic.Dcom/Common/Ntlm/Type2Message.cs#L9-L151), and [`Type3Message.cs:10`](../../src/Opc.Classic.Dcom/Common/Ntlm/Type3Message.cs#L10-L129) model the three NTLMSSP messages.
-- [`src\Opc.Classic.Core\Security\ChannelBindingsFactory.cs:12`](../../src/Opc.Classic.Core/Security/ChannelBindingsFactory.cs#L12-L58) and [`src\Opc.Classic.Core\Security\ChannelBindingsHash.cs:13`](../../src/Opc.Classic.Core/Security/ChannelBindingsHash.cs#L13-L70) implement CBT construction and hashing.
-- Protocol references: [MS-NLMP](https://learn.microsoft.com/openspecs/windows_protocols/ms-nlmp/) and [`docs\cookbook\05-dcom-hardening-pkt-integrity-explainer.md:49`](../cookbook/05-dcom-hardening-pkt-integrity-explainer.md#L49-L53).
+- `IAuthContext` defines the authentication seam used by DCOM channels.
+- `NtlmAuthentication` adapts NTLM to `IAuthContext`, including `BuildInitialToken`, `ProcessChallengeToken`, `SignAndSeal`, and `VerifyAndUnseal`.
+- `Type1Message`, `Type2Message`, and `Type3Message` model the three NTLMSSP messages.
+- `ChannelBindingsFactory` and `ChannelBindingsHash` implement CBT construction and hashing.
+- Protocol references: [MS-NLMP](https://learn.microsoft.com/openspecs/windows_protocols/ms-nlmp/) and [`docs\cookbook\05-dcom-hardening-pkt-integrity-explainer.md`](../cookbook/05-dcom-hardening-pkt-integrity-explainer.md#L49-L53).
 
 ## Kerberos handshake
 
@@ -256,12 +256,12 @@ sequenceDiagram
 
 ### Where to read more
 
-- [`src\Opc.Classic.Dcom.Kerberos\KerberosAuthContext.cs:67`](../../src/Opc.Classic.Dcom.Kerberos/KerberosAuthContext.cs#L67-L99) adapts Kerberos/SPNEGO tokens to `IAuthContext`, and [`KerberosAuthContext.cs:142`](../../src/Opc.Classic.Dcom.Kerberos/KerberosAuthContext.cs#L142-L198) applies packet protection.
-- [`src\Opc.Classic.Dcom.Kerberos\KerberosConnectionContext.cs:61`](../../src/Opc.Classic.Dcom.Kerberos/KerberosConnectionContext.cs#L61-L104) acquires AP-REQ tokens, requests mutual authentication, and processes AP-REP tokens.
-- [`src\Opc.Classic.Dcom.Kerberos\IKerberosConnectionContext.cs:15`](../../src/Opc.Classic.Dcom.Kerberos/IKerberosConnectionContext.cs#L15-L37) defines the AP-REQ and AP-REP abstraction.
-- [`src\Opc.Classic.Dcom.Kerberos\Spnego\SpnegoTokenBuilder.cs:13`](../../src/Opc.Classic.Dcom.Kerberos/Spnego/SpnegoTokenBuilder.cs#L13-L28) wraps Kerberos AP-REQ tokens in SPNEGO.
-- [`src\Opc.Classic.Dcom.Kerberos\KerberosSession.cs:87`](../../src/Opc.Classic.Dcom.Kerberos/KerberosSession.cs#L87-L123) implements RFC 4121 wrap and unwrap tokens.
-- Protocol references: [MS-KILE](https://learn.microsoft.com/openspecs/windows_protocols/ms-kile/) and [`docs\cookbook\03-kerberos-in-active-directory.md:36`](../cookbook/03-kerberos-in-active-directory.md#L36-L52).
+- `KerberosAuthContext` adapts Kerberos/SPNEGO tokens to `IAuthContext`, and `KerberosAuthContext` applies packet protection.
+- `KerberosConnectionContext` acquires AP-REQ tokens, requests mutual authentication, and processes AP-REP tokens.
+- `IKerberosConnectionContext` defines the AP-REQ and AP-REP abstraction.
+- `SpnegoTokenBuilder` wraps Kerberos AP-REQ tokens in SPNEGO.
+- `KerberosSession` implements RFC 4121 wrap and unwrap tokens.
+- Protocol references: [MS-KILE](https://learn.microsoft.com/openspecs/windows_protocols/ms-kile/) and [`docs\cookbook\03-kerberos-in-active-directory.md`](../cookbook/03-kerberos-in-active-directory.md#L36-L52).
 
 ## SPNEGO negotiation
 
@@ -303,10 +303,10 @@ sequenceDiagram
 
 ### Where to read more
 
-- [`src\Opc.Classic.Dcom.Kerberos\Spnego\SpnegoNegTokenInit.cs:11`](../../src/Opc.Classic.Dcom.Kerberos/Spnego/SpnegoNegTokenInit.cs#L11-L20) models RFC 4178 `NegTokenInit`.
-- [`src\Opc.Classic.Dcom.Kerberos\Spnego\SpnegoNegTokenResp.cs:10`](../../src/Opc.Classic.Dcom.Kerberos/Spnego/SpnegoNegTokenResp.cs#L10-L21) models `NegTokenResp`.
-- [`src\Opc.Classic.Dcom.Kerberos\Spnego\SpnegoOids.cs:11`](../../src/Opc.Classic.Dcom.Kerberos/Spnego/SpnegoOids.cs#L11-L27) defines the SPNEGO, Kerberos, and NTLMSSP OIDs.
-- [`src\Opc.Classic.Dcom.Kerberos\Spnego\SpnegoEncoder.cs:14`](../../src/Opc.Classic.Dcom.Kerberos/Spnego/SpnegoEncoder.cs#L14-L72) and [`SpnegoDecoder.cs:14`](../../src/Opc.Classic.Dcom.Kerberos/Spnego/SpnegoDecoder.cs#L14-L120) encode and decode the DER tokens.
+- `SpnegoNegTokenInit` models RFC 4178 `NegTokenInit`.
+- `SpnegoNegTokenResp` models `NegTokenResp`.
+- `SpnegoOids` defines the SPNEGO, Kerberos, and NTLMSSP OIDs.
+- `SpnegoEncoder` and `SpnegoDecoder` encode and decode the DER tokens.
 - Protocol references: [RFC 4178](https://www.rfc-editor.org/rfc/rfc4178) and [MS-SPNG](https://learn.microsoft.com/openspecs/windows_protocols/ms-spng/).
 
 ## Discovery flow
@@ -348,14 +348,14 @@ sequenceDiagram
 
 ### Where to read more
 
-- [`src\Opc.Classic.Discovery\IOpcDiscovery.cs:14`](../../src/Opc.Classic.Discovery/IOpcDiscovery.cs#L14-L22) defines the shared async discovery contract.
-- [`src\Opc.Classic.Discovery\OpcDiscoveryFactory.cs:36`](../../src/Opc.Classic.Discovery/OpcDiscoveryFactory.cs#L36-L53) composes strategies and de-duplicates by CLSID; [`OpcDiscoveryFactory.cs:56`](../../src/Opc.Classic.Discovery/OpcDiscoveryFactory.cs#L56-L93) isolates per-strategy failures.
-- [`src\Opc.Classic.Discovery\OpcEnumClient.cs:88`](../../src/Opc.Classic.Discovery/OpcEnumClient.cs#L88-L118) activates OPCEnum and selects the server-list interface; [`OpcEnumClient.cs:145`](../../src/Opc.Classic.Discovery/OpcEnumClient.cs#L145-L190) maps server-list results into descriptors.
-- [`src\Opc.Classic.Discovery\OpcEnumDcomInterfaces.cs:16`](../../src/Opc.Classic.Discovery/OpcEnumDcomInterfaces.cs#L16-L96) contains the OPCEnum `ICallChannel` shims for `IOPCServerList` and `IOPCServerList2`.
-- [`src\Opc.Classic.Da\Dcom\IOPCInterfaces.cs:632`](../../src/Opc.Classic.Da/Dcom/IOPCInterfaces.cs#L632-L680) defines `IOPCEnumGUID`, `IOPCServerList`, and `IOPCServerList2` projections.
-- [`src\Opc.Classic.Discovery\RemoteRegistryEnum.cs:94`](../../src/Opc.Classic.Discovery/RemoteRegistryEnum.cs#L94-L162) enumerates registry entries, and [`RemoteRegistryEnum.cs:165`](../../src/Opc.Classic.Discovery/RemoteRegistryEnum.cs#L165-L243) reads category and CLSID metadata.
-- [`src\Opc.Classic.Dcom\Winreg\WinRegClient.cs:21`](../../src/Opc.Classic.Dcom/Winreg/WinRegClient.cs#L21-L50), [`RemoteRegistryEnum.cs:336`](../../src/Opc.Classic.Discovery/RemoteRegistryEnum.cs#L336-L394), and [`NcacnNpTransport.cs:53`](../../src/Opc.Classic.Dcom/Transport/NcacnNpTransport.cs#L53-L85) show the `ncacn_np` / `\\PIPE\\winreg` path.
-- See also [`docs\ARCHITECTURE.md:216`](../ARCHITECTURE.md#L216-L236) and [`docs\ADOPTION.md:242`](../ADOPTION.md#L242-L280).
+- `IOpcDiscovery` defines the shared async discovery contract.
+- `OpcDiscoveryFactory` composes strategies and de-duplicates by CLSID; `OpcDiscoveryFactory` isolates per-strategy failures.
+- `OpcEnumClient` activates OPCEnum and selects the server-list interface; `OpcEnumClient` maps server-list results into descriptors.
+- `OpcEnumDcomInterfaces` contains the OPCEnum `ICallChannel` shims for `IOPCServerList` and `IOPCServerList2`.
+- `IOPCInterfaces` defines `IOPCEnumGUID`, `IOPCServerList`, and `IOPCServerList2` projections.
+- `RemoteRegistryEnum` enumerates registry entries, and `RemoteRegistryEnum` reads category and CLSID metadata.
+- `WinRegClient`, `RemoteRegistryEnum`, and `NcacnNpTransport` show the `ncacn_np` / `\\PIPE\\winreg` path.
+- See also [`docs\ARCHITECTURE.md`](../ARCHITECTURE.md#L216-L236) and [`docs\ADOPTION.md`](../ADOPTION.md#L242-L280).
 
 ## Source generator pipeline
 
@@ -395,13 +395,13 @@ flowchart LR
 
 ### Where to read more
 
-- [`src\Opc.Classic.Da\Dcom\IOPCInterfaces.cs:29`](../../src/Opc.Classic.Da/Dcom/IOPCInterfaces.cs#L29-L55) shows an annotated `IOPCServer` projection with proxy and server-dispatch generation enabled.
-- [`src\Opc.Classic.Generators\OpcInterfaceGenerator.cs:40`](../../src/Opc.Classic.Generators/OpcInterfaceGenerator.cs#L40-L130) defines the generated attributes and `OpcInterfaceGenerator` entry point.
-- [`src\Opc.Classic.Generators\OpcProxyGenerator.cs:19`](../../src/Opc.Classic.Generators/OpcProxyGenerator.cs#L19-L43) defines the proxy generator and its generated `[GenerateOpcProxy]` attribute.
-- [`src\Opc.Classic.Generators\OpcProxyGenerator.cs:55`](../../src/Opc.Classic.Generators/OpcProxyGenerator.cs#L55-L99) is the generator codec table.
-- [`src\Opc.Classic.Generators\OpcProxyGenerator.cs:543`](../../src/Opc.Classic.Generators/OpcProxyGenerator.cs#L543-L620) emits generated `InvokeAsync` bodies.
-- [`src\Opc.Classic.Generators\OpcServerDispatchGenerator.cs:320`](../../src/Opc.Classic.Generators/OpcServerDispatchGenerator.cs#L320-L347) emits generated dispatcher classes, and [`OpcServerDispatchGenerator.cs:350`](../../src/Opc.Classic.Generators/OpcServerDispatchGenerator.cs#L350-L390) emits their opnum switches.
-- See also [`docs\ARCHITECTURE.md:135`](../ARCHITECTURE.md#L135-L168).
+- `IOPCInterfaces` shows an annotated `IOPCServer` projection with proxy and server-dispatch generation enabled.
+- `OpcInterfaceGenerator` defines the generated attributes and `OpcInterfaceGenerator` entry point.
+- `OpcProxyGenerator` defines the proxy generator and its generated `[GenerateOpcProxy]` attribute.
+- `OpcProxyGenerator` is the generator codec table.
+- `OpcProxyGenerator` emits generated `InvokeAsync` bodies.
+- `OpcServerDispatchGenerator` emits generated dispatcher classes, and `OpcServerDispatchGenerator` emits their opnum switches.
+- See also [`docs\ARCHITECTURE.md`](../ARCHITECTURE.md#L135-L168).
 
 ## Subscription data flow
 
@@ -448,20 +448,20 @@ sequenceDiagram
 
 ### Where to read more
 
-- [`src\Opc.Classic.Da\SubscriptionState.cs:10`](../../src/Opc.Classic.Da/SubscriptionState.cs#L10-L83) describes DA group and subscription state, including active state and keep-alive.
-- [`src\Opc.Classic.Da\IDaServer.cs:96`](../../src/Opc.Classic.Da/IDaServer.cs#L96-L100) creates managed DA subscriptions.
-- [`src\Opc.Classic.Da\IDaSubscription.cs:14`](../../src/Opc.Classic.Da/IDaSubscription.cs#L14-L80) maps DA groups to async subscription operations and a `DataChanges` stream.
-- [`src\Opc.Classic.Da\Dcom\IOPCInterfaces.cs:277`](../../src/Opc.Classic.Da/Dcom/IOPCInterfaces.cs#L277-L334) defines item management methods including `SetActiveState`.
-- [`src\Opc.Classic.Da\Dcom\IOPCInterfaces.cs:575`](../../src/Opc.Classic.Da/Dcom/IOPCInterfaces.cs#L575-L625) defines `IOPCDataCallback::OnDataChange`.
-- [`src\Opc.Classic.Da\Hosting\IOpcDaDataChangePublisher.cs:11`](../../src/Opc.Classic.Da/Hosting/IOpcDaDataChangePublisher.cs#L11-L22) and [`OpcDaDataChangePublisher.cs:19`](../../src/Opc.Classic.Da/Hosting/OpcDaDataChangePublisher.cs#L19-L83) implement callback fan-out.
-- [`src\Opc.Classic.Da\Hosting\IOpcDataCallbackSink.cs:37`](../../src/Opc.Classic.Da/Hosting/IOpcDataCallbackSink.cs#L37-L55) is the unified callback sink abstraction.
-- [`src\Opc.Classic.Da\Hosting\Windows\OpcDataCallbackProxy.cs:28`](../../src/Opc.Classic.Da/Hosting/Windows/OpcDataCallbackProxy.cs#L28-L76) implements the Windows CCW callback sink.
+- `SubscriptionState` describes DA group and subscription state, including active state and keep-alive.
+- `IDaServer` creates managed DA subscriptions.
+- `IDaSubscription` maps DA groups to async subscription operations and a `DataChanges` stream.
+- `IOPCInterfaces` defines item management methods including `SetActiveState`.
+- `IOPCInterfaces` defines `IOPCDataCallback::OnDataChange`.
+- `IOpcDaDataChangePublisher` and `OpcDaDataChangePublisher` implement callback fan-out.
+- `IOpcDataCallbackSink` is the unified callback sink abstraction.
+- `OpcDataCallbackProxy` implements the Windows CCW callback sink.
 
 ## AOT and trimming shape
 
-This diagram shows what the trimmer and NativeAOT compiler see in the portable `src/*` libraries. The design goal is static, analyzable code: generated proxies and dispatchers call known methods and codecs directly rather than reflecting over interface metadata at runtime.
+This diagram shows what the trimmer and NativeAOT compiler see in the portable * libraries. The design goal is static, analyzable code: generated proxies and dispatchers call known methods and codecs directly rather than reflecting over interface metadata at runtime.
 
-`src/Directory.Build.props` enables AOT and trimming analyzers for source projects, and `src/BannedSymbols.txt` blocks the dynamic patterns that would hide code from the trimmer. The Roslyn generator assembly itself is build-time only, so it opts out of AOT properties while keeping its emitted output AOT-safe.
+`Directory.Build` enables AOT and trimming analyzers for source projects, and `BannedSymbols` blocks the dynamic patterns that would hide code from the trimmer. The Roslyn generator assembly itself is build-time only, so it opts out of AOT properties while keeping its emitted output AOT-safe.
 
 `Opc.Classic.Dcom` participates in the current AOT shape. Its channel-level DCOM transport, packet protection, source-generated shims and dispatchers, and explicit codecs keep the runtime path statically visible to analyzers and NativeAOT.
 
@@ -493,9 +493,9 @@ flowchart TD
 
 ### Where to read more
 
-- [`src\Directory.Build.props:27`](../../src/Directory.Build.props#L27-L34) sets `IsAotCompatible`, `IsTrimmable`, and analyzer properties for source assemblies.
-- [`src\BannedSymbols.txt:1`](../../src/BannedSymbols.txt#L1-L37) lists banned reflection, expression compilation, COM RCW, and native marshal patterns.
-- [`src\Opc.Classic.Generators\Opc.Classic.Generators.csproj:3`](../../src/Opc.Classic.Generators/Opc.Classic.Generators.csproj#L3-L42) explains why generators are build-time only and why their output must be AOT-safe.
-- [`src\Opc.Classic.Dcom\Opc.Classic.Dcom.csproj:3`](../../src/Opc.Classic.Dcom/Opc.Classic.Dcom.csproj#L3-L8) defines the pure-managed DCOM assembly identity, and [`DcomCallChannel.cs:240`](../../src/Opc.Classic.Dcom/Transport/DcomCallChannel.cs#L240-L255) shows channel-level packet protection.
-- [`samples\Opc.Classic.Samples.AotCanary\Opc.Classic.Samples.AotCanary.csproj:1`](../../samples/Opc.Classic.Samples.AotCanary/Opc.Classic.Samples.AotCanary.csproj#L1-L11) and [`Program.cs:21`](../../samples/Opc.Classic.Samples.AotCanary/Program.cs#L21-L30) show the AOT smoke sample.
-- See also [`docs\ARCHITECTURE.md:281`](../ARCHITECTURE.md#L281-L292) and [`docs\ADOPTION.md:302`](../ADOPTION.md#L302-L312).
+- `Directory.Build` sets `IsAotCompatible`, `IsTrimmable`, and analyzer properties for source assemblies.
+- `BannedSymbols` lists banned reflection, expression compilation, COM RCW, and native marshal patterns.
+- `Opc.Classic.Generators` explains why generators are build-time only and why their output must be AOT-safe.
+- `Opc.Classic.Dcom` defines the pure-managed DCOM assembly identity, and `DcomCallChannel` shows channel-level packet protection.
+- AotCanary sample and `Program` show the AOT smoke sample.
+- See also [`docs\ARCHITECTURE.md`](../ARCHITECTURE.md#L281-L292) and [`docs\ADOPTION.md`](../ADOPTION.md#L302-L312).

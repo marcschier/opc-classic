@@ -314,7 +314,7 @@ Capture logs from a healthy run, not only from failures. A known-good status cal
 
 - [MS-DCOM], [MS-RPCE], [MS-KILE], and [MS-CSSP].
 - OPC DA 3.00, HDA 1.20, and AE 1.10 HRESULT semantics.
-- Repository files: `src\Opc.Classic.Core\OpcResultId.cs`, `src\Opc.Classic.Core\Ndr\`, and `src\Opc.Classic.Dcom\Internal\LogHost.cs`.
+- Repository files: `OpcResultId`, `Ndr`, and `LogHost`.
 
 
 

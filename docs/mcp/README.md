@@ -87,7 +87,7 @@ Credentials are supplied at the tool boundary and flow only to the underlying co
 - User names can use `DOMAIN\user` when a Windows domain is required.
 - OPC Security tools (`opcclassic.security.*`) operate inside an existing session and call the server's security interface; `opcclassic.security.logon` accepts server-private credentials and `opcclassic.security.logoff` clears that identity.
 - XML-DA tools target HTTP/SOAP endpoints and use the XML-DA client surface.
-- Do not put literal passwords in MCP config files. Prefer environment variables, OS secret stores, or agent-specific secret injection. `mcp\Opc.Classic.Mcp\appsettings.template.json` shows a secure reference pattern using `PasswordEnvironmentVariable` fields.
+- Do not put literal passwords in MCP config files. Prefer environment variables, OS secret stores, or agent-specific secret injection. `appsettings.template` shows a secure reference pattern using `PasswordEnvironmentVariable` fields.
 
 ## Architecture
 

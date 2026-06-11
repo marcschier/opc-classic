@@ -54,10 +54,10 @@ The rc.10 Windows hosting tests cover DA SCM activation, all AE array-returning 
 
 ## Sample integration
 
-See `samples\Opc.Classic.Samples.CttServer\Program.cs` for the `--register` / `--unregister` / `-Embedding` integration pattern.
+See Program sample for the `--register` / `--unregister` / `-Embedding` integration pattern.
 
 ## Test isolation
 
 The HKCU hive provides isolation for unit tests:
 
-- `tests\Opc.Classic.Hosting.Tests\Windows\WindowsComRegistrationTests.cs` uses unique per-test CLSIDs and ProgIDs and writes only to `HKCU` so the tests run without administrator privileges and clean up after themselves.
+- `WindowsComRegistrationTests` uses unique per-test CLSIDs and ProgIDs and writes only to `HKCU` so the tests run without administrator privileges and clean up after themselves.

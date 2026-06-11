@@ -14,7 +14,7 @@ builds it with MSBuild and emits `C:/out/opc_exe.exe`; use
 
 `opc-sample-server.cpp` implements `IOPCServer`, `IOPCCommon`,
 `IOPCGroupStateMgt`, `IOPCItemMgt`, and `IOPCSyncIO` on top of
-`interop/inc/opcda.h` / `opccomn.h`. It uses `CoRegisterClassObject` for
+`opcda` / `opccomn.h`. It uses `CoRegisterClassObject` for
 out-of-process activation, self-registers `OPC.SampleServer.1`, and exposes the
 `Sin`, `Square`, and `Random` sample tags for interop smoke runs.
 
@@ -23,5 +23,5 @@ return `E_NOTIMPL` in this MVP.
 
 ## See also
 
-- `interop/docker/opc-c-server/Dockerfile` — current image definition
-- `interop/docker/opc-c-server/server-init.ps1` — runtime entrypoint
+- `Dockerfile` — current image definition
+- server-init — runtime entrypoint

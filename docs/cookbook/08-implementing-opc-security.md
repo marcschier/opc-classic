@@ -2,7 +2,7 @@
 
 ## What this covers
 
-OPC Security 1.00 is an optional session-level identity switch layered above DCOM. The reference server in `samples\Opc.Classic.Samples.OpcSecurityServer` shows how to publish `IOPCSecurityNT` and `IOPCSecurityPrivate` beside a minimal DA server.
+OPC Security 1.00 is an optional session-level identity switch layered above DCOM. The reference server in Opc.Classic.Samples sample shows how to publish `IOPCSecurityNT` and `IOPCSecurityPrivate` beside a minimal DA server.
 
 Run it with:
 
@@ -16,7 +16,7 @@ The demo private credential is `operator` / `demo`. The implementation is intent
 
 `Program.cs` registers a minimal `IOpcDaServer`, a singleton `StubOpcSecurityServer`, and maps that singleton to:
 
-- `IOpcSecurity` — the managed abstraction in `src\Opc.Classic.Security\IOpcSecurity.cs`.
+- `IOpcSecurity` — the managed abstraction in `IOpcSecurity`.
 - `IOPCSecurityNT` — the generated DCOM dispatcher contract for Windows-integrated authentication.
 - `IOPCSecurityPrivate` — the generated DCOM dispatcher contract for server-private credentials.
 
@@ -28,7 +28,7 @@ The sample host publishes all DA root dispatchers plus `IOPCSecurityNTServerDisp
 - `LoginAsCurrentUserAsync` captures `WindowsIdentity.GetCurrent().Name` on Windows, or `OPC_CLASSIC_SAMPLE_IDENTITY` / `Environment.UserName` elsewhere.
 - `LoginPrivateAsync` accepts only `operator` / `demo`.
 - `LogoutAsync` clears `IsAuthenticated` and `CurrentIdentity`.
-- The DCOM methods translate failures to `OpcException`; private re-logon uses `OpcSecurityErrors.OPC_E_PRIVATE_ACTIVE` from `src\Opc.Classic.Core\Errors\OpcSecurityErrors.cs`.
+- The DCOM methods translate failures to `OpcException`; private re-logon uses `OpcSecurityErrors.OPC_E_PRIVATE_ACTIVE` from `OpcSecurityErrors`.
 
 ## DCOM-layer security vs OPC Security 1.00
 
@@ -78,7 +78,7 @@ Use `OpcSecurityErrors.OPC_E_PRIVATE_ACTIVE` when a second private logon is atte
 
 ## References
 
-- `src\Opc.Classic.Security\IOpcSecurity.cs` — managed async-first OPC Security abstraction.
-- `src\Opc.Classic.Security\Dcom\IOPCSecurityInterfaces.cs` — DCOM interface declarations and generated dispatcher inputs.
-- `src\Opc.Classic.Core\Errors\OpcSecurityErrors.cs` — OPC Security HRESULT constants.
-- `samples\Opc.Classic.Samples.OpcSecurityServer` — runnable reference server.
+- `IOpcSecurity` — managed async-first OPC Security abstraction.
+- `IOPCSecurityInterfaces` — DCOM interface declarations and generated dispatcher inputs.
+- `OpcSecurityErrors` — OPC Security HRESULT constants.
+- Opc.Classic.Samples sample — runnable reference server.

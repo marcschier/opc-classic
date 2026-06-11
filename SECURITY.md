@@ -35,7 +35,7 @@ Please avoid destructive proof-of-concept payloads, attacks against third-party 
 
 ## Security-sensitive Surface
 
-The project is a pure-managed OPC Classic stack with DCOM and MSRPC components under `src\Opc.Classic.Dcom\`. Its security-sensitive surface includes authentication, authorization, channel protection, NDR marshalling, and server callback dispatch.
+The project is a pure-managed OPC Classic stack with DCOM and MSRPC components under `Opc.Classic`. Its security-sensitive surface includes authentication, authorization, channel protection, NDR marshalling, and server callback dispatch.
 
 NTLMv2, Kerberos/SPNEGO, channel binding, and DCOM authentication hardening are implemented in the current tree. Findings against those areas are welcome, including protocol downgrade issues, replay weaknesses, signing or sealing mistakes, credential handling bugs, and interoperability behavior that weakens expected DCOM security.
 
@@ -43,7 +43,7 @@ Cryptanalysis findings against the in-tree authentication implementations are es
 
 ## In-Tree Cryptographic Implementations
 
-The project intentionally contains in-tree cryptographic code for OPC Classic interoperability. NTLMv2, RC4, and MD4 are hand-rolled in `src\Opc.Classic.Dcom\Crypto\` rather than delegated entirely to BCL-backed implementations.
+The project intentionally contains in-tree cryptographic code for OPC Classic interoperability. NTLMv2, RC4, and MD4 are hand-rolled in `Crypto` rather than delegated entirely to BCL-backed implementations.
 
 This code exists to support protocol compatibility, not to introduce new cryptographic designs. Responsible disclosure is particularly important for:
 

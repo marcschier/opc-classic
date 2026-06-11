@@ -32,7 +32,7 @@ Current baseline: **10 sample apps** and **2758 passed / 13 skipped / 0 failed a
 ## Interop with native OPC servers
 
 - [Probe coverage](interop/probe-coverage.md) — MCP tool-by-tool status against Matrikon Simulation Server + OPC Foundation TestServer
-- [OPCEnum DCOM authentication](interop/opcenum-auth.md) — auth-level requirements + `interop/tools/grant-opcenum-acl.ps1` AppID ACL helper
+- [OPCEnum DCOM authentication](interop/opcenum-auth.md) — auth-level requirements + grant-opcenum-acl AppID ACL helper
 - [`IOPCDataCallback` push delivery](interop/da-callbacks.md) — server→client subscription callback architecture
 - [TestServer activation residual](interop/testserver.md) — known SCM-activation blocker for the OPC Foundation managed TestServer
 - [Wire captures](interop/wire-captures/README.md) — opt-in NDR diagnostic dumps via `OPCCLASSIC_WIRE_CAPTURE_DIR`

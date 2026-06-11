@@ -2,7 +2,7 @@
 
 OPC Alarms & Events is the event stream for OPC Classic. DA tells you current values, HDA tells you historical values, and AE tells you what happened: a simple notification, an operator tracking event, or a condition event that may require acknowledgement. This tutorial walks through event categories, area browsing, filters, condition acknowledgements, refresh, and server-hosting patterns using `Opc.Classic.Ae`.
 
-The repository samples are the best reference: `samples\Opc.Classic.Samples.AeServer\` hosts `Opc.Classic.Samples.AeServer.1`, while `samples\Opc.Classic.Samples.AeClient\` builds an in-process loopback client over `IOPCEventServerClientProxy`, `InMemoryCallChannel`, `InProcessAeServer`, and `InProcessAeSubscription`. When `OPC_CLASSIC_SERVER_HOST` and `OPC_CLASSIC_SERVER_PORT` are set, the AE client uses `DcomCallChannelFactory.ConnectTcpAsync` against the sample server instead. The AE server reads `OPC_CLASSIC_SAMPLE_PORT` (default `51301`) or `OPC_CLASSIC_LISTEN_ADDRESS`. The Windows CCW path has full array marshaling for the shipped AE server, subscription, browse/filter, condition, acknowledgement, and callback methods. The public application surface is `IAeServer` and `IAeSubscription`.
+The repository AE samples are the best reference: the AE server sample hosts `Opc.Classic.Samples.AeServer.1`, while the AE client sample builds an in-process loopback client over `IOPCEventServerClientProxy`, `InMemoryCallChannel`, `InProcessAeServer`, and `InProcessAeSubscription`. When `OPC_CLASSIC_SERVER_HOST` and `OPC_CLASSIC_SERVER_PORT` are set, the AE client uses `DcomCallChannelFactory.ConnectTcpAsync` against the sample server instead. The AE server reads `OPC_CLASSIC_SAMPLE_PORT` (default `51301`) or `OPC_CLASSIC_LISTEN_ADDRESS`. The Windows CCW path has full array marshaling for the shipped AE server, subscription, browse/filter, condition, acknowledgement, and callback methods. The public application surface is `IAeServer` and `IAeSubscription`.
 
 ## Prerequisites
 
@@ -323,7 +323,7 @@ Before release, replay the complete AE scenario: browse areas, query categories,
 
 ## Next steps
 
-- Run `samples\Opc.Classic.Samples.AeServer` and `samples\Opc.Classic.Samples.AeClient`; for container ports and `OPC_CLASSIC_SERVER_HOST` / `OPC_CLASSIC_SERVER_PORT`, see [../../samples/README.docker.md](../../samples/README.docker.md).
+- Run Opc.Classic.Samples sample and Opc.Classic.Samples sample; for container ports and `OPC_CLASSIC_SERVER_HOST` / `OPC_CLASSIC_SERVER_PORT`, see [../../samples/README.docker.md](../../samples/README.docker.md).
 - Deploy AE workloads with [03-cross-platform-deployment.md](03-cross-platform-deployment.md).
 - Harden authentication with [04-security-with-kerberos-and-channel-binding.md](04-security-with-kerberos-and-channel-binding.md).
 - Diagnose event stream failures with [09-troubleshooting-and-diagnostics.md](09-troubleshooting-and-diagnostics.md).
@@ -332,7 +332,7 @@ Before release, replay the complete AE scenario: browse areas, query categories,
 
 - OPC AE 1.10: `IOPCEventServer`, `IOPCEventSubscriptionMgt`, `IOPCEventSink`, condition refresh, and acknowledgements.
 - [MS-DCOM] for callback object references and activation.
-- Repository: `src\Opc.Classic.Ae\`, `samples\Opc.Classic.Samples.AeClient\`, and `samples\Opc.Classic.Samples.AeServer\`.
+- Repository: `Opc.Classic`, Opc.Classic.Samples sample, and Opc.Classic.Samples sample.
 
 
 
@@ -340,4 +340,3 @@ Before release, replay the complete AE scenario: browse areas, query categories,
 
 
 Additional practice: rehearse operator acknowledgement workflows quarterly.
-

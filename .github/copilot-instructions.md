@@ -16,7 +16,7 @@ opc-classic/
 ├── tests/                        TUnit projects on Microsoft.Testing.Platform
 ├── samples/                      10 sample apps: DA/AE/HDA servers + clients, LoopbackDemo, CttServer (additional managed DA sample), OpcSecurityServer, AotCanary
 ├── docs/                         plain Markdown documentation hub and topic pages
-├── interop/                     OPC Foundation IDL (`interop/inc`), redistributables (`external`), and native C++ samples/test apps (`interop/samples`); spec reference markdown lives in the private `marcschier/opc-classic-docs` repo
+├── interop/                     OPC Foundation IDL, redistributables (`external`), and native C++ samples/test apps; spec reference markdown lives in the private `marcschier/opc-classic-docs` repo
 │   └── docker/                   Windows-container managed/native interop test fleet
 ├── .github/workflows/            build, release, and Docker test fleet workflows
 ├── Opc.Classic.slnx              .NET 10 XML solution format
@@ -63,7 +63,7 @@ Every runtime source project inherits:
 <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
 ```
 
-`src/BannedSymbols.txt` rejects runtime patterns that would break AOT or cross-platform behavior:
+`BannedSymbols` rejects runtime patterns that would break AOT or cross-platform behavior:
 
 - `System.Reflection.Emit.*`
 - `Expression<T>.Compile()`
@@ -80,20 +80,20 @@ Use source generation for static dispatch tables, proxy methods, and server disp
 - **C# style**: file-scoped namespaces, usings outside namespace declarations, `_camelCase` private fields, predefined C# type aliases, and no broad analyzer suppressions.
 - **IDL names**: OPC/MS-DCOM wire identifiers keep their original casing, underscores, and reserved-word shapes where needed for spec readability.
 - **License headers**: every new `src/` file carries `SPDX-License-Identifier: MIT` and the repository copyright header.
-- **Crypto**: MD4 and RC4 live in `src\Opc.Classic.Dcom\Crypto\`; MD5, HMAC, DES, and AES primitives come from the BCL where available. Do not add new crypto dependencies without a security review.
+- **Crypto**: MD4 and RC4 live in `Crypto`; MD5, HMAC, DES, and AES primitives come from the BCL where available. Do not add new crypto dependencies without a security review.
 - **Tests**: use TUnit, `[Test]`, `[Arguments]`, and `await Assert.That(actual).IsEqualTo(expected)`. Prefer hand-written test doubles over runtime-proxy mocking frameworks.
 - **Solutions**: `Opc.Classic.slnx` is the only root solution and uses the .NET XML solution format.
-- **Packages**: central package versions live in `src\Directory.Packages.props` and `tests\Directory.Packages.props`.
+- **Packages**: central package versions live in `Directory.Packages` and Directory.Packages tests.
 - **Conformance**: All code must conform strictly to the vendored OPC/MS specifications.
 
 ## Quick task pointers
 
 - **Documentation hub**: `docs\README.md`; forward-looking work belongs in `docs\ROADMAP.md`.
 - **Architecture overview**: `docs\ARCHITECTURE.md`.
-- **Generator diagnostics**: `docs\generators\diagnostics.md` and `src\Opc.Classic.Generators\`.
-- **Migration diagnostics**: `docs\migration\` and `src\Opc.Classic.MigrationAnalyzer\`.
-- **NTLM/Kerberos/SPNEGO auth**: `src\Opc.Classic.Dcom\rpc\Auth\`, `src\Opc.Classic.Dcom.Kerberos\`, and `src\Opc.Classic.Dcom\Spnego\`.
-- **DCOM activation**: `src\Opc.Classic.Dcom\Activation\` and `src\Opc.Classic.Dcom\Core\RemActivation.cs`.
-- **Server dispatch path**: generated dispatchers plus `src\Opc.Classic.Dcom\Transport\ComRuntimeEndpoint.cs` and `src\Opc.Classic.Dcom\Core\ComOxidRuntime*.cs`.
-- **Discovery**: `src\Opc.Classic.Discovery\OpcEnumClient.cs` and `src\Opc.Classic.Discovery\OpcEnumDcomInterfaces.cs`.
-- **Samples**: `samples\Opc.Classic.Samples.*`.
+- **Generator diagnostics**: `docs\generators\diagnostics.md` and `Opc.Classic`.
+- **Migration diagnostics**: `docs\migration\` and `Opc.Classic`.
+- **NTLM/Kerberos/SPNEGO auth**: `Auth`, `Opc.Classic.Dcom`, and `Spnego`.
+- **DCOM activation**: `Activation` and `RemActivation`.
+- **Server dispatch path**: generated dispatchers plus `ComRuntimeEndpoint` and ComOxidRuntime*.
+- **Discovery**: `OpcEnumClient` and `OpcEnumDcomInterfaces`.
+- **Samples**: Opc.Classic.Samples sample.

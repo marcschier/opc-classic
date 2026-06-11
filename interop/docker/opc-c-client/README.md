@@ -11,6 +11,6 @@ docker run --rm --network opc-test-net opc-classic/c-client `
     -TargetHost opc-classic-managed
 ```
 
-The image compiles `interop\docker\opc-c-client\build\opc-test.cpp` against headers from `interop\inc`; `client.ps1` forwards `-ProgId` and `-TargetHost` to `opc-test.exe`.
+The image compiles opc-test against headers from `inc`; `client.ps1` forwards `-ProgId` and `-TargetHost` to `opc-test.exe`.
 
-See `build\README.md` for the native project details and `interop\docker\README.md` for the full fleet.
+See `build\README.md` for the native project details and `docker` for the full fleet.

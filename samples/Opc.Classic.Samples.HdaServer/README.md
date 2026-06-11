@@ -1,6 +1,6 @@
 # Opc.Classic Sample HDA Server
 
-Managed OPC HDA sample server mirroring the native `interop\samples\SampleServer\Hda` historian shape with a small synthetic tag tree.
+Managed OPC HDA sample server mirroring the native `Hda` historian shape with a small synthetic tag tree.
 
 ## Tags
 
@@ -47,4 +47,4 @@ OpcHdaItem[] averages = await server.ReadProcessedAsync(
 - `SampleHdaServer.cs` — managed HDA server status, validation, raw read, and processed read implementation.
 - `HistoricalDataStore.cs` — seeded one-day historian data set.
 
-For the compose-orchestrated container demo, see `samples\README.docker.md`.
+For the compose-orchestrated container demo, see README.docker sample.

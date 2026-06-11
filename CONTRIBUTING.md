@@ -22,12 +22,12 @@ dotnet test Opc.Classic.slnx
 
 | Path | Purpose |
 | --- | --- |
-| `src\` | Production libraries and generators. `src\Directory.Build.props` applies .NET 10, nullable, analyzer, package, NativeAOT, and trimming settings. |
+| `src\` | Production libraries and generators. `Directory.Build` applies .NET 10, nullable, analyzer, package, NativeAOT, and trimming settings. |
 | `tests\` | TUnit and Microsoft.Testing.Platform test projects, including unit, property, snapshot, generator, logging, conformance, and integration scaffolds. |
 | `samples\` | Ten runnable managed samples for DA/AE/HDA clients and servers, loopback, an additional managed DA sample (CttServer), the OPC Security reference server, and AOT publishing. |
 | `docs\` | Plain Markdown architecture, adoption, cookbook, tutorials, security, migration, architecture diagrams, conformance, release, and roadmap docs. |
-| `interop\docker\` | Windows-container test fleet for managed server and native C server/client interop. |
-| `interop\samples\` | OPC Foundation native C++ sample servers and test applications used as conformance references. Do not casually rewrite or relicense them. |
+| `docker` | Windows-container test fleet for managed server and native C server/client interop. |
+| `samples` | OPC Foundation native C++ sample servers and test applications used as conformance references. Do not casually rewrite or relicense them. |
 | `interop\` | OPC Foundation redistributables, IDL, headers, and native sample assets used as conformance inputs. |
 
 The portable stack must not introduce Windows-only COM runtime dependencies such as `[ComImport]`, RCW activation, or `ole32.dll` P/Invoke.
@@ -41,7 +41,7 @@ Every new source file in `src\` must carry the repository SPDX and copyright hea
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 ```
 
-Follow the style enforced by `.editorconfig` and `src\Directory.Build.props`:
+Follow the style enforced by `.editorconfig` and `Directory.Build`:
 
 - Use file-scoped namespaces.
 - Keep nullable reference types enabled.
@@ -64,7 +64,7 @@ Runtime source projects are expected to keep:
 <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
 ```
 
-The Banned API analyzer uses `src\BannedSymbols.txt` to reject NativeAOT-hostile patterns. Do not introduce:
+The Banned API analyzer uses `BannedSymbols` to reject NativeAOT-hostile patterns. Do not introduce:
 
 - `System.Reflection.Emit`.
 - `Activator.CreateInstance(Type)` or equivalent runtime type activation.
@@ -73,7 +73,7 @@ The Banned API analyzer uses `src\BannedSymbols.txt` to reject NativeAOT-hostile
 - `[ComImport]`, `ole32.dll` P/Invoke, or Windows COM runtime dependencies in cross-platform source.
 - `MethodInfo.Invoke` or other reflection-dispatch paths that should be generated instead.
 
-If a feature needs runtime-looking dispatch, prefer emitting static code from `src\Opc.Classic.Generators\`.
+If a feature needs runtime-looking dispatch, prefer emitting static code from `Opc.Classic`.
 
 ## Test conventions
 
@@ -87,7 +87,7 @@ Use `[Test]` and `[Arguments]` for parameterized cases. Keep tests deterministic
 
 ### Mocking and test doubles
 
-Do not add runtime-proxy mocking frameworks such as NSubstitute, Moq, or FakeItEasy; they rely on Castle.Core, Reflection.Emit, DispatchProxy, or similar dynamic code paths that conflict with the NativeAOT direction. Shared hand-written doubles live under `tests\_TestDoubles\` when needed.
+Do not add runtime-proxy mocking frameworks such as NSubstitute, Moq, or FakeItEasy; they rely on Castle.Core, Reflection.Emit, DispatchProxy, or similar dynamic code paths that conflict with the NativeAOT direction. Shared hand-written doubles live under _TestDoubles tests when needed.
 
 Use `FakeXxx` for reusable configurable doubles, `StubXxx` for narrow scaffolds, and `CapturingXxx` for doubles that record calls or state. For `ILogger` assertions, prefer Microsoft.Extensions.Diagnostics.Testing (`Microsoft.Extensions.Logging.Testing` namespace).
 
@@ -109,12 +109,12 @@ await Assert.That(status).IsEqualTo(expectedStatus);
 await Assert.That(itemId).IsEqualTo(expectedItemId);
 ```
 
-Verify.TUnit golden files live alongside tests under `tests\<ProjectName>.Tests\Snapshots\`. Review `.received.*` files before accepting them as `.verified.*` snapshots.
+Verify.TUnit golden files live alongside tests under Snapshots tests. Review `.received.*` files before accepting them as `.verified.*` snapshots.
 
 ## Coverage
 
 CI gates code coverage at **70% line / 50% branch** (workspace-wide aggregate
-across all `tests/**/coverage.cobertura.xml`, after the ReportGenerator
+across all coverage.cobertura tests, after the ReportGenerator
 exclusion of `Opc.Classic.Dcom*`/`Opc.Classic.Generators*`/`*Tests*`). The
 branch floor was lifted in step with the actual aggregate as Tracks AR + BD
 raised coverage on the new sink + listener + element-VARIANT surfaces;
@@ -140,16 +140,16 @@ Use samples to demonstrate public APIs, not test-only shortcuts.
 
 | Sample | Purpose |
 | --- | --- |
-| `samples\Opc.Classic.Samples.DaServer\` | Managed DA server. |
-| `samples\Opc.Classic.Samples.AeServer\` | Managed AE server. |
-| `samples\Opc.Classic.Samples.HdaServer\` | Managed HDA server. |
-| `samples\Opc.Classic.Samples.DaClient\` | Managed DA client. |
-| `samples\Opc.Classic.Samples.AeClient\` | Managed AE client. |
-| `samples\Opc.Classic.Samples.HdaClient\` | Managed HDA client. |
-| `samples\Opc.Classic.Samples.LoopbackDemo\` | In-process client/server loopback. |
-| `samples\Opc.Classic.Samples.CttServer\` | Additional managed DA sample (different CLSID from samples-da). |
-| `samples\Opc.Classic.Samples.OpcSecurityServer\` | Managed OPC Security reference server. |
-| `samples\Opc.Classic.Samples.AotCanary\` | NativeAOT publish canary. |
+| Opc.Classic.Samples sample | Managed DA server. |
+| Opc.Classic.Samples sample | Managed AE server. |
+| Opc.Classic.Samples sample | Managed HDA server. |
+| Opc.Classic.Samples sample | Managed DA client. |
+| Opc.Classic.Samples sample | Managed AE client. |
+| Opc.Classic.Samples sample | Managed HDA client. |
+| Opc.Classic.Samples sample | In-process client/server loopback. |
+| Opc.Classic.Samples sample | Additional managed DA sample (different CLSID from samples-da). |
+| Opc.Classic.Samples sample | Managed OPC Security reference server. |
+| Opc.Classic.Samples sample | NativeAOT publish canary. |
 
 Build or run a sample with the XML solution restored:
 
@@ -186,11 +186,11 @@ Use clear commit messages. Do not use PowerShell here-strings for commit message
 The CI matrix includes Windows conformance coverage that can:
 
 1. install OPC Foundation Core Components,
-2. build preserved native C++ OPC sample servers under `interop\samples\`,
+2. build preserved native C++ OPC sample servers under `samples`,
 3. register them via the vendored `regserver.cmd` COM-registration helper,
 4. run managed native-conformance subsets against those servers.
 
-The `.github\workflows\docker-test-fleet.yml` workflow builds the Windows-container fleet under `interop\docker\` and runs the managed `cross-impl-matrix` smoke when a Windows-container host is available.
+The `.github\workflows\docker-test-fleet.yml` workflow builds the Windows-container fleet under `docker` and runs the managed `cross-impl-matrix` smoke when a Windows-container host is available.
 
 ## License
 

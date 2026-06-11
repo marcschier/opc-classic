@@ -5,14 +5,14 @@
 
 ## In scope
 
-- NTLMSSP message exchange: Type1 NEGOTIATE, Type2 CHALLENGE, Type3 AUTHENTICATE in `src\Opc.Classic.Dcom\Common\Ntlm\Type1Message.cs`, `Type2Message.cs`, `Type3Message.cs`.
-- AV-pair processing, MIC flag handling, MIC computation/verification, and channel-binding AV pairs in `src\Opc.Classic.Dcom\Common\Ntlm\NtlmAvPairs.cs`, `NtlmMic.cs`, and `src\Opc.Classic.Core\Security\ChannelBindings*.cs`.
-- NTLMv2 response computation: HMAC-MD5, NTOWFv2, LMOWFv2, timestamp/nonce blob construction, and server proof verification in `src\Opc.Classic.Dcom\rpc\Auth\Responses.cs` and `NtlmAuthentication.cs`.
-- Session-key derivation and key-exchange wrapping in `src\Opc.Classic.Dcom\rpc\Auth\NTLMKeyFactory.cs`.
-- DCE/RPC `PKT_INTEGRITY` / `PKT_PRIVACY` signing and sealing in `src\Opc.Classic.Dcom\rpc\Auth\Ntlm1.cs`, `NtlmAuthentication.cs:155-233`, and `src\Opc.Classic.Dcom\Transport\DcomCallChannel.cs:402-445`.
-- MD4 and RC4 hand-rolled primitives and compatibility wrappers in `src\Opc.Classic.Dcom\Crypto\Md4*.cs`, `Rc4.cs`, `MD4Digest.cs`, and `RC4Engine.cs`.
-- Password-derived buffer zeroization in `src\Opc.Classic.Dcom\rpc\Auth\SensitiveBufferPool.cs:17-34`, covered by `tests\Opc.Classic.Dcom.Crypto.Tests\PasswordZeroizationTests.cs`.
-- DCE/RPC bind-time auth verifier wrapping: `src\Opc.Classic.Dcom\rpc\Auth\NtlmConnection.cs:44-124`, `NtlmConnectionContext.cs`, `src\Opc.Classic.Dcom\Transport\PduCodec.cs`, and `DcomCallChannel.cs:342-503`.
+- NTLMSSP message exchange: Type1 NEGOTIATE, Type2 CHALLENGE, Type3 AUTHENTICATE in `Type1Message`, `Type2Message.cs`, `Type3Message.cs`.
+- AV-pair processing, MIC flag handling, MIC computation/verification, and channel-binding AV pairs in `NtlmAvPairs`, `NtlmMic.cs`, and ChannelBindings*.
+- NTLMv2 response computation: HMAC-MD5, NTOWFv2, LMOWFv2, timestamp/nonce blob construction, and server proof verification in `Responses` and `NtlmAuthentication.cs`.
+- Session-key derivation and key-exchange wrapping in `NTLMKeyFactory`.
+- DCE/RPC `PKT_INTEGRITY` / `PKT_PRIVACY` signing and sealing in `Ntlm1`, `NtlmAuthentication`, and `DcomCallChannel`.
+- MD4 and RC4 hand-rolled primitives and compatibility wrappers in Md4*, `Rc4.cs`, `MD4Digest.cs`, and `RC4Engine.cs`.
+- Password-derived buffer zeroization in `SensitiveBufferPool`, covered by `PasswordZeroizationTests`.
+- DCE/RPC bind-time auth verifier wrapping: `NtlmConnection`, `NtlmConnectionContext.cs`, `PduCodec`, and `DcomCallChannel`.
 
 ## Out of scope
 

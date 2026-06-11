@@ -5,13 +5,13 @@ client-implementation × server-implementation pairs are validated, what
 features each pair exercises, and the spec-mandated reason behind any
 EXPECTED-FAIL / NOT-APPLICABLE cell.
 
-Cells are filled in by running [`tools/run-cross-impl-matrix.ps1`](../../tools/run-cross-impl-matrix.ps1)
-(see [Automation wrapper](#automation-wrapper)) or by manual `tools/probe_servers.py`
+Cells are filled in by running run-cross-impl-matrix tool
+(see [Automation wrapper](#automation-wrapper)) or by manual probe servers tool
 runs. The PowerShell wrapper auto-registers every Opc.Classic sample
 server under HKCU (no elevation required) before launching the Python
-[`tools/run_cross_impl_matrix.py`](../../tools/run_cross_impl_matrix.py)
+run cross impl matrix tool
 driver against each server profile defined in
-[`tools/probe_matrix.py`](../../tools/probe_matrix.py).
+probe matrix tool.
 
 ## Profile inventory
 
@@ -19,21 +19,21 @@ driver against each server profile defined in
 | --- | --- | --- | --- |
 | `testserver` | OPC Foundation `OpcTestServer_x64.exe` | DA 2.05a | `OPC.TestServer.1` |
 | `matrikon` | Matrikon OPC Simulation Server | DA 1.0 + 2.05a + 3.0 | `Matrikon.OPC.Simulation.1` |
-| `samples-da` | `samples/Opc.Classic.Samples.DaServer` | DA 2.05a + 3.0 | `Opc.Classic.Samples.DaServer.1` |
-| `ctt-da` | `samples/Opc.Classic.Samples.CttServer` | DA 2.05a + 3.0 | `Opc.Classic.DaSample.1` |
-| `samples-hda` | `samples/Opc.Classic.Samples.HdaServer` | HDA 1.0 | `Opc.Classic.Samples.HdaServer.1` |
-| `samples-ae` | `samples/Opc.Classic.Samples.AeServer` | AE 1.0 | `Opc.Classic.Samples.AeServer.1` |
-| `security-da` | `samples/Opc.Classic.Samples.OpcSecurityServer` | DA 2.05a + IOPCSecurityNT + IOPCSecurityPrivate | `Opc.Classic.Samples.OpcSecurityServer.1` |
+| `samples-da` | Opc.Classic.Samples sample | DA 2.05a + 3.0 | `Opc.Classic.Samples.DaServer.1` |
+| `ctt-da` | Opc.Classic.Samples sample | DA 2.05a + 3.0 | `Opc.Classic.DaSample.1` |
+| `samples-hda` | Opc.Classic.Samples sample | HDA 1.0 | `Opc.Classic.Samples.HdaServer.1` |
+| `samples-ae` | Opc.Classic.Samples sample | AE 1.0 | `Opc.Classic.Samples.AeServer.1` |
+| `security-da` | Opc.Classic.Samples sample | DA 2.05a + IOPCSecurityNT + IOPCSecurityPrivate | `Opc.Classic.Samples.OpcSecurityServer.1` |
 
 ## Client inventory
 
 | Client | What it exercises |
 | --- | --- |
-| MCP probe (`tools/probe_servers.py`) | Every `opcclassic.*` MCP tool. Curated probe specs per tool. Mirrors what end-user LLMs see through the MCP server. |
+| MCP probe | Every `opcclassic.*` MCP tool. Curated probe specs per tool. Mirrors what end-user LLMs see through the MCP server. |
 | OPC Foundation `OpcTestClient_x64.exe` | Minimal DA enumerator: `IOPCServerList::EnumClassesOfCategories(CATID_OPCDAServer20)` + per-server `IOPCServer::GetStatus`. Does NOT browse / add groups / read / write / subscribe. |
-| Managed `samples/Opc.Classic.Samples.DaClient` | Demonstrates full DA flow: connect, browse, add group, add items, sync read, write, subscribe + callback. |
-| Managed `samples/Opc.Classic.Samples.AeClient` | Full AE flow: connect, browse areas, create subscription, refresh, poll events, ack condition. |
-| Managed `samples/Opc.Classic.Samples.HdaClient` | Full HDA flow: connect, browse, get item handles, read raw / processed / at time. |
+| Managed Opc.Classic.Samples sample | Demonstrates full DA flow: connect, browse, add group, add items, sync read, write, subscribe + callback. |
+| Managed Opc.Classic.Samples sample | Full AE flow: connect, browse areas, create subscription, refresh, poll events, ack condition. |
+| Managed Opc.Classic.Samples sample | Full HDA flow: connect, browse, get item handles, read raw / processed / at time. |
 
 ## Cross-implementation matrix
 
@@ -42,14 +42,14 @@ Cell legend:
 - ✅ **PASS** — every applicable tool succeeds (DA 2.05a tools for a
   DA 2.05a server, plus DA 3.0 tools for a DA 3.0 server).
 - 🚧 **TODO** — not yet validated in this matrix. Run
-  `tools/run-cross-impl-matrix.ps1` to update.
+  run-cross-impl-matrix tool to update.
 - ❌ **EXPECTED-FAIL (NOINTERFACE)** — tool calls a higher-spec
   interface (e.g. `opcclassic.da.read_items_by_id` uses DA 3.0
   `IOPCItemIO` against a DA 2.05a server).
 - ⛔ **NOT APPLICABLE** — wrong spec entirely (HDA tool against a DA
   server).
 - 🔒 **PERMISSION** — server requires admin elevation or explicit DCOM
-  ACL grant (see `interop/tools/grant-testserver-acl.ps1`).
+  ACL grant.
 
 | Client ↓ \ Server → | `testserver` | `matrikon` | `samples-da` | `ctt-da` | `samples-hda` | `samples-ae` | `security-da` |
 | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -71,9 +71,9 @@ validated it; see [Validation procedure](#validation-procedure) below.
 
 ### MCP probe row
 
-The Python driver pair `tools/run_cross_impl_matrix.py` +
-`tools/probe_servers.py --expect-matrix <profile>` automates this. The
-`tools/run-cross-impl-matrix.ps1` wrapper handles HKCU registration so a
+The Python driver pair run cross impl matrix tool +
+probe servers tool automates this. The
+run-cross-impl-matrix tool wrapper handles HKCU registration so a
 non-elevated dev machine can run the full matrix end-to-end except for
 the `testserver` profile (which needs the BH3 ACL grant).
 
@@ -103,7 +103,7 @@ Each profile run produces:
   REGRESSION / UNEXPECTED_PASS / MISSING_CLASSIFICATION counts.
 - `matrix-out/wire-captures/<profile>/...` — when `-WireCapture`, the
   per-tool `.hex` wire-capture dumps (same shape as
-  `interop/docs/wire-captures/`).
+  wire-captures).
 
 The exit code is **0** iff every profile completed with zero REGRESSION
 rows. Exit **2** when any profile has a regression; **3** when the
@@ -112,7 +112,7 @@ probe driver failed catastrophically (server didn't launch, etc.).
 ### `OpcTestClient.exe` row
 
 After registering the sample servers (via the same
-`tools/run-cross-impl-matrix.ps1` or the per-sample
+run-cross-impl-matrix tool or the per-sample
 `--register --registry-hive=hklm` elevated command), invoke the
 Foundation TestClient:
 
@@ -124,11 +124,11 @@ The TestClient walks `IOPCServerList::EnumClassesOfCategories(CATID_OPCDAServer2
 and `IOPCServerList::EnumClassesOfCategories(CATID_OPCDAServer30)`, then
 for each enumerated CLSID does `CoCreateInstance` + `IOPCServer::GetStatus`.
 Expected output includes our registered samples with `state=Running`.
-Archive the stdout under `interop/docs/testclient-runs/<profile>-<timestamp>.log`.
+Archive the stdout under <profile>-<timestamp>.
 
 ### Managed `DaClient` / `AeClient` / `HdaClient` rows
 
-The managed sample clients run from `samples/Opc.Classic.Samples.*Client/`
+The managed sample clients run from Opc.Classic.Samples sample
 and target the matching sample servers. These rows validate the OPC
 Classic specs end-to-end against our own implementation.
 
@@ -146,17 +146,17 @@ These cells are spec-mandated and will never be PASS for the given pair:
 
 ## Automation wrapper
 
-The `tools/run-cross-impl-matrix.ps1` automation script wraps the Python
+The run-cross-impl-matrix tool automation script wraps the Python
 driver with HKCU auto-registration and a PowerShell-native parameter
 surface. See `Get-Help .\tools\run-cross-impl-matrix.ps1 -Full`.
 
 ## Related docs
 
-- [`interop/docs/probe-coverage.md`](probe-coverage.md) — per-tool
+- [probe-coverage](probe-coverage.md) — per-tool
   results from Matrikon-only probes (historical baseline).
-- [`interop/docs/testserver-registration-spec.md`](testserver-registration-spec.md)
+- [testserver-registration-spec](testserver-registration-spec.md)
   — WiX-derived TestServer registration reference.
-- [`interop/docs/network-capture.md`](network-capture.md) — capture
+- [network-capture](network-capture.md) — capture
   engine cookbook.
-- [`interop/docs/wire-captures/README.md`](wire-captures/README.md) —
+- [wire-captures](wire-captures/README.md) —
   `.hex` wire-capture file format used by `-WireCapture`.

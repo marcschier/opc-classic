@@ -133,7 +133,7 @@ var proxy = new IOPCServerClientProxy(channel);
 OpcServerStatus status = await proxy.GetStatusAsync(cancellationToken);
 ```
 
-For a runnable client pattern, see `samples/Opc.Classic.Samples.DaClient` and `samples/Opc.Classic.Samples.LoopbackDemo`.
+For a runnable client pattern, see Opc.Classic.Samples sample and Opc.Classic.Samples sample.
 
 ## 5. Managed DA server hosting
 
@@ -441,13 +441,13 @@ The sample suite contains 10 runnable apps.
 
 | Sample | Start here when you need |
 | --- | --- |
-| `samples/Opc.Classic.Samples.DaClient` | DA reads, browse, subscriptions, and generated proxy wiring. |
-| `samples/Opc.Classic.Samples.DaServer` | Managed DA server hosting. |
-| `samples/Opc.Classic.Samples.AeClient` | AE subscription consumption. |
-| `samples/Opc.Classic.Samples.AeServer` | Managed AE server hosting. |
-| `samples/Opc.Classic.Samples.HdaClient` | HDA query/playback client flow. |
-| `samples/Opc.Classic.Samples.HdaServer` | Managed HDA historical server hosting. |
-| `samples/Opc.Classic.Samples.LoopbackDemo` | In-memory generated proxy/dispatcher loopback. |
-| `samples/Opc.Classic.Samples.CttServer` | Additional managed DA sample (different CLSID from samples-da). |
-| `samples/Opc.Classic.Samples.OpcSecurityServer` | OPC Security reference server and ACL semantics. |
-| `samples/Opc.Classic.Samples.AotCanary` | NativeAOT publish validation. |
+| Opc.Classic.Samples sample | DA reads, browse, subscriptions, and generated proxy wiring. |
+| Opc.Classic.Samples sample | Managed DA server hosting. |
+| Opc.Classic.Samples sample | AE subscription consumption. |
+| Opc.Classic.Samples sample | Managed AE server hosting. |
+| Opc.Classic.Samples sample | HDA query/playback client flow. |
+| Opc.Classic.Samples sample | Managed HDA historical server hosting. |
+| Opc.Classic.Samples sample | In-memory generated proxy/dispatcher loopback. |
+| Opc.Classic.Samples sample | Additional managed DA sample (different CLSID from samples-da). |
+| Opc.Classic.Samples sample | OPC Security reference server and ACL semantics. |
+| Opc.Classic.Samples sample | NativeAOT publish validation. |

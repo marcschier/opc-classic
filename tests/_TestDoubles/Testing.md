@@ -8,7 +8,7 @@ The project uses hand-written test doubles by default. This keeps tests aligned 
 - `StubXxx` for narrow one-shot scaffolds local to a scenario.
 - `CapturingXxx` for doubles whose main job is recording calls or state for assertions.
 
-`InMemoryCallChannel` in `src\Opc.Classic.Core\Testing\` is the canonical example: small, delegate-configured, and explicit about what it records.
+`InMemoryCallChannel` in `Testing` is the canonical example: small, delegate-configured, and explicit about what it records.
 
 ## When to add one
 

@@ -3,11 +3,11 @@
 Windows containers for end-to-end DCOM interop testing of the managed
 implementation against:
 
-- A **native (C-built) OPC DA smoke server** — hand-rolled in `interop\docker\opc-c-server\build\` with OPC Foundation headers.
-- A **native (C-built) OPC DA smoke client** — hand-rolled in `interop\docker\opc-c-client\build\` with OPC Foundation headers.
+- A **native (C-built) OPC DA smoke server** — hand-rolled in `build` with OPC Foundation headers.
+- A **native (C-built) OPC DA smoke client** — hand-rolled in `build` with OPC Foundation headers.
 - The **OPC Foundation TestServer/TestClient x64 pair** — built from the
   vendored `external` CMake tree and gated behind
-  `interop\docker\run-matrix.ps1 -IncludeTestServer`.
+  run-matrix.
 
 The managed `Opc.Classic.Samples.CttServer` runs beside the native C and OPC
 Foundation reference containers so cross-implementation client/server pairs can
@@ -58,10 +58,10 @@ The `opc-classic/managed` container runs `Opc.Classic.Samples.CttServer` with th
   the ~10 GB `dotnet/framework/sdk` image; the TestServer cold build also
   installs VS Build Tools in a Server Core layer).
 - **One `l2bridge` Docker network** named `opc-test-net` (created on first
-  `interop/docker/run-matrix.ps1` invocation).
+  run-matrix invocation).
 - **Optional `external` vendor tree** for
   `opc-classic/testserver` and `opc-classic/testclient`. OPERATOR: if the tree
-  is omitted locally, restore `interop\build\x64\Release` from CI or
+  is omitted locally, restore `Release` from CI or
   build the TestServer image on a machine with the vendored sources.
 
 ## Quick start
@@ -74,7 +74,7 @@ docker compose --file interop/docker/docker-compose.test.yml --profile interacti
 
 This includes `opc-classic/testserver` and `opc-classic/testclient`, so it
 requires `external`. To keep the historical three-image smoke path,
-use `interop\docker\run-matrix.ps1` without `-IncludeTestServer`.
+use run-matrix without `-IncludeTestServer`.
 
 ### Bring the server fleet up
 
@@ -101,19 +101,19 @@ The managed `Opc.Classic.Samples.CttServer`, registered under `HKLM\Software\Cla
 
 ### `opc-classic/c-server`
 
-Builds and runs the hand-rolled native OPC DA smoke server (`opc_exe.exe`) from `interop\docker\opc-c-server\build\opc-sample-server.cpp`. It self-registers `OPC.SampleServer.1`, exposes `Sin`, `Square`, and `Random`, and implements the DA root/group interfaces.
+Builds and runs the hand-rolled native OPC DA smoke server (`opc_exe.exe`) from opc-sample-server. It self-registers `OPC.SampleServer.1`, exposes `Sin`, `Square`, and `Random`, and implements the DA root/group interfaces.
 
 ### `opc-classic/c-client`
 
-Builds and runs the hand-rolled native OPC DA smoke client (`opc-test.exe`) from `interop\docker\opc-c-client\build\opc-test.cpp`. It resolves a ProgID on a target host, calls `AddGroup`, `AddItems`, `Read`, then removes the group.
+Builds and runs the hand-rolled native OPC DA smoke client (`opc-test.exe`) from opc-test. It resolves a ProgID on a target host, calls `AddGroup`, `AddItems`, `Read`, then removes the group.
 
 ### `opc-classic/testserver`
 
 Builds the OPC Foundation CoreComponents CMake targets for
 `OpcTestServer_x64.exe`, `OpcTestClient_x64.exe`, `OpcCategoryManager.exe`, and
 the eight proxy/stub DLLs. `server-init.ps1` invokes
-`interop\tools\register-testserver.ps1`, starts `OpcTestServer_x64.exe`, and unregisters
-on shutdown. See `interop\docker\opc-testserver\README.md`.
+register-testserver, starts `OpcTestServer_x64.exe`, and unregisters
+on shutdown. See opc-testserver.
 
 ### `opc-classic/testclient`
 
@@ -121,7 +121,7 @@ Copies `OpcTestClient_x64.exe` and the proxy/stub DLLs from the
 `opc-classic/testserver` image to avoid a second CoreComponents build. Its
 entrypoint redirects local OpcEnum activation to `opc-classic-testserver` via
 DCOM `RemoteServerName`, then verifies `OpcTestServer_x64.1` appears in the
-enumeration output. See `interop\docker\opc-testclient\README.md`.
+enumeration output. See opc-testclient.
 
 ## Networking
 
@@ -130,7 +130,7 @@ The default Docker NAT will break the OXID resolver: the server announces
 its internal container IP in the `DUALSTRINGARRAY` returned from activation,
 and the client cannot route to that IP through NAT.
 
-`interop/docker/run-matrix.ps1` creates the network idempotently with:
+run-matrix creates the network idempotently with:
 
 ```pwsh
 docker network create --driver l2bridge `
@@ -169,7 +169,7 @@ disposable test rig but **must never be applied to a production host**.
 
 - **TestServer/TestClient scaffold**: CoreComponents builds and DCOM
   `RemoteServerName` redirection cannot be validated without a Windows Docker
-  host. OPERATOR: run `interop\docker\run-matrix.ps1 -IncludeTestServer` and tune the
+  host. OPERATOR: run run-matrix and tune the
   VS Build Tools component IDs, OpcEnum availability, or port pinning if needed.
 - **DcomContainerSample's open issue**: even the simplest reference example
   in [DcomContainerSample](https://github.com/wazzzaatosh/DcomContainerSample)

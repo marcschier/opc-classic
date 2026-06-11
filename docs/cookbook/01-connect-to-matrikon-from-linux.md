@@ -88,9 +88,9 @@ Open TCP/135 for the Endpoint Mapper plus the dynamic TCP range used by the Matr
 
 ## Validation aids
 
-- `samples\Opc.Classic.Samples.DaClient` shows the managed DA client shape.
-- `samples\Opc.Classic.Samples.LoopbackDemo` validates generated proxy/dispatcher flow without remote networking.
-- `samples\Opc.Classic.Samples.AotCanary` validates NativeAOT publish behavior.
+- Opc.Classic.Samples sample shows the managed DA client shape.
+- Opc.Classic.Samples sample validates generated proxy/dispatcher flow without remote networking.
+- Opc.Classic.Samples sample validates NativeAOT publish behavior.
 - [../../samples/README.docker.md](../../samples/README.docker.md) documents the sample `OPC_CLASSIC_SERVER_HOST`, `OPC_CLASSIC_SERVER_PORT`, and server port defaults.
 
 For packet-integrity rationale, see [DCOM hardening and packet integrity](05-dcom-hardening-pkt-integrity-explainer.md).

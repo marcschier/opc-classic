@@ -48,7 +48,7 @@ Before tagging, verify:
 ## Prepare the release change
 
 1. Move the relevant `CHANGELOG.md` entries from `Unreleased` into a section named for the release version.
-2. Confirm `src\Directory.Build.props` contains the intended default package version for package builds or pass `-p:Version=<version>` consistently.
+2. Confirm `Directory.Build` contains the intended default package version for package builds or pass `-p:Version=<version>` consistently.
 3. Confirm the release workflow can derive the same package version from the tag you intend to publish.
 4. Create the release-prep Git change on the release branch.
 

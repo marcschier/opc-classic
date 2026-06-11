@@ -16,7 +16,7 @@ docker run --rm --network opc-test-net opc-classic/testclient `
 
 `Dockerfile` uses `FROM opc-classic/testserver AS testserver-artifacts` so the
 CoreComponents CMake build is not repeated. Build `opc-classic/testserver`
-first or use `interop\docker\run-matrix.ps1 -IncludeTestServer`, which orders the two
+first or use run-matrix, which orders the two
 builds correctly.
 
 `client.ps1` registers the proxy/stub DLLs, redirects local OpcEnum activation

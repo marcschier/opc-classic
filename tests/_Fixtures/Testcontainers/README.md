@@ -8,11 +8,11 @@ Cross-process integration tests use Testcontainers to spin up dependencies in di
 
 ## Requirements
 
-Docker must be running locally. CI runs on a Linux runner with Docker preinstalled. Kerberos tests are gated by `OPC_CLASSIC_RUN_KDC_TESTS=1` so ordinary local test runs do not require Docker. The Samba WINREG smoke uses `interop\docker\samba\docker-compose.yml` directly rather than a Testcontainers fixture.
+Docker must be running locally. CI runs on a Linux runner with Docker preinstalled. Kerberos tests are gated by `OPC_CLASSIC_RUN_KDC_TESTS=1` so ordinary local test runs do not require Docker. The Samba WINREG smoke uses docker-compose directly rather than a Testcontainers fixture.
 
 ## Adding a fixture
 
-1. Place under `tests\_Fixtures\Testcontainers\<Name>Fixture.cs`
+1. Place under <Name>Fixture tests
 2. Implement `IAsyncDisposable`
 3. Use `DotNet.Testcontainers.Builders.ContainerBuilder` to define the image + ports + env
 4. Return strongly-typed connection info via fixture properties

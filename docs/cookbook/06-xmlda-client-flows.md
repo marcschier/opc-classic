@@ -240,4 +240,4 @@ public static async Task PollSubscriptionAsync(
 
 - [XML-DA status](../CONFORMANCE.md#opc-xml-da-101) summarizes supported operations, value handling, error codes, and quality bits.
 - [OPC XML-DA 1.01 specification coverage](../CONFORMANCE.md#opc-xml-da-101) tracks operation and conformance coverage.
-- `tests\Opc.Classic.Xml.Tests` exercises the HTTP client and serializers with in-process SOAP payloads.
+- Opc.Classic.Xml tests exercises the HTTP client and serializers with in-process SOAP payloads.

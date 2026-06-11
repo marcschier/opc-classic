@@ -201,19 +201,19 @@ the protection level is privacy; by 8 bytes for integrity-only).
 
 ## Related
 
-- `NtlmPassiveUnwrapper` source: `mcp/Opc.Classic.Mcp.Capture/NtlmPassiveUnwrapper.cs`
+- `NtlmPassiveUnwrapper` source: `NtlmPassiveUnwrapper`
 - Unit tests + round-trip vs production `Ntlm1.ProcessOutgoing`:
-  `tests/Opc.Classic.Mcp.Capture.Tests/NtlmPassiveUnwrapperTests.cs`
+  `NtlmPassiveUnwrapperTests`
 - In-decoder integration (`OpcDcomDecoder.TryUnwrapInPlace` +
   `FlowState.KnownDirection`):
-  `mcp/Opc.Classic.Mcp.Capture/OpcDcomDecoder.cs`
+  `OpcDcomDecoder`
 - Decoder integration tests (sealed-frame round-trip via
   `BuildSealedFramePerCodebase`):
-  `tests/Opc.Classic.Mcp.Capture.Tests/OpcDcomDecoderTests.cs`
+  `OpcDcomDecoderTests`
 - MCP tool parameter: `opcclassic.capture.start --ntlmSessionKeyHex`
-  in `mcp/Opc.Classic.Mcp/Tools/CaptureTools.cs`
+  in `CaptureTools`
 - Redacting `ToString()` on `CaptureStartRequest`:
-  `mcp/Opc.Classic.Mcp.Capture/CaptureStartRequest.cs`
+  `CaptureStartRequest`
 
 ## Wire-format compatibility caveat
 

@@ -15,7 +15,7 @@ The bottom-left cell — **Windows COM clients consuming net10 managed servers**
 - `ManagedClientOverTransportTests` — real managed client -> managed `OpcDaServerHost` over `TcpServerEndpoint` / `DcomCallChannel`. These are not scaffold-only; they bind a loopback TCP listener and round-trip generated `IOPCServer` calls through the transport.
 - `OutboundCallbackOverTransportTests` — real listener/proxy proof for server-to-client `IOPCDataCallback` calls over the same transport model.
 - `Net10ServerToNativeClientTests` — native-client-launch readiness checks for `OpcDaSimpleClient.vcxproj` (vendored OPC Foundation SampleClient) / `OpcDaSimpleClient.exe`. These soft-skip when the native executable or Windows prerequisites are missing.
-- DA loopback TCP tests in `tests\Opc.Classic.Integration.Tests\Da\` cover the same object-IPID dispatch path for group objects, item enumerators, callbacks, and `opc-da-browse:N` continuation tokens.
+- DA loopback TCP tests in Da tests cover the same object-IPID dispatch path for group objects, item enumerators, callbacks, and `opc-da-browse:N` continuation tokens.
 - `CompatMatrixSummaryTests` — structural guard that the four matrix cells remain represented.
 
 ## Loopback equivalent

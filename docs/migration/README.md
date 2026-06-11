@@ -2,7 +2,7 @@
 
 The `Opc.Classic.MigrationAnalyzer` package identifies OPC Foundation .NET API usage and offers starter code fixes that move callers toward `Opc.Classic.*`. Diagnostics are informational by default so existing projects keep compiling; raise severity in `.editorconfig` when you are ready to enforce migration work.
 
-The current diagnostic descriptors are in `src/Opc.Classic.MigrationAnalyzer/MigrationDiagnosticDescriptors.cs`. The release tracker currently lists these IDs in `src/Opc.Classic.MigrationAnalyzer/AnalyzerReleases.Unshipped.md`; `AnalyzerReleases.Shipped.md` has no shipped entries yet.
+The current diagnostic descriptors are in `MigrationDiagnosticDescriptors`. The release tracker currently lists these IDs in `AnalyzerReleases.Unshipped`; `AnalyzerReleases.Shipped.md` has no shipped entries yet.
 
 | ID | Severity | Area | Summary |
 | --- | --- | --- | --- |
