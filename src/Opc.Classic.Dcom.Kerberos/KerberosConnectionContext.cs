@@ -42,7 +42,7 @@ public sealed class KerberosConnectionContext : IKerberosConnectionContext
     /// <summary>
     /// Acquires an AP-REQ token for the configured SPN. Returns the GSS-API token bytes
     /// suitable for embedding in a DCOM bind PDU (after wrapping in SPNEGO if SPNEGO
-    /// negotiation is enabled - see Phase 3E).
+    /// negotiation is enabled).
     /// </summary>
     /// <param name="cancellationToken">Cancellation token for the future KDC request flow.</param>
     /// <returns>The AP-REQ token bytes.</returns>

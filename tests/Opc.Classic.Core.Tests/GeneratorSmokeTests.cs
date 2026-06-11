@@ -31,6 +31,6 @@ public sealed class GeneratorSmokeTests
     [Test]
     public async Task GeneratedMarker_HasDescription()
     {
-        await Assert.That(ReadDescription()).Contains("Phase 4A.1");
+        await Assert.That(ReadDescription()).Contains("OpcInterface generators");
     }
 }

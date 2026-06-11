@@ -14,7 +14,7 @@ namespace Opc.Classic.Dx;
 /// <remarks>
 /// The optional fields correspond to the native <c>dwMask</c> presence bits in
 /// <c>OpcDxConnection</c>. NDR codecs will map those fields to/from the mask in
-/// Phase 9A-followup.
+/// Forward-compat scaffold.
 /// </remarks>
 public sealed record DxConnection
 {

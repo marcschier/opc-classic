@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
-// Track AU integration: proves the loopback IOPCDataCallback scaffold lights up
+// Loopback integration: proves the loopback IOPCDataCallback scaffold lights up
 // end-to-end inside one process:
 //
 //   DaCallbackEndpoint (TCP server, loopback bind)

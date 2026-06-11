@@ -27,13 +27,13 @@ public enum OpcAuthMode
 
     /// <summary>
     /// NTLMv2 with extended session security — the cross-platform default.
-    /// Validated against MS-NLMP Appendix C test vectors by Phase 12 unit tests.
+    /// Validated against MS-NLMP Appendix C test vectors by unit tests.
     /// </summary>
     NtlmV2 = 2,
 
     /// <summary>
     /// Kerberos / SPNEGO — preferred for Active Directory environments.
-    /// Provided by Phase 3D's Opc.Classic.Dcom.Kerberos package; until that
+    /// Provided by the Opc.Classic.Dcom.Kerberos package; until that
     /// phase ships, choosing this throws <see cref="OpcPlatformNotSupportedException"/>.
     /// </summary>
     Kerberos = 3,

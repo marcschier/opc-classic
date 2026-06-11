@@ -16,9 +16,9 @@ public sealed class CompatMatrixSummaryTests
     /// Asserts that the four matrix cells are tracked.
     /// This is not a runtime interop test - it is a structural compile-time
     /// reminder that the matrix has these cells:
-    ///   - net10 client ↔ net10 server: Phase 13 Loopback
-    ///   - net10 client → Windows COM server: Phase 14B / 14C
-    ///   - Windows COM client → net10 server: Phase 14D-B
+    ///   - net10 client ↔ net10 server: Loopback fixtures
+    ///   - net10 client → Windows COM server: managed-client + native-server fixtures
+    ///   - Windows COM client → net10 server: native-client + managed-server fixtures
     ///   - Windows COM client → Windows COM server: out of scope (Windows-only legacy)
     /// </summary>
     [Test, Category("CompatMatrix")]

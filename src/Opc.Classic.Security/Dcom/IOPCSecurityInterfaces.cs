@@ -6,10 +6,10 @@
 // interface is extended by the OpcInterfaceGenerator to carry a
 // compile-time-known InterfaceId.
 //
-// Cross-platform note (Phase 3D/3E):
+// Cross-platform note:
 //   IOPCSecurityNT historically depends on Windows SSPI to enumerate the
 //   caller's authenticated identity. The Opc.Classic.Dcom.Kerberos stack
-//   (Phase 3D scaffold) replaces SSPI with Kerberos.NET-based credential
+//   The Kerberos.NET scaffold replaces SSPI with Kerberos.NET-based credential
 //   acquisition. The cross-platform server-side implementation of
 //   IsAvailableNT returns true iff a configured Kerberos KDC is reachable
 //   from the server.

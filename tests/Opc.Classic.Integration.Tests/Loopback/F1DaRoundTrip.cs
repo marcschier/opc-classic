@@ -27,7 +27,7 @@ public sealed class F1DaRoundTrip
             LastUpdateTime = new DateTimeOffset(2026, 5, 22, 8, 0, 45, TimeSpan.Zero),
             State = OpcServerState.Running,
             ServerVersion = new Version(2, 5, 1),
-            VendorInfo = "Phase 13 managed loopback",
+            VendorInfo = "Managed loopback",
             GroupCount = 3,
             BandWidth = 4_500u,
         };

@@ -20,7 +20,7 @@ namespace Opc.Classic.Discovery;
 /// <summary>
 /// Discovers locally configured OPC Classic servers and, on Windows, OPC COM registrations.
 /// </summary>
-[SuppressMessage("Naming", "CA1711:Identifiers should not have incorrect suffix", Justification = "The Phase 10 public API intentionally names discovery strategies after OPC enumeration sources.")]
+[SuppressMessage("Naming", "CA1711:Identifiers should not have incorrect suffix", Justification = "Discovery strategies are intentionally named after OPC enumeration sources.")]
 public sealed class LocalEnum : IOpcDiscovery
 {
     private static readonly Guid[] OpcCategoryIds =

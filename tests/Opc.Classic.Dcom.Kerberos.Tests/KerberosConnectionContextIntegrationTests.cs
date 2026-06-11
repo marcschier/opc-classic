@@ -71,7 +71,7 @@ public sealed class KerberosConnectionContextIntegrationTests
             }
             else
             {
-                // No real KDC is available in unit tests; Phase 14A Windows CI will exercise success.
+                // No real KDC is available in unit tests; the Windows CI pipeline exercises success.
                 await Assert.That(thrown is not NotImplementedException).IsTrue();
                 await Assert.That(IsExpectedKdcFailure(thrown)).IsTrue();
             }

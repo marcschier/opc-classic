@@ -228,12 +228,12 @@ public sealed class DaClientState : IAsyncDisposable
     public ConcurrentDictionary<string, DaSubscriptionContext> Subscriptions { get; } = new(StringComparer.Ordinal);
 
     /// <summary>
-    /// Loopback inbound <c>IOPCDataCallback</c> endpoint (Track AU scaffold).
+    /// Loopback inbound <c>IOPCDataCallback</c> endpoint (scaffold).
     /// Lazily created on first use via <see cref="GetOrCreateCallbackEndpointAsync"/>.
     /// Disposed by <see cref="DisposeAsync"/>. Not auto-started by Subscribe;
     /// production callback bring-up against real OPC servers needs
-    /// <c>IObjectExporter</c> OXID-resolution support which is tracked under
-    /// AP1/AP2/AP4 — see <c>interop/docs/da-callbacks.md</c>.
+    /// <c>IObjectExporter</c> OXID-resolution support documented in
+    /// <c>interop/docs/da-callbacks.md</c>.
     /// </summary>
     public Tools.DaCallbackEndpoint? CallbackEndpoint { get; private set; }
 
@@ -280,7 +280,7 @@ public sealed class DaClientState : IAsyncDisposable
             return;
         }
 
-        // Track BI: tear down each Advise cookie + sink registration before
+        // tear down each Advise cookie + sink registration before
         // disposing the underlying sinks. Best-effort: the channel may be
         // already half-closed (connection dropped, server crashed) so we
         // swallow OpcException / InvalidOperationException and proceed to
@@ -428,7 +428,7 @@ public sealed record DaItemBindingContext(string ItemName, string? ItemPath, int
 /// <summary>Tracks a poll-based DA subscription.</summary>
 /// <remarks>
 /// The <see cref="Sink"/> is constructed eagerly even though the production
-/// callback bind path (Track AP1/AP2) is not yet wired. This makes the
+/// callback bind path is not yet wired. This makes the
 /// queue-drain contract used by <c>opcclassic.da.poll_subscription</c>
 /// testable in isolation and a no-op for live polling until a sink producer
 /// is plumbed.

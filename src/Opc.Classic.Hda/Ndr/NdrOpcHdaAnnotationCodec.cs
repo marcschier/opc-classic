@@ -24,7 +24,7 @@ namespace Opc.Classic.Hda.Ndr;
 /// </code>
 /// The LPWSTR arrays currently use a simplified interleaved form: each element is
 /// emitted as its referent plus string body via <see cref="NdrWriter.WriteUnicodeStringPtr"/>.
-/// Phase 14 will validate and adjust this against real Windows-emitted wire dumps.
+/// Real Windows-emitted wire dumps remain a future validation source.
 /// </remarks>
 public static class NdrOpcHdaAnnotationCodec
 {

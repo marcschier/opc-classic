@@ -79,15 +79,15 @@ public class NtlmAuthentication
 
         if (_useSSO)
         {
-            // Phase 2F: the Windows-only SSPIJNIClient (P/Invoke to ntlmauth.dll)
+            // the Windows-only SSPIJNIClient (P/Invoke to ntlmauth.dll)
             // is incompatible with the cross-platform .NET 10 target. Single
-            // sign-on returns in Phase 3D via Kerberos.NET-backed Kerberos /
+            // sign-on is provided via Kerberos.NET-backed Kerberos /
             // SPNEGO authentication. Until then, callers must supply explicit
             // domain / user / password credentials.
             throw new PlatformNotSupportedException(
                 "NTLM SSO (rpc.ntlm.sso=true) is not supported on this platform. " +
                 "Use explicit username/password NTLMv2 credentials, or wait for " +
-                "Kerberos/SPNEGO support in Opc.Classic.Dcom.Kerberos (Phase 3D).");
+                "Kerberos/SPNEGO support in Opc.Classic.Dcom.Kerberos.");
         }
         _credentials = new NetworkCredential(user, password, domain);
     }
@@ -278,7 +278,7 @@ public class NtlmAuthentication
         {
             // Unreachable — constructor already throws for _useSSO. Defensive guard.
             throw new PlatformNotSupportedException(
-                "NTLM SSO is unsupported on net10; use Kerberos via Phase 3D.");
+                "NTLM SSO is unsupported on net10; use Kerberos via Opc.Classic.Dcom.Kerberos.");
         }
         var flags = DefaultFlags;
         var type1 = new Type1Message(flags, _credentials.Domain, Type1Message.GetDefaultWorkstation());
@@ -337,7 +337,7 @@ public class NtlmAuthentication
         {
             // Unreachable — constructor already throws for _useSSO. Defensive guard.
             throw new PlatformNotSupportedException(
-                "NTLM SSO is unsupported on net10; use Kerberos via Phase 3D.");
+                "NTLM SSO is unsupported on net10; use Kerberos via Opc.Classic.Dcom.Kerberos.");
         }
         else
         {

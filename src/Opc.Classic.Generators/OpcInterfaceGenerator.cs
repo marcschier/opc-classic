@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
-// Phase 4A.2 — the first functional source generator.
+// The first functional source generator.
 //
 // Consumer pattern:
 //

@@ -554,7 +554,7 @@ public sealed class DaClientTools
 
         var subscription = new DaSubscriptionContext(subscriptionId, groupHandle, fromCache, transactionId, cancelId);
 
-        // Track BI: lazily bring up the loopback IOPCDataCallback endpoint,
+        // lazily bring up the loopback IOPCDataCallback endpoint,
         // register the subscription's sink, build a sink OBJREF, and call
         // IConnectionPoint::Advise so the OPC server pushes data-change
         // notifications back over the listener. The endpoint hosts an
@@ -624,7 +624,7 @@ public sealed class DaClientTools
         // Prefer push notifications when the sink has any data; otherwise
         // fall back to a synchronous pull read of the group. The pull
         // fallback preserves the existing MCP behavior for the (current)
-        // case where Track AP1/AP2 callback bind is not yet wired up.
+        // case where the callback bind is not yet wired up.
         IReadOnlyList<DataChangeItem> pushed = subscription.Sink.DrainItems(maxNotifications);
         if (pushed.Count > 0)
         {
@@ -654,7 +654,7 @@ public sealed class DaClientTools
         CancellationToken cancellationToken = default)
     {
         DaClientState client = GetDaClient(sessionId);
-        // Track BI: unwind every subscription Advise/sink registration on
+        // unwind every subscription Advise/sink registration on
         // this group BEFORE asking the server to remove it. Unadvise +
         // UnregisterSink failures are non-fatal — the server-side state is
         // about to be torn down by RemoveGroupAsync anyway, and the

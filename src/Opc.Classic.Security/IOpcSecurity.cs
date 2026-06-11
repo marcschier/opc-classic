@@ -26,7 +26,7 @@ namespace Opc.Classic.Security;
 /// </para>
 /// <list type="bullet">
 ///   <item><description><strong>NT</strong> — Windows-integrated. The current process's identity is used.
-///     In a cross-platform deployment, this requires Kerberos (Phase 3D).</description></item>
+///     In a cross-platform deployment, this requires Kerberos.</description></item>
 ///   <item><description><strong>Private</strong> — the server validates a username + password it manages
 ///     directly. Stored in the server, not Windows.</description></item>
 /// </list>

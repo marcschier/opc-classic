@@ -552,7 +552,7 @@ public static class NdrVariantExtensions
         // (USHORT vt), NDR (C706 §14.4.1) writes the discriminator on the
         // wire explicitly with the switch_type. So a 4-byte ULONG vt copy
         // sits between the 16-byte wireVARIANT header and the union body.
-        // Missing this is the root cause of the Track AY GetProperties drift.
+        // Missing this is the root cause of the historical GetProperties drift.
         _ = reader.ReadUInt32();
 
         var vt = (VarType)vtRaw;

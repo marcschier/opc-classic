@@ -24,7 +24,7 @@ namespace Opc.Classic.Discovery;
 /// <summary>
 /// Discovers OPC Classic server registrations through the WINREG RPC protocol over SMB.
 /// </summary>
-[SuppressMessage("Naming", "CA1711:Identifiers should not have incorrect suffix", Justification = "The Phase 10 public API intentionally names discovery strategies after OPC enumeration sources.")]
+[SuppressMessage("Naming", "CA1711:Identifiers should not have incorrect suffix", Justification = "Discovery strategies are intentionally named after OPC enumeration sources.")]
 public sealed class RemoteRegistryEnum : IOpcDiscovery
 {
     private const string ClassesPath = @"SOFTWARE\Classes";

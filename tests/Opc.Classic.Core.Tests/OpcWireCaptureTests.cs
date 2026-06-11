@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
-// Exercises Track AK2: WireCapturingCallChannel decorator + OpcWireCapture
+// Exercises the WireCapturingCallChannel decorator + OpcWireCapture
 // static gate. The decorator writes per-call hex dumps under the configured
 // directory; failures during write must NEVER alter call semantics.
 //

@@ -20,7 +20,7 @@ using TUnit.Core;
 namespace Opc.Classic.Integration.Tests.CompatMatrix;
 
 /// <summary>
-/// Phase 14D-C: outbound callback dispatch. Proves that the same
+/// Outbound callback dispatch over transport. Proves that the same
 /// <see cref="OpcServerListener"/> infrastructure used server-side (ocom-1)
 /// hosts a CLIENT-SIDE callback sink, and that a managed outbound caller
 /// (the role of an OPC server pushing data into its subscribed clients)

@@ -8,9 +8,9 @@
   </PropertyGroup>
 
   <!--
-    Phase M10: AOT + trimming enabled. The Dcom assembly has been modernized so that
-    reflection on type / dynamic dispatch / MethodInfo.Invoke are gone (the server-dispatch
-    source generator [gap-2] replaced them). The remaining transitional relaxations below
+    AOT + trimming enabled. The Dcom assembly is modernized so that
+    reflection on type / dynamic dispatch / MethodInfo.Invoke are absent (the server-dispatch
+    source generator replaced them). The remaining transitional relaxations below
     are for nullable-reference annotations (full =enable rewrite is a separate post-1.0
     milestone) and a small set of style warnings that aren't AOT or correctness related.
   -->
@@ -27,10 +27,10 @@
 
     <ItemGroup>
         <!--
-          TRANSITIONAL package set now cleared: Phase 2D replaced SharpCifs.Std with
-          self-contained NTLM/NDR compatibility code; Phase 2E replaced BouncyCastle
+          The TRANSITIONAL package set is cleared: SharpCifs.Std is replaced by
+          self-contained NTLM/NDR compatibility code; BouncyCastle is replaced
           with hand-rolled MD4 + RC4 in Crypto/ plus BCL MD5/HMAC-MD5/DES via the
-          transitional Crypto/BcCompat.cs shim; Phase 2G removed Serilog.
+          transitional Crypto/BcCompat.cs shim; Serilog is removed.
         -->
         <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
     </ItemGroup>

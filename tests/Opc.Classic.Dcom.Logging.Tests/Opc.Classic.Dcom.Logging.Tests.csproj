@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <Description>TUnit tests for the Phase 2G ILogger migration shim in Opc.Classic.Dcom.Internal.</Description>
+    <Description>TUnit tests for the ILogger migration shim in Opc.Classic.Dcom.Internal.</Description>
     <RootNamespace>Opc.Classic.Dcom.Logging.Tests</RootNamespace>
     <AssemblyName>Opc.Classic.Dcom.Logging.Tests</AssemblyName>
   </PropertyGroup>

@@ -27,7 +27,7 @@ namespace Opc.Classic.Mcp.Tools;
 /// </summary>
 /// <remarks>
 /// <para>
-/// This is the Track AU scaffold built on top of the AP3 sink. The endpoint
+/// This is the loopback scaffold built on top of the sink. The endpoint
 /// hosts an <see cref="OpcServerListener"/> bound to <see cref="IPAddress.Loopback"/>
 /// and routes inbound calls via per-IPID <see cref="OpcObjectRegistry"/>
 /// lookup. Each registered sink gets its own IPID so a multi-subscription

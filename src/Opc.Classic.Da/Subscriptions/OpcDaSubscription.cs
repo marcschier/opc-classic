@@ -3,7 +3,7 @@
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
 
-#pragma warning disable MA0025 // This Phase 6D scaffold is intentionally not implemented yet.
+#pragma warning disable MA0025 // Scaffold is intentionally not implemented yet.
 #pragma warning disable VSTHRD200 // Public DA callback terminology uses DataChanges without an Async suffix.
 
 using System;

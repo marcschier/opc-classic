@@ -54,7 +54,7 @@ public sealed class NdrOpcBatchSummaryCodecTests
     {
         // FILETIME = 0 (Epoch) is the natural "zero" wire value for OPC Batch
         // timestamp fields. DateTimeOffset.MinValue (year 0001) would round-trip
-        // through a negative FILETIME which the strict decode (Track AW) rejects
+        // through a negative FILETIME which the strict decode rejects
         // as out-of-range per the FILETIME spec.
         var input = new OpcBatchSummary(
             Id: null,

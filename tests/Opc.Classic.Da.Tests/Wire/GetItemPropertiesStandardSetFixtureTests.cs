@@ -2,11 +2,11 @@
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
-// Track AT2: synthetic Matrikon-shaped fixtures for IOPCItemProperties::GetItemProperties.
+// synthetic Matrikon-shaped fixtures for IOPCItemProperties::GetItemProperties.
 //
 // The blocker (ag-get-properties-decode) is that against a live Matrikon Simulation
 // Server the response-side VARIANT[] decode reportedly hits an offset issue on certain
-// VARTYPEs. The request side was closed by Track AF4 + AG1; the failing surface is the
+// VARTYPEs. The request side is in place; the failing surface is the
 // per-element wireVARIANT envelope that our generator-emitted proxy reads via
 // [OpcVariantElements] (NdrVariantExtensions.ReadVariantElement).
 //

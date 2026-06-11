@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
-// Phase 4A.6b — call-shim emission scaffold.
+// Call-shim emission scaffold.
 //
 
 using System.Collections.Generic;
@@ -675,7 +675,7 @@ namespace Opc.Classic.Generators
         }
 
         sb.Append(indent).Append("        throw new global::System.NotImplementedException(")
-            .Append("\"Phase 6B/7B/8B - per-method shim for '").Append(interfaceName).Append('.')
+            .Append("\"Per-method shim for '").Append(interfaceName).Append('.')
             .Append(method.Name).Append("' TBD\");").AppendLine();
     }
 
@@ -718,13 +718,13 @@ namespace Opc.Classic.Generators
         if (method.TaskReturnKind == TaskReturnKind.TaskOfT)
         {
             sb.Append(indent).Append("        // Unsupported OPC method type '").Append(method.UnsupportedMarshallingType ?? "<unknown>")
-                .AppendLine("'; Phase 6B emits the empty-payload placeholder.");
+                .AppendLine("'; emits the empty-payload placeholder.");
             sb.Append(indent).AppendLine("        return default!;");
         }
         else
         {
             sb.Append(indent).Append("        // Unsupported OPC method type '").Append(method.UnsupportedMarshallingType ?? "<unknown>")
-                .AppendLine("'; Phase 6B emits the empty-payload placeholder.");
+                .AppendLine("'; emits the empty-payload placeholder.");
         }
     }
 

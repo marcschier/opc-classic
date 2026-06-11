@@ -13,7 +13,7 @@ namespace Opc.Classic.Da.Hosting;
 
 /// <summary>
 /// Contract implemented by user code to provide an in-process managed DA server.
-/// The OpcDaServerHost (Phase 6F) marshals incoming IOPCServer + IOPCGroupStateMgt
+/// The OpcDaServerHost marshals incoming IOPCServer + IOPCGroupStateMgt
 /// + IOPCSyncIO/AsyncIO calls onto this interface; the user's implementation
 /// returns server status, manages groups, and serves item values.
 /// </summary>
@@ -127,5 +127,5 @@ public interface IOpcDaServer : IOPCServer
             securityOffset: 0,
             resolverBindings: Array.Empty<ushort>());
 
-    // Future Phase 6F-followup adds item-level read/write and subscriptions.
+    // Future follow-up adds item-level read/write and subscriptions.
 }

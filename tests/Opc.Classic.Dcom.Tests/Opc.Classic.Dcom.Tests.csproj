@@ -6,13 +6,13 @@
     entry points that require a live DCOM endpoint + credentials). Driver.cs is
     explicitly excluded from compilation in the original.
 
-    Phase 3B adds focused TUnit coverage for hardened DCOM protection defaults.
-    Phase 11 later rewrites the remaining manual drivers under siblings such as
+    Focused TUnit coverage for hardened DCOM protection defaults runs alongside.
+    Future work rewrites the remaining manual drivers under siblings such as
     tests/Opc.Classic.Dcom.Unit.Tests/ and tests/Opc.Classic.Dcom.Integration.Tests/.
   -->
 
   <PropertyGroup>
-    <Description>(Transitional) Legacy Opc.Classic.Dcom integration-driver samples — pending Phase 11 rewrite.</Description>
+    <Description>(Transitional) Legacy Opc.Classic.Dcom integration-driver samples — pending rewrite.</Description>
     <RootNamespace>Opc.Classic.Dcom.Test</RootNamespace>
     <AssemblyName>Opc.Classic.Dcom.LegacyTests</AssemblyName>
 

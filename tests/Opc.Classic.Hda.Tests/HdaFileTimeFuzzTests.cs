@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
-// Track AW3: FILETIME-decode hypothesis-matrix fuzz tests for the HDA
+// FILETIME-decode hypothesis-matrix fuzz tests for the HDA
 // NdrOpcHdaServerStatusCodec swept by AW2. Mirrors the AS3 pattern.
 //
 

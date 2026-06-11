@@ -2,9 +2,9 @@
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
-// Phase 4A.1 skeleton — proves the source-generator toolchain works end-to-end.
-// Subsequent generators (DispatchGenerator, MarshallerGenerator, GuidTableGenerator,
-// JsonContextGenerator) live in sibling files under this same assembly.
+// Smoke-test marker generator — proves the source-generator toolchain works end-to-end.
+// Sibling generators (DispatchGenerator, MarshallerGenerator, GuidTableGenerator,
+// JsonContextGenerator) live under this same assembly.
 //
 
 using System.Text;
@@ -43,7 +43,7 @@ namespace Opc.Classic.Generators
         public const string Version = ""0.2.0-dev"";
 
         /// <summary>Human-readable description of the current generator surface.</summary>
-        public const string Description = ""Phase 4A.1 + 4A.2: marker + OpcInterface generators"";
+        public const string Description = ""Marker + OpcInterface generators"";
     }
 }
 ";

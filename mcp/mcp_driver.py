@@ -4,12 +4,12 @@ mcp_driver.py — end-to-end demo / smoke test for the Opc.Classic MCP
 server against a live OPC DA server.
 
 This script drives the MCP server over stdio via JSON-RPC and exercises
-the Track Y/Z demo path:
+the demo path:
 
   1. session.create
   2. da.connect           — multi-IID activation, registers per-IID IPIDs
-  3. da.get_status        — exercises Y1-Y9 (NDR unique pointer + MInterfacePointer)
-  4. da.read_items_by_id  — exercises Y10/Z2 (VARIANT marshaling) via the
+  3. da.get_status        — NDR unique pointer + MInterfacePointer marshaling
+  4. da.read_items_by_id  — VARIANT marshaling via the
                             DA 3.0 stateless IOPCItemIO interface.
 
 Requirements:
@@ -335,7 +335,7 @@ def main() -> int:
 
         banner("da.disconnect")
         client.call_tool("opcclassic.da.disconnect", {"sessionId": session_id})
-        print("Done. All Track Y NDR/MInterfacePointer paths exercised against the live server.", flush=True)
+        print("Done. NDR/MInterfacePointer paths exercised against the live server.", flush=True)
         return 0
     finally:
         try:

@@ -225,7 +225,7 @@ def _testserver_matrix() -> dict[str, str]:
     """OPC Foundation OpcTestServer_x64.exe specifically.
 
     TestServer's OpcTestServer.cpp advertises BOTH CATID_OPCDAServer20 AND
-    CATID_OPCDAServer30 (Track AB5 divergence vs. upstream) so it implements
+    CATID_OPCDAServer30 (a divergence vs. upstream) so it implements
     DA 3.0 IOPCItemIO. The COpcTestServer also implements IOPCTypeSystem so
     cpx.get_type_system can negotiate (returns empty supported list).
     """
@@ -279,9 +279,9 @@ def _ae_matrix() -> dict[str, str]:
     # PERMANENT WAIVER (DR32/DR33, conclusively verified 2026-06-10).
     # opcae_ps.dll (the OPC Foundation native MIDL proxy/stub) crashes on the
     # response/request mid-call for these 2 methods. Confirmed via the
-    # following multi-phase investigation:
+    # following multi-step investigation:
     #
-    # Phase A (commit d7d8fa1e): extracted the authoritative wire format from
+    # Wire-format spec: extracted the authoritative wire format from
     # the vendored interop/inc/opc_ae_p.c MIDL-generated proxy/stub source.
     # Spec doc at docs/conformance/ae-wire-format.md. Identified that
     # szSource/szConditionName (GetConditionState) and szAcknowledgerID/
@@ -289,20 +289,20 @@ def _ae_matrix() -> dict[str, str]:
     # [simple_pointer] FC_C_WSTRING) -- the body must follow the FC_C_WSTRING
     # convention directly, with no outer 4-byte [unique] referent ID.
     #
-    # Phase B (commit 7078f62d): captured the managed encoder's actual wire
+    # Wire-byte capture: captured the managed encoder's actual wire
     # bytes via tests/Opc.Classic.Ae.Tests/Wire/Dr3233/Dr3233WireCaptureTests.cs.
     # Confirmed the encoder was emitting outer 4-byte referent IDs (visible
     # at offsets 0/0x28 of GetConditionState and 0x04/0x24 of AckCondition).
     #
-    # Phase D1 (commit c5ebb77d): applied [OpcRefString] to all 4 simple_ref
+    # Encoder fix: applied [OpcRefString] to all 4 simple_ref
     # scalar LPWSTR params in src/Opc.Classic.Ae/Dcom/IOPCInterfaces.cs.
-    # Regenerated Phase B fixtures verify the wire bytes now match the MIDL
+    # Regenerated fixtures verify the wire bytes now match the MIDL
     # spec byte-for-byte: GetConditionState request 100->92 bytes (-8 bytes
     # = 2 referent IDs removed); AckCondition request 296->288 bytes (-8 bytes
-    # = 2 referent IDs removed). 319/319 regression tests green.
+    # = 2 referent IDs removed). All regression tests green.
     #
-    # Phase E (operator-gated matrix re-run 2026-06-10, transcript at
-    # matrix-out/dr3233-phase-e-transcript.log): with the now-spec-compliant
+    # Elevated matrix re-run (transcript at
+    # matrix-out/dr3233-phase-e-transcript.log): with spec-compliant
     # wire bytes, opcae_ps.dll STILL forcibly closes the connection. Client
     # observes "SocketException (10054): An existing connection was forcibly
     # closed by the remote host" on the response read for get_condition_state
@@ -312,7 +312,7 @@ def _ae_matrix() -> dict[str, str]:
     #
     # PERMANENT DISPOSITION: keep these 2 markers as EXPECTED_FAIL on the
     # native-CCW samples-ae profile. The samples-ae-managed profile
-    # (commit b3b8ffd4) bypasses opcae_ps.dll entirely via tcp:// direct
+    # bypasses opcae_ps.dll entirely via tcp:// direct
     # connect and flips these tools to PASS via _ae_managed_matrix() --
     # that is the recommended operational path for consumers needing AE
     # condition-state methods. See docs/CONFORMANCE.md "Documented waiver"

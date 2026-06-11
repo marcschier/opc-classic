@@ -118,7 +118,7 @@ public sealed class OpcConnectData
         return new OpcConnectData(url, credentials, OpcAuthMode.NtlmV2, protectionLevel, operationTimeout, channelBindings);
     }
 
-    /// <summary>Construct Kerberos / SPNEGO connection data (requires Phase 3D).</summary>
+    /// <summary>Construct Kerberos / SPNEGO connection data (requires the Opc.Classic.Dcom.Kerberos package).</summary>
     public static OpcConnectData WithKerberos(
         OpcUrl url,
         NetworkCredential credentials,

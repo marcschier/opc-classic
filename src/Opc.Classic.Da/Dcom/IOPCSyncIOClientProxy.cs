@@ -57,7 +57,7 @@ public sealed class IOPCSyncIOClientProxy : IOPCSyncIO
         // pointers; consume the outer referent + max_count, then use the
         // deferred-pile codec because OPCITEMSTATE contains a [unique]
         // VARIANT whose body lives in the deferred section (per Matrikon
-        // wire capture, see Track AY+ / get_properties fix).
+        // wire capture).
         OpcItemState[] states = ReadConformantOpcItemStateArray(ref reader);
         int[] errors = ReadUniqueInt32Array(ref reader);
         return new ReadResult(states, errors);

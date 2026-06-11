@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
-// Exercises Track AK1: NdrReader/NdrVariantExtensions decode-fail messages
+// Exercises NdrReader/NdrVariantExtensions decode-fail messages:
 // must include a multi-line hex window centered on the failure offset so
 // a developer can compare the failing wire bytes against a Wireshark
 // capture or canonical MIDL layout.

@@ -24,7 +24,7 @@ using TUnit.Core;
 namespace Opc.Classic.Integration.Tests.CompatMatrix;
 
 /// <summary>
-/// Phase 14D-B integration tests: a fully-managed Opc.Classic client connects
+/// Cross-platform managed integration tests: a fully-managed Opc.Classic client connects
 /// to a fully-managed Opc.Classic server over the real cross-platform
 /// <see cref="OpcServerListener"/> transport (ocom-1). The previous
 /// scaffold-only loopback tests (<see cref="Net10ServerToNativeClientTests"/>)

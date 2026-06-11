@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
-// Track AL2: byte-exact response-decoding fixtures. Each test synthesizes
+// byte-exact response-decoding fixtures. Each test synthesizes
 // a wire payload that matches the MIDL canonical layout for one of the
 // Matrikon-OK methods, then asserts the proxy decodes it to the expected
 // managed result. Companion to AL1 (request encoding).
@@ -108,7 +108,7 @@ public sealed class ResponseWireFixtureTests
 
     /// <summary>
     /// Empty-array case: a null outer referent on ppErrors must decode to <c>int[0]</c> without
-    /// trying to read max_count past end-of-buffer (Track AG4 null-referent decode safety).
+    /// trying to read max_count past end-of-buffer (null-referent decode safety).
     /// </summary>
     [Test]
     public async Task SyncIO_Write_NullErrorsReferent_DecodesToEmptyArray()

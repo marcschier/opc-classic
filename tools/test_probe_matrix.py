@@ -54,7 +54,7 @@ class MatrixSmokeTests(unittest.TestCase):
             self.assertIn(required, names)
 
     def test_testserver_profile_marks_iopcitemio_as_pass(self) -> None:
-        # TestServer (per our Track AB5 divergence) advertises both
+        # TestServer (per our divergence from upstream) advertises both
         # CATID_OPCDAServer20 AND CATID_OPCDAServer30 — so it implements
         # IOPCItemIO and read_items_by_id should succeed.
         expected, verdict = probe_matrix.classify(

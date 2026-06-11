@@ -5,9 +5,9 @@
 // OPC DA DCOM-projection interfaces. Each [OpcInterface] partial interface is
 // extended by the OpcInterfaceGenerator to carry a compile-time-known InterfaceId.
 //
-// Methods will be added in Phase 6B/6C with [OpcMethod(opnum)] driving call-shim
-// emission. Today these are pure markers — the IID surface alone is the
-// foundation the upcoming generators bind against.
+// Methods are added with [OpcMethod(opnum)] driving call-shim
+// emission. The current set covers IID surface plus implemented opnums; future
+// opnums append to the same partial interface.
 //
 // IID values match Opc.Classic.Core.OpcGuids — duplication is acceptable for
 // now; a future refactor may collapse OpcGuids constants to delegate to these

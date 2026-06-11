@@ -278,7 +278,7 @@ public ref struct NdrReader
     /// trailing NUL. Older versions of this method omitted the max_count read,
     /// which broke interop with real OPC servers (Matrikon emits the spec
     /// layout). Symmetric loopback continued to work because the writer had the
-    /// same bug — see Track AY+ NDR variant codec sweep.
+    /// same bug — see the NDR variant codec sweep history in CHANGELOG.
     /// </remarks>
     public string? ReadBstr()
     {

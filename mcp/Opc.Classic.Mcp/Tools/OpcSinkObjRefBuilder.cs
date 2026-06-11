@@ -12,7 +12,7 @@ namespace Opc.Classic.Mcp.Tools;
 
 /// <summary>
 /// Builds OBJREF_STANDARD interface pointers for server-pushed sinks
-/// hosted on the MCP host (Track AU). The sink OBJREF is what the MCP
+/// hosted on the MCP host. The sink OBJREF is what the MCP
 /// client hands to <c>IConnectionPoint::Advise</c> so the OPC server
 /// can call back into the host's <c>IOPCDataCallback</c> listener.
 /// </summary>

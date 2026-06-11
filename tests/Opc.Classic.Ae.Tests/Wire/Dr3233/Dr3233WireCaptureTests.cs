@@ -20,18 +20,18 @@ using TUnit.Core;
 namespace Opc.Classic.Ae.Tests.Wire.Dr3233;
 
 /// <summary>
-/// DR32/DR33 Phase B: capture the EXACT bytes the managed proxy/dispatcher
+/// DR32/DR33 wire-byte capture: capture the EXACT bytes the managed proxy/dispatcher
 /// pair emits for <c>GetConditionState</c> and <c>AckCondition</c>, then
 /// regression-lock them so any encoder change is visible as a wire-byte
 /// delta.
 /// </summary>
 /// <remarks>
 /// <para>The captured bytes are diffed against the MIDL spec captured in
-/// <c>docs/conformance/ae-wire-format.md</c> (Phase A) to identify the
+/// <c>docs/conformance/ae-wire-format.md</c> to identify the
 /// exact byte-level discrepancies that cause <c>opcae_ps.dll</c> to crash
 /// (<c>GetConditionState</c> response) and reject (<c>AckCondition</c>
 /// request) on the <c>samples-ae</c> native-CCW path. This file is the
-/// "actual" side of that diff; Phase A's doc is the "expected" side.</para>
+/// "actual" side of that diff; the spec doc is the "expected" side.</para>
 ///
 /// <para><strong>Fixture regeneration:</strong> the test asserts captured
 /// bytes match committed hex fixtures at
@@ -123,7 +123,7 @@ public sealed class Dr3233WireCaptureTests
         // Variant: ascDefinition + acknowledgerId + comment are all null —
         // this is the "happy-path quiescent condition" the matrix probes
         // typically hit, and exercises null-referent handling which is one
-        // of the hypothesized response-crash root causes (Phase A § hypotheses).
+        // of the hypothesized response-crash root causes.
         var stub = new DeterministicEventServer
         {
             ReturnNullOptionalStrings = true,
@@ -215,7 +215,7 @@ public sealed class Dr3233WireCaptureTests
     private static string FormatCapture(Guid iid, int opnum, byte[] request, byte[] response)
     {
         var sb = new StringBuilder();
-        sb.Append("# Opc.Classic AE wire capture (DR32/DR33 Phase B fixture)\n");
+        sb.Append("# Opc.Classic AE wire capture (DR32/DR33 wire fixture)\n");
         sb.Append("# iid:     ").Append(iid.ToString("D", CultureInfo.InvariantCulture)).Append('\n');
         sb.Append("# opnum:   ").Append(opnum.ToString(CultureInfo.InvariantCulture)).Append('\n');
         sb.Append("# timestamp_utc: 2026-01-01T00:00:00.000\n");

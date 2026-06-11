@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
-// Track AL1: byte-exact wire fixtures that lock in the proxy's request
+// byte-exact wire fixtures that lock in the proxy's request
 // encoding for the Matrikon-OK methods. If a generator/codec change ever
 // silently mutates the wire shape, these fixtures fail with a hex diff so
 // the regression is caught before it reaches a live server.

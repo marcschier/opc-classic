@@ -81,7 +81,7 @@ internal sealed class ComOxidDetails
     /// <summary>
     /// Protection level
     /// </summary>
-    // Phase 3B: default INTEGRITY per Microsoft DCOM hardening (KB5004442).
+    // default INTEGRITY per Microsoft DCOM hardening (KB5004442).
     internal Opc.Classic.Dcom.Rpc.ProtectionLevel AuthHint { get; } =
         Opc.Classic.Dcom.Rpc.ProtectionLevel.PROTECTION_LEVEL_INTEGRITY;
 

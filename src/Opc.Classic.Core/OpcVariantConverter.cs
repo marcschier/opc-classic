@@ -11,7 +11,7 @@ namespace Opc.Classic;
 /// Bidirectional bridge between the loosely-typed <see cref="object"/>?
 /// representation used by existing DA APIs (notably
 /// <c>Opc.Classic.Da.ItemValue.Value</c>) and the strongly-typed
-/// <see cref="OpcVariant"/> carrier introduced in Phase 5E.3a.
+/// <see cref="OpcVariant"/> carrier.
 /// </summary>
 /// <remarks>
 /// Designed to allow gradual migration: code that already has

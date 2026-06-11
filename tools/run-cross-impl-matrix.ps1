@@ -9,7 +9,7 @@
     Auto-registers every sample server (HKCU, no elevation) so the OPC
     Foundation OpcTestClient.exe can enumerate them, then runs the Python
     cross-impl-probe driver across every profile and emits a green/red
-    summary. Optional -WireCapture enables Track CA `.pcap` capture per
+    summary. Optional -WireCapture enables network `.pcap` capture per
     profile.
 
     Expectations:
@@ -34,7 +34,7 @@
     ProgIDs). Useful when OPCEnum is misbehaving on a hardened DCOM box.
 
 .PARAMETER WireCapture
-    Enable Track CA wire capture per profile. Artifacts land under
+    Enable network wire capture per profile. Artifacts land under
     matrix-out/wire-captures/<profile>/.
 
 .PARAMETER HklmRegister

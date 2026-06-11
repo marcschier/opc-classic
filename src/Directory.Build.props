@@ -42,7 +42,7 @@
     <ContinuousIntegrationBuild Condition="'$(GITHUB_ACTIONS)' == 'true'">true</ContinuousIntegrationBuild>
   </PropertyGroup>
 
-  <!-- Phase 16A: NuGet package metadata (shared across all src/ projects) -->
+  <!-- NuGet package metadata (shared across all src/ projects) -->
   <PropertyGroup>
     <IsPackable>true</IsPackable>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
@@ -61,7 +61,7 @@
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
 
-  <!-- Phase 16B: Strong naming (key in build/Opc.Classic.snk; not a secret) -->
+  <!-- Strong naming (key in build/Opc.Classic.snk; not a secret) -->
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)..\build\Opc.Classic.snk</AssemblyOriginatorKeyFile>
@@ -106,7 +106,7 @@
 
     Excluded:
       - Opc.Classic.Generators itself (would create a circular reference).
-      - Opc.Classic.Dcom: transitional Java-ported code; out of scope until Phase 2B
+      - Opc.Classic.Dcom: transitional Java-ported code awaiting unit-test conversion
         completes its modernization sweep.
   -->
   <ItemGroup Condition="'$(MSBuildProjectName)' != 'Opc.Classic.Generators' and '$(MSBuildProjectName)' != 'Opc.Classic.Dcom'">

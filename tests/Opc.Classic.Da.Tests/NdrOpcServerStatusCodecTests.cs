@@ -120,7 +120,7 @@ public sealed class NdrOpcServerStatusCodecTests
         await Assert.That(back.Spec).IsEqualTo(OpcStatusSpec.Da);
     }
 
-    // -- Track AS: FILETIME decode hypothesis matrix (x3-mcp-e2e-test blocker investigation) --
+    // -- FILETIME decode hypothesis matrix --
 
     [Test]
     public async Task Decode_FileTime_Zero_Yields1601Epoch()

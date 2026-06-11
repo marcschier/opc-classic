@@ -99,7 +99,7 @@ public sealed class DaEnumOpcItemAttributesVeuInfoTests
                 return attributes;
             }
 
-            // Only include the actual fetched slice — Track AM surfaces pceltFetched so
+            // Only include the actual fetched slice — the enumerator surfaces pceltFetched so
             // a server pre-allocating to `celt` length doesn't confuse the consumer.
             for (int i = 0; i < fetched && i < batch.Length; i++)
             {

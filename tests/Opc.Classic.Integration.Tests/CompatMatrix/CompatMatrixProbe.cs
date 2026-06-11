@@ -25,7 +25,7 @@ internal static class CompatMatrixProbe
         {
             reason = "Native sample client not found at any expected path: "
                 + string.Join(", ", candidates)
-                + " (Phase 14A workflow must build the COM sample client first)";
+                + " (the Windows CI workflow must build the COM sample client first)";
             return true;
         }
 

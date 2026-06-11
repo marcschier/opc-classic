@@ -2,9 +2,9 @@
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
-// Phase 2G bootstrap — Microsoft.Extensions.Logging-backed shim that
-// mimics Serilog's "Log.Logger.Information(...)" surface. Lets existing
-// Serilog call sites migrate file-by-file with a single using-directive
+// Microsoft.Extensions.Logging-backed shim that mimics Serilog's
+// "Log.Logger.Information(...)" surface. Lets existing Serilog call sites
+// migrate file-by-file with a single using-directive
 // swap (`using Opc.Classic.Dcom.Internal;` -> `using Opc.Classic.Dcom.Internal;`) instead
 // of a big-bang rewrite of all 33+ logging consumers.
 //

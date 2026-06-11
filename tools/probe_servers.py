@@ -358,7 +358,7 @@ def probe_specs() -> list[ProbeSpec]:
         ProbeSpec("opcclassic.session.list", lambda r: {}),
         ProbeSpec("opcclassic.discovery.enumerate_servers", lambda r: r.discovery_args()),
 
-        # --- capture tools (Track CA) ----------------------------------
+        # --- capture tools ----------------------------------
         # These tools don't take a sessionId; they own their own lifecycle.
         # capture.start needs an interfaceName -- we resolve it lazily from
         # capture.list_interfaces (run during the probe sweep). The probe

@@ -42,7 +42,7 @@ public sealed class Net10ServerToNativeClientTests
             return;
         }
 
-        // Phase 14D-B still needs a native client process and real listener-side transport.
+        // The native-client integration still needs a native client process and real listener-side transport.
         // The structural assertions below keep the scaffold wired to the managed server pieces.
         await AssertCompatScaffoldReadyAsync<IOPCServer, IOPCServerClientProxy>(
             nameof(Native_simple_client_connects_to_net10_server_and_calls_GetStatus),

@@ -1,6 +1,6 @@
 ﻿// SPDX-License-Identifier: MIT
 //
-// Phase 2H: replaced the original Java SPI / META-INF/services service-loader
+// replaced the original Java SPI / META-INF/services service-loader
 // (incompatible with NativeAOT because it uses runtime ClassLoader / Type.GetType
 // reflection) with a simple register-at-startup pattern. Consumers — typically a
 // Microsoft.Extensions.DependencyInjection container — register their custom

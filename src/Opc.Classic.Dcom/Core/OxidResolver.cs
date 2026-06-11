@@ -11,7 +11,7 @@ namespace Opc.Classic.Dcom.Core;
 /// <summary>
 /// Partially implements IOxIDResolver client calls, used only for ResolveOxid.
 /// </summary>
-// Phase 4E audit (date: 2026-05-22):
+// Security audit (date: 2026-05-22):
 //   - Authentication: this client-side NdrOp does not accept incoming Ping/PingObject calls; the server-side
 //     handlers live in ComOxidRuntimeHelper.OxidResolverImpl and are exposed through the unauthenticated
 //     ComRuntimeConnectionContext path by default.

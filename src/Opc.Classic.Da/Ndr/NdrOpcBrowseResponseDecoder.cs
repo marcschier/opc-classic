@@ -170,7 +170,7 @@ public static class NdrOpcBrowseResponseDecoder
         // FC_USER_MARSHAL with USER_MARSHAL_UNIQUE (flags=0x83, bit 0x80) so the
         // inline part carries a 4-byte referent and the wireVARIANT body lives
         // in the deferred pile AFTER szItemID and szDescription. Confirmed by
-        // live Matrikon Simulation Server wire capture (Track AY+, fixture
+        // live Matrikon Simulation Server wire capture (fixture
         // matrikon-getproperties-random-int4.hex).
         writer.WriteUniquePointerReferent(true);
         writer.WriteInt32(prop.ErrorId);
@@ -405,7 +405,7 @@ public static class NdrOpcBrowseResponseDecoder
         // VARIANT vValue: 4-byte unique-pointer referent (FC_USER_MARSHAL flags=0x83,
         // USER_MARSHAL_UNIQUE). The actual wireVARIANT body is deferred AFTER the
         // szItemID / szDescription strings. Confirmed by live Matrikon Simulation
-        // Server wire capture (Track AY+).
+        // Server wire capture.
         uint valueRef = reader.ReadUInt32();
         int hrErrorId = reader.ReadInt32();
         _ = reader.ReadUInt32();

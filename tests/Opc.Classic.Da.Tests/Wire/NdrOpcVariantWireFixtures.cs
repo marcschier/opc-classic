@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
-// Wire-format fixture tests for OpcVariant (Track Y10). Pins the
+// Wire-format fixture tests for OpcVariant. Pins the
 // MS-OAUT §2.2.29 _wireVARIANT layout for the common VARTYPEs used by
 // OPC DA reads (VT_I4, VT_R4, VT_R8, VT_BOOL, VT_BSTR, VT_UI1) so the
 // codec doesn't silently drift from the Microsoft RPC reference shape.

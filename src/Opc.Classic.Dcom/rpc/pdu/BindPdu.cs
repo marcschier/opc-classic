@@ -13,11 +13,11 @@ public class BindPdu : ConnectionOrientedPdu
 
     public const int BIND_TYPE = 0x0b;
 
-    // Phase 4G audit (date: 2026-05-22): PFC_CONC_MPX (0x10) is parsed and
+    // Concurrency audit (date: 2026-05-22): PFC_CONC_MPX (0x10) is parsed and
     // emitted through ConnectionOrientedPdu.Flags for every PDU, including bind.
     // BindPdu itself does not negotiate concurrent call routing, and the server
     // request loop remains single-request/single-response per connection until
-    // the Channel<>-backed worker queue lands in the Phase 4G follow-up.
+    // the Channel<>-backed worker queue lands.
 
     /// <inheritdoc/>
     public override int Type => BIND_TYPE;

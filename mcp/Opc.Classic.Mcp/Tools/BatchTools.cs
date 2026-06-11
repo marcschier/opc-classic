@@ -209,7 +209,7 @@ public sealed class BatchTools
         // Unbounded-min defaults use FileTimeHelper.Epoch (1601-01-01) because
         // DateTimeOffset.MinValue (year 0001) would encode as a negative FILETIME
         // which is invalid per the Windows FILETIME spec and rejected by the
-        // strict decode path (Track AW). Unbounded-max stays at DateTimeOffset.MaxValue
+        // strict decode path. Unbounded-max stays at DateTimeOffset.MaxValue
         // (year 9999) which is the upper bound of the valid FILETIME range.
         OpcBatchSummaryFilter filter = new(
             Normalize(id),

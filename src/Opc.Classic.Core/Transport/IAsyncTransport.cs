@@ -13,8 +13,7 @@ namespace Opc.Classic.Transport;
 
 /// <summary>
 /// Cross-platform pipelines-backed transport contract for DCE/RPC over
-/// ncacn_ip_tcp. Replaces the legacy <c>Opc.Classic.Dcom.Rpc.ITransport</c>
-/// in the Phase 2C end-to-end refactor.
+/// ncacn_ip_tcp. Replaces the legacy <c>Opc.Classic.Dcom.Rpc.ITransport</c>.
 /// </summary>
 public interface IAsyncTransport : IAsyncDisposable
 {

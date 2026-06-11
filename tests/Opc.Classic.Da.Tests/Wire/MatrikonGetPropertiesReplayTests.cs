@@ -32,7 +32,7 @@ public sealed class MatrikonGetPropertiesReplayTests
     /// <summary>
     /// Replays the live Matrikon Simulation Server <c>IOPCBrowse::GetProperties</c>
     /// response through the decoder and verifies it produces the OPC DA 3.00 §A.1
-    /// standard + recommended property set for <c>Random.Int4</c> (Track AY+).
+    /// standard + recommended property set for <c>Random.Int4</c>.
     /// </summary>
     [Test]
     public async Task Replay_decodes_response_through_browse_decoder()

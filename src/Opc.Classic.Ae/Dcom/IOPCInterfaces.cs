@@ -106,12 +106,12 @@ public partial interface IOPCEventServer
     /// <c>FC_RP [simple_pointer] → FC_C_WSTRING</c> (flag <c>0x10b</c>) —
     /// NO outer <c>[unique]</c> referent before the conformant-varying string
     /// body. <see cref="OpcRefStringAttribute"/> applied to both parameters
-    /// emits the spec-compliant simple_ref wire (DR32/DR33 Phase D1; see
+    /// emits the spec-compliant simple_ref wire (DR32/DR33; see
     /// <c>docs/conformance/ae-wire-format.md</c> for the byte-level diff
-    /// against the captured Phase B fixtures at
-    /// <c>tests/Opc.Classic.Ae.Tests/Wire/Dr3233/Fixtures/</c>). The previous
+    /// against the captured fixtures at
+    /// <c>tests/Opc.Classic.Ae.Tests/Wire/Dr3233/Fixtures/</c>). An earlier
     /// "server-side connection drop" investigation reverted this fix; the
-    /// real-fix work in DR32/DR33 re-applies it with full byte-level
+    /// DR32/DR33 wire-fix work re-applies it with full byte-level
     /// validation.
     /// </remarks>
     [OpcMethod(12)]
@@ -148,7 +148,7 @@ public partial interface IOPCEventServer
     /// <c>FC_RP [simple_pointer] → FC_C_WSTRING</c> (flag <c>0x10b</c>) — NO
     /// outer <c>[unique]</c> referent before the FC_C_WSTRING body.
     /// <see cref="OpcRefStringAttribute"/> on both scalars emits the
-    /// spec-compliant simple_ref wire (DR32/DR33 Phase D1). The array
+    /// spec-compliant simple_ref wire (DR32/DR33). The array
     /// params <c>pszSource</c>/<c>pszConditionName</c> already carry
     /// <see cref="OpcDeferredElementsAttribute"/>; the deferred-pile
     /// layout (max + N referents + N bodies, all within the parameter

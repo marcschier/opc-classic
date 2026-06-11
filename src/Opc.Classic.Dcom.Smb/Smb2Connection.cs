@@ -46,12 +46,12 @@ public sealed record Smb2ConnectionOptions(
 /// </summary>
 /// <remarks>
 /// <para>
-/// Phase 1 (the current phase) delivers the wire-format primitives and the
+/// Delivers the wire-format primitives and the
 /// connection state-machine skeleton. The transport-level I/O loop is left as
 /// a separate concern: callers wishing to issue SMB2 traffic against a real
 /// server should construct an <see cref="Smb2Connection" /> with an
-/// <see cref="ISmb2Transport" /> implementation. Phase 2 wires the production
-/// TCP+NetBIOS transport into <c>Opc.Classic.Dcom.Rpc.Ncacn_Np.RpcTransport</c>.
+/// <see cref="ISmb2Transport" /> implementation. The production
+/// TCP+NetBIOS transport is wired into <c>Opc.Classic.Dcom.Rpc.Ncacn_Np.RpcTransport</c>.
 /// </para>
 /// <para>
 /// The state machine progresses: <c>Disconnected → Negotiating → Authenticated

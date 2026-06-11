@@ -22,18 +22,18 @@ public sealed class F4Auth
     [Test, Skip(Ntlmv2SkipReason)]
     public void Ntlmv2_authenticates_the_managed_loopback_call_path()
     {
-        // TODO: Phase 13-followup — bind NTLMv2 credentials to the managed call channel and verify authenticated proxy calls.
+        // TODO: bind NTLMv2 credentials to the managed call channel and verify authenticated proxy calls.
     }
 
     [Test, Skip(KerberosSkipReason)]
     public void Kerberos_authenticates_the_managed_loopback_call_path()
     {
-        // TODO: Phase 13-followup — use the Testcontainers KDC fixture to issue tickets and authenticate the loopback channel.
+        // TODO: use the Testcontainers KDC fixture to issue tickets and authenticate the loopback channel.
     }
 
     [Test, Skip(SpnegoSkipReason)]
     public void Spnego_negotiates_ntlmv2_or_kerberos_for_the_managed_loopback_call_path()
     {
-        // TODO: Phase 13-followup — exercise SPNEGO negotiation and assert the selected NTLMv2/Kerberos mechanism is enforced.
+        // TODO: exercise SPNEGO negotiation and assert the selected NTLMv2/Kerberos mechanism is enforced.
     }
 }
