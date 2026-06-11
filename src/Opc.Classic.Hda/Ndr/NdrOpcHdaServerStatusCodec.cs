@@ -10,11 +10,13 @@ using Opc.Classic.Ndr;
 namespace Opc.Classic.Hda.Ndr;
 
 /// <summary>NDR encoder / decoder for the OPC HDA historian status response.</summary>
-public static class NdrOpcHdaServerStatusCodec {
+public static class NdrOpcHdaServerStatusCodec
+{
     private const long FileTimeEpochOffsetTicks = 504911232000000000L;
 
     /// <summary>Encodes an HDA historian status structure.</summary>
-    public static void Write(ref NdrWriter writer, OpcServerStatus status) {
+    public static void Write(ref NdrWriter writer, OpcServerStatus status)
+    {
         ArgumentNullException.ThrowIfNull(status);
 
         writer.WriteUInt32(ToHistorianStatus(status.State));
@@ -37,7 +39,8 @@ public static class NdrOpcHdaServerStatusCodec {
     }
 
     /// <summary>Decodes an HDA historian status structure.</summary>
-    public static OpcServerStatus Read(ref NdrReader reader) {
+    public static OpcServerStatus Read(ref NdrReader reader)
+    {
         OpcServerState state = FromHistorianStatus(reader.ReadUInt32());
         // [out] FILETIME **pftCurrentTime / pftStartTime: skip the outer
         // unique-pointer referent that the OS COM proxy/stub emits before
@@ -54,7 +57,8 @@ public static class NdrOpcHdaServerStatusCodec {
         _ = reader.ReadUnicodeStringPtr();
         string vendorInfo = reader.ReadUnicodeStringPtr() ?? string.Empty;
 
-        return new OpcServerStatus {
+        return new OpcServerStatus
+        {
             Spec = OpcStatusSpec.Hda,
             StartTime = start,
             CurrentTime = current,
@@ -65,13 +69,15 @@ public static class NdrOpcHdaServerStatusCodec {
         };
     }
 
-    private static uint ToHistorianStatus(OpcServerState state) => state switch {
+    private static uint ToHistorianStatus(OpcServerState state) => state switch
+    {
         OpcServerState.Running => 1u,
         OpcServerState.Failed or OpcServerState.CommFault => 2u,
         _ => 3u,
     };
 
-    private static OpcServerState FromHistorianStatus(uint value) => value switch {
+    private static OpcServerState FromHistorianStatus(uint value) => value switch
+    {
         1u => OpcServerState.Running,
         2u => OpcServerState.Failed,
         _ => OpcServerState.NoConfig,
@@ -80,9 +86,11 @@ public static class NdrOpcHdaServerStatusCodec {
     private static long ToFileTime(DateTimeOffset value) =>
         value.UtcTicks - FileTimeEpochOffsetTicks;
 
-    private static DateTimeOffset ReadAndDecodeFileTime(ref NdrReader reader, string fieldName) {
+    private static DateTimeOffset ReadAndDecodeFileTime(ref NdrReader reader, string fieldName)
+    {
         long raw = reader.ReadFileTime();
-        if (FileTimeHelper.TryFromFileTime(raw, out DateTimeOffset value)) {
+        if (FileTimeHelper.TryFromFileTime(raw, out DateTimeOffset value))
+        {
             return value;
         }
         throw new InvalidDataException(

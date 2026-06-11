@@ -13,7 +13,8 @@ using Opc.Classic.Mcp.Dtos;
 namespace Opc.Classic.Mcp.Tools;
 
 /// <summary>MCP tools for OPC Classic server discovery.</summary>
-public sealed class DiscoveryTools {
+public sealed class DiscoveryTools
+{
     private readonly IReadOnlyList<IOpcDiscovery> _discoveries;
 
     /// <summary>Creates the discovery tool set.</summary>
@@ -38,11 +39,13 @@ public sealed class DiscoveryTools {
         bool useSso = false,
         [Description(OpcMcpAuthLevel.Description)]
         string? authLevel = null,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         string targetHost = string.IsNullOrWhiteSpace(host) ? "localhost" : host.Trim();
         Guid[] categories = ParseCategoryIds(categoryIds);
 
-        if (_discoveries.Count > 0) {
+        if (_discoveries.Count > 0)
+        {
             return await EnumerateInjectedDiscoveryAsync(_discoveries[0], targetHost, categories, cancellationToken).ConfigureAwait(false);
         }
 
@@ -64,8 +67,10 @@ public sealed class DiscoveryTools {
         IOpcDiscovery discovery,
         string host,
         IReadOnlyList<Guid> categories,
-        CancellationToken cancellationToken) {
-        if (discovery is OpcEnumClient enumClient) {
+        CancellationToken cancellationToken)
+    {
+        if (discovery is OpcEnumClient enumClient)
+        {
             OpcServerDescriptor[] descriptors = await enumClient.EnumerateAsync(
                 host,
                 categories.Count == 0 ? null : categories,
@@ -74,7 +79,8 @@ public sealed class DiscoveryTools {
         }
 
         var results = new List<OpcServerDescriptorDto>();
-        await foreach (OpcServerEntry entry in discovery.DiscoverAsync(host, cancellationToken).ConfigureAwait(false)) {
+        await foreach (OpcServerEntry entry in discovery.DiscoverAsync(host, cancellationToken).ConfigureAwait(false))
+        {
             results.Add(new OpcServerDescriptorDto(
                 entry.Clsid,
                 entry.ProgId,
@@ -96,15 +102,18 @@ public sealed class DiscoveryTools {
         string? password,
         bool useKerberos,
         bool useSso,
-        string? authLevel) {
+        string? authLevel)
+    {
         OpcUrl url = OpcUrl.Parse($"opcda://{host}/OPC.ServerList.1");
         OpcProtectionLevel protectionLevel = OpcMcpAuthLevel.ParseOrDefault(authLevel);
-        if (useSso) {
+        if (useSso)
+        {
             return OpcConnectData.WithWindowsSso(url, protectionLevel);
         }
 
         NetworkCredential? credentials = CreateCredential(username, password);
-        if (credentials is null) {
+        if (credentials is null)
+        {
             return OpcMcpAuthLevel.IsSpecified(authLevel)
                 ? new OpcConnectData(url, credentials: null, authMode: OpcAuthMode.Anonymous, protectionLevel: protectionLevel)
                 : null;
@@ -115,15 +124,18 @@ public sealed class DiscoveryTools {
             : OpcConnectData.WithNtlmV2(url, credentials, protectionLevel);
     }
 
-    private static NetworkCredential? CreateCredential(string? username, string? password) {
-        if (string.IsNullOrWhiteSpace(username)) {
+    private static NetworkCredential? CreateCredential(string? username, string? password)
+    {
+        if (string.IsNullOrWhiteSpace(username))
+        {
             return null;
         }
 
         string user = username.Trim();
         string domain = string.Empty;
         int slash = user.IndexOf('\\', StringComparison.Ordinal);
-        if (slash > 0 && slash < user.Length - 1) {
+        if (slash > 0 && slash < user.Length - 1)
+        {
             domain = user[..slash];
             user = user[(slash + 1)..];
         }
@@ -131,14 +143,18 @@ public sealed class DiscoveryTools {
         return new NetworkCredential(user, password ?? string.Empty, domain);
     }
 
-    private static Guid[] ParseCategoryIds(IReadOnlyList<string>? categoryIds) {
-        if (categoryIds is null || categoryIds.Count == 0) {
+    private static Guid[] ParseCategoryIds(IReadOnlyList<string>? categoryIds)
+    {
+        if (categoryIds is null || categoryIds.Count == 0)
+        {
             return [];
         }
 
         var categories = new List<Guid>(categoryIds.Count);
-        foreach (string categoryId in categoryIds) {
-            if (!Guid.TryParse(categoryId, out Guid category)) {
+        foreach (string categoryId in categoryIds)
+        {
+            if (!Guid.TryParse(categoryId, out Guid category))
+            {
                 throw new ArgumentException($"Category '{categoryId}' is not a GUID.", nameof(categoryIds));
             }
 

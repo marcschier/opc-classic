@@ -9,7 +9,8 @@ namespace Opc.Classic.Dcom.Registry;
 /// This interface uses "Windows Remote Registry" and "Server" services
 /// and these must be running on target workstation.
 /// </summary>
-public interface IRegistry {
+public interface IRegistry
+{
 
     /// <summary>
     /// Opens the HKEY_CLASSES_ROOT key

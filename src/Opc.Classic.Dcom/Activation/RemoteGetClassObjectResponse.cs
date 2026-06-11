@@ -8,7 +8,8 @@ using System;
 namespace Opc.Classic.Dcom.Core;
 
 /// <summary>Server-side IRemoteSCMActivator::RemoteGetClassObject response.</summary>
-public sealed record RemoteGetClassObjectResponse(int Hresult, Guid Oxid, Guid Ipid, byte[] ObjRef) {
+public sealed record RemoteGetClassObjectResponse(int Hresult, Guid Oxid, Guid Ipid, byte[] ObjRef)
+{
     /// <summary>Object identifier allocated for the exported class factory.</summary>
     public Guid Oid { get; init; }
 

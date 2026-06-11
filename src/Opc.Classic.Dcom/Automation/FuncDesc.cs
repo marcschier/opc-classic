@@ -27,7 +27,8 @@ namespace Opc.Classic.Dcom.Automation;
 ///  WORD wFuncFlags;          // Definition of flags follows.
 /// </remarks>
 [Serializable]
-public sealed class FuncDesc {
+public sealed class FuncDesc
+{
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 #pragma warning disable IDE1006 // Naming Styles
@@ -51,15 +52,18 @@ public sealed class FuncDesc {
     /// </summary>
     /// <param name="values"></param>
     internal FuncDesc(ComPointer values) :
-        this(values.IsNull ? null : (Struct)values.Referent) {
+        this(values.IsNull ? null : (Struct)values.Referent)
+    {
     }
 
     /// <summary>
     /// Create description
     /// </summary>
     /// <param name="filledStruct"></param>
-    internal FuncDesc(Struct filledStruct) {
-        if (filledStruct == null) {
+    internal FuncDesc(Struct filledStruct)
+    {
+        if (filledStruct == null)
+        {
             _values = null;
             memberId = -1;
             lprgscode = null;
@@ -80,7 +84,8 @@ public sealed class FuncDesc {
         lprgscode = (ComPointer)_values.GetMember(1);
         var ptr = (ComPointer)_values.GetMember(2);
         ComArray arrayOfElemDesc = null;
-        if (!ptr.IsNull) {
+        if (!ptr.IsNull)
+        {
             var arry = (ComArray)ptr.Referent;
             var obj = (object[])arry.ArrayInstance;
             arrayOfElemDesc = new ComArray(obj);

@@ -24,10 +24,13 @@ public readonly record struct Smb2PacketHeader(
     uint ProcessId,
     uint TreeId,
     ulong SessionId,
-    ReadOnlyMemory<byte> Signature) {
+    ReadOnlyMemory<byte> Signature)
+{
     /// <summary>Writes the synchronous header to <paramref name="destination" /> starting at offset 0.</summary>
-    public void Write(Span<byte> destination) {
-        if (destination.Length < Smb2Constants.PacketHeaderSize) {
+    public void Write(Span<byte> destination)
+    {
+        if (destination.Length < Smb2Constants.PacketHeaderSize)
+        {
             throw new ArgumentException(
                 $"Destination must be at least {Smb2Constants.PacketHeaderSize} bytes.",
                 nameof(destination));
@@ -47,27 +50,33 @@ public readonly record struct Smb2PacketHeader(
         BinaryPrimitives.WriteUInt64LittleEndian(destination[40..], SessionId);
 
         Span<byte> sigDest = destination.Slice(48, 16);
-        if (Signature.IsEmpty) {
+        if (Signature.IsEmpty)
+        {
             sigDest.Clear();
         }
-        else {
+        else
+        {
             Signature.Span.CopyTo(sigDest);
         }
     }
 
     /// <summary>Parses a synchronous SMB2 header from <paramref name="source" />.</summary>
-    public static Smb2PacketHeader Read(ReadOnlySpan<byte> source) {
-        if (source.Length < Smb2Constants.PacketHeaderSize) {
+    public static Smb2PacketHeader Read(ReadOnlySpan<byte> source)
+    {
+        if (source.Length < Smb2Constants.PacketHeaderSize)
+        {
             throw new ArgumentException(
                 $"Source must be at least {Smb2Constants.PacketHeaderSize} bytes.",
                 nameof(source));
         }
-        if (!source[..4].SequenceEqual(Smb2Constants.ProtocolId)) {
+        if (!source[..4].SequenceEqual(Smb2Constants.ProtocolId))
+        {
             throw new Smb2ProtocolException("Invalid SMB2 ProtocolId.");
         }
 
         ushort headerSize = BinaryPrimitives.ReadUInt16LittleEndian(source[4..]);
-        if (headerSize != Smb2Constants.PacketHeaderSize) {
+        if (headerSize != Smb2Constants.PacketHeaderSize)
+        {
             throw new Smb2ProtocolException(
                 $"Unexpected SMB2 StructureSize {headerSize}; expected {Smb2Constants.PacketHeaderSize}.");
         }
@@ -94,19 +103,23 @@ public readonly record struct Smb2PacketHeader(
 /// NetBIOS-over-TCP framing: a 4-byte big-endian length prefix (with the high
 /// byte set to 0x00 for SMB direct messages). See [MS-CIFS] §2.2.1.
 /// </summary>
-public static class NetBiosFraming {
+public static class NetBiosFraming
+{
     /// <summary>Size of the NetBIOS frame header in bytes.</summary>
     public const int HeaderSize = 4;
 
     /// <summary>Writes the NetBIOS frame header for an SMB2 payload of the given length.</summary>
-    public static void WriteHeader(Span<byte> destination, int payloadLength) {
-        if (payloadLength < 0 || payloadLength > Smb2Constants.MaxNetBiosFrameSize) {
+    public static void WriteHeader(Span<byte> destination, int payloadLength)
+    {
+        if (payloadLength < 0 || payloadLength > Smb2Constants.MaxNetBiosFrameSize)
+        {
             throw new ArgumentOutOfRangeException(
                 nameof(payloadLength),
                 payloadLength,
                 $"NetBIOS frame payload length must be 0..{Smb2Constants.MaxNetBiosFrameSize}.");
         }
-        if (destination.Length < HeaderSize) {
+        if (destination.Length < HeaderSize)
+        {
             throw new ArgumentException(
                 $"Destination must be at least {HeaderSize} bytes.",
                 nameof(destination));
@@ -123,25 +136,30 @@ public static class NetBiosFraming {
         ReadPayloadLength(source, Smb2Constants.MaxNetBiosFrameSize);
 
     /// <summary>Parses a NetBIOS frame header and enforces a payload quota.</summary>
-    internal static int ReadPayloadLength(ReadOnlySpan<byte> source, int maxPayloadLength) {
-        if (maxPayloadLength < 0 || maxPayloadLength > Smb2Constants.MaxNetBiosFrameSize) {
+    internal static int ReadPayloadLength(ReadOnlySpan<byte> source, int maxPayloadLength)
+    {
+        if (maxPayloadLength < 0 || maxPayloadLength > Smb2Constants.MaxNetBiosFrameSize)
+        {
             throw new ArgumentOutOfRangeException(
                 nameof(maxPayloadLength),
                 maxPayloadLength,
                 $"NetBIOS frame payload quota must be 0..{Smb2Constants.MaxNetBiosFrameSize}.");
         }
-        if (source.Length < HeaderSize) {
+        if (source.Length < HeaderSize)
+        {
             throw new ArgumentException(
                 $"Source must be at least {HeaderSize} bytes.",
                 nameof(source));
         }
-        if (source[0] != 0) {
+        if (source[0] != 0)
+        {
             throw new Smb2ProtocolException(
                 $"Unexpected NetBIOS frame type 0x{source[0]:X2}; expected 0x00 (SMB direct).");
         }
 
         int payloadLength = (source[1] << 16) | (source[2] << 8) | source[3];
-        if (payloadLength > maxPayloadLength) {
+        if (payloadLength > maxPayloadLength)
+        {
             throw new Smb2ProtocolException(
                 $"NetBIOS frame payload length {payloadLength} exceeds the configured SMB2 quota of {maxPayloadLength} bytes.");
         }

@@ -16,7 +16,8 @@ namespace Opc.Classic.Dcom.Rpc.Auth.ntlm;
     "NTLMv1 (Ntlm1) is cryptographically broken and disabled by default in Phase 3C. " +
     "Use NtlmV2 (default). To re-enable NTLMv1 for compatibility with very old legacy " +
     "servers, set OpcConnectData.AllowNtlmV1 = true or properties.SetProperty(\"rpc.ntlm.allowV1\", \"true\").")]
-public class Ntlm1 : ISecurity {
+public class Ntlm1 : ISecurity
+{
 
     private const int kNTLM1_VERIFIER_LENGTH = 16;
 
@@ -41,7 +42,8 @@ public class Ntlm1 : ISecurity {
     /// <param name="flags"></param>
     /// <param name="sessionKey"></param>
     /// <param name="isServer"></param>
-    public Ntlm1(NtlmFlags flags, byte[] sessionKey, bool isServer) {
+    public Ntlm1(NtlmFlags flags, byte[] sessionKey, bool isServer)
+    {
 
         Protection = ((flags & NtlmFlags.NtlmsspNegotiateSeal) != NtlmFlags.None) ?
             ProtectionLevel.PROTECTION_LEVEL_PRIVACY :
@@ -76,19 +78,24 @@ public class Ntlm1 : ISecurity {
     /// <param name="verifierIndex"></param>
     /// <param name="isFragmented"></param>
     /// <exception cref="IOException"></exception>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Meziantou.Analyzer", "MA0051:Method is too long", Justification = "NTLM signing/sealing reverse path must remain inline so the cipher selection, signature verification, and decrypt steps stay correlated against MS-NLMP §3.4.4.")]
     public void ProcessIncoming(NdrCodec ndr, int index, int length,
-        int verifierIndex, bool isFragmented) {
-        try {
+        int verifierIndex, bool isFragmented)
+    {
+        try
+        {
             var buffer = ndr.Buffer;
             byte[] signingKey = null;
             IStreamCipher cipher = null;
 
             // reverse of what it is
-            if (!_isServer) {
+            if (!_isServer)
+            {
                 signingKey = _serverSigningKey;
                 cipher = _serverCipher;
             }
-            else {
+            else
+            {
                 signingKey = _clientSigningKey;
                 cipher = _clientCipher;
             }
@@ -96,7 +103,8 @@ public class Ntlm1 : ISecurity {
             var data = new byte[length];
             Array.Copy(ndr.Buffer.Buf, index, data, 0, data.Length);
 
-            if (Protection == ProtectionLevel.PROTECTION_LEVEL_PRIVACY) {
+            if (Protection == ProtectionLevel.PROTECTION_LEVEL_PRIVACY)
+            {
                 data = _keyFactory.ApplyARCFOUR(cipher, data);
                 Array.Copy(data, 0, ndr.Buffer.Buf, index, data.Length);
             }
@@ -105,7 +113,8 @@ public class Ntlm1 : ISecurity {
 
             var verifier = _keyFactory.SigningPt1(_responseCounter, signingKey,
                 buffer.Buf, verifierIndex);
-            if (_encryptMessageSignature) {
+            if (_encryptMessageSignature)
+            {
                 _keyFactory.SigningPt2(verifier, cipher);
             }
 
@@ -115,18 +124,21 @@ public class Ntlm1 : ISecurity {
             ndr.ReadOctetArray(signing, 0, signing.Length);
 
             // this should result in an access denied fault
-            if (!_keyFactory.CompareSignature(verifier, signing)) {
+            if (!_keyFactory.CompareSignature(verifier, signing))
+            {
                 throw new IntegrityException("Message out of sequence. " +
                     "Perhaps the user being used to run this application is different " +
                     "from the one under which the COM server is running !.");
             }
             _responseCounter++;
         }
-        catch (IOException ex) {
+        catch (IOException ex)
+        {
             Log.Logger.Error(ex, "");
             throw;
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             Log.Logger.Error(ex, "");
             throw new IntegrityException("General error: " + ex.Message);
         }
@@ -141,17 +153,21 @@ public class Ntlm1 : ISecurity {
     /// <param name="verifierIndex"></param>
     /// <param name="isFragmented"></param>
     public void ProcessOutgoing(NdrCodec ndr, int index, int length,
-        int verifierIndex, bool isFragmented) {
-        try {
+        int verifierIndex, bool isFragmented)
+    {
+        try
+        {
             var buffer = ndr.Buffer;
             byte[] signingKey = null;
             IStreamCipher cipher = null;
 
-            if (_isServer) {
+            if (_isServer)
+            {
                 signingKey = _serverSigningKey;
                 cipher = _serverCipher;
             }
-            else {
+            else
+            {
                 signingKey = _clientSigningKey;
                 cipher = _clientCipher;
             }
@@ -163,18 +179,21 @@ public class Ntlm1 : ISecurity {
             Log.Logger.Verbose("\n BEFORE Encryption\n" +
                 Utils.HexString(data, 0, data.Length) + "\n Length is: " + data.Length);
 
-            if (Protection == ProtectionLevel.PROTECTION_LEVEL_PRIVACY) {
+            if (Protection == ProtectionLevel.PROTECTION_LEVEL_PRIVACY)
+            {
                 var data2 = _keyFactory.ApplyARCFOUR(cipher, data);
                 Array.Copy(data2, 0, ndr.Buffer.Buf, index, data2.Length);
             }
-            if (_encryptMessageSignature) {
+            if (_encryptMessageSignature)
+            {
                 _keyFactory.SigningPt2(verifier, cipher);
             }
             buffer.Index = verifierIndex;
             buffer.WriteOctetArray(verifier, 0, verifier.Length);
             _requestCounter++;
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             throw new IntegrityException("General error: " + ex.Message);
         }
     }

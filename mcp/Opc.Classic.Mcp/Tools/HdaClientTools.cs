@@ -18,7 +18,8 @@ using Opc.Classic.Mcp.Sessions;
 namespace Opc.Classic.Mcp.Tools;
 
 /// <summary>Creates HDA client state for a session.</summary>
-public interface IOpcHdaConnectionFactory {
+public interface IOpcHdaConnectionFactory
+{
     /// <summary>Connects to an HDA server and returns a client state object.</summary>
     Task<HdaClientState> ConnectAsync(HdaConnectionRequest request, CancellationToken cancellationToken = default);
 }
@@ -35,11 +36,13 @@ public sealed record HdaConnectionRequest(
     string? AuthLevel = null);
 
 /// <summary>Registers in-memory HDA call channels for MCP tests and loopback scenarios.</summary>
-public static class InMemoryHdaConnectionRegistry {
+public static class InMemoryHdaConnectionRegistry
+{
     private static readonly ConcurrentDictionary<string, InMemoryHdaConnection> Channels = new(StringComparer.OrdinalIgnoreCase);
 
     /// <summary>Registers an in-memory HDA call channel by name.</summary>
-    public static IDisposable Register(string name, ICallChannel channel, IHdaServer? managedServer = null) {
+    public static IDisposable Register(string name, ICallChannel channel, IHdaServer? managedServer = null)
+    {
         ArgumentException.ThrowIfNullOrWhiteSpace(name);
         ArgumentNullException.ThrowIfNull(channel);
 
@@ -49,14 +52,17 @@ public static class InMemoryHdaConnectionRegistry {
 
     internal static bool TryGet(string name, out InMemoryHdaConnection connection) => Channels.TryGetValue(name, out connection!);
 
-    private sealed class Registration : IDisposable {
+    private sealed class Registration : IDisposable
+    {
         private readonly string _name;
         private bool _disposed;
 
         public Registration(string name) => _name = name;
 
-        public void Dispose() {
-            if (_disposed) {
+        public void Dispose()
+        {
+            if (_disposed)
+            {
                 return;
             }
 
@@ -70,12 +76,14 @@ public static class InMemoryHdaConnectionRegistry {
 public sealed record InMemoryHdaConnection(ICallChannel Channel, IHdaServer? ManagedServer);
 
 /// <summary>MCP tools for OPC HDA client operations.</summary>
-public sealed class HdaClientTools {
+public sealed class HdaClientTools
+{
     private readonly IOpcSessionManager _sessionManager;
     private readonly IOpcHdaConnectionFactory _connectionFactory;
 
     /// <summary>Creates the HDA client tool set.</summary>
-    public HdaClientTools(IOpcSessionManager sessionManager, IEnumerable<IOpcHdaConnectionFactory> connectionFactories) {
+    public HdaClientTools(IOpcSessionManager sessionManager, IEnumerable<IOpcHdaConnectionFactory> connectionFactories)
+    {
         _sessionManager = sessionManager ?? throw new ArgumentNullException(nameof(sessionManager));
         ArgumentNullException.ThrowIfNull(connectionFactories);
         _connectionFactory = connectionFactories.FirstOrDefault() ?? new DefaultOpcHdaConnectionFactory();
@@ -103,7 +111,8 @@ public sealed class HdaClientTools {
         string? connectionString = null,
         [Description(OpcMcpAuthLevel.Description)]
         string? authLevel = null,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         OpcSession session = _sessionManager.GetSession(sessionId);
         HdaClientState client = await _connectionFactory.ConnectAsync(
             new HdaConnectionRequest(host, progId, clsid, username, password, useKerberos, connectionString, authLevel),
@@ -111,7 +120,8 @@ public sealed class HdaClientTools {
 
         HdaClientState? existing = session.HdaClient;
         session.HdaClient = client;
-        if (existing is not null) {
+        if (existing is not null)
+        {
             await existing.DisposeAsync().ConfigureAwait(false);
         }
 
@@ -126,7 +136,8 @@ public sealed class HdaClientTools {
     public async Task<OpcServerStatusDto> GetStatus(
         [Description("The sessionId returned by opcclassic.session.create and connected with opcclassic.hda.connect.")]
         string sessionId,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         HdaClientState client = GetHdaClient(sessionId);
         OpcServerStatus status = await GetStatusAsync(client, cancellationToken).ConfigureAwait(false);
         return ToStatusDto(status);
@@ -142,15 +153,18 @@ public sealed class HdaClientTools {
         string itemIdPrefix = "",
         [Description("Browse type: branch, leaf, or flat.")]
         string browseType = "leaf",
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         HdaClientState client = GetHdaClient(sessionId);
         HdaBrowseType type = ParseBrowseType(browseType);
-        if (client.ManagedServer is null) {
+        if (client.ManagedServer is null)
+        {
             return [];
         }
 
         var elements = new List<OpcHdaBrowseElementDto>();
-        await foreach (HdaBrowseElement element in client.ManagedServer.BrowseAsync(itemIdPrefix ?? string.Empty, type, cancellationToken).ConfigureAwait(false)) {
+        await foreach (HdaBrowseElement element in client.ManagedServer.BrowseAsync(itemIdPrefix ?? string.Empty, type, cancellationToken).ConfigureAwait(false))
+        {
             elements.Add(new OpcHdaBrowseElementDto(element.Name, element.ItemId, element.BrowseType.ToString()));
         }
 
@@ -165,7 +179,8 @@ public sealed class HdaClientTools {
         string sessionId,
         [Description("OPC HDA item IDs to validate.")]
         string[] itemIds,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         ArgumentNullException.ThrowIfNull(itemIds);
         HdaClientState client = GetHdaClient(sessionId);
         int[] errors = await client.Server.ValidateItemIDsAsync(itemIds, cancellationToken).ConfigureAwait(false);
@@ -182,16 +197,19 @@ public sealed class HdaClientTools {
         string[] itemIds,
         [Description("Optional client handles aligned with itemIds. Defaults to 1-based handles.")]
         int[]? clientHandles = null,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         ArgumentNullException.ThrowIfNull(itemIds);
         HdaClientState client = GetHdaClient(sessionId);
         int[] requestedClientHandles = NormalizeClientHandles(itemIds.Length, clientHandles);
         int[] handles = await client.Server.GetItemHandlesAsync(itemIds, requestedClientHandles, cancellationToken).ConfigureAwait(false);
         var results = new List<OpcHdaItemHandleDto>(itemIds.Length);
-        for (int i = 0; i < itemIds.Length; i++) {
+        for (int i = 0; i < itemIds.Length; i++)
+        {
             int serverHandle = i < handles.Length ? handles[i] : 0;
             int hresult = serverHandle != 0 ? OpcResultId.Ok.Code : OpcResultId.UnknownItemId.Code;
-            if (serverHandle != 0) {
+            if (serverHandle != 0)
+            {
                 client.ItemHandles[serverHandle] = new HdaItemHandleContext(itemIds[i], requestedClientHandles[i], serverHandle);
             }
 
@@ -209,12 +227,14 @@ public sealed class HdaClientTools {
         string sessionId,
         [Description("HDA server handles returned by opcclassic.hda.get_item_handles.")]
         int[] serverHandles,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         ArgumentNullException.ThrowIfNull(serverHandles);
         HdaClientState client = GetHdaClient(sessionId);
         int[] errors = await client.Server.ReleaseItemHandlesAsync(serverHandles, cancellationToken).ConfigureAwait(false);
         var results = new List<OpcResultDto>(serverHandles.Length);
-        for (int i = 0; i < serverHandles.Length; i++) {
+        for (int i = 0; i < serverHandles.Length; i++)
+        {
             client.ItemHandles.TryRemove(serverHandles[i], out HdaItemHandleContext? context);
             int hresult = i < errors.Length ? errors[i] : OpcResultId.Fail.Code;
             results.Add(new OpcResultDto(hresult, AeClientTools.DescribeHResult(hresult), new OpcResultId(hresult, null).IsSuccess, context?.ItemId, context?.ClientHandle, serverHandles[i]));
@@ -241,7 +261,8 @@ public sealed class HdaClientTools {
         int maxValuesPerItem = 0,
         [Description("True to include bounding values at the start and end times when supported.")]
         bool includeBounds = false,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         HdaClientState client = GetHdaClient(sessionId);
         int[] handles = await ResolveHandlesAsync(client, serverHandles, itemIds, cancellationToken).ConfigureAwait(false);
         OpcHdaItem[] items = await client.SyncRead.ReadRawAsync(ToOpcHdaTime(startTime), ToOpcHdaTime(endTime), maxValuesPerItem, includeBounds, handles, cancellationToken).ConfigureAwait(false);
@@ -266,7 +287,8 @@ public sealed class HdaClientTools {
         int[]? serverHandles = null,
         [Description("Optional item IDs to bind automatically when serverHandles are omitted.")]
         string[]? itemIds = null,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         ArgumentNullException.ThrowIfNull(aggregate);
         HdaClientState client = GetHdaClient(sessionId);
         int[] handles = await ResolveHandlesAsync(client, serverHandles, itemIds, cancellationToken).ConfigureAwait(false);
@@ -288,7 +310,8 @@ public sealed class HdaClientTools {
         int[]? serverHandles = null,
         [Description("Optional item IDs to bind automatically when serverHandles are omitted.")]
         string[]? itemIds = null,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         ArgumentNullException.ThrowIfNull(timestamps);
         HdaClientState client = GetHdaClient(sessionId);
         int[] handles = await ResolveHandlesAsync(client, serverHandles, itemIds, cancellationToken).ConfigureAwait(false);
@@ -313,7 +336,8 @@ public sealed class HdaClientTools {
         int[]? serverHandles = null,
         [Description("Optional item IDs to bind automatically when serverHandles are omitted.")]
         string[]? itemIds = null,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         HdaClientState client = GetHdaClient(sessionId);
         int[] handles = await ResolveHandlesAsync(client, serverHandles, itemIds, cancellationToken).ConfigureAwait(false);
         OpcHdaModifiedItem[] items = await client.SyncRead.ReadModifiedAsync(ToOpcHdaTime(startTime), ToOpcHdaTime(endTime), maxValuesPerItem, handles, cancellationToken).ConfigureAwait(false);
@@ -334,7 +358,8 @@ public sealed class HdaClientTools {
         string startTime,
         [Description("End time as ISO-8601 UTC or HDA relative expression such as NOW.")]
         string endTime,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         ArgumentNullException.ThrowIfNull(attributeIds);
         HdaClientState client = GetHdaClient(sessionId);
         OpcHdaAttribute[] attributes = await client.SyncRead.ReadAttributeAsync(ToOpcHdaTime(startTime), ToOpcHdaTime(endTime), serverHandle, attributeIds, cancellationToken).ConfigureAwait(false);
@@ -355,7 +380,8 @@ public sealed class HdaClientTools {
         int[]? serverHandles = null,
         [Description("Optional item IDs to bind automatically when serverHandles are omitted.")]
         string[]? itemIds = null,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         HdaClientState client = GetHdaClient(sessionId);
         int[] handles = await ResolveHandlesAsync(client, serverHandles, itemIds, cancellationToken).ConfigureAwait(false);
         OpcHdaAnnotation[] annotations = await client.SyncAnnotations.ReadAsync(ToOpcHdaTime(startTime), ToOpcHdaTime(endTime), handles, cancellationToken).ConfigureAwait(false);
@@ -425,7 +451,8 @@ public sealed class HdaClientTools {
         string endTime,
         [Description("HDA server handles returned by opcclassic.hda.get_item_handles.")]
         int[] serverHandles,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         ArgumentNullException.ThrowIfNull(serverHandles);
         HdaClientState client = GetHdaClient(sessionId);
         int[] errors = await client.SyncUpdate.DeleteRawAsync(ToOpcHdaTime(startTime), ToOpcHdaTime(endTime), serverHandles, cancellationToken).ConfigureAwait(false);
@@ -442,7 +469,8 @@ public sealed class HdaClientTools {
         int[] serverHandles,
         [Description("UTC timestamps to delete, aligned with serverHandles.")]
         DateTimeOffset[] timestamps,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         ArgumentNullException.ThrowIfNull(serverHandles);
         ArgumentNullException.ThrowIfNull(timestamps);
         ValidateEqualLength(serverHandles.Length, timestamps.Length, nameof(timestamps));
@@ -467,24 +495,28 @@ public sealed class HdaClientTools {
         string[]? users = null,
         [Description("Optional annotation creation times aligned with serverHandles. Defaults to now.")]
         DateTimeOffset[]? annotationTimes = null,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         ArgumentNullException.ThrowIfNull(serverHandles);
         ArgumentNullException.ThrowIfNull(timestamps);
         ArgumentNullException.ThrowIfNull(annotationTexts);
         ValidateEqualLength(serverHandles.Length, timestamps.Length, nameof(timestamps));
         ValidateEqualLength(serverHandles.Length, annotationTexts.Length, nameof(annotationTexts));
-        if (users is not null) {
+        if (users is not null)
+        {
             ValidateEqualLength(serverHandles.Length, users.Length, nameof(users));
         }
 
-        if (annotationTimes is not null) {
+        if (annotationTimes is not null)
+        {
             ValidateEqualLength(serverHandles.Length, annotationTimes.Length, nameof(annotationTimes));
         }
 
         HdaClientState client = GetHdaClient(sessionId);
         var annotations = new OpcHdaAnnotation[serverHandles.Length];
         long[] fileTimes = new long[serverHandles.Length];
-        for (int i = 0; i < annotations.Length; i++) {
+        for (int i = 0; i < annotations.Length; i++)
+        {
             fileTimes[i] = timestamps[i].ToFileTime();
             annotations[i] = new OpcHdaAnnotation(
                 GetHandleContext(client, serverHandles[i]).ClientHandle,
@@ -504,16 +536,19 @@ public sealed class HdaClientTools {
     public async Task<IReadOnlyList<OpcHdaAggregateDto>> GetAggregates(
         [Description("The connected OPC Classic sessionId.")]
         string sessionId,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         HdaClientState client = GetHdaClient(sessionId);
-        try {
+        try
+        {
             await client.Server.GetAggregatesAsync(out int[] ids, out string[] names, out string[] descriptions, cancellationToken).ConfigureAwait(false);
             return ids.Select((id, index) => new OpcHdaAggregateDto(
                 id,
                 index < names.Length ? names[index] : ((HdaAggregate)id).ToString(),
                 index < descriptions.Length ? descriptions[index] : string.Empty)).ToArray();
         }
-        catch (OpcException ex) when (client.ManagedServer is not null && ex.ResultId.Code == OpcResultId.NotImplemented.Code) {
+        catch (OpcException ex) when (client.ManagedServer is not null && ex.ResultId.Code == OpcResultId.NotImplemented.Code)
+        {
             IReadOnlyList<HdaAggregate> aggregates = await client.ManagedServer.GetSupportedAggregatesAsync(cancellationToken).ConfigureAwait(false);
             return aggregates.Select(aggregate => new OpcHdaAggregateDto((int)aggregate, aggregate.ToString(), string.Empty)).ToArray();
         }
@@ -524,11 +559,13 @@ public sealed class HdaClientTools {
     [Description("Disconnects the session from its OPC HDA server and releases HDA state.")]
     public async Task<OpcResultDto> Disconnect(
         [Description("The connected OPC Classic sessionId.")]
-        string sessionId) {
+        string sessionId)
+    {
         OpcSession session = _sessionManager.GetSession(sessionId);
         HdaClientState? client = session.HdaClient;
         session.HdaClient = null;
-        if (client is not null) {
+        if (client is not null)
+        {
             await client.DisposeAsync().ConfigureAwait(false);
             return new OpcResultDto(0, "HDA client disconnected.", Succeeded: true);
         }
@@ -536,7 +573,8 @@ public sealed class HdaClientTools {
         return new OpcResultDto(1, "HDA client was not connected.", Succeeded: false);
     }
 
-    private HdaClientState GetHdaClient(string sessionId) {
+    private HdaClientState GetHdaClient(string sessionId)
+    {
         OpcSession session = _sessionManager.GetSession(sessionId);
         return session.HdaClient ?? throw new McpException($"Session '{sessionId}' is not connected to an OPC HDA server. Call opcclassic.hda.connect first.");
     }
@@ -548,13 +586,15 @@ public sealed class HdaClientTools {
         JsonElement[] values,
         int[]? qualities,
         UpdateKind updateKind,
-        CancellationToken cancellationToken) {
+        CancellationToken cancellationToken)
+    {
         ArgumentNullException.ThrowIfNull(serverHandles);
         ArgumentNullException.ThrowIfNull(timestamps);
         ArgumentNullException.ThrowIfNull(values);
         ValidateEqualLength(serverHandles.Length, timestamps.Length, nameof(timestamps));
         ValidateEqualLength(serverHandles.Length, values.Length, nameof(values));
-        if (qualities is not null) {
+        if (qualities is not null)
+        {
             ValidateEqualLength(serverHandles.Length, qualities.Length, nameof(qualities));
         }
 
@@ -562,7 +602,8 @@ public sealed class HdaClientTools {
         long[] fileTimes = timestamps.Select(static timestamp => timestamp.ToFileTime()).ToArray();
         OpcVariant[] variants = values.Select(AeClientTools.ToVariant).ToArray();
         int[] qualityValues = qualities ?? Enumerable.Repeat((int)OpcQuality.Good.RawValue, values.Length).ToArray();
-        int[] errors = updateKind switch {
+        int[] errors = updateKind switch
+        {
             UpdateKind.Insert => await client.SyncUpdate.InsertAsync(serverHandles, fileTimes, variants, qualityValues, cancellationToken).ConfigureAwait(false),
             UpdateKind.Replace => await client.SyncUpdate.ReplaceAsync(serverHandles, fileTimes, variants, qualityValues, cancellationToken).ConfigureAwait(false),
             _ => await client.SyncUpdate.InsertReplaceAsync(serverHandles, fileTimes, variants, qualityValues, cancellationToken).ConfigureAwait(false),
@@ -575,17 +616,22 @@ public sealed class HdaClientTools {
             ? await client.ManagedServer.GetStatusAsync(cancellationToken).ConfigureAwait(false)
             : await client.Server.GetStatusAsync(cancellationToken).ConfigureAwait(false);
 
-    private static async Task<int[]> ResolveHandlesAsync(HdaClientState client, int[]? serverHandles, string[]? itemIds, CancellationToken cancellationToken) {
-        if (serverHandles is { Length: > 0 }) {
+    private static async Task<int[]> ResolveHandlesAsync(HdaClientState client, int[]? serverHandles, string[]? itemIds, CancellationToken cancellationToken)
+    {
+        if (serverHandles is { Length: > 0 })
+        {
             return serverHandles;
         }
 
-        if (itemIds is { Length: > 0 }) {
+        if (itemIds is { Length: > 0 })
+        {
             int[] clientHandles = NormalizeClientHandles(itemIds.Length, null);
             int[] handles = await client.Server.GetItemHandlesAsync(itemIds, clientHandles, cancellationToken).ConfigureAwait(false);
-            for (int i = 0; i < itemIds.Length; i++) {
+            for (int i = 0; i < itemIds.Length; i++)
+            {
                 int handle = i < handles.Length ? handles[i] : 0;
-                if (handle != 0) {
+                if (handle != 0)
+                {
                     client.ItemHandles[handle] = new HdaItemHandleContext(itemIds[i], clientHandles[i], handle);
                 }
             }
@@ -610,9 +656,11 @@ public sealed class HdaClientTools {
             status.MaxReturnValues,
             status.IsOperational);
 
-    private static IReadOnlyList<OpcHdaReadResultDto> ToReadResultDtos(HdaClientState client, IReadOnlyList<int> handles, IReadOnlyList<OpcHdaItem> items) {
+    private static IReadOnlyList<OpcHdaReadResultDto> ToReadResultDtos(HdaClientState client, IReadOnlyList<int> handles, IReadOnlyList<OpcHdaItem> items)
+    {
         var results = new List<OpcHdaReadResultDto>(items.Count);
-        for (int i = 0; i < items.Count; i++) {
+        for (int i = 0; i < items.Count; i++)
+        {
             int handle = i < handles.Count ? handles[i] : 0;
             HdaItemHandleContext context = GetHandleContext(client, handle, items[i].ClientHandle);
             results.Add(new OpcHdaReadResultDto(
@@ -630,9 +678,11 @@ public sealed class HdaClientTools {
         return results;
     }
 
-    private static IReadOnlyList<OpcHdaItemValueDto> ToValueDtos(OpcHdaItem item) {
+    private static IReadOnlyList<OpcHdaItemValueDto> ToValueDtos(OpcHdaItem item)
+    {
         var values = new List<OpcHdaItemValueDto>(item.Values.Length);
-        for (int i = 0; i < item.Values.Length; i++) {
+        for (int i = 0; i < item.Values.Length; i++)
+        {
             OpcVariant value = item.Values[i];
             uint quality = i < item.Qualities.Length ? item.Qualities[i] : OpcQuality.Bad.RawValue;
             values.Add(new OpcHdaItemValueDto(
@@ -646,13 +696,16 @@ public sealed class HdaClientTools {
         return values;
     }
 
-    private static IReadOnlyList<OpcHdaModifiedReadResultDto> ToModifiedResultDtos(HdaClientState client, IReadOnlyList<int> handles, IReadOnlyList<OpcHdaModifiedItem> items) {
+    private static IReadOnlyList<OpcHdaModifiedReadResultDto> ToModifiedResultDtos(HdaClientState client, IReadOnlyList<int> handles, IReadOnlyList<OpcHdaModifiedItem> items)
+    {
         var results = new List<OpcHdaModifiedReadResultDto>(items.Count);
-        for (int i = 0; i < items.Count; i++) {
+        for (int i = 0; i < items.Count; i++)
+        {
             int handle = i < handles.Count ? handles[i] : 0;
             HdaItemHandleContext context = GetHandleContext(client, handle, items[i].ClientHandle);
             var values = new List<OpcHdaModifiedValueDto>(items[i].Values.Length);
-            for (int j = 0; j < items[i].Values.Length; j++) {
+            for (int j = 0; j < items[i].Values.Length; j++)
+            {
                 OpcVariant value = items[i].Values[j];
                 uint quality = j < items[i].Qualities.Length ? items[i].Qualities[j] : OpcQuality.Bad.RawValue;
                 values.Add(new OpcHdaModifiedValueDto(
@@ -672,7 +725,8 @@ public sealed class HdaClientTools {
         return results;
     }
 
-    private static IReadOnlyList<OpcHdaAttributeResultDto> ToAttributeResultDtos(HdaClientState client, int serverHandle, IReadOnlyList<OpcHdaAttribute> attributes) {
+    private static IReadOnlyList<OpcHdaAttributeResultDto> ToAttributeResultDtos(HdaClientState client, int serverHandle, IReadOnlyList<OpcHdaAttribute> attributes)
+    {
         HdaItemHandleContext context = GetHandleContext(client, serverHandle);
         return attributes.Select(attribute => new OpcHdaAttributeResultDto(
             context.ItemId,
@@ -684,9 +738,11 @@ public sealed class HdaClientTools {
             ToAttributeValueDtos(attribute))).ToArray();
     }
 
-    private static IReadOnlyList<OpcHdaAttributeValueDto> ToAttributeValueDtos(OpcHdaAttribute attribute) {
+    private static IReadOnlyList<OpcHdaAttributeValueDto> ToAttributeValueDtos(OpcHdaAttribute attribute)
+    {
         var values = new List<OpcHdaAttributeValueDto>(attribute.Values.Length);
-        for (int i = 0; i < attribute.Values.Length; i++) {
+        for (int i = 0; i < attribute.Values.Length; i++)
+        {
             OpcVariant value = attribute.Values[i];
             values.Add(new OpcHdaAttributeValueDto(
                 i < attribute.Timestamps.Length ? attribute.Timestamps[i] : DateTimeOffset.UnixEpoch,
@@ -697,13 +753,16 @@ public sealed class HdaClientTools {
         return values;
     }
 
-    private static IReadOnlyList<OpcHdaAnnotationResultDto> ToAnnotationResultDtos(HdaClientState client, IReadOnlyList<int> handles, IReadOnlyList<OpcHdaAnnotation> annotations) {
+    private static IReadOnlyList<OpcHdaAnnotationResultDto> ToAnnotationResultDtos(HdaClientState client, IReadOnlyList<int> handles, IReadOnlyList<OpcHdaAnnotation> annotations)
+    {
         var results = new List<OpcHdaAnnotationResultDto>(annotations.Count);
-        for (int i = 0; i < annotations.Count; i++) {
+        for (int i = 0; i < annotations.Count; i++)
+        {
             int handle = i < handles.Count ? handles[i] : 0;
             HdaItemHandleContext context = GetHandleContext(client, handle, annotations[i].ClientHandle);
             var values = new List<OpcHdaAnnotationDto>(annotations[i].Annotations.Length);
-            for (int j = 0; j < annotations[i].Annotations.Length; j++) {
+            for (int j = 0; j < annotations[i].Annotations.Length; j++)
+            {
                 values.Add(new OpcHdaAnnotationDto(
                     j < annotations[i].Timestamps.Length ? annotations[i].Timestamps[j] : DateTimeOffset.UnixEpoch,
                     j < annotations[i].AnnotationTimes.Length ? annotations[i].AnnotationTimes[j] : DateTimeOffset.UnixEpoch,
@@ -717,9 +776,11 @@ public sealed class HdaClientTools {
         return results;
     }
 
-    private static IReadOnlyList<OpcResultDto> ToUpdateResults(HdaClientState client, IReadOnlyList<int> serverHandles, IReadOnlyList<int> errors) {
+    private static IReadOnlyList<OpcResultDto> ToUpdateResults(HdaClientState client, IReadOnlyList<int> serverHandles, IReadOnlyList<int> errors)
+    {
         var results = new List<OpcResultDto>(serverHandles.Count);
-        for (int i = 0; i < serverHandles.Count; i++) {
+        for (int i = 0; i < serverHandles.Count; i++)
+        {
             HdaItemHandleContext context = GetHandleContext(client, serverHandles[i]);
             int hresult = i < errors.Count ? errors[i] : OpcResultId.Fail.Code;
             results.Add(new OpcResultDto(hresult, AeClientTools.DescribeHResult(hresult), new OpcResultId(hresult, null).IsSuccess, context.ItemId, context.ClientHandle, serverHandles[i]));
@@ -731,30 +792,37 @@ public sealed class HdaClientTools {
     private static OpcHdaItemHandleDto ToHandleDto(string itemId, int clientHandle, int serverHandle, int hresult) =>
         new(itemId, clientHandle, serverHandle, hresult, AeClientTools.DescribeHResult(hresult), new OpcResultId(hresult, null).IsSuccess);
 
-    private static HdaItemHandleContext GetHandleContext(HdaClientState client, int serverHandle, int clientHandle = 0) {
-        if (serverHandle != 0 && client.ItemHandles.TryGetValue(serverHandle, out HdaItemHandleContext? context)) {
+    private static HdaItemHandleContext GetHandleContext(HdaClientState client, int serverHandle, int clientHandle = 0)
+    {
+        if (serverHandle != 0 && client.ItemHandles.TryGetValue(serverHandle, out HdaItemHandleContext? context))
+        {
             return context;
         }
 
         return new HdaItemHandleContext(serverHandle == 0 ? string.Empty : "#" + serverHandle.ToString(CultureInfo.InvariantCulture), clientHandle, serverHandle);
     }
 
-    private static int[] NormalizeClientHandles(int count, int[]? clientHandles) {
+    private static int[] NormalizeClientHandles(int count, int[]? clientHandles)
+    {
         var handles = new int[count];
-        for (int i = 0; i < handles.Length; i++) {
+        for (int i = 0; i < handles.Length; i++)
+        {
             handles[i] = clientHandles is not null && i < clientHandles.Length ? clientHandles[i] : i + 1;
         }
 
         return handles;
     }
 
-    private static OpcHdaTime ToOpcHdaTime(string value) {
-        if (string.IsNullOrWhiteSpace(value)) {
+    private static OpcHdaTime ToOpcHdaTime(string value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+        {
             return OpcHdaTime.FromTimestamp(DateTimeOffset.UtcNow);
         }
 
         string trimmed = value.Trim();
-        if (trimmed.StartsWith("NOW", StringComparison.OrdinalIgnoreCase)) {
+        if (trimmed.StartsWith("NOW", StringComparison.OrdinalIgnoreCase))
+        {
             // Convert relative "NOW-1H" expressions to absolute UTC timestamps
             // so the wire format stays struct-only (no LPWSTR field that
             // requires deferred NDR encoding inside OPCHDA_TIME).
@@ -767,26 +835,32 @@ public sealed class HdaClientTools {
             : OpcHdaTime.FromTimestamp(DateTimeOffset.UtcNow);
     }
 
-    private static DateTimeOffset ResolveRelativeTime(string expression, DateTimeOffset reference) {
+    private static DateTimeOffset ResolveRelativeTime(string expression, DateTimeOffset reference)
+    {
         // Accepts "NOW", "NOW-1H", "NOW+30M", "NOW-2D", etc. Falls back to
         // reference time when the suffix is unrecognized.
         string trimmed = expression.Trim();
-        if (string.Equals(trimmed, "NOW", StringComparison.OrdinalIgnoreCase)) {
+        if (string.Equals(trimmed, "NOW", StringComparison.OrdinalIgnoreCase))
+        {
             return reference;
         }
-        if (trimmed.Length < 5) {
+        if (trimmed.Length < 5)
+        {
             return reference;
         }
         char sign = trimmed[3];
-        if (sign != '+' && sign != '-') {
+        if (sign != '+' && sign != '-')
+        {
             return reference;
         }
         string magnitudePart = trimmed[4..^1];
         char unit = char.ToUpperInvariant(trimmed[^1]);
-        if (!double.TryParse(magnitudePart, NumberStyles.Number, CultureInfo.InvariantCulture, out double magnitude)) {
+        if (!double.TryParse(magnitudePart, NumberStyles.Number, CultureInfo.InvariantCulture, out double magnitude))
+        {
             return reference;
         }
-        TimeSpan delta = unit switch {
+        TimeSpan delta = unit switch
+        {
             'S' => TimeSpan.FromSeconds(magnitude),
             'M' => TimeSpan.FromMinutes(magnitude),
             'H' => TimeSpan.FromHours(magnitude),
@@ -796,19 +870,23 @@ public sealed class HdaClientTools {
         return sign == '+' ? reference + delta : reference - delta;
     }
 
-    private static HdaBrowseType ParseBrowseType(string browseType) => browseType?.Trim().ToLowerInvariant() switch {
+    private static HdaBrowseType ParseBrowseType(string browseType) => browseType?.Trim().ToLowerInvariant() switch
+    {
         "branch" or "branches" => HdaBrowseType.Branch,
         "flat" or "all" => HdaBrowseType.Flat,
         _ => HdaBrowseType.Leaf,
     };
 
-    private static HdaAggregate ParseAggregate(string aggregate) {
-        if (int.TryParse(aggregate, NumberStyles.Integer, CultureInfo.InvariantCulture, out int id)) {
+    private static HdaAggregate ParseAggregate(string aggregate)
+    {
+        if (int.TryParse(aggregate, NumberStyles.Integer, CultureInfo.InvariantCulture, out int id))
+        {
             return (HdaAggregate)id;
         }
 
         string normalized = aggregate.Replace(" ", string.Empty, StringComparison.OrdinalIgnoreCase).Replace("_", string.Empty, StringComparison.OrdinalIgnoreCase);
-        return normalized.ToLowerInvariant() switch {
+        return normalized.ToLowerInvariant() switch
+        {
             "min" => HdaAggregate.Minimum,
             "max" => HdaAggregate.Maximum,
             "stdev" or "stddev" => HdaAggregate.StandardDeviation,
@@ -817,20 +895,25 @@ public sealed class HdaClientTools {
         };
     }
 
-    private static void ValidateEqualLength(int expected, int actual, string parameterName) {
-        if (expected != actual) {
+    private static void ValidateEqualLength(int expected, int actual, string parameterName)
+    {
+        if (expected != actual)
+        {
             throw new ArgumentException($"Expected {expected} values but received {actual}.", parameterName);
         }
     }
 
-    private enum UpdateKind {
+    private enum UpdateKind
+    {
         Insert,
         Replace,
         InsertReplace,
     }
 
-    private sealed class DefaultOpcHdaConnectionFactory : IOpcHdaConnectionFactory {
-        public async Task<HdaClientState> ConnectAsync(HdaConnectionRequest request, CancellationToken cancellationToken = default) {
+    private sealed class DefaultOpcHdaConnectionFactory : IOpcHdaConnectionFactory
+    {
+        public async Task<HdaClientState> ConnectAsync(HdaConnectionRequest request, CancellationToken cancellationToken = default)
+        {
             ArgumentNullException.ThrowIfNull(request);
             OpcMcpDcomConnectionRequest normalized = OpcMcpDcomConnectionHelper.NormalizeRequest(
                 request.Host,
@@ -844,8 +927,10 @@ public sealed class HdaClientTools {
                 "opchda");
 
             string? inMemoryKey = OpcMcpDcomConnectionHelper.TryGetInMemoryKey(normalized.ConnectionString);
-            if (inMemoryKey is not null) {
-                if (!InMemoryHdaConnectionRegistry.TryGet(inMemoryKey, out InMemoryHdaConnection connection)) {
+            if (inMemoryKey is not null)
+            {
+                if (!InMemoryHdaConnectionRegistry.TryGet(inMemoryKey, out InMemoryHdaConnection connection))
+                {
                     throw new McpException($"No in-memory HDA channel is registered for '{inMemoryKey}'.");
                 }
 

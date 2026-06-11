@@ -48,7 +48,8 @@ namespace Opc.Classic.Hosting.Windows;
 /// </para>
 /// </remarks>
 [SupportedOSPlatform("windows")]
-public static unsafe class ComClassObjectRegistrar {
+public static unsafe class ComClassObjectRegistrar
+{
     private const int S_OK = 0;
     private const int E_NOINTERFACE = unchecked((int)0x80004002);
     private const int E_INVALIDARG = unchecked((int)0x80070057);
@@ -78,10 +79,12 @@ public static unsafe class ComClassObjectRegistrar {
     /// choice — MTA dispatches COM calls on a pool thread without requiring a
     /// message pump.
     /// </remarks>
-    public static void InitializeApartmentThreaded() {
+    public static void InitializeApartmentThreaded()
+    {
         int hr = CoInitializeEx(IntPtr.Zero, COINIT_APARTMENTTHREADED);
         // S_FALSE (1) means "apartment already initialized"; both are acceptable.
-        if (hr < 0) {
+        if (hr < 0)
+        {
             throw new InvalidOperationException(
                 $"CoInitializeEx failed with HRESULT 0x{hr:X8}.");
         }
@@ -93,9 +96,11 @@ public static unsafe class ComClassObjectRegistrar {
     /// servers because incoming activation requests from SCM dispatch on
     /// a pool thread without requiring a Win32 <c>GetMessage</c> loop.
     /// </summary>
-    public static void InitializeMultithreaded() {
+    public static void InitializeMultithreaded()
+    {
         int hr = CoInitializeEx(IntPtr.Zero, COINIT_MULTITHREADED);
-        if (hr < 0) {
+        if (hr < 0)
+        {
             throw new InvalidOperationException(
                 $"CoInitializeEx(MULTITHREADED) failed with HRESULT 0x{hr:X8}.");
         }
@@ -135,7 +140,8 @@ public static unsafe class ComClassObjectRegistrar {
     public static uint RegisterClassObject(
         Guid clsid,
         Func<Guid, IntPtr>? createInstanceCallback,
-        bool suspended = true) {
+        bool suspended = true)
+    {
         IntPtr factoryInstance = AllocateFactoryInstance();
         s_factories[factoryInstance] = new FactoryEntry(clsid, createInstanceCallback);
 
@@ -147,7 +153,8 @@ public static unsafe class ComClassObjectRegistrar {
             regcls,
             out uint cookie);
 
-        if (hr < 0) {
+        if (hr < 0)
+        {
             throw new InvalidOperationException(
                 $"CoRegisterClassObject failed for CLSID {clsid:B} with HRESULT 0x{hr:X8}.");
         }
@@ -159,9 +166,11 @@ public static unsafe class ComClassObjectRegistrar {
     /// Resumes activation dispatch after all class objects have been registered with
     /// <c>REGCLS_SUSPENDED</c>.
     /// </summary>
-    public static void ResumeClassObjects() {
+    public static void ResumeClassObjects()
+    {
         int hr = CoResumeClassObjects();
-        if (hr < 0) {
+        if (hr < 0)
+        {
             throw new InvalidOperationException(
                 $"CoResumeClassObjects failed with HRESULT 0x{hr:X8}.");
         }
@@ -171,9 +180,11 @@ public static unsafe class ComClassObjectRegistrar {
     /// Revokes a previously registered class object so SCM stops routing activations
     /// to this process.
     /// </summary>
-    public static void RevokeClassObject(uint cookie) {
+    public static void RevokeClassObject(uint cookie)
+    {
         int hr = CoRevokeClassObject(cookie);
-        if (hr < 0) {
+        if (hr < 0)
+        {
             throw new InvalidOperationException(
                 $"CoRevokeClassObject failed with HRESULT 0x{hr:X8}.");
         }
@@ -182,7 +193,8 @@ public static unsafe class ComClassObjectRegistrar {
     [SuppressMessage(
         "Reliability", "CA2018:Buffer size argument matches element count",
         Justification = "Allocating IntPtr-sized native struct with explicit byte count.")]
-    private static IntPtr AllocateFactoryInstance() {
+    private static IntPtr AllocateFactoryInstance()
+    {
         IntPtr* vtable = (IntPtr*)NativeMemory.Alloc((nuint)(5 * sizeof(IntPtr)));
         vtable[0] = (IntPtr)(delegate* unmanaged<IntPtr, Guid*, IntPtr*, int>)&QueryInterface;
         vtable[1] = (IntPtr)(delegate* unmanaged<IntPtr, uint>)&AddRef;
@@ -196,18 +208,22 @@ public static unsafe class ComClassObjectRegistrar {
     }
 
     [UnmanagedCallersOnly]
-    private static int QueryInterface(IntPtr pThis, Guid* riid, IntPtr* ppv) {
-        if (ppv == null) {
+    private static int QueryInterface(IntPtr pThis, Guid* riid, IntPtr* ppv)
+    {
+        if (ppv == null)
+        {
             return E_INVALIDARG;
         }
 
-        if (riid == null) {
+        if (riid == null)
+        {
             *ppv = IntPtr.Zero;
             return E_INVALIDARG;
         }
 
         Guid iid = *riid;
-        if (iid == IID_IUnknown || iid == IID_IClassFactory) {
+        if (iid == IID_IUnknown || iid == IID_IClassFactory)
+        {
             *ppv = pThis;
             return S_OK;
         }
@@ -217,16 +233,20 @@ public static unsafe class ComClassObjectRegistrar {
     }
 
     [UnmanagedCallersOnly]
-    private static uint AddRef(IntPtr pThis) {
-        if (!s_factories.TryGetValue(pThis, out FactoryEntry? entry)) {
+    private static uint AddRef(IntPtr pThis)
+    {
+        if (!s_factories.TryGetValue(pThis, out FactoryEntry? entry))
+        {
             return 1;
         }
         return (uint)Interlocked.Increment(ref entry.RefCount);
     }
 
     [UnmanagedCallersOnly]
-    private static uint Release(IntPtr pThis) {
-        if (!s_factories.TryGetValue(pThis, out FactoryEntry? entry)) {
+    private static uint Release(IntPtr pThis)
+    {
+        if (!s_factories.TryGetValue(pThis, out FactoryEntry? entry))
+        {
             return 0;
         }
 
@@ -238,24 +258,29 @@ public static unsafe class ComClassObjectRegistrar {
     }
 
     [UnmanagedCallersOnly]
-    private static int CreateInstance(IntPtr pThis, IntPtr pUnkOuter, Guid* riid, IntPtr* ppv) {
+    private static int CreateInstance(IntPtr pThis, IntPtr pUnkOuter, Guid* riid, IntPtr* ppv)
+    {
         _ = pUnkOuter;
-        if (ppv == null) {
+        if (ppv == null)
+        {
             return E_INVALIDARG;
         }
         *ppv = IntPtr.Zero;
 
-        if (riid == null) {
+        if (riid == null)
+        {
             return E_INVALIDARG;
         }
 
         if (!s_factories.TryGetValue(pThis, out FactoryEntry? entry)
-            || entry.CreateInstanceCallback is null) {
+            || entry.CreateInstanceCallback is null)
+        {
             return E_NOINTERFACE;
         }
 
         IntPtr ccw;
-        try {
+        try
+        {
             ccw = entry.CreateInstanceCallback(*riid);
         }
 #pragma warning disable CA1031 // Crossing the unmanaged COM boundary; any managed exception here would escape into ole32 and crash the process.
@@ -265,7 +290,8 @@ public static unsafe class ComClassObjectRegistrar {
             return E_NOINTERFACE;
         }
 
-        if (ccw == IntPtr.Zero) {
+        if (ccw == IntPtr.Zero)
+        {
             return E_NOINTERFACE;
         }
 
@@ -274,7 +300,8 @@ public static unsafe class ComClassObjectRegistrar {
     }
 
     [UnmanagedCallersOnly]
-    private static int LockServer(IntPtr pThis, int fLock) {
+    private static int LockServer(IntPtr pThis, int fLock)
+    {
         _ = pThis;
         _ = fLock;
         return S_OK;
@@ -307,8 +334,10 @@ public static unsafe class ComClassObjectRegistrar {
     [DefaultDllImportSearchPaths(DllImportSearchPath.System32)]
     private static extern int CoResumeClassObjects();
 
-    private sealed class FactoryEntry {
-        public FactoryEntry(Guid clsid, Func<Guid, IntPtr>? createInstanceCallback) {
+    private sealed class FactoryEntry
+    {
+        public FactoryEntry(Guid clsid, Func<Guid, IntPtr>? createInstanceCallback)
+        {
             Clsid = clsid;
             CreateInstanceCallback = createInstanceCallback;
         }

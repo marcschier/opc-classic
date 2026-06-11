@@ -23,9 +23,11 @@ namespace Opc.Classic.Da.Ndr;
 ///     UINT32   dwReserved (0)
 /// </code>
 /// </remarks>
-public static class NdrOpcItemPropertiesCodec {
+public static class NdrOpcItemPropertiesCodec
+{
     /// <summary>Encodes a single OPCITEMPROPERTIES in NDR.</summary>
-    public static void Write(ref NdrWriter writer, OpcItemProperties itemProperties) {
+    public static void Write(ref NdrWriter writer, OpcItemProperties itemProperties)
+    {
         ArgumentNullException.ThrowIfNull(itemProperties);
 
         OpcItemPropertyResult[] properties = itemProperties.Properties;
@@ -33,24 +35,28 @@ public static class NdrOpcItemPropertiesCodec {
         writer.WriteInt32(itemProperties.ErrorId);
         writer.WriteUInt32(unchecked((uint)count));
         writer.WriteUInt32(unchecked((uint)count));
-        for (int i = 0; i < count; i++) {
+        for (int i = 0; i < count; i++)
+        {
             NdrOpcItemPropertyCodec.Write(ref writer, properties[i]);
         }
         writer.WriteUInt32(0u);
     }
 
     /// <summary>Decodes a single OPCITEMPROPERTIES from NDR.</summary>
-    public static OpcItemProperties Read(ref NdrReader reader) {
+    public static OpcItemProperties Read(ref NdrReader reader)
+    {
         int hrErrorId = reader.ReadInt32();
         _ = reader.ReadUInt32();
         uint arrayCount = reader.ReadUInt32();
-        if (arrayCount > (uint)int.MaxValue) {
+        if (arrayCount > (uint)int.MaxValue)
+        {
             throw new InvalidDataException($"OPCITEMPROPERTIES pItemProperties conformance count {arrayCount} too large.");
         }
 
         int count = (int)arrayCount;
         var properties = new OpcItemPropertyResult[count];
-        for (int i = 0; i < count; i++) {
+        for (int i = 0; i < count; i++)
+        {
             properties[i] = NdrOpcItemPropertyCodec.Read(ref reader);
         }
         _ = reader.ReadUInt32();

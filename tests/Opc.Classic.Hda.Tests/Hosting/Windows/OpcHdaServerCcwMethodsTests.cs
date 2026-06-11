@@ -17,7 +17,8 @@ namespace Opc.Classic.Hda.Tests.Hosting.Windows;
 
 /// <summary>Windows-only method dispatch tests for <see cref="OpcHdaServerCcw" />.</summary>
 [SupportedOSPlatform("windows")]
-public sealed class OpcHdaServerCcwMethodsTests {
+public sealed class OpcHdaServerCcwMethodsTests
+{
     private const int S_OK = 0;
     private const int E_NOINTERFACE = unchecked((int)0x80004002);
     private const int E_INVALIDARG = unchecked((int)0x80070057);
@@ -26,8 +27,10 @@ public sealed class OpcHdaServerCcwMethodsTests {
     private static readonly Guid IID_IUnknown = Guid.Parse("00000000-0000-0000-C000-000000000046");
 
     [Test]
-    public async Task QueryInterface_for_supported_iids_returns_nonzero_tearoffs() {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task QueryInterface_for_supported_iids_returns_nonzero_tearoffs()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
@@ -43,8 +46,10 @@ public sealed class OpcHdaServerCcwMethodsTests {
     }
 
     [Test]
-    public async Task QueryInterface_for_IUnknown_on_any_tearoff_returns_canonical_identity() {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task QueryInterface_for_IUnknown_on_any_tearoff_returns_canonical_identity()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
@@ -59,8 +64,10 @@ public sealed class OpcHdaServerCcwMethodsTests {
     }
 
     [Test]
-    public async Task QueryInterface_for_unsupported_iid_returns_E_NOINTERFACE() {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task QueryInterface_for_unsupported_iid_returns_E_NOINTERFACE()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
@@ -72,8 +79,10 @@ public sealed class OpcHdaServerCcwMethodsTests {
     }
 
     [Test]
-    public async Task Release_to_zero_removes_ccw_from_registry() {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task Release_to_zero_removes_ccw_from_registry()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
@@ -84,8 +93,10 @@ public sealed class OpcHdaServerCcwMethodsTests {
     }
 
     [Test]
-    public async Task GetHistorianStatus_dispatches_through_managed_server() {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task GetHistorianStatus_dispatches_through_managed_server()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
@@ -105,8 +116,10 @@ public sealed class OpcHdaServerCcwMethodsTests {
     }
 
     [Test]
-    public async Task ValidateItemIDs_dispatches_and_returns_per_item_errors() {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task ValidateItemIDs_dispatches_and_returns_per_item_errors()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
@@ -123,8 +136,10 @@ public sealed class OpcHdaServerCcwMethodsTests {
     }
 
     [Test]
-    public async Task GetItemHandles_and_ReleaseItemHandles_dispatch_with_int_array_marshaling() {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task GetItemHandles_and_ReleaseItemHandles_dispatch_with_int_array_marshaling()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
@@ -144,8 +159,10 @@ public sealed class OpcHdaServerCcwMethodsTests {
     }
 
     [Test]
-    public async Task ReadRaw_tearoffs_exist_and_reject_empty_counts() {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task ReadRaw_tearoffs_exist_and_reject_empty_counts()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
@@ -159,7 +176,8 @@ public sealed class OpcHdaServerCcwMethodsTests {
         await Assert.That(Helpers.InvokeAsyncReadRaw(asyncRead)).IsEqualTo(E_INVALIDARG);
     }
 
-    private sealed class StubHdaServer : IOpcHdaServer {
+    private sealed class StubHdaServer : IOpcHdaServer
+    {
         public int StatusCalls { get; private set; }
 
         public string[]? LastValidatedItemIds { get; private set; }
@@ -168,9 +186,11 @@ public sealed class OpcHdaServerCcwMethodsTests {
 
         public int[]? LastReleasedHandles { get; private set; }
 
-        public Task<OpcServerStatus> GetStatusAsync(CancellationToken cancellationToken = default) {
+        public Task<OpcServerStatus> GetStatusAsync(CancellationToken cancellationToken = default)
+        {
             StatusCalls++;
-            return Task.FromResult(new OpcServerStatus {
+            return Task.FromResult(new OpcServerStatus
+            {
                 Spec = OpcStatusSpec.Hda,
                 State = OpcServerState.Running,
                 CurrentTime = DateTimeOffset.FromUnixTimeSeconds(20),
@@ -181,24 +201,28 @@ public sealed class OpcHdaServerCcwMethodsTests {
             });
         }
 
-        public Task<int[]> ValidateItemIdsAsync(string[] itemIds, CancellationToken cancellationToken = default) {
+        public Task<int[]> ValidateItemIdsAsync(string[] itemIds, CancellationToken cancellationToken = default)
+        {
             LastValidatedItemIds = itemIds;
             return Task.FromResult(new[] { S_OK, E_FAIL });
         }
 
-        Task<int[]> IOPCHDA_Server.GetItemHandlesAsync(string[] itemIds, int[] clientHandles, CancellationToken cancellationToken) {
+        Task<int[]> IOPCHDA_Server.GetItemHandlesAsync(string[] itemIds, int[] clientHandles, CancellationToken cancellationToken)
+        {
             LastValidatedItemIds = itemIds;
             LastClientHandles = clientHandles;
             return Task.FromResult(new[] { 501, 502 });
         }
 
-        Task<int[]> IOPCHDA_Server.ReleaseItemHandlesAsync(int[] serverHandles, CancellationToken cancellationToken) {
+        Task<int[]> IOPCHDA_Server.ReleaseItemHandlesAsync(int[] serverHandles, CancellationToken cancellationToken)
+        {
             LastReleasedHandles = serverHandles;
             return Task.FromResult(new[] { S_OK, OpcResultId.InvalidHandle.Code });
         }
     }
 
-    private static class Helpers {
+    private static class Helpers
+    {
         internal readonly record struct HistorianStatusResult(
             int Hr,
             int Status,
@@ -217,24 +241,28 @@ public sealed class OpcHdaServerCcwMethodsTests {
 
         private readonly record struct StringArrayAllocation(IntPtr Array, IntPtr[] Strings);
 
-        internal static IntPtr InvokeQI(IntPtr ccw, Guid iid) {
+        internal static IntPtr InvokeQI(IntPtr ccw, Guid iid)
+        {
             QueryInterfaceDelegate qi = GetMethod<QueryInterfaceDelegate>(ccw, 0);
             int hr = qi(ccw, ref iid, out IntPtr returned);
             return hr == S_OK ? returned : IntPtr.Zero;
         }
 
-        internal static (int Hr, IntPtr Returned) InvokeQIRaw(IntPtr ccw, Guid iid) {
+        internal static (int Hr, IntPtr Returned) InvokeQIRaw(IntPtr ccw, Guid iid)
+        {
             QueryInterfaceDelegate qi = GetMethod<QueryInterfaceDelegate>(ccw, 0);
             int hr = qi(ccw, ref iid, out IntPtr returned);
             return (hr, returned);
         }
 
-        internal static void InvokeRelease(IntPtr ccw) {
+        internal static void InvokeRelease(IntPtr ccw)
+        {
             ReleaseDelegate release = GetMethod<ReleaseDelegate>(ccw, 2);
             release(ccw);
         }
 
-        internal static HistorianStatusResult InvokeGetHistorianStatus(IntPtr server) {
+        internal static HistorianStatusResult InvokeGetHistorianStatus(IntPtr server)
+        {
             GetHistorianStatusDelegate getStatus = GetMethod<GetHistorianStatusDelegate>(server, 5);
             using CoTaskMemBlock status = CoTaskMemBlock.Allocate(sizeof(int));
             using CoTaskMemBlock major = CoTaskMemBlock.Allocate(sizeof(ushort));
@@ -248,47 +276,57 @@ public sealed class OpcHdaServerCcwMethodsTests {
             return ReadHistorianStatus(hr, status, currentTime, startTime, major, minor, build, max, statusString, vendor);
         }
 
-        internal static ErrorsResult InvokeValidateItemIDs(IntPtr server, string[] itemIds) {
+        internal static ErrorsResult InvokeValidateItemIDs(IntPtr server, string[] itemIds)
+        {
             ValidateItemIDsDelegate validate = GetMethod<ValidateItemIDsDelegate>(server, 8);
             StringArrayAllocation ids = AllocateStringPointerArray(itemIds);
-            try {
+            try
+            {
                 int hr = validate(server, (uint)itemIds.Length, ids.Array, out IntPtr ppErrors);
                 return new ErrorsResult(hr, ReadAndFreeInt32Array(ppErrors, itemIds.Length));
             }
-            finally {
+            finally
+            {
                 FreeStringPointerArray(ids);
             }
         }
 
-        internal static ItemHandlesResult InvokeGetItemHandles(IntPtr server, string[] itemIds, int[] clientHandles) {
+        internal static ItemHandlesResult InvokeGetItemHandles(IntPtr server, string[] itemIds, int[] clientHandles)
+        {
             GetItemHandlesDelegate getHandles = GetMethod<GetItemHandlesDelegate>(server, 6);
             StringArrayAllocation ids = AllocateStringPointerArray(itemIds);
             IntPtr pClientHandles = AllocateInt32Array(clientHandles);
-            try {
+            try
+            {
                 int hr = getHandles(server, (uint)itemIds.Length, ids.Array, pClientHandles, out IntPtr pServer, out IntPtr pErrors);
                 int[] handles = ReadAndFreeInt32Array(pServer, itemIds.Length);
                 int[] errors = ReadAndFreeInt32Array(pErrors, itemIds.Length);
                 return new ItemHandlesResult(hr, handles, errors);
             }
-            finally {
+            finally
+            {
                 FreeStringPointerArray(ids);
                 Marshal.FreeCoTaskMem(pClientHandles);
             }
         }
 
-        internal static ErrorsResult InvokeReleaseItemHandles(IntPtr server, int[] serverHandles) {
+        internal static ErrorsResult InvokeReleaseItemHandles(IntPtr server, int[] serverHandles)
+        {
             ReleaseItemHandlesDelegate release = GetMethod<ReleaseItemHandlesDelegate>(server, 7);
             IntPtr pServerHandles = AllocateInt32Array(serverHandles);
-            try {
+            try
+            {
                 int hr = release(server, (uint)serverHandles.Length, pServerHandles, out IntPtr pErrors);
                 return new ErrorsResult(hr, ReadAndFreeInt32Array(pErrors, serverHandles.Length));
             }
-            finally {
+            finally
+            {
                 Marshal.FreeCoTaskMem(pServerHandles);
             }
         }
 
-        internal static int InvokeSyncReadRaw(IntPtr syncRead) {
+        internal static int InvokeSyncReadRaw(IntPtr syncRead)
+        {
             SyncReadRawDelegate readRaw = GetMethod<SyncReadRawDelegate>(syncRead, 3);
             int hr = readRaw(syncRead, IntPtr.Zero, IntPtr.Zero, 0, 0, 0, IntPtr.Zero, out IntPtr items, out IntPtr errors);
             FreeIfNonZero(items);
@@ -296,7 +334,8 @@ public sealed class OpcHdaServerCcwMethodsTests {
             return hr;
         }
 
-        internal static int InvokeAsyncReadRaw(IntPtr asyncRead) {
+        internal static int InvokeAsyncReadRaw(IntPtr asyncRead)
+        {
             AsyncReadRawDelegate readRaw = GetMethod<AsyncReadRawDelegate>(asyncRead, 3);
             using CoTaskMemBlock cancel = CoTaskMemBlock.Allocate(sizeof(int));
             int hr = readRaw(asyncRead, 1, IntPtr.Zero, IntPtr.Zero, 0, 0, 0, IntPtr.Zero, cancel.Pointer, out IntPtr errors);
@@ -314,16 +353,19 @@ public sealed class OpcHdaServerCcwMethodsTests {
             CoTaskMemBlock build,
             CoTaskMemBlock max,
             CoTaskMemBlock statusString,
-            CoTaskMemBlock vendor) {
+            CoTaskMemBlock vendor)
+        {
             IntPtr statusTextPtr = Marshal.ReadIntPtr(statusString.Pointer);
             IntPtr vendorPtr = Marshal.ReadIntPtr(vendor.Pointer);
-            try {
+            try
+            {
                 return new HistorianStatusResult(hr, Marshal.ReadInt32(status.Pointer), ReadFileTime(currentTime),
                     ReadFileTime(startTime), ReadUInt16(major.Pointer), ReadUInt16(minor.Pointer),
                     ReadUInt16(build.Pointer), unchecked((uint)Marshal.ReadInt32(max.Pointer)),
                     Marshal.PtrToStringUni(statusTextPtr), Marshal.PtrToStringUni(vendorPtr));
             }
-            finally {
+            finally
+            {
                 FreeIfNonZero(currentTime);
                 FreeIfNonZero(startTime);
                 FreeIfNonZero(statusTextPtr);
@@ -332,55 +374,67 @@ public sealed class OpcHdaServerCcwMethodsTests {
         }
 
         private static T GetMethod<T>(IntPtr tearoff, int slot)
-            where T : Delegate {
+            where T : Delegate
+        {
             IntPtr vtable = Marshal.ReadIntPtr(tearoff);
             IntPtr method = Marshal.ReadIntPtr(vtable, slot * IntPtr.Size);
             return Marshal.GetDelegateForFunctionPointer<T>(method);
         }
 
-        private static StringArrayAllocation AllocateStringPointerArray(string[] values) {
+        private static StringArrayAllocation AllocateStringPointerArray(string[] values)
+        {
             IntPtr array = Marshal.AllocCoTaskMem(values.Length * IntPtr.Size);
             var strings = new IntPtr[values.Length];
-            for (int i = 0; i < values.Length; i++) {
+            for (int i = 0; i < values.Length; i++)
+            {
                 strings[i] = Marshal.StringToCoTaskMemUni(values[i]);
                 Marshal.WriteIntPtr(array, i * IntPtr.Size, strings[i]);
             }
             return new StringArrayAllocation(array, strings);
         }
 
-        private static void FreeStringPointerArray(StringArrayAllocation allocation) {
-            for (int i = 0; i < allocation.Strings.Length; i++) {
+        private static void FreeStringPointerArray(StringArrayAllocation allocation)
+        {
+            for (int i = 0; i < allocation.Strings.Length; i++)
+            {
                 FreeIfNonZero(allocation.Strings[i]);
             }
             FreeIfNonZero(allocation.Array);
         }
 
-        private static IntPtr AllocateInt32Array(int[] values) {
+        private static IntPtr AllocateInt32Array(int[] values)
+        {
             IntPtr ptr = Marshal.AllocCoTaskMem(values.Length * sizeof(int));
-            if (values.Length > 0) {
+            if (values.Length > 0)
+            {
                 Marshal.Copy(values, 0, ptr, values.Length);
             }
             return ptr;
         }
 
-        private static int[] ReadAndFreeInt32Array(IntPtr ptr, int count) {
+        private static int[] ReadAndFreeInt32Array(IntPtr ptr, int count)
+        {
             var values = new int[count];
-            if (ptr != IntPtr.Zero && count > 0) {
+            if (ptr != IntPtr.Zero && count > 0)
+            {
                 Marshal.Copy(ptr, values, 0, count);
             }
             FreeIfNonZero(ptr);
             return values;
         }
 
-        private static DateTimeOffset ReadFileTime(IntPtr ptr) {
+        private static DateTimeOffset ReadFileTime(IntPtr ptr)
+        {
             long fileTime = ptr == IntPtr.Zero ? 0L : Marshal.ReadInt64(ptr);
             return fileTime == 0L ? default : DateTimeOffset.FromFileTime(fileTime);
         }
 
         private static ushort ReadUInt16(IntPtr ptr) => unchecked((ushort)Marshal.ReadInt16(ptr));
 
-        private static void FreeIfNonZero(IntPtr ptr) {
-            if (ptr != IntPtr.Zero) {
+        private static void FreeIfNonZero(IntPtr ptr)
+        {
+            if (ptr != IntPtr.Zero)
+            {
                 Marshal.FreeCoTaskMem(ptr);
             }
         }
@@ -444,21 +498,25 @@ public sealed class OpcHdaServerCcwMethodsTests {
             IntPtr pdwCancelID,
             out IntPtr ppErrors);
 
-        private readonly struct CoTaskMemBlock : IDisposable {
-            public CoTaskMemBlock(IntPtr pointer) {
+        private readonly struct CoTaskMemBlock : IDisposable
+        {
+            public CoTaskMemBlock(IntPtr pointer)
+            {
                 Pointer = pointer;
             }
 
             public IntPtr Pointer { get; }
 
-            public static CoTaskMemBlock Allocate(int byteCount) {
+            public static CoTaskMemBlock Allocate(int byteCount)
+            {
                 IntPtr ptr = Marshal.AllocCoTaskMem(byteCount);
                 byte[] zero = new byte[byteCount];
                 Marshal.Copy(zero, 0, ptr, byteCount);
                 return new CoTaskMemBlock(ptr);
             }
 
-            public void Dispose() {
+            public void Dispose()
+            {
                 FreeIfNonZero(Pointer);
             }
         }

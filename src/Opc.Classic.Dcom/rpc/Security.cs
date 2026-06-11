@@ -5,7 +5,8 @@ namespace Opc.Classic.Dcom.Rpc;
 /// <summary>
 /// Security constants
 /// </summary>
-public static class Security {
+public static class Security
+{
 
     /// <summary>
     /// User name key

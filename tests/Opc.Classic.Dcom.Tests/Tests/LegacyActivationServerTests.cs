@@ -11,13 +11,15 @@ using TUnit.Core;
 
 namespace Opc.Classic.Dcom.Tests;
 
-public sealed class LegacyActivationServerTests {
+public sealed class LegacyActivationServerTests
+{
     private const int REGDB_E_CLASSNOTREG = unchecked((int)0x80040154u);
     private const int E_NOTIMPL = unchecked((int)0x80004001u);
     private const int E_NOINTERFACE = unchecked((int)0x80004002u);
 
     [Test]
-    public async Task RemoteActivation_UnknownClsid_ReturnsClassNotRegistered() {
+    public async Task RemoteActivation_UnknownClsid_ReturnsClassNotRegistered()
+    {
         var modern = new RemoteSCMActivatorServer(new InMemoryClsidRegistry());
         var legacy = new Opc.Classic.Dcom.Activation.LegacyActivationServer(modern);
 
@@ -36,7 +38,8 @@ public sealed class LegacyActivationServerTests {
     }
 
     [Test]
-    public async Task RemoteActivation_EmptyRequestedIidList_ReturnsENoInterface() {
+    public async Task RemoteActivation_EmptyRequestedIidList_ReturnsENoInterface()
+    {
         var modern = new RemoteSCMActivatorServer(new InMemoryClsidRegistry());
         var legacy = new Opc.Classic.Dcom.Activation.LegacyActivationServer(modern);
 
@@ -52,7 +55,8 @@ public sealed class LegacyActivationServerTests {
     }
 
     [Test]
-    public async Task RemoteActivation_KnownClsid_AdditionalIidsBeyondPrimary_ReturnPerIidENoInterface() {
+    public async Task RemoteActivation_KnownClsid_AdditionalIidsBeyondPrimary_ReturnPerIidENoInterface()
+    {
         // Register a known CLSID so the modern activator returns E_NOTIMPL (no
         // class factory) for the primary IID; the additional IIDs should each
         // get E_NOINTERFACE since the legacy server does not perform QueryInterface.
@@ -87,7 +91,8 @@ public sealed class LegacyActivationServerTests {
     }
 
     [Test]
-    public async Task RemoteActivation_ModeGetClassObject_RoutesToRemoteGetClassObject() {
+    public async Task RemoteActivation_ModeGetClassObject_RoutesToRemoteGetClassObject()
+    {
         var modern = new RemoteSCMActivatorServer(new InMemoryClsidRegistry());
         var legacy = new Opc.Classic.Dcom.Activation.LegacyActivationServer(modern);
 

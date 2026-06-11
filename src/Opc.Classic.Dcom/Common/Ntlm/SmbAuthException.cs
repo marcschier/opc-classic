@@ -2,11 +2,14 @@
 
 namespace SharpCifs.Smb;
 
-public sealed class SmbAuthException : SmbException {
-    public SmbAuthException() {
+public sealed class SmbAuthException : SmbException
+{
+    public SmbAuthException()
+    {
     }
 
     public SmbAuthException(string message)
-        : base(message) {
+        : base(message)
+    {
     }
 }

@@ -18,7 +18,8 @@ namespace Opc.Classic.Ndr;
 /// A forward-only span-based NDR reader.
 /// </summary>
 [StructLayout(LayoutKind.Auto)]
-public ref struct NdrReader {
+public ref struct NdrReader
+{
     /// <summary>Default maximum decoded payload, in bytes.</summary>
     public const int DefaultMaxPayloadSize = 16 * 1024 * 1024;
 
@@ -28,16 +29,20 @@ public ref struct NdrReader {
 
     /// <summary>Creates a new reader over the supplied buffer.</summary>
     public NdrReader(ReadOnlySpan<byte> buffer)
-        : this(buffer, DefaultMaxPayloadSize) {
+        : this(buffer, DefaultMaxPayloadSize)
+    {
     }
 
     /// <summary>Creates a new reader over the supplied buffer with a decoded-payload quota.</summary>
-    public NdrReader(ReadOnlySpan<byte> buffer, int maxPayloadSize) {
-        if (maxPayloadSize <= 0) {
+    public NdrReader(ReadOnlySpan<byte> buffer, int maxPayloadSize)
+    {
+        if (maxPayloadSize <= 0)
+        {
             throw new ArgumentOutOfRangeException(nameof(maxPayloadSize), maxPayloadSize, "NDR payload quota must be positive.");
         }
 
-        if (buffer.Length > maxPayloadSize) {
+        if (buffer.Length > maxPayloadSize)
+        {
             throw new InvalidOperationException($"NDR buffer length {buffer.Length} exceeds the configured quota of {maxPayloadSize} bytes.");
         }
 
@@ -60,13 +65,16 @@ public ref struct NdrReader {
     /// (but not validating) padding bytes. <paramref name="boundary"/> must
     /// be 1, 2, 4, or 8.
     /// </summary>
-    public void AlignTo(int boundary) {
-        if (boundary != 1 && boundary != 2 && boundary != 4 && boundary != 8) {
+    public void AlignTo(int boundary)
+    {
+        if (boundary != 1 && boundary != 2 && boundary != 4 && boundary != 8)
+        {
             throw new ArgumentOutOfRangeException(nameof(boundary), boundary, "Alignment must be 1, 2, 4, or 8.");
         }
 
         int misaligned = _position & (boundary - 1);
-        if (misaligned == 0) {
+        if (misaligned == 0)
+        {
             return;
         }
 
@@ -75,7 +83,8 @@ public ref struct NdrReader {
         _position += padding;
     }
 
-    public byte ReadByte() {
+    public byte ReadByte()
+    {
         EnsureAvailable(1);
         byte value = _buffer[_position];
         _position += 1;
@@ -88,7 +97,8 @@ public ref struct NdrReader {
 
     public byte ReadUInt8() => ReadByte();
 
-    public short ReadInt16() {
+    public short ReadInt16()
+    {
         AlignTo(2);
         EnsureAvailable(2);
         short value = BinaryPrimitives.ReadInt16LittleEndian(_buffer.Slice(_position, 2));
@@ -96,7 +106,8 @@ public ref struct NdrReader {
         return value;
     }
 
-    public ushort ReadUInt16() {
+    public ushort ReadUInt16()
+    {
         AlignTo(2);
         EnsureAvailable(2);
         ushort value = BinaryPrimitives.ReadUInt16LittleEndian(_buffer.Slice(_position, 2));
@@ -104,7 +115,8 @@ public ref struct NdrReader {
         return value;
     }
 
-    public int ReadInt32() {
+    public int ReadInt32()
+    {
         AlignTo(4);
         EnsureAvailable(4);
         int value = BinaryPrimitives.ReadInt32LittleEndian(_buffer.Slice(_position, 4));
@@ -112,7 +124,8 @@ public ref struct NdrReader {
         return value;
     }
 
-    public uint ReadUInt32() {
+    public uint ReadUInt32()
+    {
         AlignTo(4);
         EnsureAvailable(4);
         uint value = BinaryPrimitives.ReadUInt32LittleEndian(_buffer.Slice(_position, 4));
@@ -120,7 +133,8 @@ public ref struct NdrReader {
         return value;
     }
 
-    public long ReadInt64() {
+    public long ReadInt64()
+    {
         AlignTo(8);
         EnsureAvailable(8);
         long value = BinaryPrimitives.ReadInt64LittleEndian(_buffer.Slice(_position, 8));
@@ -128,7 +142,8 @@ public ref struct NdrReader {
         return value;
     }
 
-    public ulong ReadUInt64() {
+    public ulong ReadUInt64()
+    {
         AlignTo(8);
         EnsureAvailable(8);
         ulong value = BinaryPrimitives.ReadUInt64LittleEndian(_buffer.Slice(_position, 8));
@@ -136,7 +151,8 @@ public ref struct NdrReader {
         return value;
     }
 
-    public float ReadSingle() {
+    public float ReadSingle()
+    {
         AlignTo(4);
         EnsureAvailable(4);
         float value = BinaryPrimitives.ReadSingleLittleEndian(_buffer.Slice(_position, 4));
@@ -144,7 +160,8 @@ public ref struct NdrReader {
         return value;
     }
 
-    public double ReadDouble() {
+    public double ReadDouble()
+    {
         AlignTo(8);
         EnsureAvailable(8);
         double value = BinaryPrimitives.ReadDoubleLittleEndian(_buffer.Slice(_position, 8));
@@ -152,7 +169,8 @@ public ref struct NdrReader {
         return value;
     }
 
-    public Guid ReadGuid() {
+    public Guid ReadGuid()
+    {
         AlignTo(4);
         EnsureAvailable(16);
         var guid = new Guid(_buffer.Slice(_position, 16));
@@ -164,7 +182,8 @@ public ref struct NdrReader {
     /// Reads a FILETIME (two little-endian uint halves, low first). Returns
     /// the value as Int64 100-nanosecond intervals since 1601-01-01 UTC.
     /// </summary>
-    public long ReadFileTime() {
+    public long ReadFileTime()
+    {
         AlignTo(4);
         EnsureAvailable(8);
         uint low = BinaryPrimitives.ReadUInt32LittleEndian(_buffer.Slice(_position, 4));
@@ -174,9 +193,11 @@ public ref struct NdrReader {
     }
 
     /// <summary>Reads a conformance header (a single uint, aligned to 4).</summary>
-    public int ReadConformanceHeader() {
+    public int ReadConformanceHeader()
+    {
         uint value = ReadUInt32();
-        if (value > int.MaxValue) {
+        if (value > int.MaxValue)
+        {
             throw new InvalidOperationException($"NDR conformance header {value} exceeds Int32.MaxValue." + FormatContext());
         }
         return unchecked((int)value);
@@ -186,7 +207,8 @@ public ref struct NdrReader {
     /// Reads a 4-byte referent ID. Returns true if the referent is non-null
     /// (out parameter contains the ID); false if null (referent = 0).
     /// </summary>
-    public bool TryReadReferentId(out uint referentId) {
+    public bool TryReadReferentId(out uint referentId)
+    {
         referentId = ReadUInt32();
         return referentId != 0u;
     }
@@ -201,15 +223,18 @@ public ref struct NdrReader {
     /// convention; this method strips it from the returned string. If the
     /// terminator is missing the entire buffer is returned as-is.
     /// </summary>
-    public string ReadUnicodeString() {
+    public string ReadUnicodeString()
+    {
         AlignTo(4);
         uint maxCount = ReadUInt32();
         uint offset = ReadUInt32();        // offset
-        if (offset != 0u) {
+        if (offset != 0u)
+        {
             throw new InvalidOperationException($"NDR LPWSTR offset must be 0 but was {offset}." + FormatContext());
         }
         uint actualCount = ReadUInt32();   // actual_count (includes the NUL)
-        if (actualCount > maxCount) {
+        if (actualCount > maxCount)
+        {
             throw new InvalidOperationException($"NDR LPWSTR actual_count {actualCount} exceeds max_count {maxCount}." + FormatContext());
         }
         EnsureBoundedPayloadBytes(actualCount, sizeof(char), "NDR LPWSTR actual_count");
@@ -219,16 +244,19 @@ public ref struct NdrReader {
 
         // Drop the trailing NUL if present.
         int effective = charCount;
-        if (effective > 0) {
+        if (effective > 0)
+        {
             ushort last = BinaryPrimitives.ReadUInt16LittleEndian(
                 _buffer.Slice(_position + (effective - 1) * 2, 2));
-            if (last == 0) {
+            if (last == 0)
+            {
                 effective -= 1;
             }
         }
 
         var chars = new char[effective];
-        for (int i = 0; i < effective; i++) {
+        for (int i = 0; i < effective; i++)
+        {
             chars[i] = (char)BinaryPrimitives.ReadUInt16LittleEndian(
                 _buffer.Slice(_position + i * 2, 2));
         }
@@ -252,14 +280,17 @@ public ref struct NdrReader {
     /// layout). Symmetric loopback continued to work because the writer had the
     /// same bug — see Track AY+ NDR variant codec sweep.
     /// </remarks>
-    public string? ReadBstr() {
-        if (!TryReadReferentId(out _)) {
+    public string? ReadBstr()
+    {
+        if (!TryReadReferentId(out _))
+        {
             return null;
         }
         uint maxCount = ReadUInt32();
         uint cBytes = ReadUInt32();
         uint clSize = ReadUInt32();
-        if (clSize > maxCount) {
+        if (clSize > maxCount)
+        {
             throw new InvalidOperationException(
                 $"NDR BSTR clSize ({clSize}) exceeds max_count ({maxCount})." + FormatContext());
         }
@@ -268,7 +299,8 @@ public ref struct NdrReader {
         int charCount = (int)clSize;
         EnsureAvailable(charCount * sizeof(char));
         var chars = new char[charCount];
-        for (int i = 0; i < charCount; i++) {
+        for (int i = 0; i < charCount; i++)
+        {
             chars[i] = (char)BinaryPrimitives.ReadUInt16LittleEndian(
                 _buffer.Slice(_position + i * 2, 2));
         }
@@ -281,15 +313,18 @@ public ref struct NdrReader {
     /// conformant-variant string body. Returns <see langword="null"/>
     /// when the referent is zero.
     /// </summary>
-    public string? ReadUnicodeStringPtr() {
-        if (!TryReadReferentId(out _)) {
+    public string? ReadUnicodeStringPtr()
+    {
+        if (!TryReadReferentId(out _))
+        {
             return null;
         }
         return ReadUnicodeString();
     }
 
     /// <summary>Reads a span of raw bytes verbatim (no alignment, no length prefix).</summary>
-    public ReadOnlySpan<byte> ReadRawBytes(int count) {
+    public ReadOnlySpan<byte> ReadRawBytes(int count)
+    {
         ArgumentOutOfRangeException.ThrowIfNegative(count);
         EnsureBoundedPayloadBytes((uint)count, 1, "NDR raw byte read");
         EnsureAvailable(count);
@@ -301,7 +336,8 @@ public ref struct NdrReader {
     // -------- Conformant arrays of primitive types --------
 
     /// <summary>Reads a conformant array of bytes (uint count + raw bytes).</summary>
-    public byte[] ReadConformantByteArray() {
+    public byte[] ReadConformantByteArray()
+    {
         int count = ReadBoundedConformanceCount(1, "NDR conformant byte array");
         EnsureAvailable(count);
         var result = new byte[count];
@@ -311,12 +347,14 @@ public ref struct NdrReader {
     }
 
     /// <summary>Reads a conformant array of Int16 values.</summary>
-    public short[] ReadConformantInt16Array() {
+    public short[] ReadConformantInt16Array()
+    {
         int count = ReadBoundedConformanceCount(sizeof(short), "NDR conformant Int16 array");
         AlignTo(2);
         EnsureAvailable(count * sizeof(short));
         var result = new short[count];
-        for (int i = 0; i < count; i++) {
+        for (int i = 0; i < count; i++)
+        {
             result[i] = BinaryPrimitives.ReadInt16LittleEndian(_buffer.Slice(_position, 2));
             _position += 2;
         }
@@ -324,12 +362,14 @@ public ref struct NdrReader {
     }
 
     /// <summary>Reads a conformant array of UInt16 values.</summary>
-    public ushort[] ReadConformantUInt16Array() {
+    public ushort[] ReadConformantUInt16Array()
+    {
         int count = ReadBoundedConformanceCount(sizeof(ushort), "NDR conformant UInt16 array");
         AlignTo(2);
         EnsureAvailable(count * sizeof(ushort));
         var result = new ushort[count];
-        for (int i = 0; i < count; i++) {
+        for (int i = 0; i < count; i++)
+        {
             result[i] = BinaryPrimitives.ReadUInt16LittleEndian(_buffer.Slice(_position, 2));
             _position += 2;
         }
@@ -337,11 +377,13 @@ public ref struct NdrReader {
     }
 
     /// <summary>Reads a conformant array of Int32 values.</summary>
-    public int[] ReadConformantInt32Array() {
+    public int[] ReadConformantInt32Array()
+    {
         int count = ReadBoundedConformanceCount(sizeof(int), "NDR conformant Int32 array");
         EnsureAvailable(count * sizeof(int));
         var result = new int[count];
-        for (int i = 0; i < count; i++) {
+        for (int i = 0; i < count; i++)
+        {
             result[i] = BinaryPrimitives.ReadInt32LittleEndian(_buffer.Slice(_position, 4));
             _position += 4;
         }
@@ -349,11 +391,13 @@ public ref struct NdrReader {
     }
 
     /// <summary>Reads a conformant array of UInt32 values.</summary>
-    public uint[] ReadConformantUInt32Array() {
+    public uint[] ReadConformantUInt32Array()
+    {
         int count = ReadBoundedConformanceCount(sizeof(uint), "NDR conformant UInt32 array");
         EnsureAvailable(count * sizeof(uint));
         var result = new uint[count];
-        for (int i = 0; i < count; i++) {
+        for (int i = 0; i < count; i++)
+        {
             result[i] = BinaryPrimitives.ReadUInt32LittleEndian(_buffer.Slice(_position, 4));
             _position += 4;
         }
@@ -361,12 +405,14 @@ public ref struct NdrReader {
     }
 
     /// <summary>Reads a conformant array of Int64 values.</summary>
-    public long[] ReadConformantInt64Array() {
+    public long[] ReadConformantInt64Array()
+    {
         int count = ReadBoundedConformanceCount(sizeof(long), "NDR conformant Int64 array");
         AlignTo(8);
         EnsureAvailable(count * sizeof(long));
         var result = new long[count];
-        for (int i = 0; i < count; i++) {
+        for (int i = 0; i < count; i++)
+        {
             result[i] = BinaryPrimitives.ReadInt64LittleEndian(_buffer.Slice(_position, 8));
             _position += 8;
         }
@@ -379,11 +425,13 @@ public ref struct NdrReader {
     /// element layout matches <see cref="ReadFileTime"/>, NOT 8-byte-aligned
     /// Int64. Used for IDL <c>[out, size_is(N)] FILETIME *p</c> arrays.
     /// </summary>
-    public long[] ReadConformantFileTimeArray() {
+    public long[] ReadConformantFileTimeArray()
+    {
         int count = ReadBoundedConformanceCount(sizeof(long), "NDR conformant FILETIME array");
         EnsureAvailable(count * sizeof(long));
         var result = new long[count];
-        for (int i = 0; i < count; i++) {
+        for (int i = 0; i < count; i++)
+        {
             uint low = BinaryPrimitives.ReadUInt32LittleEndian(_buffer.Slice(_position, 4));
             uint high = BinaryPrimitives.ReadUInt32LittleEndian(_buffer.Slice(_position + 4, 4));
             result[i] = unchecked((long)(((ulong)high << 32) | low));
@@ -393,11 +441,13 @@ public ref struct NdrReader {
     }
 
     /// <summary>Reads a conformant array of Single (float) values.</summary>
-    public float[] ReadConformantSingleArray() {
+    public float[] ReadConformantSingleArray()
+    {
         int count = ReadBoundedConformanceCount(sizeof(float), "NDR conformant Single array");
         EnsureAvailable(count * sizeof(float));
         var result = new float[count];
-        for (int i = 0; i < count; i++) {
+        for (int i = 0; i < count; i++)
+        {
             result[i] = BinaryPrimitives.ReadSingleLittleEndian(_buffer.Slice(_position, 4));
             _position += 4;
         }
@@ -405,12 +455,14 @@ public ref struct NdrReader {
     }
 
     /// <summary>Reads a conformant array of Double values.</summary>
-    public double[] ReadConformantDoubleArray() {
+    public double[] ReadConformantDoubleArray()
+    {
         int count = ReadBoundedConformanceCount(sizeof(double), "NDR conformant Double array");
         AlignTo(8);
         EnsureAvailable(count * sizeof(double));
         var result = new double[count];
-        for (int i = 0; i < count; i++) {
+        for (int i = 0; i < count; i++)
+        {
             result[i] = BinaryPrimitives.ReadDoubleLittleEndian(_buffer.Slice(_position, 8));
             _position += 8;
         }
@@ -418,12 +470,14 @@ public ref struct NdrReader {
     }
 
     /// <summary>Reads a conformant array of Guid values.</summary>
-    public Guid[] ReadConformantGuidArray() {
+    public Guid[] ReadConformantGuidArray()
+    {
         int count = ReadBoundedConformanceCount(16, "NDR conformant Guid array");
         AlignTo(4);
         EnsureAvailable(count * 16);
         var result = new Guid[count];
-        for (int i = 0; i < count; i++) {
+        for (int i = 0; i < count; i++)
+        {
             result[i] = new Guid(_buffer.Slice(_position, 16));
             _position += 16;
         }
@@ -437,12 +491,14 @@ public ref struct NdrReader {
     /// (for example <c>IEnumGUID::Next</c>) where the server returns fewer
     /// elements than the caller-requested maximum.
     /// </summary>
-    public Guid[] ReadVaryingConformantGuidArray() {
+    public Guid[] ReadVaryingConformantGuidArray()
+    {
         _ = ReadBoundedConformanceCount(16, "NDR varying-conformant Guid array");
         AlignTo(4);
         _ = ReadUInt32();
         int actualCount = (int)ReadUInt32();
-        if (actualCount < 0) {
+        if (actualCount < 0)
+        {
             throw new InvalidOperationException("NDR varying-conformant Guid array length is negative.");
         }
 
@@ -450,35 +506,42 @@ public ref struct NdrReader {
         AlignTo(4);
         EnsureAvailable(actualCount * 16);
         var result = new Guid[actualCount];
-        for (int i = 0; i < actualCount; i++) {
+        for (int i = 0; i < actualCount; i++)
+        {
             result[i] = new Guid(_buffer.Slice(_position, 16));
             _position += 16;
         }
         return result;
     }
 
-    private int ReadBoundedConformanceCount(int elementSize, string context) {
+    private int ReadBoundedConformanceCount(int elementSize, string context)
+    {
         int count = ReadConformanceHeader();
         EnsureBoundedPayloadBytes((uint)count, elementSize, context);
         return count;
     }
 
-    private void EnsureBoundedPayloadBytes(uint count, int elementSize, string context) {
+    private void EnsureBoundedPayloadBytes(uint count, int elementSize, string context)
+    {
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(elementSize);
         ulong byteCount = (ulong)count * (uint)elementSize;
-        if (byteCount > (uint)_maxPayloadSize) {
+        if (byteCount > (uint)_maxPayloadSize)
+        {
             throw new InvalidOperationException(
                 $"{context} requires {byteCount} bytes, which exceeds the configured NDR quota of {_maxPayloadSize} bytes." + FormatContext());
         }
 
-        if (byteCount > int.MaxValue) {
+        if (byteCount > int.MaxValue)
+        {
             throw new InvalidOperationException($"{context} requires {byteCount} bytes, which exceeds Int32.MaxValue." + FormatContext());
         }
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private void EnsureAvailable(int requiredBytes) {
-        if (requiredBytes < 0 || _position > _buffer.Length - requiredBytes) {
+    private void EnsureAvailable(int requiredBytes)
+    {
+        if (requiredBytes < 0 || _position > _buffer.Length - requiredBytes)
+        {
             throw new InvalidOperationException(
                 $"NdrReader past end-of-buffer: need {requiredBytes} bytes at position {_position} but only {_buffer.Length - _position} remain." + FormatContext());
         }
@@ -506,13 +569,16 @@ public ref struct NdrReader {
     /// codecs (e.g. <c>NdrVariantExtensions</c>) that hold their own reference to the
     /// buffer can produce identically-shaped diagnostic blocks.
     /// </summary>
-    public static string FormatHexContext(ReadOnlySpan<byte> buffer, int position, int contextBytes = 16) {
-        if (buffer.IsEmpty || contextBytes <= 0) {
+    public static string FormatHexContext(ReadOnlySpan<byte> buffer, int position, int contextBytes = 16)
+    {
+        if (buffer.IsEmpty || contextBytes <= 0)
+        {
             return string.Empty;
         }
         int start = Math.Max(0, position - contextBytes);
         int end = Math.Min(buffer.Length, position + contextBytes);
-        if (end <= start) {
+        if (end <= start)
+        {
             return string.Empty;
         }
 
@@ -521,21 +587,26 @@ public ref struct NdrReader {
             .Append(", >> marks position ").Append(position).AppendLine("):");
         const int RowBytes = 16;
         int rowStart = start - (start % RowBytes);
-        for (int row = rowStart; row < end; row += RowBytes) {
+        for (int row = rowStart; row < end; row += RowBytes)
+        {
             sb.Append("  ").Append(row.ToString("X4", System.Globalization.CultureInfo.InvariantCulture)).Append(": ");
             var hex = new System.Text.StringBuilder(48);
             var ascii = new System.Text.StringBuilder(16);
-            for (int col = 0; col < RowBytes; col++) {
+            for (int col = 0; col < RowBytes; col++)
+            {
                 int idx = row + col;
-                if (idx < start || idx >= end || idx >= buffer.Length) {
+                if (idx < start || idx >= end || idx >= buffer.Length)
+                {
                     hex.Append("   ");
                     ascii.Append(' ');
                     continue;
                 }
-                if (idx == position) {
+                if (idx == position)
+                {
                     hex.Append(">>");
                 }
-                else {
+                else
+                {
                     hex.Append(' ');
                 }
                 byte b = buffer[idx];

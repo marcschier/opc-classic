@@ -13,12 +13,15 @@ using Microsoft.CodeAnalysis.Diagnostics;
 namespace Opc.Classic.MigrationAnalyzer.Analyzers;
 
 [DiagnosticAnalyzer(LanguageNames.CSharp)]
-public sealed class OcmDa01_LegacyServerCreation : DiagnosticAnalyzer {
+public sealed class OcmDa01_LegacyServerCreation : DiagnosticAnalyzer
+{
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
         ImmutableArray.Create(MigrationDiagnosticDescriptors.LegacyServerCreation);
 
-    public override void Initialize(AnalysisContext context) {
-        if (context is null) {
+    public override void Initialize(AnalysisContext context)
+    {
+        if (context is null)
+        {
             throw new ArgumentNullException(nameof(context));
         }
 
@@ -27,9 +30,11 @@ public sealed class OcmDa01_LegacyServerCreation : DiagnosticAnalyzer {
         context.RegisterSyntaxNodeAction(AnalyzeObjectCreation, SyntaxKind.ObjectCreationExpression);
     }
 
-    private static void AnalyzeObjectCreation(SyntaxNodeAnalysisContext context) {
+    private static void AnalyzeObjectCreation(SyntaxNodeAnalysisContext context)
+    {
         var objectCreation = (ObjectCreationExpressionSyntax)context.Node;
-        if (!LegacySyntaxFacts.IsOpcComServerCreation(objectCreation, context.SemanticModel)) {
+        if (!LegacySyntaxFacts.IsOpcComServerCreation(objectCreation, context.SemanticModel))
+        {
             return;
         }
 

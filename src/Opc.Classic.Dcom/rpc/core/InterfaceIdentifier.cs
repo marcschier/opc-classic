@@ -9,7 +9,8 @@ namespace Opc.Classic.Dcom.Rpc.Core;
 /// <summary>
 /// Interface id
 /// </summary>
-public class InterfaceIdentifier : NdrOp {
+public class InterfaceIdentifier : NdrOp
+{
 
     /// <summary>
     /// Id
@@ -30,7 +31,8 @@ public class InterfaceIdentifier : NdrOp {
     /// Create id
     /// </summary>
     /// <param name="syntax"></param>
-    public InterfaceIdentifier(string syntax) {
+    public InterfaceIdentifier(string syntax)
+    {
         var tokenizer = new StringTokenizer(syntax, ":.");
         Uuid.Parse(tokenizer.NextToken());
         MajorVersion = int.Parse(tokenizer.NextToken(), CultureInfo.InvariantCulture);
@@ -44,7 +46,8 @@ public class InterfaceIdentifier : NdrOp {
     /// <param name="majorVersion"></param>
     /// <param name="minorVersion"></param>
     public InterfaceIdentifier(UUID uuid, int majorVersion,
-        int minorVersion) {
+        int minorVersion)
+    {
         Uuid = uuid;
         MajorVersion = majorVersion;
         MinorVersion = minorVersion;

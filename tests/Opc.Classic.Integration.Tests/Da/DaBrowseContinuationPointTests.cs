@@ -22,7 +22,8 @@ using TUnit.Core;
 
 namespace Opc.Classic.Integration.Tests.Da;
 
-public sealed class DaBrowseContinuationPointTests {
+public sealed class DaBrowseContinuationPointTests
+{
     private const int BrowseFilterItems = 3;
     private const int ItemCount = 50;
     private const string HierarchicalBrowseRoot = "Site.Building";
@@ -31,7 +32,8 @@ public sealed class DaBrowseContinuationPointTests {
     [Category("Da.Loopback")]
     [Arguments(false)]
     [Arguments(true)]
-    public async Task Browse_with_zero_max_returns_all_items_without_continuation(bool hierarchical) {
+    public async Task Browse_with_zero_max_returns_all_items_without_continuation(bool hierarchical)
+    {
         await using BrowseLoopback loopback = await BrowseLoopback.StartAsync(hierarchical);
         string? continuationPoint = string.Empty;
 
@@ -58,7 +60,8 @@ public sealed class DaBrowseContinuationPointTests {
     [Category("Da.Loopback")]
     [Arguments(false)]
     [Arguments(true)]
-    public async Task Browse_pages_with_size_ten_until_all_items_are_returned(bool hierarchical) {
+    public async Task Browse_pages_with_size_ten_until_all_items_are_returned(bool hierarchical)
+    {
         await using BrowseLoopback loopback = await BrowseLoopback.StartAsync(hierarchical);
 
         (string[] itemIds, string[] continuationPoints) = await ReadPagedItemIdsAsync(loopback, pageSize: 10);
@@ -73,7 +76,8 @@ public sealed class DaBrowseContinuationPointTests {
     [Category("Da.Loopback")]
     [Arguments(false)]
     [Arguments(true)]
-    public async Task Browse_page_size_seven_crosses_page_boundaries_without_losing_items(bool hierarchical) {
+    public async Task Browse_page_size_seven_crosses_page_boundaries_without_losing_items(bool hierarchical)
+    {
         await using BrowseLoopback loopback = await BrowseLoopback.StartAsync(hierarchical);
 
         (string[] itemIds, string[] continuationPoints) = await ReadPagedItemIdsAsync(loopback, pageSize: 7);
@@ -89,7 +93,8 @@ public sealed class DaBrowseContinuationPointTests {
     [Category("Da.Loopback")]
     [Arguments(false)]
     [Arguments(true)]
-    public async Task Browse_reuses_server_issued_opaque_continuation_token_unmodified(bool hierarchical) {
+    public async Task Browse_reuses_server_issued_opaque_continuation_token_unmodified(bool hierarchical)
+    {
         await using BrowseLoopback loopback = await BrowseLoopback.StartAsync(hierarchical);
         string? continuationPoint = string.Empty;
 
@@ -136,7 +141,8 @@ public sealed class DaBrowseContinuationPointTests {
     [Category("Da.Loopback")]
     [Arguments(false)]
     [Arguments(true)]
-    public async Task Browse_with_invalid_continuation_token_returns_E_INVALIDCONTINUATIONPOINT(bool hierarchical) {
+    public async Task Browse_with_invalid_continuation_token_returns_E_INVALIDCONTINUATIONPOINT(bool hierarchical)
+    {
         await using BrowseLoopback loopback = await BrowseLoopback.StartAsync(hierarchical);
         string? continuationPoint = "bogus-continuation-token";
 
@@ -159,11 +165,13 @@ public sealed class DaBrowseContinuationPointTests {
 
     private static async Task<(string[] ItemIds, string[] ContinuationPoints)> ReadPagedItemIdsAsync(
         BrowseLoopback loopback,
-        int pageSize) {
+        int pageSize)
+    {
         string? continuationPoint = string.Empty;
         var itemIds = new List<string>();
         var continuationPoints = new List<string>();
-        while (true) {
+        while (true)
+        {
             await loopback.Proxy.BrowseAsync(
                 loopback.ItemId,
                 ref continuationPoint,
@@ -179,7 +187,8 @@ public sealed class DaBrowseContinuationPointTests {
                 TestContext.Current!.CancellationToken);
 
             itemIds.AddRange(browseElements.Select(static item => item.ItemId ?? string.Empty));
-            if (!moreElements) {
+            if (!moreElements)
+            {
                 await Assert.That(continuationPoint).IsEqualTo(string.Empty);
                 return (itemIds.ToArray(), continuationPoints.ToArray());
             }
@@ -189,28 +198,35 @@ public sealed class DaBrowseContinuationPointTests {
     }
 
     private static async Task<TException> CaptureAsync<TException>(Func<Task> action)
-        where TException : Exception {
-        try {
+        where TException : Exception
+    {
+        try
+        {
             await action().ConfigureAwait(false);
         }
-        catch (TException exception) {
+        catch (TException exception)
+        {
             return exception;
         }
-        catch (Exception exception) {
+        catch (Exception exception)
+        {
             throw new InvalidOperationException($"Expected {typeof(TException).Name}, but caught {exception.GetType().Name}.", exception);
         }
 
         throw new InvalidOperationException($"Expected {typeof(TException).Name}, but no exception was thrown.");
     }
 
-    private static IOpcAddressSpace CreateAddressSpace(bool hierarchical) {
-        if (!hierarchical) {
+    private static IOpcAddressSpace CreateAddressSpace(bool hierarchical)
+    {
+        if (!hierarchical)
+        {
             return new FlatAddressSpace(ExpectedFlatItemIds());
         }
 
         var addressSpace = new InMemoryAddressSpace("Site");
         addressSpace.AddBranch(HierarchicalBrowseRoot);
-        for (int i = 1; i <= ItemCount; i++) {
+        for (int i = 1; i <= ItemCount; i++)
+        {
             addressSpace.AddItem(HierarchicalBrowseRoot, $"Tag{i}");
         }
 
@@ -223,7 +239,8 @@ public sealed class DaBrowseContinuationPointTests {
     private static string[] ExpectedHierarchicalItemIds() =>
         Enumerable.Range(1, ItemCount).Select(static i => $"{HierarchicalBrowseRoot}.Tag{i}").ToArray();
 
-    private sealed class BrowseLoopback : IAsyncDisposable {
+    private sealed class BrowseLoopback : IAsyncDisposable
+    {
         private readonly ServiceProvider _provider;
         private readonly OpcDaServerHost _host;
         private readonly DcomCallChannel _channel;
@@ -234,7 +251,8 @@ public sealed class DaBrowseContinuationPointTests {
             DcomCallChannel channel,
             IOPCBrowseClientProxy proxy,
             string itemId,
-            string[] expectedItemIds) {
+            string[] expectedItemIds)
+        {
             _provider = provider;
             _host = host;
             _channel = channel;
@@ -249,7 +267,8 @@ public sealed class DaBrowseContinuationPointTests {
 
         public string[] ExpectedItemIds { get; }
 
-        public static async Task<BrowseLoopback> StartAsync(bool hierarchical) {
+        public static async Task<BrowseLoopback> StartAsync(bool hierarchical)
+        {
             IOpcAddressSpace addressSpace = CreateAddressSpace(hierarchical);
             ServiceProvider provider = BuildServiceProvider(addressSpace);
             OpcDaServerHost host = provider.GetRequiredService<OpcDaServerHost>();
@@ -264,13 +283,15 @@ public sealed class DaBrowseContinuationPointTests {
                 hierarchical ? ExpectedHierarchicalItemIds() : ExpectedFlatItemIds());
         }
 
-        public async ValueTask DisposeAsync() {
+        public async ValueTask DisposeAsync()
+        {
             await _channel.DisposeAsync();
             await _host.StopAsync(CancellationToken.None);
             await _provider.DisposeAsync();
         }
 
-        private static ServiceProvider BuildServiceProvider(IOpcAddressSpace addressSpace) {
+        private static ServiceProvider BuildServiceProvider(IOpcAddressSpace addressSpace)
+        {
             var services = new ServiceCollection();
             services.AddLogging();
             services.AddSingleton(addressSpace);
@@ -279,7 +300,8 @@ public sealed class DaBrowseContinuationPointTests {
             services.AddSingleton<OpcObjectRegistry>();
             services.AddSingleton<OpcDaServerHost>();
             services.AddSingleton<IOpcServerHost>(static sp => sp.GetRequiredService<OpcDaServerHost>());
-            services.Configure<OpcDaServerOptions>(static o => {
+            services.Configure<OpcDaServerOptions>(static o =>
+            {
                 o.Clsid = Guid.NewGuid();
                 o.ProgId = "Managed.Da.BrowseContinuation.1";
                 o.FriendlyName = "Managed DA browse continuation test server";
@@ -288,7 +310,8 @@ public sealed class DaBrowseContinuationPointTests {
             return services.BuildServiceProvider();
         }
 
-        private static async Task<DcomCallChannel> ConnectBrowseClientAsync(OpcDaServerHost host) {
+        private static async Task<DcomCallChannel> ConnectBrowseClientAsync(OpcDaServerHost host)
+        {
             var bound = (IPEndPoint?)host.LocalEndpoint
                 ?? throw new InvalidOperationException("Host did not expose a bound endpoint after StartAsync.");
 
@@ -300,10 +323,12 @@ public sealed class DaBrowseContinuationPointTests {
         }
     }
 
-    private sealed class FlatAddressSpace : IOpcAddressSpace {
+    private sealed class FlatAddressSpace : IOpcAddressSpace
+    {
         private readonly string[] _items;
 
-        public FlatAddressSpace(string[] items) {
+        public FlatAddressSpace(string[] items)
+        {
             _items = items ?? throw new ArgumentNullException(nameof(items));
         }
 
@@ -312,9 +337,11 @@ public sealed class DaBrowseContinuationPointTests {
         public Task<OpcBrowseResult> BrowseAsync(
             string? branchPath,
             OpcBrowseElementKind kind,
-            CancellationToken cancellationToken = default) {
+            CancellationToken cancellationToken = default)
+        {
             cancellationToken.ThrowIfCancellationRequested();
-            if (!string.IsNullOrEmpty(branchPath)) {
+            if (!string.IsNullOrEmpty(branchPath))
+            {
                 return Task.FromResult(OpcBrowseResult.Empty);
             }
 
@@ -325,7 +352,8 @@ public sealed class DaBrowseContinuationPointTests {
         public Task<string> GetItemIdAsync(
             string? currentBranchPath,
             string itemDataId,
-            CancellationToken cancellationToken = default) {
+            CancellationToken cancellationToken = default)
+        {
             _ = currentBranchPath;
             ArgumentException.ThrowIfNullOrEmpty(itemDataId);
             cancellationToken.ThrowIfCancellationRequested();

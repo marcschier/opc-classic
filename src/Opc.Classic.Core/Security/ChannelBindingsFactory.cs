@@ -16,7 +16,8 @@ namespace Opc.Classic.Security;
 /// Convenience factory for channel-bindings structures that carry TLS
 /// endpoint application data.
 /// </summary>
-public static class ChannelBindingsFactory {
+public static class ChannelBindingsFactory
+{
     private const string TlsServerEndpointPrefix = "tls-server-end-point:";
 
     /// <summary>
@@ -31,9 +32,11 @@ public static class ChannelBindingsFactory {
     /// Creates TLS server-end-point channel bindings from a DER-encoded server certificate
     /// and the negotiated TLS protocol.
     /// </summary>
-    public static ChannelBindings ForTlsServerEndpoint(ReadOnlySpan<byte> serverCertDer, SslProtocols sslProtocol) {
+    public static ChannelBindings ForTlsServerEndpoint(ReadOnlySpan<byte> serverCertDer, SslProtocols sslProtocol)
+    {
         var hashKind = SelectHashAlgorithmForCert(serverCertDer, sslProtocol);
-        byte[] hash = hashKind switch {
+        byte[] hash = hashKind switch
+        {
             HashKind.Sha256 => SHA256.HashData(serverCertDer),
             HashKind.Sha384 => SHA384.HashData(serverCertDer),
             HashKind.Sha512 => SHA512.HashData(serverCertDer),
@@ -47,7 +50,8 @@ public static class ChannelBindingsFactory {
     /// Creates TLS server-end-point channel bindings from an X.509 server certificate
     /// and the negotiated TLS protocol.
     /// </summary>
-    public static ChannelBindings ForTlsServerEndpoint(X509Certificate2 serverCertificate, SslProtocols sslProtocol = SslProtocols.None) {
+    public static ChannelBindings ForTlsServerEndpoint(X509Certificate2 serverCertificate, SslProtocols sslProtocol = SslProtocols.None)
+    {
         ArgumentNullException.ThrowIfNull(serverCertificate);
         return ForTlsServerEndpoint(serverCertificate.RawData, sslProtocol);
     }
@@ -56,9 +60,11 @@ public static class ChannelBindingsFactory {
     /// Extracts the remote certificate from an authenticated <see cref="SslStream" />
     /// and creates TLS server-end-point channel bindings for that TLS session.
     /// </summary>
-    public static ChannelBindings ForTlsServerEndpoint(SslStream sslStream) {
+    public static ChannelBindings ForTlsServerEndpoint(SslStream sslStream)
+    {
         ArgumentNullException.ThrowIfNull(sslStream);
-        if (!sslStream.IsAuthenticated) {
+        if (!sslStream.IsAuthenticated)
+        {
             throw new InvalidOperationException("The SslStream must be authenticated before channel bindings are computed.");
         }
 
@@ -67,7 +73,8 @@ public static class ChannelBindingsFactory {
         return ForTlsServerEndpoint(remoteCertificate.Export(X509ContentType.Cert), sslStream.SslProtocol);
     }
 
-    private enum HashKind {
+    private enum HashKind
+    {
         Sha256,
         Sha384,
         Sha512,
@@ -81,7 +88,8 @@ public static class ChannelBindingsFactory {
             AcceptorAddress: ReadOnlyMemory<byte>.Empty,
             ApplicationData: applicationData);
 
-    private static byte[] BuildTlsServerEndpointApplicationData(byte[] certificateHash) {
+    private static byte[] BuildTlsServerEndpointApplicationData(byte[] certificateHash)
+    {
         byte[] prefixBytes = Encoding.ASCII.GetBytes(TlsServerEndpointPrefix);
         var appData = new byte[prefixBytes.Length + certificateHash.Length];
         Buffer.BlockCopy(prefixBytes, 0, appData, 0, prefixBytes.Length);
@@ -89,22 +97,27 @@ public static class ChannelBindingsFactory {
         return appData;
     }
 
-    private static HashKind SelectHashAlgorithmForCert(ReadOnlySpan<byte> certDer, SslProtocols sslProtocol) {
-        if (sslProtocol == SslProtocols.Tls13) {
+    private static HashKind SelectHashAlgorithmForCert(ReadOnlySpan<byte> certDer, SslProtocols sslProtocol)
+    {
+        if (sslProtocol == SslProtocols.Tls13)
+        {
             return HashKind.Sha384;
         }
 
-        try {
+        try
+        {
             using var certificate = X509CertificateLoader.LoadCertificate(certDer);
             return SelectHashAlgorithmForSignatureOid(certificate.SignatureAlgorithm.Value);
         }
-        catch (CryptographicException) {
+        catch (CryptographicException)
+        {
             return HashKind.Sha256;
         }
     }
 
     private static HashKind SelectHashAlgorithmForSignatureOid(string? oid) =>
-        oid switch {
+        oid switch
+        {
             "1.2.840.113549.1.1.13" => HashKind.Sha512, // sha512WithRSAEncryption
             "1.2.840.10045.4.3.4" => HashKind.Sha512, // ecdsa-with-SHA512
             "2.16.840.1.101.3.4.3.4" => HashKind.Sha512, // dsa-with-sha512

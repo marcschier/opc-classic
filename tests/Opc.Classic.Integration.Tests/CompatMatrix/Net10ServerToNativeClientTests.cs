@@ -11,10 +11,12 @@ using TUnit.Core;
 
 namespace Opc.Classic.Integration.Tests.CompatMatrix;
 
-public sealed class Net10ServerToNativeClientTests {
+public sealed class Net10ServerToNativeClientTests
+{
     [Test]
     [Category("CompatMatrix.Loopback")]
-    public async Task Managed_proxy_to_net10_server_loopback_calls_GetStatus() {
+    public async Task Managed_proxy_to_net10_server_loopback_calls_GetStatus()
+    {
         var serverImpl = StubDaServer.CompatMatrixNet10Server();
         var (proxy, channel) = StubDaServer.CreateLoopbackProxy(serverImpl);
 
@@ -33,8 +35,10 @@ public sealed class Net10ServerToNativeClientTests {
     }
 
     [Test, Category("CompatMatrix")]
-    public async Task Native_simple_client_connects_to_net10_server_and_calls_GetStatus() {
-        if (CompatMatrixProbe.ShouldSkipNet10ServerToNativeClient(out _)) {
+    public async Task Native_simple_client_connects_to_net10_server_and_calls_GetStatus()
+    {
+        if (CompatMatrixProbe.ShouldSkipNet10ServerToNativeClient(out _))
+        {
             return;
         }
 
@@ -47,8 +51,10 @@ public sealed class Net10ServerToNativeClientTests {
     }
 
     [Test, Category("CompatMatrix")]
-    public async Task Native_client_can_AddGroup_then_Read_through_net10_server() {
-        if (CompatMatrixProbe.ShouldSkipNet10ServerToNativeClient(out _)) {
+    public async Task Native_client_can_AddGroup_then_Read_through_net10_server()
+    {
+        if (CompatMatrixProbe.ShouldSkipNet10ServerToNativeClient(out _))
+        {
             return;
         }
 
@@ -59,8 +65,10 @@ public sealed class Net10ServerToNativeClientTests {
     }
 
     [Test, Category("CompatMatrix")]
-    public async Task Native_client_receives_OnDataChange_callbacks_from_net10_server() {
-        if (CompatMatrixProbe.ShouldSkipNet10ServerToNativeClient(out _)) {
+    public async Task Native_client_receives_OnDataChange_callbacks_from_net10_server()
+    {
+        if (CompatMatrixProbe.ShouldSkipNet10ServerToNativeClient(out _))
+        {
             return;
         }
 
@@ -70,8 +78,10 @@ public sealed class Net10ServerToNativeClientTests {
     }
 
     [Test, Category("CompatMatrix")]
-    public async Task Native_client_disconnect_releases_net10_server_resources() {
-        if (CompatMatrixProbe.ShouldSkipNet10ServerToNativeClient(out _)) {
+    public async Task Native_client_disconnect_releases_net10_server_resources()
+    {
+        if (CompatMatrixProbe.ShouldSkipNet10ServerToNativeClient(out _))
+        {
             return;
         }
 
@@ -81,7 +91,8 @@ public sealed class Net10ServerToNativeClientTests {
         await Assert.That(HasDaServerMethod(nameof(IOpcDaServer.RemoveGroupAsync))).IsTrue();
     }
 
-    private static async Task AssertCompatScaffoldReadyAsync<TInterface, TProxy>(string methodName, int expectedOpnum) {
+    private static async Task AssertCompatScaffoldReadyAsync<TInterface, TProxy>(string methodName, int expectedOpnum)
+    {
         await Assert.That(ConformanceMetadata.HasCategory(typeof(Net10ServerToNativeClientTests), methodName, "CompatMatrix")).IsTrue();
         await Assert.That(ConformanceMetadata.ReadType<TInterface>()).IsNotNull();
         await Assert.That(ConformanceMetadata.ReadType<TProxy>()).IsNotNull();
@@ -89,9 +100,11 @@ public sealed class Net10ServerToNativeClientTests {
         await Assert.That(ConformanceMetadata.ReadInt32(expectedOpnum)).IsGreaterThan(0);
     }
 
-    private static async Task AssertCompatProbeAsync() {
+    private static async Task AssertCompatProbeAsync()
+    {
         var shouldSkip = CompatMatrixProbe.ShouldSkipNet10ServerToNativeClient(out var reason);
-        if (shouldSkip) {
+        if (shouldSkip)
+        {
             await Assert.That(reason.Length).IsGreaterThan(0);
             return;
         }

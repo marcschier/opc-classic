@@ -8,7 +8,8 @@ using Opc.Classic.Dcom.Internal;
 namespace Opc.Classic.Dcom.Core;
 
 [Serializable]
-internal sealed class StdObjRef {
+internal sealed class StdObjRef
+{
 
     /// <summary>
     /// Flags
@@ -38,7 +39,8 @@ internal sealed class StdObjRef {
     /// <summary>
     /// Private constructor
     /// </summary>
-    private StdObjRef() {
+    private StdObjRef()
+    {
     }
 
     /// <summary>
@@ -47,7 +49,8 @@ internal sealed class StdObjRef {
     /// <param name="ipid"></param>
     /// <param name="oxid"></param>
     /// <param name="oid"></param>
-    internal StdObjRef(string ipid, Oxid oxid, ObjectId oid) {
+    internal StdObjRef(string ipid, Oxid oxid, ObjectId oid)
+    {
         Ipid = ipid;
         Oxid = oxid.OXID;
         ObjectId = oid.OID;
@@ -59,7 +62,8 @@ internal sealed class StdObjRef {
     /// cases where the interface is not supported.
     /// </summary>
     /// <param name="ipid"></param>
-    internal StdObjRef(string ipid) {
+    internal StdObjRef(string ipid)
+    {
         Ipid = ipid;
         Flags = 0x0;
         Oxid = new byte[] { 0, 0, 0, 0, 0, 0, 0, 0 };
@@ -72,19 +76,23 @@ internal sealed class StdObjRef {
     /// </summary>
     /// <param name="ndr"></param>
     /// <returns></returns>
-    internal static StdObjRef Decode(NdrCodec ndr) {
-        var objRef = new StdObjRef {
+    internal static StdObjRef Decode(NdrCodec ndr)
+    {
+        var objRef = new StdObjRef
+        {
             Flags = ndr.ReadUnsignedLong(),
             PublicRefs = ndr.ReadUnsignedLong(),
             Oxid = MarshalUnMarshalHelper.ReadOctetArrayLE(ndr, 8),
             ObjectId = MarshalUnMarshalHelper.ReadOctetArrayLE(ndr, 8)
         };
-        try {
+        try
+        {
             var ipid2 = new UUID();
             ipid2.Decode(ndr, ndr.Buffer);
             objRef.Ipid = ipid2.ToString();
         }
-        catch (NdrException e) {
+        catch (NdrException e)
+        {
             Log.Logger.Error(e, "StdObjRef decode");
         }
         return objRef;
@@ -94,23 +102,27 @@ internal sealed class StdObjRef {
     /// Encode
     /// </summary>
     /// <param name="ndr"></param>
-    public void Encode(NdrCodec ndr) {
+    public void Encode(NdrCodec ndr)
+    {
         ndr.WriteUnsignedLong(Flags);
         ndr.WriteUnsignedLong(PublicRefs);
         MarshalUnMarshalHelper.WriteOctetArrayLE(ndr, Oxid);
         MarshalUnMarshalHelper.WriteOctetArrayLE(ndr, ObjectId);
-        try {
+        try
+        {
             var ipid = new UUID(Ipid);
             ipid.Encode(ndr, ndr.Buffer);
         }
-        catch (NdrException e) {
+        catch (NdrException e)
+        {
 
             Log.Logger.Error(e, "StdObjRef encode");
         }
     }
 
     /// <inheritdoc/>
-    public override string ToString() {
+    public override string ToString()
+    {
         var retVal = "IPID: " + Ipid; // + ", OID: " + oidString;
         return retVal;
     }

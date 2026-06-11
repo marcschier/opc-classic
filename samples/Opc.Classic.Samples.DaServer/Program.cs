@@ -10,14 +10,16 @@ using Opc.Classic.Hosting.Windows;
 
 namespace Opc.Classic.Samples.DaServer;
 
-internal static class Program {
+internal static class Program
+{
     private static readonly Guid SampleClsid = new("B3AE5D6F-2A91-4F8B-9D2C-7E5B0C8F1A3E");
     private const string SampleProgId = "Opc.Classic.Samples.DaServer.1";
     private const string SampleFriendlyName = "Opc.Classic Sample DA Server";
     private const string SampleAssemblyName = "Opc.Classic.Samples.DaServer";
     private const string SampleTypeName = "Opc.Classic.Samples.DaServer.SampleDaServer";
 
-    public static async Task<int> Main(string[] args) {
+    public static async Task<int> Main(string[] args)
+    {
         ArgumentNullException.ThrowIfNull(args);
 
         var registration = new OpcClsidRegistration(
@@ -32,7 +34,8 @@ internal static class Program {
             OpcComponentCategories.OpcDaServer30,
         ];
 
-        if (SampleServerRegistrationCommand.TryHandle(args, registration, implementedCategories, out int registrationExitCode)) {
+        if (SampleServerRegistrationCommand.TryHandle(args, registration, implementedCategories, out int registrationExitCode))
+        {
             return registrationExitCode;
         }
 
@@ -55,7 +58,8 @@ internal static class Program {
         var builder = Host.CreateApplicationBuilder(args);
 
         builder.Logging.ClearProviders();
-        builder.Logging.AddSimpleConsole(static opt => {
+        builder.Logging.AddSimpleConsole(static opt =>
+        {
             opt.SingleLine = true;
             opt.TimestampFormat = "HH:mm:ss ";
         });
@@ -63,7 +67,8 @@ internal static class Program {
         builder.Services.AddClassicServer();
         builder.Services.AddClassicClsidRegistry(builder.Configuration);
         builder.Services.AddSingleton<TagTree>();
-        builder.Services.AddOpcDaServer<SampleDaServer>(opt => {
+        builder.Services.AddOpcDaServer<SampleDaServer>(opt =>
+        {
             opt.Clsid = SampleClsid;
             opt.ProgId = SampleProgId;
             opt.FriendlyName = SampleFriendlyName;
@@ -73,15 +78,19 @@ internal static class Program {
         var host = builder.Build();
 
         uint comClassObjectCookie = 0;
-        if (embedded && OperatingSystem.IsWindows()) {
+        if (embedded && OperatingSystem.IsWindows())
+        {
             comClassObjectCookie = RegisterScmFactory(host.Services);
         }
 
-        try {
+        try
+        {
             await host.RunAsync().ConfigureAwait(false);
         }
-        finally {
-            if (embedded && OperatingSystem.IsWindows() && comClassObjectCookie != 0) {
+        finally
+        {
+            if (embedded && OperatingSystem.IsWindows() && comClassObjectCookie != 0)
+            {
                 ComClassObjectRegistrar.RevokeClassObject(comClassObjectCookie);
                 ComClassObjectRegistrar.Uninitialize();
             }
@@ -91,7 +100,8 @@ internal static class Program {
     }
 
     [System.Runtime.Versioning.SupportedOSPlatform("windows")]
-    private static uint RegisterScmFactory(IServiceProvider services) {
+    private static uint RegisterScmFactory(IServiceProvider services)
+    {
         var serverImpl = services.GetRequiredService<IOpcDaServer>();
         ComClassObjectRegistrar.InitializeMultithreaded();
         uint cookie = ComClassObjectRegistrar.RegisterClassObject(

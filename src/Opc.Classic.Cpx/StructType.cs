@@ -11,7 +11,8 @@ namespace Opc.Classic.Cpx;
 /// <summary>
 /// A named struct definition from an OPCBinary type dictionary.
 /// </summary>
-public sealed class StructType {
+public sealed class StructType
+{
     /// <summary>Struct type name — referenced by <see cref="StructField.TypeReference"/>.</summary>
     public required string Name { get; init; }
 

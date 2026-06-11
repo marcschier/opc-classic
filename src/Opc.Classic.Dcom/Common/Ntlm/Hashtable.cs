@@ -6,10 +6,12 @@ using System.Linq;
 
 namespace SharpCifs.Util.Sharpen;
 
-public sealed class Hashtable : IEnumerable<KeyValuePair<object, object>> {
+public sealed class Hashtable : IEnumerable<KeyValuePair<object, object>>
+{
     private readonly Dictionary<object, object> _inner = new();
 
-    public object this[object key] {
+    public object this[object key]
+    {
         get => _inner[key];
         set => _inner[key] = value;
     }
@@ -28,7 +30,8 @@ public sealed class Hashtable : IEnumerable<KeyValuePair<object, object>> {
 
     public bool TryGetValue(object key, out object? value) => _inner.TryGetValue(key, out value);
 
-    public object? Put(object key, object value) {
+    public object? Put(object key, object value)
+    {
         _inner.TryGetValue(key, out var previous);
         _inner[key] = value;
         return previous;

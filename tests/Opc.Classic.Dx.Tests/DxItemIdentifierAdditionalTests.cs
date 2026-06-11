@@ -7,9 +7,11 @@ using TUnit.Core;
 
 namespace Opc.Classic.Dx.Tests;
 
-public sealed class DxItemIdentifierAdditionalTests {
+public sealed class DxItemIdentifierAdditionalTests
+{
     [Test]
-    public async Task DefaultConstructor_UsesNullStringsAndZeroReserved() {
+    public async Task DefaultConstructor_UsesNullStringsAndZeroReserved()
+    {
         var identifier = new DxItemIdentifier();
 
         await Assert.That(identifier.ItemPath).IsNull();
@@ -19,7 +21,8 @@ public sealed class DxItemIdentifierAdditionalTests {
     }
 
     [Test]
-    public async Task Constructor_AssignsAllRecordFields() {
+    public async Task Constructor_AssignsAllRecordFields()
+    {
         var identifier = new DxItemIdentifier(
             ItemPath: "DX/SourceServers",
             ItemName: "PLC1",
@@ -33,7 +36,8 @@ public sealed class DxItemIdentifierAdditionalTests {
     }
 
     [Test]
-    public async Task FromName_CreatesBranchLocalIdentifier() {
+    public async Task FromName_CreatesBranchLocalIdentifier()
+    {
         DxItemIdentifier identifier = DxItemIdentifier.FromName("Pump.Speed", "v7");
 
         await Assert.That(identifier.ItemPath).IsNull();
@@ -43,7 +47,8 @@ public sealed class DxItemIdentifierAdditionalTests {
     }
 
     [Test]
-    public async Task RecordEquality_UsesPathNameVersionAndReserved() {
+    public async Task RecordEquality_UsesPathNameVersionAndReserved()
+    {
         var left = new DxItemIdentifier("Path", "Name", "v1", 1);
         var same = new DxItemIdentifier("Path", "Name", "v1", 1);
         var differentReserved = left with { Reserved = 2 };

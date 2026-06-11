@@ -27,7 +27,8 @@ namespace Opc.Classic.Dcom.Automation;
 /// }
 /// </code>
 /// </summary>
-public interface IEnumVariant {
+public interface IEnumVariant
+{
 
     /// <summary>
     /// Attempts to get the next celt items in the enumeration

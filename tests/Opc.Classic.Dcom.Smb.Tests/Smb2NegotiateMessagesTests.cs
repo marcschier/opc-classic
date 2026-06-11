@@ -11,9 +11,11 @@ using TUnit.Core;
 
 namespace Opc.Classic.Dcom.Smb.Tests;
 
-public sealed class Smb2NegotiateMessagesTests {
+public sealed class Smb2NegotiateMessagesTests
+{
     [Test]
-    public async Task NegotiateRequest_WriteTo_ProducesExpectedLayout() {
+    public async Task NegotiateRequest_WriteTo_ProducesExpectedLayout()
+    {
         var req = new Smb2NegotiateRequest(
             SecurityMode: 0x01,
             Capabilities: 0,
@@ -48,7 +50,8 @@ public sealed class Smb2NegotiateMessagesTests {
     }
 
     [Test]
-    public async Task NegotiateResponse_Read_ParsesDialectAndServerGuid() {
+    public async Task NegotiateResponse_Read_ParsesDialectAndServerGuid()
+    {
         // Body layout per [MS-SMB2] §2.2.4. Offsets in the body are computed RELATIVE
         // to the SMB2 packet header start (i.e. 64 bytes before the body).
         byte[] buf = new byte[72];

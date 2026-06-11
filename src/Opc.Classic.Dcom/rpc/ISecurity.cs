@@ -8,7 +8,8 @@ namespace Opc.Classic.Dcom.Rpc;
 /// <summary>
 /// Security interface
 /// </summary>
-public interface ISecurity {
+public interface ISecurity
+{
 
     /// <summary>
     /// Verifier length

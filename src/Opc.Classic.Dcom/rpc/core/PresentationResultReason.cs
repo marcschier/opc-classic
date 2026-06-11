@@ -5,7 +5,8 @@ namespace Opc.Classic.Dcom.Rpc.Core;
 /// <summary>
 /// Presentation result reason
 /// </summary>
-public enum PresentationResultReason {
+public enum PresentationResultReason
+{
 
     /// <summary>
     /// No reason

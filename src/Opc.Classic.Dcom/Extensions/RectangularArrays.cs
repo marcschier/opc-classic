@@ -12,7 +12,8 @@ namespace System;
 /// <summary>
 /// Extension
 /// </summary>
-public static class RectangularArrays {
+public static class RectangularArrays
+{
 
     /// <summary>
     /// Create
@@ -20,17 +21,22 @@ public static class RectangularArrays {
     /// <param name="size1"></param>
     /// <param name="size2"></param>
     /// <returns></returns>
-    public static float[][] ReturnRectangularFloatArray(int size1, int size2) {
+    public static float[][] ReturnRectangularFloatArray(int size1, int size2)
+    {
         float[][] newArray;
-        if (size1 > -1) {
+        if (size1 > -1)
+        {
             newArray = new float[size1][];
-            if (size2 > -1) {
-                for (var array1 = 0; array1 < size1; array1++) {
+            if (size2 > -1)
+            {
+                for (var array1 = 0; array1 < size1; array1++)
+                {
                     newArray[array1] = new float[size2];
                 }
             }
         }
-        else {
+        else
+        {
             newArray = null;
         }
 
@@ -43,17 +49,22 @@ public static class RectangularArrays {
     /// <param name="size1"></param>
     /// <param name="size2"></param>
     /// <returns></returns>
-    public static int[][] ReturnRectangularIntArray(int size1, int size2) {
+    public static int[][] ReturnRectangularIntArray(int size1, int size2)
+    {
         int[][] newArray;
-        if (size1 > -1) {
+        if (size1 > -1)
+        {
             newArray = new int[size1][];
-            if (size2 > -1) {
-                for (var array1 = 0; array1 < size1; array1++) {
+            if (size2 > -1)
+            {
+                for (var array1 = 0; array1 < size1; array1++)
+                {
                     newArray[array1] = new int[size2];
                 }
             }
         }
-        else {
+        else
+        {
             newArray = null;
         }
 
@@ -66,17 +77,22 @@ public static class RectangularArrays {
     /// <param name="size1"></param>
     /// <param name="size2"></param>
     /// <returns></returns>
-    public static double[][] ReturnRectangularDoubleArray(int size1, int size2) {
+    public static double[][] ReturnRectangularDoubleArray(int size1, int size2)
+    {
         double[][] newArray;
-        if (size1 > -1) {
+        if (size1 > -1)
+        {
             newArray = new double[size1][];
-            if (size2 > -1) {
-                for (var array1 = 0; array1 < size1; array1++) {
+            if (size2 > -1)
+            {
+                for (var array1 = 0; array1 < size1; array1++)
+                {
                     newArray[array1] = new double[size2];
                 }
             }
         }
-        else {
+        else
+        {
             newArray = null;
         }
 
@@ -89,17 +105,22 @@ public static class RectangularArrays {
     /// <param name="size1"></param>
     /// <param name="size2"></param>
     /// <returns></returns>
-    public static char[][] ReturnRectangularCharArray(int size1, int size2) {
+    public static char[][] ReturnRectangularCharArray(int size1, int size2)
+    {
         char[][] newArray;
-        if (size1 > -1) {
+        if (size1 > -1)
+        {
             newArray = new char[size1][];
-            if (size2 > -1) {
-                for (var array1 = 0; array1 < size1; array1++) {
+            if (size2 > -1)
+            {
+                for (var array1 = 0; array1 < size1; array1++)
+                {
                     newArray[array1] = new char[size2];
                 }
             }
         }
-        else {
+        else
+        {
             newArray = null;
         }
 
@@ -112,17 +133,22 @@ public static class RectangularArrays {
     /// <param name="size1"></param>
     /// <param name="size2"></param>
     /// <returns></returns>
-    public static bool[][] ReturnRectangularBoolArray(int size1, int size2) {
+    public static bool[][] ReturnRectangularBoolArray(int size1, int size2)
+    {
         bool[][] newArray;
-        if (size1 > -1) {
+        if (size1 > -1)
+        {
             newArray = new bool[size1][];
-            if (size2 > -1) {
-                for (var array1 = 0; array1 < size1; array1++) {
+            if (size2 > -1)
+            {
+                for (var array1 = 0; array1 < size1; array1++)
+                {
                     newArray[array1] = new bool[size2];
                 }
             }
         }
-        else {
+        else
+        {
             newArray = null;
         }
 
@@ -135,17 +161,22 @@ public static class RectangularArrays {
     /// <param name="size1"></param>
     /// <param name="size2"></param>
     /// <returns></returns>
-    public static sbyte[][] ReturnRectangularSbyteArray(int size1, int size2) {
+    public static sbyte[][] ReturnRectangularSbyteArray(int size1, int size2)
+    {
         sbyte[][] newArray;
-        if (size1 > -1) {
+        if (size1 > -1)
+        {
             newArray = new sbyte[size1][];
-            if (size2 > -1) {
-                for (var array1 = 0; array1 < size1; array1++) {
+            if (size2 > -1)
+            {
+                for (var array1 = 0; array1 < size1; array1++)
+                {
                     newArray[array1] = new sbyte[size2];
                 }
             }
         }
-        else {
+        else
+        {
             newArray = null;
         }
 
@@ -158,17 +189,22 @@ public static class RectangularArrays {
     /// <param name="size1"></param>
     /// <param name="size2"></param>
     /// <returns></returns>
-    public static short[][] ReturnRectangularShortArray(int size1, int size2) {
+    public static short[][] ReturnRectangularShortArray(int size1, int size2)
+    {
         short[][] newArray;
-        if (size1 > -1) {
+        if (size1 > -1)
+        {
             newArray = new short[size1][];
-            if (size2 > -1) {
-                for (var array1 = 0; array1 < size1; array1++) {
+            if (size2 > -1)
+            {
+                for (var array1 = 0; array1 < size1; array1++)
+                {
                     newArray[array1] = new short[size2];
                 }
             }
         }
-        else {
+        else
+        {
             newArray = null;
         }
 
@@ -181,17 +217,22 @@ public static class RectangularArrays {
     /// <param name="size1"></param>
     /// <param name="size2"></param>
     /// <returns></returns>
-    public static object[][] ReturnRectangularObjectArray(int size1, int size2) {
+    public static object[][] ReturnRectangularObjectArray(int size1, int size2)
+    {
         object[][] newArray;
-        if (size1 > -1) {
+        if (size1 > -1)
+        {
             newArray = new object[size1][];
-            if (size2 > -1) {
-                for (var array1 = 0; array1 < size1; array1++) {
+            if (size2 > -1)
+            {
+                for (var array1 = 0; array1 < size1; array1++)
+                {
                     newArray[array1] = new object[size2];
                 }
             }
         }
-        else {
+        else
+        {
             newArray = null;
         }
 
@@ -204,17 +245,22 @@ public static class RectangularArrays {
     /// <param name="size1"></param>
     /// <param name="size2"></param>
     /// <returns></returns>
-    public static Variant[][] ReturnRectangularVariantArray(int size1, int size2) {
+    public static Variant[][] ReturnRectangularVariantArray(int size1, int size2)
+    {
         Variant[][] newArray;
-        if (size1 > -1) {
+        if (size1 > -1)
+        {
             newArray = new Variant[size1][];
-            if (size2 > -1) {
-                for (var array1 = 0; array1 < size1; array1++) {
+            if (size2 > -1)
+            {
+                for (var array1 = 0; array1 < size1; array1++)
+                {
                     newArray[array1] = new Variant[size2];
                 }
             }
         }
-        else {
+        else
+        {
             newArray = null;
         }
 

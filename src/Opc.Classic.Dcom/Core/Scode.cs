@@ -9,7 +9,8 @@ namespace Opc.Classic.Dcom.Core;
 /// Scode type
 /// </summary>
 [Serializable]
-public sealed class Scode {
+public sealed class Scode
+{
 
     /// <summary>
     /// Null value
@@ -34,6 +35,7 @@ public sealed class Scode {
     /// </summary>
     /// <param name="errorCode"></param>
     public Scode(ErrorCode errorCode) :
-        this((int)errorCode) {
+        this((int)errorCode)
+    {
     }
 }

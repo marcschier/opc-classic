@@ -21,11 +21,13 @@ namespace Opc.Classic.Mcp.Capture.Tests;
 /// <c>InternalsVisibleTo("Opc.Classic.Mcp.Capture.Tests")</c> attribute on
 /// Opc.Classic.Mcp.Capture.
 /// </summary>
-public sealed class CaptureSessionTailTests {
+public sealed class CaptureSessionTailTests
+{
     private static readonly Guid InterfaceA = Guid.Parse("11111111-2222-3333-4444-555555555555");
 
     [Test]
-    public async Task DrainTailAsync_FirstCallWithCursor0_ReturnsAllPdusEmittedSoFar() {
+    public async Task DrainTailAsync_FirstCallWithCursor0_ReturnsAllPdusEmittedSoFar()
+    {
         await using TailHarness harness = await TailHarness.StartAsync(
             new[] { HexRequest("a"), HexResponse("b") });
 
@@ -39,7 +41,8 @@ public sealed class CaptureSessionTailTests {
     }
 
     [Test]
-    public async Task DrainTailAsync_SecondCallWithReturnedCursor_ReturnsZeroNewPdus() {
+    public async Task DrainTailAsync_SecondCallWithReturnedCursor_ReturnsZeroNewPdus()
+    {
         await using TailHarness harness = await TailHarness.StartAsync(
             new[] { HexRequest("a"), HexResponse("b") });
 
@@ -53,7 +56,8 @@ public sealed class CaptureSessionTailTests {
     }
 
     [Test]
-    public async Task DrainTailAsync_PacketsAppendedBetweenCalls_AreReturnedOnSecondCall() {
+    public async Task DrainTailAsync_PacketsAppendedBetweenCalls_AreReturnedOnSecondCall()
+    {
         await using TailHarness harness = await TailHarness.StartAsync(
             new[] { HexRequest("a"), HexResponse("b") });
 
@@ -73,7 +77,8 @@ public sealed class CaptureSessionTailTests {
     }
 
     [Test]
-    public async Task DrainTailAsync_MaxLimitsReturnedWindow_AndPreservesCursorAdvance() {
+    public async Task DrainTailAsync_MaxLimitsReturnedWindow_AndPreservesCursorAdvance()
+    {
         await using TailHarness harness = await TailHarness.StartAsync(
             new[]
             {
@@ -97,7 +102,8 @@ public sealed class CaptureSessionTailTests {
     }
 
     [Test]
-    public async Task DrainTailAsync_AfterSessionStopped_ReportsDoneWhenCursorCaughtUp() {
+    public async Task DrainTailAsync_AfterSessionStopped_ReportsDoneWhenCursorCaughtUp()
+    {
         await using TailHarness harness = await TailHarness.StartAsync(
             new[] { HexRequest("a"), HexResponse("b") });
 
@@ -115,7 +121,8 @@ public sealed class CaptureSessionTailTests {
     }
 
     [Test]
-    public async Task DrainTailAsync_NegativeSinceIndex_IsClampedToZero() {
+    public async Task DrainTailAsync_NegativeSinceIndex_IsClampedToZero()
+    {
         await using TailHarness harness = await TailHarness.StartAsync(
             new[] { HexRequest("a") });
 
@@ -126,7 +133,8 @@ public sealed class CaptureSessionTailTests {
     }
 
     [Test]
-    public async Task DrainTailAsync_SinceIndexBeyondCache_ReturnsEmptyWithoutAdvance() {
+    public async Task DrainTailAsync_SinceIndexBeyondCache_ReturnsEmptyWithoutAdvance()
+    {
         await using TailHarness harness = await TailHarness.StartAsync(
             new[] { HexRequest("a") });
 
@@ -138,7 +146,8 @@ public sealed class CaptureSessionTailTests {
     }
 
     [Test]
-    public async Task DrainTailAsync_PreservesPerFlowDecoderStateAcrossPolls() {
+    public async Task DrainTailAsync_PreservesPerFlowDecoderStateAcrossPolls()
+    {
         // First poll consumes 1 packet; second poll consumes the next 1; if the
         // long-lived OpcDcomDecoder is preserved, both PDUs decode cleanly. We
         // can't easily prove "preserved" against the public DecodedOpcPdu shape
@@ -164,14 +173,16 @@ public sealed class CaptureSessionTailTests {
 
     private static CapturedPacket HexResponse(string tag) => MakeHexPacket(tag, direction: "response");
 
-    private static CapturedPacket MakeHexPacket(string tag, string direction) {
+    private static CapturedPacket MakeHexPacket(string tag, string direction)
+    {
         byte[] data = System.Text.Encoding.ASCII.GetBytes(tag);
         return new CapturedPacket(
             Timestamp: new DateTimeOffset(2026, 6, 9, 12, 0, 0, TimeSpan.Zero),
             OriginalLength: data.Length,
             Data: data,
             LinkType: 0,
-            Annotations: new Dictionary<string, string?> {
+            Annotations: new Dictionary<string, string?>
+            {
                 ["iid"] = InterfaceA.ToString("D"),
                 ["opnum"] = "5",
                 ["direction"] = direction,
@@ -179,10 +190,12 @@ public sealed class CaptureSessionTailTests {
             });
     }
 
-    private sealed class TailHarness : IAsyncDisposable {
+    private sealed class TailHarness : IAsyncDisposable
+    {
         private readonly string _scratchFolder;
 
-        private TailHarness(CaptureSession session, FakeCaptureSource source, string scratchFolder) {
+        private TailHarness(CaptureSession session, FakeCaptureSource source, string scratchFolder)
+        {
             Session = session;
             Source = source;
             _scratchFolder = scratchFolder;
@@ -191,10 +204,12 @@ public sealed class CaptureSessionTailTests {
         public CaptureSession Session { get; }
         public FakeCaptureSource Source { get; }
 
-        public static async Task<TailHarness> StartAsync(IEnumerable<CapturedPacket> initialPackets) {
+        public static async Task<TailHarness> StartAsync(IEnumerable<CapturedPacket> initialPackets)
+        {
             string folder = TestDirectories.CreateUniqueTempDirectory();
             var source = new FakeCaptureSource();
-            foreach (CapturedPacket pkt in initialPackets) {
+            foreach (CapturedPacket pkt in initialPackets)
+            {
                 source.Packets.Add(pkt);
             }
             var session = new CaptureSession(
@@ -207,24 +222,28 @@ public sealed class CaptureSessionTailTests {
             return new TailHarness(session, source, folder);
         }
 
-        public Task<DrainTailResult> DrainAsync(long sinceIndex, int max) {
+        public Task<DrainTailResult> DrainAsync(long sinceIndex, int max)
+        {
             // DrainTailAsync is internal; invoke via reflection using the
             // assembly's InternalsVisibleTo grant for this test project.
             MethodInfo method = typeof(CaptureSession).GetMethod(
                 "DrainTailAsync",
                 BindingFlags.Instance | BindingFlags.NonPublic)
                 ?? throw new InvalidOperationException("DrainTailAsync method not found.");
-            try {
+            try
+            {
                 return (Task<DrainTailResult>)method.Invoke(Session,
                     new object[] { sinceIndex, max, TestContext.Current!.CancellationToken })!;
             }
-            catch (TargetInvocationException ex) when (ex.InnerException is not null) {
+            catch (TargetInvocationException ex) when (ex.InnerException is not null)
+            {
                 ExceptionDispatchInfo.Capture(ex.InnerException).Throw();
                 throw;
             }
         }
 
-        public async ValueTask DisposeAsync() {
+        public async ValueTask DisposeAsync()
+        {
             await Session.DisposeAsync();
             TestDirectories.DeleteIfExists(_scratchFolder);
         }

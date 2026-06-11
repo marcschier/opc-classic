@@ -10,7 +10,8 @@ namespace Opc.Classic.Dcom.Core;
 /// <summary>
 /// Stores the oxid details in memory.
 /// </summary>
-internal sealed class ComOxidDetails {
+internal sealed class ComOxidDetails
+{
 
     /// <summary>
     /// Create details
@@ -25,7 +26,8 @@ internal sealed class ComOxidDetails {
     /// <param name="protectionLevel"></param>
     internal ComOxidDetails(LocalCoClass localInstance, Oxid oxid,
         ObjectId oid, string iid, string ipid, InterfacePointer ptr,
-        ComOxidRuntimeHelper helper, ProtectionLevel protectionLevel) {
+        ComOxidRuntimeHelper helper, ProtectionLevel protectionLevel)
+    {
         Referent = localInstance;
         Ipid = ipid;
         _ptr = ptr;
@@ -93,14 +95,18 @@ internal sealed class ComOxidDetails {
     /// <summary>
     /// Interrupt unknown thread group thread
     /// </summary>
-    internal void InterruptRemUnknownThreadGroup() {
-        if (_remUnknownThread != null) {
-            try {
+    internal void InterruptRemUnknownThreadGroup()
+    {
+        if (_remUnknownThread != null)
+        {
+            try
+            {
                 // _remUnknownThread.interrupt();
 
                 // old: remUnknownThread.destroy();
             }
-            catch (Exception e) {
+            catch (Exception e)
+            {
                 Log.Logger.Information(e, "ComOxidDetails interruptRemUnknownThreadGroup");
             }
         }

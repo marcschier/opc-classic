@@ -33,7 +33,8 @@ namespace Opc.Classic.Dcom.Core;
 /// and MSShell examples for more details on how to use this class.
 /// </summary>
 [Serializable]
-public sealed class LocalParamsDescriptor {
+public sealed class LocalParamsDescriptor
+{
 
     /// <summary>
     /// Parameters
@@ -52,7 +53,8 @@ public sealed class LocalParamsDescriptor {
     /// </summary>
     /// <param name="ndr"></param>
     /// <returns></returns>
-    internal object[] Read(NdrCodec ndr) {
+    internal object[] Read(NdrCodec ndr)
+    {
         _callObject.Read2(ndr);
         return _callObject.Results;
     }

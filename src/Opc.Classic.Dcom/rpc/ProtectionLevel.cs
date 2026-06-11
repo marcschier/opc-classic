@@ -5,7 +5,8 @@ namespace Opc.Classic.Dcom.Rpc;
 /// <summary>
 /// Protection level
 /// </summary>
-public enum ProtectionLevel {
+public enum ProtectionLevel
+{
 
     /// <summary>
     /// None

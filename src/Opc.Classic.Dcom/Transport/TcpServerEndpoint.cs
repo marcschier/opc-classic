@@ -26,7 +26,8 @@ namespace Opc.Classic.Dcom.Transport;
 /// <see cref="LocalEndpoint"/> before any consumer subscribes to
 /// <see cref="AcceptConnectionsAsync"/>.
 /// </remarks>
-public sealed class TcpServerEndpoint : IAsyncEndpoint {
+public sealed class TcpServerEndpoint : IAsyncEndpoint
+{
     private readonly TcpListener _listener;
     private bool _disposed;
 
@@ -34,7 +35,8 @@ public sealed class TcpServerEndpoint : IAsyncEndpoint {
     /// Initializes a new <see cref="TcpServerEndpoint"/> bound to
     /// <paramref name="listenEndpoint"/> and immediately starts accepting.
     /// </summary>
-    public TcpServerEndpoint(IPEndPoint listenEndpoint) {
+    public TcpServerEndpoint(IPEndPoint listenEndpoint)
+    {
         ArgumentNullException.ThrowIfNull(listenEndpoint);
         _listener = new TcpListener(listenEndpoint);
         _listener.Start();
@@ -45,19 +47,25 @@ public sealed class TcpServerEndpoint : IAsyncEndpoint {
 
     /// <inheritdoc />
     public async IAsyncEnumerable<IAsyncTransport> AcceptConnectionsAsync(
-        [EnumeratorCancellation] CancellationToken cancellationToken = default) {
-        while (!cancellationToken.IsCancellationRequested && !_disposed) {
+        [EnumeratorCancellation] CancellationToken cancellationToken = default)
+    {
+        while (!cancellationToken.IsCancellationRequested && !_disposed)
+        {
             TcpClient client;
-            try {
+            try
+            {
                 client = await _listener.AcceptTcpClientAsync(cancellationToken).ConfigureAwait(false);
             }
-            catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested) {
+            catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+            {
                 yield break;
             }
-            catch (ObjectDisposedException) {
+            catch (ObjectDisposedException)
+            {
                 yield break;
             }
-            catch (SocketException) when (_disposed) {
+            catch (SocketException) when (_disposed)
+            {
                 yield break;
             }
 
@@ -66,16 +74,20 @@ public sealed class TcpServerEndpoint : IAsyncEndpoint {
     }
 
     /// <inheritdoc />
-    public ValueTask DisposeAsync() {
-        if (_disposed) {
+    public ValueTask DisposeAsync()
+    {
+        if (_disposed)
+        {
             return ValueTask.CompletedTask;
         }
 
         _disposed = true;
-        try {
+        try
+        {
             _listener.Stop();
         }
-        catch (SocketException) {
+        catch (SocketException)
+        {
             // Ignored - listener was already stopped or never fully started.
         }
         _listener.Dispose();
@@ -88,12 +100,14 @@ public sealed class TcpServerEndpoint : IAsyncEndpoint {
     /// the <c>TcpSocketTransport</c> client-side pattern used by
     /// <c>DcomOpcEnumCallChannelFactory</c>.
     /// </summary>
-    private sealed class TcpServerTransport : IAsyncTransport {
+    private sealed class TcpServerTransport : IAsyncTransport
+    {
         private readonly TcpClient _client;
         private readonly NetworkStream _stream;
         private bool _disposed;
 
-        public TcpServerTransport(TcpClient client) {
+        public TcpServerTransport(TcpClient client)
+        {
             _client = client;
             _stream = client.GetStream();
             Input = PipeReader.Create(_stream);
@@ -110,8 +124,10 @@ public sealed class TcpServerEndpoint : IAsyncEndpoint {
         public async ValueTask FlushAsync(CancellationToken cancellationToken = default) =>
             await Output.FlushAsync(cancellationToken).ConfigureAwait(false);
 
-        public async ValueTask DisposeAsync() {
-            if (_disposed) {
+        public async ValueTask DisposeAsync()
+        {
+            if (_disposed)
+            {
                 return;
             }
 

@@ -8,7 +8,8 @@ namespace Opc.Classic.Dcom.Rpc.pdu;
 /// <summary>
 /// Bind ack
 /// </summary>
-public class BindAcknowledgePdu : ConnectionOrientedPdu {
+public class BindAcknowledgePdu : ConnectionOrientedPdu
+{
 
     public const int BIND_ACKNOWLEDGE_TYPE = 0x0c;
 
@@ -41,7 +42,8 @@ public class BindAcknowledgePdu : ConnectionOrientedPdu {
     public PresentationResult[] ResultList { get; set; }
 
     /// <inheritdoc/>
-    protected internal override void ReadBody(NdrCodec ndr) {
+    protected internal override void ReadBody(NdrCodec ndr)
+    {
         MaxTransmitFragment = ndr.ReadUnsignedShort();
         MaxReceiveFragment = ndr.ReadUnsignedShort();
         AssociationGroupId = ndr.ReadUnsignedLong();
@@ -51,7 +53,8 @@ public class BindAcknowledgePdu : ConnectionOrientedPdu {
         ndr.Buffer.Align(4);
         var count = ndr.ReadUnsignedSmall();
         var resultList = new PresentationResult[count];
-        for (var i = 0; i < count; i++) {
+        for (var i = 0; i < count; i++)
+        {
             resultList[i] = new PresentationResult();
             resultList[i].Read(ndr);
         }
@@ -59,12 +62,14 @@ public class BindAcknowledgePdu : ConnectionOrientedPdu {
     }
 
     /// <inheritdoc/>
-    protected internal override void WriteBody(NdrCodec ndr) {
+    protected internal override void WriteBody(NdrCodec ndr)
+    {
         ndr.WriteUnsignedShort(MaxTransmitFragment);
         ndr.WriteUnsignedShort(MaxReceiveFragment);
         ndr.WriteUnsignedLong(AssociationGroupId);
         var secondaryAddress = SecondaryAddress;
-        if (secondaryAddress == null) {
+        if (secondaryAddress == null)
+        {
             secondaryAddress = new Port();
         }
         secondaryAddress.Write(ndr);
@@ -72,7 +77,8 @@ public class BindAcknowledgePdu : ConnectionOrientedPdu {
         var resultList = ResultList;
         var count = resultList.Length;
         ndr.WriteUnsignedSmall((short)count);
-        for (var i = 0; i < count; i++) {
+        for (var i = 0; i < count; i++)
+        {
             resultList[i].Write(ndr);
         }
     }

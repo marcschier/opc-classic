@@ -21,45 +21,56 @@ namespace Opc.Classic.Ae.Hosting.Windows;
 /// and marshal OPC AE native CoTaskMem/BSTR payloads at the COM boundary.
 /// </remarks>
 [SupportedOSPlatform("windows")]
-internal static unsafe class OpcAeServerCcwMethods {
+internal static unsafe class OpcAeServerCcwMethods
+{
     [UnmanagedCallersOnly]
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
-    public static int GetStatus(IntPtr pThis, IntPtr* ppEventServerStatus) {
-        if (ppEventServerStatus == null) {
+    public static int GetStatus(IntPtr pThis, IntPtr* ppEventServerStatus)
+    {
+        if (ppEventServerStatus == null)
+        {
             return OpcAeServerCcw.E_INVALIDARG;
         }
         *ppEventServerStatus = IntPtr.Zero;
-        if (!TryResolveServer(pThis, out IOpcAeServer? server)) {
+        if (!TryResolveServer(pThis, out IOpcAeServer? server))
+        {
             return OpcAeServerCcw.E_FAIL;
         }
-        try {
+        try
+        {
 #pragma warning disable VSTHRD002
             OpcServerStatus status = server!.GetStatusAsync(CancellationToken.None).GetAwaiter().GetResult();
 #pragma warning restore VSTHRD002
             *ppEventServerStatus = AllocateOpcEventServerStatus(status);
             return OpcAeServerCcw.S_OK;
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             return MapHResult(ex);
         }
     }
 
     [UnmanagedCallersOnly]
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
-    public static int CreateEventSubscription(IntPtr pThis, int active, int bufferTime, int maxSize, int clientSubscription, Guid* riid, IntPtr* ppUnk, IntPtr pRevisedBufferTime, IntPtr pRevisedMaxSize) {
+    public static int CreateEventSubscription(IntPtr pThis, int active, int bufferTime, int maxSize, int clientSubscription, Guid* riid, IntPtr* ppUnk, IntPtr pRevisedBufferTime, IntPtr pRevisedMaxSize)
+    {
         WriteNull(ppUnk);
         WriteInt32(pRevisedBufferTime, 0);
         WriteInt32(pRevisedMaxSize, 0);
-        if (riid == null || ppUnk == null) {
+        if (riid == null || ppUnk == null)
+        {
             return OpcAeServerCcw.E_INVALIDARG;
         }
-        if (!OpcAeSubscriptionCcw.SupportsInterface(*riid)) {
+        if (!OpcAeSubscriptionCcw.SupportsInterface(*riid))
+        {
             return OpcAeServerCcw.E_NOINTERFACE;
         }
-        if (!TryResolveDispatcher(pThis, out IOpcAeServerDispatcher? dispatcher)) {
+        if (!TryResolveDispatcher(pThis, out IOpcAeServerDispatcher? dispatcher))
+        {
             return OpcAeServerCcw.E_FAIL;
         }
-        try {
+        try
+        {
 #pragma warning disable VSTHRD002
             IOPCEventSubscriptionMgt subscription = dispatcher!.CreateEventSubscriptionAsync(
                 active != 0,
@@ -72,7 +83,8 @@ internal static unsafe class OpcAeServerCcwMethods {
                 CancellationToken.None).GetAwaiter().GetResult();
 #pragma warning restore VSTHRD002
             IntPtr subscriptionCcw = OpcAeSubscriptionCcw.Create(subscription, *riid, dispatcher);
-            if (subscriptionCcw == IntPtr.Zero) {
+            if (subscriptionCcw == IntPtr.Zero)
+            {
                 return OpcAeServerCcw.E_NOINTERFACE;
             }
             *ppUnk = subscriptionCcw;
@@ -80,46 +92,55 @@ internal static unsafe class OpcAeServerCcwMethods {
             WriteInt32(pRevisedMaxSize, revisedMaxSize);
             return OpcAeServerCcw.S_OK;
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             return MapHResult(ex);
         }
     }
 
     [UnmanagedCallersOnly]
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
-    public static int QueryAvailableFilters(IntPtr pThis, IntPtr pFilterMask) {
-        if (!TryResolveServer(pThis, out IOpcAeServer? server)) {
+    public static int QueryAvailableFilters(IntPtr pThis, IntPtr pFilterMask)
+    {
+        if (!TryResolveServer(pThis, out IOpcAeServer? server))
+        {
             return OpcAeServerCcw.E_FAIL;
         }
-        try {
+        try
+        {
 #pragma warning disable VSTHRD002
             int filters = server!.QueryAvailableFiltersAsync(CancellationToken.None).GetAwaiter().GetResult();
 #pragma warning restore VSTHRD002
             WriteInt32(pFilterMask, filters);
             return OpcAeServerCcw.S_OK;
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             return MapHResult(ex);
         }
     }
 
     [UnmanagedCallersOnly]
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
-    public static int QueryEventCategories(IntPtr pThis, int eventType, IntPtr pCount, IntPtr* ppEventCategories, IntPtr* ppEventCategoryDescs) {
+    public static int QueryEventCategories(IntPtr pThis, int eventType, IntPtr pCount, IntPtr* ppEventCategories, IntPtr* ppEventCategoryDescs)
+    {
         WriteInt32(pCount, 0);
         WriteNull(ppEventCategories);
         WriteNull(ppEventCategoryDescs);
-        if (pCount == IntPtr.Zero || ppEventCategories == null || ppEventCategoryDescs == null) {
+        if (pCount == IntPtr.Zero || ppEventCategories == null || ppEventCategoryDescs == null)
+        {
             return OpcAeServerCcw.E_INVALIDARG;
         }
-        if (!TryResolveDispatcher(pThis, out IOpcAeServerDispatcher? dispatcher)) {
+        if (!TryResolveDispatcher(pThis, out IOpcAeServerDispatcher? dispatcher))
+        {
             return OpcAeServerCcw.E_FAIL;
         }
 
         IntPtr categoriesPtr = IntPtr.Zero;
         IntPtr descriptionsPtr = IntPtr.Zero;
         int count = 0;
-        try {
+        try
+        {
 #pragma warning disable VSTHRD002
             dispatcher!.QueryEventCategoriesAsync(eventType, out int[] categories, out string[] descriptions, CancellationToken.None)
                 .GetAwaiter().GetResult();
@@ -137,7 +158,8 @@ internal static unsafe class OpcAeServerCcwMethods {
             descriptionsPtr = IntPtr.Zero;
             return OpcAeServerCcw.S_OK;
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             OpcAeArrayMarshaler.FreeCoTaskMem(categoriesPtr);
             OpcAeArrayMarshaler.FreeBstrArray(descriptionsPtr, count);
             return MapHResult(ex);
@@ -146,19 +168,23 @@ internal static unsafe class OpcAeServerCcwMethods {
 
     [UnmanagedCallersOnly]
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
-    public static int QueryConditionNames(IntPtr pThis, int eventCategory, IntPtr pCount, IntPtr* ppConditionNames) {
+    public static int QueryConditionNames(IntPtr pThis, int eventCategory, IntPtr pCount, IntPtr* ppConditionNames)
+    {
         WriteInt32(pCount, 0);
         WriteNull(ppConditionNames);
-        if (pCount == IntPtr.Zero || ppConditionNames == null) {
+        if (pCount == IntPtr.Zero || ppConditionNames == null)
+        {
             return OpcAeServerCcw.E_INVALIDARG;
         }
-        if (!TryResolveDispatcher(pThis, out IOpcAeServerDispatcher? dispatcher)) {
+        if (!TryResolveDispatcher(pThis, out IOpcAeServerDispatcher? dispatcher))
+        {
             return OpcAeServerCcw.E_FAIL;
         }
 
         IntPtr namesPtr = IntPtr.Zero;
         int count = 0;
-        try {
+        try
+        {
 #pragma warning disable VSTHRD002
             string[] names = dispatcher!.QueryConditionNamesAsync(eventCategory, CancellationToken.None).GetAwaiter().GetResult();
 #pragma warning restore VSTHRD002
@@ -169,7 +195,8 @@ internal static unsafe class OpcAeServerCcwMethods {
             namesPtr = IntPtr.Zero;
             return OpcAeServerCcw.S_OK;
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             OpcAeArrayMarshaler.FreeBstrArray(namesPtr, count);
             return MapHResult(ex);
         }
@@ -177,19 +204,23 @@ internal static unsafe class OpcAeServerCcwMethods {
 
     [UnmanagedCallersOnly]
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
-    public static int QuerySubConditionNames(IntPtr pThis, IntPtr conditionName, IntPtr pCount, IntPtr* ppSubConditionNames) {
+    public static int QuerySubConditionNames(IntPtr pThis, IntPtr conditionName, IntPtr pCount, IntPtr* ppSubConditionNames)
+    {
         WriteInt32(pCount, 0);
         WriteNull(ppSubConditionNames);
-        if (pCount == IntPtr.Zero || ppSubConditionNames == null || conditionName == IntPtr.Zero) {
+        if (pCount == IntPtr.Zero || ppSubConditionNames == null || conditionName == IntPtr.Zero)
+        {
             return OpcAeServerCcw.E_INVALIDARG;
         }
-        if (!TryResolveDispatcher(pThis, out IOpcAeServerDispatcher? dispatcher)) {
+        if (!TryResolveDispatcher(pThis, out IOpcAeServerDispatcher? dispatcher))
+        {
             return OpcAeServerCcw.E_FAIL;
         }
 
         IntPtr namesPtr = IntPtr.Zero;
         int count = 0;
-        try {
+        try
+        {
             string name = Marshal.PtrToStringUni(conditionName) ?? string.Empty;
 #pragma warning disable VSTHRD002
             string[] names = dispatcher!.QuerySubConditionNamesAsync(name, CancellationToken.None).GetAwaiter().GetResult();
@@ -201,7 +232,8 @@ internal static unsafe class OpcAeServerCcwMethods {
             namesPtr = IntPtr.Zero;
             return OpcAeServerCcw.S_OK;
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             OpcAeArrayMarshaler.FreeBstrArray(namesPtr, count);
             return MapHResult(ex);
         }
@@ -209,19 +241,23 @@ internal static unsafe class OpcAeServerCcwMethods {
 
     [UnmanagedCallersOnly]
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
-    public static int QuerySourceConditions(IntPtr pThis, IntPtr source, IntPtr pCount, IntPtr* ppConditionNames) {
+    public static int QuerySourceConditions(IntPtr pThis, IntPtr source, IntPtr pCount, IntPtr* ppConditionNames)
+    {
         WriteInt32(pCount, 0);
         WriteNull(ppConditionNames);
-        if (pCount == IntPtr.Zero || ppConditionNames == null || source == IntPtr.Zero) {
+        if (pCount == IntPtr.Zero || ppConditionNames == null || source == IntPtr.Zero)
+        {
             return OpcAeServerCcw.E_INVALIDARG;
         }
-        if (!TryResolveDispatcher(pThis, out IOpcAeServerDispatcher? dispatcher)) {
+        if (!TryResolveDispatcher(pThis, out IOpcAeServerDispatcher? dispatcher))
+        {
             return OpcAeServerCcw.E_FAIL;
         }
 
         IntPtr namesPtr = IntPtr.Zero;
         int count = 0;
-        try {
+        try
+        {
             string sourceName = Marshal.PtrToStringUni(source) ?? string.Empty;
 #pragma warning disable VSTHRD002
             string[] names = dispatcher!.QuerySourceConditionsAsync(sourceName, CancellationToken.None).GetAwaiter().GetResult();
@@ -233,7 +269,8 @@ internal static unsafe class OpcAeServerCcwMethods {
             namesPtr = IntPtr.Zero;
             return OpcAeServerCcw.S_OK;
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             OpcAeArrayMarshaler.FreeBstrArray(namesPtr, count);
             return MapHResult(ex);
         }
@@ -241,15 +278,18 @@ internal static unsafe class OpcAeServerCcwMethods {
 
     [UnmanagedCallersOnly]
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
-    public static int QueryEventAttributes(IntPtr pThis, int eventCategory, IntPtr pCount, IntPtr* ppAttrIds, IntPtr* ppAttrDescs, IntPtr* ppAttrTypes) {
+    public static int QueryEventAttributes(IntPtr pThis, int eventCategory, IntPtr pCount, IntPtr* ppAttrIds, IntPtr* ppAttrDescs, IntPtr* ppAttrTypes)
+    {
         WriteInt32(pCount, 0);
         WriteNull(ppAttrIds);
         WriteNull(ppAttrDescs);
         WriteNull(ppAttrTypes);
-        if (pCount == IntPtr.Zero || ppAttrIds == null || ppAttrDescs == null || ppAttrTypes == null) {
+        if (pCount == IntPtr.Zero || ppAttrIds == null || ppAttrDescs == null || ppAttrTypes == null)
+        {
             return OpcAeServerCcw.E_INVALIDARG;
         }
-        if (!TryResolveDispatcher(pThis, out IOpcAeServerDispatcher? dispatcher)) {
+        if (!TryResolveDispatcher(pThis, out IOpcAeServerDispatcher? dispatcher))
+        {
             return OpcAeServerCcw.E_FAIL;
         }
 
@@ -257,7 +297,8 @@ internal static unsafe class OpcAeServerCcwMethods {
         IntPtr descriptionsPtr = IntPtr.Zero;
         IntPtr typesPtr = IntPtr.Zero;
         int count = 0;
-        try {
+        try
+        {
 #pragma warning disable VSTHRD002
             dispatcher!.QueryEventAttributesAsync(eventCategory, out int[] ids, out string[] descriptions, out ushort[] types, CancellationToken.None)
                 .GetAwaiter().GetResult();
@@ -281,7 +322,8 @@ internal static unsafe class OpcAeServerCcwMethods {
             typesPtr = IntPtr.Zero;
             return OpcAeServerCcw.S_OK;
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             OpcAeArrayMarshaler.FreeCoTaskMem(idsPtr);
             OpcAeArrayMarshaler.FreeBstrArray(descriptionsPtr, count);
             OpcAeArrayMarshaler.FreeCoTaskMem(typesPtr);
@@ -291,21 +333,25 @@ internal static unsafe class OpcAeServerCcwMethods {
 
     [UnmanagedCallersOnly]
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
-    public static int TranslateToItemIDs(IntPtr pThis, IntPtr source, int eventCategory, IntPtr conditionName, IntPtr subconditionName, int count, IntPtr assocAttrIds, IntPtr* ppAttrItemIds, IntPtr* ppNodeNames, IntPtr* ppClsids) {
+    public static int TranslateToItemIDs(IntPtr pThis, IntPtr source, int eventCategory, IntPtr conditionName, IntPtr subconditionName, int count, IntPtr assocAttrIds, IntPtr* ppAttrItemIds, IntPtr* ppNodeNames, IntPtr* ppClsids)
+    {
         WriteNull(ppAttrItemIds);
         WriteNull(ppNodeNames);
         WriteNull(ppClsids);
-        if (source == IntPtr.Zero || conditionName == IntPtr.Zero || subconditionName == IntPtr.Zero || count <= 0 || assocAttrIds == IntPtr.Zero || ppAttrItemIds == null || ppNodeNames == null || ppClsids == null) {
+        if (source == IntPtr.Zero || conditionName == IntPtr.Zero || subconditionName == IntPtr.Zero || count <= 0 || assocAttrIds == IntPtr.Zero || ppAttrItemIds == null || ppNodeNames == null || ppClsids == null)
+        {
             return OpcAeServerCcw.E_INVALIDARG;
         }
-        if (!TryResolveDispatcher(pThis, out IOpcAeServerDispatcher? dispatcher)) {
+        if (!TryResolveDispatcher(pThis, out IOpcAeServerDispatcher? dispatcher))
+        {
             return OpcAeServerCcw.E_FAIL;
         }
 
         IntPtr itemIdsPtr = IntPtr.Zero;
         IntPtr nodeNamesPtr = IntPtr.Zero;
         IntPtr clsidsPtr = IntPtr.Zero;
-        try {
+        try
+        {
             string sourceName = Marshal.PtrToStringUni(source) ?? string.Empty;
             string condition = Marshal.PtrToStringUni(conditionName) ?? string.Empty;
             string subcondition = Marshal.PtrToStringUni(subconditionName) ?? string.Empty;
@@ -331,7 +377,8 @@ internal static unsafe class OpcAeServerCcwMethods {
             clsidsPtr = IntPtr.Zero;
             return OpcAeServerCcw.S_OK;
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             OpcAeArrayMarshaler.FreeBstrArray(itemIdsPtr, count);
             OpcAeArrayMarshaler.FreeBstrArray(nodeNamesPtr, count);
             OpcAeArrayMarshaler.FreeCoTaskMem(clsidsPtr);
@@ -341,17 +388,21 @@ internal static unsafe class OpcAeServerCcwMethods {
 
     [UnmanagedCallersOnly]
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
-    public static int GetConditionState(IntPtr pThis, IntPtr source, IntPtr conditionName, int eventAttrCount, IntPtr attributeIds, IntPtr* ppConditionState) {
+    public static int GetConditionState(IntPtr pThis, IntPtr source, IntPtr conditionName, int eventAttrCount, IntPtr attributeIds, IntPtr* ppConditionState)
+    {
         WriteNull(ppConditionState);
-        if (source == IntPtr.Zero || conditionName == IntPtr.Zero || eventAttrCount < 0 || (eventAttrCount > 0 && attributeIds == IntPtr.Zero) || ppConditionState == null) {
+        if (source == IntPtr.Zero || conditionName == IntPtr.Zero || eventAttrCount < 0 || (eventAttrCount > 0 && attributeIds == IntPtr.Zero) || ppConditionState == null)
+        {
             return OpcAeServerCcw.E_INVALIDARG;
         }
-        if (!TryResolveDispatcher(pThis, out IOpcAeServerDispatcher? dispatcher)) {
+        if (!TryResolveDispatcher(pThis, out IOpcAeServerDispatcher? dispatcher))
+        {
             return OpcAeServerCcw.E_FAIL;
         }
 
         IntPtr statePtr = IntPtr.Zero;
-        try {
+        try
+        {
             string sourceName = Marshal.PtrToStringUni(source) ?? string.Empty;
             string condition = Marshal.PtrToStringUni(conditionName) ?? string.Empty;
             int[] ids = OpcAeArrayMarshaler.ReadDwordArray(attributeIds, eventAttrCount);
@@ -363,7 +414,8 @@ internal static unsafe class OpcAeServerCcwMethods {
             statePtr = IntPtr.Zero;
             return OpcAeServerCcw.S_OK;
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             OpcAeArrayMarshaler.FreeCoTaskMem(statePtr);
             return MapHResult(ex);
         }
@@ -391,17 +443,21 @@ internal static unsafe class OpcAeServerCcwMethods {
 
     [UnmanagedCallersOnly]
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
-    public static int AckCondition(IntPtr pThis, int count, IntPtr acknowledgerId, IntPtr comment, IntPtr sources, IntPtr conditionNames, IntPtr activeTimes, IntPtr cookies, IntPtr* ppErrors) {
+    public static int AckCondition(IntPtr pThis, int count, IntPtr acknowledgerId, IntPtr comment, IntPtr sources, IntPtr conditionNames, IntPtr activeTimes, IntPtr cookies, IntPtr* ppErrors)
+    {
         WriteNull(ppErrors);
-        if (count <= 0 || acknowledgerId == IntPtr.Zero || comment == IntPtr.Zero || sources == IntPtr.Zero || conditionNames == IntPtr.Zero || activeTimes == IntPtr.Zero || cookies == IntPtr.Zero || ppErrors == null) {
+        if (count <= 0 || acknowledgerId == IntPtr.Zero || comment == IntPtr.Zero || sources == IntPtr.Zero || conditionNames == IntPtr.Zero || activeTimes == IntPtr.Zero || cookies == IntPtr.Zero || ppErrors == null)
+        {
             return OpcAeServerCcw.E_INVALIDARG;
         }
-        if (!TryResolveDispatcher(pThis, out IOpcAeServerDispatcher? dispatcher)) {
+        if (!TryResolveDispatcher(pThis, out IOpcAeServerDispatcher? dispatcher))
+        {
             return OpcAeServerCcw.E_FAIL;
         }
 
         IntPtr errorsPtr = IntPtr.Zero;
-        try {
+        try
+        {
             string acknowledger = Marshal.PtrToStringUni(acknowledgerId) ?? string.Empty;
             string ackComment = Marshal.PtrToStringUni(comment) ?? string.Empty;
             string[] sourceNames = OpcAeArrayMarshaler.ReadBstrArray(sources, count);
@@ -419,7 +475,8 @@ internal static unsafe class OpcAeServerCcwMethods {
             errorsPtr = IntPtr.Zero;
             return OpcAeServerCcw.S_OK;
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             OpcAeArrayMarshaler.FreeCoTaskMem(errorsPtr);
             return MapHResult(ex);
         }
@@ -427,40 +484,50 @@ internal static unsafe class OpcAeServerCcwMethods {
 
     [UnmanagedCallersOnly]
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
-    public static int CreateAreaBrowser(IntPtr pThis, Guid* riid, IntPtr* ppUnk) {
+    public static int CreateAreaBrowser(IntPtr pThis, Guid* riid, IntPtr* ppUnk)
+    {
         WriteNull(ppUnk);
-        if (riid == null || ppUnk == null) {
+        if (riid == null || ppUnk == null)
+        {
             return OpcAeServerCcw.E_INVALIDARG;
         }
-        if (!OpcAeAreaBrowserCcw.SupportsInterface(*riid)) {
+        if (!OpcAeAreaBrowserCcw.SupportsInterface(*riid))
+        {
             return OpcAeServerCcw.E_NOINTERFACE;
         }
-        if (!TryResolveDispatcher(pThis, out IOpcAeServerDispatcher? dispatcher)) {
+        if (!TryResolveDispatcher(pThis, out IOpcAeServerDispatcher? dispatcher))
+        {
             return OpcAeServerCcw.E_FAIL;
         }
-        try {
+        try
+        {
 #pragma warning disable VSTHRD002
             IOpcAeAreaBrowserDispatcher browser = dispatcher!.CreateAreaBrowserAsync(*riid, CancellationToken.None).GetAwaiter().GetResult();
 #pragma warning restore VSTHRD002
             IntPtr browserCcw = OpcAeAreaBrowserCcw.Create(browser, *riid);
-            if (browserCcw == IntPtr.Zero) {
+            if (browserCcw == IntPtr.Zero)
+            {
                 return OpcAeServerCcw.E_NOINTERFACE;
             }
             *ppUnk = browserCcw;
             return OpcAeServerCcw.S_OK;
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             return MapHResult(ex);
         }
     }
 
     [UnmanagedCallersOnly]
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
-    public static int SetFilter(IntPtr pThis, int eventType, int categoryCount, IntPtr eventCategories, int lowSeverity, int highSeverity, int areaCount, IntPtr areas, int sourceCount, IntPtr sources) {
-        if (!TryResolveSubscription(pThis, out IOPCEventSubscriptionMgt? subscription)) {
+    public static int SetFilter(IntPtr pThis, int eventType, int categoryCount, IntPtr eventCategories, int lowSeverity, int highSeverity, int areaCount, IntPtr areas, int sourceCount, IntPtr sources)
+    {
+        if (!TryResolveSubscription(pThis, out IOPCEventSubscriptionMgt? subscription))
+        {
             return OpcAeServerCcw.E_FAIL;
         }
-        try {
+        try
+        {
             int[] categoryIds = OpcAeSubscriptionCcw.ReadInt32Array(categoryCount, eventCategories);
             string[] areaNames = OpcAeSubscriptionCcw.ReadStringPointerArray(areaCount, areas);
             string[] sourceNames = OpcAeSubscriptionCcw.ReadStringPointerArray(sourceCount, sources);
@@ -469,26 +536,31 @@ internal static unsafe class OpcAeServerCcwMethods {
 #pragma warning restore VSTHRD002
             return OpcAeServerCcw.S_OK;
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             return MapHResult(ex);
         }
     }
 
     [UnmanagedCallersOnly]
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
-    public static int GetFilter(IntPtr pThis, IntPtr pEventType, IntPtr pCategoryCount, IntPtr* ppEventCategories, IntPtr pLowSeverity, IntPtr pHighSeverity, IntPtr pAreaCount, IntPtr* ppAreaList, IntPtr pSourceCount, IntPtr* ppSourceList) {
+    public static int GetFilter(IntPtr pThis, IntPtr pEventType, IntPtr pCategoryCount, IntPtr* ppEventCategories, IntPtr pLowSeverity, IntPtr pHighSeverity, IntPtr pAreaCount, IntPtr* ppAreaList, IntPtr pSourceCount, IntPtr* ppSourceList)
+    {
         InitializeGetFilterOutputs(pEventType, pCategoryCount, ppEventCategories, pLowSeverity, pHighSeverity, pAreaCount, ppAreaList, pSourceCount, ppSourceList);
-        if (IsInvalidGetFilterArgs(pEventType, pCategoryCount, ppEventCategories, pLowSeverity, pHighSeverity, pAreaCount, ppAreaList, pSourceCount, ppSourceList)) {
+        if (IsInvalidGetFilterArgs(pEventType, pCategoryCount, ppEventCategories, pLowSeverity, pHighSeverity, pAreaCount, ppAreaList, pSourceCount, ppSourceList))
+        {
             return OpcAeServerCcw.E_INVALIDARG;
         }
-        if (!TryResolveSubscription(pThis, out IOPCEventSubscriptionMgt? subscription)) {
+        if (!TryResolveSubscription(pThis, out IOPCEventSubscriptionMgt? subscription))
+        {
             return OpcAeServerCcw.E_FAIL;
         }
 
         IntPtr categoriesPtr = IntPtr.Zero;
         IntPtr areasPtr = IntPtr.Zero;
         IntPtr sourcesPtr = IntPtr.Zero;
-        try {
+        try
+        {
 #pragma warning disable VSTHRD002
             subscription!.GetFilterAsync(out int eventType, out int[] categories, out int lowSeverity, out int highSeverity, out string[] areas, out string[] sources, CancellationToken.None)
                 .GetAwaiter().GetResult();
@@ -523,7 +595,8 @@ internal static unsafe class OpcAeServerCcwMethods {
             sourcesPtr = IntPtr.Zero;
             return OpcAeServerCcw.S_OK;
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             OpcAeSubscriptionCcw.FreeCoTaskMem(categoriesPtr);
             OpcAeSubscriptionCcw.FreeStringPointerArray(areasPtr);
             OpcAeSubscriptionCcw.FreeStringPointerArray(sourcesPtr);
@@ -531,7 +604,8 @@ internal static unsafe class OpcAeServerCcwMethods {
         }
     }
 
-    private static void InitializeGetFilterOutputs(IntPtr pEventType, IntPtr pCategoryCount, IntPtr* ppEventCategories, IntPtr pLowSeverity, IntPtr pHighSeverity, IntPtr pAreaCount, IntPtr* ppAreaList, IntPtr pSourceCount, IntPtr* ppSourceList) {
+    private static void InitializeGetFilterOutputs(IntPtr pEventType, IntPtr pCategoryCount, IntPtr* ppEventCategories, IntPtr pLowSeverity, IntPtr pHighSeverity, IntPtr pAreaCount, IntPtr* ppAreaList, IntPtr pSourceCount, IntPtr* ppSourceList)
+    {
         WriteInt32(pEventType, 0);
         WriteInt32(pCategoryCount, 0);
         WriteNull(ppEventCategories);
@@ -572,7 +646,8 @@ internal static unsafe class OpcAeServerCcwMethods {
         IntPtr pAreaCount,
         IntPtr* ppAreaList,
         IntPtr pSourceCount,
-        IntPtr* ppSourceList) {
+        IntPtr* ppSourceList)
+    {
         WriteInt32(pEventType, eventType);
         WriteInt32(pCategoryCount, categories.Length);
         *ppEventCategories = categoriesPtr;
@@ -586,40 +661,49 @@ internal static unsafe class OpcAeServerCcwMethods {
 
     [UnmanagedCallersOnly]
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
-    public static int SetReturnedAttributes(IntPtr pThis, int eventCategory, int count, IntPtr attributeIds) {
-        if (count < 0 || (count > 0 && attributeIds == IntPtr.Zero)) {
+    public static int SetReturnedAttributes(IntPtr pThis, int eventCategory, int count, IntPtr attributeIds)
+    {
+        if (count < 0 || (count > 0 && attributeIds == IntPtr.Zero))
+        {
             return OpcAeServerCcw.E_INVALIDARG;
         }
-        if (!TryResolveSubscription(pThis, out IOPCEventSubscriptionMgt? subscription)) {
+        if (!TryResolveSubscription(pThis, out IOPCEventSubscriptionMgt? subscription))
+        {
             return OpcAeServerCcw.E_FAIL;
         }
 
-        try {
+        try
+        {
             int[] ids = OpcAeArrayMarshaler.ReadDwordArray(attributeIds, count);
 #pragma warning disable VSTHRD002
             subscription!.SetReturnedAttributesAsync(eventCategory, ids, CancellationToken.None).GetAwaiter().GetResult();
 #pragma warning restore VSTHRD002
             return OpcAeServerCcw.S_OK;
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             return MapHResult(ex);
         }
     }
 
     [UnmanagedCallersOnly]
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
-    public static int GetReturnedAttributes(IntPtr pThis, int eventCategory, IntPtr pCount, IntPtr* ppAttributeIds) {
+    public static int GetReturnedAttributes(IntPtr pThis, int eventCategory, IntPtr pCount, IntPtr* ppAttributeIds)
+    {
         WriteInt32(pCount, 0);
         WriteNull(ppAttributeIds);
-        if (pCount == IntPtr.Zero || ppAttributeIds == null) {
+        if (pCount == IntPtr.Zero || ppAttributeIds == null)
+        {
             return OpcAeServerCcw.E_INVALIDARG;
         }
-        if (!TryResolveSubscription(pThis, out IOPCEventSubscriptionMgt? subscription)) {
+        if (!TryResolveSubscription(pThis, out IOPCEventSubscriptionMgt? subscription))
+        {
             return OpcAeServerCcw.E_FAIL;
         }
 
         IntPtr attributeIdsPtr = IntPtr.Zero;
-        try {
+        try
+        {
 #pragma warning disable VSTHRD002
             int[] ids = subscription!.GetReturnedAttributesAsync(eventCategory, CancellationToken.None).GetAwaiter().GetResult();
 #pragma warning restore VSTHRD002
@@ -630,7 +714,8 @@ internal static unsafe class OpcAeServerCcwMethods {
             attributeIdsPtr = IntPtr.Zero;
             return OpcAeServerCcw.S_OK;
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             OpcAeArrayMarshaler.FreeCoTaskMem(attributeIdsPtr);
             return MapHResult(ex);
         }
@@ -638,45 +723,56 @@ internal static unsafe class OpcAeServerCcwMethods {
 
     [UnmanagedCallersOnly]
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
-    public static int Refresh(IntPtr pThis, int connection) {
-        if (!TryResolveSubscription(pThis, out IOPCEventSubscriptionMgt? subscription)) {
+    public static int Refresh(IntPtr pThis, int connection)
+    {
+        if (!TryResolveSubscription(pThis, out IOPCEventSubscriptionMgt? subscription))
+        {
             return OpcAeServerCcw.E_FAIL;
         }
-        try {
+        try
+        {
 #pragma warning disable VSTHRD002
             subscription!.RefreshAsync(connection, CancellationToken.None).GetAwaiter().GetResult();
 #pragma warning restore VSTHRD002
             return OpcAeServerCcw.S_OK;
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             return MapHResult(ex);
         }
     }
 
     [UnmanagedCallersOnly]
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
-    public static int CancelRefresh(IntPtr pThis, int connection) {
-        if (!TryResolveSubscription(pThis, out IOPCEventSubscriptionMgt? subscription)) {
+    public static int CancelRefresh(IntPtr pThis, int connection)
+    {
+        if (!TryResolveSubscription(pThis, out IOPCEventSubscriptionMgt? subscription))
+        {
             return OpcAeServerCcw.E_FAIL;
         }
-        try {
+        try
+        {
 #pragma warning disable VSTHRD002
             subscription!.CancelRefreshAsync(connection, CancellationToken.None).GetAwaiter().GetResult();
 #pragma warning restore VSTHRD002
             return OpcAeServerCcw.S_OK;
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             return MapHResult(ex);
         }
     }
 
     [UnmanagedCallersOnly]
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
-    public static int GetState(IntPtr pThis, IntPtr pActive, IntPtr pBufferTime, IntPtr pMaxSize, IntPtr pClientSubscription) {
-        if (!TryResolveSubscription(pThis, out IOPCEventSubscriptionMgt? subscription)) {
+    public static int GetState(IntPtr pThis, IntPtr pActive, IntPtr pBufferTime, IntPtr pMaxSize, IntPtr pClientSubscription)
+    {
+        if (!TryResolveSubscription(pThis, out IOPCEventSubscriptionMgt? subscription))
+        {
             return OpcAeServerCcw.E_FAIL;
         }
-        try {
+        try
+        {
 #pragma warning disable VSTHRD002
             subscription!.GetStateAsync(out bool active, out int bufferTime, out int maxSize, out int clientSubscription, CancellationToken.None)
                 .GetAwaiter().GetResult();
@@ -687,18 +783,22 @@ internal static unsafe class OpcAeServerCcwMethods {
             WriteInt32(pClientSubscription, clientSubscription);
             return OpcAeServerCcw.S_OK;
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             return MapHResult(ex);
         }
     }
 
     [UnmanagedCallersOnly]
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
-    public static int SetState(IntPtr pThis, IntPtr pActive, IntPtr pBufferTime, IntPtr pMaxSize, int clientSubscription, IntPtr pRevisedBufferTime, IntPtr pRevisedMaxSize) {
-        if (!TryResolveSubscription(pThis, out IOPCEventSubscriptionMgt? subscription)) {
+    public static int SetState(IntPtr pThis, IntPtr pActive, IntPtr pBufferTime, IntPtr pMaxSize, int clientSubscription, IntPtr pRevisedBufferTime, IntPtr pRevisedMaxSize)
+    {
+        if (!TryResolveSubscription(pThis, out IOPCEventSubscriptionMgt? subscription))
+        {
             return OpcAeServerCcw.E_FAIL;
         }
-        try {
+        try
+        {
             ReadCurrentState(subscription!, out bool active, out int bufferTime, out int maxSize);
             ApplyRequestedState(pActive, pBufferTime, pMaxSize, ref active, ref bufferTime, ref maxSize);
 #pragma warning disable VSTHRD002
@@ -709,7 +809,8 @@ internal static unsafe class OpcAeServerCcwMethods {
             WriteInt32(pRevisedMaxSize, revisedMaxSize);
             return OpcAeServerCcw.S_OK;
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             return MapHResult(ex);
         }
     }
@@ -719,49 +820,60 @@ internal static unsafe class OpcAeServerCcwMethods {
         IntPtr pThis,
         int count,
         IntPtr names,
-        Func<IOpcAeServerDispatcher, string[], Task> dispatchAsync) {
+        Func<IOpcAeServerDispatcher, string[], Task> dispatchAsync)
+    {
         ArgumentNullException.ThrowIfNull(dispatchAsync);
-        if (count <= 0 || names == IntPtr.Zero) {
+        if (count <= 0 || names == IntPtr.Zero)
+        {
             return OpcAeServerCcw.E_INVALIDARG;
         }
-        if (!TryResolveDispatcher(pThis, out IOpcAeServerDispatcher? dispatcher)) {
+        if (!TryResolveDispatcher(pThis, out IOpcAeServerDispatcher? dispatcher))
+        {
             return OpcAeServerCcw.E_FAIL;
         }
 
-        try {
+        try
+        {
             string[] nameValues = OpcAeArrayMarshaler.ReadBstrArray(names, count);
 #pragma warning disable VSTHRD002
             dispatchAsync(dispatcher!, nameValues).GetAwaiter().GetResult();
 #pragma warning restore VSTHRD002
             return OpcAeServerCcw.S_OK;
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             return MapHResult(ex);
         }
     }
 
-    private static void EnsureSameLength(int expected, int actual, string arrayName) {
-        if (actual != expected) {
+    private static void EnsureSameLength(int expected, int actual, string arrayName)
+    {
+        if (actual != expected)
+        {
             throw new ArgumentException($"{arrayName} length {actual} must equal {expected}.", arrayName);
         }
     }
 
-    private static bool TryResolveServer(IntPtr pThis, out IOpcAeServer? server) {
+    private static bool TryResolveServer(IntPtr pThis, out IOpcAeServer? server)
+    {
         server = OpcAeServerCcw.ResolveServer(pThis);
         return server is not null;
     }
 
-    private static bool TryResolveDispatcher(IntPtr pThis, out IOpcAeServerDispatcher? dispatcher) {
+    private static bool TryResolveDispatcher(IntPtr pThis, out IOpcAeServerDispatcher? dispatcher)
+    {
         dispatcher = OpcAeServerCcw.ResolveDispatcher(pThis);
         return dispatcher is not null;
     }
 
-    private static bool TryResolveSubscription(IntPtr pThis, out IOPCEventSubscriptionMgt? subscription) {
+    private static bool TryResolveSubscription(IntPtr pThis, out IOPCEventSubscriptionMgt? subscription)
+    {
         subscription = OpcAeServerCcw.ResolveSubscription(pThis);
         return subscription is not null;
     }
 
-    private static int MapHResult(Exception ex) => ex switch {
+    private static int MapHResult(Exception ex) => ex switch
+    {
         COMException comEx => comEx.ErrorCode,
         OpcException opcEx => opcEx.ResultId.Code,
         ArgumentNullException => OpcAeServerCcw.E_INVALIDARG,
@@ -770,39 +882,50 @@ internal static unsafe class OpcAeServerCcwMethods {
         _ => OpcAeServerCcw.E_FAIL,
     };
 
-    private static void ReadCurrentState(IOPCEventSubscriptionMgt subscription, out bool active, out int bufferTime, out int maxSize) {
+    private static void ReadCurrentState(IOPCEventSubscriptionMgt subscription, out bool active, out int bufferTime, out int maxSize)
+    {
 #pragma warning disable VSTHRD002
         subscription.GetStateAsync(out active, out bufferTime, out maxSize, out _, CancellationToken.None)
             .GetAwaiter().GetResult();
 #pragma warning restore VSTHRD002
     }
 
-    private static void ApplyRequestedState(IntPtr pActive, IntPtr pBufferTime, IntPtr pMaxSize, ref bool active, ref int bufferTime, ref int maxSize) {
-        if (pActive != IntPtr.Zero) {
+    private static void ApplyRequestedState(IntPtr pActive, IntPtr pBufferTime, IntPtr pMaxSize, ref bool active, ref int bufferTime, ref int maxSize)
+    {
+        if (pActive != IntPtr.Zero)
+        {
             active = Marshal.ReadInt32(pActive) != 0;
         }
-        if (pBufferTime != IntPtr.Zero) {
+        if (pBufferTime != IntPtr.Zero)
+        {
             bufferTime = Marshal.ReadInt32(pBufferTime);
         }
-        if (pMaxSize != IntPtr.Zero) {
+        if (pMaxSize != IntPtr.Zero)
+        {
             maxSize = Marshal.ReadInt32(pMaxSize);
         }
     }
 
-    private static void WriteInt32(IntPtr p, int value) {
-        if (p != IntPtr.Zero) {
+    private static void WriteInt32(IntPtr p, int value)
+    {
+        if (p != IntPtr.Zero)
+        {
             Marshal.WriteInt32(p, value);
         }
     }
 
-    private static void WriteNull(IntPtr* pp) {
-        if (pp != null) {
+    private static void WriteNull(IntPtr* pp)
+    {
+        if (pp != null)
+        {
             *pp = IntPtr.Zero;
         }
     }
 
-    private static IntPtr AllocateLpwStr(string? value) {
-        if (value is null) {
+    private static IntPtr AllocateLpwStr(string? value)
+    {
+        if (value is null)
+        {
             return IntPtr.Zero;
         }
         int byteCount = (value.Length + 1) * sizeof(char);
@@ -812,11 +935,13 @@ internal static unsafe class OpcAeServerCcwMethods {
         return ptr;
     }
 
-    private static IntPtr AllocateOpcEventServerStatus(OpcServerStatus status) {
+    private static IntPtr AllocateOpcEventServerStatus(OpcServerStatus status)
+    {
         int size = sizeof(OPCEVENTSERVERSTATUS_NATIVE);
         IntPtr ptr = Marshal.AllocCoTaskMem(size);
         Version version = status.ServerVersion ?? new Version(1, 0, 0);
-        var native = new OPCEVENTSERVERSTATUS_NATIVE {
+        var native = new OPCEVENTSERVERSTATUS_NATIVE
+        {
             ftStartTime = status.StartTime.ToFileTime(),
             ftCurrentTime = status.CurrentTime.ToFileTime(),
             ftLastUpdateTime = status.LastUpdateTime.ToFileTime(),
@@ -836,7 +961,8 @@ internal static unsafe class OpcAeServerCcwMethods {
     /// layout would put <c>szVendorInfo</c> at an offset Windows DCOM's
     /// MIDL stub reads as garbage and resets the wire connection.</summary>
     [StructLayout(LayoutKind.Sequential)]
-    private struct OPCEVENTSERVERSTATUS_NATIVE {
+    private struct OPCEVENTSERVERSTATUS_NATIVE
+    {
         public long ftStartTime;
         public long ftCurrentTime;
         public long ftLastUpdateTime;

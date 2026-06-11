@@ -13,14 +13,16 @@ namespace Opc.Classic.Dcom.Rpc;
 /// <summary>
 /// Default connection object
 /// </summary>
-public class DefaultConnection : IConnection {
+public class DefaultConnection : IConnection
+{
 
     /// <summary>
     /// Create connection
     /// </summary>
     public DefaultConnection() :
         this(ConnectionOrientedPdu.MUST_RECEIVE_FRAGMENT_SIZE,
-            ConnectionOrientedPdu.MUST_RECEIVE_FRAGMENT_SIZE) {
+            ConnectionOrientedPdu.MUST_RECEIVE_FRAGMENT_SIZE)
+    {
     }
 
     /// <summary>
@@ -28,29 +30,35 @@ public class DefaultConnection : IConnection {
     /// </summary>
     /// <param name="transmitLength"></param>
     /// <param name="receiveLength"></param>
-    public DefaultConnection(int transmitLength, int receiveLength) {
+    public DefaultConnection(int transmitLength, int receiveLength)
+    {
         _ndr = new NdrCodec();
         _transmitBuffer = new NdrBuffer(new byte[transmitLength], 0);
         _receiveBuffer = new NdrBuffer(new byte[receiveLength], 0);
     }
 
     /// <inheritdoc/>
-    public void Transmit(ConnectionOrientedPdu pdu, ITransport transport) {
-        if (!(pdu is IFragmentable fpdu)) {
+    public void Transmit(ConnectionOrientedPdu pdu, ITransport transport)
+    {
+        if (!(pdu is IFragmentable fpdu))
+        {
             TransmitPdu(pdu, transport);
             return;
         }
         var fragments = fpdu.GetFragments(_transmitBuffer.GetCapacity());
-        while (fragments.HasNext()) {
+        while (fragments.HasNext())
+        {
             TransmitPdu(fragments.Next(), transport);
         }
     }
 
     /// <inheritdoc/>
-    public ConnectionOrientedPdu Receive(ITransport transport) {
+    public ConnectionOrientedPdu Receive(ITransport transport)
+    {
         var pdu = ReceivePdu(transport);
         if (!(pdu is IFragmentable fpdu) ||
-            pdu.GetFlag(ConnectionOrientedPdu.PFC_LAST_FRAG)) {
+            pdu.GetFlag(ConnectionOrientedPdu.PFC_LAST_FRAG))
+        {
             return pdu;
         }
         return fpdu.Reassemble(
@@ -60,7 +68,8 @@ public class DefaultConnection : IConnection {
     /// <summary>
     /// Iterator receiving fragments
     /// </summary>
-    private sealed class FragmentReceiveIterator : Iterator<ConnectionOrientedPdu> {
+    private sealed class FragmentReceiveIterator : Iterator<ConnectionOrientedPdu>
+    {
 
         /// <summary>
         /// Create iterator
@@ -69,7 +78,8 @@ public class DefaultConnection : IConnection {
         /// <param name="transport"></param>
         /// <param name="fragment"></param>
         public FragmentReceiveIterator(DefaultConnection outerInstance,
-            ITransport transport, ConnectionOrientedPdu fragment) {
+            ITransport transport, ConnectionOrientedPdu fragment)
+        {
             _outerInstance = outerInstance;
             _transport = transport;
             _currentFragment = fragment;
@@ -79,28 +89,36 @@ public class DefaultConnection : IConnection {
         public override bool HasNext() => _currentFragment != null;
 
         /// <inheritdoc/>
-        public override ConnectionOrientedPdu Next() {
-            if (_currentFragment == null) {
+        public override ConnectionOrientedPdu Next()
+        {
+            if (_currentFragment == null)
+            {
                 throw new NoSuchElementException();
             }
 
             var fragment = _currentFragment;
-            if (fragment.GetFlag(ConnectionOrientedPdu.PFC_LAST_FRAG)) {
+            if (fragment.GetFlag(ConnectionOrientedPdu.PFC_LAST_FRAG))
+            {
                 _currentFragment = null;
             }
-            else {
-                try {
+            else
+            {
+                try
+                {
                     Log.Logger.Verbose("[Fragmented Packet] [" + _packetIndex++ +
                         "] recieved, fragment decomposition is below: ");
                     _currentFragment = _outerInstance.ReceivePdu(_transport);
                 }
-                catch (InvalidCastException e) {
+                catch (InvalidCastException e)
+                {
                     throw new IOException("invalid pdu received", e);
                 }
-                catch (IOException) {
+                catch (IOException)
+                {
                     throw;
                 }
-                catch (Exception ex) {
+                catch (Exception ex)
+                {
                     throw new InvalidOperationException("Unknown", ex);
                 }
             }
@@ -123,7 +141,8 @@ public class DefaultConnection : IConnection {
     /// <param name="fragment"></param>
     /// <param name="transport"></param>
     /// <exception cref="IOException"></exception>
-    private void TransmitPdu(ConnectionOrientedPdu fragment, ITransport transport) {
+    private void TransmitPdu(ConnectionOrientedPdu fragment, ITransport transport)
+    {
         _transmitBuffer.Reset();
         fragment.Encode(_ndr, _transmitBuffer);
         ProcessOutgoing();
@@ -139,10 +158,12 @@ public class DefaultConnection : IConnection {
     /// <exception cref="IOException"></exception>
     /// <returns></returns>
 #pragma warning disable MA0051 // Legacy fragment receive state machine; refactor would risk packet framing behavior.
-    private ConnectionOrientedPdu ReceivePdu(ITransport transport) {
+    private ConnectionOrientedPdu ReceivePdu(ITransport transport)
+    {
         var read = true;
 
-        if (_bytesRemainingInRecieveBuffer) {
+        if (_bytesRemainingInRecieveBuffer)
+        {
 
             // receiver buffer always falls on the boundary of a new Fragment.
             //
@@ -157,7 +178,8 @@ public class DefaultConnection : IConnection {
                 {
                     // this is required so that the correct length for the next fragment can be obtained.
                     // If is < 10 bytes than the fraglength would be an arbitary length.
-                    while (_receiveBuffer.Length <= 10) {
+                    while (_receiveBuffer.Length <= 10)
+                    {
                         // perform a read again in a new buffer and assign that to the reciever buffer
                         // this needs to be a small buffer 10 bytes
                         var tmpBuffer = new NdrBuffer(new byte[10], 0);
@@ -173,7 +195,8 @@ public class DefaultConnection : IConnection {
         }
 
         // will be true for all cases and false if anything valid is already in the buffer
-        if (read) {
+        if (read)
+        {
             // read the transport now...
             _receiveBuffer.Reset();
             Log.Logger.Verbose("Reading bytes from RecieveBuffer Socket...Current Capacity: " +
@@ -187,7 +210,8 @@ public class DefaultConnection : IConnection {
         var trimSize = -1;
         var lengthOfArrayTobeRead = _receiveBuffer.Length;
         // frag length logic
-        if (_receiveBuffer.Length <= 0) {
+        if (_receiveBuffer.Length <= 0)
+        {
             // socket has been closed.
             throw new IOException("Socket Closed");
         }
@@ -202,17 +226,20 @@ public class DefaultConnection : IConnection {
 
         // the new buffer should be equal to fragment size
         var newbuffer = new byte[fragmentLength];
-        if (fragmentLength > _receiveBuffer.Length) {
+        if (fragmentLength > _receiveBuffer.Length)
+        {
             // this means the socket buffer is not fully read, this packet is bigger than the reciever buffer size
             var remainingBytes = fragmentLength - _receiveBuffer.Length;
             Log.Logger.Verbose("\n" + " Some bytes from RecieveBuffer Socket have not been read: Remaining  " +
                 remainingBytes);
 
             // now reset and read again.
-            while (fragmentLength > counter) {
+            while (fragmentLength > counter)
+            {
                 Array.Copy(_receiveBuffer.Buf, 0, newbuffer, counter, lengthOfArrayTobeRead);
                 counter += lengthOfArrayTobeRead;
-                if (fragmentLength == counter) {
+                if (fragmentLength == counter)
+                {
                     break;
                 }
                 Log.Logger.Verbose("\n" + " About to read more bytes from socket, current counter is: " + counter);
@@ -222,10 +249,12 @@ public class DefaultConnection : IConnection {
                 // and one may be some other one, like a request packet.
                 // or it may not ...and reads only the partial packet.
                 transport.Receive(_receiveBuffer);
-                if (fragmentLength - counter >= _receiveBuffer.Length) {
+                if (fragmentLength - counter >= _receiveBuffer.Length)
+                {
                     lengthOfArrayTobeRead = _receiveBuffer.Length;
                 }
-                else {
+                else
+                {
                     // this would be the last one. Now we need to trim the buffer to it's read length as well.
                     lengthOfArrayTobeRead = fragmentLength - counter;
                     trimSize = _receiveBuffer.Length - lengthOfArrayTobeRead;
@@ -237,7 +266,8 @@ public class DefaultConnection : IConnection {
                     Utils.HexString(_receiveBuffer.Buf, 0, _receiveBuffer.Length));
             }
         }
-        else {
+        else
+        {
             Log.Logger.Verbose("fragmentLength is less than  receiveBuffer.length");
             // Since fragment length is smaller, There might be 2 or more packets in here
             // just read what is your packet.
@@ -246,7 +276,8 @@ public class DefaultConnection : IConnection {
             trimSize = _receiveBuffer.Length - fragmentLength;
         }
 
-        if (trimSize > 0) {
+        if (trimSize > 0)
+        {
             Log.Logger.Verbose("trimSize = " + trimSize);
             Array.Copy(_receiveBuffer.Buf, _receiveBuffer.Length - trimSize, _receiveBuffer.Buf, 0, trimSize);
             _receiveBuffer.Length = trimSize;
@@ -257,7 +288,8 @@ public class DefaultConnection : IConnection {
             _bytesRemainingInRecieveBuffer = true;
         }
 
-        var bufferToBeUsed = new NdrBuffer(newbuffer, 0) {
+        var bufferToBeUsed = new NdrBuffer(newbuffer, 0)
+        {
             Length = newbuffer.Length // this will be fully utilized and not left empty.
         };
 
@@ -270,7 +302,8 @@ public class DefaultConnection : IConnection {
         var type = bufferToBeUsed.Dec_ndr_small();
 
         ConnectionOrientedPdu pdu;
-        switch (type) {
+        switch (type)
+        {
             case AlterContextPdu.ALTER_CONTEXT_TYPE:
                 pdu = new AlterContextPdu();
                 break;
@@ -321,7 +354,8 @@ public class DefaultConnection : IConnection {
     /// </summary>
     /// <exception cref="IOException"></exception>
     /// <param name="verifier"></param>
-    protected internal virtual void IncomingRebind(AuthenticationVerifier verifier) {
+    protected internal virtual void IncomingRebind(AuthenticationVerifier verifier)
+    {
         // nothing
     }
 
@@ -338,77 +372,93 @@ public class DefaultConnection : IConnection {
     /// <exception cref="IOException"></exception>
     /// <param name="buffer"></param>
 #pragma warning disable MA0051 // Legacy RPC authentication PDU dispatch; preserving fall-through behavior.
-    private void ProcessIncoming(NdrBuffer buffer) {
+    private void ProcessIncoming(NdrBuffer buffer)
+    {
         buffer.Index = ConnectionOrientedPdu.TYPE_OFFSET;
         var logMsg = true;
-        switch (buffer.Dec_ndr_small()) {
+        switch (buffer.Dec_ndr_small())
+        {
             case BindAcknowledgePdu.BIND_ACKNOWLEDGE_TYPE:
-                if (logMsg) {
+                if (logMsg)
+                {
                     Log.Logger.Information("Recieved BIND_ACK");
                     logMsg = false;
                 }
                 goto case AlterContextResponsePdu.ALTER_CONTEXT_RESPONSE_TYPE;
             case AlterContextResponsePdu.ALTER_CONTEXT_RESPONSE_TYPE:
-                if (logMsg) {
+                if (logMsg)
+                {
                     Log.Logger.Information("Recieved ALTER_CTX_RESP");
                     logMsg = false;
                 }
                 goto case BindPdu.BIND_TYPE;
             case BindPdu.BIND_TYPE:
-                if (logMsg) {
+                if (logMsg)
+                {
                     Log.Logger.Information("Recieved BIND");
                     logMsg = false;
                 }
                 goto case AlterContextPdu.ALTER_CONTEXT_TYPE;
             case AlterContextPdu.ALTER_CONTEXT_TYPE:
-                if (logMsg) {
+                if (logMsg)
+                {
                     Log.Logger.Information("Recieved ALTER_CTX");
                 }
                 var verifier = DetachAuthentication(buffer);
-                if (verifier != null) {
+                if (verifier != null)
+                {
                     IncomingRebind(verifier);
                 }
                 break;
             case FaultCoPdu.FAULT_TYPE:
-                if (logMsg) {
+                if (logMsg)
+                {
                     Log.Logger.Information("\n Recieved FAULT");
                     logMsg = false;
                 }
                 goto case CancelCoPdu.CANCEL_TYPE;
             case CancelCoPdu.CANCEL_TYPE:
-                if (logMsg) {
+                if (logMsg)
+                {
                     Log.Logger.Information("\n Recieved CANCEL");
                     logMsg = false;
                 }
                 goto case OrphanedPdu.ORPHANED_TYPE;
             case OrphanedPdu.ORPHANED_TYPE:
-                if (logMsg) {
+                if (logMsg)
+                {
                     Log.Logger.Information("\n Recieved ORPHANED");
                     logMsg = false;
                 }
                 goto case ResponseCoPdu.RESPONSE_TYPE;
             case ResponseCoPdu.RESPONSE_TYPE:
-                if (logMsg) {
+                if (logMsg)
+                {
                     Log.Logger.Information("\n Recieved RESPONSE");
                     logMsg = false;
                 }
                 goto case RequestCoPdu.REQUEST_TYPE;
             case RequestCoPdu.REQUEST_TYPE:
-                if (logMsg) {
+                if (logMsg)
+                {
                     Log.Logger.Information("\n Recieved REQUEST");
                 }
-                if (_security != null) {
-                    var ndr2 = new NdrCodec {
+                if (_security != null)
+                {
+                    var ndr2 = new NdrCodec
+                    {
                         Buffer = buffer
                     };
                     VerifyAndUnseal(ndr2);
                 }
-                else {
+                else
+                {
                     DetachAuthentication(buffer); // just strip the information, do not use it.
                 }
                 break;
             case Auth3Pdu.AUTH3_TYPE:
-                if (logMsg) {
+                if (logMsg)
+                {
                     Log.Logger.Information("\n Recieved AUTH3");
                 }
                 IncomingRebind(DetachAuthentication2(buffer));
@@ -427,45 +477,54 @@ public class DefaultConnection : IConnection {
     /// </summary>
     /// <exception cref="IOException"></exception>
 #pragma warning disable MA0051 // Legacy RPC authentication PDU dispatch; preserving fall-through behavior.
-    private void ProcessOutgoing() {
+    private void ProcessOutgoing()
+    {
         _ndr.Buffer.Index = ConnectionOrientedPdu.TYPE_OFFSET;
         var logMsg = true;
-        switch (_ndr.ReadUnsignedSmall()) {
+        switch (_ndr.ReadUnsignedSmall())
+        {
             case BindPdu.BIND_TYPE:
-                if (logMsg) {
+                if (logMsg)
+                {
                     Log.Logger.Information("\n Sending BIND");
                     logMsg = false;
                 }
                 goto case Auth3Pdu.AUTH3_TYPE;
             case Auth3Pdu.AUTH3_TYPE:
-                if (logMsg) {
+                if (logMsg)
+                {
                     Log.Logger.Information("\n Sending AUTH3");
                     logMsg = false;
                 }
 
                 goto case BindAcknowledgePdu.BIND_ACKNOWLEDGE_TYPE;
             case BindAcknowledgePdu.BIND_ACKNOWLEDGE_TYPE:
-                if (logMsg) {
+                if (logMsg)
+                {
                     Log.Logger.Information("\n Sending BIND_ACK");
                     logMsg = false;
                 }
                 goto case AlterContextResponsePdu.ALTER_CONTEXT_RESPONSE_TYPE;
             case AlterContextResponsePdu.ALTER_CONTEXT_RESPONSE_TYPE:
-                if (logMsg) {
+                if (logMsg)
+                {
                     Log.Logger.Information("\n Sending ALTER_CTX_RESP");
                 }
                 var verifier = OutgoingRebind();
-                if (verifier != null) {
+                if (verifier != null)
+                {
                     AttachAuthentication(verifier);
                 }
                 break;
             case AlterContextPdu.ALTER_CONTEXT_TYPE:
-                if (logMsg) {
+                if (logMsg)
+                {
                     Log.Logger.Information("\n Sending ALTER_CTX");
                 }
                 break;
             case RequestCoPdu.REQUEST_TYPE:
-                if (logMsg) {
+                if (logMsg)
+                {
                     Log.Logger.Information("\n Sending REQUEST");
                     logMsg = false;
                 }
@@ -473,28 +532,33 @@ public class DefaultConnection : IConnection {
                 //            if (verifier != null) attachAuthentication(verifier);
                 goto case CancelCoPdu.CANCEL_TYPE;
             case CancelCoPdu.CANCEL_TYPE:
-                if (logMsg) {
+                if (logMsg)
+                {
                     Log.Logger.Information("\n Sending CANCEL");
                     logMsg = false;
                 }
                 goto case OrphanedPdu.ORPHANED_TYPE;
             case OrphanedPdu.ORPHANED_TYPE:
-                if (logMsg) {
+                if (logMsg)
+                {
                     Log.Logger.Information("\n Sending ORPHANED");
                     logMsg = false;
                 }
                 goto case FaultCoPdu.FAULT_TYPE;
             case FaultCoPdu.FAULT_TYPE:
-                if (logMsg) {
+                if (logMsg)
+                {
                     Log.Logger.Information("\n Sending FAULT");
                     logMsg = false;
                 }
                 goto case ResponseCoPdu.RESPONSE_TYPE;
             case ResponseCoPdu.RESPONSE_TYPE:
-                if (logMsg) {
+                if (logMsg)
+                {
                     Log.Logger.Information("\n Sending RESPONSE");
                 }
-                if (_security != null) {
+                if (_security != null)
+                {
                     SignAndSeal(_ndr);
                 }
                 break;
@@ -511,8 +575,10 @@ public class DefaultConnection : IConnection {
     /// Add auth
     /// </summary>
     /// <exception cref="IOException"></exception>
-    private void AttachAuthentication(AuthenticationVerifier verifier) {
-        try {
+    private void AttachAuthentication(AuthenticationVerifier verifier)
+    {
+        try
+        {
             var buffer = _ndr.Buffer;
             var length = buffer.Length;
             buffer.Index = length;
@@ -524,7 +590,8 @@ public class DefaultConnection : IConnection {
             // buffer.setIndex(ConnectionOrientedPdu.FLAGS_OFFSET);
             // ndr.writeUnsignedSmall(0);
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             throw new IOException("Error attaching authentication to PDU: " + ex.Message);
         }
     }
@@ -535,8 +602,10 @@ public class DefaultConnection : IConnection {
     /// <param name="buffer"></param>
     /// <exception cref="IOException"></exception>
     /// <returns></returns>
-    private AuthenticationVerifier DetachAuthentication2(NdrBuffer buffer) {
-        try {
+    private AuthenticationVerifier DetachAuthentication2(NdrBuffer buffer)
+    {
+        try
+        {
             buffer.Index = ConnectionOrientedPdu.AUTH_LENGTH_OFFSET;
             var length = buffer.Dec_ndr_short(); // auth body size
             var index = 20;
@@ -551,7 +620,8 @@ public class DefaultConnection : IConnection {
             buffer.Index = length;
             return verifier;
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             throw new IOException("Error stripping authentication from PDU: " + ex);
         }
     }
@@ -562,11 +632,14 @@ public class DefaultConnection : IConnection {
     /// <param name="buffer"></param>
     /// <exception cref="IOException"></exception>
     /// <returns></returns>
-    private AuthenticationVerifier DetachAuthentication(NdrBuffer buffer) {
-        try {
+    private AuthenticationVerifier DetachAuthentication(NdrBuffer buffer)
+    {
+        try
+        {
             buffer.Index = ConnectionOrientedPdu.AUTH_LENGTH_OFFSET;
             var length = buffer.Dec_ndr_short(); // auth body size
-            if (length == 0) {
+            if (length == 0)
+            {
                 Log.Logger.Verbose("In [detachAuthentication] No authn info present...");
                 return null;
             }
@@ -584,7 +657,8 @@ public class DefaultConnection : IConnection {
                 "setting new FRAG_LENGTH_OFFSET for the packet as = " + length);
             return verifier;
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             throw new IOException("Error stripping authentication from PDU: " + ex);
         }
     }
@@ -595,9 +669,11 @@ public class DefaultConnection : IConnection {
     /// <param name="ndr"></param>
     /// <exception cref="IOException"></exception>
     /// <returns></returns>
-    private void SignAndSeal(NdrCodec ndr) {
+    private void SignAndSeal(NdrCodec ndr)
+    {
         var protectionLevel = _security.Protection;
-        if (protectionLevel < ProtectionLevel.PROTECTION_LEVEL_INTEGRITY) {
+        if (protectionLevel < ProtectionLevel.PROTECTION_LEVEL_INTEGRITY)
+        {
             return;
         }
         var verifierLength = _security.VerifierLength;
@@ -614,11 +690,13 @@ public class DefaultConnection : IConnection {
         length -= verifierLength + 8; // less verifier + header
         var index = ConnectionOrientedPdu.HEADER_LENGTH;
         buffer.Index = ConnectionOrientedPdu.TYPE_OFFSET;
-        switch (ndr.ReadUnsignedSmall()) {
+        switch (ndr.ReadUnsignedSmall())
+        {
             case RequestCoPdu.REQUEST_TYPE:
                 index += 8;
                 buffer.Index = ConnectionOrientedPdu.FLAGS_OFFSET;
-                if ((ndr.ReadUnsignedSmall() & ConnectionOrientedPdu.PFC_OBJECT_UUID) != 0) {
+                if ((ndr.ReadUnsignedSmall() & ConnectionOrientedPdu.PFC_OBJECT_UUID) != 0)
+                {
                     index += 16;
                 }
                 break;
@@ -639,7 +717,8 @@ public class DefaultConnection : IConnection {
         buffer.Index = ConnectionOrientedPdu.FLAGS_OFFSET;
         var flags = ndr.ReadUnsignedSmall();
         if ((flags & ConnectionOrientedPdu.PFC_FIRST_FRAG) == ConnectionOrientedPdu.PFC_FIRST_FRAG &&
-            (flags & ConnectionOrientedPdu.PFC_LAST_FRAG) == ConnectionOrientedPdu.PFC_LAST_FRAG) {
+            (flags & ConnectionOrientedPdu.PFC_LAST_FRAG) == ConnectionOrientedPdu.PFC_LAST_FRAG)
+        {
             isFragmented = false;
         }
         length -= index;
@@ -652,22 +731,26 @@ public class DefaultConnection : IConnection {
     /// <param name="ndr"></param>
     /// <exception cref="IOException"></exception>
     /// <returns></returns>
-    private void VerifyAndUnseal(NdrCodec ndr) {
+    private void VerifyAndUnseal(NdrCodec ndr)
+    {
         var buffer = ndr.Buffer;
         buffer.Index = ConnectionOrientedPdu.AUTH_LENGTH_OFFSET;
         var verifierLength = ndr.ReadUnsignedShort();
-        if (verifierLength <= 0) {
+        if (verifierLength <= 0)
+        {
             return;
         }
         var verifierIndex = buffer.Length - verifierLength;
         var length = verifierIndex - 8;
         var index = ConnectionOrientedPdu.HEADER_LENGTH;
         buffer.Index = ConnectionOrientedPdu.TYPE_OFFSET;
-        switch (ndr.ReadUnsignedSmall()) {
+        switch (ndr.ReadUnsignedSmall())
+        {
             case RequestCoPdu.REQUEST_TYPE:
                 index += 8;
                 buffer.Index = ConnectionOrientedPdu.FLAGS_OFFSET;
-                if ((ndr.ReadUnsignedSmall() & ConnectionOrientedPdu.PFC_OBJECT_UUID) != 0) {
+                if ((ndr.ReadUnsignedSmall() & ConnectionOrientedPdu.PFC_OBJECT_UUID) != 0)
+                {
                     index += 16;
                 }
                 break;
@@ -691,7 +774,8 @@ public class DefaultConnection : IConnection {
         buffer.Index = ConnectionOrientedPdu.FLAGS_OFFSET;
         var flags = ndr.ReadUnsignedSmall();
         if ((flags & ConnectionOrientedPdu.PFC_FIRST_FRAG) == ConnectionOrientedPdu.PFC_FIRST_FRAG &&
-            (flags & ConnectionOrientedPdu.PFC_LAST_FRAG) == ConnectionOrientedPdu.PFC_LAST_FRAG) {
+            (flags & ConnectionOrientedPdu.PFC_LAST_FRAG) == ConnectionOrientedPdu.PFC_LAST_FRAG)
+        {
             isFragmented = false;
         }
 
@@ -711,9 +795,11 @@ public class DefaultConnection : IConnection {
     /// <param name="type"></param>
     /// <returns></returns>
 #pragma warning disable IDE0051 // Remove unused private members
-    private bool IsValidType(int type) {
+    private bool IsValidType(int type)
+    {
 #pragma warning restore IDE0051 // Remove unused private members
-        switch (type) {
+        switch (type)
+        {
             case AlterContextPdu.ALTER_CONTEXT_TYPE:
             case AlterContextResponsePdu.ALTER_CONTEXT_RESPONSE_TYPE:
             case Auth3Pdu.AUTH3_TYPE:

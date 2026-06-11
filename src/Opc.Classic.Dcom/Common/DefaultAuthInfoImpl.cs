@@ -5,7 +5,8 @@ namespace Opc.Classic.Dcom.Common;
 /// <summary>
 /// Default implementation of <code>IAuthInfo</code>.
 /// </summary>
-public sealed class DefaultAuthInfoImpl : IAuthInfo {
+public sealed class DefaultAuthInfoImpl : IAuthInfo
+{
 
     /// <summary>
     ///Creates the AuthInfo Object.
@@ -14,7 +15,8 @@ public sealed class DefaultAuthInfoImpl : IAuthInfo {
     /// <param name="username"> </param>
     /// <param name="password"> </param>
     public DefaultAuthInfoImpl(string domain, string username,
-        string password) {
+        string password)
+    {
         UserName = username;
         Password = password;
         Domain = domain;

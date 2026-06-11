@@ -13,7 +13,8 @@ namespace Opc.Classic.Dcom.Internal;
 /// Shim providing the Serilog static-API surface (<c>Log.Logger.X(...)</c>)
 /// but routing through Microsoft.Extensions.Logging.ILogger.
 /// </summary>
-public static class Log {
+public static class Log
+{
     /// <summary>The shim logger — call <c>Log.Logger.Information(...)</c> etc.</summary>
     public static IShimLogger Logger { get; } = new ShimLogger();
 }

@@ -11,7 +11,8 @@ namespace Opc.Classic.Dcom.Core;
 /// Represents array of network address and security bindings.
 /// </summary>
 [Serializable]
-internal sealed class DualStringArray {
+internal sealed class DualStringArray
+{
 
     /// <summary>
     /// String bindings
@@ -37,7 +38,8 @@ internal sealed class DualStringArray {
     /// Will get called from Oxid Resolver
     /// </summary>
     /// <param name="port"></param>
-    internal DualStringArray(int port) {
+    internal DualStringArray(int port)
+    {
         // create bindings here.
         StringBindings = new StringBinding[2]; // only 1
         StringBindings[0] = new StringBinding(port, false);
@@ -62,14 +64,16 @@ internal sealed class DualStringArray {
     /// </summary>
     /// <param name="ndr"></param>
     /// <returns></returns>
-    internal static DualStringArray Decode(NdrCodec ndr) {
+    internal static DualStringArray Decode(NdrCodec ndr)
+    {
         var dualStringArray = new DualStringArray();
 
         // first extract number of entries
         var numEntries = ndr.ReadUnsignedShort();
 
         // return empty
-        if (numEntries == 0) {
+        if (numEntries == 0)
+        {
             return dualStringArray;
         }
 
@@ -80,10 +84,13 @@ internal sealed class DualStringArray {
         var listOfSecurityBindings = new List<SecurityBinding>();
 
         var stringbinding = true;
-        while (true) {
-            if (stringbinding) {
+        while (true)
+        {
+            if (stringbinding)
+            {
                 var s = StringBinding.Decode(ndr);
-                if (s == null) {
+                if (s == null)
+                {
                     stringbinding = false;
                     // null termination
                     dualStringArray.Length += 2;
@@ -94,9 +101,11 @@ internal sealed class DualStringArray {
                 listOfStringBindings.Add(s);
                 dualStringArray.Length += s.Length;
             }
-            else {
+            else
+            {
                 var s = SecurityBinding.Decode(ndr);
-                if (s == null) {
+                if (s == null)
+                {
                     // null termination
                     dualStringArray.Length += 2;
                     break;
@@ -119,15 +128,18 @@ internal sealed class DualStringArray {
     /// Encode
     /// </summary>
     /// <param name="ndr"></param>
-    public void Encode(NdrCodec ndr) {
+    public void Encode(NdrCodec ndr)
+    {
         // fill num entries
         // this is total length/2. since they are all shorts
         ndr.WriteUnsignedShort((Length - 4) / 2);
         ndr.WriteUnsignedShort(_secOffset / 2);
 
         var i = 0;
-        if (StringBindings != null) {
-            while (i < StringBindings.Length) {
+        if (StringBindings != null)
+        {
+            while (i < StringBindings.Length)
+            {
                 StringBindings[i].Encode(ndr);
                 i++;
             }
@@ -135,8 +147,10 @@ internal sealed class DualStringArray {
         }
 
         i = 0;
-        if (SecurityBindings != null) {
-            while (i < SecurityBindings.Length) {
+        if (SecurityBindings != null)
+        {
+            while (i < SecurityBindings.Length)
+            {
                 SecurityBindings[i].Encode(ndr);
                 i++;
             }

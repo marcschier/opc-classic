@@ -6,7 +6,8 @@ using Opc.Classic.Dcom.Internal.LegacyNdr;
 namespace Opc.Classic.Dcom.Registry;
 
 /// <inheritdoc/>
-public class CreateKey : NdrOp {
+public class CreateKey : NdrOp
+{
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 #pragma warning disable IDE1006 // Naming Styles
@@ -24,7 +25,8 @@ public class CreateKey : NdrOp {
 
     /// <inheritdoc/>
 #pragma warning disable MA0051 // Legacy NDR encode mirrors the WinReg wire layout.
-    public override void Write(NdrCodec ndr) {
+    public override void Write(NdrCodec ndr)
+    {
         // Write parent handle
         ndr.WriteOctetArray(parentKey.Handle, 0, 20);
 
@@ -44,7 +46,8 @@ public class CreateKey : NdrOp {
         ndr.WriteUnsignedLong(key.Length + 1);
 
         var i = 0;
-        while (i < key.Length) {
+        while (i < key.Length)
+        {
             ndr.WriteUnsignedShort(key[i]);
             i++;
         }
@@ -72,7 +75,8 @@ public class CreateKey : NdrOp {
         ndr.WriteUnsignedLong(clazz.Length + 1);
 
         i = 0;
-        while (i < clazz.Length) {
+        while (i < clazz.Length)
+        {
             ndr.WriteUnsignedShort(clazz[i]);
             i++;
         }
@@ -97,13 +101,15 @@ public class CreateKey : NdrOp {
 #pragma warning restore MA0051
 
     /// <inheritdoc/>
-    public override void Read(NdrCodec ndr) {
+    public override void Read(NdrCodec ndr)
+    {
         ndr.ReadOctetArray(policyhandle, 0, 20);
         // pointer to action taken
         ndr.ReadUnsignedLong();
         actiontaken = ndr.ReadUnsignedLong();
         var hresult = ndr.ReadUnsignedLong();
-        if (hresult != 0) {
+        if (hresult != 0)
+        {
             throw new InteropRuntimeException(hresult);
         }
     }

@@ -27,11 +27,13 @@ namespace Opc.Classic.Ae.Ndr;
 ///     LPWSTR   szVendorInfo       // unique-pointer LPWSTR
 /// </code>
 /// </remarks>
-public static class NdrOpcEventServerStatusCodec {
+public static class NdrOpcEventServerStatusCodec
+{
     private const long FileTimeEpochOffsetTicks = 504911232000000000L;
 
     /// <summary>Encodes an OPCEVENTSERVERSTATUS in NDR (AE variant — assumes Spec == AE).</summary>
-    public static void Write(ref NdrWriter writer, OpcServerStatus status) {
+    public static void Write(ref NdrWriter writer, OpcServerStatus status)
+    {
         ArgumentNullException.ThrowIfNull(status);
 
         writer.WriteFileTime(ToFileTime(status.StartTime));
@@ -46,7 +48,8 @@ public static class NdrOpcEventServerStatusCodec {
     }
 
     /// <summary>Decodes an OPCEVENTSERVERSTATUS from NDR (AE variant).</summary>
-    public static OpcServerStatus Read(ref NdrReader reader) {
+    public static OpcServerStatus Read(ref NdrReader reader)
+    {
         DateTimeOffset start = ReadAndDecodeFileTime(ref reader, "ftStartTime");
         DateTimeOffset current = ReadAndDecodeFileTime(ref reader, "ftCurrentTime");
         DateTimeOffset lastUpdate = ReadAndDecodeFileTime(ref reader, "ftLastUpdateTime");
@@ -57,7 +60,8 @@ public static class NdrOpcEventServerStatusCodec {
         _ = reader.ReadUInt16();   // wReserved
         string vendorInfo = reader.ReadUnicodeStringPtr() ?? string.Empty;
 
-        return new OpcServerStatus {
+        return new OpcServerStatus
+        {
             Spec = OpcStatusSpec.Ae,
             StartTime = start,
             CurrentTime = current,
@@ -68,7 +72,8 @@ public static class NdrOpcEventServerStatusCodec {
         };
     }
 
-    private static uint ToEventServerState(OpcServerState state) => state switch {
+    private static uint ToEventServerState(OpcServerState state) => state switch
+    {
         OpcServerState.Running => 1u,
         OpcServerState.Failed => 2u,
         OpcServerState.NoConfig => 3u,
@@ -78,7 +83,8 @@ public static class NdrOpcEventServerStatusCodec {
         _ => unchecked((uint)state),
     };
 
-    private static OpcServerState FromEventServerState(uint value) => value switch {
+    private static OpcServerState FromEventServerState(uint value) => value switch
+    {
         1u => OpcServerState.Running,
         2u => OpcServerState.Failed,
         3u => OpcServerState.NoConfig,
@@ -91,9 +97,11 @@ public static class NdrOpcEventServerStatusCodec {
     private static long ToFileTime(DateTimeOffset value) =>
         value.UtcTicks - FileTimeEpochOffsetTicks;
 
-    private static DateTimeOffset ReadAndDecodeFileTime(ref NdrReader reader, string fieldName) {
+    private static DateTimeOffset ReadAndDecodeFileTime(ref NdrReader reader, string fieldName)
+    {
         long raw = reader.ReadFileTime();
-        if (FileTimeHelper.TryFromFileTime(raw, out DateTimeOffset value)) {
+        if (FileTimeHelper.TryFromFileTime(raw, out DateTimeOffset value))
+        {
             return value;
         }
         throw new InvalidDataException(

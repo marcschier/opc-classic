@@ -13,12 +13,15 @@ using Microsoft.CodeAnalysis.Diagnostics;
 namespace Opc.Classic.MigrationAnalyzer.Analyzers;
 
 [DiagnosticAnalyzer(LanguageNames.CSharp)]
-public sealed class OcmGeneral02_ManualVariant : DiagnosticAnalyzer {
+public sealed class OcmGeneral02_ManualVariant : DiagnosticAnalyzer
+{
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
         ImmutableArray.Create(MigrationDiagnosticDescriptors.ManualVariant);
 
-    public override void Initialize(AnalysisContext context) {
-        if (context is null) {
+    public override void Initialize(AnalysisContext context)
+    {
+        if (context is null)
+        {
             throw new ArgumentNullException(nameof(context));
         }
 
@@ -28,29 +31,35 @@ public sealed class OcmGeneral02_ManualVariant : DiagnosticAnalyzer {
         context.RegisterSyntaxNodeAction(AnalyzeInvocation, SyntaxKind.InvocationExpression);
     }
 
-    private static void AnalyzeObjectCreation(SyntaxNodeAnalysisContext context) {
+    private static void AnalyzeObjectCreation(SyntaxNodeAnalysisContext context)
+    {
         var objectCreation = (ObjectCreationExpressionSyntax)context.Node;
-        if (!objectCreation.Type.ToString().EndsWith("VariantValue", StringComparison.Ordinal)) {
+        if (!objectCreation.Type.ToString().EndsWith("VariantValue", StringComparison.Ordinal))
+        {
             return;
         }
 
         ITypeSymbol? type = context.SemanticModel.GetTypeInfo(objectCreation.Type).Type;
-        if (type is not null && LegacySyntaxFacts.IsOpcClassicSymbol(type)) {
+        if (type is not null && LegacySyntaxFacts.IsOpcClassicSymbol(type))
+        {
             return;
         }
 
         context.ReportDiagnostic(Diagnostic.Create(MigrationDiagnosticDescriptors.ManualVariant, objectCreation.GetLocation()));
     }
 
-    private static void AnalyzeInvocation(SyntaxNodeAnalysisContext context) {
+    private static void AnalyzeInvocation(SyntaxNodeAnalysisContext context)
+    {
         var invocation = (InvocationExpressionSyntax)context.Node;
         string? invocationName = LegacySyntaxFacts.GetInvocationName(invocation);
-        if (invocationName is null || !IsMarshalVariantMethod(invocationName)) {
+        if (invocationName is null || !IsMarshalVariantMethod(invocationName))
+        {
             return;
         }
 
         ExpressionSyntax? receiver = LegacySyntaxFacts.GetInvocationReceiver(invocation);
-        if (receiver is null || !string.Equals(receiver.ToString(), "Marshal", StringComparison.Ordinal)) {
+        if (receiver is null || !string.Equals(receiver.ToString(), "Marshal", StringComparison.Ordinal))
+        {
             return;
         }
 

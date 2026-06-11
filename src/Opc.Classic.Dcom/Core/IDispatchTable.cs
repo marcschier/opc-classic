@@ -7,6 +7,7 @@ using System;
 
 namespace Opc.Classic.Dcom.Core;
 
-internal interface IDispatchTable {
+internal interface IDispatchTable
+{
     bool TryGetDispatcher(Guid iid, int opnum, out Func<object[], object?> dispatcher);
 }

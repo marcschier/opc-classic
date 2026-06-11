@@ -13,7 +13,8 @@ using TUnit.Core;
 
 namespace Opc.Classic.SnapshotTests.Pipeline;
 
-public sealed class ObjrefSnapshotTests {
+public sealed class ObjrefSnapshotTests
+{
     private const string Iid = "11111111-2222-3333-4455-66778899aabb";
     private const string Ipid = "aaaaaaaa-bbbb-cccc-ddee-ff0011223344";
     private const string HandlerClsid = "12345678-1234-5678-90ab-cdef01234567";
@@ -30,7 +31,8 @@ public sealed class ObjrefSnapshotTests {
         await SnapshotVerifier.VerifyBytes(
             "OBJREF_STANDARD",
             "known IID/OXID/OID/IPID with one TCP binding",
-            BuildObjRef(ObjRefStandard, static ndr => {
+            BuildObjRef(ObjRefStandard, static ndr =>
+            {
                 WriteStdObjRef(ndr);
                 WriteDualStringArray(ndr);
             }));
@@ -40,7 +42,8 @@ public sealed class ObjrefSnapshotTests {
         await SnapshotVerifier.VerifyBytes(
             "OBJREF_HANDLER",
             "known IID/stdobjref/handler CLSID with one TCP binding",
-            BuildObjRef(ObjRefHandler, static ndr => {
+            BuildObjRef(ObjRefHandler, static ndr =>
+            {
                 WriteStdObjRef(ndr);
                 InterfacePointerBody.WriteUuid(ndr, HandlerClsid, "snapshot handler clsid");
                 WriteDualStringArray(ndr);
@@ -51,7 +54,8 @@ public sealed class ObjrefSnapshotTests {
         await SnapshotVerifier.VerifyBytes(
             "OBJREF_CUSTOM",
             "known IID/custom CLSID and opaque extension payload",
-            BuildObjRef(ObjRefCustom, static ndr => {
+            BuildObjRef(ObjRefCustom, static ndr =>
+            {
                 byte[] payload = [0xDE, 0xAD, 0xBE, 0xEF, 0x01, 0x02];
                 InterfacePointerBody.WriteUuid(ndr, CustomClsid, "snapshot custom clsid");
                 ndr.WriteUnsignedLong(0x12345678);
@@ -59,7 +63,8 @@ public sealed class ObjrefSnapshotTests {
                 ndr.WriteOctetArray(payload, 0, payload.Length);
             }));
 
-    private static byte[] BuildObjRef(int objectType, Action<NdrCodec> writeBody) {
+    private static byte[] BuildObjRef(int objectType, Action<NdrCodec> writeBody)
+    {
         var ndr = CreateWriter();
         ndr.WriteOctetArray(ObjRefSignature, 0, 4);
         ndr.WriteUnsignedLong(objectType);
@@ -68,7 +73,8 @@ public sealed class ObjrefSnapshotTests {
         return WithLengthPrefix(ToArray(ndr));
     }
 
-    private static void WriteStdObjRef(NdrCodec ndr) {
+    private static void WriteStdObjRef(NdrCodec ndr)
+    {
         ndr.WriteUnsignedLong(SorfNoping);
         ndr.WriteUnsignedLong(5);
         byte[] oxid = [0x01, 0x23, 0x45, 0x67, 0x89, 0xAB, 0xCD, 0xEF];
@@ -78,7 +84,8 @@ public sealed class ObjrefSnapshotTests {
         InterfacePointerBody.WriteUuid(ndr, Ipid, "snapshot ipid");
     }
 
-    private static void WriteDualStringArray(NdrCodec ndr) {
+    private static void WriteDualStringArray(NdrCodec ndr)
+    {
         const string networkAddress = "127.0.0.1[13579]";
         int stringBindingLength = 2 + (networkAddress.Length * 2) + 2;
         int securityOffsetBytes = stringBindingLength + 2;
@@ -88,7 +95,8 @@ public sealed class ObjrefSnapshotTests {
         ndr.WriteUnsignedShort(entryBytes / 2);
         ndr.WriteUnsignedShort(securityOffsetBytes / 2);
         ndr.WriteUnsignedShort(0x07);
-        foreach (char ch in networkAddress) {
+        foreach (char ch in networkAddress)
+        {
             ndr.WriteUnsignedShort(ch);
         }
 
@@ -100,7 +108,8 @@ public sealed class ObjrefSnapshotTests {
         ndr.WriteUnsignedShort(0);
     }
 
-    private static byte[] WithLengthPrefix(byte[] objRef) {
+    private static byte[] WithLengthPrefix(byte[] objRef)
+    {
         byte[] encoded = new byte[8 + objRef.Length];
         BinaryPrimitives.WriteInt32LittleEndian(encoded.AsSpan(0, 4), objRef.Length);
         BinaryPrimitives.WriteInt32LittleEndian(encoded.AsSpan(4, 4), objRef.Length);

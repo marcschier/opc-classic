@@ -19,33 +19,41 @@ namespace Opc.Classic.Dcom.Crypto;
 /// Each instance carries its own keystream state — create one per direction
 /// (client→server and server→client need separate states with the same key).
 /// </summary>
-public sealed class Rc4 {
+public sealed class Rc4
+{
     private readonly byte[] _s = new byte[256];
     private byte _i;
     private byte _j;
 
     /// <summary>Construct + key-schedule (KSA).</summary>
-    public Rc4(ReadOnlySpan<byte> key) {
-        if (key.IsEmpty) {
+    public Rc4(ReadOnlySpan<byte> key)
+    {
+        if (key.IsEmpty)
+        {
             throw new ArgumentException("Key cannot be empty.", nameof(key));
         }
 
-        for (var n = 0; n < 256; n++) {
+        for (var n = 0; n < 256; n++)
+        {
             _s[n] = (byte)n;
         }
         byte j = 0;
-        for (var n = 0; n < 256; n++) {
+        for (var n = 0; n < 256; n++)
+        {
             j = (byte)(j + _s[n] + key[n % key.Length]);
             (_s[n], _s[j]) = (_s[j], _s[n]);
         }
     }
 
     /// <summary>PRGA: produce <paramref name="output"/> = XOR(input, keystream).</summary>
-    public void Process(ReadOnlySpan<byte> input, Span<byte> output) {
-        if (output.Length < input.Length) {
+    public void Process(ReadOnlySpan<byte> input, Span<byte> output)
+    {
+        if (output.Length < input.Length)
+        {
             throw new ArgumentException("Output is shorter than input.", nameof(output));
         }
-        for (var k = 0; k < input.Length; k++) {
+        for (var k = 0; k < input.Length; k++)
+        {
             _i = (byte)(_i + 1);
             _j = (byte)(_j + _s[_i]);
             (_s[_i], _s[_j]) = (_s[_j], _s[_i]);
@@ -58,7 +66,8 @@ public sealed class Rc4 {
     public void XorInPlace(Span<byte> data) => Process(data, data);
 
     /// <summary>Convenience: returns a fresh <paramref name="input"/>.Length-sized byte[] of XOR output.</summary>
-    public byte[] Process(ReadOnlySpan<byte> input) {
+    public byte[] Process(ReadOnlySpan<byte> input)
+    {
         var output = new byte[input.Length];
         Process(input, output);
         return output;

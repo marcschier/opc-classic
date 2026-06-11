@@ -22,7 +22,8 @@ public sealed record RemoteActivationRequest(
     IReadOnlyList<Guid> RequestedIids,
     uint ClientImpLevel,
     uint Mode,
-    IReadOnlyList<ushort> RequestedProtocolSequences) {
+    IReadOnlyList<ushort> RequestedProtocolSequences)
+{
     /// <summary>Optional object name (used by <c>MODE_GET_CLASS_OBJECT</c> handlers).</summary>
     public string? ObjectName { get; init; }
 

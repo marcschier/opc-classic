@@ -13,7 +13,8 @@ using Opc.Classic.Mcp.Sessions;
 namespace Opc.Classic.Mcp.Tools;
 
 /// <summary>Creates Commands client state for a session.</summary>
-public interface IOpcCommandsConnectionFactory {
+public interface IOpcCommandsConnectionFactory
+{
     /// <summary>Connects to a Commands server and returns a client state object.</summary>
     Task<CommandsClientState> ConnectAsync(CommandsConnectionRequest request, CancellationToken cancellationToken = default);
 }
@@ -30,11 +31,13 @@ public sealed record CommandsConnectionRequest(
     string? AuthLevel = null);
 
 /// <summary>Registers in-memory Commands call channels for MCP tests and loopback scenarios.</summary>
-public static class InMemoryCommandsConnectionRegistry {
+public static class InMemoryCommandsConnectionRegistry
+{
     private static readonly System.Collections.Concurrent.ConcurrentDictionary<string, ICallChannel> Channels = new(StringComparer.OrdinalIgnoreCase);
 
     /// <summary>Registers an in-memory Commands call channel by name.</summary>
-    public static IDisposable Register(string name, ICallChannel channel) {
+    public static IDisposable Register(string name, ICallChannel channel)
+    {
         ArgumentException.ThrowIfNullOrWhiteSpace(name);
         ArgumentNullException.ThrowIfNull(channel);
 
@@ -44,14 +47,17 @@ public static class InMemoryCommandsConnectionRegistry {
 
     internal static bool TryGet(string name, out ICallChannel channel) => Channels.TryGetValue(name, out channel!);
 
-    private sealed class Registration : IDisposable {
+    private sealed class Registration : IDisposable
+    {
         private readonly string _name;
         private bool _disposed;
 
         public Registration(string name) => _name = name;
 
-        public void Dispose() {
-            if (_disposed) {
+        public void Dispose()
+        {
+            if (_disposed)
+            {
                 return;
             }
 
@@ -62,12 +68,14 @@ public static class InMemoryCommandsConnectionRegistry {
 }
 
 /// <summary>MCP tools for OPC Commands client operations.</summary>
-public sealed class CommandsTools {
+public sealed class CommandsTools
+{
     private readonly IOpcSessionManager _sessionManager;
     private readonly IOpcCommandsConnectionFactory _connectionFactory;
 
     /// <summary>Creates the Commands tool set.</summary>
-    public CommandsTools(IOpcSessionManager sessionManager, IEnumerable<IOpcCommandsConnectionFactory> connectionFactories) {
+    public CommandsTools(IOpcSessionManager sessionManager, IEnumerable<IOpcCommandsConnectionFactory> connectionFactories)
+    {
         _sessionManager = sessionManager ?? throw new ArgumentNullException(nameof(sessionManager));
         ArgumentNullException.ThrowIfNull(connectionFactories);
         _connectionFactory = connectionFactories.FirstOrDefault() ?? new DefaultOpcCommandsConnectionFactory();
@@ -95,7 +103,8 @@ public sealed class CommandsTools {
         string? connectionString = null,
         [Description(OpcMcpAuthLevel.Description)]
         string? authLevel = null,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         OpcSession session = _sessionManager.GetSession(sessionId);
         CommandsClientState client = await _connectionFactory.ConnectAsync(
             new CommandsConnectionRequest(host, progId, clsid, username, password, useKerberos, connectionString, authLevel),
@@ -103,7 +112,8 @@ public sealed class CommandsTools {
 
         CommandsClientState? existing = session.CommandsClient;
         session.CommandsClient = client;
-        if (existing is not null) {
+        if (existing is not null)
+        {
             await existing.DisposeAsync().ConfigureAwait(false);
         }
 
@@ -117,7 +127,8 @@ public sealed class CommandsTools {
     public async Task<OpcResultDto> GetStatus(
         [Description("The sessionId returned by opcclassic.session.create and connected with opcclassic.commands.connect.")]
         string sessionId,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         CommandsClientState client = GetCommandsClient(sessionId);
         double maxStorageTime = await client.CommandInformation.QueryMaxStorageTimeAsync(cancellationToken).ConfigureAwait(false);
         string[] commandNames = await client.CommandInformation.ListCommandsAsync(cancellationToken).ConfigureAwait(false);
@@ -129,11 +140,13 @@ public sealed class CommandsTools {
     [Description("Disconnects the session from its OPC Commands server and releases the Commands channel.")]
     public async Task<OpcResultDto> Disconnect(
         [Description("The connected OPC Classic sessionId.")]
-        string sessionId) {
+        string sessionId)
+    {
         OpcSession session = _sessionManager.GetSession(sessionId);
         CommandsClientState? client = session.CommandsClient;
         session.CommandsClient = null;
-        if (client is not null) {
+        if (client is not null)
+        {
             await client.DisposeAsync().ConfigureAwait(false);
             return new OpcResultDto(0, "Commands client disconnected.", Succeeded: true, ValueType: "Commands");
         }
@@ -151,14 +164,16 @@ public sealed class CommandsTools {
         string commandNamespace = "",
         [Description("Optional command names to describe. Omit or pass an empty array to describe all commands returned by the server.")]
         string[]? commandNames = null,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         CommandsClientState client = GetCommandsClient(sessionId);
         string[] names = commandNames is { Length: > 0 }
             ? commandNames
             : await client.CommandInformation.ListCommandsAsync(cancellationToken).ConfigureAwait(false);
 
         var descriptions = new List<OpcCommandDescriptionDto>(names.Length);
-        foreach (string name in names) {
+        foreach (string name in names)
+        {
             string description = await client.CommandInformation.GetCommandDescriptionAsync(
                 name,
                 commandNamespace ?? string.Empty,
@@ -191,7 +206,8 @@ public sealed class CommandsTools {
         int updateFrequencyMs = 1000,
         [Description("Requested async keep-alive time in milliseconds.")]
         int keepAliveTimeMs = 30000,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         ArgumentException.ThrowIfNullOrWhiteSpace(commandName);
         CommandsClientState client = GetCommandsClient(sessionId);
         string[] actualArguments = arguments ?? [];
@@ -199,7 +215,8 @@ public sealed class CommandsTools {
         string actualNamespace = commandNamespace ?? string.Empty;
         string actualTargetId = targetId ?? string.Empty;
 
-        if (!asynchronous) {
+        if (!asynchronous)
+        {
             string[] results = await client.CommandExecution.SyncInvokeAsync(
                 commandName,
                 actualNamespace,
@@ -257,7 +274,8 @@ public sealed class CommandsTools {
         string invocationId,
         [Description("Server wait time in milliseconds for QueryState. Use 0 for a non-blocking poll.")]
         int waitTimeMs = 0,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         ArgumentException.ThrowIfNullOrWhiteSpace(invocationId);
         CommandsClientState client = GetCommandsClient(sessionId);
         string[] permittedControls = await client.CommandExecution.QueryStateAsync(invocationId, waitTimeMs, cancellationToken).ConfigureAwait(false);
@@ -266,7 +284,8 @@ public sealed class CommandsTools {
             static id => new CommandsInvocationContext(id, string.Empty, string.Empty, string.Empty, DateTimeOffset.UtcNow));
 
         bool noStateChange = context.LastPermittedControls.SequenceEqual(permittedControls, StringComparer.Ordinal);
-        if (!noStateChange) {
+        if (!noStateChange)
+        {
             context.EventCount++;
             context.LastPermittedControls = permittedControls;
         }
@@ -292,7 +311,8 @@ public sealed class CommandsTools {
         string sessionId,
         [Description("Invocation identifier returned by opcclassic.commands.invoke_command.")]
         string invocationId,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         ArgumentException.ThrowIfNullOrWhiteSpace(invocationId);
         CommandsClientState client = GetCommandsClient(sessionId);
         await client.CommandExecution.ControlAsync(invocationId, "Cancel", cancellationToken).ConfigureAwait(false);
@@ -301,13 +321,16 @@ public sealed class CommandsTools {
         return new OpcResultDto(0, $"Command invocation '{invocationId}' cancelled.", Succeeded: true, ItemName: invocationId, ValueType: "Commands");
     }
 
-    private CommandsClientState GetCommandsClient(string sessionId) {
+    private CommandsClientState GetCommandsClient(string sessionId)
+    {
         OpcSession session = _sessionManager.GetSession(sessionId);
         return session.CommandsClient ?? throw new McpException($"Session '{sessionId}' is not connected to an OPC Commands server. Call opcclassic.commands.connect first.");
     }
 
-    private sealed class DefaultOpcCommandsConnectionFactory : IOpcCommandsConnectionFactory {
-        public Task<CommandsClientState> ConnectAsync(CommandsConnectionRequest request, CancellationToken cancellationToken = default) {
+    private sealed class DefaultOpcCommandsConnectionFactory : IOpcCommandsConnectionFactory
+    {
+        public Task<CommandsClientState> ConnectAsync(CommandsConnectionRequest request, CancellationToken cancellationToken = default)
+        {
             ArgumentNullException.ThrowIfNull(request);
             return OpcClassicDcomConnectionFactory.ConnectAsync(
                 new OpcClassicConnectionRequest(request.Host, request.ProgId, request.Clsid, request.Username, request.Password, request.UseKerberos, request.ConnectionString, request.AuthLevel),

@@ -1,13 +1,12 @@
 ﻿// SPDX-License-Identifier: MIT
 
-namespace Opc.Classic.Dcom.Test {
-    using Opc.Classic.Dcom.Core;
+using Opc.Classic.Dcom.Core;
 
+namespace Opc.Classic.Dcom.Test;
 
-    public interface IEventNotificationListener {
+public interface IEventNotificationListener
+{
 
-        void OnEvent(Struct[] @event);
-
-    }
+    void OnEvent(Struct[] @event);
 
 }

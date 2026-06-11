@@ -61,7 +61,8 @@ namespace Opc.Classic.Dcom.Automation;
 /// parameter, the developer can use <code><see cref="Variant"/>.OPTIONAL_PARAM()</code>,
 /// like in the example above.
 /// </summary>
-public interface IDispatch : IComObject {
+public interface IDispatch : IComObject
+{
 
     /// <summary>
     /// Returns the COM <code>EXCEPINFO</code> structure wrapped as a

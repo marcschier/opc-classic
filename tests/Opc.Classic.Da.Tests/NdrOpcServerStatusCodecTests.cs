@@ -12,22 +12,26 @@ using TUnit.Assertions.AssertConditions.Throws;
 
 namespace Opc.Classic.Da.Tests;
 
-public sealed class NdrOpcServerStatusCodecTests {
+public sealed class NdrOpcServerStatusCodecTests
+{
     private delegate void NdrWriteAction(ref NdrWriter w);
 
-    private static byte[] WriteOne(NdrWriteAction write, int capacity = 256) {
+    private static byte[] WriteOne(NdrWriteAction write, int capacity = 256)
+    {
         var buf = new byte[capacity];
         var w = new NdrWriter(buf);
         write(ref w);
         return buf[..w.Position];
     }
 
-    private static OpcServerStatus ReadOne(byte[] bytes) {
+    private static OpcServerStatus ReadOne(byte[] bytes)
+    {
         var r = new NdrReader(bytes);
         return NdrOpcServerStatusCodec.Read(ref r);
     }
 
-    private static OpcServerStatus BuildSample(string vendor = "Acme OPC Inc.") => new() {
+    private static OpcServerStatus BuildSample(string vendor = "Acme OPC Inc.") => new()
+    {
         Spec = OpcStatusSpec.Da,
         StartTime = new DateTimeOffset(2026, 5, 22, 0, 0, 0, TimeSpan.Zero),
         CurrentTime = new DateTimeOffset(2026, 5, 22, 10, 30, 0, TimeSpan.Zero),
@@ -40,7 +44,8 @@ public sealed class NdrOpcServerStatusCodecTests {
     };
 
     [Test]
-    public async Task RoundTrip_TypicalRunningServer() {
+    public async Task RoundTrip_TypicalRunningServer()
+    {
         var input = BuildSample();
         var bytes = WriteOne((ref NdrWriter w) => NdrOpcServerStatusCodec.Write(ref w, input), capacity: 512);
         var back = ReadOne(bytes);
@@ -54,7 +59,8 @@ public sealed class NdrOpcServerStatusCodecTests {
     }
 
     [Test]
-    public async Task RoundTrip_PreservesTimestamps() {
+    public async Task RoundTrip_PreservesTimestamps()
+    {
         var input = BuildSample();
         var bytes = WriteOne((ref NdrWriter w) => NdrOpcServerStatusCodec.Write(ref w, input), capacity: 512);
         var back = ReadOne(bytes);
@@ -64,7 +70,8 @@ public sealed class NdrOpcServerStatusCodecTests {
     }
 
     [Test]
-    public async Task RoundTrip_EmptyVendorInfo() {
+    public async Task RoundTrip_EmptyVendorInfo()
+    {
         var input = BuildSample(vendor: string.Empty);
         var bytes = WriteOne((ref NdrWriter w) => NdrOpcServerStatusCodec.Write(ref w, input), capacity: 512);
         var back = ReadOne(bytes);
@@ -72,7 +79,8 @@ public sealed class NdrOpcServerStatusCodecTests {
     }
 
     [Test]
-    public async Task RoundTrip_UnicodeVendor() {
+    public async Task RoundTrip_UnicodeVendor()
+    {
         var input = BuildSample(vendor: "Müller Industriewerke 株式会社");
         var bytes = WriteOne((ref NdrWriter w) => NdrOpcServerStatusCodec.Write(ref w, input), capacity: 512);
         var back = ReadOne(bytes);
@@ -80,10 +88,13 @@ public sealed class NdrOpcServerStatusCodecTests {
     }
 
     [Test]
-    public async Task RoundTrip_AllStates() {
-        foreach (var state in new[] { OpcServerState.Running, OpcServerState.Failed, OpcServerState.NoConfig, OpcServerState.Suspended, OpcServerState.Test }) {
+    public async Task RoundTrip_AllStates()
+    {
+        foreach (var state in new[] { OpcServerState.Running, OpcServerState.Failed, OpcServerState.NoConfig, OpcServerState.Suspended, OpcServerState.Test })
+        {
             var sample = BuildSample();
-            var input = new OpcServerStatus {
+            var input = new OpcServerStatus
+            {
                 Spec = sample.Spec,
                 StartTime = sample.StartTime,
                 CurrentTime = sample.CurrentTime,
@@ -101,7 +112,8 @@ public sealed class NdrOpcServerStatusCodecTests {
     }
 
     [Test]
-    public async Task DecodedSpec_IsDa() {
+    public async Task DecodedSpec_IsDa()
+    {
         var input = BuildSample();
         var bytes = WriteOne((ref NdrWriter w) => NdrOpcServerStatusCodec.Write(ref w, input), capacity: 512);
         var back = ReadOne(bytes);
@@ -111,7 +123,8 @@ public sealed class NdrOpcServerStatusCodecTests {
     // -- Track AS: FILETIME decode hypothesis matrix (x3-mcp-e2e-test blocker investigation) --
 
     [Test]
-    public async Task Decode_FileTime_Zero_Yields1601Epoch() {
+    public async Task Decode_FileTime_Zero_Yields1601Epoch()
+    {
         byte[] wire = WireWithRawFileTimes(rawStartFileTime: 0L, rawCurrentFileTime: 0L, rawLastUpdateFileTime: 0L);
         OpcServerStatus back = ReadOne(wire);
         var epoch = new DateTimeOffset(1601, 1, 1, 0, 0, 0, TimeSpan.Zero);
@@ -124,7 +137,8 @@ public sealed class NdrOpcServerStatusCodecTests {
     [Arguments(long.MinValue)]
     [Arguments(-1L)]
     [Arguments(long.MaxValue)]
-    public async Task Decode_FileTime_OutOfRange_ThrowsInvalidDataException_WithContext(long bogusFileTime) {
+    public async Task Decode_FileTime_OutOfRange_ThrowsInvalidDataException_WithContext(long bogusFileTime)
+    {
         byte[] wire = WireWithRawFileTimes(rawStartFileTime: bogusFileTime, rawCurrentFileTime: 0L, rawLastUpdateFileTime: 0L);
 
         var thrown = await Assert.ThrowsAsync<System.IO.InvalidDataException>(() => Task.FromResult(ReadOne(wire)));
@@ -134,7 +148,8 @@ public sealed class NdrOpcServerStatusCodecTests {
     }
 
     [Test]
-    public async Task Decode_FileTime_NamesFailingField() {
+    public async Task Decode_FileTime_NamesFailingField()
+    {
         // Cause the LAST field (ftLastUpdateTime) to overflow; verify the exception names that field, not the earlier two.
         byte[] wire = WireWithRawFileTimes(rawStartFileTime: 0L, rawCurrentFileTime: 0L, rawLastUpdateFileTime: long.MaxValue);
 
@@ -145,7 +160,8 @@ public sealed class NdrOpcServerStatusCodecTests {
     }
 
     [Test]
-    public async Task Decode_FileTime_NamesFailingField_StartTime() {
+    public async Task Decode_FileTime_NamesFailingField_StartTime()
+    {
         // Symmetric coverage for the FIRST field: only ftStartTime is corrupt;
         // exception must name it (not the unread later fields).
         byte[] wire = WireWithRawFileTimes(rawStartFileTime: long.MaxValue, rawCurrentFileTime: 0L, rawLastUpdateFileTime: 0L);
@@ -157,7 +173,8 @@ public sealed class NdrOpcServerStatusCodecTests {
     }
 
     [Test]
-    public async Task Decode_FileTime_NamesFailingField_CurrentTime() {
+    public async Task Decode_FileTime_NamesFailingField_CurrentTime()
+    {
         // Symmetric coverage for the MIDDLE field: ftStartTime valid, ftCurrentTime corrupt.
         byte[] wire = WireWithRawFileTimes(rawStartFileTime: 0L, rawCurrentFileTime: -1L, rawLastUpdateFileTime: 0L);
 
@@ -168,7 +185,8 @@ public sealed class NdrOpcServerStatusCodecTests {
     }
 
     [Test]
-    public async Task Decode_FileTime_MaxValid_DecodesToYear9999() {
+    public async Task Decode_FileTime_MaxValid_DecodesToYear9999()
+    {
         // Positive boundary test: the max FILETIME that still fits in DateTimeOffset
         // must decode cleanly, not be over-zealously rejected by the strict guard.
         const long FileTimeEpochOffsetTicks = 504911232000000000L;
@@ -185,9 +203,11 @@ public sealed class NdrOpcServerStatusCodecTests {
     /// Used to exercise decode-side edge cases that the writer's <c>DateTimeOffset</c>
     /// roundtrip would never produce.
     /// </summary>
-    private static byte[] WireWithRawFileTimes(long rawStartFileTime, long rawCurrentFileTime, long rawLastUpdateFileTime) {
+    private static byte[] WireWithRawFileTimes(long rawStartFileTime, long rawCurrentFileTime, long rawLastUpdateFileTime)
+    {
         return WriteOne(
-            (ref NdrWriter w) => {
+            (ref NdrWriter w) =>
+            {
                 w.WriteFileTime(rawStartFileTime);
                 w.WriteFileTime(rawCurrentFileTime);
                 w.WriteFileTime(rawLastUpdateFileTime);

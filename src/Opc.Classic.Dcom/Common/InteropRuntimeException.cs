@@ -13,7 +13,8 @@ namespace Opc.Classic.Dcom.Common;
 /// The <see cref="IComObject"/> call or QI or any other APIs
 /// will always throw checked <see cref="InteropException"/>
 /// </remarks>
-public sealed class InteropRuntimeException : Exception {
+public sealed class InteropRuntimeException : Exception
+{
 
     /// <summary>
     /// Create exception

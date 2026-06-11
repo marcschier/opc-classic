@@ -9,7 +9,8 @@ namespace Opc.Classic.Da;
 /// Browse-tree filter passed to <c>IDaServer.BrowseAsync</c>.
 /// Matches the on-the-wire <c>OPCBROWSEFILTER</c> enum.
 /// </summary>
-public enum BrowseFilters {
+public enum BrowseFilters
+{
     /// <summary>Return both branches and leaves.</summary>
     All = 1,
     /// <summary>Return only branches (sub-namespaces / folders).</summary>

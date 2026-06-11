@@ -5,7 +5,8 @@ namespace Opc.Classic.Dcom.Rpc;
 /// <summary>
 /// Fault
 /// </summary>
-public class FaultException : RpcException {
+public class FaultException : RpcException
+{
 
     /// <summary>
     /// Fault code
@@ -26,7 +27,8 @@ public class FaultException : RpcException {
     /// Create fault
     /// </summary>
     /// <param name="message"></param>
-    public FaultException(string message) : base(message) {
+    public FaultException(string message) : base(message)
+    {
         Stub = null;
         Code = FaultCode.UNKNOWN;
     }
@@ -37,7 +39,8 @@ public class FaultException : RpcException {
     /// <param name="message"></param>
     /// <param name="status"></param>
     public FaultException(string message, FaultCode status) :
-        base(ToString(message, status)) {
+        base(ToString(message, status))
+    {
         Code = status;
         Stub = null;
     }
@@ -49,7 +52,8 @@ public class FaultException : RpcException {
     /// <param name="status"></param>
     /// <param name="stub"></param>
     public FaultException(string message, FaultCode status, byte[] stub) :
-        base(ToString(message, status)) {
+        base(ToString(message, status))
+    {
         Code = status;
         Stub = stub;
     }
@@ -69,8 +73,10 @@ public class FaultException : RpcException {
     /// </summary>
     /// <param name="status"></param>
     /// <returns></returns>
-    private static string ToString(FaultCode status) {
-        switch (status) {
+    private static string ToString(FaultCode status)
+    {
+        switch (status)
+        {
             case FaultCode.RPC_VERSION_MISMATCH:
                 return "RPC_VERSION_MISMATCH";
             case FaultCode.UNSPECIFIED_REJECTION:

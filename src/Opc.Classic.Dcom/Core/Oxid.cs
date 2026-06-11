@@ -9,7 +9,8 @@ namespace Opc.Classic.Dcom.Core;
 /// Oxid
 /// </summary>
 [Serializable]
-internal sealed class Oxid {
+internal sealed class Oxid
+{
 
 #pragma warning disable RECS0154 // Parameter is never used
     /// <summary>
@@ -25,18 +26,22 @@ internal sealed class Oxid {
     internal byte[] OXID => _oxid;
 
     /// <inheritdoc/>
-    public override int GetHashCode() {
+    public override int GetHashCode()
+    {
         var result = 1;
         // from SUN
-        for (var i = 0; i < OXID.Length; i++) {
+        for (var i = 0; i < OXID.Length; i++)
+        {
             result = (31 * result) + OXID[i];
         }
         return result;
     }
 
     /// <inheritdoc/>
-    public override bool Equals(object obj) {
-        if (!(obj is Oxid other)) {
+    public override bool Equals(object obj)
+    {
+        if (!(obj is Oxid other))
+        {
             return false;
         }
         return _oxid.SequenceEqual(other.OXID);

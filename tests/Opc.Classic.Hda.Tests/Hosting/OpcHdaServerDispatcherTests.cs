@@ -15,11 +15,13 @@ using TUnit.Core;
 
 namespace Opc.Classic.Hda.Tests.Hosting;
 
-public sealed class OpcHdaServerDispatcherTests {
+public sealed class OpcHdaServerDispatcherTests
+{
     private delegate void NdrWriteAction(ref NdrWriter writer);
 
     [Test]
-    public async Task DispatchGetHistorianStatus_calls_server_and_returns_status_payload() {
+    public async Task DispatchGetHistorianStatus_calls_server_and_returns_status_payload()
+    {
         var server = new StubHdaServer();
         var dispatcher = new OpcHdaServerDispatcher(server);
 
@@ -37,14 +39,16 @@ public sealed class OpcHdaServerDispatcherTests {
     }
 
     [Test]
-    public async Task DispatchValidateItemIds_decodes_items_and_encodes_results() {
+    public async Task DispatchValidateItemIds_decodes_items_and_encodes_results()
+    {
         var server = new StubHdaServer { ValidateResults = [0, OpcResultId.UnknownItemId.Code] };
         var dispatcher = new OpcHdaServerDispatcher(server);
         // Per [OpcEmitArrayCount, OpcDeferredElements] on IOPCHDA_Server.ValidateItemIDsAsync:
         // sibling DWORD count, then conformant array of LPWSTR with per-element
         // referent IDs followed by per-element string bodies (DCE 1.1 §14.3.12.3).
         // This matches the wire shape opchda_ps.dll (MS-DCOM proxy/stub) emits.
-        byte[] request = WritePayload((ref NdrWriter writer) => {
+        byte[] request = WritePayload((ref NdrWriter writer) =>
+        {
             writer.WriteUInt32(2);             // sibling count (from [OpcEmitArrayCount])
             writer.WriteUInt32(2);             // array conformance (from [OpcDeferredElements])
             _ = writer.WriteReferentId();      // per-element referent for element 0
@@ -73,14 +77,16 @@ public sealed class OpcHdaServerDispatcherTests {
         await Assert.That(second).IsEqualTo(OpcResultId.UnknownItemId.Code);
     }
 
-    private static byte[] WritePayload(NdrWriteAction write, int capacity = 512) {
+    private static byte[] WritePayload(NdrWriteAction write, int capacity = 512)
+    {
         var buffer = new byte[capacity];
         var writer = new NdrWriter(buffer);
         write(ref writer);
         return buffer[..writer.Position];
     }
 
-    private static OpcServerStatus BuildStatus() => new() {
+    private static OpcServerStatus BuildStatus() => new()
+    {
         Spec = OpcStatusSpec.Hda,
         StartTime = DateTimeOffset.UnixEpoch,
         CurrentTime = DateTimeOffset.UnixEpoch.AddSeconds(1),
@@ -91,19 +97,22 @@ public sealed class OpcHdaServerDispatcherTests {
         VendorInfo = "HDA Dispatcher Test Server",
     };
 
-    private sealed class StubHdaServer : IOpcHdaServer {
+    private sealed class StubHdaServer : IOpcHdaServer
+    {
         public int[] ValidateResults { get; init; } = [];
 
         public string[] LastItemIds { get; private set; } = [];
 
         public int GetStatusCallCount { get; private set; }
 
-        public Task<OpcServerStatus> GetStatusAsync(CancellationToken cancellationToken = default) {
+        public Task<OpcServerStatus> GetStatusAsync(CancellationToken cancellationToken = default)
+        {
             GetStatusCallCount++;
             return Task.FromResult(BuildStatus());
         }
 
-        public Task<int[]> ValidateItemIdsAsync(string[] itemIds, CancellationToken cancellationToken = default) {
+        public Task<int[]> ValidateItemIdsAsync(string[] itemIds, CancellationToken cancellationToken = default)
+        {
             LastItemIds = itemIds;
             return Task.FromResult(ValidateResults);
         }

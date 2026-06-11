@@ -10,8 +10,10 @@ namespace SharpCifs.Smb;
 /// password strings are managed by the GC and cannot be zeroized by this library; callers should
 /// avoid long-lived instances and rotate credentials after suspected exposure.
 /// </remarks>
-public sealed class NtlmPasswordAuthentication {
-    public NtlmPasswordAuthentication(string domain, string username, string password) {
+public sealed class NtlmPasswordAuthentication
+{
+    public NtlmPasswordAuthentication(string domain, string username, string password)
+    {
         Domain = domain;
         Username = username;
         Password = password;

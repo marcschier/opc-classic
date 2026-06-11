@@ -19,7 +19,8 @@ namespace Opc.Classic.Hda;
 /// interfaces (IOPCHDA_AsyncRead etc.) deliver completion via callback;
 /// this managed shape hides that complexity behind <see cref="Task{T}"/>.
 /// </remarks>
-public interface IHdaServer : IAsyncDisposable {
+public interface IHdaServer : IAsyncDisposable
+{
     /// <summary>Raised when the server emits a shutdown notification.</summary>
     event EventHandler<EventArgs>? ServerShutdown;
 

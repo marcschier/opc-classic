@@ -8,7 +8,8 @@ namespace Opc.Classic.Xml;
 /// <summary>
 /// Type-safe OPC XML-DA standard result code discriminator.
 /// </summary>
-public enum XmlDaErrorCode {
+public enum XmlDaErrorCode
+{
     /// <summary>Unknown, vendor-specific, or malformed result code.</summary>
     Unknown = 0,
 

@@ -9,7 +9,8 @@ using System.Threading.Tasks;
 namespace Opc.Classic.Ae.Hosting;
 
 /// <summary>Dispatches Windows CCW calls for one AE area-browser cursor.</summary>
-public interface IOpcAeAreaBrowserDispatcher {
+public interface IOpcAeAreaBrowserDispatcher
+{
     /// <summary>Moves the browser cursor.</summary>
     Task ChangeBrowsePositionAsync(int browseDirection, string? position, CancellationToken cancellationToken = default);
 

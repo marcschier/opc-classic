@@ -29,7 +29,8 @@ namespace Opc.Classic.Dcom;
 /// <see cref="RegisterAndYieldChannel"/> and then <c>new XClientProxy(channel)</c>.
 /// </para>
 /// </remarks>
-public static class OpcSubProxyHelper {
+public static class OpcSubProxyHelper
+{
     /// <summary>
     /// Registers the IID→IPID routing for <paramref name="objRef"/> on the
     /// supplied <paramref name="channel"/> (if it supports IPID routing) and
@@ -44,17 +45,21 @@ public static class OpcSubProxyHelper {
     public static Opc.Classic.ICallChannel? RegisterAndYieldChannel(
         Opc.Classic.ICallChannel channel,
         Guid targetInterfaceId,
-        IOpcInterfaceRef? objRef) {
+        IOpcInterfaceRef? objRef)
+    {
         ArgumentNullException.ThrowIfNull(channel);
-        if (targetInterfaceId == Guid.Empty) {
+        if (targetInterfaceId == Guid.Empty)
+        {
             throw new ArgumentException("Target interface IID must not be empty.", nameof(targetInterfaceId));
         }
 
-        if (objRef is null || objRef.Ipid == Guid.Empty) {
+        if (objRef is null || objRef.Ipid == Guid.Empty)
+        {
             return null;
         }
 
-        if (channel is DcomCallChannel routable) {
+        if (channel is DcomCallChannel routable)
+        {
             routable.RegisterInterfaceIpid(targetInterfaceId, objRef.Ipid);
         }
 

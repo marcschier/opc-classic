@@ -16,11 +16,13 @@ namespace Opc.Classic.Dcom.Core;
 /// at the OxidResolverImpl level in ComOxidRuntimeHelper, since each of the Oxid
 /// Resolver has a separate thread for COM client.
 /// </summary>
-internal sealed class ComOxidStub : Stub {
+internal sealed class ComOxidStub : Stub
+{
 
     private static readonly PropertyBag kDefaults = new PropertyBag();
 
-    static ComOxidStub() {
+    static ComOxidStub()
+    {
 
         kDefaults.SetProperty("rpc.ntlm.lanManagerKey", "false");
         kDefaults.SetProperty("rpc.ntlm.sign", "false");
@@ -45,13 +47,16 @@ internal sealed class ComOxidStub : Stub {
     /// <param name="useNTLMv2"></param>
     /// <param name="isSSO"></param>
     public ComOxidStub(string address, string domain, string username,
-        string password, bool useNTLMv2, bool isSSO) {
+        string password, bool useNTLMv2, bool isSSO)
+    {
         TransportFactory = ComTransportFactory.Instance;
         Properties = new PropertyBag(kDefaults);
-        if (isSSO) {
+        if (isSSO)
+        {
             Properties.SetProperty("rpc.ntlm.sso", "true");
         }
-        else {
+        else
+        {
             Properties.SetProperty("rpc.security.username", username);
             Properties.SetProperty("rpc.security.password", password);
             Properties.SetProperty("rpc.ntlm.domain", domain);
@@ -71,25 +76,31 @@ internal sealed class ComOxidStub : Stub {
     /// <param name="seqNum"></param>
     /// <returns></returns>
     public byte[] Call(bool isSimplePing, byte[] setId,
-        List<ObjectId> listOfAdds, List<ObjectId> listOfDels, int seqNum) {
-        var pingObject = new ComOxidPingObject {
+        List<ObjectId> listOfAdds, List<ObjectId> listOfDels, int seqNum)
+    {
+        var pingObject = new ComOxidPingObject
+        {
             SetId = setId,
             _listOfAdds = listOfAdds,
             _listOfDels = listOfDels,
             _seqNum = seqNum
         };
 
-        if (isSimplePing) {
+        if (isSimplePing)
+        {
             pingObject.Opnum = 1;
         }
-        else {
+        else
+        {
             pingObject.Opnum = 2;
         }
 
-        try {
+        try
+        {
             Call(Semantics.IDEMPOTENT, pingObject);
         }
-        catch (IOException e) {
+        catch (IOException e)
+        {
             Log.Logger.Error(e, "ComOxidStub call");
         }
 
@@ -100,11 +111,14 @@ internal sealed class ComOxidStub : Stub {
     /// <summary>
     /// Close
     /// </summary>
-    public void Close() {
-        try {
+    public void Close()
+    {
+        try
+        {
             Detach();
         }
-        catch (Exception e) {
+        catch (Exception e)
+        {
             Log.Logger.Verbose(e, "ComOxidStub close");
         }
     }

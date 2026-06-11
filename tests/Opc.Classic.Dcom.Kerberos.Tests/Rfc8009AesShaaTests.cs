@@ -9,13 +9,15 @@ using TUnit.Core;
 
 namespace Opc.Classic.Dcom.Kerberos.Tests;
 
-public sealed class Rfc8009AesShaaTests {
+public sealed class Rfc8009AesShaaTests
+{
     private static readonly byte[] Rfc8009Salt = KerberosTestHex.FromHex(
         "10DF9DD783E5BC8ACEA1730E74355F61" +
         "415448454E412E4D49542E4544557261656275726E");
 
     [Test]
-    public async Task Rfc8009_AES128_SHA256_string_to_key_matches_vector() {
+    public async Task Rfc8009_AES128_SHA256_string_to_key_matches_vector()
+    {
         byte[] key = new KerberosKey(
             password: "password",
             saltBytes: Rfc8009Salt,
@@ -25,7 +27,8 @@ public sealed class Rfc8009AesShaaTests {
     }
 
     [Test]
-    public async Task Rfc8009_AES256_SHA384_string_to_key_matches_vector() {
+    public async Task Rfc8009_AES256_SHA384_string_to_key_matches_vector()
+    {
         byte[] key = new KerberosKey(
             password: "password",
             saltBytes: Rfc8009Salt,
@@ -37,7 +40,8 @@ public sealed class Rfc8009AesShaaTests {
     }
 
     [Test]
-    public async Task Rfc8009_AES128_SHA256_checksum_matches_vector() {
+    public async Task Rfc8009_AES128_SHA256_checksum_matches_vector()
+    {
         byte[] baseKey = KerberosTestHex.FromHex("3705D96080C17728A0E800EAB6E0D23C");
         byte[] plaintext = KerberosTestHex.FromHex("000102030405060708090A0B0C0D0E0F1011121314");
         var transform = CryptoService.CreateTransform(EncryptionType.AES128_CTS_HMAC_SHA256_128);
@@ -53,7 +57,8 @@ public sealed class Rfc8009AesShaaTests {
     }
 
     [Test]
-    public async Task Rfc8009_AES256_SHA384_checksum_matches_vector() {
+    public async Task Rfc8009_AES256_SHA384_checksum_matches_vector()
+    {
         byte[] baseKey = KerberosTestHex.FromHex(
             "6D404D37FAF79F9DF0D33568D3206698" +
             "00EB4836472EA8A026D16B7182460C52");
@@ -73,7 +78,8 @@ public sealed class Rfc8009AesShaaTests {
     }
 
     [Test]
-    public async Task AES_SHA2_session_supports_wrap_round_trip_for_both_etypes() {
+    public async Task AES_SHA2_session_supports_wrap_round_trip_for_both_etypes()
+    {
         byte[] plaintext = [0xCA, 0xFE, 0xBA, 0xBE, 0x00, 0x01];
         var aes128 = new KerberosSession(KerberosTestHex.FromHex("3705D96080C17728A0E800EAB6E0D23C"), EncryptionType.AES128_CTS_HMAC_SHA256_128);
         var aes256 = new KerberosSession(

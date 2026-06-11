@@ -12,9 +12,11 @@ using TUnit.Core;
 
 namespace Opc.Classic.Integration.Tests.EndToEnd;
 
-public sealed class AeEndToEndTests {
+public sealed class AeEndToEndTests
+{
     [Test, Category("EndToEnd")]
-    public async Task ConnectAndGetStatus_Then_AeStatusFlowsBack() {
+    public async Task ConnectAndGetStatus_Then_AeStatusFlowsBack()
+    {
         var pipeline = new AeEndToEndPipeline();
 
         OpcServerStatus status = await pipeline.EventServer.GetStatusAsync(CancellationToken.None);
@@ -33,7 +35,8 @@ public sealed class AeEndToEndTests {
     }
 
     [Test, Category("EndToEnd")]
-    public async Task QueryAvailableFilters_Then_FilterMaskFlowsThrough() {
+    public async Task QueryAvailableFilters_Then_FilterMaskFlowsThrough()
+    {
         var pipeline = new AeEndToEndPipeline();
 
         int filters = await pipeline.EventServer.QueryAvailableFiltersAsync(CancellationToken.None);
@@ -47,7 +50,8 @@ public sealed class AeEndToEndTests {
     }
 
     [Test, Category("EndToEnd")]
-    public async Task CreateEventSubscription_Then_SubscriptionHandleReturned() {
+    public async Task CreateEventSubscription_Then_SubscriptionHandleReturned()
+    {
         var pipeline = new AeEndToEndPipeline();
         var sink = new AeEventSink();
 
@@ -69,7 +73,8 @@ public sealed class AeEndToEndTests {
     }
 
     [Test, Category("EndToEnd")]
-    public async Task ReceiveEvent_Then_ClientAsyncEnumerationYieldsNotification() {
+    public async Task ReceiveEvent_Then_ClientAsyncEnumerationYieldsNotification()
+    {
         var pipeline = new AeEndToEndPipeline();
         var sink = new AeEventSink();
         AeSubscriptionHandle handle = await pipeline.CreateEventSubscriptionViaWireAsync(
@@ -107,7 +112,8 @@ public sealed class AeEndToEndTests {
     }
 
     [Test, Category("EndToEnd")]
-    public async Task AcknowledgeCondition_Then_ServerReceivesAckArguments() {
+    public async Task AcknowledgeCondition_Then_ServerReceivesAckArguments()
+    {
         var pipeline = new AeEndToEndPipeline();
         long activeTime = new DateTimeOffset(2026, 2, 3, 4, 5, 6, TimeSpan.Zero).ToFileTime();
 
@@ -133,7 +139,8 @@ public sealed class AeEndToEndTests {
     }
 
     [Test, Category("EndToEnd")]
-    public async Task BrowseAreas_Then_AreaHierarchyReturned() {
+    public async Task BrowseAreas_Then_AreaHierarchyReturned()
+    {
         var pipeline = new AeEndToEndPipeline();
 
         await pipeline.AreaBrowser.ChangeBrowsePositionAsync(1, "Plant1", CancellationToken.None);
@@ -149,7 +156,8 @@ public sealed class AeEndToEndTests {
     }
 
     [Test, Category("EndToEnd")]
-    public async Task CancelAndCleanup_Then_SubscriptionIsRemoved() {
+    public async Task CancelAndCleanup_Then_SubscriptionIsRemoved()
+    {
         var pipeline = new AeEndToEndPipeline();
         var sink = new AeEventSink();
         AeSubscriptionHandle handle = await pipeline.CreateEventSubscriptionViaWireAsync(
@@ -171,7 +179,8 @@ public sealed class AeEndToEndTests {
     }
 
     [Test, Category("EndToEnd")]
-    public async Task QueryEventCategories_Then_CategoryMetadataFlowsThrough() {
+    public async Task QueryEventCategories_Then_CategoryMetadataFlowsThrough()
+    {
         var pipeline = new AeEndToEndPipeline();
 
         await pipeline.EventServer.QueryEventCategoriesAsync(0x7, out int[] categories, out string[] descriptions, CancellationToken.None);
@@ -182,7 +191,8 @@ public sealed class AeEndToEndTests {
     }
 
     [Test, Category("EndToEnd")]
-    public async Task QueryEventAttributes_Then_AttributeMetadataFlowsThrough() {
+    public async Task QueryEventAttributes_Then_AttributeMetadataFlowsThrough()
+    {
         var pipeline = new AeEndToEndPipeline();
 
         await pipeline.EventServer.QueryEventAttributesAsync(0x1002, out int[] ids, out string[] descriptions, out ushort[] types, CancellationToken.None);
@@ -194,7 +204,8 @@ public sealed class AeEndToEndTests {
     }
 
     [Test, Category("EndToEnd")]
-    public async Task QueryConditionMetadata_Then_ConditionNamesFlowThrough() {
+    public async Task QueryConditionMetadata_Then_ConditionNamesFlowThrough()
+    {
         var pipeline = new AeEndToEndPipeline();
 
         string[] conditions = await pipeline.EventServer.QueryConditionNamesAsync(0x1002, CancellationToken.None);
@@ -210,7 +221,8 @@ public sealed class AeEndToEndTests {
     }
 
     [Test, Category("EndToEnd")]
-    public async Task TranslateToItemIDs_Then_DaMappingsFlowThrough() {
+    public async Task TranslateToItemIDs_Then_DaMappingsFlowThrough()
+    {
         var pipeline = new AeEndToEndPipeline();
 
         await pipeline.EventServer.TranslateToItemIDsAsync(
@@ -231,7 +243,8 @@ public sealed class AeEndToEndTests {
     }
 
     [Test, Category("EndToEnd")]
-    public async Task GetConditionState_Then_StateSnapshotFlowsThrough() {
+    public async Task GetConditionState_Then_StateSnapshotFlowsThrough()
+    {
         var pipeline = new AeEndToEndPipeline();
 
         OpcConditionState state = await pipeline.EventServer.GetConditionStateAsync(
@@ -247,7 +260,8 @@ public sealed class AeEndToEndTests {
     }
 
     [Test, Category("EndToEnd")]
-    public async Task EnableDisableConditions_Then_AllAreaAndSourceOpnumsRoute() {
+    public async Task EnableDisableConditions_Then_AllAreaAndSourceOpnumsRoute()
+    {
         var pipeline = new AeEndToEndPipeline();
 
         await pipeline.EventServer.EnableConditionByAreaAsync(["Plant1.AreaA"], CancellationToken.None);
@@ -263,7 +277,8 @@ public sealed class AeEndToEndTests {
     }
 
     [Test, Category("EndToEnd")]
-    public async Task SubscriptionFilter_SetThenGet_RoundTripsFilter() {
+    public async Task SubscriptionFilter_SetThenGet_RoundTripsFilter()
+    {
         var pipeline = new AeEndToEndPipeline();
 
         await pipeline.SubscriptionMgt.SetFilterAsync(0x4, [0x1002], 200, 800, ["Plant1.AreaA"], ["Plant1.AreaA.Tank7"], CancellationToken.None);
@@ -286,7 +301,8 @@ public sealed class AeEndToEndTests {
     }
 
     [Test, Category("EndToEnd")]
-    public async Task SubscriptionState_SetThenGet_RoundTripsState() {
+    public async Task SubscriptionState_SetThenGet_RoundTripsState()
+    {
         var pipeline = new AeEndToEndPipeline();
 
         await pipeline.SubscriptionMgt.SetStateAsync(false, 10, 0, 0xAA03, out int revisedBufferTime, out int revisedMaxSize, CancellationToken.None);
@@ -302,7 +318,8 @@ public sealed class AeEndToEndTests {
     }
 
     [Test, Category("EndToEnd")]
-    public async Task ReturnedAttributes_SetThenGet_RoundTripsAttributeIds() {
+    public async Task ReturnedAttributes_SetThenGet_RoundTripsAttributeIds()
+    {
         var pipeline = new AeEndToEndPipeline();
 
         await pipeline.SubscriptionMgt.SetReturnedAttributesAsync(0x1002, [10, 11], CancellationToken.None);
@@ -313,7 +330,8 @@ public sealed class AeEndToEndTests {
     }
 
     [Test, Category("EndToEnd")]
-    public async Task Refresh_Then_RefreshOpnumRoutesToSubscription() {
+    public async Task Refresh_Then_RefreshOpnumRoutesToSubscription()
+    {
         var pipeline = new AeEndToEndPipeline();
 
         await pipeline.SubscriptionMgt.RefreshAsync(0xAA03, CancellationToken.None);
@@ -323,7 +341,8 @@ public sealed class AeEndToEndTests {
     }
 
     [Test, Category("EndToEnd")]
-    public async Task EventServer2PerAreaErrors_Then_MixedResultsFlowThrough() {
+    public async Task EventServer2PerAreaErrors_Then_MixedResultsFlowThrough()
+    {
         var pipeline = new AeEndToEndPipeline();
 
         int[] errors = await pipeline.EventServer2.EnableConditionByArea2Async(["Plant1", "Missing"], CancellationToken.None);
@@ -334,7 +353,8 @@ public sealed class AeEndToEndTests {
     }
 
     [Test, Category("EndToEnd")]
-    public async Task GetEnableStateByArea_Then_DirectAndEffectiveStatesFlowThrough() {
+    public async Task GetEnableStateByArea_Then_DirectAndEffectiveStatesFlowThrough()
+    {
         var pipeline = new AeEndToEndPipeline();
 
         await pipeline.EventServer2.GetEnableStateByAreaAsync(
@@ -351,7 +371,8 @@ public sealed class AeEndToEndTests {
     }
 
     [Test, Category("EndToEnd")]
-    public async Task GetEnableStateBySource_Then_DirectAndEffectiveStatesFlowThrough() {
+    public async Task GetEnableStateBySource_Then_DirectAndEffectiveStatesFlowThrough()
+    {
         var pipeline = new AeEndToEndPipeline();
 
         await pipeline.EventServer2.GetEnableStateBySourceAsync(
@@ -368,7 +389,8 @@ public sealed class AeEndToEndTests {
     }
 
     [Test, Category("EndToEnd")]
-    public async Task KeepAlive_SetThenGet_RoundTripsRevisedKeepAlive() {
+    public async Task KeepAlive_SetThenGet_RoundTripsRevisedKeepAlive()
+    {
         var pipeline = new AeEndToEndPipeline();
 
         int revised = await pipeline.SubscriptionMgt2.SetKeepAliveAsync(25, CancellationToken.None);
@@ -380,8 +402,10 @@ public sealed class AeEndToEndTests {
         await Assert.That(pipeline.Channel.CallLog.Last().Opnum).IsEqualTo(IOPCEventSubscriptionMgt2.Opnums.GetKeepAliveAsync);
     }
 
-    private static async Task<OpcEventNotification> ReadFirstAsync(AeEventSink sink, CancellationToken cancellationToken) {
-        await foreach (OpcEventNotification notification in sink.ReadAllAsync(cancellationToken).ConfigureAwait(false)) {
+    private static async Task<OpcEventNotification> ReadFirstAsync(AeEventSink sink, CancellationToken cancellationToken)
+    {
+        await foreach (OpcEventNotification notification in sink.ReadAllAsync(cancellationToken).ConfigureAwait(false))
+        {
             return notification;
         }
 

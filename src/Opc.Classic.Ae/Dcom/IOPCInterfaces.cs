@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -24,7 +24,8 @@ namespace Opc.Classic.Ae.Dcom;
 [OpcInterface("65168851-5783-11D1-84A0-00608CB8A7E9")]
 [GenerateOpcProxy]
 [OpcGenerateServerDispatch]
-public partial interface IOPCEventServer {
+public partial interface IOPCEventServer
+{
     /// <summary><c>IOPCEventServer::GetStatus</c> (opnum 3). Returns the AE server runtime state.</summary>
     /// <remarks>
     /// IDL: <c>[out] OPCEVENTSERVERSTATUS **ppEventServerStatus</c>. The double-star
@@ -178,7 +179,8 @@ public partial interface IOPCEventServer {
 [OpcInterface("71BBE88E-9564-4BCD-BCFC-71C558D94F2D")]
 [GenerateOpcProxy]
 [OpcGenerateServerDispatch]
-public partial interface IOPCEventServer2 {
+public partial interface IOPCEventServer2
+{
     /// <summary><c>IOPCEventServer2::EnableConditionByArea2</c> (opnum 19). Enables conditions by area with per-area HRESULTs.</summary>
     [OpcMethod(19)]
     [return: OpcUniquePointer]
@@ -224,7 +226,8 @@ public partial interface IOPCEventServer2 {
 [OpcInterface("65168855-5783-11D1-84A0-00608CB8A7E9")]
 [GenerateOpcProxy]
 [OpcGenerateServerDispatch]
-public partial interface IOPCEventSubscriptionMgt {
+public partial interface IOPCEventSubscriptionMgt
+{
     /// <summary><c>IOPCEventSubscriptionMgt::SetFilter</c> (opnum 3). Updates the subscription filter.</summary>
     [OpcMethod(3)]
     Task SetFilterAsync(
@@ -291,7 +294,8 @@ public partial interface IOPCEventSubscriptionMgt {
 [OpcInterface("94C955DC-3684-4CCB-AFAB-F898CE19AAC3")]
 [GenerateOpcProxy]
 [OpcGenerateServerDispatch]
-public partial interface IOPCEventSubscriptionMgt2 {
+public partial interface IOPCEventSubscriptionMgt2
+{
     /// <summary><c>IOPCEventSubscriptionMgt2::SetKeepAlive</c> (opnum 11). Sets the keep-alive time and returns the revised value.</summary>
     [OpcMethod(11)]
     Task<int> SetKeepAliveAsync(int keepAliveTime, CancellationToken cancellationToken = default);
@@ -305,7 +309,8 @@ public partial interface IOPCEventSubscriptionMgt2 {
 [OpcInterface("65168857-5783-11D1-84A0-00608CB8A7E9")]
 [GenerateOpcProxy]
 [OpcGenerateServerDispatch]
-public partial interface IOPCEventAreaBrowser {
+public partial interface IOPCEventAreaBrowser
+{
     /// <summary><c>IOPCEventAreaBrowser::ChangeBrowsePosition</c> (opnum 3). Moves the browser cursor.</summary>
     [OpcMethod(3)]
     Task ChangeBrowsePositionAsync(int browseDirection, string? position, CancellationToken cancellationToken = default);
@@ -331,7 +336,8 @@ public partial interface IOPCEventAreaBrowser {
 [OpcInterface("6516885F-5783-11D1-84A0-00608CB8A7E9")]
 [GenerateOpcProxy]
 [OpcGenerateServerDispatch]
-public partial interface IOPCEventSink {
+public partial interface IOPCEventSink
+{
     /// <summary><c>IOPCEventSink::OnEvent</c> (opnum 3). Delivers event notifications to the client callback sink.</summary>
     [OpcMethod(3)]
     Task OnEventAsync(
@@ -345,5 +351,6 @@ public partial interface IOPCEventSink {
 /// <summary><c>IEnumString</c> — COM string enumerator returned by AE browser methods.</summary>
 [OpcInterface("00000101-0000-0000-C000-000000000046")]
 [GenerateOpcProxy]
-public partial interface IEnumString {
+public partial interface IEnumString
+{
 }

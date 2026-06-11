@@ -12,23 +12,27 @@ using TUnit.Core;
 
 namespace Opc.Classic.Da.Tests;
 
-public sealed class NdrOpcItemStateCodecTests {
+public sealed class NdrOpcItemStateCodecTests
+{
     private delegate void NdrWriteAction(ref NdrWriter w);
 
-    private static byte[] WriteOne(NdrWriteAction write, int capacity = 256) {
+    private static byte[] WriteOne(NdrWriteAction write, int capacity = 256)
+    {
         var buf = new byte[capacity];
         var w = new NdrWriter(buf);
         write(ref w);
         return buf[..w.Position];
     }
 
-    private static OpcItemState ReadOne(byte[] bytes) {
+    private static OpcItemState ReadOne(byte[] bytes)
+    {
         var r = new NdrReader(bytes);
         return NdrOpcItemStateCodec.Read(ref r);
     }
 
     [Test]
-    public async Task RoundTrip_DoubleValue() {
+    public async Task RoundTrip_DoubleValue()
+    {
         var input = new OpcItemState(
             ClientHandle: 42,
             Timestamp: new DateTimeOffset(2026, 5, 22, 10, 0, 0, TimeSpan.Zero),
@@ -43,7 +47,8 @@ public sealed class NdrOpcItemStateCodecTests {
     }
 
     [Test]
-    public async Task RoundTrip_StringValue() {
+    public async Task RoundTrip_StringValue()
+    {
         var input = new OpcItemState(
             ClientHandle: 7,
             Timestamp: new DateTimeOffset(2026, 5, 22, 12, 30, 0, TimeSpan.Zero),
@@ -56,7 +61,8 @@ public sealed class NdrOpcItemStateCodecTests {
     }
 
     [Test]
-    public async Task RoundTrip_BadQuality_NoValue() {
+    public async Task RoundTrip_BadQuality_NoValue()
+    {
         var input = new OpcItemState(
             ClientHandle: 99,
             Timestamp: new DateTimeOffset(2026, 5, 22, 0, 0, 0, TimeSpan.Zero),
@@ -69,7 +75,8 @@ public sealed class NdrOpcItemStateCodecTests {
     }
 
     [Test]
-    public async Task ClientHandle_Layout_AtOffsetZero() {
+    public async Task ClientHandle_Layout_AtOffsetZero()
+    {
         var input = new OpcItemState(
             ClientHandle: unchecked((int)0xCAFEBABE),
             Timestamp: new DateTimeOffset(2026, 5, 22, 0, 0, 0, TimeSpan.Zero),
@@ -81,7 +88,8 @@ public sealed class NdrOpcItemStateCodecTests {
     }
 
     [Test]
-    public async Task FileTimeFields_OccupyEightBytesAfterHandle() {
+    public async Task FileTimeFields_OccupyEightBytesAfterHandle()
+    {
         var input = new OpcItemState(
             ClientHandle: 1,
             Timestamp: DateTimeOffset.UnixEpoch,
@@ -98,7 +106,8 @@ public sealed class NdrOpcItemStateCodecTests {
     }
 
     [Test]
-    public async Task Quality_LowWordOnly_OnWire() {
+    public async Task Quality_LowWordOnly_OnWire()
+    {
         var quality = new OpcQuality(0xAB_C0);  // vendor=0xAB in high byte, kind=Good in low byte
         var input = new OpcItemState(
             ClientHandle: 0,

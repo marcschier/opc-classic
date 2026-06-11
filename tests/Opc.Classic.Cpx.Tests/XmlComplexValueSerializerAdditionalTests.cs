@@ -10,9 +10,11 @@ using TUnit.Assertions.AssertConditions.Throws;
 
 namespace Opc.Classic.Cpx.Tests;
 
-public sealed class XmlComplexValueSerializerAdditionalTests {
+public sealed class XmlComplexValueSerializerAdditionalTests
+{
     [Test]
-    public async Task Serializer_RoundTripsPrimitiveArraysBlobGuidFileTimeAndNamespace() {
+    public async Task Serializer_RoundTripsPrimitiveArraysBlobGuidFileTimeAndNamespace()
+    {
         var id = new Guid("4D40350B-0D22-4B98-9E4F-7A09D61802D5");
         var stamp = new DateTime(2026, 6, 7, 10, 20, 30, DateTimeKind.Utc);
         var type = new TypeDescription(
@@ -29,7 +31,8 @@ public sealed class XmlComplexValueSerializerAdditionalTests {
                 new TypeField("Stamp", TypeKind.FileTime),
             });
         var dictionary = new TypeDictionary("http://example.com/cpx", new[] { type });
-        var value = CreateValue(type, new Dictionary<string, object?> {
+        var value = CreateValue(type, new Dictionary<string, object?>
+        {
             ["Name"] = "Batch-1",
             ["Counts"] = new ushort[] { 7, 9 },
             ["Payload"] = new byte[] { 0x01, 0x02, 0x03 },
@@ -58,7 +61,8 @@ public sealed class XmlComplexValueSerializerAdditionalTests {
     }
 
     [Test]
-    public async Task Serializer_RoundTripsFixedNestedStructArray() {
+    public async Task Serializer_RoundTripsFixedNestedStructArray()
+    {
         var motorType = new TypeDescription(
             "Motor",
             "MotorType",
@@ -96,7 +100,8 @@ public sealed class XmlComplexValueSerializerAdditionalTests {
     }
 
     [Test]
-    public async Task Serializer_ErrorBranches_ThrowSpecificExceptions() {
+    public async Task Serializer_ErrorBranches_ThrowSpecificExceptions()
+    {
         var type = new TypeDescription(
             "Payload",
             "PayloadType",
@@ -132,7 +137,8 @@ public sealed class XmlComplexValueSerializerAdditionalTests {
     }
 
     private static ComplexValue CreateValue(TypeDescription type, IReadOnlyDictionary<string, object?> fields) =>
-        new() {
+        new()
+        {
             Type = new StructType { Name = type.Name },
             Fields = fields,
         };

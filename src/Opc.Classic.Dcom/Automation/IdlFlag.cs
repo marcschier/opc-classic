@@ -8,7 +8,8 @@ namespace Opc.Classic.Dcom.Automation;
 /// Idl flag
 /// </summary>
 [Flags]
-public enum IdlFlag : short {
+public enum IdlFlag : short
+{
 
     /// <summary>
     /// None

@@ -5,7 +5,8 @@ namespace Opc.Classic.Dcom.Automation;
 /// <summary>
 /// Implements the <i>INVOKEKIND</i> type of COM Automation.
 /// </summary>
-public enum InvokeKind {
+public enum InvokeKind
+{
 
     /// <summary>
     /// The member is called using a normal function invocation syntax

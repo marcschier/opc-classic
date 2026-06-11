@@ -25,7 +25,8 @@ namespace Opc.Classic.Discovery;
 /// Discovers OPC Classic server registrations through the WINREG RPC protocol over SMB.
 /// </summary>
 [SuppressMessage("Naming", "CA1711:Identifiers should not have incorrect suffix", Justification = "The Phase 10 public API intentionally names discovery strategies after OPC enumeration sources.")]
-public sealed class RemoteRegistryEnum : IOpcDiscovery {
+public sealed class RemoteRegistryEnum : IOpcDiscovery
+{
     private const string ClassesPath = @"SOFTWARE\Classes";
     private const string ClsidPath = ClassesPath + @"\CLSID";
     private const string ComponentCategoriesPath = ClassesPath + @"\Component Categories";
@@ -61,7 +62,8 @@ public sealed class RemoteRegistryEnum : IOpcDiscovery {
     /// Initializes a remote-registry discovery strategy using the managed SMB/WINREG client.
     /// </summary>
     public RemoteRegistryEnum(string host, NetworkCredential credentials)
-        : this(host, credentials, WinRegRemoteRegistryReaderFactory.Instance, NullLogger<RemoteRegistryEnum>.Instance) {
+        : this(host, credentials, WinRegRemoteRegistryReaderFactory.Instance, NullLogger<RemoteRegistryEnum>.Instance)
+    {
     }
 
     /// <summary>
@@ -71,7 +73,8 @@ public sealed class RemoteRegistryEnum : IOpcDiscovery {
         string host,
         NetworkCredential credentials,
         IRemoteRegistryReaderFactory readerFactory,
-        ILogger<RemoteRegistryEnum>? logger = null) {
+        ILogger<RemoteRegistryEnum>? logger = null)
+    {
         ArgumentException.ThrowIfNullOrWhiteSpace(host);
         ArgumentNullException.ThrowIfNull(credentials);
         ArgumentNullException.ThrowIfNull(readerFactory);
@@ -91,40 +94,50 @@ public sealed class RemoteRegistryEnum : IOpcDiscovery {
     /// <inheritdoc />
     public async IAsyncEnumerable<OpcServerEntry> DiscoverAsync(
         string? host = null,
-        [System.Runtime.CompilerServices.EnumeratorCancellation] CancellationToken cancellationToken = default) {
+        [System.Runtime.CompilerServices.EnumeratorCancellation] CancellationToken cancellationToken = default)
+    {
         await Task.CompletedTask.ConfigureAwait(false);
 
         var targetHost = string.IsNullOrWhiteSpace(host) ? Host : host;
-        foreach (var entry in EnumerateOrLogFailure(targetHost, cancellationToken)) {
+        foreach (var entry in EnumerateOrLogFailure(targetHost, cancellationToken))
+        {
             cancellationToken.ThrowIfCancellationRequested();
             yield return entry;
         }
     }
 
-    private IReadOnlyList<OpcServerEntry> EnumerateOrLogFailure(string host, CancellationToken cancellationToken) {
-        try {
+    private IReadOnlyList<OpcServerEntry> EnumerateOrLogFailure(string host, CancellationToken cancellationToken)
+    {
+        try
+        {
             return EnumerateRemoteRegistry(host, cancellationToken);
         }
-        catch (InteropException ex) {
+        catch (InteropException ex)
+        {
             LogRemoteRegistryEnumerationFailed(host, ex);
         }
-        catch (UnknownHostException ex) {
+        catch (UnknownHostException ex)
+        {
             LogRemoteRegistryEnumerationFailed(host, ex);
         }
-        catch (IOException ex) {
+        catch (IOException ex)
+        {
             LogRemoteRegistryEnumerationFailed(host, ex);
         }
-        catch (SocketException ex) {
+        catch (SocketException ex)
+        {
             LogRemoteRegistryEnumerationFailed(host, ex);
         }
-        catch (UnauthorizedAccessException ex) {
+        catch (UnauthorizedAccessException ex)
+        {
             LogRemoteRegistryEnumerationFailed(host, ex);
         }
 
         return Array.Empty<OpcServerEntry>();
     }
 
-    private List<OpcServerEntry> EnumerateRemoteRegistry(string host, CancellationToken cancellationToken) {
+    private List<OpcServerEntry> EnumerateRemoteRegistry(string host, CancellationToken cancellationToken)
+    {
         cancellationToken.ThrowIfCancellationRequested();
         using var reader = _readerFactory.Open(host, Credentials);
         var candidates = new Dictionary<Guid, HashSet<Guid>>();
@@ -136,10 +149,12 @@ public sealed class RemoteRegistryEnum : IOpcDiscovery {
         clsids.Sort();
 
         var entries = new List<OpcServerEntry>();
-        foreach (var clsid in clsids) {
+        foreach (var clsid in clsids)
+        {
             cancellationToken.ThrowIfCancellationRequested();
             var entry = ReadServerEntry(reader, host, clsid, candidates[clsid]);
-            if (entry is not null) {
+            if (entry is not null)
+            {
                 entries.Add(entry);
             }
         }
@@ -150,16 +165,20 @@ public sealed class RemoteRegistryEnum : IOpcDiscovery {
     private static void AddCandidatesFromCategoryIndexes(
         IRemoteRegistryReader reader,
         Dictionary<Guid, HashSet<Guid>> candidates,
-        CancellationToken cancellationToken) {
-        foreach (var categoryId in OpcCategoryIds) {
+        CancellationToken cancellationToken)
+    {
+        foreach (var categoryId in OpcCategoryIds)
+        {
             cancellationToken.ThrowIfCancellationRequested();
             var implementationsPath = CombineRegistryPath(
                 CombineRegistryPath(ComponentCategoriesPath, categoryId.ToString("B")),
                 ImplementationsSubKey);
 
-            foreach (var clsidText in reader.EnumerateSubKeyNames(implementationsPath)) {
+            foreach (var clsidText in reader.EnumerateSubKeyNames(implementationsPath))
+            {
                 cancellationToken.ThrowIfCancellationRequested();
-                if (Guid.TryParse(clsidText, out var clsid)) {
+                if (Guid.TryParse(clsidText, out var clsid))
+                {
                     AddCategory(candidates, clsid, categoryId);
                 }
             }
@@ -169,22 +188,27 @@ public sealed class RemoteRegistryEnum : IOpcDiscovery {
     private static void AddCandidatesFromClsidHive(
         IRemoteRegistryReader reader,
         Dictionary<Guid, HashSet<Guid>> candidates,
-        CancellationToken cancellationToken) {
-        foreach (var clsidText in reader.EnumerateSubKeyNames(ClsidPath)) {
+        CancellationToken cancellationToken)
+    {
+        foreach (var clsidText in reader.EnumerateSubKeyNames(ClsidPath))
+        {
             cancellationToken.ThrowIfCancellationRequested();
-            if (!Guid.TryParse(clsidText, out var clsid)) {
+            if (!Guid.TryParse(clsidText, out var clsid))
+            {
                 continue;
             }
 
             var clsidKeyPath = CombineRegistryPath(ClsidPath, clsidText);
             var opcServerPath = CombineRegistryPath(clsidKeyPath, OpcServerSubKey);
             var implementedCategories = ReadImplementedCategories(reader, clsidKeyPath);
-            if (!reader.KeyExists(opcServerPath) && implementedCategories.Count == 0) {
+            if (!reader.KeyExists(opcServerPath) && implementedCategories.Count == 0)
+            {
                 continue;
             }
 
             _ = GetOrAddCandidate(candidates, clsid);
-            foreach (var categoryId in implementedCategories) {
+            foreach (var categoryId in implementedCategories)
+            {
                 AddCategory(candidates, clsid, categoryId);
             }
         }
@@ -194,11 +218,13 @@ public sealed class RemoteRegistryEnum : IOpcDiscovery {
         IRemoteRegistryReader reader,
         string host,
         Guid clsid,
-        HashSet<Guid> categoriesFromIndex) {
+        HashSet<Guid> categoriesFromIndex)
+    {
         var clsidText = clsid.ToString("B");
         var clsidKeyPath = CombineRegistryPath(ClsidPath, clsidText);
         var opcServerPath = CombineRegistryPath(clsidKeyPath, OpcServerSubKey);
-        if (!reader.KeyExists(opcServerPath) && categoriesFromIndex.Count == 0) {
+        if (!reader.KeyExists(opcServerPath) && categoriesFromIndex.Count == 0)
+        {
             return null;
         }
 
@@ -220,15 +246,19 @@ public sealed class RemoteRegistryEnum : IOpcDiscovery {
     private static Guid[] ReadSupportedCategories(
         IRemoteRegistryReader reader,
         string clsidKeyPath,
-        HashSet<Guid> categoriesFromIndex) {
+        HashSet<Guid> categoriesFromIndex)
+    {
         var categoryIds = new HashSet<Guid>(categoriesFromIndex);
-        foreach (var categoryId in ReadImplementedCategories(reader, clsidKeyPath)) {
+        foreach (var categoryId in ReadImplementedCategories(reader, clsidKeyPath))
+        {
             categoryIds.Add(categoryId);
         }
 
         var ordered = new List<Guid>();
-        foreach (var categoryId in OpcCategoryIds) {
-            if (categoryIds.Contains(categoryId)) {
+        foreach (var categoryId in OpcCategoryIds)
+        {
+            if (categoryIds.Contains(categoryId))
+            {
                 ordered.Add(categoryId);
             }
         }
@@ -236,11 +266,14 @@ public sealed class RemoteRegistryEnum : IOpcDiscovery {
         return ordered.ToArray();
     }
 
-    private static List<Guid> ReadImplementedCategories(IRemoteRegistryReader reader, string clsidKeyPath) {
+    private static List<Guid> ReadImplementedCategories(IRemoteRegistryReader reader, string clsidKeyPath)
+    {
         var implementedCategoriesPath = CombineRegistryPath(clsidKeyPath, ImplementedCategoriesSubKey);
         var categoryIds = new List<Guid>();
-        foreach (var categoryText in reader.EnumerateSubKeyNames(implementedCategoriesPath)) {
-            if (Guid.TryParse(categoryText, out var categoryId) && IsOpcCategory(categoryId)) {
+        foreach (var categoryText in reader.EnumerateSubKeyNames(implementedCategoriesPath))
+        {
+            if (Guid.TryParse(categoryText, out var categoryId) && IsOpcCategory(categoryId))
+            {
                 categoryIds.Add(categoryId);
             }
         }
@@ -251,8 +284,10 @@ public sealed class RemoteRegistryEnum : IOpcDiscovery {
     private static void AddCategory(Dictionary<Guid, HashSet<Guid>> candidates, Guid clsid, Guid categoryId) =>
         GetOrAddCandidate(candidates, clsid).Add(categoryId);
 
-    private static HashSet<Guid> GetOrAddCandidate(Dictionary<Guid, HashSet<Guid>> candidates, Guid clsid) {
-        if (!candidates.TryGetValue(clsid, out var categoryIds)) {
+    private static HashSet<Guid> GetOrAddCandidate(Dictionary<Guid, HashSet<Guid>> candidates, Guid clsid)
+    {
+        if (!candidates.TryGetValue(clsid, out var categoryIds))
+        {
             categoryIds = new HashSet<Guid>();
             candidates.Add(clsid, categoryIds);
         }
@@ -260,9 +295,12 @@ public sealed class RemoteRegistryEnum : IOpcDiscovery {
         return categoryIds;
     }
 
-    private static bool IsOpcCategory(Guid categoryId) {
-        foreach (var opcCategoryId in OpcCategoryIds) {
-            if (opcCategoryId == categoryId) {
+    private static bool IsOpcCategory(Guid categoryId)
+    {
+        foreach (var opcCategoryId in OpcCategoryIds)
+        {
+            if (opcCategoryId == categoryId)
+            {
                 return true;
             }
         }
@@ -270,12 +308,15 @@ public sealed class RemoteRegistryEnum : IOpcDiscovery {
         return false;
     }
 
-    private static string FirstNonEmpty(string? first, string? second, string? third, string fallback) {
-        if (!string.IsNullOrWhiteSpace(first)) {
+    private static string FirstNonEmpty(string? first, string? second, string? third, string fallback)
+    {
+        if (!string.IsNullOrWhiteSpace(first))
+        {
             return first;
         }
 
-        if (!string.IsNullOrWhiteSpace(second)) {
+        if (!string.IsNullOrWhiteSpace(second))
+        {
             return second;
         }
 
@@ -284,31 +325,39 @@ public sealed class RemoteRegistryEnum : IOpcDiscovery {
 
     private static string CombineRegistryPath(string parent, string child) => string.Concat(parent, "\\", child);
 
-    private void LogRemoteRegistryEnumerationFailed(string host, Exception exception) {
-        if (_logger.IsEnabled(LogLevel.Warning)) {
+    private void LogRemoteRegistryEnumerationFailed(string host, Exception exception)
+    {
+        if (_logger.IsEnabled(LogLevel.Warning))
+        {
             RemoteRegistryEnumerationFailed(_logger, host, exception);
         }
     }
 
-    private sealed class WinRegRemoteRegistryReaderFactory : IRemoteRegistryReaderFactory {
+    private sealed class WinRegRemoteRegistryReaderFactory : IRemoteRegistryReaderFactory
+    {
         public static WinRegRemoteRegistryReaderFactory Instance { get; } = new();
 
-        public IRemoteRegistryReader Open(string host, NetworkCredential credentials) {
+        public IRemoteRegistryReader Open(string host, NetworkCredential credentials)
+        {
             ArgumentException.ThrowIfNullOrWhiteSpace(host);
             ArgumentNullException.ThrowIfNull(credentials);
 
             var registry = CreateRegistryClient(host, credentials);
-            try {
+            try
+            {
                 return new WinRegRemoteRegistryReader(registry, registry.OpenHKLM());
             }
-            catch (InteropException) {
+            catch (InteropException)
+            {
                 registry.CloseConnection();
                 throw;
             }
         }
 
-        private static IRegistry CreateRegistryClient(string host, NetworkCredential credentials) {
-            if (string.IsNullOrWhiteSpace(credentials.UserName)) {
+        private static IRegistry CreateRegistryClient(string host, NetworkCredential credentials)
+        {
+            if (string.IsNullOrWhiteSpace(credentials.UserName))
+            {
                 return RegistryFactory.Instance.GetRegistryClient(host, smbTransport: true);
             }
 
@@ -320,52 +369,64 @@ public sealed class RemoteRegistryEnum : IOpcDiscovery {
         }
     }
 
-    private sealed class WinRegRemoteRegistryReader : IRemoteRegistryReader {
+    private sealed class WinRegRemoteRegistryReader : IRemoteRegistryReader
+    {
         private readonly IRegistry _registry;
         private readonly PolicyHandle _hklm;
         private bool _disposed;
 
-        public WinRegRemoteRegistryReader(IRegistry registry, PolicyHandle hklm) {
+        public WinRegRemoteRegistryReader(IRegistry registry, PolicyHandle hklm)
+        {
             _registry = registry ?? throw new ArgumentNullException(nameof(registry));
             _hklm = hklm ?? throw new ArgumentNullException(nameof(hklm));
         }
 
-        public IReadOnlyList<string> EnumerateSubKeyNames(string keyPath) {
+        public IReadOnlyList<string> EnumerateSubKeyNames(string keyPath)
+        {
             ObjectDisposedException.ThrowIf(_disposed, this);
             ArgumentException.ThrowIfNullOrWhiteSpace(keyPath);
 
             var key = TryOpenKey(keyPath);
-            if (key is null) {
+            if (key is null)
+            {
                 return Array.Empty<string>();
             }
 
-            try {
+            try
+            {
                 var names = new List<string>();
-                for (var index = 0; ; index++) {
-                    try {
+                for (var index = 0; ; index++)
+                {
+                    try
+                    {
                         var keyData = _registry.EnumKey(key, index);
-                        if (keyData.Length > 0 && !string.IsNullOrWhiteSpace(keyData[0])) {
+                        if (keyData.Length > 0 && !string.IsNullOrWhiteSpace(keyData[0]))
+                        {
                             names.Add(keyData[0]);
                         }
                     }
-                    catch (InteropException ex) when (IsNoMoreItems(ex)) {
+                    catch (InteropException ex) when (IsNoMoreItems(ex))
+                    {
                         break;
                     }
                 }
 
                 return names;
             }
-            finally {
+            finally
+            {
                 _registry.CloseKey(key);
             }
         }
 
-        public bool KeyExists(string keyPath) {
+        public bool KeyExists(string keyPath)
+        {
             ObjectDisposedException.ThrowIf(_disposed, this);
             ArgumentException.ThrowIfNullOrWhiteSpace(keyPath);
 
             var key = TryOpenKey(keyPath);
-            if (key is null) {
+            if (key is null)
+            {
                 return false;
             }
 
@@ -373,66 +434,84 @@ public sealed class RemoteRegistryEnum : IOpcDiscovery {
             return true;
         }
 
-        public string? ReadStringValue(string keyPath, string? valueName = null) {
+        public string? ReadStringValue(string keyPath, string? valueName = null)
+        {
             ObjectDisposedException.ThrowIf(_disposed, this);
             ArgumentException.ThrowIfNullOrWhiteSpace(keyPath);
 
             var key = TryOpenKey(keyPath);
-            if (key is null) {
+            if (key is null)
+            {
                 return null;
             }
 
-            try {
+            try
+            {
                 return valueName is null
                     ? DecodeRegistryString(_registry.QueryValue(key, RegistryStringBufferSize))
                     : DecodeNamedRegistryString(_registry.QueryValue(key, valueName, RegistryStringBufferSize));
             }
-            catch (InteropException ex) when (IsMissingRegistryItem(ex)) {
+            catch (InteropException ex) when (IsMissingRegistryItem(ex))
+            {
                 return null;
             }
-            finally {
+            finally
+            {
                 _registry.CloseKey(key);
             }
         }
 
-        public void Dispose() {
-            if (_disposed) {
+        public void Dispose()
+        {
+            if (_disposed)
+            {
                 return;
             }
 
             _disposed = true;
-            try {
+            try
+            {
                 _registry.CloseKey(_hklm);
             }
-            catch (InteropException) {
+            catch (InteropException)
+            {
             }
 
-            try {
+            try
+            {
                 _registry.CloseConnection();
             }
-            catch (InteropException) {
+            catch (InteropException)
+            {
             }
         }
 
-        private PolicyHandle? TryOpenKey(string keyPath) {
-            try {
+        private PolicyHandle? TryOpenKey(string keyPath)
+        {
+            try
+            {
                 return _registry.OpenKey(_hklm, keyPath, RegKeyAccess.KEY_READ);
             }
-            catch (InteropException ex) when (IsMissingRegistryItem(ex)) {
+            catch (InteropException ex) when (IsMissingRegistryItem(ex))
+            {
                 return null;
             }
         }
 
-        private static string? DecodeNamedRegistryString(object[] valueData) {
-            if (valueData.Length < 2) {
+        private static string? DecodeNamedRegistryString(object[] valueData)
+        {
+            if (valueData.Length < 2)
+            {
                 return null;
             }
 
             return valueData[1] is byte[] bytes ? DecodeRegistryString(bytes) : null;
         }
 
-        private static string? DecodeRegistryString(byte[] bytes) {
-            if (bytes.Length == 0) {
+        private static string? DecodeRegistryString(byte[] bytes)
+        {
+            if (bytes.Length == 0)
+            {
                 return null;
             }
 

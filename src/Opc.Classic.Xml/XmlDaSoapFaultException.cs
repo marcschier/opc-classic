@@ -10,24 +10,29 @@ namespace Opc.Classic.Xml;
 /// <summary>
 /// Exception thrown when an OPC XML-DA SOAP response contains a SOAP Fault.
 /// </summary>
-public sealed class XmlDaSoapFaultException : Exception {
+public sealed class XmlDaSoapFaultException : Exception
+{
     /// <summary>Creates an empty SOAP fault exception.</summary>
-    public XmlDaSoapFaultException() {
+    public XmlDaSoapFaultException()
+    {
     }
 
     /// <summary>Creates a SOAP fault exception with a custom message.</summary>
     public XmlDaSoapFaultException(string? message)
-        : base(message) {
+        : base(message)
+    {
     }
 
     /// <summary>Creates a SOAP fault exception with a custom message and inner exception.</summary>
     public XmlDaSoapFaultException(string? message, Exception? innerException)
-        : base(message, innerException) {
+        : base(message, innerException)
+    {
     }
 
     /// <summary>Creates a SOAP fault exception from the decoded SOAP fault fields.</summary>
     public XmlDaSoapFaultException(string? faultCode, string? faultString, XmlDaErrorCode errorCode)
-        : base(BuildMessage(faultCode, faultString, errorCode)) {
+        : base(BuildMessage(faultCode, faultString, errorCode))
+    {
         FaultCode = faultCode ?? string.Empty;
         FaultString = faultString ?? string.Empty;
         ErrorCode = errorCode;
@@ -42,7 +47,8 @@ public sealed class XmlDaSoapFaultException : Exception {
     /// <summary>The typed XML-DA error code parsed from <see cref="FaultCode"/>.</summary>
     public XmlDaErrorCode ErrorCode { get; } = XmlDaErrorCode.Unknown;
 
-    private static string BuildMessage(string? faultCode, string? faultString, XmlDaErrorCode errorCode) {
+    private static string BuildMessage(string? faultCode, string? faultString, XmlDaErrorCode errorCode)
+    {
         string codeText = string.IsNullOrWhiteSpace(faultCode) ? "unknown" : faultCode;
         string messageText = string.IsNullOrWhiteSpace(faultString) ? "SOAP Fault" : faultString;
         return $"SOAP Fault {codeText} ({errorCode}): {messageText}";

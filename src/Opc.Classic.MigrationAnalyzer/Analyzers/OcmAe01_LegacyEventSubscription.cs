@@ -13,12 +13,15 @@ using Microsoft.CodeAnalysis.Diagnostics;
 namespace Opc.Classic.MigrationAnalyzer.Analyzers;
 
 [DiagnosticAnalyzer(LanguageNames.CSharp)]
-public sealed class OcmAe01_LegacyEventSubscription : DiagnosticAnalyzer {
+public sealed class OcmAe01_LegacyEventSubscription : DiagnosticAnalyzer
+{
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
         ImmutableArray.Create(MigrationDiagnosticDescriptors.LegacyEventSubscription);
 
-    public override void Initialize(AnalysisContext context) {
-        if (context is null) {
+    public override void Initialize(AnalysisContext context)
+    {
+        if (context is null)
+        {
             throw new ArgumentNullException(nameof(context));
         }
 
@@ -28,23 +31,29 @@ public sealed class OcmAe01_LegacyEventSubscription : DiagnosticAnalyzer {
         context.RegisterSyntaxNodeAction(AnalyzeParameter, SyntaxKind.Parameter);
     }
 
-    private static void AnalyzeVariableDeclaration(SyntaxNodeAnalysisContext context) {
+    private static void AnalyzeVariableDeclaration(SyntaxNodeAnalysisContext context)
+    {
         var declaration = (VariableDeclarationSyntax)context.Node;
-        if (IsEventSubscriptionType(declaration.Type, context.SemanticModel)) {
+        if (IsEventSubscriptionType(declaration.Type, context.SemanticModel))
+        {
             context.ReportDiagnostic(Diagnostic.Create(MigrationDiagnosticDescriptors.LegacyEventSubscription, declaration.Type.GetLocation()));
         }
     }
 
-    private static void AnalyzeParameter(SyntaxNodeAnalysisContext context) {
+    private static void AnalyzeParameter(SyntaxNodeAnalysisContext context)
+    {
         var parameter = (ParameterSyntax)context.Node;
-        if (parameter.Type is not null && IsEventSubscriptionType(parameter.Type, context.SemanticModel)) {
+        if (parameter.Type is not null && IsEventSubscriptionType(parameter.Type, context.SemanticModel))
+        {
             context.ReportDiagnostic(Diagnostic.Create(MigrationDiagnosticDescriptors.LegacyEventSubscription, parameter.Type.GetLocation()));
         }
     }
 
-    private static bool IsEventSubscriptionType(TypeSyntax typeSyntax, SemanticModel semanticModel) {
+    private static bool IsEventSubscriptionType(TypeSyntax typeSyntax, SemanticModel semanticModel)
+    {
         string typeText = typeSyntax.ToString();
-        if (typeText.IndexOf("IOPCEventSubscription", StringComparison.Ordinal) >= 0) {
+        if (typeText.IndexOf("IOPCEventSubscription", StringComparison.Ordinal) >= 0)
+        {
             return true;
         }
 

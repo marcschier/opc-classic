@@ -32,7 +32,8 @@ namespace Opc.Classic.Dcom.Core;
 /// <code>bool</code>s are 1 byte in length.
 /// </remarks>
 [Serializable]
-public sealed class Variant {
+public sealed class Variant
+{
 
     /// <summary> array is allocated on the stack </summary>
     public const int FADF_AUTO = 0x0001;
@@ -66,34 +67,45 @@ public sealed class Variant {
     /// <param name="c"></param>
     /// <param name="isArray"></param>
     /// <returns></returns>
-    public static Variant OUTPARAMforType(Type c, bool isArray) {
+    public static Variant OUTPARAMforType(Type c, bool isArray)
+    {
         Variant variant = null;
-        if (!isArray) {
-            try {
+        if (!isArray)
+        {
+            try
+            {
                 variant = MakeVariant(_outTypesMap.GetOrDefault(c), true);
             }
 #pragma warning disable RECS0022 // A catch clause that catches System.Exception and has an empty body
-            catch {
+            catch
+            {
 #pragma warning restore RECS0022 // A catch clause that catches System.Exception and has an empty body
             }
 
-            if (c == typeof(IDispatch)) {
+            if (c == typeof(IDispatch))
+            {
                 return CreateOUT_IDISPATCH();
             }
-            if (c == typeof(IComObject)) {
+            if (c == typeof(IComObject))
+            {
                 return CreateOUT_IUNKNOWN();
             }
-            if (c == typeof(Variant)) {
+            if (c == typeof(Variant))
+            {
                 return CreateEMPTY_BYREF();
             }
-            if (c == typeof(ComString)) {
+            if (c == typeof(ComString))
+            {
                 return new Variant("", true);
             }
         }
-        else {
-            try {
+        else
+        {
+            try
+            {
                 var oo = _outTypesMap.GetOrDefault(c);
-                if (oo != null) {
+                if (oo != null)
+                {
                     // we will always send a single dimension array.
                     object x = CreateSupportedArray(c, 1);
                     ((Array)x).SetValue(oo, 0);
@@ -101,31 +113,39 @@ public sealed class Variant {
                 }
             }
 #pragma warning disable RECS0022 // A catch clause that catches System.Exception and has an empty body
-            catch {
+            catch
+            {
 #pragma warning restore RECS0022 // A catch clause that catches System.Exception and has an empty body
             }
 
-            if (c == typeof(IDispatch)) {
+            if (c == typeof(IDispatch))
+            {
                 IComObject[] arry = { new ComObjectImpl(null, new InterfacePointer(null, -1, null)) };
-                variant = new Variant(new ComArray(arry, true), true) {
+                variant = new Variant(new ComArray(arry, true), true)
+                {
                     Flag =
                         InteropFlags.FLAG_REPRESENTATION_IDISPATCH_NULL_FOR_OUT |
                         InteropFlags.FLAG_REPRESENTATION_SET_INTERFACEPTR_NULL_FOR_VARIANT
                 };
             }
-            else if (c == typeof(IComObject)) {
+            else if (c == typeof(IComObject))
+            {
                 IComObject[] arry = { new ComObjectImpl(null, new InterfacePointer(null, -1, null)) };
-                variant = new Variant(new ComArray(arry, true), true) {
+                variant = new Variant(new ComArray(arry, true), true)
+                {
                     Flag =
                         InteropFlags.FLAG_REPRESENTATION_IUNKNOWN_NULL_FOR_OUT |
                         InteropFlags.FLAG_REPRESENTATION_SET_INTERFACEPTR_NULL_FOR_VARIANT
                 };
             }
-            else {
-                if (c == typeof(Variant)) {
+            else
+            {
+                if (c == typeof(Variant))
+                {
                     return CreateVARIANTARRAY();
                 }
-                if (c == typeof(ComString) || c == typeof(string)) {
+                if (c == typeof(ComString) || c == typeof(string))
+                {
                     return CreateBSTRARRAY();
                 }
             }
@@ -139,70 +159,91 @@ public sealed class Variant {
     /// <param name="o"> </param>
     /// <param name="isByRef">
     /// </param>
-    public static Variant MakeVariant(object o, bool isByRef = false) {
-        if (o == null || o.GetType() == typeof(object)) {
-            if (isByRef) {
+    public static Variant MakeVariant(object o, bool isByRef = false)
+    {
+        if (o == null || o.GetType() == typeof(object))
+        {
+            if (isByRef)
+            {
                 return CreateEMPTY_BYREF();
             }
             return CreateEMPTY();
         }
         var c = o.GetType();
-        if (c.IsArray) {
+        if (c.IsArray)
+        {
             throw new ArgumentException(Interop.GetLocalizedMessage(ErrorCode.INTEROP_VARIANT_ONLY_COMARRAY_EXCEPTED), nameof(o));
         }
-        if (c == typeof(Variant)) {
+        if (c == typeof(Variant))
+        {
             return new Variant((Variant)o);
         }
-        try {
+        try
+        {
             ConstructorInfo ctor = null;
             // now we look at the class and return a <see cref="Variant"/>.
-            if (c == typeof(bool)) {
+            if (c == typeof(bool))
+            {
                 ctor = typeof(Variant).GetConstructor(new Type[] { typeof(bool), typeof(bool) });
             }
-            else if (c == typeof(char)) {
+            else if (c == typeof(char))
+            {
                 ctor = typeof(Variant).GetConstructor(new Type[] { typeof(char), typeof(bool) });
             }
-            else if (c == typeof(sbyte)) {
+            else if (c == typeof(sbyte))
+            {
                 ctor = typeof(Variant).GetConstructor(new Type[] { typeof(sbyte), typeof(bool) });
             }
-            else if (c == typeof(byte)) {
+            else if (c == typeof(byte))
+            {
                 ctor = typeof(Variant).GetConstructor(new Type[] { typeof(byte), typeof(bool) });
             }
-            else if (c == typeof(short)) {
+            else if (c == typeof(short))
+            {
                 ctor = typeof(Variant).GetConstructor(new Type[] { typeof(short), typeof(bool) });
             }
-            else if (c == typeof(ushort)) {
+            else if (c == typeof(ushort))
+            {
                 ctor = typeof(Variant).GetConstructor(new Type[] { typeof(ushort), typeof(bool) });
             }
-            else if (c == typeof(int)) {
+            else if (c == typeof(int))
+            {
                 ctor = typeof(Variant).GetConstructor(new Type[] { typeof(int), typeof(bool) });
             }
-            else if (c == typeof(uint)) {
+            else if (c == typeof(uint))
+            {
                 ctor = typeof(Variant).GetConstructor(new Type[] { typeof(uint), typeof(bool) });
             }
-            else if (c == typeof(long)) {
+            else if (c == typeof(long))
+            {
                 ctor = typeof(Variant).GetConstructor(new Type[] { typeof(long), typeof(bool) });
             }
-            else if (c == typeof(ulong)) {
+            else if (c == typeof(ulong))
+            {
                 ctor = typeof(Variant).GetConstructor(new Type[] { typeof(ulong), typeof(bool) });
             }
-            else if (c == typeof(float)) {
+            else if (c == typeof(float))
+            {
                 ctor = typeof(Variant).GetConstructor(new Type[] { typeof(float), typeof(bool) });
             }
-            else if (c == typeof(double)) {
+            else if (c == typeof(double))
+            {
                 ctor = typeof(Variant).GetConstructor(new Type[] { typeof(double), typeof(bool) });
             }
-            else if (o is IComObject) {
+            else if (o is IComObject)
+            {
                 ctor = typeof(Variant).GetConstructor(new Type[] { typeof(IComObject), typeof(bool) });
             }
-            else {
+            else
+            {
                 // should cover all the rest cases.
                 ctor = typeof(Variant).GetConstructor(new Type[] { c, typeof(bool) });
             }
             // TODO N1.2-followup: replace reflective Variant construction with a generated factory table.
             return (Variant)ctor.Invoke(new object[] { o, Convert.ToBoolean(isByRef) });
         }
-        catch (Exception e) {
+        catch (Exception e)
+        {
             Log.Logger.Warning(e, "Could not create Variant for " + o + ", isByRef " + isByRef);
         }
         return null;
@@ -216,84 +257,106 @@ public sealed class Variant {
     internal static Type GetSupportedClass(VariantType type) =>
         _supportedTypes_classes.GetOrDefault(type);
 
-    internal static Array CreateSupportedArray(Type elementType, int length) {
+    internal static Array CreateSupportedArray(Type elementType, int length)
+    {
         ArgumentNullException.ThrowIfNull(elementType);
 
-        if (elementType == typeof(object)) {
+        if (elementType == typeof(object))
+        {
             return new object[length];
         }
-        if (elementType == typeof(string)) {
+        if (elementType == typeof(string))
+        {
             return new string[length];
         }
-        if (elementType == typeof(sbyte)) {
+        if (elementType == typeof(sbyte))
+        {
             return new sbyte[length];
         }
-        if (elementType == typeof(char)) {
+        if (elementType == typeof(char))
+        {
             return new char[length];
         }
-        if (elementType == typeof(decimal)) {
+        if (elementType == typeof(decimal))
+        {
             return new decimal[length];
         }
-        if (elementType == typeof(IDispatch)) {
+        if (elementType == typeof(IDispatch))
+        {
             return new IDispatch[length];
         }
-        if (elementType == typeof(IComObject)) {
+        if (elementType == typeof(IComObject))
+        {
             return new IComObject[length];
         }
 
         var variantType = GetSupportedType(elementType);
-        if (variantType == null) {
+        if (variantType == null)
+        {
             throw new NotSupportedException($"Type {elementType} is not supported in VARIANT array context.");
         }
 
         return CreateSupportedArray(variantType.Value, length);
     }
 
-    internal static Array CreateSupportedJaggedArray(Type elementType, int firstLength, int secondLength) {
+    internal static Array CreateSupportedJaggedArray(Type elementType, int firstLength, int secondLength)
+    {
         ArgumentNullException.ThrowIfNull(elementType);
 
-        if (elementType == typeof(object)) {
+        if (elementType == typeof(object))
+        {
             return CreateJaggedArray<object>(firstLength, secondLength);
         }
-        if (elementType == typeof(string)) {
+        if (elementType == typeof(string))
+        {
             return CreateJaggedArray<string>(firstLength, secondLength);
         }
-        if (elementType == typeof(sbyte)) {
+        if (elementType == typeof(sbyte))
+        {
             return CreateJaggedArray<sbyte>(firstLength, secondLength);
         }
-        if (elementType == typeof(char)) {
+        if (elementType == typeof(char))
+        {
             return CreateJaggedArray<char>(firstLength, secondLength);
         }
-        if (elementType == typeof(decimal)) {
+        if (elementType == typeof(decimal))
+        {
             return CreateJaggedArray<decimal>(firstLength, secondLength);
         }
-        if (elementType == typeof(IDispatch)) {
+        if (elementType == typeof(IDispatch))
+        {
             return CreateJaggedArray<IDispatch>(firstLength, secondLength);
         }
-        if (elementType == typeof(IComObject)) {
+        if (elementType == typeof(IComObject))
+        {
             return CreateJaggedArray<IComObject>(firstLength, secondLength);
         }
 
         var variantType = GetSupportedType(elementType);
-        if (variantType == null) {
+        if (variantType == null)
+        {
             throw new NotSupportedException($"Type {elementType} is not supported in VARIANT array context.");
         }
 
         return CreateSupportedJaggedArray(variantType.Value, firstLength, secondLength);
     }
 
-    private static object[] CreateSupportedReferenceArray(Type elementType, int length) {
+    private static object[] CreateSupportedReferenceArray(Type elementType, int length)
+    {
         var array = CreateSupportedArray(elementType, length);
-        if (array is object[] objectArray) {
+        if (array is object[] objectArray)
+        {
             return objectArray;
         }
 
         throw new NotSupportedException($"Type {elementType} is not supported in object-backed VARIANT array context.");
     }
 
-    private static Array CreateSupportedArray(VariantType variantType, int length) {
+    private static Array CreateSupportedArray(VariantType variantType, int length)
+    {
         var vt = variantType & VariantType.VT_TYPEMASK;
-        return vt switch {
+        return vt switch
+        {
             VariantType.VT_EMPTY => new Empty[length],
             VariantType.VT_NULL => new Null[length],
             VariantType.VT_I2 => new short[length],
@@ -320,9 +383,11 @@ public sealed class Variant {
         };
     }
 
-    private static Array CreateSupportedJaggedArray(VariantType variantType, int firstLength, int secondLength) {
+    private static Array CreateSupportedJaggedArray(VariantType variantType, int firstLength, int secondLength)
+    {
         var vt = variantType & VariantType.VT_TYPEMASK;
-        return vt switch {
+        return vt switch
+        {
             VariantType.VT_EMPTY => CreateJaggedArray<Empty>(firstLength, secondLength),
             VariantType.VT_NULL => CreateJaggedArray<Null>(firstLength, secondLength),
             VariantType.VT_I2 => CreateJaggedArray<short>(firstLength, secondLength),
@@ -349,9 +414,11 @@ public sealed class Variant {
         };
     }
 
-    private static T[][] CreateJaggedArray<T>(int firstLength, int secondLength) {
+    private static T[][] CreateJaggedArray<T>(int firstLength, int secondLength)
+    {
         var array = new T[firstLength][];
-        for (var i = 0; i < firstLength; i++) {
+        for (var i = 0; i < firstLength; i++)
+        {
             array[i] = new T[secondLength];
         }
 
@@ -364,12 +431,16 @@ public sealed class Variant {
     /// <param name="c"></param>
     /// <param name="flag"></param>
     /// <returns></returns>
-    internal static VariantType? GetSupportedType(Type c, int flag = InteropFlags.FLAG_NULL) {
-        if (!_supportedTypes.TryGetValue(c, out var type)) {
-            if (typeof(IComObject) == c) {
+    internal static VariantType? GetSupportedType(Type c, int flag = InteropFlags.FLAG_NULL)
+    {
+        if (!_supportedTypes.TryGetValue(c, out var type))
+        {
+            if (typeof(IComObject) == c)
+            {
                 return VariantType.VT_UNKNOWN;
             }
-            if (typeof(IDispatch) == c) {
+            if (typeof(IDispatch) == c)
+            {
                 return VariantType.VT_DISPATCH;
             }
             return null;
@@ -377,13 +448,15 @@ public sealed class Variant {
         var retVal = type;
         if (retVal == VariantType.VT_I4 &&
             (flag & InteropFlags.FLAG_REPRESENTATION_VT_INT) ==
-                    InteropFlags.FLAG_REPRESENTATION_VT_INT) {
+                    InteropFlags.FLAG_REPRESENTATION_VT_INT)
+        {
             // means that if retval came back as VariantType.VT_I4, we should make that VariantType.VT_INT
             return VariantType.VT_INT;
         }
         else if (retVal == VariantType.VT_UI4 &&
             (flag & InteropFlags.FLAG_REPRESENTATION_VT_UINT) ==
-                    InteropFlags.FLAG_REPRESENTATION_VT_UINT) {
+                    InteropFlags.FLAG_REPRESENTATION_VT_UINT)
+        {
             return VariantType.VT_UINT;
         }
         return retVal;
@@ -395,17 +468,21 @@ public sealed class Variant {
     /// <param name="o"></param>
     /// <param name="defaultType"></param>
     /// <returns></returns>
-    internal static VariantType GetSupportedType(object o, VariantType defaultType) {
+    internal static VariantType GetSupportedType(object o, VariantType defaultType)
+    {
         var retval = defaultType;
         var c = o.GetType();
-        if (_supportedTypes.ContainsKey(c)) {
+        if (_supportedTypes.ContainsKey(c))
+        {
             retval = _supportedTypes[c];
         }
         // Order is important since <see cref="IDispatch"/> derieves from <see cref="IComObject"/>
-        if (o is IDispatch) {
+        if (o is IDispatch)
+        {
             retval = VariantType.VT_DISPATCH;
         }
-        else if (o is IComObject) {
+        else if (o is IComObject)
+        {
             retval = VariantType.VT_UNKNOWN;
         }
         return retval;
@@ -428,8 +505,10 @@ public sealed class Variant {
     /// <code>VARIANT</code> for <code>([out] IUnknown*)</code>.
     /// This is not Thread Safe, hence a new instance must be taken each time.
     /// </summary>
-    public static Variant CreateOUT_IUNKNOWN() {
-        var retval = new Variant(new ComObjectImpl(null, new InterfacePointer(null, -1, null)), true) {
+    public static Variant CreateOUT_IUNKNOWN()
+    {
+        var retval = new Variant(new ComObjectImpl(null, new InterfacePointer(null, -1, null)), true)
+        {
             Flag =
                 InteropFlags.FLAG_REPRESENTATION_IUNKNOWN_NULL_FOR_OUT |
                 InteropFlags.FLAG_REPRESENTATION_SET_INTERFACEPTR_NULL_FOR_VARIANT
@@ -446,9 +525,11 @@ public sealed class Variant {
     /// subclass of <code>IDispatch</code> i.e. supports automation (or is a
     /// <code>dispinterface</code>).
     /// </remarks>
-    public static Variant CreateOUT_IDISPATCH() {
+    public static Variant CreateOUT_IDISPATCH()
+    {
         var retval = new Variant(
-            new ComObjectImpl(null, new InterfacePointer(null, -1, null)), true) {
+            new ComObjectImpl(null, new InterfacePointer(null, -1, null)), true)
+        {
             Flag =
                 InteropFlags.FLAG_REPRESENTATION_IDISPATCH_NULL_FOR_OUT |
                 InteropFlags.FLAG_REPRESENTATION_SET_INTERFACEPTR_NULL_FOR_VARIANT
@@ -491,9 +572,12 @@ public sealed class Variant {
     /// <summary>
     /// Called when this variant is nested
     /// </summary>
-    internal bool Deffered {
-        set {
-            if (_member != null && !_member.Reference) {
+    internal bool Deffered
+    {
+        set
+        {
+            if (_member != null && !_member.Reference)
+            {
                 _member.Deffered = value;
             }
         }
@@ -503,12 +587,15 @@ public sealed class Variant {
     /// Sets a <see cref="InteropFlags"/> value to be used while encoding
     /// (marshalling) this Variant.
     /// </summary>
-    public int Flag {
-        set {
+    public int Flag
+    {
+        set
+        {
             var variantBody = (VariantBody)_member.Referent;
             variantBody._flag |= value;
         }
-        get {
+        get
+        {
             var variantBody = (VariantBody)_member.Referent;
             return variantBody._flag;
         }
@@ -519,9 +606,12 @@ public sealed class Variant {
     /// </summary>
     /// <returns> <code>true</code> if the variant is a
     /// <code>NULL</code> </returns>
-    public bool IsNull {
-        get {
-            if (_member == null) {
+    public bool IsNull
+    {
+        get
+        {
+            if (_member == null)
+            {
                 return true;
             }
             var variantBody = (VariantBody)_member.Referent;
@@ -535,7 +625,8 @@ public sealed class Variant {
     /// </summary>
     /// <param name="variant"> </param>
     public Variant(Variant variant) :
-        this(true, variant) {
+        this(true, variant)
+    {
     }
 
     /// <summary>
@@ -547,7 +638,8 @@ public sealed class Variant {
     /// <param name="isByRef"> <code>true</code> if the value is to
     /// be represented as a pointer. LONG* </param>
     public Variant(int value, bool isByRef = false) :
-        this(isByRef, value) {
+        this(isByRef, value)
+    {
     }
 
     /// <summary>
@@ -559,7 +651,8 @@ public sealed class Variant {
     /// <param name="isByRef"> <code>true</code> if the value is to
     /// be represented as a pointer. </param>
     public Variant(long value, bool isByRef = false) :
-        this(isByRef, value) {
+        this(isByRef, value)
+    {
     }
 
     /// <summary>
@@ -570,7 +663,8 @@ public sealed class Variant {
     /// <param name="isByRef"> <code>true</code> if the value is to
     /// be represented as a pointer. FLOAT* </param>
     public Variant(float value, bool isByRef = false) :
-        this(isByRef, value) {
+        this(isByRef, value)
+    {
     }
 
     /// <summary>
@@ -581,7 +675,8 @@ public sealed class Variant {
     /// <param name="isByRef"> <code>true</code> if the value is to
     /// be represented as a pointer. VARIANT_BOOL* </param>
     public Variant(bool value, bool isByRef = false) :
-        this(isByRef, (object)value) {
+        this(isByRef, (object)value)
+    {
     }
 
     /// <summary>
@@ -592,7 +687,8 @@ public sealed class Variant {
     /// <param name="isByRef"> <code>true</code> if the value is to be
     /// represented as a pointer. DOUBLE* </param>
     public Variant(double value, bool isByRef = false) :
-        this(isByRef, value) {
+        this(isByRef, value)
+    {
     }
 
     /// <summary>
@@ -603,7 +699,8 @@ public sealed class Variant {
     /// <param name="isByRef"> <code>true</code> if the value is to be
     /// represented as a pointer. SHORT* </param>
     public Variant(short value, bool isByRef = false) :
-        this(isByRef, value) {
+        this(isByRef, value)
+    {
     }
 
     /// <summary>
@@ -614,7 +711,8 @@ public sealed class Variant {
     /// <param name="isByRef"> <code>true</code> if the value is to be
     /// represented as a pointer. CHAR* </param>
     public Variant(char value, bool isByRef = false) :
-        this(isByRef, value) {
+        this(isByRef, value)
+    {
     }
 
     /// <summary>
@@ -625,7 +723,8 @@ public sealed class Variant {
     /// <param name="isByRef"> <code>true</code> if the value is to be
     /// represented as a pointer. BSTR* </param>
     public Variant(ComString value, bool isByRef = false) :
-        this(isByRef, value) {
+        this(isByRef, value)
+    {
     }
 
     /// <summary>
@@ -638,7 +737,8 @@ public sealed class Variant {
     /// <param name="isByRef"> <code>true</code> if the value is to be
     /// represented as a pointer. BSTR* </param>
     public Variant(string value, bool isByRef = false) :
-        this(new ComString(value), isByRef) {
+        this(new ComString(value), isByRef)
+    {
     }
 
     /// <summary>
@@ -649,11 +749,14 @@ public sealed class Variant {
     /// <param name="isByRef"> <code>true</code> if the value is to be
     /// represented as a pointer. <see cref="IComObject"/>** </param>
     public Variant(IComObject value, bool isByRef = false) :
-        this(isByRef, value) {
-        if (value is IDispatch) {
+        this(isByRef, value)
+    {
+        if (value is IDispatch)
+        {
             Flag = InteropFlags.FLAG_REPRESENTATION_USE_IDISPATCH_IID;
         }
-        else {
+        else
+        {
             Flag = InteropFlags.FLAG_REPRESENTATION_USE_IUNKNOWN_IID;
         }
     }
@@ -667,7 +770,8 @@ public sealed class Variant {
     /// <param name="isByRef"> <code>true</code> if the value is to
     /// be represented as a pointer. SCODE* </param>
     public Variant(Scode scode, bool isByRef = false) :
-        this(isByRef, scode) {
+        this(isByRef, scode)
+    {
     }
 
     /// <summary>
@@ -678,7 +782,8 @@ public sealed class Variant {
     /// <param name="isByRef"> <code>true</code> if the value is to
     /// be represented as a pointer. Date* </param>
     public Variant(DateTime value, bool isByRef = false) :
-        this(isByRef, value) {
+        this(isByRef, value)
+    {
     }
 
     /// <summary>
@@ -689,7 +794,8 @@ public sealed class Variant {
     /// <param name="isByRef"> <code>true</code> if the value is to
     /// be represented as a pointer. Date* </param>
     public Variant(Currency value, bool isByRef = false) :
-        this(isByRef, value) {
+        this(isByRef, value)
+    {
     }
 
     /// <summary>
@@ -700,7 +806,8 @@ public sealed class Variant {
     /// <param name="isByRef"> <code>true</code> if the value is to
     /// be represented as a pointer. </param>
     public Variant(byte number, bool isByRef = false) :
-        this(isByRef, number) {
+        this(isByRef, number)
+    {
     }
 
     /// <summary>
@@ -711,7 +818,8 @@ public sealed class Variant {
     /// <param name="isByRef"> <code>true</code> if the value is to
     /// be represented as a pointer. </param>
     public Variant(ushort number, bool isByRef = false) :
-        this(isByRef, number) {
+        this(isByRef, number)
+    {
     }
 
     /// <summary>
@@ -722,7 +830,8 @@ public sealed class Variant {
     /// <param name="isByRef"> <code>true</code> if the value is to
     /// be represented as a pointer. </param>
     public Variant(uint number, bool isByRef = false) :
-        this(isByRef, number) {
+        this(isByRef, number)
+    {
     }
 
     /// <summary>
@@ -733,7 +842,8 @@ public sealed class Variant {
     /// <param name="isByRef"> <code>true</code> if the value is to
     /// be represented as a pointer. </param>
     public Variant(ulong number, bool isByRef = false) :
-        this(isByRef, number) {
+        this(isByRef, number)
+    {
     }
 
     /// <summary>
@@ -744,7 +854,8 @@ public sealed class Variant {
     /// <param name="array"> </param>
     /// <param name="flag"> <see cref="InteropFlags"/> value </param>
     public Variant(ComArray array, int flag) :
-        this(array, false, flag) {
+        this(array, false, flag)
+    {
     }
 
     /// <summary>
@@ -757,13 +868,15 @@ public sealed class Variant {
     /// <param name="flag"> <see cref="InteropFlags"/> value </param>
     public Variant(ComArray array, bool isByRef = false,
         int flag = InteropFlags.FLAG_NULL) :
-        this(isByRef, array, flag) {
+        this(isByRef, array, flag)
+    {
     }
 
     /// <summary>
     /// Private constructor
     /// </summary>
-    private Variant() {
+    private Variant()
+    {
     }
 
     /// <summary>
@@ -771,19 +884,24 @@ public sealed class Variant {
     /// </summary>
     /// <param name="obj"></param>
     /// <param name="isByRef"></param>
-    private Variant(bool isByRef, object obj) {
-        if (obj != null && obj.GetType().IsArray) {
+    private Variant(bool isByRef, object obj)
+    {
+        if (obj != null && obj.GetType().IsArray)
+        {
             throw new ArgumentException(Interop.GetLocalizedMessage(
                 ErrorCode.INTEROP_VARIANT_ONLY_COMARRAY_EXCEPTED), nameof(obj));
         }
-        if (obj is InterfacePointer) {
+        if (obj is InterfacePointer)
+        {
             throw new ArgumentException(Interop.GetLocalizedMessage(
                 ErrorCode.INTEROP_VARIANT_TYPE_INCORRECT), nameof(obj));
         }
-        if (obj is VariantBody) {
+        if (obj is VariantBody)
+        {
             _member = new ComPointer(obj);
         }
-        else {
+        else
+        {
             _member = new ComPointer(new VariantBody(obj, isByRef));
         }
         _member.ReferentId = 0x72657355; // "User" in LEndian.
@@ -795,11 +913,14 @@ public sealed class Variant {
     /// <param name="isByRef"></param>
     /// <param name="array"></param>
     /// <param name="flag"></param>
-    private Variant(bool isByRef, ComArray array, int flag = InteropFlags.FLAG_NULL) {
+    private Variant(bool isByRef, ComArray array, int flag = InteropFlags.FLAG_NULL)
+    {
         var is2Dim = false;
 
-        if (array == null) {
-            _member = new ComPointer(new VariantBody(null, false)) {
+        if (array == null)
+        {
+            _member = new ComPointer(new VariantBody(null, false))
+            {
                 ReferentId = 0x72657355 // "User" in LEndian.
             };
             return;
@@ -807,7 +928,8 @@ public sealed class Variant {
 
         Type c;
         object[] newArrayObj;
-        switch (array.Dimensions) {
+        switch (array.Dimensions)
+        {
             case 1:
                 var obj = (object[])array.ArrayInstance;
                 newArrayObj = obj;
@@ -833,8 +955,10 @@ public sealed class Variant {
                 c = subArray?.GetType().GetElementType() ?? typeof(object);
                 var k = 0;
                 newArrayObj = CreateSupportedReferenceArray(c, array.NumElementsInAllDimensions);
-                for (var i = 0; i < secondDim; i++) {
-                    for (var j = 0; j < firstDim; j++) {
+                for (var i = 0; i < secondDim; i++)
+                {
+                    for (var j = 0; j < firstDim; j++)
+                    {
                         newArrayObj[k++] = obj2[j][i];
                     }
                 }
@@ -848,26 +972,35 @@ public sealed class Variant {
         var array2 = new ComArray(newArrayObj, true);
 
         var safeArray = new Struct();
-        try {
+        try
+        {
             safeArray.AddMember((short)array.Dimensions); // dim
             var elementSize = -1;
             short flags = FADF_HAVEVARTYPE;
-            if (c == typeof(Variant)) {
+            if (c == typeof(Variant))
+            {
                 flags = (short)(flags | FADF_VARIANT);
                 elementSize = 16; // (Variant is pointer whose size is 16)
             }
-            else {
-                if (kArryInits.Contains(c)) {
-                    if (c == typeof(ComString)) {
+            else
+            {
+                if (kArryInits.Contains(c))
+                {
+                    if (c == typeof(ComString))
+                    {
                         flags = (short)(flags | FADF_BSTR);
                     }
-                    else {
-                        if (c == typeof(IComObject)) {
+                    else
+                    {
+                        if (c == typeof(IComObject))
+                        {
                             flags = (short)(flags | FADF_UNKNOWN);
                             flag |= InteropFlags.FLAG_REPRESENTATION_USE_IUNKNOWN_IID;
                         }
-                        else {
-                            if (c == typeof(IDispatch)) {
+                        else
+                        {
+                            if (c == typeof(IDispatch))
+                            {
                                 flags = (short)(flags | FADF_DISPATCH);
                                 flag |= InteropFlags.FLAG_REPRESENTATION_USE_IDISPATCH_IID;
                             }
@@ -875,7 +1008,8 @@ public sealed class Variant {
                     }
                     elementSize = 4; // Since all these are pointers inherently
                 }
-                else {
+                else
+                {
                     // JStruct and <see cref="Union"/>s are expected to be encapsulated within pointers...they usually are :)
                     elementSize = MarshalUnMarshalHelper.GetLengthInBytes(c, null, c == typeof(bool) ?
                         InteropFlags.FLAG_REPRESENTATION_VARIANT_BOOL : InteropFlags.FLAG_NULL); // All other types, basic types
@@ -886,7 +1020,8 @@ public sealed class Variant {
 
             var upperBounds = array.UpperBounds;
             var arrayOfSafeArrayBounds = new Struct[array.Dimensions];
-            for (var i = 0; i < array.Dimensions; i++) {
+            for (var i = 0; i < array.Dimensions; i++)
+            {
                 safeArrayBound = new Struct();
                 safeArrayBound.AddMember(upperBounds[i]);
                 safeArrayBound.AddMember(0); // starts at 0
@@ -896,10 +1031,12 @@ public sealed class Variant {
             var arrayOfSafeArrayBounds2 = new ComArray(arrayOfSafeArrayBounds, true);
 
             safeArray.AddMember(flags); // flags
-            if (elementSize > 0) {
+            if (elementSize > 0)
+            {
                 safeArray.AddMember(elementSize);
             }
-            else {
+            else
+            {
                 elementSize = MarshalUnMarshalHelper.GetLengthInBytes(c, null, flag);
                 safeArray.AddMember(elementSize); // size
             }
@@ -908,28 +1045,36 @@ public sealed class Variant {
             safeArray.AddMember((short)GetSupportedType(c, flag)); // variant array, safearrayunion
 
             // peculiarity here, windows seems to be sending the signed type in VarType32...
-            if (c == typeof(byte)) {
+            if (c == typeof(byte))
+            {
                 safeArray.AddMember(GetSupportedType(typeof(sbyte), flag)); // safearrayunion
             }
-            else if (c == typeof(ushort)) {
+            else if (c == typeof(ushort))
+            {
                 safeArray.AddMember(GetSupportedType(typeof(short), flag)); // safearrayunion
             }
-            else if (c == typeof(uint)) {
+            else if (c == typeof(uint))
+            {
                 safeArray.AddMember(GetSupportedType(typeof(int), flag)); // safearrayunion
             }
-            else if (c == typeof(ulong)) {
+            else if (c == typeof(ulong))
+            {
                 safeArray.AddMember(GetSupportedType(typeof(long), flag)); // safearrayunion
             }
-            else if (c == typeof(bool)) {
+            else if (c == typeof(bool))
+            {
                 safeArray.AddMember(GetSupportedType(typeof(short), flag)); // safearrayunion
             }
-            else if (c == typeof(double)) {
+            else if (c == typeof(double))
+            {
                 safeArray.AddMember(GetSupportedType(typeof(long), flag)); // safearrayunion
             }
-            else if (c == typeof(float)) {
+            else if (c == typeof(float))
+            {
                 safeArray.AddMember(GetSupportedType(typeof(int), flag)); // safearrayunion
             }
-            else {
+            else
+            {
                 safeArray.AddMember(GetSupportedType(c, flag)); // safearrayunion
             }
             safeArray.AddMember(array2.NumElementsInAllDimensions); // size in safearrayunion
@@ -937,12 +1082,14 @@ public sealed class Variant {
             safeArray.AddMember(ptr2RealArray);
             safeArray.AddMember(arrayOfSafeArrayBounds2);
         }
-        catch (InteropException e) {
+        catch (InteropException e)
+        {
             throw new InteropRuntimeException(e.ErrorCode);
         }
 
         var variant2 = new VariantBody(safeArray, c, is2Dim, isByRef, flag);
-        _member = new ComPointer(variant2, false) {
+        _member = new ComPointer(variant2, false)
+        {
             ReferentId = 0x72657355 // "User" in LEndian.
         };
     }
@@ -951,8 +1098,10 @@ public sealed class Variant {
     /// Returns the contained object.
     /// </summary>
     /// <exception cref="InteropException"> </exception>
-    public object Object {
-        get {
+    public object Object
+    {
+        get
+        {
             CheckValidity();
             return ((VariantBody)_member.Referent).Object;
         }
@@ -962,8 +1111,10 @@ public sealed class Variant {
     /// Retrieves the contained object as <code>int</code>.
     /// </summary>
     /// <exception cref="InteropException"> </exception>
-    public int ObjectAsInt {
-        get {
+    public int ObjectAsInt
+    {
+        get
+        {
             CheckValidity();
             return ((VariantBody)_member.Referent).ObjectAsInt;
         }
@@ -973,8 +1124,10 @@ public sealed class Variant {
     /// Retrieves the contained object as <code>float</code>.
     /// </summary>
     /// <exception cref="InteropException"> </exception>
-    public float ObjectAsFloat {
-        get {
+    public float ObjectAsFloat
+    {
+        get
+        {
             CheckValidity();
             return ((VariantBody)_member.Referent).ObjectAsFloat;
         }
@@ -984,8 +1137,10 @@ public sealed class Variant {
     /// Retrieves the contained objects errorCode.
     /// </summary>
     /// <exception cref="InteropException"> </exception>
-    public int ObjectAsSCODE {
-        get {
+    public int ObjectAsSCODE
+    {
+        get
+        {
             CheckValidity();
             return ((VariantBody)_member.Referent).ObjectAsSCODE;
         }
@@ -995,8 +1150,10 @@ public sealed class Variant {
     /// Retrieves the contained object as <code>double</code>.
     /// </summary>
     /// <exception cref="InteropException"> </exception>
-    public double ObjectAsDouble {
-        get {
+    public double ObjectAsDouble
+    {
+        get
+        {
             CheckValidity();
             return ((VariantBody)_member.Referent).ObjectAsDouble;
         }
@@ -1006,8 +1163,10 @@ public sealed class Variant {
     /// Retrieves the contained object as <code>short</code>.
     /// </summary>
     /// <exception cref="InteropException"> </exception>
-    public short ObjectAsShort {
-        get {
+    public short ObjectAsShort
+    {
+        get
+        {
             CheckValidity();
             return ((VariantBody)_member.Referent).ObjectAsShort;
         }
@@ -1017,8 +1176,10 @@ public sealed class Variant {
     /// Retrieves the contained object as <code>bool</code>.
     /// </summary>
     /// <exception cref="InteropException"> </exception>
-    public bool ObjectAsBoolean {
-        get {
+    public bool ObjectAsBoolean
+    {
+        get
+        {
             CheckValidity();
             return ((VariantBody)_member.Referent).ObjectAsBoolean;
         }
@@ -1028,8 +1189,10 @@ public sealed class Variant {
     /// Retrieves the contained object as <code><see cref="ComString"/></code>.
     /// </summary>
     /// <exception cref="InteropException"> </exception>
-    public ComString ObjectAsString {
-        get {
+    public ComString ObjectAsString
+    {
+        get
+        {
             CheckValidity();
             return ((VariantBody)_member.Referent).ObjectAsString;
         }
@@ -1039,8 +1202,10 @@ public sealed class Variant {
     /// Retrieves the contained object as <code>String</code>.
     /// </summary>
     /// <exception cref="InteropException"> </exception>
-    public string ObjectAsString2 {
-        get {
+    public string ObjectAsString2
+    {
+        get
+        {
             CheckValidity();
             return ((VariantBody)_member.Referent).ObjectAsString.String;
         }
@@ -1050,8 +1215,10 @@ public sealed class Variant {
     /// Retrieves the contained object as <code>DateTime</code>.
     /// </summary>
     /// <exception cref="InteropException"> </exception>
-    public DateTime ObjectAsDate {
-        get {
+    public DateTime ObjectAsDate
+    {
+        get
+        {
             CheckValidity();
             return ((VariantBody)_member.Referent).ObjectAsDate;
         }
@@ -1061,8 +1228,10 @@ public sealed class Variant {
     /// Retrieves the contained object as <code>char</code>.
     /// </summary>
     /// <exception cref="InteropException"> </exception>
-    public char ObjectAsChar {
-        get {
+    public char ObjectAsChar
+    {
+        get
+        {
             CheckValidity();
             return ((VariantBody)_member.Referent).ObjectAsChar;
         }
@@ -1077,8 +1246,10 @@ public sealed class Variant {
     ///     <see cref="IComObject"/>)</code> to get to the right type.
     /// </summary>
     /// <exception cref="InteropException"> </exception>
-    public IComObject ObjectAsComObject {
-        get {
+    public IComObject ObjectAsComObject
+    {
+        get
+        {
             CheckValidity();
             return ((VariantBody)_member.Referent).ObjectAsComObject;
         }
@@ -1088,8 +1259,10 @@ public sealed class Variant {
     /// Retrieves the contained object as <code><see cref="Variant"/></code>.
     /// </summary>
     /// <exception cref="InteropException"> </exception>
-    public Variant ObjectAsVariant {
-        get {
+    public Variant ObjectAsVariant
+    {
+        get
+        {
             CheckValidity();
             return ((VariantBody)_member.Referent).ObjectAsVariant;
         }
@@ -1105,8 +1278,10 @@ public sealed class Variant {
     /// get the right instance.
     /// </summary>
     /// <exception cref="InteropException"> </exception>
-    public ComArray ObjectAsArray {
-        get {
+    public ComArray ObjectAsArray
+    {
+        get
+        {
             CheckValidity();
             return ((VariantBody)_member.Referent).Array;
         }
@@ -1117,8 +1292,10 @@ public sealed class Variant {
     /// used when the expected type is VariantType.VT_I8.
     /// </summary>
     /// <exception cref="InteropException"> </exception>
-    public long ObjectAsLong {
-        get {
+    public long ObjectAsLong
+    {
+        get
+        {
             CheckValidity();
             return ((VariantBody)_member.Referent).ObjectAsLong;
         }
@@ -1128,8 +1305,10 @@ public sealed class Variant {
     /// Retrieves the contained object as <code>ulong</code> number.
     /// </summary>
     /// <exception cref="InteropException"> </exception>
-    public ulong ObjectAsUlong {
-        get {
+    public ulong ObjectAsUlong
+    {
+        get
+        {
             CheckValidity();
             return ((VariantBody)_member.Referent).ObjectAsUlong;
         }
@@ -1139,8 +1318,10 @@ public sealed class Variant {
     /// Retrieves the contained object as <code>uint</code> number.
     /// </summary>
     /// <exception cref="InteropException"> </exception>
-    public uint ObjectAsUnsigned {
-        get {
+    public uint ObjectAsUnsigned
+    {
+        get
+        {
             CheckValidity();
             return ((VariantBody)_member.Referent).ObjectAsUnsigned;
         }
@@ -1150,8 +1331,10 @@ public sealed class Variant {
     /// Retrieves the contained object as <code>ushort</code> number.
     /// </summary>
     /// <exception cref="InteropException"> </exception>
-    public ushort ObjectAsUShort {
-        get {
+    public ushort ObjectAsUShort
+    {
+        get
+        {
             CheckValidity();
             return ((VariantBody)_member.Referent).ObjectAsUShort;
         }
@@ -1161,8 +1344,10 @@ public sealed class Variant {
     /// Retrieves the contained object as <code>byte</code> number.
     /// </summary>
     /// <exception cref="InteropException"> </exception>
-    public byte ObjectAsByte {
-        get {
+    public byte ObjectAsByte
+    {
+        get
+        {
             CheckValidity();
             return ((VariantBody)_member.Referent).ObjectAsByte;
         }
@@ -1173,7 +1358,8 @@ public sealed class Variant {
     /// </summary>
     /// <param name="ndr"></param>
     /// <param name="context"></param>
-    internal void Encode(NdrCodec ndr, CodecContext context) {
+    internal void Encode(NdrCodec ndr, CodecContext context)
+    {
         _member.Deffered = true;
         // this is since this could be part of an array or a struct...for normal calls
         // as soon as this call finishes a call will be given from Callobject for it's variantbody.
@@ -1186,9 +1372,11 @@ public sealed class Variant {
     /// <param name="ndr"></param>
     /// <param name="context"></param>
     /// <returns></returns>
-    internal static Variant Decode(NdrCodec ndr, CodecContext context) {
+    internal static Variant Decode(NdrCodec ndr, CodecContext context)
+    {
         var variant = new Variant();
-        var pointer = new ComPointer(typeof(VariantBody)) {
+        var pointer = new ComPointer(typeof(VariantBody))
+        {
             // this is since this could be part of an array or a struct...for normal calls
             Deffered = true
         };
@@ -1203,8 +1391,10 @@ public sealed class Variant {
     /// Returns whether the variant is an array
     /// </summary>
     /// <exception cref="InteropException"> </exception>
-    public bool IsArray {
-        get {
+    public bool IsArray
+    {
+        get
+        {
             CheckValidity();
             return ((VariantBody)_member.Referent).IsArray;
         }
@@ -1215,7 +1405,8 @@ public sealed class Variant {
     /// </summary>
     /// <param name="flag"></param>
     /// <exception cref="InteropException"> </exception>
-    internal int GetLengthInBytes(int flag = InteropFlags.FLAG_NULL) {
+    internal int GetLengthInBytes(int flag = InteropFlags.FLAG_NULL)
+    {
         CheckValidity();
         return MarshalUnMarshalHelper.GetLengthInBytes(_member.GetType(),
             _member, flag);
@@ -1225,8 +1416,10 @@ public sealed class Variant {
     /// Whether the ref flag is set
     /// </summary>
     /// <exception cref="InteropException"> </exception>
-    public bool IsByRef {
-        get {
+    public bool IsByRef
+    {
+        get
+        {
             CheckValidity();
             return ((VariantBody)_member.Referent).IsByRef;
         }
@@ -1249,8 +1442,10 @@ public sealed class Variant {
     /// </code>
     /// </summary>
     /// <exception cref="InteropException"> </exception>
-    public VariantType Type {
-        get {
+    public VariantType Type
+    {
+        get
+        {
             CheckValidity();
             return ((VariantBody)_member.Referent).Type;
         }
@@ -1259,8 +1454,10 @@ public sealed class Variant {
     /// <summary>
     /// Helper to check validity
     /// </summary>
-    private void CheckValidity() {
-        if (_member == null || _member.IsNull) {
+    private void CheckValidity()
+    {
+        if (_member == null || _member.IsNull)
+        {
             throw new InteropException(ErrorCode.INTEROP_VARIANT_IS_NULL);
         }
     }
@@ -1272,7 +1469,8 @@ public sealed class Variant {
 
     // CAUTION NO PTR TYPE SHOULD BE PART OF THIS MAP !!!
     private static readonly Dictionary<Type, VariantType> _supportedTypes =
-        new Dictionary<Type, VariantType> {
+        new Dictionary<Type, VariantType>
+        {
             [typeof(object)] = VariantType.VT_VARIANT,
             [typeof(Variant)] = VariantType.VT_VARIANT,
             [typeof(int)] = VariantType.VT_I4,
@@ -1296,7 +1494,8 @@ public sealed class Variant {
             [typeof(ulong)] = VariantType.VT_UI8
         };
     private static readonly Dictionary<VariantType, Type> _supportedTypes_classes =
-        new Dictionary<VariantType, Type> {
+        new Dictionary<VariantType, Type>
+        {
             [VariantType.VT_DATE] = typeof(DateTime),
             [VariantType.VT_CY] = typeof(Currency),
             [VariantType.VT_VARIANT] = typeof(Variant),
@@ -1322,7 +1521,8 @@ public sealed class Variant {
             [VariantType.VT_UI8] = typeof(ulong)
         };
     private static readonly Dictionary<Type, object> _outTypesMap =
-        new Dictionary<Type, object> {
+        new Dictionary<Type, object>
+        {
             [typeof(int)] = 0,
             [typeof(short)] = (short)0,
             [typeof(float)] = 0.0f,

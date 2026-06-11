@@ -9,7 +9,8 @@ using TUnit.Core;
 
 namespace Opc.Classic.Cpx.Tests;
 
-public sealed class OpcBinaryCodecTests {
+public sealed class OpcBinaryCodecTests
+{
     private const string FunctionBlockDictionary = """
         <?xml version="1.0" encoding="utf-8" ?>
         <TypeDictionary xmlns="http://opcfoundation.org/OPCBinary/1.0/"
@@ -25,7 +26,8 @@ public sealed class OpcBinaryCodecTests {
         """;
 
     [Test]
-    public async Task OpcBinaryDictionaryParser_ParsesTypeDictionary() {
+    public async Task OpcBinaryDictionaryParser_ParsesTypeDictionary()
+    {
         var dictionary = OpcBinaryDictionaryParser.Parse(FunctionBlockDictionary);
         var type = dictionary.TryGetByTypeId("FunctionBlockHeader");
 
@@ -40,10 +42,12 @@ public sealed class OpcBinaryCodecTests {
     }
 
     [Test]
-    public async Task OpcBinaryEncoderDecoder_RoundTripsFunctionBlockHeader() {
+    public async Task OpcBinaryEncoderDecoder_RoundTripsFunctionBlockHeader()
+    {
         var dictionary = OpcBinaryDictionaryParser.Parse(FunctionBlockDictionary);
         var type = dictionary.TryGetByTypeId("FunctionBlockHeader")!;
-        var value = CreateValue(type, new Dictionary<string, object?> {
+        var value = CreateValue(type, new Dictionary<string, object?>
+        {
             ["Block Tag"] = "FB-100",
             ["Execution Time"] = 1_000,
             ["Execution Frequency"] = 50,
@@ -67,13 +71,15 @@ public sealed class OpcBinaryCodecTests {
     }
 
     private static ComplexValue CreateValue(TypeDescription type, IReadOnlyDictionary<string, object?> fields) =>
-        new() {
+        new()
+        {
             Type = new StructType { Name = type.Name },
             Fields = fields,
         };
 }
 
-public sealed class XmlSchemaCodecTests {
+public sealed class XmlSchemaCodecTests
+{
     private const string ConnectionSchema = """
         <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
                    targetNamespace="http://opcfoundation.org/ComplexData/Sample1.xsd"
@@ -100,7 +106,8 @@ public sealed class XmlSchemaCodecTests {
         """;
 
     [Test]
-    public async Task XmlSchemaParser_ParsesNestedComplexTypes() {
+    public async Task XmlSchemaParser_ParsesNestedComplexTypes()
+    {
         var dictionary = XmlSchemaParser.Parse(ConnectionSchema);
         var connection = dictionary.TryGetByTypeId("Connection");
         var status = dictionary.TryGetByTypeId("Connection/Status");
@@ -115,18 +122,21 @@ public sealed class XmlSchemaCodecTests {
     }
 
     [Test]
-    public async Task XmlComplexValueSerializer_RoundTripsNestedValue() {
+    public async Task XmlComplexValueSerializer_RoundTripsNestedValue()
+    {
         var dictionary = XmlSchemaParser.Parse(ConnectionSchema);
         var connectionType = dictionary.TryGetByTypeId("Connection")!;
         var statusType = dictionary.TryGetByTypeId("Connection/Status")!;
         var lastConnectTime = new DateTime(2026, 1, 2, 3, 4, 5, DateTimeKind.Utc);
-        var status = CreateValue(statusType, new Dictionary<string, object?> {
+        var status = CreateValue(statusType, new Dictionary<string, object?>
+        {
             ["ConnectState"] = true,
             ["LastConnectTime"] = lastConnectTime,
             ["ConnectFailCount"] = 2u,
             ["IsConnected"] = true,
         });
-        var connection = CreateValue(connectionType, new Dictionary<string, object?> {
+        var connection = CreateValue(connectionType, new Dictionary<string, object?>
+        {
             ["DeviceName"] = "Device00",
             ["WaitTime"] = 250u,
             ["Status"] = status,
@@ -149,24 +159,30 @@ public sealed class XmlSchemaCodecTests {
     }
 
     private static ComplexValue CreateValue(TypeDescription type, IReadOnlyDictionary<string, object?> fields) =>
-        new() {
+        new()
+        {
             Type = new StructType { Name = type.Name },
             Fields = fields,
         };
 }
 
-public sealed class CpxConstantsAndNamespaceTests {
+public sealed class CpxConstantsAndNamespaceTests
+{
     [Test]
-    public async Task OpcComplexDataConstants_MatchSpecAndOpcErrorHeader() {
-        var typeSystemIds = new Dictionary<string, string> {
+    public async Task OpcComplexDataConstants_MatchSpecAndOpcErrorHeader()
+    {
+        var typeSystemIds = new Dictionary<string, string>
+        {
             [nameof(TypeDictionary.XmlSchemaTypeSystemId)] = TypeDictionary.XmlSchemaTypeSystemId,
             [nameof(TypeDictionary.OpcBinaryTypeSystemId)] = TypeDictionary.OpcBinaryTypeSystemId,
         };
-        var propertyIds = new Dictionary<string, int> {
+        var propertyIds = new Dictionary<string, int>
+        {
             [nameof(OpcComplexDataProperty.TypeSystemId)] = OpcComplexDataProperty.TypeSystemId,
             [nameof(OpcComplexDataProperty.DataFilterValue)] = OpcComplexDataProperty.DataFilterValue,
         };
-        var resultCodes = new Dictionary<string, int> {
+        var resultCodes = new Dictionary<string, int>
+        {
             [nameof(OpcComplexDataResult.OPCCPX_E_TYPE_CHANGED)] = OpcComplexDataResult.OPCCPX_E_TYPE_CHANGED,
             [nameof(OpcComplexDataResult.OPCCPX_E_FILTER_DUPLICATE)] = OpcComplexDataResult.OPCCPX_E_FILTER_DUPLICATE,
             [nameof(OpcComplexDataResult.OPCCPX_E_FILTER_INVALID)] = OpcComplexDataResult.OPCCPX_E_FILTER_INVALID,
@@ -186,7 +202,8 @@ public sealed class CpxConstantsAndNamespaceTests {
     }
 
     [Test]
-    public async Task CpxNamespaceBuilder_BuildsDiscoveryConversionAndFilterPaths() {
+    public async Task CpxNamespaceBuilder_BuildsDiscoveryConversionAndFilterPaths()
+    {
         await Assert.That(CpxNamespaceBuilder.BuildTypePath("XMLSchema", "Sample1", "Connection/Status"))
             .IsEqualTo("/CPX/XMLSchema/Sample1/Connection/Status");
         await Assert.That(CpxNamespaceBuilder.GetDictionarySegment("http://opcfoundation.org/ComplexData/Sample1.xsd"))

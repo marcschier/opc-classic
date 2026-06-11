@@ -16,12 +16,15 @@ using TUnit.Core;
 
 namespace Opc.Classic.Ae.Tests.Dcom;
 
-public sealed class IOPCEventProxyTests {
+public sealed class IOPCEventProxyTests
+{
     private delegate void NdrWriteAction(ref NdrWriter writer);
 
     [Test]
-    public async Task EventServer_GetStatus_invokes_channel_with_metadata_and_decodes_status() {
-        var expected = new OpcServerStatus {
+    public async Task EventServer_GetStatus_invokes_channel_with_metadata_and_decodes_status()
+    {
+        var expected = new OpcServerStatus
+        {
             Spec = OpcStatusSpec.Ae,
             StartTime = new DateTimeOffset(2024, 1, 2, 3, 4, 5, TimeSpan.Zero),
             CurrentTime = new DateTimeOffset(2024, 1, 2, 3, 4, 6, TimeSpan.Zero),
@@ -32,13 +35,15 @@ public sealed class IOPCEventProxyTests {
         };
         Guid observedIid = Guid.Empty;
         int observedOpnum = -1;
-        ReadOnlyMemory<byte> responsePayload = WritePayload((ref NdrWriter writer) => {
+        ReadOnlyMemory<byte> responsePayload = WritePayload((ref NdrWriter writer) =>
+        {
             // [out] OPCEVENTSERVERSTATUS **ppEventServerStatus is wire-encoded as
             // an NDR unique pointer (referent + struct).
             writer.WriteUInt32(0x00020000u);
             NdrOpcEventServerStatusCodec.Write(ref writer, expected);
         });
-        var channel = new InMemoryCallChannel((iid, opnum, _, _) => {
+        var channel = new InMemoryCallChannel((iid, opnum, _, _) =>
+        {
             observedIid = iid;
             observedOpnum = opnum;
             return Task.FromResult(new NdrCallResult(0, responsePayload));
@@ -55,11 +60,13 @@ public sealed class IOPCEventProxyTests {
     }
 
     [Test]
-    public async Task EventServer_QueryConditionNames_invokes_channel_with_metadata_and_decodes_names() {
+    public async Task EventServer_QueryConditionNames_invokes_channel_with_metadata_and_decodes_names()
+    {
         Guid observedIid = Guid.Empty;
         int observedOpnum = -1;
         ReadOnlyMemory<byte> responsePayload = WriteStringArray("High", "Low");
-        var channel = new InMemoryCallChannel((iid, opnum, _, _) => {
+        var channel = new InMemoryCallChannel((iid, opnum, _, _) =>
+        {
             observedIid = iid;
             observedOpnum = opnum;
             return Task.FromResult(new NdrCallResult(0, responsePayload));
@@ -74,11 +81,13 @@ public sealed class IOPCEventProxyTests {
     }
 
     [Test]
-    public async Task EventSubscriptionMgt_SetFilter_invokes_channel_with_metadata_and_encodes_payload() {
+    public async Task EventSubscriptionMgt_SetFilter_invokes_channel_with_metadata_and_encodes_payload()
+    {
         Guid observedIid = Guid.Empty;
         int observedOpnum = -1;
         int observedPayloadLength = -1;
-        var channel = new InMemoryCallChannel((iid, opnum, payload, _) => {
+        var channel = new InMemoryCallChannel((iid, opnum, payload, _) =>
+        {
             observedIid = iid;
             observedOpnum = opnum;
             observedPayloadLength = payload.Length;
@@ -94,11 +103,13 @@ public sealed class IOPCEventProxyTests {
     }
 
     [Test]
-    public async Task EventSubscriptionMgt_GetReturnedAttributes_invokes_channel_with_metadata_and_decodes_ids() {
+    public async Task EventSubscriptionMgt_GetReturnedAttributes_invokes_channel_with_metadata_and_decodes_ids()
+    {
         Guid observedIid = Guid.Empty;
         int observedOpnum = -1;
         ReadOnlyMemory<byte> responsePayload = WriteIntArray(10, 20, 30);
-        var channel = new InMemoryCallChannel((iid, opnum, _, _) => {
+        var channel = new InMemoryCallChannel((iid, opnum, _, _) =>
+        {
             observedIid = iid;
             observedOpnum = opnum;
             return Task.FromResult(new NdrCallResult(0, responsePayload));
@@ -113,12 +124,14 @@ public sealed class IOPCEventProxyTests {
     }
 
     [Test]
-    public async Task EventAreaBrowser_GetQualifiedAreaName_invokes_channel_with_metadata_and_decodes_name() {
+    public async Task EventAreaBrowser_GetQualifiedAreaName_invokes_channel_with_metadata_and_decodes_name()
+    {
         Guid observedIid = Guid.Empty;
         int observedOpnum = -1;
         ReadOnlyMemory<byte> responsePayload = WritePayload((ref NdrWriter writer) =>
             writer.WriteUnicodeStringPtr("Plant1.Area1"));
-        var channel = new InMemoryCallChannel((iid, opnum, _, _) => {
+        var channel = new InMemoryCallChannel((iid, opnum, _, _) =>
+        {
             observedIid = iid;
             observedOpnum = opnum;
             return Task.FromResult(new NdrCallResult(0, responsePayload));
@@ -133,11 +146,13 @@ public sealed class IOPCEventProxyTests {
     }
 
     [Test]
-    public async Task EventSink_OnEvent_invokes_channel_with_metadata_and_encodes_notifications() {
+    public async Task EventSink_OnEvent_invokes_channel_with_metadata_and_encodes_notifications()
+    {
         Guid observedIid = Guid.Empty;
         int observedOpnum = -1;
         int observedPayloadLength = -1;
-        var channel = new InMemoryCallChannel((iid, opnum, payload, _) => {
+        var channel = new InMemoryCallChannel((iid, opnum, payload, _) =>
+        {
             observedIid = iid;
             observedOpnum = opnum;
             observedPayloadLength = payload.Length;
@@ -153,11 +168,13 @@ public sealed class IOPCEventProxyTests {
     }
 
     [Test]
-    public async Task EventSubscriptionMgt2_GetKeepAlive_invokes_channel_with_metadata_and_decodes_value() {
+    public async Task EventSubscriptionMgt2_GetKeepAlive_invokes_channel_with_metadata_and_decodes_value()
+    {
         Guid observedIid = Guid.Empty;
         int observedOpnum = -1;
         ReadOnlyMemory<byte> responsePayload = WritePayload((ref NdrWriter writer) => writer.WriteInt32(5000));
-        var channel = new InMemoryCallChannel((iid, opnum, _, _) => {
+        var channel = new InMemoryCallChannel((iid, opnum, _, _) =>
+        {
             observedIid = iid;
             observedOpnum = opnum;
             return Task.FromResult(new NdrCallResult(0, responsePayload));
@@ -172,22 +189,27 @@ public sealed class IOPCEventProxyTests {
     }
 
     private static ReadOnlyMemory<byte> WriteIntArray(params int[] values) =>
-        WritePayload((ref NdrWriter writer) => {
+        WritePayload((ref NdrWriter writer) =>
+        {
             writer.WriteUInt32(unchecked((uint)values.Length));
-            foreach (int value in values) {
+            foreach (int value in values)
+            {
                 writer.WriteInt32(value);
             }
         });
 
     private static ReadOnlyMemory<byte> WriteStringArray(params string[] values) =>
-        WritePayload((ref NdrWriter writer) => {
+        WritePayload((ref NdrWriter writer) =>
+        {
             writer.WriteUInt32(unchecked((uint)values.Length));
-            foreach (string value in values) {
+            foreach (string value in values)
+            {
                 writer.WriteUnicodeStringPtr(value);
             }
         });
 
-    private static ReadOnlyMemory<byte> WritePayload(NdrWriteAction write, int capacity = 2048) {
+    private static ReadOnlyMemory<byte> WritePayload(NdrWriteAction write, int capacity = 2048)
+    {
         var buffer = new byte[capacity];
         var writer = new NdrWriter(buffer);
         write(ref writer);

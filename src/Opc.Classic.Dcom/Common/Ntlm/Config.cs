@@ -5,17 +5,21 @@ using System.Collections.Generic;
 
 namespace SharpCifs;
 
-public static class Config {
+public static class Config
+{
     private static readonly Dictionary<string, string> Properties = new(StringComparer.OrdinalIgnoreCase);
 
     public static string? GetProperty(string key) =>
         Properties.TryGetValue(key, out var value) ? value : Environment.GetEnvironmentVariable(ToEnvironmentName(key));
 
-    public static void SetProperty(string key, string? value) {
-        if (value is null) {
+    public static void SetProperty(string key, string? value)
+    {
+        if (value is null)
+        {
             Properties.Remove(key);
         }
-        else {
+        else
+        {
             Properties[key] = value;
         }
     }

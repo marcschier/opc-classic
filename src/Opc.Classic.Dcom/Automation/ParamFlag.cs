@@ -8,7 +8,8 @@ namespace Opc.Classic.Dcom.Automation;
 /// Param flags
 /// </summary>
 [Flags]
-public enum ParamFlag : short {
+public enum ParamFlag : short
+{
 
     /// <summary>
     /// None

@@ -16,13 +16,15 @@ using TUnit.Core;
 
 namespace Opc.Classic.Mcp.Capture.Tests;
 
-public sealed class OpcDcomDecoderTests {
+public sealed class OpcDcomDecoderTests
+{
     private const int EthernetLinkType = 1;
     private static readonly Guid s_interfaceId = Guid.Parse("11111111-2222-3333-4444-555555555555");
     private static readonly Guid s_objectIpid = Guid.Parse("aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee");
 
     [Test]
-    public async Task Decode_NullArguments_Throw() {
+    public async Task Decode_NullArguments_Throw()
+    {
         var decoder = new OpcDcomDecoder();
 
         await Assert.That(() => decoder.Decode(null!).ToArray()).Throws<ArgumentNullException>();
@@ -30,7 +32,8 @@ public sealed class OpcDcomDecoderTests {
     }
 
     [Test]
-    public async Task Decode_HexSourceRequestAndResponse_MapsAnnotationsToOrpcBodyPdus() {
+    public async Task Decode_HexSourceRequestAndResponse_MapsAnnotationsToOrpcBodyPdus()
+    {
         var decoder = new OpcDcomDecoder();
         var timestamp = new DateTimeOffset(2026, 6, 7, 11, 0, 0, TimeSpan.Zero);
         var request = new CapturedPacket(
@@ -38,16 +41,19 @@ public sealed class OpcDcomDecoderTests {
             3,
             new byte[] { 0xAA, 0xBB, 0xCC },
             LinkType: 0,
-            Annotations: new Dictionary<string, string?> {
+            Annotations: new Dictionary<string, string?>
+            {
                 ["iid"] = s_interfaceId.ToString("D"),
                 ["opnum"] = "9",
                 ["direction"] = "request",
                 ["hresult"] = "0x80004005",
             });
-        var response = request with {
+        var response = request with
+        {
             Data = new byte[] { 0x01, 0x02 },
             OriginalLength = 2,
-            Annotations = new Dictionary<string, string?> {
+            Annotations = new Dictionary<string, string?>
+            {
                 ["iid"] = s_interfaceId.ToString("D"),
                 ["opnum"] = "9",
                 ["direction"] = "response",
@@ -73,14 +79,16 @@ public sealed class OpcDcomDecoderTests {
     }
 
     [Test]
-    public async Task Decode_MissingOrInvalidHexAnnotations_LeavesOptionalFieldsNull() {
+    public async Task Decode_MissingOrInvalidHexAnnotations_LeavesOptionalFieldsNull()
+    {
         var decoder = new OpcDcomDecoder();
         var packet = new CapturedPacket(
             DateTimeOffset.UnixEpoch,
             1,
             new byte[] { 0x01 },
             LinkType: 0,
-            Annotations: new Dictionary<string, string?> {
+            Annotations: new Dictionary<string, string?>
+            {
                 ["iid"] = "not-a-guid",
                 ["opnum"] = "not-an-int",
                 ["direction"] = "response",
@@ -96,7 +104,8 @@ public sealed class OpcDcomDecoderTests {
     }
 
     [Test]
-    public async Task Decode_EmptyLinkLayerPacket_YieldsNoPdus() {
+    public async Task Decode_EmptyLinkLayerPacket_YieldsNoPdus()
+    {
         var decoder = new OpcDcomDecoder();
         var empty = new CapturedPacket(DateTimeOffset.UnixEpoch, 0, ReadOnlyMemory<byte>.Empty, EthernetLinkType, new Dictionary<string, string?>());
 
@@ -104,7 +113,8 @@ public sealed class OpcDcomDecoderTests {
     }
 
     [Test]
-    public async Task Decode_EthernetTcpDceRpcFrames_ReassemblesAndProjectsConcretePduFields() {
+    public async Task Decode_EthernetTcpDceRpcFrames_ReassemblesAndProjectsConcretePduFields()
+    {
         var decoder = new OpcDcomDecoder();
         var timestamp = new DateTimeOffset(2026, 6, 7, 12, 0, 0, TimeSpan.Zero);
         var decoded = new List<DecodedOpcPdu>();
@@ -152,7 +162,8 @@ public sealed class OpcDcomDecoderTests {
     }
 
     [Test]
-    public async Task Decode_SimpleShutdownAuthCancelAndOrphanedPdus_ProjectEndpointAndType() {
+    public async Task Decode_SimpleShutdownAuthCancelAndOrphanedPdus_ProjectEndpointAndType()
+    {
         var decoder = new OpcDcomDecoder();
         DecodedOpcPdu[] decoded =
         [
@@ -172,16 +183,19 @@ public sealed class OpcDcomDecoderTests {
     }
 
     [Test]
-    public async Task Decode_AlterContextAndBindNakFrames_ProjectExpectedPduTypes() {
+    public async Task Decode_AlterContextAndBindNakFrames_ProjectExpectedPduTypes()
+    {
         var decoder = new OpcDcomDecoder();
         Guid alterIid = Guid.Parse("99999999-8888-7777-6666-555555555555");
 
-        DecodedOpcPdu alter = decoder.Decode(NewTcpPacket(new AlterContextPdu {
+        DecodedOpcPdu alter = decoder.Decode(NewTcpPacket(new AlterContextPdu
+        {
             CallId = 31,
             AssociationGroupId = 9,
             ContextList = [NewPresentationContext(4, alterIid)],
         }, DateTimeOffset.UnixEpoch)).Single();
-        DecodedOpcPdu alterResponse = decoder.Decode(NewTcpPacket(new AlterContextResponsePdu {
+        DecodedOpcPdu alterResponse = decoder.Decode(NewTcpPacket(new AlterContextResponsePdu
+        {
             CallId = 32,
             AssociationGroupId = 9,
             SecondaryAddress = new Port("135"),
@@ -190,7 +204,8 @@ public sealed class OpcDcomDecoderTests {
                 new PresentationResult(),
             ],
         }, DateTimeOffset.UnixEpoch.AddMilliseconds(1))).Single();
-        DecodedOpcPdu bindNak = decoder.Decode(NewTcpPacket(new BindNoAcknowledgePdu {
+        DecodedOpcPdu bindNak = decoder.Decode(NewTcpPacket(new BindNoAcknowledgePdu
+        {
             CallId = 33,
             RejectReason = BindNoAcknowledgeReason.LOCAL_LIMIT_EXCEEDED,
         }, DateTimeOffset.UnixEpoch.AddMilliseconds(2))).Single();
@@ -209,7 +224,8 @@ public sealed class OpcDcomDecoderTests {
     }
 
     private static BindPdu NewBindPdu(int callId)
-        => new() {
+        => new()
+        {
             CallId = callId,
             AssociationGroupId = 0,
             MaxTransmitFragment = ConnectionOrientedPdu.MUST_RECEIVE_FRAGMENT_SIZE,
@@ -226,7 +242,8 @@ public sealed class OpcDcomDecoderTests {
             new PresentationSyntax(new UUID(interfaceId.ToString("D")), 1, 2));
 
     private static BindAcknowledgePdu NewBindAckPdu(int callId)
-        => new() {
+        => new()
+        {
             CallId = callId,
             AssociationGroupId = 0,
             MaxTransmitFragment = ConnectionOrientedPdu.MUST_RECEIVE_FRAGMENT_SIZE,
@@ -235,9 +252,11 @@ public sealed class OpcDcomDecoderTests {
             ResultList = [new PresentationResult()],
         };
 
-    private static RequestCoPdu NewRequestPdu(int callId) {
+    private static RequestCoPdu NewRequestPdu(int callId)
+    {
         byte[] stub = OrpcEnvelope.BuildRequestStub(new byte[] { 0x44, 0x55 }, Guid.Parse("bbbbbbbb-cccc-dddd-eeee-ffffffffffff"));
-        return new RequestCoPdu {
+        return new RequestCoPdu
+        {
             CallId = callId,
             ContextId = 3,
             Opnum = 7,
@@ -247,9 +266,11 @@ public sealed class OpcDcomDecoderTests {
         };
     }
 
-    private static ResponseCoPdu NewResponsePdu(int callId) {
+    private static ResponseCoPdu NewResponsePdu(int callId)
+    {
         byte[] stub = [0x11, 0x22, 0x33, 0x44, 0x78, 0x56, 0x34, 0x12];
-        return new ResponseCoPdu {
+        return new ResponseCoPdu
+        {
             CallId = callId,
             ContextId = 3,
             AllocationHint = stub.Length,
@@ -258,7 +279,8 @@ public sealed class OpcDcomDecoderTests {
     }
 
     private static FaultCoPdu NewFaultPdu(int callId)
-        => new() {
+        => new()
+        {
             CallId = callId,
             ContextId = 3,
             AllocationHint = 0,
@@ -292,7 +314,8 @@ public sealed class OpcDcomDecoderTests {
     private const int ServerPort = 135;
 
     [Test]
-    public async Task Decode_BindPdu_SetsClientToServerOnFlow_AndReverseFlowGetsServerToClient() {
+    public async Task Decode_BindPdu_SetsClientToServerOnFlow_AndReverseFlowGetsServerToClient()
+    {
         using var unwrapper = new NtlmPassiveUnwrapper(s_testSessionKey);
         var decoder = new OpcDcomDecoder(unwrapper);
         var ts = new DateTimeOffset(2026, 6, 9, 14, 0, 0, TimeSpan.Zero);
@@ -320,7 +343,8 @@ public sealed class OpcDcomDecoderTests {
     }
 
     [Test]
-    public async Task Decode_RequestPduWithSealedBody_DecryptsAndProjectsPlaintext() {
+    public async Task Decode_RequestPduWithSealedBody_DecryptsAndProjectsPlaintext()
+    {
         using var unwrapper = new NtlmPassiveUnwrapper(s_testSessionKey);
         var decoder = new OpcDcomDecoder(unwrapper);
         var ts = new DateTimeOffset(2026, 6, 9, 14, 0, 0, TimeSpan.Zero);
@@ -346,7 +370,8 @@ public sealed class OpcDcomDecoderTests {
     }
 
     [Test]
-    public async Task Decode_RequestPduNoAuthLength_DoesNotInvokeUnwrapper() {
+    public async Task Decode_RequestPduNoAuthLength_DoesNotInvokeUnwrapper()
+    {
         using var unwrapper = new NtlmPassiveUnwrapper(s_testSessionKey);
         var decoder = new OpcDcomDecoder(unwrapper);
         var ts = new DateTimeOffset(2026, 6, 9, 14, 0, 0, TimeSpan.Zero);
@@ -366,7 +391,8 @@ public sealed class OpcDcomDecoderTests {
     }
 
     [Test]
-    public async Task Decode_RequestPduBeforeBind_AnnotatesUnknownDirection() {
+    public async Task Decode_RequestPduBeforeBind_AnnotatesUnknownDirection()
+    {
         using var unwrapper = new NtlmPassiveUnwrapper(s_testSessionKey);
         var decoder = new OpcDcomDecoder(unwrapper);
         var ts = new DateTimeOffset(2026, 6, 9, 14, 0, 0, TimeSpan.Zero);
@@ -385,7 +411,8 @@ public sealed class OpcDcomDecoderTests {
     }
 
     [Test]
-    public async Task Decode_AuthSchemeNotNtlm_SkipsUnwrapSilently() {
+    public async Task Decode_AuthSchemeNotNtlm_SkipsUnwrapSilently()
+    {
         using var unwrapper = new NtlmPassiveUnwrapper(s_testSessionKey);
         var decoder = new OpcDcomDecoder(unwrapper);
         var ts = new DateTimeOffset(2026, 6, 9, 14, 0, 0, TimeSpan.Zero);
@@ -406,7 +433,8 @@ public sealed class OpcDcomDecoderTests {
     }
 
     [Test]
-    public async Task Decode_NoUnwrapperConfigured_PreservesExistingBehavior() {
+    public async Task Decode_NoUnwrapperConfigured_PreservesExistingBehavior()
+    {
         var decoder = new OpcDcomDecoder(); // no unwrapper
         var ts = new DateTimeOffset(2026, 6, 9, 14, 0, 0, TimeSpan.Zero);
 
@@ -434,22 +462,27 @@ public sealed class OpcDcomDecoderTests {
     /// <c>Ntlm1.ProcessOutgoing</c>.
     /// </summary>
     private static byte[] BuildSealedFramePerCodebase(
-        byte ptype, int callId, int contextId, int opnum, byte[] plaintextStub, bool isServerSide) {
-        ConnectionOrientedPdu basePdu = ptype switch {
-            0x00 => (ConnectionOrientedPdu)new RequestCoPdu {
+        byte ptype, int callId, int contextId, int opnum, byte[] plaintextStub, bool isServerSide)
+    {
+        ConnectionOrientedPdu basePdu = ptype switch
+        {
+            0x00 => (ConnectionOrientedPdu)new RequestCoPdu
+            {
                 CallId = callId,
                 ContextId = contextId,
                 Opnum = opnum,
                 AllocationHint = plaintextStub.Length,
                 Stub = plaintextStub,
             },
-            0x02 => new ResponseCoPdu {
+            0x02 => new ResponseCoPdu
+            {
                 CallId = callId,
                 ContextId = contextId,
                 AllocationHint = plaintextStub.Length,
                 Stub = plaintextStub,
             },
-            0x03 => new FaultCoPdu {
+            0x03 => new FaultCoPdu
+            {
                 CallId = callId,
                 ContextId = contextId,
                 AllocationHint = 0,
@@ -501,7 +534,8 @@ public sealed class OpcDcomDecoderTests {
         return protectedPdu;
     }
 
-    private static byte[] AppendBogusAuthTrailer(byte[] plainPdu, byte authType) {
+    private static byte[] AppendBogusAuthTrailer(byte[] plainPdu, byte authType)
+    {
         int padding = (4 - (plainPdu.Length % 4)) % 4;
         int verifierStart = plainPdu.Length + padding;
         int fragmentLength = verifierStart + AuthVerifierHeaderLength + NtlmAuthValueLength;
@@ -516,7 +550,8 @@ public sealed class OpcDcomDecoderTests {
         return frame;
     }
 
-    private static CapturedPacket NewTcpPacket(byte[] tcpPayload, DateTimeOffset timestamp) {
+    private static CapturedPacket NewTcpPacket(byte[] tcpPayload, DateTimeOffset timestamp)
+    {
         byte[] frame = new byte[14 + 20 + 20 + tcpPayload.Length];
 
         // Ethernet header.

@@ -13,9 +13,11 @@ using TUnit.Core;
 
 namespace Opc.Classic.Discovery.Tests;
 
-public sealed class OpcDiscoveryFactoryTests {
+public sealed class OpcDiscoveryFactoryTests
+{
     [Test]
-    public async Task Combines_entries_from_multiple_strategies() {
+    public async Task Combines_entries_from_multiple_strategies()
+    {
         var first = CreateEntry("10138C2C-0000-0000-0000-000000000011", "Vendor.First.1");
         var second = CreateEntry("10138C2C-0000-0000-0000-000000000012", "Vendor.Second.1");
         var discovery = new OpcDiscoveryFactory(
@@ -30,7 +32,8 @@ public sealed class OpcDiscoveryFactoryTests {
     }
 
     [Test]
-    public async Task Deduplicates_by_clsid_across_strategies() {
+    public async Task Deduplicates_by_clsid_across_strategies()
+    {
         var clsid = Guid.Parse("10138C2C-0000-0000-0000-000000000013");
         var first = CreateEntry(clsid, "Vendor.First.1");
         var duplicate = CreateEntry(clsid, "Vendor.Duplicate.1");
@@ -45,12 +48,14 @@ public sealed class OpcDiscoveryFactoryTests {
     }
 
     [Test]
-    public async Task Empty_strategy_list_throws_ArgumentException() {
+    public async Task Empty_strategy_list_throws_ArgumentException()
+    {
         await Assert.That(() => new OpcDiscoveryFactory()).Throws<ArgumentException>();
     }
 
     [Test]
-    public async Task Skips_strategies_that_throw_protocol_errors() {
+    public async Task Skips_strategies_that_throw_protocol_errors()
+    {
         var local = CreateEntry("10138C2C-0000-0000-0000-000000000014", "Vendor.Local.1");
         var discovery = new OpcDiscoveryFactory(
             new ProtocolErrorDiscovery(),
@@ -63,7 +68,8 @@ public sealed class OpcDiscoveryFactoryTests {
     }
 
     [Test]
-    public async Task Does_not_mask_NotImplementedException() {
+    public async Task Does_not_mask_NotImplementedException()
+    {
         var discovery = new OpcDiscoveryFactory(new ThrowingDiscovery());
 
         Exception exception = await CaptureAsync(() => ToListAsync(discovery));
@@ -72,7 +78,8 @@ public sealed class OpcDiscoveryFactoryTests {
     }
 
     [Test]
-    public async Task Includes_OpcEnumClient_when_configured() {
+    public async Task Includes_OpcEnumClient_when_configured()
+    {
         var classId = Guid.Parse("10138C2C-0000-0000-0000-000000000015");
         var server = new SyntheticOpcEnumServer()
             .AddServer(Opc.Classic.OpcGuids.CATID_OPCDAServer20, classId, "Vendor.OpcEnum.1", "Vendor OpcEnum", "Vendor.OpcEnum");
@@ -86,9 +93,11 @@ public sealed class OpcDiscoveryFactoryTests {
         await Assert.That(entries[0].ProgId).IsEqualTo("Vendor.OpcEnum.1");
     }
 
-    private static async Task<List<OpcServerEntry>> ToListAsync(IOpcDiscovery discovery) {
+    private static async Task<List<OpcServerEntry>> ToListAsync(IOpcDiscovery discovery)
+    {
         var entries = new List<OpcServerEntry>();
-        await foreach (var entry in discovery.DiscoverAsync()) {
+        await foreach (var entry in discovery.DiscoverAsync())
+        {
             entries.Add(entry);
         }
 
@@ -106,50 +115,61 @@ public sealed class OpcDiscoveryFactoryTests {
             "localhost",
             Array.Empty<Guid>());
 
-    private sealed class StubDiscovery : IOpcDiscovery {
+    private sealed class StubDiscovery : IOpcDiscovery
+    {
         private readonly IReadOnlyList<OpcServerEntry> _entries;
 
-        public StubDiscovery(params OpcServerEntry[] entries) {
+        public StubDiscovery(params OpcServerEntry[] entries)
+        {
             _entries = entries;
         }
 
         public async IAsyncEnumerable<OpcServerEntry> DiscoverAsync(
             string? host = null,
-            [System.Runtime.CompilerServices.EnumeratorCancellation] CancellationToken cancellationToken = default) {
+            [System.Runtime.CompilerServices.EnumeratorCancellation] CancellationToken cancellationToken = default)
+        {
             await Task.CompletedTask.ConfigureAwait(false);
 
-            foreach (var entry in _entries) {
+            foreach (var entry in _entries)
+            {
                 cancellationToken.ThrowIfCancellationRequested();
                 yield return entry;
             }
         }
     }
 
-    private static async Task<Exception> CaptureAsync(Func<Task> action) {
-        try {
+    private static async Task<Exception> CaptureAsync(Func<Task> action)
+    {
+        try
+        {
             await action().ConfigureAwait(false);
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             return ex;
         }
 
         throw new InvalidOperationException("Expected an exception.");
     }
 
-    private sealed class ProtocolErrorDiscovery : IOpcDiscovery {
+    private sealed class ProtocolErrorDiscovery : IOpcDiscovery
+    {
         public IAsyncEnumerable<OpcServerEntry> DiscoverAsync(
             string? host = null,
-            CancellationToken cancellationToken = default) {
+            CancellationToken cancellationToken = default)
+        {
             _ = host;
             _ = cancellationToken;
             throw new OpcException(new OpcResultId(unchecked((int)0x80004005u), "E_FAIL"));
         }
     }
 
-    private sealed class ThrowingDiscovery : IOpcDiscovery {
+    private sealed class ThrowingDiscovery : IOpcDiscovery
+    {
         public IAsyncEnumerable<OpcServerEntry> DiscoverAsync(
             string? host = null,
-            CancellationToken cancellationToken = default) {
+            CancellationToken cancellationToken = default)
+        {
             _ = host;
             _ = cancellationToken;
             throw new NotImplementedException();

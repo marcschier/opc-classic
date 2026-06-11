@@ -8,7 +8,8 @@ namespace Opc.Classic.Hda;
 /// <summary>
 /// HDA address-space browse-element type, mirroring OPCHDA_BROWSETYPE.
 /// </summary>
-public enum HdaBrowseType {
+public enum HdaBrowseType
+{
     /// <summary>A branch (sub-tree) in the HDA namespace.</summary>
     Branch = 1,
     /// <summary>A leaf (a historical item).</summary>

@@ -14,7 +14,8 @@ namespace Opc.Classic.Discovery;
 /// <summary>
 /// Creates DCOM call channels for OPCEnum activation and for interfaces returned by OBJREFs.
 /// </summary>
-public interface IOpcEnumCallChannelFactory {
+public interface IOpcEnumCallChannelFactory
+{
     /// <summary>
     /// Gets the minimum authentication level to declare in IRemoteSCMActivator activation properties.
     /// Hardened Windows DCOM requires at least packet integrity for activation.

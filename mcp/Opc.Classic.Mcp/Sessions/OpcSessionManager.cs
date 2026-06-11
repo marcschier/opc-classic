@@ -9,7 +9,8 @@ using Opc.Classic.Mcp.Dtos;
 namespace Opc.Classic.Mcp.Sessions;
 
 /// <summary>Thread-safe in-memory OPC Classic session manager.</summary>
-public sealed class OpcSessionManager : IOpcSessionManager, IDisposable {
+public sealed class OpcSessionManager : IOpcSessionManager, IDisposable
+{
     private static readonly TimeSpan DefaultIdleExpiry = TimeSpan.FromMinutes(30);
     private static readonly TimeSpan SweepInterval = TimeSpan.FromSeconds(60);
 
@@ -21,10 +22,12 @@ public sealed class OpcSessionManager : IOpcSessionManager, IDisposable {
     public OpcSessionManager() => _timer = new Timer(SweepExpiredSessions, null, SweepInterval, SweepInterval);
 
     /// <inheritdoc />
-    public OpcSession CreateSession(TimeSpan? idleExpiry = null) {
+    public OpcSession CreateSession(TimeSpan? idleExpiry = null)
+    {
         ObjectDisposedException.ThrowIf(_disposed, this);
         var session = new OpcSession(Guid.NewGuid().ToString("N"), idleExpiry ?? DefaultIdleExpiry);
-        if (!_sessions.TryAdd(session.SessionId, session)) {
+        if (!_sessions.TryAdd(session.SessionId, session))
+        {
             throw new InvalidOperationException("Unable to create a unique OPC session identifier.");
         }
 
@@ -32,9 +35,11 @@ public sealed class OpcSessionManager : IOpcSessionManager, IDisposable {
     }
 
     /// <inheritdoc />
-    public OpcSession GetSession(string sessionId) {
+    public OpcSession GetSession(string sessionId)
+    {
         ArgumentException.ThrowIfNullOrWhiteSpace(sessionId);
-        if (!TryGetSession(sessionId, out OpcSession? session)) {
+        if (!TryGetSession(sessionId, out OpcSession? session))
+        {
             throw new KeyNotFoundException($"OPC session '{sessionId}' was not found or has expired.");
         }
 
@@ -43,16 +48,19 @@ public sealed class OpcSessionManager : IOpcSessionManager, IDisposable {
     }
 
     /// <inheritdoc />
-    public bool TryGetSession(string sessionId, out OpcSession session) {
+    public bool TryGetSession(string sessionId, out OpcSession session)
+    {
         ArgumentException.ThrowIfNullOrWhiteSpace(sessionId);
         ObjectDisposedException.ThrowIf(_disposed, this);
 
-        if (!_sessions.TryGetValue(sessionId, out OpcSession? existing)) {
+        if (!_sessions.TryGetValue(sessionId, out OpcSession? existing))
+        {
             session = null!;
             return false;
         }
 
-        if (existing.IsExpired(DateTimeOffset.UtcNow)) {
+        if (existing.IsExpired(DateTimeOffset.UtcNow))
+        {
             _ = CloseSession(sessionId);
             session = null!;
             return false;
@@ -63,9 +71,11 @@ public sealed class OpcSessionManager : IOpcSessionManager, IDisposable {
     }
 
     /// <inheritdoc />
-    public bool CloseSession(string sessionId) {
+    public bool CloseSession(string sessionId)
+    {
         ArgumentException.ThrowIfNullOrWhiteSpace(sessionId);
-        if (!_sessions.TryRemove(sessionId, out OpcSession? session)) {
+        if (!_sessions.TryRemove(sessionId, out OpcSession? session))
+        {
             return false;
         }
 
@@ -74,7 +84,8 @@ public sealed class OpcSessionManager : IOpcSessionManager, IDisposable {
     }
 
     /// <inheritdoc />
-    public IReadOnlyList<OpcSessionDto> ListSessions() {
+    public IReadOnlyList<OpcSessionDto> ListSessions()
+    {
         ObjectDisposedException.ThrowIf(_disposed, this);
         SweepExpiredSessions(null);
         return _sessions.Values
@@ -84,31 +95,38 @@ public sealed class OpcSessionManager : IOpcSessionManager, IDisposable {
     }
 
     /// <inheritdoc />
-    public void Dispose() {
-        if (_disposed) {
+    public void Dispose()
+    {
+        if (_disposed)
+        {
             return;
         }
 
         _disposed = true;
         _timer.Dispose();
-        foreach (OpcSession session in _sessions.Values) {
+        foreach (OpcSession session in _sessions.Values)
+        {
             DisposeSession(session);
         }
 
         _sessions.Clear();
     }
 
-    private void SweepExpiredSessions(object? state) {
+    private void SweepExpiredSessions(object? state)
+    {
         _ = state;
         DateTimeOffset now = DateTimeOffset.UtcNow;
-        foreach (KeyValuePair<string, OpcSession> pair in _sessions) {
-            if (pair.Value.IsExpired(now) && _sessions.TryRemove(pair.Key, out OpcSession? removed)) {
+        foreach (KeyValuePair<string, OpcSession> pair in _sessions)
+        {
+            if (pair.Value.IsExpired(now) && _sessions.TryRemove(pair.Key, out OpcSession? removed))
+            {
                 DisposeSession(removed);
             }
         }
     }
 
-    private static OpcSessionDto ToDto(OpcSession session) {
+    private static OpcSessionDto ToDto(OpcSession session)
+    {
         DaClientState? da = session.DaClient;
         return new OpcSessionDto(
             session.SessionId,

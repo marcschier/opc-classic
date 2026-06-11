@@ -12,9 +12,11 @@ using TUnit.Core;
 
 namespace Opc.Classic.Mcp.Capture.Tests;
 
-public sealed class OpcWireCaptureSourceTests {
+public sealed class OpcWireCaptureSourceTests
+{
     [Test]
-    public async Task StartAsync_NullOrMissingReplayDirectory_Throws() {
+    public async Task StartAsync_NullOrMissingReplayDirectory_Throws()
+    {
         var source = new OpcWireCaptureSource();
         CancellationToken cancellationToken = TestContext.Current!.CancellationToken;
 
@@ -29,7 +31,8 @@ public sealed class OpcWireCaptureSourceTests {
     }
 
     [Test]
-    public async Task ReadAllAsync_BeforeStart_YieldsNoPackets() {
+    public async Task ReadAllAsync_BeforeStart_YieldsNoPackets()
+    {
         var source = new OpcWireCaptureSource();
 
         var packets = await source.ReadAllAsync(null, TestContext.Current!.CancellationToken).ToListAsync();
@@ -42,9 +45,11 @@ public sealed class OpcWireCaptureSourceTests {
     }
 
     [Test]
-    public async Task StartAndReadAllAsync_HexFiles_ReplaysRequestAndResponsePacketsWithAnnotations() {
+    public async Task StartAndReadAllAsync_HexFiles_ReplaysRequestAndResponsePacketsWithAnnotations()
+    {
         string directory = TestDirectories.CreateUniqueTempDirectory();
-        try {
+        try
+        {
             Guid iid = Guid.Parse("11111111-2222-3333-4444-555555555555");
             string firstPath = Path.Combine(directory, "0001.hex");
             string secondPath = Path.Combine(directory, "0002.hex");
@@ -92,15 +97,18 @@ public sealed class OpcWireCaptureSourceTests {
             await Assert.That(packets[2].Annotations["opnum"]).IsEqualTo("8");
             await source.DisposeAsync();
         }
-        finally {
+        finally
+        {
             TestDirectories.DeleteIfExists(directory);
         }
     }
 
     [Test]
-    public async Task ReadAllAsync_MaxPackets_LimitsEnumerationInSortedFileOrder() {
+    public async Task ReadAllAsync_MaxPackets_LimitsEnumerationInSortedFileOrder()
+    {
         string directory = TestDirectories.CreateUniqueTempDirectory();
-        try {
+        try
+        {
             Guid iid = Guid.Parse("aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee");
             await File.WriteAllTextAsync(
                 Path.Combine(directory, "b.hex"),
@@ -122,7 +130,8 @@ public sealed class OpcWireCaptureSourceTests {
             await Assert.That(packets[1].Annotations["direction"]).IsEqualTo("response");
             await source.DisposeAsync();
         }
-        finally {
+        finally
+        {
             TestDirectories.DeleteIfExists(directory);
         }
     }

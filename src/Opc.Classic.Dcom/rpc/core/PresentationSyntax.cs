@@ -9,7 +9,8 @@ namespace Opc.Classic.Dcom.Rpc.Core;
 /// <summary>
 /// Presentation syntax
 /// </summary>
-public class PresentationSyntax : NdrOp {
+public class PresentationSyntax : NdrOp
+{
 
     /// <summary>
     /// Uuuid
@@ -34,24 +35,28 @@ public class PresentationSyntax : NdrOp {
     /// <summary>
     /// Create syntax
     /// </summary>
-    public PresentationSyntax() {
+    public PresentationSyntax()
+    {
     }
 
     /// <summary>
     /// Create presentation syntax
     /// </summary>
     /// <param name="syntax"></param>
-    public PresentationSyntax(string syntax) : this() {
+    public PresentationSyntax(string syntax) : this()
+    {
         ArgumentNullException.ThrowIfNull(syntax);
 
         var versionSeparator = syntax.LastIndexOf(':');
-        if (versionSeparator < 0 || versionSeparator == syntax.Length - 1) {
+        if (versionSeparator < 0 || versionSeparator == syntax.Length - 1)
+        {
             throw new FormatException("Presentation syntax must include a version suffix.");
         }
 
         var version = syntax[(versionSeparator + 1)..];
         var minorSeparator = version.IndexOf('.');
-        if (minorSeparator < 0 || minorSeparator == version.Length - 1) {
+        if (minorSeparator < 0 || minorSeparator == version.Length - 1)
+        {
             throw new FormatException("Presentation syntax version must be major.minor.");
         }
 
@@ -66,19 +71,22 @@ public class PresentationSyntax : NdrOp {
     /// <param name="uuid"></param>
     /// <param name="majorVersion"></param>
     /// <param name="minorVersion"></param>
-    public PresentationSyntax(UUID uuid, int majorVersion, int minorVersion) : this() {
+    public PresentationSyntax(UUID uuid, int majorVersion, int minorVersion) : this()
+    {
         Uuid = uuid;
         Version = (majorVersion & 0xffff) | (minorVersion << 16);
     }
 
     /// <inheritdoc/>
-    public override void Encode(NdrCodec ndr, NdrBuffer dst) {
+    public override void Encode(NdrCodec ndr, NdrBuffer dst)
+    {
         Uuid.Encode(ndr, dst);
         dst.Enc_ndr_long(Version);
     }
 
     /// <inheritdoc/>
-    public override void Decode(NdrCodec ndr, NdrBuffer src) {
+    public override void Decode(NdrCodec ndr, NdrBuffer src)
+    {
         Uuid = new UUID();
         Uuid.Decode(ndr, src);
         Version = src.Dec_ndr_long();

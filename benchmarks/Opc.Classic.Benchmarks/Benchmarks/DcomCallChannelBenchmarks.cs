@@ -11,11 +11,13 @@ using Opc.Classic.Testing;
 namespace Opc.Classic.Benchmarks.Benchmarks;
 
 [MemoryDiagnoser]
-public class DcomCallChannelBenchmarks {
+public class DcomCallChannelBenchmarks
+{
     private IOPCServerClientProxy _proxy = null!;
 
     [GlobalSetup]
-    public void GlobalSetup() {
+    public void GlobalSetup()
+    {
         var server = new ConstantDaServer(BuildStatus());
         var dispatcher = new OpcDaServerDispatcher(server);
         var channel = new InMemoryCallChannel(dispatcher.DispatchAsync);
@@ -25,7 +27,8 @@ public class DcomCallChannelBenchmarks {
     [Benchmark]
     public Task<OpcServerStatus> GetStatusAsync() => _proxy.GetStatusAsync(CancellationToken.None);
 
-    private static OpcServerStatus BuildStatus() => new() {
+    private static OpcServerStatus BuildStatus() => new()
+    {
         Spec = OpcStatusSpec.Da,
         StartTime = DateTimeOffset.UnixEpoch,
         CurrentTime = DateTimeOffset.UnixEpoch.AddSeconds(1),
@@ -37,14 +40,17 @@ public class DcomCallChannelBenchmarks {
         VendorInfo = "Benchmark InMemory DA Server",
     };
 
-    private sealed class ConstantDaServer : IOpcDaServer {
+    private sealed class ConstantDaServer : IOpcDaServer
+    {
         private readonly Task<OpcServerStatus> _statusTask;
 
-        public ConstantDaServer(OpcServerStatus status) {
+        public ConstantDaServer(OpcServerStatus status)
+        {
             _statusTask = Task.FromResult(status);
         }
 
-        public Task<OpcServerStatus> GetStatusAsync(CancellationToken cancellationToken = default) {
+        public Task<OpcServerStatus> GetStatusAsync(CancellationToken cancellationToken = default)
+        {
             cancellationToken.ThrowIfCancellationRequested();
             return _statusTask;
         }
@@ -55,7 +61,8 @@ public class DcomCallChannelBenchmarks {
             int requestedUpdateRate,
             int clientHandle,
             int localeId,
-            CancellationToken cancellationToken = default) {
+            CancellationToken cancellationToken = default)
+        {
             cancellationToken.ThrowIfCancellationRequested();
             return Task.FromResult(0);
         }
@@ -63,7 +70,8 @@ public class DcomCallChannelBenchmarks {
         public Task RemoveGroupAsync(
             int serverGroupHandle,
             bool force,
-            CancellationToken cancellationToken = default) {
+            CancellationToken cancellationToken = default)
+        {
             cancellationToken.ThrowIfCancellationRequested();
             return Task.CompletedTask;
         }
@@ -71,7 +79,8 @@ public class DcomCallChannelBenchmarks {
         public Task<string> GetErrorStringAsync(
             int errorCode,
             int localeId,
-            CancellationToken cancellationToken = default) {
+            CancellationToken cancellationToken = default)
+        {
             cancellationToken.ThrowIfCancellationRequested();
             return Task.FromResult("Benchmark error string");
         }

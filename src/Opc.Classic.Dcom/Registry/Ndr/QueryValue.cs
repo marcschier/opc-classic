@@ -8,7 +8,8 @@ using System.Buffers.Binary;
 namespace Opc.Classic.Dcom.Registry;
 
 /// <inheritdoc/>
-public class QueryValue : NdrOp {
+public class QueryValue : NdrOp
+{
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 #pragma warning disable IDE1006 // Naming Styles
@@ -26,7 +27,8 @@ public class QueryValue : NdrOp {
     public override int Opnum => 17;
 
     /// <inheritdoc/>
-    public override void Write(NdrCodec ndr) {
+    public override void Write(NdrCodec ndr)
+    {
 
         // Write parent handle
         ndr.WriteOctetArray(parentKey.Handle, 0, 20);
@@ -47,7 +49,8 @@ public class QueryValue : NdrOp {
         ndr.WriteUnsignedLong(key.Length + 1);
 
         var i = 0;
-        while (i < key.Length) {
+        while (i < key.Length)
+        {
             ndr.WriteUnsignedShort(key[i]);
             i++;
         }
@@ -80,7 +83,8 @@ public class QueryValue : NdrOp {
 
     /// <inheritdoc/>
 #pragma warning disable MA0051 // Legacy NDR decode mirrors the WinReg wire layout.
-    public override void Read(NdrCodec ndr) {
+    public override void Read(NdrCodec ndr)
+    {
         var i = 0;
         // pointer
         ndr.ReadUnsignedLong();
@@ -91,14 +95,16 @@ public class QueryValue : NdrOp {
         ndr.ReadUnsignedLong();
         var maxcount = ndr.ReadUnsignedLong(); // maxcount
         var offset = ndr.ReadUnsignedLong(); // offset
-        switch (type) {
+        switch (type)
+        {
             case RegValueType.REG_EXPAND_SZ: // for environment variable strings
             case RegValueType.REG_SZ:
 
                 var actuallength = (int)Math.Round(ndr.ReadUnsignedLong() / 2.0); // actuallength
 
                 // last 2 bytes, null termination will be eaten outside the loop
-                while (i < actuallength - 1) {
+                while (i < actuallength - 1)
+                {
                     var retVal = ndr.ReadUnsignedShort();
                     // even though this is a unicode string, but will not have anything else
                     // other than ascii charset, which is supported by all encodings.
@@ -106,7 +112,8 @@ public class QueryValue : NdrOp {
                     retval[i] = (byte)retVal;
                     i++;
                 }
-                if (actuallength != 0) {
+                if (actuallength != 0)
+                {
                     ndr.ReadUnsignedShort();
                 }
 
@@ -126,9 +133,11 @@ public class QueryValue : NdrOp {
                 int kk = 0, ll = 0;
                 i = 0;
                 // last 2 bytes, null termination will be eaten outside the loop
-                while (i < actuallength - 1) {
+                while (i < actuallength - 1)
+                {
                     var retVal = ndr.ReadUnsignedShort();
-                    if (retVal == 0) {
+                    if (retVal == 0)
+                    {
                         // reached end of one string
                         buffer2[kk] = new byte[ll];
                         Array.Copy(retval, 0, buffer2[kk], 0, ll);
@@ -136,13 +145,15 @@ public class QueryValue : NdrOp {
                         ll = -1; // it will become 0 next
                         retval = new byte[bufferLength];
                     }
-                    else {
+                    else
+                    {
                         retval[ll] = (byte)retVal;
                     }
                     i++;
                     ll++;
                 }
-                if (actuallength != 0) {
+                if (actuallength != 0)
+                {
                     ndr.ReadUnsignedShort();
                 }
 
@@ -162,11 +173,13 @@ public class QueryValue : NdrOp {
         ndr.ReadUnsignedLong();
 
         var hresult = ndr.ReadUnsignedLong();
-        if (hresult != 0) {
+        if (hresult != 0)
+        {
             throw new InteropRuntimeException(hresult);
         }
 
-        if (type != RegValueType.REG_MULTI_SZ) {
+        if (type != RegValueType.REG_MULTI_SZ)
+        {
             buffer = new byte[i];
             Array.Copy(retval, 0, buffer, 0, i);
         }

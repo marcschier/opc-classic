@@ -16,7 +16,8 @@ using Opc.Classic.Ndr;
 namespace Opc.Classic.Mcp.Tools;
 
 /// <summary>Creates DX client state for a session.</summary>
-public interface IOpcDxConnectionFactory {
+public interface IOpcDxConnectionFactory
+{
     /// <summary>Connects to a DX server and returns a client state object.</summary>
     Task<DxClientState> ConnectAsync(DxConnectionRequest request, CancellationToken cancellationToken = default);
 }
@@ -33,11 +34,13 @@ public sealed record DxConnectionRequest(
     string? AuthLevel = null);
 
 /// <summary>Registers in-memory DX clients for MCP tests and loopback scenarios.</summary>
-public static class InMemoryDxConnectionRegistry {
+public static class InMemoryDxConnectionRegistry
+{
     private static readonly System.Collections.Concurrent.ConcurrentDictionary<string, IOpcDxClient> Clients = new(StringComparer.OrdinalIgnoreCase);
 
     /// <summary>Registers an in-memory DX client by name.</summary>
-    public static IDisposable Register(string name, IOpcDxClient client) {
+    public static IDisposable Register(string name, IOpcDxClient client)
+    {
         ArgumentException.ThrowIfNullOrWhiteSpace(name);
         ArgumentNullException.ThrowIfNull(client);
 
@@ -47,14 +50,17 @@ public static class InMemoryDxConnectionRegistry {
 
     internal static bool TryGet(string name, out IOpcDxClient client) => Clients.TryGetValue(name, out client!);
 
-    private sealed class Registration : IDisposable {
+    private sealed class Registration : IDisposable
+    {
         private readonly string _name;
         private bool _disposed;
 
         public Registration(string name) => _name = name;
 
-        public void Dispose() {
-            if (_disposed) {
+        public void Dispose()
+        {
+            if (_disposed)
+            {
                 return;
             }
 
@@ -65,12 +71,14 @@ public static class InMemoryDxConnectionRegistry {
 }
 
 /// <summary>MCP tools for OPC DX configuration operations.</summary>
-public sealed class DxTools {
+public sealed class DxTools
+{
     private readonly IOpcSessionManager _sessionManager;
     private readonly IOpcDxConnectionFactory _connectionFactory;
 
     /// <summary>Creates the DX tool set.</summary>
-    public DxTools(IOpcSessionManager sessionManager, IEnumerable<IOpcDxConnectionFactory> connectionFactories) {
+    public DxTools(IOpcSessionManager sessionManager, IEnumerable<IOpcDxConnectionFactory> connectionFactories)
+    {
         _sessionManager = sessionManager ?? throw new ArgumentNullException(nameof(sessionManager));
         ArgumentNullException.ThrowIfNull(connectionFactories);
         _connectionFactory = connectionFactories.FirstOrDefault() ?? new DefaultOpcDxConnectionFactory();
@@ -98,7 +106,8 @@ public sealed class DxTools {
         string? connectionString = null,
         [Description(OpcMcpAuthLevel.Description)]
         string? authLevel = null,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         OpcSession session = _sessionManager.GetSession(sessionId);
         DxClientState client = await _connectionFactory.ConnectAsync(
             new DxConnectionRequest(host, progId, clsid, username, password, useKerberos, connectionString, authLevel),
@@ -106,7 +115,8 @@ public sealed class DxTools {
 
         DxClientState? existing = session.DxClient;
         session.DxClient = client;
-        if (existing is not null) {
+        if (existing is not null)
+        {
             await existing.DisposeAsync().ConfigureAwait(false);
         }
 
@@ -121,7 +131,8 @@ public sealed class DxTools {
     public async Task<OpcServerStatusDto> GetStatus(
         [Description("The sessionId returned by opcclassic.session.create and connected with opcclassic.dx.connect.")]
         string sessionId,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         DxClientState client = GetDxClient(sessionId);
         OpcServerStatus status = await client.Client.GetStatusAsync(cancellationToken).ConfigureAwait(false);
         return ToDto(status);
@@ -139,7 +150,8 @@ public sealed class DxTools {
         string[]? connectionMasks = null,
         [Description("True to include descendant browse paths.")]
         bool recursive = false,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         DxClientState client = GetDxClient(sessionId);
         return await client.Client.QueryConnectionNamesAsync(browsePath ?? string.Empty, connectionMasks ?? [], recursive, cancellationToken).ConfigureAwait(false);
     }
@@ -150,7 +162,8 @@ public sealed class DxTools {
     public async Task<IReadOnlyList<OpcDxSourceServerDto>> QuerySourceServers(
         [Description("The connected OPC Classic sessionId.")]
         string sessionId,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         DxClientState client = GetDxClient(sessionId);
         IReadOnlyList<DxSourceServer> sources = await client.Client.QuerySourceServersAsync(cancellationToken).ConfigureAwait(false);
         return sources.Select(ToDto).ToArray();
@@ -164,7 +177,8 @@ public sealed class DxTools {
         string sessionId,
         [Description("DX connection definition to add.")]
         OpcDxConnectionDto connection,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         ArgumentNullException.ThrowIfNull(connection);
         DxClientState client = GetDxClient(sessionId);
         OpcResultId result = await client.Client.AddConnectionAsync(ToConnection(connection), cancellationToken).ConfigureAwait(false);
@@ -179,7 +193,8 @@ public sealed class DxTools {
         string sessionId,
         [Description("DX connection definition to modify.")]
         OpcDxConnectionDto connection,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         ArgumentNullException.ThrowIfNull(connection);
         DxClientState client = GetDxClient(sessionId);
         OpcResultId result = await client.Client.ModifyConnectionAsync(ToConnection(connection), cancellationToken).ConfigureAwait(false);
@@ -200,7 +215,8 @@ public sealed class DxTools {
         string browsePath = "",
         [Description("True to include descendant browse paths.")]
         bool recursive = false,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         ArgumentException.ThrowIfNullOrWhiteSpace(connectionName);
         ArgumentNullException.ThrowIfNull(connection);
         DxClientState client = GetDxClient(sessionId);
@@ -220,7 +236,8 @@ public sealed class DxTools {
         string browsePath = "",
         [Description("True to include descendant browse paths.")]
         bool recursive = false,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         ArgumentException.ThrowIfNullOrWhiteSpace(connectionName);
         DxClientState client = GetDxClient(sessionId);
         OpcResultId result = await client.Client.DeleteConnectionAsync(browsePath ?? string.Empty, connectionName, recursive, cancellationToken).ConfigureAwait(false);
@@ -235,7 +252,8 @@ public sealed class DxTools {
         string sessionId,
         [Description("DX source-server definition to add.")]
         OpcDxSourceServerDto sourceServer,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         ArgumentNullException.ThrowIfNull(sourceServer);
         DxClientState client = GetDxClient(sessionId);
         OpcResultId result = await client.Client.AddSourceServerAsync(ToSourceServer(sourceServer), cancellationToken).ConfigureAwait(false);
@@ -250,7 +268,8 @@ public sealed class DxTools {
         string sessionId,
         [Description("DX source-server definition to modify.")]
         OpcDxSourceServerDto sourceServer,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         ArgumentNullException.ThrowIfNull(sourceServer);
         DxClientState client = GetDxClient(sessionId);
         OpcResultId result = await client.Client.ModifySourceServerAsync(ToSourceServer(sourceServer), cancellationToken).ConfigureAwait(false);
@@ -265,7 +284,8 @@ public sealed class DxTools {
         string sessionId,
         [Description("Optional current configuration version supplied to the server.")]
         string configurationVersion = "",
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         DxClientState client = GetDxClient(sessionId);
         string newVersion = await client.Client.ResetConfigurationAsync(configurationVersion ?? string.Empty, cancellationToken).ConfigureAwait(false);
         return new OpcResultDto(0, string.IsNullOrEmpty(newVersion) ? "DX configuration reset." : $"DX configuration reset. New version: {newVersion}", Succeeded: true, ValueType: newVersion);
@@ -276,11 +296,13 @@ public sealed class DxTools {
     [Description("Disconnects the session from its OPC DX server and releases DX client state.")]
     public async Task<OpcResultDto> Disconnect(
         [Description("The connected OPC Classic sessionId.")]
-        string sessionId) {
+        string sessionId)
+    {
         OpcSession session = _sessionManager.GetSession(sessionId);
         DxClientState? client = session.DxClient;
         session.DxClient = null;
-        if (client is not null) {
+        if (client is not null)
+        {
             await client.DisposeAsync().ConfigureAwait(false);
             return new OpcResultDto(0, "DX client disconnected.", Succeeded: true);
         }
@@ -288,7 +310,8 @@ public sealed class DxTools {
         return new OpcResultDto(1, "DX client was not connected.", Succeeded: false);
     }
 
-    private DxClientState GetDxClient(string sessionId) {
+    private DxClientState GetDxClient(string sessionId)
+    {
         OpcSession session = _sessionManager.GetSession(sessionId);
         return session.DxClient ?? throw new McpException($"Session '{sessionId}' is not connected to an OPC DX server. Call opcclassic.dx.connect first.");
     }
@@ -369,7 +392,8 @@ public sealed class DxTools {
 
     private static OpcVariant? ToVariantOrNull(object? value) => value is null ? null : ToVariant(value);
 
-    private static OpcVariant ToVariant(object? value) => value switch {
+    private static OpcVariant ToVariant(object? value) => value switch
+    {
         null => OpcVariant.Null,
         OpcVariant variant => variant,
         JsonElement element => ToVariant(element),
@@ -386,7 +410,8 @@ public sealed class DxTools {
         _ => OpcVariant.FromString(value.ToString() ?? string.Empty),
     };
 
-    private static OpcVariant ToVariant(JsonElement value) => value.ValueKind switch {
+    private static OpcVariant ToVariant(JsonElement value) => value.ValueKind switch
+    {
         JsonValueKind.Null or JsonValueKind.Undefined => OpcVariant.Null,
         JsonValueKind.True => OpcVariant.FromBoolean(true),
         JsonValueKind.False => OpcVariant.FromBoolean(false),
@@ -397,16 +422,20 @@ public sealed class DxTools {
         _ => OpcVariant.FromString(value.GetRawText()),
     };
 
-    private static OpcVariant StringToVariant(string? value) {
-        if (value is null) {
+    private static OpcVariant StringToVariant(string? value)
+    {
+        if (value is null)
+        {
             return OpcVariant.Null;
         }
 
-        if (DateTime.TryParse(value, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal, out DateTime dateTime)) {
+        if (DateTime.TryParse(value, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal, out DateTime dateTime))
+        {
             return OpcVariant.FromDate(dateTime);
         }
 
-        if (Guid.TryParse(value, out Guid guid)) {
+        if (Guid.TryParse(value, out Guid guid))
+        {
             return OpcVariant.FromClsid(guid);
         }
 
@@ -415,7 +444,8 @@ public sealed class DxTools {
 
     private static object? NormalizeVariant(OpcVariant? variant) => variant.HasValue ? NormalizeValue(OpcVariantConverter.ToObject(variant.Value)) : null;
 
-    private static object? NormalizeValue(object? value) => value switch {
+    private static object? NormalizeValue(object? value) => value switch
+    {
         DateTime dateTime => DateTime.SpecifyKind(dateTime, DateTimeKind.Utc),
         OpcSafeArray safeArray => safeArray.ToString(),
         _ => value,
@@ -437,7 +467,8 @@ public sealed class DxTools {
         status.MaxReturnValues,
         status.IsOperational);
 
-    private static OpcSessionDto ToSessionDto(OpcSession session) {
+    private static OpcSessionDto ToSessionDto(OpcSession session)
+    {
         DxClientState? dx = session.DxClient;
         return new OpcSessionDto(
             session.SessionId,
@@ -451,13 +482,17 @@ public sealed class DxTools {
             dx?.Clsid);
     }
 
-    private sealed class DefaultOpcDxConnectionFactory : IOpcDxConnectionFactory {
-        public Task<DxClientState> ConnectAsync(DxConnectionRequest request, CancellationToken cancellationToken = default) {
+    private sealed class DefaultOpcDxConnectionFactory : IOpcDxConnectionFactory
+    {
+        public Task<DxClientState> ConnectAsync(DxConnectionRequest request, CancellationToken cancellationToken = default)
+        {
             ArgumentNullException.ThrowIfNull(request);
             cancellationToken.ThrowIfCancellationRequested();
             string? key = TryGetInMemoryKey(request.ConnectionString);
-            if (key is not null) {
-                if (!InMemoryDxConnectionRegistry.TryGet(key, out IOpcDxClient client)) {
+            if (key is not null)
+            {
+                if (!InMemoryDxConnectionRegistry.TryGet(key, out IOpcDxClient client))
+                {
                     throw new McpException($"No in-memory DX client is registered for '{key}'.");
                 }
 
@@ -467,13 +502,16 @@ public sealed class DxTools {
             throw new McpException("No OPC DX connection factory is registered for DCOM connections. Register IOpcDxConnectionFactory or use connectionString=inmemory://name.");
         }
 
-        private static string? TryGetInMemoryKey(string? connectionString) {
-            if (string.IsNullOrWhiteSpace(connectionString)) {
+        private static string? TryGetInMemoryKey(string? connectionString)
+        {
+            if (string.IsNullOrWhiteSpace(connectionString))
+            {
                 return null;
             }
 
             if (Uri.TryCreate(connectionString, UriKind.Absolute, out Uri? uri)
-                && uri.Scheme.Equals("inmemory", StringComparison.OrdinalIgnoreCase)) {
+                && uri.Scheme.Equals("inmemory", StringComparison.OrdinalIgnoreCase))
+            {
                 string key = uri.Host + uri.AbsolutePath.Trim('/');
                 return string.IsNullOrWhiteSpace(key) ? null : key;
             }

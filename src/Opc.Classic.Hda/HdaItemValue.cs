@@ -11,7 +11,8 @@ namespace Opc.Classic.Hda;
 /// A single historical value: timestamp + value + quality. Mirrors
 /// <c>OPCHDA_ITEM</c>'s per-element shape.
 /// </summary>
-public sealed class HdaItemValue {
+public sealed class HdaItemValue
+{
     /// <summary>Server-supplied UTC timestamp.</summary>
     public DateTimeOffset Timestamp { get; init; }
 

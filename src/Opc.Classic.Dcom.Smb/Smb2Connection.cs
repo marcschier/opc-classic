@@ -34,7 +34,8 @@ public sealed record Smb2ConnectionOptions(
     string Host,
     int Port = 445,
     int ReceiveTimeoutMs = 30_000,
-    int SendTimeoutMs = 30_000) {
+    int SendTimeoutMs = 30_000)
+{
     public int MaxSmb2MessageSize { get; init; } = Smb2Constants.MaxNetBiosFrameSize;
 }
 
@@ -58,7 +59,8 @@ public sealed record Smb2ConnectionOptions(
 /// single SMB2 round-trip plus (for SESSION_SETUP) one or more NTLMSSP iterations.
 /// </para>
 /// </remarks>
-public sealed class Smb2Connection : IAsyncDisposable {
+public sealed class Smb2Connection : IAsyncDisposable
+{
     private readonly Smb2ConnectionOptions _options;
     private readonly ISmb2Transport _transport;
     private readonly Smb2MessageCounter _counter = new();
@@ -80,7 +82,8 @@ public sealed class Smb2Connection : IAsyncDisposable {
     private bool _disposed;
 
     /// <summary>Initializes a new SMB2 connection over the supplied transport.</summary>
-    public Smb2Connection(Smb2ConnectionOptions options, ISmb2Transport transport) {
+    public Smb2Connection(Smb2ConnectionOptions options, ISmb2Transport transport)
+    {
         _options = ValidateOptions(options ?? throw new ArgumentNullException(nameof(options)));
         _transport = transport ?? throw new ArgumentNullException(nameof(transport));
     }
@@ -99,9 +102,11 @@ public sealed class Smb2Connection : IAsyncDisposable {
     /// deriving keys per [MS-SMB2] §3.1.5.1 and §3.1.4.2.
     /// </summary>
     /// <param name="sessionKey">The established authentication SessionKey.</param>
-    public void SetSessionKey(ReadOnlySpan<byte> sessionKey) {
+    public void SetSessionKey(ReadOnlySpan<byte> sessionKey)
+    {
         ThrowIfDisposed();
-        if (_negotiatedDialect == default) {
+        if (_negotiatedDialect == default)
+        {
             throw new InvalidOperationException("Call NegotiateAsync before setting the SMB2 session key.");
         }
 
@@ -110,7 +115,8 @@ public sealed class Smb2Connection : IAsyncDisposable {
             : default;
         _signer = Smb2Signer.CreateForDialect(_negotiatedDialect, sessionKey, preauthContext);
 
-        if (_supportsEncryption) {
+        if (_supportsEncryption)
+        {
             Smb2Crypter.ValidateDialectAlgorithm(_negotiatedDialect, _encryptionAlgorithm);
             byte[] encryptionKey = Smb2Crypter.DeriveSmb3ClientEncryptionKey(_negotiatedDialect, sessionKey, preauthContext);
             byte[] decryptionKey = Smb2Crypter.DeriveSmb3ClientDecryptionKey(_negotiatedDialect, sessionKey, preauthContext);
@@ -125,7 +131,8 @@ public sealed class Smb2Connection : IAsyncDisposable {
     /// Performs the SMB2 NEGOTIATE exchange. The client advertises support for
     /// SMB 2.0.2 through SMB 3.1.1 and accepts the highest dialect the server selects.
     /// </summary>
-    public async Task<Smb2NegotiateResponse> NegotiateAsync(CancellationToken cancellationToken = default) {
+    public async Task<Smb2NegotiateResponse> NegotiateAsync(CancellationToken cancellationToken = default)
+    {
         ThrowIfDisposed();
 
         IReadOnlyList<Smb2Dialect> dialects =
@@ -159,7 +166,8 @@ public sealed class Smb2Connection : IAsyncDisposable {
             (response.SecurityMode & Smb2Constants.SecurityModeSigningEnabled) != 0;
         _supportsEncryption = IsSmb3Dialect(response.Dialect) &&
             ((response.Capabilities & Smb2Constants.GlobalCapEncryption) != 0 || response.EncryptionAlgorithm.HasValue);
-        if (_supportsEncryption) {
+        if (_supportsEncryption)
+        {
             _encryptionAlgorithm = response.EncryptionAlgorithm ?? Smb2Crypter.GetDefaultAlgorithmForDialect(response.Dialect);
         }
         InitializePreauthIntegrityHashIfNeeded();
@@ -185,20 +193,24 @@ public sealed class Smb2Connection : IAsyncDisposable {
     public async Task SessionSetupAsync(
         NtlmsspBlobProvider blobProvider,
         Smb2SessionKeyProvider? sessionKeyProvider,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         ArgumentNullException.ThrowIfNull(blobProvider);
         ThrowIfDisposed();
-        if (_negotiatedDialect == default) {
+        if (_negotiatedDialect == default)
+        {
             throw new InvalidOperationException("Call NegotiateAsync before SessionSetupAsync.");
         }
 
         ReadOnlyMemory<byte> serverBlob = ReadOnlyMemory<byte>.Empty;
         ReadOnlyMemory<byte>? clientBlob = blobProvider(serverBlob);
-        if (clientBlob is null) {
+        if (clientBlob is null)
+        {
             throw new InvalidOperationException("NtlmsspBlobProvider returned null on first call.");
         }
 
-        while (clientBlob is not null) {
+        while (clientBlob is not null)
+        {
             var setupRequest = new Smb2SessionSetupRequest(
                 Flags: 0,
                 SecurityMode: 0x01,
@@ -223,7 +235,8 @@ public sealed class Smb2Connection : IAsyncDisposable {
             // The provider may still want one final processing pass (e.g. to
             // extract the NTLM session key) — we call it one more time and
             // discard any non-null result.
-            if (_lastStatus == NtStatus.Success) {
+            if (_lastStatus == NtStatus.Success)
+            {
                 _ = blobProvider(response.SecurityBlob);
                 CaptureSessionEncryptionFlag(response);
                 ConfigureSessionSecurityAfterSessionSetup(sessionKeyProvider);
@@ -235,7 +248,8 @@ public sealed class Smb2Connection : IAsyncDisposable {
             clientBlob = blobProvider(serverBlob);
         }
 
-        if (_lastStatus != NtStatus.Success) {
+        if (_lastStatus != NtStatus.Success)
+        {
             throw new Smb2StatusException(
                 _lastStatus,
                 $"SESSION_SETUP did not complete; last NTSTATUS=0x{_lastStatus:X8}.");
@@ -243,9 +257,11 @@ public sealed class Smb2Connection : IAsyncDisposable {
     }
 
     /// <summary>Connects to the <c>IPC$</c> share on the server.</summary>
-    public async Task<Smb2TreeConnectResponse> TreeConnectIpcAsync(CancellationToken cancellationToken = default) {
+    public async Task<Smb2TreeConnectResponse> TreeConnectIpcAsync(CancellationToken cancellationToken = default)
+    {
         ThrowIfDisposed();
-        if (_sessionId == 0) {
+        if (_sessionId == 0)
+        {
             throw new InvalidOperationException("Call SessionSetupAsync before TreeConnectIpcAsync.");
         }
 
@@ -267,10 +283,12 @@ public sealed class Smb2Connection : IAsyncDisposable {
     /// <summary>Opens a named pipe on the IPC$ share (e.g. <c>"winreg"</c>).</summary>
     public async Task<Smb2NamedPipe> OpenNamedPipeAsync(
         string pipeName,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         ArgumentException.ThrowIfNullOrEmpty(pipeName);
         ThrowIfDisposed();
-        if (_treeId == 0) {
+        if (_treeId == 0)
+        {
             throw new InvalidOperationException("Call TreeConnectIpcAsync before OpenNamedPipeAsync.");
         }
 
@@ -298,7 +316,8 @@ public sealed class Smb2Connection : IAsyncDisposable {
     public async Task PipeWriteAsync(
         Smb2NamedPipe pipe,
         ReadOnlyMemory<byte> data,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         ArgumentNullException.ThrowIfNull(pipe);
         ThrowIfDisposed();
 
@@ -316,7 +335,8 @@ public sealed class Smb2Connection : IAsyncDisposable {
             maxBodySize: 48 + data.Length,
             cancellationToken: cancellationToken).ConfigureAwait(false);
         var response = Smb2WriteResponse.Read(responseBytes.Span);
-        if (response.Count != data.Length) {
+        if (response.Count != data.Length)
+        {
             throw new Smb2ProtocolException($"SMB2 WRITE acknowledged {response.Count} of {data.Length} bytes.");
         }
     }
@@ -325,7 +345,8 @@ public sealed class Smb2Connection : IAsyncDisposable {
     public async Task<ReadOnlyMemory<byte>> PipeReadAsync(
         Smb2NamedPipe pipe,
         int maxLength,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         ArgumentNullException.ThrowIfNull(pipe);
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(maxLength);
         ThrowIfDisposed();
@@ -352,7 +373,8 @@ public sealed class Smb2Connection : IAsyncDisposable {
         Smb2NamedPipe pipe,
         ReadOnlyMemory<byte> data,
         int maxOutputResponse = 64 * 1024,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         ArgumentNullException.ThrowIfNull(pipe);
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(maxOutputResponse);
         ThrowIfDisposed();
@@ -376,7 +398,8 @@ public sealed class Smb2Connection : IAsyncDisposable {
     }
 
     /// <summary>Closes a previously-opened named pipe handle.</summary>
-    public async Task ClosePipeAsync(Smb2NamedPipe pipe, CancellationToken cancellationToken = default) {
+    public async Task ClosePipeAsync(Smb2NamedPipe pipe, CancellationToken cancellationToken = default)
+    {
         ArgumentNullException.ThrowIfNull(pipe);
         ThrowIfDisposed();
         var request = new Smb2CloseRequest(pipe.FileIdPersistent, pipe.FileIdVolatile);
@@ -390,14 +413,18 @@ public sealed class Smb2Connection : IAsyncDisposable {
     }
 
     /// <inheritdoc />
-    public async ValueTask DisposeAsync() {
-        if (_disposed) {
+    public async ValueTask DisposeAsync()
+    {
+        if (_disposed)
+        {
             return;
         }
         _disposed = true;
 
-        try {
-            if (_treeId != 0) {
+        try
+        {
+            if (_treeId != 0)
+            {
                 _ = await ExchangeAsync(
                     command: Smb2Command.TreeDisconnect,
                     sessionId: _sessionId,
@@ -407,7 +434,8 @@ public sealed class Smb2Connection : IAsyncDisposable {
                     cancellationToken: default).ConfigureAwait(false);
             }
 
-            if (_sessionId != 0) {
+            if (_sessionId != 0)
+            {
                 _ = await ExchangeAsync(
                     command: Smb2Command.Logoff,
                     sessionId: _sessionId,
@@ -418,7 +446,8 @@ public sealed class Smb2Connection : IAsyncDisposable {
             }
         }
 #pragma warning disable CA1031 // Tear-down: any failure is non-fatal because we close the transport unconditionally below.
-        catch {
+        catch
+        {
             // Ignore teardown errors; the transport is being closed regardless.
         }
 #pragma warning restore CA1031
@@ -428,12 +457,15 @@ public sealed class Smb2Connection : IAsyncDisposable {
 
     private uint _lastStatus;
 
-    private static Smb2ConnectionOptions ValidateOptions(Smb2ConnectionOptions options) {
+    private static Smb2ConnectionOptions ValidateOptions(Smb2ConnectionOptions options)
+    {
         ArgumentException.ThrowIfNullOrWhiteSpace(options.Host);
-        if (options.Port is <= 0 or > 65535) {
+        if (options.Port is <= 0 or > 65535)
+        {
             throw new ArgumentOutOfRangeException(nameof(options), options.Port, "Port must be 1..65535.");
         }
-        if (options.MaxSmb2MessageSize is <= Smb2Constants.PacketHeaderSize or > Smb2Constants.MaxNetBiosFrameSize) {
+        if (options.MaxSmb2MessageSize is <= Smb2Constants.PacketHeaderSize or > Smb2Constants.MaxNetBiosFrameSize)
+        {
             throw new ArgumentOutOfRangeException(
                 nameof(options),
                 options.MaxSmb2MessageSize,
@@ -453,10 +485,12 @@ public sealed class Smb2Connection : IAsyncDisposable {
         CancellationToken cancellationToken,
         Func<uint, bool>? expectedStatus = null,
         Action<ulong>? captureSessionId = null,
-        Action<uint>? captureTreeId = null) {
+        Action<uint>? captureTreeId = null)
+    {
         byte[] packetBuffer = CreateRequestPacket(command, sessionId, treeId, maxBodySize);
         int bodySize = writeBody(packetBuffer.AsSpan(Smb2Constants.PacketHeaderSize));
-        if (bodySize < 0 || bodySize > maxBodySize) {
+        if (bodySize < 0 || bodySize > maxBodySize)
+        {
             throw new Smb2ProtocolException($"SMB2 {command} writer produced invalid body size {bodySize}.");
         }
         int totalSize = Smb2Constants.PacketHeaderSize + bodySize;
@@ -468,7 +502,8 @@ public sealed class Smb2Connection : IAsyncDisposable {
             totalSize,
             out bool requestWasEncrypted);
 
-        if (command == Smb2Command.Negotiate) {
+        if (command == Smb2Command.Negotiate)
+        {
             _lastNegotiateRequest = packetBuffer.AsSpan(0, totalSize).ToArray();
         }
 
@@ -484,7 +519,8 @@ public sealed class Smb2Connection : IAsyncDisposable {
         CaptureSigningState(command, packetBuffer.AsSpan(0, totalSize), responseBuffer.Span);
 
         var responseHeader = Smb2PacketHeader.Read(responseBuffer.Span);
-        if (!responseWasEncrypted) {
+        if (!responseWasEncrypted)
+        {
             VerifyResponseSignatureIfNeeded(command, responseHeader, responseBuffer.Span);
         }
         _lastStatus = responseHeader.Status;
@@ -494,7 +530,8 @@ public sealed class Smb2Connection : IAsyncDisposable {
         bool ok = expectedStatus is null
             ? responseHeader.Status == NtStatus.Success
             : expectedStatus(responseHeader.Status);
-        if (!ok) {
+        if (!ok)
+        {
             throw new Smb2StatusException(
                 responseHeader.Status,
                 $"SMB2 {command} returned NTSTATUS=0x{responseHeader.Status:X8}.");
@@ -503,8 +540,10 @@ public sealed class Smb2Connection : IAsyncDisposable {
         return responseBuffer[Smb2Constants.PacketHeaderSize..];
     }
 
-    private byte[] CreateRequestPacket(Smb2Command command, ulong sessionId, uint treeId, int maxBodySize) {
-        if (maxBodySize < 0 || maxBodySize > _options.MaxSmb2MessageSize - Smb2Constants.PacketHeaderSize) {
+    private byte[] CreateRequestPacket(Smb2Command command, ulong sessionId, uint treeId, int maxBodySize)
+    {
+        if (maxBodySize < 0 || maxBodySize > _options.MaxSmb2MessageSize - Smb2Constants.PacketHeaderSize)
+        {
             throw new Smb2ProtocolException(
                 $"SMB2 {command} request body quota {maxBodySize} exceeds the configured message quota of {_options.MaxSmb2MessageSize} bytes.");
         }
@@ -529,30 +568,38 @@ public sealed class Smb2Connection : IAsyncDisposable {
     private void CaptureSigningState(
         Smb2Command command,
         ReadOnlySpan<byte> requestPacket,
-        ReadOnlySpan<byte> responsePacket) {
-        if (command == Smb2Command.Negotiate) {
+        ReadOnlySpan<byte> responsePacket)
+    {
+        if (command == Smb2Command.Negotiate)
+        {
             _lastNegotiateResponse = responsePacket.ToArray();
         }
-        else if (command == Smb2Command.SessionSetup) {
+        else if (command == Smb2Command.SessionSetup)
+        {
             UpdatePreauthIntegrityHashForSessionSetup(requestPacket, responsePacket);
         }
     }
 
-    private void CaptureSessionEncryptionFlag(Smb2SessionSetupResponse response) {
+    private void CaptureSessionEncryptionFlag(Smb2SessionSetupResponse response)
+    {
         _sessionEncryptData = _supportsEncryption &&
             (response.SessionFlags & Smb2Constants.SessionFlagEncryptData) != 0;
-        if (_sessionEncryptData) {
+        if (_sessionEncryptData)
+        {
             _signingRequired = false;
         }
     }
 
-    private void ConfigureSessionSecurityAfterSessionSetup(Smb2SessionKeyProvider? sessionKeyProvider) {
-        if (!_signingEnabled && !_signingRequired && !_supportsEncryption) {
+    private void ConfigureSessionSecurityAfterSessionSetup(Smb2SessionKeyProvider? sessionKeyProvider)
+    {
+        if (!_signingEnabled && !_signingRequired && !_supportsEncryption)
+        {
             return;
         }
 
         ReadOnlyMemory<byte>? sessionKey = sessionKeyProvider?.Invoke();
-        if (!sessionKey.HasValue || sessionKey.Value.IsEmpty) {
+        if (!sessionKey.HasValue || sessionKey.Value.IsEmpty)
+        {
             throw new InvalidOperationException(
                 "SMB2 signing or encryption was negotiated, but no NTLMSSP/Kerberos SessionKey was provided.");
         }
@@ -566,9 +613,11 @@ public sealed class Smb2Connection : IAsyncDisposable {
         uint treeId,
         byte[] packetBuffer,
         int totalSize,
-        out bool requestWasEncrypted) {
+        out bool requestWasEncrypted)
+    {
         requestWasEncrypted = ShouldEncrypt(command, sessionId, treeId);
-        if (requestWasEncrypted) {
+        if (requestWasEncrypted)
+        {
             return EncryptRequest(packetBuffer.AsSpan(0, totalSize), sessionId);
         }
 
@@ -580,33 +629,41 @@ public sealed class Smb2Connection : IAsyncDisposable {
         ReadOnlySpan<byte> rawResponsePacket,
         ulong sessionId,
         bool requestWasEncrypted,
-        out bool responseWasEncrypted) {
-        if (rawResponsePacket.Length > _options.MaxSmb2MessageSize) {
+        out bool responseWasEncrypted)
+    {
+        if (rawResponsePacket.Length > _options.MaxSmb2MessageSize)
+        {
             throw new Smb2ProtocolException(
                 $"SMB2 response length {rawResponsePacket.Length} exceeds the configured message quota of {_options.MaxSmb2MessageSize} bytes.");
         }
 
         var responseBuffer = DecryptResponseIfNeeded(rawResponsePacket, sessionId, out responseWasEncrypted);
-        if (responseBuffer.Length > _options.MaxSmb2MessageSize) {
+        if (responseBuffer.Length > _options.MaxSmb2MessageSize)
+        {
             throw new Smb2ProtocolException(
                 $"SMB2 decoded response length {responseBuffer.Length} exceeds the configured message quota of {_options.MaxSmb2MessageSize} bytes.");
         }
-        if (!responseWasEncrypted && requestWasEncrypted) {
+        if (!responseWasEncrypted && requestWasEncrypted)
+        {
             throw new Smb2ProtocolException("SMB2 response was not encrypted after encryption was required.");
         }
-        if (responseBuffer.Length < Smb2Constants.PacketHeaderSize) {
+        if (responseBuffer.Length < Smb2Constants.PacketHeaderSize)
+        {
             throw new Smb2ProtocolException("SMB2 response too short for a header.");
         }
 
         return responseBuffer;
     }
 
-    private void SignRequestIfNeeded(Smb2Command command, ulong sessionId, uint treeId, Span<byte> packet) {
-        if (!ShouldSign(command, sessionId, treeId)) {
+    private void SignRequestIfNeeded(Smb2Command command, ulong sessionId, uint treeId, Span<byte> packet)
+    {
+        if (!ShouldSign(command, sessionId, treeId))
+        {
             return;
         }
 
-        if (_signer is null) {
+        if (_signer is null)
+        {
             throw new InvalidOperationException(
                 "SMB2 signing was negotiated, but no NTLMSSP/Kerberos SessionKey was provided.");
         }
@@ -618,16 +675,20 @@ public sealed class Smb2Connection : IAsyncDisposable {
     private void VerifyResponseSignatureIfNeeded(
         Smb2Command command,
         Smb2PacketHeader responseHeader,
-        ReadOnlySpan<byte> responsePacket) {
-        if (!ShouldSign(command, responseHeader.SessionId, responseHeader.TreeId)) {
+        ReadOnlySpan<byte> responsePacket)
+    {
+        if (!ShouldSign(command, responseHeader.SessionId, responseHeader.TreeId))
+        {
             return;
         }
 
-        if ((responseHeader.Flags & Smb2Constants.FlagsSigned) == 0) {
+        if ((responseHeader.Flags & Smb2Constants.FlagsSigned) == 0)
+        {
             throw new Smb2ProtocolException("SMB2 response was not signed after signing was negotiated.");
         }
 
-        if (_signer is null || !_signer.VerifySignature(responsePacket)) {
+        if (_signer is null || !_signer.VerifySignature(responsePacket))
+        {
             throw new Smb2ProtocolException("SMB2 response signature verification failed.");
         }
     }
@@ -646,18 +707,22 @@ public sealed class Smb2Connection : IAsyncDisposable {
         command != Smb2Command.SessionSetup &&
         (_sessionEncryptData || (treeId != 0 && _treeEncryptData));
 
-    private ReadOnlyMemory<byte> EncryptRequest(ReadOnlySpan<byte> packet, ulong sessionId) {
-        if (_encrypter is null) {
+    private ReadOnlyMemory<byte> EncryptRequest(ReadOnlySpan<byte> packet, ulong sessionId)
+    {
+        if (_encrypter is null)
+        {
             throw new InvalidOperationException(
                 "SMB3 encryption was negotiated, but no NTLMSSP/Kerberos SessionKey was provided.");
         }
 
         byte[] nonce = new byte[_encrypter.NonceLength];
         RandomNumberGenerator.Fill(nonce);
-        try {
+        try
+        {
             return _encrypter.EncryptMessage(packet, nonce, sessionId);
         }
-        finally {
+        finally
+        {
             CryptographicOperations.ZeroMemory(nonce);
         }
     }
@@ -665,16 +730,20 @@ public sealed class Smb2Connection : IAsyncDisposable {
     private ReadOnlyMemory<byte> DecryptResponseIfNeeded(
         ReadOnlySpan<byte> responsePacket,
         ulong expectedSessionId,
-        out bool responseWasEncrypted) {
+        out bool responseWasEncrypted)
+    {
         responseWasEncrypted = Smb2TransformHeader.HasTransformProtocolId(responsePacket);
-        if (!responseWasEncrypted) {
+        if (!responseWasEncrypted)
+        {
             return responsePacket.ToArray();
         }
 
-        if (!_supportsEncryption) {
+        if (!_supportsEncryption)
+        {
             throw new Smb2ProtocolException("Received an SMB2 TRANSFORM_HEADER before encryption was negotiated.");
         }
-        if (_decrypter is null) {
+        if (_decrypter is null)
+        {
             throw new InvalidOperationException(
                 "SMB3 encryption was negotiated, but no NTLMSSP/Kerberos SessionKey was provided.");
         }
@@ -686,15 +755,18 @@ public sealed class Smb2Connection : IAsyncDisposable {
     private static bool IsSmb3Dialect(Smb2Dialect dialect) =>
         dialect is Smb2Dialect.Smb300 or Smb2Dialect.Smb302 or Smb2Dialect.Smb311;
 
-    private void InitializePreauthIntegrityHashIfNeeded() {
-        if (_negotiatedDialect != Smb2Dialect.Smb311) {
+    private void InitializePreauthIntegrityHashIfNeeded()
+    {
+        if (_negotiatedDialect != Smb2Dialect.Smb311)
+        {
             _preauthIntegrityHash = null;
             _lastNegotiateRequest = null;
             _lastNegotiateResponse = null;
             return;
         }
 
-        if (_lastNegotiateRequest is null || _lastNegotiateResponse is null) {
+        if (_lastNegotiateRequest is null || _lastNegotiateResponse is null)
+        {
             throw new Smb2ProtocolException("SMB 3.1.1 preauth hash cannot be initialized without NEGOTIATE messages.");
         }
 
@@ -707,8 +779,10 @@ public sealed class Smb2Connection : IAsyncDisposable {
 
     private void UpdatePreauthIntegrityHashForSessionSetup(
         ReadOnlySpan<byte> requestPacket,
-        ReadOnlySpan<byte> responsePacket) {
-        if (_negotiatedDialect != Smb2Dialect.Smb311 || _preauthIntegrityHash is null) {
+        ReadOnlySpan<byte> responsePacket)
+    {
+        if (_negotiatedDialect != Smb2Dialect.Smb311 || _preauthIntegrityHash is null)
+        {
             return;
         }
 
@@ -716,7 +790,8 @@ public sealed class Smb2Connection : IAsyncDisposable {
         UpdatePreauthIntegrityHash(responsePacket);
     }
 
-    private void UpdatePreauthIntegrityHash(ReadOnlySpan<byte> packet) {
+    private void UpdatePreauthIntegrityHash(ReadOnlySpan<byte> packet)
+    {
         byte[] previous = GetPreauthIntegrityHash().ToArray();
         byte[] input = new byte[previous.Length + packet.Length];
         previous.CopyTo(input, 0);
@@ -729,24 +804,28 @@ public sealed class Smb2Connection : IAsyncDisposable {
         _preauthIntegrityHash ?? throw new InvalidOperationException(
             "SMB 3.1.1 signing requires the PreauthIntegrityHashValue before deriving the signing key.");
 
-    private void ThrowIfDisposed() {
+    private void ThrowIfDisposed()
+    {
         ObjectDisposedException.ThrowIf(_disposed, this);
     }
 }
 
 /// <summary>Allocates monotonic SMB2 MessageIds (per [MS-SMB2] §3.2.4.1.4).</summary>
-internal sealed class Smb2MessageCounter {
+internal sealed class Smb2MessageCounter
+{
     private ulong _next;
 
     public ulong Next() => Interlocked.Increment(ref _next);
 }
 
 /// <summary>Handle to an opened SMB2 named pipe (FileId on the wire).</summary>
-public sealed class Smb2NamedPipe : IAsyncDisposable {
+public sealed class Smb2NamedPipe : IAsyncDisposable
+{
     private readonly Smb2Connection _connection;
     private bool _closed;
 
-    internal Smb2NamedPipe(Smb2Connection connection, ulong fileIdPersistent, ulong fileIdVolatile) {
+    internal Smb2NamedPipe(Smb2Connection connection, ulong fileIdPersistent, ulong fileIdVolatile)
+    {
         _connection = connection;
         FileIdPersistent = fileIdPersistent;
         FileIdVolatile = fileIdVolatile;
@@ -772,8 +851,10 @@ public sealed class Smb2NamedPipe : IAsyncDisposable {
         _connection.PipeTransceiveAsync(this, data, maxOutputResponse, cancellationToken);
 
     /// <inheritdoc />
-    public async ValueTask DisposeAsync() {
-        if (_closed) {
+    public async ValueTask DisposeAsync()
+    {
+        if (_closed)
+        {
             return;
         }
         _closed = true;

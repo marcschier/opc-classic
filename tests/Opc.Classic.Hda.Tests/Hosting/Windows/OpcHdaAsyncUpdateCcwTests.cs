@@ -19,7 +19,8 @@ using TUnit.Core;
 namespace Opc.Classic.Hda.Tests.Hosting.Windows;
 
 [SupportedOSPlatform("windows")]
-public sealed class OpcHdaAsyncUpdateCcwTests {
+public sealed class OpcHdaAsyncUpdateCcwTests
+{
     private const int S_OK = 0;
     private const int S_FALSE = 1;
     private const int E_FAIL = unchecked((int)0x80004005);
@@ -27,8 +28,10 @@ public sealed class OpcHdaAsyncUpdateCcwTests {
     private static readonly Guid IID_IUnknown = Guid.Parse("00000000-0000-0000-C000-000000000046");
 
     [Test]
-    public async Task QueryCapabilities_returns_update_capability_mask() {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task QueryCapabilities_returns_update_capability_mask()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
@@ -46,8 +49,10 @@ public sealed class OpcHdaAsyncUpdateCcwTests {
     [Arguments(4)]
     [Arguments(5)]
     [Arguments(6)]
-    public async Task Async_insert_replace_and_insert_replace_return_cancel_ids_and_fire_update_callback(int slot) {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task Async_insert_replace_and_insert_replace_return_cancel_ids_and_fire_update_callback(int slot)
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
@@ -75,8 +80,10 @@ public sealed class OpcHdaAsyncUpdateCcwTests {
     }
 
     [Test]
-    public async Task Async_delete_methods_return_errors_and_callbacks() {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task Async_delete_methods_return_errors_and_callbacks()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
@@ -110,8 +117,10 @@ public sealed class OpcHdaAsyncUpdateCcwTests {
     [Arguments(4)]
     [Arguments(5)]
     [Arguments(6)]
-    public async Task Async_write_methods_reject_count_zero(int slot) {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task Async_write_methods_reject_count_zero(int slot)
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
@@ -127,8 +136,10 @@ public sealed class OpcHdaAsyncUpdateCcwTests {
     }
 
     [Test]
-    public async Task Cancel_returns_cancel_complete_for_pending_update_and_E_FAIL_for_unknown_cancel_id() {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task Cancel_returns_cancel_complete_for_pending_update_and_E_FAIL_for_unknown_cancel_id()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
@@ -157,7 +168,8 @@ public sealed class OpcHdaAsyncUpdateCcwTests {
         await Assert.That(unknownHr).IsEqualTo(E_FAIL);
     }
 
-    private sealed class UpdateServer : IOpcHdaServer, IOPCHDA_SyncUpdate {
+    private sealed class UpdateServer : IOpcHdaServer, IOPCHDA_SyncUpdate
+    {
         public Task<OpcServerStatus> GetStatusAsync(CancellationToken cancellationToken = default) =>
             Task.FromResult(new OpcServerStatus { Spec = OpcStatusSpec.Hda });
 
@@ -171,32 +183,38 @@ public sealed class OpcHdaAsyncUpdateCcwTests {
         public Task<int[]> DeleteRawAsync(OpcHdaTime startTime, OpcHdaTime endTime, int[] serverHandles, CancellationToken cancellationToken = default) { _ = startTime; _ = endTime; return Task.FromResult(Errors(serverHandles, S_OK)); }
         public Task<int[]> DeleteAtTimeAsync(int[] serverHandles, long[] timestampFileTimes, CancellationToken cancellationToken = default) { _ = timestampFileTimes; return Task.FromResult(Errors(serverHandles, S_OK)); }
 
-        private static int[] Errors(int[] handles, int success) {
+        private static int[] Errors(int[] handles, int success)
+        {
             var errors = new int[handles.Length];
-            for (int i = 0; i < handles.Length; i++) {
+            for (int i = 0; i < handles.Length; i++)
+            {
                 errors[i] = handles[i] == 404 ? OpcResultId.InvalidHandle.Code : success;
             }
             return errors;
         }
     }
 
-    private static class Native {
+    private static class Native
+    {
         private static int HdaTimeSize => IntPtr.Size == 8 ? 24 : 16;
         private static int HdaTimeFileTimeOffset => IntPtr.Size == 8 ? 16 : 8;
         private static int VariantSize => IntPtr.Size == 8 ? 24 : 16;
 
-        internal static IntPtr InvokeQI(IntPtr ccw, Guid iid) {
+        internal static IntPtr InvokeQI(IntPtr ccw, Guid iid)
+        {
             QueryInterfaceDelegate qi = GetMethod<QueryInterfaceDelegate>(ccw, 0);
             int hr = qi(ccw, ref iid, out IntPtr returned);
             return hr == S_OK ? returned : IntPtr.Zero;
         }
 
-        internal static uint Advise(IntPtr ccw, IntPtr callback) {
+        internal static uint Advise(IntPtr ccw, IntPtr callback)
+        {
             IntPtr cpc = InvokeQI(ccw, OpcGuids.IID_IConnectionPointContainer);
             FindConnectionPointDelegate find = GetMethod<FindConnectionPointDelegate>(cpc, 4);
             Guid iid = IOPCHDA_DataCallback.InterfaceId;
             int hr = find(cpc, ref iid, out IntPtr cp);
-            if (hr != S_OK) {
+            if (hr != S_OK)
+            {
                 return 0;
             }
             AdviseDelegate advise = GetMethod<AdviseDelegate>(cp, 5);
@@ -204,15 +222,18 @@ public sealed class OpcHdaAsyncUpdateCcwTests {
             return hr == S_OK ? cookie : 0;
         }
 
-        internal static T GetMethod<T>(IntPtr tearoff, int slot) where T : Delegate {
+        internal static T GetMethod<T>(IntPtr tearoff, int slot) where T : Delegate
+        {
             IntPtr vtable = Marshal.ReadIntPtr(tearoff);
             IntPtr method = Marshal.ReadIntPtr(vtable, slot * IntPtr.Size);
             return Marshal.GetDelegateForFunctionPointer<T>(method);
         }
 
-        internal static int[] ReadAndFreeErrors(IntPtr ptr, int count) {
+        internal static int[] ReadAndFreeErrors(IntPtr ptr, int count)
+        {
             var values = new int[count];
-            if (ptr != IntPtr.Zero && count > 0) {
+            if (ptr != IntPtr.Zero && count > 0)
+            {
                 Marshal.Copy(ptr, values, 0, count);
                 Marshal.FreeCoTaskMem(ptr);
             }
@@ -235,7 +256,8 @@ public sealed class OpcHdaAsyncUpdateCcwTests {
         internal sealed class CoTaskMemBlock : IDisposable { private CoTaskMemBlock(IntPtr pointer) => Pointer = pointer; public IntPtr Pointer { get; } public static CoTaskMemBlock Allocate(int byteCount) { IntPtr ptr = Marshal.AllocCoTaskMem(byteCount); for (int i = 0; i < byteCount; i++) { Marshal.WriteByte(ptr, i, 0); } return new CoTaskMemBlock(ptr); } public void Dispose() => Marshal.FreeCoTaskMem(Pointer); }
     }
 
-    private sealed class CallbackCcw : IDisposable {
+    private sealed class CallbackCcw : IDisposable
+    {
         private static readonly ConcurrentDictionary<IntPtr, CallbackCcw> s_instances = new();
         private static readonly QueryInterfaceCallback s_queryInterface = QueryInterface;
         private static readonly RefCountCallback s_addRef = AddRef;
@@ -250,7 +272,8 @@ public sealed class OpcHdaAsyncUpdateCcwTests {
         private int _cancelId;
         private int _transactionId;
 
-        public CallbackCcw() {
+        public CallbackCcw()
+        {
             _vtable = Marshal.AllocCoTaskMem(12 * IntPtr.Size);
             WriteSlot(0, s_queryInterface);
             WriteSlot(1, s_addRef);
@@ -274,7 +297,8 @@ public sealed class OpcHdaAsyncUpdateCcwTests {
         public uint CancelId => unchecked((uint)Volatile.Read(ref _cancelId));
         public uint LastTransactionId => unchecked((uint)Volatile.Read(ref _transactionId));
 
-        public void Dispose() {
+        public void Dispose()
+        {
             s_instances.TryRemove(Pointer, out _);
             Marshal.FreeCoTaskMem(Pointer);
             Marshal.FreeCoTaskMem(_vtable);

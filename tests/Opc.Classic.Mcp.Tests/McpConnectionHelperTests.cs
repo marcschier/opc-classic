@@ -10,9 +10,11 @@ using TUnit.Core;
 
 namespace Opc.Classic.Mcp.Tests;
 
-public sealed class McpConnectionHelperTests {
+public sealed class McpConnectionHelperTests
+{
     [Test]
-    public async Task OpcMcpDcomConnectionHelper_NormalizeRequest_Parses_opc_scheme_url() {
+    public async Task OpcMcpDcomConnectionHelper_NormalizeRequest_Parses_opc_scheme_url()
+    {
         object request = InvokeStatic<object>(
             "OpcMcpDcomConnectionHelper",
             "NormalizeRequest",
@@ -37,7 +39,8 @@ public sealed class McpConnectionHelperTests {
     }
 
     [Test]
-    public async Task OpcMcpDcomConnectionHelper_NormalizeRequest_Parses_guid_path_as_clsid() {
+    public async Task OpcMcpDcomConnectionHelper_NormalizeRequest_Parses_guid_path_as_clsid()
+    {
         const string classId = "10138C2C-0000-0000-0000-00000000A001";
 
         object request = InvokeStatic<object>(
@@ -64,21 +67,24 @@ public sealed class McpConnectionHelperTests {
     [Arguments("inmemory://host/path", "hostpath")]
     [Arguments("inmemory:local-channel", "local-channel")]
     [Arguments("INMEMORY:/trimmed/", "trimmed")]
-    public async Task OpcMcpDcomConnectionHelper_TryGetInMemoryKey_Parses_supported_forms(string connectionString, string expected) {
+    public async Task OpcMcpDcomConnectionHelper_TryGetInMemoryKey_Parses_supported_forms(string connectionString, string expected)
+    {
         string? actual = InvokeStatic<string?>("OpcMcpDcomConnectionHelper", "TryGetInMemoryKey", connectionString);
 
         await Assert.That(actual).IsEqualTo(expected);
     }
 
     [Test]
-    public async Task OpcMcpDcomConnectionHelper_TryGetInMemoryKey_Returns_null_for_blank_or_other_schemes() {
+    public async Task OpcMcpDcomConnectionHelper_TryGetInMemoryKey_Returns_null_for_blank_or_other_schemes()
+    {
         await Assert.That(InvokeStatic<string?>("OpcMcpDcomConnectionHelper", "TryGetInMemoryKey", (object?)null)).IsNull();
         await Assert.That(InvokeStatic<string?>("OpcMcpDcomConnectionHelper", "TryGetInMemoryKey", "  ")).IsNull();
         await Assert.That(InvokeStatic<string?>("OpcMcpDcomConnectionHelper", "TryGetInMemoryKey", "opcda://host/Server")).IsNull();
     }
 
     [Test]
-    public async Task OpcClassicDcomConnectionFactory_NormalizeRequest_Parses_connection_url_and_trims_fields() {
+    public async Task OpcClassicDcomConnectionFactory_NormalizeRequest_Parses_connection_url_and_trims_fields()
+    {
         const string classId = "10138C2C-0000-0000-0000-00000000B001";
         object original = CreateClassicConnectionRequest(
             "  fallback  ",
@@ -106,7 +112,8 @@ public sealed class McpConnectionHelperTests {
     [Arguments("tcp://127.0.0.1:51301", "127.0.0.1", 51301)]
     [Arguments("tcp://localhost:5000", "localhost", 5000)]
     [Arguments("TCP://example.com:65535", "example.com", 65535)]
-    public async Task OpcMcpDcomConnectionHelper_TryGetTcpEndpoint_Parses_supported_forms(string connectionString, string expectedHost, int expectedPort) {
+    public async Task OpcMcpDcomConnectionHelper_TryGetTcpEndpoint_Parses_supported_forms(string connectionString, string expectedHost, int expectedPort)
+    {
         object?[] args = [connectionString, null, 0];
         bool ok = InvokeStaticWithOut<bool>("OpcMcpDcomConnectionHelper", "TryGetTcpEndpoint", args);
         await Assert.That(ok).IsTrue();
@@ -124,7 +131,8 @@ public sealed class McpConnectionHelperTests {
     [Arguments("tcp://")]
     [Arguments("tcp://hostonly")]
     [Arguments("not-a-uri")]
-    public async Task OpcMcpDcomConnectionHelper_TryGetTcpEndpoint_Returns_false_for_non_tcp_or_invalid(string? connectionString) {
+    public async Task OpcMcpDcomConnectionHelper_TryGetTcpEndpoint_Returns_false_for_non_tcp_or_invalid(string? connectionString)
+    {
         object?[] args = [connectionString, null, 0];
         bool ok = InvokeStaticWithOut<bool>("OpcMcpDcomConnectionHelper", "TryGetTcpEndpoint", args);
         await Assert.That(ok).IsFalse();
@@ -133,7 +141,8 @@ public sealed class McpConnectionHelperTests {
     }
 
     [Test]
-    public async Task OpcClassicDcomConnectionFactory_TryGetInMemoryKey_Parses_uri_and_prefixed_forms() {
+    public async Task OpcClassicDcomConnectionFactory_TryGetInMemoryKey_Parses_uri_and_prefixed_forms()
+    {
         await Assert.That(InvokeStatic<string?>("OpcClassicDcomConnectionFactory", "TryGetInMemoryKey", "inmemory://batch-loop")).IsEqualTo("batch-loop");
         await Assert.That(InvokeStatic<string?>("OpcClassicDcomConnectionFactory", "TryGetInMemoryKey", "inmemory://host/path")).IsEqualTo("hostpath");
         await Assert.That(InvokeStatic<string?>("OpcClassicDcomConnectionFactory", "TryGetInMemoryKey", "inmemory:batch-channel")).IsEqualTo("batch-channel");
@@ -148,7 +157,8 @@ public sealed class McpConnectionHelperTests {
         string? password,
         bool useKerberos,
         string? connectionString,
-        string? authLevel) {
+        string? authLevel)
+    {
         Type type = GetToolType("OpcClassicConnectionRequest");
         return Activator.CreateInstance(
             type,
@@ -161,26 +171,32 @@ public sealed class McpConnectionHelperTests {
     private static T? GetProperty<T>(object instance, string propertyName) =>
         (T?)instance.GetType().GetProperty(propertyName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)!.GetValue(instance);
 
-    private static T InvokeStatic<T>(string typeName, string methodName, params object?[] args) {
+    private static T InvokeStatic<T>(string typeName, string methodName, params object?[] args)
+    {
         Type type = GetToolType(typeName);
         MethodInfo method = type.GetMethod(methodName, BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic)!;
-        try {
+        try
+        {
             return (T)method.Invoke(null, args)!;
         }
-        catch (TargetInvocationException ex) when (ex.InnerException is not null) {
+        catch (TargetInvocationException ex) when (ex.InnerException is not null)
+        {
             ExceptionDispatchInfo.Capture(ex.InnerException).Throw();
             throw;
         }
     }
 
-    private static T InvokeStaticWithOut<T>(string typeName, string methodName, object?[] args) {
+    private static T InvokeStaticWithOut<T>(string typeName, string methodName, object?[] args)
+    {
         Type type = GetToolType(typeName);
         MethodInfo method = type.GetMethod(methodName, BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic)!;
-        try {
+        try
+        {
             object? result = method.Invoke(null, args);
             return (T)result!;
         }
-        catch (TargetInvocationException ex) when (ex.InnerException is not null) {
+        catch (TargetInvocationException ex) when (ex.InnerException is not null)
+        {
             ExceptionDispatchInfo.Capture(ex.InnerException).Throw();
             throw;
         }

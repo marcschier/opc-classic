@@ -29,7 +29,8 @@ namespace Opc.Classic.Dcom.Common;
 /// </para>
 /// Please refer to MSWMI example for more details on how to use this class.
 /// </remarks>
-public interface IUnreferenced {
+public interface IUnreferenced
+{
 
     /// <summary>
     /// Called when the <code><see cref="IComObject"/></code> associated with this

@@ -13,7 +13,8 @@ using Opc.Classic.Dcom.Rpc;
 
 namespace Opc.Classic.Dcom.Core;
 
-internal sealed class RemActivation : NdrOp, IServerActivation {
+internal sealed class RemActivation : NdrOp, IServerActivation
+{
 
     /// <summary>
     /// That
@@ -54,7 +55,8 @@ internal sealed class RemActivation : NdrOp, IServerActivation {
     /// Create activation
     /// </summary>
     /// <param name="clsid"></param>
-    public RemActivation(string clsid) {
+    public RemActivation(string clsid)
+    {
         ClientImpersonationLevel = RpcImpersonationLevel.RPC_C_IMP_LEVEL_IMPERSONATE;
         // 10000002-0000-0000-0000-000000000001 Inside DCOM
         _clsid = new UUID(clsid);
@@ -64,8 +66,10 @@ internal sealed class RemActivation : NdrOp, IServerActivation {
     /// Set file moniker
     /// </summary>
     /// <param name="name"></param>
-    public void SetfileMonikerAtServer(string name) {
-        if (name != null && !name.Equals("", StringComparison.CurrentCultureIgnoreCase)) {
+    public void SetfileMonikerAtServer(string name)
+    {
+        if (name != null && !name.Equals("", StringComparison.CurrentCultureIgnoreCase))
+        {
             _monikerName = name;
         }
     }
@@ -74,23 +78,28 @@ internal sealed class RemActivation : NdrOp, IServerActivation {
     public override int Opnum => 0;
 
     /// <inheritdoc/>
-    public override void Write(NdrCodec ndr) {
+    public override void Write(NdrCodec ndr)
+    {
         var orpcThis = new OrpcThis();
         orpcThis.Encode(ndr);
 
         // Clsid of the component being activated.
         var uuid = new UUID();
         uuid.Parse(_clsid.ToString());
-        try {
+        try
+        {
             uuid.Encode(ndr, ndr.Buffer);
         }
-        catch (NdrException e) {
+        catch (NdrException e)
+        {
             Log.Logger.Error(e, "RemActivation write");
         }
-        if (_monikerName == null) {
+        if (_monikerName == null)
+        {
             ndr.WriteUnsignedLong(0);
         }
-        else {
+        else
+        {
             ndr.WriteCharacterArray(_monikerName.ToCharArray(), 0,
                 _monikerName.Length); // Object Name
         }
@@ -105,19 +114,23 @@ internal sealed class RemActivation : NdrOp, IServerActivation {
         // IID of IUnknown, this is hard coded here, standard way of COM 
         // is to first get a handle to the IUnknown
         uuid.Parse(Interfaces.IID_IUnknown);
-        try {
+        try
+        {
             uuid.Encode(ndr, ndr.Buffer);
         }
-        catch (NdrException e) {
+        catch (NdrException e)
+        {
             Log.Logger.Error(e, "RemActivation write");
         }
 
         // checking for IDispatch support
         uuid.Parse(Interfaces.IID_IDispatch);
-        try {
+        try
+        {
             uuid.Encode(ndr, ndr.Buffer);
         }
-        catch (NdrException e) {
+        catch (NdrException e)
+        {
             Log.Logger.Error(e, "RemActivation write");
         }
 
@@ -133,7 +146,8 @@ internal sealed class RemActivation : NdrOp, IServerActivation {
     }
 
     /// <inheritdoc/>
-    public override void Read(NdrCodec ndr) {
+    public override void Read(NdrCodec ndr)
+    {
 
         // first take out OrpcThat
         ORPCThat = OrpcThat.Decode(ndr);
@@ -143,7 +157,8 @@ internal sealed class RemActivation : NdrOp, IServerActivation {
 
         var skipdual = ndr.ReadUnsignedLong();
 
-        if (skipdual != 0) {
+        if (skipdual != 0)
+        {
             ndr.ReadUnsignedLong();
             // now fill the dual string array for oxid bindings, the call to IRemUnknown will be
             // directed to this address and the port in that address.
@@ -154,25 +169,29 @@ internal sealed class RemActivation : NdrOp, IServerActivation {
         // component which has been specified as the Clsid. This may differ in multiple invokations of
         // of remote activation as everytime a new object may be created at the server per call. This is all
         // server implementation dependent.
-        try {
+        try
+        {
             var ipid2 = new UUID();
             ipid2.Decode(ndr, ndr.Buffer);
             IPID = ipid2.ToString();
         }
-        catch (NdrException e) {
+        catch (NdrException e)
+        {
             Log.Logger.Error(e, "RemActivation read");
         }
 
         // read the auth hint
         AuthenticationHint = ndr.ReadUnsignedLong();
 
-        ComVersion = new ComVersion {
+        ComVersion = new ComVersion
+        {
             MajorVersion = ndr.ReadUnsignedShort(),
             MinorVersion = ndr.ReadUnsignedShort()
         };
 
         Hresult = ndr.ReadUnsignedLong();
-        if (Hresult != 0) {
+        if (Hresult != 0)
+        {
             throw new InteropRuntimeException(Hresult);
         }
 
@@ -185,7 +204,8 @@ internal sealed class RemActivation : NdrOp, IServerActivation {
         var arrayObjs = (InterfacePointer[])array.ArrayInstance;
         MInterfacePointer = arrayObjs[0];
 
-        if (arrayObjs[1] != null) {
+        if (arrayObjs[1] != null)
+        {
             // dual is supported since the IDispatch was obtained
             _isDual = true;
             // eat this keeping only the IPID for cleanup, let the user perform another queryInterface for this.
@@ -218,7 +238,8 @@ internal sealed class RemActivation : NdrOp, IServerActivation {
     public bool Dual => _isDual;
 
     /// <inheritdoc/>
-    public string DispIpid {
+    public string DispIpid
+    {
         get => _dispIpid;
         set => _dispIpid = value;
     }

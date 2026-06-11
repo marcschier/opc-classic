@@ -13,7 +13,8 @@ namespace Opc.Classic.Dcom.Kerberos;
 /// <summary>
 /// Kerberos / SPNEGO implementation of the DCOM authentication context abstraction.
 /// </summary>
-public sealed class KerberosAuthContext : IAuthContext, IAuthSessionKeyProvider {
+public sealed class KerberosAuthContext : IAuthContext, IAuthSessionKeyProvider
+{
     private const int Rfc4121WrapHeaderLength = 16;
 
     private readonly IKerberosConnectionContext _kerberosCtx;
@@ -34,7 +35,8 @@ public sealed class KerberosAuthContext : IAuthContext, IAuthSessionKeyProvider 
         ChannelBindings? channelBindings = null,
         OpcProtectionLevel protectionLevel = OpcProtectionLevel.Integrity,
         IGssMicProvider? micProvider = null)
-        : this(new KerberosConnectionContext(authInfo), channelBindings, protectionLevel, micProvider) {
+        : this(new KerberosConnectionContext(authInfo), channelBindings, protectionLevel, micProvider)
+    {
     }
 
     /// <summary>
@@ -48,7 +50,8 @@ public sealed class KerberosAuthContext : IAuthContext, IAuthSessionKeyProvider 
         IKerberosConnectionContext kerberosContext,
         ChannelBindings? channelBindings = null,
         OpcProtectionLevel protectionLevel = OpcProtectionLevel.Integrity,
-        IGssMicProvider? micProvider = null) {
+        IGssMicProvider? micProvider = null)
+    {
         ArgumentNullException.ThrowIfNull(kerberosContext);
 
         _kerberosCtx = kerberosContext;
@@ -64,9 +67,11 @@ public sealed class KerberosAuthContext : IAuthContext, IAuthSessionKeyProvider 
     public byte AuthenticationServiceCode => 0x09;
 
     /// <inheritdoc />
-    public byte[] BuildInitialToken() {
+    public byte[] BuildInitialToken()
+    {
         ReadOnlyMemory<byte>? channelBindingsHash = null;
-        if (_channelBindings is not null) {
+        if (_channelBindings is not null)
+        {
             channelBindingsHash = ChannelBindingsHash.Compute(_channelBindings);
         }
 
@@ -78,42 +83,52 @@ public sealed class KerberosAuthContext : IAuthContext, IAuthSessionKeyProvider 
     }
 
     /// <inheritdoc />
-    public byte[] ProcessChallengeToken(ReadOnlyMemory<byte> serverToken) {
+    public byte[] ProcessChallengeToken(ReadOnlyMemory<byte> serverToken)
+    {
         var resp = SpnegoDecoder.DecodeNegTokenResp(serverToken);
-        if (resp.ResponseToken is { } responseToken) {
+        if (resp.ResponseToken is { } responseToken)
+        {
 #pragma warning disable VSTHRD002 // IAuthContext is synchronous; Kerberos.NET AP-REP processing is async.
             _ = _kerberosCtx.ProcessApResponseAsync(responseToken, CancellationToken.None).GetAwaiter().GetResult();
 #pragma warning restore VSTHRD002
             UpdateSessionFromEstablishedKey();
         }
 
-        if (resp.MechListMic.HasValue) {
+        if (resp.MechListMic.HasValue)
+        {
             VerifyMechListMic(resp);
         }
 
         return [];
     }
 
-    private void VerifyMechListMic(SpnegoNegTokenResp response) {
-        if (_mechListBytes is null || _mechListBytes.Length == 0) {
+    private void VerifyMechListMic(SpnegoNegTokenResp response)
+    {
+        if (_mechListBytes is null || _mechListBytes.Length == 0)
+        {
             throw new InvalidOperationException("SPNEGO mechListMIC verification requires the original NegTokenInit mechType list.");
         }
 
-        if (!response.VerifyMechListMic(_mechListBytes, GetMicProvider())) {
+        if (!response.VerifyMechListMic(_mechListBytes, GetMicProvider()))
+        {
             throw new InvalidOperationException("SPNEGO mechListMIC verification failed.");
         }
     }
 
-    private IGssMicProvider GetMicProvider() {
-        if (_micProvider is not null) {
+    private IGssMicProvider GetMicProvider()
+    {
+        if (_micProvider is not null)
+        {
             return _micProvider;
         }
 
         return new KerberosMicProvider(EstablishedSession);
     }
 
-    private void UpdateSessionFromEstablishedKey() {
-        if (_kerberosCtx.EstablishedSessionKey is not { } sessionKey) {
+    private void UpdateSessionFromEstablishedKey()
+    {
+        if (_kerberosCtx.EstablishedSessionKey is not { } sessionKey)
+        {
             return;
         }
 
@@ -130,48 +145,60 @@ public sealed class KerberosAuthContext : IAuthContext, IAuthSessionKeyProvider 
     public ReadOnlyMemory<byte>? GetSessionKey() => _kerberosCtx.EstablishedSessionKey?.Key;
 
     /// <inheritdoc />
-    public void SignAndSeal(Span<byte> pduBody, out byte[] signature) {
-        if (ProtectionLevel < OpcProtectionLevel.Integrity) {
+    public void SignAndSeal(Span<byte> pduBody, out byte[] signature)
+    {
+        if (ProtectionLevel < OpcProtectionLevel.Integrity)
+        {
             signature = [];
             return;
         }
 
         bool confidential = ProtectionLevel >= OpcProtectionLevel.Privacy;
         signature = EstablishedSession.WrapMessage(pduBody, confidential);
-        if (confidential) {
+        if (confidential)
+        {
             signature.AsSpan(Rfc4121WrapHeaderLength, pduBody.Length).CopyTo(pduBody);
         }
     }
 
     /// <inheritdoc />
-    public bool VerifyAndUnseal(Span<byte> pduBody, ReadOnlyMemory<byte> signature) {
-        if (ProtectionLevel < OpcProtectionLevel.Integrity) {
+    public bool VerifyAndUnseal(Span<byte> pduBody, ReadOnlyMemory<byte> signature)
+    {
+        if (ProtectionLevel < OpcProtectionLevel.Integrity)
+        {
             return signature.IsEmpty;
         }
 
-        try {
+        try
+        {
             byte[] plaintext = EstablishedSession.UnwrapMessage(signature.Span, out bool wasConfidential);
-            if (wasConfidential != (ProtectionLevel >= OpcProtectionLevel.Privacy) || plaintext.Length != pduBody.Length) {
+            if (wasConfidential != (ProtectionLevel >= OpcProtectionLevel.Privacy) || plaintext.Length != pduBody.Length)
+            {
                 return false;
             }
 
-            if (!wasConfidential && !plaintext.AsSpan().SequenceEqual(pduBody)) {
+            if (!wasConfidential && !plaintext.AsSpan().SequenceEqual(pduBody))
+            {
                 return false;
             }
 
             plaintext.CopyTo(pduBody);
             return true;
         }
-        catch (ArgumentException) {
+        catch (ArgumentException)
+        {
             return false;
         }
-        catch (InvalidOperationException) {
+        catch (InvalidOperationException)
+        {
             return false;
         }
-        catch (System.Security.SecurityException) {
+        catch (System.Security.SecurityException)
+        {
             return false;
         }
-        catch (System.Security.Cryptography.CryptographicException) {
+        catch (System.Security.Cryptography.CryptographicException)
+        {
             return false;
         }
     }

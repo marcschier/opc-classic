@@ -8,7 +8,8 @@ namespace Opc.Classic.Dcom.Rpc.pdu;
 /// <summary>
 /// Alter context pdu
 /// </summary>
-public class AlterContextPdu : ConnectionOrientedPdu {
+public class AlterContextPdu : ConnectionOrientedPdu
+{
 
     public const int ALTER_CONTEXT_TYPE = 0x0e;
 
@@ -37,13 +38,15 @@ public class AlterContextPdu : ConnectionOrientedPdu {
 
 
     /// <inheritdoc/>
-    protected internal override void ReadBody(NdrCodec ndr) {
+    protected internal override void ReadBody(NdrCodec ndr)
+    {
         MaxTransmitFragment = ndr.ReadUnsignedShort();
         MaxReceiveFragment = ndr.ReadUnsignedShort();
         AssociationGroupId = ndr.ReadUnsignedLong();
         var count = ndr.ReadUnsignedSmall();
         var contextList = new PresentationContext[count];
-        for (var i = 0; i < count; i++) {
+        for (var i = 0; i < count; i++)
+        {
             contextList[i] = new PresentationContext();
             contextList[i].Read(ndr);
         }
@@ -51,7 +54,8 @@ public class AlterContextPdu : ConnectionOrientedPdu {
     }
 
     /// <inheritdoc/>
-    protected internal override void WriteBody(NdrCodec ndr) {
+    protected internal override void WriteBody(NdrCodec ndr)
+    {
         var maxTransmitFragment = MaxTransmitFragment;
         var maxReceiveFragment = MaxReceiveFragment;
         ndr.WriteUnsignedShort((maxTransmitFragment == -1) ?
@@ -62,7 +66,8 @@ public class AlterContextPdu : ConnectionOrientedPdu {
         var contextList = ContextList;
         var count = contextList.Length;
         ndr.WriteUnsignedSmall((short)count);
-        for (var i = 0; i < count; i++) {
+        for (var i = 0; i < count; i++)
+        {
             contextList[i].Write(ndr);
         }
     }

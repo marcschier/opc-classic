@@ -10,24 +10,30 @@ using TUnit.Core;
 
 namespace Opc.Classic.Dcom.Kerberos.Tests;
 
-public sealed class KerberosAuthInfoTests {
+public sealed class KerberosAuthInfoTests
+{
     [Test]
-    public async Task KerberosAuthInfo_validates_required_fields() {
-        await Assert.That(() => {
+    public async Task KerberosAuthInfo_validates_required_fields()
+    {
+        await Assert.That(() =>
+        {
             _ = new KerberosAuthInfo(string.Empty, "RPCSS/server.example.com", "alice", null, null, null);
         }).Throws<ArgumentException>();
 
-        await Assert.That(() => {
+        await Assert.That(() =>
+        {
             _ = new KerberosAuthInfo("EXAMPLE.COM", string.Empty, "alice", null, null, null);
         }).Throws<ArgumentException>();
 
-        await Assert.That(() => {
+        await Assert.That(() =>
+        {
             _ = new KerberosAuthInfo("EXAMPLE.COM", "RPCSS/server.example.com", string.Empty, null, null, null);
         }).Throws<ArgumentException>();
     }
 
     [Test]
-    public async Task KerberosAuthInfo_accepts_optional_fields() {
+    public async Task KerberosAuthInfo_accepts_optional_fields()
+    {
         var authInfo = new KerberosAuthInfo("EXAMPLE.COM", "RPCSS/server.example.com", "alice", null, null, null);
         IKerberosAuthInfo contract = authInfo;
 

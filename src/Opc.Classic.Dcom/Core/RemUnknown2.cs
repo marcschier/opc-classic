@@ -11,7 +11,8 @@ namespace Opc.Classic.Dcom.Core;
 /// <summary>
 /// Remote unknown
 /// </summary>
-internal sealed class RemUnknown2 : NdrOp {
+internal sealed class RemUnknown2 : NdrOp
+{
 
     /// <summary>
     /// Interface pointer
@@ -29,22 +30,26 @@ internal sealed class RemUnknown2 : NdrOp {
     /// </summary>
     /// <param name="ipidOfIUnknown"></param>
     /// <param name="requestedIID"></param>
-    internal RemUnknown2(string ipidOfIUnknown, string requestedIID) {
+    internal RemUnknown2(string ipidOfIUnknown, string requestedIID)
+    {
         _ipidOfIUnknown = ipidOfIUnknown;
         _requestedIID = requestedIID;
     }
 
     /// <inheritdoc/>
-    public override void Write(NdrCodec ndr) {
+    public override void Write(NdrCodec ndr)
+    {
         var orpcthis = new OrpcThis();
         orpcthis.Encode(ndr);
 
         // now write the IPID
         var uuid = new UUID(_ipidOfIUnknown);
-        try {
+        try
+        {
             uuid.Encode(ndr, ndr.Buffer);
         }
-        catch (NdrException e) {
+        catch (NdrException e)
+        {
             Log.Logger.Error(e, "RemUnknown2 write");
         }
 
@@ -52,10 +57,12 @@ internal sealed class RemUnknown2 : NdrOp {
         ndr.WriteUnsignedShort(0); // byte alignment
         ndr.WriteUnsignedLong(1); // length of the array
         uuid = new UUID(_requestedIID);
-        try {
+        try
+        {
             uuid.Encode(ndr, ndr.Buffer);
         }
-        catch (NdrException e) {
+        catch (NdrException e)
+        {
             Log.Logger.Error(e, "RemUnknown2 Performing a QueryInterface for " +
                 _requestedIID);
         }
@@ -68,11 +75,13 @@ internal sealed class RemUnknown2 : NdrOp {
     }
 
     /// <inheritdoc/>
-    public override void Read(NdrCodec ndr) {
+    public override void Read(NdrCodec ndr)
+    {
         OrpcThat.Decode(ndr);
         ndr.ReadUnsignedLong(); // size will be one
         var hresult1 = ndr.ReadUnsignedLong();
-        if (hresult1 != 0) {
+        if (hresult1 != 0)
+        {
             // something happened.
             throw new InteropRuntimeException(hresult1);
         }
@@ -82,7 +91,8 @@ internal sealed class RemUnknown2 : NdrOp {
         InterfacePointer = InterfacePointer.Decode(ndr, new CodecContext());
         // final hresult
         hresult1 = ndr.ReadUnsignedLong();
-        if (hresult1 != 0) {
+        if (hresult1 != 0)
+        {
             // something happened.
             throw new InteropRuntimeException(hresult1);
         }

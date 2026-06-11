@@ -17,9 +17,11 @@ using TUnit.Core;
 
 namespace Opc.Classic.Dcom.Tests.Transport;
 
-public sealed class TcpServerEndpointTests {
+public sealed class TcpServerEndpointTests
+{
     [Test]
-    public async Task LocalEndpoint_resolves_dynamic_port_zero_to_real_port() {
+    public async Task LocalEndpoint_resolves_dynamic_port_zero_to_real_port()
+    {
         await using var endpoint = new TcpServerEndpoint(new IPEndPoint(IPAddress.Loopback, 0));
 
         var boundEndpoint = endpoint.LocalEndpoint as IPEndPoint;
@@ -30,7 +32,8 @@ public sealed class TcpServerEndpointTests {
     }
 
     [Test]
-    public async Task AcceptConnectionsAsync_yields_accepted_clients() {
+    public async Task AcceptConnectionsAsync_yields_accepted_clients()
+    {
         await using var endpoint = new TcpServerEndpoint(new IPEndPoint(IPAddress.Loopback, 0));
         var boundEndpoint = (IPEndPoint)endpoint.LocalEndpoint;
         using var cts = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current!.CancellationToken);
@@ -38,7 +41,8 @@ public sealed class TcpServerEndpointTests {
 
         // Producer: connect three TCP clients
         var connectTasks = Enumerable.Range(0, 3)
-            .Select(async _ => {
+            .Select(async _ =>
+            {
                 var client = new TcpClient();
                 await client.ConnectAsync(boundEndpoint.Address, boundEndpoint.Port, cts.Token);
                 return client;
@@ -46,9 +50,11 @@ public sealed class TcpServerEndpointTests {
             .ToArray();
 
         var transports = new List<IAsyncTransport>();
-        await foreach (IAsyncTransport transport in endpoint.AcceptConnectionsAsync(cts.Token)) {
+        await foreach (IAsyncTransport transport in endpoint.AcceptConnectionsAsync(cts.Token))
+        {
             transports.Add(transport);
-            if (transports.Count == 3) {
+            if (transports.Count == 3)
+            {
                 break;
             }
         }
@@ -56,21 +62,26 @@ public sealed class TcpServerEndpointTests {
         TcpClient[] clients = await Task.WhenAll(connectTasks);
 
         await Assert.That(transports.Count).IsEqualTo(3);
-        foreach (TcpClient client in clients) {
+        foreach (TcpClient client in clients)
+        {
             client.Dispose();
         }
-        foreach (IAsyncTransport transport in transports) {
+        foreach (IAsyncTransport transport in transports)
+        {
             await transport.DisposeAsync();
         }
     }
 
     [Test]
-    public async Task AcceptConnectionsAsync_completes_on_cancellation() {
+    public async Task AcceptConnectionsAsync_completes_on_cancellation()
+    {
         await using var endpoint = new TcpServerEndpoint(new IPEndPoint(IPAddress.Loopback, 0));
         using var cts = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current!.CancellationToken);
 
-        Task drain = Task.Run(async () => {
-            await foreach (IAsyncTransport transport in endpoint.AcceptConnectionsAsync(cts.Token)) {
+        Task drain = Task.Run(async () =>
+        {
+            await foreach (IAsyncTransport transport in endpoint.AcceptConnectionsAsync(cts.Token))
+            {
                 await transport.DisposeAsync();
             }
         });
@@ -82,20 +93,23 @@ public sealed class TcpServerEndpointTests {
     }
 
     [Test]
-    public async Task DisposeAsync_stops_listener() {
+    public async Task DisposeAsync_stops_listener()
+    {
         var endpoint = new TcpServerEndpoint(new IPEndPoint(IPAddress.Loopback, 0));
         var boundEndpoint = (IPEndPoint)endpoint.LocalEndpoint;
 
         await endpoint.DisposeAsync();
 
-        await Assert.That(async () => {
+        await Assert.That(async () =>
+        {
             using var client = new TcpClient();
             await client.ConnectAsync(boundEndpoint.Address, boundEndpoint.Port, TestContext.Current!.CancellationToken);
         }).Throws<SocketException>();
     }
 
     [Test]
-    public async Task Constructor_throws_on_null_endpoint() {
+    public async Task Constructor_throws_on_null_endpoint()
+    {
         await Assert.That(() => { _ = new TcpServerEndpoint(null!); })
             .Throws<ArgumentNullException>();
     }

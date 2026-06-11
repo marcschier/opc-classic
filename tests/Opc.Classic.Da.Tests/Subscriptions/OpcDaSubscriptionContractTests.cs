@@ -11,9 +11,11 @@ using TUnit.Core;
 
 namespace Opc.Classic.Da.Tests.Subscriptions;
 
-public sealed class OpcDaSubscriptionContractTests {
+public sealed class OpcDaSubscriptionContractTests
+{
     [Test]
-    public async Task OpcDaDataChange_RecordEquality_MatchesPayload() {
+    public async Task OpcDaDataChange_RecordEquality_MatchesPayload()
+    {
         var timestamp = new DateTimeOffset(2026, 5, 21, 12, 0, 0, TimeSpan.Zero);
         IReadOnlyList<OpcDaDataChangeItem> items = new[]
         {
@@ -27,13 +29,15 @@ public sealed class OpcDaSubscriptionContractTests {
     }
 
     [Test]
-    public async Task OpcDaDataChange_CtorThrows_WhenItemsNull() {
+    public async Task OpcDaDataChange_CtorThrows_WhenItemsNull()
+    {
         await Assert.That(() => { _ = new OpcDaDataChange(1, 2, 3, 4, null!); })
             .Throws<ArgumentNullException>();
     }
 
     [Test]
-    public async Task OpcDaDataChangeItem_RecordEquality_MatchesPayload() {
+    public async Task OpcDaDataChangeItem_RecordEquality_MatchesPayload()
+    {
         var timestamp = new DateTimeOffset(2026, 5, 21, 12, 0, 0, TimeSpan.Zero);
         var expected = new OpcDaDataChangeItem(10, OpcVariant.FromString("running"), OpcQuality.Good, timestamp, 0);
         var actual = expected with { };
@@ -42,19 +46,22 @@ public sealed class OpcDaSubscriptionContractTests {
     }
 
     [Test]
-    public async Task IConnectionPointContainer_InterfaceId_IsEmitted() {
+    public async Task IConnectionPointContainer_InterfaceId_IsEmitted()
+    {
         await Assert.That(ReadIConnectionPointContainerInterfaceId()).IsNotEqualTo(ReadEmptyGuid());
         await Assert.That(ReadIConnectionPointContainerInterfaceId()).IsEqualTo(ReadExpectedIConnectionPointContainerInterfaceId());
     }
 
     [Test]
-    public async Task IConnectionPoint_InterfaceId_IsEmitted() {
+    public async Task IConnectionPoint_InterfaceId_IsEmitted()
+    {
         await Assert.That(ReadIConnectionPointInterfaceId()).IsNotEqualTo(ReadEmptyGuid());
         await Assert.That(ReadIConnectionPointInterfaceId()).IsEqualTo(ReadExpectedIConnectionPointInterfaceId());
     }
 
     [Test]
-    public async Task IOPCDataCallback_InterfaceId_IsEmitted() {
+    public async Task IOPCDataCallback_InterfaceId_IsEmitted()
+    {
         await Assert.That(ReadIOPCDataCallbackInterfaceId()).IsNotEqualTo(ReadEmptyGuid());
         await Assert.That(ReadIOPCDataCallbackInterfaceId()).IsEqualTo(ReadExpectedIOPCDataCallbackInterfaceId());
     }

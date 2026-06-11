@@ -11,7 +11,8 @@ namespace Opc.Classic.Ae;
 /// Managed projection of OPC AE's <c>OPCCONDITIONSTATE</c> payload returned by
 /// <c>IOPCEventServer::GetConditionState</c>.
 /// </summary>
-public sealed record OpcConditionState {
+public sealed record OpcConditionState
+{
     /// <summary>Constructor for the immutable condition-state payload.</summary>
     public OpcConditionState(
         ushort state,
@@ -31,7 +32,8 @@ public sealed record OpcConditionState {
         uint[] subConditionSeverities,
         string?[] subConditionDescriptions,
         OpcVariant[] eventAttributes,
-        int[] errors) {
+        int[] errors)
+    {
         ArgumentNullException.ThrowIfNull(subConditionNames);
         ArgumentNullException.ThrowIfNull(subConditionDefinitions);
         ArgumentNullException.ThrowIfNull(subConditionSeverities);
@@ -125,8 +127,10 @@ public sealed record OpcConditionState {
     /// <summary>Number of event attributes.</summary>
     public int EventAttributeCount => EventAttributes.Length;
 
-    private static void ValidateLength(Array array, int expectedLength, string arrayName, string wireCountName) {
-        if (array.Length != expectedLength) {
+    private static void ValidateLength(Array array, int expectedLength, string arrayName, string wireCountName)
+    {
+        if (array.Length != expectedLength)
+        {
             throw new ArgumentException(
                 $"{arrayName} length {array.Length} must equal {wireCountName} {expectedLength}.",
                 arrayName);

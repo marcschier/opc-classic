@@ -36,7 +36,8 @@ namespace Opc.Classic.Dcom.Rpc.Auth.ntlm;
 /// <see cref="InvalidOperationException"/> on any auth attempt.
 /// </para>
 /// </remarks>
-public abstract class AuthenticationSource {
+public abstract class AuthenticationSource
+{
 
     private static AuthenticationSource? s_default;
 
@@ -57,7 +58,8 @@ public abstract class AuthenticationSource {
     /// The implementation to use, or <see langword="null"/> to reset to
     /// the no-op default (subsequent auth attempts will throw).
     /// </param>
-    public static void SetDefaultInstance(AuthenticationSource? source) {
+    public static void SetDefaultInstance(AuthenticationSource? source)
+    {
         Interlocked.Exchange(ref s_default, source);
     }
 

@@ -4,11 +4,14 @@ using System;
 
 namespace SharpCifs.Util.Sharpen;
 
-public sealed class UnknownHostException : Exception {
-    public UnknownHostException() {
+public sealed class UnknownHostException : Exception
+{
+    public UnknownHostException()
+    {
     }
 
     public UnknownHostException(string message)
-        : base(message) {
+        : base(message)
+    {
     }
 }

@@ -20,7 +20,8 @@ namespace Opc.Classic.Commands.Dcom;
 [OpcInterface("3104B525-2016-442D-9696-1275DE978778")]
 [GenerateOpcProxy]
 [OpcGenerateServerDispatch]
-public partial interface IOPCCommandInformation {
+public partial interface IOPCCommandInformation
+{
     /// <summary><c>IOPCCommandInformation::QueryCapabilities</c> (opnum 3) projected as maximum storage time.</summary>
     [OpcMethod(3)]
     Task<double> QueryMaxStorageTimeAsync(CancellationToken cancellationToken = default);
@@ -42,7 +43,8 @@ public partial interface IOPCCommandInformation {
 [OpcInterface("3104B526-2016-442D-9696-1275DE978778")]
 [GenerateOpcProxy]
 [OpcGenerateServerDispatch]
-public partial interface IOPCCommandExecution {
+public partial interface IOPCCommandExecution
+{
     /// <summary><c>IOPCCommandExecution::SyncInvoke</c> (opnum 3) projected as string result arguments.</summary>
     [OpcMethod(3)]
     Task<string[]> SyncInvokeAsync(string commandName, string commandNamespace, string targetId, string[] arguments, string[] filters, CancellationToken cancellationToken = default);
@@ -72,7 +74,8 @@ public partial interface IOPCCommandExecution {
 [OpcInterface("3104B527-2016-442D-9696-1275DE978778")]
 [GenerateOpcProxy]
 [OpcGenerateServerDispatch]
-public partial interface IOPCCommandCallback {
+public partial interface IOPCCommandCallback
+{
     /// <summary><c>IOPCCommandCallback::OnStateChange</c> (opnum 3) projected as a compact callback notification.</summary>
     [OpcMethod(3)]
     Task OnStateChangeAsync(int eventCount, string[] permittedControls, bool noStateChange, CancellationToken cancellationToken = default);

@@ -16,7 +16,8 @@ namespace Opc.Classic.Dcom.Transport;
 /// <summary>
 /// Transport
 /// </summary>
-internal sealed class ComTransport : ITransport, IDisposable {
+internal sealed class ComTransport : ITransport, IDisposable
+{
 
     /// <inheritdoc/>
     public string Protocol => "ncacn_ip_tcp";
@@ -27,12 +28,15 @@ internal sealed class ComTransport : ITransport, IDisposable {
     /// <summary>
     /// Initialize class
     /// </summary>
-    static ComTransport() {
+    static ComTransport()
+    {
         string localhost = null;
-        try {
+        try
+        {
             localhost = Dns.GetHostName();
         }
-        catch (UnknownHostException) { // ignored
+        catch (UnknownHostException)
+        { // ignored
         }
         kLOCALHOST = localhost;
     }
@@ -43,31 +47,38 @@ internal sealed class ComTransport : ITransport, IDisposable {
     /// <exception cref="ProviderException"></exception>
     /// <param name="address"></param>
     /// <param name="properties"></param>
-    public ComTransport(string address, PropertyBag properties) {
+    public ComTransport(string address, PropertyBag properties)
+    {
         Properties = properties;
 
-        if (address == null) {
+        if (address == null)
+        {
             throw new ProviderException("Null address.");
         }
-        if (!address.StartsWith("ncacn_ip_tcp:", StringComparison.Ordinal)) {
+        if (!address.StartsWith("ncacn_ip_tcp:", StringComparison.Ordinal))
+        {
             throw new ProviderException("Not an ncacn_ip_tcp address.");
         }
         address = address.Substring(13);
         var index = address.IndexOf('[');
-        if (index == -1) {
+        if (index == -1)
+        {
             throw new ProviderException("No port specifier present.");
         }
         var server = address.Substring(0, index);
         address = address.Substring(index + 1);
         index = address.IndexOf(']');
-        if (index == -1) {
+        if (index == -1)
+        {
             throw new ProviderException("Port specifier not terminated.");
         }
         address = address.Substring(0, index);
-        if (string.IsNullOrEmpty(server)) {
+        if (string.IsNullOrEmpty(server))
+        {
             server = kLOCALHOST;
         }
-        if (!int.TryParse(address, NumberStyles.Integer, CultureInfo.InvariantCulture, out int port)) {
+        if (!int.TryParse(address, NumberStyles.Integer, CultureInfo.InvariantCulture, out int port))
+        {
             throw new ProviderException("Invalid port specifier.");
         }
         _port = port;
@@ -75,15 +86,19 @@ internal sealed class ComTransport : ITransport, IDisposable {
     }
 
     /// <inheritdoc/>
-    public IEndpoint Attach(PresentationSyntax syntax) {
-        if (_client != null) {
+    public IEndpoint Attach(PresentationSyntax syntax)
+    {
+        if (_client != null)
+        {
             throw new RpcException("Transport already attached.");
         }
-        try {
+        try
+        {
             Log.Logger.Verbose("Connecting to " + _host + ":" + _port);
             _client = new TcpClient();
             var timeout = int.Parse((string)Properties.GetProperty("rpc.socketTimeout", "0"), CultureInfo.InvariantCulture);
-            if (timeout != 0) {
+            if (timeout != 0)
+            {
                 _client.ReceiveTimeout = timeout;
             }
             // Connects without a timeout. If a timeout is needed then someone
@@ -92,12 +107,15 @@ internal sealed class ComTransport : ITransport, IDisposable {
             _stream = _client.GetStream();
             return new ComEndpoint(this, syntax);
         }
-        catch (IOException) {
-            try {
+        catch (IOException)
+        {
+            try
+            {
                 Close();
             }
 #pragma warning disable RECS0022 // A catch clause that catches System.Exception and has an empty body
-            catch (Exception) { // ignored
+            catch (Exception)
+            { // ignored
 #pragma warning restore RECS0022 // A catch clause that catches System.Exception and has an empty body
             }
             throw;
@@ -105,14 +123,18 @@ internal sealed class ComTransport : ITransport, IDisposable {
     }
 
     /// <inheritdoc/>
-    public void Close() {
-        try {
-            if (_client != null) {
+    public void Close()
+    {
+        try
+        {
+            if (_client != null)
+            {
                 Log.Logger.Verbose("Closing client to " + _host + ":" + _port);
                 _client.Close();
             }
         }
-        finally {
+        finally
+        {
             _client?.Dispose();
             _client = null;
             _stream?.Dispose();
@@ -121,22 +143,27 @@ internal sealed class ComTransport : ITransport, IDisposable {
     }
 
     /// <summary>Releases the underlying TCP resources.</summary>
-    public void Dispose() {
+    public void Dispose()
+    {
         Close();
         GC.SuppressFinalize(this);
     }
 
     /// <inheritdoc/>
-    public void Send(NdrBuffer buffer) {
-        if (_client == null) {
+    public void Send(NdrBuffer buffer)
+    {
+        if (_client == null)
+        {
             throw new RpcException("Transport not attached.");
         }
         _stream.Write(buffer.Buf, 0, buffer.Length);
     }
 
     /// <inheritdoc/>
-    public void Receive(NdrBuffer buffer) {
-        if (_client == null) {
+    public void Receive(NdrBuffer buffer)
+    {
+        if (_client == null)
+        {
             throw new RpcException("Transport not attached.");
         }
         buffer.Length = _stream.Read(buffer.Buf, 0, buffer.GetCapacity());

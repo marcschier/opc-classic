@@ -11,7 +11,8 @@ namespace Opc.Classic.Xml;
 /// <see cref="XmlDaNamespace"/>; the SOAPAction header carries the
 /// per-operation constant.
 /// </summary>
-public static class XmlDaConstants {
+public static class XmlDaConstants
+{
     /// <summary>The XML namespace URI for OPC XML-DA 1.0 elements.</summary>
     public const string XmlDaNamespace = "http://opcfoundation.org/webservices/XMLDA/1.0/";
 

@@ -5,7 +5,8 @@ namespace Opc.Classic.Dcom.Automation;
 /// <summary>
 /// Implements the <i>TYPEKIND</i> structure of COM Automation
 /// </summary>
-public enum TypeKind {
+public enum TypeKind
+{
 
     /// <summary>
     /// A set of enumerators.

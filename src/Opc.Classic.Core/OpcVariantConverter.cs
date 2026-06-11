@@ -18,13 +18,15 @@ namespace Opc.Classic;
 /// <c>object? value</c> can use <see cref="FromObject"/> to lift it
 /// into the typed VARIANT vocabulary without touching the source.
 /// </remarks>
-public static class OpcVariantConverter {
+public static class OpcVariantConverter
+{
     /// <summary>
     /// Converts a .NET-typed value to an <see cref="OpcVariant"/>.
     /// <see langword="null"/> maps to <see cref="OpcVariant.Null"/>.
     /// Unsupported types raise <see cref="ArgumentException"/>.
     /// </summary>
-    public static OpcVariant FromObject(object? value) => value switch {
+    public static OpcVariant FromObject(object? value) => value switch
+    {
         null => OpcVariant.Null,
         bool b => OpcVariant.FromBoolean(b),
         sbyte i1 => OpcVariant.FromInt8(i1),
@@ -56,7 +58,8 @@ public static class OpcVariantConverter {
     /// True if <see cref="FromObject"/> would succeed for the given value
     /// (i.e., it is null or one of the supported .NET types).
     /// </summary>
-    public static bool CanConvert(object? value) => value switch {
+    public static bool CanConvert(object? value) => value switch
+    {
         null => true,
         bool or sbyte or byte or short or ushort or int or uint
             or long or ulong or float or double or string or DateTime or Guid => true,

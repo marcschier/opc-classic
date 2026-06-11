@@ -16,7 +16,8 @@ namespace Opc.Classic.Dcom.Core;
 /// etc. should come at the begining of the struct.
 /// </summary>
 [Serializable]
-public sealed class Struct {
+public sealed class Struct
+{
 
     /// <summary>
     /// Empty struct
@@ -36,16 +37,21 @@ public sealed class Struct {
     /// <summary>
     /// Length
     /// </summary>
-    internal int Length {
-        get {
+    internal int Length
+    {
+        get
+        {
             var length = 0;
             var i = 0;
-            while (i < Members.Count) {
+            while (i < Members.Count)
+            {
                 var o = Members[i];
-                if (o is Type) {
+                if (o is Type)
+                {
                     length += MarshalUnMarshalHelper.GetLengthInBytes((Type)o, o);
                 }
-                else {
+                else
+                {
                     length += MarshalUnMarshalHelper.GetLengthInBytes(o.GetType(), o);
                 }
                 i++;
@@ -62,14 +68,18 @@ public sealed class Struct {
     /// <summary>
     /// Alignment
     /// </summary>
-    internal int Alignment {
-        get {
+    internal int Alignment
+    {
+        get
+        {
             var alignment = 0;
 
-            for (var i = 0; i < Members.Count; i++) {
+            for (var i = 0; i < Members.Count; i++)
+            {
                 var c = Members[i].GetType();
                 var isClass = false;
-                if (c.Equals(typeof(Type))) {
+                if (c.Equals(typeof(Type)))
+                {
                     isClass = true;
                     c = (Type)Members[i];
                 }
@@ -80,35 +90,43 @@ public sealed class Struct {
                     c.Equals(typeof(ComString)) ||
                     c.Equals(typeof(ComPointer)) ||
                     c.Equals(typeof(uint)) ||
-                    c.Equals(typeof(Variant))) {
+                    c.Equals(typeof(Variant)))
+                {
                     // align with 4 bytes
                     alignment = alignment <= 4 ? 4 : alignment;
                 }
                 else if (c.Equals(typeof(double)) ||
                          c.Equals(typeof(DateTime)) ||
                          c.Equals(typeof(long)) ||
-                         c.Equals(typeof(ulong))) {
+                         c.Equals(typeof(ulong)))
+                {
                     // align with 8
                     alignment = alignment <= 8 ? 8 : alignment;
                 }
                 else if (c.Equals(typeof(short)) ||
-                         c.Equals(typeof(ushort))) {
+                         c.Equals(typeof(ushort)))
+                {
                     // align with 2
                     alignment = alignment <= 2 ? 2 : alignment;
                 }
-                else if (c.Equals(typeof(Struct))) {
-                    if (!isClass) {
+                else if (c.Equals(typeof(Struct)))
+                {
+                    if (!isClass)
+                    {
                         var align = ((Struct)Members[i]).Alignment;
                         alignment = alignment <= align ? align : alignment;
                     }
                 }
-                else if (c.Equals(typeof(Union))) {
-                    if (!isClass) {
+                else if (c.Equals(typeof(Union)))
+                {
+                    if (!isClass)
+                    {
                         var align = ((Union)Members[i]).Alignment;
                         alignment = alignment <= align ? align : alignment;
                     }
                 }
-                if (alignment == 8) {
+                if (alignment == 8)
+                {
                     break;
                 }
             }
@@ -139,26 +157,31 @@ public sealed class Struct {
     /// <param name="position"> Zero based index </param>
     /// <param name="member"> </param>
     /// <exception cref="InteropException"></exception>
-    public void AddMember(int position, object member) {
+    public void AddMember(int position, object member)
+    {
         // null has to be allowed for members who would like to send null...NPE should not be thrown
         member = member ?? 0;
         var memberClass = member.GetType();
         // An array has already been added, now a new member cannot be added
-        if (_arrayAdded && position == Members.Count && !memberClass.Equals(typeof(ComArray))) {
+        if (_arrayAdded && position == Members.Count && !memberClass.Equals(typeof(ComArray)))
+        {
             throw new InteropException(ErrorCode.INTEROP_STRUCT_ARRAY_AT_END);
         }
 
         // arrays can only be the last element of this struct.
-        if (memberClass.Equals(typeof(ComArray))) {
+        if (memberClass.Equals(typeof(ComArray)))
+        {
             // this condition will also allow that if another nested struct has an array,
             // this new array is added at the
             // very end.
-            if (position != Members.Count) {
+            if (position != Members.Count)
+            {
                 throw new InteropException(ErrorCode.INTEROP_STRUCT_ARRAY_ONLY_AT_END);
             }
             _arrayAdded = true;
             // Fixed arrays like char[50] are serialzed\deserialized in place itself.
-            if (((ComArray)member).Conformant || ((ComArray)member).Varying) {
+            if (((ComArray)member).Conformant || ((ComArray)member).Varying)
+            {
                 // since there could be two arrays.
                 ArrayMaxCounts.AddRange(((ComArray)member).ConformantMaxCounts);
                 _listOfDimensions.Add(((ComArray)member).Dimensions);
@@ -166,13 +189,16 @@ public sealed class Struct {
         }
 
         // struct part of another struct
-        if (memberClass.Equals(typeof(Struct))) {
+        if (memberClass.Equals(typeof(Struct)))
+        {
             // if this has an array then, this struct has to be the last member in the struct list.
-            if (((Struct)member)._arrayAdded && _arrayAdded && position != (Members.Count - 1)) {
+            if (((Struct)member)._arrayAdded && _arrayAdded && position != (Members.Count - 1))
+            {
                 throw new InteropException(ErrorCode.INTEROP_STRUCT_INCORRECT_NESTED_STRUCT_POS);
             }
 
-            if (_arrayAdded && ((Struct)member)._arrayAdded) {
+            if (_arrayAdded && ((Struct)member)._arrayAdded)
+            {
                 // means that we have to move the maxcount of the internal struct to this struct.
                 _arrayAdded = true;
                 ArrayMaxCounts.AddRange(((Struct)member).ArrayMaxCounts);
@@ -183,8 +209,10 @@ public sealed class Struct {
                 ((Struct)member)._listOfDimensions.Clear();
 
             }
-            else if (!_arrayAdded && ((Struct)member)._arrayAdded) {
-                if (position == Members.Count) {
+            else if (!_arrayAdded && ((Struct)member)._arrayAdded)
+            {
+                if (position == Members.Count)
+                {
                     _arrayAdded = true;
                     ArrayMaxCounts.AddRange(((Struct)member).ArrayMaxCounts);
                     ((Struct)member).ArrayMaxCounts.Clear(); // this is a "move" of max counts to the
@@ -193,19 +221,23 @@ public sealed class Struct {
                     _listOfDimensions.AddRange(((Struct)member)._listOfDimensions);
                     ((Struct)member)._listOfDimensions.Clear();
                 }
-                else {
+                else
+                {
                     throw new InteropException(ErrorCode.INTEROP_STRUCT_INCORRECT_NESTED_STRUCT_POS2);
                 }
             }
         }
-        if (memberClass.Equals(typeof(ComPointer)) && !((ComPointer)member).Reference) {
+        if (memberClass.Equals(typeof(ComPointer)) && !((ComPointer)member).Reference)
+        {
             // send this to the end and put the place holder of the pointer here
             ((ComPointer)member).Deffered = true;
         }
-        else if (memberClass.Equals(typeof(Variant))) {
+        else if (memberClass.Equals(typeof(Variant)))
+        {
             ((Variant)member).Deffered = true;
         }
-        else if (memberClass.Equals(typeof(ComString))) {
+        else if (memberClass.Equals(typeof(ComString)))
+        {
             ((ComString)member).Deffered = true;
         }
         // else if (memberClass.equals(<see cref="InterfacePointer"/>.class)) {
@@ -217,7 +249,8 @@ public sealed class Struct {
         // else if (memberClass.equals(ComObjectImpl.class)) {
         //            ((<see cref="IComObject"/>)member).getInterfacePointer().Deffered = true;
         //        }
-        else if (memberClass.Equals(typeof(IComObject))) {
+        else if (memberClass.Equals(typeof(IComObject)))
+        {
             ((IComObjectInternal)member).SetDeffered(true);
         }
         // else the pointer will be serialized "inplace".
@@ -228,18 +261,22 @@ public sealed class Struct {
     /// Removes the member from the specified index.
     /// </summary>
     /// <param name="index"> </param>
-    public void RemoveMember(int index) {
+    public void RemoveMember(int index)
+    {
         var member = Members.GetAndRemoveAt(index);
-        if (member is ComArray) {
+        if (member is ComArray)
+        {
             // we need to remove it's max count values also.
             ArrayMaxCounts.RemoveAll(((ComArray)member).ConformantMaxCounts);
 
         }
-        else if (member is Struct && ((Struct)member)._arrayAdded) {
+        else if (member is Struct && ((Struct)member)._arrayAdded)
+        {
             // we need to remove it's max count values also.
             ArrayMaxCounts.RemoveAll(((Struct)member).ArrayMaxCounts);
         }
-        if (ArrayMaxCounts.Count == 0) {
+        if (ArrayMaxCounts.Count == 0)
+        {
             _arrayAdded = false;
         }
     }
@@ -249,23 +286,28 @@ public sealed class Struct {
     /// </summary>
     /// <param name="ndr"></param>
     /// <param name="context"></param>
-    internal void Encode(NdrCodec ndr, CodecContext context) {
+    internal void Encode(NdrCodec ndr, CodecContext context)
+    {
         // first write all Max counts and then the rest of the structs
-        for (var i = 0; i < ArrayMaxCounts.Count; i++) {
+        for (var i = 0; i < ArrayMaxCounts.Count; i++)
+        {
             MarshalUnMarshalHelper.Serialize(ndr, typeof(int), ArrayMaxCounts[i], context);
         }
 
-        for (var i = 0; i < Members.Count; i++) {
+        for (var i = 0; i < Members.Count; i++)
+        {
             var o = Members[i];
             var conformant = false;
-            if (o is ComArray arr1) {
+            if (o is ComArray arr1)
+            {
                 // if this array is conformant then reset it's conformancy, since the length would have been
                 // written before.
                 conformant = arr1.Conformant;
                 arr1.Conformant = false;
             }
             MarshalUnMarshalHelper.Serialize(ndr, o.GetType(), o, context);
-            if (conformant && o is ComArray arr2) {
+            if (conformant && o is ComArray arr2)
+            {
                 // noew reset this, so that next time when the same struct is written everything goes proper.
                 arr2.Conformant = true;
             }
@@ -278,25 +320,31 @@ public sealed class Struct {
     /// <param name="ndr"></param>
     /// <param name="context"></param>
     /// <returns></returns>
-    internal Struct Decode(NdrCodec ndr, CodecContext context) {
+    internal Struct Decode(NdrCodec ndr, CodecContext context)
+    {
         var retVal = new Struct();
         var listOfMaxCounts2 = new List<int>();
         // first read all Max counts and then the rest of the structs
         int j;
         int i;
-        for (i = 0; i < _listOfDimensions.Count; i++) {
-            for (j = 0; j < _listOfDimensions[i]; j++) {
+        for (i = 0; i < _listOfDimensions.Count; i++)
+        {
+            for (j = 0; j < _listOfDimensions[i]; j++)
+            {
                 listOfMaxCounts2.Add((int)MarshalUnMarshalHelper.Deserialize(ndr,
                     typeof(int), context));
             }
         }
         i = 0;
         j = 0; // index only for the conformant \ varying arrays
-        while (i < Members.Count) {
+        while (i < Members.Count)
+        {
             var o = Members[i];
             List<int> maxCountTemp = null;
-            if (o is ComArray) {
-                if (((ComArray)o).Conformant || ((ComArray)o).Varying) {
+            if (o is ComArray)
+            {
+                if (((ComArray)o).Conformant || ((ComArray)o).Varying)
+                {
                     // if this array is conformant then reset it's conformancy, since the length would have been
                     // read before.
                     ((ComArray)o).Conformant = false;
@@ -306,17 +354,21 @@ public sealed class Struct {
                 }
             }
             var o1 = MarshalUnMarshalHelper.Deserialize(ndr, o, context);
-            if (o is ComArray) {
-                if (((ComArray)o).Conformant || ((ComArray)o).Varying) {
+            if (o is ComArray)
+            {
+                if (((ComArray)o).Conformant || ((ComArray)o).Varying)
+                {
                     // now reset this, so that next time when the same struct is written everything goes proper.
                     ((ComArray)o).Conformant = ((ComArray)o).Conformant;
                     ((ComArray)o).MaxCountAndUpperBounds = maxCountTemp;
                 }
             }
-            try {
+            try
+            {
                 retVal.AddMember(o1); // listOfMembers.add(o);
             }
-            catch (InteropException e) {
+            catch (InteropException e)
+            {
                 throw new InteropRuntimeException(e.ErrorCode);
             }
             i++;

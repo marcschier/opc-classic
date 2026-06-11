@@ -30,7 +30,8 @@ namespace Opc.Classic.Da;
 ///   <item><description>Browse returns an <see cref="IAsyncEnumerable{T}"/> — the consumer doesn't manage <see cref="BrowsePosition"/> tokens manually.</description></item>
 /// </list>
 /// </remarks>
-public interface IDaServer : IAsyncDisposable {
+public interface IDaServer : IAsyncDisposable
+{
     /// <summary>Raised when the server emits <c>IOPCShutdown::ShutdownRequest</c>.</summary>
     event EventHandler<ServerShutdownEventArgs>? ServerShutdown;
 
@@ -53,7 +54,8 @@ public interface IDaServer : IAsyncDisposable {
     Task<string> GetErrorTextAsync(OpcResultId resultId, CancellationToken cancellationToken = default);
 
     /// <summary>Supply a client name that servers may use for diagnostics and logging.</summary>
-    Task SetClientNameAsync(string clientName, CancellationToken cancellationToken = default) {
+    Task SetClientNameAsync(string clientName, CancellationToken cancellationToken = default)
+    {
         ArgumentNullException.ThrowIfNull(clientName);
         cancellationToken.ThrowIfCancellationRequested();
         return Task.CompletedTask;

@@ -15,7 +15,8 @@ using TUnit.Core;
 
 namespace Opc.Classic.Dcom.Tests.Fuzz.Objref;
 
-public sealed class ObjrefFuzzTests {
+public sealed class ObjrefFuzzTests
+{
     private const string Iid = "11111111-2222-3333-4455-66778899aabb";
     private const string Ipid = "aaaaaaaa-bbbb-cccc-ddee-ff0011223344";
     private const int ObjRefStandard = 0x1;
@@ -34,7 +35,8 @@ public sealed class ObjrefFuzzTests {
 
     [Test]
     [Category("Fuzz")]
-    public void InterfacePointer_Parse_RandomBytes_DoesNotCrash() {
+    public void InterfacePointer_Parse_RandomBytes_DoesNotCrash()
+    {
         FuzzHarness.BytesEdgeWeighted.Sample(
             static bytes => FuzzHarness.AssertParseDoesNotCrash(
                 bytes,
@@ -46,8 +48,10 @@ public sealed class ObjrefFuzzTests {
 
     [Test]
     [Category("Fuzz")]
-    public void InterfacePointer_Parse_MutatedValid_DoesNotCrash() {
-        byte[] valid = BuildObjRef(static ndr => {
+    public void InterfacePointer_Parse_MutatedValid_DoesNotCrash()
+    {
+        byte[] valid = BuildObjRef(static ndr =>
+        {
             WriteStdObjRef(ndr, publicRefs: 5);
             WriteDualStringArray(ndr);
         });
@@ -63,8 +67,10 @@ public sealed class ObjrefFuzzTests {
 
     [Test]
     [Category("Fuzz")]
-    public async Task InterfacePointer_Parse_DualStringArrayOverflow_Bounded() {
-        byte[] objRef = BuildObjRef(static ndr => {
+    public async Task InterfacePointer_Parse_DualStringArrayOverflow_Bounded()
+    {
+        byte[] objRef = BuildObjRef(static ndr =>
+        {
             WriteStdObjRef(ndr, publicRefs: 5);
             ndr.WriteUnsignedShort(0xFFFF);
             ndr.WriteUnsignedShort(1);
@@ -78,8 +84,10 @@ public sealed class ObjrefFuzzTests {
 
     [Test]
     [Category("Fuzz")]
-    public async Task InterfacePointer_Parse_BadSignature_Rejected() {
-        byte[] objRef = BuildObjRef(static ndr => {
+    public async Task InterfacePointer_Parse_BadSignature_Rejected()
+    {
+        byte[] objRef = BuildObjRef(static ndr =>
+        {
             WriteStdObjRef(ndr, publicRefs: 5);
             WriteDualStringArray(ndr);
         });
@@ -90,8 +98,10 @@ public sealed class ObjrefFuzzTests {
 
     [Test]
     [Category("Fuzz")]
-    public async Task InterfacePointer_Parse_StandardFlagWithBadCount_Rejected() {
-        byte[] objRef = BuildObjRef(static ndr => {
+    public async Task InterfacePointer_Parse_StandardFlagWithBadCount_Rejected()
+    {
+        byte[] objRef = BuildObjRef(static ndr =>
+        {
             WriteStdObjRef(ndr, publicRefs: unchecked((int)0xFFFFFFFF));
             WriteDualStringArray(ndr);
         });
@@ -102,31 +112,38 @@ public sealed class ObjrefFuzzTests {
     [Test]
     [Category("Fuzz")]
     [Skip("OxidResolver is internal and exposes no public decode surface reachable without changing production InternalsVisibleTo.")]
-    public void OxidResolver_RemoteActivationResult_RandomBytes_DoesNotCrash() {
+    public void OxidResolver_RemoteActivationResult_RandomBytes_DoesNotCrash()
+    {
     }
 
     [Test]
     [Category("Fuzz")]
-    public void InterfacePointer_Parse_Corpus_DoesNotCrash() {
-        foreach (object[] row in FuzzHarness.LoadCorpus("Objref")) {
+    public void InterfacePointer_Parse_Corpus_DoesNotCrash()
+    {
+        foreach (object[] row in FuzzHarness.LoadCorpus("Objref"))
+        {
             byte[] bytes = (byte[])row[0];
             FuzzHarness.AssertParseDoesNotCrash(bytes, ParseObjRef, AllowedObjRefExceptions);
         }
     }
 
-    private static InterfacePointerBody ParseObjRef(ReadOnlyMemory<byte> input) {
+    private static InterfacePointerBody ParseObjRef(ReadOnlyMemory<byte> input)
+    {
         byte[] bytes = input.ToArray();
         var ndr = new NdrCodec { Buffer = new NdrBuffer(bytes, 0) };
         ndr.Buffer.SetLength(bytes.Length);
         InterfacePointerBody? body = InterfacePointerBody.Decode(ndr, 0);
-        if (body is null) {
+        if (body is null)
+        {
             throw new InvalidDataException("OBJREF signature was not recognized.");
         }
 
         object? stdObjRef = body.GetObjectReference(ObjRefStandard);
-        if (stdObjRef is not null) {
+        if (stdObjRef is not null)
+        {
             int publicRefs = (int)stdObjRef.GetType().GetProperty("PublicRefs")!.GetValue(stdObjRef)!;
-            if (publicRefs < 0) {
+            if (publicRefs < 0)
+            {
                 throw new InvalidDataException("STDOBJREF public reference count was negative.");
             }
         }
@@ -134,7 +151,8 @@ public sealed class ObjrefFuzzTests {
         return body;
     }
 
-    private static byte[] BuildObjRef(Action<NdrCodec> writeBody) {
+    private static byte[] BuildObjRef(Action<NdrCodec> writeBody)
+    {
         var ndr = CreateWriter();
         ndr.WriteOctetArray(ObjRefSignature, 0, 4);
         ndr.WriteUnsignedLong(ObjRefStandard);
@@ -143,7 +161,8 @@ public sealed class ObjrefFuzzTests {
         return WithLengthPrefix(ToArray(ndr));
     }
 
-    private static void WriteStdObjRef(NdrCodec ndr, int publicRefs) {
+    private static void WriteStdObjRef(NdrCodec ndr, int publicRefs)
+    {
         ndr.WriteUnsignedLong(SorfNoping);
         ndr.WriteUnsignedLong(publicRefs);
         byte[] oxid = [0x01, 0x23, 0x45, 0x67, 0x89, 0xAB, 0xCD, 0xEF];
@@ -153,7 +172,8 @@ public sealed class ObjrefFuzzTests {
         InterfacePointerBody.WriteUuid(ndr, Ipid, "objref fuzz ipid");
     }
 
-    private static void WriteDualStringArray(NdrCodec ndr) {
+    private static void WriteDualStringArray(NdrCodec ndr)
+    {
         const string networkAddress = "127.0.0.1[13579]";
         int stringBindingLength = 2 + (networkAddress.Length * 2) + 2;
         int securityOffsetBytes = stringBindingLength + 2;
@@ -163,7 +183,8 @@ public sealed class ObjrefFuzzTests {
         ndr.WriteUnsignedShort(entryBytes / 2);
         ndr.WriteUnsignedShort(securityOffsetBytes / 2);
         ndr.WriteUnsignedShort(0x07);
-        foreach (char ch in networkAddress) {
+        foreach (char ch in networkAddress)
+        {
             ndr.WriteUnsignedShort(ch);
         }
 
@@ -175,7 +196,8 @@ public sealed class ObjrefFuzzTests {
         ndr.WriteUnsignedShort(0);
     }
 
-    private static byte[] WithLengthPrefix(byte[] objRef) {
+    private static byte[] WithLengthPrefix(byte[] objRef)
+    {
         byte[] encoded = new byte[8 + objRef.Length];
         BinaryPrimitives.WriteInt32LittleEndian(encoded.AsSpan(0, 4), objRef.Length);
         BinaryPrimitives.WriteInt32LittleEndian(encoded.AsSpan(4, 4), objRef.Length);

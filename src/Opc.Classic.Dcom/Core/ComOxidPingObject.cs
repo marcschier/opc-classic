@@ -12,7 +12,8 @@ namespace Opc.Classic.Dcom.Core;
 /// <summary>
 /// Oxid ping
 /// </summary>
-internal sealed class ComOxidPingObject : NdrOp {
+internal sealed class ComOxidPingObject : NdrOp
+{
 
     /// <summary>
     /// Set id
@@ -20,23 +21,28 @@ internal sealed class ComOxidPingObject : NdrOp {
     internal byte[] SetId { get; set; }
 
     /// <inhertidoc/>
-    public override void Write(NdrCodec ndr) {
-        switch (Opnum) {
+    public override void Write(NdrCodec ndr)
+    {
+        switch (Opnum)
+        {
             case 2: // complex ping
 
                 var newlength = 8 + 6 + 8 + (_listOfAdds.Count * 8) + 8 +
                     (_listOfDels.Count * 8) + 16;
-                if (newlength > ndr.Buffer.Buf.Length) {
+                if (newlength > ndr.Buffer.Buf.Length)
+                {
                     ndr.Buffer.Buf = new byte[newlength + 16];
                 }
 
-                if (SetId == null) {
+                if (SetId == null)
+                {
                     Log.Logger.Information(
                         "Complex Ping going for the first time, will get the setId as response of this call ");
                     SetId = new byte[] { 0, 0, 0, 0, 0, 0, 0, 0 };
                 }
 
-                if (Log.Logger.IsEnabled(Microsoft.Extensions.Logging.LogLevel.Information)) {
+                if (Log.Logger.IsEnabled(Microsoft.Extensions.Logging.LogLevel.Information))
+                {
                     Log.Logger.Information("Complex ping going : listOfAdds -> Size : " +
                         _listOfAdds.Count + ", " + _listOfAdds);
                     Log.Logger.Information("listOfDels -> Size : " +
@@ -47,30 +53,36 @@ internal sealed class ComOxidPingObject : NdrOp {
                 MarshalUnMarshalHelper.Serialize(ndr, typeof(short), (short)_seqNum); // seq
                 MarshalUnMarshalHelper.Serialize(ndr, typeof(short), (short)_listOfAdds.Count); // add
                 MarshalUnMarshalHelper.Serialize(ndr, typeof(short), (short)_listOfDels.Count); // del
-                if (_listOfAdds.Count > 0) {
+                if (_listOfAdds.Count > 0)
+                {
                     MarshalUnMarshalHelper.Serialize(ndr, typeof(int), new object().GetHashCode()); // pointer
                     MarshalUnMarshalHelper.Serialize(ndr, typeof(int), _listOfAdds.Count);
-                    for (var i = 0; i < _listOfAdds.Count; i++) {
+                    for (var i = 0; i < _listOfAdds.Count; i++)
+                    {
                         var oid = _listOfAdds[i];
                         MarshalUnMarshalHelper.WriteOctetArrayLE(ndr, oid.OID);
                         Log.Logger.Information("[" + oid.ToString() + "]");
                     }
                 }
-                else {
+                else
+                {
                     MarshalUnMarshalHelper.Serialize(ndr, typeof(int), 0); // null pointer
                 }
 
-                if (_listOfDels.Count > 0) {
+                if (_listOfDels.Count > 0)
+                {
                     MarshalUnMarshalHelper.Serialize(ndr, typeof(int), new object().GetHashCode()); // pointer
                     MarshalUnMarshalHelper.Serialize(ndr, typeof(int), _listOfDels.Count);
                     // now align for array
                     ndr.FillAligned(8);
-                    for (var i = 0; i < _listOfDels.Count; i++) {
+                    for (var i = 0; i < _listOfDels.Count; i++)
+                    {
                         var oid = _listOfDels[i];
                         MarshalUnMarshalHelper.WriteOctetArrayLE(ndr, oid.OID);
                     }
                 }
-                else {
+                else
+                {
                     MarshalUnMarshalHelper.Serialize(ndr, typeof(int), 0); // null pointer
                 }
                 MarshalUnMarshalHelper.Serialize(ndr, typeof(int), 0);
@@ -80,11 +92,13 @@ internal sealed class ComOxidPingObject : NdrOp {
                 break;
 
             case 1: // simple ping
-                if (SetId != null) {
+                if (SetId != null)
+                {
                     MarshalUnMarshalHelper.WriteOctetArrayLE(ndr, SetId); // setid
                     Log.Logger.Information("Simple Ping going for setId: " + Utils.HexString(SetId, 0, SetId.Length));
                 }
-                else {
+                else
+                {
                     Log.Logger.Information("Some error ! Simple ping requested, but has no setID ");
                 }
                 break;
@@ -95,26 +109,31 @@ internal sealed class ComOxidPingObject : NdrOp {
     }
 
     /// <inhertidoc/>
-    public override void Read(NdrCodec ndr) {
+    public override void Read(NdrCodec ndr)
+    {
         // read response and fill DSs accordingly
-        switch (Opnum) {
+        switch (Opnum)
+        {
             case 2: // complex ping
                 SetId = MarshalUnMarshalHelper.ReadOctetArrayLE(ndr, 8);
                 // ping factor
                 MarshalUnMarshalHelper.Deserialize(ndr, typeof(short));
                 // hresult
                 var hresult = (int)MarshalUnMarshalHelper.Deserialize(ndr, typeof(int));
-                if (hresult != 0) {
+                if (hresult != 0)
+                {
                     Log.Logger.Error("Some error ! Complex ping failed, hresult: " + hresult);
                 }
                 break;
             case 1: // simple ping
                 // hresult
                 hresult = (int)MarshalUnMarshalHelper.Deserialize(ndr, typeof(int));
-                if (hresult != 0) {
+                if (hresult != 0)
+                {
                     Log.Logger.Error("Some error ! Simple ping failed, hresult: " + hresult);
                 }
-                else {
+                else
+                {
                     Log.Logger.Information("Simple Ping Succeeded");
                 }
                 break;

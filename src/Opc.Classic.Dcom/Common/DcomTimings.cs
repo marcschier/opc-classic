@@ -10,7 +10,8 @@ namespace Opc.Classic.Dcom.Common;
 /// <summary>
 /// DCOM OXID ping timing defaults and runtime overrides.
 /// </summary>
-public static class DcomTimings {
+public static class DcomTimings
+{
     /// <summary>
     /// MS-DCOM §3.1.4.1 PingPeriod constant.
     /// </summary>
@@ -29,11 +30,14 @@ public static class DcomTimings {
     /// <summary>
     /// Client-side OXID ping period.
     /// </summary>
-    public static TimeSpan PingPeriod {
+    public static TimeSpan PingPeriod
+    {
         get => _pingPeriod;
-        set {
+        set
+        {
             ValidatePingPeriod(value);
-            if (_objectExpiryPeriod < Double(value)) {
+            if (_objectExpiryPeriod < Double(value))
+            {
                 throw new ArgumentException("ObjectExpiryPeriod must be at least twice PingPeriod.", nameof(value));
             }
 
@@ -44,10 +48,13 @@ public static class DcomTimings {
     /// <summary>
     /// Server-side object expiry period for references that stop receiving OXID pings.
     /// </summary>
-    public static TimeSpan ObjectExpiryPeriod {
+    public static TimeSpan ObjectExpiryPeriod
+    {
         get => _objectExpiryPeriod;
-        set {
-            if (value < Double(_pingPeriod)) {
+        set
+        {
+            if (value < Double(_pingPeriod))
+            {
                 throw new ArgumentException("ObjectExpiryPeriod must be at least twice PingPeriod.", nameof(value));
             }
 
@@ -59,14 +66,17 @@ public static class DcomTimings {
 
     internal static TimeProvider TimeProvider { get; set; } = TimeProvider.System;
 
-    internal static void ResetForTesting() {
+    internal static void ResetForTesting()
+    {
         _pingPeriod = SpecMandatedPingPeriod;
         _objectExpiryPeriod = DefaultObjectExpiryPeriod;
         TimeProvider = TimeProvider.System;
     }
 
-    private static void ValidatePingPeriod(TimeSpan value) {
-        if (value < MinimumPingPeriod || value > MaximumAllowedPingPeriod) {
+    private static void ValidatePingPeriod(TimeSpan value)
+    {
+        if (value < MinimumPingPeriod || value > MaximumAllowedPingPeriod)
+        {
             throw new ArgumentOutOfRangeException(
                 nameof(value),
                 value,

@@ -16,7 +16,8 @@ namespace Opc.Classic.Dcom.Core;
 /// and MSShell examples for more details on how to use this class.</i>
 /// </summary>
 [Serializable]
-public sealed class LocalInterfaceDefinition {
+public sealed class LocalInterfaceDefinition
+{
 
     /// <summary>
     /// Returns status whether this interface supports
@@ -61,7 +62,8 @@ public sealed class LocalInterfaceDefinition {
     /// <code>IDispatch</code> ("<code>dispinterface</code>")
     /// is supported, <code>false</code> otherwise. </param>
     public LocalInterfaceDefinition(string interfaceIdentifier,
-        bool isDispInterface) {
+        bool isDispInterface)
+    {
         InterfaceIdentifier = interfaceIdentifier;
         DispInterface = isDispInterface;
     }
@@ -74,16 +76,20 @@ public sealed class LocalInterfaceDefinition {
     /// <param name="methodDescriptor"> </param>
     /// <exception cref="ArgumentException"> if a method by the
     /// same name already exists. </exception>
-    public void AddMethodDescriptor(LocalMethodDescriptor methodDescriptor) {
-        if (_nameVsMethodInfo.Contains(methodDescriptor.MethodName)) {
+    public void AddMethodDescriptor(LocalMethodDescriptor methodDescriptor)
+    {
+        if (_nameVsMethodInfo.Contains(methodDescriptor.MethodName))
+        {
             throw new ArgumentException(Interop.GetLocalizedMessage(
                 ErrorCode.INTEROP_CALLBACK_OVERLOADS_NOTALLOWED), nameof(methodDescriptor));
         }
         methodDescriptor.MethodNum = _nextNum;
         _nextNum++;
         _opnumVsMethodInfo.AddOrUpdate(methodDescriptor.MethodNum, methodDescriptor);
-        if (DispInterface) {
-            if (methodDescriptor.MethodDispID == -1) {
+        if (DispInterface)
+        {
+            if (methodDescriptor.MethodDispID == -1)
+            {
                 throw new ArgumentException(Interop.GetLocalizedMessage(
                     ErrorCode.INTEROP_METHODDESC_DISPID_MISSING), nameof(methodDescriptor));
             }
@@ -140,9 +146,11 @@ public sealed class LocalInterfaceDefinition {
     /// </remarks>
     /// <param name="opnum"> </param>
     /// <seealso cref="AddMethodDescriptor(LocalMethodDescriptor)"></seealso>
-    public void RemoveMethodDescriptor(int opnum) {
+    public void RemoveMethodDescriptor(int opnum)
+    {
         var methodDescriptor = _opnumVsMethodInfo.GetAndRemove(opnum);
-        if (methodDescriptor != null) {
+        if (methodDescriptor != null)
+        {
             _nameVsMethodInfo.Remove(methodDescriptor.MethodName);
         }
     }
@@ -156,9 +164,11 @@ public sealed class LocalInterfaceDefinition {
     /// </remarks>
     /// <param name="methodName"> </param>
     /// <seealso cref="AddMethodDescriptor(LocalMethodDescriptor)"></seealso>
-    public void RemoveMethodDescriptor(string methodName) {
+    public void RemoveMethodDescriptor(string methodName)
+    {
         var methodDescriptor = _nameVsMethodInfo.GetAndRemove(methodName);
-        if (methodDescriptor != null) {
+        if (methodDescriptor != null)
+        {
             _nameVsMethodInfo.Remove(methodDescriptor.MethodNum.ToString(CultureInfo.InvariantCulture));
         }
     }

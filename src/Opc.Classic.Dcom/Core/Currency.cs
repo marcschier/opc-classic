@@ -27,7 +27,8 @@ namespace Opc.Classic.Dcom.Core;
 /// curA.SetCurrency(2, -50);    // value: 1.9950
 /// </code>
 /// </summary>
-public sealed class Currency {
+public sealed class Currency
+{
 
     /// <summary>
     /// Returns the units value.
@@ -43,19 +44,23 @@ public sealed class Currency {
     /// Create currency
     /// </summary>
     /// <param name="value"></param>
-    public Currency(string value) {
-        if (value.StartsWith('.')) {
+    public Currency(string value)
+    {
+        if (value.StartsWith('.'))
+        {
             value = "0" + value;
         }
 
-        if (value.EndsWith('.')) {
+        if (value.EndsWith('.'))
+        {
             value += "0";
         }
 
         var str = value.Split("\\.", true);
 
         Units = int.Parse(str[0], CultureInfo.InvariantCulture);
-        if (str.Length > 1) {
+        if (str.Length > 1)
+        {
             FractionalUnits = int.Parse(str[1], CultureInfo.InvariantCulture);
         }
     }
@@ -65,7 +70,8 @@ public sealed class Currency {
     /// </summary>
     /// <param name="units"></param>
     /// <param name="fractionalUnits"></param>
-    public Currency(int units, int fractionalUnits) {
+    public Currency(int units, int fractionalUnits)
+    {
         Units = units;
         FractionalUnits = fractionalUnits;
     }

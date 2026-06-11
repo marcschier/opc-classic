@@ -14,7 +14,8 @@ namespace Opc.Classic.Xml.Serialization;
 /// <summary>
 /// SOAP 1.1 envelope reader for OPC XML-DA response payloads.
 /// </summary>
-public sealed class SoapEnvelopeReader : IDisposable {
+public sealed class SoapEnvelopeReader : IDisposable
+{
     private readonly XmlReader _reader;
     private readonly bool _ownsReader;
 
@@ -22,16 +23,19 @@ public sealed class SoapEnvelopeReader : IDisposable {
     public XmlReader Reader => _reader;
 
     /// <summary>Wraps an existing XmlReader (ownership stays with caller).</summary>
-    public SoapEnvelopeReader(XmlReader reader) {
+    public SoapEnvelopeReader(XmlReader reader)
+    {
         ArgumentNullException.ThrowIfNull(reader);
         _reader = reader;
         _ownsReader = false;
     }
 
     /// <summary>Creates a reader over the given stream.</summary>
-    public SoapEnvelopeReader(Stream stream) {
+    public SoapEnvelopeReader(Stream stream)
+    {
         ArgumentNullException.ThrowIfNull(stream);
-        var settings = new XmlReaderSettings {
+        var settings = new XmlReaderSettings
+        {
             ConformanceLevel = ConformanceLevel.Document,
             IgnoreWhitespace = true,
             IgnoreComments = true,
@@ -50,69 +54,86 @@ public sealed class SoapEnvelopeReader : IDisposable {
     /// or if the response is a SOAP Fault.
     /// </summary>
     /// <returns>The local name of the operation response element.</returns>
-    public string AdvanceToOperationResponse() {
+    public string AdvanceToOperationResponse()
+    {
         // Advance to soap:Envelope
-        if (!_reader.ReadToFollowing("Envelope", XmlDaConstants.SoapEnvelopeNamespace)) {
+        if (!_reader.ReadToFollowing("Envelope", XmlDaConstants.SoapEnvelopeNamespace))
+        {
             throw new InvalidDataException("SOAP envelope not found.");
         }
 
-        if (!_reader.ReadToDescendant("Body", XmlDaConstants.SoapEnvelopeNamespace)) {
+        if (!_reader.ReadToDescendant("Body", XmlDaConstants.SoapEnvelopeNamespace))
+        {
             throw new InvalidDataException("SOAP Body not found inside Envelope.");
         }
 
         // Now positioned on soap:Body — advance to its first child element.
-        if (!_reader.Read()) {
+        if (!_reader.Read())
+        {
             throw new InvalidDataException("SOAP Body is empty.");
         }
 
         // Skip whitespace / non-element nodes.
-        while (_reader.NodeType != XmlNodeType.Element) {
-            if (_reader.NodeType == XmlNodeType.EndElement) {
+        while (_reader.NodeType != XmlNodeType.Element)
+        {
+            if (_reader.NodeType == XmlNodeType.EndElement)
+            {
                 throw new InvalidDataException("SOAP Body contains no operation element.");
             }
 
-            if (!_reader.Read()) {
+            if (!_reader.Read())
+            {
                 throw new InvalidDataException("Unexpected end of XML inside SOAP Body.");
             }
         }
 
         // SOAP Faults surface as <soap:Fault> children of <soap:Body>.
         if (string.Equals(_reader.NamespaceURI, XmlDaConstants.SoapEnvelopeNamespace, StringComparison.Ordinal)
-            && string.Equals(_reader.LocalName, "Fault", StringComparison.Ordinal)) {
+            && string.Equals(_reader.LocalName, "Fault", StringComparison.Ordinal))
+        {
             throw ReadFault();
         }
 
         return _reader.LocalName;
     }
 
-    private XmlDaSoapFaultException ReadFault() {
+    private XmlDaSoapFaultException ReadFault()
+    {
         string faultCode = string.Empty;
         string faultString = string.Empty;
 
-        if (!_reader.IsEmptyElement) {
+        if (!_reader.IsEmptyElement)
+        {
             int faultDepth = _reader.Depth;
             bool alreadyAdvanced = false;
-            while (true) {
-                if (!alreadyAdvanced && !_reader.Read()) {
+            while (true)
+            {
+                if (!alreadyAdvanced && !_reader.Read())
+                {
                     break;
                 }
                 alreadyAdvanced = false;
-                if (_reader.Depth <= faultDepth) {
+                if (_reader.Depth <= faultDepth)
+                {
                     break;
                 }
-                if (_reader.NodeType != XmlNodeType.Element) {
+                if (_reader.NodeType != XmlNodeType.Element)
+                {
                     continue;
                 }
 
-                if (string.Equals(_reader.LocalName, "faultcode", StringComparison.Ordinal)) {
+                if (string.Equals(_reader.LocalName, "faultcode", StringComparison.Ordinal))
+                {
                     faultCode = _reader.ReadElementContentAsString();
                     alreadyAdvanced = true;
                 }
-                else if (string.Equals(_reader.LocalName, "faultstring", StringComparison.Ordinal)) {
+                else if (string.Equals(_reader.LocalName, "faultstring", StringComparison.Ordinal))
+                {
                     faultString = _reader.ReadElementContentAsString();
                     alreadyAdvanced = true;
                 }
-                else {
+                else
+                {
                     _reader.Skip();
                     alreadyAdvanced = true;
                 }
@@ -123,8 +144,10 @@ public sealed class SoapEnvelopeReader : IDisposable {
     }
 
     /// <inheritdoc />
-    public void Dispose() {
-        if (_ownsReader) {
+    public void Dispose()
+    {
+        if (_ownsReader)
+        {
             _reader.Dispose();
         }
     }

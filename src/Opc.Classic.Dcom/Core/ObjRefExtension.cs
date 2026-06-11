@@ -9,12 +9,15 @@ using System.Collections.Generic;
 namespace Opc.Classic.Dcom.Core;
 
 [Serializable]
-public sealed class ObjRefExtension {
+public sealed class ObjRefExtension
+{
     public ObjRefExtension(string dataId, byte[] payload)
-        : this(dataId, payload?.Length ?? 0, RoundUpToEight(payload?.Length ?? 0), PadToEight(payload)) {
+        : this(dataId, payload?.Length ?? 0, RoundUpToEight(payload?.Length ?? 0), PadToEight(payload))
+    {
     }
 
-    private ObjRefExtension(string dataId, int size, int roundedSize, byte[] data) {
+    private ObjRefExtension(string dataId, int size, int roundedSize, byte[] data)
+    {
         DataId = dataId;
         Size = size;
         RoundedSize = roundedSize;
@@ -31,7 +34,8 @@ public sealed class ObjRefExtension {
 
     public int Length => 16 + 4 + 4 + RoundedSize;
 
-    internal static ObjRefExtension Decode(NdrCodec ndr) {
+    internal static ObjRefExtension Decode(NdrCodec ndr)
+    {
         var dataId = InterfacePointerBody.ReadUuid(ndr, "OBJREF_EXTENDED extension decode");
         var size = ndr.ReadUnsignedLong();
         var roundedSize = ndr.ReadUnsignedLong();
@@ -39,19 +43,23 @@ public sealed class ObjRefExtension {
         return new ObjRefExtension(dataId, size, roundedSize, data);
     }
 
-    internal void Encode(NdrCodec ndr) {
+    internal void Encode(NdrCodec ndr)
+    {
         InterfacePointerBody.WriteUuid(ndr, DataId, "OBJREF_EXTENDED extension encode");
         ndr.WriteUnsignedLong(Size);
         ndr.WriteUnsignedLong(RoundedSize);
-        if (Data.Length > 0) {
+        if (Data.Length > 0)
+        {
             ndr.WriteOctetArray(Data, 0, Data.Length);
         }
     }
 
     private static int RoundUpToEight(int length) => (length + 7) & ~7;
 
-    private static byte[] PadToEight(byte[] payload) {
-        if (payload == null || payload.Length == 0) {
+    private static byte[] PadToEight(byte[] payload)
+    {
+        if (payload == null || payload.Length == 0)
+        {
             return Array.Empty<byte>();
         }
         var data = new byte[RoundUpToEight(payload.Length)];

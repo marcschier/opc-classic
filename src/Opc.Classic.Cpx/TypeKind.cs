@@ -13,7 +13,8 @@ namespace Opc.Classic.Cpx;
 /// in the managed model by <see cref="StructType"/> declarations and
 /// <see cref="StructField"/>.Repeats &gt; 1, not by separate <see cref="TypeKind"/> values.
 /// </summary>
-public enum TypeKind {
+public enum TypeKind
+{
     /// <summary>Not a recognized type.</summary>
     Unknown = 0,
     /// <summary>Boolean.</summary>

@@ -23,7 +23,8 @@ namespace Opc.Classic.Hda.Ndr;
 /// Both szTime and ftTime are always present in the wire form; the
 /// <c>bString</c> flag tells the consumer which to honour.
 /// </remarks>
-public static class NdrOpcHdaTimeCodec {
+public static class NdrOpcHdaTimeCodec
+{
     private const int Win32BoolTrue = unchecked((int)0xFFFFFFFFu);
     private const long FileTimeEpochOffsetTicks = 504911232000000000L;
 
@@ -36,7 +37,8 @@ public static class NdrOpcHdaTimeCodec {
     /// so a naive inline write of WriteUnicodeStringPtr (referent + body) puts
     /// the body BEFORE ftTime and breaks RPC decoding (RPC_S_BAD_STUB_DATA).
     /// </remarks>
-    public static void Write(ref NdrWriter writer, OpcHdaTime value) {
+    public static void Write(ref NdrWriter writer, OpcHdaTime value)
+    {
         ArgumentNullException.ThrowIfNull(value);
 
         long fileTimeTicks = value.IsStringExpression
@@ -46,22 +48,26 @@ public static class NdrOpcHdaTimeCodec {
         // Primary part: bString + szTime referent + ftTime.
         writer.WriteInt32(value.IsStringExpression ? Win32BoolTrue : 0);
         bool hasString = value.StringExpression is not null;
-        if (hasString) {
+        if (hasString)
+        {
             _ = writer.WriteReferentId();
         }
-        else {
+        else
+        {
             writer.WriteNullReferent();
         }
         writer.WriteFileTime(fileTimeTicks);
 
         // Deferred part: szTime body, only when the referent is non-null.
-        if (hasString) {
+        if (hasString)
+        {
             writer.WriteUnicodeString(value.StringExpression!);
         }
     }
 
     /// <summary>Decodes a single OPCHDA_TIME from NDR.</summary>
-    public static OpcHdaTime Read(ref NdrReader reader) {
+    public static OpcHdaTime Read(ref NdrReader reader)
+    {
         int bString = reader.ReadInt32();
         uint szTimeRef = reader.ReadUInt32();
         long fileTimeTicks = reader.ReadFileTime();

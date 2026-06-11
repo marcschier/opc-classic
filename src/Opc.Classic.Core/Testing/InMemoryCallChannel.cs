@@ -19,7 +19,8 @@ namespace Opc.Classic.Testing;
 /// The call log records only interface ID, opnum, and payload length; handlers can capture request
 /// bytes themselves when a test needs to assert payload contents.
 /// </remarks>
-public sealed class InMemoryCallChannel : ICallChannel {
+public sealed class InMemoryCallChannel : ICallChannel
+{
     private readonly InMemoryCallHandler _handler;
     private readonly ConcurrentQueue<InMemoryCall> _callLog = new();
 
@@ -28,7 +29,8 @@ public sealed class InMemoryCallChannel : ICallChannel {
     /// </summary>
     /// <param name="handler">The handler that simulates server responses.</param>
     /// <exception cref="ArgumentNullException"><paramref name="handler" /> is <see langword="null" />.</exception>
-    public InMemoryCallChannel(InMemoryCallHandler handler) {
+    public InMemoryCallChannel(InMemoryCallHandler handler)
+    {
         ArgumentNullException.ThrowIfNull(handler);
 
         _handler = handler;
@@ -44,7 +46,8 @@ public sealed class InMemoryCallChannel : ICallChannel {
         Guid interfaceId,
         int opnum,
         ReadOnlyMemory<byte> requestPayload,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         cancellationToken.ThrowIfCancellationRequested();
 
         _callLog.Enqueue(new InMemoryCall(interfaceId, opnum, requestPayload.Length));

@@ -10,17 +10,20 @@ using TUnit.Core;
 
 namespace Opc.Classic.Ae.Tests;
 
-public sealed class NdrOpcConditionStateCodecTests {
+public sealed class NdrOpcConditionStateCodecTests
+{
     private delegate void NdrWriteAction(ref NdrWriter writer);
 
-    private static byte[] WriteOne(NdrWriteAction write, int capacity = 4096) {
+    private static byte[] WriteOne(NdrWriteAction write, int capacity = 4096)
+    {
         var buffer = new byte[capacity];
         var writer = new NdrWriter(buffer);
         write(ref writer);
         return buffer[..writer.Position];
     }
 
-    private static OpcConditionState ReadOne(byte[] bytes) {
+    private static OpcConditionState ReadOne(byte[] bytes)
+    {
         var reader = new NdrReader(bytes);
         return NdrOpcConditionStateCodec.Read(ref reader);
     }
@@ -60,7 +63,8 @@ public sealed class NdrOpcConditionStateCodecTests {
             errors: errors ?? new[] { 0, unchecked((int)0x80004005u), 7 });
 
     [Test]
-    public async Task RoundTrip_ZeroSubConditionsAndEventAttributes() {
+    public async Task RoundTrip_ZeroSubConditionsAndEventAttributes()
+    {
         var input = new OpcConditionState(
             state: 0x0004,
             activeSubCondition: null,
@@ -92,7 +96,8 @@ public sealed class NdrOpcConditionStateCodecTests {
     }
 
     [Test]
-    public async Task RoundTrip_TwoSubConditionsAndThreeEventAttributes() {
+    public async Task RoundTrip_TwoSubConditionsAndThreeEventAttributes()
+    {
         var input = MakeState();
         var bytes = WriteOne((ref NdrWriter writer) => NdrOpcConditionStateCodec.Write(ref writer, input));
         var back = ReadOne(bytes);
@@ -115,7 +120,8 @@ public sealed class NdrOpcConditionStateCodecTests {
     }
 
     [Test]
-    public async Task RoundTrip_NullAcknowledgerIdAndComment() {
+    public async Task RoundTrip_NullAcknowledgerIdAndComment()
+    {
         var input = MakeState(acknowledgerId: null, comment: null);
         var bytes = WriteOne((ref NdrWriter writer) => NdrOpcConditionStateCodec.Write(ref writer, input));
         var back = ReadOne(bytes);
@@ -127,12 +133,15 @@ public sealed class NdrOpcConditionStateCodecTests {
     }
 
     [Test]
-    public async Task Constructor_MismatchedParallelArrayLengths_ThrowsArgumentException() {
+    public async Task Constructor_MismatchedParallelArrayLengths_ThrowsArgumentException()
+    {
         bool threw = false;
-        try {
+        try
+        {
             _ = MakeState(subConditionDescriptions: new[] { "only one" });
         }
-        catch (ArgumentException ex) when (ex.Message.Contains("subConditionDescriptions", StringComparison.Ordinal)) {
+        catch (ArgumentException ex) when (ex.Message.Contains("subConditionDescriptions", StringComparison.Ordinal))
+        {
             threw = true;
         }
 

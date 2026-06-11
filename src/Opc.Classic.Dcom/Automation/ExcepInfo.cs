@@ -7,15 +7,18 @@ namespace Opc.Classic.Dcom.Automation;
 /// help file path for an unsuccessful <seealso cref="IDispatch"/>
 /// operation.
 /// </summary>
-public sealed class ExcepInfo {
+public sealed class ExcepInfo
+{
 
     /// <summary>
     /// Create exception info
     /// </summary>
-    internal ExcepInfo() {
+    internal ExcepInfo()
+    {
     }
 
-    internal void ClearAll() {
+    internal void ClearAll()
+    {
         ErrorCode = -1;
         ExcepSource = null;
         ExcepDesc = null;

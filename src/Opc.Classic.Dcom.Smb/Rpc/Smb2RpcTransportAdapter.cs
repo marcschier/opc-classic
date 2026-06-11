@@ -37,25 +37,29 @@ public delegate Task<ISmb2Transport> Smb2TransportConnector(
 /// <see cref="Smb2NamedPipe" /> directly.
 /// </para>
 /// </remarks>
-public sealed class Smb2RpcTransportAdapter : IDisposable, IAsyncDisposable {
+public sealed class Smb2RpcTransportAdapter : IDisposable, IAsyncDisposable
+{
     private readonly Smb2Connection _connection;
     private readonly Smb2NamedPipe _pipe;
     private bool _disposed;
 
     /// <summary>Initializes a new adapter over an established named-pipe handle.</summary>
-    public Smb2RpcTransportAdapter(Smb2Connection connection, Smb2NamedPipe pipe) {
+    public Smb2RpcTransportAdapter(Smb2Connection connection, Smb2NamedPipe pipe)
+    {
         _connection = connection ?? throw new ArgumentNullException(nameof(connection));
         _pipe = pipe ?? throw new ArgumentNullException(nameof(pipe));
     }
 
     /// <summary>Sends data with an SMB2 WRITE request.</summary>
-    public async Task WriteAsync(ReadOnlyMemory<byte> request, CancellationToken cancellationToken = default) {
+    public async Task WriteAsync(ReadOnlyMemory<byte> request, CancellationToken cancellationToken = default)
+    {
         ObjectDisposedException.ThrowIf(_disposed, this);
         await _pipe.WriteAsync(request, cancellationToken).ConfigureAwait(false);
     }
 
     /// <summary>Reads data with an SMB2 READ request.</summary>
-    public async Task<ReadOnlyMemory<byte>> ReadAsync(int maxLength, CancellationToken cancellationToken = default) {
+    public async Task<ReadOnlyMemory<byte>> ReadAsync(int maxLength, CancellationToken cancellationToken = default)
+    {
         ObjectDisposedException.ThrowIf(_disposed, this);
         return await _pipe.ReadAsync(maxLength, cancellationToken).ConfigureAwait(false);
     }
@@ -67,7 +71,8 @@ public sealed class Smb2RpcTransportAdapter : IDisposable, IAsyncDisposable {
     public async Task<ReadOnlyMemory<byte>> TransceiveAsync(
         ReadOnlyMemory<byte> request,
         int maxOutputResponse = 64 * 1024,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         ObjectDisposedException.ThrowIf(_disposed, this);
         return await _pipe.TransceiveAsync(request, maxOutputResponse, cancellationToken).ConfigureAwait(false);
     }
@@ -103,14 +108,17 @@ public sealed class Smb2RpcTransportAdapter : IDisposable, IAsyncDisposable {
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
         "Usage", "VSTHRD002:Avoid problematic synchronous waits",
         Justification = "IDisposable.Dispose is intrinsically synchronous; we delegate to the async DisposeAsync. Callers wanting deterministic async tear-down can call DisposeAsync directly.")]
-    public void Dispose() {
+    public void Dispose()
+    {
         DisposeAsync().AsTask().GetAwaiter().GetResult();
         GC.SuppressFinalize(this);
     }
 
     /// <inheritdoc />
-    public async ValueTask DisposeAsync() {
-        if (_disposed) {
+    public async ValueTask DisposeAsync()
+    {
+        if (_disposed)
+        {
             return;
         }
         _disposed = true;
@@ -123,7 +131,8 @@ public sealed class Smb2RpcTransportAdapter : IDisposable, IAsyncDisposable {
 /// Address parser for the legacy <c>smb://user@server/IPC$/pipename</c> form
 /// used by <c>Opc.Classic.Dcom.Rpc.Ncacn_Np.RpcTransport</c>.
 /// </summary>
-public static class SmbRpcAddress {
+public static class SmbRpcAddress
+{
     /// <summary>Parsed components of an SMB pipe URL.</summary>
     public sealed record Parsed(
         string Host,
@@ -136,30 +145,35 @@ public static class SmbRpcAddress {
     /// <summary>
     /// Parses an <c>smb://[user[:password]@][domain;]server/IPC$/pipename</c> address.
     /// </summary>
-    public static Parsed Parse(string smbUrl) {
+    public static Parsed Parse(string smbUrl)
+    {
         ArgumentException.ThrowIfNullOrWhiteSpace(smbUrl);
         const string Scheme = "smb://";
-        if (!smbUrl.StartsWith(Scheme, StringComparison.OrdinalIgnoreCase)) {
+        if (!smbUrl.StartsWith(Scheme, StringComparison.OrdinalIgnoreCase))
+        {
             throw new FormatException($"SMB URL must start with '{Scheme}'.");
         }
 
         string body = smbUrl[Scheme.Length..];
         string? userInfo = null;
         int at = body.IndexOf('@', StringComparison.Ordinal);
-        if (at > 0) {
+        if (at > 0)
+        {
             userInfo = body[..at];
             body = body[(at + 1)..];
         }
 
         int firstSlash = body.IndexOf('/', StringComparison.Ordinal);
-        if (firstSlash <= 0) {
+        if (firstSlash <= 0)
+        {
             throw new FormatException("SMB URL is missing a share name.");
         }
 
         string host = body[..firstSlash];
         string rest = body[(firstSlash + 1)..];
         int secondSlash = rest.IndexOf('/', StringComparison.Ordinal);
-        if (secondSlash <= 0) {
+        if (secondSlash <= 0)
+        {
             throw new FormatException("SMB URL is missing a pipe name.");
         }
 
@@ -169,18 +183,22 @@ public static class SmbRpcAddress {
         string? userName = null;
         string? domain = null;
         string? password = null;
-        if (userInfo is not null) {
+        if (userInfo is not null)
+        {
             int colon = userInfo.IndexOf(':', StringComparison.Ordinal);
-            if (colon >= 0) {
+            if (colon >= 0)
+            {
                 password = Uri.UnescapeDataString(userInfo[(colon + 1)..]);
                 userInfo = userInfo[..colon];
             }
             int semi = userInfo.IndexOf(';', StringComparison.Ordinal);
-            if (semi >= 0) {
+            if (semi >= 0)
+            {
                 domain = userInfo[..semi];
                 userName = userInfo[(semi + 1)..];
             }
-            else {
+            else
+            {
                 userName = userInfo;
             }
         }
@@ -191,15 +209,19 @@ public static class SmbRpcAddress {
     /// <summary>
     /// Formats a parsed SMB URL back to its <c>smb://[user[:password]@][domain;]server/IPC$/pipe</c> string form.
     /// </summary>
-    public static string Format(Parsed parsed) {
+    public static string Format(Parsed parsed)
+    {
         ArgumentNullException.ThrowIfNull(parsed);
         var sb = new System.Text.StringBuilder("smb://", capacity: 64);
-        if (!string.IsNullOrEmpty(parsed.UserName)) {
-            if (!string.IsNullOrEmpty(parsed.Domain)) {
+        if (!string.IsNullOrEmpty(parsed.UserName))
+        {
+            if (!string.IsNullOrEmpty(parsed.Domain))
+            {
                 sb.Append(parsed.Domain).Append(';');
             }
             sb.Append(parsed.UserName);
-            if (!string.IsNullOrEmpty(parsed.Password)) {
+            if (!string.IsNullOrEmpty(parsed.Password))
+            {
                 sb.Append(':').Append(Uri.EscapeDataString(parsed.Password));
             }
             sb.Append('@');
@@ -216,7 +238,8 @@ public static class SmbRpcAddress {
 /// (via a caller-supplied blob provider), connects to the IPC$ tree, opens
 /// the named pipe, and returns an adapter ready for synchronous RPC transacts.
 /// </summary>
-public sealed class Smb2RpcTransportBuilder {
+public sealed class Smb2RpcTransportBuilder
+{
     private readonly SmbRpcAddress.Parsed _address;
     private readonly NtlmsspBlobProvider _blobProvider;
     private readonly Smb2SessionKeyProvider? _sessionKeyProvider;
@@ -231,15 +254,18 @@ public sealed class Smb2RpcTransportBuilder {
     public Smb2RpcTransportBuilder(
         SmbRpcAddress.Parsed address,
         NtlmsspBlobProvider blobProvider,
-        Smb2SessionKeyProvider? sessionKeyProvider = null) {
+        Smb2SessionKeyProvider? sessionKeyProvider = null)
+    {
         _address = address ?? throw new ArgumentNullException(nameof(address));
         _blobProvider = blobProvider ?? throw new ArgumentNullException(nameof(blobProvider));
         _sessionKeyProvider = sessionKeyProvider;
     }
 
     /// <summary>Sets the TCP port for the SMB2 transport (default 445).</summary>
-    public Smb2RpcTransportBuilder UsePort(int port) {
-        if (port is <= 0 or > 65535) {
+    public Smb2RpcTransportBuilder UsePort(int port)
+    {
+        if (port is <= 0 or > 65535)
+        {
             throw new ArgumentOutOfRangeException(nameof(port), port, "Port must be 1..65535.");
         }
         _port = port;
@@ -247,14 +273,16 @@ public sealed class Smb2RpcTransportBuilder {
     }
 
     /// <summary>Sets the maximum SMB2 message size for inbound and outbound frames.</summary>
-    public Smb2RpcTransportBuilder UseMaxSmb2MessageSize(int maxSmb2MessageSize) {
+    public Smb2RpcTransportBuilder UseMaxSmb2MessageSize(int maxSmb2MessageSize)
+    {
         _ = new Smb2ConnectionOptions(_address.Host, _port) { MaxSmb2MessageSize = maxSmb2MessageSize };
         _maxSmb2MessageSize = maxSmb2MessageSize;
         return this;
     }
 
     /// <summary>Overrides the SMB2 byte transport connector, primarily for tests.</summary>
-    public Smb2RpcTransportBuilder UseTransportConnector(Smb2TransportConnector transportConnector) {
+    public Smb2RpcTransportBuilder UseTransportConnector(Smb2TransportConnector transportConnector)
+    {
         _transportConnector = transportConnector ?? throw new ArgumentNullException(nameof(transportConnector));
         return this;
     }
@@ -263,17 +291,20 @@ public sealed class Smb2RpcTransportBuilder {
     /// Opens the SMB2 connection, completes NTLMSSP session setup, connects to IPC$,
     /// opens the named pipe, and returns the adapter.
     /// </summary>
-    public async Task<Smb2RpcTransportAdapter> BuildAsync(CancellationToken cancellationToken = default) {
+    public async Task<Smb2RpcTransportAdapter> BuildAsync(CancellationToken cancellationToken = default)
+    {
         ISmb2Transport tcp = await _transportConnector(_address.Host, _port, _maxSmb2MessageSize, cancellationToken).ConfigureAwait(false);
         var conn = new Smb2Connection(new Smb2ConnectionOptions(_address.Host, _port) { MaxSmb2MessageSize = _maxSmb2MessageSize }, tcp);
-        try {
+        try
+        {
             _ = await conn.NegotiateAsync(cancellationToken).ConfigureAwait(false);
             await conn.SessionSetupAsync(_blobProvider, _sessionKeyProvider, cancellationToken).ConfigureAwait(false);
             _ = await conn.TreeConnectIpcAsync(cancellationToken).ConfigureAwait(false);
             var pipe = await conn.OpenNamedPipeAsync(_address.PipeName, cancellationToken).ConfigureAwait(false);
             return new Smb2RpcTransportAdapter(conn, pipe);
         }
-        catch {
+        catch
+        {
             await conn.DisposeAsync().ConfigureAwait(false);
             throw;
         }

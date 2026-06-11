@@ -7,7 +7,8 @@ namespace Opc.Classic.Dcom.Core;
 /// <summary>
 /// Users can implement this class to provide for custom handling of there objects
 /// </summary>
-public abstract class CustomCallBuilder : CallBuilder {
+public abstract class CustomCallBuilder : CallBuilder
+{
 
     /// <summary>
     /// Write
@@ -26,13 +27,15 @@ public abstract class CustomCallBuilder : CallBuilder {
     /// </summary>
     /// <param name="dispatchNotSupported"></param>
     protected CustomCallBuilder(bool dispatchNotSupported) :
-        base(dispatchNotSupported) {
+        base(dispatchNotSupported)
+    {
     }
 
     /// <summary>
     /// Create
     /// </summary>
-    protected CustomCallBuilder() {
+    protected CustomCallBuilder()
+    {
     }
 
     /// <inheritdoc/>

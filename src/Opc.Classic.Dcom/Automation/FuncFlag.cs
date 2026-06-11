@@ -8,7 +8,8 @@ namespace Opc.Classic.Dcom.Automation;
 /// Function flags
 /// </summary>
 [Flags]
-public enum FuncFlag {
+public enum FuncFlag
+{
 
     /// <summary>
     /// Restricted

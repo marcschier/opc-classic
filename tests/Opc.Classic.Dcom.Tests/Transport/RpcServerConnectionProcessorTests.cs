@@ -20,11 +20,13 @@ using TUnit.Core;
 
 namespace Opc.Classic.Dcom.Tests.Transport;
 
-public sealed class RpcServerConnectionProcessorTests {
+public sealed class RpcServerConnectionProcessorTests
+{
     private static readonly Guid InterfaceId = Guid.Parse("11111111-2222-3333-4444-555555555555");
 
     [Test]
-    public async Task BindPdu_for_known_interface_returns_acceptance() {
+    public async Task BindPdu_for_known_interface_returns_acceptance()
+    {
         var processor = new RpcServerConnectionProcessor(
             new Dictionary<Guid, IOpcServerDispatcher> { [InterfaceId] = new StubDispatcher() });
         await using var transport = new InMemoryAsyncTransport();
@@ -40,7 +42,8 @@ public sealed class RpcServerConnectionProcessorTests {
     }
 
     [Test]
-    public async Task BindPdu_for_unknown_interface_returns_rejection() {
+    public async Task BindPdu_for_unknown_interface_returns_rejection()
+    {
         var processor = new RpcServerConnectionProcessor(
             new Dictionary<Guid, IOpcServerDispatcher> { [InterfaceId] = new StubDispatcher() });
         await using var transport = new InMemoryAsyncTransport();
@@ -55,7 +58,8 @@ public sealed class RpcServerConnectionProcessorTests {
     }
 
     [Test]
-    public async Task RequestPdu_routes_to_dispatcher_and_returns_response() {
+    public async Task RequestPdu_routes_to_dispatcher_and_returns_response()
+    {
         byte[] responseBody = [0xAB, 0xCD, 0xEF];
         var dispatcher = new StubDispatcher(opnum => DispatchResult.Success(responseBody));
         var processor = new RpcServerConnectionProcessor(
@@ -76,7 +80,8 @@ public sealed class RpcServerConnectionProcessorTests {
     }
 
     [Test]
-    public async Task RequestPdu_with_unknown_context_returns_fault() {
+    public async Task RequestPdu_with_unknown_context_returns_fault()
+    {
         var processor = new RpcServerConnectionProcessor(
             new Dictionary<Guid, IOpcServerDispatcher> { [InterfaceId] = new StubDispatcher() });
         await using var transport = new InMemoryAsyncTransport();
@@ -91,7 +96,8 @@ public sealed class RpcServerConnectionProcessorTests {
     }
 
     [Test]
-    public async Task DispatcherFailure_returns_fault_with_hresult_status() {
+    public async Task DispatcherFailure_returns_fault_with_hresult_status()
+    {
         const int hresult = unchecked((int)0x80004005);
         var dispatcher = new StubDispatcher(opnum => DispatchResult.Fault(hresult));
         var processor = new RpcServerConnectionProcessor(
@@ -110,7 +116,8 @@ public sealed class RpcServerConnectionProcessorTests {
     }
 
     [Test]
-    public async Task DispatcherThrowing_returns_fault_without_propagating_exception() {
+    public async Task DispatcherThrowing_returns_fault_without_propagating_exception()
+    {
         var dispatcher = new StubDispatcher(_ => throw new InvalidOperationException("boom"));
         var processor = new RpcServerConnectionProcessor(
             new Dictionary<Guid, IOpcServerDispatcher> { [InterfaceId] = dispatcher });
@@ -126,7 +133,8 @@ public sealed class RpcServerConnectionProcessorTests {
     }
 
     [Test]
-    public async Task ShutdownPdu_terminates_loop_cleanly() {
+    public async Task ShutdownPdu_terminates_loop_cleanly()
+    {
         var processor = new RpcServerConnectionProcessor(
             new Dictionary<Guid, IOpcServerDispatcher> { [InterfaceId] = new StubDispatcher() });
         await using var transport = new InMemoryAsyncTransport();
@@ -140,10 +148,12 @@ public sealed class RpcServerConnectionProcessorTests {
     }
 
     [Test]
-    public async Task AlterContextPdu_adds_new_context_mapping() {
+    public async Task AlterContextPdu_adds_new_context_mapping()
+    {
         Guid secondInterface = Guid.Parse("66666666-7777-8888-9999-aaaaaaaaaaaa");
         var processor = new RpcServerConnectionProcessor(
-            new Dictionary<Guid, IOpcServerDispatcher> {
+            new Dictionary<Guid, IOpcServerDispatcher>
+            {
                 [InterfaceId] = new StubDispatcher(),
                 [secondInterface] = new StubDispatcher(opnum => DispatchResult.Success([0xAA])),
             });
@@ -163,7 +173,8 @@ public sealed class RpcServerConnectionProcessorTests {
     }
 
     [Test]
-    public async Task AuthenticatedBind_is_rejected_with_bind_nak() {
+    public async Task AuthenticatedBind_is_rejected_with_bind_nak()
+    {
         var processor = new RpcServerConnectionProcessor(
             new Dictionary<Guid, IOpcServerDispatcher> { [InterfaceId] = new StubDispatcher() });
         await using var transport = new InMemoryAsyncTransport();
@@ -181,13 +192,15 @@ public sealed class RpcServerConnectionProcessorTests {
     }
 
     [Test]
-    public async Task Constructor_throws_on_null_dispatcher_map() {
+    public async Task Constructor_throws_on_null_dispatcher_map()
+    {
         await TUnit.Assertions.Assert.That(() => { _ = new RpcServerConnectionProcessor(null!); })
             .Throws<ArgumentNullException>();
     }
 
     [Test]
-    public async Task Request_with_object_uuid_routes_through_object_registry() {
+    public async Task Request_with_object_uuid_routes_through_object_registry()
+    {
         // Demonstrates the per-object IPID routing path. The root
         // dispatcher returns one payload; the per-object dispatcher
         // (registered with a specific IPID) returns a different one.
@@ -226,7 +239,8 @@ public sealed class RpcServerConnectionProcessorTests {
     }
 
     [Test]
-    public async Task Request_with_unknown_object_uuid_falls_back_to_root_dispatcher() {
+    public async Task Request_with_unknown_object_uuid_falls_back_to_root_dispatcher()
+    {
         byte[] rootPayload = [0xFA, 0x11, 0xBA, 0xCC];
         var rootDispatcher = new StubDispatcher(_ => DispatchResult.Success(rootPayload));
         var registry = new OpcObjectRegistry();
@@ -248,9 +262,11 @@ public sealed class RpcServerConnectionProcessorTests {
         await Assert.That(body.ToArray()).IsEquivalentTo(rootPayload);
     }
 
-    private static RequestCoPdu NewRequestWithObject(int contextId, int opnum, int callId, Guid ipid) {
+    private static RequestCoPdu NewRequestWithObject(int contextId, int opnum, int callId, Guid ipid)
+    {
         byte[] stub = OrpcEnvelope.BuildRequestStub(Array.Empty<byte>(), Guid.NewGuid());
-        var request = new RequestCoPdu {
+        var request = new RequestCoPdu
+        {
             CallId = callId,
             ContextId = contextId,
             Opnum = opnum,
@@ -262,20 +278,23 @@ public sealed class RpcServerConnectionProcessorTests {
     }
 
     private static async Task RunProcessorAndShutdown(
-        RpcServerConnectionProcessor processor, InMemoryAsyncTransport transport) {
+        RpcServerConnectionProcessor processor, InMemoryAsyncTransport transport)
+    {
         await WritePduToInbound(transport, new ShutdownPdu { CallId = int.MaxValue });
         await processor.ProcessConnectionAsync(transport, TestContext.Current!.CancellationToken)
             .AsTask()
             .WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current!.CancellationToken);
     }
 
-    private static async Task WritePduToInbound(InMemoryAsyncTransport transport, ConnectionOrientedPdu pdu) {
+    private static async Task WritePduToInbound(InMemoryAsyncTransport transport, ConnectionOrientedPdu pdu)
+    {
         byte[] frame = PduCodec.EncodePdu(pdu, ConnectionOrientedPdu.MUST_RECEIVE_FRAGMENT_SIZE);
         await transport.WriteInboundAsync(frame);
     }
 
     private static async Task WriteFrameWithAuthVerifier(
-        InMemoryAsyncTransport transport, ConnectionOrientedPdu pdu, int authBodyLength) {
+        InMemoryAsyncTransport transport, ConnectionOrientedPdu pdu, int authBodyLength)
+    {
         byte[] frame = PduCodec.EncodePdu(pdu, ConnectionOrientedPdu.MUST_RECEIVE_FRAGMENT_SIZE);
         // Stamp the auth length so the processor's auth check triggers.
         // The actual auth verifier bytes do not need to be valid for the
@@ -291,17 +310,20 @@ public sealed class RpcServerConnectionProcessorTests {
     }
 
     private static async Task<T> ReadOutboundPduAs<T>(InMemoryAsyncTransport transport)
-        where T : ConnectionOrientedPdu {
+        where T : ConnectionOrientedPdu
+    {
         byte[] frame = await PduCodec.ReadPduFrameAsync(transport.ReadOutbound, TestContext.Current!.CancellationToken);
         ConnectionOrientedPdu pdu = PduCodec.DecodePdu(frame);
-        if (pdu is T typed) {
+        if (pdu is T typed)
+        {
             return typed;
         }
         throw new InvalidOperationException($"Expected {typeof(T).Name} but read {pdu.GetType().Name}.");
     }
 
     private static BindPdu NewBindForInterface(Guid interfaceId, int contextId, int callId) =>
-        new() {
+        new()
+        {
             CallId = callId,
             AssociationGroupId = 0,
             MaxTransmitFragment = ConnectionOrientedPdu.MUST_RECEIVE_FRAGMENT_SIZE,
@@ -310,7 +332,8 @@ public sealed class RpcServerConnectionProcessorTests {
         };
 
     private static AlterContextPdu NewAlterContextForInterface(Guid interfaceId, int contextId, int callId) =>
-        new() {
+        new()
+        {
             CallId = callId,
             AssociationGroupId = 0,
             MaxTransmitFragment = ConnectionOrientedPdu.MUST_RECEIVE_FRAGMENT_SIZE,
@@ -318,9 +341,11 @@ public sealed class RpcServerConnectionProcessorTests {
             ContextList = [BuildContext(interfaceId, contextId)],
         };
 
-    private static RequestCoPdu NewRequest(int contextId, int opnum, int callId, byte[] payload) {
+    private static RequestCoPdu NewRequest(int contextId, int opnum, int callId, byte[] payload)
+    {
         byte[] stub = OrpcEnvelope.BuildRequestStub(payload, Guid.NewGuid());
-        return new RequestCoPdu {
+        return new RequestCoPdu
+        {
             CallId = callId,
             ContextId = contextId,
             Opnum = opnum,
@@ -332,18 +357,21 @@ public sealed class RpcServerConnectionProcessorTests {
     private static PresentationContext BuildContext(Guid interfaceId, int contextId) =>
         new(contextId, new PresentationSyntax(new UUID(interfaceId.ToString("D")), 0, 0));
 
-    private sealed class StubDispatcher : IOpcServerDispatcher {
+    private sealed class StubDispatcher : IOpcServerDispatcher
+    {
         private readonly Func<int, DispatchResult> _handler;
 
         public StubDispatcher() : this(_ => DispatchResult.Success(Array.Empty<byte>())) { }
 
-        public StubDispatcher(Func<int, DispatchResult> handler) {
+        public StubDispatcher(Func<int, DispatchResult> handler)
+        {
             _handler = handler;
         }
 
         public int LastOpnum { get; private set; }
 
-        public ValueTask<DispatchResult> DispatchAsync(int opnum, ReadOnlyMemory<byte> requestPayload, CancellationToken cancellationToken) {
+        public ValueTask<DispatchResult> DispatchAsync(int opnum, ReadOnlyMemory<byte> requestPayload, CancellationToken cancellationToken)
+        {
             LastOpnum = opnum;
             return ValueTask.FromResult(_handler(opnum));
         }

@@ -10,7 +10,8 @@ using TUnit.Core;
 
 namespace Opc.Classic.Integration.Tests.CompatMatrix;
 
-public sealed class CompatMatrixSummaryTests {
+public sealed class CompatMatrixSummaryTests
+{
     /// <summary>
     /// Asserts that the four matrix cells are tracked.
     /// This is not a runtime interop test - it is a structural compile-time
@@ -21,7 +22,8 @@ public sealed class CompatMatrixSummaryTests {
     ///   - Windows COM client → Windows COM server: out of scope (Windows-only legacy)
     /// </summary>
     [Test, Category("CompatMatrix")]
-    public async Task Matrix_cells_documented() {
+    public async Task Matrix_cells_documented()
+    {
         await Assert.That(ReadLoopbackRoundTripType()).IsNotNull();
         await Assert.That(ReadNet10ServerToNativeClientType()).IsNotNull();
     }

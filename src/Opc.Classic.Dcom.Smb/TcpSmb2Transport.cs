@@ -16,7 +16,8 @@ namespace Opc.Classic.Dcom.Smb;
 /// server. Implementations frame SMB2 messages with the NetBIOS-over-TCP
 /// 4-byte length prefix per [MS-CIFS] §2.2.1.
 /// </summary>
-public interface ISmb2Transport : IAsyncDisposable {
+public interface ISmb2Transport : IAsyncDisposable
+{
     /// <summary>Send a complete SMB2 message (header + body) framed for the wire.</summary>
     Task SendAsync(ReadOnlyMemory<byte> packet, CancellationToken cancellationToken);
 
@@ -27,13 +28,15 @@ public interface ISmb2Transport : IAsyncDisposable {
 /// <summary>
 /// Production SMB2 transport over TCP port 445 with NetBIOS-over-TCP framing.
 /// </summary>
-public sealed class TcpSmb2Transport : ISmb2Transport {
+public sealed class TcpSmb2Transport : ISmb2Transport
+{
     private readonly TcpClient _tcp;
     private readonly NetworkStream _stream;
     private readonly int _maxPayloadLength;
     private bool _disposed;
 
-    private TcpSmb2Transport(TcpClient tcp, int maxPayloadLength) {
+    private TcpSmb2Transport(TcpClient tcp, int maxPayloadLength)
+    {
         _tcp = tcp;
         _stream = tcp.GetStream();
         _maxPayloadLength = maxPayloadLength;
@@ -50,27 +53,32 @@ public sealed class TcpSmb2Transport : ISmb2Transport {
         string host,
         int port,
         int maxPayloadLength,
-        CancellationToken cancellationToken) {
+        CancellationToken cancellationToken)
+    {
         ArgumentException.ThrowIfNullOrWhiteSpace(host);
-        if (maxPayloadLength < 0 || maxPayloadLength > Smb2Constants.MaxNetBiosFrameSize) {
+        if (maxPayloadLength < 0 || maxPayloadLength > Smb2Constants.MaxNetBiosFrameSize)
+        {
             throw new ArgumentOutOfRangeException(
                 nameof(maxPayloadLength),
                 maxPayloadLength,
                 $"SMB2 payload quota must be 0..{Smb2Constants.MaxNetBiosFrameSize} bytes.");
         }
         var tcp = new TcpClient();
-        try {
+        try
+        {
             await tcp.ConnectAsync(host, port, cancellationToken).ConfigureAwait(false);
             return new TcpSmb2Transport(tcp, maxPayloadLength);
         }
-        catch {
+        catch
+        {
             tcp.Dispose();
             throw;
         }
     }
 
     /// <inheritdoc />
-    public async Task SendAsync(ReadOnlyMemory<byte> packet, CancellationToken cancellationToken) {
+    public async Task SendAsync(ReadOnlyMemory<byte> packet, CancellationToken cancellationToken)
+    {
         ThrowIfDisposed();
 
         var frame = new byte[NetBiosFraming.HeaderSize + packet.Length];
@@ -81,7 +89,8 @@ public sealed class TcpSmb2Transport : ISmb2Transport {
     }
 
     /// <inheritdoc />
-    public async Task<ReadOnlyMemory<byte>> ReceiveAsync(CancellationToken cancellationToken) {
+    public async Task<ReadOnlyMemory<byte>> ReceiveAsync(CancellationToken cancellationToken)
+    {
         ThrowIfDisposed();
 
         var header = new byte[NetBiosFraming.HeaderSize];
@@ -92,11 +101,14 @@ public sealed class TcpSmb2Transport : ISmb2Transport {
         return payload;
     }
 
-    private async Task ReadExactlyAsync(Memory<byte> buffer, CancellationToken cancellationToken) {
+    private async Task ReadExactlyAsync(Memory<byte> buffer, CancellationToken cancellationToken)
+    {
         int total = 0;
-        while (total < buffer.Length) {
+        while (total < buffer.Length)
+        {
             int read = await _stream.ReadAsync(buffer[total..], cancellationToken).ConfigureAwait(false);
-            if (read == 0) {
+            if (read == 0)
+            {
                 throw new EndOfStreamException(
                     $"TCP stream closed after {total} of {buffer.Length} expected bytes.");
             }
@@ -105,8 +117,10 @@ public sealed class TcpSmb2Transport : ISmb2Transport {
     }
 
     /// <inheritdoc />
-    public async ValueTask DisposeAsync() {
-        if (_disposed) {
+    public async ValueTask DisposeAsync()
+    {
+        if (_disposed)
+        {
             return;
         }
         _disposed = true;
@@ -114,7 +128,8 @@ public sealed class TcpSmb2Transport : ISmb2Transport {
         _tcp.Dispose();
     }
 
-    private void ThrowIfDisposed() {
+    private void ThrowIfDisposed()
+    {
         ObjectDisposedException.ThrowIf(_disposed, this);
     }
 }

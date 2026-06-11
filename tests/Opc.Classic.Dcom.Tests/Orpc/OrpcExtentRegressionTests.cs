@@ -11,9 +11,11 @@ using TUnit.Core;
 
 namespace Opc.Classic.Dcom.Tests.Orpc;
 
-public sealed class OrpcExtentRegressionTests {
+public sealed class OrpcExtentRegressionTests
+{
     [Test]
-    public async Task OrpcExtent_Constructor_CopiesPayload() {
+    public async Task OrpcExtent_Constructor_CopiesPayload()
+    {
         byte[] payload = [0xAA, 0xBB, 0xCC];
         var extent = new OrpcExtent(new Guid("10203040-5060-7080-90a0-b0c0d0e0f001"), payload);
 
@@ -24,8 +26,10 @@ public sealed class OrpcExtentRegressionTests {
     }
 
     [Test]
-    public async Task OrpcThis_WithSingleExtent_WritesExpectedNdrLayout() {
-        var value = new OrpcThis {
+    public async Task OrpcThis_WithSingleExtent_WritesExpectedNdrLayout()
+    {
+        var value = new OrpcThis
+        {
             Flags = 0x00000002u,
             CausalityId = new Guid("00112233-4455-6677-8899-aabbccddeeff"),
             Extensions =
@@ -55,8 +59,10 @@ public sealed class OrpcExtentRegressionTests {
     }
 
     [Test]
-    public async Task OrpcThis_WithSingleExtent_RoundTripsExtentFields() {
-        var expected = new OrpcThis {
+    public async Task OrpcThis_WithSingleExtent_RoundTripsExtentFields()
+    {
+        var expected = new OrpcThis
+        {
             Flags = 0x00000003u,
             CausalityId = new Guid("00112233-4455-6677-8899-aabbccddeeff"),
             Extensions =
@@ -77,8 +83,10 @@ public sealed class OrpcExtentRegressionTests {
     }
 
     [Test]
-    public async Task OrpcThis_NullExtensions_WritesExpectedNullPointerLayout() {
-        var value = new OrpcThis {
+    public async Task OrpcThis_NullExtensions_WritesExpectedNullPointerLayout()
+    {
+        var value = new OrpcThis
+        {
             Flags = 0u,
             CausalityId = Guid.Empty,
             Extensions = null,
@@ -95,8 +103,10 @@ public sealed class OrpcExtentRegressionTests {
     }
 
     [Test]
-    public async Task OrpcThat_WithEmptyExtentArray_WritesExpectedNullPointerArrayLayout() {
-        var value = new OrpcThat {
+    public async Task OrpcThat_WithEmptyExtentArray_WritesExpectedNullPointerArrayLayout()
+    {
+        var value = new OrpcThat
+        {
             Flags = 0x1Fu,
             Extensions = Array.Empty<OrpcExtent>(),
         };
@@ -112,8 +122,10 @@ public sealed class OrpcExtentRegressionTests {
     }
 
     [Test]
-    public async Task OrpcThat_WithTwoExtents_RoundTripsPayloadsAndConsumesBuffer() {
-        var expected = new OrpcThat {
+    public async Task OrpcThat_WithTwoExtents_RoundTripsPayloadsAndConsumesBuffer()
+    {
+        var expected = new OrpcThat
+        {
             Flags = 0x05u,
             Extensions =
             [
@@ -134,10 +146,12 @@ public sealed class OrpcExtentRegressionTests {
     }
 
     [Test]
-    public async Task OrpcThis_ReadRejectsNonZeroReservedField() {
+    public async Task OrpcThis_ReadRejectsNonZeroReservedField()
+    {
         byte[] bytes = Convert.FromHexString("050007000000000001000000");
 
-        InvalidOperationException exception = Capture<InvalidOperationException>(() => {
+        InvalidOperationException exception = Capture<InvalidOperationException>(() =>
+        {
             var reader = new NdrReader(bytes);
             _ = OrpcThis.Read(ref reader);
         });
@@ -146,10 +160,12 @@ public sealed class OrpcExtentRegressionTests {
     }
 
     [Test]
-    public async Task OrpcThat_ReadRejectsReservedFlagBits() {
+    public async Task OrpcThat_ReadRejectsReservedFlagBits()
+    {
         byte[] bytes = Convert.FromHexString("20000000");
 
-        InvalidOperationException exception = Capture<InvalidOperationException>(() => {
+        InvalidOperationException exception = Capture<InvalidOperationException>(() =>
+        {
             var reader = new NdrReader(bytes);
             _ = OrpcThat.Read(ref reader);
         });
@@ -158,14 +174,16 @@ public sealed class OrpcExtentRegressionTests {
     }
 
     [Test]
-    public async Task OrpcThat_ReadRejectsNonZeroExtentArrayReservedField() {
+    public async Task OrpcThat_ReadRejectsNonZeroExtentArrayReservedField()
+    {
         byte[] bytes = Convert.FromHexString(
             "00000000" +
             "00000200" +
             "00000000" +
             "01000000");
 
-        InvalidOperationException exception = Capture<InvalidOperationException>(() => {
+        InvalidOperationException exception = Capture<InvalidOperationException>(() =>
+        {
             var reader = new NdrReader(bytes);
             _ = OrpcThat.Read(ref reader);
         });
@@ -174,7 +192,8 @@ public sealed class OrpcExtentRegressionTests {
     }
 
     [Test]
-    public async Task OrpcThat_ReadRejectsNullExtentPointerForNonEmptyArray() {
+    public async Task OrpcThat_ReadRejectsNullExtentPointerForNonEmptyArray()
+    {
         byte[] bytes = Convert.FromHexString(
             "00000000" +
             "00000200" +
@@ -182,7 +201,8 @@ public sealed class OrpcExtentRegressionTests {
             "00000000" +
             "00000000");
 
-        InvalidOperationException exception = Capture<InvalidOperationException>(() => {
+        InvalidOperationException exception = Capture<InvalidOperationException>(() =>
+        {
             var reader = new NdrReader(bytes);
             _ = OrpcThat.Read(ref reader);
         });
@@ -190,38 +210,45 @@ public sealed class OrpcExtentRegressionTests {
         await Assert.That(exception.Message).IsEqualTo("ORPC_EXTENT_ARRAY extent pointer is null for a non-empty array.");
     }
 
-    private static byte[] WriteOrpcThis(OrpcThis value) {
+    private static byte[] WriteOrpcThis(OrpcThis value)
+    {
         byte[] buffer = new byte[256];
         var writer = new NdrWriter(buffer);
         value.Write(ref writer);
         return buffer.AsSpan(0, writer.Position).ToArray();
     }
 
-    private static byte[] WriteOrpcThat(OrpcThat value) {
+    private static byte[] WriteOrpcThat(OrpcThat value)
+    {
         byte[] buffer = new byte[256];
         var writer = new NdrWriter(buffer);
         value.Write(ref writer);
         return buffer.AsSpan(0, writer.Position).ToArray();
     }
 
-    private static (OrpcThis Value, int Position) ReadOrpcThis(byte[] bytes) {
+    private static (OrpcThis Value, int Position) ReadOrpcThis(byte[] bytes)
+    {
         var reader = new NdrReader(bytes);
         OrpcThis value = OrpcThis.Read(ref reader);
         return (value, reader.Position);
     }
 
-    private static (OrpcThat Value, int Position) ReadOrpcThat(byte[] bytes) {
+    private static (OrpcThat Value, int Position) ReadOrpcThat(byte[] bytes)
+    {
         var reader = new NdrReader(bytes);
         OrpcThat value = OrpcThat.Read(ref reader);
         return (value, reader.Position);
     }
 
     private static TException Capture<TException>(Action action)
-        where TException : Exception {
-        try {
+        where TException : Exception
+    {
+        try
+        {
             action();
         }
-        catch (TException exception) {
+        catch (TException exception)
+        {
             return exception;
         }
 

@@ -10,8 +10,10 @@ namespace Opc.Classic.SnapshotTests.Support;
 
 internal delegate void NdrWriteAction(ref NdrWriter writer);
 
-internal static class NdrSnapshotWriter {
-    public static byte[] Write(NdrWriteAction write, int capacity = 4096) {
+internal static class NdrSnapshotWriter
+{
+    public static byte[] Write(NdrWriteAction write, int capacity = 4096)
+    {
         ArgumentNullException.ThrowIfNull(write);
 
         var buffer = new byte[capacity];

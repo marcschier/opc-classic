@@ -12,7 +12,8 @@ using TUnit.Core;
 
 namespace Opc.Classic.Dcom.Tests.Fuzz;
 
-public sealed class DecoderBoundsFuzzTests {
+public sealed class DecoderBoundsFuzzTests
+{
     private static readonly byte[] NtlmSignature = "NTLMSSP\0"u8.ToArray();
 
     [Test]
@@ -36,7 +37,8 @@ public sealed class DecoderBoundsFuzzTests {
     [Arguments("single-array-over-quota")]
     [Arguments("double-array-over-quota")]
     [Arguments("guid-array-over-quota")]
-    public async Task NdrReader_RejectsMalformedBoundedInputs(string caseName) {
+    public async Task NdrReader_RejectsMalformedBoundedInputs(string caseName)
+    {
         await Assert.That(() => ExecuteNdrCase(caseName)).Throws<Exception>();
     }
 
@@ -62,12 +64,15 @@ public sealed class DecoderBoundsFuzzTests {
     [Arguments("type3-user-overlaps-header")]
     [Arguments("type3-fields-overlap")]
     [Arguments("type3-negative-offset")]
-    public async Task NtlmMessages_RejectMalformedBoundedInputs(string caseName) {
+    public async Task NtlmMessages_RejectMalformedBoundedInputs(string caseName)
+    {
         await Assert.That(() => ExecuteNtlmCase(caseName)).Throws<Exception>();
     }
 
-    private static void ExecuteNdrCase(string caseName) {
-        switch (caseName) {
+    private static void ExecuteNdrCase(string caseName)
+    {
+        switch (caseName)
+        {
             case "unicode-offset-nonzero":
                 _ = new NdrReader(UInt32s(1, 1, 1), 64).ReadUnicodeString();
                 break;
@@ -133,8 +138,10 @@ public sealed class DecoderBoundsFuzzTests {
         }
     }
 
-    private static void ExecuteNtlmCase(string caseName) {
-        switch (caseName) {
+    private static void ExecuteNtlmCase(string caseName)
+    {
+        switch (caseName)
+        {
             case "type1-truncated":
                 _ = new Type1Message(new byte[8]);
                 break;
@@ -203,22 +210,26 @@ public sealed class DecoderBoundsFuzzTests {
         }
     }
 
-    private static byte[] UInt32s(params uint[] values) {
+    private static byte[] UInt32s(params uint[] values)
+    {
         var buffer = new byte[values.Length * sizeof(uint)];
-        for (var i = 0; i < values.Length; i++) {
+        for (var i = 0; i < values.Length; i++)
+        {
             BinaryPrimitives.WriteUInt32LittleEndian(buffer.AsSpan(i * sizeof(uint)), values[i]);
         }
         return buffer;
     }
 
-    private static byte[] NtlmMessage(int messageType, int length) {
+    private static byte[] NtlmMessage(int messageType, int length)
+    {
         var raw = new byte[length];
         NtlmSignature.CopyTo(raw, 0);
         BinaryPrimitives.WriteInt32LittleEndian(raw.AsSpan(8), messageType);
         return raw;
     }
 
-    private static byte[] WithUInt32(byte[] raw, int offset, uint value) {
+    private static byte[] WithUInt32(byte[] raw, int offset, uint value)
+    {
         BinaryPrimitives.WriteUInt32LittleEndian(raw.AsSpan(offset), value);
         return raw;
     }
@@ -226,8 +237,10 @@ public sealed class DecoderBoundsFuzzTests {
     private static byte[] WithSecurityBuffer(byte[] raw, int fieldOffset, ushort length, uint bufferOffset) =>
         WithSecurityBuffers(raw, (fieldOffset, length, bufferOffset));
 
-    private static byte[] WithSecurityBuffers(byte[] raw, params (int FieldOffset, ushort Length, uint BufferOffset)[] fields) {
-        foreach (var field in fields) {
+    private static byte[] WithSecurityBuffers(byte[] raw, params (int FieldOffset, ushort Length, uint BufferOffset)[] fields)
+    {
+        foreach (var field in fields)
+        {
             BinaryPrimitives.WriteUInt16LittleEndian(raw.AsSpan(field.FieldOffset), field.Length);
             BinaryPrimitives.WriteUInt16LittleEndian(raw.AsSpan(field.FieldOffset + sizeof(ushort)), field.Length);
             BinaryPrimitives.WriteUInt32LittleEndian(raw.AsSpan(field.FieldOffset + 4), field.BufferOffset);

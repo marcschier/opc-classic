@@ -15,7 +15,8 @@ namespace Opc.Classic.Dcom.Core;
 /// <summary>
 /// Marshal helper
 /// </summary>
-internal static class MarshalUnMarshalHelper {
+internal static class MarshalUnMarshalHelper
+{
 
     /// <summary>
     /// Serialize
@@ -24,56 +25,69 @@ internal static class MarshalUnMarshalHelper {
     /// <param name="c"></param>
     /// <param name="value"></param>
     /// <param name="context"></param>
-    internal static void Serialize(NdrCodec ndr, Type c, object value, CodecContext context = null) {
+    internal static void Serialize(NdrCodec ndr, Type c, object value, CodecContext context = null)
+    {
 
-        if (context == null) {
+        if (context == null)
+        {
             context = new CodecContext();
         }
-        if (c.Equals(typeof(ComArray))) {
+        if (c.Equals(typeof(ComArray)))
+        {
             ((ComArray)value).Encode(ndr, ((ComArray)value).ArrayInstance, context);
         }
-        else {
-            if ((c != typeof(IComObject) || c != typeof(IDispatch)) && value is IComObject) {
+        else
+        {
+            if ((c != typeof(IComObject) || c != typeof(IDispatch)) && value is IComObject)
+            {
                 c = typeof(IComObject);
             }
 
             AlignMemberWhileEncoding(ndr, c, value);
 
-            if (c.Equals(typeof(ComString))) {
+            if (c.Equals(typeof(ComString)))
+            {
                 ((ComString)value).Encode(ndr, context);
                 return;
             }
 
-            if (c.Equals(typeof(ComPointer))) {
+            if (c.Equals(typeof(ComPointer)))
+            {
                 ((ComPointer)value).Encode(ndr, context);
                 return;
             }
 
-            if (c.Equals(typeof(Struct))) {
+            if (c.Equals(typeof(Struct)))
+            {
                 ((Struct)value).Encode(ndr, context);
                 return;
             }
 
-            if (c.Equals(typeof(Union))) {
+            if (c.Equals(typeof(Union)))
+            {
                 ((Union)value).Encode(ndr, context);
                 return;
             }
 
-            if (c.Equals(typeof(InterfacePointer))) {
+            if (c.Equals(typeof(InterfacePointer)))
+            {
                 ((InterfacePointer)value).Encode(ndr, context);
                 return;
             }
 
-            if (c.Equals(typeof(Variant))) {
+            if (c.Equals(typeof(Variant)))
+            {
                 ((Variant)value).Encode(ndr, context);
                 return;
             }
 
-            if (c.Equals(typeof(VariantBody))) {
+            if (c.Equals(typeof(VariantBody)))
+            {
                 ((VariantBody)value).Encode(ndr, context);
                 return;
             }
-            if (!kMapOfSerializers.ContainsKey(c)) {
+            if (!kMapOfSerializers.ContainsKey(c))
+            {
                 throw new InvalidOperationException(
                     string.Format(Interop.GetLocalizedMessage(ErrorCode.INTEROP_UTIL_SERDESER_NOT_FOUND), c));
             }
@@ -88,59 +102,70 @@ internal static class MarshalUnMarshalHelper {
     /// <param name="obj"></param>
     /// <param name="context"></param>
     /// <returns></returns>
-    internal static object Deserialize(NdrCodec ndr, object obj, CodecContext context = null) {
+    internal static object Deserialize(NdrCodec ndr, object obj, CodecContext context = null)
+    {
 
-        if (context == null) {
+        if (context == null)
+        {
             context = new CodecContext();
         }
 
         var c = obj is Type ? (Type)obj : obj.GetType();
-        if (c.Equals(typeof(ComArray))) {
+        if (c.Equals(typeof(ComArray)))
+        {
             return ((ComArray)obj).Decode(ndr, ((ComArray)obj).ArrayType,
                 ((ComArray)obj).Dimensions, context);
         }
 
         AlignMemberWhileDecoding(ndr, c, obj);
 
-        if (c.Equals(typeof(ComPointer))) {
+        if (c.Equals(typeof(ComPointer)))
+        {
             var retVal = ((ComPointer)obj).Decode(ndr, context);
             return retVal;
         }
 
-        if (c.Equals(typeof(Struct))) {
+        if (c.Equals(typeof(Struct)))
+        {
             var retVal = ((Struct)obj).Decode(ndr, context);
             return retVal;
         }
 
-        if (c.Equals(typeof(Union))) {
+        if (c.Equals(typeof(Union)))
+        {
             var retVal = ((Union)obj).Decode(ndr, context);
             return retVal;
         }
 
-        if (c.Equals(typeof(ComString))) {
+        if (c.Equals(typeof(ComString)))
+        {
             var retVal = ((ComString)obj).Decode(ndr, context);
             return retVal;
         }
 
         // This will always be a class
-        if (c.Equals(typeof(InterfacePointer))) {
+        if (c.Equals(typeof(InterfacePointer)))
+        {
             var retVal = InterfacePointer.Decode(ndr, context);
             return retVal;
         }
 
         // This will always be a class
-        if (c.Equals(typeof(Variant))) {
+        if (c.Equals(typeof(Variant)))
+        {
             var retVal = Variant.Decode(ndr, context);
             return retVal;
         }
 
         // This will always be a class
-        if (c.Equals(typeof(VariantBody))) {
+        if (c.Equals(typeof(VariantBody)))
+        {
             var retVal = VariantBody.Decode(ndr, context);
             return retVal;
         }
 
-        if (!kMapOfSerializers.ContainsKey(c)) {
+        if (!kMapOfSerializers.ContainsKey(c))
+        {
             throw new InvalidOperationException(string.Format(
                 Interop.GetLocalizedMessage(ErrorCode.INTEROP_UTIL_SERDESER_NOT_FOUND), obj));
         }
@@ -155,15 +180,19 @@ internal static class MarshalUnMarshalHelper {
     /// <param name="obj"></param>
     /// <param name="flag"></param>
     /// <returns></returns>
-    internal static int GetLengthInBytes(Type c, object obj, int flag = InteropFlags.FLAG_NULL) {
-        if (obj != null && obj.GetType().Equals(typeof(ComArray))) {
+    internal static int GetLengthInBytes(Type c, object obj, int flag = InteropFlags.FLAG_NULL)
+    {
+        if (obj != null && obj.GetType().Equals(typeof(ComArray)))
+        {
             return ((ComArray)obj).SizeOfAllElementsInBytes;
         }
-        if ((c != typeof(IComObject) || c != typeof(IDispatch)) && obj is IComObject) {
+        if ((c != typeof(IComObject) || c != typeof(IDispatch)) && obj is IComObject)
+        {
             c = typeof(IComObject);
         }
 
-        if (kMapOfSerializers[c] == null) {
+        if (kMapOfSerializers[c] == null)
+        {
             throw new InvalidOperationException(string.Format(
                 Interop.GetLocalizedMessage(ErrorCode.INTEROP_UTIL_SERDESER_NOT_FOUND), c));
         }
@@ -177,27 +206,33 @@ internal static class MarshalUnMarshalHelper {
     /// <param name="ndr"></param>
     /// <param name="c"></param>
     /// <param name="obj"></param>
-    private static void AlignMemberWhileEncoding(NdrCodec ndr, Type c, object obj) {
+    private static void AlignMemberWhileEncoding(NdrCodec ndr, Type c, object obj)
+    {
         var index = (double)ndr.Buffer.Index;
-        if (c.Equals(typeof(Struct))) {
+        if (c.Equals(typeof(Struct)))
+        {
             ndr.FillAligned(((Struct)obj).Alignment);
         }
-        else if (c.Equals(typeof(Union))) {
+        else if (c.Equals(typeof(Union)))
+        {
             ndr.FillAligned(((Union)obj).Alignment);
         }
         else if (c.Equals(typeof(int)) ||
                 c.Equals(typeof(float)) ||
                 c.Equals(typeof(Variant)) ||
                 c.Equals(typeof(string)) ||
-                c.Equals(typeof(ComPointer))) {
+                c.Equals(typeof(ComPointer)))
+        {
             // align with 4
             ndr.FillAligned(4);
         }
-        else if (c.Equals(typeof(double))) {
+        else if (c.Equals(typeof(double)))
+        {
             // align with 8
             ndr.FillAligned(8);
         }
-        else if (c.Equals(typeof(short))) {
+        else if (c.Equals(typeof(short)))
+        {
             ndr.FillAligned(2);
         }
     }
@@ -208,26 +243,32 @@ internal static class MarshalUnMarshalHelper {
     /// <param name="ndr"></param>
     /// <param name="c"></param>
     /// <param name="obj"></param>
-    private static void AlignMemberWhileDecoding(NdrCodec ndr, Type c, object obj) {
-        if (c.Equals(typeof(Struct))) {
+    private static void AlignMemberWhileDecoding(NdrCodec ndr, Type c, object obj)
+    {
+        if (c.Equals(typeof(Struct)))
+        {
             ndr.SkipAligned(((Struct)obj).Alignment);
         }
-        else if (c.Equals(typeof(Union))) {
+        else if (c.Equals(typeof(Union)))
+        {
             ndr.SkipAligned(((Union)obj).Alignment);
         }
         else if (c.Equals(typeof(int)) ||
                 c.Equals(typeof(float)) ||
                 c.Equals(typeof(Variant)) ||
                 c.Equals(typeof(string)) ||
-                c.Equals(typeof(ComPointer))) {
+                c.Equals(typeof(ComPointer)))
+        {
             // align with 4
             ndr.SkipAligned(4);
         }
-        else if (c.Equals(typeof(double))) {
+        else if (c.Equals(typeof(double)))
+        {
             // align with 8
             ndr.SkipAligned(8);
         }
-        else if (c.Equals(typeof(short))) {
+        else if (c.Equals(typeof(short)))
+        {
             ndr.SkipAligned(2);
         }
     }
@@ -238,11 +279,13 @@ internal static class MarshalUnMarshalHelper {
     /// <param name="ndr"></param>
     /// <param name="length"></param>
     /// <returns></returns>
-    internal static byte[] ReadOctetArrayLE(NdrCodec ndr, int length) {
+    internal static byte[] ReadOctetArrayLE(NdrCodec ndr, int length)
+    {
         System.Diagnostics.Debug.Assert(length == 8); // TODO: Should be generic.
         var bytes = new byte[8];
         ndr.ReadOctetArray(bytes, 0, 8);
-        for (var i = 0; i < 4; i++) {
+        for (var i = 0; i < 4; i++)
+        {
             var t = bytes[i];
             bytes[i] = bytes[7 - i];
             bytes[7 - i] = t;
@@ -255,8 +298,10 @@ internal static class MarshalUnMarshalHelper {
     /// </summary>
     /// <param name="ndr"></param>
     /// <param name="b"></param>
-    internal static void WriteOctetArrayLE(NdrCodec ndr, byte[] b) {
-        for (var i = 0; i < b.Length; i++) {
+    internal static void WriteOctetArrayLE(NdrCodec ndr, byte[] b)
+    {
+        for (var i = 0; i < b.Length; i++)
+        {
             ndr.WriteUnsignedSmall(b[b.Length - i - 1]);
         }
     }
@@ -264,7 +309,8 @@ internal static class MarshalUnMarshalHelper {
     /// <summary>
     /// Serializer interface
     /// </summary>
-    private interface ISerializerDeserializer {
+    private interface ISerializerDeserializer
+    {
 
         /// <summary>
         /// Serialize data
@@ -293,7 +339,8 @@ internal static class MarshalUnMarshalHelper {
 
 
     /// <inheritdoc/>
-    private sealed class PointerImpl : ISerializerDeserializer {
+    private sealed class PointerImpl : ISerializerDeserializer
+    {
 
         /// <inheritdoc/>
         public void SerializeData(NdrCodec ndr, object value, CodecContext context) =>
@@ -308,7 +355,8 @@ internal static class MarshalUnMarshalHelper {
     }
 
     /// <inheritdoc/>
-    private sealed class UIntImpl : ISerializerDeserializer {
+    private sealed class UIntImpl : ISerializerDeserializer
+    {
 
         /// <inheritdoc/>
         public void SerializeData(NdrCodec ndr, object value, CodecContext context) =>
@@ -324,7 +372,8 @@ internal static class MarshalUnMarshalHelper {
     }
 
     /// <inheritdoc/>
-    private sealed class DualStringArrayImpl : ISerializerDeserializer {
+    private sealed class DualStringArrayImpl : ISerializerDeserializer
+    {
 
         /// <inheritdoc/>
         public void SerializeData(NdrCodec ndr, object value, CodecContext context) =>
@@ -339,7 +388,8 @@ internal static class MarshalUnMarshalHelper {
     }
 
     /// <inheritdoc/>
-    private sealed class ByteImpl : ISerializerDeserializer {
+    private sealed class ByteImpl : ISerializerDeserializer
+    {
 
         /// <inheritdoc/>
         public void SerializeData(NdrCodec ndr, object value, CodecContext context) =>
@@ -355,7 +405,8 @@ internal static class MarshalUnMarshalHelper {
     }
 
     /// <inheritdoc/>
-    private sealed class UShortImpl : ISerializerDeserializer {
+    private sealed class UShortImpl : ISerializerDeserializer
+    {
 
         /// <inheritdoc/>
         public void SerializeData(NdrCodec ndr, object value, CodecContext context) =>
@@ -371,7 +422,8 @@ internal static class MarshalUnMarshalHelper {
 
 
     /// <inheritdoc/>
-    private sealed class StructImpl : ISerializerDeserializer {
+    private sealed class StructImpl : ISerializerDeserializer
+    {
 
         /// <inheritdoc/>
         public void SerializeData(NdrCodec ndr, object value, CodecContext context) =>
@@ -386,7 +438,8 @@ internal static class MarshalUnMarshalHelper {
     }
 
     /// <inheritdoc/>
-    private sealed class UnionImpl : ISerializerDeserializer {
+    private sealed class UnionImpl : ISerializerDeserializer
+    {
 
         /// <inheritdoc/>
         public void SerializeData(NdrCodec ndr, object value, CodecContext context) =>
@@ -401,13 +454,16 @@ internal static class MarshalUnMarshalHelper {
     }
 
     /// <inheritdoc/>
-    private sealed class ComObjectSerDer : ISerializerDeserializer {
+    private sealed class ComObjectSerDer : ISerializerDeserializer
+    {
 
         /// <inheritdoc/>
-        public void SerializeData(NdrCodec ndr, object value, CodecContext context) {
+        public void SerializeData(NdrCodec ndr, object value, CodecContext context)
+        {
             var ptr = ((IComObjectInternal)value).GetInterfacePointer();
             Serialize(ndr, typeof(InterfacePointer), ptr, context);
-            if (ptr.IsCustomObjRef) {
+            if (ptr.IsCustomObjRef)
+            {
                 // ask the session now for its marshaller unmarshaller and that should
                 // write the object down into the <see cref="InterfacePointer"/>.
                 // Where we are right now is where our object needs to be written.
@@ -430,17 +486,20 @@ internal static class MarshalUnMarshalHelper {
         }
 
         /// <inheritdoc/>
-        public object DeserializeData(NdrCodec ndr, CodecContext context) {
+        public object DeserializeData(NdrCodec ndr, CodecContext context)
+        {
             var session = context.CurrentSession;
             var ptr = (InterfacePointer)Deserialize(ndr, typeof(InterfacePointer), context);
             IComObject comObject = new ComObjectImpl(session, ptr);
             if (ptr != null &&
                 ((InteropFlags.FLAG_REPRESENTATION_ARRAY & context.Flag) != InteropFlags.FLAG_REPRESENTATION_ARRAY) &&
-                ptr.IsCustomObjRef) {
+                ptr.IsCustomObjRef)
+            {
                 // now we need to ask the session for its marshaller unmarshaller based on the CLSID
                 var customNdr = ndr;
                 if (ptr.GetObjectReference(InterfacePointer.OBJREF_CUSTOM) is CustomInterfacePointerBody customBody &&
-                    customBody.ObjectData.Length > 0) {
+                    customBody.ObjectData.Length > 0)
+                {
                     customNdr = new NdrCodec { Buffer = new NdrBuffer(customBody.ObjectData, 0), Format = ndr.Format };
                     customNdr.Buffer.Length = customBody.ObjectData.Length;
                 }
@@ -452,14 +511,16 @@ internal static class MarshalUnMarshalHelper {
         }
 
         /// <inheritdoc/>
-        public int GetDataLengthInBytes(object value, int flag = InteropFlags.FLAG_NULL) {
+        public int GetDataLengthInBytes(object value, int flag = InteropFlags.FLAG_NULL)
+        {
             var interfacePointer = ((IComObjectInternal)value).GetInterfacePointer();
             return interfacePointer.Length;
         }
     }
 
     /// <inheritdoc/>
-    private sealed class VariantBodyImpl : ISerializerDeserializer {
+    private sealed class VariantBodyImpl : ISerializerDeserializer
+    {
 
         /// <inheritdoc/>
         public void SerializeData(NdrCodec ndr, object value, CodecContext context) =>
@@ -474,7 +535,8 @@ internal static class MarshalUnMarshalHelper {
     }
 
     /// <inheritdoc/>
-    private sealed class VariantImpl : ISerializerDeserializer {
+    private sealed class VariantImpl : ISerializerDeserializer
+    {
 
         /// <inheritdoc/>
         public void SerializeData(NdrCodec ndr, object value, CodecContext context) =>
@@ -485,19 +547,23 @@ internal static class MarshalUnMarshalHelper {
             throw new InvalidOperationException(Interop.GetLocalizedMessage(ErrorCode.INTEROP_UTIL_INCORRECT_CALL));
 
         /// <inheritdoc/>
-        public int GetDataLengthInBytes(object value, int flag = InteropFlags.FLAG_NULL) {
+        public int GetDataLengthInBytes(object value, int flag = InteropFlags.FLAG_NULL)
+        {
             // 4 for pointer and rest for variant2
-            try {
+            try
+            {
                 return ((Variant)value).GetLengthInBytes(flag);
             }
-            catch (InteropException e) {
+            catch (InteropException e)
+            {
                 throw new InteropRuntimeException(e.ErrorCode);
             }
         }
     }
 
     /// <inheritdoc/>
-    private sealed class CharacterImpl : ISerializerDeserializer {
+    private sealed class CharacterImpl : ISerializerDeserializer
+    {
 
         /// <inheritdoc/>
         public void SerializeData(NdrCodec ndr, object value, CodecContext context) =>
@@ -511,7 +577,8 @@ internal static class MarshalUnMarshalHelper {
     }
 
     /// <inheritdoc/>
-    private sealed class SByteImpl : ISerializerDeserializer {
+    private sealed class SByteImpl : ISerializerDeserializer
+    {
 
         /// <inheritdoc/>
         public void SerializeData(NdrCodec ndr, object value, CodecContext context) =>
@@ -525,18 +592,22 @@ internal static class MarshalUnMarshalHelper {
     }
 
     /// <inheritdoc/>
-    private sealed class ShortImpl : ISerializerDeserializer {
+    private sealed class ShortImpl : ISerializerDeserializer
+    {
 
         /// <inheritdoc/>
-        public void SerializeData(NdrCodec ndr, object value, CodecContext context) {
-            if (value == null) {
+        public void SerializeData(NdrCodec ndr, object value, CodecContext context)
+        {
+            if (value == null)
+            {
                 value = short.MinValue;
             }
             ndr.WriteUnsignedShort((short)value);
         }
 
         /// <inheritdoc/>
-        public object DeserializeData(NdrCodec ndr, CodecContext context) {
+        public object DeserializeData(NdrCodec ndr, CodecContext context)
+        {
             var s = (short)ndr.ReadUnsignedShort();
             return s;
         }
@@ -546,37 +617,47 @@ internal static class MarshalUnMarshalHelper {
     }
 
     /// <inheritdoc/>
-    private sealed class BooleanImpl : ISerializerDeserializer {
+    private sealed class BooleanImpl : ISerializerDeserializer
+    {
 
         /// <inheritdoc/>
-        public void SerializeData(NdrCodec ndr, object value, CodecContext context) {
-            if (value == null) {
+        public void SerializeData(NdrCodec ndr, object value, CodecContext context)
+        {
+            if (value == null)
+            {
                 value = false;
             }
-            if ((context.Flag & InteropFlags.FLAG_REPRESENTATION_VARIANT_BOOL) == InteropFlags.FLAG_REPRESENTATION_VARIANT_BOOL) {
+            if ((context.Flag & InteropFlags.FLAG_REPRESENTATION_VARIANT_BOOL) == InteropFlags.FLAG_REPRESENTATION_VARIANT_BOOL)
+            {
                 ndr.WriteUnsignedShort((bool)value == true ? 0xFFFF : 0x0000);
             }
-            else {
+            else
+            {
                 ndr.WriteBoolean((bool)value);
             }
         }
 
         /// <inheritdoc/>
-        public object DeserializeData(NdrCodec ndr, CodecContext context) {
+        public object DeserializeData(NdrCodec ndr, CodecContext context)
+        {
             bool b;
-            if ((context.Flag & InteropFlags.FLAG_REPRESENTATION_VARIANT_BOOL) == InteropFlags.FLAG_REPRESENTATION_VARIANT_BOOL) {
+            if ((context.Flag & InteropFlags.FLAG_REPRESENTATION_VARIANT_BOOL) == InteropFlags.FLAG_REPRESENTATION_VARIANT_BOOL)
+            {
                 var s = ndr.ReadUnsignedShort();
                 b = s != 0 ? true : false;
             }
-            else {
+            else
+            {
                 b = Convert.ToBoolean(ndr.ReadBoolean());
             }
             return b;
         }
 
         /// <inheritdoc/>
-        public int GetDataLengthInBytes(object value, int flag = InteropFlags.FLAG_NULL) {
-            if ((flag & InteropFlags.FLAG_REPRESENTATION_VARIANT_BOOL) == InteropFlags.FLAG_REPRESENTATION_VARIANT_BOOL) {
+        public int GetDataLengthInBytes(object value, int flag = InteropFlags.FLAG_NULL)
+        {
+            if ((flag & InteropFlags.FLAG_REPRESENTATION_VARIANT_BOOL) == InteropFlags.FLAG_REPRESENTATION_VARIANT_BOOL)
+            {
                 return 2;
             }
             return 1;
@@ -584,11 +665,14 @@ internal static class MarshalUnMarshalHelper {
     }
 
     /// <inheritdoc/>
-    private sealed class IntegerImpl : ISerializerDeserializer {
+    private sealed class IntegerImpl : ISerializerDeserializer
+    {
 
         /// <inheritdoc/>
-        public void SerializeData(NdrCodec ndr, object value, CodecContext context) {
-            if (value == null) {
+        public void SerializeData(NdrCodec ndr, object value, CodecContext context)
+        {
+            if (value == null)
+            {
                 value = int.MinValue;
             }
             ndr.WriteUnsignedLong((int)value);
@@ -602,11 +686,14 @@ internal static class MarshalUnMarshalHelper {
     }
 
     /// <inheritdoc/>
-    private sealed class LongImpl : ISerializerDeserializer {
+    private sealed class LongImpl : ISerializerDeserializer
+    {
 
         /// <inheritdoc/>
-        public void SerializeData(NdrCodec ndr, object value, CodecContext context) {
-            if (value == null) {
+        public void SerializeData(NdrCodec ndr, object value, CodecContext context)
+        {
+            if (value == null)
+            {
                 value = long.MinValue;
             }
             ndr.Buffer.Align(8); // needed?
@@ -615,7 +702,8 @@ internal static class MarshalUnMarshalHelper {
         }
 
         /// <inheritdoc/>
-        public object DeserializeData(NdrCodec ndr, CodecContext context) {
+        public object DeserializeData(NdrCodec ndr, CodecContext context)
+        {
             ndr.Buffer.Align(8);// needed?
             var b = BinaryPrimitives.ReadInt64LittleEndian(ndr.Buffer.Buf.AsSpan(ndr.Buffer.Index, sizeof(long)));
             ndr.Buffer.Advance(8);
@@ -627,11 +715,14 @@ internal static class MarshalUnMarshalHelper {
     }
 
     /// <inheritdoc/>
-    private sealed class DoubleImpl : ISerializerDeserializer {
+    private sealed class DoubleImpl : ISerializerDeserializer
+    {
 
         /// <inheritdoc/>
-        public void SerializeData(NdrCodec ndr, object value, CodecContext context) {
-            if (value == null) {
+        public void SerializeData(NdrCodec ndr, object value, CodecContext context)
+        {
+            if (value == null)
+            {
                 value = double.NaN;
             }
             ndr.Buffer.Align(8);
@@ -640,7 +731,8 @@ internal static class MarshalUnMarshalHelper {
         }
 
         /// <inheritdoc/>
-        public object DeserializeData(NdrCodec ndr, CodecContext context) {
+        public object DeserializeData(NdrCodec ndr, CodecContext context)
+        {
             ndr.Buffer.Align(8);
             var b = BitConverter.Int64BitsToDouble(BinaryPrimitives.ReadInt64LittleEndian(ndr.Buffer.Buf.AsSpan(ndr.Buffer.Index, sizeof(double))));
             ndr.Buffer.Advance(8);
@@ -653,11 +745,13 @@ internal static class MarshalUnMarshalHelper {
     }
 
     /// <inheritdoc/>
-    private sealed class CurrencyImpl : ISerializerDeserializer {
+    private sealed class CurrencyImpl : ISerializerDeserializer
+    {
 
         /// <inheritdoc/>
         public void SerializeData(NdrCodec ndr, object value,
-            CodecContext context) {
+            CodecContext context)
+        {
             var currency = (Currency)value;
 
             var units = currency.Units;
@@ -671,13 +765,16 @@ internal static class MarshalUnMarshalHelper {
             var hibytes = 0;
 
             int lowbytes;
-            if (toSend2.Length > 8) {
+            if (toSend2.Length > 8)
+            {
                 lowbytes = Convert.ToInt32(toSend2.Substring(8), 16);
                 hibytes = Convert.ToInt32(toSend2.Substring(0, 8), 16);
             }
-            else {
+            else
+            {
                 lowbytes = toSend;
-                if (toSend < 0) {
+                if (toSend < 0)
+                {
                     hibytes = -1;
                 }
             }
@@ -686,17 +783,20 @@ internal static class MarshalUnMarshalHelper {
             ndr.FillAligned(8);
 
             var strukt = new Struct();
-            try {
+            try
+            {
                 strukt.AddMember(lowbytes);
                 strukt.AddMember(hibytes);
             }
-            catch (InteropException) {
+            catch (InteropException)
+            {
             }
             Serialize(ndr, typeof(Struct), strukt, context);
         }
 
         /// <inheritdoc/>
-        public object DeserializeData(NdrCodec ndr, CodecContext context) {
+        public object DeserializeData(NdrCodec ndr, CodecContext context)
+        {
             // first align
             ndr.SkipAligned(8);
 
@@ -704,7 +804,8 @@ internal static class MarshalUnMarshalHelper {
             var lowbyte = ndr.ReadUnsignedLong();
             // hibyte
             var hibyte = ndr.ReadUnsignedLong();
-            if (hibyte < 0) {
+            if (hibyte < 0)
+            {
                 lowbyte = -1 * Math.Abs(lowbyte);
             }
 
@@ -718,10 +819,12 @@ internal static class MarshalUnMarshalHelper {
     }
 
     /// <inheritdoc/>
-    private sealed class DateImpl : ISerializerDeserializer {
+    private sealed class DateImpl : ISerializerDeserializer
+    {
 
         /// <inheritdoc/>
-        public void SerializeData(NdrCodec ndr, object value, CodecContext context) {
+        public void SerializeData(NdrCodec ndr, object value, CodecContext context)
+        {
             ndr.Buffer.Align(8);
             BinaryPrimitives.WriteInt64LittleEndian(ndr.Buffer.Buf.AsSpan(ndr.Buffer.Index, sizeof(double)), BitConverter.DoubleToInt64Bits(((DateTime)value).ToOADate()));
             ndr.Buffer.Advance(8);
@@ -729,7 +832,8 @@ internal static class MarshalUnMarshalHelper {
         }
 
         /// <inheritdoc/>
-        public object DeserializeData(NdrCodec ndr, CodecContext context) {
+        public object DeserializeData(NdrCodec ndr, CodecContext context)
+        {
             ndr.Buffer.Align(8);
             var b = DateTime.FromOADate(BitConverter.Int64BitsToDouble(BinaryPrimitives.ReadInt64LittleEndian(ndr.Buffer.Buf.AsSpan(ndr.Buffer.Index, sizeof(double)))));
             ndr.Buffer.Advance(8);
@@ -741,11 +845,14 @@ internal static class MarshalUnMarshalHelper {
     }
 
     /// <inheritdoc/>
-    private sealed class FloatImpl : ISerializerDeserializer {
+    private sealed class FloatImpl : ISerializerDeserializer
+    {
 
         /// <inheritdoc/>
-        public void SerializeData(NdrCodec ndr, object value, CodecContext context) {
-            if (value == null) {
+        public void SerializeData(NdrCodec ndr, object value, CodecContext context)
+        {
+            if (value == null)
+            {
                 value = float.NaN;
             }
             ndr.Buffer.Align(4);
@@ -754,7 +861,8 @@ internal static class MarshalUnMarshalHelper {
         }
 
         /// <inheritdoc/>
-        public object DeserializeData(NdrCodec ndr, CodecContext context) {
+        public object DeserializeData(NdrCodec ndr, CodecContext context)
+        {
             ndr.Buffer.Align(4);
             var b = BitConverter.Int32BitsToSingle(BinaryPrimitives.ReadInt32LittleEndian(ndr.Buffer.Buf.AsSpan(ndr.Buffer.Index, sizeof(float))));
             ndr.Buffer.Advance(4);
@@ -767,24 +875,31 @@ internal static class MarshalUnMarshalHelper {
     }
 
     /// <inheritdoc/>
-    private sealed class StringImpl : ISerializerDeserializer {
+    private sealed class StringImpl : ISerializerDeserializer
+    {
 
         /// <inheritdoc/>
-        public void SerializeData(NdrCodec ndr, object value, CodecContext context) {
-            if ((context.Flag & InteropFlags.FLAG_REPRESENTATION_VALID_STRING) != InteropFlags.FLAG_REPRESENTATION_VALID_STRING) {
+        public void SerializeData(NdrCodec ndr, object value, CodecContext context)
+        {
+            if ((context.Flag & InteropFlags.FLAG_REPRESENTATION_VALID_STRING) != InteropFlags.FLAG_REPRESENTATION_VALID_STRING)
+            {
                 throw new InteropRuntimeException((int)ErrorCode.INTEROP_UTIL_STRING_INVALID);
             }
             var str = (string)value;
-            if (str == null) {
+            if (str == null)
+            {
                 str = "";
             }
             // BSTR encoding
-            if ((context.Flag & InteropFlags.FLAG_REPRESENTATION_STRING_BSTR) == InteropFlags.FLAG_REPRESENTATION_STRING_BSTR) {
+            if ((context.Flag & InteropFlags.FLAG_REPRESENTATION_STRING_BSTR) == InteropFlags.FLAG_REPRESENTATION_STRING_BSTR)
+            {
                 byte[] strBytes;
-                try {
+                try
+                {
                     strBytes = str.GetBytes("UTF-16LE");
                 }
-                catch (UnsupportedEncodingException) {
+                catch (UnsupportedEncodingException)
+                {
                     throw new InteropRuntimeException((int)ErrorCode.INTEROP_UTIL_STRING_DECODE_CHARSET);
                 }
                 // NDR representation Max count, then offset, then, actual count
@@ -796,7 +911,8 @@ internal static class MarshalUnMarshalHelper {
                 ndr.WriteUnsignedLong(strBytes.Length / 2);
                 // write an array of unsigned shorts
                 var i = 0;
-                while (i < strBytes.Length) {
+                while (i < strBytes.Length)
+                {
                     // ndr.writeUnsignedShort(str.charAt(i));
                     ndr.WriteUnsignedSmall(strBytes[i]);
                     i++;
@@ -805,17 +921,20 @@ internal static class MarshalUnMarshalHelper {
             }
             else // Normal String
             {
-                if ((context.Flag & InteropFlags.FLAG_REPRESENTATION_STRING_LPCTSTR) == InteropFlags.FLAG_REPRESENTATION_STRING_LPCTSTR) {
+                if ((context.Flag & InteropFlags.FLAG_REPRESENTATION_STRING_LPCTSTR) == InteropFlags.FLAG_REPRESENTATION_STRING_LPCTSTR)
+                {
                     // the String is written as "short" so length is strlen/2+1
                     var strlen = (int)Math.Round(str.Length / 2.0);
 
                     ndr.WriteUnsignedLong(strlen + 1);
                     ndr.WriteUnsignedLong(0);
                     ndr.WriteUnsignedLong(strlen + 1);
-                    if (str.Length != 0) {
+                    if (str.Length != 0)
+                    {
                         ndr.WriteCharacterArray(str.ToCharArray(), 0, str.Length);
                         // odd length
-                        if (str.Length % 2 != 0) {
+                        if (str.Length % 2 != 0)
+                        {
                             // add a 0
                             ndr.WriteUnsignedSmall(0);
                         }
@@ -824,13 +943,17 @@ internal static class MarshalUnMarshalHelper {
                     // null termination
                     ndr.WriteUnsignedShort(0);
                 }
-                else {
-                    if ((context.Flag & InteropFlags.FLAG_REPRESENTATION_STRING_LPWSTR) == InteropFlags.FLAG_REPRESENTATION_STRING_LPWSTR) {
+                else
+                {
+                    if ((context.Flag & InteropFlags.FLAG_REPRESENTATION_STRING_LPWSTR) == InteropFlags.FLAG_REPRESENTATION_STRING_LPWSTR)
+                    {
                         byte[] strBytes;
-                        try {
+                        try
+                        {
                             strBytes = str.GetBytes("UTF-16LE");
                         }
-                        catch (UnsupportedEncodingException) {
+                        catch (UnsupportedEncodingException)
+                        {
                             throw new InteropRuntimeException((int)ErrorCode.INTEROP_UTIL_STRING_DECODE_CHARSET);
                         }
 
@@ -840,7 +963,8 @@ internal static class MarshalUnMarshalHelper {
                         ndr.WriteUnsignedLong((strBytes.Length / 2) + 1);
                         // write an array of unsigned shorts
                         var i = 0;
-                        while (i < strBytes.Length) {
+                        while (i < strBytes.Length)
+                        {
                             // ndr.writeUnsignedShort(str.charAt(i));
                             ndr.WriteUnsignedSmall(strBytes[i]);
                             i++;
@@ -867,23 +991,28 @@ internal static class MarshalUnMarshalHelper {
         }
 
         /// <inheritdoc/>
-        public object DeserializeData(NdrCodec ndr, CodecContext context) {
-            if ((context.Flag & InteropFlags.FLAG_REPRESENTATION_VALID_STRING) != InteropFlags.FLAG_REPRESENTATION_VALID_STRING) {
+        public object DeserializeData(NdrCodec ndr, CodecContext context)
+        {
+            if ((context.Flag & InteropFlags.FLAG_REPRESENTATION_VALID_STRING) != InteropFlags.FLAG_REPRESENTATION_VALID_STRING)
+            {
                 throw new InteropRuntimeException((int)ErrorCode.INTEROP_UTIL_STRING_INVALID);
             }
             // StringBuffer buffer = new StringBuffer();
             string retString = null;
-            try {
+            try
+            {
                 int retVal;
                 // BSTR Decoding
-                if ((context.Flag & InteropFlags.FLAG_REPRESENTATION_STRING_BSTR) == InteropFlags.FLAG_REPRESENTATION_STRING_BSTR) {
+                if ((context.Flag & InteropFlags.FLAG_REPRESENTATION_STRING_BSTR) == InteropFlags.FLAG_REPRESENTATION_STRING_BSTR)
+                {
                     // Read for user
                     ndr.ReadUnsignedLong(); // eating max length
                     ndr.ReadUnsignedLong(); // eating length in bytes
                     var actuallength = ndr.ReadUnsignedLong() * 2;
                     var buffer = new byte[actuallength];
                     var i = 0;
-                    while (i < actuallength) {
+                    while (i < actuallength)
+                    {
                         retVal = ndr.ReadUnsignedSmall();
                         buffer[i] = (byte)retVal;
                         i++;
@@ -893,9 +1022,11 @@ internal static class MarshalUnMarshalHelper {
                 }
                 else // Normal String
                 {
-                    if ((context.Flag & InteropFlags.FLAG_REPRESENTATION_STRING_LPCTSTR) == InteropFlags.FLAG_REPRESENTATION_STRING_LPCTSTR) {
+                    if ((context.Flag & InteropFlags.FLAG_REPRESENTATION_STRING_LPCTSTR) == InteropFlags.FLAG_REPRESENTATION_STRING_LPCTSTR)
+                    {
                         var actuallength = ndr.ReadUnsignedLong(); // max length
-                        if (actuallength == 0) {
+                        if (actuallength == 0)
+                        {
                             return null;
                         }
 
@@ -905,19 +1036,24 @@ internal static class MarshalUnMarshalHelper {
                         var ret = new char[(actuallength * 2) - 2];
                         // read including the unsigned short (null chars)
                         ndr.ReadCharacterArray(ret, 0, (actuallength * 2) - 2);
-                        if (ret[ret.Length - 1] == '0') {
+                        if (ret[ret.Length - 1] == '0')
+                        {
                             retString = new string(ret, 0, ret.Length - 1);
                         }
-                        else {
+                        else
+                        {
                             retString = new string(ret);
                         }
 
                         ndr.ReadUnsignedShort();
                     }
-                    else {
-                        if ((context.Flag & InteropFlags.FLAG_REPRESENTATION_STRING_LPWSTR) == InteropFlags.FLAG_REPRESENTATION_STRING_LPWSTR) {
+                    else
+                    {
+                        if ((context.Flag & InteropFlags.FLAG_REPRESENTATION_STRING_LPWSTR) == InteropFlags.FLAG_REPRESENTATION_STRING_LPWSTR)
+                        {
                             var maxlength = ndr.ReadUnsignedLong();
-                            if (maxlength == 0) {
+                            if (maxlength == 0)
+                            {
                                 return null;
                             }
                             ndr.ReadUnsignedLong(); // eating offset
@@ -925,12 +1061,14 @@ internal static class MarshalUnMarshalHelper {
                             var buffer = new byte[actuallength - 2];
                             var i = 0;
                             // last 2 bytes, null termination will be eaten outside the loop
-                            while (i < actuallength - 2) {
+                            while (i < actuallength - 2)
+                            {
                                 retVal = ndr.ReadUnsignedSmall();
                                 buffer[i] = (byte)retVal;
                                 i++;
                             }
-                            if (actuallength != 0) {
+                            if (actuallength != 0)
+                            {
                                 ndr.ReadUnsignedShort();
                             }
 
@@ -939,29 +1077,34 @@ internal static class MarshalUnMarshalHelper {
                     }
                 }
             }
-            catch (UnsupportedEncodingException) {
+            catch (UnsupportedEncodingException)
+            {
                 throw new InteropRuntimeException((int)ErrorCode.INTEROP_UTIL_STRING_DECODE_CHARSET);
             }
             return retString;
         }
 
         /// <inheritdoc/>
-        public int GetDataLengthInBytes(object value, int flag = InteropFlags.FLAG_NULL) {
+        public int GetDataLengthInBytes(object value, int flag = InteropFlags.FLAG_NULL)
+        {
             // rough estimate, this will vary from string to string
 
             var length = 4 + 4 + 4; // max len, offset,actual length
-            if (!((flag & InteropFlags.FLAG_REPRESENTATION_STRING_BSTR) == InteropFlags.FLAG_REPRESENTATION_STRING_BSTR)) {
+            if (!((flag & InteropFlags.FLAG_REPRESENTATION_STRING_BSTR) == InteropFlags.FLAG_REPRESENTATION_STRING_BSTR))
+            {
                 length += 2; // adding null termination
             }
 
-            if ((flag & InteropFlags.FLAG_REPRESENTATION_STRING_LPCTSTR) == InteropFlags.FLAG_REPRESENTATION_STRING_LPCTSTR) {
+            if ((flag & InteropFlags.FLAG_REPRESENTATION_STRING_LPCTSTR) == InteropFlags.FLAG_REPRESENTATION_STRING_LPCTSTR)
+            {
                 length += ((string)value).Length; // this is only a character array, no unicode, each char is writen in 1 byte "abcd" --> ab, cd,00 ; "abcde" --> ab,cd,e0, 00
                 if (!(((string)value).Length % 2 == 0)) // odd
                 {
                     length++;
                 }
             }
-            else {
+            else
+            {
                 //                if (value == null)
                 //                {
                 //                    int i = 0;
@@ -973,7 +1116,8 @@ internal static class MarshalUnMarshalHelper {
     }
 
     /// <inheritdoc/>
-    private sealed class ComStringImpl : ISerializerDeserializer {
+    private sealed class ComStringImpl : ISerializerDeserializer
+    {
 
         /// <inheritdoc/>
         public void SerializeData(NdrCodec ndr, object value, CodecContext context) =>
@@ -984,10 +1128,12 @@ internal static class MarshalUnMarshalHelper {
             throw new InvalidOperationException(Interop.GetLocalizedMessage(ErrorCode.INTEROP_UTIL_INCORRECT_CALL));
 
         /// <inheritdoc/>
-        public int GetDataLengthInBytes(object value, int flag = InteropFlags.FLAG_NULL) {
+        public int GetDataLengthInBytes(object value, int flag = InteropFlags.FLAG_NULL)
+        {
             var length = 4;
 
-            if (((ComString)value).String == null) {
+            if (((ComString)value).String == null)
+            {
                 return length;
             }
             // for LPWSTR and BSTR adding 2 for the null character.
@@ -999,25 +1145,32 @@ internal static class MarshalUnMarshalHelper {
 
 
     /// <inheritdoc/>
-    private sealed class UUIDImpl : ISerializerDeserializer {
+    private sealed class UUIDImpl : ISerializerDeserializer
+    {
 
         /// <inheritdoc/>
-        public void SerializeData(NdrCodec ndr, object value, CodecContext context) {
-            try {
+        public void SerializeData(NdrCodec ndr, object value, CodecContext context)
+        {
+            try
+            {
                 ((UUID)value).Encode(ndr, ndr.Buffer);
             }
-            catch (NdrException e) {
+            catch (NdrException e)
+            {
                 Log.Logger.Error(e, "UUIDImpl serializeData");
             }
         }
 
         /// <inheritdoc/>
-        public object DeserializeData(NdrCodec ndr, CodecContext context) {
+        public object DeserializeData(NdrCodec ndr, CodecContext context)
+        {
             var ret = new UUID();
-            try {
+            try
+            {
                 ret.Decode(ndr, ndr.Buffer);
             }
-            catch (NdrException e) {
+            catch (NdrException e)
+            {
                 Log.Logger.Error(e, "UUIDImpl deserializeData", e);
                 ret = null;
             }
@@ -1030,7 +1183,8 @@ internal static class MarshalUnMarshalHelper {
 
 
     /// <inheritdoc/>
-    private sealed class MInterfacePointerImpl : ISerializerDeserializer {
+    private sealed class MInterfacePointerImpl : ISerializerDeserializer
+    {
 
         /// <inheritdoc/>
         public void SerializeData(NdrCodec ndr, object value, CodecContext context) =>
@@ -1046,7 +1200,8 @@ internal static class MarshalUnMarshalHelper {
     }
 
     /// <inheritdoc/>
-    private sealed class MInterfacePointerImpl2 : ISerializerDeserializer {
+    private sealed class MInterfacePointerImpl2 : ISerializerDeserializer
+    {
 
         /// <inheritdoc/>
         public void SerializeData(NdrCodec ndr, object value, CodecContext context) =>
@@ -1062,7 +1217,8 @@ internal static class MarshalUnMarshalHelper {
     }
 
     private static readonly Dictionary<Type, ISerializerDeserializer> kMapOfSerializers =
-        new Dictionary<Type, ISerializerDeserializer> {
+        new Dictionary<Type, ISerializerDeserializer>
+        {
             [typeof(DateTime)] = new DateImpl(),
             [typeof(Currency)] = new CurrencyImpl(),
             [typeof(VariantBody)] = new VariantBodyImpl(),

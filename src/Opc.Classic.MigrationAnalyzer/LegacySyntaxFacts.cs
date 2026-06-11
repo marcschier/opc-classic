@@ -9,7 +9,8 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Opc.Classic.MigrationAnalyzer;
 
-internal static class LegacySyntaxFacts {
+internal static class LegacySyntaxFacts
+{
     private static readonly string[] LegacyNamespacePrefixes =
     {
         "OpcCom",
@@ -17,15 +18,18 @@ internal static class LegacySyntaxFacts {
         "Opc",
     };
 
-    public static bool IsOpcComServerCreation(ObjectCreationExpressionSyntax objectCreation, SemanticModel semanticModel) {
+    public static bool IsOpcComServerCreation(ObjectCreationExpressionSyntax objectCreation, SemanticModel semanticModel)
+    {
         string typeName = Normalize(objectCreation.Type.ToString());
         if (typeName.Equals("OpcCom.Da.Server", StringComparison.Ordinal) ||
-            typeName.Equals("OpcCom.Server", StringComparison.Ordinal)) {
+            typeName.Equals("OpcCom.Server", StringComparison.Ordinal))
+        {
             return true;
         }
 
         ITypeSymbol? type = semanticModel.GetTypeInfo(objectCreation.Type).Type;
-        if (type is null) {
+        if (type is null)
+        {
             return false;
         }
 
@@ -35,14 +39,17 @@ internal static class LegacySyntaxFacts {
                !IsOpcClassicSymbol(type);
     }
 
-    public static bool IsLegacyInvocationReceiver(InvocationExpressionSyntax invocation, SemanticModel semanticModel) {
+    public static bool IsLegacyInvocationReceiver(InvocationExpressionSyntax invocation, SemanticModel semanticModel)
+    {
         ExpressionSyntax? receiver = GetInvocationReceiver(invocation);
-        if (receiver is null) {
+        if (receiver is null)
+        {
             return false;
         }
 
         ITypeSymbol? receiverType = semanticModel.GetTypeInfo(receiver).Type;
-        if (receiverType is not null) {
+        if (receiverType is not null)
+        {
             return IsLegacyOpcSymbol(receiverType);
         }
 
@@ -51,28 +58,34 @@ internal static class LegacySyntaxFacts {
                receiverText.StartsWith("OpcRcw.", StringComparison.Ordinal);
     }
 
-    public static ExpressionSyntax? GetInvocationReceiver(InvocationExpressionSyntax invocation) => invocation.Expression switch {
+    public static ExpressionSyntax? GetInvocationReceiver(InvocationExpressionSyntax invocation) => invocation.Expression switch
+    {
         MemberAccessExpressionSyntax memberAccess => memberAccess.Expression,
         MemberBindingExpressionSyntax => null,
         _ => null,
     };
 
-    public static string? GetInvocationName(InvocationExpressionSyntax invocation) => invocation.Expression switch {
+    public static string? GetInvocationName(InvocationExpressionSyntax invocation) => invocation.Expression switch
+    {
         MemberAccessExpressionSyntax memberAccess => memberAccess.Name.Identifier.ValueText,
         IdentifierNameSyntax identifier => identifier.Identifier.ValueText,
         MemberBindingExpressionSyntax memberBinding => memberBinding.Name.Identifier.ValueText,
         _ => null,
     };
 
-    public static bool IsLegacyOpcSymbol(ITypeSymbol symbol) {
-        if (IsOpcClassicSymbol(symbol)) {
+    public static bool IsLegacyOpcSymbol(ITypeSymbol symbol)
+    {
+        if (IsOpcClassicSymbol(symbol))
+        {
             return false;
         }
 
         string namespaceName = symbol.ContainingNamespace?.ToDisplayString() ?? string.Empty;
-        foreach (string prefix in LegacyNamespacePrefixes) {
+        foreach (string prefix in LegacyNamespacePrefixes)
+        {
             if (namespaceName.Equals(prefix, StringComparison.Ordinal) ||
-                namespaceName.StartsWith(prefix + ".", StringComparison.Ordinal)) {
+                namespaceName.StartsWith(prefix + ".", StringComparison.Ordinal))
+            {
                 return true;
             }
         }
@@ -80,7 +93,8 @@ internal static class LegacySyntaxFacts {
         return false;
     }
 
-    public static bool IsOpcClassicSymbol(ITypeSymbol symbol) {
+    public static bool IsOpcClassicSymbol(ITypeSymbol symbol)
+    {
         string namespaceName = symbol.ContainingNamespace?.ToDisplayString() ?? string.Empty;
         return namespaceName.Equals("Opc.Classic", StringComparison.Ordinal) ||
                namespaceName.StartsWith("Opc.Classic.", StringComparison.Ordinal);
@@ -90,20 +104,25 @@ internal static class LegacySyntaxFacts {
         name.Equals("OpcRcw", StringComparison.Ordinal) ||
         name.StartsWith("OpcRcw.", StringComparison.Ordinal);
 
-    public static string MapOpcRcwNamespace(string name) {
-        if (name.StartsWith("OpcRcw.Da", StringComparison.Ordinal)) {
+    public static string MapOpcRcwNamespace(string name)
+    {
+        if (name.StartsWith("OpcRcw.Da", StringComparison.Ordinal))
+        {
             return "Opc.Classic.Da" + name.Substring("OpcRcw.Da".Length);
         }
 
-        if (name.StartsWith("OpcRcw.Hda", StringComparison.Ordinal)) {
+        if (name.StartsWith("OpcRcw.Hda", StringComparison.Ordinal))
+        {
             return "Opc.Classic.Hda" + name.Substring("OpcRcw.Hda".Length);
         }
 
-        if (name.StartsWith("OpcRcw.Ae", StringComparison.Ordinal)) {
+        if (name.StartsWith("OpcRcw.Ae", StringComparison.Ordinal))
+        {
             return "Opc.Classic.Ae" + name.Substring("OpcRcw.Ae".Length);
         }
 
-        if (name.StartsWith("OpcRcw.Comn", StringComparison.Ordinal)) {
+        if (name.StartsWith("OpcRcw.Comn", StringComparison.Ordinal))
+        {
             return "Opc.Classic.Core" + name.Substring("OpcRcw.Comn".Length);
         }
 

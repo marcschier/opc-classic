@@ -8,7 +8,8 @@ namespace Opc.Classic.Dcom.Rpc;
 /// <summary>
 /// Fragmantable tag
 /// </summary>
-public interface IFragmentable {
+public interface IFragmentable
+{
 
     /// <summary>
     /// Create fragments

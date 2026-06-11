@@ -22,20 +22,24 @@ using TUnit.Core;
 namespace Opc.Classic.Tests;
 
 [OpcInterface("39C13A4D-011E-11D0-9675-0020AFD8ADB3")]
-public partial interface IOpcInterfaceGeneratorSample {
+public partial interface IOpcInterfaceGeneratorSample
+{
 }
 
-public sealed class OpcInterfaceGeneratorTests {
+public sealed class OpcInterfaceGeneratorTests
+{
     private static Guid ReadInterfaceId() => IOpcInterfaceGeneratorSample.InterfaceId;
 
     [Test]
-    public async Task GeneratedInterfaceId_MatchesAttribute() {
+    public async Task GeneratedInterfaceId_MatchesAttribute()
+    {
         var expected = new Guid("39C13A4D-011E-11D0-9675-0020AFD8ADB3");
         await Assert.That(ReadInterfaceId()).IsEqualTo(expected);
     }
 
     [Test]
-    public async Task GeneratedInterfaceId_IsNotEmpty() {
+    public async Task GeneratedInterfaceId_IsNotEmpty()
+    {
         await Assert.That(ReadInterfaceId()).IsNotEqualTo(Guid.Empty);
     }
 }

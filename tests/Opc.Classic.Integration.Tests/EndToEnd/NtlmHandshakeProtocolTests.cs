@@ -22,7 +22,8 @@ using TUnit.Core;
 
 namespace Opc.Classic.Integration.Tests.EndToEnd;
 
-public sealed class NtlmHandshakeProtocolTests {
+public sealed class NtlmHandshakeProtocolTests
+{
     private const string TestDomain = "DOMAIN";
     private const string TestUser = "User";
     private const string TestPassword = "Password";
@@ -34,7 +35,8 @@ public sealed class NtlmHandshakeProtocolTests {
     private static readonly byte[] ExpectedServerChallenge = [1, 2, 3, 4, 5, 6, 7, 8];
 
     [Test, Category("EndToEnd")]
-    public async Task Type1Negotiate_GeneratesExpectedNtlmSspHeaderAndFlags() {
+    public async Task Type1Negotiate_GeneratesExpectedNtlmSspHeaderAndFlags()
+    {
         var client = CreateAuthentication(password: TestPassword, channelBindingsHash: null);
 
         Type1Message type1 = client.CreateType1();
@@ -60,7 +62,8 @@ public sealed class NtlmHandshakeProtocolTests {
     }
 
     [Test, Category("EndToEnd")]
-    public async Task Type2Challenge_FromAuthenticationSourceCarriesChallengeTargetInfoAndMicRequest() {
+    public async Task Type2Challenge_FromAuthenticationSourceCarriesChallengeTargetInfoAndMicRequest()
+    {
         HandshakeTokens handshake = BuildHandshake(clientPassword: TestPassword);
         Type2Message type2 = handshake.Type2;
         byte[] targetInformation = type2.GetTargetInformation();
@@ -83,7 +86,8 @@ public sealed class NtlmHandshakeProtocolTests {
     }
 
     [Test, Category("EndToEnd")]
-    public async Task Type3Authenticate_CarriesNtlmV2ResponseIdentityMicAndSessionKeys() {
+    public async Task Type3Authenticate_CarriesNtlmV2ResponseIdentityMicAndSessionKeys()
+    {
         HandshakeTokens handshake = BuildHandshake(clientPassword: TestPassword);
         Type3Message type3 = handshake.Type3;
         byte[] authenticate = handshake.Type3Token;
@@ -128,7 +132,8 @@ public sealed class NtlmHandshakeProtocolTests {
     }
 
     [Test, Category("EndToEnd")]
-    public async Task Authenticate_RejectsTamperedType3MicAndWrongPassword() {
+    public async Task Authenticate_RejectsTamperedType3MicAndWrongPassword()
+    {
         HandshakeTokens handshake = BuildHandshake(clientPassword: TestPassword);
         byte[] tamperedAuthenticate = handshake.Type3Token.ToArray();
         (ushort ntResponseLength, uint ntResponseOffset) = ReadSecurityBuffer(tamperedAuthenticate, NtResponseSecurityBufferOffset);
@@ -145,7 +150,8 @@ public sealed class NtlmHandshakeProtocolTests {
     }
 
     [Test, Category("EndToEnd")]
-    public async Task ChannelBindingToken_IsEmbeddedInNtlmV2BlobAndMismatchesAreRejected() {
+    public async Task ChannelBindingToken_IsEmbeddedInNtlmV2BlobAndMismatchesAreRejected()
+    {
         byte[] channelBindingsHash = CreateChannelBindingsHash("tls-server-end-point:ntlm-protocol-test");
         HandshakeTokens handshake = BuildHandshake(
             clientPassword: TestPassword,
@@ -172,7 +178,8 @@ public sealed class NtlmHandshakeProtocolTests {
     }
 
     [Test, Category("EndToEnd")]
-    public async Task CreateAuthContext_MapsModesAndNtlmContextTokenMethodsDriveHandshake() {
+    public async Task CreateAuthContext_MapsModesAndNtlmContextTokenMethodsDriveHandshake()
+    {
         OpcUrl url = OpcUrl.Parse("opcda://opc-host/Test.Server");
         var credentials = new NetworkCredential(TestUser, TestPassword, TestDomain);
 
@@ -189,12 +196,14 @@ public sealed class NtlmHandshakeProtocolTests {
         await Assert.That(kerberos).IsTypeOf<KerberosAuthContext>();
         await Assert.That(kerberos.AuthenticationServiceCode).IsEqualTo((byte)0x09);
 
-        if (OperatingSystem.IsWindows()) {
+        if (OperatingSystem.IsWindows())
+        {
             IAuthContext windowsSso = NtlmAuthentication.CreateAuthContext(OpcConnectData.WithWindowsSso(url));
             await Assert.That(windowsSso).IsTypeOf<WindowsSsoAuthContext>();
             await Assert.That(windowsSso.AuthenticationServiceCode).IsEqualTo((byte)0x0A);
         }
-        else {
+        else
+        {
             await Assert.That(() => NtlmAuthentication.CreateAuthContext(OpcConnectData.WithWindowsSso(url)))
                 .Throws<PlatformNotSupportedException>();
         }
@@ -221,7 +230,8 @@ public sealed class NtlmHandshakeProtocolTests {
     private static HandshakeTokens BuildHandshake(
         string clientPassword,
         byte[]? clientChannelBindingsHash = null,
-        byte[]? serverChannelBindingsHash = null) {
+        byte[]? serverChannelBindingsHash = null)
+    {
         var client = CreateAuthentication(clientPassword, clientChannelBindingsHash);
         var source = new TestAuthenticationSource(serverChannelBindingsHash);
         Type1Message type1 = client.CreateType1();
@@ -233,7 +243,8 @@ public sealed class NtlmHandshakeProtocolTests {
         return new HandshakeTokens(client, source, type1, type2, type3, type1Token, type2Token, type3Token);
     }
 
-    private static NtlmAuthentication CreateAuthentication(string password, byte[]? channelBindingsHash) {
+    private static NtlmAuthentication CreateAuthentication(string password, byte[]? channelBindingsHash)
+    {
         var properties = new PropertyBag();
         properties.SetProperty("rpc.ntlm.lanManagerKey", "false");
         properties.SetProperty("rpc.ntlm.sign", "true");
@@ -247,14 +258,16 @@ public sealed class NtlmHandshakeProtocolTests {
         properties.SetProperty("rpc.ntlm.domain", TestDomain);
         properties.SetProperty(Opc.Classic.Dcom.Rpc.Security.USERNAME, TestUser);
         properties.SetProperty(Opc.Classic.Dcom.Rpc.Security.PASSWORD, password);
-        if (channelBindingsHash is not null) {
+        if (channelBindingsHash is not null)
+        {
             properties.SetProperty("rpc.ntlm.channelBindingsHash", channelBindingsHash);
         }
 
         return new NtlmAuthentication(properties);
     }
 
-    private static async Task AssertNtlmHeaderAsync(byte[] token, int expectedMessageType) {
+    private static async Task AssertNtlmHeaderAsync(byte[] token, int expectedMessageType)
+    {
         bool hasSignature = HasNtlmSignature(token);
         int messageType = ReadNtlmMessageType(token);
         await Assert.That(hasSignature).IsTrue();
@@ -278,8 +291,10 @@ public sealed class NtlmHandshakeProtocolTests {
 
     private static bool HasFlag(NtlmFlags flags, NtlmFlags flag) => (flags & flag) == flag;
 
-    private static bool TryGetNtlmV2AvPair(byte[] ntResponse, ushort avId, out byte[] value) {
-        if (ntResponse.Length <= NtlmV2ProofLength + NtlmV2AvPairsOffsetInBlob) {
+    private static bool TryGetNtlmV2AvPair(byte[] ntResponse, ushort avId, out byte[] value)
+    {
+        if (ntResponse.Length <= NtlmV2ProofLength + NtlmV2AvPairsOffsetInBlob)
+        {
             value = [];
             return false;
         }
@@ -287,22 +302,27 @@ public sealed class NtlmHandshakeProtocolTests {
         return TryGetAvPair(ntResponse.AsSpan(NtlmV2ProofLength + NtlmV2AvPairsOffsetInBlob), avId, out value);
     }
 
-    private static bool TryGetAvPair(ReadOnlySpan<byte> targetInformation, ushort avId, out byte[] value) {
+    private static bool TryGetAvPair(ReadOnlySpan<byte> targetInformation, ushort avId, out byte[] value)
+    {
         int offset = 0;
-        while (offset + 4 <= targetInformation.Length) {
+        while (offset + 4 <= targetInformation.Length)
+        {
             ushort currentAvId = BinaryPrimitives.ReadUInt16LittleEndian(targetInformation.Slice(offset, sizeof(ushort)));
             ushort length = BinaryPrimitives.ReadUInt16LittleEndian(targetInformation.Slice(offset + sizeof(ushort), sizeof(ushort)));
             offset += 4;
-            if (length > targetInformation.Length - offset) {
+            if (length > targetInformation.Length - offset)
+            {
                 break;
             }
 
-            if (currentAvId == avId) {
+            if (currentAvId == avId)
+            {
                 value = targetInformation.Slice(offset, length).ToArray();
                 return true;
             }
 
-            if (currentAvId == NtlmAvPairs.MsvAvEol) {
+            if (currentAvId == NtlmAvPairs.MsvAvEol)
+            {
                 break;
             }
 
@@ -321,36 +341,43 @@ public sealed class NtlmHandshakeProtocolTests {
             AcceptorAddress: ReadOnlyMemory<byte>.Empty,
             ApplicationData: System.Text.Encoding.ASCII.GetBytes(applicationData)));
 
-    private static byte[] FromSByteArray(sbyte[] bytes) {
+    private static byte[] FromSByteArray(sbyte[] bytes)
+    {
         var unsigned = new byte[bytes.Length];
-        for (int i = 0; i < bytes.Length; i++) {
+        for (int i = 0; i < bytes.Length; i++)
+        {
             unsigned[i] = unchecked((byte)bytes[i]);
         }
 
         return unsigned;
     }
 
-    private static sbyte[] ToSByteArray(ReadOnlyMemory<byte>? bytes) {
+    private static sbyte[] ToSByteArray(ReadOnlyMemory<byte>? bytes)
+    {
         byte[] unsigned = bytes.GetValueOrDefault().ToArray();
         var signed = new sbyte[unsigned.Length];
-        for (int i = 0; i < unsigned.Length; i++) {
+        for (int i = 0; i < unsigned.Length; i++)
+        {
             signed[i] = unchecked((sbyte)unsigned[i]);
         }
 
         return signed;
     }
 
-    private static void InvokeCreateSecurityWhenServer(NtlmAuthentication authentication, Type3Message type3, byte[] authenticate) {
+    private static void InvokeCreateSecurityWhenServer(NtlmAuthentication authentication, Type3Message type3, byte[] authenticate)
+    {
         MethodInfo method = typeof(NtlmAuthentication).GetMethod(
             "CreateSecurityWhenServerWithMic",
             BindingFlags.Instance | BindingFlags.NonPublic,
             binder: null,
             types: [typeof(object), typeof(byte[])],
             modifiers: null)!;
-        try {
+        try
+        {
             method.Invoke(authentication, [type3, authenticate]);
         }
-        catch (TargetInvocationException ex) when (ex.InnerException is not null) {
+        catch (TargetInvocationException ex) when (ex.InnerException is not null)
+        {
             ExceptionDispatchInfo.Capture(ex.InnerException).Throw();
             throw;
         }
@@ -366,7 +393,8 @@ public sealed class NtlmHandshakeProtocolTests {
         byte[] Type2Token,
         byte[] Type3Token);
 
-    private sealed class TestAuthenticationSource : AuthenticationSource {
+    private sealed class TestAuthenticationSource : AuthenticationSource
+    {
         private readonly byte[]? _channelBindingsHash;
         private NtlmAuthentication? _server;
 
@@ -375,16 +403,19 @@ public sealed class NtlmHandshakeProtocolTests {
 
         public bool SecurityEstablished => _server?.Security is not null;
 
-        public override byte[] CreateChallenge(PropertyBag properties, Type1Message type1) {
+        public override byte[] CreateChallenge(PropertyBag properties, Type1Message type1)
+        {
             _ = properties;
             _server = CreateAuthentication(TestPassword, _channelBindingsHash);
             return _server.CreateType2(type1).ToByteArray();
         }
 
-        public override sbyte[] Authenticate(PropertyBag properties, Type2Message type2, Type3Message type3) {
+        public override sbyte[] Authenticate(PropertyBag properties, Type2Message type2, Type3Message type3)
+        {
             _ = properties;
             _ = type2;
-            if (_server is null) {
+            if (_server is null)
+            {
                 throw new InvalidOperationException("CreateChallenge must be called before Authenticate.");
             }
 

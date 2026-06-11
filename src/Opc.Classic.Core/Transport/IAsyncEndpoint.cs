@@ -13,7 +13,8 @@ namespace Opc.Classic.Transport;
 /// <summary>
 /// Server-side asynchronous DCE/RPC listener endpoint.
 /// </summary>
-public interface IAsyncEndpoint : IAsyncDisposable {
+public interface IAsyncEndpoint : IAsyncDisposable
+{
     /// <summary>Gets the local endpoint where this listener accepts connections.</summary>
     EndPoint LocalEndpoint { get; }
 

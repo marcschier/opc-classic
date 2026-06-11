@@ -7,7 +7,8 @@ using Microsoft.Extensions.Logging;
 
 namespace Opc.Classic.Samples.LoopbackDemo;
 
-internal sealed class LoopbackDemoService : BackgroundService {
+internal sealed class LoopbackDemoService : BackgroundService
+{
     private static readonly Action<ILogger, Exception?> StartingDemo = LoggerMessage.Define(
         LogLevel.Information,
         new EventId(1, nameof(StartingDemo)),
@@ -27,25 +28,30 @@ internal sealed class LoopbackDemoService : BackgroundService {
         LoopbackDaClient client,
         LoopbackDaRuntime runtime,
         IHostApplicationLifetime lifetime,
-        ILogger<LoopbackDemoService> logger) {
+        ILogger<LoopbackDemoService> logger)
+    {
         _client = client ?? throw new ArgumentNullException(nameof(client));
         _runtime = runtime ?? throw new ArgumentNullException(nameof(runtime));
         _lifetime = lifetime ?? throw new ArgumentNullException(nameof(lifetime));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
-    protected override async Task ExecuteAsync(CancellationToken stoppingToken) {
-        try {
+    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+    {
+        try
+        {
             StartingDemo(_logger, null);
             await RunDemoAsync(stoppingToken).ConfigureAwait(false);
             CompletedDemo(_logger, null);
         }
-        finally {
+        finally
+        {
             _lifetime.StopApplication();
         }
     }
 
-    private async Task RunDemoAsync(CancellationToken stoppingToken) {
+    private async Task RunDemoAsync(CancellationToken stoppingToken)
+    {
         WriteSection("OPC Classic DA in-process loopback");
         Console.WriteLine("Client proxies -> InMemoryCallChannel -> SampleDaServer dispatcher, all in one process.");
         Console.WriteLine();
@@ -59,7 +65,8 @@ internal sealed class LoopbackDemoService : BackgroundService {
 
         string[] itemIds = await _client.BrowseAsync(stoppingToken).ConfigureAwait(false);
         WriteSection("Browse");
-        foreach (string itemId in itemIds) {
+        foreach (string itemId in itemIds)
+        {
             Console.WriteLine(string.Create(CultureInfo.InvariantCulture, $"  • {itemId}"));
         }
 
@@ -85,7 +92,8 @@ internal sealed class LoopbackDemoService : BackgroundService {
             groupHandle,
             itemRequests,
             stoppingToken).ConfigureAwait(false);
-        foreach (LoopbackAddItemResult item in addedItems) {
+        foreach (LoopbackAddItemResult item in addedItems)
+        {
             Console.WriteLine(string.Create(
                 CultureInfo.InvariantCulture,
                 $"  {item.ItemId,-26} -> server={item.ServerHandle}, client={item.ClientHandle}, type={item.CanonicalDataType}, result={FormatError(item.Error)}"));
@@ -101,7 +109,8 @@ internal sealed class LoopbackDemoService : BackgroundService {
         LoopbackSubscription? subscription = null;
         var receivedNotifications = new List<LoopbackNotification>();
         Task? consumer = null;
-        try {
+        try
+        {
             subscription = await _client.SubscribeAsync(stoppingToken).ConfigureAwait(false);
             consumer = ConsumeNotificationsAsync(subscription, receivedNotifications, stoppingToken);
 
@@ -113,7 +122,8 @@ internal sealed class LoopbackDemoService : BackgroundService {
                 writableItems,
                 writeValues,
                 stoppingToken).ConfigureAwait(false);
-            foreach (LoopbackWriteResult write in writes) {
+            foreach (LoopbackWriteResult write in writes)
+            {
                 Console.WriteLine(string.Create(
                     CultureInfo.InvariantCulture,
                     $"  Write {write.ItemId,-22} = {FormatVariant(write.Value),-24} result={FormatError(write.Error)}"));
@@ -124,13 +134,16 @@ internal sealed class LoopbackDemoService : BackgroundService {
             Console.WriteLine("  Streaming notifications for ~5 seconds...");
             await _runtime.RunPublisherAsync(TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(1), stoppingToken).ConfigureAwait(false);
         }
-        finally {
-            if (subscription is not null) {
+        finally
+        {
+            if (subscription is not null)
+            {
                 await subscription.DisposeAsync().ConfigureAwait(false);
             }
         }
 
-        if (consumer is not null) {
+        if (consumer is not null)
+        {
             await consumer.WaitAsync(TimeSpan.FromSeconds(2), CancellationToken.None).ConfigureAwait(false);
         }
 
@@ -154,13 +167,16 @@ internal sealed class LoopbackDemoService : BackgroundService {
     private static async Task ConsumeNotificationsAsync(
         LoopbackSubscription subscription,
         List<LoopbackNotification> receivedNotifications,
-        CancellationToken stoppingToken) {
-        await foreach (LoopbackNotification notification in subscription.Notifications(stoppingToken).ConfigureAwait(false)) {
+        CancellationToken stoppingToken)
+    {
+        await foreach (LoopbackNotification notification in subscription.Notifications(stoppingToken).ConfigureAwait(false))
+        {
             receivedNotifications.Add(notification);
             Console.WriteLine(string.Create(
                 CultureInfo.InvariantCulture,
                 $"  OnDataChange tx={notification.TransactionId}, group={notification.GroupServerHandle}, items={notification.Items.Count}"));
-            foreach (LoopbackNotificationItem item in notification.Items) {
+            foreach (LoopbackNotificationItem item in notification.Items)
+            {
                 Console.WriteLine(string.Create(
                     CultureInfo.InvariantCulture,
                     $"    client={item.ClientHandle}: {FormatVariant(item.Value),-24} quality={item.Quality.Quality}, result={FormatError(item.Error)}"));
@@ -168,15 +184,18 @@ internal sealed class LoopbackDemoService : BackgroundService {
         }
     }
 
-    private static void WriteReads(IReadOnlyList<LoopbackReadResult> reads) {
-        foreach (LoopbackReadResult read in reads) {
+    private static void WriteReads(IReadOnlyList<LoopbackReadResult> reads)
+    {
+        foreach (LoopbackReadResult read in reads)
+        {
             Console.WriteLine(string.Create(
                 CultureInfo.InvariantCulture,
                 $"  Read  {read.ItemId,-26} = {FormatVariant(read.Value),-24} quality={read.Quality.Quality}, result={FormatError(read.Error)}"));
         }
     }
 
-    private static void WriteSection(string title) {
+    private static void WriteSection(string title)
+    {
         Console.WriteLine(title);
         Console.WriteLine(new string('-', title.Length));
     }
@@ -185,8 +204,10 @@ internal sealed class LoopbackDemoService : BackgroundService {
         ? "S_OK"
         : string.Create(CultureInfo.InvariantCulture, $"0x{error:X8}");
 
-    private static string FormatVariant(OpcVariant value) {
-        string formatted = value.Boxed switch {
+    private static string FormatVariant(OpcVariant value)
+    {
+        string formatted = value.Boxed switch
+        {
             null => "<null>",
             float single => single.ToString("0.000", CultureInfo.InvariantCulture),
             double number => number.ToString("0.000", CultureInfo.InvariantCulture),

@@ -13,7 +13,8 @@ using HdaNdr = Opc.Classic.Hda.Ndr;
 
 namespace Opc.Classic.SnapshotTests.Codecs;
 
-public sealed class SpecStructsSnapshotTests {
+public sealed class SpecStructsSnapshotTests
+{
     [Test]
     public async Task OpcItemState_encodes_to_stable_bytes() =>
         await VerifyStruct("OPCITEMSTATE", "canonical DA item state", static (ref NdrWriter writer) => DaNdr.NdrOpcItemStateCodec.Write(ref writer, CodecFixtures.ItemState()));

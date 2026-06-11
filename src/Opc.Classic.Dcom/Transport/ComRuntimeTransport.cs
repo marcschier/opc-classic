@@ -13,7 +13,8 @@ namespace Opc.Classic.Dcom.Transport;
 /// <summary>
 /// Transport
 /// </summary>
-internal sealed class ComRuntimeTransport : ITransport, IDisposable {
+internal sealed class ComRuntimeTransport : ITransport, IDisposable
+{
 
     /// <summary>
     /// Create transport
@@ -21,7 +22,8 @@ internal sealed class ComRuntimeTransport : ITransport, IDisposable {
     /// <exception cref="ProviderException"></exception>
     /// <param name="address"></param>
     /// <param name="properties"></param>
-    public ComRuntimeTransport(string address, PropertyBag properties) {
+    public ComRuntimeTransport(string address, PropertyBag properties)
+    {
         // address is ignored but should not be null
         System.Diagnostics.Debug.Assert(address != null);
         Properties = properties;
@@ -34,24 +36,30 @@ internal sealed class ComRuntimeTransport : ITransport, IDisposable {
     public PropertyBag Properties { get; }
 
     /// <inheritdoc/>
-    public IEndpoint Attach(PresentationSyntax syntax) {
-        if (_attached) {
+    public IEndpoint Attach(PresentationSyntax syntax)
+    {
+        if (_attached)
+        {
             throw new RpcException("Transport already attached.");
         }
 
         IEndpoint endPoint = null;
-        try {
+        try
+        {
             _socket = Interop.Internal_getSocket();
             _stream = new System.Net.Sockets.NetworkStream(_socket);
             _attached = true;
             endPoint = new ComRuntimeEndpoint(this, syntax);
         }
-        catch {
-            try {
+        catch
+        {
+            try
+            {
                 Close();
             }
 #pragma warning disable RECS0022 // A catch clause that catches System.Exception and has an empty body
-            catch {
+            catch
+            {
 #pragma warning restore RECS0022 // A catch clause that catches System.Exception and has an empty body
             }
         }
@@ -59,11 +67,14 @@ internal sealed class ComRuntimeTransport : ITransport, IDisposable {
     }
 
     /// <inheritdoc/>
-    public void Close() {
-        try {
+    public void Close()
+    {
+        try
+        {
             _socket?.Close();
         }
-        finally {
+        finally
+        {
             _attached = false;
             _socket = null;
             _stream?.Dispose();
@@ -71,14 +82,17 @@ internal sealed class ComRuntimeTransport : ITransport, IDisposable {
     }
 
     /// <summary>Releases the accepted runtime socket resources.</summary>
-    public void Dispose() {
+    public void Dispose()
+    {
         Close();
         GC.SuppressFinalize(this);
     }
 
     /// <inheritdoc/>
-    public void Send(NdrBuffer buffer) {
-        if (!_attached) {
+    public void Send(NdrBuffer buffer)
+    {
+        if (!_attached)
+        {
             throw new RpcException("Transport not attached.");
         }
         _stream.Write(buffer.Buf, 0, buffer.Length);
@@ -86,8 +100,10 @@ internal sealed class ComRuntimeTransport : ITransport, IDisposable {
     }
 
     /// <inheritdoc/>
-    public void Receive(NdrBuffer buffer) {
-        if (!_attached) {
+    public void Receive(NdrBuffer buffer)
+    {
+        if (!_attached)
+        {
             throw new RpcException("Transport not attached.");
         }
         buffer.Length = _stream.Read(buffer.Buf, 0, buffer.GetCapacity());

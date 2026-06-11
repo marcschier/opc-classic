@@ -11,7 +11,8 @@ namespace Opc.Classic.Hda;
 /// An OPC HDA annotation — a user-supplied note attached to a historical
 /// timestamp. Mirrors <c>OPCHDA_ANNOTATION</c>.
 /// </summary>
-public sealed class HdaAnnotation {
+public sealed class HdaAnnotation
+{
     /// <summary>The historical timestamp the annotation is anchored to.</summary>
     public DateTimeOffset Timestamp { get; init; }
 

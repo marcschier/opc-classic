@@ -16,16 +16,19 @@ namespace Opc.Classic.Dcom.Transport;
 /// <summary>
 /// Connection context
 /// </summary>
-public sealed class ComRuntimeNtlmConnectionContext : NtlmConnectionContext {
+public sealed class ComRuntimeNtlmConnectionContext : NtlmConnectionContext
+{
 
     /// <inheritdoc/>
     public override bool Established => base.Established | _established;
 
     /// <inheritdoc/>
-    public override ConnectionOrientedPdu Init(PresentationContext context, PropertyBag properties) {
+    public override ConnectionOrientedPdu Init(PresentationContext context, PropertyBag properties)
+    {
         base.Init2(context, properties);
         _properties = properties;
-        lock (_listOfInterfacesSupported) { // TODO - find another way...
+        lock (_listOfInterfacesSupported)
+        { // TODO - find another way...
             _listOfInterfacesSupported.Add(((string)properties.GetProperty(kIID)).ToUpper(CultureInfo.InvariantCulture));
             _listOfInterfacesSupported.Add(((string)properties.GetProperty(kIID2)).ToUpper(CultureInfo.InvariantCulture) + ":0.0");
         }
@@ -36,22 +39,27 @@ public sealed class ComRuntimeNtlmConnectionContext : NtlmConnectionContext {
 
     /// <inheritdoc/>
 #pragma warning disable MA0051 // Legacy bind/alter-context state machine kept together.
-    public override ConnectionOrientedPdu Accept(ConnectionOrientedPdu pdu) {
+    public override ConnectionOrientedPdu Accept(ConnectionOrientedPdu pdu)
+    {
         ConnectionOrientedPdu reply = null;
-        switch (pdu.Type) {
+        switch (pdu.Type)
+        {
             case BindPdu.BIND_TYPE:
                 _established = true;
                 var presentationContexts = ((BindPdu)pdu).ContextList;
                 reply = new BindAcknowledgePdu();
                 var result = new PresentationResult[1];
-                for (var i = 0; i < presentationContexts.Length; i++) {
+                for (var i = 0; i < presentationContexts.Length; i++)
+                {
                     var presentationContext = presentationContexts[i];
 
                     var contains = false;
-                    lock (_listOfInterfacesSupported) {
+                    lock (_listOfInterfacesSupported)
+                    {
                         contains = _listOfInterfacesSupported.Contains(presentationContext.AbstractSyntax.ToString(), StringComparer.OrdinalIgnoreCase);
                     }
-                    if (!contains) {
+                    if (!contains)
+                    {
                         // create a fault PDU stating the syntax is not supported.
                         result[0] = new PresentationResult(PresentationResultCode.PROVIDER_REJECTION,
                             PresentationResultReason.ABSTRACT_SYNTAX_NOT_SUPPORTED,
@@ -62,7 +70,8 @@ public sealed class ComRuntimeNtlmConnectionContext : NtlmConnectionContext {
                 }
 
                 // all okay
-                if (((BindAcknowledgePdu)reply).ResultList == null) {
+                if (((BindAcknowledgePdu)reply).ResultList == null)
+                {
                     result[0] = new PresentationResult(); // this will be acceptance.
                     ((BindAcknowledgePdu)reply).AssociationGroupId =
                         new object().GetHashCode(); // TODO should I save this ?
@@ -77,13 +86,16 @@ public sealed class ComRuntimeNtlmConnectionContext : NtlmConnectionContext {
                 presentationContexts = ((AlterContextPdu)pdu).ContextList;
                 reply = new AlterContextResponsePdu();
                 result = new PresentationResult[1];
-                for (var i = 0; i < presentationContexts.Length; i++) {
+                for (var i = 0; i < presentationContexts.Length; i++)
+                {
                     var presentationContext = presentationContexts[i];
                     var contains = false;
-                    lock (_listOfInterfacesSupported) {
+                    lock (_listOfInterfacesSupported)
+                    {
                         contains = _listOfInterfacesSupported.Contains(presentationContext.AbstractSyntax.ToString(), StringComparer.OrdinalIgnoreCase);
                     }
-                    if (!contains) {
+                    if (!contains)
+                    {
                         // create a fault PDU stating the syntax is not supported.
                         result[0] = new PresentationResult(PresentationResultCode.PROVIDER_REJECTION,
                             PresentationResultReason.ABSTRACT_SYNTAX_NOT_SUPPORTED,
@@ -94,7 +106,8 @@ public sealed class ComRuntimeNtlmConnectionContext : NtlmConnectionContext {
                 }
 
                 // all okay
-                if (((AlterContextResponsePdu)reply).ResultList == null) {
+                if (((AlterContextResponsePdu)reply).ResultList == null)
+                {
                     result[0] = new PresentationResult(); // this will be acceptance.
                     ((AlterContextResponsePdu)reply).AssociationGroupId =
                         new object().GetHashCode(); // TODO should I save this ?
@@ -116,15 +129,20 @@ public sealed class ComRuntimeNtlmConnectionContext : NtlmConnectionContext {
     /// Update interfaces
     /// </summary>
     /// <param name="newList"></param>
-    internal void UpdateListOfInterfacesSupported(IReadOnlyList<string> newList) {
-        lock (_listOfInterfacesSupported) {
+    internal void UpdateListOfInterfacesSupported(IReadOnlyList<string> newList)
+    {
+        lock (_listOfInterfacesSupported)
+        {
             _listOfInterfacesSupported.AddRange(newList);
         }
     }
 
-    internal void UpdateListOfInterfacesSupported2(IReadOnlyList<string> newList) {
-        lock (_listOfInterfacesSupported) {
-            for (var i = 0; i < newList.Count; i++) {
+    internal void UpdateListOfInterfacesSupported2(IReadOnlyList<string> newList)
+    {
+        lock (_listOfInterfacesSupported)
+        {
+            for (var i = 0; i < newList.Count; i++)
+            {
                 _listOfInterfacesSupported.Add(newList[i] + ":0.0");
             }
         }

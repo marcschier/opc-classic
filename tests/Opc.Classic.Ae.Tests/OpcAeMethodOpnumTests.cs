@@ -11,7 +11,8 @@ using TUnit.Core;
 
 namespace Opc.Classic.Ae.Tests;
 
-public sealed class OpcAeMethodOpnumTests {
+public sealed class OpcAeMethodOpnumTests
+{
     private const string OpcMethodAttributeFullName = "Opc.Classic.Generators.OpcMethodAttribute";
 
     private static readonly ExpectedOpcMethod[] OpcAeIdlOpnums =
@@ -56,18 +57,23 @@ public sealed class OpcAeMethodOpnumTests {
     ];
 
     [Test]
-    public async Task OpcAeMethods_MatchOpcAeIdlOpnums() {
-        foreach (ExpectedOpcMethod expected in OpcAeIdlOpnums) {
+    public async Task OpcAeMethods_MatchOpcAeIdlOpnums()
+    {
+        foreach (ExpectedOpcMethod expected in OpcAeIdlOpnums)
+        {
             int actual = GetOpcMethodOpnum(expected.InterfaceType, expected.MethodName);
             await Assert.That(actual).IsEqualTo(expected.Opnum);
         }
     }
 
     [Test]
-    public async Task OpcAeMethods_DoNotDuplicateOpnumsPerInterface() {
+    public async Task OpcAeMethods_DoNotDuplicateOpnumsPerInterface()
+    {
         var opnumsByInterface = new Dictionary<Type, HashSet<int>>();
-        foreach (ExpectedOpcMethod expected in OpcAeIdlOpnums) {
-            if (!opnumsByInterface.TryGetValue(expected.InterfaceType, out HashSet<int>? opnums)) {
+        foreach (ExpectedOpcMethod expected in OpcAeIdlOpnums)
+        {
+            if (!opnumsByInterface.TryGetValue(expected.InterfaceType, out HashSet<int>? opnums))
+            {
                 opnums = new HashSet<int>();
                 opnumsByInterface.Add(expected.InterfaceType, opnums);
             }
@@ -77,14 +83,17 @@ public sealed class OpcAeMethodOpnumTests {
         }
     }
 
-    private static int GetOpcMethodOpnum(Type interfaceType, string methodName) {
+    private static int GetOpcMethodOpnum(Type interfaceType, string methodName)
+    {
         MethodInfo method = interfaceType.GetMethod(methodName, BindingFlags.Public | BindingFlags.Instance)
             ?? throw new MissingMethodException(interfaceType.FullName, methodName);
 
-        foreach (CustomAttributeData attribute in method.CustomAttributes) {
+        foreach (CustomAttributeData attribute in method.CustomAttributes)
+        {
             if (attribute.AttributeType.FullName == OpcMethodAttributeFullName &&
                 attribute.ConstructorArguments.Count == 1 &&
-                attribute.ConstructorArguments[0].Value is int opnum) {
+                attribute.ConstructorArguments[0].Value is int opnum)
+            {
                 return opnum;
             }
         }

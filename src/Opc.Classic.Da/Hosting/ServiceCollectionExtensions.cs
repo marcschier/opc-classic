@@ -13,13 +13,15 @@ namespace Opc.Classic.Da.Hosting;
 #pragma warning disable MA0048
 
 /// <summary>Service registration helpers for managed OPC DA server hosting.</summary>
-public static class OpcDaHostingServiceCollectionExtensions {
+public static class OpcDaHostingServiceCollectionExtensions
+{
     /// <summary>Registers a managed OPC DA server implementation and host.</summary>
     public static IServiceCollection AddOpcDaServer<
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] T>(
         this IServiceCollection services,
         Action<OpcDaServerOptions> configureOptions)
-        where T : class, IOpcDaServer {
+        where T : class, IOpcDaServer
+    {
         ArgumentNullException.ThrowIfNull(services);
         ArgumentNullException.ThrowIfNull(configureOptions);
 

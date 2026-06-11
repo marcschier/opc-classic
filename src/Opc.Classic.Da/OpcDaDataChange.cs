@@ -23,13 +23,16 @@ public sealed record OpcDaDataChange(
     int GroupServerHandle,
     short MasterQuality,
     int MasterError,
-    IReadOnlyList<OpcDaDataChangeItem> Items) {
+    IReadOnlyList<OpcDaDataChangeItem> Items)
+{
     private IReadOnlyList<OpcDaDataChangeItem> _items = Items ?? throw new ArgumentNullException(nameof(Items));
 
     /// <summary>Per-item values carried by the callback.</summary>
-    public IReadOnlyList<OpcDaDataChangeItem> Items {
+    public IReadOnlyList<OpcDaDataChangeItem> Items
+    {
         get => _items;
-        init {
+        init
+        {
             ArgumentNullException.ThrowIfNull(value);
             _items = value;
         }

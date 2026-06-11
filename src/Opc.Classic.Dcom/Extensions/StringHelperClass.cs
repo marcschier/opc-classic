@@ -9,7 +9,8 @@ namespace System;
 /// <summary>
 ///
 /// </summary>
-public static class StringHelperClass {
+public static class StringHelperClass
+{
     private static readonly TimeSpan RegexTimeout = TimeSpan.FromSeconds(1);
 
     // ----------------------------------------------------------------------------------
@@ -35,18 +36,24 @@ public static class StringHelperClass {
     /// <param name="regexDelimiter"></param>
     /// <param name="trimTrailingEmptyStrings"></param>
     /// <returns></returns>
-    public static string[] Split(this string self, string regexDelimiter, bool trimTrailingEmptyStrings) {
+    public static string[] Split(this string self, string regexDelimiter, bool trimTrailingEmptyStrings)
+    {
         var splitArray = Text.RegularExpressions.Regex.Split(
             self,
             regexDelimiter,
             Text.RegularExpressions.RegexOptions.None,
             RegexTimeout);
 
-        if (trimTrailingEmptyStrings) {
-            if (splitArray.Length > 1) {
-                for (var i = splitArray.Length; i > 0; i--) {
-                    if (splitArray[i - 1].Length > 0) {
-                        if (i < splitArray.Length) {
+        if (trimTrailingEmptyStrings)
+        {
+            if (splitArray.Length > 1)
+            {
+                for (var i = splitArray.Length; i > 0; i--)
+                {
+                    if (splitArray[i - 1].Length > 0)
+                    {
+                        if (i < splitArray.Length)
+                        {
                             Array.Resize(ref splitArray, i);
                         }
 
@@ -115,7 +122,8 @@ public static class StringHelperClass {
     /// <param name="encoding"></param>
     /// <param name="s"></param>
     /// <returns></returns>
-    private static byte[] GetSBytesForEncoding(Text.Encoding encoding, string s) {
+    private static byte[] GetSBytesForEncoding(Text.Encoding encoding, string s)
+    {
         var sbytes = new byte[encoding.GetByteCount(s)];
         encoding.GetBytes(s, 0, s.Length, (byte[])(object)sbytes, 0);
         return sbytes;

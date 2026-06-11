@@ -10,9 +10,11 @@ using TUnit.Core;
 
 namespace Opc.Classic.Dcom.Tests.Orpc;
 
-public sealed class OrpcEnvelopeTests {
+public sealed class OrpcEnvelopeTests
+{
     [Test]
-    public async Task OrpcThis_round_trips_default_values() {
+    public async Task OrpcThis_round_trips_default_values()
+    {
         var expected = new OrpcThis();
 
         byte[] bytes = WriteOrpcThis(expected);
@@ -26,8 +28,10 @@ public sealed class OrpcEnvelopeTests {
     }
 
     [Test]
-    public async Task OrpcThis_round_trips_empty_extension_array() {
-        var expected = new OrpcThis {
+    public async Task OrpcThis_round_trips_empty_extension_array()
+    {
+        var expected = new OrpcThis
+        {
             CausalityId = Guid.NewGuid(),
             Extensions = Array.Empty<OrpcExtent>(),
         };
@@ -44,7 +48,8 @@ public sealed class OrpcEnvelopeTests {
     }
 
     [Test]
-    public async Task OrpcThat_round_trips_default_values() {
+    public async Task OrpcThat_round_trips_default_values()
+    {
         var expected = new OrpcThat();
 
         byte[] bytes = WriteOrpcThat(expected);
@@ -56,7 +61,8 @@ public sealed class OrpcEnvelopeTests {
     }
 
     [Test]
-    public async Task OrpcThis_ends_on_four_byte_alignment() {
+    public async Task OrpcThis_ends_on_four_byte_alignment()
+    {
         (int payloadStart, int finalPosition) = WriteOrpcThisThenUInt32();
 
         await Assert.That(payloadStart).IsEqualTo(OrpcThis.NullExtensionsWireSize);
@@ -64,21 +70,24 @@ public sealed class OrpcEnvelopeTests {
         await Assert.That(finalPosition).IsEqualTo(payloadStart + sizeof(uint));
     }
 
-    private static OrpcThis ReadOrpcThis(byte[] bytes, out int position) {
+    private static OrpcThis ReadOrpcThis(byte[] bytes, out int position)
+    {
         var reader = new NdrReader(bytes);
         OrpcThis value = OrpcThis.Read(ref reader);
         position = reader.Position;
         return value;
     }
 
-    private static OrpcThat ReadOrpcThat(byte[] bytes, out int position) {
+    private static OrpcThat ReadOrpcThat(byte[] bytes, out int position)
+    {
         var reader = new NdrReader(bytes);
         OrpcThat value = OrpcThat.Read(ref reader);
         position = reader.Position;
         return value;
     }
 
-    private static (int PayloadStart, int FinalPosition) WriteOrpcThisThenUInt32() {
+    private static (int PayloadStart, int FinalPosition) WriteOrpcThisThenUInt32()
+    {
         byte[] buffer = new byte[OrpcThis.NullExtensionsWireSize + sizeof(uint)];
         var writer = new NdrWriter(buffer);
         new OrpcThis().Write(ref writer);
@@ -87,14 +96,16 @@ public sealed class OrpcEnvelopeTests {
         return (payloadStart, writer.Position);
     }
 
-    private static byte[] WriteOrpcThis(OrpcThis value, int capacity = OrpcThis.NullExtensionsWireSize) {
+    private static byte[] WriteOrpcThis(OrpcThis value, int capacity = OrpcThis.NullExtensionsWireSize)
+    {
         byte[] buffer = new byte[capacity];
         var writer = new NdrWriter(buffer);
         value.Write(ref writer);
         return buffer.AsSpan(0, writer.Position).ToArray();
     }
 
-    private static byte[] WriteOrpcThat(OrpcThat value, int capacity = OrpcThat.NullExtensionsWireSize) {
+    private static byte[] WriteOrpcThat(OrpcThat value, int capacity = OrpcThat.NullExtensionsWireSize)
+    {
         byte[] buffer = new byte[capacity];
         var writer = new NdrWriter(buffer);
         value.Write(ref writer);

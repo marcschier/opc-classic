@@ -13,12 +13,15 @@ using Opc.Classic.Testing;
 
 namespace Opc.Classic.Samples.AeClient;
 
-internal static class Program {
-    public static async Task<int> Main(string[] args) {
+internal static class Program
+{
+    public static async Task<int> Main(string[] args)
+    {
         HostApplicationBuilder host = Host.CreateApplicationBuilder(args);
 
         host.Logging.ClearProviders();
-        host.Logging.AddSimpleConsole(static opt => {
+        host.Logging.AddSimpleConsole(static opt =>
+        {
             opt.SingleLine = true;
             opt.TimestampFormat = "HH:mm:ss ";
         });
@@ -34,10 +37,12 @@ internal static class Program {
             ? $"Connecting over TCP to {remoteHost}:{remotePort}"
             : "Running in-process via InMemoryCallChannel + LoopbackDaServer");
 
-        if (useTcp) {
+        if (useTcp)
+        {
             AddTcpAeClient(host.Services, remoteHost!, remotePort);
         }
-        else {
+        else
+        {
             AddLoopbackAeClient(host.Services);
         }
 
@@ -47,7 +52,8 @@ internal static class Program {
         return 0;
     }
 
-    private static void AddTcpAeClient(IServiceCollection services, string remoteHost, int remotePort) {
+    private static void AddTcpAeClient(IServiceCollection services, string remoteHost, int remotePort)
+    {
         services.AddSingleton<DcomCallChannel>(_ =>
             DcomCallChannelFactory.ConnectTcpAsync(remoteHost, remotePort, NoOpAuthContext.Instance)
                 .GetAwaiter()
@@ -57,12 +63,14 @@ internal static class Program {
         services.AddSingleton<LoopbackAeClient>();
     }
 
-    private static void AddLoopbackAeClient(IServiceCollection services) {
+    private static void AddLoopbackAeClient(IServiceCollection services)
+    {
         services.AddSingleton<SampleAeServer>();
         services.AddSingleton<InProcessAeServer>();
         services.AddSingleton<IOpcAeServer>(static sp => sp.GetRequiredService<InProcessAeServer>());
         services.AddSingleton<OpcAeServerDispatcher>();
-        services.AddSingleton(static sp => {
+        services.AddSingleton(static sp =>
+        {
             var dispatcher = sp.GetRequiredService<OpcAeServerDispatcher>();
             return new InMemoryCallChannel((iid, opnum, payload, ct) =>
                 dispatcher.DispatchAsync(iid, opnum, payload, ct));

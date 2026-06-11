@@ -13,7 +13,8 @@ namespace Opc.Classic.Cpx.Hosting;
 /// <summary>
 /// Publishes OPC Complex Data item properties 600-609 for registered complex DA items.
 /// </summary>
-public sealed class OpcCpxItemProperties : IOpcItemPropertyProvider, IOpcItemPropertyMetadataProvider {
+public sealed class OpcCpxItemProperties : IOpcItemPropertyProvider, IOpcItemPropertyMetadataProvider
+{
     private static readonly OpcStandardProperty[] CpxPropertyDescriptors =
     [
         new(OpcComplexDataProperty.TypeSystemId, VarType.VT_BSTR, "Type System ID"),
@@ -34,11 +35,13 @@ public sealed class OpcCpxItemProperties : IOpcItemPropertyProvider, IOpcItemPro
 
     /// <summary>Creates a CPX property provider.</summary>
     public OpcCpxItemProperties(OpcCpxOptions options)
-        : this(options, NullItemPropertyProvider.Instance) {
+        : this(options, NullItemPropertyProvider.Instance)
+    {
     }
 
     /// <summary>Creates a CPX property provider with a fallback provider for non-CPX properties.</summary>
-    public OpcCpxItemProperties(OpcCpxOptions options, IOpcItemPropertyProvider fallbackProvider) {
+    public OpcCpxItemProperties(OpcCpxOptions options, IOpcItemPropertyProvider fallbackProvider)
+    {
         _options = options ?? throw new ArgumentNullException(nameof(options));
         _fallbackProvider = fallbackProvider ?? throw new ArgumentNullException(nameof(fallbackProvider));
         _fallbackMetadataProvider = fallbackProvider as IOpcItemPropertyMetadataProvider;
@@ -48,9 +51,11 @@ public sealed class OpcCpxItemProperties : IOpcItemPropertyProvider, IOpcItemPro
     public static IReadOnlyList<OpcStandardProperty> Properties => CpxPropertyDescriptors;
 
     /// <inheritdoc />
-    public (OpcVariant Value, int Error) TryGetPropertyValue(string itemId, int propertyId) {
+    public (OpcVariant Value, int Error) TryGetPropertyValue(string itemId, int propertyId)
+    {
         ArgumentException.ThrowIfNullOrWhiteSpace(itemId);
-        if (TryGetCpxPropertyValue(itemId, propertyId, out var value, out var error)) {
+        if (TryGetCpxPropertyValue(itemId, propertyId, out var value, out var error))
+        {
             return (value, error);
         }
 
@@ -58,16 +63,20 @@ public sealed class OpcCpxItemProperties : IOpcItemPropertyProvider, IOpcItemPro
     }
 
     /// <inheritdoc />
-    public IReadOnlyList<OpcStandardProperty> GetAvailableProperties(string itemId) {
+    public IReadOnlyList<OpcStandardProperty> GetAvailableProperties(string itemId)
+    {
         ArgumentException.ThrowIfNullOrWhiteSpace(itemId);
         var properties = new List<OpcStandardProperty>();
-        if (_fallbackMetadataProvider is not null) {
+        if (_fallbackMetadataProvider is not null)
+        {
             properties.AddRange(_fallbackMetadataProvider.GetAvailableProperties(itemId));
         }
 
-        foreach (var descriptor in CpxPropertyDescriptors) {
+        foreach (var descriptor in CpxPropertyDescriptors)
+        {
             if (TryGetCpxPropertyValue(itemId, descriptor.Id, out _, out var error)
-                && error == OpcResultId.Ok.Code) {
+                && error == OpcResultId.Ok.Code)
+            {
                 AddIfMissing(properties, descriptor);
             }
         }
@@ -76,10 +85,13 @@ public sealed class OpcCpxItemProperties : IOpcItemPropertyProvider, IOpcItemPro
     }
 
     /// <inheritdoc />
-    public (string ItemId, int Error) TryGetPropertyItemId(string itemId, int propertyId) {
+    public (string ItemId, int Error) TryGetPropertyItemId(string itemId, int propertyId)
+    {
         ArgumentException.ThrowIfNullOrWhiteSpace(itemId);
-        if (_options.TryGetComplexItem(itemId, out var complexItem)) {
-            return propertyId switch {
+        if (_options.TryGetComplexItem(itemId, out var complexItem))
+        {
+            return propertyId switch
+            {
                 OpcComplexDataProperty.DictionaryId => OkItemId(GetDictionaryItemId(complexItem.TypeSystemId, complexItem.DictionaryId)),
                 OpcComplexDataProperty.TypeId => OkItemId(GetTypeItemId(complexItem.TypeSystemId, complexItem.DictionaryId, complexItem.TypeId)),
                 OpcComplexDataProperty.UnconvertedItemId when complexItem.UnconvertedItemId is not null => OkItemId(complexItem.UnconvertedItemId),
@@ -91,16 +103,20 @@ public sealed class OpcCpxItemProperties : IOpcItemPropertyProvider, IOpcItemPro
         return _fallbackMetadataProvider?.TryGetPropertyItemId(itemId, propertyId) ?? InvalidItemId();
     }
 
-    private bool TryGetCpxPropertyValue(string itemId, int propertyId, out OpcVariant value, out int error) {
-        if (_options.TryGetComplexItem(itemId, out var complexItem)) {
+    private bool TryGetCpxPropertyValue(string itemId, int propertyId, out OpcVariant value, out int error)
+    {
+        if (_options.TryGetComplexItem(itemId, out var complexItem))
+        {
             return TryGetComplexItemProperty(complexItem, propertyId, out value, out error);
         }
 
-        if (TryGetDictionaryItem(itemId, out var dictionary)) {
+        if (TryGetDictionaryItem(itemId, out var dictionary))
+        {
             return TryGetDictionaryItemProperty(dictionary, propertyId, out value, out error);
         }
 
-        if (TryGetTypeItem(itemId, out dictionary, out var typeId)) {
+        if (TryGetTypeItem(itemId, out dictionary, out var typeId))
+        {
             return TryGetTypeItemProperty(dictionary, typeId, propertyId, out value, out error);
         }
 
@@ -113,8 +129,10 @@ public sealed class OpcCpxItemProperties : IOpcItemPropertyProvider, IOpcItemPro
         OpcCpxOptions.ComplexItemRegistration item,
         int propertyId,
         out OpcVariant value,
-        out int error) {
-        switch (propertyId) {
+        out int error)
+    {
+        switch (propertyId)
+        {
             case OpcComplexDataProperty.TypeSystemId:
                 return OkString(item.TypeSystemId, out value, out error);
             case OpcComplexDataProperty.DictionaryId:
@@ -146,8 +164,10 @@ public sealed class OpcCpxItemProperties : IOpcItemPropertyProvider, IOpcItemPro
         OpcCpxOptions.DictionaryRegistration dictionary,
         int propertyId,
         out OpcVariant value,
-        out int error) {
-        switch (propertyId) {
+        out int error)
+    {
+        switch (propertyId)
+        {
             case OpcComplexDataProperty.TypeSystemId:
                 return OkString(dictionary.TypeSystemId, out value, out error);
             case OpcComplexDataProperty.DictionaryId:
@@ -166,8 +186,10 @@ public sealed class OpcCpxItemProperties : IOpcItemPropertyProvider, IOpcItemPro
         string typeId,
         int propertyId,
         out OpcVariant value,
-        out int error) {
-        switch (propertyId) {
+        out int error)
+    {
+        switch (propertyId)
+        {
             case OpcComplexDataProperty.TypeSystemId:
                 return OkString(dictionary.TypeSystemId, out value, out error);
             case OpcComplexDataProperty.DictionaryId:
@@ -183,9 +205,11 @@ public sealed class OpcCpxItemProperties : IOpcItemPropertyProvider, IOpcItemPro
         }
     }
 
-    private bool TryGetDictionaryValue(string typeSystemId, string dictionaryId, out OpcVariant value, out int error) {
+    private bool TryGetDictionaryValue(string typeSystemId, string dictionaryId, out OpcVariant value, out int error)
+    {
         if (_options.TryGetDictionary(typeSystemId, dictionaryId, out var dictionary)
-            && dictionary.DictionaryValue is not null) {
+            && dictionary.DictionaryValue is not null)
+        {
             return OkString(dictionary.DictionaryValue, out value, out error);
         }
 
@@ -194,9 +218,11 @@ public sealed class OpcCpxItemProperties : IOpcItemPropertyProvider, IOpcItemPro
         return true;
     }
 
-    private bool TryGetTypeDescriptionValue(string typeSystemId, string dictionaryId, string typeId, out OpcVariant value, out int error) {
+    private bool TryGetTypeDescriptionValue(string typeSystemId, string dictionaryId, string typeId, out OpcVariant value, out int error)
+    {
         if (_options.TryGetDictionary(typeSystemId, dictionaryId, out var dictionary)
-            && dictionary.TryGetTypeDescriptionValue(typeId, out var typeDescription)) {
+            && dictionary.TryGetTypeDescriptionValue(typeId, out var typeDescription))
+        {
             return OkString(typeDescription, out value, out error);
         }
 
@@ -205,9 +231,12 @@ public sealed class OpcCpxItemProperties : IOpcItemPropertyProvider, IOpcItemPro
         return true;
     }
 
-    private bool TryGetDictionaryItem(string itemId, out OpcCpxOptions.DictionaryRegistration dictionary) {
-        foreach (var candidate in _options.Dictionaries) {
-            if (PathsEqual(itemId, CpxNamespaceBuilder.BuildDictionaryPath(candidate.TypeSystemId, candidate.DictionarySegment))) {
+    private bool TryGetDictionaryItem(string itemId, out OpcCpxOptions.DictionaryRegistration dictionary)
+    {
+        foreach (var candidate in _options.Dictionaries)
+        {
+            if (PathsEqual(itemId, CpxNamespaceBuilder.BuildDictionaryPath(candidate.TypeSystemId, candidate.DictionarySegment)))
+            {
                 dictionary = candidate;
                 return true;
             }
@@ -217,10 +246,14 @@ public sealed class OpcCpxItemProperties : IOpcItemPropertyProvider, IOpcItemPro
         return false;
     }
 
-    private bool TryGetTypeItem(string itemId, out OpcCpxOptions.DictionaryRegistration dictionary, out string typeId) {
-        foreach (var candidate in _options.Dictionaries) {
-            foreach (var type in candidate.Dictionary.Types) {
-                if (PathsEqual(itemId, CpxNamespaceBuilder.BuildTypePath(candidate.TypeSystemId, candidate.DictionarySegment, type.TypeId))) {
+    private bool TryGetTypeItem(string itemId, out OpcCpxOptions.DictionaryRegistration dictionary, out string typeId)
+    {
+        foreach (var candidate in _options.Dictionaries)
+        {
+            foreach (var type in candidate.Dictionary.Types)
+            {
+                if (PathsEqual(itemId, CpxNamespaceBuilder.BuildTypePath(candidate.TypeSystemId, candidate.DictionarySegment, type.TypeId)))
+                {
                     dictionary = candidate;
                     typeId = type.TypeId;
                     return true;
@@ -244,7 +277,8 @@ public sealed class OpcCpxItemProperties : IOpcItemPropertyProvider, IOpcItemPro
             ? dictionary.DictionarySegment
             : CpxNamespaceBuilder.GetDictionarySegment(dictionaryId);
 
-    private static bool OkString(string text, out OpcVariant value, out int error) {
+    private static bool OkString(string text, out OpcVariant value, out int error)
+    {
         value = OpcVariant.FromString(text);
         error = OpcResultId.Ok.Code;
         return true;
@@ -254,9 +288,12 @@ public sealed class OpcCpxItemProperties : IOpcItemPropertyProvider, IOpcItemPro
 
     private static (string ItemId, int Error) InvalidItemId() => (string.Empty, OpcResultId.InvalidPid.Code);
 
-    private static void AddIfMissing(List<OpcStandardProperty> properties, OpcStandardProperty property) {
-        foreach (var existing in properties) {
-            if (existing.Id == property.Id) {
+    private static void AddIfMissing(List<OpcStandardProperty> properties, OpcStandardProperty property)
+    {
+        foreach (var existing in properties)
+        {
+            if (existing.Id == property.Id)
+            {
                 return;
             }
         }

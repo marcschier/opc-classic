@@ -34,7 +34,8 @@ namespace Opc.Classic.Dcom.Core;
 /// </code>
 /// </summary>
 [Serializable]
-public class CallBuilder : NdrOp {
+public class CallBuilder : NdrOp
+{
 
     /// <summary>
     /// From destroy
@@ -58,7 +59,8 @@ public class CallBuilder : NdrOp {
     /// interface is supported by the <code><see cref="IComObject"/></code> on which this builder
     /// would act.
     /// </summary>
-    public CallBuilder() {
+    public CallBuilder()
+    {
         //        enclosingParentsIPID = IPIDofParent;
     }
 
@@ -68,7 +70,8 @@ public class CallBuilder : NdrOp {
     ///
     /// </summary>
     // after reinit, except parent, nothing is available.
-    public void ReInit() {
+    public void ReInit()
+    {
         _opnum = -1;
         _inParams = new List<object>();
         _inparamFlags = new List<int>();
@@ -261,8 +264,10 @@ public class CallBuilder : NdrOp {
     /// </summary>
     /// <param name="values"> </param>
     /// <param name="flags"> from <see cref="InteropFlags"/> (if need be).</param>
-    public void SetInParams(object[] values, int flags = InteropFlags.FLAG_NULL) {
-        for (var i = 0; i < values.Length; i++) {
+    public void SetInParams(object[] values, int flags = InteropFlags.FLAG_NULL)
+    {
+        for (var i = 0; i < values.Length; i++)
+        {
             _inParams.Add(values[i]);
             // quite useless but do not want to change logic elsewhere
             _inparamFlags.Add(flags);
@@ -277,7 +282,8 @@ public class CallBuilder : NdrOp {
     /// <param name="value"> </param>
     /// <param name="flags"> from <see cref="InteropFlags"/> (if need be).</param>
     public void InsertInParamAsComObjectAt(int index, IComObject value,
-        int flags = InteropFlags.FLAG_NULL) {
+        int flags = InteropFlags.FLAG_NULL)
+    {
         _inParams.Insert(index, value);
         _inparamFlags.Insert(index, flags);
     }
@@ -290,7 +296,8 @@ public class CallBuilder : NdrOp {
     /// <param name="value"> </param>
     /// <param name="flags"> from <see cref="InteropFlags"/> (if need be).</param>
     public void InsertInParamAsIntAt(int index, int value,
-        int flags = InteropFlags.FLAG_NULL) {
+        int flags = InteropFlags.FLAG_NULL)
+    {
         _inParams.Insert(index, value);
         _inparamFlags.Insert(index, flags);
     }
@@ -303,7 +310,8 @@ public class CallBuilder : NdrOp {
     /// <param name="value"> </param>
     /// <param name="flags"> from <see cref="InteropFlags"/> (if need be).</param>
     public void InsertInParamAsUnsignedAt(int index, byte value,
-        int flags = InteropFlags.FLAG_NULL) {
+        int flags = InteropFlags.FLAG_NULL)
+    {
         _inParams.Insert(index, value);
         _inparamFlags.Insert(index, flags);
     }
@@ -316,7 +324,8 @@ public class CallBuilder : NdrOp {
     /// <param name="value"> </param>
     /// <param name="flags"> from <see cref="InteropFlags"/> (if need be).</param>
     public void InsertInParamAsUnsignedAt(int index, ushort value,
-        int flags = InteropFlags.FLAG_NULL) {
+        int flags = InteropFlags.FLAG_NULL)
+    {
         _inParams.Insert(index, value);
         _inparamFlags.Insert(index, flags);
     }
@@ -329,7 +338,8 @@ public class CallBuilder : NdrOp {
     /// <param name="value"> </param>
     /// <param name="flags"> from <see cref="InteropFlags"/> (if need be).</param>
     public void InsertInParamAsUnsignedAt(int index, ulong value,
-        int flags = InteropFlags.FLAG_NULL) {
+        int flags = InteropFlags.FLAG_NULL)
+    {
         _inParams.Insert(index, value);
         _inparamFlags.Insert(index, flags);
     }
@@ -342,7 +352,8 @@ public class CallBuilder : NdrOp {
     /// <param name="value"> </param>
     /// <param name="flags"> from <see cref="InteropFlags"/> (if need be).</param>
     public void InsertInParamAsFloatAt(int index, float value,
-        int flags = InteropFlags.FLAG_NULL) {
+        int flags = InteropFlags.FLAG_NULL)
+    {
         _inParams.Insert(index, value);
         _inparamFlags.Insert(index, flags);
     }
@@ -355,7 +366,8 @@ public class CallBuilder : NdrOp {
     /// <param name="value"> </param>
     /// <param name="flags"> from <see cref="InteropFlags"/> (if need be).</param>
     public void InsertInParamAsBooleanAt(int index, bool value,
-        int flags = InteropFlags.FLAG_NULL) {
+        int flags = InteropFlags.FLAG_NULL)
+    {
         _inParams.Insert(index, Convert.ToBoolean(value));
         _inparamFlags.Insert(index, flags);
     }
@@ -368,7 +380,8 @@ public class CallBuilder : NdrOp {
     /// <param name="value"> </param>
     /// <param name="flags"> from <see cref="InteropFlags"/> (if need be).</param>
     public void InsertInParamAsSByteAt(int index, sbyte value,
-        int flags = InteropFlags.FLAG_NULL) {
+        int flags = InteropFlags.FLAG_NULL)
+    {
         _inParams.Insert(index, value);
         _inparamFlags.Insert(index, flags);
     }
@@ -381,7 +394,8 @@ public class CallBuilder : NdrOp {
     /// <param name="value"> </param>
     /// <param name="flags"> from <see cref="InteropFlags"/> (if need be).</param>
     public void InsertInParamAsShortAt(int index, short value,
-        int flags = InteropFlags.FLAG_NULL) {
+        int flags = InteropFlags.FLAG_NULL)
+    {
         _inParams.Insert(index, value);
         _inparamFlags.Insert(index, flags);
     }
@@ -394,7 +408,8 @@ public class CallBuilder : NdrOp {
     /// <param name="value"> </param>
     /// <param name="flags"> from <see cref="InteropFlags"/> (if need be).</param>
     public void InsertInParamAsDoubleAt(int index, double value,
-        int flags = InteropFlags.FLAG_NULL) {
+        int flags = InteropFlags.FLAG_NULL)
+    {
         _inParams.Insert(index, value);
         _inparamFlags.Insert(index, flags);
     }
@@ -407,7 +422,8 @@ public class CallBuilder : NdrOp {
     /// <param name="value"> </param>
     /// <param name="flags"> from <see cref="InteropFlags"/> (if need be).</param>
     public void InsertInParamAsCharacterAt(int index, char value,
-        int flags = InteropFlags.FLAG_NULL) {
+        int flags = InteropFlags.FLAG_NULL)
+    {
         _inParams.Insert(index, value);
         _inparamFlags.Insert(index, flags);
     }
@@ -420,7 +436,8 @@ public class CallBuilder : NdrOp {
     /// <param name="value"> </param>
     /// <param name="flags"> from <see cref="InteropFlags"/> (These <i>HAVE</i> to be
     /// the <b>String</b> Flags). </param>
-    public void InsertInParamAsStringAt(int index, string value, int flags) {
+    public void InsertInParamAsStringAt(int index, string value, int flags)
+    {
         _inParams.Insert(index, new ComString(value, flags));
         _inparamFlags.Insert(index, InteropFlags.FLAG_NULL);
     }
@@ -433,7 +450,8 @@ public class CallBuilder : NdrOp {
     /// <param name="value"> </param>
     /// <param name="flags"> from <see cref="InteropFlags"/> (if need be).</param>
     public void InsertInParamAsVariantAt(int index, Variant value,
-        int flags = InteropFlags.FLAG_NULL) {
+        int flags = InteropFlags.FLAG_NULL)
+    {
         _inParams.Insert(index, value);
         _inparamFlags.Insert(index, flags);
     }
@@ -446,7 +464,8 @@ public class CallBuilder : NdrOp {
     /// <param name="value"> </param>
     /// <param name="flags"> from <see cref="InteropFlags"/> (if need be).</param>
     public void InsertInParamAsObjectAt(int index, object value,
-        int flags = InteropFlags.FLAG_NULL) {
+        int flags = InteropFlags.FLAG_NULL)
+    {
         _inParams.Insert(index, value);
         _inparamFlags.Insert(index, flags);
     }
@@ -459,7 +478,8 @@ public class CallBuilder : NdrOp {
     /// <param name="value"> </param>
     /// <param name="flags"> from <see cref="InteropFlags"/> (if need be).</param>
     public void InsertInParamAsUUIDAt(int index, string value,
-        int flags = InteropFlags.FLAG_NULL) {
+        int flags = InteropFlags.FLAG_NULL)
+    {
         _inParams.Insert(index, new UUID(value));
         _inparamFlags.Insert(index, flags);
     }
@@ -472,7 +492,8 @@ public class CallBuilder : NdrOp {
     /// <param name="value"> </param>
     /// <param name="flags"> from <see cref="InteropFlags"/> (if need be).</param>
     public void InsertInParamAsPointerAt(int index, ComPointer value,
-        int flags = InteropFlags.FLAG_NULL) {
+        int flags = InteropFlags.FLAG_NULL)
+    {
         _inParams.Insert(index, value);
         _inparamFlags.Insert(index, flags);
     }
@@ -485,7 +506,8 @@ public class CallBuilder : NdrOp {
     /// <param name="value"> </param>
     /// <param name="flags"> from <see cref="InteropFlags"/> (if need be).</param>
     public void InsertInParamAsStructAt(int index, Struct value,
-        int flags = InteropFlags.FLAG_NULL) {
+        int flags = InteropFlags.FLAG_NULL)
+    {
         _inParams.Insert(index, value);
         _inparamFlags.Insert(index, flags);
     }
@@ -498,7 +520,8 @@ public class CallBuilder : NdrOp {
     /// <param name="value"> </param>
     /// <param name="flags"> from <see cref="InteropFlags"/> (if need be).</param>
     public void InsertInParamAsArrayAt(int index, ComArray value,
-        int flags = InteropFlags.FLAG_NULL) {
+        int flags = InteropFlags.FLAG_NULL)
+    {
         _inParams.Insert(index, value);
         _inparamFlags.Insert(index, flags);
     }
@@ -511,7 +534,8 @@ public class CallBuilder : NdrOp {
     /// <param name="flags"> from <see cref="InteropFlags"/> (if need be).</param>
 #pragma warning disable IDE0060 // Remove unused parameter
 #pragma warning disable RECS0154 // Parameter is never used
-    public void RemoveInParamAt(int index, int flags = InteropFlags.FLAG_NULL) {
+    public void RemoveInParamAt(int index, int flags = InteropFlags.FLAG_NULL)
+    {
 #pragma warning restore RECS0154 // Parameter is never used
 #pragma warning restore IDE0060 // Remove unused parameter
         _inParams.RemoveAt(index);
@@ -558,7 +582,8 @@ public class CallBuilder : NdrOp {
     /// an Object </param>
     /// <param name="flags"> </param>
     public void InsertOutParamAt(int index, object classOrInstance,
-        int flags = InteropFlags.FLAG_NULL) {
+        int flags = InteropFlags.FLAG_NULL)
+    {
         _outParams.Insert(index, classOrInstance);
         _outparamFlags.Insert(index, flags);
     }
@@ -579,7 +604,8 @@ public class CallBuilder : NdrOp {
     /// <param name="flags"> from <see cref="InteropFlags"/> (if need be).</param>
 #pragma warning disable IDE0060 // Remove unused parameter
 #pragma warning disable RECS0154 // Parameter is never used
-    public void RemoveOutParamAt(int index, int flags = InteropFlags.FLAG_NULL) {
+    public void RemoveOutParamAt(int index, int flags = InteropFlags.FLAG_NULL)
+    {
 #pragma warning restore RECS0154 // Parameter is never used
 #pragma warning restore IDE0060 // Remove unused parameter
         _outParams.RemoveAt(index);
@@ -593,8 +619,10 @@ public class CallBuilder : NdrOp {
     /// </summary>
     /// <param name="values"> </param>
     /// <param name="flags"> from <see cref="InteropFlags"/> (if need be).</param>
-    public void SetOutParams(object[] values, int flags = InteropFlags.FLAG_NULL) {
-        for (var i = 0; i < values.Length; i++) {
+    public void SetOutParams(object[] values, int flags = InteropFlags.FLAG_NULL)
+    {
+        for (var i = 0; i < values.Length; i++)
+        {
             _outParams.Add(values[i]);
             _outparamFlags.Add(flags);
         }
@@ -607,8 +635,10 @@ public class CallBuilder : NdrOp {
     /// only valid before the interpretation of read, after that
     /// has actual values
     /// </summary>
-    public object[] Results {
-        get {
+    public object[] Results
+    {
+        get
+        {
             CheckIfCalled();
             return _outparams;
         }
@@ -619,7 +649,8 @@ public class CallBuilder : NdrOp {
     /// the result list.
     /// </summary>
     /// <param name="index"> 0 based index</param>
-    public int GetResultAsIntAt(int index) {
+    public int GetResultAsIntAt(int index)
+    {
         CheckIfCalled();
         return (int)_outparams[index];
     }
@@ -629,7 +660,8 @@ public class CallBuilder : NdrOp {
     /// the result list.
     /// </summary>
     /// <param name="index"> 0 based index</param>
-    public float GetResultAsFloatAt(int index) {
+    public float GetResultAsFloatAt(int index)
+    {
         CheckIfCalled();
         return (float)_outparams[index];
     }
@@ -639,7 +671,8 @@ public class CallBuilder : NdrOp {
     /// the result list.
     /// </summary>
     /// <param name="index"> 0 based index</param>
-    public bool GetResultAsBooleanAt(int index) {
+    public bool GetResultAsBooleanAt(int index)
+    {
         CheckIfCalled();
         return (bool)_outparams[index];
     }
@@ -649,7 +682,8 @@ public class CallBuilder : NdrOp {
     /// the result list.
     /// </summary>
     /// <param name="index"> 0 based index</param>
-    public short GetResultAsShortAt(int index) {
+    public short GetResultAsShortAt(int index)
+    {
         CheckIfCalled();
         return (short)_outparams[index];
     }
@@ -659,7 +693,8 @@ public class CallBuilder : NdrOp {
     /// the result list.
     /// </summary>
     /// <param name="index"> 0 based index</param>
-    public double GetResultAsDoubleAt(int index) {
+    public double GetResultAsDoubleAt(int index)
+    {
         CheckIfCalled();
         return (double)_outparams[index];
     }
@@ -669,7 +704,8 @@ public class CallBuilder : NdrOp {
     /// the result list.
     /// </summary>
     /// <param name="index"> 0 based index</param>
-    public char GetResultAsCharacterAt(int index) {
+    public char GetResultAsCharacterAt(int index)
+    {
         CheckIfCalled();
         return (char)_outparams[index];
     }
@@ -679,7 +715,8 @@ public class CallBuilder : NdrOp {
     /// from the result list.
     /// </summary>
     /// <param name="index"> 0 based index</param>
-    public ComString GetResultAsStringAt(int index) {
+    public ComString GetResultAsStringAt(int index)
+    {
         CheckIfCalled();
         return (ComString)_outparams[index];
     }
@@ -689,7 +726,8 @@ public class CallBuilder : NdrOp {
     /// from the result list.
     /// </summary>
     /// <param name="index"> 0 based index</param>
-    public Variant GetResultAsVariantAt(int index) {
+    public Variant GetResultAsVariantAt(int index)
+    {
         CheckIfCalled();
         return (Variant)_outparams[index];
     }
@@ -699,7 +737,8 @@ public class CallBuilder : NdrOp {
     /// UUID</code> at the index from the result list.
     /// </summary>
     /// <param name="index"> 0 based index</param>
-    public string GetResultAsUUIDStrAt(int index) {
+    public string GetResultAsUUIDStrAt(int index)
+    {
         CheckIfCalled();
         return ((UUID)_outparams[index]).ToString();
     }
@@ -709,7 +748,8 @@ public class CallBuilder : NdrOp {
     /// from the result list.
     /// </summary>
     /// <param name="index"> 0 based index</param>
-    public ComPointer GetResultAsPointerAt(int index) {
+    public ComPointer GetResultAsPointerAt(int index)
+    {
         CheckIfCalled();
         return (ComPointer)_outparams[index];
     }
@@ -719,7 +759,8 @@ public class CallBuilder : NdrOp {
     /// from the result list.
     /// </summary>
     /// <param name="index"> 0 based index</param>
-    public Struct GetResultAsStructAt(int index) {
+    public Struct GetResultAsStructAt(int index)
+    {
         CheckIfCalled();
         return (Struct)_outparams[index];
     }
@@ -729,7 +770,8 @@ public class CallBuilder : NdrOp {
     /// from the result list.
     /// </summary>
     /// <param name="index"> 0 based index</param>
-    public ComArray GetResultAsArrayAt(int index) {
+    public ComArray GetResultAsArrayAt(int index)
+    {
         CheckIfCalled();
         return (ComArray)_outparams[index];
     }
@@ -737,8 +779,10 @@ public class CallBuilder : NdrOp {
     /// <summary>
     /// Returns the results incase an exception occured.
     /// </summary>
-    public object[] ResultsInCaseOfException {
-        get {
+    public object[] ResultsInCaseOfException
+    {
+        get
+        {
             CheckIfCalled();
             return _resultsOfException;
         }
@@ -753,8 +797,10 @@ public class CallBuilder : NdrOp {
     /// <summary>
     /// Helper
     /// </summary>
-    private void CheckIfCalled() {
-        if (!_executed) {
+    private void CheckIfCalled()
+    {
+        if (!_executed)
+        {
             throw new InvalidOperationException(
                 Interop.GetLocalizedMessage(ErrorCode.INTEROP_API_INCORRECTLY_CALLED));
         }
@@ -783,14 +829,17 @@ public class CallBuilder : NdrOp {
     /// <summary>
     /// Returns the opnum of the API which will be invoked at the <code>COM</code> server.
     /// </summary>
-    public override int Opnum {
+    public override int Opnum
+    {
         get =>
             // opnum is 3 as this is a COM interface and 0,1,2 are occupied by IUnknown
             // TODO remember this for extending com components also.
             _opnum;
-        set {
+        set
+        {
             var dispatch = 0;
-            if (!_dispatchNotSupported) {
+            if (!_dispatchNotSupported)
+            {
                 dispatch = 4; // 4 apis.
             }
             _opnum = dispatch + value + 3; // 0,1,2, Q.I
@@ -798,7 +847,8 @@ public class CallBuilder : NdrOp {
     }
 
     /// <inheritdoc/>
-    public override void Write(NdrCodec ndr) {
+    public override void Write(NdrCodec ndr)
+    {
 
         // reset buffer size here...
         // calculate rough length required length + 16 for the last bytes
@@ -818,7 +868,8 @@ public class CallBuilder : NdrOp {
     }
 
     // All Methods are 0 index based
-    internal void Write2(NdrCodec ndr) {
+    internal void Write2(NdrCodec ndr)
+    {
         // reset buffer size here...
         // calculate rough length required length + 16 for the last bytes
         // plus adding 30 more for the verifier etc.
@@ -828,8 +879,10 @@ public class CallBuilder : NdrOp {
     }
 
 
-    private void WritePacket(NdrCodec ndr) {
-        if (Session == null) {
+    private void WritePacket(NdrCodec ndr)
+    {
+        if (Session == null)
+        {
             throw new InvalidOperationException(
                 "Programming Error ! Session not attached with this call ! ... Please rectify ! ");
         }
@@ -837,13 +890,17 @@ public class CallBuilder : NdrOp {
         var inparams = _inParams.ToArray();
 
         var index = 0;
-        if (inparams != null) {
-            while (index < inparams.Length) {
+        if (inparams != null)
+        {
+            while (index < inparams.Length)
+            {
                 var context = new CodecContext();
-                if (inparams[index] == null) {
+                if (inparams[index] == null)
+                {
                     MarshalUnMarshalHelper.Serialize(ndr, typeof(int), 0, context);
                 }
-                else {
+                else
+                {
                     context.Flag = _inparamFlags[index];
                     MarshalUnMarshalHelper.Serialize(ndr, inparams[index].GetType(), inparams[index], context);
                 }
@@ -854,16 +911,20 @@ public class CallBuilder : NdrOp {
     }
 
     /// <inheritdoc/>
-    public override void Read(NdrCodec ndr) {
+    public override void Read(NdrCodec ndr)
+    {
         // interpret based on the out params flags
-        if (!_readOnlyHRESULT) {
-            if (_splCOMVersion) {
+        if (!_readOnlyHRESULT)
+        {
+            if (_splCOMVersion)
+            {
                 // during handshake and no other time. Kept for OxidResolver methods.
                 _serverAlive2 = new ComVersion(ndr.ReadUnsignedShort(), ndr.ReadUnsignedShort());
                 new ComPointer(new ComPointer(typeof(DualStringArray))).Decode(ndr, new CodecContext());
                 ndr.ReadUnsignedLong();
             }
-            else {
+            else
+            {
                 _ = OrpcThat.Decode(ndr);
                 ReadPacket(ndr, false);
             }
@@ -875,7 +936,8 @@ public class CallBuilder : NdrOp {
     /// called by only COMRuntime and NO ONE ELSE.
     /// </summary>
     /// <param name="ndr"> </param>
-    internal void Read2(NdrCodec ndr) {
+    internal void Read2(NdrCodec ndr)
+    {
         OrpcThis.Decode(ndr);
         ReadPacket(ndr, true);
         // readResult(ndr);
@@ -887,9 +949,11 @@ public class CallBuilder : NdrOp {
     /// </summary>
     /// <param name="ndr"></param>
     /// <param name="fromCallback"></param>
-    private void ReadPacket(NdrCodec ndr, bool fromCallback) {
+    private void ReadPacket(NdrCodec ndr, bool fromCallback)
+    {
 
-        if (Session == null) {
+        if (Session == null)
+        {
             throw new InvalidOperationException(
                 "Programming Error ! Session not attached with this call ! ... Please rectify ! ");
         }
@@ -897,21 +961,26 @@ public class CallBuilder : NdrOp {
         var index = 0;
         _outparams = _outParams.ToArray();
 
-        if (Log.Logger.IsEnabled(Microsoft.Extensions.Logging.LogLevel.Trace)) {
+        if (Log.Logger.IsEnabled(Microsoft.Extensions.Logging.LogLevel.Trace))
+        {
             var str = "";
-            for (var i = 0; i < _outparams.Length; i++) {
+            for (var i = 0; i < _outparams.Length; i++)
+            {
                 str = str + "Out Param:[" + i + "]" + _outparams[i] + "\n";
             }
             Log.Logger.Verbose(str);
         }
 
-        var context = new CodecContext {
+        var context = new CodecContext
+        {
             CurrentSession = Session
         };
         var results = new List<object>();
         // user has nothing to return.
-        if (_outparams != null && _outparams.Length > 0) {
-            while (index < _outparams.Length) {
+        if (_outparams != null && _outparams.Length > 0)
+        {
+            while (index < _outparams.Length)
+            {
                 context.DefferedPointers = new List<ComPointer>();
                 context.Flag = _outparamFlags[index];
                 results.Add(MarshalUnMarshalHelper.Deserialize(ndr, _outparams[index], context));
@@ -921,11 +990,14 @@ public class CallBuilder : NdrOp {
             }
 
             // now create the right COM Objects, it is required here only and no place else.
-            for (var i = 0; i < context.ComObjects.Count; i++) {
+            for (var i = 0; i < context.ComObjects.Count; i++)
+            {
                 var comObjectImpl = (ComObjectImpl)context.ComObjects[i];
-                try {
+                try
+                {
                     IComObject comObject = null;
-                    if (fromCallback) {
+                    if (fromCallback)
+                    {
                         // this is a new IP, so make a new <see cref="ComServer"/> for this.
                         var newsession = Session.CreateSession(Session);
                         newsession.GlobalSocketTimeout = Session.GlobalSocketTimeout;
@@ -936,8 +1008,10 @@ public class CallBuilder : NdrOp {
                         comObject = comServer.Instance;
                         FrameworkHelper.Link2Sessions(Session, newsession);
                     }
-                    else {
-                        if (comObjectImpl.GetInterfacePointer().IsCustomObjRef) {
+                    else
+                    {
+                        if (comObjectImpl.GetInterfacePointer().IsCustomObjRef)
+                        {
                             continue;
                         }
                         comObject = FrameworkHelper.InstantiateComObject2(
@@ -954,7 +1028,8 @@ public class CallBuilder : NdrOp {
                     }
 
                 }
-                catch (InteropException e) {
+                catch (InteropException e)
+                {
                     Log.Logger.Error(e, "CallBuilder readPacket");
                     throw new InteropRuntimeException(e.ErrorCode);
                 }
@@ -971,11 +1046,13 @@ public class CallBuilder : NdrOp {
     /// Read result
     /// </summary>
     /// <param name="ndr"></param>
-    private void ReadResult(NdrCodec ndr) {
+    private void ReadResult(NdrCodec ndr)
+    {
         // last has to be the result.
         HRESULT = ndr.ReadUnsignedLong();
 
-        if (HRESULT != 0) {
+        if (HRESULT != 0)
+        {
             // something exception occured at server, set up results
             _resultsOfException = _outparams;
             _outparams = null;
@@ -987,11 +1064,14 @@ public class CallBuilder : NdrOp {
     /// Get buffer length
     /// </summary>
     /// <returns></returns>
-    private int BufferLength() {
+    private int BufferLength()
+    {
         var length = 0;
         var inparams = _inParams.ToArray();
-        for (var i = 0; i < inparams.Length; i++) {
-            if (inparams[i] == null) {
+        for (var i = 0; i < inparams.Length; i++)
+        {
+            if (inparams[i] == null)
+            {
                 length += 4;
                 continue;
             }
@@ -1006,8 +1086,10 @@ public class CallBuilder : NdrOp {
     /// <summary>
     /// Returns true incase the Call resulted in an exception, use getHRESULT to get the error code.
     /// </summary>
-    public bool Error {
-        get {
+    public bool Error
+    {
+        get
+        {
             CheckIfCalled();
             return HRESULT != 0;
         }

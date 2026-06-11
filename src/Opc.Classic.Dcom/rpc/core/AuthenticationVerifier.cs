@@ -9,7 +9,8 @@ namespace Opc.Classic.Dcom.Rpc.Core;
 /// <summary>
 /// Verifier
 /// </summary>
-public class AuthenticationVerifier : NdrOp {
+public class AuthenticationVerifier : NdrOp
+{
 
     /// <summary>
     /// Service
@@ -36,7 +37,8 @@ public class AuthenticationVerifier : NdrOp {
     /// </summary>
     public AuthenticationVerifier() :
         this(Opc.Classic.Dcom.Rpc.Security.AUTHENTICATION_SERVICE_NONE,
-            ProtectionLevel.PROTECTION_LEVEL_NONE, 0, null) {
+            ProtectionLevel.PROTECTION_LEVEL_NONE, 0, null)
+    {
     }
 
     /// <summary>
@@ -45,7 +47,8 @@ public class AuthenticationVerifier : NdrOp {
     /// <param name="authenticatorLength"></param>
     public AuthenticationVerifier(int authenticatorLength) :
         this(Opc.Classic.Dcom.Rpc.Security.AUTHENTICATION_SERVICE_NONE,
-            ProtectionLevel.PROTECTION_LEVEL_NONE, 0, authenticatorLength) {
+            ProtectionLevel.PROTECTION_LEVEL_NONE, 0, authenticatorLength)
+    {
     }
 
     /// <summary>
@@ -58,7 +61,8 @@ public class AuthenticationVerifier : NdrOp {
     public AuthenticationVerifier(int authenticationService,
         ProtectionLevel protectionLevel, int contextId, int authenticatorLength) :
         this(authenticationService, protectionLevel, contextId,
-            new byte[authenticatorLength]) {
+            new byte[authenticatorLength])
+    {
     }
 
     /// <summary>
@@ -69,7 +73,8 @@ public class AuthenticationVerifier : NdrOp {
     /// <param name="contextId"></param>
     /// <param name="body"></param>
     public AuthenticationVerifier(int authenticationService,
-        ProtectionLevel protectionLevel, int contextId, byte[] body) {
+        ProtectionLevel protectionLevel, int contextId, byte[] body)
+    {
         AuthenticationService = authenticationService;
         Protection = protectionLevel;
         ContextId = contextId;
@@ -77,7 +82,8 @@ public class AuthenticationVerifier : NdrOp {
     }
 
     /// <inheritdoc/>
-    public override void Decode(NdrCodec ndr, NdrBuffer src) {
+    public override void Decode(NdrCodec ndr, NdrBuffer src)
+    {
         src.Align(4);
         AuthenticationService = src.Dec_ndr_small();
         Protection = (ProtectionLevel)src.Dec_ndr_small();
@@ -88,7 +94,8 @@ public class AuthenticationVerifier : NdrOp {
     }
 
     /// <inheritdoc/>
-    public override void Encode(NdrCodec ndr, NdrBuffer dst) {
+    public override void Encode(NdrCodec ndr, NdrBuffer dst)
+    {
         var padding = dst.Align(4, 0);
         dst.Enc_ndr_small(AuthenticationService);
         dst.Enc_ndr_small((int)Protection);
@@ -101,19 +108,24 @@ public class AuthenticationVerifier : NdrOp {
     }
 
     /// <inheritdoc/>
-    public override bool Equals(object obj) {
-        if (!(obj is AuthenticationVerifier other)) {
+    public override bool Equals(object obj)
+    {
+        if (!(obj is AuthenticationVerifier other))
+        {
             return false;
         }
         if (AuthenticationService != other.AuthenticationService ||
             Protection != other.Protection ||
-            ContextId != other.ContextId) {
+            ContextId != other.ContextId)
+        {
             return false;
         }
-        if (Body == null) {
+        if (Body == null)
+        {
             return other.Body == null;
         }
-        if (other.Body == null) {
+        if (other.Body == null)
+        {
             return false;
         }
         return Body.SequenceEqual(other.Body);

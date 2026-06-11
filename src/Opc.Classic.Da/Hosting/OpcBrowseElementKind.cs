@@ -8,7 +8,8 @@ namespace Opc.Classic.Da.Hosting;
 /// <summary>
 /// Element-kind filter for <see cref="IOpcAddressSpace.BrowseAsync"/>.
 /// </summary>
-public enum OpcBrowseElementKind {
+public enum OpcBrowseElementKind
+{
     /// <summary>Both branches and items.</summary>
     All,
 

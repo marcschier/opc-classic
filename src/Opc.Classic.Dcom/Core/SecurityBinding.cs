@@ -10,7 +10,8 @@ namespace Opc.Classic.Dcom.Core;
 /// Represents a security binding
 /// </summary>
 [Serializable]
-internal sealed class SecurityBinding {
+internal sealed class SecurityBinding
+{
 
     /// <summary>
     /// Length
@@ -23,14 +24,17 @@ internal sealed class SecurityBinding {
     /// <param name="authnSvc"></param>
     /// <param name="authzSvc"></param>
     /// <param name="princName"></param>
-    internal SecurityBinding(int authnSvc, int authzSvc, string princName) {
+    internal SecurityBinding(int authnSvc, int authzSvc, string princName)
+    {
         _authnSvc = authnSvc;
         _authzSvc = authzSvc;
         _princName = princName;
-        if (princName.Equals("")) {
+        if (princName.Equals(""))
+        {
             Length = 2 + 2 + 2;
         }
-        else {
+        else
+        {
             Length = 2 + 2 + (princName.Length * 2) + 2;
         }
     }
@@ -38,7 +42,8 @@ internal sealed class SecurityBinding {
     /// <summary>
     /// Private constructor
     /// </summary>
-    private SecurityBinding() {
+    private SecurityBinding()
+    {
     }
 
     /// <summary>
@@ -46,12 +51,15 @@ internal sealed class SecurityBinding {
     /// </summary>
     /// <param name="ndr"></param>
     /// <returns></returns>
-    internal static SecurityBinding Decode(NdrCodec ndr) {
-        var securityBinding = new SecurityBinding {
+    internal static SecurityBinding Decode(NdrCodec ndr)
+    {
+        var securityBinding = new SecurityBinding
+        {
             _authnSvc = ndr.ReadUnsignedShort()
         };
 
-        if (securityBinding._authnSvc == 0) {
+        if (securityBinding._authnSvc == 0)
+        {
             // security binding over.
             return null;
         }
@@ -62,7 +70,8 @@ internal sealed class SecurityBinding {
         // a '0' will be represented as 30
         var buffer = new StringBuilder();
         int retVal;
-        while ((retVal = ndr.ReadUnsignedShort()) != 0) {
+        while ((retVal = ndr.ReadUnsignedShort()) != 0)
+        {
             // even though this is a unicode string, but will not have anything else
             // other than ascii charset, which is supported by all encodings.
             buffer.Append(StringHelperClass.NewString(new byte[] { (byte)retVal }));
@@ -77,13 +86,15 @@ internal sealed class SecurityBinding {
     /// Encode
     /// </summary>
     /// <param name="ndr"></param>
-    public void Encode(NdrCodec ndr) {
+    public void Encode(NdrCodec ndr)
+    {
         ndr.WriteUnsignedShort(_authnSvc);
         ndr.WriteUnsignedShort(_authzSvc);
 
         // now to write the network address.
         var i = 0;
-        while (i < _princName.Length) {
+        while (i < _princName.Length)
+        {
             ndr.WriteUnsignedShort(_princName[i]);
             i++;
         }

@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -10,7 +10,8 @@ using TUnit.Core;
 
 namespace Opc.Classic.Tests.Integration.Native;
 
-public sealed class OpcSampleHdaServerConformanceTests {
+public sealed class OpcSampleHdaServerConformanceTests
+{
     private const string SampleProgId = "OPCSample.OpcHdaServer.1";
     private static readonly Guid SampleClsid = new("6A5EEDEC-1509-4627-997F-993CCB65AB7C");
     // ProgID is derived by interop/samples/SampleServer/Hda/Server/OpcHdaServer.cpp registration macros.
@@ -18,8 +19,10 @@ public sealed class OpcSampleHdaServerConformanceTests {
 
     [Test]
     [Category("NativeConformance")]
-    public async Task GetHistorianStatus_returns_running_state() {
-        if (NativeServerProbe.ShouldSkip(SampleProgId, SampleClsid, out var reason)) {
+    public async Task GetHistorianStatus_returns_running_state()
+    {
+        if (NativeServerProbe.ShouldSkip(SampleProgId, SampleClsid, out var reason))
+        {
             SoftSkip(reason);
             return;
         }
@@ -31,8 +34,10 @@ public sealed class OpcSampleHdaServerConformanceTests {
 
     [Test]
     [Category("NativeConformance")]
-    public async Task GetErrorString_for_S_OK_returns_localized_string() {
-        if (NativeServerProbe.ShouldSkip(SampleProgId, SampleClsid, out var reason)) {
+    public async Task GetErrorString_for_S_OK_returns_localized_string()
+    {
+        if (NativeServerProbe.ShouldSkip(SampleProgId, SampleClsid, out var reason))
+        {
             SoftSkip(reason);
             return;
         }
@@ -44,8 +49,10 @@ public sealed class OpcSampleHdaServerConformanceTests {
 
     [Test]
     [Category("NativeConformance")]
-    public async Task GetItemHandles_then_ReleaseItemHandles_round_trips() {
-        if (NativeServerProbe.ShouldSkip(SampleProgId, SampleClsid, out var reason)) {
+    public async Task GetItemHandles_then_ReleaseItemHandles_round_trips()
+    {
+        if (NativeServerProbe.ShouldSkip(SampleProgId, SampleClsid, out var reason))
+        {
             SoftSkip(reason);
             return;
         }
@@ -58,8 +65,10 @@ public sealed class OpcSampleHdaServerConformanceTests {
 
     [Test]
     [Category("NativeConformance")]
-    public async Task ReadRaw_returns_sample_history_values() {
-        if (NativeServerProbe.ShouldSkip(SampleProgId, SampleClsid, out var reason)) {
+    public async Task ReadRaw_returns_sample_history_values()
+    {
+        if (NativeServerProbe.ShouldSkip(SampleProgId, SampleClsid, out var reason))
+        {
             SoftSkip(reason);
             return;
         }
@@ -69,7 +78,8 @@ public sealed class OpcSampleHdaServerConformanceTests {
             IOPCHDA_SyncRead.Opnums.ReadRawAsync).ConfigureAwait(false);
     }
 
-    private static async Task AssertNativeHdaScaffoldReadyAsync<TInterface, TProxy>(string methodName, int expectedOpnum) {
+    private static async Task AssertNativeHdaScaffoldReadyAsync<TInterface, TProxy>(string methodName, int expectedOpnum)
+    {
         await Assert.That(ConformanceMetadata.HasCategory(typeof(OpcSampleHdaServerConformanceTests), methodName, "NativeConformance")).IsTrue();
         await Assert.That(ConformanceMetadata.ReadType<TInterface>()).IsNotNull();
         await Assert.That(ConformanceMetadata.ReadType<TProxy>()).IsNotNull();
@@ -78,7 +88,8 @@ public sealed class OpcSampleHdaServerConformanceTests {
         await AssertNativeProbeRecognizesMissingServerAsync().ConfigureAwait(false);
     }
 
-    private static async Task AssertNativeProbeRecognizesMissingServerAsync() {
+    private static async Task AssertNativeProbeRecognizesMissingServerAsync()
+    {
         var missingProgId = "Opc.Classic.Missing.Hda." + Guid.NewGuid().ToString("N");
         var shouldSkip = NativeServerProbe.ShouldSkip(missingProgId, out var reason);
 
@@ -88,7 +99,8 @@ public sealed class OpcSampleHdaServerConformanceTests {
 
     private static int GetHistorianStatusOpnum() => 5;
 
-    private static void SoftSkip(string reason) {
+    private static void SoftSkip(string reason)
+    {
         // TUnit has no portable arbitrary runtime skip for this repository's current version.
         // Native conformance tests therefore soft-skip by logging and returning successfully.
         Console.WriteLine(reason);

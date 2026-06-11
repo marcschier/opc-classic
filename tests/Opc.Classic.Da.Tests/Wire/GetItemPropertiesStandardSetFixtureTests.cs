@@ -28,7 +28,8 @@ using TUnit.Core;
 
 namespace Opc.Classic.Da.Tests;
 
-public sealed class GetItemPropertiesStandardSetFixtureTests {
+public sealed class GetItemPropertiesStandardSetFixtureTests
+{
     /// <summary>
     /// OPC DA 3.00 §6.5 standard property set (subset used by simulation servers).
     /// Each property id is paired with the VARTYPE the spec mandates for the value.
@@ -51,8 +52,10 @@ public sealed class GetItemPropertiesStandardSetFixtureTests {
     ];
 
     [Test]
-    public async Task EachStandardProperty_RoundTrips_ThroughVariantElementCodec() {
-        foreach (StandardProperty prop in s_standardSet) {
+    public async Task EachStandardProperty_RoundTrips_ThroughVariantElementCodec()
+    {
+        foreach (StandardProperty prop in s_standardSet)
+        {
             // 1) Confirm the sample value has the spec-mandated VARTYPE.
             await Assert.That(prop.SampleValue.Type).IsEqualTo(prop.DataType);
 
@@ -74,7 +77,8 @@ public sealed class GetItemPropertiesStandardSetFixtureTests {
     }
 
     [Test]
-    public async Task MixedVariantArray_RoundTrips_PreservingOrderAndTypes() {
+    public async Task MixedVariantArray_RoundTrips_PreservingOrderAndTypes()
+    {
         // GetItemProperties response is the array variant of the per-element layout —
         // exercise the same codec used by [OpcVariantElements] with a typical 3-element
         // simulation server payload: scan rate (R4), access rights (I4), EU type (I4).
@@ -87,25 +91,29 @@ public sealed class GetItemPropertiesStandardSetFixtureTests {
 
         byte[] buf = new byte[512];
         var writer = new NdrWriter(buf);
-        foreach (OpcVariant v in inputs) {
+        foreach (OpcVariant v in inputs)
+        {
             writer.WriteVariantElement(v);
         }
 
         int written = writer.Position;
         var reader = new NdrReader(buf.AsMemory(0, written).Span);
         OpcVariant[] decoded = new OpcVariant[inputs.Length];
-        for (int i = 0; i < inputs.Length; i++) {
+        for (int i = 0; i < inputs.Length; i++)
+        {
             decoded[i] = reader.ReadVariantElement();
         }
 
-        for (int i = 0; i < inputs.Length; i++) {
+        for (int i = 0; i < inputs.Length; i++)
+        {
             await Assert.That(decoded[i].Type).IsEqualTo(inputs[i].Type);
             await Assert.That(decoded[i]).IsEqualTo(inputs[i]);
         }
     }
 
     [Test]
-    public async Task BstrEuInfo_VariantElementRoundTrip() {
+    public async Task BstrEuInfo_VariantElementRoundTrip()
+    {
         // OPC property #7 (EU Type) can be OPC_ANALOG (engineering range stored
         // separately), OPC_ENUMERATED (string array), or OPC_NO_ENUM. The
         // companion property "EU Info" carries a BSTR or BSTR[] payload. Pin the
@@ -123,7 +131,8 @@ public sealed class GetItemPropertiesStandardSetFixtureTests {
     }
 
     [Test]
-    public async Task EmptyVariantElement_RoundTripsWithoutOffsetDrift() {
+    public async Task EmptyVariantElement_RoundTripsWithoutOffsetDrift()
+    {
         // OPC servers commonly return VT_EMPTY for unsupported properties.
         // Verifying that the empty arm consumes the correct number of bytes
         // protects against the offset-drift class of bugs the live blocker
@@ -151,7 +160,8 @@ public sealed class GetItemPropertiesStandardSetFixtureTests {
     }
 
     [Test]
-    public async Task FiletimeElement_PadsToEightByteStride() {
+    public async Task FiletimeElement_PadsToEightByteStride()
+    {
         // FILETIME is the variant arm with strictest alignment requirements
         // (AlignTo(8) before and pad to 8 after). Verifies pad accounting for
         // the property-#4 (Timestamp) path that Matrikon Simulation Server

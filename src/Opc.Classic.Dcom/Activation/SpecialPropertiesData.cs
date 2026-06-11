@@ -14,7 +14,8 @@ public sealed record SpecialPropertiesData(
     int Mode,
     int ClassContext,
     Guid RequestedIid,
-    IReadOnlyList<int> SpecialProperties) {
+    IReadOnlyList<int> SpecialProperties)
+{
     /// <summary>An empty v5.6 special-properties set.</summary>
     public static SpecialPropertiesData Empty { get; } = new(
         ActivationComVersion.V5_6,

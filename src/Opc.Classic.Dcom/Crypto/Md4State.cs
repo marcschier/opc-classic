@@ -17,7 +17,8 @@ namespace Opc.Classic.Dcom.Crypto;
 /// Incremental MD4 state. Reusable after <see cref="GetHashAndReset"/>.
 /// </summary>
 [StructLayout(LayoutKind.Sequential)]
-public struct Md4State {
+public struct Md4State
+{
     // RFC 1320 §3.3 — initial chaining values, little-endian.
     private uint _a, _b, _c, _d;
     private ulong _bitsProcessed;
@@ -28,14 +29,16 @@ public struct Md4State {
     private Buffer64 _buffer;
 
     [InlineArray(64)]
-    private struct Buffer64 {
+    private struct Buffer64
+    {
 #pragma warning disable IDE0051, CS0169
         private byte _element0;
 #pragma warning restore IDE0051, CS0169
     }
 
     /// <summary>Reset to RFC 1320 §3.3 initial values.</summary>
-    public void Initialize() {
+    public void Initialize()
+    {
         _a = 0x67452301u;
         _b = 0xefcdab89u;
         _c = 0x98badcfeu;
@@ -45,14 +48,17 @@ public struct Md4State {
     }
 
     /// <summary>Append <paramref name="data"/> to the running hash.</summary>
-    public void AppendData(ReadOnlySpan<byte> data) {
+    public void AppendData(ReadOnlySpan<byte> data)
+    {
         _bitsProcessed += (ulong)data.Length * 8;
 
         // If we have a partial block buffered, fill it first.
         Span<byte> buf = _buffer;
-        if (_bufferedBytes > 0) {
+        if (_bufferedBytes > 0)
+        {
             var need = Md4.BlockSizeInBytes - (int)_bufferedBytes;
-            if (data.Length < need) {
+            if (data.Length < need)
+            {
                 data.CopyTo(buf[(int)_bufferedBytes..]);
                 _bufferedBytes += (uint)data.Length;
                 return;
@@ -64,21 +70,25 @@ public struct Md4State {
         }
 
         // Crunch any full 64-byte blocks directly from the input.
-        while (data.Length >= Md4.BlockSizeInBytes) {
+        while (data.Length >= Md4.BlockSizeInBytes)
+        {
             ProcessBlock(data[..Md4.BlockSizeInBytes]);
             data = data[Md4.BlockSizeInBytes..];
         }
 
         // Buffer the tail.
-        if (!data.IsEmpty) {
+        if (!data.IsEmpty)
+        {
             data.CopyTo(buf);
             _bufferedBytes = (uint)data.Length;
         }
     }
 
     /// <summary>Finalize, write the 16-byte hash, and reset state for reuse.</summary>
-    public void GetHashAndReset(Span<byte> destination) {
-        if (destination.Length < Md4.HashSizeInBytes) {
+    public void GetHashAndReset(Span<byte> destination)
+    {
+        if (destination.Length < Md4.HashSizeInBytes)
+        {
             throw new ArgumentException(
                 $"Destination must be at least {Md4.HashSizeInBytes} bytes.", nameof(destination));
         }
@@ -89,13 +99,15 @@ public struct Md4State {
         buf[(int)_bufferedBytes] = 0x80;
         var padded = (int)_bufferedBytes + 1;
 
-        if (padded > Md4.BlockSizeInBytes - 8) {
+        if (padded > Md4.BlockSizeInBytes - 8)
+        {
             // Not enough room for length; pad to end of this block, process, start fresh.
             buf[padded..].Clear();
             ProcessBlock(buf);
             buf.Clear();
         }
-        else {
+        else
+        {
             buf[padded..(Md4.BlockSizeInBytes - 8)].Clear();
         }
 
@@ -123,10 +135,12 @@ public struct Md4State {
     private static uint Rol(uint v, int s) => (v << s) | (v >> (32 - s));
 
 #pragma warning disable MA0051 // MD4 compression round is intentionally kept literal to RFC 1320.
-    private void ProcessBlock(ReadOnlySpan<byte> block) {
+    private void ProcessBlock(ReadOnlySpan<byte> block)
+    {
         // Decode 16 little-endian 32-bit words.
         Span<uint> x = stackalloc uint[16];
-        for (var i = 0; i < 16; i++) {
+        for (var i = 0; i < 16; i++)
+        {
             x[i] = BinaryPrimitives.ReadUInt32LittleEndian(block.Slice(i * 4, 4));
         }
 

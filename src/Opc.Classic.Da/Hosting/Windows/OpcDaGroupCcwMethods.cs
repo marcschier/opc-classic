@@ -23,7 +23,8 @@ namespace Opc.Classic.Da.Hosting.Windows;
 /// methods allocate COM-owned memory with CoTaskMemAlloc-compatible helpers.
 /// </remarks>
 [SupportedOSPlatform("windows")]
-internal static unsafe class OpcDaGroupCcwMethods {
+internal static unsafe class OpcDaGroupCcwMethods
+{
     // ===== IOPCGroupStateMgt =====
 
     [UnmanagedCallersOnly]
@@ -38,7 +39,8 @@ internal static unsafe class OpcDaGroupCcwMethods {
         IntPtr ppName,
         IntPtr ppTimeBias,
         IntPtr ppPercentDeadband,
-        IntPtr pLcid) {
+        IntPtr pLcid)
+    {
         // The actual IOPCGroupStateMgt::GetState signature is:
         //   HRESULT GetState(DWORD* pUpdateRate, BOOL* pActive, LPWSTR* ppName,
         //                    LONG* pTimeBias, FLOAT* pPercentDeadband, DWORD* pLCID,
@@ -46,10 +48,12 @@ internal static unsafe class OpcDaGroupCcwMethods {
         // 8 OUT params total; the simplified signature here writes the first 6 +
         // accepts the last 2 via the same IntPtr*-channel convention. We use IntPtr
         // (rather than typed pointers) and Marshal.* writes for ABI portability.
-        if (!s_groupResolve(pThis, out OpcDaGroup? group)) {
+        if (!s_groupResolve(pThis, out OpcDaGroup? group))
+        {
             return OpcDaGroupCcw.E_FAIL;
         }
-        try {
+        try
+        {
 #pragma warning disable VSTHRD002
             OpcGroupState state = group!.GetStateAsync(CancellationToken.None).GetAwaiter().GetResult();
 #pragma warning restore VSTHRD002
@@ -61,7 +65,8 @@ internal static unsafe class OpcDaGroupCcwMethods {
             WriteUInt32(pLcid, (uint)state.LocaleId);
             return OpcDaGroupCcw.S_OK;
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             return MapHResult(ex);
         }
     }
@@ -76,14 +81,17 @@ internal static unsafe class OpcDaGroupCcwMethods {
         IntPtr pPercentDeadband,
         IntPtr pLCID,
         IntPtr phClientGroup,
-        IntPtr pRevisedUpdateRate) {
+        IntPtr pRevisedUpdateRate)
+    {
         // Signature: SetState(DWORD* pRequestedUpdateRate, DWORD* pRevisedUpdateRate,
         //                    BOOL bActive, LONG* pTimeBias, FLOAT* pPercentDeadband,
         //                    DWORD* pLCID, DWORD* phClientGroup)
-        if (!s_groupResolve(pThis, out OpcDaGroup? group)) {
+        if (!s_groupResolve(pThis, out OpcDaGroup? group))
+        {
             return OpcDaGroupCcw.E_FAIL;
         }
-        try {
+        try
+        {
             int requestedRate = pRequestedUpdateRate == IntPtr.Zero ? group!.UpdateRate : Marshal.ReadInt32(pRequestedUpdateRate);
             int timeBias = pTimeBias == IntPtr.Zero ? group!.TimeBias : Marshal.ReadInt32(pTimeBias);
             float percentDeadband = pPercentDeadband == IntPtr.Zero ? group!.PercentDeadband : ReadFloat(pPercentDeadband);
@@ -94,56 +102,69 @@ internal static unsafe class OpcDaGroupCcwMethods {
             group!.SetStateAsync(requestedRate, bActive != 0, timeBias, percentDeadband, lcid, clientHandle, out int revisedRate, CancellationToken.None)
                 .GetAwaiter().GetResult();
 #pragma warning restore VSTHRD002
-            if (pRevisedUpdateRate != IntPtr.Zero) {
+            if (pRevisedUpdateRate != IntPtr.Zero)
+            {
                 Marshal.WriteInt32(pRevisedUpdateRate, revisedRate);
             }
             return OpcDaGroupCcw.S_OK;
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             return MapHResult(ex);
         }
     }
 
     [UnmanagedCallersOnly]
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
-    public static int SetName(IntPtr pThis, IntPtr szName) {
-        if (!s_groupResolve(pThis, out OpcDaGroup? group)) {
+    public static int SetName(IntPtr pThis, IntPtr szName)
+    {
+        if (!s_groupResolve(pThis, out OpcDaGroup? group))
+        {
             return OpcDaGroupCcw.E_FAIL;
         }
-        if (szName == IntPtr.Zero) {
+        if (szName == IntPtr.Zero)
+        {
             return OpcDaGroupCcw.E_INVALIDARG;
         }
-        try {
+        try
+        {
             string name = Marshal.PtrToStringUni(szName) ?? string.Empty;
 #pragma warning disable VSTHRD002
             group!.SetNameAsync(name, CancellationToken.None).GetAwaiter().GetResult();
 #pragma warning restore VSTHRD002
             return OpcDaGroupCcw.S_OK;
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             return MapHResult(ex);
         }
     }
 
     [UnmanagedCallersOnly]
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
-    public static int CloneGroup(IntPtr pThis, IntPtr szName, Guid* riid, IntPtr* ppUnk) {
-        if (ppUnk != null) {
+    public static int CloneGroup(IntPtr pThis, IntPtr szName, Guid* riid, IntPtr* ppUnk)
+    {
+        if (ppUnk != null)
+        {
             *ppUnk = IntPtr.Zero;
         }
-        if (ppUnk == null || riid == null || szName == IntPtr.Zero) {
+        if (ppUnk == null || riid == null || szName == IntPtr.Zero)
+        {
             return OpcDaGroupCcw.E_INVALIDARG;
         }
-        if (!s_groupResolve(pThis, out OpcDaGroup? group)) {
+        if (!s_groupResolve(pThis, out OpcDaGroup? group))
+        {
             return OpcDaGroupCcw.E_FAIL;
         }
-        try {
+        try
+        {
             string name = Marshal.PtrToStringUni(szName) ?? string.Empty;
             OpcDaGroup clone = CloneGroupForCcw(group!, name);
             IntPtr ccw = OpcDaGroupCcw.Create(clone);
             return ReturnRequestedInterfacePointer(ccw, riid, ppUnk);
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             return MapHResult(ex);
         }
     }
@@ -152,41 +173,51 @@ internal static unsafe class OpcDaGroupCcwMethods {
 
     [UnmanagedCallersOnly]
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
-    public static int SetKeepAlive(IntPtr pThis, int keepAliveTime, IntPtr pRevisedKeepAliveTime) {
-        if (!s_groupResolve(pThis, out OpcDaGroup? group)) {
+    public static int SetKeepAlive(IntPtr pThis, int keepAliveTime, IntPtr pRevisedKeepAliveTime)
+    {
+        if (!s_groupResolve(pThis, out OpcDaGroup? group))
+        {
             return OpcDaGroupCcw.E_FAIL;
         }
-        try {
+        try
+        {
 #pragma warning disable VSTHRD002
             int previous = group!.SetKeepAliveAsync(keepAliveTime, CancellationToken.None).GetAwaiter().GetResult();
 #pragma warning restore VSTHRD002
             _ = previous;
-            if (pRevisedKeepAliveTime != IntPtr.Zero) {
+            if (pRevisedKeepAliveTime != IntPtr.Zero)
+            {
                 Marshal.WriteInt32(pRevisedKeepAliveTime, keepAliveTime);
             }
             return OpcDaGroupCcw.S_OK;
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             return MapHResult(ex);
         }
     }
 
     [UnmanagedCallersOnly]
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
-    public static int GetKeepAlive(IntPtr pThis, IntPtr pKeepAliveTime) {
-        if (!s_groupResolve(pThis, out OpcDaGroup? group)) {
+    public static int GetKeepAlive(IntPtr pThis, IntPtr pKeepAliveTime)
+    {
+        if (!s_groupResolve(pThis, out OpcDaGroup? group))
+        {
             return OpcDaGroupCcw.E_FAIL;
         }
-        try {
+        try
+        {
 #pragma warning disable VSTHRD002
             int keepAlive = group!.GetKeepAliveAsync(CancellationToken.None).GetAwaiter().GetResult();
 #pragma warning restore VSTHRD002
-            if (pKeepAliveTime != IntPtr.Zero) {
+            if (pKeepAliveTime != IntPtr.Zero)
+            {
                 Marshal.WriteInt32(pKeepAliveTime, keepAlive);
             }
             return OpcDaGroupCcw.S_OK;
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             return MapHResult(ex);
         }
     }
@@ -195,15 +226,19 @@ internal static unsafe class OpcDaGroupCcwMethods {
 
     [UnmanagedCallersOnly]
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
-    public static int AddItems(IntPtr pThis, uint dwCount, IntPtr pItemArray, IntPtr* ppAddResults, IntPtr* ppErrors) {
+    public static int AddItems(IntPtr pThis, uint dwCount, IntPtr pItemArray, IntPtr* ppAddResults, IntPtr* ppErrors)
+    {
         ZeroItemResultOuts(ppAddResults, ppErrors);
-        if (!HasValidItemArrayArguments(dwCount, pItemArray, ppAddResults, ppErrors)) {
+        if (!HasValidItemArrayArguments(dwCount, pItemArray, ppAddResults, ppErrors))
+        {
             return OpcDaGroupCcw.E_INVALIDARG;
         }
-        if (!s_groupResolve(pThis, out OpcDaGroup? group)) {
+        if (!s_groupResolve(pThis, out OpcDaGroup? group))
+        {
             return OpcDaGroupCcw.E_FAIL;
         }
-        try {
+        try
+        {
             OpcItemDef[] defs = ReadItemDefinitions(pItemArray, dwCount);
 #pragma warning disable VSTHRD002
             group!.AddItemsAsync(defs, out OpcItemResult[] results, out int[] errors, CancellationToken.None)
@@ -213,22 +248,27 @@ internal static unsafe class OpcDaGroupCcwMethods {
             *ppErrors = AllocateInt32Array(errors);
             return OpcDaGroupCcw.S_OK;
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             return MapHResult(ex);
         }
     }
 
     [UnmanagedCallersOnly]
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
-    public static int ValidateItems(IntPtr pThis, uint dwCount, IntPtr pItemArray, int bBlobUpdate, IntPtr* ppValidationResults, IntPtr* ppErrors) {
+    public static int ValidateItems(IntPtr pThis, uint dwCount, IntPtr pItemArray, int bBlobUpdate, IntPtr* ppValidationResults, IntPtr* ppErrors)
+    {
         ZeroItemResultOuts(ppValidationResults, ppErrors);
-        if (!HasValidItemArrayArguments(dwCount, pItemArray, ppValidationResults, ppErrors)) {
+        if (!HasValidItemArrayArguments(dwCount, pItemArray, ppValidationResults, ppErrors))
+        {
             return OpcDaGroupCcw.E_INVALIDARG;
         }
-        if (!s_groupResolve(pThis, out OpcDaGroup? group)) {
+        if (!s_groupResolve(pThis, out OpcDaGroup? group))
+        {
             return OpcDaGroupCcw.E_FAIL;
         }
-        try {
+        try
+        {
             OpcItemDef[] defs = ReadItemDefinitions(pItemArray, dwCount);
 #pragma warning disable VSTHRD002
             group!.ValidateItemsAsync(defs, bBlobUpdate != 0, out OpcItemResult[] results, out int[] errors, CancellationToken.None)
@@ -238,21 +278,26 @@ internal static unsafe class OpcDaGroupCcwMethods {
             *ppErrors = AllocateInt32Array(errors);
             return OpcDaGroupCcw.S_OK;
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             return MapHResult(ex);
         }
     }
 
     [UnmanagedCallersOnly]
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
-    public static int RemoveItems(IntPtr pThis, uint dwCount, IntPtr phServer, IntPtr* ppErrors) {
-        if (!s_groupResolve(pThis, out OpcDaGroup? group)) {
+    public static int RemoveItems(IntPtr pThis, uint dwCount, IntPtr phServer, IntPtr* ppErrors)
+    {
+        if (!s_groupResolve(pThis, out OpcDaGroup? group))
+        {
             return OpcDaGroupCcw.E_FAIL;
         }
-        if (ppErrors == null || (dwCount > 0 && phServer == IntPtr.Zero)) {
+        if (ppErrors == null || (dwCount > 0 && phServer == IntPtr.Zero))
+        {
             return OpcDaGroupCcw.E_INVALIDARG;
         }
-        try {
+        try
+        {
             int[] handles = ReadInt32Array(phServer, (int)dwCount);
 #pragma warning disable VSTHRD002
             int[] errors = group!.RemoveItemsAsync(handles, CancellationToken.None).GetAwaiter().GetResult();
@@ -260,21 +305,26 @@ internal static unsafe class OpcDaGroupCcwMethods {
             *ppErrors = AllocateInt32Array(errors);
             return OpcDaGroupCcw.S_OK;
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             return MapHResult(ex);
         }
     }
 
     [UnmanagedCallersOnly]
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
-    public static int SetActiveState(IntPtr pThis, uint dwCount, IntPtr phServer, int bActive, IntPtr* ppErrors) {
-        if (!s_groupResolve(pThis, out OpcDaGroup? group)) {
+    public static int SetActiveState(IntPtr pThis, uint dwCount, IntPtr phServer, int bActive, IntPtr* ppErrors)
+    {
+        if (!s_groupResolve(pThis, out OpcDaGroup? group))
+        {
             return OpcDaGroupCcw.E_FAIL;
         }
-        if (ppErrors == null || (dwCount > 0 && phServer == IntPtr.Zero)) {
+        if (ppErrors == null || (dwCount > 0 && phServer == IntPtr.Zero))
+        {
             return OpcDaGroupCcw.E_INVALIDARG;
         }
-        try {
+        try
+        {
             int[] handles = ReadInt32Array(phServer, (int)dwCount);
 #pragma warning disable VSTHRD002
             int[] errors = group!.SetActiveStateAsync(handles, bActive != 0, CancellationToken.None).GetAwaiter().GetResult();
@@ -282,21 +332,26 @@ internal static unsafe class OpcDaGroupCcwMethods {
             *ppErrors = AllocateInt32Array(errors);
             return OpcDaGroupCcw.S_OK;
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             return MapHResult(ex);
         }
     }
 
     [UnmanagedCallersOnly]
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
-    public static int SetClientHandles(IntPtr pThis, uint dwCount, IntPtr phServer, IntPtr phClient, IntPtr* ppErrors) {
-        if (!s_groupResolve(pThis, out OpcDaGroup? group)) {
+    public static int SetClientHandles(IntPtr pThis, uint dwCount, IntPtr phServer, IntPtr phClient, IntPtr* ppErrors)
+    {
+        if (!s_groupResolve(pThis, out OpcDaGroup? group))
+        {
             return OpcDaGroupCcw.E_FAIL;
         }
-        if (ppErrors == null || (dwCount > 0 && (phServer == IntPtr.Zero || phClient == IntPtr.Zero))) {
+        if (ppErrors == null || (dwCount > 0 && (phServer == IntPtr.Zero || phClient == IntPtr.Zero)))
+        {
             return OpcDaGroupCcw.E_INVALIDARG;
         }
-        try {
+        try
+        {
             int[] handles = ReadInt32Array(phServer, (int)dwCount);
             int[] clientHandles = ReadInt32Array(phClient, (int)dwCount);
 #pragma warning disable VSTHRD002
@@ -305,21 +360,26 @@ internal static unsafe class OpcDaGroupCcwMethods {
             *ppErrors = AllocateInt32Array(errors);
             return OpcDaGroupCcw.S_OK;
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             return MapHResult(ex);
         }
     }
 
     [UnmanagedCallersOnly]
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
-    public static int SetDatatypes(IntPtr pThis, uint dwCount, IntPtr phServer, IntPtr pRequestedDatatypes, IntPtr* ppErrors) {
-        if (!s_groupResolve(pThis, out OpcDaGroup? group)) {
+    public static int SetDatatypes(IntPtr pThis, uint dwCount, IntPtr phServer, IntPtr pRequestedDatatypes, IntPtr* ppErrors)
+    {
+        if (!s_groupResolve(pThis, out OpcDaGroup? group))
+        {
             return OpcDaGroupCcw.E_FAIL;
         }
-        if (ppErrors == null || (dwCount > 0 && (phServer == IntPtr.Zero || pRequestedDatatypes == IntPtr.Zero))) {
+        if (ppErrors == null || (dwCount > 0 && (phServer == IntPtr.Zero || pRequestedDatatypes == IntPtr.Zero)))
+        {
             return OpcDaGroupCcw.E_INVALIDARG;
         }
-        try {
+        try
+        {
             int[] handles = ReadInt32Array(phServer, (int)dwCount);
             ushort[] datatypes = ReadUInt16Array(pRequestedDatatypes, (int)dwCount);
 #pragma warning disable VSTHRD002
@@ -328,29 +388,36 @@ internal static unsafe class OpcDaGroupCcwMethods {
             *ppErrors = AllocateInt32Array(errors);
             return OpcDaGroupCcw.S_OK;
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             return MapHResult(ex);
         }
     }
 
     [UnmanagedCallersOnly]
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
-    public static int CreateEnumerator(IntPtr pThis, Guid* riid, IntPtr* ppUnk) {
-        if (ppUnk != null) {
+    public static int CreateEnumerator(IntPtr pThis, Guid* riid, IntPtr* ppUnk)
+    {
+        if (ppUnk != null)
+        {
             *ppUnk = IntPtr.Zero;
         }
-        if (ppUnk == null || riid == null) {
+        if (ppUnk == null || riid == null)
+        {
             return OpcDaGroupCcw.E_INVALIDARG;
         }
-        if (!s_groupResolve(pThis, out OpcDaGroup? group)) {
+        if (!s_groupResolve(pThis, out OpcDaGroup? group))
+        {
             return OpcDaGroupCcw.E_FAIL;
         }
-        try {
+        try
+        {
             var enumerator = new OpcDaItemAttributesEnumerator(group!.BuildItemAttributesSnapshot(), registry: null);
             IntPtr ccw = OpcEnumOpcItemAttributesCcw.Create(enumerator);
             return ReturnRequestedInterfacePointer(ccw, riid, ppUnk);
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             return MapHResult(ex);
         }
     }
@@ -363,7 +430,8 @@ internal static unsafe class OpcDaGroupCcwMethods {
     // garbage when marshalling AddItems results, closing the wire
     // connection mid-call (manifests as RPC_S_CALL_FAILED on the client).
     [StructLayout(LayoutKind.Sequential)]
-    private struct OPCITEMDEF_NATIVE {
+    private struct OPCITEMDEF_NATIVE
+    {
         public IntPtr szAccessPath;
         public IntPtr szItemID;
         public int bActive;
@@ -375,7 +443,8 @@ internal static unsafe class OpcDaGroupCcwMethods {
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    private struct OPCITEMRESULT_NATIVE {
+    private struct OPCITEMRESULT_NATIVE
+    {
         public uint hServer;
         public ushort vtCanonicalDataType;
         public ushort wReserved;
@@ -388,12 +457,14 @@ internal static unsafe class OpcDaGroupCcwMethods {
 
     private delegate bool TryResolve(IntPtr pThis, out OpcDaGroup? group);
 
-    private static bool TryResolveGroup(IntPtr pThis, out OpcDaGroup? group) {
+    private static bool TryResolveGroup(IntPtr pThis, out OpcDaGroup? group)
+    {
         group = OpcDaGroupCcw.ResolveGroup(pThis);
         return group is not null;
     }
 
-    private static int MapHResult(Exception ex) => ex switch {
+    private static int MapHResult(Exception ex) => ex switch
+    {
         OpcException opcEx => opcEx.ResultId.Code,
         ArgumentNullException => OpcDaGroupCcw.E_INVALIDARG,
         ArgumentException => OpcDaGroupCcw.E_INVALIDARG,
@@ -403,20 +474,25 @@ internal static unsafe class OpcDaGroupCcwMethods {
     private static bool HasValidItemArrayArguments(uint count, IntPtr items, IntPtr* ppResults, IntPtr* ppErrors) =>
         ppResults != null && ppErrors != null && count <= int.MaxValue && (count == 0 || items != IntPtr.Zero);
 
-    private static void ZeroItemResultOuts(IntPtr* ppResults, IntPtr* ppErrors) {
-        if (ppResults != null) {
+    private static void ZeroItemResultOuts(IntPtr* ppResults, IntPtr* ppErrors)
+    {
+        if (ppResults != null)
+        {
             *ppResults = IntPtr.Zero;
         }
-        if (ppErrors != null) {
+        if (ppErrors != null)
+        {
             *ppErrors = IntPtr.Zero;
         }
     }
 
-    private static OpcItemDef[] ReadItemDefinitions(IntPtr pItemArray, uint count) {
+    private static OpcItemDef[] ReadItemDefinitions(IntPtr pItemArray, uint count)
+    {
         int itemCount = checked((int)count);
         var defs = new OpcItemDef[itemCount];
         int size = Marshal.SizeOf<OPCITEMDEF_NATIVE>();
-        for (int i = 0; i < itemCount; i++) {
+        for (int i = 0; i < itemCount; i++)
+        {
             var native = Marshal.PtrToStructure<OPCITEMDEF_NATIVE>(IntPtr.Add(pItemArray, i * size));
             defs[i] = new OpcItemDef(
                 Marshal.PtrToStringUni(native.szAccessPath),
@@ -429,11 +505,14 @@ internal static unsafe class OpcDaGroupCcwMethods {
         return defs;
     }
 
-    private static byte[] ReadBlob(IntPtr pBlob, uint blobSize) {
-        if (blobSize == 0) {
+    private static byte[] ReadBlob(IntPtr pBlob, uint blobSize)
+    {
+        if (blobSize == 0)
+        {
             return Array.Empty<byte>();
         }
-        if (pBlob == IntPtr.Zero || blobSize > int.MaxValue) {
+        if (pBlob == IntPtr.Zero || blobSize > int.MaxValue)
+        {
             throw new ArgumentException("Invalid OPC item blob pointer or size.", nameof(blobSize));
         }
         var blob = new byte[(int)blobSize];
@@ -441,19 +520,23 @@ internal static unsafe class OpcDaGroupCcwMethods {
         return blob;
     }
 
-    private static IntPtr AllocateOpcItemResultArray(OpcItemResult[] results) {
+    private static IntPtr AllocateOpcItemResultArray(OpcItemResult[] results)
+    {
         int size = Marshal.SizeOf<OPCITEMRESULT_NATIVE>();
         int byteCount = Math.Max(1, checked(results.Length * size));
         IntPtr ptr = Marshal.AllocCoTaskMem(byteCount);
-        for (int i = 0; i < results.Length; i++) {
+        for (int i = 0; i < results.Length; i++)
+        {
             Marshal.StructureToPtr(ToNative(results[i]), IntPtr.Add(ptr, i * size), fDeleteOld: false);
         }
         return ptr;
     }
 
-    private static OPCITEMRESULT_NATIVE ToNative(OpcItemResult result) {
+    private static OPCITEMRESULT_NATIVE ToNative(OpcItemResult result)
+    {
         byte[] blob = result.Blob ?? Array.Empty<byte>();
-        return new OPCITEMRESULT_NATIVE {
+        return new OPCITEMRESULT_NATIVE
+        {
             hServer = unchecked((uint)result.ServerHandle),
             vtCanonicalDataType = (ushort)result.CanonicalDataType,
             wReserved = 0,
@@ -463,8 +546,10 @@ internal static unsafe class OpcDaGroupCcwMethods {
         };
     }
 
-    private static IntPtr AllocateBlob(byte[] blob) {
-        if (blob.Length == 0) {
+    private static IntPtr AllocateBlob(byte[] blob)
+    {
+        if (blob.Length == 0)
+        {
             return IntPtr.Zero;
         }
         IntPtr ptr = Marshal.AllocCoTaskMem(blob.Length);
@@ -472,13 +557,15 @@ internal static unsafe class OpcDaGroupCcwMethods {
         return ptr;
     }
 
-    private static OpcDaGroup CloneGroupForCcw(OpcDaGroup source, string name) {
+    private static OpcDaGroup CloneGroupForCcw(OpcDaGroup source, string name)
+    {
         // This clone is CCW-scope only; the current managed CloneGroupAsync surface returns a synthetic IOpcInterfaceRef.
         var clone = new OpcDaGroup(name, Random.Shared.Next(int.MaxValue / 2, int.MaxValue), source.ClientHandle,
             source.Active, source.UpdateRate, source.TimeBias, source.PercentDeadband, source.LocaleId);
         var defs = new OpcItemDef[source.Items.Count];
         int index = 0;
-        foreach (OpcDaItem item in source.Items) {
+        foreach (OpcDaItem item in source.Items)
+        {
             defs[index++] = new OpcItemDef(item.AccessPath, item.ItemId, item.Active, item.ClientHandle,
                 Array.Empty<byte>(), (VarType)item.RequestedDatatype);
         }
@@ -488,8 +575,10 @@ internal static unsafe class OpcDaGroupCcwMethods {
         return clone;
     }
 
-    private static int ReturnRequestedInterfacePointer(IntPtr ccw, Guid* riid, IntPtr* ppUnk) {
-        if (*riid == OpcDaGroupCcw.IID_IUnknown) {
+    private static int ReturnRequestedInterfacePointer(IntPtr ccw, Guid* riid, IntPtr* ppUnk)
+    {
+        if (*riid == OpcDaGroupCcw.IID_IUnknown)
+        {
             *ppUnk = ccw;
             return OpcDaGroupCcw.S_OK;
         }
@@ -498,32 +587,40 @@ internal static unsafe class OpcDaGroupCcwMethods {
         IntPtr requested;
         int hr = queryInterface(ccw, riid, &requested);
         ReleaseInterfacePointer(ccw);
-        if (hr == OpcDaGroupCcw.S_OK) {
+        if (hr == OpcDaGroupCcw.S_OK)
+        {
             *ppUnk = requested;
         }
         return hr;
     }
 
-    private static void ReleaseInterfacePointer(IntPtr ccw) {
+    private static void ReleaseInterfacePointer(IntPtr ccw)
+    {
         IntPtr* vtable = *(IntPtr**)ccw;
         var release = (delegate* unmanaged<IntPtr, uint>)vtable[2];
         release(ccw);
     }
 
-    private static void WriteUInt32(IntPtr p, uint v) {
-        if (p != IntPtr.Zero) {
+    private static void WriteUInt32(IntPtr p, uint v)
+    {
+        if (p != IntPtr.Zero)
+        {
             Marshal.WriteInt32(p, unchecked((int)v));
         }
     }
 
-    private static void WriteInt32(IntPtr p, int v) {
-        if (p != IntPtr.Zero) {
+    private static void WriteInt32(IntPtr p, int v)
+    {
+        if (p != IntPtr.Zero)
+        {
             Marshal.WriteInt32(p, v);
         }
     }
 
-    private static void WriteFloat(IntPtr p, float v) {
-        if (p == IntPtr.Zero) {
+    private static void WriteFloat(IntPtr p, float v)
+    {
+        if (p == IntPtr.Zero)
+        {
             return;
         }
         int bits = BitConverter.SingleToInt32Bits(v);
@@ -532,16 +629,20 @@ internal static unsafe class OpcDaGroupCcwMethods {
 
     private static float ReadFloat(IntPtr p) => BitConverter.Int32BitsToSingle(Marshal.ReadInt32(p));
 
-    private static void WriteLpwStrPtr(IntPtr ppwzOut, string? value) {
-        if (ppwzOut == IntPtr.Zero) {
+    private static void WriteLpwStrPtr(IntPtr ppwzOut, string? value)
+    {
+        if (ppwzOut == IntPtr.Zero)
+        {
             return;
         }
         IntPtr s = AllocateLpwStr(value);
         Marshal.WriteIntPtr(ppwzOut, s);
     }
 
-    private static IntPtr AllocateLpwStr(string? value) {
-        if (value is null) {
+    private static IntPtr AllocateLpwStr(string? value)
+    {
+        if (value is null)
+        {
             return IntPtr.Zero;
         }
         int byteCount = (value.Length + 1) * sizeof(char);
@@ -551,26 +652,32 @@ internal static unsafe class OpcDaGroupCcwMethods {
         return ptr;
     }
 
-    private static int[] ReadInt32Array(IntPtr ptr, int count) {
+    private static int[] ReadInt32Array(IntPtr ptr, int count)
+    {
         var array = new int[count];
-        if (count > 0) {
+        if (count > 0)
+        {
             Marshal.Copy(ptr, array, 0, count);
         }
         return array;
     }
 
-    private static ushort[] ReadUInt16Array(IntPtr ptr, int count) {
+    private static ushort[] ReadUInt16Array(IntPtr ptr, int count)
+    {
         var array = new ushort[count];
-        for (int i = 0; i < count; i++) {
+        for (int i = 0; i < count; i++)
+        {
             array[i] = (ushort)Marshal.ReadInt16(ptr, i * sizeof(ushort));
         }
         return array;
     }
 
-    private static IntPtr AllocateInt32Array(int[] values) {
+    private static IntPtr AllocateInt32Array(int[] values)
+    {
         int byteCount = Math.Max(1, values.Length * sizeof(int));
         IntPtr ptr = Marshal.AllocCoTaskMem(byteCount);
-        if (values.Length > 0) {
+        if (values.Length > 0)
+        {
             Marshal.Copy(values, 0, ptr, values.Length);
         }
         return ptr;

@@ -35,10 +35,12 @@ namespace Opc.Classic.Dcom.Core;
 ///  </code>
 /// Each instance of this class is associated with a single session only.
 /// </summary>
-public sealed class ComServer : Stub {
+public sealed class ComServer : Stub
+{
 
     private static readonly PropertyBag kDefaults = new PropertyBag();
-    static ComServer() {
+    static ComServer()
+    {
 
         kDefaults.SetProperty("rpc.ntlm.lanManagerKey", "false");
         kDefaults.SetProperty("rpc.ntlm.sign", "false");
@@ -58,7 +60,8 @@ public sealed class ComServer : Stub {
     }
 
 
-    private ComServer() {
+    private ComServer()
+    {
     }
 
     /// <summary>
@@ -82,21 +85,26 @@ public sealed class ComServer : Stub {
     /// which may get sent as part of the interface pointer and consequently this call will fail since it is a possibility that IP is not reachable via this machine.
     /// The developer can send in the valid IP and if found in the interface pointer list will be used to talk to the target machine, overriding the other IP addresses present in the interface pointer.
     /// If this IP is not found then the "machine name" binding will be used. If this param is <code>null</code> then the first binding obtained from the interface pointer is used. </param>
-    internal ComServer(Session session, InterfacePointer interfacePointer, string ipAddress) {
-        if (interfacePointer == null || session == null) {
+    internal ComServer(Session session, InterfacePointer interfacePointer, string ipAddress)
+    {
+        if (interfacePointer == null || session == null)
+        {
             throw new ArgumentException(Interop.GetLocalizedMessage(ErrorCode.INTEROP_COMSTUB_ILLEGAL_ARGUMENTS), nameof(session));
         }
 
-        if (session.Stub != null) {
+        if (session.Stub != null)
+        {
             throw new InteropException(ErrorCode.INTEROP_SESSION_ALREADY_ESTABLISHED);
         }
 
-        if (Log.Logger.IsEnabled(Microsoft.Extensions.Logging.LogLevel.Information)) {
+        if (Log.Logger.IsEnabled(Microsoft.Extensions.Logging.LogLevel.Information))
+        {
             Interop.Internal_dumpMap();
         }
 
         //        ipAddress="192.168.1.104";
-        if (ipAddress != null && !ipAddress.Trim().Equals("", StringComparison.CurrentCultureIgnoreCase)) {
+        if (ipAddress != null && !ipAddress.Trim().Equals("", StringComparison.CurrentCultureIgnoreCase))
+        {
             kListOfIps.Add(ipAddress);
         }
 
@@ -107,10 +115,12 @@ public sealed class ComServer : Stub {
         Properties.SetProperty("rpc.security.password", session.Password);
         Properties.SetProperty("rpc.ntlm.domain", session.Domain);
         Properties.SetProperty("rpc.socketTimeout", session.GlobalSocketTimeout.ToString(CultureInfo.InvariantCulture));
-        if (session.NTLMv2Enabled) {
+        if (session.NTLMv2Enabled)
+        {
             Properties.SetProperty("rpc.ntlm.ntlmv2", "true");
         }
-        if (session.SSOEnabled) {
+        if (session.SSOEnabled)
+        {
             Properties.SetProperty("rpc.ntlm.sso", "true");
         }
 
@@ -124,33 +134,41 @@ public sealed class ComServer : Stub {
         {
             //        if (!targetAddress.equals(""))
             // now we choose, otherwise the first one we get.
-            while (i < addressBindings.Length) {
+            while (i < addressBindings.Length)
+            {
                 binding = addressBindings[i];
-                if (binding.TowerId != 0x07) {
+                if (binding.TowerId != 0x07)
+                {
                     // this means, even though I asked for TCPIP something else was supplied, noticed this in win2k.
                     i++;
                     continue;
                 }
                 // get the one with IP address
                 var idx = binding.NetworkAddress.IndexOf('.');
-                if (idx != -1) {
-                    try {
-                        if (kListOfIps.Contains(binding.NetworkAddress)) {
+                if (idx != -1)
+                {
+                    try
+                    {
+                        if (kListOfIps.Contains(binding.NetworkAddress))
+                        {
                             nameBinding = null;
                             break;
                         }
 
                         // now check for the one with port
                         idx = binding.NetworkAddress.IndexOf('['); // this contains the port
-                        if (idx != -1 && kListOfIps.Contains(binding.NetworkAddress.Substring(0, idx))) {
+                        if (idx != -1 && kListOfIps.Contains(binding.NetworkAddress.Substring(0, idx)))
+                        {
                             nameBinding = null;
                             break;
                         }
                     }
-                    catch (FormatException) {
+                    catch (FormatException)
+                    {
                     }
                 }
-                else {
+                else
+                {
                     // can only come for the name, saving it incase nothing matches the target address
                     nameBinding = binding;
                 }
@@ -163,19 +181,23 @@ public sealed class ComServer : Stub {
         // will use this last binding .
         // and currently only TCPIP is supported.
         var address = binding.NetworkAddress;
-        if (address.IndexOf('[') == -1) { // this does not contain the port
+        if (address.IndexOf('[') == -1)
+        { // this does not contain the port
             var addr = Interop.GetIPForHostName(address); // to use the binding supplied by the user.
-            if (addr != null) {
+            if (addr != null)
+            {
                 address = addr;
             }
             // use 135
             address += "[135]";
         }
-        else {
+        else
+        {
             var idx = address.IndexOf('[');
             var host = binding.NetworkAddress.Substring(0, idx);
             var addr = Interop.GetIPForHostName(host); // to use the binding supplied by the user.
-            if (addr != null) {
+            if (addr != null)
+            {
                 address = string.Concat(addr, address.AsSpan(idx));
             }
         }
@@ -186,7 +208,8 @@ public sealed class ComServer : Stub {
             Address.IndexOf('['));
         _oxidResolver = new OxidResolver(((StdObjRef)
             interfacePointer.GetObjectReference(InterfacePointer.OBJREF_STANDARD)).Oxid);
-        try {
+        try
+        {
             _syntax = "99fcfec4-5260-101b-bbcb-00aa0021347a:0.0";
             Attach();
             // first send an AlterContext to the IID of the IOxidResolver
@@ -196,13 +219,16 @@ public sealed class ComServer : Stub {
 
             Call(Semantics.IDEMPOTENT, _oxidResolver);
         }
-        catch (FaultException e) {
+        catch (FaultException e)
+        {
             throw new InteropException((int)e.Code, e);
         }
-        catch (IOException e) {
+        catch (IOException e)
+        {
             throw new InteropException(ErrorCode.RPC_E_UNEXPECTED, e);
         }
-        catch (InteropRuntimeException e1) {
+        catch (InteropRuntimeException e1)
+        {
             throw new InteropException(e1);
         }
 
@@ -219,7 +245,8 @@ public sealed class ComServer : Stub {
         //        if (!targetAddress.equals(""))
         {
             // now we choose, otherwise the first one we get.
-            while (i < bindings.Length) {
+            while (i < bindings.Length)
+            {
                 binding = bindings[i];
                 if (binding.TowerId != 0x07) // this means, even though I asked for TCPIP something else was supplied, noticed this in win2k.
                 {
@@ -228,25 +255,31 @@ public sealed class ComServer : Stub {
                 }
                 // get the one with IP address
                 var idx = binding.NetworkAddress.IndexOf('.');
-                if (idx != -1) {
-                    try {
-                        if (kListOfIps.Contains(binding.NetworkAddress)) {
+                if (idx != -1)
+                {
+                    try
+                    {
+                        if (kListOfIps.Contains(binding.NetworkAddress))
+                        {
                             nameBinding = null;
                             break;
                         }
 
                         // now check for the one with port
                         idx = binding.NetworkAddress.IndexOf('['); // this contains the port
-                        if (idx != -1 && kListOfIps.Contains(binding.NetworkAddress.Substring(0, idx))) {
+                        if (idx != -1 && kListOfIps.Contains(binding.NetworkAddress.Substring(0, idx)))
+                        {
                             nameBinding = null;
                             break;
                         }
                     }
-                    catch (FormatException) {
+                    catch (FormatException)
+                    {
 
                     }
                 }
-                else {
+                else
+                {
                     // can only come for the name, saving it incase nothing matches the target address
                     nameBinding = binding;
                 }
@@ -257,7 +290,8 @@ public sealed class ComServer : Stub {
         }
 
         // now set the NTLMv2 Session Security.
-        if (session.SessionSecurityEnabled) {
+        if (session.SessionSecurityEnabled)
+        {
             Properties.SetProperty("rpc.ntlm.seal", "true");
             Properties.SetProperty("rpc.ntlm.sign", "true");
             Properties.SetProperty("rpc.ntlm.keyExchange", "true");
@@ -269,7 +303,8 @@ public sealed class ComServer : Stub {
         var index = address.IndexOf('[');
         var hostname = binding.NetworkAddress.Substring(0, index);
         var ipAddr = Interop.GetIPForHostName(hostname); // to use the binding supplied by the user.
-        if (ipAddr != null) {
+        if (ipAddr != null)
+        {
             address = string.Concat(ipAddr, address.AsSpan(index));
         }
 
@@ -294,7 +329,8 @@ public sealed class ComServer : Stub {
     /// or <code>session</code> is <code>null</code>. </exception>
     /// <exception cref="UnknownHostException"> </exception>
     public ComServer(ProgId progId, Session session) :
-        this(progId, Dns.GetHostName(), session) {
+        this(progId, Dns.GetHostName(), session)
+    {
     }
 
     /// <summary>
@@ -310,7 +346,8 @@ public sealed class ComServer : Stub {
     /// or <code>session</code> is <code>null</code>. </exception>
     /// <exception cref="UnknownHostException"> </exception>
     public ComServer(Clsid clsid, Session session) :
-        this(clsid, Dns.GetHostName(), session) {
+        this(clsid, Dns.GetHostName(), session)
+    {
     }
 
     /// <summary>
@@ -327,16 +364,20 @@ public sealed class ComServer : Stub {
     /// <exception cref="ArgumentException"> raised when any of the parameters
     /// is <code>null</code>. </exception>
     /// <exception cref="UnknownHostException"> </exception>
-    public ComServer(ProgId progId, string address, Session session) {
-        if (progId == null || address == null || session == null) {
+    public ComServer(ProgId progId, string address, Session session)
+    {
+        if (progId == null || address == null || session == null)
+        {
             throw new ArgumentException(Interop.GetLocalizedMessage(
                 ErrorCode.INTEROP_COMSTUB_ILLEGAL_ARGUMENTS), nameof(session));
         }
-        if (session.Stub != null) {
+        if (session.Stub != null)
+        {
             throw new InteropException(ErrorCode.INTEROP_SESSION_ALREADY_ESTABLISHED);
         }
 
-        if (session.SSOEnabled) {
+        if (session.SSOEnabled)
+        {
             throw new ArgumentException(Interop.GetLocalizedMessage(
                 ErrorCode.INTEROP_COMSTUB_ILLEGAL_ARGUMENTS2), nameof(session));
         }
@@ -362,12 +403,15 @@ public sealed class ComServer : Stub {
     /// <exception cref="ArgumentException"> raised when any of the parameters
     /// is <code>null</code>. </exception>
     /// <exception cref="UnknownHostException"> </exception>
-    public ComServer(Clsid clsid, string address, Session session) {
-        if (clsid == null || address == null || session == null) {
+    public ComServer(Clsid clsid, string address, Session session)
+    {
+        if (clsid == null || address == null || session == null)
+        {
             throw new ArgumentException(Interop.GetLocalizedMessage(
                 ErrorCode.INTEROP_COMSTUB_ILLEGAL_ARGUMENTS), nameof(session));
         }
-        if (session.Stub != null) {
+        if (session.Stub != null)
+        {
             throw new InteropException(ErrorCode.INTEROP_SESSION_ALREADY_ESTABLISHED);
         }
         address = address.Trim();
@@ -383,21 +427,25 @@ public sealed class ComServer : Stub {
     /// <param name="address"></param>
     /// <param name="session"></param>
     /// <exception cref="InteropException"></exception>
-    private void Initialise(Clsid clsid, string address, Session session) {
+    private void Initialise(Clsid clsid, string address, Session session)
+    {
         TransportFactory = ComTransportFactory.Instance;
         // now read the session and prepare information for the stub.
         Properties = new PropertyBag(kDefaults);
         Properties.SetProperty("rpc.socketTimeout", session.GlobalSocketTimeout.ToString(CultureInfo.InvariantCulture));
         Address = address;
 
-        if (session.NTLMv2Enabled) {
+        if (session.NTLMv2Enabled)
+        {
             Properties.SetProperty("rpc.ntlm.ntlmv2", "true");
         }
 
-        if (session.SSOEnabled) {
+        if (session.SSOEnabled)
+        {
             Properties.SetProperty("rpc.ntlm.sso", "true");
         }
-        else {
+        else
+        {
             Properties.SetProperty("rpc.security.username", session.UserName);
             Properties.SetProperty("rpc.security.password", session.Password);
             Properties.SetProperty("rpc.ntlm.domain", session.Domain);
@@ -410,18 +458,22 @@ public sealed class ComServer : Stub {
             session.SessionSecurityEnabled ? session.Password : null);
         _activationAuthenticationLevel = (int)activationProtectionLevel;
 
-        if (Log.Logger.IsEnabled(Microsoft.Extensions.Logging.LogLevel.Information)) {
+        if (Log.Logger.IsEnabled(Microsoft.Extensions.Logging.LogLevel.Information))
+        {
             Interop.Internal_dumpMap();
         }
 
         _clsid = clsid.CLSID.ToUpper(CultureInfo.InvariantCulture);
         _session = session;
         _session.TargetServer = address.SubstringSpecial(address.IndexOf(':') + 1, address.IndexOf('['));
-        try {
+        try
+        {
             Init();
         }
-        catch (InteropException e) {
-            if ((uint)e.ErrorCode == 0x80040154) {
+        catch (InteropException e)
+        {
+            if ((uint)e.ErrorCode == 0x80040154)
+            {
                 Log.Logger.Warning("Got the class not registered exception, " +
                     "will attempt setting entries based on status flags...");
 
@@ -430,34 +482,42 @@ public sealed class ComServer : Stub {
                 // check for jisystem.autoregister flag.
                 // jisystem takes precedence over clsid.
 
-                if (Interop.UseAutoRegistration || clsid.UseAutoRegistration) {
+                if (Interop.UseAutoRegistration || clsid.UseAutoRegistration)
+                {
 
                     // first create the registry entries.
-                    try {
+                    try
+                    {
                         IRegistry registry = null;
-                        if (session.SSOEnabled) {
+                        if (session.SSOEnabled)
+                        {
                             registry = RegistryFactory.Instance.GetRegistryClient(session.TargetServer, true);
                         }
-                        else {
+                        else
+                        {
                             registry = RegistryFactory.Instance.GetRegistryClient(new DefaultAuthInfoImpl(
                                 session.Domain, session.UserName, session.Password), session.TargetServer, true);
                         }
 
                         PolicyHandle hklm = null;
                         PolicyHandle hkwow6432 = null;
-                        try {
+                        try
+                        {
                             // Try 64bit first...
                             hklm = registry.OpenHKLM();
                             hkwow6432 = registry.OpenKey(hklm, "SOFTWARE\\Classes\\Wow6432Node", RegKeyAccess.KEY_ALL_ACCESS);
                         }
-                        catch (InteropException) {
+                        catch (InteropException)
+                        {
                         }
 
-                        if (hklm != null) {
+                        if (hklm != null)
+                        {
                             registry.CloseKey(hklm);
                         }
 
-                        if (hkwow6432 != null) {
+                        if (hkwow6432 != null)
+                        {
                             Log.Logger.Information("Attempting to register on 64 bit");
 
                             // HKEY_LOCAL_MACHINE\SOFTWARE\Classes\Wow6432Node\CLSID\{E4BE20A4-9EF1-4B05-9117-AF43EAB4B295}\ -- "AppID"
@@ -477,7 +537,8 @@ public sealed class ComServer : Stub {
                                 _clsid + " -- DllSurrogate");
                             registry.CloseKey(hkwow6432);
                         }
-                        else {
+                        else
+                        {
                             Log.Logger.Information("Attempting to register on 32 bit");
                             var hkcr = registry.OpenHKCR();
                             var key = registry.CreateKey(hkcr, "CLSID\\{" + _clsid + "}",
@@ -493,7 +554,8 @@ public sealed class ComServer : Stub {
                         }
                         registry.CloseConnection();
                     }
-                    catch (UnknownHostException e1) {
+                    catch (UnknownHostException e1)
+                    {
                         // auto registration failed as well...
                         Log.Logger.Error(e, "ComServer initialise");
                         throw new InteropException(ErrorCode.INTEROP_WINREG_EXCEPTION3, e1);
@@ -501,11 +563,13 @@ public sealed class ComServer : Stub {
                     // lets retry
                     Init();
                 }
-                else {
+                else
+                {
                     throw;
                 }
             }
-            else {
+            else
+            {
                 throw;
             }
         }
@@ -518,13 +582,16 @@ public sealed class ComServer : Stub {
     /// Initialize
     /// </summary>
     /// <exception cref="InteropException"></exception>
-    private void Init() {
-        if (_serverActivation != null && _serverActivation.ActivationSuccessful) {
+    private void Init()
+    {
+        if (_serverActivation != null && _serverActivation.ActivationSuccessful)
+        {
             return;
         }
 
         var attachcomplete = false;
-        try {
+        try
+        {
             _syntax = Interfaces.IID_IObjectExporter.ToLower(CultureInfo.InvariantCulture) + ":0.0";
             Attach();
             // socket to COM server is established
@@ -546,18 +613,22 @@ public sealed class ComServer : Stub {
             serverAlive.AttachSession(_session);
             serverAlive.Opnum = 2;
             serverAlive.Internal_COMVersion();
-            try {
+            try
+            {
                 Call(Semantics.IDEMPOTENT, serverAlive);
                 Interop.COMVersion = serverAlive.Internal_getComVersion();
             }
-            catch (InteropRuntimeException e) {
-                if (e.HResult == unchecked((int)ErrorCode.RPC_S_PROCNUM_OUT_OF_RANGE)) {
+            catch (InteropRuntimeException e)
+            {
+                if (e.HResult == unchecked((int)ErrorCode.RPC_S_PROCNUM_OUT_OF_RANGE))
+                {
                     Interop.COMVersion.MajorVersion = 5;
                     Interop.COMVersion.MinorVersion = 1;
                 }
             }
 
-            if (Interop.COMVersion != null && Interop.COMVersion.MinorVersion > 1) {
+            if (Interop.COMVersion != null && Interop.COMVersion.MinorVersion > 1)
+            {
                 // Default path: IRemoteSCMActivator (DCOM v5.6 / Win XP SP2+ /
                 // Win Server 2003+). Required by Microsoft's DCOM hardening
                 // (KB5004442, mandatory since March 2023) which rejects activation
@@ -570,7 +641,8 @@ public sealed class ComServer : Stub {
                 _serverActivation = new RemoteSCMActivator.RemoteCreateInstance(_session.TargetServer, _clsid, _activationAuthenticationLevel);
                 Call(Semantics.IDEMPOTENT, (RemoteSCMActivator.RemoteCreateInstance)_serverActivation);
             }
-            else {
+            else
+            {
                 // Legacy path: IRemoteActivation (DCOM v5.4 / Win 2000 / XP RTM).
                 // Opt-in only — set Interop.COMVersion = new ComVersion(5, 1).
                 // Hardened Windows DCOM servers will reject this path with
@@ -583,25 +655,32 @@ public sealed class ComServer : Stub {
                 Call(Semantics.IDEMPOTENT, (RemActivation)_serverActivation);
             }
         }
-        catch (FaultException e) {
+        catch (FaultException e)
+        {
             _serverActivation = null;
             throw new InteropException((int)e.Code, e);
         }
-        catch (IOException e) {
+        catch (IOException e)
+        {
             _serverActivation = null;
             throw new InteropException(ErrorCode.RPC_E_UNEXPECTED, e);
         }
-        catch (InteropRuntimeException e1) {
+        catch (InteropRuntimeException e1)
+        {
             _serverActivation = null;
             throw new InteropException(e1);
         }
-        finally {
+        finally
+        {
             // the only time remactivation will be null will be case of an exception.
-            if (attachcomplete && _serverActivation == null) {
-                try {
+            if (attachcomplete && _serverActivation == null)
+            {
+                try
+                {
                     Detach();
                 }
-                catch (IOException e) {
+                catch (IOException e)
+                {
                     Log.Logger.Warning(e, "Unable to detach during init");
                 }
             }
@@ -617,7 +696,8 @@ public sealed class ComServer : Stub {
         StringBinding nameBinding = null;
         var targetAddress = Address;
         targetAddress = targetAddress.SubstringSpecial(targetAddress.IndexOf(':') + 1, targetAddress.IndexOf('['));
-        while (i < bindings.Length) {
+        while (i < bindings.Length)
+        {
             binding = bindings[i];
             if (binding.TowerId != 0x07) // this means, even though I asked for TCPIP something else was supplied, noticed this in win2k.
             {
@@ -626,38 +706,46 @@ public sealed class ComServer : Stub {
             }
             // get the one with IP address
             var idx = binding.NetworkAddress.IndexOf('.');
-            if (idx != -1) {
-                try {
+            if (idx != -1)
+            {
+                try
+                {
                     idx = binding.NetworkAddress.IndexOf('['); // this contains the port
-                    if (idx != -1 && binding.NetworkAddress.Substring(0, idx).Equals(targetAddress, StringComparison.CurrentCultureIgnoreCase)) {
+                    if (idx != -1 && binding.NetworkAddress.Substring(0, idx).Equals(targetAddress, StringComparison.CurrentCultureIgnoreCase))
+                    {
                         break;
                     }
                 }
-                catch (FormatException) {
+                catch (FormatException)
+                {
 
                 }
             }
-            else {
+            else
+            {
                 // can only come for the name, saving it incase nothing matches the target address
                 // then we are not sure which is the right IP and which might be virtual, refer to
                 // issue faced by Igor.
                 nameBinding = binding;
                 idx = binding.NetworkAddress.IndexOf('['); // this contains the port
-                if (binding.NetworkAddress.Substring(0, idx).Equals(targetAddress, StringComparison.CurrentCultureIgnoreCase)) {
+                if (binding.NetworkAddress.Substring(0, idx).Equals(targetAddress, StringComparison.CurrentCultureIgnoreCase))
+                {
                     break;
                 }
             }
             i++;
         }
 
-        if (binding == null) {
+        if (binding == null)
+        {
             binding = nameBinding;
         }
 
         // will use this last binding .
         // and currently only TCPIP is supported.
         // now set the NTLMv2 Session Security.
-        if (_session.SessionSecurityEnabled) {
+        if (_session.SessionSecurityEnabled)
+        {
             Properties.SetProperty("rpc.ntlm.seal", "true");
             Properties.SetProperty("rpc.ntlm.sign", "true");
             Properties.SetProperty("rpc.ntlm.keyExchange", "true");
@@ -669,7 +757,8 @@ public sealed class ComServer : Stub {
         var index = address.IndexOf('[');
         var hostname = binding.NetworkAddress.Substring(0, index);
         var ipAddr = Interop.GetIPForHostName(hostname); // to use the binding supplied by the user.
-        if (ipAddr != null) {
+        if (ipAddr != null)
+        {
             address = string.Concat(ipAddr, address.AsSpan(index));
         }
 
@@ -685,24 +774,30 @@ public sealed class ComServer : Stub {
     /// <param name="ipidOfTheTargetUnknown"></param>
     /// <returns></returns>
     /// <exception cref="InteropException"></exception>
-    internal IComObject GetInterface(string iid, string ipidOfTheTargetUnknown) {
+    internal IComObject GetInterface(string iid, string ipidOfTheTargetUnknown)
+    {
         IComObject retval = null;
         // this is still essentially serial, since all threads will have to wait for mutex before
         // entering addToSession.
-        lock (_mutex) {
+        lock (_mutex)
+        {
             // now also set the Object ID for IRemUnknown call this will be the IPID of the returned RemActivation
             Object = _remunknownIPID;
             var reqUnknown = new RemUnknown2(ipidOfTheTargetUnknown, iid);
-            try {
+            try
+            {
                 _session.Stub2.Call(Semantics.IDEMPOTENT, reqUnknown);
             }
-            catch (FaultException e) {
+            catch (FaultException e)
+            {
                 throw new InteropException((int)e.Code, e);
             }
-            catch (IOException e) {
+            catch (IOException e)
+            {
                 throw new InteropException(ErrorCode.RPC_E_UNEXPECTED, e);
             }
-            catch (InteropRuntimeException e1) {
+            catch (InteropRuntimeException e1)
+            {
                 // remoteActivation = null;
                 throw new InteropException(e1);
             }
@@ -711,28 +806,34 @@ public sealed class ComServer : Stub {
             // increasing the reference count.
             retval.AddRef();
             // for querying dispatch we can't send another call
-            if (!iid.Equals(Interfaces.IID_IDispatch, StringComparison.CurrentCultureIgnoreCase)) {
+            if (!iid.Equals(Interfaces.IID_IDispatch, StringComparison.CurrentCultureIgnoreCase))
+            {
                 var success = true;
                 ((ComObjectImpl)retval).IsDual = true;
                 // now to check whether it supports IDispatch
                 // IDispatch 00020400-0000-0000-c000-000000000046
                 var dispatch = new RemUnknown2(retval.Ipid, Interfaces.IID_IDispatch);
-                try {
+                try
+                {
                     _session.Stub2.Call(Semantics.IDEMPOTENT, dispatch);
                 }
-                catch (FaultException e) {
+                catch (FaultException e)
+                {
                     throw new InteropException((int)e.Code, e);
                 }
-                catch (IOException e) {
+                catch (IOException e)
+                {
                     throw new InteropException(ErrorCode.RPC_E_UNEXPECTED, e);
                 }
-                catch (InteropRuntimeException) {
+                catch (InteropRuntimeException)
+                {
                     // will eat this exception here.
                     ((ComObjectImpl)retval).IsDual = false;
                     success = false;
                 }
 
-                if (success) {
+                if (success)
+                {
                     // which means that IDispatch is supported
                     _session.ReleaseRef(dispatch.InterfacePointer.IPID, ((StdObjRef)dispatch.InterfacePointer.GetObjectReference(InterfacePointer.OBJREF_STANDARD)).PublicRefs);
                 }
@@ -747,8 +848,10 @@ public sealed class ComServer : Stub {
     /// Returns an <code><see cref="IComObject"/></code> representing the COM Server.
     /// </summary>
     /// <exception cref="InteropException"> </exception>
-    public IComObject CreateInstance() {
-        if (_interfacePtrCtor != null) {
+    public IComObject CreateInstance()
+    {
+        if (_interfacePtrCtor != null)
+        {
             throw new InvalidOperationException(Interop.GetLocalizedMessage(
                 ErrorCode.INTEROP_COMSTUB_WRONGCALLCREATEINSTANCE));
         }
@@ -756,12 +859,15 @@ public sealed class ComServer : Stub {
 
         // This method is still essentially serial, since all threads will have to stop at mutex and then
         // go to addToSession after it (since there is no condition).
-        lock (_mutex) {
-            if (_serverInstantiated) {
+        lock (_mutex)
+        {
+            if (_serverInstantiated)
+            {
                 throw new InteropException(ErrorCode.INTEROP_OBJECT_ALREADY_INSTANTIATED);
             }
             comObject = FrameworkHelper.InstantiateComObject(_session, _serverActivation.MInterfacePointer);
-            if (_serverActivation.Dual) {
+            if (_serverActivation.Dual)
+            {
                 // <see cref="IComObject"/> comObject2 = getObject(remoteActivation.dispIpid,Interfaces.IID_IDispatch);
                 // this will get garbage collected and then removed.
                 // session.addToSession(comObject2,remoteActivation.dispOid);
@@ -769,7 +875,8 @@ public sealed class ComServer : Stub {
                 _serverActivation.DispIpid = null;
                 ((ComObjectImpl)comObject).IsDual = true;
             }
-            else {
+            else
+            {
                 ((ComObjectImpl)comObject).IsDual = false;
             }
             // increasing the reference count.
@@ -786,9 +893,12 @@ public sealed class ComServer : Stub {
     /// otherwise use createInstance() instead.
     /// </summary>
     /// <exception cref="InteropException"> </exception>
-    internal IComObject Instance {
-        get {
-            if (_interfacePtrCtor == null) {
+    internal IComObject Instance
+    {
+        get
+        {
+            if (_interfacePtrCtor == null)
+            {
                 throw new InvalidOperationException(Interop.GetLocalizedMessage(
                     ErrorCode.INTEROP_COMSTUB_WRONGCALLGETINSTANCE));
             }
@@ -796,8 +906,10 @@ public sealed class ComServer : Stub {
             IComObject comObject = null;
             // This method is still essentially serial, since all threads will have to stop at mutex and then
             // go to addToSession after it (since there is no condition).
-            lock (_mutex) {
-                if (_serverInstantiated) {
+            lock (_mutex)
+            {
+                if (_serverInstantiated)
+                {
                     throw new InteropException(ErrorCode.INTEROP_OBJECT_ALREADY_INSTANTIATED);
                 }
                 comObject = FrameworkHelper.InstantiateComObject(_session, _interfacePtrCtor);
@@ -833,25 +945,32 @@ public sealed class ComServer : Stub {
     /// </param>
     /// <param name="socketTimeout"></param>
     /// <exception cref="InteropException"> </exception>
-    internal object[] Call(CallBuilder obj, string targetIID, int socketTimeout) {
-        lock (_mutex) {
+    internal object[] Call(CallBuilder obj, string targetIID, int socketTimeout)
+    {
+        lock (_mutex)
+        {
 
-            if (_session.SessionInDestroy && !obj.FromDestroySession) {
+            if (_session.SessionInDestroy && !obj.FromDestroySession)
+            {
                 throw new InteropException(ErrorCode.INTEROP_SESSION_DESTROYED);
             }
 
-            if (socketTimeout != 0) {
+            if (socketTimeout != 0)
+            {
                 SocketTimeOut = socketTimeout;
             }
             else // for cases where it was something earlier, but is now being set to 0.
             {
-                if (_timeoutModifiedfrom0) {
+                if (_timeoutModifiedfrom0)
+                {
                     SocketTimeOut = socketTimeout;
                 }
             }
-            try {
+            try
+            {
                 Attach();
-                if (!Endpoint.Syntax.Uuid.ToString().Equals(targetIID, StringComparison.CurrentCultureIgnoreCase)) {
+                if (!Endpoint.Syntax.Uuid.ToString().Equals(targetIID, StringComparison.CurrentCultureIgnoreCase))
+                {
                     // first send an AlterContext to the IID of the interface
                     Endpoint.Syntax.Uuid = new Opc.Classic.Dcom.Rpc.Core.UUID(targetIID);
                     Endpoint.Syntax.Version = 0;
@@ -861,13 +980,16 @@ public sealed class ComServer : Stub {
                 Object = obj.ParentIpid;
                 Call(Semantics.IDEMPOTENT, obj);
             }
-            catch (FaultException e) {
+            catch (FaultException e)
+            {
                 throw new InteropException((int)e.Code, e);
             }
-            catch (IOException e) {
+            catch (IOException e)
+            {
                 throw new InteropException(ErrorCode.RPC_E_UNEXPECTED, e);
             }
-            catch (InteropRuntimeException e1) {
+            catch (InteropRuntimeException e1)
+            {
                 throw new InteropException(e1);
             }
             return obj.Results;
@@ -886,20 +1008,25 @@ public sealed class ComServer : Stub {
     /// </summary>
     /// <param name="obj"></param>
     /// <exception cref="InteropException"> </exception>
-    internal void AddRef_ReleaseRef(CallBuilder obj) {
-        lock (_mutex) {
+    internal void AddRef_ReleaseRef(CallBuilder obj)
+    {
+        lock (_mutex)
+        {
 
-            if (_remunknownIPID == null) {
+            if (_remunknownIPID == null)
+            {
                 return;
             }
             // now also set the Object ID for IRemUnknown call this will be 
             // the IPID of the returned RemActivation or IOxidResolver
             obj.ParentIpid = _remunknownIPID;
             obj.AttachSession(_session);
-            try {
+            try
+            {
                 Call(obj, Interfaces.IID_IRemUnknown2);
             }
-            catch (InteropRuntimeException e1) {
+            catch (InteropRuntimeException e1)
+            {
                 throw new InteropException(e1);
             }
 
@@ -909,12 +1036,15 @@ public sealed class ComServer : Stub {
     /// <summary>
     /// Close
     /// </summary>
-    internal void CloseStub() {
-        try {
+    internal void CloseStub()
+    {
+        try
+        {
             Detach();
         }
 #pragma warning disable RECS0022 // A catch clause that catches System.Exception and has an empty body
-        catch {
+        catch
+        {
 #pragma warning restore RECS0022 // A catch clause that catches System.Exception and has an empty body
         }
     }
@@ -922,12 +1052,16 @@ public sealed class ComServer : Stub {
     /// <summary>
     /// Socket timeout
     /// </summary>
-    internal int SocketTimeOut {
-        set {
-            if (value == 0) {
+    internal int SocketTimeOut
+    {
+        set
+        {
+            if (value == 0)
+            {
                 _timeoutModifiedfrom0 = false;
             }
-            else {
+            else
+            {
                 _timeoutModifiedfrom0 = true;
             }
 

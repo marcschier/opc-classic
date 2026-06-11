@@ -14,13 +14,16 @@ using TUnit.Core;
 
 namespace Opc.Classic.PropertyTests;
 
-public sealed class FileTimeHelperProperties {
+public sealed class FileTimeHelperProperties
+{
     [Test]
-    public Task ToFromFileTime_RoundTrips_ForAnyValidDateTimeOffset() {
+    public Task ToFromFileTime_RoundTrips_ForAnyValidDateTimeOffset()
+    {
         // Ticks from Epoch (1601-01-01) up to the upper bound where adding
         // Epoch.Ticks would still fit in DateTimeOffset.Ticks.
         var maxTicks = DateTimeOffset.MaxValue.Ticks - FileTimeHelper.Epoch.Ticks;
-        Gen.Long[0, maxTicks].Sample(ticks => {
+        Gen.Long[0, maxTicks].Sample(ticks =>
+        {
             var dt = FileTimeHelper.FromFileTime(ticks);
             var back = FileTimeHelper.ToFileTime(dt);
             return back == ticks;
@@ -29,9 +32,11 @@ public sealed class FileTimeHelperProperties {
     }
 
     [Test]
-    public Task LowHighWordSplit_RecombinesIdentically_ForAnyFileTime() {
+    public Task LowHighWordSplit_RecombinesIdentically_ForAnyFileTime()
+    {
         var maxTicks = DateTimeOffset.MaxValue.Ticks - FileTimeHelper.Epoch.Ticks;
-        Gen.Long[0, maxTicks].Sample(ticks => {
+        Gen.Long[0, maxTicks].Sample(ticks =>
+        {
             var dt = FileTimeHelper.FromFileTime(ticks);
             var (low, high) = FileTimeHelper.ToFileTimeWords(dt);
             var rebuilt = FileTimeHelper.FromFileTime(low, high);
@@ -41,11 +46,14 @@ public sealed class FileTimeHelperProperties {
     }
 }
 
-public sealed class OpcQualityProperties {
+public sealed class OpcQualityProperties
+{
     [Test]
-    public Task Compose_RoundTrips_AllSubFields_ForAnyValidInput() {
+    public Task Compose_RoundTrips_AllSubFields_ForAnyValidInput()
+    {
         Gen.Select(Gen.Int[0, 3], Gen.Int[0, 15], Gen.Int[0, 3], Gen.Byte)
-           .Sample(t => {
+           .Sample(t =>
+           {
                var kind = (OpcQualityKind)t.Item1;
                var sub = t.Item2;
                var limit = (OpcQualityLimit)t.Item3;
@@ -61,9 +69,11 @@ public sealed class OpcQualityProperties {
     }
 
     [Test]
-    public Task WithSubstatus_PreservesOtherFields_ForAnyInput() {
+    public Task WithSubstatus_PreservesOtherFields_ForAnyInput()
+    {
         Gen.Select(Gen.Int[0, 3], Gen.Int[0, 15], Gen.Int[0, 15], Gen.Int[0, 3], Gen.Byte)
-           .Sample(t => {
+           .Sample(t =>
+           {
                var kind = (OpcQualityKind)t.Item1;
                var origSub = t.Item2;
                var newSub = t.Item3;
@@ -80,7 +90,8 @@ public sealed class OpcQualityProperties {
     }
 }
 
-public sealed class OpcUrlProperties {
+public sealed class OpcUrlProperties
+{
     private static readonly string[] Schemes = { "opcda", "opcae", "opchda", "opcdx", "opc.xml-da" };
     private static readonly OpcUrlScheme[] SchemeEnums =
     {
@@ -92,12 +103,14 @@ public sealed class OpcUrlProperties {
         Gen.OneOf(Gen.Char['a', 'z'], Gen.Char['A', 'Z']);
 
     [Test]
-    public Task Parse_AndToString_RoundTrip_AcrossAllSchemes() {
+    public Task Parse_AndToString_RoundTrip_AcrossAllSchemes()
+    {
         Gen.Select(
             Gen.Int[0, Schemes.Length - 1],
             LetterGen.Array[1, 16],
             LetterGen.Array[1, 32])
-           .Sample(t => {
+           .Sample(t =>
+           {
                var schemeIdx = t.Item1;
                var host = new string(t.Item2);
                var progId = new string(t.Item3);
@@ -112,13 +125,15 @@ public sealed class OpcUrlProperties {
     }
 
     [Test]
-    public Task Parse_WithPort_ExtractsPortAcrossAllSchemes() {
+    public Task Parse_WithPort_ExtractsPortAcrossAllSchemes()
+    {
         Gen.Select(
             Gen.Int[0, Schemes.Length - 1],
             LetterGen.Array[1, 16],
             Gen.Int[1, 65535],
             LetterGen.Array[1, 32])
-           .Sample(t => {
+           .Sample(t =>
+           {
                var schemeIdx = t.Item1;
                var host = new string(t.Item2);
                var port = t.Item3;
@@ -132,10 +147,13 @@ public sealed class OpcUrlProperties {
     }
 }
 
-public sealed class CryptoProperties {
+public sealed class CryptoProperties
+{
     [Test]
-    public Task Md4_AlwaysProduces16Bytes_ForAnyInput() {
-        Gen.Byte.Array[0, 1024].Sample(data => {
+    public Task Md4_AlwaysProduces16Bytes_ForAnyInput()
+    {
+        Gen.Byte.Array[0, 1024].Sample(data =>
+        {
             var hash = Opc.Classic.Dcom.Crypto.Md4.HashData(data);
             return hash.Length == 16;
         });
@@ -143,8 +161,10 @@ public sealed class CryptoProperties {
     }
 
     [Test]
-    public Task Md4_Deterministic_SameInputAlwaysSameOutput() {
-        Gen.Byte.Array[0, 256].Sample(data => {
+    public Task Md4_Deterministic_SameInputAlwaysSameOutput()
+    {
+        Gen.Byte.Array[0, 256].Sample(data =>
+        {
             var h1 = Opc.Classic.Dcom.Crypto.Md4.HashData(data);
             var h2 = Opc.Classic.Dcom.Crypto.Md4.HashData(data);
             return Convert.ToHexString(h1) == Convert.ToHexString(h2);
@@ -153,9 +173,11 @@ public sealed class CryptoProperties {
     }
 
     [Test]
-    public Task Rc4_IsSelfInverse_ForAnyKeyAndData() {
+    public Task Rc4_IsSelfInverse_ForAnyKeyAndData()
+    {
         Gen.Select(Gen.Byte.Array[1, 64], Gen.Byte.Array[0, 256])
-           .Sample(t => {
+           .Sample(t =>
+           {
                var key = t.Item1;
                var plaintext = t.Item2;
                var ciphertext = new Opc.Classic.Dcom.Crypto.Rc4(key).Process(plaintext);
@@ -166,9 +188,11 @@ public sealed class CryptoProperties {
     }
 
     [Test]
-    public Task Rc4_OutputLength_EqualsInputLength() {
+    public Task Rc4_OutputLength_EqualsInputLength()
+    {
         Gen.Select(Gen.Byte.Array[1, 32], Gen.Byte.Array[0, 256])
-           .Sample(t => {
+           .Sample(t =>
+           {
                var key = t.Item1;
                var data = t.Item2;
                var output = new Opc.Classic.Dcom.Crypto.Rc4(key).Process(data);
@@ -178,10 +202,13 @@ public sealed class CryptoProperties {
     }
 }
 
-public sealed class OpcResultIdProperties {
+public sealed class OpcResultIdProperties
+{
     [Test]
-    public Task SeverityBit_DerivedConsistently_FromAnyCode() {
-        Gen.Int.Sample(code => {
+    public Task SeverityBit_DerivedConsistently_FromAnyCode()
+    {
+        Gen.Int.Sample(code =>
+        {
             var r = new OpcResultId(code, null);
             var hasSeverityBit = (code & unchecked((int)0x80000000)) != 0;
             return r.IsFailure == hasSeverityBit
@@ -191,8 +218,10 @@ public sealed class OpcResultIdProperties {
     }
 
     [Test]
-    public Task Facility_ExtractedAccordingToHResultEncoding() {
-        Gen.Int.Sample(code => {
+    public Task Facility_ExtractedAccordingToHResultEncoding()
+    {
+        Gen.Int.Sample(code =>
+        {
             var r = new OpcResultId(code, null);
             var expectedFacility = (code >> 16) & 0x07FF;
             return r.Facility == expectedFacility;

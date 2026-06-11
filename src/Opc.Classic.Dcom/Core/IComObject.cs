@@ -40,7 +40,8 @@ namespace Opc.Classic.Dcom.Core;
 /// <b>Note</b>: Methods starting with <i>internal_</i> keyword are internal 
 /// to the framework and must not be called by the developer.
 /// </summary>
-public interface IComObject {
+public interface IComObject
+{
 
     /// <summary>
     /// Unique 128 bit uuid representing the interface on the COM server.

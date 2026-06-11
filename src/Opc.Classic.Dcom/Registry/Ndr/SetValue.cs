@@ -6,7 +6,8 @@ using Opc.Classic.Dcom.Internal.LegacyNdr;
 namespace Opc.Classic.Dcom.Registry;
 
 /// <inheritdoc/>
-public class SetValue : NdrOp {
+public class SetValue : NdrOp
+{
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 #pragma warning disable IDE1006 // Naming Styles
@@ -25,7 +26,8 @@ public class SetValue : NdrOp {
 
     /// <inheritdoc/>
 #pragma warning disable MA0051 // Legacy NDR encode mirrors the WinReg wire layout.
-    public override void Write(NdrCodec ndr) {
+    public override void Write(NdrCodec ndr)
+    {
 
         // Write parent handle
         ndr.WriteOctetArray(parentKey.Handle, 0, 20);
@@ -46,7 +48,8 @@ public class SetValue : NdrOp {
         ndr.WriteUnsignedLong(valueName.Length + 1);
 
         var i = 0;
-        while (i < valueName.Length) {
+        while (i < valueName.Length)
+        {
             ndr.WriteUnsignedShort(valueName[i]);
             i++;
         }
@@ -61,8 +64,10 @@ public class SetValue : NdrOp {
         ndr.WriteUnsignedLong((int)clazzType);
 
         i = 0;
-        if (lengthInBytes != 0) {
-            switch (clazzType) {
+        if (lengthInBytes != 0)
+        {
+            switch (clazzType)
+            {
                 case RegValueType.REG_EXPAND_SZ: // for environment variable strings
                 case RegValueType.REG_SZ:
                     // for strings, strings are null terminated, length in
@@ -70,7 +75,8 @@ public class SetValue : NdrOp {
                     // character writing the max count
                     ndr.WriteUnsignedLong((lengthInBytes + 1) * 2);
 
-                    while (i < data.Length) {
+                    while (i < data.Length)
+                    {
                         ndr.WriteUnsignedShort(data[i]);
                         i++;
                     }
@@ -104,8 +110,10 @@ public class SetValue : NdrOp {
                     // character.  Writing the max count, this will be computed before hand
                     ndr.WriteUnsignedLong(lengthInBytes);
 
-                    for (i = 0; i < data2.Length; i++) {
-                        for (var j = 0; j < data2[i].Length; j++) {
+                    for (i = 0; i < data2.Length; i++)
+                    {
+                        for (var j = 0; j < data2[i].Length; j++)
+                        {
                             ndr.WriteUnsignedShort(data2[i][j]);
                         }
                         // null termination for each string
@@ -123,7 +131,8 @@ public class SetValue : NdrOp {
                     throw new InteropRuntimeException((int)ErrorCode.INTEROP_WINREG_EXCEPTION4);
             }
         }
-        else {
+        else
+        {
             // for data
             ndr.WriteUnsignedLong(0);
             // for length
@@ -133,9 +142,11 @@ public class SetValue : NdrOp {
 #pragma warning restore MA0051
 
     /// <inheritdoc/>
-    public override void Read(NdrCodec ndr) {
+    public override void Read(NdrCodec ndr)
+    {
         var hresult = ndr.ReadUnsignedLong();
-        if (hresult != 0) {
+        if (hresult != 0)
+        {
             throw new InteropRuntimeException(hresult);
         }
     }

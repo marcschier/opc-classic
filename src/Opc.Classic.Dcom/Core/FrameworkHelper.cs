@@ -12,14 +12,16 @@ namespace Opc.Classic.Dcom.Core;
 /// <summary>
 /// Internal Framework Helper class. Do not use outside of framework.
 /// </summary>
-public static class FrameworkHelper {
+public static class FrameworkHelper
+{
 
     /// <summary>
     /// link session
     /// </summary>
     /// <param name="src"> </param>
     /// <param name="target"> </param>
-    internal static void Link2Sessions(Session src, Session target) {
+    internal static void Link2Sessions(Session src, Session target)
+    {
         ArgumentNullException.ThrowIfNull(src);
         ArgumentNullException.ThrowIfNull(target);
         Session.LinkTwoSessions(src, target);
@@ -30,7 +32,8 @@ public static class FrameworkHelper {
     /// </summary>
     /// <param name="src"> </param>
     /// <param name="unlinkedSession"> </param>
-    internal static void UnLinkSession(Session src, Session unlinkedSession) {
+    internal static void UnLinkSession(Session src, Session unlinkedSession)
+    {
         ArgumentNullException.ThrowIfNull(src);
         ArgumentNullException.ThrowIfNull(unlinkedSession);
         Session.UnLinkSession(src, unlinkedSession);
@@ -60,7 +63,8 @@ public static class FrameworkHelper {
     /// <param name="ptr"></param>
     /// <exception cref="InteropException"> </exception>
     /// <returns></returns>
-    internal static IComObject InstantiateComObject(Session session, InterfacePointer ptr) {
+    internal static IComObject InstantiateComObject(Session session, InterfacePointer ptr)
+    {
         var retval = InstantiateComObject2(session, ptr);
         AddComObjectToSession(retval.AssociatedSession, retval);
         return retval;
@@ -73,18 +77,22 @@ public static class FrameworkHelper {
     /// <param name="ptr"></param>
     /// <exception cref="InteropException"> </exception>
     /// <returns></returns>
-    internal static IComObject InstantiateComObject2(Session session, InterfacePointer ptr) {
-        if (ptr == null) {
+    internal static IComObject InstantiateComObject2(Session session, InterfacePointer ptr)
+    {
+        if (ptr == null)
+        {
             throw new ArgumentException(Interop.GetLocalizedMessage(ErrorCode.INTEROP_COMFACTORY_ILLEGAL_ARG), nameof(ptr));
         }
 
         IComObject retval = null;
         var stubPtr = GetInterfacePointerOfStub(session);
-        if (!InterfacePointer.IsOxidEqual(stubPtr, ptr)) {
+        if (!InterfacePointer.IsOxidEqual(stubPtr, ptr))
+        {
             Log.Logger.Warning("NEW SESSION IDENTIFIED ! for ptr " + ptr);
             // first check if a session for this OXID does not already exist and thus its stub
             var newsession = ResolveSessionForOXID(ptr.OXID);
-            if (newsession == null) {
+            if (newsession == null)
+            {
                 // new COM server pointer
                 newsession = Session.CreateSession(session);
                 newsession.GlobalSocketTimeout = session.GlobalSocketTimeout;
@@ -99,7 +107,8 @@ public static class FrameworkHelper {
             session = newsession;
         }
 
-        if (retval == null) {
+        if (retval == null)
+        {
             retval = new ComObjectImpl(session, ptr);
         }
 
@@ -144,17 +153,20 @@ public static class FrameworkHelper {
     /// <param name="ipAddress"></param>
     /// <exception cref="InteropException"> </exception>
     /// <returns></returns>
-    public static IComObject InstantiateComObject(Session session, byte[] rawBytes, string ipAddress) {
+    public static IComObject InstantiateComObject(Session session, byte[] rawBytes, string ipAddress)
+    {
         var ndr = new NdrCodec();
         var ndrBuffer = new NdrBuffer(rawBytes, 0);
         ndr.Buffer = ndrBuffer;
         ndrBuffer.Length = rawBytes.Length;
-        var context = new CodecContext {
+        var context = new CodecContext
+        {
             CurrentSession = session,
             Flag = InteropFlags.FLAG_REPRESENTATION_INTERFACEPTR_DECODE2
         };
         // this is a brand new session.
-        if (session.Stub == null) {
+        if (session.Stub == null)
+        {
             var comServer = new ComServer(session, InterfacePointer.Decode(ndr, context), ipAddress);
             return comServer.Instance;
         }
@@ -174,13 +186,16 @@ public static class FrameworkHelper {
     /// <param name="comObject"></param>
     /// <exception cref="InteropException"> </exception>
     /// <returns></returns>
-    public static IComObject InstantiateComObject(Session session, IComObject comObject) {
-        if (comObject.AssociatedSession != null) {
+    public static IComObject InstantiateComObject(Session session, IComObject comObject)
+    {
+        if (comObject.AssociatedSession != null)
+        {
             throw new ArgumentException(Interop.GetLocalizedMessage(
                 ErrorCode.INTEROP_SESSION_ALREADY_ATTACHED), nameof(comObject));
         }
 
-        if (comObject.LocalReference) {
+        if (comObject.LocalReference)
+        {
             throw new ArgumentException(Interop.GetLocalizedMessage(
                 ErrorCode.INTEROP_COMOBJ_LOCAL_REF), nameof(comObject));
         }
@@ -195,9 +210,11 @@ public static class FrameworkHelper {
     /// <param name="comObject"> </param>
     /// <param name="identifier"> </param>
     /// <exception cref="InteropException"> </exception>
-    public static void DetachEventHandler(IComObject comObject, string identifier) {
+    public static void DetachEventHandler(IComObject comObject, string identifier)
+    {
         var connectionInfo = ((IComObjectInternal)comObject).GetConnectionInfo(identifier);
-        if (connectionInfo == null) {
+        if (connectionInfo == null)
+        {
             throw new InteropException(ErrorCode.INTEROP_CALLBACK_INVALID_ID);
         }
 
@@ -207,7 +224,8 @@ public static class FrameworkHelper {
         var connectionPointer = (IComObject)connectionInfo[0];
 
         // first use the cookie to detach.
-        var @object = new CallBuilder(true) {
+        var @object = new CallBuilder(true)
+        {
             Opnum = 3
         };
         @object.AddInParamAsInt((int)connectionInfo[1]);
@@ -224,11 +242,13 @@ public static class FrameworkHelper {
     /// <exception cref="InteropException"> </exception>
     /// <returns></returns>
     public static string AttachEventHandler(IComObject comObject, string sourceUUID,
-        IComObject eventListener) {
+        IComObject eventListener)
+    {
         if (eventListener == null ||
             comObject == null ||
             sourceUUID == null ||
-            sourceUUID.Equals("", StringComparison.CurrentCultureIgnoreCase)) {
+            sourceUUID.Equals("", StringComparison.CurrentCultureIgnoreCase))
+        {
             throw new ArgumentException(Interop.GetLocalizedMessage(
                 ErrorCode.INTEROP_CALLBACK_INVALID_PARAMS), nameof(sourceUUID));
         }
@@ -239,7 +259,8 @@ public static class FrameworkHelper {
             " and eventListner IPID: " + eventListener.Ipid);
         // IID of IConnectionPointContainer : B196B284-BAB4-101A-B69C-00AA00341D07
         var connectionPointContainer = comObject.QueryInterface("B196B284-BAB4-101A-B69C-00AA00341D07");
-        var @object = new CallBuilder(true) {
+        var @object = new CallBuilder(true)
+        {
             Opnum = 1
         };
         @object.AddInParamAsUUID(sourceUUID);

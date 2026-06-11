@@ -8,7 +8,8 @@ namespace Opc.Classic.Dcom.Rpc.Core;
 /// <summary>
 /// Presentation layer context
 /// </summary>
-public class PresentationContext : NdrOp {
+public class PresentationContext : NdrOp
+{
 
     /// <summary>
     /// Context
@@ -31,7 +32,8 @@ public class PresentationContext : NdrOp {
     public PresentationContext() :
         this(0, new PresentationSyntax(), new PresentationSyntax[] {
             new PresentationSyntax(NdrCodec.NDR_SYNTAX)
-        }) {
+        })
+    {
     }
 
     /// <summary>
@@ -42,7 +44,8 @@ public class PresentationContext : NdrOp {
     public PresentationContext(int contextId, PresentationSyntax abstractSyntax) :
         this(contextId, abstractSyntax, new PresentationSyntax[] {
             new PresentationSyntax(NdrCodec.NDR_SYNTAX)
-        }) {
+        })
+    {
     }
 
     /// <summary>
@@ -52,44 +55,53 @@ public class PresentationContext : NdrOp {
     /// <param name="abstractSyntax"></param>
     /// <param name="transferSyntaxes"></param>
     public PresentationContext(int contextId, PresentationSyntax abstractSyntax,
-        PresentationSyntax[] transferSyntaxes) {
+        PresentationSyntax[] transferSyntaxes)
+    {
         ContextId = contextId;
         AbstractSyntax = abstractSyntax;
         TransferSyntaxes = transferSyntaxes;
     }
 
     /// <inheritdoc/>
-    public override void Read(NdrCodec ndr) {
+    public override void Read(NdrCodec ndr)
+    {
         ndr.Buffer.Align(4);
         ContextId = ndr.ReadUnsignedShort();
         var count = ndr.ReadUnsignedSmall();
 
-        try {
+        try
+        {
             AbstractSyntax.Decode(ndr, ndr.Buffer);
             TransferSyntaxes = new PresentationSyntax[count];
-            for (var i = 0; i < count; i++) {
+            for (var i = 0; i < count; i++)
+            {
                 TransferSyntaxes[i] = new PresentationSyntax();
                 TransferSyntaxes[i].Decode(ndr, ndr.Buffer);
             }
         }
-        catch (NdrException ex) {
+        catch (NdrException ex)
+        {
             Log.Logger.Verbose(ex, "Read presentation context failed");
         }
     }
 
     /// <inheritdoc/>
-    public override void Write(NdrCodec ndr) {
+    public override void Write(NdrCodec ndr)
+    {
         ndr.Buffer.Align(4, unchecked(0xcc));
         ndr.WriteUnsignedShort(ContextId);
         ndr.WriteUnsignedShort((short)TransferSyntaxes.Length);
 
-        try {
+        try
+        {
             AbstractSyntax.Encode(ndr, ndr.Buffer);
-            for (var i = 0; i < TransferSyntaxes.Length; i++) {
+            for (var i = 0; i < TransferSyntaxes.Length; i++)
+            {
                 TransferSyntaxes[i].Encode(ndr, ndr.Buffer);
             }
         }
-        catch (NdrException ex) {
+        catch (NdrException ex)
+        {
             Log.Logger.Verbose(ex, "Write presentation context failed");
         }
     }

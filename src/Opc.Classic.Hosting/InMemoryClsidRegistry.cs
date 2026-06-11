@@ -12,14 +12,16 @@ namespace Opc.Classic.Hosting;
 /// <summary>
 /// Concurrent in-memory <see cref="IClsidRegistry"/> implementation.
 /// </summary>
-public sealed class InMemoryClsidRegistry : IClsidRegistry {
+public sealed class InMemoryClsidRegistry : IClsidRegistry
+{
     private readonly ConcurrentDictionary<Guid, OpcClsidRegistration> _byClsid;
     private readonly ConcurrentDictionary<string, OpcClsidRegistration> _byProgId;
 
     /// <summary>
     /// Initializes an empty registry.
     /// </summary>
-    public InMemoryClsidRegistry() {
+    public InMemoryClsidRegistry()
+    {
         _byClsid = new ConcurrentDictionary<Guid, OpcClsidRegistration>();
         _byProgId = new ConcurrentDictionary<string, OpcClsidRegistration>(StringComparer.OrdinalIgnoreCase);
     }
@@ -28,10 +30,12 @@ public sealed class InMemoryClsidRegistry : IClsidRegistry {
     /// Initializes a registry from an existing registration sequence.
     /// </summary>
     public InMemoryClsidRegistry(IEnumerable<OpcClsidRegistration> initialRegistrations)
-        : this() {
+        : this()
+    {
         ArgumentNullException.ThrowIfNull(initialRegistrations);
 
-        foreach (var registration in initialRegistrations) {
+        foreach (var registration in initialRegistrations)
+        {
             Register(registration);
         }
     }
@@ -41,7 +45,8 @@ public sealed class InMemoryClsidRegistry : IClsidRegistry {
         _byClsid.TryGetValue(clsid, out registration!);
 
     /// <inheritdoc />
-    public bool TryResolveProgId(string progId, out OpcClsidRegistration registration) {
+    public bool TryResolveProgId(string progId, out OpcClsidRegistration registration)
+    {
         ArgumentNullException.ThrowIfNull(progId);
 
         return _byProgId.TryGetValue(progId, out registration!);
@@ -51,19 +56,23 @@ public sealed class InMemoryClsidRegistry : IClsidRegistry {
     public IEnumerable<OpcClsidRegistration> Enumerate() => _byClsid.Values;
 
     /// <inheritdoc />
-    public void Register(OpcClsidRegistration registration) {
+    public void Register(OpcClsidRegistration registration)
+    {
         ArgumentNullException.ThrowIfNull(registration);
-        if (string.IsNullOrWhiteSpace(registration.ProgId)) {
+        if (string.IsNullOrWhiteSpace(registration.ProgId))
+        {
             throw new ArgumentException("A ProgID is required.", nameof(registration));
         }
 
         if (_byProgId.TryGetValue(registration.ProgId, out var previousForProgId)
-            && previousForProgId.Clsid != registration.Clsid) {
+            && previousForProgId.Clsid != registration.Clsid)
+        {
             _byClsid.TryRemove(previousForProgId.Clsid, out _);
         }
 
         if (_byClsid.TryGetValue(registration.Clsid, out var previousForClsid)
-            && !string.Equals(previousForClsid.ProgId, registration.ProgId, StringComparison.OrdinalIgnoreCase)) {
+            && !string.Equals(previousForClsid.ProgId, registration.ProgId, StringComparison.OrdinalIgnoreCase))
+        {
             _byProgId.TryRemove(previousForClsid.ProgId, out _);
         }
 
@@ -72,8 +81,10 @@ public sealed class InMemoryClsidRegistry : IClsidRegistry {
     }
 
     /// <inheritdoc />
-    public void Unregister(Guid clsid) {
-        if (_byClsid.TryRemove(clsid, out var registration)) {
+    public void Unregister(Guid clsid)
+    {
+        if (_byClsid.TryRemove(clsid, out var registration))
+        {
             _byProgId.TryRemove(registration.ProgId, out _);
         }
     }

@@ -25,7 +25,8 @@ namespace Opc.Classic.Da.Tests.Hosting.Windows;
 /// IOPCItemMgt method bodies wired into the vtables.
 /// </summary>
 [SupportedOSPlatform("windows")]
-public sealed class OpcDaGroupCcwTests {
+public sealed class OpcDaGroupCcwTests
+{
     private const int S_OK = 0;
     private const int S_FALSE = 1;
     private const int E_NOINTERFACE = unchecked((int)0x80004002);
@@ -35,8 +36,10 @@ public sealed class OpcDaGroupCcwTests {
     private static readonly Guid IID_IUnknown = Guid.Parse("00000000-0000-0000-C000-000000000046");
 
     [Test]
-    public async Task Create_returns_nonzero_ccw_pointer() {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task Create_returns_nonzero_ccw_pointer()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
@@ -47,8 +50,10 @@ public sealed class OpcDaGroupCcwTests {
     }
 
     [Test]
-    public async Task Create_returns_distinct_ccw_per_call() {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task Create_returns_distinct_ccw_per_call()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
@@ -59,8 +64,10 @@ public sealed class OpcDaGroupCcwTests {
     }
 
     [Test]
-    public async Task GetReferenceCount_returns_negative_one_for_unknown_pointer() {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task GetReferenceCount_returns_negative_one_for_unknown_pointer()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
@@ -68,8 +75,10 @@ public sealed class OpcDaGroupCcwTests {
     }
 
     [Test]
-    public async Task QueryInterface_for_IOPCGroupStateMgt_returns_real_tearoff() {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task QueryInterface_for_IOPCGroupStateMgt_returns_real_tearoff()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
@@ -82,8 +91,10 @@ public sealed class OpcDaGroupCcwTests {
     }
 
     [Test]
-    public async Task QueryInterface_for_IOPCGroupStateMgt2_returns_real_tearoff() {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task QueryInterface_for_IOPCGroupStateMgt2_returns_real_tearoff()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
@@ -94,8 +105,10 @@ public sealed class OpcDaGroupCcwTests {
     }
 
     [Test]
-    public async Task QueryInterface_for_IOPCItemMgt_returns_real_tearoff() {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task QueryInterface_for_IOPCItemMgt_returns_real_tearoff()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
@@ -107,8 +120,10 @@ public sealed class OpcDaGroupCcwTests {
     }
 
     [Test]
-    public async Task QueryInterface_for_unsupported_iid_returns_E_NOINTERFACE() {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task QueryInterface_for_unsupported_iid_returns_E_NOINTERFACE()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
@@ -120,8 +135,10 @@ public sealed class OpcDaGroupCcwTests {
     }
 
     [Test]
-    public async Task QueryInterface_for_IUnknown_returns_canonical_identity() {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task QueryInterface_for_IUnknown_returns_canonical_identity()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
@@ -136,8 +153,10 @@ public sealed class OpcDaGroupCcwTests {
     }
 
     [Test]
-    public async Task Release_to_zero_frees_session_and_pointer_becomes_unknown() {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task Release_to_zero_frees_session_and_pointer_becomes_unknown()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
@@ -148,8 +167,10 @@ public sealed class OpcDaGroupCcwTests {
     }
 
     [Test]
-    public async Task GetState_returns_managed_group_state_values() {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task GetState_returns_managed_group_state_values()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
@@ -166,8 +187,10 @@ public sealed class OpcDaGroupCcwTests {
     }
 
     [Test]
-    public async Task SetName_updates_managed_group_name() {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task SetName_updates_managed_group_name()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
@@ -182,8 +205,10 @@ public sealed class OpcDaGroupCcwTests {
     }
 
     [Test]
-    public async Task CloneGroup_returns_new_ccw_with_group_state_interface() {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task CloneGroup_returns_new_ccw_with_group_state_interface()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
@@ -198,8 +223,10 @@ public sealed class OpcDaGroupCcwTests {
     }
 
     [Test]
-    public async Task CloneGroup_copies_items_into_new_ccw_scope() {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task CloneGroup_copies_items_into_new_ccw_scope()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
@@ -218,8 +245,10 @@ public sealed class OpcDaGroupCcwTests {
     }
 
     [Test]
-    public async Task RemoveItems_dispatches_to_managed_group() {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task RemoveItems_dispatches_to_managed_group()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
@@ -236,8 +265,10 @@ public sealed class OpcDaGroupCcwTests {
     }
 
     [Test]
-    public async Task AddItems_marshals_one_item_and_returns_server_handle() {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task AddItems_marshals_one_item_and_returns_server_handle()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
@@ -253,8 +284,10 @@ public sealed class OpcDaGroupCcwTests {
     }
 
     [Test]
-    public async Task AddItems_zero_items_returns_empty_arrays() {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task AddItems_zero_items_returns_empty_arrays()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
@@ -268,8 +301,10 @@ public sealed class OpcDaGroupCcwTests {
     }
 
     [Test]
-    public async Task AddItems_null_out_pointers_returns_invalidarg() {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task AddItems_null_out_pointers_returns_invalidarg()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
@@ -281,8 +316,10 @@ public sealed class OpcDaGroupCcwTests {
     }
 
     [Test]
-    public async Task AddItems_unknown_item_returns_per_item_error() {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task AddItems_unknown_item_returns_per_item_error()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
@@ -295,8 +332,10 @@ public sealed class OpcDaGroupCcwTests {
     }
 
     [Test]
-    public async Task ValidateItems_marshals_one_item_and_returns_validation_error() {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task ValidateItems_marshals_one_item_and_returns_validation_error()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
@@ -310,8 +349,10 @@ public sealed class OpcDaGroupCcwTests {
     }
 
     [Test]
-    public async Task CreateEnumerator_returns_ccw_for_requested_interface() {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task CreateEnumerator_returns_ccw_for_requested_interface()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
@@ -326,8 +367,10 @@ public sealed class OpcDaGroupCcwTests {
     }
 
     [Test]
-    public async Task QueryInterface_for_IOPCSyncIO_returns_real_tearoff() {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task QueryInterface_for_IOPCSyncIO_returns_real_tearoff()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
@@ -339,8 +382,10 @@ public sealed class OpcDaGroupCcwTests {
     }
 
     [Test]
-    public async Task QueryInterface_for_IOPCSyncIO2_returns_distinct_tearoff() {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task QueryInterface_for_IOPCSyncIO2_returns_distinct_tearoff()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
@@ -353,8 +398,10 @@ public sealed class OpcDaGroupCcwTests {
     }
 
     [Test]
-    public async Task SyncIO_Read_returns_OPCITEMSTATE_array_with_values() {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task SyncIO_Read_returns_OPCITEMSTATE_array_with_values()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
@@ -380,8 +427,10 @@ public sealed class OpcDaGroupCcwTests {
     }
 
     [Test]
-    public async Task SyncIO_Read_unknown_handle_returns_OPC_E_INVALIDHANDLE_per_handle() {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task SyncIO_Read_unknown_handle_returns_OPC_E_INVALIDHANDLE_per_handle()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
@@ -401,8 +450,10 @@ public sealed class OpcDaGroupCcwTests {
     }
 
     [Test]
-    public async Task SyncIO_Read_with_null_OUT_returns_E_INVALIDARG() {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task SyncIO_Read_with_null_OUT_returns_E_INVALIDARG()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
@@ -420,8 +471,10 @@ public sealed class OpcDaGroupCcwTests {
     }
 
     [Test]
-    public async Task SyncIO_Write_VT_I4_writes_through_to_managed_group() {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task SyncIO_Write_VT_I4_writes_through_to_managed_group()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
@@ -441,8 +494,10 @@ public sealed class OpcDaGroupCcwTests {
     }
 
     [Test]
-    public async Task SyncIO_Write_VT_BSTR_writes_through() {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task SyncIO_Write_VT_BSTR_writes_through()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
@@ -462,8 +517,10 @@ public sealed class OpcDaGroupCcwTests {
     }
 
     [Test]
-    public async Task SyncIO2_ReadMaxAge_returns_separate_value_quality_timestamp_arrays() {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task SyncIO2_ReadMaxAge_returns_separate_value_quality_timestamp_arrays()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
@@ -489,8 +546,10 @@ public sealed class OpcDaGroupCcwTests {
     }
 
     [Test]
-    public async Task SyncIO2_WriteVqt_with_explicit_timestamp_overrides_DateTime_UtcNow() {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task SyncIO2_WriteVqt_with_explicit_timestamp_overrides_DateTime_UtcNow()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
@@ -514,8 +573,10 @@ public sealed class OpcDaGroupCcwTests {
     }
 
     [Test]
-    public async Task QueryInterface_for_IOPCAsyncIO2_and_IOPCAsyncIO3_returns_tearoffs() {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task QueryInterface_for_IOPCAsyncIO2_and_IOPCAsyncIO3_returns_tearoffs()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
@@ -529,8 +590,10 @@ public sealed class OpcDaGroupCcwTests {
     }
 
     [Test]
-    public async Task IOPCAsyncIO2_read_dispatches_and_returns_cancel_id_and_errors() {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task IOPCAsyncIO2_read_dispatches_and_returns_cancel_id_and_errors()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
@@ -548,8 +611,10 @@ public sealed class OpcDaGroupCcwTests {
     }
 
     [Test]
-    public async Task IOPCAsyncIO2_setenable_getenable_round_trips() {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task IOPCAsyncIO2_setenable_getenable_round_trips()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
@@ -565,8 +630,10 @@ public sealed class OpcDaGroupCcwTests {
     }
 
     [Test]
-    public async Task IOPCAsyncIO2_cancel2_dispatches_to_managed_group() {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task IOPCAsyncIO2_cancel2_dispatches_to_managed_group()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
@@ -581,8 +648,10 @@ public sealed class OpcDaGroupCcwTests {
     }
 
     [Test]
-    public async Task IOPCAsyncIO2_refresh2_returns_nonzero_cancel_id() {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task IOPCAsyncIO2_refresh2_returns_nonzero_cancel_id()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
@@ -595,8 +664,10 @@ public sealed class OpcDaGroupCcwTests {
     }
 
     [Test]
-    public async Task IOPCAsyncIO3_readmaxage_and_refreshmaxage_return_cancel_ids() {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task IOPCAsyncIO3_readmaxage_and_refreshmaxage_return_cancel_ids()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
@@ -618,8 +689,10 @@ public sealed class OpcDaGroupCcwTests {
     }
 
     [Test]
-    public async Task AsyncIO2_Write_returns_cancel_id_and_writes_through() {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task AsyncIO2_Write_returns_cancel_id_and_writes_through()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
@@ -640,8 +713,10 @@ public sealed class OpcDaGroupCcwTests {
     }
 
     [Test]
-    public async Task IOPCAsyncIO3_writevqt_writes_three_items_and_fires_onwritecomplete() {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task IOPCAsyncIO3_writevqt_writes_three_items_and_fires_onwritecomplete()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
@@ -661,7 +736,8 @@ public sealed class OpcDaGroupCcwTests {
         IntPtr cpPtr = IntPtr.Zero;
         IntPtr async3Ptr = IntPtr.Zero;
         int adviseCookie = 0;
-        try {
+        try
+        {
             ccw = OpcDaGroupCcw.Create(group);
             cpPtr = Helpers.InvokeQI(ccw, IConnectionPoint.InterfaceId);
             Helpers.AdviseResult advise = Helpers.InvokeAdvise(cpPtr, stub);
@@ -687,17 +763,22 @@ public sealed class OpcDaGroupCcwTests {
             await Assert.That(items[2].GetSnapshot().Value.AsInt32().GetValueOrDefault()).IsEqualTo(303);
             await Assert.That(items[0].GetSnapshot().Timestamp).IsEqualTo(timestamp);
         }
-        finally {
-            if (adviseCookie != 0 && cpPtr != IntPtr.Zero) {
+        finally
+        {
+            if (adviseCookie != 0 && cpPtr != IntPtr.Zero)
+            {
                 _ = Helpers.InvokeUnadvise(cpPtr, adviseCookie);
             }
-            if (async3Ptr != IntPtr.Zero) {
+            if (async3Ptr != IntPtr.Zero)
+            {
                 Helpers.InvokeRelease(async3Ptr);
             }
-            if (cpPtr != IntPtr.Zero) {
+            if (cpPtr != IntPtr.Zero)
+            {
                 Helpers.InvokeRelease(cpPtr);
             }
-            if (ccw != IntPtr.Zero) {
+            if (ccw != IntPtr.Zero)
+            {
                 Helpers.InvokeRelease(ccw);
             }
             Helpers.DestroyDataCallbackStub(stub);
@@ -705,8 +786,10 @@ public sealed class OpcDaGroupCcwTests {
     }
 
     [Test]
-    public async Task IOPCAsyncIO3_writevqt_cancel_id_can_be_passed_to_cancel2() {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task IOPCAsyncIO3_writevqt_cancel_id_can_be_passed_to_cancel2()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
@@ -734,8 +817,10 @@ public sealed class OpcDaGroupCcwTests {
     }
 
     [Test]
-    public async Task IOPCAsyncIO3_writevqt_invalid_handle_returns_per_item_error() {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task IOPCAsyncIO3_writevqt_invalid_handle_returns_per_item_error()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
@@ -766,8 +851,10 @@ public sealed class OpcDaGroupCcwTests {
     }
 
     [Test]
-    public async Task IOPCAsyncIO3_writevqt_empty_count_returns_invalidarg() {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task IOPCAsyncIO3_writevqt_empty_count_returns_invalidarg()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
@@ -783,8 +870,10 @@ public sealed class OpcDaGroupCcwTests {
     }
 
     [Test]
-    public async Task QueryInterface_for_connection_point_interfaces_returns_tearoffs() {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task QueryInterface_for_connection_point_interfaces_returns_tearoffs()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
@@ -798,8 +887,10 @@ public sealed class OpcDaGroupCcwTests {
     }
 
     [Test]
-    public async Task IConnectionPoint_getconnectioninterface_returns_data_callback_iid() {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task IConnectionPoint_getconnectioninterface_returns_data_callback_iid()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
@@ -812,8 +903,10 @@ public sealed class OpcDaGroupCcwTests {
     }
 
     [Test]
-    public async Task IConnectionPointContainer_findconnectionpoint_returns_connection_point_for_data_callback() {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task IConnectionPointContainer_findconnectionpoint_returns_connection_point_for_data_callback()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
@@ -827,8 +920,10 @@ public sealed class OpcDaGroupCcwTests {
     }
 
     [Test]
-    public async Task IConnectionPointContainer_findconnectionpoint_for_unknown_iid_returns_no_connection() {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task IConnectionPointContainer_findconnectionpoint_for_unknown_iid_returns_no_connection()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
@@ -841,13 +936,16 @@ public sealed class OpcDaGroupCcwTests {
     }
 
     [Test]
-    public async Task IConnectionPoint_advise_and_unadvise_manage_scm_sink_dictionary() {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task IConnectionPoint_advise_and_unadvise_manage_scm_sink_dictionary()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
         IntPtr stub = Helpers.CreateDataCallbackStub();
-        try {
+        try
+        {
             IntPtr ccw = OpcDaGroupCcw.Create(NewGroup());
             IntPtr cpPtr = Helpers.InvokeQI(ccw, IConnectionPoint.InterfaceId);
             Helpers.AdviseResult advised = Helpers.InvokeAdvise(cpPtr, stub);
@@ -862,14 +960,17 @@ public sealed class OpcDaGroupCcwTests {
             await Assert.That(OpcDaGroupCcw.GetScmSinkCount(cpPtr)).IsEqualTo(0);
             await Assert.That(Helpers.GetDataCallbackStubReferenceCount(stub)).IsEqualTo(1L);
         }
-        finally {
+        finally
+        {
             Helpers.DestroyDataCallbackStub(stub);
         }
     }
 
     [Test]
-    public async Task IConnectionPoint_unadvise_unknown_cookie_returns_no_connection() {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task IConnectionPoint_unadvise_unknown_cookie_returns_no_connection()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
@@ -882,8 +983,10 @@ public sealed class OpcDaGroupCcwTests {
     }
 
     [Test]
-    public async Task IConnectionPoint_enumconnections_returns_active_sinks_and_cookies_after_advise() {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task IConnectionPoint_enumconnections_returns_active_sinks_and_cookies_after_advise()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
@@ -896,7 +999,8 @@ public sealed class OpcDaGroupCcwTests {
         IntPtr enumPtr = IntPtr.Zero;
         IntPtr queriedEnumPtr = IntPtr.Zero;
         Helpers.ConnectionDataResult next = default;
-        try {
+        try
+        {
             ccw = OpcDaGroupCcw.Create(NewGroup());
             cpPtr = Helpers.InvokeQI(ccw, IConnectionPoint.InterfaceId);
             advised1 = Helpers.InvokeAdvise(cpPtr, stub1);
@@ -907,14 +1011,17 @@ public sealed class OpcDaGroupCcwTests {
 
             next = Helpers.InvokeEnumConnectionsNext(queriedEnumPtr, 3);
         }
-        finally {
+        finally
+        {
             Helpers.ReleaseConnections(next.Connections);
             Helpers.ReleaseIfNonZero(queriedEnumPtr);
             Helpers.ReleaseIfNonZero(enumPtr);
-            if (advised1.Cookie != 0) {
+            if (advised1.Cookie != 0)
+            {
                 _ = Helpers.InvokeUnadvise(cpPtr, advised1.Cookie);
             }
-            if (advised2.Cookie != 0) {
+            if (advised2.Cookie != 0)
+            {
                 _ = Helpers.InvokeUnadvise(cpPtr, advised2.Cookie);
             }
             Helpers.ReleaseIfNonZero(cpPtr);
@@ -933,8 +1040,10 @@ public sealed class OpcDaGroupCcwTests {
     }
 
     [Test]
-    public async Task IEnumConnections_skip_reset_and_clone_use_independent_cursors() {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task IEnumConnections_skip_reset_and_clone_use_independent_cursors()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
@@ -955,7 +1064,8 @@ public sealed class OpcDaGroupCcwTests {
         int resetHr = 0;
         int skipBeyondHr = 0;
         int cloneHr = 0;
-        try {
+        try
+        {
             ccw = OpcDaGroupCcw.Create(NewGroup());
             cpPtr = Helpers.InvokeQI(ccw, IConnectionPoint.InterfaceId);
             advised1 = Helpers.InvokeAdvise(cpPtr, stub1);
@@ -974,7 +1084,8 @@ public sealed class OpcDaGroupCcwTests {
             originalAfterReset = Helpers.InvokeEnumConnectionsNext(enumPtr, 1);
             cloneAtSavedCursor = Helpers.InvokeEnumConnectionsNext(clonePtr, 1);
         }
-        finally {
+        finally
+        {
             Helpers.ReleaseConnections(afterSkip.Connections);
             Helpers.ReleaseConnections(exhausted.Connections);
             Helpers.ReleaseConnections(first.Connections);
@@ -982,10 +1093,12 @@ public sealed class OpcDaGroupCcwTests {
             Helpers.ReleaseConnections(cloneAtSavedCursor.Connections);
             Helpers.ReleaseIfNonZero(clonePtr);
             Helpers.ReleaseIfNonZero(enumPtr);
-            if (advised1.Cookie != 0) {
+            if (advised1.Cookie != 0)
+            {
                 _ = Helpers.InvokeUnadvise(cpPtr, advised1.Cookie);
             }
-            if (advised2.Cookie != 0) {
+            if (advised2.Cookie != 0)
+            {
                 _ = Helpers.InvokeUnadvise(cpPtr, advised2.Cookie);
             }
             Helpers.ReleaseIfNonZero(cpPtr);
@@ -1007,8 +1120,10 @@ public sealed class OpcDaGroupCcwTests {
     }
 
     [Test]
-    public async Task IConnectionPointContainer_enumconnectionpoints_returns_registered_connection_points() {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task IConnectionPointContainer_enumconnectionpoints_returns_registered_connection_points()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
@@ -1018,7 +1133,8 @@ public sealed class OpcDaGroupCcwTests {
         IntPtr enumPtr = IntPtr.Zero;
         IntPtr queriedEnumPtr = IntPtr.Zero;
         Helpers.ConnectionPointsResult next = default;
-        try {
+        try
+        {
             ccw = OpcDaGroupCcw.Create(NewGroup());
             cpPtr = Helpers.InvokeQI(ccw, IConnectionPoint.InterfaceId);
             cpcPtr = Helpers.InvokeQI(ccw, IConnectionPointContainer.InterfaceId);
@@ -1028,7 +1144,8 @@ public sealed class OpcDaGroupCcwTests {
 
             next = Helpers.InvokeEnumConnectionPointsNext(queriedEnumPtr, 2);
         }
-        finally {
+        finally
+        {
             Helpers.ReleasePointers(next.Points);
             Helpers.ReleaseIfNonZero(queriedEnumPtr);
             Helpers.ReleaseIfNonZero(enumPtr);
@@ -1043,8 +1160,10 @@ public sealed class OpcDaGroupCcwTests {
     }
 
     [Test]
-    public async Task IEnumConnectionPoints_reset_and_clone_use_independent_cursors() {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task IEnumConnectionPoints_reset_and_clone_use_independent_cursors()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
@@ -1060,7 +1179,8 @@ public sealed class OpcDaGroupCcwTests {
         int cloneHr = 0;
         int resetOriginalHr = 0;
         int resetCloneHr = 0;
-        try {
+        try
+        {
             ccw = OpcDaGroupCcw.Create(NewGroup());
             cpPtr = Helpers.InvokeQI(ccw, IConnectionPoint.InterfaceId);
             cpcPtr = Helpers.InvokeQI(ccw, IConnectionPointContainer.InterfaceId);
@@ -1074,7 +1194,8 @@ public sealed class OpcDaGroupCcwTests {
             resetCloneHr = Helpers.InvokeEnumReset(clonePtr);
             cloneAfterReset = Helpers.InvokeEnumConnectionPointsNext(clonePtr, 1);
         }
-        finally {
+        finally
+        {
             Helpers.ReleasePointers(first.Points);
             Helpers.ReleasePointers(originalAfterReset.Points);
             Helpers.ReleasePointers(cloneAtEnd.Points);
@@ -1097,13 +1218,16 @@ public sealed class OpcDaGroupCcwTests {
     }
 
     [Test]
-    public async Task Release_to_zero_disposes_all_scm_sink_proxies() {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task Release_to_zero_disposes_all_scm_sink_proxies()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
         IntPtr stub = Helpers.CreateDataCallbackStub();
-        try {
+        try
+        {
             IntPtr ccw = OpcDaGroupCcw.Create(NewGroup());
             IntPtr cpPtr = Helpers.InvokeQI(ccw, IConnectionPoint.InterfaceId);
             Helpers.AdviseResult advised = Helpers.InvokeAdvise(cpPtr, stub);
@@ -1116,7 +1240,8 @@ public sealed class OpcDaGroupCcwTests {
             await Assert.That(Helpers.GetDataCallbackStubReferenceCount(stub)).IsEqualTo(1L);
             await Assert.That(OpcDaGroupCcw.GetReferenceCount(ccw)).IsEqualTo(-1L);
         }
-        finally {
+        finally
+        {
             Helpers.DestroyDataCallbackStub(stub);
         }
     }
@@ -1124,7 +1249,8 @@ public sealed class OpcDaGroupCcwTests {
     private static OpcItemDef NewItemDef(string itemId, int clientHandle) =>
         new("", itemId, true, clientHandle, Array.Empty<byte>(), VarType.VT_I4);
 
-    private static async Task AddManagedItems(OpcDaGroup group, params string[] itemIds) {
+    private static async Task AddManagedItems(OpcDaGroup group, params string[] itemIds)
+    {
         OpcItemDef[] defs = itemIds.Select((itemId, index) => NewItemDef(itemId, index + 1)).ToArray();
         await group.AddItemsAsync(defs, out OpcItemResult[] _, out int[] _, TestContext.Current!.CancellationToken);
     }
@@ -1142,7 +1268,8 @@ public sealed class OpcDaGroupCcwTests {
         percentDeadband: 0f,
         localeId: 1033);
 
-    private static unsafe class Helpers {
+    private static unsafe class Helpers
+    {
         internal readonly record struct GetStateResult(int Hr, int UpdateRate, int Active, string? Name, int LocaleId);
 
         internal readonly record struct RemoveItemsResult(int Hr, int[] Errors);
@@ -1195,7 +1322,8 @@ public sealed class OpcDaGroupCcwTests {
             int MasterError,
             uint Count,
             int[] ClientHandles,
-            int[] Errors) {
+            int[] Errors)
+        {
             internal static DataCallbackWriteInvocation Empty { get; } = new(
                 0,
                 0,
@@ -1209,7 +1337,8 @@ public sealed class OpcDaGroupCcwTests {
         // Mirror production OpcDaGroupCcwMethods.OPCITEMDEF_NATIVE which uses
         // natural alignment (no Pack) — see DR7 fix.
         [StructLayout(LayoutKind.Sequential)]
-        private struct OPCITEMDEF_NATIVE {
+        private struct OPCITEMDEF_NATIVE
+        {
             public IntPtr szAccessPath;
             public IntPtr szItemID;
             public int bActive;
@@ -1223,7 +1352,8 @@ public sealed class OpcDaGroupCcwTests {
         // Mirror production OpcDaGroupCcwMethods.OPCITEMRESULT_NATIVE which
         // uses natural alignment (no Pack) — see DR7 fix.
         [StructLayout(LayoutKind.Sequential)]
-        private struct OPCITEMRESULT_NATIVE {
+        private struct OPCITEMRESULT_NATIVE
+        {
             public uint hServer;
             public ushort vtCanonicalDataType;
             public ushort wReserved;
@@ -1233,7 +1363,8 @@ public sealed class OpcDaGroupCcwTests {
         }
 
         [StructLayout(LayoutKind.Sequential, Pack = 4)]
-        private struct OPCITEMATTRIBUTES_NATIVE {
+        private struct OPCITEMATTRIBUTES_NATIVE
+        {
             public IntPtr szAccessPath;
             public IntPtr szItemID;
             public int bActive;
@@ -1252,7 +1383,8 @@ public sealed class OpcDaGroupCcwTests {
         }
 
         [StructLayout(LayoutKind.Sequential)]
-        private struct CONNECTDATA_NATIVE {
+        private struct CONNECTDATA_NATIVE
+        {
             public IntPtr pUnk;
             public uint dwCookie;
         }
@@ -1268,7 +1400,8 @@ public sealed class OpcDaGroupCcwTests {
         private static readonly Guid s_iidDataCallback = IOPCDataCallback.InterfaceId;
         private static readonly ConcurrentDictionary<IntPtr, DataCallbackStubSession> s_dataCallbackStubs = new();
 
-        internal static IntPtr InvokeQI(IntPtr ccw, Guid iid) {
+        internal static IntPtr InvokeQI(IntPtr ccw, Guid iid)
+        {
             IntPtr* vtable = *(IntPtr**)ccw;
             var qi = (delegate* unmanaged<IntPtr, Guid*, IntPtr*, int>)vtable[0];
             Guid local = iid;
@@ -1277,7 +1410,8 @@ public sealed class OpcDaGroupCcwTests {
             return hr == S_OK ? returned : IntPtr.Zero;
         }
 
-        internal static (int Hr, IntPtr Returned) InvokeQIRaw(IntPtr ccw, Guid iid) {
+        internal static (int Hr, IntPtr Returned) InvokeQIRaw(IntPtr ccw, Guid iid)
+        {
             IntPtr* vtable = *(IntPtr**)ccw;
             var qi = (delegate* unmanaged<IntPtr, Guid*, IntPtr*, int>)vtable[0];
             Guid local = iid;
@@ -1286,40 +1420,51 @@ public sealed class OpcDaGroupCcwTests {
             return (hr, returned);
         }
 
-        internal static void InvokeRelease(IntPtr ccw) {
+        internal static void InvokeRelease(IntPtr ccw)
+        {
             IntPtr* vtable = *(IntPtr**)ccw;
             var release = (delegate* unmanaged<IntPtr, uint>)vtable[2];
             release(ccw);
         }
 
-        internal static void ReleaseIfNonZero(IntPtr ccw) {
-            if (ccw != IntPtr.Zero) {
+        internal static void ReleaseIfNonZero(IntPtr ccw)
+        {
+            if (ccw != IntPtr.Zero)
+            {
                 InvokeRelease(ccw);
             }
         }
 
-        internal static void ReleaseConnections(NativeConnectionData[]? connections) {
-            if (connections is null) {
+        internal static void ReleaseConnections(NativeConnectionData[]? connections)
+        {
+            if (connections is null)
+            {
                 return;
             }
-            foreach (NativeConnectionData connection in connections) {
+            foreach (NativeConnectionData connection in connections)
+            {
                 ReleaseIfNonZero(connection.Unknown);
             }
         }
 
-        internal static void ReleasePointers(IntPtr[]? pointers) {
-            if (pointers is null) {
+        internal static void ReleasePointers(IntPtr[]? pointers)
+        {
+            if (pointers is null)
+            {
                 return;
             }
-            foreach (IntPtr pointer in pointers) {
+            foreach (IntPtr pointer in pointers)
+            {
                 ReleaseIfNonZero(pointer);
             }
         }
 
-        internal static SyncReadResult InvokeSyncRead(IntPtr syncPtr, int[] handles) {
+        internal static SyncReadResult InvokeSyncRead(IntPtr syncPtr, int[] handles)
+        {
             IntPtr* vtable = *(IntPtr**)syncPtr;
             IntPtr pHandles = AllocateInt32ArrayForCall(handles);
-            try {
+            try
+            {
                 var read = (delegate* unmanaged<IntPtr, uint, uint, IntPtr, IntPtr*, IntPtr*, int>)vtable[3];
                 IntPtr ppValues;
                 IntPtr ppErrors;
@@ -1327,62 +1472,75 @@ public sealed class OpcDaGroupCcwTests {
                 return new SyncReadResult(hr, ReadItemStatesAndFree(ppValues, handles.Length),
                     ReadErrorsAndFree(ppErrors, handles.Length));
             }
-            finally {
+            finally
+            {
                 Marshal.FreeCoTaskMem(pHandles);
             }
         }
 
-        internal static int InvokeSyncReadWithNullOut(IntPtr syncPtr, int handle) {
+        internal static int InvokeSyncReadWithNullOut(IntPtr syncPtr, int handle)
+        {
             IntPtr* vtable = *(IntPtr**)syncPtr;
             IntPtr pHandles = AllocateInt32ArrayForCall([handle]);
-            try {
+            try
+            {
                 var read = (delegate* unmanaged<IntPtr, uint, uint, IntPtr, IntPtr*, IntPtr*, int>)vtable[3];
                 return read(syncPtr, 1, 1, pHandles, null, null);
             }
-            finally {
+            finally
+            {
                 Marshal.FreeCoTaskMem(pHandles);
             }
         }
 
-        internal static ErrorsResult InvokeSyncWrite(IntPtr syncPtr, int[] handles, OpcVariant[] values) {
+        internal static ErrorsResult InvokeSyncWrite(IntPtr syncPtr, int[] handles, OpcVariant[] values)
+        {
             IntPtr* vtable = *(IntPtr**)syncPtr;
             IntPtr pHandles = AllocateInt32ArrayForCall(handles);
             IntPtr pValues = AllocateVariantArrayForCall(values);
-            try {
+            try
+            {
                 var write = (delegate* unmanaged<IntPtr, uint, IntPtr, IntPtr, IntPtr*, int>)vtable[4];
                 IntPtr ppErrors;
                 int hr = write(syncPtr, (uint)handles.Length, pHandles, pValues, &ppErrors);
                 return new ErrorsResult(hr, ReadErrorsAndFree(ppErrors, handles.Length));
             }
-            finally {
+            finally
+            {
                 FreeVariantArrayForCall(pValues, values.Length);
                 Marshal.FreeCoTaskMem(pHandles);
             }
         }
 
-        internal static SyncReadMaxAgeResult InvokeSyncReadMaxAge(IntPtr sync2Ptr, int[] handles, int[] maxAges) {
+        internal static SyncReadMaxAgeResult InvokeSyncReadMaxAge(IntPtr sync2Ptr, int[] handles, int[] maxAges)
+        {
             IntPtr* vtable = *(IntPtr**)sync2Ptr;
             IntPtr pHandles = AllocateInt32ArrayForCall(handles);
             IntPtr pMaxAges = AllocateInt32ArrayForCall(maxAges);
-            try {
+            try
+            {
                 return InvokeSyncReadMaxAgeCore(sync2Ptr, vtable[5], handles.Length, pHandles, pMaxAges);
             }
-            finally {
+            finally
+            {
                 FreeCoTaskMem(pHandles, pMaxAges);
             }
         }
 
-        internal static ErrorsResult InvokeSyncWriteVqt(IntPtr sync2Ptr, int[] handles, OpcItemVqt[] values) {
+        internal static ErrorsResult InvokeSyncWriteVqt(IntPtr sync2Ptr, int[] handles, OpcItemVqt[] values)
+        {
             IntPtr* vtable = *(IntPtr**)sync2Ptr;
             IntPtr pHandles = AllocateInt32ArrayForCall(handles);
             IntPtr pValues = AllocateOpcItemVqtArrayForCall(values);
-            try {
+            try
+            {
                 var write = (delegate* unmanaged<IntPtr, uint, IntPtr, IntPtr, IntPtr*, int>)vtable[6];
                 IntPtr ppErrors;
                 int hr = write(sync2Ptr, (uint)handles.Length, pHandles, pValues, &ppErrors);
                 return new ErrorsResult(hr, ReadErrorsAndFree(ppErrors, handles.Length));
             }
-            finally {
+            finally
+            {
                 FreeOpcItemVqtArrayForCall(pValues, values.Length);
                 Marshal.FreeCoTaskMem(pHandles);
             }
@@ -1393,7 +1551,8 @@ public sealed class OpcDaGroupCcwTests {
             IntPtr method,
             int count,
             IntPtr pHandles,
-            IntPtr pMaxAges) {
+            IntPtr pMaxAges)
+        {
             var read = (delegate* unmanaged<IntPtr, uint, IntPtr, IntPtr, IntPtr*, IntPtr*, IntPtr*, IntPtr*, int>)method;
             IntPtr values;
             IntPtr qualities;
@@ -1405,39 +1564,46 @@ public sealed class OpcDaGroupCcwTests {
                 ReadErrorsAndFree(errors, count));
         }
 
-        internal static AsyncErrorsResult InvokeAsyncRead(IntPtr async2Ptr, int[] handles) {
+        internal static AsyncErrorsResult InvokeAsyncRead(IntPtr async2Ptr, int[] handles)
+        {
             IntPtr* vtable = *(IntPtr**)async2Ptr;
             IntPtr pHandles = AllocateInt32ArrayForCall(handles);
-            try {
+            try
+            {
                 var read = (delegate* unmanaged<IntPtr, uint, IntPtr, uint, uint*, IntPtr*, int>)vtable[3];
                 uint cancelId;
                 IntPtr ppErrors;
                 int hr = read(async2Ptr, (uint)handles.Length, pHandles, 77, &cancelId, &ppErrors);
                 return new AsyncErrorsResult(hr, unchecked((int)cancelId), ReadErrorsAndFree(ppErrors, handles.Length));
             }
-            finally {
+            finally
+            {
                 Marshal.FreeCoTaskMem(pHandles);
             }
         }
 
-        internal static AsyncErrorsResult InvokeAsyncWrite(IntPtr async2Ptr, int[] handles, OpcVariant[] values) {
+        internal static AsyncErrorsResult InvokeAsyncWrite(IntPtr async2Ptr, int[] handles, OpcVariant[] values)
+        {
             IntPtr* vtable = *(IntPtr**)async2Ptr;
             IntPtr pHandles = AllocateInt32ArrayForCall(handles);
             IntPtr pValues = AllocateVariantArrayForCall(values);
-            try {
+            try
+            {
                 var write = (delegate* unmanaged<IntPtr, uint, IntPtr, IntPtr, uint, uint*, IntPtr*, int>)vtable[4];
                 uint cancelId;
                 IntPtr ppErrors;
                 int hr = write(async2Ptr, (uint)handles.Length, pHandles, pValues, 77, &cancelId, &ppErrors);
                 return new AsyncErrorsResult(hr, unchecked((int)cancelId), ReadErrorsAndFree(ppErrors, handles.Length));
             }
-            finally {
+            finally
+            {
                 FreeVariantArrayForCall(pValues, values.Length);
                 Marshal.FreeCoTaskMem(pHandles);
             }
         }
 
-        internal static CancelResult InvokeAsyncRefresh2(IntPtr async2Ptr) {
+        internal static CancelResult InvokeAsyncRefresh2(IntPtr async2Ptr)
+        {
             IntPtr* vtable = *(IntPtr**)async2Ptr;
             var refresh = (delegate* unmanaged<IntPtr, uint, uint, uint*, int>)vtable[5];
             uint cancelId;
@@ -1445,19 +1611,22 @@ public sealed class OpcDaGroupCcwTests {
             return new CancelResult(hr, unchecked((int)cancelId));
         }
 
-        internal static int InvokeAsyncCancel2(IntPtr async2Ptr, int cancelId) {
+        internal static int InvokeAsyncCancel2(IntPtr async2Ptr, int cancelId)
+        {
             IntPtr* vtable = *(IntPtr**)async2Ptr;
             var cancel = (delegate* unmanaged<IntPtr, uint, int>)vtable[6];
             return cancel(async2Ptr, unchecked((uint)cancelId));
         }
 
-        internal static int InvokeAsyncSetEnable(IntPtr async2Ptr, bool enabled) {
+        internal static int InvokeAsyncSetEnable(IntPtr async2Ptr, bool enabled)
+        {
             IntPtr* vtable = *(IntPtr**)async2Ptr;
             var setEnable = (delegate* unmanaged<IntPtr, int, int>)vtable[7];
             return setEnable(async2Ptr, enabled ? 1 : 0);
         }
 
-        internal static GetEnableResult InvokeAsyncGetEnable(IntPtr async2Ptr) {
+        internal static GetEnableResult InvokeAsyncGetEnable(IntPtr async2Ptr)
+        {
             IntPtr* vtable = *(IntPtr**)async2Ptr;
             var getEnable = (delegate* unmanaged<IntPtr, int*, int>)vtable[8];
             int enabled;
@@ -1465,18 +1634,21 @@ public sealed class OpcDaGroupCcwTests {
             return new GetEnableResult(hr, enabled != 0);
         }
 
-        internal static AsyncErrorsResult InvokeAsyncReadMaxAge(IntPtr async3Ptr, int[] handles, int[] maxAges) {
+        internal static AsyncErrorsResult InvokeAsyncReadMaxAge(IntPtr async3Ptr, int[] handles, int[] maxAges)
+        {
             IntPtr* vtable = *(IntPtr**)async3Ptr;
             IntPtr pHandles = AllocateInt32ArrayForCall(handles);
             IntPtr pMaxAges = AllocateInt32ArrayForCall(maxAges);
-            try {
+            try
+            {
                 var read = (delegate* unmanaged<IntPtr, uint, IntPtr, IntPtr, uint, uint*, IntPtr*, int>)vtable[9];
                 uint cancelId;
                 IntPtr ppErrors;
                 int hr = read(async3Ptr, (uint)handles.Length, pHandles, pMaxAges, 88, &cancelId, &ppErrors);
                 return new AsyncErrorsResult(hr, unchecked((int)cancelId), ReadErrorsAndFree(ppErrors, handles.Length));
             }
-            finally {
+            finally
+            {
                 FreeCoTaskMem(pHandles, pMaxAges);
             }
         }
@@ -1485,24 +1657,28 @@ public sealed class OpcDaGroupCcwTests {
             IntPtr async3Ptr,
             int[] handles,
             OpcItemVqt[] values,
-            int transactionId) {
+            int transactionId)
+        {
             IntPtr* vtable = *(IntPtr**)async3Ptr;
             IntPtr pHandles = AllocateInt32ArrayForCall(handles);
             IntPtr pValues = AllocateOpcItemVqtArrayForCall(values);
-            try {
+            try
+            {
                 var write = (delegate* unmanaged<IntPtr, uint, IntPtr, IntPtr, uint, uint*, IntPtr*, int>)vtable[10];
                 uint cancelId;
                 IntPtr ppErrors;
                 int hr = write(async3Ptr, (uint)handles.Length, pHandles, pValues, unchecked((uint)transactionId), &cancelId, &ppErrors);
                 return new AsyncErrorsResult(hr, unchecked((int)cancelId), ReadErrorsAndFree(ppErrors, handles.Length));
             }
-            finally {
+            finally
+            {
                 FreeOpcItemVqtArrayForCall(pValues, values.Length);
                 Marshal.FreeCoTaskMem(pHandles);
             }
         }
 
-        internal static CancelResult InvokeAsyncRefreshMaxAge(IntPtr async3Ptr) {
+        internal static CancelResult InvokeAsyncRefreshMaxAge(IntPtr async3Ptr)
+        {
             IntPtr* vtable = *(IntPtr**)async3Ptr;
             var refresh = (delegate* unmanaged<IntPtr, uint, uint, uint*, int>)vtable[11];
             uint cancelId;
@@ -1510,7 +1686,8 @@ public sealed class OpcDaGroupCcwTests {
             return new CancelResult(hr, unchecked((int)cancelId));
         }
 
-        internal static GuidResult InvokeGetConnectionInterface(IntPtr cpPtr) {
+        internal static GuidResult InvokeGetConnectionInterface(IntPtr cpPtr)
+        {
             IntPtr* vtable = *(IntPtr**)cpPtr;
             var getInterface = (delegate* unmanaged<IntPtr, Guid*, int>)vtable[3];
             Guid iid;
@@ -1518,7 +1695,8 @@ public sealed class OpcDaGroupCcwTests {
             return new GuidResult(hr, iid);
         }
 
-        internal static PointerResult InvokeFindConnectionPoint(IntPtr cpcPtr, Guid iid) {
+        internal static PointerResult InvokeFindConnectionPoint(IntPtr cpcPtr, Guid iid)
+        {
             IntPtr* vtable = *(IntPtr**)cpcPtr;
             var find = (delegate* unmanaged<IntPtr, Guid*, IntPtr*, int>)vtable[4];
             Guid local = iid;
@@ -1527,7 +1705,8 @@ public sealed class OpcDaGroupCcwTests {
             return new PointerResult(hr, pointer);
         }
 
-        internal static AdviseResult InvokeAdvise(IntPtr cpPtr, IntPtr sink) {
+        internal static AdviseResult InvokeAdvise(IntPtr cpPtr, IntPtr sink)
+        {
             IntPtr* vtable = *(IntPtr**)cpPtr;
             var advise = (delegate* unmanaged<IntPtr, IntPtr, uint*, int>)vtable[5];
             uint cookie;
@@ -1535,13 +1714,15 @@ public sealed class OpcDaGroupCcwTests {
             return new AdviseResult(hr, unchecked((int)cookie));
         }
 
-        internal static int InvokeUnadvise(IntPtr cpPtr, int cookie) {
+        internal static int InvokeUnadvise(IntPtr cpPtr, int cookie)
+        {
             IntPtr* vtable = *(IntPtr**)cpPtr;
             var unadvise = (delegate* unmanaged<IntPtr, uint, int>)vtable[6];
             return unadvise(cpPtr, unchecked((uint)cookie));
         }
 
-        internal static PointerResult InvokeEnumConnections(IntPtr cpPtr) {
+        internal static PointerResult InvokeEnumConnections(IntPtr cpPtr)
+        {
             IntPtr* vtable = *(IntPtr**)cpPtr;
             var enumConnections = (delegate* unmanaged<IntPtr, IntPtr*, int>)vtable[7];
             IntPtr pointer;
@@ -1549,7 +1730,8 @@ public sealed class OpcDaGroupCcwTests {
             return new PointerResult(hr, pointer);
         }
 
-        internal static PointerResult InvokeEnumConnectionPoints(IntPtr cpcPtr) {
+        internal static PointerResult InvokeEnumConnectionPoints(IntPtr cpcPtr)
+        {
             IntPtr* vtable = *(IntPtr**)cpcPtr;
             var enumConnectionPoints = (delegate* unmanaged<IntPtr, IntPtr*, int>)vtable[3];
             IntPtr pointer;
@@ -1557,51 +1739,60 @@ public sealed class OpcDaGroupCcwTests {
             return new PointerResult(hr, pointer);
         }
 
-        internal static ConnectionDataResult InvokeEnumConnectionsNext(IntPtr enumPtr, uint count) {
+        internal static ConnectionDataResult InvokeEnumConnectionsNext(IntPtr enumPtr, uint count)
+        {
             IntPtr* vtable = *(IntPtr**)enumPtr;
             var next = (delegate* unmanaged<IntPtr, uint, CONNECTDATA_NATIVE*, uint*, int>)vtable[3];
             int elementCount = checked((int)count);
             int byteCount = checked(elementCount * Marshal.SizeOf<CONNECTDATA_NATIVE>());
             IntPtr buffer = Marshal.AllocCoTaskMem(byteCount);
-            try {
+            try
+            {
                 uint fetched;
                 int hr = next(enumPtr, count, (CONNECTDATA_NATIVE*)buffer, &fetched);
                 return new ConnectionDataResult(hr, fetched, ReadConnectionData(buffer, (int)fetched));
             }
-            finally {
+            finally
+            {
                 Marshal.FreeCoTaskMem(buffer);
             }
         }
 
-        internal static ConnectionPointsResult InvokeEnumConnectionPointsNext(IntPtr enumPtr, uint count) {
+        internal static ConnectionPointsResult InvokeEnumConnectionPointsNext(IntPtr enumPtr, uint count)
+        {
             IntPtr* vtable = *(IntPtr**)enumPtr;
             var next = (delegate* unmanaged<IntPtr, uint, IntPtr*, uint*, int>)vtable[3];
             int elementCount = checked((int)count);
             int byteCount = checked(elementCount * IntPtr.Size);
             IntPtr buffer = Marshal.AllocCoTaskMem(byteCount);
-            try {
+            try
+            {
                 uint fetched;
                 int hr = next(enumPtr, count, (IntPtr*)buffer, &fetched);
                 return new ConnectionPointsResult(hr, fetched, ReadConnectionPoints(buffer, (int)fetched));
             }
-            finally {
+            finally
+            {
                 Marshal.FreeCoTaskMem(buffer);
             }
         }
 
-        internal static int InvokeEnumSkip(IntPtr enumPtr, uint count) {
+        internal static int InvokeEnumSkip(IntPtr enumPtr, uint count)
+        {
             IntPtr* vtable = *(IntPtr**)enumPtr;
             var skip = (delegate* unmanaged<IntPtr, uint, int>)vtable[4];
             return skip(enumPtr, count);
         }
 
-        internal static int InvokeEnumReset(IntPtr enumPtr) {
+        internal static int InvokeEnumReset(IntPtr enumPtr)
+        {
             IntPtr* vtable = *(IntPtr**)enumPtr;
             var reset = (delegate* unmanaged<IntPtr, int>)vtable[5];
             return reset(enumPtr);
         }
 
-        internal static (int Hr, IntPtr Pointer) InvokeEnumClone(IntPtr enumPtr) {
+        internal static (int Hr, IntPtr Pointer) InvokeEnumClone(IntPtr enumPtr)
+        {
             IntPtr* vtable = *(IntPtr**)enumPtr;
             var clone = (delegate* unmanaged<IntPtr, IntPtr*, int>)vtable[6];
             IntPtr pointer;
@@ -1609,7 +1800,8 @@ public sealed class OpcDaGroupCcwTests {
             return (hr, pointer);
         }
 
-        internal static GetStateResult InvokeGetState(IntPtr gsmPtr) {
+        internal static GetStateResult InvokeGetState(IntPtr gsmPtr)
+        {
             IntPtr* vtable = *(IntPtr**)gsmPtr;
             var getState = (delegate* unmanaged<IntPtr, IntPtr, IntPtr, IntPtr, IntPtr, IntPtr, IntPtr, int>)vtable[3];
 
@@ -1629,7 +1821,8 @@ public sealed class OpcDaGroupCcwTests {
             string? name = Marshal.PtrToStringUni(namePtr);
             int lcid = Marshal.ReadInt32(pLcid);
 
-            if (namePtr != IntPtr.Zero) {
+            if (namePtr != IntPtr.Zero)
+            {
                 Marshal.FreeCoTaskMem(namePtr);
             }
             Marshal.FreeCoTaskMem(pRate);
@@ -1642,34 +1835,41 @@ public sealed class OpcDaGroupCcwTests {
             return new GetStateResult(hr, rate, active, name, lcid);
         }
 
-        internal static int InvokeSetName(IntPtr gsmPtr, string name) {
+        internal static int InvokeSetName(IntPtr gsmPtr, string name)
+        {
             IntPtr* vtable = *(IntPtr**)gsmPtr;
             var setName = (delegate* unmanaged<IntPtr, IntPtr, int>)vtable[5];
             IntPtr namePtr = Marshal.StringToCoTaskMemUni(name);
-            try {
+            try
+            {
                 return setName(gsmPtr, namePtr);
             }
-            finally {
+            finally
+            {
                 Marshal.FreeCoTaskMem(namePtr);
             }
         }
 
-        internal static CloneGroupResult InvokeCloneGroup(IntPtr gsmPtr, string name) {
+        internal static CloneGroupResult InvokeCloneGroup(IntPtr gsmPtr, string name)
+        {
             IntPtr* vtable = *(IntPtr**)gsmPtr;
             var clone = (delegate* unmanaged<IntPtr, IntPtr, Guid*, IntPtr*, int>)vtable[6];
             IntPtr namePtr = Marshal.StringToCoTaskMemUni(name);
-            try {
+            try
+            {
                 IntPtr ppUnk;
                 Guid iid = IID_IUnknown;
                 int hr = clone(gsmPtr, namePtr, &iid, &ppUnk);
                 return new CloneGroupResult(hr, ppUnk);
             }
-            finally {
+            finally
+            {
                 Marshal.FreeCoTaskMem(namePtr);
             }
         }
 
-        internal static RemoveItemsResult InvokeRemoveItems(IntPtr itemMgtPtr, int[] handles) {
+        internal static RemoveItemsResult InvokeRemoveItems(IntPtr itemMgtPtr, int[] handles)
+        {
             IntPtr* vtable = *(IntPtr**)itemMgtPtr;
             var removeItems = (delegate* unmanaged<IntPtr, uint, IntPtr, IntPtr*, int>)vtable[5];
             IntPtr pHandles = Marshal.AllocCoTaskMem(handles.Length * sizeof(int));
@@ -1684,7 +1884,8 @@ public sealed class OpcDaGroupCcwTests {
         internal static ItemMethodResult InvokeAddItems(IntPtr itemMgtPtr, OpcItemDef[] defs) =>
             InvokeItemMethod(itemMgtPtr, defs, vtableSlot: 3, blobUpdate: 0);
 
-        internal static int InvokeAddItemsWithNullOutPointers(IntPtr itemMgtPtr) {
+        internal static int InvokeAddItemsWithNullOutPointers(IntPtr itemMgtPtr)
+        {
             IntPtr* vtable = *(IntPtr**)itemMgtPtr;
             var addItems = (delegate* unmanaged<IntPtr, uint, IntPtr, IntPtr*, IntPtr*, int>)vtable[3];
             return addItems(itemMgtPtr, 0, IntPtr.Zero, null, null);
@@ -1693,7 +1894,8 @@ public sealed class OpcDaGroupCcwTests {
         internal static ItemMethodResult InvokeValidateItems(IntPtr itemMgtPtr, OpcItemDef[] defs) =>
             InvokeItemMethod(itemMgtPtr, defs, vtableSlot: 4, blobUpdate: 1);
 
-        internal static CreateEnumeratorResult InvokeCreateEnumerator(IntPtr itemMgtPtr, Guid iid) {
+        internal static CreateEnumeratorResult InvokeCreateEnumerator(IntPtr itemMgtPtr, Guid iid)
+        {
             IntPtr* vtable = *(IntPtr**)itemMgtPtr;
             var create = (delegate* unmanaged<IntPtr, Guid*, IntPtr*, int>)vtable[9];
             Guid local = iid;
@@ -1702,7 +1904,8 @@ public sealed class OpcDaGroupCcwTests {
             return new CreateEnumeratorResult(hr, ppUnk);
         }
 
-        internal static EnumNextResult InvokeEnumNext(IntPtr enumPtr, uint count) {
+        internal static EnumNextResult InvokeEnumNext(IntPtr enumPtr, uint count)
+        {
             IntPtr* vtable = *(IntPtr**)enumPtr;
             var next = (delegate* unmanaged<IntPtr, uint, IntPtr*, uint*, int>)vtable[3];
             IntPtr ppItems;
@@ -1712,10 +1915,12 @@ public sealed class OpcDaGroupCcwTests {
             return new EnumNextResult(hr, fetched, itemIds);
         }
 
-        private static ItemMethodResult InvokeItemMethod(IntPtr itemMgtPtr, OpcItemDef[] defs, int vtableSlot, int blobUpdate) {
+        private static ItemMethodResult InvokeItemMethod(IntPtr itemMgtPtr, OpcItemDef[] defs, int vtableSlot, int blobUpdate)
+        {
             IntPtr* vtable = *(IntPtr**)itemMgtPtr;
             IntPtr pItems = AllocateNativeItemDefs(defs, out IntPtr[] allocations);
-            try {
+            try
+            {
                 IntPtr ppResults;
                 IntPtr ppErrors;
                 int hr = InvokeItemMethodCore(vtable[vtableSlot], itemMgtPtr, defs.Length, pItems,
@@ -1723,21 +1928,26 @@ public sealed class OpcDaGroupCcwTests {
                 return new ItemMethodResult(hr, ReadItemResultsAndFree(ppResults, defs.Length),
                     ReadErrorsAndFree(ppErrors, defs.Length));
             }
-            finally {
+            finally
+            {
                 FreeAllocations(allocations);
                 Marshal.FreeCoTaskMem(pItems);
             }
         }
 
         private static int InvokeItemMethodCore(IntPtr method, IntPtr itemMgtPtr, int count, IntPtr pItems,
-            int blobUpdate, IntPtr* ppResults, IntPtr* ppErrors) {
-            if (blobUpdate < 0) {
+            int blobUpdate, IntPtr* ppResults, IntPtr* ppErrors)
+        {
+            if (blobUpdate < 0)
+            {
                 return E_INVALIDARG;
             }
-            if (method == IntPtr.Zero) {
+            if (method == IntPtr.Zero)
+            {
                 return E_INVALIDARG;
             }
-            if (blobUpdate == 0) {
+            if (blobUpdate == 0)
+            {
                 var add = (delegate* unmanaged<IntPtr, uint, IntPtr, IntPtr*, IntPtr*, int>)method;
                 return add(itemMgtPtr, (uint)count, pItems, ppResults, ppErrors);
             }
@@ -1745,15 +1955,18 @@ public sealed class OpcDaGroupCcwTests {
             return validate(itemMgtPtr, (uint)count, pItems, blobUpdate, ppResults, ppErrors);
         }
 
-        internal static IntPtr CreateDataCallbackStub() {
+        internal static IntPtr CreateDataCallbackStub()
+        {
             IntPtr* vtable = AllocateDataCallbackStubVtable();
             IntPtr instance = AllocateDataCallbackStubInstance(vtable);
             s_dataCallbackStubs[instance] = new DataCallbackStubSession(vtable);
             return instance;
         }
 
-        internal static void DestroyDataCallbackStub(IntPtr stub) {
-            if (!s_dataCallbackStubs.TryRemove(stub, out DataCallbackStubSession? session)) {
+        internal static void DestroyDataCallbackStub(IntPtr stub)
+        {
+            if (!s_dataCallbackStubs.TryRemove(stub, out DataCallbackStubSession? session))
+            {
                 return;
             }
 
@@ -1772,7 +1985,8 @@ public sealed class OpcDaGroupCcwTests {
                 : DataCallbackWriteInvocation.Empty;
 
         [SuppressMessage("Reliability", "CA2018", Justification = "Explicit byte size.")]
-        private static IntPtr* AllocateDataCallbackStubVtable() {
+        private static IntPtr* AllocateDataCallbackStubVtable()
+        {
             IntPtr* vtable = (IntPtr*)NativeMemory.Alloc((nuint)(DataCallbackVtableSlotCount * sizeof(IntPtr)));
             vtable[0] = (IntPtr)(delegate* unmanaged<IntPtr, Guid*, IntPtr*, int>)&DataCallbackStubQueryInterface;
             vtable[1] = (IntPtr)(delegate* unmanaged<IntPtr, uint>)&DataCallbackStubAddRef;
@@ -1785,22 +1999,27 @@ public sealed class OpcDaGroupCcwTests {
         }
 
         [SuppressMessage("Reliability", "CA2018", Justification = "Explicit byte size.")]
-        private static IntPtr AllocateDataCallbackStubInstance(IntPtr* vtable) {
+        private static IntPtr AllocateDataCallbackStubInstance(IntPtr* vtable)
+        {
             IntPtr* instance = (IntPtr*)NativeMemory.Alloc((nuint)sizeof(IntPtr));
             instance[0] = (IntPtr)vtable;
             return (IntPtr)instance;
         }
 
         [UnmanagedCallersOnly]
-        private static int DataCallbackStubQueryInterface(IntPtr pThis, Guid* riid, IntPtr* ppv) {
-            if (ppv == null) {
+        private static int DataCallbackStubQueryInterface(IntPtr pThis, Guid* riid, IntPtr* ppv)
+        {
+            if (ppv == null)
+            {
                 return E_INVALIDARG;
             }
-            if (!s_dataCallbackStubs.TryGetValue(pThis, out DataCallbackStubSession? session) || riid == null) {
+            if (!s_dataCallbackStubs.TryGetValue(pThis, out DataCallbackStubSession? session) || riid == null)
+            {
                 *ppv = IntPtr.Zero;
                 return E_NOINTERFACE;
             }
-            if (*riid == IID_IUnknown || *riid == s_iidDataCallback) {
+            if (*riid == IID_IUnknown || *riid == s_iidDataCallback)
+            {
                 *ppv = pThis;
                 Interlocked.Increment(ref session.RefCount);
                 return S_OK;
@@ -1810,16 +2029,20 @@ public sealed class OpcDaGroupCcwTests {
         }
 
         [UnmanagedCallersOnly]
-        private static uint DataCallbackStubAddRef(IntPtr pThis) {
-            if (!s_dataCallbackStubs.TryGetValue(pThis, out DataCallbackStubSession? session)) {
+        private static uint DataCallbackStubAddRef(IntPtr pThis)
+        {
+            if (!s_dataCallbackStubs.TryGetValue(pThis, out DataCallbackStubSession? session))
+            {
                 return 1;
             }
             return (uint)Interlocked.Increment(ref session.RefCount);
         }
 
         [UnmanagedCallersOnly]
-        private static uint DataCallbackStubRelease(IntPtr pThis) {
-            if (!s_dataCallbackStubs.TryGetValue(pThis, out DataCallbackStubSession? session)) {
+        private static uint DataCallbackStubRelease(IntPtr pThis)
+        {
+            if (!s_dataCallbackStubs.TryGetValue(pThis, out DataCallbackStubSession? session))
+            {
                 return 0;
             }
             return (uint)Interlocked.Decrement(ref session.RefCount);
@@ -1878,8 +2101,10 @@ public sealed class OpcDaGroupCcwTests {
             int masterError,
             uint count,
             IntPtr clientItems,
-            IntPtr errors) {
-            if (!s_dataCallbackStubs.TryGetValue(pThis, out DataCallbackStubSession? session)) {
+            IntPtr errors)
+        {
+            if (!s_dataCallbackStubs.TryGetValue(pThis, out DataCallbackStubSession? session))
+            {
                 return E_NOINTERFACE;
             }
 
@@ -1895,17 +2120,21 @@ public sealed class OpcDaGroupCcwTests {
             return S_OK;
         }
 
-        private static int[] ReadInt32Array(IntPtr ptr, int count) {
+        private static int[] ReadInt32Array(IntPtr ptr, int count)
+        {
             var values = new int[count];
-            if (ptr != IntPtr.Zero && count > 0) {
+            if (ptr != IntPtr.Zero && count > 0)
+            {
                 Marshal.Copy(ptr, values, 0, count);
             }
             return values;
         }
 
         [SuppressMessage("Reliability", "CA2018", Justification = "Explicit byte size.")]
-        private static IntPtr AllocateInt32ArrayForCall(int[] values) {
-            if (values.Length == 0) {
+        private static IntPtr AllocateInt32ArrayForCall(int[] values)
+        {
+            if (values.Length == 0)
+            {
                 return IntPtr.Zero;
             }
             IntPtr ptr = Marshal.AllocCoTaskMem(checked(values.Length * sizeof(int)));
@@ -1914,32 +2143,39 @@ public sealed class OpcDaGroupCcwTests {
         }
 
         [SuppressMessage("Reliability", "CA2018", Justification = "Explicit byte size.")]
-        private static IntPtr AllocateVariantArrayForCall(OpcVariant[] values) {
-            if (values.Length == 0) {
+        private static IntPtr AllocateVariantArrayForCall(OpcVariant[] values)
+        {
+            if (values.Length == 0)
+            {
                 return IntPtr.Zero;
             }
             int variantSize = ComVariantMarshaler.VariantSize;
             IntPtr ptr = Marshal.AllocCoTaskMem(checked(values.Length * variantSize));
-            for (int i = 0; i < values.Length; i++) {
+            for (int i = 0; i < values.Length; i++)
+            {
                 ComVariantMarshaler.WriteVariant(IntPtr.Add(ptr, checked(i * variantSize)), values[i]);
             }
             return ptr;
         }
 
         [SuppressMessage("Reliability", "CA2018", Justification = "Explicit byte size.")]
-        private static IntPtr AllocateOpcItemVqtArrayForCall(OpcItemVqt[] values) {
-            if (values.Length == 0) {
+        private static IntPtr AllocateOpcItemVqtArrayForCall(OpcItemVqt[] values)
+        {
+            if (values.Length == 0)
+            {
                 return IntPtr.Zero;
             }
             int size = OpcItemVqtSize;
             IntPtr ptr = Marshal.AllocCoTaskMem(checked(values.Length * size));
-            for (int i = 0; i < values.Length; i++) {
+            for (int i = 0; i < values.Length; i++)
+            {
                 WriteOpcItemVqtForCall(IntPtr.Add(ptr, checked(i * size)), values[i]);
             }
             return ptr;
         }
 
-        private static void WriteOpcItemVqtForCall(IntPtr slot, OpcItemVqt value) {
+        private static void WriteOpcItemVqtForCall(IntPtr slot, OpcItemVqt value)
+        {
             int variantSize = ComVariantMarshaler.VariantSize;
             ComVariantMarshaler.WriteVariant(slot, value.Value);
             bool qualitySpecified = value.Quality.HasValue;
@@ -1954,56 +2190,69 @@ public sealed class OpcDaGroupCcwTests {
             Marshal.WriteInt64(slot, variantSize + 16, fileTime);
         }
 
-        private static void FreeVariantArrayForCall(IntPtr ptr, int count) {
-            if (ptr == IntPtr.Zero) {
+        private static void FreeVariantArrayForCall(IntPtr ptr, int count)
+        {
+            if (ptr == IntPtr.Zero)
+            {
                 return;
             }
             int variantSize = ComVariantMarshaler.VariantSize;
-            for (int i = 0; i < count; i++) {
+            for (int i = 0; i < count; i++)
+            {
                 ComVariantMarshaler.ClearVariant(IntPtr.Add(ptr, checked(i * variantSize)));
             }
             Marshal.FreeCoTaskMem(ptr);
         }
 
-        private static void FreeOpcItemVqtArrayForCall(IntPtr ptr, int count) {
-            if (ptr == IntPtr.Zero) {
+        private static void FreeOpcItemVqtArrayForCall(IntPtr ptr, int count)
+        {
+            if (ptr == IntPtr.Zero)
+            {
                 return;
             }
             int size = OpcItemVqtSize;
-            for (int i = 0; i < count; i++) {
+            for (int i = 0; i < count; i++)
+            {
                 ComVariantMarshaler.ClearVariant(IntPtr.Add(ptr, checked(i * size)));
             }
             Marshal.FreeCoTaskMem(ptr);
         }
 
-        private static void FreeCoTaskMem(params IntPtr[] pointers) {
-            foreach (IntPtr pointer in pointers) {
+        private static void FreeCoTaskMem(params IntPtr[] pointers)
+        {
+            foreach (IntPtr pointer in pointers)
+            {
                 Marshal.FreeCoTaskMem(pointer);
             }
         }
 
-        private sealed class DataCallbackStubSession(IntPtr* vtable) {
+        private sealed class DataCallbackStubSession(IntPtr* vtable)
+        {
             internal readonly IntPtr* Vtable = vtable;
             internal long RefCount = 1;
             internal DataCallbackWriteInvocation LastWriteInvocation = DataCallbackWriteInvocation.Empty;
         }
 
-        private static IntPtr AllocateNativeItemDefs(OpcItemDef[] defs, out IntPtr[] allocations) {
+        private static IntPtr AllocateNativeItemDefs(OpcItemDef[] defs, out IntPtr[] allocations)
+        {
             allocations = new IntPtr[defs.Length * 3];
-            if (defs.Length == 0) {
+            if (defs.Length == 0)
+            {
                 return IntPtr.Zero;
             }
             int size = Marshal.SizeOf<OPCITEMDEF_NATIVE>();
             IntPtr pItems = Marshal.AllocCoTaskMem(checked(defs.Length * size));
             int allocationIndex = 0;
-            for (int i = 0; i < defs.Length; i++) {
+            for (int i = 0; i < defs.Length; i++)
+            {
                 OPCITEMDEF_NATIVE native = ToNativeItemDef(defs[i], allocations, ref allocationIndex);
                 Marshal.StructureToPtr(native, IntPtr.Add(pItems, i * size), fDeleteOld: false);
             }
             return pItems;
         }
 
-        private static OPCITEMDEF_NATIVE ToNativeItemDef(OpcItemDef def, IntPtr[] allocations, ref int allocationIndex) {
+        private static OPCITEMDEF_NATIVE ToNativeItemDef(OpcItemDef def, IntPtr[] allocations, ref int allocationIndex)
+        {
             byte[] blob = def.Blob ?? Array.Empty<byte>();
             IntPtr accessPath = Marshal.StringToCoTaskMemUni(def.AccessPath);
             IntPtr itemId = Marshal.StringToCoTaskMemUni(def.ItemId);
@@ -2011,7 +2260,8 @@ public sealed class OpcDaGroupCcwTests {
             allocations[allocationIndex++] = accessPath;
             allocations[allocationIndex++] = itemId;
             allocations[allocationIndex++] = blobPtr;
-            return new OPCITEMDEF_NATIVE {
+            return new OPCITEMDEF_NATIVE
+            {
                 szAccessPath = accessPath,
                 szItemID = itemId,
                 bActive = def.Active ? 1 : 0,
@@ -2022,10 +2272,12 @@ public sealed class OpcDaGroupCcwTests {
             };
         }
 
-        private static NativeItemResult[] ReadItemResultsAndFree(IntPtr ptr, int count) {
+        private static NativeItemResult[] ReadItemResultsAndFree(IntPtr ptr, int count)
+        {
             var results = new NativeItemResult[count];
             int size = Marshal.SizeOf<OPCITEMRESULT_NATIVE>();
-            for (int i = 0; i < count && ptr != IntPtr.Zero; i++) {
+            for (int i = 0; i < count && ptr != IntPtr.Zero; i++)
+            {
                 var native = Marshal.PtrToStructure<OPCITEMRESULT_NATIVE>(IntPtr.Add(ptr, i * size));
                 results[i] = new NativeItemResult(unchecked((int)native.hServer), native.vtCanonicalDataType,
                     unchecked((int)native.dwAccessRights), unchecked((int)native.dwBlobSize));
@@ -2035,10 +2287,12 @@ public sealed class OpcDaGroupCcwTests {
             return results;
         }
 
-        private static NativeItemState[] ReadItemStatesAndFree(IntPtr ptr, int count) {
+        private static NativeItemState[] ReadItemStatesAndFree(IntPtr ptr, int count)
+        {
             var states = new NativeItemState[count];
             int size = OpcItemStateSize;
-            for (int i = 0; i < count && ptr != IntPtr.Zero; i++) {
+            for (int i = 0; i < count && ptr != IntPtr.Zero; i++)
+            {
                 IntPtr slot = IntPtr.Add(ptr, checked(i * size));
                 states[i] = new NativeItemState(Marshal.ReadInt32(slot), Marshal.ReadInt64(slot, 4),
                     unchecked((ushort)Marshal.ReadInt16(slot, 12)),
@@ -2049,10 +2303,12 @@ public sealed class OpcDaGroupCcwTests {
             return states;
         }
 
-        private static OpcVariant[] ReadVariantArrayAndFree(IntPtr ptr, int count) {
+        private static OpcVariant[] ReadVariantArrayAndFree(IntPtr ptr, int count)
+        {
             var values = new OpcVariant[count];
             int variantSize = ComVariantMarshaler.VariantSize;
-            for (int i = 0; i < count && ptr != IntPtr.Zero; i++) {
+            for (int i = 0; i < count && ptr != IntPtr.Zero; i++)
+            {
                 IntPtr slot = IntPtr.Add(ptr, checked(i * variantSize));
                 values[i] = ComVariantMarshaler.ReadVariant(slot);
                 ComVariantMarshaler.ClearVariant(slot);
@@ -2061,55 +2317,67 @@ public sealed class OpcDaGroupCcwTests {
             return values;
         }
 
-        private static ushort[] ReadUInt16ArrayAndFree(IntPtr ptr, int count) {
+        private static ushort[] ReadUInt16ArrayAndFree(IntPtr ptr, int count)
+        {
             var values = new ushort[count];
-            for (int i = 0; i < count && ptr != IntPtr.Zero; i++) {
+            for (int i = 0; i < count && ptr != IntPtr.Zero; i++)
+            {
                 values[i] = unchecked((ushort)Marshal.ReadInt16(ptr, checked(i * sizeof(ushort))));
             }
             Marshal.FreeCoTaskMem(ptr);
             return values;
         }
 
-        private static long[] ReadInt64ArrayAndFree(IntPtr ptr, int count) {
+        private static long[] ReadInt64ArrayAndFree(IntPtr ptr, int count)
+        {
             var values = new long[count];
-            if (ptr != IntPtr.Zero && count > 0) {
+            if (ptr != IntPtr.Zero && count > 0)
+            {
                 Marshal.Copy(ptr, values, 0, count);
             }
             Marshal.FreeCoTaskMem(ptr);
             return values;
         }
 
-        private static int[] ReadErrorsAndFree(IntPtr ptr, int count) {
+        private static int[] ReadErrorsAndFree(IntPtr ptr, int count)
+        {
             var errors = new int[count];
-            if (ptr != IntPtr.Zero && count > 0) {
+            if (ptr != IntPtr.Zero && count > 0)
+            {
                 Marshal.Copy(ptr, errors, 0, count);
             }
             Marshal.FreeCoTaskMem(ptr);
             return errors;
         }
 
-        private static NativeConnectionData[] ReadConnectionData(IntPtr ptr, int count) {
+        private static NativeConnectionData[] ReadConnectionData(IntPtr ptr, int count)
+        {
             var connections = new NativeConnectionData[count];
             int size = Marshal.SizeOf<CONNECTDATA_NATIVE>();
-            for (int i = 0; i < count && ptr != IntPtr.Zero; i++) {
+            for (int i = 0; i < count && ptr != IntPtr.Zero; i++)
+            {
                 var native = Marshal.PtrToStructure<CONNECTDATA_NATIVE>(IntPtr.Add(ptr, checked(i * size)));
                 connections[i] = new NativeConnectionData(native.pUnk, unchecked((int)native.dwCookie));
             }
             return connections;
         }
 
-        private static IntPtr[] ReadConnectionPoints(IntPtr ptr, int count) {
+        private static IntPtr[] ReadConnectionPoints(IntPtr ptr, int count)
+        {
             var points = new IntPtr[count];
-            for (int i = 0; i < count && ptr != IntPtr.Zero; i++) {
+            for (int i = 0; i < count && ptr != IntPtr.Zero; i++)
+            {
                 points[i] = Marshal.ReadIntPtr(ptr, checked(i * IntPtr.Size));
             }
             return points;
         }
 
-        private static string?[] ReadItemIdsAndFree(IntPtr ptr, int count) {
+        private static string?[] ReadItemIdsAndFree(IntPtr ptr, int count)
+        {
             var itemIds = new string?[count];
             int size = Marshal.SizeOf<OPCITEMATTRIBUTES_NATIVE>();
-            for (int i = 0; i < count && ptr != IntPtr.Zero; i++) {
+            for (int i = 0; i < count && ptr != IntPtr.Zero; i++)
+            {
                 var native = Marshal.PtrToStructure<OPCITEMATTRIBUTES_NATIVE>(IntPtr.Add(ptr, i * size));
                 itemIds[i] = Marshal.PtrToStringUni(native.szItemID);
                 FreeNativeAttributes(native);
@@ -2118,20 +2386,25 @@ public sealed class OpcDaGroupCcwTests {
             return itemIds;
         }
 
-        private static void FreeNativeAttributes(OPCITEMATTRIBUTES_NATIVE native) {
+        private static void FreeNativeAttributes(OPCITEMATTRIBUTES_NATIVE native)
+        {
             Marshal.FreeCoTaskMem(native.szAccessPath);
             Marshal.FreeCoTaskMem(native.szItemID);
             Marshal.FreeCoTaskMem(native.pBlob);
         }
 
-        private static void FreeAllocations(IntPtr[] allocations) {
-            foreach (IntPtr allocation in allocations) {
+        private static void FreeAllocations(IntPtr[] allocations)
+        {
+            foreach (IntPtr allocation in allocations)
+            {
                 Marshal.FreeCoTaskMem(allocation);
             }
         }
 
-        private static IntPtr AllocateBlob(byte[] blob) {
-            if (blob.Length == 0) {
+        private static IntPtr AllocateBlob(byte[] blob)
+        {
+            if (blob.Length == 0)
+            {
                 return IntPtr.Zero;
             }
             IntPtr ptr = Marshal.AllocCoTaskMem(blob.Length);

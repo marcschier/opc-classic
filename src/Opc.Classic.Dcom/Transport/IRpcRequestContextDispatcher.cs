@@ -10,7 +10,8 @@ using Opc.Classic.Hosting;
 
 namespace Opc.Classic.Dcom.Transport;
 
-public interface IRpcRequestContextDispatcher : IOpcServerDispatcher {
+public interface IRpcRequestContextDispatcher : IOpcServerDispatcher
+{
     ValueTask<DispatchResult> DispatchAsync(
         int opnum,
         ReadOnlyMemory<byte> requestPayload,

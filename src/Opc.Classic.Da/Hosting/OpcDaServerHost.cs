@@ -19,7 +19,8 @@ namespace Opc.Classic.Da.Hosting;
 /// <summary>
 /// DA-specific <see cref="IOpcServerHost"/> implementation for managed in-process servers.
 /// </summary>
-public sealed class OpcDaServerHost : IOpcServerHost, IDisposable, IAsyncDisposable {
+public sealed class OpcDaServerHost : IOpcServerHost, IDisposable, IAsyncDisposable
+{
     private static readonly Action<ILogger, Guid, string, Exception?> StartingHost = LoggerMessage.Define<Guid, string>(
         LogLevel.Information,
         new EventId(1, nameof(StartingHost)),
@@ -52,7 +53,8 @@ public sealed class OpcDaServerHost : IOpcServerHost, IDisposable, IAsyncDisposa
         ILogger<OpcDaServerHost> logger,
         IOpcAddressSpace? addressSpace = null,
         IOpcItemPropertyProvider? itemPropertyProvider = null,
-        IOPCItemProperties? itemProperties = null) {
+        IOPCItemProperties? itemProperties = null)
+    {
         _serverImpl = serverImpl ?? throw new ArgumentNullException(nameof(serverImpl));
         _options = options?.Value ?? throw new ArgumentNullException(nameof(options));
         _objectRegistry = objectRegistry ?? throw new ArgumentNullException(nameof(objectRegistry));
@@ -81,7 +83,8 @@ public sealed class OpcDaServerHost : IOpcServerHost, IDisposable, IAsyncDisposa
     public EndPoint? LocalEndpoint => _listener?.LocalEndpoint;
 
     /// <inheritdoc />
-    public Task StartAsync(CancellationToken cancellationToken) {
+    public Task StartAsync(CancellationToken cancellationToken)
+    {
         StartingHost(_logger, _options.Clsid, _options.ProgId, null);
 
         IPEndPoint listenEndpoint = ListenAddressParser.Parse(_options.ListenAddress ?? "127.0.0.1:0");
@@ -98,14 +101,16 @@ public sealed class OpcDaServerHost : IOpcServerHost, IDisposable, IAsyncDisposa
         return started;
     }
 
-    private Dictionary<Guid, IOpcServerDispatcher> BuildServerDispatchers() {
+    private Dictionary<Guid, IOpcServerDispatcher> BuildServerDispatchers()
+    {
         // Always register IOPCServer + the DA 2.x/3.0 default browse/property
         // dispatchers so a conformant DA server presents reachable interfaces
         // for namespace browsing even when the user's IOpcDaServer doesn't
         // explicitly override them. Implementations that want richer behaviour
         // can subclass the default classes.
         var daDispatcher = new OpcDaServerDispatcher(_serverImpl, _logger);
-        var dispatchers = new Dictionary<Guid, IOpcServerDispatcher> {
+        var dispatchers = new Dictionary<Guid, IOpcServerDispatcher>
+        {
             [IOPCServer.InterfaceId] = daDispatcher.ServerDispatcher,
             [IOPCCommon.InterfaceId] = daDispatcher.CommonDispatcher,
         };
@@ -124,12 +129,14 @@ public sealed class OpcDaServerHost : IOpcServerHost, IDisposable, IAsyncDisposa
     }
 
     /// <inheritdoc />
-    public async Task StopAsync(CancellationToken cancellationToken) {
+    public async Task StopAsync(CancellationToken cancellationToken)
+    {
         StoppingHost(_logger, _options.Clsid, null);
 
         OpcServerListener? listener = _listener;
         _listener = null;
-        if (listener is not null) {
+        if (listener is not null)
+        {
             await listener.DisposeAsync().ConfigureAwait(false);
         }
     }
@@ -138,7 +145,8 @@ public sealed class OpcDaServerHost : IOpcServerHost, IDisposable, IAsyncDisposa
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
         "Usage", "VSTHRD002:Avoid problematic synchronous waits",
         Justification = "IDisposable is synchronous; the underlying StopAsync is async.")]
-    public void Dispose() {
+    public void Dispose()
+    {
         StopAsync(CancellationToken.None).GetAwaiter().GetResult();
     }
 

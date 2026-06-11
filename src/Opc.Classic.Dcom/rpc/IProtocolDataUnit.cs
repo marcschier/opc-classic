@@ -7,7 +7,8 @@ namespace Opc.Classic.Dcom.Rpc;
 /// <summary>
 /// Defines a PDU
 /// </summary>
-public interface IProtocolDataUnit {
+public interface IProtocolDataUnit
+{
 
     /// <summary>
     /// Major version

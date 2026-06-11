@@ -11,14 +11,16 @@ using TUnit.Core;
 
 namespace Opc.Classic.Cpx.Tests;
 
-public sealed class OpcCpxItemPropertiesTests {
+public sealed class OpcCpxItemPropertiesTests
+{
     private const string ItemId = "Plant.Motor01.Status";
     private const string DictionaryId = "http://example.com/PlantTypes.v1";
     private const string DictionaryXml = "<TypeDictionary Name=\"PlantTypes\" />";
     private const string TypeDescriptionXml = "<TypeDescription TypeID=\"MotorStatus\" />";
 
     [Test]
-    public async Task DefaultItemProperties_PublishesCpxPropertiesForComplexItem() {
+    public async Task DefaultItemProperties_PublishesCpxPropertiesForComplexItem()
+    {
         var properties = new DefaultItemProperties(new OpcCpxItemProperties(CreateOptions()));
 
         await properties.QueryAvailablePropertiesAsync(
@@ -34,7 +36,8 @@ public sealed class OpcCpxItemPropertiesTests {
     }
 
     [Test]
-    public async Task GetItemProperties_ReturnsCpxPropertyValuesAndLookupItemIds() {
+    public async Task GetItemProperties_ReturnsCpxPropertyValuesAndLookupItemIds()
+    {
         var properties = new DefaultItemProperties(new OpcCpxItemProperties(CreateOptions()));
         var propertyIds = new[]
         {
@@ -84,7 +87,8 @@ public sealed class OpcCpxItemPropertiesTests {
         });
     }
 
-    private static OpcCpxOptions CreateOptions() {
+    private static OpcCpxOptions CreateOptions()
+    {
         var dictionary = new TypeDictionary(
             "PlantTypes",
             new[]
@@ -98,7 +102,8 @@ public sealed class OpcCpxItemPropertiesTests {
                 DictionaryId,
                 dictionary,
                 DictionaryXml,
-                new Dictionary<string, string> {
+                new Dictionary<string, string>
+                {
                     ["MotorStatus"] = TypeDescriptionXml,
                 })
             .AddComplexItem(
@@ -114,10 +119,14 @@ public sealed class OpcCpxItemPropertiesTests {
     }
 }
 
-internal static class PropertyIdTestExtensions {
-    public static int IndexOf(this int[] values, int value) {
-        for (var i = 0; i < values.Length; i++) {
-            if (values[i] == value) {
+internal static class PropertyIdTestExtensions
+{
+    public static int IndexOf(this int[] values, int value)
+    {
+        for (var i = 0; i < values.Length; i++)
+        {
+            if (values[i] == value)
+            {
                 return i;
             }
         }

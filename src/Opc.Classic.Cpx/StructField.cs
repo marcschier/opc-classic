@@ -9,7 +9,8 @@ namespace Opc.Classic.Cpx;
 /// A single field inside a <see cref="StructType"/>. Mirrors an OPCBinary
 /// <c>&lt;Field&gt;</c> element.
 /// </summary>
-public sealed class StructField {
+public sealed class StructField
+{
     /// <summary>Field name (for diagnostics; not part of the wire encoding).</summary>
     public required string Name { get; init; }
 

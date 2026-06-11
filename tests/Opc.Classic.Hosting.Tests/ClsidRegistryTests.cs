@@ -13,9 +13,11 @@ using TUnit.Core;
 
 namespace Opc.Classic.Hosting.Tests;
 
-public sealed class ClsidRegistryTests {
+public sealed class ClsidRegistryTests
+{
     [Test]
-    public async Task InMemoryClsidRegistry_Register_then_TryResolve_round_trips() {
+    public async Task InMemoryClsidRegistry_Register_then_TryResolve_round_trips()
+    {
         var registration = CreateRegistration();
         var registry = new InMemoryClsidRegistry();
 
@@ -27,7 +29,8 @@ public sealed class ClsidRegistryTests {
     }
 
     [Test]
-    public async Task TryResolveProgId_is_case_insensitive() {
+    public async Task TryResolveProgId_is_case_insensitive()
+    {
         var registration = CreateRegistration(progId: "Vendor.Server.1");
         var registry = new InMemoryClsidRegistry([registration]);
 
@@ -38,7 +41,8 @@ public sealed class ClsidRegistryTests {
     }
 
     [Test]
-    public async Task Enumerate_returns_all_registered_entries() {
+    public async Task Enumerate_returns_all_registered_entries()
+    {
         var first = CreateRegistration(
             clsid: Guid.Parse("10138C2C-0000-0000-0000-000000000001"),
             progId: "Vendor.First.1");
@@ -57,7 +61,8 @@ public sealed class ClsidRegistryTests {
     }
 
     [Test]
-    public async Task Unregister_removes_clsid_and_progid_entries() {
+    public async Task Unregister_removes_clsid_and_progid_entries()
+    {
         var registration = CreateRegistration();
         var registry = new InMemoryClsidRegistry([registration]);
 
@@ -72,7 +77,8 @@ public sealed class ClsidRegistryTests {
     }
 
     [Test]
-    public async Task ConfigurationClsidRegistry_binds_from_ClassicServers_section() {
+    public async Task ConfigurationClsidRegistry_binds_from_ClassicServers_section()
+    {
         var expectedCategory = Guid.Parse("63D5F432-CFE4-11D1-B2C8-0060083BA1FB");
         var registration = CreateRegistration(
             clsid: Guid.Parse("10138C2C-0000-0000-0000-000000000003"),
@@ -95,7 +101,8 @@ public sealed class ClsidRegistryTests {
     }
 
     [Test]
-    public async Task OpcClsidRegistration_record_equality_value_semantics() {
+    public async Task OpcClsidRegistration_record_equality_value_semantics()
+    {
         var clsid = Guid.Parse("10138C2C-0000-0000-0000-000000000004");
         var first = CreateRegistration(clsid: clsid, friendlyName: "Vendor Server");
         var second = CreateRegistration(clsid: clsid, friendlyName: "Vendor Server");
@@ -121,11 +128,13 @@ public sealed class ClsidRegistryTests {
             friendlyName,
             implementedCategories);
 
-    private static InMemoryConfigurationSection CreateConfiguration(params OpcClsidRegistration[] registrations) {
+    private static InMemoryConfigurationSection CreateConfiguration(params OpcClsidRegistration[] registrations)
+    {
         InMemoryConfigurationSection root = new(string.Empty, string.Empty);
         var servers = root.GetOrAddSection("Opc.Classic").GetOrAddSection("Servers");
 
-        for (var i = 0; i < registrations.Length; i++) {
+        for (var i = 0; i < registrations.Length; i++)
+        {
             var registration = registrations[i];
             var section = servers.GetOrAddSection(i.ToString(CultureInfo.InvariantCulture));
             section.GetOrAddSection("Clsid").Value = registration.Clsid.ToString("D");
@@ -133,13 +142,16 @@ public sealed class ClsidRegistryTests {
             section.GetOrAddSection("AssemblyName").Value = registration.AssemblyName;
             section.GetOrAddSection("TypeName").Value = registration.TypeName;
 
-            if (registration.FriendlyName is not null) {
+            if (registration.FriendlyName is not null)
+            {
                 section.GetOrAddSection("FriendlyName").Value = registration.FriendlyName;
             }
 
-            if (registration.ImplementedCategories is not null) {
+            if (registration.ImplementedCategories is not null)
+            {
                 var categories = section.GetOrAddSection("ImplementedCategories");
-                for (var categoryIndex = 0; categoryIndex < registration.ImplementedCategories.Count; categoryIndex++) {
+                for (var categoryIndex = 0; categoryIndex < registration.ImplementedCategories.Count; categoryIndex++)
+                {
                     categories.GetOrAddSection(categoryIndex.ToString(CultureInfo.InvariantCulture)).Value =
                         registration.ImplementedCategories[categoryIndex].ToString("D");
                 }
@@ -149,10 +161,12 @@ public sealed class ClsidRegistryTests {
         return root;
     }
 
-    private sealed class InMemoryConfigurationSection : IConfigurationSection {
+    private sealed class InMemoryConfigurationSection : IConfigurationSection
+    {
         private readonly List<InMemoryConfigurationSection> _children = new();
 
-        public InMemoryConfigurationSection(string key, string path) {
+        public InMemoryConfigurationSection(string key, string path)
+        {
             Key = key;
             Path = path;
         }
@@ -163,7 +177,8 @@ public sealed class ClsidRegistryTests {
 
         public string? Value { get; set; }
 
-        public string? this[string key] {
+        public string? this[string key]
+        {
             get => GetSection(key).Value;
             set => GetOrAddSection(key).Value = value;
         }
@@ -172,12 +187,15 @@ public sealed class ClsidRegistryTests {
 
         public IChangeToken GetReloadToken() => NoopChangeToken.Instance;
 
-        public IConfigurationSection GetSection(string key) {
+        public IConfigurationSection GetSection(string key)
+        {
             var current = this;
-            foreach (var segment in key.Split(':', StringSplitOptions.RemoveEmptyEntries)) {
+            foreach (var segment in key.Split(':', StringSplitOptions.RemoveEmptyEntries))
+            {
                 var next = current._children.FirstOrDefault(child =>
                     string.Equals(child.Key, segment, StringComparison.OrdinalIgnoreCase));
-                if (next is null) {
+                if (next is null)
+                {
                     return new InMemoryConfigurationSection(segment, CreateChildPath(current.Path, segment));
                 }
 
@@ -187,12 +205,15 @@ public sealed class ClsidRegistryTests {
             return current;
         }
 
-        public InMemoryConfigurationSection GetOrAddSection(string key) {
+        public InMemoryConfigurationSection GetOrAddSection(string key)
+        {
             var current = this;
-            foreach (var segment in key.Split(':', StringSplitOptions.RemoveEmptyEntries)) {
+            foreach (var segment in key.Split(':', StringSplitOptions.RemoveEmptyEntries))
+            {
                 var next = current._children.FirstOrDefault(child =>
                     string.Equals(child.Key, segment, StringComparison.OrdinalIgnoreCase));
-                if (next is null) {
+                if (next is null)
+                {
                     next = new InMemoryConfigurationSection(segment, CreateChildPath(current.Path, segment));
                     current._children.Add(next);
                 }
@@ -207,7 +228,8 @@ public sealed class ClsidRegistryTests {
             string.IsNullOrEmpty(parentPath) ? key : string.Concat(parentPath, ":", key);
     }
 
-    private sealed class NoopChangeToken : IChangeToken {
+    private sealed class NoopChangeToken : IChangeToken
+    {
         public static NoopChangeToken Instance { get; } = new();
 
         public bool HasChanged => false;
@@ -217,10 +239,12 @@ public sealed class ClsidRegistryTests {
         public IDisposable RegisterChangeCallback(Action<object?> callback, object? state) => NoopDisposable.Instance;
     }
 
-    private sealed class NoopDisposable : IDisposable {
+    private sealed class NoopDisposable : IDisposable
+    {
         public static NoopDisposable Instance { get; } = new();
 
-        public void Dispose() {
+        public void Dispose()
+        {
         }
     }
 }

@@ -2,7 +2,8 @@
 
 namespace SharpCifs;
 
-public sealed class UniAddress {
+public sealed class UniAddress
+{
     private UniAddress(string hostName) => HostName = hostName;
 
     public string HostName { get; }

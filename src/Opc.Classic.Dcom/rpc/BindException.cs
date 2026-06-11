@@ -5,20 +5,24 @@ using Opc.Classic.Dcom.Rpc.pdu;
 namespace Opc.Classic.Dcom.Rpc;
 
 /// <inheritdoc/>
-public class BindException : RpcException {
+public class BindException : RpcException
+{
 
     /// <inheritdoc/>
-    public BindException() {
+    public BindException()
+    {
     }
 
     /// <inheritdoc/>
     public BindException(string message) :
-        base(message) {
+        base(message)
+    {
     }
 
     /// <inheritdoc/>
     public BindException(string message, BindNoAcknowledgeReason rejectReason) :
-        base(ToString(message, rejectReason)) {
+        base(ToString(message, rejectReason))
+    {
     }
 
     /// <summary>
@@ -36,8 +40,10 @@ public class BindException : RpcException {
     /// </summary>
     /// <param name="reason"></param>
     /// <returns></returns>
-    private static string ToString(BindNoAcknowledgeReason reason) {
-        switch (reason) {
+    private static string ToString(BindNoAcknowledgeReason reason)
+    {
+        switch (reason)
+        {
             case BindNoAcknowledgeReason.REASON_NOT_SPECIFIED:
                 return "REASON_NOT_SPECIFIED";
             case BindNoAcknowledgeReason.TEMPORARY_CONGESTION:

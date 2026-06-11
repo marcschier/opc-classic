@@ -15,25 +15,31 @@ using TUnit.Core;
 
 namespace Opc.Classic.Tests;
 
-public sealed class NdrReaderHexContextTests {
+public sealed class NdrReaderHexContextTests
+{
     private delegate T NdrReadFunc<T>(ref NdrReader reader);
 
-    private static (bool Threw, string Message) TryRead(byte[] bytes, NdrReadFunc<object?> read) {
-        try {
+    private static (bool Threw, string Message) TryRead(byte[] bytes, NdrReadFunc<object?> read)
+    {
+        try
+        {
             var reader = new NdrReader(bytes);
             read(ref reader);
             return (false, string.Empty);
         }
-        catch (InvalidOperationException ex) {
+        catch (InvalidOperationException ex)
+        {
             return (true, ex.Message);
         }
-        catch (System.IO.InvalidDataException ex) {
+        catch (System.IO.InvalidDataException ex)
+        {
             return (true, ex.Message);
         }
     }
 
     [Test]
-    public async Task LpwstrOffsetMismatch_ExceptionMessageIncludesHexWindow() {
+    public async Task LpwstrOffsetMismatch_ExceptionMessageIncludesHexWindow()
+    {
         // A 32-byte buffer that decodes as an LPWSTR with offset != 0; the
         // reader must throw and the message must carry a hex window showing
         // the failure position.
@@ -56,9 +62,11 @@ public sealed class NdrReaderHexContextTests {
     }
 
     [Test]
-    public async Task FormatHexContext_RendersBoundedWindowAroundPosition() {
+    public async Task FormatHexContext_RendersBoundedWindowAroundPosition()
+    {
         byte[] bytes = new byte[64];
-        for (int i = 0; i < bytes.Length; i++) {
+        for (int i = 0; i < bytes.Length; i++)
+        {
             bytes[i] = (byte)i;
         }
 
@@ -73,16 +81,19 @@ public sealed class NdrReaderHexContextTests {
     }
 
     [Test]
-    public async Task FormatHexContext_EmptyBufferReturnsEmptyString() {
+    public async Task FormatHexContext_EmptyBufferReturnsEmptyString()
+    {
         string formatted = NdrReader.FormatHexContext(ReadOnlySpan<byte>.Empty, position: 0);
 
         await Assert.That(formatted).IsEqualTo(string.Empty);
     }
 
     [Test]
-    public async Task FormatHexContext_PositionPastBufferStillRenders() {
+    public async Task FormatHexContext_PositionPastBufferStillRenders()
+    {
         byte[] bytes = new byte[8];
-        for (int i = 0; i < bytes.Length; i++) {
+        for (int i = 0; i < bytes.Length; i++)
+        {
             bytes[i] = (byte)(0xA0 + i);
         }
 

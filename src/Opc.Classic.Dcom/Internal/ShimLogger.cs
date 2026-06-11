@@ -9,7 +9,8 @@ using Microsoft.Extensions.Logging;
 namespace Opc.Classic.Dcom.Internal;
 
 #pragma warning disable CA1848, CA1873, CA2254 // Compatibility shim preserves Serilog-style dynamic templates.
-internal sealed class ShimLogger : IShimLogger {
+internal sealed class ShimLogger : IShimLogger
+{
     private static ILogger Get() => LogHost.CreateLogger("Opc.Classic.Dcom");
 
     public bool IsEnabled(LogLevel level) => Get().IsEnabled(level);

@@ -4,7 +4,8 @@ using System.Net;
 
 namespace SharpCifs.Netbios;
 
-public sealed class NbtAddress {
+public sealed class NbtAddress
+{
     private readonly string _hostName;
 
     private NbtAddress(string hostName) => _hostName = hostName;

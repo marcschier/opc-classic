@@ -14,22 +14,29 @@ namespace Opc.Classic.Dcom.Registry;
 /// based upon the transport intended to be used this factory
 /// provides either the smb impl or the tcp/ip one.
 /// </summary>
-public class RegistryFactory {
+public class RegistryFactory
+{
 
     /// <summary>
     /// Private constructor
     /// </summary>
-    private RegistryFactory() {
+    private RegistryFactory()
+    {
     }
 
     /// <summary>
     /// Instantiates the Factory.
     /// </summary>
-    public static RegistryFactory Instance {
-        get {
-            if (_factory == null) {
-                lock (s_factoryLock) {
-                    if (_factory == null) {
+    public static RegistryFactory Instance
+    {
+        get
+        {
+            if (_factory == null)
+            {
+                lock (s_factoryLock)
+                {
+                    if (_factory == null)
+                    {
                         _factory = new RegistryFactory();
                     }
                 }
@@ -50,8 +57,10 @@ public class RegistryFactory {
     /// </param>
     /// <exception cref="UnknownHostException"> </exception>
     public IRegistry GetRegistryClient(IAuthInfo authInfo, string serverName,
-        bool smbTransport) {
-        if (smbTransport) {
+        bool smbTransport)
+    {
+        if (smbTransport)
+        {
             return new RegistryStub(authInfo, serverName);
         }
         return null;
@@ -66,8 +75,10 @@ public class RegistryFactory {
     /// is required, false will return null.
     /// </param>
     /// <exception cref="UnknownHostException"> </exception>
-    public IRegistry GetRegistryClient(string serverName, bool smbTransport) {
-        if (smbTransport) {
+    public IRegistry GetRegistryClient(string serverName, bool smbTransport)
+    {
+        if (smbTransport)
+        {
             return new RegistryStub(serverName);
         }
         return null;

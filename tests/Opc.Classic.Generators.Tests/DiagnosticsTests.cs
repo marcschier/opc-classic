@@ -16,9 +16,11 @@ using TUnit.Core;
 
 namespace Opc.Classic.Generators.Tests;
 
-public sealed class DiagnosticsTests {
+public sealed class DiagnosticsTests
+{
     [Test]
-    public async Task InvalidOpcInterfaceGuid_reports_OPCGEN001() {
+    public async Task InvalidOpcInterfaceGuid_reports_OPCGEN001()
+    {
         const string source = """
             using Opc.Classic.Generators;
 
@@ -34,7 +36,8 @@ public sealed class DiagnosticsTests {
     }
 
     [Test]
-    public async Task NonPartialOpcInterface_reports_OPCGEN002() {
+    public async Task NonPartialOpcInterface_reports_OPCGEN002()
+    {
         const string source = """
             using Opc.Classic.Generators;
 
@@ -50,7 +53,8 @@ public sealed class DiagnosticsTests {
     }
 
     [Test]
-    public async Task DuplicateOpcMethodOpnum_reports_OPCGEN003() {
+    public async Task DuplicateOpcMethodOpnum_reports_OPCGEN003()
+    {
         const string source = """
             using System.Threading.Tasks;
             using Opc.Classic.Generators;
@@ -69,7 +73,8 @@ public sealed class DiagnosticsTests {
     }
 
     [Test]
-    public async Task UnsupportedOpcMethodSignature_reports_OPCGEN007() {
+    public async Task UnsupportedOpcMethodSignature_reports_OPCGEN007()
+    {
         const string source = """
             using Opc.Classic.Generators;
 
@@ -87,7 +92,8 @@ public sealed class DiagnosticsTests {
     }
 
     [Test]
-    public async Task MissingReturnCodec_reports_OPCGEN009() {
+    public async Task MissingReturnCodec_reports_OPCGEN009()
+    {
         const string source = """
             using System.Threading.Tasks;
             using Opc.Classic.Generators;
@@ -108,7 +114,8 @@ public sealed class DiagnosticsTests {
     }
 
     [Test]
-    public async Task UnsupportedParameter_reports_OPCGEN010() {
+    public async Task UnsupportedParameter_reports_OPCGEN010()
+    {
         const string source = """
             using System.Threading.Tasks;
             using Opc.Classic.Generators;
@@ -128,13 +135,15 @@ public sealed class DiagnosticsTests {
         await AssertDiagnosticAsync(source, "OPCGEN010", DiagnosticSeverity.Warning);
     }
 
-    private static async Task AssertDiagnosticAsync(string source, string diagnosticId, DiagnosticSeverity severity) {
+    private static async Task AssertDiagnosticAsync(string source, string diagnosticId, DiagnosticSeverity severity)
+    {
         Diagnostic diagnostic = DiagnosticsFor(source).First(diagnostic => diagnostic.Id == diagnosticId);
 
         await Assert.That(diagnostic.Severity).IsEqualTo(severity);
     }
 
-    private static ImmutableArray<Diagnostic> DiagnosticsFor(string source) {
+    private static ImmutableArray<Diagnostic> DiagnosticsFor(string source)
+    {
         GeneratorDriverRunResult result = RunGenerator(source, out ImmutableArray<Diagnostic> driverDiagnostics);
         return result.Results
             .SelectMany(static generator => generator.Diagnostics)
@@ -142,7 +151,8 @@ public sealed class DiagnosticsTests {
             .ToImmutableArray();
     }
 
-    private static GeneratorDriverRunResult RunGenerator(string source, out ImmutableArray<Diagnostic> driverDiagnostics) {
+    private static GeneratorDriverRunResult RunGenerator(string source, out ImmutableArray<Diagnostic> driverDiagnostics)
+    {
         var compilation = CSharpCompilation.Create(
             assemblyName: "OpcGeneratorDiagnosticsTestAssembly",
             syntaxTrees: [CSharpSyntaxTree.ParseText(source, ParseOptions())],
@@ -162,10 +172,13 @@ public sealed class DiagnosticsTests {
 
     private static CSharpParseOptions ParseOptions() => CSharpParseOptions.Default.WithLanguageVersion(LanguageVersion.Latest);
 
-    private static IEnumerable<MetadataReference> References() {
+    private static IEnumerable<MetadataReference> References()
+    {
         string? trustedPlatformAssemblies = AppContext.GetData("TRUSTED_PLATFORM_ASSEMBLIES") as string;
-        if (!string.IsNullOrEmpty(trustedPlatformAssemblies)) {
-            foreach (var path in trustedPlatformAssemblies.Split(Path.PathSeparator)) {
+        if (!string.IsNullOrEmpty(trustedPlatformAssemblies))
+        {
+            foreach (var path in trustedPlatformAssemblies.Split(Path.PathSeparator))
+            {
                 yield return MetadataReference.CreateFromFile(path);
             }
         }

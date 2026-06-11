@@ -17,7 +17,8 @@ namespace Opc.Classic.Dcom.Core;
 /// <summary>
 /// BackgroundService-backed accept loop for the modern DCOM server transport path.
 /// </summary>
-internal sealed class ComOxidRuntimeAcceptService : BackgroundService, IAsyncDisposable {
+internal sealed class ComOxidRuntimeAcceptService : BackgroundService, IAsyncDisposable
+{
     private readonly IAsyncEndpoint _endpoint;
     private readonly Func<IAsyncTransport, CancellationToken, ValueTask> _connectionProcessor;
     private readonly Channel<IAsyncTransport> _connections;
@@ -32,17 +33,20 @@ internal sealed class ComOxidRuntimeAcceptService : BackgroundService, IAsyncDis
     public ComOxidRuntimeAcceptService(
         IAsyncEndpoint endpoint,
         Func<IAsyncTransport, CancellationToken, ValueTask> connectionProcessor)
-        : this(endpoint, connectionProcessor, workerCount: 0) {
+        : this(endpoint, connectionProcessor, workerCount: 0)
+    {
     }
 
     public ComOxidRuntimeAcceptService(
         IAsyncEndpoint endpoint,
         Func<IAsyncTransport, CancellationToken, ValueTask> connectionProcessor,
-        int workerCount) {
+        int workerCount)
+    {
         _endpoint = endpoint ?? throw new ArgumentNullException(nameof(endpoint));
         _connectionProcessor = connectionProcessor ?? throw new ArgumentNullException(nameof(connectionProcessor));
         _workerCount = workerCount > 0 ? workerCount : Math.Max(1, Environment.ProcessorCount);
-        _connections = Channel.CreateUnbounded<IAsyncTransport>(new UnboundedChannelOptions {
+        _connections = Channel.CreateUnbounded<IAsyncTransport>(new UnboundedChannelOptions
+        {
             SingleReader = false,
             SingleWriter = true,
         });
@@ -56,13 +60,16 @@ internal sealed class ComOxidRuntimeAcceptService : BackgroundService, IAsyncDis
 
     public int ProcessedConnectionCount => Volatile.Read(ref _processedConnectionCount);
 
-    public override async Task StopAsync(CancellationToken cancellationToken) {
+    public override async Task StopAsync(CancellationToken cancellationToken)
+    {
         _connections.Writer.TryComplete();
         await base.StopAsync(cancellationToken).ConfigureAwait(false);
     }
 
-    public async ValueTask DisposeAsync() {
-        if (_disposed) {
+    public async ValueTask DisposeAsync()
+    {
+        if (_disposed)
+        {
             return;
         }
 
@@ -72,8 +79,10 @@ internal sealed class ComOxidRuntimeAcceptService : BackgroundService, IAsyncDis
         GC.SuppressFinalize(this);
     }
 
-    public override void Dispose() {
-        if (_disposed) {
+    public override void Dispose()
+    {
+        if (_disposed)
+        {
             return;
         }
 
@@ -82,58 +91,77 @@ internal sealed class ComOxidRuntimeAcceptService : BackgroundService, IAsyncDis
         base.Dispose();
     }
 
-    protected override async Task ExecuteAsync(CancellationToken stoppingToken) {
-        for (var i = 0; i < _workerCount; i++) {
+    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+    {
+        for (var i = 0; i < _workerCount; i++)
+        {
             _workers.Add(Task.Run(() => ProcessConnectionsAsync(stoppingToken), CancellationToken.None));
         }
 
-        try {
-            await foreach (var transport in _endpoint.AcceptConnectionsAsync(stoppingToken).WithCancellation(stoppingToken).ConfigureAwait(false)) {
+        try
+        {
+            await foreach (var transport in _endpoint.AcceptConnectionsAsync(stoppingToken).WithCancellation(stoppingToken).ConfigureAwait(false))
+            {
                 Interlocked.Increment(ref _acceptedConnectionCount);
                 await _connections.Writer.WriteAsync(transport, stoppingToken).ConfigureAwait(false);
                 Interlocked.Increment(ref _queuedConnectionCount);
             }
         }
-        catch (OperationCanceledException) when (stoppingToken.IsCancellationRequested) {
+        catch (OperationCanceledException) when (stoppingToken.IsCancellationRequested)
+        {
         }
-        catch (ChannelClosedException) when (stoppingToken.IsCancellationRequested) {
+        catch (ChannelClosedException) when (stoppingToken.IsCancellationRequested)
+        {
         }
-        catch (Exception e) {
+        catch (Exception e)
+        {
             Log.Logger.Warning(e, "ComOxidRuntimeAcceptService accept loop failed");
         }
-        finally {
+        finally
+        {
             _connections.Writer.TryComplete();
             await Task.WhenAll(_workers).ConfigureAwait(false);
         }
     }
 
-    private async Task ProcessConnectionsAsync(CancellationToken cancellationToken) {
-        try {
-            await foreach (var transport in _connections.Reader.ReadAllAsync(cancellationToken).WithCancellation(cancellationToken).ConfigureAwait(false)) {
+    private async Task ProcessConnectionsAsync(CancellationToken cancellationToken)
+    {
+        try
+        {
+            await foreach (var transport in _connections.Reader.ReadAllAsync(cancellationToken).WithCancellation(cancellationToken).ConfigureAwait(false))
+            {
                 await ProcessConnectionAsync(transport, cancellationToken).ConfigureAwait(false);
             }
         }
-        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested) {
+        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+        {
         }
     }
 
-    private async ValueTask ProcessConnectionAsync(IAsyncTransport transport, CancellationToken cancellationToken) {
-        try {
+    private async ValueTask ProcessConnectionAsync(IAsyncTransport transport, CancellationToken cancellationToken)
+    {
+        try
+        {
             await _connectionProcessor(transport, cancellationToken).ConfigureAwait(false);
             Interlocked.Increment(ref _processedConnectionCount);
         }
-        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested) {
+        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+        {
         }
-        catch (Exception e) {
+        catch (Exception e)
+        {
             Log.Logger.Warning(e, "ComOxidRuntimeAcceptService worker failed to process connection");
         }
-        finally {
+        finally
+        {
             await transport.DisposeAsync().ConfigureAwait(false);
         }
     }
 
-    private async ValueTask DisposeEndpointAsync() {
-        if (_endpointDisposed) {
+    private async ValueTask DisposeEndpointAsync()
+    {
+        if (_endpointDisposed)
+        {
             return;
         }
 

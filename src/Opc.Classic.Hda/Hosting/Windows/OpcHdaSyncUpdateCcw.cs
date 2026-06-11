@@ -18,7 +18,8 @@ namespace Opc.Classic.Hda.Hosting.Windows;
 
 /// <summary>Raw-vtable method bodies for the <c>IOPCHDA_SyncUpdate</c> tearoff.</summary>
 [SupportedOSPlatform("windows")]
-internal static unsafe class OpcHdaSyncUpdateCcw {
+internal static unsafe class OpcHdaSyncUpdateCcw
+{
     [UnmanagedCallersOnly]
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
     public static int QueryCapabilities(IntPtr pThis, IntPtr pCapabilities) =>
@@ -41,16 +42,20 @@ internal static unsafe class OpcHdaSyncUpdateCcw {
 
     [UnmanagedCallersOnly]
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
-    public static int DeleteRaw(IntPtr pThis, IntPtr htStartTime, IntPtr htEndTime, uint dwNumItems, IntPtr phServer, IntPtr* ppErrors) {
+    public static int DeleteRaw(IntPtr pThis, IntPtr htStartTime, IntPtr htEndTime, uint dwNumItems, IntPtr phServer, IntPtr* ppErrors)
+    {
         OpcHdaCcwUpdateHelpers.ZeroOut(ppErrors);
-        if (!OpcHdaCcwUpdateHelpers.HasDeleteRawArgs(htStartTime, htEndTime, dwNumItems, phServer, ppErrors)) {
+        if (!OpcHdaCcwUpdateHelpers.HasDeleteRawArgs(htStartTime, htEndTime, dwNumItems, phServer, ppErrors))
+        {
             return OpcHdaServerCcw.E_INVALIDARG;
         }
-        if (!OpcHdaCcwUpdateHelpers.TryResolveDispatcher(pThis, out IOpcHdaServerDispatcher? dispatcher)) {
+        if (!OpcHdaCcwUpdateHelpers.TryResolveDispatcher(pThis, out IOpcHdaServerDispatcher? dispatcher))
+        {
             return OpcHdaServerCcw.E_FAIL;
         }
 
-        try {
+        try
+        {
             int count = OpcHdaCcwUpdateHelpers.CountToInt(dwNumItems);
             OpcHdaTime startTime = OpcHdaItemMarshaler.ReadHdaTime(htStartTime);
             OpcHdaTime endTime = OpcHdaItemMarshaler.ReadHdaTime(htEndTime);
@@ -62,23 +67,28 @@ internal static unsafe class OpcHdaSyncUpdateCcw {
             *ppErrors = OpcHdaItemMarshaler.AllocateInt32Array(errors);
             return OpcHdaCcwUpdateHelpers.GetMasterHResult(errors);
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             return OpcHdaCcwUpdateHelpers.MapHResult(ex);
         }
     }
 
     [UnmanagedCallersOnly]
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
-    public static int DeleteAtTime(IntPtr pThis, uint dwNumItems, IntPtr phServer, IntPtr ftTimeStamps, IntPtr* ppErrors) {
+    public static int DeleteAtTime(IntPtr pThis, uint dwNumItems, IntPtr phServer, IntPtr ftTimeStamps, IntPtr* ppErrors)
+    {
         OpcHdaCcwUpdateHelpers.ZeroOut(ppErrors);
-        if (!OpcHdaCcwUpdateHelpers.HasDeleteAtTimeArgs(dwNumItems, phServer, ftTimeStamps, ppErrors)) {
+        if (!OpcHdaCcwUpdateHelpers.HasDeleteAtTimeArgs(dwNumItems, phServer, ftTimeStamps, ppErrors))
+        {
             return OpcHdaServerCcw.E_INVALIDARG;
         }
-        if (!OpcHdaCcwUpdateHelpers.TryResolveDispatcher(pThis, out IOpcHdaServerDispatcher? dispatcher)) {
+        if (!OpcHdaCcwUpdateHelpers.TryResolveDispatcher(pThis, out IOpcHdaServerDispatcher? dispatcher))
+        {
             return OpcHdaServerCcw.E_FAIL;
         }
 
-        try {
+        try
+        {
             int count = OpcHdaCcwUpdateHelpers.CountToInt(dwNumItems);
             int[] handles = OpcHdaItemMarshaler.ReadInt32Array(phServer, count);
             long[] timestamps = OpcHdaItemMarshaler.ReadFileTimeArray(ftTimeStamps, count);
@@ -89,29 +99,35 @@ internal static unsafe class OpcHdaSyncUpdateCcw {
             *ppErrors = OpcHdaItemMarshaler.AllocateInt32Array(errors);
             return OpcHdaCcwUpdateHelpers.GetMasterHResult(errors);
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             return OpcHdaCcwUpdateHelpers.MapHResult(ex);
         }
     }
 
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
-    private static int Update(IntPtr pThis, uint dwNumItems, IntPtr phServer, IntPtr ftTimeStamps, IntPtr pDataValues, IntPtr pQualities, IntPtr* ppErrors, OpcHdaUpdateKind kind) {
+    private static int Update(IntPtr pThis, uint dwNumItems, IntPtr phServer, IntPtr ftTimeStamps, IntPtr pDataValues, IntPtr pQualities, IntPtr* ppErrors, OpcHdaUpdateKind kind)
+    {
         OpcHdaCcwUpdateHelpers.ZeroOut(ppErrors);
-        if (!OpcHdaCcwUpdateHelpers.HasWriteArgs(dwNumItems, phServer, ftTimeStamps, pDataValues, pQualities, ppErrors)) {
+        if (!OpcHdaCcwUpdateHelpers.HasWriteArgs(dwNumItems, phServer, ftTimeStamps, pDataValues, pQualities, ppErrors))
+        {
             return OpcHdaServerCcw.E_INVALIDARG;
         }
-        if (!OpcHdaCcwUpdateHelpers.TryResolveDispatcher(pThis, out IOpcHdaServerDispatcher? dispatcher)) {
+        if (!OpcHdaCcwUpdateHelpers.TryResolveDispatcher(pThis, out IOpcHdaServerDispatcher? dispatcher))
+        {
             return OpcHdaServerCcw.E_FAIL;
         }
 
-        try {
+        try
+        {
             int count = OpcHdaCcwUpdateHelpers.CountToInt(dwNumItems);
             int[] handles = OpcHdaItemMarshaler.ReadInt32Array(phServer, count);
             long[] timestamps = OpcHdaItemMarshaler.ReadFileTimeArray(ftTimeStamps, count);
             OpcVariant[] values = OpcHdaCcwUpdateHelpers.ReadVariantArray(pDataValues, count);
             int[] qualities = OpcHdaItemMarshaler.ReadInt32Array(pQualities, count);
 #pragma warning disable VSTHRD002
-            int[] returnedErrors = kind switch {
+            int[] returnedErrors = kind switch
+            {
                 OpcHdaUpdateKind.Insert => dispatcher!.InsertAsync(handles, timestamps, values, qualities, CancellationToken.None).GetAwaiter().GetResult(),
                 OpcHdaUpdateKind.Replace => dispatcher!.ReplaceAsync(handles, timestamps, values, qualities, CancellationToken.None).GetAwaiter().GetResult(),
                 _ => dispatcher!.InsertReplaceAsync(handles, timestamps, values, qualities, CancellationToken.None).GetAwaiter().GetResult(),
@@ -121,13 +137,15 @@ internal static unsafe class OpcHdaSyncUpdateCcw {
             *ppErrors = OpcHdaItemMarshaler.AllocateInt32Array(errors);
             return OpcHdaCcwUpdateHelpers.GetMasterHResult(errors);
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             return OpcHdaCcwUpdateHelpers.MapHResult(ex);
         }
     }
 }
 
-internal enum OpcHdaUpdateKind {
+internal enum OpcHdaUpdateKind
+{
     Insert,
     Replace,
     InsertReplace,
@@ -135,39 +153,48 @@ internal enum OpcHdaUpdateKind {
 
 /// <summary>Shared raw-vtable helpers for HDA update and playback tearoffs.</summary>
 [SupportedOSPlatform("windows")]
-internal static class OpcHdaCcwUpdateHelpers {
+internal static class OpcHdaCcwUpdateHelpers
+{
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
-    public static int QueryCapabilities(IntPtr pThis, IntPtr pCapabilities) {
-        if (pCapabilities == IntPtr.Zero) {
+    public static int QueryCapabilities(IntPtr pThis, IntPtr pCapabilities)
+    {
+        if (pCapabilities == IntPtr.Zero)
+        {
             return OpcHdaServerCcw.E_INVALIDARG;
         }
-        if (!TryResolveDispatcher(pThis, out IOpcHdaServerDispatcher? dispatcher)) {
+        if (!TryResolveDispatcher(pThis, out IOpcHdaServerDispatcher? dispatcher))
+        {
             return OpcHdaServerCcw.E_FAIL;
         }
 
-        try {
+        try
+        {
 #pragma warning disable VSTHRD002
             int capabilities = dispatcher!.UpdateCapabilitiesAsync(CancellationToken.None).GetAwaiter().GetResult();
 #pragma warning restore VSTHRD002
             WriteInt32(pCapabilities, capabilities);
             return OpcHdaServerCcw.S_OK;
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             return MapHResult(ex);
         }
     }
 
-    public static bool TryResolveDispatcher(IntPtr pThis, out IOpcHdaServerDispatcher? dispatcher) {
+    public static bool TryResolveDispatcher(IntPtr pThis, out IOpcHdaServerDispatcher? dispatcher)
+    {
         dispatcher = OpcHdaServerCcw.ResolveDispatcher(pThis);
         return dispatcher is not null;
     }
 
-    public static bool TryResolveSession(IntPtr pThis, out OpcHdaServerCcw.CcwSession? session) {
+    public static bool TryResolveSession(IntPtr pThis, out OpcHdaServerCcw.CcwSession? session)
+    {
         session = OpcHdaServerCcw.ResolveSession(pThis);
         return session is not null;
     }
 
-    public static bool HasPlaybackSource(IntPtr pThis) {
+    public static bool HasPlaybackSource(IntPtr pThis)
+    {
         IOpcHdaServer? server = OpcHdaServerCcw.ResolveServer(pThis);
         return server is IOPCHDA_Playback or IOPCHDA_SyncRead;
     }
@@ -198,16 +225,20 @@ internal static class OpcHdaCcwUpdateHelpers {
     public static unsafe bool HasPlaybackProcessedArgs(IntPtr startTime, IntPtr endTime, uint count, IntPtr handles, IntPtr aggregates, IntPtr cancelId, IntPtr* errors) =>
         HasPlaybackRawArgs(startTime, endTime, count, handles, cancelId, errors) && aggregates != IntPtr.Zero;
 
-    public static int CountToInt(uint count) {
+    public static int CountToInt(uint count)
+    {
         ArgumentOutOfRangeException.ThrowIfGreaterThan(count, (uint)int.MaxValue);
         return (int)count;
     }
 
-    public static OpcVariant[] ReadVariantArray(IntPtr ptr, int count) {
+    public static OpcVariant[] ReadVariantArray(IntPtr ptr, int count)
+    {
         var values = new OpcVariant[count];
-        for (int i = 0; i < count; i++) {
+        for (int i = 0; i < count; i++)
+        {
             IntPtr slot = IntPtr.Add(ptr, checked(i * NativeHdaVariantReader.VariantSize));
-            if (!NativeHdaVariantReader.TryRead(slot, out values[i])) {
+            if (!NativeHdaVariantReader.TryRead(slot, out values[i]))
+            {
                 throw new ArgumentException("A VARIANT update value could not be marshaled.", nameof(ptr));
             }
         }
@@ -215,18 +246,22 @@ internal static class OpcHdaCcwUpdateHelpers {
         return values;
     }
 
-    public static int[] NormalizeErrors(int[]? errors, int count, int missingError) {
+    public static int[] NormalizeErrors(int[]? errors, int count, int missingError)
+    {
         var normalized = new int[count];
-        for (int i = 0; i < count; i++) {
+        for (int i = 0; i < count; i++)
+        {
             normalized[i] = errors is not null && i < errors.Length ? errors[i] : missingError;
         }
 
         return normalized;
     }
 
-    public static int[] NormalizeClientHandles(int[]? clientHandles, int[] serverHandles, int count) {
+    public static int[] NormalizeClientHandles(int[]? clientHandles, int[] serverHandles, int count)
+    {
         var normalized = new int[count];
-        for (int i = 0; i < count; i++) {
+        for (int i = 0; i < count; i++)
+        {
             normalized[i] = clientHandles is not null && i < clientHandles.Length ? clientHandles[i] : serverHandles[i];
         }
 
@@ -237,7 +272,8 @@ internal static class OpcHdaCcwUpdateHelpers {
 
     public static int GetMasterHResult(int[] errors) => HasAnyFailure(errors) ? OpcHdaServerCcw.S_FALSE : OpcHdaServerCcw.S_OK;
 
-    public static int MapHResult(Exception ex) => ex switch {
+    public static int MapHResult(Exception ex) => ex switch
+    {
         OpcException opcEx => opcEx.ResultId.Code,
         COMException comEx => comEx.ErrorCode,
         ArgumentException => OpcHdaServerCcw.E_INVALIDARG,
@@ -246,10 +282,12 @@ internal static class OpcHdaCcwUpdateHelpers {
         _ => OpcHdaServerCcw.E_FAIL,
     };
 
-    public static int RegisterPendingOperation(OpcHdaServerCcw.CcwSession session, IntPtr pdwCancelID, int preferredCancelId, out CancellationToken cancellationToken) {
+    public static int RegisterPendingOperation(OpcHdaServerCcw.CcwSession session, IntPtr pdwCancelID, int preferredCancelId, out CancellationToken cancellationToken)
+    {
         int cancelId = preferredCancelId != 0 ? preferredCancelId : NextCancelId(session);
         var cts = new CancellationTokenSource();
-        while (!session.PendingOperations.TryAdd(cancelId, cts)) {
+        while (!session.PendingOperations.TryAdd(cancelId, cts))
+        {
             cancelId = NextCancelId(session);
         }
 
@@ -264,22 +302,28 @@ internal static class OpcHdaCcwUpdateHelpers {
     public static void QueuePlayback(OpcHdaServerCcw.CcwSession session, int cancelId, int transactionId, IAsyncEnumerable<OpcHdaPlaybackEvent> playbackEvents) =>
         _ = Task.Run(() => CompletePlaybackAsync(session, cancelId, transactionId, playbackEvents));
 
-    public static int CancelOperation(OpcHdaServerCcw.CcwSession session, int cancelId) {
-        if (!session.PendingOperations.TryRemove(cancelId, out CancellationTokenSource? cts)) {
+    public static int CancelOperation(OpcHdaServerCcw.CcwSession session, int cancelId)
+    {
+        if (!session.PendingOperations.TryRemove(cancelId, out CancellationTokenSource? cts))
+        {
             return OpcHdaServerCcw.E_FAIL;
         }
 
-        try {
+        try
+        {
             cts.Cancel();
 #pragma warning disable VSTHRD002
             session.Dispatcher.CancelAsync(cancelId, CancellationToken.None).GetAwaiter().GetResult();
 #pragma warning restore VSTHRD002
         }
-        catch (OpcException ex) when (ex.ResultId.Code == OpcResultId.NotImplemented.Code) {
+        catch (OpcException ex) when (ex.ResultId.Code == OpcResultId.NotImplemented.Code)
+        {
         }
-        catch (NotSupportedException) {
+        catch (NotSupportedException)
+        {
         }
-        finally {
+        finally
+        {
             cts.Dispose();
         }
 
@@ -287,101 +331,137 @@ internal static class OpcHdaCcwUpdateHelpers {
         return OpcHdaServerCcw.S_OK;
     }
 
-    public static unsafe void ZeroOut(IntPtr* pp) {
-        if (pp != null) {
+    public static unsafe void ZeroOut(IntPtr* pp)
+    {
+        if (pp != null)
+        {
             *pp = IntPtr.Zero;
         }
     }
 
-    public static void WriteUInt32(IntPtr p, uint value) {
-        if (p != IntPtr.Zero) {
+    public static void WriteUInt32(IntPtr p, uint value)
+    {
+        if (p != IntPtr.Zero)
+        {
             Marshal.WriteInt32(p, unchecked((int)value));
         }
     }
 
-    private static int NextCancelId(OpcHdaServerCcw.CcwSession session) {
+    private static int NextCancelId(OpcHdaServerCcw.CcwSession session)
+    {
         int cancelId = Interlocked.Increment(ref session.NextCancelId);
         return cancelId == 0 ? Interlocked.Increment(ref session.NextCancelId) : cancelId;
     }
 
-    private static async Task CompletePlaybackAsync(OpcHdaServerCcw.CcwSession session, int cancelId, int transactionId, IAsyncEnumerable<OpcHdaPlaybackEvent> playbackEvents) {
-        if (!session.PendingOperations.TryGetValue(cancelId, out CancellationTokenSource? cts)) {
+    private static async Task CompletePlaybackAsync(OpcHdaServerCcw.CcwSession session, int cancelId, int transactionId, IAsyncEnumerable<OpcHdaPlaybackEvent> playbackEvents)
+    {
+        if (!session.PendingOperations.TryGetValue(cancelId, out CancellationTokenSource? cts))
+        {
             return;
         }
 
-        try {
-            await foreach (OpcHdaPlaybackEvent playbackEvent in playbackEvents.WithCancellation(cts.Token).ConfigureAwait(false)) {
-                if (cts.IsCancellationRequested) {
+        try
+        {
+            await foreach (OpcHdaPlaybackEvent playbackEvent in playbackEvents.WithCancellation(cts.Token).ConfigureAwait(false))
+            {
+                if (cts.IsCancellationRequested)
+                {
                     break;
                 }
 
                 FirePlayback(session, transactionId, playbackEvent);
             }
         }
-        catch (OperationCanceledException) {
+        catch (OperationCanceledException)
+        {
         }
-        finally {
-            if (session.PendingOperations.TryRemove(cancelId, out CancellationTokenSource? removed)) {
+        finally
+        {
+            if (session.PendingOperations.TryRemove(cancelId, out CancellationTokenSource? removed))
+            {
                 removed.Dispose();
             }
         }
     }
 
-    private static void CompleteUpdateCallback(OpcHdaServerCcw.CcwSession session, int cancelId, int transactionId, int[] clientHandles, int[] errors) {
-        if (!session.PendingOperations.TryRemove(cancelId, out CancellationTokenSource? cts)) {
+    private static void CompleteUpdateCallback(OpcHdaServerCcw.CcwSession session, int cancelId, int transactionId, int[] clientHandles, int[] errors)
+    {
+        if (!session.PendingOperations.TryRemove(cancelId, out CancellationTokenSource? cts))
+        {
             return;
         }
 
-        try {
-            if (!cts.IsCancellationRequested) {
+        try
+        {
+            if (!cts.IsCancellationRequested)
+            {
                 FireUpdateComplete(session, transactionId, clientHandles, errors);
             }
         }
-        finally {
+        finally
+        {
             cts.Dispose();
         }
     }
 
-    private static void FireUpdateComplete(OpcHdaServerCcw.CcwSession session, int transactionId, int[] clientHandles, int[] errors) {
+    private static void FireUpdateComplete(OpcHdaServerCcw.CcwSession session, int transactionId, int[] clientHandles, int[] errors)
+    {
         int status = GetMasterHResult(errors);
-        foreach (OpcHdaCallbackProxy sink in session.ScmSinks.Values) {
-            try {
+        foreach (OpcHdaCallbackProxy sink in session.ScmSinks.Values)
+        {
+            try
+            {
                 sink.OnUpdateComplete(transactionId, status, clientHandles, errors);
             }
-            catch (COMException) {
+            catch (COMException)
+            {
             }
-            catch (ObjectDisposedException) {
+            catch (ObjectDisposedException)
+            {
             }
         }
     }
 
-    private static void FirePlayback(OpcHdaServerCcw.CcwSession session, int transactionId, OpcHdaPlaybackEvent playbackEvent) {
-        foreach (OpcHdaCallbackProxy sink in session.ScmSinks.Values) {
-            try {
+    private static void FirePlayback(OpcHdaServerCcw.CcwSession session, int transactionId, OpcHdaPlaybackEvent playbackEvent)
+    {
+        foreach (OpcHdaCallbackProxy sink in session.ScmSinks.Values)
+        {
+            try
+            {
                 sink.OnPlayback(transactionId, playbackEvent.Status, playbackEvent.Items, playbackEvent.Errors);
             }
-            catch (COMException) {
+            catch (COMException)
+            {
             }
-            catch (ObjectDisposedException) {
+            catch (ObjectDisposedException)
+            {
             }
         }
     }
 
-    private static void FireCancelComplete(OpcHdaServerCcw.CcwSession session, int cancelId) {
-        foreach (OpcHdaCallbackProxy sink in session.ScmSinks.Values) {
-            try {
+    private static void FireCancelComplete(OpcHdaServerCcw.CcwSession session, int cancelId)
+    {
+        foreach (OpcHdaCallbackProxy sink in session.ScmSinks.Values)
+        {
+            try
+            {
                 sink.OnCancelComplete(cancelId);
             }
-            catch (COMException) {
+            catch (COMException)
+            {
             }
-            catch (ObjectDisposedException) {
+            catch (ObjectDisposedException)
+            {
             }
         }
     }
 
-    private static bool HasAnyFailure(int[] errors) {
-        for (int i = 0; i < errors.Length; i++) {
-            if (errors[i] < 0) {
+    private static bool HasAnyFailure(int[] errors)
+    {
+        for (int i = 0; i < errors.Length; i++)
+        {
+            if (errors[i] < 0)
+            {
                 return true;
             }
         }
@@ -389,8 +469,10 @@ internal static class OpcHdaCcwUpdateHelpers {
         return false;
     }
 
-    private static void WriteInt32(IntPtr p, int value) {
-        if (p != IntPtr.Zero) {
+    private static void WriteInt32(IntPtr p, int value)
+    {
+        if (p != IntPtr.Zero)
+        {
             Marshal.WriteInt32(p, value);
         }
     }

@@ -16,12 +16,14 @@ using TUnit.Assertions.AssertConditions.Throws;
 
 namespace Opc.Classic.Mcp.Tests;
 
-public sealed class OpcSinkObjRefBuilderTests {
+public sealed class OpcSinkObjRefBuilderTests
+{
     private static readonly Guid SampleIid = IOPCDataCallback.InterfaceId;
     private static readonly IPEndPoint SampleEndpoint = new(IPAddress.Loopback, 51234);
 
     [Test]
-    public async Task Build_SetsExpectedHeaderFields() {
+    public async Task Build_SetsExpectedHeaderFields()
+    {
         Guid ipid = Guid.NewGuid();
         IOpcInterfaceRef objref = OpcSinkObjRefBuilder.Build(SampleIid, ipid, SampleEndpoint);
 
@@ -34,7 +36,8 @@ public sealed class OpcSinkObjRefBuilderTests {
     }
 
     [Test]
-    public async Task Build_GeneratesDistinctOxidAndOidPerCall() {
+    public async Task Build_GeneratesDistinctOxidAndOidPerCall()
+    {
         Guid ipid = Guid.NewGuid();
         IOpcInterfaceRef a = OpcSinkObjRefBuilder.Build(SampleIid, ipid, SampleEndpoint);
         IOpcInterfaceRef b = OpcSinkObjRefBuilder.Build(SampleIid, ipid, SampleEndpoint);
@@ -44,7 +47,8 @@ public sealed class OpcSinkObjRefBuilderTests {
     }
 
     [Test]
-    public async Task Build_RespectsExplicitOxidAndOid() {
+    public async Task Build_RespectsExplicitOxidAndOid()
+    {
         Guid ipid = Guid.NewGuid();
         IOpcInterfaceRef objref = OpcSinkObjRefBuilder.Build(
             SampleIid, ipid, SampleEndpoint, oxid: 0xDEADBEEFCAFEBABEUL, oid: 0x1122334455667788UL);
@@ -54,16 +58,19 @@ public sealed class OpcSinkObjRefBuilderTests {
     }
 
     [Test]
-    public async Task Build_EncodesTcpStringBindingTowerAndHostPort() {
+    public async Task Build_EncodesTcpStringBindingTowerAndHostPort()
+    {
         IOpcInterfaceRef objref = OpcSinkObjRefBuilder.Build(SampleIid, Guid.NewGuid(), SampleEndpoint);
 
         await Assert.That(objref.ResolverBindings[0]).IsEqualTo((ushort)0x07);
 
         // Decode the host[port] wchar* between the tower id and the first NUL.
         var sb = new System.Text.StringBuilder();
-        for (int i = 1; i < objref.ResolverBindings.Count; i++) {
+        for (int i = 1; i < objref.ResolverBindings.Count; i++)
+        {
             ushort u = objref.ResolverBindings[i];
-            if (u == 0) {
+            if (u == 0)
+            {
                 break;
             }
             sb.Append((char)u);
@@ -73,7 +80,8 @@ public sealed class OpcSinkObjRefBuilderTests {
     }
 
     [Test]
-    public async Task Build_PlacesSecurityBindingAtSecurityOffset() {
+    public async Task Build_PlacesSecurityBindingAtSecurityOffset()
+    {
         IOpcInterfaceRef objref = OpcSinkObjRefBuilder.Build(SampleIid, Guid.NewGuid(), SampleEndpoint);
 
         // SecurityOffset points into the bindings array at the first ushort of
@@ -84,7 +92,8 @@ public sealed class OpcSinkObjRefBuilderTests {
     }
 
     [Test]
-    public async Task Build_RoundTripsThroughOpcInterfaceRefCodec() {
+    public async Task Build_RoundTripsThroughOpcInterfaceRefCodec()
+    {
         Guid ipid = Guid.NewGuid();
         IOpcInterfaceRef built = OpcSinkObjRefBuilder.Build(SampleIid, ipid, SampleEndpoint);
 
@@ -105,20 +114,23 @@ public sealed class OpcSinkObjRefBuilderTests {
         await Assert.That(decoded.SecurityOffset).IsEqualTo(built.SecurityOffset);
         await Assert.That(decoded.ResolverBindings.Count).IsEqualTo(built.ResolverBindings.Count);
         // Element-by-element binding comparison so silent ushort drift is caught.
-        for (int i = 0; i < built.ResolverBindings.Count; i++) {
+        for (int i = 0; i < built.ResolverBindings.Count; i++)
+        {
             await Assert.That(decoded.ResolverBindings[i]).IsEqualTo(built.ResolverBindings[i]);
         }
     }
 
     [Test]
-    public async Task Build_GeneratesDistinctOxidAndOid_AcrossManyCalls() {
+    public async Task Build_GeneratesDistinctOxidAndOid_AcrossManyCalls()
+    {
         // N=2 sampling masks generators with substantial collision rates.
         // Generate 256 ObjRefs and assert per-field uniqueness via HashSet.Count.
         const int N = 256;
         Guid ipid = Guid.NewGuid();
         var oxids = new HashSet<ulong>(N);
         var oids = new HashSet<ulong>(N);
-        for (int i = 0; i < N; i++) {
+        for (int i = 0; i < N; i++)
+        {
             IOpcInterfaceRef objref = OpcSinkObjRefBuilder.Build(SampleIid, ipid, SampleEndpoint);
             oxids.Add(objref.Oxid);
             oids.Add(objref.Oid);
@@ -128,19 +140,22 @@ public sealed class OpcSinkObjRefBuilderTests {
     }
 
     [Test]
-    public async Task Build_NullEndpoint_Throws() {
+    public async Task Build_NullEndpoint_Throws()
+    {
         await Assert.That(() => { _ = OpcSinkObjRefBuilder.Build(SampleIid, Guid.NewGuid(), null!); })
             .Throws<ArgumentNullException>();
     }
 
     [Test]
-    public async Task Build_EmptyIid_Throws() {
+    public async Task Build_EmptyIid_Throws()
+    {
         await Assert.That(() => { _ = OpcSinkObjRefBuilder.Build(Guid.Empty, Guid.NewGuid(), SampleEndpoint); })
             .Throws<ArgumentException>();
     }
 
     [Test]
-    public async Task Build_EmptyIpid_Throws() {
+    public async Task Build_EmptyIpid_Throws()
+    {
         await Assert.That(() => { _ = OpcSinkObjRefBuilder.Build(SampleIid, Guid.Empty, SampleEndpoint); })
             .Throws<ArgumentException>();
     }

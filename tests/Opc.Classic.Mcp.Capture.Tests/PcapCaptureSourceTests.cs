@@ -15,9 +15,11 @@ using TUnit.Core;
 
 namespace Opc.Classic.Mcp.Capture.Tests;
 
-public sealed class PcapCaptureSourceTests {
+public sealed class PcapCaptureSourceTests
+{
     [Test]
-    public async Task Constants_ExposeExpectedSourceNameAndDefaultFilter() {
+    public async Task Constants_ExposeExpectedSourceNameAndDefaultFilter()
+    {
         string sourceName = GetPcapSourceName();
         string defaultFilter = GetDefaultOpcBpfFilter();
 
@@ -26,13 +28,15 @@ public sealed class PcapCaptureSourceTests {
     }
 
     [Test]
-    public async Task BuildServerPortBpfFilter_NullOrEmpty_ReturnsDefaultFilter() {
+    public async Task BuildServerPortBpfFilter_NullOrEmpty_ReturnsDefaultFilter()
+    {
         await Assert.That(PcapCaptureSource.BuildServerPortBpfFilter(null)).IsEqualTo(PcapCaptureSource.DefaultOpcBpfFilter);
         await Assert.That(PcapCaptureSource.BuildServerPortBpfFilter(Array.Empty<int>())).IsEqualTo(PcapCaptureSource.DefaultOpcBpfFilter);
     }
 
     [Test]
-    public async Task BuildServerPortBpfFilter_AllInvalidPorts_ReturnsDefaultFilter() {
+    public async Task BuildServerPortBpfFilter_AllInvalidPorts_ReturnsDefaultFilter()
+    {
         // Negative, zero, and out-of-range ports are all silently skipped per the
         // documented BPF semantics; if every entry is invalid, behave as if the
         // caller passed an empty list (fall back to the default port-range filter).
@@ -41,20 +45,23 @@ public sealed class PcapCaptureSourceTests {
     }
 
     [Test]
-    public async Task BuildServerPortBpfFilter_SinglePort_NarrowsToPort135PlusGivenPort() {
+    public async Task BuildServerPortBpfFilter_SinglePort_NarrowsToPort135PlusGivenPort()
+    {
         await Assert.That(PcapCaptureSource.BuildServerPortBpfFilter([51301]))
             .IsEqualTo("tcp and (port 135 or port 51301)");
     }
 
     [Test]
-    public async Task BuildServerPortBpfFilter_MultiplePorts_AreSortedAndDeduplicated() {
+    public async Task BuildServerPortBpfFilter_MultiplePorts_AreSortedAndDeduplicated()
+    {
         // Duplicate 51301 + reverse order to assert dedupe + sort.
         await Assert.That(PcapCaptureSource.BuildServerPortBpfFilter([51301, 49500, 51301, 8080]))
             .IsEqualTo("tcp and (port 135 or port 8080 or port 49500 or port 51301)");
     }
 
     [Test]
-    public async Task BuildServerPortBpfFilter_IncludesPort135ExactlyOnce() {
+    public async Task BuildServerPortBpfFilter_IncludesPort135ExactlyOnce()
+    {
         // Caller already included 135 explicitly; should not appear twice in the output.
         await Assert.That(PcapCaptureSource.BuildServerPortBpfFilter([135, 51301]))
             .IsEqualTo("tcp and (port 135 or port 51301)");
@@ -63,21 +70,25 @@ public sealed class PcapCaptureSourceTests {
     }
 
     [Test]
-    public async Task BuildServerPortBpfFilter_MixedValidAndInvalidPorts_DropsTheInvalidOnes() {
+    public async Task BuildServerPortBpfFilter_MixedValidAndInvalidPorts_DropsTheInvalidOnes()
+    {
         await Assert.That(PcapCaptureSource.BuildServerPortBpfFilter([0, 51301, -5, 65535, 70000]))
             .IsEqualTo("tcp and (port 135 or port 51301 or port 65535)");
     }
 
     [Test]
-    public async Task Constructor_NullOrEmptySessionFolder_Throws() {
+    public async Task Constructor_NullOrEmptySessionFolder_Throws()
+    {
         await Assert.That(() => new PcapCaptureSource(null!)).Throws<ArgumentNullException>();
         await Assert.That(() => new PcapCaptureSource(string.Empty)).Throws<ArgumentException>();
     }
 
     [Test]
-    public async Task NewInstance_BeforeStart_HasZeroCountsAndNoRawPcapPath() {
+    public async Task NewInstance_BeforeStart_HasZeroCountsAndNoRawPcapPath()
+    {
         string directory = TestDirectories.CreateUniqueTempDirectory();
-        try {
+        try
+        {
             var source = new PcapCaptureSource(directory);
 
             await Assert.That(source.PacketCount).IsEqualTo(0);
@@ -87,15 +98,18 @@ public sealed class PcapCaptureSourceTests {
             await source.StopAsync(TestContext.Current!.CancellationToken);
             await source.DisposeAsync();
         }
-        finally {
+        finally
+        {
             TestDirectories.DeleteIfExists(directory);
         }
     }
 
     [Test]
-    public async Task StartAsync_NullRequestOrMissingInterface_ThrowsBeforeOpeningHardware() {
+    public async Task StartAsync_NullRequestOrMissingInterface_ThrowsBeforeOpeningHardware()
+    {
         string directory = TestDirectories.CreateUniqueTempDirectory();
-        try {
+        try
+        {
             var source = new PcapCaptureSource(directory);
             CancellationToken cancellationToken = TestContext.Current!.CancellationToken;
 
@@ -105,15 +119,18 @@ public sealed class PcapCaptureSourceTests {
                 .Throws<CaptureException>();
             await source.DisposeAsync();
         }
-        finally {
+        finally
+        {
             TestDirectories.DeleteIfExists(directory);
         }
     }
 
     [Test]
-    public async Task StartStopAndReadAsync_CanceledOrMissingFile_DoNotBindLiveDevice() {
+    public async Task StartStopAndReadAsync_CanceledOrMissingFile_DoNotBindLiveDevice()
+    {
         string directory = TestDirectories.CreateUniqueTempDirectory();
-        try {
+        try
+        {
             var source = new PcapCaptureSource(directory);
             using var cts = new CancellationTokenSource();
             await cts.CancelAsync();
@@ -126,15 +143,18 @@ public sealed class PcapCaptureSourceTests {
             await Assert.That(File.Exists(Path.Combine(directory, "capture.pcap"))).IsFalse();
             await source.DisposeAsync();
         }
-        finally {
+        finally
+        {
             TestDirectories.DeleteIfExists(directory);
         }
     }
 
     [Test]
-    public async Task ReadAllAsync_ExistingPcapFile_ReplaysPacketsAndReportsRawPcapPath() {
+    public async Task ReadAllAsync_ExistingPcapFile_ReplaysPacketsAndReportsRawPcapPath()
+    {
         string directory = TestDirectories.CreateUniqueTempDirectory();
-        try {
+        try
+        {
             byte[] frame =
             [
                 0x00, 0x11, 0x22, 0x33, 0x44, 0x55,
@@ -142,7 +162,8 @@ public sealed class PcapCaptureSourceTests {
                 0x08, 0x00,
             ];
             string pcapPath = Path.Combine(directory, "capture.pcap");
-            using (var writer = new CaptureFileWriterDevice(pcapPath, FileMode.Create)) {
+            using (var writer = new CaptureFileWriterDevice(pcapPath, FileMode.Create))
+            {
                 writer.Open(new DeviceConfiguration { LinkLayerType = LinkLayers.Ethernet });
                 writer.Write(new RawCapture(
                     LinkLayers.Ethernet,
@@ -165,7 +186,8 @@ public sealed class PcapCaptureSourceTests {
             await Assert.That(packets[0].Annotations.Count).IsEqualTo(0);
             await source.DisposeAsync();
         }
-        finally {
+        finally
+        {
             TestDirectories.DeleteIfExists(directory);
         }
     }

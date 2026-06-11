@@ -14,13 +14,16 @@ namespace Opc.Classic.Dcom.Core;
 /// There is a 1 to 1 mapping between this and a <code>COM</code> interface.
 /// </summary>
 [Serializable]
-internal sealed class ComObjectImpl : IComObject, IComObjectInternal {
+internal sealed class ComObjectImpl : IComObject, IComObjectInternal
+{
 
     /// <summary>
     /// Dual interface
     /// </summary>
-    internal bool IsDual {
-        set {
+    internal bool IsDual
+    {
+        set
+        {
             _dualInfo = true;
             _isDual = value;
         }
@@ -45,18 +48,24 @@ internal sealed class ComObjectImpl : IComObject, IComObjectInternal {
     public string InterfaceIdentifier => _ptr.IID;
 
     /// <inheritdoc/>
-    public bool DispatchSupported {
-        get {
-            lock (_syncRoot) {
+    public bool DispatchSupported
+    {
+        get
+        {
+            lock (_syncRoot)
+            {
                 CheckLocal();
-                if (!_dualInfo) {
+                if (!_dualInfo)
+                {
                     // query interface for it and then release it.
-                    try {
+                    try
+                    {
                         var comObject = QueryInterface(Interfaces.IID_IDispatch);
                         comObject.Release();
                         IsDual = true;
                     }
-                    catch (InteropException) {
+                    catch (InteropException)
+                    {
                         IsDual = false;
                     }
                 }
@@ -66,20 +75,25 @@ internal sealed class ComObjectImpl : IComObject, IComObjectInternal {
     }
 
     /// <inheritdoc/>
-    public IUnreferenced UnreferencedHandler {
-        get {
+    public IUnreferenced UnreferencedHandler
+    {
+        get
+        {
             CheckLocal();
             return _session.GetUnreferencedHandler(Ipid);
         }
     }
 
     /// <inheritdoc/>
-    public int InstanceLevelSocketTimeout {
-        get {
+    public int InstanceLevelSocketTimeout
+    {
+        get
+        {
             CheckLocal();
             return _timeout;
         }
-        set {
+        set
+        {
             CheckLocal();
             _timeout = value;
         }
@@ -91,7 +105,8 @@ internal sealed class ComObjectImpl : IComObject, IComObjectInternal {
     /// <param name="session"></param>
     /// <param name="ptr"></param>
     internal ComObjectImpl(Session session, InterfacePointer ptr) :
-        this(session, ptr, false) {
+        this(session, ptr, false)
+    {
     }
 
     /// <summary>
@@ -100,22 +115,26 @@ internal sealed class ComObjectImpl : IComObject, IComObjectInternal {
     /// <param name="session"></param>
     /// <param name="ptr"></param>
     /// <param name="isLocal"></param>
-    internal ComObjectImpl(Session session, InterfacePointer ptr, bool isLocal) {
+    internal ComObjectImpl(Session session, InterfacePointer ptr, bool isLocal)
+    {
         _session = session;
         _ptr = ptr;
         LocalReference = isLocal;
     }
 
     /// <inheritdoc/>
-    public IComObject QueryInterface(string iid) {
+    public IComObject QueryInterface(string iid)
+    {
         CheckLocal();
         return _session.Stub.GetInterface(iid, _ptr.IPID);
     }
 
     /// <inheritdoc/>
-    public void AddRef() {
+    public void AddRef()
+    {
         CheckLocal();
-        var obj = new CallBuilder(true) {
+        var obj = new CallBuilder(true)
+        {
             ParentIpid = _ptr.IPID,
             Opnum = 1 // addRef
         };
@@ -141,15 +160,18 @@ internal sealed class ComObjectImpl : IComObject, IComObjectInternal {
         //        session.getStub2().addRef_ReleaseRef(obj);
         _session.AddRef_ReleaseRef(_ptr.IPID, obj, 5);
 
-        if (obj.GetResultAsIntAt(1) != 0) {
+        if (obj.GetResultAsIntAt(1) != 0)
+        {
             throw new InteropException(obj.GetResultAsIntAt(1), (Exception)null);
         }
     }
 
     /// <inheritdoc/>
-    public void Release() {
+    public void Release()
+    {
         CheckLocal();
-        var obj = new CallBuilder(true) {
+        var obj = new CallBuilder(true)
+        {
             ParentIpid = _ptr.IPID,
             Opnum = 2 // release
         };
@@ -162,7 +184,8 @@ internal sealed class ComObjectImpl : IComObject, IComObjectInternal {
         // same with release.
         obj.AddInParamAsInt(5);
         obj.AddInParamAsInt(0); // private refs = 0
-        if (Log.Logger.IsEnabled(Microsoft.Extensions.Logging.LogLevel.Information)) {
+        if (Log.Logger.IsEnabled(Microsoft.Extensions.Logging.LogLevel.Information))
+        {
             Log.Logger.Warning("RELEASE called directly ! removing 5 references for " + _ptr.IPID + " session: " + _session.SessionIdentifier);
             // <see cref="Session"/>.debug_delIpids(_ptr.IPID, 5);
         }
@@ -170,30 +193,35 @@ internal sealed class ComObjectImpl : IComObject, IComObjectInternal {
     }
 
     /// <inheritdoc/>
-    public object[] Call(CallBuilder obj) {
+    public object[] Call(CallBuilder obj)
+    {
         CheckLocal();
         return Call(obj, _timeout);
     }
 
     /// <inheritdoc/>
-    public void RegisterUnreferencedHandler(IUnreferenced unreferenced) {
+    public void RegisterUnreferencedHandler(IUnreferenced unreferenced)
+    {
         CheckLocal();
         _session.RegisterUnreferencedHandler(Ipid, unreferenced);
     }
 
     /// <inheritdoc/>
-    public void UnregisterUnreferencedHandler() {
+    public void UnregisterUnreferencedHandler()
+    {
         CheckLocal();
         _session.UnregisterUnreferencedHandler(Ipid);
     }
 
     /// <inheritdoc/>
-    public object[] Call(CallBuilder obj, int socketTimeout) {
+    public object[] Call(CallBuilder obj, int socketTimeout)
+    {
         CheckLocal();
         obj.AttachSession(_session);
         obj.ParentIpid = _ptr.IPID;
         // Call is always made on your stub.
-        if (socketTimeout != 0) { // using instance level timeout
+        if (socketTimeout != 0)
+        { // using instance level timeout
             return _session.Stub.Call(obj, _ptr.IID, socketTimeout);
         }
         return _session.Stub.Call(obj, _ptr.IID);
@@ -203,10 +231,13 @@ internal sealed class ComObjectImpl : IComObject, IComObjectInternal {
     public InterfacePointer GetInterfacePointer() => _ptr ?? _session.Stub.ServerInterfacePointer;
 
     /// <inheritdoc/>
-    public string SetConnectionInfo(IComObject connectionPoint, int? cookie) {
-        lock (_syncRoot) {
+    public string SetConnectionInfo(IComObject connectionPoint, int? cookie)
+    {
+        lock (_syncRoot)
+        {
             CheckLocal();
-            if (_connectionPointInfo == null) { // lazy creation, since this is used by event callbacks only.
+            if (_connectionPointInfo == null)
+            { // lazy creation, since this is used by event callbacks only.
                 _connectionPointInfo = new Dictionary<string, object[]>(StringComparer.Ordinal);
             }
             var uniqueId = /*UUID.randomUUID()*/ Guid.NewGuid().ToString();
@@ -216,16 +247,20 @@ internal sealed class ComObjectImpl : IComObject, IComObjectInternal {
     }
 
     /// <inheritdoc/>
-    public object[] GetConnectionInfo(string identifier) {
-        lock (_syncRoot) {
+    public object[] GetConnectionInfo(string identifier)
+    {
+        lock (_syncRoot)
+        {
             CheckLocal();
             return _connectionPointInfo[identifier];
         }
     }
 
     /// <inheritdoc/>
-    public object[] RemoveConnectionInfo(string identifier) {
-        lock (_syncRoot) {
+    public object[] RemoveConnectionInfo(string identifier)
+    {
+        lock (_syncRoot)
+        {
             CheckLocal();
             var result = _connectionPointInfo[identifier];
             _connectionPointInfo.Remove(identifier);
@@ -242,8 +277,10 @@ internal sealed class ComObjectImpl : IComObject, IComObjectInternal {
         ", isLocal: " + LocalReference + "]";
 
     /// <inheritdoc/>
-    public override bool Equals(object obj) {
-        if (!(obj is ComObjectImpl other)) {
+    public override bool Equals(object obj)
+    {
+        if (!(obj is ComObjectImpl other))
+        {
             return false;
         }
         return _ptr.IPID.Equals(other.Ipid, StringComparison.CurrentCultureIgnoreCase);
@@ -256,7 +293,8 @@ internal sealed class ComObjectImpl : IComObject, IComObjectInternal {
     /// Replace members
     /// </summary>
     /// <param name="comObject"></param>
-    internal void ReplaceMembers(IComObject comObject) {
+    internal void ReplaceMembers(IComObject comObject)
+    {
         _session = comObject.AssociatedSession;
         _ptr = ((IComObjectInternal)comObject).GetInterfacePointer();
     }
@@ -264,12 +302,15 @@ internal sealed class ComObjectImpl : IComObject, IComObjectInternal {
     /// <summary>
     /// Check local
     /// </summary>
-    private void CheckLocal() {
-        if (_session == null) {
+    private void CheckLocal()
+    {
+        if (_session == null)
+        {
             throw new InvalidOperationException(
                 Interop.GetLocalizedMessage(ErrorCode.INTEROP_SESSION_NOT_ATTACHED));
         }
-        if (LocalReference) {
+        if (LocalReference)
+        {
             throw new InvalidOperationException(
                 Interop.GetLocalizedMessage(ErrorCode.E_NOTIMPL));
         }

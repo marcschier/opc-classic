@@ -12,9 +12,11 @@ using TUnit.Assertions.AssertConditions.Throws;
 
 namespace Opc.Classic.Da.Tests.Hosting;
 
-public sealed class DefaultItemSamplingMgtAdditionalTests {
+public sealed class DefaultItemSamplingMgtAdditionalTests
+{
     [Test]
-    public async Task SetItemSamplingRate_ReturnsZeroRevisedRatesAndRateNotSetErrors() {
+    public async Task SetItemSamplingRate_ReturnsZeroRevisedRatesAndRateNotSetErrors()
+    {
         var manager = new DefaultItemSamplingMgt();
 
         await manager.SetItemSamplingRateAsync(
@@ -34,7 +36,8 @@ public sealed class DefaultItemSamplingMgtAdditionalTests {
     }
 
     [Test]
-    public async Task GetItemSamplingRate_ReturnsZeroRatesAndRateNotSetErrors() {
+    public async Task GetItemSamplingRate_ReturnsZeroRatesAndRateNotSetErrors()
+    {
         var manager = new DefaultItemSamplingMgt();
 
         await manager.GetItemSamplingRateAsync(
@@ -52,7 +55,8 @@ public sealed class DefaultItemSamplingMgtAdditionalTests {
     }
 
     [Test]
-    public async Task ClearItemSamplingRate_ReturnsRateNotSetForEveryHandle() {
+    public async Task ClearItemSamplingRate_ReturnsRateNotSetForEveryHandle()
+    {
         var manager = new DefaultItemSamplingMgt();
 
         int[] errors = await manager.ClearItemSamplingRateAsync([21, 22], TestContext.Current!.CancellationToken);
@@ -65,7 +69,8 @@ public sealed class DefaultItemSamplingMgtAdditionalTests {
     }
 
     [Test]
-    public async Task SetItemBufferEnable_ReturnsNoBufferingForEveryHandleAndAcceptsNullEnabled() {
+    public async Task SetItemBufferEnable_ReturnsNoBufferingForEveryHandleAndAcceptsNullEnabled()
+    {
         var manager = new DefaultItemSamplingMgt();
 
         int[] errors = await manager.SetItemBufferEnableAsync([31, 32], null!, TestContext.Current!.CancellationToken);
@@ -78,7 +83,8 @@ public sealed class DefaultItemSamplingMgtAdditionalTests {
     }
 
     [Test]
-    public async Task GetItemBufferEnable_ReturnsFalseEnabledFlagsAndNoBufferingErrors() {
+    public async Task GetItemBufferEnable_ReturnsFalseEnabledFlagsAndNoBufferingErrors()
+    {
         var manager = new DefaultItemSamplingMgt();
 
         await manager.GetItemBufferEnableAsync(
@@ -97,7 +103,8 @@ public sealed class DefaultItemSamplingMgtAdditionalTests {
     }
 
     [Test]
-    public async Task Methods_WithEmptyHandles_ReturnEmptyArrays() {
+    public async Task Methods_WithEmptyHandles_ReturnEmptyArrays()
+    {
         var manager = new DefaultItemSamplingMgt();
 
         await manager.SetItemSamplingRateAsync([], [], out int[] revised, out int[] setErrors, TestContext.Current!.CancellationToken);
@@ -117,7 +124,8 @@ public sealed class DefaultItemSamplingMgtAdditionalTests {
     }
 
     [Test]
-    public async Task Methods_NullRequiredArrays_ThrowArgumentNullException() {
+    public async Task Methods_NullRequiredArrays_ThrowArgumentNullException()
+    {
         var manager = new DefaultItemSamplingMgt();
 
         await Assert.That(() => manager.SetItemSamplingRateAsync(null!, [], out _, out _, TestContext.Current!.CancellationToken))
@@ -135,7 +143,8 @@ public sealed class DefaultItemSamplingMgtAdditionalTests {
     }
 
     [Test]
-    public async Task Methods_CanceledToken_ThrowOperationCanceledException() {
+    public async Task Methods_CanceledToken_ThrowOperationCanceledException()
+    {
         var manager = new DefaultItemSamplingMgt();
         using var cts = new CancellationTokenSource();
         cts.Cancel();

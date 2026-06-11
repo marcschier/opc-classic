@@ -14,9 +14,12 @@ internal readonly record struct Smb2ReadRequest(
     ulong Offset,
     ulong FileIdPersistent,
     ulong FileIdVolatile,
-    uint MinimumCount) {
-    public int WriteTo(Span<byte> destination) {
-        if (destination.Length < 49) {
+    uint MinimumCount)
+{
+    public int WriteTo(Span<byte> destination)
+    {
+        if (destination.Length < 49)
+        {
             throw new ArgumentException("Destination too small for SMB2 READ request.", nameof(destination));
         }
         destination[..49].Clear();
@@ -38,21 +41,26 @@ internal readonly record struct Smb2ReadRequest(
 }
 
 /// <summary>SMB2 READ response body, per [MS-SMB2] §2.2.20.</summary>
-internal readonly record struct Smb2ReadResponse(ReadOnlyMemory<byte> Data) {
-    public static Smb2ReadResponse Read(ReadOnlySpan<byte> source) {
+internal readonly record struct Smb2ReadResponse(ReadOnlyMemory<byte> Data)
+{
+    public static Smb2ReadResponse Read(ReadOnlySpan<byte> source)
+    {
         Smb2MessageBounds.EnsureBodyWithinDefaultQuota(source, "SMB2 READ response");
-        if (source.Length < 16) {
+        if (source.Length < 16)
+        {
             throw new Smb2ProtocolException("SMB2 READ response too short.");
         }
         ushort structureSize = BinaryPrimitives.ReadUInt16LittleEndian(source);
-        if (structureSize != 17) {
+        if (structureSize != 17)
+        {
             throw new Smb2ProtocolException($"Unexpected READ StructureSize {structureSize}; expected 17.");
         }
 
         byte dataOffset = source[2];
         uint dataLength = BinaryPrimitives.ReadUInt32LittleEndian(source[4..]);
 
-        if (dataLength == 0) {
+        if (dataLength == 0)
+        {
             return new Smb2ReadResponse(ReadOnlyMemory<byte>.Empty);
         }
 
@@ -72,14 +80,18 @@ internal readonly record struct Smb2WriteRequest(
     ulong Offset,
     ulong FileIdPersistent,
     ulong FileIdVolatile,
-    ReadOnlyMemory<byte> Data) {
-    public int WriteTo(Span<byte> destination) {
+    ReadOnlyMemory<byte> Data)
+{
+    public int WriteTo(Span<byte> destination)
+    {
         const int FixedSize = 48;
-        if (Data.Length > Smb2Constants.MaxNetBiosFrameSize - Smb2Constants.PacketHeaderSize - FixedSize) {
+        if (Data.Length > Smb2Constants.MaxNetBiosFrameSize - Smb2Constants.PacketHeaderSize - FixedSize)
+        {
             throw new InvalidOperationException("WRITE Data exceeds the configured SMB2 frame quota.");
         }
         int total = FixedSize + Data.Length;
-        if (destination.Length < total) {
+        if (destination.Length < total)
+        {
             throw new ArgumentException("Destination too small for SMB2 WRITE request.", nameof(destination));
         }
         destination[..FixedSize].Clear();
@@ -95,7 +107,8 @@ internal readonly record struct Smb2WriteRequest(
         BinaryPrimitives.WriteUInt16LittleEndian(destination[40..], 0);    // WriteChannelInfoOffset
         BinaryPrimitives.WriteUInt16LittleEndian(destination[42..], 0);    // WriteChannelInfoLength
         BinaryPrimitives.WriteUInt32LittleEndian(destination[44..], 0);    // Flags
-        if (!Data.IsEmpty) {
+        if (!Data.IsEmpty)
+        {
             Data.Span.CopyTo(destination[FixedSize..]);
         }
         return total;
@@ -103,14 +116,18 @@ internal readonly record struct Smb2WriteRequest(
 }
 
 /// <summary>SMB2 WRITE response body, per [MS-SMB2] §2.2.22.</summary>
-internal readonly record struct Smb2WriteResponse(uint Count) {
-    public static Smb2WriteResponse Read(ReadOnlySpan<byte> source) {
+internal readonly record struct Smb2WriteResponse(uint Count)
+{
+    public static Smb2WriteResponse Read(ReadOnlySpan<byte> source)
+    {
         Smb2MessageBounds.EnsureBodyWithinDefaultQuota(source, "SMB2 WRITE response");
-        if (source.Length < 16) {
+        if (source.Length < 16)
+        {
             throw new Smb2ProtocolException("SMB2 WRITE response too short.");
         }
         ushort structureSize = BinaryPrimitives.ReadUInt16LittleEndian(source);
-        if (structureSize != 17) {
+        if (structureSize != 17)
+        {
             throw new Smb2ProtocolException($"Unexpected WRITE StructureSize {structureSize}; expected 17.");
         }
         return new Smb2WriteResponse(BinaryPrimitives.ReadUInt32LittleEndian(source[4..]));
@@ -124,14 +141,18 @@ internal readonly record struct Smb2IoctlRequest(
     ulong FileIdVolatile,
     ReadOnlyMemory<byte> Input,
     uint MaxOutputResponse,
-    bool IsFsctl) {
-    public int WriteTo(Span<byte> destination) {
+    bool IsFsctl)
+{
+    public int WriteTo(Span<byte> destination)
+    {
         const int FixedSize = 56;
-        if (Input.Length > Smb2Constants.MaxNetBiosFrameSize - Smb2Constants.PacketHeaderSize - FixedSize) {
+        if (Input.Length > Smb2Constants.MaxNetBiosFrameSize - Smb2Constants.PacketHeaderSize - FixedSize)
+        {
             throw new InvalidOperationException("IOCTL Input exceeds the configured SMB2 frame quota.");
         }
         int total = FixedSize + Input.Length;
-        if (destination.Length < total) {
+        if (destination.Length < total)
+        {
             throw new ArgumentException("Destination too small for SMB2 IOCTL request.", nameof(destination));
         }
         destination[..FixedSize].Clear();
@@ -152,7 +173,8 @@ internal readonly record struct Smb2IoctlRequest(
         BinaryPrimitives.WriteUInt32LittleEndian(destination[48..], IsFsctl ? 1u : 0u);
         BinaryPrimitives.WriteUInt32LittleEndian(destination[52..], 0);    // Reserved2
 
-        if (!Input.IsEmpty) {
+        if (!Input.IsEmpty)
+        {
             Input.Span.CopyTo(destination[FixedSize..]);
         }
         return total;
@@ -164,14 +186,18 @@ internal readonly record struct Smb2IoctlResponse(
     uint CtlCode,
     ulong FileIdPersistent,
     ulong FileIdVolatile,
-    ReadOnlyMemory<byte> Output) {
-    public static Smb2IoctlResponse Read(ReadOnlySpan<byte> source) {
+    ReadOnlyMemory<byte> Output)
+{
+    public static Smb2IoctlResponse Read(ReadOnlySpan<byte> source)
+    {
         Smb2MessageBounds.EnsureBodyWithinDefaultQuota(source, "SMB2 IOCTL response");
-        if (source.Length < 48) {
+        if (source.Length < 48)
+        {
             throw new Smb2ProtocolException("SMB2 IOCTL response too short.");
         }
         ushort structureSize = BinaryPrimitives.ReadUInt16LittleEndian(source);
-        if (structureSize != 49) {
+        if (structureSize != 49)
+        {
             throw new Smb2ProtocolException($"Unexpected IOCTL StructureSize {structureSize}; expected 49.");
         }
         uint ctlCode = BinaryPrimitives.ReadUInt32LittleEndian(source[4..]);
@@ -181,10 +207,12 @@ internal readonly record struct Smb2IoctlResponse(
         uint outputCount = BinaryPrimitives.ReadUInt32LittleEndian(source[36..]);
 
         byte[] output;
-        if (outputCount == 0) {
+        if (outputCount == 0)
+        {
             output = Array.Empty<byte>();
         }
-        else {
+        else
+        {
             output = Smb2MessageBounds.GetPayloadSlice(
                 source,
                 outputOffset,

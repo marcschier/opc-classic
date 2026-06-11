@@ -14,7 +14,8 @@ namespace Opc.Classic.Dcom.Internal.Ntlm;
 /// <summary>
 /// Computes NTLMv2 extended-session-security SIGNATURE_BLOCK values.
 /// </summary>
-public static class NtlmMessageSignature {
+public static class NtlmMessageSignature
+{
     /// <summary>
     /// The fixed NTLM message-signature length.
     /// </summary>
@@ -27,8 +28,10 @@ public static class NtlmMessageSignature {
     /// <param name="message">The message bytes to sign.</param>
     /// <param name="sequenceNumber">The NTLM sequence number. SPNEGO mechListMIC uses zero.</param>
     /// <returns>The 16-byte NTLM SIGNATURE_BLOCK.</returns>
-    public static byte[] Sign(ReadOnlySpan<byte> signingKey, ReadOnlySpan<byte> message, uint sequenceNumber = 0) {
-        if (signingKey.IsEmpty) {
+    public static byte[] Sign(ReadOnlySpan<byte> signingKey, ReadOnlySpan<byte> message, uint sequenceNumber = 0)
+    {
+        if (signingKey.IsEmpty)
+        {
             throw new ArgumentException("The NTLM signing key must not be empty.", nameof(signingKey));
         }
 
@@ -37,7 +40,8 @@ public static class NtlmMessageSignature {
         message.CopyTo(hmacInput.AsSpan(sizeof(uint)));
 
         byte[] checksum;
-        using (var hmac = new HMACMD5(signingKey.ToArray())) {
+        using (var hmac = new HMACMD5(signingKey.ToArray()))
+        {
             checksum = hmac.ComputeHash(hmacInput);
         }
 
@@ -60,8 +64,10 @@ public static class NtlmMessageSignature {
         ReadOnlySpan<byte> signingKey,
         ReadOnlySpan<byte> message,
         ReadOnlySpan<byte> signature,
-        uint sequenceNumber = 0) {
-        if (signature.Length != SignatureLength) {
+        uint sequenceNumber = 0)
+    {
+        if (signature.Length != SignatureLength)
+        {
             return false;
         }
 

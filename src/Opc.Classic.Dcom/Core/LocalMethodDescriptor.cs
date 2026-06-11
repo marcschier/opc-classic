@@ -14,7 +14,8 @@ namespace Opc.Classic.Dcom.Core;
 /// SampleTestServer and MSShell examples for more details on how to use
 /// this class.</i>
 /// </summary>
-public sealed class LocalMethodDescriptor {
+public sealed class LocalMethodDescriptor
+{
 
     /// <summary>
     /// Method number
@@ -34,21 +35,27 @@ public sealed class LocalMethodDescriptor {
     /// <summary>
     /// Param object
     /// </summary>
-    internal LocalParamsDescriptor ParameterObject {
+    internal LocalParamsDescriptor ParameterObject
+    {
         get => _parameters;
-        set {
-            if (value == null) {
+        set
+        {
+            if (value == null)
+            {
                 return;
             }
             _parameters = value;
             var parameters = value.InParams;
             InparametersAsType = new Type[parameters.Length];
-            for (var i = 0; i < parameters.Length; i++) {
+            for (var i = 0; i < parameters.Length; i++)
+            {
                 var obj = parameters[i];
-                if (obj is Type c) {
+                if (obj is Type c)
+                {
                     InparametersAsType[i] = c;
                 }
-                else {
+                else
+                {
                     InparametersAsType[i] = obj.GetType();
                 }
             }
@@ -70,7 +77,8 @@ public sealed class LocalMethodDescriptor {
     /// <param name="parameters"> pass <code>null</code> if the 
     /// method has no parameters. </param>
     public LocalMethodDescriptor(string methodName,
-        LocalParamsDescriptor parameters) {
+        LocalParamsDescriptor parameters)
+    {
         MethodName = methodName;
         ParameterObject = parameters;
     }
@@ -84,7 +92,8 @@ public sealed class LocalMethodDescriptor {
     /// <param name="parameters"> pass <code>null</code> if the method has
     /// no parameters. </param>
     public LocalMethodDescriptor(string methodName, int dispId,
-        LocalParamsDescriptor parameters) {
+        LocalParamsDescriptor parameters)
+    {
         MethodName = methodName;
         MethodDispID = dispId;
         ParameterObject = parameters;

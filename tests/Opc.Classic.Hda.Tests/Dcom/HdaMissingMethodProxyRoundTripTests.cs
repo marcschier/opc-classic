@@ -17,7 +17,8 @@ using TUnit.Core;
 
 namespace Opc.Classic.Hda.Tests.Dcom;
 
-public sealed class HdaMissingMethodProxyRoundTripTests {
+public sealed class HdaMissingMethodProxyRoundTripTests
+{
     private delegate void NdrWriteAction(ref NdrWriter writer);
 
     [Test]
@@ -54,19 +55,23 @@ public sealed class HdaMissingMethodProxyRoundTripTests {
     [Arguments("DataCallback.OnPlayback")]
     [Arguments("DataCallback.OnUpdateComplete")]
     [Arguments("DataCallback.OnCancelComplete")]
-    public async Task MissingHdaMethod_RoundTripsThroughInMemoryCallChannel(string method) {
-        switch (method) {
+    public async Task MissingHdaMethod_RoundTripsThroughInMemoryCallChannel(string method)
+    {
+        switch (method)
+        {
             case "Server.GetItemAttributes":
                 await AssertRoundTripAsync(
                     IOPCHDA_Server.InterfaceId,
                     3,
-                    (ref NdrWriter w) => {
+                    (ref NdrWriter w) =>
+                    {
                         WriteIntArray(ref w, [1, 2]);
                         WriteStringArray(ref w, ["Data Type", "Description"]);
                         WriteStringArray(ref w, ["VT", "Text"]);
                         WriteIntArray(ref w, [5, 8]);
                     },
-                    async channel => {
+                    async channel =>
+                    {
                         var proxy = new IOPCHDA_ServerClientProxy(channel);
                         await proxy.GetItemAttributesAsync(out int[] ids, out string[] names, out string[] descriptions, out int[] dataTypes, CancellationToken.None);
                         await Assert.That(ids[1]).IsEqualTo(2);
@@ -80,12 +85,14 @@ public sealed class HdaMissingMethodProxyRoundTripTests {
                 await AssertRoundTripAsync(
                     IOPCHDA_Server.InterfaceId,
                     4,
-                    (ref NdrWriter w) => {
+                    (ref NdrWriter w) =>
+                    {
                         WriteIntArray(ref w, [1, 4]);
                         WriteStringArray(ref w, ["Interpolative", "Average"]);
                         WriteStringArray(ref w, ["Interpolated value", "Time average"]);
                     },
-                    async channel => {
+                    async channel =>
+                    {
                         var proxy = new IOPCHDA_ServerClientProxy(channel);
                         await proxy.GetAggregatesAsync(out int[] ids, out string[] names, out string[] descriptions, CancellationToken.None);
                         await Assert.That(ids[0]).IsEqualTo(1);
@@ -99,7 +106,8 @@ public sealed class HdaMissingMethodProxyRoundTripTests {
                     IOPCHDA_Browser.InterfaceId,
                     3,
                     WriteEnumStringRef,
-                    async channel => {
+                    async channel =>
+                    {
                         var proxy = new IOPCHDA_BrowserClientProxy(channel);
                         IOpcInterfaceRef enumRef = await proxy.GetEnumAsync(3, CancellationToken.None);
                         await Assert.That(enumRef.Iid).IsEqualTo(OpcGuids.IID_IEnumString);
@@ -119,7 +127,8 @@ public sealed class HdaMissingMethodProxyRoundTripTests {
                     IOPCHDA_Browser.InterfaceId,
                     5,
                     (ref NdrWriter w) => w.WriteUnicodeStringPtr("Plant.Area.Tag"),
-                    async channel => {
+                    async channel =>
+                    {
                         string itemId = await new IOPCHDA_BrowserClientProxy(channel).GetItemIDAsync("Tag", CancellationToken.None);
                         await Assert.That(itemId).IsEqualTo("Plant.Area.Tag");
                     });
@@ -130,7 +139,8 @@ public sealed class HdaMissingMethodProxyRoundTripTests {
                     IOPCHDA_Browser.InterfaceId,
                     6,
                     (ref NdrWriter w) => w.WriteUnicodeStringPtr("Plant.Area"),
-                    async channel => {
+                    async channel =>
+                    {
                         string branch = await new IOPCHDA_BrowserClientProxy(channel).GetBranchPositionAsync(CancellationToken.None);
                         await Assert.That(branch).IsEqualTo("Plant.Area");
                     });
@@ -140,12 +150,14 @@ public sealed class HdaMissingMethodProxyRoundTripTests {
                 await AssertRoundTripAsync(
                     IOPCHDA_SyncRead.InterfaceId,
                     7,
-                    (ref NdrWriter w) => {
+                    (ref NdrWriter w) =>
+                    {
                         // [return: OpcUniquePointer] emits outer referent before conformance.
                         w.WriteUInt32(0x00020000u);
                         WriteAttributeArray(ref w, [SampleAttribute()]);
                     },
-                    async channel => {
+                    async channel =>
+                    {
                         OpcHdaAttribute[] attributes = await new IOPCHDA_SyncReadClientProxy(channel).ReadAttributeAsync(SampleStart(), SampleEnd(), 100, [1], CancellationToken.None);
                         await Assert.That(attributes[0].AttributeId).IsEqualTo(1);
                         await Assert.That(attributes[0].Values[0].AsString()).IsEqualTo("kg/s");
@@ -181,12 +193,14 @@ public sealed class HdaMissingMethodProxyRoundTripTests {
                 await AssertRoundTripAsync(
                     IOPCHDA_SyncAnnotations.InterfaceId,
                     4,
-                    (ref NdrWriter w) => {
+                    (ref NdrWriter w) =>
+                    {
                         // [return: OpcUniquePointer] emits outer referent before conformance.
                         w.WriteUInt32(0x00020000u);
                         WriteAnnotationArray(ref w, [SampleAnnotation()]);
                     },
-                    async channel => {
+                    async channel =>
+                    {
                         OpcHdaAnnotation[] annotations = await new IOPCHDA_SyncAnnotationsClientProxy(channel).ReadAsync(SampleStart(), SampleEnd(), [10], CancellationToken.None);
                         await Assert.That(annotations[0].ClientHandle).IsEqualTo(77);
                         await Assert.That(annotations[0].Annotations[0]).IsEqualTo("checked by operator");
@@ -300,28 +314,33 @@ public sealed class HdaMissingMethodProxyRoundTripTests {
         }
     }
 
-    private static async Task AssertIntReturnAsync(Guid expectedIid, int expectedOpnum, Func<InMemoryCallChannel, Task<int>> invoke) {
+    private static async Task AssertIntReturnAsync(Guid expectedIid, int expectedOpnum, Func<InMemoryCallChannel, Task<int>> invoke)
+    {
         await AssertRoundTripAsync(
             expectedIid,
             expectedOpnum,
             (ref NdrWriter w) => w.WriteInt32(1234),
-            async channel => {
+            async channel =>
+            {
                 int value = await invoke(channel);
                 await Assert.That(value).IsEqualTo(1234);
             });
     }
 
-    private static async Task AssertIntArrayReturnAsync(Guid expectedIid, int expectedOpnum, string method, Func<InMemoryCallChannel, Task<int[]>> invoke) {
+    private static async Task AssertIntArrayReturnAsync(Guid expectedIid, int expectedOpnum, string method, Func<InMemoryCallChannel, Task<int[]>> invoke)
+    {
         _ = method;
         await AssertRoundTripAsync(
             expectedIid,
             expectedOpnum,
-            (ref NdrWriter w) => {
+            (ref NdrWriter w) =>
+            {
                 // [return: OpcUniquePointer] emits outer referent before conformance.
                 w.WriteUInt32(0x00020000u);
                 WriteIntArray(ref w, [0, OpcResultId.UnknownItemId.Code]);
             },
-            async channel => {
+            async channel =>
+            {
                 int[] values = await invoke(channel);
                 await Assert.That(values.Length).IsEqualTo(2);
                 await Assert.That(values[1]).IsEqualTo(OpcResultId.UnknownItemId.Code);
@@ -331,12 +350,14 @@ public sealed class HdaMissingMethodProxyRoundTripTests {
     private static Task AssertCallbackAsync(int expectedOpnum, Func<InMemoryCallChannel, Task> invoke) =>
         AssertRoundTripAsync(IOPCHDA_DataCallback.InterfaceId, expectedOpnum, null, invoke);
 
-    private static async Task AssertRoundTripAsync(Guid expectedIid, int expectedOpnum, NdrWriteAction? writeResponse, Func<InMemoryCallChannel, Task> invoke) {
+    private static async Task AssertRoundTripAsync(Guid expectedIid, int expectedOpnum, NdrWriteAction? writeResponse, Func<InMemoryCallChannel, Task> invoke)
+    {
         Guid observedIid = Guid.Empty;
         int observedOpnum = -1;
         int observedPayloadLength = -1;
         ReadOnlyMemory<byte> responsePayload = WritePayload(writeResponse);
-        var channel = new InMemoryCallChannel((iid, opnum, payload, _) => {
+        var channel = new InMemoryCallChannel((iid, opnum, payload, _) =>
+        {
             observedIid = iid;
             observedOpnum = opnum;
             observedPayloadLength = payload.Length;
@@ -350,8 +371,10 @@ public sealed class HdaMissingMethodProxyRoundTripTests {
         await Assert.That(observedPayloadLength).IsGreaterThanOrEqualTo(0);
     }
 
-    private static ReadOnlyMemory<byte> WritePayload(NdrWriteAction? write, int capacity = 8192) {
-        if (write is null) {
+    private static ReadOnlyMemory<byte> WritePayload(NdrWriteAction? write, int capacity = 8192)
+    {
+        if (write is null)
+        {
             return ReadOnlyMemory<byte>.Empty;
         }
 
@@ -361,35 +384,44 @@ public sealed class HdaMissingMethodProxyRoundTripTests {
         return buffer.AsMemory(0, writer.Position);
     }
 
-    private static void WriteIntArray(ref NdrWriter writer, int[] values) {
+    private static void WriteIntArray(ref NdrWriter writer, int[] values)
+    {
         writer.WriteUInt32(unchecked((uint)values.Length));
-        foreach (int value in values) {
+        foreach (int value in values)
+        {
             writer.WriteInt32(value);
         }
     }
 
-    private static void WriteStringArray(ref NdrWriter writer, string[] values) {
+    private static void WriteStringArray(ref NdrWriter writer, string[] values)
+    {
         writer.WriteUInt32(unchecked((uint)values.Length));
-        foreach (string value in values) {
+        foreach (string value in values)
+        {
             writer.WriteUnicodeStringPtr(value);
         }
     }
 
-    private static void WriteAttributeArray(ref NdrWriter writer, OpcHdaAttribute[] values) {
+    private static void WriteAttributeArray(ref NdrWriter writer, OpcHdaAttribute[] values)
+    {
         writer.WriteUInt32(unchecked((uint)values.Length));
-        foreach (OpcHdaAttribute value in values) {
+        foreach (OpcHdaAttribute value in values)
+        {
             NdrOpcHdaAttributeCodec.Write(ref writer, value);
         }
     }
 
-    private static void WriteAnnotationArray(ref NdrWriter writer, OpcHdaAnnotation[] values) {
+    private static void WriteAnnotationArray(ref NdrWriter writer, OpcHdaAnnotation[] values)
+    {
         writer.WriteUInt32(unchecked((uint)values.Length));
-        foreach (OpcHdaAnnotation value in values) {
+        foreach (OpcHdaAnnotation value in values)
+        {
             NdrOpcHdaAnnotationCodec.Write(ref writer, value);
         }
     }
 
-    private static void WriteEnumStringRef(ref NdrWriter writer) {
+    private static void WriteEnumStringRef(ref NdrWriter writer)
+    {
         writer.WriteUInt32(0x574F454Du);
         writer.WriteUInt32(1u);
         writer.WriteGuid(OpcGuids.IID_IEnumString);

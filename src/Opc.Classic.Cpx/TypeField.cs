@@ -32,7 +32,8 @@ public sealed record TypeField(
     ByteOrder? ByteOrder = null,
     string? StringEncoding = null,
     int? CharWidth = null,
-    string? Format = null) {
+    string? Format = null)
+{
     /// <summary>Field name. Empty when the OPCBinary field is anonymous.</summary>
     public string Name { get; init; } = Name ?? string.Empty;
 
@@ -66,24 +67,30 @@ public sealed record TypeField(
     /// <summary>Optional field format metadata.</summary>
     public string? Format { get; init; } = Normalize(Format);
 
-    private static TypeKind ValidateKind(TypeKind kind) {
-        if (kind == TypeKind.Unknown) {
+    private static TypeKind ValidateKind(TypeKind kind)
+    {
+        if (kind == TypeKind.Unknown)
+        {
             throw new ArgumentOutOfRangeException(nameof(kind), kind, "A field must declare a concrete OPCBinary type kind.");
         }
 
         return kind;
     }
 
-    private static int? ValidateNonNegative(int? value, string parameterName) {
-        if (value is < 0) {
+    private static int? ValidateNonNegative(int? value, string parameterName)
+    {
+        if (value is < 0)
+        {
             throw new ArgumentOutOfRangeException(parameterName, value, "Field counts and lengths cannot be negative.");
         }
 
         return value;
     }
 
-    private static int? ValidatePositive(int? value, string parameterName) {
-        if (value is <= 0) {
+    private static int? ValidatePositive(int? value, string parameterName)
+    {
+        if (value is <= 0)
+        {
             throw new ArgumentOutOfRangeException(parameterName, value, "Field character width must be positive when specified.");
         }
 

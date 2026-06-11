@@ -14,7 +14,8 @@ namespace Opc.Classic.Hda.Hosting.Windows;
 
 /// <summary>Raw-vtable method bodies for the <c>IOPCHDA_Playback</c> tearoff.</summary>
 [SupportedOSPlatform("windows")]
-internal static unsafe class OpcHdaPlaybackCcw {
+internal static unsafe class OpcHdaPlaybackCcw
+{
     [UnmanagedCallersOnly]
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
     public static int ReadRawWithUpdate(
@@ -28,21 +29,26 @@ internal static unsafe class OpcHdaPlaybackCcw {
         uint dwNumItems,
         IntPtr phServer,
         IntPtr pdwCancelID,
-        IntPtr* ppErrors) {
+        IntPtr* ppErrors)
+    {
         OpcHdaCcwUpdateHelpers.WriteUInt32(pdwCancelID, 0);
         OpcHdaCcwUpdateHelpers.ZeroOut(ppErrors);
-        if (!OpcHdaCcwUpdateHelpers.HasPlaybackRawArgs(htStartTime, htEndTime, dwNumItems, phServer, pdwCancelID, ppErrors)) {
+        if (!OpcHdaCcwUpdateHelpers.HasPlaybackRawArgs(htStartTime, htEndTime, dwNumItems, phServer, pdwCancelID, ppErrors))
+        {
             return OpcHdaServerCcw.E_INVALIDARG;
         }
-        if (!OpcHdaCcwUpdateHelpers.HasPlaybackSource(pThis)) {
+        if (!OpcHdaCcwUpdateHelpers.HasPlaybackSource(pThis))
+        {
             return OpcHdaServerCcw.E_NOTIMPL;
         }
         if (!OpcHdaCcwUpdateHelpers.TryResolveDispatcher(pThis, out IOpcHdaServerDispatcher? dispatcher) ||
-            !OpcHdaCcwUpdateHelpers.TryResolveSession(pThis, out OpcHdaServerCcw.CcwSession? session)) {
+            !OpcHdaCcwUpdateHelpers.TryResolveSession(pThis, out OpcHdaServerCcw.CcwSession? session))
+        {
             return OpcHdaServerCcw.E_FAIL;
         }
 
-        try {
+        try
+        {
             int count = OpcHdaCcwUpdateHelpers.CountToInt(dwNumItems);
             OpcHdaTime startTime = OpcHdaItemMarshaler.ReadHdaTime(htStartTime);
             OpcHdaTime endTime = OpcHdaItemMarshaler.ReadHdaTime(htEndTime);
@@ -62,7 +68,8 @@ internal static unsafe class OpcHdaPlaybackCcw {
             OpcHdaCcwUpdateHelpers.QueuePlayback(session!, cancelId, unchecked((int)dwTransactionID), playbackEvents);
             return OpcHdaServerCcw.S_OK;
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             return OpcHdaCcwUpdateHelpers.MapHResult(ex);
         }
     }
@@ -81,21 +88,26 @@ internal static unsafe class OpcHdaPlaybackCcw {
         IntPtr phServer,
         IntPtr haAggregate,
         IntPtr pdwCancelID,
-        IntPtr* ppErrors) {
+        IntPtr* ppErrors)
+    {
         OpcHdaCcwUpdateHelpers.WriteUInt32(pdwCancelID, 0);
         OpcHdaCcwUpdateHelpers.ZeroOut(ppErrors);
-        if (!OpcHdaCcwUpdateHelpers.HasPlaybackProcessedArgs(htStartTime, htEndTime, dwNumItems, phServer, haAggregate, pdwCancelID, ppErrors)) {
+        if (!OpcHdaCcwUpdateHelpers.HasPlaybackProcessedArgs(htStartTime, htEndTime, dwNumItems, phServer, haAggregate, pdwCancelID, ppErrors))
+        {
             return OpcHdaServerCcw.E_INVALIDARG;
         }
-        if (!OpcHdaCcwUpdateHelpers.HasPlaybackSource(pThis)) {
+        if (!OpcHdaCcwUpdateHelpers.HasPlaybackSource(pThis))
+        {
             return OpcHdaServerCcw.E_NOTIMPL;
         }
         if (!OpcHdaCcwUpdateHelpers.TryResolveDispatcher(pThis, out IOpcHdaServerDispatcher? dispatcher) ||
-            !OpcHdaCcwUpdateHelpers.TryResolveSession(pThis, out OpcHdaServerCcw.CcwSession? session)) {
+            !OpcHdaCcwUpdateHelpers.TryResolveSession(pThis, out OpcHdaServerCcw.CcwSession? session))
+        {
             return OpcHdaServerCcw.E_FAIL;
         }
 
-        try {
+        try
+        {
             int count = OpcHdaCcwUpdateHelpers.CountToInt(dwNumItems);
             OpcHdaTime startTime = OpcHdaItemMarshaler.ReadHdaTime(htStartTime);
             OpcHdaTime endTime = OpcHdaItemMarshaler.ReadHdaTime(htEndTime);
@@ -117,14 +129,17 @@ internal static unsafe class OpcHdaPlaybackCcw {
             OpcHdaCcwUpdateHelpers.QueuePlayback(session!, cancelId, unchecked((int)dwTransactionID), playbackEvents);
             return OpcHdaServerCcw.S_OK;
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             return OpcHdaCcwUpdateHelpers.MapHResult(ex);
         }
     }
 
     [UnmanagedCallersOnly]
-    public static int Cancel(IntPtr pThis, uint dwCancelID) {
-        if (!OpcHdaCcwUpdateHelpers.TryResolveSession(pThis, out OpcHdaServerCcw.CcwSession? session)) {
+    public static int Cancel(IntPtr pThis, uint dwCancelID)
+    {
+        if (!OpcHdaCcwUpdateHelpers.TryResolveSession(pThis, out OpcHdaServerCcw.CcwSession? session))
+        {
             return OpcHdaServerCcw.E_FAIL;
         }
 

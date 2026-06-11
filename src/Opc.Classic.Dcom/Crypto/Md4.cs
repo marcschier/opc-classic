@@ -18,7 +18,8 @@ namespace Opc.Classic.Dcom.Crypto;
 /// <summary>
 /// Pure-managed MD4 (RFC 1320). Hash size = 16 bytes; block size = 64 bytes.
 /// </summary>
-public static class Md4 {
+public static class Md4
+{
     /// <summary>Size of the produced hash, in bytes.</summary>
     public const int HashSizeInBytes = 16;
 
@@ -26,15 +27,18 @@ public static class Md4 {
     public const int BlockSizeInBytes = 64;
 
     /// <summary>One-shot hashing: returns a 16-byte MD4 of <paramref name="source"/>.</summary>
-    public static byte[] HashData(ReadOnlySpan<byte> source) {
+    public static byte[] HashData(ReadOnlySpan<byte> source)
+    {
         var result = new byte[HashSizeInBytes];
         HashData(source, result);
         return result;
     }
 
     /// <summary>One-shot hashing into a caller-provided 16-byte destination.</summary>
-    public static void HashData(ReadOnlySpan<byte> source, Span<byte> destination) {
-        if (destination.Length < HashSizeInBytes) {
+    public static void HashData(ReadOnlySpan<byte> source, Span<byte> destination)
+    {
+        if (destination.Length < HashSizeInBytes)
+        {
             throw new ArgumentException(
                 $"Destination must be at least {HashSizeInBytes} bytes.", nameof(destination));
         }

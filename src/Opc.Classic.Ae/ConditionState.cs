@@ -11,7 +11,8 @@ namespace Opc.Classic.Ae;
 /// State flags of an OPC AE condition.
 /// </summary>
 [Flags]
-public enum ConditionState {
+public enum ConditionState
+{
     /// <summary>No state bits set.</summary>
     None = 0,
 

@@ -5,14 +5,17 @@ namespace Opc.Classic.Dcom.Rpc;
 /// <summary>
 /// Provider exception
 /// </summary>
-public class ProviderException : RpcException {
+public class ProviderException : RpcException
+{
 
     /// <inheritdoc/>
-    public ProviderException() {
+    public ProviderException()
+    {
     }
 
     /// <inheritdoc/>
     public ProviderException(string message) :
-        base(message) {
+        base(message)
+    {
     }
 }

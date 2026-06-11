@@ -12,19 +12,22 @@ namespace Opc.Classic.Ae.Ndr;
 /// <summary>
 /// NDR encoder / decoder for OPC AE's <c>OPCCONDITIONSTATE</c> payload.
 /// </summary>
-public static class NdrOpcConditionStateCodec {
+public static class NdrOpcConditionStateCodec
+{
     private const long FileTimeEpochOffsetTicks = 504911232000000000L;
 
     /// <summary>Encodes a single OPCCONDITIONSTATE in NDR (matching the MS-DCOM
     /// proxy/stub wire format: primary fields first, deferred pointer bodies after).</summary>
-    public static void Write(ref NdrWriter writer, OpcConditionState state) {
+    public static void Write(ref NdrWriter writer, OpcConditionState state)
+    {
         ArgumentNullException.ThrowIfNull(state);
 
         WritePrimary(ref writer, state);
         WriteDeferred(ref writer, state);
     }
 
-    private static void WritePrimary(ref NdrWriter writer, OpcConditionState state) {
+    private static void WritePrimary(ref NdrWriter writer, OpcConditionState state)
+    {
         bool hasActiveSubCondition = state.ActiveSubCondition is not null;
         bool hasActiveDefinition = state.ActiveSubConditionDefinition is not null;
         bool hasActiveDescription = state.ActiveSubConditionDescription is not null;
@@ -57,19 +60,22 @@ public static class NdrOpcConditionStateCodec {
         WriteReferent(ref writer, eventAttrCount > 0);
     }
 
-    private static void WriteDeferred(ref NdrWriter writer, OpcConditionState state) {
+    private static void WriteDeferred(ref NdrWriter writer, OpcConditionState state)
+    {
         if (state.ActiveSubCondition is string s1) { writer.WriteUnicodeString(s1); }
         if (state.ActiveSubConditionDefinition is string s2) { writer.WriteUnicodeString(s2); }
         if (state.ActiveSubConditionDescription is string s3) { writer.WriteUnicodeString(s3); }
         if (state.AcknowledgerId is string s4) { writer.WriteUnicodeString(s4); }
         if (state.Comment is string s5) { writer.WriteUnicodeString(s5); }
-        if (state.SubConditionCount > 0) {
+        if (state.SubConditionCount > 0)
+        {
             WriteLpwstrArrayBody(ref writer, state.SubConditionNames);
             WriteLpwstrArrayBody(ref writer, state.SubConditionDefinitions);
             writer.WriteConformantUInt32Array(state.SubConditionSeverities);
             WriteLpwstrArrayBody(ref writer, state.SubConditionDescriptions);
         }
-        if (state.EventAttributeCount > 0) {
+        if (state.EventAttributeCount > 0)
+        {
             WriteVariantArrayBody(ref writer, state.EventAttributes);
             writer.WriteConformantInt32Array(state.Errors);
         }
@@ -77,12 +83,14 @@ public static class NdrOpcConditionStateCodec {
 
     /// <summary>Decodes a single OPCCONDITIONSTATE from NDR (matching the MS-DCOM
     /// proxy/stub wire format).</summary>
-    public static OpcConditionState Read(ref NdrReader reader) {
+    public static OpcConditionState Read(ref NdrReader reader)
+    {
         ConditionStatePrimary primary = ReadPrimary(ref reader);
         return ReadDeferred(ref reader, primary);
     }
 
-    private static ConditionStatePrimary ReadPrimary(ref NdrReader reader) {
+    private static ConditionStatePrimary ReadPrimary(ref NdrReader reader)
+    {
         ushort conditionState = reader.ReadUInt16();
         _ = reader.ReadUInt16(); // wReserved1
         bool hasActiveSubCondition = reader.ReadUInt32() != 0;
@@ -113,7 +121,8 @@ public static class NdrOpcConditionStateCodec {
             eventAttrCount, hasEventAttrs, hasErrors);
     }
 
-    private static OpcConditionState ReadDeferred(ref NdrReader reader, ConditionStatePrimary primary) {
+    private static OpcConditionState ReadDeferred(ref NdrReader reader, ConditionStatePrimary primary)
+    {
         string? activeSubCondition = primary.HasActiveSubCondition ? reader.ReadUnicodeString() : null;
         string? activeDefinition = primary.HasActiveDefinition ? reader.ReadUnicodeString() : null;
         string? activeDescription = primary.HasActiveDescription ? reader.ReadUnicodeString() : null;
@@ -142,74 +151,94 @@ public static class NdrOpcConditionStateCodec {
         bool HasAcknowledger, bool HasComment, int SubCount, bool HasSubNames, bool HasSubDefinitions, bool HasSubSeverities, bool HasSubDescriptions,
         int EventAttrCount, bool HasEventAttrs, bool HasErrors);
 
-    private static void WriteReferent(ref NdrWriter writer, bool hasValue) {
-        if (hasValue) {
+    private static void WriteReferent(ref NdrWriter writer, bool hasValue)
+    {
+        if (hasValue)
+        {
             _ = writer.WriteReferentId();
         }
-        else {
+        else
+        {
             writer.WriteNullReferent();
         }
     }
 
-    private static void WriteLpwstrArrayBody(ref NdrWriter writer, string?[] values) {
+    private static void WriteLpwstrArrayBody(ref NdrWriter writer, string?[] values)
+    {
         // Array body: max_count + per-element [unique] referents + per-element bodies (deferred within array).
         writer.WriteUInt32(unchecked((uint)values.Length));
-        for (int i = 0; i < values.Length; i++) {
+        for (int i = 0; i < values.Length; i++)
+        {
             WriteReferent(ref writer, values[i] is not null);
         }
-        for (int i = 0; i < values.Length; i++) {
-            if (values[i] is string body) {
+        for (int i = 0; i < values.Length; i++)
+        {
+            if (values[i] is string body)
+            {
                 writer.WriteUnicodeString(body);
             }
         }
     }
 
-    private static string?[] ReadLpwstrArrayBody(ref NdrReader reader, int count) {
+    private static string?[] ReadLpwstrArrayBody(ref NdrReader reader, int count)
+    {
         uint rawConformance = reader.ReadUInt32();
         int conformance = ToInt32Count(rawConformance, "pszSC array");
-        if (conformance != count) {
+        if (conformance != count)
+        {
             throw new InvalidDataException($"OPCCONDITIONSTATE pszSC array conformance {conformance} did not match dwNumSCs {count}.");
         }
         var refs = new bool[count];
-        for (int i = 0; i < count; i++) {
+        for (int i = 0; i < count; i++)
+        {
             refs[i] = reader.ReadUInt32() != 0;
         }
         var values = new string?[count];
-        for (int i = 0; i < count; i++) {
+        for (int i = 0; i < count; i++)
+        {
             values[i] = refs[i] ? reader.ReadUnicodeString() : null;
         }
         return values;
     }
 
-    private static void WriteVariantArrayBody(ref NdrWriter writer, OpcVariant[] attributes) {
+    private static void WriteVariantArrayBody(ref NdrWriter writer, OpcVariant[] attributes)
+    {
         writer.WriteUInt32(unchecked((uint)attributes.Length));
-        for (int i = 0; i < attributes.Length; i++) {
+        for (int i = 0; i < attributes.Length; i++)
+        {
             writer.WriteVariant(attributes[i]);
         }
     }
 
-    private static OpcVariant[] ReadVariantArrayBody(ref NdrReader reader, int count) {
+    private static OpcVariant[] ReadVariantArrayBody(ref NdrReader reader, int count)
+    {
         uint conformance = reader.ReadUInt32();
         int observed = ToInt32Count(conformance, "pEventAttributes");
-        if (observed != count) {
+        if (observed != count)
+        {
             throw new InvalidDataException($"OPCCONDITIONSTATE pEventAttributes conformance {observed} did not match dwNumEventAttrs {count}.");
         }
         var attributes = new OpcVariant[count];
-        for (int i = 0; i < count; i++) {
+        for (int i = 0; i < count; i++)
+        {
             attributes[i] = reader.ReadVariant();
         }
         return attributes;
     }
 
-    private static void ValidateArrayLength(Array array, int expectedLength, string arrayName, string countName) {
-        if (array.Length != expectedLength) {
+    private static void ValidateArrayLength(Array array, int expectedLength, string arrayName, string countName)
+    {
+        if (array.Length != expectedLength)
+        {
             throw new InvalidDataException(
                 $"OPCCONDITIONSTATE {arrayName} length {array.Length} did not match {countName} {expectedLength}.");
         }
     }
 
-    private static int ToInt32Count(uint count, string fieldName) {
-        if (count > (uint)int.MaxValue) {
+    private static int ToInt32Count(uint count, string fieldName)
+    {
+        if (count > (uint)int.MaxValue)
+        {
             throw new InvalidDataException($"OPCCONDITIONSTATE {fieldName} {count} too large.");
         }
         return unchecked((int)count);
@@ -217,9 +246,11 @@ public static class NdrOpcConditionStateCodec {
 
     private static long ToFileTime(DateTimeOffset value) => value.UtcTicks - FileTimeEpochOffsetTicks;
 
-    private static DateTimeOffset ReadAndDecodeFileTime(ref NdrReader reader, string fieldName) {
+    private static DateTimeOffset ReadAndDecodeFileTime(ref NdrReader reader, string fieldName)
+    {
         long raw = reader.ReadFileTime();
-        if (FileTimeHelper.TryFromFileTime(raw, out DateTimeOffset value)) {
+        if (FileTimeHelper.TryFromFileTime(raw, out DateTimeOffset value))
+        {
             return value;
         }
         throw new InvalidDataException(

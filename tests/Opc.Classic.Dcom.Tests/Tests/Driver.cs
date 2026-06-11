@@ -1,4 +1,5 @@
-namespace org.jinterop.dcom.test {
+namespace org.jinterop.dcom.test
+{
 
 
     using System;
@@ -14,11 +15,14 @@ namespace org.jinterop.dcom.test {
 
     //import com.iwombat.foundation.ObjectId;
 
-    internal class Driver : iota {
+    internal class Driver : iota
+    {
 
         /// <param name="args"> </param>
-        public static void Main(string[] args) {
-            try {
+        public static void Main(string[] args)
+        {
+            try
+            {
 
                 string n = "variant[index]sss".replaceFirst("index", Convert.ToString(100));
                 var xxxs = new short?(1);
@@ -31,7 +35,8 @@ namespace org.jinterop.dcom.test {
                 ccccccc = typeof(short?[][]);
                 //JAVA TO C# CONVERTER WARNING: The .NET Type.FullName property will not always yield results identical to the Java Class.getName method:
                 Console.WriteLine(ccccccc.FullName);
-                if (ccccccc.IsArray) {
+                if (ccccccc.IsArray)
+                {
                     //JAVA TO C# CONVERTER WARNING: The .NET Type.FullName property will not always yield results identical to the Java Class.getName method:
                     var name2 = ccccccc.FullName;
                     var i = name2.LastIndexOf("L", StringComparison.Ordinal);
@@ -78,54 +83,72 @@ namespace org.jinterop.dcom.test {
 
                 var isPrimitive = false;
                 var d = oi.GetType().GetElementType();
-                while (d != null) {
+                while (d != null)
+                {
                     var dd = d.GetElementType();
-                    if (dd == null) {
+                    if (dd == null)
+                    {
                         isPrimitive = d.IsPrimitive;
                     }
                     d = dd;
                 }
                 //extract the class name
                 string clazzName = null;
-                if (isPrimitive) {
+                if (isPrimitive)
+                {
                     //JAVA TO C# CONVERTER WARNING: The .NET Type.FullName property will not always yield results identical to the Java Class.getName method:
                     clazzName = oi.GetType().FullName;
-                    if (clazzName.EndsWith("F", StringComparison.Ordinal)) {
+                    if (clazzName.EndsWith("F", StringComparison.Ordinal))
+                    {
                         //JAVA TO C# CONVERTER WARNING: The .NET Type.FullName property will not always yield results identical to the Java Class.getName method:
                         clazzName = typeof(float).FullName;
                     }
-                    else {
-                        if (clazzName.EndsWith("I", StringComparison.Ordinal)) {
+                    else
+                    {
+                        if (clazzName.EndsWith("I", StringComparison.Ordinal))
+                        {
                             //JAVA TO C# CONVERTER WARNING: The .NET Type.FullName property will not always yield results identical to the Java Class.getName method:
                             clazzName = typeof(int).FullName;
                         }
-                        else {
-                            if (clazzName.EndsWith("D", StringComparison.Ordinal)) {
+                        else
+                        {
+                            if (clazzName.EndsWith("D", StringComparison.Ordinal))
+                            {
                                 //JAVA TO C# CONVERTER WARNING: The .NET Type.FullName property will not always yield results identical to the Java Class.getName method:
                                 clazzName = typeof(double).FullName;
                             }
-                            else {
-                                if (clazzName.EndsWith("C", StringComparison.Ordinal)) {
+                            else
+                            {
+                                if (clazzName.EndsWith("C", StringComparison.Ordinal))
+                                {
                                     //JAVA TO C# CONVERTER WARNING: The .NET Type.FullName property will not always yield results identical to the Java Class.getName method:
                                     clazzName = typeof(char).FullName;
                                 }
-                                else {
-                                    if (clazzName.EndsWith("Z", StringComparison.Ordinal)) {
+                                else
+                                {
+                                    if (clazzName.EndsWith("Z", StringComparison.Ordinal))
+                                    {
                                         //JAVA TO C# CONVERTER WARNING: The .NET Type.FullName property will not always yield results identical to the Java Class.getName method:
                                         clazzName = typeof(bool).FullName;
                                     }
-                                    else {
-                                        if (clazzName.EndsWith("B", StringComparison.Ordinal)) {
+                                    else
+                                    {
+                                        if (clazzName.EndsWith("B", StringComparison.Ordinal))
+                                        {
                                             //JAVA TO C# CONVERTER WARNING: The .NET Type.FullName property will not always yield results identical to the Java Class.getName method:
                                             clazzName = typeof(byte).FullName;
                                         }
-                                        else {
-                                            if (clazzName.EndsWith("S", StringComparison.Ordinal)) {
+                                        else
+                                        {
+                                            if (clazzName.EndsWith("S", StringComparison.Ordinal))
+                                            {
                                                 //JAVA TO C# CONVERTER WARNING: The .NET Type.FullName property will not always yield results identical to the Java Class.getName method:
                                                 clazzName = typeof(short).FullName;
                                             }
-                                            else {
-                                                if (clazzName.EndsWith("J", StringComparison.Ordinal)) {
+                                            else
+                                            {
+                                                if (clazzName.EndsWith("J", StringComparison.Ordinal))
+                                                {
                                                     //JAVA TO C# CONVERTER WARNING: The .NET Type.FullName property will not always yield results identical to the Java Class.getName method:
                                                     clazzName = typeof(long).FullName;
                                                 }
@@ -149,7 +172,8 @@ namespace org.jinterop.dcom.test {
                 var name = oi.GetType().FullName;
                 var subArray = oi;
                 var dimension = 0;
-                while (name.StartsWith("[", StringComparison.Ordinal)) {
+                while (name.StartsWith("[", StringComparison.Ordinal))
+                {
                     name = name.Substring(1);
                     int x = Array.getLength(subArray);
                     upperBounds2.Add(x);
@@ -162,7 +186,8 @@ namespace org.jinterop.dcom.test {
                 }
 
                 var upperBounds = new int[upperBounds2.Count];
-                for (var i = 0; i < upperBounds2.Count; i++) {
+                for (var i = 0; i < upperBounds2.Count; i++)
+                {
                     upperBounds[i] = (int)upperBounds2[i];
                 }
 
@@ -198,7 +223,8 @@ namespace org.jinterop.dcom.test {
                 var vv = (JIVariant)cc_Renamed.newInstance(new object[] { y, Convert.ToBoolean(true) });
                 object o007 = 1;
                 cc(o007);
-                if (typeof(int) == typeof(int)) {
+                if (typeof(int) == typeof(int))
+                {
                     Console.WriteLine("same");
                 }
                 object o123 = new int[][]
@@ -217,7 +243,8 @@ namespace org.jinterop.dcom.test {
                 Console.WriteLine(a);
                 a += 1;
                 Console.WriteLine(a);
-                if (a == int.MaxValue) {
+                if (a == int.MaxValue)
+                {
 
                 }
                 object o = Array.CreateInstance(typeof(IJIDispatch), 10);
@@ -248,11 +275,13 @@ namespace org.jinterop.dcom.test {
                 var toSend2 = toSend.ToString("x");
                 byte[] hibuffer = { 0, 0, 0, 0, 0, 0, 0, 0 };
                 byte[] lowbuffer = { 0, 0, 0, 0, 0, 0, 0, 0 };
-                if (toSend2.Length > 8) {
+                if (toSend2.Length > 8)
+                {
                     Array.Copy(toSend2.Substring(8).GetBytes(), 0, lowbuffer, 0, 8);
                     Array.Copy(toSend2.Substring(0, 8).GetBytes(), 0, hibuffer, 0, 8);
                 }
-                else {
+                else
+                {
                     Array.Copy(toSend2.GetBytes(), 0, lowbuffer, 0, 8);
                 }
 
@@ -263,7 +292,8 @@ namespace org.jinterop.dcom.test {
 
                 var buffer = new byte[1148]; //1144
                 System.IO.FileStream inputStream;
-                try {
+                try
+                {
                     inputStream = new System.IO.FileStream("c:/temp/webbrowserevent3", System.IO.FileMode.Open, System.IO.FileAccess.Read); //change the 32nd member to 106 byte value, in inspect and change
                     inputStream.Read(buffer, 0, 1148); //1144
 
@@ -273,7 +303,8 @@ namespace org.jinterop.dcom.test {
                     //                    outputStream.flush();
                     //                    outputStream.close();
                 }
-                catch (Exception e) {
+                catch (Exception e)
+                {
                     // TODO Auto-generated catch block
                     Console.WriteLine(e.ToString());
                     Console.Write(e.StackTrace);
@@ -341,26 +372,32 @@ namespace org.jinterop.dcom.test {
                 //test.setObject(UUID.NIL_UUID);
                 test.obtainReference();
             }
-            catch (Exception e) {
+            catch (Exception e)
+            {
                 // TODO Auto-generated catch block
                 Console.WriteLine(e.ToString());
                 Console.Write(e.StackTrace);
             }
         }
 
-        internal static object createArray(object srcArray, Type targetArrayType, int dimension) {
+        internal static object createArray(object srcArray, Type targetArrayType, int dimension)
+        {
             object array = null;
             var c = targetArrayType;
             int len = Array.getLength(srcArray);
-            for (var j = 0; j < dimension; j++) {
+            for (var j = 0; j < dimension; j++)
+            {
                 array = Array.CreateInstance(c, len);
                 c = array.GetType();
             }
 
-            for (var i = 0; i < len; i++) {
-                if (dimension == 1) {
+            for (var i = 0; i < len; i++)
+            {
+                if (dimension == 1)
+                {
                     //fill value here
-                    if (i == Array.getLength(srcArray)) {
+                    if (i == Array.getLength(srcArray))
+                    {
                         //this means this array has less data than its upper bounds which is the max value.
                         //resize it.
                         object array2 = Array.CreateInstance(targetArrayType, i);
@@ -370,7 +407,8 @@ namespace org.jinterop.dcom.test {
                     }
                     ((System.Array)array).SetValue(Array.get(srcArray, i), i);
                 }
-                else {
+                else
+                {
                     ((System.Array)array).SetValue(createArray(Array.get(srcArray, i), targetArrayType, dimension - 1), i);
                 }
 
@@ -379,14 +417,18 @@ namespace org.jinterop.dcom.test {
             return array;
         }
 
-        internal static void serializeArray(object array) {
+        internal static void serializeArray(object array)
+        {
             //JAVA TO C# CONVERTER WARNING: The .NET Type.FullName property will not always yield results identical to the Java Class.getName method:
             var name = array.GetType().FullName;
             var o = (object[])array;
-            for (var i = 0; i < o.Length; i++) {
-                if (name[1] != '[') {
+            for (var i = 0; i < o.Length; i++)
+            {
+                if (name[1] != '[')
+                {
                     var o1 = (object[])array;
-                    for (var j = 0; j < o1.Length; j++) {
+                    for (var j = 0; j < o1.Length; j++)
+                    {
                         Console.WriteLine(o1[j]);
                     }
                     return;
@@ -396,13 +438,16 @@ namespace org.jinterop.dcom.test {
 
         }
 
-        internal static int computeLengthArray(object array) {
+        internal static int computeLengthArray(object array)
+        {
             var length = 0;
             //JAVA TO C# CONVERTER WARNING: The .NET Type.FullName property will not always yield results identical to the Java Class.getName method:
             var name = array.GetType().FullName;
             var o = (object[])array;
-            for (var i = 0; i < o.Length; i++) {
-                if (name[1] != '[') {
+            for (var i = 0; i < o.Length; i++)
+            {
+                if (name[1] != '[')
+                {
                     var o1 = (object[])array;
                     Console.WriteLine(o1.GetType().GetElementType());
                     return length;
@@ -413,20 +458,25 @@ namespace org.jinterop.dcom.test {
             return length;
         }
 
-        internal static object deSerializeArray(Type arrayType, int[] upperBounds, int dimension) {
+        internal static object deSerializeArray(Type arrayType, int[] upperBounds, int dimension)
+        {
             object array = null;
             var c = arrayType;
-            for (var j = 0; j < dimension; j++) {
+            for (var j = 0; j < dimension; j++)
+            {
                 array = Array.CreateInstance(c, upperBounds[upperBounds.Length - j - 1]);
                 c = array.GetType();
             }
 
-            for (var i = 0; i < upperBounds[upperBounds.Length - dimension]; i++) {
-                if (dimension == 1) {
+            for (var i = 0; i < upperBounds[upperBounds.Length - dimension]; i++)
+            {
+                if (dimension == 1)
+                {
                     //fill value here
                     ((System.Array)array).SetValue(i, i);
                 }
-                else {
+                else
+                {
                     ((System.Array)array).SetValue(deSerializeArray(arrayType, upperBounds, dimension - 1), i);
                 }
 
@@ -439,14 +489,16 @@ namespace org.jinterop.dcom.test {
 
         public static void cc(object i) => Console.WriteLine(i + " (), " + i.GetType());
 
-        public virtual void v() {
+        public virtual void v()
+        {
         }
 
 
 
     }
 
-    internal interface iota {
+    internal interface iota
+    {
         void v();
     }
 

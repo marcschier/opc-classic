@@ -16,15 +16,18 @@ using TUnit.Core;
 namespace Opc.Classic.Ae.Tests.Hosting.Windows;
 
 [SupportedOSPlatform("windows")]
-public sealed class OpcAeSubscriptionCcwTests {
+public sealed class OpcAeSubscriptionCcwTests
+{
     private const int S_OK = 0;
     private const int E_NOTIMPL = unchecked((int)0x80004001);
 
     private static readonly Guid IID_IUnknown = Guid.Parse("00000000-0000-0000-C000-000000000046");
 
     [Test]
-    public async Task CreateEventSubscription_returns_subscription_pointer_from_dispatcher() {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task CreateEventSubscription_returns_subscription_pointer_from_dispatcher()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
@@ -42,8 +45,10 @@ public sealed class OpcAeSubscriptionCcwTests {
     }
 
     [Test]
-    public async Task SetFilter_and_GetFilter_round_trip_native_arrays() {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task SetFilter_and_GetFilter_round_trip_native_arrays()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
@@ -70,8 +75,10 @@ public sealed class OpcAeSubscriptionCcwTests {
     }
 
     [Test]
-    public async Task SelectReturnedAttributes_and_GetReturnedAttributes_round_trip_attribute_ids() {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task SelectReturnedAttributes_and_GetReturnedAttributes_round_trip_attribute_ids()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
@@ -89,8 +96,10 @@ public sealed class OpcAeSubscriptionCcwTests {
     }
 
     [Test]
-    public async Task Refresh_dispatches_and_fires_event_sink_callback() {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task Refresh_dispatches_and_fires_event_sink_callback()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
@@ -109,8 +118,10 @@ public sealed class OpcAeSubscriptionCcwTests {
     }
 
     [Test]
-    public async Task CancelRefresh_dispatches_connection_cookie() {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task CancelRefresh_dispatches_connection_cookie()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
@@ -124,8 +135,10 @@ public sealed class OpcAeSubscriptionCcwTests {
     }
 
     [Test]
-    public async Task GetState_returns_active_buffering_and_client_handle() {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task GetState_returns_active_buffering_and_client_handle()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
@@ -144,8 +157,10 @@ public sealed class OpcAeSubscriptionCcwTests {
     }
 
     [Test]
-    public async Task SetState_updates_state_and_returns_revised_buffering() {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task SetState_updates_state_and_returns_revised_buffering()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
@@ -164,8 +179,10 @@ public sealed class OpcAeSubscriptionCcwTests {
     }
 
     [Test]
-    public async Task Release_removes_subscription_through_dispatcher() {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task Release_removes_subscription_through_dispatcher()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
@@ -180,7 +197,8 @@ public sealed class OpcAeSubscriptionCcwTests {
         await Assert.That(dispatcher.RemovedSubscription).IsEqualTo(dispatcher);
     }
 
-    private sealed class StubAeServerDispatcher : IOpcAeServerDispatcher, IOPCEventSubscriptionMgt {
+    private sealed class StubAeServerDispatcher : IOpcAeServerDispatcher, IOPCEventSubscriptionMgt
+    {
         public Guid LastRequestedInterfaceId { get; private set; }
         public bool LastActive { get; private set; }
         public int LastClientSubscription { get; private set; }
@@ -213,7 +231,8 @@ public sealed class OpcAeSubscriptionCcwTests {
             Guid requestedInterfaceId,
             out int revisedBufferTime,
             out int revisedMaxSize,
-            CancellationToken cancellationToken = default) {
+            CancellationToken cancellationToken = default)
+        {
             cancellationToken.ThrowIfCancellationRequested();
             LastActive = active;
             Active = active;
@@ -227,14 +246,16 @@ public sealed class OpcAeSubscriptionCcwTests {
             return Task.FromResult<IOPCEventSubscriptionMgt>(this);
         }
 
-        public Task RemoveSubscriptionAsync(IOPCEventSubscriptionMgt subscription, CancellationToken cancellationToken = default) {
+        public Task RemoveSubscriptionAsync(IOPCEventSubscriptionMgt subscription, CancellationToken cancellationToken = default)
+        {
             cancellationToken.ThrowIfCancellationRequested();
             RemoveSubscriptionCallCount++;
             RemovedSubscription = subscription;
             return Task.CompletedTask;
         }
 
-        public Task SetFilterAsync(int eventType, int[] eventCategories, int lowSeverity, int highSeverity, string[] areas, string[] sources, CancellationToken cancellationToken = default) {
+        public Task SetFilterAsync(int eventType, int[] eventCategories, int lowSeverity, int highSeverity, string[] areas, string[] sources, CancellationToken cancellationToken = default)
+        {
             cancellationToken.ThrowIfCancellationRequested();
             EventType = eventType;
             EventCategories = eventCategories;
@@ -245,7 +266,8 @@ public sealed class OpcAeSubscriptionCcwTests {
             return Task.CompletedTask;
         }
 
-        public Task GetFilterAsync(out int eventType, out int[] eventCategories, out int lowSeverity, out int highSeverity, out string[] areas, out string[] sources, CancellationToken cancellationToken = default) {
+        public Task GetFilterAsync(out int eventType, out int[] eventCategories, out int lowSeverity, out int highSeverity, out string[] areas, out string[] sources, CancellationToken cancellationToken = default)
+        {
             cancellationToken.ThrowIfCancellationRequested();
             eventType = EventType;
             eventCategories = EventCategories;
@@ -256,20 +278,23 @@ public sealed class OpcAeSubscriptionCcwTests {
             return Task.CompletedTask;
         }
 
-        public Task SetReturnedAttributesAsync(int eventCategory, int[] attributeIds, CancellationToken cancellationToken = default) {
+        public Task SetReturnedAttributesAsync(int eventCategory, int[] attributeIds, CancellationToken cancellationToken = default)
+        {
             cancellationToken.ThrowIfCancellationRequested();
             LastAttributeCategory = eventCategory;
             ReturnedAttributes = attributeIds;
             return Task.CompletedTask;
         }
 
-        public Task<int[]> GetReturnedAttributesAsync(int eventCategory, CancellationToken cancellationToken = default) {
+        public Task<int[]> GetReturnedAttributesAsync(int eventCategory, CancellationToken cancellationToken = default)
+        {
             cancellationToken.ThrowIfCancellationRequested();
             LastAttributeCategory = eventCategory;
             return Task.FromResult(ReturnedAttributes);
         }
 
-        public Task RefreshAsync(int connection, CancellationToken cancellationToken = default) {
+        public Task RefreshAsync(int connection, CancellationToken cancellationToken = default)
+        {
             cancellationToken.ThrowIfCancellationRequested();
             LastRefreshConnection = connection;
             return EventSink.OnEventAsync(
@@ -280,13 +305,15 @@ public sealed class OpcAeSubscriptionCcwTests {
                 cancellationToken);
         }
 
-        public Task CancelRefreshAsync(int connection, CancellationToken cancellationToken = default) {
+        public Task CancelRefreshAsync(int connection, CancellationToken cancellationToken = default)
+        {
             cancellationToken.ThrowIfCancellationRequested();
             LastCancelRefreshConnection = connection;
             return Task.CompletedTask;
         }
 
-        public Task GetStateAsync(out bool active, out int bufferTime, out int maxSize, out int clientSubscription, CancellationToken cancellationToken = default) {
+        public Task GetStateAsync(out bool active, out int bufferTime, out int maxSize, out int clientSubscription, CancellationToken cancellationToken = default)
+        {
             cancellationToken.ThrowIfCancellationRequested();
             active = Active;
             bufferTime = BufferTime;
@@ -295,7 +322,8 @@ public sealed class OpcAeSubscriptionCcwTests {
             return Task.CompletedTask;
         }
 
-        public Task SetStateAsync(bool active, int bufferTime, int maxSize, int clientSubscription, out int revisedBufferTime, out int revisedMaxSize, CancellationToken cancellationToken = default) {
+        public Task SetStateAsync(bool active, int bufferTime, int maxSize, int clientSubscription, out int revisedBufferTime, out int revisedMaxSize, CancellationToken cancellationToken = default)
+        {
             cancellationToken.ThrowIfCancellationRequested();
             Active = active;
             BufferTime = bufferTime;
@@ -307,14 +335,16 @@ public sealed class OpcAeSubscriptionCcwTests {
         }
     }
 
-    private sealed class RecordingEventSink : IOPCEventSink {
+    private sealed class RecordingEventSink : IOPCEventSink
+    {
         public int CallCount { get; private set; }
         public int LastClientSubscription { get; private set; }
         public bool LastRefresh { get; private set; }
         public bool LastRefreshComplete { get; private set; }
         public int LastEventCount { get; private set; }
 
-        public Task OnEventAsync(int clientSubscription, bool refresh, bool lastRefresh, OpcEventNotification[] events, CancellationToken cancellationToken = default) {
+        public Task OnEventAsync(int clientSubscription, bool refresh, bool lastRefresh, OpcEventNotification[] events, CancellationToken cancellationToken = default)
+        {
             cancellationToken.ThrowIfCancellationRequested();
             CallCount++;
             LastClientSubscription = clientSubscription;
@@ -325,64 +355,76 @@ public sealed class OpcAeSubscriptionCcwTests {
         }
     }
 
-    private static class Helpers {
+    private static class Helpers
+    {
         internal readonly record struct CreateSubscriptionResult(int Hr, IntPtr Subscription, int RevisedBufferTime, int RevisedMaxSize);
         internal readonly record struct FilterResult(int Hr, int EventType, int[] EventCategories, int LowSeverity, int HighSeverity, string[] Areas, string[] Sources);
         internal readonly record struct IntArrayResult(int Hr, int[] Values);
         internal readonly record struct SubscriptionStateResult(int Hr, int Active, int BufferTime, int MaxSize, int ClientSubscription);
         internal readonly record struct SetStateResult(int Hr, int RevisedBufferTime, int RevisedMaxSize);
 
-        internal static IntPtr CreateEventServer(IOpcAeServerDispatcher dispatcher) {
+        internal static IntPtr CreateEventServer(IOpcAeServerDispatcher dispatcher)
+        {
             IntPtr ccw = OpcAeServerCcw.Create(dispatcher, IID_IUnknown);
             return InvokeQI(ccw, IOPCEventServer.InterfaceId);
         }
 
-        internal static IntPtr CreateSubscription(IOpcAeServerDispatcher dispatcher) {
+        internal static IntPtr CreateSubscription(IOpcAeServerDispatcher dispatcher)
+        {
             IntPtr eventServer = CreateEventServer(dispatcher);
             CreateSubscriptionResult result = InvokeCreateEventSubscription(eventServer, active: true, bufferTime: 100, maxSize: 10, clientSubscription: 0xAA01);
-            if (result.Hr != S_OK) {
+            if (result.Hr != S_OK)
+            {
                 throw new InvalidOperationException($"CreateEventSubscription failed with 0x{result.Hr:X8}.");
             }
             return result.Subscription;
         }
 
-        internal static IntPtr InvokeQI(IntPtr ccw, Guid iid) {
+        internal static IntPtr InvokeQI(IntPtr ccw, Guid iid)
+        {
             QueryInterfaceDelegate qi = GetMethod<QueryInterfaceDelegate>(ccw, 0);
             int hr = qi(ccw, ref iid, out IntPtr returned);
             return hr == S_OK ? returned : IntPtr.Zero;
         }
 
-        internal static CreateSubscriptionResult InvokeCreateEventSubscription(IntPtr eventServer, bool active, int bufferTime, int maxSize, int clientSubscription) {
+        internal static CreateSubscriptionResult InvokeCreateEventSubscription(IntPtr eventServer, bool active, int bufferTime, int maxSize, int clientSubscription)
+        {
             CreateEventSubscriptionDelegate create = GetMethod<CreateEventSubscriptionDelegate>(eventServer, 4);
             IntPtr pRevisedBufferTime = Marshal.AllocCoTaskMem(sizeof(int));
             IntPtr pRevisedMaxSize = Marshal.AllocCoTaskMem(sizeof(int));
             Guid iid = IOPCEventSubscriptionMgt.InterfaceId;
-            try {
+            try
+            {
                 int hr = create(eventServer, active ? 1 : 0, bufferTime, maxSize, clientSubscription, ref iid, out IntPtr subscription, pRevisedBufferTime, pRevisedMaxSize);
                 return new CreateSubscriptionResult(hr, subscription, Marshal.ReadInt32(pRevisedBufferTime), Marshal.ReadInt32(pRevisedMaxSize));
             }
-            finally {
+            finally
+            {
                 Marshal.FreeCoTaskMem(pRevisedBufferTime);
                 Marshal.FreeCoTaskMem(pRevisedMaxSize);
             }
         }
 
-        internal static int InvokeSetFilter(IntPtr subscription, int eventType, int[] categories, int lowSeverity, int highSeverity, string[] areas, string[] sources) {
+        internal static int InvokeSetFilter(IntPtr subscription, int eventType, int[] categories, int lowSeverity, int highSeverity, string[] areas, string[] sources)
+        {
             SetFilterDelegate setFilter = GetMethod<SetFilterDelegate>(subscription, 3);
             IntPtr categoryPtr = AllocateInt32Array(categories);
             IntPtr areaPtr = AllocateStringPointerArray(areas);
             IntPtr sourcePtr = AllocateStringPointerArray(sources);
-            try {
+            try
+            {
                 return setFilter(subscription, eventType, categories.Length, categoryPtr, lowSeverity, highSeverity, areas.Length, areaPtr, sources.Length, sourcePtr);
             }
-            finally {
+            finally
+            {
                 FreeCoTaskMem(categoryPtr);
                 FreeStringPointerArray(areaPtr, areas.Length);
                 FreeStringPointerArray(sourcePtr, sources.Length);
             }
         }
 
-        internal static FilterResult InvokeGetFilter(IntPtr subscription) {
+        internal static FilterResult InvokeGetFilter(IntPtr subscription)
+        {
             GetFilterDelegate getFilter = GetMethod<GetFilterDelegate>(subscription, 4);
             IntPtr pEventType = Marshal.AllocCoTaskMem(sizeof(int));
             IntPtr pCategoryCount = Marshal.AllocCoTaskMem(sizeof(int));
@@ -393,7 +435,8 @@ public sealed class OpcAeSubscriptionCcwTests {
             IntPtr categoriesPtr = IntPtr.Zero;
             IntPtr areasPtr = IntPtr.Zero;
             IntPtr sourcesPtr = IntPtr.Zero;
-            try {
+            try
+            {
                 int hr = getFilter(subscription, pEventType, pCategoryCount, out categoriesPtr, pLowSeverity, pHighSeverity, pAreaCount, out areasPtr, pSourceCount, out sourcesPtr);
                 int categoryCount = Marshal.ReadInt32(pCategoryCount);
                 int areaCount = Marshal.ReadInt32(pAreaCount);
@@ -407,7 +450,8 @@ public sealed class OpcAeSubscriptionCcwTests {
                     ReadStringPointerArray(areasPtr, areaCount),
                     ReadStringPointerArray(sourcesPtr, sourceCount));
             }
-            finally {
+            finally
+            {
                 Marshal.FreeCoTaskMem(pEventType);
                 Marshal.FreeCoTaskMem(pCategoryCount);
                 Marshal.FreeCoTaskMem(pLowSeverity);
@@ -420,53 +464,64 @@ public sealed class OpcAeSubscriptionCcwTests {
             }
         }
 
-        internal static int InvokeSelectReturnedAttributes(IntPtr subscription, int eventCategory, int[] attributeIds) {
+        internal static int InvokeSelectReturnedAttributes(IntPtr subscription, int eventCategory, int[] attributeIds)
+        {
             SelectReturnedAttributesDelegate select = GetMethod<SelectReturnedAttributesDelegate>(subscription, 5);
             IntPtr attributesPtr = AllocateInt32Array(attributeIds);
-            try {
+            try
+            {
                 return select(subscription, eventCategory, attributeIds.Length, attributesPtr);
             }
-            finally {
+            finally
+            {
                 FreeCoTaskMem(attributesPtr);
             }
         }
 
-        internal static IntArrayResult InvokeGetReturnedAttributes(IntPtr subscription, int eventCategory) {
+        internal static IntArrayResult InvokeGetReturnedAttributes(IntPtr subscription, int eventCategory)
+        {
             GetReturnedAttributesDelegate get = GetMethod<GetReturnedAttributesDelegate>(subscription, 6);
             IntPtr pCount = Marshal.AllocCoTaskMem(sizeof(int));
             IntPtr attributesPtr = IntPtr.Zero;
-            try {
+            try
+            {
                 int hr = get(subscription, eventCategory, pCount, out attributesPtr);
                 int count = Marshal.ReadInt32(pCount);
                 return new IntArrayResult(hr, ReadInt32Array(attributesPtr, count));
             }
-            finally {
+            finally
+            {
                 Marshal.FreeCoTaskMem(pCount);
                 FreeCoTaskMem(attributesPtr);
             }
         }
 
-        internal static int InvokeRefresh(IntPtr subscription, int connection) {
+        internal static int InvokeRefresh(IntPtr subscription, int connection)
+        {
             RefreshDelegate refresh = GetMethod<RefreshDelegate>(subscription, 7);
             return refresh(subscription, connection);
         }
 
-        internal static int InvokeCancelRefresh(IntPtr subscription, int connection) {
+        internal static int InvokeCancelRefresh(IntPtr subscription, int connection)
+        {
             CancelRefreshDelegate cancel = GetMethod<CancelRefreshDelegate>(subscription, 8);
             return cancel(subscription, connection);
         }
 
-        internal static SubscriptionStateResult InvokeGetState(IntPtr subscription) {
+        internal static SubscriptionStateResult InvokeGetState(IntPtr subscription)
+        {
             GetStateDelegate getState = GetMethod<GetStateDelegate>(subscription, 9);
             IntPtr pActive = Marshal.AllocCoTaskMem(sizeof(int));
             IntPtr pBufferTime = Marshal.AllocCoTaskMem(sizeof(int));
             IntPtr pMaxSize = Marshal.AllocCoTaskMem(sizeof(int));
             IntPtr pClientSubscription = Marshal.AllocCoTaskMem(sizeof(int));
-            try {
+            try
+            {
                 int hr = getState(subscription, pActive, pBufferTime, pMaxSize, pClientSubscription);
                 return new SubscriptionStateResult(hr, Marshal.ReadInt32(pActive), Marshal.ReadInt32(pBufferTime), Marshal.ReadInt32(pMaxSize), Marshal.ReadInt32(pClientSubscription));
             }
-            finally {
+            finally
+            {
                 Marshal.FreeCoTaskMem(pActive);
                 Marshal.FreeCoTaskMem(pBufferTime);
                 Marshal.FreeCoTaskMem(pMaxSize);
@@ -474,21 +529,24 @@ public sealed class OpcAeSubscriptionCcwTests {
             }
         }
 
-        internal static SetStateResult InvokeSetState(IntPtr subscription, bool active, int bufferTime, int maxSize, int clientSubscription) {
+        internal static SetStateResult InvokeSetState(IntPtr subscription, bool active, int bufferTime, int maxSize, int clientSubscription)
+        {
             SetStateDelegate setState = GetMethod<SetStateDelegate>(subscription, 10);
             IntPtr pActive = Marshal.AllocCoTaskMem(sizeof(int));
             IntPtr pBufferTime = Marshal.AllocCoTaskMem(sizeof(int));
             IntPtr pMaxSize = Marshal.AllocCoTaskMem(sizeof(int));
             IntPtr pRevisedBufferTime = Marshal.AllocCoTaskMem(sizeof(int));
             IntPtr pRevisedMaxSize = Marshal.AllocCoTaskMem(sizeof(int));
-            try {
+            try
+            {
                 Marshal.WriteInt32(pActive, active ? 1 : 0);
                 Marshal.WriteInt32(pBufferTime, bufferTime);
                 Marshal.WriteInt32(pMaxSize, maxSize);
                 int hr = setState(subscription, pActive, pBufferTime, pMaxSize, clientSubscription, pRevisedBufferTime, pRevisedMaxSize);
                 return new SetStateResult(hr, Marshal.ReadInt32(pRevisedBufferTime), Marshal.ReadInt32(pRevisedMaxSize));
             }
-            finally {
+            finally
+            {
                 Marshal.FreeCoTaskMem(pActive);
                 Marshal.FreeCoTaskMem(pBufferTime);
                 Marshal.FreeCoTaskMem(pMaxSize);
@@ -497,84 +555,105 @@ public sealed class OpcAeSubscriptionCcwTests {
             }
         }
 
-        internal static uint InvokeRelease(IntPtr subscription) {
+        internal static uint InvokeRelease(IntPtr subscription)
+        {
             ReleaseDelegate release = GetMethod<ReleaseDelegate>(subscription, 2);
             return release(subscription);
         }
 
-        private static IntPtr AllocateInt32Array(int[] values) {
-            if (values.Length == 0) {
+        private static IntPtr AllocateInt32Array(int[] values)
+        {
+            if (values.Length == 0)
+            {
                 return IntPtr.Zero;
             }
 
             IntPtr ptr = Marshal.AllocCoTaskMem(values.Length * sizeof(int));
-            for (int i = 0; i < values.Length; i++) {
+            for (int i = 0; i < values.Length; i++)
+            {
                 Marshal.WriteInt32(ptr, i * sizeof(int), values[i]);
             }
             return ptr;
         }
 
-        private static IntPtr AllocateStringPointerArray(string[] values) {
-            if (values.Length == 0) {
+        private static IntPtr AllocateStringPointerArray(string[] values)
+        {
+            if (values.Length == 0)
+            {
                 return IntPtr.Zero;
             }
 
             IntPtr ptr = Marshal.AllocCoTaskMem(values.Length * IntPtr.Size);
-            for (int i = 0; i < values.Length; i++) {
+            for (int i = 0; i < values.Length; i++)
+            {
                 Marshal.WriteIntPtr(ptr, i * IntPtr.Size, Marshal.StringToBSTR(values[i]));
             }
             return ptr;
         }
 
-        private static int[] ReadInt32Array(IntPtr ptr, int count) {
-            if (count == 0) {
+        private static int[] ReadInt32Array(IntPtr ptr, int count)
+        {
+            if (count == 0)
+            {
                 return [];
             }
 
             var values = new int[count];
-            for (int i = 0; i < values.Length; i++) {
+            for (int i = 0; i < values.Length; i++)
+            {
                 values[i] = Marshal.ReadInt32(ptr, i * sizeof(int));
             }
             return values;
         }
 
-        private static string[] ReadStringPointerArray(IntPtr ptr, int count) {
-            if (count == 0) {
+        private static string[] ReadStringPointerArray(IntPtr ptr, int count)
+        {
+            if (count == 0)
+            {
                 return [];
             }
 
             var values = new string[count];
-            for (int i = 0; i < values.Length; i++) {
+            for (int i = 0; i < values.Length; i++)
+            {
                 IntPtr valuePtr = Marshal.ReadIntPtr(ptr, i * IntPtr.Size);
                 values[i] = Marshal.PtrToStringBSTR(valuePtr) ?? string.Empty;
             }
             return values;
         }
 
-        private static int CountStringPointers(IntPtr ptr) {
-            if (ptr == IntPtr.Zero) {
+        private static int CountStringPointers(IntPtr ptr)
+        {
+            if (ptr == IntPtr.Zero)
+            {
                 return 0;
             }
 
             int count = 0;
-            while (Marshal.ReadIntPtr(ptr, count * IntPtr.Size) != IntPtr.Zero) {
+            while (Marshal.ReadIntPtr(ptr, count * IntPtr.Size) != IntPtr.Zero)
+            {
                 count++;
             }
             return count;
         }
 
-        private static void FreeCoTaskMem(IntPtr ptr) {
-            if (ptr != IntPtr.Zero) {
+        private static void FreeCoTaskMem(IntPtr ptr)
+        {
+            if (ptr != IntPtr.Zero)
+            {
                 Marshal.FreeCoTaskMem(ptr);
             }
         }
 
-        private static void FreeStringPointerArray(IntPtr ptr, int count) {
-            if (ptr == IntPtr.Zero) {
+        private static void FreeStringPointerArray(IntPtr ptr, int count)
+        {
+            if (ptr == IntPtr.Zero)
+            {
                 return;
             }
 
-            for (int i = 0; i < count; i++) {
+            for (int i = 0; i < count; i++)
+            {
                 IntPtr valuePtr = Marshal.ReadIntPtr(ptr, i * IntPtr.Size);
                 Marshal.FreeBSTR(valuePtr);
             }
@@ -582,7 +661,8 @@ public sealed class OpcAeSubscriptionCcwTests {
         }
 
         private static T GetMethod<T>(IntPtr tearoff, int slot)
-            where T : Delegate {
+            where T : Delegate
+        {
             IntPtr vtable = Marshal.ReadIntPtr(tearoff);
             IntPtr method = Marshal.ReadIntPtr(vtable, slot * IntPtr.Size);
             return Marshal.GetDelegateForFunctionPointer<T>(method);

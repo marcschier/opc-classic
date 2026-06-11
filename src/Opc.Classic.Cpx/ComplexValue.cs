@@ -19,7 +19,8 @@ namespace Opc.Classic.Cpx;
 /// stored as <see langword="object"/>?. Consumers cast based on the
 /// <see cref="StructField.Kind"/> of the corresponding field.
 /// </remarks>
-public sealed class ComplexValue {
+public sealed class ComplexValue
+{
     /// <summary>The struct type this value conforms to.</summary>
     public required StructType Type { get; init; }
 
@@ -38,8 +39,10 @@ public sealed class ComplexValue {
     /// <see langword="false"/> when the field doesn't exist or the value is
     /// the wrong type for <typeparamref name="T"/>.
     /// </summary>
-    public bool TryGet<T>(string fieldName, out T value) {
-        if (Fields.TryGetValue(fieldName, out var raw) && raw is T typed) {
+    public bool TryGet<T>(string fieldName, out T value)
+    {
+        if (Fields.TryGetValue(fieldName, out var raw) && raw is T typed)
+        {
             value = typed;
             return true;
         }

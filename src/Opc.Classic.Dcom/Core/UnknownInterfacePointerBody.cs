@@ -9,9 +9,11 @@ using System.Collections.Generic;
 namespace Opc.Classic.Dcom.Core;
 
 [Serializable]
-public sealed class UnknownInterfacePointerBody : InterfacePointerBody {
+public sealed class UnknownInterfacePointerBody : InterfacePointerBody
+{
     internal UnknownInterfacePointerBody(int objectType, string iid, byte[] rawBytes)
-        : base(objectType, iid, null, null) {
+        : base(objectType, iid, null, null)
+    {
         RawBytes = rawBytes ?? Array.Empty<byte>();
         Length = GetEncodedLength();
     }
@@ -23,8 +25,10 @@ public sealed class UnknownInterfacePointerBody : InterfacePointerBody {
 
     protected override int GetEncodedLength() => ObjRefHeaderLength + RawBytes.Length;
 
-    protected override void EncodeBody(NdrCodec ndr, int flags) {
-        if (RawBytes.Length > 0) {
+    protected override void EncodeBody(NdrCodec ndr, int flags)
+    {
+        if (RawBytes.Length > 0)
+        {
             ndr.WriteOctetArray(RawBytes, 0, RawBytes.Length);
         }
     }

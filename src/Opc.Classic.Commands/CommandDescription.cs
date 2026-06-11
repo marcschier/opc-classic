@@ -12,7 +12,8 @@ namespace Opc.Classic.Commands;
 /// <summary>
 /// Describes a command exposed by an OPC Commands server.
 /// </summary>
-public sealed record CommandDescription {
+public sealed record CommandDescription
+{
     private readonly string[] _inputArguments;
     private readonly string[] _returnArguments;
 
@@ -24,7 +25,8 @@ public sealed record CommandDescription {
         int commandResultCount,
         Guid categoryId,
         IReadOnlyList<string> inputArguments,
-        IReadOnlyList<string> returnArguments) {
+        IReadOnlyList<string> returnArguments)
+    {
         ArgumentNullException.ThrowIfNull(commandName);
         ArgumentNullException.ThrowIfNull(commandCategory);
         ArgumentNullException.ThrowIfNull(commandHelp);
@@ -73,7 +75,8 @@ public sealed record CommandDescription {
         && _returnArguments.SequenceEqual(other._returnArguments, StringComparer.Ordinal);
 
     /// <inheritdoc />
-    public override int GetHashCode() {
+    public override int GetHashCode()
+    {
         var hash = new HashCode();
         hash.Add(CommandName, StringComparer.Ordinal);
         hash.Add(CommandCategory, StringComparer.Ordinal);
@@ -81,22 +84,26 @@ public sealed record CommandDescription {
         hash.Add(CommandResultCount);
         hash.Add(CategoryId);
 
-        foreach (var inputArgument in _inputArguments) {
+        foreach (var inputArgument in _inputArguments)
+        {
             hash.Add(inputArgument, StringComparer.Ordinal);
         }
 
-        foreach (var returnArgument in _returnArguments) {
+        foreach (var returnArgument in _returnArguments)
+        {
             hash.Add(returnArgument, StringComparer.Ordinal);
         }
 
         return hash.ToHashCode();
     }
 
-    private static string[] CopyArguments(IReadOnlyList<string> arguments, string parameterName) {
+    private static string[] CopyArguments(IReadOnlyList<string> arguments, string parameterName)
+    {
         ArgumentNullException.ThrowIfNull(arguments, parameterName);
 
         var copy = new string[arguments.Count];
-        for (var i = 0; i < arguments.Count; i++) {
+        for (var i = 0; i < arguments.Count; i++)
+        {
             copy[i] = arguments[i] ?? throw new ArgumentException("Command argument names cannot be null.", parameterName);
         }
 

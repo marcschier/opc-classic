@@ -11,7 +11,8 @@ namespace Opc.Classic.Dcom.Rpc.pdu;
 /// <summary>
 /// Response pdu
 /// </summary>
-public class ResponseCoPdu : ConnectionOrientedPdu, IFragmentable {
+public class ResponseCoPdu : ConnectionOrientedPdu, IFragmentable
+{
 
     public const int RESPONSE_TYPE = 0x02;
 
@@ -40,67 +41,80 @@ public class ResponseCoPdu : ConnectionOrientedPdu, IFragmentable {
 
 
     /// <inheritdoc/>
-    protected internal override void ReadPdu(NdrCodec ndr) {
+    protected internal override void ReadPdu(NdrCodec ndr)
+    {
         ReadHeader(ndr);
         ReadBody(ndr);
         ReadStub(ndr);
     }
 
     /// <inheritdoc/>
-    protected internal override void WritePdu(NdrCodec ndr) {
+    protected internal override void WritePdu(NdrCodec ndr)
+    {
         WriteHeader(ndr);
         WriteBody(ndr);
         WriteStub(ndr);
     }
 
     /// <inheritdoc/>
-    protected internal override void ReadBody(NdrCodec ndr) {
+    protected internal override void ReadBody(NdrCodec ndr)
+    {
         AllocationHint = ndr.ReadUnsignedLong();
         ContextId = ndr.ReadUnsignedShort();
         CancelCount = ndr.ReadUnsignedSmall();
     }
 
     /// <inheritdoc/>
-    protected internal override void WriteBody(NdrCodec ndr) {
+    protected internal override void WriteBody(NdrCodec ndr)
+    {
         ndr.WriteUnsignedLong(AllocationHint);
         ndr.WriteUnsignedShort(ContextId);
         ndr.WriteUnsignedSmall((short)CancelCount);
     }
 
     /// <inheritdoc/>
-    public Iterator<ConnectionOrientedPdu> GetFragments(int size) {
+    public Iterator<ConnectionOrientedPdu> GetFragments(int size)
+    {
         var stub = Stub;
-        if (stub == null) {
+        if (stub == null)
+        {
             return new ConnectionOrientedPdu[] { this }.Iterator();
         }
 
         // subtracting 8 bytes for authentication header and 16 for the
         // authentication verifier size, someone forgot the poor guys..
         var stubSize = size - 24 - 8 - 16;
-        if (stub.Length <= stubSize) {
+        if (stub.Length <= stubSize)
+        {
             return new ConnectionOrientedPdu[] { this }.Iterator();
         }
         return new FragmentIterator(this, stubSize);
     }
 
     /// <inheritdoc/>
-    public ConnectionOrientedPdu Reassemble(Iterator<ConnectionOrientedPdu> fragments) {
+    public ConnectionOrientedPdu Reassemble(Iterator<ConnectionOrientedPdu> fragments)
+    {
         Log.Logger.Verbose("[DURING RECIEVE IN ASSEMBLE]\n");
-        if (!fragments.HasNext()) {
+        if (!fragments.HasNext())
+        {
             throw new IOException("No fragments available.");
         }
-        try {
+        try
+        {
             var pdu = (ResponseCoPdu)fragments.Next();
             var stub = pdu.Stub;
-            if (stub == null) {
+            if (stub == null)
+            {
                 stub = Array.Empty<byte>();
             }
             var i = 0;
-            while (fragments.HasNext()) {
+            while (fragments.HasNext())
+            {
                 Log.Logger.Verbose("[IN ASSEMBLE] Fragment { " + i + " }\n");
                 var fragment_Renamed = (ResponseCoPdu)fragments.Next();
                 var fragmentStub = fragment_Renamed.Stub;
-                if (fragmentStub != null && fragmentStub.Length > 0) {
+                if (fragmentStub != null && fragmentStub.Length > 0)
+                {
                     Log.Logger.Verbose("[FRAGMENT'S STUB (new one)] Length is = " +
                         fragmentStub.Length);
                     var tmp = new byte[stub.Length + fragmentStub.Length];
@@ -114,13 +128,15 @@ public class ResponseCoPdu : ConnectionOrientedPdu, IFragmentable {
                 }
             }
             var length = stub.Length;
-            if (length > 0) {
+            if (length > 0)
+            {
                 pdu.Stub = stub;
                 pdu.AllocationHint = length;
                 Log.Logger.Verbose("[FULL AND FINAL STUB AFTER ASSEMBLY]\n" +
                     Utils.HexString(stub, 0, stub.Length));
             }
-            else {
+            else
+            {
                 pdu.Stub = null;
                 pdu.AllocationHint = 0;
             }
@@ -128,17 +144,21 @@ public class ResponseCoPdu : ConnectionOrientedPdu, IFragmentable {
             pdu.SetFlag(PFC_LAST_FRAG, true);
             return pdu;
         }
-        catch (Exception) {
+        catch (Exception)
+        {
             throw new IOException("Unable to assemble PDU fragments.");
         }
     }
 
     /// <inheritdoc/>
-    public ConnectionOrientedPdu Clone() {
-        try {
+    public ConnectionOrientedPdu Clone()
+    {
+        try
+        {
             return (ConnectionOrientedPdu)base.MemberwiseClone();
         }
-        catch (Exception) {
+        catch (Exception)
+        {
             throw new InvalidOperationException();
         }
     }
@@ -146,11 +166,13 @@ public class ResponseCoPdu : ConnectionOrientedPdu, IFragmentable {
     /// Read stub
     /// </summary>
     /// <param name="ndr"></param>
-    private void ReadStub(NdrCodec ndr) {
+    private void ReadStub(NdrCodec ndr)
+    {
         ndr.Buffer.Align(8);
         byte[] stub = null;
         var length = FragmentLength - ndr.Buffer.Index;
-        if (length > 0) {
+        if (length > 0)
+        {
             stub = new byte[length];
             ndr.ReadOctetArray(stub, 0, length);
         }
@@ -161,17 +183,21 @@ public class ResponseCoPdu : ConnectionOrientedPdu, IFragmentable {
     /// Write stub
     /// </summary>
     /// <param name="ndr"></param>
-    private void WriteStub(NdrCodec ndr) {
+    private void WriteStub(NdrCodec ndr)
+    {
         ndr.Buffer.Align(8, 0);
         var stub = Stub;
-        if (stub != null) {
+        if (stub != null)
+        {
             ndr.WriteOctetArray(stub, 0, stub.Length);
         }
     }
 
-    private sealed class FragmentIterator : Iterator<ConnectionOrientedPdu> {
+    private sealed class FragmentIterator : Iterator<ConnectionOrientedPdu>
+    {
 
-        public FragmentIterator(ResponseCoPdu outerInstance, int stubSize) {
+        public FragmentIterator(ResponseCoPdu outerInstance, int stubSize)
+        {
             _outerInstance = outerInstance;
             _stubSize = stubSize;
         }
@@ -180,25 +206,30 @@ public class ResponseCoPdu : ConnectionOrientedPdu, IFragmentable {
         public override bool HasNext() => _index < _outerInstance.Stub.Length;
 
         /// <inheritdoc/>
-        public override ConnectionOrientedPdu Next() {
-            if (_index >= _outerInstance.Stub.Length) {
+        public override ConnectionOrientedPdu Next()
+        {
+            if (_index >= _outerInstance.Stub.Length)
+            {
                 throw new NoSuchElementException();
             }
             var fragment = (ResponseCoPdu)_outerInstance.Clone();
             var allocation = _outerInstance.Stub.Length - _index;
             fragment.AllocationHint = allocation;
-            if (_stubSize < allocation) {
+            if (_stubSize < allocation)
+            {
                 allocation = _stubSize;
             }
             var fragmentStub = new byte[allocation];
             Array.Copy(_outerInstance.Stub, _index, fragmentStub, 0, allocation);
             fragment.Stub = fragmentStub;
             var flags = _outerInstance.Flags & ~(PFC_FIRST_FRAG | PFC_LAST_FRAG);
-            if (_index == 0) {
+            if (_index == 0)
+            {
                 flags |= PFC_FIRST_FRAG;
             }
             _index += allocation;
-            if (_index >= _outerInstance.Stub.Length) {
+            if (_index >= _outerInstance.Stub.Length)
+            {
                 flags |= PFC_LAST_FRAG;
             }
             fragment.Flags = flags;

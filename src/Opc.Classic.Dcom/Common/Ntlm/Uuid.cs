@@ -5,7 +5,8 @@ using System.Globalization;
 
 namespace SharpCifs.Dcerpc;
 
-public sealed class Uuid {
+public sealed class Uuid
+{
     public Uuid(string value) => Parse(value);
 
     public int TimeLow { get; set; }
@@ -20,9 +21,11 @@ public sealed class Uuid {
 
     public byte[] Node { get; set; } = new byte[6];
 
-    public void Parse(string value) {
+    public void Parse(string value)
+    {
         var parts = value.Split('-');
-        if (parts.Length != 5 || parts[3].Length != 4 || parts[4].Length != 12) {
+        if (parts.Length != 5 || parts[3].Length != 4 || parts[4].Length != 12)
+        {
             throw new FormatException("Invalid UUID format.");
         }
 
@@ -32,7 +35,8 @@ public sealed class Uuid {
         ClockSeqHiAndReserved = byte.Parse(parts[3][..2], NumberStyles.HexNumber, CultureInfo.InvariantCulture);
         ClockSeqLow = byte.Parse(parts[3][2..], NumberStyles.HexNumber, CultureInfo.InvariantCulture);
         Node = new byte[6];
-        for (var i = 0; i < Node.Length; i++) {
+        for (var i = 0; i < Node.Length; i++)
+        {
             Node[i] = byte.Parse(parts[4].AsSpan(i * 2, 2), NumberStyles.HexNumber, CultureInfo.InvariantCulture);
         }
     }

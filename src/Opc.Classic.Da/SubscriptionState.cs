@@ -16,7 +16,8 @@ namespace Opc.Classic.Da;
 /// <c>IOPCGroupStateMgt::SetState</c> take, but as a managed init-only record.
 /// Nullable fields signal "leave unchanged" semantics for SetState.
 /// </remarks>
-public sealed class SubscriptionState {
+public sealed class SubscriptionState
+{
     /// <summary>
     /// Subscription / group name. Optional — servers will assign one if blank.
     /// Group names are unique within a server connection.
@@ -66,12 +67,15 @@ public sealed class SubscriptionState {
     public int KeepAliveMs { get; init; }
 
     /// <summary>Convenience: create a subscription that polls every <paramref name="updateRate"/>.</summary>
-    public static SubscriptionState At(TimeSpan updateRate, bool active = true) {
-        if (updateRate <= TimeSpan.Zero) {
+    public static SubscriptionState At(TimeSpan updateRate, bool active = true)
+    {
+        if (updateRate <= TimeSpan.Zero)
+        {
             throw new ArgumentOutOfRangeException(nameof(updateRate), updateRate,
                 "Update rate must be positive.");
         }
-        return new SubscriptionState {
+        return new SubscriptionState
+        {
             UpdateRateMs = (int)updateRate.TotalMilliseconds,
             Active = active,
         };

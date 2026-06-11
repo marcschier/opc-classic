@@ -9,19 +9,23 @@ using TUnit.Assertions.AssertConditions.Throws;
 
 namespace Opc.Classic.Tests;
 
-public sealed class OpcQualityTests {
+public sealed class OpcQualityTests
+{
     [Test]
-    public async Task Bad_HasKindBad() {
+    public async Task Bad_HasKindBad()
+    {
         await Assert.That(OpcQuality.Bad.Quality).IsEqualTo(OpcQualityKind.Bad);
     }
 
     [Test]
-    public async Task Good_HasKindGood() {
+    public async Task Good_HasKindGood()
+    {
         await Assert.That(OpcQuality.Good.Quality).IsEqualTo(OpcQualityKind.Good);
     }
 
     [Test]
-    public async Task Uncertain_HasKindUncertain() {
+    public async Task Uncertain_HasKindUncertain()
+    {
         await Assert.That(OpcQuality.Uncertain.Quality).IsEqualTo(OpcQualityKind.Uncertain);
     }
 
@@ -32,7 +36,8 @@ public sealed class OpcQualityTests {
     [Arguments(OpcQualityKind.Good, 6, OpcQualityLimit.Constant)]       // OPC_QUALITY_LOCAL_OVERRIDE + constant
     [Arguments(OpcQualityKind.Good, 15, OpcQualityLimit.Constant)]
     public async Task Compose_RoundTripsAllSubFields(
-        OpcQualityKind kind, int substatus, OpcQualityLimit limit) {
+        OpcQualityKind kind, int substatus, OpcQualityLimit limit)
+    {
         var q = OpcQuality.Compose(kind, substatus, limit, vendorExtension: 0xAB);
 
         await Assert.That(q.Quality).IsEqualTo(kind);
@@ -42,7 +47,8 @@ public sealed class OpcQualityTests {
     }
 
     [Test]
-    public async Task RawValue_PackedAccordingToOpcDaSpec() {
+    public async Task RawValue_PackedAccordingToOpcDaSpec()
+    {
         // Quality=Good (3), substatus=4 (Local Override), limit=Constant (3), vendor=0xAB
         // Expected raw layout:
         //   bits 0-1:  quality   = 11 (Good)
@@ -57,7 +63,8 @@ public sealed class OpcQualityTests {
     }
 
     [Test]
-    public async Task WithSubstatus_PreservesOtherFields() {
+    public async Task WithSubstatus_PreservesOtherFields()
+    {
         var original = OpcQuality.Compose(OpcQualityKind.Good, substatus: 0, limit: OpcQualityLimit.High, vendorExtension: 0x55);
         var modified = original.WithSubstatus(7);
 
@@ -68,13 +75,15 @@ public sealed class OpcQualityTests {
     }
 
     [Test]
-    public async Task Compose_NegativeSubstatus_Throws() {
+    public async Task Compose_NegativeSubstatus_Throws()
+    {
         await Assert.That(() => { OpcQuality.Compose(OpcQualityKind.Good, substatus: -1); })
             .Throws<System.ArgumentOutOfRangeException>();
     }
 
     [Test]
-    public async Task Compose_OverflowingSubstatus_Throws() {
+    public async Task Compose_OverflowingSubstatus_Throws()
+    {
         await Assert.That(() => { OpcQuality.Compose(OpcQualityKind.Good, substatus: 16); })
             .Throws<System.ArgumentOutOfRangeException>();
     }

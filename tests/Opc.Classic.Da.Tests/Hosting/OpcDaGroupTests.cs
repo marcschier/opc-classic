@@ -11,9 +11,11 @@ using TUnit.Core;
 
 namespace Opc.Classic.Da.Tests.Hosting;
 
-public sealed class OpcDaGroupTests {
+public sealed class OpcDaGroupTests
+{
     [Test]
-    public async Task Constructor_initializes_state_from_creation_parameters() {
+    public async Task Constructor_initializes_state_from_creation_parameters()
+    {
         var group = new OpcDaGroup(
             name: "G1",
             serverHandle: 42,
@@ -36,7 +38,8 @@ public sealed class OpcDaGroupTests {
     }
 
     [Test]
-    public async Task GetStateAsync_returns_current_snapshot() {
+    public async Task GetStateAsync_returns_current_snapshot()
+    {
         var group = CreateGroup();
 
         OpcGroupState state = await group.GetStateAsync(TestContext.Current!.CancellationToken);
@@ -52,7 +55,8 @@ public sealed class OpcDaGroupTests {
     }
 
     [Test]
-    public async Task SetStateAsync_updates_all_fields() {
+    public async Task SetStateAsync_updates_all_fields()
+    {
         var group = CreateGroup();
         await group.SetStateAsync(
             requestedUpdateRate: 2000,
@@ -74,7 +78,8 @@ public sealed class OpcDaGroupTests {
     }
 
     [Test]
-    public async Task SetNameAsync_changes_group_name() {
+    public async Task SetNameAsync_changes_group_name()
+    {
         var group = CreateGroup();
 
         await group.SetNameAsync("Renamed", TestContext.Current!.CancellationToken);
@@ -83,7 +88,8 @@ public sealed class OpcDaGroupTests {
     }
 
     [Test]
-    public async Task SetKeepAliveAsync_returns_previous_value_and_updates_state() {
+    public async Task SetKeepAliveAsync_returns_previous_value_and_updates_state()
+    {
         var group = CreateGroup();
 
         int previous = await group.SetKeepAliveAsync(5000, TestContext.Current!.CancellationToken);
@@ -94,7 +100,8 @@ public sealed class OpcDaGroupTests {
     }
 
     [Test]
-    public async Task CloneGroupAsync_returns_interface_ref_with_requested_iid() {
+    public async Task CloneGroupAsync_returns_interface_ref_with_requested_iid()
+    {
         var group = CreateGroup();
         Guid iid = Guid.NewGuid();
 

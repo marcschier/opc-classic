@@ -23,7 +23,8 @@ namespace Opc.Classic.Diagnostics;
 /// returns the channel unchanged so call sites add a single line of code with
 /// zero hot-path cost.
 /// </remarks>
-public static class OpcWireCapture {
+public static class OpcWireCapture
+{
     private const string EnvVarName = "OPCCLASSIC_WIRE_CAPTURE_DIR";
 
     /// <summary>Returns the configured capture directory, or <see langword="null"/> when capture is disabled.</summary>
@@ -43,12 +44,14 @@ public static class OpcWireCapture {
     /// (typically the DCOM CLSID, ProgID, or host:port). Used as a filename prefix
     /// so a multi-session run produces self-describing artifacts on disk.
     /// </param>
-    public static ICallChannel Wrap(ICallChannel channel, string contextTag) {
+    public static ICallChannel Wrap(ICallChannel channel, string contextTag)
+    {
         ArgumentNullException.ThrowIfNull(channel);
         ArgumentNullException.ThrowIfNull(contextTag);
 
         string? directory = CaptureDirectory;
-        if (string.IsNullOrWhiteSpace(directory)) {
+        if (string.IsNullOrWhiteSpace(directory))
+        {
             return channel;
         }
 

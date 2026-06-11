@@ -8,9 +8,11 @@ using TUnit.Core;
 
 namespace Opc.Classic.Mcp.Capture.Tests;
 
-public sealed class CaptureStartRequestTests {
+public sealed class CaptureStartRequestTests
+{
     [Test]
-    public async Task Constructor_Defaults_MatchCaptureToolDefaults() {
+    public async Task Constructor_Defaults_MatchCaptureToolDefaults()
+    {
         var request = new CaptureStartRequest();
 
         await Assert.That(request.InterfaceName).IsNull();
@@ -24,7 +26,8 @@ public sealed class CaptureStartRequestTests {
     }
 
     [Test]
-    public async Task Constructor_ServerPortsSupplied_IsPersisted() {
+    public async Task Constructor_ServerPortsSupplied_IsPersisted()
+    {
         var request = new CaptureStartRequest(
             InterfaceName: "eth0",
             ServerPorts: [51301, 51302]);
@@ -36,7 +39,8 @@ public sealed class CaptureStartRequestTests {
     }
 
     [Test]
-    public async Task Constructor_NtlmSessionKey_IsPersisted_AndRedactedInToString() {
+    public async Task Constructor_NtlmSessionKey_IsPersisted_AndRedactedInToString()
+    {
         var key = new byte[16];
         for (int i = 0; i < 16; i++) { key[i] = (byte)(0xC0 + i); }
         var request = new CaptureStartRequest(InterfaceName: "lo", NtlmSessionKey: key);
@@ -53,7 +57,8 @@ public sealed class CaptureStartRequestTests {
     }
 
     [Test]
-    public async Task Constructor_NullNtlmSessionKey_TostringSaysNull() {
+    public async Task Constructor_NullNtlmSessionKey_TostringSaysNull()
+    {
         var request = new CaptureStartRequest(InterfaceName: "lo");
         string str = request.ToString();
 
@@ -62,9 +67,11 @@ public sealed class CaptureStartRequestTests {
     }
 
     [Test]
-    public async Task WithExpression_ReplacesSelectedValuesAndPreservesRecordValueEquality() {
+    public async Task WithExpression_ReplacesSelectedValuesAndPreservesRecordValueEquality()
+    {
         var original = new CaptureStartRequest(InterfaceName: "eth0", MaxPackets: 10);
-        CaptureStartRequest changed = original with {
+        CaptureStartRequest changed = original with
+        {
             BpfFilter = "tcp port 135",
             Promiscuous = false,
             ReplaySourceDirectory = "captures",

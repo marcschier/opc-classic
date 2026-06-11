@@ -15,7 +15,8 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 namespace Opc.Classic.MigrationAnalyzer.CodeFixes;
 
 [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(OcmDa03_LegacyReadCodeFix)), Shared]
-public sealed class OcmDa03_LegacyReadCodeFix : CodeFixProvider {
+public sealed class OcmDa03_LegacyReadCodeFix : CodeFixProvider
+{
     private const string Title = "Use ReadAsync with CancellationToken";
 
     public override ImmutableArray<string> FixableDiagnosticIds { get; } =
@@ -23,10 +24,12 @@ public sealed class OcmDa03_LegacyReadCodeFix : CodeFixProvider {
 
     public override FixAllProvider GetFixAllProvider() => WellKnownFixAllProviders.BatchFixer;
 
-    public override async Task RegisterCodeFixesAsync(CodeFixContext context) {
+    public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    {
         SyntaxNode root = await MigrationCodeFixHelpers.GetRequiredRootAsync(context.Document, context.CancellationToken).ConfigureAwait(false);
         InvocationExpressionSyntax? invocation = root.FindNode(context.Span).FirstAncestorOrSelf<InvocationExpressionSyntax>();
-        if (invocation is null) {
+        if (invocation is null)
+        {
             return;
         }
 
@@ -35,14 +38,16 @@ public sealed class OcmDa03_LegacyReadCodeFix : CodeFixProvider {
             context.Diagnostics);
     }
 
-    private static async Task<Document> ApplyAsync(Document document, InvocationExpressionSyntax invocation, CancellationToken cancellationToken) {
+    private static async Task<Document> ApplyAsync(Document document, InvocationExpressionSyntax invocation, CancellationToken cancellationToken)
+    {
         SyntaxNode root = await MigrationCodeFixHelpers.GetRequiredRootAsync(document, cancellationToken).ConfigureAwait(false);
         MethodDeclarationSyntax? method = invocation.FirstAncestorOrSelf<MethodDeclarationSyntax>();
         string replacementText = MigrationCodeFixHelpers.ReceiverText(invocation) +
             ".ReadAsync(" + MigrationCodeFixHelpers.ArgumentsWithCancellationToken(invocation.ArgumentList) + ")";
         ExpressionSyntax replacement = MigrationCodeFixHelpers.AwaitExpression(replacementText).WithTriviaFrom(invocation);
         root = root.ReplaceNode(invocation, replacement);
-        if (method is not null) {
+        if (method is not null)
+        {
             root = MigrationCodeFixHelpers.EnsureContainingMethodIsAwaitable(root, root.FindNode(method.Span));
             root = MigrationCodeFixHelpers.EnsureCancellationTokenParameter(root, root.FindNode(method.Span));
         }

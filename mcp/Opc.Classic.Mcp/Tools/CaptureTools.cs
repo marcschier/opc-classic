@@ -39,8 +39,10 @@ namespace Opc.Classic.Mcp.Tools;
 /// missing.
 /// </para>
 /// </remarks>
-public sealed class CaptureTools {
-    private static readonly JsonSerializerOptions s_jsonOptions = new() {
+public sealed class CaptureTools
+{
+    private static readonly JsonSerializerOptions s_jsonOptions = new()
+    {
         WriteIndented = true,
         DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull,
     };
@@ -48,7 +50,8 @@ public sealed class CaptureTools {
     private readonly CaptureSessionManager _manager;
 
     /// <summary>Creates the capture tool set, injected by the host.</summary>
-    public CaptureTools(CaptureSessionManager manager) {
+    public CaptureTools(CaptureSessionManager manager)
+    {
         _manager = manager ?? throw new ArgumentNullException(nameof(manager));
     }
 
@@ -57,28 +60,38 @@ public sealed class CaptureTools {
     [Description("Enumerate NICs that can be used as 'interfaceName' for opcclassic.capture.start. On Windows requires Npcap; on Linux a libpcap install.")]
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1031:Do not catch general exception types",
         Justification = "list_interfaces is a top-level MCP tool that maps every libpcap/Npcap initialization failure into a user-actionable McpException message.")]
-    public IReadOnlyList<CaptureInterfaceDto> ListInterfaces() {
+    public IReadOnlyList<CaptureInterfaceDto> ListInterfaces()
+    {
         var result = new List<CaptureInterfaceDto>();
         LibPcapLiveDeviceList? devices;
-        try {
+        try
+        {
             devices = LibPcapLiveDeviceList.Instance;
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             throw new McpException(
                 "Unable to enumerate network interfaces (libpcap/Npcap installed and process has required privileges?): " + ex.Message);
         }
 
-        foreach (LibPcapLiveDevice d in devices) {
+        foreach (LibPcapLiveDevice d in devices)
+        {
             string? linkType = null;
             try { linkType = d.LinkType.ToString(); }
             catch (Exception) { /* device LinkType only known after open */ }
 
             var addresses = new List<string>();
-            try {
-                if (d.Addresses is not null) {
-                    foreach (PcapAddress? a in d.Addresses) {
+            try
+            {
+                if (d.Addresses is not null)
+                {
+                    foreach (PcapAddress? a in d.Addresses)
+                    {
                         System.Net.IPAddress? ip = a?.Addr?.ipAddress;
-                        if (ip is not null) addresses.Add(ip.ToString());
+                        if (ip is not null)
+                        {
+                            addresses.Add(ip.ToString());
+                        }
                     }
                 }
             }
@@ -116,12 +129,15 @@ public sealed class CaptureTools {
         int[]? serverPorts = null,
         [Description("DEVELOPER-ONLY. Optional 32-character hex-encoded 16-byte NTLMv2 session key for opt-in auth-trailer unwrap of sign/seal-protected DCOM traffic. Never log or persist the key. Capture MUST start BEFORE the NTLM Type3 handshake or per-direction sequence counters will drift and unwrap will fail. The wire-level NtlmPassiveUnwrapper is usable from offline pcap-analysis scripts today; full in-decoder integration (decoder reads auth_length from frame, extracts trailer, surfaces NtlmUnwrapStatus on each DecodedOpcPdu) is tracked as a CA9-c follow-up — passing this param today validates + plumbs the key but does not yet decrypt PDUs inline.")]
         string? ntlmSessionKeyHex = null,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         byte[]? sessionKey = null;
-        if (!string.IsNullOrWhiteSpace(ntlmSessionKeyHex)) {
+        if (!string.IsNullOrWhiteSpace(ntlmSessionKeyHex))
+        {
             sessionKey = ParseNtlmSessionKey(ntlmSessionKeyHex);
         }
-        try {
+        try
+        {
             CaptureSession session = await _manager.CreateAndStartAsync(
                 PcapCaptureSource.SourceName,
                 folder => new PcapCaptureSource(folder),
@@ -137,7 +153,8 @@ public sealed class CaptureTools {
                 cancellationToken).ConfigureAwait(false);
             return CaptureSessionDto.From(session);
         }
-        catch (CaptureException ex) {
+        catch (CaptureException ex)
+        {
             throw new McpException(ex.Message);
         }
     }
@@ -147,31 +164,39 @@ public sealed class CaptureTools {
     /// Strict on length + hex-character validity so the operator gets
     /// an actionable error before the capture even starts.
     /// </summary>
-    private static byte[] ParseNtlmSessionKey(string hex) {
+    private static byte[] ParseNtlmSessionKey(string hex)
+    {
         ArgumentNullException.ThrowIfNull(hex);
         // Accept optional 0x prefix, strip whitespace + separators.
         string cleaned = StripHexFormatting(hex);
-        if (cleaned.Length != 32) {
+        if (cleaned.Length != 32)
+        {
             throw new McpException(
                 $"ntlmSessionKeyHex must be exactly 32 hex characters (16 bytes); got {cleaned.Length}.");
         }
-        try {
+        try
+        {
             return Convert.FromHexString(cleaned);
         }
-        catch (FormatException ex) {
+        catch (FormatException ex)
+        {
             throw new McpException($"ntlmSessionKeyHex contains non-hex characters: {ex.Message}");
         }
     }
 
-    private static string StripHexFormatting(string hex) {
+    private static string StripHexFormatting(string hex)
+    {
         const string prefix = "0x";
         ReadOnlySpan<char> input = hex.AsSpan();
-        if (input.StartsWith(prefix, StringComparison.OrdinalIgnoreCase)) {
+        if (input.StartsWith(prefix, StringComparison.OrdinalIgnoreCase))
+        {
             input = input[prefix.Length..];
         }
         var sb = new StringBuilder(input.Length);
-        foreach (char c in input) {
-            if (!char.IsWhiteSpace(c) && c != ':' && c != '-' && c != ',' && c != ';') {
+        foreach (char c in input)
+        {
+            if (!char.IsWhiteSpace(c) && c != ':' && c != '-' && c != ',' && c != ';')
+            {
                 sb.Append(c);
             }
         }
@@ -184,15 +209,19 @@ public sealed class CaptureTools {
     public async Task<CaptureSessionDto> StopCapture(
         [Description("Capture session id returned by opcclassic.capture.start.")]
         string sessionId,
-        CancellationToken cancellationToken = default) {
-        if (!_manager.TryGet(sessionId, out CaptureSession session)) {
+        CancellationToken cancellationToken = default)
+    {
+        if (!_manager.TryGet(sessionId, out CaptureSession session))
+        {
             throw new McpException($"Capture session '{sessionId}' not found.");
         }
 
-        try {
+        try
+        {
             await session.StopAsync(cancellationToken).ConfigureAwait(false);
         }
-        catch (CaptureException ex) {
+        catch (CaptureException ex)
+        {
             throw new McpException(ex.Message);
         }
 
@@ -204,13 +233,17 @@ public sealed class CaptureTools {
     [Description("List capture sessions; pass state=active|running|completed|failed|all (default = all).")]
     public IReadOnlyList<CaptureSessionDto> ListCaptures(
         [Description("Optional state filter: active (=Starting|Running), running, completed, failed, all (default).")]
-        string? state = null) {
+        string? state = null)
+    {
         CaptureSessionState? filter = ParseStateFilter(state);
         IReadOnlyList<CaptureSession> sessions = _manager.List(filter);
         var result = new List<CaptureSessionDto>(sessions.Count);
-        foreach (CaptureSession s in sessions) {
-            if (state is { Length: > 0 } && string.Equals(state, "active", StringComparison.OrdinalIgnoreCase)) {
-                if (s.State is CaptureSessionState.Starting or CaptureSessionState.Running) {
+        foreach (CaptureSession s in sessions)
+        {
+            if (state is { Length: > 0 } && string.Equals(state, "active", StringComparison.OrdinalIgnoreCase))
+            {
+                if (s.State is CaptureSessionState.Starting or CaptureSessionState.Running)
+                {
                     result.Add(CaptureSessionDto.From(s));
                 }
                 continue;
@@ -230,12 +263,15 @@ public sealed class CaptureTools {
         string format = "dcom",
         [Description("Maximum PDUs to decode/return (default 200).")]
         int maxPdus = 200,
-        CancellationToken cancellationToken = default) {
-        if (!_manager.TryGet(sessionId, out CaptureSession session)) {
+        CancellationToken cancellationToken = default)
+    {
+        if (!_manager.TryGet(sessionId, out CaptureSession session))
+        {
             throw new McpException($"Capture session '{sessionId}' not found.");
         }
 
-        if (string.Equals(format, "pcap-path", StringComparison.OrdinalIgnoreCase)) {
+        if (string.Equals(format, "pcap-path", StringComparison.OrdinalIgnoreCase))
+        {
             string? path = session.Source.GetRawPcapFilePath();
             return path is null
                 ? throw new McpException("This capture source does not produce a libpcap file.")
@@ -243,53 +279,67 @@ public sealed class CaptureTools {
         }
 
         NtlmPassiveUnwrapper? unwrapper = CaptureSession.BuildUnwrapper(session.Request);
-        try {
+        try
+        {
             var decoder = new OpcDcomDecoder(unwrapper);
             var pdus = new List<DecodedOpcPdu>();
             int decoded = 0;
-            await foreach (CapturedPacket pkt in session.Source.ReadAllAsync(maxPackets: null, cancellationToken).ConfigureAwait(false)) {
-                foreach (DecodedOpcPdu pdu in decoder.Decode(pkt)) {
+            await foreach (CapturedPacket pkt in session.Source.ReadAllAsync(maxPackets: null, cancellationToken).ConfigureAwait(false))
+            {
+                foreach (DecodedOpcPdu pdu in decoder.Decode(pkt))
+                {
                     pdus.Add(pdu);
                     decoded++;
-                    if (decoded >= maxPdus) {
+                    if (decoded >= maxPdus)
+                    {
                         goto done;
                     }
                 }
             }
         done:
 
-            if (string.Equals(format, "json", StringComparison.OrdinalIgnoreCase)) {
+            if (string.Equals(format, "json", StringComparison.OrdinalIgnoreCase))
+            {
                 return JsonSerializer.Serialize(pdus, s_jsonOptions);
             }
 
             // 'dcom' (default): human-readable per-PDU summary
             var sb = new StringBuilder();
             sb.AppendLine(CultureInfo.InvariantCulture, $"# Opc.Classic capture session {sessionId} — {pdus.Count} PDUs");
-            foreach (DecodedOpcPdu pdu in pdus) {
+            foreach (DecodedOpcPdu pdu in pdus)
+            {
                 sb.AppendLine(CultureInfo.InvariantCulture, $"{pdu.Timestamp:O}  {pdu.PduType,-20} {pdu.SourceEndpoint,-22} -> {pdu.DestinationEndpoint,-22} call_id={pdu.CallId}");
-                if (pdu.InterfaceId is Guid iid && iid != Guid.Empty) {
+                if (pdu.InterfaceId is Guid iid && iid != Guid.Empty)
+                {
                     sb.AppendLine(CultureInfo.InvariantCulture, $"   iid={iid:D}  opnum={pdu.Opnum?.ToString(CultureInfo.InvariantCulture) ?? "-"}  ipid={pdu.ObjectIpid?.ToString("D", CultureInfo.InvariantCulture) ?? "-"}");
                 }
-                if (pdu.Hresult is int hr) {
+                if (pdu.Hresult is int hr)
+                {
                     sb.AppendLine(CultureInfo.InvariantCulture, $"   hresult=0x{hr:X8}");
                 }
-                if (pdu.FaultStatus is int fault) {
+                if (pdu.FaultStatus is int fault)
+                {
                     sb.AppendLine(CultureInfo.InvariantCulture, $"   fault_status=0x{fault:X8}");
                 }
-                if (pdu.ContextList.Count > 0) {
-                    foreach (PresentationContextInfo c in pdu.ContextList) {
+                if (pdu.ContextList.Count > 0)
+                {
+                    foreach (PresentationContextInfo c in pdu.ContextList)
+                    {
                         sb.AppendLine(CultureInfo.InvariantCulture, $"   ctx[{c.ContextId}] iid={c.AbstractSyntaxIid:D} ver={c.MajorVersion}.{c.MinorVersion}");
                     }
                 }
-                if (pdu.ResultList.Count > 0) {
-                    for (int i = 0; i < pdu.ResultList.Count; i++) {
+                if (pdu.ResultList.Count > 0)
+                {
+                    for (int i = 0; i < pdu.ResultList.Count; i++)
+                    {
                         sb.AppendLine(CultureInfo.InvariantCulture, $"   result[{i}] {pdu.ResultList[i].Result}; {pdu.ResultList[i].Reason}");
                     }
                 }
             }
             return sb.ToString();
         }
-        finally {
+        finally
+        {
             // Zero NTLM session-derived sub-keys promptly when the one-shot
             // decoder goes out of scope. The per-session TailCapture cursor
             // owns its own unwrapper and disposes it via CaptureSession.DisposeAsync.
@@ -312,8 +362,10 @@ public sealed class CaptureTools {
         int max = 200,
         [Description("Cursor returned by the previous tail call as nextIndex. Pass 0 for the first call.")]
         long sinceIndex = 0,
-        CancellationToken cancellationToken = default) {
-        if (!_manager.TryGet(sessionId, out CaptureSession session)) {
+        CancellationToken cancellationToken = default)
+    {
+        if (!_manager.TryGet(sessionId, out CaptureSession session))
+        {
             throw new McpException($"Capture session '{sessionId}' not found.");
         }
 
@@ -322,9 +374,11 @@ public sealed class CaptureTools {
         // pattern means the caller just polls more often to drain quickly.
         int effectiveMax = max <= 0 ? 200 : Math.Min(max, 5000);
 
-        try {
+        try
+        {
             DrainTailResult result = await session.DrainTailAsync(sinceIndex, effectiveMax, cancellationToken).ConfigureAwait(false);
-            return new CaptureTailResultDto {
+            return new CaptureTailResultDto
+            {
                 SessionId = sessionId,
                 Pdus = result.Pdus,
                 NextIndex = result.NextIndex,
@@ -333,7 +387,8 @@ public sealed class CaptureTools {
                 SessionState = result.SessionState,
             };
         }
-        catch (CaptureException ex) {
+        catch (CaptureException ex)
+        {
             throw new McpException(ex.Message);
         }
     }
@@ -346,23 +401,29 @@ public sealed class CaptureTools {
         string sessionId,
         [Description("Top-N entries per category (default 10).")]
         int top = 10,
-        CancellationToken cancellationToken = default) {
-        if (!_manager.TryGet(sessionId, out CaptureSession session)) {
+        CancellationToken cancellationToken = default)
+    {
+        if (!_manager.TryGet(sessionId, out CaptureSession session))
+        {
             throw new McpException($"Capture session '{sessionId}' not found.");
         }
 
         NtlmPassiveUnwrapper? unwrapper = CaptureSession.BuildUnwrapper(session.Request);
-        try {
+        try
+        {
             var decoder = new OpcDcomDecoder(unwrapper);
             var pdus = new List<DecodedOpcPdu>();
-            await foreach (CapturedPacket pkt in session.Source.ReadAllAsync(maxPackets: null, cancellationToken).ConfigureAwait(false)) {
-                foreach (DecodedOpcPdu pdu in decoder.Decode(pkt)) {
+            await foreach (CapturedPacket pkt in session.Source.ReadAllAsync(maxPackets: null, cancellationToken).ConfigureAwait(false))
+            {
+                foreach (DecodedOpcPdu pdu in decoder.Decode(pkt))
+                {
                     pdus.Add(pdu);
                 }
             }
             return CaptureSummarizer.Summarize(sessionId, pdus, top);
         }
-        finally {
+        finally
+        {
             unwrapper?.Dispose();
         }
     }
@@ -375,11 +436,14 @@ public sealed class CaptureTools {
     public async Task<bool> RemoveCapture(
         [Description("Capture session id from opcclassic.capture.start.")]
         string sessionId,
-        CancellationToken cancellationToken = default) {
-        try {
+        CancellationToken cancellationToken = default)
+    {
+        try
+        {
             return await _manager.RemoveAsync(sessionId, cancellationToken).ConfigureAwait(false);
         }
-        catch (CaptureException ex) {
+        catch (CaptureException ex)
+        {
             throw new McpException(ex.Message);
         }
     }
@@ -392,7 +456,8 @@ public sealed class CaptureTools {
     [Description("Decode a single DCE/RPC PDU frame from hex bytes. Useful for ad-hoc inspection of a captured byte string without standing up a full capture session.")]
     public string DecodePdu(
         [Description("Hex string of the raw frame bytes (with or without whitespace / 0x prefix).")]
-        string hex) {
+        string hex)
+    {
         ArgumentException.ThrowIfNullOrEmpty(hex);
         byte[] bytes = ParseHex(hex);
         var decoder = new OpcDcomDecoder();
@@ -416,15 +481,19 @@ public sealed class CaptureTools {
     public async Task<ReplayReport> ReplayCapture(
         [Description("Capture session id from opcclassic.capture.start.")]
         string sessionId,
-        CancellationToken cancellationToken = default) {
-        if (!_manager.TryGet(sessionId, out CaptureSession session)) {
+        CancellationToken cancellationToken = default)
+    {
+        if (!_manager.TryGet(sessionId, out CaptureSession session))
+        {
             throw new McpException($"Capture session '{sessionId}' not found.");
         }
 
         var decoder = new OpcDcomDecoder();
         var pdus = new List<DecodedOpcPdu>();
-        await foreach (CapturedPacket pkt in session.Source.ReadAllAsync(maxPackets: null, cancellationToken).ConfigureAwait(false)) {
-            foreach (DecodedOpcPdu pdu in decoder.Decode(pkt)) {
+        await foreach (CapturedPacket pkt in session.Source.ReadAllAsync(maxPackets: null, cancellationToken).ConfigureAwait(false))
+        {
+            foreach (DecodedOpcPdu pdu in decoder.Decode(pkt))
+            {
                 pdus.Add(pdu);
             }
         }
@@ -433,12 +502,15 @@ public sealed class CaptureTools {
         return replay.Replay(pdus);
     }
 
-    private static CaptureSessionState? ParseStateFilter(string? state) {
-        if (string.IsNullOrWhiteSpace(state) || string.Equals(state, "all", StringComparison.OrdinalIgnoreCase)) {
+    private static CaptureSessionState? ParseStateFilter(string? state)
+    {
+        if (string.IsNullOrWhiteSpace(state) || string.Equals(state, "all", StringComparison.OrdinalIgnoreCase))
+        {
             return null;
         }
 
-        return state.ToLowerInvariant() switch {
+        return state.ToLowerInvariant() switch
+        {
             "starting" => CaptureSessionState.Starting,
             "running" or "active" => CaptureSessionState.Running,
             "stopping" => CaptureSessionState.Stopping,
@@ -449,37 +521,54 @@ public sealed class CaptureTools {
         };
     }
 
-    private static byte[] ParseHex(string hex) {
+    private static byte[] ParseHex(string hex)
+    {
         // Strip whitespace + optional 0x prefix + commas; tolerate hex dumps like "01 02 0a, 0xff".
         Span<char> buffer = stackalloc char[Math.Min(hex.Length, 16384)];
         int idx = 0;
-        for (int i = 0; i < hex.Length && idx < buffer.Length; i++) {
+        for (int i = 0; i < hex.Length && idx < buffer.Length; i++)
+        {
             char c = hex[i];
-            if (char.IsWhiteSpace(c) || c == ',' || c == ':' || c == ';') continue;
-            if (c == '0' && i + 1 < hex.Length && (hex[i + 1] == 'x' || hex[i + 1] == 'X')) {
+            if (char.IsWhiteSpace(c) || c == ',' || c == ':' || c == ';')
+            {
+                continue;
+            }
+
+            if (c == '0' && i + 1 < hex.Length && (hex[i + 1] == 'x' || hex[i + 1] == 'X'))
+            {
                 i++;
                 continue;
             }
             buffer[idx++] = c;
         }
 
-        if ((idx & 1) != 0) {
+        if ((idx & 1) != 0)
+        {
             throw new McpException("Hex input has an odd nibble count after stripping whitespace/prefix.");
         }
 
         byte[] result = new byte[idx / 2];
-        for (int i = 0; i < result.Length; i++) {
+        for (int i = 0; i < result.Length; i++)
+        {
             result[i] = byte.Parse(buffer.Slice(i * 2, 2), NumberStyles.HexNumber, CultureInfo.InvariantCulture);
         }
         return result;
     }
 
-    private static string? TryGetFriendlyName(string? interfaceName) {
-        if (string.IsNullOrEmpty(interfaceName)) return null;
-        try {
-            foreach (NetworkInterface ni in NetworkInterface.GetAllNetworkInterfaces()) {
+    private static string? TryGetFriendlyName(string? interfaceName)
+    {
+        if (string.IsNullOrEmpty(interfaceName))
+        {
+            return null;
+        }
+
+        try
+        {
+            foreach (NetworkInterface ni in NetworkInterface.GetAllNetworkInterfaces())
+            {
                 if (interfaceName.Contains(ni.Id, StringComparison.OrdinalIgnoreCase)
-                    || interfaceName.Contains(ni.Name, StringComparison.OrdinalIgnoreCase)) {
+                    || interfaceName.Contains(ni.Name, StringComparison.OrdinalIgnoreCase))
+                {
                     return ni.Name;
                 }
             }
@@ -504,7 +593,8 @@ public sealed record class CaptureInterfaceDto(
 /// from each response and passing it as <c>sinceIndex</c> on the next
 /// call. Stop polling when <see cref="Done"/> is true.
 /// </summary>
-public sealed record class CaptureTailResultDto {
+public sealed record class CaptureTailResultDto
+{
     /// <summary>The capture session id that owns this drain.</summary>
     public required string SessionId { get; init; }
 
@@ -525,7 +615,8 @@ public sealed record class CaptureTailResultDto {
 }
 
 /// <summary>Capture session info DTO surfaced by opcclassic.capture.* tools.</summary>
-public sealed record class CaptureSessionDto {
+public sealed record class CaptureSessionDto
+{
     public required string SessionId { get; init; }
     public required string Source { get; init; }
     public required CaptureSessionState State { get; init; }
@@ -538,9 +629,11 @@ public sealed record class CaptureSessionDto {
     public string? Error { get; init; }
     public string? RawPcapFilePath { get; init; }
 
-    public static CaptureSessionDto From(CaptureSession session) {
+    public static CaptureSessionDto From(CaptureSession session)
+    {
         ArgumentNullException.ThrowIfNull(session);
-        return new CaptureSessionDto {
+        return new CaptureSessionDto
+        {
             SessionId = session.Id,
             Source = session.SourceName,
             State = session.State,

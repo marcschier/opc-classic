@@ -18,9 +18,11 @@ using TUnit.Core;
 
 namespace Opc.Classic.Ae.Tests.Hosting;
 
-public sealed class OpcAeServerDispatcherRoundTripAdditionalTests {
+public sealed class OpcAeServerDispatcherRoundTripAdditionalTests
+{
     [Test]
-    public async Task DispatchAsync_GeneratedProxyRoundTripsCatalogMethods_ReturnsConcreteResults() {
+    public async Task DispatchAsync_GeneratedProxyRoundTripsCatalogMethods_ReturnsConcreteResults()
+    {
         var server = new RecordingAeServer();
         IOpcAeServerDispatcher dispatcher = new OpcAeServerDispatcher(server);
         InMemoryCallChannel channel = CreateChannel(dispatcher);
@@ -73,7 +75,8 @@ public sealed class OpcAeServerDispatcherRoundTripAdditionalTests {
     }
 
     [Test]
-    public async Task DispatchAsync_GeneratedProxyRoundTripsConditionMethods_RecordsInputsAndErrors() {
+    public async Task DispatchAsync_GeneratedProxyRoundTripsConditionMethods_RecordsInputsAndErrors()
+    {
         var server = new RecordingAeServer();
         var dispatcher = new OpcAeServerDispatcher(server);
         InMemoryCallChannel channel = CreateChannel(dispatcher);
@@ -116,7 +119,8 @@ public sealed class OpcAeServerDispatcherRoundTripAdditionalTests {
     }
 
     [Test]
-    public async Task DispatchAsync_UnknownInterface_ReturnsNotImplementedWithoutCallingServer() {
+    public async Task DispatchAsync_UnknownInterface_ReturnsNotImplementedWithoutCallingServer()
+    {
         var server = new RecordingAeServer();
         IOpcAeServerDispatcher dispatcher = new OpcAeServerDispatcher(server);
 
@@ -132,7 +136,8 @@ public sealed class OpcAeServerDispatcherRoundTripAdditionalTests {
     }
 
     [Test]
-    public async Task CreateEventSubscriptionAsync_FallbackAdapter_ManagesFilterRefreshAndDisposal() {
+    public async Task CreateEventSubscriptionAsync_FallbackAdapter_ManagesFilterRefreshAndDisposal()
+    {
         var server = new RecordingAeServer();
         IOpcAeServerDispatcher dispatcher = new OpcAeServerDispatcher(server);
 
@@ -202,7 +207,8 @@ public sealed class OpcAeServerDispatcherRoundTripAdditionalTests {
         new((iid, opnum, payload, cancellationToken) =>
             dispatcher.DispatchAsync(iid, opnum, payload, cancellationToken));
 
-    private static OpcServerStatus CreateStatus() => new() {
+    private static OpcServerStatus CreateStatus() => new()
+    {
         Spec = OpcStatusSpec.Ae,
         StartTime = DateTimeOffset.UnixEpoch,
         CurrentTime = DateTimeOffset.UnixEpoch.AddSeconds(5),
@@ -212,7 +218,8 @@ public sealed class OpcAeServerDispatcherRoundTripAdditionalTests {
         VendorInfo = "AE adapter round-trip",
     };
 
-    private sealed class RecordingAeServer : IOpcAeServer, IAeServer {
+    private sealed class RecordingAeServer : IOpcAeServer, IAeServer
+    {
         public Guid[] TranslateClassIds { get; } =
             [Guid.Parse("aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"), Guid.Parse("ffffffff-1111-2222-3333-444444444444")];
 
@@ -242,7 +249,8 @@ public sealed class OpcAeServerDispatcherRoundTripAdditionalTests {
 
         public RecordingAeSubscription? CreatedSubscription { get; private set; }
 
-        public event EventHandler<EventArgs>? ServerShutdown {
+        public event EventHandler<EventArgs>? ServerShutdown
+        {
             add { }
             remove { }
         }
@@ -250,7 +258,8 @@ public sealed class OpcAeServerDispatcherRoundTripAdditionalTests {
         public Task<OpcServerStatus> GetStatusAsync(CancellationToken cancellationToken = default) =>
             Task.FromResult(CreateStatus());
 
-        public Task<int> QueryAvailableFiltersAsync(CancellationToken cancellationToken = default) {
+        public Task<int> QueryAvailableFiltersAsync(CancellationToken cancellationToken = default)
+        {
             QueryAvailableFiltersCallCount++;
             return Task.FromResult(0x7);
         }
@@ -264,7 +273,8 @@ public sealed class OpcAeServerDispatcherRoundTripAdditionalTests {
             out IOPCEventSubscriptionMgt subscription,
             out int revisedBufferTime,
             out int revisedMaxSize,
-            CancellationToken cancellationToken = default) {
+            CancellationToken cancellationToken = default)
+        {
             _ = active;
             _ = bufferTime;
             _ = maxSize;
@@ -280,24 +290,28 @@ public sealed class OpcAeServerDispatcherRoundTripAdditionalTests {
             int eventType,
             out int[] eventCategories,
             out string[] eventCategoryDescriptions,
-            CancellationToken cancellationToken = default) {
+            CancellationToken cancellationToken = default)
+        {
             LastEventType = eventType;
             eventCategories = [1001, 1002];
             eventCategoryDescriptions = ["Process", "System"];
             return Task.CompletedTask;
         }
 
-        public Task<string[]> QueryConditionNamesAsync(int eventCategory, CancellationToken cancellationToken = default) {
+        public Task<string[]> QueryConditionNamesAsync(int eventCategory, CancellationToken cancellationToken = default)
+        {
             _ = eventCategory;
             return Task.FromResult(new[] { "Level", "Pressure" });
         }
 
-        public Task<string[]> QuerySubConditionNamesAsync(string conditionName, CancellationToken cancellationToken = default) {
+        public Task<string[]> QuerySubConditionNamesAsync(string conditionName, CancellationToken cancellationToken = default)
+        {
             _ = conditionName;
             return Task.FromResult(new[] { "Hi", "HiHi" });
         }
 
-        public Task<string[]> QuerySourceConditionsAsync(string source, CancellationToken cancellationToken = default) {
+        public Task<string[]> QuerySourceConditionsAsync(string source, CancellationToken cancellationToken = default)
+        {
             _ = source;
             return Task.FromResult(new[] { "Level", "ValveFailure" });
         }
@@ -307,7 +321,8 @@ public sealed class OpcAeServerDispatcherRoundTripAdditionalTests {
             out int[] attributeIds,
             out string[] attributeDescriptions,
             out ushort[] attributeTypes,
-            CancellationToken cancellationToken = default) {
+            CancellationToken cancellationToken = default)
+        {
             LastAttributeCategory = eventCategory;
             attributeIds = [501, 502];
             attributeDescriptions = ["Batch", "Limit"];
@@ -324,7 +339,8 @@ public sealed class OpcAeServerDispatcherRoundTripAdditionalTests {
             out string[] attributeItemIds,
             out string[] nodeNames,
             out Guid[] classIds,
-            CancellationToken cancellationToken = default) {
+            CancellationToken cancellationToken = default)
+        {
             _ = eventCategory;
             _ = conditionName;
             _ = subconditionName;
@@ -339,7 +355,8 @@ public sealed class OpcAeServerDispatcherRoundTripAdditionalTests {
             string source,
             string conditionName,
             int[] attributeIds,
-            CancellationToken cancellationToken = default) {
+            CancellationToken cancellationToken = default)
+        {
             LastConditionSource = source;
             LastConditionAttributeIds = attributeIds;
             return Task.FromResult(new OpcConditionState(
@@ -363,22 +380,26 @@ public sealed class OpcAeServerDispatcherRoundTripAdditionalTests {
                 errors: [OpcResultId.Ok.Code]));
         }
 
-        public Task EnableConditionByAreaAsync(string[] areas, CancellationToken cancellationToken = default) {
+        public Task EnableConditionByAreaAsync(string[] areas, CancellationToken cancellationToken = default)
+        {
             EnabledAreas = areas;
             return Task.CompletedTask;
         }
 
-        public Task EnableConditionBySourceAsync(string[] sources, CancellationToken cancellationToken = default) {
+        public Task EnableConditionBySourceAsync(string[] sources, CancellationToken cancellationToken = default)
+        {
             EnabledSources = sources;
             return Task.CompletedTask;
         }
 
-        public Task DisableConditionByAreaAsync(string[] areas, CancellationToken cancellationToken = default) {
+        public Task DisableConditionByAreaAsync(string[] areas, CancellationToken cancellationToken = default)
+        {
             DisabledAreas = areas;
             return Task.CompletedTask;
         }
 
-        public Task DisableConditionBySourceAsync(string[] sources, CancellationToken cancellationToken = default) {
+        public Task DisableConditionBySourceAsync(string[] sources, CancellationToken cancellationToken = default)
+        {
             DisabledSources = sources;
             return Task.CompletedTask;
         }
@@ -391,7 +412,8 @@ public sealed class OpcAeServerDispatcherRoundTripAdditionalTests {
             string[] conditionNames,
             long[] activeTimes,
             int[] cookies,
-            CancellationToken cancellationToken = default) {
+            CancellationToken cancellationToken = default)
+        {
             _ = dwCount;
             _ = comment;
             _ = sources;
@@ -405,7 +427,8 @@ public sealed class OpcAeServerDispatcherRoundTripAdditionalTests {
         public Task CreateAreaBrowserAsync(
             Guid requestedInterfaceId,
             out IOPCEventAreaBrowser areaBrowser,
-            CancellationToken cancellationToken = default) {
+            CancellationToken cancellationToken = default)
+        {
             _ = requestedInterfaceId;
             areaBrowser = default!;
             throw new OpcException(OpcResultId.NotImplemented);
@@ -413,7 +436,8 @@ public sealed class OpcAeServerDispatcherRoundTripAdditionalTests {
 
         public async IAsyncEnumerable<AreaBrowseElement> BrowseAreasAsync(
             string areaQualifiedName,
-            [System.Runtime.CompilerServices.EnumeratorCancellation] CancellationToken cancellationToken = default) {
+            [System.Runtime.CompilerServices.EnumeratorCancellation] CancellationToken cancellationToken = default)
+        {
             _ = areaQualifiedName;
             cancellationToken.ThrowIfCancellationRequested();
             await Task.CompletedTask;
@@ -453,7 +477,8 @@ public sealed class OpcAeServerDispatcherRoundTripAdditionalTests {
             bool active,
             int bufferTimeMs,
             int maxBufferSize,
-            CancellationToken cancellationToken = default) {
+            CancellationToken cancellationToken = default)
+        {
             CreatedSubscription = new RecordingAeSubscription(active);
             return Task.FromResult<IAeSubscription>(CreatedSubscription);
         }
@@ -461,7 +486,8 @@ public sealed class OpcAeServerDispatcherRoundTripAdditionalTests {
         public ValueTask DisposeAsync() => ValueTask.CompletedTask;
     }
 
-    private sealed class RecordingAeSubscription : IAeSubscription {
+    private sealed class RecordingAeSubscription : IAeSubscription
+    {
         public RecordingAeSubscription(bool active) => Active = active;
 
         public bool Active { get; private set; }
@@ -476,38 +502,45 @@ public sealed class OpcAeServerDispatcherRoundTripAdditionalTests {
 
         public bool Disposed { get; private set; }
 
-        public Task SetActiveAsync(bool active, CancellationToken cancellationToken = default) {
+        public Task SetActiveAsync(bool active, CancellationToken cancellationToken = default)
+        {
             Active = active;
             return Task.CompletedTask;
         }
 
-        public Task SetFilterAsync(SubscriptionFilter filter, CancellationToken cancellationToken = default) {
+        public Task SetFilterAsync(SubscriptionFilter filter, CancellationToken cancellationToken = default)
+        {
             Filter = filter;
             return Task.CompletedTask;
         }
 
-        public Task RefreshAsync(CancellationToken cancellationToken = default) {
+        public Task RefreshAsync(CancellationToken cancellationToken = default)
+        {
             RefreshCalls++;
             return Task.CompletedTask;
         }
 
-        public Task CancelRefreshAsync(CancellationToken cancellationToken = default) {
+        public Task CancelRefreshAsync(CancellationToken cancellationToken = default)
+        {
             CancelRefreshCalls++;
             return Task.CompletedTask;
         }
 
-        public ValueTask DisposeAsync() {
+        public ValueTask DisposeAsync()
+        {
             Disposed = true;
             return ValueTask.CompletedTask;
         }
 
-        private static async IAsyncEnumerable<EventNotification> ReadEventsAsync() {
+        private static async IAsyncEnumerable<EventNotification> ReadEventsAsync()
+        {
             await Task.CompletedTask;
             yield break;
         }
     }
 
-    private sealed class RecordingEventSink : IOPCEventSink {
+    private sealed class RecordingEventSink : IOPCEventSink
+    {
         public int LastClientSubscription { get; private set; }
 
         public bool LastRefresh { get; private set; }
@@ -521,7 +554,8 @@ public sealed class OpcAeServerDispatcherRoundTripAdditionalTests {
             bool refresh,
             bool lastRefresh,
             OpcEventNotification[] events,
-            CancellationToken cancellationToken = default) {
+            CancellationToken cancellationToken = default)
+        {
             LastClientSubscription = clientSubscription;
             LastRefresh = refresh;
             LastRefreshComplete = lastRefresh;

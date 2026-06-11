@@ -12,10 +12,13 @@ using TUnit.Core;
 
 namespace Opc.Classic.SnapshotTests.Pipeline;
 
-public sealed class OrpcEnvelopeSnapshotTests {
+public sealed class OrpcEnvelopeSnapshotTests
+{
     [Test]
-    public async Task OrpcThis_with_zero_causality_guid_encodes_to_stable_bytes() {
-        var value = new OrpcThis {
+    public async Task OrpcThis_with_zero_causality_guid_encodes_to_stable_bytes()
+    {
+        var value = new OrpcThis
+        {
             CausalityId = Guid.Empty,
         };
 
@@ -26,8 +29,10 @@ public sealed class OrpcEnvelopeSnapshotTests {
     }
 
     [Test]
-    public async Task OrpcThat_with_flags_zero_and_no_extensions_encodes_to_stable_bytes() {
-        var value = new OrpcThat {
+    public async Task OrpcThat_with_flags_zero_and_no_extensions_encodes_to_stable_bytes()
+    {
+        var value = new OrpcThat
+        {
             Flags = 0,
             Extensions = null,
         };

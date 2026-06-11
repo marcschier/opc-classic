@@ -15,7 +15,8 @@ using Opc.Classic.Xml;
 namespace Opc.Classic.Mcp.Tools;
 
 /// <summary>Creates XML-DA client state for a session.</summary>
-public interface IOpcXmlDaConnectionFactory {
+public interface IOpcXmlDaConnectionFactory
+{
     /// <summary>Connects to an XML-DA endpoint and returns client state.</summary>
     Task<XmlDaClientState> ConnectAsync(XmlDaConnectionRequest request, CancellationToken cancellationToken = default);
 }
@@ -24,11 +25,13 @@ public interface IOpcXmlDaConnectionFactory {
 public sealed record XmlDaConnectionRequest(string EndpointUrl);
 
 /// <summary>Registers in-memory XML-DA clients for MCP tests and loopback scenarios.</summary>
-public static class InMemoryXmlDaConnectionRegistry {
+public static class InMemoryXmlDaConnectionRegistry
+{
     private static readonly System.Collections.Concurrent.ConcurrentDictionary<string, IXmlDaClient> Clients = new(StringComparer.OrdinalIgnoreCase);
 
     /// <summary>Registers an in-memory XML-DA client by name.</summary>
-    public static IDisposable Register(string name, IXmlDaClient client) {
+    public static IDisposable Register(string name, IXmlDaClient client)
+    {
         ArgumentException.ThrowIfNullOrWhiteSpace(name);
         ArgumentNullException.ThrowIfNull(client);
 
@@ -38,14 +41,17 @@ public static class InMemoryXmlDaConnectionRegistry {
 
     internal static bool TryGet(string name, out IXmlDaClient client) => Clients.TryGetValue(name, out client!);
 
-    private sealed class Registration : IDisposable {
+    private sealed class Registration : IDisposable
+    {
         private readonly string _name;
         private bool _disposed;
 
         public Registration(string name) => _name = name;
 
-        public void Dispose() {
-            if (_disposed) {
+        public void Dispose()
+        {
+            if (_disposed)
+            {
                 return;
             }
 
@@ -56,12 +62,14 @@ public static class InMemoryXmlDaConnectionRegistry {
 }
 
 /// <summary>MCP tools for OPC XML-DA SOAP/HTTP operations.</summary>
-public sealed class XmlDaTools {
+public sealed class XmlDaTools
+{
     private readonly IOpcSessionManager _sessionManager;
     private readonly IOpcXmlDaConnectionFactory _connectionFactory;
 
     /// <summary>Creates the XML-DA tool set.</summary>
-    public XmlDaTools(IOpcSessionManager sessionManager, IEnumerable<IOpcXmlDaConnectionFactory> connectionFactories) {
+    public XmlDaTools(IOpcSessionManager sessionManager, IEnumerable<IOpcXmlDaConnectionFactory> connectionFactories)
+    {
         _sessionManager = sessionManager ?? throw new ArgumentNullException(nameof(sessionManager));
         ArgumentNullException.ThrowIfNull(connectionFactories);
         _connectionFactory = connectionFactories.FirstOrDefault() ?? new DefaultOpcXmlDaConnectionFactory();
@@ -75,12 +83,14 @@ public sealed class XmlDaTools {
         string sessionId,
         [Description("XML-DA HTTP or HTTPS endpoint URL. Use inmemory://name for a registered test client.")]
         string endpointUrl,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         OpcSession session = _sessionManager.GetSession(sessionId);
         XmlDaClientState client = await _connectionFactory.ConnectAsync(new XmlDaConnectionRequest(endpointUrl), cancellationToken).ConfigureAwait(false);
         XmlDaClientState? existing = session.XmlDaClient;
         session.XmlDaClient = client;
-        if (existing is not null) {
+        if (existing is not null)
+        {
             await existing.DisposeAsync().ConfigureAwait(false);
         }
 
@@ -99,7 +109,8 @@ public sealed class XmlDaTools {
         string? localeId = null,
         [Description("Optional client request handle echoed by the server.")]
         string? clientRequestHandle = null,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         XmlDaClientState client = GetXmlDaClient(sessionId);
         XmlDaServerStatus status = await client.Client.GetStatusAsync(CreateHeader(localeId, clientRequestHandle), cancellationToken).ConfigureAwait(false);
         return ToDto(status);
@@ -127,7 +138,8 @@ public sealed class XmlDaTools {
         string? localeId = null,
         [Description("Optional client request handle echoed by the server.")]
         string? clientRequestHandle = null,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         XmlDaClientState client = GetXmlDaClient(sessionId);
         var request = new XmlDaBrowseRequest(
             CreateHeader(localeId, clientRequestHandle),
@@ -163,7 +175,8 @@ public sealed class XmlDaTools {
         string? localeId = null,
         [Description("Optional client request handle echoed by the server.")]
         string? clientRequestHandle = null,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         ArgumentNullException.ThrowIfNull(itemNames);
         XmlDaClientState client = GetXmlDaClient(sessionId);
         var request = new XmlDaGetPropertiesRequest(
@@ -192,7 +205,8 @@ public sealed class XmlDaTools {
         string? localeId = null,
         [Description("Optional client request handle echoed by the server.")]
         string? clientRequestHandle = null,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         ArgumentNullException.ThrowIfNull(items);
         XmlDaClientState client = GetXmlDaClient(sessionId);
         XmlDaReadItem[] readItems = items.Select(static item => new XmlDaReadItem(item.ItemName, item.ClientItemHandle, item.MaxAge)).ToArray();
@@ -216,7 +230,8 @@ public sealed class XmlDaTools {
         string? localeId = null,
         [Description("Optional client request handle echoed by the server.")]
         string? clientRequestHandle = null,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         ArgumentNullException.ThrowIfNull(items);
         XmlDaClientState client = GetXmlDaClient(sessionId);
         XmlDaWriteItem[] writeItems = items.Select(static item => new XmlDaWriteItem(item.ItemName, item.ClientItemHandle, ToXmlDaValue(item.Value, item.ValueType))).ToArray();
@@ -248,7 +263,8 @@ public sealed class XmlDaTools {
         string? localeId = null,
         [Description("Optional client request handle echoed by the server.")]
         string? clientRequestHandle = null,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         ArgumentNullException.ThrowIfNull(items);
         XmlDaClientState client = GetXmlDaClient(sessionId);
         XmlDaSubscribeItem[] subscribeItems = items.Select(static item => new XmlDaSubscribeItem(item.ItemName, item.ClientItemHandle, item.RequestedSamplingRate, item.Deadband)).ToArray();
@@ -285,7 +301,8 @@ public sealed class XmlDaTools {
         string? localeId = null,
         [Description("Optional client request handle echoed by the server.")]
         string? clientRequestHandle = null,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         ArgumentNullException.ThrowIfNull(serverSubHandles);
         XmlDaClientState client = GetXmlDaClient(sessionId);
         var request = new XmlDaSubscriptionPolledRefreshRequest(
@@ -309,7 +326,8 @@ public sealed class XmlDaTools {
         string serverSubHandle,
         [Description("Optional client request handle echoed by the server.")]
         string? clientRequestHandle = null,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         ArgumentException.ThrowIfNullOrWhiteSpace(serverSubHandle);
         XmlDaClientState client = GetXmlDaClient(sessionId);
         XmlDaSubscriptionCancelResponse response = await client.Client.SubscriptionCancelAsync(new XmlDaSubscriptionCancelRequest(serverSubHandle, clientRequestHandle), cancellationToken).ConfigureAwait(false);
@@ -321,11 +339,13 @@ public sealed class XmlDaTools {
     [Description("Disconnects the session from its OPC XML-DA endpoint and releases HTTP client state.")]
     public async Task<OpcResultDto> Disconnect(
         [Description("The connected OPC Classic sessionId.")]
-        string sessionId) {
+        string sessionId)
+    {
         OpcSession session = _sessionManager.GetSession(sessionId);
         XmlDaClientState? client = session.XmlDaClient;
         session.XmlDaClient = null;
-        if (client is not null) {
+        if (client is not null)
+        {
             await client.DisposeAsync().ConfigureAwait(false);
             return new OpcResultDto(0, "XML-DA client disconnected.", Succeeded: true);
         }
@@ -333,7 +353,8 @@ public sealed class XmlDaTools {
         return new OpcResultDto(1, "XML-DA client was not connected.", Succeeded: false);
     }
 
-    private XmlDaClientState GetXmlDaClient(string sessionId) {
+    private XmlDaClientState GetXmlDaClient(string sessionId)
+    {
         OpcSession session = _sessionManager.GetSession(sessionId);
         return session.XmlDaClient ?? throw new McpException($"Session '{sessionId}' is not connected to an OPC XML-DA endpoint. Call opcclassic.xmlda.connect first.");
     }
@@ -405,18 +426,22 @@ public sealed class XmlDaTools {
         response.InvalidServerSubHandles,
         response.ItemLists.Select(static list => new OpcXmlDaSubscriptionItemListDto(list.SubscriptionHandle, list.Items.Select(ToDto).ToArray())).ToArray());
 
-    private static XmlDaBrowseFilter ParseBrowseFilter(string browseFilter) => browseFilter?.Trim().ToLowerInvariant() switch {
+    private static XmlDaBrowseFilter ParseBrowseFilter(string browseFilter) => browseFilter?.Trim().ToLowerInvariant() switch
+    {
         "branch" or "branches" => XmlDaBrowseFilter.Branch,
         "item" or "items" or "leaf" or "leaves" => XmlDaBrowseFilter.Item,
         _ => XmlDaBrowseFilter.All,
     };
 
-    private static XmlDaValue ToXmlDaValue(object? value, string? valueType = null) {
-        if (!string.IsNullOrWhiteSpace(valueType)) {
+    private static XmlDaValue ToXmlDaValue(object? value, string? valueType = null)
+    {
+        if (!string.IsNullOrWhiteSpace(valueType))
+        {
             return ToXmlDaValueByType(value, valueType.Trim());
         }
 
-        return value switch {
+        return value switch
+        {
             null => XmlDaValue.OfString(string.Empty),
             JsonElement element => ToXmlDaValue(element),
             bool boolean => XmlDaValue.OfBoolean(boolean),
@@ -438,7 +463,8 @@ public sealed class XmlDaTools {
         };
     }
 
-    private static XmlDaValue ToXmlDaValue(JsonElement element) => element.ValueKind switch {
+    private static XmlDaValue ToXmlDaValue(JsonElement element) => element.ValueKind switch
+    {
         JsonValueKind.Null or JsonValueKind.Undefined => XmlDaValue.OfString(string.Empty),
         JsonValueKind.True => XmlDaValue.OfBoolean(true),
         JsonValueKind.False => XmlDaValue.OfBoolean(false),
@@ -449,11 +475,13 @@ public sealed class XmlDaTools {
         _ => XmlDaValue.OfString(element.GetRawText()),
     };
 
-    private static XmlDaValue ToXmlDaValueByType(object? value, string valueType) {
+    private static XmlDaValue ToXmlDaValueByType(object? value, string valueType)
+    {
         string text = value is JsonElement element && element.ValueKind == JsonValueKind.String
             ? element.GetString() ?? string.Empty
             : value?.ToString() ?? string.Empty;
-        return valueType.ToLowerInvariant() switch {
+        return valueType.ToLowerInvariant() switch
+        {
             "string" or "xsd:string" => XmlDaValue.OfString(text),
             "bool" or "boolean" or "xsd:boolean" => XmlDaValue.OfBoolean(bool.Parse(text)),
             "int" or "int32" or "xsd:int" => XmlDaValue.OfInt32(int.Parse(text, CultureInfo.InvariantCulture)),
@@ -466,12 +494,15 @@ public sealed class XmlDaTools {
         };
     }
 
-    private static XmlDaValue StringToXmlDaValue(string? text) {
-        if (text is null) {
+    private static XmlDaValue StringToXmlDaValue(string? text)
+    {
+        if (text is null)
+        {
             return XmlDaValue.OfString(string.Empty);
         }
 
-        if (DateTimeOffset.TryParse(text, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal, out DateTimeOffset dateTime)) {
+        if (DateTimeOffset.TryParse(text, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal, out DateTimeOffset dateTime))
+        {
             return XmlDaValue.OfDateTime(dateTime);
         }
 
@@ -480,7 +511,8 @@ public sealed class XmlDaTools {
 
     private static object? NormalizeValue(XmlDaValue? value) => value is null ? null : NormalizeValue(value.Boxed);
 
-    private static object? NormalizeValue(object? value) => value switch {
+    private static object? NormalizeValue(object? value) => value switch
+    {
         DateOnly date => date.ToString("O", CultureInfo.InvariantCulture),
         TimeOnly time => time.ToString("HH:mm:ss.FFFFFFF", CultureInfo.InvariantCulture),
         TimeSpan duration => duration.ToString(),
@@ -489,20 +521,25 @@ public sealed class XmlDaTools {
         _ => value,
     };
 
-    private sealed class DefaultOpcXmlDaConnectionFactory : IOpcXmlDaConnectionFactory {
-        public Task<XmlDaClientState> ConnectAsync(XmlDaConnectionRequest request, CancellationToken cancellationToken = default) {
+    private sealed class DefaultOpcXmlDaConnectionFactory : IOpcXmlDaConnectionFactory
+    {
+        public Task<XmlDaClientState> ConnectAsync(XmlDaConnectionRequest request, CancellationToken cancellationToken = default)
+        {
             ArgumentNullException.ThrowIfNull(request);
             cancellationToken.ThrowIfCancellationRequested();
 
-            if (TryGetInMemoryKey(request.EndpointUrl, out string? key)) {
-                if (!InMemoryXmlDaConnectionRegistry.TryGet(key, out IXmlDaClient client)) {
+            if (TryGetInMemoryKey(request.EndpointUrl, out string? key))
+            {
+                if (!InMemoryXmlDaConnectionRegistry.TryGet(key, out IXmlDaClient client))
+                {
                     throw new McpException($"No in-memory XML-DA client is registered for '{key}'.");
                 }
 
                 return Task.FromResult(new XmlDaClientState("inmemory://" + key, client));
             }
 
-            if (!Uri.TryCreate(request.EndpointUrl, UriKind.Absolute, out Uri? endpoint) || (endpoint.Scheme != Uri.UriSchemeHttp && endpoint.Scheme != Uri.UriSchemeHttps)) {
+            if (!Uri.TryCreate(request.EndpointUrl, UriKind.Absolute, out Uri? endpoint) || (endpoint.Scheme != Uri.UriSchemeHttp && endpoint.Scheme != Uri.UriSchemeHttps))
+            {
                 throw new McpException("XML-DA connect requires an absolute http:// or https:// endpoint URL, or inmemory://name for tests.");
             }
 
@@ -511,20 +548,24 @@ public sealed class XmlDaTools {
             return Task.FromResult(clientState);
         }
 
-        private static bool TryGetInMemoryKey(string? endpointUrl, out string key) {
+        private static bool TryGetInMemoryKey(string? endpointUrl, out string key)
+        {
             key = string.Empty;
-            if (string.IsNullOrWhiteSpace(endpointUrl)) {
+            if (string.IsNullOrWhiteSpace(endpointUrl))
+            {
                 return false;
             }
 
             if (Uri.TryCreate(endpointUrl, UriKind.Absolute, out Uri? uri)
-                && uri.Scheme.Equals("inmemory", StringComparison.OrdinalIgnoreCase)) {
+                && uri.Scheme.Equals("inmemory", StringComparison.OrdinalIgnoreCase))
+            {
                 key = uri.Host + uri.AbsolutePath.Trim('/');
                 return !string.IsNullOrWhiteSpace(key);
             }
 
             const string prefix = "inmemory:";
-            if (endpointUrl.StartsWith(prefix, StringComparison.OrdinalIgnoreCase)) {
+            if (endpointUrl.StartsWith(prefix, StringComparison.OrdinalIgnoreCase))
+            {
                 key = endpointUrl[prefix.Length..].Trim('/');
                 return !string.IsNullOrWhiteSpace(key);
             }

@@ -11,23 +11,27 @@ using TUnit.Core;
 
 namespace Opc.Classic.Da.Tests;
 
-public sealed class NdrOpcItemPropertyCodecTests {
+public sealed class NdrOpcItemPropertyCodecTests
+{
     private delegate void NdrWriteAction(ref NdrWriter w);
 
-    private static byte[] WriteOne(NdrWriteAction write, int capacity = 256) {
+    private static byte[] WriteOne(NdrWriteAction write, int capacity = 256)
+    {
         var buf = new byte[capacity];
         var w = new NdrWriter(buf);
         write(ref w);
         return buf[..w.Position];
     }
 
-    private static OpcItemPropertyResult ReadOne(byte[] bytes) {
+    private static OpcItemPropertyResult ReadOne(byte[] bytes)
+    {
         var r = new NdrReader(bytes);
         return NdrOpcItemPropertyCodec.Read(ref r);
     }
 
     [Test]
-    public async Task RoundTrip_DoubleValueProperty() {
+    public async Task RoundTrip_DoubleValueProperty()
+    {
         var input = new OpcItemPropertyResult(
             DataType: VarType.VT_R8,
             PropertyId: 100,
@@ -45,7 +49,8 @@ public sealed class NdrOpcItemPropertyCodecTests {
     }
 
     [Test]
-    public async Task RoundTrip_BstrValueProperty() {
+    public async Task RoundTrip_BstrValueProperty()
+    {
         var input = new OpcItemPropertyResult(
             DataType: VarType.VT_BSTR,
             PropertyId: 600,
@@ -59,7 +64,8 @@ public sealed class NdrOpcItemPropertyCodecTests {
     }
 
     [Test]
-    public async Task RoundTrip_ErrorId_InvalidPid() {
+    public async Task RoundTrip_ErrorId_InvalidPid()
+    {
         var input = new OpcItemPropertyResult(
             DataType: VarType.VT_EMPTY,
             PropertyId: 9999,
@@ -74,7 +80,8 @@ public sealed class NdrOpcItemPropertyCodecTests {
     }
 
     [Test]
-    public async Task RoundTrip_EmptyDescription() {
+    public async Task RoundTrip_EmptyDescription()
+    {
         var input = new OpcItemPropertyResult(
             DataType: VarType.VT_I4,
             PropertyId: 5,
@@ -89,7 +96,8 @@ public sealed class NdrOpcItemPropertyCodecTests {
     }
 
     [Test]
-    public async Task RoundTrip_WithIndirectItemId() {
+    public async Task RoundTrip_WithIndirectItemId()
+    {
         var input = new OpcItemPropertyResult(
             DataType: VarType.VT_BSTR,
             PropertyId: 0x12345,

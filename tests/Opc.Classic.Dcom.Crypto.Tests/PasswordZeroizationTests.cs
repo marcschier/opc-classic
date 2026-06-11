@@ -13,7 +13,8 @@ using TUnit.Core;
 namespace Opc.Classic.Dcom.Crypto.Tests;
 
 [NotInParallel]
-public sealed class PasswordZeroizationTests {
+public sealed class PasswordZeroizationTests
+{
     private const string Password = "Password";
     private const string User = "User";
     private const string Domain = "Domain";
@@ -33,21 +34,26 @@ public sealed class PasswordZeroizationTests {
     [Arguments("ntlm2-session-response")]
     [Arguments("ntlmv2-session-key")]
     [Arguments("ntlm2-session-key")]
-    public async Task PasswordDerivedPooledBuffers_AreZeroedBeforeReturn(string path) {
+    public async Task PasswordDerivedPooledBuffers_AreZeroedBeforeReturn(string path)
+    {
         var snapshots = new List<BufferSnapshot>();
-        using (InstallSensitiveBufferObserver(snapshots)) {
+        using (InstallSensitiveBufferObserver(snapshots))
+        {
             ExecutePasswordPath(path);
         }
 
         await Assert.That(snapshots.Count).IsGreaterThan(0);
         await Assert.That(snapshots.Any(static snapshot => snapshot.Length > 0)).IsTrue();
-        foreach (var snapshot in snapshots) {
+        foreach (var snapshot in snapshots)
+        {
             await Assert.That(snapshot.Bytes.All(static b => b == 0)).IsTrue();
         }
     }
 
-    private static void ExecutePasswordPath(string path) {
-        switch (path) {
+    private static void ExecutePasswordPath(string path)
+    {
+        switch (path)
+        {
             case "lm-response":
                 _ = Responses.GetLMResponse(Password, Challenge);
                 break;
@@ -83,23 +89,27 @@ public sealed class PasswordZeroizationTests {
         }
     }
 
-    private static void InvokeNtlmKeyFactory(string methodName, params object[] args) {
+    private static void InvokeNtlmKeyFactory(string methodName, params object[] args)
+    {
         var type = typeof(Responses).Assembly.GetType("Opc.Classic.Dcom.Rpc.Auth.ntlm.NTLMKeyFactory", throwOnError: true)!;
         var instance = Activator.CreateInstance(type)!;
         var method = type.GetMethod(methodName, BindingFlags.Instance | BindingFlags.Public)!;
         _ = method.Invoke(instance, args);
     }
 
-    private static IDisposable InstallSensitiveBufferObserver(List<BufferSnapshot> snapshots) {
+    private static IDisposable InstallSensitiveBufferObserver(List<BufferSnapshot> snapshots)
+    {
         var type = typeof(Responses).Assembly.GetType("Opc.Classic.Dcom.Rpc.Auth.ntlm.SensitiveBufferPool", throwOnError: true)!;
         var method = type.GetMethod("SetReturnObserverForTests", BindingFlags.Static | BindingFlags.NonPublic)!;
-        var callback = new Action<string, byte[], int>((_, buffer, length) => {
+        var callback = new Action<string, byte[], int>((_, buffer, length) =>
+        {
             snapshots.Add(new BufferSnapshot(buffer.AsSpan(0, length).ToArray(), length));
         });
         return (IDisposable)method.Invoke(null, new object?[] { callback })!;
     }
 
-    private static byte[] Combine(byte[] first, byte[] second) {
+    private static byte[] Combine(byte[] first, byte[] second)
+    {
         var result = new byte[first.Length + second.Length];
         first.CopyTo(result, 0);
         second.CopyTo(result, first.Length);

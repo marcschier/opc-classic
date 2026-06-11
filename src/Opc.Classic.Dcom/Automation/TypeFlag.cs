@@ -7,7 +7,8 @@ namespace Opc.Classic.Dcom.Automation;
 /// Type flags
 /// </summary>
 [Flags]
-public enum TypeFlag : short {
+public enum TypeFlag : short
+{
 
     /// <summary>
     /// App object

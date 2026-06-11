@@ -5,7 +5,8 @@ namespace Opc.Classic.Dcom.Rpc.pdu;
 /// <summary>
 /// Orphan
 /// </summary>
-public class OrphanedPdu : ConnectionOrientedPdu {
+public class OrphanedPdu : ConnectionOrientedPdu
+{
 
     public const int ORPHANED_TYPE = 0x13;
 

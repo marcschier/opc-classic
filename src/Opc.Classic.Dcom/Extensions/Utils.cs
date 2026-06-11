@@ -7,7 +7,8 @@ namespace System;
 /// <summary>
 /// Utils
 /// </summary>
-public static class Utils {
+public static class Utils
+{
 
     /// <summary>
     /// Helper to convert buffer into hex

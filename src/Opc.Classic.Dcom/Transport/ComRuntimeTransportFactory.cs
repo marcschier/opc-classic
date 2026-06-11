@@ -9,12 +9,14 @@ namespace Opc.Classic.Dcom.Transport;
 /// <summary>
 /// Transport factory
 /// </summary>
-public sealed class ComRuntimeTransportFactory : TransportFactory {
+public sealed class ComRuntimeTransportFactory : TransportFactory
+{
 
     /// <summary>
     /// Private constructor
     /// </summary>
-    private ComRuntimeTransportFactory() {
+    private ComRuntimeTransportFactory()
+    {
     }
 
     /// <inheritdoc/>
@@ -25,11 +27,16 @@ public sealed class ComRuntimeTransportFactory : TransportFactory {
     /// <summary>
     /// Singleton
     /// </summary>
-    public static ComRuntimeTransportFactory Instance {
-        get {
-            if (_factory == null) {
-                lock (s_factoryLock) {
-                    if (_factory == null) {
+    public static ComRuntimeTransportFactory Instance
+    {
+        get
+        {
+            if (_factory == null)
+            {
+                lock (s_factoryLock)
+                {
+                    if (_factory == null)
+                    {
                         _factory = new ComRuntimeTransportFactory();
                     }
                 }

@@ -5,7 +5,8 @@ namespace Opc.Classic.Dcom.Rpc;
 /// <summary>
 /// Rpc constants
 /// </summary>
-public enum RpcImpersonationLevel {
+public enum RpcImpersonationLevel
+{
 
     /// <summary>
     /// identfiy

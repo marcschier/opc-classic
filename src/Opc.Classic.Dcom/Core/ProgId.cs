@@ -22,7 +22,8 @@ namespace Opc.Classic.Dcom.Core;
 /// The internal database is looked up first before making calls
 /// to <code>WINREG</code> service.
 /// </summary>
-public class ProgId {
+public class ProgId
+{
 
     /// <summary>
     /// Indicates to the framework, if Windows Registry settings for
@@ -47,7 +48,8 @@ public class ProgId {
     /// Create prog id
     /// </summary>
     /// <param name="progId"></param>
-    private ProgId(string progId) {
+    private ProgId(string progId)
+    {
         _progId = progId;
         _clsid = Clsid.ValueOf(Interop.GetClsidFromProgId(progId));
     }
@@ -59,8 +61,10 @@ public class ProgId {
     /// <param name="session"></param>
     /// <exception cref="InteropException"> </exception>
     public Clsid GetCorrespondingClsid(
-        string server, Session session) {
-        if (_clsid == null) {
+        string server, Session session)
+    {
+        if (_clsid == null)
+        {
             _clsid = GetIdFromWinReg(server, session);
         }
         return _clsid;
@@ -78,23 +82,29 @@ public class ProgId {
     /// <param name="server"></param>
     /// <param name="session"></param>
     /// <exception cref="InteropException"></exception>
-    private Clsid GetIdFromWinReg(string server, Session session) {
+    private Clsid GetIdFromWinReg(string server, Session session)
+    {
         IRegistry winreg;
-        if (server == null) {
+        if (server == null)
+        {
             server = session.TargetServer;
         }
-        try {
-            if (session.SSOEnabled) {
+        try
+        {
+            if (session.SSOEnabled)
+            {
                 winreg = RegistryFactory.Instance.GetRegistryClient(
                     server, true);
             }
-            else {
+            else
+            {
                 winreg = RegistryFactory.Instance.GetRegistryClient(
                     new DefaultAuthInfoImpl(session.Domain,
                     session.UserName, session.Password), server, true);
             }
         }
-        catch (UnknownHostException) {
+        catch (UnknownHostException)
+        {
             throw new InteropException(ErrorCode.INTEROP_WINREG_EXCEPTION3);
         }
         var handle = winreg.OpenHKLM();

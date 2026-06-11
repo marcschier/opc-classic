@@ -16,7 +16,8 @@ namespace Opc.Classic.Dcom.Rpc.Auth.ntlm;
 /// <summary>
 /// Calculates the various Type 3 responses.
 /// </summary>
-public static class Responses {
+public static class Responses
+{
 
     /// <summary>
     /// Calculates the LM Response for the given challenge, using the specified
@@ -26,12 +27,15 @@ public static class Responses {
     /// <param name="challenge"> The Type 2 challenge from the server.
     /// </param>
     /// <returns> The LM Response. </returns>
-    public static byte[] GetLMResponse(string password, byte[] challenge) {
+    public static byte[] GetLMResponse(string password, byte[] challenge)
+    {
         var lmHash_Renamed = LmHash(password);
-        try {
+        try
+        {
             return LmResponse(lmHash_Renamed, challenge);
         }
-        finally {
+        finally
+        {
             CryptographicOperations.ZeroMemory(lmHash_Renamed);
         }
     }
@@ -44,12 +48,15 @@ public static class Responses {
     /// <param name="challenge"> The Type 2 challenge from the server.
     /// </param>
     /// <returns> The NTLM Response. </returns>
-    public static byte[] GetNTLMResponse(string password, byte[] challenge) {
+    public static byte[] GetNTLMResponse(string password, byte[] challenge)
+    {
         var ntlmHash_Renamed = NtlmHash(password);
-        try {
+        try
+        {
             return LmResponse(ntlmHash_Renamed, challenge);
         }
-        finally {
+        finally
+        {
             CryptographicOperations.ZeroMemory(ntlmHash_Renamed);
         }
     }
@@ -69,16 +76,19 @@ public static class Responses {
     /// </param>
     /// <returns> The NTLMv2 Response. </returns>
     public static byte[][] GetNTLMv2Response(string target, string user, string password,
-        byte[] targetInformation, byte[] challenge, byte[] clientNonce) {
+        byte[] targetInformation, byte[] challenge, byte[] clientNonce)
+    {
         var retval = new byte[2][];
         var ntlmv2Hash_Renamed = Ntlmv2Hash(target, user, password);
-        try {
+        try
+        {
             var blob = CreateBlob(targetInformation, clientNonce);
             retval[1] = blob;
             retval[0] = Lmv2Response(ntlmv2Hash_Renamed, blob, challenge);
             return retval;
         }
-        finally {
+        finally
+        {
             CryptographicOperations.ZeroMemory(ntlmv2Hash_Renamed);
         }
     }
@@ -96,12 +106,15 @@ public static class Responses {
     /// </param>
     /// <returns> The LMv2 Response.  </returns>
     public static byte[] GetLMv2Response(string target, string user, string password,
-        byte[] challenge, byte[] clientNonce) {
+        byte[] challenge, byte[] clientNonce)
+    {
         var ntlmv2Hash_Renamed = Ntlmv2Hash(target, user, password);
-        try {
+        try
+        {
             return Lmv2Response(ntlmv2Hash_Renamed, clientNonce, challenge);
         }
-        finally {
+        finally
+        {
             CryptographicOperations.ZeroMemory(ntlmv2Hash_Renamed);
         }
     }
@@ -121,11 +134,13 @@ public static class Responses {
     /// <exception cref="InvalidOperationException"> </exception>
     /// <exception cref="InvalidKeyException">  </exception>
     public static byte[] GetNTLM2SessionResponse(string password,
-        byte[] challenge, byte[] clientNonce) {
+        byte[] challenge, byte[] clientNonce)
+    {
         var hash = NtlmHash(password);
         var digest = Array.Empty<byte>();
         var sessionHash = Array.Empty<byte>();
-        try {
+        try
+        {
             var md5 = DigestUtilities.GetDigest("MD5");
             md5.BlockUpdate(challenge, 0, challenge.Length);
             md5.BlockUpdate(clientNonce, 0, clientNonce.Length);
@@ -135,7 +150,8 @@ public static class Responses {
             Array.Copy(digest, 0, sessionHash, 0, sessionHash.Length);
             return LmResponse(hash, sessionHash);
         }
-        finally {
+        finally
+        {
             CryptographicOperations.ZeroMemory(hash);
             CryptographicOperations.ZeroMemory(digest);
             CryptographicOperations.ZeroMemory(sessionHash);
@@ -149,17 +165,20 @@ public static class Responses {
     /// </param>
     /// <returns> The LM Hash of the given password, used in the calculation
     /// of the LM Response. </returns>
-    private static byte[] LmHash(string password) {
+    private static byte[] LmHash(string password)
+    {
         ArgumentNullException.ThrowIfNull(password);
         byte[]? oemPassword = null;
         var oemLength = 0;
         Span<byte> keyBytes = stackalloc byte[14];
         byte[]? lowHash = null;
         byte[]? highHash = null;
-        try {
+        try
+        {
             oemLength = Math.Min(password.Length, keyBytes.Length);
             oemPassword = SensitiveBufferPool.Rent(oemLength);
-            for (var i = 0; i < oemLength; i++) {
+            for (var i = 0; i < oemLength; i++)
+            {
                 var ch = char.ToUpperInvariant(password[i]);
                 oemPassword[i] = ch <= 0x7F ? (byte)ch : (byte)'?';
             }
@@ -180,7 +199,8 @@ public static class Responses {
             Array.Copy(highHash, 0, lmHash_Renamed, 8, 8);
             return lmHash_Renamed;
         }
-        finally {
+        finally
+        {
             CryptographicOperations.ZeroMemory(keyBytes);
             CryptographicOperations.ZeroMemory(lowHash);
             CryptographicOperations.ZeroMemory(highHash);
@@ -195,11 +215,13 @@ public static class Responses {
     /// </param>
     /// <returns> The NTLM Hash of the given password, used in the calculation
     /// of the NTLM Response and the NTLMv2 and LMv2 Hashes. </returns>
-    internal static byte[] NtlmHash(string password) {
+    internal static byte[] NtlmHash(string password)
+    {
         ArgumentNullException.ThrowIfNull(password);
         byte[]? unicodePassword = null;
         var bytesWritten = 0;
-        try {
+        try
+        {
             var byteCount = Encoding.Unicode.GetByteCount(password);
             unicodePassword = SensitiveBufferPool.Rent(byteCount);
             bytesWritten = Encoding.Unicode.GetBytes(password.AsSpan(), unicodePassword.AsSpan(0, byteCount));
@@ -209,7 +231,8 @@ public static class Responses {
             md4.DoFinal(ret, 0);
             return ret;
         }
-        finally {
+        finally
+        {
             SensitiveBufferPool.Return("ntlm-password-unicode", unicodePassword, bytesWritten);
         }
     }
@@ -223,18 +246,21 @@ public static class Responses {
     /// </param>
     /// <returns> The NTLMv2 Hash, used in the calculation of the NTLMv2
     /// and LMv2 Responses.  </returns>
-    internal static byte[] Ntlmv2Hash(string target, string user, string password) {
+    internal static byte[] Ntlmv2Hash(string target, string user, string password)
+    {
         var ntlmHash_Renamed = NtlmHash(password);
         var identity = user.ToUpperInvariant() + target;
         byte[]? identityBytes = null;
         var bytesWritten = 0;
-        try {
+        try
+        {
             var byteCount = Encoding.Unicode.GetByteCount(identity);
             identityBytes = SensitiveBufferPool.Rent(byteCount);
             bytesWritten = Encoding.Unicode.GetBytes(identity.AsSpan(), identityBytes.AsSpan(0, byteCount));
             return HmacMD5(identityBytes.AsSpan(0, bytesWritten), ntlmHash_Renamed);
         }
-        finally {
+        finally
+        {
             CryptographicOperations.ZeroMemory(ntlmHash_Renamed);
             SensitiveBufferPool.Return("ntlmv2-identity-unicode", identityBytes, bytesWritten);
         }
@@ -251,12 +277,14 @@ public static class Responses {
     /// <exception cref="SharpCifs.Util.Sharpen.NoSuchAlgorithmException"> </exception>
     /// <exception cref="InvalidKeyException"> </exception>
     /// <exception cref="InvalidOperationException">  </exception>
-    private static byte[] LmResponse(byte[] hash, byte[] challenge) {
+    private static byte[] LmResponse(byte[] hash, byte[] challenge)
+    {
         byte[]? keyBytes = null;
         byte[]? lowResponse = null;
         byte[]? middleResponse = null;
         byte[]? highResponse = null;
-        try {
+        try
+        {
             keyBytes = SensitiveBufferPool.Rent(21);
             keyBytes.AsSpan(0, 21).Clear();
             Array.Copy(hash, 0, keyBytes, 0, Math.Min(hash.Length, 16));
@@ -279,7 +307,8 @@ public static class Responses {
             Array.Copy(highResponse, 0, lmResponse_Renamed, 16, 8);
             return lmResponse_Renamed;
         }
-        finally {
+        finally
+        {
             SensitiveBufferPool.Return("lm-response-key-material", keyBytes, 21);
             CryptographicOperations.ZeroMemory(lowResponse);
             CryptographicOperations.ZeroMemory(middleResponse);
@@ -297,10 +326,12 @@ public static class Responses {
     /// </param>
     /// <returns> The response (either NTLMv2 or LMv2, depending on the
     /// client data). </returns>
-    private static byte[] Lmv2Response(byte[] hash, byte[] clientData, byte[] challenge) {
+    private static byte[] Lmv2Response(byte[] hash, byte[] clientData, byte[] challenge)
+    {
         var data = new byte[challenge.Length + clientData.Length];
         byte[]? mac = null;
-        try {
+        try
+        {
             Array.Copy(challenge, 0, data, 0, challenge.Length);
             Array.Copy(clientData, 0, data, challenge.Length, clientData.Length);
             mac = HmacMD5(data, hash);
@@ -309,7 +340,8 @@ public static class Responses {
             Array.Copy(clientData, 0, lmv2Response_Renamed, mac.Length, clientData.Length);
             return lmv2Response_Renamed;
         }
-        finally {
+        finally
+        {
             CryptographicOperations.ZeroMemory(data);
             CryptographicOperations.ZeroMemory(mac);
         }
@@ -324,7 +356,8 @@ public static class Responses {
     /// <param name="clientNonce"> The random 8-byte client nonce.
     /// </param>
     /// <returns> The blob, used in the calculation of the NTLMv2 Response. </returns>
-    internal static byte[] CreateBlob(byte[] targetInformation, byte[] clientNonce) {
+    internal static byte[] CreateBlob(byte[] targetInformation, byte[] clientNonce)
+    {
         byte[] blobSignature = { 0x01, 0x01, 0x00, 0x00 };
         byte[] reserved = { 0x00, 0x00, 0x00, 0x00 };
         byte[] unknown1 = { 0x00, 0x00, 0x00, 0x00 };
@@ -335,7 +368,8 @@ public static class Responses {
         //time *= 10000; // tenths of a microsecond.
         //               // convert to little-endian byte array.
         var timestamp = new byte[8];
-        for (var i = 0; i < 8; i++) {
+        for (var i = 0; i < 8; i++)
+        {
             timestamp[i] = (byte)time;
             time = (long)((ulong)time >> 8);
         }
@@ -382,9 +416,11 @@ public static class Responses {
     /// </param>
     /// <returns> A DES encryption key created from the key material
     /// starting at the specified offset in the given span. </returns>
-    private static KeyParameter CreateDESKey(ReadOnlySpan<byte> bytes, int offset) {
+    private static KeyParameter CreateDESKey(ReadOnlySpan<byte> bytes, int offset)
+    {
         var material = new byte[8];
-        try {
+        try
+        {
             material[0] = bytes[offset];
             material[1] = (byte)((bytes[offset] << 7) | (int)((uint)(bytes[offset + 1] & 0xff) >> 1));
             material[2] = (byte)((bytes[offset + 1] << 6) | (int)((uint)(bytes[offset + 2] & 0xff) >> 2));
@@ -396,7 +432,8 @@ public static class Responses {
             OddParity(material);
             return new KeyParameter(material);
         }
-        finally {
+        finally
+        {
             CryptographicOperations.ZeroMemory(material);
         }
     }
@@ -406,8 +443,10 @@ public static class Responses {
     /// </summary>
     /// <param name="bytes"> The data whose parity bits are to be adjusted for
     /// odd parity. </param>
-    private static void OddParity(Span<byte> bytes) {
-        for (var i = 0; i < bytes.Length; i++) {
+    private static void OddParity(Span<byte> bytes)
+    {
+        for (var i = 0; i < bytes.Length; i++)
+        {
             var b = bytes[i];
             var needsParity =
                 ((((int)((uint)b >> 7)) ^
@@ -417,10 +456,12 @@ public static class Responses {
                 ((int)((uint)b >> 3)) ^
                 ((int)((uint)b >> 2)) ^
                 ((int)((uint)b >> 1))) & 0x01) == 0;
-            if (needsParity) {
+            if (needsParity)
+            {
                 bytes[i] |= 0x01;
             }
-            else {
+            else
+            {
                 bytes[i] &= unchecked(0xfe);
             }
         }

@@ -14,7 +14,8 @@ using TUnit.Core;
 
 namespace Opc.Classic.Dcom.Smb.Tests;
 
-public sealed class Smb2DecoderBoundsFuzzTests {
+public sealed class Smb2DecoderBoundsFuzzTests
+{
     private const int PacketHeaderSize = 64;
     private const uint FlagsServerToRedir = 0x00000001;
 
@@ -39,12 +40,15 @@ public sealed class Smb2DecoderBoundsFuzzTests {
     [Arguments("ioctl-output-underflow")]
     [Arguments("ioctl-output-out-of-range")]
     [Arguments("ioctl-output-negative-offset")]
-    public async Task Smb2Parsers_RejectMalformedBoundedInputs(string caseName) {
+    public async Task Smb2Parsers_RejectMalformedBoundedInputs(string caseName)
+    {
         await Assert.That(async () => await ExecuteSmbCaseAsync(caseName)).Throws<Exception>();
     }
 
-    private static async Task ExecuteSmbCaseAsync(string caseName) {
-        switch (caseName) {
+    private static async Task ExecuteSmbCaseAsync(string caseName)
+    {
+        switch (caseName)
+        {
             case "netbios-oversized-read":
                 _ = NetBiosFraming.ReadPayloadLength([0x00, 0x02, 0x00, 0x00]);
                 break;
@@ -110,13 +114,15 @@ public sealed class Smb2DecoderBoundsFuzzTests {
         }
     }
 
-    private static async Task ExpectNegotiateRejectsAsync(byte[] body, int maxMessageSize = 0x1FFFF) {
+    private static async Task ExpectNegotiateRejectsAsync(byte[] body, int maxMessageSize = 0x1FFFF)
+    {
         var mock = new MockSmb2Transport(Packet(Smb2Command.Negotiate, body));
         await using var conn = new Smb2Connection(new Smb2ConnectionOptions("test") { MaxSmb2MessageSize = maxMessageSize }, mock);
         _ = await conn.NegotiateAsync().ConfigureAwait(false);
     }
 
-    private static async Task ExpectSessionSetupRejectsAsync(byte[] body) {
+    private static async Task ExpectSessionSetupRejectsAsync(byte[] body)
+    {
         var mock = new MockSmb2Transport(
             Packet(Smb2Command.Negotiate, NegotiateBody()),
             Packet(Smb2Command.SessionSetup, body, sessionId: 0x1000));
@@ -125,7 +131,8 @@ public sealed class Smb2DecoderBoundsFuzzTests {
         await conn.SessionSetupAsync(OneRoundTripBlobProvider()).ConfigureAwait(false);
     }
 
-    private static async Task ExpectCreateRejectsAsync(byte[] body) {
+    private static async Task ExpectCreateRejectsAsync(byte[] body)
+    {
         var mock = new MockSmb2Transport(
             Packet(Smb2Command.Negotiate, NegotiateBody()),
             Packet(Smb2Command.SessionSetup, SessionSetupBody(), sessionId: 0x1000),
@@ -136,7 +143,8 @@ public sealed class Smb2DecoderBoundsFuzzTests {
         _ = await conn.OpenNamedPipeAsync("winreg").ConfigureAwait(false);
     }
 
-    private static async Task ExpectIoctlRejectsAsync(byte[] body) {
+    private static async Task ExpectIoctlRejectsAsync(byte[] body)
+    {
         var mock = new MockSmb2Transport(
             Packet(Smb2Command.Negotiate, NegotiateBody()),
             Packet(Smb2Command.SessionSetup, SessionSetupBody(), sessionId: 0x1000),
@@ -149,13 +157,15 @@ public sealed class Smb2DecoderBoundsFuzzTests {
         _ = await pipe.TransceiveAsync(new byte[] { 0x01 }).ConfigureAwait(false);
     }
 
-    private static async Task EstablishTreeAsync(Smb2Connection conn) {
+    private static async Task EstablishTreeAsync(Smb2Connection conn)
+    {
         _ = await conn.NegotiateAsync().ConfigureAwait(false);
         await conn.SessionSetupAsync(OneRoundTripBlobProvider()).ConfigureAwait(false);
         _ = await conn.TreeConnectIpcAsync().ConfigureAwait(false);
     }
 
-    private static NtlmsspBlobProvider OneRoundTripBlobProvider() {
+    private static NtlmsspBlobProvider OneRoundTripBlobProvider()
+    {
         var calls = 0;
         return _ => calls++ == 0 ? new byte[] { 0x01 } : null;
     }
@@ -165,7 +175,8 @@ public sealed class Smb2DecoderBoundsFuzzTests {
         byte[] body,
         ulong sessionId = 0,
         uint treeId = 0,
-        uint status = 0) {
+        uint status = 0)
+    {
         var packet = new byte[PacketHeaderSize + body.Length];
         var header = new Smb2PacketHeader(
             CreditCharge: 1,
@@ -184,7 +195,8 @@ public sealed class Smb2DecoderBoundsFuzzTests {
         return packet;
     }
 
-    private static byte[] NegotiateBody(ushort securityOffset = 0, ushort securityLength = 0) {
+    private static byte[] NegotiateBody(ushort securityOffset = 0, ushort securityLength = 0)
+    {
         var body = new byte[64];
         BinaryPrimitives.WriteUInt16LittleEndian(body.AsSpan(0), 65);
         BinaryPrimitives.WriteUInt16LittleEndian(body.AsSpan(4), (ushort)Smb2Dialect.Smb300);
@@ -196,7 +208,8 @@ public sealed class Smb2DecoderBoundsFuzzTests {
         return body;
     }
 
-    private static byte[] SessionSetupBody(ushort securityOffset = 0, ushort securityLength = 0) {
+    private static byte[] SessionSetupBody(ushort securityOffset = 0, ushort securityLength = 0)
+    {
         var body = new byte[8];
         BinaryPrimitives.WriteUInt16LittleEndian(body.AsSpan(0), 9);
         BinaryPrimitives.WriteUInt16LittleEndian(body.AsSpan(4), securityOffset);
@@ -204,13 +217,15 @@ public sealed class Smb2DecoderBoundsFuzzTests {
         return body;
     }
 
-    private static byte[] TreeBody() {
+    private static byte[] TreeBody()
+    {
         var body = new byte[16];
         BinaryPrimitives.WriteUInt16LittleEndian(body.AsSpan(0), 16);
         return body;
     }
 
-    private static byte[] CreateBody() {
+    private static byte[] CreateBody()
+    {
         var body = new byte[88];
         BinaryPrimitives.WriteUInt16LittleEndian(body.AsSpan(0), 89);
         BinaryPrimitives.WriteUInt64LittleEndian(body.AsSpan(64), 1);
@@ -218,7 +233,8 @@ public sealed class Smb2DecoderBoundsFuzzTests {
         return body;
     }
 
-    private static byte[] IoctlBody(uint outputOffset = 0, uint outputCount = 0) {
+    private static byte[] IoctlBody(uint outputOffset = 0, uint outputCount = 0)
+    {
         var body = new byte[48];
         BinaryPrimitives.WriteUInt16LittleEndian(body.AsSpan(0), 49);
         BinaryPrimitives.WriteUInt32LittleEndian(body.AsSpan(32), outputOffset);
@@ -226,20 +242,25 @@ public sealed class Smb2DecoderBoundsFuzzTests {
         return body;
     }
 
-    private sealed class MockSmb2Transport : ISmb2Transport {
+    private sealed class MockSmb2Transport : ISmb2Transport
+    {
         private readonly Queue<ReadOnlyMemory<byte>> _responses;
 
-        public MockSmb2Transport(params byte[][] responses) {
+        public MockSmb2Transport(params byte[][] responses)
+        {
             _responses = new Queue<ReadOnlyMemory<byte>>();
-            foreach (var response in responses) {
+            foreach (var response in responses)
+            {
                 _responses.Enqueue(response);
             }
         }
 
         public Task SendAsync(ReadOnlyMemory<byte> packet, CancellationToken cancellationToken) => Task.CompletedTask;
 
-        public Task<ReadOnlyMemory<byte>> ReceiveAsync(CancellationToken cancellationToken) {
-            if (_responses.Count == 0) {
+        public Task<ReadOnlyMemory<byte>> ReceiveAsync(CancellationToken cancellationToken)
+        {
+            if (_responses.Count == 0)
+            {
                 throw new InvalidOperationException("No queued SMB2 fuzz response.");
             }
             return Task.FromResult(_responses.Dequeue());

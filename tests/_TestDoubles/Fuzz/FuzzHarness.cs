@@ -21,7 +21,8 @@ namespace Opc.Classic.Tests.Fuzz;
 /// exceptions and fails on any other exception type.
 /// All helpers are deterministic — seed via OPCCLASSIC_FUZZ_SEED or explicit CsCheck overloads.
 /// </summary>
-public static class FuzzHarness {
+public static class FuzzHarness
+{
     /// <summary>Quick CI iteration default.</summary>
     public const int DefaultIterations = 200;
 
@@ -61,7 +62,8 @@ public static class FuzzHarness {
     /// </summary>
     /// <param name="validInput">Known-good encoded input to mutate.</param>
     /// <returns>A deterministic CsCheck generator for mutated copies of <paramref name="validInput"/>.</returns>
-    public static Gen<byte[]> MutateValid(ReadOnlyMemory<byte> validInput) {
+    public static Gen<byte[]> MutateValid(ReadOnlyMemory<byte> validInput)
+    {
         byte[] source = validInput.ToArray();
         return Gen.Select(
             Gen.Int[0, 7],
@@ -87,23 +89,27 @@ public static class FuzzHarness {
         Func<ReadOnlyMemory<byte>, T> parse,
         IReadOnlyCollection<Type> allowedExceptions,
         Action<T>? resultInvariant = null,
-        int timeoutMs = 1_000) {
+        int timeoutMs = 1_000)
+    {
         ArgumentNullException.ThrowIfNull(parse);
         ArgumentNullException.ThrowIfNull(allowedExceptions);
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(timeoutMs);
 
         var stopwatch = Stopwatch.StartNew();
-        try {
+        try
+        {
             T result = parse(input);
             stopwatch.Stop();
             AssertWithinTimeout(input, stopwatch.ElapsedMilliseconds, timeoutMs);
             resultInvariant?.Invoke(result);
         }
-        catch (Exception ex) when (IsAllowedParserException(ex, allowedExceptions)) {
+        catch (Exception ex) when (IsAllowedParserException(ex, allowedExceptions))
+        {
             stopwatch.Stop();
             AssertWithinTimeout(input, stopwatch.ElapsedMilliseconds, timeoutMs);
         }
-        catch (Exception ex) when (ex is not FuzzHarnessFailureException && !IsNeverCaught(ex)) {
+        catch (Exception ex) when (ex is not FuzzHarnessFailureException && !IsNeverCaught(ex))
+        {
             stopwatch.Stop();
             throw CreateFailure(
                 input,
@@ -125,24 +131,29 @@ public static class FuzzHarness {
     /// </summary>
     /// <param name="surface">Fuzzing surface directory name under tests/_Fixtures/Fuzz.</param>
     /// <returns>Rows whose first item is the corpus file bytes.</returns>
-    public static IEnumerable<object[]> LoadCorpus(string surface) {
+    public static IEnumerable<object[]> LoadCorpus(string surface)
+    {
         ArgumentException.ThrowIfNullOrWhiteSpace(surface);
 
         string? repositoryRoot = FindRepositoryRoot(Directory.GetCurrentDirectory());
-        if (repositoryRoot is null) {
+        if (repositoryRoot is null)
+        {
             repositoryRoot = FindRepositoryRoot(AppContext.BaseDirectory);
         }
 
-        if (repositoryRoot is null) {
+        if (repositoryRoot is null)
+        {
             yield break;
         }
 
         string directory = Path.Combine(repositoryRoot, "tests", "_Fixtures", "Fuzz", surface);
-        if (!Directory.Exists(directory)) {
+        if (!Directory.Exists(directory))
+        {
             yield break;
         }
 
-        foreach (string file in Directory.EnumerateFiles(directory, "*.bin", SearchOption.TopDirectoryOnly)) {
+        foreach (string file in Directory.EnumerateFiles(directory, "*.bin", SearchOption.TopDirectoryOnly))
+        {
             yield return [File.ReadAllBytes(file)];
         }
     }
@@ -153,25 +164,31 @@ public static class FuzzHarness {
     /// <param name="input">Input bytes to dump.</param>
     /// <param name="maxBytes">Maximum number of input bytes to include.</param>
     /// <returns>Offset-prefixed hex dump.</returns>
-    public static string HexDump(ReadOnlySpan<byte> input, int maxBytes = 256) {
+    public static string HexDump(ReadOnlySpan<byte> input, int maxBytes = 256)
+    {
         ArgumentOutOfRangeException.ThrowIfNegative(maxBytes);
 
         int length = Math.Min(input.Length, maxBytes);
-        if (length == 0) {
+        if (length == 0)
+        {
             return "00000000  <empty>";
         }
 
         var builder = new StringBuilder(((length + 15) / 16) * 80);
-        for (int offset = 0; offset < length; offset += 16) {
-            if (builder.Length > 0) {
+        for (int offset = 0; offset < length; offset += 16)
+        {
+            if (builder.Length > 0)
+            {
                 builder.AppendLine();
             }
 
             builder.Append(offset.ToString("x8", CultureInfo.InvariantCulture));
             builder.Append("  ");
             int lineLength = Math.Min(16, length - offset);
-            for (int index = 0; index < lineLength; index++) {
-                if (index == 8) {
+            for (int index = 0; index < lineLength; index++)
+            {
+                if (index == 8)
+                {
                     builder.Append(' ');
                 }
 
@@ -180,7 +197,8 @@ public static class FuzzHarness {
             }
         }
 
-        if (input.Length > length) {
+        if (input.Length > length)
+        {
             builder.AppendLine();
             builder.Append("... truncated ");
             builder.Append((input.Length - length).ToString(CultureInfo.InvariantCulture));
@@ -190,7 +208,8 @@ public static class FuzzHarness {
         return builder.ToString();
     }
 
-    private static byte[] Mutate(byte[] source, int operation, int first, int second, byte value, byte[] fill) => operation switch {
+    private static byte[] Mutate(byte[] source, int operation, int first, int second, byte value, byte[] fill) => operation switch
+    {
         0 => Truncate(source, first),
         1 => Append(source, fill),
         2 => FlipBit(source, first, second),
@@ -201,8 +220,10 @@ public static class FuzzHarness {
         _ => NegateUInt32Length(source, first),
     };
 
-    private static byte[] Truncate(byte[] source, int selector) {
-        if (source.Length == 0) {
+    private static byte[] Truncate(byte[] source, int selector)
+    {
+        if (source.Length == 0)
+        {
             return [];
         }
 
@@ -212,15 +233,18 @@ public static class FuzzHarness {
         return mutated;
     }
 
-    private static byte[] Append(byte[] source, byte[] suffix) {
+    private static byte[] Append(byte[] source, byte[] suffix)
+    {
         byte[] mutated = new byte[source.Length + suffix.Length];
         Array.Copy(source, mutated, source.Length);
         Array.Copy(suffix, 0, mutated, source.Length, suffix.Length);
         return mutated;
     }
 
-    private static byte[] FlipBit(byte[] source, int offsetSelector, int bitSelector) {
-        if (source.Length == 0) {
+    private static byte[] FlipBit(byte[] source, int offsetSelector, int bitSelector)
+    {
+        if (source.Length == 0)
+        {
             return [1];
         }
 
@@ -230,8 +254,10 @@ public static class FuzzHarness {
         return mutated;
     }
 
-    private static byte[] FlipByte(byte[] source, int offsetSelector, byte value) {
-        if (source.Length == 0) {
+    private static byte[] FlipByte(byte[] source, int offsetSelector, byte value)
+    {
+        if (source.Length == 0)
+        {
             return [value];
         }
 
@@ -240,8 +266,10 @@ public static class FuzzHarness {
         return mutated;
     }
 
-    private static byte[] FillBytes(byte[] source, int offsetSelector, int lengthSelector, byte value) {
-        if (source.Length == 0) {
+    private static byte[] FillBytes(byte[] source, int offsetSelector, int lengthSelector, byte value)
+    {
+        if (source.Length == 0)
+        {
             return [value];
         }
 
@@ -252,8 +280,10 @@ public static class FuzzHarness {
         return mutated;
     }
 
-    private static byte[] FillBytes(byte[] source, int offsetSelector, int lengthSelector, byte[] fill) {
-        if (source.Length == 0) {
+    private static byte[] FillBytes(byte[] source, int offsetSelector, int lengthSelector, byte[] fill)
+    {
+        if (source.Length == 0)
+        {
             return Copy(fill);
         }
 
@@ -264,9 +294,11 @@ public static class FuzzHarness {
         return mutated;
     }
 
-    private static byte[] WriteUInt32Length(byte[] source, int offsetSelector, uint value) {
+    private static byte[] WriteUInt32Length(byte[] source, int offsetSelector, uint value)
+    {
         byte[] mutated = source.Length < sizeof(uint) ? new byte[sizeof(uint)] : Copy(source);
-        if (source.Length < sizeof(uint)) {
+        if (source.Length < sizeof(uint))
+        {
             Array.Copy(source, mutated, source.Length);
         }
 
@@ -275,9 +307,11 @@ public static class FuzzHarness {
         return mutated;
     }
 
-    private static byte[] NegateUInt32Length(byte[] source, int offsetSelector) {
+    private static byte[] NegateUInt32Length(byte[] source, int offsetSelector)
+    {
         byte[] mutated = source.Length < sizeof(uint) ? new byte[sizeof(uint)] : Copy(source);
-        if (source.Length < sizeof(uint)) {
+        if (source.Length < sizeof(uint))
+        {
             Array.Copy(source, mutated, source.Length);
         }
 
@@ -287,19 +321,23 @@ public static class FuzzHarness {
         return mutated;
     }
 
-    private static byte[] Copy(byte[] source) {
+    private static byte[] Copy(byte[] source)
+    {
         byte[] copy = new byte[source.Length];
         Array.Copy(source, copy, source.Length);
         return copy;
     }
 
-    private static int PositiveModulo(int value, int divisor) {
+    private static int PositiveModulo(int value, int divisor)
+    {
         int remainder = value % divisor;
         return remainder < 0 ? remainder + divisor : remainder;
     }
 
-    private static void AssertWithinTimeout(ReadOnlyMemory<byte> input, long elapsedMs, int timeoutMs) {
-        if (elapsedMs > timeoutMs) {
+    private static void AssertWithinTimeout(ReadOnlyMemory<byte> input, long elapsedMs, int timeoutMs)
+    {
+        if (elapsedMs > timeoutMs)
+        {
             throw CreateFailure(
                 input,
                 $"Parser exceeded timeout of {timeoutMs.ToString(CultureInfo.InvariantCulture)} ms; elapsed {elapsedMs.ToString(CultureInfo.InvariantCulture)} ms.",
@@ -307,14 +345,18 @@ public static class FuzzHarness {
         }
     }
 
-    private static bool IsAllowedParserException(Exception exception, IReadOnlyCollection<Type> allowedExceptions) {
-        if (IsAlwaysEscalated(exception)) {
+    private static bool IsAllowedParserException(Exception exception, IReadOnlyCollection<Type> allowedExceptions)
+    {
+        if (IsAlwaysEscalated(exception))
+        {
             return false;
         }
 
         Type exceptionType = exception.GetType();
-        foreach (Type allowedException in allowedExceptions) {
-            if (allowedException.IsAssignableFrom(exceptionType)) {
+        foreach (Type allowedException in allowedExceptions)
+        {
+            if (allowedException.IsAssignableFrom(exceptionType))
+            {
                 return true;
             }
         }
@@ -337,7 +379,8 @@ public static class FuzzHarness {
             or AccessViolationException
             or InvalidProgramException;
 
-    private static FuzzHarnessFailureException CreateFailure(ReadOnlyMemory<byte> input, string reason, Exception? innerException) {
+    private static FuzzHarnessFailureException CreateFailure(ReadOnlyMemory<byte> input, string reason, Exception? innerException)
+    {
         string message = string.Concat(
             reason,
             Environment.NewLine,
@@ -348,23 +391,28 @@ public static class FuzzHarness {
         return new FuzzHarnessFailureException(message, innerException);
     }
 
-    private static int ParsePositiveIntEnvironment(string variableName, int fallback) {
+    private static int ParsePositiveIntEnvironment(string variableName, int fallback)
+    {
         string? value = Environment.GetEnvironmentVariable(variableName);
         return int.TryParse(value, NumberStyles.None, CultureInfo.InvariantCulture, out int parsed) && parsed > 0
             ? parsed
             : fallback;
     }
 
-    private static ulong ParseULongEnvironment(string variableName) {
+    private static ulong ParseULongEnvironment(string variableName)
+    {
         string? value = Environment.GetEnvironmentVariable(variableName);
         return ulong.TryParse(value, NumberStyles.None, CultureInfo.InvariantCulture, out ulong parsed) ? parsed : 0;
     }
 
-    private static string? FindRepositoryRoot(string startDirectory) {
+    private static string? FindRepositoryRoot(string startDirectory)
+    {
         var directory = new DirectoryInfo(startDirectory);
-        while (directory is not null) {
+        while (directory is not null)
+        {
             if (File.Exists(Path.Combine(directory.FullName, "Opc.Classic.slnx"))
-                && Directory.Exists(Path.Combine(directory.FullName, "tests"))) {
+                && Directory.Exists(Path.Combine(directory.FullName, "tests")))
+            {
                 return directory.FullName;
             }
 

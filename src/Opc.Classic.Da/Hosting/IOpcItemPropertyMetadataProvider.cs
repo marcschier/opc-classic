@@ -10,7 +10,8 @@ namespace Opc.Classic.Da.Hosting;
 /// <summary>
 /// Optional metadata companion for <see cref="IOpcItemPropertyProvider"/> implementations.
 /// </summary>
-public interface IOpcItemPropertyMetadataProvider {
+public interface IOpcItemPropertyMetadataProvider
+{
     /// <summary>Returns item-specific property descriptors in addition to OPC DA standard properties.</summary>
     IReadOnlyList<OpcStandardProperty> GetAvailableProperties(string itemId);
 

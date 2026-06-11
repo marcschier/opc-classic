@@ -13,7 +13,8 @@ namespace Opc.Classic.Dcom.Rpc.Auth.ntlm;
 /// at the <see cref="AuthenticationSource.SetDefaultInstance(AuthenticationSource?)"/>
 /// registration API.
 /// </summary>
-public sealed class NullAuthenticationSource : AuthenticationSource {
+public sealed class NullAuthenticationSource : AuthenticationSource
+{
 
     /// <summary>Singleton instance.</summary>
     public static NullAuthenticationSource Instance { get; } = new NullAuthenticationSource();

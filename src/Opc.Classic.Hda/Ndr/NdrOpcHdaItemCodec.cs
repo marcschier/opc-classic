@@ -23,11 +23,13 @@ namespace Opc.Classic.Hda.Ndr;
 ///     VARIANT[dwCount]   pvDataValues      - conformant array; emit count then loop
 /// </code>
 /// </remarks>
-public static class NdrOpcHdaItemCodec {
+public static class NdrOpcHdaItemCodec
+{
     private const long FileTimeEpochOffsetTicks = 504911232000000000L;
 
     /// <summary>Encodes a single OPCHDA_ITEM in NDR.</summary>
-    public static void Write(ref NdrWriter writer, OpcHdaItem item) {
+    public static void Write(ref NdrWriter writer, OpcHdaItem item)
+    {
         ArgumentNullException.ThrowIfNull(item);
 
         int count = item.Timestamps.Length;
@@ -36,31 +38,36 @@ public static class NdrOpcHdaItemCodec {
         writer.WriteUInt32(unchecked((uint)count));
 
         writer.WriteUInt32(unchecked((uint)count));  // conformance for timestamps
-        for (int i = 0; i < count; i++) {
+        for (int i = 0; i < count; i++)
+        {
             writer.WriteFileTime(item.Timestamps[i].UtcTicks - FileTimeEpochOffsetTicks);
         }
 
         writer.WriteConformantUInt32Array(item.Qualities);
 
         writer.WriteUInt32(unchecked((uint)count));  // conformance for variants
-        for (int i = 0; i < count; i++) {
+        for (int i = 0; i < count; i++)
+        {
             writer.WriteVariant(item.Values[i]);
         }
     }
 
     /// <summary>Decodes a single OPCHDA_ITEM from NDR.</summary>
-    public static OpcHdaItem Read(ref NdrReader reader) {
+    public static OpcHdaItem Read(ref NdrReader reader)
+    {
         uint hClient = reader.ReadUInt32();
         uint haAggregate = reader.ReadUInt32();
         uint dwCount = reader.ReadUInt32();
-        if (dwCount > (uint)int.MaxValue) {
+        if (dwCount > (uint)int.MaxValue)
+        {
             throw new System.IO.InvalidDataException($"OPCHDA_ITEM dwCount {dwCount} too large.");
         }
         int count = (int)dwCount;
 
         uint tsConformance = reader.ReadUInt32();
         var timestamps = new DateTimeOffset[count];
-        for (int i = 0; i < count; i++) {
+        for (int i = 0; i < count; i++)
+        {
             long ft = reader.ReadFileTime();
             timestamps[i] = new DateTimeOffset(ft + FileTimeEpochOffsetTicks, TimeSpan.Zero);
         }
@@ -71,7 +78,8 @@ public static class NdrOpcHdaItemCodec {
         uint variantConformance = reader.ReadUInt32();
         _ = variantConformance;
         var values = new OpcVariant[count];
-        for (int i = 0; i < count; i++) {
+        for (int i = 0; i < count; i++)
+        {
             values[i] = reader.ReadVariant();
         }
 

@@ -7,8 +7,10 @@ using System.Reflection;
 
 namespace Opc.Classic.Integration.Tests.Support;
 
-internal static class ConformanceMetadata {
-    public static bool HasCategory(Type testType, string methodName, string category) {
+internal static class ConformanceMetadata
+{
+    public static bool HasCategory(Type testType, string methodName, string category)
+    {
         var method = testType.GetMethod(methodName, BindingFlags.Public | BindingFlags.Instance);
         return method?.GetCustomAttributesData().Any(attribute =>
             attribute.AttributeType.FullName == "TUnit.Core.CategoryAttribute"

@@ -28,7 +28,8 @@ namespace Opc.Classic.Security.Dcom;
 [OpcInterface("7AA83A01-6C77-11D3-84F9-00008630A38B")]
 [GenerateOpcProxy]
 [OpcGenerateServerDispatch]
-public partial interface IOPCSecurityNT {
+public partial interface IOPCSecurityNT
+{
     /// <summary><c>IOPCSecurityNT::IsAvailableNT</c> (opnum 3).</summary>
     [OpcMethod(3)]
     Task<bool> IsAvailableNTAsync(CancellationToken cancellationToken = default);
@@ -46,7 +47,8 @@ public partial interface IOPCSecurityNT {
 [OpcInterface("7AA83A02-6C77-11D3-84F9-00008630A38B")]
 [GenerateOpcProxy]
 [OpcGenerateServerDispatch]
-public partial interface IOPCSecurityPrivate {
+public partial interface IOPCSecurityPrivate
+{
     /// <summary><c>IOPCSecurityPrivate::IsAvailablePriv</c> (opnum 3).</summary>
     [OpcMethod(3)]
     Task<bool> IsAvailablePrivAsync(CancellationToken cancellationToken = default);

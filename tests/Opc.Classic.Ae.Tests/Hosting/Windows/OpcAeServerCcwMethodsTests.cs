@@ -19,15 +19,18 @@ namespace Opc.Classic.Ae.Tests.Hosting.Windows;
 /// Windows-only tests for the AE server CCW per-method vtables.
 /// </summary>
 [SupportedOSPlatform("windows")]
-public sealed class OpcAeServerCcwMethodsTests {
+public sealed class OpcAeServerCcwMethodsTests
+{
     private const int S_OK = 0;
     private const int E_NOINTERFACE = unchecked((int)0x80004002);
 
     private static readonly Guid IID_IUnknown = Guid.Parse("00000000-0000-0000-C000-000000000046");
 
     [Test]
-    public async Task QueryInterface_for_each_supported_iid_returns_nonzero_tearoff() {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task QueryInterface_for_each_supported_iid_returns_nonzero_tearoff()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
@@ -42,8 +45,10 @@ public sealed class OpcAeServerCcwMethodsTests {
     }
 
     [Test]
-    public async Task QueryInterface_for_IUnknown_on_any_tearoff_returns_canonical_identity() {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task QueryInterface_for_IUnknown_on_any_tearoff_returns_canonical_identity()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
@@ -59,8 +64,10 @@ public sealed class OpcAeServerCcwMethodsTests {
     }
 
     [Test]
-    public async Task QueryInterface_for_unsupported_iid_returns_E_NOINTERFACE() {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task QueryInterface_for_unsupported_iid_returns_E_NOINTERFACE()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
@@ -72,8 +79,10 @@ public sealed class OpcAeServerCcwMethodsTests {
     }
 
     [Test]
-    public async Task Release_to_zero_removes_ccw_from_registry() {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task Release_to_zero_removes_ccw_from_registry()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
@@ -84,8 +93,10 @@ public sealed class OpcAeServerCcwMethodsTests {
     }
 
     [Test]
-    public async Task GetStatus_dispatches_through_managed_server() {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task GetStatus_dispatches_through_managed_server()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
@@ -105,8 +116,10 @@ public sealed class OpcAeServerCcwMethodsTests {
     }
 
     [Test]
-    public async Task QueryAvailableFilters_dispatches_through_managed_server() {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task QueryAvailableFilters_dispatches_through_managed_server()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
@@ -121,8 +134,10 @@ public sealed class OpcAeServerCcwMethodsTests {
     }
 
     [Test]
-    public async Task SubscriptionGetState_dispatches_through_managed_subscription() {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task SubscriptionGetState_dispatches_through_managed_subscription()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
@@ -140,8 +155,10 @@ public sealed class OpcAeServerCcwMethodsTests {
     }
 
     [Test]
-    public async Task SubscriptionSetState_dispatches_through_managed_subscription() {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task SubscriptionSetState_dispatches_through_managed_subscription()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
@@ -160,8 +177,10 @@ public sealed class OpcAeServerCcwMethodsTests {
         await Assert.That(server.ClientSubscription).IsEqualTo(900);
     }
 
-    private sealed class StubAeServer : IOpcAeServer, IOPCEventSubscriptionMgt {
-        public OpcServerStatus Status { get; } = new() {
+    private sealed class StubAeServer : IOpcAeServer, IOPCEventSubscriptionMgt
+    {
+        public OpcServerStatus Status { get; } = new()
+        {
             Spec = OpcStatusSpec.Ae,
             StartTime = new DateTimeOffset(2026, 1, 2, 3, 4, 5, TimeSpan.Zero),
             CurrentTime = new DateTimeOffset(2026, 1, 2, 3, 4, 6, TimeSpan.Zero),
@@ -190,7 +209,8 @@ public sealed class OpcAeServerCcwMethodsTests {
         public Task SetFilterAsync(int eventType, int[] eventCategories, int lowSeverity, int highSeverity, string[] areas, string[] sources, CancellationToken cancellationToken = default) =>
             Task.CompletedTask;
 
-        public Task GetFilterAsync(out int eventType, out int[] eventCategories, out int lowSeverity, out int highSeverity, out string[] areas, out string[] sources, CancellationToken cancellationToken = default) {
+        public Task GetFilterAsync(out int eventType, out int[] eventCategories, out int lowSeverity, out int highSeverity, out string[] areas, out string[] sources, CancellationToken cancellationToken = default)
+        {
             eventType = 0;
             eventCategories = Array.Empty<int>();
             lowSeverity = 0;
@@ -212,7 +232,8 @@ public sealed class OpcAeServerCcwMethodsTests {
         public Task CancelRefreshAsync(int connection, CancellationToken cancellationToken = default) =>
             Task.CompletedTask;
 
-        public Task GetStateAsync(out bool active, out int bufferTime, out int maxSize, out int clientSubscription, CancellationToken cancellationToken = default) {
+        public Task GetStateAsync(out bool active, out int bufferTime, out int maxSize, out int clientSubscription, CancellationToken cancellationToken = default)
+        {
             active = Active;
             bufferTime = BufferTime;
             maxSize = MaxSize;
@@ -220,7 +241,8 @@ public sealed class OpcAeServerCcwMethodsTests {
             return Task.CompletedTask;
         }
 
-        public Task SetStateAsync(bool active, int bufferTime, int maxSize, int clientSubscription, out int revisedBufferTime, out int revisedMaxSize, CancellationToken cancellationToken = default) {
+        public Task SetStateAsync(bool active, int bufferTime, int maxSize, int clientSubscription, out int revisedBufferTime, out int revisedMaxSize, CancellationToken cancellationToken = default)
+        {
             Active = active;
             BufferTime = bufferTime;
             MaxSize = maxSize;
@@ -231,69 +253,82 @@ public sealed class OpcAeServerCcwMethodsTests {
         }
     }
 
-    private static class Helpers {
+    private static class Helpers
+    {
         internal readonly record struct GetStatusResult(int Hr, long StartTime, long CurrentTime, long LastUpdateTime, int State, (int Major, int Minor, int Build) Version, string? VendorInfo);
 
         internal readonly record struct SubscriptionStateResult(int Hr, int Active, int BufferTime, int MaxSize, int ClientSubscription);
 
         internal readonly record struct SetStateResult(int Hr, int RevisedBufferTime, int RevisedMaxSize);
 
-        internal static IntPtr InvokeQI(IntPtr ccw, Guid iid) {
+        internal static IntPtr InvokeQI(IntPtr ccw, Guid iid)
+        {
             QueryInterfaceDelegate qi = GetMethod<QueryInterfaceDelegate>(ccw, 0);
             int hr = qi(ccw, ref iid, out IntPtr returned);
             return hr == S_OK ? returned : IntPtr.Zero;
         }
 
-        internal static (int Hr, IntPtr Returned) InvokeQIRaw(IntPtr ccw, Guid iid) {
+        internal static (int Hr, IntPtr Returned) InvokeQIRaw(IntPtr ccw, Guid iid)
+        {
             QueryInterfaceDelegate qi = GetMethod<QueryInterfaceDelegate>(ccw, 0);
             int hr = qi(ccw, ref iid, out IntPtr returned);
             return (hr, returned);
         }
 
-        internal static void InvokeRelease(IntPtr ccw) {
+        internal static void InvokeRelease(IntPtr ccw)
+        {
             ReleaseDelegate release = GetMethod<ReleaseDelegate>(ccw, 2);
             release(ccw);
         }
 
-        internal static GetStatusResult InvokeGetStatus(IntPtr eventServer) {
+        internal static GetStatusResult InvokeGetStatus(IntPtr eventServer)
+        {
             GetStatusDelegate getStatus = GetMethod<GetStatusDelegate>(eventServer, 3);
             int hr = getStatus(eventServer, out IntPtr statusPtr);
-            if (statusPtr == IntPtr.Zero) {
+            if (statusPtr == IntPtr.Zero)
+            {
                 return new GetStatusResult(hr, 0, 0, 0, 0, default, null);
             }
 
             var native = Marshal.PtrToStructure<OPCEVENTSERVERSTATUS_NATIVE>(statusPtr);
             string? vendorInfo = Marshal.PtrToStringUni(native.szVendorInfo);
-            if (native.szVendorInfo != IntPtr.Zero) {
+            if (native.szVendorInfo != IntPtr.Zero)
+            {
                 Marshal.FreeCoTaskMem(native.szVendorInfo);
             }
             Marshal.FreeCoTaskMem(statusPtr);
             return new GetStatusResult(hr, native.ftStartTime, native.ftCurrentTime, native.ftLastUpdateTime, native.dwServerState, (native.wMajorVersion, native.wMinorVersion, native.wBuildNumber), vendorInfo);
         }
 
-        internal static (int Hr, int FilterMask) InvokeQueryAvailableFilters(IntPtr eventServer) {
+        internal static (int Hr, int FilterMask) InvokeQueryAvailableFilters(IntPtr eventServer)
+        {
             QueryAvailableFiltersDelegate queryFilters = GetMethod<QueryAvailableFiltersDelegate>(eventServer, 5);
             IntPtr pFilterMask = Marshal.AllocCoTaskMem(sizeof(int));
-            try {
+            try
+            {
                 int hr = queryFilters(eventServer, pFilterMask);
                 return (hr, Marshal.ReadInt32(pFilterMask));
             }
-            finally {
+            finally
+            {
                 Marshal.FreeCoTaskMem(pFilterMask);
             }
         }
 
-        internal static SubscriptionStateResult InvokeGetState(IntPtr subscription) {
+        internal static SubscriptionStateResult InvokeGetState(IntPtr subscription)
+        {
             GetStateDelegate getState = GetMethod<GetStateDelegate>(subscription, 9);
             IntPtr pActive = Marshal.AllocCoTaskMem(sizeof(int));
             IntPtr pBufferTime = Marshal.AllocCoTaskMem(sizeof(int));
             IntPtr pMaxSize = Marshal.AllocCoTaskMem(sizeof(int));
             IntPtr pClientSubscription = Marshal.AllocCoTaskMem(sizeof(int));
-            try {
+            try
+            {
                 int hr = getState(subscription, pActive, pBufferTime, pMaxSize, pClientSubscription);
                 return new SubscriptionStateResult(hr, Marshal.ReadInt32(pActive), Marshal.ReadInt32(pBufferTime), Marshal.ReadInt32(pMaxSize), Marshal.ReadInt32(pClientSubscription));
             }
-            finally {
+            finally
+            {
                 Marshal.FreeCoTaskMem(pActive);
                 Marshal.FreeCoTaskMem(pBufferTime);
                 Marshal.FreeCoTaskMem(pMaxSize);
@@ -301,21 +336,24 @@ public sealed class OpcAeServerCcwMethodsTests {
             }
         }
 
-        internal static SetStateResult InvokeSetState(IntPtr subscription, bool active, int bufferTime, int maxSize, int clientSubscription) {
+        internal static SetStateResult InvokeSetState(IntPtr subscription, bool active, int bufferTime, int maxSize, int clientSubscription)
+        {
             SetStateDelegate setState = GetMethod<SetStateDelegate>(subscription, 10);
             IntPtr pActive = Marshal.AllocCoTaskMem(sizeof(int));
             IntPtr pBufferTime = Marshal.AllocCoTaskMem(sizeof(int));
             IntPtr pMaxSize = Marshal.AllocCoTaskMem(sizeof(int));
             IntPtr pRevisedBufferTime = Marshal.AllocCoTaskMem(sizeof(int));
             IntPtr pRevisedMaxSize = Marshal.AllocCoTaskMem(sizeof(int));
-            try {
+            try
+            {
                 Marshal.WriteInt32(pActive, active ? 1 : 0);
                 Marshal.WriteInt32(pBufferTime, bufferTime);
                 Marshal.WriteInt32(pMaxSize, maxSize);
                 int hr = setState(subscription, pActive, pBufferTime, pMaxSize, clientSubscription, pRevisedBufferTime, pRevisedMaxSize);
                 return new SetStateResult(hr, Marshal.ReadInt32(pRevisedBufferTime), Marshal.ReadInt32(pRevisedMaxSize));
             }
-            finally {
+            finally
+            {
                 Marshal.FreeCoTaskMem(pActive);
                 Marshal.FreeCoTaskMem(pBufferTime);
                 Marshal.FreeCoTaskMem(pMaxSize);
@@ -325,7 +363,8 @@ public sealed class OpcAeServerCcwMethodsTests {
         }
 
         private static T GetMethod<T>(IntPtr tearoff, int slot)
-            where T : Delegate {
+            where T : Delegate
+        {
             IntPtr vtable = Marshal.ReadIntPtr(tearoff);
             IntPtr method = Marshal.ReadIntPtr(vtable, slot * IntPtr.Size);
             return Marshal.GetDelegateForFunctionPointer<T>(method);
@@ -352,7 +391,8 @@ public sealed class OpcAeServerCcwMethodsTests {
         // Mirror production OpcAeServerCcwMethods.OPCEVENTSERVERSTATUS_NATIVE
         // which uses natural alignment (no Pack) — see DR7 fix.
         [StructLayout(LayoutKind.Sequential)]
-        private struct OPCEVENTSERVERSTATUS_NATIVE {
+        private struct OPCEVENTSERVERSTATUS_NATIVE
+        {
             public long ftStartTime;
             public long ftCurrentTime;
             public long ftLastUpdateTime;

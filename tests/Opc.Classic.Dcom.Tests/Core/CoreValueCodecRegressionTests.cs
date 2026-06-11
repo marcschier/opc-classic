@@ -11,9 +11,11 @@ using TUnit.Core;
 
 namespace Opc.Classic.Dcom.Tests;
 
-public sealed class CoreValueCodecRegressionTests {
+public sealed class CoreValueCodecRegressionTests
+{
     [Test]
-    public async Task ComVersion_DefaultConstructor_UsesDcomFiveFour() {
+    public async Task ComVersion_DefaultConstructor_UsesDcomFiveFour()
+    {
         var version = new ComVersion();
 
         await Assert.That(version.MajorVersion).IsEqualTo(5);
@@ -21,7 +23,8 @@ public sealed class CoreValueCodecRegressionTests {
     }
 
     [Test]
-    public async Task ComVersion_CustomConstructor_PreservesComponents() {
+    public async Task ComVersion_CustomConstructor_PreservesComponents()
+    {
         var version = new ComVersion(7, 9);
 
         await Assert.That(version.MajorVersion).IsEqualTo(7);
@@ -29,7 +32,8 @@ public sealed class CoreValueCodecRegressionTests {
     }
 
     [Test]
-    public async Task Currency_StringWithFraction_SplitsUnitsAndFractionalUnits() {
+    public async Task Currency_StringWithFraction_SplitsUnitsAndFractionalUnits()
+    {
         var currency = new Currency("12.0340");
 
         await Assert.That(currency.Units).IsEqualTo(12);
@@ -37,7 +41,8 @@ public sealed class CoreValueCodecRegressionTests {
     }
 
     [Test]
-    public async Task Currency_StringWithoutLeadingUnit_NormalizesUnits() {
+    public async Task Currency_StringWithoutLeadingUnit_NormalizesUnits()
+    {
         var currency = new Currency(".5000");
 
         await Assert.That(currency.Units).IsEqualTo(0);
@@ -45,7 +50,8 @@ public sealed class CoreValueCodecRegressionTests {
     }
 
     [Test]
-    public async Task Currency_StringWithoutFraction_NormalizesZeroFraction() {
+    public async Task Currency_StringWithoutFraction_NormalizesZeroFraction()
+    {
         var currency = new Currency("42.");
 
         await Assert.That(currency.Units).IsEqualTo(42);
@@ -53,7 +59,8 @@ public sealed class CoreValueCodecRegressionTests {
     }
 
     [Test]
-    public async Task Currency_TwoPartConstructor_PreservesSignedParts() {
+    public async Task Currency_TwoPartConstructor_PreservesSignedParts()
+    {
         var currency = new Currency(-7, -1250);
 
         await Assert.That(currency.Units).IsEqualTo(-7);
@@ -61,19 +68,22 @@ public sealed class CoreValueCodecRegressionTests {
     }
 
     [Test]
-    public async Task Scode_OkSingleton_UsesZeroHresult() {
+    public async Task Scode_OkSingleton_UsesZeroHresult()
+    {
         await Assert.That(Scode.Ok.ErrorCode).IsEqualTo(0);
     }
 
     [Test]
-    public async Task Scode_ErrorCodeConstructor_PreservesSignedHresult() {
+    public async Task Scode_ErrorCodeConstructor_PreservesSignedHresult()
+    {
         var scode = new Scode(ErrorCode.E_INVALIDARG);
 
         await Assert.That(scode.ErrorCode).IsEqualTo(unchecked((int)ErrorCode.E_INVALIDARG));
     }
 
     [Test]
-    public async Task NdrException_ReasonConstructor_PreservesMessageAndReason() {
+    public async Task NdrException_ReasonConstructor_PreservesMessageAndReason()
+    {
         var exception = new NdrException(NdrException.InvalidConformance, NdrException.InvalidArrayConformance);
 
         await Assert.That(exception.Message).IsEqualTo(NdrException.InvalidConformance);
@@ -82,7 +92,8 @@ public sealed class CoreValueCodecRegressionTests {
     }
 
     [Test]
-    public async Task NdrException_InnerConstructor_PreservesInnerException() {
+    public async Task NdrException_InnerConstructor_PreservesInnerException()
+    {
         var inner = new InvalidOperationException("inner failure");
         var exception = new NdrException("outer failure", inner);
 
@@ -91,7 +102,8 @@ public sealed class CoreValueCodecRegressionTests {
     }
 
     [Test]
-    public async Task ComString_BstrConstructor_ExposesBstrTypeAndValue() {
+    public async Task ComString_BstrConstructor_ExposesBstrTypeAndValue()
+    {
         var value = new ComString("Alpha");
 
         await Assert.That(value.Type).IsEqualTo(InteropFlags.FLAG_REPRESENTATION_STRING_BSTR);
@@ -99,7 +111,8 @@ public sealed class CoreValueCodecRegressionTests {
     }
 
     [Test]
-    public async Task ComString_NullString_NormalizesToEmptyBstr() {
+    public async Task ComString_NullString_NormalizesToEmptyBstr()
+    {
         var value = new ComString(null!);
 
         await Assert.That(value.Type).IsEqualTo(InteropFlags.FLAG_REPRESENTATION_STRING_BSTR);
@@ -107,7 +120,8 @@ public sealed class CoreValueCodecRegressionTests {
     }
 
     [Test]
-    public async Task ComString_LpwstrConstructor_UsesLpwstrTypeWithoutVariantWrappers() {
+    public async Task ComString_LpwstrConstructor_UsesLpwstrTypeWithoutVariantWrappers()
+    {
         var value = new ComString("Wide", InteropFlags.FLAG_REPRESENTATION_STRING_LPWSTR);
 
         await Assert.That(value.Type).IsEqualTo(InteropFlags.FLAG_REPRESENTATION_STRING_LPWSTR);
@@ -117,14 +131,16 @@ public sealed class CoreValueCodecRegressionTests {
     }
 
     [Test]
-    public async Task ComString_InvalidRepresentation_ThrowsArgumentException() {
+    public async Task ComString_InvalidRepresentation_ThrowsArgumentException()
+    {
         var exception = Capture<ArgumentException>(() => _ = new ComString("bad", 0x7F));
 
         await Assert.That(exception.ParamName).IsEqualTo("type");
     }
 
     [Test]
-    public async Task ComString_BstrVariantWrappers_ExposeByValueAndByRefVartypes() {
+    public async Task ComString_BstrVariantWrappers_ExposeByValueAndByRefVartypes()
+    {
         var value = new ComString("Wrapped");
 
         await Assert.That(value.Variant.Type).IsEqualTo(VariantType.VT_BSTR);
@@ -134,7 +150,8 @@ public sealed class CoreValueCodecRegressionTests {
     }
 
     [Test]
-    public async Task Variant_Int32Constructor_ExposesI4Value() {
+    public async Task Variant_Int32Constructor_ExposesI4Value()
+    {
         var variant = new Variant(123456);
 
         await Assert.That(variant.Type).IsEqualTo(VariantType.VT_I4);
@@ -144,7 +161,8 @@ public sealed class CoreValueCodecRegressionTests {
     }
 
     [Test]
-    public async Task Variant_UInt32Constructor_ExposesUi4Value() {
+    public async Task Variant_UInt32Constructor_ExposesUi4Value()
+    {
         var variant = new Variant(0xAABBCCDDu);
 
         await Assert.That(variant.Type).IsEqualTo(VariantType.VT_UI4);
@@ -152,7 +170,8 @@ public sealed class CoreValueCodecRegressionTests {
     }
 
     [Test]
-    public async Task Variant_DoubleConstructor_ExposesR8Value() {
+    public async Task Variant_DoubleConstructor_ExposesR8Value()
+    {
         var variant = new Variant(1234.5d);
 
         await Assert.That(variant.Type).IsEqualTo(VariantType.VT_R8);
@@ -160,7 +179,8 @@ public sealed class CoreValueCodecRegressionTests {
     }
 
     [Test]
-    public async Task Variant_BooleanConstructor_UsesVariantBoolTypeAndFlag() {
+    public async Task Variant_BooleanConstructor_UsesVariantBoolTypeAndFlag()
+    {
         var variant = new Variant(true);
 
         await Assert.That(variant.Type).IsEqualTo(VariantType.VT_BOOL);
@@ -169,7 +189,8 @@ public sealed class CoreValueCodecRegressionTests {
     }
 
     [Test]
-    public async Task Variant_CharConstructor_UsesI1Vartype() {
+    public async Task Variant_CharConstructor_UsesI1Vartype()
+    {
         var variant = new Variant('Z');
 
         await Assert.That(variant.Type).IsEqualTo(VariantType.VT_I1);
@@ -177,7 +198,8 @@ public sealed class CoreValueCodecRegressionTests {
     }
 
     [Test]
-    public async Task Variant_StringConstructor_ExposesBstrValue() {
+    public async Task Variant_StringConstructor_ExposesBstrValue()
+    {
         var variant = new Variant("Opc");
 
         await Assert.That(variant.Type).IsEqualTo(VariantType.VT_BSTR);
@@ -186,7 +208,8 @@ public sealed class CoreValueCodecRegressionTests {
     }
 
     [Test]
-    public async Task Variant_NullFactory_ExposesVtNullAndZeroPayload() {
+    public async Task Variant_NullFactory_ExposesVtNullAndZeroPayload()
+    {
         Variant variant = Variant.CreateNULL();
 
         await Assert.That(variant.IsNull).IsTrue();
@@ -195,7 +218,8 @@ public sealed class CoreValueCodecRegressionTests {
     }
 
     [Test]
-    public async Task Variant_OptionalParamFactory_UsesParamNotFoundScode() {
+    public async Task Variant_OptionalParamFactory_UsesParamNotFoundScode()
+    {
         Variant variant = Variant.CreateOPTIONAL_PARAM();
 
         await Assert.That(variant.Type).IsEqualTo(VariantType.VT_ERROR);
@@ -203,7 +227,8 @@ public sealed class CoreValueCodecRegressionTests {
     }
 
     [Test]
-    public async Task Variant_ByRefInt32Constructor_SetsByRefVartype() {
+    public async Task Variant_ByRefInt32Constructor_SetsByRefVartype()
+    {
         var variant = new Variant(99, isByRef: true);
 
         await Assert.That(variant.Type).IsEqualTo(VariantType.VT_BYREF_VT_I4);
@@ -212,7 +237,8 @@ public sealed class CoreValueCodecRegressionTests {
     }
 
     [Test]
-    public async Task Variant_ScodeConstructor_ExposesErrorVartype() {
+    public async Task Variant_ScodeConstructor_ExposesErrorVartype()
+    {
         var variant = new Variant(new Scode(ErrorCode.E_NOINTERFACE));
 
         await Assert.That(variant.Type).IsEqualTo(VariantType.VT_ERROR);
@@ -220,7 +246,8 @@ public sealed class CoreValueCodecRegressionTests {
     }
 
     [Test]
-    public async Task Variant_DateConstructor_ExposesDateValue() {
+    public async Task Variant_DateConstructor_ExposesDateValue()
+    {
         var value = new DateTime(2026, 6, 7, 12, 30, 0, DateTimeKind.Utc);
         var variant = new Variant(value);
 
@@ -229,7 +256,8 @@ public sealed class CoreValueCodecRegressionTests {
     }
 
     [Test]
-    public async Task Variant_CurrencyConstructor_ExposesCurrencyValue() {
+    public async Task Variant_CurrencyConstructor_ExposesCurrencyValue()
+    {
         var variant = new Variant(new Currency(18, 2500));
         var currency = (Currency)variant.Object;
 
@@ -239,7 +267,8 @@ public sealed class CoreValueCodecRegressionTests {
     }
 
     [Test]
-    public async Task ComArray_TemplateConstructor_ExposesConformantArrayMetadata() {
+    public async Task ComArray_TemplateConstructor_ExposesConformantArrayMetadata()
+    {
         var array = new ComArray(typeof(ComString), [3], 1, isConformant: true);
 
         await Assert.That(array.ArrayType).IsEqualTo(typeof(ComString));
@@ -250,7 +279,8 @@ public sealed class CoreValueCodecRegressionTests {
     }
 
     [Test]
-    public async Task Struct_AddMember_AppendsAndReportsSize() {
+    public async Task Struct_AddMember_AppendsAndReportsSize()
+    {
         var structure = new Struct();
 
         structure.AddMember(7);
@@ -262,7 +292,8 @@ public sealed class CoreValueCodecRegressionTests {
     }
 
     [Test]
-    public async Task Struct_AddMemberWithIndex_InsertsAtPosition() {
+    public async Task Struct_AddMemberWithIndex_InsertsAtPosition()
+    {
         var structure = new Struct();
 
         structure.AddMember(1);
@@ -274,7 +305,8 @@ public sealed class CoreValueCodecRegressionTests {
     }
 
     [Test]
-    public async Task Struct_AddMember_NullMember_StoresZeroSentinel() {
+    public async Task Struct_AddMember_NullMember_StoresZeroSentinel()
+    {
         var structure = new Struct();
 
         structure.AddMember(null);
@@ -284,7 +316,8 @@ public sealed class CoreValueCodecRegressionTests {
     }
 
     [Test]
-    public async Task Struct_AddNonArrayAfterTrailingArray_ThrowsArrayAtEndInteropException() {
+    public async Task Struct_AddNonArrayAfterTrailingArray_ThrowsArrayAtEndInteropException()
+    {
         var structure = new Struct();
         structure.AddMember(new ComArray(new[] { new ComString("x") }, isConformant: true));
 
@@ -294,7 +327,8 @@ public sealed class CoreValueCodecRegressionTests {
     }
 
     [Test]
-    public async Task Struct_AddArrayAtNonTailPosition_ThrowsArrayOnlyAtEndInteropException() {
+    public async Task Struct_AddArrayAtNonTailPosition_ThrowsArrayOnlyAtEndInteropException()
+    {
         var structure = new Struct();
         structure.AddMember(123);
 
@@ -305,14 +339,16 @@ public sealed class CoreValueCodecRegressionTests {
     }
 
     [Test]
-    public async Task Union_ConstructorRejectsUnsupportedDiscriminant() {
+    public async Task Union_ConstructorRejectsUnsupportedDiscriminant()
+    {
         var exception = Capture<ArgumentException>(() => _ = new Union(typeof(string)));
 
         await Assert.That(exception.ParamName).IsEqualTo("discriminantClass");
     }
 
     [Test]
-    public async Task Union_AddMember_StoresMemberByDiscriminant() {
+    public async Task Union_AddMember_StoresMemberByDiscriminant()
+    {
         var union = new Union(typeof(short));
 
         union.AddMember((short)7, 1234);
@@ -323,7 +359,8 @@ public sealed class CoreValueCodecRegressionTests {
     }
 
     [Test]
-    public async Task Union_AddMemberMismatchedDiscriminant_ThrowsInteropException() {
+    public async Task Union_AddMemberMismatchedDiscriminant_ThrowsInteropException()
+    {
         var union = new Union(typeof(short));
 
         InteropException exception = Capture<InteropException>(() => union.AddMember(7, 1234));
@@ -332,7 +369,8 @@ public sealed class CoreValueCodecRegressionTests {
     }
 
     [Test]
-    public async Task Union_AddNullStructMember_StoresEmptySentinel() {
+    public async Task Union_AddNullStructMember_StoresEmptySentinel()
+    {
         var union = new Union(typeof(int));
 
         union.AddMember(3, (Struct)null!);
@@ -341,7 +379,8 @@ public sealed class CoreValueCodecRegressionTests {
     }
 
     [Test]
-    public async Task Union_RemoveMember_RemovesDiscriminant() {
+    public async Task Union_RemoveMember_RemovesDiscriminant()
+    {
         var union = new Union(typeof(bool));
         union.AddMember(true, "enabled");
 
@@ -351,11 +390,14 @@ public sealed class CoreValueCodecRegressionTests {
     }
 
     private static TException Capture<TException>(Action action)
-        where TException : Exception {
-        try {
+        where TException : Exception
+    {
+        try
+        {
             action();
         }
-        catch (TException exception) {
+        catch (TException exception)
+        {
             return exception;
         }
 

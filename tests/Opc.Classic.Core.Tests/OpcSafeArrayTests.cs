@@ -9,9 +9,11 @@ using TUnit.Core;
 
 namespace Opc.Classic.Tests;
 
-public sealed class OpcSafeArrayTests {
+public sealed class OpcSafeArrayTests
+{
     [Test]
-    public async Task OfInt32_Single_DimensionDefaults() {
+    public async Task OfInt32_Single_DimensionDefaults()
+    {
         var arr = OpcSafeArray.OfInt32(new[] { 1, 2, 3, 4 });
         await Assert.That(arr.ElementType).IsEqualTo(VarType.VT_I4);
         await Assert.That(arr.Rank).IsEqualTo(1);
@@ -21,7 +23,8 @@ public sealed class OpcSafeArrayTests {
     }
 
     [Test]
-    public async Task OfDouble_Empty_IsValid() {
+    public async Task OfDouble_Empty_IsValid()
+    {
         var arr = OpcSafeArray.OfDouble(Array.Empty<double>());
         await Assert.That(arr.Rank).IsEqualTo(1);
         await Assert.That(arr.Lengths[0]).IsEqualTo(0);
@@ -29,7 +32,8 @@ public sealed class OpcSafeArrayTests {
     }
 
     [Test]
-    public async Task OfString_PreservesElements() {
+    public async Task OfString_PreservesElements()
+    {
         var input = new[] { "Tag1", "Tag2", "Tag3" };
         var arr = OpcSafeArray.OfString(input);
         await Assert.That(arr.ElementType).IsEqualTo(VarType.VT_BSTR);
@@ -38,7 +42,8 @@ public sealed class OpcSafeArrayTests {
     }
 
     [Test]
-    public async Task ExplicitDimensions_PackedRowMajor() {
+    public async Task ExplicitDimensions_PackedRowMajor()
+    {
         // 2x3 logical shape, 6 elements row-major.
         var data = new int[] { 1, 2, 3, 4, 5, 6 };
         var arr = new OpcSafeArray(VarType.VT_I4, data, lengths: new[] { 2, 3 });
@@ -49,7 +54,8 @@ public sealed class OpcSafeArrayTests {
     }
 
     [Test]
-    public async Task ExplicitDimensions_LowerBoundsPreserved() {
+    public async Task ExplicitDimensions_LowerBoundsPreserved()
+    {
         var arr = new OpcSafeArray(
             VarType.VT_I4,
             new int[] { 10, 20, 30 },
@@ -59,53 +65,63 @@ public sealed class OpcSafeArrayTests {
     }
 
     [Test]
-    public async Task Constructor_RejectsMismatchedRanks() {
+    public async Task Constructor_RejectsMismatchedRanks()
+    {
         bool threw = false;
-        try {
+        try
+        {
             _ = new OpcSafeArray(
                 VarType.VT_I4,
                 new int[] { 1 },
                 lengths: new[] { 1, 1 },
                 lowerBounds: new[] { 0 });
         }
-        catch (ArgumentException) {
+        catch (ArgumentException)
+        {
             threw = true;
         }
         await Assert.That(threw).IsTrue();
     }
 
     [Test]
-    public async Task Constructor_RejectsLengthProductMismatch() {
+    public async Task Constructor_RejectsLengthProductMismatch()
+    {
         bool threw = false;
-        try {
+        try
+        {
             _ = new OpcSafeArray(
                 VarType.VT_I4,
                 new int[] { 1, 2, 3 },          // 3 elements
                 lengths: new[] { 2, 3 });        // expects 6
         }
-        catch (ArgumentException) {
+        catch (ArgumentException)
+        {
             threw = true;
         }
         await Assert.That(threw).IsTrue();
     }
 
     [Test]
-    public async Task Constructor_RejectsNegativeLength() {
+    public async Task Constructor_RejectsNegativeLength()
+    {
         bool threw = false;
-        try {
+        try
+        {
             _ = new OpcSafeArray(
                 VarType.VT_I4,
                 Array.Empty<int>(),
                 lengths: new[] { -1 });
         }
-        catch (ArgumentOutOfRangeException) {
+        catch (ArgumentOutOfRangeException)
+        {
             threw = true;
         }
         await Assert.That(threw).IsTrue();
     }
 
     [Test]
-    public async Task Equality_IsStructural() {
+    public async Task Equality_IsStructural()
+    {
         var a = OpcSafeArray.OfInt32(new[] { 1, 2, 3 });
         var b = OpcSafeArray.OfInt32(new[] { 1, 2, 3 });
         var c = OpcSafeArray.OfInt32(new[] { 1, 2, 4 });
@@ -119,29 +135,34 @@ public sealed class OpcSafeArrayTests {
     }
 
     [Test]
-    public async Task Equality_DifferentLowerBounds_NotEqual() {
+    public async Task Equality_DifferentLowerBounds_NotEqual()
+    {
         var a = new OpcSafeArray(VarType.VT_I4, new int[] { 1, 2 }, lengths: new[] { 2 }, lowerBounds: new[] { 0 });
         var b = new OpcSafeArray(VarType.VT_I4, new int[] { 1, 2 }, lengths: new[] { 2 }, lowerBounds: new[] { 1 });
         await Assert.That(a).IsNotEqualTo(b);
     }
 
     [Test]
-    public async Task HashCode_StableForEqualArrays() {
+    public async Task HashCode_StableForEqualArrays()
+    {
         var a = OpcSafeArray.OfDouble(new[] { 1.0, 2.0, 3.0 });
         var b = OpcSafeArray.OfDouble(new[] { 1.0, 2.0, 3.0 });
         await Assert.That(a.GetHashCode()).IsEqualTo(b.GetHashCode());
     }
 
     [Test]
-    public async Task Constructor_RejectsMismatchedFeatureFlags() {
+    public async Task Constructor_RejectsMismatchedFeatureFlags()
+    {
         bool threw = false;
-        try {
+        try
+        {
             _ = new OpcSafeArray(
                 VarType.VT_I4,
                 new int[] { 1 },
                 features: SafeArrayFeatures.HaveVartype | SafeArrayFeatures.Bstr);
         }
-        catch (ArgumentException) {
+        catch (ArgumentException)
+        {
             threw = true;
         }
         await Assert.That(threw).IsTrue();

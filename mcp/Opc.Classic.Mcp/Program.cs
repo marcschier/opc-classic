@@ -13,7 +13,8 @@ var builder = Host.CreateApplicationBuilder(args);
 
 // All logs go to stderr because stdio MCP transports use stdout for protocol traffic.
 builder.Logging.ClearProviders();
-builder.Logging.AddConsole(static o => {
+builder.Logging.AddConsole(static o =>
+{
     o.LogToStandardErrorThreshold = LogLevel.Trace;
 });
 

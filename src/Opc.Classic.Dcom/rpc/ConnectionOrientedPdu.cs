@@ -8,7 +8,8 @@ namespace Opc.Classic.Dcom.Rpc;
 /// <summary>
 /// A connection oriented pdu
 /// </summary>
-public abstract class ConnectionOrientedPdu : NdrOp, IProtocolDataUnit {
+public abstract class ConnectionOrientedPdu : NdrOp, IProtocolDataUnit
+{
 
     /// <summary>
     /// Flag indicating the PDU is the first fragment.
@@ -68,7 +69,8 @@ public abstract class ConnectionOrientedPdu : NdrOp, IProtocolDataUnit {
     /// <summary>
     /// Format
     /// </summary>
-    public NdrFormat Format {
+    public NdrFormat Format
+    {
         get => _format ?? (_format = NdrFormat.DEFAULT_FORMAT);
         set => _format = value;
     }
@@ -97,9 +99,11 @@ public abstract class ConnectionOrientedPdu : NdrOp, IProtocolDataUnit {
     /// <summary>
     /// Call id
     /// </summary>
-    public int CallId {
+    public int CallId
+    {
         get => _callId;
-        set {
+        set
+        {
             _useCallIdCounter = false;
             _callId = value;
         }
@@ -121,7 +125,8 @@ public abstract class ConnectionOrientedPdu : NdrOp, IProtocolDataUnit {
     /// </summary>
     /// <param name="ndr"></param>
     /// <param name="src"></param>
-    public override void Decode(NdrCodec ndr, NdrBuffer src) {
+    public override void Decode(NdrCodec ndr, NdrBuffer src)
+    {
         ndr.Buffer = src;
         ReadPdu(ndr);
     }
@@ -131,7 +136,8 @@ public abstract class ConnectionOrientedPdu : NdrOp, IProtocolDataUnit {
     /// </summary>
     /// <param name="ndr"></param>
     /// <param name="dst"></param>
-    public override void Encode(NdrCodec ndr, NdrBuffer dst) {
+    public override void Encode(NdrCodec ndr, NdrBuffer dst)
+    {
         ndr.Buffer = dst;
         ndr.Format = Format;
         WritePdu(ndr);
@@ -149,7 +155,8 @@ public abstract class ConnectionOrientedPdu : NdrOp, IProtocolDataUnit {
     /// Read pdu
     /// </summary>
     /// <param name="ndr"></param>
-    protected internal virtual void ReadPdu(NdrCodec ndr) {
+    protected internal virtual void ReadPdu(NdrCodec ndr)
+    {
         ReadHeader(ndr);
         ReadBody(ndr);
     }
@@ -158,7 +165,8 @@ public abstract class ConnectionOrientedPdu : NdrOp, IProtocolDataUnit {
     /// Write pdu
     /// </summary>
     /// <param name="ndr"></param>
-    protected internal virtual void WritePdu(NdrCodec ndr) {
+    protected internal virtual void WritePdu(NdrCodec ndr)
+    {
         WriteHeader(ndr);
         WriteBody(ndr);
     }
@@ -167,13 +175,16 @@ public abstract class ConnectionOrientedPdu : NdrOp, IProtocolDataUnit {
     /// Read header
     /// </summary>
     /// <param name="ndr"></param>
-    protected internal void ReadHeader(NdrCodec ndr) {
-        if (ndr.ReadUnsignedSmall() != CONNECTION_ORIENTED_MAJOR_VERSION) {
+    protected internal void ReadHeader(NdrCodec ndr)
+    {
+        if (ndr.ReadUnsignedSmall() != CONNECTION_ORIENTED_MAJOR_VERSION)
+        {
             throw new InvalidOperationException("Version mismatch.");
         }
         // read minor version
         MinorVersion = ndr.ReadUnsignedSmall();
-        if (Type != ndr.ReadUnsignedSmall()) {
+        if (Type != ndr.ReadUnsignedSmall())
+        {
             throw new ArgumentException("Incorrect PDU type.", nameof(ndr));
         }
         Flags = ndr.ReadUnsignedSmall();
@@ -189,7 +200,8 @@ public abstract class ConnectionOrientedPdu : NdrOp, IProtocolDataUnit {
     /// Write header
     /// </summary>
     /// <param name="ndr"></param>
-    protected internal void WriteHeader(NdrCodec ndr) {
+    protected internal void WriteHeader(NdrCodec ndr)
+    {
         ndr.WriteUnsignedSmall((short)MajorVersion);
         ndr.WriteUnsignedSmall((short)MinorVersion);
         ndr.WriteUnsignedSmall((short)Type);
@@ -205,7 +217,8 @@ public abstract class ConnectionOrientedPdu : NdrOp, IProtocolDataUnit {
     /// Read body
     /// </summary>
     /// <param name="ndr"></param>
-    protected internal virtual void ReadBody(NdrCodec ndr) {
+    protected internal virtual void ReadBody(NdrCodec ndr)
+    {
         // override
     }
 
@@ -213,7 +226,8 @@ public abstract class ConnectionOrientedPdu : NdrOp, IProtocolDataUnit {
     /// Write body
     /// </summary>
     /// <param name="ndr"></param>
-    protected internal virtual void WriteBody(NdrCodec ndr) {
+    protected internal virtual void WriteBody(NdrCodec ndr)
+    {
         // override
     }
 

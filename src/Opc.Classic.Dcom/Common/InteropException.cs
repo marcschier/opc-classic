@@ -8,7 +8,8 @@ namespace Opc.Classic.Dcom.Common;
 /// Exception class for the framework. Developers are expected to catch
 /// or re-throw these exceptions and not create one themselves.
 /// </summary>
-public class InteropException : Exception {
+public class InteropException : Exception
+{
 
     /// <summary>
     /// Create exception
@@ -16,7 +17,8 @@ public class InteropException : Exception {
     /// <param name="errorCode"></param>
     /// <param name="message"></param>
     public InteropException(int errorCode, string message) :
-        this(errorCode, message, null) {
+        this(errorCode, message, null)
+    {
     }
 
     /// <summary>
@@ -25,7 +27,8 @@ public class InteropException : Exception {
     /// <param name="errorCode"></param>
     /// <param name="message"></param>
     public InteropException(ErrorCode errorCode, string message) :
-        this(errorCode, message, null) {
+        this(errorCode, message, null)
+    {
     }
 
     /// <summary>
@@ -33,7 +36,8 @@ public class InteropException : Exception {
     /// </summary>
     /// <param name="errorCode"></param>
     public InteropException(int errorCode) :
-        this(errorCode, (Exception)null) {
+        this(errorCode, (Exception)null)
+    {
     }
 
     /// <summary>
@@ -41,35 +45,40 @@ public class InteropException : Exception {
     /// </summary>
     /// <param name="errorCode"></param>
     public InteropException(ErrorCode errorCode) :
-        this(errorCode, (Exception)null) {
+        this(errorCode, (Exception)null)
+    {
     }
 
     /// <summary>
     /// Create exception
     /// </summary>
     public InteropException(int errorCode, Exception cause) :
-        this(errorCode, null, cause) {
+        this(errorCode, null, cause)
+    {
     }
 
     /// <summary>
     /// Create exception
     /// </summary>
     public InteropException(ErrorCode errorCode, Exception cause) :
-        this(errorCode, null, cause) {
+        this(errorCode, null, cause)
+    {
     }
 
     /// <summary>
     /// Create exception
     /// </summary>
     public InteropException(InteropRuntimeException exception) :
-        this(exception.HResult, null, exception) {
+        this(exception.HResult, null, exception)
+    {
     }
 
     /// <summary>
     /// Create exception
     /// </summary>
     public InteropException(int errorCode, string message, Exception cause) :
-        base(message, cause) {
+        base(message, cause)
+    {
         ErrorCode = (ErrorCode)errorCode;
         _message = message;
     }
@@ -78,7 +87,8 @@ public class InteropException : Exception {
     /// Create exception
     /// </summary>
     public InteropException(ErrorCode errorCode, string message, Exception cause) :
-        base(message, cause) {
+        base(message, cause)
+    {
         ErrorCode = errorCode;
         _message = message;
     }

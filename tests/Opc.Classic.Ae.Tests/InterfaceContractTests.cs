@@ -15,15 +15,18 @@ using TUnit.Core;
 
 namespace Opc.Classic.Ae.Tests;
 
-public sealed class ConditionRefTests {
+public sealed class ConditionRefTests
+{
     [Test]
-    public async Task ToString_FormatsSourceAndCondition() {
+    public async Task ToString_FormatsSourceAndCondition()
+    {
         var r = new ConditionRef("Tank1", "HighLimit");
         await Assert.That(r.ToString()).IsEqualTo("Tank1::HighLimit");
     }
 
     [Test]
-    public async Task ValueEquality_OnAllFields() {
+    public async Task ValueEquality_OnAllFields()
+    {
         var a = new ConditionRef("S", "C");
         var b = new ConditionRef("S", "C");
         var c = new ConditionRef("S", "X");
@@ -33,9 +36,11 @@ public sealed class ConditionRefTests {
     }
 }
 
-public sealed class AreaBrowseElementTests {
+public sealed class AreaBrowseElementTests
+{
     [Test]
-    public async Task Default_IsNeitherAreaNorSource() {
+    public async Task Default_IsNeitherAreaNorSource()
+    {
         var e = new AreaBrowseElement();
         await Assert.That(e.IsArea).IsFalse();
         await Assert.That(e.IsSource).IsFalse();
@@ -43,8 +48,10 @@ public sealed class AreaBrowseElementTests {
     }
 
     [Test]
-    public async Task Initializer_AssignsAllFields() {
-        var e = new AreaBrowseElement {
+    public async Task Initializer_AssignsAllFields()
+    {
+        var e = new AreaBrowseElement
+        {
             Name = "Tanks",
             QualifiedName = "Plant1/Tanks",
             IsArea = true,
@@ -58,11 +65,13 @@ public sealed class AreaBrowseElementTests {
 
 // ---- AE interface contracts — exercise with hand-written fakes ----
 
-internal sealed class FakeAeServer : IAeServer {
+internal sealed class FakeAeServer : IAeServer
+{
     public event EventHandler<EventArgs>? ServerShutdown;
 
     public Task<OpcServerStatus> GetStatusAsync(CancellationToken ct = default) =>
-        Task.FromResult(new OpcServerStatus {
+        Task.FromResult(new OpcServerStatus
+        {
             Spec = OpcStatusSpec.Ae,
             State = OpcServerState.Running,
             VendorInfo = "FakeAeServer",
@@ -70,7 +79,8 @@ internal sealed class FakeAeServer : IAeServer {
 
     public async IAsyncEnumerable<AreaBrowseElement> BrowseAreasAsync(
         string areaQualifiedName,
-        [EnumeratorCancellation] CancellationToken ct = default) {
+        [EnumeratorCancellation] CancellationToken ct = default)
+    {
         await Task.Yield();
         yield return new AreaBrowseElement { Name = "Plant1", QualifiedName = "Plant1", IsArea = true };
         yield return new AreaBrowseElement { Name = "Tank1", QualifiedName = "Plant1/Tank1", IsSource = true };
@@ -98,13 +108,15 @@ internal sealed class FakeAeServer : IAeServer {
         bool active, int bufferTimeMs, int maxBufferSize, CancellationToken ct = default) =>
         Task.FromResult<IAeSubscription>(new FakeAeSubscription(active));
 
-    public ValueTask DisposeAsync() {
+    public ValueTask DisposeAsync()
+    {
         ServerShutdown?.Invoke(this, EventArgs.Empty);
         return ValueTask.CompletedTask;
     }
 }
 
-internal sealed class FakeAeSubscription : IAeSubscription {
+internal sealed class FakeAeSubscription : IAeSubscription
+{
     public FakeAeSubscription(bool active) { Active = active; }
 
     public bool Active { get; private set; }
@@ -113,10 +125,13 @@ internal sealed class FakeAeSubscription : IAeSubscription {
     public IAsyncEnumerable<EventNotification> Events => EventsImpl();
 
     private async IAsyncEnumerable<EventNotification> EventsImpl(
-        [EnumeratorCancellation] CancellationToken ct = default) {
-        for (var i = 0; i < 3; i++) {
+        [EnumeratorCancellation] CancellationToken ct = default)
+    {
+        for (var i = 0; i < 3; i++)
+        {
             await Task.Yield();
-            yield return new EventNotification {
+            yield return new EventNotification
+            {
                 Source = $"Source{i}",
                 Severity = 500 + i,
                 Message = $"Event {i}",
@@ -125,12 +140,14 @@ internal sealed class FakeAeSubscription : IAeSubscription {
         }
     }
 
-    public Task SetActiveAsync(bool active, CancellationToken ct = default) {
+    public Task SetActiveAsync(bool active, CancellationToken ct = default)
+    {
         Active = active;
         return Task.CompletedTask;
     }
 
-    public Task SetFilterAsync(SubscriptionFilter filter, CancellationToken ct = default) {
+    public Task SetFilterAsync(SubscriptionFilter filter, CancellationToken ct = default)
+    {
         Filter = filter;
         return Task.CompletedTask;
     }
@@ -141,9 +158,11 @@ internal sealed class FakeAeSubscription : IAeSubscription {
     public ValueTask DisposeAsync() => ValueTask.CompletedTask;
 }
 
-public sealed class IAeServerContractTests {
+public sealed class IAeServerContractTests
+{
     [Test]
-    public async Task GetStatusAsync_ReturnsAeStatus() {
+    public async Task GetStatusAsync_ReturnsAeStatus()
+    {
         await using var server = new FakeAeServer();
         var status = await server.GetStatusAsync();
         await Assert.That(status.Spec).IsEqualTo(OpcStatusSpec.Ae);
@@ -151,17 +170,20 @@ public sealed class IAeServerContractTests {
     }
 
     [Test]
-    public async Task BrowseAreasAsync_StreamsElements() {
+    public async Task BrowseAreasAsync_StreamsElements()
+    {
         await using var server = new FakeAeServer();
         var count = 0;
-        await foreach (var _ in server.BrowseAreasAsync(string.Empty)) {
+        await foreach (var _ in server.BrowseAreasAsync(string.Empty))
+        {
             count++;
         }
         await Assert.That(count).IsEqualTo(2);
     }
 
     [Test]
-    public async Task QueryEventCategoriesAsync_ReturnsCategoryIds() {
+    public async Task QueryEventCategoriesAsync_ReturnsCategoryIds()
+    {
         await using var server = new FakeAeServer();
         var cats = await server.QueryEventCategoriesAsync(EventType.All);
         await Assert.That(cats.Count).IsEqualTo(2);
@@ -169,7 +191,8 @@ public sealed class IAeServerContractTests {
     }
 
     [Test]
-    public async Task AcknowledgeAsync_EchoesConditions() {
+    public async Task AcknowledgeAsync_EchoesConditions()
+    {
         await using var server = new FakeAeServer();
         IReadOnlyList<ConditionRef> conds = new[]
         {
@@ -183,19 +206,22 @@ public sealed class IAeServerContractTests {
     }
 
     [Test]
-    public async Task CreateSubscriptionAsync_PreservesActiveFlag() {
+    public async Task CreateSubscriptionAsync_PreservesActiveFlag()
+    {
         await using var server = new FakeAeServer();
         await using var sub = await server.CreateSubscriptionAsync(active: true, bufferTimeMs: 0, maxBufferSize: 0);
         await Assert.That(sub.Active).IsTrue();
     }
 
     [Test]
-    public async Task Subscription_Events_StreamsNotifications() {
+    public async Task Subscription_Events_StreamsNotifications()
+    {
         await using var server = new FakeAeServer();
         await using var sub = await server.CreateSubscriptionAsync(active: true, bufferTimeMs: 0, maxBufferSize: 0);
 
         var events = new List<EventNotification>();
-        await foreach (var e in sub.Events) {
+        await foreach (var e in sub.Events)
+        {
             events.Add(e);
         }
         await Assert.That(events.Count).IsEqualTo(3);
@@ -204,7 +230,8 @@ public sealed class IAeServerContractTests {
     }
 
     [Test]
-    public async Task Subscription_SetActive_UpdatesState() {
+    public async Task Subscription_SetActive_UpdatesState()
+    {
         await using var server = new FakeAeServer();
         await using var sub = await server.CreateSubscriptionAsync(active: true, bufferTimeMs: 0, maxBufferSize: 0);
         await sub.SetActiveAsync(false);
@@ -212,7 +239,8 @@ public sealed class IAeServerContractTests {
     }
 
     [Test]
-    public async Task Subscription_SetFilter_UpdatesFilter() {
+    public async Task Subscription_SetFilter_UpdatesFilter()
+    {
         await using var server = new FakeAeServer();
         await using var sub = await server.CreateSubscriptionAsync(active: true, bufferTimeMs: 0, maxBufferSize: 0);
         var newFilter = new SubscriptionFilter { MinSeverity = 250, EventTypes = EventType.Condition };

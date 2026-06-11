@@ -14,7 +14,8 @@ namespace Opc.Classic.Ae;
 /// A live OPC AE event subscription. Disposing cancels the subscription and
 /// removes the server-side state.
 /// </summary>
-public interface IAeSubscription : IAsyncDisposable {
+public interface IAeSubscription : IAsyncDisposable
+{
     /// <summary>True if the subscription is currently delivering events.</summary>
     bool Active { get; }
 

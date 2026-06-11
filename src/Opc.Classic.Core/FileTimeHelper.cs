@@ -21,7 +21,8 @@ namespace Opc.Classic;
 /// <c>dwHighDateTime</c>) which together form a 64-bit count of 100-nanosecond
 /// intervals since the Windows epoch.
 /// </remarks>
-public static class FileTimeHelper {
+public static class FileTimeHelper
+{
     /// <summary>Number of 100-nanosecond ticks per second.</summary>
     public const long TicksPerSecond = 10_000_000L;
 
@@ -38,16 +39,20 @@ public static class FileTimeHelper {
     /// Thrown when <paramref name="fileTime"/> is negative or would overflow
     /// <see cref="DateTimeOffset.MaxValue"/>.
     /// </exception>
-    public static DateTimeOffset FromFileTime(long fileTime) {
-        if (fileTime < 0) {
+    public static DateTimeOffset FromFileTime(long fileTime)
+    {
+        if (fileTime < 0)
+        {
             throw new ArgumentOutOfRangeException(
                 nameof(fileTime), fileTime, "FILETIME ticks cannot be negative.");
         }
         // DateTimeOffset interprets its tick origin as 0001-01-01; offset = Epoch.Ticks (504,911,232,000,000,000).
-        try {
+        try
+        {
             return new DateTimeOffset(fileTime + Epoch.Ticks, TimeSpan.Zero);
         }
-        catch (ArgumentOutOfRangeException ex) {
+        catch (ArgumentOutOfRangeException ex)
+        {
             throw new ArgumentOutOfRangeException(
                 nameof(fileTime),
                 $"FILETIME ticks ({fileTime}) exceed DateTimeOffset.MaxValue. ({ex.Message})");
@@ -66,15 +71,19 @@ public static class FileTimeHelper {
     /// a default value or raise a structured decode failure with surrounding
     /// wire context.
     /// </remarks>
-    public static bool TryFromFileTime(long fileTime, out DateTimeOffset value) {
-        if (fileTime < 0) {
+    public static bool TryFromFileTime(long fileTime, out DateTimeOffset value)
+    {
+        if (fileTime < 0)
+        {
             value = default;
             return false;
         }
 
-        try {
+        try
+        {
             long ticks = checked(fileTime + Epoch.Ticks);
-            if (ticks < 0L || ticks > DateTimeOffset.MaxValue.UtcTicks) {
+            if (ticks < 0L || ticks > DateTimeOffset.MaxValue.UtcTicks)
+            {
                 value = default;
                 return false;
             }
@@ -82,11 +91,13 @@ public static class FileTimeHelper {
             value = new DateTimeOffset(ticks, TimeSpan.Zero);
             return true;
         }
-        catch (OverflowException) {
+        catch (OverflowException)
+        {
             value = default;
             return false;
         }
-        catch (ArgumentOutOfRangeException) {
+        catch (ArgumentOutOfRangeException)
+        {
             value = default;
             return false;
         }
@@ -103,8 +114,10 @@ public static class FileTimeHelper {
     /// convert to <see cref="DateTimeOffset"/>. The source must be at least
     /// 8 bytes; extra bytes are ignored.
     /// </summary>
-    public static DateTimeOffset FromFileTime(ReadOnlySpan<byte> source) {
-        if (source.Length < 8) {
+    public static DateTimeOffset FromFileTime(ReadOnlySpan<byte> source)
+    {
+        if (source.Length < 8)
+        {
             throw new ArgumentException(
                 "FILETIME requires at least 8 bytes.", nameof(source));
         }
@@ -119,9 +132,11 @@ public static class FileTimeHelper {
     /// Thrown when <paramref name="value"/> is earlier than the Windows
     /// epoch (1601-01-01 00:00:00 UTC).
     /// </exception>
-    public static long ToFileTime(DateTimeOffset value) {
+    public static long ToFileTime(DateTimeOffset value)
+    {
         var utc = value.ToUniversalTime();
-        if (utc < Epoch) {
+        if (utc < Epoch)
+        {
             throw new ArgumentOutOfRangeException(
                 nameof(value), value, "Value is earlier than the FILETIME epoch (1601-01-01 UTC).");
         }
@@ -132,7 +147,8 @@ public static class FileTimeHelper {
     /// Convert a <see cref="DateTimeOffset"/> to the (low, high) word pair as
     /// transmitted on the wire.
     /// </summary>
-    public static (uint Low, uint High) ToFileTimeWords(DateTimeOffset value) {
+    public static (uint Low, uint High) ToFileTimeWords(DateTimeOffset value)
+    {
         var ticks = ToFileTime(value);
         return ((uint)(ticks & 0xFFFFFFFFL), (uint)((ticks >> 32) & 0xFFFFFFFFL));
     }
@@ -141,8 +157,10 @@ public static class FileTimeHelper {
     /// Write a <see cref="DateTimeOffset"/> as 8 bytes of little-endian FILETIME
     /// into <paramref name="destination"/>. Destination must be at least 8 bytes.
     /// </summary>
-    public static void WriteFileTime(DateTimeOffset value, Span<byte> destination) {
-        if (destination.Length < 8) {
+    public static void WriteFileTime(DateTimeOffset value, Span<byte> destination)
+    {
+        if (destination.Length < 8)
+        {
             throw new ArgumentException(
                 "Destination must be at least 8 bytes.", nameof(destination));
         }

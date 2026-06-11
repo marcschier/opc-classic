@@ -40,7 +40,8 @@ namespace Opc.Classic.Hosting.Windows;
 /// </para>
 /// </remarks>
 [SupportedOSPlatform("windows")]
-public static class WindowsComRegistration {
+public static class WindowsComRegistration
+{
     private const string ClassesSubkey = @"Software\Classes";
 
     /// <summary>
@@ -72,11 +73,13 @@ public static class WindowsComRegistration {
         string executablePath,
         RegistryHive hive = RegistryHive.LocalMachine,
         IReadOnlyList<RegistryView>? views = null,
-        IReadOnlyList<OpcComponentCategory>? implementedCategories = null) {
+        IReadOnlyList<OpcComponentCategory>? implementedCategories = null)
+    {
         ArgumentNullException.ThrowIfNull(registration);
         ArgumentException.ThrowIfNullOrEmpty(executablePath);
 
-        foreach (RegistryView v in ResolveViews(views)) {
+        foreach (RegistryView v in ResolveViews(views))
+        {
             using RegistryKey baseKey = RegistryKey.OpenBaseKey(hive, v);
             using RegistryKey classes = baseKey.CreateSubKey(ClassesSubkey, writable: true)
                 ?? throw new UnauthorizedAccessException(
@@ -84,7 +87,8 @@ public static class WindowsComRegistration {
             WriteClsidTree(classes, registration, executablePath, implementedCategories);
             WriteAppIdTree(classes, registration);
             WriteProgIdAliases(classes, registration);
-            if (implementedCategories is { Count: > 0 }) {
+            if (implementedCategories is { Count: > 0 })
+            {
                 WriteComponentCategoryDescriptions(classes, implementedCategories);
             }
         }
@@ -99,13 +103,16 @@ public static class WindowsComRegistration {
     public static void UnregisterLocalServer(
         OpcClsidRegistration registration,
         RegistryHive hive = RegistryHive.LocalMachine,
-        IReadOnlyList<RegistryView>? views = null) {
+        IReadOnlyList<RegistryView>? views = null)
+    {
         ArgumentNullException.ThrowIfNull(registration);
 
-        foreach (RegistryView v in ResolveViews(views)) {
+        foreach (RegistryView v in ResolveViews(views))
+        {
             using RegistryKey baseKey = RegistryKey.OpenBaseKey(hive, v);
             using RegistryKey? classes = baseKey.OpenSubKey(ClassesSubkey, writable: true);
-            if (classes is null) {
+            if (classes is null)
+            {
                 continue;
             }
 
@@ -114,15 +121,18 @@ public static class WindowsComRegistration {
             DeleteIfExists(classes, registration.ProgId);
 
             string versionIndependent = StripVersionSuffix(registration.ProgId);
-            if (!string.Equals(versionIndependent, registration.ProgId, StringComparison.Ordinal)) {
+            if (!string.Equals(versionIndependent, registration.ProgId, StringComparison.Ordinal))
+            {
                 DeleteIfExists(classes, versionIndependent);
             }
         }
     }
 
-    private static void DeleteIfExists(RegistryKey parent, string subkeyPath) {
+    private static void DeleteIfExists(RegistryKey parent, string subkeyPath)
+    {
         using RegistryKey? probe = parent.OpenSubKey(subkeyPath);
-        if (probe is null) {
+        if (probe is null)
+        {
             return;
         }
         probe.Dispose();
@@ -133,7 +143,8 @@ public static class WindowsComRegistration {
         RegistryKey classes,
         OpcClsidRegistration registration,
         string executablePath,
-        IReadOnlyList<OpcComponentCategory>? implementedCategories) {
+        IReadOnlyList<OpcComponentCategory>? implementedCategories)
+    {
         string friendly = registration.FriendlyName ?? registration.ProgId;
         string versionIndependent = StripVersionSuffix(registration.ProgId);
 
@@ -148,31 +159,37 @@ public static class WindowsComRegistration {
         clsidKey.SetValue("AppID", $"{{{registration.Clsid:D}}}");
 
         using (RegistryKey local = clsidKey.CreateSubKey("LocalServer32", writable: true)
-            ?? throw new UnauthorizedAccessException("Cannot create LocalServer32 subkey.")) {
+            ?? throw new UnauthorizedAccessException("Cannot create LocalServer32 subkey."))
+        {
             local.SetValue(null, $"\"{executablePath}\"");
         }
 
         using (RegistryKey progIdKey = clsidKey.CreateSubKey("ProgID", writable: true)
-            ?? throw new UnauthorizedAccessException("Cannot create ProgID subkey.")) {
+            ?? throw new UnauthorizedAccessException("Cannot create ProgID subkey."))
+        {
             progIdKey.SetValue(null, registration.ProgId);
         }
 
-        if (!string.Equals(versionIndependent, registration.ProgId, StringComparison.Ordinal)) {
+        if (!string.Equals(versionIndependent, registration.ProgId, StringComparison.Ordinal))
+        {
             using RegistryKey viKey = clsidKey.CreateSubKey("VersionIndependentProgID", writable: true)
                 ?? throw new UnauthorizedAccessException("Cannot create VersionIndependentProgID subkey.");
             viKey.SetValue(null, versionIndependent);
         }
 
-        if (implementedCategories is { Count: > 0 }) {
+        if (implementedCategories is { Count: > 0 })
+        {
             using RegistryKey impl = clsidKey.CreateSubKey("Implemented Categories", writable: true)
                 ?? throw new UnauthorizedAccessException("Cannot create Implemented Categories subkey.");
-            foreach (OpcComponentCategory cat in implementedCategories) {
+            foreach (OpcComponentCategory cat in implementedCategories)
+            {
                 using RegistryKey? _ = impl.CreateSubKey($"{{{cat.CategoryId:D}}}", writable: true);
             }
         }
     }
 
-    private static void WriteAppIdTree(RegistryKey classes, OpcClsidRegistration registration) {
+    private static void WriteAppIdTree(RegistryKey classes, OpcClsidRegistration registration)
+    {
         using RegistryKey appIdKey = classes.CreateSubKey(
             $@"AppID\{{{registration.Clsid:D}}}",
             writable: true)
@@ -180,25 +197,29 @@ public static class WindowsComRegistration {
         appIdKey.SetValue(null, registration.FriendlyName ?? registration.ProgId);
     }
 
-    private static void WriteProgIdAliases(RegistryKey classes, OpcClsidRegistration registration) {
+    private static void WriteProgIdAliases(RegistryKey classes, OpcClsidRegistration registration)
+    {
         string friendly = registration.FriendlyName ?? registration.ProgId;
         string versionIndependent = StripVersionSuffix(registration.ProgId);
 
         using (RegistryKey progIdKey = classes.CreateSubKey(registration.ProgId, writable: true)
-            ?? throw new UnauthorizedAccessException("Cannot create ProgID alias subkey.")) {
+            ?? throw new UnauthorizedAccessException("Cannot create ProgID alias subkey."))
+        {
             progIdKey.SetValue(null, friendly);
             using RegistryKey clsidValue = progIdKey.CreateSubKey("CLSID", writable: true)
                 ?? throw new UnauthorizedAccessException("Cannot create ProgID alias\\CLSID subkey.");
             clsidValue.SetValue(null, $"{{{registration.Clsid:D}}}");
         }
 
-        if (!string.Equals(versionIndependent, registration.ProgId, StringComparison.Ordinal)) {
+        if (!string.Equals(versionIndependent, registration.ProgId, StringComparison.Ordinal))
+        {
             using RegistryKey viKey = classes.CreateSubKey(versionIndependent, writable: true)
                 ?? throw new UnauthorizedAccessException("Cannot create VersionIndependentProgID alias subkey.");
             viKey.SetValue(null, friendly);
 
             using (RegistryKey viClsid = viKey.CreateSubKey("CLSID", writable: true)
-                ?? throw new UnauthorizedAccessException("Cannot create version-independent CLSID subkey.")) {
+                ?? throw new UnauthorizedAccessException("Cannot create version-independent CLSID subkey."))
+            {
                 viClsid.SetValue(null, $"{{{registration.Clsid:D}}}");
             }
 
@@ -210,11 +231,13 @@ public static class WindowsComRegistration {
 
     private static void WriteComponentCategoryDescriptions(
         RegistryKey classes,
-        IReadOnlyList<OpcComponentCategory> categories) {
+        IReadOnlyList<OpcComponentCategory> categories)
+    {
         using RegistryKey categoriesRoot = classes.CreateSubKey("Component Categories", writable: true)
             ?? throw new UnauthorizedAccessException("Cannot create Component Categories subkey.");
 
-        foreach (OpcComponentCategory cat in categories) {
+        foreach (OpcComponentCategory cat in categories)
+        {
             using RegistryKey catKey = categoriesRoot.CreateSubKey($"{{{cat.CategoryId:D}}}", writable: true)
                 ?? throw new UnauthorizedAccessException("Cannot create category description subkey.");
             // LCID 409 = en-US. ICatInformation::GetCategoryDesc resolves the locale-specific value.
@@ -228,28 +251,35 @@ public static class WindowsComRegistration {
 
     private const int LcidEnUs = 0x409;
 
-    private static IEnumerable<RegistryView> ResolveViews(IReadOnlyList<RegistryView>? views) {
-        if (views is null || views.Count == 0) {
+    private static IEnumerable<RegistryView> ResolveViews(IReadOnlyList<RegistryView>? views)
+    {
+        if (views is null || views.Count == 0)
+        {
             yield return RegistryView.Registry32;
             yield return RegistryView.Registry64;
             yield break;
         }
 
-        foreach (RegistryView v in views) {
+        foreach (RegistryView v in views)
+        {
             yield return v;
         }
     }
 
-    private static string StripVersionSuffix(string progId) {
+    private static string StripVersionSuffix(string progId)
+    {
         // OPC ProgIDs use the convention "Vendor.Server.N" where N is an integer version.
         // The version-independent form is "Vendor.Server" (everything before the final ".N").
         int dot = progId.LastIndexOf('.');
-        if (dot <= 0 || dot == progId.Length - 1) {
+        if (dot <= 0 || dot == progId.Length - 1)
+        {
             return progId;
         }
 
-        for (int i = dot + 1; i < progId.Length; i++) {
-            if (!char.IsAsciiDigit(progId[i])) {
+        for (int i = dot + 1; i < progId.Length; i++)
+        {
+            if (!char.IsAsciiDigit(progId[i]))
+            {
                 return progId;
             }
         }

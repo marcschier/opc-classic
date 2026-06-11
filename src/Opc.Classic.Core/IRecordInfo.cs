@@ -17,7 +17,8 @@ namespace Opc.Classic;
 /// implementation with <see cref="RecordInfoRegistry"/>. The GUID identifies
 /// the record layout on the wire; fields are encoded in the listed order.
 /// </remarks>
-public interface IRecordInfo {
+public interface IRecordInfo
+{
     /// <summary>The GUID that identifies this record layout.</summary>
     Guid Id { get; }
 

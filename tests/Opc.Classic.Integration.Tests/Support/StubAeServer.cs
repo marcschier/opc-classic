@@ -14,7 +14,8 @@ using Opc.Classic.Ae.Hosting;
 
 namespace Opc.Classic.Integration.Tests.Support;
 
-internal sealed class StubAeServer : IOpcAeServer {
+internal sealed class StubAeServer : IOpcAeServer
+{
     private int _statusCallCount;
     private int _filterCallCount;
     private int _categoryCallCount;
@@ -27,10 +28,12 @@ internal sealed class StubAeServer : IOpcAeServer {
 
     public int LastEventType { get; private set; }
 
-    public Task<OpcServerStatus> GetStatusAsync(CancellationToken cancellationToken = default) {
+    public Task<OpcServerStatus> GetStatusAsync(CancellationToken cancellationToken = default)
+    {
         cancellationToken.ThrowIfCancellationRequested();
         Interlocked.Increment(ref _statusCallCount);
-        return Task.FromResult(new OpcServerStatus {
+        return Task.FromResult(new OpcServerStatus
+        {
             Spec = OpcStatusSpec.Ae,
             StartTime = DateTimeOffset.UnixEpoch,
             CurrentTime = DateTimeOffset.UnixEpoch.AddSeconds(5),
@@ -43,7 +46,8 @@ internal sealed class StubAeServer : IOpcAeServer {
         });
     }
 
-    public Task<int> QueryAvailableFiltersAsync(CancellationToken cancellationToken = default) {
+    public Task<int> QueryAvailableFiltersAsync(CancellationToken cancellationToken = default)
+    {
         cancellationToken.ThrowIfCancellationRequested();
         Interlocked.Increment(ref _filterCallCount);
         return Task.FromResult(0x07);
@@ -53,7 +57,8 @@ internal sealed class StubAeServer : IOpcAeServer {
         int eventType,
         out int[] eventCategories,
         out string[] eventCategoryDescriptions,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         cancellationToken.ThrowIfCancellationRequested();
         Interlocked.Increment(ref _categoryCallCount);
         LastEventType = eventType;
@@ -62,19 +67,22 @@ internal sealed class StubAeServer : IOpcAeServer {
         return Task.CompletedTask;
     }
 
-    public Task<string[]> QueryConditionNamesAsync(int eventCategory, CancellationToken cancellationToken = default) {
+    public Task<string[]> QueryConditionNamesAsync(int eventCategory, CancellationToken cancellationToken = default)
+    {
         _ = eventCategory;
         cancellationToken.ThrowIfCancellationRequested();
         return Task.FromResult(new[] { "Level", "Pressure" });
     }
 
-    public Task<string[]> QuerySubConditionNamesAsync(string conditionName, CancellationToken cancellationToken = default) {
+    public Task<string[]> QuerySubConditionNamesAsync(string conditionName, CancellationToken cancellationToken = default)
+    {
         _ = conditionName;
         cancellationToken.ThrowIfCancellationRequested();
         return Task.FromResult(new[] { "Hi", "HiHi" });
     }
 
-    public Task<string[]> QuerySourceConditionsAsync(string source, CancellationToken cancellationToken = default) {
+    public Task<string[]> QuerySourceConditionsAsync(string source, CancellationToken cancellationToken = default)
+    {
         _ = source;
         cancellationToken.ThrowIfCancellationRequested();
         return Task.FromResult(new[] { "Level" });
@@ -85,7 +93,8 @@ internal sealed class StubAeServer : IOpcAeServer {
         out int[] attributeIds,
         out string[] attributeDescriptions,
         out ushort[] attributeTypes,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         _ = eventCategory;
         cancellationToken.ThrowIfCancellationRequested();
         attributeIds = [501, 502];
@@ -103,7 +112,8 @@ internal sealed class StubAeServer : IOpcAeServer {
         out string[] attributeItemIds,
         out string[] nodeNames,
         out Guid[] classIds,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         _ = eventCategory;
         _ = conditionName;
         _ = subconditionName;
@@ -118,7 +128,8 @@ internal sealed class StubAeServer : IOpcAeServer {
         string source,
         string conditionName,
         int[] attributeIds,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         _ = source;
         _ = conditionName;
         _ = attributeIds;
@@ -135,7 +146,8 @@ internal sealed class StubAeServer : IOpcAeServer {
         out IOPCEventSubscriptionMgt subscription,
         out int revisedBufferTime,
         out int revisedMaxSize,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         _ = active;
         _ = bufferTime;
         _ = maxSize;
@@ -148,25 +160,29 @@ internal sealed class StubAeServer : IOpcAeServer {
         throw new NotSupportedException("AE subscription routing is not exposed by OpcAeServerHost's loopback object registry yet.");
     }
 
-    public Task EnableConditionByAreaAsync(string[] areas, CancellationToken cancellationToken = default) {
+    public Task EnableConditionByAreaAsync(string[] areas, CancellationToken cancellationToken = default)
+    {
         _ = areas;
         _ = cancellationToken;
         throw new NotSupportedException("Condition enable calls are not exercised by the loopback AE root-call tests.");
     }
 
-    public Task EnableConditionBySourceAsync(string[] sources, CancellationToken cancellationToken = default) {
+    public Task EnableConditionBySourceAsync(string[] sources, CancellationToken cancellationToken = default)
+    {
         _ = sources;
         _ = cancellationToken;
         throw new NotSupportedException("Condition enable calls are not exercised by the loopback AE root-call tests.");
     }
 
-    public Task DisableConditionByAreaAsync(string[] areas, CancellationToken cancellationToken = default) {
+    public Task DisableConditionByAreaAsync(string[] areas, CancellationToken cancellationToken = default)
+    {
         _ = areas;
         _ = cancellationToken;
         throw new NotSupportedException("Condition disable calls are not exercised by the loopback AE root-call tests.");
     }
 
-    public Task DisableConditionBySourceAsync(string[] sources, CancellationToken cancellationToken = default) {
+    public Task DisableConditionBySourceAsync(string[] sources, CancellationToken cancellationToken = default)
+    {
         _ = sources;
         _ = cancellationToken;
         throw new NotSupportedException("Condition disable calls are not exercised by the loopback AE root-call tests.");
@@ -180,7 +196,8 @@ internal sealed class StubAeServer : IOpcAeServer {
         string[] conditionNames,
         long[] activeTimes,
         int[] cookies,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         _ = dwCount;
         _ = acknowledgerId;
         _ = comment;
@@ -195,7 +212,8 @@ internal sealed class StubAeServer : IOpcAeServer {
     public Task CreateAreaBrowserAsync(
         Guid requestedInterfaceId,
         out IOPCEventAreaBrowser areaBrowser,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         _ = requestedInterfaceId;
         _ = cancellationToken;
         areaBrowser = default!;

@@ -18,7 +18,8 @@ namespace Opc.Classic;
 /// Replaces the legacy <c>Opc.ConnectData</c> from the .NET Framework 4.6.2
 /// surface. Immutable and AOT-clean.
 /// </remarks>
-public sealed class OpcConnectData {
+public sealed class OpcConnectData
+{
     /// <summary>Construct connection data.</summary>
     /// <param name="url">Target OPC URL (scheme + host + port + ProgID/CLSID).</param>
     /// <param name="credentials">
@@ -46,24 +47,29 @@ public sealed class OpcConnectData {
         OpcAuthMode authMode = OpcAuthMode.NtlmV2,
         OpcProtectionLevel protectionLevel = OpcProtectionLevel.Integrity,
         TimeSpan? operationTimeout = null,
-        ChannelBindings? channelBindings = null) {
+        ChannelBindings? channelBindings = null)
+    {
         ArgumentNullException.ThrowIfNull(url);
-        if (authMode == OpcAuthMode.Anonymous && credentials is not null) {
+        if (authMode == OpcAuthMode.Anonymous && credentials is not null)
+        {
             throw new ArgumentException(
                 "OpcAuthMode.Anonymous is incompatible with non-null credentials.",
                 nameof(authMode));
         }
-        if (authMode == OpcAuthMode.WindowsSso && credentials is not null) {
+        if (authMode == OpcAuthMode.WindowsSso && credentials is not null)
+        {
             throw new ArgumentException(
                 "OpcAuthMode.WindowsSso uses CredentialCache.DefaultNetworkCredentials and must be constructed with null credentials.",
                 nameof(authMode));
         }
-        if (authMode != OpcAuthMode.Anonymous && authMode != OpcAuthMode.WindowsSso && credentials is null) {
+        if (authMode != OpcAuthMode.Anonymous && authMode != OpcAuthMode.WindowsSso && credentials is null)
+        {
             throw new ArgumentException(
                 $"OpcAuthMode.{authMode} requires non-null credentials.",
                 nameof(credentials));
         }
-        if (operationTimeout is { } t && t <= TimeSpan.Zero) {
+        if (operationTimeout is { } t && t <= TimeSpan.Zero)
+        {
             throw new ArgumentOutOfRangeException(nameof(operationTimeout), t,
                 "Operation timeout must be positive.");
         }
@@ -106,7 +112,8 @@ public sealed class OpcConnectData {
         NetworkCredential credentials,
         OpcProtectionLevel protectionLevel = OpcProtectionLevel.Integrity,
         TimeSpan? operationTimeout = null,
-        ChannelBindings? channelBindings = null) {
+        ChannelBindings? channelBindings = null)
+    {
         ArgumentNullException.ThrowIfNull(credentials);
         return new OpcConnectData(url, credentials, OpcAuthMode.NtlmV2, protectionLevel, operationTimeout, channelBindings);
     }
@@ -117,7 +124,8 @@ public sealed class OpcConnectData {
         NetworkCredential credentials,
         OpcProtectionLevel protectionLevel = OpcProtectionLevel.Integrity,
         TimeSpan? operationTimeout = null,
-        ChannelBindings? channelBindings = null) {
+        ChannelBindings? channelBindings = null)
+    {
         ArgumentNullException.ThrowIfNull(credentials);
         return new OpcConnectData(url, credentials, OpcAuthMode.Kerberos, protectionLevel, operationTimeout, channelBindings);
     }

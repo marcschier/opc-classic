@@ -13,7 +13,8 @@ namespace Opc.Classic.Ae;
 /// <summary>
 /// The managed async-first OPC AE server contract.
 /// </summary>
-public interface IAeServer : IAsyncDisposable {
+public interface IAeServer : IAsyncDisposable
+{
     /// <summary>Raised when the server emits <c>IOPCShutdown::ShutdownRequest</c>.</summary>
     event EventHandler<EventArgs>? ServerShutdown;
 

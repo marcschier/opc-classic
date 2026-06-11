@@ -19,7 +19,8 @@ namespace Opc.Classic.Dcom.Kerberos.Tests;
 [ClassDataSource<KdcFixture>(Shared = SharedType.PerAssembly)]
 [Category("Kerberos")]
 [NotInParallel]
-public sealed class KerberosKdcIntegrationTests {
+public sealed class KerberosKdcIntegrationTests
+{
     private static readonly ChannelBindings MatchingChannelBindings = new(
         InitiatorAddrType: 0,
         InitiatorAddress: ReadOnlyMemory<byte>.Empty,
@@ -29,12 +30,14 @@ public sealed class KerberosKdcIntegrationTests {
 
     private readonly KdcFixture _kdc;
 
-    public KerberosKdcIntegrationTests(KdcFixture kdc) {
+    public KerberosKdcIntegrationTests(KdcFixture kdc)
+    {
         _kdc = kdc;
     }
 
     [Test, Category("Kerberos")]
-    public async Task KerberosAuthContext_requests_live_kdc_ticket_and_wraps_ap_req_in_spnego() {
+    public async Task KerberosAuthContext_requests_live_kdc_ticket_and_wraps_ap_req_in_spnego()
+    {
         SkipWhenKdcUnavailable();
         using var krb5Config = _kdc.UseKrb5Config();
         _ = _kdc.TestUserKeyTable;
@@ -51,7 +54,8 @@ public sealed class KerberosKdcIntegrationTests {
     }
 
     [Test, Category("Kerberos")]
-    public async Task Mutual_auth_round_trips_ap_req_to_ap_rep_against_server_keytab() {
+    public async Task Mutual_auth_round_trips_ap_req_to_ap_rep_against_server_keytab()
+    {
         SkipWhenKdcUnavailable();
         using var krb5Config = _kdc.UseKrb5Config();
         var context = new KerberosConnectionContext(_kdc.CreatePasswordAuthInfo());
@@ -68,7 +72,8 @@ public sealed class KerberosKdcIntegrationTests {
     }
 
     [Test, Category("Kerberos")]
-    public async Task Replay_protection_rejects_second_use_of_same_ap_req() {
+    public async Task Replay_protection_rejects_second_use_of_same_ap_req()
+    {
         SkipWhenKdcUnavailable();
         using var krb5Config = _kdc.UseKrb5Config();
         var context = new KerberosConnectionContext(_kdc.CreatePasswordAuthInfo());
@@ -82,7 +87,8 @@ public sealed class KerberosKdcIntegrationTests {
     }
 
     [Test, Category("Kerberos")]
-    public async Task Channel_binding_hash_is_embedded_and_tamper_is_detected() {
+    public async Task Channel_binding_hash_is_embedded_and_tamper_is_detected()
+    {
         SkipWhenKdcUnavailable();
         using var krb5Config = _kdc.UseKrb5Config();
         byte[] expectedHash = ChannelBindingsHash.Compute(MatchingChannelBindings);
@@ -99,7 +105,8 @@ public sealed class KerberosKdcIntegrationTests {
     }
 
     [Test, Category("Kerberos")]
-    public async Task Expired_service_ticket_is_rejected_with_ticket_expired_semantics() {
+    public async Task Expired_service_ticket_is_rejected_with_ticket_expired_semantics()
+    {
         SkipWhenKdcUnavailable();
         using var krb5Config = _kdc.UseKrb5Config();
         var context = new KerberosConnectionContext(_kdc.CreatePasswordAuthInfo(KdcFixture.ShortLivedServerSpn));
@@ -115,43 +122,52 @@ public sealed class KerberosKdcIntegrationTests {
         await Assert.That(thrown!.Message).Contains("expired");
     }
 
-    private void SkipWhenKdcUnavailable() {
-        if (!_kdc.IsAvailable) {
+    private void SkipWhenKdcUnavailable()
+    {
+        if (!_kdc.IsAvailable)
+        {
             Skip.Test(_kdc.SkipReason ?? $"Requires Docker — set {KdcFixture.RunEnvironmentVariable}=1 to enable.");
         }
     }
 
-    private Task<KerberosIdentity> AuthenticateAsServerAsync(ReadOnlyMemory<byte> apReq) {
+    private Task<KerberosIdentity> AuthenticateAsServerAsync(ReadOnlyMemory<byte> apReq)
+    {
         var authenticator = new KerberosAuthenticator(CreateValidator(_kdc.ServerKeyTable));
         return AuthenticateAsKerberosIdentityAsync(authenticator, apReq);
     }
 
-    private static KerberosValidator CreateValidator(KeyTable keyTable) => new(keyTable) {
+    private static KerberosValidator CreateValidator(KeyTable keyTable) => new(keyTable)
+    {
         ValidateAfterDecrypt = ValidationActions.All,
     };
 
     private static async Task<KerberosIdentity> AuthenticateAsKerberosIdentityAsync(
         KerberosAuthenticator authenticator,
-        ReadOnlyMemory<byte> apReq) {
+        ReadOnlyMemory<byte> apReq)
+    {
         var identity = await authenticator.Authenticate(apReq).ConfigureAwait(false);
         return identity as KerberosIdentity ?? throw new InvalidOperationException("Kerberos authenticator did not return a KerberosIdentity.");
     }
 
-    private static ReadOnlyMemory<byte> ExtractOptimisticMechanismToken(ReadOnlyMemory<byte> token) {
+    private static ReadOnlyMemory<byte> ExtractOptimisticMechanismToken(ReadOnlyMemory<byte> token)
+    {
         var reader = new AsnReader(token, AsnEncodingRules.DER);
         var initialContextTokenTag = new Asn1Tag(TagClass.Application, 0, isConstructed: true);
         var initialContextToken = reader.ReadSequence(initialContextTokenTag);
         string oid = initialContextToken.ReadObjectIdentifier();
-        if (!StringComparer.Ordinal.Equals(oid, SpnegoOids.Spnego)) {
+        if (!StringComparer.Ordinal.Equals(oid, SpnegoOids.Spnego))
+        {
             throw new AsnContentException();
         }
 
         var negTokenInitTag = new Asn1Tag(TagClass.ContextSpecific, 0, isConstructed: true);
         var negotiationToken = initialContextToken.ReadSequence(negTokenInitTag);
         var body = negotiationToken.ReadSequence();
-        while (body.HasData) {
+        while (body.HasData)
+        {
             var tag = body.PeekTag();
-            if (tag.TagClass == TagClass.ContextSpecific && tag.TagValue == 2) {
+            if (tag.TagClass == TagClass.ContextSpecific && tag.TagValue == 2)
+            {
                 var mechToken = body.ReadSequence(tag);
                 return mechToken.ReadOctetString();
             }
@@ -162,16 +178,19 @@ public sealed class KerberosKdcIntegrationTests {
         throw new AsnContentException();
     }
 
-    private static ReadOnlyMemory<byte> ExtractChannelBindingHash(DecryptedKrbApReq decrypted) {
+    private static ReadOnlyMemory<byte> ExtractChannelBindingHash(DecryptedKrbApReq decrypted)
+    {
         var checksum = decrypted.Authenticator.Checksum ?? throw new KerberosValidationException("AP-REQ authenticator does not contain channel bindings.");
         var delegationInfo = checksum.DecodeDelegation() ?? throw new KerberosValidationException("AP-REQ authenticator checksum is not a GSS checksum.");
         return delegationInfo.ChannelBinding;
     }
 
-    private static void ValidateChannelBinding(DecryptedKrbApReq decrypted, ChannelBindings expectedBindings) {
+    private static void ValidateChannelBinding(DecryptedKrbApReq decrypted, ChannelBindings expectedBindings)
+    {
         ReadOnlyMemory<byte> actual = ExtractChannelBindingHash(decrypted);
         byte[] expected = ChannelBindingsHash.Compute(expectedBindings);
-        if (actual.IsEmpty || !actual.Span.SequenceEqual(expected)) {
+        if (actual.IsEmpty || !actual.Span.SequenceEqual(expected))
+        {
             throw new KerberosValidationException("KRB_AP_ERR_BAD_BINDINGS: AP-REQ channel bindings do not match expected channel bindings.");
         }
     }
@@ -183,22 +202,28 @@ public sealed class KerberosKdcIntegrationTests {
         AcceptorAddress: ReadOnlyMemory<byte>.Empty,
         ApplicationData: "tls-server-end-point:tampered"u8.ToArray());
 
-    private static async Task<Exception?> CaptureExceptionAsync(Func<Task> action) {
-        try {
+    private static async Task<Exception?> CaptureExceptionAsync(Func<Task> action)
+    {
+        try
+        {
             await action().ConfigureAwait(false);
             return null;
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             return ex;
         }
     }
 
-    private static Exception? CaptureException(Action action) {
-        try {
+    private static Exception? CaptureException(Action action)
+    {
+        try
+        {
             action();
             return null;
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             return ex;
         }
     }

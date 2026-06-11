@@ -12,7 +12,8 @@ namespace Opc.Classic.Dcom.Core;
 /// Managed representation of the versioned activation property array exchanged by
 /// IRemoteSCMActivator v5.6.
 /// </summary>
-public sealed class ActivationProperties {
+public sealed class ActivationProperties
+{
     /// <summary>Empty v5.6 activation property set.</summary>
     public static ActivationProperties Empty { get; } = new();
 
@@ -24,7 +25,8 @@ public sealed class ActivationProperties {
             null,
             null,
             null,
-            Array.Empty<ActivationProperty>()) {
+            Array.Empty<ActivationProperty>())
+    {
     }
 
     /// <summary>Creates an activation property set.</summary>
@@ -34,7 +36,8 @@ public sealed class ActivationProperties {
         LocationInfo? locationInfo,
         ScmReplyInfo? scmReplyInfo,
         SecurityInfo? securityInfo,
-        IReadOnlyList<ActivationProperty>? customProperties = null) {
+        IReadOnlyList<ActivationProperty>? customProperties = null)
+    {
         SpecialProperties = specialProperties ?? SpecialPropertiesData.Empty;
         InstanceInfo = instanceInfo;
         LocationInfo = locationInfo;
@@ -71,25 +74,31 @@ public sealed class ActivationProperties {
         CustomProperties);
 
     /// <summary>Returns the requested IID in activation-priority order.</summary>
-    public Guid GetRequestedIidOr(Guid fallback) {
-        if (InstanceInfo is { RequestedIid: var instanceIid } && instanceIid != Guid.Empty) {
+    public Guid GetRequestedIidOr(Guid fallback)
+    {
+        if (InstanceInfo is { RequestedIid: var instanceIid } && instanceIid != Guid.Empty)
+        {
             return instanceIid;
         }
 
-        if (SpecialProperties.RequestedIid != Guid.Empty) {
+        if (SpecialProperties.RequestedIid != Guid.Empty)
+        {
             return SpecialProperties.RequestedIid;
         }
 
         return fallback;
     }
 
-    private static ActivationProperty[] CopyCustomProperties(IReadOnlyList<ActivationProperty>? properties) {
-        if (properties is null || properties.Count == 0) {
+    private static ActivationProperty[] CopyCustomProperties(IReadOnlyList<ActivationProperty>? properties)
+    {
+        if (properties is null || properties.Count == 0)
+        {
             return Array.Empty<ActivationProperty>();
         }
 
         var copy = new ActivationProperty[properties.Count];
-        for (int i = 0; i < properties.Count; i++) {
+        for (int i = 0; i < properties.Count; i++)
+        {
             ActivationProperty property = properties[i];
             copy[i] = new ActivationProperty(property.Id, property.Payload);
         }

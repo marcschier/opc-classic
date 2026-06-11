@@ -6,7 +6,8 @@ namespace Opc.Classic.Dcom.Automation;
 /// Implements the <i>CALLCONV</i> data type of COM Automation.
 /// Identifies the calling convention used by a member function.
 /// </summary>
-public enum CallConv {
+public enum CallConv
+{
 
     /// <summary>
     /// Fast call

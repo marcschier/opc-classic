@@ -23,7 +23,8 @@ namespace Opc.Classic.Mcp.Capture;
 /// Lifecycle:
 /// <c>Starting → Running → Stopping → (Completed | Failed) → Disposed.</c>
 /// </remarks>
-public sealed class CaptureSession : IAsyncDisposable {
+public sealed class CaptureSession : IAsyncDisposable
+{
     private readonly SemaphoreSlim _lock = new(1, 1);
     private readonly ILogger _logger;
     private int _disposed;
@@ -35,7 +36,8 @@ public sealed class CaptureSession : IAsyncDisposable {
         ICaptureSource source,
         string sessionFolder,
         CaptureStartRequest request,
-        ILogger? logger = null) {
+        ILogger? logger = null)
+    {
         ArgumentException.ThrowIfNullOrEmpty(id);
         ArgumentException.ThrowIfNullOrEmpty(sourceName);
         ArgumentNullException.ThrowIfNull(source);
@@ -81,60 +83,73 @@ public sealed class CaptureSession : IAsyncDisposable {
     public string? Error { get; private set; }
 
     /// <summary>Starts the underlying source. Sets <see cref="State"/> to Running on success or Failed on throw.</summary>
-    public async Task StartAsync(CancellationToken cancellationToken) {
+    public async Task StartAsync(CancellationToken cancellationToken)
+    {
         await _lock.WaitAsync(cancellationToken).ConfigureAwait(false);
-        try {
-            try {
+        try
+        {
+            try
+            {
                 await Source.StartAsync(Request, cancellationToken).ConfigureAwait(false);
                 StartedAt = DateTimeOffset.UtcNow;
                 State = CaptureSessionState.Running;
                 LastTouchedAt = DateTimeOffset.UtcNow;
-                if (_logger.IsEnabled(LogLevel.Information)) {
+                if (_logger.IsEnabled(LogLevel.Information))
+                {
                     _logger.LogInformation("Capture session {SessionId} started ({Source}).", Id, SourceName);
                 }
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 Error = ex.Message;
                 State = CaptureSessionState.Failed;
                 _logger.LogError(ex, "Capture session {SessionId} failed to start.", Id);
                 throw;
             }
         }
-        finally {
+        finally
+        {
             _lock.Release();
         }
     }
 
     /// <summary>Stops the underlying source. Idempotent.</summary>
-    public async Task StopAsync(CancellationToken cancellationToken) {
+    public async Task StopAsync(CancellationToken cancellationToken)
+    {
         await _lock.WaitAsync(cancellationToken).ConfigureAwait(false);
-        try {
+        try
+        {
             if (State is CaptureSessionState.Completed
                      or CaptureSessionState.Failed
-                     or CaptureSessionState.Disposed) {
+                     or CaptureSessionState.Disposed)
+            {
                 return;
             }
 
             State = CaptureSessionState.Stopping;
-            try {
+            try
+            {
                 await Source.StopAsync(cancellationToken).ConfigureAwait(false);
                 StoppedAt = DateTimeOffset.UtcNow;
                 State = CaptureSessionState.Completed;
                 LastTouchedAt = DateTimeOffset.UtcNow;
-                if (_logger.IsEnabled(LogLevel.Information)) {
+                if (_logger.IsEnabled(LogLevel.Information))
+                {
                     _logger.LogInformation(
                         "Capture session {SessionId} completed ({Packets} packets, {Bytes} bytes).",
                         Id, Source.PacketCount, Source.ByteCount);
                 }
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 Error = ex.Message;
                 State = CaptureSessionState.Failed;
                 _logger.LogError(ex, "Capture session {SessionId} failed to stop.", Id);
                 throw;
             }
         }
-        finally {
+        finally
+        {
             _lock.Release();
         }
     }
@@ -188,26 +203,33 @@ public sealed class CaptureSession : IAsyncDisposable {
     internal async Task<DrainTailResult> DrainTailAsync(
         long sinceIndex,
         int max,
-        CancellationToken cancellationToken) {
-        if (sinceIndex < 0) {
+        CancellationToken cancellationToken)
+    {
+        if (sinceIndex < 0)
+        {
             sinceIndex = 0;
         }
-        if (max <= 0) {
+        if (max <= 0)
+        {
             max = 1;
         }
 
         DecodeCursor cursor = GetOrCreateCursor();
 
         await cursor.Lock.WaitAsync(cancellationToken).ConfigureAwait(false);
-        try {
+        try
+        {
             long packetIdx = 0;
-            await foreach (CapturedPacket pkt in Source.ReadAllAsync(maxPackets: null, cancellationToken).ConfigureAwait(false)) {
-                if (packetIdx < cursor.PacketsConsumed) {
+            await foreach (CapturedPacket pkt in Source.ReadAllAsync(maxPackets: null, cancellationToken).ConfigureAwait(false))
+            {
+                if (packetIdx < cursor.PacketsConsumed)
+                {
                     packetIdx++;
                     continue;
                 }
 
-                foreach (DecodedOpcPdu pdu in cursor.Decoder.Decode(pkt)) {
+                foreach (DecodedOpcPdu pdu in cursor.Decoder.Decode(pkt))
+                {
                     cursor.Pdus.Add(pdu);
                 }
                 packetIdx++;
@@ -231,18 +253,22 @@ public sealed class CaptureSession : IAsyncDisposable {
             LastTouchedAt = DateTimeOffset.UtcNow;
             return new DrainTailResult(window, endExclusive, totalEmitted, done, State);
         }
-        finally {
+        finally
+        {
             cursor.Lock.Release();
         }
     }
 
-    private DecodeCursor GetOrCreateCursor() {
+    private DecodeCursor GetOrCreateCursor()
+    {
         DecodeCursor? cursor = _cursor;
-        if (cursor is not null) {
+        if (cursor is not null)
+        {
             return cursor;
         }
 
-        lock (_cursorInitLock) {
+        lock (_cursorInitLock)
+        {
             cursor = _cursor ??= new DecodeCursor(_logger, BuildUnwrapper(Request));
         }
         return cursor;
@@ -256,9 +282,11 @@ public sealed class CaptureSession : IAsyncDisposable {
     /// <c>opcclassic.capture.get</c> and <c>.summarize</c> share the
     /// same construction logic.
     /// </summary>
-    internal static NtlmPassiveUnwrapper? BuildUnwrapper(CaptureStartRequest request) {
+    internal static NtlmPassiveUnwrapper? BuildUnwrapper(CaptureStartRequest request)
+    {
         ArgumentNullException.ThrowIfNull(request);
-        if (request.NtlmSessionKey is not { Length: NtlmPassiveUnwrapper.VerifierLength } sk) {
+        if (request.NtlmSessionKey is not { Length: NtlmPassiveUnwrapper.VerifierLength } sk)
+        {
             return null;
         }
         return new NtlmPassiveUnwrapper(sk);
@@ -268,8 +296,10 @@ public sealed class CaptureSession : IAsyncDisposable {
     /// Per-session decoded-PDU cache + long-lived decoder used by the
     /// <c>opcclassic.capture.tail</c> cursor-based polling path.
     /// </summary>
-    private sealed class DecodeCursor {
-        public DecodeCursor(ILogger logger, NtlmPassiveUnwrapper? unwrapper) {
+    private sealed class DecodeCursor
+    {
+        public DecodeCursor(ILogger logger, NtlmPassiveUnwrapper? unwrapper)
+        {
             Unwrapper = unwrapper;
             Decoder = new OpcDcomDecoder(unwrapper, logger);
         }
@@ -288,24 +318,31 @@ public sealed class CaptureSession : IAsyncDisposable {
     /// <inheritdoc/>
     [SuppressMessage("Design", "CA1031:Do not catch general exception types",
         Justification = "Dispose path must release native resources + scratch folder regardless of source-side errors; logging is sufficient.")]
-    public async ValueTask DisposeAsync() {
-        if (Interlocked.Exchange(ref _disposed, 1) != 0) {
+    public async ValueTask DisposeAsync()
+    {
+        if (Interlocked.Exchange(ref _disposed, 1) != 0)
+        {
             return;
         }
 
-        try {
+        try
+        {
             await Source.DisposeAsync().ConfigureAwait(false);
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             _logger.LogWarning(ex, "Capture session {SessionId} source dispose error.", Id);
         }
 
-        try {
-            if (Directory.Exists(SessionFolder)) {
+        try
+        {
+            if (Directory.Exists(SessionFolder))
+            {
                 Directory.Delete(SessionFolder, recursive: true);
             }
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             _logger.LogWarning(ex, "Capture session {SessionId} folder cleanup error.", Id);
         }
 

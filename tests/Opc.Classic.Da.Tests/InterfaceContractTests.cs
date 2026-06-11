@@ -16,9 +16,11 @@ namespace Opc.Classic.Da.Tests;
 
 // ---------- DataChange ----------
 
-public sealed class DataChangeTests {
+public sealed class DataChangeTests
+{
     [Test]
-    public async Task EmptyItems_IsKeepAlive() {
+    public async Task EmptyItems_IsKeepAlive()
+    {
         var dc = new DataChange();
         await Assert.That(dc.IsKeepAlive).IsTrue();
         await Assert.That(dc.Items.Count).IsEqualTo(0);
@@ -26,8 +28,10 @@ public sealed class DataChangeTests {
     }
 
     [Test]
-    public async Task WithItems_IsNotKeepAlive() {
-        var dc = new DataChange {
+    public async Task WithItems_IsNotKeepAlive()
+    {
+        var dc = new DataChange
+        {
             TransactionId = 7,
             Items = new[]
             {
@@ -43,15 +47,18 @@ public sealed class DataChangeTests {
 
 // ---------- ServerShutdownEventArgs ----------
 
-public sealed class ServerShutdownEventArgsTests {
+public sealed class ServerShutdownEventArgsTests
+{
     [Test]
-    public async Task DefaultReason_IsEmpty() {
+    public async Task DefaultReason_IsEmpty()
+    {
         var e = new ServerShutdownEventArgs();
         await Assert.That(e.Reason).IsEqualTo(string.Empty);
     }
 
     [Test]
-    public async Task TimeDefaults_ToNow() {
+    public async Task TimeDefaults_ToNow()
+    {
         var before = DateTimeOffset.UtcNow.AddSeconds(-1);
         var e = new ServerShutdownEventArgs();
         var after = DateTimeOffset.UtcNow.AddSeconds(1);
@@ -67,13 +74,15 @@ public sealed class ServerShutdownEventArgsTests {
 /// the interface is implementable with idiomatic async code and proves
 /// the contract compiles end-to-end.
 /// </summary>
-internal sealed class FakeDaServer : IDaServer {
+internal sealed class FakeDaServer : IDaServer
+{
     public int LocaleId { get; private set; } = 0x0409; // en-US default
 
     public event EventHandler<ServerShutdownEventArgs>? ServerShutdown;
 
     public Task<OpcServerStatus> GetStatusAsync(CancellationToken ct = default) =>
-        Task.FromResult(new OpcServerStatus {
+        Task.FromResult(new OpcServerStatus
+        {
             Spec = OpcStatusSpec.Da,
             State = OpcServerState.Running,
             VendorInfo = "FakeDaServer",
@@ -81,7 +90,8 @@ internal sealed class FakeDaServer : IDaServer {
             StartTime = DateTimeOffset.UtcNow.AddMinutes(-5),
         });
 
-    public Task SetLocaleAsync(int localeId, CancellationToken ct = default) {
+    public Task SetLocaleAsync(int localeId, CancellationToken ct = default)
+    {
         LocaleId = localeId;
         return Task.CompletedTask;
     }
@@ -95,7 +105,8 @@ internal sealed class FakeDaServer : IDaServer {
     public async IAsyncEnumerable<BrowseElement> BrowseAsync(
         string itemPath,
         BrowseFilters filters = BrowseFilters.All,
-        [System.Runtime.CompilerServices.EnumeratorCancellation] CancellationToken ct = default) {
+        [System.Runtime.CompilerServices.EnumeratorCancellation] CancellationToken ct = default)
+    {
         await Task.Yield();
         yield return new BrowseElement { Name = "Folder", IsItem = false, HasChildren = true };
         yield return new BrowseElement { Name = "Tag1", ItemName = "Tag1", IsItem = true };
@@ -103,8 +114,10 @@ internal sealed class FakeDaServer : IDaServer {
     }
 
     public Task<IReadOnlyList<ItemValueResult>> ReadAsync(
-        IReadOnlyList<Item> items, CancellationToken ct = default) {
-        IReadOnlyList<ItemValueResult> results = items.Select(i => new ItemValueResult(i.ItemName) {
+        IReadOnlyList<Item> items, CancellationToken ct = default)
+    {
+        IReadOnlyList<ItemValueResult> results = items.Select(i => new ItemValueResult(i.ItemName)
+        {
             ClientHandle = i.ClientHandle,
             Value = 42.0,
             Quality = OpcQuality.Good,
@@ -114,7 +127,8 @@ internal sealed class FakeDaServer : IDaServer {
     }
 
     public Task<IReadOnlyList<IdentifiedResult>> WriteAsync(
-        IReadOnlyList<ItemValue> values, CancellationToken ct = default) {
+        IReadOnlyList<ItemValue> values, CancellationToken ct = default)
+    {
         IReadOnlyList<IdentifiedResult> results = values
             .Select(v => new IdentifiedResult(v.ItemName) { ClientHandle = v.ClientHandle })
             .ToList();
@@ -122,7 +136,8 @@ internal sealed class FakeDaServer : IDaServer {
     }
 
     public Task<IReadOnlyList<IdentifiedResult>> ValidateItemsAsync(
-        IReadOnlyList<Item> items, CancellationToken ct = default) {
+        IReadOnlyList<Item> items, CancellationToken ct = default)
+    {
         IReadOnlyList<IdentifiedResult> results = items
             .Select(i => new IdentifiedResult(i.ItemName) { ClientHandle = i.ClientHandle })
             .ToList();
@@ -133,10 +148,13 @@ internal sealed class FakeDaServer : IDaServer {
         IReadOnlyList<ItemIdentifier> itemIds,
         IReadOnlyList<PropertyID> propertyIds,
         bool returnValues,
-        CancellationToken ct = default) {
-        IReadOnlyList<ItemPropertyResult> results = itemIds.Select(id => new ItemPropertyResult {
+        CancellationToken ct = default)
+    {
+        IReadOnlyList<ItemPropertyResult> results = itemIds.Select(id => new ItemPropertyResult
+        {
             ItemName = id.ItemName,
-            Properties = propertyIds.Select(p => new ItemProperty {
+            Properties = propertyIds.Select(p => new ItemProperty
+            {
                 PropertyId = p,
                 Value = returnValues ? "fake" : null,
             }).ToList(),
@@ -148,23 +166,28 @@ internal sealed class FakeDaServer : IDaServer {
         SubscriptionState state, CancellationToken ct = default) =>
         Task.FromResult<IDaSubscription>(new FakeDaSubscription(state));
 
-    public ValueTask DisposeAsync() {
+    public ValueTask DisposeAsync()
+    {
         ServerShutdown?.Invoke(this, new ServerShutdownEventArgs { Reason = "Disposed" });
         return ValueTask.CompletedTask;
     }
 }
 
-internal sealed class FakeDaSubscription : IDaSubscription {
+internal sealed class FakeDaSubscription : IDaSubscription
+{
     public FakeDaSubscription(SubscriptionState state) { State = state; }
 
     public SubscriptionState State { get; private set; }
 
     public async IAsyncEnumerable<DataChange> DataChanges_Impl(
-        [System.Runtime.CompilerServices.EnumeratorCancellation] CancellationToken ct = default) {
-        for (var i = 0; i < 3; i++) {
+        [System.Runtime.CompilerServices.EnumeratorCancellation] CancellationToken ct = default)
+    {
+        for (var i = 0; i < 3; i++)
+        {
             ct.ThrowIfCancellationRequested();
             await Task.Yield();
-            yield return new DataChange {
+            yield return new DataChange
+            {
                 TransactionId = i,
                 Items = new[] { new ItemValueResult("Tag") { Value = i, Quality = OpcQuality.Good } },
             };
@@ -173,7 +196,8 @@ internal sealed class FakeDaSubscription : IDaSubscription {
 
     public IAsyncEnumerable<DataChange> DataChanges => DataChanges_Impl();
 
-    public Task SetStateAsync(SubscriptionState state, CancellationToken ct = default) {
+    public Task SetStateAsync(SubscriptionState state, CancellationToken ct = default)
+    {
         State = state;
         return Task.CompletedTask;
     }
@@ -198,9 +222,11 @@ internal sealed class FakeDaSubscription : IDaSubscription {
     public ValueTask DisposeAsync() => ValueTask.CompletedTask;
 }
 
-public sealed class IDaServerContractTests {
+public sealed class IDaServerContractTests
+{
     [Test]
-    public async Task GetStatusAsync_ReturnsServerStatus() {
+    public async Task GetStatusAsync_ReturnsServerStatus()
+    {
         await using var server = new FakeDaServer();
         var status = await server.GetStatusAsync();
         await Assert.That(status.Spec).IsEqualTo(OpcStatusSpec.Da);
@@ -209,33 +235,40 @@ public sealed class IDaServerContractTests {
     }
 
     [Test]
-    public async Task SetLocaleAsync_UpdatesLocaleId() {
+    public async Task SetLocaleAsync_UpdatesLocaleId()
+    {
         await using var server = new FakeDaServer();
         await server.SetLocaleAsync(0x0407); // de-DE
         await Assert.That(server.LocaleId).IsEqualTo(0x0407);
     }
 
     [Test]
-    public async Task BrowseAsync_StreamsElements() {
+    public async Task BrowseAsync_StreamsElements()
+    {
         await using var server = new FakeDaServer();
         var count = 0;
-        await foreach (var el in server.BrowseAsync(string.Empty)) {
+        await foreach (var el in server.BrowseAsync(string.Empty))
+        {
             count++;
         }
         await Assert.That(count).IsEqualTo(3);
     }
 
     [Test]
-    public async Task BrowseAsync_RespectsCancellation() {
+    public async Task BrowseAsync_RespectsCancellation()
+    {
         await using var server = new FakeDaServer();
         using var cts = new CancellationTokenSource();
         await cts.CancelAsync();
-        try {
-            await foreach (var _ in server.BrowseAsync(string.Empty, BrowseFilters.All, cts.Token)) {
+        try
+        {
+            await foreach (var _ in server.BrowseAsync(string.Empty, BrowseFilters.All, cts.Token))
+            {
                 // Should not reach here under normal cancellation flow.
             }
         }
-        catch (OperationCanceledException) {
+        catch (OperationCanceledException)
+        {
             // Expected for true implementations that observe the token.
             return;
         }
@@ -245,7 +278,8 @@ public sealed class IDaServerContractTests {
     }
 
     [Test]
-    public async Task ReadAsync_EchoesClientHandlesAndPopulatesValues() {
+    public async Task ReadAsync_EchoesClientHandlesAndPopulatesValues()
+    {
         await using var server = new FakeDaServer();
         IReadOnlyList<Item> items = new[]
         {
@@ -260,7 +294,8 @@ public sealed class IDaServerContractTests {
     }
 
     [Test]
-    public async Task GetPropertiesAsync_ReturnsRequestedProperties() {
+    public async Task GetPropertiesAsync_ReturnsRequestedProperties()
+    {
         await using var server = new FakeDaServer();
         IReadOnlyList<ItemIdentifier> ids = new ItemIdentifier[]
         {
@@ -276,7 +311,8 @@ public sealed class IDaServerContractTests {
     }
 
     [Test]
-    public async Task CreateSubscriptionAsync_ReturnsSubscriptionWithState() {
+    public async Task CreateSubscriptionAsync_ReturnsSubscriptionWithState()
+    {
         await using var server = new FakeDaServer();
         var initial = SubscriptionState.At(TimeSpan.FromSeconds(1));
         await using var sub = await server.CreateSubscriptionAsync(initial);
@@ -284,12 +320,14 @@ public sealed class IDaServerContractTests {
     }
 
     [Test]
-    public async Task Subscription_DataChanges_DeliversBatches() {
+    public async Task Subscription_DataChanges_DeliversBatches()
+    {
         await using var server = new FakeDaServer();
         await using var sub = await server.CreateSubscriptionAsync(SubscriptionState.At(TimeSpan.FromMilliseconds(100)));
 
         var batches = new List<DataChange>();
-        await foreach (var dc in sub.DataChanges) {
+        await foreach (var dc in sub.DataChanges)
+        {
             batches.Add(dc);
         }
 
@@ -299,7 +337,8 @@ public sealed class IDaServerContractTests {
     }
 
     [Test]
-    public async Task Subscription_AddItems_EchoesClientHandles() {
+    public async Task Subscription_AddItems_EchoesClientHandles()
+    {
         await using var server = new FakeDaServer();
         await using var sub = await server.CreateSubscriptionAsync(SubscriptionState.At(TimeSpan.FromSeconds(1)));
 
@@ -315,7 +354,8 @@ public sealed class IDaServerContractTests {
     }
 
     [Test]
-    public async Task Subscription_SetState_UpdatesState() {
+    public async Task Subscription_SetState_UpdatesState()
+    {
         await using var server = new FakeDaServer();
         await using var sub = await server.CreateSubscriptionAsync(SubscriptionState.At(TimeSpan.FromSeconds(1)));
 

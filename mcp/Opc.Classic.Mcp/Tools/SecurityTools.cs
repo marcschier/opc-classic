@@ -13,18 +13,21 @@ using Opc.Classic.Security.Dcom;
 namespace Opc.Classic.Mcp.Tools;
 
 /// <summary>Creates OPC Security client state for a session.</summary>
-public interface IOpcSecurityClientFactory {
+public interface IOpcSecurityClientFactory
+{
     /// <summary>Creates or resolves an OPC Security client for the supplied session.</summary>
     Task<SecurityClientState> CreateAsync(OpcSession session, CancellationToken cancellationToken = default);
 }
 
 /// <summary>MCP tools for optional OPC Security interfaces.</summary>
-public sealed class SecurityTools {
+public sealed class SecurityTools
+{
     private readonly IOpcSessionManager _sessionManager;
     private readonly IOpcSecurityClientFactory _clientFactory;
 
     /// <summary>Creates the OPC Security tool set.</summary>
-    public SecurityTools(IOpcSessionManager sessionManager, IEnumerable<IOpcSecurityClientFactory> clientFactories) {
+    public SecurityTools(IOpcSessionManager sessionManager, IEnumerable<IOpcSecurityClientFactory> clientFactories)
+    {
         _sessionManager = sessionManager ?? throw new ArgumentNullException(nameof(sessionManager));
         ArgumentNullException.ThrowIfNull(clientFactories);
         _clientFactory = clientFactories.FirstOrDefault() ?? new DefaultOpcSecurityClientFactory();
@@ -36,7 +39,8 @@ public sealed class SecurityTools {
     public async Task<OpcSecurityInfoDto> IsAvailableNt(
         [Description("The sessionId returned by opcclassic.session.create, typically connected to a DCOM OPC server.")]
         string sessionId,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         SecurityClientState state = await GetSecurityClientAsync(sessionId, cancellationToken).ConfigureAwait(false);
         bool nt = await state.Client.IsAvailableNtAsync(cancellationToken).ConfigureAwait(false);
         bool priv = await state.Client.IsAvailablePrivateAsync(cancellationToken).ConfigureAwait(false);
@@ -49,7 +53,8 @@ public sealed class SecurityTools {
     public async Task<OpcSecurityInfoDto> IsAvailablePrivate(
         [Description("The sessionId returned by opcclassic.session.create, typically connected to a DCOM OPC server.")]
         string sessionId,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         SecurityClientState state = await GetSecurityClientAsync(sessionId, cancellationToken).ConfigureAwait(false);
         bool nt = await state.Client.IsAvailableNtAsync(cancellationToken).ConfigureAwait(false);
         bool priv = await state.Client.IsAvailablePrivateAsync(cancellationToken).ConfigureAwait(false);
@@ -66,7 +71,8 @@ public sealed class SecurityTools {
         string username,
         [Description("Server-private password. This is sent to the OPC server according to the server's configured DCOM security.")]
         string password,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         ArgumentException.ThrowIfNullOrWhiteSpace(username);
         ArgumentNullException.ThrowIfNull(password);
         SecurityClientState state = await GetSecurityClientAsync(sessionId, cancellationToken).ConfigureAwait(false);
@@ -82,15 +88,18 @@ public sealed class SecurityTools {
     public async Task<OpcResultDto> Logoff(
         [Description("The connected OPC Classic sessionId.")]
         string sessionId,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         SecurityClientState state = await GetSecurityClientAsync(sessionId, cancellationToken).ConfigureAwait(false);
         await state.Client.LogoffAsync(cancellationToken).ConfigureAwait(false);
         return new OpcResultDto(0, "OPC Security logoff succeeded.", Succeeded: true);
     }
 
-    private async Task<SecurityClientState> GetSecurityClientAsync(string sessionId, CancellationToken cancellationToken) {
+    private async Task<SecurityClientState> GetSecurityClientAsync(string sessionId, CancellationToken cancellationToken)
+    {
         OpcSession session = _sessionManager.GetSession(sessionId);
-        if (session.SecurityClient is not null) {
+        if (session.SecurityClient is not null)
+        {
             return session.SecurityClient;
         }
 
@@ -102,8 +111,10 @@ public sealed class SecurityTools {
     private static OpcSecurityInfoDto ToInfo(IOpcSecurityClient client, bool supportsNt, bool supportsPrivate, string message) =>
         new(supportsNt, supportsPrivate, client.IsAuthenticated, client.CurrentIdentity, message);
 
-    private sealed class DefaultOpcSecurityClientFactory : IOpcSecurityClientFactory {
-        public Task<SecurityClientState> CreateAsync(OpcSession session, CancellationToken cancellationToken = default) {
+    private sealed class DefaultOpcSecurityClientFactory : IOpcSecurityClientFactory
+    {
+        public Task<SecurityClientState> CreateAsync(OpcSession session, CancellationToken cancellationToken = default)
+        {
             ArgumentNullException.ThrowIfNull(session);
             cancellationToken.ThrowIfCancellationRequested();
             DaClientState daClient = session.DaClient ?? throw new McpException("OPC Security tools require an existing DCOM client in the session. Connect DA first or register IOpcSecurityClientFactory.");
@@ -111,11 +122,13 @@ public sealed class SecurityTools {
         }
     }
 
-    private sealed class DcomOpcSecurityClient : IOpcSecurityClient {
+    private sealed class DcomOpcSecurityClient : IOpcSecurityClient
+    {
         private readonly IOPCSecurityNTClientProxy _nt;
         private readonly IOPCSecurityPrivateClientProxy _priv;
 
-        public DcomOpcSecurityClient(ICallChannel channel) {
+        public DcomOpcSecurityClient(ICallChannel channel)
+        {
             ArgumentNullException.ThrowIfNull(channel);
             _nt = new IOPCSecurityNTClientProxy(channel);
             _priv = new IOPCSecurityPrivateClientProxy(channel);
@@ -125,49 +138,62 @@ public sealed class SecurityTools {
 
         public string CurrentIdentity { get; private set; } = string.Empty;
 
-        public async Task<bool> IsAvailableNtAsync(CancellationToken cancellationToken = default) {
-            try {
+        public async Task<bool> IsAvailableNtAsync(CancellationToken cancellationToken = default)
+        {
+            try
+            {
                 return await _nt.IsAvailableNTAsync(cancellationToken).ConfigureAwait(false);
             }
-            catch (OpcException) {
+            catch (OpcException)
+            {
                 return false;
             }
-            catch (NotImplementedException) {
+            catch (NotImplementedException)
+            {
                 return false;
             }
         }
 
-        public async Task<bool> IsAvailablePrivateAsync(CancellationToken cancellationToken = default) {
-            try {
+        public async Task<bool> IsAvailablePrivateAsync(CancellationToken cancellationToken = default)
+        {
+            try
+            {
                 return await _priv.IsAvailablePrivAsync(cancellationToken).ConfigureAwait(false);
             }
-            catch (OpcException) {
+            catch (OpcException)
+            {
                 return false;
             }
-            catch (NotImplementedException) {
+            catch (NotImplementedException)
+            {
                 return false;
             }
         }
 
-        public async Task<bool> LogonPrivateAsync(string username, string password, CancellationToken cancellationToken = default) {
-            if (!await IsAvailablePrivateAsync(cancellationToken).ConfigureAwait(false)) {
+        public async Task<bool> LogonPrivateAsync(string username, string password, CancellationToken cancellationToken = default)
+        {
+            if (!await IsAvailablePrivateAsync(cancellationToken).ConfigureAwait(false))
+            {
                 return false;
             }
 
-            try {
+            try
+            {
                 await _priv.LogonAsync(username, password, cancellationToken).ConfigureAwait(false);
                 IsAuthenticated = true;
                 CurrentIdentity = "private:" + username;
                 return true;
             }
-            catch (OpcException) {
+            catch (OpcException)
+            {
                 IsAuthenticated = false;
                 CurrentIdentity = string.Empty;
                 return false;
             }
         }
 
-        public async Task LogoffAsync(CancellationToken cancellationToken = default) {
+        public async Task LogoffAsync(CancellationToken cancellationToken = default)
+        {
             await _priv.LogoffAsync(cancellationToken).ConfigureAwait(false);
             IsAuthenticated = false;
             CurrentIdentity = string.Empty;

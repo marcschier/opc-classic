@@ -19,7 +19,8 @@ namespace Opc.Classic;
 /// are preserved for round-tripping but do not change managed ownership.
 /// </remarks>
 [Flags]
-public enum SafeArrayFeatures : ushort {
+public enum SafeArrayFeatures : ushort
+{
     /// <summary>No SAFEARRAY feature flags are set.</summary>
     None = 0x0000,
 

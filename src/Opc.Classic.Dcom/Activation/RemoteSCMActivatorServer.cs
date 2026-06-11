@@ -17,7 +17,8 @@ namespace Opc.Classic.Dcom.Core;
 /// Server-side IRemoteSCMActivator v5.6 implementation for RemoteCreateInstance
 /// and RemoteGetClassObject.
 /// </summary>
-public sealed class RemoteSCMActivatorServer : IRemoteSCMActivatorServer {
+public sealed class RemoteSCMActivatorServer : IRemoteSCMActivatorServer
+{
     internal const int REGDB_E_CLASSNOTREG = unchecked((int)0x80040154u);
     internal const int E_NOTIMPL = unchecked((int)0x80004001u);
     internal const int CO_E_CLASSSTRING = unchecked((int)0x800401F3u);
@@ -31,7 +32,8 @@ public sealed class RemoteSCMActivatorServer : IRemoteSCMActivatorServer {
     private Session? _serverSession;
 
     /// <summary>Initializes an activator backed by managed class factories.</summary>
-    public RemoteSCMActivatorServer(ClassFactoryRegistry classFactories) {
+    public RemoteSCMActivatorServer(ClassFactoryRegistry classFactories)
+    {
         _classFactories = classFactories ?? throw new ArgumentNullException(nameof(classFactories));
     }
 
@@ -39,13 +41,15 @@ public sealed class RemoteSCMActivatorServer : IRemoteSCMActivatorServer {
     /// Initializes the legacy metadata-only scaffold. Known CLSIDs still return
     /// E_NOTIMPL because no managed class factory was supplied.
     /// </summary>
-    public RemoteSCMActivatorServer(IClsidRegistry registry) {
+    public RemoteSCMActivatorServer(IClsidRegistry registry)
+    {
         _metadataRegistry = registry ?? throw new ArgumentNullException(nameof(registry));
         _classFactories = new ClassFactoryRegistry();
     }
 
     /// <summary>Initializes an activator with metadata and class factories.</summary>
-    public RemoteSCMActivatorServer(IClsidRegistry registry, ClassFactoryRegistry classFactories) {
+    public RemoteSCMActivatorServer(IClsidRegistry registry, ClassFactoryRegistry classFactories)
+    {
         _metadataRegistry = registry ?? throw new ArgumentNullException(nameof(registry));
         _classFactories = classFactories ?? throw new ArgumentNullException(nameof(classFactories));
     }
@@ -54,7 +58,8 @@ public sealed class RemoteSCMActivatorServer : IRemoteSCMActivatorServer {
     public async Task<int> RemoteCreateInstanceAsync(
         Guid clsid,
         Guid requestedIid,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         var response = await RemoteCreateInstanceAsync(
             new RemoteCreateInstanceRequest(clsid, requestedIid, Array.Empty<int>()),
             cancellationToken).ConfigureAwait(false);
@@ -65,7 +70,8 @@ public sealed class RemoteSCMActivatorServer : IRemoteSCMActivatorServer {
     public async Task<int> RemoteGetClassObjectAsync(
         Guid clsid,
         Guid requestedIid,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         var response = await RemoteGetClassObjectAsync(
             new RemoteGetClassObjectRequest(clsid, requestedIid, Array.Empty<int>()),
             cancellationToken).ConfigureAwait(false);
@@ -75,11 +81,13 @@ public sealed class RemoteSCMActivatorServer : IRemoteSCMActivatorServer {
     /// <inheritdoc />
     public Task<RemoteCreateInstanceResponse> RemoteCreateInstanceAsync(
         RemoteCreateInstanceRequest request,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         cancellationToken.ThrowIfCancellationRequested();
         ArgumentNullException.ThrowIfNull(request);
 
-        if (!_classFactories.TryResolve(request.Clsid, out IClassFactory factory)) {
+        if (!_classFactories.TryResolve(request.Clsid, out IClassFactory factory))
+        {
             int hresult = ResolveMissingClass(request.Clsid);
             return Task.FromResult(new RemoteCreateInstanceResponse(hresult, Guid.Empty, Guid.Empty, Array.Empty<byte>()));
         }
@@ -93,7 +101,8 @@ public sealed class RemoteSCMActivatorServer : IRemoteSCMActivatorServer {
         var reply = new ScmReplyInfo(0, exported.Oxid, exported.Oid, exported.Ipid, exported.ObjRef, copy: true);
         ActivationProperties responseProperties = activationProperties.WithScmReplyInfo(reply);
 
-        return Task.FromResult(new RemoteCreateInstanceResponse(0, exported.Oxid, exported.Ipid, exported.ObjRef) {
+        return Task.FromResult(new RemoteCreateInstanceResponse(0, exported.Oxid, exported.Ipid, exported.ObjRef)
+        {
             Oid = exported.Oid,
             ActivationProperties = responseProperties,
             EncodedActivationProperties = ActivationInfoCodec.Encode(responseProperties),
@@ -104,16 +113,19 @@ public sealed class RemoteSCMActivatorServer : IRemoteSCMActivatorServer {
     /// <inheritdoc />
     public Task<RemoteGetClassObjectResponse> RemoteGetClassObjectAsync(
         RemoteGetClassObjectRequest request,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         cancellationToken.ThrowIfCancellationRequested();
         ArgumentNullException.ThrowIfNull(request);
 
-        if (!_classFactories.TryResolve(request.Clsid, out IClassFactory factory)) {
+        if (!_classFactories.TryResolve(request.Clsid, out IClassFactory factory))
+        {
             int hresult = ResolveMissingClass(request.Clsid);
             return Task.FromResult(new RemoteGetClassObjectResponse(hresult, Guid.Empty, Guid.Empty, Array.Empty<byte>()));
         }
 
-        if (!factory.SupportsGetClassObject) {
+        if (!factory.SupportsGetClassObject)
+        {
             return Task.FromResult(new RemoteGetClassObjectResponse(CLASS_E_CLASSNOTAVAILABLE, Guid.Empty, Guid.Empty, Array.Empty<byte>()));
         }
 
@@ -125,7 +137,8 @@ public sealed class RemoteSCMActivatorServer : IRemoteSCMActivatorServer {
         var reply = new ScmReplyInfo(0, exported.Oxid, exported.Oid, exported.Ipid, exported.ObjRef, copy: true);
         ActivationProperties responseProperties = activationProperties.WithScmReplyInfo(reply);
 
-        return Task.FromResult(new RemoteGetClassObjectResponse(0, exported.Oxid, exported.Ipid, exported.ObjRef) {
+        return Task.FromResult(new RemoteGetClassObjectResponse(0, exported.Oxid, exported.Ipid, exported.ObjRef)
+        {
             Oid = exported.Oid,
             ActivationProperties = responseProperties,
             EncodedActivationProperties = ActivationInfoCodec.Encode(responseProperties),
@@ -133,8 +146,10 @@ public sealed class RemoteSCMActivatorServer : IRemoteSCMActivatorServer {
         });
     }
 
-    private int ResolveMissingClass(Guid clsid) {
-        if (_metadataRegistry is null) {
+    private int ResolveMissingClass(Guid clsid)
+    {
+        if (_metadataRegistry is null)
+        {
             return CO_E_CLASSSTRING;
         }
 
@@ -143,8 +158,10 @@ public sealed class RemoteSCMActivatorServer : IRemoteSCMActivatorServer {
 
     private static ActivationProperties ResolveActivationProperties(
         ActivationProperties activationProperties,
-        byte[] rawActivationProperties) {
-        if (rawActivationProperties.Length == 0) {
+        byte[] rawActivationProperties)
+    {
+        if (rawActivationProperties.Length == 0)
+        {
             return activationProperties ?? ActivationProperties.Empty;
         }
 
@@ -153,8 +170,10 @@ public sealed class RemoteSCMActivatorServer : IRemoteSCMActivatorServer {
             : activationProperties ?? ActivationProperties.Empty;
     }
 
-    private static LocalCoClass CreateLocalCoClass(ClassFactoryActivationResult activationResult) {
-        if (activationResult.Instance is LocalCoClass localCoClass) {
+    private static LocalCoClass CreateLocalCoClass(ClassFactoryActivationResult activationResult)
+    {
+        if (activationResult.Instance is LocalCoClass localCoClass)
+        {
             return localCoClass;
         }
 
@@ -164,7 +183,8 @@ public sealed class RemoteSCMActivatorServer : IRemoteSCMActivatorServer {
             useInterfaceDefinitionIID: true);
     }
 
-    private ExportedInterface Export(LocalCoClass localCoClass, Guid requestedIid) {
+    private ExportedInterface Export(LocalCoClass localCoClass, Guid requestedIid)
+    {
         Session session = GetOrCreateServerSession();
         InterfacePointer pointer = ComOxidRuntime.Instance.GetInterfacePointer(session, localCoClass);
         byte[] oxidBindings = EncodeDualStringArray(pointer.StringBindings);
@@ -177,9 +197,12 @@ public sealed class RemoteSCMActivatorServer : IRemoteSCMActivatorServer {
             objRef);
     }
 
-    private Session GetOrCreateServerSession() {
-        lock (_sessionLock) {
-            if (_serverSession is not null) {
+    private Session GetOrCreateServerSession()
+    {
+        lock (_sessionLock)
+        {
+            if (_serverSession is not null)
+            {
                 return _serverSession;
             }
 
@@ -189,7 +212,8 @@ public sealed class RemoteSCMActivatorServer : IRemoteSCMActivatorServer {
         }
     }
 
-    private static byte[] EncodeObjRef(InterfacePointer pointer, Guid iid, byte[] dualStringArray) {
+    private static byte[] EncodeObjRef(InterfacePointer pointer, Guid iid, byte[] dualStringArray)
+    {
         var stdObjRef = (StdObjRef)pointer.GetObjectReference(InterfacePointer.OBJREF_STANDARD);
         var buffer = new byte[64 + dualStringArray.Length];
         var writer = new NdrWriter(buffer);
@@ -205,7 +229,8 @@ public sealed class RemoteSCMActivatorServer : IRemoteSCMActivatorServer {
         return buffer.AsSpan(0, writer.Position).ToArray();
     }
 
-    private static byte[] EncodeDualStringArray(DualStringArray dualStringArray) {
+    private static byte[] EncodeDualStringArray(DualStringArray dualStringArray)
+    {
         var buffer = new byte[dualStringArray.Length];
         var ndrBuffer = new NdrBuffer(buffer, 0);
         var ndr = new NdrCodec { Buffer = ndrBuffer };
@@ -214,20 +239,25 @@ public sealed class RemoteSCMActivatorServer : IRemoteSCMActivatorServer {
         return buffer.AsSpan(0, length).ToArray();
     }
 
-    private static void WriteEightByteLittleEndianOctetArray(ref NdrWriter writer, byte[] bytes) {
-        if (bytes.Length != 8) {
+    private static void WriteEightByteLittleEndianOctetArray(ref NdrWriter writer, byte[] bytes)
+    {
+        if (bytes.Length != 8)
+        {
             throw new InvalidOperationException("DCOM OXID/OID values must be 8 bytes.");
         }
 
-        for (int i = bytes.Length - 1; i >= 0; i--) {
+        for (int i = bytes.Length - 1; i >= 0; i--)
+        {
             writer.WriteByte(bytes[i]);
         }
     }
 
-    private static Guid GuidFromEightBytes(byte[] bytes) {
+    private static Guid GuidFromEightBytes(byte[] bytes)
+    {
         Span<byte> guidBytes = stackalloc byte[16];
         int count = Math.Min(bytes.Length, 8);
-        for (int i = 0; i < count; i++) {
+        for (int i = 0; i < count; i++)
+        {
             guidBytes[i] = bytes[i];
         }
 

@@ -15,13 +15,15 @@ using TUnit.Core;
 
 namespace Opc.Classic.Dcom.Crypto.Tests;
 
-public sealed class NtlmMicTests {
+public sealed class NtlmMicTests
+{
     private const string User = "User";
     private const string Domain = "Domain";
     private const string Password = "Password";
 
     [Test]
-    public async Task Compute_MatchesFixedHmacMd5Vector() {
+    public async Task Compute_MatchesFixedHmacMd5Vector()
+    {
         byte[] sessionKey = Convert.FromHexString("000102030405060708090A0B0C0D0E0F");
         byte[] negotiate = System.Text.Encoding.ASCII.GetBytes("NEGOTIATE_MESSAGE");
         byte[] challenge = System.Text.Encoding.ASCII.GetBytes("CHALLENGE_MESSAGE");
@@ -35,7 +37,8 @@ public sealed class NtlmMicTests {
     }
 
     [Test]
-    public async Task Verify_ReturnsTrue_WhenAuthenticateContainsComputedMic() {
+    public async Task Verify_ReturnsTrue_WhenAuthenticateContainsComputedMic()
+    {
         byte[] sessionKey = Convert.FromHexString("101112131415161718191A1B1C1D1E1F");
         byte[] negotiate = System.Text.Encoding.ASCII.GetBytes("NEGOTIATE_MESSAGE");
         byte[] challenge = System.Text.Encoding.ASCII.GetBytes("CHALLENGE_MESSAGE");
@@ -50,7 +53,8 @@ public sealed class NtlmMicTests {
     }
 
     [Test]
-    public async Task ClientServerRoundTrip_IncludesMicAtOffset72_AndServerVerifies() {
+    public async Task ClientServerRoundTrip_IncludesMicAtOffset72_AndServerVerifies()
+    {
         var client = CreateAuthentication();
         var server = CreateAuthentication();
         Type1Message type1 = client.CreateType1();
@@ -69,7 +73,8 @@ public sealed class NtlmMicTests {
     }
 
     [Test]
-    public async Task ServerVerification_ThrowsSecurityException_WhenAuthenticateIsTampered() {
+    public async Task ServerVerification_ThrowsSecurityException_WhenAuthenticateIsTampered()
+    {
         var client = CreateAuthentication();
         var server = CreateAuthentication();
         Type1Message type1 = client.CreateType1();
@@ -84,7 +89,8 @@ public sealed class NtlmMicTests {
     }
 
     [Test]
-    public async Task Verify_ReturnsFalse_WhenSessionKeyIsTampered() {
+    public async Task Verify_ReturnsFalse_WhenSessionKeyIsTampered()
+    {
         byte[] sessionKey = Convert.FromHexString("202122232425262728292A2B2C2D2E2F");
         byte[] negotiate = System.Text.Encoding.ASCII.GetBytes("NEGOTIATE_MESSAGE");
         byte[] challenge = System.Text.Encoding.ASCII.GetBytes("CHALLENGE_MESSAGE");
@@ -101,14 +107,16 @@ public sealed class NtlmMicTests {
     }
 
     [Test]
-    public async Task Verify_UsesFixedTimeEqualsForMicComparison() {
+    public async Task Verify_UsesFixedTimeEqualsForMicComparison()
+    {
         string sourcePath = Path.Combine(FindRepositoryRoot(), "src", "Opc.Classic.Dcom", "Common", "Ntlm", "NtlmMic.cs");
         string source = File.ReadAllText(sourcePath);
 
         await Assert.That(source.Contains("CryptographicOperations.FixedTimeEquals", StringComparison.Ordinal)).IsTrue();
     }
 
-    private static NtlmAuthentication CreateAuthentication() {
+    private static NtlmAuthentication CreateAuthentication()
+    {
         var properties = new PropertyBag();
         properties.SetProperty("rpc.ntlm.lanManagerKey", "false");
         properties.SetProperty("rpc.ntlm.sign", "true");
@@ -125,37 +133,45 @@ public sealed class NtlmMicTests {
         return new NtlmAuthentication(properties);
     }
 
-    private static void FlipFirstWorkstationByte(byte[] authenticate) {
+    private static void FlipFirstWorkstationByte(byte[] authenticate)
+    {
         const int workstationFieldsOffset = 44;
         ushort length = BinaryPrimitives.ReadUInt16LittleEndian(authenticate.AsSpan(workstationFieldsOffset, sizeof(ushort)));
         uint offset = BinaryPrimitives.ReadUInt32LittleEndian(authenticate.AsSpan(workstationFieldsOffset + 4, sizeof(uint)));
-        if (length == 0 || offset >= authenticate.Length) {
+        if (length == 0 || offset >= authenticate.Length)
+        {
             throw new InvalidOperationException("Test authenticate message did not contain a workstation payload.");
         }
 
         authenticate[(int)offset] ^= 0x20;
     }
 
-    private static void InvokeCreateSecurityWhenServer(NtlmAuthentication authentication, Type3Message type3, byte[] authenticate) {
+    private static void InvokeCreateSecurityWhenServer(NtlmAuthentication authentication, Type3Message type3, byte[] authenticate)
+    {
         MethodInfo method = typeof(NtlmAuthentication).GetMethod(
             "CreateSecurityWhenServerWithMic",
             BindingFlags.Instance | BindingFlags.NonPublic,
             binder: null,
             types: new[] { typeof(object), typeof(byte[]) },
             modifiers: null)!;
-        try {
+        try
+        {
             method.Invoke(authentication, new object[] { type3, authenticate });
         }
-        catch (TargetInvocationException ex) when (ex.InnerException != null) {
+        catch (TargetInvocationException ex) when (ex.InnerException != null)
+        {
             ExceptionDispatchInfo.Capture(ex.InnerException).Throw();
             throw;
         }
     }
 
-    private static string FindRepositoryRoot() {
+    private static string FindRepositoryRoot()
+    {
         var directory = new DirectoryInfo(AppContext.BaseDirectory);
-        while (directory != null) {
-            if (File.Exists(Path.Combine(directory.FullName, "Opc.Classic.slnx"))) {
+        while (directory != null)
+        {
+            if (File.Exists(Path.Combine(directory.FullName, "Opc.Classic.slnx")))
+            {
                 return directory.FullName;
             }
 

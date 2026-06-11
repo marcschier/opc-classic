@@ -12,14 +12,17 @@ using TUnit.Core;
 
 namespace Opc.Classic.Da.Tests.Wire;
 
-public sealed class MatrikonGetPropertiesReplayTests {
-    private static string FixturePath() {
+public sealed class MatrikonGetPropertiesReplayTests
+{
+    private static string FixturePath()
+    {
         string baseDir = AppContext.BaseDirectory;
         return Path.Combine(baseDir, "Wire", "Fixtures", "matrikon-getproperties-random-int4.hex");
     }
 
     [Test]
-    public async Task Fixture_loads_with_expected_metadata_and_response_size() {
+    public async Task Fixture_loads_with_expected_metadata_and_response_size()
+    {
         WireCaptureFile capture = WireCaptureFile.Load(FixturePath());
         await Assert.That(capture.Metadata["iid"]).IsEqualTo("39227004-a18f-4b57-8b0a-5235670f4468");
         await Assert.That(capture.Metadata["opnum"]).IsEqualTo("3");
@@ -32,7 +35,8 @@ public sealed class MatrikonGetPropertiesReplayTests {
     /// standard + recommended property set for <c>Random.Int4</c> (Track AY+).
     /// </summary>
     [Test]
-    public async Task Replay_decodes_response_through_browse_decoder() {
+    public async Task Replay_decodes_response_through_browse_decoder()
+    {
         WireCaptureFile capture = WireCaptureFile.Load(FixturePath());
         OpcItemProperties[] items = DecodeCaptured(capture.ResponsePayload);
 
@@ -43,7 +47,8 @@ public sealed class MatrikonGetPropertiesReplayTests {
         // Standard property set 1..8 + recommended Item Description (101) +
         // five Matrikon-private wave-form properties (-5..-1).
         int[] expectedIds = [1, 2, 3, 4, 5, 6, 7, 8, 101, -5, -4, -3, -2, -1];
-        for (int i = 0; i < expectedIds.Length; i++) {
+        for (int i = 0; i < expectedIds.Length; i++)
+        {
             await Assert.That(items[0].Properties[i].PropertyId).IsEqualTo(expectedIds[i]);
             await Assert.That(items[0].Properties[i].ItemId).IsEqualTo("Random.Int4");
             await Assert.That(items[0].Properties[i].ErrorId).IsEqualTo(0);
@@ -67,7 +72,8 @@ public sealed class MatrikonGetPropertiesReplayTests {
         await Assert.That(items[0].Properties[7].Description).IsEqualTo("Item EUInfo");
     }
 
-    private static OpcItemProperties[] DecodeCaptured(byte[] response) {
+    private static OpcItemProperties[] DecodeCaptured(byte[] response)
+    {
         // Match the generated proxy code path verbatim — ReadItemPropertiesConformantArray
         // consumes the outer unique-pointer referent internally before reading the
         // array max_count, so the caller does NOT pre-read it.

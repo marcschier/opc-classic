@@ -16,15 +16,18 @@ using TUnit.Core;
 namespace Opc.Classic.Ae.Tests.Hosting.Windows;
 
 [SupportedOSPlatform("windows")]
-public sealed class OpcAeServerCcwArrayTests {
+public sealed class OpcAeServerCcwArrayTests
+{
     private const int S_OK = 0;
     private const int E_INVALIDARG = unchecked((int)0x80070057);
     private const int E_FAIL = unchecked((int)0x80004005);
     private static readonly Guid s_iidUnknown = Guid.Parse("00000000-0000-0000-C000-000000000046");
 
     [Test]
-    public async Task Query_family_happy_paths_marshal_correlated_arrays() {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task Query_family_happy_paths_marshal_correlated_arrays()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
@@ -57,8 +60,10 @@ public sealed class OpcAeServerCcwArrayTests {
     }
 
     [Test]
-    public async Task Translate_and_condition_state_happy_paths_roundtrip_native_payloads() {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task Translate_and_condition_state_happy_paths_roundtrip_native_payloads()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
@@ -93,8 +98,10 @@ public sealed class OpcAeServerCcwArrayTests {
     }
 
     [Test]
-    public async Task Condition_ops_and_ack_happy_paths_dispatch_arrays_and_errors() {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task Condition_ops_and_ack_happy_paths_dispatch_arrays_and_errors()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
@@ -130,8 +137,10 @@ public sealed class OpcAeServerCcwArrayTests {
     }
 
     [Test]
-    public async Task Returned_attributes_happy_path_uses_managed_subscription_selection() {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task Returned_attributes_happy_path_uses_managed_subscription_selection()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
@@ -150,8 +159,10 @@ public sealed class OpcAeServerCcwArrayTests {
     }
 
     [Test]
-    public async Task Invalid_arguments_return_E_INVALIDARG_and_clear_outputs() {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task Invalid_arguments_return_E_INVALIDARG_and_clear_outputs()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
@@ -177,8 +188,10 @@ public sealed class OpcAeServerCcwArrayTests {
     }
 
     [Test]
-    public async Task Mismatched_dispatcher_arrays_return_E_INVALIDARG_with_null_outputs() {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task Mismatched_dispatcher_arrays_return_E_INVALIDARG_with_null_outputs()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
@@ -206,7 +219,8 @@ public sealed class OpcAeServerCcwArrayTests {
         await Assert.That(ack.Errors).IsEmpty();
     }
 
-    private sealed class RecordingDispatcher : IOpcAeServerDispatcher {
+    private sealed class RecordingDispatcher : IOpcAeServerDispatcher
+    {
         public int[] EventCategories { get; set; } = [1001, 1002, 1003];
         public string[] EventCategoryDescriptions { get; set; } = ["Process", "System", "Tracking"];
         public string[] ConditionNames { get; set; } = ["Level", "Pressure"];
@@ -235,29 +249,34 @@ public sealed class OpcAeServerCcwArrayTests {
         public Task<NdrCallResult> DispatchAsync(Guid interfaceId, int opnum, ReadOnlyMemory<byte> requestPayload, CancellationToken cancellationToken) =>
             Task.FromResult(new NdrCallResult(E_FAIL, ReadOnlyMemory<byte>.Empty));
 
-        public Task QueryEventCategoriesAsync(int eventType, out int[] eventCategories, out string[] eventCategoryDescriptions, CancellationToken cancellationToken = default) {
+        public Task QueryEventCategoriesAsync(int eventType, out int[] eventCategories, out string[] eventCategoryDescriptions, CancellationToken cancellationToken = default)
+        {
             LastQueryEventType = eventType;
             eventCategories = EventCategories;
             eventCategoryDescriptions = EventCategoryDescriptions;
             return Task.CompletedTask;
         }
 
-        public Task<string[]> QueryConditionNamesAsync(int eventCategory, CancellationToken cancellationToken = default) {
+        public Task<string[]> QueryConditionNamesAsync(int eventCategory, CancellationToken cancellationToken = default)
+        {
             LastConditionCategory = eventCategory;
             return Task.FromResult(ConditionNames);
         }
 
-        public Task<string[]> QuerySubConditionNamesAsync(string conditionName, CancellationToken cancellationToken = default) {
+        public Task<string[]> QuerySubConditionNamesAsync(string conditionName, CancellationToken cancellationToken = default)
+        {
             LastSubConditionName = conditionName;
             return Task.FromResult(SubConditionNames);
         }
 
-        public Task<string[]> QuerySourceConditionsAsync(string source, CancellationToken cancellationToken = default) {
+        public Task<string[]> QuerySourceConditionsAsync(string source, CancellationToken cancellationToken = default)
+        {
             LastSource = source;
             return Task.FromResult(SourceConditions);
         }
 
-        public Task QueryEventAttributesAsync(int eventCategory, out int[] attributeIds, out string[] attributeDescriptions, out ushort[] attributeTypes, CancellationToken cancellationToken = default) {
+        public Task QueryEventAttributesAsync(int eventCategory, out int[] attributeIds, out string[] attributeDescriptions, out ushort[] attributeTypes, CancellationToken cancellationToken = default)
+        {
             _ = eventCategory;
             attributeIds = AttributeIds;
             attributeDescriptions = AttributeDescriptions;
@@ -265,7 +284,8 @@ public sealed class OpcAeServerCcwArrayTests {
             return Task.CompletedTask;
         }
 
-        public Task TranslateToItemIDsAsync(string source, int eventCategory, string conditionName, string subconditionName, int[] associatedAttributeIds, out string[] attributeItemIds, out string[] nodeNames, out Guid[] classIds, CancellationToken cancellationToken = default) {
+        public Task TranslateToItemIDsAsync(string source, int eventCategory, string conditionName, string subconditionName, int[] associatedAttributeIds, out string[] attributeItemIds, out string[] nodeNames, out Guid[] classIds, CancellationToken cancellationToken = default)
+        {
             _ = source;
             _ = eventCategory;
             _ = conditionName;
@@ -277,34 +297,40 @@ public sealed class OpcAeServerCcwArrayTests {
             return Task.CompletedTask;
         }
 
-        public Task<OpcConditionState> GetConditionStateAsync(string source, string conditionName, int[] attributeIds, CancellationToken cancellationToken = default) {
+        public Task<OpcConditionState> GetConditionStateAsync(string source, string conditionName, int[] attributeIds, CancellationToken cancellationToken = default)
+        {
             _ = source;
             _ = conditionName;
             _ = attributeIds;
             return Task.FromResult(BuildConditionState());
         }
 
-        public Task EnableConditionByAreaAsync(string[] areas, CancellationToken cancellationToken = default) {
+        public Task EnableConditionByAreaAsync(string[] areas, CancellationToken cancellationToken = default)
+        {
             EnabledAreas = areas;
             return Task.CompletedTask;
         }
 
-        public Task EnableConditionBySourceAsync(string[] sources, CancellationToken cancellationToken = default) {
+        public Task EnableConditionBySourceAsync(string[] sources, CancellationToken cancellationToken = default)
+        {
             EnabledSources = sources;
             return Task.CompletedTask;
         }
 
-        public Task DisableConditionByAreaAsync(string[] areas, CancellationToken cancellationToken = default) {
+        public Task DisableConditionByAreaAsync(string[] areas, CancellationToken cancellationToken = default)
+        {
             DisabledAreas = areas;
             return Task.CompletedTask;
         }
 
-        public Task DisableConditionBySourceAsync(string[] sources, CancellationToken cancellationToken = default) {
+        public Task DisableConditionBySourceAsync(string[] sources, CancellationToken cancellationToken = default)
+        {
             DisabledSources = sources;
             return Task.CompletedTask;
         }
 
-        public Task<int[]> AckConditionAsync(int dwCount, string acknowledgerId, string comment, string[] sources, string[] conditionNames, long[] activeTimes, int[] cookies, CancellationToken cancellationToken = default) {
+        public Task<int[]> AckConditionAsync(int dwCount, string acknowledgerId, string comment, string[] sources, string[] conditionNames, long[] activeTimes, int[] cookies, CancellationToken cancellationToken = default)
+        {
             _ = dwCount;
             _ = comment;
             _ = activeTimes;
@@ -336,7 +362,8 @@ public sealed class OpcAeServerCcwArrayTests {
             errors: [S_OK, E_FAIL]);
     }
 
-    private sealed class RecordingReturnedAttributesServer : IOpcAeServer, IOPCEventSubscriptionMgt {
+    private sealed class RecordingReturnedAttributesServer : IOpcAeServer, IOPCEventSubscriptionMgt
+    {
         public int LastReturnedAttributeCategory { get; private set; }
         public int[] ReturnedAttributes { get; private set; } = [];
 
@@ -349,7 +376,8 @@ public sealed class OpcAeServerCcwArrayTests {
         public Task SetFilterAsync(int eventType, int[] eventCategories, int lowSeverity, int highSeverity, string[] areas, string[] sources, CancellationToken cancellationToken = default) =>
             Task.CompletedTask;
 
-        public Task GetFilterAsync(out int eventType, out int[] eventCategories, out int lowSeverity, out int highSeverity, out string[] areas, out string[] sources, CancellationToken cancellationToken = default) {
+        public Task GetFilterAsync(out int eventType, out int[] eventCategories, out int lowSeverity, out int highSeverity, out string[] areas, out string[] sources, CancellationToken cancellationToken = default)
+        {
             eventType = 0;
             eventCategories = [];
             lowSeverity = 0;
@@ -359,13 +387,15 @@ public sealed class OpcAeServerCcwArrayTests {
             return Task.CompletedTask;
         }
 
-        public Task SetReturnedAttributesAsync(int eventCategory, int[] attributeIds, CancellationToken cancellationToken = default) {
+        public Task SetReturnedAttributesAsync(int eventCategory, int[] attributeIds, CancellationToken cancellationToken = default)
+        {
             LastReturnedAttributeCategory = eventCategory;
             ReturnedAttributes = attributeIds;
             return Task.CompletedTask;
         }
 
-        public Task<int[]> GetReturnedAttributesAsync(int eventCategory, CancellationToken cancellationToken = default) {
+        public Task<int[]> GetReturnedAttributesAsync(int eventCategory, CancellationToken cancellationToken = default)
+        {
             LastReturnedAttributeCategory = eventCategory;
             return Task.FromResult(ReturnedAttributes);
         }
@@ -373,7 +403,8 @@ public sealed class OpcAeServerCcwArrayTests {
         public Task RefreshAsync(int connection, CancellationToken cancellationToken = default) => Task.CompletedTask;
         public Task CancelRefreshAsync(int connection, CancellationToken cancellationToken = default) => Task.CompletedTask;
 
-        public Task GetStateAsync(out bool active, out int bufferTime, out int maxSize, out int clientSubscription, CancellationToken cancellationToken = default) {
+        public Task GetStateAsync(out bool active, out int bufferTime, out int maxSize, out int clientSubscription, CancellationToken cancellationToken = default)
+        {
             active = true;
             bufferTime = 0;
             maxSize = 0;
@@ -381,7 +412,8 @@ public sealed class OpcAeServerCcwArrayTests {
             return Task.CompletedTask;
         }
 
-        public Task SetStateAsync(bool active, int bufferTime, int maxSize, int clientSubscription, out int revisedBufferTime, out int revisedMaxSize, CancellationToken cancellationToken = default) {
+        public Task SetStateAsync(bool active, int bufferTime, int maxSize, int clientSubscription, out int revisedBufferTime, out int revisedMaxSize, CancellationToken cancellationToken = default)
+        {
             _ = active;
             revisedBufferTime = bufferTime;
             revisedMaxSize = maxSize;
@@ -389,7 +421,8 @@ public sealed class OpcAeServerCcwArrayTests {
         }
     }
 
-    private static class Helpers {
+    private static class Helpers
+    {
         internal readonly record struct CategoryResult(int Hr, int[] Ids, string[] Descriptions);
         internal readonly record struct StringArrayResult(int Hr, string[] Values);
         internal readonly record struct AttributeResult(int Hr, int[] Ids, string[] Descriptions, ushort[] Types);
@@ -398,97 +431,116 @@ public sealed class OpcAeServerCcwArrayTests {
         internal readonly record struct ReturnedAttributesResult(int Hr, int[] AttributeIds);
         internal readonly record struct ConditionStateResult(int Hr, OPCCONDITIONSTATE_NATIVE Native, string? ActiveSubCondition, string? ActiveDefinition, uint ActiveSeverity, ushort Quality, string[] SubConditionNames, int[] SubConditionSeverities, string[] EventAttributeStrings, int[] Errors);
 
-        internal static IntPtr CreateEventServer(IOpcAeServerDispatcher dispatcher) {
+        internal static IntPtr CreateEventServer(IOpcAeServerDispatcher dispatcher)
+        {
             IntPtr ccw = OpcAeServerCcw.Create(dispatcher, s_iidUnknown);
             return InvokeQI(ccw, IOPCEventServer.InterfaceId);
         }
 
-        internal static IntPtr InvokeQI(IntPtr ccw, Guid iid) {
+        internal static IntPtr InvokeQI(IntPtr ccw, Guid iid)
+        {
             QueryInterfaceDelegate qi = GetMethod<QueryInterfaceDelegate>(ccw, 0);
             int hr = qi(ccw, ref iid, out IntPtr returned);
             return hr == S_OK ? returned : IntPtr.Zero;
         }
 
-        internal static CategoryResult InvokeQueryEventCategories(IntPtr eventServer, int eventType) {
+        internal static CategoryResult InvokeQueryEventCategories(IntPtr eventServer, int eventType)
+        {
             QueryEventCategoriesDelegate query = GetMethod<QueryEventCategoriesDelegate>(eventServer, 6);
             IntPtr pCount = AllocateInt32();
             IntPtr idsPtr = IntPtr.Zero;
             IntPtr descriptionsPtr = IntPtr.Zero;
-            try {
+            try
+            {
                 int hr = query(eventServer, eventType, pCount, out idsPtr, out descriptionsPtr);
                 int count = Marshal.ReadInt32(pCount);
                 return new CategoryResult(hr, ReadInt32Array(idsPtr, count), ReadBstrArray(descriptionsPtr, count));
             }
-            finally {
+            finally
+            {
                 Marshal.FreeCoTaskMem(pCount);
                 FreeCoTaskMem(idsPtr);
                 FreeBstrArray(descriptionsPtr, CountBstrPointers(descriptionsPtr));
             }
         }
 
-        internal static (int Hr, IntPtr Output) InvokeQueryEventCategoriesRaw(IntPtr eventServer, IntPtr pCount) {
+        internal static (int Hr, IntPtr Output) InvokeQueryEventCategoriesRaw(IntPtr eventServer, IntPtr pCount)
+        {
             QueryEventCategoriesDelegate query = GetMethod<QueryEventCategoriesDelegate>(eventServer, 6);
             int hr = query(eventServer, 0, pCount, out IntPtr output, out _);
             return (hr, output);
         }
 
-        internal static StringArrayResult InvokeQueryConditionNames(IntPtr eventServer, int eventCategory) {
+        internal static StringArrayResult InvokeQueryConditionNames(IntPtr eventServer, int eventCategory)
+        {
             QueryConditionNamesDelegate query = GetMethod<QueryConditionNamesDelegate>(eventServer, 7);
             return InvokeStringArray((IntPtr self, IntPtr pCount, out IntPtr values) => query(self, eventCategory, pCount, out values), eventServer);
         }
 
-        internal static (int Hr, IntPtr Output) InvokeQueryConditionNamesRaw(IntPtr eventServer, IntPtr pCount) {
+        internal static (int Hr, IntPtr Output) InvokeQueryConditionNamesRaw(IntPtr eventServer, IntPtr pCount)
+        {
             QueryConditionNamesDelegate query = GetMethod<QueryConditionNamesDelegate>(eventServer, 7);
             int hr = query(eventServer, 0, pCount, out IntPtr output);
             return (hr, output);
         }
 
-        internal static StringArrayResult InvokeQuerySubConditionNames(IntPtr eventServer, string conditionName) {
+        internal static StringArrayResult InvokeQuerySubConditionNames(IntPtr eventServer, string conditionName)
+        {
             QuerySubConditionNamesDelegate query = GetMethod<QuerySubConditionNamesDelegate>(eventServer, 8);
             IntPtr conditionNamePtr = Marshal.StringToCoTaskMemUni(conditionName);
-            try {
+            try
+            {
                 return InvokeStringArray((IntPtr self, IntPtr pCount, out IntPtr values) => query(self, conditionNamePtr, pCount, out values), eventServer);
             }
-            finally {
+            finally
+            {
                 Marshal.FreeCoTaskMem(conditionNamePtr);
             }
         }
 
-        internal static (int Hr, IntPtr Output) InvokeQuerySubConditionNamesRaw(IntPtr eventServer, IntPtr conditionName, IntPtr pCount) {
+        internal static (int Hr, IntPtr Output) InvokeQuerySubConditionNamesRaw(IntPtr eventServer, IntPtr conditionName, IntPtr pCount)
+        {
             QuerySubConditionNamesDelegate query = GetMethod<QuerySubConditionNamesDelegate>(eventServer, 8);
             int hr = query(eventServer, conditionName, pCount, out IntPtr output);
             return (hr, output);
         }
 
-        internal static StringArrayResult InvokeQuerySourceConditions(IntPtr eventServer, string source) {
+        internal static StringArrayResult InvokeQuerySourceConditions(IntPtr eventServer, string source)
+        {
             QuerySourceConditionsDelegate query = GetMethod<QuerySourceConditionsDelegate>(eventServer, 9);
             IntPtr sourcePtr = Marshal.StringToCoTaskMemUni(source);
-            try {
+            try
+            {
                 return InvokeStringArray((IntPtr self, IntPtr pCount, out IntPtr values) => query(self, sourcePtr, pCount, out values), eventServer);
             }
-            finally {
+            finally
+            {
                 Marshal.FreeCoTaskMem(sourcePtr);
             }
         }
 
-        internal static (int Hr, IntPtr Output) InvokeQuerySourceConditionsRaw(IntPtr eventServer, IntPtr source, IntPtr pCount) {
+        internal static (int Hr, IntPtr Output) InvokeQuerySourceConditionsRaw(IntPtr eventServer, IntPtr source, IntPtr pCount)
+        {
             QuerySourceConditionsDelegate query = GetMethod<QuerySourceConditionsDelegate>(eventServer, 9);
             int hr = query(eventServer, source, pCount, out IntPtr output);
             return (hr, output);
         }
 
-        internal static AttributeResult InvokeQueryEventAttributes(IntPtr eventServer, int eventCategory) {
+        internal static AttributeResult InvokeQueryEventAttributes(IntPtr eventServer, int eventCategory)
+        {
             QueryEventAttributesDelegate query = GetMethod<QueryEventAttributesDelegate>(eventServer, 10);
             IntPtr pCount = AllocateInt32();
             IntPtr idsPtr = IntPtr.Zero;
             IntPtr descriptionsPtr = IntPtr.Zero;
             IntPtr typesPtr = IntPtr.Zero;
-            try {
+            try
+            {
                 int hr = query(eventServer, eventCategory, pCount, out idsPtr, out descriptionsPtr, out typesPtr);
                 int count = Marshal.ReadInt32(pCount);
                 return new AttributeResult(hr, ReadInt32Array(idsPtr, count), ReadBstrArray(descriptionsPtr, count), ReadUInt16Array(typesPtr, count));
             }
-            finally {
+            finally
+            {
                 Marshal.FreeCoTaskMem(pCount);
                 FreeCoTaskMem(idsPtr);
                 FreeBstrArray(descriptionsPtr, CountBstrPointers(descriptionsPtr));
@@ -496,13 +548,15 @@ public sealed class OpcAeServerCcwArrayTests {
             }
         }
 
-        internal static (int Hr, IntPtr Output) InvokeQueryEventAttributesRaw(IntPtr eventServer, IntPtr pCount) {
+        internal static (int Hr, IntPtr Output) InvokeQueryEventAttributesRaw(IntPtr eventServer, IntPtr pCount)
+        {
             QueryEventAttributesDelegate query = GetMethod<QueryEventAttributesDelegate>(eventServer, 10);
             int hr = query(eventServer, 0, pCount, out IntPtr output, out _, out _);
             return (hr, output);
         }
 
-        internal static TranslateResult InvokeTranslateToItemIDs(IntPtr eventServer, string source, int category, string condition, string subcondition, int[] attributeIds) {
+        internal static TranslateResult InvokeTranslateToItemIDs(IntPtr eventServer, string source, int category, string condition, string subcondition, int[] attributeIds)
+        {
             TranslateToItemIDsDelegate translate = GetMethod<TranslateToItemIDsDelegate>(eventServer, 11);
             IntPtr sourcePtr = Marshal.StringToCoTaskMemUni(source);
             IntPtr conditionPtr = Marshal.StringToCoTaskMemUni(condition);
@@ -511,11 +565,13 @@ public sealed class OpcAeServerCcwArrayTests {
             IntPtr itemIdsPtr = IntPtr.Zero;
             IntPtr nodeNamesPtr = IntPtr.Zero;
             IntPtr clsidsPtr = IntPtr.Zero;
-            try {
+            try
+            {
                 int hr = translate(eventServer, sourcePtr, category, conditionPtr, subconditionPtr, attributeIds.Length, attributeIdsPtr, out itemIdsPtr, out nodeNamesPtr, out clsidsPtr);
                 return new TranslateResult(hr, ReadBstrArray(itemIdsPtr, attributeIds.Length), ReadBstrArray(nodeNamesPtr, attributeIds.Length), ReadGuidArray(clsidsPtr, attributeIds.Length));
             }
-            finally {
+            finally
+            {
                 Marshal.FreeCoTaskMem(sourcePtr);
                 Marshal.FreeCoTaskMem(conditionPtr);
                 Marshal.FreeCoTaskMem(subconditionPtr);
@@ -526,20 +582,24 @@ public sealed class OpcAeServerCcwArrayTests {
             }
         }
 
-        internal static int InvokeTranslateToItemIDsInvalid(IntPtr eventServer) {
+        internal static int InvokeTranslateToItemIDsInvalid(IntPtr eventServer)
+        {
             TranslateToItemIDsDelegate translate = GetMethod<TranslateToItemIDsDelegate>(eventServer, 11);
             return translate(eventServer, IntPtr.Zero, 0, IntPtr.Zero, IntPtr.Zero, 0, IntPtr.Zero, out _, out _, out _);
         }
 
-        internal static ConditionStateResult InvokeGetConditionState(IntPtr eventServer, string source, string condition, int[] attributeIds) {
+        internal static ConditionStateResult InvokeGetConditionState(IntPtr eventServer, string source, string condition, int[] attributeIds)
+        {
             GetConditionStateDelegate getState = GetMethod<GetConditionStateDelegate>(eventServer, 12);
             IntPtr sourcePtr = Marshal.StringToCoTaskMemUni(source);
             IntPtr conditionPtr = Marshal.StringToCoTaskMemUni(condition);
             IntPtr attributeIdsPtr = AllocateInt32Array(attributeIds);
             IntPtr statePtr = IntPtr.Zero;
-            try {
+            try
+            {
                 int hr = getState(eventServer, sourcePtr, conditionPtr, attributeIds.Length, attributeIdsPtr, out statePtr);
-                if (statePtr == IntPtr.Zero) {
+                if (statePtr == IntPtr.Zero)
+                {
                     return new ConditionStateResult(hr, default, null, null, 0, 0, [], [], [], []);
                 }
 
@@ -560,7 +620,8 @@ public sealed class OpcAeServerCcwArrayTests {
                     attributes,
                     errors);
             }
-            finally {
+            finally
+            {
                 Marshal.FreeCoTaskMem(sourcePtr);
                 Marshal.FreeCoTaskMem(conditionPtr);
                 FreeCoTaskMem(attributeIdsPtr);
@@ -568,28 +629,34 @@ public sealed class OpcAeServerCcwArrayTests {
             }
         }
 
-        internal static int InvokeGetConditionStateInvalid(IntPtr eventServer) {
+        internal static int InvokeGetConditionStateInvalid(IntPtr eventServer)
+        {
             GetConditionStateDelegate getState = GetMethod<GetConditionStateDelegate>(eventServer, 12);
             return getState(eventServer, IntPtr.Zero, IntPtr.Zero, 1, IntPtr.Zero, out _);
         }
 
-        internal static int InvokeConditionNameArray(IntPtr eventServer, int slot, string[] values) {
+        internal static int InvokeConditionNameArray(IntPtr eventServer, int slot, string[] values)
+        {
             ConditionNameArrayDelegate invoke = GetMethod<ConditionNameArrayDelegate>(eventServer, slot);
             IntPtr valuesPtr = AllocateBstrArray(values);
-            try {
+            try
+            {
                 return invoke(eventServer, values.Length, valuesPtr);
             }
-            finally {
+            finally
+            {
                 FreeBstrArray(valuesPtr, values.Length);
             }
         }
 
-        internal static int InvokeConditionNameArrayRaw(IntPtr eventServer, int slot, int count, IntPtr values) {
+        internal static int InvokeConditionNameArrayRaw(IntPtr eventServer, int slot, int count, IntPtr values)
+        {
             ConditionNameArrayDelegate invoke = GetMethod<ConditionNameArrayDelegate>(eventServer, slot);
             return invoke(eventServer, count, values);
         }
 
-        internal static AckResult InvokeAckCondition(IntPtr eventServer, string acknowledger, string comment, string[] sources, string[] conditions, long[] activeTimes, int[] cookies) {
+        internal static AckResult InvokeAckCondition(IntPtr eventServer, string acknowledger, string comment, string[] sources, string[] conditions, long[] activeTimes, int[] cookies)
+        {
             AckConditionDelegate ack = GetMethod<AckConditionDelegate>(eventServer, 17);
             IntPtr acknowledgerPtr = Marshal.StringToCoTaskMemUni(acknowledger);
             IntPtr commentPtr = Marshal.StringToCoTaskMemUni(comment);
@@ -598,11 +665,13 @@ public sealed class OpcAeServerCcwArrayTests {
             IntPtr activeTimesPtr = AllocateInt64Array(activeTimes);
             IntPtr cookiesPtr = AllocateInt32Array(cookies);
             IntPtr errorsPtr = IntPtr.Zero;
-            try {
+            try
+            {
                 int hr = ack(eventServer, sources.Length, acknowledgerPtr, commentPtr, sourcesPtr, conditionsPtr, activeTimesPtr, cookiesPtr, out errorsPtr);
                 return new AckResult(hr, ReadInt32Array(errorsPtr, sources.Length));
             }
-            finally {
+            finally
+            {
                 Marshal.FreeCoTaskMem(acknowledgerPtr);
                 Marshal.FreeCoTaskMem(commentPtr);
                 FreeBstrArray(sourcesPtr, sources.Length);
@@ -613,49 +682,59 @@ public sealed class OpcAeServerCcwArrayTests {
             }
         }
 
-        internal static int InvokeAckConditionInvalid(IntPtr eventServer) {
+        internal static int InvokeAckConditionInvalid(IntPtr eventServer)
+        {
             AckConditionDelegate ack = GetMethod<AckConditionDelegate>(eventServer, 17);
             return ack(eventServer, 0, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero, out _);
         }
 
-        internal static int InvokeSetReturnedAttributes(IntPtr subscription, int eventCategory, int[] attributeIds) {
+        internal static int InvokeSetReturnedAttributes(IntPtr subscription, int eventCategory, int[] attributeIds)
+        {
             SetReturnedAttributesDelegate set = GetMethod<SetReturnedAttributesDelegate>(subscription, 5);
             IntPtr idsPtr = AllocateInt32Array(attributeIds);
-            try {
+            try
+            {
                 return set(subscription, eventCategory, attributeIds.Length, idsPtr);
             }
-            finally {
+            finally
+            {
                 FreeCoTaskMem(idsPtr);
             }
         }
 
-        internal static int InvokeSetReturnedAttributesRaw(IntPtr subscription, int eventCategory, int count, IntPtr attributeIds) {
+        internal static int InvokeSetReturnedAttributesRaw(IntPtr subscription, int eventCategory, int count, IntPtr attributeIds)
+        {
             SetReturnedAttributesDelegate set = GetMethod<SetReturnedAttributesDelegate>(subscription, 5);
             return set(subscription, eventCategory, count, attributeIds);
         }
 
-        internal static ReturnedAttributesResult InvokeGetReturnedAttributes(IntPtr subscription, int eventCategory) {
+        internal static ReturnedAttributesResult InvokeGetReturnedAttributes(IntPtr subscription, int eventCategory)
+        {
             GetReturnedAttributesDelegate get = GetMethod<GetReturnedAttributesDelegate>(subscription, 6);
             IntPtr pCount = AllocateInt32();
             IntPtr idsPtr = IntPtr.Zero;
-            try {
+            try
+            {
                 int hr = get(subscription, eventCategory, pCount, out idsPtr);
                 int count = Marshal.ReadInt32(pCount);
                 return new ReturnedAttributesResult(hr, ReadInt32Array(idsPtr, count));
             }
-            finally {
+            finally
+            {
                 Marshal.FreeCoTaskMem(pCount);
                 FreeCoTaskMem(idsPtr);
             }
         }
 
-        internal static (int Hr, IntPtr Output) InvokeGetReturnedAttributesRaw(IntPtr subscription, int eventCategory, IntPtr pCount) {
+        internal static (int Hr, IntPtr Output) InvokeGetReturnedAttributesRaw(IntPtr subscription, int eventCategory, IntPtr pCount)
+        {
             GetReturnedAttributesDelegate get = GetMethod<GetReturnedAttributesDelegate>(subscription, 6);
             int hr = get(subscription, eventCategory, pCount, out IntPtr output);
             return (hr, output);
         }
 
-        internal static IntPtr AllocateInt32() {
+        internal static IntPtr AllocateInt32()
+        {
             IntPtr ptr = Marshal.AllocCoTaskMem(sizeof(int));
             Marshal.WriteInt32(ptr, 0);
             return ptr;
@@ -663,105 +742,132 @@ public sealed class OpcAeServerCcwArrayTests {
 
         private delegate int StringArrayInvoker(IntPtr self, IntPtr pCount, out IntPtr values);
 
-        private static StringArrayResult InvokeStringArray(StringArrayInvoker invoker, IntPtr eventServer) {
+        private static StringArrayResult InvokeStringArray(StringArrayInvoker invoker, IntPtr eventServer)
+        {
             IntPtr pCount = AllocateInt32();
             IntPtr valuesPtr = IntPtr.Zero;
-            try {
+            try
+            {
                 int hr = invoker(eventServer, pCount, out valuesPtr);
                 int count = Marshal.ReadInt32(pCount);
                 return new StringArrayResult(hr, ReadBstrArray(valuesPtr, count));
             }
-            finally {
+            finally
+            {
                 Marshal.FreeCoTaskMem(pCount);
                 FreeBstrArray(valuesPtr, CountBstrPointers(valuesPtr));
             }
         }
 
-        private static IntPtr AllocateInt32Array(int[] values) {
-            if (values.Length == 0) {
+        private static IntPtr AllocateInt32Array(int[] values)
+        {
+            if (values.Length == 0)
+            {
                 return IntPtr.Zero;
             }
             IntPtr ptr = Marshal.AllocCoTaskMem(values.Length * sizeof(int));
-            for (int i = 0; i < values.Length; i++) {
+            for (int i = 0; i < values.Length; i++)
+            {
                 Marshal.WriteInt32(ptr, i * sizeof(int), values[i]);
             }
             return ptr;
         }
 
-        private static IntPtr AllocateInt64Array(long[] values) {
+        private static IntPtr AllocateInt64Array(long[] values)
+        {
             IntPtr ptr = Marshal.AllocCoTaskMem(values.Length * sizeof(long));
-            for (int i = 0; i < values.Length; i++) {
+            for (int i = 0; i < values.Length; i++)
+            {
                 Marshal.WriteInt64(ptr, i * sizeof(long), values[i]);
             }
             return ptr;
         }
 
-        private static IntPtr AllocateBstrArray(string[] values) {
-            if (values.Length == 0) {
+        private static IntPtr AllocateBstrArray(string[] values)
+        {
+            if (values.Length == 0)
+            {
                 return IntPtr.Zero;
             }
             IntPtr ptr = Marshal.AllocCoTaskMem(values.Length * IntPtr.Size);
-            for (int i = 0; i < values.Length; i++) {
+            for (int i = 0; i < values.Length; i++)
+            {
                 Marshal.WriteIntPtr(ptr, i * IntPtr.Size, Marshal.StringToBSTR(values[i]));
             }
             return ptr;
         }
 
-        private static int[] ReadInt32Array(IntPtr ptr, int count) {
-            if (count == 0 || ptr == IntPtr.Zero) {
+        private static int[] ReadInt32Array(IntPtr ptr, int count)
+        {
+            if (count == 0 || ptr == IntPtr.Zero)
+            {
                 return [];
             }
             var values = new int[count];
-            for (int i = 0; i < count; i++) {
+            for (int i = 0; i < count; i++)
+            {
                 values[i] = Marshal.ReadInt32(ptr, i * sizeof(int));
             }
             return values;
         }
 
-        private static ushort[] ReadUInt16Array(IntPtr ptr, int count) {
-            if (count == 0 || ptr == IntPtr.Zero) {
+        private static ushort[] ReadUInt16Array(IntPtr ptr, int count)
+        {
+            if (count == 0 || ptr == IntPtr.Zero)
+            {
                 return [];
             }
             var values = new ushort[count];
-            for (int i = 0; i < count; i++) {
+            for (int i = 0; i < count; i++)
+            {
                 values[i] = unchecked((ushort)Marshal.ReadInt16(ptr, i * sizeof(ushort)));
             }
             return values;
         }
 
-        private static string[] ReadBstrArray(IntPtr ptr, int count) {
-            if (count == 0 || ptr == IntPtr.Zero) {
+        private static string[] ReadBstrArray(IntPtr ptr, int count)
+        {
+            if (count == 0 || ptr == IntPtr.Zero)
+            {
                 return [];
             }
             var values = new string[count];
-            for (int i = 0; i < count; i++) {
+            for (int i = 0; i < count; i++)
+            {
                 values[i] = ReadBstr(Marshal.ReadIntPtr(ptr, i * IntPtr.Size)) ?? string.Empty;
             }
             return values;
         }
 
-        private static Guid[] ReadGuidArray(IntPtr ptr, int count) {
-            if (count == 0 || ptr == IntPtr.Zero) {
+        private static Guid[] ReadGuidArray(IntPtr ptr, int count)
+        {
+            if (count == 0 || ptr == IntPtr.Zero)
+            {
                 return [];
             }
             var values = new Guid[count];
-            for (int i = 0; i < count; i++) {
+            for (int i = 0; i < count; i++)
+            {
                 values[i] = Marshal.PtrToStructure<Guid>(ptr + (i * 16));
             }
             return values;
         }
 
-        private static string[] ReadVariantStrings(IntPtr ptr, int count) {
-            if (count == 0 || ptr == IntPtr.Zero) {
+        private static string[] ReadVariantStrings(IntPtr ptr, int count)
+        {
+            if (count == 0 || ptr == IntPtr.Zero)
+            {
                 return [];
             }
             var values = new string[count];
             int variantSize = IntPtr.Size == 8 ? 24 : 16;
-            for (int i = 0; i < count; i++) {
+            for (int i = 0; i < count; i++)
+            {
                 IntPtr slot = ptr + (i * variantSize);
                 ushort vt = unchecked((ushort)Marshal.ReadInt16(slot));
                 IntPtr value = slot + 8;
-                values[i] = vt switch {
+                values[i] = vt switch
+                {
                     (ushort)VarType.VT_BSTR => ReadBstr(Marshal.ReadIntPtr(value)) ?? string.Empty,
                     (ushort)VarType.VT_I4 => Marshal.ReadInt32(value).ToString(System.Globalization.CultureInfo.InvariantCulture),
                     _ => string.Empty,
@@ -773,38 +879,49 @@ public sealed class OpcAeServerCcwArrayTests {
         private static string? ReadBstr(IntPtr ptr) =>
             ptr == IntPtr.Zero ? null : Marshal.PtrToStringBSTR(ptr);
 
-        private static int CountBstrPointers(IntPtr ptr) {
-            if (ptr == IntPtr.Zero) {
+        private static int CountBstrPointers(IntPtr ptr)
+        {
+            if (ptr == IntPtr.Zero)
+            {
                 return 0;
             }
             int count = 0;
-            while (Marshal.ReadIntPtr(ptr, count * IntPtr.Size) != IntPtr.Zero) {
+            while (Marshal.ReadIntPtr(ptr, count * IntPtr.Size) != IntPtr.Zero)
+            {
                 count++;
             }
             return count;
         }
 
-        private static void FreeCoTaskMem(IntPtr ptr) {
-            if (ptr != IntPtr.Zero) {
+        private static void FreeCoTaskMem(IntPtr ptr)
+        {
+            if (ptr != IntPtr.Zero)
+            {
                 Marshal.FreeCoTaskMem(ptr);
             }
         }
 
-        private static void FreeBstrArray(IntPtr ptr, int count) {
-            if (ptr == IntPtr.Zero) {
+        private static void FreeBstrArray(IntPtr ptr, int count)
+        {
+            if (ptr == IntPtr.Zero)
+            {
                 return;
             }
-            for (int i = 0; i < count; i++) {
+            for (int i = 0; i < count; i++)
+            {
                 IntPtr bstr = Marshal.ReadIntPtr(ptr, i * IntPtr.Size);
-                if (bstr != IntPtr.Zero) {
+                if (bstr != IntPtr.Zero)
+                {
                     Marshal.FreeBSTR(bstr);
                 }
             }
             Marshal.FreeCoTaskMem(ptr);
         }
 
-        private static void FreeConditionState(IntPtr ptr) {
-            if (ptr == IntPtr.Zero) {
+        private static void FreeConditionState(IntPtr ptr)
+        {
+            if (ptr == IntPtr.Zero)
+            {
                 return;
             }
             OPCCONDITIONSTATE_NATIVE native = Marshal.PtrToStructure<OPCCONDITIONSTATE_NATIVE>(ptr);
@@ -822,29 +939,36 @@ public sealed class OpcAeServerCcwArrayTests {
             Marshal.FreeCoTaskMem(ptr);
         }
 
-        private static void FreeVariantArray(IntPtr ptr, int count) {
-            if (ptr == IntPtr.Zero) {
+        private static void FreeVariantArray(IntPtr ptr, int count)
+        {
+            if (ptr == IntPtr.Zero)
+            {
                 return;
             }
             int variantSize = IntPtr.Size == 8 ? 24 : 16;
-            for (int i = 0; i < count; i++) {
+            for (int i = 0; i < count; i++)
+            {
                 IntPtr slot = ptr + (i * variantSize);
                 ushort vt = unchecked((ushort)Marshal.ReadInt16(slot));
-                if (vt == (ushort)VarType.VT_BSTR) {
+                if (vt == (ushort)VarType.VT_BSTR)
+                {
                     FreeBstr(Marshal.ReadIntPtr(slot + 8));
                 }
             }
             Marshal.FreeCoTaskMem(ptr);
         }
 
-        private static void FreeBstr(IntPtr ptr) {
-            if (ptr != IntPtr.Zero) {
+        private static void FreeBstr(IntPtr ptr)
+        {
+            if (ptr != IntPtr.Zero)
+            {
                 Marshal.FreeBSTR(ptr);
             }
         }
 
         private static T GetMethod<T>(IntPtr tearoff, int slot)
-            where T : Delegate {
+            where T : Delegate
+        {
             IntPtr vtable = Marshal.ReadIntPtr(tearoff);
             IntPtr method = Marshal.ReadIntPtr(vtable, slot * IntPtr.Size);
             return Marshal.GetDelegateForFunctionPointer<T>(method);
@@ -879,7 +1003,8 @@ public sealed class OpcAeServerCcwArrayTests {
         // uses natural alignment (no Pack) so x64 pointer fields land at
         // 8-byte aligned offsets the MIDL stub expects (see DR7 fix).
         [StructLayout(LayoutKind.Sequential)]
-        internal struct OPCCONDITIONSTATE_NATIVE {
+        internal struct OPCCONDITIONSTATE_NATIVE
+        {
             public ushort wState;
             public ushort wReserved1;
             public IntPtr szActiveSubCondition;

@@ -3,7 +3,8 @@
 
 namespace Opc.Classic.Samples.HdaServer;
 
-public sealed class HistoricalDataStore {
+public sealed class HistoricalDataStore
+{
     private static readonly string[] s_tagIds = ["Sensor.Temperature", "Sensor.Pressure", "Sensor.FlowRate"];
 
     // Lazily seed each tag on first access so the SCM-launched HDA EXE
@@ -14,7 +15,8 @@ public sealed class HistoricalDataStore {
     // returned RPC_S_SERVER_UNAVAILABLE for HDA but not for AE.
     private readonly Lazy<Dictionary<string, List<(DateTimeOffset Time, double Value)>>> _data;
 
-    public HistoricalDataStore() {
+    public HistoricalDataStore()
+    {
         EndTime = DateTimeOffset.UtcNow;
         StartTime = EndTime.AddDays(-1);
         _data = new Lazy<Dictionary<string, List<(DateTimeOffset, double)>>>(
@@ -30,7 +32,8 @@ public sealed class HistoricalDataStore {
 
     public bool Contains(string tagId) => _data.Value.ContainsKey(tagId);
 
-    private Dictionary<string, List<(DateTimeOffset Time, double Value)>> BuildData() {
+    private Dictionary<string, List<(DateTimeOffset Time, double Value)>> BuildData()
+    {
         var data = new Dictionary<string, List<(DateTimeOffset, double)>>(StringComparer.OrdinalIgnoreCase);
         Seed(data, "Sensor.Temperature", StartTime, EndTime, t => 20.0 + 5.0 * Math.Sin(t.TotalHours / 12.0 * Math.PI));
         Seed(data, "Sensor.Pressure", StartTime, EndTime, t => 101.3 + 0.5 * Math.Cos(t.TotalHours / 6.0 * Math.PI));
@@ -48,35 +51,43 @@ public sealed class HistoricalDataStore {
         string tagId,
         DateTimeOffset start,
         DateTimeOffset end,
-        Func<TimeSpan, double> generator) {
+        Func<TimeSpan, double> generator)
+    {
         // Sample every 10 seconds (was 1 second) to keep the seed loop under
         // ~10k entries per tag. The original 1-second cadence over a 24-hour
         // window produced 86,400 entries per tag, pushing startup past 2s.
         var list = new List<(DateTimeOffset, double)>(capacity: 8700);
-        for (var t = start; t <= end; t = t.AddSeconds(10)) {
+        for (var t = start; t <= end; t = t.AddSeconds(10))
+        {
             list.Add((t, generator(t - start)));
         }
 
         data[tagId] = list;
     }
 
-    public IEnumerable<(DateTimeOffset Time, double Value)> ReadRaw(string tagId, DateTimeOffset start, DateTimeOffset end, int maxValues) {
-        if (!_data.Value.TryGetValue(tagId, out var samples)) {
+    public IEnumerable<(DateTimeOffset Time, double Value)> ReadRaw(string tagId, DateTimeOffset start, DateTimeOffset end, int maxValues)
+    {
+        if (!_data.Value.TryGetValue(tagId, out var samples))
+        {
             yield break;
         }
 
         var count = 0;
-        foreach (var (t, v) in samples) {
-            if (t < start) {
+        foreach (var (t, v) in samples)
+        {
+            if (t < start)
+            {
                 continue;
             }
 
-            if (t > end) {
+            if (t > end)
+            {
                 yield break;
             }
 
             yield return (t, v);
-            if (maxValues > 0 && ++count >= maxValues) {
+            if (maxValues > 0 && ++count >= maxValues)
+            {
                 yield break;
             }
         }

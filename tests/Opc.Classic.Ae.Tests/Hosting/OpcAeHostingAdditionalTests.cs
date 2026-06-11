@@ -19,11 +19,14 @@ using TUnit.Core;
 
 namespace Opc.Classic.Ae.Tests.Hosting;
 
-public sealed class OpcAeHostingAdditionalTests {
+public sealed class OpcAeHostingAdditionalTests
+{
     [Test]
-    public async Task AddOpcAeServer_RegistersServerHostAndOptions_ResolvesExpectedConcreteTypes() {
+    public async Task AddOpcAeServer_RegistersServerHostAndOptions_ResolvesExpectedConcreteTypes()
+    {
         var clsid = Guid.Parse("aaaaaaaa-0000-0000-0000-0000000000ae");
-        var options = new OpcAeServerOptions {
+        var options = new OpcAeServerOptions
+        {
             Clsid = clsid,
             ProgId = "Opc.Classic.Tests.Ae.1",
             FriendlyName = "AE DI test server",
@@ -31,7 +34,8 @@ public sealed class OpcAeHostingAdditionalTests {
         };
         var services = new ServiceCollection();
 
-        services.AddOpcAeServer<MinimalAeServer>(configured => {
+        services.AddOpcAeServer<MinimalAeServer>(configured =>
+        {
             configured.Clsid = options.Clsid;
             configured.ProgId = options.ProgId;
             configured.FriendlyName = options.FriendlyName;
@@ -61,12 +65,14 @@ public sealed class OpcAeHostingAdditionalTests {
     }
 
     [Test]
-    public async Task OpcAeServerHost_RegistrationAndStopBeforeStart_AreCrossPlatformAndDoNotOpenListener() {
+    public async Task OpcAeServerHost_RegistrationAndStopBeforeStart_AreCrossPlatformAndDoNotOpenListener()
+    {
         var clsid = Guid.Parse("bbbbbbbb-0000-0000-0000-0000000000ae");
         var server = new MinimalAeServer();
         var host = new OpcAeServerHost(
             server,
-            Options.Create(new OpcAeServerOptions {
+            Options.Create(new OpcAeServerOptions
+            {
                 Clsid = clsid,
                 ProgId = "Opc.Classic.Tests.Ae.Host.1",
                 FriendlyName = "AE host lifecycle",
@@ -87,9 +93,11 @@ public sealed class OpcAeHostingAdditionalTests {
     }
 
     [Test]
-    public async Task OpcAeServerHost_ConstructorNullArguments_ThrowArgumentNullException() {
+    public async Task OpcAeServerHost_ConstructorNullArguments_ThrowArgumentNullException()
+    {
         var server = new MinimalAeServer();
-        IOptions<OpcAeServerOptions> options = Options.Create(new OpcAeServerOptions {
+        IOptions<OpcAeServerOptions> options = Options.Create(new OpcAeServerOptions
+        {
             Clsid = Guid.Parse("cccccccc-0000-0000-0000-0000000000ae"),
             ProgId = "Opc.Classic.Tests.Ae.Null.1",
         });
@@ -111,20 +119,25 @@ public sealed class OpcAeHostingAdditionalTests {
         new(server, options, logger);
 
     private static TException Capture<TException>(Func<object> action)
-        where TException : Exception {
-        try {
+        where TException : Exception
+    {
+        try
+        {
             _ = action();
         }
-        catch (TException exception) {
+        catch (TException exception)
+        {
             return exception;
         }
 
         throw new InvalidOperationException($"Expected {typeof(TException).Name}.");
     }
 
-    private sealed class MinimalAeServer : IOpcAeServer {
+    private sealed class MinimalAeServer : IOpcAeServer
+    {
         public Task<OpcServerStatus> GetStatusAsync(CancellationToken cancellationToken = default) =>
-            Task.FromResult(new OpcServerStatus {
+            Task.FromResult(new OpcServerStatus
+            {
                 Spec = OpcStatusSpec.Ae,
                 State = OpcServerState.Running,
                 VendorInfo = "Minimal AE server",
@@ -134,25 +147,31 @@ public sealed class OpcAeHostingAdditionalTests {
             Task.FromResult(0);
     }
 
-    private sealed class TestServiceProvider : IServiceProvider {
+    private sealed class TestServiceProvider : IServiceProvider
+    {
         private readonly IReadOnlyList<ServiceDescriptor> _descriptors;
         private readonly Dictionary<ServiceDescriptor, object?> _singletons = new();
 
-        public TestServiceProvider(IEnumerable<ServiceDescriptor> descriptors) {
+        public TestServiceProvider(IEnumerable<ServiceDescriptor> descriptors)
+        {
             _descriptors = descriptors.ToArray();
         }
 
-        public object? GetService(Type serviceType) {
+        public object? GetService(Type serviceType)
+        {
             ServiceDescriptor? descriptor = _descriptors.LastOrDefault(candidate => candidate.ServiceType == serviceType);
             return descriptor is null ? null : GetService(descriptor);
         }
 
-        private object? GetService(ServiceDescriptor descriptor) {
-            if (descriptor.Lifetime != ServiceLifetime.Singleton) {
+        private object? GetService(ServiceDescriptor descriptor)
+        {
+            if (descriptor.Lifetime != ServiceLifetime.Singleton)
+            {
                 return CreateService(descriptor);
             }
 
-            if (_singletons.TryGetValue(descriptor, out object? instance)) {
+            if (_singletons.TryGetValue(descriptor, out object? instance))
+            {
                 return instance;
             }
 
@@ -161,19 +180,23 @@ public sealed class OpcAeHostingAdditionalTests {
             return instance;
         }
 
-        private object? CreateService(ServiceDescriptor descriptor) {
-            if (descriptor.ImplementationInstance is not null) {
+        private object? CreateService(ServiceDescriptor descriptor)
+        {
+            if (descriptor.ImplementationInstance is not null)
+            {
                 return descriptor.ImplementationInstance;
             }
 
-            if (descriptor.ImplementationFactory is not null) {
+            if (descriptor.ImplementationFactory is not null)
+            {
                 return descriptor.ImplementationFactory(this);
             }
 
             return descriptor.ImplementationType is null ? null : CreateImplementation(descriptor.ImplementationType);
         }
 
-        private object CreateImplementation(Type implementationType) {
+        private object CreateImplementation(Type implementationType)
+        {
             var constructor = implementationType.GetConstructors()
                 .OrderByDescending(candidate => candidate.GetParameters().Length)
                 .First();

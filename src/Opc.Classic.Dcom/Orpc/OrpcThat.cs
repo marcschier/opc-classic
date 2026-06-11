@@ -12,7 +12,8 @@ namespace Opc.Classic.Dcom.Orpc;
 /// <summary>
 /// ORPC_THAT response envelope defined by [MS-DCOM] section 2.2.20.
 /// </summary>
-public sealed class OrpcThat {
+public sealed class OrpcThat
+{
     /// <summary>Wire size when the extensions pointer is null.</summary>
     public const int NullExtensionsWireSize = 8;
 
@@ -23,25 +24,30 @@ public sealed class OrpcThat {
     public IReadOnlyList<OrpcExtent>? Extensions { get; init; }
 
     /// <summary>Writes this envelope using NDR encoding.</summary>
-    public void Write(ref NdrWriter writer) {
+    public void Write(ref NdrWriter writer)
+    {
         writer.WriteUInt32(Flags);
         OrpcExtentArrayCodec.Write(ref writer, Extensions);
     }
 
     /// <summary>Reads an ORPC_THAT envelope using NDR encoding.</summary>
-    public static OrpcThat Read(ref NdrReader reader) {
+    public static OrpcThat Read(ref NdrReader reader)
+    {
         uint flags = reader.ReadUInt32();
         ValidateFlags(flags);
         IReadOnlyList<OrpcExtent>? extensions = OrpcExtentArrayCodec.Read(ref reader);
-        return new OrpcThat {
+        return new OrpcThat
+        {
             Flags = flags,
             Extensions = extensions,
         };
     }
 
-    private static void ValidateFlags(uint flags) {
+    private static void ValidateFlags(uint flags)
+    {
         const uint knownFlags = 0x0000001Fu;
-        if ((flags & ~knownFlags) != 0u) {
+        if ((flags & ~knownFlags) != 0u)
+        {
             throw new InvalidOperationException($"ORPC_THAT flags contain reserved bits: 0x{flags:X8}.");
         }
     }

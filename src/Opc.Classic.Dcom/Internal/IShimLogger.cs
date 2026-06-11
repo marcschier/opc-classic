@@ -9,7 +9,8 @@ using Microsoft.Extensions.Logging;
 namespace Opc.Classic.Dcom.Internal;
 
 /// <summary>Serilog-compatible logger surface routed through ILogger.</summary>
-public interface IShimLogger {
+public interface IShimLogger
+{
     /// <summary>Returns true if the corresponding log level is enabled.</summary>
     bool IsEnabled(LogLevel level);
 

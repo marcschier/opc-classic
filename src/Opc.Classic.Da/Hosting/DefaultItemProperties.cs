@@ -19,16 +19,19 @@ namespace Opc.Classic.Da.Hosting;
 /// customize per-item behaviour; the default provider returns
 /// <c>OPC_E_INVALID_PID</c> for every requested property value.
 /// </summary>
-public sealed class DefaultItemProperties : IOPCItemProperties {
+public sealed class DefaultItemProperties : IOPCItemProperties
+{
     private readonly IOpcItemPropertyProvider _provider;
 
     /// <summary>Initializes with the no-op property provider.</summary>
     public DefaultItemProperties()
-        : this(NullItemPropertyProvider.Instance) {
+        : this(NullItemPropertyProvider.Instance)
+    {
     }
 
     /// <summary>Initializes with the supplied provider.</summary>
-    public DefaultItemProperties(IOpcItemPropertyProvider provider) {
+    public DefaultItemProperties(IOpcItemPropertyProvider provider)
+    {
         _provider = provider ?? throw new ArgumentNullException(nameof(provider));
     }
 
@@ -38,18 +41,23 @@ public sealed class DefaultItemProperties : IOPCItemProperties {
         out int[] propertyIds,
         out string[] descriptions,
         out ushort[] dataTypes,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         ArgumentException.ThrowIfNullOrEmpty(itemId);
         cancellationToken.ThrowIfCancellationRequested();
         var properties = new List<OpcStandardProperty>(OpcStandardProperties.All);
-        if (_provider is IOpcItemPropertyMetadataProvider metadataProvider) {
+        if (_provider is IOpcItemPropertyMetadataProvider metadataProvider)
+        {
             var seen = new HashSet<int>();
-            foreach (var property in properties) {
+            foreach (var property in properties)
+            {
                 seen.Add(property.Id);
             }
 
-            foreach (var property in metadataProvider.GetAvailableProperties(itemId)) {
-                if (seen.Add(property.Id)) {
+            foreach (var property in metadataProvider.GetAvailableProperties(itemId))
+            {
+                if (seen.Add(property.Id))
+                {
                     properties.Add(property);
                 }
             }
@@ -58,7 +66,8 @@ public sealed class DefaultItemProperties : IOPCItemProperties {
         propertyIds = new int[properties.Count];
         descriptions = new string[properties.Count];
         dataTypes = new ushort[properties.Count];
-        for (int i = 0; i < properties.Count; i++) {
+        for (int i = 0; i < properties.Count; i++)
+        {
             propertyIds[i] = properties[i].Id;
             descriptions[i] = properties[i].Description;
             dataTypes[i] = (ushort)properties[i].DataType;
@@ -72,13 +81,15 @@ public sealed class DefaultItemProperties : IOPCItemProperties {
         int[] propertyIds,
         out OpcVariant[] data,
         out int[] errors,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         ArgumentException.ThrowIfNullOrEmpty(itemId);
         ArgumentNullException.ThrowIfNull(propertyIds);
         cancellationToken.ThrowIfCancellationRequested();
         data = new OpcVariant[propertyIds.Length];
         errors = new int[propertyIds.Length];
-        for (int i = 0; i < propertyIds.Length; i++) {
+        for (int i = 0; i < propertyIds.Length; i++)
+        {
             (OpcVariant value, int error) = _provider.TryGetPropertyValue(itemId, propertyIds[i]);
             data[i] = value;
             errors[i] = error;
@@ -92,15 +103,18 @@ public sealed class DefaultItemProperties : IOPCItemProperties {
         int[] propertyIds,
         out string[] newItemIds,
         out int[] errors,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         ArgumentException.ThrowIfNullOrEmpty(itemId);
         ArgumentNullException.ThrowIfNull(propertyIds);
         cancellationToken.ThrowIfCancellationRequested();
         newItemIds = new string[propertyIds.Length];
         errors = new int[propertyIds.Length];
         var metadataProvider = _provider as IOpcItemPropertyMetadataProvider;
-        for (int i = 0; i < propertyIds.Length; i++) {
-            if (metadataProvider is not null) {
+        for (int i = 0; i < propertyIds.Length; i++)
+        {
+            if (metadataProvider is not null)
+            {
                 (string resolvedItemId, int error) = metadataProvider.TryGetPropertyItemId(itemId, propertyIds[i]);
                 newItemIds[i] = resolvedItemId;
                 errors[i] = error;

@@ -19,16 +19,21 @@ namespace Opc.Classic.Da.Tests.Hosting;
 /// snapshot must be stable under concurrent item add/remove, and parallel
 /// readers must not observe corrupted state.
 /// </summary>
-public sealed class OpcDaGroupConcurrencyTests {
+public sealed class OpcDaGroupConcurrencyTests
+{
     [Test]
-    public async Task CreateEnumerator_during_concurrent_AddItems_produces_stable_snapshot() {
+    public async Task CreateEnumerator_during_concurrent_AddItems_produces_stable_snapshot()
+    {
         var group = CreateGroup();
         using var cts = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current!.CancellationToken);
         cts.CancelAfter(TimeSpan.FromSeconds(5));
 
-        Task[] adders = Enumerable.Range(0, 4).Select(i => Task.Run(async () => {
-            for (int j = 0; j < 50; j++) {
-                if (cts.Token.IsCancellationRequested) {
+        Task[] adders = Enumerable.Range(0, 4).Select(i => Task.Run(async () =>
+        {
+            for (int j = 0; j < 50; j++)
+            {
+                if (cts.Token.IsCancellationRequested)
+                {
                     return;
                 }
                 var defs = new[] { new OpcItemDef("", $"T{i}.{j}", true, 1, null, VarType.VT_I4) };
@@ -36,21 +41,27 @@ public sealed class OpcDaGroupConcurrencyTests {
             }
         }, cts.Token)).ToArray();
 
-        Task<bool> enumerator = Task.Run(async () => {
-            try {
-                for (int k = 0; k < 100; k++) {
-                    if (cts.Token.IsCancellationRequested) {
+        Task<bool> enumerator = Task.Run(async () =>
+        {
+            try
+            {
+                for (int k = 0; k < 100; k++)
+                {
+                    if (cts.Token.IsCancellationRequested)
+                    {
                         break;
                     }
                     IOpcInterfaceRef iref = await group.CreateEnumeratorAsync(
                         IEnumOPCItemAttributes.InterfaceId, cts.Token);
-                    if (iref.Ipid == Guid.Empty) {
+                    if (iref.Ipid == Guid.Empty)
+                    {
                         return false;
                     }
                 }
                 return true;
             }
-            catch (OperationCanceledException) {
+            catch (OperationCanceledException)
+            {
                 return true;
             }
         }, cts.Token);
@@ -63,7 +74,8 @@ public sealed class OpcDaGroupConcurrencyTests {
     }
 
     [Test]
-    public async Task RemoveItems_during_concurrent_Reads_does_not_throw() {
+    public async Task RemoveItems_during_concurrent_Reads_does_not_throw()
+    {
         var group = CreateGroup();
         var defs = Enumerable.Range(0, 100)
             .Select(i => new OpcItemDef("", $"Tag.{i}", true, i, null, VarType.VT_I4))
@@ -74,26 +86,33 @@ public sealed class OpcDaGroupConcurrencyTests {
         using var cts = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current!.CancellationToken);
         cts.CancelAfter(TimeSpan.FromSeconds(5));
 
-        Task remover = Task.Run(async () => {
+        Task remover = Task.Run(async () =>
+        {
             // Small initial delay so the reader gets at least one iteration in.
             await Task.Delay(50, cts.Token);
-            foreach (int handle in handles) {
-                if (cts.Token.IsCancellationRequested) {
+            foreach (int handle in handles)
+            {
+                if (cts.Token.IsCancellationRequested)
+                {
                     return;
                 }
                 await group.RemoveItemsAsync(new[] { handle }, cts.Token);
             }
         }, cts.Token);
 
-        Task<int> reader = Task.Run(async () => {
+        Task<int> reader = Task.Run(async () =>
+        {
             int reads = 0;
-            try {
-                while (!cts.Token.IsCancellationRequested) {
+            try
+            {
+                while (!cts.Token.IsCancellationRequested)
+                {
                     await group.ReadAsync(dataSource: 0, handles, out _, cts.Token);
                     reads++;
                 }
             }
-            catch (OperationCanceledException) {
+            catch (OperationCanceledException)
+            {
                 // Expected on shutdown.
             }
             return reads;

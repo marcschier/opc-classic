@@ -8,7 +8,8 @@ namespace Opc.Classic.Dcom.Automation;
 /// Implements the <i>IMPLTYPEFLAGS</i> structure of COM Automation.
 /// </summary>
 [Flags]
-public enum ImplTypeFlags {
+public enum ImplTypeFlags
+{
 
     /// <summary>
     /// The interface or dispinterface represents the default for the source or sink.

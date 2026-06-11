@@ -12,7 +12,8 @@ namespace Opc.Classic.Dcom.Rpc.Auth.ntlm;
 /// <summary>
 /// Key factory for lan manager
 /// </summary>
-internal sealed class NTLMKeyFactory {
+internal sealed class NTLMKeyFactory
+{
 
     /// <summary>
     /// Get user session key
@@ -24,18 +25,21 @@ internal sealed class NTLMKeyFactory {
     /// <param name="blob"></param>
     /// <returns></returns>
     public byte[] GetNTLMv2UserSessionKey(string target, string user,
-        string password, byte[] challenge, byte[] blob) {
+        string password, byte[] challenge, byte[] blob)
+    {
         var ntlm2Hash = Responses.Ntlmv2Hash(target, user, password);
         byte[]? data = null;
         byte[]? mac = null;
-        try {
+        try
+        {
             data = new byte[challenge.Length + blob.Length];
             Array.Copy(challenge, 0, data, 0, challenge.Length);
             Array.Copy(blob, 0, data, challenge.Length, blob.Length);
             mac = Responses.HmacMD5(data, ntlm2Hash);
             return Responses.HmacMD5(mac, ntlm2Hash);
         }
-        finally {
+        finally
+        {
             CryptographicOperations.ZeroMemory(ntlm2Hash);
             CryptographicOperations.ZeroMemory(data);
             CryptographicOperations.ZeroMemory(mac);
@@ -51,12 +55,15 @@ internal sealed class NTLMKeyFactory {
     /// <exception cref="SecurityUtilityException"> </exception>
     /// <exception cref="UnsupportedEncodingException"> </exception>
     /// <exception cref="SharpCifs.Util.Sharpen.NoSuchAlgorithmException"> </exception>
-    public byte[] GetNTLM2SessionResponseUserSessionKey(string password, byte[] servernonce) {
+    public byte[] GetNTLM2SessionResponseUserSessionKey(string password, byte[] servernonce)
+    {
         var userSessionKey = GetNTLMUserSessionKey(password);
-        try {
+        try
+        {
             return Responses.HmacMD5(servernonce, userSessionKey);
         }
-        finally {
+        finally
+        {
             CryptographicOperations.ZeroMemory(userSessionKey);
         }
     }
@@ -64,8 +71,10 @@ internal sealed class NTLMKeyFactory {
     /// <summary>
     /// Randomly generated 16 bytes
     /// </summary>
-    public byte[] SecondarySessionKey {
-        get {
+    public byte[] SecondarySessionKey
+    {
+        get
+        {
             var key = new byte[16];
             _random.NextBytes(key);
             return key;
@@ -77,7 +86,8 @@ internal sealed class NTLMKeyFactory {
     /// </summary>
     /// <param name="key"></param>
     /// <returns></returns>
-    public IStreamCipher GetARCFOUR(byte[] key) {
+    public IStreamCipher GetARCFOUR(byte[] key)
+    {
         var attrib = new Hashtable();
         var keystream = new RC4Engine();
         var parameters = new KeyParameter(key);
@@ -91,7 +101,8 @@ internal sealed class NTLMKeyFactory {
     /// <param name="keystream"></param>
     /// <param name="data"></param>
     /// <returns></returns>
-    internal byte[] ApplyARCFOUR(IStreamCipher keystream, byte[] data) {
+    internal byte[] ApplyARCFOUR(IStreamCipher keystream, byte[] data)
+    {
         var retData = new byte[data.Length];
         keystream.ProcessBytes(data, 0, data.Length, retData, 0);
         return retData;
@@ -106,19 +117,22 @@ internal sealed class NTLMKeyFactory {
     /// </param>
     /// <exception cref="UnsupportedEncodingException"> </exception>
     /// <exception cref="SecurityUtilityException"> </exception>
-    private byte[] GetNTLMUserSessionKey(string password) {
+    private byte[] GetNTLMUserSessionKey(string password)
+    {
         // The old SharpCifs credential helper supported only
         // the NTLMUserSessionKey and the LMv2UserSessionKey...we need more :(
         //         byte key[] = new byte[16];
         var ntlmHash = Responses.NtlmHash(password);
-        try {
+        try
+        {
             var md4 = new MD4Digest();
             var ret = new byte[md4.GetDigestSize()];
             md4.BlockUpdate(ntlmHash, 0, ntlmHash.Length);
             md4.DoFinal(ret, 0);
             return ret;
         }
-        finally {
+        finally
+        {
             CryptographicOperations.ZeroMemory(ntlmHash);
         }
     }
@@ -196,7 +210,8 @@ internal sealed class NTLMKeyFactory {
     /// <exception cref="InvalidOperationException"></exception>
     /// <returns></returns>
     public byte[] SigningPt1(int sequenceNumber, byte[] signingKey,
-        byte[] data, int lengthOfBuffer) {
+        byte[] data, int lengthOfBuffer)
+    {
         // TODO merge the signing routine for both client and server all that
         // they differ by are keys...as expected
         var seqNumPlusData = new byte[4 + lengthOfBuffer];
@@ -212,10 +227,12 @@ internal sealed class NTLMKeyFactory {
         retval[0] = 0x01; // Version number LE 1.
 
         byte[]? sign = null;
-        try {
+        try
+        {
             sign = Responses.HmacMD5(seqNumPlusData, signingKey);
 
-            for (var i = 0; i < 8; i++) {
+            for (var i = 0; i < 8; i++)
+            {
                 retval[i + 4] = sign[i];
             }
 
@@ -225,7 +242,8 @@ internal sealed class NTLMKeyFactory {
             retval[15] = unchecked((byte)((sequenceNumber >> 24) & 0xFF));
             return retval;
         }
-        finally {
+        finally
+        {
             CryptographicOperations.ZeroMemory(seqNumPlusData);
             CryptographicOperations.ZeroMemory(sign);
         }
@@ -238,8 +256,10 @@ internal sealed class NTLMKeyFactory {
     /// <param name="verifier"></param>
     /// <param name="rc4"></param>
     /// <exception cref="InvalidOperationException"></exception>
-    public void SigningPt2(byte[] verifier, IStreamCipher rc4) {
-        for (var i = 0; i < 8; i++) {
+    public void SigningPt2(byte[] verifier, IStreamCipher rc4)
+    {
+        for (var i = 0; i < 8; i++)
+        {
             //            verifier[i+4] = (byte) (verifier[i+4] ^ rc4.nextByte());
             verifier[i + 4] = rc4.ReturnByte(verifier[i + 4]);
         }
@@ -253,21 +273,27 @@ internal sealed class NTLMKeyFactory {
     /// <returns></returns>
     public bool CompareSignature(byte[] src, byte[] target) => src.SequenceEqual(target);
 
-    private static byte[] GenerateSigningKey(NtlmFlags flags, byte[] exportedSessionKey, byte[] magicConstant) {
-        if ((flags & NtlmFlags.NtlmsspNegotiateExtendedSessionSecurity) == NtlmFlags.None) {
+    private static byte[] GenerateSigningKey(NtlmFlags flags, byte[] exportedSessionKey, byte[] magicConstant)
+    {
+        if ((flags & NtlmFlags.NtlmsspNegotiateExtendedSessionSecurity) == NtlmFlags.None)
+        {
             return Array.Empty<byte>();
         }
 
         return GenerateExtendedSessionSecurityKey(exportedSessionKey, magicConstant);
     }
 
-    private static byte[] GenerateSealingKey(NtlmFlags flags, byte[] exportedSessionKey, byte[] magicConstant) {
-        if ((flags & NtlmFlags.NtlmsspNegotiateExtendedSessionSecurity) != NtlmFlags.None) {
+    private static byte[] GenerateSealingKey(NtlmFlags flags, byte[] exportedSessionKey, byte[] magicConstant)
+    {
+        if ((flags & NtlmFlags.NtlmsspNegotiateExtendedSessionSecurity) != NtlmFlags.None)
+        {
             return GenerateExtendedSessionSecurityKey(GetExtendedSessionSecuritySealKeyMaterial(flags, exportedSessionKey), magicConstant);
         }
 
-        if ((flags & (NtlmFlags.NtlmsspNegotiateLmKey | NtlmFlags.NtlmsspNegotiateDatagram)) != NtlmFlags.None) {
-            if ((flags & NtlmFlags.NtlmsspNegotiate56) != NtlmFlags.None) {
+        if ((flags & (NtlmFlags.NtlmsspNegotiateLmKey | NtlmFlags.NtlmsspNegotiateDatagram)) != NtlmFlags.None)
+        {
+            if ((flags & NtlmFlags.NtlmsspNegotiate56) != NtlmFlags.None)
+            {
                 return Concatenate(Left(exportedSessionKey, 7), [0xA0]);
             }
 
@@ -277,8 +303,10 @@ internal sealed class NTLMKeyFactory {
         return (byte[])exportedSessionKey.Clone();
     }
 
-    private static byte[] GetExtendedSessionSecuritySealKeyMaterial(NtlmFlags flags, byte[] exportedSessionKey) {
-        if ((flags & NtlmFlags.NtlmsspNegotiate128) != NtlmFlags.None) {
+    private static byte[] GetExtendedSessionSecuritySealKeyMaterial(NtlmFlags flags, byte[] exportedSessionKey)
+    {
+        if ((flags & NtlmFlags.NtlmsspNegotiate128) != NtlmFlags.None)
+        {
             return exportedSessionKey;
         }
 
@@ -287,9 +315,11 @@ internal sealed class NTLMKeyFactory {
             : Left(exportedSessionKey, 5);
     }
 
-    private static byte[] GenerateExtendedSessionSecurityKey(byte[] keyMaterial, byte[] magicConstant) {
+    private static byte[] GenerateExtendedSessionSecurityKey(byte[] keyMaterial, byte[] magicConstant)
+    {
         var dataforhash = new byte[keyMaterial.Length + magicConstant.Length];
-        try {
+        try
+        {
             Array.Copy(keyMaterial, 0, dataforhash, 0, keyMaterial.Length);
             Array.Copy(magicConstant, 0, dataforhash, keyMaterial.Length, magicConstant.Length);
             var md5 = new MD5Digest();
@@ -298,18 +328,21 @@ internal sealed class NTLMKeyFactory {
             md5.DoFinal(ret, 0);
             return ret;
         }
-        finally {
+        finally
+        {
             CryptographicOperations.ZeroMemory(dataforhash);
         }
     }
 
-    private static byte[] Left(byte[] value, int length) {
+    private static byte[] Left(byte[] value, int length)
+    {
         var copy = new byte[length];
         Array.Copy(value, 0, copy, 0, Math.Min(value.Length, length));
         return copy;
     }
 
-    private static byte[] Concatenate(byte[] first, byte[] second) {
+    private static byte[] Concatenate(byte[] first, byte[] second)
+    {
         var result = new byte[first.Length + second.Length];
         Array.Copy(first, 0, result, 0, first.Length);
         Array.Copy(second, 0, result, first.Length, second.Length);

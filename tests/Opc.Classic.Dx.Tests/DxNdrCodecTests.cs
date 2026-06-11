@@ -10,18 +10,21 @@ using TUnit.Core;
 
 namespace Opc.Classic.Dx.Tests;
 
-public sealed class DxNdrCodecTests {
+public sealed class DxNdrCodecTests
+{
     private delegate void NdrWriteAction(ref NdrWriter writer);
 
     [Test]
-    public async Task CodecRegistry_RegistersSixteenDxCodecs() {
+    public async Task CodecRegistry_RegistersSixteenDxCodecs()
+    {
         await Assert.That(NdrOpcDxCodecRegistry.RegisteredCodecNames.Count).IsEqualTo(16);
         await Assert.That(NdrOpcDxCodecRegistry.RegisteredCodecNames).Contains("OPCDX_CONNECTION");
         await Assert.That(NdrOpcDxCodecRegistry.RegisteredCodecNames).Contains("OPCDX_SOURCE_SERVER_STATUS");
     }
 
     [Test]
-    public async Task ConnectionCodec_RoundTripsMasksAndVariants() {
+    public async Task ConnectionCodec_RoundTripsMasksAndVariants()
+    {
         var connection = new DxConnection(
             name: "C1",
             description: "Mirror tank level",
@@ -56,7 +59,8 @@ public sealed class DxNdrCodecTests {
     }
 
     [Test]
-    public async Task SourceServerCodec_RoundTripsMaskFields() {
+    public async Task SourceServerCodec_RoundTripsMaskFields()
+    {
         var source = new DxSourceServer(
             name: "PLC1",
             serverUrl: "opcda://plc1/Vendor.OPC.1",
@@ -76,7 +80,8 @@ public sealed class DxNdrCodecTests {
     }
 
     [Test]
-    public async Task GeneralResponseCodec_RoundTripsIdentifiedResults() {
+    public async Task GeneralResponseCodec_RoundTripsIdentifiedResults()
+    {
         var response = new DxGeneralResponse(
             "cfg-2",
             new[]
@@ -92,7 +97,8 @@ public sealed class DxNdrCodecTests {
     }
 
     [Test]
-    public async Task ServerStatusCodec_RoundTripsStatusRecord() {
+    public async Task ServerStatusCodec_RoundTripsStatusRecord()
+    {
         var status = new DxServerStatus(
             DxServerState.Running,
             "cfg-3",
@@ -112,7 +118,8 @@ public sealed class DxNdrCodecTests {
     }
 
     [Test]
-    public async Task ConnectionStatusCodec_RoundTripsStatusRecord() {
+    public async Task ConnectionStatusCodec_RoundTripsStatusRecord()
+    {
         var timestamp = new DateTimeOffset(2026, 1, 2, 3, 4, 5, TimeSpan.Zero);
         var status = new DxConnectionStatus(
             DxConnectionState.Operational,
@@ -143,7 +150,8 @@ public sealed class DxNdrCodecTests {
     }
 
     [Test]
-    public async Task SourceServerStatusCodec_RoundTripsStatusRecord() {
+    public async Task SourceServerStatusCodec_RoundTripsStatusRecord()
+    {
         var timestamp = new DateTimeOffset(2026, 1, 2, 3, 4, 5, TimeSpan.Zero);
         var status = new DxSourceServerStatus(
             DxConnectStatus.Connected,
@@ -164,7 +172,8 @@ public sealed class DxNdrCodecTests {
     }
 
     [Test]
-    public async Task NamespaceHelpers_BuildCanonicalDxPaths() {
+    public async Task NamespaceHelpers_BuildCanonicalDxPaths()
+    {
         await Assert.That(DxNamespace.ServerStatusPath).IsEqualTo("/DX/ServerStatus");
         await Assert.That(DxNamespace.ConnectionPath("Area1", "Tank1")).IsEqualTo("/DX/DXConnectionsRoot/Area1/Tank1");
         await Assert.That(DxNamespace.ConnectionStatusPath("/DX/Area1/Tank1/")).IsEqualTo("/DX/DXConnectionsRoot/Area1/Tank1/Status");
@@ -172,20 +181,23 @@ public sealed class DxNdrCodecTests {
     }
 
     [Test]
-    public async Task OpcDxError_TableContainsSpecHresults() {
+    public async Task OpcDxError_TableContainsSpecHresults()
+    {
         await Assert.That(OpcDxError.All.Count).IsGreaterThanOrEqualTo(55);
         await Assert.That(OpcDxError.E_VERSION_MISMATCH.Code).IsEqualTo(unchecked((int)0xC0040703u));
         await Assert.That(OpcDxError.E_CONNECTIONS_EXIST.Code).IsEqualTo(unchecked((int)0xC004070Eu));
         await Assert.That(OpcDxError.S_CLAMP.Code).IsEqualTo(0x00040782);
     }
 
-    private static T RoundTrip<T>(T value, NdrWriteFunc<T> write, NdrReadFunc<T> read) {
+    private static T RoundTrip<T>(T value, NdrWriteFunc<T> write, NdrReadFunc<T> read)
+    {
         var payload = WritePayload((ref NdrWriter writer) => write(ref writer, value));
         var reader = new NdrReader(payload.Span);
         return read(ref reader);
     }
 
-    private static ReadOnlyMemory<byte> WritePayload(NdrWriteAction write, int capacity = 8192) {
+    private static ReadOnlyMemory<byte> WritePayload(NdrWriteAction write, int capacity = 8192)
+    {
         var buffer = new byte[capacity];
         var writer = new NdrWriter(buffer);
         write(ref writer);

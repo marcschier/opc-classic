@@ -14,7 +14,8 @@ using System.Threading.Tasks;
 namespace Opc.Classic.Hda.Hosting;
 
 /// <summary>Dispatches NDR-encoded HDA DCOM calls to a managed HDA server implementation.</summary>
-public interface IOpcHdaServerDispatcher {
+public interface IOpcHdaServerDispatcher
+{
     /// <summary>Routes an incoming interface/opnum request and returns an HRESULT plus NDR response body.</summary>
     Task<NdrCallResult> DispatchAsync(
         Guid interfaceId,
@@ -25,7 +26,8 @@ public interface IOpcHdaServerDispatcher {
     /// <summary>Validates HDA browse filters and returns one HRESULT per filter.</summary>
     Task<int[]> ValidateBrowseFiltersAsync(
         IReadOnlyList<OpcHdaBrowseFilter> filters,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         ArgumentNullException.ThrowIfNull(filters);
         cancellationToken.ThrowIfCancellationRequested();
         return Task.FromResult(new int[filters.Count]);
@@ -36,7 +38,8 @@ public interface IOpcHdaServerDispatcher {
         string branchPosition,
         HdaBrowseType browseType,
         IReadOnlyList<OpcHdaBrowseFilter> filters,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         _ = branchPosition;
         _ = browseType;
         ArgumentNullException.ThrowIfNull(filters);
@@ -49,9 +52,11 @@ public interface IOpcHdaServerDispatcher {
         string currentBranchPosition,
         int browseDirection,
         string? browseString,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         cancellationToken.ThrowIfCancellationRequested();
-        return Task.FromResult(browseDirection switch {
+        return Task.FromResult(browseDirection switch
+        {
             1 => MoveUp(currentBranchPosition),
             2 when !string.IsNullOrEmpty(browseString) => string.IsNullOrEmpty(currentBranchPosition)
                 ? browseString
@@ -65,9 +70,11 @@ public interface IOpcHdaServerDispatcher {
     Task<string> GetItemIdAsync(
         string branchPosition,
         string node,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         cancellationToken.ThrowIfCancellationRequested();
-        if (string.IsNullOrEmpty(branchPosition) || string.IsNullOrEmpty(node)) {
+        if (string.IsNullOrEmpty(branchPosition) || string.IsNullOrEmpty(node))
+        {
             return Task.FromResult(node);
         }
 
@@ -79,7 +86,8 @@ public interface IOpcHdaServerDispatcher {
     /// <summary>Returns the browser's current branch position string.</summary>
     Task<string> GetBranchPositionAsync(
         string branchPosition,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         cancellationToken.ThrowIfCancellationRequested();
         return Task.FromResult(branchPosition);
     }
@@ -89,7 +97,8 @@ public interface IOpcHdaServerDispatcher {
         Task.FromException<int>(NotImplemented());
 
     /// <summary>Synchronously inserts historical values.</summary>
-    Task<int[]> InsertAsync(int[] serverHandles, long[] timestampFileTimes, OpcVariant[] dataValues, int[] qualities, CancellationToken cancellationToken = default) {
+    Task<int[]> InsertAsync(int[] serverHandles, long[] timestampFileTimes, OpcVariant[] dataValues, int[] qualities, CancellationToken cancellationToken = default)
+    {
         _ = serverHandles;
         _ = timestampFileTimes;
         _ = dataValues;
@@ -98,7 +107,8 @@ public interface IOpcHdaServerDispatcher {
     }
 
     /// <summary>Synchronously replaces historical values at exact timestamps.</summary>
-    Task<int[]> ReplaceAsync(int[] serverHandles, long[] timestampFileTimes, OpcVariant[] dataValues, int[] qualities, CancellationToken cancellationToken = default) {
+    Task<int[]> ReplaceAsync(int[] serverHandles, long[] timestampFileTimes, OpcVariant[] dataValues, int[] qualities, CancellationToken cancellationToken = default)
+    {
         _ = serverHandles;
         _ = timestampFileTimes;
         _ = dataValues;
@@ -107,7 +117,8 @@ public interface IOpcHdaServerDispatcher {
     }
 
     /// <summary>Synchronously inserts or replaces historical values.</summary>
-    Task<int[]> InsertReplaceAsync(int[] serverHandles, long[] timestampFileTimes, OpcVariant[] dataValues, int[] qualities, CancellationToken cancellationToken = default) {
+    Task<int[]> InsertReplaceAsync(int[] serverHandles, long[] timestampFileTimes, OpcVariant[] dataValues, int[] qualities, CancellationToken cancellationToken = default)
+    {
         _ = serverHandles;
         _ = timestampFileTimes;
         _ = dataValues;
@@ -116,7 +127,8 @@ public interface IOpcHdaServerDispatcher {
     }
 
     /// <summary>Synchronously deletes raw values in a historical range.</summary>
-    Task<int[]> DeleteRawAsync(OpcHdaTime startTime, OpcHdaTime endTime, int[] serverHandles, CancellationToken cancellationToken = default) {
+    Task<int[]> DeleteRawAsync(OpcHdaTime startTime, OpcHdaTime endTime, int[] serverHandles, CancellationToken cancellationToken = default)
+    {
         _ = startTime;
         _ = endTime;
         _ = serverHandles;
@@ -124,14 +136,16 @@ public interface IOpcHdaServerDispatcher {
     }
 
     /// <summary>Synchronously deletes values at exact timestamps.</summary>
-    Task<int[]> DeleteAtTimeAsync(int[] serverHandles, long[] timestampFileTimes, CancellationToken cancellationToken = default) {
+    Task<int[]> DeleteAtTimeAsync(int[] serverHandles, long[] timestampFileTimes, CancellationToken cancellationToken = default)
+    {
         _ = serverHandles;
         _ = timestampFileTimes;
         return Task.FromException<int[]>(NotImplemented());
     }
 
     /// <summary>Begins an asynchronous insert and returns its cancel ID, callback handles, and immediate item errors.</summary>
-    Task<OpcHdaAsyncUpdateResult> BeginAsyncInsertAsync(int transactionId, int[] serverHandles, long[] timestampFileTimes, OpcVariant[] dataValues, int[] qualities, CancellationToken cancellationToken = default) {
+    Task<OpcHdaAsyncUpdateResult> BeginAsyncInsertAsync(int transactionId, int[] serverHandles, long[] timestampFileTimes, OpcVariant[] dataValues, int[] qualities, CancellationToken cancellationToken = default)
+    {
         _ = transactionId;
         _ = serverHandles;
         _ = timestampFileTimes;
@@ -141,7 +155,8 @@ public interface IOpcHdaServerDispatcher {
     }
 
     /// <summary>Begins an asynchronous replace and returns its cancel ID, callback handles, and immediate item errors.</summary>
-    Task<OpcHdaAsyncUpdateResult> BeginAsyncReplaceAsync(int transactionId, int[] serverHandles, long[] timestampFileTimes, OpcVariant[] dataValues, int[] qualities, CancellationToken cancellationToken = default) {
+    Task<OpcHdaAsyncUpdateResult> BeginAsyncReplaceAsync(int transactionId, int[] serverHandles, long[] timestampFileTimes, OpcVariant[] dataValues, int[] qualities, CancellationToken cancellationToken = default)
+    {
         _ = transactionId;
         _ = serverHandles;
         _ = timestampFileTimes;
@@ -151,7 +166,8 @@ public interface IOpcHdaServerDispatcher {
     }
 
     /// <summary>Begins an asynchronous insert-or-replace and returns its cancel ID, callback handles, and immediate item errors.</summary>
-    Task<OpcHdaAsyncUpdateResult> BeginAsyncInsertReplaceAsync(int transactionId, int[] serverHandles, long[] timestampFileTimes, OpcVariant[] dataValues, int[] qualities, CancellationToken cancellationToken = default) {
+    Task<OpcHdaAsyncUpdateResult> BeginAsyncInsertReplaceAsync(int transactionId, int[] serverHandles, long[] timestampFileTimes, OpcVariant[] dataValues, int[] qualities, CancellationToken cancellationToken = default)
+    {
         _ = transactionId;
         _ = serverHandles;
         _ = timestampFileTimes;
@@ -161,7 +177,8 @@ public interface IOpcHdaServerDispatcher {
     }
 
     /// <summary>Begins an asynchronous raw-range delete and returns its cancel ID, callback handles, and immediate item errors.</summary>
-    Task<OpcHdaAsyncUpdateResult> BeginAsyncDeleteRawAsync(int transactionId, OpcHdaTime startTime, OpcHdaTime endTime, int[] serverHandles, CancellationToken cancellationToken = default) {
+    Task<OpcHdaAsyncUpdateResult> BeginAsyncDeleteRawAsync(int transactionId, OpcHdaTime startTime, OpcHdaTime endTime, int[] serverHandles, CancellationToken cancellationToken = default)
+    {
         _ = transactionId;
         _ = startTime;
         _ = endTime;
@@ -170,7 +187,8 @@ public interface IOpcHdaServerDispatcher {
     }
 
     /// <summary>Begins an asynchronous exact-time delete and returns its cancel ID, callback handles, and immediate item errors.</summary>
-    Task<OpcHdaAsyncUpdateResult> BeginAsyncDeleteAtTimeAsync(int transactionId, int[] serverHandles, long[] timestampFileTimes, CancellationToken cancellationToken = default) {
+    Task<OpcHdaAsyncUpdateResult> BeginAsyncDeleteAtTimeAsync(int transactionId, int[] serverHandles, long[] timestampFileTimes, CancellationToken cancellationToken = default)
+    {
         _ = transactionId;
         _ = serverHandles;
         _ = timestampFileTimes;
@@ -186,7 +204,8 @@ public interface IOpcHdaServerDispatcher {
         long updateDurationFileTime,
         long updateIntervalFileTime,
         int[] serverHandles,
-        [EnumeratorCancellation] CancellationToken cancellationToken = default) {
+        [EnumeratorCancellation] CancellationToken cancellationToken = default)
+    {
         _ = transactionId;
         _ = startTime;
         _ = endTime;
@@ -209,7 +228,8 @@ public interface IOpcHdaServerDispatcher {
         long updateIntervalFileTime,
         int[] serverHandles,
         int[] aggregateIds,
-        [EnumeratorCancellation] CancellationToken cancellationToken = default) {
+        [EnumeratorCancellation] CancellationToken cancellationToken = default)
+    {
         _ = transactionId;
         _ = startTime;
         _ = endTime;
@@ -224,7 +244,8 @@ public interface IOpcHdaServerDispatcher {
     }
 
     /// <summary>Cancels an asynchronous update or playback operation.</summary>
-    Task CancelAsync(int cancelId, CancellationToken cancellationToken = default) {
+    Task CancelAsync(int cancelId, CancellationToken cancellationToken = default)
+    {
         _ = cancelId;
         cancellationToken.ThrowIfCancellationRequested();
         return Task.CompletedTask;
@@ -235,7 +256,8 @@ public interface IOpcHdaServerDispatcher {
         int[] serverHandles,
         long[] timestampFileTimes,
         OpcHdaAnnotation[] annotationValues,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         ArgumentNullException.ThrowIfNull(serverHandles);
         ArgumentNullException.ThrowIfNull(timestampFileTimes);
         ArgumentNullException.ThrowIfNull(annotationValues);
@@ -248,7 +270,8 @@ public interface IOpcHdaServerDispatcher {
         int[] serverHandles,
         OpcHdaTime startTime,
         long updateIntervalFileTime,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         ArgumentNullException.ThrowIfNull(serverHandles);
         ArgumentNullException.ThrowIfNull(startTime);
         _ = updateIntervalFileTime;
@@ -263,7 +286,8 @@ public interface IOpcHdaServerDispatcher {
         long resampleIntervalFileTime,
         int[] aggregateHandles,
         int intervalCount,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         ArgumentNullException.ThrowIfNull(serverHandles);
         ArgumentNullException.ThrowIfNull(startTime);
         ArgumentNullException.ThrowIfNull(aggregateHandles);
@@ -275,8 +299,10 @@ public interface IOpcHdaServerDispatcher {
 
     private static OpcException NotImplemented() => new(OpcResultId.NotImplemented);
 
-    private static string MoveUp(string position) {
-        if (string.IsNullOrEmpty(position)) {
+    private static string MoveUp(string position)
+    {
+        if (string.IsNullOrEmpty(position))
+        {
             return string.Empty;
         }
 

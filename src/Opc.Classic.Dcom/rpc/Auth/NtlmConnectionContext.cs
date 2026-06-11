@@ -13,7 +13,8 @@ namespace Opc.Classic.Dcom.Rpc.Auth.ntlm;
 /// <summary>
 /// Connection context
 /// </summary>
-public class NtlmConnectionContext : IConnectionContext {
+public class NtlmConnectionContext : IConnectionContext
+{
 
     /// <summary>
     /// Connection
@@ -32,19 +33,24 @@ public class NtlmConnectionContext : IConnectionContext {
     /// <param name="properties"></param>
     /// <exception cref="IOException"></exception>
     /// <returns></returns>
-    public virtual ConnectionOrientedPdu Init2(PresentationContext context, PropertyBag properties) {
+    public virtual ConnectionOrientedPdu Init2(PresentationContext context, PropertyBag properties)
+    {
         Established = false;
-        if (properties != null) {
+        if (properties != null)
+        {
             var maxTransmit = (string)properties.GetProperty(Opc.Classic.Dcom.Rpc.Connection.MAX_TRANSMIT_FRAGMENT);
-            if (maxTransmit != null) {
+            if (maxTransmit != null)
+            {
                 _maxTransmitFragment = int.Parse(maxTransmit, CultureInfo.InvariantCulture);
             }
             var maxReceive = (string)properties.GetProperty(Opc.Classic.Dcom.Rpc.Connection.MAX_RECEIVE_FRAGMENT);
-            if (maxReceive != null) {
+            if (maxReceive != null)
+            {
                 _maxReceiveFragment = int.Parse(maxReceive, CultureInfo.InvariantCulture);
             }
         }
-        var pdu = new BindPdu {
+        var pdu = new BindPdu
+        {
             ContextList = new PresentationContext[] { context },
             MaxTransmitFragment = _maxTransmitFragment,
             MaxReceiveFragment = _maxReceiveFragment
@@ -55,7 +61,8 @@ public class NtlmConnectionContext : IConnectionContext {
     }
 
     /// <inheritdoc/>
-    public virtual ConnectionOrientedPdu Init(PresentationContext context, PropertyBag properties) {
+    public virtual ConnectionOrientedPdu Init(PresentationContext context, PropertyBag properties)
+    {
 
         var pdu = (BindPdu)Init2(context, properties);
         pdu.ResetCallIdCounter();
@@ -63,9 +70,11 @@ public class NtlmConnectionContext : IConnectionContext {
     }
 
     /// <inheritdoc/>
-    public virtual ConnectionOrientedPdu Alter(PresentationContext context) {
+    public virtual ConnectionOrientedPdu Alter(PresentationContext context)
+    {
         Established = false;
-        var pdu = new AlterContextPdu {
+        var pdu = new AlterContextPdu
+        {
             ContextList = new PresentationContext[] { context },
             AssociationGroupId = _assocGroupId
         };
@@ -73,17 +82,23 @@ public class NtlmConnectionContext : IConnectionContext {
     }
 
     /// <inheritdoc/>
-    public virtual ConnectionOrientedPdu Accept(ConnectionOrientedPdu pdu) {
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Meziantou.Analyzer", "MA0051:Method is too long", Justification = "NTLM bind-acknowledge / alter-context / auth3 PDU handling forms a single state machine; splitting per PDU type fragments the auth handshake.")]
+    public virtual ConnectionOrientedPdu Accept(ConnectionOrientedPdu pdu)
+    {
         PresentationResult[] results;
-        switch (pdu.Type) {
+        switch (pdu.Type)
+        {
             case BindAcknowledgePdu.BIND_ACKNOWLEDGE_TYPE:
                 var bindAck = (BindAcknowledgePdu)pdu;
                 results = bindAck.ResultList;
-                if (results == null) {
+                if (results == null)
+                {
                     throw new BindException("No presentation context results.");
                 }
-                for (var i = results.Length - 1; i >= 0; i--) {
-                    if (results[i].Result != PresentationResultCode.ACCEPTANCE) {
+                for (var i = results.Length - 1; i >= 0; i--)
+                {
+                    if (results[i].Result != PresentationResultCode.ACCEPTANCE)
+                    {
                         throw new PresentationException("Context rejected.", results[i]);
                     }
                 }
@@ -97,11 +112,14 @@ public class NtlmConnectionContext : IConnectionContext {
             case AlterContextResponsePdu.ALTER_CONTEXT_RESPONSE_TYPE:
                 var alterContextResponse = (AlterContextResponsePdu)pdu;
                 results = alterContextResponse.ResultList;
-                if (results == null) {
+                if (results == null)
+                {
                     throw new BindException("No presentation context results.");
                 }
-                for (var i = results.Length - 1; i >= 0; i--) {
-                    if (results[i].Result != PresentationResultCode.ACCEPTANCE) {
+                for (var i = results.Length - 1; i >= 0; i--)
+                {
+                    if (results[i].Result != PresentationResultCode.ACCEPTANCE)
+                    {
                         throw new PresentationException("Context rejected.", results[i]);
                     }
                 }

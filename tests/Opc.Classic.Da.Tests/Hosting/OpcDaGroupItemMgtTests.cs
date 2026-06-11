@@ -16,9 +16,11 @@ namespace Opc.Classic.Da.Tests.Hosting;
 /// <summary>
 /// Tests for OpcDaGroup's IOPCItemMgt + IOPCSyncIO surface (ocom-3c).
 /// </summary>
-public sealed class OpcDaGroupItemMgtTests {
+public sealed class OpcDaGroupItemMgtTests
+{
     [Test]
-    public async Task AddItemsAsync_assigns_unique_server_handles() {
+    public async Task AddItemsAsync_assigns_unique_server_handles()
+    {
         var group = CreateGroup();
         var defs = new[]
         {
@@ -38,7 +40,8 @@ public sealed class OpcDaGroupItemMgtTests {
     }
 
     [Test]
-    public async Task AddItemsAsync_rejects_blank_item_id_with_unknown_item_id_hresult() {
+    public async Task AddItemsAsync_rejects_blank_item_id_with_unknown_item_id_hresult()
+    {
         var group = CreateGroup();
         var defs = new[] { new OpcItemDef("", "", true, 1, null, VarType.VT_I4) };
 
@@ -51,7 +54,8 @@ public sealed class OpcDaGroupItemMgtTests {
     }
 
     [Test]
-    public async Task ValidateItemsAsync_does_not_add_items() {
+    public async Task ValidateItemsAsync_does_not_add_items()
+    {
         var group = CreateGroup();
         var defs = new[] { new OpcItemDef("", "Tag.A", true, 1, null, VarType.VT_I4) };
 
@@ -64,7 +68,8 @@ public sealed class OpcDaGroupItemMgtTests {
     }
 
     [Test]
-    public async Task RemoveItemsAsync_removes_known_handles_and_reports_invalid() {
+    public async Task RemoveItemsAsync_removes_known_handles_and_reports_invalid()
+    {
         var group = CreateGroup();
         int handle = await AddSingleItem(group, "Tag.A");
 
@@ -77,7 +82,8 @@ public sealed class OpcDaGroupItemMgtTests {
     }
 
     [Test]
-    public async Task SetActiveStateAsync_updates_item_active_flag() {
+    public async Task SetActiveStateAsync_updates_item_active_flag()
+    {
         var group = CreateGroup();
         int handle = await AddSingleItem(group, "Tag.A", active: false);
 
@@ -89,7 +95,8 @@ public sealed class OpcDaGroupItemMgtTests {
     }
 
     [Test]
-    public async Task SetClientHandlesAsync_updates_client_handles() {
+    public async Task SetClientHandlesAsync_updates_client_handles()
+    {
         var group = CreateGroup();
         int handle = await AddSingleItem(group, "Tag.A");
 
@@ -102,7 +109,8 @@ public sealed class OpcDaGroupItemMgtTests {
     }
 
     [Test]
-    public async Task SetDatatypesAsync_updates_requested_types() {
+    public async Task SetDatatypesAsync_updates_requested_types()
+    {
         var group = CreateGroup();
         int handle = await AddSingleItem(group, "Tag.A");
 
@@ -115,7 +123,8 @@ public sealed class OpcDaGroupItemMgtTests {
     }
 
     [Test]
-    public async Task WriteAsync_then_ReadAsync_round_trips_value() {
+    public async Task WriteAsync_then_ReadAsync_round_trips_value()
+    {
         var group = CreateGroup();
         int handle = await AddSingleItem(group, "Tag.A");
         OpcVariant value = new(VarType.VT_I4, 42);
@@ -135,7 +144,8 @@ public sealed class OpcDaGroupItemMgtTests {
     }
 
     [Test]
-    public async Task ReadAsync_for_unknown_handle_returns_error() {
+    public async Task ReadAsync_for_unknown_handle_returns_error()
+    {
         var group = CreateGroup();
 
         OpcItemState[] states = await group.ReadAsync(
@@ -149,10 +159,12 @@ public sealed class OpcDaGroupItemMgtTests {
     }
 
     [Test]
-    public async Task WriteAsync_throws_on_length_mismatch() {
+    public async Task WriteAsync_throws_on_length_mismatch()
+    {
         var group = CreateGroup();
 
-        await Assert.That(async () => {
+        await Assert.That(async () =>
+        {
             _ = await group.WriteAsync(
                 [1, 2],
                 [OpcVariant.Empty],
@@ -160,7 +172,8 @@ public sealed class OpcDaGroupItemMgtTests {
         }).Throws<ArgumentException>();
     }
 
-    private static async Task<int> AddSingleItem(OpcDaGroup group, string itemId, bool active = true) {
+    private static async Task<int> AddSingleItem(OpcDaGroup group, string itemId, bool active = true)
+    {
         var defs = new[] { new OpcItemDef("", itemId, active, 1, null, VarType.VT_I4) };
         await group.AddItemsAsync(defs, out OpcItemResult[] results, out int[] _,
             TestContext.Current!.CancellationToken);

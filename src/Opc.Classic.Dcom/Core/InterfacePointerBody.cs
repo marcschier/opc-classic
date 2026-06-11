@@ -12,7 +12,8 @@ namespace Opc.Classic.Dcom.Core;
 /// Interface pointer body
 /// </summary>
 [Serializable]
-public class InterfacePointerBody {
+public class InterfacePointerBody
+{
     protected const int ObjRefHeaderLength = 24;
     protected const int StdObjRefLength = 40;
     protected const int CustomBodyHeaderLength = 24;
@@ -43,11 +44,14 @@ public class InterfacePointerBody {
     /// </summary>
     /// <param name="type"></param>
     /// <returns>object reference</returns>
-    public virtual object GetObjectReference(int type) {
-        if (type == InterfacePointer.OBJREF_STANDARD && _stdObjRef != null) {
+    public virtual object GetObjectReference(int type)
+    {
+        if (type == InterfacePointer.OBJREF_STANDARD && _stdObjRef != null)
+        {
             return _stdObjRef;
         }
-        if (type == ObjectType) {
+        if (type == ObjectType)
+        {
             return this;
         }
         return null;
@@ -85,7 +89,8 @@ public class InterfacePointerBody {
     /// <param name="iid"> </param>
     /// <param name="port"></param>
     /// <param name="objref"></param>
-    internal InterfacePointerBody(string iid, int port, StdObjRef objref) {
+    internal InterfacePointerBody(string iid, int port, StdObjRef objref)
+    {
         ObjectType = InterfacePointer.OBJREF_STANDARD;
         IID = iid;
         _stdObjRef = objref;
@@ -99,7 +104,8 @@ public class InterfacePointerBody {
     /// </summary>
     /// <param name="iid"></param>
     /// <param name="interfacePointer"></param>
-    internal InterfacePointerBody(string iid, InterfacePointer interfacePointer) {
+    internal InterfacePointerBody(string iid, InterfacePointer interfacePointer)
+    {
         ObjectType = InterfacePointer.OBJREF_STANDARD;
         IID = iid;
         _stdObjRef = (StdObjRef)interfacePointer.GetObjectReference(InterfacePointer.OBJREF_STANDARD);
@@ -107,7 +113,8 @@ public class InterfacePointerBody {
         Length = GetStandardLength(StringBindings);
     }
 
-    internal InterfacePointerBody(int objectType, string iid, StdObjRef stdObjRef, DualStringArray stringBindings) {
+    internal InterfacePointerBody(int objectType, string iid, StdObjRef stdObjRef, DualStringArray stringBindings)
+    {
         ObjectType = objectType;
         IID = iid;
         _stdObjRef = stdObjRef;
@@ -120,9 +127,11 @@ public class InterfacePointerBody {
     /// <param name="ndr"></param>
     /// <param name="Flags"></param>
     /// <returns></returns>
-    public static InterfacePointerBody Decode(NdrCodec ndr, int Flags) {
+    public static InterfacePointerBody Decode(NdrCodec ndr, int Flags)
+    {
         if ((Flags & InteropFlags.FLAG_REPRESENTATION_INTERFACEPTR_DECODE2) ==
-                     InteropFlags.FLAG_REPRESENTATION_INTERFACEPTR_DECODE2) {
+                     InteropFlags.FLAG_REPRESENTATION_INTERFACEPTR_DECODE2)
+        {
             return Decode2(ndr);
         }
 
@@ -145,7 +154,8 @@ public class InterfacePointerBody {
     /// </summary>
     /// <param name="ndr"></param>
     /// <param name="flags"></param>
-    public void Encode(NdrCodec ndr, int flags) {
+    public void Encode(NdrCodec ndr, int flags)
+    {
         var length = GetEncodedLength();
 
         ndr.WriteUnsignedLong(length);
@@ -156,7 +166,8 @@ public class InterfacePointerBody {
 
     protected virtual int GetEncodedLength() => GetStandardLength(StringBindings);
 
-    protected virtual void EncodeBody(NdrCodec ndr, int flags) {
+    protected virtual void EncodeBody(NdrCodec ndr, int flags)
+    {
         _stdObjRef.Encode(ndr);
         StringBindings.Encode(ndr);
     }
@@ -164,47 +175,58 @@ public class InterfacePointerBody {
     private static int GetStandardLength(DualStringArray stringBindings) =>
         ObjRefHeaderLength + StdObjRefLength + stringBindings.Length;
 
-    public static string ReadUuid(NdrCodec ndr, string logContext) {
-        try {
+    public static string ReadUuid(NdrCodec ndr, string logContext)
+    {
+        try
+        {
             var uuid = new UUID();
             uuid.Decode(ndr, ndr.Buffer);
             return uuid.ToString();
         }
-        catch (NdrException e) {
+        catch (NdrException e)
+        {
             Log.Logger.Error(e, logContext);
             return UUID.NIL_UUID;
         }
     }
 
-    public static void WriteUuid(NdrCodec ndr, string value, string logContext) {
-        try {
+    public static void WriteUuid(NdrCodec ndr, string value, string logContext)
+    {
+        try
+        {
             var uuid = new UUID(value);
             uuid.Encode(ndr, ndr.Buffer);
             ndr.Buffer.SetLength(Math.Max(ndr.Buffer.Length, ndr.Buffer.Index - ndr.Buffer.Start));
         }
-        catch (NdrException e) {
+        catch (NdrException e)
+        {
             Log.Logger.Error(e, logContext);
         }
     }
 
-    internal static int GetRemainingByteCount(NdrCodec ndr) {
+    internal static int GetRemainingByteCount(NdrCodec ndr)
+    {
         var readableLimit = ndr.Buffer.Length > 0
             ? Math.Min(ndr.Buffer.Buf.Length, ndr.Buffer.Start + ndr.Buffer.Length)
             : ndr.Buffer.Buf.Length;
         return Math.Max(0, readableLimit - ndr.Buffer.Index);
     }
 
-    internal static byte[] ReadRemainingBytes(NdrCodec ndr, int length) {
+    internal static byte[] ReadRemainingBytes(NdrCodec ndr, int length)
+    {
         var bytes = new byte[Math.Max(0, length)];
-        if (bytes.Length > 0) {
+        if (bytes.Length > 0)
+        {
             ndr.ReadOctetArray(bytes, 0, bytes.Length);
         }
         return bytes;
     }
 
-    private static InterfacePointerBody DecodeObjRef(NdrCodec ndr, int length) {
+    private static InterfacePointerBody DecodeObjRef(NdrCodec ndr, int length)
+    {
         var objRefStart = ndr.Buffer.Index;
-        if (!ReadSignature(ndr)) {
+        if (!ReadSignature(ndr))
+        {
             return null;
         }
 
@@ -213,7 +235,8 @@ public class InterfacePointerBody {
         var bodyLength = GetBodyLength(ndr, objRefStart, length);
 
         InterfacePointerBody ptr;
-        switch (objectType) {
+        switch (objectType)
+        {
             case InterfacePointer.OBJREF_STANDARD:
                 ptr = DecodeStandardBody(ndr, iid, objectType);
                 break;
@@ -235,15 +258,19 @@ public class InterfacePointerBody {
         return ptr;
     }
 
-    private static int GetBodyLength(NdrCodec ndr, int objRefStart, int length) {
-        if (length > 0) {
+    private static int GetBodyLength(NdrCodec ndr, int objRefStart, int length)
+    {
+        if (length > 0)
+        {
             return Math.Max(0, length - (ndr.Buffer.Index - objRefStart));
         }
         return GetRemainingByteCount(ndr);
     }
 
-    private static InterfacePointerBody DecodeStandardBody(NdrCodec ndr, string iid, int objectType) {
-        var ptr = new InterfacePointerBody {
+    private static InterfacePointerBody DecodeStandardBody(NdrCodec ndr, string iid, int objectType)
+    {
+        var ptr = new InterfacePointerBody
+        {
             ObjectType = objectType,
             IID = iid,
             _stdObjRef = StdObjRef.Decode(ndr)
@@ -253,40 +280,49 @@ public class InterfacePointerBody {
         return ptr;
     }
 
-    private static bool ReadSignature(NdrCodec ndr) {
+    private static bool ReadSignature(NdrCodec ndr)
+    {
         var b = new byte[4];
         ndr.ReadOctetArray(b, 0, 4);
 
-        for (var i = 0; i != 4; i++) {
-            if (b[i] != InterfacePointer.OBJREF_SIGNATURE[i]) {
+        for (var i = 0; i != 4; i++)
+        {
+            if (b[i] != InterfacePointer.OBJREF_SIGNATURE[i])
+            {
                 return false;
             }
         }
         return true;
     }
 
-    private void EncodeObjRef(NdrCodec ndr, int flags) {
+    private void EncodeObjRef(NdrCodec ndr, int flags)
+    {
         ndr.WriteOctetArray(InterfacePointer.OBJREF_SIGNATURE, 0, 4);
         ndr.WriteUnsignedLong(ObjectType);
         WriteUuid(ndr, GetIidForEncoding(flags), "InterfacePointer encode");
         EncodeBody(ndr, flags);
     }
 
-    protected static int GetNdrAlignmentPadding(int index, int alignment) {
+    protected static int GetNdrAlignmentPadding(int index, int alignment)
+    {
         var misaligned = index % alignment;
         return misaligned == 0 ? 0 : alignment - misaligned;
     }
 
-    private string GetIidForEncoding(int flags) {
-        if (ObjectType == InterfacePointer.OBJREF_CUSTOM) {
+    private string GetIidForEncoding(int flags)
+    {
+        if (ObjectType == InterfacePointer.OBJREF_CUSTOM)
+        {
             return IID;
         }
         if ((flags & InteropFlags.FLAG_REPRESENTATION_USE_IUNKNOWN_IID) ==
-                     InteropFlags.FLAG_REPRESENTATION_USE_IUNKNOWN_IID) {
+                     InteropFlags.FLAG_REPRESENTATION_USE_IUNKNOWN_IID)
+        {
             return Interfaces.IID_IUnknown;
         }
         if ((flags & InteropFlags.FLAG_REPRESENTATION_USE_IDISPATCH_IID) ==
-                          InteropFlags.FLAG_REPRESENTATION_USE_IDISPATCH_IID) {
+                          InteropFlags.FLAG_REPRESENTATION_USE_IDISPATCH_IID)
+        {
             return Interfaces.IID_IDispatch;
         }
         return IID;

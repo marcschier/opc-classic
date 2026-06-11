@@ -14,9 +14,11 @@ using VerifyTUnit;
 
 namespace Opc.Classic.Da.Tests.Snapshots;
 
-public sealed class NdrOpcItemStateCodecSnapshotTests {
+public sealed class NdrOpcItemStateCodecSnapshotTests
+{
     [Test]
-    public async Task OpcItemState_with_R8_value_round_trips_to_known_bytes() {
+    public async Task OpcItemState_with_R8_value_round_trips_to_known_bytes()
+    {
         var state = new OpcItemState(
             ClientHandle: 0x12345678,
             Timestamp: new DateTimeOffset(2026, 5, 22, 14, 0, 0, TimeSpan.Zero),
@@ -27,7 +29,8 @@ public sealed class NdrOpcItemStateCodecSnapshotTests {
     }
 
     [Test]
-    public async Task OpcItemState_with_VT_EMPTY_value_round_trips() {
+    public async Task OpcItemState_with_VT_EMPTY_value_round_trips()
+    {
         var state = new OpcItemState(
             ClientHandle: 7,
             Timestamp: DateTimeOffset.UnixEpoch,
@@ -38,7 +41,8 @@ public sealed class NdrOpcItemStateCodecSnapshotTests {
     }
 
     [Test]
-    public async Task OpcItemState_with_string_value_round_trips() {
+    public async Task OpcItemState_with_string_value_round_trips()
+    {
         var state = new OpcItemState(
             ClientHandle: 42,
             Timestamp: new DateTimeOffset(2000, 1, 1, 0, 0, 0, TimeSpan.Zero),
@@ -48,7 +52,8 @@ public sealed class NdrOpcItemStateCodecSnapshotTests {
         await Verifier.Verify(WriteHex(state, capacity: 128));
     }
 
-    private static string WriteHex(OpcItemState state, int capacity = 256) {
+    private static string WriteHex(OpcItemState state, int capacity = 256)
+    {
         var buffer = new byte[capacity];
         var writer = new NdrWriter(buffer);
         NdrOpcItemStateCodec.Write(ref writer, state);

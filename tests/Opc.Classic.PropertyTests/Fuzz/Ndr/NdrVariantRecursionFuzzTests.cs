@@ -14,7 +14,8 @@ using TUnit.Core;
 
 namespace Opc.Classic.PropertyTests.Fuzz.Ndr;
 
-public sealed class NdrVariantRecursionFuzzTests {
+public sealed class NdrVariantRecursionFuzzTests
+{
     private static readonly Type[] AllowedVariantExceptions =
     [
         typeof(InvalidDataException),
@@ -33,12 +34,14 @@ public sealed class NdrVariantRecursionFuzzTests {
     [Arguments(128)]
     [Arguments(256)]
     [Arguments(1024)]
-    public async Task NdrReader_ReadVariant_DeepNestedVariant_BoundedRecursionOrRejected(int depth) {
+    public async Task NdrReader_ReadVariant_DeepNestedVariant_BoundedRecursionOrRejected(int depth)
+    {
         byte[] input = BuildNestedVariant(depth);
 
         FuzzHarness.AssertParseDoesNotCrash(
             input,
-            static OpcVariant (ReadOnlyMemory<byte> bytes) => {
+            static OpcVariant (ReadOnlyMemory<byte> bytes) =>
+            {
                 var reader = new NdrReader(bytes.Span);
                 return reader.ReadVariant();
             },
@@ -50,11 +53,13 @@ public sealed class NdrVariantRecursionFuzzTests {
 
     [Test]
     [Category("Fuzz")]
-    public async Task NdrReader_ReadVariant_RandomBytes_DoesNotCrash() {
+    public async Task NdrReader_ReadVariant_RandomBytes_DoesNotCrash()
+    {
         FuzzHarness.BytesEdgeWeighted.Sample(
             static input => FuzzHarness.AssertParseDoesNotCrash(
                 input,
-                static OpcVariant (ReadOnlyMemory<byte> bytes) => {
+                static OpcVariant (ReadOnlyMemory<byte> bytes) =>
+                {
                     var reader = new NdrReader(bytes.Span);
                     return reader.ReadVariant();
                 },
@@ -68,14 +73,16 @@ public sealed class NdrVariantRecursionFuzzTests {
 
     [Test]
     [Category("Fuzz")]
-    public async Task NdrReader_ReadVariant_RandomVtTag_DoesNotCrash() {
+    public async Task NdrReader_ReadVariant_RandomVtTag_DoesNotCrash()
+    {
         Gen.Select(
             Gen.Int[0, 0x9000],
             FuzzHarness.BytesEdgeWeighted,
             static (vt, payload) => BuildVariantWithTag((ushort)vt, payload)).Sample(
                 static input => FuzzHarness.AssertParseDoesNotCrash(
                     input,
-                    static OpcVariant (ReadOnlyMemory<byte> bytes) => {
+                    static OpcVariant (ReadOnlyMemory<byte> bytes) =>
+                    {
                         var reader = new NdrReader(bytes.Span);
                         return reader.ReadVariant();
                     },
@@ -87,12 +94,14 @@ public sealed class NdrVariantRecursionFuzzTests {
         await Assert.That(completed).IsTrue();
     }
 
-    private static byte[] BuildNestedVariant(int depth) {
+    private static byte[] BuildNestedVariant(int depth)
+    {
         ArgumentOutOfRangeException.ThrowIfNegative(depth);
 
         byte[] buffer = new byte[Math.Max(32, (depth + 1) * 24)];
         int position = 0;
-        for (int i = 0; i < depth; i++) {
+        for (int i = 0; i < depth; i++)
+        {
             Align(ref position, 8);
             WriteVariantHeader(buffer, ref position, VarType.VT_VARIANT);
         }
@@ -102,7 +111,8 @@ public sealed class NdrVariantRecursionFuzzTests {
         return buffer.AsSpan(0, position).ToArray();
     }
 
-    private static byte[] BuildVariantWithTag(ushort vt, byte[] payload) {
+    private static byte[] BuildVariantWithTag(ushort vt, byte[] payload)
+    {
         byte[] buffer = new byte[24 + payload.Length];
         int position = 0;
         WriteVariantHeader(buffer, ref position, (VarType)vt);
@@ -110,7 +120,8 @@ public sealed class NdrVariantRecursionFuzzTests {
         return buffer;
     }
 
-    private static void WriteVariantHeader(byte[] buffer, ref int position, VarType vt) {
+    private static void WriteVariantHeader(byte[] buffer, ref int position, VarType vt)
+    {
         BinaryPrimitives.WriteUInt32LittleEndian(buffer.AsSpan(position), 3u);
         position += sizeof(uint);
         BinaryPrimitives.WriteUInt32LittleEndian(buffer.AsSpan(position), 0u);
@@ -127,9 +138,11 @@ public sealed class NdrVariantRecursionFuzzTests {
         position += sizeof(uint);
     }
 
-    private static void Align(ref int position, int boundary) {
+    private static void Align(ref int position, int boundary)
+    {
         int misaligned = position & (boundary - 1);
-        if (misaligned != 0) {
+        if (misaligned != 0)
+        {
             position += boundary - misaligned;
         }
     }

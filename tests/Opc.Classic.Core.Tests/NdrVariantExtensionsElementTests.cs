@@ -21,17 +21,20 @@ using TUnit.Assertions.AssertConditions.Throws;
 
 namespace Opc.Classic.Tests;
 
-public sealed class NdrVariantExtensionsElementTests {
+public sealed class NdrVariantExtensionsElementTests
+{
     private delegate void NdrWriteAction(ref NdrWriter w);
 
-    private static byte[] WriteOne(NdrWriteAction write, int capacity = 256) {
+    private static byte[] WriteOne(NdrWriteAction write, int capacity = 256)
+    {
         var buf = new byte[capacity];
         var w = new NdrWriter(buf);
         write(ref w);
         return buf[..w.Position];
     }
 
-    private static OpcVariant ReadElementOne(byte[] bytes) {
+    private static OpcVariant ReadElementOne(byte[] bytes)
+    {
         var r = new NdrReader(bytes);
         return r.ReadVariantElement();
     }
@@ -41,7 +44,8 @@ public sealed class NdrVariantExtensionsElementTests {
     [Test]
     [Arguments(VarType.VT_EMPTY)]
     [Arguments(VarType.VT_NULL)]
-    public async Task Element_Empty_And_Null_RoundTrip(VarType vt) {
+    public async Task Element_Empty_And_Null_RoundTrip(VarType vt)
+    {
         var input = vt == VarType.VT_EMPTY ? OpcVariant.Empty : OpcVariant.Null;
         byte[] bytes = WriteOne((ref NdrWriter w) => w.WriteVariantElement(input));
         OpcVariant decoded = ReadElementOne(bytes);
@@ -49,32 +53,37 @@ public sealed class NdrVariantExtensionsElementTests {
     }
 
     [Test]
-    public async Task Element_I1_RoundTrip() {
+    public async Task Element_I1_RoundTrip()
+    {
         var input = OpcVariant.FromInt8(-5);
         byte[] bytes = WriteOne((ref NdrWriter w) => w.WriteVariantElement(input));
         await Assert.That(ReadElementOne(bytes)).IsEqualTo(input);
     }
 
     [Test]
-    public async Task Element_UI1_RoundTrip() {
+    public async Task Element_UI1_RoundTrip()
+    {
         var input = OpcVariant.FromUInt8(0xAB);
         await Assert.That(ReadElementOne(WriteOne((ref NdrWriter w) => w.WriteVariantElement(input)))).IsEqualTo(input);
     }
 
     [Test]
-    public async Task Element_I2_RoundTrip() {
+    public async Task Element_I2_RoundTrip()
+    {
         var input = OpcVariant.FromInt16(-12345);
         await Assert.That(ReadElementOne(WriteOne((ref NdrWriter w) => w.WriteVariantElement(input)))).IsEqualTo(input);
     }
 
     [Test]
-    public async Task Element_UI2_RoundTrip() {
+    public async Task Element_UI2_RoundTrip()
+    {
         var input = OpcVariant.FromUInt16(54321);
         await Assert.That(ReadElementOne(WriteOne((ref NdrWriter w) => w.WriteVariantElement(input)))).IsEqualTo(input);
     }
 
     [Test]
-    public async Task Element_BOOL_RoundTripsBothValues() {
+    public async Task Element_BOOL_RoundTripsBothValues()
+    {
         var t = OpcVariant.FromBoolean(true);
         var f = OpcVariant.FromBoolean(false);
         await Assert.That(ReadElementOne(WriteOne((ref NdrWriter w) => w.WriteVariantElement(t)))).IsEqualTo(t);
@@ -82,43 +91,50 @@ public sealed class NdrVariantExtensionsElementTests {
     }
 
     [Test]
-    public async Task Element_I4_RoundTrip() {
+    public async Task Element_I4_RoundTrip()
+    {
         var input = OpcVariant.FromInt32(-987_654_321);
         await Assert.That(ReadElementOne(WriteOne((ref NdrWriter w) => w.WriteVariantElement(input)))).IsEqualTo(input);
     }
 
     [Test]
-    public async Task Element_UI4_RoundTrip() {
+    public async Task Element_UI4_RoundTrip()
+    {
         var input = OpcVariant.FromUInt32(0xDEADBEEFu);
         await Assert.That(ReadElementOne(WriteOne((ref NdrWriter w) => w.WriteVariantElement(input)))).IsEqualTo(input);
     }
 
     [Test]
-    public async Task Element_R4_RoundTrip() {
+    public async Task Element_R4_RoundTrip()
+    {
         var input = OpcVariant.FromSingle(3.14159f);
         await Assert.That(ReadElementOne(WriteOne((ref NdrWriter w) => w.WriteVariantElement(input)))).IsEqualTo(input);
     }
 
     [Test]
-    public async Task Element_R8_RoundTrip() {
+    public async Task Element_R8_RoundTrip()
+    {
         var input = OpcVariant.FromDouble(2.718281828459045);
         await Assert.That(ReadElementOne(WriteOne((ref NdrWriter w) => w.WriteVariantElement(input)))).IsEqualTo(input);
     }
 
     [Test]
-    public async Task Element_I8_RoundTrip() {
+    public async Task Element_I8_RoundTrip()
+    {
         var input = OpcVariant.FromInt64(-9_000_000_000_000L);
         await Assert.That(ReadElementOne(WriteOne((ref NdrWriter w) => w.WriteVariantElement(input)))).IsEqualTo(input);
     }
 
     [Test]
-    public async Task Element_UI8_RoundTrip() {
+    public async Task Element_UI8_RoundTrip()
+    {
         var input = OpcVariant.FromUInt64(0xCAFEBABE_DEADBEEFul);
         await Assert.That(ReadElementOne(WriteOne((ref NdrWriter w) => w.WriteVariantElement(input)))).IsEqualTo(input);
     }
 
     [Test]
-    public async Task Element_FILETIME_RoundTrip() {
+    public async Task Element_FILETIME_RoundTrip()
+    {
         long ft = new DateTimeOffset(2026, 6, 3, 15, 0, 0, TimeSpan.Zero).ToFileTime();
         var input = OpcVariant.FromFileTime(ft);
         OpcVariant decoded = ReadElementOne(WriteOne((ref NdrWriter w) => w.WriteVariantElement(input)));
@@ -127,7 +143,8 @@ public sealed class NdrVariantExtensionsElementTests {
     }
 
     [Test]
-    public async Task Element_ERROR_RoundTrip() {
+    public async Task Element_ERROR_RoundTrip()
+    {
         var input = OpcVariant.FromError(unchecked((int)0x80004005u));
         OpcVariant decoded = ReadElementOne(WriteOne((ref NdrWriter w) => w.WriteVariantElement(input)));
         await Assert.That(decoded.Type).IsEqualTo(VarType.VT_ERROR);
@@ -135,7 +152,8 @@ public sealed class NdrVariantExtensionsElementTests {
     }
 
     [Test]
-    public async Task Element_BSTR_RoundTrip() {
+    public async Task Element_BSTR_RoundTrip()
+    {
         var input = OpcVariant.FromString("hello unicode 株式会社");
         OpcVariant decoded = ReadElementOne(WriteOne((ref NdrWriter w) => w.WriteVariantElement(input)));
         await Assert.That(decoded.Type).IsEqualTo(VarType.VT_BSTR);
@@ -143,7 +161,8 @@ public sealed class NdrVariantExtensionsElementTests {
     }
 
     [Test]
-    public async Task Element_BSTR_Null_RoundTrip() {
+    public async Task Element_BSTR_Null_RoundTrip()
+    {
         var input = new OpcVariant(VarType.VT_BSTR, null);
         OpcVariant decoded = ReadElementOne(WriteOne((ref NdrWriter w) => w.WriteVariantElement(input)));
         await Assert.That(decoded.Type).IsEqualTo(VarType.VT_BSTR);
@@ -151,7 +170,8 @@ public sealed class NdrVariantExtensionsElementTests {
     }
 
     [Test]
-    public async Task Element_DATE_RoundTrip() {
+    public async Task Element_DATE_RoundTrip()
+    {
         var dt = new DateTime(2026, 6, 3, 15, 30, 45, DateTimeKind.Utc);
         var input = OpcVariant.FromDate(dt);
         OpcVariant decoded = ReadElementOne(WriteOne((ref NdrWriter w) => w.WriteVariantElement(input)));
@@ -166,11 +186,13 @@ public sealed class NdrVariantExtensionsElementTests {
     // ----- Discriminator-mismatch failure path ---------------------------------------------------
 
     [Test]
-    public async Task Element_DiscriminatorMismatch_ThrowsInvalidDataException() {
+    public async Task Element_DiscriminatorMismatch_ThrowsInvalidDataException()
+    {
         // Build a valid VARIANT element with vt=VT_I4 but corrupt the duplicated
         // switch_is discriminator USHORT to a different VARTYPE. The reader must
         // detect the mismatch per DCE 1.1 §14.3.7.2 NDR rule and reject.
-        byte[] bytes = WriteOne((ref NdrWriter w) => {
+        byte[] bytes = WriteOne((ref NdrWriter w) =>
+        {
             // wireVARIANT header: clSize=3 + rpcReserved + vt + 3 reserved USHORTs.
             w.WriteUInt32(3);          // clSize for a 4-byte arm
             w.WriteUInt32(0);          // rpcReserved
@@ -183,12 +205,14 @@ public sealed class NdrVariantExtensionsElementTests {
             w.WriteInt32(42);
             // Pad to 8.
             int rem = w.Position & 7;
-            if (rem != 0) {
+            if (rem != 0)
+            {
                 for (int i = rem; i < 8; i++) { w.WriteByte(0); }
             }
         });
 
-        await Assert.That(() => {
+        await Assert.That(() =>
+        {
             var r = new NdrReader(bytes);
             _ = r.ReadVariantElement();
         }).Throws<InvalidDataException>();
@@ -197,11 +221,13 @@ public sealed class NdrVariantExtensionsElementTests {
     // ----- Multi-element packing + per-element pad-to-8 alignment --------------------------------
 
     [Test]
-    public async Task TwoElements_PackedBackToBack_DecodeIndependently() {
+    public async Task TwoElements_PackedBackToBack_DecodeIndependently()
+    {
         var first = OpcVariant.FromInt32(11);
         var second = OpcVariant.FromDouble(22.5);
 
-        byte[] bytes = WriteOne((ref NdrWriter w) => {
+        byte[] bytes = WriteOne((ref NdrWriter w) =>
+        {
             w.WriteVariantElement(first);
             w.WriteVariantElement(second);
         });
@@ -214,7 +240,8 @@ public sealed class NdrVariantExtensionsElementTests {
     }
 
     [Test]
-    public async Task ElementBoundary_EachElementSizeIsMultipleOfEight() {
+    public async Task ElementBoundary_EachElementSizeIsMultipleOfEight()
+    {
         // The pad-to-8 invariant after each element is critical: a violation
         // would silently misalign every subsequent element in a [OpcVariantElements]
         // array. Exercise across scalar widths.
@@ -230,7 +257,8 @@ public sealed class NdrVariantExtensionsElementTests {
             OpcVariant.FromFileTime(0L),
         };
 
-        foreach (OpcVariant sample in samples) {
+        foreach (OpcVariant sample in samples)
+        {
             byte[] bytes = WriteOne((ref NdrWriter w) => w.WriteVariantElement(sample));
             await Assert.That(bytes.Length % 8).IsEqualTo(0);
         }
@@ -239,10 +267,12 @@ public sealed class NdrVariantExtensionsElementTests {
     // ----- rpcReserved tolerance (MS-OAUT §2.2.29.2 says receivers MUST tolerate any value) -----
 
     [Test]
-    public async Task Element_NonZeroRpcReserved_IsTolerated() {
+    public async Task Element_NonZeroRpcReserved_IsTolerated()
+    {
         // Construct a VT_I4 element with a deliberately-non-zero rpcReserved field.
         // The reader must accept it (Matrikon Simulation Server sets non-zero bytes here).
-        byte[] bytes = WriteOne((ref NdrWriter w) => {
+        byte[] bytes = WriteOne((ref NdrWriter w) =>
+        {
             w.WriteUInt32(3);                                    // clSize
             w.WriteUInt32(0xDEADBEEFu);                          // rpcReserved (non-zero, must be tolerated)
             w.WriteUInt16((ushort)VarType.VT_I4);
@@ -254,7 +284,8 @@ public sealed class NdrVariantExtensionsElementTests {
             w.WriteInt32(0x12345678);
             // Pad to 8.
             int rem = w.Position & 7;
-            if (rem != 0) {
+            if (rem != 0)
+            {
                 for (int i = rem; i < 8; i++) { w.WriteByte(0); }
             }
         });

@@ -11,7 +11,8 @@ namespace Opc.Classic.Dcom.Automation;
 /// or function return value between processes.
 /// </summary>
 [Serializable]
-public sealed class ParamDesc {
+public sealed class ParamDesc
+{
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 #pragma warning disable IDE1006 // Naming Styles
@@ -24,8 +25,10 @@ public sealed class ParamDesc {
     /// Create param description
     /// </summary>
     /// <param name="values"></param>
-    internal ParamDesc(Struct values) {
-        if (values == null) {
+    internal ParamDesc(Struct values)
+    {
+        if (values == null)
+        {
             lpVarValue = null;
             wPARAMFlags = (ParamFlag)(-1);
             return;

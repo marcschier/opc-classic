@@ -23,23 +23,30 @@ namespace Opc.Classic.Dcom.Core;
 /// Please note that the <b>"Server"</b> Service should be running on the
 /// machine where the COM server is running.
 /// </summary>
-internal sealed class ComOxidRuntime : IDisposable {
+internal sealed class ComOxidRuntime : IDisposable
+{
     private static readonly Lock s_instanceLock = new();
     private static ComOxidRuntime _instance;
 
     /// <summary>
     /// Singleton
     /// </summary>
-    public static ComOxidRuntime Instance {
-        get {
+    public static ComOxidRuntime Instance
+    {
+        get
+        {
             // TODO N1.2-followup: register ComOxidRuntime as an IServiceProvider singleton
             // and retire this legacy global mutable accessor.
-            lock (s_instanceLock) {
-                if (_instance == null) {
-                    try {
+            lock (s_instanceLock)
+            {
+                if (_instance == null)
+                {
+                    try
+                    {
                         _instance = new ComOxidRuntime();
                     }
-                    catch (IOException e) {
+                    catch (IOException e)
+                    {
                         throw new InteropException(-1, e);
                     }
                 }
@@ -56,7 +63,8 @@ internal sealed class ComOxidRuntime : IDisposable {
     /// <summary>
     /// Create runtime
     /// </summary>
-    private ComOxidRuntime() {
+    private ComOxidRuntime()
+    {
         _defaults2.SetProperty("rpc.ntlm.lanManagerKey", "false");
         _defaults2.SetProperty("rpc.ntlm.sign", "false");
         _defaults2.SetProperty("rpc.ntlm.seal", "false");
@@ -73,7 +81,8 @@ internal sealed class ComOxidRuntime : IDisposable {
 
     internal static ProtectionLevel ConfigureActivationProtection(
         PropertyBag properties, bool sessionSecurityEnabled,
-        string username, string password) {
+        string username, string password)
+    {
         // Phase 3B: default to INTEGRITY per Microsoft DCOM hardening (KB5004442);
         // patched Windows DCOM servers reject CONNECT-level activation requests.
         // SessionSecurityEnabled still escalates to PRIVACY for full seal.
@@ -83,7 +92,8 @@ internal sealed class ComOxidRuntime : IDisposable {
         properties.SetProperty("rpc.ntlm.ntlmv2", "true");
         properties.SetProperty("rpc.ntlm.ntlm2", "true");
 
-        if (sessionSecurityEnabled) {
+        if (sessionSecurityEnabled)
+        {
             protectionLevel = ProtectionLevel.PROTECTION_LEVEL_PRIVACY;
             properties.SetProperty("rpc.ntlm.seal", "true");
             properties.SetProperty("rpc.ntlm.keyExchange", "true");
@@ -100,9 +110,12 @@ internal sealed class ComOxidRuntime : IDisposable {
     /// <summary>
     /// Start resolver
     /// </summary>
-    public void StartResolver() {
-        lock (s_instanceLock) {
-            if (_resolverStarted) {
+    public void StartResolver()
+    {
+        lock (s_instanceLock)
+        {
+            if (_resolverStarted)
+            {
                 return;
             }
             // TODO N1.2-followup: route the OXID socket listener through
@@ -113,7 +126,8 @@ internal sealed class ComOxidRuntime : IDisposable {
 
             // schedule only the task to ping the OIDs obtained.
             _clientPing = new Timer(_ => ClientPingTimerTask(), null, TimeSpan.Zero, DcomTimings.PingPeriod);
-            if (Interop.IsCoClassAutoCollection) {
+            if (Interop.IsCoClassAutoCollection)
+            {
                 _serverPing = new Timer(_ => ServerPingTimerTask(), null, TimeSpan.Zero, DcomTimings.ObjectExpiryPeriod);
             }
             _resolverStarted = true;
@@ -123,8 +137,10 @@ internal sealed class ComOxidRuntime : IDisposable {
     /// <summary>
     /// Stop resolver
     /// </summary>
-    public void StopResolver() {
-        lock (s_instanceLock) {
+    public void StopResolver()
+    {
+        lock (s_instanceLock)
+        {
             _thread.Interrupt();
             _thread.Join();
             _thread = null;
@@ -132,7 +148,8 @@ internal sealed class ComOxidRuntime : IDisposable {
             _serverPing?.Dispose();
 
             var itr = _mapOfAddressVsStub.Values.Iterator();
-            while (itr.HasNext()) {
+            while (itr.HasNext())
+            {
                 var s = itr.Next();
                 s.Close();
             }
@@ -148,8 +165,10 @@ internal sealed class ComOxidRuntime : IDisposable {
     /// </summary>
     /// <param name="session"></param>
     /// <param name="component"></param>
-    internal void ReleaseLocalComponent(Session session, LocalCoClass component) {
-        lock (_mapOfOIDVsComponentsLock) {
+    internal void ReleaseLocalComponent(Session session, LocalCoClass component)
+    {
+        lock (_mapOfOIDVsComponentsLock)
+        {
             Log.Logger.Information("releaseLocalComponent: " + component.CoClassIID);
 
             var details = _mapOfLocalVsOxidDetails.GetOrDefault(component);
@@ -172,27 +191,33 @@ internal sealed class ComOxidRuntime : IDisposable {
     /// Destroy session oids
     /// </summary>
     /// <param name="sessionId"></param>
-    internal void DestroySessionOIDs(int sessionId) {
-        lock (_mapOfOIDVsComponentsLock) {
+    internal void DestroySessionOIDs(int sessionId)
+    {
+        lock (_mapOfOIDVsComponentsLock)
+        {
             Log.Logger.Information("DestroySessionOIDs for session: " + sessionId);
 
             var oids = _mapOfSessionIdsVsOIDs.GetAndRemove(sessionId);
-            if (oids == null || oids.Count == 0) {
+            if (oids == null || oids.Count == 0)
+            {
                 return;
             }
 
-            foreach (var oid in oids) {
+            foreach (var oid in oids)
+            {
                 // remove all
                 var component = _mapOfOIDVsComponents.GetAndRemove(oid);
                 var details = _mapOfLocalVsOxidDetails.GetOrDefault(component);
-                if (details != null) {
+                if (details != null)
+                {
                     _mapOfOxidVsOxidDetails.Remove(details.Oxid);
                     _mapOfIPIDVsComponent.Remove(details.Ipid);
                 }
                 _mapOfLocalVsOxidDetails.Remove(component);
                 _listOfExportedComponents.Remove(component);
                 // the thread associated with this will also stop.
-                if (details != null) {
+                if (details != null)
+                {
                     details.InterruptRemUnknownThreadGroup();
                 }
                 component = null;
@@ -209,14 +234,18 @@ internal sealed class ComOxidRuntime : IDisposable {
     /// <param name="session"></param>
     /// <param name="IPID"></param>
     /// <param name="oid"></param>
-    internal void AddUpdateOXIDs(Session session, string IPID, ObjectId oid) {
+    internal void AddUpdateOXIDs(Session session, string IPID, ObjectId oid)
+    {
         System.Diagnostics.Debug.Assert(IPID != null);
-        lock (_mapOfSessionVsPingSetHolderLock) {
+        lock (_mapOfSessionVsPingSetHolderLock)
+        {
             // make sure this is the IP address
             var holder = _mapOfSessionVsPingSetHolder.GetOrDefault(session);
-            if (holder == null) {
+            if (holder == null)
+            {
                 // new
-                holder = new PingSetHolder {
+                holder = new PingSetHolder
+                {
                     Username = session.UserName,
                     Password = session.Password,
                     Domain = session.Domain
@@ -228,14 +257,17 @@ internal sealed class ComOxidRuntime : IDisposable {
                 holder.IsSSO = session.SSOEnabled;
                 _mapOfSessionVsPingSetHolder.AddOrUpdate(session, holder);
             }
-            else {
+            else
+            {
                 // found, means it is another call for a new IPID
                 var oid2 = holder.CurrentSetOIDs.GetOrDefault(oid);
-                if (oid2 != null) {
+                if (oid2 != null)
+                {
                     // have to update this oid, since the one from parameters is a "new" one.
                     oid = oid2;
                 }
-                else {
+                else
+                {
                     Log.Logger.Information("addUpdateOXIDs: Adding OID to holder " +
                         holder + ", current size of currentSetOIDs is " + holder.CurrentSetOIDs.Count);
                     holder.CurrentSetOIDs.AddOrUpdate(oid, oid);
@@ -254,17 +286,22 @@ internal sealed class ComOxidRuntime : IDisposable {
     /// <param name="IPID"></param>
     /// <param name="oid"></param>
     /// <param name="session"></param>
-    internal void DelIPIDReference(string IPID, ObjectId oid, Session session) {
-        lock (_mapOfSessionVsPingSetHolderLock) {
+    internal void DelIPIDReference(string IPID, ObjectId oid, Session session)
+    {
+        lock (_mapOfSessionVsPingSetHolderLock)
+        {
             var holder = _mapOfSessionVsPingSetHolder.GetOrDefault(session);
             // this will be non-null, since we are trying to remove an IPID reference so the PingSet for its OID should exist
-            if (holder != null) {
+            if (holder != null)
+            {
                 var oid2 = holder.CurrentSetOIDs.GetOrDefault(oid);
-                if (oid2 != null) {
+                if (oid2 != null)
+                {
                     // temp gets replaced by the real one.
                     oid = oid2;
                 }
-                else {
+                else
+                {
                     Log.Logger.Warning("In delIPIDReference: Could not find Original OID for this temp OID for session: " +
                         session.SessionIdentifier + ", temp oid is " + oid + ", and IPID is " + IPID);
                     return;
@@ -277,10 +314,12 @@ internal sealed class ComOxidRuntime : IDisposable {
 
                 // should we retain this now ???, we need not send a ping for this as well.
                 // It is being retained for the last ping only.
-                if (oid.IPIDRefCount <= 0) {
+                if (oid.IPIDRefCount <= 0)
+                {
                     holder.CurrentSetOIDs.Remove(oid);
                     // everything is gone, remove the session
-                    if (holder.CurrentSetOIDs.Count == 0) {
+                    if (holder.CurrentSetOIDs.Count == 0)
+                    {
                         holder.Closed = true;
                         _mapOfSessionVsPingSetHolder.Remove(session);
                     }
@@ -288,7 +327,8 @@ internal sealed class ComOxidRuntime : IDisposable {
                         "Ref count is <= 0, for OID " + oid + ", holder status: " + holder.Closed);
                 }
             }
-            else {
+            else
+            {
                 Log.Logger.Warning("In delIPIDReference: Could not find PingSetHolder for this session: " +
                     session.SessionIdentifier + ", temp oid is " + oid + ", and IPID is " + IPID);
             }
@@ -299,11 +339,14 @@ internal sealed class ComOxidRuntime : IDisposable {
     /// Clear ipds
     /// </summary>
     /// <param name="session"></param>
-    internal void ClearIPIDsforSession(Session session) {
-        lock (_mapOfSessionVsPingSetHolderLock) {
+    internal void ClearIPIDsforSession(Session session)
+    {
+        lock (_mapOfSessionVsPingSetHolderLock)
+        {
             // make sure this is the IP address
             var holder = _mapOfSessionVsPingSetHolder.GetOrDefault(session);
-            if (holder != null) {
+            if (holder != null)
+            {
                 Log.Logger.Information("clearIPIDsforSession: holder.currentSetOIDs's size is " +
                     holder.CurrentSetOIDs.Count);
 
@@ -320,9 +363,11 @@ internal sealed class ComOxidRuntime : IDisposable {
         }
 
         // remove the socket for this session associated with ping timer
-        lock (_mapOfAddressVsStubLock) {
+        lock (_mapOfAddressVsStubLock)
+        {
             var stub = _mapOfAddressVsStub.GetAndRemove(session.TargetServer);
-            if (stub != null) {
+            if (stub != null)
+            {
                 stub.Close();
             }
         }
@@ -336,11 +381,14 @@ internal sealed class ComOxidRuntime : IDisposable {
     /// <param name="session"></param>
     /// <param name="component"></param>
     /// <returns></returns>
-    internal InterfacePointer GetInterfacePointer(Session session, LocalCoClass component) {
+    internal InterfacePointer GetInterfacePointer(Session session, LocalCoClass component)
+    {
         InterfacePointer ptr = null;
 
-        lock (_mapOfOIDVsComponentsLock) {
-            if (component.AlreadyExported) {
+        lock (_mapOfOIDVsComponentsLock)
+        {
+            if (component.AlreadyExported)
+            {
                 throw new InteropException(ErrorCode.INTEROP_JAVACOCLASS_ALREADY_EXPORTED);
             }
 
@@ -373,7 +421,8 @@ internal sealed class ComOxidRuntime : IDisposable {
                 sessionSecurityEnabled ? session.UserName : null,
                 sessionSecurityEnabled ? session.Password : null);
 
-            if (session.NTLMv2Enabled) {
+            if (session.NTLMv2Enabled)
+            {
                 properties.SetProperty("rpc.ntlm.ntlmv2", "true");
             }
 
@@ -391,7 +440,8 @@ internal sealed class ComOxidRuntime : IDisposable {
             _mapOfIPIDVsComponent.AddOrUpdate(ipid, details); // this is the ipid of the component.
 
             var oids = _mapOfSessionIdsVsOIDs.GetOrDefault(session.SessionIdentifier);
-            if (oids == null) {
+            if (oids == null)
+            {
                 oids = new List<ObjectId>();
                 _mapOfSessionIdsVsOIDs.AddOrUpdate(session.SessionIdentifier, oids);
             }
@@ -403,8 +453,10 @@ internal sealed class ComOxidRuntime : IDisposable {
     }
 
     // will get called from OxidResolverImpl only
-    internal ComOxidDetails GetOxidDetails(Oxid oxid) {
-        lock (_mapOfOIDVsComponentsLock) {
+    internal ComOxidDetails GetOxidDetails(Oxid oxid)
+    {
+        lock (_mapOfOIDVsComponentsLock)
+        {
             return _mapOfOxidVsOxidDetails.GetOrDefault(oxid);
         }
     }
@@ -424,9 +476,11 @@ internal sealed class ComOxidRuntime : IDisposable {
     /// </summary>
     /// <param name="ipid"></param>
     /// <returns></returns>
-    internal ComOxidDetails GetComponentFromIPID(string ipid) {
+    internal ComOxidDetails GetComponentFromIPID(string ipid)
+    {
         // How will the request get decoded without IDL info ??? Hard code for now for toString ??
-        lock (_mapOfOIDVsComponentsLock) {
+        lock (_mapOfOIDVsComponentsLock)
+        {
             return _mapOfIPIDVsComponent.GetOrDefault(ipid);
         }
     }
@@ -438,19 +492,25 @@ internal sealed class ComOxidRuntime : IDisposable {
     /// <param name="objectIdsAdded"></param>
     /// <param name="objectIdsDel"></param>
     internal void AddUpdateSets(SetId setId, List<ObjectId> objectIdsAdded,
-        List<ObjectId> objectIdsDel) {
-        lock (_mapOfOIDVsComponentsLock) {
+        List<ObjectId> objectIdsDel)
+    {
+        lock (_mapOfOIDVsComponentsLock)
+        {
             var listOfOIDs = _mapOfSetIdVsListOfOIDs.GetOrDefault(setId);
-            if (listOfOIDs == null) {
+            if (listOfOIDs == null)
+            {
                 listOfOIDs = new List<ObjectId>();
                 // first time
                 listOfOIDs.AddRange(objectIdsAdded);
                 _mapOfSetIdVsListOfOIDs.AddOrUpdate(setId, listOfOIDs);
                 // del list would be empty I presume
             }
-            else {
-                foreach (var oid in listOfOIDs) {
-                    if (!objectIdsDel.Contains(oid)) {
+            else
+            {
+                foreach (var oid in listOfOIDs)
+                {
+                    if (!objectIdsDel.Contains(oid))
+                    {
                         oid.UpdateLastPingTime();
                     }
                 }
@@ -464,12 +524,16 @@ internal sealed class ComOxidRuntime : IDisposable {
     /// </summary>
     /// <param name="ipid"></param>
     /// <returns></returns>
-    internal LocalCoClass GetLocalComponentFromIPID(string ipid) {
-        lock (_mapOfOIDVsComponentsLock) {
-            foreach (var component in _listOfExportedComponents) {
+    internal LocalCoClass GetLocalComponentFromIPID(string ipid)
+    {
+        lock (_mapOfOIDVsComponentsLock)
+        {
+            foreach (var component in _listOfExportedComponents)
+            {
                 // this will be unique, no two components will ever have same IPID for
                 // an IID.They will have different IPIDs for same IIDs.
-                if (component.GetIIDFromIpid(ipid) != null) {
+                if (component.GetIIDFromIpid(ipid) != null)
+                {
                     return component;
                 }
             }
@@ -484,19 +548,24 @@ internal sealed class ComOxidRuntime : IDisposable {
     /// thus removing any reference of the given server from the library, after which
     /// if no one outside has references, this object can be GCed.
     /// </summary>
-    private void ServerPingTimerTask() {
+    private void ServerPingTimerTask()
+    {
 
-        lock (_mapOfOIDVsComponentsLock) {
+        lock (_mapOfOIDVsComponentsLock)
+        {
             Log.Logger.Information("Running ServerPingTimerTask !");
             var itr = _mapOfOIDVsComponents.Keys.Iterator();
-            while (itr.HasNext()) {
+            while (itr.HasNext())
+            {
                 var oid = itr.Next();
-                if (oid.HasExpired()) {
+                if (oid.HasExpired())
+                {
                     // remove all
                     var component = _mapOfOIDVsComponents.GetOrDefault(oid);
                     // this means the local system still has references and we cannot delete this object
                     // since the user may reuse it.
-                    if (component.AssociatedReferenceAlive) {
+                    if (component.AssociatedReferenceAlive)
+                    {
                         continue;
                     }
                     var details = _mapOfLocalVsOxidDetails.GetOrDefault(component);
@@ -519,10 +588,12 @@ internal sealed class ComOxidRuntime : IDisposable {
     /// <summary>
     /// Client point
     /// </summary>
-    private void ClientPingTimerTask() {
+    private void ClientPingTimerTask()
+    {
 
         Iterator<KeyValuePair<Session, PingSetHolder>> itr = null;
-        lock (_mapOfSessionVsPingSetHolderLock) {
+        lock (_mapOfSessionVsPingSetHolderLock)
+        {
             itr = _mapOfSessionVsPingSetHolder.ToList().Iterator();
         }
 
@@ -533,16 +604,19 @@ internal sealed class ComOxidRuntime : IDisposable {
         // if set id is null send a complex ping to get back the set id for all the OIDs in the
         // PingSetHolder
 
-        while (itr.HasNext()) {
+        while (itr.HasNext())
+        {
             var entry = itr.Next();
             var holder = entry.Value;
             var address = entry.Key.TargetServer;
             // will get it from the cache, since it is getting called every OXID ping period
             // what if this stub has timed out, I guess I will have to ask the developers to increase the timeout for now.
             ComOxidStub stub = null;
-            lock (_mapOfAddressVsStubLock) {
+            lock (_mapOfAddressVsStubLock)
+            {
                 stub = _mapOfAddressVsStub.GetOrDefault(address);
-                if (stub == null) {
+                if (stub == null)
+                {
                     stub = new ComOxidStub(address, holder.Domain, holder.Username,
                         holder.Password, holder.UseNTLMv2, holder.IsSSO);
                     _mapOfAddressVsStub.AddOrUpdate(address, stub);
@@ -552,19 +626,25 @@ internal sealed class ComOxidRuntime : IDisposable {
             var listOfAddedOIDs = new List<ObjectId>();
             var listOfRemovedOIDs = new List<ObjectId>();
             // form a list if OID is 0 ref
-            lock (_mapOfSessionVsPingSetHolderLock) {
-                for (var itr2 = holder.CurrentSetOIDs.Keys.Iterator(); itr2.HasNext();) {
+            lock (_mapOfSessionVsPingSetHolderLock)
+            {
+                for (var itr2 = holder.CurrentSetOIDs.Keys.Iterator(); itr2.HasNext();)
+                {
                     var oid = itr2.Next();
-                    if (oid.IPIDRefCount == 0) {
-                        if (!oid.Dontping) {
+                    if (oid.IPIDRefCount == 0)
+                    {
+                        if (!oid.Dontping)
+                        {
                             listOfRemovedOIDs.Add(oid);
                             holder.PingedOnce.Remove(oid);
                             holder.Modified = true;
                         }
                         itr2.Remove();
                     }
-                    else {
-                        if (!oid.Dontping && !holder.PingedOnce.Contains(oid)) {
+                    else
+                    {
+                        if (!oid.Dontping && !holder.PingedOnce.Contains(oid))
+                        {
                             listOfAddedOIDs.Add(oid);
                             holder.PingedOnce.AddOrUpdate(oid, oid);
                             holder.Modified = true;
@@ -578,7 +658,8 @@ internal sealed class ComOxidRuntime : IDisposable {
 
             // this is the first time this is going and objects with no references
             // will not be added to ping set.
-            if (holder.SetId == null) {
+            if (holder.SetId == null)
+            {
                 listOfRemovedOIDs.Clear();
             }
 
@@ -593,13 +674,15 @@ internal sealed class ComOxidRuntime : IDisposable {
 
             holder.Modified = false;
             // stub.close(); commenting this since we are caching the stub.
-            if (holder.Closed) {
+            if (holder.Closed)
+            {
                 // this means that this set is empty and there is no need for it.
                 // The set has emptied  itself and will get removed from COM servers side as well.
                 Log.Logger.Information("Within ClientPingTimerTask: Holder " + holder +
                     " is empty, will remove this from mapOfSessionVsPingSetHolder");
                 itr.Remove();
-                lock (_mapOfSessionVsPingSetHolderLock) {
+                lock (_mapOfSessionVsPingSetHolderLock)
+                {
                     _mapOfSessionVsPingSetHolder.Remove(entry.Key);
                 }
             }
@@ -609,7 +692,8 @@ internal sealed class ComOxidRuntime : IDisposable {
     /// <summary>
     /// Ping set holder - one per session.
     /// </summary>
-    private sealed class PingSetHolder {
+    private sealed class PingSetHolder
+    {
         internal byte[] SetId { get; set; }
         internal string Username { get; set; }
         internal string Password { get; set; }
@@ -637,7 +721,8 @@ internal sealed class ComOxidRuntime : IDisposable {
     /// <summary>
     /// Oxid resolver thread
     /// </summary>
-    private sealed class OxidResolverThread : SharpCifs.Util.Sharpen.Thread {
+    private sealed class OxidResolverThread : SharpCifs.Util.Sharpen.Thread
+    {
 
         /// <summary>
         /// Create
@@ -648,14 +733,17 @@ internal sealed class ComOxidRuntime : IDisposable {
             base(name) => _outerInstance = outerInstance;
 
         /// <inheritdoc/>
-        public override void Run() {
+        public override void Run()
+        {
             var listener = new Socket(SocketType.Stream, ProtocolType.Tcp);
             listener.Bind(new IPEndPoint(IPAddress.Any, 0));
             listener.Listen();
             _outerInstance.OxidResolverPort = listener.GetLocalPort();
-            while (!IsCanceled) {
+            while (!IsCanceled)
+            {
                 var socket = listener.Accept();
-                lock (_outerInstance.Mutex) {
+                lock (_outerInstance.Mutex)
+                {
                     Interop.Internal_setSocket(socket);
                     // now create the ComOxidRuntimeHelper Object and start it.
                     var properties = new PropertyBag(_outerInstance._defaults);
@@ -665,14 +753,17 @@ internal sealed class ComOxidRuntime : IDisposable {
                     oxidResolver.StartOxid(socket.GetLocalPort(), socket.GetLocalPort());
                 }
             }
-            try {
+            try
+            {
                 listener.Close();
             }
 #pragma warning disable RECS0022 // A catch clause that catches System.Exception and has an empty body
-            catch {
+            catch
+            {
 #pragma warning restore RECS0022 // A catch clause that catches System.Exception and has an empty body
             }
-            finally {
+            finally
+            {
                 listener.Dispose();
             }
         }
@@ -716,7 +807,8 @@ internal sealed class ComOxidRuntime : IDisposable {
     private readonly Lock _mapOfAddressVsStubLock = new();
 
 
-    public void Dispose() {
+    public void Dispose()
+    {
         _clientPing?.Dispose();
         _serverPing?.Dispose();
     }

@@ -26,7 +26,8 @@ namespace Opc.Classic.Dcom.Transport;
 /// <summary>
 /// DCOM implementation of <see cref="ICallChannel" /> over a pipelines-backed async transport.
 /// </summary>
-public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable {
+public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable
+{
     private const int AuthenticationVerifierHeaderLength = 8;
 
     private readonly IAsyncTransport _transport;
@@ -48,7 +49,8 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable {
     /// <param name="transport">The connected async transport.</param>
     /// <param name="authContext">The authentication context for bind and packet protection.</param>
     public DcomCallChannel(IAsyncTransport transport, IAuthContext authContext)
-        : this(transport, authContext, objectIpid: null, preBindIids: null) {
+        : this(transport, authContext, objectIpid: null, preBindIids: null)
+    {
     }
 
     /// <summary>Initializes a new instance with presentation contexts to include in the first bind.</summary>
@@ -59,7 +61,8 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable {
         IAsyncTransport transport,
         IAuthContext authContext,
         IReadOnlyList<Guid> preBindIids)
-        : this(transport, authContext, objectIpid: null, preBindIids) {
+        : this(transport, authContext, objectIpid: null, preBindIids)
+    {
     }
 
     /// <summary>Initializes a channel that routes calls to a specific DCOM object IPID.</summary>
@@ -67,8 +70,10 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable {
     /// <param name="authContext">The authentication context for bind and packet protection.</param>
     /// <param name="objectIpid">The object IPID to place in request PDUs.</param>
     public DcomCallChannel(IAsyncTransport transport, IAuthContext authContext, Guid objectIpid)
-        : this(transport, authContext, (Guid?)objectIpid, preBindIids: null) {
-        if (objectIpid == Guid.Empty) {
+        : this(transport, authContext, (Guid?)objectIpid, preBindIids: null)
+    {
+        if (objectIpid == Guid.Empty)
+        {
             throw new ArgumentException("Object IPID must not be empty.", nameof(objectIpid));
         }
     }
@@ -83,8 +88,10 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable {
         IAuthContext authContext,
         Guid objectIpid,
         IReadOnlyList<Guid> preBindIids)
-        : this(transport, authContext, (Guid?)objectIpid, preBindIids) {
-        if (objectIpid == Guid.Empty) {
+        : this(transport, authContext, (Guid?)objectIpid, preBindIids)
+    {
+        if (objectIpid == Guid.Empty)
+        {
             throw new ArgumentException("Object IPID must not be empty.", nameof(objectIpid));
         }
     }
@@ -93,7 +100,8 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable {
         IAsyncTransport transport,
         IAuthContext authContext,
         Guid? objectIpid,
-        IReadOnlyList<Guid>? preBindIids) {
+        IReadOnlyList<Guid>? preBindIids)
+    {
         ArgumentNullException.ThrowIfNull(transport);
         ArgumentNullException.ThrowIfNull(authContext);
 
@@ -110,11 +118,14 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable {
     /// caller obtains additional IPIDs via DCOM activation with multiple
     /// requested IIDs, then calls this to associate each IID with its IPID.
     /// </summary>
-    public void RegisterInterfaceIpid(Guid interfaceId, Guid ipid) {
-        if (interfaceId == Guid.Empty) {
+    public void RegisterInterfaceIpid(Guid interfaceId, Guid ipid)
+    {
+        if (interfaceId == Guid.Empty)
+        {
             throw new ArgumentException("InterfaceId must not be empty.", nameof(interfaceId));
         }
-        if (ipid == Guid.Empty) {
+        if (ipid == Guid.Empty)
+        {
             throw new ArgumentException("IPID must not be empty.", nameof(ipid));
         }
         _interfaceIpids[interfaceId] = ipid;
@@ -125,14 +136,16 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable {
         Guid interfaceId,
         int opnum,
         ReadOnlyMemory<byte> requestPayload,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         ArgumentOutOfRangeException.ThrowIfNegative(opnum);
         cancellationToken.ThrowIfCancellationRequested();
 
         bool diag = string.Equals(System.Environment.GetEnvironmentVariable("OPC_CLASSIC_DCOM_WIRE_DUMP"), "1", System.StringComparison.Ordinal);
         using IDisposable causalityScope = CausalityContext.BeginCall();
         await _callLock.WaitAsync(cancellationToken).ConfigureAwait(false);
-        try {
+        try
+        {
             ObjectDisposedException.ThrowIf(_disposed, this);
 
             int contextId = await EnsurePresentationContextAsync(interfaceId, cancellationToken).ConfigureAwait(false);
@@ -140,7 +153,8 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable {
             Guid causalityId = CausalityContext.Current.Value.GetValueOrDefault();
             byte[] requestStub = OrpcEnvelope.BuildRequestStub(requestPayload, causalityId);
             Guid? routedIpid = _interfaceIpids.TryGetValue(interfaceId, out Guid mapped) ? mapped : _objectIpid;
-            var request = new RequestCoPdu {
+            var request = new RequestCoPdu
+            {
                 AllocationHint = requestStub.Length,
                 ContextId = contextId,
                 Opnum = opnum,
@@ -154,7 +168,8 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable {
 
             ConnectionOrientedPdu reply = await ReadFragmentedPduAsync(cancellationToken).ConfigureAwait(false);
             await BindTraceAsync(diag, $"InvokeAsync: received reply PDU type={reply.Type}").ConfigureAwait(false);
-            NdrCallResult result = reply switch {
+            NdrCallResult result = reply switch
+            {
                 ResponseCoPdu response => new NdrCallResult(0, OrpcEnvelope.ExtractResponseBody(response.Stub)),
                 FaultCoPdu fault => new NdrCallResult(unchecked((int)fault.Status), ReadOnlyMemory<byte>.Empty),
                 _ => throw new InvalidOperationException($"Unexpected DCE/RPC PDU type {reply.Type}.")
@@ -162,21 +177,25 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable {
             // Optional diagnostic hex-dump: set OPC_CLASSIC_DCOM_WIRE_DUMP=1 to log
             // request and response bytes to stderr. Useful for byte-exact wire-format
             // debugging against captured Wireshark traces from Windows OPC clients.
-            if (diag) {
+            if (diag)
+            {
                 await System.Console.Error.WriteLineAsync($"[wire] iid={interfaceId:D} opnum={opnum} hresult=0x{result.Hresult:X8}").ConfigureAwait(false);
                 await System.Console.Error.WriteLineAsync($"[wire] request  ({requestPayload.Length}b): {System.Convert.ToHexString(requestPayload.Span)}").ConfigureAwait(false);
                 await System.Console.Error.WriteLineAsync($"[wire] response ({result.ResponsePayload.Length}b): {System.Convert.ToHexString(result.ResponsePayload.Span)}").ConfigureAwait(false);
             }
             return result;
         }
-        finally {
+        finally
+        {
             _callLock.Release();
         }
     }
 
     /// <inheritdoc />
-    public async ValueTask DisposeAsync() {
-        if (_disposed) {
+    public async ValueTask DisposeAsync()
+    {
+        if (_disposed)
+        {
             return;
         }
 
@@ -185,30 +204,37 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable {
         await _transport.DisposeAsync().ConfigureAwait(false);
     }
 
-    private async ValueTask<int> EnsurePresentationContextAsync(Guid interfaceId, CancellationToken cancellationToken) {
-        if (_contextIds.TryGetValue(interfaceId, out int contextId)) {
+    private async ValueTask<int> EnsurePresentationContextAsync(Guid interfaceId, CancellationToken cancellationToken)
+    {
+        if (_contextIds.TryGetValue(interfaceId, out int contextId))
+        {
             return contextId;
         }
 
-        if (!_bound) {
+        if (!_bound)
+        {
             PendingPresentationContext[] initialContexts = CreateInitialPresentationContexts(interfaceId);
             PresentationResult[] bindResults = await BindAsync(initialContexts, cancellationToken).ConfigureAwait(false);
             _bound = true;
-            if (string.Equals(System.Environment.GetEnvironmentVariable("OPC_CLASSIC_DCOM_WIRE_DUMP"), "1", System.StringComparison.Ordinal)) {
+            if (string.Equals(System.Environment.GetEnvironmentVariable("OPC_CLASSIC_DCOM_WIRE_DUMP"), "1", System.StringComparison.Ordinal))
+            {
                 var culture = System.Globalization.CultureInfo.InvariantCulture;
                 var sb = new System.Text.StringBuilder();
                 sb.Append(culture, $"[bind] req-iid={interfaceId:D} contexts={initialContexts.Length}");
-                for (int i = 0; i < initialContexts.Length && i < bindResults.Length; i++) {
+                for (int i = 0; i < initialContexts.Length && i < bindResults.Length; i++)
+                {
                     sb.Append(culture, $" | [{i}] iid={initialContexts[i].InterfaceId:D} -> {bindResults[i]}");
                 }
                 await System.Console.Error.WriteLineAsync(sb.ToString()).ConfigureAwait(false);
             }
-            if (_contextIds.TryGetValue(interfaceId, out contextId)) {
+            if (_contextIds.TryGetValue(interfaceId, out contextId))
+            {
                 return contextId;
             }
 
             PresentationResult? result = FindPresentationResult(initialContexts, bindResults, interfaceId);
-            if (result is not null) {
+            if (result is not null)
+            {
                 throw new InvalidOperationException($"Presentation context rejected for IID {interfaceId:D}: {result}.");
             }
 
@@ -221,8 +247,10 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable {
         return contextId;
     }
 
-    private async ValueTask AlterContextAsync(Guid interfaceId, int contextId, CancellationToken cancellationToken) {
-        var alter = new AlterContextPdu {
+    private async ValueTask AlterContextAsync(Guid interfaceId, int contextId, CancellationToken cancellationToken)
+    {
+        var alter = new AlterContextPdu
+        {
             AssociationGroupId = _associationGroupId,
             ContextList = [CreatePresentationContext(interfaceId, contextId)],
             MaxReceiveFragment = _maxReceiveFragment,
@@ -232,8 +260,10 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable {
         await WritePduAsync(alter, cancellationToken).ConfigureAwait(false);
 
         DecodedPdu decoded = await ReadSinglePduAsync(cancellationToken).ConfigureAwait(false);
-        if (decoded.Pdu is not AlterContextResponsePdu alterAck) {
-            if (decoded.Pdu is FaultCoPdu fault) {
+        if (decoded.Pdu is not AlterContextResponsePdu alterAck)
+        {
+            if (decoded.Pdu is FaultCoPdu fault)
+            {
                 throw new InvalidOperationException($"AlterContext failed with fault 0x{unchecked((int)fault.Status):X8}.");
             }
             throw new InvalidOperationException($"Expected alter_context_response PDU, received type {decoded.Pdu.Type}.");
@@ -242,12 +272,14 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable {
         ValidatePresentationResults(alterAck.ResultList, "AlterContext response had no presentation results.", "AlterContext presentation context rejected");
     }
 
-    private async ValueTask<PresentationResult[]> BindAsync(PendingPresentationContext[] contexts, CancellationToken cancellationToken) {
+    private async ValueTask<PresentationResult[]> BindAsync(PendingPresentationContext[] contexts, CancellationToken cancellationToken)
+    {
         bool diag = string.Equals(System.Environment.GetEnvironmentVariable("OPC_CLASSIC_DCOM_WIRE_DUMP"), "1", System.StringComparison.Ordinal);
         await BindTraceAsync(diag, $"BindAsync entered: ctx_count={contexts.Length} auth_ctx={_authContext.GetType().Name} protection={_authContext.ProtectionLevel}").ConfigureAwait(false);
         byte[] initialToken = _authContext.BuildInitialToken();
         await BindTraceAsync(diag, $"initial_token: {initialToken.Length} bytes").ConfigureAwait(false);
-        var bind = new BindPdu {
+        var bind = new BindPdu
+        {
             AssociationGroupId = _associationGroupId,
             ContextList = ToPresentationContexts(contexts),
             MaxReceiveFragment = _maxReceiveFragment,
@@ -259,8 +291,10 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable {
         await BindTraceAsync(diag, "BIND PDU written; awaiting BIND_ACK...").ConfigureAwait(false);
         DecodedPdu decoded = await ReadSinglePduAsync(cancellationToken).ConfigureAwait(false);
         await BindTraceAsync(diag, $"received PDU type={decoded.Pdu.Type} auth_body_len={decoded.AuthenticationBody.Length}").ConfigureAwait(false);
-        if (decoded.Pdu is not BindAcknowledgePdu bindAck) {
-            if (decoded.Pdu is FaultCoPdu fault) {
+        if (decoded.Pdu is not BindAcknowledgePdu bindAck)
+        {
+            if (decoded.Pdu is FaultCoPdu fault)
+            {
                 throw new InvalidOperationException($"Bind failed with fault 0x{unchecked((int)fault.Status):X8}.");
             }
             throw new InvalidOperationException($"Expected bind_ack PDU, received type {decoded.Pdu.Type}.");
@@ -272,7 +306,8 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable {
         await BindTraceAsync(diag, "processing challenge token...").ConfigureAwait(false);
         byte[] nextToken = _authContext.ProcessChallengeToken(decoded.AuthenticationBody);
         await BindTraceAsync(diag, $"next_token: {nextToken.Length} bytes (will {(nextToken.Length > 0 ? "send AUTH3" : "skip AUTH3")})").ConfigureAwait(false);
-        if (nextToken.Length > 0) {
+        if (nextToken.Length > 0)
+        {
             var auth3 = new Auth3Pdu { CallId = NextCallId() };
             await WritePduAsync(auth3, cancellationToken, nextToken).ConfigureAwait(false);
             await BindTraceAsync(diag, "AUTH3 PDU written").ConfigureAwait(false);
@@ -282,8 +317,10 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable {
         return results;
     }
 
-    private static async ValueTask BindTraceAsync(bool enabled, string message) {
-        if (!enabled) {
+    private static async ValueTask BindTraceAsync(bool enabled, string message)
+    {
+        if (!enabled)
+        {
             return;
         }
         await System.Console.Error.WriteLineAsync($"[bind-trace] {message}").ConfigureAwait(false);
@@ -292,10 +329,13 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable {
     private async ValueTask WritePduAsync(
         ConnectionOrientedPdu pdu,
         CancellationToken cancellationToken,
-        ReadOnlyMemory<byte> authenticationBody = default) {
-        if (pdu is IFragmentable fragmentable && authenticationBody.IsEmpty) {
+        ReadOnlyMemory<byte> authenticationBody = default)
+    {
+        if (pdu is IFragmentable fragmentable && authenticationBody.IsEmpty)
+        {
             Iterator<ConnectionOrientedPdu> fragments = fragmentable.GetFragments(_maxTransmitFragment);
-            while (fragments.HasNext()) {
+            while (fragments.HasNext())
+            {
                 await WriteSinglePduAsync(fragments.Next(), cancellationToken).ConfigureAwait(false);
             }
 
@@ -308,19 +348,23 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable {
     private async ValueTask WriteSinglePduAsync(
         ConnectionOrientedPdu pdu,
         CancellationToken cancellationToken,
-        ReadOnlyMemory<byte> authenticationBody = default) {
+        ReadOnlyMemory<byte> authenticationBody = default)
+    {
         byte[] bytes = PduCodec.EncodePdu(pdu, _maxTransmitFragment);
-        if (!authenticationBody.IsEmpty) {
+        if (!authenticationBody.IsEmpty)
+        {
             bytes = AttachAuthenticationVerifier(bytes, authenticationBody);
         }
         else if (pdu.Type == AlterContextPdu.ALTER_CONTEXT_TYPE
-            && _authContext.ProtectionLevel >= OpcProtectionLevel.Integrity) {
+            && _authContext.ProtectionLevel >= OpcProtectionLevel.Integrity)
+        {
             // Per MS-RPCE §3.3.1.5.3.1: alter_context at PKT_INTEGRITY/PRIVACY
             // carries a verifier header with auth_type/auth_level but a zero-length
             // auth_value (no signature, no token). Use AttachEmptyAuthVerifier.
             bytes = AttachEmptyAuthVerifier(bytes);
         }
-        else {
+        else
+        {
             bytes = ApplyPacketProtection(bytes);
         }
 
@@ -330,13 +374,15 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable {
         await _transport.FlushAsync(cancellationToken).ConfigureAwait(false);
     }
 
-    private byte[] AttachEmptyAuthVerifier(byte[] pduBytes) {
+    private byte[] AttachEmptyAuthVerifier(byte[] pduBytes)
+    {
         // Emit an 8-byte auth verifier header with our current auth_type/auth_level
         // and a zero-length auth_value, per MS-RPCE §3.3.1.5.3.1 for alter_context.
         int padding = PaddingTo(pduBytes.Length, 4);
         int verifierStart = pduBytes.Length + padding;
         int fragmentLength = verifierStart + AuthenticationVerifierHeaderLength;
-        if (fragmentLength > ushort.MaxValue) {
+        if (fragmentLength > ushort.MaxValue)
+        {
             throw new InvalidOperationException("DCE/RPC fragment length exceeds the 16-bit PDU limit.");
         }
 
@@ -354,15 +400,18 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable {
         return result;
     }
 
-    private async ValueTask<ConnectionOrientedPdu> ReadFragmentedPduAsync(CancellationToken cancellationToken) {
+    private async ValueTask<ConnectionOrientedPdu> ReadFragmentedPduAsync(CancellationToken cancellationToken)
+    {
         DecodedPdu decoded = await ReadSinglePduAsync(cancellationToken).ConfigureAwait(false);
         ConnectionOrientedPdu pdu = decoded.Pdu;
-        if (pdu is not IFragmentable fragmentable || pdu.GetFlag(ConnectionOrientedPdu.PFC_LAST_FRAG)) {
+        if (pdu is not IFragmentable fragmentable || pdu.GetFlag(ConnectionOrientedPdu.PFC_LAST_FRAG))
+        {
             return pdu;
         }
 
         var fragments = new List<ConnectionOrientedPdu> { pdu };
-        while (!pdu.GetFlag(ConnectionOrientedPdu.PFC_LAST_FRAG)) {
+        while (!pdu.GetFlag(ConnectionOrientedPdu.PFC_LAST_FRAG))
+        {
             decoded = await ReadSinglePduAsync(cancellationToken).ConfigureAwait(false);
             pdu = decoded.Pdu;
             fragments.Add(pdu);
@@ -371,11 +420,13 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable {
         return fragmentable.Reassemble(new PduFragmentIterator(fragments));
     }
 
-    private async ValueTask<DecodedPdu> ReadSinglePduAsync(CancellationToken cancellationToken) {
+    private async ValueTask<DecodedPdu> ReadSinglePduAsync(CancellationToken cancellationToken)
+    {
         byte[] frame = await PduCodec.ReadPduFrameAsync(_transport.Input, cancellationToken).ConfigureAwait(false);
         AuthenticationStrippedFrame stripped = StripAuthenticationVerifier(frame);
         byte pduType = stripped.PduBytes[ConnectionOrientedPdu.TYPE_OFFSET];
-        if (stripped.AuthenticationBody.Length > 0 && IsPacketProtectedPdu(pduType)) {
+        if (stripped.AuthenticationBody.Length > 0 && IsPacketProtectedPdu(pduType))
+        {
             VerifyPacketProtection(stripped);
         }
 
@@ -383,21 +434,26 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable {
         return new DecodedPdu(pdu, stripped.AuthenticationBody);
     }
 
-    private void VerifyPacketProtection(AuthenticationStrippedFrame stripped) {
+    private void VerifyPacketProtection(AuthenticationStrippedFrame stripped)
+    {
         Span<byte> pduBody = stripped.PduBytes.AsSpan(ConnectionOrientedPdu.HEADER_LENGTH);
-        if (!_authContext.VerifyAndUnseal(pduBody, stripped.AuthenticationBody)) {
+        if (!_authContext.VerifyAndUnseal(pduBody, stripped.AuthenticationBody))
+        {
             throw new InvalidOperationException("DCE/RPC authentication verifier validation failed.");
         }
     }
 
-    private byte[] ApplyPacketProtection(byte[] pduBytes) {
-        if (_authContext.ProtectionLevel < OpcProtectionLevel.Integrity) {
+    private byte[] ApplyPacketProtection(byte[] pduBytes)
+    {
+        if (_authContext.ProtectionLevel < OpcProtectionLevel.Integrity)
+        {
             return pduBytes;
         }
         return ApplyPacketProtectionCore(pduBytes);
     }
 
-    private byte[] ApplyPacketProtectionCore(byte[] pduBytes) {
+    private byte[] ApplyPacketProtectionCore(byte[] pduBytes)
+    {
         // Per MS-RPCE §3.3.1.5.2.2 the signature covers the entire PDU EXCEPT
         // the auth_value field. Build the full PDU with a zeroed auth_value
         // placeholder and final frag_length/auth_length headers; hand the
@@ -407,7 +463,8 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable {
         int padding = PaddingTo(pduBytes.Length, 4);
         int verifierStart = pduBytes.Length + padding;
         int fragmentLength = verifierStart + AuthenticationVerifierHeaderLength + authValueLength;
-        if (fragmentLength > ushort.MaxValue) {
+        if (fragmentLength > ushort.MaxValue)
+        {
             throw new InvalidOperationException("DCE/RPC fragment length exceeds the 16-bit PDU limit.");
         }
 
@@ -426,10 +483,12 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable {
 
         Span<byte> signedRegion = protectedPdu.AsSpan(0, verifierStart + AuthenticationVerifierHeaderLength);
         _authContext.SignAndSeal(signedRegion, out byte[] signature);
-        if (signature is null || signature.Length == 0) {
+        if (signature is null || signature.Length == 0)
+        {
             return pduBytes;
         }
-        if (signature.Length != authValueLength) {
+        if (signature.Length != authValueLength)
+        {
             throw new InvalidOperationException(
                 $"Auth context returned a {signature.Length}-byte signature; DCE/RPC expects {authValueLength}.");
         }
@@ -437,15 +496,18 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable {
         return protectedPdu;
     }
 
-    private byte[] AttachAuthenticationVerifier(byte[] pduBytes, ReadOnlyMemory<byte> body) {
-        if (body.IsEmpty) {
+    private byte[] AttachAuthenticationVerifier(byte[] pduBytes, ReadOnlyMemory<byte> body)
+    {
+        if (body.IsEmpty)
+        {
             return pduBytes;
         }
 
         int padding = PaddingTo(pduBytes.Length, 4);
         int verifierStart = pduBytes.Length + padding;
         int fragmentLength = verifierStart + AuthenticationVerifierHeaderLength + body.Length;
-        if (fragmentLength > ushort.MaxValue) {
+        if (fragmentLength > ushort.MaxValue)
+        {
             throw new InvalidOperationException("DCE/RPC fragment length exceeds the 16-bit PDU limit.");
         }
 
@@ -465,25 +527,30 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable {
         return protectedPdu;
     }
 
-    private static AuthenticationStrippedFrame StripAuthenticationVerifier(byte[] frame) {
-        if (frame.Length < ConnectionOrientedPdu.HEADER_LENGTH) {
+    private static AuthenticationStrippedFrame StripAuthenticationVerifier(byte[] frame)
+    {
+        if (frame.Length < ConnectionOrientedPdu.HEADER_LENGTH)
+        {
             throw new InvalidOperationException("DCE/RPC frame is shorter than the common header.");
         }
 
         int fragmentLength = BinaryPrimitives.ReadUInt16LittleEndian(frame.AsSpan(ConnectionOrientedPdu.FRAG_LENGTH_OFFSET));
         int authLength = BinaryPrimitives.ReadUInt16LittleEndian(frame.AsSpan(ConnectionOrientedPdu.AUTH_LENGTH_OFFSET));
-        if (authLength == 0) {
+        if (authLength == 0)
+        {
             return new AuthenticationStrippedFrame(frame, []);
         }
 
         int verifierStart = fragmentLength - authLength - AuthenticationVerifierHeaderLength;
-        if (verifierStart < ConnectionOrientedPdu.HEADER_LENGTH || verifierStart + AuthenticationVerifierHeaderLength > frame.Length) {
+        if (verifierStart < ConnectionOrientedPdu.HEADER_LENGTH || verifierStart + AuthenticationVerifierHeaderLength > frame.Length)
+        {
             throw new InvalidOperationException("DCE/RPC authentication verifier is malformed.");
         }
 
         int padding = frame[verifierStart + 2];
         int strippedLength = verifierStart - padding;
-        if (strippedLength < ConnectionOrientedPdu.HEADER_LENGTH || strippedLength > frame.Length) {
+        if (strippedLength < ConnectionOrientedPdu.HEADER_LENGTH || strippedLength > frame.Length)
+        {
             throw new InvalidOperationException("DCE/RPC authentication verifier padding is malformed.");
         }
 
@@ -494,10 +561,12 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable {
         return new AuthenticationStrippedFrame(pduBytes, authenticationBody);
     }
 
-    private PendingPresentationContext[] CreateInitialPresentationContexts(Guid interfaceId) {
+    private PendingPresentationContext[] CreateInitialPresentationContexts(Guid interfaceId)
+    {
         List<Guid> interfaceIds = BuildInitialInterfaceList(interfaceId);
         var contexts = new PendingPresentationContext[interfaceIds.Count];
-        for (int i = 0; i < contexts.Length; i++) {
+        for (int i = 0; i < contexts.Length; i++)
+        {
             int contextId = _nextContextId++;
             contexts[i] = new PendingPresentationContext(interfaceIds[i], CreatePresentationContext(interfaceIds[i], contextId));
         }
@@ -505,10 +574,13 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable {
         return contexts;
     }
 
-    private List<Guid> BuildInitialInterfaceList(Guid interfaceId) {
+    private List<Guid> BuildInitialInterfaceList(Guid interfaceId)
+    {
         var interfaceIds = new List<Guid>(_preBindIids.Length + 1) { interfaceId };
-        foreach (Guid preBindIid in _preBindIids) {
-            if (!interfaceIds.Contains(preBindIid)) {
+        foreach (Guid preBindIid in _preBindIids)
+        {
+            if (!interfaceIds.Contains(preBindIid))
+            {
                 interfaceIds.Add(preBindIid);
             }
         }
@@ -516,15 +588,19 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable {
         return interfaceIds;
     }
 
-    private static Guid[] NormalizePreBindIids(IReadOnlyList<Guid>? interfaceIds) {
-        if (interfaceIds is null || interfaceIds.Count == 0) {
+    private static Guid[] NormalizePreBindIids(IReadOnlyList<Guid>? interfaceIds)
+    {
+        if (interfaceIds is null || interfaceIds.Count == 0)
+        {
             return [];
         }
 
         var normalized = new List<Guid>(interfaceIds.Count);
-        for (int i = 0; i < interfaceIds.Count; i++) {
+        for (int i = 0; i < interfaceIds.Count; i++)
+        {
             Guid interfaceId = interfaceIds[i];
-            if (interfaceId != Guid.Empty && !normalized.Contains(interfaceId)) {
+            if (interfaceId != Guid.Empty && !normalized.Contains(interfaceId))
+            {
                 normalized.Add(interfaceId);
             }
         }
@@ -532,19 +608,24 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable {
         return normalized.ToArray();
     }
 
-    private static PresentationContext[] ToPresentationContexts(PendingPresentationContext[] contexts) {
+    private static PresentationContext[] ToPresentationContexts(PendingPresentationContext[] contexts)
+    {
         var presentationContexts = new PresentationContext[contexts.Length];
-        for (int i = 0; i < contexts.Length; i++) {
+        for (int i = 0; i < contexts.Length; i++)
+        {
             presentationContexts[i] = contexts[i].Context;
         }
 
         return presentationContexts;
     }
 
-    private void RegisterAcceptedPresentationContexts(PendingPresentationContext[] contexts, PresentationResult[] results) {
+    private void RegisterAcceptedPresentationContexts(PendingPresentationContext[] contexts, PresentationResult[] results)
+    {
         int count = Math.Min(contexts.Length, results.Length);
-        for (int i = 0; i < count; i++) {
-            if (results[i].Result == PresentationResultCode.ACCEPTANCE) {
+        for (int i = 0; i < count; i++)
+        {
+            if (results[i].Result == PresentationResultCode.ACCEPTANCE)
+            {
                 _contextIds[contexts[i].InterfaceId] = contexts[i].Context.ContextId;
             }
         }
@@ -553,10 +634,13 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable {
     private static PresentationResult? FindPresentationResult(
         PendingPresentationContext[] contexts,
         PresentationResult[] results,
-        Guid interfaceId) {
+        Guid interfaceId)
+    {
         int count = Math.Min(contexts.Length, results.Length);
-        for (int i = 0; i < count; i++) {
-            if (contexts[i].InterfaceId == interfaceId) {
+        for (int i = 0; i < count; i++)
+        {
+            if (contexts[i].InterfaceId == interfaceId)
+            {
                 return results[i];
             }
         }
@@ -564,8 +648,10 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable {
         return null;
     }
 
-    private static PresentationResult[] GetPresentationResults(PresentationResult[]? results, string emptyMessage) {
-        if (results is null || results.Length == 0) {
+    private static PresentationResult[] GetPresentationResults(PresentationResult[]? results, string emptyMessage)
+    {
+        if (results is null || results.Length == 0)
+        {
             throw new InvalidOperationException(emptyMessage);
         }
 
@@ -575,9 +661,12 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable {
     private static void ValidatePresentationResults(
         PresentationResult[]? results,
         string emptyMessage,
-        string rejectionMessagePrefix) {
-        foreach (PresentationResult result in GetPresentationResults(results, emptyMessage)) {
-            if (result.Result != PresentationResultCode.ACCEPTANCE) {
+        string rejectionMessagePrefix)
+    {
+        foreach (PresentationResult result in GetPresentationResults(results, emptyMessage))
+        {
+            if (result.Result != PresentationResultCode.ACCEPTANCE)
+            {
                 throw new InvalidOperationException($"{rejectionMessagePrefix}: {result}.");
             }
         }
@@ -589,12 +678,14 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable {
     private static bool IsPacketProtectedPdu(byte pduType) =>
         pduType is RequestCoPdu.REQUEST_TYPE or ResponseCoPdu.RESPONSE_TYPE or FaultCoPdu.FAULT_TYPE;
 
-    private static int PaddingTo(int length, int alignment) {
+    private static int PaddingTo(int length, int alignment)
+    {
         int remainder = length % alignment;
         return remainder == 0 ? 0 : alignment - remainder;
     }
 
-    private static ProtectionLevel ToRpcProtectionLevel(OpcProtectionLevel protectionLevel) => protectionLevel switch {
+    private static ProtectionLevel ToRpcProtectionLevel(OpcProtectionLevel protectionLevel) => protectionLevel switch
+    {
         OpcProtectionLevel.None => ProtectionLevel.PROTECTION_LEVEL_NONE,
         OpcProtectionLevel.Connect => ProtectionLevel.PROTECTION_LEVEL_CONNECT,
         OpcProtectionLevel.Call => ProtectionLevel.PROTECTION_LEVEL_CALL,
@@ -612,7 +703,8 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable {
 
     private readonly record struct AuthenticationStrippedFrame(byte[] PduBytes, byte[] AuthenticationBody);
 
-    private sealed class PduFragmentIterator : Iterator<ConnectionOrientedPdu> {
+    private sealed class PduFragmentIterator : Iterator<ConnectionOrientedPdu>
+    {
         private readonly IReadOnlyList<ConnectionOrientedPdu> _fragments;
         private int _index;
 
@@ -620,8 +712,10 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable {
 
         public override bool HasNext() => _index < _fragments.Count;
 
-        public override ConnectionOrientedPdu Next() {
-            if (!HasNext()) {
+        public override ConnectionOrientedPdu Next()
+        {
+            if (!HasNext())
+            {
                 throw new NoSuchElementException();
             }
 

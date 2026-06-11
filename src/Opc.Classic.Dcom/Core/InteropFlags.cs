@@ -5,7 +5,8 @@ namespace Opc.Classic.Dcom.Core;
 /// <summary>
 /// Class representing various flags used in the system.
 /// </summary>
-public sealed class InteropFlags {
+public sealed class InteropFlags
+{
 
     /// <summary>
     /// FLAG representing nothing. Use this if no other flag is to be set.

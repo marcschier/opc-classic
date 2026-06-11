@@ -10,25 +10,31 @@ using System.Threading;
 namespace Opc.Classic.Da.Hosting.Windows;
 
 [SupportedOSPlatform("windows")]
-internal sealed unsafe class OpcEnumConnectionPointsEnumerator : IDisposable {
+internal sealed unsafe class OpcEnumConnectionPointsEnumerator : IDisposable
+{
     private readonly Lock _syncRoot = new();
     private readonly IntPtr[] _connectionPoints;
     private int _position;
     private bool _disposed;
 
     public OpcEnumConnectionPointsEnumerator(IntPtr[] connectionPoints)
-        : this(connectionPoints, 0) {
+        : this(connectionPoints, 0)
+    {
     }
 
-    private OpcEnumConnectionPointsEnumerator(IntPtr[] connectionPoints, int position) {
+    private OpcEnumConnectionPointsEnumerator(IntPtr[] connectionPoints, int position)
+    {
         ArgumentNullException.ThrowIfNull(connectionPoints);
         _connectionPoints = connectionPoints;
         _position = Math.Clamp(position, 0, connectionPoints.Length);
     }
 
-    public void Dispose() {
-        lock (_syncRoot) {
-            if (_disposed) {
+    public void Dispose()
+    {
+        lock (_syncRoot)
+        {
+            if (_disposed)
+            {
                 return;
             }
             _disposed = true;
@@ -36,12 +42,15 @@ internal sealed unsafe class OpcEnumConnectionPointsEnumerator : IDisposable {
         }
     }
 
-    internal int Next(uint cConnections, IntPtr* ppCP) {
-        lock (_syncRoot) {
+    internal int Next(uint cConnections, IntPtr* ppCP)
+    {
+        lock (_syncRoot)
+        {
             ThrowIfDisposed();
             int requested = cConnections > int.MaxValue ? int.MaxValue : (int)cConnections;
             int fetched = Math.Min(requested, _connectionPoints.Length - _position);
-            for (int i = 0; i < fetched; i++) {
+            for (int i = 0; i < fetched; i++)
+            {
                 IntPtr connectionPoint = _connectionPoints[_position++];
                 AddRef(connectionPoint);
                 ppCP[i] = connectionPoint;
@@ -50,8 +59,10 @@ internal sealed unsafe class OpcEnumConnectionPointsEnumerator : IDisposable {
         }
     }
 
-    internal int Skip(uint cConnections) {
-        lock (_syncRoot) {
+    internal int Skip(uint cConnections)
+    {
+        lock (_syncRoot)
+        {
             ThrowIfDisposed();
             long requested = cConnections;
             int skipped = (int)Math.Min(requested, _connectionPoints.Length - _position);
@@ -60,43 +71,55 @@ internal sealed unsafe class OpcEnumConnectionPointsEnumerator : IDisposable {
         }
     }
 
-    internal void Reset() {
-        lock (_syncRoot) {
+    internal void Reset()
+    {
+        lock (_syncRoot)
+        {
             ThrowIfDisposed();
             _position = 0;
         }
     }
 
-    internal OpcEnumConnectionPointsEnumerator Clone() {
-        lock (_syncRoot) {
+    internal OpcEnumConnectionPointsEnumerator Clone()
+    {
+        lock (_syncRoot)
+        {
             ThrowIfDisposed();
             return new OpcEnumConnectionPointsEnumerator(AddRefSnapshot(_connectionPoints), _position);
         }
     }
 
-    private static IntPtr[] AddRefSnapshot(IntPtr[] snapshot) {
+    private static IntPtr[] AddRefSnapshot(IntPtr[] snapshot)
+    {
         var clone = new IntPtr[snapshot.Length];
         int copied = 0;
-        try {
-            for (int i = 0; i < snapshot.Length; i++) {
+        try
+        {
+            for (int i = 0; i < snapshot.Length; i++)
+            {
                 AddRef(snapshot[i]);
                 clone[i] = snapshot[i];
                 copied = i + 1;
             }
             return clone;
         }
-        catch {
-            for (int i = 0; i < copied; i++) {
+        catch
+        {
+            for (int i = 0; i < copied; i++)
+            {
                 Release(clone[i]);
             }
             throw;
         }
     }
 
-    private static void ReleaseSnapshot(IntPtr[] snapshot) {
-        for (int i = 0; i < snapshot.Length; i++) {
+    private static void ReleaseSnapshot(IntPtr[] snapshot)
+    {
+        for (int i = 0; i < snapshot.Length; i++)
+        {
             IntPtr pointer = snapshot[i];
-            if (pointer != IntPtr.Zero) {
+            if (pointer != IntPtr.Zero)
+            {
                 snapshot[i] = IntPtr.Zero;
                 Release(pointer);
             }
@@ -105,8 +128,10 @@ internal sealed unsafe class OpcEnumConnectionPointsEnumerator : IDisposable {
 
     private void ThrowIfDisposed() => ObjectDisposedException.ThrowIf(_disposed, this);
 
-    private static void AddRef(IntPtr pointer) {
-        if (pointer == IntPtr.Zero) {
+    private static void AddRef(IntPtr pointer)
+    {
+        if (pointer == IntPtr.Zero)
+        {
             return;
         }
         IntPtr* vtable = *(IntPtr**)pointer;
@@ -114,8 +139,10 @@ internal sealed unsafe class OpcEnumConnectionPointsEnumerator : IDisposable {
         _ = addRef(pointer);
     }
 
-    private static void Release(IntPtr pointer) {
-        if (pointer == IntPtr.Zero) {
+    private static void Release(IntPtr pointer)
+    {
+        if (pointer == IntPtr.Zero)
+        {
             return;
         }
         IntPtr* vtable = *(IntPtr**)pointer;

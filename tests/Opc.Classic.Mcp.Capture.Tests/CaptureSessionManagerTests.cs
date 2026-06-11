@@ -12,9 +12,11 @@ using TUnit.Core;
 
 namespace Opc.Classic.Mcp.Capture.Tests;
 
-public sealed class CaptureSessionManagerTests {
+public sealed class CaptureSessionManagerTests
+{
     [Test]
-    public async Task Constructor_InvalidArguments_Throw() {
+    public async Task Constructor_InvalidArguments_Throw()
+    {
         await Assert.That(() => new CaptureSessionManager(null!)).Throws<ArgumentNullException>();
         await Assert.That(() => new CaptureSessionManager(string.Empty)).Throws<ArgumentException>();
         await Assert.That(() => new CaptureSessionManager("scratch", maxActiveSessions: 0)).Throws<ArgumentOutOfRangeException>();
@@ -23,9 +25,11 @@ public sealed class CaptureSessionManagerTests {
     }
 
     [Test]
-    public async Task CreateAndStartAsync_RegistersRunningSessionAndTryGetTouchesIt() {
+    public async Task CreateAndStartAsync_RegistersRunningSessionAndTryGetTouchesIt()
+    {
         string root = TestDirectories.CreateUniqueTempDirectory();
-        try {
+        try
+        {
             await using var manager = new CaptureSessionManager(root, maxActiveSessions: 2, maxRetainedSessions: 4);
             var source = new FakeCaptureSource();
             var request = new CaptureStartRequest(InterfaceName: "eth0");
@@ -48,15 +52,18 @@ public sealed class CaptureSessionManagerTests {
             await Assert.That(source.StartCallCount).IsEqualTo(1);
             await Assert.That(foundSession.LastTouchedAt >= beforeTouch).IsTrue();
         }
-        finally {
+        finally
+        {
             TestDirectories.DeleteIfExists(root);
         }
     }
 
     [Test]
-    public async Task CreateAndStartAsync_ArgumentValidation_Throws() {
+    public async Task CreateAndStartAsync_ArgumentValidation_Throws()
+    {
         string root = TestDirectories.CreateUniqueTempDirectory();
-        try {
+        try
+        {
             await using var manager = new CaptureSessionManager(root);
             Func<string, ICaptureSource> factory = _ => new FakeCaptureSource();
             var request = new CaptureStartRequest();
@@ -72,15 +79,18 @@ public sealed class CaptureSessionManagerTests {
             await Assert.That(() => manager.TryGet(null!, out _)).Throws<ArgumentNullException>();
             await Assert.That(() => manager.TryGet(string.Empty, out _)).Throws<ArgumentException>();
         }
-        finally {
+        finally
+        {
             TestDirectories.DeleteIfExists(root);
         }
     }
 
     [Test]
-    public async Task CreateAndStartAsync_ActiveCapExceeded_ThrowsCaptureException() {
+    public async Task CreateAndStartAsync_ActiveCapExceeded_ThrowsCaptureException()
+    {
         string root = TestDirectories.CreateUniqueTempDirectory();
-        try {
+        try
+        {
             await using var manager = new CaptureSessionManager(root, maxActiveSessions: 1, maxRetainedSessions: 2);
             await manager.CreateAndStartAsync("fake", _ => new FakeCaptureSource(), new CaptureStartRequest(), CancellationToken.None);
 
@@ -93,15 +103,18 @@ public sealed class CaptureSessionManagerTests {
             await Assert.That(manager.Count).IsEqualTo(1);
             await Assert.That(manager.ActiveCount).IsEqualTo(1);
         }
-        finally {
+        finally
+        {
             TestDirectories.DeleteIfExists(root);
         }
     }
 
     [Test]
-    public async Task RemoveAsync_ExistingSession_StopsDisposesAndRemovesIt() {
+    public async Task RemoveAsync_ExistingSession_StopsDisposesAndRemovesIt()
+    {
         string root = TestDirectories.CreateUniqueTempDirectory();
-        try {
+        try
+        {
             await using var manager = new CaptureSessionManager(root, maxActiveSessions: 2, maxRetainedSessions: 4);
             var source = new FakeCaptureSource();
             CaptureSession session = await manager.CreateAndStartAsync("fake", _ => source, new CaptureStartRequest(), CancellationToken.None);
@@ -116,17 +129,21 @@ public sealed class CaptureSessionManagerTests {
             await Assert.That(source.DisposeCallCount).IsEqualTo(1);
             await Assert.That(session.State).IsEqualTo(CaptureSessionState.Disposed);
         }
-        finally {
+        finally
+        {
             TestDirectories.DeleteIfExists(root);
         }
     }
 
     [Test]
-    public async Task CreateAndStartAsync_StartFailure_RemovesAndDisposesSession() {
+    public async Task CreateAndStartAsync_StartFailure_RemovesAndDisposesSession()
+    {
         string root = TestDirectories.CreateUniqueTempDirectory();
-        try {
+        try
+        {
             await using var manager = new CaptureSessionManager(root, maxActiveSessions: 2, maxRetainedSessions: 4);
-            var source = new FakeCaptureSource {
+            var source = new FakeCaptureSource
+            {
                 StartException = new CaptureException("start failed"),
             };
 
@@ -140,15 +157,18 @@ public sealed class CaptureSessionManagerTests {
             await Assert.That(manager.Count).IsEqualTo(0);
             await Assert.That(source.DisposeCallCount).IsEqualTo(1);
         }
-        finally {
+        finally
+        {
             TestDirectories.DeleteIfExists(root);
         }
     }
 
     [Test]
-    public async Task CreateAndStartAsync_RetentionCapEvictsOldestCompletedSession() {
+    public async Task CreateAndStartAsync_RetentionCapEvictsOldestCompletedSession()
+    {
         string root = TestDirectories.CreateUniqueTempDirectory();
-        try {
+        try
+        {
             await using var manager = new CaptureSessionManager(root, maxActiveSessions: 2, maxRetainedSessions: 2);
             var sources = new Queue<FakeCaptureSource>([
                 new FakeCaptureSource(),
@@ -169,15 +189,18 @@ public sealed class CaptureSessionManagerTests {
             await Assert.That(first.State).IsEqualTo(CaptureSessionState.Disposed);
             await Assert.That(third.State).IsEqualTo(CaptureSessionState.Running);
         }
-        finally {
+        finally
+        {
             TestDirectories.DeleteIfExists(root);
         }
     }
 
     [Test]
-    public async Task List_StateFilter_ReturnsOnlyMatchingSessions() {
+    public async Task List_StateFilter_ReturnsOnlyMatchingSessions()
+    {
         string root = TestDirectories.CreateUniqueTempDirectory();
-        try {
+        try
+        {
             await using var manager = new CaptureSessionManager(root, maxActiveSessions: 3, maxRetainedSessions: 4);
             CaptureSession completed = await manager.CreateAndStartAsync("fake", _ => new FakeCaptureSource(), new CaptureStartRequest(), CancellationToken.None);
             await completed.StopAsync(CancellationToken.None);
@@ -194,15 +217,18 @@ public sealed class CaptureSessionManagerTests {
             await Assert.That(allSessions.Select(s => s.Id).Contains(completed.Id)).IsTrue();
             await Assert.That(allSessions.Select(s => s.Id).Contains(running.Id)).IsTrue();
         }
-        finally {
+        finally
+        {
             TestDirectories.DeleteIfExists(root);
         }
     }
 
     [Test]
-    public async Task DisposeAsync_StopsDisposesAllSessionsClearsRegistryAndRejectsNewWork() {
+    public async Task DisposeAsync_StopsDisposesAllSessionsClearsRegistryAndRejectsNewWork()
+    {
         string root = TestDirectories.CreateUniqueTempDirectory();
-        try {
+        try
+        {
             var manager = new CaptureSessionManager(root, maxActiveSessions: 2, maxRetainedSessions: 4);
             var firstSource = new FakeCaptureSource();
             var secondSource = new FakeCaptureSource();
@@ -224,7 +250,8 @@ public sealed class CaptureSessionManagerTests {
                     CancellationToken.None))
                 .Throws<ObjectDisposedException>();
         }
-        finally {
+        finally
+        {
             TestDirectories.DeleteIfExists(root);
         }
     }

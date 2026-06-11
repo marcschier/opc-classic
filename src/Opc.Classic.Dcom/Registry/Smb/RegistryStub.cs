@@ -17,7 +17,8 @@ namespace Opc.Classic.Dcom.Registry.Smb;
 /// <summary>
 /// Registry strub
 /// </summary>
-public class RegistryStub : Stub, IRegistry {
+public class RegistryStub : Stub, IRegistry
+{
 
     /// <inheritdoc/>
     protected override string Syntax => // WinReg Service
@@ -30,8 +31,10 @@ public class RegistryStub : Stub, IRegistry {
     /// <param name="authInfo"></param>
     /// <param name="serverName"></param>
     /// <exception cref="UnknownHostException"></exception>
-    public RegistryStub(IAuthInfo authInfo, string serverName) {
-        if (authInfo == null) {
+    public RegistryStub(IAuthInfo authInfo, string serverName)
+    {
+        if (authInfo == null)
+        {
             throw new ArgumentException(
                 Interop.GetLocalizedMessage(ErrorCode.INTEROP_AUTH_NOT_SUPPLIED),
                 nameof(authInfo));
@@ -46,9 +49,11 @@ public class RegistryStub : Stub, IRegistry {
         // (which is right), but Windows refuses it.
         // Manually changing + to %20
         var password_ = new StringBuilder();
-        for (var i = 0; i < password.Length; i++) {
+        for (var i = 0; i < password.Length; i++)
+        {
             var ch = password[i];
-            if (ch == '+') {
+            if (ch == '+')
+            {
                 password_.Append("%20");
                 continue;
             }
@@ -69,7 +74,8 @@ public class RegistryStub : Stub, IRegistry {
     /// </summary>
     /// <param name="serverName"></param>
     /// <exception cref="UnknownHostException"></exception>
-    public RegistryStub(string serverName) {
+    public RegistryStub(string serverName)
+    {
         TransportFactory = new Opc.Classic.Dcom.Rpc.Ncacn_Np.TransportFactory();
         Properties = new PropertyBag();
         Properties.SetProperty("rpc.ntlm.sso", "true");
@@ -79,19 +85,24 @@ public class RegistryStub : Stub, IRegistry {
     }
 
     /// <inheritdoc/>
-    public PolicyHandle OpenHKLM() {
+    public PolicyHandle OpenHKLM()
+    {
         var openhklm = new OpenHKLM();
         var handle = new PolicyHandle(false);
-        try {
+        try
+        {
             Call(Semantics.IDEMPOTENT, openhklm);
         }
-        catch (SmbException e) {
+        catch (SmbException e)
+        {
             throw new InteropException(e.GetNtStatus(), e);
         }
-        catch (IOException e) {
+        catch (IOException e)
+        {
             throw new InteropException(ErrorCode.INTEROP_WINREG_EXCEPTION, e);
         }
-        catch (InteropRuntimeException e) {
+        catch (InteropRuntimeException e)
+        {
             throw new InteropException(e);
         }
 
@@ -100,19 +111,24 @@ public class RegistryStub : Stub, IRegistry {
     }
 
     /// <inheritdoc/>
-    public PolicyHandle OpenHKCR() {
+    public PolicyHandle OpenHKCR()
+    {
         var openhkcr = new OpenHKCR();
         var handle = new PolicyHandle(false);
-        try {
+        try
+        {
             Call(Semantics.IDEMPOTENT, openhkcr);
         }
-        catch (SmbException e) {
+        catch (SmbException e)
+        {
             throw new InteropException(e.GetNtStatus(), e);
         }
-        catch (IOException e) {
+        catch (IOException e)
+        {
             throw new InteropException(ErrorCode.INTEROP_WINREG_EXCEPTION, e);
         }
-        catch (InteropRuntimeException e) {
+        catch (InteropRuntimeException e)
+        {
             throw new InteropException(e);
         }
 
@@ -122,19 +138,24 @@ public class RegistryStub : Stub, IRegistry {
     }
 
     /// <inheritdoc/>
-    public PolicyHandle OpenHKCU() {
+    public PolicyHandle OpenHKCU()
+    {
         var openhkcu = new OpenHKCU();
         var handle = new PolicyHandle(false);
-        try {
+        try
+        {
             Call(Semantics.IDEMPOTENT, openhkcu);
         }
-        catch (SmbException e) {
+        catch (SmbException e)
+        {
             throw new InteropException(e.GetNtStatus(), e);
         }
-        catch (IOException e) {
+        catch (IOException e)
+        {
             throw new InteropException(ErrorCode.INTEROP_WINREG_EXCEPTION, e);
         }
-        catch (InteropRuntimeException e) {
+        catch (InteropRuntimeException e)
+        {
             throw new InteropException(e);
         }
 
@@ -143,19 +164,24 @@ public class RegistryStub : Stub, IRegistry {
     }
 
     /// <inheritdoc/>
-    public PolicyHandle OpenHKU() {
+    public PolicyHandle OpenHKU()
+    {
         var openhku = new OpenHKU();
         var handle = new PolicyHandle(false);
-        try {
+        try
+        {
             Call(Semantics.IDEMPOTENT, openhku);
         }
-        catch (SmbException e) {
+        catch (SmbException e)
+        {
             throw new InteropException(e.GetNtStatus(), e);
         }
-        catch (IOException e) {
+        catch (IOException e)
+        {
             throw new InteropException(ErrorCode.INTEROP_WINREG_EXCEPTION, e);
         }
-        catch (InteropRuntimeException e) {
+        catch (InteropRuntimeException e)
+        {
             throw new InteropException(e);
         }
 
@@ -166,23 +192,29 @@ public class RegistryStub : Stub, IRegistry {
 
     /// <inheritdoc/>
     public PolicyHandle OpenKey(PolicyHandle handle, string key,
-        RegKeyAccess accessMask) {
-        var openkey = new OpenKey {
+        RegKeyAccess accessMask)
+    {
+        var openkey = new OpenKey
+        {
             accessMask = accessMask,
             key = key,
             parentKey = handle
         };
         var newHandle = new PolicyHandle(false);
-        try {
+        try
+        {
             Call(Semantics.IDEMPOTENT, openkey);
         }
-        catch (SmbException e) {
+        catch (SmbException e)
+        {
             throw new InteropException(e.GetNtStatus(), e);
         }
-        catch (IOException e) {
+        catch (IOException e)
+        {
             throw new InteropException(ErrorCode.RPC_E_UNEXPECTED, e);
         }
-        catch (InteropRuntimeException e) {
+        catch (InteropRuntimeException e)
+        {
             throw new InteropException(e);
         }
 
@@ -192,61 +224,79 @@ public class RegistryStub : Stub, IRegistry {
     }
 
     /// <inheritdoc/>
-    public void CloseKey(PolicyHandle handle) {
-        var closekey = new CloseKey {
+    public void CloseKey(PolicyHandle handle)
+    {
+        var closekey = new CloseKey
+        {
             key = handle
         };
-        try {
+        try
+        {
             Call(Semantics.IDEMPOTENT, closekey);
         }
-        catch (SmbException e) {
+        catch (SmbException e)
+        {
             throw new InteropException(e.GetNtStatus(), e);
         }
-        catch (IOException e) {
+        catch (IOException e)
+        {
             throw new InteropException(ErrorCode.RPC_E_UNEXPECTED, e);
         }
-        catch (InteropRuntimeException e) {
+        catch (InteropRuntimeException e)
+        {
             throw new InteropException(e);
         }
     }
 
     /// <inheritdoc/>
-    public void DeleteKeyOrValue(PolicyHandle handle, string valueName, bool isKey) {
-        var delete = new DeleteValueOrKey {
+    public void DeleteKeyOrValue(PolicyHandle handle, string valueName, bool isKey)
+    {
+        var delete = new DeleteValueOrKey
+        {
             parentKey = handle,
             valueName = valueName,
             isKey = isKey
         };
-        try {
+        try
+        {
             Call(Semantics.IDEMPOTENT, delete);
         }
-        catch (SmbException e) {
+        catch (SmbException e)
+        {
             throw new InteropException(e.GetNtStatus(), e);
         }
-        catch (IOException e) {
+        catch (IOException e)
+        {
             throw new InteropException(ErrorCode.RPC_E_UNEXPECTED, e);
         }
-        catch (InteropRuntimeException e) {
+        catch (InteropRuntimeException e)
+        {
             throw new InteropException(e);
         }
     }
 
     /// <inheritdoc/>
-    public byte[] QueryValue(PolicyHandle handle, int bufferSize) {
-        var queryvalue = new QueryValue {
+    public byte[] QueryValue(PolicyHandle handle, int bufferSize)
+    {
+        var queryvalue = new QueryValue
+        {
             parentKey = handle,
             bufferLength = bufferSize
         };
-        try {
+        try
+        {
             Call(Semantics.IDEMPOTENT, queryvalue);
         }
-        catch (SmbException e) {
+        catch (SmbException e)
+        {
             throw new InteropException(e.GetNtStatus(), e);
         }
-        catch (IOException e) {
+        catch (IOException e)
+        {
             throw new InteropException(ErrorCode.RPC_E_UNEXPECTED, e);
         }
-        catch (InteropRuntimeException e) {
+        catch (InteropRuntimeException e)
+        {
             throw new InteropException(e);
         }
 
@@ -255,23 +305,29 @@ public class RegistryStub : Stub, IRegistry {
     }
 
     /// <inheritdoc/>
-    public object[] QueryValue(PolicyHandle handle, string valueName, int bufferSize) {
-        var queryvalue = new QueryValue {
+    public object[] QueryValue(PolicyHandle handle, string valueName, int bufferSize)
+    {
+        var queryvalue = new QueryValue
+        {
             parentKey = handle,
             bufferLength = bufferSize,
             key = valueName
         };
 
-        try {
+        try
+        {
             Call(Semantics.IDEMPOTENT, queryvalue);
         }
-        catch (SmbException e) {
+        catch (SmbException e)
+        {
             throw new InteropException(e.GetNtStatus(), e);
         }
-        catch (IOException e) {
+        catch (IOException e)
+        {
             throw new InteropException(ErrorCode.RPC_E_UNEXPECTED, e);
         }
-        catch (InteropRuntimeException e) {
+        catch (InteropRuntimeException e)
+        {
             throw new InteropException(e);
         }
 
@@ -279,22 +335,28 @@ public class RegistryStub : Stub, IRegistry {
     }
 
     /// <inheritdoc/>
-    public void SaveFile(PolicyHandle handle, string fileName) {
-        var savefile = new SaveFile {
+    public void SaveFile(PolicyHandle handle, string fileName)
+    {
+        var savefile = new SaveFile
+        {
             parentKey = handle,
             fileName = fileName
         };
 
-        try {
+        try
+        {
             Call(Semantics.IDEMPOTENT, savefile);
         }
-        catch (SmbException e) {
+        catch (SmbException e)
+        {
             throw new InteropException(e.GetNtStatus(), e);
         }
-        catch (IOException e) {
+        catch (IOException e)
+        {
             throw new InteropException(ErrorCode.RPC_E_UNEXPECTED, e);
         }
-        catch (InteropRuntimeException e) {
+        catch (InteropRuntimeException e)
+        {
             throw new InteropException(e);
         }
 
@@ -302,24 +364,30 @@ public class RegistryStub : Stub, IRegistry {
 
     /// <inheritdoc/>
     public PolicyHandle CreateKey(PolicyHandle handle, string subKey,
-        RegOption options, RegKeyAccess accessMask) {
-        var createkey = new CreateKey {
+        RegOption options, RegKeyAccess accessMask)
+    {
+        var createkey = new CreateKey
+        {
             accessMask = accessMask,
             key = subKey,
             parentKey = handle,
             options = options
         };
 
-        try {
+        try
+        {
             Call(Semantics.IDEMPOTENT, createkey);
         }
-        catch (SmbException e) {
+        catch (SmbException e)
+        {
             throw new InteropException(e.GetNtStatus(), e);
         }
-        catch (IOException e) {
+        catch (IOException e)
+        {
             throw new InteropException(ErrorCode.RPC_E_UNEXPECTED, e);
         }
-        catch (InteropRuntimeException e) {
+        catch (InteropRuntimeException e)
+        {
             throw new InteropException(e);
         }
 
@@ -330,8 +398,10 @@ public class RegistryStub : Stub, IRegistry {
     }
 
     /// <inheritdoc/>
-    public void SetValue(PolicyHandle handle, string valueName, byte[][] data) {
-        if (data == null) {
+    public void SetValue(PolicyHandle handle, string valueName, byte[][] data)
+    {
+        if (data == null)
+        {
             throw new ArgumentException(Interop.GetLocalizedMessage(
                 ErrorCode.INTEROP_WINREG_EXCEPTION5), nameof(data));
         }
@@ -339,14 +409,16 @@ public class RegistryStub : Stub, IRegistry {
         // calculate length of all strings + extra null in the end
         var totalStrings = data.Length;
         var length = 0;
-        for (var i = 0; i < totalStrings; i++) {
+        for (var i = 0; i < totalStrings; i++)
+        {
             var j = data[i].Length;
             length += (j + 1) * 2; // including null termination
         }
 
         length += 2; // final termination
 
-        var setvalue = new SetValue {
+        var setvalue = new SetValue
+        {
             clazzType = RegValueType.REG_MULTI_SZ,
             data2 = data,
             lengthInBytes = length,
@@ -357,8 +429,10 @@ public class RegistryStub : Stub, IRegistry {
     }
 
     /// <inheritdoc/>
-    public void SetValue(PolicyHandle handle, string valueName) {
-        var setvalue = new SetValue {
+    public void SetValue(PolicyHandle handle, string valueName)
+    {
+        var setvalue = new SetValue
+        {
             clazzType = RegValueType.REG_NONE,
             parentKey = handle,
             valueName = valueName
@@ -367,21 +441,27 @@ public class RegistryStub : Stub, IRegistry {
     }
 
     /// <inheritdoc/>
-    public void SetValue(PolicyHandle handle, string valueName, byte[] data, bool isBinary, bool expand_sz) {
-        var setvalue = new SetValue {
+    public void SetValue(PolicyHandle handle, string valueName, byte[] data, bool isBinary, bool expand_sz)
+    {
+        var setvalue = new SetValue
+        {
             data = data,
             lengthInBytes = data.Length,
             parentKey = handle,
             valueName = valueName
         };
-        if (isBinary) {
+        if (isBinary)
+        {
             setvalue.clazzType = RegValueType.REG_BINARY;
         }
-        else {
-            if (expand_sz) {
+        else
+        {
+            if (expand_sz)
+            {
                 setvalue.clazzType = RegValueType.REG_EXPAND_SZ;
             }
-            else {
+            else
+            {
                 setvalue.clazzType = RegValueType.REG_SZ;
             }
         }
@@ -389,8 +469,10 @@ public class RegistryStub : Stub, IRegistry {
     }
 
     /// <inheritdoc/>
-    public void SetValue(PolicyHandle handle, string valueName, int data) {
-        var setvalue = new SetValue {
+    public void SetValue(PolicyHandle handle, string valueName, int data)
+    {
+        var setvalue = new SetValue
+        {
             clazzType = RegValueType.REG_DWORD,
             lengthInBytes = 4,
             dword = data,
@@ -401,19 +483,24 @@ public class RegistryStub : Stub, IRegistry {
     }
 
     /// <inheritdoc/>
-    public string[] EnumKey(PolicyHandle handle, int index) {
-        var enumkey = new EnumKey {
+    public string[] EnumKey(PolicyHandle handle, int index)
+    {
+        var enumkey = new EnumKey
+        {
             parentKey = handle,
             index = index
         };
 
-        try {
+        try
+        {
             Call(Semantics.IDEMPOTENT, enumkey);
         }
-        catch (IOException e) {
+        catch (IOException e)
+        {
             throw new InteropException(ErrorCode.RPC_E_UNEXPECTED, e);
         }
-        catch (InteropRuntimeException e) {
+        catch (InteropRuntimeException e)
+        {
             throw new InteropException(e);
         }
 
@@ -421,18 +508,23 @@ public class RegistryStub : Stub, IRegistry {
     }
 
     /// <inheritdoc/>
-    public object[] EnumValue(PolicyHandle handle, int index) {
-        var enumvalue = new EnumValue {
+    public object[] EnumValue(PolicyHandle handle, int index)
+    {
+        var enumvalue = new EnumValue
+        {
             parentKey = handle,
             index = index
         };
-        try {
+        try
+        {
             Call(Semantics.IDEMPOTENT, enumvalue);
         }
-        catch (IOException e) {
+        catch (IOException e)
+        {
             throw new InteropException(ErrorCode.RPC_E_UNEXPECTED, e);
         }
-        catch (InteropRuntimeException e) {
+        catch (InteropRuntimeException e)
+        {
             throw new InteropException(e);
         }
 
@@ -440,11 +532,14 @@ public class RegistryStub : Stub, IRegistry {
     }
 
     /// <inheritdoc/>
-    public void CloseConnection() {
-        try {
+    public void CloseConnection()
+    {
+        try
+        {
             Detach();
         }
-        catch (IOException e) {
+        catch (IOException e)
+        {
             throw new InteropException(ErrorCode.RPC_E_UNEXPECTED, e);
         }
     }
@@ -452,14 +547,18 @@ public class RegistryStub : Stub, IRegistry {
     /// <summary>
     /// Set value
     /// </summary>
-    private void SetValue(SetValue value) {
-        try {
+    private void SetValue(SetValue value)
+    {
+        try
+        {
             Call(Semantics.IDEMPOTENT, value);
         }
-        catch (IOException e) {
+        catch (IOException e)
+        {
             throw new InteropException(ErrorCode.RPC_E_UNEXPECTED, e);
         }
-        catch (InteropRuntimeException e) {
+        catch (InteropRuntimeException e)
+        {
             throw new InteropException(e);
         }
     }

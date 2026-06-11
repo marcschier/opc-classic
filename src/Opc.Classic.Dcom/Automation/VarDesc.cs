@@ -10,7 +10,8 @@ namespace Opc.Classic.Dcom.Automation;
 /// Implements the <i>VARDESC</i> structure of COM Automation
 /// </summary>
 [Serializable]
-public sealed class VarDesc {
+public sealed class VarDesc
+{
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 #pragma warning disable IDE1006 // Naming Styles
@@ -37,15 +38,18 @@ public sealed class VarDesc {
     /// </summary>
     /// <param name="values"></param>
     internal VarDesc(ComPointer values) :
-        this(values.IsNull ? null : (Struct)values.Referent) {
+        this(values.IsNull ? null : (Struct)values.Referent)
+    {
     }
 
     /// <summary>
     /// Create description
     /// </summary>
     /// <param name="filledStruct"></param>
-    internal VarDesc(Struct filledStruct) {
-        if (filledStruct == null) {
+    internal VarDesc(Struct filledStruct)
+    {
+        if (filledStruct == null)
+        {
             memberId = -1;
             lpstrSchema = null;
             u = null;

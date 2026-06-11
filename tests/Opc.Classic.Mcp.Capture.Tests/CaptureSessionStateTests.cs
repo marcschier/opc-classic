@@ -9,9 +9,11 @@ using TUnit.Core;
 
 namespace Opc.Classic.Mcp.Capture.Tests;
 
-public sealed class CaptureSessionStateTests {
+public sealed class CaptureSessionStateTests
+{
     [Test]
-    public async Task EnumMembers_AreOrderedAsLifecycleStateMachineExpects() {
+    public async Task EnumMembers_AreOrderedAsLifecycleStateMachineExpects()
+    {
         CaptureSessionState[] states = Enum.GetValues<CaptureSessionState>();
 
         await Assert.That((int)states[0]).IsEqualTo(0);
@@ -23,7 +25,8 @@ public sealed class CaptureSessionStateTests {
     }
 
     [Test]
-    public async Task GetNames_ReturnsAllPublicStates() {
+    public async Task GetNames_ReturnsAllPublicStates()
+    {
         string[] names = Enum.GetNames<CaptureSessionState>();
 
         await Assert.That(names.Length).IsEqualTo(6);

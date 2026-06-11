@@ -13,7 +13,8 @@ namespace Opc.Classic.Dcom.Core;
 /// will be preserved by the library for all to and fro operations.
 /// </summary>
 [Serializable]
-public sealed class ComString {
+public sealed class ComString
+{
 
     /// <summary>
     /// Represents <code><see cref="Variant"/></code> for this object,
@@ -39,16 +40,20 @@ public sealed class ComString {
     /// <seealso cref="InteropFlags.FLAG_REPRESENTATION_STRING_LPWSTR"> </seealso>
     /// <exception cref="ArgumentException">
     /// if <code>type</code> is not a string flag.</exception>
-    public ComString(int type) {
+    public ComString(int type)
+    {
         Type = type;
         if (type == InteropFlags.FLAG_REPRESENTATION_STRING_LPCTSTR ||
-            type == InteropFlags.FLAG_REPRESENTATION_STRING_LPWSTR) {
+            type == InteropFlags.FLAG_REPRESENTATION_STRING_LPWSTR)
+        {
             _member = new ComPointer(typeof(string), true);
         }
-        else if (type == InteropFlags.FLAG_REPRESENTATION_STRING_BSTR) {
+        else if (type == InteropFlags.FLAG_REPRESENTATION_STRING_BSTR)
+        {
             _member = new ComPointer(typeof(string), false);
         }
-        else {
+        else
+        {
             throw new ArgumentException(
                 Interop.GetLocalizedMessage(ErrorCode.INTEROP_UTIL_FLAG_ERROR), nameof(type));
         }
@@ -67,23 +72,28 @@ public sealed class ComString {
     /// <seealso cref="InteropFlags.FLAG_REPRESENTATION_STRING_LPWSTR"> </seealso>
     /// <exception cref="ArgumentException">
     /// if <code>type</code> is not a string flag. </exception>
-    public ComString(string str, int type) {
+    public ComString(string str, int type)
+    {
         str = str ?? "";
         Type = type;
         if (type == InteropFlags.FLAG_REPRESENTATION_STRING_LPCTSTR ||
-            type == InteropFlags.FLAG_REPRESENTATION_STRING_LPWSTR) {
+            type == InteropFlags.FLAG_REPRESENTATION_STRING_LPWSTR)
+        {
             _member = new ComPointer(str, true);
             Variant = null;
             VariantByRef = null;
         }
-        else if (type == InteropFlags.FLAG_REPRESENTATION_STRING_BSTR) {
-            _member = new ComPointer(str, false) {
+        else if (type == InteropFlags.FLAG_REPRESENTATION_STRING_BSTR)
+        {
+            _member = new ComPointer(str, false)
+            {
                 ReferentId = 0x72657355 // "User" in LEndian.
             };
             Variant = new Variant(this);
             VariantByRef = new Variant(this, true);
         }
-        else {
+        else
+        {
             throw new ArgumentException(
                 Interop.GetLocalizedMessage(ErrorCode.INTEROP_UTIL_FLAG_ERROR), nameof(type));
         }
@@ -96,7 +106,8 @@ public sealed class ComString {
     /// </summary>
     /// <param name="str"> value encapsulated by this object. </param>
     public ComString(string str) :
-        this(str, InteropFlags.FLAG_REPRESENTATION_STRING_BSTR) {
+        this(str, InteropFlags.FLAG_REPRESENTATION_STRING_BSTR)
+    {
     }
 
     /// <summary>
@@ -119,13 +130,16 @@ public sealed class ComString {
     /// </summary>
     /// <param name="ndr"></param>
     /// <param name="context"></param>
-    internal void Encode(NdrCodec ndr, CodecContext context) {
+    internal void Encode(NdrCodec ndr, CodecContext context)
+    {
         var flags = context.Flag;
-        try {
+        try
+        {
             context.Flag |= Type;
             MarshalUnMarshalHelper.Serialize(ndr, _member.GetType(), _member, context);
         }
-        finally {
+        finally
+        {
             context.Flag = flags;
         }
     }
@@ -136,29 +150,36 @@ public sealed class ComString {
     /// <param name="ndr"></param>
     /// <param name="context"></param>
     /// <returns></returns>
-    internal ComString Decode(NdrCodec ndr, CodecContext context) {
+    internal ComString Decode(NdrCodec ndr, CodecContext context)
+    {
         var flags = context.Flag;
-        try {
+        try
+        {
             context.Flag |= Type;
-            var newString = new ComString(Type) {
+            var newString = new ComString(Type)
+            {
                 _member = (ComPointer)MarshalUnMarshalHelper.Deserialize(ndr, _member, context)
             };
             context.Flag = flags;
             return newString;
         }
-        finally {
+        finally
+        {
             context.Flag = flags;
         }
     }
 
-    internal bool Deffered {
-        set {
+    internal bool Deffered
+    {
+        set
+        {
             // this condition is required so that only BSTRs are value
             // and also since this member could be value and
             // setting it to true would spoil the logic
             // this is incorrect logic in the bug sent by Kevin, the
             // ONEVENTSTRUCT consists of LPWSTRs which are value
-            if (_member != null && !_member.Reference) {
+            if (_member != null && !_member.Reference)
+            {
                 _member.Deffered = value;
             }
         }

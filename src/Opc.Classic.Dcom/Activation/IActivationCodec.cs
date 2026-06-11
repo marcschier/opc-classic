@@ -11,7 +11,8 @@ using Opc.Classic.Ndr;
 namespace Opc.Classic.Dcom.Activation;
 
 /// <summary>NDR codec for the legacy <c>IActivation::RemoteActivation</c> method body.</summary>
-public static class IActivationCodec {
+public static class IActivationCodec
+{
     private const int InitialBufferSize = 4096;
     private const int MaximumBufferSize = 1024 * 1024;
     private const int MaxRequestedInterfaces = 0x8000;
@@ -20,11 +21,13 @@ public static class IActivationCodec {
     private delegate void NdrWriteAction(ref NdrWriter writer);
 
     /// <summary>Encodes a legacy <c>RemoteActivation</c> request body, excluding the ORPC envelope.</summary>
-    public static byte[] EncodeRemoteActivationRequest(RemoteActivationRequest request) {
+    public static byte[] EncodeRemoteActivationRequest(RemoteActivationRequest request)
+    {
         ArgumentNullException.ThrowIfNull(request);
         ValidateRequest(request);
 
-        return WritePayload((ref NdrWriter writer) => {
+        return WritePayload((ref NdrWriter writer) =>
+        {
             writer.WriteGuid(request.Clsid);
             writer.WriteUnicodeStringPtr(request.ObjectName);
             WriteMInterfacePointerPtr(ref writer, request.ObjectStorage.Span);
@@ -34,20 +37,23 @@ public static class IActivationCodec {
             writer.WriteUInt32(unchecked((uint)request.RequestedIids.Count));
             _ = writer.WriteReferentId();
             writer.WriteConformanceHeader(request.RequestedIids.Count);
-            for (int i = 0; i < request.RequestedIids.Count; i++) {
+            for (int i = 0; i < request.RequestedIids.Count; i++)
+            {
                 writer.WriteGuid(request.RequestedIids[i]);
             }
 
             writer.WriteUInt16(checked((ushort)request.RequestedProtocolSequences.Count));
             writer.WriteConformanceHeader(request.RequestedProtocolSequences.Count);
-            for (int i = 0; i < request.RequestedProtocolSequences.Count; i++) {
+            for (int i = 0; i < request.RequestedProtocolSequences.Count; i++)
+            {
                 writer.WriteUInt16(request.RequestedProtocolSequences[i]);
             }
         });
     }
 
     /// <summary>Decodes a legacy <c>RemoteActivation</c> request body, excluding the ORPC envelope.</summary>
-    public static RemoteActivationRequest DecodeRemoteActivationRequest(ReadOnlySpan<byte> payload) {
+    public static RemoteActivationRequest DecodeRemoteActivationRequest(ReadOnlySpan<byte> payload)
+    {
         var reader = new NdrReader(payload);
         Guid clsid = reader.ReadGuid();
         string? objectName = reader.ReadUnicodeStringPtr();
@@ -55,54 +61,65 @@ public static class IActivationCodec {
         uint clientImpLevel = reader.ReadUInt32();
         uint mode = reader.ReadUInt32();
         uint interfaceCount = reader.ReadUInt32();
-        if (interfaceCount is 0 or > MaxRequestedInterfaces) {
+        if (interfaceCount is 0 or > MaxRequestedInterfaces)
+        {
             throw new InvalidOperationException("IActivation request IID count is outside the allowed range.");
         }
 
-        if (!reader.TryReadReferentId(out _)) {
+        if (!reader.TryReadReferentId(out _))
+        {
             throw new InvalidOperationException("IActivation request IID array pointer is null.");
         }
 
         int iidArrayCount = reader.ReadConformanceHeader();
         int requestedInterfaceCount = checked((int)interfaceCount);
-        if (iidArrayCount != requestedInterfaceCount) {
+        if (iidArrayCount != requestedInterfaceCount)
+        {
             throw new InvalidOperationException("IActivation request IID array size does not match the Interfaces field.");
         }
 
         var iids = new Guid[iidArrayCount];
-        for (int i = 0; i < iids.Length; i++) {
+        for (int i = 0; i < iids.Length; i++)
+        {
             iids[i] = reader.ReadGuid();
         }
 
         ushort protocolSequenceCount = reader.ReadUInt16();
-        if (protocolSequenceCount is 0 or > MaxRequestedProtocolSequences) {
+        if (protocolSequenceCount is 0 or > MaxRequestedProtocolSequences)
+        {
             throw new InvalidOperationException("IActivation request protocol sequence count is outside the allowed range.");
         }
 
         int encodedProtocolSequenceCount = reader.ReadConformanceHeader();
-        if (encodedProtocolSequenceCount != protocolSequenceCount) {
+        if (encodedProtocolSequenceCount != protocolSequenceCount)
+        {
             throw new InvalidOperationException("IActivation request protocol sequence array size does not match the count field.");
         }
 
         var protocolSequences = new ushort[encodedProtocolSequenceCount];
-        for (int i = 0; i < protocolSequences.Length; i++) {
+        for (int i = 0; i < protocolSequences.Length; i++)
+        {
             protocolSequences[i] = reader.ReadUInt16();
         }
 
-        return new RemoteActivationRequest(clsid, iids, clientImpLevel, mode, protocolSequences) {
+        return new RemoteActivationRequest(clsid, iids, clientImpLevel, mode, protocolSequences)
+        {
             ObjectName = objectName,
             ObjectStorage = objectStorage,
         };
     }
 
     /// <summary>Encodes a legacy <c>RemoteActivation</c> response body, excluding the ORPC envelope.</summary>
-    public static byte[] EncodeRemoteActivationResponse(RemoteActivationResponse response) {
+    public static byte[] EncodeRemoteActivationResponse(RemoteActivationResponse response)
+    {
         ArgumentNullException.ThrowIfNull(response);
-        if (response.InterfaceResults.Count > MaxRequestedInterfaces) {
+        if (response.InterfaceResults.Count > MaxRequestedInterfaces)
+        {
             throw new ArgumentException("IActivation response interface result count is too large.", nameof(response));
         }
 
-        return WritePayload((ref NdrWriter writer) => {
+        return WritePayload((ref NdrWriter writer) =>
+        {
             writer.WriteUInt64(UInt64FromGuid(response.Oxid));
             WriteDualStringArrayPointerPointer(ref writer, response.OxidBindings.Span);
             writer.WriteGuid(response.IpidRemUnknown);
@@ -112,32 +129,40 @@ public static class IActivationCodec {
             writer.WriteInt32(response.Hresult);
 
             writer.WriteConformanceHeader(response.InterfaceResults.Count);
-            for (int i = 0; i < response.InterfaceResults.Count; i++) {
-                if (response.InterfaceResults[i].ObjRef.IsEmpty) {
+            for (int i = 0; i < response.InterfaceResults.Count; i++)
+            {
+                if (response.InterfaceResults[i].ObjRef.IsEmpty)
+                {
                     writer.WriteNullReferent();
                 }
-                else {
+                else
+                {
                     _ = writer.WriteReferentId();
                 }
             }
 
-            for (int i = 0; i < response.InterfaceResults.Count; i++) {
+            for (int i = 0; i < response.InterfaceResults.Count; i++)
+            {
                 ReadOnlySpan<byte> objRef = response.InterfaceResults[i].ObjRef.Span;
-                if (!objRef.IsEmpty) {
+                if (!objRef.IsEmpty)
+                {
                     WriteMInterfacePointer(ref writer, objRef);
                 }
             }
 
             writer.WriteConformanceHeader(response.InterfaceResults.Count);
-            for (int i = 0; i < response.InterfaceResults.Count; i++) {
+            for (int i = 0; i < response.InterfaceResults.Count; i++)
+            {
                 writer.WriteInt32(response.InterfaceResults[i].Hresult);
             }
         });
     }
 
     /// <summary>Decodes a legacy <c>RemoteActivation</c> response body, excluding the ORPC envelope.</summary>
-    public static RemoteActivationResponse DecodeRemoteActivationResponse(ReadOnlySpan<byte> payload, int expectedInterfaceCount) {
-        if (expectedInterfaceCount is <= 0 or > MaxRequestedInterfaces) {
+    public static RemoteActivationResponse DecodeRemoteActivationResponse(ReadOnlySpan<byte> payload, int expectedInterfaceCount)
+    {
+        if (expectedInterfaceCount is <= 0 or > MaxRequestedInterfaces)
+        {
             throw new ArgumentOutOfRangeException(nameof(expectedInterfaceCount), expectedInterfaceCount, "Expected interface count is outside the allowed range.");
         }
 
@@ -151,27 +176,32 @@ public static class IActivationCodec {
         int hresult = reader.ReadInt32();
 
         int interfaceDataCount = reader.ReadConformanceHeader();
-        if (interfaceDataCount != expectedInterfaceCount) {
+        if (interfaceDataCount != expectedInterfaceCount)
+        {
             throw new InvalidOperationException("IActivation response interface pointer array size does not match the request.");
         }
 
         var hasInterfaceData = new bool[interfaceDataCount];
-        for (int i = 0; i < hasInterfaceData.Length; i++) {
+        for (int i = 0; i < hasInterfaceData.Length; i++)
+        {
             hasInterfaceData[i] = reader.TryReadReferentId(out _);
         }
 
         var objRefs = new byte[interfaceDataCount][];
-        for (int i = 0; i < objRefs.Length; i++) {
+        for (int i = 0; i < objRefs.Length; i++)
+        {
             objRefs[i] = hasInterfaceData[i] ? ReadMInterfacePointer(ref reader) : Array.Empty<byte>();
         }
 
         int resultCount = reader.ReadConformanceHeader();
-        if (resultCount != expectedInterfaceCount) {
+        if (resultCount != expectedInterfaceCount)
+        {
             throw new InvalidOperationException("IActivation response HRESULT array size does not match the request.");
         }
 
         var interfaceResults = new RemoteActivationInterfaceResult[resultCount];
-        for (int i = 0; i < interfaceResults.Length; i++) {
+        for (int i = 0; i < interfaceResults.Length; i++)
+        {
             int interfaceHresult = reader.ReadInt32();
             interfaceResults[i] = new RemoteActivationInterfaceResult(interfaceHresult, objRefs[i]);
         }
@@ -182,23 +212,29 @@ public static class IActivationCodec {
             ipidRemUnknown,
             authnHint,
             (major, minor),
-            interfaceResults) {
+            interfaceResults)
+        {
             OxidBindings = oxidBindings,
         };
     }
 
-    private static void ValidateRequest(RemoteActivationRequest request) {
-        if (request.RequestedIids.Count is 0 or > MaxRequestedInterfaces) {
+    private static void ValidateRequest(RemoteActivationRequest request)
+    {
+        if (request.RequestedIids.Count is 0 or > MaxRequestedInterfaces)
+        {
             throw new ArgumentException("IActivation requires between 1 and 32768 requested IIDs.", nameof(request));
         }
 
-        if (request.RequestedProtocolSequences.Count is 0 or > MaxRequestedProtocolSequences) {
+        if (request.RequestedProtocolSequences.Count is 0 or > MaxRequestedProtocolSequences)
+        {
             throw new ArgumentException("IActivation requires between 1 and 32768 requested protocol sequences.", nameof(request));
         }
     }
 
-    private static void WriteMInterfacePointerPtr(ref NdrWriter writer, ReadOnlySpan<byte> objRef) {
-        if (objRef.IsEmpty) {
+    private static void WriteMInterfacePointerPtr(ref NdrWriter writer, ReadOnlySpan<byte> objRef)
+    {
+        if (objRef.IsEmpty)
+        {
             writer.WriteNullReferent();
             return;
         }
@@ -210,17 +246,20 @@ public static class IActivationCodec {
     private static byte[] ReadMInterfacePointerPtr(ref NdrReader reader) =>
         reader.TryReadReferentId(out _) ? ReadMInterfacePointer(ref reader) : Array.Empty<byte>();
 
-    private static void WriteMInterfacePointer(ref NdrWriter writer, ReadOnlySpan<byte> objRef) {
+    private static void WriteMInterfacePointer(ref NdrWriter writer, ReadOnlySpan<byte> objRef)
+    {
         writer.WriteUInt32(unchecked((uint)objRef.Length));
         writer.WriteUInt32(unchecked((uint)objRef.Length));
         writer.WriteRawBytes(objRef);
         writer.AlignTo(4);
     }
 
-    private static byte[] ReadMInterfacePointer(ref NdrReader reader) {
+    private static byte[] ReadMInterfacePointer(ref NdrReader reader)
+    {
         uint maxCount = reader.ReadUInt32();
         uint actualCount = reader.ReadUInt32();
-        if (actualCount > maxCount || actualCount > reader.RemainingBytes) {
+        if (actualCount > maxCount || actualCount > reader.RemainingBytes)
+        {
             throw new InvalidOperationException("MInterfacePointer byte count exceeds the remaining payload.");
         }
 
@@ -229,10 +268,12 @@ public static class IActivationCodec {
         return objRef;
     }
 
-    private static void WriteDualStringArrayPointerPointer(ref NdrWriter writer, ReadOnlySpan<byte> dualStringArray) {
+    private static void WriteDualStringArrayPointerPointer(ref NdrWriter writer, ReadOnlySpan<byte> dualStringArray)
+    {
         _ = writer.WriteReferentId();
         _ = writer.WriteReferentId();
-        if (dualStringArray.IsEmpty) {
+        if (dualStringArray.IsEmpty)
+        {
             writer.WriteUInt16(0);
             writer.WriteUInt16(0);
             return;
@@ -242,25 +283,30 @@ public static class IActivationCodec {
         writer.AlignTo(4);
     }
 
-    private static byte[] ReadDualStringArrayPointerPointer(ref NdrReader reader) {
-        if (!reader.TryReadReferentId(out _)) {
+    private static byte[] ReadDualStringArrayPointerPointer(ref NdrReader reader)
+    {
+        if (!reader.TryReadReferentId(out _))
+        {
             return Array.Empty<byte>();
         }
 
-        if (!reader.TryReadReferentId(out _)) {
+        if (!reader.TryReadReferentId(out _))
+        {
             return Array.Empty<byte>();
         }
 
         ushort entryCount = reader.ReadUInt16();
         ushort securityOffset = reader.ReadUInt16();
-        if (entryCount > reader.RemainingBytes / sizeof(ushort)) {
+        if (entryCount > reader.RemainingBytes / sizeof(ushort))
+        {
             throw new InvalidOperationException("DUALSTRINGARRAY entry count exceeds the remaining payload.");
         }
 
         byte[] dualStringArray = new byte[sizeof(ushort) + sizeof(ushort) + (entryCount * sizeof(ushort))];
         BinaryPrimitives.WriteUInt16LittleEndian(dualStringArray.AsSpan(0, sizeof(ushort)), entryCount);
         BinaryPrimitives.WriteUInt16LittleEndian(dualStringArray.AsSpan(sizeof(ushort), sizeof(ushort)), securityOffset);
-        for (int i = 0; i < entryCount; i++) {
+        for (int i = 0; i < entryCount; i++)
+        {
             ushort entry = reader.ReadUInt16();
             BinaryPrimitives.WriteUInt16LittleEndian(dualStringArray.AsSpan(4 + (i * sizeof(ushort)), sizeof(ushort)), entry);
         }
@@ -269,31 +315,38 @@ public static class IActivationCodec {
         return dualStringArray;
     }
 
-    private static Guid GuidFromUInt64(ulong value) {
+    private static Guid GuidFromUInt64(ulong value)
+    {
         Span<byte> bytes = stackalloc byte[16];
         BinaryPrimitives.WriteUInt64LittleEndian(bytes, value);
         return new Guid(bytes);
     }
 
-    private static ulong UInt64FromGuid(Guid value) {
+    private static ulong UInt64FromGuid(Guid value)
+    {
         Span<byte> bytes = stackalloc byte[16];
         bool ok = value.TryWriteBytes(bytes);
-        if (!ok) {
+        if (!ok)
+        {
             throw new InvalidOperationException("Guid.TryWriteBytes failed unexpectedly.");
         }
 
         return BinaryPrimitives.ReadUInt64LittleEndian(bytes);
     }
 
-    private static byte[] WritePayload(NdrWriteAction action) {
-        for (int size = InitialBufferSize; size <= MaximumBufferSize; size *= 2) {
+    private static byte[] WritePayload(NdrWriteAction action)
+    {
+        for (int size = InitialBufferSize; size <= MaximumBufferSize; size *= 2)
+        {
             var buffer = new byte[size];
             var writer = new NdrWriter(buffer);
-            try {
+            try
+            {
                 action(ref writer);
                 return buffer.AsSpan(0, writer.Position).ToArray();
             }
-            catch (InvalidOperationException) when (size < MaximumBufferSize) {
+            catch (InvalidOperationException) when (size < MaximumBufferSize)
+            {
             }
         }
 

@@ -16,7 +16,8 @@ namespace Opc.Classic.Da.Hosting;
 /// <summary>
 /// Default server-side data-change publisher for advised OPC DA callbacks.
 /// </summary>
-public sealed class OpcDaDataChangePublisher : IOpcDaDataChangePublisher, IAsyncDisposable {
+public sealed class OpcDaDataChangePublisher : IOpcDaDataChangePublisher, IAsyncDisposable
+{
     private static readonly Action<ILogger, int, Exception?> SubscriberThrew = LoggerMessage.Define<int>(
         LogLevel.Warning,
         new EventId(1, nameof(SubscriberThrew)),
@@ -27,7 +28,8 @@ public sealed class OpcDaDataChangePublisher : IOpcDaDataChangePublisher, IAsync
     private int _nextCookie;
 
     /// <summary>Initializes a new instance of the <see cref="OpcDaDataChangePublisher" /> class.</summary>
-    public OpcDaDataChangePublisher(ILogger<OpcDaDataChangePublisher> logger) {
+    public OpcDaDataChangePublisher(ILogger<OpcDaDataChangePublisher> logger)
+    {
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         _subscribers = new();
     }
@@ -38,7 +40,8 @@ public sealed class OpcDaDataChangePublisher : IOpcDaDataChangePublisher, IAsync
     /// </summary>
     /// <param name="callback">Callback invoked for each published data-change batch.</param>
     /// <returns>The advise cookie used to remove the subscriber.</returns>
-    public int Advise(Func<OpcDaDataChange, CancellationToken, ValueTask> callback) {
+    public int Advise(Func<OpcDaDataChange, CancellationToken, ValueTask> callback)
+    {
         ArgumentNullException.ThrowIfNull(callback);
         var cookie = Interlocked.Increment(ref _nextCookie);
         _subscribers[cookie] = new OpcDaSubscriberEntry(callback);
@@ -50,22 +53,27 @@ public sealed class OpcDaDataChangePublisher : IOpcDaDataChangePublisher, IAsync
     public void Unadvise(int cookie) => _subscribers.TryRemove(cookie, out _);
 
     /// <inheritdoc />
-    public async ValueTask PublishAsync(OpcDaDataChange change, CancellationToken cancellationToken = default) {
+    public async ValueTask PublishAsync(OpcDaDataChange change, CancellationToken cancellationToken = default)
+    {
         ArgumentNullException.ThrowIfNull(change);
         cancellationToken.ThrowIfCancellationRequested();
 
-        foreach (var (cookie, entry) in _subscribers) {
-            try {
+        foreach (var (cookie, entry) in _subscribers)
+        {
+            try
+            {
                 await entry.Callback(change, cancellationToken).ConfigureAwait(false);
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 SubscriberThrew(_logger, cookie, ex);
             }
         }
     }
 
     /// <inheritdoc />
-    public ValueTask DisposeAsync() {
+    public ValueTask DisposeAsync()
+    {
         _subscribers.Clear();
         return ValueTask.CompletedTask;
     }

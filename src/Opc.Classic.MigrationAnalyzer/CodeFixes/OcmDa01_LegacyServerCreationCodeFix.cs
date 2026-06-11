@@ -18,7 +18,8 @@ using Opc.Classic.MigrationAnalyzer.Analyzers;
 namespace Opc.Classic.MigrationAnalyzer.CodeFixes;
 
 [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(OcmDa01_LegacyServerCreationCodeFix)), Shared]
-public sealed class OcmDa01_LegacyServerCreationCodeFix : CodeFixProvider {
+public sealed class OcmDa01_LegacyServerCreationCodeFix : CodeFixProvider
+{
     private const string Title = "Use await using OpcDaClient.ConnectAsync";
 
     public override ImmutableArray<string> FixableDiagnosticIds { get; } =
@@ -26,10 +27,12 @@ public sealed class OcmDa01_LegacyServerCreationCodeFix : CodeFixProvider {
 
     public override FixAllProvider GetFixAllProvider() => WellKnownFixAllProviders.BatchFixer;
 
-    public override async Task RegisterCodeFixesAsync(CodeFixContext context) {
+    public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    {
         SyntaxNode root = await MigrationCodeFixHelpers.GetRequiredRootAsync(context.Document, context.CancellationToken).ConfigureAwait(false);
         ObjectCreationExpressionSyntax? objectCreation = root.FindNode(context.Span).FirstAncestorOrSelf<ObjectCreationExpressionSyntax>();
-        if (objectCreation is null) {
+        if (objectCreation is null)
+        {
             return;
         }
 
@@ -41,7 +44,8 @@ public sealed class OcmDa01_LegacyServerCreationCodeFix : CodeFixProvider {
     private static async Task<Document> ApplyAsync(
         Document document,
         ObjectCreationExpressionSyntax objectCreation,
-        CancellationToken cancellationToken) {
+        CancellationToken cancellationToken)
+    {
         SyntaxNode root = await MigrationCodeFixHelpers.GetRequiredRootAsync(document, cancellationToken).ConfigureAwait(false);
         MethodDeclarationSyntax? method = objectCreation.FirstAncestorOrSelf<MethodDeclarationSyntax>();
         string urlArgument = objectCreation.ArgumentList?.Arguments.FirstOrDefault()?.ToString() ?? "url";
@@ -49,7 +53,8 @@ public sealed class OcmDa01_LegacyServerCreationCodeFix : CodeFixProvider {
             "OpcDaClient.ConnectAsync(" + urlArgument + ", options)");
 
         LocalDeclarationStatementSyntax? localStatement = objectCreation.FirstAncestorOrSelf<LocalDeclarationStatementSyntax>();
-        if (localStatement is not null && localStatement.Declaration.Variables.Count == 1) {
+        if (localStatement is not null && localStatement.Declaration.Variables.Count == 1)
+        {
             VariableDeclaratorSyntax variable = localStatement.Declaration.Variables[0];
             string declaration = localStatement.Declaration.Type + " " + variable.Identifier.ValueText + " = " + connectExpression + ";";
             StatementSyntax replacement = SyntaxFactory.ParseStatement("await using " + declaration)
@@ -57,11 +62,13 @@ public sealed class OcmDa01_LegacyServerCreationCodeFix : CodeFixProvider {
                 .WithAdditionalAnnotations(Microsoft.CodeAnalysis.Formatting.Formatter.Annotation);
             root = root.ReplaceNode(localStatement, replacement);
         }
-        else {
+        else
+        {
             root = root.ReplaceNode(objectCreation, connectExpression.WithTriviaFrom(objectCreation));
         }
 
-        if (method is not null) {
+        if (method is not null)
+        {
             root = MigrationCodeFixHelpers.EnsureContainingMethodIsAwaitable(root, root.FindNode(method.Span));
         }
 

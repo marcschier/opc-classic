@@ -11,7 +11,8 @@ namespace Opc.Classic.Dcom.Automation;
 /// or the type of a function parameter.
 /// </summary>
 [Serializable]
-public sealed class TypeDesc {
+public sealed class TypeDesc
+{
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 #pragma warning disable IDE1006 // Naming Styles
@@ -36,15 +37,18 @@ public sealed class TypeDesc {
     /// </summary>
     /// <param name="values"></param>
     internal TypeDesc(ComPointer values) :
-        this(values.IsNull ? null : (Struct)values.Referent) {
+        this(values.IsNull ? null : (Struct)values.Referent)
+    {
     }
 
     /// <summary>
     /// Create type description
     /// </summary>
     /// <param name="values"></param>
-    internal TypeDesc(Struct values) {
-        if (values == null) {
+    internal TypeDesc(Struct values)
+    {
+        if (values == null)
+        {
             typeDesc = null;
             arrayDesc = null;
             hrefType = -1;
@@ -54,27 +58,32 @@ public sealed class TypeDesc {
 
         vt = (short)values.GetMember(1);
         var union = (Union)values.GetMember(0);
-        if (vt.Equals(VT_PTR) || vt.Equals(VT_SAFEARRAY)) {
+        if (vt.Equals(VT_PTR) || vt.Equals(VT_SAFEARRAY))
+        {
             var pointer = (ComPointer)union.Members[VT_PTR];
-            if (pointer == null) {
+            if (pointer == null)
+            {
                 pointer = (ComPointer)union.Members[VT_SAFEARRAY];
             }
             typeDesc = new ComPointer(new TypeDesc(pointer), false);
             arrayDesc = null;
             hrefType = -1;
         }
-        else if (vt.Equals(VT_CARRAY)) {
+        else if (vt.Equals(VT_CARRAY))
+        {
             hrefType = -1;
             typeDesc = null;
             var pointer = (ComPointer)union.Members[VT_CARRAY];
             arrayDesc = new ComPointer(new ArrayDesc(pointer));
         }
-        else if (vt.Equals(VT_USERDEFINED)) {
+        else if (vt.Equals(VT_USERDEFINED))
+        {
             typeDesc = null;
             arrayDesc = null;
             hrefType = (int)union.Members[VT_USERDEFINED];
         }
-        else {
+        else
+        {
             typeDesc = null;
             arrayDesc = null;
             hrefType = -1;

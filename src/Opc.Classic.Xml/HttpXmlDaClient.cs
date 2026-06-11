@@ -24,7 +24,8 @@ namespace Opc.Classic.Xml;
 /// <summary>
 /// SOAP-over-HTTP implementation of <see cref="IXmlDaClient"/>.
 /// </summary>
-public sealed class HttpXmlDaClient : IXmlDaClient {
+public sealed class HttpXmlDaClient : IXmlDaClient
+{
     private readonly HttpClient _http;
     private readonly Uri _endpoint;
 
@@ -33,7 +34,8 @@ public sealed class HttpXmlDaClient : IXmlDaClient {
     /// The <see cref="HttpClient"/> lifetime is the caller's
     /// responsibility — typical usage is a process-wide singleton.
     /// </summary>
-    public HttpXmlDaClient(HttpClient httpClient, Uri endpoint) {
+    public HttpXmlDaClient(HttpClient httpClient, Uri endpoint)
+    {
         ArgumentNullException.ThrowIfNull(httpClient);
         ArgumentNullException.ThrowIfNull(endpoint);
         _http = httpClient;
@@ -43,12 +45,15 @@ public sealed class HttpXmlDaClient : IXmlDaClient {
     /// <inheritdoc />
     public async Task<XmlDaServerStatus> GetStatusAsync(
         XmlDaRequestHeader header,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         ArgumentNullException.ThrowIfNull(header);
 
         byte[] requestBytes;
-        using (var ms = new MemoryStream(capacity: 256)) {
-            using (var w = new SoapEnvelopeWriter(ms)) {
+        using (var ms = new MemoryStream(capacity: 256))
+        {
+            using (var w = new SoapEnvelopeWriter(ms))
+            {
                 GetStatusSerializer.WriteRequest(w, header);
             }
             requestBytes = ms.ToArray();
@@ -63,12 +68,15 @@ public sealed class HttpXmlDaClient : IXmlDaClient {
     /// <inheritdoc />
     public async Task<XmlDaReadResponse> ReadAsync(
         XmlDaReadRequest request,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         ArgumentNullException.ThrowIfNull(request);
 
         byte[] requestBytes;
-        using (var ms = new MemoryStream(capacity: 512)) {
-            using (var w = new SoapEnvelopeWriter(ms)) {
+        using (var ms = new MemoryStream(capacity: 512))
+        {
+            using (var w = new SoapEnvelopeWriter(ms))
+            {
                 ReadSerializer.WriteRequest(w, request);
             }
             requestBytes = ms.ToArray();
@@ -83,12 +91,15 @@ public sealed class HttpXmlDaClient : IXmlDaClient {
     /// <inheritdoc />
     public async Task<XmlDaWriteResponse> WriteAsync(
         XmlDaWriteRequest request,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         ArgumentNullException.ThrowIfNull(request);
 
         byte[] requestBytes;
-        using (var ms = new MemoryStream(capacity: 512)) {
-            using (var w = new SoapEnvelopeWriter(ms)) {
+        using (var ms = new MemoryStream(capacity: 512))
+        {
+            using (var w = new SoapEnvelopeWriter(ms))
+            {
                 WriteSerializer.WriteRequest(w, request);
             }
             requestBytes = ms.ToArray();
@@ -103,12 +114,15 @@ public sealed class HttpXmlDaClient : IXmlDaClient {
     /// <inheritdoc />
     public async Task<XmlDaBrowseResponse> BrowseAsync(
         XmlDaBrowseRequest request,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         ArgumentNullException.ThrowIfNull(request);
 
         byte[] requestBytes;
-        using (var ms = new MemoryStream(capacity: 256)) {
-            using (var w = new SoapEnvelopeWriter(ms)) {
+        using (var ms = new MemoryStream(capacity: 256))
+        {
+            using (var w = new SoapEnvelopeWriter(ms))
+            {
                 BrowseSerializer.WriteRequest(w, request);
             }
             requestBytes = ms.ToArray();
@@ -123,12 +137,15 @@ public sealed class HttpXmlDaClient : IXmlDaClient {
     /// <inheritdoc />
     public async Task<XmlDaSubscribeResponse> SubscribeAsync(
         XmlDaSubscribeRequest request,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         ArgumentNullException.ThrowIfNull(request);
 
         byte[] requestBytes;
-        using (var ms = new MemoryStream(capacity: 512)) {
-            using (var w = new SoapEnvelopeWriter(ms)) {
+        using (var ms = new MemoryStream(capacity: 512))
+        {
+            using (var w = new SoapEnvelopeWriter(ms))
+            {
                 SubscribeSerializer.WriteRequest(w, request);
             }
             requestBytes = ms.ToArray();
@@ -143,12 +160,15 @@ public sealed class HttpXmlDaClient : IXmlDaClient {
     /// <inheritdoc />
     public async Task<XmlDaSubscriptionPolledRefreshResponse> SubscriptionPolledRefreshAsync(
         XmlDaSubscriptionPolledRefreshRequest request,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         ArgumentNullException.ThrowIfNull(request);
 
         byte[] requestBytes;
-        using (var ms = new MemoryStream(capacity: 512)) {
-            using (var w = new SoapEnvelopeWriter(ms)) {
+        using (var ms = new MemoryStream(capacity: 512))
+        {
+            using (var w = new SoapEnvelopeWriter(ms))
+            {
                 SubscriptionPolledRefreshSerializer.WriteRequest(w, request);
             }
             requestBytes = ms.ToArray();
@@ -163,12 +183,15 @@ public sealed class HttpXmlDaClient : IXmlDaClient {
     /// <inheritdoc />
     public async Task<XmlDaSubscriptionCancelResponse> SubscriptionCancelAsync(
         XmlDaSubscriptionCancelRequest request,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         ArgumentNullException.ThrowIfNull(request);
 
         byte[] requestBytes;
-        using (var ms = new MemoryStream(capacity: 256)) {
-            using (var w = new SoapEnvelopeWriter(ms)) {
+        using (var ms = new MemoryStream(capacity: 256))
+        {
+            using (var w = new SoapEnvelopeWriter(ms))
+            {
                 SubscriptionCancelSerializer.WriteRequest(w, request);
             }
             requestBytes = ms.ToArray();
@@ -183,12 +206,15 @@ public sealed class HttpXmlDaClient : IXmlDaClient {
     /// <inheritdoc />
     public async Task<XmlDaGetPropertiesResponse> GetPropertiesAsync(
         XmlDaGetPropertiesRequest request,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         ArgumentNullException.ThrowIfNull(request);
 
         byte[] requestBytes;
-        using (var ms = new MemoryStream(capacity: 512)) {
-            using (var w = new SoapEnvelopeWriter(ms)) {
+        using (var ms = new MemoryStream(capacity: 512))
+        {
+            using (var w = new SoapEnvelopeWriter(ms))
+            {
                 GetPropertiesSerializer.WriteRequest(w, request);
             }
             requestBytes = ms.ToArray();
@@ -204,7 +230,8 @@ public sealed class HttpXmlDaClient : IXmlDaClient {
         byte[] requestBytes,
         string soapAction,
         Func<SoapEnvelopeReader, T> deserialize,
-        CancellationToken cancellationToken) {
+        CancellationToken cancellationToken)
+    {
         using var content = new ByteArrayContent(requestBytes);
         content.Headers.ContentType = new MediaTypeHeaderValue("text/xml") { CharSet = "utf-8" };
         content.Headers.Add("SOAPAction", "\"" + soapAction + "\"");
@@ -214,21 +241,26 @@ public sealed class HttpXmlDaClient : IXmlDaClient {
         Stream responseStream = await response.Content
             .ReadAsStreamAsync(cancellationToken)
             .ConfigureAwait(false);
-        await using (responseStream.ConfigureAwait(false)) {
+        await using (responseStream.ConfigureAwait(false))
+        {
             using var reader = new SoapEnvelopeReader(responseStream);
-            try {
+            try
+            {
                 T result = deserialize(reader);
                 response.EnsureSuccessStatusCode();
                 return result;
             }
-            catch (XmlDaSoapFaultException) {
+            catch (XmlDaSoapFaultException)
+            {
                 throw;
             }
-            catch (InvalidDataException) when (!response.IsSuccessStatusCode) {
+            catch (InvalidDataException) when (!response.IsSuccessStatusCode)
+            {
                 response.EnsureSuccessStatusCode();
                 throw;
             }
-            catch (XmlException) when (!response.IsSuccessStatusCode) {
+            catch (XmlException) when (!response.IsSuccessStatusCode)
+            {
                 response.EnsureSuccessStatusCode();
                 throw;
             }

@@ -3,13 +3,16 @@
 namespace Opc.Classic.Dcom.Rpc;
 
 /// <inheritdoc/>
-public class IntegrityException : RpcException {
+public class IntegrityException : RpcException
+{
 
     /// <inheritdoc/>
-    public IntegrityException() {
+    public IntegrityException()
+    {
     }
 
     /// <inheritdoc/>
-    public IntegrityException(string message) : base(message) {
+    public IntegrityException(string message) : base(message)
+    {
     }
 }

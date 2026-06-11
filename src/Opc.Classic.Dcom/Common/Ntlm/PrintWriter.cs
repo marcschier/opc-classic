@@ -5,7 +5,8 @@ using System.IO;
 
 namespace SharpCifs.Util.Sharpen;
 
-public sealed class PrintWriter : IDisposable {
+public sealed class PrintWriter : IDisposable
+{
     private readonly TextWriter _writer;
 
     public PrintWriter(TextWriter writer) => _writer = writer;

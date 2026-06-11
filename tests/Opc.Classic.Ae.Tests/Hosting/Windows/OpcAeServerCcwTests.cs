@@ -19,12 +19,15 @@ namespace Opc.Classic.Ae.Tests.Hosting.Windows;
 /// parity to OpcDaServerCcw, providing IUnknown identity for SCM activation.
 /// </summary>
 [SupportedOSPlatform("windows")]
-public sealed class OpcAeServerCcwTests {
+public sealed class OpcAeServerCcwTests
+{
     private static readonly Guid IID_IUnknown = Guid.Parse("00000000-0000-0000-C000-000000000046");
 
     [Test]
-    public async Task Create_returns_zero_for_unsupported_iid() {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task Create_returns_zero_for_unsupported_iid()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
@@ -34,8 +37,10 @@ public sealed class OpcAeServerCcwTests {
     }
 
     [Test]
-    public async Task Create_returns_nonzero_for_IID_IUnknown() {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task Create_returns_nonzero_for_IID_IUnknown()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
@@ -46,8 +51,10 @@ public sealed class OpcAeServerCcwTests {
     }
 
     [Test]
-    public async Task Create_returns_nonzero_for_IOPCEventServer_iid() {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task Create_returns_nonzero_for_IOPCEventServer_iid()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
@@ -57,8 +64,10 @@ public sealed class OpcAeServerCcwTests {
     }
 
     [Test]
-    public async Task SupportsInterface_returns_true_for_known_iids() {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task SupportsInterface_returns_true_for_known_iids()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
@@ -67,7 +76,8 @@ public sealed class OpcAeServerCcwTests {
         await Assert.That(OpcAeServerCcw.SupportsInterface(Guid.NewGuid())).IsFalse();
     }
 
-    private sealed class StubAeServer : IOpcAeServer {
+    private sealed class StubAeServer : IOpcAeServer
+    {
         public Task<OpcServerStatus> GetStatusAsync(CancellationToken cancellationToken = default) =>
             Task.FromResult(new OpcServerStatus { Spec = OpcStatusSpec.Ae });
 

@@ -5,7 +5,8 @@ namespace Opc.Classic.Dcom.Automation;
 /// <summary>
 /// Implements the <i>FUNCKIND</i> structure of COM Automation.
 /// </summary>
-public enum FuncKind {
+public enum FuncKind
+{
 
     /// <summary>
     /// The function is accessed the same as PUREVIRTUAL,

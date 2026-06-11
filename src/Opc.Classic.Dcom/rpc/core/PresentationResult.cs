@@ -9,7 +9,8 @@ namespace Opc.Classic.Dcom.Rpc.Core;
 /// <summary>
 /// Presentation result
 /// </summary>
-public class PresentationResult : NdrOp {
+public class PresentationResult : NdrOp
+{
 
     /// <summary>
     /// Result
@@ -30,7 +31,8 @@ public class PresentationResult : NdrOp {
     /// Create default result
     /// </summary>
     public PresentationResult() :
-        this(new PresentationSyntax(NdrCodec.NDR_SYNTAX)) {
+        this(new PresentationSyntax(NdrCodec.NDR_SYNTAX))
+    {
     }
 
     /// <summary>
@@ -39,7 +41,8 @@ public class PresentationResult : NdrOp {
     /// <param name="transferSyntax"></param>
     public PresentationResult(PresentationSyntax transferSyntax) :
         this(PresentationResultCode.ACCEPTANCE,
-            PresentationResultReason.REASON_NOT_SPECIFIED, transferSyntax) {
+            PresentationResultReason.REASON_NOT_SPECIFIED, transferSyntax)
+    {
     }
 
     /// <summary>
@@ -49,7 +52,8 @@ public class PresentationResult : NdrOp {
     /// <param name="reason"></param>
     public PresentationResult(PresentationResultCode result,
         PresentationResultReason reason) :
-        this(result, reason, null) {
+        this(result, reason, null)
+    {
     }
 
     /// <summary>
@@ -59,14 +63,16 @@ public class PresentationResult : NdrOp {
     /// <param name="reason"></param>
     /// <param name="transferSyntax"></param>
     public PresentationResult(PresentationResultCode result,
-        PresentationResultReason reason, PresentationSyntax transferSyntax) {
+        PresentationResultReason reason, PresentationSyntax transferSyntax)
+    {
         Result = result;
         Reason = reason;
         TransferSyntax = transferSyntax;
     }
 
     /// <inheritdoc/>
-    public override void Read(NdrCodec ndr) {
+    public override void Read(NdrCodec ndr)
+    {
         ndr.Buffer.Align(4);
         Result = (PresentationResultCode)ndr.ReadUnsignedShort();
         Reason = (PresentationResultReason)ndr.ReadUnsignedShort();
@@ -74,36 +80,44 @@ public class PresentationResult : NdrOp {
         // if (Result == PresentationResultCode.ACCEPTANCE)
         {
             TransferSyntax = new PresentationSyntax();
-            try {
+            try
+            {
                 TransferSyntax.Decode(ndr, ndr.Buffer);
             }
-            catch (NdrException ex) {
+            catch (NdrException ex)
+            {
                 Log.Logger.Verbose(ex, "Read presentation result failed");
             }
         }
     }
 
     /// <inheritdoc/>
-    public override void Write(NdrCodec ndr) {
+    public override void Write(NdrCodec ndr)
+    {
         ndr.Buffer.Align(4, 0);
         ndr.WriteUnsignedShort((int)Result);
         ndr.WriteUnsignedShort((int)Reason);
         // commenting this since the entire packet should be written VRC
         // if (Result == PresentationResultCode.ACCEPTANCE && TransferSyntax != null)
-        if (TransferSyntax != null) {
-            try {
+        if (TransferSyntax != null)
+        {
+            try
+            {
                 TransferSyntax.Encode(ndr, ndr.Buffer);
             }
-            catch (NdrException ex) {
+            catch (NdrException ex)
+            {
                 Log.Logger.Verbose(ex, "Write presentation result failed");
             }
         }
     }
 
     /// <inheritdoc/>
-    public override string ToString() {
+    public override string ToString()
+    {
         var str = new StringBuilder();
-        switch (Result) {
+        switch (Result)
+        {
             case PresentationResultCode.ACCEPTANCE:
                 str.Append("ACCEPTANCE");
                 break;
@@ -118,7 +132,8 @@ public class PresentationResult : NdrOp {
                 break;
         }
         str.Append("; ");
-        switch (Reason) {
+        switch (Reason)
+        {
             case PresentationResultReason.REASON_NOT_SPECIFIED:
                 str.Append("REASON_NOT_SPECIFIED");
                 break;

@@ -12,9 +12,11 @@ using TUnit.Core;
 
 namespace Opc.Classic.Dcom.Tests;
 
-public sealed class ProtectionLevelDefaultsTests {
+public sealed class ProtectionLevelDefaultsTests
+{
     [Test]
-    public async Task Default_protectionLevel_is_INTEGRITY() {
+    public async Task Default_protectionLevel_is_INTEGRITY()
+    {
         var properties = CreateActivationProperties();
         var protectionLevel = ConfigureActivationProtection(properties, sessionSecurityEnabled: false);
 
@@ -22,7 +24,8 @@ public sealed class ProtectionLevelDefaultsTests {
     }
 
     [Test]
-    public async Task Sign_property_is_set_by_default() {
+    public async Task Sign_property_is_set_by_default()
+    {
         var properties = CreateActivationProperties();
         ConfigureActivationProtection(properties, sessionSecurityEnabled: false);
 
@@ -33,7 +36,8 @@ public sealed class ProtectionLevelDefaultsTests {
     }
 
     [Test]
-    public async Task Session_security_enabled_escalates_to_PRIVACY() {
+    public async Task Session_security_enabled_escalates_to_PRIVACY()
+    {
         var properties = CreateActivationProperties();
         var protectionLevel = ConfigureActivationProtection(properties, sessionSecurityEnabled: true);
 
@@ -42,7 +46,8 @@ public sealed class ProtectionLevelDefaultsTests {
         await Assert.That(properties.GetProperty("rpc.ntlm.seal")).IsEqualTo("true");
     }
 
-    private static ProtectionLevel ConfigureActivationProtection(PropertyBag properties, bool sessionSecurityEnabled) {
+    private static ProtectionLevel ConfigureActivationProtection(PropertyBag properties, bool sessionSecurityEnabled)
+    {
         var runtimeType = typeof(ProtectionLevel).Assembly.GetType(
             "Opc.Classic.Dcom.Core.ComOxidRuntime", throwOnError: true)!;
         var method = runtimeType.GetMethod(
@@ -52,7 +57,8 @@ public sealed class ProtectionLevelDefaultsTests {
             null, new object?[] { properties, sessionSecurityEnabled, "user", "password" })!;
     }
 
-    private static PropertyBag CreateActivationProperties() {
+    private static PropertyBag CreateActivationProperties()
+    {
         var properties = new PropertyBag();
         properties.SetProperty("rpc.ntlm.lanManagerKey", "false");
         properties.SetProperty("rpc.ntlm.sign", "false");

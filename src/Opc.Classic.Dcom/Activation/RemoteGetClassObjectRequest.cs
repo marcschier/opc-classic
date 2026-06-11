@@ -12,7 +12,8 @@ namespace Opc.Classic.Dcom.Core;
 public sealed record RemoteGetClassObjectRequest(
     Guid Clsid,
     Guid RequestedIid,
-    IReadOnlyList<int> ProtocolSequences) {
+    IReadOnlyList<int> ProtocolSequences)
+{
     /// <summary>Decoded activation properties supplied by the client.</summary>
     public ActivationProperties ActivationProperties { get; init; } = ActivationProperties.Empty;
 

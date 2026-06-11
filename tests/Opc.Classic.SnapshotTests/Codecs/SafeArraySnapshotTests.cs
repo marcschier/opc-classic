@@ -10,7 +10,8 @@ using TUnit.Core;
 
 namespace Opc.Classic.SnapshotTests.Codecs;
 
-public sealed class SafeArraySnapshotTests {
+public sealed class SafeArraySnapshotTests
+{
     [Test]
     public async Task One_dimensional_i4_array_encodes_to_stable_bytes() =>
         await VerifySafeArray("OpcSafeArray", "1-D VT_I4[5]", OpcSafeArray.OfInt32([1, 2, 3, 4, 5]));

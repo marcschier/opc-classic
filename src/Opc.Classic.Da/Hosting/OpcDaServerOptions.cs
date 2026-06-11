@@ -8,7 +8,8 @@ using System;
 namespace Opc.Classic.Da.Hosting;
 
 /// <summary>Configuration for a managed OPC DA server host.</summary>
-public sealed record OpcDaServerOptions {
+public sealed record OpcDaServerOptions
+{
     /// <summary>Gets the COM class identifier exposed to OPC DA clients.</summary>
     public required Guid Clsid { get; set; }
 

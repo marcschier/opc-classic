@@ -18,10 +18,12 @@ using TUnit.Core;
 
 namespace Opc.Classic.Integration.Tests.CompatMatrix;
 
-public sealed class AeManagedClientOverTransportTests {
+public sealed class AeManagedClientOverTransportTests
+{
     [Test]
     [Category("CompatMatrix.Loopback")]
-    public async Task Ae_managed_client_round_trips_GetStatus_over_real_listener() {
+    public async Task Ae_managed_client_round_trips_GetStatus_over_real_listener()
+    {
         using var timeout = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current!.CancellationToken);
         timeout.CancelAfter(TimeSpan.FromSeconds(10));
         CancellationToken cancellationToken = timeout.Token;
@@ -31,7 +33,8 @@ public sealed class AeManagedClientOverTransportTests {
         OpcAeServerHost host = ResolveHost(provider);
 
         await host.StartAsync(cancellationToken);
-        try {
+        try
+        {
             await using DcomCallChannel channel = await ConnectClientAsync(host, cancellationToken);
             var proxy = new IOPCEventServerClientProxy(channel);
 
@@ -43,14 +46,16 @@ public sealed class AeManagedClientOverTransportTests {
             await Assert.That(status.ServerVersion).IsEqualTo(new Version(1, 10, 1));
             await Assert.That(stub.StatusCallCount).IsEqualTo(1);
         }
-        finally {
+        finally
+        {
             await host.StopAsync(CancellationToken.None);
         }
     }
 
     [Test]
     [Category("CompatMatrix.Loopback")]
-    public async Task Ae_managed_client_round_trips_QueryAvailableFilters_and_categories_over_real_listener() {
+    public async Task Ae_managed_client_round_trips_QueryAvailableFilters_and_categories_over_real_listener()
+    {
         using var timeout = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current!.CancellationToken);
         timeout.CancelAfter(TimeSpan.FromSeconds(10));
         CancellationToken cancellationToken = timeout.Token;
@@ -60,7 +65,8 @@ public sealed class AeManagedClientOverTransportTests {
         OpcAeServerHost host = ResolveHost(provider);
 
         await host.StartAsync(cancellationToken);
-        try {
+        try
+        {
             await using DcomCallChannel channel = await ConnectClientAsync(host, cancellationToken);
             var proxy = new IOPCEventServerClientProxy(channel);
 
@@ -78,14 +84,16 @@ public sealed class AeManagedClientOverTransportTests {
             await Assert.That(stub.FilterCallCount).IsEqualTo(1);
             await Assert.That(stub.CategoryCallCount).IsEqualTo(1);
         }
-        finally {
+        finally
+        {
             await host.StopAsync(CancellationToken.None);
         }
     }
 
     [Test]
     [Category("CompatMatrix.Loopback")]
-    public async Task Ae_managed_client_two_back_to_back_calls_share_connection() {
+    public async Task Ae_managed_client_two_back_to_back_calls_share_connection()
+    {
         using var timeout = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current!.CancellationToken);
         timeout.CancelAfter(TimeSpan.FromSeconds(10));
         CancellationToken cancellationToken = timeout.Token;
@@ -95,7 +103,8 @@ public sealed class AeManagedClientOverTransportTests {
         OpcAeServerHost host = ResolveHost(provider);
 
         await host.StartAsync(cancellationToken);
-        try {
+        try
+        {
             await using DcomCallChannel channel = await ConnectClientAsync(host, cancellationToken);
             var proxy = new IOPCEventServerClientProxy(channel);
 
@@ -107,7 +116,8 @@ public sealed class AeManagedClientOverTransportTests {
             await Assert.That(stub.StatusCallCount).IsEqualTo(1);
             await Assert.That(stub.FilterCallCount).IsEqualTo(1);
         }
-        finally {
+        finally
+        {
             await host.StopAsync(CancellationToken.None);
         }
     }
@@ -116,14 +126,16 @@ public sealed class AeManagedClientOverTransportTests {
     // builds a root-only RpcServerConnectionProcessor and does not pass an
     // OpcObjectRegistry for object-IPID routing like the DA host does.
 
-    private static ServiceProvider BuildServiceProvider(StubAeServer server) {
+    private static ServiceProvider BuildServiceProvider(StubAeServer server)
+    {
         var services = new ServiceCollection();
         services.AddLogging();
         services.AddSingleton<IOpcAeServer>(server);
         services.AddSingleton<OpcObjectRegistry>();
         services.AddSingleton<OpcAeServerHost>();
         services.AddSingleton<IOpcServerHost>(static sp => sp.GetRequiredService<OpcAeServerHost>());
-        services.Configure<OpcAeServerOptions>(static options => {
+        services.Configure<OpcAeServerOptions>(static options =>
+        {
             options.Clsid = Guid.NewGuid();
             options.ProgId = "Managed.Ae.Compat.1";
             options.FriendlyName = "Managed AE transport test server";
@@ -137,7 +149,8 @@ public sealed class AeManagedClientOverTransportTests {
 
     private static async Task<DcomCallChannel> ConnectClientAsync(
         OpcAeServerHost host,
-        CancellationToken cancellationToken) {
+        CancellationToken cancellationToken)
+    {
         var endpoint = (IPEndPoint?)host.LocalEndpoint
             ?? throw new InvalidOperationException("Host did not expose a bound endpoint after StartAsync.");
         TcpClientTransport transport = await TcpClientTransport.ConnectAsync(

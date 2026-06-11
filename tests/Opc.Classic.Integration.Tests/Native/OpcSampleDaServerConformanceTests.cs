@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -10,7 +10,8 @@ using TUnit.Core;
 
 namespace Opc.Classic.Tests.Integration.Native;
 
-public sealed class OpcSampleDaServerConformanceTests {
+public sealed class OpcSampleDaServerConformanceTests
+{
     private const string SampleProgId = "OPCSample.OpcDaServer.1";
     private static readonly Guid SampleClsid = new("625C49A1-BE1C-45D7-9A8A-14BEDCF5CE6C");
     // ProgID is derived by interop/samples/SampleServer/Da/Server/OpcDaServer.cpp registration macros.
@@ -20,7 +21,8 @@ public sealed class OpcSampleDaServerConformanceTests {
 
     [Test]
     [Category("NativeConformance.Loopback")]
-    public async Task GetStatus_loopback_returns_running_state() {
+    public async Task GetStatus_loopback_returns_running_state()
+    {
         var serverImpl = StubDaServer.NativeSample();
         var (proxy, channel) = StubDaServer.CreateLoopbackProxy(serverImpl);
 
@@ -40,14 +42,17 @@ public sealed class OpcSampleDaServerConformanceTests {
 
     [Test]
     [Category("NativeConformance")]
-    public async Task GetStatus_returns_running_state() {
-        if (NativeServerProbe.ShouldSkip(SampleProgId, SampleClsid, out var reason)) {
+    public async Task GetStatus_returns_running_state()
+    {
+        if (NativeServerProbe.ShouldSkip(SampleProgId, SampleClsid, out var reason))
+        {
             SoftSkip(reason);
             return;
         }
 
         var proxy = await TryCreateProxyAsync(CancellationToken.None).ConfigureAwait(false);
-        if (proxy is null) {
+        if (proxy is null)
+        {
             await AssertNativeDaScaffoldReadyAsync(nameof(GetStatus_returns_running_state), IOPCServer.Opnums.GetStatusAsync).ConfigureAwait(false);
             return;
         }
@@ -59,14 +64,17 @@ public sealed class OpcSampleDaServerConformanceTests {
 
     [Test]
     [Category("NativeConformance")]
-    public async Task GetErrorString_for_S_OK_returns_localized_string() {
-        if (NativeServerProbe.ShouldSkip(SampleProgId, SampleClsid, out var reason)) {
+    public async Task GetErrorString_for_S_OK_returns_localized_string()
+    {
+        if (NativeServerProbe.ShouldSkip(SampleProgId, SampleClsid, out var reason))
+        {
             SoftSkip(reason);
             return;
         }
 
         var proxy = await TryCreateProxyAsync(CancellationToken.None).ConfigureAwait(false);
-        if (proxy is null) {
+        if (proxy is null)
+        {
             await AssertNativeDaScaffoldReadyAsync(nameof(GetErrorString_for_S_OK_returns_localized_string), IOPCServer.Opnums.GetErrorStringAsync).ConfigureAwait(false);
             return;
         }
@@ -78,8 +86,10 @@ public sealed class OpcSampleDaServerConformanceTests {
 
     [Test]
     [Category("NativeConformance")]
-    public async Task AddGroup_then_RemoveGroup_round_trips() {
-        if (NativeServerProbe.ShouldSkip(SampleProgId, SampleClsid, out var reason)) {
+    public async Task AddGroup_then_RemoveGroup_round_trips()
+    {
+        if (NativeServerProbe.ShouldSkip(SampleProgId, SampleClsid, out var reason))
+        {
             SoftSkip(reason);
             return;
         }
@@ -90,8 +100,10 @@ public sealed class OpcSampleDaServerConformanceTests {
 
     [Test]
     [Category("NativeConformance")]
-    public async Task GetGroupByName_returns_handle_for_named_group() {
-        if (NativeServerProbe.ShouldSkip(SampleProgId, SampleClsid, out var reason)) {
+    public async Task GetGroupByName_returns_handle_for_named_group()
+    {
+        if (NativeServerProbe.ShouldSkip(SampleProgId, SampleClsid, out var reason))
+        {
             SoftSkip(reason);
             return;
         }
@@ -100,7 +112,8 @@ public sealed class OpcSampleDaServerConformanceTests {
         await Assert.That(ConformanceMetadata.ReadType<IOPCGroupStateMgt>()).IsNotNull();
     }
 
-    private static async Task AssertNativeDaScaffoldReadyAsync(string methodName, int expectedOpnum) {
+    private static async Task AssertNativeDaScaffoldReadyAsync(string methodName, int expectedOpnum)
+    {
         await Assert.That(ConformanceMetadata.HasCategory(typeof(OpcSampleDaServerConformanceTests), methodName, "NativeConformance")).IsTrue();
         await Assert.That(ConformanceMetadata.ReadType<IOPCServer>()).IsNotNull();
         await Assert.That(ConformanceMetadata.ReadType<IOPCServerClientProxy>()).IsNotNull();
@@ -108,7 +121,8 @@ public sealed class OpcSampleDaServerConformanceTests {
         await AssertNativeProbeRecognizesMissingServerAsync().ConfigureAwait(false);
     }
 
-    private static async Task AssertNativeProbeRecognizesMissingServerAsync() {
+    private static async Task AssertNativeProbeRecognizesMissingServerAsync()
+    {
         var missingProgId = "Opc.Classic.Missing.Native." + Guid.NewGuid().ToString("N");
         var shouldSkip = NativeServerProbe.ShouldSkip(missingProgId, out var reason);
 
@@ -116,8 +130,10 @@ public sealed class OpcSampleDaServerConformanceTests {
         await Assert.That(reason.Length).IsGreaterThan(0);
     }
 
-    private static async Task<IOPCServerClientProxy?> TryCreateProxyAsync(CancellationToken cancellationToken) {
-        if (ConnectAsync is null) {
+    private static async Task<IOPCServerClientProxy?> TryCreateProxyAsync(CancellationToken cancellationToken)
+    {
+        if (ConnectAsync is null)
+        {
             return null;
         }
 
@@ -125,7 +141,8 @@ public sealed class OpcSampleDaServerConformanceTests {
         return new IOPCServerClientProxy(channel);
     }
 
-    private static void SoftSkip(string reason) {
+    private static void SoftSkip(string reason)
+    {
         // TUnit has no portable arbitrary runtime skip for this repository's current version.
         // Native conformance tests therefore soft-skip by logging and returning successfully.
         Console.WriteLine(reason);

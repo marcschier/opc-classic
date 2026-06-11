@@ -24,49 +24,61 @@ namespace Opc.Classic.Da.Hosting;
 /// <see cref="DefaultBrowseServerAddressSpace"/> with an
 /// <see cref="InMemoryAddressSpace"/> or a custom <see cref="IOpcAddressSpace"/>.
 /// </remarks>
-public sealed class DefaultBrowseServerAddressSpace : IOPCBrowseServerAddressSpace {
+public sealed class DefaultBrowseServerAddressSpace : IOPCBrowseServerAddressSpace
+{
     private readonly IOpcAddressSpace _addressSpace;
     private readonly Lock _lock = new();
     private string _browsePosition = string.Empty;
 
     /// <summary>Initializes with an empty flat address space.</summary>
     public DefaultBrowseServerAddressSpace()
-        : this(new FlatHierarchicalNamespace()) {
+        : this(new FlatHierarchicalNamespace())
+    {
     }
 
     /// <summary>Initializes with the supplied address space.</summary>
-    public DefaultBrowseServerAddressSpace(IOpcAddressSpace addressSpace) {
+    public DefaultBrowseServerAddressSpace(IOpcAddressSpace addressSpace)
+    {
         _addressSpace = addressSpace ?? throw new ArgumentNullException(nameof(addressSpace));
     }
 
     /// <summary>Test helper: the current browse position.</summary>
-    public string CurrentBrowsePosition {
-        get {
-            lock (_lock) {
+    public string CurrentBrowsePosition
+    {
+        get
+        {
+            lock (_lock)
+            {
                 return _browsePosition;
             }
         }
     }
 
     /// <inheritdoc />
-    public Task<int> QueryOrganizationAsync(CancellationToken cancellationToken = default) {
+    public Task<int> QueryOrganizationAsync(CancellationToken cancellationToken = default)
+    {
         cancellationToken.ThrowIfCancellationRequested();
         return Task.FromResult(_addressSpace.IsHierarchical ? 2 : 1);
     }
 
     /// <inheritdoc />
-    public Task ChangeBrowsePositionAsync(int browseDirection, string browsePosition, CancellationToken cancellationToken = default) {
+    public Task ChangeBrowsePositionAsync(int browseDirection, string browsePosition, CancellationToken cancellationToken = default)
+    {
         cancellationToken.ThrowIfCancellationRequested();
-        if (!_addressSpace.IsHierarchical) {
+        if (!_addressSpace.IsHierarchical)
+        {
             throw new OpcException(OpcResultId.NotSupported);
         }
-        lock (_lock) {
-            switch (browseDirection) {
+        lock (_lock)
+        {
+            switch (browseDirection)
+            {
                 case 0: // OPC_BROWSE_UP
                     _browsePosition = MoveUp(_browsePosition);
                     break;
                 case 1: // OPC_BROWSE_DOWN
-                    if (string.IsNullOrEmpty(browsePosition)) {
+                    if (string.IsNullOrEmpty(browsePosition))
+                    {
                         throw new OpcException(OpcResultId.InvalidArg);
                     }
                     _browsePosition = string.IsNullOrEmpty(_browsePosition)
@@ -89,7 +101,8 @@ public sealed class DefaultBrowseServerAddressSpace : IOPCBrowseServerAddressSpa
         string filterCriteria,
         ushort dataTypeFilter,
         int accessRightsFilter,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         _ = browseFilterType; _ = filterCriteria; _ = dataTypeFilter; _ = accessRightsFilter;
         cancellationToken.ThrowIfCancellationRequested();
         // The result drives an IEnumString enumerator on the wire. The address
@@ -109,17 +122,20 @@ public sealed class DefaultBrowseServerAddressSpace : IOPCBrowseServerAddressSpa
     }
 
     /// <inheritdoc />
-    public Task<string> GetItemIdAsync(string itemDataId, CancellationToken cancellationToken = default) {
+    public Task<string> GetItemIdAsync(string itemDataId, CancellationToken cancellationToken = default)
+    {
         ArgumentException.ThrowIfNullOrEmpty(itemDataId);
         string position;
-        lock (_lock) {
+        lock (_lock)
+        {
             position = _browsePosition;
         }
         return _addressSpace.GetItemIdAsync(position, itemDataId, cancellationToken);
     }
 
     /// <inheritdoc />
-    public Task<IOpcInterfaceRef> BrowseAccessPathsAsync(string itemId, CancellationToken cancellationToken = default) {
+    public Task<IOpcInterfaceRef> BrowseAccessPathsAsync(string itemId, CancellationToken cancellationToken = default)
+    {
         _ = itemId;
         cancellationToken.ThrowIfCancellationRequested();
         throw new OpcException(OpcResultId.NotSupported);
@@ -129,16 +145,20 @@ public sealed class DefaultBrowseServerAddressSpace : IOPCBrowseServerAddressSpa
     /// Test helper: snapshots the current branch's items at the current
     /// browse position (not part of the OPC wire interface).
     /// </summary>
-    public Task<OpcBrowseResult> SnapshotCurrentBranchAsync(OpcBrowseElementKind kind, CancellationToken cancellationToken = default) {
+    public Task<OpcBrowseResult> SnapshotCurrentBranchAsync(OpcBrowseElementKind kind, CancellationToken cancellationToken = default)
+    {
         string position;
-        lock (_lock) {
+        lock (_lock)
+        {
             position = _browsePosition;
         }
         return _addressSpace.BrowseAsync(position, kind, cancellationToken);
     }
 
-    private static string MoveUp(string position) {
-        if (string.IsNullOrEmpty(position)) {
+    private static string MoveUp(string position)
+    {
+        if (string.IsNullOrEmpty(position))
+        {
             return string.Empty;
         }
         int lastDot = position.LastIndexOf('.');

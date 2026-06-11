@@ -16,13 +16,16 @@ using TUnit.Core;
 
 namespace Opc.Classic.Dcom.Tests.Transport;
 
-public sealed class PduCodecTests {
+public sealed class PduCodecTests
+{
     [Test]
-    public async Task DecodePdu_round_trips_AlterContextPdu() {
+    public async Task DecodePdu_round_trips_AlterContextPdu()
+    {
         // AlterContextPdu was previously missing from the client-side DecodePdu
         // switch. ocom-1a adds it because the server-side processor must accept
         // it from clients adding a new presentation context.
-        var pdu = new AlterContextPdu {
+        var pdu = new AlterContextPdu
+        {
             CallId = 7,
             ContextList = [],
         };
@@ -35,7 +38,8 @@ public sealed class PduCodecTests {
     }
 
     [Test]
-    public async Task DecodePdu_round_trips_CancelCoPdu() {
+    public async Task DecodePdu_round_trips_CancelCoPdu()
+    {
         var pdu = new CancelCoPdu { CallId = 42 };
 
         byte[] encoded = PduCodec.EncodePdu(pdu, ConnectionOrientedPdu.MUST_RECEIVE_FRAGMENT_SIZE);
@@ -46,7 +50,8 @@ public sealed class PduCodecTests {
     }
 
     [Test]
-    public async Task DecodePdu_round_trips_OrphanedPdu() {
+    public async Task DecodePdu_round_trips_OrphanedPdu()
+    {
         var pdu = new OrphanedPdu { CallId = 99 };
 
         byte[] encoded = PduCodec.EncodePdu(pdu, ConnectionOrientedPdu.MUST_RECEIVE_FRAGMENT_SIZE);
@@ -57,7 +62,8 @@ public sealed class PduCodecTests {
     }
 
     [Test]
-    public async Task DecodePdu_throws_on_unknown_pdu_type() {
+    public async Task DecodePdu_throws_on_unknown_pdu_type()
+    {
         byte[] frame = new byte[ConnectionOrientedPdu.HEADER_LENGTH];
         frame[ConnectionOrientedPdu.TYPE_OFFSET] = 0xEF;
         frame[ConnectionOrientedPdu.FRAG_LENGTH_OFFSET] = (byte)frame.Length;
@@ -66,12 +72,14 @@ public sealed class PduCodecTests {
     }
 
     [Test]
-    public async Task DecodePdu_throws_on_undersized_frame() {
+    public async Task DecodePdu_throws_on_undersized_frame()
+    {
         await Assert.That(() => { _ = PduCodec.DecodePdu(new byte[4]); }).Throws<InvalidOperationException>();
     }
 
     [Test]
-    public async Task TryGetFragmentLength_returns_false_when_buffer_too_small() {
+    public async Task TryGetFragmentLength_returns_false_when_buffer_too_small()
+    {
         var buffer = new ReadOnlySequence<byte>(new byte[4]);
 
         bool ok = PduCodec.TryGetFragmentLength(buffer, out int length);
@@ -81,7 +89,8 @@ public sealed class PduCodecTests {
     }
 
     [Test]
-    public async Task TryGetFragmentLength_reads_fragment_length_from_header() {
+    public async Task TryGetFragmentLength_reads_fragment_length_from_header()
+    {
         byte[] frame = new byte[ConnectionOrientedPdu.HEADER_LENGTH];
         frame[ConnectionOrientedPdu.TYPE_OFFSET] = RequestCoPdu.REQUEST_TYPE;
         frame[ConnectionOrientedPdu.FRAG_LENGTH_OFFSET] = 0x34;
@@ -95,7 +104,8 @@ public sealed class PduCodecTests {
     }
 
     [Test]
-    public async Task ReadPduFrameAsync_reads_complete_fragment_from_pipe() {
+    public async Task ReadPduFrameAsync_reads_complete_fragment_from_pipe()
+    {
         var pdu = new ShutdownPdu { CallId = 5 };
         byte[] frame = PduCodec.EncodePdu(pdu, ConnectionOrientedPdu.MUST_RECEIVE_FRAGMENT_SIZE);
         var pipe = new Pipe();
@@ -111,7 +121,8 @@ public sealed class PduCodecTests {
     }
 
     [Test]
-    public async Task ReadPduFrameAsync_throws_on_truncated_stream() {
+    public async Task ReadPduFrameAsync_throws_on_truncated_stream()
+    {
         var pipe = new Pipe();
         await pipe.Writer.WriteAsync(new byte[4], TestContext.Current!.CancellationToken);
         await pipe.Writer.CompleteAsync();

@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -43,7 +43,8 @@ namespace Opc.Classic.Mcp.Tools;
 /// separately as AP1/AP2/AP4 — see <c>interop/docs/da-callbacks.md</c>.
 /// </para>
 /// </remarks>
-public sealed class DaCallbackEndpoint : IAsyncDisposable {
+public sealed class DaCallbackEndpoint : IAsyncDisposable
+{
     private static readonly Action<ILogger, EndPoint, Exception?> EndpointStarted =
         LoggerMessage.Define<EndPoint>(LogLevel.Information, new EventId(1, nameof(EndpointStarted)),
             "DaCallbackEndpoint: loopback IOPCDataCallback listener bound to {Endpoint}");
@@ -61,7 +62,8 @@ public sealed class DaCallbackEndpoint : IAsyncDisposable {
     private bool _disposed;
 
     /// <summary>Creates an unstarted endpoint.</summary>
-    public DaCallbackEndpoint(ILogger? logger = null) {
+    public DaCallbackEndpoint(ILogger? logger = null)
+    {
         _logger = logger ?? NullLogger.Instance;
     }
 
@@ -82,12 +84,15 @@ public sealed class DaCallbackEndpoint : IAsyncDisposable {
     public Guid IRemUnknownIpid => _objectExporter?.IRemUnknownIpid ?? Guid.Empty;
 
     /// <summary>Starts the loopback listener. Idempotent — calling again is a no-op.</summary>
-    public async Task StartAsync(CancellationToken cancellationToken) {
+    public async Task StartAsync(CancellationToken cancellationToken)
+    {
         ObjectDisposedException.ThrowIf(_disposed, this);
 
         await _lifecycleLock.WaitAsync(cancellationToken).ConfigureAwait(false);
-        try {
-            if (_listener is not null) {
+        try
+        {
+            if (_listener is not null)
+            {
                 return;
             }
 
@@ -102,7 +107,8 @@ public sealed class DaCallbackEndpoint : IAsyncDisposable {
             // probe times out and the callback channel is abandoned.
             var objectExporter = new IObjectExporterDispatcher(
                 endpointProvider: () => _listener?.LocalEndpoint as IPEndPoint);
-            var rootDispatchers = new Dictionary<Guid, IOpcServerDispatcher> {
+            var rootDispatchers = new Dictionary<Guid, IOpcServerDispatcher>
+            {
                 [IObjectExporterDispatcher.InterfaceId] = objectExporter,
             };
             var processor = new RpcServerConnectionProcessor(
@@ -116,7 +122,8 @@ public sealed class DaCallbackEndpoint : IAsyncDisposable {
 
             EndpointStarted(_logger, listener.LocalEndpoint, null);
         }
-        finally {
+        finally
+        {
             _lifecycleLock.Release();
         }
     }
@@ -126,44 +133,54 @@ public sealed class DaCallbackEndpoint : IAsyncDisposable {
     /// The IPID is what callers embed in the sink OBJREF handed to
     /// <c>IConnectionPoint::Advise</c>.
     /// </summary>
-    public Guid RegisterSink(IOPCDataCallback sink) {
+    public Guid RegisterSink(IOPCDataCallback sink)
+    {
         ArgumentNullException.ThrowIfNull(sink);
         ObjectDisposedException.ThrowIf(_disposed, this);
 
         _lifecycleLock.Wait();
-        try {
-            if (_listener is null) {
+        try
+        {
+            if (_listener is null)
+            {
                 throw new InvalidOperationException("DaCallbackEndpoint must be started before registering sinks.");
             }
 
             var dispatcher = new IOPCDataCallbackServerDispatcher(sink);
-            Guid ipid = _registry.Register(new Dictionary<Guid, IOpcServerDispatcher> {
+            Guid ipid = _registry.Register(new Dictionary<Guid, IOpcServerDispatcher>
+            {
                 [IOPCDataCallback.InterfaceId] = dispatcher,
             });
             _sinksByIpid[ipid] = sink;
             return ipid;
         }
-        finally {
+        finally
+        {
             _lifecycleLock.Release();
         }
     }
 
     /// <summary>Unregisters a previously-registered sink IPID. Returns false when the IPID is not known.</summary>
-    public bool UnregisterSink(Guid ipid) {
-        if (ipid == Guid.Empty || _disposed) {
+    public bool UnregisterSink(Guid ipid)
+    {
+        if (ipid == Guid.Empty || _disposed)
+        {
             return false;
         }
 
         _lifecycleLock.Wait();
-        try {
-            if (!_sinksByIpid.TryRemove(ipid, out _)) {
+        try
+        {
+            if (!_sinksByIpid.TryRemove(ipid, out _))
+            {
                 return false;
             }
 
             _registry.Unregister(ipid);
             return true;
         }
-        finally {
+        finally
+        {
             _lifecycleLock.Release();
         }
     }
@@ -174,39 +191,49 @@ public sealed class DaCallbackEndpoint : IAsyncDisposable {
     /// bound TCP endpoint. Caller hands this to
     /// <c>IConnectionPoint::Advise</c>.
     /// </summary>
-    public IOpcInterfaceRef BuildSinkObjRef(Guid ipid) {
+    public IOpcInterfaceRef BuildSinkObjRef(Guid ipid)
+    {
         ObjectDisposedException.ThrowIf(_disposed, this);
 
         _lifecycleLock.Wait();
-        try {
-            if (_listener?.LocalEndpoint is not IPEndPoint endpoint) {
+        try
+        {
+            if (_listener?.LocalEndpoint is not IPEndPoint endpoint)
+            {
                 throw new InvalidOperationException("DaCallbackEndpoint is not started or did not bind a TCP endpoint.");
             }
 
-            if (!_sinksByIpid.ContainsKey(ipid)) {
+            if (!_sinksByIpid.ContainsKey(ipid))
+            {
                 throw new ArgumentException($"IPID {ipid:D} is not registered with this endpoint.", nameof(ipid));
             }
 
             return OpcSinkObjRefBuilder.Build(IOPCDataCallback.InterfaceId, ipid, endpoint);
         }
-        finally {
+        finally
+        {
             _lifecycleLock.Release();
         }
     }
 
     /// <summary>Stops the listener; idempotent.</summary>
-    public Task StopAsync(CancellationToken cancellationToken) {
-        if (_disposed) {
+    public Task StopAsync(CancellationToken cancellationToken)
+    {
+        if (_disposed)
+        {
             return Task.CompletedTask;
         }
         return StopCoreAsync(cancellationToken);
     }
 
-    private async Task StopCoreAsync(CancellationToken cancellationToken) {
+    private async Task StopCoreAsync(CancellationToken cancellationToken)
+    {
         await _lifecycleLock.WaitAsync(cancellationToken).ConfigureAwait(false);
-        try {
+        try
+        {
             OpcServerListener? listener = _listener;
-            if (listener is null) {
+            if (listener is null)
+            {
                 return;
             }
 
@@ -216,21 +243,26 @@ public sealed class DaCallbackEndpoint : IAsyncDisposable {
             await listener.DisposeAsync().ConfigureAwait(false);
             EndpointStopped(_logger, listener.LocalEndpoint, null);
         }
-        finally {
+        finally
+        {
             _lifecycleLock.Release();
         }
     }
 
     /// <inheritdoc/>
-    public async ValueTask DisposeAsync() {
-        if (_disposed) {
+    public async ValueTask DisposeAsync()
+    {
+        if (_disposed)
+        {
             return;
         }
 
-        try {
+        try
+        {
             await StopCoreAsync(CancellationToken.None).ConfigureAwait(false);
         }
-        finally {
+        finally
+        {
             _disposed = true;
             _sinksByIpid.Clear();
             _lifecycleLock.Dispose();

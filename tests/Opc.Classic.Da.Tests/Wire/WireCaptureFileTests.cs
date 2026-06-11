@@ -19,14 +19,17 @@ using TUnit.Core;
 
 namespace Opc.Classic.Da.Tests.Wire;
 
-public sealed class WireCaptureFileTests {
+public sealed class WireCaptureFileTests
+{
     private static readonly Guid SampleIid = new("39C13A4D-011E-11D0-9675-0020AFD8ADB3");
 
     [Test]
-    public async Task LoadsRequestAndResponseBytesEmittedByWireCapturingCallChannel() {
+    public async Task LoadsRequestAndResponseBytesEmittedByWireCapturingCallChannel()
+    {
         string dir = Path.Combine(Path.GetTempPath(), "wire-replay-test-" + Guid.NewGuid().ToString("N"));
         Directory.CreateDirectory(dir);
-        try {
+        try
+        {
             var requestBytes = new byte[]
             {
                 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08,
@@ -56,22 +59,26 @@ public sealed class WireCaptureFileTests {
             await Assert.That(capture.Opnum).IsEqualTo(7);
             await Assert.That(capture.Metadata["hresult"]).IsEqualTo("0x00040003");
         }
-        finally {
+        finally
+        {
             try { Directory.Delete(dir, recursive: true); } catch { /* best-effort */ }
         }
     }
 
     [Test]
-    public async Task FormatResponseContext_RendersHexWindowAroundOffset() {
+    public async Task FormatResponseContext_RendersHexWindowAroundOffset()
+    {
         byte[] response = new byte[32];
-        for (int i = 0; i < response.Length; i++) {
+        for (int i = 0; i < response.Length; i++)
+        {
             response[i] = (byte)i;
         }
         var inner = new InMemoryCallChannel((_, _, _, _) => Task.FromResult(new NdrCallResult(0, response)));
 
         string dir = Path.Combine(Path.GetTempPath(), "wire-replay-fmt-" + Guid.NewGuid().ToString("N"));
         Directory.CreateDirectory(dir);
-        try {
+        try
+        {
             await new WireCapturingCallChannel(inner, dir, "fmt-test").InvokeAsync(SampleIid, 3, ReadOnlyMemory<byte>.Empty, CancellationToken.None);
             string file = Directory.GetFiles(dir, "*.hex")[0];
 
@@ -83,7 +90,8 @@ public sealed class WireCaptureFileTests {
             // Byte at offset 16 is 0x10 — confirm the marker lands there.
             await Assert.That(window.Contains(">>10", StringComparison.Ordinal)).IsTrue();
         }
-        finally {
+        finally
+        {
             try { Directory.Delete(dir, recursive: true); } catch { /* best-effort */ }
         }
     }

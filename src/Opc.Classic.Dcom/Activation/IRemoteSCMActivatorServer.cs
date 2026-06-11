@@ -9,7 +9,8 @@ using System.Threading.Tasks;
 namespace Opc.Classic.Dcom.Core;
 
 /// <summary>Server-side contract for IRemoteSCMActivator activation handling.</summary>
-public interface IRemoteSCMActivatorServer : IRemoteSCMActivator {
+public interface IRemoteSCMActivatorServer : IRemoteSCMActivator
+{
     /// <summary>Handles a decoded RemoteCreateInstance request.</summary>
     Task<RemoteCreateInstanceResponse> RemoteCreateInstanceAsync(
         RemoteCreateInstanceRequest request,

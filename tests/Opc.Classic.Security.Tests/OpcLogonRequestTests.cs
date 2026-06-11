@@ -9,9 +9,11 @@ using TUnit.Core;
 
 namespace Opc.Classic.Security.Tests;
 
-public sealed class OpcLogonRequestTests {
+public sealed class OpcLogonRequestTests
+{
     [Test]
-    public async Task Equality_UsesUserIdAndPassword() {
+    public async Task Equality_UsesUserIdAndPassword()
+    {
         var left = new OpcLogonRequest("operator", "correct");
         var right = new OpcLogonRequest("operator", "correct");
         var different = new OpcLogonRequest("operator", "other");
@@ -24,25 +26,31 @@ public sealed class OpcLogonRequestTests {
     }
 
     [Test]
-    public async Task Constructor_RejectsNullOrEmptyUserId() {
-        await Assert.That(() => {
+    public async Task Constructor_RejectsNullOrEmptyUserId()
+    {
+        await Assert.That(() =>
+        {
             _ = new OpcLogonRequest(null!, "password");
         }).Throws<ArgumentException>();
 
-        await Assert.That(() => {
+        await Assert.That(() =>
+        {
             _ = new OpcLogonRequest(string.Empty, "password");
         }).Throws<ArgumentException>();
     }
 
     [Test]
-    public async Task Constructor_RejectsNullPassword() {
-        await Assert.That(() => {
+    public async Task Constructor_RejectsNullPassword()
+    {
+        await Assert.That(() =>
+        {
             _ = new OpcLogonRequest("operator", null!);
         }).Throws<ArgumentNullException>();
     }
 
     [Test]
-    public async Task Constructor_AllowsEmptyPassword() {
+    public async Task Constructor_AllowsEmptyPassword()
+    {
         var request = new OpcLogonRequest("operator", string.Empty);
 
         await Assert.That(request.Password).IsEqualTo(string.Empty);

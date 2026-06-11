@@ -23,13 +23,15 @@ namespace Opc.Classic.Dcom.Core;
 /// Used to manipulate Oxid details. one instance is created per binding
 /// call to the oxid resolver.
 /// </summary>
-internal sealed class ComOxidRuntimeHelper : Stub {
+internal sealed class ComOxidRuntimeHelper : Stub
+{
 
     /// <summary>
     /// Create runtime helper
     /// </summary>
     /// <param name="properties"></param>
-    internal ComOxidRuntimeHelper(PropertyBag properties) {
+    internal ComOxidRuntimeHelper(PropertyBag properties)
+    {
         TransportFactory = ComRuntimeTransportFactory.Instance;
         Properties = properties;
         // this is never consulted so, putting localhost here.
@@ -46,7 +48,8 @@ internal sealed class ComOxidRuntimeHelper : Stub {
     /// <exception cref="IOException"></exception>
     /// <param name="portNumLocal"></param>
     /// <param name="portNumRemote"></param>
-    internal void StartOxid(int portNumLocal, int portNumRemote) {
+    internal void StartOxid(int portNumLocal, int portNumRemote)
+    {
         var oxidResolverThread = new OxidResolverThread(this,
             "jI_OxidResolver_Client[" + portNumLocal + ", " + portNumRemote + "]");
         oxidResolverThread.SetDaemon(true);
@@ -65,7 +68,8 @@ internal sealed class ComOxidRuntimeHelper : Stub {
     /// <returns></returns>
     internal int StartRemUnknown(string baseIID, string ipidOfRemUnknown,
         string ipidOfComponent, List<string> listOfSupportedInterfaces,
-        out ThreadGroup remUnknownForThisListener) {
+        out ThreadGroup remUnknownForThisListener)
+    {
         var serverSocket = new Socket(SocketType.Stream, ProtocolType.Tcp);
         serverSocket.Bind(new IPEndPoint(IPAddress.Any, 0));
         var remUnknownPort = serverSocket.GetLocalPort();
@@ -87,7 +91,8 @@ internal sealed class ComOxidRuntimeHelper : Stub {
     /// <summary>
     /// Oxid resolver thread
     /// </summary>
-    private sealed class OxidResolverThread : SharpCifs.Util.Sharpen.Thread {
+    private sealed class OxidResolverThread : SharpCifs.Util.Sharpen.Thread
+    {
 #pragma warning disable RECS0154 // Parameter is never used
         /// <summary>
         /// Create thrad
@@ -99,25 +104,32 @@ internal sealed class ComOxidRuntimeHelper : Stub {
             base(name) => _outerInstance = outerInstance;
 
         /// <inheritdoc/>
-        public override void Run() {
-            try {
+        public override void Run()
+        {
+            try
+            {
                 Log.Logger.Information("started startOxid thread: " + GetName());
                 _outerInstance.Attach();
                 ((ComRuntimeEndpoint)_outerInstance.Endpoint).ProcessRequests(
                     new OxidResolverImpl(_outerInstance.Properties), null, new List<string>(), Canceller.Token);
             }
-            catch (OperationCanceledException) {
+            catch (OperationCanceledException)
+            {
                 Log.Logger.Information("Oxid Resolver Thread" +
                     GetName() + " is purposefully closed by cancellation.");
             }
-            catch (Exception e) {
+            catch (Exception e)
+            {
                 Log.Logger.Error(e, "Oxid Resolver Thread: " + e.Message + ", on thread Id: " + GetName());
             }
-            finally {
-                try {
+            finally
+            {
+                try
+                {
                     ((ComRuntimeEndpoint)_outerInstance.Endpoint).Detach();
                 }
-                catch (IOException) {
+                catch (IOException)
+                {
                 }
             }
             Log.Logger.Information("terminating startOxid thread: " + GetName());
@@ -128,7 +140,8 @@ internal sealed class ComOxidRuntimeHelper : Stub {
     /// <summary>
     /// Listener
     /// </summary>
-    private sealed class RemUnknownListenerThread : SharpCifs.Util.Sharpen.Thread {
+    private sealed class RemUnknownListenerThread : SharpCifs.Util.Sharpen.Thread
+    {
 
         /// <summary>
         /// Create thread
@@ -145,7 +158,8 @@ internal sealed class ComOxidRuntimeHelper : Stub {
             string baseIID, string ipidOfRemUnknown, string ipidOfComponent,
             List<string> listOfSupportedInterfaces, Socket serverSocket,
             ThreadGroup remUnknownForThisListener, string name) :
-            base(remUnknownForThisListener, name) {
+            base(remUnknownForThisListener, name)
+        {
             _outerInstance = outerInstance;
             _baseIID = baseIID;
             _ipidOfRemUnknown = ipidOfRemUnknown;
@@ -156,12 +170,16 @@ internal sealed class ComOxidRuntimeHelper : Stub {
         }
 
         /// <inheritdoc/>
-        public override void Run() {
+        public override void Run()
+        {
             Log.Logger.Information("started RemUnknown listener thread for : " + GetName());
-            try {
-                while (!IsCanceled) {
+            try
+            {
+                while (!IsCanceled)
+                {
                     var socket = _serverSocket.Accept();
-                    if (socket == null) {
+                    if (socket == null)
+                    {
                         continue;
                     }
                     Log.Logger.Information("RemUnknown listener: Got Connection from " + socket.GetPort());
@@ -169,7 +187,8 @@ internal sealed class ComOxidRuntimeHelper : Stub {
                     // now create the ComOxidRuntimeHelper Object and start it.
                     // We need a new one since the old one is already attached to the listener.
                     var remUnknownHelper = new ComOxidRuntimeHelper(_outerInstance.Properties);
-                    lock (ComOxidRuntime.Instance.Mutex) {
+                    lock (ComOxidRuntime.Instance.Mutex)
+                    {
                         Interop.Internal_setSocket(socket);
                         remUnknownHelper.Attach();
                     }
@@ -182,16 +201,19 @@ internal sealed class ComOxidRuntimeHelper : Stub {
                     remUnknown.Start();
                 }
             }
-            catch (OperationCanceledException) {
+            catch (OperationCanceledException)
+            {
                 Log.Logger.Information("ComOxidRuntimeHelper RemUnknownListener" +
                     GetName() + " is purposefully closed by cancellation.");
             }
-            catch (IOException e) {
+            catch (IOException e)
+            {
                 Log.Logger.Warning(e, "ComOxidRuntimeHelper RemUnknownListener");
                 Log.Logger.Warning("RemUnknownListener Thread: " + e.Message +
                     ", on thread Id: " + GetName());
             }
-            catch (Exception e) {
+            catch (Exception e)
+            {
                 Log.Logger.Warning(e, "ComOxidRuntimeHelper RemUnknownListener");
             }
             Log.Logger.Information("terminating RemUnknownListener thread: " + GetName());
@@ -200,7 +222,8 @@ internal sealed class ComOxidRuntimeHelper : Stub {
         /// <summary>
         /// Inner thread
         /// </summary>
-        private sealed class RemUnknownThread : SharpCifs.Util.Sharpen.Thread {
+        private sealed class RemUnknownThread : SharpCifs.Util.Sharpen.Thread
+        {
 
             /// <summary>
             /// Create runner
@@ -212,39 +235,49 @@ internal sealed class ComOxidRuntimeHelper : Stub {
             public RemUnknownThread(RemUnknownListenerThread outerInstance,
                 ComOxidRuntimeHelper remUnknownHelper,
                 ThreadGroup remUnknownForThisListener,
-                string name) : base(remUnknownForThisListener, name) {
+                string name) : base(remUnknownForThisListener, name)
+            {
                 _outerInstance = outerInstance;
                 _remUnknownHelper = remUnknownHelper;
             }
 
             /// <inheritdoc/>
-            public override void Run() {
-                try {
+            public override void Run()
+            {
+                try
+                {
                     ((ComRuntimeEndpoint)_remUnknownHelper.Endpoint).ProcessRequests(
                         new RemUnknownObject(_outerInstance._ipidOfRemUnknown, _outerInstance._ipidOfComponent),
                         _outerInstance._baseIID, _outerInstance._listOfSupportedInterfaces, Canceller.Token);
                 }
-                catch (SmbAuthException e) {
+                catch (SmbAuthException e)
+                {
                     Log.Logger.Warning(e, "ComOxidRuntimeHelper RemUnknownThread (not listener)");
                     throw new InteropRuntimeException((int)ErrorCode.INTEROP_CALLBACK_AUTH_FAILURE);
                 }
-                catch (SmbException e) {
+                catch (SmbException e)
+                {
                     // System.out.println(e.getMessage());
                     Log.Logger.Warning(e, "ComOxidRuntimeHelper RemUnknownThread (not listener)");
                     throw new InteropRuntimeException((int)ErrorCode.INTEROP_CALLBACK_SMB_FAILURE);
                 }
-                catch (OperationCanceledException) {
+                catch (OperationCanceledException)
+                {
                     Log.Logger.Information("ComOxidRuntimeHelper RemUnknownThread (not listener)" +
                         GetName() + " is purposefully closed by cancellation.");
                 }
-                catch (IOException e) {
+                catch (IOException e)
+                {
                     Log.Logger.Warning(e, "ComOxidRuntimeHelper RemUnknownThread (not listener)");
                 }
-                finally {
-                    try {
+                finally
+                {
+                    try
+                    {
                         _remUnknownHelper.Detach();
                     }
-                    catch (IOException) {
+                    catch (IOException)
+                    {
                     }
                 }
             }
@@ -268,7 +301,8 @@ internal sealed class ComOxidRuntimeHelper : Stub {
     /// at a time only 1 read --> write, cycle should happen
     /// it is not multithreaded safe.
     /// </summary>
-    internal sealed class OxidResolverImpl : NdrOp, IComRuntimeWorker {
+    internal sealed class OxidResolverImpl : NdrOp, IComRuntimeWorker
+    {
 
 #pragma warning disable RECS0154 // Parameter is never used
         /// <summary>
@@ -301,10 +335,12 @@ internal sealed class ComOxidRuntimeHelper : Stub {
         public override void Write(NdrCodec ndr) => ndr.Buffer = _buffer;
 
         /// <inheritdoc/>
-        public override void Read(NdrCodec ndr) {
+        public override void Read(NdrCodec ndr)
+        {
             // will read according to the opnum.
             // The Opnum should have been set called before this call.
-            switch (Opnum) {
+            switch (Opnum)
+            {
                 case 1:
                     _buffer = ProcessSimplePing(ndr);
                     break;
@@ -331,7 +367,8 @@ internal sealed class ComOxidRuntimeHelper : Stub {
         /// </summary>
         /// <param name="ndr"></param>
         /// <returns></returns>
-        private NdrBuffer ProcessSimplePing(NdrCodec ndr) {
+        private NdrBuffer ProcessSimplePing(NdrCodec ndr)
+        {
             Log.Logger.Information("Oxid Object: SimplePing");
             var b = MarshalUnMarshalHelper.ReadOctetArrayLE(ndr, 8); // setid
             ComOxidRuntime.Instance.AddUpdateSets(
@@ -349,7 +386,8 @@ internal sealed class ComOxidRuntimeHelper : Stub {
         /// </summary>
         /// <param name="ndr"></param>
         /// <returns></returns>
-        private NdrBuffer ProcessComplexPing(NdrCodec ndr) {
+        private NdrBuffer ProcessComplexPing(NdrCodec ndr)
+        {
             Log.Logger.Information("Oxid Object: ComplexPing");
             var b = MarshalUnMarshalHelper.ReadOctetArrayLE(ndr, 8); // setid
             MarshalUnMarshalHelper.Deserialize(
@@ -364,24 +402,28 @@ internal sealed class ComOxidRuntimeHelper : Stub {
             MarshalUnMarshalHelper.Deserialize(
                 ndr, typeof(int)); // length
             var listOfAdds = new List<ObjectId>();
-            for (var i = 0; i < lengthAdds; i++) {
+            for (var i = 0; i < lengthAdds; i++)
+            {
                 listOfAdds.Add(new ObjectId(MarshalUnMarshalHelper.ReadOctetArrayLE(ndr, 8), false));
             }
 
             MarshalUnMarshalHelper.Deserialize(
                 ndr, typeof(int)); // length
             var listOfDels = new List<ObjectId>();
-            for (var i = 0; i < lengthDels; i++) {
+            for (var i = 0; i < lengthDels; i++)
+            {
                 listOfDels.Add(new ObjectId(MarshalUnMarshalHelper.ReadOctetArrayLE(ndr, 8), false));
             }
 
-            if (Arrays.Equals(b, new byte[] { 0, 0, 0, 0, 0, 0, 0, 0 })) {
+            if (Arrays.Equals(b, new byte[] { 0, 0, 0, 0, 0, 0, 0, 0 }))
+            {
                 _random.NextBytes(b);
             }
 
             ComOxidRuntime.Instance.AddUpdateSets(new SetId(b), listOfAdds, listOfDels);
             _buffer = new NdrBuffer(new byte[32], 0);
-            var ndr2 = new NdrCodec {
+            var ndr2 = new NdrCodec
+            {
                 Buffer = _buffer
             };
 
@@ -398,7 +440,8 @@ internal sealed class ComOxidRuntimeHelper : Stub {
         /// </summary>
         /// <param name="ndr"></param>
         /// <returns></returns>
-        private NdrBuffer ProcessServerAlive(NdrCodec ndr) {
+        private NdrBuffer ProcessServerAlive(NdrCodec ndr)
+        {
             System.Diagnostics.Debug.Assert(ndr != null);
             Log.Logger.Information("Oxid Object: ServerAlive");
             var buf = new byte[32]; // 16 + 16=just in case
@@ -415,7 +458,8 @@ internal sealed class ComOxidRuntimeHelper : Stub {
         /// </summary>
         /// <param name="ndr"></param>
         /// <returns></returns>
-        private NdrBuffer ProcessServerAlive2(NdrCodec ndr) {
+        private NdrBuffer ProcessServerAlive2(NdrCodec ndr)
+        {
             System.Diagnostics.Debug.Assert(ndr != null);
             Log.Logger.Information("Oxid Object: ServerAlive2");
             // there is no in params for this.
@@ -425,7 +469,8 @@ internal sealed class ComOxidRuntimeHelper : Stub {
             var buf = new byte[dualStringArray.Length + 4 + 16 + 16]; // just in case - 2 unknown 8 bytes - COMVERSION
             var ndrBuffer = new NdrBuffer(buf, 0);
 
-            var ndr2 = new NdrCodec {
+            var ndr2 = new NdrCodec
+            {
                 Buffer = ndrBuffer
             };
 
@@ -447,7 +492,8 @@ internal sealed class ComOxidRuntimeHelper : Stub {
         /// </summary>
         /// <param name="ndr"></param>
         /// <returns></returns>
-        private NdrBuffer ProcessResolveOxid2(NdrCodec ndr) {
+        private NdrBuffer ProcessResolveOxid2(NdrCodec ndr)
+        {
             Log.Logger.Information("Oxid Object: ResolveOxid2");
             // first read the OXID, then consult the oxid master about it's details.
             var oxid = new Oxid(MarshalUnMarshalHelper.ReadOctetArrayLE(ndr, 8));
@@ -456,14 +502,16 @@ internal sealed class ComOxidRuntimeHelper : Stub {
 
             // now for the array.
             var array = (ComArray)MarshalUnMarshalHelper.Deserialize(ndr,
-                new ComArray(typeof(short), null, 1, true), new CodecContext {
+                new ComArray(typeof(short), null, 1, true), new CodecContext
+                {
                     Flag = InteropFlags.FLAG_REPRESENTATION_ARRAY
                 });
 
             // now query the Resolver master for this data.
             var details = ComOxidRuntime.Instance.GetOxidDetails(oxid);
 
-            if (details == null) {
+            if (details == null)
+            {
                 // not found, now throw an InteropRuntimeException, so that a FaultPdu is sent.
                 throw new InteropRuntimeException(ErrorCode.RPC_E_INVALID_OXID);
             }
@@ -477,10 +525,12 @@ internal sealed class ComOxidRuntimeHelper : Stub {
 
             // create the bindings for this Java Object.
             // this port will go in the new bindings sent to the COM client.
-            try {
+            try
+            {
                 // this is so that repeated calls for Oxid resolution return the same rem unknwon.
                 port = details.PortForRemUnknown;
-                if (port == -1) {
+                if (port == -1)
+                {
                     var remunknownipid = uuid.ToString();
                     port = details.COMRuntimeHelper.StartRemUnknown(
                         details.IID, remunknownipid, details.Ipid,
@@ -490,7 +540,8 @@ internal sealed class ComOxidRuntimeHelper : Stub {
                 }
                 details.PortForRemUnknown = port;
             }
-            catch (IOException) {
+            catch (IOException)
+            {
                 throw new InteropRuntimeException(ErrorCode.E_UNEXPECTED);
             }
 
@@ -504,7 +555,8 @@ internal sealed class ComOxidRuntimeHelper : Stub {
             // the response expected here is defines the byte array size.
             var ndrBuffer = new NdrBuffer(buf, 0);
 
-            var ndr2 = new NdrCodec {
+            var ndr2 = new NdrCodec
+            {
                 Buffer = ndrBuffer
             };
 
@@ -545,9 +597,11 @@ internal sealed class ComOxidRuntimeHelper : Stub {
     /// at a time only 1 read --> write, cycle should happen
     /// it is not multithreaded safe.
     /// </summary>
-    internal sealed class RemUnknownObject : NdrOp, IComRuntimeWorker {
+    internal sealed class RemUnknownObject : NdrOp, IComRuntimeWorker
+    {
 
-        internal RemUnknownObject(string ipidOfme, string ipidOfComponent) {
+        internal RemUnknownObject(string ipidOfme, string ipidOfComponent)
+        {
             _selfIPID = ipidOfme;
             _mapOfIpidsVsRef.AddOrUpdate(ipidOfComponent.ToUpper(CultureInfo.InvariantCulture), 5);
         }
@@ -562,8 +616,10 @@ internal sealed class ComOxidRuntimeHelper : Stub {
         public bool Resolver => false;
 
         /// <inheritdoc/>
-        public UUID CurrentObjectID {
-            set {
+        public UUID CurrentObjectID
+        {
+            set
+            {
                 _objectId = value;
                 _component = ComOxidRuntime.Instance.GetLocalComponentFromIPID(value.ToString());
             }
@@ -580,15 +636,18 @@ internal sealed class ComOxidRuntimeHelper : Stub {
         public override void Write(NdrCodec ndr) => ndr.Buffer = _buffer; // this buffer is prepared via read.
 
         /// <inheritdoc/>
-        public override void Read(NdrCodec ndr) {
+        public override void Read(NdrCodec ndr)
+        {
             // will read according to the opnum. The setOpnum should have been called before this call.
             var ipid = _objectId.ToString();
 
             // this means the call came for IRemUnknown apis, since selfIpid is null or matches the objectID
             // if (selfIPID == null || selfIPID.equalsIgnoreCase(ipid))
             //        if (Interfaces.IID_IRemUnknown.EqualsIgnoreCase(currentIID))
-            if (_selfIPID.Equals(ipid, StringComparison.CurrentCultureIgnoreCase)) {
-                switch (Opnum) {
+            if (_selfIPID.Equals(ipid, StringComparison.CurrentCultureIgnoreCase))
+            {
+                switch (Opnum)
+                {
                     case 3: // IRemUnknown QI.
                         _buffer = QueryInterface(ndr);
                         break;
@@ -598,17 +657,20 @@ internal sealed class ComOxidRuntimeHelper : Stub {
 
                         var retvals = new int[length];
                         var array = (ComArray)MarshalUnMarshalHelper.Deserialize(ndr, kRemInterfaceRefArray,
-                            new CodecContext {
+                            new CodecContext
+                            {
                                 Flag = InteropFlags.FLAG_REPRESENTATION_ARRAY
                             });
                         // saving the ipids with there references. considering public + private references together for now.
                         var structs = (Struct[])array.ArrayInstance;
-                        for (var i = 0; i < length; i++) {
+                        for (var i = 0; i < length; i++)
+                        {
                             var ipidref = ((UUID)structs[i].GetMember(0)).ToString().ToUpper(CultureInfo.InvariantCulture);
                             var publicRefs = (int)structs[i].GetMember(1);
                             var privateRefs = (int)structs[i].GetMember(2);
 
-                            if (!_mapOfIpidsVsRef.Contains(ipidref)) {
+                            if (!_mapOfIpidsVsRef.Contains(ipidref))
+                            {
                                 // this would be strange, since all the ipids we give should be part of the map already.
                                 // have to set 0x80000003 (INVALID ARG here)
                                 retvals[i] = unchecked((int)0x80000003);
@@ -622,11 +684,13 @@ internal sealed class ComOxidRuntimeHelper : Stub {
                         }
                         // preparing the response
                         _buffer = new NdrBuffer(new byte[(length * 4) + 16], 0);
-                        var ndr2 = new NdrCodec {
+                        var ndr2 = new NdrCodec
+                        {
                             Buffer = _buffer
                         };
                         OrpcThat.Encode(ndr2);
-                        for (var i = 0; i < length; i++) {
+                        for (var i = 0; i < length; i++)
+                        {
                             _buffer.Enc_ndr_long(retvals[i]);
                         }
 
@@ -638,24 +702,29 @@ internal sealed class ComOxidRuntimeHelper : Stub {
                         OrpcThis.Decode(ndr);
                         length = ndr.ReadUnsignedShort();
                         array = (ComArray)MarshalUnMarshalHelper.Deserialize(
-                            ndr, kRemInterfaceRefArray, new CodecContext {
+                            ndr, kRemInterfaceRefArray, new CodecContext
+                            {
                                 Flag = InteropFlags.FLAG_REPRESENTATION_ARRAY
                             });
                         // saving the ipids with there references. considering public + private references together for now.
                         structs = (Struct[])array.ArrayInstance;
-                        for (var i = 0; i < length; i++) {
+                        for (var i = 0; i < length; i++)
+                        {
                             var ipidref = ((UUID)structs[i].GetMember(0)).ToString().ToUpper(CultureInfo.InvariantCulture);
                             var publicRefs = (int)structs[i].GetMember(1);
                             var privateRefs = (int)structs[i].GetMember(2);
-                            if (!_mapOfIpidsVsRef.Contains(ipidref)) {
+                            if (!_mapOfIpidsVsRef.Contains(ipidref))
+                            {
                                 continue;
                             }
 
                             var total = _mapOfIpidsVsRef.GetOrDefault(ipidref) - publicRefs - privateRefs;
-                            if (total == 0) {
+                            if (total == 0)
+                            {
                                 _mapOfIpidsVsRef.Remove(ipidref);
                             }
-                            else {
+                            else
+                            {
                                 _mapOfIpidsVsRef.AddOrUpdate(ipidref, total);
                             }
                         }
@@ -665,7 +734,8 @@ internal sealed class ComOxidRuntimeHelper : Stub {
 
                         // I have 1 OID == 1 IPID == 1 java instance.
                         _buffer = new NdrBuffer(new byte[32], 0);
-                        ndr2 = new NdrCodec {
+                        ndr2 = new NdrCodec
+                        {
                             Buffer = _buffer
                         };
                         OrpcThat.Encode(ndr2);
@@ -676,11 +746,13 @@ internal sealed class ComOxidRuntimeHelper : Stub {
                         throw new InteropRuntimeException(ErrorCode.RPC_S_PROCNUM_OUT_OF_RANGE);
                 }
             }
-            else {
+            else
+            {
                 // now use the objectId, just set in before this call to read. That objectId is the IPID on which the
                 // call is being made, and was previously exported during Q.I. The component value was filled during an
                 // alter context or bind, again made some calls before.
-                if (_component == null) {
+                if (_component == null)
+                {
                     Log.Logger.Error("ComOxidRuntimeHelper RemUnknownObject read(): component is null, opnum is " +
                         Opnum + ", IPID is " + ipid + ", selfIpid is " + _selfIPID);
                 }
@@ -689,17 +761,20 @@ internal sealed class ComOxidRuntimeHelper : Stub {
                 var ndr2 = new NdrCodec();
                 var hresult = 0;
                 object[] retArray = null;
-                try {
+                try
+                {
                     result = _component.InvokeMethod(ipid, Opnum, ndr);
                 }
-                catch (InteropException e) {
+                catch (InteropException e)
+                {
                     hresult = (int)e.ErrorCode;
                     Log.Logger.Error(e, "RemUnknownObject read. Exception occured: " + e.ErrorCode);
                 }
 
                 // now if opnum was 6 then this is a dispatch call, so response has to be dispatch response
                 // not the normal one.
-                if (_component.GetInterfaceDefinitionFromIPID(ipid).DispInterface && Opnum == 6) {
+                if (_component.GetInterfaceDefinitionFromIPID(ipid).DispInterface && Opnum == 6)
+                {
                     var result2 = result;
                     // orpcthat
                     // [out] VARIANT * pVarResult,
@@ -708,7 +783,8 @@ internal sealed class ComOxidRuntimeHelper : Stub {
                     // [in, out, size_is(cVarRef)] VARIANTARG * rgVarRef
                     result = new object[4]; // orpcthat gets filled outside
                     var excepInfo = new Struct();
-                    try {
+                    try
+                    {
                         excepInfo.AddMember((short)0);
                         excepInfo.AddMember((short)0);
                         excepInfo.AddMember(new ComString(""));
@@ -719,32 +795,39 @@ internal sealed class ComOxidRuntimeHelper : Stub {
                         excepInfo.AddMember(new ComPointer(null, true));
                         excepInfo.AddMember(0);
                     }
-                    catch (InteropException e) { // not expecting any here
+                    catch (InteropException e)
+                    { // not expecting any here
                         Console.WriteLine(e.ToString());
                         Console.Write(e.StackTrace);
                     }
 
-                    if (result2 == null) {
+                    if (result2 == null)
+                    {
                         ((object[])result)[0] = Variant.CreateEMPTY();
                     }
-                    else {
+                    else
+                    {
                         // now check whether the variant is by ref or not.
                         var variant = (Variant)((object[])result2)[0];
 
-                        try {
-                            if (variant.IsByRef) {
+                        try
+                        {
+                            if (variant.IsByRef)
+                            {
                                 // add empty inplace of this.
                                 ((object[])result)[0] = Variant.CreateEMPTY();
                                 // now update the array at the end.
                                 ((object[])result)[3] = new ComArray(new Variant[] { variant }, true);
 
                             }
-                            else {
+                            else
+                            {
                                 ((object[])result)[0] = ((object[])result2)[0]; // will have only a single index.
                                 ((object[])result)[3] = 0; // Array
                             }
                         }
-                        catch (InteropException e) {
+                        catch (InteropException e)
+                        {
                             throw new InteropRuntimeException(e.ErrorCode);
                         }
                     }
@@ -758,17 +841,22 @@ internal sealed class ComOxidRuntimeHelper : Stub {
                 // have to create a call Object, since these return types could be structs, unions etc. having deffered pointers
                 var callObject = new CallBuilder();
                 callObject.AttachSession(_component.Session);
-                if (result != null) {
+                if (result != null)
+                {
 
-                    if (retArray != null) {
+                    if (retArray != null)
+                    {
                         // serialize all members sequentially.
-                        for (var i = 0; i < retArray.Length; i++) {
+                        for (var i = 0; i < retArray.Length; i++)
+                        {
                             callObject.AddInParamAsObject(retArray[i], InteropFlags.FLAG_NULL);
                         }
                     }
-                    else {
+                    else
+                    {
                         // serialize all members sequentially.
-                        for (var i = 0; i < ((object[])result).Length; i++) {
+                        for (var i = 0; i < ((object[])result).Length; i++)
+                        {
                             callObject.AddInParamAsObject(((object[])result)[i], InteropFlags.FLAG_NULL);
                         }
                     }
@@ -783,7 +871,8 @@ internal sealed class ComOxidRuntimeHelper : Stub {
         /// </summary>
         /// <param name="ndr"></param>
         /// <returns></returns>
-        private NdrBuffer QueryInterface(NdrCodec ndr) {
+        private NdrBuffer QueryInterface(NdrCodec ndr)
+        {
             // now to decompose all
             Log.Logger.Verbose("Within RemUnknownObject: QueryInterface");
             Log.Logger.Verbose("RemUnknownObject: [QI] Before call terminated listOfIIDsQIed are: " + QIedIIDs);
@@ -791,10 +880,12 @@ internal sealed class ComOxidRuntimeHelper : Stub {
 
             // now get the IPID and export the component with a new IPID and IID.
             var ipid = new UUID();
-            try {
+            try
+            {
                 ipid.Decode(ndr, ndr.Buffer);
             }
-            catch (NdrException e) {
+            catch (NdrException e)
+            {
                 Log.Logger.Error(e, "ComOxidRuntimeHelper", "QueryInterface", e);
             }
 
@@ -802,7 +893,8 @@ internal sealed class ComOxidRuntimeHelper : Stub {
             // set theLocalCoClass., the ipid should not be null in this call.
             var details = ComOxidRuntime.Instance.GetComponentFromIPID(ipid.ToString());
 
-            if (details == null) {
+            if (details == null)
+            {
                 // not found, now throw an InteropRuntimeException, so that a FaultPdu is sent.
                 throw new InteropRuntimeException(ErrorCode.RPC_E_INVALID_OXID);
             }
@@ -817,7 +909,8 @@ internal sealed class ComOxidRuntimeHelper : Stub {
             int length = (short)MarshalUnMarshalHelper.Deserialize(
                 ndr, typeof(short)); // length of the requested Interfaces
             var array = (ComArray)MarshalUnMarshalHelper.Deserialize(
-                ndr, new ComArray(typeof(UUID), null, 1, true), new CodecContext {
+                ndr, new ComArray(typeof(UUID), null, 1, true), new CodecContext
+                {
                     Flag = InteropFlags.FLAG_REPRESENTATION_ARRAY
                 });
 
@@ -826,7 +919,8 @@ internal sealed class ComOxidRuntimeHelper : Stub {
             var buffer = new NdrBuffer(b, 0);
 
             // start with response
-            var ndr2 = new NdrCodec {
+            var ndr2 = new NdrCodec
+            {
                 Buffer = buffer
             };
 
@@ -839,31 +933,39 @@ internal sealed class ComOxidRuntimeHelper : Stub {
 
             var arrayOfUUIDs = (object[])array.ArrayInstance;
 
-            for (var i = 0; i < arrayOfUUIDs.Length; i++) {
+            for (var i = 0; i < arrayOfUUIDs.Length; i++)
+            {
                 var iid = (UUID)arrayOfUUIDs[i];
                 Log.Logger.Verbose("RemUnknownObject: [QI] Array iid[" + i + "] is " + iid);
                 // now for each QueryResult
-                try {
+                try
+                {
                     var hresult = ErrorCode.ERROR_SUCCESS;
                     var ipid2 = Guid.NewGuid().ToString();
-                    if (!component.IsIIDPresent(iid.ToString())) {
+                    if (!component.IsIIDPresent(iid.ToString()))
+                    {
                         hresult = ErrorCode.E_NOINTERFACE;
                         ipid2 = Guid.Empty.ToString();
                     }
-                    else {
+                    else
+                    {
                         string tmpIpid = null;
-                        try {
+                        try
+                        {
                             tmpIpid = component.GetIpidFromIID(iid.ToString());
                         }
-                        catch (Exception e) {
+                        catch (Exception e)
+                        {
                             Log.Logger.Error(e, "ComOxidRuntimeHelper: QueryInterface");
                         }
 
-                        if (tmpIpid == null) {
+                        if (tmpIpid == null)
+                        {
                             Log.Logger.Verbose("RemUnknownObject: [QI] tmpIpid is null for iid " + iid);
                             component.ExportInstance(iid.ToString(), ipid2);
                         }
-                        else {
+                        else
+                        {
                             Log.Logger.Verbose("RemUnknownObject: [QI] tmpIpid is NOT null for iid "
                                 + iid + " and ipid sent back is " + ipid2);
                             ipid2 = tmpIpid;
@@ -877,31 +979,37 @@ internal sealed class ComOxidRuntimeHelper : Stub {
 
                     // now generate the IPID and export a java instance with this.
                     StdObjRef objRef = null;
-                    if (hresult == ErrorCode.ERROR_SUCCESS) {
+                    if (hresult == ErrorCode.ERROR_SUCCESS)
+                    {
                         objRef = new StdObjRef(ipid2, details.Oxid, details.Oid);
                     }
-                    else {
+                    else
+                    {
                         objRef = new StdObjRef(ipid2);
                     }
                     objRef.Encode(ndr2);
 
                     // add it to the exported Ipids map
-                    if (hresult == ErrorCode.ERROR_SUCCESS) {
+                    if (hresult == ErrorCode.ERROR_SUCCESS)
+                    {
                         _mapOfIpidsVsRef.AddOrUpdate(ipid2.ToUpper(CultureInfo.InvariantCulture), objRef.PublicRefs);
                     }
 
                     Log.Logger.Verbose("RemUnknownObject: [QI] for which the stdObjRef is " + objRef);
 
                 }
-                catch (MemberAccessException e) {
+                catch (MemberAccessException e)
+                {
                     Log.Logger.Error(e, "ComOxidRuntimeHelper: QueryInterface");
                 }
-                catch (InstantiationException e) {
+                catch (InstantiationException e)
+                {
                     Log.Logger.Error(e, "ComOxidRuntimeHelper: QueryInterface");
                 }
 
                 var iidtemp = iid.ToString().ToUpper(CultureInfo.InvariantCulture) + ":0.0";
-                if (!QIedIIDs.Contains(iidtemp, StringComparer.OrdinalIgnoreCase)) {
+                if (!QIedIIDs.Contains(iidtemp, StringComparer.OrdinalIgnoreCase))
+                {
                     QIedIIDs.Add(iidtemp);
                 }
             }
@@ -911,7 +1019,8 @@ internal sealed class ComOxidRuntimeHelper : Stub {
             return buffer;
         }
 
-        static RemUnknownObject() {
+        static RemUnknownObject()
+        {
             kRemInterfaceRef.AddMember(typeof(UUID));
             kRemInterfaceRef.AddMember(typeof(int));
             kRemInterfaceRef.AddMember(typeof(int));

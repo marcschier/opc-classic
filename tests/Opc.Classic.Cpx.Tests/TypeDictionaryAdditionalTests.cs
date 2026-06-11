@@ -9,9 +9,11 @@ using TUnit.Assertions.AssertConditions.Throws;
 
 namespace Opc.Classic.Cpx.Tests;
 
-public sealed class TypeDictionaryAdditionalTests {
+public sealed class TypeDictionaryAdditionalTests
+{
     [Test]
-    public async Task Constructor_CopiesTypesAndNormalizesNullName() {
+    public async Task Constructor_CopiesTypesAndNormalizesNullName()
+    {
         var type = new TypeDescription("Level", "LevelType", TypeKind.Double, isComplex: false);
         TypeDescription[] source = [type];
 
@@ -30,7 +32,8 @@ public sealed class TypeDictionaryAdditionalTests {
     }
 
     [Test]
-    public async Task Lookup_NullNames_ThrowArgumentNullException() {
+    public async Task Lookup_NullNames_ThrowArgumentNullException()
+    {
         var dictionary = TypeDictionary.FromTypes(new TypeDescription("Level", "LevelType", TypeKind.Double, isComplex: false));
 
         await Assert.That(() => dictionary.TryGet(null!))
@@ -42,7 +45,8 @@ public sealed class TypeDictionaryAdditionalTests {
     }
 
     [Test]
-    public async Task Constructor_InvalidDefaults_ThrowSpecificExceptions() {
+    public async Task Constructor_InvalidDefaults_ThrowSpecificExceptions()
+    {
         var type = new TypeDescription("Level", "LevelType", TypeKind.Double, isComplex: false);
 
         await Assert.That(() => new TypeDictionary("Bad", null!))
@@ -56,7 +60,8 @@ public sealed class TypeDictionaryAdditionalTests {
     }
 
     [Test]
-    public async Task Equality_IncludesMetadataAndTypeOrder() {
+    public async Task Equality_IncludesMetadataAndTypeOrder()
+    {
         var first = new TypeDescription("A", "AType", TypeKind.Int16, isComplex: false);
         var second = new TypeDescription("B", "BType", TypeKind.Int32, isComplex: false);
         var left = new TypeDictionary("Plant", new[] { first, second }, defaultBigEndian: true);

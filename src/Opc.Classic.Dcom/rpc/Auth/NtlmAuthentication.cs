@@ -21,7 +21,8 @@ namespace Opc.Classic.Dcom.Rpc.Auth.ntlm;
 /// <summary>
 /// Ntlm auth
 /// </summary>
-public class NtlmAuthentication {
+public class NtlmAuthentication
+{
 
     /// <summary>
     /// Type of auth
@@ -33,24 +34,29 @@ public class NtlmAuthentication {
     /// Create auth
     /// </summary>
     /// <param name="properties"></param>
-    public NtlmAuthentication(PropertyBag properties) {
+    public NtlmAuthentication(PropertyBag properties)
+    {
         _properties = properties;
         _useNtlm2sessionsecurity = true;
         _useNtlmV2 = true;
         string domain = null;
         string user = null;
         string password = null;
-        if (properties != null) {
+        if (properties != null)
+        {
             _lanManagerKey = Convert.ToBoolean(properties.GetProperty("rpc.ntlm.lanManagerKey"));
             _seal = Convert.ToBoolean(properties.GetProperty("rpc.ntlm.seal"));
             _sign = _seal || Convert.ToBoolean(properties.GetProperty("rpc.ntlm.sign"));
             _keyExchange = Convert.ToBoolean(properties.GetProperty("rpc.ntlm.keyExchange"));
             var keyLength = (string)properties.GetProperty("rpc.ntlm.keyLength");
-            if (keyLength != null) {
-                try {
+            if (keyLength != null)
+            {
+                try
+                {
                     _keyLength = int.Parse(keyLength, CultureInfo.InvariantCulture);
                 }
-                catch (FormatException) {
+                catch (FormatException)
+                {
                     throw new ArgumentException("Invalid key length: " + keyLength, nameof(properties));
                 }
             }
@@ -65,12 +71,14 @@ public class NtlmAuthentication {
             password = (string)properties.GetProperty(Opc.Classic.Dcom.Rpc.Security.PASSWORD);
         }
 
-        if (!_useNtlmV2 && !_allowNtlmV1) {
+        if (!_useNtlmV2 && !_allowNtlmV1)
+        {
             throw new NotSupportedException(
                 "NTLMv1 is disabled by default; set rpc.ntlm.allowV1=true to re-enable (not recommended).");
         }
 
-        if (_useSSO) {
+        if (_useSSO)
+        {
             // Phase 2F: the Windows-only SSPIJNIClient (P/Invoke to ntlmauth.dll)
             // is incompatible with the cross-platform .NET 10 target. Single
             // sign-on returns in Phase 3D via Kerberos.NET-backed Kerberos /
@@ -89,10 +97,12 @@ public class NtlmAuthentication {
     /// </summary>
     /// <param name="connectData">OPC connection authentication settings.</param>
     /// <returns>The authentication context used by DCOM bind and call PDUs.</returns>
-    public static IAuthContext CreateAuthContext(OpcConnectData connectData) {
+    public static IAuthContext CreateAuthContext(OpcConnectData connectData)
+    {
         ArgumentNullException.ThrowIfNull(connectData);
 
-        return connectData.AuthMode switch {
+        return connectData.AuthMode switch
+        {
             OpcAuthMode.Anonymous => NoOpAuthContext.Instance,
             OpcAuthMode.Kerberos => new KerberosAuthContext(
                 BuildKerberosAuthInfo(connectData),
@@ -104,7 +114,8 @@ public class NtlmAuthentication {
         };
     }
 
-    private static KerberosAuthInfo BuildKerberosAuthInfo(OpcConnectData connectData) {
+    private static KerberosAuthInfo BuildKerberosAuthInfo(OpcConnectData connectData)
+    {
         var credentials = connectData.Credentials ?? throw new InvalidOperationException(
             "Kerberos authentication requires credentials.");
         var host = string.IsNullOrWhiteSpace(connectData.Url.Host) ? "localhost" : connectData.Url.Host;
@@ -121,14 +132,16 @@ public class NtlmAuthentication {
             keytabPath: null);
     }
 
-    private static string ExtractRealm(string userName) {
+    private static string ExtractRealm(string userName)
+    {
         var separator = userName.LastIndexOf('@');
         return separator > 0 && separator < userName.Length - 1
             ? userName[(separator + 1)..].ToUpperInvariant()
             : null;
     }
 
-    private static PropertyBag CreateNtlmProperties(OpcConnectData connectData) {
+    private static PropertyBag CreateNtlmProperties(OpcConnectData connectData)
+    {
         var credentials = connectData.Credentials ?? throw new InvalidOperationException(
             "NTLM authentication requires credentials.");
         var properties = new PropertyBag();
@@ -145,7 +158,8 @@ public class NtlmAuthentication {
         properties.SetProperty("rpc.ntlm.allowV1", "false");
         properties.SetProperty("rpc.ntlm.sso", "false");
         properties.SetProperty("rpc.ntlm.domain", credentials.Domain);
-        if (connectData.ChannelBindings is not null) {
+        if (connectData.ChannelBindings is not null)
+        {
             properties.SetProperty("rpc.ntlm.channelBindingsHash", ChannelBindingsHash.Compute(connectData.ChannelBindings));
         }
         properties.SetProperty(Opc.Classic.Dcom.Rpc.Security.USERNAME, credentials.UserName);
@@ -153,10 +167,12 @@ public class NtlmAuthentication {
         return properties;
     }
 
-    private sealed class NtlmAuthContext : IAuthContext, IAuthSessionKeyProvider {
+    private sealed class NtlmAuthContext : IAuthContext, IAuthSessionKeyProvider
+    {
         private readonly NtlmAuthentication _authentication;
 
-        public NtlmAuthContext(OpcConnectData connectData) {
+        public NtlmAuthContext(OpcConnectData connectData)
+        {
             ArgumentNullException.ThrowIfNull(connectData);
             _authentication = new NtlmAuthentication(CreateNtlmProperties(connectData));
             ProtectionLevel = connectData.ProtectionLevel;
@@ -167,22 +183,26 @@ public class NtlmAuthentication {
         /// <summary>NTLMSSP auth-service code (MS-RPCE §2.2.1.1.7).</summary>
         public byte AuthenticationServiceCode => 0x0A;
 
-        public byte[] BuildInitialToken() {
+        public byte[] BuildInitialToken()
+        {
             var type1 = _authentication.CreateType1();
             var token = type1.ToByteArray();
             _authentication.SetNegotiateMessage(token);
             return token;
         }
 
-        public byte[] ProcessChallengeToken(ReadOnlyMemory<byte> serverToken) {
+        public byte[] ProcessChallengeToken(ReadOnlyMemory<byte> serverToken)
+        {
             var challengeToken = serverToken.ToArray();
             _authentication.SetChallengeMessage(challengeToken);
             var type2 = new Type2Message(challengeToken);
             return _authentication.CreateType3(type2).ToByteArray();
         }
 
-        public void SignAndSeal(Span<byte> pduBody, out byte[] signature) {
-            if (ProtectionLevel < OpcProtectionLevel.Integrity) {
+        public void SignAndSeal(Span<byte> pduBody, out byte[] signature)
+        {
+            if (ProtectionLevel < OpcProtectionLevel.Integrity)
+            {
                 signature = [];
                 return;
             }
@@ -196,13 +216,16 @@ public class NtlmAuthentication {
             signature = buffer.AsSpan(pduBody.Length, security.VerifierLength).ToArray();
         }
 
-        public bool VerifyAndUnseal(Span<byte> pduBody, ReadOnlyMemory<byte> signature) {
-            if (ProtectionLevel < OpcProtectionLevel.Integrity) {
+        public bool VerifyAndUnseal(Span<byte> pduBody, ReadOnlyMemory<byte> signature)
+        {
+            if (ProtectionLevel < OpcProtectionLevel.Integrity)
+            {
                 return signature.IsEmpty;
             }
 
             var security = EstablishedSecurity;
-            if (signature.Length != security.VerifierLength) {
+            if (signature.Length != security.VerifierLength)
+            {
                 return false;
             }
 
@@ -210,10 +233,12 @@ public class NtlmAuthentication {
             pduBody.CopyTo(buffer.AsSpan());
             signature.Span.CopyTo(buffer.AsSpan(pduBody.Length));
             var ndr = CreateNdrCodec(buffer);
-            try {
+            try
+            {
                 security.ProcessIncoming(ndr, 0, pduBody.Length, pduBody.Length, isFragmented: false);
             }
-            catch (IntegrityException) {
+            catch (IntegrityException)
+            {
                 return false;
             }
 
@@ -226,7 +251,8 @@ public class NtlmAuthentication {
         private ISecurity EstablishedSecurity => _authentication.Security ?? throw new InvalidOperationException(
             "NTLM session security is not established until ProcessChallengeToken completes.");
 
-        private static NdrCodec CreateNdrCodec(byte[] buffer) {
+        private static NdrCodec CreateNdrCodec(byte[] buffer)
+        {
             var ndrBuffer = new NdrBuffer(buffer, 0);
             ndrBuffer.SetLength(buffer.Length);
             return new NdrCodec { Buffer = ndrBuffer, Format = NdrFormat.DEFAULT_FORMAT };
@@ -246,8 +272,10 @@ public class NtlmAuthentication {
     /// </summary>
     /// <exception cref="IOException"></exception>
     /// <returns></returns>
-    public Type1Message CreateType1() {
-        if (_useSSO) {
+    public Type1Message CreateType1()
+    {
+        if (_useSSO)
+        {
             // Unreachable — constructor already throws for _useSSO. Defensive guard.
             throw new PlatformNotSupportedException(
                 "NTLM SSO is unsupported on net10; use Kerberos via Phase 3D.");
@@ -264,12 +292,15 @@ public class NtlmAuthentication {
     /// <param name="type1"></param>
     /// <exception cref="IOException"></exception>
     /// <returns></returns>
-    public Type2Message CreateType2(Type1Message type1) {
+    public Type2Message CreateType2(Type1Message type1)
+    {
         NtlmFlags flags;
-        if (type1 == null) {
+        if (type1 == null)
+        {
             flags = DefaultFlags;
         }
-        else {
+        else
+        {
             flags = AdjustFlags(type1.GetFlags());
         }
         flags |= NtlmFlags.NtlmsspTargetTypeServer; // challenge accept response flag
@@ -277,14 +308,16 @@ public class NtlmAuthentication {
         _serverChallenge = challenge;
         var type2Message = new Type2Message(flags, challenge,
             _credentials.Domain); // generate our own, since SMB will throw exception here
-        if (ShouldRequestMic(flags)) {
+        if (ShouldRequestMic(flags))
+        {
             type2Message.SetTargetInformation(NtlmAvPairs.AddMicFlag(type2Message.GetTargetInformation()));
         }
 
         _challengeFlags = flags;
         _challengeTargetInformation = type2Message.GetTargetInformation();
         _challengeMessage = type2Message.ToByteArray();
-        if (type1 != null && _negotiateMessage == null) {
+        if (type1 != null && _negotiateMessage == null)
+        {
             _negotiateMessage = type1.ToByteArray();
         }
 
@@ -298,15 +331,19 @@ public class NtlmAuthentication {
     /// <exception cref="IOException"></exception>
     /// <returns></returns>
 #pragma warning disable MA0051 // Legacy NTLM type-3 negotiation flow; refactor would risk authentication behavior.
-    public Type3Message CreateType3(Type2Message type2) {
-        if (_useSSO) {
+    public Type3Message CreateType3(Type2Message type2)
+    {
+        if (_useSSO)
+        {
             // Unreachable — constructor already throws for _useSSO. Defensive guard.
             throw new PlatformNotSupportedException(
                 "NTLM SSO is unsupported on net10; use Kerberos via Phase 3D.");
         }
-        else {
+        else
+        {
             var flags = type2.GetFlags();
-            if ((flags & NtlmFlags.NtlmsspNegotiateDatagramStyle) != NtlmFlags.None) {
+            if ((flags & NtlmFlags.NtlmsspNegotiateDatagramStyle) != NtlmFlags.None)
+            {
                 flags = AdjustFlags(flags);
                 flags &= ~NtlmFlags.NtlmsspTargetTypeServer;
             }
@@ -315,18 +352,22 @@ public class NtlmAuthentication {
             byte[] blob = null;
             string target = null; // getTargetFromTargetInformation(type2.GetTargetInformation());
 
-            if (target == null) {
+            if (target == null)
+            {
                 target = _credentials.Domain.ToUpperInvariant();
-                if (target.Equals("")) {
+                if (target.Equals(""))
+                {
                     target = GetTargetFromTargetInformation(type2.GetTargetInformation());
                 }
             }
 
             Type3Message type3;
             byte[] exportedSessionKey = null;
-            if (_useNtlmV2) {
+            if (_useNtlmV2)
+            {
                 kRandomGen.NextBytes(clientNonce);
-                try {
+                try
+                {
                     var lmv2Response = Responses.GetLMv2Response(target,
                         _credentials.UserName, _credentials.Password, type2.GetChallenge(), clientNonce);
                     var targetInformation = ApplyChannelBindings(type2.GetTargetInformation());
@@ -338,12 +379,14 @@ public class NtlmAuthentication {
                     type3 = new Type3Message(flags, lmv2Response, ntlmv2Response,
                         target, _credentials.UserName, Type3Message.GetDefaultWorkstation());
                 }
-                catch (Exception e) {
+                catch (Exception e)
+                {
                     throw new InvalidOperationException("Exception occurred while forming NTLMv2 Type3Response", e);
                 }
 
             }
-            else {
+            else
+            {
                 if ((flags & NtlmFlags.NtlmsspNegotiateNtlm2) != NtlmFlags.None) // NTLM2 Session security response
                 {
                     flags = AdjustFlags(flags);
@@ -356,10 +399,12 @@ public class NtlmAuthentication {
                     kRandomGen.NextBytes(clientNonce);
                     Array.Copy(clientNonce, 0, lmResponse, 0, clientNonce.Length);
                     byte[] ntResponse;
-                    try {
+                    try
+                    {
                         ntResponse = Responses.GetNTLM2SessionResponse(_credentials.Password, challenge, clientNonce);
                     }
-                    catch (Exception e) {
+                    catch (Exception e)
+                    {
                         throw new InvalidOperationException("Exception occurred while forming Session Security Type3Response", e);
                     }
 
@@ -373,47 +418,58 @@ public class NtlmAuthentication {
                     var ntResponse = Responses.GetNTLMResponse(_credentials.Password, challenge);
                     type3 = new Type3Message(flags, lmResponse, ntResponse, target,
                         _credentials.UserName, Type3Message.GetDefaultWorkstation());
-                    if ((flags & NtlmFlags.NtlmsspNegotiateKeyExch) != NtlmFlags.None) {
+                    if ((flags & NtlmFlags.NtlmsspNegotiateKeyExch) != NtlmFlags.None)
+                    {
                         throw new NotSupportedException("Key Exchange not supported by Library.");
                     }
                 }
             }
             // we have to now form lmv2 and ntlmv2 response with regards to the session security
             // the type3message also has to be altered
-            if (_useNtlm2sessionsecurity && (flags & NtlmFlags.NtlmsspNegotiateNtlm2) != NtlmFlags.None) {
+            if (_useNtlm2sessionsecurity && (flags & NtlmFlags.NtlmsspNegotiateNtlm2) != NtlmFlags.None)
+            {
                 var ntlmKeyFactory = new NTLMKeyFactory();
                 byte[] userSessionKey;
-                if (_useNtlmV2) {
-                    try {
+                if (_useNtlmV2)
+                {
+                    try
+                    {
                         userSessionKey = ntlmKeyFactory
                             .GetNTLMv2UserSessionKey(target, _credentials.UserName, _credentials.Password, type2.GetChallenge(), blob);
                     }
-                    catch (Exception e) {
+                    catch (Exception e)
+                    {
                         throw new InvalidOperationException("Exception occurred while forming NTLMv2 with NTLM2 Session Security for Type3Response", e);
                     }
                 }
-                else {
+                else
+                {
                     // now create the key for the session
                     // this key will be used to RC4 a 16 byte random key and set to the type3 message
                     var servernonce = new byte[16];
                     Array.Copy(type2.GetChallenge(), 0, servernonce, 0, type2.GetChallenge().Length);
                     Array.Copy(clientNonce, 0, servernonce, 8, clientNonce.Length);
-                    try {
+                    try
+                    {
                         userSessionKey = ntlmKeyFactory
                             .GetNTLM2SessionResponseUserSessionKey(_credentials.Password, servernonce);
                     }
-                    catch (Exception e) {
+                    catch (Exception e)
+                    {
                         throw new InvalidOperationException("Exception occurred while forming Session Security for Type3Response", e);
                     }
 
                 }
-                try {
-                    if ((flags & NtlmFlags.NtlmsspNegotiateKeyExch) != NtlmFlags.None) {
+                try
+                {
+                    if ((flags & NtlmFlags.NtlmsspNegotiateKeyExch) != NtlmFlags.None)
+                    {
                         // now RC4 encrypt a random 16 byte key
                         exportedSessionKey = ntlmKeyFactory.SecondarySessionKey;
                         type3.SetSessionKey(ntlmKeyFactory.EncryptSecondarySessionKey(exportedSessionKey, userSessionKey));
                     }
-                    else {
+                    else
+                    {
                         exportedSessionKey = userSessionKey;
                     }
 #pragma warning disable CS0618 // NTLMv1 fallback - explicit opt-in via rpc.ntlm.allowV1
@@ -421,7 +477,8 @@ public class NtlmAuthentication {
                     Security = new Ntlm1(flags, exportedSessionKey, false);
 #pragma warning restore CS0618
                 }
-                catch (Exception e) {
+                catch (Exception e)
+                {
                     throw new InvalidOperationException("Exception occurred while forming Session Security for Type3Response", e);
                 }
             }
@@ -453,25 +510,33 @@ public class NtlmAuthentication {
     //          }
     //      }
 
-    private NtlmFlags DefaultFlags {
-        get {
+    private NtlmFlags DefaultFlags
+    {
+        get
+        {
             var flags = kBASICFLAGS;
-            if (_lanManagerKey) {
+            if (_lanManagerKey)
+            {
                 flags |= NtlmFlags.NtlmsspNegotiateLmKey;
             }
-            if (_sign) {
+            if (_sign)
+            {
                 flags |= NtlmFlags.NtlmsspNegotiateSign;
             }
-            if (_seal) {
+            if (_seal)
+            {
                 flags |= NtlmFlags.NtlmsspNegotiateSeal;
             }
-            if (_keyExchange) {
+            if (_keyExchange)
+            {
                 flags |= NtlmFlags.NtlmsspNegotiateKeyExch | NtlmFlags.NtlmsspNegotiateVersion;
             }
-            if (_keyLength >= 56) {
+            if (_keyLength >= 56)
+            {
                 flags |= NtlmFlags.NtlmsspNegotiate56;
             }
-            if (_keyLength >= 128) {
+            if (_keyLength >= 128)
+            {
                 flags |= NtlmFlags.NtlmsspNegotiate128;
             }
             // We always negotiate for NTLM2 session security
@@ -484,31 +549,40 @@ public class NtlmAuthentication {
         }
     }
 
-    private NtlmFlags AdjustFlags(NtlmFlags flags) {
-        if (kUnicodeSupported && ((flags & NtlmFlags.NtlmsspNegotiateUnicode) != NtlmFlags.None)) {
+    private NtlmFlags AdjustFlags(NtlmFlags flags)
+    {
+        if (kUnicodeSupported && ((flags & NtlmFlags.NtlmsspNegotiateUnicode) != NtlmFlags.None))
+        {
             flags &= ~NtlmFlags.NtlmsspNegotiateOem;
             flags |= NtlmFlags.NtlmsspNegotiateUnicode;
         }
-        else {
+        else
+        {
             flags &= ~NtlmFlags.NtlmsspNegotiateUnicode;
             flags |= NtlmFlags.NtlmsspNegotiateOem;
         }
-        if (!_lanManagerKey) {
+        if (!_lanManagerKey)
+        {
             flags &= ~NtlmFlags.NtlmsspNegotiateLmKey;
         }
-        if (!(_sign || _seal)) {
+        if (!(_sign || _seal))
+        {
             flags &= ~NtlmFlags.NtlmsspNegotiateSign;
         }
-        if (!_seal) {
+        if (!_seal)
+        {
             flags &= ~NtlmFlags.NtlmsspNegotiateSeal;
         }
-        if (!_keyExchange) {
+        if (!_keyExchange)
+        {
             flags &= ~NtlmFlags.NtlmsspNegotiateKeyExch;
         }
-        if (_keyLength < 128) {
+        if (_keyLength < 128)
+        {
             flags &= ~NtlmFlags.NtlmsspNegotiate128;
         }
-        if (_keyLength < 56) {
+        if (_keyLength < 56)
+        {
             flags &= ~NtlmFlags.NtlmsspNegotiate56;
         }
         //   if (!useNtlm2sessionsecurity)
@@ -523,12 +597,15 @@ public class NtlmAuthentication {
     /// </summary>
     /// <param name="targetInformation"></param>
     /// <returns></returns>
-    private string GetTargetFromTargetInformation(byte[] targetInformation) {
+    private string GetTargetFromTargetInformation(byte[] targetInformation)
+    {
         string target = null;
 
         var i = 0;
-        while (i < targetInformation.Length) {
-            switch (BinaryPrimitives.ReadUInt16LittleEndian(targetInformation.AsSpan(i, sizeof(ushort)))) {
+        while (i < targetInformation.Length)
+        {
+            switch (BinaryPrimitives.ReadUInt16LittleEndian(targetInformation.AsSpan(i, sizeof(ushort))))
+            {
                 case 1: // Server name
                     i++;
                     i++; // advance two bytes
@@ -537,10 +614,12 @@ public class NtlmAuthentication {
                     i++; // advance two bytes
                     var domainb = new byte[length];
                     Array.Copy(targetInformation, i, domainb, 0, length);
-                    try {
+                    try
+                    {
                         target = StringHelperClass.NewString(domainb, "UTF-16LE");
                     }
-                    catch (ArgumentException) {
+                    catch (ArgumentException)
+                    {
                         return null;
                     }
 
@@ -568,7 +647,8 @@ public class NtlmAuthentication {
     internal void CreateSecurityWhenServerWithMic(object type3, byte[] authenticateMessage) =>
         CreateSecurityWhenServerCore(type3, authenticateMessage);
 
-    private void CreateSecurityWhenServerCore(object type3, byte[]? authenticateMessage) {
+    private void CreateSecurityWhenServerCore(object type3, byte[]? authenticateMessage)
+    {
         var type3Message = Type3Message.FromObject(type3);
         // two things here...check for anonymous, in that case the user response key is new byte[16].
         // in case anonymous has not been sent then create the key using credentials.
@@ -582,11 +662,13 @@ public class NtlmAuthentication {
             // if it is anonymous the user session key is new byte[16];
             sessionResponseUserSessionKey = new byte[16];
         }
-        else if (_useNtlmV2) {
+        else if (_useNtlmV2)
+        {
             sessionResponseUserSessionKey = CreateNtlmV2ServerSessionKey(type3Message, ntlmKeyFactory);
             sessionResponseUserSessionKeyIsSecondaryMasterKey = true;
         }
-        else {
+        else
+        {
             // now create the key for the session
             // this key will be used to RC4 a 16 byte random key and set to the type3 message
             var servernonce = new byte[16];
@@ -594,16 +676,19 @@ public class NtlmAuthentication {
             Array.Copy(challenge, 0, servernonce, 0, challenge.Length);
             // first 8 bytes only, the rest are all 0x00 and not required.
             Array.Copy(type3Message.GetLMResponse(), 0, servernonce, 8, 8);
-            try {
+            try
+            {
                 sessionResponseUserSessionKey = ntlmKeyFactory
                     .GetNTLM2SessionResponseUserSessionKey(_credentials.Password, servernonce);
             }
-            catch (Exception e) {
+            catch (Exception e)
+            {
                 throw new InvalidOperationException("Exception occurred while forming Session Security from Type3 AUTH", e);
             }
         }
 
-        try {
+        try
+        {
             secondayMasterKey = sessionResponseUserSessionKeyIsSecondaryMasterKey ||
                 (flags & NtlmFlags.NtlmsspNegotiateKeyExch) == NtlmFlags.None
                 ? sessionResponseUserSessionKey
@@ -614,20 +699,25 @@ public class NtlmAuthentication {
             Security = new Ntlm1(flags, secondayMasterKey, true);
 #pragma warning restore CS0618
         }
-        catch (SecurityException) {
+        catch (SecurityException)
+        {
             throw;
         }
-        catch (Exception e) {
+        catch (Exception e)
+        {
             throw new InvalidOperationException("Exception occurred while forming Session Security Type3Response", e);
         }
     }
 
-    private byte[] CreateNtlmV2ServerSessionKey(Type3Message type3Message, NTLMKeyFactory ntlmKeyFactory) {
+    private byte[] CreateNtlmV2ServerSessionKey(Type3Message type3Message, NTLMKeyFactory ntlmKeyFactory)
+    {
         var ntResponse = type3Message.GetNTResponse();
-        if (ntResponse == null || ntResponse.Length < 16) {
+        if (ntResponse == null || ntResponse.Length < 16)
+        {
             throw new SecurityException("Invalid NTLMv2 NT challenge response.");
         }
-        if (_serverChallenge == null || _serverChallenge.Length != 8) {
+        if (_serverChallenge == null || _serverChallenge.Length != 8)
+        {
             throw new SecurityException("The NTLMv2 server challenge was not saved before authentication.");
         }
 
@@ -644,17 +734,20 @@ public class NtlmAuthentication {
         Array.Copy(_serverChallenge, 0, challengeAndTemp, 0, _serverChallenge.Length);
         Array.Copy(temp, 0, challengeAndTemp, _serverChallenge.Length, temp.Length);
         var expectedNtProofStr = Responses.HmacMD5(challengeAndTemp, ntowfv2);
-        if (!CryptographicOperations.FixedTimeEquals(expectedNtProofStr, ntProofStr)) {
+        if (!CryptographicOperations.FixedTimeEquals(expectedNtProofStr, ntProofStr))
+        {
             throw new SecurityException("Invalid NTLMv2 NT proof string.");
         }
 
         var sessionBaseKey = Responses.HmacMD5(ntProofStr, ntowfv2);
-        if (!type3Message.GetFlag(NtlmFlags.NtlmsspNegotiateKeyExch)) {
+        if (!type3Message.GetFlag(NtlmFlags.NtlmsspNegotiateKeyExch))
+        {
             return sessionBaseKey;
         }
 
         var encryptedRandomSessionKey = type3Message.GetSessionKey();
-        if (encryptedRandomSessionKey == null || encryptedRandomSessionKey.Length == 0) {
+        if (encryptedRandomSessionKey == null || encryptedRandomSessionKey.Length == 0)
+        {
             throw new SecurityException("NTLMv2 key exchange was negotiated without an encrypted random session key.");
         }
         return ntlmKeyFactory.DecryptSecondarySessionKey(encryptedRandomSessionKey, sessionBaseKey);
@@ -666,15 +759,19 @@ public class NtlmAuthentication {
     internal void SetChallengeMessage(ReadOnlySpan<byte> challengeMessage) =>
         _challengeMessage = challengeMessage.ToArray();
 
-    private void AddMicIfRequired(Type2Message type2, Type3Message type3, byte[]? exportedSessionKey) {
+    private void AddMicIfRequired(Type2Message type2, Type3Message type3, byte[]? exportedSessionKey)
+    {
         var targetInformation = type2.GetTargetInformation();
-        if (!RequiresMic(type2.GetFlags(), targetInformation)) {
+        if (!RequiresMic(type2.GetFlags(), targetInformation))
+        {
             return;
         }
-        if (exportedSessionKey == null || exportedSessionKey.Length == 0) {
+        if (exportedSessionKey == null || exportedSessionKey.Length == 0)
+        {
             throw new SecurityException("NTLMv2 MIC requires an exported session key.");
         }
-        if (_negotiateMessage == null || _negotiateMessage.Length == 0) {
+        if (_negotiateMessage == null || _negotiateMessage.Length == 0)
+        {
             throw new SecurityException("NTLMv2 MIC requires the original NEGOTIATE message.");
         }
 
@@ -682,21 +779,26 @@ public class NtlmAuthentication {
         type3.ToByteArrayWithMic(exportedSessionKey, _negotiateMessage, challengeMessage);
     }
 
-    private void VerifyMicIfRequired(Type3Message type3Message, byte[] exportedSessionKey, byte[]? authenticateMessage) {
-        if (!RequiresMic(_challengeFlags, _challengeTargetInformation ?? Array.Empty<byte>())) {
+    private void VerifyMicIfRequired(Type3Message type3Message, byte[] exportedSessionKey, byte[]? authenticateMessage)
+    {
+        if (!RequiresMic(_challengeFlags, _challengeTargetInformation ?? Array.Empty<byte>()))
+        {
             return;
         }
-        if (exportedSessionKey == null || exportedSessionKey.Length == 0) {
+        if (exportedSessionKey == null || exportedSessionKey.Length == 0)
+        {
             throw new SecurityException("NTLMv2 MIC verification requires an exported session key.");
         }
         if (_negotiateMessage == null || _negotiateMessage.Length == 0 ||
-            _challengeMessage == null || _challengeMessage.Length == 0) {
+            _challengeMessage == null || _challengeMessage.Length == 0)
+        {
             throw new SecurityException("NTLMv2 MIC verification requires the original NEGOTIATE and CHALLENGE messages.");
         }
 
         var authenticate = authenticateMessage ?? type3Message.ToByteArray();
         if (!type3Message.HasMic ||
-            !NtlmMic.Verify(exportedSessionKey, _negotiateMessage, _challengeMessage, authenticate, Type3Message.MicOffset)) {
+            !NtlmMic.Verify(exportedSessionKey, _negotiateMessage, _challengeMessage, authenticate, Type3Message.MicOffset))
+        {
             throw new SecurityException("Invalid NTLMv2 MIC.");
         }
     }
@@ -715,16 +817,20 @@ public class NtlmAuthentication {
         NtlmFlags.NtlmsspNegotiateOem | NtlmFlags.NtlmsspNegotiateAlwaysSign |
         (kUnicodeSupported ? NtlmFlags.NtlmsspNegotiateUnicode : NtlmFlags.None);
 
-    private byte[] ApplyChannelBindings(byte[] targetInformation) {
-        if (_channelBindingsHash == null || _channelBindingsHash.Length == 0) {
+    private byte[] ApplyChannelBindings(byte[] targetInformation)
+    {
+        if (_channelBindingsHash == null || _channelBindingsHash.Length == 0)
+        {
             return targetInformation;
         }
 
         return AddOrReplaceAvPair(targetInformation, MsvAvChannelBindings, _channelBindingsHash);
     }
 
-    private void ValidateChannelBindingsInNtChallengeResponse(byte[] temp) {
-        if (_channelBindingsHash == null || _channelBindingsHash.Length == 0) {
+    private void ValidateChannelBindingsInNtChallengeResponse(byte[] temp)
+    {
+        if (_channelBindingsHash == null || _channelBindingsHash.Length == 0)
+        {
             return;
         }
 
@@ -732,18 +838,23 @@ public class NtlmAuthentication {
         if (temp.Length < avPairsOffset ||
             !TryGetAvPair(temp.AsSpan(avPairsOffset), MsvAvChannelBindings, out var actualChannelBindings) ||
             actualChannelBindings.Length != _channelBindingsHash.Length ||
-            !CryptographicOperations.FixedTimeEquals(actualChannelBindings, _channelBindingsHash)) {
+            !CryptographicOperations.FixedTimeEquals(actualChannelBindings, _channelBindingsHash))
+        {
             throw new SecurityException("NTLMv2 channel bindings did not match the TLS endpoint.");
         }
     }
 
-    private static byte[] CloneChannelBindingsHash(object value) {
-        if (value == null) {
+    private static byte[] CloneChannelBindingsHash(object value)
+    {
+        if (value == null)
+        {
             return null;
         }
 
-        if (value is byte[] bytes) {
-            if (bytes.Length != 16) {
+        if (value is byte[] bytes)
+        {
+            if (bytes.Length != 16)
+            {
                 throw new ArgumentException("NTLM channel bindings hash must be exactly 16 bytes.", nameof(value));
             }
 
@@ -753,22 +864,27 @@ public class NtlmAuthentication {
         throw new ArgumentException("NTLM channel bindings hash must be a byte array.", nameof(value));
     }
 
-    private static byte[] AddOrReplaceAvPair(byte[] targetInformation, ushort avId, byte[] value) {
+    private static byte[] AddOrReplaceAvPair(byte[] targetInformation, ushort avId, byte[] value)
+    {
         var source = targetInformation ?? Array.Empty<byte>();
         using var output = new MemoryStream(source.Length + 4 + value.Length);
         var offset = 0;
         var wroteChannelBindings = false;
 
-        while (offset + 4 <= source.Length) {
+        while (offset + 4 <= source.Length)
+        {
             var currentAvId = BinaryPrimitives.ReadUInt16LittleEndian(source.AsSpan(offset, sizeof(ushort)));
             var length = BinaryPrimitives.ReadUInt16LittleEndian(source.AsSpan(offset + sizeof(ushort), sizeof(ushort)));
             offset += 4;
-            if (length > source.Length - offset) {
+            if (length > source.Length - offset)
+            {
                 throw new ArgumentException("NTLM target information AV_PAIR length is invalid.", nameof(targetInformation));
             }
 
-            if (currentAvId == MsvAvEol) {
-                if (!wroteChannelBindings) {
+            if (currentAvId == MsvAvEol)
+            {
+                if (!wroteChannelBindings)
+                {
                     WriteAvPair(output, avId, value);
                 }
 
@@ -776,40 +892,48 @@ public class NtlmAuthentication {
                 return output.ToArray();
             }
 
-            if (currentAvId == avId) {
+            if (currentAvId == avId)
+            {
                 WriteAvPair(output, avId, value);
                 wroteChannelBindings = true;
             }
-            else {
+            else
+            {
                 WriteAvPair(output, currentAvId, source.AsSpan(offset, length));
             }
 
             offset += length;
         }
 
-        if (!wroteChannelBindings) {
+        if (!wroteChannelBindings)
+        {
             WriteAvPair(output, avId, value);
         }
         WriteAvPair(output, MsvAvEol, Array.Empty<byte>());
         return output.ToArray();
     }
 
-    private static bool TryGetAvPair(ReadOnlySpan<byte> targetInformation, ushort avId, out ReadOnlySpan<byte> value) {
+    private static bool TryGetAvPair(ReadOnlySpan<byte> targetInformation, ushort avId, out ReadOnlySpan<byte> value)
+    {
         var offset = 0;
-        while (offset + 4 <= targetInformation.Length) {
+        while (offset + 4 <= targetInformation.Length)
+        {
             var currentAvId = BinaryPrimitives.ReadUInt16LittleEndian(targetInformation.Slice(offset, sizeof(ushort)));
             var length = BinaryPrimitives.ReadUInt16LittleEndian(targetInformation.Slice(offset + sizeof(ushort), sizeof(ushort)));
             offset += 4;
-            if (length > targetInformation.Length - offset) {
+            if (length > targetInformation.Length - offset)
+            {
                 break;
             }
 
-            if (currentAvId == avId) {
+            if (currentAvId == avId)
+            {
                 value = targetInformation.Slice(offset, length);
                 return true;
             }
 
-            if (currentAvId == MsvAvEol) {
+            if (currentAvId == MsvAvEol)
+            {
                 break;
             }
 
@@ -820,7 +944,8 @@ public class NtlmAuthentication {
         return false;
     }
 
-    private static void WriteAvPair(Stream output, ushort avId, ReadOnlySpan<byte> value) {
+    private static void WriteAvPair(Stream output, ushort avId, ReadOnlySpan<byte> value)
+    {
         Span<byte> header = stackalloc byte[4];
         BinaryPrimitives.WriteUInt16LittleEndian(header, avId);
         BinaryPrimitives.WriteUInt16LittleEndian(header[sizeof(ushort)..], checked((ushort)value.Length));
@@ -828,7 +953,8 @@ public class NtlmAuthentication {
         output.Write(value);
     }
 
-    private static bool GetBooleanProperty(PropertyBag properties, string name, bool defaultValue) {
+    private static bool GetBooleanProperty(PropertyBag properties, string name, bool defaultValue)
+    {
         var value = properties.GetProperty(name);
         return value == null ? defaultValue : Convert.ToBoolean(value);
     }

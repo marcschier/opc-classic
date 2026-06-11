@@ -15,9 +15,11 @@ using TUnit.Core;
 
 namespace Opc.Classic.Dcom.Kerberos.Tests;
 
-public sealed class KerberosAuthContextTests {
+public sealed class KerberosAuthContextTests
+{
     [Test]
-    public async Task BuildInitialToken_returns_SPNEGO_wrapped_AP_REQ_bytes() {
+    public async Task BuildInitialToken_returns_SPNEGO_wrapped_AP_REQ_bytes()
+    {
         byte[] apReq = [0x60, 0x61, 0x62];
         var kerberos = new FakeKerberosConnectionContext(apReq);
         var context = new KerberosAuthContext(kerberos);
@@ -32,7 +34,8 @@ public sealed class KerberosAuthContextTests {
     }
 
     [Test]
-    public async Task ProcessChallengeToken_parses_NegTokenResp_and_extracts_AP_REP() {
+    public async Task ProcessChallengeToken_parses_NegTokenResp_and_extracts_AP_REP()
+    {
         byte[] apRep = [0x6F, 0x01, 0x00];
         byte[] encoded = EncodeNegTokenResp(apRep);
         var kerberos = new FakeKerberosConnectionContext([0x60, 0x61, 0x62]);
@@ -46,7 +49,8 @@ public sealed class KerberosAuthContextTests {
     }
 
     [Test]
-    public async Task SignAndSeal_after_context_establishment_wraps_and_verifies_pdu_body() {
+    public async Task SignAndSeal_after_context_establishment_wraps_and_verifies_pdu_body()
+    {
         var context = new KerberosAuthContext(new FakeKerberosConnectionContext([0x60, 0x61, 0x62]));
         _ = context.BuildInitialToken();
         byte[] pduBody = [0x01, 0x02, 0x03];
@@ -61,7 +65,8 @@ public sealed class KerberosAuthContextTests {
     }
 
     [Test]
-    public async Task KerberosAuthContext_with_channel_bindings_passes_hash_to_ap_req_builder() {
+    public async Task KerberosAuthContext_with_channel_bindings_passes_hash_to_ap_req_builder()
+    {
         var bindings = new ChannelBindings(
             InitiatorAddrType: 0,
             InitiatorAddress: ReadOnlyMemory<byte>.Empty,
@@ -79,7 +84,8 @@ public sealed class KerberosAuthContextTests {
         await Assert.That(kerberos.LastChannelBindingsHash.GetValueOrDefault().ToArray().SequenceEqual(expectedHash)).IsTrue();
     }
 
-    private static byte[] EncodeNegTokenResp(ReadOnlySpan<byte> responseToken) {
+    private static byte[] EncodeNegTokenResp(ReadOnlySpan<byte> responseToken)
+    {
         var body = new AsnWriter(AsnEncodingRules.DER);
         body.PushSequence();
 
@@ -111,10 +117,12 @@ public sealed class KerberosAuthContextTests {
     private static bool ContainsSubsequence(ReadOnlySpan<byte> haystack, ReadOnlySpan<byte> needle) =>
         haystack.IndexOf(needle) >= 0;
 
-    private sealed class FakeKerberosConnectionContext : IKerberosConnectionContext {
+    private sealed class FakeKerberosConnectionContext : IKerberosConnectionContext
+    {
         private readonly byte[] _apRequest;
 
-        public FakeKerberosConnectionContext(byte[] apRequest) {
+        public FakeKerberosConnectionContext(byte[] apRequest)
+        {
             _apRequest = apRequest;
             EstablishedSessionKey = new KerberosSessionKey(
                 new byte[] { 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 0x19, 0x1A, 0x1B, 0x1C, 0x1D, 0x1E, 0x1F },
@@ -134,14 +142,16 @@ public sealed class KerberosAuthContextTests {
 
         public Task<byte[]> AcquireApRequestAsync(
             ReadOnlyMemory<byte>? channelBindingsHash,
-            CancellationToken cancellationToken = default) {
+            CancellationToken cancellationToken = default)
+        {
             cancellationToken.ThrowIfCancellationRequested();
             AcquireCallCount++;
             LastChannelBindingsHash = channelBindingsHash;
             return Task.FromResult(_apRequest);
         }
 
-        public Task<byte[]> ProcessApResponseAsync(ReadOnlyMemory<byte> apReply, CancellationToken cancellationToken = default) {
+        public Task<byte[]> ProcessApResponseAsync(ReadOnlyMemory<byte> apReply, CancellationToken cancellationToken = default)
+        {
             cancellationToken.ThrowIfCancellationRequested();
             ProcessCallCount++;
             LastApReply = apReply.ToArray();

@@ -5,16 +5,20 @@
 
 namespace Opc.Classic.Tests.Integration.Matrikon;
 
-internal static class MatrikonServerProbe {
+internal static class MatrikonServerProbe
+{
     public const string MatrikonProgId = "Matrikon.OPC.Simulation.1";
 
-    public static bool ShouldSkip(out string reason) {
-        if (!System.OperatingSystem.IsWindows()) {
+    public static bool ShouldSkip(out string reason)
+    {
+        if (!System.OperatingSystem.IsWindows())
+        {
             reason = "Matrikon conformance tests require Windows";
             return true;
         }
 
-        if (!IsRegistered(MatrikonProgId)) {
+        if (!IsRegistered(MatrikonProgId))
+        {
             reason = "Matrikon.OPC.Simulation.1 is not installed";
             return true;
         }
@@ -24,8 +28,10 @@ internal static class MatrikonServerProbe {
     }
 
     [System.Runtime.Versioning.SupportedOSPlatform("windows")]
-    private static bool IsRegistered(string progId) {
-        if (!System.OperatingSystem.IsWindows()) {
+    private static bool IsRegistered(string progId)
+    {
+        if (!System.OperatingSystem.IsWindows())
+        {
             return false;
         }
 

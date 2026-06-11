@@ -13,7 +13,8 @@ using Opc.Classic.Hda.Dcom;
 namespace Opc.Classic.Hda.Hosting;
 
 /// <summary>HDA dispatcher adapter that delegates to the source-generated IOPCHDA_Server dispatcher.</summary>
-public sealed class OpcHdaServerDispatcher : IOpcHdaServerDispatcher {
+public sealed class OpcHdaServerDispatcher : IOpcHdaServerDispatcher
+{
     private const int OpchdaEqual = 1;
     private const int OpchdaNotEqual = 6;
 
@@ -21,7 +22,8 @@ public sealed class OpcHdaServerDispatcher : IOpcHdaServerDispatcher {
     private readonly IOPCHDA_ServerServerDispatcher _serverDispatcher;
 
     /// <summary>Initializes a new instance of the <see cref="OpcHdaServerDispatcher" /> class.</summary>
-    public OpcHdaServerDispatcher(IOpcHdaServer server) {
+    public OpcHdaServerDispatcher(IOpcHdaServer server)
+    {
         _server = server ?? throw new ArgumentNullException(nameof(server));
         _serverDispatcher = new IOPCHDA_ServerServerDispatcher(_server);
     }
@@ -31,8 +33,10 @@ public sealed class OpcHdaServerDispatcher : IOpcHdaServerDispatcher {
         Guid interfaceId,
         int opnum,
         ReadOnlyMemory<byte> requestPayload,
-        CancellationToken cancellationToken) {
-        if (interfaceId != IOPCHDA_Server.InterfaceId) {
+        CancellationToken cancellationToken)
+    {
+        if (interfaceId != IOPCHDA_Server.InterfaceId)
+        {
             return new NdrCallResult(OpcResultId.NotImplemented.Code, ReadOnlyMemory<byte>.Empty);
         }
 
@@ -43,13 +47,15 @@ public sealed class OpcHdaServerDispatcher : IOpcHdaServerDispatcher {
     /// <inheritdoc />
     public async Task<int[]> ValidateBrowseFiltersAsync(
         IReadOnlyList<OpcHdaBrowseFilter> filters,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         ArgumentNullException.ThrowIfNull(filters);
         cancellationToken.ThrowIfCancellationRequested();
 
         HashSet<int>? supportedAttributeIds = await TryGetSupportedAttributeIdsAsync(cancellationToken).ConfigureAwait(false);
         var errors = new int[filters.Count];
-        for (int i = 0; i < filters.Count; i++) {
+        for (int i = 0; i < filters.Count; i++)
+        {
             errors[i] = ValidateBrowseFilter(filters[i], supportedAttributeIds);
         }
 
@@ -61,13 +67,16 @@ public sealed class OpcHdaServerDispatcher : IOpcHdaServerDispatcher {
         string branchPosition,
         HdaBrowseType browseType,
         IReadOnlyList<OpcHdaBrowseFilter> filters,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         ArgumentNullException.ThrowIfNull(filters);
         cancellationToken.ThrowIfCancellationRequested();
 
         var values = new List<string>();
-        await foreach (HdaBrowseElement element in _server.BrowseAsync(branchPosition, browseType, cancellationToken).ConfigureAwait(false)) {
-            if (ShouldInclude(element, browseType)) {
+        await foreach (HdaBrowseElement element in _server.BrowseAsync(branchPosition, browseType, cancellationToken).ConfigureAwait(false))
+        {
+            if (ShouldInclude(element, browseType))
+            {
                 values.Add(ToBrowseString(element, browseType));
             }
         }
@@ -80,9 +89,11 @@ public sealed class OpcHdaServerDispatcher : IOpcHdaServerDispatcher {
         string currentBranchPosition,
         int browseDirection,
         string? browseString,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         cancellationToken.ThrowIfCancellationRequested();
-        return Task.FromResult(browseDirection switch {
+        return Task.FromResult(browseDirection switch
+        {
             1 => MoveUp(currentBranchPosition),
             2 when !string.IsNullOrEmpty(browseString) => string.IsNullOrEmpty(currentBranchPosition)
                 ? browseString
@@ -96,9 +107,11 @@ public sealed class OpcHdaServerDispatcher : IOpcHdaServerDispatcher {
     public Task<string> GetItemIdAsync(
         string branchPosition,
         string node,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         cancellationToken.ThrowIfCancellationRequested();
-        if (string.IsNullOrEmpty(branchPosition) || string.IsNullOrEmpty(node)) {
+        if (string.IsNullOrEmpty(branchPosition) || string.IsNullOrEmpty(node))
+        {
             return Task.FromResult(node);
         }
 
@@ -110,18 +123,22 @@ public sealed class OpcHdaServerDispatcher : IOpcHdaServerDispatcher {
     /// <inheritdoc />
     public Task<string> GetBranchPositionAsync(
         string branchPosition,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         cancellationToken.ThrowIfCancellationRequested();
         return Task.FromResult(branchPosition);
     }
 
     /// <inheritdoc />
-    public async Task<int> UpdateCapabilitiesAsync(CancellationToken cancellationToken = default) {
+    public async Task<int> UpdateCapabilitiesAsync(CancellationToken cancellationToken = default)
+    {
         cancellationToken.ThrowIfCancellationRequested();
-        if (_server is IOPCHDA_SyncUpdate syncUpdate) {
+        if (_server is IOPCHDA_SyncUpdate syncUpdate)
+        {
             return await syncUpdate.QueryCapabilitiesAsync(cancellationToken).ConfigureAwait(false);
         }
-        if (_server is IOPCHDA_AsyncUpdate asyncUpdate) {
+        if (_server is IOPCHDA_AsyncUpdate asyncUpdate)
+        {
             return await asyncUpdate.QueryCapabilitiesAsync(cancellationToken).ConfigureAwait(false);
         }
 
@@ -129,28 +146,32 @@ public sealed class OpcHdaServerDispatcher : IOpcHdaServerDispatcher {
     }
 
     /// <inheritdoc />
-    public Task<int[]> InsertAsync(int[] serverHandles, long[] timestampFileTimes, OpcVariant[] dataValues, int[] qualities, CancellationToken cancellationToken = default) {
+    public Task<int[]> InsertAsync(int[] serverHandles, long[] timestampFileTimes, OpcVariant[] dataValues, int[] qualities, CancellationToken cancellationToken = default)
+    {
         ValidateUpdateArrays(serverHandles, timestampFileTimes, dataValues, qualities);
         cancellationToken.ThrowIfCancellationRequested();
         return GetSyncUpdate().InsertAsync(serverHandles, timestampFileTimes, dataValues, qualities, cancellationToken);
     }
 
     /// <inheritdoc />
-    public Task<int[]> ReplaceAsync(int[] serverHandles, long[] timestampFileTimes, OpcVariant[] dataValues, int[] qualities, CancellationToken cancellationToken = default) {
+    public Task<int[]> ReplaceAsync(int[] serverHandles, long[] timestampFileTimes, OpcVariant[] dataValues, int[] qualities, CancellationToken cancellationToken = default)
+    {
         ValidateUpdateArrays(serverHandles, timestampFileTimes, dataValues, qualities);
         cancellationToken.ThrowIfCancellationRequested();
         return GetSyncUpdate().ReplaceAsync(serverHandles, timestampFileTimes, dataValues, qualities, cancellationToken);
     }
 
     /// <inheritdoc />
-    public Task<int[]> InsertReplaceAsync(int[] serverHandles, long[] timestampFileTimes, OpcVariant[] dataValues, int[] qualities, CancellationToken cancellationToken = default) {
+    public Task<int[]> InsertReplaceAsync(int[] serverHandles, long[] timestampFileTimes, OpcVariant[] dataValues, int[] qualities, CancellationToken cancellationToken = default)
+    {
         ValidateUpdateArrays(serverHandles, timestampFileTimes, dataValues, qualities);
         cancellationToken.ThrowIfCancellationRequested();
         return GetSyncUpdate().InsertReplaceAsync(serverHandles, timestampFileTimes, dataValues, qualities, cancellationToken);
     }
 
     /// <inheritdoc />
-    public Task<int[]> DeleteRawAsync(OpcHdaTime startTime, OpcHdaTime endTime, int[] serverHandles, CancellationToken cancellationToken = default) {
+    public Task<int[]> DeleteRawAsync(OpcHdaTime startTime, OpcHdaTime endTime, int[] serverHandles, CancellationToken cancellationToken = default)
+    {
         ArgumentNullException.ThrowIfNull(startTime);
         ArgumentNullException.ThrowIfNull(endTime);
         ArgumentNullException.ThrowIfNull(serverHandles);
@@ -159,7 +180,8 @@ public sealed class OpcHdaServerDispatcher : IOpcHdaServerDispatcher {
     }
 
     /// <inheritdoc />
-    public Task<int[]> DeleteAtTimeAsync(int[] serverHandles, long[] timestampFileTimes, CancellationToken cancellationToken = default) {
+    public Task<int[]> DeleteAtTimeAsync(int[] serverHandles, long[] timestampFileTimes, CancellationToken cancellationToken = default)
+    {
         ArgumentNullException.ThrowIfNull(serverHandles);
         ArgumentNullException.ThrowIfNull(timestampFileTimes);
         ValidateLength(serverHandles.Length, timestampFileTimes.Length, nameof(timestampFileTimes));
@@ -168,11 +190,13 @@ public sealed class OpcHdaServerDispatcher : IOpcHdaServerDispatcher {
     }
 
     /// <inheritdoc />
-    public async Task<OpcHdaAsyncUpdateResult> BeginAsyncInsertAsync(int transactionId, int[] serverHandles, long[] timestampFileTimes, OpcVariant[] dataValues, int[] qualities, CancellationToken cancellationToken = default) {
+    public async Task<OpcHdaAsyncUpdateResult> BeginAsyncInsertAsync(int transactionId, int[] serverHandles, long[] timestampFileTimes, OpcVariant[] dataValues, int[] qualities, CancellationToken cancellationToken = default)
+    {
         ArgumentNullException.ThrowIfNull(serverHandles);
         ValidateUpdateArrays(serverHandles, timestampFileTimes, dataValues, qualities);
         cancellationToken.ThrowIfCancellationRequested();
-        if (_server is IOPCHDA_AsyncUpdate asyncUpdate) {
+        if (_server is IOPCHDA_AsyncUpdate asyncUpdate)
+        {
             int cancelId = await asyncUpdate.InsertAsync(transactionId, serverHandles, timestampFileTimes, dataValues, qualities, cancellationToken).ConfigureAwait(false);
             return SucceededAsyncUpdate(cancelId, serverHandles);
         }
@@ -182,11 +206,13 @@ public sealed class OpcHdaServerDispatcher : IOpcHdaServerDispatcher {
     }
 
     /// <inheritdoc />
-    public async Task<OpcHdaAsyncUpdateResult> BeginAsyncReplaceAsync(int transactionId, int[] serverHandles, long[] timestampFileTimes, OpcVariant[] dataValues, int[] qualities, CancellationToken cancellationToken = default) {
+    public async Task<OpcHdaAsyncUpdateResult> BeginAsyncReplaceAsync(int transactionId, int[] serverHandles, long[] timestampFileTimes, OpcVariant[] dataValues, int[] qualities, CancellationToken cancellationToken = default)
+    {
         ArgumentNullException.ThrowIfNull(serverHandles);
         ValidateUpdateArrays(serverHandles, timestampFileTimes, dataValues, qualities);
         cancellationToken.ThrowIfCancellationRequested();
-        if (_server is IOPCHDA_AsyncUpdate asyncUpdate) {
+        if (_server is IOPCHDA_AsyncUpdate asyncUpdate)
+        {
             int cancelId = await asyncUpdate.ReplaceAsync(transactionId, serverHandles, timestampFileTimes, dataValues, qualities, cancellationToken).ConfigureAwait(false);
             return SucceededAsyncUpdate(cancelId, serverHandles);
         }
@@ -196,11 +222,13 @@ public sealed class OpcHdaServerDispatcher : IOpcHdaServerDispatcher {
     }
 
     /// <inheritdoc />
-    public async Task<OpcHdaAsyncUpdateResult> BeginAsyncInsertReplaceAsync(int transactionId, int[] serverHandles, long[] timestampFileTimes, OpcVariant[] dataValues, int[] qualities, CancellationToken cancellationToken = default) {
+    public async Task<OpcHdaAsyncUpdateResult> BeginAsyncInsertReplaceAsync(int transactionId, int[] serverHandles, long[] timestampFileTimes, OpcVariant[] dataValues, int[] qualities, CancellationToken cancellationToken = default)
+    {
         ArgumentNullException.ThrowIfNull(serverHandles);
         ValidateUpdateArrays(serverHandles, timestampFileTimes, dataValues, qualities);
         cancellationToken.ThrowIfCancellationRequested();
-        if (_server is IOPCHDA_AsyncUpdate asyncUpdate) {
+        if (_server is IOPCHDA_AsyncUpdate asyncUpdate)
+        {
             int cancelId = await asyncUpdate.InsertReplaceAsync(transactionId, serverHandles, timestampFileTimes, dataValues, qualities, cancellationToken).ConfigureAwait(false);
             return SucceededAsyncUpdate(cancelId, serverHandles);
         }
@@ -210,12 +238,14 @@ public sealed class OpcHdaServerDispatcher : IOpcHdaServerDispatcher {
     }
 
     /// <inheritdoc />
-    public async Task<OpcHdaAsyncUpdateResult> BeginAsyncDeleteRawAsync(int transactionId, OpcHdaTime startTime, OpcHdaTime endTime, int[] serverHandles, CancellationToken cancellationToken = default) {
+    public async Task<OpcHdaAsyncUpdateResult> BeginAsyncDeleteRawAsync(int transactionId, OpcHdaTime startTime, OpcHdaTime endTime, int[] serverHandles, CancellationToken cancellationToken = default)
+    {
         ArgumentNullException.ThrowIfNull(startTime);
         ArgumentNullException.ThrowIfNull(endTime);
         ArgumentNullException.ThrowIfNull(serverHandles);
         cancellationToken.ThrowIfCancellationRequested();
-        if (_server is IOPCHDA_AsyncUpdate asyncUpdate) {
+        if (_server is IOPCHDA_AsyncUpdate asyncUpdate)
+        {
             int cancelId = await asyncUpdate.DeleteRawAsync(transactionId, startTime, endTime, serverHandles, cancellationToken).ConfigureAwait(false);
             return SucceededAsyncUpdate(cancelId, serverHandles);
         }
@@ -225,12 +255,14 @@ public sealed class OpcHdaServerDispatcher : IOpcHdaServerDispatcher {
     }
 
     /// <inheritdoc />
-    public async Task<OpcHdaAsyncUpdateResult> BeginAsyncDeleteAtTimeAsync(int transactionId, int[] serverHandles, long[] timestampFileTimes, CancellationToken cancellationToken = default) {
+    public async Task<OpcHdaAsyncUpdateResult> BeginAsyncDeleteAtTimeAsync(int transactionId, int[] serverHandles, long[] timestampFileTimes, CancellationToken cancellationToken = default)
+    {
         ArgumentNullException.ThrowIfNull(serverHandles);
         ArgumentNullException.ThrowIfNull(timestampFileTimes);
         ValidateLength(serverHandles.Length, timestampFileTimes.Length, nameof(timestampFileTimes));
         cancellationToken.ThrowIfCancellationRequested();
-        if (_server is IOPCHDA_AsyncUpdate asyncUpdate) {
+        if (_server is IOPCHDA_AsyncUpdate asyncUpdate)
+        {
             int cancelId = await asyncUpdate.DeleteAtTimeAsync(transactionId, serverHandles, timestampFileTimes, cancellationToken).ConfigureAwait(false);
             return SucceededAsyncUpdate(cancelId, serverHandles);
         }
@@ -248,27 +280,32 @@ public sealed class OpcHdaServerDispatcher : IOpcHdaServerDispatcher {
         long updateDurationFileTime,
         long updateIntervalFileTime,
         int[] serverHandles,
-        [EnumeratorCancellation] CancellationToken cancellationToken = default) {
+        [EnumeratorCancellation] CancellationToken cancellationToken = default)
+    {
         _ = transactionId;
         ArgumentNullException.ThrowIfNull(startTime);
         ArgumentNullException.ThrowIfNull(endTime);
         ArgumentNullException.ThrowIfNull(serverHandles);
         cancellationToken.ThrowIfCancellationRequested();
 
-        if (_server is IOPCHDA_Playback playback && _server is not IOPCHDA_SyncRead) {
+        if (_server is IOPCHDA_Playback playback && _server is not IOPCHDA_SyncRead)
+        {
             await playback.ReadRawWithUpdateAsync(transactionId, startTime, endTime, maxValues, updateDurationFileTime, updateIntervalFileTime, serverHandles, cancellationToken).ConfigureAwait(false);
             yield break;
         }
-        if (_server is not IOPCHDA_SyncRead syncRead) {
+        if (_server is not IOPCHDA_SyncRead syncRead)
+        {
             throw new OpcException(OpcResultId.NotImplemented);
         }
 
         int iterations = GetPlaybackIterationCount(updateDurationFileTime, updateIntervalFileTime);
         TimeSpan delay = ToPlaybackDelay(updateIntervalFileTime);
-        for (int i = 0; i < iterations; i++) {
+        for (int i = 0; i < iterations; i++)
+        {
             OpcHdaItem[] items = await syncRead.ReadRawAsync(startTime, endTime, maxValues, false, serverHandles, cancellationToken).ConfigureAwait(false);
             yield return BuildPlaybackEvent(items, serverHandles.Length);
-            if (i + 1 < iterations) {
+            if (i + 1 < iterations)
+            {
                 await Task.Delay(delay, cancellationToken).ConfigureAwait(false);
             }
         }
@@ -284,7 +321,8 @@ public sealed class OpcHdaServerDispatcher : IOpcHdaServerDispatcher {
         long updateIntervalFileTime,
         int[] serverHandles,
         int[] aggregateIds,
-        [EnumeratorCancellation] CancellationToken cancellationToken = default) {
+        [EnumeratorCancellation] CancellationToken cancellationToken = default)
+    {
         _ = transactionId;
         ArgumentNullException.ThrowIfNull(startTime);
         ArgumentNullException.ThrowIfNull(endTime);
@@ -293,33 +331,40 @@ public sealed class OpcHdaServerDispatcher : IOpcHdaServerDispatcher {
         ValidateLength(serverHandles.Length, aggregateIds.Length, nameof(aggregateIds));
         cancellationToken.ThrowIfCancellationRequested();
 
-        if (_server is IOPCHDA_Playback playback && _server is not IOPCHDA_SyncRead) {
+        if (_server is IOPCHDA_Playback playback && _server is not IOPCHDA_SyncRead)
+        {
             await playback.ReadProcessedWithUpdateAsync(transactionId, startTime, endTime, resampleIntervalFileTime, intervalCount, updateIntervalFileTime, serverHandles, aggregateIds, cancellationToken).ConfigureAwait(false);
             yield break;
         }
-        if (_server is not IOPCHDA_SyncRead syncRead) {
+        if (_server is not IOPCHDA_SyncRead syncRead)
+        {
             throw new OpcException(OpcResultId.NotImplemented);
         }
 
         int iterations = Math.Clamp(intervalCount, 1, 64);
         TimeSpan delay = ToPlaybackDelay(updateIntervalFileTime);
-        for (int i = 0; i < iterations; i++) {
+        for (int i = 0; i < iterations; i++)
+        {
             OpcHdaItem[] items = await syncRead.ReadProcessedAsync(startTime, endTime, resampleIntervalFileTime, serverHandles, aggregateIds, cancellationToken).ConfigureAwait(false);
             yield return BuildPlaybackEvent(items, serverHandles.Length);
-            if (i + 1 < iterations) {
+            if (i + 1 < iterations)
+            {
                 await Task.Delay(delay, cancellationToken).ConfigureAwait(false);
             }
         }
     }
 
     /// <inheritdoc />
-    public async Task CancelAsync(int cancelId, CancellationToken cancellationToken = default) {
+    public async Task CancelAsync(int cancelId, CancellationToken cancellationToken = default)
+    {
         cancellationToken.ThrowIfCancellationRequested();
-        if (_server is IOPCHDA_AsyncUpdate asyncUpdate) {
+        if (_server is IOPCHDA_AsyncUpdate asyncUpdate)
+        {
             await asyncUpdate.CancelAsync(cancelId, cancellationToken).ConfigureAwait(false);
             return;
         }
-        if (_server is IOPCHDA_Playback playback) {
+        if (_server is IOPCHDA_Playback playback)
+        {
             await playback.CancelAsync(cancelId, cancellationToken).ConfigureAwait(false);
             return;
         }
@@ -332,7 +377,8 @@ public sealed class OpcHdaServerDispatcher : IOpcHdaServerDispatcher {
         int[] serverHandles,
         long[] timestampFileTimes,
         OpcHdaAnnotation[] annotationValues,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         ArgumentNullException.ThrowIfNull(serverHandles);
         ArgumentNullException.ThrowIfNull(timestampFileTimes);
         ArgumentNullException.ThrowIfNull(annotationValues);
@@ -340,7 +386,8 @@ public sealed class OpcHdaServerDispatcher : IOpcHdaServerDispatcher {
         ValidateLength(serverHandles.Length, annotationValues.Length, nameof(annotationValues));
         cancellationToken.ThrowIfCancellationRequested();
 
-        if (_server is not IOPCHDA_SyncAnnotations annotations) {
+        if (_server is not IOPCHDA_SyncAnnotations annotations)
+        {
             throw new OpcException(OpcResultId.NotImplemented);
         }
 
@@ -352,12 +399,14 @@ public sealed class OpcHdaServerDispatcher : IOpcHdaServerDispatcher {
         int[] serverHandles,
         OpcHdaTime startTime,
         long updateIntervalFileTime,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         ArgumentNullException.ThrowIfNull(serverHandles);
         ArgumentNullException.ThrowIfNull(startTime);
         cancellationToken.ThrowIfCancellationRequested();
 
-        if (_server is not IOPCHDA_SyncRead syncRead) {
+        if (_server is not IOPCHDA_SyncRead syncRead)
+        {
             throw new OpcException(OpcResultId.NotImplemented);
         }
 
@@ -376,17 +425,20 @@ public sealed class OpcHdaServerDispatcher : IOpcHdaServerDispatcher {
         long resampleIntervalFileTime,
         int[] aggregateHandles,
         int intervalCount,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         ArgumentNullException.ThrowIfNull(serverHandles);
         ArgumentNullException.ThrowIfNull(startTime);
         ArgumentNullException.ThrowIfNull(aggregateHandles);
         ValidateLength(serverHandles.Length, aggregateHandles.Length, nameof(aggregateHandles));
         cancellationToken.ThrowIfCancellationRequested();
 
-        if (_server is not IOPCHDA_SyncRead syncRead) {
+        if (_server is not IOPCHDA_SyncRead syncRead)
+        {
             throw new OpcException(OpcResultId.NotImplemented);
         }
-        if (intervalCount <= 0) {
+        if (intervalCount <= 0)
+        {
             throw new OpcException(OpcResultId.InvalidArg);
         }
 
@@ -399,8 +451,10 @@ public sealed class OpcHdaServerDispatcher : IOpcHdaServerDispatcher {
             AdviseProcessedUpdatesAsync(syncRead, handles, startTime, resampleInterval, resampleIntervalFileTime, aggregates, intervalCount, cancellationToken)));
     }
 
-    private async Task<HashSet<int>?> TryGetSupportedAttributeIdsAsync(CancellationToken cancellationToken) {
-        try {
+    private async Task<HashSet<int>?> TryGetSupportedAttributeIdsAsync(CancellationToken cancellationToken)
+    {
+        try
+        {
             await ((IOPCHDA_Server)_server).GetItemAttributesAsync(
                 out int[] attributeIds,
                 out string[] attributeNames,
@@ -412,7 +466,8 @@ public sealed class OpcHdaServerDispatcher : IOpcHdaServerDispatcher {
             _ = attributeDataTypes;
             return attributeIds.Length == 0 ? null : new HashSet<int>(attributeIds);
         }
-        catch (OpcException ex) when (ex.ResultId.Code == OpcResultId.NotImplemented.Code) {
+        catch (OpcException ex) when (ex.ResultId.Code == OpcResultId.NotImplemented.Code)
+        {
             return null;
         }
     }
@@ -422,9 +477,11 @@ public sealed class OpcHdaServerDispatcher : IOpcHdaServerDispatcher {
         int[] serverHandles,
         OpcHdaTime startTime,
         TimeSpan updateInterval,
-        [EnumeratorCancellation] CancellationToken cancellationToken) {
+        [EnumeratorCancellation] CancellationToken cancellationToken)
+    {
         DateTimeOffset current = ResolveStartTime(startTime);
-        while (true) {
+        while (true)
+        {
             await Task.Delay(updateInterval, cancellationToken).ConfigureAwait(false);
             DateTimeOffset next = current + updateInterval;
             OpcHdaItem[] items = await syncRead.ReadRawAsync(
@@ -447,9 +504,11 @@ public sealed class OpcHdaServerDispatcher : IOpcHdaServerDispatcher {
         long resampleIntervalFileTime,
         int[] aggregateHandles,
         int intervalCount,
-        [EnumeratorCancellation] CancellationToken cancellationToken) {
+        [EnumeratorCancellation] CancellationToken cancellationToken)
+    {
         DateTimeOffset current = ResolveStartTime(startTime);
-        while (true) {
+        while (true)
+        {
             TimeSpan updateInterval = TimeSpan.FromTicks(checked(resampleInterval.Ticks * intervalCount));
             await Task.Delay(updateInterval, cancellationToken).ConfigureAwait(false);
             DateTimeOffset next = current + updateInterval;
@@ -468,7 +527,8 @@ public sealed class OpcHdaServerDispatcher : IOpcHdaServerDispatcher {
     private IOPCHDA_SyncUpdate GetSyncUpdate() =>
         _server as IOPCHDA_SyncUpdate ?? throw new OpcException(OpcResultId.NotImplemented);
 
-    private static void ValidateUpdateArrays(int[] serverHandles, long[] timestampFileTimes, OpcVariant[] dataValues, int[] qualities) {
+    private static void ValidateUpdateArrays(int[] serverHandles, long[] timestampFileTimes, OpcVariant[] dataValues, int[] qualities)
+    {
         ArgumentNullException.ThrowIfNull(serverHandles);
         ArgumentNullException.ThrowIfNull(timestampFileTimes);
         ArgumentNullException.ThrowIfNull(dataValues);
@@ -484,44 +544,55 @@ public sealed class OpcHdaServerDispatcher : IOpcHdaServerDispatcher {
     private static OpcHdaDataUpdate BuildUpdate(OpcHdaItem[] items, int expectedCount) =>
         new(NormalizeItems(items, expectedCount), BuildResultErrors(items.Length, expectedCount, OpcResultId.InvalidHandle.Code));
 
-    private static OpcHdaPlaybackEvent BuildPlaybackEvent(OpcHdaItem[] items, int expectedCount) {
+    private static OpcHdaPlaybackEvent BuildPlaybackEvent(OpcHdaItem[] items, int expectedCount)
+    {
         int[] errors = BuildResultErrors(items.Length, expectedCount, OpcResultId.InvalidHandle.Code);
         return new OpcHdaPlaybackEvent(GetMasterHResult(errors), NormalizeItems(items, expectedCount), errors);
     }
 
-    private static int[] BuildResultErrors(int resultCount, int expectedCount, int missingError) {
+    private static int[] BuildResultErrors(int resultCount, int expectedCount, int missingError)
+    {
         var errors = new int[expectedCount];
-        for (int i = 0; i < expectedCount; i++) {
+        for (int i = 0; i < expectedCount; i++)
+        {
             errors[i] = i < resultCount ? OpcResultId.Ok.Code : missingError;
         }
 
         return errors;
     }
 
-    private static OpcHdaItem[] NormalizeItems(OpcHdaItem[] items, int count) {
+    private static OpcHdaItem[] NormalizeItems(OpcHdaItem[] items, int count)
+    {
         var normalized = new OpcHdaItem[count];
-        for (int i = 0; i < count; i++) {
+        for (int i = 0; i < count; i++)
+        {
             normalized[i] = i < items.Length ? items[i] : new OpcHdaItem(0, 0, [], [], []);
         }
 
         return normalized;
     }
 
-    private static TimeSpan ToPositiveTimeSpan(long fileTimeTicks, string parameterName) {
-        if (fileTimeTicks <= 0) {
+    private static TimeSpan ToPositiveTimeSpan(long fileTimeTicks, string parameterName)
+    {
+        if (fileTimeTicks <= 0)
+        {
             throw new OpcException(OpcResultId.InvalidArg);
         }
 
-        try {
+        try
+        {
             return TimeSpan.FromTicks(fileTimeTicks);
         }
-        catch (ArgumentOutOfRangeException ex) {
+        catch (ArgumentOutOfRangeException ex)
+        {
             throw new ArgumentOutOfRangeException(parameterName, fileTimeTicks, ex.Message);
         }
     }
 
-    private static int GetPlaybackIterationCount(long updateDurationFileTime, long updateIntervalFileTime) {
-        if (updateDurationFileTime <= 0 || updateIntervalFileTime <= 0) {
+    private static int GetPlaybackIterationCount(long updateDurationFileTime, long updateIntervalFileTime)
+    {
+        if (updateDurationFileTime <= 0 || updateIntervalFileTime <= 0)
+        {
             return 1;
         }
 
@@ -529,8 +600,10 @@ public sealed class OpcHdaServerDispatcher : IOpcHdaServerDispatcher {
         return (int)Math.Clamp(count, 1, 64);
     }
 
-    private static TimeSpan ToPlaybackDelay(long updateIntervalFileTime) {
-        if (updateIntervalFileTime <= 0) {
+    private static TimeSpan ToPlaybackDelay(long updateIntervalFileTime)
+    {
+        if (updateIntervalFileTime <= 0)
+        {
             return TimeSpan.FromMilliseconds(1);
         }
 
@@ -538,9 +611,12 @@ public sealed class OpcHdaServerDispatcher : IOpcHdaServerDispatcher {
         return TimeSpan.FromTicks(ticks);
     }
 
-    private static int GetMasterHResult(int[] errors) {
-        for (int i = 0; i < errors.Length; i++) {
-            if (errors[i] < 0) {
+    private static int GetMasterHResult(int[] errors)
+    {
+        for (int i = 0; i < errors.Length; i++)
+        {
+            if (errors[i] < 0)
+            {
                 return 1;
             }
         }
@@ -548,8 +624,10 @@ public sealed class OpcHdaServerDispatcher : IOpcHdaServerDispatcher {
         return OpcResultId.Ok.Code;
     }
 
-    private static void ValidateLength(int expected, int actual, string parameterName) {
-        if (actual != expected) {
+    private static void ValidateLength(int expected, int actual, string parameterName)
+    {
+        if (actual != expected)
+        {
             throw new ArgumentException($"Array length {actual} does not match expected {expected}.", parameterName);
         }
     }
@@ -557,27 +635,33 @@ public sealed class OpcHdaServerDispatcher : IOpcHdaServerDispatcher {
     private static DateTimeOffset ResolveStartTime(OpcHdaTime startTime) =>
         startTime.IsStringExpression ? DateTimeOffset.UtcNow : startTime.Timestamp;
 
-    private static int[] CopyArray(int[] values) {
+    private static int[] CopyArray(int[] values)
+    {
         var copy = new int[values.Length];
         Array.Copy(values, copy, values.Length);
         return copy;
     }
 
-    private static int ValidateBrowseFilter(OpcHdaBrowseFilter filter, HashSet<int>? supportedAttributeIds) {
-        if (filter.AttributeId <= 0) {
+    private static int ValidateBrowseFilter(OpcHdaBrowseFilter filter, HashSet<int>? supportedAttributeIds)
+    {
+        if (filter.AttributeId <= 0)
+        {
             return OpcHdaErrors.OPCHDA_E_INVALIDATTRID;
         }
-        if (filter.OperatorCode is < OpchdaEqual or > OpchdaNotEqual) {
+        if (filter.OperatorCode is < OpchdaEqual or > OpchdaNotEqual)
+        {
             return OpcResultId.InvalidArg.Code;
         }
-        if (supportedAttributeIds is not null && !supportedAttributeIds.Contains(filter.AttributeId)) {
+        if (supportedAttributeIds is not null && !supportedAttributeIds.Contains(filter.AttributeId))
+        {
             return OpcHdaErrors.OPCHDA_E_UNKNOWNATTRID;
         }
 
         return OpcResultId.Ok.Code;
     }
 
-    private static bool ShouldInclude(HdaBrowseElement element, HdaBrowseType browseType) => browseType switch {
+    private static bool ShouldInclude(HdaBrowseElement element, HdaBrowseType browseType) => browseType switch
+    {
         HdaBrowseType.Branch => element.BrowseType == HdaBrowseType.Branch,
         HdaBrowseType.Leaf => element.BrowseType == HdaBrowseType.Leaf,
         HdaBrowseType.Flat => element.BrowseType == HdaBrowseType.Flat,
@@ -590,8 +674,10 @@ public sealed class OpcHdaServerDispatcher : IOpcHdaServerDispatcher {
             ? string.IsNullOrEmpty(element.ItemId) ? element.Name : element.ItemId
             : element.Name;
 
-    private static string MoveUp(string position) {
-        if (string.IsNullOrEmpty(position)) {
+    private static string MoveUp(string position)
+    {
+        if (string.IsNullOrEmpty(position))
+        {
             return string.Empty;
         }
 

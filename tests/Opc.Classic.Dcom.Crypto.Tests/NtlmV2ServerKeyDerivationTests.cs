@@ -20,7 +20,8 @@ using TUnit.Core;
 
 namespace Opc.Classic.Dcom.Crypto.Tests;
 
-public sealed class NtlmV2ServerKeyDerivationTests {
+public sealed class NtlmV2ServerKeyDerivationTests
+{
     private const string User = "User";
     private const string Domain = "Domain";
     private const string Password = "Password";
@@ -48,7 +49,8 @@ public sealed class NtlmV2ServerKeyDerivationTests {
         "86c35097ac9cec102554764a57cccc19aaaaaaaaaaaaaaaa");
 
     [Test]
-    public async Task MsNlmp4241_Vectors_DeriveExpectedKeys() {
+    public async Task MsNlmp4241_Vectors_DeriveExpectedKeys()
+    {
         var ntowfv2 = ComputeNTOWFv2(Password, User, Domain);
         await Assert.That(ToHex(ntowfv2)).IsEqualTo("0c868a403bfd7a93a3001ef22ef02e3f");
 
@@ -63,7 +65,8 @@ public sealed class NtlmV2ServerKeyDerivationTests {
     }
 
     [Test]
-    public async Task CreateSecurityWhenServer_VerifiesValidNtProof_AndDecryptsRandomSessionKey() {
+    public async Task CreateSecurityWhenServer_VerifiesValidNtProof_AndDecryptsRandomSessionKey()
+    {
         var authentication = CreateAuthentication(Password);
         SetSavedServerChallenge(authentication, ServerChallenge);
         var type3 = CreateMsNlmpType3();
@@ -76,7 +79,8 @@ public sealed class NtlmV2ServerKeyDerivationTests {
     }
 
     [Test]
-    public async Task CreateSecurityWhenServer_ThrowsSecurityException_WhenNtProofDoesNotMatchPassword() {
+    public async Task CreateSecurityWhenServer_ThrowsSecurityException_WhenNtProofDoesNotMatchPassword()
+    {
         var authentication = CreateAuthentication("WrongPassword");
         SetSavedServerChallenge(authentication, ServerChallenge);
         var type3 = CreateMsNlmpType3();
@@ -86,7 +90,8 @@ public sealed class NtlmV2ServerKeyDerivationTests {
     }
 
     [Test]
-    public async Task ClientServerRoundTrip_DerivesMatchingSigningKeys() {
+    public async Task ClientServerRoundTrip_DerivesMatchingSigningKeys()
+    {
         var client = CreateAuthentication(Password);
         var server = CreateAuthentication(Password);
 
@@ -103,7 +108,8 @@ public sealed class NtlmV2ServerKeyDerivationTests {
             .IsEqualTo(ToHex(GetSecurityField(client, "_serverSigningKey")));
     }
 
-    private static Type3Message CreateMsNlmpType3() {
+    private static Type3Message CreateMsNlmpType3()
+    {
         var flags = NtlmFlags.NtlmsspNegotiateUnicode |
             NtlmFlags.NtlmsspNegotiateNtlm |
             NtlmFlags.NtlmsspNegotiateNtlm2 |
@@ -118,7 +124,8 @@ public sealed class NtlmV2ServerKeyDerivationTests {
         return type3;
     }
 
-    private static NtlmAuthentication CreateAuthentication(string password) {
+    private static NtlmAuthentication CreateAuthentication(string password)
+    {
         var properties = new PropertyBag();
         properties.SetProperty("rpc.ntlm.lanManagerKey", "false");
         properties.SetProperty("rpc.ntlm.sign", "true");
@@ -132,41 +139,49 @@ public sealed class NtlmV2ServerKeyDerivationTests {
         return new NtlmAuthentication(properties);
     }
 
-    private static void SetSavedServerChallenge(NtlmAuthentication authentication, byte[] challenge) {
+    private static void SetSavedServerChallenge(NtlmAuthentication authentication, byte[] challenge)
+    {
         var field = typeof(NtlmAuthentication).GetField("_serverChallenge", BindingFlags.Instance | BindingFlags.NonPublic)!;
         field.SetValue(authentication, (byte[])challenge.Clone());
     }
 
-    private static void InvokeCreateSecurityWhenServer(NtlmAuthentication authentication, Type3Message type3) {
+    private static void InvokeCreateSecurityWhenServer(NtlmAuthentication authentication, Type3Message type3)
+    {
         var method = typeof(NtlmAuthentication).GetMethod(
             "CreateSecurityWhenServer", BindingFlags.Instance | BindingFlags.NonPublic)!;
-        try {
+        try
+        {
             method.Invoke(authentication, new object[] { type3 });
         }
-        catch (TargetInvocationException ex) when (ex.InnerException != null) {
+        catch (TargetInvocationException ex) when (ex.InnerException != null)
+        {
             ExceptionDispatchInfo.Capture(ex.InnerException).Throw();
             throw;
         }
     }
 
-    private static byte[] GetSecurityField(NtlmAuthentication authentication, string fieldName) {
+    private static byte[] GetSecurityField(NtlmAuthentication authentication, string fieldName)
+    {
         var field = authentication.Security.GetType().GetField(fieldName, BindingFlags.Instance | BindingFlags.NonPublic)!;
         return (byte[])field.GetValue(authentication.Security)!;
     }
 
-    private static byte[] ComputeNTOWFv2(string password, string user, string domain) {
+    private static byte[] ComputeNTOWFv2(string password, string user, string domain)
+    {
         var ntHash = Md4.HashData(Encoding.Unicode.GetBytes(password));
         return HmacMd5(ntHash, Encoding.Unicode.GetBytes(user.ToUpperInvariant() + domain));
     }
 
-    private static byte[] ComputeNtProofStr(byte[] ntowfv2, byte[] serverChallenge, byte[] temp) {
+    private static byte[] ComputeNtProofStr(byte[] ntowfv2, byte[] serverChallenge, byte[] temp)
+    {
         var input = new byte[serverChallenge.Length + temp.Length];
         Array.Copy(serverChallenge, 0, input, 0, serverChallenge.Length);
         Array.Copy(temp, 0, input, serverChallenge.Length, temp.Length);
         return HmacMd5(ntowfv2, input);
     }
 
-    private static byte[] HmacMd5(byte[] key, byte[] input) {
+    private static byte[] HmacMd5(byte[] key, byte[] input)
+    {
         using var hmac = new HMACMD5(key);
         return hmac.ComputeHash(input);
     }

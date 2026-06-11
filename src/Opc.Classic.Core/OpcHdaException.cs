@@ -8,7 +8,8 @@ using System;
 namespace Opc.Classic;
 
 /// <summary>OPC Historical Data Access (HDA) specification errors.</summary>
-public sealed class OpcHdaException : OpcException {
+public sealed class OpcHdaException : OpcException
+{
     public OpcHdaException() { }
     public OpcHdaException(string message) : base(message) { }
     public OpcHdaException(string message, Exception innerException) : base(message, innerException) { }

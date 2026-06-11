@@ -24,14 +24,16 @@ using TUnit.Core;
 
 namespace Opc.Classic.Dcom.Tests;
 
-public sealed class ChannelBindingTlsTests {
+public sealed class ChannelBindingTlsTests
+{
     private const ushort MsvAvChannelBindings = 0x000A;
     private const string TlsServerEndpointPrefix = "tls-server-end-point:";
     private const string Sha256CertFile = "tls-server-endpoint-sha256.cer";
     private const string Sha384CertFile = "tls-server-endpoint-sha384.cer";
 
     [Test]
-    public async Task FixedSha256Certificate_ProducesExpectedTlsServerEndpointApplicationData() {
+    public async Task FixedSha256Certificate_ProducesExpectedTlsServerEndpointApplicationData()
+    {
         byte[] certDer = ReadTestCertificate(Sha256CertFile);
         byte[] expectedDigest = Convert.FromHexString("8A0769B7D62A1699BADEA8E3EC0B97CF7DC459FB61CA3E098F3641E3C4974D85");
         byte[] expected = BuildExpectedApplicationData(expectedDigest);
@@ -43,7 +45,8 @@ public sealed class ChannelBindingTlsTests {
     }
 
     [Test]
-    public async Task Tls13Sha384Certificate_UsesSha384ForTlsServerEndpointApplicationData() {
+    public async Task Tls13Sha384Certificate_UsesSha384ForTlsServerEndpointApplicationData()
+    {
         byte[] certDer = ReadTestCertificate(Sha384CertFile);
         byte[] expectedDigest = Convert.FromHexString(
             "B8B2EF7D3076E418A7BCDE700F90E70291D2F7D9255BDE6A50239422F938A6D4F1FB05218082B70C4CAA0133277513E0");
@@ -56,7 +59,8 @@ public sealed class ChannelBindingTlsTests {
     }
 
     [Test]
-    public async Task NtlmAuthenticate_IncludesMsvAvChannelBindings_WhenTlsBindingHashIsConfigured() {
+    public async Task NtlmAuthenticate_IncludesMsvAvChannelBindings_WhenTlsBindingHashIsConfigured()
+    {
         byte[] channelBindingsHash = ChannelBindingsHash.ForTlsServerCert(ReadTestCertificate(Sha256CertFile));
         Type3Message type3 = CreateNtlmType3(channelBindingsHash);
 
@@ -67,21 +71,25 @@ public sealed class ChannelBindingTlsTests {
     }
 
     [Test]
-    public async Task NtlmAuthenticate_NoTlsOmitsOrZerosMsvAvChannelBindings() {
+    public async Task NtlmAuthenticate_NoTlsOmitsOrZerosMsvAvChannelBindings()
+    {
         Type3Message type3 = CreateNtlmType3(channelBindingsHash: null);
 
         bool found = TryGetNtlmV2AvPair(type3.GetNTResponse(), MsvAvChannelBindings, out byte[] actual);
 
-        if (found) {
+        if (found)
+        {
             await Assert.That(actual.All(static b => b == 0)).IsTrue();
         }
-        else {
+        else
+        {
             await Assert.That(found).IsFalse();
         }
     }
 
     [Test]
-    public async Task NtlmServerRoundTrip_VerifiesMatchingTlsChannelBindings() {
+    public async Task NtlmServerRoundTrip_VerifiesMatchingTlsChannelBindings()
+    {
         byte[] channelBindingsHash = ChannelBindingsHash.ForTlsServerCert(ReadTestCertificate(Sha256CertFile));
         var client = CreateNtlmAuthentication(channelBindingsHash);
         var server = CreateNtlmAuthentication(channelBindingsHash);
@@ -94,7 +102,8 @@ public sealed class ChannelBindingTlsTests {
     }
 
     [Test]
-    public async Task SslStreamLoopback_ExtractsServerCertificateAndComputesTlsServerEndpointCbt() {
+    public async Task SslStreamLoopback_ExtractsServerCertificateAndComputesTlsServerEndpointCbt()
+    {
         using X509Certificate2 certificate = CreateLoopbackCertificate();
         using var listener = new TcpListener(IPAddress.Loopback, port: 0);
         listener.Start();
@@ -105,7 +114,8 @@ public sealed class ChannelBindingTlsTests {
         await client.ConnectAsync(IPAddress.Loopback, port);
         using var sslStream = new SslStream(client.GetStream(), leaveInnerStreamOpen: false);
 
-        await sslStream.AuthenticateAsClientAsync(new SslClientAuthenticationOptions {
+        await sslStream.AuthenticateAsClientAsync(new SslClientAuthenticationOptions
+        {
             TargetHost = "localhost",
             EnabledSslProtocols = SslProtocols.Tls12 | SslProtocols.Tls13,
             RemoteCertificateValidationCallback = static (_, _, _, _) => true,
@@ -126,7 +136,8 @@ public sealed class ChannelBindingTlsTests {
     private static byte[] ReadTestCertificate(string fileName) =>
         File.ReadAllBytes(Path.Combine(AppContext.BaseDirectory, "TestData", fileName));
 
-    private static byte[] BuildExpectedApplicationData(byte[] digest) {
+    private static byte[] BuildExpectedApplicationData(byte[] digest)
+    {
         byte[] prefix = System.Text.Encoding.ASCII.GetBytes(TlsServerEndpointPrefix);
         var expected = new byte[prefix.Length + digest.Length];
         Buffer.BlockCopy(prefix, 0, expected, 0, prefix.Length);
@@ -134,14 +145,16 @@ public sealed class ChannelBindingTlsTests {
         return expected;
     }
 
-    private static Type3Message CreateNtlmType3(byte[]? channelBindingsHash) {
+    private static Type3Message CreateNtlmType3(byte[]? channelBindingsHash)
+    {
         var client = CreateNtlmAuthentication(channelBindingsHash);
         var server = CreateNtlmAuthentication(channelBindingsHash: null);
         Type2Message type2 = server.CreateType2(client.CreateType1());
         return client.CreateType3(type2);
     }
 
-    private static NtlmAuthentication CreateNtlmAuthentication(byte[]? channelBindingsHash) {
+    private static NtlmAuthentication CreateNtlmAuthentication(byte[]? channelBindingsHash)
+    {
         var properties = new PropertyBag();
         properties.SetProperty("rpc.ntlm.lanManagerKey", "false");
         properties.SetProperty("rpc.ntlm.sign", "true");
@@ -155,30 +168,36 @@ public sealed class ChannelBindingTlsTests {
         properties.SetProperty("rpc.ntlm.domain", "DOMAIN");
         properties.SetProperty(Opc.Classic.Dcom.Rpc.Security.USERNAME, "User");
         properties.SetProperty(Opc.Classic.Dcom.Rpc.Security.PASSWORD, "Password");
-        if (channelBindingsHash is not null) {
+        if (channelBindingsHash is not null)
+        {
             properties.SetProperty("rpc.ntlm.channelBindingsHash", channelBindingsHash);
         }
 
         return new NtlmAuthentication(properties);
     }
 
-    private static bool TryGetNtlmV2AvPair(byte[] ntResponse, ushort avId, out byte[] value) {
+    private static bool TryGetNtlmV2AvPair(byte[] ntResponse, ushort avId, out byte[] value)
+    {
         const int ntProofLength = 16;
         const int avPairsOffsetInBlob = 28;
         int offset = ntProofLength + avPairsOffsetInBlob;
-        while (offset + 4 <= ntResponse.Length) {
+        while (offset + 4 <= ntResponse.Length)
+        {
             ushort currentAvId = BinaryPrimitives.ReadUInt16LittleEndian(ntResponse.AsSpan(offset, sizeof(ushort)));
             ushort length = BinaryPrimitives.ReadUInt16LittleEndian(ntResponse.AsSpan(offset + sizeof(ushort), sizeof(ushort)));
             offset += 4;
-            if (length > ntResponse.Length - offset) {
+            if (length > ntResponse.Length - offset)
+            {
                 break;
             }
 
-            if (currentAvId == 0) {
+            if (currentAvId == 0)
+            {
                 break;
             }
 
-            if (currentAvId == avId) {
+            if (currentAvId == avId)
+            {
                 value = ntResponse.AsSpan(offset, length).ToArray();
                 return true;
             }
@@ -190,19 +209,23 @@ public sealed class ChannelBindingTlsTests {
         return false;
     }
 
-    private static void InvokeCreateSecurityWhenServer(NtlmAuthentication authentication, Type3Message type3) {
+    private static void InvokeCreateSecurityWhenServer(NtlmAuthentication authentication, Type3Message type3)
+    {
         MethodInfo method = typeof(NtlmAuthentication).GetMethod(
             "CreateSecurityWhenServer", BindingFlags.Instance | BindingFlags.NonPublic)!;
-        try {
+        try
+        {
             method.Invoke(authentication, new object[] { type3 });
         }
-        catch (TargetInvocationException ex) when (ex.InnerException != null) {
+        catch (TargetInvocationException ex) when (ex.InnerException != null)
+        {
             ExceptionDispatchInfo.Capture(ex.InnerException).Throw();
             throw;
         }
     }
 
-    private static X509Certificate2 CreateLoopbackCertificate() {
+    private static X509Certificate2 CreateLoopbackCertificate()
+    {
         using RSA rsa = RSA.Create(2048);
         var request = new CertificateRequest(
             "CN=localhost",
@@ -221,21 +244,26 @@ public sealed class ChannelBindingTlsTests {
         return X509CertificateLoader.LoadPkcs12(certificate.Export(X509ContentType.Pkcs12), password: null);
     }
 
-    private static async Task<Exception?> RunSslServerAsync(TcpListener listener, X509Certificate2 certificate) {
-        try {
+    private static async Task<Exception?> RunSslServerAsync(TcpListener listener, X509Certificate2 certificate)
+    {
+        try
+        {
             using TcpClient serverClient = await listener.AcceptTcpClientAsync();
             using var serverSsl = new SslStream(serverClient.GetStream(), leaveInnerStreamOpen: false);
-            await serverSsl.AuthenticateAsServerAsync(new SslServerAuthenticationOptions {
+            await serverSsl.AuthenticateAsServerAsync(new SslServerAuthenticationOptions
+            {
                 ServerCertificate = certificate,
                 EnabledSslProtocols = SslProtocols.Tls12 | SslProtocols.Tls13,
                 ClientCertificateRequired = false,
             });
             return null;
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             return ex;
         }
-        finally {
+        finally
+        {
             listener.Stop();
         }
     }

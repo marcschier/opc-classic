@@ -9,14 +9,16 @@ using System.Collections.Generic;
 namespace Opc.Classic.Dcom.Core;
 
 [Serializable]
-public sealed class CustomInterfacePointerBody : InterfacePointerBody {
+public sealed class CustomInterfacePointerBody : InterfacePointerBody
+{
     internal CustomInterfacePointerBody(
         string iid,
         string clsid,
         int cbExtension,
         int reserved,
         byte[] objectData)
-        : base(InterfacePointer.OBJREF_CUSTOM, iid, null, null) {
+        : base(InterfacePointer.OBJREF_CUSTOM, iid, null, null)
+    {
         CustomCLSID = clsid;
         ExtensionSize = cbExtension;
         Reserved = reserved;
@@ -32,7 +34,8 @@ public sealed class CustomInterfacePointerBody : InterfacePointerBody {
 
     public byte[] ObjectData { get; private set; }
 
-    internal static CustomInterfacePointerBody Decode(NdrCodec ndr, string iid, int bodyLength) {
+    internal static CustomInterfacePointerBody Decode(NdrCodec ndr, string iid, int bodyLength)
+    {
         var clsid = ReadUuid(ndr, "OBJREF_CUSTOM decode");
         var cbExtension = ndr.ReadUnsignedLong();
         var reserved = ndr.ReadUnsignedLong();
@@ -46,11 +49,13 @@ public sealed class CustomInterfacePointerBody : InterfacePointerBody {
     protected override int GetEncodedLength() =>
         ObjRefHeaderLength + CustomBodyHeaderLength + ObjectData.Length;
 
-    protected override void EncodeBody(NdrCodec ndr, int flags) {
+    protected override void EncodeBody(NdrCodec ndr, int flags)
+    {
         WriteUuid(ndr, CustomCLSID, "OBJREF_CUSTOM encode");
         ndr.WriteUnsignedLong(ExtensionSize);
         ndr.WriteUnsignedLong(Reserved);
-        if (ObjectData.Length > 0) {
+        if (ObjectData.Length > 0)
+        {
             ndr.WriteOctetArray(ObjectData, 0, ObjectData.Length);
         }
     }

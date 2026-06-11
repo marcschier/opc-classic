@@ -10,7 +10,8 @@ using Opc.Classic.Ndr;
 
 namespace Opc.Classic.Da.Dcom;
 
-public sealed class IOPCSyncIOClientProxy : IOPCSyncIO {
+public sealed class IOPCSyncIOClientProxy : IOPCSyncIO
+{
     private readonly ICallChannel _channel;
 
     public IOPCSyncIOClientProxy(ICallChannel channel) =>
@@ -20,10 +21,12 @@ public sealed class IOPCSyncIOClientProxy : IOPCSyncIO {
         int dataSource,
         int[] serverHandles,
         out int[] errors,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         ArgumentNullException.ThrowIfNull(serverHandles);
 
-        ReadOnlyMemory<byte> payload = WritePayload((ref NdrWriter writer) => {
+        ReadOnlyMemory<byte> payload = WritePayload((ref NdrWriter writer) =>
+        {
             // IOPCSyncIO::Read IDL: [in] OPCDATASOURCE dwSource, [in] DWORD dwCount,
             // [in, size_is(dwCount)] OPCHANDLE *phServer. Both the explicit dwCount
             // AND the array's own NDR max_count must be written (the array is a
@@ -39,7 +42,8 @@ public sealed class IOPCSyncIOClientProxy : IOPCSyncIO {
         return Task.FromResult(decoded.States);
     }
 
-    private async Task<ReadResult> InvokeReadAsync(ReadOnlyMemory<byte> payload, CancellationToken cancellationToken) {
+    private async Task<ReadResult> InvokeReadAsync(ReadOnlyMemory<byte> payload, CancellationToken cancellationToken)
+    {
         NdrCallResult result = await _channel.InvokeAsync(
             IOPCSyncIO.InterfaceId,
             IOPCSyncIO.Opnums.ReadAsync,
@@ -59,19 +63,23 @@ public sealed class IOPCSyncIOClientProxy : IOPCSyncIO {
         return new ReadResult(states, errors);
     }
 
-    private static OpcItemState[] ReadConformantOpcItemStateArray(ref NdrReader reader) {
-        if (!reader.TryReadReferentId(out _)) {
+    private static OpcItemState[] ReadConformantOpcItemStateArray(ref NdrReader reader)
+    {
+        if (!reader.TryReadReferentId(out _))
+        {
             return [];
         }
         int count = reader.ReadInt32();
         return NdrOpcItemStateCodec.ReadConformantArray(ref reader, count);
     }
 
-    public async Task<int[]> WriteAsync(int[] serverHandles, OpcVariant[] values, CancellationToken cancellationToken = default) {
+    public async Task<int[]> WriteAsync(int[] serverHandles, OpcVariant[] values, CancellationToken cancellationToken = default)
+    {
         ArgumentNullException.ThrowIfNull(serverHandles);
         ArgumentNullException.ThrowIfNull(values);
 
-        ReadOnlyMemory<byte> payload = WritePayload((ref NdrWriter writer) => {
+        ReadOnlyMemory<byte> payload = WritePayload((ref NdrWriter writer) =>
+        {
             // IOPCSyncIO::Write IDL: [in] DWORD dwCount, [in, size_is(dwCount)]
             // OPCHANDLE *phServer, [in, size_is(dwCount)] VARIANT *pItemValues.
             // Wire layout matches the generator's [OpcEmitArrayCount] +
@@ -79,7 +87,8 @@ public sealed class IOPCSyncIOClientProxy : IOPCSyncIO {
             writer.WriteUInt32((uint)serverHandles.Length);   // dwCount sibling
             writer.WriteConformantInt32Array(serverHandles);  // max_count + DWORDs
             writer.WriteUInt32((uint)values.Length);          // max_count for VARIANT[]
-            foreach (OpcVariant value in values) {
+            foreach (OpcVariant value in values)
+            {
                 NdrVariantExtensions.WriteVariantElement(ref writer, value);
             }
         });
@@ -98,43 +107,54 @@ public sealed class IOPCSyncIOClientProxy : IOPCSyncIO {
 
     private sealed record ReadResult(OpcItemState[] States, int[] Errors);
 
-    private static T[] ReadUniqueArray<T>(ref NdrReader reader, NdrReadFunc<T> read) {
-        if (!reader.TryReadReferentId(out _)) {
+    private static T[] ReadUniqueArray<T>(ref NdrReader reader, NdrReadFunc<T> read)
+    {
+        if (!reader.TryReadReferentId(out _))
+        {
             return [];
         }
         int count = reader.ReadInt32();
         if (count <= 0) { return []; }
         var values = new T[count];
-        for (int i = 0; i < values.Length; i++) {
+        for (int i = 0; i < values.Length; i++)
+        {
             values[i] = read(ref reader);
         }
         return values;
     }
 
-    private static int[] ReadUniqueInt32Array(ref NdrReader reader) {
-        if (!reader.TryReadReferentId(out _)) {
+    private static int[] ReadUniqueInt32Array(ref NdrReader reader)
+    {
+        if (!reader.TryReadReferentId(out _))
+        {
             return [];
         }
         return reader.ReadConformantInt32Array();
     }
 
-    private static ReadOnlyMemory<byte> WritePayload(NdrWriteAction write) {
-        for (int size = 1024; size <= 65536; size *= 2) {
+    private static ReadOnlyMemory<byte> WritePayload(NdrWriteAction write)
+    {
+        for (int size = 1024; size <= 65536; size *= 2)
+        {
             var buffer = new byte[size];
             var writer = new NdrWriter(buffer);
-            try {
+            try
+            {
                 write(ref writer);
                 return buffer.AsMemory(0, writer.Position);
             }
-            catch (InvalidOperationException) when (size < 65536) {
+            catch (InvalidOperationException) when (size < 65536)
+            {
             }
         }
 
         throw new InvalidOperationException("Unable to encode IOPCSyncIO payload within 65536 bytes.");
     }
 
-    private static void ThrowIfFailed(NdrCallResult result) {
-        if (result.IsFailure) {
+    private static void ThrowIfFailed(NdrCallResult result)
+    {
+        if (result.IsFailure)
+        {
             throw new OpcException(new OpcResultId(result.Hresult, null));
         }
     }

@@ -10,7 +10,8 @@ using Opc.Classic.Ae.Dcom;
 namespace Opc.Classic.Ae.Hosting;
 
 /// <summary>In-process registration surface for AE event-sink callbacks.</summary>
-public interface IOpcAeEventSinkRegistration {
+public interface IOpcAeEventSinkRegistration
+{
     /// <summary>Registers a client event sink and returns the connection cookie.</summary>
     Task<int> AdviseEventSinkAsync(IOPCEventSink sink, CancellationToken cancellationToken = default);
 

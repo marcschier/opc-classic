@@ -59,7 +59,8 @@ namespace Opc.Classic.Dcom.Transport;
 /// <see cref="ConnectionOrientedPdu.PFC_CONC_MPX"/>.
 /// </para>
 /// </remarks>
-public sealed class RpcServerConnectionProcessor {
+public sealed class RpcServerConnectionProcessor
+{
     private const int AuthenticationVerifierHeaderLength = 8;
     private const int E_ACCESSDENIED = unchecked((int)0x80070005u);
 
@@ -109,7 +110,8 @@ public sealed class RpcServerConnectionProcessor {
     public RpcServerConnectionProcessor(
         IReadOnlyDictionary<Guid, IOpcServerDispatcher> dispatchers,
         ILogger? logger = null)
-        : this(dispatchers, objectRegistry: null, logger) {
+        : this(dispatchers, objectRegistry: null, logger)
+    {
     }
 
     /// <summary>
@@ -126,7 +128,8 @@ public sealed class RpcServerConnectionProcessor {
     public RpcServerConnectionProcessor(
         IReadOnlyDictionary<Guid, IOpcServerDispatcher> dispatchers,
         OpcObjectRegistry? objectRegistry,
-        ILogger? logger = null) {
+        ILogger? logger = null)
+    {
         ArgumentNullException.ThrowIfNull(dispatchers);
         _dispatchers = dispatchers;
         _objectRegistry = objectRegistry;
@@ -141,56 +144,70 @@ public sealed class RpcServerConnectionProcessor {
     /// closes, sends a <see cref="ShutdownPdu"/>, or
     /// <paramref name="cancellationToken"/> fires.
     /// </summary>
-    public async ValueTask ProcessConnectionAsync(IAsyncTransport transport, CancellationToken cancellationToken) {
+    public async ValueTask ProcessConnectionAsync(IAsyncTransport transport, CancellationToken cancellationToken)
+    {
         ArgumentNullException.ThrowIfNull(transport);
 
         var contextMap = new Dictionary<int, Guid>();
         int maxTransmitFragment = ConnectionOrientedPdu.MUST_RECEIVE_FRAGMENT_SIZE;
 
         ProcessorStarted(_logger, transport.RemoteEndpoint, null);
-        try {
-            while (!cancellationToken.IsCancellationRequested) {
+        try
+        {
+            while (!cancellationToken.IsCancellationRequested)
+            {
                 byte[]? frame = await ReadFrameOrNullAsync(transport, cancellationToken).ConfigureAwait(false);
-                if (frame is null) {
+                if (frame is null)
+                {
                     return;
                 }
 
-                if (!TryStripAuthenticationVerifier(transport, frame, out AuthenticationStrippedFrame stripped)) {
+                if (!TryStripAuthenticationVerifier(transport, frame, out AuthenticationStrippedFrame stripped))
+                {
                     return;
                 }
 
-                if (!TryDecodePdu(transport, stripped.PduBytes, out ConnectionOrientedPdu? pdu)) {
+                if (!TryDecodePdu(transport, stripped.PduBytes, out ConnectionOrientedPdu? pdu))
+                {
                     return;
                 }
 
                 bool keepGoing = await HandlePduAsync(transport, pdu!, stripped.Authentication, contextMap, maxTransmitFragment, cancellationToken)
                     .ConfigureAwait(false);
-                if (!keepGoing) {
+                if (!keepGoing)
+                {
                     return;
                 }
 
-                if (pdu is BindAcknowledgePdu ackUpdate && ackUpdate.MaxTransmitFragment > 0) {
+                if (pdu is BindAcknowledgePdu ackUpdate && ackUpdate.MaxTransmitFragment > 0)
+                {
                     maxTransmitFragment = ackUpdate.MaxTransmitFragment;
                 }
             }
         }
-        catch (Exception ex) when (ex is not OperationCanceledException) {
+        catch (Exception ex) when (ex is not OperationCanceledException)
+        {
             ProcessorFaulted(_logger, transport.RemoteEndpoint, ex);
         }
-        finally {
+        finally
+        {
             ProcessorClosed(_logger, transport.RemoteEndpoint, null);
         }
     }
 
     private static async ValueTask<byte[]?> ReadFrameOrNullAsync(
-        IAsyncTransport transport, CancellationToken cancellationToken) {
-        try {
+        IAsyncTransport transport, CancellationToken cancellationToken)
+    {
+        try
+        {
             return await PduCodec.ReadPduFrameAsync(transport.Input, cancellationToken).ConfigureAwait(false);
         }
-        catch (EndOfStreamException) {
+        catch (EndOfStreamException)
+        {
             return null;
         }
-        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested) {
+        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+        {
             return null;
         }
     }
@@ -198,22 +215,27 @@ public sealed class RpcServerConnectionProcessor {
     private bool TryStripAuthenticationVerifier(
         IAsyncTransport transport,
         byte[] frame,
-        out AuthenticationStrippedFrame stripped) {
-        try {
+        out AuthenticationStrippedFrame stripped)
+    {
+        try
+        {
             stripped = StripAuthenticationVerifier(frame);
             return true;
         }
-        catch (InvalidOperationException ex) {
+        catch (InvalidOperationException ex)
+        {
             UnsupportedPduType(_logger, transport.RemoteEndpoint, frame[ConnectionOrientedPdu.TYPE_OFFSET], ex);
             stripped = default;
             return false;
         }
     }
 
-    private static AuthenticationStrippedFrame StripAuthenticationVerifier(byte[] frame) {
+    private static AuthenticationStrippedFrame StripAuthenticationVerifier(byte[] frame)
+    {
         int authLength = BinaryPrimitives.ReadUInt16LittleEndian(
             frame.AsSpan(ConnectionOrientedPdu.AUTH_LENGTH_OFFSET));
-        if (authLength == 0) {
+        if (authLength == 0)
+        {
             return new AuthenticationStrippedFrame(frame, RpcPduAuthentication.None);
         }
 
@@ -221,13 +243,15 @@ public sealed class RpcServerConnectionProcessor {
             frame.AsSpan(ConnectionOrientedPdu.FRAG_LENGTH_OFFSET));
         int verifierStart = fragmentLength - authLength - AuthenticationVerifierHeaderLength;
         if (verifierStart < ConnectionOrientedPdu.HEADER_LENGTH
-            || verifierStart + AuthenticationVerifierHeaderLength > frame.Length) {
+            || verifierStart + AuthenticationVerifierHeaderLength > frame.Length)
+        {
             throw new InvalidOperationException("DCE/RPC authentication verifier is malformed.");
         }
 
         int padding = frame[verifierStart + 2];
         int strippedLength = verifierStart - padding;
-        if (strippedLength < ConnectionOrientedPdu.HEADER_LENGTH || strippedLength > frame.Length) {
+        if (strippedLength < ConnectionOrientedPdu.HEADER_LENGTH || strippedLength > frame.Length)
+        {
             throw new InvalidOperationException("DCE/RPC authentication verifier padding is malformed.");
         }
 
@@ -242,12 +266,15 @@ public sealed class RpcServerConnectionProcessor {
         return new AuthenticationStrippedFrame(pduBytes, authentication);
     }
 
-    private bool TryDecodePdu(IAsyncTransport transport, byte[] frame, out ConnectionOrientedPdu? pdu) {
-        try {
+    private bool TryDecodePdu(IAsyncTransport transport, byte[] frame, out ConnectionOrientedPdu? pdu)
+    {
+        try
+        {
             pdu = PduCodec.DecodePdu(frame);
             return true;
         }
-        catch (Exception ex) when (ex is InvalidOperationException or NotSupportedException) {
+        catch (Exception ex) when (ex is InvalidOperationException or NotSupportedException)
+        {
             UnsupportedPduType(_logger, transport.RemoteEndpoint, frame[ConnectionOrientedPdu.TYPE_OFFSET], ex);
             pdu = null;
             return false;
@@ -260,10 +287,13 @@ public sealed class RpcServerConnectionProcessor {
         RpcPduAuthentication authentication,
         Dictionary<int, Guid> contextMap,
         int maxTransmitFragment,
-        CancellationToken cancellationToken) {
-        switch (pdu) {
+        CancellationToken cancellationToken)
+    {
+        switch (pdu)
+        {
             case BindPdu bind:
-                if (authentication.IsAuthenticated && !AuthenticatedBindAllowed(bind)) {
+                if (authentication.IsAuthenticated && !AuthenticatedBindAllowed(bind))
+                {
                     AuthRejected(_logger, transport.RemoteEndpoint, authentication.AuthLength, null);
                     await WriteBindNakAsync(transport, bind.CallId,
                         BindNoAcknowledgeReason.REASON_NOT_SPECIFIED, cancellationToken).ConfigureAwait(false);
@@ -298,7 +328,8 @@ public sealed class RpcServerConnectionProcessor {
         }
     }
 
-    private BindAcknowledgePdu BuildBindAck(BindPdu bind, Dictionary<int, Guid> contextMap) {
+    private BindAcknowledgePdu BuildBindAck(BindPdu bind, Dictionary<int, Guid> contextMap)
+    {
         PresentationResult[] results = NegotiateContexts(bind.ContextList, contextMap);
         int associationGroupId = bind.AssociationGroupId != 0
             ? bind.AssociationGroupId
@@ -307,7 +338,8 @@ public sealed class RpcServerConnectionProcessor {
         int negotiatedMaxTransmit = Math.Min(bind.MaxTransmitFragment, ConnectionOrientedPdu.MUST_RECEIVE_FRAGMENT_SIZE);
         int negotiatedMaxReceive = Math.Min(bind.MaxReceiveFragment, ConnectionOrientedPdu.MUST_RECEIVE_FRAGMENT_SIZE);
 
-        return new BindAcknowledgePdu {
+        return new BindAcknowledgePdu
+        {
             MaxTransmitFragment = negotiatedMaxTransmit,
             MaxReceiveFragment = negotiatedMaxReceive,
             AssociationGroupId = associationGroupId,
@@ -317,9 +349,11 @@ public sealed class RpcServerConnectionProcessor {
         };
     }
 
-    private AlterContextResponsePdu BuildAlterContextResponse(AlterContextPdu alter, Dictionary<int, Guid> contextMap) {
+    private AlterContextResponsePdu BuildAlterContextResponse(AlterContextPdu alter, Dictionary<int, Guid> contextMap)
+    {
         PresentationResult[] results = NegotiateContexts(alter.ContextList, contextMap);
-        return new AlterContextResponsePdu {
+        return new AlterContextResponsePdu
+        {
             MaxTransmitFragment = alter.MaxTransmitFragment > 0 ? alter.MaxTransmitFragment : ConnectionOrientedPdu.MUST_RECEIVE_FRAGMENT_SIZE,
             MaxReceiveFragment = alter.MaxReceiveFragment > 0 ? alter.MaxReceiveFragment : ConnectionOrientedPdu.MUST_RECEIVE_FRAGMENT_SIZE,
             AssociationGroupId = alter.AssociationGroupId,
@@ -331,17 +365,21 @@ public sealed class RpcServerConnectionProcessor {
 
     private PresentationResult[] NegotiateContexts(
         PresentationContext[] proposedContexts,
-        Dictionary<int, Guid> contextMap) {
-        if (proposedContexts is null || proposedContexts.Length == 0) {
+        Dictionary<int, Guid> contextMap)
+    {
+        if (proposedContexts is null || proposedContexts.Length == 0)
+        {
             return [];
         }
 
         var ndrTransferSyntax = new PresentationSyntax(NdrCodec.NDR_SYNTAX);
         var results = new PresentationResult[proposedContexts.Length];
-        for (int i = 0; i < proposedContexts.Length; i++) {
+        for (int i = 0; i < proposedContexts.Length; i++)
+        {
             PresentationContext proposal = proposedContexts[i];
             if (!TryGuidFromUuid(proposal.AbstractSyntax?.Uuid, out Guid interfaceId)
-                || !SupportsInterface(interfaceId)) {
+                || !SupportsInterface(interfaceId))
+            {
                 // PresentationResult.Read always reads a TransferSyntax, so we
                 // always include one on rejection too (otherwise the peer's
                 // decode underflows). Use the proposed NDR syntax as a
@@ -353,7 +391,8 @@ public sealed class RpcServerConnectionProcessor {
                 continue;
             }
 
-            if (!HasNdrTransferSyntax(proposal.TransferSyntaxes, ndrTransferSyntax)) {
+            if (!HasNdrTransferSyntax(proposal.TransferSyntaxes, ndrTransferSyntax))
+            {
                 results[i] = new PresentationResult(
                     PresentationResultCode.PROVIDER_REJECTION,
                     PresentationResultReason.PROPOSED_TRANSFER_SYNTAXES_NOT_SUPPORTED,
@@ -373,8 +412,10 @@ public sealed class RpcServerConnectionProcessor {
         RpcPduAuthentication authentication,
         Dictionary<int, Guid> contextMap,
         int maxTransmitFragment,
-        CancellationToken cancellationToken) {
-        if (!contextMap.TryGetValue(request.ContextId, out Guid interfaceId)) {
+        CancellationToken cancellationToken)
+    {
+        if (!contextMap.TryGetValue(request.ContextId, out Guid interfaceId))
+        {
             UnknownContext(_logger, transport.RemoteEndpoint, request.ContextId, null);
             await WriteFaultAsync(transport, request.CallId, request.ContextId,
                 FaultCode.UNSPECIFIED_REJECTION, maxTransmitFragment, cancellationToken).ConfigureAwait(false);
@@ -382,14 +423,16 @@ public sealed class RpcServerConnectionProcessor {
         }
 
         IOpcServerDispatcher? dispatcher = ResolveDispatcher(request, interfaceId);
-        if (dispatcher is null) {
+        if (dispatcher is null)
+        {
             UnknownContext(_logger, transport.RemoteEndpoint, request.ContextId, null);
             await WriteFaultAsync(transport, request.CallId, request.ContextId,
                 FaultCode.UNSPECIFIED_REJECTION, maxTransmitFragment, cancellationToken).ConfigureAwait(false);
             return;
         }
 
-        if (!TryExtractRequestBody(request, out ReadOnlyMemory<byte> body)) {
+        if (!TryExtractRequestBody(request, out ReadOnlyMemory<byte> body))
+        {
             await WriteFaultAsync(transport, request.CallId, request.ContextId,
                 FaultCode.UNSPECIFIED_REJECTION, maxTransmitFragment, cancellationToken).ConfigureAwait(false);
             return;
@@ -397,7 +440,8 @@ public sealed class RpcServerConnectionProcessor {
 
         DispatchResult? result = await TryDispatchAsync(transport, dispatcher, interfaceId, request, authentication, body, cancellationToken)
             .ConfigureAwait(false);
-        if (result is null) {
+        if (result is null)
+        {
             await WriteFaultAsync(transport, request.CallId, request.ContextId,
                 FaultCode.UNSPECIFIED_REJECTION, maxTransmitFragment, cancellationToken).ConfigureAwait(false);
             return;
@@ -407,16 +451,20 @@ public sealed class RpcServerConnectionProcessor {
             .ConfigureAwait(false);
     }
 
-    private static bool TryExtractRequestBody(RequestCoPdu request, out ReadOnlyMemory<byte> body) {
+    private static bool TryExtractRequestBody(RequestCoPdu request, out ReadOnlyMemory<byte> body)
+    {
         body = ReadOnlyMemory<byte>.Empty;
-        if (request.Stub is null) {
+        if (request.Stub is null)
+        {
             return true;
         }
-        try {
+        try
+        {
             body = OrpcEnvelope.ExtractRequestBody(request.Stub);
             return true;
         }
-        catch (InvalidOperationException) {
+        catch (InvalidOperationException)
+        {
             return false;
         }
     }
@@ -428,9 +476,12 @@ public sealed class RpcServerConnectionProcessor {
         RequestCoPdu request,
         RpcPduAuthentication authentication,
         ReadOnlyMemory<byte> body,
-        CancellationToken cancellationToken) {
-        try {
-            if (dispatcher is IRpcRequestContextDispatcher contextDispatcher) {
+        CancellationToken cancellationToken)
+    {
+        try
+        {
+            if (dispatcher is IRpcRequestContextDispatcher contextDispatcher)
+            {
                 var requestContext = new RpcRequestContext(
                     authentication.IsAuthenticated,
                     authentication.ProtectionLevel,
@@ -438,17 +489,20 @@ public sealed class RpcServerConnectionProcessor {
                 return await contextDispatcher.DispatchAsync(request.Opnum, body, requestContext, cancellationToken).ConfigureAwait(false);
             }
 
-            if (authentication.IsAuthenticated) {
+            if (authentication.IsAuthenticated)
+            {
                 AuthRejected(_logger, transport.RemoteEndpoint, authentication.AuthLength, null);
                 return DispatchResult.Fault(E_ACCESSDENIED);
             }
 
             return await dispatcher.DispatchAsync(request.Opnum, body, cancellationToken).ConfigureAwait(false);
         }
-        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested) {
+        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+        {
             throw;
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             DispatcherThrew(_logger, transport.RemoteEndpoint, interfaceId, request.Opnum, ex);
             return null;
         }
@@ -459,15 +513,18 @@ public sealed class RpcServerConnectionProcessor {
         RequestCoPdu request,
         DispatchResult result,
         int maxTransmitFragment,
-        CancellationToken cancellationToken) {
-        if (result.IsFailure) {
+        CancellationToken cancellationToken)
+    {
+        if (result.IsFailure)
+        {
             await WriteFaultAsync(transport, request.CallId, request.ContextId,
                 (FaultCode)result.Hresult, maxTransmitFragment, cancellationToken).ConfigureAwait(false);
             return;
         }
 
         byte[] responseStub = OrpcEnvelope.BuildResponseStub(result.Payload);
-        var response = new ResponseCoPdu {
+        var response = new ResponseCoPdu
+        {
             AllocationHint = responseStub.Length,
             ContextId = request.ContextId,
             Stub = responseStub,
@@ -479,13 +536,15 @@ public sealed class RpcServerConnectionProcessor {
     private bool SupportsInterface(Guid interfaceId) =>
         _dispatchers.ContainsKey(interfaceId) || (_objectRegistry?.ContainsInterface(interfaceId) ?? false);
 
-    private IOpcServerDispatcher? ResolveDispatcher(RequestCoPdu request, Guid interfaceId) {
+    private IOpcServerDispatcher? ResolveDispatcher(RequestCoPdu request, Guid interfaceId)
+    {
         // Per-object route: if the request carries an Object UUID and the
         // registry knows it for the requested interface, prefer it over
         // the root map. Otherwise fall through to the root dispatcher set.
         if (_objectRegistry is not null && request.Object is not null
             && Guid.TryParse(request.Object.ToString(), out Guid ipid)
-            && _objectRegistry.TryGetDispatcher(ipid, interfaceId, out IOpcServerDispatcher perObject)) {
+            && _objectRegistry.TryGetDispatcher(ipid, interfaceId, out IOpcServerDispatcher perObject))
+        {
             return perObject;
         }
 
@@ -496,10 +555,13 @@ public sealed class RpcServerConnectionProcessor {
         IAsyncTransport transport,
         ConnectionOrientedPdu pdu,
         int maxTransmitFragment,
-        CancellationToken cancellationToken) {
-        if (pdu is IFragmentable fragmentable) {
+        CancellationToken cancellationToken)
+    {
+        if (pdu is IFragmentable fragmentable)
+        {
             var fragments = fragmentable.GetFragments(maxTransmitFragment);
-            while (fragments.HasNext()) {
+            while (fragments.HasNext())
+            {
                 await WriteSinglePduAsync(transport, fragments.Next(), maxTransmitFragment, cancellationToken)
                     .ConfigureAwait(false);
             }
@@ -513,7 +575,8 @@ public sealed class RpcServerConnectionProcessor {
         IAsyncTransport transport,
         ConnectionOrientedPdu pdu,
         int maxTransmitFragment,
-        CancellationToken cancellationToken) {
+        CancellationToken cancellationToken)
+    {
         byte[] bytes = PduCodec.EncodePdu(pdu, maxTransmitFragment);
         Memory<byte> destination = transport.Output.GetMemory(bytes.Length);
         bytes.AsSpan().CopyTo(destination.Span);
@@ -527,8 +590,10 @@ public sealed class RpcServerConnectionProcessor {
         int contextId,
         FaultCode status,
         int maxTransmitFragment,
-        CancellationToken cancellationToken) {
-        var fault = new FaultCoPdu {
+        CancellationToken cancellationToken)
+    {
+        var fault = new FaultCoPdu
+        {
             CallId = callId,
             ContextId = contextId,
             Status = status,
@@ -541,8 +606,10 @@ public sealed class RpcServerConnectionProcessor {
         IAsyncTransport transport,
         int callId,
         BindNoAcknowledgeReason reason,
-        CancellationToken cancellationToken) {
-        var nak = new BindNoAcknowledgePdu {
+        CancellationToken cancellationToken)
+    {
+        var nak = new BindNoAcknowledgePdu
+        {
             CallId = callId,
             RejectReason = reason,
         };
@@ -550,17 +617,22 @@ public sealed class RpcServerConnectionProcessor {
             .ConfigureAwait(false);
     }
 
-    private bool AuthenticatedBindAllowed(BindPdu bind) {
-        if (bind.ContextList is null || bind.ContextList.Length == 0) {
+    private bool AuthenticatedBindAllowed(BindPdu bind)
+    {
+        if (bind.ContextList is null || bind.ContextList.Length == 0)
+        {
             return false;
         }
 
         bool hasKnownContext = false;
-        foreach (PresentationContext context in bind.ContextList) {
+        foreach (PresentationContext context in bind.ContextList)
+        {
             if (TryGuidFromUuid(context.AbstractSyntax?.Uuid, out Guid interfaceId)
-                && _dispatchers.TryGetValue(interfaceId, out IOpcServerDispatcher? dispatcher)) {
+                && _dispatchers.TryGetValue(interfaceId, out IOpcServerDispatcher? dispatcher))
+            {
                 hasKnownContext = true;
-                if (dispatcher is not IRpcRequestContextDispatcher) {
+                if (dispatcher is not IRpcRequestContextDispatcher)
+                {
                     return false;
                 }
             }
@@ -569,7 +641,8 @@ public sealed class RpcServerConnectionProcessor {
         return hasKnownContext;
     }
 
-    private static OpcProtectionLevel ToOpcProtectionLevel(ProtectionLevel protectionLevel) => protectionLevel switch {
+    private static OpcProtectionLevel ToOpcProtectionLevel(ProtectionLevel protectionLevel) => protectionLevel switch
+    {
         ProtectionLevel.PROTECTION_LEVEL_CONNECT => OpcProtectionLevel.Connect,
         ProtectionLevel.PROTECTION_LEVEL_CALL => OpcProtectionLevel.Call,
         ProtectionLevel.PROTECTION_LEVEL_PACKET => OpcProtectionLevel.Packet,
@@ -578,29 +651,36 @@ public sealed class RpcServerConnectionProcessor {
         _ => OpcProtectionLevel.None,
     };
 
-    private static bool TryGuidFromUuid(UUID? uuid, out Guid value) {
-        if (uuid is null) {
+    private static bool TryGuidFromUuid(UUID? uuid, out Guid value)
+    {
+        if (uuid is null)
+        {
             value = Guid.Empty;
             return false;
         }
         return Guid.TryParse(uuid.ToString(), out value);
     }
 
-    private static bool HasNdrTransferSyntax(PresentationSyntax[]? transferSyntaxes, PresentationSyntax ndr) {
-        if (transferSyntaxes is null) {
+    private static bool HasNdrTransferSyntax(PresentationSyntax[]? transferSyntaxes, PresentationSyntax ndr)
+    {
+        if (transferSyntaxes is null)
+        {
             return false;
         }
 
         Guid ndrUuid = Guid.TryParse(ndr.Uuid?.ToString(), out Guid g) ? g : Guid.Empty;
-        foreach (PresentationSyntax candidate in transferSyntaxes) {
-            if (candidate?.Uuid is null) {
+        foreach (PresentationSyntax candidate in transferSyntaxes)
+        {
+            if (candidate?.Uuid is null)
+            {
                 continue;
             }
 
             if (Guid.TryParse(candidate.Uuid.ToString(), out Guid candidateUuid)
                 && candidateUuid == ndrUuid
                 && candidate.MajorVersion == ndr.MajorVersion
-                && candidate.MinorVersion == ndr.MinorVersion) {
+                && candidate.MinorVersion == ndr.MinorVersion)
+            {
                 return true;
             }
         }
@@ -611,7 +691,8 @@ public sealed class RpcServerConnectionProcessor {
     private readonly record struct RpcPduAuthentication(
         bool IsAuthenticated,
         int AuthLength,
-        OpcProtectionLevel ProtectionLevel) {
+        OpcProtectionLevel ProtectionLevel)
+    {
         public static RpcPduAuthentication None { get; } = new(false, 0, OpcProtectionLevel.None);
     }
 

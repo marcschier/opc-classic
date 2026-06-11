@@ -18,7 +18,8 @@ namespace Opc.Classic;
 ///   <item><term>8-15</term><description>Vendor-specific extension byte (preserved as-is)</description></item>
 /// </list>
 /// </summary>
-public readonly record struct OpcQuality(ushort RawValue) {
+public readonly record struct OpcQuality(ushort RawValue)
+{
     /// <summary>Bit mask for the quality sub-field (bits 0-1).</summary>
     public const ushort QualityMask = 0b0000_0000_0000_0011;
 
@@ -57,8 +58,10 @@ public readonly record struct OpcQuality(ushort RawValue) {
         OpcQualityKind quality,
         int substatus = 0,
         OpcQualityLimit limit = OpcQualityLimit.NotLimited,
-        byte vendorExtension = 0) {
-        if (substatus is < 0 or > 0b1111) {
+        byte vendorExtension = 0)
+    {
+        if (substatus is < 0 or > 0b1111)
+        {
             throw new ArgumentOutOfRangeException(nameof(substatus), substatus,
                 "Substatus must be 0..15 (4 bits).");
         }

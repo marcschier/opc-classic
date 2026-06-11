@@ -12,14 +12,16 @@ namespace Opc.Classic.Dcom.Transport;
 /// <summary>
 /// Connection context
 /// </summary>
-public sealed class ComRuntimeConnectionContext : BasicConnectionContext {
+public sealed class ComRuntimeConnectionContext : BasicConnectionContext
+{
 
     /// <inheritdoc/>
     public override bool Established => base.Established | _established;
 
     /// <inheritdoc/>
     public override ConnectionOrientedPdu Init(PresentationContext context,
-        PropertyBag properties) {
+        PropertyBag properties)
+    {
         base.Init(context, properties);
         _properties = properties;
         return null;
@@ -27,18 +29,22 @@ public sealed class ComRuntimeConnectionContext : BasicConnectionContext {
 
     /// <inheritdoc/>
 #pragma warning disable MA0051 // Legacy bind/alter-context state machine kept together.
-    public override ConnectionOrientedPdu Accept(ConnectionOrientedPdu pdu) {
+    public override ConnectionOrientedPdu Accept(ConnectionOrientedPdu pdu)
+    {
         ConnectionOrientedPdu reply = null;
-        switch (pdu.Type) {
+        switch (pdu.Type)
+        {
             case BindPdu.BIND_TYPE:
                 _established = true;
                 var presentationContexts = ((BindPdu)pdu).ContextList;
                 reply = new BindAcknowledgePdu();
                 var result = new PresentationResult[1];
-                for (var i = 0; i < presentationContexts.Length; i++) {
+                for (var i = 0; i < presentationContexts.Length; i++)
+                {
                     var presentationContext = presentationContexts[i];
                     if (!presentationContext.AbstractSyntax.ToString().ToUpper(CultureInfo.InvariantCulture).Equals(
-                        (string)_properties.GetProperty(kIID), StringComparison.CurrentCultureIgnoreCase)) {
+                        (string)_properties.GetProperty(kIID), StringComparison.CurrentCultureIgnoreCase))
+                    {
                         // create a fault PDU stating the syntax is not supported.
                         result[0] = new PresentationResult(PresentationResultCode.PROVIDER_REJECTION,
                             PresentationResultReason.ABSTRACT_SYNTAX_NOT_SUPPORTED,
@@ -49,7 +55,8 @@ public sealed class ComRuntimeConnectionContext : BasicConnectionContext {
                 }
 
                 // all okay
-                if (((BindAcknowledgePdu)reply).ResultList == null) {
+                if (((BindAcknowledgePdu)reply).ResultList == null)
+                {
                     result[0] = new PresentationResult(); // this will be acceptance.
                     ((BindAcknowledgePdu)reply).AssociationGroupId =
                         new object().GetHashCode(); // TODO should I save this ?
@@ -63,10 +70,12 @@ public sealed class ComRuntimeConnectionContext : BasicConnectionContext {
                 presentationContexts = ((AlterContextPdu)pdu).ContextList;
                 reply = new AlterContextResponsePdu();
                 result = new PresentationResult[1];
-                for (var i = 0; i < presentationContexts.Length; i++) {
+                for (var i = 0; i < presentationContexts.Length; i++)
+                {
                     var presentationContext = presentationContexts[i];
                     if (!presentationContext.AbstractSyntax.ToString().ToUpper(CultureInfo.InvariantCulture).Equals(
-                        (string)_properties.GetProperty(kIID), StringComparison.CurrentCultureIgnoreCase)) {
+                        (string)_properties.GetProperty(kIID), StringComparison.CurrentCultureIgnoreCase))
+                    {
                         // create a fault PDU stating the syntax is not supported.
                         result[0] = new PresentationResult(PresentationResultCode.PROVIDER_REJECTION,
                             PresentationResultReason.ABSTRACT_SYNTAX_NOT_SUPPORTED,
@@ -77,7 +86,8 @@ public sealed class ComRuntimeConnectionContext : BasicConnectionContext {
                 }
 
                 // all okay
-                if (((AlterContextResponsePdu)reply).ResultList == null) {
+                if (((AlterContextResponsePdu)reply).ResultList == null)
+                {
                     result[0] = new PresentationResult(); // this will be acceptance.
                     ((AlterContextResponsePdu)reply).AssociationGroupId =
                         new object().GetHashCode(); // TODO should I save this ?

@@ -16,9 +16,11 @@ using TUnit.Core;
 
 namespace Opc.Classic.Mcp.Tests;
 
-public sealed class HdaClientToolsTests {
+public sealed class HdaClientToolsTests
+{
     [Test]
-    public async Task Hda_connect_status_browse_and_disconnect_round_trip_via_mcp_client() {
+    public async Task Hda_connect_status_browse_and_disconnect_round_trip_via_mcp_client()
+    {
         var syntheticHda = new SyntheticHdaServer();
         string channelName = "hda-" + Guid.NewGuid().ToString("N");
         using IDisposable registration = InMemoryHdaConnectionRegistry.Register(channelName, syntheticHda.Channel, syntheticHda);
@@ -27,7 +29,8 @@ public sealed class HdaClientToolsTests {
 
         OpcResultDto connected = await server.CallToolAsync<OpcResultDto>(
             "opcclassic.hda.connect",
-            new Dictionary<string, object> {
+            new Dictionary<string, object>
+            {
                 ["sessionId"] = session.SessionId,
                 ["connectionString"] = "inmemory://" + channelName,
             }).ConfigureAwait(false);
@@ -49,7 +52,8 @@ public sealed class HdaClientToolsTests {
     }
 
     [Test]
-    public async Task Hda_validate_get_and_release_item_handles_via_mcp_client() {
+    public async Task Hda_validate_get_and_release_item_handles_via_mcp_client()
+    {
         var syntheticHda = new SyntheticHdaServer();
         string channelName = "hda-" + Guid.NewGuid().ToString("N");
         using IDisposable registration = InMemoryHdaConnectionRegistry.Register(channelName, syntheticHda.Channel, syntheticHda);
@@ -58,20 +62,23 @@ public sealed class HdaClientToolsTests {
 
         OpcHdaItemHandleDto[] validated = await server.CallToolAsync<OpcHdaItemHandleDto[]>(
             "opcclassic.hda.validate_items",
-            new Dictionary<string, object> {
+            new Dictionary<string, object>
+            {
                 ["sessionId"] = session.SessionId,
                 ["itemIds"] = new[] { "Sensor.Temperature", "Missing.Tag" },
             }).ConfigureAwait(false);
         OpcHdaItemHandleDto[] handles = await server.CallToolAsync<OpcHdaItemHandleDto[]>(
             "opcclassic.hda.get_item_handles",
-            new Dictionary<string, object> {
+            new Dictionary<string, object>
+            {
                 ["sessionId"] = session.SessionId,
                 ["itemIds"] = new[] { "Sensor.Temperature", "Sensor.Pressure" },
                 ["clientHandles"] = new[] { 41, 42 },
             }).ConfigureAwait(false);
         OpcResultDto[] released = await server.CallToolAsync<OpcResultDto[]>(
             "opcclassic.hda.release_item_handles",
-            new Dictionary<string, object> {
+            new Dictionary<string, object>
+            {
                 ["sessionId"] = session.SessionId,
                 ["serverHandles"] = handles.Select(static handle => handle.ServerHandle).ToArray(),
             }).ConfigureAwait(false);
@@ -84,7 +91,8 @@ public sealed class HdaClientToolsTests {
     }
 
     [Test]
-    public async Task Hda_read_raw_processed_and_at_time_via_mcp_client() {
+    public async Task Hda_read_raw_processed_and_at_time_via_mcp_client()
+    {
         var syntheticHda = new SyntheticHdaServer();
         string channelName = "hda-" + Guid.NewGuid().ToString("N");
         using IDisposable registration = InMemoryHdaConnectionRegistry.Register(channelName, syntheticHda.Channel, syntheticHda);
@@ -94,7 +102,8 @@ public sealed class HdaClientToolsTests {
 
         OpcHdaReadResultDto[] raw = await server.CallToolAsync<OpcHdaReadResultDto[]>(
             "opcclassic.hda.read_raw",
-            new Dictionary<string, object> {
+            new Dictionary<string, object>
+            {
                 ["sessionId"] = session.SessionId,
                 ["serverHandles"] = handles,
                 ["startTime"] = "NOW-1H",
@@ -103,7 +112,8 @@ public sealed class HdaClientToolsTests {
             }).ConfigureAwait(false);
         OpcHdaReadResultDto[] processed = await server.CallToolAsync<OpcHdaReadResultDto[]>(
             "opcclassic.hda.read_processed",
-            new Dictionary<string, object> {
+            new Dictionary<string, object>
+            {
                 ["sessionId"] = session.SessionId,
                 ["serverHandles"] = handles,
                 ["startTime"] = "NOW-1H",
@@ -113,7 +123,8 @@ public sealed class HdaClientToolsTests {
             }).ConfigureAwait(false);
         OpcHdaReadResultDto[] atTime = await server.CallToolAsync<OpcHdaReadResultDto[]>(
             "opcclassic.hda.read_at_time",
-            new Dictionary<string, object> {
+            new Dictionary<string, object>
+            {
                 ["sessionId"] = session.SessionId,
                 ["serverHandles"] = handles,
                 ["timestamps"] = new[] { DateTimeOffset.UtcNow.AddMinutes(-5) },
@@ -126,7 +137,8 @@ public sealed class HdaClientToolsTests {
     }
 
     [Test]
-    public async Task Hda_read_modified_attributes_annotations_and_aggregates_via_mcp_client() {
+    public async Task Hda_read_modified_attributes_annotations_and_aggregates_via_mcp_client()
+    {
         var syntheticHda = new SyntheticHdaServer();
         string channelName = "hda-" + Guid.NewGuid().ToString("N");
         using IDisposable registration = InMemoryHdaConnectionRegistry.Register(channelName, syntheticHda.Channel, syntheticHda);
@@ -136,7 +148,8 @@ public sealed class HdaClientToolsTests {
 
         OpcHdaModifiedReadResultDto[] modified = await server.CallToolAsync<OpcHdaModifiedReadResultDto[]>(
             "opcclassic.hda.read_modified",
-            new Dictionary<string, object> {
+            new Dictionary<string, object>
+            {
                 ["sessionId"] = session.SessionId,
                 ["serverHandles"] = handles,
                 ["startTime"] = "NOW-1H",
@@ -144,7 +157,8 @@ public sealed class HdaClientToolsTests {
             }).ConfigureAwait(false);
         OpcHdaAttributeResultDto[] attributes = await server.CallToolAsync<OpcHdaAttributeResultDto[]>(
             "opcclassic.hda.read_attribute",
-            new Dictionary<string, object> {
+            new Dictionary<string, object>
+            {
                 ["sessionId"] = session.SessionId,
                 ["serverHandle"] = handles[0],
                 ["attributeIds"] = new[] { 3 },
@@ -153,7 +167,8 @@ public sealed class HdaClientToolsTests {
             }).ConfigureAwait(false);
         OpcHdaAnnotationResultDto[] annotations = await server.CallToolAsync<OpcHdaAnnotationResultDto[]>(
             "opcclassic.hda.read_annotations",
-            new Dictionary<string, object> {
+            new Dictionary<string, object>
+            {
                 ["sessionId"] = session.SessionId,
                 ["serverHandles"] = handles,
                 ["startTime"] = "NOW-1H",
@@ -170,7 +185,8 @@ public sealed class HdaClientToolsTests {
     }
 
     [Test]
-    public async Task Hda_update_delete_and_insert_annotations_via_mcp_client() {
+    public async Task Hda_update_delete_and_insert_annotations_via_mcp_client()
+    {
         var syntheticHda = new SyntheticHdaServer();
         string channelName = "hda-" + Guid.NewGuid().ToString("N");
         using IDisposable registration = InMemoryHdaConnectionRegistry.Register(channelName, syntheticHda.Channel, syntheticHda);
@@ -181,7 +197,8 @@ public sealed class HdaClientToolsTests {
 
         OpcResultDto[] inserted = await server.CallToolAsync<OpcResultDto[]>(
             "opcclassic.hda.insert_data",
-            new Dictionary<string, object> {
+            new Dictionary<string, object>
+            {
                 ["sessionId"] = session.SessionId,
                 ["serverHandles"] = new[] { handles[0] },
                 ["timestamps"] = new[] { timestamp },
@@ -189,7 +206,8 @@ public sealed class HdaClientToolsTests {
             }).ConfigureAwait(false);
         OpcResultDto[] replaced = await server.CallToolAsync<OpcResultDto[]>(
             "opcclassic.hda.replace_data",
-            new Dictionary<string, object> {
+            new Dictionary<string, object>
+            {
                 ["sessionId"] = session.SessionId,
                 ["serverHandles"] = new[] { handles[0] },
                 ["timestamps"] = new[] { timestamp },
@@ -197,7 +215,8 @@ public sealed class HdaClientToolsTests {
             }).ConfigureAwait(false);
         OpcResultDto[] insertReplaced = await server.CallToolAsync<OpcResultDto[]>(
             "opcclassic.hda.insert_replace_data",
-            new Dictionary<string, object> {
+            new Dictionary<string, object>
+            {
                 ["sessionId"] = session.SessionId,
                 ["serverHandles"] = new[] { handles[0] },
                 ["timestamps"] = new[] { timestamp },
@@ -205,7 +224,8 @@ public sealed class HdaClientToolsTests {
             }).ConfigureAwait(false);
         OpcResultDto[] deleteRaw = await server.CallToolAsync<OpcResultDto[]>(
             "opcclassic.hda.delete_raw",
-            new Dictionary<string, object> {
+            new Dictionary<string, object>
+            {
                 ["sessionId"] = session.SessionId,
                 ["serverHandles"] = new[] { handles[0] },
                 ["startTime"] = "NOW-1H",
@@ -213,14 +233,16 @@ public sealed class HdaClientToolsTests {
             }).ConfigureAwait(false);
         OpcResultDto[] deleteAtTime = await server.CallToolAsync<OpcResultDto[]>(
             "opcclassic.hda.delete_at_time",
-            new Dictionary<string, object> {
+            new Dictionary<string, object>
+            {
                 ["sessionId"] = session.SessionId,
                 ["serverHandles"] = new[] { handles[0] },
                 ["timestamps"] = new[] { timestamp },
             }).ConfigureAwait(false);
         OpcResultDto[] annotationInsert = await server.CallToolAsync<OpcResultDto[]>(
             "opcclassic.hda.insert_annotations",
-            new Dictionary<string, object> {
+            new Dictionary<string, object>
+            {
                 ["sessionId"] = session.SessionId,
                 ["serverHandles"] = new[] { handles[0] },
                 ["timestamps"] = new[] { timestamp },
@@ -236,21 +258,25 @@ public sealed class HdaClientToolsTests {
         await Assert.That(annotationInsert[0].Succeeded).IsTrue();
     }
 
-    private static async Task<OpcSessionDto> CreateConnectedSessionAsync(McpAeHdaTestServer server, string channelName) {
+    private static async Task<OpcSessionDto> CreateConnectedSessionAsync(McpAeHdaTestServer server, string channelName)
+    {
         OpcSessionDto session = await server.CallToolAsync<OpcSessionDto>("opcclassic.session.create", []).ConfigureAwait(false);
         _ = await server.CallToolAsync<OpcResultDto>(
             "opcclassic.hda.connect",
-            new Dictionary<string, object> {
+            new Dictionary<string, object>
+            {
                 ["sessionId"] = session.SessionId,
                 ["connectionString"] = "inmemory://" + channelName,
             }).ConfigureAwait(false);
         return session;
     }
 
-    private static async Task<int[]> GetHandlesAsync(McpAeHdaTestServer server, string sessionId) {
+    private static async Task<int[]> GetHandlesAsync(McpAeHdaTestServer server, string sessionId)
+    {
         OpcHdaItemHandleDto[] handles = await server.CallToolAsync<OpcHdaItemHandleDto[]>(
             "opcclassic.hda.get_item_handles",
-            new Dictionary<string, object> {
+            new Dictionary<string, object>
+            {
                 ["sessionId"] = sessionId,
                 ["itemIds"] = new[] { "Sensor.Temperature", "Sensor.Pressure" },
             }).ConfigureAwait(false);
@@ -258,9 +284,11 @@ public sealed class HdaClientToolsTests {
     }
 }
 
-internal sealed class SyntheticHdaServer : IOpcHdaServer, IHdaServer, IOPCHDA_SyncRead, IOPCHDA_SyncUpdate, IOPCHDA_SyncAnnotations {
+internal sealed class SyntheticHdaServer : IOpcHdaServer, IHdaServer, IOPCHDA_SyncRead, IOPCHDA_SyncUpdate, IOPCHDA_SyncAnnotations
+{
     private static readonly DateTimeOffset Startup = DateTimeOffset.UtcNow.AddHours(-1);
-    private readonly Dictionary<string, double> _values = new(StringComparer.OrdinalIgnoreCase) {
+    private readonly Dictionary<string, double> _values = new(StringComparer.OrdinalIgnoreCase)
+    {
         ["Sensor.Temperature"] = 21.5,
         ["Sensor.Pressure"] = 101.25,
     };
@@ -271,7 +299,8 @@ internal sealed class SyntheticHdaServer : IOpcHdaServer, IHdaServer, IOPCHDA_Sy
     private readonly IOPCHDA_SyncAnnotationsServerDispatcher _syncAnnotationsDispatcher;
     private int _nextHandle = 2000;
 
-    public SyntheticHdaServer() {
+    public SyntheticHdaServer()
+    {
         _serverDispatcher = new OpcHdaServerDispatcher(this);
         _syncReadDispatcher = new IOPCHDA_SyncReadServerDispatcher(this);
         _syncUpdateDispatcher = new IOPCHDA_SyncUpdateServerDispatcher(this);
@@ -283,10 +312,12 @@ internal sealed class SyntheticHdaServer : IOpcHdaServer, IHdaServer, IOPCHDA_Sy
 
     public InMemoryCallChannel Channel { get; }
 
-    public Task<OpcServerStatus> GetStatusAsync(CancellationToken cancellationToken = default) {
+    public Task<OpcServerStatus> GetStatusAsync(CancellationToken cancellationToken = default)
+    {
         cancellationToken.ThrowIfCancellationRequested();
         DateTimeOffset now = DateTimeOffset.UtcNow;
-        return Task.FromResult(new OpcServerStatus {
+        return Task.FromResult(new OpcServerStatus
+        {
             Spec = OpcStatusSpec.Hda,
             StartTime = Startup,
             CurrentTime = now,
@@ -298,37 +329,46 @@ internal sealed class SyntheticHdaServer : IOpcHdaServer, IHdaServer, IOPCHDA_Sy
         });
     }
 
-    public async IAsyncEnumerable<HdaBrowseElement> BrowseAsync(string itemIdPrefix, HdaBrowseType browseType, [EnumeratorCancellation] CancellationToken cancellationToken = default) {
+    public async IAsyncEnumerable<HdaBrowseElement> BrowseAsync(string itemIdPrefix, HdaBrowseType browseType, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+    {
         await Task.Yield();
         cancellationToken.ThrowIfCancellationRequested();
-        if (string.IsNullOrWhiteSpace(itemIdPrefix) && browseType is HdaBrowseType.Branch or HdaBrowseType.Flat) {
+        if (string.IsNullOrWhiteSpace(itemIdPrefix) && browseType is HdaBrowseType.Branch or HdaBrowseType.Flat)
+        {
             yield return new HdaBrowseElement { Name = "Sensor", ItemId = "Sensor", BrowseType = HdaBrowseType.Branch };
         }
 
-        if (browseType is HdaBrowseType.Leaf or HdaBrowseType.Flat) {
-            foreach (string itemId in _values.Keys.Order(StringComparer.OrdinalIgnoreCase)) {
+        if (browseType is HdaBrowseType.Leaf or HdaBrowseType.Flat)
+        {
+            foreach (string itemId in _values.Keys.Order(StringComparer.OrdinalIgnoreCase))
+            {
                 yield return new HdaBrowseElement { Name = itemId[(itemId.LastIndexOf('.') + 1)..], ItemId = itemId, BrowseType = HdaBrowseType.Leaf };
             }
         }
     }
 
-    public Task<IReadOnlyList<HdaAggregate>> GetSupportedAggregatesAsync(CancellationToken cancellationToken = default) {
+    public Task<IReadOnlyList<HdaAggregate>> GetSupportedAggregatesAsync(CancellationToken cancellationToken = default)
+    {
         cancellationToken.ThrowIfCancellationRequested();
         return Task.FromResult<IReadOnlyList<HdaAggregate>>([HdaAggregate.Average, HdaAggregate.Minimum, HdaAggregate.Maximum]);
     }
 
-    public Task<int[]> ValidateItemIdsAsync(string[] itemIds, CancellationToken cancellationToken = default) {
+    public Task<int[]> ValidateItemIdsAsync(string[] itemIds, CancellationToken cancellationToken = default)
+    {
         ArgumentNullException.ThrowIfNull(itemIds);
         cancellationToken.ThrowIfCancellationRequested();
         return Task.FromResult(itemIds.Select(itemId => _values.ContainsKey(itemId) ? OpcResultId.Ok.Code : OpcResultId.UnknownItemId.Code).ToArray());
     }
 
-    public Task<int[]> GetItemHandlesAsync(string[] itemIds, int[] clientHandles, CancellationToken cancellationToken = default) {
+    public Task<int[]> GetItemHandlesAsync(string[] itemIds, int[] clientHandles, CancellationToken cancellationToken = default)
+    {
         ArgumentNullException.ThrowIfNull(itemIds);
         cancellationToken.ThrowIfCancellationRequested();
         var handles = new int[itemIds.Length];
-        for (int i = 0; i < itemIds.Length; i++) {
-            if (!_values.ContainsKey(itemIds[i])) {
+        for (int i = 0; i < itemIds.Length; i++)
+        {
+            if (!_values.ContainsKey(itemIds[i]))
+            {
                 continue;
             }
 
@@ -341,18 +381,21 @@ internal sealed class SyntheticHdaServer : IOpcHdaServer, IHdaServer, IOPCHDA_Sy
         return Task.FromResult(handles);
     }
 
-    public Task<int[]> ReleaseItemHandlesAsync(int[] serverHandles, CancellationToken cancellationToken = default) {
+    public Task<int[]> ReleaseItemHandlesAsync(int[] serverHandles, CancellationToken cancellationToken = default)
+    {
         ArgumentNullException.ThrowIfNull(serverHandles);
         cancellationToken.ThrowIfCancellationRequested();
         var errors = new int[serverHandles.Length];
-        for (int i = 0; i < serverHandles.Length; i++) {
+        for (int i = 0; i < serverHandles.Length; i++)
+        {
             errors[i] = _handles.Remove(serverHandles[i]) ? OpcResultId.Ok.Code : OpcResultId.InvalidHandle.Code;
         }
 
         return Task.FromResult(errors);
     }
 
-    public Task GetItemAttributesAsync(out int[] attributeIds, out string[] attributeNames, out string[] attributeDescriptions, out int[] attributeDataTypes, CancellationToken cancellationToken = default) {
+    public Task GetItemAttributesAsync(out int[] attributeIds, out string[] attributeNames, out string[] attributeDescriptions, out int[] attributeDataTypes, CancellationToken cancellationToken = default)
+    {
         cancellationToken.ThrowIfCancellationRequested();
         attributeIds = [1, 2, 3];
         attributeNames = ["DataType", "Description", "EngUnits"];
@@ -361,7 +404,8 @@ internal sealed class SyntheticHdaServer : IOpcHdaServer, IHdaServer, IOPCHDA_Sy
         return Task.CompletedTask;
     }
 
-    public Task GetAggregatesAsync(out int[] aggregateIds, out string[] aggregateNames, out string[] aggregateDescriptions, CancellationToken cancellationToken = default) {
+    public Task GetAggregatesAsync(out int[] aggregateIds, out string[] aggregateNames, out string[] aggregateDescriptions, CancellationToken cancellationToken = default)
+    {
         cancellationToken.ThrowIfCancellationRequested();
         aggregateIds = [(int)HdaAggregate.Average, (int)HdaAggregate.Minimum, (int)HdaAggregate.Maximum];
         aggregateNames = ["Average", "Minimum", "Maximum"];
@@ -369,7 +413,8 @@ internal sealed class SyntheticHdaServer : IOpcHdaServer, IHdaServer, IOPCHDA_Sy
         return Task.CompletedTask;
     }
 
-    public Task<OpcHdaItem[]> ReadRawAsync(OpcHdaTime startTime, OpcHdaTime endTime, int maxValues, bool bounds, int[] serverHandles, CancellationToken cancellationToken = default) {
+    public Task<OpcHdaItem[]> ReadRawAsync(OpcHdaTime startTime, OpcHdaTime endTime, int maxValues, bool bounds, int[] serverHandles, CancellationToken cancellationToken = default)
+    {
         cancellationToken.ThrowIfCancellationRequested();
         _ = startTime;
         _ = endTime;
@@ -378,7 +423,8 @@ internal sealed class SyntheticHdaServer : IOpcHdaServer, IHdaServer, IOPCHDA_Sy
         return Task.FromResult(serverHandles.Select(handle => CreateItem(handle, 0, ReadValue(handle))).ToArray());
     }
 
-    public Task<OpcHdaItem[]> ReadProcessedAsync(OpcHdaTime startTime, OpcHdaTime endTime, long resampleIntervalFileTime, int[] serverHandles, int[] aggregateIds, CancellationToken cancellationToken = default) {
+    public Task<OpcHdaItem[]> ReadProcessedAsync(OpcHdaTime startTime, OpcHdaTime endTime, long resampleIntervalFileTime, int[] serverHandles, int[] aggregateIds, CancellationToken cancellationToken = default)
+    {
         cancellationToken.ThrowIfCancellationRequested();
         _ = startTime;
         _ = endTime;
@@ -386,13 +432,15 @@ internal sealed class SyntheticHdaServer : IOpcHdaServer, IHdaServer, IOPCHDA_Sy
         return Task.FromResult(serverHandles.Select((handle, index) => CreateItem(handle, index < aggregateIds.Length ? aggregateIds[index] : (int)HdaAggregate.Average, ReadValue(handle) + 1.0)).ToArray());
     }
 
-    public Task<OpcHdaItem[]> ReadAtTimeAsync(long[] timestampFileTimes, int[] serverHandles, CancellationToken cancellationToken = default) {
+    public Task<OpcHdaItem[]> ReadAtTimeAsync(long[] timestampFileTimes, int[] serverHandles, CancellationToken cancellationToken = default)
+    {
         cancellationToken.ThrowIfCancellationRequested();
         DateTimeOffset[] timestamps = timestampFileTimes.Select(DateTimeOffset.FromFileTime).ToArray();
         return Task.FromResult(serverHandles.Select(handle => CreateItem(handle, 0, ReadValue(handle), timestamps)).ToArray());
     }
 
-    public Task<OpcHdaModifiedItem[]> ReadModifiedAsync(OpcHdaTime startTime, OpcHdaTime endTime, int maxValues, int[] serverHandles, CancellationToken cancellationToken = default) {
+    public Task<OpcHdaModifiedItem[]> ReadModifiedAsync(OpcHdaTime startTime, OpcHdaTime endTime, int maxValues, int[] serverHandles, CancellationToken cancellationToken = default)
+    {
         cancellationToken.ThrowIfCancellationRequested();
         _ = startTime;
         _ = endTime;
@@ -407,7 +455,8 @@ internal sealed class SyntheticHdaServer : IOpcHdaServer, IHdaServer, IOPCHDA_Sy
             ["historian"])).ToArray());
     }
 
-    public Task<OpcHdaAttribute[]> ReadAttributeAsync(OpcHdaTime startTime, OpcHdaTime endTime, int serverHandle, int[] attributeIds, CancellationToken cancellationToken = default) {
+    public Task<OpcHdaAttribute[]> ReadAttributeAsync(OpcHdaTime startTime, OpcHdaTime endTime, int serverHandle, int[] attributeIds, CancellationToken cancellationToken = default)
+    {
         cancellationToken.ThrowIfCancellationRequested();
         _ = startTime;
         _ = endTime;
@@ -418,12 +467,14 @@ internal sealed class SyntheticHdaServer : IOpcHdaServer, IHdaServer, IOPCHDA_Sy
             [OpcVariant.FromString(attributeId == 3 ? "degC" : "attribute")])).ToArray());
     }
 
-    public Task<int> QueryCapabilitiesAsync(CancellationToken cancellationToken = default) {
+    public Task<int> QueryCapabilitiesAsync(CancellationToken cancellationToken = default)
+    {
         cancellationToken.ThrowIfCancellationRequested();
         return Task.FromResult(0x1F);
     }
 
-    public Task<int[]> InsertAsync(int[] serverHandles, long[] timestampFileTimes, OpcVariant[] dataValues, int[] qualities, CancellationToken cancellationToken = default) {
+    public Task<int[]> InsertAsync(int[] serverHandles, long[] timestampFileTimes, OpcVariant[] dataValues, int[] qualities, CancellationToken cancellationToken = default)
+    {
         cancellationToken.ThrowIfCancellationRequested();
         _ = timestampFileTimes;
         _ = dataValues;
@@ -431,7 +482,8 @@ internal sealed class SyntheticHdaServer : IOpcHdaServer, IHdaServer, IOPCHDA_Sy
         return Task.FromResult(serverHandles.Select(static _ => OpcResultId.Ok.Code).ToArray());
     }
 
-    public Task<int[]> ReplaceAsync(int[] serverHandles, long[] timestampFileTimes, OpcVariant[] dataValues, int[] qualities, CancellationToken cancellationToken = default) {
+    public Task<int[]> ReplaceAsync(int[] serverHandles, long[] timestampFileTimes, OpcVariant[] dataValues, int[] qualities, CancellationToken cancellationToken = default)
+    {
         cancellationToken.ThrowIfCancellationRequested();
         _ = timestampFileTimes;
         _ = dataValues;
@@ -439,7 +491,8 @@ internal sealed class SyntheticHdaServer : IOpcHdaServer, IHdaServer, IOPCHDA_Sy
         return Task.FromResult(serverHandles.Select(static _ => OpcResultId.Ok.Code).ToArray());
     }
 
-    public Task<int[]> InsertReplaceAsync(int[] serverHandles, long[] timestampFileTimes, OpcVariant[] dataValues, int[] qualities, CancellationToken cancellationToken = default) {
+    public Task<int[]> InsertReplaceAsync(int[] serverHandles, long[] timestampFileTimes, OpcVariant[] dataValues, int[] qualities, CancellationToken cancellationToken = default)
+    {
         cancellationToken.ThrowIfCancellationRequested();
         _ = timestampFileTimes;
         _ = dataValues;
@@ -447,20 +500,23 @@ internal sealed class SyntheticHdaServer : IOpcHdaServer, IHdaServer, IOPCHDA_Sy
         return Task.FromResult(serverHandles.Select(static _ => OpcResultId.Ok.Code).ToArray());
     }
 
-    public Task<int[]> DeleteRawAsync(OpcHdaTime startTime, OpcHdaTime endTime, int[] serverHandles, CancellationToken cancellationToken = default) {
+    public Task<int[]> DeleteRawAsync(OpcHdaTime startTime, OpcHdaTime endTime, int[] serverHandles, CancellationToken cancellationToken = default)
+    {
         cancellationToken.ThrowIfCancellationRequested();
         _ = startTime;
         _ = endTime;
         return Task.FromResult(serverHandles.Select(static _ => OpcResultId.Ok.Code).ToArray());
     }
 
-    public Task<int[]> DeleteAtTimeAsync(int[] serverHandles, long[] timestampFileTimes, CancellationToken cancellationToken = default) {
+    public Task<int[]> DeleteAtTimeAsync(int[] serverHandles, long[] timestampFileTimes, CancellationToken cancellationToken = default)
+    {
         cancellationToken.ThrowIfCancellationRequested();
         _ = timestampFileTimes;
         return Task.FromResult(serverHandles.Select(static _ => OpcResultId.Ok.Code).ToArray());
     }
 
-    public Task<OpcHdaAnnotation[]> ReadAsync(OpcHdaTime startTime, OpcHdaTime endTime, int[] serverHandles, CancellationToken cancellationToken = default) {
+    public Task<OpcHdaAnnotation[]> ReadAsync(OpcHdaTime startTime, OpcHdaTime endTime, int[] serverHandles, CancellationToken cancellationToken = default)
+    {
         cancellationToken.ThrowIfCancellationRequested();
         _ = startTime;
         _ = endTime;
@@ -472,80 +528,96 @@ internal sealed class SyntheticHdaServer : IOpcHdaServer, IHdaServer, IOPCHDA_Sy
             ["historian"])).ToArray());
     }
 
-    public Task<int[]> InsertAsync(int[] serverHandles, long[] timestampFileTimes, OpcHdaAnnotation[] annotationValues, CancellationToken cancellationToken = default) {
+    public Task<int[]> InsertAsync(int[] serverHandles, long[] timestampFileTimes, OpcHdaAnnotation[] annotationValues, CancellationToken cancellationToken = default)
+    {
         cancellationToken.ThrowIfCancellationRequested();
         _ = timestampFileTimes;
         _ = annotationValues;
         return Task.FromResult(serverHandles.Select(static _ => OpcResultId.Ok.Code).ToArray());
     }
 
-    public Task<IReadOnlyList<HdaReadResult>> ReadRawAsync(IReadOnlyList<string> itemIds, HdaTime startTime, HdaTime endTime, int maxValuesPerItem, bool includeBounds, CancellationToken cancellationToken = default) {
+    public Task<IReadOnlyList<HdaReadResult>> ReadRawAsync(IReadOnlyList<string> itemIds, HdaTime startTime, HdaTime endTime, int maxValuesPerItem, bool includeBounds, CancellationToken cancellationToken = default)
+    {
         cancellationToken.ThrowIfCancellationRequested();
         _ = startTime;
         _ = endTime;
         _ = maxValuesPerItem;
         _ = includeBounds;
-        return Task.FromResult<IReadOnlyList<HdaReadResult>>(itemIds.Select(itemId => new HdaReadResult {
+        return Task.FromResult<IReadOnlyList<HdaReadResult>>(itemIds.Select(itemId => new HdaReadResult
+        {
             ItemId = itemId,
             Values = [new HdaItemValue { Timestamp = DateTimeOffset.UtcNow, Value = _values.GetValueOrDefault(itemId), Quality = OpcQuality.Good }],
         }).ToArray());
     }
 
-    public Task<IReadOnlyList<HdaReadResult>> ReadProcessedAsync(IReadOnlyList<AggregateRequest> requests, HdaTime startTime, HdaTime endTime, TimeSpan resampleInterval, CancellationToken cancellationToken = default) {
+    public Task<IReadOnlyList<HdaReadResult>> ReadProcessedAsync(IReadOnlyList<AggregateRequest> requests, HdaTime startTime, HdaTime endTime, TimeSpan resampleInterval, CancellationToken cancellationToken = default)
+    {
         cancellationToken.ThrowIfCancellationRequested();
         _ = startTime;
         _ = endTime;
         _ = resampleInterval;
-        return Task.FromResult<IReadOnlyList<HdaReadResult>>(requests.Select(request => new HdaReadResult {
+        return Task.FromResult<IReadOnlyList<HdaReadResult>>(requests.Select(request => new HdaReadResult
+        {
             ItemId = request.ItemId,
             Values = [new HdaItemValue { Timestamp = DateTimeOffset.UtcNow, Value = _values.GetValueOrDefault(request.ItemId), Quality = OpcQuality.Good }],
         }).ToArray());
     }
 
-    public Task<IReadOnlyList<HdaReadResult>> ReadAtTimeAsync(IReadOnlyList<string> itemIds, IReadOnlyList<DateTimeOffset> timestamps, CancellationToken cancellationToken = default) {
+    public Task<IReadOnlyList<HdaReadResult>> ReadAtTimeAsync(IReadOnlyList<string> itemIds, IReadOnlyList<DateTimeOffset> timestamps, CancellationToken cancellationToken = default)
+    {
         cancellationToken.ThrowIfCancellationRequested();
-        return Task.FromResult<IReadOnlyList<HdaReadResult>>(itemIds.Select(itemId => new HdaReadResult {
+        return Task.FromResult<IReadOnlyList<HdaReadResult>>(itemIds.Select(itemId => new HdaReadResult
+        {
             ItemId = itemId,
             Values = timestamps.Select(timestamp => new HdaItemValue { Timestamp = timestamp, Value = _values.GetValueOrDefault(itemId), Quality = OpcQuality.Good }).ToArray(),
         }).ToArray());
     }
 
-    public Task<IReadOnlyList<HdaAnnotationResult>> ReadAnnotationsAsync(IReadOnlyList<string> itemIds, HdaTime startTime, HdaTime endTime, CancellationToken cancellationToken = default) {
+    public Task<IReadOnlyList<HdaAnnotationResult>> ReadAnnotationsAsync(IReadOnlyList<string> itemIds, HdaTime startTime, HdaTime endTime, CancellationToken cancellationToken = default)
+    {
         cancellationToken.ThrowIfCancellationRequested();
         _ = startTime;
         _ = endTime;
-        return Task.FromResult<IReadOnlyList<HdaAnnotationResult>>(itemIds.Select(itemId => new HdaAnnotationResult {
+        return Task.FromResult<IReadOnlyList<HdaAnnotationResult>>(itemIds.Select(itemId => new HdaAnnotationResult
+        {
             ItemId = itemId,
             Annotations = [new HdaAnnotation { Timestamp = DateTimeOffset.UtcNow, AnnotationTime = DateTimeOffset.UtcNow, AnnotationText = "Calibration", User = "historian" }],
         }).ToArray());
     }
 
-    public Task<IReadOnlyList<HdaReadResult>> ReadNextAsync(IReadOnlyList<string> itemIds, IReadOnlyList<int> continuationHandles, int maxValuesPerItem, CancellationToken cancellationToken = default) {
+    public Task<IReadOnlyList<HdaReadResult>> ReadNextAsync(IReadOnlyList<string> itemIds, IReadOnlyList<int> continuationHandles, int maxValuesPerItem, CancellationToken cancellationToken = default)
+    {
         cancellationToken.ThrowIfCancellationRequested();
         _ = continuationHandles;
         _ = maxValuesPerItem;
         return Task.FromResult<IReadOnlyList<HdaReadResult>>(itemIds.Select(static itemId => new HdaReadResult { ItemId = itemId }).ToArray());
     }
 
-    public ValueTask DisposeAsync() {
+    public ValueTask DisposeAsync()
+    {
         ServerShutdown?.Invoke(this, EventArgs.Empty);
         return ValueTask.CompletedTask;
     }
 
-    private Task<NdrCallResult> DispatchAsync(Guid interfaceId, int opnum, ReadOnlyMemory<byte> requestPayload, CancellationToken cancellationToken) {
-        if (interfaceId == IOPCHDA_Server.InterfaceId) {
+    private Task<NdrCallResult> DispatchAsync(Guid interfaceId, int opnum, ReadOnlyMemory<byte> requestPayload, CancellationToken cancellationToken)
+    {
+        if (interfaceId == IOPCHDA_Server.InterfaceId)
+        {
             return _serverDispatcher.DispatchAsync(interfaceId, opnum, requestPayload, cancellationToken);
         }
 
-        if (interfaceId == IOPCHDA_SyncRead.InterfaceId) {
+        if (interfaceId == IOPCHDA_SyncRead.InterfaceId)
+        {
             return ToCallResultAsync(_syncReadDispatcher.DispatchAsync(opnum, requestPayload, cancellationToken));
         }
 
-        if (interfaceId == IOPCHDA_SyncUpdate.InterfaceId) {
+        if (interfaceId == IOPCHDA_SyncUpdate.InterfaceId)
+        {
             return ToCallResultAsync(_syncUpdateDispatcher.DispatchAsync(opnum, requestPayload, cancellationToken));
         }
 
-        if (interfaceId == IOPCHDA_SyncAnnotations.InterfaceId) {
+        if (interfaceId == IOPCHDA_SyncAnnotations.InterfaceId)
+        {
             return ToCallResultAsync(_syncAnnotationsDispatcher.DispatchAsync(opnum, requestPayload, cancellationToken));
         }
 
@@ -555,7 +627,8 @@ internal sealed class SyntheticHdaServer : IOpcHdaServer, IHdaServer, IOPCHDA_Sy
     private static async Task<NdrCallResult> ToCallResultAsync(ValueTask<DispatchResult> dispatch) =>
         (await dispatch.ConfigureAwait(false)).ToNdrCallResult();
 
-    private OpcHdaItem CreateItem(int serverHandle, int aggregateHandle, double value, DateTimeOffset[]? timestamps = null) {
+    private OpcHdaItem CreateItem(int serverHandle, int aggregateHandle, double value, DateTimeOffset[]? timestamps = null)
+    {
         timestamps ??= [DateTimeOffset.UtcNow.AddMinutes(-5), DateTimeOffset.UtcNow];
         return new OpcHdaItem(
             ClientHandle(serverHandle),

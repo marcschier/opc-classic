@@ -14,7 +14,8 @@ using TUnit.Core;
 
 namespace Opc.Classic.Hda.Tests.Hosting.Windows;
 
-public sealed class OpcHdaVariantMarshalerAdditionalTests {
+public sealed class OpcHdaVariantMarshalerAdditionalTests
+{
     private const int S_OK = 0;
     private const int VariantValueOffset = 8;
     private const ushort VT_BOOL = 11;
@@ -24,14 +25,17 @@ public sealed class OpcHdaVariantMarshalerAdditionalTests {
     private const ushort VT_I4 = 3;
 
     [Test]
-    public async Task WriteVariant_ScalarValues_UseExpectedNativeVariantLayout() {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task WriteVariant_ScalarValues_UseExpectedNativeVariantLayout()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
         int variantSize = GetVariantSize();
         IntPtr variantPtr = Marshal.AllocCoTaskMem(variantSize);
-        try {
+        try
+        {
             WriteVariant(variantPtr, OpcVariant.FromString("History"));
             ushort bstrType = ReadVariantType(variantPtr);
             string? bstrValue = Marshal.PtrToStringBSTR(Marshal.ReadIntPtr(variantPtr, VariantValueOffset));
@@ -54,20 +58,24 @@ public sealed class OpcHdaVariantMarshalerAdditionalTests {
             await Assert.That(boolType).IsEqualTo(VT_BOOL);
             await Assert.That(boolValue).IsEqualTo(unchecked((short)0xFFFF));
         }
-        finally {
+        finally
+        {
             ClearVariant(variantPtr);
             Marshal.FreeCoTaskMem(variantPtr);
         }
     }
 
     [Test]
-    public async Task WriteVariant_SafeArrayInt32_WritesDescriptorBoundsAndData() {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task WriteVariant_SafeArrayInt32_WritesDescriptorBoundsAndData()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
         IntPtr variantPtr = Marshal.AllocCoTaskMem(GetVariantSize());
-        try {
+        try
+        {
             WriteVariant(variantPtr, OpcVariant.FromSafeArray(OpcSafeArray.OfInt32([10, 20, 30])));
 
             ushort variantType = ReadVariantType(variantPtr);
@@ -89,22 +97,26 @@ public sealed class OpcHdaVariantMarshalerAdditionalTests {
             await Assert.That(second).IsEqualTo(20);
             await Assert.That(third).IsEqualTo(30);
         }
-        finally {
+        finally
+        {
             ClearVariant(variantPtr);
             Marshal.FreeCoTaskMem(variantPtr);
         }
     }
 
     [Test]
-    public async Task OpcHdaEnumStringCcwMethods_NextSkipResetAndClone_ReturnConcreteStrings() {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task OpcHdaEnumStringCcwMethods_NextSkipResetAndClone_ReturnConcreteStrings()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
         IntPtr enumerator = CreateEnumString(["Area", "Unit", "Tag"]);
         IntPtr clone = IntPtr.Zero;
         IntPtr slots = Marshal.AllocCoTaskMem(2 * IntPtr.Size);
-        try {
+        try
+        {
             ClearSlots(slots, 2);
             int nextHr = GetMethod<NextDelegate>(enumerator, 3)(enumerator, 2, slots, out uint fetched);
             string[] firstBatch = ReadAndFreeLpwStrSlots(slots, 2);
@@ -128,8 +140,10 @@ public sealed class OpcHdaVariantMarshalerAdditionalTests {
             await Assert.That(cloneFetched).IsEqualTo(2u);
             await Assert.That(cloneBatch).IsEquivalentTo(["Unit", "Tag"]);
         }
-        finally {
-            if (clone != IntPtr.Zero) {
+        finally
+        {
+            if (clone != IntPtr.Zero)
+            {
                 _ = GetMethod<ReleaseDelegate>(clone, 2)(clone);
             }
             _ = GetMethod<ReleaseDelegate>(enumerator, 2)(enumerator);
@@ -160,7 +174,8 @@ public sealed class OpcHdaVariantMarshalerAdditionalTests {
         VariantMarshalerType.GetMethod(name, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static)
         ?? throw new MissingMethodException(VariantMarshalerType.FullName, name);
 
-    private static IntPtr CreateEnumString(IReadOnlyList<string> values) {
+    private static IntPtr CreateEnumString(IReadOnlyList<string> values)
+    {
         MethodInfo create = EnumStringCcwType.GetMethod(
             "Create",
             BindingFlags.Public | BindingFlags.Static,
@@ -172,24 +187,30 @@ public sealed class OpcHdaVariantMarshalerAdditionalTests {
     }
 
     private static T GetMethod<T>(IntPtr instance, int slot)
-        where T : Delegate {
+        where T : Delegate
+    {
         IntPtr vtable = Marshal.ReadIntPtr(instance);
         IntPtr method = Marshal.ReadIntPtr(vtable, slot * IntPtr.Size);
         return Marshal.GetDelegateForFunctionPointer<T>(method);
     }
 
-    private static void ClearSlots(IntPtr slots, int count) {
-        for (int i = 0; i < count; i++) {
+    private static void ClearSlots(IntPtr slots, int count)
+    {
+        for (int i = 0; i < count; i++)
+        {
             Marshal.WriteIntPtr(slots, i * IntPtr.Size, IntPtr.Zero);
         }
     }
 
-    private static string[] ReadAndFreeLpwStrSlots(IntPtr slots, int count) {
+    private static string[] ReadAndFreeLpwStrSlots(IntPtr slots, int count)
+    {
         var values = new string[count];
-        for (int i = 0; i < count; i++) {
+        for (int i = 0; i < count; i++)
+        {
             IntPtr valuePtr = Marshal.ReadIntPtr(slots, i * IntPtr.Size);
             values[i] = valuePtr == IntPtr.Zero ? string.Empty : Marshal.PtrToStringUni(valuePtr) ?? string.Empty;
-            if (valuePtr != IntPtr.Zero) {
+            if (valuePtr != IntPtr.Zero)
+            {
                 Marshal.FreeCoTaskMem(valuePtr);
                 Marshal.WriteIntPtr(slots, i * IntPtr.Size, IntPtr.Zero);
             }

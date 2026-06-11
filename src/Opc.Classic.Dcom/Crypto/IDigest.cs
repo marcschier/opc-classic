@@ -6,7 +6,8 @@
 namespace Opc.Classic.Dcom.Crypto;
 
 /// <summary>BouncyCastle <c>IDigest</c>-shaped hash interface (transitional).</summary>
-public interface IDigest {
+public interface IDigest
+{
     int GetDigestSize();
     void BlockUpdate(byte[] input, int offset, int count);
     int DoFinal(byte[] output, int offset);

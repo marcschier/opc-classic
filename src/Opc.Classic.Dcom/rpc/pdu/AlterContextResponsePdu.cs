@@ -8,7 +8,8 @@ namespace Opc.Classic.Dcom.Rpc.pdu;
 /// <summary>
 /// Alter context response
 /// </summary>
-public class AlterContextResponsePdu : ConnectionOrientedPdu {
+public class AlterContextResponsePdu : ConnectionOrientedPdu
+{
 
     public const int ALTER_CONTEXT_RESPONSE_TYPE = 0x0f;
 
@@ -41,7 +42,8 @@ public class AlterContextResponsePdu : ConnectionOrientedPdu {
     public PresentationResult[] ResultList { get; set; }
 
     /// <inheritdoc/>
-    protected internal override void ReadBody(NdrCodec ndr) {
+    protected internal override void ReadBody(NdrCodec ndr)
+    {
         MaxTransmitFragment = ndr.ReadUnsignedShort();
         MaxReceiveFragment = ndr.ReadUnsignedShort();
         AssociationGroupId = ndr.ReadUnsignedLong();
@@ -51,7 +53,8 @@ public class AlterContextResponsePdu : ConnectionOrientedPdu {
         ndr.Buffer.Align(4);
         var count = ndr.ReadUnsignedSmall();
         var resultList = new PresentationResult[count];
-        for (var i = 0; i < count; i++) {
+        for (var i = 0; i < count; i++)
+        {
             resultList[i] = new PresentationResult();
             resultList[i].Read(ndr);
         }
@@ -59,7 +62,8 @@ public class AlterContextResponsePdu : ConnectionOrientedPdu {
     }
 
     /// <inheritdoc/>
-    protected internal override void WriteBody(NdrCodec ndr) {
+    protected internal override void WriteBody(NdrCodec ndr)
+    {
         var maxTransmitFragment = MaxTransmitFragment;
         var maxReceiveFragment = MaxReceiveFragment;
         ndr.WriteUnsignedShort((maxTransmitFragment == -1) ?
@@ -68,7 +72,8 @@ public class AlterContextResponsePdu : ConnectionOrientedPdu {
             ndr.Buffer.GetCapacity() : maxReceiveFragment);
         ndr.WriteUnsignedLong(AssociationGroupId);
         var secondaryAddress = SecondaryAddress;
-        if (secondaryAddress == null) {
+        if (secondaryAddress == null)
+        {
             secondaryAddress = new Port();
         }
         secondaryAddress.Write(ndr);
@@ -76,7 +81,8 @@ public class AlterContextResponsePdu : ConnectionOrientedPdu {
         var resultList = ResultList;
         var count = resultList.Length;
         ndr.WriteUnsignedSmall((short)count);
-        for (var i = 0; i < count; i++) {
+        for (var i = 0; i < count; i++)
+        {
             resultList[i].Write(ndr);
         }
     }

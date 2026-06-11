@@ -13,19 +13,23 @@ namespace Opc.Classic.Dcom.Automation;
 /// Type info
 /// </summary>
 [Serializable]
-internal sealed class TypeInfoImpl : ComObjectImplWrapper, ITypeInfo {
+internal sealed class TypeInfoImpl : ComObjectImplWrapper, ITypeInfo
+{
 
     /// <summary>
     /// Create implementation
     /// </summary>
     /// <param name="comObject"></param>
     internal TypeInfoImpl(IComObject comObject) :
-        base(comObject) {
+        base(comObject)
+    {
     }
 
     /// <inheritdoc/>
-    public FuncDesc GetFuncDesc(int index) {
-        var obj = new CallBuilder(true) {
+    public FuncDesc GetFuncDesc(int index)
+    {
+        var obj = new CallBuilder(true)
+        {
             Opnum = 2
         };
         obj.AddInParamAsInt(index);
@@ -101,9 +105,12 @@ internal sealed class TypeInfoImpl : ComObjectImplWrapper, ITypeInfo {
     }
 
     /// <inheritdoc/>
-    public TypeAttr TypeAttr {
-        get {
-            var obj = new CallBuilder(true) {
+    public TypeAttr TypeAttr
+    {
+        get
+        {
+            var obj = new CallBuilder(true)
+            {
                 Opnum = 0
             };
 
@@ -171,8 +178,10 @@ internal sealed class TypeInfoImpl : ComObjectImplWrapper, ITypeInfo {
     }
 
     /// <inheritdoc/>
-    public object[] ContainingTypeLib {
-        get {
+    public object[] ContainingTypeLib
+    {
+        get
+        {
             var callObject = new CallBuilder(true);
             callObject.AddOutParamAsObject(typeof(IComObject));
             callObject.AddOutParamAsObject(typeof(int));
@@ -186,11 +195,13 @@ internal sealed class TypeInfoImpl : ComObjectImplWrapper, ITypeInfo {
     }
 
     /// <inheritdoc/>
-    public object[] GetDllEntry(int memberId, int invKind) {
+    public object[] GetDllEntry(int memberId, int invKind)
+    {
         if (invKind != (int)InvokeKind.INVOKE_FUNC &&
             invKind != (int)InvokeKind.INVOKE_PROPERTYGET &&
             invKind != (int)InvokeKind.INVOKE_PROPERTYPUTREF &&
-            invKind != (int)InvokeKind.INVOKE_PROPERTYPUT) {
+            invKind != (int)InvokeKind.INVOKE_PROPERTYPUT)
+        {
             throw new ArgumentException(Interop.GetLocalizedMessage(ErrorCode.E_INVALIDARG), nameof(invKind));
         }
         var callObject = new CallBuilder(true);
@@ -205,7 +216,8 @@ internal sealed class TypeInfoImpl : ComObjectImplWrapper, ITypeInfo {
     }
 
     /// <inheritdoc/>
-    public object[] GetDocumentation(int memberId) {
+    public object[] GetDocumentation(int memberId)
+    {
         var callObject = new CallBuilder(true);
         callObject.AddInParamAsInt(memberId);
         callObject.AddInParamAsInt(0xb); // refPtrFlags, as per the oaidl.idl...
@@ -218,8 +230,10 @@ internal sealed class TypeInfoImpl : ComObjectImplWrapper, ITypeInfo {
     }
 
     /// <inheritdoc/>
-    public VarDesc GetVarDesc(int index) {
-        var callObject = new CallBuilder(true) {
+    public VarDesc GetVarDesc(int index)
+    {
+        var callObject = new CallBuilder(true)
+        {
             Opnum = 3
         };
         callObject.AddInParamAsInt(index);
@@ -298,8 +312,10 @@ internal sealed class TypeInfoImpl : ComObjectImplWrapper, ITypeInfo {
     }
 
     /// <inheritdoc/>
-    public object[] GetNames(int memberId, int maxNames) {
-        var callObject = new CallBuilder(true) {
+    public object[] GetNames(int memberId, int maxNames)
+    {
+        var callObject = new CallBuilder(true)
+        {
             Opnum = 4
         };
         callObject.AddInParamAsInt(memberId);
@@ -313,8 +329,10 @@ internal sealed class TypeInfoImpl : ComObjectImplWrapper, ITypeInfo {
     }
 
     /// <inheritdoc/>
-    public int GetRefTypeOfImplType(int index) {
-        var callObject = new CallBuilder(true) {
+    public int GetRefTypeOfImplType(int index)
+    {
+        var callObject = new CallBuilder(true)
+        {
             Opnum = 5
         };
         callObject.AddInParamAsInt(index);
@@ -323,8 +341,10 @@ internal sealed class TypeInfoImpl : ComObjectImplWrapper, ITypeInfo {
     }
 
     /// <inheritdoc/>
-    public int GetImplTypeFlags(int index) {
-        var callObject = new CallBuilder(true) {
+    public int GetImplTypeFlags(int index)
+    {
+        var callObject = new CallBuilder(true)
+        {
             Opnum = 6
         };
         callObject.AddInParamAsInt(index);
@@ -333,8 +353,10 @@ internal sealed class TypeInfoImpl : ComObjectImplWrapper, ITypeInfo {
     }
 
     /// <inheritdoc/>
-    public ITypeInfo GetRefTypeInfo(int hrefType) {
-        var callObject = new CallBuilder(true) {
+    public ITypeInfo GetRefTypeInfo(int hrefType)
+    {
+        var callObject = new CallBuilder(true)
+        {
             Opnum = 11
         };
         callObject.AddInParamAsInt(hrefType);
@@ -344,8 +366,10 @@ internal sealed class TypeInfoImpl : ComObjectImplWrapper, ITypeInfo {
     }
 
     /// <inheritdoc/>
-    public IComObject CreateInstance(string riid) {
-        var callObject = new CallBuilder(true) {
+    public IComObject CreateInstance(string riid)
+    {
+        var callObject = new CallBuilder(true)
+        {
             Opnum = 13
         };
         callObject.AddInParamAsUUID(riid);
@@ -355,8 +379,10 @@ internal sealed class TypeInfoImpl : ComObjectImplWrapper, ITypeInfo {
     }
 
     /// <inheritdoc/>
-    public ComString GetMops(int memberId) {
-        var callObject = new CallBuilder(true) {
+    public ComString GetMops(int memberId)
+    {
+        var callObject = new CallBuilder(true)
+        {
             Opnum = 14
         };
         callObject.AddInParamAsInt(memberId);

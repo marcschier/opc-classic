@@ -11,9 +11,11 @@ using TUnit.Core;
 
 namespace Opc.Classic.Cpx.Tests;
 
-public sealed class OpcCpxAddressSpaceTests {
+public sealed class OpcCpxAddressSpaceTests
+{
     [Test]
-    public async Task BrowseAsync_ExposesCpxDictionaryTreeAlongsideInnerNamespace() {
+    public async Task BrowseAsync_ExposesCpxDictionaryTreeAlongsideInnerNamespace()
+    {
         var inner = new InMemoryAddressSpace("Plant");
         inner.AddItem("Plant", "Temperature");
         var addressSpace = new OpcCpxAddressSpace(inner, CreateOptions());
@@ -34,7 +36,8 @@ public sealed class OpcCpxAddressSpaceTests {
     }
 
     [Test]
-    public async Task DefaultBrowse_WalksCpxTypeItemsWithContinuationPoints() {
+    public async Task DefaultBrowse_WalksCpxTypeItemsWithContinuationPoints()
+    {
         var browse = new DefaultBrowse(new OpcCpxAddressSpace(new InMemoryAddressSpace(), CreateOptions()));
         string? continuationPoint = null;
 
@@ -75,7 +78,8 @@ public sealed class OpcCpxAddressSpaceTests {
             .IsEquivalentTo(new[] { "MotorDiagnostics" });
     }
 
-    private static OpcCpxOptions CreateOptions() {
+    private static OpcCpxOptions CreateOptions()
+    {
         var types = new[]
         {
             new TypeDescription("MotorStatus", "MotorStatus", TypeKind.StructReference, true, new[] { new TypeField("Running", TypeKind.Boolean) }),

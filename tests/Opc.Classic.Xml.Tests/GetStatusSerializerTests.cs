@@ -13,42 +13,50 @@ using TUnit.Core;
 
 namespace Opc.Classic.Xml.Tests;
 
-public sealed class GetStatusSerializerTests {
-    private static string SerializeRequest(XmlDaRequestHeader header) {
+public sealed class GetStatusSerializerTests
+{
+    private static string SerializeRequest(XmlDaRequestHeader header)
+    {
         using var ms = new MemoryStream();
-        using (var w = new SoapEnvelopeWriter(ms)) {
+        using (var w = new SoapEnvelopeWriter(ms))
+        {
             GetStatusSerializer.WriteRequest(w, header);
         }
         return Encoding.UTF8.GetString(ms.ToArray());
     }
 
-    private static XmlDaServerStatus Deserialize(string xml) {
+    private static XmlDaServerStatus Deserialize(string xml)
+    {
         using var ms = new MemoryStream(Encoding.UTF8.GetBytes(xml));
         using var r = new SoapEnvelopeReader(ms);
         return GetStatusSerializer.ReadResponse(r);
     }
 
     [Test]
-    public async Task Request_EmitsLocaleIdAttribute() {
+    public async Task Request_EmitsLocaleIdAttribute()
+    {
         var xml = SerializeRequest(new XmlDaRequestHeader("en-US", null));
         await Assert.That(xml).Contains("LocaleID=\"en-US\"");
     }
 
     [Test]
-    public async Task Request_EmitsClientRequestHandle() {
+    public async Task Request_EmitsClientRequestHandle()
+    {
         var xml = SerializeRequest(new XmlDaRequestHeader(null, "req-42"));
         await Assert.That(xml).Contains("ClientRequestHandle=\"req-42\"");
     }
 
     [Test]
-    public async Task Request_OmitsAttributes_WhenHeaderFieldsEmpty() {
+    public async Task Request_OmitsAttributes_WhenHeaderFieldsEmpty()
+    {
         var xml = SerializeRequest(new XmlDaRequestHeader(null, null));
         await Assert.That(xml).DoesNotContain("LocaleID");
         await Assert.That(xml).DoesNotContain("ClientRequestHandle");
     }
 
     [Test]
-    public async Task Response_DecodesServerState_Running() {
+    public async Task Response_DecodesServerState_Running()
+    {
         const string xml = """
             <?xml version="1.0"?>
             <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
@@ -65,8 +73,10 @@ public sealed class GetStatusSerializerTests {
     }
 
     [Test]
-    public async Task Response_DecodesAllServerStates() {
-        XmlDaServerState ParseOne(string state) {
+    public async Task Response_DecodesAllServerStates()
+    {
+        XmlDaServerState ParseOne(string state)
+        {
             string xml = $"""
                 <?xml version="1.0"?>
                 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
@@ -89,7 +99,8 @@ public sealed class GetStatusSerializerTests {
     }
 
     [Test]
-    public async Task Response_RejectsUnknownServerState() {
+    public async Task Response_RejectsUnknownServerState()
+    {
         const string xml = """
             <?xml version="1.0"?>
             <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
@@ -108,7 +119,8 @@ public sealed class GetStatusSerializerTests {
     }
 
     [Test]
-    public async Task Response_DecodesStartTime_ProductVersion_VendorInfo() {
+    public async Task Response_DecodesStartTime_ProductVersion_VendorInfo()
+    {
         const string xml = """
             <?xml version="1.0"?>
             <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
@@ -131,7 +143,8 @@ public sealed class GetStatusSerializerTests {
     }
 
     [Test]
-    public async Task Response_DecodesSupportedLocaleIds_MultipleEntries() {
+    public async Task Response_DecodesSupportedLocaleIds_MultipleEntries()
+    {
         const string xml = """
             <?xml version="1.0"?>
             <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
@@ -153,7 +166,8 @@ public sealed class GetStatusSerializerTests {
     }
 
     [Test]
-    public async Task Response_DecodesSupportedInterfaceVersions() {
+    public async Task Response_DecodesSupportedInterfaceVersions()
+    {
         const string xml = """
             <?xml version="1.0"?>
             <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
@@ -173,7 +187,8 @@ public sealed class GetStatusSerializerTests {
     }
 
     [Test]
-    public async Task Response_DecodesStatusInfo() {
+    public async Task Response_DecodesStatusInfo()
+    {
         const string xml = """
             <?xml version="1.0"?>
             <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
@@ -192,7 +207,8 @@ public sealed class GetStatusSerializerTests {
     }
 
     [Test]
-    public async Task Response_HandlesEmptyStatusInfo() {
+    public async Task Response_HandlesEmptyStatusInfo()
+    {
         const string xml = """
             <?xml version="1.0"?>
             <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
@@ -209,7 +225,8 @@ public sealed class GetStatusSerializerTests {
     }
 
     [Test]
-    public async Task Response_RejectsWrongOperation() {
+    public async Task Response_RejectsWrongOperation()
+    {
         const string xml = """
             <?xml version="1.0"?>
             <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
@@ -225,7 +242,8 @@ public sealed class GetStatusSerializerTests {
     }
 
     [Test]
-    public async Task Request_Then_Response_RoundTrips() {
+    public async Task Request_Then_Response_RoundTrips()
+    {
         // Produce a request, build a synthetic response, then deserialize.
         // Demonstrates the writer + reader work as a connected pipeline.
         var reqXml = SerializeRequest(new XmlDaRequestHeader("en-US", "client-42"));

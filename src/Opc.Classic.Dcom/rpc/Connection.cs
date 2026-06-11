@@ -5,7 +5,8 @@ namespace Opc.Classic.Dcom.Rpc;
 /// <summary>
 /// Constants
 /// </summary>
-public static class Connection {
+public static class Connection
+{
 
     /// <summary>
     /// Key to read max fragments

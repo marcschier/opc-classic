@@ -7,14 +7,16 @@ using Opc.Classic.Dcom.Rpc.Auth.ntlm;
 
 namespace Opc.Classic.Dcom.Internal.Ntlm;
 
-public sealed class Type3Message : NtlmMessage {
+public sealed class Type3Message : NtlmMessage
+{
     public const int MicOffset = 72;
     public const int MicLength = NtlmMic.MicLength;
 
     private byte[]? _version;
     private byte[]? _mic;
 
-    public Type3Message() {
+    public Type3Message()
+    {
         Flags = GetDefaultFlags();
         Domain = GetDefaultDomain();
         User = GetDefaultUser();
@@ -29,7 +31,8 @@ public sealed class Type3Message : NtlmMessage {
     internal Type3Message(byte[] raw, int maxMessageSize) => Parse(raw, maxMessageSize);
 
     public Type3Message(NtlmFlags flags, byte[] lmResponse, byte[] ntResponse,
-        string domain, string user, string workstation) {
+        string domain, string user, string workstation)
+    {
         Flags = flags;
         LmResponse = CloneOrEmpty(lmResponse);
         NtResponse = CloneOrEmpty(ntResponse);
@@ -41,23 +44,27 @@ public sealed class Type3Message : NtlmMessage {
 
     public Type3Message(int flags, byte[] lmResponse, byte[] ntResponse,
         string domain, string user, string workstation)
-        : this(FromInt32(flags), lmResponse, ntResponse, domain, user, workstation) {
+        : this(FromInt32(flags), lmResponse, ntResponse, domain, user, workstation)
+    {
     }
 
     public Type3Message(Type2Message type2Message)
         : this(GetDefaultFlags(type2Message), Array.Empty<byte>(), Array.Empty<byte>(),
-            type2Message?.GetTarget() ?? GetDefaultDomain(), GetDefaultUser(), GetDefaultWorkstation()) {
+            type2Message?.GetTarget() ?? GetDefaultDomain(), GetDefaultUser(), GetDefaultWorkstation())
+    {
     }
 
     public Type3Message(Type2Message type2Message, string password, string domain,
         string user, string workstation, NtlmFlags flags)
         : this(flags, GetLMResponse(type2Message, password), GetNTResponse(type2Message, password),
-            domain, user, workstation) {
+            domain, user, workstation)
+    {
     }
 
     public Type3Message(Type2Message type2Message, string password, string domain,
         string user, string workstation, int flags)
-        : this(type2Message, password, domain, user, workstation, FromInt32(flags)) {
+        : this(type2Message, password, domain, user, workstation, FromInt32(flags))
+    {
     }
 
     public override int MessageType => 3;
@@ -70,7 +77,8 @@ public sealed class Type3Message : NtlmMessage {
 
     public string? User { get; set; }
 
-    public string? Username {
+    public string? Username
+    {
         get => User;
         set => User = value;
     }
@@ -93,19 +101,22 @@ public sealed class Type3Message : NtlmMessage {
 
     public static string GetDefaultWorkstation() => Environment.MachineName;
 
-    public static byte[] GetLMResponse(Type2Message type2Message, string password) {
+    public static byte[] GetLMResponse(Type2Message type2Message, string password)
+    {
         ArgumentNullException.ThrowIfNull(type2Message);
         return Responses.GetLMResponse(password, type2Message.GetChallenge());
     }
 
     public static byte[] GetLMv2Response(Type2Message type2Message, string domain,
-        string user, string password, byte[] clientChallenge) {
+        string user, string password, byte[] clientChallenge)
+    {
         ArgumentNullException.ThrowIfNull(type2Message);
         return Responses.GetLMv2Response(domain, user, password, type2Message.GetChallenge(), clientChallenge);
     }
 
     public static byte[] GetNtlMv2Response(Type2Message type2Message, byte[] responseKeyNT,
-        byte[] clientChallenge) {
+        byte[] clientChallenge)
+    {
         ArgumentNullException.ThrowIfNull(type2Message);
         ArgumentNullException.ThrowIfNull(responseKeyNT);
         ArgumentNullException.ThrowIfNull(clientChallenge);
@@ -122,7 +133,8 @@ public sealed class Type3Message : NtlmMessage {
         return response;
     }
 
-    public static byte[] GetNTResponse(Type2Message type2Message, string password) {
+    public static byte[] GetNTResponse(Type2Message type2Message, string password)
+    {
         ArgumentNullException.ThrowIfNull(type2Message);
         return Responses.GetNTLMResponse(password, type2Message.GetChallenge());
     }
@@ -153,9 +165,11 @@ public sealed class Type3Message : NtlmMessage {
 
     public void SetSessionKey(byte[] sessionKey) => EncryptedRandomSessionKey = CloneOrEmpty(sessionKey);
 
-    public void SetMic(byte[] mic) {
+    public void SetMic(byte[] mic)
+    {
         ArgumentNullException.ThrowIfNull(mic);
-        if (mic.Length != MicLength) {
+        if (mic.Length != MicLength)
+        {
             throw new ArgumentException("NTLM MIC must be exactly 16 bytes.", nameof(mic));
         }
 
@@ -168,7 +182,8 @@ public sealed class Type3Message : NtlmMessage {
 
     public void SetWorkstation(string workstation) => Workstation = workstation;
 
-    public override byte[] ToByteArray() {
+    public override byte[] ToByteArray()
+    {
         var encoding = StringEncoding(Flags);
         var lmResponse = LmResponse ?? Array.Empty<byte>();
         var ntResponse = NtResponse ?? Array.Empty<byte>();
@@ -193,10 +208,12 @@ public sealed class Type3Message : NtlmMessage {
         WritePayloadFields(span.Slice(44, 8), workstationBytes, ref offset);
         WritePayloadFields(span.Slice(52, 8), sessionKey, ref offset);
         BinaryPrimitives.WriteUInt32LittleEndian(span.Slice(60, 4), (uint)Flags);
-        if (includeVersion) {
+        if (includeVersion)
+        {
             (_version ?? DefaultVersion.ToArray()).AsSpan(0, Math.Min(_version?.Length ?? 8, 8)).CopyTo(span.Slice(64, 8));
         }
-        if (includeMic) {
+        if (includeMic)
+        {
             _mic!.CopyTo(span.Slice(MicOffset, MicLength));
         }
 
@@ -210,19 +227,22 @@ public sealed class Type3Message : NtlmMessage {
         return buffer;
     }
 
-    public byte[] ToByteArrayWithMic(byte[] sessionKey, ReadOnlySpan<byte> negotiate, ReadOnlySpan<byte> challenge) {
+    public byte[] ToByteArrayWithMic(byte[] sessionKey, ReadOnlySpan<byte> negotiate, ReadOnlySpan<byte> challenge)
+    {
         ArgumentNullException.ThrowIfNull(sessionKey);
 
         var previousMic = _mic;
         _mic = new byte[MicLength];
-        try {
+        try
+        {
             var authenticate = ToByteArray();
             var mic = NtlmMic.Compute(sessionKey, negotiate, challenge, authenticate);
             mic.CopyTo(authenticate.AsSpan(MicOffset, MicLength));
             _mic = mic;
             return authenticate;
         }
-        catch {
+        catch
+        {
             _mic = previousMic;
             throw;
         }
@@ -232,20 +252,25 @@ public sealed class Type3Message : NtlmMessage {
         $"Type3Message[Flags=0x{(uint)Flags:X8}, Domain={Domain}, User={User}, Workstation={Workstation}]";
 
     internal static Type3Message FromObject(object message) =>
-        message switch {
+        message switch
+        {
             Type3Message wrapper => wrapper,
             _ => throw new ArgumentException("Expected an NTLM Type3 message.", nameof(message)),
         };
 
-    private void Parse(byte[] raw, int maxMessageSize) {
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Meziantou.Analyzer", "MA0051:Method is too long", Justification = "NTLM Type3 message field parsing must remain inlined for byte-offset correlation with MS-NLMP §2.2.1.3.")]
+    private void Parse(byte[] raw, int maxMessageSize)
+    {
         ArgumentNullException.ThrowIfNull(raw);
         var span = raw.AsSpan();
         ValidateMessageLength(span, "NTLM Type 3 message", maxMessageSize);
-        if (ReadMessageType(span) != MessageType) {
+        if (ReadMessageType(span) != MessageType)
+        {
             throw new ArgumentException("Not a Type 3 message.", nameof(raw));
         }
 
-        if (span.Length < 64) {
+        if (span.Length < 64)
+        {
             throw new ArgumentException("NTLM Type 3 message too short.", nameof(raw));
         }
 
@@ -260,16 +285,20 @@ public sealed class Type3Message : NtlmMessage {
         var minimumPayloadOffset = MinimumPayloadOffset(
             lmFields, ntFields, domainFields, userFields, workstationFields, sessionKeyFields);
         var headerSize = 64;
-        if ((Flags & NtlmFlags.NtlmsspNegotiateVersion) != NtlmFlags.None) {
-            if (span.Length < 72) {
+        if ((Flags & NtlmFlags.NtlmsspNegotiateVersion) != NtlmFlags.None)
+        {
+            if (span.Length < 72)
+            {
                 throw new ArgumentException("NTLM Type 3 message version flag set but version field is truncated.", nameof(raw));
             }
             headerSize = 72;
-            if (minimumPayloadOffset >= 72) {
+            if (minimumPayloadOffset >= 72)
+            {
                 _version = span.Slice(64, 8).ToArray();
             }
         }
-        if (span.Length >= MicOffset + MicLength && minimumPayloadOffset >= MicOffset + MicLength) {
+        if (span.Length >= MicOffset + MicLength && minimumPayloadOffset >= MicOffset + MicLength)
+        {
             headerSize = MicOffset + MicLength;
             _mic = span.Slice(MicOffset, MicLength).ToArray();
         }
@@ -298,20 +327,25 @@ public sealed class Type3Message : NtlmMessage {
     private static byte[] CloneOrEmpty(byte[]? source) =>
         source is null ? Array.Empty<byte>() : (byte[])source.Clone();
 
-    private static void WritePayloadFields(Span<byte> fields, byte[] payload, ref int offset) {
+    private static void WritePayloadFields(Span<byte> fields, byte[] payload, ref int offset)
+    {
         WriteFields(fields, CheckedLength(payload.Length), (uint)offset);
         offset += payload.Length;
     }
 
-    private static void CopyPayload(byte[] payload, Span<byte> destination, ref int offset) {
+    private static void CopyPayload(byte[] payload, Span<byte> destination, ref int offset)
+    {
         payload.CopyTo(destination[offset..]);
         offset += payload.Length;
     }
 
-    private static uint MinimumPayloadOffset(params (ushort Length, uint Offset)[] fields) {
+    private static uint MinimumPayloadOffset(params (ushort Length, uint Offset)[] fields)
+    {
         var minimum = uint.MaxValue;
-        foreach (var field in fields) {
-            if (field.Length != 0 && field.Offset < minimum) {
+        foreach (var field in fields)
+        {
+            if (field.Length != 0 && field.Offset < minimum)
+            {
                 minimum = field.Offset;
             }
         }

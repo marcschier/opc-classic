@@ -9,7 +9,8 @@ namespace Opc.Classic.Hda;
 /// OPC HDA built-in aggregate functions per OPC HDA 1.x §3.5.
 /// Values are the IDs the server expects on the wire.
 /// </summary>
-public enum HdaAggregate {
+public enum HdaAggregate
+{
     /// <summary>No aggregate — return raw values.</summary>
     None = 0,
     /// <summary>Interpolated values across the requested time range.</summary>

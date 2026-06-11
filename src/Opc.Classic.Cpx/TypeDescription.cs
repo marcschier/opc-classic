@@ -16,7 +16,8 @@ namespace Opc.Classic.Cpx;
 /// This is the AOT-clean managed form of an OPCBinary <c>TypeDescription</c>
 /// entry or an XML Schema element/complexType entry.
 /// </remarks>
-public sealed record TypeDescription {
+public sealed record TypeDescription
+{
     private readonly TypeField[] _fields;
 
     /// <summary>Create a type description.</summary>
@@ -29,28 +30,35 @@ public sealed record TypeDescription {
         bool? defaultBigEndian = null,
         string? defaultStringEncoding = null,
         int? defaultCharWidth = null,
-        string? defaultFloatFormat = null) {
-        if (string.IsNullOrWhiteSpace(name)) {
+        string? defaultFloatFormat = null)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+        {
             throw new ArgumentException("A type description must have a non-empty name.", nameof(name));
         }
 
-        if (string.IsNullOrWhiteSpace(typeId)) {
+        if (string.IsNullOrWhiteSpace(typeId))
+        {
             throw new ArgumentException("A type description must have a non-empty type identifier.", nameof(typeId));
         }
 
-        if (type == TypeKind.Unknown) {
+        if (type == TypeKind.Unknown)
+        {
             throw new ArgumentOutOfRangeException(nameof(type), type, "A type description must declare a concrete type kind.");
         }
 
-        if (defaultStringEncoding is not null && string.IsNullOrWhiteSpace(defaultStringEncoding)) {
+        if (defaultStringEncoding is not null && string.IsNullOrWhiteSpace(defaultStringEncoding))
+        {
             throw new ArgumentException("Default string encoding must be non-empty when specified.", nameof(defaultStringEncoding));
         }
 
-        if (defaultCharWidth is <= 0) {
+        if (defaultCharWidth is <= 0)
+        {
             throw new ArgumentOutOfRangeException(nameof(defaultCharWidth), defaultCharWidth, "Default character width must be positive.");
         }
 
-        if (defaultFloatFormat is not null && string.IsNullOrWhiteSpace(defaultFloatFormat)) {
+        if (defaultFloatFormat is not null && string.IsNullOrWhiteSpace(defaultFloatFormat))
+        {
             throw new ArgumentException("Default float format must be non-empty when specified.", nameof(defaultFloatFormat));
         }
 
@@ -107,7 +115,8 @@ public sealed record TypeDescription {
         && _fields.SequenceEqual(other._fields);
 
     /// <inheritdoc />
-    public override int GetHashCode() {
+    public override int GetHashCode()
+    {
         var hash = new HashCode();
         hash.Add(Name, StringComparer.Ordinal);
         hash.Add(TypeId, StringComparer.Ordinal);
@@ -118,7 +127,8 @@ public sealed record TypeDescription {
         hash.Add(DefaultCharWidth);
         hash.Add(DefaultFloatFormat, StringComparer.Ordinal);
 
-        foreach (var field in _fields) {
+        foreach (var field in _fields)
+        {
             hash.Add(field);
         }
 

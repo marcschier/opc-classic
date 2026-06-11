@@ -13,14 +13,16 @@ namespace Opc.Classic.Da;
 /// per-add configuration: client handle, requested data type, and
 /// (legacy) requested deadband.
 /// </summary>
-public sealed class Item : ItemIdentifier {
+public sealed class Item : ItemIdentifier
+{
     /// <summary>Construct from an identifier.</summary>
     public Item(string itemName, string? path = null) : base(itemName, path) { }
 
     /// <summary>Copy-construct from an existing identifier.</summary>
     public Item(ItemIdentifier identifier) : base(
         (identifier ?? throw new ArgumentNullException(nameof(identifier))).ItemName,
-        identifier.Path) { }
+        identifier.Path)
+    { }
 
     /// <summary>
     /// Opaque value the client passes; the server echoes this back in every

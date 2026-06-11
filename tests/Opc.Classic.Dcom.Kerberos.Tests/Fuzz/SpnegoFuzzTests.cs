@@ -13,7 +13,8 @@ using TUnit.Core;
 
 namespace Opc.Classic.Dcom.Kerberos.Tests.Fuzz;
 
-public sealed class SpnegoFuzzTests {
+public sealed class SpnegoFuzzTests
+{
     private static readonly Type[] AllowedSpnegoExceptions =
     [
         typeof(InvalidDataException),
@@ -26,7 +27,8 @@ public sealed class SpnegoFuzzTests {
 
     [Test]
     [Category("Fuzz")]
-    public async Task NegToken_Parse_RandomBytes_DoesNotCrash() {
+    public async Task NegToken_Parse_RandomBytes_DoesNotCrash()
+    {
         FuzzHarness.BytesEdgeWeighted.Sample(
             static input => FuzzHarness.AssertParseDoesNotCrash(
                 input,
@@ -41,8 +43,10 @@ public sealed class SpnegoFuzzTests {
 
     [Test]
     [Category("Fuzz")]
-    public async Task NegToken_Parse_MutatedValid_DoesNotCrash() {
-        foreach (byte[] valid in ValidTokens()) {
+    public async Task NegToken_Parse_MutatedValid_DoesNotCrash()
+    {
+        foreach (byte[] valid in ValidTokens())
+        {
             FuzzHarness.MutateValid(valid).Sample(
                 static input => FuzzHarness.AssertParseDoesNotCrash(
                     input,
@@ -51,7 +55,8 @@ public sealed class SpnegoFuzzTests {
                 iter: FuzzHarness.Iterations,
                 threads: 1);
 
-            foreach (byte[] mutated in DerLengthAndTagMutations(valid)) {
+            foreach (byte[] mutated in DerLengthAndTagMutations(valid))
+            {
                 FuzzHarness.AssertParseDoesNotCrash(
                     mutated,
                     static object (ReadOnlyMemory<byte> bytes) => ParseEitherNegToken(bytes),
@@ -63,18 +68,24 @@ public sealed class SpnegoFuzzTests {
         await Assert.That(completed).IsTrue();
     }
 
-    private static object ParseEitherNegToken(ReadOnlyMemory<byte> bytes) {
-        try {
+    private static object ParseEitherNegToken(ReadOnlyMemory<byte> bytes)
+    {
+        try
+        {
             return SpnegoDecoder.DecodeNegTokenInit(bytes);
         }
-        catch (Exception ex) when (IsAllowed(ex)) {
+        catch (Exception ex) when (IsAllowed(ex))
+        {
             return SpnegoDecoder.DecodeNegTokenResp(bytes);
         }
     }
 
-    private static bool IsAllowed(Exception ex) {
-        foreach (Type type in AllowedSpnegoExceptions) {
-            if (type.IsAssignableFrom(ex.GetType())) {
+    private static bool IsAllowed(Exception ex)
+    {
+        foreach (Type type in AllowedSpnegoExceptions)
+        {
+            if (type.IsAssignableFrom(ex.GetType()))
+            {
                 return true;
             }
         }
@@ -95,19 +106,23 @@ public sealed class SpnegoFuzzTests {
             new byte[] { 0x07, 0x08 })),
     ];
 
-    private static byte[][] DerLengthAndTagMutations(byte[] input) {
+    private static byte[][] DerLengthAndTagMutations(byte[] input)
+    {
         byte[] tlvLengthOverflow = (byte[])input.Clone();
-        if (tlvLengthOverflow.Length > 1) {
+        if (tlvLengthOverflow.Length > 1)
+        {
             tlvLengthOverflow[1] = 0x82;
         }
 
         byte[] swappedTag = (byte[])input.Clone();
-        if (swappedTag.Length > 0) {
+        if (swappedTag.Length > 0)
+        {
             swappedTag[0] ^= 0x20;
         }
 
         byte[] indefiniteLength = (byte[])input.Clone();
-        if (indefiniteLength.Length > 1) {
+        if (indefiniteLength.Length > 1)
+        {
             indefiniteLength[1] = 0x80;
         }
 

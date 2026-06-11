@@ -20,7 +20,8 @@ namespace Opc.Classic.Da.Tests.Hosting;
 /// Tests for OpcDaGroup's IConnectionPoint subscription wireup + the
 /// TriggerDataChangeAsync fan-out helper (ocom-7b).
 /// </summary>
-public sealed class OpcDaGroupSubscriptionTests {
+public sealed class OpcDaGroupSubscriptionTests
+{
     private static readonly IOpcInterfaceRef SampleSink = new OpcInterfaceRef(
         iid: IOPCDataCallback.InterfaceId,
         flags: 0,
@@ -32,7 +33,8 @@ public sealed class OpcDaGroupSubscriptionTests {
         resolverBindings: Array.Empty<ushort>());
 
     [Test]
-    public async Task GetConnectionInterfaceAsync_returns_IID_IOPCDataCallback() {
+    public async Task GetConnectionInterfaceAsync_returns_IID_IOPCDataCallback()
+    {
         var group = CreateGroup();
         IConnectionPoint cp = group;
 
@@ -42,7 +44,8 @@ public sealed class OpcDaGroupSubscriptionTests {
     }
 
     [Test]
-    public async Task AdviseAsync_returns_unique_cookies() {
+    public async Task AdviseAsync_returns_unique_cookies()
+    {
         var group = CreateGroup();
         IConnectionPoint cp = group;
 
@@ -54,7 +57,8 @@ public sealed class OpcDaGroupSubscriptionTests {
     }
 
     [Test]
-    public async Task UnadviseAsync_removes_subscription() {
+    public async Task UnadviseAsync_removes_subscription()
+    {
         var group = CreateGroup();
         IConnectionPoint cp = group;
         int cookie = await cp.AdviseAsync(SampleSink, TestContext.Current!.CancellationToken);
@@ -65,7 +69,8 @@ public sealed class OpcDaGroupSubscriptionTests {
     }
 
     [Test]
-    public async Task TriggerDataChangeAsync_invokes_sender_once_per_sink() {
+    public async Task TriggerDataChangeAsync_invokes_sender_once_per_sink()
+    {
         var group = CreateGroup();
         int handle = await AddSingleItem(group, "Tag.A");
         await group.WriteAsync([handle], [new OpcVariant(VarType.VT_I4, 99)],
@@ -79,7 +84,8 @@ public sealed class OpcDaGroupSubscriptionTests {
         await group.TriggerDataChangeAsync(
             transactionId: 42,
             serverHandles: [handle],
-            sender: (sink, payload, ct) => {
+            sender: (sink, payload, ct) =>
+            {
                 deliveries.Add(payload);
                 return Task.CompletedTask;
             },
@@ -93,7 +99,8 @@ public sealed class OpcDaGroupSubscriptionTests {
     }
 
     [Test]
-    public async Task TriggerDataChangeAsync_is_noop_when_callbacks_disabled() {
+    public async Task TriggerDataChangeAsync_is_noop_when_callbacks_disabled()
+    {
         var group = CreateGroup();
         IConnectionPoint cp = group;
         await cp.AdviseAsync(SampleSink, TestContext.Current!.CancellationToken);
@@ -105,7 +112,8 @@ public sealed class OpcDaGroupSubscriptionTests {
         await group.TriggerDataChangeAsync(
             transactionId: 1,
             serverHandles: [],
-            sender: (_, _, _) => {
+            sender: (_, _, _) =>
+            {
                 Interlocked.Increment(ref callbackCount);
                 return Task.CompletedTask;
             },
@@ -115,7 +123,8 @@ public sealed class OpcDaGroupSubscriptionTests {
     }
 
     [Test]
-    public async Task TriggerDataChangeAsync_skips_unknown_server_handles() {
+    public async Task TriggerDataChangeAsync_skips_unknown_server_handles()
+    {
         var group = CreateGroup();
         IConnectionPoint cp = group;
         await cp.AdviseAsync(SampleSink, TestContext.Current!.CancellationToken);
@@ -133,7 +142,8 @@ public sealed class OpcDaGroupSubscriptionTests {
     }
 
     [Test]
-    public async Task IConnectionPointContainer_FindConnectionPointAsync_returns_connection_point_for_DataCallback() {
+    public async Task IConnectionPointContainer_FindConnectionPointAsync_returns_connection_point_for_DataCallback()
+    {
         var group = CreateGroup();
         IConnectionPointContainer container = group;
 
@@ -146,11 +156,13 @@ public sealed class OpcDaGroupSubscriptionTests {
     }
 
     [Test]
-    public async Task IConnectionPointContainer_FindConnectionPointAsync_throws_for_unknown_iid() {
+    public async Task IConnectionPointContainer_FindConnectionPointAsync_throws_for_unknown_iid()
+    {
         var group = CreateGroup();
         IConnectionPointContainer container = group;
 
-        await Assert.That(async () => {
+        await Assert.That(async () =>
+        {
             _ = await container.FindConnectionPointAsync(
                 Guid.NewGuid(),
                 TestContext.Current!.CancellationToken);
@@ -158,7 +170,8 @@ public sealed class OpcDaGroupSubscriptionTests {
     }
 
     [Test]
-    public async Task IConnectionPointContainer_EnumConnectionPointsAsync_returns_interface_ref() {
+    public async Task IConnectionPointContainer_EnumConnectionPointsAsync_returns_interface_ref()
+    {
         var group = CreateGroup();
         IConnectionPointContainer container = group;
 
@@ -168,11 +181,13 @@ public sealed class OpcDaGroupSubscriptionTests {
     }
 
     [Test]
-    public async Task UnadviseAsync_with_unknown_cookie_throws_CONNECT_E_NOCONNECTION() {
+    public async Task UnadviseAsync_with_unknown_cookie_throws_CONNECT_E_NOCONNECTION()
+    {
         var group = CreateGroup();
         IConnectionPoint cp = group;
 
-        OpcException? ex = await Assert.That(async () => {
+        OpcException? ex = await Assert.That(async () =>
+        {
             await cp.UnadviseAsync(cookie: 99999, TestContext.Current!.CancellationToken);
         }).Throws<OpcException>();
         await Assert.That(ex).IsNotNull();
@@ -180,7 +195,8 @@ public sealed class OpcDaGroupSubscriptionTests {
     }
 
     [Test]
-    public async Task Cancel2Async_records_cancel_id_for_subsequent_TriggerCancelComplete() {
+    public async Task Cancel2Async_records_cancel_id_for_subsequent_TriggerCancelComplete()
+    {
         var group = CreateGroup();
         IOPCAsyncIO2 async2 = group;
 
@@ -190,7 +206,8 @@ public sealed class OpcDaGroupSubscriptionTests {
     }
 
     [Test]
-    public async Task TriggerCancelCompleteAsync_invokes_sender_once_per_sink() {
+    public async Task TriggerCancelCompleteAsync_invokes_sender_once_per_sink()
+    {
         var group = CreateGroup();
         IConnectionPoint cp = group;
         await cp.AdviseAsync(SampleSink, TestContext.Current!.CancellationToken);
@@ -208,7 +225,8 @@ public sealed class OpcDaGroupSubscriptionTests {
     }
 
     [Test]
-    public async Task TriggerCancelCompleteAsync_is_noop_when_callbacks_disabled() {
+    public async Task TriggerCancelCompleteAsync_is_noop_when_callbacks_disabled()
+    {
         var group = CreateGroup();
         IConnectionPoint cp = group;
         await cp.AdviseAsync(SampleSink, TestContext.Current!.CancellationToken);
@@ -226,7 +244,8 @@ public sealed class OpcDaGroupSubscriptionTests {
     }
 
     [Test]
-    public async Task AdviseAsync_IOpcDataCallbackSink_overload_adds_to_directSinks_and_TriggerDataChange_invokes_OnDataChange() {
+    public async Task AdviseAsync_IOpcDataCallbackSink_overload_adds_to_directSinks_and_TriggerDataChange_invokes_OnDataChange()
+    {
         // cap-c8: TriggerDataChangeAsync fans out to both _sinks (IOpcInterfaceRef
         // path) and _directSinks (IOpcDataCallbackSink path) so the Windows
         // CCW's OpcDataCallbackProxy participates in the same fan-out.
@@ -249,7 +268,8 @@ public sealed class OpcDaGroupSubscriptionTests {
     }
 
     [Test]
-    public async Task TriggerCancelCompleteAsync_invokes_OnCancelComplete_on_direct_sinks() {
+    public async Task TriggerCancelCompleteAsync_invokes_OnCancelComplete_on_direct_sinks()
+    {
         var group = CreateGroup();
         var directSink = new RecordingDataCallbackSink();
         await group.AdviseAsync(directSink, TestContext.Current!.CancellationToken);
@@ -264,7 +284,8 @@ public sealed class OpcDaGroupSubscriptionTests {
     }
 
     [Test]
-    public async Task UnadviseAsync_removes_direct_sink_so_subsequent_TriggerDataChange_does_not_invoke_it() {
+    public async Task UnadviseAsync_removes_direct_sink_so_subsequent_TriggerDataChange_does_not_invoke_it()
+    {
         var group = CreateGroup();
         var directSink = new RecordingDataCallbackSink();
         int cookie = await group.AdviseAsync(directSink, TestContext.Current!.CancellationToken);
@@ -282,7 +303,8 @@ public sealed class OpcDaGroupSubscriptionTests {
     }
 
     [Test]
-    public async Task AdviseAsync_IOpcDataCallbackSink_with_null_throws_ArgumentNullException() {
+    public async Task AdviseAsync_IOpcDataCallbackSink_with_null_throws_ArgumentNullException()
+    {
         var group = CreateGroup();
         await Assert.That(async () => await group.AdviseAsync(
             (IOpcDataCallbackSink)null!,
@@ -290,7 +312,8 @@ public sealed class OpcDaGroupSubscriptionTests {
             .Throws<ArgumentNullException>();
     }
 
-    private sealed class RecordingDataCallbackSink : IOpcDataCallbackSink {
+    private sealed class RecordingDataCallbackSink : IOpcDataCallbackSink
+    {
         public int DataChangeCount { get; private set; }
 
         public int ReadCompleteCount { get; private set; }
@@ -303,7 +326,8 @@ public sealed class OpcDaGroupSubscriptionTests {
 
         public OpcDaGroup.CancelCompletePayload? LastCancelComplete { get; private set; }
 
-        public void OnDataChange(OpcDaGroup.DataChangePayload payload) {
+        public void OnDataChange(OpcDaGroup.DataChangePayload payload)
+        {
             DataChangeCount++;
             LastDataChange = payload;
         }
@@ -313,17 +337,20 @@ public sealed class OpcDaGroupSubscriptionTests {
         public void OnWriteComplete(int transactionId, int groupHandle, int masterError, int[] clientHandles, int[] errors) =>
             WriteCompleteCount++;
 
-        public void OnCancelComplete(OpcDaGroup.CancelCompletePayload payload) {
+        public void OnCancelComplete(OpcDaGroup.CancelCompletePayload payload)
+        {
             CancelCompleteCount++;
             LastCancelComplete = payload;
         }
 
-        public void Dispose() {
+        public void Dispose()
+        {
             // Recording sink owns no native resources.
         }
     }
 
-    private static async Task<int> AddSingleItem(OpcDaGroup group, string itemId) {
+    private static async Task<int> AddSingleItem(OpcDaGroup group, string itemId)
+    {
         var defs = new[] { new OpcItemDef("", itemId, true, 1, null, VarType.VT_I4) };
         await group.AddItemsAsync(defs, out OpcItemResult[] results, out int[] _,
             TestContext.Current!.CancellationToken);

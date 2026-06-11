@@ -10,18 +10,23 @@ using TUnit.Core;
 
 namespace Opc.Classic.Integration.Tests;
 
-public sealed class KerberosKdcFixtureTests {
+public sealed class KerberosKdcFixtureTests
+{
     [Test, NotInParallel]
-    public async Task KerberosKdcFixture_starts_and_exposes_realm() {
-        if (!IsDockerAvailable()) {
+    public async Task KerberosKdcFixture_starts_and_exposes_realm()
+    {
+        if (!IsDockerAvailable())
+        {
             return;
         }
 
         KerberosKdcFixture kdc;
-        try {
+        try
+        {
             kdc = await KerberosKdcFixture.StartAsync();
         }
-        catch (Exception ex) when (IsTransientDockerInfrastructureFailure(ex)) {
+        catch (Exception ex) when (IsTransientDockerInfrastructureFailure(ex))
+        {
             // Skip on environments where the docker daemon is reachable
             // (`docker info` works) but the public Docker Hub image pull
             // fails — e.g. GitHub Actions ubuntu-latest hitting Docker
@@ -34,37 +39,44 @@ public sealed class KerberosKdcFixtureTests {
             return;
         }
 
-        await using (kdc) {
+        await using (kdc)
+        {
             await Assert.That(kdc.Realm).IsEqualTo("EXAMPLE.COM");
             await Assert.That(kdc.Kdc).Contains(":");
             await Assert.That(kdc.Port).IsGreaterThan(0);
         }
     }
 
-    private static bool IsTransientDockerInfrastructureFailure(Exception ex) {
+    private static bool IsTransientDockerInfrastructureFailure(Exception ex)
+    {
         // Heuristic: Testcontainers / Docker.DotNet wrap registry timeouts
         // and pull failures in messages mentioning "Docker API responded"
         // or the typical registry / network failure markers. Be generous
         // here — the alternative (test failure) is far worse than a
         // false-positive skip for a genuinely-broken fixture (caught by
         // any other docker-using test in the suite).
-        for (Exception? cur = ex; cur is not null; cur = cur.InnerException) {
+        for (Exception? cur = ex; cur is not null; cur = cur.InnerException)
+        {
             string msg = cur.Message ?? string.Empty;
             if (msg.Contains("Docker API responded", StringComparison.Ordinal)
                 || msg.Contains("registry-1.docker.io", StringComparison.Ordinal)
                 || msg.Contains("toomanyrequests", StringComparison.OrdinalIgnoreCase)
                 || msg.Contains("context deadline exceeded", StringComparison.Ordinal)
                 || msg.Contains("connection refused", StringComparison.OrdinalIgnoreCase)
-                || msg.Contains("manifest unknown", StringComparison.OrdinalIgnoreCase)) {
+                || msg.Contains("manifest unknown", StringComparison.OrdinalIgnoreCase))
+            {
                 return true;
             }
         }
         return false;
     }
 
-    private static bool IsDockerAvailable() {
-        try {
-            using var process = Process.Start(new ProcessStartInfo {
+    private static bool IsDockerAvailable()
+    {
+        try
+        {
+            using var process = Process.Start(new ProcessStartInfo
+            {
                 FileName = "docker",
                 Arguments = "info",
                 RedirectStandardOutput = true,
@@ -73,18 +85,21 @@ public sealed class KerberosKdcFixtureTests {
                 CreateNoWindow = true,
             });
 
-            if (process is null) {
+            if (process is null)
+            {
                 return false;
             }
 
-            if (!process.WaitForExit(2000)) {
+            if (!process.WaitForExit(2000))
+            {
                 process.Kill(entireProcessTree: true);
                 return false;
             }
 
             return process.ExitCode == 0;
         }
-        catch {
+        catch
+        {
             return false;
         }
     }

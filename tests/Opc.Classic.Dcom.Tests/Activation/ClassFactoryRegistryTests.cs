@@ -10,9 +10,11 @@ using TUnit.Core;
 
 namespace Opc.Classic.Dcom.Tests.Activation;
 
-public sealed class ClassFactoryRegistryTests {
+public sealed class ClassFactoryRegistryTests
+{
     [Test]
-    public async Task Register_then_lookup_returns_factory() {
+    public async Task Register_then_lookup_returns_factory()
+    {
         Guid clsid = Guid.NewGuid();
         var registry = new ClassFactoryRegistry();
         registry.Register(clsid, _ => new TestServer());
@@ -25,7 +27,8 @@ public sealed class ClassFactoryRegistryTests {
     }
 
     [Test]
-    public async Task Unregister_removes_factory() {
+    public async Task Unregister_removes_factory()
+    {
         Guid clsid = Guid.NewGuid();
         var registry = new ClassFactoryRegistry();
         registry.Register(clsid, _ => new TestServer());
@@ -39,7 +42,8 @@ public sealed class ClassFactoryRegistryTests {
     }
 
     [Test]
-    public async Task Register_replaces_existing_factory() {
+    public async Task Register_replaces_existing_factory()
+    {
         Guid clsid = Guid.NewGuid();
         var registry = new ClassFactoryRegistry();
         registry.Register(clsid, _ => new TestServer { Name = "first" });
@@ -56,23 +60,28 @@ public sealed class ClassFactoryRegistryTests {
     }
 
     [Test]
-    public async Task Concurrent_register_and_lookup_preserves_entries() {
+    public async Task Concurrent_register_and_lookup_preserves_entries()
+    {
         const int count = 128;
         var clsids = new Guid[count];
-        for (int i = 0; i < clsids.Length; i++) {
+        for (int i = 0; i < clsids.Length; i++)
+        {
             clsids[i] = Guid.NewGuid();
         }
 
         var registry = new ClassFactoryRegistry();
 
-        Parallel.For(0, count, i => {
+        Parallel.For(0, count, i =>
+        {
             registry.Register(clsids[i], _ => new TestServer { Name = i.ToString() });
             _ = registry.TryResolve(clsids[i], out _);
         });
 
         int resolved = 0;
-        for (int i = 0; i < clsids.Length; i++) {
-            if (registry.TryResolve(clsids[i], out _)) {
+        for (int i = 0; i < clsids.Length; i++)
+        {
+            if (registry.TryResolve(clsids[i], out _))
+            {
                 resolved++;
             }
         }
@@ -81,7 +90,8 @@ public sealed class ClassFactoryRegistryTests {
         await Assert.That(registry.Count).IsEqualTo(count);
     }
 
-    private sealed class TestServer {
+    private sealed class TestServer
+    {
         public string Name { get; init; } = string.Empty;
     }
 }

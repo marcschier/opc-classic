@@ -7,12 +7,14 @@ namespace Opc.Classic.Dcom.Rpc;
 /// <summary>
 /// Presentation exception
 /// </summary>
-public class PresentationException : BindException {
+public class PresentationException : BindException
+{
 
     /// <summary>
     /// Create default
     /// </summary>
-    public PresentationException() {
+    public PresentationException()
+    {
     }
 
     /// <summary>
@@ -20,7 +22,8 @@ public class PresentationException : BindException {
     /// </summary>
     /// <param name="message"></param>
     public PresentationException(string message) :
-        base(message) {
+        base(message)
+    {
     }
 
     /// <summary>
@@ -29,7 +32,8 @@ public class PresentationException : BindException {
     /// <param name="message"></param>
     /// <param name="result"></param>
     public PresentationException(string message, PresentationResult result) :
-        base(ToString(message, result)) {
+        base(ToString(message, result))
+    {
     }
 
     /// <summary>
@@ -38,8 +42,10 @@ public class PresentationException : BindException {
     /// <param name="message"></param>
     /// <param name="result"></param>
     /// <returns></returns>
-    private static string ToString(string message, PresentationResult result) {
-        if (result == null) {
+    private static string ToString(string message, PresentationResult result)
+    {
+        if (result == null)
+        {
             return message;
         }
         return !string.IsNullOrEmpty(message) ? message +

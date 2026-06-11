@@ -8,7 +8,8 @@ namespace Opc.Classic.Hda;
 /// <summary>
 /// A node in an OPC HDA server's browse tree.
 /// </summary>
-public sealed class HdaBrowseElement {
+public sealed class HdaBrowseElement
+{
     /// <summary>Short display name.</summary>
     public string Name { get; init; } = string.Empty;
 

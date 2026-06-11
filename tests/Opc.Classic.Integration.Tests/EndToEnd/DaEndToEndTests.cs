@@ -12,9 +12,11 @@ using TUnit.Core;
 
 namespace Opc.Classic.Integration.Tests.EndToEnd;
 
-public sealed class DaEndToEndTests {
+public sealed class DaEndToEndTests
+{
     [Test, Category("EndToEnd")]
-    public async Task ConnectAndGetStatus_Then_ServerStatusFlowsBack() {
+    public async Task ConnectAndGetStatus_Then_ServerStatusFlowsBack()
+    {
         var pipeline = new DaEndToEndPipeline();
 
         OpcServerStatus status = await pipeline.Server.GetStatusAsync(CancellationToken.None);
@@ -34,7 +36,8 @@ public sealed class DaEndToEndTests {
     }
 
     [Test, Category("EndToEnd")]
-    public async Task AddGroupWithDefaultState_Then_GroupExistsWithMatchingState() {
+    public async Task AddGroupWithDefaultState_Then_GroupExistsWithMatchingState()
+    {
         var pipeline = new DaEndToEndPipeline();
         const string groupName = "E2E.DA.Group-A";
         const int updateRate = 1_000;
@@ -59,7 +62,8 @@ public sealed class DaEndToEndTests {
     }
 
     [Test, Category("EndToEnd")]
-    public async Task AddItemsAndReadSync_Then_ValuesRoundTripThroughCodecs() {
+    public async Task AddItemsAndReadSync_Then_ValuesRoundTripThroughCodecs()
+    {
         var pipeline = new DaEndToEndPipeline();
         int groupHandle = await AddDefaultGroupAsync(pipeline);
 
@@ -88,7 +92,8 @@ public sealed class DaEndToEndTests {
     }
 
     [Test, Category("EndToEnd")]
-    public async Task WriteSync_Then_ServerReceivesValuesAndReadReflectsThem() {
+    public async Task WriteSync_Then_ServerReceivesValuesAndReadReflectsThem()
+    {
         var pipeline = new DaEndToEndPipeline();
         int groupHandle = await AddDefaultGroupAsync(pipeline);
         DaAddItemResult[] items = await pipeline.AddItemsViaWireAsync(groupHandle, WritableItemRequests(), CancellationToken.None);
@@ -117,7 +122,8 @@ public sealed class DaEndToEndTests {
     }
 
     [Test, Category("EndToEnd")]
-    public async Task SetActiveState_Then_ItemActiveStateToggles() {
+    public async Task SetActiveState_Then_ItemActiveStateToggles()
+    {
         var pipeline = new DaEndToEndPipeline();
         int groupHandle = await AddDefaultGroupAsync(pipeline);
         DaAddItemResult[] items = await pipeline.AddItemsViaWireAsync(groupHandle, WritableItemRequests(), CancellationToken.None);
@@ -136,7 +142,8 @@ public sealed class DaEndToEndTests {
     }
 
     [Test, Category("EndToEnd")]
-    public async Task BrowseAddressSpace_Then_HierarchicalResultsAreReturned() {
+    public async Task BrowseAddressSpace_Then_HierarchicalResultsAreReturned()
+    {
         var pipeline = new DaEndToEndPipeline();
 
         int organization = await pipeline.Browse.QueryOrganizationAsync(CancellationToken.None);
@@ -155,7 +162,8 @@ public sealed class DaEndToEndTests {
 
 
     [Test, Category("EndToEnd")]
-    public async Task InterfacePointerMethods_Then_ObjrefsFlowBack() {
+    public async Task InterfacePointerMethods_Then_ObjrefsFlowBack()
+    {
         var pipeline = new DaEndToEndPipeline();
 
         await pipeline.Server.AddGroupAsync(
@@ -187,7 +195,8 @@ public sealed class DaEndToEndTests {
     }
 
     [Test, Category("EndToEnd")]
-    public async Task MultiOutMethods_Then_ValuesAndErrorsFlowBack() {
+    public async Task MultiOutMethods_Then_ValuesAndErrorsFlowBack()
+    {
         var pipeline = new DaEndToEndPipeline();
         int groupHandle = await AddDefaultGroupAsync(pipeline);
         var definitions = WritableItemRequests()
@@ -225,7 +234,8 @@ public sealed class DaEndToEndTests {
     }
 
     [Test, Category("EndToEnd")]
-    public async Task AsyncIO2ReadWrite_Then_CancelIdsAndErrorsFlowBack() {
+    public async Task AsyncIO2ReadWrite_Then_CancelIdsAndErrorsFlowBack()
+    {
         var pipeline = new DaEndToEndPipeline();
         int groupHandle = await AddDefaultGroupAsync(pipeline);
         DaAddItemResult[] items = await pipeline.AddItemsViaWireAsync(groupHandle, WritableItemRequests(), CancellationToken.None);
@@ -245,7 +255,8 @@ public sealed class DaEndToEndTests {
     }
 
     [Test, Category("EndToEnd")]
-    public async Task GetErrorString_Then_KnownHresultMapsToMessage() {
+    public async Task GetErrorString_Then_KnownHresultMapsToMessage()
+    {
         var pipeline = new DaEndToEndPipeline();
         int hresult = OpcResultId.BadRights.Code;
 
@@ -258,7 +269,8 @@ public sealed class DaEndToEndTests {
     }
 
     [Test, Category("EndToEnd")]
-    public async Task RemoveGroup_Then_GroupIsTornDown() {
+    public async Task RemoveGroup_Then_GroupIsTornDown()
+    {
         var pipeline = new DaEndToEndPipeline();
         int groupHandle = await AddDefaultGroupAsync(pipeline);
         await Assert.That(pipeline.GroupExists(groupHandle)).IsTrue();

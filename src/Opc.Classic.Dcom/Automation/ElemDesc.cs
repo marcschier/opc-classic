@@ -11,7 +11,8 @@ namespace Opc.Classic.Dcom.Automation;
 /// information for a variable a function, or a function parameter.</i>
 /// </summary>
 [Serializable]
-public sealed class ElemDesc {
+public sealed class ElemDesc
+{
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 #pragma warning disable IDE1006 // Naming Styles
@@ -24,8 +25,10 @@ public sealed class ElemDesc {
     /// Element descriptor
     /// </summary>
     /// <param name="values"></param>
-    public ElemDesc(Struct values) {
-        if (values == null) {
+    public ElemDesc(Struct values)
+    {
+        if (values == null)
+        {
             TypeDesc = null;
             paramDesc = null;
             return;
@@ -39,6 +42,7 @@ public sealed class ElemDesc {
     /// </summary>
     /// <param name="ptrValues"></param>
     internal ElemDesc(ComPointer ptrValues) :
-        this(ptrValues.IsNull ? null : (Struct)ptrValues.Referent) {
+        this(ptrValues.IsNull ? null : (Struct)ptrValues.Referent)
+    {
     }
 }

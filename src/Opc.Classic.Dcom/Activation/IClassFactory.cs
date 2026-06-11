@@ -6,7 +6,8 @@
 namespace Opc.Classic.Dcom.Core;
 
 /// <summary>Managed COM class factory used by <see cref="RemoteSCMActivatorServer" />.</summary>
-public interface IClassFactory {
+public interface IClassFactory
+{
     /// <summary>Whether this factory can be returned from RemoteGetClassObject.</summary>
     bool SupportsGetClassObject { get; }
 

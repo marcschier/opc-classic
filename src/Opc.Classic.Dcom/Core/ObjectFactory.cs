@@ -18,7 +18,8 @@ namespace Opc.Classic.Dcom;
 ///    newComObject.queryInterface(Interfaces.IID_IDispatch));
 /// </code>
 /// </summary>
-public static class ObjectFactory {
+public static class ObjectFactory
+{
 
     /// <summary>
     /// Attaches an event handler to <code>comObject</code> for the source
@@ -66,8 +67,10 @@ public static class ObjectFactory {
     /// <exception cref="InteropException"> </exception>
     /// <exception cref="System.ArgumentException"> if <code>comObject</code>
     /// is <code>null</code> or a local reference. </exception>
-    public static IComObject NarrowObject(IComObject comObject) {
-        if (comObject == null || comObject.LocalReference) {
+    public static IComObject NarrowObject(IComObject comObject)
+    {
+        if (comObject == null || comObject.LocalReference)
+        {
             throw new System.ArgumentException(
                 Interop.GetLocalizedMessage(ErrorCode.INTEROP_COMFACTORY_ILLEGAL_ARG), nameof(comObject));
         }

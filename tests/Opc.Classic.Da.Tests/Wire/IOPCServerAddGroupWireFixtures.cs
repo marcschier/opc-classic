@@ -28,13 +28,16 @@ using TUnit.Core;
 
 namespace Opc.Classic.Da.Tests.Wire;
 
-public sealed class IOPCServerAddGroupWireFixtures {
+public sealed class IOPCServerAddGroupWireFixtures
+{
     private static readonly Guid SampleIid = new("39C13A4E-011E-11D0-9675-0020AFD8ADB3");   // IID_IOPCGroupStateMgt
 
     [Test]
-    public async Task Request_AddGroup_emits_unique_pointer_referents_for_pTimeBias_and_pPercentDeadband() {
+    public async Task Request_AddGroup_emits_unique_pointer_referents_for_pTimeBias_and_pPercentDeadband()
+    {
         ReadOnlyMemory<byte> captured = ReadOnlyMemory<byte>.Empty;
-        var channel = new InMemoryCallChannel((interfaceId, opnum, payload, _) => {
+        var channel = new InMemoryCallChannel((interfaceId, opnum, payload, _) =>
+        {
             captured = payload.ToArray();
             // Return a minimal success response so the proxy doesn't fault during decode;
             // serverGroupHandle + revisedUpdateRate + null ppUnk referent.
@@ -46,7 +49,8 @@ public sealed class IOPCServerAddGroupWireFixtures {
         });
         var proxy = new IOPCServerClientProxy(channel);
 
-        try {
+        try
+        {
             await proxy.AddGroupAsync(
                 name: "G",
                 active: true,
@@ -61,7 +65,8 @@ public sealed class IOPCServerAddGroupWireFixtures {
                 group: out _,
                 cancellationToken: CancellationToken.None);
         }
-        catch {
+        catch
+        {
             // Proxy may throw on null ppUnk; the test only inspects the captured REQUEST.
         }
 
@@ -109,7 +114,8 @@ public sealed class IOPCServerAddGroupWireFixtures {
     }
 
     [Test]
-    public async Task Response_AddGroup_decodes_MInterfacePointer_wrapped_ppUnk() {
+    public async Task Response_AddGroup_decodes_MInterfacePointer_wrapped_ppUnk()
+    {
         // Server side: encode serverHandle + revisedUpdateRate + MInterfacePointer-wrapped group OBJREF.
         var groupRef = new OpcInterfaceRef(
             iid: SampleIid,
@@ -123,14 +129,16 @@ public sealed class IOPCServerAddGroupWireFixtures {
 
         var bufferOwner = System.Buffers.ArrayPool<byte>.Shared.Rent(512);
         ReadOnlyMemory<byte> response;
-        try {
+        try
+        {
             var writer = new Opc.Classic.Ndr.NdrWriter(bufferOwner.AsSpan());
             writer.WriteInt32(0xABCD);                    // serverHandle
             writer.WriteInt32(0x1234);                    // revisedUpdateRate
             OpcMInterfacePointerCodec.Write(ref writer, groupRef);
             response = bufferOwner.AsMemory(0, writer.Position).ToArray();
         }
-        finally {
+        finally
+        {
             System.Buffers.ArrayPool<byte>.Shared.Return(bufferOwner);
         }
 

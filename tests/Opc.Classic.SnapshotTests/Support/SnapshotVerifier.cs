@@ -8,8 +8,10 @@ using VerifyTUnit;
 
 namespace Opc.Classic.SnapshotTests.Support;
 
-internal static class SnapshotVerifier {
-    public static async Task VerifyBytes(string codecName, string sampleDescription, byte[] bytes) {
+internal static class SnapshotVerifier
+{
+    public static async Task VerifyBytes(string codecName, string sampleDescription, byte[] bytes)
+    {
         await Verifier.Verify(HexDumpFormatter.Format(codecName, sampleDescription, bytes));
     }
 }

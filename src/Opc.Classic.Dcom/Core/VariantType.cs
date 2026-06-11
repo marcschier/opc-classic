@@ -9,7 +9,8 @@ namespace Opc.Classic.Dcom.Core;
 /// </summary>
 #pragma warning disable MA0062 // VARTYPE combines base values with VT_ARRAY/VT_BYREF modifier bits.
 [Flags]
-public enum VariantType {
+public enum VariantType
+{
     /// <summary> id </summary>
     VT_EMPTY = 0,
     /// <summary> id </summary>

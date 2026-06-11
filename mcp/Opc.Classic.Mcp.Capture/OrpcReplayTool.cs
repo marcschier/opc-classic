@@ -40,15 +40,18 @@ namespace Opc.Classic.Mcp.Capture;
 /// server.
 /// </para>
 /// </remarks>
-public sealed class OrpcReplayTool {
+public sealed class OrpcReplayTool
+{
     private readonly ILogger _logger;
 
-    public OrpcReplayTool(ILogger? logger = null) {
+    public OrpcReplayTool(ILogger? logger = null)
+    {
         _logger = logger ?? NullLogger.Instance;
     }
 
     /// <summary>Replays the supplied decoded PDU stream and returns the per-call results.</summary>
-    public ReplayReport Replay(IEnumerable<DecodedOpcPdu> pdus, byte[]? stubBytes = null) {
+    public ReplayReport Replay(IEnumerable<DecodedOpcPdu> pdus, byte[]? stubBytes = null)
+    {
         ArgumentNullException.ThrowIfNull(pdus);
         _ = stubBytes;  // reserved for the inline byte-replay variant; see follow-up.
 
@@ -57,8 +60,10 @@ public sealed class OrpcReplayTool {
         long totalFailed = 0;
         long totalSkipped = 0;
 
-        foreach (DecodedOpcPdu pdu in pdus) {
-            if (pdu.PduType is not ("request" or "response" or "orpc_body")) {
+        foreach (DecodedOpcPdu pdu in pdus)
+        {
+            if (pdu.PduType is not ("request" or "response" or "orpc_body"))
+            {
                 continue;
             }
 
@@ -66,13 +71,15 @@ public sealed class OrpcReplayTool {
             ReplayKeyStats stats = perKey.TryGetValue(key, out ReplayKeyStats? existing) ? existing : new ReplayKeyStats(key);
             perKey[key] = stats;
 
-            int payloadLength = pdu.PduType switch {
+            int payloadLength = pdu.PduType switch
+            {
                 "request" => pdu.RequestStubLength ?? 0,
                 "response" => pdu.ResponseStubLength ?? 0,
                 _ => pdu.RequestStubLength ?? pdu.ResponseStubLength ?? 0,
             };
 
-            if (payloadLength == 0) {
+            if (payloadLength == 0)
+            {
                 stats.SkippedCount++;
                 totalSkipped++;
                 continue;
@@ -89,7 +96,8 @@ public sealed class OrpcReplayTool {
             totalSucceeded++;
         }
 
-        return new ReplayReport {
+        return new ReplayReport
+        {
             Buckets = perKey.Values.OrderByDescending(b => b.SucceededCount + b.FailedCount).ToArray(),
             TotalSucceeded = totalSucceeded,
             TotalFailed = totalFailed,
@@ -105,17 +113,21 @@ public sealed class OrpcReplayTool {
     /// </summary>
     [SuppressMessage("Design", "CA1031:Do not catch general exception types",
         Justification = "Replay tool wraps every codec exception into a structured failure report; that includes unexpected NdrReader behaviour.")]
-    public bool TryReplayBody(ReadOnlyMemory<byte> body, out string? errorMessage) {
-        if (body.IsEmpty) {
+    public bool TryReplayBody(ReadOnlyMemory<byte> body, out string? errorMessage)
+    {
+        if (body.IsEmpty)
+        {
             errorMessage = "Empty payload";
             return false;
         }
 
-        try {
+        try
+        {
             // Use the static FormatHexContext helper to exercise the reader
             // surface without committing to a per-spec decode shape.
             string preview = NdrReader.FormatHexContext(body.Span, position: 0, contextBytes: 8);
-            if (string.IsNullOrEmpty(preview)) {
+            if (string.IsNullOrEmpty(preview))
+            {
                 errorMessage = "NdrReader produced no context preview";
                 return false;
             }
@@ -123,13 +135,15 @@ public sealed class OrpcReplayTool {
             errorMessage = null;
             return true;
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             errorMessage = ex.GetType().Name + ": " + ex.Message;
             return false;
         }
     }
 
-    private static string BuildKey(DecodedOpcPdu pdu) {
+    private static string BuildKey(DecodedOpcPdu pdu)
+    {
         string iid = pdu.InterfaceId is Guid g && g != Guid.Empty
             ? g.ToString("D", CultureInfo.InvariantCulture)
             : "<unbound>";
@@ -139,7 +153,8 @@ public sealed class OrpcReplayTool {
 }
 
 /// <summary>Per-(IID,opnum,direction) replay statistics.</summary>
-public sealed class ReplayKeyStats {
+public sealed class ReplayKeyStats
+{
     public string Key { get; }
     public long SucceededCount { get; set; }
     public long FailedCount { get; set; }
@@ -150,7 +165,8 @@ public sealed class ReplayKeyStats {
 }
 
 /// <summary>Aggregate result of an <see cref="OrpcReplayTool"/> run.</summary>
-public sealed record class ReplayReport {
+public sealed record class ReplayReport
+{
     public required IReadOnlyList<ReplayKeyStats> Buckets { get; init; }
     public required long TotalSucceeded { get; init; }
     public required long TotalFailed { get; init; }

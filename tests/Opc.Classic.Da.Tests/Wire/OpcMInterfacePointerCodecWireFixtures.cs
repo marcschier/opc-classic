@@ -18,7 +18,8 @@ using TUnit.Core;
 
 namespace Opc.Classic.Da.Tests.Wire;
 
-public sealed class OpcMInterfacePointerCodecWireFixtures {
+public sealed class OpcMInterfacePointerCodecWireFixtures
+{
     private delegate void NdrWriteAction(ref NdrWriter w);
 
     private static readonly Guid SampleIid = new("39C13A4E-011E-11D0-9675-0020AFD8ADB3");   // IID_IOPCGroupStateMgt
@@ -36,7 +37,8 @@ public sealed class OpcMInterfacePointerCodecWireFixtures {
             resolverBindings: new List<ushort>());
 
     [Test]
-    public async Task Encode_non_null_emits_referent_plus_cbData_plus_OBJREF() {
+    public async Task Encode_non_null_emits_referent_plus_cbData_plus_OBJREF()
+    {
         IOpcInterfaceRef iref = BuildFixture();
         byte[] wire = WriteOne((ref NdrWriter w) => OpcMInterfacePointerCodec.Write(ref w, iref));
 
@@ -61,7 +63,8 @@ public sealed class OpcMInterfacePointerCodecWireFixtures {
     }
 
     [Test]
-    public async Task Encode_null_emits_only_zero_referent() {
+    public async Task Encode_null_emits_only_zero_referent()
+    {
         byte[] wire = WriteOne((ref NdrWriter w) => OpcMInterfacePointerCodec.Write(ref w, null));
 
         await Assert.That(wire.Length).IsEqualTo(4);
@@ -69,7 +72,8 @@ public sealed class OpcMInterfacePointerCodecWireFixtures {
     }
 
     [Test]
-    public async Task RoundTrip_preserves_oxid_oid_ipid_iid() {
+    public async Task RoundTrip_preserves_oxid_oid_ipid_iid()
+    {
         IOpcInterfaceRef expected = BuildFixture();
         byte[] wire = WriteOne((ref NdrWriter w) => OpcMInterfacePointerCodec.Write(ref w, expected));
 
@@ -85,7 +89,8 @@ public sealed class OpcMInterfacePointerCodecWireFixtures {
     }
 
     [Test]
-    public async Task RoundTrip_null_decodes_back_to_null() {
+    public async Task RoundTrip_null_decodes_back_to_null()
+    {
         byte[] wire = WriteOne((ref NdrWriter w) => OpcMInterfacePointerCodec.Write(ref w, null));
 
         var reader = new NdrReader(wire);
@@ -94,7 +99,8 @@ public sealed class OpcMInterfacePointerCodecWireFixtures {
         await Assert.That(actual).IsNull();
     }
 
-    private static byte[] WriteOne(NdrWriteAction write, int capacity = 1024) {
+    private static byte[] WriteOne(NdrWriteAction write, int capacity = 1024)
+    {
         var buf = new byte[capacity];
         var w = new NdrWriter(buf);
         write(ref w);

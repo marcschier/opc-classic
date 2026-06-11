@@ -16,15 +16,19 @@ internal readonly record struct Smb2CreateRequest(
     uint ShareAccessMask,
     uint Disposition,
     uint CreateOptionsMask,
-    string Name) {
-    public int WriteTo(Span<byte> destination) {
-        if (Name is null) {
+    string Name)
+{
+    public int WriteTo(Span<byte> destination)
+    {
+        if (Name is null)
+        {
             throw new InvalidOperationException("CREATE Name must not be null.");
         }
 
         const int FixedSize = 56;
         int nameBytes = Encoding.Unicode.GetByteCount(Name);
-        if (nameBytes > ushort.MaxValue) {
+        if (nameBytes > ushort.MaxValue)
+        {
             throw new InvalidOperationException("CREATE Name exceeds 65535 bytes when UTF-16LE encoded.");
         }
 
@@ -33,7 +37,8 @@ internal readonly record struct Smb2CreateRequest(
         int payload = Math.Max(nameBytes, 1);
         int total = FixedSize + payload;
 
-        if (destination.Length < total) {
+        if (destination.Length < total)
+        {
             throw new ArgumentException("Destination too small for SMB2 CREATE request.", nameof(destination));
         }
 
@@ -56,7 +61,8 @@ internal readonly record struct Smb2CreateRequest(
         BinaryPrimitives.WriteUInt32LittleEndian(destination[48..], 0);    // CreateContextsOffset
         BinaryPrimitives.WriteUInt32LittleEndian(destination[52..], 0);    // CreateContextsLength
 
-        if (nameBytes > 0) {
+        if (nameBytes > 0)
+        {
             Encoding.Unicode.GetBytes(Name, destination[FixedSize..]);
         }
 
@@ -67,14 +73,18 @@ internal readonly record struct Smb2CreateRequest(
 /// <summary>SMB2 CREATE response body, per [MS-SMB2] §2.2.14.</summary>
 internal readonly record struct Smb2CreateResponse(
     ulong FileIdPersistent,
-    ulong FileIdVolatile) {
-    public static Smb2CreateResponse Read(ReadOnlySpan<byte> source) {
+    ulong FileIdVolatile)
+{
+    public static Smb2CreateResponse Read(ReadOnlySpan<byte> source)
+    {
         Smb2MessageBounds.EnsureBodyWithinDefaultQuota(source, "SMB2 CREATE response");
-        if (source.Length < 88) {
+        if (source.Length < 88)
+        {
             throw new Smb2ProtocolException("SMB2 CREATE response too short.");
         }
         ushort structureSize = BinaryPrimitives.ReadUInt16LittleEndian(source);
-        if (structureSize != 89) {
+        if (structureSize != 89)
+        {
             throw new Smb2ProtocolException($"Unexpected CREATE StructureSize {structureSize}; expected 89.");
         }
         return new Smb2CreateResponse(
@@ -86,9 +96,12 @@ internal readonly record struct Smb2CreateResponse(
 /// <summary>SMB2 CLOSE request body, per [MS-SMB2] §2.2.15.</summary>
 internal readonly record struct Smb2CloseRequest(
     ulong FileIdPersistent,
-    ulong FileIdVolatile) {
-    public int WriteTo(Span<byte> destination) {
-        if (destination.Length < 24) {
+    ulong FileIdVolatile)
+{
+    public int WriteTo(Span<byte> destination)
+    {
+        if (destination.Length < 24)
+        {
             throw new ArgumentException("Destination too small for SMB2 CLOSE request.", nameof(destination));
         }
         BinaryPrimitives.WriteUInt16LittleEndian(destination[0..], 24);

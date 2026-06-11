@@ -8,7 +8,8 @@ namespace Opc.Classic.Dcom.Rpc.Core;
 /// <summary>
 /// UUID - TODO: Replace entirely everything with sharpcif ndr/uuid
 /// </summary>
-public class UUID : NdrOp {
+public class UUID : NdrOp
+{
 
     /// <summary>
     /// null uuid
@@ -19,7 +20,8 @@ public class UUID : NdrOp {
     /// Create uuid
     /// </summary>
     public UUID() :
-        this(NIL_UUID) {
+        this(NIL_UUID)
+    {
     }
 
 #pragma warning disable RECS0154 // Parameter is never used
@@ -31,7 +33,8 @@ public class UUID : NdrOp {
 #pragma warning restore RECS0154 // Parameter is never used
 
     /// <inheritdoc/>
-    public override void Encode(NdrCodec ndr, NdrBuffer dst) {
+    public override void Encode(NdrCodec ndr, NdrBuffer dst)
+    {
         dst.Enc_ndr_long(_internal.TimeLow);
         dst.Enc_ndr_short(_internal.TimeMid);
         dst.Enc_ndr_short(_internal.TimeHiAndVersion);
@@ -42,7 +45,8 @@ public class UUID : NdrOp {
     }
 
     /// <inheritdoc/>
-    public override void Decode(NdrCodec ndr, NdrBuffer src) {
+    public override void Decode(NdrCodec ndr, NdrBuffer src)
+    {
         _internal.TimeLow = src.Dec_ndr_long();
         _internal.TimeMid = (short)src.Dec_ndr_short();
         _internal.TimeHiAndVersion = (short)src.Dec_ndr_short();

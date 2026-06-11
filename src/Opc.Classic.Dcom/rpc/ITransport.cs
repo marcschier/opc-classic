@@ -11,7 +11,8 @@ namespace Opc.Classic.Dcom.Rpc;
 /// <summary>
 /// Transport interface
 /// </summary>
-public interface ITransport {
+public interface ITransport
+{
 
     /// <summary>
     /// Protocol name

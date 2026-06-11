@@ -17,7 +17,8 @@ namespace Opc.Classic.Samples.AeServer;
 /// dispatcher uses to adapt CreateEventSubscription via
 /// CreateEventSubscriptionAdapterAsync).
 /// </summary>
-public sealed class SampleAeServer : IAeServer, IOpcAeServer {
+public sealed class SampleAeServer : IAeServer, IOpcAeServer
+{
     private const uint SimpleCategory = 1;
     private const uint TrackingCategory = 2;
     private const uint ConditionCategory = 3;
@@ -53,18 +54,21 @@ public sealed class SampleAeServer : IAeServer, IOpcAeServer {
     private readonly ConcurrentDictionary<ConditionRef, bool> _acknowledgedConditions = new();
     private readonly ILogger<SampleAeServer> _logger;
 
-    public SampleAeServer(ILogger<SampleAeServer> logger) {
+    public SampleAeServer(ILogger<SampleAeServer> logger)
+    {
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
     public event EventHandler<EventArgs>? ServerShutdown;
 
-    public Task<OpcServerStatus> GetStatusAsync(CancellationToken cancellationToken = default) {
+    public Task<OpcServerStatus> GetStatusAsync(CancellationToken cancellationToken = default)
+    {
         cancellationToken.ThrowIfCancellationRequested();
         GetStatusMessage(_logger, null);
 
         var now = DateTimeOffset.UtcNow;
-        var status = new OpcServerStatus {
+        var status = new OpcServerStatus
+        {
             Spec = OpcStatusSpec.Ae,
             StartTime = StartupTime,
             CurrentTime = now,
@@ -79,19 +83,22 @@ public sealed class SampleAeServer : IAeServer, IOpcAeServer {
         return Task.FromResult(status);
     }
 
-    public Task<int> QueryAvailableFiltersAsync(CancellationToken cancellationToken = default) {
+    public Task<int> QueryAvailableFiltersAsync(CancellationToken cancellationToken = default)
+    {
         cancellationToken.ThrowIfCancellationRequested();
         return Task.FromResult(0x1F);
     }
 
     public async IAsyncEnumerable<AreaBrowseElement> BrowseAreasAsync(
         string areaQualifiedName,
-        [EnumeratorCancellation] CancellationToken cancellationToken = default) {
+        [EnumeratorCancellation] CancellationToken cancellationToken = default)
+    {
         ArgumentNullException.ThrowIfNull(areaQualifiedName);
 
         BrowseMessage(_logger, areaQualifiedName.Length == 0 ? "<root>" : areaQualifiedName, null);
 
-        foreach (AreaBrowseElement element in GetAreaElements(areaQualifiedName)) {
+        foreach (AreaBrowseElement element in GetAreaElements(areaQualifiedName))
+        {
             await Task.Delay(BrowseDelay, cancellationToken).ConfigureAwait(false);
             yield return element;
         }
@@ -99,17 +106,21 @@ public sealed class SampleAeServer : IAeServer, IOpcAeServer {
 
     public Task<IReadOnlyList<uint>> QueryEventCategoriesAsync(
         EventType eventTypes,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         cancellationToken.ThrowIfCancellationRequested();
 
         var categories = new List<uint>(3);
-        if ((eventTypes & EventType.Simple) != 0) {
+        if ((eventTypes & EventType.Simple) != 0)
+        {
             categories.Add(SimpleCategory);
         }
-        if ((eventTypes & EventType.Tracking) != 0) {
+        if ((eventTypes & EventType.Tracking) != 0)
+        {
             categories.Add(TrackingCategory);
         }
-        if ((eventTypes & EventType.Condition) != 0) {
+        if ((eventTypes & EventType.Condition) != 0)
+        {
             categories.Add(ConditionCategory);
         }
 
@@ -118,7 +129,8 @@ public sealed class SampleAeServer : IAeServer, IOpcAeServer {
 
     public Task<IReadOnlyList<string>> QueryConditionNamesAsync(
         uint eventCategory,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         cancellationToken.ThrowIfCancellationRequested();
 
         IReadOnlyList<string> names = eventCategory == ConditionCategory
@@ -131,7 +143,8 @@ public sealed class SampleAeServer : IAeServer, IOpcAeServer {
         string actor,
         string? comment,
         IReadOnlyList<ConditionRef> conditions,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         ArgumentException.ThrowIfNullOrWhiteSpace(actor);
         ArgumentNullException.ThrowIfNull(conditions);
         cancellationToken.ThrowIfCancellationRequested();
@@ -139,7 +152,8 @@ public sealed class SampleAeServer : IAeServer, IOpcAeServer {
         AcknowledgeMessage(_logger, actor, comment, conditions.Count, null);
 
         var results = new List<AckResult>(conditions.Count);
-        foreach (ConditionRef condition in conditions) {
+        foreach (ConditionRef condition in conditions)
+        {
             _acknowledgedConditions[condition] = true;
             results.Add(new AckResult { Condition = condition });
         }
@@ -149,7 +163,8 @@ public sealed class SampleAeServer : IAeServer, IOpcAeServer {
 
     public Task<OpcResultId> EnableConditionsByAreaAsync(
         IReadOnlyList<string> areaQualifiedNames,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         ArgumentNullException.ThrowIfNull(areaQualifiedNames);
         cancellationToken.ThrowIfCancellationRequested();
         return Task.FromResult(OpcResultId.Ok);
@@ -157,7 +172,8 @@ public sealed class SampleAeServer : IAeServer, IOpcAeServer {
 
     public Task<OpcResultId> DisableConditionsByAreaAsync(
         IReadOnlyList<string> areaQualifiedNames,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         ArgumentNullException.ThrowIfNull(areaQualifiedNames);
         cancellationToken.ThrowIfCancellationRequested();
         return Task.FromResult(OpcResultId.Ok);
@@ -167,7 +183,8 @@ public sealed class SampleAeServer : IAeServer, IOpcAeServer {
         bool active,
         int bufferTimeMs,
         int maxBufferSize,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         cancellationToken.ThrowIfCancellationRequested();
         IAeSubscription subscription = new SampleAeSubscription(active, CreateDemoEvents, bufferTimeMs, maxBufferSize);
         return Task.FromResult(subscription);
@@ -181,7 +198,8 @@ public sealed class SampleAeServer : IAeServer, IOpcAeServer {
         string source,
         string conditionName,
         int[] attributeIds,
-        CancellationToken cancellationToken) {
+        CancellationToken cancellationToken)
+    {
         cancellationToken.ThrowIfCancellationRequested();
         ConditionStateMessage(_logger, source ?? string.Empty, conditionName ?? string.Empty, null);
 
@@ -220,7 +238,8 @@ public sealed class SampleAeServer : IAeServer, IOpcAeServer {
         string[] conditionNames,
         long[] activeTimes,
         int[] cookies,
-        CancellationToken cancellationToken) {
+        CancellationToken cancellationToken)
+    {
         ArgumentNullException.ThrowIfNull(sources);
         cancellationToken.ThrowIfCancellationRequested();
         // Mirror IAeServer.AcknowledgeAsync semantics: accept any condition
@@ -230,30 +249,36 @@ public sealed class SampleAeServer : IAeServer, IOpcAeServer {
         return Task.FromResult(results);
     }
 
-    public ValueTask DisposeAsync() {
+    public ValueTask DisposeAsync()
+    {
         ServerShutdown?.Invoke(this, EventArgs.Empty);
         return ValueTask.CompletedTask;
     }
 
-    private static IEnumerable<AreaBrowseElement> GetAreaElements(string areaQualifiedName) {
-        if (areaQualifiedName.Length == 0) {
+    private static IEnumerable<AreaBrowseElement> GetAreaElements(string areaQualifiedName)
+    {
+        if (areaQualifiedName.Length == 0)
+        {
             yield return new AreaBrowseElement { Name = "Server", QualifiedName = "Server", IsArea = true };
             yield return new AreaBrowseElement { Name = "Demo", QualifiedName = "Demo", IsArea = true };
             yield break;
         }
 
-        if (string.Equals(areaQualifiedName, "Server", StringComparison.Ordinal)) {
+        if (string.Equals(areaQualifiedName, "Server", StringComparison.Ordinal))
+        {
             yield return new AreaBrowseElement { Name = "Heartbeat", QualifiedName = "Server.Heartbeat", IsSource = true };
             yield return new AreaBrowseElement { Name = "Errors", QualifiedName = "Server.Errors", IsSource = true };
             yield break;
         }
 
-        if (string.Equals(areaQualifiedName, "Demo", StringComparison.Ordinal)) {
+        if (string.Equals(areaQualifiedName, "Demo", StringComparison.Ordinal))
+        {
             yield return new AreaBrowseElement { Name = "Conditions", QualifiedName = DemoSource, IsSource = true };
         }
     }
 
-    private static IReadOnlyList<EventNotification> CreateDemoEvents() {
+    private static IReadOnlyList<EventNotification> CreateDemoEvents()
+    {
         DateTimeOffset now = DateTimeOffset.UtcNow;
         DateTimeOffset activeTime = now.AddSeconds(-5);
 

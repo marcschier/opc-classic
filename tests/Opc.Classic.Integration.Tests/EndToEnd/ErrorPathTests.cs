@@ -13,9 +13,11 @@ using TUnit.Core;
 
 namespace Opc.Classic.Integration.Tests.EndToEnd;
 
-public sealed class ErrorPathTests {
+public sealed class ErrorPathTests
+{
     [Test, Category("EndToEnd")]
-    public async Task ServerReturnsENotImpl_Then_ClientSurfacesOpcException() {
+    public async Task ServerReturnsENotImpl_Then_ClientSurfacesOpcException()
+    {
         InMemoryCallChannel channel = new InMemoryCallChannelBuilder().Build();
         var proxy = new IOPCGroupStateMgtClientProxy(channel);
 
@@ -29,7 +31,8 @@ public sealed class ErrorPathTests {
     }
 
     [Test, Category("EndToEnd")]
-    public async Task NdrDecodeFailure_Then_InvalidOperationExceptionNamesEndOfBuffer() {
+    public async Task NdrDecodeFailure_Then_InvalidOperationExceptionNamesEndOfBuffer()
+    {
         var channel = new InMemoryCallChannel((_, _, _, _) =>
             Task.FromResult(new NdrCallResult(OpcResultId.Ok.Code, new byte[] { 0x01, 0x02, 0x03 })));
         var proxy = new IOPCServerClientProxy(channel);
@@ -45,9 +48,11 @@ public sealed class ErrorPathTests {
     }
 
     [Test, Category("EndToEnd")]
-    public async Task Cancellation_Then_InFlightCallIsCanceledAndLoggedOnce() {
+    public async Task Cancellation_Then_InFlightCallIsCanceledAndLoggedOnce()
+    {
         var entered = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
-        var channel = new InMemoryCallChannel(async (_, _, _, cancellationToken) => {
+        var channel = new InMemoryCallChannel(async (_, _, _, cancellationToken) =>
+        {
             entered.TrySetResult();
             await Task.Delay(TimeSpan.FromSeconds(30), cancellationToken).ConfigureAwait(false);
             return new NdrCallResult(OpcResultId.Ok.Code, EncodeStatus());
@@ -68,10 +73,12 @@ public sealed class ErrorPathTests {
     }
 
     [Test, Category("EndToEnd")]
-    public async Task ChannelDisposalMidCall_Then_ObjectDisposedExceptionIsGraceful() {
+    public async Task ChannelDisposalMidCall_Then_ObjectDisposedExceptionIsGraceful()
+    {
         var entered = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
         var release = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
-        using var channel = new DisposableCallChannel(async (_, _, _, cancellationToken) => {
+        using var channel = new DisposableCallChannel(async (_, _, _, cancellationToken) =>
+        {
             entered.TrySetResult();
             await release.Task.WaitAsync(cancellationToken).ConfigureAwait(false);
             return new NdrCallResult(OpcResultId.Ok.Code, EncodeStatus());
@@ -89,8 +96,10 @@ public sealed class ErrorPathTests {
         await Assert.That(exception.Message).Contains("in-flight");
     }
 
-    private static ReadOnlyMemory<byte> EncodeStatus() {
-        var status = new OpcServerStatus {
+    private static ReadOnlyMemory<byte> EncodeStatus()
+    {
+        var status = new OpcServerStatus
+        {
             Spec = OpcStatusSpec.Da,
             StartTime = new DateTimeOffset(2026, 1, 1, 0, 0, 0, TimeSpan.Zero),
             CurrentTime = new DateTimeOffset(2026, 1, 1, 0, 0, 1, TimeSpan.Zero),
@@ -101,7 +110,8 @@ public sealed class ErrorPathTests {
             GroupCount = 0,
             BandWidth = 0,
         };
-        return EndToEndNdr.Write((ref NdrWriter writer) => {
+        return EndToEndNdr.Write((ref NdrWriter writer) =>
+        {
             // [out] OPCSERVERSTATUS **ppServerStatus is wire-encoded as a NDR unique
             // pointer (MS-RPCE §14.3.10): 4-byte referent ID + struct.
             writer.WriteUInt32(0x00020000u);
@@ -110,14 +120,18 @@ public sealed class ErrorPathTests {
     }
 
     private static async Task<TException> CaptureAsync<TException>(Func<Task> action)
-        where TException : Exception {
-        try {
+        where TException : Exception
+    {
+        try
+        {
             await action().ConfigureAwait(false);
         }
-        catch (TException exception) {
+        catch (TException exception)
+        {
             return exception;
         }
-        catch (Exception exception) {
+        catch (Exception exception)
+        {
             throw new InvalidOperationException(
                 $"Expected {typeof(TException).Name}, but caught {exception.GetType().Name}.",
                 exception);

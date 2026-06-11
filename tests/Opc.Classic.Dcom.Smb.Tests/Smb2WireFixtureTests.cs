@@ -20,14 +20,16 @@ namespace Opc.Classic.Dcom.Smb.Tests;
 /// a real Samba/Windows server, the synthetic fixtures below validate that our
 /// codec implementations match the spec's documented wire layouts.
 /// </summary>
-public sealed class Smb2WireFixtureTests {
+public sealed class Smb2WireFixtureTests
+{
     /// <summary>
     /// SMB2 packet header for a NEGOTIATE request with MessageId=1. The exact byte
     /// layout is fixed by [MS-SMB2] §2.2.1.2; verifying the on-the-wire bytes match
     /// the spec example catches any field-ordering or endianness regressions.
     /// </summary>
     [Test]
-    public async Task NegotiateHeader_MatchesSpecLayout() {
+    public async Task NegotiateHeader_MatchesSpecLayout()
+    {
         var header = new Smb2PacketHeader(
             CreditCharge: 0,
             Status: 0,
@@ -84,7 +86,8 @@ public sealed class Smb2WireFixtureTests {
     /// length value with the high byte set to 0x00 (Direct TCP). See [MS-CIFS] §2.2.1.
     /// </summary>
     [Test]
-    public async Task NetBiosFrameHeader_24BitBigEndian() {
+    public async Task NetBiosFrameHeader_24BitBigEndian()
+    {
         byte[] actual = new byte[4];
         NetBiosFraming.WriteHeader(actual, 0x010203);
 
@@ -102,7 +105,8 @@ public sealed class Smb2WireFixtureTests {
     /// Reserved, Capabilities, ClientGuid, and the trailing dialect array.
     /// </summary>
     [Test]
-    public async Task NegotiateRequestBody_TwoDialects() {
+    public async Task NegotiateRequestBody_TwoDialects()
+    {
         var req = new Smb2NegotiateRequest(
             SecurityMode: 0x01,
             Capabilities: 0,

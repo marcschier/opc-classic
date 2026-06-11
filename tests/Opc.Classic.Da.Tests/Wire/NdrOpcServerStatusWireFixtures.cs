@@ -19,10 +19,12 @@ using TUnit.Core;
 
 namespace Opc.Classic.Da.Tests.Wire;
 
-public sealed class NdrOpcServerStatusWireFixtures {
+public sealed class NdrOpcServerStatusWireFixtures
+{
     private delegate void NdrWriteAction(ref NdrWriter w);
 
-    private static OpcServerStatus BuildFixture() => new() {
+    private static OpcServerStatus BuildFixture() => new()
+    {
         Spec = OpcStatusSpec.Da,
         StartTime = new DateTimeOffset(2020, 6, 10, 16, 53, 16, TimeSpan.Zero),
         CurrentTime = new DateTimeOffset(2020, 6, 10, 16, 54, 16, TimeSpan.Zero),
@@ -35,7 +37,8 @@ public sealed class NdrOpcServerStatusWireFixtures {
     };
 
     [Test]
-    public async Task OpcServerStatus_wire_layout_matches_OPC_DA_spec_offsets() {
+    public async Task OpcServerStatus_wire_layout_matches_OPC_DA_spec_offsets()
+    {
         // Per opcda.h OPCSERVERSTATUS / MS-RPCE NDR:
         //   [0..7]   FILETIME ftStartTime         (FILETIME is 2x UInt32, 4-aligned)
         //   [8..15]  FILETIME ftCurrentTime
@@ -79,7 +82,8 @@ public sealed class NdrOpcServerStatusWireFixtures {
     }
 
     [Test]
-    public async Task OpcServerStatus_round_trips_through_pinned_wire_layout() {
+    public async Task OpcServerStatus_round_trips_through_pinned_wire_layout()
+    {
         OpcServerStatus expected = BuildFixture();
         byte[] wire = WriteOne((ref NdrWriter w) => NdrOpcServerStatusCodec.Write(ref w, expected));
 
@@ -97,8 +101,10 @@ public sealed class NdrOpcServerStatusWireFixtures {
     }
 
     [Test]
-    public async Task OpcServerStatus_null_VendorInfo_is_zero_referent() {
-        OpcServerStatus expected = new() {
+    public async Task OpcServerStatus_null_VendorInfo_is_zero_referent()
+    {
+        OpcServerStatus expected = new()
+        {
             Spec = OpcStatusSpec.Da,
             StartTime = new DateTimeOffset(2020, 6, 10, 16, 53, 16, TimeSpan.Zero),
             CurrentTime = new DateTimeOffset(2020, 6, 10, 16, 54, 16, TimeSpan.Zero),
@@ -116,7 +122,8 @@ public sealed class NdrOpcServerStatusWireFixtures {
         await Assert.That(WireAssert.ReadUInt32At(wire, 44)).IsEqualTo(0u);
     }
 
-    private static byte[] WriteOne(NdrWriteAction write, int capacity = 256) {
+    private static byte[] WriteOne(NdrWriteAction write, int capacity = 256)
+    {
         var buf = new byte[capacity];
         var w = new NdrWriter(buf);
         write(ref w);

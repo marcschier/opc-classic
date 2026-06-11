@@ -16,10 +16,12 @@ using TUnit.Assertions.AssertConditions.Throws;
 
 namespace Opc.Classic.Hda.Tests;
 
-public sealed class HdaFileTimeFuzzTests {
+public sealed class HdaFileTimeFuzzTests
+{
     private delegate void NdrWriteAction(ref NdrWriter writer);
 
-    private static byte[] WriteOne(NdrWriteAction write, int capacity = 512) {
+    private static byte[] WriteOne(NdrWriteAction write, int capacity = 512)
+    {
         var buf = new byte[capacity];
         var writer = new NdrWriter(buf);
         write(ref writer);
@@ -27,8 +29,10 @@ public sealed class HdaFileTimeFuzzTests {
     }
 
     [Test]
-    public async Task HdaServerStatus_FileTime_Zero_DecodesAsEpoch() {
-        byte[] wire = WriteOne((ref NdrWriter w) => {
+    public async Task HdaServerStatus_FileTime_Zero_DecodesAsEpoch()
+    {
+        byte[] wire = WriteOne((ref NdrWriter w) =>
+        {
             w.WriteUInt32(1);                  // historian status = Up = Running
             // [out] FILETIME** pftCurrentTime: 4-byte unique-pointer referent
             // before each FILETIME on the wire (matches the OS COM proxy/stub
@@ -55,8 +59,10 @@ public sealed class HdaFileTimeFuzzTests {
     [Test]
     [Arguments(-1L)]
     [Arguments(long.MaxValue)]
-    public async Task HdaServerStatus_FileTime_OutOfRange_ThrowsAndNamesField(long bogus) {
-        byte[] wire = WriteOne((ref NdrWriter w) => {
+    public async Task HdaServerStatus_FileTime_OutOfRange_ThrowsAndNamesField(long bogus)
+    {
+        byte[] wire = WriteOne((ref NdrWriter w) =>
+        {
             w.WriteUInt32(1);
             _ = w.WriteReferentId();
             w.WriteFileTime(bogus);            // ftCurrentTime FIRST → named
@@ -71,12 +77,14 @@ public sealed class HdaFileTimeFuzzTests {
             w.WriteUnicodeStringPtr("v");
         });
 
-        try {
+        try
+        {
             var reader = new NdrReader(wire);
             _ = NdrOpcHdaServerStatusCodec.Read(ref reader);
             throw new Exception("expected InvalidDataException");
         }
-        catch (InvalidDataException ex) {
+        catch (InvalidDataException ex)
+        {
             await Assert.That(ex.Message).Contains("OPCHDA_SERVERSTATUS.ftCurrentTime");
         }
     }

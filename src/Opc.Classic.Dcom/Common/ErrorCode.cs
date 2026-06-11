@@ -7,7 +7,8 @@ namespace Opc.Classic.Dcom.Common;
 /// <summary>
 /// All errorcodes. ErrorCodes begining with "INTEROP" are internal error codes.
 /// </summary>
-public enum ErrorCode : uint {
+public enum ErrorCode : uint
+{
 
     /// <summary>
     /// Success

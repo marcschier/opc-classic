@@ -11,7 +11,8 @@ namespace Opc.Classic.Cpx;
 /// <summary>
 /// OPC Complex Data HRESULT constants defined by CPX 1.00 §9 and OPC <c>opcerror.h</c>.
 /// </summary>
-public static class OpcComplexDataResult {
+public static class OpcComplexDataResult
+{
     /// <summary>XML-DA namespace for CPX-specific errors.</summary>
     public const string XmlDaNamespace = "http://opcfoundation.org/ComplexData/1.0/";
 

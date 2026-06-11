@@ -14,7 +14,8 @@ namespace Opc.Classic.Dcom.Core;
 /// <summary>
 /// Server-side scaffold for IRemoteActivation v5.4 activation handling.
 /// </summary>
-public sealed class RemoteActivationV54Server {
+public sealed class RemoteActivationV54Server
+{
     internal const int REGDB_E_CLASSNOTREG = unchecked((int)0x80040154u);
     internal const int E_NOTIMPL = unchecked((int)0x80004001u);
 
@@ -23,7 +24,8 @@ public sealed class RemoteActivationV54Server {
     /// <summary>
     /// Initializes a new server-side v5.4 activation handler.
     /// </summary>
-    public RemoteActivationV54Server(IClsidRegistry registry) {
+    public RemoteActivationV54Server(IClsidRegistry registry)
+    {
         ArgumentNullException.ThrowIfNull(registry);
         _registry = registry;
     }
@@ -33,11 +35,13 @@ public sealed class RemoteActivationV54Server {
     /// </summary>
     public Task<RemoteActivationResponse> RemoteActivationAsync(
         RemoteActivationRequest request,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         cancellationToken.ThrowIfCancellationRequested();
         ArgumentNullException.ThrowIfNull(request);
 
-        if (!_registry.TryResolve(request.Clsid, out _)) {
+        if (!_registry.TryResolve(request.Clsid, out _))
+        {
             return Task.FromResult(new RemoteActivationResponse(
                 REGDB_E_CLASSNOTREG,
                 Guid.Empty,

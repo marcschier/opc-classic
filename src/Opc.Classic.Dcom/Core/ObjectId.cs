@@ -8,7 +8,8 @@ using System.Linq;
 namespace Opc.Classic.Dcom.Core;
 
 [Serializable]
-internal sealed class ObjectId {
+internal sealed class ObjectId
+{
 
     /// <summary>
     /// Ref count
@@ -29,8 +30,10 @@ internal sealed class ObjectId {
     /// Returns whether object expired
     /// </summary>
     /// <returns></returns>
-    internal bool HasExpired() {
-        if ((DcomTimings.UtcNow - _lastPingTime) > DcomTimings.ObjectExpiryPeriod) {
+    internal bool HasExpired()
+    {
+        if ((DcomTimings.UtcNow - _lastPingTime) > DcomTimings.ObjectExpiryPeriod)
+        {
             return true;
         }
         return false;
@@ -41,10 +44,12 @@ internal sealed class ObjectId {
     /// </summary>
     /// <param name="oid"></param>
     /// <param name="dontping"></param>
-    internal ObjectId(byte[] oid, bool dontping) {
+    internal ObjectId(byte[] oid, bool dontping)
+    {
         OID = oid;
         Dontping = dontping;
-        if (dontping) {
+        if (dontping)
+        {
             Log.Logger.Information("DONT PING is true for OID: " + ToString());
         }
     }
@@ -71,17 +76,21 @@ internal sealed class ObjectId {
     internal void IncrementIPIDRefCountBy1() => IPIDRefCount++;
 
     /// <inheritdoc/>
-    public override int GetHashCode() {
+    public override int GetHashCode()
+    {
         var result = 1;
-        for (var i = 0; i < OID.Length; i++) {
+        for (var i = 0; i < OID.Length; i++)
+        {
             result = (31 * result) + OID[i];
         }
         return result;
     }
 
     /// <inheritdoc/>
-    public override bool Equals(object obj) {
-        if (!(obj is ObjectId other)) {
+    public override bool Equals(object obj)
+    {
+        if (!(obj is ObjectId other))
+        {
             return false;
         }
 

@@ -5,7 +5,8 @@ namespace Opc.Classic.Dcom.Common;
 /// <summary>
 /// Interface for setting user credentials.
 /// </summary>
-public interface IAuthInfo {
+public interface IAuthInfo
+{
 
     /// <summary>
     /// Returns username.

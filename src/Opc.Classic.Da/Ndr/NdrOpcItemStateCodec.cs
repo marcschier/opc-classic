@@ -23,18 +23,21 @@ namespace Opc.Classic.Da.Ndr;
 /// for the array case; <see cref="Read"/>/<see cref="Write"/> emit inline +
 /// deferred for a single element.</para>
 /// </remarks>
-public static class NdrOpcItemStateCodec {
+public static class NdrOpcItemStateCodec
+{
     private const long FileTimeEpochOffsetTicks = 504911232000000000L;
 
     /// <summary>Encodes a single OPCITEMSTATE (inline + deferred VARIANT body).</summary>
-    public static void Write(ref NdrWriter writer, OpcItemState state) {
+    public static void Write(ref NdrWriter writer, OpcItemState state)
+    {
         ArgumentNullException.ThrowIfNull(state);
         WriteInlinePart(ref writer, state);
         writer.WriteVariant(state.Value);
     }
 
     /// <summary>Decodes a single OPCITEMSTATE (inline + immediately deferred VARIANT body).</summary>
-    public static OpcItemState Read(ref NdrReader reader) {
+    public static OpcItemState Read(ref NdrReader reader)
+    {
         InlinePart inline = ReadInlinePart(ref reader);
         return ApplyDeferred(ref reader, inline);
     }
@@ -48,8 +51,10 @@ public static class NdrOpcItemStateCodec {
     /// consumed by <see cref="ReadConformantArray"/> when paired with a
     /// preceding referent + count read.
     /// </summary>
-    public static void WriteConformantArray(ref NdrWriter writer, OpcItemState[]? states) {
-        if (states is null || states.Length == 0) {
+    public static void WriteConformantArray(ref NdrWriter writer, OpcItemState[]? states)
+    {
+        if (states is null || states.Length == 0)
+        {
             writer.WriteUniquePointerReferent(false);
             return;
         }
@@ -65,7 +70,8 @@ public static class NdrOpcItemStateCodec {
     /// layout. The caller must have already consumed any outer max_count /
     /// referent and pass the element count via <paramref name="count"/>.
     /// </summary>
-    public static OpcItemState[] ReadConformantArray(ref NdrReader reader, int count) {
+    public static OpcItemState[] ReadConformantArray(ref NdrReader reader, int count)
+    {
         if (count <= 0) { return []; }
         var inlines = new InlinePart[count];
         for (int i = 0; i < count; i++) { inlines[i] = ReadInlinePart(ref reader); }
@@ -74,7 +80,8 @@ public static class NdrOpcItemStateCodec {
         return results;
     }
 
-    private static void WriteInlinePart(ref NdrWriter writer, OpcItemState state) {
+    private static void WriteInlinePart(ref NdrWriter writer, OpcItemState state)
+    {
         writer.WriteUInt32(unchecked((uint)state.ClientHandle));
         writer.WriteFileTime(ToFileTime(state.Timestamp));
         writer.WriteUInt16(unchecked((ushort)(state.Quality.RawValue & 0xFFFF)));
@@ -86,7 +93,8 @@ public static class NdrOpcItemStateCodec {
         writer.WriteUniquePointerReferent(true);
     }
 
-    private static InlinePart ReadInlinePart(ref NdrReader reader) {
+    private static InlinePart ReadInlinePart(ref NdrReader reader)
+    {
         uint hClient = reader.ReadUInt32();
         DateTimeOffset timestamp = ReadAndDecodeFileTime(ref reader, "ftTimeStamp");
         ushort wQuality = reader.ReadUInt16();
@@ -95,7 +103,8 @@ public static class NdrOpcItemStateCodec {
         return new InlinePart(unchecked((int)hClient), timestamp, wQuality, variantRef);
     }
 
-    private static OpcItemState ApplyDeferred(ref NdrReader reader, InlinePart inline) {
+    private static OpcItemState ApplyDeferred(ref NdrReader reader, InlinePart inline)
+    {
         OpcVariant value = inline.VariantRef == 0u
             ? OpcVariant.Empty
             : reader.ReadVariant();
@@ -107,8 +116,10 @@ public static class NdrOpcItemStateCodec {
     }
 
     [StructLayout(LayoutKind.Auto)]
-    private readonly struct InlinePart {
-        public InlinePart(int clientHandle, DateTimeOffset timestamp, ushort quality, uint variantRef) {
+    private readonly struct InlinePart
+    {
+        public InlinePart(int clientHandle, DateTimeOffset timestamp, ushort quality, uint variantRef)
+        {
             ClientHandle = clientHandle;
             Timestamp = timestamp;
             Quality = quality;
@@ -123,9 +134,11 @@ public static class NdrOpcItemStateCodec {
     private static long ToFileTime(DateTimeOffset value) =>
         value.UtcTicks - FileTimeEpochOffsetTicks;
 
-    private static DateTimeOffset ReadAndDecodeFileTime(ref NdrReader reader, string fieldName) {
+    private static DateTimeOffset ReadAndDecodeFileTime(ref NdrReader reader, string fieldName)
+    {
         long raw = reader.ReadFileTime();
-        if (FileTimeHelper.TryFromFileTime(raw, out DateTimeOffset value)) {
+        if (FileTimeHelper.TryFromFileTime(raw, out DateTimeOffset value))
+        {
             return value;
         }
         throw new InvalidDataException(

@@ -80,7 +80,8 @@ public sealed record class CaptureStartRequest(
     int? MaxDurationSeconds = null,
     string? ReplaySourceDirectory = null,
     IReadOnlyList<int>? ServerPorts = null,
-    byte[]? NtlmSessionKey = null) {
+    byte[]? NtlmSessionKey = null)
+{
     /// <summary>
     /// Custom <see cref="ToString"/> that REDACTS the
     /// <see cref="NtlmSessionKey"/> byte array. The default
@@ -88,7 +89,8 @@ public sealed record class CaptureStartRequest(
     /// which we MUST NOT do because the key is equivalent to the
     /// session secret protecting authenticated DCOM traffic.
     /// </summary>
-    public override string ToString() {
+    public override string ToString()
+    {
         string keyDescriptor = NtlmSessionKey is null
             ? "null"
             : $"REDACTED[{NtlmSessionKey.Length} bytes]";

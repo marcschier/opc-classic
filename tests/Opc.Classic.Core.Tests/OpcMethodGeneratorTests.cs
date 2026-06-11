@@ -15,7 +15,8 @@ using TUnit.Core;
 namespace Opc.Classic.Tests;
 
 [OpcInterface("11223344-5566-7788-99AA-BBCCDDEEFF00")]
-public partial interface ISampleOpcInterfaceWithOpnums {
+public partial interface ISampleOpcInterfaceWithOpnums
+{
     [OpcMethod(3)]
     int FooMethod();
 
@@ -26,28 +27,33 @@ public partial interface ISampleOpcInterfaceWithOpnums {
     int BazMethod();
 }
 
-public sealed class OpcMethodGeneratorTests {
+public sealed class OpcMethodGeneratorTests
+{
     private static int ReadFoo() => ISampleOpcInterfaceWithOpnums.Opnums.FooMethod;
     private static int ReadBar() => ISampleOpcInterfaceWithOpnums.Opnums.BarMethod;
     private static int ReadBaz() => ISampleOpcInterfaceWithOpnums.Opnums.BazMethod;
 
     [Test]
-    public async Task Foo_Opnum_IsThree() {
+    public async Task Foo_Opnum_IsThree()
+    {
         await Assert.That(ReadFoo()).IsEqualTo(3);
     }
 
     [Test]
-    public async Task Bar_Opnum_IsFour() {
+    public async Task Bar_Opnum_IsFour()
+    {
         await Assert.That(ReadBar()).IsEqualTo(4);
     }
 
     [Test]
-    public async Task Baz_Opnum_IsSeven() {
+    public async Task Baz_Opnum_IsSeven()
+    {
         await Assert.That(ReadBaz()).IsEqualTo(7);
     }
 
     [Test]
-    public async Task Opnums_AreUnique() {
+    public async Task Opnums_AreUnique()
+    {
         // If the generator's duplicate-opnum diagnostic ever regressed
         // and let two methods share an opnum, this test would still pass
         // — but the project wouldn't compile.  This is a sanity check

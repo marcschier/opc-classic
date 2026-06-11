@@ -9,9 +9,11 @@ using TUnit.Core;
 
 namespace Opc.Classic.Dcom.Kerberos.Tests;
 
-public sealed class KerberosSpnegoMicProviderTests {
+public sealed class KerberosSpnegoMicProviderTests
+{
     [Test]
-    public async Task KerberosMicProvider_uses_session_GetMic_and_VerifyMic_for_mechListMIC() {
+    public async Task KerberosMicProvider_uses_session_GetMic_and_VerifyMic_for_mechListMIC()
+    {
         var session = new KerberosSession(
             KerberosTestHex.FromHex("00112233445566778899AABBCCDDEEFF"),
             EncryptionType.AES128_CTS_HMAC_SHA1_96);

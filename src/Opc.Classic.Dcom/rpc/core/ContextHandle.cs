@@ -7,7 +7,8 @@ namespace Opc.Classic.Dcom.Rpc.Core;
 /// <summary>
 /// Context handle
 /// </summary>
-public class ContextHandle : NdrOp {
+public class ContextHandle : NdrOp
+{
 
     /// <summary>
     /// Attributes
@@ -24,7 +25,8 @@ public class ContextHandle : NdrOp {
     /// </summary>
     /// <param name="attributes"></param>
     /// <param name="uuid"></param>
-    public ContextHandle(int attributes, UUID uuid) {
+    public ContextHandle(int attributes, UUID uuid)
+    {
         Attributes = attributes;
         Uuid = uuid;
     }

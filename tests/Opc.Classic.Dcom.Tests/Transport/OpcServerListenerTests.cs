@@ -22,11 +22,13 @@ using TUnit.Core;
 
 namespace Opc.Classic.Dcom.Tests.Transport;
 
-public sealed class OpcServerListenerTests {
+public sealed class OpcServerListenerTests
+{
     private static readonly Guid InterfaceId = Guid.Parse("aa111111-2222-3333-4444-555555555555");
 
     [Test]
-    public async Task LocalEndpoint_exposes_bound_port_before_start() {
+    public async Task LocalEndpoint_exposes_bound_port_before_start()
+    {
         var endpoint = new TcpServerEndpoint(new IPEndPoint(IPAddress.Loopback, 0));
         var processor = new RpcServerConnectionProcessor(EmptyDispatchers());
 
@@ -38,7 +40,8 @@ public sealed class OpcServerListenerTests {
     }
 
     [Test]
-    public async Task End_to_end_real_TCP_client_round_trip() {
+    public async Task End_to_end_real_TCP_client_round_trip()
+    {
         // A real TcpClient connects, sends a bind + request, and receives
         // a response. Proves the full ocom-1 stack (TcpServerEndpoint ->
         // accept loop -> processor -> dispatcher) works end-to-end over
@@ -77,7 +80,8 @@ public sealed class OpcServerListenerTests {
     }
 
     [Test]
-    public async Task StartAsync_then_StopAsync_drains_in_flight_connections() {
+    public async Task StartAsync_then_StopAsync_drains_in_flight_connections()
+    {
         var dispatcher = new RecordingDispatcher(payload: []);
         var endpoint = new TcpServerEndpoint(new IPEndPoint(IPAddress.Loopback, 0));
         var processor = new RpcServerConnectionProcessor(
@@ -90,7 +94,8 @@ public sealed class OpcServerListenerTests {
         using var client = new TcpClient();
         await client.ConnectAsync(bound.Address, bound.Port, TestContext.Current!.CancellationToken);
         // Give the accept loop a moment to register the connection
-        for (int i = 0; i < 50 && listener.InFlightConnectionCount == 0; i++) {
+        for (int i = 0; i < 50 && listener.InFlightConnectionCount == 0; i++)
+        {
             await Task.Delay(20, TestContext.Current!.CancellationToken);
         }
         await Assert.That(listener.InFlightConnectionCount).IsGreaterThanOrEqualTo(1);
@@ -103,7 +108,8 @@ public sealed class OpcServerListenerTests {
     }
 
     [Test]
-    public async Task StartAsync_twice_throws() {
+    public async Task StartAsync_twice_throws()
+    {
         var endpoint = new TcpServerEndpoint(new IPEndPoint(IPAddress.Loopback, 0));
         var processor = new RpcServerConnectionProcessor(EmptyDispatchers());
         await using var listener = new OpcServerListener(endpoint, processor);
@@ -114,7 +120,8 @@ public sealed class OpcServerListenerTests {
     }
 
     [Test]
-    public async Task Concurrent_StartAsync_yields_exactly_one_started_listener() {
+    public async Task Concurrent_StartAsync_yields_exactly_one_started_listener()
+    {
         // The Start path must be serialized — otherwise two concurrent StartAsync
         // calls could both pass the "_acceptLoop is null" check and both spin up
         // their own accept loops, leaking one.
@@ -125,8 +132,10 @@ public sealed class OpcServerListenerTests {
         const int parallelism = 16;
         var starts = new Task[parallelism];
         var startGate = new SemaphoreSlim(0, parallelism);
-        for (int i = 0; i < parallelism; i++) {
-            starts[i] = Task.Run(async () => {
+        for (int i = 0; i < parallelism; i++)
+        {
+            starts[i] = Task.Run(async () =>
+            {
                 await startGate.WaitAsync().ConfigureAwait(false);
                 await listener.StartAsync(TestContext.Current!.CancellationToken).ConfigureAwait(false);
             });
@@ -136,7 +145,8 @@ public sealed class OpcServerListenerTests {
 
         int succeeded = 0;
         int alreadyStartedFaults = 0;
-        await Task.WhenAll(starts.Select(async t => {
+        await Task.WhenAll(starts.Select(async t =>
+        {
             try { await t.ConfigureAwait(false); Interlocked.Increment(ref succeeded); }
             catch (InvalidOperationException) { Interlocked.Increment(ref alreadyStartedFaults); }
         })).ConfigureAwait(false);
@@ -150,7 +160,8 @@ public sealed class OpcServerListenerTests {
     }
 
     [Test]
-    public async Task Parallel_Start_and_Stop_cycles_leave_listener_in_clean_state() {
+    public async Task Parallel_Start_and_Stop_cycles_leave_listener_in_clean_state()
+    {
         // Drive Start/Stop cycles in parallel against the same listener; the
         // lifecycle lock must ensure each cycle's mutations are atomic so the
         // final state is either fully stopped (no orphaned accept loop) or fully
@@ -158,9 +169,11 @@ public sealed class OpcServerListenerTests {
         var endpoint = new TcpServerEndpoint(new IPEndPoint(IPAddress.Loopback, 0));
         var processor = new RpcServerConnectionProcessor(EmptyDispatchers());
         var listener = new OpcServerListener(endpoint, processor);
-        try {
+        try
+        {
             const int cycles = 6;
-            for (int i = 0; i < cycles; i++) {
+            for (int i = 0; i < cycles; i++)
+            {
                 await listener.StartAsync(TestContext.Current!.CancellationToken).ConfigureAwait(false);
                 Task stop = listener.StopAsync(TestContext.Current!.CancellationToken);
 
@@ -176,7 +189,8 @@ public sealed class OpcServerListenerTests {
             await listener.StartAsync(TestContext.Current!.CancellationToken).ConfigureAwait(false);
             await Assert.That((listener.LocalEndpoint as IPEndPoint)!.Port).IsGreaterThan(0);
         }
-        finally {
+        finally
+        {
             await listener.DisposeAsync().ConfigureAwait(false);
         }
     }
@@ -184,7 +198,8 @@ public sealed class OpcServerListenerTests {
     private static IReadOnlyDictionary<Guid, IOpcServerDispatcher> EmptyDispatchers() =>
         new Dictionary<Guid, IOpcServerDispatcher>();
 
-    private static async Task WriteAndFlush(PipeWriter writer, byte[] bytes) {
+    private static async Task WriteAndFlush(PipeWriter writer, byte[] bytes)
+    {
         Memory<byte> dest = writer.GetMemory(bytes.Length);
         bytes.AsSpan().CopyTo(dest.Span);
         writer.Advance(bytes.Length);
@@ -192,7 +207,8 @@ public sealed class OpcServerListenerTests {
     }
 
     private static BindPdu NewBind(Guid interfaceId, int contextId, int callId) =>
-        new() {
+        new()
+        {
             CallId = callId,
             AssociationGroupId = 0,
             MaxTransmitFragment = ConnectionOrientedPdu.MUST_RECEIVE_FRAGMENT_SIZE,
@@ -200,9 +216,11 @@ public sealed class OpcServerListenerTests {
             ContextList = [new(contextId, new PresentationSyntax(new UUID(interfaceId.ToString("D")), 0, 0))],
         };
 
-    private static RequestCoPdu NewRequest(int contextId, int opnum, int callId) {
+    private static RequestCoPdu NewRequest(int contextId, int opnum, int callId)
+    {
         byte[] stub = OrpcEnvelope.BuildRequestStub(Array.Empty<byte>(), Guid.NewGuid());
-        return new RequestCoPdu {
+        return new RequestCoPdu
+        {
             CallId = callId,
             ContextId = contextId,
             Opnum = opnum,
@@ -211,14 +229,16 @@ public sealed class OpcServerListenerTests {
         };
     }
 
-    private sealed class RecordingDispatcher : IOpcServerDispatcher {
+    private sealed class RecordingDispatcher : IOpcServerDispatcher
+    {
         private readonly byte[] _payload;
 
         public RecordingDispatcher(byte[] payload) { _payload = payload; }
 
         public int LastOpnum { get; private set; } = -1;
 
-        public ValueTask<DispatchResult> DispatchAsync(int opnum, ReadOnlyMemory<byte> requestPayload, CancellationToken cancellationToken) {
+        public ValueTask<DispatchResult> DispatchAsync(int opnum, ReadOnlyMemory<byte> requestPayload, CancellationToken cancellationToken)
+        {
             LastOpnum = opnum;
             return ValueTask.FromResult(DispatchResult.Success(_payload));
         }

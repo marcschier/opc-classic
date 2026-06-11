@@ -12,7 +12,8 @@ namespace Opc.Classic.Dcom.Orpc;
 /// <summary>
 /// ORPC_THIS request envelope defined by [MS-DCOM] section 2.2.19.
 /// </summary>
-public sealed class OrpcThis {
+public sealed class OrpcThis
+{
     /// <summary>Wire size when the extensions pointer is null.</summary>
     public const int NullExtensionsWireSize = 32;
 
@@ -29,7 +30,8 @@ public sealed class OrpcThis {
     public IReadOnlyList<OrpcExtent>? Extensions { get; init; }
 
     /// <summary>Writes this envelope using NDR encoding.</summary>
-    public void Write(ref NdrWriter writer) {
+    public void Write(ref NdrWriter writer)
+    {
         writer.WriteUInt16(Version.Major);
         writer.WriteUInt16(Version.Minor);
         writer.WriteUInt32(Flags);
@@ -39,17 +41,20 @@ public sealed class OrpcThis {
     }
 
     /// <summary>Reads an ORPC_THIS envelope using NDR encoding.</summary>
-    public static OrpcThis Read(ref NdrReader reader) {
+    public static OrpcThis Read(ref NdrReader reader)
+    {
         var version = new OrpcComVersion(reader.ReadUInt16(), reader.ReadUInt16());
         uint flags = reader.ReadUInt32();
         uint reserved1 = reader.ReadUInt32();
-        if (reserved1 != 0u) {
+        if (reserved1 != 0u)
+        {
             throw new InvalidOperationException($"ORPC_THIS reserved1 must be zero but was {reserved1}.");
         }
 
         Guid causalityId = reader.ReadGuid();
         IReadOnlyList<OrpcExtent>? extensions = OrpcExtentArrayCodec.Read(ref reader);
-        return new OrpcThis {
+        return new OrpcThis
+        {
             Version = version,
             Flags = flags,
             CausalityId = causalityId,

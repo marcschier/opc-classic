@@ -10,7 +10,8 @@ namespace Opc.Classic.Dcom.Core;
 /// Represents a string binding
 /// </summary>
 [Serializable]
-internal sealed class StringBinding {
+internal sealed class StringBinding
+{
 
     /// <summary>
     /// Tower id
@@ -30,7 +31,8 @@ internal sealed class StringBinding {
     /// <summary>
     /// Private constructor
     /// </summary>
-    private StringBinding() {
+    private StringBinding()
+    {
     }
 
     /// <summary>
@@ -38,19 +40,24 @@ internal sealed class StringBinding {
     /// </summary>
     /// <param name="port"></param>
     /// <param name="hostname"></param>
-    internal StringBinding(int port, bool hostname) {
+    internal StringBinding(int port, bool hostname)
+    {
         string hostaddress;
-        if (!hostname) {
+        if (!hostname)
+        {
             //single binding with our IP address
             hostaddress = Session.LocalhostAddressAsIPString;
         }
-        else {
+        else
+        {
             hostaddress = Session.LocalhostCanonicalAddressAsString;
         }
-        if (port == -1) {
+        if (port == -1)
+        {
             NetworkAddress = hostaddress;
         }
-        else {
+        else
+        {
             NetworkAddress = hostaddress + "[" + Convert.ToString(port) + "]";
         }
         Length = 2 + (NetworkAddress.Length * 2) + 2;
@@ -61,7 +68,8 @@ internal sealed class StringBinding {
     /// Create string binding
     /// </summary>
     /// <param name="port"></param>
-    internal StringBinding(int port) : this(port, false) {
+    internal StringBinding(int port) : this(port, false)
+    {
     }
 
     /// <summary>
@@ -69,13 +77,16 @@ internal sealed class StringBinding {
     /// </summary>
     /// <param name="ndr"></param>
     /// <returns></returns>
-    internal static StringBinding Decode(NdrCodec ndr) {
-        var stringBinding = new StringBinding {
+    internal static StringBinding Decode(NdrCodec ndr)
+    {
+        var stringBinding = new StringBinding
+        {
             TowerId = ndr.ReadUnsignedShort()
         };
 
         //hit the end, security bindings start.
-        if (stringBinding.TowerId == 0) {
+        if (stringBinding.TowerId == 0)
+        {
             return null;
         }
 
@@ -83,7 +94,8 @@ internal sealed class StringBinding {
         // a '0' will be represented as 30
         var buffer = new StringBuilder();
         int retVal;
-        while ((retVal = ndr.ReadUnsignedShort()) != 0) {
+        while ((retVal = ndr.ReadUnsignedShort()) != 0)
+        {
             //even though this is a unicode string, but will not have anything else
             //other than ascii charset, which is supported by all encodings.
             buffer.Append(StringHelperClass.NewString(new byte[] { (byte)retVal }));
@@ -99,11 +111,13 @@ internal sealed class StringBinding {
     /// Encode
     /// </summary>
     /// <param name="ndr"></param>
-    public void Encode(NdrCodec ndr) {
+    public void Encode(NdrCodec ndr)
+    {
         ndr.WriteUnsignedShort(TowerId);
         //now to write the network address.
         var i = 0;
-        while (i < NetworkAddress.Length) {
+        while (i < NetworkAddress.Length)
+        {
             ndr.WriteUnsignedShort(NetworkAddress[i]);
             i++;
         }

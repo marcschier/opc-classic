@@ -36,7 +36,8 @@ namespace Opc.Classic.Da.Hosting;
 /// </remarks>
 public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItemMgt, IOPCSyncIO,
     IOPCSyncIO2, IOPCAsyncIO2, IOPCAsyncIO3, IConnectionPoint, IConnectionPointContainer,
-    IOPCItemDeadbandMgt, IOPCItemSamplingMgt {
+    IOPCItemDeadbandMgt, IOPCItemSamplingMgt
+{
     private readonly OpcObjectRegistry? _objectRegistry;
     private readonly ConcurrentDictionary<int, OpcDaItem> _items = new();
     private readonly ConcurrentDictionary<int, IOpcInterfaceRef> _sinks = new();
@@ -69,7 +70,8 @@ public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItem
         int timeBias,
         float percentDeadband,
         int localeId)
-        : this(name, serverHandle, clientHandle, active, requestedUpdateRate, timeBias, percentDeadband, localeId, objectRegistry: null) {
+        : this(name, serverHandle, clientHandle, active, requestedUpdateRate, timeBias, percentDeadband, localeId, objectRegistry: null)
+    {
     }
 
     /// <summary>
@@ -86,7 +88,8 @@ public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItem
         int timeBias,
         float percentDeadband,
         int localeId,
-        OpcObjectRegistry? objectRegistry) {
+        OpcObjectRegistry? objectRegistry)
+    {
         ArgumentNullException.ThrowIfNull(name);
         Name = name;
         ServerHandle = serverHandle;
@@ -149,7 +152,8 @@ public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItem
     // ----- IOPCGroupStateMgt -----
 
     /// <inheritdoc />
-    public Task<OpcGroupState> GetStateAsync(CancellationToken cancellationToken = default) {
+    public Task<OpcGroupState> GetStateAsync(CancellationToken cancellationToken = default)
+    {
         cancellationToken.ThrowIfCancellationRequested();
         return Task.FromResult(new OpcGroupState(
             ClientHandle: ClientHandle,
@@ -171,7 +175,8 @@ public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItem
         int localeId,
         int clientGroupHandle,
         out int revisedUpdateRate,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         cancellationToken.ThrowIfCancellationRequested();
         UpdateRate = requestedUpdateRate;
         Active = active;
@@ -184,7 +189,8 @@ public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItem
     }
 
     /// <inheritdoc />
-    public Task SetNameAsync(string name, CancellationToken cancellationToken = default) {
+    public Task SetNameAsync(string name, CancellationToken cancellationToken = default)
+    {
         ArgumentException.ThrowIfNullOrWhiteSpace(name);
         cancellationToken.ThrowIfCancellationRequested();
         Name = name;
@@ -192,7 +198,8 @@ public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItem
     }
 
     /// <inheritdoc />
-    public Task<IOpcInterfaceRef> CloneGroupAsync(string name, Guid requestedInterfaceId, CancellationToken cancellationToken = default) {
+    public Task<IOpcInterfaceRef> CloneGroupAsync(string name, Guid requestedInterfaceId, CancellationToken cancellationToken = default)
+    {
         ArgumentException.ThrowIfNullOrWhiteSpace(name);
         cancellationToken.ThrowIfCancellationRequested();
         return Task.FromResult<IOpcInterfaceRef>(new OpcInterfaceRef(
@@ -209,7 +216,8 @@ public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItem
     // ----- IOPCGroupStateMgt2 -----
 
     /// <inheritdoc />
-    public Task<int> SetKeepAliveAsync(int keepAliveTime, CancellationToken cancellationToken = default) {
+    public Task<int> SetKeepAliveAsync(int keepAliveTime, CancellationToken cancellationToken = default)
+    {
         cancellationToken.ThrowIfCancellationRequested();
         int previous = KeepAliveTime;
         KeepAliveTime = keepAliveTime;
@@ -217,7 +225,8 @@ public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItem
     }
 
     /// <inheritdoc />
-    public Task<int> GetKeepAliveAsync(CancellationToken cancellationToken = default) {
+    public Task<int> GetKeepAliveAsync(CancellationToken cancellationToken = default)
+    {
         cancellationToken.ThrowIfCancellationRequested();
         return Task.FromResult(KeepAliveTime);
     }
@@ -229,14 +238,16 @@ public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItem
         OpcItemDef[] itemDefinitions,
         out OpcItemResult[] addResults,
         out int[] errors,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         ArgumentNullException.ThrowIfNull(itemDefinitions);
         cancellationToken.ThrowIfCancellationRequested();
 
         addResults = new OpcItemResult[itemDefinitions.Length];
         errors = new int[itemDefinitions.Length];
 
-        for (int i = 0; i < itemDefinitions.Length; i++) {
+        for (int i = 0; i < itemDefinitions.Length; i++)
+        {
             (OpcItemResult result, int hr) = TryAddItem(itemDefinitions[i]);
             addResults[i] = result;
             errors[i] = hr;
@@ -250,7 +261,8 @@ public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItem
         bool blobUpdate,
         out OpcItemResult[] validationResults,
         out int[] errors,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         ArgumentNullException.ThrowIfNull(itemDefinitions);
         cancellationToken.ThrowIfCancellationRequested();
         _ = blobUpdate;
@@ -260,7 +272,8 @@ public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItem
 
         // Validation does not add; produce a result shape but don't allocate
         // a real handle. A zero handle means "validation only".
-        for (int i = 0; i < itemDefinitions.Length; i++) {
+        for (int i = 0; i < itemDefinitions.Length; i++)
+        {
             OpcItemDef def = itemDefinitions[i];
             errors[i] = string.IsNullOrWhiteSpace(def?.ItemId)
                 ? OpcResultId.UnknownItemId.Code
@@ -275,11 +288,13 @@ public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItem
     }
 
     /// <inheritdoc />
-    public Task<int[]> RemoveItemsAsync(int[] serverHandles, CancellationToken cancellationToken = default) {
+    public Task<int[]> RemoveItemsAsync(int[] serverHandles, CancellationToken cancellationToken = default)
+    {
         ArgumentNullException.ThrowIfNull(serverHandles);
         cancellationToken.ThrowIfCancellationRequested();
         int[] errors = new int[serverHandles.Length];
-        for (int i = 0; i < serverHandles.Length; i++) {
+        for (int i = 0; i < serverHandles.Length; i++)
+        {
             errors[i] = _items.TryRemove(serverHandles[i], out _)
                 ? OpcResultId.Ok.Code
                 : OpcResultId.InvalidHandle.Code;
@@ -288,16 +303,20 @@ public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItem
     }
 
     /// <inheritdoc />
-    public Task<int[]> SetActiveStateAsync(int[] serverHandles, bool active, CancellationToken cancellationToken = default) {
+    public Task<int[]> SetActiveStateAsync(int[] serverHandles, bool active, CancellationToken cancellationToken = default)
+    {
         ArgumentNullException.ThrowIfNull(serverHandles);
         cancellationToken.ThrowIfCancellationRequested();
         int[] errors = new int[serverHandles.Length];
-        for (int i = 0; i < serverHandles.Length; i++) {
-            if (_items.TryGetValue(serverHandles[i], out OpcDaItem? item)) {
+        for (int i = 0; i < serverHandles.Length; i++)
+        {
+            if (_items.TryGetValue(serverHandles[i], out OpcDaItem? item))
+            {
                 item.Active = active;
                 errors[i] = OpcResultId.Ok.Code;
             }
-            else {
+            else
+            {
                 errors[i] = OpcResultId.InvalidHandle.Code;
             }
         }
@@ -305,20 +324,25 @@ public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItem
     }
 
     /// <inheritdoc />
-    public Task<int[]> SetClientHandlesAsync(int[] serverHandles, int[] clientHandles, CancellationToken cancellationToken = default) {
+    public Task<int[]> SetClientHandlesAsync(int[] serverHandles, int[] clientHandles, CancellationToken cancellationToken = default)
+    {
         ArgumentNullException.ThrowIfNull(serverHandles);
         ArgumentNullException.ThrowIfNull(clientHandles);
-        if (serverHandles.Length != clientHandles.Length) {
+        if (serverHandles.Length != clientHandles.Length)
+        {
             throw new ArgumentException("serverHandles and clientHandles must have the same length.", nameof(clientHandles));
         }
         cancellationToken.ThrowIfCancellationRequested();
         int[] errors = new int[serverHandles.Length];
-        for (int i = 0; i < serverHandles.Length; i++) {
-            if (_items.TryGetValue(serverHandles[i], out OpcDaItem? item)) {
+        for (int i = 0; i < serverHandles.Length; i++)
+        {
+            if (_items.TryGetValue(serverHandles[i], out OpcDaItem? item))
+            {
                 item.ClientHandle = clientHandles[i];
                 errors[i] = OpcResultId.Ok.Code;
             }
-            else {
+            else
+            {
                 errors[i] = OpcResultId.InvalidHandle.Code;
             }
         }
@@ -326,20 +350,25 @@ public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItem
     }
 
     /// <inheritdoc />
-    public Task<int[]> SetDatatypesAsync(int[] serverHandles, ushort[] requestedDataTypes, CancellationToken cancellationToken = default) {
+    public Task<int[]> SetDatatypesAsync(int[] serverHandles, ushort[] requestedDataTypes, CancellationToken cancellationToken = default)
+    {
         ArgumentNullException.ThrowIfNull(serverHandles);
         ArgumentNullException.ThrowIfNull(requestedDataTypes);
-        if (serverHandles.Length != requestedDataTypes.Length) {
+        if (serverHandles.Length != requestedDataTypes.Length)
+        {
             throw new ArgumentException("serverHandles and requestedDataTypes must have the same length.", nameof(requestedDataTypes));
         }
         cancellationToken.ThrowIfCancellationRequested();
         int[] errors = new int[serverHandles.Length];
-        for (int i = 0; i < serverHandles.Length; i++) {
-            if (_items.TryGetValue(serverHandles[i], out OpcDaItem? item)) {
+        for (int i = 0; i < serverHandles.Length; i++)
+        {
+            if (_items.TryGetValue(serverHandles[i], out OpcDaItem? item))
+            {
                 item.RequestedDatatype = requestedDataTypes[i];
                 errors[i] = OpcResultId.Ok.Code;
             }
-            else {
+            else
+            {
                 errors[i] = OpcResultId.InvalidHandle.Code;
             }
         }
@@ -347,20 +376,24 @@ public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItem
     }
 
     /// <inheritdoc />
-    public Task<IOpcInterfaceRef> CreateEnumeratorAsync(Guid requestedInterfaceId, CancellationToken cancellationToken = default) {
+    public Task<IOpcInterfaceRef> CreateEnumeratorAsync(Guid requestedInterfaceId, CancellationToken cancellationToken = default)
+    {
         cancellationToken.ThrowIfCancellationRequested();
 
         OpcItemAttributes[] snapshot = BuildItemAttributesSnapshot();
         var enumerator = new OpcDaItemAttributesEnumerator(snapshot, _objectRegistry);
 
         Guid ipid;
-        if (_objectRegistry is not null) {
-            var dispatchers = new Dictionary<Guid, IOpcServerDispatcher> {
+        if (_objectRegistry is not null)
+        {
+            var dispatchers = new Dictionary<Guid, IOpcServerDispatcher>
+            {
                 [IEnumOPCItemAttributes.InterfaceId] = new IEnumOPCItemAttributesServerDispatcher(enumerator),
             };
             ipid = _objectRegistry.Register(dispatchers);
         }
-        else {
+        else
+        {
             ipid = Guid.CreateVersion7();
         }
 
@@ -375,9 +408,11 @@ public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItem
             resolverBindings: Array.Empty<ushort>()));
     }
 
-    internal OpcItemAttributes[] BuildItemAttributesSnapshot() {
+    internal OpcItemAttributes[] BuildItemAttributesSnapshot()
+    {
         var snapshot = new List<OpcItemAttributes>(_items.Count);
-        foreach (OpcDaItem item in _items.Values) {
+        foreach (OpcDaItem item in _items.Values)
+        {
             snapshot.Add(new OpcItemAttributes(
                 AccessPath: item.AccessPath,
                 ItemId: item.ItemId,
@@ -401,19 +436,23 @@ public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItem
         int dataSource,
         int[] serverHandles,
         out int[] errors,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         ArgumentNullException.ThrowIfNull(serverHandles);
         cancellationToken.ThrowIfCancellationRequested();
         _ = dataSource; // OPC_DS_CACHE / OPC_DS_DEVICE -- ignored; in-memory snapshot serves both
 
         OpcItemState[] states = new OpcItemState[serverHandles.Length];
         errors = new int[serverHandles.Length];
-        for (int i = 0; i < serverHandles.Length; i++) {
-            if (_items.TryGetValue(serverHandles[i], out OpcDaItem? item)) {
+        for (int i = 0; i < serverHandles.Length; i++)
+        {
+            if (_items.TryGetValue(serverHandles[i], out OpcDaItem? item))
+            {
                 states[i] = item.GetSnapshot();
                 errors[i] = OpcResultId.Ok.Code;
             }
-            else {
+            else
+            {
                 states[i] = new OpcItemState(0, DateTimeOffset.UnixEpoch, default, OpcVariant.Empty);
                 errors[i] = OpcResultId.InvalidHandle.Code;
             }
@@ -422,21 +461,26 @@ public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItem
     }
 
     /// <inheritdoc />
-    public Task<int[]> WriteAsync(int[] serverHandles, OpcVariant[] values, CancellationToken cancellationToken = default) {
+    public Task<int[]> WriteAsync(int[] serverHandles, OpcVariant[] values, CancellationToken cancellationToken = default)
+    {
         ArgumentNullException.ThrowIfNull(serverHandles);
         ArgumentNullException.ThrowIfNull(values);
-        if (serverHandles.Length != values.Length) {
+        if (serverHandles.Length != values.Length)
+        {
             throw new ArgumentException("serverHandles and values must have the same length.", nameof(values));
         }
         cancellationToken.ThrowIfCancellationRequested();
         int[] errors = new int[serverHandles.Length];
         DateTimeOffset now = DateTimeOffset.UtcNow;
-        for (int i = 0; i < serverHandles.Length; i++) {
-            if (_items.TryGetValue(serverHandles[i], out OpcDaItem? item)) {
+        for (int i = 0; i < serverHandles.Length; i++)
+        {
+            if (_items.TryGetValue(serverHandles[i], out OpcDaItem? item))
+            {
                 item.Update(values[i], OpcDaItemQuality.GoodNonSpecific, now);
                 errors[i] = OpcResultId.Ok.Code;
             }
-            else {
+            else
+            {
                 errors[i] = OpcResultId.InvalidHandle.Code;
             }
         }
@@ -453,7 +497,8 @@ public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItem
         out ushort[] qualities,
         out long[] timestamps,
         out int[] errors,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         ArgumentNullException.ThrowIfNull(serverHandles);
         ArgumentNullException.ThrowIfNull(maxAges);
         cancellationToken.ThrowIfCancellationRequested();
@@ -464,15 +509,18 @@ public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItem
         qualities = new ushort[count];
         timestamps = new long[count];
         errors = new int[count];
-        for (int i = 0; i < count; i++) {
-            if (_items.TryGetValue(serverHandles[i], out OpcDaItem? item)) {
+        for (int i = 0; i < count; i++)
+        {
+            if (_items.TryGetValue(serverHandles[i], out OpcDaItem? item))
+            {
                 OpcItemState snapshot = item.GetSnapshot();
                 values[i] = snapshot.Value;
                 qualities[i] = (ushort)snapshot.Quality.RawValue;
                 timestamps[i] = snapshot.Timestamp.ToFileTime();
                 errors[i] = OpcResultId.Ok.Code;
             }
-            else {
+            else
+            {
                 values[i] = OpcVariant.Empty;
                 qualities[i] = OpcDaItemQuality.BadNonSpecific;
                 timestamps[i] = 0;
@@ -483,24 +531,29 @@ public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItem
     }
 
     /// <inheritdoc />
-    public Task<int[]> WriteVqtAsync(int[] serverHandles, OpcItemVqt[] values, CancellationToken cancellationToken = default) {
+    public Task<int[]> WriteVqtAsync(int[] serverHandles, OpcItemVqt[] values, CancellationToken cancellationToken = default)
+    {
         ArgumentNullException.ThrowIfNull(serverHandles);
         ArgumentNullException.ThrowIfNull(values);
-        if (serverHandles.Length != values.Length) {
+        if (serverHandles.Length != values.Length)
+        {
             throw new ArgumentException("serverHandles and values must have the same length.", nameof(values));
         }
         cancellationToken.ThrowIfCancellationRequested();
         int[] errors = new int[serverHandles.Length];
         DateTimeOffset now = DateTimeOffset.UtcNow;
-        for (int i = 0; i < serverHandles.Length; i++) {
-            if (_items.TryGetValue(serverHandles[i], out OpcDaItem? item)) {
+        for (int i = 0; i < serverHandles.Length; i++)
+        {
+            if (_items.TryGetValue(serverHandles[i], out OpcDaItem? item))
+            {
                 OpcItemVqt vqt = values[i];
                 ushort quality = vqt.Quality is { } q ? (ushort)q.RawValue : OpcDaItemQuality.GoodNonSpecific;
                 DateTimeOffset ts = vqt.Timestamp ?? now;
                 item.Update(vqt.Value, quality, ts);
                 errors[i] = OpcResultId.Ok.Code;
             }
-            else {
+            else
+            {
                 errors[i] = OpcResultId.InvalidHandle.Code;
             }
         }
@@ -510,7 +563,8 @@ public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItem
     // ----- IOPCAsyncIO2 -----
 
     /// <inheritdoc />
-    Task<int> IOPCAsyncIO2.ReadAsync(int[] serverHandles, int transactionId, out int[] errors, CancellationToken cancellationToken) {
+    Task<int> IOPCAsyncIO2.ReadAsync(int[] serverHandles, int transactionId, out int[] errors, CancellationToken cancellationToken)
+    {
         ArgumentNullException.ThrowIfNull(serverHandles);
         cancellationToken.ThrowIfCancellationRequested();
         _ = transactionId;
@@ -520,7 +574,8 @@ public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItem
         // errors synchronously so the client gets a consistent dispatch contract.
         int cancelId = Interlocked.Increment(ref _nextCancelId);
         errors = new int[serverHandles.Length];
-        for (int i = 0; i < serverHandles.Length; i++) {
+        for (int i = 0; i < serverHandles.Length; i++)
+        {
             errors[i] = _items.ContainsKey(serverHandles[i])
                 ? OpcResultId.Ok.Code
                 : OpcResultId.InvalidHandle.Code;
@@ -529,10 +584,12 @@ public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItem
     }
 
     /// <inheritdoc />
-    Task<int> IOPCAsyncIO2.WriteAsync(int[] serverHandles, OpcVariant[] values, int transactionId, out int[] errors, CancellationToken cancellationToken) {
+    Task<int> IOPCAsyncIO2.WriteAsync(int[] serverHandles, OpcVariant[] values, int transactionId, out int[] errors, CancellationToken cancellationToken)
+    {
         ArgumentNullException.ThrowIfNull(serverHandles);
         ArgumentNullException.ThrowIfNull(values);
-        if (serverHandles.Length != values.Length) {
+        if (serverHandles.Length != values.Length)
+        {
             throw new ArgumentException("serverHandles and values must have the same length.", nameof(values));
         }
         cancellationToken.ThrowIfCancellationRequested();
@@ -540,12 +597,15 @@ public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItem
         int cancelId = Interlocked.Increment(ref _nextCancelId);
         errors = new int[serverHandles.Length];
         DateTimeOffset now = DateTimeOffset.UtcNow;
-        for (int i = 0; i < serverHandles.Length; i++) {
-            if (_items.TryGetValue(serverHandles[i], out OpcDaItem? item)) {
+        for (int i = 0; i < serverHandles.Length; i++)
+        {
+            if (_items.TryGetValue(serverHandles[i], out OpcDaItem? item))
+            {
                 item.Update(values[i], OpcDaItemQuality.GoodNonSpecific, now);
                 errors[i] = OpcResultId.Ok.Code;
             }
-            else {
+            else
+            {
                 errors[i] = OpcResultId.InvalidHandle.Code;
             }
         }
@@ -553,7 +613,8 @@ public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItem
     }
 
     /// <inheritdoc />
-    public Task<int> Refresh2Async(int dataSource, int transactionId, CancellationToken cancellationToken = default) {
+    public Task<int> Refresh2Async(int dataSource, int transactionId, CancellationToken cancellationToken = default)
+    {
         cancellationToken.ThrowIfCancellationRequested();
         _ = dataSource;
         _ = transactionId;
@@ -561,7 +622,8 @@ public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItem
     }
 
     /// <inheritdoc />
-    public Task Cancel2Async(int cancelId, CancellationToken cancellationToken = default) {
+    public Task Cancel2Async(int cancelId, CancellationToken cancellationToken = default)
+    {
         cancellationToken.ThrowIfCancellationRequested();
         _lastCancel2Id = cancelId;
         // OPC DA spec: the server confirms by raising OnCancelComplete on each
@@ -571,14 +633,16 @@ public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItem
     }
 
     /// <inheritdoc />
-    public Task SetEnableAsync(bool enabled, CancellationToken cancellationToken = default) {
+    public Task SetEnableAsync(bool enabled, CancellationToken cancellationToken = default)
+    {
         cancellationToken.ThrowIfCancellationRequested();
         _callbacksEnabled = enabled;
         return Task.CompletedTask;
     }
 
     /// <inheritdoc />
-    public Task<bool> GetEnableAsync(CancellationToken cancellationToken = default) {
+    public Task<bool> GetEnableAsync(CancellationToken cancellationToken = default)
+    {
         cancellationToken.ThrowIfCancellationRequested();
         return Task.FromResult(_callbacksEnabled);
     }
@@ -586,7 +650,8 @@ public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItem
     // ----- IOPCAsyncIO3 -----
 
     /// <inheritdoc />
-    public Task<int> ReadMaxAgeAsync(int[] serverHandles, int[] maxAges, int transactionId, out int[] errors, CancellationToken cancellationToken = default) {
+    public Task<int> ReadMaxAgeAsync(int[] serverHandles, int[] maxAges, int transactionId, out int[] errors, CancellationToken cancellationToken = default)
+    {
         ArgumentNullException.ThrowIfNull(serverHandles);
         ArgumentNullException.ThrowIfNull(maxAges);
         cancellationToken.ThrowIfCancellationRequested();
@@ -594,7 +659,8 @@ public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItem
         _ = maxAges;
         int cancelId = Interlocked.Increment(ref _nextCancelId);
         errors = new int[serverHandles.Length];
-        for (int i = 0; i < serverHandles.Length; i++) {
+        for (int i = 0; i < serverHandles.Length; i++)
+        {
             errors[i] = _items.ContainsKey(serverHandles[i])
                 ? OpcResultId.Ok.Code
                 : OpcResultId.InvalidHandle.Code;
@@ -603,10 +669,12 @@ public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItem
     }
 
     /// <inheritdoc />
-    public Task<int> WriteVqtAsync(int[] serverHandles, OpcItemVqt[] values, int transactionId, out int[] errors, CancellationToken cancellationToken = default) {
+    public Task<int> WriteVqtAsync(int[] serverHandles, OpcItemVqt[] values, int transactionId, out int[] errors, CancellationToken cancellationToken = default)
+    {
         ArgumentNullException.ThrowIfNull(serverHandles);
         ArgumentNullException.ThrowIfNull(values);
-        if (serverHandles.Length != values.Length) {
+        if (serverHandles.Length != values.Length)
+        {
             throw new ArgumentException("serverHandles and values must have the same length.", nameof(values));
         }
         cancellationToken.ThrowIfCancellationRequested();
@@ -614,15 +682,18 @@ public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItem
         int cancelId = Interlocked.Increment(ref _nextCancelId);
         errors = new int[serverHandles.Length];
         DateTimeOffset now = DateTimeOffset.UtcNow;
-        for (int i = 0; i < serverHandles.Length; i++) {
-            if (_items.TryGetValue(serverHandles[i], out OpcDaItem? item)) {
+        for (int i = 0; i < serverHandles.Length; i++)
+        {
+            if (_items.TryGetValue(serverHandles[i], out OpcDaItem? item))
+            {
                 OpcItemVqt vqt = values[i];
                 ushort quality = vqt.Quality is { } q ? (ushort)q.RawValue : OpcDaItemQuality.GoodNonSpecific;
                 DateTimeOffset ts = vqt.Timestamp ?? now;
                 item.Update(vqt.Value, quality, ts);
                 errors[i] = OpcResultId.Ok.Code;
             }
-            else {
+            else
+            {
                 errors[i] = OpcResultId.InvalidHandle.Code;
             }
         }
@@ -630,7 +701,8 @@ public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItem
     }
 
     /// <inheritdoc />
-    public Task<int> RefreshMaxAgeAsync(int maxAge, int transactionId, CancellationToken cancellationToken = default) {
+    public Task<int> RefreshMaxAgeAsync(int maxAge, int transactionId, CancellationToken cancellationToken = default)
+    {
         cancellationToken.ThrowIfCancellationRequested();
         _ = maxAge;
         _ = transactionId;
@@ -649,25 +721,31 @@ public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItem
     // ----- IOPCItemDeadbandMgt (DA 3.0 per-item deadband) -----
 
     /// <inheritdoc />
-    public Task<int[]> SetItemDeadbandAsync(int[] serverHandles, float[] percentDeadbands, CancellationToken cancellationToken = default) {
+    public Task<int[]> SetItemDeadbandAsync(int[] serverHandles, float[] percentDeadbands, CancellationToken cancellationToken = default)
+    {
         ArgumentNullException.ThrowIfNull(serverHandles);
         ArgumentNullException.ThrowIfNull(percentDeadbands);
-        if (serverHandles.Length != percentDeadbands.Length) {
+        if (serverHandles.Length != percentDeadbands.Length)
+        {
             throw new ArgumentException("serverHandles and percentDeadbands must have the same length.", nameof(percentDeadbands));
         }
         cancellationToken.ThrowIfCancellationRequested();
         int[] errors = new int[serverHandles.Length];
-        for (int i = 0; i < serverHandles.Length; i++) {
-            if (_items.TryGetValue(serverHandles[i], out OpcDaItem? item)) {
+        for (int i = 0; i < serverHandles.Length; i++)
+        {
+            if (_items.TryGetValue(serverHandles[i], out OpcDaItem? item))
+            {
                 float pd = percentDeadbands[i];
-                if (pd < 0f || pd > 100f) {
+                if (pd < 0f || pd > 100f)
+                {
                     errors[i] = OpcResultId.Range.Code;
                     continue;
                 }
                 item.PercentDeadband = pd;
                 errors[i] = OpcResultId.Ok.Code;
             }
-            else {
+            else
+            {
                 errors[i] = OpcResultId.InvalidHandle.Code;
             }
         }
@@ -675,22 +753,28 @@ public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItem
     }
 
     /// <inheritdoc />
-    public Task GetItemDeadbandAsync(int[] serverHandles, out float[] percentDeadbands, out int[] errors, CancellationToken cancellationToken = default) {
+    public Task GetItemDeadbandAsync(int[] serverHandles, out float[] percentDeadbands, out int[] errors, CancellationToken cancellationToken = default)
+    {
         ArgumentNullException.ThrowIfNull(serverHandles);
         cancellationToken.ThrowIfCancellationRequested();
         percentDeadbands = new float[serverHandles.Length];
         errors = new int[serverHandles.Length];
-        for (int i = 0; i < serverHandles.Length; i++) {
-            if (_items.TryGetValue(serverHandles[i], out OpcDaItem? item)) {
-                if (item.PercentDeadband is { } pd) {
+        for (int i = 0; i < serverHandles.Length; i++)
+        {
+            if (_items.TryGetValue(serverHandles[i], out OpcDaItem? item))
+            {
+                if (item.PercentDeadband is { } pd)
+                {
                     percentDeadbands[i] = pd;
                     errors[i] = OpcResultId.Ok.Code;
                 }
-                else {
+                else
+                {
                     errors[i] = OpcResultId.DeadbandNotSet.Code;
                 }
             }
-            else {
+            else
+            {
                 errors[i] = OpcResultId.InvalidHandle.Code;
             }
         }
@@ -698,21 +782,27 @@ public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItem
     }
 
     /// <inheritdoc />
-    public Task<int[]> ClearItemDeadbandAsync(int[] serverHandles, CancellationToken cancellationToken = default) {
+    public Task<int[]> ClearItemDeadbandAsync(int[] serverHandles, CancellationToken cancellationToken = default)
+    {
         ArgumentNullException.ThrowIfNull(serverHandles);
         cancellationToken.ThrowIfCancellationRequested();
         int[] errors = new int[serverHandles.Length];
-        for (int i = 0; i < serverHandles.Length; i++) {
-            if (_items.TryGetValue(serverHandles[i], out OpcDaItem? item)) {
-                if (item.PercentDeadband is null) {
+        for (int i = 0; i < serverHandles.Length; i++)
+        {
+            if (_items.TryGetValue(serverHandles[i], out OpcDaItem? item))
+            {
+                if (item.PercentDeadband is null)
+                {
                     errors[i] = OpcResultId.DeadbandNotSet.Code;
                 }
-                else {
+                else
+                {
                     item.PercentDeadband = null;
                     errors[i] = OpcResultId.Ok.Code;
                 }
             }
-            else {
+            else
+            {
                 errors[i] = OpcResultId.InvalidHandle.Code;
             }
         }
@@ -727,23 +817,28 @@ public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItem
         int[] requestedSamplingRates,
         out int[] revisedSamplingRates,
         out int[] errors,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         ArgumentNullException.ThrowIfNull(serverHandles);
         ArgumentNullException.ThrowIfNull(requestedSamplingRates);
-        if (serverHandles.Length != requestedSamplingRates.Length) {
+        if (serverHandles.Length != requestedSamplingRates.Length)
+        {
             throw new ArgumentException("serverHandles and requestedSamplingRates must have the same length.", nameof(requestedSamplingRates));
         }
         cancellationToken.ThrowIfCancellationRequested();
         revisedSamplingRates = new int[serverHandles.Length];
         errors = new int[serverHandles.Length];
-        for (int i = 0; i < serverHandles.Length; i++) {
-            if (_items.TryGetValue(serverHandles[i], out OpcDaItem? item)) {
+        for (int i = 0; i < serverHandles.Length; i++)
+        {
+            if (_items.TryGetValue(serverHandles[i], out OpcDaItem? item))
+            {
                 int rate = Math.Max(0, requestedSamplingRates[i]);
                 item.SamplingRate = rate;
                 revisedSamplingRates[i] = rate;
                 errors[i] = OpcResultId.Ok.Code;
             }
-            else {
+            else
+            {
                 errors[i] = OpcResultId.InvalidHandle.Code;
             }
         }
@@ -751,22 +846,28 @@ public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItem
     }
 
     /// <inheritdoc />
-    public Task GetItemSamplingRateAsync(int[] serverHandles, out int[] samplingRates, out int[] errors, CancellationToken cancellationToken = default) {
+    public Task GetItemSamplingRateAsync(int[] serverHandles, out int[] samplingRates, out int[] errors, CancellationToken cancellationToken = default)
+    {
         ArgumentNullException.ThrowIfNull(serverHandles);
         cancellationToken.ThrowIfCancellationRequested();
         samplingRates = new int[serverHandles.Length];
         errors = new int[serverHandles.Length];
-        for (int i = 0; i < serverHandles.Length; i++) {
-            if (_items.TryGetValue(serverHandles[i], out OpcDaItem? item)) {
-                if (item.SamplingRate is { } rate) {
+        for (int i = 0; i < serverHandles.Length; i++)
+        {
+            if (_items.TryGetValue(serverHandles[i], out OpcDaItem? item))
+            {
+                if (item.SamplingRate is { } rate)
+                {
                     samplingRates[i] = rate;
                     errors[i] = OpcResultId.Ok.Code;
                 }
-                else {
+                else
+                {
                     errors[i] = OpcResultId.RateNotSet.Code;
                 }
             }
-            else {
+            else
+            {
                 errors[i] = OpcResultId.InvalidHandle.Code;
             }
         }
@@ -774,21 +875,27 @@ public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItem
     }
 
     /// <inheritdoc />
-    public Task<int[]> ClearItemSamplingRateAsync(int[] serverHandles, CancellationToken cancellationToken = default) {
+    public Task<int[]> ClearItemSamplingRateAsync(int[] serverHandles, CancellationToken cancellationToken = default)
+    {
         ArgumentNullException.ThrowIfNull(serverHandles);
         cancellationToken.ThrowIfCancellationRequested();
         int[] errors = new int[serverHandles.Length];
-        for (int i = 0; i < serverHandles.Length; i++) {
-            if (_items.TryGetValue(serverHandles[i], out OpcDaItem? item)) {
-                if (item.SamplingRate is null) {
+        for (int i = 0; i < serverHandles.Length; i++)
+        {
+            if (_items.TryGetValue(serverHandles[i], out OpcDaItem? item))
+            {
+                if (item.SamplingRate is null)
+                {
                     errors[i] = OpcResultId.RateNotSet.Code;
                 }
-                else {
+                else
+                {
                     item.SamplingRate = null;
                     errors[i] = OpcResultId.Ok.Code;
                 }
             }
-            else {
+            else
+            {
                 errors[i] = OpcResultId.InvalidHandle.Code;
             }
         }
@@ -796,20 +903,25 @@ public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItem
     }
 
     /// <inheritdoc />
-    public Task<int[]> SetItemBufferEnableAsync(int[] serverHandles, bool[] enabled, CancellationToken cancellationToken = default) {
+    public Task<int[]> SetItemBufferEnableAsync(int[] serverHandles, bool[] enabled, CancellationToken cancellationToken = default)
+    {
         ArgumentNullException.ThrowIfNull(serverHandles);
         ArgumentNullException.ThrowIfNull(enabled);
-        if (serverHandles.Length != enabled.Length) {
+        if (serverHandles.Length != enabled.Length)
+        {
             throw new ArgumentException("serverHandles and enabled must have the same length.", nameof(enabled));
         }
         cancellationToken.ThrowIfCancellationRequested();
         int[] errors = new int[serverHandles.Length];
-        for (int i = 0; i < serverHandles.Length; i++) {
-            if (_items.TryGetValue(serverHandles[i], out OpcDaItem? item)) {
+        for (int i = 0; i < serverHandles.Length; i++)
+        {
+            if (_items.TryGetValue(serverHandles[i], out OpcDaItem? item))
+            {
                 item.BufferEnabled = enabled[i];
                 errors[i] = OpcResultId.Ok.Code;
             }
-            else {
+            else
+            {
                 errors[i] = OpcResultId.InvalidHandle.Code;
             }
         }
@@ -817,17 +929,21 @@ public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItem
     }
 
     /// <inheritdoc />
-    public Task GetItemBufferEnableAsync(int[] serverHandles, out bool[] enabled, out int[] errors, CancellationToken cancellationToken = default) {
+    public Task GetItemBufferEnableAsync(int[] serverHandles, out bool[] enabled, out int[] errors, CancellationToken cancellationToken = default)
+    {
         ArgumentNullException.ThrowIfNull(serverHandles);
         cancellationToken.ThrowIfCancellationRequested();
         enabled = new bool[serverHandles.Length];
         errors = new int[serverHandles.Length];
-        for (int i = 0; i < serverHandles.Length; i++) {
-            if (_items.TryGetValue(serverHandles[i], out OpcDaItem? item)) {
+        for (int i = 0; i < serverHandles.Length; i++)
+        {
+            if (_items.TryGetValue(serverHandles[i], out OpcDaItem? item))
+            {
                 enabled[i] = item.BufferEnabled;
                 errors[i] = OpcResultId.Ok.Code;
             }
-            else {
+            else
+            {
                 errors[i] = OpcResultId.InvalidHandle.Code;
             }
         }
@@ -837,13 +953,15 @@ public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItem
     // ----- IConnectionPoint (subscription sink-binding) -----
 
     /// <inheritdoc />
-    public Task<Guid> GetConnectionInterfaceAsync(CancellationToken cancellationToken = default) {
+    public Task<Guid> GetConnectionInterfaceAsync(CancellationToken cancellationToken = default)
+    {
         cancellationToken.ThrowIfCancellationRequested();
         return Task.FromResult(IOPCDataCallback.InterfaceId);
     }
 
     /// <inheritdoc />
-    public Task<int> AdviseAsync(IOpcInterfaceRef sink, CancellationToken cancellationToken = default) {
+    public Task<int> AdviseAsync(IOpcInterfaceRef sink, CancellationToken cancellationToken = default)
+    {
         ArgumentNullException.ThrowIfNull(sink);
         cancellationToken.ThrowIfCancellationRequested();
         int cookie = Interlocked.Increment(ref _nextSubscriptionCookie);
@@ -862,7 +980,8 @@ public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItem
     /// the CCW's CcwSession) own + dispose the sink. OpcDaGroup just
     /// tracks the sink for trigger fan-out.
     /// </remarks>
-    public Task<int> AdviseAsync(IOpcDataCallbackSink sink, CancellationToken cancellationToken = default) {
+    public Task<int> AdviseAsync(IOpcDataCallbackSink sink, CancellationToken cancellationToken = default)
+    {
         ArgumentNullException.ThrowIfNull(sink);
         cancellationToken.ThrowIfCancellationRequested();
         int cookie = Interlocked.Increment(ref _nextSubscriptionCookie);
@@ -871,15 +990,18 @@ public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItem
     }
 
     /// <inheritdoc />
-    public Task UnadviseAsync(int cookie, CancellationToken cancellationToken = default) {
+    public Task UnadviseAsync(int cookie, CancellationToken cancellationToken = default)
+    {
         cancellationToken.ThrowIfCancellationRequested();
         // Check both subscription dictionaries before deciding CONNECT_E_NOCONNECTION.
         bool removedAny = _sinks.TryRemove(cookie, out _);
-        if (_directSinks.TryRemove(cookie, out _)) {
+        if (_directSinks.TryRemove(cookie, out _))
+        {
             removedAny = true;
         }
         // OLE / COM IConnectionPoint convention: unknown cookies return CONNECT_E_NOCONNECTION.
-        if (!removedAny) {
+        if (!removedAny)
+        {
             throw new OpcException(new OpcResultId(unchecked((int)0x80040200), "CONNECT_E_NOCONNECTION"));
         }
         return Task.CompletedTask;
@@ -888,7 +1010,8 @@ public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItem
     // ----- IConnectionPointContainer -----
 
     /// <inheritdoc />
-    public Task<IOpcInterfaceRef> EnumConnectionPointsAsync(CancellationToken cancellationToken = default) {
+    public Task<IOpcInterfaceRef> EnumConnectionPointsAsync(CancellationToken cancellationToken = default)
+    {
         cancellationToken.ThrowIfCancellationRequested();
         return Task.FromResult<IOpcInterfaceRef>(new OpcInterfaceRef(
             iid: Guid.Parse("B196B285-BAB4-101A-B69C-00AA00341D07"), // IID_IEnumConnectionPoints
@@ -902,13 +1025,15 @@ public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItem
     }
 
     /// <inheritdoc />
-    public Task<IOpcInterfaceRef> FindConnectionPointAsync(Guid iid, CancellationToken cancellationToken = default) {
+    public Task<IOpcInterfaceRef> FindConnectionPointAsync(Guid iid, CancellationToken cancellationToken = default)
+    {
         cancellationToken.ThrowIfCancellationRequested();
         // OpcDaGroup only supports IOPCDataCallback subscriptions. IID_IDataObject
         // (OPC DA 2.05a Appendix B, optional) is intentionally NOT supported;
         // clients that QI for IDataObject see a clean CONNECT_E_NOCONNECTION
         // failure rather than a malformed sink.
-        if (iid != IOPCDataCallback.InterfaceId) {
+        if (iid != IOPCDataCallback.InterfaceId)
+        {
             throw new OpcException(new OpcResultId(unchecked((int)0x80040200), "CONNECT_E_NOCONNECTION"));
         }
 
@@ -953,20 +1078,24 @@ public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItem
         int transactionId,
         int[] serverHandles,
         Func<IOpcInterfaceRef, DataChangePayload, CancellationToken, Task> sender,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         ArgumentNullException.ThrowIfNull(serverHandles);
         ArgumentNullException.ThrowIfNull(sender);
         cancellationToken.ThrowIfCancellationRequested();
 
-        if (!_callbacksEnabled || (_sinks.IsEmpty && _directSinks.IsEmpty)) {
+        if (!_callbacksEnabled || (_sinks.IsEmpty && _directSinks.IsEmpty))
+        {
             return;
         }
 
         DataChangePayload payload = BuildDataChangePayload(transactionId, serverHandles);
-        foreach (KeyValuePair<int, IOpcInterfaceRef> entry in _sinks) {
+        foreach (KeyValuePair<int, IOpcInterfaceRef> entry in _sinks)
+        {
             await sender(entry.Value, payload, cancellationToken).ConfigureAwait(false);
         }
-        foreach (KeyValuePair<int, IOpcDataCallbackSink> entry in _directSinks) {
+        foreach (KeyValuePair<int, IOpcDataCallbackSink> entry in _directSinks)
+        {
             entry.Value.OnDataChange(payload);
         }
     }
@@ -989,32 +1118,39 @@ public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItem
     public async Task TriggerCancelCompleteAsync(
         int transactionId,
         Func<IOpcInterfaceRef, CancelCompletePayload, CancellationToken, Task> sender,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         ArgumentNullException.ThrowIfNull(sender);
         cancellationToken.ThrowIfCancellationRequested();
 
-        if (!_callbacksEnabled || (_sinks.IsEmpty && _directSinks.IsEmpty)) {
+        if (!_callbacksEnabled || (_sinks.IsEmpty && _directSinks.IsEmpty))
+        {
             return;
         }
 
         var payload = new CancelCompletePayload(transactionId, ClientHandle);
-        foreach (KeyValuePair<int, IOpcInterfaceRef> entry in _sinks) {
+        foreach (KeyValuePair<int, IOpcInterfaceRef> entry in _sinks)
+        {
             await sender(entry.Value, payload, cancellationToken).ConfigureAwait(false);
         }
-        foreach (KeyValuePair<int, IOpcDataCallbackSink> entry in _directSinks) {
+        foreach (KeyValuePair<int, IOpcDataCallbackSink> entry in _directSinks)
+        {
             entry.Value.OnCancelComplete(payload);
         }
     }
 
-    private DataChangePayload BuildDataChangePayload(int transactionId, int[] serverHandles) {
+    private DataChangePayload BuildDataChangePayload(int transactionId, int[] serverHandles)
+    {
         var clientHandles = new List<int>(serverHandles.Length);
         var values = new List<OpcVariant>(serverHandles.Length);
         var qualities = new List<ushort>(serverHandles.Length);
         var timestamps = new List<long>(serverHandles.Length);
         var errors = new List<int>(serverHandles.Length);
 
-        foreach (int serverHandle in serverHandles) {
-            if (!_items.TryGetValue(serverHandle, out OpcDaItem? item)) {
+        foreach (int serverHandle in serverHandles)
+        {
+            if (!_items.TryGetValue(serverHandle, out OpcDaItem? item))
+            {
                 continue;
             }
             OpcItemState snapshot = item.GetSnapshot();
@@ -1058,8 +1194,10 @@ public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItem
     /// </summary>
     public sealed record CancelCompletePayload(int TransactionId, int GroupHandle);
 
-    private (OpcItemResult Result, int Hresult) TryAddItem(OpcItemDef? def) {
-        if (def is null || string.IsNullOrWhiteSpace(def.ItemId)) {
+    private (OpcItemResult Result, int Hresult) TryAddItem(OpcItemDef? def)
+    {
+        if (def is null || string.IsNullOrWhiteSpace(def.ItemId))
+        {
             return (
                 new OpcItemResult(0, def?.RequestedDataType ?? VarType.VT_EMPTY, 0, Array.Empty<byte>()),
                 OpcResultId.UnknownItemId.Code);

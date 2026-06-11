@@ -6,7 +6,8 @@
 namespace Opc.Classic;
 
 /// <summary>The OPC quality limit field (bits 6-7 of the DA quality WORD).</summary>
-public enum OpcQualityLimit {
+public enum OpcQualityLimit
+{
     /// <summary>The value is not limited.</summary>
     NotLimited = 0,
     /// <summary>The value has been pegged to the low limit.</summary>

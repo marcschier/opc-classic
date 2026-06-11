@@ -18,14 +18,16 @@ using TUnit.Core;
 
 namespace Opc.Classic.Dcom.Kerberos.Tests;
 
-public sealed class KerberosConnectionContextIntegrationTests {
+public sealed class KerberosConnectionContextIntegrationTests
+{
     private const string Realm = "EXAMPLE.COM";
     private const string Spn = "RPCSS/server.example.com";
     private const string Username = "alice";
     private const string Password = "correct horse battery staple";
 
     [Test]
-    public async Task AcquireApRequestAsync_observes_precanceled_token_before_kdc_io() {
+    public async Task AcquireApRequestAsync_observes_precanceled_token_before_kdc_io()
+    {
         var context = CreatePasswordContext();
         using var cts = new CancellationTokenSource();
         cts.Cancel();
@@ -36,7 +38,8 @@ public sealed class KerberosConnectionContextIntegrationTests {
     }
 
     [Test]
-    public async Task AcquireApRequestAsync_enters_KerberosNet_path_and_fails_without_reachable_kdc() {
+    public async Task AcquireApRequestAsync_enters_KerberosNet_path_and_fails_without_reachable_kdc()
+    {
         var configPath = Path.Combine(AppContext.BaseDirectory, "krb5-p3d-localhost.conf");
         await File.WriteAllTextAsync(
             configPath,
@@ -51,31 +54,37 @@ public sealed class KerberosConnectionContextIntegrationTests {
         var previousConfig = Environment.GetEnvironmentVariable("KRB5_CONFIG");
         Environment.SetEnvironmentVariable("KRB5_CONFIG", configPath);
 
-        try {
+        try
+        {
             var context = CreatePasswordContext();
             byte[]? token = null;
-            var thrown = await CaptureExceptionAsync(async () => {
+            var thrown = await CaptureExceptionAsync(async () =>
+            {
                 token = await context.AcquireApRequestAsync();
             });
 
-            if (thrown is null) {
+            if (thrown is null)
+            {
                 await Assert.That(token).IsNotNull();
                 await Assert.That(token!.Length > 0).IsTrue();
                 await Assert.That(token[0]).IsEqualTo((byte)0x60);
             }
-            else {
+            else
+            {
                 // No real KDC is available in unit tests; Phase 14A Windows CI will exercise success.
                 await Assert.That(thrown is not NotImplementedException).IsTrue();
                 await Assert.That(IsExpectedKdcFailure(thrown)).IsTrue();
             }
         }
-        finally {
+        finally
+        {
             Environment.SetEnvironmentVariable("KRB5_CONFIG", previousConfig);
         }
     }
 
     [Test]
-    public async Task ProcessApResponseAsync_round_trips_raw_ap_rep_and_returns_subsession_key() {
+    public async Task ProcessApResponseAsync_round_trips_raw_ap_rep_and_returns_subsession_key()
+    {
         var context = CreatePasswordContext();
         var sessionKey = KrbEncryptionKey.Generate(EncryptionType.AES256_CTS_HMAC_SHA1_96);
         var subSessionKey = KrbEncryptionKey.Generate(EncryptionType.AES256_CTS_HMAC_SHA1_96);
@@ -83,7 +92,8 @@ public sealed class KerberosConnectionContextIntegrationTests {
         const int cuSec = 123456;
         const int sequenceNumber = 789;
 
-        SetSessionContext(context, new ApplicationSessionContext {
+        SetSessionContext(context, new ApplicationSessionContext
+        {
             SessionKey = sessionKey,
             CTime = cTime,
             CuSec = cuSec,
@@ -98,7 +108,8 @@ public sealed class KerberosConnectionContextIntegrationTests {
     }
 
     [Test]
-    public async Task ProcessApResponseAsync_accepts_gss_api_ap_rep_token_id_frame() {
+    public async Task ProcessApResponseAsync_accepts_gss_api_ap_rep_token_id_frame()
+    {
         var context = CreatePasswordContext();
         var sessionKey = KrbEncryptionKey.Generate(EncryptionType.AES256_CTS_HMAC_SHA1_96);
         var subSessionKey = KrbEncryptionKey.Generate(EncryptionType.AES256_CTS_HMAC_SHA1_96);
@@ -106,7 +117,8 @@ public sealed class KerberosConnectionContextIntegrationTests {
         const int cuSec = 654321;
         const int sequenceNumber = 987;
 
-        SetSessionContext(context, new ApplicationSessionContext {
+        SetSessionContext(context, new ApplicationSessionContext
+        {
             SessionKey = sessionKey,
             CTime = cTime,
             CuSec = cuSec,
@@ -125,7 +137,8 @@ public sealed class KerberosConnectionContextIntegrationTests {
     }
 
     [Test]
-    public async Task ProcessApResponseAsync_with_malformed_input_throws_kerberos_protocol_exception() {
+    public async Task ProcessApResponseAsync_with_malformed_input_throws_kerberos_protocol_exception()
+    {
         var context = CreatePasswordContext();
 
         var thrown = await CaptureExceptionAsync(() => context.ProcessApResponseAsync(new byte[] { 0x01, 0x02 }));
@@ -133,7 +146,8 @@ public sealed class KerberosConnectionContextIntegrationTests {
         await Assert.That(thrown is KerberosProtocolException).IsTrue();
     }
 
-    private static KerberosConnectionContext CreatePasswordContext() {
+    private static KerberosConnectionContext CreatePasswordContext()
+    {
         return new KerberosConnectionContext(new KerberosAuthInfo(Realm, Spn, Username, null, Password, null));
     }
 
@@ -142,8 +156,10 @@ public sealed class KerberosConnectionContextIntegrationTests {
         KrbEncryptionKey subSessionKey,
         DateTimeOffset cTime,
         int cuSec,
-        int sequenceNumber) {
-        var response = new KrbEncApRepPart {
+        int sequenceNumber)
+    {
+        var response = new KrbEncApRepPart
+        {
             CTime = cTime,
             CuSec = cuSec,
             SequenceNumber = sequenceNumber,
@@ -158,23 +174,28 @@ public sealed class KerberosConnectionContextIntegrationTests {
         return new KrbApRep { EncryptedPart = encryptedPart }.EncodeApplication().ToArray();
     }
 
-    private static void SetSessionContext(KerberosConnectionContext context, ApplicationSessionContext sessionContext) {
+    private static void SetSessionContext(KerberosConnectionContext context, ApplicationSessionContext sessionContext)
+    {
         var field = typeof(KerberosConnectionContext).GetField("_sessionContext", BindingFlags.Instance | BindingFlags.NonPublic)
             ?? throw new InvalidOperationException("KerberosConnectionContext session field was not found.");
         field.SetValue(context, sessionContext);
     }
 
-    private static async Task<Exception?> CaptureExceptionAsync(Func<Task> action) {
-        try {
+    private static async Task<Exception?> CaptureExceptionAsync(Func<Task> action)
+    {
+        try
+        {
             await action();
             return null;
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             return ex;
         }
     }
 
-    private static bool IsExpectedKdcFailure(Exception exception) {
+    private static bool IsExpectedKdcFailure(Exception exception)
+    {
         return exception is KerberosProtocolException or KerberosTransportException or InvalidOperationException or OperationCanceledException ||
             exception.GetType().FullName?.Contains("SocketException", StringComparison.Ordinal) == true ||
             exception.GetType().FullName?.Contains("IOException", StringComparison.Ordinal) == true ||

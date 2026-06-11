@@ -18,9 +18,11 @@ using TUnit.Core;
 
 namespace Opc.Classic.Discovery.Tests;
 
-public sealed class OpcEnumClientTests {
+public sealed class OpcEnumClientTests
+{
     [Test]
-    public async Task EnumerateAsync_returns_descriptors_from_synthetic_opcenum_server() {
+    public async Task EnumerateAsync_returns_descriptors_from_synthetic_opcenum_server()
+    {
         var classId = Guid.Parse("10138C2C-0000-0000-0000-000000000031");
         var server = new SyntheticOpcEnumServer()
             .AddServer(OpcGuids.CATID_OPCDAServer20, classId, "Vendor.DA.1", "Vendor DA", "Vendor.DA");
@@ -38,7 +40,8 @@ public sealed class OpcEnumClientTests {
     }
 
     [Test]
-    public async Task EnumerateAsync_merges_multi_category_results() {
+    public async Task EnumerateAsync_merges_multi_category_results()
+    {
         var da20Only = Guid.Parse("10138C2C-0000-0000-0000-000000000032");
         var da20AndDa30 = Guid.Parse("10138C2C-0000-0000-0000-000000000033");
         var hdaOnly = Guid.Parse("10138C2C-0000-0000-0000-000000000034");
@@ -62,7 +65,8 @@ public sealed class OpcEnumClientTests {
     }
 
     [Test]
-    public async Task EnumerateAsync_returns_empty_result_when_no_categories_have_servers() {
+    public async Task EnumerateAsync_returns_empty_result_when_no_categories_have_servers()
+    {
         var server = new SyntheticOpcEnumServer();
         var client = new OpcEnumClient("opc-host", server, new[] { OpcGuids.CATID_OPCDAServer20 });
 
@@ -72,7 +76,8 @@ public sealed class OpcEnumClientTests {
     }
 
     [Test]
-    public async Task EnumerateAsync_maps_failed_hresult_to_OpcException() {
+    public async Task EnumerateAsync_maps_failed_hresult_to_OpcException()
+    {
         const int accessDenied = unchecked((int)0x80070005u);
         var classId = Guid.Parse("10138C2C-0000-0000-0000-000000000035");
         var server = new SyntheticOpcEnumServer { GetClassDetailsHresult = accessDenied }
@@ -86,7 +91,8 @@ public sealed class OpcEnumClientTests {
     }
 
     [Test]
-    public async Task DiscoverAsync_projects_descriptors_to_server_entries() {
+    public async Task DiscoverAsync_projects_descriptors_to_server_entries()
+    {
         var classId = Guid.Parse("10138C2C-0000-0000-0000-000000000036");
         var server = new SyntheticOpcEnumServer()
             .AddServer(OpcGuids.CATID_OPCDAServer20, classId, "Vendor.Entry.1", "Vendor Entry", "Vendor.Entry");
@@ -102,7 +108,8 @@ public sealed class OpcEnumClientTests {
     }
 
     [Test]
-    public async Task RemoteCreateInstance_declares_packet_integrity_activation_authentication() {
+    public async Task RemoteCreateInstance_declares_packet_integrity_activation_authentication()
+    {
         var classId = Guid.Parse("10138C2C-0000-0000-0000-000000000037");
         var server = new SyntheticOpcEnumServer()
             .AddServer(OpcGuids.CATID_OPCDAServer20, classId, "Vendor.Auth.1", "Vendor Auth", "Vendor.Auth");
@@ -117,7 +124,8 @@ public sealed class OpcEnumClientTests {
     }
 
     [Test]
-    public async Task RemoteCreateInstance_preserves_packet_privacy_activation_authentication() {
+    public async Task RemoteCreateInstance_preserves_packet_privacy_activation_authentication()
+    {
         var classId = Guid.Parse("10138C2C-0000-0000-0000-000000000038");
         var server = new SyntheticOpcEnumServer { ActivationProtectionLevel = OpcProtectionLevel.Privacy }
             .AddServer(OpcGuids.CATID_OPCDAServer20, classId, "Vendor.Privacy.1", "Vendor Privacy", "Vendor.Privacy");
@@ -130,7 +138,8 @@ public sealed class OpcEnumClientTests {
     }
 
     [Test]
-    public async Task DcomOpcEnumCallChannelFactory_upgrades_weak_activation_protection_to_integrity() {
+    public async Task DcomOpcEnumCallChannelFactory_upgrades_weak_activation_protection_to_integrity()
+    {
         OpcUrl url = OpcUrl.Parse("opcda://opc-host/OPC.ServerList.1");
         var connectData = OpcConnectData.WithNtlmV2(url, new NetworkCredential("user", "p"), OpcProtectionLevel.Connect);
         var factory = new DcomOpcEnumCallChannelFactory(connectData);
@@ -139,7 +148,8 @@ public sealed class OpcEnumClientTests {
     }
 
     [Test]
-    public async Task EnumerateAsync_downgrades_to_IOPCServerList_when_IOPCServerList2_bind_is_rejected() {
+    public async Task EnumerateAsync_downgrades_to_IOPCServerList_when_IOPCServerList2_bind_is_rejected()
+    {
         // Regression: some OPCEnum installs (older OPC Core Components, certain
         // vendor SDKs) marshal an OBJREF claiming IOPCServerList2 support but
         // the underlying RPC server only speaks IOPCServerList (DA 2.0) over
@@ -159,7 +169,8 @@ public sealed class OpcEnumClientTests {
     }
 
     [Test, Skip("Requires reachable OPCEnum.exe host")]
-    public async Task OpcEnum_real_network_enumerates_reachable_host() {
+    public async Task OpcEnum_real_network_enumerates_reachable_host()
+    {
         OpcServerDescriptor[] descriptors = await OpcDiscovery.EnumerateAsync(
             "localhost",
             OpcEnumClient.DefaultCategoryIds,
@@ -168,20 +179,25 @@ public sealed class OpcEnumClientTests {
         await Assert.That(descriptors.Length).IsGreaterThanOrEqualTo(0);
     }
 
-    private static async Task<List<OpcServerEntry>> ToListAsync(IOpcDiscovery discovery) {
+    private static async Task<List<OpcServerEntry>> ToListAsync(IOpcDiscovery discovery)
+    {
         var entries = new List<OpcServerEntry>();
-        await foreach (OpcServerEntry entry in discovery.DiscoverAsync()) {
+        await foreach (OpcServerEntry entry in discovery.DiscoverAsync())
+        {
             entries.Add(entry);
         }
 
         return entries;
     }
 
-    private static async Task<Exception> CaptureAsync(Func<Task> action) {
-        try {
+    private static async Task<Exception> CaptureAsync(Func<Task> action)
+    {
+        try
+        {
             await action().ConfigureAwait(false);
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             return ex;
         }
 
@@ -189,7 +205,8 @@ public sealed class OpcEnumClientTests {
     }
 }
 
-internal sealed class SyntheticOpcEnumServer : IOpcEnumCallChannelFactory {
+internal sealed class SyntheticOpcEnumServer : IOpcEnumCallChannelFactory
+{
     private static readonly Guid RemoteScmActivatorInterfaceId = new("000001A0-0000-0000-C000-000000000046");
 
     private readonly Dictionary<Guid, List<Guid>> _categoryClasses = new();
@@ -226,13 +243,16 @@ internal sealed class SyntheticOpcEnumServer : IOpcEnumCallChannelFactory {
         Guid classId,
         string progId,
         string userType,
-        string? verIndProgId) {
-        if (!_categoryClasses.TryGetValue(categoryId, out List<Guid>? classIds)) {
+        string? verIndProgId)
+    {
+        if (!_categoryClasses.TryGetValue(categoryId, out List<Guid>? classIds))
+        {
             classIds = new List<Guid>();
             _categoryClasses.Add(categoryId, classIds);
         }
 
-        if (!classIds.Contains(classId)) {
+        if (!classIds.Contains(classId))
+        {
             classIds.Add(classId);
         }
 
@@ -242,7 +262,8 @@ internal sealed class SyntheticOpcEnumServer : IOpcEnumCallChannelFactory {
 
     public ValueTask<ICallChannel> CreateActivationChannelAsync(
         string host,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         _ = host;
         cancellationToken.ThrowIfCancellationRequested();
         return ValueTask.FromResult<ICallChannel>(_channel);
@@ -252,7 +273,8 @@ internal sealed class SyntheticOpcEnumServer : IOpcEnumCallChannelFactory {
         string host,
         IOpcInterfaceRef interfaceRef,
         Guid interfaceId,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         _ = host;
         _ = interfaceRef;
         _ = interfaceId;
@@ -264,15 +286,18 @@ internal sealed class SyntheticOpcEnumServer : IOpcEnumCallChannelFactory {
         Guid interfaceId,
         int opnum,
         ReadOnlyMemory<byte> requestPayload,
-        CancellationToken cancellationToken) {
+        CancellationToken cancellationToken)
+    {
         cancellationToken.ThrowIfCancellationRequested();
 
-        if (interfaceId == RemoteScmActivatorInterfaceId && opnum == 4) {
+        if (interfaceId == RemoteScmActivatorInterfaceId && opnum == 4)
+        {
             ActivationRequests.Add(DecodeActivationProperties(requestPayload));
             return Task.FromResult(new NdrCallResult(0, EncodeObjRef(OpcGuids.IID_IOPCServerList2)));
         }
 
-        if (interfaceId == OpcGuids.IID_IOPCServerList2 && RejectServerList2Bind) {
+        if (interfaceId == OpcGuids.IID_IOPCServerList2 && RejectServerList2Bind)
+        {
             // Simulate the bind-time PROVIDER_REJECTION that DcomCallChannel surfaces
             // when an OPCEnum host's RPC server doesn't actually speak IOPCServerList2
             // despite the activator returning an OBJREF claiming the IID. The IID
@@ -282,7 +307,8 @@ internal sealed class SyntheticOpcEnumServer : IOpcEnumCallChannelFactory {
                 $"Presentation context rejected for IID {OpcGuids.IID_IOPCServerList2:D}: PROVIDER_REJECTION; ABSTRACT_SYNTAX_NOT_SUPPORTED.");
         }
 
-        if ((interfaceId == OpcGuids.IID_IOPCServerList2 || interfaceId == OpcGuids.IID_IOPCServerList) && opnum == 3) {
+        if ((interfaceId == OpcGuids.IID_IOPCServerList2 || interfaceId == OpcGuids.IID_IOPCServerList) && opnum == 3)
+        {
             Guid categoryId = DecodeFirstImplementedCategory(requestPayload);
             _pendingEnums.Enqueue(_categoryClasses.TryGetValue(categoryId, out List<Guid>? classIds)
                 ? classIds.ToArray()
@@ -290,12 +316,15 @@ internal sealed class SyntheticOpcEnumServer : IOpcEnumCallChannelFactory {
             return Task.FromResult(new NdrCallResult(0, EncodeObjRef(OpcGuids.IID_IOPCEnumGUID)));
         }
 
-        if (interfaceId == OpcGuids.IID_IOPCEnumGUID && opnum == 3) {
+        if (interfaceId == OpcGuids.IID_IOPCEnumGUID && opnum == 3)
+        {
             return Task.FromResult(HandleNext(requestPayload));
         }
 
-        if ((interfaceId == OpcGuids.IID_IOPCServerList2 || interfaceId == OpcGuids.IID_IOPCServerList) && opnum == 4) {
-            if (GetClassDetailsHresult != 0) {
+        if ((interfaceId == OpcGuids.IID_IOPCServerList2 || interfaceId == OpcGuids.IID_IOPCServerList) && opnum == 4)
+        {
+            if (GetClassDetailsHresult != 0)
+            {
                 return Task.FromResult(new NdrCallResult(GetClassDetailsHresult, ReadOnlyMemory<byte>.Empty));
             }
 
@@ -307,7 +336,8 @@ internal sealed class SyntheticOpcEnumServer : IOpcEnumCallChannelFactory {
         return Task.FromResult(new NdrCallResult(unchecked((int)0x80004001u), ReadOnlyMemory<byte>.Empty));
     }
 
-    private NdrCallResult HandleNext(ReadOnlyMemory<byte> requestPayload) {
+    private NdrCallResult HandleNext(ReadOnlyMemory<byte> requestPayload)
+    {
         var reader = new NdrReader(requestPayload.Span);
         int requested = reader.ReadInt32();
         _currentEnum ??= _pendingEnums.Count == 0 ? Array.Empty<Guid>() : _pendingEnums.Dequeue();
@@ -315,11 +345,13 @@ internal sealed class SyntheticOpcEnumServer : IOpcEnumCallChannelFactory {
         int remaining = Math.Max(0, _currentEnum.Count - _currentEnumIndex);
         int fetched = Math.Min(requested, remaining);
         var batch = new Guid[fetched];
-        for (int i = 0; i < batch.Length; i++) {
+        for (int i = 0; i < batch.Length; i++)
+        {
             batch[i] = _currentEnum[_currentEnumIndex++];
         }
 
-        if (_currentEnumIndex >= _currentEnum.Count) {
+        if (_currentEnumIndex >= _currentEnum.Count)
+        {
             _currentEnum = null;
             _currentEnumIndex = 0;
         }
@@ -328,7 +360,8 @@ internal sealed class SyntheticOpcEnumServer : IOpcEnumCallChannelFactory {
         return new NdrCallResult(hresult, EncodeNext(batch, fetched));
     }
 
-    private static Guid DecodeFirstImplementedCategory(ReadOnlyMemory<byte> requestPayload) {
+    private static Guid DecodeFirstImplementedCategory(ReadOnlyMemory<byte> requestPayload)
+    {
         var reader = new NdrReader(requestPayload.Span);
         // IDL: [in] ULONG cImplemented, [in, size_is(cImplemented)] CATID rgcatidImpl[],
         //      [in] ULONG cRequired,    [in, size_is(cRequired)] CATID rgcatidReq[]
@@ -339,12 +372,14 @@ internal sealed class SyntheticOpcEnumServer : IOpcEnumCallChannelFactory {
         return implementedCategories.Length == 0 ? Guid.Empty : implementedCategories[0];
     }
 
-    private static ActivationProperties DecodeActivationProperties(ReadOnlyMemory<byte> requestPayload) {
+    private static ActivationProperties DecodeActivationProperties(ReadOnlyMemory<byte> requestPayload)
+    {
         var reader = new NdrReader(requestPayload.Span);
         _ = reader.ReadGuid();
         _ = reader.ReadGuid();
         uint protocolSequenceCount = reader.ReadUInt32();
-        for (uint i = 0; i < protocolSequenceCount; i++) {
+        for (uint i = 0; i < protocolSequenceCount; i++)
+        {
             _ = reader.ReadInt32();
         }
 
@@ -352,12 +387,14 @@ internal sealed class SyntheticOpcEnumServer : IOpcEnumCallChannelFactory {
         return ActivationInfoCodec.Decode(reader.ReadRawBytes((int)activationPropertiesLength));
     }
 
-    private static Guid DecodeClassId(ReadOnlyMemory<byte> requestPayload) {
+    private static Guid DecodeClassId(ReadOnlyMemory<byte> requestPayload)
+    {
         var reader = new NdrReader(requestPayload.Span);
         return reader.ReadGuid();
     }
 
-    private static byte[] EncodeObjRef(Guid iid) => WritePayload((ref NdrWriter writer) => {
+    private static byte[] EncodeObjRef(Guid iid) => WritePayload((ref NdrWriter writer) =>
+    {
         writer.WriteUInt32(0x574F454Du);
         writer.WriteUInt32(0x00000001u);
         writer.WriteGuid(iid);
@@ -370,27 +407,31 @@ internal sealed class SyntheticOpcEnumServer : IOpcEnumCallChannelFactory {
         writer.WriteUInt16(0);
     });
 
-    private static byte[] EncodeClassDetails(SyntheticOpcServerDetails details) => WritePayload((ref NdrWriter writer) => {
+    private static byte[] EncodeClassDetails(SyntheticOpcServerDetails details) => WritePayload((ref NdrWriter writer) =>
+    {
         writer.WriteUnicodeStringPtr(details.ProgId);
         writer.WriteUnicodeStringPtr(details.UserType);
         writer.WriteUnicodeStringPtr(details.VerIndProgId);
     });
 
-    private static byte[] EncodeNext(Guid[] classIds, int fetched) => WritePayload((ref NdrWriter writer) => {
+    private static byte[] EncodeNext(Guid[] classIds, int fetched) => WritePayload((ref NdrWriter writer) =>
+    {
         // IEnumGUID::Next response shape: [out, size_is(celt), length_is(*pceltFetched)] GUID* rgelt
         // marshaled as a varying-conformant array (max_count + offset + actual_count + elements),
         // followed by [out] ULONG* pceltFetched.
         writer.WriteUInt32((uint)classIds.Length);
         writer.WriteUInt32(0);
         writer.WriteUInt32((uint)classIds.Length);
-        for (int i = 0; i < classIds.Length; i++) {
+        for (int i = 0; i < classIds.Length; i++)
+        {
             writer.WriteGuid(classIds[i]);
         }
 
         writer.WriteInt32(fetched);
     });
 
-    private static byte[] WritePayload(NdrWriteAction action) {
+    private static byte[] WritePayload(NdrWriteAction action)
+    {
         var buffer = new byte[4096];
         var writer = new NdrWriter(buffer);
         action(ref writer);

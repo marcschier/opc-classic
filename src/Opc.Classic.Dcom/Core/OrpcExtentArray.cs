@@ -8,7 +8,8 @@ namespace Opc.Classic.Dcom.Core;
 /// Extent array
 /// </summary>
 [Serializable]
-internal sealed class OrpcExtentArray {
+internal sealed class OrpcExtentArray
+{
 
     /// <summary>
     /// Create
@@ -16,7 +17,8 @@ internal sealed class OrpcExtentArray {
     /// <param name="guid"></param>
     /// <param name="size"></param>
     /// <param name="data"></param>
-    internal OrpcExtentArray(string guid, int size, byte[] data) {
+    internal OrpcExtentArray(string guid, int size, byte[] data)
+    {
         GUID = guid;
         SizeOfData = size;
         _data = data;
@@ -35,10 +37,13 @@ internal sealed class OrpcExtentArray {
     /// <summary>
     /// Data
     /// </summary>
-    public byte[] Data {
-        get {
+    public byte[] Data
+    {
+        get
+        {
             var newData = new byte[_data.Length];
-            for (var i = 0; i < _data.Length; i++) {
+            for (var i = 0; i < _data.Length; i++)
+            {
                 newData[i] = _data[i];
             }
             return newData;

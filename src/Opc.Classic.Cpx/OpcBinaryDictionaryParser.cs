@@ -15,11 +15,13 @@ namespace Opc.Classic.Cpx;
 /// <summary>
 /// Parses OPCBinary type dictionaries defined by OPC Complex Data 1.00 §6.
 /// </summary>
-public static class OpcBinaryDictionaryParser {
+public static class OpcBinaryDictionaryParser
+{
     private static readonly XNamespace XsiNamespace = "http://www.w3.org/2001/XMLSchema-instance";
 
     /// <summary>Parse a complete <c>TypeDictionary</c> XML document.</summary>
-    public static TypeDictionary Parse(string xml) {
+    public static TypeDictionary Parse(string xml)
+    {
         ArgumentException.ThrowIfNullOrWhiteSpace(xml);
 
         using var stringReader = new StringReader(xml);
@@ -29,10 +31,12 @@ public static class OpcBinaryDictionaryParser {
     }
 
     /// <summary>Parse a complete <c>TypeDictionary</c> element or a single <c>TypeDescription</c> element.</summary>
-    public static TypeDictionary Parse(XElement root) {
+    public static TypeDictionary Parse(XElement root)
+    {
         ArgumentNullException.ThrowIfNull(root);
 
-        if (IsElement(root, "TypeDictionary")) {
+        if (IsElement(root, "TypeDictionary"))
+        {
             var defaultBigEndian = ReadBoolean(root, "DefaultBigEndian") ?? true;
             var defaultStringEncoding = ReadString(root, "DefaultStringEncoding") ?? TypeDictionary.DefaultOpcBinaryStringEncoding;
             var defaultCharWidth = ReadInt32(root, "DefaultCharWidth") ?? 2;
@@ -40,20 +44,24 @@ public static class OpcBinaryDictionaryParser {
             var name = ReadString(root, "Name") ?? ReadString(root, "TargetNamespace") ?? string.Empty;
 
             var types = new List<TypeDescription>();
-            foreach (var element in root.Elements()) {
-                if (IsElement(element, "TypeDescription")) {
+            foreach (var element in root.Elements())
+            {
+                if (IsElement(element, "TypeDescription"))
+                {
                     types.Add(ParseTypeDescriptionElement(element));
                 }
             }
 
-            if (types.Count == 0) {
+            if (types.Count == 0)
+            {
                 throw new FormatException("OPCBinary TypeDictionary must contain at least one TypeDescription.");
             }
 
             return new TypeDictionary(name, types, defaultBigEndian, defaultStringEncoding, defaultCharWidth, defaultFloatFormat);
         }
 
-        if (IsElement(root, "TypeDescription")) {
+        if (IsElement(root, "TypeDescription"))
+        {
             var type = ParseTypeDescriptionElement(root);
             return new TypeDictionary(
                 string.Empty,
@@ -68,28 +76,33 @@ public static class OpcBinaryDictionaryParser {
     }
 
     /// <summary>Parse a single OPCBinary <c>TypeDescription</c> XML document.</summary>
-    public static TypeDescription ParseTypeDescription(string xml) {
+    public static TypeDescription ParseTypeDescription(string xml)
+    {
         ArgumentException.ThrowIfNullOrWhiteSpace(xml);
 
         using var stringReader = new StringReader(xml);
         using var xmlReader = XmlReader.Create(stringReader, CreateReaderSettings());
         var document = XDocument.Load(xmlReader, LoadOptions.None);
         var root = document.Root ?? throw new FormatException("OPCBinary TypeDescription XML is empty.");
-        if (!IsElement(root, "TypeDescription")) {
+        if (!IsElement(root, "TypeDescription"))
+        {
             throw new FormatException($"Expected TypeDescription root element, found '{root.Name.LocalName}'.");
         }
 
         return ParseTypeDescriptionElement(root);
     }
 
-    private static TypeDescription ParseTypeDescriptionElement(XElement element) {
+    private static TypeDescription ParseTypeDescriptionElement(XElement element)
+    {
         var typeId = ReadRequiredString(element, "TypeID");
         var fields = new List<TypeField>();
-        foreach (var child in element.Elements()) {
+        foreach (var child in element.Elements())
+        {
             fields.Add(ParseField(child));
         }
 
-        if (fields.Count == 0) {
+        if (fields.Count == 0)
+        {
             throw new FormatException($"TypeDescription '{typeId}' must contain at least one field.");
         }
 
@@ -105,7 +118,8 @@ public static class OpcBinaryDictionaryParser {
             ReadString(element, "DefaultFloatFormat"));
     }
 
-    private static TypeField ParseField(XElement element) {
+    private static TypeField ParseField(XElement element)
+    {
         var xsiType = ReadString(element, XsiNamespace + "type");
         var fieldTypeName = StripPrefix(xsiType) ?? element.Name.LocalName;
         var name = ReadString(element, "Name") ?? string.Empty;
@@ -114,7 +128,8 @@ public static class OpcBinaryDictionaryParser {
         var elementCountRef = ReadString(element, "ElementCountRef") ?? ReadString(element, "CharCountRef");
         var fieldTerminator = ReadString(element, "FieldTerminator");
         var format = ReadString(element, "Format") ?? ReadString(element, "FloatFormat");
-        var byteOrder = ReadBoolean(element, "DefaultBigEndian") switch {
+        var byteOrder = ReadBoolean(element, "DefaultBigEndian") switch
+        {
             true => ByteOrder.BigEndian,
             false => ByteOrder.LittleEndian,
             null => (ByteOrder?)null,
@@ -125,11 +140,13 @@ public static class OpcBinaryDictionaryParser {
         var stringEncoding = ReadString(element, "StringEncoding");
         var charWidth = ReadInt32(element, "CharWidth");
 
-        if (fieldTypeName.Equals("Ascii", StringComparison.OrdinalIgnoreCase)) {
+        if (fieldTypeName.Equals("Ascii", StringComparison.OrdinalIgnoreCase))
+        {
             stringEncoding ??= "ASCII";
             charWidth ??= 1;
         }
-        else if (fieldTypeName.Equals("Unicode", StringComparison.OrdinalIgnoreCase)) {
+        else if (fieldTypeName.Equals("Unicode", StringComparison.OrdinalIgnoreCase))
+        {
             stringEncoding ??= TypeDictionary.DefaultOpcBinaryStringEncoding;
             charWidth ??= 2;
         }
@@ -149,7 +166,8 @@ public static class OpcBinaryDictionaryParser {
     }
 
     private static TypeKind ResolveKind(string fieldTypeName, XElement element, int? length) =>
-        fieldTypeName switch {
+        fieldTypeName switch
+        {
             "TypeReference" => TypeKind.StructReference,
             "CharString" => TypeKind.String,
             "Ascii" => TypeKind.String,
@@ -181,9 +199,11 @@ public static class OpcBinaryDictionaryParser {
             _ => throw new FormatException($"Unsupported OPCBinary field type '{fieldTypeName}'."),
         };
 
-    private static TypeKind ResolveIntegerKind(XElement element, int? length) {
+    private static TypeKind ResolveIntegerKind(XElement element, int? length)
+    {
         var signed = ReadBoolean(element, "Signed") ?? true;
-        return (length ?? 4, signed) switch {
+        return (length ?? 4, signed) switch
+        {
             (1, true) => TypeKind.Int8,
             (1, false) => TypeKind.UInt8,
             (2, true) => TypeKind.Int16,
@@ -197,14 +217,16 @@ public static class OpcBinaryDictionaryParser {
     }
 
     private static TypeKind ResolveFloatingPointKind(int? length) =>
-        (length ?? 8) switch {
+        (length ?? 8) switch
+        {
             4 => TypeKind.Single,
             8 => TypeKind.Double,
             _ => throw new FormatException("FloatingPoint fields must have a supported Length of 4 or 8 bytes."),
         };
 
     private static XmlReaderSettings CreateReaderSettings() =>
-        new() {
+        new()
+        {
             DtdProcessing = DtdProcessing.Prohibit,
             XmlResolver = null,
         };
@@ -229,8 +251,10 @@ public static class OpcBinaryDictionaryParser {
     private static bool? ReadBoolean(XElement element, string attributeName) =>
         ReadString(element, attributeName) is { } value ? XmlConvert.ToBoolean(value) : null;
 
-    private static string? StripPrefix(string? value) {
-        if (string.IsNullOrWhiteSpace(value)) {
+    private static string? StripPrefix(string? value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+        {
             return null;
         }
 

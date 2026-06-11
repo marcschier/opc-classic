@@ -17,7 +17,8 @@ using TUnit.Core;
 
 namespace Opc.Classic.Dcom.Crypto.Tests.Fixtures.Ntlm;
 
-public sealed class NtlmHandshakeFixtureTests {
+public sealed class NtlmHandshakeFixtureTests
+{
     private const string User = "User";
     private const string Domain = "Domain";
     private const string Password = "Password";
@@ -41,7 +42,8 @@ public sealed class NtlmHandshakeFixtureTests {
         "0000000000000000");
 
     [Test]
-    public async Task Negotiate_request_marshals_to_fixture_bytes() {
+    public async Task Negotiate_request_marshals_to_fixture_bytes()
+    {
         byte[] expected = ReadFixture("negotiate.bin");
         byte[] actual = BuildNegotiateMessage();
 
@@ -49,7 +51,8 @@ public sealed class NtlmHandshakeFixtureTests {
     }
 
     [Test]
-    public async Task Challenge_response_unmarshals_to_sample_ServerChallenge() {
+    public async Task Challenge_response_unmarshals_to_sample_ServerChallenge()
+    {
         var challenge = new Type2Message(ReadFixture("challenge.bin"));
         byte[] targetInformation = challenge.GetTargetInformation();
 
@@ -60,7 +63,8 @@ public sealed class NtlmHandshakeFixtureTests {
     }
 
     [Test]
-    public async Task Authenticate_marshals_with_session_key_to_fixture_bytes() {
+    public async Task Authenticate_marshals_with_session_key_to_fixture_bytes()
+    {
         byte[] expected = ReadFixture("authenticate.bin");
         byte[] actual = BuildAuthenticateMessage();
 
@@ -68,7 +72,8 @@ public sealed class NtlmHandshakeFixtureTests {
     }
 
     [Test]
-    public async Task Authenticate_unmarshals_to_expected_NtChallengeResponse() {
+    public async Task Authenticate_unmarshals_to_expected_NtChallengeResponse()
+    {
         var authenticate = new Type3Message(ReadFixture("authenticate.bin"));
 
         await Assert.That(authenticate.GetNTResponse().SequenceEqual(NtChallengeResponse)).IsTrue();
@@ -80,7 +85,8 @@ public sealed class NtlmHandshakeFixtureTests {
     }
 
     [Test]
-    public async Task Negotiate_round_trip_preserves_flags() {
+    public async Task Negotiate_round_trip_preserves_flags()
+    {
         byte[] encoded = BuildNegotiateMessage();
         var parsed = new Type1Message(encoded);
         byte[] roundTrip = parsed.ToByteArray();
@@ -94,7 +100,8 @@ public sealed class NtlmHandshakeFixtureTests {
     private static byte[] BuildNegotiateMessage() =>
         new Type1Message(GetNegotiateFlags(), Domain, Workstation).ToByteArray();
 
-    private static byte[] BuildAuthenticateMessage() {
+    private static byte[] BuildAuthenticateMessage()
+    {
         // MS-NLMP §4.2.4.3 publishes the same field values with payloads ordered
         // Domain/User/Workstation/LM/NT/SessionKey. Type3Message writes LM/NT first;
         // the security-buffer offsets keep both encodings semantically equivalent.
@@ -110,29 +117,34 @@ public sealed class NtlmHandshakeFixtureTests {
         return message.ToByteArray();
     }
 
-    private static byte[] ComputeEncryptedRandomSessionKey() {
+    private static byte[] ComputeEncryptedRandomSessionKey()
+    {
         byte[] ntowfv2 = ComputeNTOWFv2();
         byte[] ntProofStr = NtChallengeResponse.AsSpan(0, 16).ToArray();
         byte[] sessionBaseKey = HmacMd5(ntowfv2, ntProofStr);
         byte[] encrypted = new Rc4(sessionBaseKey).Process(RandomSessionKey);
-        if (!encrypted.SequenceEqual(EncryptedRandomSessionKey)) {
+        if (!encrypted.SequenceEqual(EncryptedRandomSessionKey))
+        {
             throw new InvalidDataException("MS-NLMP §4.2.4.2.3 encrypted session key vector changed.");
         }
 
         return encrypted;
     }
 
-    private static byte[] ComputeNTOWFv2() {
+    private static byte[] ComputeNTOWFv2()
+    {
         byte[] ntHash = Md4.HashData(Encoding.Unicode.GetBytes(Password));
         return HmacMd5(ntHash, Encoding.Unicode.GetBytes(User.ToUpperInvariant() + Domain));
     }
 
-    private static byte[] HmacMd5(byte[] key, byte[] input) {
+    private static byte[] HmacMd5(byte[] key, byte[] input)
+    {
         using var hmac = new HMACMD5(key);
         return hmac.ComputeHash(input);
     }
 
-    private static void SetVersion(Type3Message message, byte[] version) {
+    private static void SetVersion(Type3Message message, byte[] version)
+    {
         FieldInfo field = typeof(Type3Message).GetField("_version", BindingFlags.Instance | BindingFlags.NonPublic)!;
         field.SetValue(message, (byte[])version.Clone());
     }
@@ -164,8 +176,10 @@ public sealed class NtlmHandshakeFixtureTests {
         NtlmFlags.NtlmsspNegotiateKeyExch |
         NtlmFlags.NtlmsspNegotiate56;
 
-    private static string ReadAvPair(byte[] targetInformation, ushort avId) {
-        if (!NtlmAvPairs.TryGet(targetInformation, avId, out ReadOnlySpan<byte> value)) {
+    private static string ReadAvPair(byte[] targetInformation, ushort avId)
+    {
+        if (!NtlmAvPairs.TryGet(targetInformation, avId, out ReadOnlySpan<byte> value))
+        {
             throw new InvalidDataException($"NTLM target info did not contain AV pair 0x{avId:X4}.");
         }
 
@@ -174,10 +188,13 @@ public sealed class NtlmHandshakeFixtureTests {
 
     private static byte[] ReadFixture(string fileName) => File.ReadAllBytes(GetFixturePath(fileName));
 
-    private static string GetFixturePath(string fileName) {
-        for (var directory = new DirectoryInfo(AppContext.BaseDirectory); directory != null; directory = directory.Parent) {
+    private static string GetFixturePath(string fileName)
+    {
+        for (var directory = new DirectoryInfo(AppContext.BaseDirectory); directory != null; directory = directory.Parent)
+        {
             string localPath = Path.Combine(directory.FullName, "Fixtures", "Ntlm", fileName);
-            if (File.Exists(localPath)) {
+            if (File.Exists(localPath))
+            {
                 return localPath;
             }
 
@@ -188,7 +205,8 @@ public sealed class NtlmHandshakeFixtureTests {
                 "Fixtures",
                 "Ntlm",
                 fileName);
-            if (File.Exists(repoPath)) {
+            if (File.Exists(repoPath))
+            {
                 return repoPath;
             }
         }

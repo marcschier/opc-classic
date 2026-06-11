@@ -9,7 +9,8 @@ using Opc.Classic.Ae.Dcom;
 
 namespace Opc.Classic.Samples.AeClient;
 
-internal sealed class LoopbackAeClient : IAeServer {
+internal sealed class LoopbackAeClient : IAeServer
+{
     private static readonly Action<ILogger, Exception?> ConnectedMessage = LoggerMessage.Define(
         LogLevel.Information,
         new EventId(1, nameof(ConnectAsync)),
@@ -25,7 +26,8 @@ internal sealed class LoopbackAeClient : IAeServer {
     private readonly InProcessAeServer? _server;
     private bool _connected;
 
-    public LoopbackAeClient(IOPCEventServer eventServerProxy, ILogger<LoopbackAeClient> logger) {
+    public LoopbackAeClient(IOPCEventServer eventServerProxy, ILogger<LoopbackAeClient> logger)
+    {
         _eventServerProxy = eventServerProxy ?? throw new ArgumentNullException(nameof(eventServerProxy));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
@@ -34,23 +36,27 @@ internal sealed class LoopbackAeClient : IAeServer {
         IOPCEventServer eventServerProxy,
         InProcessAeServer server,
         ILogger<LoopbackAeClient> logger)
-        : this(eventServerProxy, logger) {
+        : this(eventServerProxy, logger)
+    {
         _server = server ?? throw new ArgumentNullException(nameof(server));
         _server.ServerShutdown += OnServerShutdown;
     }
 
     public event EventHandler<EventArgs>? ServerShutdown;
 
-    public Task ConnectAsync(CancellationToken cancellationToken = default) {
+    public Task ConnectAsync(CancellationToken cancellationToken = default)
+    {
         cancellationToken.ThrowIfCancellationRequested();
         _connected = true;
         ConnectedMessage(_logger, null);
         return Task.CompletedTask;
     }
 
-    public ValueTask DisconnectAsync(CancellationToken cancellationToken = default) {
+    public ValueTask DisconnectAsync(CancellationToken cancellationToken = default)
+    {
         cancellationToken.ThrowIfCancellationRequested();
-        if (_connected) {
+        if (_connected)
+        {
             DisconnectedMessage(_logger, null);
         }
 
@@ -58,17 +64,21 @@ internal sealed class LoopbackAeClient : IAeServer {
         return ValueTask.CompletedTask;
     }
 
-    public async Task<OpcServerStatus> GetStatusAsync(CancellationToken cancellationToken = default) {
+    public async Task<OpcServerStatus> GetStatusAsync(CancellationToken cancellationToken = default)
+    {
         ThrowIfDisconnected();
         return await _eventServerProxy.GetStatusAsync(cancellationToken).ConfigureAwait(false);
     }
 
     public async IAsyncEnumerable<AreaBrowseElement> BrowseAreasAsync(
         string areaQualifiedName,
-        [EnumeratorCancellation] CancellationToken cancellationToken = default) {
+        [EnumeratorCancellation] CancellationToken cancellationToken = default)
+    {
         ThrowIfDisconnected();
-        if (_server is not null) {
-            await foreach (AreaBrowseElement element in _server.BrowseAreasAsync(areaQualifiedName, cancellationToken).ConfigureAwait(false)) {
+        if (_server is not null)
+        {
+            await foreach (AreaBrowseElement element in _server.BrowseAreasAsync(areaQualifiedName, cancellationToken).ConfigureAwait(false))
+            {
                 yield return element;
             }
         }
@@ -76,9 +86,11 @@ internal sealed class LoopbackAeClient : IAeServer {
 
     public async Task<IReadOnlyList<uint>> QueryEventCategoriesAsync(
         EventType eventTypes,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         ThrowIfDisconnected();
-        if (_server is not null) {
+        if (_server is not null)
+        {
             return await _server.QueryEventCategoriesAsync(eventTypes, cancellationToken).ConfigureAwait(false);
         }
 
@@ -88,9 +100,11 @@ internal sealed class LoopbackAeClient : IAeServer {
 
     public async Task<IReadOnlyList<string>> QueryConditionNamesAsync(
         uint eventCategory,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         ThrowIfDisconnected();
-        if (_server is not null) {
+        if (_server is not null)
+        {
             return await _server.QueryConditionNamesAsync(eventCategory, cancellationToken).ConfigureAwait(false);
         }
 
@@ -101,9 +115,11 @@ internal sealed class LoopbackAeClient : IAeServer {
         string actor,
         string? comment,
         IReadOnlyList<ConditionRef> conditions,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         ThrowIfDisconnected();
-        if (_server is not null) {
+        if (_server is not null)
+        {
             return await _server.AcknowledgeAsync(actor, comment, conditions, cancellationToken).ConfigureAwait(false);
         }
 
@@ -121,9 +137,11 @@ internal sealed class LoopbackAeClient : IAeServer {
 
     public async Task<OpcResultId> EnableConditionsByAreaAsync(
         IReadOnlyList<string> areaQualifiedNames,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         ThrowIfDisconnected();
-        if (_server is not null) {
+        if (_server is not null)
+        {
             return await _server.EnableConditionsByAreaAsync(areaQualifiedNames, cancellationToken).ConfigureAwait(false);
         }
 
@@ -133,9 +151,11 @@ internal sealed class LoopbackAeClient : IAeServer {
 
     public async Task<OpcResultId> DisableConditionsByAreaAsync(
         IReadOnlyList<string> areaQualifiedNames,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         ThrowIfDisconnected();
-        if (_server is not null) {
+        if (_server is not null)
+        {
             return await _server.DisableConditionsByAreaAsync(areaQualifiedNames, cancellationToken).ConfigureAwait(false);
         }
 
@@ -147,9 +167,11 @@ internal sealed class LoopbackAeClient : IAeServer {
         bool active,
         int bufferTimeMs,
         int maxBufferSize,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         ThrowIfDisconnected();
-        if (_server is not null) {
+        if (_server is not null)
+        {
             return await _server.CreateSubscriptionAsync(active, bufferTimeMs, maxBufferSize, cancellationToken).ConfigureAwait(false);
         }
 
@@ -166,25 +188,31 @@ internal sealed class LoopbackAeClient : IAeServer {
         return new RemoteAeSubscription(active, revisedBufferTime, revisedMaxSize);
     }
 
-    public async ValueTask DisposeAsync() {
+    public async ValueTask DisposeAsync()
+    {
         await DisconnectAsync().ConfigureAwait(false);
-        if (_server is not null) {
+        if (_server is not null)
+        {
             _server.ServerShutdown -= OnServerShutdown;
         }
     }
 
     private static IReadOnlyList<AckResult> ToAckResults(IReadOnlyList<ConditionRef> conditions, int[] errors) =>
-        conditions.Select((condition, index) => new AckResult {
+        conditions.Select((condition, index) => new AckResult
+        {
             Condition = condition,
             ResultId = new OpcResultId(index < errors.Length ? errors[index] : OpcResultId.Fail.Code, null),
         }).ToArray();
 
-    private void OnServerShutdown(object? sender, EventArgs args) {
+    private void OnServerShutdown(object? sender, EventArgs args)
+    {
         ServerShutdown?.Invoke(this, args);
     }
 
-    private void ThrowIfDisconnected() {
-        if (!_connected) {
+    private void ThrowIfDisconnected()
+    {
+        if (!_connected)
+        {
             throw new InvalidOperationException("The AE sample client is not connected.");
         }
     }

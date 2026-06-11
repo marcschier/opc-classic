@@ -1,4 +1,4 @@
-﻿// SPDX-License-Identifier: MIT
+// SPDX-License-Identifier: MIT
 
 using Opc.Classic.Dcom.Common;
 using Opc.Classic.Dcom.Rpc.Core;
@@ -15,7 +15,8 @@ namespace Opc.Classic.Dcom.Core;
 /// <summary>
 /// IRemoteSCMActivator implementation.
 /// </summary>
-internal sealed class RemoteSCMActivator {
+internal sealed class RemoteSCMActivator
+{
 
     //        HRESULT RemoteCreateInstance(
     //                [in] handle_t hRpc,
@@ -25,7 +26,8 @@ internal sealed class RemoteSCMActivator {
     //                [in, unique] MInterfacePointer* pActProperties,
     //                [out] MInterfacePointer** ppActProperties
     //                );
-    internal sealed class RemoteCreateInstance : NdrOp, IServerActivation {
+    internal sealed class RemoteCreateInstance : NdrOp, IServerActivation
+    {
         private readonly string _targetClsid;
         private readonly string _targetServer;
         private readonly int _activationAuthenticationLevel;
@@ -41,7 +43,8 @@ internal sealed class RemoteSCMActivator {
         /// </summary>
         /// <param name="targetServer"></param>
         /// <param name="clsid"></param>
-        public RemoteCreateInstance(string targetServer, string clsid, int activationAuthenticationLevel = 5) {
+        public RemoteCreateInstance(string targetServer, string clsid, int activationAuthenticationLevel = 5)
+        {
             _targetClsid = clsid;
             _targetServer = targetServer;
             _activationAuthenticationLevel = activationAuthenticationLevel < 5 ? 5 : activationAuthenticationLevel;
@@ -51,7 +54,8 @@ internal sealed class RemoteSCMActivator {
         public override int Opnum => 4;
 
         /// <inheritdoc/>
-        public override void Write(NdrCodec ndr) {
+        public override void Write(NdrCodec ndr)
+        {
             var orpcThis = new OrpcThis();
             orpcThis.Encode(ndr);
 
@@ -70,11 +74,13 @@ internal sealed class RemoteSCMActivator {
             ndr.WriteUnsignedLong(4); // OBJREF_CUSTOM
 
             // now we will write the Custom Interface pointer to Activation Properties.
-            try {
+            try
+            {
                 new UUID(Interfaces.IID_IActivationPropertiesIn).Encode(ndr, ndr.Buffer);
                 new UUID(Classes.CLSID_ActivationPropertiesIn).Encode(ndr, ndr.Buffer);
             }
-            catch (NdrException e) {
+            catch (NdrException e)
+            {
                 Log.Logger.Error(e, "Writing uuids");
             }
             // Entire length of Payload for Custom Marshalling
@@ -135,7 +141,8 @@ internal sealed class RemoteSCMActivator {
         /// <param name="countFromIndex"></param>
         /// <param name="writeAtIndex"></param>
         /// <param name="ndr"></param>
-        internal void WriteEncodingLength(int countFromIndex, int writeAtIndex, NdrCodec ndr) {
+        internal void WriteEncodingLength(int countFromIndex, int writeAtIndex, NdrCodec ndr)
+        {
             var length = ndr.Buffer.Index - countFromIndex;
             var temp = ndr.Buffer.Index;
             ndr.Buffer.Index = writeAtIndex;
@@ -145,7 +152,8 @@ internal sealed class RemoteSCMActivator {
 
         // Pass the length from outside as to calculate it we need to encode the struct and that mutates the internal data structs
         // will return total length of the structure including common header and padding.
-        internal int AddCommonTypeHeaderAndEncode(NdrCodec ndr, Struct strukt, int lengthOfStruct) {
+        internal int AddCommonTypeHeaderAndEncode(NdrCodec ndr, Struct strukt, int lengthOfStruct)
+        {
             // will add the common type header and write on wire
 
             // common header has to be a multiple of 8 bytes. If not it has to be padded at the end.
@@ -171,7 +179,8 @@ internal sealed class RemoteSCMActivator {
             strukt.Encode(ndr, context);
             context.EncodeDeferredPointers(ndr);
 
-            if (padding != 0) {
+            if (padding != 0)
+            {
                 padding = 8 - padding;
                 ndr.WriteOctetArray(new byte[padding], 0, padding);
             }
@@ -181,10 +190,13 @@ internal sealed class RemoteSCMActivator {
             return ndr.Buffer.Index - startI;
         }
 
-        internal Struct CustomHeader {
-            get {
+        internal Struct CustomHeader
+        {
+            get
+            {
                 var strukt = GetCustomHeader();
-                var ndr = new NdrCodec {
+                var ndr = new NdrCodec
+                {
                     Buffer = new NdrBuffer(new byte[512], 0)
                 };
                 var lenOfStruct = GetLengthOfStruct(strukt);
@@ -195,10 +207,12 @@ internal sealed class RemoteSCMActivator {
                 // int len = ndr.readUnsignedLong() + 16; // 8 for common type header and (4 + 4) for header length and reserved.
                 strukt = GetCustomHeader();
                 strukt.RemoveMember(1);
-                try {
+                try
+                {
                     strukt.AddMember(1, len); // will push Reserved to the next place now.
                 }
-                catch (InteropException e) {
+                catch (InteropException e)
+                {
                     Log.Logger.Error(e, "Adding member");
                 }
 
@@ -220,11 +234,13 @@ internal sealed class RemoteSCMActivator {
         /// DWORD* pdwReserved;
         /// } CustomHeader;
         /// </summary>
-        internal Struct GetCustomHeader() {
+        internal Struct GetCustomHeader()
+        {
 
             var strukt = new Struct();
 
-            try {
+            try
+            {
 
                 strukt.AddMember(0); // Total Activation Blob size
 
@@ -244,7 +260,8 @@ internal sealed class RemoteSCMActivator {
             }, true)));
 
                 // now come their sizes including their Common headers.
-                var ndr2 = new NdrCodec {
+                var ndr2 = new NdrCodec
+                {
                     Buffer = new NdrBuffer(new byte[512], 0)
                 };
                 var tempStruct = SpecialPropertyData;
@@ -252,7 +269,8 @@ internal sealed class RemoteSCMActivator {
                 tempStruct = SpecialPropertyData;
                 var lenSpecialSystemProp = AddCommonTypeHeaderAndEncode(ndr2, tempStruct, lentempStruct);
 
-                ndr2 = new NdrCodec {
+                ndr2 = new NdrCodec
+                {
                     Buffer = new NdrBuffer(new byte[512], 0)
                 };
                 tempStruct = InstantiationInfoData;
@@ -260,7 +278,8 @@ internal sealed class RemoteSCMActivator {
                 tempStruct = InstantiationInfoData;
                 var lenInstantiationInfoProp = AddCommonTypeHeaderAndEncode(ndr2, tempStruct, lentempStruct);
 
-                ndr2 = new NdrCodec {
+                ndr2 = new NdrCodec
+                {
                     Buffer = new NdrBuffer(new byte[512], 0)
                 };
                 tempStruct = SecurityInfoData;
@@ -268,7 +287,8 @@ internal sealed class RemoteSCMActivator {
                 tempStruct = SecurityInfoData;
                 var lenSecurityInfoProp = AddCommonTypeHeaderAndEncode(ndr2, tempStruct, lentempStruct);
 
-                ndr2 = new NdrCodec {
+                ndr2 = new NdrCodec
+                {
                     Buffer = new NdrBuffer(new byte[512], 0)
                 };
                 tempStruct = ServerLocationInfo;
@@ -276,7 +296,8 @@ internal sealed class RemoteSCMActivator {
                 tempStruct = ServerLocationInfo;
                 var lenServerLocationProp = AddCommonTypeHeaderAndEncode(ndr2, tempStruct, lentempStruct);
 
-                ndr2 = new NdrCodec {
+                ndr2 = new NdrCodec
+                {
                     Buffer = new NdrBuffer(new byte[512], 0)
                 };
                 tempStruct = ScmRequestInfoData;
@@ -290,7 +311,8 @@ internal sealed class RemoteSCMActivator {
                 strukt.AddMember(0); // reserved
 
             }
-            catch (InteropException e) {
+            catch (InteropException e)
+            {
                 Log.Logger.Error(e, "Adding member");
             } // don't know will correct later.
 
@@ -312,10 +334,12 @@ internal sealed class RemoteSCMActivator {
         /// } InstantiationInfoData
         ///
         /// </summary>
-        internal Struct GetInstantiationInfoData() {
+        internal Struct GetInstantiationInfoData()
+        {
 
             var strukt = new Struct();
-            try {
+            try
+            {
 
                 strukt.AddMember(new UUID(_targetClsid));
                 strukt.AddMember(0x14); //  CLSCTX_INPROC_HANDLER | CLSCTX_LOCAL_SERVER | CLSCTX_INPROC_SERVER16
@@ -333,7 +357,8 @@ internal sealed class RemoteSCMActivator {
                 strukt.AddMember(Convert.ToInt16((short)Interop.COMVersion.MinorVersion));
 
             }
-            catch (InteropException e) {
+            catch (InteropException e)
+            {
                 Log.Logger.Error(e, "Adding member");
             }
 
@@ -348,10 +373,13 @@ internal sealed class RemoteSCMActivator {
         /// DWORD* pdwReserved;
         /// } SecurityInfoData
         /// </summary>
-        internal Struct SecurityInfoData {
-            get {
+        internal Struct SecurityInfoData
+        {
+            get
+            {
                 var strukt = new Struct();
-                try {
+                try
+                {
                     strukt.AddMember(0);
 
                     var coserver = new Struct();
@@ -362,7 +390,8 @@ internal sealed class RemoteSCMActivator {
                     strukt.AddMember(new ComPointer(coserver));
                     strukt.AddMember(0);
                 }
-                catch (InteropException e) {
+                catch (InteropException e)
+                {
                     Log.Logger.Error(e, "Adding member");
                 }
 
@@ -378,10 +407,13 @@ internal sealed class RemoteSCMActivator {
         /// DWORD contextId;
         /// } LocationInfoData;
         /// </summary>
-        internal Struct ServerLocationInfo {
-            get {
+        internal Struct ServerLocationInfo
+        {
+            get
+            {
                 var strukt = new Struct();
-                try {
+                try
+                {
 
                     strukt.AddMember(0);
                     strukt.AddMember(0);
@@ -389,7 +421,8 @@ internal sealed class RemoteSCMActivator {
                     strukt.AddMember(0);
 
                 }
-                catch (InteropException e) {
+                catch (InteropException e)
+                {
                     Log.Logger.Error(e, "Adding member");
                 }
 
@@ -403,10 +436,13 @@ internal sealed class RemoteSCMActivator {
         /// customREMOTE_REQUEST_SCM_INFO* remoteRequest;
         /// } ScmRequestInfoData
         /// </summary>
-        internal Struct ScmRequestInfoData {
-            get {
+        internal Struct ScmRequestInfoData
+        {
+            get
+            {
                 var strukt = new Struct();
-                try {
+                try
+                {
 
                     strukt.AddMember(0);
 
@@ -417,7 +453,8 @@ internal sealed class RemoteSCMActivator {
                     strukt.AddMember(new ComPointer(_customRemoteRequestSCMInfo));
 
                 }
-                catch (InteropException e) {
+                catch (InteropException e)
+                {
                     Log.Logger.Error(e, "Adding member");
                 }
 
@@ -426,12 +463,15 @@ internal sealed class RemoteSCMActivator {
         }
 
 
-        internal Struct InstantiationInfoData {
-            get {
+        internal Struct InstantiationInfoData
+        {
+            get
+            {
                 var strukt = GetInstantiationInfoData();
                 var lenOfStruct = GetLengthOfStruct(strukt);
                 strukt = GetInstantiationInfoData();
-                var ndr = new NdrCodec {
+                var ndr = new NdrCodec
+                {
                     Buffer = new NdrBuffer(new byte[512], 0)
                 };
                 var len = AddCommonTypeHeaderAndEncode(ndr, strukt, lenOfStruct);
@@ -440,10 +480,12 @@ internal sealed class RemoteSCMActivator {
                 //            int len = ndr.readUnsignedLong();
                 strukt = GetInstantiationInfoData();
                 strukt.RemoveMember(7);
-                try {
+                try
+                {
                     strukt.AddMember(7, len); // will push COMVERSION to last place now.
                 }
-                catch (InteropException e) {
+                catch (InteropException e)
+                {
                     Log.Logger.Error(e, "Adding member");
                 }
 
@@ -467,11 +509,14 @@ internal sealed class RemoteSCMActivator {
         /// DWORD Reserved3[5];
         /// } SpecialPropertiesData;
         /// </summary>
-        internal Struct SpecialPropertyData {
-            get {
+        internal Struct SpecialPropertyData
+        {
+            get
+            {
 
                 var strukt = new Struct();
-                try {
+                try
+                {
                     strukt.AddMember(unchecked((int)0xFFFFFFFF));
                     strukt.AddMember(0x00000000);
                     strukt.AddMember(0x00000000);
@@ -489,7 +534,8 @@ internal sealed class RemoteSCMActivator {
                     strukt.AddMember(0x00000000);
                     strukt.AddMember(0x00000000);
                 }
-                catch (InteropException e) {
+                catch (InteropException e)
+                {
                     Log.Logger.Error(e, "Adding member");
                 }
 
@@ -499,8 +545,10 @@ internal sealed class RemoteSCMActivator {
 
 
         // discard this struct after use and create a new one
-        internal int GetLengthOfStruct(Struct strukt) {
-            var ndr = new NdrCodec {
+        internal int GetLengthOfStruct(Struct strukt)
+        {
+            var ndr = new NdrCodec
+            {
                 Buffer = new NdrBuffer(new byte[512], 0)
             };
             var startI = ndr.Buffer.Index;
@@ -513,7 +561,8 @@ internal sealed class RemoteSCMActivator {
 
         // Skip common header and return total length of the object buffer inside. We will need to skip the
         // padded bytes as well once we have analyzed the complete objectBuffer.
-        internal int SkipCommonHeader(NdrCodec ndr) {
+        internal int SkipCommonHeader(NdrCodec ndr)
+        {
             ndr.ReadUnsignedSmall(); // version
             ndr.ReadUnsignedSmall(); // endianness
             ndr.ReadUnsignedShort(); // common header length
@@ -523,16 +572,19 @@ internal sealed class RemoteSCMActivator {
             return retlength;
         }
 
-        internal void SkipBytes(int objectBufferLength, int startIndex, NdrCodec ndr) {
+        internal void SkipBytes(int objectBufferLength, int startIndex, NdrCodec ndr)
+        {
             var bytesRead = ndr.Buffer.Index - startIndex;
-            if (objectBufferLength > bytesRead) {
+            if (objectBufferLength > bytesRead)
+            {
                 ndr.ReadOctetArray(new byte[objectBufferLength - bytesRead], 0, objectBufferLength - bytesRead);
             }
         }
 
 
 
-        public override void Read(NdrCodec ndr) {
+        public override void Read(NdrCodec ndr)
+        {
 
             OrpcThat.Decode(ndr);
 
@@ -542,7 +594,8 @@ internal sealed class RemoteSCMActivator {
             var ppActProperties = (InterfacePointer)MarshalUnMarshalHelper.Deserialize(ndr, typeof(InterfacePointer), context);
 
             // Class not registered or any other exception probably.
-            if (ppActProperties == null) {
+            if (ppActProperties == null)
+            {
                 var hResult = ndr.ReadUnsignedLong();
                 throw new InteropRuntimeException(hResult);
             }
@@ -573,7 +626,8 @@ internal sealed class RemoteSCMActivator {
             var objectBufferLength = SkipCommonHeader(ndr);
             var startIndex = ndr.Buffer.Index;
             var strukt = new Struct();
-            try {
+            try
+            {
                 strukt.AddMember(typeof(int));
                 strukt.AddMember(typeof(int));
                 strukt.AddMember(typeof(int));
@@ -584,7 +638,8 @@ internal sealed class RemoteSCMActivator {
                 strukt.AddMember(new ComPointer(new ComArray(typeof(int), null, 1, true)));
                 strukt.AddMember(typeof(int));
             }
-            catch (InteropException e) {
+            catch (InteropException e)
+            {
                 Log.Logger.Error(e, "Adding member");
             }
 
@@ -599,20 +654,25 @@ internal sealed class RemoteSCMActivator {
             var clsidPropsLengths = (int[])((ComArray)((ComPointer)strukt.GetMember(7)).Referent).ArrayInstance;
 
             // using the clsidPropsLengths we can skip the NDR buffer of the properties not needed.
-            HashSet<string> requiredProps = new HashSet<string>(StringComparer.OrdinalIgnoreCase) {
+            HashSet<string> requiredProps = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+            {
                 "000001b6-0000-0000-c000-000000000046",
                 "00000339-0000-0000-c000-000000000046"
             };
             // we will go sequentially so if a property is not found we skip that many bytes ahead
-            for (var i = 0; i < clsidProps.Length; i++) {
-                if (requiredProps.Contains(clsidProps[i].ToString())) {
+            for (var i = 0; i < clsidProps.Length; i++)
+            {
+                if (requiredProps.Contains(clsidProps[i].ToString()))
+                {
                     // its present so analyse
                     objectBufferLength = SkipCommonHeader(ndr);
                     startIndex = ndr.Buffer.Index;
                     strukt = new Struct();
 
-                    if (clsidProps[i].ToString().Equals("000001b6-0000-0000-c000-000000000046", StringComparison.CurrentCultureIgnoreCase)) {
-                        try { // ScmReplyInfo
+                    if (clsidProps[i].ToString().Equals("000001b6-0000-0000-c000-000000000046", StringComparison.CurrentCultureIgnoreCase))
+                    {
+                        try
+                        { // ScmReplyInfo
 
                             // typedef struct tagScmReplyInfoData {
                             // DWORD* pdwReserved;
@@ -651,7 +711,8 @@ internal sealed class RemoteSCMActivator {
                             strukt.AddMember(new ComPointer(remoteReplyStruct));
 
                         }
-                        catch (InteropException e) {
+                        catch (InteropException e)
+                        {
                             Log.Logger.Error(e, "Adding member");
                         }
 
@@ -677,9 +738,12 @@ internal sealed class RemoteSCMActivator {
                         _authenticationHint = (int)strukt.GetMember(10);
                         _comVersion = new ComVersion((short)strukt.GetMember(11), (short)strukt.GetMember(12));
                     }
-                    else {
-                        if (clsidProps[i].ToString().Equals("00000339-0000-0000-c000-000000000046", StringComparison.CurrentCultureIgnoreCase)) {
-                            try { // PropsOutInfo
+                    else
+                    {
+                        if (clsidProps[i].ToString().Equals("00000339-0000-0000-c000-000000000046", StringComparison.CurrentCultureIgnoreCase))
+                        {
+                            try
+                            { // PropsOutInfo
 
                                 // typedef struct tagPropsOutInfo {
                                 // [range(1, MAX_REQUESTED_INTERFACES)]
@@ -696,7 +760,8 @@ internal sealed class RemoteSCMActivator {
                                 strukt.AddMember(new ComPointer(new ComArray(typeof(InterfacePointer), null, 1, true)));
 
                             }
-                            catch (InteropException e) {
+                            catch (InteropException e)
+                            {
                                 Log.Logger.Error(e, "Adding member");
                             }
 
@@ -709,15 +774,19 @@ internal sealed class RemoteSCMActivator {
                             // now get the hresults and only those IIDs are supported which have 0x00000000
                             // in our case IUnknown will always be supported (naturally) where as IDispatch may or may not be.
                             var hresults = (int[])((ComArray)((ComPointer)strukt.GetMember(2)).Referent).ArrayInstance;
-                            for (var j = 0; j < hresults.Length; j++) {
-                                if (hresults[j] == 0x00000000) {
+                            for (var j = 0; j < hresults.Length; j++)
+                            {
+                                if (hresults[j] == 0x00000000)
+                                {
                                     // pointer exists
                                     // if it is Disp IID then set dual stuff else it has to be IUnknown, save it.
-                                    if (iids[j].ToString().Equals(Interfaces.IID_IUnknown, StringComparison.CurrentCultureIgnoreCase)) {
+                                    if (iids[j].ToString().Equals(Interfaces.IID_IUnknown, StringComparison.CurrentCultureIgnoreCase))
+                                    {
                                         // IUnknown
                                         MInterfacePointer = marshalledIp[j];
                                     }
-                                    else if (iids[j].ToString().Equals("", StringComparison.CurrentCultureIgnoreCase)) {
+                                    else if (iids[j].ToString().Equals("", StringComparison.CurrentCultureIgnoreCase))
+                                    {
                                         // dual is supported since the IDispatch was obtained
                                         Dual = true;
                                         // eat this keeping only the IPID for cleanup, let the user perform another queryInterface for this.
@@ -736,7 +805,8 @@ internal sealed class RemoteSCMActivator {
 
 
                 }
-                else {
+                else
+                {
                     var skip = new byte[clsidPropsLengths[i]];
                     ndr.ReadOctetArray(skip, 0, skip.Length);
                 }
@@ -745,7 +815,8 @@ internal sealed class RemoteSCMActivator {
             ActivationSuccessful = true;
         }
 
-        internal Struct DecodeStruct(Struct strukt, NdrCodec ndr) {
+        internal Struct DecodeStruct(Struct strukt, NdrCodec ndr)
+        {
             var context = new CodecContext();
             strukt = strukt.Decode(ndr, context);
             context.DecodeDeferredPointers(ndr);

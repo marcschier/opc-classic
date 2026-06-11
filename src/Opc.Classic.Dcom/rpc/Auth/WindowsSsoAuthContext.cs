@@ -30,7 +30,8 @@ namespace Opc.Classic.Dcom.Rpc.Auth.ntlm;
 /// </para>
 /// </remarks>
 [SupportedOSPlatform("windows")]
-public sealed class WindowsSsoAuthContext : IAuthContext, IDisposable {
+public sealed class WindowsSsoAuthContext : IAuthContext, IDisposable
+{
     private const byte AuthenticationServiceNtlm = 0x0A;
 
     private readonly NegotiateAuthentication _negotiate;
@@ -38,9 +39,11 @@ public sealed class WindowsSsoAuthContext : IAuthContext, IDisposable {
 
     /// <summary>Initializes a new instance.</summary>
     /// <param name="connectData">The OPC connection data with auth mode <see cref="OpcAuthMode.WindowsSso"/>.</param>
-    public WindowsSsoAuthContext(OpcConnectData connectData) {
+    public WindowsSsoAuthContext(OpcConnectData connectData)
+    {
         ArgumentNullException.ThrowIfNull(connectData);
-        if (!OperatingSystem.IsWindows()) {
+        if (!OperatingSystem.IsWindows())
+        {
             throw new PlatformNotSupportedException(
                 "OpcAuthMode.WindowsSso is Windows-only because it relies on SSPI/Negotiate via " +
                 "System.Net.Security.NegotiateAuthentication and the current Windows logon.");
@@ -58,7 +61,8 @@ public sealed class WindowsSsoAuthContext : IAuthContext, IDisposable {
         // Raw NTLMSSP fits the 3-leg model: NEGOTIATE in bind, CHALLENGE in
         // bind_ack, AUTHENTICATE in auth3. The DCE/RPC verifier auth_type is
         // set to 0x0A (RPC_C_AUTHN_WINNT) per MS-RPCE §2.2.1.1.7.
-        var options = new NegotiateAuthenticationClientOptions {
+        var options = new NegotiateAuthenticationClientOptions
+        {
             Package = "NTLM",
             Credential = CredentialCache.DefaultNetworkCredentials,
             TargetName = targetName,
@@ -77,10 +81,12 @@ public sealed class WindowsSsoAuthContext : IAuthContext, IDisposable {
     public byte AuthenticationServiceCode => AuthenticationServiceNtlm;
 
     /// <inheritdoc />
-    public byte[] BuildInitialToken() {
+    public byte[] BuildInitialToken()
+    {
         ObjectDisposedException.ThrowIf(_disposed, this);
         byte[] token = _negotiate.GetOutgoingBlob(ReadOnlySpan<byte>.Empty, out NegotiateAuthenticationStatusCode status);
-        if (status != NegotiateAuthenticationStatusCode.Completed && status != NegotiateAuthenticationStatusCode.ContinueNeeded) {
+        if (status != NegotiateAuthenticationStatusCode.Completed && status != NegotiateAuthenticationStatusCode.ContinueNeeded)
+        {
             throw new InvalidOperationException(
                 "NegotiateAuthentication failed to produce the initial token: " + status);
         }
@@ -88,15 +94,18 @@ public sealed class WindowsSsoAuthContext : IAuthContext, IDisposable {
     }
 
     /// <inheritdoc />
-    public byte[] ProcessChallengeToken(ReadOnlyMemory<byte> serverToken) {
+    public byte[] ProcessChallengeToken(ReadOnlyMemory<byte> serverToken)
+    {
         ObjectDisposedException.ThrowIf(_disposed, this);
-        if (serverToken.IsEmpty) {
+        if (serverToken.IsEmpty)
+        {
             return Array.Empty<byte>();
         }
 
         byte[] outgoing = _negotiate.GetOutgoingBlob(serverToken.Span, out NegotiateAuthenticationStatusCode status);
         if (status == NegotiateAuthenticationStatusCode.Completed
-            || status == NegotiateAuthenticationStatusCode.ContinueNeeded) {
+            || status == NegotiateAuthenticationStatusCode.ContinueNeeded)
+        {
             return outgoing ?? Array.Empty<byte>();
         }
         throw new InvalidOperationException(
@@ -104,9 +113,11 @@ public sealed class WindowsSsoAuthContext : IAuthContext, IDisposable {
     }
 
     /// <inheritdoc />
-    public void SignAndSeal(Span<byte> pduBody, out byte[] signature) {
+    public void SignAndSeal(Span<byte> pduBody, out byte[] signature)
+    {
         ObjectDisposedException.ThrowIf(_disposed, this);
-        if (ProtectionLevel < OpcProtectionLevel.Integrity) {
+        if (ProtectionLevel < OpcProtectionLevel.Integrity)
+        {
             // At PROTECTION_LEVEL_NONE/CONNECT/CALL/PACKET the DCE/RPC layer does
             // NOT attach a per-PDU signature; the bind handshake is enough to satisfy
             // server-side AuthenticationLevel checks. Return an empty signature so
@@ -115,7 +126,8 @@ public sealed class WindowsSsoAuthContext : IAuthContext, IDisposable {
             return;
         }
 
-        if (ProtectionLevel == OpcProtectionLevel.Integrity) {
+        if (ProtectionLevel == OpcProtectionLevel.Integrity)
+        {
             // NTLMSSP per-message signature (16 bytes for NTLMv2 with extended session security).
             // DCE/RPC stores this as the auth_value following the auth verifier header.
             var sigWriter = new ArrayBufferWriter<byte>(16);
@@ -131,12 +143,14 @@ public sealed class WindowsSsoAuthContext : IAuthContext, IDisposable {
             writer,
             requestEncryption: true,
             out _);
-        if (wrapStatus != NegotiateAuthenticationStatusCode.Completed) {
+        if (wrapStatus != NegotiateAuthenticationStatusCode.Completed)
+        {
             throw new InvalidOperationException(
                 "NegotiateAuthentication.Wrap failed with status: " + wrapStatus);
         }
         ReadOnlySpan<byte> wrapped = writer.WrittenSpan;
-        if (wrapped.Length < pduBody.Length + 16) {
+        if (wrapped.Length < pduBody.Length + 16)
+        {
             throw new InvalidOperationException(
                 "NegotiateAuthentication.Wrap returned fewer bytes than expected for NTLMSSP Privacy.");
         }
@@ -147,9 +161,11 @@ public sealed class WindowsSsoAuthContext : IAuthContext, IDisposable {
     }
 
     /// <inheritdoc />
-    public bool VerifyAndUnseal(Span<byte> pduBody, ReadOnlyMemory<byte> signature) {
+    public bool VerifyAndUnseal(Span<byte> pduBody, ReadOnlyMemory<byte> signature)
+    {
         ObjectDisposedException.ThrowIf(_disposed, this);
-        if (ProtectionLevel < OpcProtectionLevel.Integrity) {
+        if (ProtectionLevel < OpcProtectionLevel.Integrity)
+        {
             return true;
         }
 
@@ -166,15 +182,18 @@ public sealed class WindowsSsoAuthContext : IAuthContext, IDisposable {
     }
 
     /// <inheritdoc />
-    public void Dispose() {
-        if (_disposed) {
+    public void Dispose()
+    {
+        if (_disposed)
+        {
             return;
         }
         _disposed = true;
         _negotiate.Dispose();
     }
 
-    private static System.Net.Security.ProtectionLevel ToFrameworkProtectionLevel(OpcProtectionLevel level) => level switch {
+    private static System.Net.Security.ProtectionLevel ToFrameworkProtectionLevel(OpcProtectionLevel level) => level switch
+    {
         OpcProtectionLevel.None => System.Net.Security.ProtectionLevel.None,
         OpcProtectionLevel.Connect => System.Net.Security.ProtectionLevel.None,
         OpcProtectionLevel.Call => System.Net.Security.ProtectionLevel.None,

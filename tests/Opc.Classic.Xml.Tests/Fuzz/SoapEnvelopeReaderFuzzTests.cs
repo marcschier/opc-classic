@@ -14,7 +14,8 @@ using TUnit.Core;
 
 namespace Opc.Classic.Xml.Tests.Fuzz;
 
-public sealed class SoapEnvelopeReaderFuzzTests {
+public sealed class SoapEnvelopeReaderFuzzTests
+{
     private static readonly Type[] AllowedSoapReadExceptions =
     [
         typeof(XmlException),
@@ -36,9 +37,11 @@ public sealed class SoapEnvelopeReaderFuzzTests {
 
     [Test]
     [Category("Fuzz")]
-    public async Task SoapEnvelopeReader_Read_RandomBytes_DoesNotCrash() {
+    public async Task SoapEnvelopeReader_Read_RandomBytes_DoesNotCrash()
+    {
         int exercised = 0;
-        FuzzHarness.BytesEdgeWeighted.Sample(bytes => {
+        FuzzHarness.BytesEdgeWeighted.Sample(bytes =>
+        {
             exercised++;
             FuzzHarness.AssertParseDoesNotCrash(
                 bytes,
@@ -51,9 +54,11 @@ public sealed class SoapEnvelopeReaderFuzzTests {
 
     [Test]
     [Category("Fuzz")]
-    public async Task SoapEnvelopeReader_Read_RandomUtf8Text_DoesNotCrash() {
+    public async Task SoapEnvelopeReader_Read_RandomUtf8Text_DoesNotCrash()
+    {
         int exercised = 0;
-        FuzzHarness.BytesEdgeWeighted.Sample(bytes => {
+        FuzzHarness.BytesEdgeWeighted.Sample(bytes =>
+        {
             exercised++;
             byte[] printable = ToPrintableUtf8(bytes);
             FuzzHarness.AssertParseDoesNotCrash(
@@ -67,7 +72,8 @@ public sealed class SoapEnvelopeReaderFuzzTests {
 
     [Test]
     [Category("Fuzz")]
-    public async Task SoapEnvelopeReader_Read_XmlBomb_BoundedTimeOrRejected() {
+    public async Task SoapEnvelopeReader_Read_XmlBomb_BoundedTimeOrRejected()
+    {
         byte[] input = Encoding.UTF8.GetBytes("""
             <?xml version="1.0"?>
             <!DOCTYPE lolz [
@@ -91,7 +97,8 @@ public sealed class SoapEnvelopeReaderFuzzTests {
 
     [Test]
     [Category("Fuzz")]
-    public async Task SoapEnvelopeReader_Read_XxeExternalEntity_RejectedNoDtd() {
+    public async Task SoapEnvelopeReader_Read_XxeExternalEntity_RejectedNoDtd()
+    {
         byte[] input = Encoding.UTF8.GetBytes("""
             <?xml version="1.0"?>
             <!DOCTYPE xxe [
@@ -102,20 +109,24 @@ public sealed class SoapEnvelopeReaderFuzzTests {
             </soap:Envelope>
             """);
 
-        try {
+        try
+        {
             _ = ReadOperationResponse(input);
             throw new InvalidOperationException("XXE payload was accepted.");
         }
-        catch (XmlException ex) {
+        catch (XmlException ex)
+        {
             await Assert.That(ex.Message).Contains("DTD");
         }
     }
 
     [Test]
     [Category("Fuzz")]
-    public async Task SoapEnvelopeReader_Read_MutatedValid_DoesNotCrash() {
+    public async Task SoapEnvelopeReader_Read_MutatedValid_DoesNotCrash()
+    {
         int exercised = 0;
-        FuzzHarness.MutateValid(ValidEnvelope).Sample(bytes => {
+        FuzzHarness.MutateValid(ValidEnvelope).Sample(bytes =>
+        {
             exercised++;
             FuzzHarness.AssertParseDoesNotCrash(
                 bytes,
@@ -128,9 +139,11 @@ public sealed class SoapEnvelopeReaderFuzzTests {
 
     [Test]
     [Category("Fuzz")]
-    public async Task SoapEnvelopeReader_Read_Corpus_DoesNotCrash() {
+    public async Task SoapEnvelopeReader_Read_Corpus_DoesNotCrash()
+    {
         int exercised = 0;
-        foreach (object[] row in FuzzHarness.LoadCorpus("SoapEnvelope")) {
+        foreach (object[] row in FuzzHarness.LoadCorpus("SoapEnvelope"))
+        {
             exercised++;
             var bytes = (byte[])row[0];
             FuzzHarness.AssertParseDoesNotCrash(
@@ -142,16 +155,20 @@ public sealed class SoapEnvelopeReaderFuzzTests {
         await Assert.That(exercised).IsGreaterThanOrEqualTo(0);
     }
 
-    private static string ReadOperationResponse(ReadOnlyMemory<byte> input) {
+    private static string ReadOperationResponse(ReadOnlyMemory<byte> input)
+    {
         using var stream = new MemoryStream(input.ToArray());
         using var reader = new SoapEnvelopeReader(stream);
         return reader.AdvanceToOperationResponse();
     }
 
-    private static byte[] ToPrintableUtf8(byte[] bytes) {
+    private static byte[] ToPrintableUtf8(byte[] bytes)
+    {
         var printable = new byte[bytes.Length];
-        for (int i = 0; i < bytes.Length; i++) {
-            printable[i] = bytes[i] switch {
+        for (int i = 0; i < bytes.Length; i++)
+        {
+            printable[i] = bytes[i] switch
+            {
                 0x09 or 0x0a or 0x0d => bytes[i],
                 >= 0x20 and <= 0x7e => bytes[i],
                 _ => (byte)('a' + (bytes[i] % 26)),

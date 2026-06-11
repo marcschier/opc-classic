@@ -10,9 +10,11 @@ using TUnit.Core;
 
 namespace Opc.Classic.Da.Tests.Dcom;
 
-public sealed class OpcSpecCatalogTests {
+public sealed class OpcSpecCatalogTests
+{
     [Test]
-    public async Task Da_returns_prebind_iids_in_expected_order() {
+    public async Task Da_returns_prebind_iids_in_expected_order()
+    {
         Guid[] expected =
         {
             IOPCServer.InterfaceId,
@@ -34,7 +36,8 @@ public sealed class OpcSpecCatalogTests {
         };
 
         await Assert.That(OpcSpecCatalog.Da.Count).IsEqualTo(expected.Length);
-        for (int i = 0; i < expected.Length; i++) {
+        for (int i = 0; i < expected.Length; i++)
+        {
             await Assert.That(OpcSpecCatalog.Da[i]).IsEqualTo(expected[i]);
         }
     }

@@ -9,7 +9,8 @@ namespace Opc.Classic.Dcom.Automation;
 /// Implements the <i>SAFEARRAYBOUNDS</i> structure of COM Automation.
 /// </summary>
 [Serializable]
-public sealed class SafeArrayBounds {
+public sealed class SafeArrayBounds
+{
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 #pragma warning disable IDE1006 // Naming Styles
@@ -22,8 +23,10 @@ public sealed class SafeArrayBounds {
     /// Create safe array bounds structure
     /// </summary>
     /// <param name="values"></param>
-    internal SafeArrayBounds(Struct values) {
-        if (values == null) {
+    internal SafeArrayBounds(Struct values)
+    {
+        if (values == null)
+        {
             cElements = -1;
             lLbound = -1;
             return;

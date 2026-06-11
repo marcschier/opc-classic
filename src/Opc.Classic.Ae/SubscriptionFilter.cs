@@ -13,7 +13,8 @@ namespace Opc.Classic.Ae;
 /// (<c>IOPCEventSubscriptionMgt::SetFilter</c>). Events that don't match
 /// the filter are not delivered to this subscription's <c>IOPCEventSink</c>.
 /// </summary>
-public sealed class SubscriptionFilter {
+public sealed class SubscriptionFilter
+{
     /// <summary>Event-type kinds to deliver. Default is all (Simple|Tracking|Condition).</summary>
     public EventType EventTypes { get; init; } = EventType.All;
 

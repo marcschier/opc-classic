@@ -12,23 +12,27 @@ using TUnit.Core;
 
 namespace Opc.Classic.Hda.Tests;
 
-public sealed class NdrOpcHdaModifiedItemCodecTests {
+public sealed class NdrOpcHdaModifiedItemCodecTests
+{
     private delegate void NdrWriteAction(ref NdrWriter w);
 
-    private static byte[] WriteOne(NdrWriteAction write, int capacity = 2048) {
+    private static byte[] WriteOne(NdrWriteAction write, int capacity = 2048)
+    {
         var buf = new byte[capacity];
         var w = new NdrWriter(buf);
         write(ref w);
         return buf[..w.Position];
     }
 
-    private static OpcHdaModifiedItem ReadOne(byte[] bytes) {
+    private static OpcHdaModifiedItem ReadOne(byte[] bytes)
+    {
         var r = new NdrReader(bytes);
         return NdrOpcHdaModifiedItemCodec.Read(ref r);
     }
 
     [Test]
-    public async Task RoundTrip_TwoModifiedItems() {
+    public async Task RoundTrip_TwoModifiedItems()
+    {
         var input = new OpcHdaModifiedItem(
             clientHandle: 42,
             timestamps: new[]
@@ -58,7 +62,8 @@ public sealed class NdrOpcHdaModifiedItemCodecTests {
     }
 
     [Test]
-    public async Task RoundTrip_Empty() {
+    public async Task RoundTrip_Empty()
+    {
         var input = new OpcHdaModifiedItem(
             clientHandle: 1,
             timestamps: Array.Empty<DateTimeOffset>(),
@@ -74,7 +79,8 @@ public sealed class NdrOpcHdaModifiedItemCodecTests {
     }
 
     [Test]
-    public async Task RoundTrip_NullUserNames() {
+    public async Task RoundTrip_NullUserNames()
+    {
         var input = new OpcHdaModifiedItem(
             clientHandle: 7,
             timestamps: new[]
@@ -101,9 +107,11 @@ public sealed class NdrOpcHdaModifiedItemCodecTests {
     }
 
     [Test]
-    public async Task ConstructorRejectsParallelArrayLengthMismatch() {
+    public async Task ConstructorRejectsParallelArrayLengthMismatch()
+    {
         bool threw = false;
-        try {
+        try
+        {
             _ = new OpcHdaModifiedItem(
                 clientHandle: 1,
                 timestamps: new DateTimeOffset[2],
@@ -118,7 +126,8 @@ public sealed class NdrOpcHdaModifiedItemCodecTests {
     }
 
     [Test]
-    public async Task ByteLayout_HClientAtOffsetZero() {
+    public async Task ByteLayout_HClientAtOffsetZero()
+    {
         var input = new OpcHdaModifiedItem(
             clientHandle: unchecked((int)0xAABBCCDDu),
             timestamps: Array.Empty<DateTimeOffset>(),

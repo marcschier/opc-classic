@@ -16,9 +16,11 @@ namespace Opc.Classic.Da.Ndr;
 /// Wire order follows the IDL out parameters: update rate, active flag, name,
 /// time bias, deadband, LCID, client handle, then server handle.
 /// </remarks>
-public static class NdrOpcGroupStateCodec {
+public static class NdrOpcGroupStateCodec
+{
     /// <summary>Encodes a group-state response payload.</summary>
-    public static void Write(ref NdrWriter writer, OpcGroupState state) {
+    public static void Write(ref NdrWriter writer, OpcGroupState state)
+    {
         ArgumentNullException.ThrowIfNull(state);
 
         writer.WriteUInt32(unchecked((uint)state.UpdateRate));
@@ -32,7 +34,8 @@ public static class NdrOpcGroupStateCodec {
     }
 
     /// <summary>Decodes a group-state response payload.</summary>
-    public static OpcGroupState Read(ref NdrReader reader) {
+    public static OpcGroupState Read(ref NdrReader reader)
+    {
         uint updateRate = reader.ReadUInt32();
         bool active = reader.ReadInt32() != 0;
         string? name = reader.ReadUnicodeStringPtr();

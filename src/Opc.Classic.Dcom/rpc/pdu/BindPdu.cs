@@ -8,7 +8,8 @@ namespace Opc.Classic.Dcom.Rpc.pdu;
 /// <summary>
 /// Bind pdu
 /// </summary>
-public class BindPdu : ConnectionOrientedPdu {
+public class BindPdu : ConnectionOrientedPdu
+{
 
     public const int BIND_TYPE = 0x0b;
 
@@ -43,13 +44,15 @@ public class BindPdu : ConnectionOrientedPdu {
 
 
     /// <inheritdoc/>
-    protected internal override void ReadBody(NdrCodec ndr) {
+    protected internal override void ReadBody(NdrCodec ndr)
+    {
         MaxTransmitFragment = ndr.ReadUnsignedShort();
         MaxReceiveFragment = ndr.ReadUnsignedShort();
         AssociationGroupId = ndr.ReadUnsignedLong();
         var count = ndr.ReadUnsignedSmall();
         var contextList = new PresentationContext[count];
-        for (var i = 0; i < count; i++) {
+        for (var i = 0; i < count; i++)
+        {
             contextList[i] = new PresentationContext();
             contextList[i].Read(ndr);
         }
@@ -57,14 +60,16 @@ public class BindPdu : ConnectionOrientedPdu {
     }
 
     /// <inheritdoc/>
-    protected internal override void WriteBody(NdrCodec ndr) {
+    protected internal override void WriteBody(NdrCodec ndr)
+    {
         ndr.WriteUnsignedShort(MaxTransmitFragment);
         ndr.WriteUnsignedShort(MaxReceiveFragment);
         ndr.WriteUnsignedLong(AssociationGroupId);
         var contextList = ContextList;
         var count = contextList.Length;
         ndr.WriteUnsignedSmall((short)count);
-        for (var i = 0; i < count; i++) {
+        for (var i = 0; i < count; i++)
+        {
             contextList[i].Write(ndr);
         }
     }

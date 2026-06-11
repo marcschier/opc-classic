@@ -18,13 +18,16 @@ public sealed record OpcBrowseElementResult(
     string? Name,
     string? ItemId,
     int FlagValue,
-    OpcItemProperties Properties) {
+    OpcItemProperties Properties)
+{
     private OpcItemProperties _properties = Properties ?? throw new ArgumentNullException(nameof(Properties));
 
     /// <summary>Inline property results returned for the element.</summary>
-    public OpcItemProperties Properties {
+    public OpcItemProperties Properties
+    {
         get => _properties;
-        init {
+        init
+        {
             ArgumentNullException.ThrowIfNull(value);
             _properties = value;
         }

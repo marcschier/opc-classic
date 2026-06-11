@@ -13,7 +13,8 @@ using TUnit.Core;
 
 namespace Opc.Classic.Dcom.Crypto.Tests;
 
-public sealed class Md4Tests {
+public sealed class Md4Tests
+{
     // RFC 1320 Appendix A.5 — MD4 Test Suite. ASCII inputs only.
     [Test]
     [Arguments("", "31d6cfe0d16ae931b73c59d7e0c089c0")]
@@ -23,7 +24,8 @@ public sealed class Md4Tests {
     [Arguments("abcdefghijklmnopqrstuvwxyz", "d79e1c308aa5bbcdeea8ed63df412da9")]
     [Arguments("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789", "043f8582f241db351ce627e153e7f0e4")]
     [Arguments("12345678901234567890123456789012345678901234567890123456789012345678901234567890", "e33b4ddc9c38f2199c3e7b164fcc0536")]
-    public async Task HashData_MatchesRfc1320Vector(string input, string expectedHex) {
+    public async Task HashData_MatchesRfc1320Vector(string input, string expectedHex)
+    {
         var bytes = Encoding.ASCII.GetBytes(input);
         var hash = Md4.HashData(bytes);
         var actual = Convert.ToHexString(hash).ToLowerInvariant();
@@ -31,7 +33,8 @@ public sealed class Md4Tests {
     }
 
     [Test]
-    public async Task HashData_NtlmNtHash_FromMicrosoftKnownExample() {
+    public async Task HashData_NtlmNtHash_FromMicrosoftKnownExample()
+    {
         // NT-Hash("password") — the well-known Windows NT password-hash example.
         // UTF-16LE encoded, MD4-hashed.
         var ntHash = Md4.HashData(Encoding.Unicode.GetBytes("password"));
@@ -40,7 +43,8 @@ public sealed class Md4Tests {
     }
 
     [Test]
-    public async Task Incremental_MatchesOneShot_LargeInput() {
+    public async Task Incremental_MatchesOneShot_LargeInput()
+    {
         // 200 bytes — spans multiple 64-byte blocks and exercises both the
         // direct-block path and the buffered-tail path.
         var data = new byte[200];
@@ -62,7 +66,8 @@ public sealed class Md4Tests {
     }
 
     [Test]
-    public async Task Incremental_ResetAllowsReuse() {
+    public async Task Incremental_ResetAllowsReuse()
+    {
         var state = new Md4State();
         state.Initialize();
         state.AppendData(Encoding.ASCII.GetBytes("abc"));
@@ -80,7 +85,8 @@ public sealed class Md4Tests {
     }
 
     [Test]
-    public async Task BcCompat_MD4Digest_MatchesStaticHashData() {
+    public async Task BcCompat_MD4Digest_MatchesStaticHashData()
+    {
         // The BC-shape MD4Digest wrapper must produce identical bytes to the
         // static Md4.HashData API for the same input.
         var input = Encoding.ASCII.GetBytes("The quick brown fox jumps over the lazy dog");

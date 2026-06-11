@@ -11,7 +11,8 @@ using System.Collections.Generic;
 namespace Opc.Classic.Dx;
 
 /// <summary>OPC DX 1.00 HRESULT constants from <c>OpcDxError.h</c> and §5.1.7.</summary>
-public static class OpcDxError {
+public static class OpcDxError
+{
     /// <summary><c>S_OK</c>.</summary>
     public static readonly OpcResultId S_OK = OpcResultId.Ok;
 

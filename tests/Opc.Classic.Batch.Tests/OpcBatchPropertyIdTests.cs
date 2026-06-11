@@ -8,7 +8,8 @@ using TUnit.Core;
 
 namespace Opc.Classic.Batch.Tests;
 
-public sealed class OpcBatchPropertyIdTests {
+public sealed class OpcBatchPropertyIdTests
+{
     [Test]
     [Arguments(nameof(OpcBatchPropertyId.Id), OpcBatchPropertyId.Id, 400, "Item name, equipment ID, batch ID, internal ID, or alias used to build the qualified item ID.", "VT_BSTR")]
     [Arguments(nameof(OpcBatchPropertyId.Value), OpcBatchPropertyId.Value, 401, "Item value derived from OPC Data Access property ID 2.", "<varies>")]
@@ -89,7 +90,8 @@ public sealed class OpcBatchPropertyIdTests {
     [Arguments(nameof(OpcBatchPropertyId.ActualDuration), OpcBatchPropertyId.ActualDuration, 476, "Actual duration of an item in seconds.", "VT_I4")]
     [Arguments(nameof(OpcBatchPropertyId.TrainList2), OpcBatchPropertyId.TrainList2, 477, "XML document containing processing trains and equipment item IDs.", "VT_BSTR")]
     [Arguments(nameof(OpcBatchPropertyId.TrainList2Schema), OpcBatchPropertyId.TrainList2Schema, 478, "XML schema URI for the TrainList2 property.", "VT_BSTR")]
-    public async Task Batch_property_metadata_matches_spec(string propertyName, int actualPropertyId, int expectedPropertyId, string expectedDescription, string expectedVarType) {
+    public async Task Batch_property_metadata_matches_spec(string propertyName, int actualPropertyId, int expectedPropertyId, string expectedDescription, string expectedVarType)
+    {
         await Assert.That(string.IsNullOrWhiteSpace(propertyName)).IsFalse();
         await Assert.That(actualPropertyId).IsEqualTo(expectedPropertyId);
         await Assert.That(OpcBatchPropertyId.GetDescription(actualPropertyId)).IsEqualTo(expectedDescription);
@@ -97,7 +99,8 @@ public sealed class OpcBatchPropertyIdTests {
     }
 
     [Test]
-    public async Task Unknown_property_ids_return_null_metadata() {
+    public async Task Unknown_property_ids_return_null_metadata()
+    {
         await Assert.That(OpcBatchPropertyId.GetDescription(399)).IsNull();
         await Assert.That(OpcBatchPropertyId.GetExpectedVarType(399)).IsNull();
         await Assert.That(OpcBatchPropertyId.GetDescription(479)).IsNull();
@@ -105,7 +108,8 @@ public sealed class OpcBatchPropertyIdTests {
     }
 
     [Test]
-    public async Task Batch_property_ids_are_distinct() {
+    public async Task Batch_property_ids_are_distinct()
+    {
         var propertyIds = new[]
         {
             OpcBatchPropertyId.Id,

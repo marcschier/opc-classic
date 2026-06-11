@@ -8,17 +8,21 @@ using System.Net;
 
 namespace SharpCifs.Util.Sharpen;
 
-public static class SharpenCompatibilityExtensions {
+public static class SharpenCompatibilityExtensions
+{
     public static Iterator<T> Iterator<T>(this IEnumerable<T> source) => new EnumerableIterator<T>(source);
 
-    public static T Remove<T>(this IList<T> list, int index) {
+    public static T Remove<T>(this IList<T> list, int index)
+    {
         var value = list[index];
         list.RemoveAt(index);
         return value;
     }
 
-    public static void RemoveAll<T>(this ICollection<T> collection, IEnumerable<T> values) {
-        foreach (var value in values.ToArray()) {
+    public static void RemoveAll<T>(this ICollection<T> collection, IEnumerable<T> values)
+    {
+        foreach (var value in values.ToArray())
+        {
             collection.Remove(value);
         }
     }
@@ -36,9 +40,11 @@ public static class SharpenCompatibilityExtensions {
         socket.RemoteEndPoint is IPEndPoint endpoint ? endpoint.Port : 0;
 
     public static bool RegionMatches(this string value, bool ignoreCase, int toffset,
-        string other, int ooffset, int length) {
+        string other, int ooffset, int length)
+    {
         if (value is null || other is null || toffset < 0 || ooffset < 0 || length < 0 ||
-            toffset + length > value.Length || ooffset + length > other.Length) {
+            toffset + length > value.Length || ooffset + length > other.Length)
+        {
             return false;
         }
 
@@ -46,24 +52,29 @@ public static class SharpenCompatibilityExtensions {
             ignoreCase, CultureInfo.InvariantCulture) == 0;
     }
 
-    private sealed class EnumerableIterator<T> : Iterator<T> {
+    private sealed class EnumerableIterator<T> : Iterator<T>
+    {
         private readonly ICollection<T>? _collection;
         private readonly IEnumerator<T> _enumerator;
         private T? _current;
         private bool _canRemove;
 
-        public EnumerableIterator(IEnumerable<T> source) {
+        public EnumerableIterator(IEnumerable<T> source)
+        {
             ArgumentNullException.ThrowIfNull(source);
             _collection = source as ICollection<T>;
             _enumerator = source.GetEnumerator();
         }
 
-        public override bool HasNext() {
-            if (_canRemove) {
+        public override bool HasNext()
+        {
+            if (_canRemove)
+            {
                 return true;
             }
 
-            if (!_enumerator.MoveNext()) {
+            if (!_enumerator.MoveNext())
+            {
                 return false;
             }
 
@@ -72,8 +83,10 @@ public static class SharpenCompatibilityExtensions {
             return true;
         }
 
-        public override T Next() {
-            if (!HasNext()) {
+        public override T Next()
+        {
+            if (!HasNext())
+            {
                 throw new NoSuchElementException();
             }
 
@@ -81,15 +94,19 @@ public static class SharpenCompatibilityExtensions {
             return _current!;
         }
 
-        public override void Remove() {
-            if (_collection is null || _current is null) {
+        public override void Remove()
+        {
+            if (_collection is null || _current is null)
+            {
                 return;
             }
 
-            try {
+            try
+            {
                 _collection.Remove(_current);
             }
-            catch (NotSupportedException) {
+            catch (NotSupportedException)
+            {
             }
         }
     }

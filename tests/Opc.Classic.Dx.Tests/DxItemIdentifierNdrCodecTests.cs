@@ -11,11 +11,13 @@ using TUnit.Assertions.AssertConditions.Throws;
 
 namespace Opc.Classic.Dx.Tests;
 
-public sealed class DxItemIdentifierNdrCodecTests {
+public sealed class DxItemIdentifierNdrCodecTests
+{
     private delegate void NdrWriteAction(ref NdrWriter writer);
 
     [Test]
-    public async Task ItemIdentifierCodec_RoundTripsAllFields() {
+    public async Task ItemIdentifierCodec_RoundTripsAllFields()
+    {
         var input = new DxItemIdentifier(
             ItemPath: "DX/DXConnectionsRoot/Area1",
             ItemName: "Tank1_to_HMI",
@@ -29,7 +31,8 @@ public sealed class DxItemIdentifierNdrCodecTests {
     }
 
     [Test]
-    public async Task ItemIdentifierCodec_RoundTripsNullStrings() {
+    public async Task ItemIdentifierCodec_RoundTripsNullStrings()
+    {
         var input = new DxItemIdentifier(Reserved: 1234);
 
         DxItemIdentifier decoded = RoundTrip(input, NdrOpcDxItemIdentifierCodec.Write, NdrOpcDxItemIdentifierCodec.Read);
@@ -41,13 +44,15 @@ public sealed class DxItemIdentifierNdrCodecTests {
     }
 
     [Test]
-    public async Task ItemIdentifierCodec_NullValue_ThrowsArgumentNullException() {
+    public async Task ItemIdentifierCodec_NullValue_ThrowsArgumentNullException()
+    {
         await Assert.That(() => WritePayload((ref NdrWriter writer) => NdrOpcDxItemIdentifierCodec.Write(ref writer, null!)))
             .Throws<ArgumentNullException>();
     }
 
     [Test]
-    public async Task ItemIdentifierArrayCodec_RoundTripsMultipleIdentifiers() {
+    public async Task ItemIdentifierArrayCodec_RoundTripsMultipleIdentifiers()
+    {
         DxItemIdentifier[] input =
         [
             new("DX/SourceServers", "PLC1", "cfg-1", 0),
@@ -65,7 +70,8 @@ public sealed class DxItemIdentifierNdrCodecTests {
     }
 
     [Test]
-    public async Task ItemIdentifierArrayCodec_NullArray_WritesZeroCount() {
+    public async Task ItemIdentifierArrayCodec_NullArray_WritesZeroCount()
+    {
         ReadOnlyMemory<byte> payload = WritePayload((ref NdrWriter writer) => NdrOpcDxItemIdentifierArrayCodec.Write(ref writer, null));
         var reader = new NdrReader(payload.Span);
         DxItemIdentifier[] decoded = NdrOpcDxItemIdentifierArrayCodec.Read(ref reader);
@@ -76,7 +82,8 @@ public sealed class DxItemIdentifierNdrCodecTests {
     }
 
     [Test]
-    public async Task DxErrorCodec_RoundTripsCodeAndTextIntoResultId() {
+    public async Task DxErrorCodec_RoundTripsCodeAndTextIntoResultId()
+    {
         var input = new DxError(
             new OpcResultId(unchecked((int)0xC0040703u), "Version mismatch from server"),
             "Version mismatch from server");
@@ -90,7 +97,8 @@ public sealed class DxItemIdentifierNdrCodecTests {
     }
 
     [Test]
-    public async Task DxErrorCodec_RoundTripsNullTextAsNullDescription() {
+    public async Task DxErrorCodec_RoundTripsNullTextAsNullDescription()
+    {
         var input = new DxError(new OpcResultId(unchecked((int)0x80004005u), null), null);
 
         DxError decoded = RoundTrip(input, NdrOpcDxErrorCodec.Write, NdrOpcDxErrorCodec.Read);
@@ -101,18 +109,21 @@ public sealed class DxItemIdentifierNdrCodecTests {
     }
 
     [Test]
-    public async Task DxErrorCodec_NullValue_ThrowsArgumentNullException() {
+    public async Task DxErrorCodec_NullValue_ThrowsArgumentNullException()
+    {
         await Assert.That(() => WritePayload((ref NdrWriter writer) => NdrOpcDxErrorCodec.Write(ref writer, null!)))
             .Throws<ArgumentNullException>();
     }
 
-    private static T RoundTrip<T>(T value, NdrWriteFunc<T> write, NdrReadFunc<T> read) {
+    private static T RoundTrip<T>(T value, NdrWriteFunc<T> write, NdrReadFunc<T> read)
+    {
         ReadOnlyMemory<byte> payload = WritePayload((ref NdrWriter writer) => write(ref writer, value));
         var reader = new NdrReader(payload.Span);
         return read(ref reader);
     }
 
-    private static ReadOnlyMemory<byte> WritePayload(NdrWriteAction write, int capacity = 2048) {
+    private static ReadOnlyMemory<byte> WritePayload(NdrWriteAction write, int capacity = 2048)
+    {
         var buffer = new byte[capacity];
         var writer = new NdrWriter(buffer);
         write(ref writer);

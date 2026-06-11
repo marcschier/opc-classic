@@ -10,7 +10,8 @@ namespace Opc.Classic.Dcom.Kerberos.Spnego;
 /// <summary>
 /// Provides GSS-API MIC services for the negotiated SPNEGO inner mechanism.
 /// </summary>
-public interface IGssMicProvider {
+public interface IGssMicProvider
+{
     /// <summary>
     /// Computes a GSS-API MIC over the supplied data.
     /// </summary>

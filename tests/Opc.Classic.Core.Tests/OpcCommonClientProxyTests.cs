@@ -14,13 +14,16 @@ using TUnit.Core;
 
 namespace Opc.Classic.Tests;
 
-public sealed class OpcCommonClientProxyTests {
+public sealed class OpcCommonClientProxyTests
+{
     [Test]
-    public async Task SetClientNameAsync_InvokesIOPCCommonSetClientName() {
+    public async Task SetClientNameAsync_InvokesIOPCCommonSetClientName()
+    {
         Guid observedIid = Guid.Empty;
         int observedOpnum = -1;
         string? observedClientName = null;
-        var channel = new InMemoryCallChannel((iid, opnum, payload, _) => {
+        var channel = new InMemoryCallChannel((iid, opnum, payload, _) =>
+        {
             observedIid = iid;
             observedOpnum = opnum;
             var reader = new NdrReader(payload.Span);
@@ -37,7 +40,8 @@ public sealed class OpcCommonClientProxyTests {
     }
 
     [Test]
-    public async Task SetClientNameAsync_FailureHresultThrowsOpcException() {
+    public async Task SetClientNameAsync_FailureHresultThrowsOpcException()
+    {
         var channel = new InMemoryCallChannel((_, _, _, _) =>
             Task.FromResult(new NdrCallResult(OpcResultId.Fail.Code, ReadOnlyMemory<byte>.Empty)));
         var proxy = new OpcCommonClientProxy(channel);
@@ -49,7 +53,8 @@ public sealed class OpcCommonClientProxyTests {
     }
 
     [Test]
-    public async Task Dispatcher_DecodesSetClientName() {
+    public async Task Dispatcher_DecodesSetClientName()
+    {
         var server = new StubCommonServer();
         var dispatcher = new OpcCommonServerDispatcher(server);
         byte[] request = WritePayload((ref NdrWriter writer) =>
@@ -65,7 +70,8 @@ public sealed class OpcCommonClientProxyTests {
     }
 
     [Test]
-    public async Task Dispatcher_UnknownOpnumReturnsNotImplemented() {
+    public async Task Dispatcher_UnknownOpnumReturnsNotImplemented()
+    {
         var dispatcher = new OpcCommonServerDispatcher(new StubCommonServer());
 
         DispatchResult result = await dispatcher.DispatchAsync(999, ReadOnlyMemory<byte>.Empty, CancellationToken.None);
@@ -74,18 +80,22 @@ public sealed class OpcCommonClientProxyTests {
         await Assert.That(result.Payload.IsEmpty).IsTrue();
     }
 
-    private static byte[] WritePayload(NdrWriteAction write) {
+    private static byte[] WritePayload(NdrWriteAction write)
+    {
         var buffer = new byte[512];
         var writer = new NdrWriter(buffer);
         write(ref writer);
         return buffer.AsSpan(0, writer.Position).ToArray();
     }
 
-    private static async Task<Exception> CaptureAsync(Func<Task> action) {
-        try {
+    private static async Task<Exception> CaptureAsync(Func<Task> action)
+    {
+        try
+        {
             await action().ConfigureAwait(false);
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             return ex;
         }
 
@@ -94,10 +104,12 @@ public sealed class OpcCommonClientProxyTests {
 
     private delegate void NdrWriteAction(ref NdrWriter writer);
 
-    private sealed class StubCommonServer : IOpcCommonServer {
+    private sealed class StubCommonServer : IOpcCommonServer
+    {
         public string? ClientName { get; private set; }
 
-        public Task SetClientNameAsync(string clientName, CancellationToken cancellationToken = default) {
+        public Task SetClientNameAsync(string clientName, CancellationToken cancellationToken = default)
+        {
             ClientName = clientName;
             return Task.CompletedTask;
         }

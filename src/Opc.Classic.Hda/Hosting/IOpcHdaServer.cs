@@ -13,7 +13,8 @@ using Opc.Classic.Hda.Dcom;
 namespace Opc.Classic.Hda.Hosting;
 
 /// <summary>Contract implemented by user code to provide an in-process managed HDA server.</summary>
-public interface IOpcHdaServer : IOPCHDA_Server {
+public interface IOpcHdaServer : IOPCHDA_Server
+{
     /// <summary>Gets the HDA historian runtime status snapshot.</summary>
     new Task<OpcServerStatus> GetStatusAsync(CancellationToken cancellationToken = default);
 
@@ -29,7 +30,8 @@ public interface IOpcHdaServer : IOPCHDA_Server {
     Task<int[]> IOPCHDA_Server.ValidateItemIDsAsync(string[] itemIds, CancellationToken cancellationToken) =>
         ValidateItemIdsAsync(itemIds, cancellationToken);
 
-    Task IOPCHDA_Server.GetItemAttributesAsync(out int[] attributeIds, out string[] attributeNames, out string[] attributeDescriptions, out int[] attributeDataTypes, CancellationToken cancellationToken) {
+    Task IOPCHDA_Server.GetItemAttributesAsync(out int[] attributeIds, out string[] attributeNames, out string[] attributeDescriptions, out int[] attributeDataTypes, CancellationToken cancellationToken)
+    {
         attributeIds = [];
         attributeNames = [];
         attributeDescriptions = [];
@@ -37,7 +39,8 @@ public interface IOpcHdaServer : IOPCHDA_Server {
         throw NotImplemented();
     }
 
-    Task IOPCHDA_Server.GetAggregatesAsync(out int[] aggregateIds, out string[] aggregateNames, out string[] aggregateDescriptions, CancellationToken cancellationToken) {
+    Task IOPCHDA_Server.GetAggregatesAsync(out int[] aggregateIds, out string[] aggregateNames, out string[] aggregateDescriptions, CancellationToken cancellationToken)
+    {
         aggregateIds = [];
         aggregateNames = [];
         aggregateDescriptions = [];
@@ -48,7 +51,8 @@ public interface IOpcHdaServer : IOPCHDA_Server {
     async IAsyncEnumerable<HdaBrowseElement> BrowseAsync(
         string branchPosition,
         HdaBrowseType browseType,
-        [EnumeratorCancellation] CancellationToken cancellationToken = default) {
+        [EnumeratorCancellation] CancellationToken cancellationToken = default)
+    {
         _ = branchPosition;
         _ = browseType;
         cancellationToken.ThrowIfCancellationRequested();
@@ -64,7 +68,8 @@ public interface IOpcHdaServer : IOPCHDA_Server {
         OpcHdaTime startTime,
         OpcHdaTime endTime,
         int maxValues,
-        CancellationToken ct = default) {
+        CancellationToken ct = default)
+    {
         ArgumentNullException.ThrowIfNull(itemIds);
         ArgumentNullException.ThrowIfNull(startTime);
         ArgumentNullException.ThrowIfNull(endTime);
@@ -80,7 +85,8 @@ public interface IOpcHdaServer : IOPCHDA_Server {
         OpcHdaTime endTime,
         TimeSpan resampleInterval,
         HdaAggregate aggregate,
-        CancellationToken ct = default) {
+        CancellationToken ct = default)
+    {
         ArgumentNullException.ThrowIfNull(itemIds);
         ArgumentNullException.ThrowIfNull(startTime);
         ArgumentNullException.ThrowIfNull(endTime);

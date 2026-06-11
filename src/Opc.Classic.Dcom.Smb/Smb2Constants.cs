@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -10,7 +10,8 @@
 namespace Opc.Classic.Dcom.Smb;
 
 /// <summary>SMB2 protocol constants. See [MS-SMB2] §2.</summary>
-internal static class Smb2Constants {
+internal static class Smb2Constants
+{
     /// <summary>SMB2 protocol identifier: <c>0xFE, 'S', 'M', 'B'</c>. See [MS-SMB2] §2.2.1.1.</summary>
     public static readonly byte[] ProtocolId = { 0xFE, (byte)'S', (byte)'M', (byte)'B' };
 
@@ -67,7 +68,8 @@ internal static class Smb2Constants {
 }
 
 /// <summary>SMB2 command identifiers. See [MS-SMB2] §2.2.1.</summary>
-public enum Smb2Command : ushort {
+public enum Smb2Command : ushort
+{
     /// <summary>Negotiate dialect.</summary>
     Negotiate = 0x0000,
     /// <summary>Session setup (NTLMSSP / Kerberos).</summary>
@@ -91,7 +93,8 @@ public enum Smb2Command : ushort {
 }
 
 /// <summary>SMB2 dialect revisions. See [MS-SMB2] §2.2.3.</summary>
-public enum Smb2Dialect : ushort {
+public enum Smb2Dialect : ushort
+{
     /// <summary>Unspecified default (before negotiation).</summary>
     None = 0,
 
@@ -112,13 +115,15 @@ public enum Smb2Dialect : ushort {
 }
 
 /// <summary>FSCTL identifiers for SMB2 IOCTL. See [MS-FSCC] §2.3 and [MS-SMB2] §2.2.31.</summary>
-internal static class FsctlCode {
+internal static class FsctlCode
+{
     /// <summary>FSCTL_PIPE_TRANSCEIVE — synchronous named-pipe write+read used by DCE/RPC over SMB. See [MS-RPCE] §2.1.1.2.</summary>
     public const uint PipeTransceive = 0x0011C017;
 }
 
 /// <summary>SMB2 CREATE disposition values. See [MS-SMB2] §2.2.13.</summary>
-internal enum CreateDisposition : uint {
+internal enum CreateDisposition : uint
+{
     Supersede = 0,
     Open = 1,
     Create = 2,
@@ -128,12 +133,14 @@ internal enum CreateDisposition : uint {
 }
 
 /// <summary>SMB2 CREATE option flags. See [MS-SMB2] §2.2.13.</summary>
-internal static class CreateOptions {
+internal static class CreateOptions
+{
     public const uint NonDirectoryFile = 0x00000040;
 }
 
 /// <summary>SMB2 file-access-mask values relevant to named pipes. See [MS-SMB2] §2.2.13.1.</summary>
-internal static class FileAccessMask {
+internal static class FileAccessMask
+{
     public const uint Read_Control = 0x00020000;
     public const uint Synchronize = 0x00100000;
     public const uint Generic_Read = 0x80000000;
@@ -145,14 +152,16 @@ internal static class FileAccessMask {
 }
 
 /// <summary>SMB2 share-access flags. See [MS-SMB2] §2.2.13.</summary>
-internal static class ShareAccess {
+internal static class ShareAccess
+{
     public const uint Read = 0x00000001;
     public const uint Write = 0x00000002;
     public const uint ReadWrite = Read | Write;
 }
 
 /// <summary>SMB2 NTSTATUS values relevant to client error handling. See [MS-ERREF] §2.3.</summary>
-internal static class NtStatus {
+internal static class NtStatus
+{
     public const uint Success = 0x00000000;
     public const uint MoreProcessingRequired = 0xC0000016;
     public const uint AccessDenied = 0xC0000022;

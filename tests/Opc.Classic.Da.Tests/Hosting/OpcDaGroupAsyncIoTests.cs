@@ -16,9 +16,11 @@ namespace Opc.Classic.Da.Tests.Hosting;
 /// <summary>
 /// Tests for OpcDaGroup's IOPCSyncIO2 + IOPCAsyncIO2/3 surface (ocom-3d).
 /// </summary>
-public sealed class OpcDaGroupAsyncIoTests {
+public sealed class OpcDaGroupAsyncIoTests
+{
     [Test]
-    public async Task ReadMaxAge_returns_current_snapshot() {
+    public async Task ReadMaxAge_returns_current_snapshot()
+    {
         var group = CreateGroup();
         int handle = await AddSingleItem(group, "Tag.A");
         await group.WriteAsync([handle], [new OpcVariant(VarType.VT_I4, 99)],
@@ -41,7 +43,8 @@ public sealed class OpcDaGroupAsyncIoTests {
     }
 
     [Test]
-    public async Task WriteVqt_updates_value_with_supplied_quality_and_timestamp() {
+    public async Task WriteVqt_updates_value_with_supplied_quality_and_timestamp()
+    {
         var group = CreateGroup();
         int handle = await AddSingleItem(group, "Tag.A");
         var ts = new DateTimeOffset(2024, 6, 1, 12, 0, 0, TimeSpan.Zero);
@@ -61,7 +64,8 @@ public sealed class OpcDaGroupAsyncIoTests {
     }
 
     [Test]
-    public async Task AsyncIO2_ReadAsync_returns_cancel_id_and_per_item_errors() {
+    public async Task AsyncIO2_ReadAsync_returns_cancel_id_and_per_item_errors()
+    {
         var group = CreateGroup();
         int knownHandle = await AddSingleItem(group, "Tag.A");
 
@@ -78,7 +82,8 @@ public sealed class OpcDaGroupAsyncIoTests {
     }
 
     [Test]
-    public async Task AsyncIO2_WriteAsync_updates_item_and_returns_cancel_id() {
+    public async Task AsyncIO2_WriteAsync_updates_item_and_returns_cancel_id()
+    {
         var group = CreateGroup();
         int handle = await AddSingleItem(group, "Tag.A");
 
@@ -96,7 +101,8 @@ public sealed class OpcDaGroupAsyncIoTests {
     }
 
     [Test]
-    public async Task SetEnable_then_GetEnable_round_trips() {
+    public async Task SetEnable_then_GetEnable_round_trips()
+    {
         var group = CreateGroup();
         IOPCAsyncIO2 async2 = group;
 
@@ -110,7 +116,8 @@ public sealed class OpcDaGroupAsyncIoTests {
     }
 
     [Test]
-    public async Task Refresh2_and_Cancel2_succeed() {
+    public async Task Refresh2_and_Cancel2_succeed()
+    {
         var group = CreateGroup();
         IOPCAsyncIO2 async2 = group;
 
@@ -122,7 +129,8 @@ public sealed class OpcDaGroupAsyncIoTests {
     }
 
     [Test]
-    public async Task AsyncIO3_ReadMaxAge_returns_cancel_id_and_per_item_errors() {
+    public async Task AsyncIO3_ReadMaxAge_returns_cancel_id_and_per_item_errors()
+    {
         var group = CreateGroup();
         int handle = await AddSingleItem(group, "Tag.A");
 
@@ -138,7 +146,8 @@ public sealed class OpcDaGroupAsyncIoTests {
     }
 
     [Test]
-    public async Task AsyncIO3_WriteVqt_updates_item_with_VQT() {
+    public async Task AsyncIO3_WriteVqt_updates_item_with_VQT()
+    {
         var group = CreateGroup();
         int handle = await AddSingleItem(group, "Tag.A");
         var vqt = new OpcItemVqt(new OpcVariant(VarType.VT_I4, 555));
@@ -156,7 +165,8 @@ public sealed class OpcDaGroupAsyncIoTests {
     }
 
     [Test]
-    public async Task AsyncIO3_RefreshMaxAge_returns_cancel_id() {
+    public async Task AsyncIO3_RefreshMaxAge_returns_cancel_id()
+    {
         var group = CreateGroup();
 
         int cancelId = await ((IOPCAsyncIO3)group).RefreshMaxAgeAsync(
@@ -167,7 +177,8 @@ public sealed class OpcDaGroupAsyncIoTests {
         await Assert.That(cancelId).IsGreaterThan(0);
     }
 
-    private static async Task<int> AddSingleItem(OpcDaGroup group, string itemId) {
+    private static async Task<int> AddSingleItem(OpcDaGroup group, string itemId)
+    {
         var defs = new[] { new OpcItemDef("", itemId, true, 1, null, VarType.VT_I4) };
         await group.AddItemsAsync(defs, out OpcItemResult[] results, out int[] _,
             TestContext.Current!.CancellationToken);

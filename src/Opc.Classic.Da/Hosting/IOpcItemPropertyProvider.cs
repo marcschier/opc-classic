@@ -8,7 +8,8 @@ namespace Opc.Classic.Da.Hosting;
 /// <summary>
 /// Supplies per-item property values for <see cref="DefaultItemProperties"/>.
 /// </summary>
-public interface IOpcItemPropertyProvider {
+public interface IOpcItemPropertyProvider
+{
     /// <summary>
     /// Resolves a property value for an item. Returns
     /// (<c>OpcVariant.Empty</c>, <c>OPC_E_INVALID_PID</c>) for unknown

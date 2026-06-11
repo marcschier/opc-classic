@@ -10,9 +10,11 @@ using TUnit.Core;
 
 namespace Opc.Classic.Dcom.Smb.Tests;
 
-public sealed class SmbRpcAddressTests {
+public sealed class SmbRpcAddressTests
+{
     [Test]
-    public async Task Parse_PlainHostShare_PipeName() {
+    public async Task Parse_PlainHostShare_PipeName()
+    {
         var p = SmbRpcAddress.Parse("smb://server/IPC$/winreg");
         await Assert.That(p.Host).IsEqualTo("server");
         await Assert.That(p.ShareName).IsEqualTo("IPC$");
@@ -23,7 +25,8 @@ public sealed class SmbRpcAddressTests {
     }
 
     [Test]
-    public async Task Parse_UserDomainAndPassword() {
+    public async Task Parse_UserDomainAndPassword()
+    {
         var p = SmbRpcAddress.Parse("smb://CORP;alice:s3cret@server/IPC$/winreg");
         await Assert.That(p.Host).IsEqualTo("server");
         await Assert.That(p.PipeName).IsEqualTo("winreg");
@@ -33,14 +36,16 @@ public sealed class SmbRpcAddressTests {
     }
 
     [Test]
-    public async Task Parse_UrlEncodedPassword() {
+    public async Task Parse_UrlEncodedPassword()
+    {
         var p = SmbRpcAddress.Parse("smb://alice:hello%20world@server/IPC$/winreg");
         await Assert.That(p.UserName).IsEqualTo("alice");
         await Assert.That(p.Password).IsEqualTo("hello world");
     }
 
     [Test]
-    public async Task Parse_RejectsNonSmbScheme() {
+    public async Task Parse_RejectsNonSmbScheme()
+    {
         bool threw = false;
         try { _ = SmbRpcAddress.Parse("http://example.com/IPC$/winreg"); }
         catch (FormatException) { threw = true; }
@@ -48,7 +53,8 @@ public sealed class SmbRpcAddressTests {
     }
 
     [Test]
-    public async Task Format_RoundTrip() {
+    public async Task Format_RoundTrip()
+    {
         var original = new SmbRpcAddress.Parsed(
             Host: "server",
             ShareName: "IPC$",

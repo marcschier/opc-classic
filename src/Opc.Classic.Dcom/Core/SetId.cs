@@ -6,7 +6,8 @@ using System.Linq;
 namespace Opc.Classic.Dcom.Core;
 
 [Serializable]
-internal sealed class SetId {
+internal sealed class SetId
+{
 
     /// <summary>
     /// Identifier
@@ -22,10 +23,12 @@ internal sealed class SetId {
 #pragma warning restore RECS0154 // Parameter is never used
 
     /// <inheritdoc/>
-    public override int GetHashCode() {
+    public override int GetHashCode()
+    {
         var result = 1;
         // from SUN
-        for (var i = 0; i < Value.Length; i++) {
+        for (var i = 0; i < Value.Length; i++)
+        {
             result = (31 * result) + Value[i];
         }
         return result;
@@ -33,8 +36,10 @@ internal sealed class SetId {
     }
 
     /// <inheritdoc/>
-    public override bool Equals(object obj) {
-        if (!(obj is SetId other)) {
+    public override bool Equals(object obj)
+    {
+        if (!(obj is SetId other))
+        {
             return false;
         }
         return Value.SequenceEqual(other.Value);

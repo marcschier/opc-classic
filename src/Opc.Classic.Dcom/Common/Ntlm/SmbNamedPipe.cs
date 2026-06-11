@@ -6,7 +6,8 @@ using System.IO;
 
 namespace SharpCifs.Smb;
 
-public sealed class SmbNamedPipe : IDisposable {
+public sealed class SmbNamedPipe : IDisposable
+{
     public const int PipeTypeDceTransact = 0x0200;
     public const int PIPE_TYPE_RDWR = 0x0003;
     public const int PIPE_TYPE_DCE_TRANSACT = PipeTypeDceTransact;
@@ -17,7 +18,8 @@ public sealed class SmbNamedPipe : IDisposable {
     [SuppressMessage(
         "Design", "CA1054:URI-like parameters should not be strings",
         Justification = "SMB pipe URLs use the Windows UNC form (\\\\server\\IPC$\\pipe\\xyz) which is not a registered System.Uri scheme.")]
-    public SmbNamedPipe(string url, int pipeType) {
+    public SmbNamedPipe(string url, int pipeType)
+    {
         Url = url;
         PipeType = pipeType;
     }
@@ -35,7 +37,8 @@ public sealed class SmbNamedPipe : IDisposable {
 
     public Stream GetNamedPipeOutputStream() => _output;
 
-    public void Dispose() {
+    public void Dispose()
+    {
         _input.Dispose();
         _output.Dispose();
         GC.SuppressFinalize(this);

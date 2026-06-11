@@ -10,7 +10,8 @@ namespace Opc.Classic.Dcom.Automation;
 /// Creates automation related objects.
 /// Internal Factory, to be used only by the framework.
 /// </summary>
-public static class AutomationFactory {
+public static class AutomationFactory
+{
 
     /// <summary>
     /// Narrow object
@@ -18,9 +19,11 @@ public static class AutomationFactory {
     /// <param name="comObject"></param>
     /// <exception cref="InteropException"></exception>
     /// <returns></returns>
-    public static IComObject NarrowObject(IComObject comObject) {
+    public static IComObject NarrowObject(IComObject comObject)
+    {
         var retval = comObject;
-        switch (comObject.InterfaceIdentifier.ToUpperInvariant()) {
+        switch (comObject.InterfaceIdentifier.ToUpperInvariant())
+        {
             case Interfaces.IID_IDispatch:
                 return new DispatchImpl(retval);
             case Interfaces.IID_ITypeInfo:

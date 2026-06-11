@@ -23,7 +23,8 @@ namespace Opc.Classic.Dcom.Core;
 /// and MSShell examples for more details on how to use this class.
 /// </summary>
 [Serializable]
-public sealed class LocalCoClass {
+public sealed class LocalCoClass
+{
 
     /// <summary>
     /// Returns <code>true</code> if the primary interface definition 
@@ -51,10 +52,14 @@ public sealed class LocalCoClass {
     /// </summary>
     /// <seealso cref="LocalCoClass(LocalInterfaceDefinition, Type)"> </seealso>
     /// <seealso cref="LocalCoClass(LocalInterfaceDefinition, object)"> </seealso>
-    public IList<string> SupportedEventInterfaces {
-        set {
-            if (value != null) {
-                for (var i = 0; i < value.Count; i++) {
+    public IList<string> SupportedEventInterfaces
+    {
+        set
+        {
+            if (value != null)
+            {
+                for (var i = 0; i < value.Count; i++)
+                {
                     var s = value[i].ToUpper(CultureInfo.InvariantCulture);
                     SupportedInterfaces.Add(s);
                     _listOfSupportedEventInterfaces.Add(s);
@@ -84,8 +89,10 @@ public sealed class LocalCoClass {
     /// <summary>
     /// Interface pointer
     /// </summary>
-    internal InterfacePointer AssociatedInterfacePointer {
-        set {
+    internal InterfacePointer AssociatedInterfacePointer
+    {
+        set
+        {
             AlreadyExported = true;
             _interfacePointer = new WeakReference(value);
             var ipid = value.IPID.ToUpper(CultureInfo.InvariantCulture);
@@ -137,8 +144,10 @@ public sealed class LocalCoClass {
     /// fully. </param>
     /// <exception cref="ArgumentException"> if <code>interfaceDefinition</code> or
     /// <code>type</code> are <code>null</code>.</exception>
-    public LocalCoClass(LocalInterfaceDefinition interfaceDefinition, Type type) {
-        if (interfaceDefinition == null || type == null) {
+    public LocalCoClass(LocalInterfaceDefinition interfaceDefinition, Type type)
+    {
+        if (interfaceDefinition == null || type == null)
+        {
             throw new ArgumentException(Interop.GetLocalizedMessage(
                 ErrorCode.INTEROP_COM_RUNTIME_INVALID_CONTAINER_INFO), nameof(interfaceDefinition));
         }
@@ -165,8 +174,10 @@ public sealed class LocalCoClass {
     /// <exception cref="ArgumentException"> if <code>interfaceDefinition</code>
     /// or <code>clazz</code> are <code>null</code>. </exception>
     public LocalCoClass(LocalInterfaceDefinition interfaceDefinition, Type type,
-        bool useInterfaceDefinitionIID) {
-        if (interfaceDefinition == null || type == null) {
+        bool useInterfaceDefinitionIID)
+    {
+        if (interfaceDefinition == null || type == null)
+        {
             throw new ArgumentException(Interop.GetLocalizedMessage(
                 ErrorCode.INTEROP_COM_RUNTIME_INVALID_CONTAINER_INFO), nameof(interfaceDefinition));
         }
@@ -186,8 +197,10 @@ public sealed class LocalCoClass {
     /// or <code>instance</code>
     /// are <code>null</code>. </exception>
     public LocalCoClass(LocalInterfaceDefinition interfaceDefinition,
-        object instance) {
-        if (interfaceDefinition == null || instance == null) {
+        object instance)
+    {
+        if (interfaceDefinition == null || instance == null)
+        {
             throw new ArgumentException(Interop.GetLocalizedMessage(
                 ErrorCode.INTEROP_COM_RUNTIME_INVALID_CONTAINER_INFO), nameof(interfaceDefinition));
         }
@@ -214,8 +227,10 @@ public sealed class LocalCoClass {
     /// <exception cref="ArgumentException"> if <code>interfaceDefinition</code>
     /// or <code>instance</code> are <code>null</code>. </exception>
     public LocalCoClass(LocalInterfaceDefinition interfaceDefinition,
-        object instance, bool useInterfaceDefinitionIID) {
-        if (interfaceDefinition == null || instance == null) {
+        object instance, bool useInterfaceDefinitionIID)
+    {
+        if (interfaceDefinition == null || instance == null)
+        {
             throw new ArgumentException(Interop.GetLocalizedMessage(
                 ErrorCode.INTEROP_COM_RUNTIME_INVALID_CONTAINER_INFO), nameof(interfaceDefinition));
         }
@@ -231,7 +246,8 @@ public sealed class LocalCoClass {
     /// <param name="instance"></param>
     /// <param name="realIID"></param>
     private void Init(LocalInterfaceDefinition interfaceDefinition, Type type,
-        object instance, bool realIID) {
+        object instance, bool realIID)
+    {
         SupportedInterfaces.Add(Interfaces.IID_IDispatch);
         SupportedInterfaces.Add(Interfaces.IID_IRemUnknown);
         InterfaceDefinition = interfaceDefinition;
@@ -255,8 +271,10 @@ public sealed class LocalCoClass {
     /// <exception cref="ArgumentException"> if <code>interfaceDefinition
     /// </code> or <code>instance</code> are <code>null</code>. </exception>
     public void AddInterfaceDefinition(LocalInterfaceDefinition interfaceDefinition,
-        object instance) {
-        if (interfaceDefinition == null || instance == null) {
+        object instance)
+    {
+        if (interfaceDefinition == null || instance == null)
+        {
             throw new ArgumentException(Interop.GetLocalizedMessage(
                 ErrorCode.INTEROP_COM_RUNTIME_INVALID_CONTAINER_INFO), nameof(interfaceDefinition));
         }
@@ -280,8 +298,10 @@ public sealed class LocalCoClass {
     /// <exception cref="ArgumentException"> if <code>interfaceDefinition</code>
     /// or <code>clazz</code> are <code>null</code>. </exception>
     public void AddInterfaceDefinition(LocalInterfaceDefinition interfaceDefinition,
-        Type type) {
-        if (interfaceDefinition == null || type == null) {
+        Type type)
+    {
+        if (interfaceDefinition == null || type == null)
+        {
             throw new ArgumentException(Interop.GetLocalizedMessage(
                 ErrorCode.INTEROP_COM_RUNTIME_INVALID_CONTAINER_INFO), nameof(interfaceDefinition));
         }
@@ -303,13 +323,15 @@ public sealed class LocalCoClass {
     /// <summary>
     /// Registers a generated dispatch table for an IID.
     /// </summary>
-    internal void AddDispatchTable(string IID, IDispatchTable dispatchTable) {
+    internal void AddDispatchTable(string IID, IDispatchTable dispatchTable)
+    {
         ArgumentNullException.ThrowIfNull(IID);
         ArgumentNullException.ThrowIfNull(dispatchTable);
 
         var key = IID.ToUpper(CultureInfo.InvariantCulture);
         _mapOfIIDsToDispatchTables.AddOrUpdate(key, dispatchTable);
-        if (_mapOfIIDsToInterfaceDefinitions.TryGetValue(key, out var interfaceDefinition)) {
+        if (_mapOfIIDsToInterfaceDefinitions.TryGetValue(key, out var interfaceDefinition))
+        {
             interfaceDefinition.DispatchTable = dispatchTable;
         }
     }
@@ -319,7 +341,8 @@ public sealed class LocalCoClass {
     /// </summary>
     /// <param name="iid"></param>
     /// <returns></returns>
-    internal bool IsIIDPresent(string iid) {
+    internal bool IsIIDPresent(string iid)
+    {
         iid = iid.ToUpper(CultureInfo.InvariantCulture);
         return SupportedInterfaces.Contains(iid, StringComparer.OrdinalIgnoreCase);
     }
@@ -329,8 +352,10 @@ public sealed class LocalCoClass {
     /// </summary>
     /// <param name="IPID"></param>
     /// <returns></returns>
-    internal LocalInterfaceDefinition GetInterfaceDefinitionFromIPID(string IPID) {
-        if (_ipidVsIID.TryGetValue(IPID.ToUpper(CultureInfo.InvariantCulture), out var iid)) {
+    internal LocalInterfaceDefinition GetInterfaceDefinitionFromIPID(string IPID)
+    {
+        if (_ipidVsIID.TryGetValue(IPID.ToUpper(CultureInfo.InvariantCulture), out var iid))
+        {
             return _mapOfIIDsToInterfaceDefinitions.GetOrDefault(iid);
         }
         throw new ArgumentException("Unknown IPID.", nameof(IPID));
@@ -357,12 +382,15 @@ public sealed class LocalCoClass {
     /// </summary>
     /// <param name="uniqueIID"> </param>
     /// <param name="IPID"> </param>
-    internal bool ExportInstance(string uniqueIID, string IPID) {
-        lock (_syncRoot) {
+    internal bool ExportInstance(string uniqueIID, string IPID)
+    {
+        lock (_syncRoot)
+        {
             // Object retval = null;
             IPID = IPID.ToUpper(CultureInfo.InvariantCulture);
 
-            if (!IsIIDPresent(uniqueIID)) {
+            if (!IsIIDPresent(uniqueIID))
+            {
                 // not supported IID.
                 return false;
             }
@@ -382,7 +410,8 @@ public sealed class LocalCoClass {
     /// <param name="Opnum"> </param>
     /// <param name="ndr"></param>
     /// <exception cref="InteropException"> </exception>
-    internal object[] InvokeMethod(string IPID, int Opnum, NdrCodec ndr) {
+    internal object[] InvokeMethod(string IPID, int Opnum, NdrCodec ndr)
+    {
         IPID = IPID.ToUpper(CultureInfo.InvariantCulture);
         // somehow identify the method from the Opnum
         // this will come from the IDL.
@@ -390,7 +419,8 @@ public sealed class LocalCoClass {
         object retVal = null; // will be an array.
 
         var iid = _ipidVsIID.GetOrDefault(IPID);
-        if (iid == null) {
+        if (iid == null)
+        {
             throw new InteropException(ErrorCode.RPC_E_INVALID_OBJECT);
         }
 
@@ -408,9 +438,11 @@ public sealed class LocalCoClass {
         // i.e 6th will be invoke and 7th(inclusive) onwards will be standard api calls.
         // if not supported than it will be base 2 {0,1,2} i.e real method calls will start from 3(inclusive) onwards.
         var isStandardCall = true;
-        if (InterfaceDefinition.DispInterface) {
+        if (InterfaceDefinition.DispInterface)
+        {
             isStandardCall = false;
-            switch (Opnum) {
+            switch (Opnum)
+            {
                 case 3: // GetTypeInfoCount
                     // not supported
                     retVal = new object[1];
@@ -433,15 +465,18 @@ public sealed class LocalCoClass {
                     // get the first member of the Array, which is the APINAME and send the retVal with it's dispId
                     var apiName = (ComString)arrayObj[0];
                     var info = interfaceDefinitionOfClass.GetMethodDescriptor(apiName.String);
-                    if (info == null) {
+                    if (info == null)
+                    {
                         dispIds[0] = unchecked((int)ErrorCode.DISP_E_UNKNOWNNAME);
                     }
-                    else {
+                    else
+                    {
                         dispIds[0] = info.MethodNum;
                     }
 
                     // rest are all 0,1,2...parameters
-                    for (var i = 1; i < arrayObj.Length; i++) {
+                    for (var i = 1; i < arrayObj.Length; i++)
+                    {
                         dispIds[i] = i - 1;
                     }
                     var results = new ComArray(dispIds);
@@ -472,7 +507,8 @@ public sealed class LocalCoClass {
                     var dispId = (int)retresults[0];
 
                     info = interfaceDefinitionOfClass.GetMethodDescriptorForDispId(dispId);
-                    if (info == null) {
+                    if (info == null)
+                    {
                         Log.Logger.Error("MethodDescriptor not found for DispId : " + dispId);
                         throw new InteropException(ErrorCode.DISP_E_MEMBERNOTFOUND);
                     }
@@ -481,30 +517,35 @@ public sealed class LocalCoClass {
                     var ptrToParamsArray = (ComPointer)dispParams.GetMember(0);
 
                     parameters = Array.Empty<object>();
-                    if (!ptrToParamsArray.IsNull) {
+                    if (!ptrToParamsArray.IsNull)
+                    {
                         // form the real array
                         array = (ComArray)ptrToParamsArray.Referent;
                         var variants = (object[])array.ArrayInstance;
                         parameters = new object[variants.Length];
-                        for (var i = 0; i < variants.Length; i++) {
+                        for (var i = 0; i < variants.Length; i++)
+                        {
                             parameters[i] = ((Variant)variants[i]).Object;
                         }
                     }
 
-                    if ((int)retresults[5] != 0) {
+                    if ((int)retresults[5] != 0)
+                    {
                         // now replace the params at index from the index array.
                         array = (ComArray)retresults[6];
                         var indexs = (int[])array.ArrayInstance;
                         array = (ComArray)retresults[7];
                         var variants = (Variant[])array.ArrayInstance;
-                        for (var i = 0; i < indexs.Length; i++) {
+                        for (var i = 0; i < indexs.Length; i++)
+                        {
                             parameters[indexs[i]] = variants[i];
                         }
                     }
 
                     // now to reverse this array of params.
                     var halflength = parameters.Length / 2;
-                    for (var i = 0; i < halflength; i++) {
+                    for (var i = 0; i < halflength; i++)
+                    {
                         var t = parameters[i];
                         parameters[i] = parameters[parameters.Length - 1 - i];
                         parameters[parameters.Length - 1 - i] = t;
@@ -520,9 +561,11 @@ public sealed class LocalCoClass {
             }
         }
 
-        if (isStandardCall) {
+        if (isStandardCall)
+        {
             methodDescriptor = interfaceDefinitionOfClass.GetMethodDescriptor(Opnum - 3); // adjust for IUnknown
-            if (methodDescriptor == null) {
+            if (methodDescriptor == null)
+            {
                 throw new InteropException(ErrorCode.RPC_S_PROCNUM_OUT_OF_RANGE);
             }
             methodDescriptor.ParameterObject.SetSession(Session);
@@ -530,13 +573,16 @@ public sealed class LocalCoClass {
             execute = true;
         }
 
-        if (execute) {
-            try {
+        if (execute)
+        {
+            try
+            {
                 Log.Logger.Information("methodDescriptor: " + methodDescriptor.MethodName);
 
                 var dispatchIid = new Guid(iid);
                 if (!TryGetDispatcher(interfaceDefinitionOfClass, dispatchIid, methodDescriptor,
-                    out var dispatcher, out var calleeInstance)) {
+                    out var dispatcher, out var calleeInstance))
+                {
                     var calleeType = interfaceDefinitionOfClass.Instance == null ?
                         interfaceDefinitionOfClass.Type : interfaceDefinitionOfClass.Instance.GetType();
                     throw new MissingMethodException(calleeType.FullName, methodDescriptor.MethodName);
@@ -545,40 +591,50 @@ public sealed class LocalCoClass {
                 Log.Logger.Information("Call Back Method to be executed: " +
                     methodDescriptor.MethodName + ", to be executed on " + calleeInstance);
                 var result = dispatcher(parameters);
-                if (result == null) {
+                if (result == null)
+                {
                     retVal = null;
                 }
-                else {
-                    if (!(result is object[])) {
+                else
+                {
+                    if (!(result is object[]))
+                    {
                         retVal = new object[1];
                         ((object[])retVal)[0] = result;
                     }
-                    else {
+                    else
+                    {
                         retVal = result;
                     }
                 }
             }
-            catch (ArgumentException e) {
+            catch (ArgumentException e)
+            {
                 Log.Logger.Error(e, "LocalCoClass invokeMethod");
                 throw new InteropException(ErrorCode.E_INVALIDARG);
             }
-            catch (MethodAccessException e) {
+            catch (MethodAccessException e)
+            {
                 Log.Logger.Error(e, "LocalCoClass invokeMethod", e);
                 throw new InteropException(ErrorCode.ERROR_ACCESS_DENIED);
             }
-            catch (TargetInvocationException e) {
+            catch (TargetInvocationException e)
+            {
                 Log.Logger.Error(e, "LocalCoClass invokeMethod");
                 throw new InteropException(ErrorCode.E_UNEXPECTED, e);
             }
-            catch (SecurityException e) {
+            catch (SecurityException e)
+            {
                 Log.Logger.Error(e, "LocalCoClass invokeMethod");
                 throw new InteropException(ErrorCode.ERROR_ACCESS_DENIED, e);
             }
-            catch (MissingMethodException e) {
+            catch (MissingMethodException e)
+            {
                 Log.Logger.Error(e, "LocalCoClass invokeMethod");
                 throw new InteropException(ErrorCode.RPC_S_PROCNUM_OUT_OF_RANGE);
             }
-            catch (InstantiationException e) {
+            catch (InstantiationException e)
+            {
                 Log.Logger.Error(e, "LocalCoClass invokeMethod");
                 throw new InteropException(ErrorCode.E_UNEXPECTED, e);
             }
@@ -588,17 +644,20 @@ public sealed class LocalCoClass {
 
     private bool TryGetDispatcher(LocalInterfaceDefinition interfaceDefinition, Guid iid,
         LocalMethodDescriptor methodDescriptor, out Func<object[], object?> dispatcher,
-        out object calleeInstance) {
+        out object calleeInstance)
+    {
         var key = iid.ToString().ToUpper(CultureInfo.InvariantCulture);
         if (_mapOfIIDsToDispatchTables.TryGetValue(key, out var dispatchTable) &&
-            dispatchTable.TryGetDispatcher(iid, methodDescriptor.MethodNum, out dispatcher)) {
+            dispatchTable.TryGetDispatcher(iid, methodDescriptor.MethodNum, out dispatcher))
+        {
             calleeInstance = interfaceDefinition.Instance;
             return true;
         }
 
         dispatchTable = interfaceDefinition.DispatchTable;
         if (dispatchTable != null &&
-            dispatchTable.TryGetDispatcher(iid, methodDescriptor.MethodNum, out dispatcher)) {
+            dispatchTable.TryGetDispatcher(iid, methodDescriptor.MethodNum, out dispatcher))
+        {
             calleeInstance = interfaceDefinition.Instance;
             return true;
         }
@@ -609,8 +668,10 @@ public sealed class LocalCoClass {
     }
 
     /// <inheritdoc/>
-    public override bool Equals(object obj) {
-        if (!(obj is LocalCoClass other)) {
+    public override bool Equals(object obj)
+    {
+        if (!(obj is LocalCoClass other))
+        {
             return false;
         }
         return _identifier == other._identifier;

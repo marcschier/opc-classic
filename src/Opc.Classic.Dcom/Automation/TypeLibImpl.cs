@@ -10,20 +10,25 @@ namespace Opc.Classic.Dcom.Automation;
 /// Type lib
 /// </summary>
 [Serializable]
-internal sealed class TypeLibImpl : ComObjectImplWrapper, ITypeLib {
+internal sealed class TypeLibImpl : ComObjectImplWrapper, ITypeLib
+{
 
     /// <summary>
     /// Create type lib
     /// </summary>
     /// <param name="comObject"></param>
     internal TypeLibImpl(IComObject comObject) :
-        base(comObject) {
+        base(comObject)
+    {
     }
 
     /// <inheritdoc/>
-    public int TypeInfoCount {
-        get {
-            var callObject = new CallBuilder(true) {
+    public int TypeInfoCount
+    {
+        get
+        {
+            var callObject = new CallBuilder(true)
+            {
                 Opnum = 0
             };
             callObject.AddOutParamAsType(typeof(int));
@@ -33,8 +38,10 @@ internal sealed class TypeLibImpl : ComObjectImplWrapper, ITypeLib {
     }
 
     /// <inheritdoc/>
-    public ITypeInfo GetTypeInfo(int index) {
-        var callObject = new CallBuilder(true) {
+    public ITypeInfo GetTypeInfo(int index)
+    {
+        var callObject = new CallBuilder(true)
+        {
             Opnum = 1
         };
         callObject.AddInParamAsInt(index);
@@ -44,8 +51,10 @@ internal sealed class TypeLibImpl : ComObjectImplWrapper, ITypeLib {
     }
 
     /// <inheritdoc/>
-    public int GetTypeInfoType(int index) {
-        var callObject = new CallBuilder(true) {
+    public int GetTypeInfoType(int index)
+    {
+        var callObject = new CallBuilder(true)
+        {
             Opnum = 2
         };
         callObject.AddInParamAsInt(index);
@@ -55,8 +64,10 @@ internal sealed class TypeLibImpl : ComObjectImplWrapper, ITypeLib {
     }
 
     /// <inheritdoc/>
-    public ITypeInfo GetTypeInfoOfGuid(string uuid) {
-        var callObject = new CallBuilder(true) {
+    public ITypeInfo GetTypeInfoOfGuid(string uuid)
+    {
+        var callObject = new CallBuilder(true)
+        {
             Opnum = 3
         };
         callObject.AddInParamAsUUID(uuid);
@@ -66,8 +77,10 @@ internal sealed class TypeLibImpl : ComObjectImplWrapper, ITypeLib {
     }
 
     /// <inheritdoc/>
-    public void GetLibAttr() {
-        var callObject = new CallBuilder(true) {
+    public void GetLibAttr()
+    {
+        var callObject = new CallBuilder(true)
+        {
             Opnum = 4
         };
 
@@ -85,7 +98,8 @@ internal sealed class TypeLibImpl : ComObjectImplWrapper, ITypeLib {
     }
 
     /// <inheritdoc/>
-    public object[] GetDocumentation(int memberId) {
+    public object[] GetDocumentation(int memberId)
+    {
         var callObject = new CallBuilder(true);
         callObject.AddInParamAsInt(memberId);
         callObject.AddInParamAsInt(0xb); // refPtrFlags, as per the oaidl.idl...
@@ -98,8 +112,10 @@ internal sealed class TypeLibImpl : ComObjectImplWrapper, ITypeLib {
     }
 
     /// <inheritdoc/>
-    public object[] FindName(ComString nameBuf, int hashValue, short found) {
-        var callObject = new CallBuilder(true) {
+    public object[] FindName(ComString nameBuf, int hashValue, short found)
+    {
+        var callObject = new CallBuilder(true)
+        {
             Opnum = 8
         };
         callObject.AddInParamAsString(nameBuf.String, nameBuf.Type);

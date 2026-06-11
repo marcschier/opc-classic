@@ -10,11 +10,14 @@ using TUnit.Core;
 
 namespace Opc.Classic.Mcp.Capture.Tests;
 
-public sealed class DecodedOpcPduTests {
+public sealed class DecodedOpcPduTests
+{
     [Test]
-    public async Task Constructor_DefaultOptionalProperties_AreUnsetOrEmpty() {
+    public async Task Constructor_DefaultOptionalProperties_AreUnsetOrEmpty()
+    {
         var timestamp = new DateTimeOffset(2026, 6, 7, 13, 30, 0, TimeSpan.Zero);
-        var pdu = new DecodedOpcPdu {
+        var pdu = new DecodedOpcPdu
+        {
             Timestamp = timestamp,
             PduType = "bind",
         };
@@ -38,12 +41,15 @@ public sealed class DecodedOpcPduTests {
     }
 
     [Test]
-    public async Task WithExpression_PreservesRecordValueEqualityForConcreteMetadata() {
+    public async Task WithExpression_PreservesRecordValueEqualityForConcreteMetadata()
+    {
         Guid iid = Guid.Parse("11111111-2222-3333-4444-555555555555");
-        IReadOnlyDictionary<string, string?> annotations = new Dictionary<string, string?> {
+        IReadOnlyDictionary<string, string?> annotations = new Dictionary<string, string?>
+        {
             ["direction"] = "request",
         };
-        var original = new DecodedOpcPdu {
+        var original = new DecodedOpcPdu
+        {
             Timestamp = new DateTimeOffset(2026, 6, 7, 13, 31, 0, TimeSpan.Zero),
             PduType = "request",
             CallId = 5,
@@ -65,7 +71,8 @@ public sealed class DecodedOpcPduTests {
     }
 
     [Test]
-    public async Task PresentationRecords_ValueEqualityAndProperties_Work() {
+    public async Task PresentationRecords_ValueEqualityAndProperties_Work()
+    {
         Guid iid = Guid.Parse("aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee");
         var context = new PresentationContextInfo(2, iid, 1, 0);
         var sameContext = new PresentationContextInfo(2, iid, 1, 0);

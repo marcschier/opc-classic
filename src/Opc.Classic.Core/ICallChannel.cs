@@ -26,7 +26,8 @@ namespace Opc.Classic;
 /// integration tests (Phase 13).
 /// </para>
 /// </remarks>
-public interface ICallChannel {
+public interface ICallChannel
+{
     /// <summary>
     /// Sends an outbound NDR-encoded request frame to the given interface +
     /// opnum and awaits the response.
@@ -55,7 +56,8 @@ public interface ICallChannel {
 /// <param name="Hresult">The HRESULT (e.g. <c>S_OK = 0</c>, <c>OPC_E_UNKNOWNITEMID = 0xC0040007</c>).</param>
 /// <param name="ResponsePayload">The NDR-encoded response body — empty on failed calls.</param>
 [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Auto)]
-public readonly record struct NdrCallResult(int Hresult, ReadOnlyMemory<byte> ResponsePayload) {
+public readonly record struct NdrCallResult(int Hresult, ReadOnlyMemory<byte> ResponsePayload)
+{
     /// <summary>True if the HRESULT severity bit is clear (success).</summary>
     public bool IsSuccess => (Hresult & unchecked((int)0x80000000u)) == 0;
 

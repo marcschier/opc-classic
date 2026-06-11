@@ -20,13 +20,15 @@ public readonly record struct Smb2NegotiateRequest(
     uint Capabilities,
     Guid ClientGuid,
     IReadOnlyList<Smb2Dialect> Dialects,
-    bool IncludeSmb311NegotiateContexts = false) {
+    bool IncludeSmb311NegotiateContexts = false)
+{
     private const int FixedSize = 36; // 2+2+2+2+4+16+8
     private const int NegotiateContextHeaderSize = 8;
     private const int PreauthContextDataLength = 6;
     private const int EncryptionContextDataLength = 6;
 
-    public int WriteTo(Span<byte> destination) {
+    public int WriteTo(Span<byte> destination)
+    {
         int dialectsSize = Dialects.Count * sizeof(ushort);
         bool includeContexts = IncludeSmb311NegotiateContexts && ContainsDialect(Smb2Dialect.Smb311);
         int firstContextOffsetFromHeader = Smb2Constants.PacketHeaderSize + FixedSize + dialectsSize;
@@ -34,7 +36,8 @@ public readonly record struct Smb2NegotiateRequest(
         firstContextOffsetFromHeader += contextPrefixPadding;
         int contextsSize = includeContexts ? GetSmb311NegotiateContextsSize(firstContextOffsetFromHeader) : 0;
         int total = FixedSize + dialectsSize + contextPrefixPadding + contextsSize;
-        if (destination.Length < total) {
+        if (destination.Length < total)
+        {
             throw new ArgumentException("Destination too small for SMB2 NEGOTIATE request.", nameof(destination));
         }
 
@@ -44,21 +47,25 @@ public readonly record struct Smb2NegotiateRequest(
         BinaryPrimitives.WriteUInt16LittleEndian(destination[4..], SecurityMode);
         BinaryPrimitives.WriteUInt16LittleEndian(destination[6..], 0);
         BinaryPrimitives.WriteUInt32LittleEndian(destination[8..], Capabilities);
-        if (!ClientGuid.TryWriteBytes(destination[12..28])) {
+        if (!ClientGuid.TryWriteBytes(destination[12..28]))
+        {
             throw new InvalidOperationException("ClientGuid write failed.");
         }
 
-        if (includeContexts) {
+        if (includeContexts)
+        {
             BinaryPrimitives.WriteUInt32LittleEndian(destination[28..], (uint)firstContextOffsetFromHeader);
             BinaryPrimitives.WriteUInt16LittleEndian(destination[32..], 2);
         }
 
         Span<byte> dialectSpan = destination.Slice(FixedSize, dialectsSize);
-        for (int i = 0; i < Dialects.Count; i++) {
+        for (int i = 0; i < Dialects.Count; i++)
+        {
             BinaryPrimitives.WriteUInt16LittleEndian(dialectSpan[(i * 2)..], (ushort)Dialects[i]);
         }
 
-        if (includeContexts) {
+        if (includeContexts)
+        {
             int offset = FixedSize + dialectsSize + contextPrefixPadding;
             int preauthLength = WritePreauthIntegrityCapabilities(destination[offset..]);
             offset += preauthLength;
@@ -69,9 +76,12 @@ public readonly record struct Smb2NegotiateRequest(
         return total;
     }
 
-    private bool ContainsDialect(Smb2Dialect dialect) {
-        for (int i = 0; i < Dialects.Count; i++) {
-            if (Dialects[i] == dialect) {
+    private bool ContainsDialect(Smb2Dialect dialect)
+    {
+        for (int i = 0; i < Dialects.Count; i++)
+        {
+            if (Dialects[i] == dialect)
+            {
                 return true;
             }
         }
@@ -79,15 +89,18 @@ public readonly record struct Smb2NegotiateRequest(
         return false;
     }
 
-    private static int GetSmb311NegotiateContextsSize(int firstContextOffsetFromHeader) {
+    private static int GetSmb311NegotiateContextsSize(int firstContextOffsetFromHeader)
+    {
         const int PreauthContextLength = NegotiateContextHeaderSize + PreauthContextDataLength;
         const int EncryptionContextLength = NegotiateContextHeaderSize + EncryptionContextDataLength;
         return PreauthContextLength + GetAlignmentPadding(firstContextOffsetFromHeader + PreauthContextLength) + EncryptionContextLength;
     }
 
-    private static int WritePreauthIntegrityCapabilities(Span<byte> destination) {
+    private static int WritePreauthIntegrityCapabilities(Span<byte> destination)
+    {
         const int ContextLength = NegotiateContextHeaderSize + PreauthContextDataLength;
-        if (destination.Length < ContextLength) {
+        if (destination.Length < ContextLength)
+        {
             throw new ArgumentException("Destination too small for SMB2_PREAUTH_INTEGRITY_CAPABILITIES.", nameof(destination));
         }
 
@@ -100,9 +113,11 @@ public readonly record struct Smb2NegotiateRequest(
         return ContextLength;
     }
 
-    private static int WriteEncryptionCapabilities(Span<byte> destination) {
+    private static int WriteEncryptionCapabilities(Span<byte> destination)
+    {
         const int ContextLength = NegotiateContextHeaderSize + EncryptionContextDataLength;
-        if (destination.Length < ContextLength) {
+        if (destination.Length < ContextLength)
+        {
             throw new ArgumentException("Destination too small for SMB2_ENCRYPTION_CAPABILITIES.", nameof(destination));
         }
 
@@ -130,15 +145,19 @@ public readonly record struct Smb2NegotiateResponse(
     uint MaxReadSize,
     uint MaxWriteSize,
     ReadOnlyMemory<byte> SecurityBuffer,
-    Smb2EncryptionAlgorithm? EncryptionAlgorithm = null) {
+    Smb2EncryptionAlgorithm? EncryptionAlgorithm = null)
+{
     /// <summary>Parses an SMB2 NEGOTIATE response body (excluding the 64-byte packet header).</summary>
-    public static Smb2NegotiateResponse Read(ReadOnlySpan<byte> source) {
+    public static Smb2NegotiateResponse Read(ReadOnlySpan<byte> source)
+    {
         Smb2MessageBounds.EnsureBodyWithinDefaultQuota(source, "SMB2 NEGOTIATE response");
-        if (source.Length < 64) {
+        if (source.Length < 64)
+        {
             throw new Smb2ProtocolException("SMB2 NEGOTIATE response too short.");
         }
         ushort structureSize = BinaryPrimitives.ReadUInt16LittleEndian(source);
-        if (structureSize != 65) {
+        if (structureSize != 65)
+        {
             throw new Smb2ProtocolException($"Unexpected NEGOTIATE StructureSize {structureSize}; expected 65.");
         }
 
@@ -156,10 +175,12 @@ public readonly record struct Smb2NegotiateResponse(
         uint negotiateContextOffset = BinaryPrimitives.ReadUInt32LittleEndian(source[60..]);
 
         byte[] securityBuffer;
-        if (secBufferLength == 0) {
+        if (secBufferLength == 0)
+        {
             securityBuffer = Array.Empty<byte>();
         }
-        else {
+        else
+        {
             // Offsets are relative to the start of the SMB2 header. Caller passes
             // the body slice starting AT the header, so the offset is from there.
             securityBuffer = Smb2MessageBounds.GetPayloadSlice(
@@ -188,28 +209,35 @@ public readonly record struct Smb2NegotiateResponse(
     private static Smb2EncryptionAlgorithm? ReadSelectedEncryptionAlgorithm(
         ReadOnlySpan<byte> source,
         uint negotiateContextOffset,
-        ushort negotiateContextCount) {
-        if (negotiateContextCount == 0) {
+        ushort negotiateContextCount)
+    {
+        if (negotiateContextCount == 0)
+        {
             return null;
         }
-        if (negotiateContextOffset < Smb2Constants.PacketHeaderSize || negotiateContextOffset > int.MaxValue) {
+        if (negotiateContextOffset < Smb2Constants.PacketHeaderSize || negotiateContextOffset > int.MaxValue)
+        {
             throw new Smb2ProtocolException("NEGOTIATE response NegotiateContextOffset out of range.");
         }
 
         int offset = (int)negotiateContextOffset - Smb2Constants.PacketHeaderSize;
-        for (int i = 0; i < negotiateContextCount; i++) {
-            if (offset < 0 || offset + 8 > source.Length) {
+        for (int i = 0; i < negotiateContextCount; i++)
+        {
+            if (offset < 0 || offset + 8 > source.Length)
+            {
                 throw new Smb2ProtocolException("NEGOTIATE response context header out of range.");
             }
 
             ushort contextType = BinaryPrimitives.ReadUInt16LittleEndian(source[offset..]);
             ushort dataLength = BinaryPrimitives.ReadUInt16LittleEndian(source[(offset + 2)..]);
             int dataOffset = offset + 8;
-            if (dataOffset + dataLength > source.Length) {
+            if (dataOffset + dataLength > source.Length)
+            {
                 throw new Smb2ProtocolException("NEGOTIATE response context data out of range.");
             }
 
-            if (contextType == Smb2Constants.NegotiateContextEncryptionCapabilities) {
+            if (contextType == Smb2Constants.NegotiateContextEncryptionCapabilities)
+            {
                 return ReadEncryptionCapabilities(source.Slice(dataOffset, dataLength));
             }
 
@@ -219,21 +247,26 @@ public readonly record struct Smb2NegotiateResponse(
         return null;
     }
 
-    private static Smb2EncryptionAlgorithm? ReadEncryptionCapabilities(ReadOnlySpan<byte> data) {
-        if (data.Length < 4) {
+    private static Smb2EncryptionAlgorithm? ReadEncryptionCapabilities(ReadOnlySpan<byte> data)
+    {
+        if (data.Length < 4)
+        {
             throw new Smb2ProtocolException("SMB2_ENCRYPTION_CAPABILITIES response too short.");
         }
 
         ushort cipherCount = BinaryPrimitives.ReadUInt16LittleEndian(data);
-        if (cipherCount != 1) {
+        if (cipherCount != 1)
+        {
             throw new Smb2ProtocolException("SMB2_ENCRYPTION_CAPABILITIES response CipherCount must be 1.");
         }
 
         ushort cipherId = BinaryPrimitives.ReadUInt16LittleEndian(data[2..]);
-        if (cipherId == 0) {
+        if (cipherId == 0)
+        {
             return null;
         }
-        if (!Smb2Crypter.TryGetAlgorithmForCipherId(cipherId, out Smb2EncryptionAlgorithm algorithm)) {
+        if (!Smb2Crypter.TryGetAlgorithmForCipherId(cipherId, out Smb2EncryptionAlgorithm algorithm))
+        {
             throw new Smb2ProtocolException($"Unsupported SMB2 encryption cipher 0x{cipherId:X4}.");
         }
 

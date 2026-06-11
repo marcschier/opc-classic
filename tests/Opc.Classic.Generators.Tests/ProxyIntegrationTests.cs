@@ -14,7 +14,8 @@ namespace Opc.Classic.Generators.Tests;
 
 [OpcInterface("11111111-2222-3333-4444-555555555555")]
 [GenerateOpcProxy]
-public partial interface IDemoService {
+public partial interface IDemoService
+{
     [OpcMethod(3)]
     Task PingAsync(CancellationToken ct);
 
@@ -27,9 +28,11 @@ public partial interface IDemoService {
     Task<bool> WithoutOpcMethodAsync();
 }
 
-public sealed class ProxyIntegrationTests {
+public sealed class ProxyIntegrationTests
+{
     [Test]
-    public async Task Successful_call_returns_without_throwing() {
+    public async Task Successful_call_returns_without_throwing()
+    {
         var channel = new InMemoryCallChannel(static (_, _, _, _) =>
             Task.FromResult(new NdrCallResult(0, ReadOnlyMemory<byte>.Empty)));
         var proxy = new IDemoServiceClientProxy(channel);
@@ -40,7 +43,8 @@ public sealed class ProxyIntegrationTests {
     }
 
     [Test]
-    public async Task Failed_call_throws_OpcException() {
+    public async Task Failed_call_throws_OpcException()
+    {
         const int OPC_E_UNKNOWNITEMID = unchecked((int)0xC0040007u);
         var channel = new InMemoryCallChannel(static (_, _, _, _) =>
             Task.FromResult(new NdrCallResult(OPC_E_UNKNOWNITEMID, ReadOnlyMemory<byte>.Empty)));
@@ -52,10 +56,12 @@ public sealed class ProxyIntegrationTests {
     }
 
     [Test]
-    public async Task Channel_observes_correct_metadata() {
+    public async Task Channel_observes_correct_metadata()
+    {
         Guid observedInterfaceId = Guid.Empty;
         int observedOpnum = -1;
-        var channel = new InMemoryCallChannel((interfaceId, opnum, _, _) => {
+        var channel = new InMemoryCallChannel((interfaceId, opnum, _, _) =>
+        {
             observedInterfaceId = interfaceId;
             observedOpnum = opnum;
             return Task.FromResult(new NdrCallResult(0, EncodeInt32(0)));
@@ -69,10 +75,12 @@ public sealed class ProxyIntegrationTests {
     }
 
     [Test]
-    public async Task CancellationToken_propagates() {
+    public async Task CancellationToken_propagates()
+    {
         using var cts = new CancellationTokenSource();
         CancellationToken observed = default;
-        var channel = new InMemoryCallChannel((_, _, _, cancellationToken) => {
+        var channel = new InMemoryCallChannel((_, _, _, cancellationToken) =>
+        {
             observed = cancellationToken;
             return Task.FromResult(new NdrCallResult(0, ReadOnlyMemory<byte>.Empty));
         });
@@ -84,7 +92,8 @@ public sealed class ProxyIntegrationTests {
     }
 
     [Test]
-    public async Task Method_without_OpcMethod_still_throws_NotImplementedException() {
+    public async Task Method_without_OpcMethod_still_throws_NotImplementedException()
+    {
         var channel = new InMemoryCallChannel(static (_, _, _, _) =>
             Task.FromResult(new NdrCallResult(0, ReadOnlyMemory<byte>.Empty)));
         var proxy = new IDemoServiceClientProxy(channel);
@@ -93,9 +102,12 @@ public sealed class ProxyIntegrationTests {
     }
 
     [Test]
-    public async Task Multiple_method_invocations_log_correctly() {
-        var channel = new InMemoryCallChannel(static (_, opnum, _, _) => {
-            ReadOnlyMemory<byte> responsePayload = opnum switch {
+    public async Task Multiple_method_invocations_log_correctly()
+    {
+        var channel = new InMemoryCallChannel(static (_, opnum, _, _) =>
+        {
+            ReadOnlyMemory<byte> responsePayload = opnum switch
+            {
                 IDemoService.Opnums.ReadCountAsync => EncodeInt32(0),
                 IDemoService.Opnums.GetLabelAsync => EncodeUnicodeStringPtr("demo"),
                 _ => ReadOnlyMemory<byte>.Empty,
@@ -115,14 +127,16 @@ public sealed class ProxyIntegrationTests {
         await Assert.That(callLog[2].Opnum).IsEqualTo(IDemoService.Opnums.GetLabelAsync);
     }
 
-    private static ReadOnlyMemory<byte> EncodeInt32(int value) {
+    private static ReadOnlyMemory<byte> EncodeInt32(int value)
+    {
         var buffer = new byte[16];
         var writer = new NdrWriter(buffer);
         writer.WriteInt32(value);
         return buffer.AsMemory(0, writer.Position).ToArray();
     }
 
-    private static ReadOnlyMemory<byte> EncodeUnicodeStringPtr(string value) {
+    private static ReadOnlyMemory<byte> EncodeUnicodeStringPtr(string value)
+    {
         var buffer = new byte[128];
         var writer = new NdrWriter(buffer);
         writer.WriteUnicodeStringPtr(value);
@@ -130,14 +144,18 @@ public sealed class ProxyIntegrationTests {
     }
 
     private static async Task<TException> CaptureAsync<TException>(Func<Task> action)
-        where TException : Exception {
-        try {
+        where TException : Exception
+    {
+        try
+        {
             await action().ConfigureAwait(false);
         }
-        catch (TException exception) {
+        catch (TException exception)
+        {
             return exception;
         }
-        catch (Exception exception) {
+        catch (Exception exception)
+        {
             throw new InvalidOperationException($"Expected {typeof(TException).Name}, but caught {exception.GetType().Name}.", exception);
         }
 

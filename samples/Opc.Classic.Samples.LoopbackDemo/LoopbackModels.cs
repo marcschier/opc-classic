@@ -50,8 +50,10 @@ internal sealed record LoopbackItemBinding(
     int ClientHandle,
     bool Active);
 
-internal sealed class LoopbackGroup {
-    public LoopbackGroup(int serverHandle, string name, bool active, int updateRateMs, int clientHandle) {
+internal sealed class LoopbackGroup
+{
+    public LoopbackGroup(int serverHandle, string name, bool active, int updateRateMs, int clientHandle)
+    {
         ServerHandle = serverHandle;
         Name = name;
         Active = active;

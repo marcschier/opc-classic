@@ -8,7 +8,8 @@ using Opc.Classic.Ae;
 
 namespace Opc.Classic.Samples.AeClient;
 
-internal sealed class AeClientDemo : BackgroundService {
+internal sealed class AeClientDemo : BackgroundService
+{
     private const string AckActor = "sample-client";
     private const string AckComment = "Acknowledged by the self-contained AE client sample";
 
@@ -43,26 +44,33 @@ internal sealed class AeClientDemo : BackgroundService {
     public AeClientDemo(
         LoopbackAeClient client,
         IHostApplicationLifetime lifetime,
-        ILogger<AeClientDemo> logger) {
+        ILogger<AeClientDemo> logger)
+    {
         _client = client ?? throw new ArgumentNullException(nameof(client));
         _lifetime = lifetime ?? throw new ArgumentNullException(nameof(lifetime));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
-    protected override async Task ExecuteAsync(CancellationToken stoppingToken) {
-        try {
+    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+    {
+        try
+        {
             await RunDemoAsync(stoppingToken).ConfigureAwait(false);
         }
-        catch (OperationCanceledException) when (stoppingToken.IsCancellationRequested) {
+        catch (OperationCanceledException) when (stoppingToken.IsCancellationRequested)
+        {
         }
-        finally {
+        finally
+        {
             _lifetime.StopApplication();
         }
     }
 
-    private async Task RunDemoAsync(CancellationToken cancellationToken) {
+    private async Task RunDemoAsync(CancellationToken cancellationToken)
+    {
         await _client.ConnectAsync(cancellationToken).ConfigureAwait(false);
-        try {
+        try
+        {
             OpcServerStatus status = await _client.GetStatusAsync(cancellationToken).ConfigureAwait(false);
             StatusMessage(_logger, status.State, status.VendorInfo, status.ServerVersion, null);
 
@@ -70,21 +78,24 @@ internal sealed class AeClientDemo : BackgroundService {
             await _client.EnableConditionsByAreaAsync(["Demo"], cancellationToken).ConfigureAwait(false);
 
             ConditionRef? conditionToAck = await SubscribeAndCaptureAckTargetAsync(cancellationToken).ConfigureAwait(false);
-            if (conditionToAck is { } condition) {
+            if (conditionToAck is { } condition)
+            {
                 IReadOnlyList<AckResult> results = await _client.AcknowledgeAsync(
                     AckActor,
                     AckComment,
                     [condition],
                     cancellationToken).ConfigureAwait(false);
 
-                foreach (AckResult result in results) {
+                foreach (AckResult result in results)
+                {
                     AckResultMessage(_logger, result.Condition.ToString(), result.ResultId, null);
                 }
             }
 
             await _client.DisableConditionsByAreaAsync(["Demo"], cancellationToken).ConfigureAwait(false);
         }
-        finally {
+        finally
+        {
             await _client.DisconnectAsync(cancellationToken).ConfigureAwait(false);
         }
     }
@@ -93,26 +104,31 @@ internal sealed class AeClientDemo : BackgroundService {
         IAeServer client,
         string areaQualifiedName,
         int depth,
-        CancellationToken cancellationToken) {
+        CancellationToken cancellationToken)
+    {
         await foreach (AreaBrowseElement element in client.BrowseAreasAsync(areaQualifiedName, cancellationToken)
-            .ConfigureAwait(false)) {
+            .ConfigureAwait(false))
+        {
             string kind = element.IsArea ? "Area" : "Source";
             BrowseNodeMessage(_logger, depth, kind, element.Name, element.QualifiedName, null);
 
-            if (element.IsArea) {
+            if (element.IsArea)
+            {
                 await BrowseAreaAsync(client, element.QualifiedName, depth + 1, cancellationToken).ConfigureAwait(false);
             }
         }
     }
 
-    private async Task<ConditionRef?> SubscribeAndCaptureAckTargetAsync(CancellationToken cancellationToken) {
+    private async Task<ConditionRef?> SubscribeAndCaptureAckTargetAsync(CancellationToken cancellationToken)
+    {
         IAeSubscription subscription = await _client.CreateSubscriptionAsync(
             active: true,
             bufferTimeMs: 100,
             maxBufferSize: 10,
             cancellationToken).ConfigureAwait(false);
 
-        await using (subscription.ConfigureAwait(false)) {
+        await using (subscription.ConfigureAwait(false))
+        {
             await subscription.SetFilterAsync(
                 new SubscriptionFilter { EventTypes = EventType.All, MinSeverity = 0, MaxSeverity = 1000 },
                 cancellationToken).ConfigureAwait(false);
@@ -120,11 +136,13 @@ internal sealed class AeClientDemo : BackgroundService {
             ConditionRef? conditionToAck = null;
             await foreach (EventNotification notification in subscription.Events
                 .WithCancellation(cancellationToken)
-                .ConfigureAwait(false)) {
+                .ConfigureAwait(false))
+            {
                 EventMessage(_logger, notification.Source, notification.EventType, notification.Severity, notification.Message, null);
                 if (notification.EventType == EventType.Condition &&
                     notification.AckRequired &&
-                    notification.ConditionName is not null) {
+                    notification.ConditionName is not null)
+                {
                     conditionToAck = new ConditionRef(notification.Source, notification.ConditionName);
                 }
             }

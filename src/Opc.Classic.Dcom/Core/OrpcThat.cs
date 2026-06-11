@@ -13,12 +13,14 @@ using System.Linq;
 namespace Opc.Classic.Dcom.Core;
 
 [Serializable]
-internal sealed class OrpcThat {
+internal sealed class OrpcThat
+{
 
     /// <summary>
     /// Create that
     /// </summary>
-    private OrpcThat() {
+    private OrpcThat()
+    {
     }
 
     /// <summary>
@@ -31,12 +33,16 @@ internal sealed class OrpcThat {
     /// For now only 2 flags are returned to the user
     /// 0 and 1. Reserved flags are not returned.
     /// </summary>
-    public int[] SupportedFlags {
-        get {
-            if (_flags == -1) {
+    public int[] SupportedFlags
+    {
+        get
+        {
+            if (_flags == -1)
+            {
                 return null;
             }
-            if ((_flags & 1) == 1) {
+            if ((_flags & 1) == 1)
+            {
                 return new int[] { 1 };
             }
             return new int[] { 0 };
@@ -47,7 +53,8 @@ internal sealed class OrpcThat {
     /// Encode
     /// </summary>
     /// <param name="ndr"></param>
-    internal static void Encode(NdrCodec ndr) {
+    internal static void Encode(NdrCodec ndr)
+    {
         ndr.WriteUnsignedLong(0);
         ndr.WriteUnsignedLong(0);
     }
@@ -57,8 +64,10 @@ internal sealed class OrpcThat {
     /// </summary>
     /// <param name="ndr"></param>
     /// <returns></returns>
-    internal static OrpcThat Decode(NdrCodec ndr) {
-        var orpcthat = new OrpcThat {
+    internal static OrpcThat Decode(NdrCodec ndr)
+    {
+        var orpcthat = new OrpcThat
+        {
             _flags = ndr.ReadUnsignedLong()
         };
 
@@ -68,12 +77,14 @@ internal sealed class OrpcThat {
             orpcthat._flags != (int)OrpcFlags.ORPCF_RESERVED1 &&
             orpcthat._flags != (int)OrpcFlags.ORPCF_RESERVED2 &&
             orpcthat._flags != (int)OrpcFlags.ORPCF_RESERVED3 &&
-            orpcthat._flags != (int)OrpcFlags.ORPCF_RESERVED4) {
+            orpcthat._flags != (int)OrpcFlags.ORPCF_RESERVED4)
+        {
             throw new InteropRuntimeException(orpcthat._flags);
         }
 
         var orpcextentarray = new Struct();
-        try {
+        try
+        {
             // create the orpcextent struct
             /*
              *  typedef struct tagORPC_EXTENT
@@ -106,11 +117,13 @@ internal sealed class OrpcThat {
             // this is since the pointer is [unique]
             orpcextentarray.AddMember(new ComPointer(new ComArray(new ComPointer(orpcextent), null, 1, true)));
         }
-        catch (InteropException) {
+        catch (InteropException)
+        {
             // this won't fail...i am certain :)...
         }
 
-        var context = new CodecContext {
+        var context = new CodecContext
+        {
             Flag = InteropFlags.FLAG_REPRESENTATION_ARRAY
         };
         var orpcextentarrayptr = (ComPointer)MarshalUnMarshalHelper.Deserialize(ndr, new ComPointer(orpcextentarray), context);
@@ -120,10 +133,13 @@ internal sealed class OrpcThat {
         var extentArrays = new List<OrpcExtentArray>();
         // now read whether extend array exists or not
         // int ptr = ndr.readUnsignedLong();
-        if (!orpcextentarrayptr.IsNull) {
+        if (!orpcextentarrayptr.IsNull)
+        {
             var pointers = (ComPointer[])((ComArray)((ComPointer)((Struct)orpcextentarrayptr.Referent).GetMember(2)).Referent).ArrayInstance;
-            for (var i = 0; i < pointers.Length; i++) {
-                if (pointers[i].IsNull) {
+            for (var i = 0; i < pointers.Length; i++)
+            {
+                if (pointers[i].IsNull)
+                {
                     continue;
                 }
 

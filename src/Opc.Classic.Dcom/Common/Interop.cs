@@ -19,7 +19,8 @@ namespace Opc.Classic.Dcom.Common;
 /// and must not be called by the developer.
 /// </para>
 /// </summary>
-public static class Interop {
+public static class Interop
+{
 
     /// <summary>
     /// Indicates to the framework, if Windows Registry settings for
@@ -66,15 +67,18 @@ public static class Interop {
     /// </summary>
     /// <param name="code"> error code
     /// </param>
-    public static string GetLocalizedMessage(ErrorCode code) {
+    public static string GetLocalizedMessage(ErrorCode code)
+    {
         var key = ((int)code).ToString("X8");
 
         string message;
-        try {
+        try
+        {
             message = Resource.ResourceManager.GetString("0x" + key, CultureInfo.InvariantCulture);
             message = message + " [" + key + "]";
         }
-        catch (MissingResourceException) {
+        catch (MissingResourceException)
+        {
             message = "Message not found for errorCode: " + key;
         }
         return message;
@@ -87,13 +91,18 @@ public static class Interop {
     /// </summary>
     /// <param name="progId"> user friendly string such as "Excel.Application".
     /// </param>
-    public static string GetClsidFromProgId(string progId) {
-        if (progId == null) {
+    public static string GetClsidFromProgId(string progId)
+    {
+        if (progId == null)
+        {
             return null;
         }
-        if (_pathToDB == null) {
-            lock (_syncRoot) {
-                if (_pathToDB == null) {
+        if (_pathToDB == null)
+        {
+            lock (_syncRoot)
+            {
+                if (_pathToDB == null)
+                {
                     Internal_readProgIdsFromFile();
                 }
             }
@@ -104,14 +113,17 @@ public static class Interop {
     /// <summary>
     /// Helper to load
     /// </summary>
-    private static void Internal_readProgIdsFromFile() {
+    private static void Internal_readProgIdsFromFile()
+    {
         _pathToDB = AppContext.BaseDirectory;
-        try {
+        try
+        {
             var inputStream = new FileStream(_pathToDB, FileMode.Create, FileAccess.Write);
             kMapOfProgIdsVsClsids.Load(inputStream);
             inputStream.Close();
         }
-        catch (Exception e) {
+        catch (Exception e)
+        {
             Log.Logger.Error(e, "writeProgIdsToFile");
         }
         Log.Logger.Information("Read {@progIdVsClsidDB}", kMapOfProgIdsVsClsids);
@@ -120,15 +132,19 @@ public static class Interop {
     /// <summary>
     /// Should be called from system shut down only
     /// </summary>
-    internal static void Internal_writeProgIdsToFile() {
-        if (_pathToDB != null) {
-            try {
+    internal static void Internal_writeProgIdsToFile()
+    {
+        if (_pathToDB != null)
+        {
+            try
+            {
                 var outputStream = new FileStream(_pathToDB, FileMode.Create, FileAccess.Write);
                 kMapOfProgIdsVsClsids.Store(outputStream);
                 outputStream.Close();
                 Log.Logger.Information("Wrote {@progIdVsClsidDB}", kMapOfProgIdsVsClsids);
             }
-            catch (IOException e) {
+            catch (IOException e)
+            {
                 Log.Logger.Error(e, "writeProgIdsToFile");
             }
         }
@@ -164,12 +180,16 @@ public static class Interop {
     /// is invalid or cannot be reached. </exception>
     /// <exception cref="ArgumentException"> if any parameter is
     /// <code>null</code> or of 0 length. </exception>
-    public static void MapHostNametoIP(string hostname, string IP) {
-        lock (_syncRoot) {
-            if (string.IsNullOrWhiteSpace(hostname)) {
+    public static void MapHostNametoIP(string hostname, string IP)
+    {
+        lock (_syncRoot)
+        {
+            if (string.IsNullOrWhiteSpace(hostname))
+            {
                 throw new ArgumentException("Hostname must not be null, empty, or whitespace.", nameof(hostname));
             }
-            if (string.IsNullOrWhiteSpace(IP)) {
+            if (string.IsNullOrWhiteSpace(IP))
+            {
                 throw new ArgumentException("IP address must not be null, empty, or whitespace.", nameof(IP));
             }
             //just check the validity of IP
@@ -183,8 +203,10 @@ public static class Interop {
     /// </summary>
     /// <param name="hostname"> </param>
     /// <returns> <code>null</code> if a mapping could not be found. </returns>
-    internal static string GetIPForHostName(string hostname) {
-        lock (_syncRoot) {
+    internal static string GetIPForHostName(string hostname)
+    {
+        lock (_syncRoot)
+        {
             return kMapOfHostnamesVsIPs[hostname.Trim().ToUpperInvariant()];
         }
     }
@@ -192,8 +214,10 @@ public static class Interop {
     /// <summary>
     /// Internal dump
     /// </summary>
-    internal static void Internal_dumpMap() {
-        lock (_syncRoot) {
+    internal static void Internal_dumpMap()
+    {
+        lock (_syncRoot)
+        {
             Log.Logger.Information("{@mapOfHostnamesVsIPs}", kMapOfHostnamesVsIPs);
         }
     }

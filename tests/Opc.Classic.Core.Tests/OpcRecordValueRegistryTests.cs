@@ -11,9 +11,11 @@ using TUnit.Assertions.AssertConditions.Throws;
 
 namespace Opc.Classic.Tests;
 
-public sealed class OpcRecordValueRegistryTests {
+public sealed class OpcRecordValueRegistryTests
+{
     [Test]
-    public async Task Constructor_WithGuid_CopiesValuesAndPreservesNullEntries() {
+    public async Task Constructor_WithGuid_CopiesValuesAndPreservesNullEntries()
+    {
         var id = new Guid("2F65BD9F-E371-4B16-B37B-89D61F0C3F38");
         object?[] values = [42, "Pump", null];
 
@@ -29,7 +31,8 @@ public sealed class OpcRecordValueRegistryTests {
     }
 
     [Test]
-    public async Task Constructor_WithInvalidArguments_ThrowsSpecificExceptions() {
+    public async Task Constructor_WithInvalidArguments_ThrowsSpecificExceptions()
+    {
         var id = new Guid("6D38D9EF-73E9-4069-8DE6-D9DDDFD6929E");
 
         await Assert.That(() => new OpcRecordValue(Guid.Empty, Array.Empty<object?>()))
@@ -41,7 +44,8 @@ public sealed class OpcRecordValueRegistryTests {
     }
 
     [Test]
-    public async Task Constructor_WithRecordInfo_RequiresValueCountToMatchFields() {
+    public async Task Constructor_WithRecordInfo_RequiresValueCountToMatchFields()
+    {
         var info = CreateRecordInfo(new Guid("98BA8BB8-A6F2-444E-A9B1-A26788E49455"), "TwoFieldRecord");
 
         var record = new OpcRecordValue(info, new object?[] { 7, "seven" });
@@ -53,7 +57,8 @@ public sealed class OpcRecordValueRegistryTests {
     }
 
     [Test]
-    public async Task Equality_ComparesRecordIdAndEachValue() {
+    public async Task Equality_ComparesRecordIdAndEachValue()
+    {
         var id = new Guid("56AB7DEC-253D-4CD0-81EC-71CF584B4B66");
         var same = new OpcRecordValue(id, new object?[] { 1, "A" });
         var equal = new OpcRecordValue(id, new object?[] { 1, "A" });
@@ -74,13 +79,15 @@ public sealed class OpcRecordValueRegistryTests {
     }
 
     [Test]
-    public async Task RecordInfoRegistry_RegisterTryGetGetAndUnregister_RoundTrip() {
+    public async Task RecordInfoRegistry_RegisterTryGetGetAndUnregister_RoundTrip()
+    {
         var id = new Guid("44BB7021-4A72-49E5-B098-1A4D62E5E66B");
         var first = CreateRecordInfo(id, "FirstLayout");
         var replacement = CreateRecordInfo(id, "ReplacementLayout");
 
         RecordInfoRegistry.Register(first);
-        try {
+        try
+        {
             bool foundFirst = RecordInfoRegistry.TryGet(id, out IRecordInfo? registeredFirst);
             await Assert.That(foundFirst).IsTrue();
             await Assert.That(registeredFirst).IsSameReferenceAs(first);
@@ -91,7 +98,8 @@ public sealed class OpcRecordValueRegistryTests {
             await Assert.That(registeredReplacement).IsSameReferenceAs(replacement);
             await Assert.That(registeredReplacement.Name).IsEqualTo("ReplacementLayout");
         }
-        finally {
+        finally
+        {
             _ = RecordInfoRegistry.Unregister(id);
         }
 
@@ -102,7 +110,8 @@ public sealed class OpcRecordValueRegistryTests {
     }
 
     [Test]
-    public async Task RecordInfoRegistry_InvalidOrMissingRecords_ThrowExpectedExceptions() {
+    public async Task RecordInfoRegistry_InvalidOrMissingRecords_ThrowExpectedExceptions()
+    {
         var missingId = new Guid("33997F1C-514D-4AA9-8B1E-CC0374106970");
         var emptyIdInfo = new TestRecordInfo(Guid.Empty);
 
@@ -126,7 +135,8 @@ public sealed class OpcRecordValueRegistryTests {
                 new OpcRecordField("Name", VarType.VT_BSTR),
             });
 
-    private sealed class TestRecordInfo(Guid id) : IRecordInfo {
+    private sealed class TestRecordInfo(Guid id) : IRecordInfo
+    {
         public Guid Id { get; } = id;
 
         public string Name => "Invalid";

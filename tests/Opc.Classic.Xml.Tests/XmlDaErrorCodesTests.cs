@@ -8,7 +8,8 @@ using TUnit.Core;
 
 namespace Opc.Classic.Xml.Tests;
 
-public sealed class XmlDaErrorCodesTests {
+public sealed class XmlDaErrorCodesTests
+{
     [Test]
     [Arguments("S_CLAMP", XmlDaErrorCode.Clamp)]
     [Arguments("xmlDa:S_CLAMP", XmlDaErrorCode.Clamp)]
@@ -16,7 +17,8 @@ public sealed class XmlDaErrorCodesTests {
     [Arguments("xmlDa:S_DATAQUEUEOVERFLOW", XmlDaErrorCode.DataQueueOverflow)]
     [Arguments("S_UNSUPPORTEDRATE", XmlDaErrorCode.UnsupportedRate)]
     [Arguments("xmlDa:S_UNSUPPORTEDRATE", XmlDaErrorCode.UnsupportedRate)]
-    public async Task ParseResultId_MapsSuccessResultIds(string resultId, XmlDaErrorCode expected) {
+    public async Task ParseResultId_MapsSuccessResultIds(string resultId, XmlDaErrorCode expected)
+    {
         await Assert.That(XmlDaErrorCodes.ParseResultId(resultId)).IsEqualTo(expected);
     }
 
@@ -25,7 +27,8 @@ public sealed class XmlDaErrorCodesTests {
     [Arguments(XmlDaErrorCode.Clamp)]
     [Arguments(XmlDaErrorCode.DataQueueOverflow)]
     [Arguments(XmlDaErrorCode.UnsupportedRate)]
-    public async Task IsSuccess_ReturnsTrue_ForSuccessCodes(XmlDaErrorCode code) {
+    public async Task IsSuccess_ReturnsTrue_ForSuccessCodes(XmlDaErrorCode code)
+    {
         await Assert.That(code.IsSuccess()).IsTrue();
     }
 
@@ -54,7 +57,8 @@ public sealed class XmlDaErrorCodesTests {
     [Arguments(XmlDaErrorCode.UnknownItemPath)]
     [Arguments(XmlDaErrorCode.WriteOnly)]
     [Arguments(XmlDaErrorCode.BadRights)]
-    public async Task IsSuccess_ReturnsFalse_ForFaultCodes(XmlDaErrorCode code) {
+    public async Task IsSuccess_ReturnsFalse_ForFaultCodes(XmlDaErrorCode code)
+    {
         await Assert.That(code.IsSuccess()).IsFalse();
     }
 }

@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -38,7 +38,8 @@ namespace Opc.Classic;
 /// pre-computed <see cref="Guid"/> with no runtime parsing.
 /// </para>
 /// </remarks>
-public static class OpcGuids {
+public static class OpcGuids
+{
     // ============================================================
     // Common COM infrastructure (interfaces used across specs)
     // ============================================================

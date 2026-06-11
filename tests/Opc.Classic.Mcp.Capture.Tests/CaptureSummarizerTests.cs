@@ -10,13 +10,15 @@ using TUnit.Core;
 
 namespace Opc.Classic.Mcp.Capture.Tests;
 
-public sealed class CaptureSummarizerTests {
+public sealed class CaptureSummarizerTests
+{
     private static readonly Guid s_interfaceA = Guid.Parse("aaaaaaaa-0000-0000-0000-000000000001");
     private static readonly Guid s_interfaceB = Guid.Parse("bbbbbbbb-0000-0000-0000-000000000002");
     private static readonly Guid s_ipid = Guid.Parse("cccccccc-0000-0000-0000-000000000003");
 
     [Test]
-    public async Task Summarize_EmptyInput_ReturnsZeroCountDurationAndEmptyBuckets() {
+    public async Task Summarize_EmptyInput_ReturnsZeroCountDurationAndEmptyBuckets()
+    {
         CaptureSummary summary = CaptureSummarizer.Summarize("session-1", Array.Empty<DecodedOpcPdu>());
 
         await Assert.That(summary.SessionId).IsEqualTo("session-1");
@@ -33,7 +35,8 @@ public sealed class CaptureSummarizerTests {
     }
 
     [Test]
-    public async Task Summarize_Pdus_CountsAndOrdersTopBucketsWithConcreteFormats() {
+    public async Task Summarize_Pdus_CountsAndOrdersTopBucketsWithConcreteFormats()
+    {
         var start = new DateTimeOffset(2026, 6, 7, 10, 0, 0, TimeSpan.Zero);
         DecodedOpcPdu[] pdus =
         [
@@ -74,7 +77,8 @@ public sealed class CaptureSummarizerTests {
     }
 
     [Test]
-    public async Task Summarize_TiesOrderByKeyOrdinalAscending() {
+    public async Task Summarize_TiesOrderByKeyOrdinalAscending()
+    {
         DecodedOpcPdu[] pdus =
         [
             NewPdu(DateTimeOffset.UnixEpoch, "zeta"),
@@ -90,7 +94,8 @@ public sealed class CaptureSummarizerTests {
     }
 
     [Test]
-    public async Task Summarize_NullOrInvalidArguments_Throw() {
+    public async Task Summarize_NullOrInvalidArguments_Throw()
+    {
         DecodedOpcPdu[] pdus = [NewPdu(DateTimeOffset.UnixEpoch, "request")];
 
         await Assert.That(() => CaptureSummarizer.Summarize(null!, pdus)).Throws<ArgumentNullException>();
@@ -109,7 +114,8 @@ public sealed class CaptureSummarizerTests {
         Guid? objectIpid = null,
         int? faultStatus = null,
         IReadOnlyList<PresentationResultInfo>? resultList = null)
-        => new() {
+        => new()
+        {
             Timestamp = timestamp,
             PduType = pduType,
             SourceEndpoint = source,

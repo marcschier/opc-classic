@@ -28,7 +28,8 @@ namespace Opc.Classic.Dcom.Remoting;
 /// </remarks>
 [OpcInterface(Opc.Classic.Dcom.Interfaces.IID_IRemUnknown)]
 [GenerateOpcProxy]
-public partial interface IRemUnknown {
+public partial interface IRemUnknown
+{
     /// <summary>
     /// <c>IRemUnknown::RemQueryInterface</c> (opnum 3). For each requested IID
     /// in <paramref name="iids"/>, returns the per-IID HRESULT and (on success)

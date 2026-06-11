@@ -8,7 +8,8 @@ using System;
 namespace Opc.Classic.Ae.Hosting;
 
 /// <summary>Configuration for a managed OPC AE server host.</summary>
-public sealed record OpcAeServerOptions {
+public sealed record OpcAeServerOptions
+{
     /// <summary>Gets the COM class identifier exposed to OPC AE clients.</summary>
     public required Guid Clsid { get; set; }
 

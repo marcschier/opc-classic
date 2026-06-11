@@ -13,12 +13,15 @@ using TUnit.Core;
 namespace Opc.Classic.Ae.Tests.Hosting.Windows;
 
 [SupportedOSPlatform("windows")]
-public sealed class OpcAeRefreshTests {
+public sealed class OpcAeRefreshTests
+{
     private const int S_OK = 0;
 
     [Test]
-    public async Task Refresh_delivers_refresh_fragments_and_marks_final_fragment() {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task Refresh_delivers_refresh_fragments_and_marks_final_fragment()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
@@ -26,7 +29,8 @@ public sealed class OpcAeRefreshTests {
         IntPtr subscription = OpcAeEventSinkTestHelpers.CreateSubscription(dispatcher);
         IntPtr connectionPoint = OpcAeEventSinkTestHelpers.FindEventConnectionPoint(subscription);
         IntPtr sink = OpcAeEventSinkTestHelpers.CreateSinkStub();
-        try {
+        try
+        {
             (int adviseHr, uint cookie) = OpcAeEventSinkTestHelpers.Advise(connectionPoint, sink);
             await Assert.That(adviseHr).IsEqualTo(S_OK);
 
@@ -45,14 +49,17 @@ public sealed class OpcAeRefreshTests {
             await Assert.That(invocations[1].LastRefresh).IsTrue();
             await Assert.That(invocations[1].Events.Length).IsEqualTo(1);
         }
-        finally {
+        finally
+        {
             OpcAeEventSinkTestHelpers.DestroySinkStub(sink);
         }
     }
 
     [Test]
-    public async Task CancelRefresh_stops_midflight_before_last_refresh_fragment() {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task CancelRefresh_stops_midflight_before_last_refresh_fragment()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
@@ -60,7 +67,8 @@ public sealed class OpcAeRefreshTests {
         IntPtr subscription = OpcAeEventSinkTestHelpers.CreateSubscription(dispatcher);
         IntPtr connectionPoint = OpcAeEventSinkTestHelpers.FindEventConnectionPoint(subscription);
         IntPtr sink = OpcAeEventSinkTestHelpers.CreateSinkStub();
-        try {
+        try
+        {
             (int adviseHr, uint cookie) = OpcAeEventSinkTestHelpers.Advise(connectionPoint, sink);
             await Assert.That(adviseHr).IsEqualTo(S_OK);
 
@@ -76,12 +84,14 @@ public sealed class OpcAeRefreshTests {
             await Assert.That(invocations[0].Refresh).IsTrue();
             await Assert.That(invocations[0].LastRefresh).IsFalse();
         }
-        finally {
+        finally
+        {
             OpcAeEventSinkTestHelpers.DestroySinkStub(sink);
         }
     }
 
-    private sealed class FragmentingRefreshDispatcher : RecordingAeDispatcher {
+    private sealed class FragmentingRefreshDispatcher : RecordingAeDispatcher
+    {
         private readonly TaskCompletionSource _releaseFinal = new(TaskCreationOptions.RunContinuationsAsynchronously);
         private CancellationTokenSource? _refreshCts;
 
@@ -89,32 +99,39 @@ public sealed class OpcAeRefreshTests {
 
         public void AllowFinalFragment() => _releaseFinal.TrySetResult();
 
-        public override async Task RefreshAsync(int connection, CancellationToken cancellationToken = default) {
-            if (!TryGetSink(connection, out IOPCEventSink? sink) || sink is null) {
+        public override async Task RefreshAsync(int connection, CancellationToken cancellationToken = default)
+        {
+            if (!TryGetSink(connection, out IOPCEventSink? sink) || sink is null)
+            {
                 return;
             }
 
             using var cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
             _refreshCts = cts;
             OpcEventNotification[] notifications = OpcAeEventSinkTestHelpers.CreateNotifications();
-            try {
+            try
+            {
                 await sink.OnEventAsync(ClientSubscription, refresh: true, lastRefresh: false, [notifications[0], notifications[1]], cts.Token).ConfigureAwait(false);
                 FirstFragmentDelivered.TrySetResult();
                 await _releaseFinal.Task.WaitAsync(cts.Token).ConfigureAwait(false);
                 cts.Token.ThrowIfCancellationRequested();
                 await sink.OnEventAsync(ClientSubscription, refresh: true, lastRefresh: true, [notifications[2]], cts.Token).ConfigureAwait(false);
             }
-            catch (OperationCanceledException) {
+            catch (OperationCanceledException)
+            {
             }
-            finally {
+            finally
+            {
                 _refreshCts = null;
             }
         }
 
-        public override async Task CancelRefreshAsync(int connection, CancellationToken cancellationToken = default) {
+        public override async Task CancelRefreshAsync(int connection, CancellationToken cancellationToken = default)
+        {
             _ = connection;
             cancellationToken.ThrowIfCancellationRequested();
-            if (_refreshCts is not null) {
+            if (_refreshCts is not null)
+            {
                 await _refreshCts.CancelAsync().ConfigureAwait(false);
             }
             _releaseFinal.TrySetResult();

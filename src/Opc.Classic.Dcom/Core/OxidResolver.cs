@@ -22,7 +22,8 @@ namespace Opc.Classic.Dcom.Core;
 //   - Recommendations: require authenticated RPC context before mutating ping sets, enforce negotiated
 //     integrity/privacy where present, and add per-peer rate limits/back-pressure.
 // TODO(p4e-security): Harden server-side SimplePing/ComplexPing before they mutate ping-set state.
-internal sealed class OxidResolver : NdrOp {
+internal sealed class OxidResolver : NdrOp
+{
 
     /// <summary>
     /// Bindings
@@ -46,7 +47,8 @@ internal sealed class OxidResolver : NdrOp {
     public override int Opnum => 4;
 
     /// <inheritdoc/>
-    public override void Write(NdrCodec ndr) {
+    public override void Write(NdrCodec ndr)
+    {
         MarshalUnMarshalHelper.WriteOctetArrayLE(ndr, _odix);
         var context = new CodecContext();
         MarshalUnMarshalHelper.Serialize(ndr, typeof(short), (short)1, context);
@@ -56,29 +58,34 @@ internal sealed class OxidResolver : NdrOp {
     }
 
     /// <inheritdoc/>
-    public override void Read(NdrCodec ndr) {
+    public override void Read(NdrCodec ndr)
+    {
         ndr.ReadUnsignedLong(); // pointer
         ndr.ReadUnsignedLong(); // some length component, irrelevant for us right now
         OxidBindings = DualStringArray.Decode(ndr);
-        try {
+        try
+        {
             var ipid2 = new UUID();
             ipid2.Decode(ndr, ndr.Buffer);
             IPID = ipid2.ToString();
         }
-        catch (NdrException e) {
+        catch (NdrException e)
+        {
             Log.Logger.Error(e, "RemActivation read");
         }
 
         // read the auth hint
         var authenticationHint = ndr.ReadUnsignedLong();
-        var comVersion = new ComVersion {
+        var comVersion = new ComVersion
+        {
             MajorVersion = ndr.ReadUnsignedShort(),
             MinorVersion = ndr.ReadUnsignedShort()
         };
 
         var hresult = ndr.ReadUnsignedLong();
 
-        if (hresult != 0) {
+        if (hresult != 0)
+        {
             throw new InteropRuntimeException(hresult);
         }
     }

@@ -19,9 +19,11 @@ using TUnit.Core;
 
 namespace Opc.Classic.Hda.Tests.Hosting;
 
-public sealed class OpcHdaServerDispatcherRoundTripAdditionalTests {
+public sealed class OpcHdaServerDispatcherRoundTripAdditionalTests
+{
     [Test]
-    public async Task DispatchAsync_GeneratedProxyRoundTripsServerMethods_ReturnsConcreteResults() {
+    public async Task DispatchAsync_GeneratedProxyRoundTripsServerMethods_ReturnsConcreteResults()
+    {
         var server = new RecordingHdaServer();
         IOpcHdaServerDispatcher dispatcher = new OpcHdaServerDispatcher(server);
         InMemoryCallChannel channel = CreateChannel(dispatcher);
@@ -63,7 +65,8 @@ public sealed class OpcHdaServerDispatcherRoundTripAdditionalTests {
     }
 
     [Test]
-    public async Task DispatcherBrowseHelpers_ValidateFiltersBrowseAndMove_ReturnConcreteValues() {
+    public async Task DispatcherBrowseHelpers_ValidateFiltersBrowseAndMove_ReturnConcreteValues()
+    {
         var server = new RecordingHdaServer();
         IOpcHdaServerDispatcher dispatcher = new OpcHdaServerDispatcher(server);
 
@@ -94,7 +97,8 @@ public sealed class OpcHdaServerDispatcherRoundTripAdditionalTests {
     }
 
     [Test]
-    public async Task DispatcherUpdateHelpers_DelegateToSyncUpdateAndAsyncFallback_ReturnConcreteErrors() {
+    public async Task DispatcherUpdateHelpers_DelegateToSyncUpdateAndAsyncFallback_ReturnConcreteErrors()
+    {
         var server = new RecordingHdaServer();
         IOpcHdaServerDispatcher dispatcher = new OpcHdaServerDispatcher(server);
         long firstTime = new DateTimeOffset(2026, 1, 2, 3, 4, 5, TimeSpan.Zero).ToFileTime();
@@ -125,7 +129,8 @@ public sealed class OpcHdaServerDispatcherRoundTripAdditionalTests {
     }
 
     [Test]
-    public async Task DispatchAsync_UnknownInterface_ReturnsNotImplementedWithoutCallingServer() {
+    public async Task DispatchAsync_UnknownInterface_ReturnsNotImplementedWithoutCallingServer()
+    {
         var server = new RecordingHdaServer();
         IOpcHdaServerDispatcher dispatcher = new OpcHdaServerDispatcher(server);
 
@@ -144,7 +149,8 @@ public sealed class OpcHdaServerDispatcherRoundTripAdditionalTests {
         new((iid, opnum, payload, cancellationToken) =>
             dispatcher.DispatchAsync(iid, opnum, payload, cancellationToken));
 
-    private static OpcServerStatus CreateStatus() => new() {
+    private static OpcServerStatus CreateStatus() => new()
+    {
         Spec = OpcStatusSpec.Hda,
         StartTime = DateTimeOffset.UnixEpoch,
         CurrentTime = DateTimeOffset.UnixEpoch.AddSeconds(10),
@@ -155,7 +161,8 @@ public sealed class OpcHdaServerDispatcherRoundTripAdditionalTests {
         VendorInfo = "HDA adapter round-trip",
     };
 
-    private sealed class RecordingHdaServer : IOpcHdaServer, IOPCHDA_SyncUpdate {
+    private sealed class RecordingHdaServer : IOpcHdaServer, IOPCHDA_SyncUpdate
+    {
         public int GetStatusCallCount { get; private set; }
 
         public string[] LastItemIds { get; private set; } = [];
@@ -177,7 +184,8 @@ public sealed class OpcHdaServerDispatcherRoundTripAdditionalTests {
             out string[] attributeNames,
             out string[] attributeDescriptions,
             out int[] attributeDataTypes,
-            CancellationToken cancellationToken = default) {
+            CancellationToken cancellationToken = default)
+        {
             attributeIds = [1, 2];
             attributeNames = ["DataType", "Description"];
             attributeDescriptions = ["Variant type", "Human text"];
@@ -189,30 +197,35 @@ public sealed class OpcHdaServerDispatcherRoundTripAdditionalTests {
             out int[] aggregateIds,
             out string[] aggregateNames,
             out string[] aggregateDescriptions,
-            CancellationToken cancellationToken = default) {
+            CancellationToken cancellationToken = default)
+        {
             aggregateIds = [1, 4];
             aggregateNames = ["Interpolative", "Average"];
             aggregateDescriptions = ["Interpolated value", "Time average"];
             return Task.CompletedTask;
         }
 
-        public Task<OpcServerStatus> GetStatusAsync(CancellationToken cancellationToken = default) {
+        public Task<OpcServerStatus> GetStatusAsync(CancellationToken cancellationToken = default)
+        {
             GetStatusCallCount++;
             return Task.FromResult(CreateStatus());
         }
 
-        public Task<int[]> GetItemHandlesAsync(string[] itemIds, int[] clientHandles, CancellationToken cancellationToken = default) {
+        public Task<int[]> GetItemHandlesAsync(string[] itemIds, int[] clientHandles, CancellationToken cancellationToken = default)
+        {
             LastItemIds = itemIds;
             LastClientHandles = clientHandles;
             return Task.FromResult(new[] { 501, 502 });
         }
 
-        public Task<int[]> ReleaseItemHandlesAsync(int[] serverHandles, CancellationToken cancellationToken = default) {
+        public Task<int[]> ReleaseItemHandlesAsync(int[] serverHandles, CancellationToken cancellationToken = default)
+        {
             LastReleasedHandles = serverHandles;
             return Task.FromResult(new[] { OpcResultId.Ok.Code, OpcResultId.InvalidHandle.Code });
         }
 
-        public Task<int[]> ValidateItemIdsAsync(string[] itemIds, CancellationToken cancellationToken = default) {
+        public Task<int[]> ValidateItemIdsAsync(string[] itemIds, CancellationToken cancellationToken = default)
+        {
             LastItemIds = itemIds;
             return Task.FromResult(itemIds
                 .Select(static itemId => itemId == "Missing" ? OpcResultId.UnknownItemId.Code : OpcResultId.Ok.Code)
@@ -222,7 +235,8 @@ public sealed class OpcHdaServerDispatcherRoundTripAdditionalTests {
         public async IAsyncEnumerable<HdaBrowseElement> BrowseAsync(
             string branchPosition,
             HdaBrowseType browseType,
-            [EnumeratorCancellation] CancellationToken cancellationToken = default) {
+            [EnumeratorCancellation] CancellationToken cancellationToken = default)
+        {
             LastBrowseBranch = branchPosition;
             cancellationToken.ThrowIfCancellationRequested();
             await Task.CompletedTask;
@@ -239,7 +253,8 @@ public sealed class OpcHdaServerDispatcherRoundTripAdditionalTests {
             long[] timestampFileTimes,
             OpcVariant[] dataValues,
             int[] qualities,
-            CancellationToken cancellationToken = default) {
+            CancellationToken cancellationToken = default)
+        {
             _ = timestampFileTimes;
             LastInsertHandles = serverHandles;
             LastInsertValues = dataValues;
@@ -252,7 +267,8 @@ public sealed class OpcHdaServerDispatcherRoundTripAdditionalTests {
             long[] timestampFileTimes,
             OpcVariant[] dataValues,
             int[] qualities,
-            CancellationToken cancellationToken = default) {
+            CancellationToken cancellationToken = default)
+        {
             _ = serverHandles;
             _ = timestampFileTimes;
             _ = dataValues;
@@ -265,7 +281,8 @@ public sealed class OpcHdaServerDispatcherRoundTripAdditionalTests {
             long[] timestampFileTimes,
             OpcVariant[] dataValues,
             int[] qualities,
-            CancellationToken cancellationToken = default) {
+            CancellationToken cancellationToken = default)
+        {
             _ = serverHandles;
             _ = timestampFileTimes;
             _ = dataValues;
@@ -277,7 +294,8 @@ public sealed class OpcHdaServerDispatcherRoundTripAdditionalTests {
             OpcHdaTime startTime,
             OpcHdaTime endTime,
             int[] serverHandles,
-            CancellationToken cancellationToken = default) {
+            CancellationToken cancellationToken = default)
+        {
             _ = startTime;
             _ = endTime;
             _ = serverHandles;
@@ -287,7 +305,8 @@ public sealed class OpcHdaServerDispatcherRoundTripAdditionalTests {
         public Task<int[]> DeleteAtTimeAsync(
             int[] serverHandles,
             long[] timestampFileTimes,
-            CancellationToken cancellationToken = default) {
+            CancellationToken cancellationToken = default)
+        {
             _ = serverHandles;
             _ = timestampFileTimes;
             return Task.FromResult(new[] { OpcResultId.Ok.Code, OpcHdaErrors.OPCHDA_E_NODATAEXISTS });

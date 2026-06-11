@@ -14,35 +14,42 @@ using Microsoft.CodeAnalysis.Formatting;
 
 namespace Opc.Classic.MigrationAnalyzer.CodeFixes;
 
-internal static class MigrationCodeFixHelpers {
+internal static class MigrationCodeFixHelpers
+{
     public static async Task<Document> ReplaceNodeAndFormatAsync(
         Document document,
         SyntaxNode oldNode,
         SyntaxNode newNode,
-        CancellationToken cancellationToken) {
+        CancellationToken cancellationToken)
+    {
         SyntaxNode root = await GetRequiredRootAsync(document, cancellationToken).ConfigureAwait(false);
         SyntaxNode newRoot = root.ReplaceNode(oldNode, newNode.WithAdditionalAnnotations(Formatter.Annotation));
         Document newDocument = document.WithSyntaxRoot(newRoot);
         return await Formatter.FormatAsync(newDocument, Formatter.Annotation, cancellationToken: cancellationToken).ConfigureAwait(false);
     }
 
-    public static async Task<SyntaxNode> GetRequiredRootAsync(Document document, CancellationToken cancellationToken) {
+    public static async Task<SyntaxNode> GetRequiredRootAsync(Document document, CancellationToken cancellationToken)
+    {
         SyntaxNode? root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
         return root ?? throw new InvalidOperationException("The document does not contain a syntax root.");
     }
 
-    public static async Task<Document> FormatRootAsync(Document document, SyntaxNode root, CancellationToken cancellationToken) {
+    public static async Task<Document> FormatRootAsync(Document document, SyntaxNode root, CancellationToken cancellationToken)
+    {
         Document newDocument = document.WithSyntaxRoot(root.WithAdditionalAnnotations(Formatter.Annotation));
         return await Formatter.FormatAsync(newDocument, Formatter.Annotation, cancellationToken: cancellationToken).ConfigureAwait(false);
     }
 
-    public static SyntaxNode AddUsing(SyntaxNode root, string namespaceName) {
-        if (root is not CompilationUnitSyntax compilationUnit) {
+    public static SyntaxNode AddUsing(SyntaxNode root, string namespaceName)
+    {
+        if (root is not CompilationUnitSyntax compilationUnit)
+        {
             return root;
         }
 
         bool hasUsing = compilationUnit.Usings.Any(usingDirective => string.Equals(usingDirective.Name?.ToString(), namespaceName, StringComparison.Ordinal));
-        if (hasUsing) {
+        if (hasUsing)
+        {
             return root;
         }
 
@@ -51,17 +58,21 @@ internal static class MigrationCodeFixHelpers {
         return compilationUnit.AddUsings(usingDirective);
     }
 
-    public static SyntaxNode EnsureContainingMethodIsAwaitable(SyntaxNode root, SyntaxNode node) {
+    public static SyntaxNode EnsureContainingMethodIsAwaitable(SyntaxNode root, SyntaxNode node)
+    {
         MethodDeclarationSyntax? method = node.FirstAncestorOrSelf<MethodDeclarationSyntax>();
-        if (method is null || method.Modifiers.Any(SyntaxKind.AsyncKeyword)) {
+        if (method is null || method.Modifiers.Any(SyntaxKind.AsyncKeyword))
+        {
             return root;
         }
 
         TypeSyntax returnType = method.ReturnType;
-        if (returnType is PredefinedTypeSyntax predefinedType && predefinedType.Keyword.IsKind(SyntaxKind.VoidKeyword)) {
+        if (returnType is PredefinedTypeSyntax predefinedType && predefinedType.Keyword.IsKind(SyntaxKind.VoidKeyword))
+        {
             returnType = SyntaxFactory.ParseTypeName("Task").WithTriviaFrom(method.ReturnType);
         }
-        else if (!IsTaskLike(returnType)) {
+        else if (!IsTaskLike(returnType))
+        {
             returnType = SyntaxFactory.ParseTypeName("Task<" + returnType.ToString() + ">").WithTriviaFrom(method.ReturnType);
         }
 
@@ -74,9 +85,11 @@ internal static class MigrationCodeFixHelpers {
         return root.ReplaceNode(method, updatedMethod);
     }
 
-    public static SyntaxNode EnsureCancellationTokenParameter(SyntaxNode root, SyntaxNode node) {
+    public static SyntaxNode EnsureCancellationTokenParameter(SyntaxNode root, SyntaxNode node)
+    {
         MethodDeclarationSyntax? method = node.FirstAncestorOrSelf<MethodDeclarationSyntax>();
-        if (method is null || method.ParameterList.Parameters.Any(parameter => string.Equals(parameter.Identifier.ValueText, "ct", StringComparison.Ordinal))) {
+        if (method is null || method.ParameterList.Parameters.Any(parameter => string.Equals(parameter.Identifier.ValueText, "ct", StringComparison.Ordinal)))
+        {
             return root;
         }
 
@@ -90,17 +103,20 @@ internal static class MigrationCodeFixHelpers {
     public static ExpressionSyntax AwaitExpression(string expressionText) =>
         SyntaxFactory.ParseExpression("await " + expressionText);
 
-    public static string ArgumentsWithCancellationToken(ArgumentListSyntax argumentList) {
+    public static string ArgumentsWithCancellationToken(ArgumentListSyntax argumentList)
+    {
         string arguments = string.Join(", ", argumentList.Arguments.Select(static argument => argument.ToString()));
         return string.IsNullOrWhiteSpace(arguments) ? "ct" : arguments + ", ct";
     }
 
-    public static string ReceiverText(InvocationExpressionSyntax invocation) {
+    public static string ReceiverText(InvocationExpressionSyntax invocation)
+    {
         ExpressionSyntax? receiver = LegacySyntaxFacts.GetInvocationReceiver(invocation);
         return receiver?.ToString() ?? string.Empty;
     }
 
-    private static bool IsTaskLike(TypeSyntax returnType) {
+    private static bool IsTaskLike(TypeSyntax returnType)
+    {
         string text = returnType.ToString();
         return text.Equals("Task", StringComparison.Ordinal) ||
                text.StartsWith("Task<", StringComparison.Ordinal) ||

@@ -39,7 +39,8 @@ namespace Opc.Classic.Dcom.Automation;
 ///                                // described type.
 /// </remarks>
 [Serializable]
-public sealed class TypeAttr {
+public sealed class TypeAttr
+{
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 #pragma warning disable IDE1006 // Naming Styles
@@ -69,15 +70,18 @@ public sealed class TypeAttr {
     /// </summary>
     /// <param name="values"></param>
     internal TypeAttr(ComPointer values) :
-        this(values.IsNull ? null : (Struct)values.Referent) {
+        this(values.IsNull ? null : (Struct)values.Referent)
+    {
     }
 
     /// <summary>
     /// Create type attribute
     /// </summary>
     /// <param name="filledStruct"></param>
-    internal TypeAttr(Struct filledStruct) {
-        if (filledStruct == null) {
+    internal TypeAttr(Struct filledStruct)
+    {
+        if (filledStruct == null)
+        {
             guid = null;
             lcid = -1;
             dwReserved = -1;

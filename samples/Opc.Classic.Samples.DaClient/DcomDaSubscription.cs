@@ -8,7 +8,8 @@ using Opc.Classic.Da.Dcom;
 
 namespace Opc.Classic.Samples.DaClient;
 
-public sealed class DcomDaSubscription : IDaSubscription {
+public sealed class DcomDaSubscription : IDaSubscription
+{
     private const int CacheDataSource = 1;
     private const int DeviceDataSource = 2;
 
@@ -27,7 +28,8 @@ public sealed class DcomDaSubscription : IDaSubscription {
         IOPCItemMgtClientProxy itemMgtProxy,
         IOPCSyncIOClientProxy syncIoProxy,
         int serverGroupHandle,
-        SubscriptionState state) {
+        SubscriptionState state)
+    {
         _serverProxy = serverProxy ?? throw new ArgumentNullException(nameof(serverProxy));
         _itemMgtProxy = itemMgtProxy ?? throw new ArgumentNullException(nameof(itemMgtProxy));
         _syncIoProxy = syncIoProxy ?? throw new ArgumentNullException(nameof(syncIoProxy));
@@ -39,7 +41,8 @@ public sealed class DcomDaSubscription : IDaSubscription {
 
     public IAsyncEnumerable<DataChange> DataChanges => ReadChangesAsync();
 
-    public Task SetStateAsync(SubscriptionState state, CancellationToken cancellationToken = default) {
+    public Task SetStateAsync(SubscriptionState state, CancellationToken cancellationToken = default)
+    {
         State = state ?? throw new ArgumentNullException(nameof(state));
         cancellationToken.ThrowIfCancellationRequested();
         return Task.CompletedTask;
@@ -47,11 +50,14 @@ public sealed class DcomDaSubscription : IDaSubscription {
 
     public async Task<IReadOnlyList<IdentifiedResult>> AddItemsAsync(
         IReadOnlyList<Item> items,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         ArgumentNullException.ThrowIfNull(items);
         await _itemMgtProxy.AddItemsAsync(ToItemDefinitions(items), out OpcItemResult[] addResults, out int[] errors, cancellationToken).ConfigureAwait(false);
-        for (int index = 0; index < items.Count && index < addResults.Length; index++) {
-            if (index >= errors.Length || new OpcResultId(errors[index], null).IsSuccess) {
+        for (int index = 0; index < items.Count && index < addResults.Length; index++)
+        {
+            if (index >= errors.Length || new OpcResultId(errors[index], null).IsSuccess)
+            {
                 _items[items[index].ClientHandle] = new ItemBinding(items[index], addResults[index].ServerHandle);
             }
         }
@@ -61,11 +67,13 @@ public sealed class DcomDaSubscription : IDaSubscription {
 
     public async Task<IReadOnlyList<IdentifiedResult>> RemoveItemsAsync(
         IReadOnlyList<int> serverHandles,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         ArgumentNullException.ThrowIfNull(serverHandles);
         int[] handles = ResolveServerHandles(serverHandles);
         int[] errors = await _itemMgtProxy.RemoveItemsAsync(handles, cancellationToken).ConfigureAwait(false);
-        foreach (int handle in serverHandles) {
+        foreach (int handle in serverHandles)
+        {
             _items.Remove(handle);
         }
 
@@ -75,7 +83,8 @@ public sealed class DcomDaSubscription : IDaSubscription {
     public Task<IReadOnlyList<IdentifiedResult>> SetActiveStateAsync(
         IReadOnlyList<int> serverHandles,
         bool active,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         ArgumentNullException.ThrowIfNull(serverHandles);
         int[] handles = ResolveServerHandles(serverHandles);
         return SetActiveStateCoreAsync(serverHandles, handles, active, cancellationToken);
@@ -84,7 +93,8 @@ public sealed class DcomDaSubscription : IDaSubscription {
     public async Task<IReadOnlyList<ItemValueResult>> ReadAsync(
         IReadOnlyList<int> serverHandles,
         bool fromCache,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         ArgumentNullException.ThrowIfNull(serverHandles);
         int[] handles = ResolveServerHandles(serverHandles);
         OpcItemState[] states = await _syncIoProxy.ReadAsync(fromCache ? CacheDataSource : DeviceDataSource, handles, out int[] errors, cancellationToken).ConfigureAwait(false);
@@ -94,7 +104,8 @@ public sealed class DcomDaSubscription : IDaSubscription {
     public async Task<IReadOnlyList<IdentifiedResult>> WriteAsync(
         IReadOnlyList<int> serverHandles,
         IReadOnlyList<object?> values,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         ArgumentNullException.ThrowIfNull(serverHandles);
         ArgumentNullException.ThrowIfNull(values);
         int[] handles = ResolveServerHandles(serverHandles);
@@ -103,7 +114,8 @@ public sealed class DcomDaSubscription : IDaSubscription {
         return ToIdentifiedResults(serverHandles.Select(static handle => new Item($"#{handle}")).ToArray(), errors);
     }
 
-    public async Task<int> RefreshAsync(bool fromCache, CancellationToken cancellationToken = default) {
+    public async Task<int> RefreshAsync(bool fromCache, CancellationToken cancellationToken = default)
+    {
         int transaction = Interlocked.Increment(ref _nextTransaction);
         IReadOnlyList<int> clientHandles = _items.Keys.ToArray();
         IReadOnlyList<ItemValueResult> values = await ReadAsync(clientHandles, fromCache, cancellationToken).ConfigureAwait(false);
@@ -112,8 +124,10 @@ public sealed class DcomDaSubscription : IDaSubscription {
         return transaction;
     }
 
-    public async ValueTask DisposeAsync() {
-        if (_disposed) {
+    public async ValueTask DisposeAsync()
+    {
+        if (_disposed)
+        {
             return;
         }
 
@@ -127,7 +141,8 @@ public sealed class DcomDaSubscription : IDaSubscription {
         IReadOnlyList<int> requestedHandles,
         int[] handles,
         bool active,
-        CancellationToken cancellationToken) {
+        CancellationToken cancellationToken)
+    {
         int[] errors = await _itemMgtProxy.SetActiveStateAsync(handles, active, cancellationToken).ConfigureAwait(false);
         return ToIdentifiedResults(requestedHandles.Select(static handle => new Item($"#{handle}")).ToArray(), errors);
     }
@@ -136,14 +151,16 @@ public sealed class DcomDaSubscription : IDaSubscription {
         handles.Select(handle => _items.TryGetValue(handle, out ItemBinding binding) ? binding.ServerHandle : handle).ToArray();
 
     private IReadOnlyList<ItemValueResult> ToValueResults(IReadOnlyList<int> requestedHandles, OpcItemState[] states, int[] errors) =>
-        requestedHandles.Select((handle, index) => {
+        requestedHandles.Select((handle, index) =>
+        {
             ItemBinding binding = _items.TryGetValue(handle, out ItemBinding found)
                 ? found
                 : new ItemBinding(new Item($"#{handle}") { ClientHandle = handle }, handle);
             OpcItemState state = index < states.Length
                 ? states[index]
                 : new OpcItemState(handle, DateTimeOffset.UtcNow, OpcQuality.Bad, OpcVariant.Null);
-            return new ItemValueResult(binding.Item.ItemName, binding.Item.Path) {
+            return new ItemValueResult(binding.Item.ItemName, binding.Item.Path)
+            {
                 ClientHandle = binding.Item.ClientHandle,
                 Value = OpcVariantConverter.ToObject(state.Value),
                 Quality = state.Quality,
@@ -152,15 +169,19 @@ public sealed class DcomDaSubscription : IDaSubscription {
             };
         }).ToArray();
 
-    private async IAsyncEnumerable<DataChange> ReadChangesAsync([EnumeratorCancellation] CancellationToken ct = default) {
-        while (true) {
+    private async IAsyncEnumerable<DataChange> ReadChangesAsync([EnumeratorCancellation] CancellationToken ct = default)
+    {
+        while (true)
+        {
             await _signal.WaitAsync(ct).ConfigureAwait(false);
-            if (_changes.Count > 0) {
+            if (_changes.Count > 0)
+            {
                 DataChange change = _changes[0];
                 _changes.RemoveAt(0);
                 yield return change;
             }
-            else if (_disposed) {
+            else if (_disposed)
+            {
                 yield break;
             }
         }
@@ -170,7 +191,8 @@ public sealed class DcomDaSubscription : IDaSubscription {
         items.Select(static item => new OpcItemDef(item.Path, item.ItemName, Active: true, item.ClientHandle, Blob: [], VarType.VT_EMPTY)).ToArray();
 
     private static IReadOnlyList<IdentifiedResult> ToIdentifiedResults(IReadOnlyList<ItemIdentifier> items, int[] errors) =>
-        items.Select((item, index) => new IdentifiedResult(item) {
+        items.Select((item, index) => new IdentifiedResult(item)
+        {
             ClientHandle = item is Item typedItem ? typedItem.ClientHandle : 0,
             ResultId = new OpcResultId(index < errors.Length ? errors[index] : OpcResultId.Fail.Code, null),
         }).ToArray();

@@ -10,12 +10,14 @@ namespace Opc.Classic.Dcom.Common;
 /// supported COM protocol. Default version is 5.4.
 /// </summary>
 [Serializable]
-public sealed class ComVersion {
+public sealed class ComVersion
+{
 
     /// <summary>
     /// Create version
     /// </summary>
-    public ComVersion() {
+    public ComVersion()
+    {
     }
 
     /// <summary>
@@ -23,7 +25,8 @@ public sealed class ComVersion {
     /// </summary>
     /// <param name="majorVersion"></param>
     /// <param name="minorVersion"></param>
-    public ComVersion(int majorVersion, int minorVersion) {
+    public ComVersion(int majorVersion, int minorVersion)
+    {
         MajorVersion = majorVersion;
         MinorVersion = minorVersion;
     }

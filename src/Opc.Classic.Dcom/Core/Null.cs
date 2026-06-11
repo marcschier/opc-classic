@@ -9,7 +9,8 @@ namespace Opc.Classic.Dcom.Core;
 /// </summary>
 [Serializable]
 #pragma warning disable RECS0014 // If all fields, properties and methods members are static, the class can be made static.
-public sealed class Null {
+public sealed class Null
+{
 #pragma warning restore RECS0014 // If all fields, properties and methods members are static, the class can be made static.
 
     /// <summary>

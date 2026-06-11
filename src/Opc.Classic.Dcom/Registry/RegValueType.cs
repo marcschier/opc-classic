@@ -5,7 +5,8 @@ namespace Opc.Classic.Dcom.Registry;
 /// <summary>
 /// Registry value types
 /// </summary>
-public enum RegValueType {
+public enum RegValueType
+{
 
     /// <summary>
     /// No type (the stored value, if any)

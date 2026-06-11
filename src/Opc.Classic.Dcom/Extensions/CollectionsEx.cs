@@ -8,7 +8,8 @@ namespace System.Collections.Generic;
 /// <summary>
 /// Extensions
 /// </summary>
-public static class CollectionsEx {
+public static class CollectionsEx
+{
 
     /// <summary>
     /// Mimics java
@@ -16,8 +17,10 @@ public static class CollectionsEx {
     /// <param name="dictionary"></param>
     /// <param name="key"></param>
     /// <returns></returns>
-    public static V GetAndRemove<K, V>(this IDictionary<K, V> dictionary, K key) {
-        if (dictionary.ContainsKey(key)) {
+    public static V GetAndRemove<K, V>(this IDictionary<K, V> dictionary, K key)
+    {
+        if (dictionary.ContainsKey(key))
+        {
             var value = dictionary[key];
             dictionary.Remove(key);
             return value;
@@ -33,8 +36,10 @@ public static class CollectionsEx {
     /// <param name="deflt"></param>
     /// <returns></returns>
     public static V GetOrDefault<K, V>(this IDictionary<K, V> dictionary, K key,
-        V deflt = default) {
-        if (dictionary.ContainsKey(key)) {
+        V deflt = default)
+    {
+        if (dictionary.ContainsKey(key))
+        {
             var value = dictionary[key];
             return value;
         }
@@ -48,11 +53,14 @@ public static class CollectionsEx {
     /// <param name="key"></param>
     /// <param name="value"></param>
     /// <returns></returns>
-    public static void AddOrUpdate<K, V>(this IDictionary<K, V> dictionary, K key, V value) {
-        if (dictionary.ContainsKey(key)) {
+    public static void AddOrUpdate<K, V>(this IDictionary<K, V> dictionary, K key, V value)
+    {
+        if (dictionary.ContainsKey(key))
+        {
             dictionary[key] = value;
         }
-        else {
+        else
+        {
             dictionary.Add(key, value);
         }
     }
@@ -63,8 +71,10 @@ public static class CollectionsEx {
     /// <param name="list"></param>
     /// <param name="index"></param>
     /// <returns></returns>
-    public static object GetAndRemoveAt(this IList<object> list, int index) {
-        if (index < list.Count) {
+    public static object GetAndRemoveAt(this IList<object> list, int index)
+    {
+        if (index < list.Count)
+        {
             var value = list[index];
             list.Remove(index);
             return value;

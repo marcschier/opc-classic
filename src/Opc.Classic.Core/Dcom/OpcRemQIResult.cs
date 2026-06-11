@@ -20,9 +20,11 @@ namespace Opc.Classic.Dcom;
 /// new calls over the same DCOM channel using the same OXID resolver bindings
 /// as the parent OBJREF.
 /// </remarks>
-public sealed class OpcRemQIResult {
+public sealed class OpcRemQIResult
+{
     /// <summary>Creates a new RemQI result entry.</summary>
-    public OpcRemQIResult(int hresult, uint flags, uint publicRefs, ulong oxid, ulong oid, Guid ipid) {
+    public OpcRemQIResult(int hresult, uint flags, uint publicRefs, ulong oxid, ulong oid, Guid ipid)
+    {
         Hresult = hresult;
         Flags = flags;
         PublicRefs = publicRefs;

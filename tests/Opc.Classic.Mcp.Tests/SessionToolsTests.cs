@@ -18,9 +18,11 @@ using TUnit.Core;
 
 namespace Opc.Classic.Mcp.Tests;
 
-public sealed class SessionToolsTests {
+public sealed class SessionToolsTests
+{
     [Test]
-    public async Task Session_tools_create_list_and_close_session_via_mcp_client() {
+    public async Task Session_tools_create_list_and_close_session_via_mcp_client()
+    {
         await using McpTestServer server = await McpTestServer.CreateAsync().ConfigureAwait(false);
 
         OpcSessionDto created = await server.CallToolAsync<OpcSessionDto>(
@@ -43,7 +45,8 @@ public sealed class SessionToolsTests {
     }
 
     [Test]
-    public async Task Session_manager_expires_idle_sessions() {
+    public async Task Session_manager_expires_idle_sessions()
+    {
         using var manager = new OpcSessionManager();
         OpcSession session = manager.CreateSession(TimeSpan.FromMilliseconds(25));
 
@@ -55,8 +58,10 @@ public sealed class SessionToolsTests {
     }
 }
 
-internal sealed class McpTestServer : IAsyncDisposable {
-    private static readonly JsonSerializerOptions JsonOptions = new(JsonSerializerDefaults.Web) {
+internal sealed class McpTestServer : IAsyncDisposable
+{
+    private static readonly JsonSerializerOptions JsonOptions = new(JsonSerializerDefaults.Web)
+    {
         PropertyNameCaseInsensitive = true,
     };
 
@@ -64,7 +69,8 @@ internal sealed class McpTestServer : IAsyncDisposable {
     private readonly Pipe _clientToServer;
     private readonly Pipe _serverToClient;
 
-    private McpTestServer(IHost host, McpClient client, Pipe clientToServer, Pipe serverToClient) {
+    private McpTestServer(IHost host, McpClient client, Pipe clientToServer, Pipe serverToClient)
+    {
         _host = host;
         Client = client;
         _clientToServer = clientToServer;
@@ -73,7 +79,8 @@ internal sealed class McpTestServer : IAsyncDisposable {
 
     public McpClient Client { get; }
 
-    public static async Task<McpTestServer> CreateAsync(Action<IServiceCollection>? configureServices = null) {
+    public static async Task<McpTestServer> CreateAsync(Action<IServiceCollection>? configureServices = null)
+    {
         var clientToServer = new Pipe();
         var serverToClient = new Pipe();
         HostApplicationBuilder builder = Host.CreateApplicationBuilder([]);
@@ -109,10 +116,12 @@ internal sealed class McpTestServer : IAsyncDisposable {
         return new McpTestServer(host, client, clientToServer, serverToClient);
     }
 
-    public async Task<T> CallToolAsync<T>(string toolName, Dictionary<string, object> arguments) {
+    public async Task<T> CallToolAsync<T>(string toolName, Dictionary<string, object> arguments)
+    {
         Dictionary<string, object?> nullableArguments = arguments.ToDictionary(static pair => pair.Key, static pair => (object?)pair.Value);
         CallToolResult result = await Client.CallToolAsync(toolName, nullableArguments).ConfigureAwait(false);
-        if (result.IsError == true) {
+        if (result.IsError == true)
+        {
             string error = string.Join("\n", result.Content.OfType<TextContentBlock>().Select(static content => content.Text));
             throw new InvalidOperationException("Tool '" + toolName + "' returned an error: " + error);
         }
@@ -122,7 +131,8 @@ internal sealed class McpTestServer : IAsyncDisposable {
         return value ?? throw new InvalidOperationException($"Tool '{toolName}' returned null JSON.");
     }
 
-    public async ValueTask DisposeAsync() {
+    public async ValueTask DisposeAsync()
+    {
         await Client.DisposeAsync().ConfigureAwait(false);
         await _host.StopAsync().ConfigureAwait(false);
         _host.Dispose();

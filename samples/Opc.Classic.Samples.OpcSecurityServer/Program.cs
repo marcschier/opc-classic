@@ -17,14 +17,16 @@ using Opc.Classic.Security.Dcom;
 
 namespace Opc.Classic.Samples.OpcSecurityServer;
 
-internal static class Program {
+internal static class Program
+{
     private static readonly Guid SampleClsid = new("5A0DA9C7-56D2-4768-9CB3-6FC5E57B6D51");
     private const string SampleProgId = "Opc.Classic.Samples.OpcSecurityServer.1";
     private const string SampleFriendlyName = "Opc.Classic Sample OPC Security Server";
     private const string SampleAssemblyName = "Opc.Classic.Samples.OpcSecurityServer";
     private const string SampleTypeName = "Opc.Classic.Samples.OpcSecurityServer.Program+SecuritySampleDaServer";
 
-    public static async Task<int> Main(string[] args) {
+    public static async Task<int> Main(string[] args)
+    {
         ArgumentNullException.ThrowIfNull(args);
 
         var registration = new OpcClsidRegistration(
@@ -38,7 +40,8 @@ internal static class Program {
             OpcComponentCategories.OpcDaServer20,
         ];
 
-        if (SampleServerRegistrationCommand.TryHandle(args, registration, implementedCategories, out int registrationExitCode)) {
+        if (SampleServerRegistrationCommand.TryHandle(args, registration, implementedCategories, out int registrationExitCode))
+        {
             return registrationExitCode;
         }
 
@@ -58,14 +61,16 @@ internal static class Program {
         var builder = Host.CreateApplicationBuilder(args);
 
         builder.Logging.ClearProviders();
-        builder.Logging.AddSimpleConsole(static opt => {
+        builder.Logging.AddSimpleConsole(static opt =>
+        {
             opt.SingleLine = true;
             opt.TimestampFormat = "HH:mm:ss ";
         });
 
         builder.Services.AddClassicServer();
         builder.Services.AddClassicClsidRegistry(builder.Configuration);
-        builder.Services.Configure<OpcDaServerOptions>(options => {
+        builder.Services.Configure<OpcDaServerOptions>(options =>
+        {
             options.Clsid = SampleClsid;
             options.ProgId = SampleProgId;
             options.FriendlyName = SampleFriendlyName;
@@ -88,15 +93,19 @@ internal static class Program {
         var host = builder.Build();
 
         uint comClassObjectCookie = 0;
-        if (embedded && OperatingSystem.IsWindows()) {
+        if (embedded && OperatingSystem.IsWindows())
+        {
             comClassObjectCookie = RegisterScmFactory(host.Services);
         }
 
-        try {
+        try
+        {
             await host.RunAsync().ConfigureAwait(false);
         }
-        finally {
-            if (embedded && OperatingSystem.IsWindows() && comClassObjectCookie != 0) {
+        finally
+        {
+            if (embedded && OperatingSystem.IsWindows() && comClassObjectCookie != 0)
+            {
                 ComClassObjectRegistrar.RevokeClassObject(comClassObjectCookie);
                 ComClassObjectRegistrar.Uninitialize();
             }
@@ -105,7 +114,8 @@ internal static class Program {
     }
 
     [System.Runtime.Versioning.SupportedOSPlatform("windows")]
-    private static uint RegisterScmFactory(IServiceProvider services) {
+    private static uint RegisterScmFactory(IServiceProvider services)
+    {
         // The DA-with-Security sample uses the standard OpcDaServerCcw for
         // the IOPCServer CCW; the IOPCSecurityNT / IOPCSecurityPrivate
         // interfaces are exposed through the listening transport endpoint
@@ -123,7 +133,8 @@ internal static class Program {
         return cookie;
     }
 
-    private sealed class OpcSecuritySampleHost : IOpcServerHost, IAsyncDisposable {
+    private sealed class OpcSecuritySampleHost : IOpcServerHost, IAsyncDisposable
+    {
         private static readonly Action<ILogger, Guid, string, Exception?> StartingHost = LoggerMessage.Define<Guid, string>(
             LogLevel.Information,
             new EventId(1, nameof(StartingHost)),
@@ -153,7 +164,8 @@ internal static class Program {
             IOPCSecurityPrivate securityPrivate,
             IOptions<OpcDaServerOptions> options,
             OpcObjectRegistry objectRegistry,
-            ILogger<OpcSecuritySampleHost> logger) {
+            ILogger<OpcSecuritySampleHost> logger)
+        {
             _daServer = daServer ?? throw new ArgumentNullException(nameof(daServer));
             _securityNt = securityNt ?? throw new ArgumentNullException(nameof(securityNt));
             _securityPrivate = securityPrivate ?? throw new ArgumentNullException(nameof(securityPrivate));
@@ -171,7 +183,8 @@ internal static class Program {
             TypeName: typeof(SecuritySampleDaServer).FullName ?? "OpcSecuritySampleServer",
             FriendlyName: _options.FriendlyName);
 
-        public Task StartAsync(CancellationToken cancellationToken) {
+        public Task StartAsync(CancellationToken cancellationToken)
+        {
             StartingHost(_logger, _options.Clsid, _options.ProgId, null);
 
             var endpoint = new TcpServerEndpoint(ListenAddressParser.Parse(_options.ListenAddress ?? "127.0.0.1:0"));
@@ -186,22 +199,26 @@ internal static class Program {
             return started;
         }
 
-        public async Task StopAsync(CancellationToken cancellationToken) {
+        public async Task StopAsync(CancellationToken cancellationToken)
+        {
             _ = cancellationToken;
             StoppingHost(_logger, _options.Clsid, null);
 
             OpcServerListener? listener = _listener;
             _listener = null;
-            if (listener is not null) {
+            if (listener is not null)
+            {
                 await listener.DisposeAsync().ConfigureAwait(false);
             }
         }
 
         public ValueTask DisposeAsync() => new(StopAsync(CancellationToken.None));
 
-        private Dictionary<Guid, IOpcServerDispatcher> BuildServerDispatchers() {
+        private Dictionary<Guid, IOpcServerDispatcher> BuildServerDispatchers()
+        {
             var addressSpace = new FlatHierarchicalNamespace();
-            return new Dictionary<Guid, IOpcServerDispatcher> {
+            return new Dictionary<Guid, IOpcServerDispatcher>
+            {
                 [IOPCServer.InterfaceId] = new IOPCServerServerDispatcher(_daServer),
                 [IOPCCommon.InterfaceId] = new OpcCommonServerDispatcher(new SampleCommonServer()),
                 [IOPCBrowseServerAddressSpace.InterfaceId] = new IOPCBrowseServerAddressSpaceServerDispatcher(new DefaultBrowseServerAddressSpace(addressSpace)),
@@ -215,21 +232,26 @@ internal static class Program {
         }
     }
 
-    private sealed class SampleCommonServer : IOpcCommonServer {
-        public Task SetClientNameAsync(string clientName, CancellationToken cancellationToken = default) {
+    private sealed class SampleCommonServer : IOpcCommonServer
+    {
+        public Task SetClientNameAsync(string clientName, CancellationToken cancellationToken = default)
+        {
             ArgumentNullException.ThrowIfNull(clientName);
             cancellationToken.ThrowIfCancellationRequested();
             return Task.CompletedTask;
         }
     }
 
-    private sealed class SecuritySampleDaServer : IOpcDaServer {
+    private sealed class SecuritySampleDaServer : IOpcDaServer
+    {
         private static readonly DateTimeOffset StartTime = DateTimeOffset.UtcNow;
 
-        public Task<OpcServerStatus> GetStatusAsync(CancellationToken cancellationToken = default) {
+        public Task<OpcServerStatus> GetStatusAsync(CancellationToken cancellationToken = default)
+        {
             cancellationToken.ThrowIfCancellationRequested();
             var now = DateTimeOffset.UtcNow;
-            return Task.FromResult(new OpcServerStatus {
+            return Task.FromResult(new OpcServerStatus
+            {
                 Spec = OpcStatusSpec.Da,
                 StartTime = StartTime,
                 CurrentTime = now,
@@ -248,7 +270,8 @@ internal static class Program {
             int requestedUpdateRate,
             int clientHandle,
             int localeId,
-            CancellationToken cancellationToken = default) {
+            CancellationToken cancellationToken = default)
+        {
             ArgumentException.ThrowIfNullOrWhiteSpace(name);
             _ = active;
             _ = requestedUpdateRate;
@@ -269,7 +292,8 @@ internal static class Program {
             out int serverGroupHandle,
             out int revisedUpdateRate,
             out IOpcInterfaceRef group,
-            CancellationToken cancellationToken = default) {
+            CancellationToken cancellationToken = default)
+        {
             ArgumentException.ThrowIfNullOrWhiteSpace(name);
             _ = active;
             _ = timeBias;
@@ -285,7 +309,8 @@ internal static class Program {
         public Task RemoveGroupAsync(
             int serverGroupHandle,
             bool force,
-            CancellationToken cancellationToken = default) {
+            CancellationToken cancellationToken = default)
+        {
             _ = serverGroupHandle;
             _ = force;
             cancellationToken.ThrowIfCancellationRequested();
@@ -295,7 +320,8 @@ internal static class Program {
         public Task<string> GetErrorStringAsync(
             int errorCode,
             int localeId,
-            CancellationToken cancellationToken = default) {
+            CancellationToken cancellationToken = default)
+        {
             _ = localeId;
             cancellationToken.ThrowIfCancellationRequested();
             return Task.FromResult($"Opc.Classic OPC Security sample error: 0x{errorCode:X8}");

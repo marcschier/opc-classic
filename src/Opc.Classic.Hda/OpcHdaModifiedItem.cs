@@ -11,7 +11,8 @@ namespace Opc.Classic.Hda;
 /// OPC HDA's <c>OPCHDA_MODIFIEDITEM</c> — modified historical values for
 /// one item, including edit metadata and the modifying user per sample.
 /// </summary>
-public sealed record OpcHdaModifiedItem {
+public sealed record OpcHdaModifiedItem
+{
     /// <summary>Constructor — validates all six parallel arrays have the same length.</summary>
     /// <param name="clientHandle">Client correlation handle.</param>
     /// <param name="timestamps">UTC timestamps; parallel with all per-sample arrays.</param>
@@ -27,7 +28,8 @@ public sealed record OpcHdaModifiedItem {
         OpcVariant[] values,
         DateTimeOffset[] modificationTimes,
         uint[] editTypes,
-        string?[] users) {
+        string?[] users)
+    {
         ArgumentNullException.ThrowIfNull(timestamps);
         ArgumentNullException.ThrowIfNull(qualities);
         ArgumentNullException.ThrowIfNull(values);
@@ -72,10 +74,12 @@ public sealed record OpcHdaModifiedItem {
         OpcVariant[] values,
         DateTimeOffset[] modificationTimes,
         uint[] editTypes,
-        string?[] users) {
+        string?[] users)
+    {
         int count = timestamps.Length;
         if (qualities.Length != count || values.Length != count ||
-            modificationTimes.Length != count || editTypes.Length != count || users.Length != count) {
+            modificationTimes.Length != count || editTypes.Length != count || users.Length != count)
+        {
             throw new ArgumentException(
                 $"Parallel arrays must have equal length: timestamps={timestamps.Length}, " +
                 $"qualities={qualities.Length}, values={values.Length}, " +

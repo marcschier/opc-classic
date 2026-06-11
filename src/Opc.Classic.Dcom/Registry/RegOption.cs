@@ -8,7 +8,8 @@ namespace Opc.Classic.Dcom.Registry;
 /// Registry options
 /// </summary>
 [Flags]
-public enum RegOption {
+public enum RegOption
+{
 
     /// <summary>
     /// This key is not volatile; this is the default. The information

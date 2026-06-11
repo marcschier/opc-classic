@@ -9,11 +9,13 @@ using TUnit.Core;
 
 namespace Opc.Classic.Tests;
 
-public sealed class OpcSpecificExceptionTypesTests {
+public sealed class OpcSpecificExceptionTypesTests
+{
     private const int DefaultExceptionHResult = unchecked((int)0x80131500u);
 
     [Test]
-    public async Task SpecExceptions_DefaultConstructor_SetsFailResultAndDefaultMessage() {
+    public async Task SpecExceptions_DefaultConstructor_SetsFailResultAndDefaultMessage()
+    {
         OpcException[] exceptions =
         [
             new OpcDaException(),
@@ -22,7 +24,8 @@ public sealed class OpcSpecificExceptionTypesTests {
             new OpcAeException(),
         ];
 
-        foreach (OpcException exception in exceptions) {
+        foreach (OpcException exception in exceptions)
+        {
             await Assert.That(exception.ResultId).IsEqualTo(OpcResultId.Fail);
             await Assert.That(exception.HResult).IsEqualTo(DefaultExceptionHResult);
             await Assert.That(exception.InnerException).IsNull();
@@ -31,7 +34,8 @@ public sealed class OpcSpecificExceptionTypesTests {
     }
 
     [Test]
-    public async Task SpecExceptions_MessageConstructor_PreservesMessageAndFailResult() {
+    public async Task SpecExceptions_MessageConstructor_PreservesMessageAndFailResult()
+    {
         OpcException[] exceptions =
         [
             new OpcDaException("DA read failed"),
@@ -40,7 +44,8 @@ public sealed class OpcSpecificExceptionTypesTests {
             new OpcAeException("AE subscribe failed"),
         ];
 
-        foreach (OpcException exception in exceptions) {
+        foreach (OpcException exception in exceptions)
+        {
             await Assert.That(exception.ResultId).IsEqualTo(OpcResultId.Fail);
             await Assert.That(exception.HResult).IsEqualTo(DefaultExceptionHResult);
             await Assert.That(exception.InnerException).IsNull();
@@ -49,7 +54,8 @@ public sealed class OpcSpecificExceptionTypesTests {
     }
 
     [Test]
-    public async Task SpecExceptions_MessageAndInnerConstructor_PreservesInnerException() {
+    public async Task SpecExceptions_MessageAndInnerConstructor_PreservesInnerException()
+    {
         var inner = new InvalidOperationException("inner failure");
         OpcException[] exceptions =
         [
@@ -59,7 +65,8 @@ public sealed class OpcSpecificExceptionTypesTests {
             new OpcAeException("AE failure", inner),
         ];
 
-        foreach (OpcException exception in exceptions) {
+        foreach (OpcException exception in exceptions)
+        {
             await Assert.That(exception.ResultId).IsEqualTo(OpcResultId.Fail);
             await Assert.That(exception.HResult).IsEqualTo(DefaultExceptionHResult);
             await Assert.That(object.ReferenceEquals(exception.InnerException, inner)).IsTrue();
@@ -68,7 +75,8 @@ public sealed class OpcSpecificExceptionTypesTests {
     }
 
     [Test]
-    public async Task SpecExceptions_ResultIdConstructor_UsesResultIdStringAsMessage() {
+    public async Task SpecExceptions_ResultIdConstructor_UsesResultIdStringAsMessage()
+    {
         OpcException[] exceptions =
         [
             new OpcDaException(OpcResultId.UnknownItemId),
@@ -85,7 +93,8 @@ public sealed class OpcSpecificExceptionTypesTests {
             OpcResultId.Range,
         ];
 
-        for (int i = 0; i < exceptions.Length; i++) {
+        for (int i = 0; i < exceptions.Length; i++)
+        {
             await Assert.That(exceptions[i].ResultId).IsEqualTo(expectedResultIds[i]);
             await Assert.That(exceptions[i].HResult).IsEqualTo(DefaultExceptionHResult);
             await Assert.That(exceptions[i].InnerException).IsNull();
@@ -94,7 +103,8 @@ public sealed class OpcSpecificExceptionTypesTests {
     }
 
     [Test]
-    public async Task SpecExceptions_ResultIdAndMessageConstructor_PreservesMessage() {
+    public async Task SpecExceptions_ResultIdAndMessageConstructor_PreservesMessage()
+    {
         OpcException[] exceptions =
         [
             new OpcDaException(OpcResultId.UnknownItemId, "DA item was not found"),
@@ -111,7 +121,8 @@ public sealed class OpcSpecificExceptionTypesTests {
             OpcResultId.Range,
         ];
 
-        for (int i = 0; i < exceptions.Length; i++) {
+        for (int i = 0; i < exceptions.Length; i++)
+        {
             await Assert.That(exceptions[i].ResultId).IsEqualTo(expectedResultIds[i]);
             await Assert.That(exceptions[i].HResult).IsEqualTo(DefaultExceptionHResult);
             await Assert.That(exceptions[i].InnerException).IsNull();
@@ -120,7 +131,8 @@ public sealed class OpcSpecificExceptionTypesTests {
     }
 
     [Test]
-    public async Task SpecExceptions_ResultIdMessageAndInnerConstructor_PreservesAllValues() {
+    public async Task SpecExceptions_ResultIdMessageAndInnerConstructor_PreservesAllValues()
+    {
         var inner = new InvalidOperationException("transport failure");
         OpcException[] exceptions =
         [
@@ -138,7 +150,8 @@ public sealed class OpcSpecificExceptionTypesTests {
             OpcResultId.Range,
         ];
 
-        for (int i = 0; i < exceptions.Length; i++) {
+        for (int i = 0; i < exceptions.Length; i++)
+        {
             await Assert.That(exceptions[i].ResultId).IsEqualTo(expectedResultIds[i]);
             await Assert.That(exceptions[i].HResult).IsEqualTo(DefaultExceptionHResult);
             await Assert.That(object.ReferenceEquals(exceptions[i].InnerException, inner)).IsTrue();
@@ -147,7 +160,8 @@ public sealed class OpcSpecificExceptionTypesTests {
     }
 
     [Test]
-    public async Task PlatformNotSupported_DefaultConstructor_UsesStablePlatformMessage() {
+    public async Task PlatformNotSupported_DefaultConstructor_UsesStablePlatformMessage()
+    {
         var exception = new OpcPlatformNotSupportedException();
 
         await Assert.That(exception.ResultId).IsEqualTo(OpcResultId.Fail);
@@ -157,7 +171,8 @@ public sealed class OpcSpecificExceptionTypesTests {
     }
 
     [Test]
-    public async Task PlatformNotSupported_MessageConstructor_PreservesMessage() {
+    public async Task PlatformNotSupported_MessageConstructor_PreservesMessage()
+    {
         var exception = new OpcPlatformNotSupportedException("SSO is unavailable");
 
         await Assert.That(exception.ResultId).IsEqualTo(OpcResultId.Fail);
@@ -167,7 +182,8 @@ public sealed class OpcSpecificExceptionTypesTests {
     }
 
     [Test]
-    public async Task PlatformNotSupported_MessageAndInnerConstructor_PreservesInnerException() {
+    public async Task PlatformNotSupported_MessageAndInnerConstructor_PreservesInnerException()
+    {
         var inner = new PlatformNotSupportedException("native platform feature missing");
         var exception = new OpcPlatformNotSupportedException("OPC platform feature missing", inner);
 

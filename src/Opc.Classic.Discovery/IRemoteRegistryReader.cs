@@ -11,7 +11,8 @@ namespace Opc.Classic.Discovery;
 /// <summary>
 /// Reads registry data relative to <c>HKEY_LOCAL_MACHINE</c> on a remote machine.
 /// </summary>
-public interface IRemoteRegistryReader : IDisposable {
+public interface IRemoteRegistryReader : IDisposable
+{
     /// <summary>Enumerates the direct subkey names under <paramref name="keyPath" />.</summary>
     IReadOnlyList<string> EnumerateSubKeyNames(string keyPath);
 

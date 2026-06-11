@@ -12,9 +12,11 @@ using TUnit.Core;
 
 namespace Opc.Classic.Mcp.Tests;
 
-public sealed class CommandsToolsTests {
+public sealed class CommandsToolsTests
+{
     [Test]
-    public async Task Commands_tools_get_status_descriptions_and_disconnect_via_mcp_client() {
+    public async Task Commands_tools_get_status_descriptions_and_disconnect_via_mcp_client()
+    {
         var syntheticCommands = new SyntheticCommandsServer();
         string channelName = "commands-" + Guid.NewGuid().ToString("N");
         using IDisposable registration = InMemoryCommandsConnectionRegistry.Register(channelName, syntheticCommands.Channel);
@@ -23,7 +25,8 @@ public sealed class CommandsToolsTests {
 
         OpcResultDto connected = await server.CallToolAsync<OpcResultDto>(
             "opcclassic.commands.connect",
-            new Dictionary<string, object> {
+            new Dictionary<string, object>
+            {
                 ["sessionId"] = session.SessionId,
                 ["connectionString"] = "inmemory://" + channelName,
             }).ConfigureAwait(false);
@@ -32,7 +35,8 @@ public sealed class CommandsToolsTests {
             new Dictionary<string, object> { ["sessionId"] = session.SessionId }).ConfigureAwait(false);
         OpcCommandDescriptionDto[] descriptions = await server.CallToolAsync<OpcCommandDescriptionDto[]>(
             "opcclassic.commands.get_command_descriptions",
-            new Dictionary<string, object> {
+            new Dictionary<string, object>
+            {
                 ["sessionId"] = session.SessionId,
                 ["commandNamespace"] = "unit-test",
             }).ConfigureAwait(false);
@@ -48,7 +52,8 @@ public sealed class CommandsToolsTests {
     }
 
     [Test]
-    public async Task Commands_tools_invoke_poll_and_cancel_via_mcp_client() {
+    public async Task Commands_tools_invoke_poll_and_cancel_via_mcp_client()
+    {
         var syntheticCommands = new SyntheticCommandsServer();
         string channelName = "commands-" + Guid.NewGuid().ToString("N");
         using IDisposable registration = InMemoryCommandsConnectionRegistry.Register(channelName, syntheticCommands.Channel);
@@ -56,14 +61,16 @@ public sealed class CommandsToolsTests {
         OpcSessionDto session = await server.CallToolAsync<OpcSessionDto>("opcclassic.session.create", []).ConfigureAwait(false);
         _ = await server.CallToolAsync<OpcResultDto>(
             "opcclassic.commands.connect",
-            new Dictionary<string, object> {
+            new Dictionary<string, object>
+            {
                 ["sessionId"] = session.SessionId,
                 ["connectionString"] = "inmemory://" + channelName,
             }).ConfigureAwait(false);
 
         OpcCommandInvocationDto invocation = await server.CallToolAsync<OpcCommandInvocationDto>(
             "opcclassic.commands.invoke_command",
-            new Dictionary<string, object> {
+            new Dictionary<string, object>
+            {
                 ["sessionId"] = session.SessionId,
                 ["commandName"] = "Start",
                 ["targetId"] = "Unit1",
@@ -73,13 +80,15 @@ public sealed class CommandsToolsTests {
             }).ConfigureAwait(false);
         OpcCommandStateDto state = await server.CallToolAsync<OpcCommandStateDto>(
             "opcclassic.commands.poll_command_state",
-            new Dictionary<string, object> {
+            new Dictionary<string, object>
+            {
                 ["sessionId"] = session.SessionId,
                 ["invocationId"] = invocation.InvocationId!,
             }).ConfigureAwait(false);
         OpcResultDto cancelled = await server.CallToolAsync<OpcResultDto>(
             "opcclassic.commands.cancel_command",
-            new Dictionary<string, object> {
+            new Dictionary<string, object>
+            {
                 ["sessionId"] = session.SessionId,
                 ["invocationId"] = invocation.InvocationId!,
             }).ConfigureAwait(false);
@@ -93,7 +102,8 @@ public sealed class CommandsToolsTests {
         await Assert.That(syntheticCommands.DisconnectedInvocationId).IsEqualTo("invoke-1");
     }
 
-    private sealed class SyntheticCommandsServer {
+    private sealed class SyntheticCommandsServer
+    {
         public SyntheticCommandsServer() => Channel = new InMemoryCallChannel(DispatchAsync);
 
         public InMemoryCallChannel Channel { get; }
@@ -102,29 +112,36 @@ public sealed class CommandsToolsTests {
 
         public string? DisconnectedInvocationId { get; private set; }
 
-        private Task<NdrCallResult> DispatchAsync(Guid interfaceId, int opnum, ReadOnlyMemory<byte> requestPayload, CancellationToken cancellationToken) {
+        private Task<NdrCallResult> DispatchAsync(Guid interfaceId, int opnum, ReadOnlyMemory<byte> requestPayload, CancellationToken cancellationToken)
+        {
             cancellationToken.ThrowIfCancellationRequested();
-            if (interfaceId == IOPCCommandInformation.InterfaceId) {
+            if (interfaceId == IOPCCommandInformation.InterfaceId)
+            {
                 return DispatchCommandInformation(opnum, requestPayload);
             }
 
-            if (interfaceId == IOPCCommandExecution.InterfaceId) {
+            if (interfaceId == IOPCCommandExecution.InterfaceId)
+            {
                 return DispatchCommandExecution(opnum, requestPayload);
             }
 
             return Task.FromResult(new NdrCallResult(OpcResultId.NotImplemented.Code, ReadOnlyMemory<byte>.Empty));
         }
 
-        private static Task<NdrCallResult> DispatchCommandInformation(int opnum, ReadOnlyMemory<byte> requestPayload) {
-            if (opnum == IOPCCommandInformation.Opnums.QueryMaxStorageTimeAsync) {
+        private static Task<NdrCallResult> DispatchCommandInformation(int opnum, ReadOnlyMemory<byte> requestPayload)
+        {
+            if (opnum == IOPCCommandInformation.Opnums.QueryMaxStorageTimeAsync)
+            {
                 return Result((ref NdrWriter writer) => writer.WriteDouble(60));
             }
 
-            if (opnum == IOPCCommandInformation.Opnums.ListCommandsAsync) {
+            if (opnum == IOPCCommandInformation.Opnums.ListCommandsAsync)
+            {
                 return Result((ref NdrWriter writer) => WriteStringArray(ref writer, "Start", "Stop"));
             }
 
-            if (opnum == IOPCCommandInformation.Opnums.GetCommandDescriptionAsync) {
+            if (opnum == IOPCCommandInformation.Opnums.GetCommandDescriptionAsync)
+            {
                 var reader = new NdrReader(requestPayload.Span);
                 string commandName = reader.ReadUnicodeStringPtr() ?? string.Empty;
                 _ = reader.ReadUnicodeStringPtr();
@@ -134,27 +151,33 @@ public sealed class CommandsToolsTests {
             return Task.FromResult(new NdrCallResult(OpcResultId.NotImplemented.Code, ReadOnlyMemory<byte>.Empty));
         }
 
-        private Task<NdrCallResult> DispatchCommandExecution(int opnum, ReadOnlyMemory<byte> requestPayload) {
-            if (opnum == IOPCCommandExecution.Opnums.AsyncInvokeAsync) {
+        private Task<NdrCallResult> DispatchCommandExecution(int opnum, ReadOnlyMemory<byte> requestPayload)
+        {
+            if (opnum == IOPCCommandExecution.Opnums.AsyncInvokeAsync)
+            {
                 return Result((ref NdrWriter writer) => writer.WriteUnicodeStringPtr("invoke-1"));
             }
 
-            if (opnum == IOPCCommandExecution.Opnums.ConnectAsync) {
+            if (opnum == IOPCCommandExecution.Opnums.ConnectAsync)
+            {
                 return Result((ref NdrWriter writer) => writer.WriteInt32(250));
             }
 
-            if (opnum == IOPCCommandExecution.Opnums.QueryStateAsync) {
+            if (opnum == IOPCCommandExecution.Opnums.QueryStateAsync)
+            {
                 return Result((ref NdrWriter writer) => WriteStringArray(ref writer, "Cancel"));
             }
 
-            if (opnum == IOPCCommandExecution.Opnums.ControlAsync) {
+            if (opnum == IOPCCommandExecution.Opnums.ControlAsync)
+            {
                 var reader = new NdrReader(requestPayload.Span);
                 _ = reader.ReadUnicodeStringPtr();
                 LastControl = reader.ReadUnicodeStringPtr();
                 return Task.FromResult(new NdrCallResult(0, ReadOnlyMemory<byte>.Empty));
             }
 
-            if (opnum == IOPCCommandExecution.Opnums.DisconnectAsync) {
+            if (opnum == IOPCCommandExecution.Opnums.DisconnectAsync)
+            {
                 var reader = new NdrReader(requestPayload.Span);
                 DisconnectedInvocationId = reader.ReadUnicodeStringPtr();
                 return Task.FromResult(new NdrCallResult(0, ReadOnlyMemory<byte>.Empty));
@@ -168,16 +191,19 @@ public sealed class CommandsToolsTests {
 
     private delegate void NdrWriteAction(ref NdrWriter writer);
 
-    private static ReadOnlyMemory<byte> WritePayload(NdrWriteAction write, int capacity = 1024) {
+    private static ReadOnlyMemory<byte> WritePayload(NdrWriteAction write, int capacity = 1024)
+    {
         var buffer = new byte[capacity];
         var writer = new NdrWriter(buffer);
         write(ref writer);
         return buffer[..writer.Position];
     }
 
-    private static void WriteStringArray(ref NdrWriter writer, params string[] values) {
+    private static void WriteStringArray(ref NdrWriter writer, params string[] values)
+    {
         writer.WriteUInt32((uint)values.Length);
-        foreach (string value in values) {
+        foreach (string value in values)
+        {
             writer.WriteUnicodeStringPtr(value);
         }
     }

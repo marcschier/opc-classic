@@ -14,9 +14,11 @@ namespace Opc.Classic.Xml.Serialization;
 /// <summary>
 /// AOT-safe serializer for the OPC XML-DA 1.0 <c>Browse</c> operation.
 /// </summary>
-public static class BrowseSerializer {
+public static class BrowseSerializer
+{
     /// <summary>Writes a complete SOAP envelope carrying a <c>Browse</c> request.</summary>
-    public static void WriteRequest(SoapEnvelopeWriter writer, XmlDaBrowseRequest request) {
+    public static void WriteRequest(SoapEnvelopeWriter writer, XmlDaBrowseRequest request)
+    {
         ArgumentNullException.ThrowIfNull(writer);
         ArgumentNullException.ThrowIfNull(request);
 
@@ -24,28 +26,35 @@ public static class BrowseSerializer {
         writer.WriteBodyStart();
         writer.WriteOperationStart("Browse");
 
-        if (!string.IsNullOrEmpty(request.Header.LocaleId)) {
+        if (!string.IsNullOrEmpty(request.Header.LocaleId))
+        {
             writer.Writer.WriteAttributeString("LocaleID", request.Header.LocaleId);
         }
-        if (!string.IsNullOrEmpty(request.Header.ClientRequestHandle)) {
+        if (!string.IsNullOrEmpty(request.Header.ClientRequestHandle))
+        {
             writer.Writer.WriteAttributeString("ClientRequestHandle", request.Header.ClientRequestHandle);
         }
 
-        if (!string.IsNullOrEmpty(request.ItemPath)) {
+        if (!string.IsNullOrEmpty(request.ItemPath))
+        {
             writer.Writer.WriteAttributeString("ItemPath", request.ItemPath);
         }
-        if (!string.IsNullOrEmpty(request.ItemName)) {
+        if (!string.IsNullOrEmpty(request.ItemName))
+        {
             writer.Writer.WriteAttributeString("ItemName", request.ItemName);
         }
-        if (!string.IsNullOrEmpty(request.ContinuationPoint)) {
+        if (!string.IsNullOrEmpty(request.ContinuationPoint))
+        {
             writer.Writer.WriteAttributeString("ContinuationPoint", request.ContinuationPoint);
         }
-        if (request.MaxElementsReturned > 0) {
+        if (request.MaxElementsReturned > 0)
+        {
             writer.Writer.WriteAttributeString("MaxElementsReturned",
                 request.MaxElementsReturned.ToString(CultureInfo.InvariantCulture));
         }
         writer.Writer.WriteAttributeString("BrowseFilter", MapFilter(request.BrowseFilter));
-        if (!string.IsNullOrEmpty(request.ElementNameFilter)) {
+        if (!string.IsNullOrEmpty(request.ElementNameFilter))
+        {
             writer.Writer.WriteAttributeString("ElementNameFilter", request.ElementNameFilter);
         }
 
@@ -55,7 +64,8 @@ public static class BrowseSerializer {
         writer.Flush();
     }
 
-    private static string MapFilter(XmlDaBrowseFilter filter) => filter switch {
+    private static string MapFilter(XmlDaBrowseFilter filter) => filter switch
+    {
         XmlDaBrowseFilter.All => "all",
         XmlDaBrowseFilter.Branch => "branch",
         XmlDaBrowseFilter.Item => "item",
@@ -66,11 +76,13 @@ public static class BrowseSerializer {
     /// Reads a SOAP-wrapped <c>BrowseResponse</c> and returns the decoded
     /// <see cref="XmlDaBrowseResponse"/>.
     /// </summary>
-    public static XmlDaBrowseResponse ReadResponse(SoapEnvelopeReader reader) {
+    public static XmlDaBrowseResponse ReadResponse(SoapEnvelopeReader reader)
+    {
         ArgumentNullException.ThrowIfNull(reader);
 
         string operationName = reader.AdvanceToOperationResponse();
-        if (!string.Equals(operationName, "BrowseResponse", StringComparison.Ordinal)) {
+        if (!string.Equals(operationName, "BrowseResponse", StringComparison.Ordinal))
+        {
             throw new InvalidDataException(
                 $"Expected BrowseResponse but found '{operationName}'.");
         }
@@ -81,7 +93,8 @@ public static class BrowseSerializer {
         bool moreElements = false;
 
         var r = reader.Reader;
-        if (!r.IsEmptyElement) {
+        if (!r.IsEmptyElement)
+        {
             ReadResponseBody(r, ref serverState, elements, ref continuationPoint, ref moreElements);
         }
 
@@ -93,51 +106,62 @@ public static class BrowseSerializer {
         ref XmlDaServerState serverState,
         List<XmlDaBrowseElement> elements,
         ref string continuationPoint,
-        ref bool moreElements) {
+        ref bool moreElements)
+    {
         int responseDepth = r.Depth;
         bool alreadyAdvanced = false;
-        while (true) {
-            if (!alreadyAdvanced) {
+        while (true)
+        {
+            if (!alreadyAdvanced)
+            {
                 if (!r.Read()) { break; }
             }
             alreadyAdvanced = false;
             if (r.Depth <= responseDepth) { break; }
             if (r.NodeType != XmlNodeType.Element) { continue; }
 
-            if (string.Equals(r.LocalName, "BrowseResult", StringComparison.Ordinal)) {
+            if (string.Equals(r.LocalName, "BrowseResult", StringComparison.Ordinal))
+            {
                 string? stateAttr = r.GetAttribute("ServerState");
-                if (!string.IsNullOrEmpty(stateAttr)) {
+                if (!string.IsNullOrEmpty(stateAttr))
+                {
                     serverState = ParseServerState(stateAttr);
                 }
             }
-            else if (string.Equals(r.LocalName, "Elements", StringComparison.Ordinal)) {
+            else if (string.Equals(r.LocalName, "Elements", StringComparison.Ordinal))
+            {
                 elements.Add(ReadElement(r));
             }
-            else if (string.Equals(r.LocalName, "ContinuationPoint", StringComparison.Ordinal)) {
+            else if (string.Equals(r.LocalName, "ContinuationPoint", StringComparison.Ordinal))
+            {
                 continuationPoint = r.ReadElementContentAsString();
                 alreadyAdvanced = true;
             }
-            else if (string.Equals(r.LocalName, "MoreElements", StringComparison.Ordinal)) {
+            else if (string.Equals(r.LocalName, "MoreElements", StringComparison.Ordinal))
+            {
                 string raw = r.ReadElementContentAsString();
                 moreElements = raw.Equals("true", StringComparison.OrdinalIgnoreCase) ||
                                raw.Equals("1", StringComparison.Ordinal);
                 alreadyAdvanced = true;
             }
-            else {
+            else
+            {
                 r.Skip();
                 alreadyAdvanced = true;
             }
         }
     }
 
-    private static XmlDaBrowseElement ReadElement(XmlReader r) {
+    private static XmlDaBrowseElement ReadElement(XmlReader r)
+    {
         string name = r.GetAttribute("Name") ?? string.Empty;
         string itemPath = r.GetAttribute("ItemPath") ?? string.Empty;
         string itemName = r.GetAttribute("ItemName") ?? string.Empty;
         bool isItem = ParseBool(r.GetAttribute("IsItem"));
         bool hasChildren = ParseBool(r.GetAttribute("HasChildren"));
 
-        if (!r.IsEmptyElement) {
+        if (!r.IsEmptyElement)
+        {
             r.Skip();
         }
         return new XmlDaBrowseElement(name, itemPath, itemName, isItem, hasChildren);
@@ -148,7 +172,8 @@ public static class BrowseSerializer {
         (value.Equals("true", StringComparison.OrdinalIgnoreCase) ||
          value.Equals("1", StringComparison.Ordinal));
 
-    private static XmlDaServerState ParseServerState(string value) => value switch {
+    private static XmlDaServerState ParseServerState(string value) => value switch
+    {
         "running" => XmlDaServerState.Running,
         "failed" => XmlDaServerState.Failed,
         "noConfig" => XmlDaServerState.NoConfig,

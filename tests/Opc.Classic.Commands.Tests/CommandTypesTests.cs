@@ -10,9 +10,11 @@ using TUnit.Core;
 
 namespace Opc.Classic.Commands.Tests;
 
-public sealed class CommandDescriptionTests {
+public sealed class CommandDescriptionTests
+{
     [Test]
-    public async Task ValueEquality_IncludesArgumentSequences() {
+    public async Task ValueEquality_IncludesArgumentSequences()
+    {
         var categoryId = Guid.NewGuid();
         var first = new CommandDescription(
             "StartMotor",
@@ -37,7 +39,8 @@ public sealed class CommandDescriptionTests {
     }
 
     [Test]
-    public async Task Constructor_RejectsNullReferenceInputs() {
+    public async Task Constructor_RejectsNullReferenceInputs()
+    {
         var arguments = Array.Empty<string>();
 
         await Assert.That(() => { _ = new CommandDescription(null!, "Category", "Help", 0, Guid.Empty, arguments, arguments); })
@@ -60,9 +63,11 @@ public sealed class CommandDescriptionTests {
     }
 }
 
-public sealed class CommandStateTests {
+public sealed class CommandStateTests
+{
     [Test]
-    public async Task EnumValues_MatchOpcCommandsSpecification() {
+    public async Task EnumValues_MatchOpcCommandsSpecification()
+    {
         var created = (int)CommandState.Created;
         var queued = (int)CommandState.Queued;
         var executing = (int)CommandState.Executing;
@@ -81,9 +86,11 @@ public sealed class CommandStateTests {
     }
 }
 
-public sealed class CommandInvocationTests {
+public sealed class CommandInvocationTests
+{
     [Test]
-    public async Task RecordRoundTrip_PreservesInvocationSnapshot() {
+    public async Task RecordRoundTrip_PreservesInvocationSnapshot()
+    {
         var invocationId = Guid.NewGuid();
         var clientHandle = Guid.NewGuid();
         var timestamp = DateTimeOffset.UtcNow;
@@ -108,15 +115,18 @@ public sealed class CommandInvocationTests {
     }
 
     [Test]
-    public async Task Constructor_RejectsNullServerName() {
+    public async Task Constructor_RejectsNullServerName()
+    {
         await Assert.That(() => { _ = new CommandInvocation(Guid.NewGuid(), Guid.NewGuid(), null!, CommandState.Created, 0, DateTimeOffset.UtcNow); })
             .Throws<ArgumentNullException>();
     }
 }
 
-public sealed class CommandStateChangeTests {
+public sealed class CommandStateChangeTests
+{
     [Test]
-    public async Task RecordRoundTrip_PreservesCallbackEvent() {
+    public async Task RecordRoundTrip_PreservesCallbackEvent()
+    {
         var invocationId = Guid.NewGuid();
         var timestamp = DateTimeOffset.UtcNow;
         var change = new CommandStateChange(invocationId, CommandState.Complete, Hresult: 0, timestamp);

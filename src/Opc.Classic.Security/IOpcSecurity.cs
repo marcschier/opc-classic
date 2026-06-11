@@ -31,7 +31,8 @@ namespace Opc.Classic.Security;
 ///     directly. Stored in the server, not Windows.</description></item>
 /// </list>
 /// </remarks>
-public interface IOpcSecurity {
+public interface IOpcSecurity
+{
     /// <summary>True if the server implements <c>IOPCSecurityNT</c>.</summary>
     bool SupportsWindowsAuthentication { get; }
 

@@ -18,9 +18,11 @@ using TUnit.Core;
 
 namespace Opc.Classic.Hosting.Tests;
 
-public sealed class HostingAdditionalTests {
+public sealed class HostingAdditionalTests
+{
     [Test]
-    public async Task AddClassicClsidRegistry_RegistersConfigurationRegistry_ResolvesConcreteRegistration() {
+    public async Task AddClassicClsidRegistry_RegistersConfigurationRegistry_ResolvesConcreteRegistration()
+    {
         var registration = CreateRegistration(
             clsid: Guid.Parse("10138c2c-0000-0000-0000-000000000101"),
             progId: "Vendor.Hosting.AddRegistry.1",
@@ -46,7 +48,8 @@ public sealed class HostingAdditionalTests {
     }
 
     [Test]
-    public async Task ServiceCollectionExtensions_NullArguments_ThrowExpectedParameterNames() {
+    public async Task ServiceCollectionExtensions_NullArguments_ThrowExpectedParameterNames()
+    {
         IConfiguration configuration = CreateConfiguration();
 
         ArgumentNullException classicServer = Capture<ArgumentNullException>(() => ClassicHostingServiceCollectionExtensions.AddClassicServer(null!));
@@ -63,7 +66,8 @@ public sealed class HostingAdditionalTests {
     }
 
     [Test]
-    public async Task ClassicHostedService_StartAsync_WhenHostThrows_PropagatesAndDoesNotStartLaterHosts() {
+    public async Task ClassicHostedService_StartAsync_WhenHostThrows_PropagatesAndDoesNotStartLaterHosts()
+    {
         var order = new List<string>();
         var first = new TestHost("DA", "Vendor.First.1", order);
         var second = new TestHost("AE", "Vendor.Second.1", order) { StartException = new InvalidOperationException("boom") };
@@ -80,7 +84,8 @@ public sealed class HostingAdditionalTests {
     }
 
     [Test]
-    public async Task ClassicHostedService_StopAsync_StopsHostsInRegistrationOrder() {
+    public async Task ClassicHostedService_StopAsync_StopsHostsInRegistrationOrder()
+    {
         var order = new List<string>();
         var first = new TestHost("AE", "Vendor.First.1", order);
         var second = new TestHost("HDA", "Vendor.Second.1", order);
@@ -94,7 +99,8 @@ public sealed class HostingAdditionalTests {
     }
 
     [Test]
-    public async Task ClassicHostedService_ConstructorNullArguments_ThrowExpectedParameterNames() {
+    public async Task ClassicHostedService_ConstructorNullArguments_ThrowExpectedParameterNames()
+    {
         IEnumerable<IOpcServerHost> hosts = [new TestHost("AE", "Vendor.Host.1", [])];
         ILogger<ClassicHostedService> logger = NoopLogger<ClassicHostedService>.Instance;
 
@@ -106,7 +112,8 @@ public sealed class HostingAdditionalTests {
     }
 
     [Test]
-    public async Task OpcComponentCategories_KnownAeAndHdaCategories_ExposeSpecIdsAndDescriptions() {
+    public async Task OpcComponentCategories_KnownAeAndHdaCategories_ExposeSpecIdsAndDescriptions()
+    {
         await Assert.That(OpcComponentCategories.OpcAeServer10.CategoryId)
             .IsEqualTo(Guid.Parse("58E13251-AC87-11d1-84D5-00608CB8A7E9"));
         await Assert.That(OpcComponentCategories.OpcAeServer10.Description)
@@ -123,11 +130,14 @@ public sealed class HostingAdditionalTests {
         new(hosts, logger);
 
     private static TException Capture<TException>(Func<object> action)
-        where TException : Exception {
-        try {
+        where TException : Exception
+    {
+        try
+        {
             _ = action();
         }
-        catch (TException exception) {
+        catch (TException exception)
+        {
             return exception;
         }
 
@@ -135,11 +145,14 @@ public sealed class HostingAdditionalTests {
     }
 
     private static async Task<TException> CaptureAsync<TException>(Func<Task> action)
-        where TException : Exception {
-        try {
+        where TException : Exception
+    {
+        try
+        {
             await action().ConfigureAwait(false);
         }
-        catch (TException exception) {
+        catch (TException exception)
+        {
             return exception;
         }
 
@@ -161,11 +174,13 @@ public sealed class HostingAdditionalTests {
             friendlyName,
             implementedCategories);
 
-    private static InMemoryConfigurationSection CreateConfiguration(params OpcClsidRegistration[] registrations) {
+    private static InMemoryConfigurationSection CreateConfiguration(params OpcClsidRegistration[] registrations)
+    {
         InMemoryConfigurationSection root = new(string.Empty, string.Empty);
         InMemoryConfigurationSection servers = root.GetOrAddSection("Opc.Classic").GetOrAddSection("Servers");
 
-        for (int i = 0; i < registrations.Length; i++) {
+        for (int i = 0; i < registrations.Length; i++)
+        {
             OpcClsidRegistration registration = registrations[i];
             InMemoryConfigurationSection section = servers.GetOrAddSection(i.ToString(CultureInfo.InvariantCulture));
             section.GetOrAddSection("Clsid").Value = registration.Clsid.ToString("D");
@@ -174,9 +189,11 @@ public sealed class HostingAdditionalTests {
             section.GetOrAddSection("TypeName").Value = registration.TypeName;
             section.GetOrAddSection("FriendlyName").Value = registration.FriendlyName;
 
-            if (registration.ImplementedCategories is not null) {
+            if (registration.ImplementedCategories is not null)
+            {
                 InMemoryConfigurationSection categories = section.GetOrAddSection("ImplementedCategories");
-                for (int categoryIndex = 0; categoryIndex < registration.ImplementedCategories.Count; categoryIndex++) {
+                for (int categoryIndex = 0; categoryIndex < registration.ImplementedCategories.Count; categoryIndex++)
+                {
                     categories.GetOrAddSection(categoryIndex.ToString(CultureInfo.InvariantCulture)).Value =
                         registration.ImplementedCategories[categoryIndex].ToString("D");
                 }
@@ -186,14 +203,17 @@ public sealed class HostingAdditionalTests {
         return root;
     }
 
-    private sealed class TestHost : IOpcServerHost {
+    private sealed class TestHost : IOpcServerHost
+    {
         private readonly List<string> _order;
 
         public TestHost()
-            : this("Test", "Vendor.Test.1", []) {
+            : this("Test", "Vendor.Test.1", [])
+        {
         }
 
-        public TestHost(string specName, string progId, List<string> order) {
+        public TestHost(string specName, string progId, List<string> order)
+        {
             SpecName = specName;
             Registration = CreateRegistration(progId: progId);
             _order = order;
@@ -209,33 +229,40 @@ public sealed class HostingAdditionalTests {
 
         public int StopCount { get; private set; }
 
-        public Task StartAsync(CancellationToken cancellationToken) {
+        public Task StartAsync(CancellationToken cancellationToken)
+        {
             StartCount++;
             _order.Add("start:" + Registration.ProgId);
-            if (StartException is not null) {
+            if (StartException is not null)
+            {
                 throw StartException;
             }
 
             return Task.CompletedTask;
         }
 
-        public Task StopAsync(CancellationToken cancellationToken) {
+        public Task StopAsync(CancellationToken cancellationToken)
+        {
             StopCount++;
             _order.Add("stop:" + Registration.ProgId);
             return Task.CompletedTask;
         }
     }
 
-    private sealed class TestServiceProvider : IServiceProvider {
+    private sealed class TestServiceProvider : IServiceProvider
+    {
         private readonly IReadOnlyList<ServiceDescriptor> _descriptors;
         private readonly Dictionary<ServiceDescriptor, object?> _singletons = new();
 
-        public TestServiceProvider(IEnumerable<ServiceDescriptor> descriptors) {
+        public TestServiceProvider(IEnumerable<ServiceDescriptor> descriptors)
+        {
             _descriptors = descriptors.ToArray();
         }
 
-        public object? GetService(Type serviceType) {
-            if (serviceType.IsGenericType && serviceType.GetGenericTypeDefinition() == typeof(IEnumerable<>)) {
+        public object? GetService(Type serviceType)
+        {
+            if (serviceType.IsGenericType && serviceType.GetGenericTypeDefinition() == typeof(IEnumerable<>))
+            {
                 return GetServices(serviceType.GetGenericArguments()[0]);
             }
 
@@ -243,22 +270,27 @@ public sealed class HostingAdditionalTests {
             return descriptor is null ? null : GetService(descriptor);
         }
 
-        private Array GetServices(Type serviceType) {
+        private Array GetServices(Type serviceType)
+        {
             ServiceDescriptor[] descriptors = _descriptors.Where(candidate => candidate.ServiceType == serviceType).ToArray();
             Array services = Array.CreateInstance(serviceType, descriptors.Length);
-            for (int i = 0; i < descriptors.Length; i++) {
+            for (int i = 0; i < descriptors.Length; i++)
+            {
                 services.SetValue(GetService(descriptors[i]), i);
             }
 
             return services;
         }
 
-        private object? GetService(ServiceDescriptor descriptor) {
-            if (descriptor.Lifetime != ServiceLifetime.Singleton) {
+        private object? GetService(ServiceDescriptor descriptor)
+        {
+            if (descriptor.Lifetime != ServiceLifetime.Singleton)
+            {
                 return CreateService(descriptor);
             }
 
-            if (_singletons.TryGetValue(descriptor, out object? instance)) {
+            if (_singletons.TryGetValue(descriptor, out object? instance))
+            {
                 return instance;
             }
 
@@ -267,19 +299,23 @@ public sealed class HostingAdditionalTests {
             return instance;
         }
 
-        private object? CreateService(ServiceDescriptor descriptor) {
-            if (descriptor.ImplementationInstance is not null) {
+        private object? CreateService(ServiceDescriptor descriptor)
+        {
+            if (descriptor.ImplementationInstance is not null)
+            {
                 return descriptor.ImplementationInstance;
             }
 
-            if (descriptor.ImplementationFactory is not null) {
+            if (descriptor.ImplementationFactory is not null)
+            {
                 return descriptor.ImplementationFactory(this);
             }
 
             return descriptor.ImplementationType is null ? null : CreateImplementation(descriptor.ImplementationType);
         }
 
-        private object CreateImplementation(Type implementationType) {
+        private object CreateImplementation(Type implementationType)
+        {
             var constructor = implementationType.GetConstructors()
                 .OrderByDescending(candidate => candidate.GetParameters().Length)
                 .First();
@@ -291,10 +327,12 @@ public sealed class HostingAdditionalTests {
         }
     }
 
-    private sealed class InMemoryConfigurationSection : IConfigurationSection {
+    private sealed class InMemoryConfigurationSection : IConfigurationSection
+    {
         private readonly List<InMemoryConfigurationSection> _children = new();
 
-        public InMemoryConfigurationSection(string key, string path) {
+        public InMemoryConfigurationSection(string key, string path)
+        {
             Key = key;
             Path = path;
         }
@@ -305,7 +343,8 @@ public sealed class HostingAdditionalTests {
 
         public string? Value { get; set; }
 
-        public string? this[string key] {
+        public string? this[string key]
+        {
             get => GetSection(key).Value;
             set => GetOrAddSection(key).Value = value;
         }
@@ -314,12 +353,15 @@ public sealed class HostingAdditionalTests {
 
         public IChangeToken GetReloadToken() => NoopChangeToken.Instance;
 
-        public IConfigurationSection GetSection(string key) {
+        public IConfigurationSection GetSection(string key)
+        {
             InMemoryConfigurationSection current = this;
-            foreach (string segment in key.Split(':', StringSplitOptions.RemoveEmptyEntries)) {
+            foreach (string segment in key.Split(':', StringSplitOptions.RemoveEmptyEntries))
+            {
                 InMemoryConfigurationSection? next = current._children.FirstOrDefault(child =>
                     string.Equals(child.Key, segment, StringComparison.OrdinalIgnoreCase));
-                if (next is null) {
+                if (next is null)
+                {
                     return new InMemoryConfigurationSection(segment, CreateChildPath(current.Path, segment));
                 }
 
@@ -329,12 +371,15 @@ public sealed class HostingAdditionalTests {
             return current;
         }
 
-        public InMemoryConfigurationSection GetOrAddSection(string key) {
+        public InMemoryConfigurationSection GetOrAddSection(string key)
+        {
             InMemoryConfigurationSection current = this;
-            foreach (string segment in key.Split(':', StringSplitOptions.RemoveEmptyEntries)) {
+            foreach (string segment in key.Split(':', StringSplitOptions.RemoveEmptyEntries))
+            {
                 InMemoryConfigurationSection? next = current._children.FirstOrDefault(child =>
                     string.Equals(child.Key, segment, StringComparison.OrdinalIgnoreCase));
-                if (next is null) {
+                if (next is null)
+                {
                     next = new InMemoryConfigurationSection(segment, CreateChildPath(current.Path, segment));
                     current._children.Add(next);
                 }
@@ -349,7 +394,8 @@ public sealed class HostingAdditionalTests {
             string.IsNullOrEmpty(parentPath) ? key : string.Concat(parentPath, ":", key);
     }
 
-    private sealed class NoopChangeToken : IChangeToken {
+    private sealed class NoopChangeToken : IChangeToken
+    {
         public static NoopChangeToken Instance { get; } = new();
 
         public bool HasChanged => false;
@@ -359,14 +405,17 @@ public sealed class HostingAdditionalTests {
         public IDisposable RegisterChangeCallback(Action<object?> callback, object? state) => NoopDisposable.Instance;
     }
 
-    private sealed class NoopDisposable : IDisposable {
+    private sealed class NoopDisposable : IDisposable
+    {
         public static NoopDisposable Instance { get; } = new();
 
-        public void Dispose() {
+        public void Dispose()
+        {
         }
     }
 
-    private sealed class NoopLogger<T> : ILogger<T> {
+    private sealed class NoopLogger<T> : ILogger<T>
+    {
         public static NoopLogger<T> Instance { get; } = new();
 
         public IDisposable? BeginScope<TState>(TState state)
@@ -380,7 +429,8 @@ public sealed class HostingAdditionalTests {
             EventId eventId,
             TState state,
             Exception? exception,
-            Func<TState, Exception?, string> formatter) {
+            Func<TState, Exception?, string> formatter)
+        {
         }
     }
 }

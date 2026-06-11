@@ -29,7 +29,8 @@ namespace Opc.Classic.Dcom.Core;
 /// after you are done using the session. This will ensure
 /// that any open sockets to COM server are closed.
 /// </summary>
-public sealed class Session {
+public sealed class Session
+{
 
     /// <summary>
     /// Local host
@@ -55,15 +56,18 @@ public sealed class Session {
     /// <summary>
     /// Initialize static session info
     /// </summary>
-    static Session() {
-        try {
+    static Session()
+    {
+        try
+        {
             LocalhostCanonicalAddressAsString = Dns.GetHostName();
             var localhostAddr = Dns.GetHostAddresses(
                 LocalhostCanonicalAddressAsString).FirstOrDefault();
             LocalhostAddressAsIPbytes = localhostAddr.GetAddressBytes();
             LocalhostAddressAsIPString = localhostAddr.ToString();
         }
-        catch (UnknownHostException) {
+        catch (UnknownHostException)
+        {
         }
 
         ComOxidRuntime.Instance.StartResolver();
@@ -71,12 +75,16 @@ public sealed class Session {
         // This schedule used to be every 2 mins.
         kReleaseRefsTimer = new Timer(_ => Release_References_TimerTask(), null, 0, 2 * 60 * 1000);
 
-        AppDomain.CurrentDomain.DomainUnload += (_, args) => {
-            foreach (var s in kListOfSessions) {
-                try {
+        AppDomain.CurrentDomain.DomainUnload += (_, args) =>
+        {
+            foreach (var s in kListOfSessions)
+            {
+                try
+                {
                     DestroySession(s);
                 }
-                catch (InteropException e) {
+                catch (InteropException e)
+                {
                     Log.Logger.Error(e, "Session shutdown");
                 }
             }
@@ -84,7 +92,8 @@ public sealed class Session {
             ComOxidRuntime.Instance.StopResolver();
             kReleaseRefsTimer.Dispose();
             kMapOfSessionIdsVsSessions.Clear();
-            lock (kMapOfObjects) {
+            lock (kMapOfObjects)
+            {
                 kMapOfObjects.Clear();
             }
             kListOfSessions.Clear();
@@ -102,15 +111,19 @@ public sealed class Session {
     /// <summary>
     /// Release references on timer
     /// </summary>
-    private static void Release_References_TimerTask() {
-        try {
+    private static void Release_References_TimerTask()
+    {
+        try
+        {
             // Use a clone so we dont hold on to the mutex for longer than required.
             List<Session> listOfSessionsClone = null;
-            lock (kMutex) {
+            lock (kMutex)
+            {
                 listOfSessionsClone = kListOfSessions.ToList();
             }
 
-            foreach (var session in listOfSessionsClone) {
+            foreach (var session in listOfSessionsClone)
+            {
                 Log.Logger.Information("Release_References_TimerTask: Ipid Vs Count Map size " +
                     session._mapOfIPIDsVsRefcounts.Count +
                     " listOfDeferencedIpids size " + session._listOfDeferencedIpids.Count);
@@ -124,21 +137,26 @@ public sealed class Session {
                 List<string> dereferencedIpids = null;
 
                 // Use a clone so we dont hold on to the mutex for longer than required.
-                lock (kMutex) {
+                lock (kMutex)
+                {
                     dereferencedIpids = session._listOfDeferencedIpids.ToList();
                 }
-                for (var j = 0; j < dereferencedIpids.Count; j++) {
-                    try {
+                for (var j = 0; j < dereferencedIpids.Count; j++)
+                {
+                    try
+                    {
                         var ipid = dereferencedIpids[j];
                         listToKill.Add(session.PrepareForReleaseRef(ipid));
                     }
-                    catch (InteropException e) {
+                    catch (InteropException e)
+                    {
                         //eaten, will never get thrown from the try block.
                         Log.Logger.Information(e,
                             "Release_References_TimerTask: Exception preparing for release ");
                     }
                 }
-                lock (kMutex) {
+                lock (kMutex)
+                {
                     session._listOfDeferencedIpids.RemoveAll(dereferencedIpids);
                 }
 
@@ -147,12 +165,15 @@ public sealed class Session {
                     "Release_References_TimerTask: Ipid Vs Count Map size after preparing release " +
                     session._mapOfIPIDsVsRefcounts.Count);
 
-                if (listToKill.Count > 0) {
+                if (listToKill.Count > 0)
+                {
                     var array = new ComArray(listToKill.ToArray(), true);
-                    try {
+                    try
+                    {
                         session.ReleaseRefs(array, false);
                     }
-                    catch (InteropException e) {
+                    catch (InteropException e)
+                    {
                         //This release cycle has to go on.
                         Log.Logger.Error(e,
                             "Session Release_References_TimerTask: Exception in internal GC");
@@ -160,7 +181,8 @@ public sealed class Session {
                 }
             }
         }
-        catch (Exception e) {
+        catch (Exception e)
+        {
             //This release cycle has to go on.
             Log.Logger.Error(e,
                 "Session Release_References_TimerTask: Exception in internal GC");
@@ -177,15 +199,19 @@ public sealed class Session {
     /// is <code>null</code>. </exception>
     /// <seealso cref="ComServer(Clsid, Session)"> </seealso>
     /// <seealso cref="ComServer(ProgId, Session)"> </seealso>
-    public static Session CreateSession(IAuthInfo authInfo) {
+    public static Session CreateSession(IAuthInfo authInfo)
+    {
         ArgumentNullException.ThrowIfNull(authInfo);
-        lock (kMutex) {
+        lock (kMutex)
+        {
             int id;
-            do {
+            do
+            {
                 id = kRandomGen.Next();
             }
             while (kMapOfSessionIdsVsSessions.ContainsKey(id));
-            var session = new Session {
+            var session = new Session
+            {
                 AuthInfo = authInfo,
                 SessionIdentifier = id
             };
@@ -209,17 +235,21 @@ public sealed class Session {
     /// <seealso cref="ComServer(Clsid, Session)"> </seealso>
     /// <seealso cref="ComServer(ProgId, Session)"> </seealso>
     public static Session CreateSession(string domain, string username,
-        string password) {
+        string password)
+    {
         ArgumentNullException.ThrowIfNull(username);
         ArgumentNullException.ThrowIfNull(password);
         ArgumentNullException.ThrowIfNull(domain);
-        lock (kMutex) {
+        lock (kMutex)
+        {
             int id;
-            do {
+            do
+            {
                 id = kRandomGen.Next();
             }
             while (kMapOfSessionIdsVsSessions.ContainsKey(id));
-            var session = new Session {
+            var session = new Session
+            {
                 _username = username,
                 _password = password,
                 _domain = domain,
@@ -241,7 +271,8 @@ public sealed class Session {
     /// </param>
     /// <seealso cref="ComServer(Clsid, Session)"> </seealso>
     /// <seealso cref="ComServer(ProgId, Session)"> </seealso>
-    public static Session CreateSession(Session session) {
+    public static Session CreateSession(Session session)
+    {
         var newSession = CreateSession(session.Domain, session.UserName,
             session.Password);
         newSession.AuthInfo = session.AuthInfo;
@@ -262,19 +293,24 @@ public sealed class Session {
     /// </summary>
     /// <seealso cref="ComServer(Clsid, Session)"></seealso>
     /// <seealso cref="ComServer(ProgId, Session)"></seealso>
-    public static Session CreateSession() {
-        if (!OperatingSystem.IsWindows()) {
+    public static Session CreateSession()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             throw new PlatformNotSupportedException(Interop.GetLocalizedMessage(
                 ErrorCode.INTEROP_WIN_ONLY));
         }
-        lock (kMutex) {
+        lock (kMutex)
+        {
             int id;
-            do {
+            do
+            {
                 id = kRandomGen.Next();
             }
             while (kMapOfSessionIdsVsSessions.ContainsKey(id));
 
-            var session = new Session {
+            var session = new Session
+            {
                 SessionIdentifier = id,
                 SSOEnabled = true
             };
@@ -295,15 +331,19 @@ public sealed class Session {
     /// </summary>
     /// <param name="session"> </param>
     /// <exception cref="InteropException"> </exception>
-    public static void DestroySession(Session session) {
+    public static void DestroySession(Session session)
+    {
         //null session
-        if (session == null) {
+        if (session == null)
+        {
             return;
         }
 
         //if stub is null then cleanup datastructures holding the session object only
-        if (session._stub == null) {
-            lock (kMutex) {
+        if (session._stub == null)
+        {
+            lock (kMutex)
+            {
                 kMapOfSessionIdsVsSessions.Remove(session.SessionIdentifier);
                 kListOfSessions.Remove(session);
             }
@@ -313,33 +353,41 @@ public sealed class Session {
             return;
         }
 
-        try {
+        try
+        {
             //session may have been destroyed and this call is from finalize.
             var list = new List<Struct>();
             var listOfFreeIPIDs = new List<string>();
-            lock (kMutex) {
-                if (session.SessionInDestroy) {
+            lock (kMutex)
+            {
+                if (session.SessionInDestroy)
+                {
                     return;
                 }
                 session.SessionInDestroy = true;
                 //list of dereferenced IPIDs
-                foreach (var ipid in session._listOfDeferencedIpids) {
+                foreach (var ipid in session._listOfDeferencedIpids)
+                {
                     list.Add(session.PrepareForReleaseRef(ipid));
                 }
                 listOfFreeIPIDs.AddRange(session._listOfDeferencedIpids);
                 session._listOfDeferencedIpids.Clear();
             }
 
-            lock (kMapOfObjects) {
+            lock (kMapOfObjects)
+            {
                 var iterator = kMapOfObjects.Iterator();
-                while (iterator.HasNext()) {
+                while (iterator.HasNext())
+                {
                     var entry = iterator.Next();
                     var tuple = entry.Value;
-                    if (session.SessionIdentifier != tuple.Item2) {
+                    if (session.SessionIdentifier != tuple.Item2)
+                    {
                         continue;
                     }
                     var ipid = tuple.Item1;
-                    if (ipid == null) {
+                    if (ipid == null)
+                    {
                         continue;
                     }
 
@@ -350,8 +398,10 @@ public sealed class Session {
             }
 
             //now to kill the stub itself
-            if (session._stub.ServerInterfacePointer != null) {
-                if (!listOfFreeIPIDs.Contains(session._stub.ServerInterfacePointer.IPID, StringComparer.OrdinalIgnoreCase)) {
+            if (session._stub.ServerInterfacePointer != null)
+            {
+                if (!listOfFreeIPIDs.Contains(session._stub.ServerInterfacePointer.IPID, StringComparer.OrdinalIgnoreCase))
+                {
                     list.Add(session.PrepareForReleaseRef(session._stub.ServerInterfacePointer.IPID));
                     listOfFreeIPIDs.Add(session._stub.ServerInterfacePointer.IPID);
                 }
@@ -359,13 +409,16 @@ public sealed class Session {
 
             listOfFreeIPIDs.Clear();
             //release is performed if only something is in the session.
-            if (list.Count > 0) {
+            if (list.Count > 0)
+            {
                 var array = new ComArray(list.ToArray(), true);
-                try {
+                try
+                {
                     session._stub.CloseStub(); //close the existing connection
                     session.ReleaseRefs(array, true);
                 }
-                catch (InteropException e) {
+                catch (InteropException e)
+                {
                     //This release cycle has to go on.
                     Log.Logger.Error(e, "Session destroySession");
                 }
@@ -374,12 +427,15 @@ public sealed class Session {
             ComOxidRuntime.Instance.ClearIPIDsforSession(session);
             Log.Logger.Information("Destroyed Session: " + session.SessionIdentifier);
         }
-        finally {
-            lock (kMutex) {
+        finally
+        {
+            lock (kMutex)
+            {
                 kMapOfSessionIdsVsSessions.Remove(session.SessionIdentifier);
                 kListOfSessions.Remove(session);
                 // and remove its entry from the map
-                if (session._stub.ServerInterfacePointer != null) {
+                if (session._stub.ServerInterfacePointer != null)
+                {
                     kMapOfOxidsVsSessions.Remove(new Oxid(session._stub.ServerInterfacePointer.OXID));
                 }
             }
@@ -397,12 +453,14 @@ public sealed class Session {
     /// </summary>
     /// <param name="session"></param>
     /// <exception cref="InteropException"></exception>
-    private static void PostDestroy(Session session) {
+    private static void PostDestroy(Session session)
+    {
         //now destroy all linked sessions
         Log.Logger.Information("About to destroy links for Session: " +
             session.SessionIdentifier + ", size of which is " + session._links.Count);
 
-        foreach (var link in session._links) {
+        foreach (var link in session._links)
+        {
             DestroySession(link);
         }
         session._links.Clear();
@@ -413,7 +471,8 @@ public sealed class Session {
     /// <summary>
     /// Session tracking reference
     /// </summary>
-    internal sealed class IPID_SessionID_Holder {
+    internal sealed class IPID_SessionID_Holder
+    {
 
         /// <summary>
         /// Ipid
@@ -443,7 +502,8 @@ public sealed class Session {
         /// <param name="isOnlySessionId"></param>
         /// <param name="oid"></param>
         internal IPID_SessionID_Holder(string ipid, int sessionID,
-            bool isOnlySessionId, byte[] oid) {
+            bool isOnlySessionId, byte[] oid)
+        {
             IPID = ipid;
             IsOnlySessionIDPresent = isOnlySessionId;
             SessionID = sessionID;
@@ -454,7 +514,8 @@ public sealed class Session {
         /// Finalize
         /// </summary>
 #pragma warning disable MA0055 // Legacy COM reference cleanup uses finalizers until the lifetime model is refactored.
-        ~IPID_SessionID_Holder() {
+        ~IPID_SessionID_Holder()
+        {
             GcCollectSession(this);
         }
 #pragma warning restore MA0055
@@ -465,34 +526,44 @@ public sealed class Session {
     /// the com object was garbage collected
     /// </summary>
     /// <param name="holder"></param>
-    private static void GcCollectSession(IPID_SessionID_Holder holder) {
-        try {
-            if (holder == null) {
+    private static void GcCollectSession(IPID_SessionID_Holder holder)
+    {
+        try
+        {
+            if (holder == null)
+            {
                 return;
             }
 
             Session session = null;
-            lock (kMutex) {
+            lock (kMutex)
+            {
                 session = kMapOfSessionIdsVsSessions.GetOrDefault(holder.SessionID);
             }
 
             // this means that the session got lost...but this logic
             // does not work, since session is strongly referenced from
             // multiple places
-            if (holder.IsOnlySessionIDPresent) {
-                try {
+            if (holder.IsOnlySessionIDPresent)
+            {
+                try
+                {
                     DestroySession(session);
                 }
-                catch (Exception e) {
+                catch (Exception e)
+                {
                     Log.Logger.Verbose("exception from destroy session in clean up thread: " + e.Message);
                 }
             }
-            else {
+            else
+            {
                 //session may have been "destroySession"...
-                if (session == null) {
+                if (session == null)
+                {
                     return;
                 }
-                try {
+                try
+                {
                     var IPID = holder.IPID;
 
                     // Since we are freeing up all references for the given IPID together, ensure
@@ -511,7 +582,8 @@ public sealed class Session {
 
                     // Only proceed to de-list this IPID for clearance if all weak-references were
                     // released.
-                    if (weakRefsRemaining > 0) {
+                    if (weakRefsRemaining > 0)
+                    {
                         return;
                     }
 
@@ -524,18 +596,21 @@ public sealed class Session {
                     session.AddDereferencedIpids(IPID);
                     holder = null;
                     var unreferenced = session.GetUnreferencedHandler(IPID);
-                    if (unreferenced != null) {
+                    if (unreferenced != null)
+                    {
                         unreferenced.UnReferenced();
                     }
                     session.UnregisterUnreferencedHandler(IPID);
                 }
-                catch (Exception e) {
+                catch (Exception e)
+                {
                     Log.Logger.Information(
                         "exception from removing a IPID from session in clean up thread: " + e.Message);
                 }
             }
         }
-        catch (Exception e) {
+        catch (Exception e)
+        {
             Log.Logger.Error(e, "Session CleanupThread:run()");
         }
     }
@@ -663,14 +738,18 @@ public sealed class Session {
     /// <summary>
     /// Target server
     /// </summary>
-    internal string TargetServer {
-        set {
+    internal string TargetServer
+    {
+        set
+        {
             if (value.Equals("127.0.0.1", StringComparison.CurrentCultureIgnoreCase) ||
-                value.Equals("localhost", StringComparison.CurrentCultureIgnoreCase)) {
+                value.Equals("localhost", StringComparison.CurrentCultureIgnoreCase))
+            {
                 //Replace with it's actual bindings, otherwise does not work for authentication
                 _targetServer = LocalhostAddressAsIPString;
             }
-            else {
+            else
+            {
                 _targetServer = value;
             }
         }
@@ -681,10 +760,13 @@ public sealed class Session {
     /// each session is associated with 1 and only 1 stub.
     /// adding something new now another stub for IRemUnknown operations
     /// </summary>
-    internal ComServer Stub {
-        set {
+    internal ComServer Stub
+    {
+        set
+        {
             _stub = value;
-            lock (kMutex) {
+            lock (kMutex)
+            {
                 kMapOfOxidsVsSessions.AddOrUpdate(new Oxid(value.ServerInterfacePointer.OXID), this);
             }
         }
@@ -699,7 +781,8 @@ public sealed class Session {
     /// <summary>
     /// Private constructor
     /// </summary>
-    private Session() {
+    private Session()
+    {
     }
 
     /// <summary>
@@ -707,9 +790,11 @@ public sealed class Session {
     /// </summary>
     /// <param name="comObject"></param>
     /// <param name="oid"></param>
-    internal void AddToSession(IComObject comObject, byte[] oid) {
+    internal void AddToSession(IComObject comObject, byte[] oid)
+    {
         //nothing will be done if the session is being destroyed.
-        if (SessionInDestroy) {
+        if (SessionInDestroy)
+        {
             return;
         }
         AddWeakReference(comObject, oid);
@@ -731,7 +816,8 @@ public sealed class Session {
     /// <param name="obj"></param>
     /// <param name="refcount"></param>
     /// <exception cref="InteropException"></exception>
-    internal void AddRef_ReleaseRef(string IPID, CallBuilder obj, int refcount) {
+    internal void AddRef_ReleaseRef(string IPID, CallBuilder obj, int refcount)
+    {
         UpdateReferenceForIPID(IPID, refcount);
         Stub2.AddRef_ReleaseRef(obj);
     }
@@ -741,20 +827,25 @@ public sealed class Session {
     /// </summary>
     /// <param name="ipid"></param>
     /// <param name="refcount"></param>
-    private void UpdateReferenceForIPID(string ipid, int refcount) {
-        if (!_mapOfIPIDsVsRefcounts.TryGetValue(ipid, out var value)) {
+    private void UpdateReferenceForIPID(string ipid, int refcount)
+    {
+        if (!_mapOfIPIDsVsRefcounts.TryGetValue(ipid, out var value))
+        {
             // Were we asked to release a ref that wasnt in our map?
-            if (refcount < 0) {
+            if (refcount < 0)
+            {
                 Log.Logger.Information("[updateReferenceForIPID] Released IPID not found: " + ipid);
                 return;
             }
             value = 0;
         }
         var newCount = value + refcount;
-        if (newCount > 0) {
+        if (newCount > 0)
+        {
             _mapOfIPIDsVsRefcounts.AddOrUpdate(ipid, newCount);
         }
-        else {
+        else
+        {
             _mapOfIPIDsVsRefcounts.Remove(ipid);
         }
     }
@@ -764,18 +855,22 @@ public sealed class Session {
     /// </summary>
     /// <param name="comObject"></param>
     /// <param name="oid"></param>
-    internal void AddWeakReference(IComObject comObject, byte[] oid) {
+    internal void AddWeakReference(IComObject comObject, byte[] oid)
+    {
         var holder = new IPID_SessionID_Holder(comObject.Ipid, SessionIdentifier, false, oid);
-        lock (kMapOfObjects) {
+        lock (kMapOfObjects)
+        {
             // Add to finalizer table - it will finalize the holder
             kWeakTable.Add(comObject, holder);
             // Add to weak object map - gives us a view of all objects around
             kMapOfObjects.AddOrUpdate(new WeakReference(comObject), Tuple.Create(comObject.Ipid, SessionIdentifier));
         }
         // Increment the count for the number of weak-references for this IPID
-        lock (_mapOfIPIDsVsWeakReferences) {
+        lock (_mapOfIPIDsVsWeakReferences)
+        {
             // Count all weak-references for a given IPID.
-            if (!_mapOfIPIDsVsWeakReferences.TryGetValue(comObject.Ipid, out var count)) {
+            if (!_mapOfIPIDsVsWeakReferences.TryGetValue(comObject.Ipid, out var count))
+            {
                 count = 0;
             }
             _mapOfIPIDsVsWeakReferences.AddOrUpdate(comObject.Ipid, count + 1);
@@ -787,19 +882,25 @@ public sealed class Session {
     /// </summary>
     /// <param name="ipid"></param>
     /// <returns></returns>
-    internal int RemoveWeakReference(string ipid) {
+    internal int RemoveWeakReference(string ipid)
+    {
         Log.Logger.Verbose("Dumping {@mapOfIPIDsVsWeakReferences}", _mapOfIPIDsVsWeakReferences);
         var weakRefsRemaining = 0;
-        lock (_mapOfIPIDsVsWeakReferences) {
-            if (!_mapOfIPIDsVsWeakReferences.TryGetValue(ipid, out var count)) {
+        lock (_mapOfIPIDsVsWeakReferences)
+        {
+            if (!_mapOfIPIDsVsWeakReferences.TryGetValue(ipid, out var count))
+            {
                 weakRefsRemaining = 0;
             }
-            else {
+            else
+            {
                 weakRefsRemaining = count - 1;
-                if (weakRefsRemaining > 0) {
+                if (weakRefsRemaining > 0)
+                {
                     _mapOfIPIDsVsWeakReferences.AddOrUpdate(ipid, weakRefsRemaining);
                 }
-                else {
+                else
+                {
                     _mapOfIPIDsVsWeakReferences.Remove(ipid);
                 }
             }
@@ -813,7 +914,8 @@ public sealed class Session {
     /// <param name="IPID"></param>
     /// <param name="oid"></param>
     /// <param name="dontping"></param>
-    private void AddToSession(string IPID, byte[] oid, bool dontping) {
+    private void AddToSession(string IPID, byte[] oid, bool dontping)
+    {
         // Weak reference of the object
         // mapOfObjects.put(new WeakReference(IPID,referenceQueueOfCOMObjects),IPID);
         // it does not matter if we create a new OID here, the OxidCOMRunttime
@@ -852,10 +954,12 @@ public sealed class Session {
     /// <param name="IPID"></param>
     /// <param name="numinstances"></param>
     /// <exception cref="InteropException"></exception>
-    internal void ReleaseRef(string IPID, int numinstances) {
+    internal void ReleaseRef(string IPID, int numinstances)
+    {
         Log.Logger.Information("releaseRef:Reclaiming from Session: " +
             SessionIdentifier + ", the IPID: " + IPID + ", numinstances is " + numinstances);
-        var obj = new CallBuilder(true) {
+        var obj = new CallBuilder(true)
+        {
             ParentIpid = IPID,
             Opnum = 2 //release
         };
@@ -869,7 +973,8 @@ public sealed class Session {
         // same with release.
         obj.AddInParamAsInt(numinstances);
         obj.AddInParamAsInt(0); //private refs = 0
-        if (Log.Logger.IsEnabled(Microsoft.Extensions.Logging.LogLevel.Information)) {
+        if (Log.Logger.IsEnabled(Microsoft.Extensions.Logging.LogLevel.Information))
+        {
             Log.Logger.Warning("releaseRef: Releasing numinstances " + numinstances +
                 " references of IPID: " + IPID + " session: " + SessionIdentifier);
             // debug_delIpids(IPID, numinstances);
@@ -881,11 +986,14 @@ public sealed class Session {
     /// Dreference
     /// </summary>
     /// <param name="IPID"></param>
-    private void AddDereferencedIpids(string IPID) {
+    private void AddDereferencedIpids(string IPID)
+    {
         Log.Logger.Information("addDereferencedIpids for session : " +
             SessionIdentifier + ", IPID is: " + IPID);
-        lock (kMutex) {
-            if (!_listOfDeferencedIpids.Contains(IPID, StringComparer.OrdinalIgnoreCase)) {
+        lock (kMutex)
+        {
+            if (!_listOfDeferencedIpids.Contains(IPID, StringComparer.OrdinalIgnoreCase))
+            {
                 _listOfDeferencedIpids.Add(IPID);
             }
         }
@@ -898,10 +1006,12 @@ public sealed class Session {
     /// <param name="fromDestroy"></param>
     /// <exception cref="InteropException"></exception>
     /// <returns></returns>
-    private void ReleaseRefs(ComArray arrayOfStructs, bool fromDestroy) {
+    private void ReleaseRefs(ComArray arrayOfStructs, bool fromDestroy)
+    {
         Log.Logger.Information("In releaseRefs for session : " + SessionIdentifier +
             ", array length is: " + (short)((object[])arrayOfStructs.ArrayInstance).Length);
-        var obj = new CallBuilder(true) {
+        var obj = new CallBuilder(true)
+        {
             Opnum = 2 //release
         };
         //length
@@ -918,9 +1028,11 @@ public sealed class Session {
     /// <param name="IPID"></param>
     /// <exception cref="InteropException"></exception>
     /// <returns></returns>
-    private Struct PrepareForReleaseRef(string IPID) {
+    private Struct PrepareForReleaseRef(string IPID)
+    {
         var releaseCount = 5 + 5; // 5 of the original and 5 for the addRef done later on.
-        if (_mapOfIPIDsVsRefcounts.TryGetValue(IPID, out var refcount)) {
+        if (_mapOfIPIDsVsRefcounts.TryGetValue(IPID, out var refcount))
+        {
             releaseCount = refcount;
         }
         return PrepareForReleaseRef(IPID, releaseCount);
@@ -933,12 +1045,14 @@ public sealed class Session {
     /// <param name="refcount"></param>
     /// <exception cref="InteropException"></exception>
     /// <returns></returns>
-    private Struct PrepareForReleaseRef(string IPID, int refcount) {
+    private Struct PrepareForReleaseRef(string IPID, int refcount)
+    {
         var remInterface = new Struct();
         remInterface.AddMember(new UUID(IPID));
         remInterface.AddMember(refcount);
         remInterface.AddMember(0); //private refs = 0
-        if (Log.Logger.IsEnabled(Microsoft.Extensions.Logging.LogLevel.Information)) {
+        if (Log.Logger.IsEnabled(Microsoft.Extensions.Logging.LogLevel.Information))
+        {
             Log.Logger.Warning("prepareForReleaseRef: Releasing " + refcount +
                 "references of IPID: " + IPID + " session: " + SessionIdentifier);
             // debug_delIpids(IPID, refcount);
@@ -949,8 +1063,10 @@ public sealed class Session {
     }
 
     /// <inheritdoc/>
-    public override bool Equals(object obj) {
-        if (!(obj is Session other)) {
+    public override bool Equals(object obj)
+    {
+        if (!(obj is Session other))
+        {
             return false;
         }
         return other.SessionIdentifier == SessionIdentifier;
@@ -963,11 +1079,14 @@ public sealed class Session {
     /// TODO: IDisposable
     /// </summary>
 #pragma warning disable MA0055 // Legacy session cleanup uses finalizers until IDisposable ownership is introduced.
-    ~Session() {
-        try {
+    ~Session()
+    {
+        try
+        {
             DestroySession(this);
         }
-        catch (InteropException e) {
+        catch (InteropException e)
+        {
             Log.Logger.Verbose("Exception in finalize when destroying session " + e.Message);
         }
     }
@@ -978,8 +1097,10 @@ public sealed class Session {
     /// </summary>
     /// <param name="ipid"></param>
     /// <returns></returns>
-    internal IUnreferenced GetUnreferencedHandler(string ipid) {
-        lock (_unreferencedHandlersLock) {
+    internal IUnreferenced GetUnreferencedHandler(string ipid)
+    {
+        lock (_unreferencedHandlersLock)
+        {
             return _mapOfUnreferencedHandlers.GetOrDefault(ipid);
         }
     }
@@ -989,8 +1110,10 @@ public sealed class Session {
     /// </summary>
     /// <param name="ipid"></param>
     /// <param name="unreferenced"></param>
-    internal void RegisterUnreferencedHandler(string ipid, IUnreferenced unreferenced) {
-        lock (_unreferencedHandlersLock) {
+    internal void RegisterUnreferencedHandler(string ipid, IUnreferenced unreferenced)
+    {
+        lock (_unreferencedHandlersLock)
+        {
             _mapOfUnreferencedHandlers.AddOrUpdate(ipid, unreferenced);
         }
     }
@@ -999,8 +1122,10 @@ public sealed class Session {
     /// Unregister unreferenced handler
     /// </summary>
     /// <param name="ipid"></param>
-    internal void UnregisterUnreferencedHandler(string ipid) {
-        lock (_unreferencedHandlersLock) {
+    internal void UnregisterUnreferencedHandler(string ipid)
+    {
+        lock (_unreferencedHandlersLock)
+        {
             _mapOfUnreferencedHandlers.Remove(ipid);
         }
     }
@@ -1010,15 +1135,20 @@ public sealed class Session {
     /// </summary>
     /// <param name="src"></param>
     /// <param name="target"></param>
-    internal static void LinkTwoSessions(Session src, Session target) {
-        if (src.SessionInDestroy || target.SessionInDestroy) {
+    internal static void LinkTwoSessions(Session src, Session target)
+    {
+        if (src.SessionInDestroy || target.SessionInDestroy)
+        {
             return;
         }
-        if (src.Equals(target)) {
+        if (src.Equals(target))
+        {
             return;
         }
-        lock (kMutex) {
-            if (!src._links.Contains(target)) {
+        lock (kMutex)
+        {
+            if (!src._links.Contains(target))
+            {
                 src._links.Add(target);
             }
         }
@@ -1029,14 +1159,18 @@ public sealed class Session {
     /// </summary>
     /// <param name="src"></param>
     /// <param name="tobeunlinked"></param>
-    internal static void UnLinkSession(Session src, Session tobeunlinked) {
-        if (src.SessionInDestroy) {
+    internal static void UnLinkSession(Session src, Session tobeunlinked)
+    {
+        if (src.SessionInDestroy)
+        {
             return;
         }
-        if (src.Equals(tobeunlinked)) {
+        if (src.Equals(tobeunlinked))
+        {
             return;
         }
-        lock (kMutex) {
+        lock (kMutex)
+        {
             src._links.Remove(tobeunlinked);
         }
     }
@@ -1052,8 +1186,10 @@ public sealed class Session {
     /// and thus a session might already exist and these have to be tied
     /// together.
     /// </summary>
-    internal static Session ResolveSessionForOxid(Oxid oxid) {
-        lock (kMutex) {
+    internal static Session ResolveSessionForOxid(Oxid oxid)
+    {
+        lock (kMutex)
+        {
             return kMapOfOxidsVsSessions.GetOrDefault(oxid);
         }
     }

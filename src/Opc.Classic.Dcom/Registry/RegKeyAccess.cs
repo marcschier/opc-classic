@@ -9,7 +9,8 @@ namespace Opc.Classic.Dcom.Registry;
 /// </summary>
 #pragma warning disable MA0062, CA1069 // WinReg access masks include composite aliases.
 [Flags]
-public enum RegKeyAccess {
+public enum RegKeyAccess
+{
 
     /// <summary>
     /// Query

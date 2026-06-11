@@ -20,11 +20,13 @@ using TUnit.Core;
 
 namespace Opc.Classic.Xml.Tests;
 
-public sealed class HttpXmlDaClientTests {
+public sealed class HttpXmlDaClientTests
+{
     /// <summary>
     /// Captures the outbound HTTP request and replays a canned response.
     /// </summary>
-    private sealed class CapturingHandler : HttpMessageHandler {
+    private sealed class CapturingHandler : HttpMessageHandler
+    {
         public HttpRequestMessage? LastRequest { get; private set; }
         public string? LastRequestBody { get; private set; }
         public string ResponseBody { get; set; } = string.Empty;
@@ -32,11 +34,13 @@ public sealed class HttpXmlDaClientTests {
 
         protected override async Task<HttpResponseMessage> SendAsync(
             HttpRequestMessage request,
-            CancellationToken cancellationToken) {
+            CancellationToken cancellationToken)
+        {
             cancellationToken.ThrowIfCancellationRequested();
 
             LastRequest = request;
-            if (request.Content is not null) {
+            if (request.Content is not null)
+            {
                 LastRequestBody = await request.Content.ReadAsStringAsync(cancellationToken)
                     .ConfigureAwait(false);
             }
@@ -49,14 +53,17 @@ public sealed class HttpXmlDaClientTests {
         }
     }
 
-    private static HttpXmlDaClient BuildClient(CapturingHandler handler) {
+    private static HttpXmlDaClient BuildClient(CapturingHandler handler)
+    {
         var http = new HttpClient(handler, disposeHandler: false);
         return new HttpXmlDaClient(http, new Uri("http://example.test/xmlda"));
     }
 
     [Test]
-    public async Task GetStatusAsync_PostsToEndpoint() {
-        var handler = new CapturingHandler {
+    public async Task GetStatusAsync_PostsToEndpoint()
+    {
+        var handler = new CapturingHandler
+        {
             ResponseBody = """
                 <?xml version="1.0"?>
                 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
@@ -81,8 +88,10 @@ public sealed class HttpXmlDaClientTests {
     }
 
     [Test]
-    public async Task GetStatusAsync_SendsSoapActionHeader() {
-        var handler = new CapturingHandler {
+    public async Task GetStatusAsync_SendsSoapActionHeader()
+    {
+        var handler = new CapturingHandler
+        {
             ResponseBody = """
                 <?xml version="1.0"?>
                 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
@@ -108,8 +117,10 @@ public sealed class HttpXmlDaClientTests {
     }
 
     [Test]
-    public async Task GetStatusAsync_SendsTextXmlContentType() {
-        var handler = new CapturingHandler {
+    public async Task GetStatusAsync_SendsTextXmlContentType()
+    {
+        var handler = new CapturingHandler
+        {
             ResponseBody = """
                 <?xml version="1.0"?>
                 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
@@ -132,8 +143,10 @@ public sealed class HttpXmlDaClientTests {
     }
 
     [Test]
-    public async Task GetStatusAsync_RequestBodyCarriesGetStatusElement() {
-        var handler = new CapturingHandler {
+    public async Task GetStatusAsync_RequestBodyCarriesGetStatusElement()
+    {
+        var handler = new CapturingHandler
+        {
             ResponseBody = """
                 <?xml version="1.0"?>
                 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
@@ -157,26 +170,32 @@ public sealed class HttpXmlDaClientTests {
     }
 
     [Test]
-    public async Task GetStatusAsync_ThrowsOnHttpError() {
-        var handler = new CapturingHandler {
+    public async Task GetStatusAsync_ThrowsOnHttpError()
+    {
+        var handler = new CapturingHandler
+        {
             StatusCode = HttpStatusCode.InternalServerError,
             ResponseBody = "internal server error body",
         };
         var client = BuildClient(handler);
 
         bool threw = false;
-        try {
+        try
+        {
             await client.GetStatusAsync(new XmlDaRequestHeader(null, null));
         }
-        catch (HttpRequestException) {
+        catch (HttpRequestException)
+        {
             threw = true;
         }
         await Assert.That(threw).IsTrue();
     }
 
     [Test]
-    public async Task GetStatusAsync_MapsSoapFaultOnHttpError_ToTypedEnum() {
-        var handler = new CapturingHandler {
+    public async Task GetStatusAsync_MapsSoapFaultOnHttpError_ToTypedEnum()
+    {
+        var handler = new CapturingHandler
+        {
             StatusCode = HttpStatusCode.InternalServerError,
             ResponseBody = """
                 <?xml version="1.0"?>
@@ -194,10 +213,12 @@ public sealed class HttpXmlDaClientTests {
         var client = BuildClient(handler);
 
         XmlDaSoapFaultException? faultException = null;
-        try {
+        try
+        {
             await client.GetStatusAsync(new XmlDaRequestHeader(null, null));
         }
-        catch (XmlDaSoapFaultException ex) {
+        catch (XmlDaSoapFaultException ex)
+        {
             faultException = ex;
         }
 
@@ -206,8 +227,10 @@ public sealed class HttpXmlDaClientTests {
     }
 
     [Test]
-    public async Task ReadAsync_TreatsClampResultIdAsSuccess() {
-        var handler = new CapturingHandler {
+    public async Task ReadAsync_TreatsClampResultIdAsSuccess()
+    {
+        var handler = new CapturingHandler
+        {
             ResponseBody = """
                 <?xml version="1.0"?>
                 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
@@ -242,8 +265,10 @@ public sealed class HttpXmlDaClientTests {
     }
 
     [Test]
-    public async Task GetStatusAsync_HonorsCancellation() {
-        var handler = new CapturingHandler {
+    public async Task GetStatusAsync_HonorsCancellation()
+    {
+        var handler = new CapturingHandler
+        {
             ResponseBody = "ignored",
         };
         var client = BuildClient(handler);
@@ -252,10 +277,12 @@ public sealed class HttpXmlDaClientTests {
         await cts.CancelAsync();
 
         bool threw = false;
-        try {
+        try
+        {
             await client.GetStatusAsync(new XmlDaRequestHeader(null, null), cts.Token);
         }
-        catch (OperationCanceledException) {
+        catch (OperationCanceledException)
+        {
             threw = true;
         }
         await Assert.That(threw).IsTrue();

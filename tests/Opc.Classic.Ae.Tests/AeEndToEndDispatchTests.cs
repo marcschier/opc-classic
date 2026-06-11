@@ -21,9 +21,11 @@ namespace Opc.Classic.Ae.Tests;
 /// is symmetric. Reproduces the matrix failures for GetConditionState and
 /// AckCondition without spinning up the sample server.
 /// </summary>
-public sealed class AeEndToEndDispatchTests {
+public sealed class AeEndToEndDispatchTests
+{
     [Test]
-    public async Task GetConditionState_with_empty_attribute_ids_round_trips_through_dispatcher() {
+    public async Task GetConditionState_with_empty_attribute_ids_round_trips_through_dispatcher()
+    {
         var impl = new StubEventServer();
         var dispatcher = new IOPCEventServerServerDispatcher(impl);
         var channel = new InProcessChannel(dispatcher);
@@ -39,7 +41,8 @@ public sealed class AeEndToEndDispatchTests {
     }
 
     [Test]
-    public async Task AckCondition_with_one_event_round_trips_through_dispatcher() {
+    public async Task AckCondition_with_one_event_round_trips_through_dispatcher()
+    {
         var impl = new StubEventServer();
         var dispatcher = new IOPCEventServerServerDispatcher(impl);
         var channel = new InProcessChannel(dispatcher);
@@ -63,7 +66,8 @@ public sealed class AeEndToEndDispatchTests {
         await Assert.That(impl.LastAckCookies![0]).IsEqualTo(42);
     }
 
-    private sealed class StubEventServer : IOPCEventServer {
+    private sealed class StubEventServer : IOPCEventServer
+    {
         public string? LastSource { get; private set; }
         public string? LastConditionName { get; private set; }
         public int[]? LastAttributeIds { get; private set; }
@@ -80,7 +84,8 @@ public sealed class AeEndToEndDispatchTests {
         public Task<int> QueryAvailableFiltersAsync(CancellationToken cancellationToken = default) =>
             Task.FromResult(0);
 
-        public Task QueryEventCategoriesAsync(int eventType, out int[] eventCategories, out string[] eventCategoryDescriptions, CancellationToken cancellationToken = default) {
+        public Task QueryEventCategoriesAsync(int eventType, out int[] eventCategories, out string[] eventCategoryDescriptions, CancellationToken cancellationToken = default)
+        {
             eventCategories = [];
             eventCategoryDescriptions = [];
             return Task.CompletedTask;
@@ -95,21 +100,24 @@ public sealed class AeEndToEndDispatchTests {
         public Task<string[]> QuerySourceConditionsAsync(string source, CancellationToken cancellationToken = default) =>
             Task.FromResult<string[]>([]);
 
-        public Task QueryEventAttributesAsync(int eventCategory, out int[] attributeIds, out string[] attributeDescriptions, out ushort[] attributeTypes, CancellationToken cancellationToken = default) {
+        public Task QueryEventAttributesAsync(int eventCategory, out int[] attributeIds, out string[] attributeDescriptions, out ushort[] attributeTypes, CancellationToken cancellationToken = default)
+        {
             attributeIds = [];
             attributeDescriptions = [];
             attributeTypes = [];
             return Task.CompletedTask;
         }
 
-        public Task TranslateToItemIDsAsync(string source, int eventCategory, string conditionName, string subConditionName, int[] attributeIds, out string[] attributeItemIds, out string[] nodeNames, out Guid[] classIds, CancellationToken cancellationToken = default) {
+        public Task TranslateToItemIDsAsync(string source, int eventCategory, string conditionName, string subConditionName, int[] attributeIds, out string[] attributeItemIds, out string[] nodeNames, out Guid[] classIds, CancellationToken cancellationToken = default)
+        {
             attributeItemIds = [];
             nodeNames = [];
             classIds = [];
             return Task.CompletedTask;
         }
 
-        public Task<OpcConditionState> GetConditionStateAsync(string source, string conditionName, int[] attributeIds, CancellationToken cancellationToken = default) {
+        public Task<OpcConditionState> GetConditionStateAsync(string source, string conditionName, int[] attributeIds, CancellationToken cancellationToken = default)
+        {
             LastSource = source;
             LastConditionName = conditionName;
             LastAttributeIds = attributeIds;
@@ -145,7 +153,8 @@ public sealed class AeEndToEndDispatchTests {
         public Task DisableConditionBySourceAsync(string[] sources, CancellationToken cancellationToken = default) =>
             Task.CompletedTask;
 
-        public Task<int[]> AckConditionAsync(int dwCount, string acknowledgerId, string comment, string[] sources, string[] conditionNames, long[] activeTimes, int[] cookies, CancellationToken cancellationToken = default) {
+        public Task<int[]> AckConditionAsync(int dwCount, string acknowledgerId, string comment, string[] sources, string[] conditionNames, long[] activeTimes, int[] cookies, CancellationToken cancellationToken = default)
+        {
             LastAckActor = acknowledgerId;
             LastAckSources = sources;
             LastAckCookies = cookies;
@@ -153,7 +162,8 @@ public sealed class AeEndToEndDispatchTests {
             return Task.FromResult(errors);
         }
 
-        public Task CreateAreaBrowserAsync(Guid requestedInterfaceId, out IOPCEventAreaBrowser areaBrowser, CancellationToken cancellationToken = default) {
+        public Task CreateAreaBrowserAsync(Guid requestedInterfaceId, out IOPCEventAreaBrowser areaBrowser, CancellationToken cancellationToken = default)
+        {
             areaBrowser = default!;
             throw new NotImplementedException();
         }
@@ -162,12 +172,14 @@ public sealed class AeEndToEndDispatchTests {
         private static NotImplementedException NotImplementedException<T1, T2, T3>(out T1 v1, out T2 v2, out T3 v3) { v1 = default!; v2 = default!; v3 = default!; return new NotImplementedException(); }
     }
 
-    private sealed class InProcessChannel : ICallChannel {
+    private sealed class InProcessChannel : ICallChannel
+    {
         private readonly IOPCEventServerServerDispatcher _dispatcher;
 
         public InProcessChannel(IOPCEventServerServerDispatcher dispatcher) => _dispatcher = dispatcher;
 
-        public async Task<NdrCallResult> InvokeAsync(Guid interfaceId, int opnum, ReadOnlyMemory<byte> requestPayload, CancellationToken cancellationToken = default) {
+        public async Task<NdrCallResult> InvokeAsync(Guid interfaceId, int opnum, ReadOnlyMemory<byte> requestPayload, CancellationToken cancellationToken = default)
+        {
             DispatchResult result = await _dispatcher.DispatchAsync(opnum, requestPayload, cancellationToken).ConfigureAwait(false);
             return result.ToNdrCallResult();
         }

@@ -10,7 +10,8 @@ namespace Opc.Classic.Dcom.Core;
 /// Must be implemented by Classes providing marshall, unmarshall support
 /// for OBJREF_CUSTOM.
 /// </summary>
-public abstract class ComCustomMarshallerUnMarshaller {
+public abstract class ComCustomMarshallerUnMarshaller
+{
 
     /// <summary>
     /// Clsid
@@ -23,7 +24,8 @@ public abstract class ComCustomMarshallerUnMarshaller {
     /// <param name="clsid"></param>
     /// <param name="comObject"></param>
     protected ComCustomMarshallerUnMarshaller(string clsid, IComObject comObject) :
-        this(clsid, comObject, false) {
+        this(clsid, comObject, false)
+    {
     }
 
     /// <summary>
@@ -33,15 +35,18 @@ public abstract class ComCustomMarshallerUnMarshaller {
     /// <param name="comObject"></param>
     /// <param name="isTemplate"></param>
     protected ComCustomMarshallerUnMarshaller(string clsid,
-        IComObject comObject, bool isTemplate) {
+        IComObject comObject, bool isTemplate)
+    {
         CLSID = clsid;
-        if (isTemplate) {
+        if (isTemplate)
+        {
             ComObject = new ComObjectImpl(comObject.AssociatedSession,
                 ((IComObjectInternal)comObject).GetInterfacePointer());
 
             ((ComObjectImpl)ComObject).CustomObject = this;
         }
-        else {
+        else
+        {
             ComObject = comObject;
         }
     }

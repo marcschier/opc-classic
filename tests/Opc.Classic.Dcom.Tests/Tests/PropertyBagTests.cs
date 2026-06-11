@@ -6,16 +6,19 @@ using TUnit.Core;
 
 namespace Opc.Classic.Dcom.Test;
 
-public sealed class PropertyBagTests {
+public sealed class PropertyBagTests
+{
     [Test]
-    public async Task PropertyBag_returns_null_for_missing_key() {
+    public async Task PropertyBag_returns_null_for_missing_key()
+    {
         var bag = new PropertyBag();
 
         await Assert.That(bag.GetProperty("missing")).IsNull();
     }
 
     [Test]
-    public async Task PropertyBag_set_then_get_round_trips() {
+    public async Task PropertyBag_set_then_get_round_trips()
+    {
         var bag = new PropertyBag();
 
         bag.SetProperty("rpc.ntlm.sign", "true");
@@ -24,14 +27,16 @@ public sealed class PropertyBagTests {
     }
 
     [Test]
-    public async Task PropertyBag_default_value_overload() {
+    public async Task PropertyBag_default_value_overload()
+    {
         var bag = new PropertyBag();
 
         await Assert.That(bag.GetProperty("rpc.socketTimeout", "0")).IsEqualTo("0");
     }
 
     [Test]
-    public async Task PropertyBag_copy_constructor_carries_defaults() {
+    public async Task PropertyBag_copy_constructor_carries_defaults()
+    {
         var defaults = new PropertyBag();
         defaults.SetProperty("rpc.ntlm.ntlmv2", "true");
 

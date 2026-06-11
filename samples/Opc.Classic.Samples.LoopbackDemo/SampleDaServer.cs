@@ -6,7 +6,8 @@ using Opc.Classic.Da.Hosting;
 
 namespace Opc.Classic.Samples.LoopbackDemo;
 
-internal sealed class SampleDaServer : IOpcDaServer {
+internal sealed class SampleDaServer : IOpcDaServer
+{
     private static readonly DateTimeOffset StartTime = DateTimeOffset.UtcNow;
 
     private static readonly Action<ILogger, Exception?> GetStatusMessage = LoggerMessage.Define(
@@ -27,17 +28,20 @@ internal sealed class SampleDaServer : IOpcDaServer {
     private readonly ILogger<SampleDaServer> _logger;
     private readonly LoopbackTagStore _tags;
 
-    public SampleDaServer(LoopbackTagStore tags, ILogger<SampleDaServer> logger) {
+    public SampleDaServer(LoopbackTagStore tags, ILogger<SampleDaServer> logger)
+    {
         _tags = tags ?? throw new ArgumentNullException(nameof(tags));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
-    public Task<OpcServerStatus> GetStatusAsync(CancellationToken cancellationToken = default) {
+    public Task<OpcServerStatus> GetStatusAsync(CancellationToken cancellationToken = default)
+    {
         cancellationToken.ThrowIfCancellationRequested();
         GetStatusMessage(_logger, null);
 
         DateTimeOffset now = DateTimeOffset.UtcNow;
-        var status = new OpcServerStatus {
+        var status = new OpcServerStatus
+        {
             Spec = OpcStatusSpec.Da,
             StartTime = StartTime,
             CurrentTime = now,
@@ -58,14 +62,16 @@ internal sealed class SampleDaServer : IOpcDaServer {
         int requestedUpdateRate,
         int clientHandle,
         int localeId,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         ArgumentException.ThrowIfNullOrWhiteSpace(name);
         cancellationToken.ThrowIfCancellationRequested();
         AddGroupMessage(_logger, name, active, requestedUpdateRate, null);
         return Task.FromResult(unchecked(clientHandle + 0x1000));
     }
 
-    public Task RemoveGroupAsync(int serverGroupHandle, bool force, CancellationToken cancellationToken = default) {
+    public Task RemoveGroupAsync(int serverGroupHandle, bool force, CancellationToken cancellationToken = default)
+    {
         cancellationToken.ThrowIfCancellationRequested();
         RemoveGroupMessage(_logger, serverGroupHandle, force, null);
         return Task.CompletedTask;
@@ -74,7 +80,8 @@ internal sealed class SampleDaServer : IOpcDaServer {
     public Task<string> GetErrorStringAsync(
         int errorCode,
         int localeId,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         cancellationToken.ThrowIfCancellationRequested();
         return Task.FromResult($"Loopback SampleDaServer error: 0x{errorCode:X8}");
     }

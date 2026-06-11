@@ -15,7 +15,8 @@ using System.Threading;
 namespace Opc.Classic.Dcom.Core;
 
 [Serializable]
-internal sealed class OrpcThis {
+internal sealed class OrpcThis
+{
 
     /// <summary>
     /// Create orpcthis
@@ -51,7 +52,8 @@ internal sealed class OrpcThis {
     /// Encode
     /// </summary>
     /// <param name="ndr"></param>
-    public void Encode(NdrCodec ndr) {
+    public void Encode(NdrCodec ndr)
+    {
         ndr.WriteUnsignedShort(_version.MajorVersion); // COM Major version
         ndr.WriteUnsignedShort(_version.MinorVersion); // COM minor version
         ndr.WriteUnsignedLong(ORPCFlags); // No Flags
@@ -60,24 +62,30 @@ internal sealed class OrpcThis {
         // the order here is important since the cid is always filled from the ctor hence will never be null.
         var cid2 = kCidForCallback.Value ?? CasualityIdentifier;
         var uuid = new UUID(cid2);
-        try {
+        try
+        {
             uuid.Encode(ndr, ndr.Buffer);
         }
-        catch (NdrException e) {
+        catch (NdrException e)
+        {
             Log.Logger.Error(e, "OrpcThis encode");
         }
 
         var i = 0;
-        if (ExtentArray != null && ExtentArray.Length != 0) {
+        if (ExtentArray != null && ExtentArray.Length != 0)
+        {
             ndr.WriteUnsignedLong(ExtentArray.Length);
             ndr.WriteUnsignedLong(0);
-            while (i < ExtentArray.Length) {
+            while (i < ExtentArray.Length)
+            {
                 var arryy = ExtentArray[i];
                 uuid = new UUID(arryy.GUID);
-                try {
+                try
+                {
                     uuid.Encode(ndr, ndr.Buffer);
                 }
-                catch (NdrException e) {
+                catch (NdrException e)
+                {
                     Log.Logger.Error(e, "OrpcThis encode");
                 }
 
@@ -86,7 +94,8 @@ internal sealed class OrpcThis {
                 i++;
             }
         }
-        else {
+        else
+        {
             ndr.WriteUnsignedLong(0);
         }
     }
@@ -96,7 +105,8 @@ internal sealed class OrpcThis {
     /// </summary>
     /// <param name="ndr"></param>
     /// <returns></returns>
-    internal static OrpcThis Decode(NdrCodec ndr) {
+    internal static OrpcThis Decode(NdrCodec ndr)
+    {
 
         var retval = new OrpcThis();
         var context = new CodecContext();
@@ -108,17 +118,20 @@ internal sealed class OrpcThis {
         MarshalUnMarshalHelper.Deserialize(ndr, typeof(int), context); // reserved.
 
         var uuid = new UUID();
-        try {
+        try
+        {
             uuid.Decode(ndr, ndr.Buffer);
             retval.CasualityIdentifier = uuid.ToString();
         }
-        catch (NdrException e) {
+        catch (NdrException e)
+        {
             Log.Logger.Error(e, "OrpcThis decode");
         }
 
 
         var orpcextentarray = new Struct();
-        try {
+        try
+        {
             // create the orpcextent struct
             /*
              typedef struct tagORPC_EXTENT
@@ -147,7 +160,8 @@ internal sealed class OrpcThis {
             // this is since the pointer is [unique]
             orpcextentarray.AddMember(new ComPointer(new ComArray(new ComPointer(orpcextent), null, 1, true)));
         }
-        catch (InteropException) {
+        catch (InteropException)
+        {
             // this won't fail...i am certain :)...
         }
 
@@ -157,10 +171,13 @@ internal sealed class OrpcThis {
 
         var extentArrays = new List<OrpcExtentArray>();
         // now read whether extend array exists or not
-        if (!orpcextentarrayptr.IsNull) {
+        if (!orpcextentarrayptr.IsNull)
+        {
             var pointers = (ComPointer[])((ComArray)((ComPointer)((Struct)orpcextentarrayptr.Referent).GetMember(2)).Referent).ArrayInstance;
-            for (var i = 0; i < pointers.Length; i++) {
-                if (pointers[i].IsNull) {
+            for (var i = 0; i < pointers.Length; i++)
+            {
+                if (pointers[i].IsNull)
+                {
                     continue;
                 }
 

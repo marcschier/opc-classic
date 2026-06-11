@@ -6,7 +6,8 @@ using Opc.Classic.Dcom.Internal.LegacyNdr;
 namespace Opc.Classic.Dcom.Registry;
 
 /// <inheritdoc/>
-public class EnumValue : NdrOp {
+public class EnumValue : NdrOp
+{
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 #pragma warning disable IDE1006 // Naming Styles
@@ -20,7 +21,8 @@ public class EnumValue : NdrOp {
     public override int Opnum => 10;
 
     /// <inheritdoc/>
-    public override void Write(NdrCodec ndr) {
+    public override void Write(NdrCodec ndr)
+    {
 
         // Write parent handle
         ndr.WriteOctetArray(parentKey.Handle, 0, 20);
@@ -56,7 +58,8 @@ public class EnumValue : NdrOp {
     }
 
     /// <inheritdoc/>
-    public override void Read(NdrCodec ndr) {
+    public override void Read(NdrCodec ndr)
+    {
         // buffer len, since it is uint16
         ndr.ReadUnsignedShort();
         // buffer size, since it is uint16
@@ -72,17 +75,20 @@ public class EnumValue : NdrOp {
 
         var actuallength = ndr.ReadUnsignedLong(); // actuallength
         var bytes = Array.Empty<byte>();
-        if (actuallength != 0) {
+        if (actuallength != 0)
+        {
             bytes = new byte[actuallength - 1];
         }
         var i = 0;
         // last 2 bytes, null termination will be eaten outside the loop
-        while (i < actuallength - 1) {
+        while (i < actuallength - 1)
+        {
             var retVal = ndr.ReadUnsignedShort();
             bytes[i] = (byte)retVal;
             i++;
         }
-        if (actuallength != 0) {
+        if (actuallength != 0)
+        {
             ndr.ReadUnsignedShort();
         }
 
@@ -106,7 +112,8 @@ public class EnumValue : NdrOp {
         ndr.ReadUnsignedLong();
 
         var hresult = ndr.ReadUnsignedLong();
-        if (hresult != 0) {
+        if (hresult != 0)
+        {
             throw new InteropRuntimeException(hresult);
         }
     }

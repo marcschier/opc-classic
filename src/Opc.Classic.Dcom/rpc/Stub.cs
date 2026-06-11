@@ -11,22 +11,28 @@ namespace Opc.Classic.Dcom.Rpc;
 /// <summary>
 /// Stub
 /// </summary>
-public abstract class Stub {
+public abstract class Stub
+{
 
     /// <summary>
     /// Address
     /// </summary>
-    public string Address {
+    public string Address
+    {
         get => _address;
-        set {
-            if ((value == null) ? _address == null : value.Equals(_address)) {
+        set
+        {
+            if ((value == null) ? _address == null : value.Equals(_address))
+            {
                 return;
             }
             _address = value;
-            try {
+            try
+            {
                 Detach();
             }
-            catch (IOException) {
+            catch (IOException)
+            {
             }
         }
     }
@@ -55,15 +61,19 @@ public abstract class Stub {
     /// Detach
     /// </summary>
     /// <exception cref="IOException"></exception>
-    protected void Detach() {
+    protected void Detach()
+    {
         var endpoint = Endpoint;
-        if (endpoint == null) {
+        if (endpoint == null)
+        {
             return;
         }
-        try {
+        try
+        {
             endpoint.Detach();
         }
-        finally {
+        finally
+        {
             Endpoint = null;
         }
     }
@@ -73,13 +83,16 @@ public abstract class Stub {
     /// </summary>
     /// <exception cref="IOException"></exception>
     /// <exception cref="T:rpc.RpcException"></exception>
-    protected void Attach() {
+    protected void Attach()
+    {
         var endpoint = Endpoint;
-        if (endpoint != null) {
+        if (endpoint != null)
+        {
             return;
         }
         var address = Address;
-        if (address == null) {
+        if (address == null)
+        {
             throw new RpcException("No address specified.");
         }
         var tp = TransportFactory.CreateTransport(address, Properties);
@@ -92,7 +105,8 @@ public abstract class Stub {
     /// <param name="semantics"></param>
     /// <param name="ndrobj"></param>
     /// <exception cref="IOException"></exception>
-    public void Call(Semantics semantics, NdrOp ndrobj) {
+    public void Call(Semantics semantics, NdrOp ndrobj)
+    {
         Attach();
         var obj = Object;
         var uuid = (obj == null) ? null : new UUID(obj);

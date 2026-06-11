@@ -5,7 +5,8 @@ namespace Opc.Classic.Dcom.Rpc.Core;
 /// <summary>
 /// Presentation result code
 /// </summary>
-public enum PresentationResultCode {
+public enum PresentationResultCode
+{
 
     /// <summary>
     /// Accept

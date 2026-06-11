@@ -6,7 +6,8 @@ using Opc.Classic.Dcom.Internal.LegacyNdr;
 namespace Opc.Classic.Dcom.Registry;
 
 /// <inheritdoc/>
-public class CloseKey : NdrOp {
+public class CloseKey : NdrOp
+{
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 #pragma warning disable IDE1006 // Naming Styles
@@ -23,10 +24,12 @@ public class CloseKey : NdrOp {
         ndr.WriteOctetArray(key.Handle, 0, 20);
 
     /// <inheritdoc/>
-    public override void Read(NdrCodec ndr) {
+    public override void Read(NdrCodec ndr)
+    {
         ndr.ReadOctetArray(policyhandle, 0, 20);
         var hresult = ndr.ReadUnsignedLong();
-        if (hresult != 0) {
+        if (hresult != 0)
+        {
             throw new InteropRuntimeException(hresult);
         }
     }

@@ -26,7 +26,8 @@ namespace Opc.Classic.Dcom.Core;
 /// </para>
 /// </summary>
 [Serializable]
-public sealed class ComArray {
+public sealed class ComArray
+{
 
     /// <summary>
     /// Returns the nested Array.
@@ -56,11 +57,14 @@ public sealed class ComArray {
     /// <summary>
     /// Total size
     /// </summary>
-    internal int SizeOfAllElementsInBytes {
-        get {
+    internal int SizeOfAllElementsInBytes
+    {
+        get
+        {
             // this means that decode has created this array, and we
             // need to compute the size to stay consistent.
-            if (_sizeOfNestedArrayInBytes == -1) {
+            if (_sizeOfNestedArrayInBytes == -1)
+            {
                 _sizeOfNestedArrayInBytes = ComputeLengthArray(ArrayInstance);
             }
             return _sizeOfNestedArrayInBytes;
@@ -72,7 +76,8 @@ public sealed class ComArray {
     /// </summary>
     /// <returns> <code>true</code> is array is <code>conformant</code>.
     /// </returns>
-    public bool Conformant {
+    public bool Conformant
+    {
         get => _isConformant;
         set => _isConformantProxy = value;
     }
@@ -82,7 +87,8 @@ public sealed class ComArray {
     /// </summary>
     /// <returns> <code>true</code> is array is <code>varying</code>.
     /// </returns>
-    public bool Varying {
+    public bool Varying
+    {
         get => _isVarying;
         set => _isVaryingProxy = value;
     }
@@ -108,7 +114,8 @@ public sealed class ComArray {
     /// <param name="isConformant"> declares whether the array is <i>conformant</i> or not. </param>
     /// <exception cref="ArgumentException"> if <code>upperBounds</code> is supplied and its length
     /// is not equal to the <code>dimension</code> parameter. </exception>
-    public ComArray(Type clazz, int[] upperBounds, int dimension, bool isConformant) {
+    public ComArray(Type clazz, int[] upperBounds, int dimension, bool isConformant)
+    {
         ArrayType = clazz;
         Init2(upperBounds, dimension, isConformant, false);
     }
@@ -123,7 +130,8 @@ public sealed class ComArray {
     /// <param name="isVarying"> declares whether the array is <i>varying</i> or not. </param>
     /// <exception cref="ArgumentException"> if <code>upperBounds</code> is supplied
     /// and its length is not equal to the <code>dimension</code> parameter. </exception>
-    public ComArray(Type clazz, int[] upperBounds, int dimension, bool isConformant, bool isVarying) {
+    public ComArray(Type clazz, int[] upperBounds, int dimension, bool isConformant, bool isVarying)
+    {
         ArrayType = clazz;
         Init2(upperBounds, dimension, isConformant, isVarying);
     }
@@ -160,12 +168,15 @@ public sealed class ComArray {
     /// is not equal to the <code>dimension</code> parameter. </exception>
     /// <exception cref="ArgumentException"> if <code>template</code> is null or is not of the
     /// specified types. </exception>
-    public ComArray(object template, int[] upperBounds, int dimension, bool isConformant) {
-        if (template == null) {
+    public ComArray(object template, int[] upperBounds, int dimension, bool isConformant)
+    {
+        if (template == null)
+        {
             throw new ArgumentException(Interop.GetLocalizedMessage(ErrorCode.INTEROP_ARRAY_TEMPLATE_NULL), nameof(template));
         }
         if (!template.GetType().Equals(typeof(Struct)) && !template.GetType().Equals(typeof(Union)) &&
-            !template.GetType().Equals(typeof(ComPointer)) && !template.GetType().Equals(typeof(ComString))) {
+            !template.GetType().Equals(typeof(ComPointer)) && !template.GetType().Equals(typeof(ComString)))
+        {
             throw new ArgumentException(Interop.GetLocalizedMessage(ErrorCode.INTEROP_ARRAY_INCORRECT_TEMPLATE_PARAM), nameof(template));
         }
         _template = template;
@@ -189,18 +200,23 @@ public sealed class ComArray {
     /// <exception cref="ArgumentException"> if <code>template</code> is null or is not of the
     /// specified types. </exception>
     // for structs, pointers, unions.
-    public ComArray(object template, int[] upperBounds, int dimension, bool isConformant, bool isVarying) {
-        if (template == null) {
+    public ComArray(object template, int[] upperBounds, int dimension, bool isConformant, bool isVarying)
+    {
+        if (template == null)
+        {
             throw new ArgumentException(Interop.GetLocalizedMessage(ErrorCode.INTEROP_ARRAY_TEMPLATE_NULL), nameof(template));
         }
 
         if (!template.GetType().Equals(typeof(Struct)) && !template.GetType().Equals(typeof(Union)) &&
-            !template.GetType().Equals(typeof(ComPointer)) && !template.GetType().Equals(typeof(ComString))) {
+            !template.GetType().Equals(typeof(ComPointer)) && !template.GetType().Equals(typeof(ComString)))
+        {
             throw new ArgumentException(Interop.GetLocalizedMessage(ErrorCode.INTEROP_ARRAY_INCORRECT_TEMPLATE_PARAM), nameof(template));
         }
 
-        if (Interop.COMVersion.MinorVersion == 6 && template.GetType().Equals(typeof(ComPointer))) {
-            if (((ComPointer)template).Referent.GetType() == typeof(IComObject)) {
+        if (Interop.COMVersion.MinorVersion == 6 && template.GetType().Equals(typeof(ComPointer)))
+        {
+            if (((ComPointer)template).Referent.GetType() == typeof(IComObject))
+            {
                 // in this case this pointer will be a reference type pointer and not deffered one.
                 // change in MS specs since DCOM 5.4
                 _isArrayOfCOMObjects_56DCOM = true;
@@ -221,7 +237,8 @@ public sealed class ComArray {
     /// <param name="dimension"></param>
     /// <param name="isConformant"></param>
     /// <param name="isVarying"></param>
-    private void Init2(int[] upperBounds, int dimension, bool isConformant, bool isVarying) {
+    private void Init2(int[] upperBounds, int dimension, bool isConformant, bool isVarying)
+    {
         UpperBounds = upperBounds;
         Dimensions = dimension;
         _isConformant = isConformant;
@@ -229,17 +246,21 @@ public sealed class ComArray {
         _isVarying = isVarying;
         _isVaryingProxy = isVarying;
 
-        if (upperBounds != null) {
+        if (upperBounds != null)
+        {
             // have to supply the upperbounds for each dimension, no gaps in between
-            if (upperBounds.Length != dimension) {
+            if (upperBounds.Length != dimension)
+            {
                 throw new ArgumentException(Interop.GetLocalizedMessage(
                     ErrorCode.INTEROP_ARRAY_UPPERBNDS_DIM_NOTMATCH), nameof(upperBounds));
             }
         }
 
-        for (var i = 0; upperBounds != null && i < upperBounds.Length; i++) {
+        for (var i = 0; upperBounds != null && i < upperBounds.Length; i++)
+        {
             NumElementsInAllDimensions += upperBounds[i];
-            if (isConformant) {
+            if (isConformant)
+            {
                 ConformantMaxCounts.Add(upperBounds[i]);
             }
         }
@@ -264,7 +285,8 @@ public sealed class ComArray {
     /// <exception cref="ArgumentException"> if the <code>array</code> is not an array or
     /// is of primitive type or is an array of <code>System.Object</code>.
     /// </exception>
-    public ComArray(object array, bool isConformant) {
+    public ComArray(object array, bool isConformant)
+    {
         _isConformant = isConformant;
         _isConformantProxy = isConformant;
         Init(array);
@@ -283,7 +305,8 @@ public sealed class ComArray {
     /// is not an array or
     /// is of primitive type or is an array of <code>System.Object</code>. 
     /// </exception>
-    public ComArray(object array, bool isConformant, bool isVarying) {
+    public ComArray(object array, bool isConformant, bool isVarying)
+    {
         _isConformant = isConformant;
         _isConformantProxy = isConformant;
         _isVarying = isVarying;
@@ -311,12 +334,15 @@ public sealed class ComArray {
     /// Init
     /// </summary>
     /// <param name="array"></param>
-    private void Init(object array) {
-        if (!array.GetType().IsArray) {
+    private void Init(object array)
+    {
+        if (!array.GetType().IsArray)
+        {
             throw new ArgumentException(Interop.GetLocalizedMessage(
                 ErrorCode.INTEROP_ARRAY_PARAM_ONLY), nameof(array));
         }
-        if (array.GetType().IsPrimitive) {
+        if (array.GetType().IsPrimitive)
+        {
             throw new ArgumentException(Interop.GetLocalizedMessage(
                 ErrorCode.INTEROP_ARRAY_PRIMITIVE_NOTACCEPT), nameof(array));
         }
@@ -324,7 +350,8 @@ public sealed class ComArray {
         // bad way...but what the heck...
         // JAVA TO C# CONVERTER WARNING: The .NET Type.FullName property will not always
         // yield results identical to the Java Class.getName method:
-        if (array.GetType().ToString().IndexOf("System.Object", StringComparison.Ordinal) != -1) {
+        if (array.GetType().ToString().IndexOf("System.Object", StringComparison.Ordinal) != -1)
+        {
             throw new ArgumentException(Interop.GetLocalizedMessage(
                 ErrorCode.INTEROP_ARRAY_TYPE_INCORRECT), nameof(array));
         }
@@ -336,12 +363,14 @@ public sealed class ComArray {
         var name = array.GetType().FullName;
         var subArray = array;
         NumElementsInAllDimensions = 1;
-        while (name.StartsWith('[')) {
+        while (name.StartsWith('['))
+        {
             name = name.Substring(1);
             var x = ((object[])subArray).Length;
             upperBounds2.Add(x);
             NumElementsInAllDimensions *= x;
-            if (_isConformant) {
+            if (_isConformant)
+            {
                 ConformantMaxCounts.Add(x);
             }
             ArrayType = subArray.GetType().GetElementType();
@@ -353,13 +382,15 @@ public sealed class ComArray {
             Dimensions++;
         }
 
-        if (Dimensions == -1) {
+        if (Dimensions == -1)
+        {
             NumElementsInAllDimensions = 0;
             Dimensions++;
         }
 
         UpperBounds = new int[upperBounds2.Count];
-        for (var i = 0; i < upperBounds2.Count; i++) {
+        for (var i = 0; i < upperBounds2.Count; i++)
+        {
             UpperBounds[i] = (int)upperBounds2[i];
         }
         Dimensions++; // since it starts from -1.
@@ -371,17 +402,21 @@ public sealed class ComArray {
     /// </summary>
     /// <param name="array"></param>
     /// <returns></returns>
-    private int ComputeLengthArray(object array) {
+    private int ComputeLengthArray(object array)
+    {
         var length = 0;
 
         // JAVA TO C# CONVERTER WARNING: The .NET Type.FullName property will not always
         // yield results identical to the Java Class.getName method:
         var name = array.GetType().FullName;
         var o = (object[])array;
-        for (var i = 0; i < o.Length; i++) {
-            if (name[1] != '[') {
+        for (var i = 0; i < o.Length; i++)
+        {
+            if (name[1] != '[')
+            {
                 var o1 = (object[])array;
-                for (var j = 0; j < o1.Length; j++) {
+                for (var j = 0; j < o1.Length; j++)
+                {
                     length += MarshalUnMarshalHelper.GetLengthInBytes(
                         o1.GetType().GetElementType(), o1[j]);
                 }
@@ -400,21 +435,26 @@ public sealed class ComArray {
     /// <param name="ndr"></param>
     /// <param name="array"></param>
     /// <param name="context"></param>
-    internal void Encode(NdrCodec ndr, object array, CodecContext context) {
-        if (_isConformantProxy) {
+    internal void Encode(NdrCodec ndr, object array, CodecContext context)
+    {
+        if (_isConformantProxy)
+        {
             // first write the max counts ...First to last dimension.
             var i = 0;
-            while (i < ConformantMaxCounts.Count) {
+            while (i < ConformantMaxCounts.Count)
+            {
                 MarshalUnMarshalHelper.Serialize(ndr, typeof(int), ConformantMaxCounts[i], context);
                 i++;
             }
 
             _isConformantProxy = false; // this is since encode is recursive.
         }
-        if (_isVaryingProxy) {
+        if (_isVaryingProxy)
+        {
             // write the offset and the actual count
             var i = 0;
-            while (i < ConformantMaxCounts.Count) {
+            while (i < ConformantMaxCounts.Count)
+            {
                 MarshalUnMarshalHelper.Serialize(ndr, typeof(int), 0, context); // offset
                 MarshalUnMarshalHelper.Serialize(ndr, typeof(int), ConformantMaxCounts[i], context); // actual count
                 i++;
@@ -426,12 +466,15 @@ public sealed class ComArray {
         // JAVA TO C# CONVERTER WARNING: The .NET Type.FullName property will not always yield results identical to the Java Class.getName method:
         var name = array.GetType().FullName;
         var o = (object[])array;
-        for (var i = 0; i < o.Length; i++) {
-            if (name[1] != '[') {
+        for (var i = 0; i < o.Length; i++)
+        {
+            if (name[1] != '[')
+            {
                 var o1 = (object[])array;
                 var oldFlag = context.Flag;
                 context.Flag |= InteropFlags.FLAG_REPRESENTATION_ARRAY;
-                for (var j = 0; j < o1.Length; j++) {
+                for (var j = 0; j < o1.Length; j++)
+                {
 
                     MarshalUnMarshalHelper.Serialize(ndr, ArrayType, o1[j], context);
                 }
@@ -452,16 +495,20 @@ public sealed class ComArray {
     /// <param name="dimension"></param>
     /// <param name="context"></param>
     /// <returns></returns>
-    internal object Decode(NdrCodec ndr, Type arrayType, int dimension, CodecContext context) {
-        var retVal = new ComArray {
+    internal object Decode(NdrCodec ndr, Type arrayType, int dimension, CodecContext context)
+    {
+        var retVal = new ComArray
+        {
             _isConformantProxy = _isConformantProxy,
             _isVaryingProxy = _isVaryingProxy
         };
-        if (_isConformantProxy) {
+        if (_isConformantProxy)
+        {
 
             // first read the max counts ...First to last dimension.
             var i = 0;
-            while (i < dimension) {
+            while (i < dimension)
+            {
                 retVal.ConformantMaxCounts.Add(
                     (int)MarshalUnMarshalHelper.Deserialize(ndr, typeof(int), context));
                 i++;
@@ -469,36 +516,42 @@ public sealed class ComArray {
 
             // isConformantProxy = false; // this is since decode is recursive.
 
-            if (UpperBounds == null) {
+            if (UpperBounds == null)
+            {
                 // max elements will come now.
                 retVal.NumElementsInAllDimensions = 0;
                 retVal.UpperBounds = new int[retVal.ConformantMaxCounts.Count];
                 i = 0;
-                while (i < retVal.ConformantMaxCounts.Count) {
+                while (i < retVal.ConformantMaxCounts.Count)
+                {
                     retVal.UpperBounds[i] = retVal.ConformantMaxCounts[i];
                     retVal.NumElementsInAllDimensions *= retVal.UpperBounds[i];
                     i++;
                 }
-                if (i == 0) {
+                if (i == 0)
+                {
                     NumElementsInAllDimensions = 0;
                 }
                 // retVal.numElementsInAllDimensions = retVal.numElementsInAllDimensions * dimension;
             }
         }
-        else { // this is the case when it is non conformant or coming from struct.
+        else
+        { // this is the case when it is non conformant or coming from struct.
             retVal.UpperBounds = UpperBounds;
             retVal.ConformantMaxCounts = ConformantMaxCounts;
             retVal.NumElementsInAllDimensions = NumElementsInAllDimensions;
         }
 
-        if (_isVaryingProxy) {
+        if (_isVaryingProxy)
+        {
             // first read the max counts ...First to last dimension.
             var i = 0;
             retVal.ConformantMaxCounts.Clear(); // can't take the max count size now
             retVal.UpperBounds = null;
             retVal.NumElementsInAllDimensions = 0;
 
-            while (i < dimension) {
+            while (i < dimension)
+            {
                 MarshalUnMarshalHelper.Deserialize(ndr, typeof(int), context); // offset
                 retVal.ConformantMaxCounts.Add(
                     (int)MarshalUnMarshalHelper.Deserialize(ndr, typeof(int), context)); // actual count
@@ -507,17 +560,20 @@ public sealed class ComArray {
 
             // isConformantProxy = false; // this is since decode is recursive.
 
-            if (UpperBounds == null) {
+            if (UpperBounds == null)
+            {
                 // max elements will come now.
                 retVal.NumElementsInAllDimensions = 1;
                 retVal.UpperBounds = new int[retVal.ConformantMaxCounts.Count];
                 i = 0;
-                while (i < retVal.ConformantMaxCounts.Count) {
+                while (i < retVal.ConformantMaxCounts.Count)
+                {
                     retVal.UpperBounds[i] = retVal.ConformantMaxCounts[i];
                     retVal.NumElementsInAllDimensions *= retVal.UpperBounds[i];
                     i++;
                 }
-                if (i == 0) {
+                if (i == 0)
+                {
                     NumElementsInAllDimensions = 0;
                 }
                 // retVal.numElementsInAllDimensions = retVal.numElementsInAllDimensions * dimension;
@@ -537,81 +593,107 @@ public sealed class ComArray {
         return retVal;
     }
 
-    private static Array CreateDecodeArray(Type elementType, int length, int dimension) {
-        if (dimension is < 1 or > 2) {
+    private static Array CreateDecodeArray(Type elementType, int length, int dimension)
+    {
+        if (dimension is < 1 or > 2)
+        {
             throw new NotSupportedException($"Array dimension {dimension} is not supported in DCOM array context.");
         }
 
-        if (elementType == typeof(object)) {
+        if (elementType == typeof(object))
+        {
             return CreateDecodeArray<object>(length, dimension);
         }
-        if (elementType == typeof(int)) {
+        if (elementType == typeof(int))
+        {
             return CreateDecodeArray<int>(length, dimension);
         }
-        if (elementType == typeof(uint)) {
+        if (elementType == typeof(uint))
+        {
             return CreateDecodeArray<uint>(length, dimension);
         }
-        if (elementType == typeof(short)) {
+        if (elementType == typeof(short))
+        {
             return CreateDecodeArray<short>(length, dimension);
         }
-        if (elementType == typeof(ushort)) {
+        if (elementType == typeof(ushort))
+        {
             return CreateDecodeArray<ushort>(length, dimension);
         }
-        if (elementType == typeof(sbyte)) {
+        if (elementType == typeof(sbyte))
+        {
             return CreateDecodeArray<sbyte>(length, dimension);
         }
-        if (elementType == typeof(byte)) {
+        if (elementType == typeof(byte))
+        {
             return CreateDecodeArray<byte>(length, dimension);
         }
-        if (elementType == typeof(long)) {
+        if (elementType == typeof(long))
+        {
             return CreateDecodeArray<long>(length, dimension);
         }
-        if (elementType == typeof(ulong)) {
+        if (elementType == typeof(ulong))
+        {
             return CreateDecodeArray<ulong>(length, dimension);
         }
-        if (elementType == typeof(float)) {
+        if (elementType == typeof(float))
+        {
             return CreateDecodeArray<float>(length, dimension);
         }
-        if (elementType == typeof(double)) {
+        if (elementType == typeof(double))
+        {
             return CreateDecodeArray<double>(length, dimension);
         }
-        if (elementType == typeof(bool)) {
+        if (elementType == typeof(bool))
+        {
             return CreateDecodeArray<bool>(length, dimension);
         }
-        if (elementType == typeof(char)) {
+        if (elementType == typeof(char))
+        {
             return CreateDecodeArray<char>(length, dimension);
         }
-        if (elementType == typeof(string)) {
+        if (elementType == typeof(string))
+        {
             return CreateDecodeArray<string>(length, dimension);
         }
-        if (elementType == typeof(ComString)) {
+        if (elementType == typeof(ComString))
+        {
             return CreateDecodeArray<ComString>(length, dimension);
         }
-        if (elementType == typeof(Variant)) {
+        if (elementType == typeof(Variant))
+        {
             return CreateDecodeArray<Variant>(length, dimension);
         }
-        if (elementType == typeof(IComObject)) {
+        if (elementType == typeof(IComObject))
+        {
             return CreateDecodeArray<IComObject>(length, dimension);
         }
-        if (elementType == typeof(IDispatch)) {
+        if (elementType == typeof(IDispatch))
+        {
             return CreateDecodeArray<IDispatch>(length, dimension);
         }
-        if (elementType == typeof(ComPointer)) {
+        if (elementType == typeof(ComPointer))
+        {
             return CreateDecodeArray<ComPointer>(length, dimension);
         }
-        if (elementType == typeof(Struct)) {
+        if (elementType == typeof(Struct))
+        {
             return CreateDecodeArray<Struct>(length, dimension);
         }
-        if (elementType == typeof(Union)) {
+        if (elementType == typeof(Union))
+        {
             return CreateDecodeArray<Union>(length, dimension);
         }
-        if (elementType == typeof(UUID)) {
+        if (elementType == typeof(UUID))
+        {
             return CreateDecodeArray<UUID>(length, dimension);
         }
-        if (elementType == typeof(InterfacePointer)) {
+        if (elementType == typeof(InterfacePointer))
+        {
             return CreateDecodeArray<InterfacePointer>(length, dimension);
         }
-        if (elementType == typeof(DualStringArray)) {
+        if (elementType == typeof(DualStringArray))
+        {
             return CreateDecodeArray<DualStringArray>(length, dimension);
         }
 
@@ -631,26 +713,33 @@ public sealed class ComArray {
     /// <param name="context"></param>
     /// <returns></returns>
     private object RecurseDecode(ComArray retVal, NdrCodec ndr, Type arrayType,
-        int dimension, CodecContext context) {
+        int dimension, CodecContext context)
+    {
         object array = CreateDecodeArray(arrayType, retVal.UpperBounds[retVal.UpperBounds.Length - dimension], dimension);
 
-        for (var i = 0; i < retVal.UpperBounds[retVal.UpperBounds.Length - dimension]; i++) {
-            if (dimension == 1) {
+        for (var i = 0; i < retVal.UpperBounds[retVal.UpperBounds.Length - dimension]; i++)
+        {
+            if (dimension == 1)
+            {
                 // fill value here
                 // Array.set(array,i,new Float(i));
-                if (_template == null) {
+                if (_template == null)
+                {
                     var flags = context.Flag;
                     context.Flag |= InteropFlags.FLAG_REPRESENTATION_ARRAY;
                     ((Array)array).SetValue(MarshalUnMarshalHelper.Deserialize(ndr, arrayType, context), i);
                     context.Flag = flags;
                 }
-                else {
-                    if (_isArrayOfCOMObjects_56DCOM) {
+                else
+                {
+                    if (_isArrayOfCOMObjects_56DCOM)
+                    {
                         // not setting the array flag here.
                         ((Array)array).SetValue(MarshalUnMarshalHelper.Deserialize(ndr,
                             _template, context), i);
                     }
-                    else {
+                    else
+                    {
                         var flags = context.Flag;
                         context.Flag |= InteropFlags.FLAG_REPRESENTATION_ARRAY;
                         ((Array)array).SetValue(MarshalUnMarshalHelper.Deserialize(ndr,
@@ -659,7 +748,8 @@ public sealed class ComArray {
                     }
                 }
             }
-            else {
+            else
+            {
                 ((Array)array).SetValue(RecurseDecode(retVal, ndr, arrayType, dimension - 1, context), i);
             }
         }
@@ -670,18 +760,22 @@ public sealed class ComArray {
     /// <summary>
     ///   Reverses Array elements for <see cref="IDispatch"/>.
     /// </summary>
-    internal int ReverseArrayForDispatch() {
-        if (ArrayInstance == null) {
+    internal int ReverseArrayForDispatch()
+    {
+        if (ArrayInstance == null)
+        {
             return 0;
         }
 
         var stack = new Stack<object>();
         int i;
-        for (i = 0; i < ((object[])ArrayInstance).Length; i++) {
+        for (i = 0; i < ((object[])ArrayInstance).Length; i++)
+        {
             stack.Push(((object[])ArrayInstance)[i]);
         }
         i = 0;
-        while (stack.Count > 0) {
+        while (stack.Count > 0)
+        {
             ((object[])ArrayInstance)[i++] = stack.Pop();
         }
         return i;
@@ -689,26 +783,32 @@ public sealed class ComArray {
 
     internal List<int> ConformantMaxCounts { get; private set; } = new List<int>();
 
-    internal List<int> MaxCountAndUpperBounds {
-        set {
+    internal List<int> MaxCountAndUpperBounds
+    {
+        set
+        {
             ConformantMaxCounts = value;
             //    if (upperBounds == null) this will always be null since this api will get called from a decode and
             // in that the upperBounds is always null, since one does not know the dim expected.
-            if (ConformantMaxCounts.Count > 0) {
+            if (ConformantMaxCounts.Count > 0)
+            {
                 // max elements will come now.
                 NumElementsInAllDimensions = 1;
                 UpperBounds = new int[ConformantMaxCounts.Count];
                 var i = 0;
-                while (i < ConformantMaxCounts.Count) {
+                while (i < ConformantMaxCounts.Count)
+                {
                     UpperBounds[i] = ConformantMaxCounts[i];
                     NumElementsInAllDimensions *= UpperBounds[i];
                     i++;
                 }
-                if (i == 0) {
+                if (i == 0)
+                {
                     NumElementsInAllDimensions = 0;
                 }
             }
-            else {
+            else
+            {
                 UpperBounds = null;
                 NumElementsInAllDimensions = 0;
             }
@@ -736,19 +836,24 @@ public sealed class ComArray {
     internal void UpdateType(Type c) => ArrayType = c;
 
     /// <inheritdoc/>
-    public override string ToString() {
+    public override string ToString()
+    {
         var retVal = "[Type: " + ArrayType + ", ";
-        if (ArrayInstance == null) {
+        if (ArrayInstance == null)
+        {
             retVal += "memberArray is null, ";
         }
-        else {
+        else
+        {
             retVal += ArrayInstance + ", ";
         }
 
-        if (_isConformant) {
+        if (_isConformant)
+        {
             retVal += " conformant, ";
         }
-        if (_isVarying) {
+        if (_isVarying)
+        {
             retVal += " varying, ";
         }
 

@@ -5,7 +5,8 @@ namespace Opc.Classic.Dcom.Core;
 /// <summary>
 /// Internal framework com object interface
 /// </summary>
-public interface IComObjectInternal {
+public interface IComObjectInternal
+{
 
     /// <summary>
     /// Returns self Interface pointer.

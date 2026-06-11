@@ -21,7 +21,8 @@ namespace Opc.Classic.Da;
 /// stream is the managed-async wrapper around <c>OnDataChange</c>; iterating
 /// it pulls each batched callback as a <see cref="DataChange"/>.
 /// </remarks>
-public interface IDaSubscription : IAsyncDisposable {
+public interface IDaSubscription : IAsyncDisposable
+{
     /// <summary>Current state of the subscription (server-confirmed).</summary>
     SubscriptionState State { get; }
 

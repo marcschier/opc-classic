@@ -15,10 +15,13 @@ using TUnit.Core;
 
 namespace Opc.Classic.Xml.Tests;
 
-public sealed class SoapEnvelopeTests {
-    private static string WriteEmptyGetStatusRequest() {
+public sealed class SoapEnvelopeTests
+{
+    private static string WriteEmptyGetStatusRequest()
+    {
         using var ms = new MemoryStream();
-        using (var w = new SoapEnvelopeWriter(ms)) {
+        using (var w = new SoapEnvelopeWriter(ms))
+        {
             w.WriteEnvelopeStart();
             w.WriteBodyStart();
             w.WriteOperationStart("GetStatus");
@@ -32,56 +35,67 @@ public sealed class SoapEnvelopeTests {
     }
 
     [Test]
-    public async Task EnvelopeStart_WritesSoapNamespaceDeclaration() {
+    public async Task EnvelopeStart_WritesSoapNamespaceDeclaration()
+    {
         var xml = WriteEmptyGetStatusRequest();
         await Assert.That(xml).Contains("xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\"");
     }
 
     [Test]
-    public async Task EnvelopeStart_WritesXsiNamespaceDeclaration() {
+    public async Task EnvelopeStart_WritesXsiNamespaceDeclaration()
+    {
         var xml = WriteEmptyGetStatusRequest();
         await Assert.That(xml).Contains("xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"");
     }
 
     [Test]
-    public async Task Body_IsBoundToSoapNamespace() {
+    public async Task Body_IsBoundToSoapNamespace()
+    {
         var xml = WriteEmptyGetStatusRequest();
         await Assert.That(xml).Contains("soap:Body");
     }
 
     [Test]
-    public async Task OperationStart_EmitsXmlDaNamespace() {
+    public async Task OperationStart_EmitsXmlDaNamespace()
+    {
         var xml = WriteEmptyGetStatusRequest();
         await Assert.That(xml).Contains("xmlns=\"http://opcfoundation.org/webservices/XMLDA/1.0/\"");
     }
 
     [Test]
-    public async Task OperationAttribute_FlowsThrough() {
+    public async Task OperationAttribute_FlowsThrough()
+    {
         var xml = WriteEmptyGetStatusRequest();
         await Assert.That(xml).Contains("LocaleID=\"en-US\"");
     }
 
     [Test]
-    public async Task Reader_AdvancesToOperationResponse_Element() {
+    public async Task Reader_AdvancesToOperationResponse_Element()
+    {
         var xml = WriteEmptyGetStatusRequest();
         string opName;
         using (var ms = new MemoryStream(Encoding.UTF8.GetBytes(xml)))
-        using (var r = new SoapEnvelopeReader(ms)) {
+        using (var r = new SoapEnvelopeReader(ms))
+        {
             opName = r.AdvanceToOperationResponse();
         }
         await Assert.That(opName).IsEqualTo("GetStatus");
     }
 
     [Test]
-    public async Task Reader_RejectsMissingEnvelope() {
+    public async Task Reader_RejectsMissingEnvelope()
+    {
         const string bad = "<?xml version=\"1.0\"?><root />";
         bool threw = false;
         using (var ms = new MemoryStream(Encoding.UTF8.GetBytes(bad)))
-        using (var r = new SoapEnvelopeReader(ms)) {
-            try {
+        using (var r = new SoapEnvelopeReader(ms))
+        {
+            try
+            {
                 r.AdvanceToOperationResponse();
             }
-            catch (InvalidDataException) {
+            catch (InvalidDataException)
+            {
                 threw = true;
             }
         }
@@ -89,7 +103,8 @@ public sealed class SoapEnvelopeTests {
     }
 
     [Test]
-    public async Task Reader_DetectsSoapFault() {
+    public async Task Reader_DetectsSoapFault()
+    {
         const string fault = """
             <?xml version="1.0"?>
             <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
@@ -103,11 +118,14 @@ public sealed class SoapEnvelopeTests {
             """;
         bool threw = false;
         using (var ms = new MemoryStream(Encoding.UTF8.GetBytes(fault)))
-        using (var r = new SoapEnvelopeReader(ms)) {
-            try {
+        using (var r = new SoapEnvelopeReader(ms))
+        {
+            try
+            {
                 r.AdvanceToOperationResponse();
             }
-            catch (XmlDaSoapFaultException) {
+            catch (XmlDaSoapFaultException)
+            {
                 threw = true;
             }
         }
@@ -115,7 +133,8 @@ public sealed class SoapEnvelopeTests {
     }
 
     [Test]
-    public async Task Reader_MapsXmlDaSoapFaultCode_ToTypedEnum() {
+    public async Task Reader_MapsXmlDaSoapFaultCode_ToTypedEnum()
+    {
         const string fault = """
             <?xml version="1.0"?>
             <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
@@ -131,11 +150,14 @@ public sealed class SoapEnvelopeTests {
 
         XmlDaSoapFaultException? faultException = null;
         using (var ms = new MemoryStream(Encoding.UTF8.GetBytes(fault)))
-        using (var r = new SoapEnvelopeReader(ms)) {
-            try {
+        using (var r = new SoapEnvelopeReader(ms))
+        {
+            try
+            {
                 r.AdvanceToOperationResponse();
             }
-            catch (XmlDaSoapFaultException ex) {
+            catch (XmlDaSoapFaultException ex)
+            {
                 faultException = ex;
             }
         }
@@ -146,7 +168,8 @@ public sealed class SoapEnvelopeTests {
     }
 
     [Test]
-    public async Task Reader_RejectsDtd_XxeDefence() {
+    public async Task Reader_RejectsDtd_XxeDefence()
+    {
         // The reader is configured with DtdProcessing.Prohibit + XmlResolver=null
         // to defend against XML external-entity attacks.
         const string xxe = """
@@ -158,14 +181,18 @@ public sealed class SoapEnvelopeTests {
             """;
         bool threw = false;
         using (var ms = new MemoryStream(Encoding.UTF8.GetBytes(xxe)))
-        using (var r = new SoapEnvelopeReader(ms)) {
-            try {
+        using (var r = new SoapEnvelopeReader(ms))
+        {
+            try
+            {
                 r.AdvanceToOperationResponse();
             }
-            catch (XmlException) {
+            catch (XmlException)
+            {
                 threw = true;
             }
-            catch (InvalidDataException) {
+            catch (InvalidDataException)
+            {
                 threw = true;
             }
         }
@@ -173,11 +200,13 @@ public sealed class SoapEnvelopeTests {
     }
 
     [Test]
-    public async Task EnvelopeWriter_WrapsXmlWriter() {
+    public async Task EnvelopeWriter_WrapsXmlWriter()
+    {
         var sb = new StringBuilder();
         var settings = new XmlWriterSettings { OmitXmlDeclaration = true };
         using var xw = XmlWriter.Create(sb, settings);
-        using (var sw = new SoapEnvelopeWriter(xw)) {
+        using (var sw = new SoapEnvelopeWriter(xw))
+        {
             sw.WriteEnvelopeStart();
             sw.WriteBodyStart();
             sw.WriteOperationStart("Read");

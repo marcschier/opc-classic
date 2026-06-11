@@ -10,7 +10,8 @@ namespace Opc.Classic.Dcom.Rpc;
 /// <summary>
 /// Connection context
 /// </summary>
-public interface IConnectionContext {
+public interface IConnectionContext
+{
 
     /// <summary>
     /// Connectrion

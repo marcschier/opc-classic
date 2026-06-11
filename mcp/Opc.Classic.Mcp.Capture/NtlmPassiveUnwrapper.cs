@@ -18,7 +18,8 @@ namespace Opc.Classic.Mcp.Capture;
 /// connection. Used by <see cref="NtlmPassiveUnwrapper.TryUnwrap"/>
 /// to pick the correct NTLM sub-key + sequence counter.
 /// </summary>
-public enum NtlmDirection {
+public enum NtlmDirection
+{
     /// <summary>Frame sent by the DCOM client to the server (request side).</summary>
     ClientToServer,
 
@@ -34,7 +35,8 @@ public enum NtlmDirection {
 /// privacy was enabled); other statuses indicate a failure mode the
 /// caller should surface to the operator.
 /// </summary>
-public enum NtlmUnwrapStatus {
+public enum NtlmUnwrapStatus
+{
     /// <summary>Body decrypted + signature verified (privacy mode).</summary>
     Decrypted,
 
@@ -65,7 +67,8 @@ public enum NtlmUnwrapStatus {
 /// for successful unwrap. Operator-friendly; safe to surface in MCP
 /// tool output / capture summaries.
 /// </param>
-public readonly record struct NtlmUnwrapResult(NtlmUnwrapStatus Status, string? Reason) {
+public readonly record struct NtlmUnwrapResult(NtlmUnwrapStatus Status, string? Reason)
+{
     /// <summary>Convenience: true when the stub buffer contains plaintext after the call.</summary>
     public bool Succeeded => Status is NtlmUnwrapStatus.Decrypted or NtlmUnwrapStatus.IntegrityVerified;
 }
@@ -115,7 +118,8 @@ public readonly record struct NtlmUnwrapResult(NtlmUnwrapStatus Status, string? 
 /// when working with non-default DCOM peers (e.g. lab traffic with
 /// downgraded negotiation).</para>
 /// </remarks>
-public sealed class NtlmPassiveUnwrapper : IDisposable {
+public sealed class NtlmPassiveUnwrapper : IDisposable
+{
     /// <summary>
     /// Standard NTLMv2 wire-level flag set used by every modern
     /// Windows DCOM peer. Reuse with the parameterless / single-arg
@@ -188,14 +192,17 @@ public sealed class NtlmPassiveUnwrapper : IDisposable {
     public NtlmPassiveUnwrapper(
         ReadOnlySpan<byte> sessionKey,
         NtlmFlags flags = DefaultFlags,
-        ProtectionLevel protection = ProtectionLevel.PROTECTION_LEVEL_PRIVACY) {
-        if (sessionKey.Length != VerifierLength) {
+        ProtectionLevel protection = ProtectionLevel.PROTECTION_LEVEL_PRIVACY)
+    {
+        if (sessionKey.Length != VerifierLength)
+        {
             throw new ArgumentException(
                 $"NTLMv2 session key must be exactly {VerifierLength} bytes; got {sessionKey.Length}.",
                 nameof(sessionKey));
         }
 
-        if (protection < ProtectionLevel.PROTECTION_LEVEL_INTEGRITY) {
+        if (protection < ProtectionLevel.PROTECTION_LEVEL_INTEGRITY)
+        {
             throw new ArgumentException(
                 $"NtlmPassiveUnwrapper requires INTEGRITY or PRIVACY; got {protection}. Unsigned/unsealed PDUs have no auth trailer.",
                 nameof(protection));
@@ -210,7 +217,8 @@ public sealed class NtlmPassiveUnwrapper : IDisposable {
         byte[] sk = sessionKey.ToArray();
         byte[]? clientSealingKey = null;
         byte[]? serverSealingKey = null;
-        try {
+        try
+        {
             _clientSigningKey = DeriveExtendedSessionKey(sk, s_clientSigningMagic);
             _serverSigningKey = DeriveExtendedSessionKey(sk, s_serverSigningMagic);
             clientSealingKey = DeriveExtendedSessionKey(sk, s_clientSealingMagic);
@@ -218,7 +226,8 @@ public sealed class NtlmPassiveUnwrapper : IDisposable {
             _clientCipher = CreateRc4(clientSealingKey);
             _serverCipher = CreateRc4(serverSealingKey);
         }
-        finally {
+        finally
+        {
             CryptographicOperations.ZeroMemory(sk);
             CryptographicOperations.ZeroMemory(clientSealingKey);
             CryptographicOperations.ZeroMemory(serverSealingKey);
@@ -233,7 +242,8 @@ public sealed class NtlmPassiveUnwrapper : IDisposable {
     /// integration can carry a non-nullable unwrapper without a
     /// special-case branch.
     /// </summary>
-    private NtlmPassiveUnwrapper() {
+    private NtlmPassiveUnwrapper()
+    {
         _flags = NtlmFlags.None;
         _protection = ProtectionLevel.PROTECTION_LEVEL_NONE;
         _clientSigningKey = Array.Empty<byte>();
@@ -279,14 +289,17 @@ public sealed class NtlmPassiveUnwrapper : IDisposable {
     public NtlmUnwrapResult TryUnwrap(
         NtlmDirection dir,
         Span<byte> stubBuffer,
-        ReadOnlySpan<byte> authTrailer) {
+        ReadOnlySpan<byte> authTrailer)
+    {
         ObjectDisposedException.ThrowIf(_disposed, this);
 
-        if (IsDisabled) {
+        if (IsDisabled)
+        {
             return new NtlmUnwrapResult(NtlmUnwrapStatus.Disabled, "No NTLM session key configured.");
         }
 
-        if (authTrailer.Length != VerifierLength) {
+        if (authTrailer.Length != VerifierLength)
+        {
             return new NtlmUnwrapResult(
                 NtlmUnwrapStatus.InvalidTrailerLength,
                 $"Auth trailer length {authTrailer.Length} != expected {VerifierLength}.");
@@ -299,7 +312,8 @@ public sealed class NtlmPassiveUnwrapper : IDisposable {
 
         // PRIVACY: decrypt body FIRST (so HMAC is computed over plaintext).
         // INTEGRITY: leave body alone.
-        if (_protection == ProtectionLevel.PROTECTION_LEVEL_PRIVACY && stubBuffer.Length > 0) {
+        if (_protection == ProtectionLevel.PROTECTION_LEVEL_PRIVACY && stubBuffer.Length > 0)
+        {
             byte[] cipherBuf = stubBuffer.ToArray();
             byte[] plaintext = new byte[cipherBuf.Length];
             cipher.ProcessBytes(cipherBuf, 0, cipherBuf.Length, plaintext, 0);
@@ -311,7 +325,8 @@ public sealed class NtlmPassiveUnwrapper : IDisposable {
         // ExtendedSessionSecurity + KeyExch is negotiated).
         byte[] expected = ComputeVerifier(sequenceNumber, signingKey, stubBuffer, cipher);
 
-        if (!authTrailer.SequenceEqual(expected)) {
+        if (!authTrailer.SequenceEqual(expected))
+        {
             // Signature mismatch — DON'T advance the counter. The caller
             // can decide to retry, give up, or surface to the operator
             // ("likely wrong session key; or capture started after Type3").
@@ -322,10 +337,12 @@ public sealed class NtlmPassiveUnwrapper : IDisposable {
         }
 
         // Successful unwrap — advance the counter for the next PDU on this direction.
-        if (isClient2Server) {
+        if (isClient2Server)
+        {
             _clientSequence++;
         }
-        else {
+        else
+        {
             _serverSequence++;
         }
 
@@ -341,8 +358,10 @@ public sealed class NtlmPassiveUnwrapper : IDisposable {
     /// disabled sentinel is a no-op so the shared singleton stays
     /// usable across the entire process lifetime.
     /// </summary>
-    public void Dispose() {
-        if (_disposed || IsDisabled) {
+    public void Dispose()
+    {
+        if (_disposed || IsDisabled)
+        {
             return;
         }
         _disposed = true;
@@ -362,21 +381,25 @@ public sealed class NtlmPassiveUnwrapper : IDisposable {
     /// uses plain MD5 (NOT HMAC-MD5) for the 4 sign/seal sub-keys
     /// when ExtendedSessionSecurity is negotiated.
     /// </summary>
-    private static byte[] DeriveExtendedSessionKey(byte[] sessionKey, byte[] magicConstant) {
+    private static byte[] DeriveExtendedSessionKey(byte[] sessionKey, byte[] magicConstant)
+    {
         byte[] dataforhash = new byte[sessionKey.Length + magicConstant.Length];
-        try {
+        try
+        {
             sessionKey.CopyTo(dataforhash, 0);
             magicConstant.CopyTo(dataforhash, sessionKey.Length);
 #pragma warning disable CA5351 // NTLM requires MD5 per [MS-NLMP] §3.4.5.3.
             return MD5.HashData(dataforhash);
 #pragma warning restore CA5351
         }
-        finally {
+        finally
+        {
             CryptographicOperations.ZeroMemory(dataforhash);
         }
     }
 
-    private static RC4Engine CreateRc4(byte[] key) {
+    private static RC4Engine CreateRc4(byte[] key)
+    {
         var engine = new RC4Engine();
         engine.Init(forEncryption: true, new KeyParameter(key));
         return engine;
@@ -394,18 +417,21 @@ public sealed class NtlmPassiveUnwrapper : IDisposable {
         int sequenceNumber,
         byte[] signingKey,
         ReadOnlySpan<byte> plaintext,
-        RC4Engine cipher) {
+        RC4Engine cipher)
+    {
         // SigningPt1: HMAC(seqNum_le || plaintext)
         byte[] seqNumPlusData = new byte[4 + plaintext.Length];
         BinaryPrimitives_WriteInt32LE(seqNumPlusData.AsSpan(0, 4), sequenceNumber);
         plaintext.CopyTo(seqNumPlusData.AsSpan(4));
 
         byte[] hmac;
-        try {
+        try
+        {
             using var h = new HMACMD5(signingKey);
             hmac = h.ComputeHash(seqNumPlusData);
         }
-        finally {
+        finally
+        {
             CryptographicOperations.ZeroMemory(seqNumPlusData);
         }
 
@@ -417,8 +443,10 @@ public sealed class NtlmPassiveUnwrapper : IDisposable {
 
         // SigningPt2: when ExtendedSessionSecurity + KeyExch, XOR-encrypt
         // the 8 HMAC bytes (verifier[4..11]) with the RC4 stream.
-        if (_encryptMessageSignature) {
-            for (int i = 0; i < 8; i++) {
+        if (_encryptMessageSignature)
+        {
+            for (int i = 0; i < 8; i++)
+            {
                 verifier[i + 4] = cipher.ReturnByte(verifier[i + 4]);
             }
         }
@@ -426,7 +454,8 @@ public sealed class NtlmPassiveUnwrapper : IDisposable {
         return verifier;
     }
 
-    private static void BinaryPrimitives_WriteInt32LE(Span<byte> dest, int value) {
+    private static void BinaryPrimitives_WriteInt32LE(Span<byte> dest, int value)
+    {
         dest[0] = unchecked((byte)(value & 0xFF));
         dest[1] = unchecked((byte)((value >> 8) & 0xFF));
         dest[2] = unchecked((byte)((value >> 16) & 0xFF));

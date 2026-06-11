@@ -12,7 +12,8 @@ namespace Opc.Classic.Hda;
 /// for one historical item, including annotation timestamps and user names.
 /// Returned by <c>IOPCHDA_SyncAnnotations</c> and friends.
 /// </summary>
-public sealed record OpcHdaAnnotation {
+public sealed record OpcHdaAnnotation
+{
     /// <summary>Constructor — validates the four parallel arrays have the same length.</summary>
     /// <param name="clientHandle">Client correlation handle.</param>
     /// <param name="timestamps">UTC value timestamps; same length as all other arrays.</param>
@@ -24,12 +25,14 @@ public sealed record OpcHdaAnnotation {
         DateTimeOffset[] timestamps,
         string?[] annotations,
         DateTimeOffset[] annotationTimes,
-        string?[] users) {
+        string?[] users)
+    {
         ArgumentNullException.ThrowIfNull(timestamps);
         ArgumentNullException.ThrowIfNull(annotations);
         ArgumentNullException.ThrowIfNull(annotationTimes);
         ArgumentNullException.ThrowIfNull(users);
-        if (timestamps.Length != annotations.Length || annotations.Length != annotationTimes.Length || annotationTimes.Length != users.Length) {
+        if (timestamps.Length != annotations.Length || annotations.Length != annotationTimes.Length || annotationTimes.Length != users.Length)
+        {
             throw new ArgumentException(
                 $"Parallel arrays must have equal length: timestamps={timestamps.Length}, annotations={annotations.Length}, annotationTimes={annotationTimes.Length}, users={users.Length}.",
                 nameof(users));

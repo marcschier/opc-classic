@@ -25,33 +25,42 @@ namespace Opc.Classic.Da.Hosting.Windows;
 /// transport subscription dictionary.
 /// </remarks>
 [SupportedOSPlatform("windows")]
-internal static unsafe class OpcDaGroupCcwConnectionPointMethods {
+internal static unsafe class OpcDaGroupCcwConnectionPointMethods
+{
     [UnmanagedCallersOnly]
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
-    public static int GetConnectionInterface(IntPtr pThis, Guid* piid) {
-        if (piid == null) {
+    public static int GetConnectionInterface(IntPtr pThis, Guid* piid)
+    {
+        if (piid == null)
+        {
             return OpcDaGroupCcw.E_INVALIDARG;
         }
-        if (!TryResolveGroup(pThis, out OpcDaGroup? group)) {
+        if (!TryResolveGroup(pThis, out OpcDaGroup? group))
+        {
             return OpcDaGroupCcw.E_FAIL;
         }
-        try {
+        try
+        {
 #pragma warning disable VSTHRD002
             *piid = group!.GetConnectionInterfaceAsync(CancellationToken.None).GetAwaiter().GetResult();
 #pragma warning restore VSTHRD002
             return OpcDaGroupCcw.S_OK;
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             return MapHResult(ex);
         }
     }
 
     [UnmanagedCallersOnly]
-    public static int GetConnectionPointContainer(IntPtr pThis, IntPtr* ppCPC) {
-        if (ppCPC != null) {
+    public static int GetConnectionPointContainer(IntPtr pThis, IntPtr* ppCPC)
+    {
+        if (ppCPC != null)
+        {
             *ppCPC = IntPtr.Zero;
         }
-        if (ppCPC == null) {
+        if (ppCPC == null)
+        {
             return OpcDaGroupCcw.E_INVALIDARG;
         }
         OpcDaGroupCcw.CcwSession? session = OpcDaGroupCcw.ResolveSession(pThis);
@@ -62,15 +71,19 @@ internal static unsafe class OpcDaGroupCcwConnectionPointMethods {
 
     [UnmanagedCallersOnly]
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
-    public static int Advise(IntPtr pThis, IntPtr pUnk, uint* pdwCookie) {
-        if (pdwCookie != null) {
+    public static int Advise(IntPtr pThis, IntPtr pUnk, uint* pdwCookie)
+    {
+        if (pdwCookie != null)
+        {
             *pdwCookie = 0;
         }
-        if (pdwCookie == null || pUnk == IntPtr.Zero) {
+        if (pdwCookie == null || pUnk == IntPtr.Zero)
+        {
             return OpcDaGroupCcw.E_INVALIDARG;
         }
         OpcDaGroupCcw.CcwSession? session = OpcDaGroupCcw.ResolveSession(pThis);
-        if (session is null) {
+        if (session is null)
+        {
             return OpcDaGroupCcw.E_FAIL;
         }
         return AdviseCore(session, pUnk, pdwCookie);
@@ -78,115 +91,142 @@ internal static unsafe class OpcDaGroupCcwConnectionPointMethods {
 
     [UnmanagedCallersOnly]
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
-    public static int Unadvise(IntPtr pThis, uint dwCookie) {
+    public static int Unadvise(IntPtr pThis, uint dwCookie)
+    {
         OpcDaGroupCcw.CcwSession? session = OpcDaGroupCcw.ResolveSession(pThis);
-        if (session is null) {
+        if (session is null)
+        {
             return OpcDaGroupCcw.E_FAIL;
         }
-        try {
+        try
+        {
             int cookie = unchecked((int)dwCookie);
-            if (!session.ScmSinks.TryRemove(cookie, out OpcDataCallbackProxy? proxy)) {
+            if (!session.ScmSinks.TryRemove(cookie, out OpcDataCallbackProxy? proxy))
+            {
                 return OpcDaGroupCcw.CONNECT_E_NOCONNECTION;
             }
             // cap-c8: also remove from the managed OpcDaGroup's _directSinks
             // so trigger fan-out stops invoking the disposed proxy.
             OpcDaGroup? group = session.GroupHandle.Target as OpcDaGroup;
-            if (group is not null) {
-                try {
+            if (group is not null)
+            {
+                try
+                {
 #pragma warning disable VSTHRD002
                     group.UnadviseAsync(cookie, CancellationToken.None).GetAwaiter().GetResult();
 #pragma warning restore VSTHRD002
                 }
-                catch (OpcException) {
+                catch (OpcException)
+                {
                     // Already unregistered (e.g. group disposed) — proceed with proxy.Dispose anyway.
                 }
             }
             proxy.Dispose();
             return OpcDaGroupCcw.S_OK;
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             return MapHResult(ex);
         }
     }
 
     [UnmanagedCallersOnly]
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
-    public static int EnumConnections(IntPtr pThis, IntPtr* ppEnum) {
+    public static int EnumConnections(IntPtr pThis, IntPtr* ppEnum)
+    {
         ZeroOut(ppEnum);
-        if (ppEnum == null) {
+        if (ppEnum == null)
+        {
             return OpcDaGroupCcw.E_INVALIDARG;
         }
         OpcDaGroupCcw.CcwSession? session = OpcDaGroupCcw.ResolveSession(pThis);
-        if (session is null) {
+        if (session is null)
+        {
             return OpcDaGroupCcw.E_FAIL;
         }
         OpcEnumConnectionsEnumerator? enumerator = null;
-        try {
+        try
+        {
             enumerator = CreateConnectionsEnumerator(session);
             *ppEnum = OpcEnumConnectionsCcw.Create(enumerator);
             enumerator = null;
             return OpcDaGroupCcw.S_OK;
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             return MapHResult(ex);
         }
-        finally {
+        finally
+        {
             enumerator?.Dispose();
         }
     }
 
     [UnmanagedCallersOnly]
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
-    public static int EnumConnectionPoints(IntPtr pThis, IntPtr* ppEnum) {
+    public static int EnumConnectionPoints(IntPtr pThis, IntPtr* ppEnum)
+    {
         ZeroOut(ppEnum);
-        if (ppEnum == null) {
+        if (ppEnum == null)
+        {
             return OpcDaGroupCcw.E_INVALIDARG;
         }
         OpcDaGroupCcw.CcwSession? session = OpcDaGroupCcw.ResolveSession(pThis);
-        if (session is null) {
+        if (session is null)
+        {
             return OpcDaGroupCcw.E_FAIL;
         }
         OpcEnumConnectionPointsEnumerator? enumerator = null;
-        try {
+        try
+        {
             enumerator = CreateConnectionPointsEnumerator(session);
             *ppEnum = OpcEnumConnectionPointsCcw.Create(enumerator);
             enumerator = null;
             return OpcDaGroupCcw.S_OK;
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             return MapHResult(ex);
         }
-        finally {
+        finally
+        {
             enumerator?.Dispose();
         }
     }
 
     [UnmanagedCallersOnly]
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
-    public static int FindConnectionPoint(IntPtr pThis, Guid* riid, IntPtr* ppCP) {
+    public static int FindConnectionPoint(IntPtr pThis, Guid* riid, IntPtr* ppCP)
+    {
         ZeroOut(ppCP);
-        if (riid == null || ppCP == null) {
+        if (riid == null || ppCP == null)
+        {
             return OpcDaGroupCcw.E_INVALIDARG;
         }
         OpcDaGroupCcw.CcwSession? session = OpcDaGroupCcw.ResolveSession(pThis);
-        if (session is null || !TryResolveGroup(pThis, out OpcDaGroup? group)) {
+        if (session is null || !TryResolveGroup(pThis, out OpcDaGroup? group))
+        {
             return OpcDaGroupCcw.E_FAIL;
         }
-        try {
+        try
+        {
 #pragma warning disable VSTHRD002
             _ = group!.FindConnectionPointAsync(*riid, CancellationToken.None).GetAwaiter().GetResult();
 #pragma warning restore VSTHRD002
             return OpcDaGroupCcw.ReturnTearoff(session, session.ConnectionPointTearoff, ppCP);
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             return MapHResult(ex);
         }
     }
 
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
-    private static int AdviseCore(OpcDaGroupCcw.CcwSession session, IntPtr pUnk, uint* pdwCookie) {
+    private static int AdviseCore(OpcDaGroupCcw.CcwSession session, IntPtr pUnk, uint* pdwCookie)
+    {
         OpcDataCallbackProxy? proxy = null;
-        try {
+        try
+        {
             proxy = new OpcDataCallbackProxy(pUnk);
             // cap-c8: register the proxy with the managed OpcDaGroup as an
             // IOpcDataCallbackSink so TriggerDataChangeAsync /
@@ -195,16 +235,19 @@ internal static unsafe class OpcDaGroupCcwConnectionPointMethods {
             // _directSinks (managed) and CcwSession.ScmSinks (CCW lifecycle).
             OpcDaGroup? group = session.GroupHandle.Target as OpcDaGroup;
             int cookie;
-            if (group is not null) {
+            if (group is not null)
+            {
 #pragma warning disable VSTHRD002
                 cookie = group.AdviseAsync((IOpcDataCallbackSink)proxy, CancellationToken.None)
                     .GetAwaiter().GetResult();
 #pragma warning restore VSTHRD002
             }
-            else {
+            else
+            {
                 cookie = Interlocked.Increment(ref session.NextScmSinkCookie);
             }
-            if (!session.ScmSinks.TryAdd(cookie, proxy)) {
+            if (!session.ScmSinks.TryAdd(cookie, proxy))
+            {
                 proxy.Dispose();
                 return OpcDaGroupCcw.E_FAIL;
             }
@@ -212,54 +255,68 @@ internal static unsafe class OpcDaGroupCcwConnectionPointMethods {
             *pdwCookie = unchecked((uint)cookie);
             return OpcDaGroupCcw.S_OK;
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             proxy?.Dispose();
             return MapHResult(ex);
         }
     }
 
-    private static OpcEnumConnectionsEnumerator CreateConnectionsEnumerator(OpcDaGroupCcw.CcwSession session) {
+    private static OpcEnumConnectionsEnumerator CreateConnectionsEnumerator(OpcDaGroupCcw.CcwSession session)
+    {
         KeyValuePair<int, OpcDataCallbackProxy>[] sinks = session.ScmSinks.ToArray();
         Array.Sort(sinks, static (left, right) => left.Key.CompareTo(right.Key));
         var snapshot = new List<OpcConnectData>(sinks.Length);
-        try {
-            foreach (KeyValuePair<int, OpcDataCallbackProxy> sink in sinks) {
-                try {
+        try
+        {
+            foreach (KeyValuePair<int, OpcDataCallbackProxy> sink in sinks)
+            {
+                try
+                {
                     IntPtr unknown = sink.Value.AddRefCallbackUnknown();
                     snapshot.Add(new OpcConnectData(unknown, unchecked((uint)sink.Key)));
                 }
-                catch (ObjectDisposedException) {
+                catch (ObjectDisposedException)
+                {
                     // Concurrent Unadvise disposed this sink after the dictionary snapshot.
                 }
             }
             return new OpcEnumConnectionsEnumerator(snapshot.ToArray());
         }
-        catch {
+        catch
+        {
             ReleaseConnectionsSnapshot(snapshot);
             throw;
         }
     }
 
-    private static OpcEnumConnectionPointsEnumerator CreateConnectionPointsEnumerator(OpcDaGroupCcw.CcwSession session) {
+    private static OpcEnumConnectionPointsEnumerator CreateConnectionPointsEnumerator(OpcDaGroupCcw.CcwSession session)
+    {
         IntPtr connectionPoint = session.ConnectionPointTearoff;
         AddRefComPointer(connectionPoint);
-        try {
+        try
+        {
             return new OpcEnumConnectionPointsEnumerator([connectionPoint]);
         }
-        catch {
+        catch
+        {
             ReleaseComPointer(connectionPoint);
             throw;
         }
     }
 
-    private static void ReleaseConnectionsSnapshot(List<OpcConnectData> snapshot) {
-        foreach (OpcConnectData connection in snapshot) {
+    private static void ReleaseConnectionsSnapshot(List<OpcConnectData> snapshot)
+    {
+        foreach (OpcConnectData connection in snapshot)
+        {
             ReleaseComPointer(connection.pUnk);
         }
     }
 
-    private static void AddRefComPointer(IntPtr pointer) {
-        if (pointer == IntPtr.Zero) {
+    private static void AddRefComPointer(IntPtr pointer)
+    {
+        if (pointer == IntPtr.Zero)
+        {
             throw new COMException("Connection point pointer is null.", OpcDaGroupCcw.E_FAIL);
         }
         IntPtr* vtable = *(IntPtr**)pointer;
@@ -267,8 +324,10 @@ internal static unsafe class OpcDaGroupCcwConnectionPointMethods {
         _ = addRef(pointer);
     }
 
-    private static void ReleaseComPointer(IntPtr pointer) {
-        if (pointer == IntPtr.Zero) {
+    private static void ReleaseComPointer(IntPtr pointer)
+    {
+        if (pointer == IntPtr.Zero)
+        {
             return;
         }
         IntPtr* vtable = *(IntPtr**)pointer;
@@ -276,12 +335,14 @@ internal static unsafe class OpcDaGroupCcwConnectionPointMethods {
         _ = release(pointer);
     }
 
-    private static bool TryResolveGroup(IntPtr pThis, out OpcDaGroup? group) {
+    private static bool TryResolveGroup(IntPtr pThis, out OpcDaGroup? group)
+    {
         group = OpcDaGroupCcw.ResolveGroup(pThis);
         return group is not null;
     }
 
-    private static int MapHResult(Exception ex) => ex switch {
+    private static int MapHResult(Exception ex) => ex switch
+    {
         COMException comEx => comEx.ErrorCode,
         OpcException opcEx => opcEx.ResultId.Code,
         ArgumentNullException => OpcDaGroupCcw.E_INVALIDARG,
@@ -289,8 +350,10 @@ internal static unsafe class OpcDaGroupCcwConnectionPointMethods {
         _ => OpcDaGroupCcw.E_FAIL,
     };
 
-    private static void ZeroOut(IntPtr* ppv) {
-        if (ppv != null) {
+    private static void ZeroOut(IntPtr* ppv)
+    {
+        if (ppv != null)
+        {
             *ppv = IntPtr.Zero;
         }
     }

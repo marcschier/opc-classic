@@ -8,7 +8,8 @@ namespace Opc.Classic.Dcom.Rpc;
 /// Endpoint type
 /// </summary>
 [Flags]
-public enum Semantics {
+public enum Semantics
+{
 
     /// <summary>
     /// No special call semantics.

@@ -10,9 +10,11 @@ using TUnit.Assertions.AssertConditions.Throws;
 
 namespace Opc.Classic.Tests.Transport;
 
-public sealed class AsyncTransportFactoryExtensionsTests {
+public sealed class AsyncTransportFactoryExtensionsTests
+{
     [Test]
-    public async Task AddAsyncTransport_ReturnsSameCollectionWithoutRegisteringDescriptors() {
+    public async Task AddAsyncTransport_ReturnsSameCollectionWithoutRegisteringDescriptors()
+    {
         IServiceCollection services = new ServiceCollection();
 
         IServiceCollection returned = services.AddAsyncTransport();
@@ -22,7 +24,8 @@ public sealed class AsyncTransportFactoryExtensionsTests {
     }
 
     [Test]
-    public async Task AddAsyncTransport_NullServices_ThrowsArgumentNullException() {
+    public async Task AddAsyncTransport_NullServices_ThrowsArgumentNullException()
+    {
         await Assert.That(() => AsyncTransportFactoryExtensions.AddAsyncTransport(null!))
             .Throws<ArgumentNullException>();
     }

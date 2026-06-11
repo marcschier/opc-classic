@@ -15,9 +15,11 @@ using TUnit.Core;
 
 namespace Opc.Classic.Mcp.Tests;
 
-public sealed class McpToolValidationTests {
+public sealed class McpToolValidationTests
+{
     [Test]
-    public async Task DiscoveryTools_EnumerateServers_Uses_trimmed_host_and_projects_entries() {
+    public async Task DiscoveryTools_EnumerateServers_Uses_trimmed_host_and_projects_entries()
+    {
         var classId = Guid.Parse("10138C2C-0000-0000-0000-00000000C001");
         var entry = new OpcServerEntry(
             classId,
@@ -45,7 +47,8 @@ public sealed class McpToolValidationTests {
     }
 
     [Test]
-    public async Task DiscoveryTools_EnumerateServers_Invalid_category_id_throws_argument_exception() {
+    public async Task DiscoveryTools_EnumerateServers_Invalid_category_id_throws_argument_exception()
+    {
         var tools = new DiscoveryTools([new RecordingDiscovery()]);
 
         await Assert.That(async () => await tools.EnumerateServers(
@@ -54,7 +57,8 @@ public sealed class McpToolValidationTests {
     }
 
     [Test]
-    public async Task SecurityTools_IsAvailableNt_Without_da_or_factory_reports_required_connection() {
+    public async Task SecurityTools_IsAvailableNt_Without_da_or_factory_reports_required_connection()
+    {
         using var sessionManager = new OpcSessionManager();
         OpcSession session = sessionManager.CreateSession();
         var tools = new SecurityTools(sessionManager, []);
@@ -66,7 +70,8 @@ public sealed class McpToolValidationTests {
     }
 
     [Test]
-    public async Task DaClientTools_Connect_Uses_injected_factory_and_shapes_session_dto() {
+    public async Task DaClientTools_Connect_Uses_injected_factory_and_shapes_session_dto()
+    {
         using var sessionManager = new OpcSessionManager();
         OpcSession session = sessionManager.CreateSession();
         var factory = new CapturingDaConnectionFactory();
@@ -103,7 +108,8 @@ public sealed class McpToolValidationTests {
     }
 
     [Test]
-    public async Task DaClientTools_WriteSync_Mismatched_value_count_throws_argument_exception_before_session_lookup() {
+    public async Task DaClientTools_WriteSync_Mismatched_value_count_throws_argument_exception_before_session_lookup()
+    {
         using var sessionManager = new OpcSessionManager();
         var tools = new DaClientTools(sessionManager, []);
         JsonElement[] values =
@@ -120,18 +126,22 @@ public sealed class McpToolValidationTests {
             CancellationToken.None)).Throws<ArgumentException>();
     }
 
-    private static async Task<Exception> CaptureAsync(Func<Task> action) {
-        try {
+    private static async Task<Exception> CaptureAsync(Func<Task> action)
+    {
+        try
+        {
             await action();
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             return ex;
         }
 
         throw new InvalidOperationException("Expected an exception.");
     }
 
-    private sealed class RecordingDiscovery : IOpcDiscovery {
+    private sealed class RecordingDiscovery : IOpcDiscovery
+    {
         private readonly IReadOnlyList<OpcServerEntry> _entries;
 
         public RecordingDiscovery(params OpcServerEntry[] entries) => _entries = entries;
@@ -140,24 +150,28 @@ public sealed class McpToolValidationTests {
 
         public async IAsyncEnumerable<OpcServerEntry> DiscoverAsync(
             string? host = null,
-            [System.Runtime.CompilerServices.EnumeratorCancellation] CancellationToken cancellationToken = default) {
+            [System.Runtime.CompilerServices.EnumeratorCancellation] CancellationToken cancellationToken = default)
+        {
             LastHost = host;
             await Task.CompletedTask;
-            foreach (OpcServerEntry entry in _entries) {
+            foreach (OpcServerEntry entry in _entries)
+            {
                 cancellationToken.ThrowIfCancellationRequested();
                 yield return entry;
             }
         }
     }
 
-    private sealed class CapturingDaConnectionFactory : IOpcDaConnectionFactory {
+    private sealed class CapturingDaConnectionFactory : IOpcDaConnectionFactory
+    {
         public static readonly Guid FactoryClassId = Guid.Parse("10138C2C-0000-0000-0000-00000000C003");
 
         private readonly SyntheticDaServer _server = new();
 
         public DaConnectionRequest? LastRequest { get; private set; }
 
-        public Task<DaClientState> ConnectAsync(DaConnectionRequest request, CancellationToken cancellationToken = default) {
+        public Task<DaClientState> ConnectAsync(DaConnectionRequest request, CancellationToken cancellationToken = default)
+        {
             cancellationToken.ThrowIfCancellationRequested();
             LastRequest = request;
             return Task.FromResult(new DaClientState("factory-host", "Factory.Prog.1", FactoryClassId, _server.Channel, ownsChannel: false));

@@ -13,12 +13,14 @@ using TUnit.Core;
 
 namespace Opc.Classic.Tests.Security;
 
-public sealed class ChannelBindingsTests {
+public sealed class ChannelBindingsTests
+{
     private const string TlsServerEndpointPrefix = "tls-server-end-point:";
     private static readonly byte[] EmptyChannelBindingsHash = Convert.FromHexString("441018525208457705BF09A8EE3C1093");
 
     [Test]
-    public async Task EmptyChannelBindingsHash_MatchesSerializedEmptyStruct() {
+    public async Task EmptyChannelBindingsHash_MatchesSerializedEmptyStruct()
+    {
         var bindings = new ChannelBindings(
             InitiatorAddrType: 0,
             InitiatorAddress: ReadOnlyMemory<byte>.Empty,
@@ -32,7 +34,8 @@ public sealed class ChannelBindingsTests {
     }
 
     [Test]
-    public async Task ForTlsServerCert_HashesPrefixedSha256CertificateDigest() {
+    public async Task ForTlsServerCert_HashesPrefixedSha256CertificateDigest()
+    {
         byte[] certDer = new byte[32];
         byte[] certHash = SHA256.HashData(certDer);
         byte[] expectedApplicationData = BuildTlsServerEndpointApplicationData(certHash);
@@ -44,7 +47,8 @@ public sealed class ChannelBindingsTests {
     }
 
     [Test]
-    public async Task ForTlsServerEndpoint_ApplicationDataStartsWithAsciiPrefix() {
+    public async Task ForTlsServerEndpoint_ApplicationDataStartsWithAsciiPrefix()
+    {
         byte[] certDer = new byte[32];
         ChannelBindings bindings = ChannelBindingsFactory.ForTlsServerEndpoint(certDer);
         byte[] prefixBytes = Encoding.ASCII.GetBytes(TlsServerEndpointPrefix);
@@ -55,7 +59,8 @@ public sealed class ChannelBindingsTests {
     }
 
     [Test]
-    public async Task Compute_IsDeterministicAndReturnsMd5Length() {
+    public async Task Compute_IsDeterministicAndReturnsMd5Length()
+    {
         var bindings = new ChannelBindings(
             InitiatorAddrType: 0,
             InitiatorAddress: new byte[] { 1, 2, 3 },
@@ -70,7 +75,8 @@ public sealed class ChannelBindingsTests {
         await Assert.That(first.SequenceEqual(second)).IsTrue();
     }
 
-    private static byte[] BuildTlsServerEndpointApplicationData(byte[] certHash) {
+    private static byte[] BuildTlsServerEndpointApplicationData(byte[] certHash)
+    {
         byte[] prefixBytes = Encoding.ASCII.GetBytes(TlsServerEndpointPrefix);
         var appData = new byte[prefixBytes.Length + certHash.Length];
         Buffer.BlockCopy(prefixBytes, 0, appData, 0, prefixBytes.Length);
@@ -78,11 +84,13 @@ public sealed class ChannelBindingsTests {
         return appData;
     }
 
-    private static byte[] ComputeExpectedHash(ReadOnlySpan<byte> applicationData) {
+    private static byte[] ComputeExpectedHash(ReadOnlySpan<byte> applicationData)
+    {
         var buffer = new byte[4 + 4 + 4 + 4 + 4 + applicationData.Length];
         int offset = 0;
 
-        void WriteU32(uint value) {
+        void WriteU32(uint value)
+        {
             BinaryPrimitives.WriteUInt32LittleEndian(buffer.AsSpan(offset, 4), value);
             offset += 4;
         }

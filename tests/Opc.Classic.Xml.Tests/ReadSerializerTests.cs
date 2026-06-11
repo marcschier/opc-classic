@@ -14,23 +14,28 @@ using TUnit.Core;
 
 namespace Opc.Classic.Xml.Tests;
 
-public sealed class ReadSerializerTests {
-    private static string SerializeRequest(XmlDaReadRequest req) {
+public sealed class ReadSerializerTests
+{
+    private static string SerializeRequest(XmlDaReadRequest req)
+    {
         using var ms = new MemoryStream();
-        using (var w = new SoapEnvelopeWriter(ms)) {
+        using (var w = new SoapEnvelopeWriter(ms))
+        {
             ReadSerializer.WriteRequest(w, req);
         }
         return Encoding.UTF8.GetString(ms.ToArray());
     }
 
-    private static XmlDaReadResponse Deserialize(string xml) {
+    private static XmlDaReadResponse Deserialize(string xml)
+    {
         using var ms = new MemoryStream(Encoding.UTF8.GetBytes(xml));
         using var r = new SoapEnvelopeReader(ms);
         return ReadSerializer.ReadResponse(r);
     }
 
     [Test]
-    public async Task Request_EmitsItemsElement_PerItem() {
+    public async Task Request_EmitsItemsElement_PerItem()
+    {
         var xml = SerializeRequest(new XmlDaReadRequest(
             new XmlDaRequestHeader("en-US", "req-1"),
             new[]
@@ -45,7 +50,8 @@ public sealed class ReadSerializerTests {
     }
 
     [Test]
-    public async Task Request_EmitsOptionsReturnErrorText() {
+    public async Task Request_EmitsOptionsReturnErrorText()
+    {
         var xml = SerializeRequest(new XmlDaReadRequest(
             new XmlDaRequestHeader(null, null),
             new[] { new XmlDaReadItem("Tag1", null) },
@@ -54,7 +60,8 @@ public sealed class ReadSerializerTests {
     }
 
     [Test]
-    public async Task Request_OmitsClientHandle_WhenEmpty() {
+    public async Task Request_OmitsClientHandle_WhenEmpty()
+    {
         var xml = SerializeRequest(new XmlDaReadRequest(
             new XmlDaRequestHeader(null, null),
             new[] { new XmlDaReadItem("Tag1", null) }));
@@ -62,7 +69,8 @@ public sealed class ReadSerializerTests {
     }
 
     [Test]
-    public async Task Response_Decodes_DoubleValue() {
+    public async Task Response_Decodes_DoubleValue()
+    {
         const string xml = """
             <?xml version="1.0"?>
             <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
@@ -92,7 +100,8 @@ public sealed class ReadSerializerTests {
     }
 
     [Test]
-    public async Task Response_Decodes_IntValue() {
+    public async Task Response_Decodes_IntValue()
+    {
         const string xml = """
             <?xml version="1.0"?>
             <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
@@ -116,7 +125,8 @@ public sealed class ReadSerializerTests {
     }
 
     [Test]
-    public async Task Response_Decodes_BooleanValue() {
+    public async Task Response_Decodes_BooleanValue()
+    {
         const string xml = """
             <?xml version="1.0"?>
             <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
@@ -140,7 +150,8 @@ public sealed class ReadSerializerTests {
     }
 
     [Test]
-    public async Task Response_Decodes_StringValue() {
+    public async Task Response_Decodes_StringValue()
+    {
         const string xml = """
             <?xml version="1.0"?>
             <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
@@ -164,7 +175,8 @@ public sealed class ReadSerializerTests {
     }
 
     [Test]
-    public async Task Response_Decodes_UnknownXsiType_AsRawText() {
+    public async Task Response_Decodes_UnknownXsiType_AsRawText()
+    {
         const string xml = """
             <?xml version="1.0"?>
             <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
@@ -190,7 +202,8 @@ public sealed class ReadSerializerTests {
     }
 
     [Test]
-    public async Task Response_Decodes_BadQuality() {
+    public async Task Response_Decodes_BadQuality()
+    {
         const string xml = """
             <?xml version="1.0"?>
             <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
@@ -215,7 +228,8 @@ public sealed class ReadSerializerTests {
     }
 
     [Test]
-    public async Task Response_DecodesMultipleItems() {
+    public async Task Response_DecodesMultipleItems()
+    {
         const string xml = """
             <?xml version="1.0"?>
             <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
@@ -239,7 +253,8 @@ public sealed class ReadSerializerTests {
     }
 
     [Test]
-    public async Task Response_DecodesTimestamp_AsUtc() {
+    public async Task Response_DecodesTimestamp_AsUtc()
+    {
         const string xml = """
             <?xml version="1.0"?>
             <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
@@ -265,7 +280,8 @@ public sealed class ReadSerializerTests {
     }
 
     [Test]
-    public async Task Response_RejectsWrongOperation() {
+    public async Task Response_RejectsWrongOperation()
+    {
         const string xml = """
             <?xml version="1.0"?>
             <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">

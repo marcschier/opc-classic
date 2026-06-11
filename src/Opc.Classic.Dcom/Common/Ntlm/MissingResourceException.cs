@@ -4,7 +4,9 @@ using System;
 
 namespace SharpCifs.Util.Sharpen;
 
-public sealed class MissingResourceException : Exception {
-    public MissingResourceException() {
+public sealed class MissingResourceException : Exception
+{
+    public MissingResourceException()
+    {
     }
 }

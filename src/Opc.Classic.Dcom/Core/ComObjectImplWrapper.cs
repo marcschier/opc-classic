@@ -9,7 +9,8 @@ namespace Opc.Classic.Dcom.Core;
 /// Internal Framework class.
 /// </summary>
 [Serializable]
-public class ComObjectImplWrapper : IComObject, IComObjectInternal {
+public class ComObjectImplWrapper : IComObject, IComObjectInternal
+{
 
     /// <summary>
     /// Wrapped Com object
@@ -48,7 +49,8 @@ public class ComObjectImplWrapper : IComObject, IComObjectInternal {
         ComObject.LengthOfInterfacePointer;
 
     /// <inheritdoc/>
-    public virtual int InstanceLevelSocketTimeout {
+    public virtual int InstanceLevelSocketTimeout
+    {
         get => ComObject.InstanceLevelSocketTimeout;
         set => ComObject.InstanceLevelSocketTimeout = value;
     }

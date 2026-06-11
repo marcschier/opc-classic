@@ -8,7 +8,8 @@ namespace Opc.Classic.Dcom.Kerberos;
 /// <summary>
 /// Describes the Kerberos identity and service principal used for DCOM authentication.
 /// </summary>
-public interface IKerberosAuthInfo {
+public interface IKerberosAuthInfo
+{
     /// <summary>
     /// Gets the Kerberos realm used for ticket acquisition.
     /// </summary>

@@ -21,15 +21,18 @@ using TUnit.Core;
 
 namespace Opc.Classic.PropertyTests.Codecs;
 
-public sealed class NdrConformantArrayTests {
+public sealed class NdrConformantArrayTests
+{
     [Test]
-    public Task ByteArrays_RoundTrip() {
+    public Task ByteArrays_RoundTrip()
+    {
         Gen.Byte.Array[0, 256].Sample(RoundTripByteArray, iter: CodecProperty.SampleIterations);
         return Task.CompletedTask;
     }
 
     [Test]
-    public Task SByteArrays_RoundTrip() {
+    public Task SByteArrays_RoundTrip()
+    {
         Gen.SByte.Array[0, 256].Sample(values => CodecProperty.RoundTripsConformantArray(
             values,
             static (ref NdrWriter writer, sbyte value) => writer.WriteInt8(value),
@@ -39,7 +42,8 @@ public sealed class NdrConformantArrayTests {
     }
 
     [Test]
-    public Task Int16Arrays_RoundTrip() {
+    public Task Int16Arrays_RoundTrip()
+    {
         Gen.Short.Array[0, 256].Sample(values => CodecProperty.RoundTrips(
             values,
             static (ref NdrWriter writer, short[] array) => writer.WriteConformantInt16Array(array),
@@ -49,7 +53,8 @@ public sealed class NdrConformantArrayTests {
     }
 
     [Test]
-    public Task UInt16Arrays_RoundTrip() {
+    public Task UInt16Arrays_RoundTrip()
+    {
         Gen.UShort.Array[0, 256].Sample(values => CodecProperty.RoundTrips(
             values,
             static (ref NdrWriter writer, ushort[] array) => writer.WriteConformantUInt16Array(array),
@@ -59,7 +64,8 @@ public sealed class NdrConformantArrayTests {
     }
 
     [Test]
-    public Task Int32Arrays_RoundTrip() {
+    public Task Int32Arrays_RoundTrip()
+    {
         Gen.Int.Array[0, 256].Sample(values => CodecProperty.RoundTrips(
             values,
             static (ref NdrWriter writer, int[] array) => writer.WriteConformantInt32Array(array),
@@ -69,7 +75,8 @@ public sealed class NdrConformantArrayTests {
     }
 
     [Test]
-    public Task UInt32Arrays_RoundTrip() {
+    public Task UInt32Arrays_RoundTrip()
+    {
         Gen.UInt.Array[0, 256].Sample(values => CodecProperty.RoundTrips(
             values,
             static (ref NdrWriter writer, uint[] array) => writer.WriteConformantUInt32Array(array),
@@ -79,7 +86,8 @@ public sealed class NdrConformantArrayTests {
     }
 
     [Test]
-    public Task Int64Arrays_RoundTrip() {
+    public Task Int64Arrays_RoundTrip()
+    {
         Gen.Long.Array[0, 256].Sample(values => CodecProperty.RoundTrips(
             values,
             static (ref NdrWriter writer, long[] array) => writer.WriteConformantInt64Array(array),
@@ -89,7 +97,8 @@ public sealed class NdrConformantArrayTests {
     }
 
     [Test]
-    public Task UInt64Arrays_RoundTrip() {
+    public Task UInt64Arrays_RoundTrip()
+    {
         Gen.ULong.Array[0, 256].Sample(values => CodecProperty.RoundTripsConformantArray(
             values,
             static (ref NdrWriter writer, ulong value) => writer.WriteUInt64(value),
@@ -99,7 +108,8 @@ public sealed class NdrConformantArrayTests {
     }
 
     [Test]
-    public Task SingleArrays_RoundTrip_BitExactly() {
+    public Task SingleArrays_RoundTrip_BitExactly()
+    {
         Gen.Single.Array[0, 256].Sample(values => CodecProperty.RoundTrips(
             values,
             static (ref NdrWriter writer, float[] array) => writer.WriteConformantSingleArray(array),
@@ -113,7 +123,8 @@ public sealed class NdrConformantArrayTests {
     }
 
     [Test]
-    public Task DoubleArrays_RoundTrip_BitExactly() {
+    public Task DoubleArrays_RoundTrip_BitExactly()
+    {
         Gen.Double.Array[0, 256].Sample(values => CodecProperty.RoundTrips(
             values,
             static (ref NdrWriter writer, double[] array) => writer.WriteConformantDoubleArray(array),
@@ -127,7 +138,8 @@ public sealed class NdrConformantArrayTests {
     }
 
     [Test]
-    public Task BooleanArrays_RoundTrip() {
+    public Task BooleanArrays_RoundTrip()
+    {
         Gen.Bool.Array[0, 256].Sample(values => CodecProperty.RoundTripsConformantArray(
             values,
             static (ref NdrWriter writer, bool value) => writer.WriteBoolean(value),
@@ -137,7 +149,8 @@ public sealed class NdrConformantArrayTests {
     }
 
     [Test]
-    public Task GuidArrays_RoundTrip() {
+    public Task GuidArrays_RoundTrip()
+    {
         Gen.Guid.Array[0, 256].Sample(values => CodecProperty.RoundTrips(
             values,
             static (ref NdrWriter writer, Guid[] array) => writer.WriteConformantGuidArray(array),
@@ -147,7 +160,8 @@ public sealed class NdrConformantArrayTests {
     }
 
     [Test]
-    public Task FileTimeArrays_RoundTrip() {
+    public Task FileTimeArrays_RoundTrip()
+    {
         Gen.Long.Array[0, 256].Sample(values => CodecProperty.RoundTripsConformantArray(
             values,
             static (ref NdrWriter writer, long value) => writer.WriteFileTime(value),
@@ -157,7 +171,8 @@ public sealed class NdrConformantArrayTests {
     }
 
     [Test]
-    public Task LpwstrPointerArrays_RoundTrip() {
+    public Task LpwstrPointerArrays_RoundTrip()
+    {
         CodecProperty.NullableShortStringGen.Array[0, 128].Sample(values => CodecProperty.RoundTripsConformantArray(
             values,
             static (ref NdrWriter writer, string? value) => writer.WriteUnicodeStringPtr(value),
@@ -168,7 +183,8 @@ public sealed class NdrConformantArrayTests {
     }
 
     [Test]
-    public Task EmptyConformantArrays_RoundTrip() {
+    public Task EmptyConformantArrays_RoundTrip()
+    {
         Gen.Int[0, 0].Sample(_ =>
             RoundTripByteArray([]) &&
             CodecProperty.RoundTripsConformantArray(Array.Empty<sbyte>(),
@@ -183,7 +199,8 @@ public sealed class NdrConformantArrayTests {
     }
 
     [Test]
-    public Task MaxLength256AlignmentArrays_RoundTrip() {
+    public Task MaxLength256AlignmentArrays_RoundTrip()
+    {
         Gen.Int.Array[256].Sample(values =>
             CodecProperty.RoundTrips(
                 values,
@@ -194,7 +211,8 @@ public sealed class NdrConformantArrayTests {
     }
 
     [Test]
-    public Task DaOpcServerStatusArrays_RoundTrip() {
+    public Task DaOpcServerStatusArrays_RoundTrip()
+    {
         CodecProperty.DaServerStatusGen.Array[0, 8].Sample(values => StructArrayRoundTrips(
             values,
             static (ref NdrWriter writer, OpcServerStatus value) => NdrOpcServerStatusCodec.Write(ref writer, value),
@@ -204,7 +222,8 @@ public sealed class NdrConformantArrayTests {
     }
 
     [Test]
-    public Task DaOpcItemStateArrays_RoundTrip() {
+    public Task DaOpcItemStateArrays_RoundTrip()
+    {
         CodecProperty.OpcItemStateGen.Array[0, 8].Sample(values => StructArrayRoundTrips(
             values,
             static (ref NdrWriter writer, OpcItemState value) => NdrOpcItemStateCodec.Write(ref writer, value),
@@ -214,7 +233,8 @@ public sealed class NdrConformantArrayTests {
     }
 
     [Test]
-    public Task DaOpcItemResultArrays_RoundTrip() {
+    public Task DaOpcItemResultArrays_RoundTrip()
+    {
         CodecProperty.OpcItemResultGen.Array[0, 8].Sample(values => StructArrayRoundTrips(
             values,
             static (ref NdrWriter writer, OpcItemResult value) => NdrOpcItemResultCodec.Write(ref writer, value),
@@ -224,7 +244,8 @@ public sealed class NdrConformantArrayTests {
     }
 
     [Test]
-    public Task DaOpcItemPropertyArrays_RoundTrip() {
+    public Task DaOpcItemPropertyArrays_RoundTrip()
+    {
         CodecProperty.OpcItemPropertyResultGen.Array[0, 8].Sample(values => StructArrayRoundTrips(
             values,
             static (ref NdrWriter writer, OpcItemPropertyResult value) => NdrOpcItemPropertyCodec.Write(ref writer, value),
@@ -234,7 +255,8 @@ public sealed class NdrConformantArrayTests {
     }
 
     [Test]
-    public Task DaOpcItemPropertiesArrays_RoundTrip() {
+    public Task DaOpcItemPropertiesArrays_RoundTrip()
+    {
         CodecProperty.OpcItemPropertiesGen.Array[0, 8].Sample(values => StructArrayRoundTrips(
             values,
             static (ref NdrWriter writer, OpcItemProperties value) => NdrOpcItemPropertiesCodec.Write(ref writer, value),
@@ -244,7 +266,8 @@ public sealed class NdrConformantArrayTests {
     }
 
     [Test]
-    public Task DaOpcBrowseElementArrays_RoundTrip() {
+    public Task DaOpcBrowseElementArrays_RoundTrip()
+    {
         CodecProperty.OpcBrowseElementResultGen.Array[0, 8].Sample(values => StructArrayRoundTrips(
             values,
             static (ref NdrWriter writer, OpcBrowseElementResult value) => NdrOpcBrowseElementCodec.Write(ref writer, value),
@@ -254,7 +277,8 @@ public sealed class NdrConformantArrayTests {
     }
 
     [Test]
-    public Task DaOpcItemDefArrays_RoundTrip() {
+    public Task DaOpcItemDefArrays_RoundTrip()
+    {
         CodecProperty.OpcItemDefGen.Array[0, 8].Sample(values => StructArrayRoundTrips(
             values,
             static (ref NdrWriter writer, OpcItemDef value) => NdrOpcItemDefCodec.Write(ref writer, value),
@@ -264,7 +288,8 @@ public sealed class NdrConformantArrayTests {
     }
 
     [Test]
-    public Task DaOpcItemAttributesArrays_RoundTrip() {
+    public Task DaOpcItemAttributesArrays_RoundTrip()
+    {
         CodecProperty.OpcItemAttributesGen.Array[0, 8].Sample(values => StructArrayRoundTrips(
             values,
             static (ref NdrWriter writer, OpcItemAttributes value) => NdrOpcItemAttributesCodec.Write(ref writer, value),
@@ -274,7 +299,8 @@ public sealed class NdrConformantArrayTests {
     }
 
     [Test]
-    public Task DaOpcGroupStateArrays_RoundTrip() {
+    public Task DaOpcGroupStateArrays_RoundTrip()
+    {
         CodecProperty.OpcGroupStateGen.Array[0, 8].Sample(values => StructArrayRoundTrips(
             values,
             static (ref NdrWriter writer, OpcGroupState value) => NdrOpcGroupStateCodec.Write(ref writer, value),
@@ -284,7 +310,8 @@ public sealed class NdrConformantArrayTests {
     }
 
     [Test]
-    public Task DaOpcItemVqtArrays_RoundTrip() {
+    public Task DaOpcItemVqtArrays_RoundTrip()
+    {
         CodecProperty.OpcItemVqtGen.Array[0, 8].Sample(values => StructArrayRoundTrips(
             values,
             static (ref NdrWriter writer, OpcItemVqt value) => NdrOpcItemVqtCodec.Write(ref writer, value),
@@ -294,7 +321,8 @@ public sealed class NdrConformantArrayTests {
     }
 
     [Test]
-    public Task AeOpcEventServerStatusArrays_RoundTrip() {
+    public Task AeOpcEventServerStatusArrays_RoundTrip()
+    {
         CodecProperty.AeServerStatusGen.Array[0, 8].Sample(values => StructArrayRoundTrips(
             values,
             static (ref NdrWriter writer, OpcServerStatus value) => NdrOpcEventServerStatusCodec.Write(ref writer, value),
@@ -304,7 +332,8 @@ public sealed class NdrConformantArrayTests {
     }
 
     [Test]
-    public Task AeOpcConditionStateArrays_RoundTrip() {
+    public Task AeOpcConditionStateArrays_RoundTrip()
+    {
         CodecProperty.OpcConditionStateGen.Array[0, 8].Sample(values => StructArrayRoundTrips(
             values,
             static (ref NdrWriter writer, OpcConditionState value) => NdrOpcConditionStateCodec.Write(ref writer, value),
@@ -314,7 +343,8 @@ public sealed class NdrConformantArrayTests {
     }
 
     [Test]
-    public Task AeOpcEventNotificationArrays_RoundTrip() {
+    public Task AeOpcEventNotificationArrays_RoundTrip()
+    {
         CodecProperty.OpcEventNotificationGen.Array[0, 8].Sample(values => StructArrayRoundTrips(
             values,
             static (ref NdrWriter writer, OpcEventNotification value) => NdrOpcEventNotificationCodec.Write(ref writer, value),
@@ -324,7 +354,8 @@ public sealed class NdrConformantArrayTests {
     }
 
     [Test]
-    public Task HdaOpcHdaTimeArrays_RoundTrip() {
+    public Task HdaOpcHdaTimeArrays_RoundTrip()
+    {
         CodecProperty.OpcHdaTimeGen.Array[0, 8].Sample(values => StructArrayRoundTrips(
             values,
             static (ref NdrWriter writer, OpcHdaTime value) => NdrOpcHdaTimeCodec.Write(ref writer, value),
@@ -334,7 +365,8 @@ public sealed class NdrConformantArrayTests {
     }
 
     [Test]
-    public Task HdaOpcServerStatusArrays_RoundTrip() {
+    public Task HdaOpcServerStatusArrays_RoundTrip()
+    {
         CodecProperty.HdaServerStatusGen.Array[0, 8].Sample(values => StructArrayRoundTrips(
             values,
             static (ref NdrWriter writer, OpcServerStatus value) => NdrOpcHdaServerStatusCodec.Write(ref writer, value),
@@ -344,7 +376,8 @@ public sealed class NdrConformantArrayTests {
     }
 
     [Test]
-    public Task HdaOpcHdaItemArrays_RoundTrip() {
+    public Task HdaOpcHdaItemArrays_RoundTrip()
+    {
         CodecProperty.OpcHdaItemGen.Array[0, 8].Sample(values => StructArrayRoundTrips(
             values,
             static (ref NdrWriter writer, OpcHdaItem value) => NdrOpcHdaItemCodec.Write(ref writer, value),
@@ -354,7 +387,8 @@ public sealed class NdrConformantArrayTests {
     }
 
     [Test]
-    public Task HdaOpcHdaAttributeArrays_RoundTrip() {
+    public Task HdaOpcHdaAttributeArrays_RoundTrip()
+    {
         CodecProperty.OpcHdaAttributeGen.Array[0, 8].Sample(values => StructArrayRoundTrips(
             values,
             static (ref NdrWriter writer, OpcHdaAttribute value) => NdrOpcHdaAttributeCodec.Write(ref writer, value),
@@ -364,7 +398,8 @@ public sealed class NdrConformantArrayTests {
     }
 
     [Test]
-    public Task HdaOpcHdaModifiedItemArrays_RoundTrip() {
+    public Task HdaOpcHdaModifiedItemArrays_RoundTrip()
+    {
         CodecProperty.OpcHdaModifiedItemGen.Array[0, 8].Sample(values => StructArrayRoundTrips(
             values,
             static (ref NdrWriter writer, OpcHdaModifiedItem value) => NdrOpcHdaModifiedItemCodec.Write(ref writer, value),
@@ -374,7 +409,8 @@ public sealed class NdrConformantArrayTests {
     }
 
     [Test]
-    public Task HdaOpcHdaAnnotationArrays_RoundTrip() {
+    public Task HdaOpcHdaAnnotationArrays_RoundTrip()
+    {
         CodecProperty.OpcHdaAnnotationGen.Array[0, 8].Sample(values => StructArrayRoundTrips(
             values,
             static (ref NdrWriter writer, OpcHdaAnnotation value) => NdrOpcHdaAnnotationCodec.Write(ref writer, value),
@@ -384,7 +420,8 @@ public sealed class NdrConformantArrayTests {
     }
 
     [Test]
-    public Task BatchOpcBatchSummaryArrays_RoundTrip() {
+    public Task BatchOpcBatchSummaryArrays_RoundTrip()
+    {
         CodecProperty.OpcBatchSummaryGen.Array[0, 8].Sample(values => StructArrayRoundTrips(
             values,
             static (ref NdrWriter writer, OpcBatchSummary value) => NdrOpcBatchSummaryCodec.Write(ref writer, value),
@@ -394,7 +431,8 @@ public sealed class NdrConformantArrayTests {
     }
 
     [Test]
-    public Task BatchOpcBatchSummaryFilterArrays_RoundTrip() {
+    public Task BatchOpcBatchSummaryFilterArrays_RoundTrip()
+    {
         CodecProperty.OpcBatchSummaryFilterGen.Array[0, 8].Sample(values => StructArrayRoundTrips(
             values,
             static (ref NdrWriter writer, OpcBatchSummaryFilter value) => NdrOpcBatchSummaryFilterCodec.Write(ref writer, value),

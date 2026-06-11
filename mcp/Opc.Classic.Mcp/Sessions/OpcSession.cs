@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -11,13 +11,16 @@ using Opc.Classic.Xml;
 namespace Opc.Classic.Mcp.Sessions;
 
 /// <summary>Holds MCP session state and per-OPC-spec client state.</summary>
-public sealed class OpcSession : IAsyncDisposable {
+public sealed class OpcSession : IAsyncDisposable
+{
     private bool _disposed;
 
     /// <summary>Creates a new session with the requested idle expiry.</summary>
-    public OpcSession(string sessionId, TimeSpan idleExpiry) {
+    public OpcSession(string sessionId, TimeSpan idleExpiry)
+    {
         ArgumentException.ThrowIfNullOrWhiteSpace(sessionId);
-        if (idleExpiry <= TimeSpan.Zero) {
+        if (idleExpiry <= TimeSpan.Zero)
+        {
             throw new ArgumentOutOfRangeException(nameof(idleExpiry), idleExpiry, "Idle expiry must be positive.");
         }
 
@@ -73,8 +76,10 @@ public sealed class OpcSession : IAsyncDisposable {
     public void Touch() => LastUsedAt = DateTimeOffset.UtcNow;
 
     /// <inheritdoc />
-    public async ValueTask DisposeAsync() {
-        if (_disposed) {
+    public async ValueTask DisposeAsync()
+    {
+        if (_disposed)
+        {
             return;
         }
 
@@ -97,52 +102,63 @@ public sealed class OpcSession : IAsyncDisposable {
         DxClient = null;
         SecurityClient = null;
         XmlDaClient = null;
-        if (cpxClient is not null) {
+        if (cpxClient is not null)
+        {
             await cpxClient.DisposeAsync().ConfigureAwait(false);
         }
 
-        if (daClient is not null) {
+        if (daClient is not null)
+        {
             await daClient.DisposeAsync().ConfigureAwait(false);
         }
 
-        if (aeClient is not null) {
+        if (aeClient is not null)
+        {
             await aeClient.DisposeAsync().ConfigureAwait(false);
         }
 
-        if (hdaClient is not null) {
+        if (hdaClient is not null)
+        {
             await hdaClient.DisposeAsync().ConfigureAwait(false);
         }
 
-        if (batchClient is not null) {
+        if (batchClient is not null)
+        {
             await batchClient.DisposeAsync().ConfigureAwait(false);
         }
 
-        if (commandsClient is not null) {
+        if (commandsClient is not null)
+        {
             await commandsClient.DisposeAsync().ConfigureAwait(false);
         }
 
-        if (dxClient is not null) {
+        if (dxClient is not null)
+        {
             await dxClient.DisposeAsync().ConfigureAwait(false);
         }
 
-        if (securityClient is not null) {
+        if (securityClient is not null)
+        {
             await securityClient.DisposeAsync().ConfigureAwait(false);
         }
 
-        if (xmlDaClient is not null) {
+        if (xmlDaClient is not null)
+        {
             await xmlDaClient.DisposeAsync().ConfigureAwait(false);
         }
     }
 }
 
 /// <summary>Holds OPC DA wire proxies and server-side group/subscription handles.</summary>
-public sealed class DaClientState : IAsyncDisposable {
+public sealed class DaClientState : IAsyncDisposable
+{
     private readonly ICallChannel _channel;
     private readonly bool _ownsChannel;
     private bool _disposed;
 
     /// <summary>Creates DA client state over an existing call channel.</summary>
-    public DaClientState(string host, string? progId, Guid? clsid, ICallChannel channel, bool ownsChannel) {
+    public DaClientState(string host, string? progId, Guid? clsid, ICallChannel channel, bool ownsChannel)
+    {
         ArgumentException.ThrowIfNullOrWhiteSpace(host);
         ArgumentNullException.ThrowIfNull(channel);
 
@@ -226,17 +242,21 @@ public sealed class DaClientState : IAsyncDisposable {
     /// for this client. Subsequent calls return the same instance. Concurrent
     /// callers race-safely; only one endpoint is ever created per client.
     /// </summary>
-    public async Task<Tools.DaCallbackEndpoint> GetOrCreateCallbackEndpointAsync(System.Threading.CancellationToken cancellationToken = default) {
+    public async Task<Tools.DaCallbackEndpoint> GetOrCreateCallbackEndpointAsync(System.Threading.CancellationToken cancellationToken = default)
+    {
         ObjectDisposedException.ThrowIf(_disposed, this);
         Tools.DaCallbackEndpoint? existing = CallbackEndpoint;
-        if (existing is not null) {
+        if (existing is not null)
+        {
             return existing;
         }
 
         await _callbackEndpointLock.WaitAsync(cancellationToken).ConfigureAwait(false);
-        try {
+        try
+        {
             ObjectDisposedException.ThrowIf(_disposed, this);
-            if (CallbackEndpoint is null) {
+            if (CallbackEndpoint is null)
+            {
                 var endpoint = new Tools.DaCallbackEndpoint();
                 await endpoint.StartAsync(cancellationToken).ConfigureAwait(false);
                 CallbackEndpoint = endpoint;
@@ -244,7 +264,8 @@ public sealed class DaClientState : IAsyncDisposable {
 
             return CallbackEndpoint;
         }
-        finally {
+        finally
+        {
             _callbackEndpointLock.Release();
         }
     }
@@ -252,8 +273,10 @@ public sealed class DaClientState : IAsyncDisposable {
     private readonly System.Threading.SemaphoreSlim _callbackEndpointLock = new(1, 1);
 
     /// <inheritdoc />
-    public async ValueTask DisposeAsync() {
-        if (_disposed) {
+    public async ValueTask DisposeAsync()
+    {
+        if (_disposed)
+        {
             return;
         }
 
@@ -263,20 +286,26 @@ public sealed class DaClientState : IAsyncDisposable {
         // swallow OpcException / InvalidOperationException and proceed to
         // local cleanup. The sink Dispose() loop below still runs even if
         // remote Unadvise fails.
-        foreach (DaSubscriptionContext subscription in Subscriptions.Values) {
-            if (subscription.AdviseCookie is int cookie) {
-                try {
+        foreach (DaSubscriptionContext subscription in Subscriptions.Values)
+        {
+            if (subscription.AdviseCookie is int cookie)
+            {
+                try
+                {
                     await ConnectionPoint.UnadviseAsync(cookie).ConfigureAwait(false);
                 }
-                catch (OpcException) {
+                catch (OpcException)
+                {
                 }
-                catch (InvalidOperationException) {
+                catch (InvalidOperationException)
+                {
                 }
 
                 subscription.AdviseCookie = null;
             }
 
-            if (subscription.SinkIpid != Guid.Empty) {
+            if (subscription.SinkIpid != Guid.Empty)
+            {
                 CallbackEndpoint?.UnregisterSink(subscription.SinkIpid);
                 subscription.SinkIpid = Guid.Empty;
             }
@@ -293,21 +322,26 @@ public sealed class DaClientState : IAsyncDisposable {
         // Release on it after their startup raced with disposal.
         await _callbackEndpointLock.WaitAsync().ConfigureAwait(false);
         Tools.DaCallbackEndpoint? callbackEndpoint;
-        try {
+        try
+        {
             _disposed = true;
             callbackEndpoint = CallbackEndpoint;
             CallbackEndpoint = null;
         }
-        finally {
+        finally
+        {
             _callbackEndpointLock.Release();
         }
 
-        if (callbackEndpoint is not null) {
+        if (callbackEndpoint is not null)
+        {
             await callbackEndpoint.DisposeAsync().ConfigureAwait(false);
         }
 
-        if (_ownsChannel) {
-            switch (_channel) {
+        if (_ownsChannel)
+        {
+            switch (_channel)
+            {
                 case IAsyncDisposable asyncDisposable:
                     await asyncDisposable.DisposeAsync().ConfigureAwait(false);
                     break;
@@ -320,7 +354,8 @@ public sealed class DaClientState : IAsyncDisposable {
 }
 
 /// <summary>Tracks a DA group created in a session.</summary>
-public sealed class DaGroupContext {
+public sealed class DaGroupContext
+{
     /// <summary>Creates a group context.</summary>
     public DaGroupContext(
         int serverGroupHandle,
@@ -333,7 +368,8 @@ public sealed class DaGroupContext {
         float deadbandPercent,
         int localeId,
         int keepAliveMs,
-        IReadOnlyDictionary<Guid, Guid>? interfaceIpids = null) {
+        IReadOnlyDictionary<Guid, Guid>? interfaceIpids = null)
+    {
         ServerGroupHandle = serverGroupHandle;
         Name = name;
         ClientHandle = clientHandle;
@@ -397,14 +433,16 @@ public sealed record DaItemBindingContext(string ItemName, string? ItemPath, int
 /// testable in isolation and a no-op for live polling until a sink producer
 /// is plumbed.
 /// </remarks>
-public sealed class DaSubscriptionContext {
+public sealed class DaSubscriptionContext
+{
     /// <summary>Creates a new subscription context with a fresh callback sink.</summary>
     public DaSubscriptionContext(
         string subscriptionId,
         int groupHandle,
         bool fromCache,
         int transactionId,
-        int? cancelId) {
+        int? cancelId)
+    {
         ArgumentException.ThrowIfNullOrEmpty(subscriptionId);
         SubscriptionId = subscriptionId;
         GroupHandle = groupHandle;
@@ -453,7 +491,8 @@ public sealed class DaSubscriptionContext {
 }
 
 /// <summary>Operations required by MCP DX tools.</summary>
-public interface IOpcDxClient : IAsyncDisposable {
+public interface IOpcDxClient : IAsyncDisposable
+{
     /// <summary>Gets DX server status.</summary>
     Task<OpcServerStatus> GetStatusAsync(CancellationToken cancellationToken = default);
 
@@ -486,9 +525,11 @@ public interface IOpcDxClient : IAsyncDisposable {
 }
 
 /// <summary>Holds OPC DX client state for an MCP session.</summary>
-public sealed class DxClientState : IAsyncDisposable {
+public sealed class DxClientState : IAsyncDisposable
+{
     /// <summary>Creates DX client state.</summary>
-    public DxClientState(string host, string? progId, Guid? clsid, IOpcDxClient client) {
+    public DxClientState(string host, string? progId, Guid? clsid, IOpcDxClient client)
+    {
         ArgumentException.ThrowIfNullOrWhiteSpace(host);
         ArgumentNullException.ThrowIfNull(client);
 
@@ -515,7 +556,8 @@ public sealed class DxClientState : IAsyncDisposable {
 }
 
 /// <summary>Operations required by MCP OPC Security tools.</summary>
-public interface IOpcSecurityClient : IAsyncDisposable {
+public interface IOpcSecurityClient : IAsyncDisposable
+{
     /// <summary>True when authenticated.</summary>
     bool IsAuthenticated { get; }
 
@@ -536,9 +578,11 @@ public interface IOpcSecurityClient : IAsyncDisposable {
 }
 
 /// <summary>Holds OPC Security client state for an MCP session.</summary>
-public sealed class SecurityClientState : IAsyncDisposable {
+public sealed class SecurityClientState : IAsyncDisposable
+{
     /// <summary>Creates OPC Security client state.</summary>
-    public SecurityClientState(IOpcSecurityClient client) {
+    public SecurityClientState(IOpcSecurityClient client)
+    {
         ArgumentNullException.ThrowIfNull(client);
         Client = client;
     }
@@ -551,13 +595,15 @@ public sealed class SecurityClientState : IAsyncDisposable {
 }
 
 /// <summary>Holds OPC XML-DA client state for an MCP session.</summary>
-public sealed class XmlDaClientState : IAsyncDisposable {
+public sealed class XmlDaClientState : IAsyncDisposable
+{
     private readonly IDisposable? _ownedDisposable;
     private readonly IAsyncDisposable? _ownedAsyncDisposable;
     private bool _disposed;
 
     /// <summary>Creates XML-DA client state.</summary>
-    public XmlDaClientState(string endpointUrl, IXmlDaClient client, IDisposable? ownedDisposable = null, IAsyncDisposable? ownedAsyncDisposable = null) {
+    public XmlDaClientState(string endpointUrl, IXmlDaClient client, IDisposable? ownedDisposable = null, IAsyncDisposable? ownedAsyncDisposable = null)
+    {
         ArgumentException.ThrowIfNullOrWhiteSpace(endpointUrl);
         ArgumentNullException.ThrowIfNull(client);
 
@@ -574,13 +620,16 @@ public sealed class XmlDaClientState : IAsyncDisposable {
     public IXmlDaClient Client { get; }
 
     /// <inheritdoc />
-    public async ValueTask DisposeAsync() {
-        if (_disposed) {
+    public async ValueTask DisposeAsync()
+    {
+        if (_disposed)
+        {
             return;
         }
 
         _disposed = true;
-        if (_ownedAsyncDisposable is not null) {
+        if (_ownedAsyncDisposable is not null)
+        {
             await _ownedAsyncDisposable.DisposeAsync().ConfigureAwait(false);
         }
 

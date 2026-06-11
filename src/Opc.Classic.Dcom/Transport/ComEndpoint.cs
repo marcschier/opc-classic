@@ -9,7 +9,8 @@ namespace Opc.Classic.Dcom.Transport;
 /// <summary>
 /// Endpoint
 /// </summary>
-public sealed class ComEndpoint : ConnectionOrientedEndpoint {
+public sealed class ComEndpoint : ConnectionOrientedEndpoint
+{
 
     /// <summary>
     /// Create endpoint
@@ -17,7 +18,8 @@ public sealed class ComEndpoint : ConnectionOrientedEndpoint {
     /// <param name="transport"></param>
     /// <param name="syntax"></param>
     internal ComEndpoint(ITransport transport, PresentationSyntax syntax) :
-        base(transport, syntax) {
+        base(transport, syntax)
+    {
     }
 
     /// <summary>

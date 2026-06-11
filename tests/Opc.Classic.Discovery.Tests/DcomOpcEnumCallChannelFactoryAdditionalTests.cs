@@ -15,9 +15,11 @@ using TUnit.Core;
 
 namespace Opc.Classic.Discovery.Tests;
 
-public sealed class DcomOpcEnumCallChannelFactoryAdditionalTests {
+public sealed class DcomOpcEnumCallChannelFactoryAdditionalTests
+{
     [Test]
-    public async Task Constructors_Normalize_activation_protection_to_integrity_or_privacy() {
+    public async Task Constructors_Normalize_activation_protection_to_integrity_or_privacy()
+    {
         var defaultFactory = new DcomOpcEnumCallChannelFactory();
         var connectFactory = new DcomOpcEnumCallChannelFactory(CreateConnectData(OpcProtectionLevel.Connect));
         var privacyFactory = new DcomOpcEnumCallChannelFactory(CreateConnectData(OpcProtectionLevel.Privacy));
@@ -33,7 +35,8 @@ public sealed class DcomOpcEnumCallChannelFactoryAdditionalTests {
     }
 
     [Test]
-    public async Task Create_channel_methods_Validate_inputs_before_transport_connection() {
+    public async Task Create_channel_methods_Validate_inputs_before_transport_connection()
+    {
         var factory = new DcomOpcEnumCallChannelFactory(
             new DcomCallChannelFactory(new ThrowingTransportFactory()),
             static () => NoOpAuthContext.Instance);
@@ -45,7 +48,8 @@ public sealed class DcomOpcEnumCallChannelFactoryAdditionalTests {
     }
 
     [Test]
-    public async Task ResolveObjectEndpoint_Uses_tcp_resolver_binding_when_present() {
+    public async Task ResolveObjectEndpoint_Uses_tcp_resolver_binding_when_present()
+    {
         IOpcInterfaceRef interfaceRef = CreateInterfaceRef(["ignored-ncacn", "object-host[49153]"]);
 
         var endpoint = (DnsEndPoint)InvokeStatic<EndPoint>("ResolveObjectEndpoint", "fallback-host", interfaceRef);
@@ -55,7 +59,8 @@ public sealed class DcomOpcEnumCallChannelFactoryAdditionalTests {
     }
 
     [Test]
-    public async Task ResolveObjectEndpoint_Falls_back_to_endpoint_mapper_without_tcp_binding() {
+    public async Task ResolveObjectEndpoint_Falls_back_to_endpoint_mapper_without_tcp_binding()
+    {
         IOpcInterfaceRef interfaceRef = new OpcInterfaceRef(
             OpcGuids.IID_IOPCServerList2,
             flags: 0,
@@ -73,7 +78,8 @@ public sealed class DcomOpcEnumCallChannelFactoryAdditionalTests {
     }
 
     [Test]
-    public async Task ResolveDataPortEndpoint_Uses_oxid_data_port_and_fallback_host() {
+    public async Task ResolveDataPortEndpoint_Uses_oxid_data_port_and_fallback_host()
+    {
         IOpcInterfaceRef interfaceRef = CreateInterfaceRef(["object-host[49153]"]);
 
         var endpoint = (DnsEndPoint)InvokeStatic<DnsEndPoint>(
@@ -87,7 +93,8 @@ public sealed class DcomOpcEnumCallChannelFactoryAdditionalTests {
     }
 
     [Test]
-    public async Task ResolveDataPortEndpoint_Falls_back_to_resolver_binding_when_oxid_binding_has_no_port() {
+    public async Task ResolveDataPortEndpoint_Falls_back_to_resolver_binding_when_oxid_binding_has_no_port()
+    {
         IOpcInterfaceRef interfaceRef = CreateInterfaceRef(["ignored-ncacn", "object-host[49153]"]);
 
         var endpoint = (DnsEndPoint)InvokeStatic<DnsEndPoint>(
@@ -101,7 +108,8 @@ public sealed class DcomOpcEnumCallChannelFactoryAdditionalTests {
     }
 
     [Test]
-    public async Task TryParseHostPort_Parses_host_port_and_rejects_missing_brackets() {
+    public async Task TryParseHostPort_Parses_host_port_and_rejects_missing_brackets()
+    {
         object?[] validArgs = ["data-host[49154]", "fallback-host", null, 0];
         object?[] fallbackArgs = ["[49155]", "fallback-host", null, 0];
         object?[] invalidArgs = ["data-host", "fallback-host", null, 0];
@@ -127,11 +135,13 @@ public sealed class DcomOpcEnumCallChannelFactoryAdditionalTests {
             new NetworkCredential("operator", "password"),
             protectionLevel);
 
-    private static IOpcInterfaceRef CreateInterfaceRef(IReadOnlyList<string> networkAddresses) {
+    private static IOpcInterfaceRef CreateInterfaceRef(IReadOnlyList<string> networkAddresses)
+    {
         var resolverBindings = new List<ushort>();
         resolverBindings.Add(0x09);
         AddNullTerminatedString(resolverBindings, networkAddresses[0]);
-        if (networkAddresses.Count > 1) {
+        if (networkAddresses.Count > 1)
+        {
             resolverBindings.Add(0x07);
             AddNullTerminatedString(resolverBindings, networkAddresses[1]);
         }
@@ -147,42 +157,51 @@ public sealed class DcomOpcEnumCallChannelFactoryAdditionalTests {
             resolverBindings);
     }
 
-    private static void AddNullTerminatedString(List<ushort> entries, string value) {
-        foreach (char c in value) {
+    private static void AddNullTerminatedString(List<ushort> entries, string value)
+    {
+        foreach (char c in value)
+        {
             entries.Add(c);
         }
 
         entries.Add(0);
     }
 
-    private static byte[] CreateOxidBindings(string address) {
+    private static byte[] CreateOxidBindings(string address)
+    {
         var entries = new List<ushort> { 0, 0, 0x07 };
         AddNullTerminatedString(entries, address);
         entries[1] = checked((ushort)entries.Count);
 
         byte[] bytes = new byte[entries.Count * sizeof(ushort)];
-        for (int i = 0; i < entries.Count; i++) {
+        for (int i = 0; i < entries.Count; i++)
+        {
             BinaryPrimitives.WriteUInt16LittleEndian(bytes.AsSpan(i * sizeof(ushort)), entries[i]);
         }
 
         return bytes;
     }
 
-    private static T InvokeStatic<T>(string methodName, params object?[] args) {
+    private static T InvokeStatic<T>(string methodName, params object?[] args)
+    {
         MethodInfo method = typeof(DcomOpcEnumCallChannelFactory).GetMethod(
             methodName,
             BindingFlags.Static | BindingFlags.NonPublic)!;
-        try {
+        try
+        {
             return (T)method.Invoke(null, args)!;
         }
-        catch (TargetInvocationException ex) when (ex.InnerException is not null) {
+        catch (TargetInvocationException ex) when (ex.InnerException is not null)
+        {
             ExceptionDispatchInfo.Capture(ex.InnerException).Throw();
             throw;
         }
     }
 
-    private sealed class ThrowingTransportFactory : IAsyncTransportFactory {
-        public ValueTask<IAsyncTransport> ConnectAsync(EndPoint endpoint, CancellationToken cancellationToken = default) {
+    private sealed class ThrowingTransportFactory : IAsyncTransportFactory
+    {
+        public ValueTask<IAsyncTransport> ConnectAsync(EndPoint endpoint, CancellationToken cancellationToken = default)
+        {
             _ = endpoint;
             cancellationToken.ThrowIfCancellationRequested();
             throw new InvalidOperationException("Transport connection should not be attempted by validation-only tests.");

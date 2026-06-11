@@ -42,7 +42,8 @@ namespace Opc.Classic.Ndr;
 /// </para>
 /// </remarks>
 /// <typeparam name="T">The struct type this codec serializes.</typeparam>
-public interface INdrDeferredCodec<T> {
+public interface INdrDeferredCodec<T>
+{
     /// <summary>
     /// Writes the inline portion of <paramref name="value"/> — scalar fields
     /// and 4-byte referent IDs for any embedded unique-pointer fields. Does

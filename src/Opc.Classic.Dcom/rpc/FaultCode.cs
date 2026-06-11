@@ -5,7 +5,8 @@ namespace Opc.Classic.Dcom.Rpc;
 /// <summary>
 /// Fault codes
 /// </summary>
-public enum FaultCode {
+public enum FaultCode
+{
 
     /// <summary>
     /// Unknown fault

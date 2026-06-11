@@ -13,9 +13,11 @@ using TUnit.Core;
 
 namespace Opc.Classic.Da.Tests.Hosting;
 
-public sealed class OpcDaDataChangePublisherTests {
+public sealed class OpcDaDataChangePublisherTests
+{
     [Test]
-    public async Task Advise_returns_distinct_cookies() {
+    public async Task Advise_returns_distinct_cookies()
+    {
         var publisher = CreatePublisher();
 
         var firstCookie = publisher.Advise((_, _) => ValueTask.CompletedTask);
@@ -25,19 +27,23 @@ public sealed class OpcDaDataChangePublisherTests {
     }
 
     [Test]
-    public async Task PublishAsync_invokes_all_subscribers() {
+    public async Task PublishAsync_invokes_all_subscribers()
+    {
         var publisher = CreatePublisher();
         var calls = new List<int>();
 
-        publisher.Advise((_, _) => {
+        publisher.Advise((_, _) =>
+        {
             calls.Add(1);
             return ValueTask.CompletedTask;
         });
-        publisher.Advise((_, _) => {
+        publisher.Advise((_, _) =>
+        {
             calls.Add(2);
             return ValueTask.CompletedTask;
         });
-        publisher.Advise((_, _) => {
+        publisher.Advise((_, _) =>
+        {
             calls.Add(3);
             return ValueTask.CompletedTask;
         });
@@ -51,10 +57,12 @@ public sealed class OpcDaDataChangePublisherTests {
     }
 
     [Test]
-    public async Task Unadvise_removes_subscriber() {
+    public async Task Unadvise_removes_subscriber()
+    {
         var publisher = CreatePublisher();
         var calls = 0;
-        var cookie = publisher.Advise((_, _) => {
+        var cookie = publisher.Advise((_, _) =>
+        {
             calls++;
             return ValueTask.CompletedTask;
         });
@@ -66,11 +74,13 @@ public sealed class OpcDaDataChangePublisherTests {
     }
 
     [Test]
-    public async Task PublishAsync_continues_after_subscriber_throws() {
+    public async Task PublishAsync_continues_after_subscriber_throws()
+    {
         var publisher = CreatePublisher();
         var calls = 0;
         publisher.Advise((_, _) => throw new InvalidOperationException("boom"));
-        publisher.Advise((_, _) => {
+        publisher.Advise((_, _) =>
+        {
             calls++;
             return ValueTask.CompletedTask;
         });
@@ -81,16 +91,19 @@ public sealed class OpcDaDataChangePublisherTests {
     }
 
     [Test]
-    public async Task PublishAsync_observes_cancellation() {
+    public async Task PublishAsync_observes_cancellation()
+    {
         var publisher = CreatePublisher();
         using var cts = new CancellationTokenSource();
         await cts.CancelAsync();
 
         var threw = false;
-        try {
+        try
+        {
             await publisher.PublishAsync(CreateChange(), cts.Token);
         }
-        catch (OperationCanceledException) {
+        catch (OperationCanceledException)
+        {
             threw = true;
         }
 
@@ -106,7 +119,8 @@ public sealed class OpcDaDataChangePublisherTests {
     // TUnitAssertions0005 workaround: use non-const indirection for literal assertions.
     private static int ReadZero() => 0;
 
-    private sealed class NoopLogger<T> : ILogger<T> {
+    private sealed class NoopLogger<T> : ILogger<T>
+    {
         public static NoopLogger<T> Instance { get; } = new();
 
         public IDisposable? BeginScope<TState>(TState state)
@@ -120,7 +134,8 @@ public sealed class OpcDaDataChangePublisherTests {
             EventId eventId,
             TState state,
             Exception? exception,
-            Func<TState, Exception?, string> formatter) {
+            Func<TState, Exception?, string> formatter)
+        {
         }
     }
 }

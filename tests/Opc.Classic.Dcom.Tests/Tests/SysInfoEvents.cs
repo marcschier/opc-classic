@@ -1,12 +1,13 @@
 ﻿// SPDX-License-Identifier: MIT
 
-namespace Opc.Classic.Dcom.Test {
-    using System;
+using System;
 
-    public class SysInfoEvents {
+namespace Opc.Classic.Dcom.Test;
 
-        public void PowerStatusChanged() => Console.WriteLine("Called by COM -> PowerStatusChanged");
+public class SysInfoEvents
+{
 
-        public void TimeChanged() => Console.WriteLine("Called by COM -> TimeChanged");
-    }
+    public void PowerStatusChanged() => Console.WriteLine("Called by COM -> PowerStatusChanged");
+
+    public void TimeChanged() => Console.WriteLine("Called by COM -> TimeChanged");
 }

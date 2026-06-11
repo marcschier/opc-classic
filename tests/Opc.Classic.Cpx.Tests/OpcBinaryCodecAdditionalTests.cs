@@ -10,9 +10,11 @@ using TUnit.Assertions.AssertConditions.Throws;
 
 namespace Opc.Classic.Cpx.Tests;
 
-public sealed class OpcBinaryCodecAdditionalTests {
+public sealed class OpcBinaryCodecAdditionalTests
+{
     [Test]
-    public async Task EncoderDecoder_RoundTripsPrimitiveMatrixWithExplicitByteOrders() {
+    public async Task EncoderDecoder_RoundTripsPrimitiveMatrixWithExplicitByteOrders()
+    {
         var timestamp = new DateTime(2026, 6, 7, 12, 34, 56, DateTimeKind.Utc);
         var guid = new Guid("00112233-4455-6677-8899-AABBCCDDEEFF");
         var type = new TypeDescription(
@@ -37,7 +39,8 @@ public sealed class OpcBinaryCodecAdditionalTests {
                 new TypeField("Id", TypeKind.Guid),
             },
             defaultBigEndian: false);
-        var value = CreateValue(type, new Dictionary<string, object?> {
+        var value = CreateValue(type, new Dictionary<string, object?>
+        {
             ["Flag"] = "true",
             ["Signed8"] = (sbyte)-2,
             ["Unsigned8"] = (byte)250,
@@ -87,7 +90,8 @@ public sealed class OpcBinaryCodecAdditionalTests {
     }
 
     [Test]
-    public async Task EncoderDecoder_RoundTripsFixedCountedTerminatedAndLengthPrefixedFields() {
+    public async Task EncoderDecoder_RoundTripsFixedCountedTerminatedAndLengthPrefixedFields()
+    {
         var type = new TypeDescription(
             "MixedBinary",
             "MixedBinary",
@@ -105,7 +109,8 @@ public sealed class OpcBinaryCodecAdditionalTests {
                 new TypeField("LengthBlob", TypeKind.Blob),
             },
             defaultBigEndian: false);
-        var value = CreateValue(type, new Dictionary<string, object?> {
+        var value = CreateValue(type, new Dictionary<string, object?>
+        {
             ["Count"] = (byte)3,
             ["FixedAscii"] = "AB",
             ["CountedUtf8"] = "XYZ",
@@ -148,7 +153,8 @@ public sealed class OpcBinaryCodecAdditionalTests {
     }
 
     [Test]
-    public async Task EncoderDecoder_RoundTripsNestedStructArrayUsingCountField() {
+    public async Task EncoderDecoder_RoundTripsNestedStructArrayUsingCountField()
+    {
         var sampleType = new TypeDescription(
             "Sample",
             "SampleType",
@@ -170,7 +176,8 @@ public sealed class OpcBinaryCodecAdditionalTests {
         var dictionary = new TypeDictionary("PlantBinary", new[] { sampleType, batchType }, defaultBigEndian: false);
         var first = CreateValue(sampleType, new Dictionary<string, object?> { ["Code"] = (ushort)0x1234 });
         var second = CreateValue(sampleType, new Dictionary<string, object?> { ["Code"] = (ushort)0xABCD });
-        var batch = CreateValue(batchType, new Dictionary<string, object?> {
+        var batch = CreateValue(batchType, new Dictionary<string, object?>
+        {
             ["Count"] = (byte)2,
             ["Samples"] = new[] { first, second },
         });
@@ -188,7 +195,8 @@ public sealed class OpcBinaryCodecAdditionalTests {
     }
 
     [Test]
-    public async Task EncoderDecoder_ErrorBranches_ThrowSpecificExceptions() {
+    public async Task EncoderDecoder_ErrorBranches_ThrowSpecificExceptions()
+    {
         var type = new TypeDescription(
             "OneField",
             "OneFieldType",
@@ -227,7 +235,8 @@ public sealed class OpcBinaryCodecAdditionalTests {
     }
 
     private static ComplexValue CreateValue(TypeDescription type, IReadOnlyDictionary<string, object?> fields) =>
-        new() {
+        new()
+        {
             Type = new StructType { Name = type.Name },
             Fields = fields,
         };

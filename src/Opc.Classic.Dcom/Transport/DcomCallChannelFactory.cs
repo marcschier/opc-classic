@@ -15,12 +15,14 @@ namespace Opc.Classic.Dcom.Transport;
 /// <summary>
 /// Factory that creates <see cref="DcomCallChannel" /> instances from async transports.
 /// </summary>
-public sealed class DcomCallChannelFactory {
+public sealed class DcomCallChannelFactory
+{
     private readonly IAsyncTransportFactory _transportFactory;
 
     /// <summary>Initializes a new instance of the <see cref="DcomCallChannelFactory" /> class.</summary>
     /// <param name="transportFactory">The transport factory used to connect to remote endpoints.</param>
-    public DcomCallChannelFactory(IAsyncTransportFactory transportFactory) {
+    public DcomCallChannelFactory(IAsyncTransportFactory transportFactory)
+    {
         ArgumentNullException.ThrowIfNull(transportFactory);
 
         _transportFactory = transportFactory;
@@ -51,7 +53,8 @@ public sealed class DcomCallChannelFactory {
         Guid clsidToActivate,
         IAuthContext authContext,
         IReadOnlyList<Guid>? preBindIids,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         ArgumentNullException.ThrowIfNull(endpoint);
         ArgumentNullException.ThrowIfNull(authContext);
         _ = clsidToActivate;
@@ -79,7 +82,8 @@ public sealed class DcomCallChannelFactory {
         IAuthContext authContext,
         Guid objectIpid,
         IReadOnlyList<Guid> preBindIids,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         ArgumentNullException.ThrowIfNull(endpoint);
         ArgumentNullException.ThrowIfNull(authContext);
         ArgumentNullException.ThrowIfNull(preBindIids);
@@ -120,7 +124,8 @@ public sealed class DcomCallChannelFactory {
         int port,
         IAuthContext authContext,
         IReadOnlyList<Guid>? preBindIids,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         ArgumentException.ThrowIfNullOrEmpty(host);
         ArgumentNullException.ThrowIfNull(authContext);
 

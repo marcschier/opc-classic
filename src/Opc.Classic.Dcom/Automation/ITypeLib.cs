@@ -17,7 +17,8 @@ namespace Opc.Classic.Dcom.Automation;
 /// functions. The type library supports compiling references
 /// to the exported data and functions.
 /// </summary>
-public interface ITypeLib : IComObject {
+public interface ITypeLib : IComObject
+{
 
     /// <summary>
     /// Returns the number of type descriptions in the type library.

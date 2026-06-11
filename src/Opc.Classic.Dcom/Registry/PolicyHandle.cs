@@ -5,7 +5,8 @@ namespace Opc.Classic.Dcom.Registry;
 /// <summary>
 /// Policy handle for each key.
 /// </summary>
-public class PolicyHandle {
+public class PolicyHandle
+{
 
     /// <summary>
     /// Handle to the Key
@@ -21,7 +22,8 @@ public class PolicyHandle {
     /// Create handle
     /// </summary>
     /// <param name="newlyCreated"> </param>
-    public PolicyHandle(bool newlyCreated) {
+    public PolicyHandle(bool newlyCreated)
+    {
         NewlyCreated = newlyCreated;
         Handle = new byte[20];
     }

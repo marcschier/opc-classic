@@ -12,9 +12,11 @@ using TUnit.Core;
 
 namespace Opc.Classic.Dcom.Logging.Tests;
 
-public sealed class LogHostAndShimTests {
+public sealed class LogHostAndShimTests
+{
     /// <summary>Recording logger that captures every Log invocation for inspection.</summary>
-    private sealed class CapturingLogger : ILogger {
+    private sealed class CapturingLogger : ILogger
+    {
         public List<(LogLevel Level, string Message, Exception? Exception)> Calls { get; } = new();
 
         public IDisposable BeginScope<TState>(TState state) where TState : notnull
@@ -24,17 +26,20 @@ public sealed class LogHostAndShimTests {
 
         public void Log<TState>(
             LogLevel logLevel, EventId eventId, TState state,
-            Exception? exception, Func<TState, Exception?, string> formatter) {
+            Exception? exception, Func<TState, Exception?, string> formatter)
+        {
             Calls.Add((logLevel, formatter(state, exception), exception));
         }
 
-        private sealed class NullScope : IDisposable {
+        private sealed class NullScope : IDisposable
+        {
             public static readonly NullScope Instance = new();
             public void Dispose() { }
         }
     }
 
-    private sealed class CapturingLoggerFactory : ILoggerFactory {
+    private sealed class CapturingLoggerFactory : ILoggerFactory
+    {
         public CapturingLogger CapturedLogger { get; } = new();
         public ILogger CreateLogger(string categoryName) => CapturedLogger;
         public void AddProvider(ILoggerProvider provider) { }
@@ -44,32 +49,39 @@ public sealed class LogHostAndShimTests {
     // -------- LogHost --------
 
     [Test, NotInParallel]
-    public async Task LogHost_DefaultsTo_NullLoggerFactory() {
+    public async Task LogHost_DefaultsTo_NullLoggerFactory()
+    {
         LogHost.ConfigureFactory(null);  // ensure clean state
         await Assert.That(LogHost.Factory).IsEqualTo((ILoggerFactory)NullLoggerFactory.Instance);
     }
 
     [Test, NotInParallel]
-    public async Task LogHost_ConfigureFactory_Installs() {
-        try {
+    public async Task LogHost_ConfigureFactory_Installs()
+    {
+        try
+        {
             var factory = new CapturingLoggerFactory();
             LogHost.ConfigureFactory(factory);
             await Assert.That(LogHost.Factory).IsEqualTo((ILoggerFactory)factory);
         }
-        finally {
+        finally
+        {
             LogHost.ConfigureFactory(null);
         }
     }
 
     [Test, NotInParallel]
-    public async Task LogHost_CreateLogger_DelegatesToFactory() {
+    public async Task LogHost_CreateLogger_DelegatesToFactory()
+    {
         var factory = new CapturingLoggerFactory();
-        try {
+        try
+        {
             LogHost.ConfigureFactory(factory);
             var logger = LogHost.CreateLogger("test");
             await Assert.That(logger).IsEqualTo((ILogger)factory.CapturedLogger);
         }
-        finally {
+        finally
+        {
             LogHost.ConfigureFactory(null);
         }
     }
@@ -77,93 +89,112 @@ public sealed class LogHostAndShimTests {
     // -------- Shim Log -> ILogger routing --------
 
     [Test, NotInParallel]
-    public async Task Shim_Information_RoutesToILogger_AtInformationLevel() {
+    public async Task Shim_Information_RoutesToILogger_AtInformationLevel()
+    {
         var factory = new CapturingLoggerFactory();
-        try {
+        try
+        {
             LogHost.ConfigureFactory(factory);
             Log.Logger.Information("hello");
             await Assert.That(factory.CapturedLogger.Calls.Count).IsEqualTo(1);
             await Assert.That(factory.CapturedLogger.Calls[0].Level).IsEqualTo(LogLevel.Information);
             await Assert.That(factory.CapturedLogger.Calls[0].Message).Contains("hello");
         }
-        finally {
+        finally
+        {
             LogHost.ConfigureFactory(null);
         }
     }
 
     [Test, NotInParallel]
-    public async Task Shim_Warning_RoutesWithException() {
+    public async Task Shim_Warning_RoutesWithException()
+    {
         var factory = new CapturingLoggerFactory();
-        try {
+        try
+        {
             LogHost.ConfigureFactory(factory);
             var ex = new InvalidOperationException("boom");
             Log.Logger.Warning(ex, "trouble: {Subsystem}", "auth");
             await Assert.That(factory.CapturedLogger.Calls[0].Level).IsEqualTo(LogLevel.Warning);
             await Assert.That(factory.CapturedLogger.Calls[0].Exception).IsEqualTo(ex);
         }
-        finally {
+        finally
+        {
             LogHost.ConfigureFactory(null);
         }
     }
 
     [Test, NotInParallel]
-    public async Task Shim_Error_RoutesWithException() {
+    public async Task Shim_Error_RoutesWithException()
+    {
         var factory = new CapturingLoggerFactory();
-        try {
+        try
+        {
             LogHost.ConfigureFactory(factory);
             var ex = new TimeoutException();
             Log.Logger.Error(ex, "rpc failed");
             await Assert.That(factory.CapturedLogger.Calls[0].Level).IsEqualTo(LogLevel.Error);
             await Assert.That(factory.CapturedLogger.Calls[0].Exception).IsEqualTo(ex);
         }
-        finally {
+        finally
+        {
             LogHost.ConfigureFactory(null);
         }
     }
 
     [Test, NotInParallel]
-    public async Task Shim_Fatal_MapsToCritical() {
+    public async Task Shim_Fatal_MapsToCritical()
+    {
         var factory = new CapturingLoggerFactory();
-        try {
+        try
+        {
             LogHost.ConfigureFactory(factory);
             Log.Logger.Fatal("system down");
             await Assert.That(factory.CapturedLogger.Calls[0].Level).IsEqualTo(LogLevel.Critical);
         }
-        finally {
+        finally
+        {
             LogHost.ConfigureFactory(null);
         }
     }
 
     [Test, NotInParallel]
-    public async Task Shim_Verbose_MapsToTrace() {
+    public async Task Shim_Verbose_MapsToTrace()
+    {
         var factory = new CapturingLoggerFactory();
-        try {
+        try
+        {
             LogHost.ConfigureFactory(factory);
             Log.Logger.Verbose("ndr frame: {Bytes}", 64);
             await Assert.That(factory.CapturedLogger.Calls[0].Level).IsEqualTo(LogLevel.Trace);
         }
-        finally {
+        finally
+        {
             LogHost.ConfigureFactory(null);
         }
     }
 
     [Test, NotInParallel]
-    public async Task Shim_Debug_RoutesWithArgs() {
+    public async Task Shim_Debug_RoutesWithArgs()
+    {
         var factory = new CapturingLoggerFactory();
-        try {
+        try
+        {
             LogHost.ConfigureFactory(factory);
             Log.Logger.Debug("opnum={Opnum} bytes={Bytes}", 3, 64);
             await Assert.That(factory.CapturedLogger.Calls[0].Level).IsEqualTo(LogLevel.Debug);
             await Assert.That(factory.CapturedLogger.Calls[0].Message).Contains("opnum=3");
             await Assert.That(factory.CapturedLogger.Calls[0].Message).Contains("bytes=64");
         }
-        finally {
+        finally
+        {
             LogHost.ConfigureFactory(null);
         }
     }
 
     [Test, NotInParallel]
-    public async Task Shim_WithoutConfiguredFactory_DoesNotThrow() {
+    public async Task Shim_WithoutConfiguredFactory_DoesNotThrow()
+    {
         LogHost.ConfigureFactory(null);
         // Should be a no-op via NullLoggerFactory:
         Log.Logger.Information("nobody is listening");

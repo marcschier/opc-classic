@@ -9,9 +9,11 @@ using TUnit.Core;
 
 namespace Opc.Classic.Discovery.Tests;
 
-public sealed class OpcDiscoveryAdditionalTests {
+public sealed class OpcDiscoveryAdditionalTests
+{
     [Test]
-    public async Task OpcDiscovery_EnumerateAsync_Empty_categories_returns_empty_without_activation() {
+    public async Task OpcDiscovery_EnumerateAsync_Empty_categories_returns_empty_without_activation()
+    {
         OpcServerDescriptor[] descriptors = await OpcDiscovery.EnumerateAsync(
             "  opc-host  ",
             Array.Empty<Guid>(),
@@ -21,7 +23,8 @@ public sealed class OpcDiscoveryAdditionalTests {
     }
 
     [Test]
-    public async Task OpcDiscovery_EnumerateAsync_With_connect_data_and_empty_categories_returns_empty_without_activation() {
+    public async Task OpcDiscovery_EnumerateAsync_With_connect_data_and_empty_categories_returns_empty_without_activation()
+    {
         var connectData = OpcConnectData.WithNtlmV2(
             OpcUrl.Parse("opcda://opc-host/OPC.ServerList.1"),
             new NetworkCredential("operator", "password"),
@@ -37,7 +40,8 @@ public sealed class OpcDiscoveryAdditionalTests {
     }
 
     [Test]
-    public async Task OpcDiscovery_EnumerateAsync_Blank_host_throws_argument_exception() {
+    public async Task OpcDiscovery_EnumerateAsync_Blank_host_throws_argument_exception()
+    {
         await Assert.That(async () => await OpcDiscovery.EnumerateAsync(
             "   ",
             Array.Empty<Guid>(),
@@ -45,7 +49,8 @@ public sealed class OpcDiscoveryAdditionalTests {
     }
 
     [Test]
-    public async Task OpcDiscovery_EnumerateAsync_Null_connect_data_throws_argument_null_exception() {
+    public async Task OpcDiscovery_EnumerateAsync_Null_connect_data_throws_argument_null_exception()
+    {
         await Assert.That(async () => await OpcDiscovery.EnumerateAsync(
             "opc-host",
             null!,
@@ -54,7 +59,8 @@ public sealed class OpcDiscoveryAdditionalTests {
     }
 
     [Test]
-    public async Task OpcServerDescriptor_Construction_and_equality_preserve_category_values() {
+    public async Task OpcServerDescriptor_Construction_and_equality_preserve_category_values()
+    {
         Guid[] categories =
         [
             OpcGuids.CATID_OPCDAServer20,
@@ -86,7 +92,8 @@ public sealed class OpcDiscoveryAdditionalTests {
     }
 
     [Test]
-    public async Task OpcServerEntry_Construction_and_equality_preserve_host_and_categories() {
+    public async Task OpcServerEntry_Construction_and_equality_preserve_host_and_categories()
+    {
         Guid[] categories =
         [
             OpcGuids.CATID_OPCAEServer10,

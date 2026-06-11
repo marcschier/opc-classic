@@ -28,7 +28,8 @@ namespace Opc.Classic.Dcom.Core;
 /// </code>
 /// </summary>
 [Serializable]
-public /*internal*/ sealed class InterfacePointer {
+public /*internal*/ sealed class InterfacePointer
+{
 
     /// <summary>
     /// Custom object
@@ -45,7 +46,8 @@ public /*internal*/ sealed class InterfacePointer {
     /// <summary>
     /// Deferred
     /// </summary>
-    internal bool Deffered {
+    internal bool Deffered
+    {
         set => _member.Deffered = true;
     }
 
@@ -97,7 +99,8 @@ public /*internal*/ sealed class InterfacePointer {
     /// <summary>
     /// Hidden constructor
     /// </summary>
-    private InterfacePointer() {
+    private InterfacePointer()
+    {
     }
 
     /// <summary>
@@ -118,7 +121,8 @@ public /*internal*/ sealed class InterfacePointer {
         _member = new ComPointer(new InterfacePointerBody(iid, interfacePointer), false);
 
     /// <inheritdoc/>
-    public override string ToString() {
+    public override string ToString()
+    {
         var retVal = "InterfacePointer[IID:" + IID + ", ObjRef: " +
             GetObjectReference(OBJREF_STANDARD) + "]";
         return retVal;
@@ -130,7 +134,8 @@ public /*internal*/ sealed class InterfacePointer {
     /// <param name="src"></param>
     /// <param name="target"></param>
     /// <returns></returns>
-    public static bool IsOxidEqual(InterfacePointer src, InterfacePointer target) {
+    public static bool IsOxidEqual(InterfacePointer src, InterfacePointer target)
+    {
         ArgumentNullException.ThrowIfNull(src);
         ArgumentNullException.ThrowIfNull(target);
         return src.OXID.SequenceEqual(target.OXID);
@@ -142,19 +147,23 @@ public /*internal*/ sealed class InterfacePointer {
     /// <param name="ndr"></param>
     /// <param name="context"></param>
     /// <returns></returns>
-    internal static InterfacePointer Decode(NdrCodec ndr, CodecContext context) {
+    internal static InterfacePointer Decode(NdrCodec ndr, CodecContext context)
+    {
         var ptr = new InterfacePointer();
         if ((context.Flag & InteropFlags.FLAG_REPRESENTATION_INTERFACEPTR_DECODE2) ==
-                    InteropFlags.FLAG_REPRESENTATION_INTERFACEPTR_DECODE2) {
+                    InteropFlags.FLAG_REPRESENTATION_INTERFACEPTR_DECODE2)
+        {
             ptr._member = (ComPointer)MarshalUnMarshalHelper.Deserialize(ndr,
                 new ComPointer(typeof(InterfacePointerBody), true), context);
         }
-        else {
+        else
+        {
             ptr._member = (ComPointer)MarshalUnMarshalHelper.Deserialize(ndr,
                 new ComPointer(typeof(InterfacePointerBody)), context);
         }
         // the pointer is null, no point of it's wrapper being present, so return null from here as well
-        if (ptr._member.IsNull) {
+        if (ptr._member.IsNull)
+        {
             ptr = null;
         }
         return ptr;
@@ -165,9 +174,11 @@ public /*internal*/ sealed class InterfacePointer {
     /// </summary>
     /// <param name="ndr"></param>
     /// <param name="context"></param>
-    internal void Encode(NdrCodec ndr, CodecContext context) {
+    internal void Encode(NdrCodec ndr, CodecContext context)
+    {
         if ((context.Flag & InteropFlags.FLAG_REPRESENTATION_SET_INTERFACEPTR_NULL_FOR_VARIANT) ==
-                    InteropFlags.FLAG_REPRESENTATION_SET_INTERFACEPTR_NULL_FOR_VARIANT) {
+                    InteropFlags.FLAG_REPRESENTATION_SET_INTERFACEPTR_NULL_FOR_VARIANT)
+        {
             // just encode a null.
             MarshalUnMarshalHelper.Serialize(ndr, typeof(int), 0, context);
             return;

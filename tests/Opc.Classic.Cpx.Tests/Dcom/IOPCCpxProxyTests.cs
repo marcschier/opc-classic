@@ -13,16 +13,19 @@ using TUnit.Core;
 
 namespace Opc.Classic.Cpx.Tests.Dcom;
 
-public sealed class IOPCCpxProxyTests {
+public sealed class IOPCCpxProxyTests
+{
     private delegate void NdrWriteAction(ref NdrWriter writer);
 
     [Test]
-    public async Task ComplexDataItem_GetTypeItemID_invokes_channel_and_decodes_string() {
+    public async Task ComplexDataItem_GetTypeItemID_invokes_channel_and_decodes_string()
+    {
         Guid observedIid = Guid.Empty;
         int observedOpnum = -1;
         int observedPayloadLength = -1;
         ReadOnlyMemory<byte> responsePayload = WritePayload((ref NdrWriter writer) => writer.WriteUnicodeStringPtr("Types.Motor"));
-        var channel = new InMemoryCallChannel((iid, opnum, payload, _) => {
+        var channel = new InMemoryCallChannel((iid, opnum, payload, _) =>
+        {
             observedIid = iid;
             observedOpnum = opnum;
             observedPayloadLength = payload.Length;
@@ -40,7 +43,8 @@ public sealed class IOPCCpxProxyTests {
     }
 
     [Test]
-    public async Task ComplexDataItem2_GetTypeID_decodes_guid() {
+    public async Task ComplexDataItem2_GetTypeID_decodes_guid()
+    {
         Guid expectedTypeId = Guid.NewGuid();
         ReadOnlyMemory<byte> responsePayload = WritePayload((ref NdrWriter writer) => writer.WriteGuid(expectedTypeId));
         var channel = new InMemoryCallChannel(static (_, _, _, _) => Task.FromResult(new NdrCallResult(0, ReadOnlyMemory<byte>.Empty)));
@@ -52,7 +56,8 @@ public sealed class IOPCCpxProxyTests {
         await Assert.That(actualTypeId).IsEqualTo(expectedTypeId);
     }
 
-    private static ReadOnlyMemory<byte> WritePayload(NdrWriteAction write, int capacity = 512) {
+    private static ReadOnlyMemory<byte> WritePayload(NdrWriteAction write, int capacity = 512)
+    {
         var buffer = new byte[capacity];
         var writer = new NdrWriter(buffer);
         write(ref writer);

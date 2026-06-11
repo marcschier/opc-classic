@@ -9,9 +9,11 @@ using TUnit.Core;
 
 namespace Opc.Classic.Tests;
 
-public sealed class OpcServerStatusTests {
+public sealed class OpcServerStatusTests
+{
     [Test]
-    public async Task IsOperational_OnlyWhenRunning() {
+    public async Task IsOperational_OnlyWhenRunning()
+    {
         var running = new OpcServerStatus { State = OpcServerState.Running };
         var failed = new OpcServerStatus { State = OpcServerState.Failed };
         var commFault = new OpcServerStatus { State = OpcServerState.CommFault };
@@ -22,7 +24,8 @@ public sealed class OpcServerStatusTests {
     }
 
     [Test]
-    public async Task Default_HasUnknownSpecAndState() {
+    public async Task Default_HasUnknownSpecAndState()
+    {
         var s = new OpcServerStatus();
         await Assert.That(s.Spec).IsEqualTo(OpcStatusSpec.Unknown);
         await Assert.That(s.State).IsEqualTo(OpcServerState.Unknown);
@@ -31,12 +34,14 @@ public sealed class OpcServerStatusTests {
     }
 
     [Test]
-    public async Task InitializerSyntax_AssignsAllFields() {
+    public async Task InitializerSyntax_AssignsAllFields()
+    {
         var start = new DateTimeOffset(2026, 5, 21, 12, 0, 0, TimeSpan.Zero);
         var current = new DateTimeOffset(2026, 5, 21, 12, 30, 0, TimeSpan.Zero);
         var lastUpdate = new DateTimeOffset(2026, 5, 21, 12, 29, 59, TimeSpan.Zero);
 
-        var s = new OpcServerStatus {
+        var s = new OpcServerStatus
+        {
             Spec = OpcStatusSpec.Da,
             StartTime = start,
             CurrentTime = current,
@@ -61,8 +66,10 @@ public sealed class OpcServerStatusTests {
     }
 
     [Test]
-    public async Task ToString_IncludesKeyFields() {
-        var s = new OpcServerStatus {
+    public async Task ToString_IncludesKeyFields()
+    {
+        var s = new OpcServerStatus
+        {
             Spec = OpcStatusSpec.Hda,
             ServerVersion = new Version(1, 20, 4),
             VendorInfo = "Acme HDA",

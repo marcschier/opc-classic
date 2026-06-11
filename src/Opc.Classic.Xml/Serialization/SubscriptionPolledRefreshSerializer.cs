@@ -16,9 +16,11 @@ namespace Opc.Classic.Xml.Serialization;
 /// <c>SubscriptionPolledRefresh</c> operation — the periodic polling
 /// endpoint that drains accumulated value changes since the last poll.
 /// </summary>
-public static class SubscriptionPolledRefreshSerializer {
+public static class SubscriptionPolledRefreshSerializer
+{
     /// <summary>Writes a complete SOAP envelope carrying a polled-refresh request.</summary>
-    public static void WriteRequest(SoapEnvelopeWriter writer, XmlDaSubscriptionPolledRefreshRequest request) {
+    public static void WriteRequest(SoapEnvelopeWriter writer, XmlDaSubscriptionPolledRefreshRequest request)
+    {
         ArgumentNullException.ThrowIfNull(writer);
         ArgumentNullException.ThrowIfNull(request);
         ArgumentNullException.ThrowIfNull(request.ServerSubHandles);
@@ -27,13 +29,16 @@ public static class SubscriptionPolledRefreshSerializer {
         writer.WriteBodyStart();
         writer.WriteOperationStart("SubscriptionPolledRefresh");
 
-        if (!string.IsNullOrEmpty(request.Header.LocaleId)) {
+        if (!string.IsNullOrEmpty(request.Header.LocaleId))
+        {
             writer.Writer.WriteAttributeString("LocaleID", request.Header.LocaleId);
         }
-        if (!string.IsNullOrEmpty(request.Header.ClientRequestHandle)) {
+        if (!string.IsNullOrEmpty(request.Header.ClientRequestHandle))
+        {
             writer.Writer.WriteAttributeString("ClientRequestHandle", request.Header.ClientRequestHandle);
         }
-        if (request.HoldTime.HasValue) {
+        if (request.HoldTime.HasValue)
+        {
             writer.Writer.WriteAttributeString("HoldTime",
                 request.HoldTime.Value.UtcDateTime.ToString("o", CultureInfo.InvariantCulture));
         }
@@ -47,7 +52,8 @@ public static class SubscriptionPolledRefreshSerializer {
             request.ReturnErrorText ? "true" : "false");
         writer.Writer.WriteEndElement();
 
-        foreach (var handle in request.ServerSubHandles) {
+        foreach (var handle in request.ServerSubHandles)
+        {
             writer.Writer.WriteStartElement("ServerSubHandles", XmlDaConstants.XmlDaNamespace);
             writer.Writer.WriteString(handle);
             writer.Writer.WriteEndElement();
@@ -60,11 +66,13 @@ public static class SubscriptionPolledRefreshSerializer {
     }
 
     /// <summary>Reads a SOAP-wrapped polled-refresh response.</summary>
-    public static XmlDaSubscriptionPolledRefreshResponse ReadResponse(SoapEnvelopeReader reader) {
+    public static XmlDaSubscriptionPolledRefreshResponse ReadResponse(SoapEnvelopeReader reader)
+    {
         ArgumentNullException.ThrowIfNull(reader);
 
         string operationName = reader.AdvanceToOperationResponse();
-        if (!string.Equals(operationName, "SubscriptionPolledRefreshResponse", StringComparison.Ordinal)) {
+        if (!string.Equals(operationName, "SubscriptionPolledRefreshResponse", StringComparison.Ordinal))
+        {
             throw new InvalidDataException(
                 $"Expected SubscriptionPolledRefreshResponse but found '{operationName}'.");
         }
@@ -75,7 +83,8 @@ public static class SubscriptionPolledRefreshSerializer {
         var itemLists = new List<XmlDaSubscriptionItemList>();
 
         var r = reader.Reader;
-        if (!r.IsEmptyElement) {
+        if (!r.IsEmptyElement)
+        {
             ReadResponseBody(r, ref serverState, ref dataBufferOverflow, invalidHandles, itemLists);
         }
 
@@ -88,28 +97,35 @@ public static class SubscriptionPolledRefreshSerializer {
         ref XmlDaServerState serverState,
         ref bool dataBufferOverflow,
         List<string> invalidHandles,
-        List<XmlDaSubscriptionItemList> itemLists) {
+        List<XmlDaSubscriptionItemList> itemLists)
+    {
         int responseDepth = r.Depth;
         bool alreadyAdvanced = false;
-        while (true) {
-            if (!alreadyAdvanced) {
+        while (true)
+        {
+            if (!alreadyAdvanced)
+            {
                 if (!r.Read()) { break; }
             }
             alreadyAdvanced = false;
             if (r.Depth <= responseDepth) { break; }
             if (r.NodeType != XmlNodeType.Element) { continue; }
 
-            if (string.Equals(r.LocalName, "SubscriptionPolledRefreshResult", StringComparison.Ordinal)) {
+            if (string.Equals(r.LocalName, "SubscriptionPolledRefreshResult", StringComparison.Ordinal))
+            {
                 ReadResult(r, ref serverState, ref dataBufferOverflow);
             }
-            else if (string.Equals(r.LocalName, "InvalidServerSubHandles", StringComparison.Ordinal)) {
+            else if (string.Equals(r.LocalName, "InvalidServerSubHandles", StringComparison.Ordinal))
+            {
                 invalidHandles.Add(r.ReadElementContentAsString());
                 alreadyAdvanced = true;
             }
-            else if (string.Equals(r.LocalName, "RItemList", StringComparison.Ordinal)) {
+            else if (string.Equals(r.LocalName, "RItemList", StringComparison.Ordinal))
+            {
                 itemLists.Add(ReadItemList(r));
             }
-            else {
+            else
+            {
                 r.Skip();
                 alreadyAdvanced = true;
             }
@@ -119,40 +135,49 @@ public static class SubscriptionPolledRefreshSerializer {
     private static void ReadResult(
         XmlReader r,
         ref XmlDaServerState serverState,
-        ref bool dataBufferOverflow) {
+        ref bool dataBufferOverflow)
+    {
         string? stateAttr = r.GetAttribute("ServerState");
-        if (!string.IsNullOrEmpty(stateAttr)) {
+        if (!string.IsNullOrEmpty(stateAttr))
+        {
             serverState = ParseServerState(stateAttr);
         }
         string? overflowAttr = r.GetAttribute("DataBufferOverflow");
-        if (!string.IsNullOrEmpty(overflowAttr)) {
+        if (!string.IsNullOrEmpty(overflowAttr))
+        {
             dataBufferOverflow = overflowAttr.Equals("true", StringComparison.OrdinalIgnoreCase) ||
                                  overflowAttr.Equals("1", StringComparison.Ordinal);
         }
     }
 
-    private static XmlDaSubscriptionItemList ReadItemList(XmlReader r) {
+    private static XmlDaSubscriptionItemList ReadItemList(XmlReader r)
+    {
         string subscriptionHandle = r.GetAttribute("SubscriptionHandle") ?? string.Empty;
         var items = new List<XmlDaItemValueResult>();
 
-        if (r.IsEmptyElement) {
+        if (r.IsEmptyElement)
+        {
             return new XmlDaSubscriptionItemList(subscriptionHandle, items);
         }
 
         int listDepth = r.Depth;
-        while (r.Read() && r.Depth > listDepth) {
+        while (r.Read() && r.Depth > listDepth)
+        {
             if (r.NodeType != XmlNodeType.Element) { continue; }
-            if (string.Equals(r.LocalName, "Items", StringComparison.Ordinal)) {
+            if (string.Equals(r.LocalName, "Items", StringComparison.Ordinal))
+            {
                 items.Add(ItemValueReader.ReadOneItem(r));
             }
-            else {
+            else
+            {
                 r.Skip();
             }
         }
         return new XmlDaSubscriptionItemList(subscriptionHandle, items);
     }
 
-    private static XmlDaServerState ParseServerState(string value) => value switch {
+    private static XmlDaServerState ParseServerState(string value) => value switch
+    {
         "running" => XmlDaServerState.Running,
         "failed" => XmlDaServerState.Failed,
         "noConfig" => XmlDaServerState.NoConfig,

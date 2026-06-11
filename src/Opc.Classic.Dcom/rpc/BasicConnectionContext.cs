@@ -10,7 +10,8 @@ namespace Opc.Classic.Dcom.Rpc;
 /// <summary>
 /// Basic connection context
 /// </summary>
-public class BasicConnectionContext : IConnectionContext {
+public class BasicConnectionContext : IConnectionContext
+{
 
     /// <inheritdoc/>
     public IConnection Connection { get; private set; }
@@ -19,20 +20,25 @@ public class BasicConnectionContext : IConnectionContext {
     public virtual bool Established { get; private set; }
 
     /// <inheritdoc/>
-    public virtual ConnectionOrientedPdu Init(PresentationContext context, PropertyBag properties) {
+    public virtual ConnectionOrientedPdu Init(PresentationContext context, PropertyBag properties)
+    {
         Established = false;
         Connection = new DefaultConnection();
-        if (properties != null) {
+        if (properties != null)
+        {
             var maxTransmit = (string)properties.GetProperty(Opc.Classic.Dcom.Rpc.Connection.MAX_TRANSMIT_FRAGMENT);
-            if (maxTransmit != null) {
+            if (maxTransmit != null)
+            {
                 _maxTransmitFragment = int.Parse(maxTransmit, CultureInfo.InvariantCulture);
             }
             var maxReceive = (string)properties.GetProperty(Opc.Classic.Dcom.Rpc.Connection.MAX_RECEIVE_FRAGMENT);
-            if (maxReceive != null) {
+            if (maxReceive != null)
+            {
                 _maxReceiveFragment = int.Parse(maxReceive, CultureInfo.InvariantCulture);
             }
         }
-        var pdu = new BindPdu {
+        var pdu = new BindPdu
+        {
             ContextList = new PresentationContext[] { context },
             MaxTransmitFragment = _maxTransmitFragment,
             MaxReceiveFragment = _maxReceiveFragment
@@ -41,26 +47,33 @@ public class BasicConnectionContext : IConnectionContext {
     }
 
     /// <inheritdoc/>
-    public virtual ConnectionOrientedPdu Alter(PresentationContext context) {
+    public virtual ConnectionOrientedPdu Alter(PresentationContext context)
+    {
         Established = false;
-        var pdu = new AlterContextPdu {
+        var pdu = new AlterContextPdu
+        {
             ContextList = new PresentationContext[] { context }
         };
         return pdu;
     }
 
     /// <inheritdoc/>
-    public virtual ConnectionOrientedPdu Accept(ConnectionOrientedPdu pdu) {
+    public virtual ConnectionOrientedPdu Accept(ConnectionOrientedPdu pdu)
+    {
         PresentationResult[] results;
-        switch (pdu.Type) {
+        switch (pdu.Type)
+        {
             case BindAcknowledgePdu.BIND_ACKNOWLEDGE_TYPE:
                 var bindAck = (BindAcknowledgePdu)pdu;
                 results = bindAck.ResultList;
-                if (results == null) {
+                if (results == null)
+                {
                     throw new BindException("No presentation context results.");
                 }
-                for (var i = results.Length - 1; i >= 0; i--) {
-                    if (results[i].Result != PresentationResultCode.ACCEPTANCE) {
+                for (var i = results.Length - 1; i >= 0; i--)
+                {
+                    if (results[i].Result != PresentationResultCode.ACCEPTANCE)
+                    {
                         throw new PresentationException("Context rejected.", results[i]);
                     }
                 }
@@ -72,11 +85,14 @@ public class BasicConnectionContext : IConnectionContext {
             case AlterContextResponsePdu.ALTER_CONTEXT_RESPONSE_TYPE:
                 var alterContextResponse = (AlterContextResponsePdu)pdu;
                 results = alterContextResponse.ResultList;
-                if (results == null) {
+                if (results == null)
+                {
                     throw new BindException("No presentation context results.");
                 }
-                for (var i = results.Length - 1; i >= 0; i--) {
-                    if (results[i].Result != PresentationResultCode.ACCEPTANCE) {
+                for (var i = results.Length - 1; i >= 0; i--)
+                {
+                    if (results[i].Result != PresentationResultCode.ACCEPTANCE)
+                    {
                         throw new PresentationException("Context rejected.", results[i]);
                     }
                 }

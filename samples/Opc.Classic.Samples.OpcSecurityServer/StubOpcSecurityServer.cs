@@ -18,7 +18,8 @@ namespace Opc.Classic.Samples.OpcSecurityServer;
 /// CoQueryClientBlanket, and AccessCheck (or equivalent managed policy checks)
 /// per OPC Security 1.00 §4.5 before allowing access to protected objects.
 /// </remarks>
-public sealed class StubOpcSecurityServer : IOpcSecurity, IOPCSecurityNT, IOPCSecurityPrivate {
+public sealed class StubOpcSecurityServer : IOpcSecurity, IOPCSecurityNT, IOPCSecurityPrivate
+{
     private static readonly OpcResultId PrivateActiveResult = new(
         OpcSecurityErrors.OPC_E_PRIVATE_ACTIVE,
         nameof(OpcSecurityErrors.OPC_E_PRIVATE_ACTIVE));
@@ -36,23 +37,30 @@ public sealed class StubOpcSecurityServer : IOpcSecurity, IOPCSecurityNT, IOPCSe
 
     public bool SupportsPrivateAuthentication => true;
 
-    public bool IsAuthenticated {
-        get {
-            lock (_stateLock) {
+    public bool IsAuthenticated
+    {
+        get
+        {
+            lock (_stateLock)
+            {
                 return _isAuthenticated;
             }
         }
     }
 
-    public string CurrentIdentity {
-        get {
-            lock (_stateLock) {
+    public string CurrentIdentity
+    {
+        get
+        {
+            lock (_stateLock)
+            {
                 return _currentIdentity;
             }
         }
     }
 
-    public Task<bool> LoginAsCurrentUserAsync(CancellationToken cancellationToken = default) {
+    public Task<bool> LoginAsCurrentUserAsync(CancellationToken cancellationToken = default)
+    {
         cancellationToken.ThrowIfCancellationRequested();
         string? configuredIdentity = Environment.GetEnvironmentVariable(IdentityEnvironmentVariable);
         string identity = string.IsNullOrWhiteSpace(configuredIdentity)
@@ -62,12 +70,14 @@ public sealed class StubOpcSecurityServer : IOpcSecurity, IOPCSecurityNT, IOPCSe
         return Task.FromResult(true);
     }
 
-    public Task<bool> LoginPrivateAsync(string username, string password, CancellationToken cancellationToken = default) {
+    public Task<bool> LoginPrivateAsync(string username, string password, CancellationToken cancellationToken = default)
+    {
         ArgumentNullException.ThrowIfNull(username);
         ArgumentNullException.ThrowIfNull(password);
         cancellationToken.ThrowIfCancellationRequested();
 
-        if (!IsOperatorCredential(username, password)) {
+        if (!IsOperatorCredential(username, password))
+        {
             return Task.FromResult(false);
         }
 
@@ -75,9 +85,11 @@ public sealed class StubOpcSecurityServer : IOpcSecurity, IOPCSecurityNT, IOPCSe
         return Task.FromResult(true);
     }
 
-    public Task LogoutAsync(CancellationToken cancellationToken = default) {
+    public Task LogoutAsync(CancellationToken cancellationToken = default)
+    {
         cancellationToken.ThrowIfCancellationRequested();
-        lock (_stateLock) {
+        lock (_stateLock)
+        {
             _isAuthenticated = false;
             _currentIdentity = string.Empty;
         }
@@ -85,38 +97,46 @@ public sealed class StubOpcSecurityServer : IOpcSecurity, IOPCSecurityNT, IOPCSe
         return Task.CompletedTask;
     }
 
-    public Task<bool> IsAvailableNTAsync(CancellationToken cancellationToken = default) {
+    public Task<bool> IsAvailableNTAsync(CancellationToken cancellationToken = default)
+    {
         cancellationToken.ThrowIfCancellationRequested();
         return Task.FromResult(SupportsWindowsAuthentication);
     }
 
-    public Task<int> QueryMinImpersonationLevelAsync(CancellationToken cancellationToken = default) {
+    public Task<int> QueryMinImpersonationLevelAsync(CancellationToken cancellationToken = default)
+    {
         cancellationToken.ThrowIfCancellationRequested();
         return Task.FromResult((int)OpcImpersonationLevel.Impersonate);
     }
 
-    public async Task ChangeUserAsync(CancellationToken cancellationToken = default) {
+    public async Task ChangeUserAsync(CancellationToken cancellationToken = default)
+    {
         bool success = await LoginAsCurrentUserAsync(cancellationToken).ConfigureAwait(false);
-        if (!success) {
+        if (!success)
+        {
             throw new OpcException(OpcResultId.Fail, "OPC Security NT authentication failed.");
         }
     }
 
-    public Task<bool> IsAvailablePrivAsync(CancellationToken cancellationToken = default) {
+    public Task<bool> IsAvailablePrivAsync(CancellationToken cancellationToken = default)
+    {
         cancellationToken.ThrowIfCancellationRequested();
         return Task.FromResult(SupportsPrivateAuthentication);
     }
 
-    public async Task LogonAsync(string userId, string password, CancellationToken cancellationToken = default) {
+    public async Task LogonAsync(string userId, string password, CancellationToken cancellationToken = default)
+    {
         ArgumentNullException.ThrowIfNull(userId);
         ArgumentNullException.ThrowIfNull(password);
 
-        if (IsPrivateIdentityActive()) {
+        if (IsPrivateIdentityActive())
+        {
             throw new OpcException(PrivateActiveResult, "A private OPC Security identity is already active.");
         }
 
         bool success = await LoginPrivateAsync(userId, password, cancellationToken).ConfigureAwait(false);
-        if (!success) {
+        if (!success)
+        {
             throw new OpcException(OpcResultId.Fail, "OPC Security private authentication failed.");
         }
     }
@@ -127,8 +147,10 @@ public sealed class StubOpcSecurityServer : IOpcSecurity, IOPCSecurityNT, IOPCSe
         string.Equals(username, OperatorUserName, StringComparison.Ordinal)
         && string.Equals(password, OperatorPassword, StringComparison.Ordinal);
 
-    private static string GetCurrentPlatformIdentity() {
-        if (OperatingSystem.IsWindows()) {
+    private static string GetCurrentPlatformIdentity()
+    {
+        if (OperatingSystem.IsWindows())
+        {
             return GetWindowsIdentityName();
         }
 
@@ -138,19 +160,24 @@ public sealed class StubOpcSecurityServer : IOpcSecurity, IOPCSecurityNT, IOPCSe
     }
 
     [SupportedOSPlatform("windows")]
-    private static string GetWindowsIdentityName() {
+    private static string GetWindowsIdentityName()
+    {
         using WindowsIdentity identity = WindowsIdentity.GetCurrent();
         return string.IsNullOrWhiteSpace(identity.Name) ? "sample-current-user" : identity.Name;
     }
 
-    private bool IsPrivateIdentityActive() {
-        lock (_stateLock) {
+    private bool IsPrivateIdentityActive()
+    {
+        lock (_stateLock)
+        {
             return _isAuthenticated && _currentIdentity.StartsWith(PrivateIdentityPrefix, StringComparison.Ordinal);
         }
     }
 
-    private void SetAuthenticated(string identity) {
-        lock (_stateLock) {
+    private void SetAuthenticated(string identity)
+    {
+        lock (_stateLock)
+        {
             _isAuthenticated = true;
             _currentIdentity = identity;
         }

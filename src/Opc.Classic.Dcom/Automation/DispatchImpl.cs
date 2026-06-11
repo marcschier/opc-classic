@@ -18,23 +18,28 @@ namespace Opc.Classic.Dcom.Automation;
 /// Dispatch implementation
 /// </summary>
 [Serializable]
-internal sealed class DispatchImpl : ComObjectImplWrapper, IDispatch {
+internal sealed class DispatchImpl : ComObjectImplWrapper, IDispatch
+{
 
     /// <summary>
     /// Create implementation
     /// </summary>
     /// <param name="comObject"></param>
     internal DispatchImpl(IComObject comObject) :
-        base(comObject) {
+        base(comObject)
+    {
     }
 
     public const int FLAG_TYPEINFO_SUPPORTED = 1;
     public const int FLAG_TYPEINFO_NOTSUPPORTED = 0;
 
     /// <inheritdoc/>
-    public int TypeInfoCount {
-        get {
-            var obj = new CallBuilder(true) {
+    public int TypeInfoCount
+    {
+        get
+        {
+            var obj = new CallBuilder(true)
+            {
                 Opnum = 0
             };
             obj.AddInParamAsInt(0);
@@ -45,19 +50,23 @@ internal sealed class DispatchImpl : ComObjectImplWrapper, IDispatch {
     }
 
     /// <inheritdoc/>
-    public int GetIDsOfNames(string apiName) {
-        if (apiName == null || apiName.Trim().Equals("")) {
+    public int GetIDsOfNames(string apiName)
+    {
+        if (apiName == null || apiName.Trim().Equals(""))
+        {
             throw new ArgumentException(Interop.GetLocalizedMessage(
                 ErrorCode.INTEROP_DISP_INCORRECT_VALUE_FOR_GETIDNAMES), nameof(apiName));
         }
 
         var innerMap = _cacheOfDispIds.GetOrDefault(apiName);
-        if (innerMap != null) {
+        if (innerMap != null)
+        {
             var dispId = innerMap[apiName];
             return dispId;
         }
 
-        var obj = new CallBuilder(true) {
+        var obj = new CallBuilder(true)
+        {
             Opnum = 2 // size of the array
             // 1st is the num elements and second is the actual values
         };
@@ -72,12 +81,14 @@ internal sealed class DispatchImpl : ComObjectImplWrapper, IDispatch {
             new ComArray(typeof(int), null, 1, true));
 
         var result = ComObject.Call(obj);
-        if (result == null && obj.Error) {
+        if (result == null && obj.Error)
+        {
             throw new InteropException(obj.HRESULT);
         }
 
         var dispid = (int)((object[])((ComArray)result[0]).ArrayInstance)[0];
-        innerMap = new Dictionary<string, int>(StringComparer.Ordinal) {
+        innerMap = new Dictionary<string, int>(StringComparer.Ordinal)
+        {
             [apiName] = dispid
         };
         _cacheOfDispIds.Add(apiName, innerMap);
@@ -88,8 +99,10 @@ internal sealed class DispatchImpl : ComObjectImplWrapper, IDispatch {
     }
 
     /// <inheritdoc/>
-    public int[] GetIDsOfNames(string[] apiName) {
-        if (apiName == null || apiName.Length == 0) {
+    public int[] GetIDsOfNames(string[] apiName)
+    {
+        if (apiName == null || apiName.Length == 0)
+        {
             throw new ArgumentException(Interop.GetLocalizedMessage(
                 ErrorCode.INTEROP_DISP_INCORRECT_VALUE_FOR_GETIDNAMES), nameof(apiName));
         }
@@ -97,32 +110,39 @@ internal sealed class DispatchImpl : ComObjectImplWrapper, IDispatch {
         var sendForAll = false;
         // first one will be the method name
         var innerMap = _cacheOfDispIds.GetOrDefault(apiName[0]);
-        if (innerMap != null) {
+        if (innerMap != null)
+        {
             // if name is not found will not even go in. so it is safe to assume
             // that api name will always be there.
             var values = new int[innerMap.Count];
-            for (var i = 0; i < apiName.Length; i++) {
-                if (!innerMap.TryGetValue(apiName[i], out var dispId)) {
+            for (var i = 0; i < apiName.Length; i++)
+            {
+                if (!innerMap.TryGetValue(apiName[i], out var dispId))
+                {
                     sendForAll = true;
                     break;
                 }
                 values[i] = dispId;
             }
 
-            if (!sendForAll) {
+            if (!sendForAll)
+            {
                 return values; // all found returning now
             }
         }
 
 
-        var obj = new CallBuilder(true) {
+        var obj = new CallBuilder(true)
+        {
             Opnum = 2 // size of the array
             // 1st is the num elements and second is the actual values
         };
 
         var pointers = new ComPointer[apiName.Length];
-        for (var i = 0; i < apiName.Length; i++) {
-            if (apiName[i] == null || apiName[i].Trim().Equals("")) {
+        for (var i = 0; i < apiName.Length; i++)
+        {
+            if (apiName[i] == null || apiName[i].Trim().Equals(""))
+            {
                 throw new ArgumentException(Interop.GetLocalizedMessage(
                     ErrorCode.INTEROP_DISP_INCORRECT_VALUE_FOR_GETIDNAMES), nameof(apiName));
             }
@@ -140,7 +160,8 @@ internal sealed class DispatchImpl : ComObjectImplWrapper, IDispatch {
 
         var result = ComObject.Call(obj);
 
-        if (obj.HRESULT != 0) { // exception occured
+        if (obj.HRESULT != 0)
+        { // exception occured
             throw new InteropException(obj.HRESULT,
                 Interop.GetLocalizedMessage((ErrorCode)obj.HRESULT));
         }
@@ -150,7 +171,8 @@ internal sealed class DispatchImpl : ComObjectImplWrapper, IDispatch {
         var retVal = new int[apiName.Length];
 
         innerMap = innerMap ?? new Dictionary<string, int>(StringComparer.Ordinal);
-        for (var i = 0; i < apiName.Length; i++) {
+        for (var i = 0; i < apiName.Length; i++)
+        {
             retVal[i] = arrayOfDispIds[i];
             innerMap[apiName[i]] = arrayOfDispIds[i];
         }
@@ -160,8 +182,10 @@ internal sealed class DispatchImpl : ComObjectImplWrapper, IDispatch {
     }
 
     /// <inheritdoc/>
-    public ITypeInfo GetTypeInfo(int typeInfo) {
-        var obj = new CallBuilder(true) {
+    public ITypeInfo GetTypeInfo(int typeInfo)
+    {
+        var obj = new CallBuilder(true)
+        {
             Opnum = 1
         };
         obj.AddInParamAsInt(typeInfo);
@@ -182,9 +206,11 @@ internal sealed class DispatchImpl : ComObjectImplWrapper, IDispatch {
     /// <exception cref="InteropException"></exception>
     /// <returns></returns>
     public Variant[] Invoke(int dispId, int dispatchFlags, ComArray arrayOfVariantsInParams,
-        ComArray arrayOfNamedDispIds, Variant outParamType) {
+        ComArray arrayOfNamedDispIds, Variant outParamType)
+    {
         LastExcepInfo.ClearAll();
-        var obj = new CallBuilder(true) {
+        var obj = new CallBuilder(true)
+        {
             Opnum = 3
         };
 
@@ -195,12 +221,15 @@ internal sealed class DispatchImpl : ComObjectImplWrapper, IDispatch {
         var listOfPositions = new List<int>();
         var lengthVar = 0;
         // bool isLastAptr = false;
-        if (arrayOfVariantsInParams != null) {
+        if (arrayOfVariantsInParams != null)
+        {
             lengthVar = FrameworkHelper.ReverseArrayForDispatch(arrayOfVariantsInParams);
             var variants = (Variant[])arrayOfVariantsInParams.ArrayInstance;
-            for (var i = 0; i < variants.Length; i++) {
+            for (var i = 0; i < variants.Length; i++)
+            {
                 var variant = variants[i];
-                if (variant.IsByRef) {
+                if (variant.IsByRef)
+                {
                     listOfVariantPtrs.Add(variant);
                     listOfPositions.Add(i); // for position array
                                             // now replace with Empty.
@@ -212,7 +241,8 @@ internal sealed class DispatchImpl : ComObjectImplWrapper, IDispatch {
 
 
         var lengthPtr = 0;
-        if (arrayOfNamedDispIds != null) {
+        if (arrayOfNamedDispIds != null)
+        {
             lengthPtr = FrameworkHelper.ReverseArrayForDispatch(arrayOfNamedDispIds);
         }
         // should be an array of variants
@@ -229,7 +259,8 @@ internal sealed class DispatchImpl : ComObjectImplWrapper, IDispatch {
         obj.AddInParamAsStruct(dispParams, InteropFlags.FLAG_REPRESENTATION_IDISPATCH_INVOKE);
 
         // now add the extra params if exist.
-        if (listOfVariantPtrs.Count > 0) {
+        if (listOfVariantPtrs.Count > 0)
+        {
             // write length
             obj.AddInParamAsInt(listOfPositions.Count);
             // then write the array
@@ -246,10 +277,12 @@ internal sealed class DispatchImpl : ComObjectImplWrapper, IDispatch {
         obj.AddInParamAsObject(null);
 
         var outparams = new object[4];
-        if (outParamType == null) {
+        if (outParamType == null)
+        {
             outparams[0] = typeof(Variant); // fill ourselves
         }
-        else {
+        else
+        {
             outparams[0] = outParamType; // fill from users input
         }
 
@@ -260,12 +293,15 @@ internal sealed class DispatchImpl : ComObjectImplWrapper, IDispatch {
         obj.SetOutParams(outparams, InteropFlags.FLAG_REPRESENTATION_IDISPATCH_INVOKE);
 
         object[] result;
-        try {
+        try
+        {
             result = ComObject.Call(obj);
         }
-        catch (InteropException e) {
+        catch (InteropException e)
+        {
             var results = obj.ResultsInCaseOfException;
-            if (results != null) {
+            if (results != null)
+            {
                 // catching here so that an extended message could be sent out
                 var excepInfoRet = (Struct)results[1];
                 var text1 = ((ComString)excepInfoRet.GetMember(2)).String + " ";
@@ -277,7 +313,8 @@ internal sealed class DispatchImpl : ComObjectImplWrapper, IDispatch {
                 LastExcepInfo.ErrorCode = (int)excepInfoRet.GetMember(0) != 0 ?
                     (int)excepInfoRet.GetMember(0) : (int)excepInfoRet.GetMember(8);
 
-                var automationException = new AutomationException(e) {
+                var automationException = new AutomationException(e)
+                {
                     ExcepInfo = LastExcepInfo
                 };
                 throw automationException;
@@ -302,28 +339,35 @@ internal sealed class DispatchImpl : ComObjectImplWrapper, IDispatch {
     /// <param name="inparams"></param>
     /// <param name="isRef"></param>
     /// <exception cref="InteropException"></exception>
-    private void Put(int dispId, object[] inparams, bool isRef) {
+    private void Put(int dispId, object[] inparams, bool isRef)
+    {
         var propertyFlag = isRef ?
             DispatchFlags.DISPATCH_PROPERTYPUTREF : DispatchFlags.DISPATCH_PROPERTYPUT;
         var objectParams = inparams;
-        if (objectParams == null) {
+        if (objectParams == null)
+        {
             objectParams = Array.Empty<object>();
         }
 
         var variants = new Variant[objectParams.Length];
-        for (var i = 0; i < objectParams.Length; i++) {
+        for (var i = 0; i < objectParams.Length; i++)
+        {
             var obj = objectParams[i];
 
             Variant variant;
-            if (!(obj is Variant)) {
-                if (obj is ComArray) {
+            if (!(obj is Variant))
+            {
+                if (obj is ComArray)
+                {
                     variant = new Variant((ComArray)obj, isRef);
                 }
-                else {
+                else
+                {
                     variant = Variant.MakeVariant(obj, isRef);
                 }
             }
-            else {
+            else
+            {
                 variant = (Variant)obj;
                 // variant = new <see cref="Variant"/>((<see cref="Variant"/>)obj);
             }
@@ -400,27 +444,34 @@ internal sealed class DispatchImpl : ComObjectImplWrapper, IDispatch {
     /// <param name="flag"></param>
     /// <exception cref="InteropException"></exception>
     /// <returns></returns>
-    private Variant[] CallMethodA(int dispId, object[] inparams, int flag = InteropFlags.FLAG_NULL) {
+    private Variant[] CallMethodA(int dispId, object[] inparams, int flag = InteropFlags.FLAG_NULL)
+    {
         var objectParams = inparams;
-        if (objectParams == null) {
+        if (objectParams == null)
+        {
             objectParams = Array.Empty<object>();
         }
 
         var variants = new Variant[objectParams.Length];
-        for (var i = 0; i < objectParams.Length; i++) {
+        for (var i = 0; i < objectParams.Length; i++)
+        {
             var obj = objectParams[i];
 
             Variant variant;
-            if (!(obj is Variant)) {
-                if (obj is ComArray) {
+            if (!(obj is Variant))
+            {
+                if (obj is ComArray)
+                {
                     variant = new Variant((ComArray)obj);
                 }
-                else {
+                else
+                {
                     variant = Variant.MakeVariant(obj);
                 }
 
             }
-            else {
+            else
+            {
                 variant = (Variant)obj;
                 // variant = new <see cref="Variant"/>((<see cref="Variant"/>)obj);
             }
@@ -447,38 +498,47 @@ internal sealed class DispatchImpl : ComObjectImplWrapper, IDispatch {
         CallMethodA(GetIDsOfNames(name), inparams, dispIds);
 
     /// <inheritdoc/>
-    public Variant[] CallMethodA(int dispId, object[] inparams, int[] dispIds) {
-        if (inparams == null || inparams.Length == 0) {
+    public Variant[] CallMethodA(int dispId, object[] inparams, int[] dispIds)
+    {
+        if (inparams == null || inparams.Length == 0)
+        {
             return CallMethodA(dispId, inparams);
         }
 
-        if (dispIds == null || dispIds.Length != inparams.Length) {
+        if (dispIds == null || dispIds.Length != inparams.Length)
+        {
             throw new ArgumentException(Interop.GetLocalizedMessage(ErrorCode.INTEROP_DISP_INCORRECT_PARAM_LENGTH),
                 nameof(dispIds));
         }
 
         var array = new int[inparams.Length];
         // now prepare the ComArray of dispIds.
-        for (var i = 0; i < inparams.Length; i++) {
+        for (var i = 0; i < inparams.Length; i++)
+        {
             array[i] = dispIds[i];
         }
 
         var arrayOfValues = new ComArray(array, true);
 
         var variants = new Variant[inparams.Length];
-        for (var i = 0; i < inparams.Length; i++) {
+        for (var i = 0; i < inparams.Length; i++)
+        {
             var obj = inparams[i];
 
             Variant variant;
-            if (!(obj is Variant)) {
-                if (obj is ComArray) {
+            if (!(obj is Variant))
+            {
+                if (obj is ComArray)
+                {
                     variant = new Variant((ComArray)obj);
                 }
-                else {
+                else
+                {
                     variant = Variant.MakeVariant(obj);
                 }
             }
-            else {
+            else
+            {
                 variant = (Variant)obj;
                 // variant = new <see cref="Variant"/>((<see cref="Variant"/>)obj);
             }
@@ -494,12 +554,15 @@ internal sealed class DispatchImpl : ComObjectImplWrapper, IDispatch {
         CallMethodA(name, inparams, paramNames);
 
     /// <inheritdoc/>
-    public Variant[] CallMethodA(string name, object[] inparams, string[] paramNames) {
-        if (inparams == null || inparams.Length == 0) {
+    public Variant[] CallMethodA(string name, object[] inparams, string[] paramNames)
+    {
+        if (inparams == null || inparams.Length == 0)
+        {
             return CallMethodA(GetIDsOfNames(name), inparams);
         }
 
-        if (paramNames == null || paramNames.Length != inparams.Length) {
+        if (paramNames == null || paramNames.Length != inparams.Length)
+        {
             throw new ArgumentException(Interop.GetLocalizedMessage(
                 ErrorCode.INTEROP_DISP_INCORRECT_PARAM_LENGTH), nameof(paramNames));
         }
@@ -511,7 +574,8 @@ internal sealed class DispatchImpl : ComObjectImplWrapper, IDispatch {
 
         var newDispIds = new int[dispIds.Length - 1];
 
-        for (var i = 0; i < newDispIds.Length; i++) {
+        for (var i = 0; i < newDispIds.Length; i++)
+        {
             newDispIds[i] = dispIds[i + 1]; // skip the apiname
         }
 
@@ -544,8 +608,10 @@ internal sealed class DispatchImpl : ComObjectImplWrapper, IDispatch {
     /// <summary>
     /// Static initialization
     /// </summary>
-    static DispatchImpl() {
-        try {
+    static DispatchImpl()
+    {
+        try
+        {
             kExcepInfo.AddMember(typeof(short));
             kExcepInfo.AddMember(typeof(short));
             kExcepInfo.AddMember(new ComString(InteropFlags.FLAG_REPRESENTATION_STRING_BSTR));
@@ -556,7 +622,8 @@ internal sealed class DispatchImpl : ComObjectImplWrapper, IDispatch {
             kExcepInfo.AddMember(new ComPointer(null, true));
             kExcepInfo.AddMember(typeof(int));
         }
-        catch (InteropException e) {
+        catch (InteropException e)
+        {
             Log.Logger.Error(e, "DispatchImpl static initializer");
         }
     }

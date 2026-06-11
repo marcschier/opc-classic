@@ -54,7 +54,8 @@ namespace Opc.Classic.Dcom.Transport;
 /// remote server uses that IPID directly).
 /// </para>
 /// </remarks>
-public sealed class IObjectExporterDispatcher : IOpcServerDispatcher {
+public sealed class IObjectExporterDispatcher : IOpcServerDispatcher
+{
     /// <summary>OPC well-known <c>IObjectExporter</c> interface identifier.</summary>
     public static readonly Guid InterfaceId = OpcGuids.IID_IObjectExporter;
 
@@ -77,7 +78,8 @@ public sealed class IObjectExporterDispatcher : IOpcServerDispatcher {
     /// <summary>Creates a dispatcher that resolves bindings via <paramref name="endpointProvider"/>.</summary>
     /// <param name="endpointProvider">Returns the listener's current TCP endpoint, or null when not bound.</param>
     /// <param name="remUnknownIpid">IPID to report as the listener's <c>IRemUnknown</c>; a freshly-generated GUID when omitted.</param>
-    public IObjectExporterDispatcher(Func<IPEndPoint?> endpointProvider, Guid? remUnknownIpid = null) {
+    public IObjectExporterDispatcher(Func<IPEndPoint?> endpointProvider, Guid? remUnknownIpid = null)
+    {
         ArgumentNullException.ThrowIfNull(endpointProvider);
         _endpointProvider = endpointProvider;
         _remUnknownIpid = remUnknownIpid ?? Guid.NewGuid();
@@ -90,10 +92,12 @@ public sealed class IObjectExporterDispatcher : IOpcServerDispatcher {
     public ValueTask<DispatchResult> DispatchAsync(
         int opnum,
         ReadOnlyMemory<byte> requestPayload,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         cancellationToken.ThrowIfCancellationRequested();
 
-        return opnum switch {
+        return opnum switch
+        {
             1 => new ValueTask<DispatchResult>(SimplePing(requestPayload.Span)),
             2 => new ValueTask<DispatchResult>(ComplexPing(requestPayload.Span)),
             3 => new ValueTask<DispatchResult>(ServerAlive()),
@@ -103,7 +107,8 @@ public sealed class IObjectExporterDispatcher : IOpcServerDispatcher {
         };
     }
 
-    private static DispatchResult SimplePing(ReadOnlySpan<byte> request) {
+    private static DispatchResult SimplePing(ReadOnlySpan<byte> request)
+    {
         // IDL: HRESULT SimplePing([in] SETID *pSetId);
         // pSetId is 8 bytes. The legacy impl maintains ping-set state; for
         // inbound callback delivery we don't need it — clients (and the
@@ -112,7 +117,8 @@ public sealed class IObjectExporterDispatcher : IOpcServerDispatcher {
         return DispatchResult.Success(ReadOnlyMemory<byte>.Empty);
     }
 
-    private static DispatchResult ComplexPing(ReadOnlySpan<byte> request) {
+    private static DispatchResult ComplexPing(ReadOnlySpan<byte> request)
+    {
         // IDL: HRESULT ComplexPing([in, out] SETID *pSetId, [in] USHORT SequenceNum,
         //                          [in] USHORT cAddToSet, [in] USHORT cDelFromSet,
         //                          [in, unique, size_is(cAddToSet)] OID AddToSet[],
@@ -121,7 +127,8 @@ public sealed class IObjectExporterDispatcher : IOpcServerDispatcher {
         // Response: SETID (8 bytes; echo back) + USHORT backoff factor + HRESULT (in ORPC envelope).
         // For inbound callbacks we don't track ping sets; echo the SETID and return 0 backoff.
         var buffer = new byte[16];
-        if (request.Length >= 8) {
+        if (request.Length >= 8)
+        {
             request[..8].CopyTo(buffer);
         }
         // SETID is at offset 0..8, USHORT backoff at offset 8, bytes 10..15 padding.
@@ -129,13 +136,15 @@ public sealed class IObjectExporterDispatcher : IOpcServerDispatcher {
         return DispatchResult.Success(buffer);
     }
 
-    private static DispatchResult ServerAlive() {
+    private static DispatchResult ServerAlive()
+    {
         // IDL: HRESULT ServerAlive(void);
         // No out-params. Return an empty body.
         return DispatchResult.Success(ReadOnlyMemory<byte>.Empty);
     }
 
-    private DispatchResult ServerAlive2() {
+    private DispatchResult ServerAlive2()
+    {
         // IDL: HRESULT ServerAlive2([out] COMVERSION *pComVersion,
         //                            [out] DUALSTRINGARRAY **ppdsaOrBindings,
         //                            [out] DWORD *pReserved);
@@ -152,7 +161,8 @@ public sealed class IObjectExporterDispatcher : IOpcServerDispatcher {
         return DispatchResult.Success(buffer.AsSpan(0, writer.Position).ToArray());
     }
 
-    private DispatchResult ResolveOxid2(ReadOnlySpan<byte> request) {
+    private DispatchResult ResolveOxid2(ReadOnlySpan<byte> request)
+    {
         // IDL: HRESULT ResolveOxid2(
         //          [in] OXID *pOxid,
         //          [in] USHORT cRequestedProtseqs,
@@ -168,7 +178,8 @@ public sealed class IObjectExporterDispatcher : IOpcServerDispatcher {
         _ = request;
 
         IPEndPoint? endpoint = _endpointProvider();
-        if (endpoint is null) {
+        if (endpoint is null)
+        {
             return DispatchResult.Fault(E_INVALIDARG);
         }
 
@@ -185,10 +196,12 @@ public sealed class IObjectExporterDispatcher : IOpcServerDispatcher {
         return DispatchResult.Success(buffer.AsSpan(0, writer.Position).ToArray());
     }
 
-    private static byte[] EncodeDualStringArrayForListener(IPEndPoint? endpoint) {
+    private static byte[] EncodeDualStringArrayForListener(IPEndPoint? endpoint)
+    {
         // Empty DUALSTRINGARRAY when the listener hasn't bound yet —
         // wire shape is two USHORT zeros (entryCount=0, securityOffset=0).
-        if (endpoint is null) {
+        if (endpoint is null)
+        {
             return new byte[] { 0x00, 0x00, 0x00, 0x00 };
         }
 
@@ -196,13 +209,15 @@ public sealed class IObjectExporterDispatcher : IOpcServerDispatcher {
         var buffer = new byte[4 + entries.Length * 2];
         BinaryPrimitives.WriteUInt16LittleEndian(buffer.AsSpan(0, 2), (ushort)entries.Length);
         BinaryPrimitives.WriteUInt16LittleEndian(buffer.AsSpan(2, 2), securityOffset);
-        for (int i = 0; i < entries.Length; i++) {
+        for (int i = 0; i < entries.Length; i++)
+        {
             BinaryPrimitives.WriteUInt16LittleEndian(buffer.AsSpan(4 + i * 2, 2), entries[i]);
         }
         return buffer;
     }
 
-    private static (ushort[] Bindings, ushort SecurityOffset) BuildResolverBindings(IPEndPoint listenerEndpoint) {
+    private static (ushort[] Bindings, ushort SecurityOffset) BuildResolverBindings(IPEndPoint listenerEndpoint)
+    {
         // Mirrors mcp/Opc.Classic.Mcp/Tools/OpcSinkObjRefBuilder.BuildResolverBindings
         // but inlined here so the Dcom assembly has no dependency on the MCP host.
         const ushort TcpTowerId = 0x07;
@@ -215,7 +230,8 @@ public sealed class IObjectExporterDispatcher : IOpcServerDispatcher {
         {
             TcpTowerId,
         };
-        for (int i = 0; i < hostPort.Length; i++) {
+        for (int i = 0; i < hostPort.Length; i++)
+        {
             bindings.Add((ushort)hostPort[i]);
         }
 
@@ -227,17 +243,20 @@ public sealed class IObjectExporterDispatcher : IOpcServerDispatcher {
         bindings.Add(0);   // empty principal
         bindings.Add(0);   // securityBindings array terminator
 
-        if (securityOffsetUShorts > ushort.MaxValue) {
+        if (securityOffsetUShorts > ushort.MaxValue)
+        {
             throw new ArgumentException("DUALSTRINGARRAY security offset exceeds UInt16.MaxValue.", nameof(listenerEndpoint));
         }
 
         return (bindings.ToArray(), (ushort)securityOffsetUShorts);
     }
 
-    private static void WriteDualStringArrayPointerPointer(ref NdrWriter writer, ReadOnlySpan<byte> dualStringArray) {
+    private static void WriteDualStringArrayPointerPointer(ref NdrWriter writer, ReadOnlySpan<byte> dualStringArray)
+    {
         _ = writer.WriteReferentId();
         _ = writer.WriteReferentId();
-        if (dualStringArray.IsEmpty) {
+        if (dualStringArray.IsEmpty)
+        {
             writer.WriteUInt16(0);
             writer.WriteUInt16(0);
             return;

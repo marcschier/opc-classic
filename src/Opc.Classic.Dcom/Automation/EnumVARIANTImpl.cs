@@ -8,18 +8,22 @@ namespace Opc.Classic.Dcom.Automation;
 /// <summary>
 /// Enum variant
 /// </summary>
-internal sealed class EnumVARIANTImpl : ComObjectImplWrapper, IEnumVariant {
+internal sealed class EnumVARIANTImpl : ComObjectImplWrapper, IEnumVariant
+{
 
     /// <summary>
     /// Create implementation
     /// </summary>
     /// <param name="comObject"></param>
-    internal EnumVARIANTImpl(IComObject comObject) : base(comObject) {
+    internal EnumVARIANTImpl(IComObject comObject) : base(comObject)
+    {
     }
 
     /// <inheritdoc/>
-    public object[] Next(int celt) {
-        var callObject = new CallBuilder(true) {
+    public object[] Next(int celt)
+    {
+        var callObject = new CallBuilder(true)
+        {
             Opnum = 0
         };
         callObject.AddInParamAsInt(celt);
@@ -31,8 +35,10 @@ internal sealed class EnumVARIANTImpl : ComObjectImplWrapper, IEnumVariant {
     }
 
     /// <inheritdoc/>
-    public void Skip(int celt) {
-        var callObject = new CallBuilder(true) {
+    public void Skip(int celt)
+    {
+        var callObject = new CallBuilder(true)
+        {
             Opnum = 1
         };
         callObject.AddInParamAsInt(celt);
@@ -40,16 +46,20 @@ internal sealed class EnumVARIANTImpl : ComObjectImplWrapper, IEnumVariant {
     }
 
     /// <inheritdoc/>
-    public void Reset() {
-        var callObject = new CallBuilder(true) {
+    public void Reset()
+    {
+        var callObject = new CallBuilder(true)
+        {
             Opnum = 2
         };
         var result = ComObject.Call(callObject);
     }
 
     /// <inheritdoc/>
-    public IEnumVariant Clone() {
-        var callObject = new CallBuilder(true) {
+    public IEnumVariant Clone()
+    {
+        var callObject = new CallBuilder(true)
+        {
             Opnum = 3
         };
         callObject.AddOutParamAsObject(typeof(IComObject));

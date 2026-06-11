@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -26,7 +26,8 @@ namespace Opc.Classic.Da.Tests.Wire.Replay;
 /// engineer can paste the bytes into a unit test or run a decoder against
 /// them and read the resulting hex window from the failure message.
 /// </remarks>
-public sealed class WireCaptureFile {
+public sealed class WireCaptureFile
+{
     private static readonly Regex BannerLine = new(
         @"^#\s*([A-Za-z_][A-Za-z0-9_]*)\s*:\s*(.+?)\s*$",
         RegexOptions.Compiled | RegexOptions.CultureInvariant);
@@ -47,23 +48,27 @@ public sealed class WireCaptureFile {
     private WireCaptureFile(
         IReadOnlyDictionary<string, string> metadata,
         byte[] requestPayload,
-        byte[] responsePayload) {
+        byte[] responsePayload)
+    {
         Metadata = metadata;
         RequestPayload = requestPayload;
         ResponsePayload = responsePayload;
     }
 
     /// <summary>Loads a capture file from disk.</summary>
-    public static WireCaptureFile Load(string path) {
+    public static WireCaptureFile Load(string path)
+    {
         ArgumentNullException.ThrowIfNull(path);
-        if (!File.Exists(path)) {
+        if (!File.Exists(path))
+        {
             throw new FileNotFoundException($"Wire capture file not found: {path}", path);
         }
         return Parse(File.ReadAllText(path));
     }
 
     /// <summary>Parses a capture file contents (typically the result of <see cref="File.ReadAllText(string)"/>).</summary>
-    public static WireCaptureFile Parse(string text) {
+    public static WireCaptureFile Parse(string text)
+    {
         ArgumentNullException.ThrowIfNull(text);
 
         var metadata = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
@@ -71,32 +76,41 @@ public sealed class WireCaptureFile {
         var responseBytes = new List<byte>(256);
         List<byte>? currentSection = null;
 
-        foreach (string rawLine in text.Split('\n')) {
+        foreach (string rawLine in text.Split('\n'))
+        {
             string line = rawLine.TrimEnd('\r');
-            if (line.StartsWith("## request", StringComparison.Ordinal)) {
+            if (line.StartsWith("## request", StringComparison.Ordinal))
+            {
                 currentSection = requestBytes;
                 continue;
             }
-            if (line.StartsWith("## response", StringComparison.Ordinal)) {
+            if (line.StartsWith("## response", StringComparison.Ordinal))
+            {
                 currentSection = responseBytes;
                 continue;
             }
-            if (line.StartsWith("#", StringComparison.Ordinal)) {
+            if (line.StartsWith("#", StringComparison.Ordinal))
+            {
                 Match banner = BannerLine.Match(line);
-                if (banner.Success) {
+                if (banner.Success)
+                {
                     metadata[banner.Groups[1].Value] = banner.Groups[2].Value;
                 }
                 continue;
             }
-            if (currentSection is null || line.Length == 0) {
+            if (currentSection is null || line.Length == 0)
+            {
                 continue;
             }
             Match row = HexRow.Match(line);
-            if (!row.Success) {
+            if (!row.Success)
+            {
                 continue;
             }
-            foreach (string token in row.Groups[1].Value.Split(' ', StringSplitOptions.RemoveEmptyEntries)) {
-                if (token.Length != 2) {
+            foreach (string token in row.Groups[1].Value.Split(' ', StringSplitOptions.RemoveEmptyEntries))
+            {
+                if (token.Length != 2)
+                {
                     continue;
                 }
                 currentSection.Add(byte.Parse(token, NumberStyles.HexNumber, CultureInfo.InvariantCulture));

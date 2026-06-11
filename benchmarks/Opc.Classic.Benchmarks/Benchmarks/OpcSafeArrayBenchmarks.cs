@@ -9,7 +9,8 @@ using Opc.Classic.Ndr;
 namespace Opc.Classic.Benchmarks.Benchmarks;
 
 [MemoryDiagnoser]
-public class OpcSafeArrayBenchmarks {
+public class OpcSafeArrayBenchmarks
+{
     private const string Int32_100 = "Int32_100";
     private const string Int32_1000 = "Int32_1000";
     private const string Int32_10000 = "Int32_10000";
@@ -25,41 +26,47 @@ public class OpcSafeArrayBenchmarks {
     public string Case { get; set; } = Int32_100;
 
     [GlobalSetup]
-    public void GlobalSetup() {
+    public void GlobalSetup()
+    {
         _array = CreateArray(Case);
         _buffer = new byte[EstimateCapacity(_array)];
         _payload = Encode(_array, _buffer.Length);
     }
 
     [Benchmark]
-    public int EncodeSafeArray() {
+    public int EncodeSafeArray()
+    {
         var writer = new NdrWriter(_buffer);
         writer.WriteSafeArray(_array);
         return writer.Position;
     }
 
     [Benchmark]
-    public OpcSafeArray DecodeSafeArray() {
+    public OpcSafeArray DecodeSafeArray()
+    {
         var reader = new NdrReader(_payload);
         return reader.ReadSafeArray();
     }
 
     [Benchmark]
-    public OpcSafeArray RoundTripSafeArray() {
+    public OpcSafeArray RoundTripSafeArray()
+    {
         var writer = new NdrWriter(_buffer);
         writer.WriteSafeArray(_array);
         var reader = new NdrReader(_buffer.AsSpan(0, writer.Position));
         return reader.ReadSafeArray();
     }
 
-    private static byte[] Encode(OpcSafeArray array, int capacity) {
+    private static byte[] Encode(OpcSafeArray array, int capacity)
+    {
         var buffer = new byte[capacity];
         var writer = new NdrWriter(buffer);
         writer.WriteSafeArray(array);
         return buffer[..writer.Position];
     }
 
-    private static OpcSafeArray CreateArray(string benchmarkCase) => benchmarkCase switch {
+    private static OpcSafeArray CreateArray(string benchmarkCase) => benchmarkCase switch
+    {
         Int32_100 => OpcSafeArray.OfInt32(CreateInt32Values(100)),
         Int32_1000 => OpcSafeArray.OfInt32(CreateInt32Values(1_000)),
         Int32_10000 => OpcSafeArray.OfInt32(CreateInt32Values(10_000)),
@@ -69,34 +76,41 @@ public class OpcSafeArrayBenchmarks {
         _ => throw new InvalidOperationException($"Unsupported SAFEARRAY benchmark case '{benchmarkCase}'."),
     };
 
-    private static int[] CreateInt32Values(int count) {
+    private static int[] CreateInt32Values(int count)
+    {
         var values = new int[count];
-        for (int i = 0; i < values.Length; i++) {
+        for (int i = 0; i < values.Length; i++)
+        {
             values[i] = i * 17 - 3;
         }
 
         return values;
     }
 
-    private static double[] CreateDoubleValues(int count) {
+    private static double[] CreateDoubleValues(int count)
+    {
         var values = new double[count];
-        for (int i = 0; i < values.Length; i++) {
+        for (int i = 0; i < values.Length; i++)
+        {
             values[i] = Math.Sqrt(i + 1);
         }
 
         return values;
     }
 
-    private static string[] CreateStringValues(int count) {
+    private static string[] CreateStringValues(int count)
+    {
         var values = new string[count];
-        for (int i = 0; i < values.Length; i++) {
+        for (int i = 0; i < values.Length; i++)
+        {
             values[i] = FormattableString.Invariant($"Tag-{i:0000}-Benchmark");
         }
 
         return values;
     }
 
-    private static int EstimateCapacity(OpcSafeArray array) => array.ElementType switch {
+    private static int EstimateCapacity(OpcSafeArray array) => array.ElementType switch
+    {
         VarType.VT_I4 => 64 + array.TotalElements * 4,
         VarType.VT_R8 => 64 + array.TotalElements * 8,
         VarType.VT_BSTR => 256 + array.TotalElements * 64,

@@ -10,23 +10,27 @@ using TUnit.Core;
 
 namespace Opc.Classic.Batch.Tests;
 
-public sealed class NdrOpcBatchSummaryCodecTests {
+public sealed class NdrOpcBatchSummaryCodecTests
+{
     private delegate void NdrWriteAction(ref NdrWriter w);
 
-    private static byte[] WriteOne(NdrWriteAction write, int capacity = 1_024) {
+    private static byte[] WriteOne(NdrWriteAction write, int capacity = 1_024)
+    {
         var buf = new byte[capacity];
         var w = new NdrWriter(buf);
         write(ref w);
         return buf[..w.Position];
     }
 
-    private static OpcBatchSummary ReadOne(byte[] bytes) {
+    private static OpcBatchSummary ReadOne(byte[] bytes)
+    {
         var r = new NdrReader(bytes);
         return NdrOpcBatchSummaryCodec.Read(ref r);
     }
 
     [Test]
-    public async Task RoundTrip_TypicalBatchSummary() {
+    public async Task RoundTrip_TypicalBatchSummary()
+    {
         var input = new OpcBatchSummary(
             Id: "B001",
             Description: "First Batch",
@@ -46,7 +50,8 @@ public sealed class NdrOpcBatchSummaryCodecTests {
     }
 
     [Test]
-    public async Task RoundTrip_AllNullStringFields_DefaultScalars() {
+    public async Task RoundTrip_AllNullStringFields_DefaultScalars()
+    {
         // FILETIME = 0 (Epoch) is the natural "zero" wire value for OPC Batch
         // timestamp fields. DateTimeOffset.MinValue (year 0001) would round-trip
         // through a negative FILETIME which the strict decode (Track AW) rejects
@@ -70,7 +75,8 @@ public sealed class NdrOpcBatchSummaryCodecTests {
     }
 
     [Test]
-    public async Task RoundTrip_NonAsciiStrings() {
+    public async Task RoundTrip_NonAsciiStrings()
+    {
         var input = new OpcBatchSummary(
             Id: "B-温度-01",
             Description: "Müller",
@@ -90,7 +96,8 @@ public sealed class NdrOpcBatchSummaryCodecTests {
     }
 
     [Test]
-    public async Task RoundTrip_EpochBoundaryTimes() {
+    public async Task RoundTrip_EpochBoundaryTimes()
+    {
         var input = new OpcBatchSummary(
             Id: "B-EPOCH",
             Description: "Epoch boundary",

@@ -11,7 +11,8 @@ namespace Opc.Classic.Cpx;
 /// <summary>
 /// Builds OPC Complex Data namespace paths for type discovery, conversion, and data filters.
 /// </summary>
-public static class CpxNamespaceBuilder {
+public static class CpxNamespaceBuilder
+{
     /// <summary>Reserved CPX branch name.</summary>
     public const string RootSegment = "CPX";
 
@@ -65,20 +66,24 @@ public static class CpxNamespaceBuilder {
             RequireSegment(filterName, nameof(filterName)));
 
     /// <summary>Build a stable dictionary branch name from a dictionary identifier.</summary>
-    public static string GetDictionarySegment(string dictionaryId) {
+    public static string GetDictionarySegment(string dictionaryId)
+    {
         var normalized = RequirePathSuffix(dictionaryId, nameof(dictionaryId));
         var lastSlash = normalized.LastIndexOf('/');
-        if (lastSlash >= 0 && lastSlash < normalized.Length - 1) {
+        if (lastSlash >= 0 && lastSlash < normalized.Length - 1)
+        {
             return normalized[(lastSlash + 1)..];
         }
 
         var lastBackslash = normalized.LastIndexOf('\\');
-        if (lastBackslash >= 0 && lastBackslash < normalized.Length - 1) {
+        if (lastBackslash >= 0 && lastBackslash < normalized.Length - 1)
+        {
             return normalized[(lastBackslash + 1)..];
         }
 
         var lastColon = normalized.LastIndexOf(':');
-        if (lastColon >= 0 && lastColon < normalized.Length - 1) {
+        if (lastColon >= 0 && lastColon < normalized.Length - 1)
+        {
             return normalized[(lastColon + 1)..];
         }
 
@@ -91,27 +96,32 @@ public static class CpxNamespaceBuilder {
     private static string CombineItemPath(string itemId, params string[] segments) =>
         string.Create(CultureInfo.InvariantCulture, $"{itemId.TrimEnd('/', '\\')}/{string.Join('/', segments)}");
 
-    private static string RequireSegment(string value, string parameterName) {
+    private static string RequireSegment(string value, string parameterName)
+    {
         ArgumentException.ThrowIfNullOrWhiteSpace(value, parameterName);
         var trimmed = value.Trim('/', '\\');
-        if (trimmed.Length == 0 || trimmed.Contains('/', StringComparison.Ordinal) || trimmed.Contains('\\', StringComparison.Ordinal)) {
+        if (trimmed.Length == 0 || trimmed.Contains('/', StringComparison.Ordinal) || trimmed.Contains('\\', StringComparison.Ordinal))
+        {
             throw new ArgumentException("A CPX namespace segment cannot contain path separators.", parameterName);
         }
 
         return trimmed;
     }
 
-    private static string RequirePathSuffix(string value, string parameterName) {
+    private static string RequirePathSuffix(string value, string parameterName)
+    {
         ArgumentException.ThrowIfNullOrWhiteSpace(value, parameterName);
         var trimmed = value.Trim('/', '\\');
-        if (trimmed.Length == 0) {
+        if (trimmed.Length == 0)
+        {
             throw new ArgumentException("A CPX namespace path suffix cannot be empty.", parameterName);
         }
 
         return trimmed;
     }
 
-    private static string RequireItemId(string value, string parameterName) {
+    private static string RequireItemId(string value, string parameterName)
+    {
         ArgumentException.ThrowIfNullOrWhiteSpace(value, parameterName);
         return value.TrimEnd('/', '\\');
     }

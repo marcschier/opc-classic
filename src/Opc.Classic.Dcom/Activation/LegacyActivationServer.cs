@@ -19,7 +19,8 @@ namespace Opc.Classic.Dcom.Activation;
 /// + activation results, all routed through the shared
 /// <see cref="ClassFactoryRegistry" />.
 /// </summary>
-public sealed class LegacyActivationServer : IActivationServer {
+public sealed class LegacyActivationServer : IActivationServer
+{
     private const uint ModeGetClassObject = 1;
     private const int E_NOINTERFACE = unchecked((int)0x80004002u);
     private const uint AuthnHintPacketIntegrity = 5;
@@ -28,7 +29,8 @@ public sealed class LegacyActivationServer : IActivationServer {
     private readonly RemoteSCMActivatorServer _modernActivator;
 
     /// <summary>Initializes a new legacy activation server backed by the modern activator.</summary>
-    public LegacyActivationServer(RemoteSCMActivatorServer modernActivator) {
+    public LegacyActivationServer(RemoteSCMActivatorServer modernActivator)
+    {
         _modernActivator = modernActivator ?? throw new ArgumentNullException(nameof(modernActivator));
     }
 
@@ -36,7 +38,8 @@ public sealed class LegacyActivationServer : IActivationServer {
     public async Task<int> RemoteActivationAsync(
         Guid clsid,
         Guid requestedIid,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         var response = await RemoteActivationAsync(
             new RemoteActivationRequest(
                 Clsid: clsid,
@@ -51,11 +54,13 @@ public sealed class LegacyActivationServer : IActivationServer {
     /// <inheritdoc />
     public async Task<RemoteActivationResponse> RemoteActivationAsync(
         RemoteActivationRequest request,
-        CancellationToken cancellationToken = default) {
+        CancellationToken cancellationToken = default)
+    {
         ArgumentNullException.ThrowIfNull(request);
         cancellationToken.ThrowIfCancellationRequested();
 
-        if (request.RequestedIids.Count == 0) {
+        if (request.RequestedIids.Count == 0)
+        {
             return new RemoteActivationResponse(
                 Hresult: E_NOINTERFACE,
                 Oxid: Guid.Empty,
@@ -67,7 +72,8 @@ public sealed class LegacyActivationServer : IActivationServer {
 
         Guid primaryIid = request.RequestedIids[0];
 
-        if (request.Mode == ModeGetClassObject) {
+        if (request.Mode == ModeGetClassObject)
+        {
             var modernRequest = new RemoteGetClassObjectRequest(
                 request.Clsid,
                 primaryIid,
@@ -76,7 +82,8 @@ public sealed class LegacyActivationServer : IActivationServer {
                 .RemoteGetClassObjectAsync(modernRequest, cancellationToken).ConfigureAwait(false);
             return TranslateGetClassObjectResponse(modernResponse, request.RequestedIids);
         }
-        else {
+        else
+        {
             var modernRequest = new RemoteCreateInstanceRequest(
                 request.Clsid,
                 primaryIid,
@@ -89,12 +96,14 @@ public sealed class LegacyActivationServer : IActivationServer {
 
     private static RemoteActivationResponse TranslateCreateInstanceResponse(
         RemoteCreateInstanceResponse modern,
-        IReadOnlyList<Guid> requestedIids) {
+        IReadOnlyList<Guid> requestedIids)
+    {
         var perIid = new List<RemoteActivationInterfaceResult>(requestedIids.Count)
         {
             new(modern.Hresult, modern.ObjRef ?? Array.Empty<byte>()),
         };
-        for (int i = 1; i < requestedIids.Count; i++) {
+        for (int i = 1; i < requestedIids.Count; i++)
+        {
             perIid.Add(new RemoteActivationInterfaceResult(E_NOINTERFACE, ReadOnlyMemory<byte>.Empty));
         }
 
@@ -104,19 +113,22 @@ public sealed class LegacyActivationServer : IActivationServer {
             IpidRemUnknown: modern.Ipid,
             AuthnHint: AuthnHintPacketIntegrity,
             ServerVersion: ServerComVersion,
-            InterfaceResults: perIid) {
+            InterfaceResults: perIid)
+        {
             OxidBindings = modern.OxidBindings,
         };
     }
 
     private static RemoteActivationResponse TranslateGetClassObjectResponse(
         RemoteGetClassObjectResponse modern,
-        IReadOnlyList<Guid> requestedIids) {
+        IReadOnlyList<Guid> requestedIids)
+    {
         var perIid = new List<RemoteActivationInterfaceResult>(requestedIids.Count)
         {
             new(modern.Hresult, modern.ObjRef ?? Array.Empty<byte>()),
         };
-        for (int i = 1; i < requestedIids.Count; i++) {
+        for (int i = 1; i < requestedIids.Count; i++)
+        {
             perIid.Add(new RemoteActivationInterfaceResult(E_NOINTERFACE, ReadOnlyMemory<byte>.Empty));
         }
 
@@ -126,7 +138,8 @@ public sealed class LegacyActivationServer : IActivationServer {
             IpidRemUnknown: modern.Ipid,
             AuthnHint: AuthnHintPacketIntegrity,
             ServerVersion: ServerComVersion,
-            InterfaceResults: perIid) {
+            InterfaceResults: perIid)
+        {
             OxidBindings = modern.OxidBindings,
         };
     }

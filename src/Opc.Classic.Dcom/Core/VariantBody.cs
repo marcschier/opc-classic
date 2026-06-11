@@ -14,7 +14,8 @@ namespace Opc.Classic.Dcom.Core;
 /// Variant body
 /// </summary>
 [Serializable]
-internal sealed class VariantBody {
+internal sealed class VariantBody
+{
 
     public const short VT_PTR = 0x1A;
     public const short VT_SAFEARRAY = 0x1B;
@@ -43,7 +44,8 @@ internal sealed class VariantBody {
     /// <param name="referent"> </param>
     /// <param name="isByRef"></param>
     internal VariantBody(object referent, bool isByRef) :
-        this(referent, isByRef, (VariantType)(-1)) {
+        this(referent, isByRef, (VariantType)(-1))
+    {
     }
 
     /// <summary>
@@ -52,14 +54,17 @@ internal sealed class VariantBody {
     /// <param name="referent"></param>
     /// <param name="isByRef"></param>
     /// <param name="dataType"></param>
-    private VariantBody(object referent, bool isByRef, VariantType dataType) {
+    private VariantBody(object referent, bool isByRef, VariantType dataType)
+    {
         _object = referent ?? new Empty();
 
         if (_object is ComString &&
-            ((ComString)_object).Type != InteropFlags.FLAG_REPRESENTATION_STRING_BSTR) {
+            ((ComString)_object).Type != InteropFlags.FLAG_REPRESENTATION_STRING_BSTR)
+        {
             throw new InteropRuntimeException(ErrorCode.INTEROP_VARIANT_BSTR_ONLY);
         }
-        if (_object is bool) {
+        if (_object is bool)
+        {
             _flag = InteropFlags.FLAG_REPRESENTATION_VARIANT_BOOL;
         }
 
@@ -68,7 +73,8 @@ internal sealed class VariantBody {
         _type = types | (isByRef ? VariantType.VT_BYREF : VariantType.VT_EMPTY);
         Log.Logger.Verbose("In VariantBody(Object,bool,int) : dataType is " + dataType +
             ", referent class is " + _object.GetType() + ", byRef is " + isByRef);
-        if (dataType == VariantType.VT_NULL) {
+        if (dataType == VariantType.VT_NULL)
+        {
             IsNull = true;
             _object = 0;
         }
@@ -79,7 +85,8 @@ internal sealed class VariantBody {
     /// Used via serializing the <code>VARIANT</code>.
     /// </summary>
     /// <param name="value"> </param>
-    internal VariantBody(Null value) : this(0, false) {
+    internal VariantBody(Null value) : this(0, false)
+    {
         ArgumentNullException.ThrowIfNull(value);
         IsNull = true;
         _type = VariantType.VT_NULL;
@@ -92,7 +99,8 @@ internal sealed class VariantBody {
     /// <param name="value"> </param>
     /// <param name="isByRef"></param>
     internal VariantBody(Scode value, bool isByRef) :
-        this(value.ErrorCode, isByRef) {
+        this(value.ErrorCode, isByRef)
+    {
         _isScode = true;
         _type = VariantType.VT_ERROR;
     }
@@ -105,12 +113,14 @@ internal sealed class VariantBody {
     /// <param name="is2Dimensional"></param>
     /// <param name="isByRef"></param>
     /// <param name="flag"></param>
-    internal VariantBody(Struct safeArray, Type nestedClass, bool is2Dimensional, bool isByRef, int flag = InteropFlags.FLAG_NULL) {
+    internal VariantBody(Struct safeArray, Type nestedClass, bool is2Dimensional, bool isByRef, int flag = InteropFlags.FLAG_NULL)
+    {
         _flag = flag;
         // can't convert the array here, since this will have deffered pointers which may not be complete.
         _safeArrayStruct = safeArray;
         IsArray = true;
-        if (_safeArrayStruct == null) {
+        if (_safeArrayStruct == null)
+        {
             IsNull = true;
         }
         _nestedArraysRealClass = nestedClass;
@@ -120,10 +130,12 @@ internal sealed class VariantBody {
         // but then this is my bug, any thread entering this ctor, will support a type.
         IsByRef = isByRef;
         var types = Variant.GetSupportedType(nestedClass, flag);
-        if (types != null) {
+        if (types != null)
+        {
             _type = types.Value | (isByRef ? VariantType.VT_BYREF : VariantType.VT_EMPTY);
         }
-        else {
+        else
+        {
             throw new InteropRuntimeException(ErrorCode.INTEROP_VARIANT_UNSUPPORTED_TYPE);
         }
     }
@@ -138,18 +150,22 @@ internal sealed class VariantBody {
     /// Returns the array
     /// </summary>
     /// <exception cref="InteropException"></exception>
-    internal ComArray Array {
-        get {
+    internal ComArray Array
+    {
+        get
+        {
             ComArray retVal = null;
             // TODO convert it to the right type based on the variantType before returning it.
             // everything is sent encapsulated in a variant(in safearray), so an Integer[] will
             // go as a variant array for each integer, only the variantType = arry of ints. so convert the
             // array in the right format before returning it to the user. That is he must get 
             // int[] within a ComArray back.
-            if (_safeArrayStruct != null) {
+            if (_safeArrayStruct != null)
+            {
                 retVal = (ComArray)((ComPointer)_safeArrayStruct.GetMember(7)).Referent;
 
-                if (_is2Dimensional) {
+                if (_is2Dimensional)
+                {
                     var obj3 = (Array)retVal.ArrayInstance; // these will all be variants
                                                             // correct the array here, i.e reform the 2 dimensional array before returning back.
                     var safeArrayBound = (ComArray)_safeArrayStruct.GetMember(8);
@@ -162,8 +178,10 @@ internal sealed class VariantBody {
 
                     var obj2 = Variant.CreateSupportedJaggedArray(_nestedArraysRealClass, firstDim, secondDim);
                     var k = 0;
-                    for (var i = 0; i < secondDim; i++) {
-                        for (var j = 0; j < firstDim; j++) {
+                    for (var i = 0; i < secondDim; i++)
+                    {
+                        for (var j = 0; j < firstDim; j++)
+                        {
                             //                        if (nestedArraysRealClass == <see cref="Variant"/>.class)
                             //                        {
                             //                            obj2[j][i] = ((<see cref="Variant"/>[])obj3)[k++];
@@ -179,12 +197,15 @@ internal sealed class VariantBody {
                     retVal = new ComArray(obj2);
 
                 }
-                else {
+                else
+                {
 
-                    if (_nestedArraysRealClass != null) {
+                    if (_nestedArraysRealClass != null)
+                    {
                         var obj = (Array)retVal.ArrayInstance; // these will all be variants
                         var obj2 = Variant.CreateSupportedArray(_nestedArraysRealClass, obj.Length);
-                        for (var i = 0; i < obj.Length; i++) {
+                        for (var i = 0; i < obj.Length; i++)
+                        {
                             //                        if (nestedArraysRealClass == <see cref="Variant"/>.class)
                             //                        {
                             //                            Array.set(obj2,i,((<see cref="Variant"/>[])obj)[i]);// should be the native type
@@ -199,7 +220,8 @@ internal sealed class VariantBody {
                         }
                         retVal = new ComArray(obj2);
                     }
-                    else {
+                    else
+                    {
                         throw new InteropException(ErrorCode.INTEROP_VARIANT_UNSUPPORTED_TYPE);
                     }
                 }
@@ -211,12 +233,16 @@ internal sealed class VariantBody {
     /// <summary>
     /// Retrieves the contained object as int.
     /// </summary>
-    internal int ObjectAsInt {
-        get {
-            try {
+    internal int ObjectAsInt
+    {
+        get
+        {
+            try
+            {
                 return (int)_object;
             }
-            catch (InvalidCastException e) {
+            catch (InvalidCastException e)
+            {
                 throw new InvalidOperationException(e.Message);
             }
         }
@@ -225,12 +251,16 @@ internal sealed class VariantBody {
     /// <summary>
     /// Retrieves the contained object as long
     /// </summary>
-    internal long ObjectAsLong {
-        get {
-            try {
+    internal long ObjectAsLong
+    {
+        get
+        {
+            try
+            {
                 return (long)_object;
             }
-            catch (InvalidCastException e) {
+            catch (InvalidCastException e)
+            {
                 throw new InvalidOperationException(e.Message);
             }
         }
@@ -239,12 +269,16 @@ internal sealed class VariantBody {
     /// <summary>
     /// Retrieves the contained object as ulong
     /// </summary>
-    internal ulong ObjectAsUlong {
-        get {
-            try {
+    internal ulong ObjectAsUlong
+    {
+        get
+        {
+            try
+            {
                 return (ulong)_object;
             }
-            catch (InvalidCastException e) {
+            catch (InvalidCastException e)
+            {
                 throw new InvalidOperationException(e.Message);
             }
         }
@@ -253,12 +287,16 @@ internal sealed class VariantBody {
     /// <summary>
     /// Retrieves the contained object as unsigned
     /// </summary>
-    internal byte ObjectAsByte {
-        get {
-            try {
+    internal byte ObjectAsByte
+    {
+        get
+        {
+            try
+            {
                 return (byte)_object;
             }
-            catch (InvalidCastException e) {
+            catch (InvalidCastException e)
+            {
                 throw new InvalidOperationException(e.Message);
             }
         }
@@ -267,12 +305,16 @@ internal sealed class VariantBody {
     /// <summary>
     /// Retrieves the contained object as unsigned
     /// </summary>
-    internal ushort ObjectAsUShort {
-        get {
-            try {
+    internal ushort ObjectAsUShort
+    {
+        get
+        {
+            try
+            {
                 return (ushort)_object;
             }
-            catch (InvalidCastException e) {
+            catch (InvalidCastException e)
+            {
                 throw new InvalidOperationException(e.Message);
             }
         }
@@ -281,12 +323,16 @@ internal sealed class VariantBody {
     /// <summary>
     /// Retrieves the contained object as unsigned
     /// </summary>
-    internal uint ObjectAsUnsigned {
-        get {
-            try {
+    internal uint ObjectAsUnsigned
+    {
+        get
+        {
+            try
+            {
                 return (uint)_object;
             }
-            catch (InvalidCastException e) {
+            catch (InvalidCastException e)
+            {
                 throw new InvalidOperationException(e.Message);
             }
         }
@@ -295,12 +341,16 @@ internal sealed class VariantBody {
     /// <summary>
     /// Retrieves the contained object as scode
     /// </summary>
-    internal int ObjectAsSCODE {
-        get {
-            try {
+    internal int ObjectAsSCODE
+    {
+        get
+        {
+            try
+            {
                 return ((Scode)_object).ErrorCode;
             }
-            catch (InvalidCastException e) {
+            catch (InvalidCastException e)
+            {
                 throw new InvalidOperationException(e.Message);
             }
         }
@@ -309,12 +359,16 @@ internal sealed class VariantBody {
     /// <summary>
     /// Retrieves the contained object as float.
     /// </summary>
-    internal float ObjectAsFloat {
-        get {
-            try {
+    internal float ObjectAsFloat
+    {
+        get
+        {
+            try
+            {
                 return (float)_object;
             }
-            catch (InvalidCastException e) {
+            catch (InvalidCastException e)
+            {
                 throw new InvalidOperationException(e.Message);
             }
         }
@@ -323,12 +377,16 @@ internal sealed class VariantBody {
     /// <summary>
     /// Retrieves the contained object as double.
     /// </summary>
-    internal double ObjectAsDouble {
-        get {
-            try {
+    internal double ObjectAsDouble
+    {
+        get
+        {
+            try
+            {
                 return (double)_object;
             }
-            catch (InvalidCastException e) {
+            catch (InvalidCastException e)
+            {
                 throw new InvalidOperationException(e.Message);
             }
         }
@@ -337,12 +395,16 @@ internal sealed class VariantBody {
     /// <summary>
     /// Retrieves the contained object as short.
     /// </summary>
-    internal short ObjectAsShort {
-        get {
-            try {
+    internal short ObjectAsShort
+    {
+        get
+        {
+            try
+            {
                 return (short)_object;
             }
-            catch (InvalidCastException e) {
+            catch (InvalidCastException e)
+            {
                 throw new InvalidOperationException(e.Message);
             }
         }
@@ -351,12 +413,16 @@ internal sealed class VariantBody {
     /// <summary>
     /// Retrieves the contained object as bool.
     /// </summary>
-    internal bool ObjectAsBoolean {
-        get {
-            try {
+    internal bool ObjectAsBoolean
+    {
+        get
+        {
+            try
+            {
                 return (bool)_object;
             }
-            catch (InvalidCastException e) {
+            catch (InvalidCastException e)
+            {
                 throw new InvalidOperationException(e.Message);
             }
         }
@@ -365,12 +431,16 @@ internal sealed class VariantBody {
     /// <summary>
     /// Retrieves the contained object as <see cref="ComString"/>.
     /// </summary>
-    internal ComString ObjectAsString {
-        get {
-            try {
+    internal ComString ObjectAsString
+    {
+        get
+        {
+            try
+            {
                 return (ComString)_object;
             }
-            catch (InvalidCastException e) {
+            catch (InvalidCastException e)
+            {
                 throw new InvalidOperationException(e.Message);
             }
         }
@@ -379,12 +449,16 @@ internal sealed class VariantBody {
     /// <summary>
     /// Retrieves the contained object as Date.
     /// </summary>
-    internal DateTime ObjectAsDate {
-        get {
-            try {
+    internal DateTime ObjectAsDate
+    {
+        get
+        {
+            try
+            {
                 return (DateTime)_object;
             }
-            catch (InvalidCastException e) {
+            catch (InvalidCastException e)
+            {
                 throw new InvalidOperationException(e.Message);
             }
         }
@@ -393,12 +467,16 @@ internal sealed class VariantBody {
     /// <summary>
     /// Retrieves the contained object as char.
     /// </summary>
-    internal char ObjectAsChar {
-        get {
-            try {
+    internal char ObjectAsChar
+    {
+        get
+        {
+            try
+            {
                 return (char)_object;
             }
-            catch (InvalidCastException e) {
+            catch (InvalidCastException e)
+            {
                 throw new InvalidOperationException(e.Message);
             }
         }
@@ -407,12 +485,16 @@ internal sealed class VariantBody {
     /// <summary>
     /// Retrieves the contained object as Variant.
     /// </summary>
-    internal Variant ObjectAsVariant {
-        get {
-            try {
+    internal Variant ObjectAsVariant
+    {
+        get
+        {
+            try
+            {
                 return (Variant)_object;
             }
-            catch (InvalidCastException e) {
+            catch (InvalidCastException e)
+            {
                 throw new InvalidOperationException(e.Message);
             }
         }
@@ -421,12 +503,16 @@ internal sealed class VariantBody {
     /// <summary>
     /// Returns the contained object as com object
     /// </summary>
-    internal IComObject ObjectAsComObject {
-        get {
-            try {
+    internal IComObject ObjectAsComObject
+    {
+        get
+        {
+            try
+            {
                 return (IComObject)_object;
             }
-            catch (InvalidCastException e) {
+            catch (InvalidCastException e)
+            {
                 throw new InvalidOperationException(e.Message);
             }
         }
@@ -437,10 +523,12 @@ internal sealed class VariantBody {
     /// </summary>
     /// <param name="ndr"></param>
     /// <param name="context"></param>
-    internal void Encode(NdrCodec ndr, CodecContext context) {
+    internal void Encode(NdrCodec ndr, CodecContext context)
+    {
 
         // Start local decoder context
-        var localContext = new CodecContext {
+        var localContext = new CodecContext
+        {
             ComObjects = context.ComObjects,
             CurrentSession = context.CurrentSession,
             Flag = context.Flag | _flag
@@ -460,7 +548,8 @@ internal sealed class VariantBody {
 
         // For IUnknown, since the inner object is a ComObjectImpl it will be fine.
         if ((localContext.Flag & InteropFlags.FLAG_REPRESENTATION_IDISPATCH_NULL_FOR_OUT) ==
-                                 InteropFlags.FLAG_REPRESENTATION_IDISPATCH_NULL_FOR_OUT) {
+                                 InteropFlags.FLAG_REPRESENTATION_IDISPATCH_NULL_FOR_OUT)
+        {
             varType = IsByRef ? VariantType.VT_BYREF | VariantType.VT_DISPATCH : VariantType.VT_DISPATCH;
         }
         ndr.WriteUnsignedShort((int)varType);
@@ -473,32 +562,42 @@ internal sealed class VariantBody {
         ndr.WriteUnsignedSmall(0xCC);
         ndr.WriteUnsignedSmall(0xCC);
 
-        if (_object != null) {
+        if (_object != null)
+        {
             ndr.WriteUnsignedLong((int)varType);
         }
-        else {
-            if (!IsByRef) {
+        else
+        {
+            if (!IsByRef)
+            {
                 ndr.WriteUnsignedLong((int)VariantType.VT_ARRAY);
             }
-            else {
+            else
+            {
                 ndr.WriteUnsignedLong((int)VariantType.VT_BYREF_VT_ARRAY);
             }
         }
 
-        if (IsByRef) {
+        if (IsByRef)
+        {
             int byRefFlag;
-            if (IsArray) { // object arrays will come here....
+            if (IsArray)
+            { // object arrays will come here....
                 byRefFlag = 4;
             }
-            else {
+            else
+            {
                 // no idea what these flags are but 0x10 is for variant, 0x8 for date, and 0x4 is for others
-                if (_type == VariantType.VT_BYREF_VT_VARIANT) {
+                if (_type == VariantType.VT_BYREF_VT_VARIANT)
+                {
                     byRefFlag = 0x10;
                 }
-                else if (_type == VariantType.VT_BYREF_VT_DATE || _type == VariantType.VT_BYREF_VT_CY) {
+                else if (_type == VariantType.VT_BYREF_VT_DATE || _type == VariantType.VT_BYREF_VT_CY)
+                {
                     byRefFlag = 8;
                 }
-                else {
+                else
+                {
                     byRefFlag = 4;
                 }
             }
@@ -524,25 +623,30 @@ internal sealed class VariantBody {
     /// <param name="c"></param>
     /// <param name="obj"></param>
     /// <returns></returns>
-    private int GetMaxLength2(Type c, object obj) {
+    private int GetMaxLength2(Type c, object obj)
+    {
         var length = 0;
 
         // since this is GetMaxLength2 and hence will either contain
         // proper type 3 elements and not EMPTY,NULL,SCODE since these are parts of Variant.
         // and not simple types like Integer or Float etc.
-        if (kType3.Contains(c)) {
+        if (kType3.Contains(c))
+        {
             length = MarshalUnMarshalHelper.GetLengthInBytes(c, obj, _flag);
         }
         else if (c.Equals(typeof(long)) ||
             c.Equals(typeof(double)) ||
             c.Equals(typeof(DateTime)) ||
-            c.Equals(typeof(Currency))) {
+            c.Equals(typeof(Currency)))
+        {
             length = 8;
         }
-        else if (c.Equals(typeof(ComString))) {
+        else if (c.Equals(typeof(ComString)))
+        {
             length = MarshalUnMarshalHelper.GetLengthInBytes(c, obj, _flag);
         }
-        else if (obj is IComObject) {
+        else if (obj is IComObject)
+        {
             // for Interface pointers without
             double value = ((IComObjectInternal)obj).GetInterfacePointer().Length;
             value = value + 4 + 4 + 4; // 20 of variant, 4 of the ptr, 4 of max count, 4 of actual count
@@ -554,8 +658,10 @@ internal sealed class VariantBody {
     /// Get array length for var type
     /// </summary>
     /// <exception cref="InteropException"></exception>
-    private int ArrayLengthForVarType {
-        get {
+    private int ArrayLengthForVarType
+    {
+        get
+        {
             // now the array will be of variants, nestedArraysRealClass identifies the class itself
             // for iteration we need the variants and then there members.
 
@@ -563,7 +669,8 @@ internal sealed class VariantBody {
             var array = (object[])objArray.ArrayInstance;
 
             var length = 20; // variant
-            if (IsByRef) {
+            if (IsByRef)
+            {
                 length += 4; // byref
             }
 
@@ -573,11 +680,14 @@ internal sealed class VariantBody {
             var isVariantArray = ((short)_safeArrayStruct.GetMember(1) & Variant.FADF_VARIANT) ==
                 Variant.FADF_VARIANT;
 
-            if (array != null) {
+            if (array != null)
+            {
                 length += 4; // for max count of the array.
-                if (isVariantArray) {
+                if (isVariantArray)
+                {
                     // each variant is 3 (size 20 = 20/8 = 3)
-                    for (var i = 0; i < array.Length; i++) {
+                    for (var i = 0; i < array.Length; i++)
+                    {
                         var variant = (Variant)array[i];
                         length += variant.GetLengthInBytes(_flag);
                     }
@@ -585,18 +695,22 @@ internal sealed class VariantBody {
                     // now for the "user" pointer part
                     // length = length + array.length * 4;
                 }
-                else {
+                else
+                {
                     // normal non variant array has been sent...
-                    for (var i = 0; i < array.Length; i++) {
+                    for (var i = 0; i < array.Length; i++)
+                    {
                         length += GetMaxLength2(array[i].GetType(), array[i]);
                     }
                 }
             }
-            else {
+            else
+            {
                 length += 4; // for the null 0000.
             }
             var value = length / 8;
-            if (length % 8 != 0) {
+            if (length % 8 != 0)
+            {
                 value++;
             }
             return value;
@@ -609,10 +723,12 @@ internal sealed class VariantBody {
     /// <param name="ndr"></param>
     /// <param name="context"></param>
     /// <returns></returns>
-    internal static VariantBody Decode(NdrCodec ndr, CodecContext context) {
+    internal static VariantBody Decode(NdrCodec ndr, CodecContext context)
+    {
 
         // Start local decoder context
-        var localContext = new CodecContext {
+        var localContext = new CodecContext
+        {
             ComObjects = context.ComObjects,
             CurrentSession = context.CurrentSession,
             Flag = context.Flag
@@ -633,50 +749,63 @@ internal sealed class VariantBody {
         ndr.ReadUnsignedLong(); // 32 bit varType
 
         VariantBody variant;
-        if ((variantType & VariantType.VT_ARRAY) == VariantType.VT_ARRAY) {
+        if ((variantType & VariantType.VT_ARRAY) == VariantType.VT_ARRAY)
+        {
             var isByRef = (variantType & VariantType.VT_BYREF) != VariantType.VT_EMPTY;
             // the struct may be null if the array has nothing
             var safeArray = GetDecodedValueAsArray(ndr, variantType & ~VariantType.VT_ARRAY, isByRef, context);
             var type2 = variantType;
-            if (isByRef) {
+            if (isByRef)
+            {
                 type2 &= ~VariantType.VT_BYREF; // so that actual type can be determined
             }
 
             type2 &= VariantType.VT_TYPEMASK;
-            if (type2 == VariantType.VT_INT) {
+            if (type2 == VariantType.VT_INT)
+            {
                 localContext.Flag |= InteropFlags.FLAG_REPRESENTATION_VT_INT;
             }
-            else {
-                if (type2 == VariantType.VT_UINT) {
+            else
+            {
+                if (type2 == VariantType.VT_UINT)
+                {
                     localContext.Flag |= InteropFlags.FLAG_REPRESENTATION_VT_UINT;
                 }
-                else {
-                    if (type2 == VariantType.VT_BOOL) {
+                else
+                {
+                    if (type2 == VariantType.VT_BOOL)
+                    {
                         localContext.Flag |= InteropFlags.FLAG_REPRESENTATION_VARIANT_BOOL;
                     }
                 }
             }
 
-            if (safeArray != null) {
+            if (safeArray != null)
+            {
                 variant = new VariantBody(safeArray, Variant.GetSupportedClass(type2 & ~VariantType.VT_ARRAY),
                     ((object[])((ComArray)safeArray.GetMember(8)).ArrayInstance).Length > 1, isByRef, localContext.Flag);
             }
-            else {
+            else
+            {
                 variant = new VariantBody(null, Variant.GetSupportedClass(type2 & ~VariantType.VT_ARRAY),
                     false, isByRef, localContext.Flag);
             }
 
             variant._flag = localContext.Flag;
         }
-        else {
+        else
+        {
             var isByRef = (variantType & VariantType.VT_BYREF) != VariantType.VT_EMPTY;
             variant = new VariantBody(GetDecodedValue(ndr, variantType, isByRef, localContext), isByRef, variantType);
             var type2 = variantType & VariantType.VT_TYPEMASK;
-            if (type2 == VariantType.VT_INT) {
+            if (type2 == VariantType.VT_INT)
+            {
                 variant._flag = InteropFlags.FLAG_REPRESENTATION_VT_INT;
             }
-            else {
-                if (type2 == VariantType.VT_UINT) {
+            else
+            {
+                if (type2 == VariantType.VT_UINT)
+                {
                     variant._flag = InteropFlags.FLAG_REPRESENTATION_VT_UINT;
                 }
             }
@@ -685,19 +814,23 @@ internal sealed class VariantBody {
         // Finally Decode all deferred pointers
         localContext.DecodeDeferredPointers(ndr);
 
-        if (variant.IsArray && variant._safeArrayStruct != null) {
+        if (variant.IsArray && variant._safeArrayStruct != null)
+        {
             // SafeArray have the alignment rule, that all Size <=4 are aligned by 4 and size 8 is aligned by 8.
             // Variant is aligned by 4, Interface pointers are aligned by 4 as well.
             // but this should not exceed the length
             var index = ndr.Buffer.Index;
             length = (length * 8) + start;
-            if (index < length) {
+            if (index < length)
+            {
                 var safeArrayStruct = variant._safeArrayStruct;
                 var size = (int)safeArrayStruct.GetMember(2);
-                if (size == 8) {
+                if (size == 8)
+                {
                     ndr.SkipAligned(8);
                 }
-                else {
+                else
+                {
                     // align by 4...
                     // TODO this needs to be tested for Structs and Unions.
                     ndr.SkipAligned(4);
@@ -707,10 +840,12 @@ internal sealed class VariantBody {
             ComArray array;
 
             // SafeArray is complete
-            try {
+            try
+            {
                 array = variant.Array;
             }
-            catch (InteropException e) {
+            catch (InteropException e)
+            {
                 throw new InteropRuntimeException(e.ErrorCode);
             }
             var variantMain = new Variant(array, variant.IsByRef, variant._flag);
@@ -725,12 +860,14 @@ internal sealed class VariantBody {
     /// </summary>
     /// <param name="type"></param>
     /// <returns></returns>
-    private static Type GetVarClass(VariantType type) {
+    private static Type GetVarClass(VariantType type)
+    {
         // now first to check if this is a pointer or not.
         type &= VariantType.VT_TYPEMASK; // 0x4XXX & 0x0FFF = real type
 
         Type c;
-        switch (type) {
+        switch (type)
+        {
             case VariantType.VT_EMPTY: // Not specified.
                 c = typeof(Empty);
                 break;
@@ -742,7 +879,8 @@ internal sealed class VariantBody {
                 break;
             default:
                 c = Variant.GetSupportedClass(type);
-                if (c == null) {
+                if (c == null)
+                {
                     // TODO log this, what has come that i don't support.
                 }
                 break;
@@ -756,37 +894,47 @@ internal sealed class VariantBody {
     /// <param name="c"></param>
     /// <param name="obj"></param>
     /// <returns></returns>
-    private VariantType GetVarType(Type c, object obj) {
+    private VariantType GetVarType(Type c, object obj)
+    {
         var type = VariantType.VT_EMPTY;
-        if (obj is IDispatch) {
+        if (obj is IDispatch)
+        {
             return IsByRef ? VariantType.VT_BYREF | VariantType.VT_DISPATCH : VariantType.VT_DISPATCH;
         }
-        if (obj is IComObject) {
+        if (obj is IComObject)
+        {
             return IsByRef ? VariantType.VT_BYREF | VariantType.VT_UNKNOWN : VariantType.VT_UNKNOWN;
         }
-        if (c != null) {
+        if (c != null)
+        {
             var type2 = Variant.GetSupportedType(c, _flag);
-            if (type2 != null) {
+            if (type2 != null)
+            {
                 type = type2.Value;
             }
-            else {
+            else
+            {
                 Log.Logger.Warning("In getVarType: Unsupported Type found ! " + c +
                     ", please add this to the supportedType map ! ");
                 // make that an array of variants
                 type2 = Variant.GetSupportedType(typeof(Variant), _flag);
             }
 
-            if (IsNull) {
+            if (IsNull)
+            {
                 type = VariantType.VT_NULL;
             }
-            else if (_isScode) {
+            else if (_isScode)
+            {
                 type = VariantType.VT_ERROR; // scode
             }
-            else if (IsArray) {
+            else if (IsArray)
+            {
                 type = VariantType.VT_ARRAY | type;
             }
         }
-        if (IsByRef && type != VariantType.VT_EMPTY && !c.Equals(typeof(ComArray))) {
+        if (IsByRef && type != VariantType.VT_EMPTY && !c.Equals(typeof(ComArray)))
+        {
             // then it is a pointer. have to set it correctly
             type |= VariantType.VT_BYREF;
         }
@@ -802,37 +950,45 @@ internal sealed class VariantBody {
     /// <param name="context"></param>
     /// <returns></returns>
     private static object GetDecodedValue(NdrCodec ndr, VariantType type, bool isByRef,
-        CodecContext context) {
+        CodecContext context)
+    {
 
         object obj = null;
         var c = GetVarClass(type);
-        if (c != null) {
-            if (isByRef) {
+        if (c != null)
+        {
+            if (isByRef)
+            {
                 ndr.ReadUnsignedLong(); // Read the Pointer
             }
-            if (c.Equals(typeof(Scode))) {
+            if (c.Equals(typeof(Scode)))
+            {
                 obj = MarshalUnMarshalHelper.Deserialize(ndr, typeof(int), context);
                 obj = new Scode((int)obj);
             }
-            else if (c.Equals(typeof(Null))) {
+            else if (c.Equals(typeof(Null)))
+            {
                 // have read 20 bytes
                 obj = Null.Value;
             }
             else if (c.Equals(typeof(Empty))) // empty is 20 bytes
-               {
+            {
                 obj = Empty.Value;
             }
-            else if (c.Equals(typeof(ComString))) {
+            else if (c.Equals(typeof(ComString)))
+            {
                 obj = new ComString(InteropFlags.FLAG_REPRESENTATION_STRING_BSTR);
                 obj = ((ComString)obj).Decode(ndr, context);
             }
-            else if (c.Equals(typeof(bool))) {
+            else if (c.Equals(typeof(bool)))
+            {
                 var oldFlags = context.Flag;
                 context.Flag |= InteropFlags.FLAG_REPRESENTATION_VARIANT_BOOL;
                 obj = MarshalUnMarshalHelper.Deserialize(ndr, c, context);
                 context.Flag = oldFlags;
             }
-            else {
+            else
+            {
                 obj = MarshalUnMarshalHelper.Deserialize(ndr, c, context);
             }
         }
@@ -848,22 +1004,26 @@ internal sealed class VariantBody {
     /// <param name="context"></param>
     /// <returns></returns>
     private static Struct GetDecodedValueAsArray(NdrCodec ndr,
-        VariantType type, bool isByRef, CodecContext context) {
+        VariantType type, bool isByRef, CodecContext context)
+    {
         // int newFLAG = flag;
-        if (isByRef) {
+        if (isByRef)
+        {
             ndr.ReadUnsignedLong(); // read the pointer
             type &= ~VariantType.VT_BYREF; // so that actual type can be determined
         }
 
         // read pointer referent id
-        if (ndr.ReadUnsignedLong() == 0) {
+        if (ndr.ReadUnsignedLong() == 0)
+        {
             return null;
         }
 
         ndr.ReadUnsignedLong(); // 1
 
         var safeArray = new Struct();
-        try {
+        try
+        {
             safeArray.AddMember(typeof(short)); // dim
 
             var safeArrayBound = new Struct();
@@ -878,7 +1038,8 @@ internal sealed class VariantBody {
             safeArray.AddMember(typeof(int)); // size in safearrayunion
 
             var c = Variant.GetSupportedClass(type);
-            if (c == null) {
+            if (c == null)
+            {
                 Log.Logger.Warning("From Variant: while decoding an Array, type " + type + ", " +
                     "was not found in supportedTypes_classes map, hence using Variant instead...");
                 // not available, lets try with <see cref="Variant"/>.
@@ -892,12 +1053,14 @@ internal sealed class VariantBody {
             // exception when the result is returned back is not an array of strings...
             // c = <see cref="Variant"/>.class;
             ComArray values = null;
-            if (c == typeof(ComString)) {
+            if (c == typeof(ComString))
+            {
                 values = new ComArray(new ComString(InteropFlags.FLAG_REPRESENTATION_STRING_BSTR), null, 1, true);
                 safeArray.AddMember(new ComPointer(values)); // single dimension array, will convert it into the
                                                              // [] or [][] after inspecting dimension read.
             }
-            else {
+            else
+            {
                 values = new ComArray(c, null, 1, true);
                 safeArray.AddMember(new ComPointer(values)); // single dimension array, will convert it into the
                                                              // [] or [][] after inspecting dimension read.
@@ -906,7 +1069,8 @@ internal sealed class VariantBody {
             safeArray.AddMember(new ComArray(safeArrayBound, null, 1, true));
 
             var oldFlags = context.Flag;
-            if (c == typeof(bool)) {
+            if (c == typeof(bool))
+            {
                 context.Flag |= InteropFlags.FLAG_REPRESENTATION_VARIANT_BOOL;
             }
             safeArray = (Struct)MarshalUnMarshalHelper.Deserialize(ndr, safeArray, context);
@@ -916,16 +1080,19 @@ internal sealed class VariantBody {
             var features = (short)safeArray.GetMember(1);
             // this condition is being kept in the front since the feature flags can be a combination of FADF_VARIANT and the
             // other flags, in which case the Variant takes priority (since they will all be wrapped as variants).
-            if ((features & Variant.FADF_VARIANT) == Variant.FADF_VARIANT) {
+            if ((features & Variant.FADF_VARIANT) == Variant.FADF_VARIANT)
+            {
                 values.UpdateType(typeof(Variant));
             }
             else if (((features & Variant.FADF_DISPATCH) == Variant.FADF_DISPATCH) ||
-                    ((features & Variant.FADF_UNKNOWN) == Variant.FADF_UNKNOWN)) {
+                    ((features & Variant.FADF_UNKNOWN) == Variant.FADF_UNKNOWN))
+            {
                 values.UpdateType(typeof(IComObject));
             }
             // For <see cref="ComString"/>s, it will be done before these above conditions are examined.
         }
-        catch (InteropException e) {
+        catch (InteropException e)
+        {
             throw new InteropRuntimeException(e.ErrorCode);
         }
         return safeArray;
@@ -937,23 +1104,28 @@ internal sealed class VariantBody {
     /// <param name="ndr"></param>
     /// <param name="obj"></param>
     /// <param name="context"></param>
-    private void SetValue(NdrCodec ndr, object obj, CodecContext context) {
-        if (IsNull) {
+    private void SetValue(NdrCodec ndr, object obj, CodecContext context)
+    {
+        if (IsNull)
+        {
             return; // null, is only 20 bytes
         }
-        if (obj != null) {
+        if (obj != null)
+        {
             var c = obj.GetType();
 
             if (c.Equals(typeof(Empty))) // 20 bytes
             {
                 return;
             }
-            if (obj is IComObject) {
+            if (obj is IComObject)
+            {
                 c = typeof(IComObject);
             }
             MarshalUnMarshalHelper.Serialize(ndr, c, obj, context);
         }
-        else {
+        else
+        {
 
             ndr.WriteUnsignedLong(new object().GetHashCode()); // pointer referentId
             ndr.WriteUnsignedLong(1);
@@ -970,18 +1142,24 @@ internal sealed class VariantBody {
     /// <summary>
     /// Total length in bytes
     /// </summary>
-    internal int LengthInBytes {
-        get {
-            if (_safeArrayStruct == null && _object.GetType().Equals(typeof(Empty))) {
+    internal int LengthInBytes
+    {
+        get
+        {
+            if (_safeArrayStruct == null && _object.GetType().Equals(typeof(Empty)))
+            {
                 return 28;
             }
 
-            if (IsArray) {
+            if (IsArray)
+            {
                 int length;
-                try {
+                try
+                {
                     length = ArrayLengthForVarType * 8;
                 }
-                catch (InteropException e) {
+                catch (InteropException e)
+                {
                     throw new InvalidOperationException("Unable to compute VARIANT array length.", e);
                 }
 
@@ -989,14 +1167,18 @@ internal sealed class VariantBody {
             }
             var c = _object.GetType();
 
-            if (_object is IComObject) {
+            if (_object is IComObject)
+            {
                 c = typeof(IComObject);
             }
-            else {
-                if (c.Equals(typeof(Scode))) {
+            else
+            {
+                if (c.Equals(typeof(Scode)))
+                {
                     return 24 + 4; // 4 for integer scode.
                 }
-                if (c.Equals(typeof(Null)) || c.Equals(typeof(Empty))) {
+                if (c.Equals(typeof(Null)) || c.Equals(typeof(Empty)))
+                {
                     return 24;
                 }
             }
@@ -1005,22 +1187,29 @@ internal sealed class VariantBody {
     }
 
     /// <inheritdoc/>
-    public override string ToString() {
+    public override string ToString()
+    {
         var retVal = "";
-        if (_object == null) {
+        if (_object == null)
+        {
             retVal += "obj is null, ";
         }
-        else {
+        else
+        {
             retVal += _object.ToString();
         }
-        if (IsArray) {
-            if (_is2Dimensional) {
+        if (IsArray)
+        {
+            if (_is2Dimensional)
+            {
                 retVal += "2 dimensional array, ";
             }
-            else {
+            else
+            {
                 retVal = "1 dimensional array, ";
             }
-            if (_safeArrayStruct != null) {
+            if (_safeArrayStruct != null)
+            {
                 retVal += _safeArrayStruct.ToString();
             }
         }
@@ -1028,8 +1217,10 @@ internal sealed class VariantBody {
         return retVal;
     }
 
-    private static object GetSafeArrayElementValue(object value, Type elementType) {
-        if (elementType != typeof(Variant) && value is Variant variant) {
+    private static object GetSafeArrayElementValue(object value, Type elementType)
+    {
+        if (elementType != typeof(Variant) && value is Variant variant)
+        {
             return variant.Object;
         }
 

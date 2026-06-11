@@ -12,7 +12,8 @@ namespace Opc.Classic.Dcom.Automation;
 /// </i>
 /// </summary>
 [Serializable]
-public sealed class ArrayDesc {
+public sealed class ArrayDesc
+{
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 #pragma warning disable IDE1006 // Naming Styles
@@ -26,8 +27,10 @@ public sealed class ArrayDesc {
     /// Create description
     /// </summary>
     /// <param name="values"></param>
-    internal ArrayDesc(Struct values) {
-        if (values == null) {
+    internal ArrayDesc(Struct values)
+    {
+        if (values == null)
+        {
             typeDesc = null;
             cDims = -1;
             safeArrayBounds = null;
@@ -39,13 +42,16 @@ public sealed class ArrayDesc {
         var arry = (ComArray)values.GetMember(2);
         var arry2 = (object[])arry.ArrayInstance;
 
-        if (arry2 != null) {
+        if (arry2 != null)
+        {
             safeArrayBounds = new SafeArrayBounds[arry2.Length];
-            for (var i = 0; i < arry2.Length; i++) {
+            for (var i = 0; i < arry2.Length; i++)
+            {
                 safeArrayBounds[i] = new SafeArrayBounds((Struct)arry2[i]);
             }
         }
-        else {
+        else
+        {
             safeArrayBounds = null;
         }
     }
@@ -55,6 +61,7 @@ public sealed class ArrayDesc {
     /// </summary>
     /// <param name="values"></param>
     internal ArrayDesc(ComPointer values) : this(values.IsNull ? null :
-        (Struct)values.Referent) {
+        (Struct)values.Referent)
+    {
     }
 }

@@ -15,15 +15,18 @@ using TUnit.Core;
 
 namespace Opc.Classic.Batch.Tests.Dcom;
 
-public sealed class IOPCBatchProxyTests {
+public sealed class IOPCBatchProxyTests
+{
     private delegate void NdrWriteAction(ref NdrWriter writer);
 
     [Test]
-    public async Task BatchServer_GetDelimiter_invokes_channel_and_decodes_string() {
+    public async Task BatchServer_GetDelimiter_invokes_channel_and_decodes_string()
+    {
         Guid observedIid = Guid.Empty;
         int observedOpnum = -1;
         ReadOnlyMemory<byte> responsePayload = WritePayload((ref NdrWriter writer) => writer.WriteUnicodeStringPtr("/"));
-        var channel = new InMemoryCallChannel((iid, opnum, _, _) => {
+        var channel = new InMemoryCallChannel((iid, opnum, _, _) =>
+        {
             observedIid = iid;
             observedOpnum = opnum;
             return Task.FromResult(new NdrCallResult(0, responsePayload));
@@ -39,13 +42,15 @@ public sealed class IOPCBatchProxyTests {
     }
 
     [Test]
-    public async Task BatchServer_CreateEnumerator_round_trips_interface_ref() {
+    public async Task BatchServer_CreateEnumerator_round_trips_interface_ref()
+    {
         Guid requestedRiid = IEnumOPCBatchSummary.InterfaceId;
         Guid observedIid = Guid.Empty;
         int observedOpnum = -1;
         Guid observedRiid = Guid.Empty;
         ReadOnlyMemory<byte> responsePayload = EncodeObjRef(requestedRiid);
-        var channel = new InMemoryCallChannel((iid, opnum, payload, _) => {
+        var channel = new InMemoryCallChannel((iid, opnum, payload, _) =>
+        {
             observedIid = iid;
             observedOpnum = opnum;
             var reader = new NdrReader(payload.Span);
@@ -64,7 +69,8 @@ public sealed class IOPCBatchProxyTests {
     }
 
     [Test]
-    public async Task BatchServer2_CreateFilteredEnumerator_round_trips_filter_model_and_interface_ref() {
+    public async Task BatchServer2_CreateFilteredEnumerator_round_trips_filter_model_and_interface_ref()
+    {
         Guid requestedRiid = IEnumOPCBatchSummary.InterfaceId;
         var filter = new OpcBatchSummaryFilter(
             Id: "B-2026",
@@ -84,7 +90,8 @@ public sealed class IOPCBatchProxyTests {
         string? observedModel = null;
         Guid observedRiid = Guid.Empty;
         ReadOnlyMemory<byte> responsePayload = EncodeObjRef(requestedRiid);
-        var channel = new InMemoryCallChannel((iid, opnum, payload, _) => {
+        var channel = new InMemoryCallChannel((iid, opnum, payload, _) =>
+        {
             Ensure(iid == IOPCBatchServer2.InterfaceId);
             Ensure(opnum == IOPCBatchServer2.Opnums.CreateFilteredEnumeratorAsync);
             var reader = new NdrReader(payload.Span);
@@ -108,12 +115,14 @@ public sealed class IOPCBatchProxyTests {
     }
 
     [Test]
-    public async Task BatchSummaryEnumerator_Clone_round_trips_interface_ref() {
+    public async Task BatchSummaryEnumerator_Clone_round_trips_interface_ref()
+    {
         Guid observedIid = Guid.Empty;
         int observedOpnum = -1;
         Guid expectedIid = IEnumOPCBatchSummary.InterfaceId;
         ReadOnlyMemory<byte> responsePayload = EncodeObjRef(expectedIid);
-        var channel = new InMemoryCallChannel((iid, opnum, _, _) => {
+        var channel = new InMemoryCallChannel((iid, opnum, _, _) =>
+        {
             observedIid = iid;
             observedOpnum = opnum;
             return Task.FromResult(new NdrCallResult(0, responsePayload));
@@ -129,11 +138,13 @@ public sealed class IOPCBatchProxyTests {
     }
 
     [Test]
-    public async Task BatchSummaryEnumerator_Count_decodes_int32() {
+    public async Task BatchSummaryEnumerator_Count_decodes_int32()
+    {
         Guid observedIid = Guid.Empty;
         int observedOpnum = -1;
         ReadOnlyMemory<byte> responsePayload = WritePayload((ref NdrWriter writer) => writer.WriteInt32(3));
-        var channel = new InMemoryCallChannel((iid, opnum, _, _) => {
+        var channel = new InMemoryCallChannel((iid, opnum, _, _) =>
+        {
             observedIid = iid;
             observedOpnum = opnum;
             return Task.FromResult(new NdrCallResult(0, responsePayload));
@@ -149,14 +160,17 @@ public sealed class IOPCBatchProxyTests {
     }
 
     [Test]
-    public async Task EnumerationSets_QueryEnumerationSets_round_trips_parallel_arrays() {
+    public async Task EnumerationSets_QueryEnumerationSets_round_trips_parallel_arrays()
+    {
         Guid observedIid = Guid.Empty;
         int observedOpnum = -1;
-        ReadOnlyMemory<byte> responsePayload = WritePayload((ref NdrWriter writer) => {
+        ReadOnlyMemory<byte> responsePayload = WritePayload((ref NdrWriter writer) =>
+        {
             WriteInt32Array(ref writer, 0, 2, 6);
             WriteStringArray(ref writer, "OPCB_ENUM_PHYS", "OPCB_ENUM_STATE", "OPCB_ENUM_RE_USE");
         });
-        var channel = new InMemoryCallChannel((iid, opnum, _, _) => {
+        var channel = new InMemoryCallChannel((iid, opnum, _, _) =>
+        {
             observedIid = iid;
             observedOpnum = opnum;
             return Task.FromResult(new NdrCallResult(0, responsePayload));
@@ -173,11 +187,13 @@ public sealed class IOPCBatchProxyTests {
     }
 
     [Test]
-    public async Task EnumerationSets_QueryEnumeration_round_trips_set_value_and_name() {
+    public async Task EnumerationSets_QueryEnumeration_round_trips_set_value_and_name()
+    {
         int observedSet = -1;
         int observedValue = -1;
         ReadOnlyMemory<byte> responsePayload = WritePayload((ref NdrWriter writer) => writer.WriteUnicodeStringPtr("RUNNING"));
-        var channel = new InMemoryCallChannel((iid, opnum, payload, _) => {
+        var channel = new InMemoryCallChannel((iid, opnum, payload, _) =>
+        {
             Ensure(iid == IOPCEnumerationSets.InterfaceId);
             Ensure(opnum == IOPCEnumerationSets.Opnums.QueryEnumerationAsync);
             var reader = new NdrReader(payload.Span);
@@ -195,13 +211,16 @@ public sealed class IOPCBatchProxyTests {
     }
 
     [Test]
-    public async Task EnumerationSets_QueryEnumerationList_round_trips_parallel_arrays() {
+    public async Task EnumerationSets_QueryEnumerationList_round_trips_parallel_arrays()
+    {
         int observedSet = -1;
-        ReadOnlyMemory<byte> responsePayload = WritePayload((ref NdrWriter writer) => {
+        ReadOnlyMemory<byte> responsePayload = WritePayload((ref NdrWriter writer) =>
+        {
             WriteInt32Array(ref writer, 0, 1, 2);
             WriteStringArray(ref writer, "IDLE", "RUNNING", "COMPLETE");
         });
-        var channel = new InMemoryCallChannel((iid, opnum, payload, _) => {
+        var channel = new InMemoryCallChannel((iid, opnum, payload, _) =>
+        {
             Ensure(iid == IOPCEnumerationSets.InterfaceId);
             Ensure(opnum == IOPCEnumerationSets.Opnums.QueryEnumerationListAsync);
             var reader = new NdrReader(payload.Span);
@@ -217,7 +236,8 @@ public sealed class IOPCBatchProxyTests {
         await Assert.That(names).IsEquivalentTo(["IDLE", "RUNNING", "COMPLETE"]);
     }
 
-    private static ReadOnlyMemory<byte> EncodeObjRef(Guid iid) => WritePayload((ref NdrWriter writer) => {
+    private static ReadOnlyMemory<byte> EncodeObjRef(Guid iid) => WritePayload((ref NdrWriter writer) =>
+    {
         writer.WriteUInt32(0x574F454Du);
         writer.WriteUInt32(0x00000001u);
         writer.WriteGuid(iid);
@@ -230,29 +250,36 @@ public sealed class IOPCBatchProxyTests {
         writer.WriteUInt16(0);
     });
 
-    private static ReadOnlyMemory<byte> WritePayload(NdrWriteAction write, int capacity = 2048) {
+    private static ReadOnlyMemory<byte> WritePayload(NdrWriteAction write, int capacity = 2048)
+    {
         var buffer = new byte[capacity];
         var writer = new NdrWriter(buffer);
         write(ref writer);
         return buffer.AsMemory(0, writer.Position);
     }
 
-    private static void WriteInt32Array(ref NdrWriter writer, params int[] values) {
+    private static void WriteInt32Array(ref NdrWriter writer, params int[] values)
+    {
         writer.WriteUInt32((uint)values.Length);
-        foreach (int value in values) {
+        foreach (int value in values)
+        {
             writer.WriteInt32(value);
         }
     }
 
-    private static void WriteStringArray(ref NdrWriter writer, params string[] values) {
+    private static void WriteStringArray(ref NdrWriter writer, params string[] values)
+    {
         writer.WriteUInt32((uint)values.Length);
-        foreach (string value in values) {
+        foreach (string value in values)
+        {
             writer.WriteUnicodeStringPtr(value);
         }
     }
 
-    private static void Ensure(bool condition) {
-        if (!condition) {
+    private static void Ensure(bool condition)
+    {
+        if (!condition)
+        {
             throw new InvalidOperationException("Unexpected round-trip payload.");
         }
     }

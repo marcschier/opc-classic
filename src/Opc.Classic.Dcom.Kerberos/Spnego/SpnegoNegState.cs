@@ -8,7 +8,8 @@ namespace Opc.Classic.Dcom.Kerberos.Spnego;
 /// <summary>
 /// SPNEGO negotiation result state values from RFC 4178.
 /// </summary>
-public enum SpnegoNegState {
+public enum SpnegoNegState
+{
     /// <summary>
     /// Authentication completed successfully.
     /// </summary>

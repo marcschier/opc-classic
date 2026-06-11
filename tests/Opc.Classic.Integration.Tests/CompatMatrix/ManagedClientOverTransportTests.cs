@@ -54,17 +54,20 @@ namespace Opc.Classic.Integration.Tests.CompatMatrix;
 /// privileged ports / no out-of-process activation is required.
 /// </para>
 /// </remarks>
-public sealed class ManagedClientOverTransportTests {
+public sealed class ManagedClientOverTransportTests
+{
     [Test]
     [Category("CompatMatrix.Loopback")]
-    public async Task Managed_client_round_trips_GetStatus_over_real_listener() {
+    public async Task Managed_client_round_trips_GetStatus_over_real_listener()
+    {
         await using ServiceProvider provider = BuildServiceProvider(
             "Managed transport status server",
             knownItems: ["Random.Int4"]);
         OpcDaServerHost host = ResolveHost(provider);
 
         await host.StartAsync(TestContext.Current!.CancellationToken);
-        try {
+        try
+        {
             await using var channel = await ConnectClientAsync(host);
             var proxy = new IOPCServerClientProxy(channel);
 
@@ -74,21 +77,24 @@ public sealed class ManagedClientOverTransportTests {
             await Assert.That(status.VendorInfo).IsEqualTo("Managed transport status server");
             await Assert.That(status.Spec).IsEqualTo(OpcStatusSpec.Da);
         }
-        finally {
+        finally
+        {
             await host.StopAsync(TestContext.Current!.CancellationToken);
         }
     }
 
     [Test]
     [Category("CompatMatrix.Loopback")]
-    public async Task Managed_client_round_trips_GetErrorString_over_real_listener() {
+    public async Task Managed_client_round_trips_GetErrorString_over_real_listener()
+    {
         await using ServiceProvider provider = BuildServiceProvider(
             "Managed transport error server",
             knownItems: []);
         OpcDaServerHost host = ResolveHost(provider);
 
         await host.StartAsync(TestContext.Current!.CancellationToken);
-        try {
+        try
+        {
             await using var channel = await ConnectClientAsync(host);
             var proxy = new IOPCServerClientProxy(channel);
 
@@ -100,20 +106,23 @@ public sealed class ManagedClientOverTransportTests {
             await Assert.That(text).Contains("0x80004005");
             await Assert.That(text).Contains("0x0409");
         }
-        finally {
+        finally
+        {
             await host.StopAsync(TestContext.Current!.CancellationToken);
         }
     }
 
     [Test]
     [Category("CompatMatrix.Loopback")]
-    public async Task Managed_client_RemoveGroup_routes_to_server_and_records_call() {
+    public async Task Managed_client_RemoveGroup_routes_to_server_and_records_call()
+    {
         StubDaServer stub = StubDaServer.CompatMatrixNet10Server();
         await using ServiceProvider provider = BuildServiceProvider(stub);
         OpcDaServerHost host = ResolveHost(provider);
 
         await host.StartAsync(TestContext.Current!.CancellationToken);
-        try {
+        try
+        {
             await using var channel = await ConnectClientAsync(host);
             var proxy = new IOPCServerClientProxy(channel);
 
@@ -123,21 +132,24 @@ public sealed class ManagedClientOverTransportTests {
             await Assert.That(stub.RemovedGroups[0].ServerGroupHandle).IsEqualTo(1234);
             await Assert.That(stub.RemovedGroups[0].Force).IsTrue();
         }
-        finally {
+        finally
+        {
             await host.StopAsync(TestContext.Current!.CancellationToken);
         }
     }
 
     [Test]
     [Category("CompatMatrix.Loopback")]
-    public async Task Managed_client_two_back_to_back_calls_share_connection() {
+    public async Task Managed_client_two_back_to_back_calls_share_connection()
+    {
         await using ServiceProvider provider = BuildServiceProvider(
             "Managed transport multi-call server",
             knownItems: []);
         OpcDaServerHost host = ResolveHost(provider);
 
         await host.StartAsync(TestContext.Current!.CancellationToken);
-        try {
+        try
+        {
             await using var channel = await ConnectClientAsync(host);
             var proxy = new IOPCServerClientProxy(channel);
 
@@ -147,14 +159,16 @@ public sealed class ManagedClientOverTransportTests {
             await Assert.That(first.VendorInfo).IsEqualTo("Managed transport multi-call server");
             await Assert.That(second.VendorInfo).IsEqualTo("Managed transport multi-call server");
         }
-        finally {
+        finally
+        {
             await host.StopAsync(TestContext.Current!.CancellationToken);
         }
     }
 
     // ----- helpers -----
 
-    private static ServiceProvider BuildServiceProvider(string vendorInfo, IReadOnlyCollection<string> knownItems) {
+    private static ServiceProvider BuildServiceProvider(string vendorInfo, IReadOnlyCollection<string> knownItems)
+    {
         var services = new ServiceCollection();
         services.AddLogging();
         services.AddSingleton<IOpcDaServer>(_ => new StubDaServer(vendorInfo, knownItems));
@@ -162,7 +176,8 @@ public sealed class ManagedClientOverTransportTests {
         services.AddSingleton<OpcObjectRegistry>();
         services.AddSingleton<OpcDaServerHost>();
         services.AddSingleton<IOpcServerHost>(sp => sp.GetRequiredService<OpcDaServerHost>());
-        services.Configure<OpcDaServerOptions>(o => {
+        services.Configure<OpcDaServerOptions>(o =>
+        {
             o.Clsid = Guid.NewGuid();
             o.ProgId = "Managed.Compat.1";
             o.FriendlyName = "Managed transport test server";
@@ -171,7 +186,8 @@ public sealed class ManagedClientOverTransportTests {
         return services.BuildServiceProvider();
     }
 
-    private static ServiceProvider BuildServiceProvider(StubDaServer server) {
+    private static ServiceProvider BuildServiceProvider(StubDaServer server)
+    {
         var services = new ServiceCollection();
         services.AddLogging();
         services.AddSingleton<IOpcDaServer>(server);
@@ -179,7 +195,8 @@ public sealed class ManagedClientOverTransportTests {
         services.AddSingleton<OpcObjectRegistry>();
         services.AddSingleton<OpcDaServerHost>();
         services.AddSingleton<IOpcServerHost>(sp => sp.GetRequiredService<OpcDaServerHost>());
-        services.Configure<OpcDaServerOptions>(o => {
+        services.Configure<OpcDaServerOptions>(o =>
+        {
             o.Clsid = Guid.NewGuid();
             o.ProgId = "Managed.Compat.1";
             o.FriendlyName = "Managed transport test server";
@@ -191,7 +208,8 @@ public sealed class ManagedClientOverTransportTests {
     private static OpcDaServerHost ResolveHost(ServiceProvider provider) =>
         (OpcDaServerHost)provider.GetRequiredService<IOpcServerHost>();
 
-    private static async Task<Opc.Classic.Dcom.Transport.DcomCallChannel> ConnectClientAsync(OpcDaServerHost host) {
+    private static async Task<Opc.Classic.Dcom.Transport.DcomCallChannel> ConnectClientAsync(OpcDaServerHost host)
+    {
         var bound = (IPEndPoint?)host.LocalEndpoint
             ?? throw new InvalidOperationException("Host did not expose a bound endpoint after StartAsync.");
 

@@ -15,7 +15,8 @@ namespace Opc.Classic.Dcom.Rpc;
 /// <summary>
 /// Connection oriented endpoint
 /// </summary>
-public class ConnectionOrientedEndpoint : IEndpoint {
+public class ConnectionOrientedEndpoint : IEndpoint
+{
 
     /// <inheritdoc/>
     public ITransport Transport { get; }
@@ -38,7 +39,8 @@ public class ConnectionOrientedEndpoint : IEndpoint {
     /// </summary>
     /// <param name="transport"></param>
     /// <param name="syntax"></param>
-    public ConnectionOrientedEndpoint(ITransport transport, PresentationSyntax syntax) {
+    public ConnectionOrientedEndpoint(ITransport transport, PresentationSyntax syntax)
+    {
         _contextIdToUse = _contextIdCounter;
         Transport = transport;
         Syntax = syntax;
@@ -46,9 +48,11 @@ public class ConnectionOrientedEndpoint : IEndpoint {
 
     /// <inheritdoc/>
     public virtual void Call(Semantics semantics, UUID objectId,
-        int opnum, NdrOp ndrobj) {
+        int opnum, NdrOp ndrobj)
+    {
         Bind();
-        var request = new RequestCoPdu {
+        var request = new RequestCoPdu
+        {
             ContextId = _contextIdToUse
         };
 
@@ -64,35 +68,42 @@ public class ConnectionOrientedEndpoint : IEndpoint {
         request.AllocationHint = buffer.Length;
         request.Opnum = opnum;
         request.Object = objectId;
-        if ((semantics & Semantics.MAYBE) != Semantics.None) {
+        if ((semantics & Semantics.MAYBE) != Semantics.None)
+        {
             request.SetFlag(ConnectionOrientedPdu.PFC_MAYBE, true);
         }
         Send(request);
 
-        if (request.GetFlag(ConnectionOrientedPdu.PFC_MAYBE)) {
+        if (request.GetFlag(ConnectionOrientedPdu.PFC_MAYBE))
+        {
             return;
         }
         var reply = Receive();
-        if (reply is ResponseCoPdu) {
+        if (reply is ResponseCoPdu)
+        {
             ndr.Format = reply.Format;
 
             buffer = new NdrBuffer(((ResponseCoPdu)reply).Stub, 0);
             Log.Logger.Verbose("\n" + Utils.HexString(buffer.Buf, 0, buffer.Buf.Length));
             ndrobj.Decode(ndr, buffer);
         }
-        else if (reply is FaultCoPdu fault) {
+        else if (reply is FaultCoPdu fault)
+        {
             throw new FaultException("Received fault.", fault.Status, fault.Stub);
         }
-        else if (reply is ShutdownPdu) {
+        else if (reply is ShutdownPdu)
+        {
             throw new RpcException("Received shutdown request from server.");
         }
-        else {
+        else
+        {
             throw new RpcException("Received unexpected PDU from server.");
         }
     }
 
     /// <inheritdoc/>
-    public void Detach() {
+    public void Detach()
+    {
         _bound = false;
         Context = null;
         Transport.Close();
@@ -102,7 +113,8 @@ public class ConnectionOrientedEndpoint : IEndpoint {
     /// Rebind
     /// </summary>
     /// <exception cref="IOException"></exception>
-    protected void Rebind() {
+    protected void Rebind()
+    {
         _bound = false;
         Bind();
     }
@@ -112,38 +124,51 @@ public class ConnectionOrientedEndpoint : IEndpoint {
     /// </summary>
     /// <exception cref="IOException"></exception>
 #pragma warning disable MA0051 // Legacy bind state machine; refactor would risk RPC handshake behavior.
-    protected void Bind() {
-        if (_bound) {
+    protected void Bind()
+    {
+        if (_bound)
+        {
             return;
         }
-        if (Context != null) {
+        if (Context != null)
+        {
             _bound = true;
-            try {
-                if (!_uuidsVsContextIds.TryGetValue(Syntax.ToString().ToUpperInvariant(), out var cid)) {
+            try
+            {
+                if (!_uuidsVsContextIds.TryGetValue(Syntax.ToString().ToUpperInvariant(), out var cid))
+                {
                     cid = null;
                 }
                 var pdu = Context.Alter(new PresentationContext(cid == null ? ++_contextIdCounter : (int)cid, Syntax));
                 var sendAlter = false;
-                if (cid == null) {
+                if (cid == null)
+                {
                     _uuidsVsContextIds[Syntax.ToString().ToUpperInvariant()] = _contextIdCounter;
                     _contextIdToUse = _contextIdCounter;
                     sendAlter = true;
                 }
-                else {
+                else
+                {
                     _contextIdToUse = (int)cid;
                 }
 
-                if (sendAlter) {
-                    if (pdu != null) {
+                if (sendAlter)
+                {
+                    if (pdu != null)
+                    {
                         Send(pdu);
                     }
-                    while (!Context.Established) {
+                    while (!Context.Established)
+                    {
                         var recieved = Receive();
-                        if ((pdu = Context.Accept(recieved)) != null) {
-                            switch (pdu.Type) {
+                        if ((pdu = Context.Accept(recieved)) != null)
+                        {
+                            switch (pdu.Type)
+                            {
                                 case BindAcknowledgePdu.BIND_ACKNOWLEDGE_TYPE:
                                     if (((BindAcknowledgePdu)pdu).ResultList[0].Result /*was: Reason*/ !=
-                                        PresentationResultCode.PROVIDER_REJECTION) {
+                                        PresentationResultCode.PROVIDER_REJECTION)
+                                    {
                                         CurrentIID = ((BindPdu)recieved).ContextList[0]
                                             .AbstractSyntax.Uuid.ToString();
                                     }
@@ -152,7 +177,8 @@ public class ConnectionOrientedEndpoint : IEndpoint {
                                     // we need to record the iid now if this is successful and subsequent
                                     // calls will now be for this iid.
                                     if (((AlterContextResponsePdu)pdu).ResultList[0].Result /*was: Reason*/ !=
-                                        PresentationResultCode.PROVIDER_REJECTION) {
+                                        PresentationResultCode.PROVIDER_REJECTION)
+                                    {
                                         CurrentIID = ((AlterContextPdu)recieved).ContextList[0]
                                             .AbstractSyntax.Uuid.ToString();
                                     }
@@ -166,16 +192,19 @@ public class ConnectionOrientedEndpoint : IEndpoint {
                     }
                 }
             }
-            catch (IOException) {
+            catch (IOException)
+            {
                 _bound = false;
                 throw;
             }
-            catch (Exception) {
+            catch (Exception)
+            {
                 _bound = false;
                 throw;
             }
         }
-        else {
+        else
+        {
             Connect();
         }
     }
@@ -186,7 +215,8 @@ public class ConnectionOrientedEndpoint : IEndpoint {
     /// </summary>
     /// <param name="request"></param>
     /// <exception cref="IOException"></exception>
-    protected void Send(ConnectionOrientedPdu request) {
+    protected void Send(ConnectionOrientedPdu request)
+    {
         Bind();
         Context.Connection.Transmit(request, Transport);
     }
@@ -201,25 +231,33 @@ public class ConnectionOrientedEndpoint : IEndpoint {
     /// Connect
     /// </summary>
     /// <exception cref="IOException"></exception>
-    private void Connect() {
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Meziantou.Analyzer", "MA0051:Method is too long", Justification = "DCE/RPC connection-oriented bind sequence orchestrates context allocation, auth negotiation, and PDU handshake; splitting fragments the state machine.")]
+    private void Connect()
+    {
         _bound = true;
         _contextIdCounter = 0;
         CurrentIID = null;
-        try {
+        try
+        {
             _uuidsVsContextIds[Syntax.ToString().ToUpperInvariant()] = _contextIdCounter;
             Context = CreateContext();
             var pdu = Context.Init(new PresentationContext(_contextIdCounter, Syntax), Transport.Properties);
             _contextIdToUse = _contextIdCounter;
-            if (pdu != null) {
+            if (pdu != null)
+            {
                 Send(pdu);
             }
-            while (!Context.Established) {
+            while (!Context.Established)
+            {
                 var recieved = Receive();
-                if ((pdu = Context.Accept(recieved)) != null) {
-                    switch (pdu.Type) {
+                if ((pdu = Context.Accept(recieved)) != null)
+                {
+                    switch (pdu.Type)
+                    {
                         case BindAcknowledgePdu.BIND_ACKNOWLEDGE_TYPE:
                             if (((BindAcknowledgePdu)pdu).ResultList[0].Result /*was: Reason*/ !=
-                                PresentationResultCode.PROVIDER_REJECTION) {
+                                PresentationResultCode.PROVIDER_REJECTION)
+                            {
                                 CurrentIID = ((BindPdu)recieved).ContextList[0].AbstractSyntax.Uuid.ToString();
                             }
                             break;
@@ -227,7 +265,8 @@ public class ConnectionOrientedEndpoint : IEndpoint {
                             // we need to record the iid now if this is successful and subsequent calls
                             // will now be for this iid.
                             if (((AlterContextResponsePdu)pdu).ResultList[0].Result /*was: Reason*/ !=
-                                PresentationResultCode.PROVIDER_REJECTION) {
+                                PresentationResultCode.PROVIDER_REJECTION)
+                            {
                                 CurrentIID = ((AlterContextPdu)recieved).ContextList[0].AbstractSyntax.Uuid.ToString();
                             }
                             break;
@@ -236,19 +275,25 @@ public class ConnectionOrientedEndpoint : IEndpoint {
                 }
             }
         }
-        catch (IOException) {
-            try {
+        catch (IOException)
+        {
+            try
+            {
                 Detach();
             }
-            catch (IOException) {
+            catch (IOException)
+            {
             }
             throw;
         }
-        catch (Exception) {
-            try {
+        catch (Exception)
+        {
+            try
+            {
                 Detach();
             }
-            catch (IOException) {
+            catch (IOException)
+            {
             }
             throw;
         }
@@ -259,16 +304,20 @@ public class ConnectionOrientedEndpoint : IEndpoint {
     /// </summary>
     /// <returns></returns>
     /// <exception cref="ProviderException"></exception>
-    private IConnectionContext CreateContext() {
+    private IConnectionContext CreateContext()
+    {
         var properties = Transport.Properties;
-        if (properties == null) {
+        if (properties == null)
+        {
             return new BasicConnectionContext();
         }
         var context = (string)properties.GetProperty("rpc.connectionContext");
-        if (context == null) {
+        if (context == null)
+        {
             return new BasicConnectionContext();
         }
-        return context switch {
+        return context switch
+        {
             "Opc.Classic.Dcom.Rpc.BasicConnectionContext" => new BasicConnectionContext(),
             "rpc.security.ntlm.NtlmConnectionContext" or "Opc.Classic.Dcom.Rpc.Auth.ntlm.NtlmConnectionContext" => new NtlmConnectionContext(),
             "Opc.Classic.Dcom.Transport.ComRuntimeConnectionContext" => new ComRuntimeConnectionContext(),

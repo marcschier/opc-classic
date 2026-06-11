@@ -28,7 +28,8 @@ namespace Opc.Classic.Dcom.Core;
 /// chooses ptrArrayDesc.
 /// </summary>
 [Serializable]
-public sealed class Union {
+public sealed class Union
+{
 
     /// <summary>
     /// Returns the discriminant Vs there members Map.
@@ -38,7 +39,8 @@ public sealed class Union {
     /// <summary>
     /// Private
     /// </summary>
-    private Union() {
+    private Union()
+    {
     }
 
     /// <summary>
@@ -50,13 +52,15 @@ public sealed class Union {
     /// <exception cref="ArgumentException"> if the
     /// <code>discriminantClass</code> is not of the type as specified
     /// above. </exception>
-    public Union(Type discriminantClass) {
+    public Union(Type discriminantClass)
+    {
         // the discriminant can only be a int, bool or char
 
         if (!discriminantClass.Equals(typeof(int)) &&
             !discriminantClass.Equals(typeof(short)) &&
             !discriminantClass.Equals(typeof(bool)) &&
-            !discriminantClass.Equals(typeof(char))) {
+            !discriminantClass.Equals(typeof(char)))
+        {
             // has to be from one of these. Rule from IDL.
             throw new ArgumentException(Interop.GetLocalizedMessage(ErrorCode.INTEROP_UNION_INCORRECT_DISC), nameof(discriminantClass));
         }
@@ -72,18 +76,23 @@ public sealed class Union {
     /// <exception cref="InteropException"> </exception>
     /// <exception cref="ArgumentException"> if any parameter is
     /// <code>null</code> </exception>
-    public void AddMember(object discriminant, object member) {
-        if (discriminant == null || member == null) {
+    public void AddMember(object discriminant, object member)
+    {
+        if (discriminant == null || member == null)
+        {
             throw new ArgumentException(
                 Interop.GetLocalizedMessage(ErrorCode.INTEROP_UNION_NULL_DISCRMINANT), nameof(discriminant));
         }
-        if (!discriminant.GetType().Equals(_discriminantClass)) {
+        if (!discriminant.GetType().Equals(_discriminantClass))
+        {
             throw new InteropException(ErrorCode.INTEROP_UNION_DISCRMINANT_MISMATCH);
         }
-        if (member.GetType().Equals(typeof(ComPointer)) && !((ComPointer)member).Reference) {
+        if (member.GetType().Equals(typeof(ComPointer)) && !((ComPointer)member).Reference)
+        {
             ((ComPointer)member).Deffered = true;
         }
-        else if (member.GetType().Equals(typeof(ComString))) {
+        else if (member.GetType().Equals(typeof(ComString)))
+        {
             ((ComString)member).Deffered = true;
         }
         Members[discriminant] = member;
@@ -98,14 +107,18 @@ public sealed class Union {
     /// <exception cref="InteropException"> </exception>
     /// <exception cref="ArgumentException"> if <code>discriminant</code>
     /// is <code>null</code> </exception>
-    public void AddMember(object discriminant, Struct member) {
-        if (discriminant == null) {
+    public void AddMember(object discriminant, Struct member)
+    {
+        if (discriminant == null)
+        {
             throw new ArgumentException(Interop.GetLocalizedMessage(ErrorCode.INTEROP_UNION_NULL_DISCRMINANT), nameof(discriminant));
         }
-        if (!discriminant.GetType().Equals(_discriminantClass)) {
+        if (!discriminant.GetType().Equals(_discriminantClass))
+        {
             throw new InteropException(ErrorCode.INTEROP_UNION_DISCRMINANT_MISMATCH);
         }
-        if (member == null) {
+        if (member == null)
+        {
             member = Struct.MEMBER_IS_EMPTY;
         }
         Members[discriminant] = member;
@@ -126,8 +139,10 @@ public sealed class Union {
     /// </summary>
     /// <param name="ndr"></param>
     /// <param name="context"></param>
-    internal void Encode(NdrCodec ndr, CodecContext context) {
-        if (Members.Count == 0 || Members.Count > 1) {
+    internal void Encode(NdrCodec ndr, CodecContext context)
+    {
+        if (Members.Count == 0 || Members.Count > 1)
+        {
             throw new InteropRuntimeException((int)
                 ErrorCode.INTEROP_UNION_DISCRMINANT_SERIALIZATION_ERROR);
         }
@@ -139,7 +154,8 @@ public sealed class Union {
         var value = keys.Next();
 
         // will not write empty union members
-        if (!value.Equals(Struct.MEMBER_IS_EMPTY)) {
+        if (!value.Equals(Struct.MEMBER_IS_EMPTY))
+        {
             MarshalUnMarshalHelper.Serialize(ndr, value.GetType(), value, context);
         }
     }
@@ -150,27 +166,33 @@ public sealed class Union {
     /// <param name="ndr"></param>
     /// <param name="context"></param>
     /// <returns></returns>
-    internal Union Decode(NdrCodec ndr, CodecContext context) {
+    internal Union Decode(NdrCodec ndr, CodecContext context)
+    {
         // first read discriminant, and then call the appropriate deserializer of the member
-        if (Members.Count == 0) {
+        if (Members.Count == 0)
+        {
             throw new InteropRuntimeException(ErrorCode.INTEROP_UNION_DISCRMINANT_DESERIALIZATION_ERROR);
         }
         // first write the discriminant and then the member
-        var retVal = new Union {
+        var retVal = new Union
+        {
             _discriminantClass = _discriminantClass
         };
         var key = MarshalUnMarshalHelper.Deserialize(ndr, _discriminantClass, context);
         // next thing to be deserialized is the member
         var value = Members[key];
         // should allow null since this could be a "default"
-        if (value == null) {
+        if (value == null)
+        {
             value = Struct.MEMBER_IS_EMPTY;
         }
         // will not write empty union members
-        if (!value.Equals(Struct.MEMBER_IS_EMPTY)) {
+        if (!value.Equals(Struct.MEMBER_IS_EMPTY))
+        {
             retVal.Members[key] = MarshalUnMarshalHelper.Deserialize(ndr, value, context);
         }
-        else {
+        else
+        {
             retVal.Members[key] = value;
         }
         return retVal;
@@ -179,10 +201,13 @@ public sealed class Union {
     /// <summary>
     /// Length
     /// </summary>
-    internal int Length {
-        get {
+    internal int Length
+    {
+        get
+        {
             var length = 0;
-            foreach (var o in Members.Keys) {
+            foreach (var o in Members.Keys)
+            {
                 var temp = MarshalUnMarshalHelper.GetLengthInBytes(
                     o.GetType(), o);
                 length = length > temp ? length : temp; // length of the largest member
@@ -195,14 +220,18 @@ public sealed class Union {
     /// <summary>
     /// Alignment
     /// </summary>
-    internal int Alignment {
-        get {
+    internal int Alignment
+    {
+        get
+        {
             var alignment = 0;
-            if (_discriminantClass.Equals(typeof(int))) {
+            if (_discriminantClass.Equals(typeof(int)))
+            {
                 // align with 4 bytes
                 alignment = 4;
             }
-            else if (_discriminantClass.Equals(typeof(short))) {
+            else if (_discriminantClass.Equals(typeof(short)))
+            {
                 // align with 2
                 alignment = 2;
             }

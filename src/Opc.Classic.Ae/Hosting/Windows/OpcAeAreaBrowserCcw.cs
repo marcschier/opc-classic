@@ -17,7 +17,8 @@ namespace Opc.Classic.Ae.Hosting.Windows;
 /// Single-tearoff Windows CCW for <see cref="IOPCEventAreaBrowser" />.
 /// </summary>
 [SupportedOSPlatform("windows")]
-public static unsafe class OpcAeAreaBrowserCcw {
+public static unsafe class OpcAeAreaBrowserCcw
+{
     internal const int S_OK = 0;
     internal const int S_FALSE = 1;
     internal const int E_NOINTERFACE = unchecked((int)0x80004002);
@@ -29,9 +30,11 @@ public static unsafe class OpcAeAreaBrowserCcw {
     private static readonly ConcurrentDictionary<IntPtr, CcwEntry> s_entries = new();
 
     /// <summary>Creates an <c>IOPCEventAreaBrowser</c> CCW with refcount = 1.</summary>
-    public static IntPtr Create(IOpcAeAreaBrowserDispatcher browser, Guid requestedIid) {
+    public static IntPtr Create(IOpcAeAreaBrowserDispatcher browser, Guid requestedIid)
+    {
         ArgumentNullException.ThrowIfNull(browser);
-        if (!SupportsInterface(requestedIid)) {
+        if (!SupportsInterface(requestedIid))
+        {
             return IntPtr.Zero;
         }
 
@@ -58,7 +61,8 @@ public static unsafe class OpcAeAreaBrowserCcw {
             : null;
 
     [SuppressMessage("Reliability", "CA2018:Buffer size argument matches element count", Justification = "Explicit byte size.")]
-    private static IntPtr* AllocateVtable() {
+    private static IntPtr* AllocateVtable()
+    {
         IntPtr* v = (IntPtr*)NativeMemory.Alloc((nuint)(7 * sizeof(IntPtr)));
         v[0] = (IntPtr)(delegate* unmanaged<IntPtr, Guid*, IntPtr*, int>)&QueryInterface;
         v[1] = (IntPtr)(delegate* unmanaged<IntPtr, uint>)&AddRef;
@@ -71,22 +75,27 @@ public static unsafe class OpcAeAreaBrowserCcw {
     }
 
     [SuppressMessage("Reliability", "CA2018:Buffer size argument matches element count", Justification = "Explicit byte size.")]
-    private static IntPtr AllocateInstance(IntPtr* vtable) {
+    private static IntPtr AllocateInstance(IntPtr* vtable)
+    {
         IntPtr* instance = (IntPtr*)NativeMemory.Alloc((nuint)sizeof(IntPtr));
         instance[0] = (IntPtr)vtable;
         return (IntPtr)instance;
     }
 
     [UnmanagedCallersOnly]
-    private static int QueryInterface(IntPtr pThis, Guid* riid, IntPtr* ppv) {
-        if (ppv == null) {
+    private static int QueryInterface(IntPtr pThis, Guid* riid, IntPtr* ppv)
+    {
+        if (ppv == null)
+        {
             return E_INVALIDARG;
         }
         *ppv = IntPtr.Zero;
-        if (riid == null) {
+        if (riid == null)
+        {
             return E_INVALIDARG;
         }
-        if (!s_entries.TryGetValue(pThis, out CcwEntry? entry) || !SupportsInterface(*riid)) {
+        if (!s_entries.TryGetValue(pThis, out CcwEntry? entry) || !SupportsInterface(*riid))
+        {
             return E_NOINTERFACE;
         }
 
@@ -96,20 +105,25 @@ public static unsafe class OpcAeAreaBrowserCcw {
     }
 
     [UnmanagedCallersOnly]
-    private static uint AddRef(IntPtr pThis) {
-        if (!s_entries.TryGetValue(pThis, out CcwEntry? entry)) {
+    private static uint AddRef(IntPtr pThis)
+    {
+        if (!s_entries.TryGetValue(pThis, out CcwEntry? entry))
+        {
             return 1;
         }
         return (uint)Interlocked.Increment(ref entry.RefCount);
     }
 
     [UnmanagedCallersOnly]
-    private static uint Release(IntPtr pThis) {
-        if (!s_entries.TryGetValue(pThis, out CcwEntry? entry)) {
+    private static uint Release(IntPtr pThis)
+    {
+        if (!s_entries.TryGetValue(pThis, out CcwEntry? entry))
+        {
             return 0;
         }
         long next = Interlocked.Decrement(ref entry.RefCount);
-        if (next > 0) {
+        if (next > 0)
+        {
             return (uint)next;
         }
         DisposeEntry(pThis, entry);
@@ -118,33 +132,41 @@ public static unsafe class OpcAeAreaBrowserCcw {
 
     [UnmanagedCallersOnly]
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
-    private static int ChangeBrowsePosition(IntPtr pThis, int dwBrowseDirection, IntPtr szString) {
-        if (!TryResolveBrowser(pThis, out IOpcAeAreaBrowserDispatcher? browser)) {
+    private static int ChangeBrowsePosition(IntPtr pThis, int dwBrowseDirection, IntPtr szString)
+    {
+        if (!TryResolveBrowser(pThis, out IOpcAeAreaBrowserDispatcher? browser))
+        {
             return E_FAIL;
         }
-        try {
+        try
+        {
             string? position = szString == IntPtr.Zero ? null : Marshal.PtrToStringUni(szString);
 #pragma warning disable VSTHRD002
             browser!.ChangeBrowsePositionAsync(dwBrowseDirection, position, CancellationToken.None).GetAwaiter().GetResult();
 #pragma warning restore VSTHRD002
             return S_OK;
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             return MapHResult(ex);
         }
     }
 
     [UnmanagedCallersOnly]
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
-    private static int BrowseOPCAreas(IntPtr pThis, int dwBrowseFilterType, IntPtr szFilterCriteria, IntPtr* ppIEnumString) {
+    private static int BrowseOPCAreas(IntPtr pThis, int dwBrowseFilterType, IntPtr szFilterCriteria, IntPtr* ppIEnumString)
+    {
         WriteNull(ppIEnumString);
-        if (ppIEnumString == null) {
+        if (ppIEnumString == null)
+        {
             return E_INVALIDARG;
         }
-        if (!TryResolveBrowser(pThis, out IOpcAeAreaBrowserDispatcher? browser)) {
+        if (!TryResolveBrowser(pThis, out IOpcAeAreaBrowserDispatcher? browser))
+        {
             return E_FAIL;
         }
-        try {
+        try
+        {
             string filterCriteria = szFilterCriteria == IntPtr.Zero
                 ? string.Empty
                 : Marshal.PtrToStringUni(szFilterCriteria) ?? string.Empty;
@@ -154,14 +176,16 @@ public static unsafe class OpcAeAreaBrowserCcw {
             *ppIEnumString = OpcEnumStringCcw.Create(names ?? Array.Empty<string>());
             return S_OK;
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             return MapHResult(ex);
         }
     }
 
     [UnmanagedCallersOnly]
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
-    private static int GetQualifiedAreaName(IntPtr pThis, IntPtr szAreaName, IntPtr* pszQualifiedAreaName) {
+    private static int GetQualifiedAreaName(IntPtr pThis, IntPtr szAreaName, IntPtr* pszQualifiedAreaName)
+    {
         return GetQualifiedNameCore(
             pThis,
             szAreaName,
@@ -171,7 +195,8 @@ public static unsafe class OpcAeAreaBrowserCcw {
 
     [UnmanagedCallersOnly]
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
-    private static int GetQualifiedSourceName(IntPtr pThis, IntPtr szSourceName, IntPtr* pszQualifiedSourceName) {
+    private static int GetQualifiedSourceName(IntPtr pThis, IntPtr szSourceName, IntPtr* pszQualifiedSourceName)
+    {
         return GetQualifiedNameCore(
             pThis,
             szSourceName,
@@ -184,15 +209,19 @@ public static unsafe class OpcAeAreaBrowserCcw {
         IntPtr pThis,
         IntPtr inputName,
         IntPtr* outputName,
-        Func<IOpcAeAreaBrowserDispatcher, string, System.Threading.Tasks.Task<string>> resolveAsync) {
+        Func<IOpcAeAreaBrowserDispatcher, string, System.Threading.Tasks.Task<string>> resolveAsync)
+    {
         WriteNull(outputName);
-        if (outputName == null) {
+        if (outputName == null)
+        {
             return E_INVALIDARG;
         }
-        if (!TryResolveBrowser(pThis, out IOpcAeAreaBrowserDispatcher? browser)) {
+        if (!TryResolveBrowser(pThis, out IOpcAeAreaBrowserDispatcher? browser))
+        {
             return E_FAIL;
         }
-        try {
+        try
+        {
             string name = inputName == IntPtr.Zero ? string.Empty : Marshal.PtrToStringUni(inputName) ?? string.Empty;
 #pragma warning disable VSTHRD002
             string qualifiedName = resolveAsync(browser!, name).GetAwaiter().GetResult();
@@ -200,17 +229,20 @@ public static unsafe class OpcAeAreaBrowserCcw {
             *outputName = Marshal.StringToBSTR(qualifiedName ?? string.Empty);
             return S_OK;
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             return MapHResult(ex);
         }
     }
 
-    private static bool TryResolveBrowser(IntPtr pThis, out IOpcAeAreaBrowserDispatcher? browser) {
+    private static bool TryResolveBrowser(IntPtr pThis, out IOpcAeAreaBrowserDispatcher? browser)
+    {
         browser = ResolveBrowser(pThis);
         return browser is not null;
     }
 
-    private static int MapHResult(Exception ex) => ex switch {
+    private static int MapHResult(Exception ex) => ex switch
+    {
         OpcException opcEx => opcEx.ResultId.Code,
         NotImplementedException => E_NOTIMPL,
         ArgumentNullException => E_INVALIDARG,
@@ -218,26 +250,33 @@ public static unsafe class OpcAeAreaBrowserCcw {
         _ => E_FAIL,
     };
 
-    private static void WriteNull(IntPtr* pp) {
-        if (pp != null) {
+    private static void WriteNull(IntPtr* pp)
+    {
+        if (pp != null)
+        {
             *pp = IntPtr.Zero;
         }
     }
 
-    private static void DisposeEntry(IntPtr instance, CcwEntry entry) {
-        if (Interlocked.Exchange(ref entry.Disposed, 1) != 0) {
+    private static void DisposeEntry(IntPtr instance, CcwEntry entry)
+    {
+        if (Interlocked.Exchange(ref entry.Disposed, 1) != 0)
+        {
             return;
         }
         s_entries.TryRemove(instance, out _);
         NativeMemory.Free((void*)instance);
         NativeMemory.Free(entry.Vtable);
-        if (entry.BrowserHandle.IsAllocated) {
+        if (entry.BrowserHandle.IsAllocated)
+        {
             entry.BrowserHandle.Free();
         }
     }
 
-    private sealed class CcwEntry {
-        public CcwEntry(GCHandle browserHandle, IntPtr* vtable) {
+    private sealed class CcwEntry
+    {
+        public CcwEntry(GCHandle browserHandle, IntPtr* vtable)
+        {
             BrowserHandle = browserHandle;
             Vtable = vtable;
         }

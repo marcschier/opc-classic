@@ -11,7 +11,8 @@ namespace Opc.Classic.Dcom.Core;
 /// Representation of a COM pointer.
 /// </summary>
 [Serializable]
-public sealed class ComPointer {
+public sealed class ComPointer
+{
 
     /// <summary>
     /// Deferred
@@ -31,7 +32,8 @@ public sealed class ComPointer {
     /// Returns the referent encapsulated by this pointer.
     /// </summary>
     /// <returns>Referent object</returns>
-    public object Referent {
+    public object Referent
+    {
         get => IsNull ? null : _referent;
         internal set => _referent = value;
     }
@@ -47,13 +49,17 @@ public sealed class ComPointer {
     /// <summary>
     /// Length
     /// </summary>
-    internal int Length {
-        get {
+    internal int Length
+    {
+        get
+        {
             // 4 for pointer
-            if (IsNull) {
+            if (IsNull)
+            {
                 return kPointerSize;
             }
-            if (_referent is Type) {
+            if (_referent is Type)
+            {
                 return 4 + MarshalUnMarshalHelper.GetLengthInBytes((Type)_referent,
                     _referent);
             }
@@ -93,7 +99,8 @@ public sealed class ComPointer {
     /// </summary>
     /// <param name="value"> </param>
     public ComPointer(object value) :
-        this(value, false) {
+        this(value, false)
+    {
     }
 
     /// <summary>
@@ -104,9 +111,11 @@ public sealed class ComPointer {
     /// <param name="value"> <code>null</code> is acceptable </param>
     /// <param name="isReferenceTypePtr"> <code>true</code> if
     /// a referent identifier will not precede this ptr. </param>
-    public ComPointer(Type value, bool isReferenceTypePtr) {
+    public ComPointer(Type value, bool isReferenceTypePtr)
+    {
         // null pointer.
-        if (value == null) {
+        if (value == null)
+        {
             value = typeof(int);
             isReferenceTypePtr = true;
             IsNull = true;
@@ -135,8 +144,10 @@ public sealed class ComPointer {
     /// </param>
     /// <param name="isReferenceTypePtr"> <code>true</code>
     /// if a referent Identifier will not precede this ptr. </param>
-    public ComPointer(object value, bool isReferenceTypePtr) {
-        if (value == null) {
+    public ComPointer(object value, bool isReferenceTypePtr)
+    {
+        if (value == null)
+        {
             // since a null is being sent for a pointer,
             // it has to be shown as 0x0.
             value = 0;
@@ -158,11 +169,14 @@ public sealed class ComPointer {
     /// </summary>
     /// <param name="ndr"></param>
     /// <param name="context"></param>
-    internal void Encode(NdrCodec ndr, CodecContext context) {
+    internal void Encode(NdrCodec ndr, CodecContext context)
+    {
         var oldFlags = context.Flag;
-        try {
+        try
+        {
             context.Flag |= _flags;
-            if (IsNull) {
+            if (IsNull)
+            {
                 MarshalUnMarshalHelper.Serialize(ndr, typeof(int), 0, context);
                 return;
             }
@@ -180,23 +194,28 @@ public sealed class ComPointer {
                 return;
             }
 
-            if (!IsNull && !Reference) {
+            if (!IsNull && !Reference)
+            {
                 var referentIdToPut = ReferentId == -1 ?
                     _referent.GetHashCode() : ReferentId;
                 MarshalUnMarshalHelper.Serialize(ndr, typeof(int), referentIdToPut, context);
             }
-            try {
-                if (!IsNull && _referent.GetType().Equals(typeof(Variant)) && ((Variant)_referent).IsArray) {
+            try
+            {
+                if (!IsNull && _referent.GetType().Equals(typeof(Variant)) && ((Variant)_referent).IsArray)
+                {
                     MarshalUnMarshalHelper.Serialize(
                         ndr, typeof(int), ((object[])((Variant)_referent).Object).Length, context);
                 }
             }
-            catch (InteropException e) {
+            catch (InteropException e)
+            {
                 throw new InteropRuntimeException(e.ErrorCode);
             }
             MarshalUnMarshalHelper.Serialize(ndr, _referent.GetType(), _referent, context);
         }
-        finally {
+        finally
+        {
             // Restore flags
             context.Flag = oldFlags;
         }
@@ -210,12 +229,15 @@ public sealed class ComPointer {
     /// <param name="ndr"></param>
     /// <param name="context"></param>
     /// <returns></returns>
-    internal ComPointer Decode(NdrCodec ndr, CodecContext context) {
+    internal ComPointer Decode(NdrCodec ndr, CodecContext context)
+    {
         var oldFlags = context.Flag;
-        try {
+        try
+        {
             context.Flag |= _flags;
 
-            var retVal = new ComPointer {
+            var retVal = new ComPointer
+            {
                 IsNull = IsNull,
                 _nullSpecial = _nullSpecial
             };
@@ -228,7 +250,8 @@ public sealed class ComPointer {
             {
                 retVal.ReferentId = (int)MarshalUnMarshalHelper.Deserialize(ndr, typeof(int), context);
                 retVal._referent = _referent; // will only be the class or object
-                if (retVal.ReferentId == 0 && !_nullSpecial) {
+                if (retVal.ReferentId == 0 && !_nullSpecial)
+                {
                     // null pointer
                     // just return
                     retVal.IsNull = true;
@@ -242,11 +265,13 @@ public sealed class ComPointer {
                 return retVal;
             }
 
-            if (!Reference) {
+            if (!Reference)
+            {
                 // referentId = ndr.readUnsignedLong();
                 retVal.ReferentId = (int)MarshalUnMarshalHelper.Deserialize(ndr, typeof(int), context);
                 retVal._referent = _referent; // will only be the class or object
-                if (retVal.ReferentId == 0 && !_nullSpecial) {
+                if (retVal.ReferentId == 0 && !_nullSpecial)
+                {
                     // null pointer
                     // just return
                     retVal.IsNull = true;
@@ -256,7 +281,8 @@ public sealed class ComPointer {
             retVal._referent = MarshalUnMarshalHelper.Deserialize(ndr, _referent, context);
             return retVal;
         }
-        finally {
+        finally
+        {
             context.Flag = oldFlags;
         }
     }
@@ -265,7 +291,8 @@ public sealed class ComPointer {
     /// Internal replace
     /// </summary>
     /// <param name="replacement"></param>
-    internal void ReplaceSelfWithNewPointer(ComPointer replacement) {
+    internal void ReplaceSelfWithNewPointer(ComPointer replacement)
+    {
         Deffered = replacement.Deffered;
         IsNull = replacement.IsNull;
         Reference = replacement.Reference;

@@ -8,7 +8,8 @@ namespace Opc.Classic.Dcom.Rpc.Core;
 /// <summary>
 /// Port
 /// </summary>
-public class Port : NdrOp {
+public class Port : NdrOp
+{
 
     /// <summary>
     /// Port specification
@@ -19,7 +20,8 @@ public class Port : NdrOp {
     /// Create
     /// </summary>
     public Port() :
-        this(null) {
+        this(null)
+    {
     }
 
 #pragma warning disable RECS0154 // Parameter is never used
@@ -31,39 +33,48 @@ public class Port : NdrOp {
 #pragma warning restore RECS0154 // Parameter is never used
 
     /// <override/>
-    public override void Read(NdrCodec ndr) {
+    public override void Read(NdrCodec ndr)
+    {
         var length = ndr.ReadUnsignedShort();
-        if (length > 0) {
+        if (length > 0)
+        {
             var buf = ndr.Buffer;
             var portSpec = new char[length - 1];
             ndr.ReadCharacterArray(portSpec, 0, portSpec.Length);
             ndr.ReadUnsignedSmall(); // null terminator
             PortSpec = new string(portSpec);
         }
-        else {
+        else
+        {
             PortSpec = null;
         }
     }
 
     /// <override/>
-    public override void Write(NdrCodec ndr) {
+    public override void Write(NdrCodec ndr)
+    {
         char[] spec;
-        if (PortSpec != null) {
+        if (PortSpec != null)
+        {
             spec = new char[PortSpec.Length + 1];
             PortSpec.CopyTo(0, spec, 0, PortSpec.Length - 0);
         }
-        else {
+        else
+        {
             spec = Array.Empty<char>();
         }
         ndr.WriteUnsignedShort(spec.Length);
-        if (spec.Length > 0) {
+        if (spec.Length > 0)
+        {
             ndr.WriteCharacterArray(spec, 0, spec.Length);
         }
     }
 
     /// <override/>
-    public override bool Equals(object obj) {
-        if (!(obj is Port other)) {
+    public override bool Equals(object obj)
+    {
+        if (!(obj is Port other))
+        {
             return false;
         }
         return string.Equals(PortSpec, other.PortSpec, StringComparison.Ordinal);

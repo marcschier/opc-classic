@@ -33,7 +33,8 @@ namespace Opc.Classic.Dcom.Activation;
 [OpcInterface(Opc.Classic.Dcom.Interfaces.IID_IActivation)]
 [GenerateOpcProxy]
 [OpcGenerateServerDispatch]
-public partial interface IActivation {
+public partial interface IActivation
+{
     /// <summary>
     /// <c>IActivation::RemoteActivation</c> (opnum 0). Per <c>[MS-DCOM] §3.1.2.5.2.3.1</c>,
     /// the wire signature has many additional output parameters

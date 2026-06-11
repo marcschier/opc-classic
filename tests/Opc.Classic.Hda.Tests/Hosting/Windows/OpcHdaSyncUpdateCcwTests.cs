@@ -18,15 +18,18 @@ using TUnit.Core;
 namespace Opc.Classic.Hda.Tests.Hosting.Windows;
 
 [SupportedOSPlatform("windows")]
-public sealed class OpcHdaSyncUpdateCcwTests {
+public sealed class OpcHdaSyncUpdateCcwTests
+{
     private const int S_OK = 0;
     private const int S_FALSE = 1;
     private const int E_INVALIDARG = unchecked((int)0x80070057);
     private static readonly Guid IID_IUnknown = Guid.Parse("00000000-0000-0000-C000-000000000046");
 
     [Test]
-    public async Task QueryCapabilities_returns_update_capability_mask() {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task QueryCapabilities_returns_update_capability_mask()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
@@ -44,8 +47,10 @@ public sealed class OpcHdaSyncUpdateCcwTests {
     [Arguments(4, OpcHdaErrors.OPCHDA_S_INSERTED)]
     [Arguments(5, OpcHdaErrors.OPCHDA_S_REPLACED)]
     [Arguments(6, S_OK)]
-    public async Task Insert_replace_and_insert_replace_dispatch_values(int slot, int expectedFirstError) {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task Insert_replace_and_insert_replace_dispatch_values(int slot, int expectedFirstError)
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
@@ -71,8 +76,10 @@ public sealed class OpcHdaSyncUpdateCcwTests {
     [Arguments(4)]
     [Arguments(5)]
     [Arguments(6)]
-    public async Task Insert_replace_and_insert_replace_return_per_item_invalid_handle(int slot) {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task Insert_replace_and_insert_replace_return_per_item_invalid_handle(int slot)
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
@@ -95,8 +102,10 @@ public sealed class OpcHdaSyncUpdateCcwTests {
     [Arguments(4)]
     [Arguments(5)]
     [Arguments(6)]
-    public async Task Insert_replace_and_insert_replace_reject_count_zero(int slot) {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task Insert_replace_and_insert_replace_reject_count_zero(int slot)
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
@@ -111,8 +120,10 @@ public sealed class OpcHdaSyncUpdateCcwTests {
     }
 
     [Test]
-    public async Task DeleteRaw_dispatches_range_and_returns_errors() {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task DeleteRaw_dispatches_range_and_returns_errors()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
@@ -134,8 +145,10 @@ public sealed class OpcHdaSyncUpdateCcwTests {
     }
 
     [Test]
-    public async Task DeleteAtTime_dispatches_timestamps_and_rejects_count_zero() {
-        if (!OperatingSystem.IsWindows()) {
+    public async Task DeleteAtTime_dispatches_timestamps_and_rejects_count_zero()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return;
         }
 
@@ -155,7 +168,8 @@ public sealed class OpcHdaSyncUpdateCcwTests {
         await Assert.That(zeroErrors).IsEqualTo(IntPtr.Zero);
     }
 
-    private sealed class UpdateServer : IOpcHdaServer, IOPCHDA_SyncUpdate {
+    private sealed class UpdateServer : IOpcHdaServer, IOPCHDA_SyncUpdate
+    {
         public OpcVariant[]? LastValues { get; private set; }
         public int[]? LastQualities { get; private set; }
         public int DeleteRawCalls { get; private set; }
@@ -168,42 +182,49 @@ public sealed class OpcHdaSyncUpdateCcwTests {
 
         public Task<int> QueryCapabilitiesAsync(CancellationToken cancellationToken = default) => Task.FromResult(0x1F);
 
-        public Task<int[]> InsertAsync(int[] serverHandles, long[] timestampFileTimes, OpcVariant[] dataValues, int[] qualities, CancellationToken cancellationToken = default) {
+        public Task<int[]> InsertAsync(int[] serverHandles, long[] timestampFileTimes, OpcVariant[] dataValues, int[] qualities, CancellationToken cancellationToken = default)
+        {
             LastValues = dataValues;
             LastQualities = qualities;
             _ = timestampFileTimes;
             return Task.FromResult(Errors(serverHandles, OpcHdaErrors.OPCHDA_S_INSERTED));
         }
 
-        public Task<int[]> ReplaceAsync(int[] serverHandles, long[] timestampFileTimes, OpcVariant[] dataValues, int[] qualities, CancellationToken cancellationToken = default) {
+        public Task<int[]> ReplaceAsync(int[] serverHandles, long[] timestampFileTimes, OpcVariant[] dataValues, int[] qualities, CancellationToken cancellationToken = default)
+        {
             LastValues = dataValues;
             LastQualities = qualities;
             _ = timestampFileTimes;
             return Task.FromResult(Errors(serverHandles, OpcHdaErrors.OPCHDA_S_REPLACED));
         }
 
-        public Task<int[]> InsertReplaceAsync(int[] serverHandles, long[] timestampFileTimes, OpcVariant[] dataValues, int[] qualities, CancellationToken cancellationToken = default) {
+        public Task<int[]> InsertReplaceAsync(int[] serverHandles, long[] timestampFileTimes, OpcVariant[] dataValues, int[] qualities, CancellationToken cancellationToken = default)
+        {
             LastValues = dataValues;
             LastQualities = qualities;
             _ = timestampFileTimes;
             return Task.FromResult(Errors(serverHandles, S_OK));
         }
 
-        public Task<int[]> DeleteRawAsync(OpcHdaTime startTime, OpcHdaTime endTime, int[] serverHandles, CancellationToken cancellationToken = default) {
+        public Task<int[]> DeleteRawAsync(OpcHdaTime startTime, OpcHdaTime endTime, int[] serverHandles, CancellationToken cancellationToken = default)
+        {
             _ = startTime;
             _ = endTime;
             DeleteRawCalls++;
             return Task.FromResult(Errors(serverHandles, S_OK));
         }
 
-        public Task<int[]> DeleteAtTimeAsync(int[] serverHandles, long[] timestampFileTimes, CancellationToken cancellationToken = default) {
+        public Task<int[]> DeleteAtTimeAsync(int[] serverHandles, long[] timestampFileTimes, CancellationToken cancellationToken = default)
+        {
             _ = timestampFileTimes;
             return Task.FromResult(Errors(serverHandles, S_OK));
         }
 
-        private static int[] Errors(int[] handles, int success) {
+        private static int[] Errors(int[] handles, int success)
+        {
             var errors = new int[handles.Length];
-            for (int i = 0; i < handles.Length; i++) {
+            for (int i = 0; i < handles.Length; i++)
+            {
                 errors[i] = handles[i] == 404 ? OpcResultId.InvalidHandle.Code : success;
             }
 
@@ -211,27 +232,32 @@ public sealed class OpcHdaSyncUpdateCcwTests {
         }
     }
 
-    private static class Native {
+    private static class Native
+    {
         private static int HdaTimeSize => IntPtr.Size == 8 ? 24 : 16;
         private static int HdaTimeFileTimeOffset => IntPtr.Size == 8 ? 16 : 8;
         private static int VariantSize => IntPtr.Size == 8 ? 24 : 16;
 
-        internal static IntPtr InvokeQI(IntPtr ccw, Guid iid) {
+        internal static IntPtr InvokeQI(IntPtr ccw, Guid iid)
+        {
             QueryInterfaceDelegate qi = GetMethod<QueryInterfaceDelegate>(ccw, 0);
             int hr = qi(ccw, ref iid, out IntPtr returned);
             return hr == S_OK ? returned : IntPtr.Zero;
         }
 
         internal static T GetMethod<T>(IntPtr tearoff, int slot)
-            where T : Delegate {
+            where T : Delegate
+        {
             IntPtr vtable = Marshal.ReadIntPtr(tearoff);
             IntPtr method = Marshal.ReadIntPtr(vtable, slot * IntPtr.Size);
             return Marshal.GetDelegateForFunctionPointer<T>(method);
         }
 
-        internal static int[] ReadAndFreeErrors(IntPtr ptr, int count) {
+        internal static int[] ReadAndFreeErrors(IntPtr ptr, int count)
+        {
             var values = new int[count];
-            if (ptr != IntPtr.Zero && count > 0) {
+            if (ptr != IntPtr.Zero && count > 0)
+            {
                 Marshal.Copy(ptr, values, 0, count);
                 Marshal.FreeCoTaskMem(ptr);
             }
@@ -245,10 +271,12 @@ public sealed class OpcHdaSyncUpdateCcwTests {
         [UnmanagedFunctionPointer(CallingConvention.Winapi)] internal delegate int DeleteRawDelegate(IntPtr pThis, IntPtr start, IntPtr end, uint count, IntPtr handles, out IntPtr errors);
         [UnmanagedFunctionPointer(CallingConvention.Winapi)] internal delegate int DeleteAtTimeDelegate(IntPtr pThis, uint count, IntPtr handles, IntPtr timestamps, out IntPtr errors);
 
-        internal sealed class IntArray : IDisposable {
+        internal sealed class IntArray : IDisposable
+        {
             private IntArray(IntPtr pointer) => Pointer = pointer;
             public IntPtr Pointer { get; }
-            public static IntArray From(int[] values) {
+            public static IntArray From(int[] values)
+            {
                 IntPtr ptr = Marshal.AllocCoTaskMem(values.Length * sizeof(int));
                 Marshal.Copy(values, 0, ptr, values.Length);
                 return new IntArray(ptr);
@@ -256,12 +284,15 @@ public sealed class OpcHdaSyncUpdateCcwTests {
             public void Dispose() => Marshal.FreeCoTaskMem(Pointer);
         }
 
-        internal sealed class FileTimeArray : IDisposable {
+        internal sealed class FileTimeArray : IDisposable
+        {
             private FileTimeArray(IntPtr pointer) => Pointer = pointer;
             public IntPtr Pointer { get; }
-            public static FileTimeArray From(DateTimeOffset[] values) {
+            public static FileTimeArray From(DateTimeOffset[] values)
+            {
                 IntPtr ptr = Marshal.AllocCoTaskMem(values.Length * sizeof(long));
-                for (int i = 0; i < values.Length; i++) {
+                for (int i = 0; i < values.Length; i++)
+                {
                     Marshal.WriteInt64(ptr, i * sizeof(long), values[i].ToFileTime());
                 }
                 return new FileTimeArray(ptr);
@@ -269,12 +300,15 @@ public sealed class OpcHdaSyncUpdateCcwTests {
             public void Dispose() => Marshal.FreeCoTaskMem(Pointer);
         }
 
-        internal sealed class DoubleVariantArray : IDisposable {
+        internal sealed class DoubleVariantArray : IDisposable
+        {
             private DoubleVariantArray(IntPtr pointer) => Pointer = pointer;
             public IntPtr Pointer { get; }
-            public static DoubleVariantArray From(double[] values) {
+            public static DoubleVariantArray From(double[] values)
+            {
                 IntPtr ptr = Marshal.AllocCoTaskMem(values.Length * VariantSize);
-                for (int i = 0; i < values.Length; i++) {
+                for (int i = 0; i < values.Length; i++)
+                {
                     IntPtr slot = IntPtr.Add(ptr, i * VariantSize);
                     Marshal.WriteInt16(slot, 0, 5);
                     Marshal.WriteInt64(slot, 8, BitConverter.DoubleToInt64Bits(values[i]));
@@ -284,10 +318,12 @@ public sealed class OpcHdaSyncUpdateCcwTests {
             public void Dispose() => Marshal.FreeCoTaskMem(Pointer);
         }
 
-        internal sealed class TimeBlock : IDisposable {
+        internal sealed class TimeBlock : IDisposable
+        {
             private TimeBlock(IntPtr pointer) => Pointer = pointer;
             public IntPtr Pointer { get; }
-            public static TimeBlock From(DateTimeOffset value) {
+            public static TimeBlock From(DateTimeOffset value)
+            {
                 IntPtr ptr = Marshal.AllocCoTaskMem(HdaTimeSize);
                 Marshal.WriteInt32(ptr, 0);
                 Marshal.WriteIntPtr(ptr, IntPtr.Size == 8 ? 8 : 4, IntPtr.Zero);
@@ -297,10 +333,12 @@ public sealed class OpcHdaSyncUpdateCcwTests {
             public void Dispose() => Marshal.FreeCoTaskMem(Pointer);
         }
 
-        internal sealed class CoTaskMemBlock : IDisposable {
+        internal sealed class CoTaskMemBlock : IDisposable
+        {
             private CoTaskMemBlock(IntPtr pointer) => Pointer = pointer;
             public IntPtr Pointer { get; }
-            public static CoTaskMemBlock Allocate(int byteCount) {
+            public static CoTaskMemBlock Allocate(int byteCount)
+            {
                 IntPtr ptr = Marshal.AllocCoTaskMem(byteCount);
                 Span<byte> zeros = stackalloc byte[byteCount];
                 Marshal.Copy(zeros.ToArray(), 0, ptr, byteCount);

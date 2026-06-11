@@ -4,7 +4,9 @@ using System;
 
 namespace SharpCifs.Util.Sharpen;
 
-public sealed class NoSuchElementException : Exception {
-    public NoSuchElementException() {
+public sealed class NoSuchElementException : Exception
+{
+    public NoSuchElementException()
+    {
     }
 }

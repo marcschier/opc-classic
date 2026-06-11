@@ -6,11 +6,14 @@ using System.Security.Cryptography;
 
 namespace Opc.Classic.Samples.LoopbackDemo;
 
-internal sealed class LoopbackTagStore {
+internal sealed class LoopbackTagStore
+{
     private readonly Dictionary<string, LoopbackTag> _tags;
 
-    public LoopbackTagStore() {
-        _tags = new Dictionary<string, LoopbackTag>(StringComparer.Ordinal) {
+    public LoopbackTagStore()
+    {
+        _tags = new Dictionary<string, LoopbackTag>(StringComparer.Ordinal)
+        {
             ["Random.Real4"] = LoopbackTag.ReadOnly("Random.Real4", VarType.VT_R4, ReadRandomSingle),
             ["Saw-toothed Waves.Real8"] = LoopbackTag.ReadOnly("Saw-toothed Waves.Real8", VarType.VT_R8, ReadSawtooth),
             ["Bucket Brigade.Int4"] = LoopbackTag.WritableTag("Bucket Brigade.Int4", VarType.VT_I4, OpcVariant.FromInt32(0)),
@@ -25,12 +28,14 @@ internal sealed class LoopbackTagStore {
 
     public string[] Browse() => _tags.Keys.Order(StringComparer.Ordinal).ToArray();
 
-    private static OpcVariant ReadRandomSingle() {
+    private static OpcVariant ReadRandomSingle()
+    {
         float value = RandomNumberGenerator.GetInt32(0, 1_000_000) / 1_000_000.0F;
         return OpcVariant.FromSingle(value);
     }
 
-    private static OpcVariant ReadSawtooth() {
+    private static OpcVariant ReadSawtooth()
+    {
         const long periodMilliseconds = 10_000;
         long elapsed = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() % periodMilliseconds;
         double value = elapsed / (double)periodMilliseconds * 100.0D;
@@ -38,7 +43,8 @@ internal sealed class LoopbackTagStore {
     }
 }
 
-internal sealed class LoopbackTag {
+internal sealed class LoopbackTag
+{
     private readonly object _gate = new();
     private readonly Func<OpcVariant> _read;
     private readonly VarType _canonicalDataType;
@@ -49,7 +55,8 @@ internal sealed class LoopbackTag {
         VarType canonicalDataType,
         Func<OpcVariant> read,
         bool writable,
-        OpcVariant initialValue) {
+        OpcVariant initialValue)
+    {
         ItemId = itemId;
         _canonicalDataType = canonicalDataType;
         _read = read;
@@ -65,33 +72,41 @@ internal sealed class LoopbackTag {
 
     public int AccessRights => Writable ? 0x3 : 0x1;
 
-    public static LoopbackTag ReadOnly(string itemId, VarType canonicalDataType, Func<OpcVariant> read) {
+    public static LoopbackTag ReadOnly(string itemId, VarType canonicalDataType, Func<OpcVariant> read)
+    {
         ArgumentException.ThrowIfNullOrWhiteSpace(itemId);
         ArgumentNullException.ThrowIfNull(read);
         return new LoopbackTag(itemId, canonicalDataType, read, writable: false, OpcVariant.Empty);
     }
 
-    public static LoopbackTag WritableTag(string itemId, VarType canonicalDataType, OpcVariant initialValue) {
+    public static LoopbackTag WritableTag(string itemId, VarType canonicalDataType, OpcVariant initialValue)
+    {
         ArgumentException.ThrowIfNullOrWhiteSpace(itemId);
         return new LoopbackTag(itemId, canonicalDataType, static () => OpcVariant.Empty, writable: true, initialValue);
     }
 
-    public OpcVariant Read() {
-        if (!Writable) {
+    public OpcVariant Read()
+    {
+        if (!Writable)
+        {
             return _read();
         }
 
-        lock (_gate) {
+        lock (_gate)
+        {
             return _value;
         }
     }
 
-    public bool TryWrite(OpcVariant value) {
-        if (!Writable || value.Type != _canonicalDataType) {
+    public bool TryWrite(OpcVariant value)
+    {
+        if (!Writable || value.Type != _canonicalDataType)
+        {
             return false;
         }
 
-        lock (_gate) {
+        lock (_gate)
+        {
             _value = value;
         }
 
@@ -102,8 +117,10 @@ internal sealed class LoopbackTag {
         CultureInfo.InvariantCulture,
         $"{ItemId} ({CanonicalDataType}, rights=0x{AccessRights:X})");
 
-    private OpcVariant ReadStoredValue() {
-        lock (_gate) {
+    private OpcVariant ReadStoredValue()
+    {
+        lock (_gate)
+        {
             return _value;
         }
     }

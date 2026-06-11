@@ -16,7 +16,8 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 namespace Opc.Classic.MigrationAnalyzer.CodeFixes;
 
 [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(OcmGeneral02_ManualVariantCodeFix)), Shared]
-public sealed class OcmGeneral02_ManualVariantCodeFix : CodeFixProvider {
+public sealed class OcmGeneral02_ManualVariantCodeFix : CodeFixProvider
+{
     private const string Title = "Use OpcVariant factory";
 
     public override ImmutableArray<string> FixableDiagnosticIds { get; } =
@@ -24,7 +25,8 @@ public sealed class OcmGeneral02_ManualVariantCodeFix : CodeFixProvider {
 
     public override FixAllProvider GetFixAllProvider() => WellKnownFixAllProviders.BatchFixer;
 
-    public override async Task RegisterCodeFixesAsync(CodeFixContext context) {
+    public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    {
         SyntaxNode root = await MigrationCodeFixHelpers.GetRequiredRootAsync(context.Document, context.CancellationToken).ConfigureAwait(false);
         SyntaxNode node = root.FindNode(context.Span);
         context.RegisterCodeFix(
@@ -32,15 +34,18 @@ public sealed class OcmGeneral02_ManualVariantCodeFix : CodeFixProvider {
             context.Diagnostics);
     }
 
-    private static async Task<Document> ApplyAsync(Document document, SyntaxNode node, CancellationToken cancellationToken) {
+    private static async Task<Document> ApplyAsync(Document document, SyntaxNode node, CancellationToken cancellationToken)
+    {
         SyntaxNode root = await MigrationCodeFixHelpers.GetRequiredRootAsync(document, cancellationToken).ConfigureAwait(false);
         SyntaxNode? replacementTarget = node.FirstAncestorOrSelf<ObjectCreationExpressionSyntax>() ??
             (SyntaxNode?)node.FirstAncestorOrSelf<InvocationExpressionSyntax>();
-        if (replacementTarget is null) {
+        if (replacementTarget is null)
+        {
             return document;
         }
 
-        string argument = replacementTarget switch {
+        string argument = replacementTarget switch
+        {
             ObjectCreationExpressionSyntax objectCreation => objectCreation.ArgumentList?.Arguments.FirstOrDefault()?.ToString() ?? "value",
             InvocationExpressionSyntax invocation => invocation.ArgumentList.Arguments.FirstOrDefault()?.ToString() ?? "value",
             _ => "value",

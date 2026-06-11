@@ -17,7 +17,8 @@ namespace Opc.Classic.Dcom.Core;
 /// For example Microsoft Office Excel Application has clsid of
 /// "00024500-0000-0000-C000-000000000046".
 /// </remarks>
-public class Clsid {
+public class Clsid
+{
 
     /// <summary>
     /// String representation of the wrapped class identifier.
@@ -47,8 +48,10 @@ public class Clsid {
     /// <param name="uuid"> - clsid of the form
     /// "00000000-0000-0000-0000-000000000000" </param>
     /// <returns> - instance of Clsid  </returns>
-    public static Clsid ValueOf(string uuid) {
-        if (uuid == null) {
+    public static Clsid ValueOf(string uuid)
+    {
+        if (uuid == null)
+        {
             return null;
         }
         return new Clsid(uuid);

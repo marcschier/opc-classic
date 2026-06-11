@@ -9,14 +9,17 @@ using TUnit.Core;
 
 namespace Opc.Classic.Tests.Integration.Winreg;
 
-public sealed class WinRegSambaSmokeTests {
+public sealed class WinRegSambaSmokeTests
+{
     private const string EnableVariable = "OPC_CLASSIC_INTEGRATION_SAMBA";
 
     [Test]
     [Category("Integration")]
     [Category("WinRegSambaSmoke")]
-    public async Task WinRegSambaSmoke_opens_enumerates_and_closes_HKLM() {
-        if (!IsConfigured(EnableVariable, out string reason)) {
+    public async Task WinRegSambaSmoke_opens_enumerates_and_closes_HKLM()
+    {
+        if (!IsConfigured(EnableVariable, out string reason))
+        {
             SoftSkip(reason);
             return;
         }
@@ -34,7 +37,8 @@ public sealed class WinRegSambaSmokeTests {
             CancellationToken.None).ConfigureAwait(false);
 
         PolicyHandle handle = await client.OpenHKLMAsync(CancellationToken.None).ConfigureAwait(false);
-        try {
+        try
+        {
             await Assert.That(handle.Handle.Any(static value => value != 0)).IsTrue();
 
             string[] key = await client.EnumKeyAsync(handle, 0, CancellationToken.None).ConfigureAwait(false);
@@ -43,14 +47,17 @@ public sealed class WinRegSambaSmokeTests {
             await Assert.That(key[0]).IsNotNull();
             await Assert.That(key[0].Length).IsGreaterThan(0);
         }
-        finally {
+        finally
+        {
             await client.CloseKeyAsync(handle, CancellationToken.None).ConfigureAwait(false);
         }
     }
 
-    private static bool IsConfigured(string variableName, out string reason) {
+    private static bool IsConfigured(string variableName, out string reason)
+    {
         string? value = Environment.GetEnvironmentVariable(variableName);
-        if (IsEnabled(value)) {
+        if (IsEnabled(value))
+        {
             reason = string.Empty;
             return true;
         }

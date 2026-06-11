@@ -13,7 +13,8 @@ namespace Opc.Classic.Da.Hosting;
 /// produces OpcDaDataChange instances; the publisher fan-outs them to all
 /// advised IOPCDataCallback subscribers registered via IConnectionPoint.
 /// </summary>
-public interface IOpcDaDataChangePublisher {
+public interface IOpcDaDataChangePublisher
+{
     /// <summary>Publishes a data-change batch to advised callback subscribers.</summary>
     ValueTask PublishAsync(
         OpcDaDataChange change,

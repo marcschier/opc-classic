@@ -16,11 +16,13 @@ namespace Opc.Classic.Cpx;
 /// <summary>
 /// Serializes and deserializes CPX XMLSchema complex values.
 /// </summary>
-public static class XmlComplexValueSerializer {
+public static class XmlComplexValueSerializer
+{
     private static readonly XNamespace XsiNamespace = "http://www.w3.org/2001/XMLSchema-instance";
 
     /// <summary>Serialize a complex value as an XML document.</summary>
-    public static string Serialize(ComplexValue value, TypeDescription type, TypeDictionary? dictionary = null) {
+    public static string Serialize(ComplexValue value, TypeDescription type, TypeDictionary? dictionary = null)
+    {
         ArgumentNullException.ThrowIfNull(value);
         ArgumentNullException.ThrowIfNull(type);
 
@@ -29,7 +31,8 @@ public static class XmlComplexValueSerializer {
     }
 
     /// <summary>Deserialize an XML document into a complex value.</summary>
-    public static ComplexValue Deserialize(string xml, TypeDescription type, TypeDictionary? dictionary = null) {
+    public static ComplexValue Deserialize(string xml, TypeDescription type, TypeDictionary? dictionary = null)
+    {
         ArgumentException.ThrowIfNullOrWhiteSpace(xml);
         ArgumentNullException.ThrowIfNull(type);
 
@@ -39,15 +42,19 @@ public static class XmlComplexValueSerializer {
         return DeserializeElement(document.Root ?? throw new FormatException("XML complex value document is empty."), type, dictionary);
     }
 
-    private static XElement SerializeElement(string elementName, ComplexValue value, TypeDescription type, TypeDictionary? dictionary, bool isRoot) {
+    private static XElement SerializeElement(string elementName, ComplexValue value, TypeDescription type, TypeDictionary? dictionary, bool isRoot)
+    {
         var element = new XElement(CreateName(dictionary, elementName));
-        if (isRoot) {
+        if (isRoot)
+        {
             element.SetAttributeValue(XNamespace.Xmlns + "xsi", XsiNamespace.NamespaceName);
             element.SetAttributeValue(XsiNamespace + "type", type.TypeId);
         }
 
-        foreach (var field in type.Fields) {
-            if (!value.Fields.TryGetValue(field.Name, out var rawValue)) {
+        foreach (var field in type.Fields)
+        {
+            if (!value.Fields.TryGetValue(field.Name, out var rawValue))
+            {
                 throw new KeyNotFoundException($"Complex value is missing XML field '{field.Name}'.");
             }
 
@@ -57,15 +64,19 @@ public static class XmlComplexValueSerializer {
         return element;
     }
 
-    private static void AppendField(XElement parent, TypeField field, object? rawValue, TypeDictionary? dictionary) {
-        if (field.ElementCount is { } count && field.Kind != TypeKind.String && rawValue is IEnumerable enumerable and not string) {
+    private static void AppendField(XElement parent, TypeField field, object? rawValue, TypeDictionary? dictionary)
+    {
+        if (field.ElementCount is { } count && field.Kind != TypeKind.String && rawValue is IEnumerable enumerable and not string)
+        {
             var written = 0;
-            foreach (var elementValue in enumerable) {
+            foreach (var elementValue in enumerable)
+            {
                 parent.Add(CreateFieldElement(field, elementValue, dictionary));
                 written++;
             }
 
-            if (written != count) {
+            if (written != count)
+            {
                 throw new InvalidOperationException($"XML field '{field.Name}' contains {written.ToString(CultureInfo.InvariantCulture)} elements; expected {count.ToString(CultureInfo.InvariantCulture)}.");
             }
 
@@ -75,8 +86,10 @@ public static class XmlComplexValueSerializer {
         parent.Add(CreateFieldElement(field, rawValue, dictionary));
     }
 
-    private static XElement CreateFieldElement(TypeField field, object? rawValue, TypeDictionary? dictionary) {
-        if (field.Kind == TypeKind.StructReference) {
+    private static XElement CreateFieldElement(TypeField field, object? rawValue, TypeDictionary? dictionary)
+    {
+        if (field.Kind == TypeKind.StructReference)
+        {
             var nestedType = OpcBinaryCodecUtilities.ResolveType(field, dictionary);
             var nestedValue = rawValue as ComplexValue
                 ?? throw new InvalidCastException($"XML field '{field.Name}' must contain a ComplexValue.");
@@ -86,17 +99,22 @@ public static class XmlComplexValueSerializer {
         return new XElement(CreateName(dictionary, field.Name), FormatPrimitive(field.Kind, rawValue));
     }
 
-    private static ComplexValue DeserializeElement(XElement element, TypeDescription type, TypeDictionary? dictionary) {
+    private static ComplexValue DeserializeElement(XElement element, TypeDescription type, TypeDictionary? dictionary)
+    {
         var fields = new Dictionary<string, object?>(StringComparer.Ordinal);
-        foreach (var field in type.Fields) {
+        foreach (var field in type.Fields)
+        {
             var children = FindChildren(element, field.Name);
-            if (field.ElementCount is { } count && field.Kind != TypeKind.String) {
-                if (children.Count != count) {
+            if (field.ElementCount is { } count && field.Kind != TypeKind.String)
+            {
+                if (children.Count != count)
+                {
                     throw new FormatException($"XML field '{field.Name}' has {children.Count.ToString(CultureInfo.InvariantCulture)} elements; expected {count.ToString(CultureInfo.InvariantCulture)}.");
                 }
 
                 var values = new object?[count];
-                for (var i = 0; i < count; i++) {
+                for (var i = 0; i < count; i++)
+                {
                     values[i] = ParseField(children[i], field, dictionary);
                 }
 
@@ -104,21 +122,25 @@ public static class XmlComplexValueSerializer {
                 continue;
             }
 
-            if (children.Count == 0) {
+            if (children.Count == 0)
+            {
                 throw new FormatException($"XML complex value is missing field '{field.Name}'.");
             }
 
             fields[field.Name] = ParseField(children[0], field, dictionary);
         }
 
-        return new ComplexValue {
+        return new ComplexValue
+        {
             Type = OpcBinaryCodecUtilities.CreateStructType(type, dictionary),
             Fields = fields,
         };
     }
 
-    private static object? ParseField(XElement element, TypeField field, TypeDictionary? dictionary) {
-        if (field.Kind == TypeKind.StructReference) {
+    private static object? ParseField(XElement element, TypeField field, TypeDictionary? dictionary)
+    {
+        if (field.Kind == TypeKind.StructReference)
+        {
             var nestedType = OpcBinaryCodecUtilities.ResolveType(field, dictionary);
             return DeserializeElement(element, nestedType, dictionary);
         }
@@ -127,7 +149,8 @@ public static class XmlComplexValueSerializer {
     }
 
     private static string FormatPrimitive(TypeKind kind, object? value) =>
-        kind switch {
+        kind switch
+        {
             TypeKind.Boolean => XmlConvert.ToString(Convert.ToBoolean(value, CultureInfo.InvariantCulture)),
             TypeKind.Int8 => XmlConvert.ToString(Convert.ToSByte(value, CultureInfo.InvariantCulture)),
             TypeKind.UInt8 => XmlConvert.ToString(Convert.ToByte(value, CultureInfo.InvariantCulture)),
@@ -147,7 +170,8 @@ public static class XmlComplexValueSerializer {
         };
 
     private static object ParsePrimitive(TypeKind kind, string value) =>
-        kind switch {
+        kind switch
+        {
             TypeKind.Boolean => XmlConvert.ToBoolean(value),
             TypeKind.Int8 => sbyte.Parse(value, NumberStyles.Integer, CultureInfo.InvariantCulture),
             TypeKind.UInt8 => byte.Parse(value, NumberStyles.Integer, CultureInfo.InvariantCulture),
@@ -166,18 +190,23 @@ public static class XmlComplexValueSerializer {
             _ => throw new NotSupportedException($"Type kind '{kind}' is not supported by the XML complex value serializer."),
         };
 
-    private static XName CreateName(TypeDictionary? dictionary, string localName) {
-        if (dictionary?.Name is { Length: > 0 } namespaceName && Uri.TryCreate(namespaceName, UriKind.Absolute, out _)) {
+    private static XName CreateName(TypeDictionary? dictionary, string localName)
+    {
+        if (dictionary?.Name is { Length: > 0 } namespaceName && Uri.TryCreate(namespaceName, UriKind.Absolute, out _))
+        {
             return XNamespace.Get(namespaceName) + localName;
         }
 
         return localName;
     }
 
-    private static List<XElement> FindChildren(XElement element, string localName) {
+    private static List<XElement> FindChildren(XElement element, string localName)
+    {
         var children = new List<XElement>();
-        foreach (var child in element.Elements()) {
-            if (child.Name.LocalName.Equals(localName, StringComparison.Ordinal)) {
+        foreach (var child in element.Elements())
+        {
+            if (child.Name.LocalName.Equals(localName, StringComparison.Ordinal))
+            {
                 children.Add(child);
             }
         }
@@ -186,7 +215,8 @@ public static class XmlComplexValueSerializer {
     }
 
     private static DateTime ToDateTime(object? value) =>
-        value switch {
+        value switch
+        {
             DateTime typed => typed.ToUniversalTime(),
             DateTimeOffset typed => typed.UtcDateTime,
             string typed => XmlConvert.ToDateTime(typed, XmlDateTimeSerializationMode.Utc),
@@ -195,14 +225,16 @@ public static class XmlComplexValueSerializer {
         };
 
     private static Guid ToGuid(object? value) =>
-        value switch {
+        value switch
+        {
             Guid typed => typed,
             string typed => Guid.Parse(typed),
             _ => throw new InvalidCastException("Value cannot be converted to a GUID."),
         };
 
     private static byte[] ToByteArray(object? value) =>
-        value switch {
+        value switch
+        {
             byte[] typed => typed,
             ReadOnlyMemory<byte> typed => typed.ToArray(),
             Memory<byte> typed => typed.ToArray(),
@@ -210,7 +242,8 @@ public static class XmlComplexValueSerializer {
         };
 
     private static XmlReaderSettings CreateReaderSettings() =>
-        new() {
+        new()
+        {
             DtdProcessing = DtdProcessing.Prohibit,
             XmlResolver = null,
         };

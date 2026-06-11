@@ -11,7 +11,8 @@ using Opc.Classic.Testing;
 
 namespace Opc.Classic.Samples.LoopbackDemo;
 
-internal sealed class LoopbackDaClient {
+internal sealed class LoopbackDaClient
+{
     private const int AddGroupOpnum = 4;
     private const int BrowseItemsOpnum = 5;
     private const int AddItemsOpnum = 3;
@@ -35,7 +36,8 @@ internal sealed class LoopbackDaClient {
     public LoopbackDaClient(
         InMemoryCallChannel channel,
         LoopbackDaRuntime runtime,
-        ILogger<LoopbackDaClient> logger) {
+        ILogger<LoopbackDaClient> logger)
+    {
         _channel = channel ?? throw new ArgumentNullException(nameof(channel));
         _runtime = runtime ?? throw new ArgumentNullException(nameof(runtime));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -49,7 +51,8 @@ internal sealed class LoopbackDaClient {
     public Task<OpcServerStatus> ConnectAsync(CancellationToken cancellationToken) =>
         _server.GetStatusAsync(cancellationToken);
 
-    public async Task<string[]> BrowseAsync(CancellationToken cancellationToken) {
+    public async Task<string[]> BrowseAsync(CancellationToken cancellationToken)
+    {
         _ = await _browse.QueryOrganizationAsync(cancellationToken).ConfigureAwait(false);
         ReadOnlyMemory<byte> response = await InvokeAsync(
             IOPCBrowseServerAddressSpace.InterfaceId,
@@ -66,8 +69,10 @@ internal sealed class LoopbackDaClient {
         int requestedUpdateRate,
         int clientHandle,
         int localeId,
-        CancellationToken cancellationToken) {
-        ReadOnlyMemory<byte> payload = LoopbackNdr.Write((ref NdrWriter writer) => {
+        CancellationToken cancellationToken)
+    {
+        ReadOnlyMemory<byte> payload = LoopbackNdr.Write((ref NdrWriter writer) =>
+        {
             writer.WriteUnicodeStringPtr(name);
             writer.WriteInt32(active ? -1 : 0);
             writer.WriteInt32(requestedUpdateRate);
@@ -86,12 +91,15 @@ internal sealed class LoopbackDaClient {
     public async Task<IReadOnlyList<LoopbackAddItemResult>> AddItemsAsync(
         int groupHandle,
         IReadOnlyList<LoopbackItemRequest> items,
-        CancellationToken cancellationToken) {
+        CancellationToken cancellationToken)
+    {
         ArgumentNullException.ThrowIfNull(items);
-        ReadOnlyMemory<byte> payload = LoopbackNdr.Write((ref NdrWriter writer) => {
+        ReadOnlyMemory<byte> payload = LoopbackNdr.Write((ref NdrWriter writer) =>
+        {
             writer.WriteInt32(groupHandle);
             writer.WriteUInt32((uint)items.Count);
-            foreach (LoopbackItemRequest item in items) {
+            foreach (LoopbackItemRequest item in items)
+            {
                 var def = new OpcItemDef(
                     AccessPath: null,
                     ItemId: item.ItemId,
@@ -111,13 +119,15 @@ internal sealed class LoopbackDaClient {
         var reader = new NdrReader(response.Span);
         int count = checked((int)reader.ReadUInt32());
         var itemResults = new OpcItemResult[count];
-        for (var index = 0; index < itemResults.Length; index++) {
+        for (var index = 0; index < itemResults.Length; index++)
+        {
             itemResults[index] = NdrOpcItemResultCodec.Read(ref reader);
         }
 
         int[] errors = LoopbackNdr.ReadInt32Array(ref reader);
         var results = new List<LoopbackAddItemResult>(items.Count);
-        for (var index = 0; index < items.Count; index++) {
+        for (var index = 0; index < items.Count; index++)
+        {
             OpcItemResult itemResult = index < itemResults.Length
                 ? itemResults[index]
                 : new OpcItemResult(0, VarType.VT_EMPTY, 0, Array.Empty<byte>());
@@ -136,10 +146,12 @@ internal sealed class LoopbackDaClient {
 
     public async Task<IReadOnlyList<LoopbackReadResult>> ReadAsync(
         IReadOnlyList<LoopbackAddItemResult> items,
-        CancellationToken cancellationToken) {
+        CancellationToken cancellationToken)
+    {
         ArgumentNullException.ThrowIfNull(items);
         int[] serverHandles = items.Select(static item => item.ServerHandle).ToArray();
-        ReadOnlyMemory<byte> payload = LoopbackNdr.Write((ref NdrWriter writer) => {
+        ReadOnlyMemory<byte> payload = LoopbackNdr.Write((ref NdrWriter writer) =>
+        {
             writer.WriteInt32(DataSourceCache);
             LoopbackNdr.WriteInt32Array(ref writer, serverHandles);
         });
@@ -152,13 +164,15 @@ internal sealed class LoopbackDaClient {
         var reader = new NdrReader(response.Span);
         int count = checked((int)reader.ReadUInt32());
         var states = new OpcItemState[count];
-        for (var index = 0; index < states.Length; index++) {
+        for (var index = 0; index < states.Length; index++)
+        {
             states[index] = NdrOpcItemStateCodec.Read(ref reader);
         }
 
         int[] errors = LoopbackNdr.ReadInt32Array(ref reader);
         var results = new List<LoopbackReadResult>(items.Count);
-        for (var index = 0; index < items.Count; index++) {
+        for (var index = 0; index < items.Count; index++)
+        {
             OpcItemState state = index < states.Length
                 ? states[index]
                 : new OpcItemState(0, DateTimeOffset.UtcNow, OpcQuality.Bad, OpcVariant.Empty);
@@ -179,17 +193,20 @@ internal sealed class LoopbackDaClient {
     public async Task<IReadOnlyList<LoopbackWriteResult>> WriteAsync(
         IReadOnlyList<LoopbackAddItemResult> items,
         IReadOnlyList<OpcVariant> values,
-        CancellationToken cancellationToken) {
+        CancellationToken cancellationToken)
+    {
         ArgumentNullException.ThrowIfNull(items);
         ArgumentNullException.ThrowIfNull(values);
-        if (items.Count != values.Count) {
+        if (items.Count != values.Count)
+        {
             throw new ArgumentException("Item and value counts must match.", nameof(values));
         }
 
         int[] serverHandles = items.Select(static item => item.ServerHandle).ToArray();
         int[] errors = await _syncIo.WriteAsync(serverHandles, values.ToArray(), cancellationToken).ConfigureAwait(false);
         var results = new List<LoopbackWriteResult>(items.Count);
-        for (var index = 0; index < items.Count; index++) {
+        for (var index = 0; index < items.Count; index++)
+        {
             int error = index < errors.Length ? errors[index] : OpcResultId.Fail.Code;
             results.Add(new LoopbackWriteResult(items[index].ItemId, items[index].ServerHandle, values[index], error));
         }
@@ -200,7 +217,8 @@ internal sealed class LoopbackDaClient {
     public Task RemoveGroupAsync(int groupHandle, CancellationToken cancellationToken) =>
         _server.RemoveGroupAsync(groupHandle, force: true, cancellationToken);
 
-    public async Task<LoopbackSubscription> SubscribeAsync(CancellationToken cancellationToken) {
+    public async Task<LoopbackSubscription> SubscribeAsync(CancellationToken cancellationToken)
+    {
         Guid callbackInterface = await _connectionPoint.GetConnectionInterfaceAsync(cancellationToken).ConfigureAwait(false);
         ConnectionPointInterface(_logger, callbackInterface, null);
 
@@ -217,9 +235,11 @@ internal sealed class LoopbackDaClient {
         Guid interfaceId,
         int opnum,
         ReadOnlyMemory<byte> payload,
-        CancellationToken cancellationToken) {
+        CancellationToken cancellationToken)
+    {
         NdrCallResult result = await _channel.InvokeAsync(interfaceId, opnum, payload, cancellationToken).ConfigureAwait(false);
-        if (result.IsFailure) {
+        if (result.IsFailure)
+        {
             throw new OpcException(new OpcResultId(result.Hresult, null));
         }
 
@@ -227,7 +247,8 @@ internal sealed class LoopbackDaClient {
     }
 }
 
-internal sealed class LoopbackSubscription : IAsyncDisposable {
+internal sealed class LoopbackSubscription : IAsyncDisposable
+{
     private readonly LoopbackDaRuntime _runtime;
     private readonly IOPCAsyncIO2ClientProxy _asyncIo;
     private readonly LoopbackCallbackSink _sink;
@@ -238,7 +259,8 @@ internal sealed class LoopbackSubscription : IAsyncDisposable {
         LoopbackDaRuntime runtime,
         IOPCAsyncIO2ClientProxy asyncIo,
         LoopbackCallbackSink sink,
-        int cookie) {
+        int cookie)
+    {
         _runtime = runtime ?? throw new ArgumentNullException(nameof(runtime));
         _asyncIo = asyncIo ?? throw new ArgumentNullException(nameof(asyncIo));
         _sink = sink ?? throw new ArgumentNullException(nameof(sink));
@@ -251,8 +273,10 @@ internal sealed class LoopbackSubscription : IAsyncDisposable {
     public Task<int> RefreshAsync(int transactionId, CancellationToken cancellationToken) =>
         _asyncIo.Refresh2Async(1, transactionId, cancellationToken);
 
-    public async ValueTask DisposeAsync() {
-        if (_disposed) {
+    public async ValueTask DisposeAsync()
+    {
+        if (_disposed)
+        {
             return;
         }
 
@@ -263,19 +287,24 @@ internal sealed class LoopbackSubscription : IAsyncDisposable {
     }
 }
 
-internal sealed class LoopbackCallbackSink {
+internal sealed class LoopbackCallbackSink
+{
     private readonly Channel<LoopbackNotification> _notifications = System.Threading.Channels.Channel.CreateUnbounded<LoopbackNotification>();
 
-    public LoopbackCallbackSink() {
+    public LoopbackCallbackSink()
+    {
         Channel = new InMemoryCallChannel(DispatchAsync);
     }
 
     public InMemoryCallChannel Channel { get; }
 
     public async IAsyncEnumerable<LoopbackNotification> Notifications(
-        [System.Runtime.CompilerServices.EnumeratorCancellation] CancellationToken cancellationToken) {
-        while (await _notifications.Reader.WaitToReadAsync(cancellationToken).ConfigureAwait(false)) {
-            while (_notifications.Reader.TryRead(out LoopbackNotification? notification)) {
+        [System.Runtime.CompilerServices.EnumeratorCancellation] CancellationToken cancellationToken)
+    {
+        while (await _notifications.Reader.WaitToReadAsync(cancellationToken).ConfigureAwait(false))
+        {
+            while (_notifications.Reader.TryRead(out LoopbackNotification? notification))
+            {
                 yield return notification;
             }
         }
@@ -287,9 +316,11 @@ internal sealed class LoopbackCallbackSink {
         Guid interfaceId,
         int opnum,
         ReadOnlyMemory<byte> payload,
-        CancellationToken cancellationToken) {
+        CancellationToken cancellationToken)
+    {
         cancellationToken.ThrowIfCancellationRequested();
-        if (interfaceId != IOPCDataCallback.InterfaceId || opnum != IOPCDataCallback.Opnums.OnDataChangeAsync) {
+        if (interfaceId != IOPCDataCallback.InterfaceId || opnum != IOPCDataCallback.Opnums.OnDataChangeAsync)
+        {
             return Task.FromResult(new NdrCallResult(OpcResultId.NotImplemented.Code, ReadOnlyMemory<byte>.Empty));
         }
 
@@ -305,7 +336,8 @@ internal sealed class LoopbackCallbackSink {
         int[] errors = LoopbackNdr.ReadInt32Array(ref reader);
         int itemCount = new[] { clientHandles.Length, values.Length, qualities.Length, timestamps.Length, errors.Length }.Min();
         var items = new List<LoopbackNotificationItem>(itemCount);
-        for (var index = 0; index < itemCount; index++) {
+        for (var index = 0; index < itemCount; index++)
+        {
             items.Add(new LoopbackNotificationItem(
                 clientHandles[index],
                 values[index],

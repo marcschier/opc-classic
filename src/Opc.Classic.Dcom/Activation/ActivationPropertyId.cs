@@ -9,7 +9,8 @@ namespace Opc.Classic.Dcom.Core;
 /// Identifies one member of the DCOM activation property array carried by
 /// <c>IActivationProperties</c> OBJREFs.
 /// </summary>
-public enum ActivationPropertyId : uint {
+public enum ActivationPropertyId : uint
+{
     /// <summary>Unrecognized or opaque activation property payload.</summary>
     Unknown = 0,
 

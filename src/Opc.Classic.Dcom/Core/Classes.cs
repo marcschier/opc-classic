@@ -5,7 +5,8 @@ namespace Opc.Classic.Dcom;
 /// <summary>
 /// Class identifiers
 /// </summary>
-public static class Classes {
+public static class Classes
+{
     /// <summary>
     /// Activation property CLSID for ActivationContextInfoData 
     /// </summary>

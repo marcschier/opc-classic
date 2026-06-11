@@ -14,7 +14,8 @@ namespace Opc.Classic.Dcom.Core;
 [OpcInterface(Opc.Classic.Dcom.Interfaces.IID_IRemoteSCMActivator)]
 [GenerateOpcProxy]
 [OpcGenerateServerDispatch]
-public partial interface IRemoteSCMActivator {
+public partial interface IRemoteSCMActivator
+{
     /// <summary>IRemoteSCMActivator::RemoteGetClassObject (opnum 3).</summary>
     [OpcMethod(3)]
     Task<int> RemoteGetClassObjectAsync(Guid clsid, Guid requestedIid, CancellationToken cancellationToken = default);

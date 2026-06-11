@@ -7,7 +7,8 @@ namespace Opc.Classic.Dcom.Core;
 /// <summary>
 /// Codec context
 /// </summary>
-public class CodecContext {
+public class CodecContext
+{
 
     /// <summary>
     /// List of deferred pointers
@@ -33,11 +34,13 @@ public class CodecContext {
     /// Decodes the deferred pointers
     /// </summary>
     /// <param name="ndr"></param>
-    public void DecodeDeferredPointers(NdrCodec ndr) {
+    public void DecodeDeferredPointers(NdrCodec ndr)
+    {
         var x = 0;
         var listOfDefferedPointers = DefferedPointers;
         var flags = Flag;
-        while (x < listOfDefferedPointers.Count) {
+        while (x < listOfDefferedPointers.Count)
+        {
             DefferedPointers = new List<ComPointer>();
             Flag = flags;
 
@@ -55,7 +58,8 @@ public class CodecContext {
     /// </summary>
     /// <param name="ndr"></param>
     /// <param name="flatten"></param>
-    public void EncodeDeferredPointers(NdrCodec ndr, bool flatten = true) { // TODO: Understand flatten
+    public void EncodeDeferredPointers(NdrCodec ndr, bool flatten = true)
+    { // TODO: Understand flatten
         // The deferred pointers need to be completely serialized here. 
         // If they are also having nested deffered pointers then those pointers
         // should be "inserted" just after the current pointer itself.
@@ -86,21 +90,27 @@ public class CodecContext {
         // serialization ofcourse) and should not go to the end of the list.
         var x = 0;
         var listOfDefferedPointers = DefferedPointers;
-        while (x < listOfDefferedPointers.Count) {
+        while (x < listOfDefferedPointers.Count)
+        {
             DefferedPointers = new List<ComPointer>();
-            if (flatten) {
+            if (flatten)
+            {
                 var referent = listOfDefferedPointers[x].Referent;
-                if (referent is Struct) {
+                if (referent is Struct)
+                {
                     MarshalUnMarshalHelper.Serialize(ndr, typeof(Struct), referent, this);
                 }
-                else if (referent is ComString) {
+                else if (referent is ComString)
+                {
                     MarshalUnMarshalHelper.Serialize(ndr, typeof(ComString), referent, this);
                 }
-                else {
+                else
+                {
                     MarshalUnMarshalHelper.Serialize(ndr, typeof(ComArray), referent, this);
                 }
             }
-            else {
+            else
+            {
                 MarshalUnMarshalHelper.Serialize(ndr, typeof(ComPointer),
                     listOfDefferedPointers[x], this);
             }
@@ -109,8 +119,10 @@ public class CodecContext {
         }
     }
 
-    private static void InsertRange<T>(IList<T> target, int index, IEnumerable<T> values) {
-        foreach (var value in values) {
+    private static void InsertRange<T>(IList<T> target, int index, IEnumerable<T> values)
+    {
+        foreach (var value in values)
+        {
             target.Insert(index, value);
             index++;
         }

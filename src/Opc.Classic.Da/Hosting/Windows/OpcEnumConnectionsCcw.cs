@@ -17,7 +17,8 @@ namespace Opc.Classic.Da.Hosting.Windows;
 /// Single-tearoff Windows CCW for OAIDL <c>IEnumConnections</c>.
 /// </summary>
 [SupportedOSPlatform("windows")]
-public static unsafe class OpcEnumConnectionsCcw {
+public static unsafe class OpcEnumConnectionsCcw
+{
     internal const int S_OK = 0;
     internal const int S_FALSE = 1;
     internal const int E_NOINTERFACE = unchecked((int)0x80004002);
@@ -28,7 +29,8 @@ public static unsafe class OpcEnumConnectionsCcw {
     private static readonly ConcurrentDictionary<IntPtr, CcwEntry> s_entries = new();
 
     /// <summary>Creates an <c>IEnumConnections</c> CCW with refcount = 1.</summary>
-    internal static IntPtr Create(OpcEnumConnectionsEnumerator enumerator) {
+    internal static IntPtr Create(OpcEnumConnectionsEnumerator enumerator)
+    {
         ArgumentNullException.ThrowIfNull(enumerator);
 
         var handle = GCHandle.Alloc(enumerator, GCHandleType.Normal);
@@ -50,7 +52,8 @@ public static unsafe class OpcEnumConnectionsCcw {
             : null;
 
     [SuppressMessage("Reliability", "CA2018:Buffer size argument matches element count", Justification = "Explicit byte size.")]
-    private static IntPtr* AllocateVtable() {
+    private static IntPtr* AllocateVtable()
+    {
         IntPtr* v = (IntPtr*)NativeMemory.Alloc((nuint)(7 * sizeof(IntPtr)));
         v[0] = (IntPtr)(delegate* unmanaged<IntPtr, Guid*, IntPtr*, int>)&QueryInterface;
         v[1] = (IntPtr)(delegate* unmanaged<IntPtr, uint>)&AddRef;
@@ -63,22 +66,27 @@ public static unsafe class OpcEnumConnectionsCcw {
     }
 
     [SuppressMessage("Reliability", "CA2018:Buffer size argument matches element count", Justification = "Explicit byte size.")]
-    private static IntPtr AllocateInstance(IntPtr* vtable) {
+    private static IntPtr AllocateInstance(IntPtr* vtable)
+    {
         IntPtr* instance = (IntPtr*)NativeMemory.Alloc((nuint)sizeof(IntPtr));
         instance[0] = (IntPtr)vtable;
         return (IntPtr)instance;
     }
 
     [UnmanagedCallersOnly]
-    private static int QueryInterface(IntPtr pThis, Guid* riid, IntPtr* ppv) {
-        if (ppv == null) {
+    private static int QueryInterface(IntPtr pThis, Guid* riid, IntPtr* ppv)
+    {
+        if (ppv == null)
+        {
             return E_INVALIDARG;
         }
         *ppv = IntPtr.Zero;
-        if (riid == null || !s_entries.TryGetValue(pThis, out CcwEntry? entry)) {
+        if (riid == null || !s_entries.TryGetValue(pThis, out CcwEntry? entry))
+        {
             return riid == null ? E_INVALIDARG : E_NOINTERFACE;
         }
-        if (*riid != IID_IUnknown && *riid != OpcGuids.IID_IEnumConnections) {
+        if (*riid != IID_IUnknown && *riid != OpcGuids.IID_IEnumConnections)
+        {
             return E_NOINTERFACE;
         }
 
@@ -88,43 +96,54 @@ public static unsafe class OpcEnumConnectionsCcw {
     }
 
     [UnmanagedCallersOnly]
-    private static uint AddRef(IntPtr pThis) {
-        if (!s_entries.TryGetValue(pThis, out CcwEntry? entry)) {
+    private static uint AddRef(IntPtr pThis)
+    {
+        if (!s_entries.TryGetValue(pThis, out CcwEntry? entry))
+        {
             return 1;
         }
         return (uint)Interlocked.Increment(ref entry.RefCount);
     }
 
     [UnmanagedCallersOnly]
-    private static uint Release(IntPtr pThis) {
-        if (!s_entries.TryGetValue(pThis, out CcwEntry? entry)) {
+    private static uint Release(IntPtr pThis)
+    {
+        if (!s_entries.TryGetValue(pThis, out CcwEntry? entry))
+        {
             return 0;
         }
         long next = Interlocked.Decrement(ref entry.RefCount);
-        if (next > 0) {
+        if (next > 0)
+        {
             return (uint)next;
         }
         DisposeEntry(pThis, entry);
         return 0;
     }
 
-    private static void DisposeEntry(IntPtr instance, CcwEntry entry) {
-        if (Interlocked.Exchange(ref entry.Disposed, 1) != 0) {
+    private static void DisposeEntry(IntPtr instance, CcwEntry entry)
+    {
+        if (Interlocked.Exchange(ref entry.Disposed, 1) != 0)
+        {
             return;
         }
         s_entries.TryRemove(instance, out _);
-        if (entry.EnumeratorHandle.Target is IDisposable disposable) {
+        if (entry.EnumeratorHandle.Target is IDisposable disposable)
+        {
             disposable.Dispose();
         }
         NativeMemory.Free((void*)instance);
         NativeMemory.Free(entry.Vtable);
-        if (entry.EnumeratorHandle.IsAllocated) {
+        if (entry.EnumeratorHandle.IsAllocated)
+        {
             entry.EnumeratorHandle.Free();
         }
     }
 
-    private sealed class CcwEntry {
-        public CcwEntry(GCHandle enumeratorHandle, IntPtr* vtable) {
+    private sealed class CcwEntry
+    {
+        public CcwEntry(GCHandle enumeratorHandle, IntPtr* vtable)
+        {
             EnumeratorHandle = enumeratorHandle;
             Vtable = vtable;
         }

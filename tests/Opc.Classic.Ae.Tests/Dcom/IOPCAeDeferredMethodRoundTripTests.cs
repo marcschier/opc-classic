@@ -17,9 +17,11 @@ using TUnit.Core;
 
 namespace Opc.Classic.Ae.Tests.Dcom;
 
-public sealed class IOPCAeDeferredMethodRoundTripTests {
+public sealed class IOPCAeDeferredMethodRoundTripTests
+{
     [Test]
-    public async Task EventServer_QueryEventCategories_round_trips_categories_and_descriptions() {
+    public async Task EventServer_QueryEventCategories_round_trips_categories_and_descriptions()
+    {
         var server = new RoundTripEventServer();
         var channel = Channel(IOPCEventServer.InterfaceId, new IOPCEventServerServerDispatcher(server));
         var proxy = new IOPCEventServerClientProxy(channel);
@@ -33,7 +35,8 @@ public sealed class IOPCAeDeferredMethodRoundTripTests {
     }
 
     [Test]
-    public async Task EventServer_QueryEventAttributes_round_trips_attribute_metadata() {
+    public async Task EventServer_QueryEventAttributes_round_trips_attribute_metadata()
+    {
         var server = new RoundTripEventServer();
         var channel = Channel(IOPCEventServer.InterfaceId, new IOPCEventServerServerDispatcher(server));
         var proxy = new IOPCEventServerClientProxy(channel);
@@ -48,7 +51,8 @@ public sealed class IOPCAeDeferredMethodRoundTripTests {
     }
 
     [Test]
-    public async Task EventServer_TranslateToItemIDs_round_trips_item_mappings() {
+    public async Task EventServer_TranslateToItemIDs_round_trips_item_mappings()
+    {
         var server = new RoundTripEventServer();
         var channel = Channel(IOPCEventServer.InterfaceId, new IOPCEventServerServerDispatcher(server));
         var proxy = new IOPCEventServerClientProxy(channel);
@@ -74,7 +78,8 @@ public sealed class IOPCAeDeferredMethodRoundTripTests {
     }
 
     [Test]
-    public async Task EventServer_GetConditionState_uses_correct_opnum_after_catalog_methods() {
+    public async Task EventServer_GetConditionState_uses_correct_opnum_after_catalog_methods()
+    {
         var server = new RoundTripEventServer();
         var channel = Channel(IOPCEventServer.InterfaceId, new IOPCEventServerServerDispatcher(server));
         var proxy = new IOPCEventServerClientProxy(channel);
@@ -86,7 +91,8 @@ public sealed class IOPCAeDeferredMethodRoundTripTests {
     }
 
     [Test]
-    public async Task EventSubscriptionMgt_GetFilter_round_trips_full_filter() {
+    public async Task EventSubscriptionMgt_GetFilter_round_trips_full_filter()
+    {
         var subscription = new RoundTripSubscriptionMgt();
         var channel = Channel(IOPCEventSubscriptionMgt.InterfaceId, new IOPCEventSubscriptionMgtServerDispatcher(subscription));
         var proxy = new IOPCEventSubscriptionMgtClientProxy(channel);
@@ -110,7 +116,8 @@ public sealed class IOPCAeDeferredMethodRoundTripTests {
     }
 
     [Test]
-    public async Task EventSubscriptionMgt_GetState_round_trips_state() {
+    public async Task EventSubscriptionMgt_GetState_round_trips_state()
+    {
         var subscription = new RoundTripSubscriptionMgt();
         var channel = Channel(IOPCEventSubscriptionMgt.InterfaceId, new IOPCEventSubscriptionMgtServerDispatcher(subscription));
         var proxy = new IOPCEventSubscriptionMgtClientProxy(channel);
@@ -125,7 +132,8 @@ public sealed class IOPCAeDeferredMethodRoundTripTests {
     }
 
     [Test]
-    public async Task EventSubscriptionMgt_SetState_round_trips_revised_buffering() {
+    public async Task EventSubscriptionMgt_SetState_round_trips_revised_buffering()
+    {
         var subscription = new RoundTripSubscriptionMgt();
         var channel = Channel(IOPCEventSubscriptionMgt.InterfaceId, new IOPCEventSubscriptionMgtServerDispatcher(subscription));
         var proxy = new IOPCEventSubscriptionMgtClientProxy(channel);
@@ -140,7 +148,8 @@ public sealed class IOPCAeDeferredMethodRoundTripTests {
     }
 
     [Test]
-    public async Task EventServer2_GetEnableStateByArea_round_trips_state_arrays() {
+    public async Task EventServer2_GetEnableStateByArea_round_trips_state_arrays()
+    {
         var server = new RoundTripEventServer2();
         var channel = Channel(IOPCEventServer2.InterfaceId, new IOPCEventServer2ServerDispatcher(server));
         var proxy = new IOPCEventServer2ClientProxy(channel);
@@ -160,7 +169,8 @@ public sealed class IOPCAeDeferredMethodRoundTripTests {
     }
 
     [Test]
-    public async Task EventServer2_GetEnableStateBySource_round_trips_state_arrays() {
+    public async Task EventServer2_GetEnableStateBySource_round_trips_state_arrays()
+    {
         var server = new RoundTripEventServer2();
         var channel = Channel(IOPCEventServer2.InterfaceId, new IOPCEventServer2ServerDispatcher(server));
         var proxy = new IOPCEventServer2ClientProxy(channel);
@@ -180,11 +190,13 @@ public sealed class IOPCAeDeferredMethodRoundTripTests {
     }
 
     [Test]
-    public async Task EventServer_CreateEventSubscription_invokes_opnum_4_with_iface_request_shape() {
+    public async Task EventServer_CreateEventSubscription_invokes_opnum_4_with_iface_request_shape()
+    {
         Guid observedIid = Guid.Empty;
         int observedOpnum = -1;
         bool observedRequest = false;
-        var channel = new InMemoryCallChannel((iid, opnum, payload, _) => {
+        var channel = new InMemoryCallChannel((iid, opnum, payload, _) =>
+        {
             observedIid = iid;
             observedOpnum = opnum;
             var reader = new NdrReader(payload.Span);
@@ -215,11 +227,13 @@ public sealed class IOPCAeDeferredMethodRoundTripTests {
     }
 
     [Test]
-    public async Task EventServer_CreateAreaBrowser_invokes_opnum_18_with_requested_iid() {
+    public async Task EventServer_CreateAreaBrowser_invokes_opnum_18_with_requested_iid()
+    {
         Guid observedIid = Guid.Empty;
         int observedOpnum = -1;
         Guid observedRequestedIid = Guid.Empty;
-        var channel = new InMemoryCallChannel((iid, opnum, payload, _) => {
+        var channel = new InMemoryCallChannel((iid, opnum, payload, _) =>
+        {
             observedIid = iid;
             observedOpnum = opnum;
             var reader = new NdrReader(payload.Span);
@@ -239,11 +253,13 @@ public sealed class IOPCAeDeferredMethodRoundTripTests {
     }
 
     [Test]
-    public async Task EventAreaBrowser_BrowseOPCAreas_invokes_opnum_4_with_filter() {
+    public async Task EventAreaBrowser_BrowseOPCAreas_invokes_opnum_4_with_filter()
+    {
         Guid observedIid = Guid.Empty;
         int observedOpnum = -1;
         bool observedRequest = false;
-        var channel = new InMemoryCallChannel((iid, opnum, payload, _) => {
+        var channel = new InMemoryCallChannel((iid, opnum, payload, _) =>
+        {
             observedIid = iid;
             observedOpnum = opnum;
             var reader = new NdrReader(payload.Span);
@@ -260,8 +276,10 @@ public sealed class IOPCAeDeferredMethodRoundTripTests {
     }
 
     private static InMemoryCallChannel Channel(Guid interfaceId, IOpcServerDispatcher dispatcher) =>
-        new((iid, opnum, payload, cancellationToken) => {
-            if (iid != interfaceId) {
+        new((iid, opnum, payload, cancellationToken) =>
+        {
+            if (iid != interfaceId)
+            {
                 return Task.FromResult(new NdrCallResult(OpcResultId.NotImplemented.Code, ReadOnlyMemory<byte>.Empty));
             }
 
@@ -276,18 +294,22 @@ public sealed class IOPCAeDeferredMethodRoundTripTests {
         (await dispatcher.DispatchAsync(opnum, payload, cancellationToken).ConfigureAwait(false)).ToNdrCallResult();
 
     private static async Task<TException> CaptureAsync<TException>(Func<Task> action)
-        where TException : Exception {
-        try {
+        where TException : Exception
+    {
+        try
+        {
             await action().ConfigureAwait(false);
         }
-        catch (TException exception) {
+        catch (TException exception)
+        {
             return exception;
         }
 
         throw new InvalidOperationException($"Expected {typeof(TException).Name} to be thrown.");
     }
 
-    private sealed class RoundTripEventServer : IOPCEventServer {
+    private sealed class RoundTripEventServer : IOPCEventServer
+    {
         public int LastEventType { get; private set; }
 
         public int LastAttributeCategory { get; private set; }
@@ -308,7 +330,8 @@ public sealed class IOPCAeDeferredMethodRoundTripTests {
             out IOPCEventSubscriptionMgt subscription,
             out int revisedBufferTime,
             out int revisedMaxSize,
-            CancellationToken cancellationToken = default) {
+            CancellationToken cancellationToken = default)
+        {
             subscription = default!;
             revisedBufferTime = bufferTime;
             revisedMaxSize = maxSize;
@@ -321,7 +344,8 @@ public sealed class IOPCAeDeferredMethodRoundTripTests {
             int eventType,
             out int[] eventCategories,
             out string[] eventCategoryDescriptions,
-            CancellationToken cancellationToken = default) {
+            CancellationToken cancellationToken = default)
+        {
             LastEventType = eventType;
             eventCategories = [1001, 1002];
             eventCategoryDescriptions = ["Simple", "Condition"];
@@ -342,7 +366,8 @@ public sealed class IOPCAeDeferredMethodRoundTripTests {
             out int[] attributeIds,
             out string[] attributeDescriptions,
             out ushort[] attributeTypes,
-            CancellationToken cancellationToken = default) {
+            CancellationToken cancellationToken = default)
+        {
             LastAttributeCategory = eventCategory;
             attributeIds = [10, 11];
             attributeDescriptions = ["Area", "Limit"];
@@ -359,7 +384,8 @@ public sealed class IOPCAeDeferredMethodRoundTripTests {
             out string[] attributeItemIds,
             out string[] nodeNames,
             out Guid[] classIds,
-            CancellationToken cancellationToken = default) {
+            CancellationToken cancellationToken = default)
+        {
             LastTranslateSource = source;
             attributeItemIds = associatedAttributeIds.Select(id => source + ".Area").ToArray();
             nodeNames = associatedAttributeIds.Select(_ => "Tank7").ToArray();
@@ -417,13 +443,15 @@ public sealed class IOPCAeDeferredMethodRoundTripTests {
         public Task CreateAreaBrowserAsync(
             Guid requestedInterfaceId,
             out IOPCEventAreaBrowser areaBrowser,
-            CancellationToken cancellationToken = default) {
+            CancellationToken cancellationToken = default)
+        {
             areaBrowser = default!;
             return Task.CompletedTask;
         }
     }
 
-    private sealed class RoundTripEventServer2 : IOPCEventServer2 {
+    private sealed class RoundTripEventServer2 : IOPCEventServer2
+    {
         public string[] LastAreas { get; private set; } = [];
 
         public string[] LastSources { get; private set; } = [];
@@ -445,7 +473,8 @@ public sealed class IOPCAeDeferredMethodRoundTripTests {
             out bool[] enabled,
             out bool[] effectivelyEnabled,
             out int[] errors,
-            CancellationToken cancellationToken = default) {
+            CancellationToken cancellationToken = default)
+        {
             LastAreas = areas;
             enabled = areas.Select(static area => area == "Plant1").ToArray();
             effectivelyEnabled = areas.Select(static area => area == "Plant1").ToArray();
@@ -458,7 +487,8 @@ public sealed class IOPCAeDeferredMethodRoundTripTests {
             out bool[] enabled,
             out bool[] effectivelyEnabled,
             out int[] errors,
-            CancellationToken cancellationToken = default) {
+            CancellationToken cancellationToken = default)
+        {
             LastSources = sources;
             enabled = sources.Select(static _ => true).ToArray();
             effectivelyEnabled = sources.Select(static _ => true).ToArray();
@@ -467,7 +497,8 @@ public sealed class IOPCAeDeferredMethodRoundTripTests {
         }
     }
 
-    private sealed class RoundTripSubscriptionMgt : IOPCEventSubscriptionMgt {
+    private sealed class RoundTripSubscriptionMgt : IOPCEventSubscriptionMgt
+    {
         public bool Active { get; private set; } = true;
 
         public int ClientSubscription { get; private set; } = 0xCAFE;
@@ -489,7 +520,8 @@ public sealed class IOPCAeDeferredMethodRoundTripTests {
             out int highSeverity,
             out string[] areas,
             out string[] sources,
-            CancellationToken cancellationToken = default) {
+            CancellationToken cancellationToken = default)
+        {
             eventType = 0x5;
             eventCategories = [1001, 1002];
             lowSeverity = 100;
@@ -514,7 +546,8 @@ public sealed class IOPCAeDeferredMethodRoundTripTests {
             out int bufferTime,
             out int maxSize,
             out int clientSubscription,
-            CancellationToken cancellationToken = default) {
+            CancellationToken cancellationToken = default)
+        {
             active = Active;
             bufferTime = 250;
             maxSize = 10;
@@ -529,7 +562,8 @@ public sealed class IOPCAeDeferredMethodRoundTripTests {
             int clientSubscription,
             out int revisedBufferTime,
             out int revisedMaxSize,
-            CancellationToken cancellationToken = default) {
+            CancellationToken cancellationToken = default)
+        {
             Active = active;
             ClientSubscription = clientSubscription;
             revisedBufferTime = Math.Max(bufferTime, 250);

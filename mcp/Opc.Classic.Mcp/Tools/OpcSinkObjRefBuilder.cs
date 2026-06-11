@@ -34,7 +34,8 @@ namespace Opc.Classic.Mcp.Tools;
 /// <see cref="IConnectionPointClientProxy.AdviseAsync"/>.
 /// </para>
 /// </remarks>
-public static class OpcSinkObjRefBuilder {
+public static class OpcSinkObjRefBuilder
+{
     private const ushort TcpTowerId = 0x07;
     private const ushort WinNtSecurityAuthService = 0x000A;
     private const ushort SecurityAuthzNone = 0xFFFF;
@@ -54,12 +55,15 @@ public static class OpcSinkObjRefBuilder {
         Guid ipid,
         IPEndPoint listenerEndpoint,
         ulong? oxid = null,
-        ulong? oid = null) {
+        ulong? oid = null)
+    {
         ArgumentNullException.ThrowIfNull(listenerEndpoint);
-        if (iid == Guid.Empty) {
+        if (iid == Guid.Empty)
+        {
             throw new ArgumentException("Sink IID must not be empty.", nameof(iid));
         }
-        if (ipid == Guid.Empty) {
+        if (ipid == Guid.Empty)
+        {
             throw new ArgumentException("Sink IPID must not be empty.", nameof(ipid));
         }
 
@@ -96,7 +100,8 @@ public static class OpcSinkObjRefBuilder {
     /// security binding, which equals the count of ushorts in the string
     /// bindings + their terminator.
     /// </remarks>
-    internal static (ushort[] Bindings, ushort SecurityOffset) BuildResolverBindings(IPEndPoint listenerEndpoint) {
+    internal static (ushort[] Bindings, ushort SecurityOffset) BuildResolverBindings(IPEndPoint listenerEndpoint)
+    {
         ArgumentNullException.ThrowIfNull(listenerEndpoint);
 
         string hostPort = listenerEndpoint.Address + "[" + listenerEndpoint.Port.ToString(System.Globalization.CultureInfo.InvariantCulture) + "]";
@@ -105,7 +110,8 @@ public static class OpcSinkObjRefBuilder {
         {
             TcpTowerId,
         };
-        for (int i = 0; i < hostPort.Length; i++) {
+        for (int i = 0; i < hostPort.Length; i++)
+        {
             stringBinding.Add((ushort)hostPort[i]);
         }
 
@@ -125,14 +131,16 @@ public static class OpcSinkObjRefBuilder {
         bindings.AddRange(securityBinding);
         bindings.Add(0);  // securityBindings terminator
 
-        if (securityOffsetUShorts > ushort.MaxValue) {
+        if (securityOffsetUShorts > ushort.MaxValue)
+        {
             throw new ArgumentException("DUALSTRINGARRAY security offset exceeds UInt16.MaxValue.", nameof(listenerEndpoint));
         }
 
         return (bindings.ToArray(), (ushort)securityOffsetUShorts);
     }
 
-    private static ulong GenerateRandomUInt64() {
+    private static ulong GenerateRandomUInt64()
+    {
         Span<byte> buf = stackalloc byte[8];
         System.Security.Cryptography.RandomNumberGenerator.Fill(buf);
         return System.Buffers.Binary.BinaryPrimitives.ReadUInt64LittleEndian(buf);

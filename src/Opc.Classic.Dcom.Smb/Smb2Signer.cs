@@ -12,7 +12,8 @@ namespace Opc.Classic.Dcom.Smb;
 /// <summary>
 /// SMB2 signing algorithms selected by the negotiated dialect; see [MS-SMB2] §3.1.5.1.
 /// </summary>
-public enum Smb2SigningAlgorithm {
+public enum Smb2SigningAlgorithm
+{
     /// <summary>HMAC-SHA256 with the session key, truncated to 16 bytes for SMB 2.0.2/2.1.</summary>
     HmacSha256,
 
@@ -24,7 +25,8 @@ public enum Smb2SigningAlgorithm {
 /// Computes and verifies the 16-byte SMB2 message signature over the complete SMB2
 /// header and body with the Signature field zeroed, per [MS-SMB2] §3.1.4.1 and §2.2.1.2.
 /// </summary>
-public sealed class Smb2Signer {
+public sealed class Smb2Signer
+{
     /// <summary>Length of the SMB2 Signature header field in bytes; see [MS-SMB2] §2.2.1.2.</summary>
     public const int SignatureLength = 16;
 
@@ -39,12 +41,15 @@ public sealed class Smb2Signer {
     /// </summary>
     /// <param name="signingKey">Session key for HMAC-SHA256, or SMB3-derived AES-CMAC signing key.</param>
     /// <param name="algorithm">The SMB2 signing algorithm selected by dialect.</param>
-    public Smb2Signer(ReadOnlySpan<byte> signingKey, Smb2SigningAlgorithm algorithm) {
-        if (signingKey.IsEmpty) {
+    public Smb2Signer(ReadOnlySpan<byte> signingKey, Smb2SigningAlgorithm algorithm)
+    {
+        if (signingKey.IsEmpty)
+        {
             throw new ArgumentException("Signing key must not be empty.", nameof(signingKey));
         }
 
-        if (algorithm == Smb2SigningAlgorithm.AesCmac && signingKey.Length != AesBlockLength) {
+        if (algorithm == Smb2SigningAlgorithm.AesCmac && signingKey.Length != AesBlockLength)
+        {
             throw new ArgumentException("AES-128-CMAC signing keys must be 16 bytes.", nameof(signingKey));
         }
 
@@ -66,8 +71,10 @@ public sealed class Smb2Signer {
     public static Smb2Signer CreateForDialect(
         Smb2Dialect dialect,
         ReadOnlySpan<byte> sessionKey,
-        ReadOnlySpan<byte> preauthIntegrityHash = default) {
-        if (GetAlgorithmForDialect(dialect) == Smb2SigningAlgorithm.HmacSha256) {
+        ReadOnlySpan<byte> preauthIntegrityHash = default)
+    {
+        if (GetAlgorithmForDialect(dialect) == Smb2SigningAlgorithm.HmacSha256)
+        {
             return new Smb2Signer(sessionKey, Smb2SigningAlgorithm.HmacSha256);
         }
 
@@ -80,7 +87,8 @@ public sealed class Smb2Signer {
     /// </summary>
     /// <param name="dialect">Negotiated SMB2 dialect.</param>
     /// <returns>The signing algorithm for <paramref name="dialect" />.</returns>
-    public static Smb2SigningAlgorithm GetAlgorithmForDialect(Smb2Dialect dialect) => dialect switch {
+    public static Smb2SigningAlgorithm GetAlgorithmForDialect(Smb2Dialect dialect) => dialect switch
+    {
         Smb2Dialect.Smb202 or Smb2Dialect.Smb210 => Smb2SigningAlgorithm.HmacSha256,
         Smb2Dialect.Smb300 or Smb2Dialect.Smb302 or Smb2Dialect.Smb311 => Smb2SigningAlgorithm.AesCmac,
         _ => throw new ArgumentOutOfRangeException(nameof(dialect), dialect, "Unsupported SMB2 dialect for signing."),
@@ -98,8 +106,10 @@ public sealed class Smb2Signer {
     public static byte[] DeriveSmb3SigningKey(
         Smb2Dialect dialect,
         ReadOnlySpan<byte> sessionKey,
-        ReadOnlySpan<byte> preauthIntegrityHash = default) {
-        return dialect switch {
+        ReadOnlySpan<byte> preauthIntegrityHash = default)
+    {
+        return dialect switch
+        {
             Smb2Dialect.Smb300 or Smb2Dialect.Smb302 => DeriveKeyCounterMode(
                 sessionKey,
                 "SMB2AESCMAC"u8,
@@ -131,11 +141,14 @@ public sealed class Smb2Signer {
         ReadOnlySpan<byte> key,
         ReadOnlySpan<byte> label,
         ReadOnlySpan<byte> context,
-        int lengthBits) {
-        if (key.IsEmpty) {
+        int lengthBits)
+    {
+        if (key.IsEmpty)
+        {
             throw new ArgumentException("KDF key must not be empty.", nameof(key));
         }
-        if (lengthBits <= 0 || (lengthBits % 8) != 0) {
+        if (lengthBits <= 0 || (lengthBits % 8) != 0)
+        {
             throw new ArgumentOutOfRangeException(nameof(lengthBits), lengthBits, "KDF length must be a positive multiple of 8 bits.");
         }
 
@@ -150,7 +163,8 @@ public sealed class Smb2Signer {
 
         byte[] mac = HMACSHA256.HashData(key, inputSpan);
         int outputLength = lengthBits / 8;
-        if (outputLength > mac.Length) {
+        if (outputLength > mac.Length)
+        {
             CryptographicOperations.ZeroMemory(mac);
             throw new ArgumentOutOfRangeException(nameof(lengthBits), lengthBits, "KDF length exceeds one HMAC-SHA256 block.");
         }
@@ -165,13 +179,15 @@ public sealed class Smb2Signer {
     /// </summary>
     /// <param name="message">Complete SMB2 message starting at the 64-byte header.</param>
     /// <param name="destination">Destination for the 16-byte signature.</param>
-    public void ComputeSignature(ReadOnlySpan<byte> message, Span<byte> destination) {
+    public void ComputeSignature(ReadOnlySpan<byte> message, Span<byte> destination)
+    {
         ValidateMessageAndDestination(message, destination);
 
         byte[] canonical = message.ToArray();
         canonical.AsSpan(48, SignatureLength).Clear();
 
-        switch (Algorithm) {
+        switch (Algorithm)
+        {
             case Smb2SigningAlgorithm.HmacSha256:
                 ComputeHmacSha256Signature(canonical, destination);
                 break;
@@ -188,8 +204,10 @@ public sealed class Smb2Signer {
     /// per [MS-SMB2] §3.1.4.1 and §2.2.1.2.
     /// </summary>
     /// <param name="message">Mutable complete SMB2 message starting at the 64-byte header.</param>
-    public void Sign(Span<byte> message) {
-        if (message.Length < Smb2Constants.PacketHeaderSize) {
+    public void Sign(Span<byte> message)
+    {
+        if (message.Length < Smb2Constants.PacketHeaderSize)
+        {
             throw new ArgumentException("SMB2 message too short for a packet header.", nameof(message));
         }
 
@@ -204,8 +222,10 @@ public sealed class Smb2Signer {
     /// </summary>
     /// <param name="message">Complete SMB2 message starting at the 64-byte header.</param>
     /// <returns><see langword="true" /> when the signature matches.</returns>
-    public bool VerifySignature(ReadOnlySpan<byte> message) {
-        if (message.Length < Smb2Constants.PacketHeaderSize) {
+    public bool VerifySignature(ReadOnlySpan<byte> message)
+    {
+        if (message.Length < Smb2Constants.PacketHeaderSize)
+        {
             throw new ArgumentException("SMB2 message too short for a packet header.", nameof(message));
         }
 
@@ -220,11 +240,14 @@ public sealed class Smb2Signer {
     /// <param name="key">The 16-byte AES key.</param>
     /// <param name="data">Data to authenticate.</param>
     /// <param name="destination">Destination for the 16-byte CMAC tag.</param>
-    public static void ComputeAesCmac(ReadOnlySpan<byte> key, ReadOnlySpan<byte> data, Span<byte> destination) {
-        if (key.Length != AesBlockLength) {
+    public static void ComputeAesCmac(ReadOnlySpan<byte> key, ReadOnlySpan<byte> data, Span<byte> destination)
+    {
+        if (key.Length != AesBlockLength)
+        {
             throw new ArgumentException("AES-128-CMAC requires a 16-byte key.", nameof(key));
         }
-        if (destination.Length < SignatureLength) {
+        if (destination.Length < SignatureLength)
+        {
             throw new ArgumentException("Destination must hold a 16-byte CMAC tag.", nameof(destination));
         }
 
@@ -246,13 +269,16 @@ public sealed class Smb2Signer {
 
         Span<byte> lastBlock = stackalloc byte[AesBlockLength];
         lastBlock.Clear();
-        if (finalBlockComplete) {
+        if (finalBlockComplete)
+        {
             data.Slice((blockCount - 1) * AesBlockLength, AesBlockLength).CopyTo(lastBlock);
             XorBlock(lastBlock, k1, lastBlock);
         }
-        else {
+        else
+        {
             int finalLength = data.Length % AesBlockLength;
-            if (finalLength > 0) {
+            if (finalLength > 0)
+            {
                 data[^finalLength..].CopyTo(lastBlock);
             }
             lastBlock[finalLength] = 0x80;
@@ -262,7 +288,8 @@ public sealed class Smb2Signer {
         Span<byte> x = stackalloc byte[AesBlockLength];
         x.Clear();
         Span<byte> y = stackalloc byte[AesBlockLength];
-        for (int i = 0; i < blockCount - 1; i++) {
+        for (int i = 0; i < blockCount - 1; i++)
+        {
             XorBlock(x, data.Slice(i * AesBlockLength, AesBlockLength), y);
             EncryptAesBlock(aes, y, x);
         }
@@ -271,49 +298,61 @@ public sealed class Smb2Signer {
         EncryptAesBlock(aes, y, destination[..SignatureLength]);
     }
 
-    private static void ValidateMessageAndDestination(ReadOnlySpan<byte> message, Span<byte> destination) {
-        if (message.Length < Smb2Constants.PacketHeaderSize) {
+    private static void ValidateMessageAndDestination(ReadOnlySpan<byte> message, Span<byte> destination)
+    {
+        if (message.Length < Smb2Constants.PacketHeaderSize)
+        {
             throw new ArgumentException("SMB2 message too short for a packet header.", nameof(message));
         }
-        if (destination.Length < SignatureLength) {
+        if (destination.Length < SignatureLength)
+        {
             throw new ArgumentException("Destination must hold a 16-byte SMB2 signature.", nameof(destination));
         }
     }
 
-    private void ComputeHmacSha256Signature(ReadOnlySpan<byte> canonicalMessage, Span<byte> destination) {
+    private void ComputeHmacSha256Signature(ReadOnlySpan<byte> canonicalMessage, Span<byte> destination)
+    {
         byte[] hash = HMACSHA256.HashData(_signingKey, canonicalMessage);
         hash.AsSpan(0, SignatureLength).CopyTo(destination);
         CryptographicOperations.ZeroMemory(hash);
     }
 
-    private static void EncryptAesBlock(Aes aes, ReadOnlySpan<byte> input, Span<byte> output) {
-        if (input.Length != AesBlockLength || output.Length < AesBlockLength) {
+    private static void EncryptAesBlock(Aes aes, ReadOnlySpan<byte> input, Span<byte> output)
+    {
+        if (input.Length != AesBlockLength || output.Length < AesBlockLength)
+        {
             throw new ArgumentException("AES-CMAC block encryption requires 16-byte blocks.", nameof(input));
         }
 
 #pragma warning disable CA5358 // AES-CMAC uses AES-ECB as the SP800-38B block-cipher primitive, not as an encryption mode.
         if (!aes.TryEncryptEcb(input, output[..AesBlockLength], PaddingMode.None, out int bytesWritten) ||
-            bytesWritten != AesBlockLength) {
+            bytesWritten != AesBlockLength)
+        {
             throw new CryptographicException("AES-CMAC block encryption failed.");
         }
 #pragma warning restore CA5358
     }
 
-    private static void DoubleCmacSubkey(ReadOnlySpan<byte> input, Span<byte> output) {
+    private static void DoubleCmacSubkey(ReadOnlySpan<byte> input, Span<byte> output)
+    {
         int carry = 0;
-        for (int i = AesBlockLength - 1; i >= 0; i--) {
+        for (int i = AesBlockLength - 1; i >= 0; i--)
+        {
             int value = (input[i] << 1) | carry;
             output[i] = (byte)value;
             carry = (input[i] & 0x80) == 0 ? 0 : 1;
         }
 
-        if (carry != 0) {
+        if (carry != 0)
+        {
             output[AesBlockLength - 1] ^= AesCmacRb;
         }
     }
 
-    private static void XorBlock(ReadOnlySpan<byte> left, ReadOnlySpan<byte> right, Span<byte> destination) {
-        for (int i = 0; i < AesBlockLength; i++) {
+    private static void XorBlock(ReadOnlySpan<byte> left, ReadOnlySpan<byte> right, Span<byte> destination)
+    {
+        for (int i = 0; i < AesBlockLength; i++)
+        {
             destination[i] = (byte)(left[i] ^ right[i]);
         }
     }

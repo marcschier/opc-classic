@@ -22,10 +22,12 @@ using TUnit.Core;
 
 namespace Opc.Classic.Da.Tests.Wire;
 
-public sealed class ResponseWireFixtureTests {
+public sealed class ResponseWireFixtureTests
+{
     private delegate void NdrWriteAction(ref NdrWriter writer);
 
-    private static byte[] WritePayload(NdrWriteAction write, int capacity = 1024) {
+    private static byte[] WritePayload(NdrWriteAction write, int capacity = 1024)
+    {
         var buffer = new byte[capacity];
         var writer = new NdrWriter(buffer);
         write(ref writer);
@@ -39,8 +41,10 @@ public sealed class ResponseWireFixtureTests {
     /// IOPCSyncIO::Write response: unique-pointer-to-HRESULT[2] — referent + max_count + 2 ints.
     /// </summary>
     [Test]
-    public async Task SyncIO_Write_DecodesUniquePointerHresultArray() {
-        byte[] response = WritePayload((ref NdrWriter w) => {
+    public async Task SyncIO_Write_DecodesUniquePointerHresultArray()
+    {
+        byte[] response = WritePayload((ref NdrWriter w) =>
+        {
             w.WriteUniquePointerReferent(true);   // outer referent for ppErrors
             w.WriteUInt32(2);                      // max_count
             w.WriteInt32(0);                       // errors[0] = S_OK
@@ -64,8 +68,10 @@ public sealed class ResponseWireFixtureTests {
     /// referent + max_count + inline + deferred shape.
     /// </summary>
     [Test]
-    public async Task ItemMgt_AddItems_DecodesUniquePointerResultsAndErrors() {
-        byte[] response = WritePayload((ref NdrWriter w) => {
+    public async Task ItemMgt_AddItems_DecodesUniquePointerResultsAndErrors()
+    {
+        byte[] response = WritePayload((ref NdrWriter w) =>
+        {
             // ppAddResults: referent + max_count + 2 OPCITEMRESULT inline + 2 deferred (empty blobs).
             NdrOpcItemResultCodec.WriteConformantArray(ref w,
             [
@@ -105,8 +111,10 @@ public sealed class ResponseWireFixtureTests {
     /// trying to read max_count past end-of-buffer (Track AG4 null-referent decode safety).
     /// </summary>
     [Test]
-    public async Task SyncIO_Write_NullErrorsReferent_DecodesToEmptyArray() {
-        byte[] response = WritePayload((ref NdrWriter w) => {
+    public async Task SyncIO_Write_NullErrorsReferent_DecodesToEmptyArray()
+    {
+        byte[] response = WritePayload((ref NdrWriter w) =>
+        {
             w.WriteUniquePointerReferent(false);  // null referent for ppErrors
         });
 

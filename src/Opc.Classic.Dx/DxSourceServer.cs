@@ -12,7 +12,8 @@ namespace Opc.Classic.Dx;
 /// OPC DX's <c>OpcDxSourceServer</c> — a registered upstream OPC server that
 /// DX connections may read from.
 /// </summary>
-public sealed record DxSourceServer {
+public sealed record DxSourceServer
+{
     /// <summary>Constructs a source-server definition.</summary>
     /// <remarks>
     /// <paramref name="serverUrl"/> is a string and not a <see cref="Uri"/> because OPC URLs
@@ -32,7 +33,8 @@ public sealed record DxSourceServer {
         string? version = null,
         bool? defaultConnected = null,
         int mask = 0,
-        int reserved = 0) {
+        int reserved = 0)
+    {
         Name = name;
         ServerUrl = serverUrl;
         Description = description;
@@ -79,7 +81,8 @@ public sealed record DxSourceServer {
     /// <summary>Reserved DWORD carried by the native structure.</summary>
     public int Reserved { get; init; }
 
-    private static int ComputeMask(DxSourceServer source) {
+    private static int ComputeMask(DxSourceServer source)
+    {
         var mask = DxMask.None;
         AddIf(!string.IsNullOrEmpty(source.ItemPath), DxMask.ItemPath, ref mask);
         AddIf(!string.IsNullOrEmpty(source.ItemName), DxMask.ItemName, ref mask);
@@ -92,8 +95,10 @@ public sealed record DxSourceServer {
         return (int)mask;
     }
 
-    private static void AddIf(bool condition, DxMask value, ref DxMask mask) {
-        if (condition) {
+    private static void AddIf(bool condition, DxMask value, ref DxMask mask)
+    {
+        if (condition)
+        {
             mask |= value;
         }
     }

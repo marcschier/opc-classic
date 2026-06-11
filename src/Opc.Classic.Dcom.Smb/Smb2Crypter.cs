@@ -9,7 +9,8 @@ using System.Security.Cryptography;
 namespace Opc.Classic.Dcom.Smb;
 
 /// <summary>SMB 3.x encryption algorithms; see [MS-SMB2] §2.2.3.1.2 and §3.1.4.3.</summary>
-public enum Smb2EncryptionAlgorithm {
+public enum Smb2EncryptionAlgorithm
+{
     /// <summary>AES-128-CCM with an 11-byte nonce and a 16-byte tag.</summary>
     AesCcm,
 
@@ -21,7 +22,8 @@ public enum Smb2EncryptionAlgorithm {
 /// Encrypts and decrypts SMB 3.x transform messages using AES-128-CCM or AES-128-GCM;
 /// see [MS-SMB2] §3.1.4.3 and §3.2.5.1.1.1.
 /// </summary>
-public sealed class Smb2Crypter {
+public sealed class Smb2Crypter
+{
     /// <summary>Length of SMB 3.x AES-128 encryption keys in bytes; see [MS-SMB2] §3.1.4.2.</summary>
     public const int KeyLength = 16;
 
@@ -39,8 +41,10 @@ public sealed class Smb2Crypter {
     private readonly byte[] _key;
 
     /// <summary>Initializes an SMB3 crypter with a derived encryption or decryption key; see [MS-SMB2] §3.1.4.3.</summary>
-    public Smb2Crypter(ReadOnlySpan<byte> key, Smb2EncryptionAlgorithm algorithm) {
-        if (key.Length != KeyLength) {
+    public Smb2Crypter(ReadOnlySpan<byte> key, Smb2EncryptionAlgorithm algorithm)
+    {
+        if (key.Length != KeyLength)
+        {
             throw new ArgumentException("SMB3 AES-128 encryption keys must be 16 bytes.", nameof(key));
         }
 
@@ -76,10 +80,12 @@ public sealed class Smb2Crypter {
     /// Encrypts a complete SMB2 header+body into TRANSFORM_HEADER+ciphertext; the 16-byte AEAD tag is stored in Signature.
     /// See [MS-SMB2] §3.1.4.3.
     /// </summary>
-    public byte[] EncryptMessage(ReadOnlySpan<byte> plaintextMessage, ReadOnlySpan<byte> nonce, ulong sessionId) {
+    public byte[] EncryptMessage(ReadOnlySpan<byte> plaintextMessage, ReadOnlySpan<byte> nonce, ulong sessionId)
+    {
         ValidatePlaintextMessage(plaintextMessage);
         ValidateNonce(nonce, Algorithm);
-        if (sessionId == 0) {
+        if (sessionId == 0)
+        {
             throw new ArgumentOutOfRangeException(nameof(sessionId), sessionId, "Encrypted SMB3 messages require a nonzero SessionId.");
         }
 
@@ -105,21 +111,26 @@ public sealed class Smb2Crypter {
     /// <summary>
     /// Decrypts a TRANSFORM_HEADER+ciphertext message and verifies the Signature tag; see [MS-SMB2] §3.2.5.1.1.1.
     /// </summary>
-    public byte[] DecryptMessage(ReadOnlySpan<byte> encryptedMessage, ulong expectedSessionId = 0) {
-        if (encryptedMessage.Length <= Smb2TransformHeader.Size) {
+    public byte[] DecryptMessage(ReadOnlySpan<byte> encryptedMessage, ulong expectedSessionId = 0)
+    {
+        if (encryptedMessage.Length <= Smb2TransformHeader.Size)
+        {
             throw new Smb2ProtocolException("SMB2 transform message does not contain ciphertext.");
         }
 
         var header = Smb2TransformHeader.Read(encryptedMessage);
-        if (header.Flags != Smb2Constants.TransformFlagsEncrypted) {
+        if (header.Flags != Smb2Constants.TransformFlagsEncrypted)
+        {
             throw new Smb2ProtocolException("SMB2 TRANSFORM_HEADER Flags/EncryptionAlgorithm must be 0x0001.");
         }
-        if (expectedSessionId != 0 && header.SessionId != expectedSessionId) {
+        if (expectedSessionId != 0 && header.SessionId != expectedSessionId)
+        {
             throw new Smb2ProtocolException("SMB2 TRANSFORM_HEADER SessionId did not match the expected session.");
         }
 
         int ciphertextLength = encryptedMessage.Length - Smb2TransformHeader.Size;
-        if (header.OriginalMessageSize != ciphertextLength) {
+        if (header.OriginalMessageSize != ciphertextLength)
+        {
             throw new Smb2ProtocolException("SMB2 TRANSFORM_HEADER OriginalMessageSize did not match ciphertext length.");
         }
 
@@ -127,10 +138,12 @@ public sealed class Smb2Crypter {
         ReadOnlySpan<byte> ciphertext = encryptedMessage[Smb2TransformHeader.Size..];
         ReadOnlySpan<byte> tag = header.Signature.Span;
         ReadOnlySpan<byte> nonce = header.Nonce.Span[..NonceLength];
-        try {
+        try
+        {
             DecryptCore(nonce, ciphertext, tag, plaintextMessage, Smb2TransformHeader.GetAssociatedData(encryptedMessage));
         }
-        catch (CryptographicException ex) {
+        catch (CryptographicException ex)
+        {
             throw new Smb2ProtocolException("SMB2 transform authentication failed.", ex);
         }
 
@@ -138,8 +151,10 @@ public sealed class Smb2Crypter {
         return plaintextMessage;
     }
 
-    internal static bool TryGetAlgorithmForCipherId(ushort cipherId, out Smb2EncryptionAlgorithm algorithm) {
-        switch (cipherId) {
+    internal static bool TryGetAlgorithmForCipherId(ushort cipherId, out Smb2EncryptionAlgorithm algorithm)
+    {
+        switch (cipherId)
+        {
             case Smb2Constants.EncryptionCipherAes128Ccm:
                 algorithm = Smb2EncryptionAlgorithm.AesCcm;
                 return true;
@@ -152,13 +167,16 @@ public sealed class Smb2Crypter {
         }
     }
 
-    internal static Smb2EncryptionAlgorithm GetDefaultAlgorithmForDialect(Smb2Dialect dialect) => dialect switch {
+    internal static Smb2EncryptionAlgorithm GetDefaultAlgorithmForDialect(Smb2Dialect dialect) => dialect switch
+    {
         Smb2Dialect.Smb300 or Smb2Dialect.Smb302 or Smb2Dialect.Smb311 => Smb2EncryptionAlgorithm.AesCcm,
         _ => throw new ArgumentOutOfRangeException(nameof(dialect), dialect, "SMB3 encryption requires an SMB 3.x dialect."),
     };
 
-    internal static void ValidateDialectAlgorithm(Smb2Dialect dialect, Smb2EncryptionAlgorithm algorithm) {
-        switch (dialect) {
+    internal static void ValidateDialectAlgorithm(Smb2Dialect dialect, Smb2EncryptionAlgorithm algorithm)
+    {
+        switch (dialect)
+        {
             case Smb2Dialect.Smb300 or Smb2Dialect.Smb302 when algorithm != Smb2EncryptionAlgorithm.AesCcm:
                 throw new ArgumentException("SMB 3.0 and 3.0.2 support only AES-128-CCM encryption.", nameof(algorithm));
             case Smb2Dialect.Smb300 or Smb2Dialect.Smb302 or Smb2Dialect.Smb311:
@@ -172,8 +190,10 @@ public sealed class Smb2Crypter {
         Smb2Dialect dialect,
         ReadOnlySpan<byte> sessionKey,
         ReadOnlySpan<byte> preauthIntegrityHash,
-        bool clientToServer) {
-        return dialect switch {
+        bool clientToServer)
+    {
+        return dialect switch
+        {
             Smb2Dialect.Smb300 or Smb2Dialect.Smb302 => Smb2Signer.DeriveKeyCounterMode(
                 sessionKey,
                 "SMB2AESCCM"u8,
@@ -192,27 +212,34 @@ public sealed class Smb2Crypter {
         };
     }
 
-    private static int GetNonceLength(Smb2EncryptionAlgorithm algorithm) => algorithm switch {
+    private static int GetNonceLength(Smb2EncryptionAlgorithm algorithm) => algorithm switch
+    {
         Smb2EncryptionAlgorithm.AesCcm => AesCcmNonceLength,
         Smb2EncryptionAlgorithm.AesGcm => AesGcmNonceLength,
         _ => throw new ArgumentOutOfRangeException(nameof(algorithm), algorithm, "Unsupported SMB3 encryption algorithm."),
     };
 
-    private static void ValidateNonce(ReadOnlySpan<byte> nonce, Smb2EncryptionAlgorithm algorithm) {
+    private static void ValidateNonce(ReadOnlySpan<byte> nonce, Smb2EncryptionAlgorithm algorithm)
+    {
         int expectedLength = GetNonceLength(algorithm);
-        if (nonce.Length != expectedLength) {
+        if (nonce.Length != expectedLength)
+        {
             throw new ArgumentException($"SMB3 {algorithm} encryption requires a {expectedLength}-byte nonce.", nameof(nonce));
         }
     }
 
-    private static void ValidatePlaintextMessage(ReadOnlySpan<byte> plaintextMessage) {
-        if (plaintextMessage.Length < Smb2Constants.PacketHeaderSize) {
+    private static void ValidatePlaintextMessage(ReadOnlySpan<byte> plaintextMessage)
+    {
+        if (plaintextMessage.Length < Smb2Constants.PacketHeaderSize)
+        {
             throw new Smb2ProtocolException("SMB2 plaintext message too short for a packet header.");
         }
-        if (Smb2TransformHeader.HasTransformProtocolId(plaintextMessage)) {
+        if (Smb2TransformHeader.HasTransformProtocolId(plaintextMessage))
+        {
             throw new Smb2ProtocolException("Nested SMB2 transform messages are not allowed.");
         }
-        if (!plaintextMessage[..4].SequenceEqual(Smb2Constants.ProtocolId)) {
+        if (!plaintextMessage[..4].SequenceEqual(Smb2Constants.ProtocolId))
+        {
             throw new Smb2ProtocolException("SMB2 plaintext message ProtocolId was invalid after decryption.");
         }
     }
@@ -222,15 +249,19 @@ public sealed class Smb2Crypter {
         ReadOnlySpan<byte> plaintext,
         Span<byte> ciphertext,
         Span<byte> tag,
-        ReadOnlySpan<byte> associatedData) {
-        switch (Algorithm) {
+        ReadOnlySpan<byte> associatedData)
+    {
+        switch (Algorithm)
+        {
             case Smb2EncryptionAlgorithm.AesCcm:
-                using (var aes = new AesCcm(_key)) {
+                using (var aes = new AesCcm(_key))
+                {
                     aes.Encrypt(nonce, plaintext, ciphertext, tag, associatedData);
                 }
                 break;
             case Smb2EncryptionAlgorithm.AesGcm:
-                using (var aes = new AesGcm(_key, AuthenticationTagLength)) {
+                using (var aes = new AesGcm(_key, AuthenticationTagLength))
+                {
                     aes.Encrypt(nonce, plaintext, ciphertext, tag, associatedData);
                 }
                 break;
@@ -244,15 +275,19 @@ public sealed class Smb2Crypter {
         ReadOnlySpan<byte> ciphertext,
         ReadOnlySpan<byte> tag,
         Span<byte> plaintext,
-        ReadOnlySpan<byte> associatedData) {
-        switch (Algorithm) {
+        ReadOnlySpan<byte> associatedData)
+    {
+        switch (Algorithm)
+        {
             case Smb2EncryptionAlgorithm.AesCcm:
-                using (var aes = new AesCcm(_key)) {
+                using (var aes = new AesCcm(_key))
+                {
                     aes.Decrypt(nonce, ciphertext, tag, plaintext, associatedData);
                 }
                 break;
             case Smb2EncryptionAlgorithm.AesGcm:
-                using (var aes = new AesGcm(_key, AuthenticationTagLength)) {
+                using (var aes = new AesGcm(_key, AuthenticationTagLength))
+                {
                     aes.Decrypt(nonce, ciphertext, tag, plaintext, associatedData);
                 }
                 break;

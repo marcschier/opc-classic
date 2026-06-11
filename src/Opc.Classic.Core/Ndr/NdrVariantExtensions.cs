@@ -14,7 +14,8 @@ namespace Opc.Classic.Ndr;
 /// <summary>
 /// NDR wire-format extensions for <see cref="OpcVariant"/>.
 /// </summary>
-public static class NdrVariantExtensions {
+public static class NdrVariantExtensions
+{
     /// <summary>Maximum nested VT_VARIANT depth accepted by the codec.</summary>
     public const int MaxVariantRecursionDepth = 64;
 
@@ -37,7 +38,8 @@ public static class NdrVariantExtensions {
     /// unique-pointer referent + inline-pad-to-8 are emitted by the caller
     /// (the generated proxy/dispatcher), not by this helper.
     /// </summary>
-    public static void WriteVariantElement(this ref NdrWriter writer, OpcVariant value) {
+    public static void WriteVariantElement(this ref NdrWriter writer, OpcVariant value)
+    {
         int startPos = writer.Position;
         WriteVariantElementBody(ref writer, value);
         int written = writer.Position - startPos;
@@ -52,7 +54,8 @@ public static class NdrVariantExtensions {
     /// wireVARIANT body, the duplicated [switch_is(vt)] union discriminator,
     /// natural-alignment padding, the arm, and a trailing pad to 8 bytes.
     /// </summary>
-    public static OpcVariant ReadVariantElement(this ref NdrReader reader) {
+    public static OpcVariant ReadVariantElement(this ref NdrReader reader)
+    {
         int startPos = reader.Position;
         OpcVariant value = ReadVariantElementBody(ref reader);
         int read = reader.Position - startPos;
@@ -61,12 +64,14 @@ public static class NdrVariantExtensions {
         return value;
     }
 
-    private static void WriteVariantElementBody(ref NdrWriter writer, OpcVariant value) {
+    private static void WriteVariantElementBody(ref NdrWriter writer, OpcVariant value)
+    {
         var vt = value.Type;
         // Canonical 16-byte wireVARIANT header: clSize + rpcReserved + vt + 3 reserved USHORTs.
         // clSize is conventionally a small per-VARTYPE constant used by Matrikon (3 for 4-byte arms,
         // 4 for 8-byte arms, etc.); we mirror what we observe on real wire traces.
-        int clSize = vt switch {
+        int clSize = vt switch
+        {
             VarType.VT_R8 or VarType.VT_I8 or VarType.VT_UI8 or VarType.VT_DATE or VarType.VT_CY or VarType.VT_FILETIME => 4,
             VarType.VT_BSTR or VarType.VT_DISPATCH or VarType.VT_UNKNOWN or VarType.VT_VARIANT => 6,
             _ => 3,
@@ -84,7 +89,8 @@ public static class NdrVariantExtensions {
         WriteVariantElementArm(ref writer, value);
     }
 
-    private static OpcVariant ReadVariantElementBody(ref NdrReader reader) {
+    private static OpcVariant ReadVariantElementBody(ref NdrReader reader)
+    {
         reader.AlignTo(4);
         _ = reader.ReadUInt32();          // clSize
         // rpcReserved per MS-OAUT §2.2.29.2: SHOULD be 0 by the sender but
@@ -96,7 +102,8 @@ public static class NdrVariantExtensions {
         _ = reader.ReadUInt16();
         _ = reader.ReadUInt16();
         ushort discRaw = reader.ReadUInt16();
-        if (discRaw != vtRaw) {
+        if (discRaw != vtRaw)
+        {
             throw new InvalidDataException(
                 $"NDR VARIANT element discriminator (0x{discRaw:X4}) does not match vt (0x{vtRaw:X4}) " +
                 $"at buffer offset {reader.Position - 2}." + reader.FormatContext());
@@ -105,9 +112,11 @@ public static class NdrVariantExtensions {
         return ReadVariantElementArm(ref reader, vt);
     }
 
-    private static void WriteVariantElementArm(ref NdrWriter writer, OpcVariant value) {
+    private static void WriteVariantElementArm(ref NdrWriter writer, OpcVariant value)
+    {
         var vt = value.Type;
-        if (VarTypeMask.IsArray(vt)) {
+        if (VarTypeMask.IsArray(vt))
+        {
             writer.AlignTo(8);
             WriteSafeArrayValue(ref writer, vt, value.Boxed);
             return;
@@ -117,8 +126,10 @@ public static class NdrVariantExtensions {
             $"NDR VARIANT element wire encoding is not yet supported for type {vt}.");
     }
 
-    private static bool WriteScalarVariantArm(ref NdrWriter writer, VarType vt, object? boxed) {
-        switch (vt) {
+    private static bool WriteScalarVariantArm(ref NdrWriter writer, VarType vt, object? boxed)
+    {
+        switch (vt)
+        {
             case VarType.VT_EMPTY: case VarType.VT_NULL: return true;
             case VarType.VT_I1: writer.WriteByte(unchecked((byte)((sbyte)boxed!))); return true;
             case VarType.VT_UI1: writer.WriteByte((byte)boxed!); return true;
@@ -151,8 +162,10 @@ public static class NdrVariantExtensions {
     /// from the legacy <c>NdrWriter.WriteBstr</c> which omits max_count
     /// for loopback-only compatibility.
     /// </summary>
-    private static void WriteElementBstrBody(ref NdrWriter writer, string? text) {
-        if (text is null) {
+    private static void WriteElementBstrBody(ref NdrWriter writer, string? text)
+    {
+        if (text is null)
+        {
             writer.WriteNullReferent();
             return;
         }
@@ -161,17 +174,21 @@ public static class NdrVariantExtensions {
         writer.WriteUInt32(clSize);         // max_count (= clSize per spec)
         writer.WriteUInt32(0u);             // fFlags (informational; 0 for our emit, server may use 8)
         writer.WriteUInt32(clSize);         // clSize (char count, no nul)
-        for (int i = 0; i < text.Length; i++) {
+        for (int i = 0; i < text.Length; i++)
+        {
             writer.WriteUInt16((ushort)text[i]);
         }
     }
 
-    private static OpcVariant ReadVariantElementArm(ref NdrReader reader, VarType vt) {
-        if (VarTypeMask.IsArray(vt)) {
+    private static OpcVariant ReadVariantElementArm(ref NdrReader reader, VarType vt)
+    {
+        if (VarTypeMask.IsArray(vt))
+        {
             reader.AlignTo(8);
             return ReadSafeArrayVariant(ref reader, vt);
         }
-        switch (vt) {
+        switch (vt)
+        {
             case VarType.VT_EMPTY: return OpcVariant.Empty;
             case VarType.VT_NULL: return OpcVariant.Null;
             case VarType.VT_I1: return OpcVariant.FromInt8(unchecked((sbyte)reader.ReadByte()));
@@ -192,7 +209,8 @@ public static class NdrVariantExtensions {
             case VarType.VT_DATE: reader.AlignTo(8); return OpcVariant.FromDate(DateTime.FromOADate(reader.ReadDouble()));
             case VarType.VT_FILETIME: reader.AlignTo(8); return OpcVariant.FromFileTime(reader.ReadFileTime());
             case VarType.VT_BSTR:
-                reader.AlignTo(4); {
+                reader.AlignTo(4);
+                {
                     string? s = ReadElementBstr(ref reader);
                     return s is null ? new OpcVariant(VarType.VT_BSTR, null) : OpcVariant.FromString(s);
                 }
@@ -208,22 +226,27 @@ public static class NdrVariantExtensions {
     /// USHORT[clSize] chars. The fFlags field is informational (set to 8 by
     /// Matrikon, 0 by some other servers); it is read but not validated.
     /// </summary>
-    private static string? ReadElementBstr(ref NdrReader reader) {
-        if (!reader.TryReadReferentId(out _)) {
+    private static string? ReadElementBstr(ref NdrReader reader)
+    {
+        if (!reader.TryReadReferentId(out _))
+        {
             return null;
         }
         uint maxCount = reader.ReadUInt32();
         _ = reader.ReadUInt32();           // fFlags — informational, not validated
         uint clSize = reader.ReadUInt32();
-        if (clSize != maxCount) {
+        if (clSize != maxCount)
+        {
             throw new InvalidDataException(
                 $"NDR FLAGGED_WORD_BLOB max_count ({maxCount}) does not match clSize ({clSize})." + reader.FormatContext());
         }
-        if (clSize == 0u) {
+        if (clSize == 0u)
+        {
             return string.Empty;
         }
         var chars = new char[clSize];
-        for (uint i = 0; i < clSize; i++) {
+        for (uint i = 0; i < clSize; i++)
+        {
             chars[i] = (char)reader.ReadUInt16();
         }
         return new string(chars);
@@ -231,7 +254,8 @@ public static class NdrVariantExtensions {
 
     private delegate OpcVariant NdrReadFunc(ref NdrReader reader);
 
-    private static void WriteVariantCore(ref NdrWriter writer, OpcVariant value, int depth) {
+    private static void WriteVariantCore(ref NdrWriter writer, OpcVariant value, int depth)
+    {
         ThrowIfDepthExceeded(depth);
 
         writer.AlignTo(8);
@@ -257,7 +281,8 @@ public static class NdrVariantExtensions {
         WriteVariantBody(ref writer, value, depth);
     }
 
-    private static void WriteVariantHeader(ref NdrWriter writer, VarType vt, int bodyBytes) {
+    private static void WriteVariantHeader(ref NdrWriter writer, VarType vt, int bodyBytes)
+    {
         writer.AlignTo(8);
         const int HeaderWithDiscriminator = VariantHeaderBytes + 4;
         int actualWireBytes = HeaderWithDiscriminator + bodyBytes;
@@ -271,23 +296,28 @@ public static class NdrVariantExtensions {
         writer.WriteUInt32((uint)vt);
     }
 
-    private static void WriteVariantBody(ref NdrWriter writer, OpcVariant value, int depth) {
-        if (VarTypeMask.IsByRef(value.Type)) {
+    private static void WriteVariantBody(ref NdrWriter writer, OpcVariant value, int depth)
+    {
+        if (VarTypeMask.IsByRef(value.Type))
+        {
             WriteByRefBody(ref writer, value, depth);
             return;
         }
 
-        if (VarTypeMask.IsArray(value.Type)) {
+        if (VarTypeMask.IsArray(value.Type))
+        {
             WriteSafeArrayValue(ref writer, value.Type, value.Boxed);
             return;
         }
 
-        switch (value.Type) {
+        switch (value.Type)
+        {
             case VarType.VT_BSTR:
                 WriteBstrBody(ref writer, (string?)value.Boxed);
                 return;
             case VarType.VT_VARIANT:
-                if (value.Boxed is not OpcVariant nested) {
+                if (value.Boxed is not OpcVariant nested)
+                {
                     throw new InvalidOperationException("VT_VARIANT payload must be an OpcVariant.");
                 }
                 WriteVariantCore(ref writer, nested, depth + 1);
@@ -301,8 +331,10 @@ public static class NdrVariantExtensions {
         }
     }
 
-    private static void WriteByRefBody(ref NdrWriter writer, OpcVariant value, int depth) {
-        if (value.Boxed is null) {
+    private static void WriteByRefBody(ref NdrWriter writer, OpcVariant value, int depth)
+    {
+        if (value.Boxed is null)
+        {
             writer.WriteNullReferent();
             return;
         }
@@ -312,18 +344,22 @@ public static class NdrVariantExtensions {
         WriteDereferencedBody(ref writer, dereferencedType, value.Boxed, depth);
     }
 
-    private static void WriteDereferencedBody(ref NdrWriter writer, VarType vt, object? boxed, int depth) {
-        if (VarTypeMask.IsArray(vt)) {
+    private static void WriteDereferencedBody(ref NdrWriter writer, VarType vt, object? boxed, int depth)
+    {
+        if (VarTypeMask.IsArray(vt))
+        {
             WriteSafeArrayValue(ref writer, vt, boxed);
             return;
         }
 
-        switch (vt) {
+        switch (vt)
+        {
             case VarType.VT_BSTR:
                 WriteBstrBody(ref writer, (string?)boxed);
                 return;
             case VarType.VT_VARIANT:
-                if (boxed is not OpcVariant nested) {
+                if (boxed is not OpcVariant nested)
+                {
                     throw new InvalidOperationException("VT_VARIANT BYREF payload must be an OpcVariant.");
                 }
                 WriteVariantCore(ref writer, nested, depth + 1);
@@ -337,14 +373,17 @@ public static class NdrVariantExtensions {
         }
     }
 
-    private static void WriteSafeArrayValue(ref NdrWriter writer, VarType vt, object? boxed) {
-        if (boxed is not OpcSafeArray array) {
+    private static void WriteSafeArrayValue(ref NdrWriter writer, VarType vt, object? boxed)
+    {
+        if (boxed is not OpcSafeArray array)
+        {
             throw new InvalidOperationException(
                 $"NDR VARIANT SAFEARRAY encoding requires an {nameof(OpcSafeArray)} payload.");
         }
 
         var expectedType = (VarType)((ushort)array.ElementType | (ushort)VarType.VT_ARRAY);
-        if (vt != expectedType) {
+        if (vt != expectedType)
+        {
             throw new InvalidOperationException(
                 $"NDR VARIANT SAFEARRAY type {vt} does not match element type {array.ElementType}.");
         }
@@ -352,17 +391,22 @@ public static class NdrVariantExtensions {
         writer.WriteSafeArray(array);
     }
 
-    private static void WriteBstrBody(ref NdrWriter writer, string? text) {
-        if (text is null) {
+    private static void WriteBstrBody(ref NdrWriter writer, string? text)
+    {
+        if (text is null)
+        {
             writer.WriteNullBstr();
         }
-        else {
+        else
+        {
             writer.WriteBstr(text);
         }
     }
 
-    private static void WriteScalarBody(ref NdrWriter writer, VarType vt, object? boxed) {
-        switch (vt) {
+    private static void WriteScalarBody(ref NdrWriter writer, VarType vt, object? boxed)
+    {
+        switch (vt)
+        {
             case VarType.VT_EMPTY:
             case VarType.VT_NULL:
                 return;
@@ -417,8 +461,10 @@ public static class NdrVariantExtensions {
         }
     }
 
-    private static void WriteRecordPayload(ref NdrWriter writer, OpcRecordValue? record, int depth) {
-        if (record is null) {
+    private static void WriteRecordPayload(ref NdrWriter writer, OpcRecordValue? record, int depth)
+    {
+        if (record is null)
+        {
             writer.WriteNullReferent();
             writer.WriteNullReferent();
             return;
@@ -430,13 +476,16 @@ public static class NdrVariantExtensions {
         _ = writer.WriteReferentId();
         _ = writer.WriteReferentId();
         writer.WriteGuid(info.Id);
-        for (int i = 0; i < info.Fields.Count; i++) {
+        for (int i = 0; i < info.Fields.Count; i++)
+        {
             WriteRecordField(ref writer, info.Fields[i], record.Values[i], depth + 1);
         }
     }
 
-    private static IRecordInfo GetRecordInfoForWrite(Guid id) {
-        if (RecordInfoRegistry.TryGet(id, out IRecordInfo? info)) {
+    private static IRecordInfo GetRecordInfoForWrite(Guid id)
+    {
+        if (RecordInfoRegistry.TryGet(id, out IRecordInfo? info))
+        {
             return info;
         }
 
@@ -444,24 +493,30 @@ public static class NdrVariantExtensions {
             $"No VT_RECORD layout is registered for {id}. Register it with {nameof(RecordInfoRegistry)} before encoding.");
     }
 
-    private static void ValidateRecordValue(IRecordInfo info, OpcRecordValue record) {
-        if (record.Values.Count != info.Fields.Count) {
+    private static void ValidateRecordValue(IRecordInfo info, OpcRecordValue record)
+    {
+        if (record.Values.Count != info.Fields.Count)
+        {
             throw new InvalidOperationException(
                 $"VT_RECORD value has {record.Values.Count} fields but layout {info.Name} declares {info.Fields.Count}.");
         }
     }
 
-    private static void WriteRecordField(ref NdrWriter writer, OpcRecordField field, object? value, int depth) {
-        if (VarTypeMask.IsArray(field.Type) || VarTypeMask.IsByRef(field.Type)) {
+    private static void WriteRecordField(ref NdrWriter writer, OpcRecordField field, object? value, int depth)
+    {
+        if (VarTypeMask.IsArray(field.Type) || VarTypeMask.IsByRef(field.Type))
+        {
             throw new InvalidOperationException($"VT_RECORD field {field.Name} uses unsupported type {field.Type}.");
         }
 
-        switch (field.Type) {
+        switch (field.Type)
+        {
             case VarType.VT_BSTR:
                 WriteBstrBody(ref writer, (string?)value);
                 return;
             case VarType.VT_VARIANT:
-                if (value is not OpcVariant nested) {
+                if (value is not OpcVariant nested)
+                {
                     throw new InvalidOperationException($"VT_RECORD field {field.Name} must be an OpcVariant.");
                 }
                 WriteVariantCore(ref writer, nested, depth);
@@ -478,7 +533,8 @@ public static class NdrVariantExtensions {
     /// <summary>Decodes a <see cref="OpcVariant"/>.</summary>
     public static OpcVariant ReadVariant(this ref NdrReader reader) => ReadVariantCore(ref reader, depth: 0);
 
-    private static OpcVariant ReadVariantCore(ref NdrReader reader, int depth) {
+    private static OpcVariant ReadVariantCore(ref NdrReader reader, int depth)
+    {
         ThrowIfDepthExceeded(depth);
 
         reader.AlignTo(8);
@@ -500,17 +556,21 @@ public static class NdrVariantExtensions {
         _ = reader.ReadUInt32();
 
         var vt = (VarType)vtRaw;
-        if (VarTypeMask.IsByRef(vt)) {
+        if (VarTypeMask.IsByRef(vt))
+        {
             return ReadByRefVariant(ref reader, vt, depth);
         }
-        if (VarTypeMask.IsArray(vt)) {
+        if (VarTypeMask.IsArray(vt))
+        {
             return ReadSafeArrayVariant(ref reader, vt);
         }
         return ReadBody(ref reader, vt, depth);
     }
 
-    private static OpcVariant ReadByRefVariant(ref NdrReader reader, VarType vt, int depth) {
-        if (!reader.TryReadReferentId(out _)) {
+    private static OpcVariant ReadByRefVariant(ref NdrReader reader, VarType vt, int depth)
+    {
+        if (!reader.TryReadReferentId(out _))
+        {
             return new OpcVariant(vt, null);
         }
 
@@ -519,18 +579,22 @@ public static class NdrVariantExtensions {
         return new OpcVariant(vt, value);
     }
 
-    private static object? ReadDereferencedValue(ref NdrReader reader, VarType vt, int depth) {
-        if (VarTypeMask.IsArray(vt)) {
+    private static object? ReadDereferencedValue(ref NdrReader reader, VarType vt, int depth)
+    {
+        if (VarTypeMask.IsArray(vt))
+        {
             OpcSafeArray array = reader.ReadSafeArray();
             var expectedType = (VarType)((ushort)array.ElementType | (ushort)VarType.VT_ARRAY);
-            if (vt != expectedType) {
+            if (vt != expectedType)
+            {
                 throw new InvalidDataException(
                     $"NDR VARIANT SAFEARRAY type {vt} does not match element type {array.ElementType}.");
             }
             return array;
         }
 
-        return vt switch {
+        return vt switch
+        {
             VarType.VT_BSTR => reader.ReadBstr(),
             VarType.VT_VARIANT => ReadVariantCore(ref reader, depth + 1),
             VarType.VT_RECORD => ReadRecordPayload(ref reader, depth),
@@ -538,10 +602,12 @@ public static class NdrVariantExtensions {
         };
     }
 
-    private static OpcVariant ReadSafeArrayVariant(ref NdrReader reader, VarType vt) {
+    private static OpcVariant ReadSafeArrayVariant(ref NdrReader reader, VarType vt)
+    {
         OpcSafeArray array = reader.ReadSafeArray();
         var expectedType = (VarType)((ushort)array.ElementType | (ushort)VarType.VT_ARRAY);
-        if (vt != expectedType) {
+        if (vt != expectedType)
+        {
             throw new InvalidDataException(
                 $"NDR VARIANT SAFEARRAY type {vt} does not match element type {array.ElementType}.");
         }
@@ -549,7 +615,8 @@ public static class NdrVariantExtensions {
         return OpcVariant.FromSafeArray(array);
     }
 
-    private static OpcVariant ReadBody(ref NdrReader reader, VarType vt, int depth) => vt switch {
+    private static OpcVariant ReadBody(ref NdrReader reader, VarType vt, int depth) => vt switch
+    {
         VarType.VT_EMPTY => OpcVariant.Empty,
         VarType.VT_NULL => OpcVariant.Null,
         VarType.VT_I1 => OpcVariant.FromInt8(unchecked((sbyte)reader.ReadByte())),
@@ -574,7 +641,8 @@ public static class NdrVariantExtensions {
             $"NDR VARIANT wire decoding is not supported for type {vt}." + reader.FormatContext()),
     };
 
-    private static object? ReadScalarValue(ref NdrReader reader, VarType vt) => vt switch {
+    private static object? ReadScalarValue(ref NdrReader reader, VarType vt) => vt switch
+    {
         VarType.VT_EMPTY or VarType.VT_NULL => null,
         VarType.VT_I1 => unchecked((sbyte)reader.ReadByte()),
         VarType.VT_UI1 => reader.ReadByte(),
@@ -595,36 +663,44 @@ public static class NdrVariantExtensions {
             $"NDR VARIANT wire decoding is not supported for type {vt}." + reader.FormatContext()),
     };
 
-    private static OpcRecordValue? ReadRecordPayload(ref NdrReader reader, int depth) {
+    private static OpcRecordValue? ReadRecordPayload(ref NdrReader reader, int depth)
+    {
         bool hasRecord = reader.TryReadReferentId(out _);
         bool hasRecordInfo = reader.TryReadReferentId(out _);
-        if (!hasRecord && !hasRecordInfo) {
+        if (!hasRecord && !hasRecordInfo)
+        {
             return null;
         }
-        if (!hasRecord || !hasRecordInfo) {
+        if (!hasRecord || !hasRecordInfo)
+        {
             throw new InvalidDataException("VT_RECORD payload must carry both pvRecord and pRecInfo referents.");
         }
 
         Guid recordInfoId = reader.ReadGuid();
-        if (!RecordInfoRegistry.TryGet(recordInfoId, out IRecordInfo? info)) {
+        if (!RecordInfoRegistry.TryGet(recordInfoId, out IRecordInfo? info))
+        {
             throw new InvalidDataException(
                 $"No VT_RECORD layout is registered for {recordInfoId}. Register it before decoding.");
         }
 
         var values = new object?[info.Fields.Count];
-        for (int i = 0; i < info.Fields.Count; i++) {
+        for (int i = 0; i < info.Fields.Count; i++)
+        {
             values[i] = ReadRecordField(ref reader, info.Fields[i], depth + 1);
         }
 
         return new OpcRecordValue(recordInfoId, values);
     }
 
-    private static object? ReadRecordField(ref NdrReader reader, OpcRecordField field, int depth) {
-        if (VarTypeMask.IsArray(field.Type) || VarTypeMask.IsByRef(field.Type)) {
+    private static object? ReadRecordField(ref NdrReader reader, OpcRecordField field, int depth)
+    {
+        if (VarTypeMask.IsArray(field.Type) || VarTypeMask.IsByRef(field.Type))
+        {
             throw new InvalidDataException($"VT_RECORD field {field.Name} uses unsupported type {field.Type}.");
         }
 
-        return field.Type switch {
+        return field.Type switch
+        {
             VarType.VT_BSTR => reader.ReadBstr(),
             VarType.VT_VARIANT => ReadVariantCore(ref reader, depth),
             VarType.VT_RECORD => ReadRecordPayload(ref reader, depth),
@@ -632,23 +708,29 @@ public static class NdrVariantExtensions {
         };
     }
 
-    private static int ComputeVariantBodySize(OpcVariant value, int depth) {
-        if (VarTypeMask.IsByRef(value.Type)) {
-            if (value.Boxed is null) {
+    private static int ComputeVariantBodySize(OpcVariant value, int depth)
+    {
+        if (VarTypeMask.IsByRef(value.Type))
+        {
+            if (value.Boxed is null)
+            {
                 return 4;
             }
             return 4 + ComputeDereferencedBodySize(RemoveByRef(value.Type), value.Boxed, depth);
         }
 
-        if (VarTypeMask.IsArray(value.Type)) {
-            if (value.Boxed is not OpcSafeArray array) {
+        if (VarTypeMask.IsArray(value.Type))
+        {
+            if (value.Boxed is not OpcSafeArray array)
+            {
                 throw new InvalidOperationException(
                     $"NDR VARIANT SAFEARRAY encoding requires an {nameof(OpcSafeArray)} payload.");
             }
             return ComputeSafeArrayBodySize(array, depth);
         }
 
-        return value.Type switch {
+        return value.Type switch
+        {
             VarType.VT_BSTR => ComputeBstrBodySize((string?)value.Boxed),
             VarType.VT_VARIANT => value.Boxed is OpcVariant nested
                 ? ComputeVariantTotalSize(nested, depth + 1)
@@ -658,15 +740,18 @@ public static class NdrVariantExtensions {
         };
     }
 
-    private static int ComputeDereferencedBodySize(VarType vt, object? boxed, int depth) {
-        if (VarTypeMask.IsArray(vt)) {
+    private static int ComputeDereferencedBodySize(VarType vt, object? boxed, int depth)
+    {
+        if (VarTypeMask.IsArray(vt))
+        {
             return boxed is OpcSafeArray array
                 ? ComputeSafeArrayBodySize(array, depth)
                 : throw new InvalidOperationException(
                     $"NDR VARIANT SAFEARRAY encoding requires an {nameof(OpcSafeArray)} payload.");
         }
 
-        return vt switch {
+        return vt switch
+        {
             VarType.VT_BSTR => ComputeBstrBodySize((string?)boxed),
             VarType.VT_VARIANT => boxed is OpcVariant nested
                 ? ComputeVariantTotalSize(nested, depth + 1)
@@ -676,19 +761,23 @@ public static class NdrVariantExtensions {
         };
     }
 
-    private static int ComputeVariantTotalSize(OpcVariant value, int depth) {
+    private static int ComputeVariantTotalSize(OpcVariant value, int depth)
+    {
         ThrowIfDepthExceeded(depth);
         return VariantHeaderBytes + ComputeVariantBodySize(value, depth);
     }
 
-    private static int ComputeSafeArrayBodySize(OpcSafeArray array, int depth) {
+    private static int ComputeSafeArrayBodySize(OpcSafeArray array, int depth)
+    {
         int position = 20 + checked(8 * array.Rank);
         int count = array.TotalElements;
-        if (count == 0) {
+        if (count == 0)
+        {
             return position;
         }
 
-        return array.ElementType switch {
+        return array.ElementType switch
+        {
             VarType.VT_I1 or VarType.VT_UI1 => position + count,
             VarType.VT_I2 or VarType.VT_UI2 or VarType.VT_BOOL => FixedArrayBodySize(position, count, 2, 2),
             VarType.VT_I4 or VarType.VT_UI4 or VarType.VT_R4 or VarType.VT_ERROR => FixedArrayBodySize(position, count, 4, 4),
@@ -707,30 +796,38 @@ public static class NdrVariantExtensions {
 
     private static int ComputeBstrBodySize(string? value) => value is null ? 4 : checked(12 + value.Length * 2);
 
-    private static int ComputeBstrSafeArrayBodySize(int position, string?[] values) {
-        for (int i = 0; i < values.Length; i++) {
+    private static int ComputeBstrSafeArrayBodySize(int position, string?[] values)
+    {
+        for (int i = 0; i < values.Length; i++)
+        {
             position = checked(AlignOffset(position, 4) + ComputeBstrBodySize(values[i]));
         }
         return position;
     }
 
-    private static int ComputeVariantSafeArrayBodySize(int position, OpcVariant[] values, int depth) {
-        for (int i = 0; i < values.Length; i++) {
+    private static int ComputeVariantSafeArrayBodySize(int position, OpcVariant[] values, int depth)
+    {
+        for (int i = 0; i < values.Length; i++)
+        {
             position = checked(AlignOffset(position, 4) + ComputeVariantTotalSize(values[i], depth + 1));
         }
         return position;
     }
 
-    private static int ComputeRecordSafeArrayBodySize(int position, OpcRecordValue?[] values, int depth) {
-        for (int i = 0; i < values.Length; i++) {
+    private static int ComputeRecordSafeArrayBodySize(int position, OpcRecordValue?[] values, int depth)
+    {
+        for (int i = 0; i < values.Length; i++)
+        {
             var recordVariant = new OpcVariant(VarType.VT_RECORD, values[i]);
             position = checked(AlignOffset(position, 4) + ComputeVariantTotalSize(recordVariant, depth + 1));
         }
         return position;
     }
 
-    private static int ComputeRecordBodySize(OpcRecordValue? record, int depth) {
-        if (record is null) {
+    private static int ComputeRecordBodySize(OpcRecordValue? record, int depth)
+    {
+        if (record is null)
+        {
             return 8;
         }
 
@@ -738,14 +835,17 @@ public static class NdrVariantExtensions {
         ValidateRecordValue(info, record);
 
         int position = 24;
-        for (int i = 0; i < info.Fields.Count; i++) {
+        for (int i = 0; i < info.Fields.Count; i++)
+        {
             position = ComputeRecordFieldSize(position, info.Fields[i], record.Values[i], depth + 1);
         }
         return position;
     }
 
-    private static int ComputeRecordFieldSize(int position, OpcRecordField field, object? value, int depth) {
-        return field.Type switch {
+    private static int ComputeRecordFieldSize(int position, OpcRecordField field, object? value, int depth)
+    {
+        return field.Type switch
+        {
             VarType.VT_BSTR => checked(AlignOffset(position, 4) + ComputeBstrBodySize((string?)value)),
             VarType.VT_VARIANT => value is OpcVariant nested
                 ? checked(AlignOffset(position, 4) + ComputeVariantTotalSize(nested, depth))
@@ -761,7 +861,8 @@ public static class NdrVariantExtensions {
         };
     }
 
-    private static int ComputeScalarBodySize(VarType vt) => vt switch {
+    private static int ComputeScalarBodySize(VarType vt) => vt switch
+    {
         VarType.VT_EMPTY or VarType.VT_NULL => 0,
         VarType.VT_I1 or VarType.VT_UI1 => 1,
         VarType.VT_I2 or VarType.VT_UI2 or VarType.VT_BOOL => 2,
@@ -772,15 +873,18 @@ public static class NdrVariantExtensions {
             $"NDR VARIANT wire encoding is not supported for type {vt}."),
     };
 
-    private static int AlignOffset(int position, int boundary) {
+    private static int AlignOffset(int position, int boundary)
+    {
         int misaligned = position & (boundary - 1);
         return misaligned == 0 ? position : position + boundary - misaligned;
     }
 
     private static VarType RemoveByRef(VarType vt) => (VarType)((ushort)vt & ~(ushort)VarType.VT_BYREF);
 
-    private static void ThrowIfDepthExceeded(int depth) {
-        if (depth > MaxVariantRecursionDepth) {
+    private static void ThrowIfDepthExceeded(int depth)
+    {
+        if (depth > MaxVariantRecursionDepth)
+        {
             throw new InvalidDataException(
                 $"NDR VARIANT nesting exceeds the supported depth of {MaxVariantRecursionDepth}.");
         }

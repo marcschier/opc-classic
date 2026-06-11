@@ -13,7 +13,8 @@ namespace Opc.Classic.Da;
 /// <c>IDaServer.GetPropertiesAsync</c>. One <see cref="ItemPropertyResult"/>
 /// per input item.
 /// </summary>
-public sealed class ItemPropertyResult {
+public sealed class ItemPropertyResult
+{
     /// <summary>The item these properties belong to.</summary>
     public string ItemName { get; init; } = string.Empty;
 

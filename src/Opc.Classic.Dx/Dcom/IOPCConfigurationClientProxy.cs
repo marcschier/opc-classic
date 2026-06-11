@@ -16,12 +16,14 @@ using Opc.Classic.Ndr;
 namespace Opc.Classic.Dx.Dcom;
 
 /// <summary>Hand-written DX configuration proxy with OPCDX structure codec support.</summary>
-public sealed class IOPCConfigurationClientProxy : IOPCConfiguration {
+public sealed class IOPCConfigurationClientProxy : IOPCConfiguration
+{
     private const int PayloadCapacity = 64 * 1024;
     private readonly ICallChannel _channel;
 
     /// <summary>Creates an <c>IOPCConfiguration</c> client proxy.</summary>
-    public IOPCConfigurationClientProxy(ICallChannel channel) {
+    public IOPCConfigurationClientProxy(ICallChannel channel)
+    {
         _channel = channel ?? throw new ArgumentNullException(nameof(channel));
     }
 
@@ -61,7 +63,8 @@ public sealed class IOPCConfigurationClientProxy : IOPCConfiguration {
     public Task<DxGeneralResponse> CopyDefaultServerAttributesAsync(bool configToStatus, DxItemIdentifier[] sourceServers, CancellationToken cancellationToken = default) =>
         InvokeAsync(
             IOPCConfiguration.Opnums.CopyDefaultServerAttributesAsync,
-            WritePayload((ref NdrWriter writer) => {
+            WritePayload((ref NdrWriter writer) =>
+            {
                 writer.WriteInt32(configToStatus ? NdrOpcDxClientProxyHelpers.Win32BoolTrue : 0);
                 NdrOpcDxItemIdentifierArrayCodec.Write(ref writer, sourceServers);
             }),
@@ -72,7 +75,8 @@ public sealed class IOPCConfigurationClientProxy : IOPCConfiguration {
     public Task<DxConnectionQueryResult> QueryDXConnectionsAsync(string browsePath, DxConnection[] connectionMasks, bool recursive, CancellationToken cancellationToken = default) =>
         InvokeAsync(
             IOPCConfiguration.Opnums.QueryDXConnectionsAsync,
-            WritePayload((ref NdrWriter writer) => {
+            WritePayload((ref NdrWriter writer) =>
+            {
                 writer.WriteUnicodeStringPtr(browsePath);
                 NdrOpcDxConnectionArrayCodec.Write(ref writer, connectionMasks);
                 writer.WriteInt32(recursive ? NdrOpcDxClientProxyHelpers.Win32BoolTrue : 0);
@@ -81,7 +85,8 @@ public sealed class IOPCConfigurationClientProxy : IOPCConfiguration {
             cancellationToken);
 
     /// <inheritdoc />
-    public async Task<string[]> QueryDXConnectionNamesAsync(string browsePath, string[] connectionMasks, bool recursive, CancellationToken cancellationToken = default) {
+    public async Task<string[]> QueryDXConnectionNamesAsync(string browsePath, string[] connectionMasks, bool recursive, CancellationToken cancellationToken = default)
+    {
         DxConnection[] masks = (connectionMasks ?? Array.Empty<string>())
             .Select(name => new DxConnection(name: name, mask: (int)DxMask.Name))
             .ToArray();
@@ -101,7 +106,8 @@ public sealed class IOPCConfigurationClientProxy : IOPCConfiguration {
     public Task<DxUpdateConnectionsResult> UpdateDXConnectionsAsync(string browsePath, DxConnection[] connectionMasks, bool recursive, DxConnection connectionDefinition, CancellationToken cancellationToken = default) =>
         InvokeAsync(
             IOPCConfiguration.Opnums.UpdateDXConnectionsAsync,
-            WritePayload((ref NdrWriter writer) => {
+            WritePayload((ref NdrWriter writer) =>
+            {
                 writer.WriteUnicodeStringPtr(browsePath);
                 NdrOpcDxConnectionArrayCodec.Write(ref writer, connectionMasks);
                 writer.WriteInt32(recursive ? NdrOpcDxClientProxyHelpers.Win32BoolTrue : 0);
@@ -122,7 +128,8 @@ public sealed class IOPCConfigurationClientProxy : IOPCConfiguration {
     public Task<int[]> DeleteDXConnectionsAsync(string browsePath, string[] connectionNames, bool recursive, CancellationToken cancellationToken = default) =>
         InvokeAsync(
             IOPCConfiguration.Opnums.DeleteDXConnectionsAsync,
-            WritePayload((ref NdrWriter writer) => {
+            WritePayload((ref NdrWriter writer) =>
+            {
                 writer.WriteUnicodeStringPtr(browsePath);
                 NdrOpcDxStringArrayCodec.Write(ref writer, connectionNames);
                 writer.WriteInt32(recursive ? NdrOpcDxClientProxyHelpers.Win32BoolTrue : 0);
@@ -134,7 +141,8 @@ public sealed class IOPCConfigurationClientProxy : IOPCConfiguration {
     public Task<DxUpdateConnectionsResult> CopyDefaultDXConnectionAttributesAsync(bool configToStatus, string browsePath, DxConnection[] connectionMasks, bool recursive, CancellationToken cancellationToken = default) =>
         InvokeAsync(
             IOPCConfiguration.Opnums.CopyDefaultDXConnectionAttributesAsync,
-            WritePayload((ref NdrWriter writer) => {
+            WritePayload((ref NdrWriter writer) =>
+            {
                 writer.WriteInt32(configToStatus ? NdrOpcDxClientProxyHelpers.Win32BoolTrue : 0);
                 writer.WriteUnicodeStringPtr(browsePath);
                 NdrOpcDxConnectionArrayCodec.Write(ref writer, connectionMasks);
@@ -151,62 +159,73 @@ public sealed class IOPCConfigurationClientProxy : IOPCConfiguration {
             DecodeString,
             cancellationToken);
 
-    private async Task<T> InvokeAsync<T>(int opnum, ReadOnlyMemory<byte> payload, Func<ReadOnlyMemory<byte>, T> decode, CancellationToken cancellationToken) {
+    private async Task<T> InvokeAsync<T>(int opnum, ReadOnlyMemory<byte> payload, Func<ReadOnlyMemory<byte>, T> decode, CancellationToken cancellationToken)
+    {
         NdrCallResult result = await _channel.InvokeAsync(
             IOPCConfiguration.InterfaceId,
             opnum,
             payload,
             cancellationToken).ConfigureAwait(false);
 
-        if (result.IsFailure) {
+        if (result.IsFailure)
+        {
             throw new OpcException(new OpcResultId(result.Hresult, null));
         }
 
         return decode(result.ResponsePayload);
     }
 
-    private static DxSourceServer[] DecodeSourceServers(ReadOnlyMemory<byte> payload) {
+    private static DxSourceServer[] DecodeSourceServers(ReadOnlyMemory<byte> payload)
+    {
         var reader = new NdrReader(payload.Span);
         return NdrOpcDxSourceServerArrayCodec.Read(ref reader);
     }
 
-    private static DxGeneralResponse DecodeGeneralResponse(ReadOnlyMemory<byte> payload) {
+    private static DxGeneralResponse DecodeGeneralResponse(ReadOnlyMemory<byte> payload)
+    {
         var reader = new NdrReader(payload.Span);
         return NdrOpcDxGeneralResponseCodec.Read(ref reader);
     }
 
-    private static DxConnectionQueryResult DecodeConnectionQueryResult(ReadOnlyMemory<byte> payload) {
+    private static DxConnectionQueryResult DecodeConnectionQueryResult(ReadOnlyMemory<byte> payload)
+    {
         var reader = new NdrReader(payload.Span);
         int[] errors = NdrOpcDxInt32ArrayCodec.Read(ref reader);
         DxConnection[] connections = NdrOpcDxConnectionArrayCodec.Read(ref reader);
         return new DxConnectionQueryResult(errors, connections);
     }
 
-    private static DxUpdateConnectionsResult DecodeUpdateConnectionsResult(ReadOnlyMemory<byte> payload) {
+    private static DxUpdateConnectionsResult DecodeUpdateConnectionsResult(ReadOnlyMemory<byte> payload)
+    {
         var reader = new NdrReader(payload.Span);
         int[] errors = NdrOpcDxInt32ArrayCodec.Read(ref reader);
         DxGeneralResponse response = NdrOpcDxGeneralResponseCodec.Read(ref reader);
         return new DxUpdateConnectionsResult(errors, response);
     }
 
-    private static int[] DecodeInt32Array(ReadOnlyMemory<byte> payload) {
+    private static int[] DecodeInt32Array(ReadOnlyMemory<byte> payload)
+    {
         var reader = new NdrReader(payload.Span);
         return NdrOpcDxInt32ArrayCodec.Read(ref reader);
     }
 
-    private static string DecodeString(ReadOnlyMemory<byte> payload) {
+    private static string DecodeString(ReadOnlyMemory<byte> payload)
+    {
         var reader = new NdrReader(payload.Span);
         return reader.ReadUnicodeStringPtr() ?? string.Empty;
     }
 
-    private static ReadOnlyMemory<byte> WritePayload(NdrWriteAction write) {
+    private static ReadOnlyMemory<byte> WritePayload(NdrWriteAction write)
+    {
         byte[] buffer = ArrayPool<byte>.Shared.Rent(PayloadCapacity);
-        try {
+        try
+        {
             var writer = new NdrWriter(buffer);
             write(ref writer);
             return buffer.AsSpan(0, writer.Position).ToArray();
         }
-        finally {
+        finally
+        {
             ArrayPool<byte>.Shared.Return(buffer);
         }
     }
@@ -214,6 +233,7 @@ public sealed class IOPCConfigurationClientProxy : IOPCConfiguration {
     private delegate void NdrWriteAction(ref NdrWriter writer);
 }
 
-internal static class NdrOpcDxClientProxyHelpers {
+internal static class NdrOpcDxClientProxyHelpers
+{
     internal const int Win32BoolTrue = unchecked((int)0xFFFFFFFFu);
 }

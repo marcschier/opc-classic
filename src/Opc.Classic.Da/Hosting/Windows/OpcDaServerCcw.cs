@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -54,7 +54,8 @@ namespace Opc.Classic.Da.Hosting.Windows;
 /// </para>
 /// </remarks>
 [SupportedOSPlatform("windows")]
-public static unsafe class OpcDaServerCcw {
+public static unsafe class OpcDaServerCcw
+{
     private const int S_OK = 0;
     private const int E_NOINTERFACE = unchecked((int)0x80004002);
     private const int E_INVALIDARG = unchecked((int)0x80070057);
@@ -93,9 +94,11 @@ public static unsafe class OpcDaServerCcw {
     /// reference), or <see cref="IntPtr.Zero"/> for
     /// <c>E_NOINTERFACE</c>-equivalent.
     /// </returns>
-    public static IntPtr Create(IOpcDaServer server, Guid requestedIid) {
+    public static IntPtr Create(IOpcDaServer server, Guid requestedIid)
+    {
         ArgumentNullException.ThrowIfNull(server);
-        if (!SupportsInterface(requestedIid)) {
+        if (!SupportsInterface(requestedIid))
+        {
             return IntPtr.Zero;
         }
 
@@ -154,7 +157,8 @@ public static unsafe class OpcDaServerCcw {
     [SuppressMessage(
         "Reliability", "CA2018:Buffer size argument matches element count",
         Justification = "Allocating IntPtr-sized native vtable with explicit byte count.")]
-    private static IntPtr* AllocateServerVtable() {
+    private static IntPtr* AllocateServerVtable()
+    {
         IntPtr* vtable = (IntPtr*)NativeMemory.Alloc((nuint)(ServerVtableSlotCount * sizeof(IntPtr)));
         // IUnknown
         vtable[0] = (IntPtr)(delegate* unmanaged<IntPtr, Guid*, IntPtr*, int>)&QueryInterface;
@@ -169,7 +173,8 @@ public static unsafe class OpcDaServerCcw {
         vtable[8] = (IntPtr)(delegate* unmanaged<IntPtr, uint, Guid*, IntPtr*, int>)&CreateGroupEnumerator;
         // Remaining slots are reserved; zero them so a misdirected dispatch
         // crashes loudly instead of into arbitrary memory.
-        for (int i = 9; i < ServerVtableSlotCount; i++) {
+        for (int i = 9; i < ServerVtableSlotCount; i++)
+        {
             vtable[i] = IntPtr.Zero;
         }
         return vtable;
@@ -178,7 +183,8 @@ public static unsafe class OpcDaServerCcw {
     [SuppressMessage(
         "Reliability", "CA2018:Buffer size argument matches element count",
         Justification = "Allocating IntPtr-sized native vtable with explicit byte count.")]
-    private static IntPtr* AllocateCommonVtable() {
+    private static IntPtr* AllocateCommonVtable()
+    {
         IntPtr* vtable = (IntPtr*)NativeMemory.Alloc((nuint)(CommonVtableSlotCount * sizeof(IntPtr)));
         // IUnknown
         vtable[0] = (IntPtr)(delegate* unmanaged<IntPtr, Guid*, IntPtr*, int>)&QueryInterface;
@@ -196,7 +202,8 @@ public static unsafe class OpcDaServerCcw {
     [SuppressMessage(
         "Reliability", "CA2018:Buffer size argument matches element count",
         Justification = "Allocating IntPtr-sized CCW header with explicit byte count.")]
-    private static IntPtr AllocateInstance(IntPtr* vtable) {
+    private static IntPtr AllocateInstance(IntPtr* vtable)
+    {
         IntPtr* instance = (IntPtr*)NativeMemory.Alloc((nuint)sizeof(IntPtr));
         instance[0] = (IntPtr)vtable;
         return (IntPtr)instance;
@@ -207,7 +214,8 @@ public static unsafe class OpcDaServerCcw {
     // and decode an empty result so probes can succeed without the heavy
     // managed→native marshalling needed for full-fidelity browse responses.
     [SuppressMessage("Reliability", "CA2018:Buffer size argument matches element count", Justification = "Explicit byte count.")]
-    private static IntPtr* AllocateBrowseVtable() {
+    private static IntPtr* AllocateBrowseVtable()
+    {
         IntPtr* v = (IntPtr*)NativeMemory.Alloc((nuint)(BrowseVtableSlotCount * sizeof(IntPtr)));
         v[0] = (IntPtr)(delegate* unmanaged<IntPtr, Guid*, IntPtr*, int>)&QueryInterface;
         v[1] = (IntPtr)(delegate* unmanaged<IntPtr, uint>)&AddRef;
@@ -220,7 +228,8 @@ public static unsafe class OpcDaServerCcw {
 
     // IOPCItemProperties (DA 2.0): stub tearoff returning empty property lists.
     [SuppressMessage("Reliability", "CA2018:Buffer size argument matches element count", Justification = "Explicit byte count.")]
-    private static IntPtr* AllocateItemPropertiesVtable() {
+    private static IntPtr* AllocateItemPropertiesVtable()
+    {
         IntPtr* v = (IntPtr*)NativeMemory.Alloc((nuint)(ItemPropertiesVtableSlotCount * sizeof(IntPtr)));
         v[0] = (IntPtr)(delegate* unmanaged<IntPtr, Guid*, IntPtr*, int>)&QueryInterface;
         v[1] = (IntPtr)(delegate* unmanaged<IntPtr, uint>)&AddRef;
@@ -234,7 +243,8 @@ public static unsafe class OpcDaServerCcw {
     // IOPCItemIO (DA 3.0): stub tearoff returning empty values for read +
     // success no-ops for write.
     [SuppressMessage("Reliability", "CA2018:Buffer size argument matches element count", Justification = "Explicit byte count.")]
-    private static IntPtr* AllocateItemIoVtable() {
+    private static IntPtr* AllocateItemIoVtable()
+    {
         IntPtr* v = (IntPtr*)NativeMemory.Alloc((nuint)(ItemIoVtableSlotCount * sizeof(IntPtr)));
         v[0] = (IntPtr)(delegate* unmanaged<IntPtr, Guid*, IntPtr*, int>)&QueryInterface;
         v[1] = (IntPtr)(delegate* unmanaged<IntPtr, uint>)&AddRef;
@@ -248,7 +258,8 @@ public static unsafe class OpcDaServerCcw {
     // IOPCBrowseServerAddressSpace (DA 2.0): stub tearoff returning empty
     // namespace enumerations + flat namespace shape.
     [SuppressMessage("Reliability", "CA2018:Buffer size argument matches element count", Justification = "Explicit byte count.")]
-    private static IntPtr* AllocateBrowseSasVtable() {
+    private static IntPtr* AllocateBrowseSasVtable()
+    {
         IntPtr* v = (IntPtr*)NativeMemory.Alloc((nuint)(BrowseSasVtableSlotCount * sizeof(IntPtr)));
         v[0] = (IntPtr)(delegate* unmanaged<IntPtr, Guid*, IntPtr*, int>)&QueryInterface;
         v[1] = (IntPtr)(delegate* unmanaged<IntPtr, uint>)&AddRef;
@@ -270,7 +281,8 @@ public static unsafe class OpcDaServerCcw {
     // COM types (OPCBROWSEELEMENT, OPCITEMPROPERTY, OPCITEMSTATE, etc.).
 
     [UnmanagedCallersOnly]
-    private static int BrowseGetProperties(IntPtr pThis, uint dwItemCount, IntPtr pszItemIDs, int bReturnPropertyValues, uint dwPropertyCount, IntPtr pdwPropertyIDs, IntPtr* ppItemProperties) {
+    private static int BrowseGetProperties(IntPtr pThis, uint dwItemCount, IntPtr pszItemIDs, int bReturnPropertyValues, uint dwPropertyCount, IntPtr pdwPropertyIDs, IntPtr* ppItemProperties)
+    {
         _ = pThis; _ = dwItemCount; _ = pszItemIDs; _ = bReturnPropertyValues; _ = dwPropertyCount; _ = pdwPropertyIDs;
         if (ppItemProperties != null) { *ppItemProperties = IntPtr.Zero; }
         return S_OK; // Empty result, no allocations.
@@ -291,7 +303,8 @@ public static unsafe class OpcDaServerCcw {
         IntPtr pdwPropertyIDs,
         IntPtr* pbMoreElements,
         IntPtr* pdwCount,
-        IntPtr* ppBrowseElements) {
+        IntPtr* ppBrowseElements)
+    {
         _ = pThis; _ = szItemID; _ = dwMaxElementsReturned; _ = dwBrowseFilter;
         _ = szElementNameFilter; _ = szVendorFilter; _ = bReturnAllProperties;
         _ = bReturnPropertyValues; _ = dwPropertyCount; _ = pdwPropertyIDs;
@@ -303,7 +316,8 @@ public static unsafe class OpcDaServerCcw {
     }
 
     [UnmanagedCallersOnly]
-    private static int ItemPropertiesQueryAvailable(IntPtr pThis, IntPtr szItemID, uint* pdwCount, IntPtr* ppPropertyIDs, IntPtr* ppDescriptions, IntPtr* ppvtDataTypes) {
+    private static int ItemPropertiesQueryAvailable(IntPtr pThis, IntPtr szItemID, uint* pdwCount, IntPtr* ppPropertyIDs, IntPtr* ppDescriptions, IntPtr* ppvtDataTypes)
+    {
         _ = pThis; _ = szItemID;
         if (pdwCount != null) { *pdwCount = 0; }
         if (ppPropertyIDs != null) { *ppPropertyIDs = IntPtr.Zero; }
@@ -313,7 +327,8 @@ public static unsafe class OpcDaServerCcw {
     }
 
     [UnmanagedCallersOnly]
-    private static int ItemPropertiesGetItemProperties(IntPtr pThis, IntPtr szItemID, uint dwCount, IntPtr pdwPropertyIDs, IntPtr* ppvData, IntPtr* ppErrors) {
+    private static int ItemPropertiesGetItemProperties(IntPtr pThis, IntPtr szItemID, uint dwCount, IntPtr pdwPropertyIDs, IntPtr* ppvData, IntPtr* ppErrors)
+    {
         _ = pThis; _ = szItemID; _ = dwCount; _ = pdwPropertyIDs;
         if (ppvData != null) { *ppvData = IntPtr.Zero; }
         if (ppErrors != null) { *ppErrors = IntPtr.Zero; }
@@ -321,7 +336,8 @@ public static unsafe class OpcDaServerCcw {
     }
 
     [UnmanagedCallersOnly]
-    private static int ItemPropertiesLookupItemIds(IntPtr pThis, IntPtr szItemID, uint dwCount, IntPtr pdwPropertyIDs, IntPtr* ppszNewItemIDs, IntPtr* ppErrors) {
+    private static int ItemPropertiesLookupItemIds(IntPtr pThis, IntPtr szItemID, uint dwCount, IntPtr pdwPropertyIDs, IntPtr* ppszNewItemIDs, IntPtr* ppErrors)
+    {
         _ = pThis; _ = szItemID; _ = dwCount; _ = pdwPropertyIDs;
         if (ppszNewItemIDs != null) { *ppszNewItemIDs = IntPtr.Zero; }
         if (ppErrors != null) { *ppErrors = IntPtr.Zero; }
@@ -329,7 +345,8 @@ public static unsafe class OpcDaServerCcw {
     }
 
     [UnmanagedCallersOnly]
-    private static int ItemIoRead(IntPtr pThis, uint dwCount, IntPtr pszItemIDs, IntPtr pdwMaxAges, IntPtr* ppvValues, IntPtr* ppErrors) {
+    private static int ItemIoRead(IntPtr pThis, uint dwCount, IntPtr pszItemIDs, IntPtr pdwMaxAges, IntPtr* ppvValues, IntPtr* ppErrors)
+    {
         _ = pThis; _ = dwCount; _ = pszItemIDs; _ = pdwMaxAges;
         if (ppvValues != null) { *ppvValues = IntPtr.Zero; }
         if (ppErrors != null) { *ppErrors = IntPtr.Zero; }
@@ -337,41 +354,47 @@ public static unsafe class OpcDaServerCcw {
     }
 
     [UnmanagedCallersOnly]
-    private static int ItemIoWriteVqt(IntPtr pThis, uint dwCount, IntPtr pszItemIDs, IntPtr pItemVQT, IntPtr* ppErrors) {
+    private static int ItemIoWriteVqt(IntPtr pThis, uint dwCount, IntPtr pszItemIDs, IntPtr pItemVQT, IntPtr* ppErrors)
+    {
         _ = pThis; _ = dwCount; _ = pszItemIDs; _ = pItemVQT;
         if (ppErrors != null) { *ppErrors = IntPtr.Zero; }
         return S_OK;
     }
 
     [UnmanagedCallersOnly]
-    private static int BrowseSasQueryOrganization(IntPtr pThis, uint* pNamespaceType) {
+    private static int BrowseSasQueryOrganization(IntPtr pThis, uint* pNamespaceType)
+    {
         _ = pThis;
         if (pNamespaceType != null) { *pNamespaceType = 1; /* OPC_NS_HIERARCHIAL */ }
         return S_OK;
     }
 
     [UnmanagedCallersOnly]
-    private static int BrowseSasChangeBrowsePosition(IntPtr pThis, uint dwBrowseDirection, IntPtr szString) {
+    private static int BrowseSasChangeBrowsePosition(IntPtr pThis, uint dwBrowseDirection, IntPtr szString)
+    {
         _ = pThis; _ = dwBrowseDirection; _ = szString;
         return S_OK;
     }
 
     [UnmanagedCallersOnly]
-    private static int BrowseSasBrowseOpcItemIds(IntPtr pThis, uint dwBrowseFilterType, IntPtr szFilterCriteria, ushort vtDataTypeFilter, uint dwAccessRightsFilter, IntPtr* ppIEnumString) {
+    private static int BrowseSasBrowseOpcItemIds(IntPtr pThis, uint dwBrowseFilterType, IntPtr szFilterCriteria, ushort vtDataTypeFilter, uint dwAccessRightsFilter, IntPtr* ppIEnumString)
+    {
         _ = pThis; _ = dwBrowseFilterType; _ = szFilterCriteria; _ = vtDataTypeFilter; _ = dwAccessRightsFilter;
         if (ppIEnumString != null) { *ppIEnumString = IntPtr.Zero; }
         return S_OK;
     }
 
     [UnmanagedCallersOnly]
-    private static int BrowseSasGetItemId(IntPtr pThis, IntPtr szItemDataID, IntPtr* ppszItemID) {
+    private static int BrowseSasGetItemId(IntPtr pThis, IntPtr szItemDataID, IntPtr* ppszItemID)
+    {
         _ = pThis; _ = szItemDataID;
         if (ppszItemID != null) { *ppszItemID = IntPtr.Zero; }
         return S_OK;
     }
 
     [UnmanagedCallersOnly]
-    private static int BrowseSasBrowseAccessPaths(IntPtr pThis, IntPtr szItemID, IntPtr* ppIEnumString) {
+    private static int BrowseSasBrowseAccessPaths(IntPtr pThis, IntPtr szItemID, IntPtr* ppIEnumString)
+    {
         _ = pThis; _ = szItemID;
         if (ppIEnumString != null) { *ppIEnumString = IntPtr.Zero; }
         return S_OK;
@@ -380,7 +403,8 @@ public static unsafe class OpcDaServerCcw {
     // ===== IOPCSecurityNT / IOPCSecurityPrivate (OPC Security 1.00) =====
 
     [SuppressMessage("Reliability", "CA2018:Buffer size argument matches element count", Justification = "Explicit byte count.")]
-    private static IntPtr* AllocateSecurityNtVtable() {
+    private static IntPtr* AllocateSecurityNtVtable()
+    {
         IntPtr* v = (IntPtr*)NativeMemory.Alloc((nuint)(SecurityNtVtableSlotCount * sizeof(IntPtr)));
         v[0] = (IntPtr)(delegate* unmanaged<IntPtr, Guid*, IntPtr*, int>)&QueryInterface;
         v[1] = (IntPtr)(delegate* unmanaged<IntPtr, uint>)&AddRef;
@@ -393,7 +417,8 @@ public static unsafe class OpcDaServerCcw {
     }
 
     [SuppressMessage("Reliability", "CA2018:Buffer size argument matches element count", Justification = "Explicit byte count.")]
-    private static IntPtr* AllocateSecurityPrivateVtable() {
+    private static IntPtr* AllocateSecurityPrivateVtable()
+    {
         IntPtr* v = (IntPtr*)NativeMemory.Alloc((nuint)(SecurityPrivateVtableSlotCount * sizeof(IntPtr)));
         v[0] = (IntPtr)(delegate* unmanaged<IntPtr, Guid*, IntPtr*, int>)&QueryInterface;
         v[1] = (IntPtr)(delegate* unmanaged<IntPtr, uint>)&AddRef;
@@ -406,14 +431,16 @@ public static unsafe class OpcDaServerCcw {
     }
 
     [UnmanagedCallersOnly]
-    private static int SecurityNtIsAvailableNT(IntPtr pThis, int* pbAvailable) {
+    private static int SecurityNtIsAvailableNT(IntPtr pThis, int* pbAvailable)
+    {
         _ = pThis;
         if (pbAvailable != null) { *pbAvailable = -1; /* TRUE */ }
         return S_OK;
     }
 
     [UnmanagedCallersOnly]
-    private static int SecurityNtQueryMinImpersonationLevel(IntPtr pThis, uint* pdwLevel) {
+    private static int SecurityNtQueryMinImpersonationLevel(IntPtr pThis, uint* pdwLevel)
+    {
         _ = pThis;
         // RPC_C_IMP_LEVEL_IDENTIFY (2)
         if (pdwLevel != null) { *pdwLevel = 2; }
@@ -421,42 +448,50 @@ public static unsafe class OpcDaServerCcw {
     }
 
     [UnmanagedCallersOnly]
-    private static int SecurityNtChangeUser(IntPtr pThis) {
+    private static int SecurityNtChangeUser(IntPtr pThis)
+    {
         _ = pThis;
         return S_OK;
     }
 
     [UnmanagedCallersOnly]
-    private static int SecurityPrivateIsAvailablePriv(IntPtr pThis, int* pbAvailable) {
+    private static int SecurityPrivateIsAvailablePriv(IntPtr pThis, int* pbAvailable)
+    {
         _ = pThis;
         if (pbAvailable != null) { *pbAvailable = -1; /* TRUE */ }
         return S_OK;
     }
 
     [UnmanagedCallersOnly]
-    private static int SecurityPrivateLogon(IntPtr pThis, IntPtr szUserID, IntPtr szPassword) {
+    private static int SecurityPrivateLogon(IntPtr pThis, IntPtr szUserID, IntPtr szPassword)
+    {
         _ = pThis; _ = szUserID; _ = szPassword;
         return S_OK;
     }
 
     [UnmanagedCallersOnly]
-    private static int SecurityPrivateLogoff(IntPtr pThis) {
+    private static int SecurityPrivateLogoff(IntPtr pThis)
+    {
         _ = pThis;
         return S_OK;
     }
 
     [UnmanagedCallersOnly]
-    private static int QueryInterface(IntPtr pThis, Guid* riid, IntPtr* ppv) {
-        if (ppv == null) {
+    private static int QueryInterface(IntPtr pThis, Guid* riid, IntPtr* ppv)
+    {
+        if (ppv == null)
+        {
             return E_INVALIDARG;
         }
-        if (riid == null) {
+        if (riid == null)
+        {
             *ppv = IntPtr.Zero;
             return E_INVALIDARG;
         }
 
         Guid requestedIid = *riid;
-        if (SupportsInterface(requestedIid) && s_ccws.TryGetValue(pThis, out CcwEntry? entry)) {
+        if (SupportsInterface(requestedIid) && s_ccws.TryGetValue(pThis, out CcwEntry? entry))
+        {
             *ppv = entry.GetInterfacePointer(requestedIid);
             Interlocked.Increment(ref entry.RefCount);
             return S_OK;
@@ -467,16 +502,20 @@ public static unsafe class OpcDaServerCcw {
     }
 
     [UnmanagedCallersOnly]
-    private static uint AddRef(IntPtr pThis) {
-        if (!s_ccws.TryGetValue(pThis, out CcwEntry? entry)) {
+    private static uint AddRef(IntPtr pThis)
+    {
+        if (!s_ccws.TryGetValue(pThis, out CcwEntry? entry))
+        {
             return 1;
         }
         return (uint)Interlocked.Increment(ref entry.RefCount);
     }
 
     [UnmanagedCallersOnly]
-    private static uint Release(IntPtr pThis) {
-        if (!s_ccws.TryGetValue(pThis, out CcwEntry? entry)) {
+    private static uint Release(IntPtr pThis)
+    {
+        if (!s_ccws.TryGetValue(pThis, out CcwEntry? entry))
+        {
             return 0;
         }
 
@@ -488,51 +527,63 @@ public static unsafe class OpcDaServerCcw {
     // ===== IOPCCommon stubs =====
 
     [UnmanagedCallersOnly]
-    private static int CommonSetLocaleId(IntPtr pThis, uint dwLcid) {
+    private static int CommonSetLocaleId(IntPtr pThis, uint dwLcid)
+    {
         _ = pThis; _ = dwLcid;
         return E_NOTIMPL;
     }
 
     [UnmanagedCallersOnly]
-    private static int CommonGetLocaleId(IntPtr pThis, uint* pdwLcid) {
+    private static int CommonGetLocaleId(IntPtr pThis, uint* pdwLcid)
+    {
         _ = pThis;
-        if (pdwLcid != null) {
+        if (pdwLcid != null)
+        {
             *pdwLcid = 0;
         }
         return E_NOTIMPL;
     }
 
     [UnmanagedCallersOnly]
-    private static int CommonQueryAvailableLocaleIds(IntPtr pThis, uint* pdwCount, IntPtr* ppdwLcid) {
+    private static int CommonQueryAvailableLocaleIds(IntPtr pThis, uint* pdwCount, IntPtr* ppdwLcid)
+    {
         _ = pThis;
-        if (pdwCount != null) {
+        if (pdwCount != null)
+        {
             *pdwCount = 0;
         }
-        if (ppdwLcid != null) {
+        if (ppdwLcid != null)
+        {
             *ppdwLcid = IntPtr.Zero;
         }
         return E_NOTIMPL;
     }
 
     [UnmanagedCallersOnly]
-    private static int CommonGetErrorString(IntPtr pThis, int dwError, IntPtr* ppString) {
+    private static int CommonGetErrorString(IntPtr pThis, int dwError, IntPtr* ppString)
+    {
         _ = pThis; _ = dwError;
-        if (ppString != null) {
+        if (ppString != null)
+        {
             *ppString = IntPtr.Zero;
         }
         return E_NOTIMPL;
     }
 
     [UnmanagedCallersOnly]
-    private static int CommonSetClientName(IntPtr pThis, IntPtr szName) {
-        if (!s_ccws.TryGetValue(pThis, out CcwEntry? entry)) {
+    private static int CommonSetClientName(IntPtr pThis, IntPtr szName)
+    {
+        if (!s_ccws.TryGetValue(pThis, out CcwEntry? entry))
+        {
             return E_NOTIMPL;
         }
 
-        try {
+        try
+        {
             string clientName = szName == IntPtr.Zero ? string.Empty : (Marshal.PtrToStringUni(szName) ?? string.Empty);
             entry.ClientName = clientName;
-            if (entry.ServerHandle.Target is IDaServer daServer) {
+            if (entry.ServerHandle.Target is IDaServer daServer)
+            {
 #pragma warning disable VSTHRD002 // Synchronous bridge across the COM ABI.
                 daServer.SetClientNameAsync(clientName, CancellationToken.None).GetAwaiter().GetResult();
 #pragma warning restore VSTHRD002
@@ -540,13 +591,16 @@ public static unsafe class OpcDaServerCcw {
             return S_OK;
         }
 #pragma warning disable CA1031 // Cross-unmanaged-boundary catch.
-        catch (Opc.Classic.OpcException opcEx) {
+        catch (Opc.Classic.OpcException opcEx)
+        {
             return opcEx.ResultId.Code;
         }
-        catch (ArgumentException) {
+        catch (ArgumentException)
+        {
             return E_INVALIDARG;
         }
-        catch (Exception) {
+        catch (Exception)
+        {
             return E_FAIL;
         }
 #pragma warning restore CA1031
@@ -567,14 +621,18 @@ public static unsafe class OpcDaServerCcw {
         IntPtr phServerGroup,
         IntPtr pRevisedUpdateRate,
         Guid* riid,
-        IntPtr* ppUnk) {
-        if (ppUnk != null) {
+        IntPtr* ppUnk)
+    {
+        if (ppUnk != null)
+        {
             *ppUnk = IntPtr.Zero;
         }
-        if (!s_ccws.TryGetValue(pThis, out CcwEntry? entry)) {
+        if (!s_ccws.TryGetValue(pThis, out CcwEntry? entry))
+        {
             return E_NOTIMPL;
         }
-        if (entry.ServerHandle.Target is not IOpcDaServer server) {
+        if (entry.ServerHandle.Target is not IOpcDaServer server)
+        {
             return E_NOTIMPL;
         }
         _ = riid; _ = pTimeBias; _ = pPercentDeadband;
@@ -591,12 +649,15 @@ public static unsafe class OpcDaServerCcw {
         uint dwLCID,
         IntPtr phServerGroup,
         IntPtr pRevisedUpdateRate,
-        IntPtr* ppUnk) {
+        IntPtr* ppUnk)
+    {
         // OPC DA 2.05a §4.3.2: all required OUT params must be non-NULL.
-        if (phServerGroup == IntPtr.Zero || pRevisedUpdateRate == IntPtr.Zero || ppUnk == null) {
+        if (phServerGroup == IntPtr.Zero || pRevisedUpdateRate == IntPtr.Zero || ppUnk == null)
+        {
             return E_INVALIDARG;
         }
-        try {
+        try
+        {
             string name = szName == IntPtr.Zero ? string.Empty : (Marshal.PtrToStringUni(szName) ?? string.Empty);
 #pragma warning disable VSTHRD002 // Sync bridge across the COM ABI.
             int serverHandle = server.AddGroupAsync(
@@ -633,32 +694,40 @@ public static unsafe class OpcDaServerCcw {
             return S_OK;
         }
 #pragma warning disable CA1031 // Cross-unmanaged-boundary catch.
-        catch (Opc.Classic.OpcException opcEx) {
+        catch (Opc.Classic.OpcException opcEx)
+        {
             return opcEx.ResultId.Code;
         }
-        catch (ArgumentException) {
+        catch (ArgumentException)
+        {
             return E_INVALIDARG;
         }
-        catch (Exception) {
+        catch (Exception)
+        {
             return E_FAIL;
         }
 #pragma warning restore CA1031
     }
 
     [UnmanagedCallersOnly]
-    private static int GetErrorString(IntPtr pThis, int dwError, uint dwLocale, IntPtr* ppString) {
-        if (ppString == null) {
+    private static int GetErrorString(IntPtr pThis, int dwError, uint dwLocale, IntPtr* ppString)
+    {
+        if (ppString == null)
+        {
             return E_INVALIDARG;
         }
         *ppString = IntPtr.Zero;
-        if (!s_ccws.TryGetValue(pThis, out CcwEntry? entry)) {
+        if (!s_ccws.TryGetValue(pThis, out CcwEntry? entry))
+        {
             return E_NOTIMPL;
         }
-        if (entry.ServerHandle.Target is not IOpcDaServer server) {
+        if (entry.ServerHandle.Target is not IOpcDaServer server)
+        {
             return E_NOTIMPL;
         }
 
-        try {
+        try
+        {
 #pragma warning disable VSTHRD002 // Synchronous bridge across the COM ABI; the underlying impl is async-by-design.
             string text = server.GetErrorStringAsync(dwError, (int)dwLocale, CancellationToken.None)
                 .GetAwaiter().GetResult();
@@ -667,32 +736,40 @@ public static unsafe class OpcDaServerCcw {
             return S_OK;
         }
 #pragma warning disable CA1031 // Cross-unmanaged-boundary catch.
-        catch (Opc.Classic.OpcException opcEx) {
+        catch (Opc.Classic.OpcException opcEx)
+        {
             return opcEx.ResultId.Code;
         }
-        catch (ArgumentException) {
+        catch (ArgumentException)
+        {
             return E_INVALIDARG;
         }
-        catch (Exception) {
+        catch (Exception)
+        {
             return E_FAIL;
         }
 #pragma warning restore CA1031
     }
 
     [UnmanagedCallersOnly]
-    private static int GetStatus(IntPtr pThis, IntPtr* ppServerStatus) {
-        if (ppServerStatus == null) {
+    private static int GetStatus(IntPtr pThis, IntPtr* ppServerStatus)
+    {
+        if (ppServerStatus == null)
+        {
             return E_INVALIDARG;
         }
         *ppServerStatus = IntPtr.Zero;
-        if (!s_ccws.TryGetValue(pThis, out CcwEntry? entry)) {
+        if (!s_ccws.TryGetValue(pThis, out CcwEntry? entry))
+        {
             return E_NOTIMPL;
         }
-        if (entry.ServerHandle.Target is not IOpcDaServer server) {
+        if (entry.ServerHandle.Target is not IOpcDaServer server)
+        {
             return E_NOTIMPL;
         }
 
-        try {
+        try
+        {
 #pragma warning disable VSTHRD002
             OpcServerStatus status = server.GetStatusAsync(CancellationToken.None)
                 .GetAwaiter().GetResult();
@@ -702,70 +779,87 @@ public static unsafe class OpcDaServerCcw {
             return S_OK;
         }
 #pragma warning disable CA1031
-        catch (Opc.Classic.OpcException opcEx) {
+        catch (Opc.Classic.OpcException opcEx)
+        {
             return opcEx.ResultId.Code;
         }
-        catch (ArgumentException) {
+        catch (ArgumentException)
+        {
             return E_INVALIDARG;
         }
-        catch (Exception) {
+        catch (Exception)
+        {
             return E_FAIL;
         }
 #pragma warning restore CA1031
     }
 
     [UnmanagedCallersOnly]
-    private static int GetGroupByName(IntPtr pThis, IntPtr szName, Guid* riid, IntPtr* ppUnk) {
+    private static int GetGroupByName(IntPtr pThis, IntPtr szName, Guid* riid, IntPtr* ppUnk)
+    {
         _ = riid;
-        if (ppUnk == null) {
+        if (ppUnk == null)
+        {
             return E_INVALIDARG;
         }
         *ppUnk = IntPtr.Zero;
-        if (!s_ccws.TryGetValue(pThis, out CcwEntry? entry)) {
+        if (!s_ccws.TryGetValue(pThis, out CcwEntry? entry))
+        {
             return E_NOTIMPL;
         }
-        if (entry.ServerHandle.Target is not IOpcDaServer server) {
+        if (entry.ServerHandle.Target is not IOpcDaServer server)
+        {
             return E_NOTIMPL;
         }
-        if (szName == IntPtr.Zero) {
+        if (szName == IntPtr.Zero)
+        {
             return E_INVALIDARG;
         }
 
-        try {
+        try
+        {
             string name = Marshal.PtrToStringUni(szName) ?? string.Empty;
 #pragma warning disable VSTHRD002
             OpcDaGroup? group = server.ResolveGroupByNameAsync(name, CancellationToken.None)
                 .GetAwaiter().GetResult();
 #pragma warning restore VSTHRD002
-            if (group is null) {
+            if (group is null)
+            {
                 return Opc.Classic.OpcResultId.UnknownPath.Code;
             }
             *ppUnk = OpcDaGroupCcw.Create(group);
             return S_OK;
         }
 #pragma warning disable CA1031 // Cross-unmanaged-boundary catch.
-        catch (Opc.Classic.OpcException opcEx) {
+        catch (Opc.Classic.OpcException opcEx)
+        {
             return opcEx.ResultId.Code;
         }
-        catch (ArgumentException) {
+        catch (ArgumentException)
+        {
             return E_INVALIDARG;
         }
-        catch (Exception) {
+        catch (Exception)
+        {
             return E_FAIL;
         }
 #pragma warning restore CA1031
     }
 
     [UnmanagedCallersOnly]
-    private static int RemoveGroup(IntPtr pThis, uint hServerGroup, int bForce) {
-        if (!s_ccws.TryGetValue(pThis, out CcwEntry? entry)) {
+    private static int RemoveGroup(IntPtr pThis, uint hServerGroup, int bForce)
+    {
+        if (!s_ccws.TryGetValue(pThis, out CcwEntry? entry))
+        {
             return E_NOTIMPL;
         }
-        if (entry.ServerHandle.Target is not IOpcDaServer server) {
+        if (entry.ServerHandle.Target is not IOpcDaServer server)
+        {
             return E_NOTIMPL;
         }
 
-        try {
+        try
+        {
 #pragma warning disable VSTHRD002 // The CCW method runs synchronously across the COM ABI; bridge to the async impl via .GetAwaiter().GetResult().
             server.RemoveGroupAsync((int)hServerGroup, bForce != 0, CancellationToken.None)
                 .GetAwaiter().GetResult();
@@ -773,29 +867,36 @@ public static unsafe class OpcDaServerCcw {
             return S_OK;
         }
 #pragma warning disable CA1031 // Cross-unmanaged-boundary catch: any escaping managed exception would crash the process.
-        catch (Opc.Classic.OpcException opcEx) {
+        catch (Opc.Classic.OpcException opcEx)
+        {
             return opcEx.ResultId.Code;
         }
-        catch (ArgumentException) {
+        catch (ArgumentException)
+        {
             return E_INVALIDARG;
         }
-        catch (Exception) {
+        catch (Exception)
+        {
             return E_FAIL;
         }
 #pragma warning restore CA1031
     }
 
     [UnmanagedCallersOnly]
-    private static int CreateGroupEnumerator(IntPtr pThis, uint dwScope, Guid* riid, IntPtr* ppUnk) {
+    private static int CreateGroupEnumerator(IntPtr pThis, uint dwScope, Guid* riid, IntPtr* ppUnk)
+    {
         _ = pThis; _ = dwScope; _ = riid;
-        if (ppUnk != null) {
+        if (ppUnk != null)
+        {
             *ppUnk = IntPtr.Zero;
         }
         return E_NOTIMPL;
     }
 
-    private sealed class CcwEntry {
-        public CcwEntry(GCHandle serverHandle, IntPtr serverPointer, IntPtr commonPointer, IntPtr browsePointer, IntPtr itemPropsPointer, IntPtr itemIoPointer, IntPtr browseSasPointer, IntPtr securityNtPointer, IntPtr securityPrivPointer) {
+    private sealed class CcwEntry
+    {
+        public CcwEntry(GCHandle serverHandle, IntPtr serverPointer, IntPtr commonPointer, IntPtr browsePointer, IntPtr itemPropsPointer, IntPtr itemIoPointer, IntPtr browseSasPointer, IntPtr securityNtPointer, IntPtr securityPrivPointer)
+        {
             ServerHandle = serverHandle;
             ServerPointer = serverPointer;
             CommonPointer = commonPointer;
@@ -829,7 +930,8 @@ public static unsafe class OpcDaServerCcw {
 
         public long RefCount;
 
-        public IntPtr GetInterfacePointer(Guid iid) {
+        public IntPtr GetInterfacePointer(Guid iid)
+        {
             if (iid == Dcom.IOPCCommon.InterfaceId) { return CommonPointer; }
             if (iid == Dcom.IOPCBrowse.InterfaceId) { return BrowsePointer; }
             if (iid == Dcom.IOPCItemProperties.InterfaceId) { return ItemPropertiesPointer; }
@@ -854,7 +956,8 @@ public static unsafe class OpcDaServerCcw {
     /// closed mid-call (observed as RPC_S_CALL_FAILED on the client side).
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
-    private struct OPCSERVERSTATUS_NATIVE {
+    private struct OPCSERVERSTATUS_NATIVE
+    {
         public long ftStartTime;
         public long ftCurrentTime;
         public long ftLastUpdateTime;
@@ -869,8 +972,10 @@ public static unsafe class OpcDaServerCcw {
     }
 
     /// <summary>Allocates an LPWSTR (null-terminated UTF-16) via CoTaskMemAlloc.</summary>
-    private static IntPtr AllocateLpwStr(string? value) {
-        if (value is null) {
+    private static IntPtr AllocateLpwStr(string? value)
+    {
+        if (value is null)
+        {
             return IntPtr.Zero;
         }
         int byteCount = (value.Length + 1) * sizeof(char);
@@ -881,11 +986,13 @@ public static unsafe class OpcDaServerCcw {
     }
 
     /// <summary>Allocates an OPCSERVERSTATUS via CoTaskMemAlloc and fills it from <paramref name="status"/>.</summary>
-    private static IntPtr AllocateOpcServerStatus(OpcServerStatus status) {
+    private static IntPtr AllocateOpcServerStatus(OpcServerStatus status)
+    {
         int size = sizeof(OPCSERVERSTATUS_NATIVE);
         IntPtr ptr = Marshal.AllocCoTaskMem(size);
         Version version = status.ServerVersion ?? new Version(1, 0, 0);
-        var native = new OPCSERVERSTATUS_NATIVE {
+        var native = new OPCSERVERSTATUS_NATIVE
+        {
             ftStartTime = status.StartTime.ToFileTime(),
             ftCurrentTime = status.CurrentTime.ToFileTime(),
             ftLastUpdateTime = status.LastUpdateTime.ToFileTime(),

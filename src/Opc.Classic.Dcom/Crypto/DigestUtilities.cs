@@ -11,9 +11,12 @@ namespace Opc.Classic.Dcom.Crypto;
 /// DigestUtilities shim — supports "MD4" and "MD5" (the two hashes the legacy
 /// NTLM code requests via string name).
 /// </summary>
-public static class DigestUtilities {
-    public static IDigest GetDigest(string algorithm) {
-        return algorithm switch {
+public static class DigestUtilities
+{
+    public static IDigest GetDigest(string algorithm)
+    {
+        return algorithm switch
+        {
             "MD4" => new MD4Digest(),
             "MD5" => new MD5Digest(),
             _ => throw new NotSupportedException(

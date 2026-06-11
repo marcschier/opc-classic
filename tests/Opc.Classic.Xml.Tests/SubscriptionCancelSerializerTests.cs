@@ -12,54 +12,65 @@ using TUnit.Core;
 
 namespace Opc.Classic.Xml.Tests;
 
-public sealed class SubscriptionCancelSerializerTests {
-    private static string SerializeRequest(XmlDaSubscriptionCancelRequest req) {
+public sealed class SubscriptionCancelSerializerTests
+{
+    private static string SerializeRequest(XmlDaSubscriptionCancelRequest req)
+    {
         using var ms = new MemoryStream();
-        using (var w = new SoapEnvelopeWriter(ms)) {
+        using (var w = new SoapEnvelopeWriter(ms))
+        {
             SubscriptionCancelSerializer.WriteRequest(w, req);
         }
         return Encoding.UTF8.GetString(ms.ToArray());
     }
 
-    private static XmlDaSubscriptionCancelResponse Deserialize(string xml) {
+    private static XmlDaSubscriptionCancelResponse Deserialize(string xml)
+    {
         using var ms = new MemoryStream(Encoding.UTF8.GetBytes(xml));
         using var r = new SoapEnvelopeReader(ms);
         return SubscriptionCancelSerializer.ReadResponse(r);
     }
 
     [Test]
-    public async Task Request_EmitsServerSubHandle() {
+    public async Task Request_EmitsServerSubHandle()
+    {
         var xml = SerializeRequest(new XmlDaSubscriptionCancelRequest("sub-handle-7"));
         await Assert.That(xml).Contains("<SubscriptionCancel");
         await Assert.That(xml).Contains("ServerSubHandle=\"sub-handle-7\"");
     }
 
     [Test]
-    public async Task Request_EmitsClientRequestHandle_WhenPresent() {
+    public async Task Request_EmitsClientRequestHandle_WhenPresent()
+    {
         var xml = SerializeRequest(new XmlDaSubscriptionCancelRequest("sub-x", "req-42"));
         await Assert.That(xml).Contains("ClientRequestHandle=\"req-42\"");
     }
 
     [Test]
-    public async Task Request_OmitsClientRequestHandle_WhenAbsent() {
+    public async Task Request_OmitsClientRequestHandle_WhenAbsent()
+    {
         var xml = SerializeRequest(new XmlDaSubscriptionCancelRequest("sub-x"));
         await Assert.That(xml).DoesNotContain("ClientRequestHandle");
     }
 
     [Test]
-    public async Task Request_ThrowsOnEmptyServerSubHandle() {
+    public async Task Request_ThrowsOnEmptyServerSubHandle()
+    {
         bool threw = false;
-        try {
+        try
+        {
             SerializeRequest(new XmlDaSubscriptionCancelRequest(string.Empty));
         }
-        catch (ArgumentException) {
+        catch (ArgumentException)
+        {
             threw = true;
         }
         await Assert.That(threw).IsTrue();
     }
 
     [Test]
-    public async Task Response_DecodesEchoedHandle() {
+    public async Task Response_DecodesEchoedHandle()
+    {
         const string xml = """
             <?xml version="1.0"?>
             <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
@@ -74,7 +85,8 @@ public sealed class SubscriptionCancelSerializerTests {
     }
 
     [Test]
-    public async Task Response_HandlesMissingClientHandle_AsNull() {
+    public async Task Response_HandlesMissingClientHandle_AsNull()
+    {
         const string xml = """
             <?xml version="1.0"?>
             <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
@@ -88,7 +100,8 @@ public sealed class SubscriptionCancelSerializerTests {
     }
 
     [Test]
-    public async Task Response_RejectsWrongOperation() {
+    public async Task Response_RejectsWrongOperation()
+    {
         const string xml = """
             <?xml version="1.0"?>
             <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">

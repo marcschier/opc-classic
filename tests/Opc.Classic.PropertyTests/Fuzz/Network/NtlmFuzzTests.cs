@@ -13,7 +13,8 @@ using TUnit.Core;
 
 namespace Opc.Classic.PropertyTests.Fuzz.Network;
 
-public sealed class NtlmFuzzTests {
+public sealed class NtlmFuzzTests
+{
     private static readonly Type[] AllowedNtlmExceptions =
     [
         typeof(InvalidDataException),
@@ -25,7 +26,8 @@ public sealed class NtlmFuzzTests {
 
     [Test]
     [Category("Fuzz")]
-    public async Task Type1_Parse_RandomBytes_DoesNotCrash() {
+    public async Task Type1_Parse_RandomBytes_DoesNotCrash()
+    {
         SampleRandom(ParseType1);
         bool completed = true;
         await Assert.That(completed).IsTrue();
@@ -33,7 +35,8 @@ public sealed class NtlmFuzzTests {
 
     [Test]
     [Category("Fuzz")]
-    public async Task Type2_Parse_RandomBytes_DoesNotCrash() {
+    public async Task Type2_Parse_RandomBytes_DoesNotCrash()
+    {
         SampleRandom(ParseType2);
         bool completed = true;
         await Assert.That(completed).IsTrue();
@@ -41,7 +44,8 @@ public sealed class NtlmFuzzTests {
 
     [Test]
     [Category("Fuzz")]
-    public async Task Type3_Parse_RandomBytes_DoesNotCrash() {
+    public async Task Type3_Parse_RandomBytes_DoesNotCrash()
+    {
         SampleRandom(ParseType3);
         bool completed = true;
         await Assert.That(completed).IsTrue();
@@ -49,7 +53,8 @@ public sealed class NtlmFuzzTests {
 
     [Test]
     [Category("Fuzz")]
-    public async Task Type1_Parse_MutatedValidMessage_DoesNotCrash() {
+    public async Task Type1_Parse_MutatedValidMessage_DoesNotCrash()
+    {
         SampleMutated(new Type1Message().ToByteArray(), ParseType1);
         bool completed = true;
         await Assert.That(completed).IsTrue();
@@ -57,7 +62,8 @@ public sealed class NtlmFuzzTests {
 
     [Test]
     [Category("Fuzz")]
-    public async Task Type2_Parse_MutatedValidMessage_DoesNotCrash() {
+    public async Task Type2_Parse_MutatedValidMessage_DoesNotCrash()
+    {
         Type1Message type1 = new();
         SampleMutated(new Type2Message(type1).ToByteArray(), ParseType2);
         bool completed = true;
@@ -66,7 +72,8 @@ public sealed class NtlmFuzzTests {
 
     [Test]
     [Category("Fuzz")]
-    public async Task Type3_Parse_MutatedValidMessage_DoesNotCrash() {
+    public async Task Type3_Parse_MutatedValidMessage_DoesNotCrash()
+    {
         Type1Message type1 = new();
         Type2Message type2 = new(type1);
         SampleMutated(new Type3Message(type2).ToByteArray(), ParseType3);
@@ -76,7 +83,8 @@ public sealed class NtlmFuzzTests {
 
     [Test]
     [Category("Fuzz")]
-    public async Task NtlmAvPairs_Scan_RandomBytes_DoesNotCrash() {
+    public async Task NtlmAvPairs_Scan_RandomBytes_DoesNotCrash()
+    {
         FuzzHarness.BytesEdgeWeighted.Sample(
             static input => FuzzHarness.AssertParseDoesNotCrash(
                 input,
@@ -92,7 +100,8 @@ public sealed class NtlmFuzzTests {
 
     [Test]
     [Category("Fuzz")]
-    public async Task NtlmMic_Verify_RandomBytes_DoesNotCrash() {
+    public async Task NtlmMic_Verify_RandomBytes_DoesNotCrash()
+    {
         byte[] sessionKey = new byte[16];
         byte[] negotiate = new Type1Message().ToByteArray();
         byte[] challenge = new Type2Message(new Type1Message()).ToByteArray();
@@ -116,10 +125,13 @@ public sealed class NtlmFuzzTests {
     [Arguments("NTLM-Type3")]
     [Arguments("NTLM-AvPairs")]
     [Arguments("NTLM-MIC")]
-    public async Task Ntlm_CorpusReplay_DoesNotCrash(string surface) {
-        foreach (object[] row in FuzzHarness.LoadCorpus(surface)) {
+    public async Task Ntlm_CorpusReplay_DoesNotCrash(string surface)
+    {
+        foreach (object[] row in FuzzHarness.LoadCorpus(surface))
+        {
             byte[] input = (byte[])row[0];
-            switch (surface) {
+            switch (surface)
+            {
                 case "NTLM-Type1":
                     AssertNtlmParseDoesNotCrash(input, ParseType1);
                     break;

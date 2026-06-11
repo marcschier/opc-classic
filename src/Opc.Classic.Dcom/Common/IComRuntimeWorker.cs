@@ -8,7 +8,8 @@ namespace Opc.Classic.Dcom.Common;
 /// <summary>
 /// Framework Internal.
 /// </summary>
-public interface IComRuntimeWorker {
+public interface IComRuntimeWorker
+{
 
     /// <summary>
     /// Set op number
