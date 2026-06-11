@@ -433,3 +433,14 @@ dotnet_diagnostic.CA1725.severity = none
 # RS0030: Banned API — Activator.CreateInstance(Type) banned by src/BannedSymbols.txt;
 # documented compatibility helpers are tracked in docs/ROADMAP.md.
 dotnet_diagnostic.RS0030.severity = warning
+# RCS1138/RCS1139: Add (summary element to) documentation comment — assembly opts out
+# of XML doc generation (GenerateDocumentationFile=false) for transitional Java-ported code.
+dotnet_diagnostic.RCS1138.severity = none
+dotnet_diagnostic.RCS1139.severity = none
+
+# Opc.Classic.Dcom.Tests — exercises the transitional Java-ported Dcom assembly with
+# legacy test fixtures (MSWord.cs, Main.cs ported from JCIFS/jcom samples). Same doc-comment
+# relaxation as the src/Opc.Classic.Dcom section above.
+[tests/Opc.Classic.Dcom.Tests/**.cs]
+dotnet_diagnostic.RCS1138.severity = none
+dotnet_diagnostic.RCS1139.severity = none

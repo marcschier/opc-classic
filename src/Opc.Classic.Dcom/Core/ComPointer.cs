@@ -25,7 +25,6 @@ public sealed class ComPointer
     /// <summary>
     /// Set referent id
     /// </summary>
-    /// <param name="value"></param>
     public int ReferentId { get; internal set; } = -1;
 
     /// <summary>
@@ -58,10 +57,9 @@ public sealed class ComPointer
             {
                 return kPointerSize;
             }
-            if (_referent is Type)
+            if (_referent is Type type)
             {
-                return 4 + MarshalUnMarshalHelper.GetLengthInBytes((Type)_referent,
-                    _referent);
+                return 4 + MarshalUnMarshalHelper.GetLengthInBytes(type, _referent);
             }
             return 4 + MarshalUnMarshalHelper.GetLengthInBytes(_referent.GetType(),
                 _referent);

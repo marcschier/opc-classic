@@ -82,7 +82,7 @@ public abstract class Stub
     /// Attach
     /// </summary>
     /// <exception cref="IOException"></exception>
-    /// <exception cref="T:rpc.RpcException"></exception>
+    /// <exception cref="RpcException"></exception>
     protected void Attach()
     {
         var endpoint = Endpoint;

@@ -96,10 +96,10 @@ public class NtlmConnection : DefaultConnection
             _contextId = Interlocked.Increment(ref _contextSerial);
             _ntlm = _authentication.CreateType1();
         }
-        else if (_ntlm is Type1Message)
+        else if (_ntlm is Type1Message type1)
         {
             // server sends challenge to client
-            _ntlm = _authentication.CreateType2((Type1Message)_ntlm);
+            _ntlm = _authentication.CreateType2(type1);
         }
         else if (_ntlm is Type2Message type2) // client sends authenticate to server
         {

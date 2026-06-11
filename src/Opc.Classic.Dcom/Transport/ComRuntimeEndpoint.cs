@@ -67,16 +67,16 @@ public sealed class ComRuntimeEndpoint : ConnectionOrientedEndpoint
                 workerObject.Resolver);
             var ndr = new NdrCodec();
             workerObject.CurrentIID = CurrentIID;
-            if (request is RequestCoPdu)
+            if (request is RequestCoPdu requestPdu)
             {
-                var buffer = new NdrBuffer(((RequestCoPdu)request).Stub, 0);
+                var buffer = new NdrBuffer(requestPdu.Stub, 0);
                 if (buffer.Buf != null)
                 {
                     var byteArrayOutputStream = Utils.HexString(buffer.Buf, 0, buffer.Buf.Length);
                     Log.Logger.Verbose("\n" + byteArrayOutputStream.ToString());
                 }
-                ndr.Format = ((RequestCoPdu)request).Format;
-                workerObject.Opnum = ((RequestCoPdu)request).Opnum;
+                ndr.Format = requestPdu.Format;
+                workerObject.Opnum = requestPdu.Opnum;
                 // sets the current object, this is used to identify the <see cref="LocalCoClass"/> to work on.
                 // for most cases this will be null, till there is an actual COM interface request.
                 workerObject.CurrentObjectID = ((RequestCoPdu)request).Object;
@@ -123,9 +123,9 @@ public sealed class ComRuntimeEndpoint : ConnectionOrientedEndpoint
                      */
                     // this call is only valid when the workerObject is RemUnknownObject.
                     // so the context us NTLMConnectionContext
-                    if (Context is ComRuntimeNtlmConnectionContext)
+                    if (Context is ComRuntimeNtlmConnectionContext ntlmContext)
                     {
-                        ((ComRuntimeNtlmConnectionContext)Context).UpdateListOfInterfacesSupported(
+                        ntlmContext.UpdateListOfInterfacesSupported(
                             workerObject.QIedIIDs);
                     }
                     switch (request.Type)
@@ -151,9 +151,9 @@ public sealed class ComRuntimeEndpoint : ConnectionOrientedEndpoint
                     PresentationContext context;
 
                     bool successful;
-                    if (response is BindAcknowledgePdu)
+                    if (response is BindAcknowledgePdu bindAck)
                     {
-                        result = ((BindAcknowledgePdu)response).ResultList;
+                        result = bindAck.ResultList;
                         successful = result[0].Result == PresentationResultCode.ACCEPTANCE;
                         context = ((BindPdu)request).ContextList[0]; // am expecting only one
                     }

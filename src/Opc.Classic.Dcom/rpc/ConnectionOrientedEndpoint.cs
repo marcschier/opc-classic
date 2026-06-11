@@ -79,11 +79,11 @@ public class ConnectionOrientedEndpoint : IEndpoint
             return;
         }
         var reply = Receive();
-        if (reply is ResponseCoPdu)
+        if (reply is ResponseCoPdu response)
         {
             ndr.Format = reply.Format;
 
-            buffer = new NdrBuffer(((ResponseCoPdu)reply).Stub, 0);
+            buffer = new NdrBuffer(response.Stub, 0);
             Log.Logger.Verbose("\n" + Utils.HexString(buffer.Buf, 0, buffer.Buf.Length));
             ndrobj.Decode(ndr, buffer);
         }

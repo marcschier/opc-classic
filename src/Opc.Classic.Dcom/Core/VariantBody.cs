@@ -58,8 +58,8 @@ internal sealed class VariantBody
     {
         _object = referent ?? new Empty();
 
-        if (_object is ComString &&
-            ((ComString)_object).Type != InteropFlags.FLAG_REPRESENTATION_STRING_BSTR)
+        if (_object is ComString comString &&
+            comString.Type != InteropFlags.FLAG_REPRESENTATION_STRING_BSTR)
         {
             throw new InteropRuntimeException(ErrorCode.INTEROP_VARIANT_BSTR_ONLY);
         }

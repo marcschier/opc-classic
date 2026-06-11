@@ -66,15 +66,13 @@ public static class StringHelperClass
         return splitArray;
     }
 
-    // -----------------------------------------------------------------------------
-    //    These methods are used to replace calls to some Java String constructors.
-    // -----------------------------------------------------------------------------
     /// <summary>
     ///
     /// </summary>
     /// <param name="bytes"></param>
     /// <returns></returns>
     public static string NewString(byte[] bytes) => NewString(bytes, 0, bytes.Length);
+
     /// <summary>
     ///
     /// </summary>
@@ -83,6 +81,7 @@ public static class StringHelperClass
     /// <param name="count"></param>
     /// <returns></returns>
     public static string NewString(byte[] bytes, int index, int count) => Text.Encoding.UTF8.GetString((byte[])(object)bytes, index, count);
+
     /// <summary>
     ///
     /// </summary>
@@ -90,6 +89,7 @@ public static class StringHelperClass
     /// <param name="encoding"></param>
     /// <returns></returns>
     public static string NewString(byte[] bytes, string encoding) => NewString(bytes, 0, bytes.Length, encoding);
+
     /// <summary>
     ///
     /// </summary>
@@ -100,15 +100,13 @@ public static class StringHelperClass
     /// <returns></returns>
     public static string NewString(byte[] bytes, int index, int count, string encoding) => Text.Encoding.GetEncoding(encoding).GetString((byte[])(object)bytes, index, count);
 
-    // --------------------------------------------------------------------------------
-    //    These methods are used to replace calls to the Java String.getBytes methods.
-    // --------------------------------------------------------------------------------
     /// <summary>
     ///
     /// </summary>
     /// <param name="self"></param>
     /// <returns></returns>
     public static byte[] GetBytes(this string self) => GetSBytesForEncoding(Text.Encoding.UTF8, self);
+
     /// <summary>
     ///
     /// </summary>
@@ -116,6 +114,7 @@ public static class StringHelperClass
     /// <param name="encoding"></param>
     /// <returns></returns>
     public static byte[] GetBytes(this string self, string encoding) => GetSBytesForEncoding(Text.Encoding.GetEncoding(encoding), self);
+
     /// <summary>
     ///
     /// </summary>

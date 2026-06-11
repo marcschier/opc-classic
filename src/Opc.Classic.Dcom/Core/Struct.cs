@@ -46,9 +46,9 @@ public sealed class Struct
             while (i < Members.Count)
             {
                 var o = Members[i];
-                if (o is Type)
+                if (o is Type typeObj)
                 {
-                    length += MarshalUnMarshalHelper.GetLengthInBytes((Type)o, o);
+                    length += MarshalUnMarshalHelper.GetLengthInBytes(typeObj, o);
                 }
                 else
                 {
@@ -76,12 +76,15 @@ public sealed class Struct
 
             for (var i = 0; i < Members.Count; i++)
             {
-                var c = Members[i].GetType();
-                var isClass = false;
-                if (c.Equals(typeof(Type)))
+                var memberObj = Members[i];
+                Type c;
+                if (memberObj is Type type)
                 {
-                    isClass = true;
-                    c = (Type)Members[i];
+                    c = type;
+                }
+                else
+                {
+                    c = memberObj.GetType();
                 }
 
                 if (c.Equals(typeof(int)) ||
@@ -111,17 +114,17 @@ public sealed class Struct
                 }
                 else if (c.Equals(typeof(Struct)))
                 {
-                    if (!isClass)
+                    if (Members[i] is Struct structMember)
                     {
-                        var align = ((Struct)Members[i]).Alignment;
+                        var align = structMember.Alignment;
                         alignment = alignment <= align ? align : alignment;
                     }
                 }
                 else if (c.Equals(typeof(Union)))
                 {
-                    if (!isClass)
+                    if (Members[i] is Union unionMember)
                     {
-                        var align = ((Union)Members[i]).Alignment;
+                        var align = unionMember.Alignment;
                         alignment = alignment <= align ? align : alignment;
                     }
                 }
@@ -192,38 +195,41 @@ public sealed class Struct
         if (memberClass.Equals(typeof(Struct)))
         {
             // if this has an array then, this struct has to be the last member in the struct list.
-            if (((Struct)member)._arrayAdded && _arrayAdded && position != (Members.Count - 1))
+            if (member is Struct structMember)
             {
-                throw new InteropException(ErrorCode.INTEROP_STRUCT_INCORRECT_NESTED_STRUCT_POS);
-            }
+                if (structMember._arrayAdded && _arrayAdded && position != (Members.Count - 1))
+                {
+                    throw new InteropException(ErrorCode.INTEROP_STRUCT_INCORRECT_NESTED_STRUCT_POS);
+                }
 
-            if (_arrayAdded && ((Struct)member)._arrayAdded)
-            {
-                // means that we have to move the maxcount of the internal struct to this struct.
-                _arrayAdded = true;
-                ArrayMaxCounts.AddRange(((Struct)member).ArrayMaxCounts);
-                ((Struct)member).ArrayMaxCounts.Clear(); // this is a "move" of max counts to the
+                if (_arrayAdded && structMember._arrayAdded)
+                {
+                    // means that we have to move the maxcount of the internal struct to this struct.
+                    _arrayAdded = true;
+                    ArrayMaxCounts.AddRange(structMember.ArrayMaxCounts);
+                    structMember.ArrayMaxCounts.Clear(); // this is a "move" of max counts to the
                                                          // outer struct
 
-                _listOfDimensions.AddRange(((Struct)member)._listOfDimensions);
-                ((Struct)member)._listOfDimensions.Clear();
+                    _listOfDimensions.AddRange(structMember._listOfDimensions);
+                    structMember._listOfDimensions.Clear();
 
-            }
-            else if (!_arrayAdded && ((Struct)member)._arrayAdded)
-            {
-                if (position == Members.Count)
+                }
+                else if (!_arrayAdded && structMember._arrayAdded)
                 {
-                    _arrayAdded = true;
-                    ArrayMaxCounts.AddRange(((Struct)member).ArrayMaxCounts);
-                    ((Struct)member).ArrayMaxCounts.Clear(); // this is a "move" of max counts to the
+                    if (position == Members.Count)
+                    {
+                        _arrayAdded = true;
+                        ArrayMaxCounts.AddRange(structMember.ArrayMaxCounts);
+                        structMember.ArrayMaxCounts.Clear(); // this is a "move" of max counts to the
                                                              // outer struct
 
-                    _listOfDimensions.AddRange(((Struct)member)._listOfDimensions);
-                    ((Struct)member)._listOfDimensions.Clear();
-                }
-                else
-                {
-                    throw new InteropException(ErrorCode.INTEROP_STRUCT_INCORRECT_NESTED_STRUCT_POS2);
+                        _listOfDimensions.AddRange(structMember._listOfDimensions);
+                        structMember._listOfDimensions.Clear();
+                    }
+                    else
+                    {
+                        throw new InteropException(ErrorCode.INTEROP_STRUCT_INCORRECT_NESTED_STRUCT_POS2);
+                    }
                 }
             }
         }
@@ -264,16 +270,16 @@ public sealed class Struct
     public void RemoveMember(int index)
     {
         var member = Members.GetAndRemoveAt(index);
-        if (member is ComArray)
+        if (member is ComArray comArray)
         {
             // we need to remove it's max count values also.
-            ArrayMaxCounts.RemoveAll(((ComArray)member).ConformantMaxCounts);
+            ArrayMaxCounts.RemoveAll(comArray.ConformantMaxCounts);
 
         }
-        else if (member is Struct && ((Struct)member)._arrayAdded)
+        else if (member is Struct structMember && structMember._arrayAdded)
         {
             // we need to remove it's max count values also.
-            ArrayMaxCounts.RemoveAll(((Struct)member).ArrayMaxCounts);
+            ArrayMaxCounts.RemoveAll(structMember.ArrayMaxCounts);
         }
         if (ArrayMaxCounts.Count == 0)
         {
@@ -341,26 +347,26 @@ public sealed class Struct
         {
             var o = Members[i];
             List<int> maxCountTemp = null;
-            if (o is ComArray)
+            if (o is ComArray comArray)
             {
-                if (((ComArray)o).Conformant || ((ComArray)o).Varying)
+                if (comArray.Conformant || comArray.Varying)
                 {
                     // if this array is conformant then reset it's conformancy, since the length would have been
                     // read before.
-                    ((ComArray)o).Conformant = false;
-                    maxCountTemp = ((ComArray)o).ConformantMaxCounts;
-                    ((ComArray)o).MaxCountAndUpperBounds = listOfMaxCounts2.SubList(j, _listOfDimensions[j]).ToList();
+                    comArray.Conformant = false;
+                    maxCountTemp = comArray.ConformantMaxCounts;
+                    comArray.MaxCountAndUpperBounds = listOfMaxCounts2.SubList(j, _listOfDimensions[j]).ToList();
                     j++;
                 }
             }
             var o1 = MarshalUnMarshalHelper.Deserialize(ndr, o, context);
-            if (o is ComArray)
+            if (o is ComArray comArray2)
             {
-                if (((ComArray)o).Conformant || ((ComArray)o).Varying)
+                if (comArray2.Conformant || comArray2.Varying)
                 {
                     // now reset this, so that next time when the same struct is written everything goes proper.
-                    ((ComArray)o).Conformant = ((ComArray)o).Conformant;
-                    ((ComArray)o).MaxCountAndUpperBounds = maxCountTemp;
+                    comArray2.Conformant = comArray2.Conformant;
+                    comArray2.MaxCountAndUpperBounds = maxCountTemp;
                 }
             }
             try

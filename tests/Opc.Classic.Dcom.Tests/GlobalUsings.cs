@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: MIT
+﻿// SPDX-License-Identifier: MIT
 
 // Project-wide aliases: the legacy jcifs/jcifs-port tests use Opc.Classic.Dcom.Common.Ntlm.Thread
 // (Java thread shim) intensively. After file-scoped namespace + outside-namespace usings,

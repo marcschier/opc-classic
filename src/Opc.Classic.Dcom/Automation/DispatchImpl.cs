@@ -355,21 +355,18 @@ internal sealed class DispatchImpl : ComObjectImplWrapper, IDispatch
             var obj = objectParams[i];
 
             Variant variant;
-            if (!(obj is Variant))
+            if (obj is Variant v)
             {
-                if (obj is ComArray)
-                {
-                    variant = new Variant((ComArray)obj, isRef);
-                }
-                else
-                {
-                    variant = Variant.MakeVariant(obj, isRef);
-                }
+                variant = v;
+                // variant = new <see cref="Variant"/>((<see cref="Variant"/>)obj);
+            }
+            else if (obj is ComArray comArr)
+            {
+                variant = new Variant(comArr, isRef);
             }
             else
             {
-                variant = (Variant)obj;
-                // variant = new <see cref="Variant"/>((<see cref="Variant"/>)obj);
+                variant = Variant.MakeVariant(obj, isRef);
             }
             variants[i] = variant;
         }
@@ -458,22 +455,18 @@ internal sealed class DispatchImpl : ComObjectImplWrapper, IDispatch
             var obj = objectParams[i];
 
             Variant variant;
-            if (!(obj is Variant))
+            if (obj is Variant v)
             {
-                if (obj is ComArray)
-                {
-                    variant = new Variant((ComArray)obj);
-                }
-                else
-                {
-                    variant = Variant.MakeVariant(obj);
-                }
-
+                variant = v;
+                // variant = new <see cref="Variant"/>((<see cref="Variant"/>)obj);
+            }
+            else if (obj is ComArray comArr)
+            {
+                variant = new Variant(comArr);
             }
             else
             {
-                variant = (Variant)obj;
-                // variant = new <see cref="Variant"/>((<see cref="Variant"/>)obj);
+                variant = Variant.MakeVariant(obj);
             }
 
             variants[i] = variant;
@@ -526,21 +519,18 @@ internal sealed class DispatchImpl : ComObjectImplWrapper, IDispatch
             var obj = inparams[i];
 
             Variant variant;
-            if (!(obj is Variant))
+            if (obj is Variant v)
             {
-                if (obj is ComArray)
-                {
-                    variant = new Variant((ComArray)obj);
-                }
-                else
-                {
-                    variant = Variant.MakeVariant(obj);
-                }
+                variant = v;
+                // variant = new <see cref="Variant"/>((<see cref="Variant"/>)obj);
+            }
+            else if (obj is ComArray comArr)
+            {
+                variant = new Variant(comArr);
             }
             else
             {
-                variant = (Variant)obj;
-                // variant = new <see cref="Variant"/>((<see cref="Variant"/>)obj);
+                variant = Variant.MakeVariant(obj);
             }
 
             variants[i] = variant;

@@ -110,7 +110,7 @@ internal static class MarshalUnMarshalHelper
             context = new CodecContext();
         }
 
-        var c = obj is Type ? (Type)obj : obj.GetType();
+        var c = obj is Type t ? t : obj.GetType();
         if (c.Equals(typeof(ComArray)))
         {
             return ((ComArray)obj).Decode(ndr, ((ComArray)obj).ArrayType,
