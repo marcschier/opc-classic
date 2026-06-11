@@ -4,8 +4,8 @@ These are the remaining gates before tagging `1.0.0` FINAL. Implemented release-
 
 ## Current state
 
-- Current release candidate: `1.0.0-rc.10`.
-- Validation baseline: 0 build warnings / 0 build errors; 2113 passed / 12 skipped / 0 failed across 23 .NET test projects.
+- Current release candidate: `1.0.0-rc.11`.
+- Validation baseline: 0 build warnings / 0 build errors; 2758 passed / 13 skipped / 0 failed across 25 .NET test projects.
 - The remaining gates are environment- or audit-blocked, not known missing release-scope CCW implementation stubs.
 
 ## Gates

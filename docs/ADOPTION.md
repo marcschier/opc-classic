@@ -30,7 +30,7 @@ dotnet add package Opc.Classic.Hda --prerelease
 dotnet add package Opc.Classic.Hosting --prerelease
 ```
 
-For source builds from the rc.10 checkout, use one of these approaches:
+For source builds from the current checkout, use one of these approaches:
 
 1. reference the projects directly in a repo-local solution;
 2. publish packages to a local folder feed from CI;
@@ -336,7 +336,7 @@ Keep reflection-heavy plugins, runtime-generated serializers, and dynamic dispat
 | Security | OPC Security projections plus DCOM authentication and packet-protection integration. |
 | Discovery | Local, remote-registry, and OPCEnum discovery strategies. |
 
-The generated DCOM surface contains 47 dispatchers and 127 opnums. The rc.10 validation sweep has 0 build errors / 0 warnings and 2113 passed / 12 skipped / 0 failed across 23 .NET test projects (DA 396, AE 110, HDA 164, DCOM 181, Crypto 65, Kerberos 48, SMB 61, Integration 107, plus the remaining suites).
+The generated DCOM surface contains 47 dispatchers and 127 opnums. The current validation sweep has 0 build errors / 0 warnings and 2758 passed / 13 skipped / 0 failed across 25 .NET test projects (DA 475, AE 128, HDA 177, DCOM 123, Crypto 65, Kerberos 48, SMB 61, Integration 109, plus the remaining suites).
 
 ## 11. Adoption from OPC NET API projects
 

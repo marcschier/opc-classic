@@ -50,7 +50,7 @@ The exposed `IClassFactory` is built from raw `[UnmanagedCallersOnly]` vtable en
 
 ## CCW coverage
 
-The rc.10 Windows hosting tests cover DA SCM activation, all AE array-returning server CCW methods, and HDA Sync/Async Update, Playback, Sync/Async Annotations, annotation insert/read, and async advise callback paths.
+The current Windows hosting tests cover DA SCM activation, all AE array-returning server CCW methods, and HDA Sync/Async Update, Playback, Sync/Async Annotations, annotation insert/read, and async advise callback paths.
 
 ## Sample integration
 

@@ -127,7 +127,7 @@ docker exec opc-classic-managed netstat -ano | findstr LISTEN
 
 ## CI integration
 
-The rc.10 repository baseline outside the Windows-container gate is **0 build warnings / 0 build errors** and **2113 passed / 12 skipped / 0 failed** across 23 .NET test projects.
+The current repository baseline outside the Windows-container gate is **0 build warnings / 0 build errors** and **2758 passed / 13 skipped / 0 failed** across 25 .NET test projects.
 
 `.github/workflows/docker-test-fleet.yml` runs the matrix monthly on
 `windows-2022` and can also be started manually with `workflow_dispatch`. When

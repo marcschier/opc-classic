@@ -43,7 +43,7 @@ The `opc-classic/managed` container runs `Opc.Classic.Samples.CttServer` with th
 | IPID per-object dispatch routing (`OpcObjectRegistry`) | `RequestCoPdu.Object` UUIDs resolve to per-group dispatchers |
 | `CttDaServer` group tracking | `AddGroup` creates an `OpcDaGroup`, returns a real IPID, and unregisters it on `RemoveGroup` |
 | Group dispatchers | `IOPCGroupStateMgt(2)`, `IOPCItemMgt`, `IOPCSyncIO(2)`, `IOPCAsyncIO2/3`, `IConnectionPoint`, deadband, and sampling dispatch through `OpcDaGroup` |
-| Windows CCW factory + SCM wireup | `IClassFactory::CreateInstance` returns a NativeAOT-friendly `IOPCServer` CCW backed by `CttDaServer`; AE array CCWs and HDA Update/Playback/Annotations CCWs are covered by the rc.10 Windows tests |
+| Windows CCW factory + SCM wireup | `IClassFactory::CreateInstance` returns a NativeAOT-friendly `IOPCServer` CCW backed by `CttDaServer`; AE array CCWs and HDA Update/Playback/Annotations CCWs are covered by the Windows hosting tests |
 | Outbound callback infrastructure | Listener + generated `IOPCDataCallback` proxy/dispatcher paths are available for callback composition |
 
 ## Prerequisites

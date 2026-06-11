@@ -31,12 +31,12 @@ Current baseline: **10 sample apps** and **2758 passed / 13 skipped / 0 failed a
 
 ## Interop with native OPC servers
 
-- [Probe coverage](interop/probe-coverage.md) — MCP tool-by-tool status against Matrikon Simulation Server + OPC Foundation TestServer
-- [OPCEnum DCOM authentication](interop/opcenum-auth.md) — auth-level requirements + grant-opcenum-acl AppID ACL helper
-- [`IOPCDataCallback` push delivery](interop/da-callbacks.md) — server→client subscription callback architecture
-- [TestServer activation residual](interop/testserver.md) — known SCM-activation blocker for the OPC Foundation managed TestServer
-- [Wire captures](interop/wire-captures/README.md) — opt-in NDR diagnostic dumps via `OPCCLASSIC_WIRE_CAPTURE_DIR`
-- [Unblocking `da.get_properties` decode](interop/unblocking-get-properties-decode.md) — step-by-step procedure to capture the live Matrikon exchange needed to close `ag-get-properties-decode`
+- [Probe coverage](../interop/docs/probe-coverage.md) — MCP tool-by-tool status against Matrikon Simulation Server + OPC Foundation TestServer
+- [OPCEnum DCOM authentication](../interop/docs/opcenum-auth.md) — auth-level requirements + grant-opcenum-acl AppID ACL helper
+- [`IOPCDataCallback` push delivery](../interop/docs/da-callbacks.md) — server→client subscription callback architecture
+- [TestServer activation residual](../interop/docs/testserver.md) — known SCM-activation blocker for the OPC Foundation managed TestServer
+- [Wire captures](../interop/docs/wire-captures/README.md) — opt-in NDR diagnostic dumps via `OPCCLASSIC_WIRE_CAPTURE_DIR`
+- [Unblocking `da.get_properties` decode](../interop/docs/unblocking-get-properties-decode.md) — step-by-step procedure to capture the live Matrikon exchange needed to close the get-properties decode investigation
 
 ## Security
 
@@ -52,7 +52,7 @@ Current baseline: **10 sample apps** and **2758 passed / 13 skipped / 0 failed a
 - [Architecture diagrams](architecture/diagrams.md) — 10 Mermaid diagrams
 - [Generator diagnostics](generators/diagnostics.md) — OPCGEN*+ OCM* reference
 - [XML-DA status](CONFORMANCE.md#opc-xml-da-101)
-- [Roadmap](ROADMAP.md) — delivered rc.* work, release gates, and beyond
+- [Roadmap](ROADMAP.md) — release gates and beyond
 
 ## For Contributors
 

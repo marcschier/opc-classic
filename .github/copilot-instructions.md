@@ -49,7 +49,7 @@ Publish the NativeAOT canary:
 dotnet publish samples\Opc.Classic.Samples.AotCanary -c Release -p:PublishAot=true -p:TreatWarningsAsErrors=true
 ```
 
-The expected baseline is 0 build warnings and 0 build errors. The rc.7 validation sweep has all 17 .NET test projects green (DA 385, AE 86, HDA 123, DCOM 123, Crypto 36, SMB 22, Integration 94, plus the remaining suites).
+The expected baseline is 0 build warnings and 0 build errors. The current validation sweep has all 25 .NET test projects green (DA 475, AE 128, HDA 177, DCOM 123, Crypto 65, SMB 61, Integration 109, plus the remaining suites).
 
 ## NativeAOT requirements
 

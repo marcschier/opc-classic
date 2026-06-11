@@ -3,7 +3,7 @@
 [![Build](https://github.com/marcschier/opc-classic/actions/workflows/build.yml/badge.svg)](https://github.com/marcschier/opc-classic/actions/workflows/build.yml)
 [![Docker test fleet](https://github.com/marcschier/opc-classic/actions/workflows/docker-test-fleet.yml/badge.svg)](https://github.com/marcschier/opc-classic/actions/workflows/docker-test-fleet.yml)
 [![.NET 10](https://img.shields.io/badge/.NET-10.0-512BD4)](https://dotnet.microsoft.com/)
-[![Version](https://img.shields.io/badge/version-1.0.0--rc.10-blue)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-1.0.0--rc.11-blue)](CHANGELOG.md)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 A cross-platform, NativeAOT-compatible **.NET 10** implementation of OPC Classic for clients and servers. Managed DCOM/MSRPC with no Windows COM runtime interop, XML-DA over HTTP, source-generated proxies and dispatchers, and self-contained NTLMv2 / Kerberos / SPNEGO authentication.
@@ -18,7 +18,7 @@ A cross-platform, NativeAOT-compatible **.NET 10** implementation of OPC Classic
 - **Source-generated proxies and dispatchers** — Roslyn `IIncrementalGenerator` emits a client proxy and a server dispatcher for every OPC interface marked `[OpcInterface]`. No reflection at runtime; AOT-clean and trim-safe.
 - **Windows COM-callable wrappers** — when running on Windows, SCM-activated servers are exposed through raw-vtable CCWs (also `[ComImport]`-free). Full release-scope vtables cover DA server/group/item/sync/async I/O/connection-point paths, AE server/subscription array-heavy methods, and HDA server/read/update/advise/playback paths.
 - **NativeAOT + trimming compatible** across every runtime project, enforced by `IsAotCompatible`, `EnableTrimAnalyzer`, `EnableAotAnalyzer`, and an explicit `BannedSymbols.txt`.
-- **Validation baseline** — 0 build warnings, 0 build errors, 2113 passed / 12 skipped / 0 failed across all 23 test projects (DA 396, AE 110, HDA 164, DCOM 181, Crypto 65, Kerberos 48, SMB 61, Integration 107, plus core, discovery, generators, property-based, snapshot, XML-DA, and more).
+- **Validation baseline** — 0 build warnings, 0 build errors, 2758 passed / 13 skipped / 0 failed across all 25 test projects (DA 475, AE 128, HDA 177, DCOM 123, Crypto 65, Kerberos 48, SMB 61, Integration 109, MCP 118, MCP Capture 99, plus core, discovery, generators, property-based, snapshot, XML-DA, and more).
 
 ## Quick start
 
@@ -49,17 +49,17 @@ Walk through the [first DA client tutorial](docs/tutorials/01-build-your-first-d
 
 | Path | What's inside |
 | --- | --- |
-| `src` | Runtime assemblies, source generators, shared build props (`Directory.Build.props`), central package versions (`Directory.Packages.props`), and the AOT/trim ban list. |
+| `src` | Runtime assemblies, source generators, shared build props, central package versions, and the AOT/trim ban list. |
 | `tests` | TUnit projects on Microsoft.Testing.Platform: primitives, transports, auth, generators, codecs, hosting, discovery, integration matrices, property-based, snapshot, and crypto. |
-| samples sample | Ten runnable apps — three DA/AE/HDA servers, three clients, a loopback demo, an additional managed DA sample (CttServer), the OPC Security sample server, and a NativeAOT canary. |
+| [`samples/`](samples/README.md) | Ten runnable apps — three DA/AE/HDA servers, three clients, a loopback demo, an additional managed DA sample (CttServer), the OPC Security sample server, and a NativeAOT canary. |
 | [`docs/`](docs/README.md) | Documentation hub: architecture, adoption, tutorials, cookbook, migration analyzer, security, conformance, roadmap, and architecture diagrams. |
-| [`docker`](interop/docker/README.md) | Windows Docker test fleet — managed-server image, C-built native server/client images, OPC Foundation TestServer/TestClient images, `docker-compose.test.yml`. |
-| `interop` | OPC Foundation conformance assets: `inc`, `external`, and native C++ sample servers/test apps in `samples`. |
-| [`.github/`](.github/) | Build, Docker test fleet, and release workflows. |
+| [`interop/docker/`](interop/docker/README.md) | Windows Docker test fleet — managed-server image, C-built native server/client images, OPC Foundation TestServer/TestClient images, and the docker-compose. |
+| [`interop/`](interop/README.md) | OPC Foundation conformance assets: vendored IDL headers, CMake-built native sample servers/test apps, and helper scripts. |
+| `.github` | Build, Docker test fleet, and release workflows. |
 
 ## Samples
 
-Ten runnable apps live in [`samples/`](samples/README.md) — three DA/AE/HDA managed servers, three clients, an in-process loopback, an additional managed DA sample (CttServer), the OPC Security sample server, and a NativeAOT canary. See [samples sample](samples/README.md) for the map, run instructions, env-var conventions, and sample-container deployment.
+Ten runnable apps live under [`samples/`](samples/README.md) — three DA/AE/HDA managed servers, three clients, an in-process loopback, an additional managed DA sample (CttServer), the OPC Security sample server, and a NativeAOT canary. See the [samples README](samples/README.md) for the map, run instructions, env-var conventions, and sample-container deployment.
 
 ## Documentation
 

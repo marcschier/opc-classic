@@ -223,7 +223,7 @@ The AE DCOM projection is substantially more complete than older external review
 
 **Spec**: OPC Batch Custom Interface Specification Version 2.0 (July 19, 2001)
 **Implementation**: `Opc.Classic`
-**Review target**: `1.0.0-rc.10`
+**Review target**: current
 
 ---
 
@@ -454,7 +454,7 @@ OPC Common coverage is high for the wire-visible functionality required by moder
 
 **Spec**: OPC Complex Data Specification Version 1.00 (December 10, 2003)
 **Implementation**: `Opc.Classic`
-**Review target**: `1.0.0-rc.10`
+**Review target**: current
 
 ---
 
@@ -584,7 +584,7 @@ CPX is not codec- or hosting-helper-blocked. Core CPX parsing, encoding/decoding
 
 **Spec**: OPC Data Access Custom Interface Specification 2.05a
 **Implementation**: `IOPCV20Interfaces` (minimal V2 back-compat layer), `IOPCInterfaces` (modern DA surface)
-**Review target**: `1.0.0-rc.10`
+**Review target**: current
 
 ---
 
@@ -685,7 +685,7 @@ The modern DA DCOM surface provides full DA 2.05a coverage of `IOPCCommon`, `IOP
 
 **Spec**: OPC Data Access Custom Interface Specification Version 3.0 (March 4, 2003)
 **Implementation**: `Opc.Classic`
-**Review target**: `1.0.0-rc.10`
+**Review target**: current
 
 ---
 
@@ -796,7 +796,7 @@ The DA 3.0 coverage document should be read as a current implementation-status d
 
 **Specification**: OPC Data eXchange Specification Version 1.0 (March 5, 2003)
 **Implementation**: `Opc.Classic.Dx` managed assembly
-**Review target**: `1.0.0-rc.10`
+**Review target**: current
 
 ---
 
@@ -919,7 +919,7 @@ DX is not codec-blocked. The library is ready for DX configuration-client scenar
 
 **Spec**: OPC Historical Data Access Specification Version 1.20 (January 30, 2004)
 **Implementation**: `Opc.Classic`
-**Review target**: `1.0.0-rc.10`
+**Review target**: current
 
 ---
 
@@ -1422,7 +1422,7 @@ The `Opc.Classic.Security` implementation is **complete** for client-side usage:
 **Implementation**: `Opc.Classic` (managed C# client)
 **Tests**: Opc.Classic.Xml tests
 **Analysis Date**: 2025-01-24
-**Target Release**: 1.0.0-rc.10 (client-only, scalar + array values)
+**Target Release**: current (client-only, scalar + array values)
 
 
 ---
@@ -1839,7 +1839,7 @@ Opc.Classic.Xml tests covers the HTTP client path and per-operation serializers.
 
 #### 10.3 Coverage Recommendations by Release
 
-##### 1.0.0-rc.10 (Client-Only)
+##### Current target (Client-Only)
 - ✅ All 8 operations, scalar values, extended scalar values, array values, base64Binary, type-safe error codes, and SOAP 1.1 complete
 - ⚠️ **Add integration tests** — Validate against real XML-DA servers
 

@@ -39,7 +39,7 @@ The portable runtime is pure managed code. Windows-specific features, such as lo
 | Generation | Source-generated client proxies and server dispatchers: 47 dispatchers, 127 opnums |
 | AOT stance | Runtime libraries are trimmable; `Opc.Classic.Dcom` runs with strict AOT/trimming analyzers enabled |
 | Samples | 10 sample apps: DA/AE/HDA server+client, LoopbackDemo, CttServer, OpcSecurityServer, AotCanary; sample containers now exchange DCOM-over-IP |
-| Verification | 0 build errors / 0 warnings; rc.10 sweep has 2113 passed / 12 skipped / 0 failed across 23 .NET test projects |
+| Verification | 0 build errors / 0 warnings; the current sweep has 2758 passed / 13 skipped / 0 failed across 25 .NET test projects |
 
 ## 2. Assembly layout
 

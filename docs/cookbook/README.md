@@ -1,6 +1,6 @@
 # OPC Classic cookbook
 
-These recipes use the current `Opc.Classic.*` package and namespace names. They are plain GitHub-rendered Markdown and assume the MIT-licensed `1.0.0-rc.10` source tree.
+These recipes use the current `Opc.Classic.*` package and namespace names. They are plain GitHub-rendered Markdown and assume the MIT-licensed source tree.
 
 ## Recipes
 

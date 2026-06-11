@@ -169,7 +169,7 @@ Documentation is plain Markdown under `docs\`. Start at `docs\README.md` and kee
 
 ## Build quality gates
 
-Current rc.10 validation baseline: **0 build warnings, 0 build errors, 2113 passed / 12 skipped / 0 failed across 23 .NET test projects**.
+Current validation baseline: **0 build warnings, 0 build errors, 2758 passed / 13 skipped / 0 failed across 25 .NET test projects**.
 
 Before opening a pull request:
 
