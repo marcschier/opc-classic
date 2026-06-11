@@ -12,7 +12,7 @@ server:
 This repository implements `ncacn_ip_tcp` end-to-end and now ships the focused
 `ncacn_np` client path required by OPC Classic discovery and legacy activation.
 The legacy `RpcTransport` and local
-Legacy jcifs-port compatibility shims still exist for older call sites, but the active
+Legacy compatibility shims still exist for older call sites, but the active
 wire path is `Opc.Classic.Dcom` plus
 `NcacnNpTransport`.
 

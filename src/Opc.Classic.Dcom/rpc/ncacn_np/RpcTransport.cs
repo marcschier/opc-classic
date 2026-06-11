@@ -195,14 +195,14 @@ public sealed class RpcTransport : ITransport, IDisposable
         target.SetProperty(propertyName, value ?? defaultValue);
     }
 
-    private string? ReadProperty(string propertyName, string jcifsPortPropertyName)
+    private string? ReadProperty(string propertyName, string legacyPropertyName)
     {
         if (Properties.GetProperty(propertyName) is string value)
         {
             return value;
         }
 
-        return Config.GetProperty(jcifsPortPropertyName);
+        return Config.GetProperty(legacyPropertyName);
     }
 
     private int MaxSmb2MessageSize() => RpcTransportQuotas.GetInt32(

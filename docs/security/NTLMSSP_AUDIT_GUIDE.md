@@ -97,7 +97,7 @@ HMAC-MD5, MD5 wrappers, DES, SHA-256/SHA-384, and certificate handling.
 | `NtlmMic` | 1-44 | AUTHENTICATE MIC compute/verify with fixed-time comparison. | Handshake transcript integrity. |
 | `NtlmMessageSignature` | 1-71 | NTLM SIGNATURE_BLOCK generation and verification. | SPNEGO mechListMIC and packet MIC helpers. |
 | `NtlmMicProvider` | 1-43 | SPNEGO `IGssMicProvider` adapter for NTLMSSP signing keys. | SPNEGO mechanism-list integrity. |
-| `NtlmPasswordAuthentication` | 1-17 | Small legacy credential holder used by jcifs-port compatible code. | Credential object boundary. |
+| `NtlmPasswordAuthentication` | 1-17 | Small legacy credential holder used by NTLM call sites. | Credential object boundary. |
 | `Arrays` | 1-10 | Java compatibility helper for filling arrays. | None; local utility. |
 | `Config` | 1-27 | Legacy configuration lookup shim. | Local configuration boundary. |
 | `Hashtable` | 1-42 | Java compatibility dictionary wrapper. | None; local utility. |
@@ -107,7 +107,7 @@ HMAC-MD5, MD5 wrappers, DES, SHA-256/SHA-384, and certificate handling.
 | `NbtAddress` | 1-15 | NetBIOS address compatibility shim. | Name-resolution compatibility. |
 | `NoSuchElementException` | 1-10 | Compatibility exception type. | None. |
 | `PrintWriter` | 1-20 | Compatibility writer shim. | None. |
-| `SharpenCompatibilityExtensions` | 1-96 | Legacy jcifs-port helper extensions. | Local utility. |
+| `SharpenCompatibilityExtensions` | 1-96 | Legacy compatibility extension helpers. | Local utility. |
 | `SmbAuthException` | 1-12 | Compatibility exception type. | Auth error propagation. |
 | `SmbException` | 1-20 | Compatibility exception type. | Protocol error propagation. |
 | `SmbNamedPipe` | 1-43 | Compatibility stream wrapper for named-pipe-style I/O. | Local stream boundary. |

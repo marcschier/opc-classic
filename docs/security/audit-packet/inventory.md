@@ -22,7 +22,7 @@ This inventory summarizes the NTLMSSP, cryptographic, RPC framing, and channel-b
 | `Arrays` | 10 | Compatibility array helper. | `Arrays.Equals(...)` |
 | `Config` | 27 | Compatibility config shim. | `GetProperty(...)`; `SetProperty(...)`; `GetBoolean(...)` |
 | `Hashtable` | 42 | Compatibility dictionary wrapper. | `Hashtable` |
-| `SharpenCompatibilityExtensions` | 96 | jcifs-port compatibility extensions. | extension helpers |
+| `SharpenCompatibilityExtensions` | 96 | Legacy compatibility extension helpers. | extension helpers |
 | Ntlm compatibility helpers compatibility exceptions/address/thread stubs | 301 | `InstantiationException`, `Iterator`, `MissingResourceException`, `NbtAddress`, `NoSuchElementException`, `PrintWriter`, `SmbAuthException`, `SmbException`, `SmbNamedPipe`, `SmbSession`, `StringTokenizer`, `Thread`, `ThreadGroup`, `UniAddress`, `UnknownHostException`, `UnsupportedEncodingException`, `Uuid`. | Constructors/properties only; no crypto logic. |
 
 ## `Crypto`

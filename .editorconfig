@@ -439,7 +439,7 @@ dotnet_diagnostic.RCS1138.severity = none
 dotnet_diagnostic.RCS1139.severity = none
 
 # Opc.Classic.Dcom.Tests — exercises the transitional Java-ported Dcom assembly with
-# legacy test fixtures (MSWord.cs, Main.cs ported from JCIFS/jcom samples). Same doc-comment
+# legacy test fixtures (MSWord.cs, Main.cs, etc.). Same doc-comment
 # relaxation as the src/Opc.Classic.Dcom section above.
 [tests/Opc.Classic.Dcom.Tests/**.cs]
 dotnet_diagnostic.RCS1138.severity = none

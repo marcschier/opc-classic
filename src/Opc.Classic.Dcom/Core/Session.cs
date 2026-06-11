@@ -287,8 +287,8 @@ public sealed class Session
     /// Security.</li>
     /// <li>It supports only NTLM1 Authentication.</li>
     /// <li>This session <b>cannot</b> be used with
-    /// <code><see cref="ComServer"/>(ProgId,...)</code> ctors. JCIFS will
-    /// fail to setup a connection with Windows Registry
+    /// <code><see cref="ComServer"/>(ProgId,...)</code> ctors. The legacy
+    /// SMB stack will fail to set up a connection with Windows Registry
     /// if GUEST account is disabled.</li></ul>
     /// </summary>
     /// <seealso cref="ComServer(Clsid, Session)"></seealso>
