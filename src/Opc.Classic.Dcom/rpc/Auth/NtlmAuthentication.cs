@@ -301,7 +301,7 @@ public class NtlmAuthentication
         }
         else
         {
-            flags = AdjustFlags(type1.GetFlags());
+            flags = AdjustFlags(type1.Flags);
         }
         flags |= NtlmFlags.NtlmsspTargetTypeServer; // challenge accept response flag
         var challenge = (byte[])kDefaultServerChallenge.Clone();
@@ -341,7 +341,7 @@ public class NtlmAuthentication
         }
         else
         {
-            var flags = type2.GetFlags();
+            var flags = type2.Flags;
             if ((flags & NtlmFlags.NtlmsspNegotiateDatagramStyle) != NtlmFlags.None)
             {
                 flags = AdjustFlags(flags);
@@ -652,7 +652,7 @@ public class NtlmAuthentication
         var type3Message = Type3Message.FromObject(type3);
         // two things here...check for anonymous, in that case the user response key is new byte[16].
         // in case anonymous has not been sent then create the key using credentials.
-        var flags = type3Message.GetFlags();
+        var flags = type3Message.Flags;
         var ntlmKeyFactory = new NTLMKeyFactory();
         byte[] secondayMasterKey;
         byte[] sessionResponseUserSessionKey = null;
@@ -762,7 +762,7 @@ public class NtlmAuthentication
     private void AddMicIfRequired(Type2Message type2, Type3Message type3, byte[]? exportedSessionKey)
     {
         var targetInformation = type2.GetTargetInformation();
-        if (!RequiresMic(type2.GetFlags(), targetInformation))
+        if (!RequiresMic(type2.Flags, targetInformation))
         {
             return;
         }
@@ -811,11 +811,14 @@ public class NtlmAuthentication
         (NtlmFlags.NtlmsspNegotiateKeyExch | NtlmFlags.NtlmsspNegotiateVersion);
 
     private static readonly byte[] kDefaultServerChallenge = { 1, 2, 3, 4, 5, 6, 7, 8 };
-    private static readonly bool kUnicodeSupported = Config.GetBoolean("Opc.Classic.Dcom.Common.Ntlm.useUnicode", true);
+    private static readonly bool kUnicodeSupported = GetUseUnicodeDefault();
     private static readonly NtlmFlags kBASICFLAGS =
         NtlmFlags.NtlmsspRequestTarget | NtlmFlags.NtlmsspNegotiateNtlm |
         NtlmFlags.NtlmsspNegotiateOem | NtlmFlags.NtlmsspNegotiateAlwaysSign |
         (kUnicodeSupported ? NtlmFlags.NtlmsspNegotiateUnicode : NtlmFlags.None);
+
+    private static bool GetUseUnicodeDefault() =>
+        bool.TryParse(Environment.GetEnvironmentVariable("OPC_CLASSIC_DCOM_COMMON_NTLM_USEUNICODE"), out var v) ? v : true;
 
     private byte[] ApplyChannelBindings(byte[] targetInformation)
     {

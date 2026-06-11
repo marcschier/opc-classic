@@ -33,10 +33,15 @@ public class InterfaceIdentifier : NdrOp
     /// <param name="syntax"></param>
     public InterfaceIdentifier(string syntax)
     {
-        var tokenizer = new StringTokenizer(syntax, ":.");
-        Uuid.Parse(tokenizer.NextToken());
-        MajorVersion = int.Parse(tokenizer.NextToken(), CultureInfo.InvariantCulture);
-        MinorVersion = int.Parse(tokenizer.NextToken(), CultureInfo.InvariantCulture);
+        var tokens = syntax.Split(new[] { ':', '.' });
+        if (tokens.Length < 3)
+        {
+            throw new ArgumentException(
+                "Interface identifier must have the form <uuid>:<major>.<minor>.", nameof(syntax));
+        }
+        Uuid.Parse(tokens[0]);
+        MajorVersion = int.Parse(tokens[1], CultureInfo.InvariantCulture);
+        MinorVersion = int.Parse(tokens[2], CultureInfo.InvariantCulture);
     }
 
     /// <summary>

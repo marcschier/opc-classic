@@ -135,13 +135,10 @@ public class ConnectionOrientedEndpoint : IEndpoint
             _bound = true;
             try
             {
-                if (!_uuidsVsContextIds.TryGetValue(Syntax.ToString().ToUpperInvariant(), out var cid))
-                {
-                    cid = null;
-                }
-                var pdu = Context.Alter(new PresentationContext(cid == null ? ++_contextIdCounter : (int)cid, Syntax));
+                bool found = _uuidsVsContextIds.TryGetValue(Syntax.ToString().ToUpperInvariant(), out var cid);
+                var pdu = Context.Alter(new PresentationContext(found ? cid : ++_contextIdCounter, Syntax));
                 var sendAlter = false;
-                if (cid == null)
+                if (!found)
                 {
                     _uuidsVsContextIds[Syntax.ToString().ToUpperInvariant()] = _contextIdCounter;
                     _contextIdToUse = _contextIdCounter;
@@ -329,5 +326,5 @@ public class ConnectionOrientedEndpoint : IEndpoint
     private bool _bound;
     private int _contextIdCounter;
     private int _contextIdToUse;
-    private readonly Hashtable _uuidsVsContextIds = new Hashtable();
+    private readonly Dictionary<string, int> _uuidsVsContextIds = [];
 }

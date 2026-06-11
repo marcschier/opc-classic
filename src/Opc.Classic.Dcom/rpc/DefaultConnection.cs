@@ -45,10 +45,9 @@ public class DefaultConnection : IConnection
             TransmitPdu(pdu, transport);
             return;
         }
-        var fragments = fpdu.GetFragments(_transmitBuffer.GetCapacity());
-        while (fragments.HasNext())
+        foreach (var fragment in fpdu.GetFragments(_transmitBuffer.GetCapacity()))
         {
-            TransmitPdu(fragments.Next(), transport);
+            TransmitPdu(fragment, transport);
         }
     }
 
@@ -61,53 +60,27 @@ public class DefaultConnection : IConnection
         {
             return pdu;
         }
-        return fpdu.Reassemble(
-            new FragmentReceiveIterator(this, transport, pdu));
+        return fpdu.Reassemble(ReceiveFragments(transport, pdu));
     }
 
-    /// <summary>
-    /// Iterator receiving fragments
-    /// </summary>
-    private sealed class FragmentReceiveIterator : Iterator<ConnectionOrientedPdu>
+    private IEnumerable<ConnectionOrientedPdu> ReceiveFragments(ITransport transport, ConnectionOrientedPdu firstFragment)
     {
-
-        /// <summary>
-        /// Create iterator
-        /// </summary>
-        /// <param name="outerInstance"></param>
-        /// <param name="transport"></param>
-        /// <param name="fragment"></param>
-        public FragmentReceiveIterator(DefaultConnection outerInstance,
-            ITransport transport, ConnectionOrientedPdu fragment)
+        var currentFragment = firstFragment;
+        var packetIndex = 0;
+        while (currentFragment != null)
         {
-            _outerInstance = outerInstance;
-            _transport = transport;
-            _currentFragment = fragment;
-        }
-
-        /// <inheritdoc/>
-        public override bool HasNext() => _currentFragment != null;
-
-        /// <inheritdoc/>
-        public override ConnectionOrientedPdu Next()
-        {
-            if (_currentFragment == null)
-            {
-                throw new NoSuchElementException();
-            }
-
-            var fragment = _currentFragment;
+            var fragment = currentFragment;
             if (fragment.GetFlag(ConnectionOrientedPdu.PFC_LAST_FRAG))
             {
-                _currentFragment = null;
+                currentFragment = null;
             }
             else
             {
                 try
                 {
-                    Log.Logger.Verbose("[Fragmented Packet] [" + _packetIndex++ +
+                    Log.Logger.Verbose("[Fragmented Packet] [" + packetIndex++ +
                         "] recieved, fragment decomposition is below: ");
-                    _currentFragment = _outerInstance.ReceivePdu(_transport);
+                    currentFragment = ReceivePdu(transport);
                 }
                 catch (InvalidCastException e)
                 {
@@ -123,16 +96,8 @@ public class DefaultConnection : IConnection
                 }
             }
 
-            return fragment;
+            yield return fragment;
         }
-
-        /// <inheritdoc/>
-        public override void Remove() => throw new NotSupportedException();
-
-        private readonly DefaultConnection _outerInstance;
-        private readonly ITransport _transport;
-        private int _packetIndex;
-        private ConnectionOrientedPdu _currentFragment;
     }
 
     /// <summary>

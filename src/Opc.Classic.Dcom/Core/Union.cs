@@ -34,7 +34,7 @@ public sealed class Union
     /// <summary>
     /// Returns the discriminant Vs there members Map.
     /// </summary>
-    public Hashtable Members { get; } = new Hashtable();
+    public IDictionary<object, object> Members { get; } = new Dictionary<object, object>();
 
     /// <summary>
     /// Private
@@ -147,11 +147,10 @@ public sealed class Union
                 ErrorCode.INTEROP_UNION_DISCRMINANT_SERIALIZATION_ERROR);
         }
         // first write the discriminant and then the member
-        var keys = Members.Keys.Iterator();
-        MarshalUnMarshalHelper.Serialize(ndr, _discriminantClass, keys.Next(), context);
+        var entry = Members.First();
+        MarshalUnMarshalHelper.Serialize(ndr, _discriminantClass, entry.Key, context);
 
-        keys = Members.Values.Iterator();
-        var value = keys.Next();
+        var value = entry.Value;
 
         // will not write empty union members
         if (!value.Equals(Struct.MEMBER_IS_EMPTY))

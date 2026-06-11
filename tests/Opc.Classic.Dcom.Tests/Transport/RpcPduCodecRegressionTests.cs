@@ -162,7 +162,7 @@ public sealed class RpcPduCodecRegressionTests
         var pdu = new FaultCoPdu();
 
         IOException exception = Capture<IOException>(() =>
-            _ = pdu.Reassemble(new List<ConnectionOrientedPdu>().Iterator()));
+            _ = pdu.Reassemble(new List<ConnectionOrientedPdu>()));
 
         await Assert.That(exception.Message).IsEqualTo("No fragments available.");
     }
@@ -193,10 +193,9 @@ public sealed class RpcPduCodecRegressionTests
     private static List<FaultCoPdu> CollectFragments(FaultCoPdu pdu, int fragmentSize)
     {
         var fragments = new List<FaultCoPdu>();
-        Iterator<ConnectionOrientedPdu> iterator = pdu.GetFragments(fragmentSize);
-        while (iterator.HasNext())
+        foreach (var fragment in pdu.GetFragments(fragmentSize))
         {
-            fragments.Add((FaultCoPdu)iterator.Next());
+            fragments.Add((FaultCoPdu)fragment);
         }
 
         return fragments;

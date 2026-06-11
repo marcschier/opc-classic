@@ -71,7 +71,7 @@ public sealed class Type2Message : NtlmMessage
         NtlmFlags.NtlmsspNegotiateUnicode | NtlmFlags.NtlmsspNegotiateNtlm;
 
     public static NtlmFlags GetDefaultFlags(Type1Message type1Message) =>
-        type1Message?.GetFlags() ?? GetDefaultFlags();
+        type1Message?.Flags ?? GetDefaultFlags();
 
     public static byte[] GetDefaultTargetInformation()
     {

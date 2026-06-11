@@ -103,7 +103,7 @@ public class ProgId
                     session.UserName, session.Password), server, true);
             }
         }
-        catch (UnknownHostException)
+        catch (System.Net.Sockets.SocketException)
         {
             throw new InteropException(ErrorCode.INTEROP_WINREG_EXCEPTION3);
         }

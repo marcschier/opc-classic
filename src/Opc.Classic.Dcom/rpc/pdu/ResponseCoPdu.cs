@@ -73,45 +73,64 @@ public class ResponseCoPdu : ConnectionOrientedPdu, IFragmentable
     }
 
     /// <inheritdoc/>
-    public Iterator<ConnectionOrientedPdu> GetFragments(int size)
+    public IEnumerable<ConnectionOrientedPdu> GetFragments(int size)
     {
         var stub = Stub;
-        if (stub == null)
-        {
-            return new ConnectionOrientedPdu[] { this }.Iterator();
-        }
-
         // subtracting 8 bytes for authentication header and 16 for the
         // authentication verifier size, someone forgot the poor guys..
         var stubSize = size - 24 - 8 - 16;
-        if (stub.Length <= stubSize)
+        if (stub == null || stub.Length <= stubSize)
         {
-            return new ConnectionOrientedPdu[] { this }.Iterator();
+            yield return this;
+            yield break;
         }
-        return new FragmentIterator(this, stubSize);
+
+        var index = 0;
+        while (index < stub.Length)
+        {
+            var fragment = (ResponseCoPdu)Clone();
+            var allocation = stub.Length - index;
+            fragment.AllocationHint = allocation;
+            if (stubSize < allocation)
+            {
+                allocation = stubSize;
+            }
+            var fragmentStub = new byte[allocation];
+            Array.Copy(stub, index, fragmentStub, 0, allocation);
+            fragment.Stub = fragmentStub;
+            var flags = Flags & ~(PFC_FIRST_FRAG | PFC_LAST_FRAG);
+            if (index == 0)
+            {
+                flags |= PFC_FIRST_FRAG;
+            }
+            index += allocation;
+            if (index >= stub.Length)
+            {
+                flags |= PFC_LAST_FRAG;
+            }
+            fragment.Flags = flags;
+            yield return fragment;
+        }
     }
 
     /// <inheritdoc/>
-    public ConnectionOrientedPdu Reassemble(Iterator<ConnectionOrientedPdu> fragments)
+    public ConnectionOrientedPdu Reassemble(IEnumerable<ConnectionOrientedPdu> fragments)
     {
         Log.Logger.Verbose("[DURING RECIEVE IN ASSEMBLE]\n");
-        if (!fragments.HasNext())
+        using var iter = fragments.GetEnumerator();
+        if (!iter.MoveNext())
         {
             throw new IOException("No fragments available.");
         }
         try
         {
-            var pdu = (ResponseCoPdu)fragments.Next();
-            var stub = pdu.Stub;
-            if (stub == null)
-            {
-                stub = Array.Empty<byte>();
-            }
+            var pdu = (ResponseCoPdu)iter.Current;
+            var stub = pdu.Stub ?? Array.Empty<byte>();
             var i = 0;
-            while (fragments.HasNext())
+            while (iter.MoveNext())
             {
                 Log.Logger.Verbose("[IN ASSEMBLE] Fragment { " + i + " }\n");
-                var fragment_Renamed = (ResponseCoPdu)fragments.Next();
+                var fragment_Renamed = (ResponseCoPdu)iter.Current;
                 var fragmentStub = fragment_Renamed.Stub;
                 if (fragmentStub != null && fragmentStub.Length > 0)
                 {
@@ -191,56 +210,5 @@ public class ResponseCoPdu : ConnectionOrientedPdu, IFragmentable
         {
             ndr.WriteOctetArray(stub, 0, stub.Length);
         }
-    }
-
-    private sealed class FragmentIterator : Iterator<ConnectionOrientedPdu>
-    {
-
-        public FragmentIterator(ResponseCoPdu outerInstance, int stubSize)
-        {
-            _outerInstance = outerInstance;
-            _stubSize = stubSize;
-        }
-
-        /// <inheritdoc/>
-        public override bool HasNext() => _index < _outerInstance.Stub.Length;
-
-        /// <inheritdoc/>
-        public override ConnectionOrientedPdu Next()
-        {
-            if (_index >= _outerInstance.Stub.Length)
-            {
-                throw new NoSuchElementException();
-            }
-            var fragment = (ResponseCoPdu)_outerInstance.Clone();
-            var allocation = _outerInstance.Stub.Length - _index;
-            fragment.AllocationHint = allocation;
-            if (_stubSize < allocation)
-            {
-                allocation = _stubSize;
-            }
-            var fragmentStub = new byte[allocation];
-            Array.Copy(_outerInstance.Stub, _index, fragmentStub, 0, allocation);
-            fragment.Stub = fragmentStub;
-            var flags = _outerInstance.Flags & ~(PFC_FIRST_FRAG | PFC_LAST_FRAG);
-            if (_index == 0)
-            {
-                flags |= PFC_FIRST_FRAG;
-            }
-            _index += allocation;
-            if (_index >= _outerInstance.Stub.Length)
-            {
-                flags |= PFC_LAST_FRAG;
-            }
-            fragment.Flags = flags;
-            return fragment;
-        }
-
-        /// <inheritdoc/>
-        public override void Remove() => throw new NotSupportedException();
-
-        private readonly ResponseCoPdu _outerInstance;
-        private readonly int _stubSize;
-        private int _index;
     }
 }

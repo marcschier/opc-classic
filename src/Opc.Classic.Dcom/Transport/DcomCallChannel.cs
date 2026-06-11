@@ -333,10 +333,9 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable
     {
         if (pdu is IFragmentable fragmentable && authenticationBody.IsEmpty)
         {
-            Iterator<ConnectionOrientedPdu> fragments = fragmentable.GetFragments(_maxTransmitFragment);
-            while (fragments.HasNext())
+            foreach (var fragment in fragmentable.GetFragments(_maxTransmitFragment))
             {
-                await WriteSinglePduAsync(fragments.Next(), cancellationToken).ConfigureAwait(false);
+                await WriteSinglePduAsync(fragment, cancellationToken).ConfigureAwait(false);
             }
 
             return;
@@ -417,7 +416,7 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable
             fragments.Add(pdu);
         }
 
-        return fragmentable.Reassemble(new PduFragmentIterator(fragments));
+        return fragmentable.Reassemble(fragments);
     }
 
     private async ValueTask<DecodedPdu> ReadSinglePduAsync(CancellationToken cancellationToken)
@@ -702,27 +701,5 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable
     private readonly record struct DecodedPdu(ConnectionOrientedPdu Pdu, byte[] AuthenticationBody);
 
     private readonly record struct AuthenticationStrippedFrame(byte[] PduBytes, byte[] AuthenticationBody);
-
-    private sealed class PduFragmentIterator : Iterator<ConnectionOrientedPdu>
-    {
-        private readonly IReadOnlyList<ConnectionOrientedPdu> _fragments;
-        private int _index;
-
-        public PduFragmentIterator(IReadOnlyList<ConnectionOrientedPdu> fragments) => _fragments = fragments;
-
-        public override bool HasNext() => _index < _fragments.Count;
-
-        public override ConnectionOrientedPdu Next()
-        {
-            if (!HasNext())
-            {
-                throw new NoSuchElementException();
-            }
-
-            return _fragments[_index++];
-        }
-
-        public override void Remove() => throw new NotSupportedException();
-    }
 }
 

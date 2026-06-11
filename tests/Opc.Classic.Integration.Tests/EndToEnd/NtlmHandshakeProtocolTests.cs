@@ -78,9 +78,9 @@ public sealed class NtlmHandshakeProtocolTests
         await Assert.That(type2.GetChallenge().SequenceEqual(ExpectedServerChallenge)).IsTrue();
         await Assert.That(type2.GetChallenge().Length).IsEqualTo(8);
         await Assert.That(targetInformation.Length).IsGreaterThan(0);
-        await Assert.That(HasFlag(type2.GetFlags(), NtlmFlags.NtlmsspTargetTypeServer)).IsTrue();
-        await Assert.That(HasFlag(type2.GetFlags(), NtlmFlags.NtlmsspNegotiateTargetInfo)).IsTrue();
-        await Assert.That(HasFlag(type2.GetFlags(), NtlmFlags.NtlmsspNegotiateNtlm2)).IsTrue();
+        await Assert.That(HasFlag(type2.Flags, NtlmFlags.NtlmsspTargetTypeServer)).IsTrue();
+        await Assert.That(HasFlag(type2.Flags, NtlmFlags.NtlmsspNegotiateTargetInfo)).IsTrue();
+        await Assert.That(HasFlag(type2.Flags, NtlmFlags.NtlmsspNegotiateNtlm2)).IsTrue();
         await Assert.That(hasMicFlags).IsTrue();
         await Assert.That((avFlagsValue & NtlmAvPairs.MsvAvFlagsMic) != 0).IsTrue();
     }
@@ -113,8 +113,8 @@ public sealed class NtlmHandshakeProtocolTests
         await Assert.That(clientNonce.Length).IsEqualTo(8);
         await Assert.That(clientNonce.Any(static b => b != 0)).IsTrue();
         await Assert.That(blobReserved2.SequenceEqual(new byte[] { 0x00, 0x00, 0x00, 0x00 })).IsTrue();
-        await Assert.That(HasFlag(type3.GetFlags(), NtlmFlags.NtlmsspNegotiateNtlm2)).IsTrue();
-        await Assert.That(HasFlag(type3.GetFlags(), NtlmFlags.NtlmsspNegotiateKeyExch)).IsTrue();
+        await Assert.That(HasFlag(type3.Flags, NtlmFlags.NtlmsspNegotiateNtlm2)).IsTrue();
+        await Assert.That(HasFlag(type3.Flags, NtlmFlags.NtlmsspNegotiateKeyExch)).IsTrue();
         await Assert.That(type3.GetSessionKey().Length).IsEqualTo(16);
         await Assert.That(type3.HasMic).IsTrue();
         await Assert.That(type3.GetMic().Length).IsEqualTo(Type3Message.MicLength);

@@ -20,22 +20,12 @@ public abstract class NtlmMessage
 
     public NtlmFlags Flags { get; set; }
 
-    public NtlmFlags GetFlags() => Flags;
-
-    public void SetFlags(NtlmFlags flags) => Flags = flags;
-
-    public void SetFlags(int flags) => Flags = FromInt32(flags);
-
     public abstract byte[] ToByteArray();
 
     public bool GetFlag(NtlmFlags flag) => (Flags & flag) != NtlmFlags.None;
 
-    public bool GetFlag(int flag) => (((uint)Flags) & unchecked((uint)flag)) != 0;
-
     public void SetFlag(NtlmFlags flag, bool value) =>
         Flags = value ? (Flags | flag) : (Flags & ~flag);
-
-    public void SetFlag(int flag, bool value) => SetFlag(FromInt32(flag), value);
 
     internal static NtlmFlags FromInt32(int flags) => (NtlmFlags)unchecked((uint)flags);
 

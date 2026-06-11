@@ -202,7 +202,8 @@ public sealed class RpcTransport : ITransport, IDisposable
             return value;
         }
 
-        return Config.GetProperty(legacyPropertyName);
+        var envName = legacyPropertyName.Replace('.', '_').Replace('-', '_').ToUpperInvariant();
+        return Environment.GetEnvironmentVariable(envName);
     }
 
     private int MaxSmb2MessageSize() => RpcTransportQuotas.GetInt32(

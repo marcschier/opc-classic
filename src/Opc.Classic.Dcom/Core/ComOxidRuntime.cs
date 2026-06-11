@@ -120,8 +120,12 @@ internal sealed class ComOxidRuntime : IDisposable
             }
             // TODO N1.2-followup: route the OXID socket listener through
             // ComOxidRuntimeAcceptService after the legacy Socket transport has an IAsyncEndpoint adapter.
-            _thread = new OxidResolverThread(this, "jI_OxidResolver");
-            _thread.SetDaemon(true);
+            _resolverCts = new CancellationTokenSource();
+            _thread = new Thread(() => RunOxidResolverListener(_resolverCts.Token))
+            {
+                IsBackground = true,
+                Name = "jI_OxidResolver",
+            };
             _thread.Start();
 
             // schedule only the task to ping the OIDs obtained.
@@ -141,16 +145,16 @@ internal sealed class ComOxidRuntime : IDisposable
     {
         lock (s_instanceLock)
         {
-            _thread.Interrupt();
-            _thread.Join();
+            _resolverCts?.Cancel();
+            _thread?.Join(TimeSpan.FromSeconds(5));
             _thread = null;
+            _resolverCts?.Dispose();
+            _resolverCts = null;
             _clientPing?.Dispose();
             _serverPing?.Dispose();
 
-            var itr = _mapOfAddressVsStub.Values.Iterator();
-            while (itr.HasNext())
+            foreach (var s in _mapOfAddressVsStub.Values.ToList())
             {
-                var s = itr.Next();
                 s.Close();
             }
             _mapOfAddressVsStub.Clear(); // will clean up all the others as well
@@ -554,33 +558,34 @@ internal sealed class ComOxidRuntime : IDisposable
         lock (_mapOfOIDVsComponentsLock)
         {
             Log.Logger.Information("Running ServerPingTimerTask !");
-            var itr = _mapOfOIDVsComponents.Keys.Iterator();
-            while (itr.HasNext())
+            var expiredOids = new List<ObjectId>();
+            foreach (var oid in _mapOfOIDVsComponents.Keys)
             {
-                var oid = itr.Next();
-                if (oid.HasExpired())
+                if (!oid.HasExpired())
                 {
-                    // remove all
-                    var component = _mapOfOIDVsComponents.GetOrDefault(oid);
-                    // this means the local system still has references and we cannot delete this object
-                    // since the user may reuse it.
-                    if (component.AssociatedReferenceAlive)
-                    {
-                        continue;
-                    }
-                    var details = _mapOfLocalVsOxidDetails.GetOrDefault(component);
-                    _mapOfOxidVsOxidDetails.Remove(details.Oxid);
-                    _mapOfIPIDVsComponent.Remove(details.Ipid);
-                    _mapOfLocalVsOxidDetails.Remove(component);
-                    _listOfExportedComponents.Remove(component);
-                    itr.Remove();
-
-                    // the thread associated with this will also stop.
-                    details.InterruptRemUnknownThreadGroup();
-
-                    component = null;
-                    details = null;
+                    continue;
                 }
+                // remove all
+                var component = _mapOfOIDVsComponents.GetOrDefault(oid);
+                // this means the local system still has references and we cannot delete this object
+                // since the user may reuse it.
+                if (component.AssociatedReferenceAlive)
+                {
+                    continue;
+                }
+                var details = _mapOfLocalVsOxidDetails.GetOrDefault(component);
+                _mapOfOxidVsOxidDetails.Remove(details.Oxid);
+                _mapOfIPIDVsComponent.Remove(details.Ipid);
+                _mapOfLocalVsOxidDetails.Remove(component);
+                _listOfExportedComponents.Remove(component);
+                expiredOids.Add(oid);
+
+                // the thread associated with this will also stop.
+                details.InterruptRemUnknownThreadGroup();
+            }
+            foreach (var oid in expiredOids)
+            {
+                _mapOfOIDVsComponents.Remove(oid);
             }
         }
     }
@@ -591,10 +596,10 @@ internal sealed class ComOxidRuntime : IDisposable
     private void ClientPingTimerTask()
     {
 
-        Iterator<KeyValuePair<Session, PingSetHolder>> itr = null;
+        List<KeyValuePair<Session, PingSetHolder>> sessionsPingSet;
         lock (_mapOfSessionVsPingSetHolderLock)
         {
-            itr = _mapOfSessionVsPingSetHolder.ToList().Iterator();
+            sessionsPingSet = _mapOfSessionVsPingSetHolder.ToList();
         }
 
         Log.Logger.Information("Running ClientPingTimerTask !");
@@ -604,9 +609,8 @@ internal sealed class ComOxidRuntime : IDisposable
         // if set id is null send a complex ping to get back the set id for all the OIDs in the
         // PingSetHolder
 
-        while (itr.HasNext())
+        foreach (var entry in sessionsPingSet)
         {
-            var entry = itr.Next();
             var holder = entry.Value;
             var address = entry.Key.TargetServer;
             // will get it from the cache, since it is getting called every OXID ping period
@@ -628,9 +632,9 @@ internal sealed class ComOxidRuntime : IDisposable
             // form a list if OID is 0 ref
             lock (_mapOfSessionVsPingSetHolderLock)
             {
-                for (var itr2 = holder.CurrentSetOIDs.Keys.Iterator(); itr2.HasNext();)
+                var staleOids = new List<ObjectId>();
+                foreach (var oid in holder.CurrentSetOIDs.Keys)
                 {
-                    var oid = itr2.Next();
                     if (oid.IPIDRefCount == 0)
                     {
                         if (!oid.Dontping)
@@ -639,17 +643,21 @@ internal sealed class ComOxidRuntime : IDisposable
                             holder.PingedOnce.Remove(oid);
                             holder.Modified = true;
                         }
-                        itr2.Remove();
+                        staleOids.Add(oid);
                     }
                     else
                     {
-                        if (!oid.Dontping && !holder.PingedOnce.Contains(oid))
+                        if (!oid.Dontping && !holder.PingedOnce.ContainsKey(oid))
                         {
                             listOfAddedOIDs.Add(oid);
                             holder.PingedOnce.AddOrUpdate(oid, oid);
                             holder.Modified = true;
                         }
                     }
+                }
+                foreach (var oid in staleOids)
+                {
+                    holder.CurrentSetOIDs.Remove(oid);
                 }
             }
             Log.Logger.Information(
@@ -680,7 +688,6 @@ internal sealed class ComOxidRuntime : IDisposable
                 // The set has emptied  itself and will get removed from COM servers side as well.
                 Log.Logger.Information("Within ClientPingTimerTask: Holder " + holder +
                     " is empty, will remove this from mapOfSessionVsPingSetHolder");
-                itr.Remove();
                 lock (_mapOfSessionVsPingSetHolderLock)
                 {
                     _mapOfSessionVsPingSetHolder.Remove(entry.Key);
@@ -719,55 +726,52 @@ internal sealed class ComOxidRuntime : IDisposable
     }
 
     /// <summary>
-    /// Oxid resolver thread
+    /// Oxid resolver listener loop. Accepts incoming OXID-resolver socket
+    /// connections and spawns a <see cref="ComOxidRuntimeHelper"/> per
+    /// connection. Exits cooperatively when <paramref name="cancellationToken"/>
+    /// is signalled (the listener socket is closed in the finally block).
     /// </summary>
-    private sealed class OxidResolverThread : Opc.Classic.Dcom.Common.Ntlm.Thread
+    private void RunOxidResolverListener(CancellationToken cancellationToken)
     {
-
-        /// <summary>
-        /// Create
-        /// </summary>
-        /// <param name="outerInstance"></param>
-        /// <param name="name"></param>
-        public OxidResolverThread(ComOxidRuntime outerInstance, string name) :
-            base(name) => _outerInstance = outerInstance;
-
-        /// <inheritdoc/>
-        public override void Run()
+        var listener = new Socket(SocketType.Stream, ProtocolType.Tcp);
+        listener.Bind(new IPEndPoint(IPAddress.Any, 0));
+        listener.Listen();
+        OxidResolverPort = listener.GetLocalPort();
+        try
         {
-            var listener = new Socket(SocketType.Stream, ProtocolType.Tcp);
-            listener.Bind(new IPEndPoint(IPAddress.Any, 0));
-            listener.Listen();
-            _outerInstance.OxidResolverPort = listener.GetLocalPort();
-            while (!IsCanceled)
+            while (!cancellationToken.IsCancellationRequested)
             {
                 var socket = listener.Accept();
-                lock (_outerInstance.Mutex)
+                lock (Mutex)
                 {
                     Interop.Internal_setSocket(socket);
                     // now create the ComOxidRuntimeHelper Object and start it.
-                    var properties = new PropertyBag(_outerInstance._defaults);
+                    var properties = new PropertyBag(_defaults);
                     properties.SetProperty("IID",
                         "99fcfec4-5260-101b-bbcb-00aa0021347a:0.0".ToUpper(CultureInfo.InvariantCulture)); // IOxidResolver
                     var oxidResolver = new ComOxidRuntimeHelper(properties);
                     oxidResolver.StartOxid(socket.GetLocalPort(), socket.GetLocalPort());
                 }
             }
+        }
+        finally
+        {
             try
             {
                 listener.Close();
             }
+#pragma warning disable RCS1075 // Best-effort listener shutdown; the runtime is being torn down
 #pragma warning disable RECS0022 // A catch clause that catches System.Exception and has an empty body
             catch
             {
-#pragma warning restore RECS0022 // A catch clause that catches System.Exception and has an empty body
             }
+#pragma warning restore RECS0022
+#pragma warning restore RCS1075
             finally
             {
                 listener.Dispose();
             }
         }
-        private readonly ComOxidRuntime _outerInstance;
     }
 
     // java client, com server
@@ -818,6 +822,7 @@ internal sealed class ComOxidRuntime : IDisposable
     private readonly Random _randomGen = new Random();
     private Timer _clientPing;
     private Timer _serverPing;
-    private OxidResolverThread _thread;
+    private Thread _thread;
+    private CancellationTokenSource _resolverCts;
     private bool _resolverStarted;
 }

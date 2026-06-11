@@ -116,15 +116,11 @@ public sealed class RemoteRegistryEnum : IOpcDiscovery
         {
             LogRemoteRegistryEnumerationFailed(host, ex);
         }
-        catch (UnknownHostException ex)
+        catch (System.Net.Sockets.SocketException ex)
         {
             LogRemoteRegistryEnumerationFailed(host, ex);
         }
         catch (IOException ex)
-        {
-            LogRemoteRegistryEnumerationFailed(host, ex);
-        }
-        catch (SocketException ex)
         {
             LogRemoteRegistryEnumerationFailed(host, ex);
         }

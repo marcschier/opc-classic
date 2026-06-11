@@ -55,7 +55,7 @@ public class RegistryFactory
     /// <param name="smbTransport"> true if SMB transport
     /// is required, false will return null.
     /// </param>
-    /// <exception cref="UnknownHostException"> </exception>
+    /// <exception cref="System.Net.Sockets.SocketException"> </exception>
     public IRegistry GetRegistryClient(IAuthInfo authInfo, string serverName,
         bool smbTransport)
     {
@@ -74,7 +74,7 @@ public class RegistryFactory
     /// <param name="smbTransport"> true if SMB transport
     /// is required, false will return null.
     /// </param>
-    /// <exception cref="UnknownHostException"> </exception>
+    /// <exception cref="System.Net.Sockets.SocketException"> </exception>
     public IRegistry GetRegistryClient(string serverName, bool smbTransport)
     {
         if (smbTransport)

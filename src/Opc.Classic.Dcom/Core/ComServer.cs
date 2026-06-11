@@ -327,7 +327,7 @@ public sealed class ComServer : Stub
     /// <code>session</code> is associated with another server already. </exception>
     /// <exception cref="ArgumentException"> raised when either <code>progId</code>
     /// or <code>session</code> is <code>null</code>. </exception>
-    /// <exception cref="UnknownHostException"> </exception>
+    /// <exception cref="System.Net.Sockets.SocketException"> </exception>
     public ComServer(ProgId progId, Session session) :
         this(progId, Dns.GetHostName(), session)
     {
@@ -344,7 +344,7 @@ public sealed class ComServer : Stub
     /// <code>session</code> is associated with another server already. </exception>
     /// <exception cref="ArgumentException"> raised when either <code>clsid</code>
     /// or <code>session</code> is <code>null</code>. </exception>
-    /// <exception cref="UnknownHostException"> </exception>
+    /// <exception cref="System.Net.Sockets.SocketException"> </exception>
     public ComServer(Clsid clsid, Session session) :
         this(clsid, Dns.GetHostName(), session)
     {
@@ -363,7 +363,7 @@ public sealed class ComServer : Stub
     /// <code>session</code> is associated with another server already. </exception>
     /// <exception cref="ArgumentException"> raised when any of the parameters
     /// is <code>null</code>. </exception>
-    /// <exception cref="UnknownHostException"> </exception>
+    /// <exception cref="System.Net.Sockets.SocketException"> </exception>
     public ComServer(ProgId progId, string address, Session session)
     {
         if (progId == null || address == null || session == null)
@@ -402,7 +402,7 @@ public sealed class ComServer : Stub
     /// <code>session</code> is associated with another server already. </exception>
     /// <exception cref="ArgumentException"> raised when any of the parameters
     /// is <code>null</code>. </exception>
-    /// <exception cref="UnknownHostException"> </exception>
+    /// <exception cref="System.Net.Sockets.SocketException"> </exception>
     public ComServer(Clsid clsid, string address, Session session)
     {
         if (clsid == null || address == null || session == null)
@@ -554,7 +554,7 @@ public sealed class ComServer : Stub
                         }
                         registry.CloseConnection();
                     }
-                    catch (UnknownHostException e1)
+                    catch (System.Net.Sockets.SocketException e1)
                     {
                         // auto registration failed as well...
                         Log.Logger.Error(e, "ComServer initialise");

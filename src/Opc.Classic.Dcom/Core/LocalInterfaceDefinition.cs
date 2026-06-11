@@ -78,7 +78,7 @@ public sealed class LocalInterfaceDefinition
     /// same name already exists. </exception>
     public void AddMethodDescriptor(LocalMethodDescriptor methodDescriptor)
     {
-        if (_nameVsMethodInfo.Contains(methodDescriptor.MethodName))
+        if (_nameVsMethodInfo.ContainsKey(methodDescriptor.MethodName))
         {
             throw new ArgumentException(Interop.GetLocalizedMessage(
                 ErrorCode.INTEROP_CALLBACK_OVERLOADS_NOTALLOWED), nameof(methodDescriptor));

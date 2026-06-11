@@ -93,7 +93,7 @@ public sealed class Type3Message : NtlmMessage
         NtlmFlags.NtlmsspNegotiateUnicode | NtlmFlags.NtlmsspNegotiateNtlm;
 
     public static NtlmFlags GetDefaultFlags(Type2Message type2Message) =>
-        type2Message?.GetFlags() ?? GetDefaultFlags();
+        type2Message?.Flags ?? GetDefaultFlags();
 
     public static string GetDefaultPassword() => string.Empty;
 

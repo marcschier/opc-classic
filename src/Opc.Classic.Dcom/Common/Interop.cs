@@ -77,7 +77,7 @@ public static class Interop
             message = Resource.ResourceManager.GetString("0x" + key, CultureInfo.InvariantCulture);
             message = message + " [" + key + "]";
         }
-        catch (MissingResourceException)
+        catch (KeyNotFoundException)
         {
             message = "Message not found for errorCode: " + key;
         }
@@ -167,7 +167,7 @@ public static class Interop
     /// is not reachable from the machine where library is currently
     /// running (such as a Linux machine with no name mappings)
     /// then the call to this COM server would fail with an
-    /// <code>UnknownHostException</code>. To avoid that either add the
+    /// <code>System.Net.Sockets.SocketException</code>. To avoid that either add the
     /// binding in the host machine or add the binding here.
     /// This method stores the name vs I.P binding in a <code>Map</code>.
     /// Providing the same <code>hostname</code> will overwrite
@@ -176,7 +176,7 @@ public static class Interop
     /// <param name="hostname"> name of target machine. </param>
     /// <param name="IP"> address of target machine in I.P format.
     /// </param>
-    /// <exception cref="UnknownHostException"> if the <code>IP</code>
+    /// <exception cref="System.Net.Sockets.SocketException"> if the <code>IP</code>
     /// is invalid or cannot be reached. </exception>
     /// <exception cref="ArgumentException"> if any parameter is
     /// <code>null</code> or of 0 length. </exception>
@@ -224,7 +224,12 @@ public static class Interop
     /// <summary>
     /// synchronisation will be performed by the oxid master
     /// </summary>
-    public static Socket Internal_getSocket() => kSocketQueue.Remove(0);
+    public static Socket Internal_getSocket()
+    {
+        var socket = kSocketQueue[0];
+        kSocketQueue.RemoveAt(0);
+        return socket;
+    }
 
     /// <summary>
     /// synchronisation will be performed by the oxid master

@@ -273,13 +273,19 @@ public sealed class Struct
         if (member is ComArray comArray)
         {
             // we need to remove it's max count values also.
-            ArrayMaxCounts.RemoveAll(comArray.ConformantMaxCounts);
+            foreach (var value in comArray.ConformantMaxCounts)
+            {
+                ArrayMaxCounts.Remove(value);
+            }
 
         }
         else if (member is Struct structMember && structMember._arrayAdded)
         {
             // we need to remove it's max count values also.
-            ArrayMaxCounts.RemoveAll(structMember.ArrayMaxCounts);
+            foreach (var value in structMember.ArrayMaxCounts)
+            {
+                ArrayMaxCounts.Remove(value);
+            }
         }
         if (ArrayMaxCounts.Count == 0)
         {
@@ -355,7 +361,7 @@ public sealed class Struct
                     // read before.
                     comArray.Conformant = false;
                     maxCountTemp = comArray.ConformantMaxCounts;
-                    comArray.MaxCountAndUpperBounds = listOfMaxCounts2.SubList(j, _listOfDimensions[j]).ToList();
+                    comArray.MaxCountAndUpperBounds = listOfMaxCounts2.Skip(j).Take(Math.Max(0, _listOfDimensions[j] - j)).ToList();
                     j++;
                 }
             }

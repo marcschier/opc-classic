@@ -1,4 +1,4 @@
-﻿// SPDX-License-Identifier: MIT
+// SPDX-License-Identifier: MIT
 
 using Opc.Classic.Dcom.Common;
 using Opc.Classic.Dcom.Transport;
@@ -15,6 +15,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Globalization;
 using System.Linq;
+using System.Threading;
 
 #pragma warning disable MA0051 // Legacy DCOM protocol methods are intentionally kept intact during analyzer cleanup.
 
@@ -50,10 +51,45 @@ internal sealed class ComOxidRuntimeHelper : Stub
     /// <param name="portNumRemote"></param>
     internal void StartOxid(int portNumLocal, int portNumRemote)
     {
-        var oxidResolverThread = new OxidResolverThread(this,
-            "jI_OxidResolver_Client[" + portNumLocal + ", " + portNumRemote + "]");
-        oxidResolverThread.SetDaemon(true);
-        oxidResolverThread.Start();
+        var threadName = "jI_OxidResolver_Client[" + portNumLocal + ", " + portNumRemote + "]";
+        var cts = new CancellationTokenSource();
+        var thread = new Thread(() => RunOxidResolver(threadName, cts.Token))
+        {
+            IsBackground = true,
+            Name = threadName,
+        };
+        thread.Start();
+    }
+
+    private void RunOxidResolver(string threadName, CancellationToken cancellationToken)
+    {
+        try
+        {
+            Log.Logger.Information("started startOxid thread: " + threadName);
+            Attach();
+            ((ComRuntimeEndpoint)Endpoint).ProcessRequests(
+                new OxidResolverImpl(Properties), null, new List<string>(), cancellationToken);
+        }
+        catch (OperationCanceledException)
+        {
+            Log.Logger.Information("Oxid Resolver Thread" +
+                threadName + " is purposefully closed by cancellation.");
+        }
+        catch (Exception e)
+        {
+            Log.Logger.Error(e, "Oxid Resolver Thread: " + e.Message + ", on thread Id: " + threadName);
+        }
+        finally
+        {
+            try
+            {
+                ((ComRuntimeEndpoint)Endpoint).Detach();
+            }
+            catch (IOException)
+            {
+            }
+        }
+        Log.Logger.Information("terminating startOxid thread: " + threadName);
     }
 
     /// <summary>
@@ -63,237 +99,144 @@ internal sealed class ComOxidRuntimeHelper : Stub
     /// <param name="ipidOfRemUnknown"></param>
     /// <param name="ipidOfComponent"></param>
     /// <param name="listOfSupportedInterfaces"></param>
-    /// <param name="remUnknownForThisListener"></param>
+    /// <param name="cancellationSource">Cancellation source the caller can use to cooperatively stop the RemUnknown listener and any per-connection worker threads it spawns. The caller owns the lifetime.</param>
     /// <exception cref="IOException"></exception>
     /// <returns></returns>
     internal int StartRemUnknown(string baseIID, string ipidOfRemUnknown,
         string ipidOfComponent, List<string> listOfSupportedInterfaces,
-        out ThreadGroup remUnknownForThisListener)
+        out CancellationTokenSource cancellationSource)
     {
         var serverSocket = new Socket(SocketType.Stream, ProtocolType.Tcp);
         serverSocket.Bind(new IPEndPoint(IPAddress.Any, 0));
         var remUnknownPort = serverSocket.GetLocalPort();
-        // have to pick up a random name so adding the ipid of
-        // remunknown this is a uuid so the string is quite random.
-        // TODO N1.2-followup: replace ThreadGroup-scoped RemUnknown lifetime with
-        // an IAsyncDisposable lease owned by ComOxidRuntimeAcceptService workers.
-        remUnknownForThisListener =
-            new ThreadGroup("ThreadGroup - " + baseIID + "[" + ipidOfRemUnknown + "]");
-        var remUnknownThread = new RemUnknownListenerThread(this, baseIID,
-            ipidOfRemUnknown, ipidOfComponent, listOfSupportedInterfaces, serverSocket,
-            remUnknownForThisListener, "jI_RemUnknownListener[" +
-            baseIID + ", " + remUnknownPort + "]");
-        remUnknownThread.SetDaemon(true);
-        remUnknownThread.Start();
+        cancellationSource = new CancellationTokenSource();
+        var threadName = "jI_RemUnknownListener[" + baseIID + ", " + remUnknownPort + "]";
+        var state = new RemUnknownListenerState(this, baseIID, ipidOfRemUnknown,
+            ipidOfComponent, listOfSupportedInterfaces, serverSocket, cancellationSource);
+        var thread = new Thread(() => RunRemUnknownListener(state, threadName))
+        {
+            IsBackground = true,
+            Name = threadName,
+        };
+        thread.Start();
         return remUnknownPort;
     }
 
-    /// <summary>
-    /// Oxid resolver thread
-    /// </summary>
-    private sealed class OxidResolverThread : Opc.Classic.Dcom.Common.Ntlm.Thread
+    private static void RunRemUnknownListener(RemUnknownListenerState state, string threadName)
     {
-#pragma warning disable RECS0154 // Parameter is never used
-        /// <summary>
-        /// Create thrad
-        /// </summary>
-        /// <param name="outerInstance"></param>
-        /// <param name="name"></param>
-        public OxidResolverThread(ComOxidRuntimeHelper outerInstance, string name) :
-#pragma warning restore RECS0154 // Parameter is never used
-            base(name) => _outerInstance = outerInstance;
-
-        /// <inheritdoc/>
-        public override void Run()
+        var cancellationToken = state.CancellationSource.Token;
+        Log.Logger.Information("started RemUnknown listener thread for : " + threadName);
+        try
         {
-            try
+            while (!cancellationToken.IsCancellationRequested)
             {
-                Log.Logger.Information("started startOxid thread: " + GetName());
-                _outerInstance.Attach();
-                ((ComRuntimeEndpoint)_outerInstance.Endpoint).ProcessRequests(
-                    new OxidResolverImpl(_outerInstance.Properties), null, new List<string>(), Canceller.Token);
-            }
-            catch (OperationCanceledException)
-            {
-                Log.Logger.Information("Oxid Resolver Thread" +
-                    GetName() + " is purposefully closed by cancellation.");
-            }
-            catch (Exception e)
-            {
-                Log.Logger.Error(e, "Oxid Resolver Thread: " + e.Message + ", on thread Id: " + GetName());
-            }
-            finally
-            {
-                try
+                var socket = state.ServerSocket.Accept();
+                if (socket == null)
                 {
-                    ((ComRuntimeEndpoint)_outerInstance.Endpoint).Detach();
+                    continue;
                 }
-                catch (IOException)
+                Log.Logger.Information("RemUnknown listener: Got Connection from " + socket.GetPort());
+
+                // now create the ComOxidRuntimeHelper Object and start it.
+                // We need a new one since the old one is already attached to the listener.
+                var remUnknownHelper = new ComOxidRuntimeHelper(state.OuterInstance.Properties);
+                lock (ComOxidRuntime.Instance.Mutex)
                 {
+                    Interop.Internal_setSocket(socket);
+                    remUnknownHelper.Attach();
                 }
+
+                // now start a new thread with this socket
+                var workerName = "jI_RemUnknown[" + state.BaseIID + ", L(" +
+                    socket.GetLocalPort() + "):R(" + socket.GetPort() + ")]";
+                var worker = new Thread(() => RunRemUnknownWorker(state, remUnknownHelper, workerName, cancellationToken))
+                {
+                    IsBackground = true,
+                    Name = workerName,
+                };
+                worker.Start();
             }
-            Log.Logger.Information("terminating startOxid thread: " + GetName());
         }
-        private readonly ComOxidRuntimeHelper _outerInstance;
+        catch (OperationCanceledException)
+        {
+            Log.Logger.Information("ComOxidRuntimeHelper RemUnknownListener" +
+                threadName + " is purposefully closed by cancellation.");
+        }
+        catch (IOException e)
+        {
+            Log.Logger.Warning(e, "ComOxidRuntimeHelper RemUnknownListener");
+            Log.Logger.Warning("RemUnknownListener Thread: " + e.Message +
+                ", on thread Id: " + threadName);
+        }
+        catch (Exception e)
+        {
+            Log.Logger.Warning(e, "ComOxidRuntimeHelper RemUnknownListener");
+        }
+        Log.Logger.Information("terminating RemUnknownListener thread: " + threadName);
     }
 
-    /// <summary>
-    /// Listener
-    /// </summary>
-    private sealed class RemUnknownListenerThread : Opc.Classic.Dcom.Common.Ntlm.Thread
+    private static void RunRemUnknownWorker(RemUnknownListenerState state, ComOxidRuntimeHelper remUnknownHelper, string threadName, CancellationToken cancellationToken)
     {
-
-        /// <summary>
-        /// Create thread
-        /// </summary>
-        /// <param name="outerInstance"></param>
-        /// <param name="baseIID"></param>
-        /// <param name="ipidOfRemUnknown"></param>
-        /// <param name="ipidOfComponent"></param>
-        /// <param name="listOfSupportedInterfaces"></param>
-        /// <param name="serverSocket"></param>
-        /// <param name="remUnknownForThisListener"></param>
-        /// <param name="name"></param>
-        public RemUnknownListenerThread(ComOxidRuntimeHelper outerInstance,
-            string baseIID, string ipidOfRemUnknown, string ipidOfComponent,
-            List<string> listOfSupportedInterfaces, Socket serverSocket,
-            ThreadGroup remUnknownForThisListener, string name) :
-            base(remUnknownForThisListener, name)
+        try
         {
-            _outerInstance = outerInstance;
-            _baseIID = baseIID;
-            _ipidOfRemUnknown = ipidOfRemUnknown;
-            _ipidOfComponent = ipidOfComponent;
-            _listOfSupportedInterfaces = listOfSupportedInterfaces;
-            _serverSocket = serverSocket;
-            _remUnknownForThisListener = remUnknownForThisListener;
+            ((ComRuntimeEndpoint)remUnknownHelper.Endpoint).ProcessRequests(
+                new RemUnknownObject(state.IpidOfRemUnknown, state.IpidOfComponent),
+                state.BaseIID, state.ListOfSupportedInterfaces, cancellationToken);
         }
-
-        /// <inheritdoc/>
-        public override void Run()
+        catch (SmbAuthException e)
         {
-            Log.Logger.Information("started RemUnknown listener thread for : " + GetName());
+            Log.Logger.Warning(e, "ComOxidRuntimeHelper RemUnknownThread (not listener)");
+            throw new InteropRuntimeException((int)ErrorCode.INTEROP_CALLBACK_AUTH_FAILURE);
+        }
+        catch (SmbException e)
+        {
+            Log.Logger.Warning(e, "ComOxidRuntimeHelper RemUnknownThread (not listener)");
+            throw new InteropRuntimeException((int)ErrorCode.INTEROP_CALLBACK_SMB_FAILURE);
+        }
+        catch (OperationCanceledException)
+        {
+            Log.Logger.Information("ComOxidRuntimeHelper RemUnknownThread (not listener)" +
+                threadName + " is purposefully closed by cancellation.");
+        }
+        catch (IOException e)
+        {
+            Log.Logger.Warning(e, "ComOxidRuntimeHelper RemUnknownThread (not listener)");
+        }
+        finally
+        {
             try
             {
-                while (!IsCanceled)
-                {
-                    var socket = _serverSocket.Accept();
-                    if (socket == null)
-                    {
-                        continue;
-                    }
-                    Log.Logger.Information("RemUnknown listener: Got Connection from " + socket.GetPort());
-
-                    // now create the ComOxidRuntimeHelper Object and start it.
-                    // We need a new one since the old one is already attached to the listener.
-                    var remUnknownHelper = new ComOxidRuntimeHelper(_outerInstance.Properties);
-                    lock (ComOxidRuntime.Instance.Mutex)
-                    {
-                        Interop.Internal_setSocket(socket);
-                        remUnknownHelper.Attach();
-                    }
-
-                    // now start a new thread with this socket
-                    var remUnknown = new RemUnknownThread(this, remUnknownHelper,
-                        _remUnknownForThisListener, "jI_RemUnknown[" + _baseIID + ", L(" +
-                            socket.GetLocalPort() + "):R(" + socket.GetPort() + ")]");
-                    remUnknown.SetDaemon(true);
-                    remUnknown.Start();
-                }
+                remUnknownHelper.Detach();
             }
-            catch (OperationCanceledException)
+            catch (IOException)
             {
-                Log.Logger.Information("ComOxidRuntimeHelper RemUnknownListener" +
-                    GetName() + " is purposefully closed by cancellation.");
             }
-            catch (IOException e)
-            {
-                Log.Logger.Warning(e, "ComOxidRuntimeHelper RemUnknownListener");
-                Log.Logger.Warning("RemUnknownListener Thread: " + e.Message +
-                    ", on thread Id: " + GetName());
-            }
-            catch (Exception e)
-            {
-                Log.Logger.Warning(e, "ComOxidRuntimeHelper RemUnknownListener");
-            }
-            Log.Logger.Information("terminating RemUnknownListener thread: " + GetName());
         }
+    }
 
-        /// <summary>
-        /// Inner thread
-        /// </summary>
-        private sealed class RemUnknownThread : Opc.Classic.Dcom.Common.Ntlm.Thread
+    private sealed class RemUnknownListenerState
+    {
+        public RemUnknownListenerState(ComOxidRuntimeHelper outerInstance, string baseIID,
+            string ipidOfRemUnknown, string ipidOfComponent,
+            List<string> listOfSupportedInterfaces, Socket serverSocket,
+            CancellationTokenSource cancellationSource)
         {
-
-            /// <summary>
-            /// Create runner
-            /// </summary>
-            /// <param name="outerInstance"></param>
-            /// <param name="remUnknownHelper"></param>
-            /// <param name="remUnknownForThisListener"></param>
-            /// <param name="name"></param>
-            public RemUnknownThread(RemUnknownListenerThread outerInstance,
-                ComOxidRuntimeHelper remUnknownHelper,
-                ThreadGroup remUnknownForThisListener,
-                string name) : base(remUnknownForThisListener, name)
-            {
-                _outerInstance = outerInstance;
-                _remUnknownHelper = remUnknownHelper;
-            }
-
-            /// <inheritdoc/>
-            public override void Run()
-            {
-                try
-                {
-                    ((ComRuntimeEndpoint)_remUnknownHelper.Endpoint).ProcessRequests(
-                        new RemUnknownObject(_outerInstance._ipidOfRemUnknown, _outerInstance._ipidOfComponent),
-                        _outerInstance._baseIID, _outerInstance._listOfSupportedInterfaces, Canceller.Token);
-                }
-                catch (SmbAuthException e)
-                {
-                    Log.Logger.Warning(e, "ComOxidRuntimeHelper RemUnknownThread (not listener)");
-                    throw new InteropRuntimeException((int)ErrorCode.INTEROP_CALLBACK_AUTH_FAILURE);
-                }
-                catch (SmbException e)
-                {
-                    // System.out.println(e.getMessage());
-                    Log.Logger.Warning(e, "ComOxidRuntimeHelper RemUnknownThread (not listener)");
-                    throw new InteropRuntimeException((int)ErrorCode.INTEROP_CALLBACK_SMB_FAILURE);
-                }
-                catch (OperationCanceledException)
-                {
-                    Log.Logger.Information("ComOxidRuntimeHelper RemUnknownThread (not listener)" +
-                        GetName() + " is purposefully closed by cancellation.");
-                }
-                catch (IOException e)
-                {
-                    Log.Logger.Warning(e, "ComOxidRuntimeHelper RemUnknownThread (not listener)");
-                }
-                finally
-                {
-                    try
-                    {
-                        _remUnknownHelper.Detach();
-                    }
-                    catch (IOException)
-                    {
-                    }
-                }
-            }
-
-            private readonly RemUnknownListenerThread _outerInstance;
-            private readonly ComOxidRuntimeHelper _remUnknownHelper;
+            OuterInstance = outerInstance;
+            BaseIID = baseIID;
+            IpidOfRemUnknown = ipidOfRemUnknown;
+            IpidOfComponent = ipidOfComponent;
+            ListOfSupportedInterfaces = listOfSupportedInterfaces;
+            ServerSocket = serverSocket;
+            CancellationSource = cancellationSource;
         }
 
-
-        private readonly ComOxidRuntimeHelper _outerInstance;
-        private readonly string _baseIID;
-        private readonly string _ipidOfRemUnknown;
-        private readonly string _ipidOfComponent;
-        private readonly List<string> _listOfSupportedInterfaces;
-        private readonly Socket _serverSocket;
-        private readonly ThreadGroup _remUnknownForThisListener;
+        public ComOxidRuntimeHelper OuterInstance { get; }
+        public string BaseIID { get; }
+        public string IpidOfRemUnknown { get; }
+        public string IpidOfComponent { get; }
+        public List<string> ListOfSupportedInterfaces { get; }
+        public Socket ServerSocket { get; }
+        public CancellationTokenSource CancellationSource { get; }
     }
 
     /// <summary>
@@ -415,7 +358,7 @@ internal sealed class ComOxidRuntimeHelper : Stub
                 listOfDels.Add(new ObjectId(MarshalUnMarshalHelper.ReadOctetArrayLE(ndr, 8), false));
             }
 
-            if (Arrays.Equals(b, new byte[] { 0, 0, 0, 0, 0, 0, 0, 0 }))
+            if (b.AsSpan().SequenceEqual(new byte[] { 0, 0, 0, 0, 0, 0, 0, 0 }))
             {
                 _random.NextBytes(b);
             }
@@ -534,8 +477,8 @@ internal sealed class ComOxidRuntimeHelper : Stub
                     var remunknownipid = uuid.ToString();
                     port = details.COMRuntimeHelper.StartRemUnknown(
                         details.IID, remunknownipid, details.Ipid,
-                        details.Referent.SupportedInterfaces, out var threadGroup);
-                    details.SetRemUnknownThreadGroup(threadGroup);
+                        details.Referent.SupportedInterfaces, out var cancellationSource);
+                    details.SetRemUnknownCancellation(cancellationSource);
                     details.RemUnknownIpid = remunknownipid;
                 }
                 details.PortForRemUnknown = port;
@@ -669,7 +612,7 @@ internal sealed class ComOxidRuntimeHelper : Stub
                             var publicRefs = (int)structs[i].GetMember(1);
                             var privateRefs = (int)structs[i].GetMember(2);
 
-                            if (!_mapOfIpidsVsRef.Contains(ipidref))
+                            if (!_mapOfIpidsVsRef.ContainsKey(ipidref))
                             {
                                 // this would be strange, since all the ipids we give should be part of the map already.
                                 // have to set 0x80000003 (INVALID ARG here)
@@ -713,7 +656,7 @@ internal sealed class ComOxidRuntimeHelper : Stub
                             var ipidref = ((UUID)structs[i].GetMember(0)).ToString().ToUpper(CultureInfo.InvariantCulture);
                             var publicRefs = (int)structs[i].GetMember(1);
                             var privateRefs = (int)structs[i].GetMember(2);
-                            if (!_mapOfIpidsVsRef.Contains(ipidref))
+                            if (!_mapOfIpidsVsRef.ContainsKey(ipidref))
                             {
                                 continue;
                             }
@@ -1002,7 +945,7 @@ internal sealed class ComOxidRuntimeHelper : Stub
                 {
                     Log.Logger.Error(e, "ComOxidRuntimeHelper: QueryInterface");
                 }
-                catch (InstantiationException e)
+                catch (InvalidOperationException e)
                 {
                     Log.Logger.Error(e, "ComOxidRuntimeHelper: QueryInterface");
                 }

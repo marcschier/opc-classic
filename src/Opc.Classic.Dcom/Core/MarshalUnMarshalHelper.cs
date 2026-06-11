@@ -898,7 +898,7 @@ internal static class MarshalUnMarshalHelper
                 {
                     strBytes = str.GetBytes("UTF-16LE");
                 }
-                catch (UnsupportedEncodingException)
+                catch (ArgumentException)
                 {
                     throw new InteropRuntimeException((int)ErrorCode.INTEROP_UTIL_STRING_DECODE_CHARSET);
                 }
@@ -952,7 +952,7 @@ internal static class MarshalUnMarshalHelper
                         {
                             strBytes = str.GetBytes("UTF-16LE");
                         }
-                        catch (UnsupportedEncodingException)
+                        catch (ArgumentException)
                         {
                             throw new InteropRuntimeException((int)ErrorCode.INTEROP_UTIL_STRING_DECODE_CHARSET);
                         }
@@ -1077,7 +1077,7 @@ internal static class MarshalUnMarshalHelper
                     }
                 }
             }
-            catch (UnsupportedEncodingException)
+            catch (ArgumentException)
             {
                 throw new InteropRuntimeException((int)ErrorCode.INTEROP_UTIL_STRING_DECODE_CHARSET);
             }

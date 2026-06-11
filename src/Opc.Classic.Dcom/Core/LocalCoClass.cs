@@ -633,7 +633,7 @@ public sealed class LocalCoClass
                 Log.Logger.Error(e, "LocalCoClass invokeMethod");
                 throw new InteropException(ErrorCode.RPC_S_PROCNUM_OUT_OF_RANGE);
             }
-            catch (InstantiationException e)
+            catch (InvalidOperationException e)
             {
                 Log.Logger.Error(e, "LocalCoClass invokeMethod");
                 throw new InteropException(ErrorCode.E_UNEXPECTED, e);

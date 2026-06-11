@@ -66,7 +66,7 @@ public sealed class Session
             LocalhostAddressAsIPbytes = localhostAddr.GetAddressBytes();
             LocalhostAddressAsIPString = localhostAddr.ToString();
         }
-        catch (UnknownHostException)
+        catch (System.Net.Sockets.SocketException)
         {
         }
 
@@ -157,7 +157,10 @@ public sealed class Session
                 }
                 lock (kMutex)
                 {
-                    session._listOfDeferencedIpids.RemoveAll(dereferencedIpids);
+                    foreach (var ipid in dereferencedIpids)
+                    {
+                        session._listOfDeferencedIpids.Remove(ipid);
+                    }
                 }
 
                 dereferencedIpids.Clear();
@@ -376,10 +379,9 @@ public sealed class Session
 
             lock (kMapOfObjects)
             {
-                var iterator = kMapOfObjects.Iterator();
-                while (iterator.HasNext())
+                var toRemove = new List<WeakReference>();
+                foreach (var entry in kMapOfObjects)
                 {
-                    var entry = iterator.Next();
                     var tuple = entry.Value;
                     if (session.SessionIdentifier != tuple.Item2)
                     {
@@ -393,7 +395,11 @@ public sealed class Session
 
                     list.Add(session.PrepareForReleaseRef(ipid));
                     listOfFreeIPIDs.Add(ipid);
-                    iterator.Remove();
+                    toRemove.Add(entry.Key);
+                }
+                foreach (var key in toRemove)
+                {
+                    kMapOfObjects.Remove(key);
                 }
             }
 

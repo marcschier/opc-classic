@@ -30,7 +30,7 @@ public class RegistryStub : Stub, IRegistry
     /// </summary>
     /// <param name="authInfo"></param>
     /// <param name="serverName"></param>
-    /// <exception cref="UnknownHostException"></exception>
+    /// <exception cref="System.Net.Sockets.SocketException"></exception>
     public RegistryStub(IAuthInfo authInfo, string serverName)
     {
         if (authInfo == null)
@@ -73,7 +73,7 @@ public class RegistryStub : Stub, IRegistry
     /// "ncacn_np:" + servername + "[\\PIPE\\winreg]"
     /// </summary>
     /// <param name="serverName"></param>
-    /// <exception cref="UnknownHostException"></exception>
+    /// <exception cref="System.Net.Sockets.SocketException"></exception>
     public RegistryStub(string serverName)
     {
         TransportFactory = new Opc.Classic.Dcom.Rpc.Ncacn_Np.TransportFactory();

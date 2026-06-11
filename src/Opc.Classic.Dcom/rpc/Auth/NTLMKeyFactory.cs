@@ -53,7 +53,7 @@ internal sealed class NTLMKeyFactory
     /// <param name="servernonce"> challenge + nonce from NTLM2 Session Response
     /// </param>
     /// <exception cref="SecurityUtilityException"> </exception>
-    /// <exception cref="UnsupportedEncodingException"> </exception>
+    /// <exception cref="ArgumentException"> </exception>
     /// <exception cref="Opc.Classic.Dcom.Common.Ntlm.NoSuchAlgorithmException"> </exception>
     public byte[] GetNTLM2SessionResponseUserSessionKey(string password, byte[] servernonce)
     {
@@ -88,7 +88,6 @@ internal sealed class NTLMKeyFactory
     /// <returns></returns>
     public IStreamCipher GetARCFOUR(byte[] key)
     {
-        var attrib = new Hashtable();
         var keystream = new RC4Engine();
         var parameters = new KeyParameter(key);
         keystream.Init(true, parameters);
@@ -115,7 +114,7 @@ internal sealed class NTLMKeyFactory
     /// </summary>
     /// <param name="password">
     /// </param>
-    /// <exception cref="UnsupportedEncodingException"> </exception>
+    /// <exception cref="ArgumentException"> </exception>
     /// <exception cref="SecurityUtilityException"> </exception>
     private byte[] GetNTLMUserSessionKey(string password)
     {

@@ -35,7 +35,7 @@ internal sealed class ComTransport : ITransport, IDisposable
         {
             localhost = Dns.GetHostName();
         }
-        catch (UnknownHostException)
+        catch (System.Net.Sockets.SocketException)
         { // ignored
         }
         kLOCALHOST = localhost;

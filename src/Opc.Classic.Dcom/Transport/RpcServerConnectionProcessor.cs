@@ -559,10 +559,9 @@ public sealed class RpcServerConnectionProcessor
     {
         if (pdu is IFragmentable fragmentable)
         {
-            var fragments = fragmentable.GetFragments(maxTransmitFragment);
-            while (fragments.HasNext())
+            foreach (var fragment in fragmentable.GetFragments(maxTransmitFragment))
             {
-                await WriteSinglePduAsync(transport, fragments.Next(), maxTransmitFragment, cancellationToken)
+                await WriteSinglePduAsync(transport, fragment, maxTransmitFragment, cancellationToken)
                     .ConfigureAwait(false);
             }
             return;

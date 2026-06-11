@@ -2,8 +2,8 @@
 
 using Opc.Classic.Dcom.Rpc;
 using Opc.Classic.Dcom.Internal;
-using Opc.Classic.Dcom.Common.Ntlm;
 using System;
+using System.Threading;
 
 namespace Opc.Classic.Dcom.Core;
 
@@ -86,34 +86,34 @@ internal sealed class ComOxidDetails
         Opc.Classic.Dcom.Rpc.ProtectionLevel.PROTECTION_LEVEL_INTEGRITY;
 
     /// <summary>
-    /// Set thread group
+    /// Cancellation source for the RemUnknown listener + per-connection
+    /// threads owned by <see cref="ComOxidRuntimeHelper.StartRemUnknown"/>.
+    /// Set when the RemUnknown listener starts; cancelled when the OXID is
+    /// torn down so the listener loop and any in-flight RemUnknown worker
+    /// threads exit cooperatively.
     /// </summary>
-    /// <param name="value"></param>
-    internal void SetRemUnknownThreadGroup(ThreadGroup value) =>
-        _remUnknownThread = value;
+    /// <param name="cts"></param>
+    internal void SetRemUnknownCancellation(CancellationTokenSource cts) =>
+        _remUnknownCts = cts;
 
     /// <summary>
-    /// Interrupt unknown thread group thread
+    /// Request cancellation of the RemUnknown listener + worker threads
+    /// associated with this OXID. Safe to call repeatedly or when no
+    /// cancellation source has been set.
     /// </summary>
     internal void InterruptRemUnknownThreadGroup()
     {
-        if (_remUnknownThread != null)
+        try
         {
-            try
-            {
-                // _remUnknownThread.interrupt();
-
-                // old: remUnknownThread.destroy();
-            }
-            catch (Exception e)
-            {
-                Log.Logger.Information(e, "ComOxidDetails interruptRemUnknownThreadGroup");
-            }
+            _remUnknownCts?.Cancel();
+        }
+        catch (ObjectDisposedException e)
+        {
+            Log.Logger.Information(e, "ComOxidDetails interruptRemUnknownThreadGroup");
         }
     }
 
-    // TODO N1.2-followup: replace ThreadGroup with an async RemUnknown listener lease.
-    private ThreadGroup _remUnknownThread;
+    private CancellationTokenSource _remUnknownCts;
 #pragma warning disable IDE0052 // Remove unread private members
     private readonly InterfacePointer _ptr;
 #pragma warning restore IDE0052 // Remove unread private members

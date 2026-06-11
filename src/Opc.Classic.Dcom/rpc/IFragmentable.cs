@@ -1,6 +1,6 @@
 ﻿// SPDX-License-Identifier: MIT
 
-using Opc.Classic.Dcom.Common.Ntlm;
+using System.Collections.Generic;
 using System.IO;
 
 namespace Opc.Classic.Dcom.Rpc;
@@ -16,7 +16,7 @@ public interface IFragmentable
     /// </summary>
     /// <param name="size"></param>
     /// <returns></returns>
-    Iterator<ConnectionOrientedPdu> GetFragments(int size);
+    IEnumerable<ConnectionOrientedPdu> GetFragments(int size);
 
     /// <summary>
     /// Reassemble
@@ -25,7 +25,7 @@ public interface IFragmentable
     /// <exception cref="IOException"></exception>
     /// <returns></returns>
     ConnectionOrientedPdu Reassemble(
-        Iterator<ConnectionOrientedPdu> fragments);
+        IEnumerable<ConnectionOrientedPdu> fragments);
 
     /// <summary>
     /// Clone
