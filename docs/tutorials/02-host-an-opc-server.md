@@ -375,7 +375,7 @@ Test negative cases too. Browse or validate an unknown item and verify the clien
 
 Use packet-integrity settings that match production from the beginning. A server tested with anonymous or connect-level authentication may fail the first time a hardened Windows client attempts packet integrity. DCOM hardening changed the default reality for OPC Classic; make the secure path the normal path, not a late-stage toggle.
 
-The Windows CCW interop path is no longer limited to `IUnknown` scaffolding. DA now has per-method vtables for `IOPCGroupStateMgt(2)`, `IOPCItemMgt`, `IOPCSyncIO(2)`, `IOPCAsyncIO2/3`, and `IConnectionPoint(Container)`, with VARIANT/SAFEARRAY marshaling in place. AE now covers its shipped array-marshaled CCW methods, and HDA covers sync read/update, async update, playback, annotation insert, and async advise sample paths, so include a strict Windows client in the matrix rather than treating native COM interop as future work.
+The Windows CCW interop path covers more than `IUnknown` scaffolding. DA has per-method vtables for `IOPCGroupStateMgt(2)`, `IOPCItemMgt`, `IOPCSyncIO(2)`, `IOPCAsyncIO2/3`, and `IConnectionPoint(Container)`, with VARIANT/SAFEARRAY marshaling in place. AE covers its shipped array-marshaled CCW methods, and HDA covers sync read/update, async update, playback, annotation insert, and async advise sample paths, so include a strict Windows client in the matrix rather than treating native COM interop as future work.
 
 ## Designing the tag catalog for change
 

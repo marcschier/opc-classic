@@ -1,12 +1,12 @@
 # TestServer registration spec (no-MSI local registration)
 
-**Track BH1 audit output.** This document enumerates every file, registry
-entry, COM CLSID, AppID, category, and self-registration step needed when
-installing the OPC Foundation `OpcTestServer_x64.exe` and the proxy/stub DLLs
-required for DCOM marshalling. It was originally derived from the upstream
-installer manifests, but local WiX/MSI packaging is no longer vendored. It is
-the source-of-truth reference for auditing `interop/tools/register-testserver.ps1` and
-the suspected `CO_E_SERVER_EXEC_FAILURE` root cause (Issue B in
+This document enumerates every file, registry entry, COM CLSID, AppID,
+category, and self-registration step needed when installing the OPC
+Foundation `OpcTestServer_x64.exe` and the proxy/stub DLLs required for
+DCOM marshalling. It is derived from the upstream installer manifests
+(local WiX/MSI packaging is not vendored). It is the source-of-truth
+reference for auditing `interop/tools/register-testserver.ps1` and the
+suspected `CO_E_SERVER_EXEC_FAILURE` root cause (Issue B in
 `interop/docs/probe-coverage.md`).
 
 ## Source artifacts audited

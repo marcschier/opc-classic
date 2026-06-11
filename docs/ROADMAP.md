@@ -12,17 +12,17 @@ This document tracks what's planned beyond the current release. For implemented 
 - [x] NTLMSSP audit-prep guide, NTLM wire fixtures, WINREG fixtures, and Docker native C server/client MVP source/build wiring.
 - [x] Sample DCOM-over-IP path: sample servers bind configurable TCP ports and sample clients dial TCP from environment variables.
 - [x] OPC Security reference sample and cookbook guidance.
-- [x] Release-candidate administration through `1.0.0-rc.10`; `[Unreleased]` in `CHANGELOG.md` tracks post-rc.10 NDR completeness work (Tracks AF/AG/AH/AI/AJ/AK/AL/AM/AN/AP).
-- [x] NDR wire-format completeness for Matrikon DA (Tracks AF/AG/AH/AI — `dfbf234b`, `3a1ba9c3`).
-- [x] Pre-bind IID set + AlterContext for the full DA spec (Track AC — `2d96d8f9`).
-- [x] OPCEnum activation auth (Track AE — `ee2425c2`) + AppID ACL helper (Track AN — `1a1de5db`) + OPCEnum bind regression closed (Track BG — `74eba65d`, `discovery.enumerate_servers` and `--da-progid` activation both work).
-- [x] NDR wire-trace diagnostic infrastructure (Track AK1 hex-context + AK2 wire capture + AK3 replay parser).
-- [x] Byte-exact request/response/server-dispatch wire fixtures (Track AL).
-- [x] `IEnumOPCItemAttributes::Next` `pceltFetched` correctness (Track AM — `1b059d0a`).
-- [x] `IOPCDataCallback` subscription queue surface + bounded sink + drain-or-pull (Track AP3/AP5/AP6 — `083c5437`).
-- [x] Matrikon `IOPCItemProperties::GetProperties` decode (Track AY+ — `6a8f32ce`); `OPCITEMSTATE` decode (Track AY++ — `7fce8b45`); live 26/95 OK probe baseline against Matrikon Simulation Server.
-- [x] Production inbound `IOPCDataCallback` listener bring-up (AP1/AP2/AP4 closed by Track BI — `41e30ca7`): `IObjectExporterDispatcher` registered at the well-known IID on the `DaCallbackEndpoint`, `DaClientTools.Subscribe` wires the Advise/Unadvise cycle. **Note**: Matrikon-specific group-channel limitation for IConnectionPoint documented in `interop/docs/da-callbacks.md`; production push-callback delivery against Matrikon needs a follow-up per-group channel that pre-binds IConnectionPoint(Container).
-- [x] TestServer registration spec + script alignment (Track BH1+BH2+BH3 — `9d6ed944`): canonical WiX-derived `interop/docs/testserver-registration-spec.md`; `interop/tools/register-testserver.ps1` mirrors the full 8-DLL MSI install order; `interop/tools/grant-testserver-acl.ps1` automates the DCOM Launch/Access ACL grant that is the actual cause of `CO_E_SERVER_EXEC_FAILURE`.
+- [x] Release-candidate administration; [CHANGELOG](../CHANGELOG.md) tracks the NDR completeness work.
+- [x] NDR wire-format completeness for Matrikon DA (full conformant-array + deferred-pile + `[OpcEmitArrayCount]` + `[OpcUniquePointer]` + `[OpcVariantElements]` annotation set).
+- [x] Pre-bind IID set + AlterContext for the full DA spec.
+- [x] OPCEnum activation auth + AppID ACL helper + OPCEnum bind regression closed (`discovery.enumerate_servers` and `--da-progid` activation both work).
+- [x] NDR wire-trace diagnostic infrastructure (hex-context + wire capture + replay parser).
+- [x] Byte-exact request/response/server-dispatch wire fixtures.
+- [x] `IEnumOPCItemAttributes::Next` `pceltFetched` correctness.
+- [x] `IOPCDataCallback` subscription queue surface + bounded sink + drain-or-pull.
+- [x] Matrikon `IOPCItemProperties::GetProperties` decode; `OPCITEMSTATE` decode; live 26/95 OK probe baseline against Matrikon Simulation Server.
+- [x] Production inbound `IOPCDataCallback` listener bring-up: `IObjectExporterDispatcher` registered at the well-known IID on the `DaCallbackEndpoint`, `DaClientTools.Subscribe` wires the Advise/Unadvise cycle. **Note**: Matrikon-specific group-channel limitation for `IConnectionPoint` documented in [interop/docs/da-callbacks.md](../interop/docs/da-callbacks.md); production push-callback delivery against Matrikon needs a follow-up per-group channel that pre-binds `IConnectionPoint(Container)`.
+- [x] TestServer registration spec + script alignment: canonical WiX-derived [testserver-registration-spec.md](../interop/docs/testserver-registration-spec.md); [register-testserver.ps1](../interop/tools/register-testserver.ps1) mirrors the full 8-DLL MSI install order; [grant-testserver-acl.ps1](../interop/tools/grant-testserver-acl.ps1) automates the DCOM Launch/Access ACL grant that is the actual cause of `CO_E_SERVER_EXEC_FAILURE`.
 - [ ] NTLMv2 wire verification against a live Windows Server / AD lab (`rw-e1-ntlmv2-realserver`).
 - [ ] External third-party NTLMSSP crypto/security audit (`rw-e4-ntlm-audit`).
 
@@ -36,10 +36,10 @@ Generated client and server DCOM projections cover the main DA/AE/HDA, Batch, Co
 - Additional multi-out record generation is still useful for Batch enumeration-set discovery and DX configuration record arrays.
 - Complex Data conversion/filter engines and vendor-specific XML payload carriers remain future work beyond the current dictionary/type/value helpers.
 
-#### Track BJ3 triage — 1.0.0 vs post-1.0.0
+#### 1.0.0 vs post-1.0.0 triage
 
 The interface-pointer return codecs and multi-out record support
-(Tracks BJ1 + BJ2) are NOT required for 1.0.0 because:
+are NOT required for 1.0.0 because:
 
 1. **The release-scope paths already work end-to-end against Matrikon
    Simulation Server** (26/95 OK, zero DA failures, all DA tools pass
@@ -50,22 +50,22 @@ The interface-pointer return codecs and multi-out record support
    `IOPCEventSubscriptionMgt::CreateEventSubscription`,
    `IClassFactory::CreateInstance` for out-of-process activation,
    etc.).
-2. **All Matrikon-blocking codec bugs were fixed in Tracks AY+/AY++**
-   — the remaining interface-pointer gaps are for less-common paths
-   that would matter only when probing additional servers (HDA / AE /
-   Batch / Commands / DX), which themselves need Track BH4-BH7 to
-   bring up. The relative work for BJ1 + BJ2 in isolation is large
-   and would not move the 1.0.0 quality bar.
+2. **All Matrikon-blocking codec bugs are fixed.** The remaining
+   interface-pointer gaps are for less-common paths that would matter
+   only when probing additional servers (HDA / AE /
+   Batch / Commands / DX). The relative work for the additional
+   codecs in isolation is large and would not move the 1.0.0 quality
+   bar.
 3. **The generator infrastructure that would emit these codecs is
-   already in place** (`Opc.Classic.Generators` ships incremental
-   Roslyn generators for proxy + dispatcher pairs). Adding the
-   additional shapes is mechanical — a follow-up adding the IDL
-   annotation per missing method + running the generator.
+   already in place** (the `Opc.Classic.Generators` Roslyn generators
+   for proxy + dispatcher pairs). Adding the additional shapes is
+   mechanical — a follow-up adding the IDL annotation per missing
+   method + running the generator.
 
-**Decision**: Move BJ1 + BJ2 to "Future work after 1.0.0" as
-`opt-in spec broadening` and ship 1.0.0 with the current release-scope
-surface. Code-level cookbook entries in `docs/generators/` already
-exist for the contributors who need to extend the surface.
+**Decision**: ship 1.0.0 with the current release-scope surface and
+treat the broader IDL coverage as an opt-in spec broadening for a
+future release. Code-level cookbook entries already exist for
+contributors who need to extend the surface.
 
 ### Compatibility and conformance gaps
 
@@ -110,16 +110,16 @@ Post-1.0 follow-ups to the CA1–CA8 capture engine ([`mcp/Opc.Classic.Mcp.Captu
   implications.
 
 
-- **Additional COM interface-pointer return codecs** (post-Track BJ1)
+- **Additional COM interface-pointer return codecs**
   for enumerators, browse objects, event subscriptions, class
   factories, and connection points beyond the current release-scope.
-- **Generator support for multi-out record arrays** (post-Track BJ2)
+- **Generator support for multi-out record arrays**
   for Batch `IOPCEnumerationSets` + DX
   `IOPCConfiguration::QueryDXConnections` parallel out arrays.
-- **Per-group channel for IConnectionPoint** so that production
+- **Per-group channel for `IConnectionPoint`** so that production
   callback delivery against Matrikon (and other servers that bind
-  IConnectionPoint at the group object only) works end-to-end. The
-  Track BI work shipped the listener side; this is the client-side
+  `IConnectionPoint` at the group object only) works end-to-end. The
+  inbound listener side is shipped; this is the client-side
   follow-up.
 - Additional spec extensions (Web-DA, Compliance 2.0 if/when published).
 - More native-server interoperability fixtures for vendor-specific DA/AE/HDA behavior.

@@ -1,6 +1,6 @@
 # Opc.Classic Documentation
 
-Current rc.10 baseline: **10 sample apps** and **2113 passed / 12 skipped / 0 failed across 23 .NET test projects** with 0 build warnings / 0 build errors.
+Current baseline: **10 sample apps** and **2758 passed / 13 skipped / 0 failed across 25 .NET test projects** with 0 build warnings / 0 build errors.
 
 ## Getting Started
 
@@ -33,7 +33,7 @@ Current rc.10 baseline: **10 sample apps** and **2113 passed / 12 skipped / 0 fa
 
 - [Probe coverage](interop/probe-coverage.md) — MCP tool-by-tool status against Matrikon Simulation Server + OPC Foundation TestServer
 - [OPCEnum DCOM authentication](interop/opcenum-auth.md) — auth-level requirements + `interop/tools/grant-opcenum-acl.ps1` AppID ACL helper
-- [`IOPCDataCallback` push delivery](interop/da-callbacks.md) — server→client subscription callback architecture (Track AP)
+- [`IOPCDataCallback` push delivery](interop/da-callbacks.md) — server→client subscription callback architecture
 - [TestServer activation residual](interop/testserver.md) — known SCM-activation blocker for the OPC Foundation managed TestServer
 - [Wire captures](interop/wire-captures/README.md) — opt-in NDR diagnostic dumps via `OPCCLASSIC_WIRE_CAPTURE_DIR`
 - [Unblocking `da.get_properties` decode](interop/unblocking-get-properties-decode.md) — step-by-step procedure to capture the live Matrikon exchange needed to close `ag-get-properties-decode`

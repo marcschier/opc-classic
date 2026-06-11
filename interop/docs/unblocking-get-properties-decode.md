@@ -7,8 +7,7 @@ Matrikon Simulation Server's `IOPCBrowse::GetProperties` /
 
 ## Background
 
-The request side was closed by Tracks AF4 + AG1 (commits in the
-`dfbf234b`/`3a1ba9c3` lineage). Track AT (`d569f384`) verified the
+The request side is in place via per-element VARIANT codec coverage. The
 **OPC DA 3.00 §6.5 standard property set** (PropertyId 1–7: canonical
 datatype `VT_I2`, value, quality `VT_I2`, timestamp `VT_FILETIME`,
 access rights `VT_I4`, scan rate `VT_R4`, EU type `VT_I4`) round-trips
@@ -16,29 +15,27 @@ byte-perfect through the per-element VARIANT codec via 5 synthetic
 fixture tests in
 [`tests/Opc.Classic.Da.Tests/Wire/GetItemPropertiesStandardSetFixtureTests.cs`](../../tests/Opc.Classic.Da.Tests/Wire/GetItemPropertiesStandardSetFixtureTests.cs).
 
-**If the live Matrikon variant still fails after Tracks AS/AT, the bug
-is vendor-specific padding — not spec-compliant layout.** This guide is
-the procedure for capturing the failing exchange so the vendor
-variation can be diffed against the spec fixtures and a targeted fix
-shipped.
+**If the live Matrikon variant fails despite spec-compliant fixtures
+passing, the bug is vendor-specific padding — not spec-compliant
+layout.** This guide is the procedure for capturing the failing
+exchange so the vendor variation can be diffed against the spec
+fixtures and a targeted fix shipped.
 
 Shipped scaffolding that makes this cheap:
 
-- Track AK1 (`89d68772`): every NDR decode-fail throws an
-  `InvalidDataException` whose message ends with a hex window centered
-  on the failing offset (via `NdrReader.FormatContext()`).
-- Track AK2 (`89d68772`): opt-in wire capture via
-  `OPCCLASSIC_WIRE_CAPTURE_DIR` env var (or the
-  `--save-wire-payloads <dir>` flag on `tools/probe_servers.py`).
-- Track AK3 (`8b98cda2`): `WireCaptureFile` parser
+- Every NDR decode-fail throws an `InvalidDataException` whose message
+  ends with a hex window centered on the failing offset (via
+  `NdrReader.FormatContext()`).
+- Opt-in wire capture via `OPCCLASSIC_WIRE_CAPTURE_DIR` env var (or
+  the `--save-wire-payloads <dir>` flag on `tools/probe_servers.py`).
+- `WireCaptureFile` parser
   ([`tests/Opc.Classic.Da.Tests/Wire/Replay/WireCaptureFile.cs`](../../tests/Opc.Classic.Da.Tests/Wire/Replay/WireCaptureFile.cs))
   that turns a captured `.hex` file back into a `byte[]` for direct
   codec replay.
-- Track AS (`778dbce7`) + Track AW (`4b89811b`): every NDR FILETIME
-  decoder now uses `FileTimeHelper.TryFromFileTime` + structured
-  `InvalidDataException` with named field, so a sentinel FILETIME from
-  Matrikon will be caught with a clean error rather than crash the
-  decoder.
+- Every NDR FILETIME decoder uses `FileTimeHelper.TryFromFileTime` +
+  structured `InvalidDataException` with named field, so a sentinel
+  FILETIME from Matrikon will be caught with a clean error rather
+  than crash the decoder.
 
 ## Prerequisites (one-time, ~5 min)
 
@@ -55,9 +52,8 @@ Shipped scaffolding that makes this cheap:
       .\interop\tools\grant-opcenum-acl.ps1
       ```
 
-      (Shipped in Track AN, commit `1a1de5db`. Idempotent; rolls back
-      via `-Unregister`. See [`opcenum-auth.md`](opcenum-auth.md) for
-      details.)
+      (Idempotent; rolls back via `-Unregister`. See
+      [`opcenum-auth.md`](opcenum-auth.md) for details.)
 - [ ] Python 3.10+ with `requests` package: `pip install requests`.
 - [ ] `dotnet` 10.0.100+ available in PATH.
 
@@ -191,7 +187,7 @@ Submit two things:
 
 1. The contents of the failing `.hex` file (one fenced code block).
 2. The MCP server's stderr from Step 2 — the actual exception message,
-   which now includes the wire-context hex window thanks to Track AK1.
+   which includes the wire-context hex window.
 
 The next iteration (automated) will:
 
@@ -210,9 +206,9 @@ The next iteration (automated) will:
 - **Run Wireshark and decode the OPC DCOM frames manually** — the
   wire-capture diagnostic gives the same bytes pre-decryption with full
   IID/opnum/HRESULT metadata. Wireshark adds no information here.
-- **Patch the codec based on guesswork** — Track AT proved the spec
-  layout decodes correctly; without the failing bytes any change is
-  speculative and risks breaking what works.
+- **Patch the codec based on guesswork** — the spec layout decodes
+  correctly; without the failing bytes any change is speculative and
+  risks breaking what works.
 - **Re-test against a non-Matrikon server** — vendor padding is the
   suspected variable; only a Matrikon capture closes the question. The
   OPC Foundation TestServer paths are already covered by the spec
@@ -220,18 +216,18 @@ The next iteration (automated) will:
 
 ## Estimated total elapsed time
 
-| Phase | Time |
+| Step | Time |
 |---|---|
 | One-time prerequisites | ~5 min |
 | Steps 1–6 | ~7–8 min on a working dev box |
 | **Total active work** | **~15 min** |
 
-## Track AY+ — FULLY RESOLVED (Matrikon wire is spec-compliant; our codec had 3 stacking bugs)
+## Get-properties fix details (Matrikon wire is spec-compliant; the codec had 3 stacking bugs)
 
-**Status: ✅ CLOSED.** The user was right — Matrikon is not incompatible. The
-live Matrikon Simulation Server emits a fully spec-compliant
-`IOPCBrowse::GetProperties` response per MS-OAUT and DCE/RPC. **Our codec had
-three stacking bugs** that all compounded to make the wire look "vendor-shaped":
+The live Matrikon Simulation Server emits a fully spec-compliant
+`IOPCBrowse::GetProperties` response per MS-OAUT and DCE/RPC. The codec
+had three stacking bugs that compounded to make the wire look
+"vendor-shaped":
 
 ### Bug 1 — embedded VARIANT was treated as inline struct instead of [unique] pointer
 
@@ -314,13 +310,13 @@ capture (`matrikon-getproperties-random-int4.hex`):
 
 Full solution test sweep: **all green** (0 failures across 17 test projects).
 
-## Track AY — original wire-replay findings (preserved for history)
+## Wire-replay findings against Matrikon (analysis archive)
 
-The first live capture against Matrikon OPC Simulation Server was
-landed as
+The live capture against Matrikon OPC Simulation Server lives at
 [`tests/Opc.Classic.Da.Tests/Wire/Fixtures/matrikon-getproperties-random-int4.hex`](../../tests/Opc.Classic.Da.Tests/Wire/Fixtures/matrikon-getproperties-random-int4.hex).
 The `MatrikonGetPropertiesReplayTests.Replay_decodes_response_through_browse_decoder`
-test reproduces the failure deterministically off-line:
+test reproduces the historical failure deterministically off-line, and
+proves the post-fix decoder handles the wire shape correctly:
 
 ```
 NDR VARIANT wire decoding is not supported for type 57.

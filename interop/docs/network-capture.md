@@ -8,7 +8,7 @@ result back into the same offline diagnostic pipeline used by
 `tools/probe_servers.py --save-wire-payloads` and the replay tests
 under `tests/Opc.Classic.Da.Tests/Wire/Replay/`.
 
-This unblocks debugging that previously required hand-crafting test
+This unblocks debugging that otherwise required hand-crafting test
 fixtures from stack traces: any failing live interaction can be
 captured once, replayed locally an unlimited number of times, and the
 captured `.pcap` can be opened in Wireshark for byte-level inspection.

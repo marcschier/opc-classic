@@ -1,6 +1,6 @@
 # Test projects and categories
 
-The repository uses TUnit on Microsoft.Testing.Platform. The rc.10 baseline is 2113 passed / 12 skipped / 0 failed across 23 .NET test projects. Run the full solution with:
+The repository uses TUnit on Microsoft.Testing.Platform. The current baseline is 2758 passed / 13 skipped / 0 failed across 25 .NET test projects. Run the full solution with:
 
 ```powershell
 dotnet test Opc.Classic.slnx

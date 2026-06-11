@@ -1,23 +1,20 @@
-# AE wire-format spec — DR32/DR33 real-fix analysis
+# AE wire-format spec — `IOPCEventServer` analysis
 
-> **Phase A of the DR32/DR33 real-fix plan.** This document
-> captures the exact byte-level wire format that the OPC Foundation
-> native `opcae_ps.dll` MIDL proxy/stub expects for
+> Byte-level wire format that the OPC Foundation native
+> `opcae_ps.dll` MIDL proxy/stub expects for
 > `IOPCEventServer::GetConditionState` (opnum 12) and
 > `IOPCEventServer::AckCondition` (opnum 17). Source: the
 > vendored `interop/inc/opc_ae_p.c` (119 KB of MIDL-generated
 > proxy/stub C source). Cited byte-by-byte against
 > ProcFormatString + TypeFormatString offsets in that file.
 >
-> **Purpose:** ground truth for Phase B (capture managed-stack wire
-> bytes) and Phase C (byte-diff to identify the discrepancies that
-> cause `opcae_ps.dll` to reject `AckCondition` requests + crash
-> on `GetConditionState` responses).
+> **Purpose:** ground truth for the managed proxy encoder and
+> the wire-byte fixtures that lock the encoder against
+> regressions.
 >
-> **Scope:** the 3 problem flows blocking DR32-phase4/phase5 and
-> DR33-getconditionstate/ackcondition. Other AE methods marshal
-> correctly on the `samples-ae` native-CCW path and are not
-> covered here.
+> **Scope:** the three flows of interest on the `samples-ae`
+> native-CCW path. Other AE methods marshal correctly and are
+> not covered here.
 
 ## Conventions
 
@@ -102,13 +99,11 @@ HRESULT GetConditionState (
 
 **Critical:** szSource and szConditionName are **simple_ref**. There
 is NO outer 4-byte referent ID before each string's conformance
-DWORD. Applying `[OpcRefString]` to the managed `IOPCEventServer.
-GetConditionState` interface declaration is REQUIRED to match this
-on the wire.
-
-The existing investigation confirms `[OpcRefString]` makes the
-request decode succeed (CCW logs `ENTER → decoded → RETURN S_OK`,
-matrix reaches 103/1). This part is solved.
+DWORD. The `[OpcRefString]` attribute on the managed
+`IOPCEventServer.GetConditionState` interface declaration is what
+produces this wire shape; without it, the source generator emits
+the `[unique]` LPWSTR wire format (4-byte outer referent ID + body)
+which the native stub rejects.
 
 ### OPCCONDITIONSTATE struct (TypeFormatString[1304-1346], referenced from response)
 
@@ -154,10 +149,11 @@ FC_BOGUS_STRUCT alignment=4, size=96 bytes
 **The OPCCONDITIONSTATE FILETIMEs land at offsets 24, 32, 40, 48 —
 all multiples of 8.** Even though `FC_STRUCT alignment=4` declares
 4-byte alignment, the struct layout (after wReserved2 padding) places
-FILETIMEs on 8-byte boundaries naturally. The prior investigation's
-"FILETIMEs must stay 8-byte aligned (a 4-align change deterministically
-crashes the stub)" reflects this *layout-imposed* 8-byte placement —
-not a hidden alignment-override rule on FILETIME itself.
+FILETIMEs on 8-byte boundaries naturally. The 8-byte placement is
+layout-imposed, not a hidden alignment-override rule on FILETIME
+itself. Hand-encoding tools that force a 4-byte step instead of
+respecting the natural-alignment offset will mis-align the deferred
+struct body and crash the native stub.
 
 ### Pointer layout (TypeFormatString[1348-1390]) — deferred bodies, pre-order
 
@@ -205,12 +201,11 @@ referent ID):**
 ```
 
 **Hypothesis for the intermittent `opcae_ps.dll` crash on response
-(DR33-getconditionstate):** the prior investigation found
-`[OpcRefString]` fixes the request decode but the response then
-crashes intermittently with TCP RST. Candidate root causes (to
-validate in Phase C against actual managed-encoder output):
+side:** with `[OpcRefString]` applied to the request scalars, the
+request decode succeeds but the response can crash with TCP RST.
+Candidate root causes:
 
-1. **Deferred-pointer ordering** — managed encoder may walk the
+1. **Deferred-pointer ordering** — the encoder may walk the
    POINTER fields in a different order than the MIDL pre-order
    table above (specifically: are szAcknowledgerID/szComment
    emitted BEFORE the 4 deferred arrays?).
@@ -287,7 +282,7 @@ HRESULT AckCondition(
 ```
 
 **The "TWO deferred FC_PP wstring arrays + an [in] FILETIME array"
-structure from DR33's description matches the table above:**
+structure from the matrix observation matches the table above:**
 
 - `pszSource` + `pszConditionName` are both FC_PP arrays of FC_UP
   LPWSTR — each contributes inline referent IDs in the array body
@@ -314,8 +309,8 @@ then pszConditionName's inline + bodies after), the wire layout
 will not match what `opcae_ps.dll` expects.
 
 **Hypothesis for the `opcae_ps.dll` `[in]` rejection on
-AckCondition (DR33-ackcondition-array-investigate):** candidate
-root causes (to validate in Phase C):
+`AckCondition`:** candidate root causes (validated below against
+captured managed-encoder fixtures):
 
 1. **Deferred-body ordering between pszSource and pszConditionName**
    — managed encoder may emit pszSource's deferred bodies BEFORE
@@ -334,10 +329,10 @@ root causes (to validate in Phase C):
 
 ---
 
-## Cross-references for Phase B (capture managed-stack wire bytes)
+## Cross-references for managed-stack wire-byte captures
 
-When Phase B captures managed-encoder output for these flows,
-hex-diff against the layouts above. Specifically look for:
+For each managed-encoder output captured for these flows, hex-diff
+against the layouts above. Specifically look for:
 
 - **GetConditionState request**: does the managed encoder emit
   szSource/szConditionName WITHOUT outer referent IDs (simple_ref)?
@@ -352,8 +347,8 @@ hex-diff against the layouts above. Specifically look for:
 
 ## Generator-architecture risk markers
 
-If Phase C reveals any of the following, we hit the **Phase C hard
-gate** and stop for operator decision:
+If the byte-diff revealed any of the following, we would hit a
+hard gate and stop for operator decision:
 
 - The source-generator emits deferred bodies interleaved with
   inline data (i.e. doesn't model pre-order traversal at all).
@@ -367,9 +362,11 @@ gate** and stop for operator decision:
   (e.g. always inlines VARIANTs even in the deferred context),
   affecting OPCCONDITIONSTATE.pEventAttributes.
 
-If Phase C reveals NONE of the above and the discrepancies are
-limited to parameter flag annotations (`[OpcRefString]`-style),
-Phase D can proceed with confidence.
+The byte-diff (see "Byte-diff vs managed-encoder fixtures" below)
+revealed NONE of the above. The only discrepancies are limited to
+parameter flag annotations (`[OpcRefString]`-style); the existing
+generator handles the wire shapes correctly with the right
+attribute coverage.
 
 ---
 
@@ -393,13 +390,11 @@ Phase D can proceed with confidence.
 
 ---
 
-# Phase C — Byte-diff vs Phase B fixtures (managed-encoder output)
+# Byte-diff vs managed-encoder fixtures
 
-> **Updated 2026-06-10.** Phase B captured the EXACT bytes the
-> managed proxy emits today for these three flows; the fixtures
-> live at `tests/Opc.Classic.Ae.Tests/Wire/Dr3233/Fixtures/`. This
-> section diffs those captures against the Phase A spec and
-> identifies the precise byte-level discrepancies.
+The fixtures live at `tests/Opc.Classic.Ae.Tests/Wire/Dr3233/Fixtures/`.
+This section diffs those captures against the spec layouts above and
+identifies the precise byte-level discrepancies.
 
 ## Diff #1 — GetConditionState request: spurious outer referent on simple_ref strings
 
@@ -418,7 +413,7 @@ Phase D can proceed with confidence.
 0058: 01 02 03 ...      ← attribute IDs
 ```
 
-**Phase A spec says:** `szSource` and `szConditionName` are
+**The spec says:** `szSource` and `szConditionName` are
 **FC_RP [simple_pointer]** (TypeFormatString[144], flag 0x10b
 "simple ref"). The wire MUST NOT include an outer 4-byte
 referent ID before the FC_C_WSTRING body.
@@ -428,9 +423,8 @@ LPWSTR wire format (outer referent ID + body) for parameters
 that are declared as bare `string` in the C# interface. Without
 `[OpcRefString]`, the simple_ref wire shape is not produced.
 
-**Fix candidate (D1):** apply `[OpcRefString]` to both
-parameters in `src/Opc.Classic.Ae/Dcom/IOPCInterfaces.cs` line
-116-120.
+**Fix:** apply `[OpcRefString]` to both parameters in
+`src/Opc.Classic.Ae/Dcom/IOPCInterfaces.cs` line 116-120.
 
 ## Diff #2 — AckCondition request: spurious outer referent on simple_ref scalars
 
@@ -458,7 +452,7 @@ parameters in `src/Opc.Classic.Ae/Dcom/IOPCInterfaces.cs` line
 0120-0127: 2 × inline DWORDs
 ```
 
-**Phase A spec says:** `szAcknowledgerID` and `szComment` are
+**The spec says:** `szAcknowledgerID` and `szComment` are
 **FC_RP [simple_pointer]** (TypeFormatString[144], flag 0x10b).
 NO outer referent ID before the FC_C_WSTRING body.
 
@@ -466,15 +460,13 @@ NO outer referent ID before the FC_C_WSTRING body.
 parameter declarations causes the generator to emit the
 `[unique]` wire shape instead of simple_ref.
 
-**Fix candidate (D1):** apply `[OpcRefString]` to
-`acknowledgerId` and `comment` in
-`src/Opc.Classic.Ae/Dcom/IOPCInterfaces.cs` line 152-160.
+**Fix:** apply `[OpcRefString]` to `acknowledgerId` and `comment`
+in `src/Opc.Classic.Ae/Dcom/IOPCInterfaces.cs` line 152-160.
 
 ## Non-Diff — AckCondition array marshaling is CORRECT
 
-**Original Phase A hypothesis WAS WRONG:** the "cross-array
-deferred-body ordering between pszSource and pszConditionName"
-hypothesis turned out to NOT be a bug.
+The "cross-array deferred-body ordering between pszSource and
+pszConditionName" was not a bug.
 
 **Re-analysis:** the MIDL spec emits FC_PP deferred bodies
 INSIDE each parameter's marshal block (after that param's
@@ -497,16 +489,15 @@ for (int idx = 0; idx < parameter.Length; idx++) {
 ```
 
 This matches the DCE C706 §14.3.12.3 within-parameter pile
-layout. Phase B byte capture confirms the bodies follow the
+layout. The captured bytes confirm the bodies follow the
 referents within the same param's section, with the next
 param's conformance starting immediately after. **NO
 cross-param reordering is required.**
 
 ## Non-Diff — pftActiveTime + pdwCookie inline placement is CORRECT
 
-**Original Phase A hypothesis WAS WRONG:** the "pftActiveTime
-inline-vs-deferred treatment" hypothesis was speculation, not a
-bug.
+The "pftActiveTime inline-vs-deferred treatment" concern was
+speculation, not a bug.
 
 **Re-analysis:** `FC_CARRAY` of `FC_EMBEDDED_COMPLEX` (FILETIME)
 or `FC_LONG` (DWORD) is purely inline by spec — no deferred
@@ -516,23 +507,21 @@ inline value-type elements, no FC_PP / no deferred section.
 ## Pending — GetConditionState RESPONSE byte-diff
 
 The OPCCONDITIONSTATE response is 540 bytes; full byte-diff
-against the Phase A spec layout (96-byte struct body + deferred
-strings + 6 deferred arrays) is left to a follow-up checkpoint
-WITHIN Phase D when we observe whether D1 (`[OpcRefString]` on
-the request) is sufficient to make the request decode AND the
-response side becomes byte-correct.
+against the spec layout (96-byte struct body + deferred
+strings + 6 deferred arrays) is left as a follow-up
+investigation if the `[OpcRefString]` fix on the request is
+insufficient to make the matrix flip.
 
-**Hypothesis (carrying forward from Phase A):** the response
-side bug noted by existing investigation may be unrelated to
-the request-side simple_ref bug. The two were observed together
-because the old investigation reverted [OpcRefString] when the
-response crashed, but the REQUEST bug remained as well. With D1
-applied, the request decode will be correct; if the response
-still crashes, it's a separate bug to chase.
+**Hypothesis:** the response-side bug may be unrelated to the
+request-side simple_ref bug. The two are observed together
+because reverting `[OpcRefString]` when the response crashes
+also leaves the REQUEST bug in place. With the attribute
+applied, the request decode is correct; if the response still
+crashes, it is a separate bug to chase.
 
 ## Hard-gate decision
 
-**Phase C clears the hard gate.** The discrepancies identified
+The diff above clears the hard gate. The discrepancies identified
 are:
 
 1. **Generator does not emit simple_ref wire format when the
@@ -541,35 +530,29 @@ are:
    problem. The fix is annotating 4 parameters in
    `IOPCInterfaces.cs`.
 
-2. **Previously-hypothesized deferred-body ordering bugs DID NOT
-   manifest** — the generator's `[OpcDeferredElements]` path
-   correctly emits the within-parameter pile layout. No
-   generator change needed for `AckCondition` array params (they
-   already carry `[OpcDeferredElements]`).
+2. **The deferred-body ordering concerns did not manifest** —
+   the generator's `[OpcDeferredElements]` path correctly emits
+   the within-parameter pile layout. No generator change is
+   needed for `AckCondition` array params (they already carry
+   `[OpcDeferredElements]`).
 
-3. **OPCCONDITIONSTATE response side** is left as a Phase D2
-   investigation gate. If D1 (`[OpcRefString]` on request side)
-   is sufficient to clear the matrix, no further work is needed.
-   If D1 makes the request decode succeed but the response still
-   crashes, D2 will diff the response bytes vs the Phase A spec
-   layout.
+3. **OPCCONDITIONSTATE response side** stays a wait-and-see gate.
+   If applying `[OpcRefString]` on the request side is sufficient
+   to clear the matrix, no further work is needed. Otherwise the
+   response bytes are diffed vs the spec layout in a follow-up
+   investigation.
 
-**Phase D proceeds with high confidence on D1 (`[OpcRefString]`
-on 4 scalar params), and a wait-and-see gate on D2 (response
-investigation).**
+## Risk re-assessment
 
-## Risk re-assessment vs the open-question defaults
-
-- **Regression risk** (default: revert + narrower retry): D1 is
-  a pure annotation change on 4 parameters in one file. Risk of
+- **Regression risk:** applying `[OpcRefString]` is a pure
+  annotation change on 4 parameters in one file. Risk of
   regressing OTHER methods is low because `[OpcRefString]`
   affects only the annotated parameter's wire format.
-- **Architecture risk** (default: stop and report): NO
-  generator-architecture changes are now expected. The
-  previously-feared deferred-body-ordering rework is unneeded.
-- **opcae_ps.dll bug-hunting** (default: report finding, keep
-  waiver): if D1 + response investigation both fail, the
-  remaining failures are documented downstream-vendor bugs and
-  the waiver stays in place. Phase D will produce evidence for
-  this verdict either way.
+- **Architecture risk:** no generator-architecture changes are
+  expected. The deferred-body-ordering rework that was a concern
+  during the investigation is unneeded.
+- **opcae_ps.dll bug-hunting:** if the annotation fix plus the
+  response investigation both fail, the remaining failures are
+  documented downstream-vendor bugs and the waiver stays in
+  place.
 

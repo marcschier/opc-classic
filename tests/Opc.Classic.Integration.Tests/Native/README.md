@@ -46,7 +46,7 @@ in-process before a real native DCOM endpoint is available.
 
 ## Status
 
-The folder is no longer placeholder-only: DA loopback tests exercise the
+The folder is populated: DA loopback tests exercise the
 managed proxy-to-dispatcher pipeline today. Full native COM end-to-end tests
 still require a registered native server plus a real `DcomCallChannel` wired
 to listener-side transport.

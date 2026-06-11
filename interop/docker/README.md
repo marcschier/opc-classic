@@ -11,8 +11,8 @@ implementation against:
 
 The managed `Opc.Classic.Samples.CttServer` runs beside the native C and OPC
 Foundation reference containers so cross-implementation client/server pairs can
-be tested on a single Windows host. The rc.10 baseline is 0 build warnings/errors and
-2113 passed / 12 skipped / 0 failed across 23 .NET test projects.
+be tested on a single Windows host. The current baseline is 0 build warnings/errors and
+2758 passed / 13 skipped / 0 failed across 25 .NET test projects.
 
 ## Status
 

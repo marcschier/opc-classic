@@ -4,12 +4,10 @@
 > (pointer kinds), §14.3.12 (pointer placement).
 
 Real Windows DCOM follows DCE 1.1 NDR strictly. Opc.Classic's generated
-client proxies and server dispatchers used to emit "flat NDR" — every
-parameter written as a flat sequence of scalar/array writes — which
-worked for managed loopback (both ends used identical layout) but
-mis-aligned every method whose IDL declares one or more pointer-typed
-parameters when talking to Matrikon, Kepware, OPC Foundation reference
-servers, or any other native DCOM peer.
+client proxies and server dispatchers emit the full DCE NDR shape per
+spec — including unique-pointer referents, conformant-array max_count
+prefixes, and the deferred-pointer pile per C706 §14.3.12.3 — so the
+managed loopback wire format matches what real DCOM peers emit.
 
 This document describes how the proxy/dispatch source generators map
 IDL pointer shapes onto C# parameter signatures and per-shape wire
@@ -115,8 +113,7 @@ of which declare `[out] OPCSERVERSTATUS **ppServerStatus`.
 
 ## What the generators DO NOT yet handle
 
-Scope-limited to keep this commit reviewable; tracked as follow-up
-work in `plan.md` under Track Y:
+Scope-limited; tracked as follow-up work:
 
 - **Deferred unique pointers inside conformant-array struct elements.**
   Spec structs like `OPCBROWSEELEMENT` carry embedded `[unique] LPWSTR`
@@ -126,9 +123,9 @@ work in `plan.md` under Track Y:
   fields. Affects `IOPCBrowse::Browse`'s `[out, size_is(,*pdwCount)]
   OPCBROWSEELEMENT** ppBrowseElements`.
 
-- **MS-OAUT `_wireVARIANT` array element envelope.** Z2 + Z4 ship the
-  per-element envelope (wireVARIANT + pad-to-8) and supporting
-  `[OpcVariantElements]` attribute, plus the new
+- **MS-OAUT `_wireVARIANT` array element envelope.** The per-element
+  envelope (wireVARIANT + pad-to-8) and supporting
+  `[OpcVariantElements]` attribute are shipped, plus the
   `WriteVariantElement`/`ReadVariantElement` helpers. Confirmed
   end-to-end on the request side. On the response side, real-DCOM
   servers emit an additional 8-byte per-element block beyond the
@@ -155,7 +152,7 @@ work in `plan.md` under Track Y:
 
 ## Available runtime-navigation primitives
 
-- **`IRemUnknown::RemQueryInterface`** (Track Y7a) — `IID 00000131-…`,
+- **`IRemUnknown::RemQueryInterface`** — `IID 00000131-…`,
   opnum 3. Use to obtain new IPIDs on an existing OXID (e.g. QI from
   `IOPCGroupStateMgt` to `IOPCSyncIO`/`IOPCItemMgt` after `AddGroup`).
   Generated proxy lives in `src/Opc.Classic.Dcom/Remoting/IRemUnknown.cs`;
@@ -164,10 +161,10 @@ work in `plan.md` under Track Y:
   `ipidRemUnknown` value to use for the call is returned by
   `IActivation::RemoteActivation` in the activation response.
 
-## Wire-format regression net (Track Y6, Y7a, Y10)
+## Wire-format regression net
 
 `tests/Opc.Classic.Da.Tests/Wire/` pins byte-shape fixtures for the
-methods we've already shipped:
+methods that have shipped:
 
 - `NdrOpcServerStatusWireFixtures` — OPCSERVERSTATUS layout and the
   unique-pointer LPWSTR VendorInfo (referent + max\_count + offset +
@@ -190,13 +187,9 @@ silently changes the wire shape.
 
 ## Loopback-vs-real-wire reconciliation
 
-Before Track Y, loopback round-trip tests were the source of truth: if
-a codec round-trip worked through `InMemoryCallChannel`, the code was
-"correct". That assumption was wrong because both sides emitted the
-same flat layout.
-
-After Track Y, the loopback wire format matches what real DCOM emits.
-Test helpers that emulate a server response payload (e.g.
+Loopback round-trip tests prove codec-level correctness, and the wire
+format matches what real DCOM emits. Test helpers that emulate a server
+response payload (e.g.
 `F1DaRoundTrip.EncodeStatus`, `ErrorPathTests.EncodeStatus`,
 `OpcDaServerDispatcherTests.ReadStatus`) prepend the
 `0x00020000` referent before invoking the spec codec. This keeps
@@ -224,6 +217,6 @@ against the IDL signature:
 When in doubt, capture a Wireshark trace of a Windows OPC client
 calling the method against the same server and compare byte-by-byte
 against the generated request/response. The fixtures under
-`tests/Opc.Classic.Da.Tests/Wire/` (planned for Track Y6) will codify
-known-good wire bytes for the most common methods so regressions are
-caught at unit-test time rather than at Matrikon-integration time.
+`tests/Opc.Classic.Da.Tests/Wire/` codify known-good wire bytes for the
+most common methods so regressions are caught at unit-test time rather
+than at Matrikon-integration time.

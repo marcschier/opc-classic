@@ -52,7 +52,7 @@ docker network create `
 Containers are assigned fixed IPs in `interop\docker\docker-compose.test.yml` so the
 DCOM bindings advertise stable, peer-routable addresses.
 
-### Functional managed DCOM-over-IP sample path (Track E)
+### Functional managed DCOM-over-IP sample path
 
 The sample DA, AE, HDA, CttServer, and OPC Security servers support direct
 DCOM-over-IP listeners without Windows SCM endpoint mapping. Server samples bind
@@ -63,7 +63,7 @@ HDA=51302, CttServer=51303, Security=51304), and DA/AE/HDA client samples dial
 environment variables are absent, clients keep their original in-process
 `InMemoryCallChannel` fallback for local development.
 
-This Track E path is separate from the Windows COM/OXID dynamic-port path below:
+This DCOM-over-IP path is separate from the Windows COM/OXID dynamic-port path below:
 it uses a known TCP port on the managed listener instead of SCM activation plus
 endpoint-mapper-discovered object bindings. See `samples\README.docker.md` for
 the DA/AE/HDA compose topology and `samples\README.md` for the full sample port table.

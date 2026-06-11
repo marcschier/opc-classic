@@ -6,7 +6,7 @@ features each pair exercises, and the spec-mandated reason behind any
 EXPECTED-FAIL / NOT-APPLICABLE cell.
 
 Cells are filled in by running [`tools/run-cross-impl-matrix.ps1`](../../tools/run-cross-impl-matrix.ps1)
-(see [Track DV1](#track-dv1)) or by manual `tools/probe_servers.py`
+(see [Automation wrapper](#automation-wrapper)) or by manual `tools/probe_servers.py`
 runs. The PowerShell wrapper auto-registers every Opc.Classic sample
 server under HKCU (no elevation required) before launching the Python
 [`tools/run_cross_impl_matrix.py`](../../tools/run_cross_impl_matrix.py)
@@ -53,13 +53,13 @@ Cell legend:
 
 | Client ↓ \ Server → | `testserver` | `matrikon` | `samples-da` | `ctt-da` | `samples-hda` | `samples-ae` | `security-da` |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| MCP probe (DA tools, DA 2.05a subset) | ✅ **104/0** (a18f8c29) | ✅ (26/95 OK, 0 DA failures) | 🚧 TODO | 🚧 TODO | ⛔ wrong spec | ⛔ wrong spec | 🚧 TODO 🔒 |
-| MCP probe (DA tools, DA 3.0 IOPCItemIO) | ✅ (TestServer Track AB5 divergence) | ✅ | 🚧 TODO | 🚧 TODO | ⛔ | ⛔ | ❌ NOINTERFACE |
+| MCP probe (DA tools, DA 2.05a subset) | ✅ **104/0** | ✅ (26/95 OK, 0 DA failures) | 🚧 TODO | 🚧 TODO | ⛔ wrong spec | ⛔ wrong spec | 🚧 TODO 🔒 |
+| MCP probe (DA tools, DA 3.0 IOPCItemIO) | ✅ (TestServer advertises CATID_OPCDAServer30) | ✅ | 🚧 TODO | 🚧 TODO | ⛔ | ⛔ | ❌ NOINTERFACE |
 | MCP probe (HDA tools) | ⛔ | ⛔ | ⛔ | ⛔ | 🚧 TODO | ⛔ | ⛔ |
 | MCP probe (AE tools) | ⛔ | ⛔ | ⛔ | ⛔ | ⛔ | 🚧 TODO | ⛔ |
 | MCP probe (security tools) | ❌ | ❌ | ❌ | ❌ | ⛔ | ⛔ | 🚧 TODO 🔒 |
 | MCP probe (capture tools) | ✅ local | ✅ local | ✅ local | ✅ local | ✅ local | ✅ local | ✅ local |
-| OPC Foundation `OpcTestClient_x64.exe` | ✅ (a18f8c29) | ✅ (verified GetStatus + AddGroup + AddItems) | 🚧 TODO | 🚧 TODO | ⛔ DA-only client | ⛔ DA-only client | 🚧 TODO |
+| OPC Foundation `OpcTestClient_x64.exe` | ✅ | ✅ (verified GetStatus + AddGroup + AddItems) | 🚧 TODO | 🚧 TODO | ⛔ DA-only client | ⛔ DA-only client | 🚧 TODO |
 | Managed `DaClient` sample | 🚧 TODO | 🚧 TODO | 🚧 TODO | 🚧 TODO | ⛔ | ⛔ | 🚧 TODO |
 | Managed `AeClient` sample | ⛔ | ⛔ | ⛔ | ⛔ | ⛔ | 🚧 TODO | ⛔ |
 | Managed `HdaClient` sample | ⛔ | ⛔ | ⛔ | ⛔ | 🚧 TODO | ⛔ | ⛔ |
@@ -144,11 +144,11 @@ These cells are spec-mandated and will never be PASS for the given pair:
 | `opcclassic.hda.*` / `opcclassic.ae.*` / `opcclassic.batch.*` / `opcclassic.commands.*` / `opcclassic.dx.*` / `opcclassic.xmlda.*` against DA-only profiles | Wrong spec entirely. |
 | All non-DA tools against DA-only `OpcTestClient.exe` | TestClient only exercises DA enumerate + GetStatus. |
 
-## Track DV1
+## Automation wrapper
 
-The `tools/run-cross-impl-matrix.ps1` automation script (DV1 in the
-project plan) wraps the Python driver with HKCU auto-registration and a
-PowerShell-native parameter surface. See `Get-Help .\tools\run-cross-impl-matrix.ps1 -Full`.
+The `tools/run-cross-impl-matrix.ps1` automation script wraps the Python
+driver with HKCU auto-registration and a PowerShell-native parameter
+surface. See `Get-Help .\tools\run-cross-impl-matrix.ps1 -Full`.
 
 ## Related docs
 
@@ -156,7 +156,7 @@ PowerShell-native parameter surface. See `Get-Help .\tools\run-cross-impl-matrix
   results from Matrikon-only probes (historical baseline).
 - [`interop/docs/testserver-registration-spec.md`](testserver-registration-spec.md)
   — WiX-derived TestServer registration reference.
-- [`interop/docs/network-capture.md`](network-capture.md) — Track CA
-  capture engine cookbook.
+- [`interop/docs/network-capture.md`](network-capture.md) — capture
+  engine cookbook.
 - [`interop/docs/wire-captures/README.md`](wire-captures/README.md) —
   `.hex` wire-capture file format used by `-WireCapture`.
