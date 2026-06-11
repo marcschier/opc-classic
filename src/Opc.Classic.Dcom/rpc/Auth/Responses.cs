@@ -130,9 +130,9 @@ public static class Responses
     /// <returns> The NTLM2 Session Response.  This is placed in the NTLM
     /// response field of the Type 3 message; the LM response field contains
     /// the client nonce, null-padded to 24 bytes. </returns>
-    /// <exception cref="Opc.Classic.Dcom.Common.Ntlm.NoSuchAlgorithmException"> </exception>
-    /// <exception cref="InvalidOperationException"> </exception>
-    /// <exception cref="InvalidKeyException">  </exception>
+    /// <exception cref="Opc.Classic.Dcom.Common.Ntlm.NoSuchAlgorithmException">Thrown when the requested NTLM cryptographic algorithm is not available.</exception>
+    /// <exception cref="InvalidOperationException">Thrown when the object is not in the state required to perform the operation.</exception>
+    /// <exception cref="InvalidKeyException">Thrown when the get ntlm2 session response operation cannot be completed.</exception>
     public static byte[] GetNTLM2SessionResponse(string password,
         byte[] challenge, byte[] clientNonce)
     {
@@ -274,9 +274,9 @@ public static class Responses
     /// </param>
     /// <returns> The response (either LM or NTLM, depending on the provided
     /// hash). </returns>
-    /// <exception cref="Opc.Classic.Dcom.Common.Ntlm.NoSuchAlgorithmException"> </exception>
-    /// <exception cref="InvalidKeyException"> </exception>
-    /// <exception cref="InvalidOperationException">  </exception>
+    /// <exception cref="Opc.Classic.Dcom.Common.Ntlm.NoSuchAlgorithmException">Thrown when the requested NTLM cryptographic algorithm is not available.</exception>
+    /// <exception cref="InvalidKeyException">Thrown when the lm response operation cannot be completed.</exception>
+    /// <exception cref="InvalidOperationException">Thrown when the object is not in the state required to perform the operation.</exception>
     private static byte[] LmResponse(byte[] hash, byte[] challenge)
     {
         byte[]? keyBytes = null;
@@ -399,7 +399,7 @@ public static class Responses
     /// <param name="data"> The data for which the hash will be calculated. </param>
     /// <param name="key"> The hashing key.
     /// </param>
-    /// <exception cref="Opc.Classic.Dcom.Common.Ntlm.NoSuchAlgorithmException"> </exception>
+    /// <exception cref="Opc.Classic.Dcom.Common.Ntlm.NoSuchAlgorithmException">Thrown when the requested NTLM cryptographic algorithm is not available.</exception>
     /// <returns> The HMAC-MD5 hash of the given data. </returns>
 #pragma warning disable CA5351 // NTLM requires HMAC-MD5 per [MS-NLMP].
     internal static byte[] HmacMD5(byte[] data, byte[] key) => HmacMD5(data.AsSpan(), key.AsSpan());

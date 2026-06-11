@@ -197,7 +197,7 @@ public sealed class Session
     /// Creates a session with the <code>authInfo</code> of the user.
     /// This session is not yet attached to a COM server.
     /// </summary>
-    /// <param name="authInfo"></param>
+    /// <param name="authInfo">Authentication information used to create the DCOM session.</param>
     /// <exception cref="ArgumentException"> if <code>authInfo</code>
     /// is <code>null</code>. </exception>
     /// <seealso cref="ComServer(Clsid, Session)"> </seealso>
@@ -332,8 +332,8 @@ public sealed class Session
     /// Note that all interface references belonging to sessions linked to this
     /// session will also be destroyed.
     /// </summary>
-    /// <param name="session"> </param>
-    /// <exception cref="InteropException"> </exception>
+    /// <param name="session">Session that owns the COM object, transport, and authentication state.</param>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     public static void DestroySession(Session session)
     {
         //null session
@@ -457,8 +457,8 @@ public sealed class Session
     /// <summary>
     /// Post destroy
     /// </summary>
-    /// <param name="session"></param>
-    /// <exception cref="InteropException"></exception>
+    /// <param name="session">Session that owns the COM object, transport, and authentication state.</param>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     private static void PostDestroy(Session session)
     {
         //now destroy all linked sessions
@@ -503,10 +503,10 @@ public sealed class Session
         /// <summary>
         /// Create tracking reference
         /// </summary>
-        /// <param name="ipid"></param>
-        /// <param name="sessionID"></param>
-        /// <param name="isOnlySessionId"></param>
-        /// <param name="oid"></param>
+        /// <param name="ipid">DCOM IPID identifying the per-interface object reference.</param>
+        /// <param name="sessionID">Session identifier associated with the tracked IPID.</param>
+        /// <param name="isOnlySessionId">Value indicating whether the holder contains only a session identifier and no live object reference.</param>
+        /// <param name="oid">DCOM OID identifying the exported object instance.</param>
         internal IPID_SessionID_Holder(string ipid, int sessionID,
             bool isOnlySessionId, byte[] oid)
         {
@@ -531,7 +531,7 @@ public sealed class Session
     /// Called when the session id holder is garbage collected because
     /// the com object was garbage collected
     /// </summary>
-    /// <param name="holder"></param>
+    /// <param name="holder">Weak-reference holder whose collected object should be removed from the session maps.</param>
     private static void GcCollectSession(IPID_SessionID_Holder holder)
     {
         try
@@ -794,8 +794,8 @@ public sealed class Session
     /// <summary>
     /// Add to session
     /// </summary>
-    /// <param name="comObject"></param>
-    /// <param name="oid"></param>
+    /// <param name="comObject">COM object instance whose exported interfaces are being managed.</param>
+    /// <param name="oid">DCOM OID identifying the exported object instance.</param>
     internal void AddToSession(IComObject comObject, byte[] oid)
     {
         //nothing will be done if the session is being destroyed.
@@ -818,10 +818,10 @@ public sealed class Session
     /// <summary>
     /// Addref release
     /// </summary>
-    /// <param name="IPID"></param>
-    /// <param name="obj"></param>
-    /// <param name="refcount"></param>
-    /// <exception cref="InteropException"></exception>
+    /// <param name="IPID">DCOM IPID identifying the per-interface object reference.</param>
+    /// <param name="obj">Object instance being marshaled, unmarshaled, or invoked.</param>
+    /// <param name="refcount">Number of items included in the operation.</param>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     internal void AddRef_ReleaseRef(string IPID, CallBuilder obj, int refcount)
     {
         UpdateReferenceForIPID(IPID, refcount);
@@ -831,8 +831,8 @@ public sealed class Session
     /// <summary>
     /// Update reference
     /// </summary>
-    /// <param name="ipid"></param>
-    /// <param name="refcount"></param>
+    /// <param name="ipid">DCOM IPID identifying the per-interface object reference.</param>
+    /// <param name="refcount">Number of items included in the operation.</param>
     private void UpdateReferenceForIPID(string ipid, int refcount)
     {
         if (!_mapOfIPIDsVsRefcounts.TryGetValue(ipid, out var value))
@@ -859,8 +859,8 @@ public sealed class Session
     /// <summary>
     /// Add weak reference
     /// </summary>
-    /// <param name="comObject"></param>
-    /// <param name="oid"></param>
+    /// <param name="comObject">COM object instance whose exported interfaces are being managed.</param>
+    /// <param name="oid">DCOM OID identifying the exported object instance.</param>
     internal void AddWeakReference(IComObject comObject, byte[] oid)
     {
         var holder = new IPID_SessionID_Holder(comObject.Ipid, SessionIdentifier, false, oid);
@@ -886,8 +886,8 @@ public sealed class Session
     /// <summary>
     /// Reduce the count of weak-references stored in mapOfIPIDsVsWeakReferences and return the same.
     /// </summary>
-    /// <param name="ipid"></param>
-    /// <returns></returns>
+    /// <param name="ipid">DCOM IPID identifying the per-interface object reference.</param>
+    /// <returns>The numeric remove weak reference value.</returns>
     internal int RemoveWeakReference(string ipid)
     {
         Log.Logger.Verbose("Dumping {@mapOfIPIDsVsWeakReferences}", _mapOfIPIDsVsWeakReferences);
@@ -917,9 +917,9 @@ public sealed class Session
     /// <summary>
     /// Add to session
     /// </summary>
-    /// <param name="IPID"></param>
-    /// <param name="oid"></param>
-    /// <param name="dontping"></param>
+    /// <param name="IPID">DCOM IPID identifying the per-interface object reference.</param>
+    /// <param name="oid">DCOM OID identifying the exported object instance.</param>
+    /// <param name="dontping">Value indicating whether the remote object should be excluded from ping tracking.</param>
     private void AddToSession(string IPID, byte[] oid, bool dontping)
     {
         // Weak reference of the object
@@ -950,16 +950,16 @@ public sealed class Session
     /// is synched with the same lock as getInterface. The remove will
     /// have to wait till that call gets over.
     /// </summary>
-    /// <param name="IPID"></param>
-    /// <exception cref="InteropException"></exception>
+    /// <param name="IPID">DCOM IPID identifying the per-interface object reference.</param>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     internal void ReleaseRef(string IPID) => ReleaseRef(IPID, 5);
 
     /// <summary>
     /// Release reference
     /// </summary>
-    /// <param name="IPID"></param>
-    /// <param name="numinstances"></param>
-    /// <exception cref="InteropException"></exception>
+    /// <param name="IPID">DCOM IPID identifying the per-interface object reference.</param>
+    /// <param name="numinstances">Number of reference instances to release for the IPID.</param>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     internal void ReleaseRef(string IPID, int numinstances)
     {
         Log.Logger.Information("releaseRef:Reclaiming from Session: " +
@@ -991,7 +991,7 @@ public sealed class Session
     /// <summary>
     /// Dreference
     /// </summary>
-    /// <param name="IPID"></param>
+    /// <param name="IPID">DCOM IPID identifying the per-interface object reference.</param>
     private void AddDereferencedIpids(string IPID)
     {
         Log.Logger.Information("addDereferencedIpids for session : " +
@@ -1008,10 +1008,10 @@ public sealed class Session
     /// <summary>
     /// Release
     /// </summary>
-    /// <param name="arrayOfStructs"></param>
-    /// <param name="fromDestroy"></param>
-    /// <exception cref="InteropException"></exception>
-    /// <returns></returns>
+    /// <param name="arrayOfStructs">COM array containing REMINTERFACEREF structures to release.</param>
+    /// <param name="fromDestroy">Value indicating whether the release is part of session destruction.</param>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
+    /// <returns>No value is returned; the remote references are released in place.</returns>
     private void ReleaseRefs(ComArray arrayOfStructs, bool fromDestroy)
     {
         Log.Logger.Information("In releaseRefs for session : " + SessionIdentifier +
@@ -1031,9 +1031,9 @@ public sealed class Session
     /// <summary>
     /// Prepare for release
     /// </summary>
-    /// <param name="IPID"></param>
-    /// <exception cref="InteropException"></exception>
-    /// <returns></returns>
+    /// <param name="IPID">DCOM IPID identifying the per-interface object reference.</param>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
+    /// <returns>A REMINTERFACEREF structure describing the IPID and reference count to release.</returns>
     private Struct PrepareForReleaseRef(string IPID)
     {
         var releaseCount = 5 + 5; // 5 of the original and 5 for the addRef done later on.
@@ -1047,10 +1047,10 @@ public sealed class Session
     /// <summary>
     /// Prepare for release
     /// </summary>
-    /// <param name="IPID"></param>
-    /// <param name="refcount"></param>
-    /// <exception cref="InteropException"></exception>
-    /// <returns></returns>
+    /// <param name="IPID">DCOM IPID identifying the per-interface object reference.</param>
+    /// <param name="refcount">Number of items included in the operation.</param>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
+    /// <returns>A REMINTERFACEREF structure describing the IPID and reference count to release.</returns>
     private Struct PrepareForReleaseRef(string IPID, int refcount)
     {
         var remInterface = new Struct();
@@ -1101,8 +1101,8 @@ public sealed class Session
     /// <summary>
     /// Get unreferenced handler
     /// </summary>
-    /// <param name="ipid"></param>
-    /// <returns></returns>
+    /// <param name="ipid">DCOM IPID identifying the per-interface object reference.</param>
+    /// <returns>The requested unreferenced handler value.</returns>
     internal IUnreferenced GetUnreferencedHandler(string ipid)
     {
         lock (_unreferencedHandlersLock)
@@ -1114,8 +1114,8 @@ public sealed class Session
     /// <summary>
     /// Register unreferenced handler
     /// </summary>
-    /// <param name="ipid"></param>
-    /// <param name="unreferenced"></param>
+    /// <param name="ipid">DCOM IPID identifying the per-interface object reference.</param>
+    /// <param name="unreferenced">Value indicating whether the object reference has already been released.</param>
     internal void RegisterUnreferencedHandler(string ipid, IUnreferenced unreferenced)
     {
         lock (_unreferencedHandlersLock)
@@ -1127,7 +1127,7 @@ public sealed class Session
     /// <summary>
     /// Unregister unreferenced handler
     /// </summary>
-    /// <param name="ipid"></param>
+    /// <param name="ipid">DCOM IPID identifying the per-interface object reference.</param>
     internal void UnregisterUnreferencedHandler(string ipid)
     {
         lock (_unreferencedHandlersLock)
@@ -1139,8 +1139,8 @@ public sealed class Session
     /// <summary>
     /// Links the src with target. These two sessions can now be destroyed in a cascade effect.
     /// </summary>
-    /// <param name="src"></param>
-    /// <param name="target"></param>
+    /// <param name="src">Source NDR buffer that supplies the field data to decode.</param>
+    /// <param name="target">Target object or buffer that receives the operation result.</param>
     internal static void LinkTwoSessions(Session src, Session target)
     {
         if (src.SessionInDestroy || target.SessionInDestroy)
@@ -1163,8 +1163,8 @@ public sealed class Session
     /// <summary>
     /// Removes session from src sessions list.
     /// </summary>
-    /// <param name="src"></param>
-    /// <param name="tobeunlinked"></param>
+    /// <param name="src">Source NDR buffer that supplies the field data to decode.</param>
+    /// <param name="tobeunlinked">Session that should be removed from the linked-session list.</param>
     internal static void UnLinkSession(Session src, Session tobeunlinked)
     {
         if (src.SessionInDestroy)
@@ -1206,8 +1206,8 @@ public sealed class Session
     /// A new copy is returned from customClass.decode(...) and that
     /// is used by framework internally.
     /// </summary>
-    /// <param name="CLSID"> </param>
-    /// <param name="customClass"> </param>
+    /// <param name="CLSID">CLSID of the COM class whose session should be found.</param>
+    /// <param name="customClass">Template class that supplies custom marshaling and unmarshaling behavior.</param>
     public void RegisterCustomMarshallerUnMarshallerTemplate(string CLSID,
         ComCustomMarshallerUnMarshaller customClass) =>
         kMapOfCustomCLSIDs.AddOrUpdate(CLSID.ToUpper(CultureInfo.InvariantCulture), customClass);
@@ -1215,8 +1215,8 @@ public sealed class Session
     /// <summary>
     /// Get template
     /// </summary>
-    /// <param name="CLSID"></param>
-    /// <returns></returns>
+    /// <param name="CLSID">CLSID of the COM class whose session should be found.</param>
+    /// <returns>The requested custom marshaller un marshaller template value.</returns>
     internal ComCustomMarshallerUnMarshaller GetCustomMarshallerUnMarshallerTemplate(
         string CLSID) => kMapOfCustomCLSIDs.GetOrDefault(CLSID.ToUpper(CultureInfo.InvariantCulture));
 

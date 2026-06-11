@@ -18,8 +18,8 @@ public interface IComObjectInternal
     /// connectionPointMap internally.
     /// To be called only by the framework.
     /// </summary>
-    /// <param name="connectionPoint"> </param>
-    /// <param name="cookie"> </param>
+    /// <param name="connectionPoint">Connection point COM object associated with the generated cookie.</param>
+    /// <param name="cookie">Connection-point cookie returned by the remote advise call.</param>
     /// <returns> unique identifier for the combination. </returns>
     string SetConnectionInfo(IComObject connectionPoint, int? cookie);
 
@@ -28,21 +28,21 @@ public interface IComObjectInternal
     /// Returns the ConnectionPoint (<see cref="IComObject"/>)
     /// and it's Cookie.
     /// </summary>
-    /// <param name="identifier"></param>
-    /// <returns></returns>
+    /// <param name="identifier">Connection-point identifier returned when the mapping was registered.</param>
+    /// <returns>The sequence of connection info values produced by the operation.</returns>
     object[] GetConnectionInfo(string identifier);
 
     /// <summary>
     /// Framework Internal.
     /// Returns and Removes the connection info from the internal map.
     /// </summary>
-    /// <param name="identifier"></param>
-    /// <returns></returns>
+    /// <param name="identifier">Connection-point identifier returned when the mapping was registered.</param>
+    /// <returns>The sequence of remove connection info values produced by the operation.</returns>
     object[] RemoveConnectionInfo(string identifier);
 
     /// <summary>
     /// <i><u>Framework Internal</u></i>
-    /// <param name="deffered"> </param>
+    /// <param name="deffered">Value indicating whether marshaling for the COM object should be deferred.</param>
     /// </summary>
     void SetDeffered(bool deffered);
 }

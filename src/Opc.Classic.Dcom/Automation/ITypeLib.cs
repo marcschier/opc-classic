@@ -23,7 +23,7 @@ public interface ITypeLib : IComObject
     /// <summary>
     /// Returns the number of type descriptions in the type library.
     /// </summary>
-    /// <exception cref="InteropException"> </exception>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     int TypeInfoCount { get; }
 
     /// <summary>
@@ -31,7 +31,7 @@ public interface ITypeLib : IComObject
     /// </summary>
     /// <param name="index"> index of the ITypeInfo interface to
     /// be returned. </param>
-    /// <exception cref="InteropException"> </exception>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     ITypeInfo GetTypeInfo(int index);
 
     /// <summary>
@@ -39,7 +39,7 @@ public interface ITypeLib : IComObject
     /// </summary>
     /// <param name="index"> ihe index of the type description
     /// within the type library. </param>
-    /// <exception cref="InteropException"> </exception>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     int GetTypeInfoType(int index);
 
     /// <summary>
@@ -47,13 +47,13 @@ public interface ITypeLib : IComObject
     /// specified GUID.
     /// </summary>
     /// <param name="uuid"> GUID of the type description.</param>
-    /// <exception cref="InteropException"> </exception>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     ITypeInfo GetTypeInfoOfGuid(string uuid);
 
     /// <summary>
     /// Retrieves the structure that contains the library's attributes.
     /// </summary>
-    /// <exception cref="InteropException"> </exception>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     void GetLibAttr();
 
     /// <summary>
@@ -61,8 +61,8 @@ public interface ITypeLib : IComObject
     /// Help file name and path, and the context identifier for the
     /// library Help topic in the Help file.
     /// </summary>
-    /// <param name="memberId"></param>
-    /// <exception cref="InteropException"> </exception>
+    /// <param name="memberId">Automation member identifier whose name should be resolved.</param>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     object[] GetDocumentation(int memberId);
 
     /// <summary>
@@ -70,10 +70,10 @@ public interface ITypeLib : IComObject
     /// This may be used to quickly verify that a name exists in a type
     /// library.
     /// </summary>
-    /// <param name="nameBuf"> </param>
-    /// <param name="hashValue"> </param>
+    /// <param name="nameBuf">Name used to identify the target server, member, or descriptor.</param>
+    /// <param name="hashValue">Locale-specific Automation name hash used for lookup.</param>
     /// <param name="found">
     /// </param>
-    /// <exception cref="InteropException"> </exception>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     object[] FindName(ComString nameBuf, int hashValue, short found);
 }

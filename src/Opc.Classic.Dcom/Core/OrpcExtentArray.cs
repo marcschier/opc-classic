@@ -14,9 +14,9 @@ internal sealed class OrpcExtentArray
     /// <summary>
     /// Create
     /// </summary>
-    /// <param name="guid"></param>
-    /// <param name="size"></param>
-    /// <param name="data"></param>
+    /// <param name="guid">GUID value encoded in the RPC or COM descriptor.</param>
+    /// <param name="size">Number of bytes or elements represented by the field.</param>
+    /// <param name="data">Wire-format payload bytes to process.</param>
     internal OrpcExtentArray(string guid, int size, byte[] data)
     {
         GUID = guid;

@@ -42,7 +42,7 @@ public class PresentationSyntax : NdrOp
     /// <summary>
     /// Create presentation syntax
     /// </summary>
-    /// <param name="syntax"></param>
+    /// <param name="syntax">Presentation syntax negotiated for the RPC context.</param>
     public PresentationSyntax(string syntax) : this()
     {
         ArgumentNullException.ThrowIfNull(syntax);
@@ -68,9 +68,9 @@ public class PresentationSyntax : NdrOp
     /// <summary>
     /// Create syntax
     /// </summary>
-    /// <param name="uuid"></param>
-    /// <param name="majorVersion"></param>
-    /// <param name="minorVersion"></param>
+    /// <param name="uuid">UUID value encoded in the RPC or COM descriptor.</param>
+    /// <param name="majorVersion">Major version component of the protocol or COM descriptor.</param>
+    /// <param name="minorVersion">Minor version component of the protocol or COM descriptor.</param>
     public PresentationSyntax(UUID uuid, int majorVersion, int minorVersion) : this()
     {
         Uuid = uuid;

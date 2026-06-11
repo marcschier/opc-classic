@@ -16,7 +16,7 @@ internal sealed class Oxid
     /// <summary>
     /// Create
     /// </summary>
-    /// <param name="oxid"></param>
+    /// <param name="oxid">DCOM OXID identifying the object exporter process.</param>
     internal Oxid(byte[] oxid) => _oxid = oxid;
 #pragma warning restore RECS0154 // Parameter is never used
 

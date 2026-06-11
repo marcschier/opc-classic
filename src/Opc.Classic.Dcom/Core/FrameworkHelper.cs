@@ -18,8 +18,8 @@ public static class FrameworkHelper
     /// <summary>
     /// link session
     /// </summary>
-    /// <param name="src"> </param>
-    /// <param name="target"> </param>
+    /// <param name="src">Source NDR buffer that supplies the field data to decode.</param>
+    /// <param name="target">Target object or buffer that receives the operation result.</param>
     internal static void Link2Sessions(Session src, Session target)
     {
         ArgumentNullException.ThrowIfNull(src);
@@ -30,8 +30,8 @@ public static class FrameworkHelper
     /// <summary>
     /// Unlink session
     /// </summary>
-    /// <param name="src"> </param>
-    /// <param name="unlinkedSession"> </param>
+    /// <param name="src">Source NDR buffer that supplies the field data to decode.</param>
+    /// <param name="unlinkedSession">Session that was detached from the COM object graph.</param>
     internal static void UnLinkSession(Session src, Session unlinkedSession)
     {
         ArgumentNullException.ThrowIfNull(src);
@@ -42,16 +42,16 @@ public static class FrameworkHelper
     /// <summary>
     /// Resolve session
     /// </summary>
-    /// <param name="oxid"> </param>
-    /// <returns></returns>
+    /// <param name="oxid">DCOM OXID identifying the object exporter process.</param>
+    /// <returns>The requested resolve session for oxid value.</returns>
     internal static Session ResolveSessionForOXID(byte[] oxid) =>
         Session.ResolveSessionForOxid(new Oxid(oxid));
 
     /// <summary>
     /// get interface pointer
     /// </summary>
-    /// <param name="session"> </param>
-    /// <returns></returns>
+    /// <param name="session">Session that owns the COM object, transport, and authentication state.</param>
+    /// <returns>The requested interface pointer of stub value.</returns>
     internal static InterfacePointer GetInterfacePointerOfStub(Session session) => session.Stub.ServerInterfacePointer;
 
     /// <summary>
@@ -59,10 +59,10 @@ public static class FrameworkHelper
     /// create the right pointer in case of man in the middle scenario and
     /// add it to the session.
     /// </summary>
-    /// <param name="session"> </param>
-    /// <param name="ptr"></param>
-    /// <exception cref="InteropException"> </exception>
-    /// <returns></returns>
+    /// <param name="session">Session that owns the COM object, transport, and authentication state.</param>
+    /// <param name="ptr">Pointer referent being encoded, decoded, or dereferenced.</param>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
+    /// <returns>The COM object proxy created for the requested interface.</returns>
     internal static IComObject InstantiateComObject(Session session, InterfacePointer ptr)
     {
         var retval = InstantiateComObject2(session, ptr);
@@ -73,10 +73,10 @@ public static class FrameworkHelper
     /// <summary>
     /// Instantiate object2
     /// </summary>
-    /// <param name="session"></param>
-    /// <param name="ptr"></param>
-    /// <exception cref="InteropException"> </exception>
-    /// <returns></returns>
+    /// <param name="session">Session that owns the COM object, transport, and authentication state.</param>
+    /// <param name="ptr">Pointer referent being encoded, decoded, or dereferenced.</param>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
+    /// <returns>The COM object proxy created from the supplied interface pointer.</returns>
     internal static IComObject InstantiateComObject2(Session session, InterfacePointer ptr)
     {
         if (ptr == null)
@@ -118,18 +118,18 @@ public static class FrameworkHelper
     /// <summary>
     /// Add to session
     /// </summary>
-    /// <param name="session"></param>
-    /// <param name="comObject"></param>
+    /// <param name="session">Session that owns the COM object, transport, and authentication state.</param>
+    /// <param name="comObject">COM object instance whose exported interfaces are being managed.</param>
     internal static void AddComObjectToSession(Session session, IComObject comObject) =>
         session.AddToSession(comObject, ((IComObjectInternal)comObject).GetInterfacePointer().OID);
 
     /// <summary>
     /// Returns an Interface Pointer representation for the Component
     /// </summary>
-    /// <param name="session"></param>
-    /// <param name="localComponent"></param>
-    /// <exception cref="InteropException"> </exception>
-    /// <returns></returns>
+    /// <param name="session">Session that owns the COM object, transport, and authentication state.</param>
+    /// <param name="localComponent">Local component of the COM version or RPC syntax identifier.</param>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
+    /// <returns>The local COM object wrapper created for the supplied implementation.</returns>
     public static IComObject InstantiateLocalComObject(Session session,
         LocalCoClass localComponent) => new ComObjectImpl(session,
             ComOxidRuntime.Instance.GetInterfacePointer(session, localComponent), true);
@@ -137,22 +137,22 @@ public static class FrameworkHelper
     /// <summary>
     /// Release local Component
     /// </summary>
-    /// <param name="session"></param>
-    /// <param name="localComponent"></param>
-    /// <exception cref="InteropException"> </exception>
-    /// <returns></returns>
+    /// <param name="session">Session that owns the COM object, transport, and authentication state.</param>
+    /// <param name="localComponent">Local component of the COM version or RPC syntax identifier.</param>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
+    /// <returns><c>true</c> when the local component was released; otherwise <c>false</c>.</returns>
     public static void ReleaseLocalComponent(Session session, LocalCoClass localComponent) =>
         ComOxidRuntime.Instance.ReleaseLocalComponent(session, localComponent);
 
     /// <summary>
     /// Returns an Interface Pointer representation from raw bytes.
     /// </summary>
-    /// <param name="session"> </param>
+    /// <param name="session">Session that owns the COM object, transport, and authentication state.</param>
     /// <param name="rawBytes">
     /// </param>
-    /// <param name="ipAddress"></param>
-    /// <exception cref="InteropException"> </exception>
-    /// <returns></returns>
+    /// <param name="ipAddress">IP address of the remote endpoint.</param>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
+    /// <returns>The COM object proxy created for the requested interface.</returns>
     public static IComObject InstantiateComObject(Session session, byte[] rawBytes, string ipAddress)
     {
         var ndr = new NdrCodec();
@@ -182,10 +182,10 @@ public static class FrameworkHelper
     /// Or the <see cref="IComObject"/> is deserialized from a
     /// Database and is right now drifting.
     /// </summary>
-    /// <param name="session"> </param>
-    /// <param name="comObject"></param>
-    /// <exception cref="InteropException"> </exception>
-    /// <returns></returns>
+    /// <param name="session">Session that owns the COM object, transport, and authentication state.</param>
+    /// <param name="comObject">COM object instance whose exported interfaces are being managed.</param>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
+    /// <returns>The COM object proxy created for the requested interface.</returns>
     public static IComObject InstantiateComObject(Session session, IComObject comObject)
     {
         if (comObject.AssociatedSession != null)
@@ -207,9 +207,9 @@ public static class FrameworkHelper
     /// <summary>
     /// Detach event handler
     /// </summary>
-    /// <param name="comObject"> </param>
-    /// <param name="identifier"> </param>
-    /// <exception cref="InteropException"> </exception>
+    /// <param name="comObject">COM object instance whose exported interfaces are being managed.</param>
+    /// <param name="identifier">Connection-point identifier returned when the mapping was registered.</param>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     public static void DetachEventHandler(IComObject comObject, string identifier)
     {
         var connectionInfo = ((IComObjectInternal)comObject).GetConnectionInfo(identifier);
@@ -236,11 +236,11 @@ public static class FrameworkHelper
 
     /// <summary>
     /// Attach event handler </summary>
-    /// <param name="comObject"> </param>
-    /// <param name="sourceUUID"> </param>
-    /// <param name="eventListener"> </param>
-    /// <exception cref="InteropException"> </exception>
-    /// <returns></returns>
+    /// <param name="comObject">COM object instance whose exported interfaces are being managed.</param>
+    /// <param name="sourceUUID">UUID text used as the source identifier for event hookup.</param>
+    /// <param name="eventListener">Listener object that receives Automation connection-point events.</param>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
+    /// <returns>The attach event handler text value.</returns>
     public static string AttachEventHandler(IComObject comObject, string sourceUUID,
         IComObject eventListener)
     {
@@ -285,7 +285,7 @@ public static class FrameworkHelper
     /// <summary>
     /// Reverse array
     /// </summary>
-    /// <param name="arrayToReverse"></param>
-    /// <returns></returns>
+    /// <param name="arrayToReverse">Array whose element order should be reversed for Automation dispatch marshaling.</param>
+    /// <returns>The numeric reverse array for dispatch value.</returns>
     public static int ReverseArrayForDispatch(ComArray arrayToReverse) => arrayToReverse.ReverseArrayForDispatch();
 }

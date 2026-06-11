@@ -39,8 +39,8 @@ public class PresentationContext : NdrOp
     /// <summary>
     /// Create context
     /// </summary>
-    /// <param name="contextId"></param>
-    /// <param name="abstractSyntax"></param>
+    /// <param name="contextId">Presentation context identifier assigned to the RPC association.</param>
+    /// <param name="abstractSyntax">Abstract interface syntax requested for the presentation context.</param>
     public PresentationContext(int contextId, PresentationSyntax abstractSyntax) :
         this(contextId, abstractSyntax, new PresentationSyntax[] {
             new PresentationSyntax(NdrCodec.NDR_SYNTAX)
@@ -51,9 +51,9 @@ public class PresentationContext : NdrOp
     /// <summary>
     /// Create context
     /// </summary>
-    /// <param name="contextId"></param>
-    /// <param name="abstractSyntax"></param>
-    /// <param name="transferSyntaxes"></param>
+    /// <param name="contextId">Presentation context identifier assigned to the RPC association.</param>
+    /// <param name="abstractSyntax">Abstract interface syntax requested for the presentation context.</param>
+    /// <param name="transferSyntaxes">Transfer syntaxes offered for the RPC presentation context.</param>
     public PresentationContext(int contextId, PresentationSyntax abstractSyntax,
         PresentationSyntax[] transferSyntaxes)
     {

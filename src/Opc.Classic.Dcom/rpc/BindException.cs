@@ -36,9 +36,9 @@ public class BindException : RpcException
     /// <summary>
     /// Combine to string
     /// </summary>
-    /// <param name="message"></param>
-    /// <param name="reason"></param>
-    /// <returns></returns>
+    /// <param name="message">Human-readable description of the failure condition.</param>
+    /// <param name="reason">Diagnostic reason associated with the RPC or COM failure.</param>
+    /// <returns>Returns a human-readable representation suitable for diagnostic logging.</returns>
     private static string ToString(string message,
         BindNoAcknowledgeReason reason) => !string.IsNullOrEmpty(message) ?
             message + " (" + ToString(reason) + ")" : ToString(reason);
@@ -46,8 +46,8 @@ public class BindException : RpcException
     /// <summary>
     /// TODO Move to extension
     /// </summary>
-    /// <param name="reason"></param>
-    /// <returns></returns>
+    /// <param name="reason">Diagnostic reason associated with the RPC or COM failure.</param>
+    /// <returns>Returns a human-readable representation suitable for diagnostic logging.</returns>
     private static string ToString(BindNoAcknowledgeReason reason)
     {
         switch (reason)

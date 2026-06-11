@@ -14,8 +14,8 @@ public class InteropException : Exception
     /// <summary>
     /// Create exception
     /// </summary>
-    /// <param name="errorCode"></param>
-    /// <param name="message"></param>
+    /// <param name="errorCode">Protocol or HRESULT error code reported by the operation.</param>
+    /// <param name="message">Human-readable description of the failure condition.</param>
     public InteropException(int errorCode, string message) :
         this(errorCode, message, null)
     {
@@ -24,8 +24,8 @@ public class InteropException : Exception
     /// <summary>
     /// Create exception
     /// </summary>
-    /// <param name="errorCode"></param>
-    /// <param name="message"></param>
+    /// <param name="errorCode">Protocol or HRESULT error code reported by the operation.</param>
+    /// <param name="message">Human-readable description of the failure condition.</param>
     public InteropException(ErrorCode errorCode, string message) :
         this(errorCode, message, null)
     {
@@ -34,7 +34,7 @@ public class InteropException : Exception
     /// <summary>
     /// Create exception
     /// </summary>
-    /// <param name="errorCode"></param>
+    /// <param name="errorCode">Protocol or HRESULT error code reported by the operation.</param>
     public InteropException(int errorCode) :
         this(errorCode, (Exception)null)
     {
@@ -43,7 +43,7 @@ public class InteropException : Exception
     /// <summary>
     /// Create exception
     /// </summary>
-    /// <param name="errorCode"></param>
+    /// <param name="errorCode">Protocol or HRESULT error code reported by the operation.</param>
     public InteropException(ErrorCode errorCode) :
         this(errorCode, (Exception)null)
     {

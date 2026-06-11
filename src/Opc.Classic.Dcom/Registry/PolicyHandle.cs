@@ -21,7 +21,7 @@ public class PolicyHandle
     /// <summary>
     /// Create handle
     /// </summary>
-    /// <param name="newlyCreated"> </param>
+    /// <param name="newlyCreated">Value indicating whether the registry key was created rather than opened.</param>
     public PolicyHandle(bool newlyCreated)
     {
         NewlyCreated = newlyCreated;

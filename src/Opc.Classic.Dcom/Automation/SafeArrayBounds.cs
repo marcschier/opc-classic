@@ -22,7 +22,7 @@ public sealed class SafeArrayBounds
     /// <summary>
     /// Create safe array bounds structure
     /// </summary>
-    /// <param name="values"></param>
+    /// <param name="values">Values being stored, encoded, or assigned.</param>
     internal SafeArrayBounds(Struct values)
     {
         if (values == null)

@@ -11,9 +11,9 @@ public sealed class DefaultAuthInfoImpl : IAuthInfo
     /// <summary>
     ///Creates the AuthInfo Object.
     /// </summary>
-    /// <param name="domain"> </param>
-    /// <param name="username"> </param>
-    /// <param name="password"> </param>
+    /// <param name="domain">Authentication domain used for the NTLM or Kerberos handshake.</param>
+    /// <param name="username">User name used for the NTLM or Kerberos handshake.</param>
+    /// <param name="password">Password used for the NTLM or Kerberos handshake.</param>
     public DefaultAuthInfoImpl(string domain, string username,
         string password)
     {

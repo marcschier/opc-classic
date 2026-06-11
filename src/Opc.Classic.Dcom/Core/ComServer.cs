@@ -78,7 +78,7 @@ public sealed class ComServer : Stub
     /// </para>
     /// <para>The DCOM specs refer to this as the "middleman" case. (Section 3.3.1) </para>
     /// </summary>
-    /// <exception cref="InteropException"></exception>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     /// <param name="session"> Please use a new session and not an already bounded one. The <code><see cref="Session"/>.createSession(<see cref="Session"/>)</code> can be used to create a new session. </param>
     /// <param name="interfacePointer"> reference to a different COM server pointer. </param>
     /// <param name="ipAddress"> Can be <code>null</code>. Sometimes there are many adapters (virtual as well) on the Target machine to which this interface pointer belongs,
@@ -327,7 +327,7 @@ public sealed class ComServer : Stub
     /// <code>session</code> is associated with another server already. </exception>
     /// <exception cref="ArgumentException"> raised when either <code>progId</code>
     /// or <code>session</code> is <code>null</code>. </exception>
-    /// <exception cref="System.Net.Sockets.SocketException"> </exception>
+    /// <exception cref="System.Net.Sockets.SocketException">Thrown when the remote host cannot be resolved or the connection is refused.</exception>
     public ComServer(ProgId progId, Session session) :
         this(progId, Dns.GetHostName(), session)
     {
@@ -344,7 +344,7 @@ public sealed class ComServer : Stub
     /// <code>session</code> is associated with another server already. </exception>
     /// <exception cref="ArgumentException"> raised when either <code>clsid</code>
     /// or <code>session</code> is <code>null</code>. </exception>
-    /// <exception cref="System.Net.Sockets.SocketException"> </exception>
+    /// <exception cref="System.Net.Sockets.SocketException">Thrown when the remote host cannot be resolved or the connection is refused.</exception>
     public ComServer(Clsid clsid, Session session) :
         this(clsid, Dns.GetHostName(), session)
     {
@@ -363,7 +363,7 @@ public sealed class ComServer : Stub
     /// <code>session</code> is associated with another server already. </exception>
     /// <exception cref="ArgumentException"> raised when any of the parameters
     /// is <code>null</code>. </exception>
-    /// <exception cref="System.Net.Sockets.SocketException"> </exception>
+    /// <exception cref="System.Net.Sockets.SocketException">Thrown when the remote host cannot be resolved or the connection is refused.</exception>
     public ComServer(ProgId progId, string address, Session session)
     {
         if (progId == null || address == null || session == null)
@@ -402,7 +402,7 @@ public sealed class ComServer : Stub
     /// <code>session</code> is associated with another server already. </exception>
     /// <exception cref="ArgumentException"> raised when any of the parameters
     /// is <code>null</code>. </exception>
-    /// <exception cref="System.Net.Sockets.SocketException"> </exception>
+    /// <exception cref="System.Net.Sockets.SocketException">Thrown when the remote host cannot be resolved or the connection is refused.</exception>
     public ComServer(Clsid clsid, string address, Session session)
     {
         if (clsid == null || address == null || session == null)
@@ -423,10 +423,10 @@ public sealed class ComServer : Stub
     /// <summary>
     /// Initialize
     /// </summary>
-    /// <param name="clsid"></param>
-    /// <param name="address"></param>
-    /// <param name="session"></param>
-    /// <exception cref="InteropException"></exception>
+    /// <param name="clsid">CLSID identifying the COM class or OPC server to activate.</param>
+    /// <param name="address">Network address or binding address for the remote endpoint.</param>
+    /// <param name="session">Session that owns the COM object, transport, and authentication state.</param>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     private void Initialise(Clsid clsid, string address, Session session)
     {
         TransportFactory = ComTransportFactory.Instance;
@@ -581,7 +581,7 @@ public sealed class ComServer : Stub
     /// <summary>
     /// Initialize
     /// </summary>
-    /// <exception cref="InteropException"></exception>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     private void Init()
     {
         if (_serverActivation != null && _serverActivation.ActivationSuccessful)
@@ -770,10 +770,10 @@ public sealed class ComServer : Stub
     /// <summary>
     /// Will give a call to IRemUnknown for the passed IID
     /// </summary>
-    /// <param name="iid"></param>
-    /// <param name="ipidOfTheTargetUnknown"></param>
-    /// <returns></returns>
-    /// <exception cref="InteropException"></exception>
+    /// <param name="iid">Interface IID identifying the COM interface being queried or marshaled.</param>
+    /// <param name="ipidOfTheTargetUnknown">IPID of the target IUnknown interface used for remote queries.</param>
+    /// <returns>The requested interface value.</returns>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     internal IComObject GetInterface(string iid, string ipidOfTheTargetUnknown)
     {
         IComObject retval = null;
@@ -847,7 +847,7 @@ public sealed class ComServer : Stub
     /// <summary>
     /// Returns an <code><see cref="IComObject"/></code> representing the COM Server.
     /// </summary>
-    /// <exception cref="InteropException"> </exception>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     public IComObject CreateInstance()
     {
         if (_interfacePtrCtor != null)
@@ -892,7 +892,7 @@ public sealed class ComServer : Stub
     /// To be used only with <code><see cref="ComServer"/>(<see cref="Session"/>,<see cref="InterfacePointer"/>,String)</code> ctor,
     /// otherwise use createInstance() instead.
     /// </summary>
-    /// <exception cref="InteropException"> </exception>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     internal IComObject Instance
     {
         get
@@ -930,21 +930,21 @@ public sealed class ComServer : Stub
     /// <summary>
     /// Execute a Method on the COM Interface identified by the IID.
     /// </summary>
-    /// <param name="obj"> </param>
+    /// <param name="obj">Object instance being marshaled, unmarshaled, or invoked.</param>
     /// <param name="targetIID">
     /// </param>
-    /// <exception cref="InteropException"> </exception>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     internal object[] Call(CallBuilder obj, string targetIID) =>
         Call(obj, targetIID, _session.GlobalSocketTimeout);
 
     /// <summary>
     /// Execute a Method on the COM Interface identified by the IID
     /// </summary>
-    /// <param name="obj"> </param>
+    /// <param name="obj">Object instance being marshaled, unmarshaled, or invoked.</param>
     /// <param name="targetIID">
     /// </param>
-    /// <param name="socketTimeout"></param>
-    /// <exception cref="InteropException"> </exception>
+    /// <param name="socketTimeout">Socket timeout, in milliseconds, used for blocking transport operations.</param>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     internal object[] Call(CallBuilder obj, string targetIID, int socketTimeout)
     {
         lock (_mutex)
@@ -1006,8 +1006,8 @@ public sealed class ComServer : Stub
     /// <summary>
     /// Add ref release
     /// </summary>
-    /// <param name="obj"></param>
-    /// <exception cref="InteropException"> </exception>
+    /// <param name="obj">Object instance being marshaled, unmarshaled, or invoked.</param>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     internal void AddRef_ReleaseRef(CallBuilder obj)
     {
         lock (_mutex)

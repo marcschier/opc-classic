@@ -76,7 +76,7 @@ public sealed class ComPointer
     /// <summary>
     /// Sets the flags associated with the referent.
     /// </summary>
-    /// <param name="value"></param>
+    /// <param name="value">Value being stored, encoded, or assigned.</param>
     internal void SetFlags(int value) => _flags = value;
 
     /// <summary>
@@ -95,7 +95,7 @@ public sealed class ComPointer
     /// Used when serializing this pointer. This pointer is
     /// <b>not</b> of reference type.
     /// </summary>
-    /// <param name="value"> </param>
+    /// <param name="value">Value being stored, encoded, or assigned.</param>
     public ComPointer(object value) :
         this(value, false)
     {
@@ -165,8 +165,8 @@ public sealed class ComPointer
     /// <summary>
     /// Encode
     /// </summary>
-    /// <param name="ndr"></param>
-    /// <param name="context"></param>
+    /// <param name="ndr">NDR buffer used to encode or decode the wire representation.</param>
+    /// <param name="context">Codec context that tracks deferred pointers and per-call buffers.</param>
     internal void Encode(NdrCodec ndr, CodecContext context)
     {
         var oldFlags = context.Flag;
@@ -224,9 +224,9 @@ public sealed class ComPointer
     /// class of type being decoded. If the type being expected is an array, the varType
     /// should be the actual array type and not ComArray.
     /// </summary>
-    /// <param name="ndr"></param>
-    /// <param name="context"></param>
-    /// <returns></returns>
+    /// <param name="ndr">NDR buffer used to encode or decode the wire representation.</param>
+    /// <param name="context">Codec context that tracks deferred pointers and per-call buffers.</param>
+    /// <returns>A new <see cref="ComPointer"/> instance built from <paramref name="ndr"/>.</returns>
     internal ComPointer Decode(NdrCodec ndr, CodecContext context)
     {
         var oldFlags = context.Flag;
@@ -288,7 +288,7 @@ public sealed class ComPointer
     /// <summary>
     /// Internal replace
     /// </summary>
-    /// <param name="replacement"></param>
+    /// <param name="replacement">Replacement text inserted for each matched character or segment.</param>
     internal void ReplaceSelfWithNewPointer(ComPointer replacement)
     {
         Deffered = replacement.Deffered;

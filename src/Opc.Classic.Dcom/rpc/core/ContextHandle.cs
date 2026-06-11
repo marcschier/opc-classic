@@ -23,8 +23,8 @@ public class ContextHandle : NdrOp
     /// <summary>
     /// Create handle
     /// </summary>
-    /// <param name="attributes"></param>
-    /// <param name="uuid"></param>
+    /// <param name="attributes">Descriptor attributes that qualify the COM or Automation metadata.</param>
+    /// <param name="uuid">UUID value encoded in the RPC or COM descriptor.</param>
     public ContextHandle(int attributes, UUID uuid)
     {
         Attributes = attributes;

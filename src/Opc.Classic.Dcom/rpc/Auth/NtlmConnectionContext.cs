@@ -29,10 +29,10 @@ public class NtlmConnectionContext : IConnectionContext
     /// <summary>
     /// Initialize
     /// </summary>
-    /// <param name="context"></param>
-    /// <param name="properties"></param>
-    /// <exception cref="IOException"></exception>
-    /// <returns></returns>
+    /// <param name="context">Codec context that tracks deferred pointers and per-call buffers.</param>
+    /// <param name="properties">Property values used to initialize the COM descriptor.</param>
+    /// <exception cref="IOException">Thrown when the underlying stream, socket, or named pipe read/write operation fails.</exception>
+    /// <returns>The NTLM Type 1 token produced while initializing the connection context.</returns>
     public virtual ConnectionOrientedPdu Init2(PresentationContext context, PropertyBag properties)
     {
         Established = false;

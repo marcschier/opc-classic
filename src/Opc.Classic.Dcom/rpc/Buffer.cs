@@ -83,7 +83,7 @@ public class Buffer
     /// <summary>
     /// Create buffer
     /// </summary>
-    /// <param name="capacityIncrement"></param>
+    /// <param name="capacityIncrement">Number of additional elements allocated when the buffer grows.</param>
     public Buffer(int capacityIncrement) :
         this(null, capacityIncrement)
     {
@@ -92,7 +92,7 @@ public class Buffer
     /// <summary>
     /// Create buffer
     /// </summary>
-    /// <param name="buffer"></param>
+    /// <param name="buffer">Buffer containing the bytes or fields being processed.</param>
     public Buffer(byte[] buffer) :
         this(buffer, 0)
     {
@@ -101,8 +101,8 @@ public class Buffer
     /// <summary>
     /// Create buffer
     /// </summary>
-    /// <param name="buffer"></param>
-    /// <param name="capacityIncrement"></param>
+    /// <param name="buffer">Buffer containing the bytes or fields being processed.</param>
+    /// <param name="capacityIncrement">Number of additional elements allocated when the buffer grows.</param>
     public Buffer(byte[] buffer, int capacityIncrement)
     {
         Buf = buffer;
@@ -112,7 +112,7 @@ public class Buffer
     /// <summary>
     /// Copy
     /// </summary>
-    /// <returns></returns>
+    /// <returns>The sequence of copy values produced by the operation.</returns>
     public byte[] Copy()
     {
         var copy_Renamed = new byte[_length];
@@ -132,8 +132,8 @@ public class Buffer
     /// <summary>
     /// Get new index
     /// </summary>
-    /// <param name="advance"></param>
-    /// <returns></returns>
+    /// <param name="advance">Number of bytes by which to advance the buffer index.</param>
+    /// <returns>The requested index value.</returns>
     public int GetIndex(int advance)
     {
         try
@@ -157,8 +157,8 @@ public class Buffer
     /// <summary>
     /// Align
     /// </summary>
-    /// <param name="boundary"></param>
-    /// <returns></returns>
+    /// <param name="boundary">Alignment boundary used before reading or writing the next field.</param>
+    /// <returns>The numeric align value.</returns>
     public int Align(int boundary)
     {
         var align_Renamed = _index % boundary;
@@ -173,9 +173,9 @@ public class Buffer
     /// <summary>
     /// Align
     /// </summary>
-    /// <param name="boundary"></param>
-    /// <param name="value"></param>
-    /// <returns></returns>
+    /// <param name="boundary">Alignment boundary used before reading or writing the next field.</param>
+    /// <param name="value">Value being stored, encoded, or assigned.</param>
+    /// <returns>The numeric align value.</returns>
     public int Align(int boundary, byte value)
     {
         var align_Renamed = _index % boundary;
@@ -190,8 +190,8 @@ public class Buffer
     /// <summary>
     /// Advance
     /// </summary>
-    /// <param name="step"></param>
-    /// <returns></returns>
+    /// <param name="step">Step size used while iterating over the source sequence.</param>
+    /// <returns>The numeric advance value.</returns>
     public int Advance(int step)
     {
         _index += step;
@@ -209,9 +209,9 @@ public class Buffer
     /// <summary>
     /// Advance
     /// </summary>
-    /// <param name="step"></param>
-    /// <param name="value"></param>
-    /// <returns></returns>
+    /// <param name="step">Step size used while iterating over the source sequence.</param>
+    /// <param name="value">Value being stored, encoded, or assigned.</param>
+    /// <returns>The numeric advance value.</returns>
     public int Advance(int step, byte value)
     {
         for (var finish = _index + step; _index < finish; _index++)
@@ -232,7 +232,7 @@ public class Buffer
     /// <summary>
     /// Grow buffer
     /// </summary>
-    /// <param name="length"></param>
+    /// <param name="length">Number of bytes or elements to process.</param>
     private void Grow(int length)
     {
         if (CapacityIncrement <= 0)

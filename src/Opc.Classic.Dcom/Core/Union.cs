@@ -48,7 +48,7 @@ public sealed class Union
     /// the union. Can only be of the type <code>Integer</code>,<code>Short</code>,<code>Boolean</code>
     /// or <code>Character</code>.
     /// </summary>
-    /// <param name="discriminantClass"></param>
+    /// <param name="discriminantClass">Union discriminant type used to choose the serialized arm.</param>
     /// <exception cref="ArgumentException"> if the
     /// <code>discriminantClass</code> is not of the type as specified
     /// above. </exception>
@@ -71,9 +71,9 @@ public sealed class Union
     /// Adds a member to this Union. The <code>member</code> is distinguished
     /// using the <code>discriminant</code>.
     /// </summary>
-    /// <param name="discriminant"> </param>
-    /// <param name="member"> </param>
-    /// <exception cref="InteropException"> </exception>
+    /// <param name="discriminant">Union discriminant value that selects the member arm.</param>
+    /// <param name="member">Structure or union member descriptor to register.</param>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     /// <exception cref="ArgumentException"> if any parameter is
     /// <code>null</code> </exception>
     public void AddMember(object discriminant, object member)
@@ -102,9 +102,9 @@ public sealed class Union
     /// Adds a member to this Union. The <code>member</code> is distinguished
     /// using the <code>discriminant</code>.
     /// </summary>
-    /// <param name="discriminant"> </param>
-    /// <param name="member"> </param>
-    /// <exception cref="InteropException"> </exception>
+    /// <param name="discriminant">Union discriminant value that selects the member arm.</param>
+    /// <param name="member">Structure or union member descriptor to register.</param>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     /// <exception cref="ArgumentException"> if <code>discriminant</code>
     /// is <code>null</code> </exception>
     public void AddMember(object discriminant, Struct member)
@@ -131,14 +131,14 @@ public sealed class Union
     /// Removes the entry, identified by it's <code>discriminant</code>
     /// from the parameter list of the union.
     /// </summary>
-    /// <param name="discriminant"> </param>
+    /// <param name="discriminant">Union discriminant value whose member arm should be removed.</param>
     public void RemoveMember(object discriminant) => Members.Remove(discriminant);
 
     /// <summary>
     /// Encode
     /// </summary>
-    /// <param name="ndr"></param>
-    /// <param name="context"></param>
+    /// <param name="ndr">NDR buffer used to encode or decode the wire representation.</param>
+    /// <param name="context">Codec context that tracks deferred pointers and per-call buffers.</param>
     internal void Encode(NdrCodec ndr, CodecContext context)
     {
         if (Members.Count == 0 || Members.Count > 1)
@@ -162,9 +162,9 @@ public sealed class Union
     /// <summary>
     /// Decode
     /// </summary>
-    /// <param name="ndr"></param>
-    /// <param name="context"></param>
-    /// <returns></returns>
+    /// <param name="ndr">NDR buffer used to encode or decode the wire representation.</param>
+    /// <param name="context">Codec context that tracks deferred pointers and per-call buffers.</param>
+    /// <returns>A new <see cref="Union"/> instance built from <paramref name="ndr"/>.</returns>
     internal Union Decode(NdrCodec ndr, CodecContext context)
     {
         // first read discriminant, and then call the appropriate deserializer of the member

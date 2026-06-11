@@ -38,7 +38,7 @@ public interface IEnumVariant
     /// </summary>
     /// <param name="celt"> number of elements to be returned. </param>
     /// <returns> results </returns>
-    /// <exception cref="InteropException"> </exception>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     object[] Next(int celt);
 
     /// <summary>
@@ -46,7 +46,7 @@ public interface IEnumVariant
     /// enumeration sequence.
     /// </summary>
     /// <param name="celt"> number of elements to skip. </param>
-    /// <exception cref="InteropException"> </exception>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     void Skip(int celt);
 
     /// <summary>
@@ -59,7 +59,7 @@ public interface IEnumVariant
     /// for some collections to maintain this condition (for
     /// example, an enumeration of the files in a directory).
     /// </summary>
-    /// <exception cref="InteropException"> </exception>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     void Reset();
 
     /// <summary>
@@ -77,6 +77,6 @@ public interface IEnumVariant
     /// (for example, an enumeration of the files in a directory).
     /// </summary>
     /// <returns> reference to the clone. </returns>
-    /// <exception cref="InteropException"> </exception>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     IEnumVariant Clone();
 }

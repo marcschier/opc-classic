@@ -19,22 +19,22 @@ public sealed class InteropRuntimeException : Exception
     /// <summary>
     /// Create exception
     /// </summary>
-    /// <param name="hresult"></param>
+    /// <param name="hresult">HRESULT value returned by the COM or RPC operation.</param>
     public InteropRuntimeException(int hresult) =>
         HResult = hresult;
 
     /// <summary>
     /// Create exception
     /// </summary>
-    /// <param name="hresult"></param>
+    /// <param name="hresult">HRESULT value returned by the COM or RPC operation.</param>
     public InteropRuntimeException(ErrorCode hresult) =>
         HResult = (int)hresult;
 
     /// <summary>
     /// Create exception
     /// </summary>
-    /// <param name="hresult"></param>
-    /// <param name="parameters"></param>
+    /// <param name="hresult">HRESULT value returned by the COM or RPC operation.</param>
+    /// <param name="parameters">Parameters supplied to the method, call builder, or descriptor.</param>
     public InteropRuntimeException(int hresult, params object[] parameters) :
         this(hresult) => Parameters = parameters;
 

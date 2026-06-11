@@ -13,7 +13,7 @@ public sealed class AutomationException : InteropException
     /// <summary>
     /// Create exception
     /// </summary>
-    /// <param name="e"></param>
+    /// <param name="e">Exception instance being wrapped or translated.</param>
     public AutomationException(InteropException e) :
         base(e.ErrorCode, e.Message, e.InnerException)
     {

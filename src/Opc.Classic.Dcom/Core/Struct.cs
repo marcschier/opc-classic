@@ -150,16 +150,16 @@ public sealed class Struct
     /// Note that null has to be allowed for members who would like
     /// to send null...NPE should not be thrown
     /// </summary>
-    /// <param name="member"> </param>
-    /// <exception cref="InteropException"></exception>
+    /// <param name="member">Structure or union member descriptor to register.</param>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     public void AddMember(object member) => AddMember(Members.Count, member);
 
     /// <summary>
     /// Adds object as member to the index specified.
     /// </summary>
     /// <param name="position"> Zero based index </param>
-    /// <param name="member"> </param>
-    /// <exception cref="InteropException"></exception>
+    /// <param name="member">Structure or union member descriptor to register.</param>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     public void AddMember(int position, object member)
     {
         // null has to be allowed for members who would like to send null...NPE should not be thrown
@@ -266,7 +266,7 @@ public sealed class Struct
     /// <summary>
     /// Removes the member from the specified index.
     /// </summary>
-    /// <param name="index"> </param>
+    /// <param name="index">Zero-based index at which the read or write operation begins.</param>
     public void RemoveMember(int index)
     {
         var member = Members.GetAndRemoveAt(index);
@@ -296,8 +296,8 @@ public sealed class Struct
     /// <summary>
     /// Encode
     /// </summary>
-    /// <param name="ndr"></param>
-    /// <param name="context"></param>
+    /// <param name="ndr">NDR buffer used to encode or decode the wire representation.</param>
+    /// <param name="context">Codec context that tracks deferred pointers and per-call buffers.</param>
     internal void Encode(NdrCodec ndr, CodecContext context)
     {
         // first write all Max counts and then the rest of the structs
@@ -329,9 +329,9 @@ public sealed class Struct
     /// <summary>
     /// Decode
     /// </summary>
-    /// <param name="ndr"></param>
-    /// <param name="context"></param>
-    /// <returns></returns>
+    /// <param name="ndr">NDR buffer used to encode or decode the wire representation.</param>
+    /// <param name="context">Codec context that tracks deferred pointers and per-call buffers.</param>
+    /// <returns>A new <see cref="Struct"/> instance built from <paramref name="ndr"/>.</returns>
     internal Struct Decode(NdrCodec ndr, CodecContext context)
     {
         var retVal = new Struct();

@@ -40,12 +40,12 @@ internal sealed class ComOxidStub : Stub
     /// <summary>
     /// Create stub
     /// </summary>
-    /// <param name="address"></param>
-    /// <param name="domain"></param>
-    /// <param name="username"></param>
-    /// <param name="password"></param>
-    /// <param name="useNTLMv2"></param>
-    /// <param name="isSSO"></param>
+    /// <param name="address">Network address or binding address for the remote endpoint.</param>
+    /// <param name="domain">Authentication domain used for the NTLM or Kerberos handshake.</param>
+    /// <param name="username">User name used for the NTLM or Kerberos handshake.</param>
+    /// <param name="password">Password used for the NTLM or Kerberos handshake.</param>
+    /// <param name="useNTLMv2">Value indicating whether NTLMv2 response generation should be used.</param>
+    /// <param name="isSSO">Value indicating whether single sign-on credentials should be used.</param>
     public ComOxidStub(string address, string domain, string username,
         string password, bool useNTLMv2, bool isSSO)
     {
@@ -69,12 +69,12 @@ internal sealed class ComOxidStub : Stub
     /// <summary>
     /// Call
     /// </summary>
-    /// <param name="isSimplePing"></param>
-    /// <param name="setId"></param>
-    /// <param name="listOfAdds"></param>
-    /// <param name="listOfDels"></param>
-    /// <param name="seqNum"></param>
-    /// <returns></returns>
+    /// <param name="isSimplePing">Value indicating whether the ping request uses the simple ping format.</param>
+    /// <param name="setId">Identifier of the ping set that owns the tracked object references.</param>
+    /// <param name="listOfAdds">Object identifiers to add to the DCOM ping set.</param>
+    /// <param name="listOfDels">Object identifiers to remove from the DCOM ping set.</param>
+    /// <param name="seqNum">NTLM sequence number used when signing or sealing the message.</param>
+    /// <returns>The sequence of call values produced by the operation.</returns>
     public byte[] Call(bool isSimplePing, byte[] setId,
         List<ObjectId> listOfAdds, List<ObjectId> listOfDels, int seqNum)
     {

@@ -41,8 +41,8 @@ internal sealed class RemoteSCMActivator
         /// <summary>
         /// Create
         /// </summary>
-        /// <param name="targetServer"></param>
-        /// <param name="clsid"></param>
+        /// <param name="targetServer">Name or address of the target server for the RPC connection.</param>
+        /// <param name="clsid">CLSID identifying the COM class or OPC server to activate.</param>
         public RemoteCreateInstance(string targetServer, string clsid, int activationAuthenticationLevel = 5)
         {
             _targetClsid = clsid;
@@ -138,9 +138,9 @@ internal sealed class RemoteSCMActivator
         /// <summary>
         /// Write length
         /// </summary>
-        /// <param name="countFromIndex"></param>
-        /// <param name="writeAtIndex"></param>
-        /// <param name="ndr"></param>
+        /// <param name="countFromIndex">Number of characters to copy from the current index.</param>
+        /// <param name="writeAtIndex">Buffer index at which the encoded value should be written.</param>
+        /// <param name="ndr">NDR buffer used to encode or decode the wire representation.</param>
         internal void WriteEncodingLength(int countFromIndex, int writeAtIndex, NdrCodec ndr)
         {
             var length = ndr.Buffer.Index - countFromIndex;

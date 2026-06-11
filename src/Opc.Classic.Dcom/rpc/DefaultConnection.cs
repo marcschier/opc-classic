@@ -28,8 +28,8 @@ public class DefaultConnection : IConnection
     /// <summary>
     /// Create connection
     /// </summary>
-    /// <param name="transmitLength"></param>
-    /// <param name="receiveLength"></param>
+    /// <param name="transmitLength">Length in bytes or elements of the value being processed.</param>
+    /// <param name="receiveLength">Length in bytes or elements of the value being processed.</param>
     public DefaultConnection(int transmitLength, int receiveLength)
     {
         _ndr = new NdrCodec();
@@ -103,9 +103,9 @@ public class DefaultConnection : IConnection
     /// <summary>
     /// Send fragment
     /// </summary>
-    /// <param name="fragment"></param>
-    /// <param name="transport"></param>
-    /// <exception cref="IOException"></exception>
+    /// <param name="fragment">PDU fragment to encode and send on the transport.</param>
+    /// <param name="transport">Underlying RPC transport handle, such as a TCP socket or SMB named pipe.</param>
+    /// <exception cref="IOException">Thrown when the underlying stream, socket, or named pipe read/write operation fails.</exception>
     private void TransmitPdu(ConnectionOrientedPdu fragment, ITransport transport)
     {
         _transmitBuffer.Reset();
@@ -119,9 +119,9 @@ public class DefaultConnection : IConnection
     /// <summary>
     /// Receive fragment
     /// </summary>
-    /// <param name="transport"></param>
-    /// <exception cref="IOException"></exception>
-    /// <returns></returns>
+    /// <param name="transport">Underlying RPC transport handle, such as a TCP socket or SMB named pipe.</param>
+    /// <exception cref="IOException">Thrown when the underlying stream, socket, or named pipe read/write operation fails.</exception>
+    /// <returns>The decoded connection-oriented PDU received from the transport.</returns>
 #pragma warning disable MA0051 // Legacy fragment receive state machine; refactor would risk packet framing behavior.
     private ConnectionOrientedPdu ReceivePdu(ITransport transport)
     {
@@ -317,8 +317,8 @@ public class DefaultConnection : IConnection
     /// <summary>
     /// Incoming rebind
     /// </summary>
-    /// <exception cref="IOException"></exception>
-    /// <param name="verifier"></param>
+    /// <exception cref="IOException">Thrown when the underlying stream, socket, or named pipe read/write operation fails.</exception>
+    /// <param name="verifier">Authentication verifier attached to the RPC PDU.</param>
     protected internal virtual void IncomingRebind(AuthenticationVerifier verifier)
     {
         // nothing
@@ -327,15 +327,15 @@ public class DefaultConnection : IConnection
     /// <summary>
     /// Outgoing rebind
     /// </summary>
-    /// <exception cref="IOException"></exception>
-    /// <returns></returns>
+    /// <exception cref="IOException">Thrown when the underlying stream, socket, or named pipe read/write operation fails.</exception>
+    /// <returns>The security verifier bytes attached to an outgoing rebind PDU.</returns>
     protected internal virtual AuthenticationVerifier OutgoingRebind() => null;
 
     /// <summary>
     /// Process incoming
     /// </summary>
-    /// <exception cref="IOException"></exception>
-    /// <param name="buffer"></param>
+    /// <exception cref="IOException">Thrown when the underlying stream, socket, or named pipe read/write operation fails.</exception>
+    /// <param name="buffer">Buffer containing the bytes or fields being processed.</param>
 #pragma warning disable MA0051 // Legacy RPC authentication PDU dispatch; preserving fall-through behavior.
     private void ProcessIncoming(NdrBuffer buffer)
     {
@@ -440,7 +440,7 @@ public class DefaultConnection : IConnection
     /// <summary>
     /// Process outgoing
     /// </summary>
-    /// <exception cref="IOException"></exception>
+    /// <exception cref="IOException">Thrown when the underlying stream, socket, or named pipe read/write operation fails.</exception>
 #pragma warning disable MA0051 // Legacy RPC authentication PDU dispatch; preserving fall-through behavior.
     private void ProcessOutgoing()
     {
@@ -539,7 +539,7 @@ public class DefaultConnection : IConnection
     /// <summary>
     /// Add auth
     /// </summary>
-    /// <exception cref="IOException"></exception>
+    /// <exception cref="IOException">Thrown when the underlying stream, socket, or named pipe read/write operation fails.</exception>
     private void AttachAuthentication(AuthenticationVerifier verifier)
     {
         try
@@ -564,9 +564,9 @@ public class DefaultConnection : IConnection
     /// <summary>
     /// Remove auth
     /// </summary>
-    /// <param name="buffer"></param>
-    /// <exception cref="IOException"></exception>
-    /// <returns></returns>
+    /// <param name="buffer">Buffer containing the bytes or fields being processed.</param>
+    /// <exception cref="IOException">Thrown when the underlying stream, socket, or named pipe read/write operation fails.</exception>
+    /// <returns>The authentication trailer removed from the received PDU buffer.</returns>
     private AuthenticationVerifier DetachAuthentication2(NdrBuffer buffer)
     {
         try
@@ -594,9 +594,9 @@ public class DefaultConnection : IConnection
     /// <summary>
     /// Remove auth
     /// </summary>
-    /// <param name="buffer"></param>
-    /// <exception cref="IOException"></exception>
-    /// <returns></returns>
+    /// <param name="buffer">Buffer containing the bytes or fields being processed.</param>
+    /// <exception cref="IOException">Thrown when the underlying stream, socket, or named pipe read/write operation fails.</exception>
+    /// <returns>The PDU bytes with the authentication verifier detached.</returns>
     private AuthenticationVerifier DetachAuthentication(NdrBuffer buffer)
     {
         try
@@ -631,9 +631,9 @@ public class DefaultConnection : IConnection
     /// <summary>
     /// Sign and seal
     /// </summary>
-    /// <param name="ndr"></param>
-    /// <exception cref="IOException"></exception>
-    /// <returns></returns>
+    /// <param name="ndr">NDR buffer used to encode or decode the wire representation.</param>
+    /// <exception cref="IOException">Thrown when the underlying stream, socket, or named pipe read/write operation fails.</exception>
+    /// <returns>The signed and sealed PDU bytes ready for transmission.</returns>
     private void SignAndSeal(NdrCodec ndr)
     {
         var protectionLevel = _security.Protection;
@@ -693,9 +693,9 @@ public class DefaultConnection : IConnection
     /// <summary>
     /// Verify and unseal
     /// </summary>
-    /// <param name="ndr"></param>
-    /// <exception cref="IOException"></exception>
-    /// <returns></returns>
+    /// <param name="ndr">NDR buffer used to encode or decode the wire representation.</param>
+    /// <exception cref="IOException">Thrown when the underlying stream, socket, or named pipe read/write operation fails.</exception>
+    /// <returns>The verified and unsealed PDU bytes.</returns>
     private void VerifyAndUnseal(NdrCodec ndr)
     {
         var buffer = ndr.Buffer;
@@ -757,8 +757,8 @@ public class DefaultConnection : IConnection
     /// <summary>
     /// Check if valid type id
     /// </summary>
-    /// <param name="type"></param>
-    /// <returns></returns>
+    /// <param name="type">COM or NDR type descriptor for the value being processed.</param>
+    /// <returns><c>true</c> when is valid type is satisfied; otherwise <c>false</c>.</returns>
 #pragma warning disable IDE0051 // Remove unused private members
     private bool IsValidType(int type)
     {

@@ -68,7 +68,7 @@ public sealed class TypeAttr
     /// <summary>
     /// Create type attribute
     /// </summary>
-    /// <param name="values"></param>
+    /// <param name="values">Values being stored, encoded, or assigned.</param>
     internal TypeAttr(ComPointer values) :
         this(values.IsNull ? null : (Struct)values.Referent)
     {
@@ -77,7 +77,7 @@ public sealed class TypeAttr
     /// <summary>
     /// Create type attribute
     /// </summary>
-    /// <param name="filledStruct"></param>
+    /// <param name="filledStruct">Structure instance populated with decoded COM field values.</param>
     internal TypeAttr(Struct filledStruct)
     {
         if (filledStruct == null)

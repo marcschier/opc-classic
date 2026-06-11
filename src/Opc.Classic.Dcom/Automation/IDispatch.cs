@@ -76,7 +76,7 @@ public interface IDispatch : IComObject
     /// Determines whether there is type information available for the dual interface.
     /// </summary>
     /// <returns> 1 if the object provides type information, otherwise 0. </returns>
-    /// <exception cref="InteropException"> </exception>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     int TypeInfoCount { get; }
 
     /// <summary>
@@ -87,7 +87,7 @@ public interface IDispatch : IComObject
     /// </summary>
     /// <param name="apiName"> Method name. </param>
     /// <returns> <code>DISPID</code> of the method. </returns>
-    /// <exception cref="InteropException"> </exception>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     /// <exception cref="System.ArgumentException"> if the <code>apiName</code>
     /// is <code>null</code> or empty. </exception>
     int GetIDsOfNames(string apiName);
@@ -102,7 +102,7 @@ public interface IDispatch : IComObject
     /// name and the rest depicting parameters. </param>
     /// <returns> int[] <code>DISPIDs</code> in the same order as the
     /// method[argument] set. </returns>
-    /// <exception cref="InteropException"> </exception>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     /// <exception cref="System.ArgumentException"> if the <code>apiName</code>
     /// is <code>null</code> or empty. </exception>
     int[] GetIDsOfNames(string[] apiName);
@@ -114,7 +114,7 @@ public interface IDispatch : IComObject
     /// <param name="typeInfo"> the type information to return. Pass 0 to
     /// retrieve type information for the <code>IDispatch</code> implementation.
     /// </param>
-    /// <exception cref="InteropException"> </exception>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     ITypeInfo GetTypeInfo(int typeInfo);
 
     /// <summary>
@@ -124,7 +124,7 @@ public interface IDispatch : IComObject
     /// <param name="dispId"> <code>DISPID</code> of the method to invoke.
     /// </param>
     /// <param name="inparam"> parameter for that method. </param>
-    /// <exception cref="InteropException"> </exception>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     void Put(int dispId, Variant inparam);
 
     /// <summary>
@@ -135,7 +135,7 @@ public interface IDispatch : IComObject
     /// </summary>
     /// <param name="name"> name of the method to invoke. </param>
     /// <param name="inparam"> parameter for that method. </param>
-    /// <exception cref="InteropException"> </exception>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     /// <exception cref="System.ArgumentException"> if the <code>name</code>
     /// is <code>null</code> or empty. </exception>
     void Put(string name, Variant inparam);
@@ -147,7 +147,7 @@ public interface IDispatch : IComObject
     /// <param name="dispId"> <code>DISPID</code> of the method to invoke.
     /// </param>
     /// <param name="inparam"> parameter for that method. </param>
-    /// <exception cref="InteropException"> </exception>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     void PutRef(int dispId, Variant inparam);
 
     /// <summary>
@@ -158,7 +158,7 @@ public interface IDispatch : IComObject
     /// </summary>
     /// <param name="name"> name of the method to invoke. </param>
     /// <param name="inparam"> parameter for that method. </param>
-    /// <exception cref="InteropException"> </exception>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     /// <exception cref="System.ArgumentException"> if the <code>name</code> is
     /// <code>null</code> or empty. </exception>
     void PutRef(string name, Variant inparam);
@@ -169,7 +169,7 @@ public interface IDispatch : IComObject
     /// </summary>
     /// <param name="dispId"> <code>DISPID</code> of the method to invoke. </param>
     /// <returns> <see cref="Variant"/> result of the call </returns>
-    /// <exception cref="InteropException"> </exception>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     Variant Get(int dispId);
 
     /// <summary>
@@ -184,7 +184,7 @@ public interface IDispatch : IComObject
     /// actual call to the COM server, via the <code><see cref="IDispatch"/></code> interface.
     /// </param>
     /// <returns> array of <see cref="Variant"/>s </returns>
-    /// <exception cref="InteropException"> </exception>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     Variant[] Get(int dispId, params object[] inparams);
 
     /// <summary>
@@ -199,7 +199,7 @@ public interface IDispatch : IComObject
     /// before performing the actual call to the COM server, via the
     /// <code><see cref="IDispatch"/></code> interface. </param>
     /// <returns> array of <see cref="Variant"/>s </returns>
-    /// <exception cref="InteropException"> </exception>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     /// <exception cref="System.ArgumentException"> if the <code>name</code> is
     /// <code>null</code> or empty. </exception>
     Variant[] Get(string name, params object[] inparams);
@@ -212,7 +212,7 @@ public interface IDispatch : IComObject
     /// </summary>
     /// <param name="name"> name of the method to invoke. </param>
     /// <returns> <see cref="Variant"/> result of the call. </returns>
-    /// <exception cref="InteropException"> </exception>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     /// <exception cref="System.ArgumentException"> if the <code>name</code> is
     /// <code>null</code> or empty. </exception>
     Variant Get(string name);
@@ -224,7 +224,7 @@ public interface IDispatch : IComObject
     /// and then delegates the call to <seealso cref="CallMethod(int)"/>.
     /// </summary>
     /// <param name="name"> name of the method to invoke. </param>
-    /// <exception cref="InteropException"> </exception>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     /// <exception cref="System.ArgumentException"> if the <code>name</code> is
     /// <code>null</code> or empty. </exception>
     void CallMethod(string name);
@@ -234,7 +234,7 @@ public interface IDispatch : IComObject
     /// <code>dispId</code> parameter.
     /// </summary>
     /// <param name="dispId"> <code>DISPID</code> of the method to invoke.</param>
-    /// <exception cref="InteropException"> </exception>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     void CallMethod(int dispId);
 
     /// <summary>
@@ -245,7 +245,7 @@ public interface IDispatch : IComObject
     /// </summary>
     /// <param name="name"> name of the method to invoke. </param>
     /// <returns> <see cref="Variant"/> result. </returns>
-    /// <exception cref="InteropException"> </exception>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     /// <exception cref="System.ArgumentException"> if the <code>name</code>
     /// is <code>null</code> or empty. </exception>
     Variant CallMethodA(string name);
@@ -257,7 +257,7 @@ public interface IDispatch : IComObject
     /// <param name="dispId"> <code>DISPID</code> of the method to invoke.
     /// </param>
     /// <returns> <see cref="Variant"/> result. </returns>
-    /// <exception cref="InteropException"> </exception>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     Variant CallMethodA(int dispId);
 
     /// <summary>
@@ -276,7 +276,7 @@ public interface IDispatch : IComObject
     /// converted to <code><see cref="Variant"/></code>s before performing the
     /// actual call to the COM server, via the <code><see cref="IDispatch"/></code>
     /// interface. </param>
-    /// <exception cref="InteropException"> </exception>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     /// <exception cref="System.ArgumentException"> if the <code>name</code>
     /// is <code>null</code> or empty. </exception>
     //
@@ -296,7 +296,7 @@ public interface IDispatch : IComObject
     /// <code><see cref="Variant"/></code>s before performing the
     /// actual call to the COM server, via the <code><see cref="IDispatch"/></code> interface.
     /// </param>
-    /// <exception cref="InteropException"> </exception>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     void CallMethod(int dispId, params object[] inparams);
 
     /// <summary>
@@ -316,7 +316,7 @@ public interface IDispatch : IComObject
     /// actual call to the COM server, via the <code><see cref="IDispatch"/></code> interface.
     /// </param>
     /// <returns> <see cref="Variant"/>[] result. </returns>
-    /// <exception cref="InteropException"> </exception>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     /// <exception cref="System.ArgumentException"> if the <code>name</code> is
     /// <code>null</code> or empty. </exception>
     Variant[] CallMethodA(string name, params object[] inparams);
@@ -337,7 +337,7 @@ public interface IDispatch : IComObject
     /// actual call to the COM server, via the <code><see cref="IDispatch"/></code> interface.
     /// </param>
     /// <returns> <see cref="Variant"/>[] result. </returns>
-    /// <exception cref="InteropException"> </exception>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     Variant[] CallMethodA(int dispId, params object[] inparams);
 
     /// <summary>
@@ -357,7 +357,7 @@ public interface IDispatch : IComObject
     /// </param>
     /// <param name="dispIds"> array of <code>DISPID</code>s, matching by index
     /// to those in <code>inparams</code> array. </param>
-    /// <exception cref="InteropException"> </exception>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     /// <exception cref="System.ArgumentException"> if the <code>name</code>
     /// is <code>null</code> or empty. </exception>
     void CallMethod(string name, object[] inparams, int[] dispIds);
@@ -377,7 +377,7 @@ public interface IDispatch : IComObject
     /// </param>
     /// <param name="dispIds"> array of <code>DISPID</code>s, matching by index to
     /// those in <code>inparams</code> array. </param>
-    /// <exception cref="InteropException"> </exception>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     void CallMethod(int dispId, object[] inparams, int[] dispIds);
 
     /// <summary>
@@ -398,7 +398,7 @@ public interface IDispatch : IComObject
     /// <param name="dispIds"> array of <code>DISPID</code>s, matching by index to
     /// those in <code>inparams</code> array. </param>
     /// <returns> <see cref="Variant"/>[] result. </returns>
-    /// <exception cref="InteropException"> </exception>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     /// <exception cref="System.ArgumentException"> if the <code>name</code> is
     /// <code>null</code> or empty. </exception>
     Variant[] CallMethodA(string name, object[] inparams, int[] dispIds);
@@ -419,7 +419,7 @@ public interface IDispatch : IComObject
     /// <param name="dispIds"> array of <code>DISPID</code>s, matching by index to
     /// those in <code>inparams</code> array. </param>
     /// <returns> <see cref="Variant"/>[] result. </returns>
-    /// <exception cref="InteropException"> </exception>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     Variant[] CallMethodA(int dispId, object[] inparams, int[] dispIds);
 
     /// <summary>
@@ -441,7 +441,7 @@ public interface IDispatch : IComObject
     /// </param>
     /// <param name="paramNames"> Array of parameter names, matching by index to
     /// those in <code>inparams</code> array. </param>
-    /// <exception cref="InteropException"> </exception>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     /// <exception cref="System.ArgumentException"> if the <code>name</code> is
     /// <code>null</code> or empty. </exception>
     void CallMethod(string name, object[] inparams, string[] paramNames);
@@ -465,7 +465,7 @@ public interface IDispatch : IComObject
     /// <param name="paramNames"> Array of parameter names, matching by index to
     /// those in <code>inparams</code> array. </param>
     /// <returns> <see cref="Variant"/> result. </returns>
-    /// <exception cref="InteropException"> </exception>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     /// <exception cref="System.ArgumentException"> if the <code>name</code> is
     /// <code>null</code> or empty. </exception>
     Variant[] CallMethodA(string name, object[] inparams, string[] paramNames);
@@ -475,7 +475,7 @@ public interface IDispatch : IComObject
     /// </summary>
     /// <param name="dispId"> <code>DISPID</code> of the method to invoke. </param>
     /// <param name="inparams"> parameters for that method. </param>
-    /// <exception cref="InteropException"> </exception>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     void Put(int dispId, params object[] inparams);
 
     /// <summary>
@@ -486,7 +486,7 @@ public interface IDispatch : IComObject
     /// </summary>
     /// <param name="name"> name of the method to invoke. </param>
     /// <param name="inparams"> parameters for that method. </param>
-    /// <exception cref="InteropException"> </exception>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     /// <exception cref="System.ArgumentException"> if the <code>name</code> is
     /// <code>null</code> or empty. </exception>
     void Put(string name, params object[] inparams);
@@ -497,7 +497,7 @@ public interface IDispatch : IComObject
     /// </summary>
     /// <param name="dispId"> <code>DISPID</code> of the method to invoke. </param>
     /// <param name="inparams"> parameters for that method. </param>
-    /// <exception cref="InteropException"> </exception>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     void PutRef(int dispId, params object[] inparams);
 
     /// <summary>
@@ -508,7 +508,7 @@ public interface IDispatch : IComObject
     /// </summary>
     /// <param name="name"> name of the method to invoke. </param>
     /// <param name="inparams"> parameters for that method. </param>
-    /// <exception cref="InteropException"> </exception>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     /// <exception cref="System.ArgumentException"> if the <code>name</code> is
     /// <code>null</code> or empty. </exception>
     void PutRef(string name, params object[] inparams);

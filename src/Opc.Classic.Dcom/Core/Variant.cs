@@ -64,9 +64,9 @@ public sealed class Variant
     /// <summary>
     /// Get out param for type
     /// </summary>
-    /// <param name="c"></param>
-    /// <param name="isArray"></param>
-    /// <returns></returns>
+    /// <param name="c">Character value being tested or transformed.</param>
+    /// <param name="isArray">Value indicating whether the variant stores an array value.</param>
+    /// <returns>A by-reference VARIANT suitable for an Automation out parameter of the requested type.</returns>
     public static Variant OUTPARAMforType(Type c, bool isArray)
     {
         Variant variant = null;
@@ -156,7 +156,7 @@ public sealed class Variant
     /// <summary>
     /// Returns a <see cref="Variant"/> (of the right type) based on the <code>o.getClass()</code>
     /// </summary>
-    /// <param name="o"> </param>
+    /// <param name="o">Object instance being compared, marshaled, or converted.</param>
     /// <param name="isByRef">
     /// </param>
     public static Variant MakeVariant(object o, bool isByRef = false)
@@ -252,8 +252,8 @@ public sealed class Variant
     /// <summary>
     /// Get supported type
     /// </summary>
-    /// <param name="type"></param>
-    /// <returns></returns>
+    /// <param name="type">COM or NDR type descriptor for the value being processed.</param>
+    /// <returns>The requested supported class value.</returns>
     internal static Type GetSupportedClass(VariantType type) =>
         _supportedTypes_classes.GetOrDefault(type);
 
@@ -428,9 +428,9 @@ public sealed class Variant
     /// <summary>
     /// Get supported type id
     /// </summary>
-    /// <param name="c"></param>
-    /// <param name="flag"></param>
-    /// <returns></returns>
+    /// <param name="c">Character value being tested or transformed.</param>
+    /// <param name="flag">Flag value that controls the requested operation.</param>
+    /// <returns>The requested supported type value.</returns>
     internal static VariantType? GetSupportedType(Type c, int flag = InteropFlags.FLAG_NULL)
     {
         if (!_supportedTypes.TryGetValue(c, out var type))
@@ -465,9 +465,9 @@ public sealed class Variant
     /// <summary>
     /// Get supported type id
     /// </summary>
-    /// <param name="o"></param>
-    /// <param name="defaultType"></param>
-    /// <returns></returns>
+    /// <param name="o">Object instance being compared, marshaled, or converted.</param>
+    /// <param name="defaultType">Type descriptor that determines how the value is marshaled.</param>
+    /// <returns>The requested supported type value.</returns>
     internal static VariantType GetSupportedType(object o, VariantType defaultType)
     {
         var retval = defaultType;
@@ -623,7 +623,7 @@ public sealed class Variant
     /// Setting up a <code>VARIANT</code> as reference to another.
     /// Used via serializing the <code>VARIANT</code>.
     /// </summary>
-    /// <param name="variant"> </param>
+    /// <param name="variant">VARIANT instance whose type and body should be copied.</param>
     public Variant(Variant variant) :
         this(true, variant)
     {
@@ -634,7 +634,7 @@ public sealed class Variant
     /// Used via serializing the <code>VARIANT</code>.
     /// Used when the variant type is VariantType.VT_I4.
     /// </summary>
-    /// <param name="value"> </param>
+    /// <param name="value">Value being stored, encoded, or assigned.</param>
     /// <param name="isByRef"> <code>true</code> if the value is to
     /// be represented as a pointer. LONG* </param>
     public Variant(int value, bool isByRef = false) :
@@ -647,7 +647,7 @@ public sealed class Variant
     /// Used via serializing the <code>VARIANT</code>.
     /// Used when the variant type is VariantType.VT_I8.
     /// </summary>
-    /// <param name="value"> </param>
+    /// <param name="value">Value being stored, encoded, or assigned.</param>
     /// <param name="isByRef"> <code>true</code> if the value is to
     /// be represented as a pointer. </param>
     public Variant(long value, bool isByRef = false) :
@@ -659,7 +659,7 @@ public sealed class Variant
     /// Setting up a <code>VARIANT</code> with a <code>float</code>.
     /// Used via serializing the <code>VARIANT</code>.
     /// </summary>
-    /// <param name="value"> </param>
+    /// <param name="value">Value being stored, encoded, or assigned.</param>
     /// <param name="isByRef"> <code>true</code> if the value is to
     /// be represented as a pointer. FLOAT* </param>
     public Variant(float value, bool isByRef = false) :
@@ -671,7 +671,7 @@ public sealed class Variant
     /// Setting up a <code>VARIANT</code> with a <code>bool</code>.
     /// Used via serializing the <code>VARIANT</code>.
     /// </summary>
-    /// <param name="value"> </param>
+    /// <param name="value">Value being stored, encoded, or assigned.</param>
     /// <param name="isByRef"> <code>true</code> if the value is to
     /// be represented as a pointer. VARIANT_BOOL* </param>
     public Variant(bool value, bool isByRef = false) :
@@ -683,7 +683,7 @@ public sealed class Variant
     /// Setting up a <code>VARIANT</code> with a <code>double</code>.
     /// Used via serializing the <code>VARIANT</code>.
     /// </summary>
-    /// <param name="value"> </param>
+    /// <param name="value">Value being stored, encoded, or assigned.</param>
     /// <param name="isByRef"> <code>true</code> if the value is to be
     /// represented as a pointer. DOUBLE* </param>
     public Variant(double value, bool isByRef = false) :
@@ -695,7 +695,7 @@ public sealed class Variant
     /// Setting up a <code>VARIANT</code> with a <code>short</code>.
     /// Used via serializing the <code>VARIANT</code>.
     /// </summary>
-    /// <param name="value"> </param>
+    /// <param name="value">Value being stored, encoded, or assigned.</param>
     /// <param name="isByRef"> <code>true</code> if the value is to be
     /// represented as a pointer. SHORT* </param>
     public Variant(short value, bool isByRef = false) :
@@ -707,7 +707,7 @@ public sealed class Variant
     /// Setting up a <code>VARIANT</code> with a <code>char</code>.
     /// Used via serializing the <code>VARIANT</code>.
     /// </summary>
-    /// <param name="value"> </param>
+    /// <param name="value">Value being stored, encoded, or assigned.</param>
     /// <param name="isByRef"> <code>true</code> if the value is to be
     /// represented as a pointer. CHAR* </param>
     public Variant(char value, bool isByRef = false) :
@@ -719,7 +719,7 @@ public sealed class Variant
     /// Setting up a <code>VARIANT</code> with a <code><see cref="ComString"/></code>.
     /// Used via serializing the <code>VARIANT</code>.
     /// </summary>
-    /// <param name="value"> </param>
+    /// <param name="value">Value being stored, encoded, or assigned.</param>
     /// <param name="isByRef"> <code>true</code> if the value is to be
     /// represented as a pointer. BSTR* </param>
     public Variant(ComString value, bool isByRef = false) :
@@ -733,7 +733,7 @@ public sealed class Variant
     /// <code><see cref="ComString"/></code> is formed with it's default type
     /// <code>BSTR</code>.
     /// </summary>
-    /// <param name="value"> </param>
+    /// <param name="value">Value being stored, encoded, or assigned.</param>
     /// <param name="isByRef"> <code>true</code> if the value is to be
     /// represented as a pointer. BSTR* </param>
     public Variant(string value, bool isByRef = false) :
@@ -745,7 +745,7 @@ public sealed class Variant
     /// Setting up a <code>VARIANT</code> with an <code><see cref="IComObject"/></code>.
     /// Used via serializing the <code>VARIANT</code>.
     /// </summary>
-    /// <param name="value"> </param>
+    /// <param name="value">Value being stored, encoded, or assigned.</param>
     /// <param name="isByRef"> <code>true</code> if the value is to be
     /// represented as a pointer. <see cref="IComObject"/>** </param>
     public Variant(IComObject value, bool isByRef = false) :
@@ -766,7 +766,7 @@ public sealed class Variant
     /// value and it's <code>errorCode</code>.
     /// Used via serializing the <code>VARIANT</code>.
     /// </summary>
-    /// <param name="scode"> </param>
+    /// <param name="scode">COM status code stored in the VARIANT.</param>
     /// <param name="isByRef"> <code>true</code> if the value is to
     /// be represented as a pointer. SCODE* </param>
     public Variant(Scode scode, bool isByRef = false) :
@@ -778,7 +778,7 @@ public sealed class Variant
     /// Setting up a <code>VARIANT</code> with an <code>DateTime</code>.
     /// Used via serializing the <code>VARIANT</code>.
     /// </summary>
-    /// <param name="value"> </param>
+    /// <param name="value">Value being stored, encoded, or assigned.</param>
     /// <param name="isByRef"> <code>true</code> if the value is to
     /// be represented as a pointer. Date* </param>
     public Variant(DateTime value, bool isByRef = false) :
@@ -790,7 +790,7 @@ public sealed class Variant
     /// Setting up a <code>VARIANT</code> with a <code>Currency</code>.
     /// Used via serializing the <code>VARIANT</code>.
     /// </summary>
-    /// <param name="value"> </param>
+    /// <param name="value">Value being stored, encoded, or assigned.</param>
     /// <param name="isByRef"> <code>true</code> if the value is to
     /// be represented as a pointer. Date* </param>
     public Variant(Currency value, bool isByRef = false) :
@@ -802,7 +802,7 @@ public sealed class Variant
     /// Setting up a <code>VARIANT</code> with a <code>byte</code>
     /// value. Used via serializing the <code>VARIANT</code>.
     /// </summary>
-    /// <param name="number"> </param>
+    /// <param name="number">Numeric value stored in the VARIANT body.</param>
     /// <param name="isByRef"> <code>true</code> if the value is to
     /// be represented as a pointer. </param>
     public Variant(byte number, bool isByRef = false) :
@@ -814,7 +814,7 @@ public sealed class Variant
     /// Setting up a <code>VARIANT</code> with a <code>ushort</code>
     /// value. Used via serializing the <code>VARIANT</code>.
     /// </summary>
-    /// <param name="number"> </param>
+    /// <param name="number">Numeric value stored in the VARIANT body.</param>
     /// <param name="isByRef"> <code>true</code> if the value is to
     /// be represented as a pointer. </param>
     public Variant(ushort number, bool isByRef = false) :
@@ -826,7 +826,7 @@ public sealed class Variant
     /// Setting up a <code>VARIANT</code> with a <code>uint</code>
     /// value. Used via serializing the <code>VARIANT</code>.
     /// </summary>
-    /// <param name="number"> </param>
+    /// <param name="number">Numeric value stored in the VARIANT body.</param>
     /// <param name="isByRef"> <code>true</code> if the value is to
     /// be represented as a pointer. </param>
     public Variant(uint number, bool isByRef = false) :
@@ -838,7 +838,7 @@ public sealed class Variant
     /// Setting up a <code>VARIANT</code> with a <code>ulong</code>
     /// value. Used via serializing the <code>VARIANT</code>.
     /// </summary>
-    /// <param name="number"> </param>
+    /// <param name="number">Numeric value stored in the VARIANT body.</param>
     /// <param name="isByRef"> <code>true</code> if the value is to
     /// be represented as a pointer. </param>
     public Variant(ulong number, bool isByRef = false) :
@@ -851,7 +851,7 @@ public sealed class Variant
     /// Used via serializing the <code>VARIANT</code>.
     /// Only 1 and 2 dimensional array is supported.
     /// </summary>
-    /// <param name="array"> </param>
+    /// <param name="array">Array instance being inspected, encoded, or copied.</param>
     /// <param name="flag"> <see cref="InteropFlags"/> value </param>
     public Variant(ComArray array, int flag) :
         this(array, false, flag)
@@ -863,8 +863,8 @@ public sealed class Variant
     /// Used via serializing the <code>VARIANT</code>.
     /// Only 1 and 2 dimensional array is supported.
     /// </summary>
-    /// <param name="array"> </param>
-    /// <param name="isByRef"> </param>
+    /// <param name="array">Array instance being inspected, encoded, or copied.</param>
+    /// <param name="isByRef">Value indicating whether the variant stores a by-reference value.</param>
     /// <param name="flag"> <see cref="InteropFlags"/> value </param>
     public Variant(ComArray array, bool isByRef = false,
         int flag = InteropFlags.FLAG_NULL) :
@@ -882,8 +882,8 @@ public sealed class Variant
     /// <summary>
     /// Private constructor
     /// </summary>
-    /// <param name="obj"></param>
-    /// <param name="isByRef"></param>
+    /// <param name="obj">Object instance being marshaled, unmarshaled, or invoked.</param>
+    /// <param name="isByRef">Value indicating whether the variant stores a by-reference value.</param>
     private Variant(bool isByRef, object obj)
     {
         if (obj != null && obj.GetType().IsArray)
@@ -910,9 +910,9 @@ public sealed class Variant
     /// <summary>
     /// Private constructor
     /// </summary>
-    /// <param name="isByRef"></param>
-    /// <param name="array"></param>
-    /// <param name="flag"></param>
+    /// <param name="isByRef">Value indicating whether the variant stores a by-reference value.</param>
+    /// <param name="array">Array instance being inspected, encoded, or copied.</param>
+    /// <param name="flag">Flag value that controls the requested operation.</param>
     private Variant(bool isByRef, ComArray array, int flag = InteropFlags.FLAG_NULL)
     {
         var is2Dim = false;
@@ -1097,7 +1097,7 @@ public sealed class Variant
     /// <summary>
     /// Returns the contained object.
     /// </summary>
-    /// <exception cref="InteropException"> </exception>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     public object Object
     {
         get
@@ -1110,7 +1110,7 @@ public sealed class Variant
     /// <summary>
     /// Retrieves the contained object as <code>int</code>.
     /// </summary>
-    /// <exception cref="InteropException"> </exception>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     public int ObjectAsInt
     {
         get
@@ -1123,7 +1123,7 @@ public sealed class Variant
     /// <summary>
     /// Retrieves the contained object as <code>float</code>.
     /// </summary>
-    /// <exception cref="InteropException"> </exception>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     public float ObjectAsFloat
     {
         get
@@ -1136,7 +1136,7 @@ public sealed class Variant
     /// <summary>
     /// Retrieves the contained objects errorCode.
     /// </summary>
-    /// <exception cref="InteropException"> </exception>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     public int ObjectAsSCODE
     {
         get
@@ -1149,7 +1149,7 @@ public sealed class Variant
     /// <summary>
     /// Retrieves the contained object as <code>double</code>.
     /// </summary>
-    /// <exception cref="InteropException"> </exception>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     public double ObjectAsDouble
     {
         get
@@ -1162,7 +1162,7 @@ public sealed class Variant
     /// <summary>
     /// Retrieves the contained object as <code>short</code>.
     /// </summary>
-    /// <exception cref="InteropException"> </exception>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     public short ObjectAsShort
     {
         get
@@ -1175,7 +1175,7 @@ public sealed class Variant
     /// <summary>
     /// Retrieves the contained object as <code>bool</code>.
     /// </summary>
-    /// <exception cref="InteropException"> </exception>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     public bool ObjectAsBoolean
     {
         get
@@ -1188,7 +1188,7 @@ public sealed class Variant
     /// <summary>
     /// Retrieves the contained object as <code><see cref="ComString"/></code>.
     /// </summary>
-    /// <exception cref="InteropException"> </exception>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     public ComString ObjectAsString
     {
         get
@@ -1201,7 +1201,7 @@ public sealed class Variant
     /// <summary>
     /// Retrieves the contained object as <code>String</code>.
     /// </summary>
-    /// <exception cref="InteropException"> </exception>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     public string ObjectAsString2
     {
         get
@@ -1214,7 +1214,7 @@ public sealed class Variant
     /// <summary>
     /// Retrieves the contained object as <code>DateTime</code>.
     /// </summary>
-    /// <exception cref="InteropException"> </exception>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     public DateTime ObjectAsDate
     {
         get
@@ -1227,7 +1227,7 @@ public sealed class Variant
     /// <summary>
     /// Retrieves the contained object as <code>char</code>.
     /// </summary>
-    /// <exception cref="InteropException"> </exception>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     public char ObjectAsChar
     {
         get
@@ -1245,7 +1245,7 @@ public sealed class Variant
     /// <code><see cref="ObjectFactory"/>.NarrowInstance(
     ///     <see cref="IComObject"/>)</code> to get to the right type.
     /// </summary>
-    /// <exception cref="InteropException"> </exception>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     public IComObject ObjectAsComObject
     {
         get
@@ -1258,7 +1258,7 @@ public sealed class Variant
     /// <summary>
     /// Retrieves the contained object as <code><see cref="Variant"/></code>.
     /// </summary>
-    /// <exception cref="InteropException"> </exception>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     public Variant ObjectAsVariant
     {
         get
@@ -1277,7 +1277,7 @@ public sealed class Variant
     /// <code><see cref="ObjectFactory"/>.narrowObject()</code> to
     /// get the right instance.
     /// </summary>
-    /// <exception cref="InteropException"> </exception>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     public ComArray ObjectAsArray
     {
         get
@@ -1291,7 +1291,7 @@ public sealed class Variant
     /// Retrieves the contained object as <code>long</code>,
     /// used when the expected type is VariantType.VT_I8.
     /// </summary>
-    /// <exception cref="InteropException"> </exception>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     public long ObjectAsLong
     {
         get
@@ -1304,7 +1304,7 @@ public sealed class Variant
     /// <summary>
     /// Retrieves the contained object as <code>ulong</code> number.
     /// </summary>
-    /// <exception cref="InteropException"> </exception>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     public ulong ObjectAsUlong
     {
         get
@@ -1317,7 +1317,7 @@ public sealed class Variant
     /// <summary>
     /// Retrieves the contained object as <code>uint</code> number.
     /// </summary>
-    /// <exception cref="InteropException"> </exception>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     public uint ObjectAsUnsigned
     {
         get
@@ -1330,7 +1330,7 @@ public sealed class Variant
     /// <summary>
     /// Retrieves the contained object as <code>ushort</code> number.
     /// </summary>
-    /// <exception cref="InteropException"> </exception>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     public ushort ObjectAsUShort
     {
         get
@@ -1343,7 +1343,7 @@ public sealed class Variant
     /// <summary>
     /// Retrieves the contained object as <code>byte</code> number.
     /// </summary>
-    /// <exception cref="InteropException"> </exception>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     public byte ObjectAsByte
     {
         get
@@ -1356,8 +1356,8 @@ public sealed class Variant
     /// <summary>
     /// Encode variant
     /// </summary>
-    /// <param name="ndr"></param>
-    /// <param name="context"></param>
+    /// <param name="ndr">NDR buffer used to encode or decode the wire representation.</param>
+    /// <param name="context">Codec context that tracks deferred pointers and per-call buffers.</param>
     internal void Encode(NdrCodec ndr, CodecContext context)
     {
         _member.Deffered = true;
@@ -1369,9 +1369,9 @@ public sealed class Variant
     /// <summary>
     /// Decode variant
     /// </summary>
-    /// <param name="ndr"></param>
-    /// <param name="context"></param>
-    /// <returns></returns>
+    /// <param name="ndr">NDR buffer used to encode or decode the wire representation.</param>
+    /// <param name="context">Codec context that tracks deferred pointers and per-call buffers.</param>
+    /// <returns>A new <see cref="Variant"/> instance built from <paramref name="ndr"/>.</returns>
     internal static Variant Decode(NdrCodec ndr, CodecContext context)
     {
         var variant = new Variant();
@@ -1390,7 +1390,7 @@ public sealed class Variant
     /// <summary>
     /// Returns whether the variant is an array
     /// </summary>
-    /// <exception cref="InteropException"> </exception>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     public bool IsArray
     {
         get
@@ -1403,8 +1403,8 @@ public sealed class Variant
     /// <summary>
     /// Returns length in bytes
     /// </summary>
-    /// <param name="flag"></param>
-    /// <exception cref="InteropException"> </exception>
+    /// <param name="flag">Flag value that controls the requested operation.</param>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     internal int GetLengthInBytes(int flag = InteropFlags.FLAG_NULL)
     {
         CheckValidity();
@@ -1415,7 +1415,7 @@ public sealed class Variant
     /// <summary>
     /// Whether the ref flag is set
     /// </summary>
-    /// <exception cref="InteropException"> </exception>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     public bool IsByRef
     {
         get
@@ -1441,7 +1441,7 @@ public sealed class Variant
     /// }
     /// </code>
     /// </summary>
-    /// <exception cref="InteropException"> </exception>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     public VariantType Type
     {
         get

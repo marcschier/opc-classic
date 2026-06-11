@@ -28,8 +28,8 @@ internal sealed class RemUnknown2 : NdrOp
     /// <summary>
     /// Create unknown
     /// </summary>
-    /// <param name="ipidOfIUnknown"></param>
-    /// <param name="requestedIID"></param>
+    /// <param name="ipidOfIUnknown">IPID of the remote IUnknown interface being managed.</param>
+    /// <param name="requestedIID">Interface IID requested by the remote caller.</param>
     internal RemUnknown2(string ipidOfIUnknown, string requestedIID)
     {
         _ipidOfIUnknown = ipidOfIUnknown;

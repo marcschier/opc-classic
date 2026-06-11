@@ -28,9 +28,9 @@ public class RegistryStub : Stub, IRegistry
     /// Create stub
     /// "ncacn_np:" + servername + "[\\PIPE\\winreg]"
     /// </summary>
-    /// <param name="authInfo"></param>
-    /// <param name="serverName"></param>
-    /// <exception cref="System.Net.Sockets.SocketException"></exception>
+    /// <param name="authInfo">Authentication information used to create the DCOM session.</param>
+    /// <param name="serverName">Name of the remote COM server host.</param>
+    /// <exception cref="System.Net.Sockets.SocketException">Thrown when the remote host cannot be resolved or the connection is refused.</exception>
     public RegistryStub(IAuthInfo authInfo, string serverName)
     {
         if (authInfo == null)
@@ -72,8 +72,8 @@ public class RegistryStub : Stub, IRegistry
     /// Create stub
     /// "ncacn_np:" + servername + "[\\PIPE\\winreg]"
     /// </summary>
-    /// <param name="serverName"></param>
-    /// <exception cref="System.Net.Sockets.SocketException"></exception>
+    /// <param name="serverName">Name of the remote COM server host.</param>
+    /// <exception cref="System.Net.Sockets.SocketException">Thrown when the remote host cannot be resolved or the connection is refused.</exception>
     public RegistryStub(string serverName)
     {
         TransportFactory = new Opc.Classic.Dcom.Rpc.Ncacn_Np.TransportFactory();

@@ -16,7 +16,7 @@ internal sealed class TypeLibImpl : ComObjectImplWrapper, ITypeLib
     /// <summary>
     /// Create type lib
     /// </summary>
-    /// <param name="comObject"></param>
+    /// <param name="comObject">COM object instance whose exported interfaces are being managed.</param>
     internal TypeLibImpl(IComObject comObject) :
         base(comObject)
     {

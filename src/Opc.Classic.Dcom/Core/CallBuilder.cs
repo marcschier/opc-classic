@@ -88,7 +88,7 @@ public class CallBuilder : NdrOp
     /// Add <code>[in]</code> parameter as <code><see cref="IComObject"/></code> at
     /// the end of the Parameter list.
     /// </summary>
-    /// <param name="comObject"> </param>
+    /// <param name="comObject">COM object instance whose exported interfaces are being managed.</param>
     /// <param name="flags"> from <see cref="InteropFlags"/> (if need be) </param>
     public void AddInParamAsComObject(IComObject comObject, int flags = InteropFlags.FLAG_NULL) =>
         InsertInParamAsComObjectAt(_inParams.Count, comObject, flags);
@@ -98,7 +98,7 @@ public class CallBuilder : NdrOp
     /// Add <code>[in]</code> parameter as <code>int</code> at the
     /// end of the Parameter list.
     /// </summary>
-    /// <param name="value"> </param>
+    /// <param name="value">Value being stored, encoded, or assigned.</param>
     /// <param name="flags"> from <see cref="InteropFlags"/> (if need be) </param>
     public void AddInParamAsInt(int value, int flags = InteropFlags.FLAG_NULL) =>
         InsertInParamAsIntAt(_inParams.Count, value, flags);
@@ -107,7 +107,7 @@ public class CallBuilder : NdrOp
     /// Add <code>[in]</code> parameter as <code>uint</code> at
     /// the end of the Parameter list.
     /// </summary>
-    /// <param name="value"> </param>
+    /// <param name="value">Value being stored, encoded, or assigned.</param>
     /// <param name="flags"> from <see cref="InteropFlags"/> (if need be) </param>
     public void AddInParamAsUnsigned(uint value, int flags = InteropFlags.FLAG_NULL) =>
         InsertInParamAsUnsignedAt(_inParams.Count, value, flags);
@@ -116,7 +116,7 @@ public class CallBuilder : NdrOp
     /// Add <code>[in]</code> parameter as <code>ushort</code> at
     /// the end of the Parameter list.
     /// </summary>
-    /// <param name="value"> </param>
+    /// <param name="value">Value being stored, encoded, or assigned.</param>
     /// <param name="flags"> from <see cref="InteropFlags"/> (if need be) </param>
     public void AddInParamAsUnsigned(ushort value, int flags = InteropFlags.FLAG_NULL) =>
         InsertInParamAsUnsignedAt(_inParams.Count, value, flags);
@@ -125,7 +125,7 @@ public class CallBuilder : NdrOp
     /// Add <code>[in]</code> parameter as <code>ulong</code> at
     /// the end of the Parameter list.
     /// </summary>
-    /// <param name="value"> </param>
+    /// <param name="value">Value being stored, encoded, or assigned.</param>
     /// <param name="flags"> from <see cref="InteropFlags"/> (if need be) </param>
     public void AddInParamAsUnsigned(ulong value, int flags = InteropFlags.FLAG_NULL) =>
         InsertInParamAsUnsignedAt(_inParams.Count, value, flags);
@@ -134,7 +134,7 @@ public class CallBuilder : NdrOp
     /// Add <code>[in]</code> parameter as <code>byte</code> at
     /// the end of the Parameter list.
     /// </summary>
-    /// <param name="value"> </param>
+    /// <param name="value">Value being stored, encoded, or assigned.</param>
     /// <param name="flags"> from <see cref="InteropFlags"/> (if need be) </param>
     public void AddInParamAsUnsigned(byte value, int flags = InteropFlags.FLAG_NULL) =>
         InsertInParamAsUnsignedAt(_inParams.Count, value, flags);
@@ -143,7 +143,7 @@ public class CallBuilder : NdrOp
     /// Add <code>[in]</code> parameter as <code>float</code> at
     /// the end of the Parameter list.
     /// </summary>
-    /// <param name="value"> </param>
+    /// <param name="value">Value being stored, encoded, or assigned.</param>
     /// <param name="flags"> from <see cref="InteropFlags"/> (if need be) </param>
     public void AddInParamAsFloat(float value, int flags = InteropFlags.FLAG_NULL) =>
         InsertInParamAsFloatAt(_inParams.Count, value, flags);
@@ -152,7 +152,7 @@ public class CallBuilder : NdrOp
     /// Add <code>[in]</code> parameter as <code>bool</code> at
     /// the end of the Parameter list.
     /// </summary>
-    /// <param name="value"> </param>
+    /// <param name="value">Value being stored, encoded, or assigned.</param>
     /// <param name="flags"> from <see cref="InteropFlags"/> (if need be) </param>
     public void AddInParamAsBoolean(bool value, int flags = InteropFlags.FLAG_NULL) =>
         InsertInParamAsBooleanAt(_inParams.Count, value, flags);
@@ -161,7 +161,7 @@ public class CallBuilder : NdrOp
     /// Add <code>[in]</code> parameter as <code>short</code> at
     /// the end of the Parameter list.
     /// </summary>
-    /// <param name="value"> </param>
+    /// <param name="value">Value being stored, encoded, or assigned.</param>
     /// <param name="flags"> from <see cref="InteropFlags"/> (if need be) </param>
     public void AddInParamAsShort(short value, int flags = InteropFlags.FLAG_NULL) =>
         InsertInParamAsShortAt(_inParams.Count, value, flags);
@@ -170,7 +170,7 @@ public class CallBuilder : NdrOp
     /// Add <code>[in]</code> parameter as <code>double</code> at
     /// the end of the Parameter list.
     /// </summary>
-    /// <param name="value"> </param>
+    /// <param name="value">Value being stored, encoded, or assigned.</param>
     /// <param name="flags"> from <see cref="InteropFlags"/> (if need be) </param>
     public void AddInParamAsDouble(double value, int flags = InteropFlags.FLAG_NULL) =>
         InsertInParamAsDoubleAt(_inParams.Count, value, flags);
@@ -179,7 +179,7 @@ public class CallBuilder : NdrOp
     /// Add <code>[in]</code> parameter as <code>char</code> at
     /// the end of the Parameter list.
     /// </summary>
-    /// <param name="value"> </param>
+    /// <param name="value">Value being stored, encoded, or assigned.</param>
     /// <param name="flags"> from <see cref="InteropFlags"/> (if need be) </param>
     public void AddInParamAsCharacter(char value, int flags = InteropFlags.FLAG_NULL) =>
         InsertInParamAsCharacterAt(_inParams.Count, value, flags);
@@ -188,7 +188,7 @@ public class CallBuilder : NdrOp
     /// Add <code>[in]</code> parameter as <code>char</code> at
     /// the end of the Parameter list.
     /// </summary>
-    /// <param name="value"> </param>
+    /// <param name="value">Value being stored, encoded, or assigned.</param>
     /// <param name="flags"> from <see cref="InteropFlags"/> (if need be) </param>
     public void AddInParamAsSByte(sbyte value, int flags = InteropFlags.FLAG_NULL) =>
         InsertInParamAsSByteAt(_inParams.Count, value, flags);
@@ -197,7 +197,7 @@ public class CallBuilder : NdrOp
     /// Add <code>[in]</code> parameter as <code>String</code> at
     /// the end of the Parameter list.
     /// </summary>
-    /// <param name="value"> </param>
+    /// <param name="value">Value being stored, encoded, or assigned.</param>
     /// <param name="flags"> from <see cref="InteropFlags"/> (These <i>HAVE</i> to be
     /// the <b>String</b> Flags).</param>
     public void AddInParamAsString(string value, int flags) =>
@@ -207,7 +207,7 @@ public class CallBuilder : NdrOp
     /// Add <code>[in]</code> parameter as <code><see cref="Variant"/></code> at
     /// the end of the Parameter list.
     /// </summary>
-    /// <param name="value"> </param>
+    /// <param name="value">Value being stored, encoded, or assigned.</param>
     /// <param name="flags"> from <see cref="InteropFlags"/> (if need be). </param>
     public void AddInParamAsVariant(Variant value, int flags = InteropFlags.FLAG_NULL) =>
         InsertInParamAsVariantAt(_inParams.Count, value, flags);
@@ -216,7 +216,7 @@ public class CallBuilder : NdrOp
     /// Add <code>[in]</code> parameter as <code>Object</code> at
     /// the end of the Parameter list.
     /// </summary>
-    /// <param name="value"> </param>
+    /// <param name="value">Value being stored, encoded, or assigned.</param>
     /// <param name="flags"> from <see cref="InteropFlags"/> (if need be). </param>
     public void AddInParamAsObject(object value, int flags = InteropFlags.FLAG_NULL) =>
         InsertInParamAsObjectAt(_inParams.Count, value, flags);
@@ -225,7 +225,7 @@ public class CallBuilder : NdrOp
     /// Add <code>[in]</code> parameter as <code>String representation
     /// of UUID</code> at the end of the Parameter list.
     /// </summary>
-    /// <param name="value"> </param>
+    /// <param name="value">Value being stored, encoded, or assigned.</param>
     /// <param name="flags"> from <see cref="InteropFlags"/> (if need be). </param>
     public void AddInParamAsUUID(string value, int flags = InteropFlags.FLAG_NULL) =>
         InsertInParamAsUUIDAt(_inParams.Count, value, flags);
@@ -234,7 +234,7 @@ public class CallBuilder : NdrOp
     /// Add <code>[in]</code> parameter as <code><see cref="ComPointer"/></code> at
     /// the end of the Parameter list.
     /// </summary>
-    /// <param name="value"> </param>
+    /// <param name="value">Value being stored, encoded, or assigned.</param>
     /// <param name="flags"> from <see cref="InteropFlags"/> (if need be). </param>
     public void AddInParamAsPointer(ComPointer value, int flags = InteropFlags.FLAG_NULL) =>
         InsertInParamAsPointerAt(_inParams.Count, value, flags);
@@ -243,7 +243,7 @@ public class CallBuilder : NdrOp
     /// Add <code>[in]</code> parameter as <code><see cref="Struct"/></code> at
     /// the end of the Parameter list.
     /// </summary>
-    /// <param name="value"> </param>
+    /// <param name="value">Value being stored, encoded, or assigned.</param>
     /// <param name="flags"> from <see cref="InteropFlags"/> (if need be). </param>
     public void AddInParamAsStruct(Struct value, int flags = InteropFlags.FLAG_NULL) =>
         InsertInParamAsStructAt(_inParams.Count, value, flags);
@@ -252,7 +252,7 @@ public class CallBuilder : NdrOp
     /// Add <code>[in]</code> parameter as <code>ComArray</code> at
     /// the end of the Parameter list.
     /// </summary>
-    /// <param name="value"> </param>
+    /// <param name="value">Value being stored, encoded, or assigned.</param>
     /// <param name="flags"> from <see cref="InteropFlags"/> (if need be). </param>
     public void AddInParamAsArray(ComArray value, int flags = InteropFlags.FLAG_NULL) =>
         InsertInParamAsArrayAt(_inParams.Count, value, flags);
@@ -262,7 +262,7 @@ public class CallBuilder : NdrOp
     /// end of the Parameter list.The array is iterated and
     /// all members appended to the list.
     /// </summary>
-    /// <param name="values"> </param>
+    /// <param name="values">Values being stored, encoded, or assigned.</param>
     /// <param name="flags"> from <see cref="InteropFlags"/> (if need be).</param>
     public void SetInParams(object[] values, int flags = InteropFlags.FLAG_NULL)
     {
@@ -279,7 +279,7 @@ public class CallBuilder : NdrOp
     /// the specified index in the Parameter list.
     /// </summary>
     /// <param name="index"> 0 based index </param>
-    /// <param name="value"> </param>
+    /// <param name="value">Value being stored, encoded, or assigned.</param>
     /// <param name="flags"> from <see cref="InteropFlags"/> (if need be).</param>
     public void InsertInParamAsComObjectAt(int index, IComObject value,
         int flags = InteropFlags.FLAG_NULL)
@@ -293,7 +293,7 @@ public class CallBuilder : NdrOp
     /// index in the Parameter list.
     /// </summary>
     /// <param name="index"> 0 based index </param>
-    /// <param name="value"> </param>
+    /// <param name="value">Value being stored, encoded, or assigned.</param>
     /// <param name="flags"> from <see cref="InteropFlags"/> (if need be).</param>
     public void InsertInParamAsIntAt(int index, int value,
         int flags = InteropFlags.FLAG_NULL)
@@ -307,7 +307,7 @@ public class CallBuilder : NdrOp
     /// specified index in the Parameter list.
     /// </summary>
     /// <param name="index"> 0 based index </param>
-    /// <param name="value"> </param>
+    /// <param name="value">Value being stored, encoded, or assigned.</param>
     /// <param name="flags"> from <see cref="InteropFlags"/> (if need be).</param>
     public void InsertInParamAsUnsignedAt(int index, byte value,
         int flags = InteropFlags.FLAG_NULL)
@@ -321,7 +321,7 @@ public class CallBuilder : NdrOp
     /// specified index in the Parameter list.
     /// </summary>
     /// <param name="index"> 0 based index </param>
-    /// <param name="value"> </param>
+    /// <param name="value">Value being stored, encoded, or assigned.</param>
     /// <param name="flags"> from <see cref="InteropFlags"/> (if need be).</param>
     public void InsertInParamAsUnsignedAt(int index, ushort value,
         int flags = InteropFlags.FLAG_NULL)
@@ -335,7 +335,7 @@ public class CallBuilder : NdrOp
     /// specified index in the Parameter list.
     /// </summary>
     /// <param name="index"> 0 based index </param>
-    /// <param name="value"> </param>
+    /// <param name="value">Value being stored, encoded, or assigned.</param>
     /// <param name="flags"> from <see cref="InteropFlags"/> (if need be).</param>
     public void InsertInParamAsUnsignedAt(int index, ulong value,
         int flags = InteropFlags.FLAG_NULL)
@@ -349,7 +349,7 @@ public class CallBuilder : NdrOp
     /// specified index in the Parameter list.
     /// </summary>
     /// <param name="index"> 0 based index </param>
-    /// <param name="value"> </param>
+    /// <param name="value">Value being stored, encoded, or assigned.</param>
     /// <param name="flags"> from <see cref="InteropFlags"/> (if need be).</param>
     public void InsertInParamAsFloatAt(int index, float value,
         int flags = InteropFlags.FLAG_NULL)
@@ -363,7 +363,7 @@ public class CallBuilder : NdrOp
     /// specified index in the Parameter list.
     /// </summary>
     /// <param name="index"> 0 based index </param>
-    /// <param name="value"> </param>
+    /// <param name="value">Value being stored, encoded, or assigned.</param>
     /// <param name="flags"> from <see cref="InteropFlags"/> (if need be).</param>
     public void InsertInParamAsBooleanAt(int index, bool value,
         int flags = InteropFlags.FLAG_NULL)
@@ -377,7 +377,7 @@ public class CallBuilder : NdrOp
     /// specified index in the Parameter list.
     /// </summary>
     /// <param name="index"> 0 based index </param>
-    /// <param name="value"> </param>
+    /// <param name="value">Value being stored, encoded, or assigned.</param>
     /// <param name="flags"> from <see cref="InteropFlags"/> (if need be).</param>
     public void InsertInParamAsSByteAt(int index, sbyte value,
         int flags = InteropFlags.FLAG_NULL)
@@ -391,7 +391,7 @@ public class CallBuilder : NdrOp
     /// specified index in the Parameter list.
     /// </summary>
     /// <param name="index"> 0 based index </param>
-    /// <param name="value"> </param>
+    /// <param name="value">Value being stored, encoded, or assigned.</param>
     /// <param name="flags"> from <see cref="InteropFlags"/> (if need be).</param>
     public void InsertInParamAsShortAt(int index, short value,
         int flags = InteropFlags.FLAG_NULL)
@@ -405,7 +405,7 @@ public class CallBuilder : NdrOp
     /// specified index in the Parameter list.
     /// </summary>
     /// <param name="index"> 0 based index </param>
-    /// <param name="value"> </param>
+    /// <param name="value">Value being stored, encoded, or assigned.</param>
     /// <param name="flags"> from <see cref="InteropFlags"/> (if need be).</param>
     public void InsertInParamAsDoubleAt(int index, double value,
         int flags = InteropFlags.FLAG_NULL)
@@ -419,7 +419,7 @@ public class CallBuilder : NdrOp
     /// specified index in the Parameter list.
     /// </summary>
     /// <param name="index"> 0 based index </param>
-    /// <param name="value"> </param>
+    /// <param name="value">Value being stored, encoded, or assigned.</param>
     /// <param name="flags"> from <see cref="InteropFlags"/> (if need be).</param>
     public void InsertInParamAsCharacterAt(int index, char value,
         int flags = InteropFlags.FLAG_NULL)
@@ -433,7 +433,7 @@ public class CallBuilder : NdrOp
     /// at the specified index in the Parameter list.
     /// </summary>
     /// <param name="index"> 0 based index </param>
-    /// <param name="value"> </param>
+    /// <param name="value">Value being stored, encoded, or assigned.</param>
     /// <param name="flags"> from <see cref="InteropFlags"/> (These <i>HAVE</i> to be
     /// the <b>String</b> Flags). </param>
     public void InsertInParamAsStringAt(int index, string value, int flags)
@@ -447,7 +447,7 @@ public class CallBuilder : NdrOp
     /// the specified index in the Parameter list.
     /// </summary>
     /// <param name="index"> 0 based index </param>
-    /// <param name="value"> </param>
+    /// <param name="value">Value being stored, encoded, or assigned.</param>
     /// <param name="flags"> from <see cref="InteropFlags"/> (if need be).</param>
     public void InsertInParamAsVariantAt(int index, Variant value,
         int flags = InteropFlags.FLAG_NULL)
@@ -461,7 +461,7 @@ public class CallBuilder : NdrOp
     /// the specified index in the Parameter list.
     /// </summary>
     /// <param name="index"> 0 based index </param>
-    /// <param name="value"> </param>
+    /// <param name="value">Value being stored, encoded, or assigned.</param>
     /// <param name="flags"> from <see cref="InteropFlags"/> (if need be).</param>
     public void InsertInParamAsObjectAt(int index, object value,
         int flags = InteropFlags.FLAG_NULL)
@@ -475,7 +475,7 @@ public class CallBuilder : NdrOp
     /// of UUID</code> at the specified index in the Parameter list.
     /// </summary>
     /// <param name="index"> 0 based index </param>
-    /// <param name="value"> </param>
+    /// <param name="value">Value being stored, encoded, or assigned.</param>
     /// <param name="flags"> from <see cref="InteropFlags"/> (if need be).</param>
     public void InsertInParamAsUUIDAt(int index, string value,
         int flags = InteropFlags.FLAG_NULL)
@@ -489,7 +489,7 @@ public class CallBuilder : NdrOp
     /// the specified index in the Parameter list.
     /// </summary>
     /// <param name="index"> 0 based index </param>
-    /// <param name="value"> </param>
+    /// <param name="value">Value being stored, encoded, or assigned.</param>
     /// <param name="flags"> from <see cref="InteropFlags"/> (if need be).</param>
     public void InsertInParamAsPointerAt(int index, ComPointer value,
         int flags = InteropFlags.FLAG_NULL)
@@ -503,7 +503,7 @@ public class CallBuilder : NdrOp
     /// the specified index in the Parameter list.
     /// </summary>
     /// <param name="index"> 0 based index </param>
-    /// <param name="value"> </param>
+    /// <param name="value">Value being stored, encoded, or assigned.</param>
     /// <param name="flags"> from <see cref="InteropFlags"/> (if need be).</param>
     public void InsertInParamAsStructAt(int index, Struct value,
         int flags = InteropFlags.FLAG_NULL)
@@ -517,7 +517,7 @@ public class CallBuilder : NdrOp
     /// the specified index in the Parameter list.
     /// </summary>
     /// <param name="index"> 0 based index </param>
-    /// <param name="value"> </param>
+    /// <param name="value">Value being stored, encoded, or assigned.</param>
     /// <param name="flags"> from <see cref="InteropFlags"/> (if need be).</param>
     public void InsertInParamAsArrayAt(int index, ComArray value,
         int flags = InteropFlags.FLAG_NULL)
@@ -557,8 +557,8 @@ public class CallBuilder : NdrOp
     /// Add <code>[out]</code> parameter of the type <code>clazz</code>
     /// at the end of the out parameter list.
     /// </summary>
-    /// <param name="clazz"> </param>
-    /// <param name="flags"> </param>
+    /// <param name="clazz">Managed type used to describe the COM out parameter.</param>
+    /// <param name="flags">Bit flags governing the requested operation.</param>
     public void AddOutParamAsType(Type clazz, int flags = InteropFlags.FLAG_NULL) =>
         InsertOutParamAt(_outParams.Count, clazz, flags);
 
@@ -568,8 +568,8 @@ public class CallBuilder : NdrOp
     /// composite in nature <see cref="Struct"/>, <see cref="Union"/>s, 
     /// <see cref="ComPointer"/> and <see cref="ComString"/> .
     /// </summary>
-    /// <param name="outparam"> </param>
-    /// <param name="flags"> </param>
+    /// <param name="outparam">Object instance used as the COM out parameter placeholder.</param>
+    /// <param name="flags">Bit flags governing the requested operation.</param>
     public void AddOutParamAsObject(object outparam, int flags = InteropFlags.FLAG_NULL) =>
         InsertOutParamAt(_outParams.Count, outparam, flags);
 
@@ -580,7 +580,7 @@ public class CallBuilder : NdrOp
     /// <param name="index"> 0 based index </param>
     /// <param name="classOrInstance"> can be either a Class or
     /// an Object </param>
-    /// <param name="flags"> </param>
+    /// <param name="flags">Bit flags governing the requested operation.</param>
     public void InsertOutParamAt(int index, object classOrInstance,
         int flags = InteropFlags.FLAG_NULL)
     {
@@ -593,7 +593,7 @@ public class CallBuilder : NdrOp
     /// the out parameters list.
     /// </summary>
     /// <param name="index"> 0 based index </param>
-    /// <returns>  </returns>
+    /// <returns>The requested out param at value.</returns>
     public object GetOutParamAt(int index) => _outParams[index];
 
     /// <summary>
@@ -617,7 +617,7 @@ public class CallBuilder : NdrOp
     /// at the end of the Parameter list.
     /// The array is iterated and all members appended to the list.
     /// </summary>
-    /// <param name="values"> </param>
+    /// <param name="values">Values being stored, encoded, or assigned.</param>
     /// <param name="flags"> from <see cref="InteropFlags"/> (if need be).</param>
     public void SetOutParams(object[] values, int flags = InteropFlags.FLAG_NULL)
     {
@@ -935,7 +935,7 @@ public class CallBuilder : NdrOp
     /// <summary>
     /// called by only COMRuntime and NO ONE ELSE.
     /// </summary>
-    /// <param name="ndr"> </param>
+    /// <param name="ndr">NDR buffer used to encode or decode the wire representation.</param>
     internal void Read2(NdrCodec ndr)
     {
         OrpcThis.Decode(ndr);
@@ -947,8 +947,8 @@ public class CallBuilder : NdrOp
     /// <summary>
     /// Read
     /// </summary>
-    /// <param name="ndr"></param>
-    /// <param name="fromCallback"></param>
+    /// <param name="ndr">NDR buffer used to encode or decode the wire representation.</param>
+    /// <param name="fromCallback">Value indicating whether the call originated from a server callback path.</param>
     private void ReadPacket(NdrCodec ndr, bool fromCallback)
     {
 
@@ -1045,7 +1045,7 @@ public class CallBuilder : NdrOp
     /// <summary>
     /// Read result
     /// </summary>
-    /// <param name="ndr"></param>
+    /// <param name="ndr">NDR buffer used to encode or decode the wire representation.</param>
     private void ReadResult(NdrCodec ndr)
     {
         // last has to be the result.
@@ -1063,7 +1063,7 @@ public class CallBuilder : NdrOp
     /// <summary>
     /// Get buffer length
     /// </summary>
-    /// <returns></returns>
+    /// <returns>The numeric buffer length value.</returns>
     private int BufferLength()
     {
         var length = 0;
@@ -1098,7 +1098,7 @@ public class CallBuilder : NdrOp
     /// <summary>
     /// Attach
     /// </summary>
-    /// <param name="session"></param>
+    /// <param name="session">Session that owns the COM object, transport, and authentication state.</param>
     internal void AttachSession(Session session) =>
         Session = session;
 

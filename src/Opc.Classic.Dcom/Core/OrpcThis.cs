@@ -28,7 +28,7 @@ internal sealed class OrpcThis
     /// <summary>
     /// Create orpcthis
     /// </summary>
-    /// <param name="casualityIdentifier"></param>
+    /// <param name="casualityIdentifier">ORPC causality identifier used to correlate the call chain.</param>
     public OrpcThis(UUID casualityIdentifier) =>
 #pragma warning restore RECS0154 // Parameter is never used
         CasualityIdentifier = casualityIdentifier.ToString();
@@ -51,7 +51,7 @@ internal sealed class OrpcThis
     /// <summary>
     /// Encode
     /// </summary>
-    /// <param name="ndr"></param>
+    /// <param name="ndr">NDR buffer used to encode or decode the wire representation.</param>
     public void Encode(NdrCodec ndr)
     {
         ndr.WriteUnsignedShort(_version.MajorVersion); // COM Major version
@@ -103,8 +103,8 @@ internal sealed class OrpcThis
     /// <summary>
     /// Decode
     /// </summary>
-    /// <param name="ndr"></param>
-    /// <returns></returns>
+    /// <param name="ndr">NDR buffer used to encode or decode the wire representation.</param>
+    /// <returns>A new <see cref="OrpcThis"/> instance built from <paramref name="ndr"/>.</returns>
     internal static OrpcThis Decode(NdrCodec ndr)
     {
 

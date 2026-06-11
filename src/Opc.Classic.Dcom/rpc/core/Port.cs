@@ -28,7 +28,7 @@ public class Port : NdrOp
     /// <summary>
     /// Create port
     /// </summary>
-    /// <param name="portSpec"></param>
+    /// <param name="portSpec">Text value used as the port spec.</param>
     public Port(string portSpec) => PortSpec = portSpec;
 #pragma warning restore RECS0154 // Parameter is never used
 

@@ -73,7 +73,7 @@ public sealed class LocalInterfaceDefinition
     /// the same order as they appear in the IDL.
     /// Please note that overloaded methods are not allowed.
     /// </summary>
-    /// <param name="methodDescriptor"> </param>
+    /// <param name="methodDescriptor">Descriptor for a local COM method exposed by the interface definition.</param>
     /// <exception cref="ArgumentException"> if a method by the
     /// same name already exists. </exception>
     public void AddMethodDescriptor(LocalMethodDescriptor methodDescriptor)
@@ -101,7 +101,7 @@ public sealed class LocalInterfaceDefinition
     /// <summary>
     /// Returns the method descriptor identified by it's number.
     /// </summary>
-    /// <param name="opnum"> </param>
+    /// <param name="opnum">RPC operation number to invoke on the remote interface.</param>
     /// <returns> <code>null</code> if no method by this
     /// <code>opnum</code> was found. </returns>
     public LocalMethodDescriptor GetMethodDescriptor(int opnum) =>
@@ -110,7 +110,7 @@ public sealed class LocalInterfaceDefinition
     /// <summary>
     ///Returns the method descriptor identified by it's dispId.
     /// </summary>
-    /// <param name="dispId"> </param>
+    /// <param name="dispId">Automation dispatch identifier of the property or method.</param>
     /// <returns> <code>null</code> if no method by this
     /// <code>dispId</code> was found. </returns>
     public LocalMethodDescriptor GetMethodDescriptorForDispId(int dispId) =>
@@ -120,7 +120,7 @@ public sealed class LocalInterfaceDefinition
     /// <summary>
     ///Returns the method descriptor identified by it's name.
     /// </summary>
-    /// <param name="name"> </param>
+    /// <param name="name">Name used to identify the field, interface, or server entry.</param>
     /// <returns> <code>null</code> if no method by this
     /// <code>name</code> was found. </returns>
     public LocalMethodDescriptor GetMethodDescriptor(string name) =>
@@ -144,7 +144,7 @@ public sealed class LocalInterfaceDefinition
     /// Please note that removal of a sequential method can have
     /// unpredictable results during a call.
     /// </remarks>
-    /// <param name="opnum"> </param>
+    /// <param name="opnum">RPC operation number to invoke on the remote interface.</param>
     /// <seealso cref="AddMethodDescriptor(LocalMethodDescriptor)"></seealso>
     public void RemoveMethodDescriptor(int opnum)
     {
@@ -162,7 +162,7 @@ public sealed class LocalInterfaceDefinition
     /// Please note that removal of a sequential method can have
     /// unpredictable results during a call.
     /// </remarks>
-    /// <param name="methodName"> </param>
+    /// <param name="methodName">Name used to identify the target server, member, or descriptor.</param>
     /// <seealso cref="AddMethodDescriptor(LocalMethodDescriptor)"></seealso>
     public void RemoveMethodDescriptor(string methodName)
     {

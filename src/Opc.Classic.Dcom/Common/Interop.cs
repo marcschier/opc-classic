@@ -201,7 +201,7 @@ public static class Interop
     /// <summary>
     /// Returns I.P address for the given <code>hostname</code>.
     /// </summary>
-    /// <param name="hostname"> </param>
+    /// <param name="hostname">Name used to identify the target server, member, or descriptor.</param>
     /// <returns> <code>null</code> if a mapping could not be found. </returns>
     internal static string GetIPForHostName(string hostname)
     {

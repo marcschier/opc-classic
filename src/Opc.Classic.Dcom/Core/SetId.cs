@@ -17,7 +17,7 @@ internal sealed class SetId
     /// <summary>
     /// Create
     /// </summary>
-    /// <param name="setid"></param>
+    /// <param name="setid">DCOM ping set identifier assigned by the OXID resolver.</param>
 #pragma warning disable RECS0154 // Parameter is never used
     internal SetId(byte[] setid) => Value = setid;
 #pragma warning restore RECS0154 // Parameter is never used

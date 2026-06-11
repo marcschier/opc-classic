@@ -44,7 +44,7 @@ public class AuthenticationVerifier : NdrOp
     /// <summary>
     /// Create verifier
     /// </summary>
-    /// <param name="authenticatorLength"></param>
+    /// <param name="authenticatorLength">Length in bytes of the authentication verifier payload.</param>
     public AuthenticationVerifier(int authenticatorLength) :
         this(Opc.Classic.Dcom.Rpc.Security.AUTHENTICATION_SERVICE_NONE,
             ProtectionLevel.PROTECTION_LEVEL_NONE, 0, authenticatorLength)
@@ -54,10 +54,10 @@ public class AuthenticationVerifier : NdrOp
     /// <summary>
     /// Create verifier
     /// </summary>
-    /// <param name="authenticationService"></param>
-    /// <param name="protectionLevel"></param>
-    /// <param name="contextId"></param>
-    /// <param name="authenticatorLength"></param>
+    /// <param name="authenticationService">RPC authentication service identifier used for the security trailer.</param>
+    /// <param name="protectionLevel">RPC authentication protection level applied to the message.</param>
+    /// <param name="contextId">Presentation context identifier assigned to the RPC association.</param>
+    /// <param name="authenticatorLength">Length in bytes of the authentication verifier payload.</param>
     public AuthenticationVerifier(int authenticationService,
         ProtectionLevel protectionLevel, int contextId, int authenticatorLength) :
         this(authenticationService, protectionLevel, contextId,
@@ -68,10 +68,10 @@ public class AuthenticationVerifier : NdrOp
     /// <summary>
     /// Create verifier
     /// </summary>
-    /// <param name="authenticationService"></param>
-    /// <param name="protectionLevel"></param>
-    /// <param name="contextId"></param>
-    /// <param name="body"></param>
+    /// <param name="authenticationService">RPC authentication service identifier used for the security trailer.</param>
+    /// <param name="protectionLevel">RPC authentication protection level applied to the message.</param>
+    /// <param name="contextId">Presentation context identifier assigned to the RPC association.</param>
+    /// <param name="body">Wire-format bytes consumed or produced by the operation.</param>
     public AuthenticationVerifier(int authenticationService,
         ProtectionLevel protectionLevel, int contextId, byte[] body)
     {

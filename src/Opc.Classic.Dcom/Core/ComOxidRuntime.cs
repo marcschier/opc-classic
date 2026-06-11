@@ -167,8 +167,8 @@ internal sealed class ComOxidRuntime : IDisposable
     /// Helper method to force release of a local component, so we dont
     /// wait until the session is destroyed.
     /// </summary>
-    /// <param name="session"></param>
-    /// <param name="component"></param>
+    /// <param name="session">Session that owns the COM object, transport, and authentication state.</param>
+    /// <param name="component">Component value used to build the COM version or descriptor.</param>
     internal void ReleaseLocalComponent(Session session, LocalCoClass component)
     {
         lock (_mapOfOIDVsComponentsLock)
@@ -194,7 +194,7 @@ internal sealed class ComOxidRuntime : IDisposable
     /// <summary>
     /// Destroy session oids
     /// </summary>
-    /// <param name="sessionId"></param>
+    /// <param name="sessionId">Identifier of the session associated with the tracked COM object.</param>
     internal void DestroySessionOIDs(int sessionId)
     {
         lock (_mapOfOIDVsComponentsLock)
@@ -235,9 +235,9 @@ internal sealed class ComOxidRuntime : IDisposable
     /// <summary>
     /// Add or update oxids
     /// </summary>
-    /// <param name="session"></param>
-    /// <param name="IPID"></param>
-    /// <param name="oid"></param>
+    /// <param name="session">Session that owns the COM object, transport, and authentication state.</param>
+    /// <param name="IPID">DCOM IPID identifying the per-interface object reference.</param>
+    /// <param name="oid">DCOM OID identifying the exported object instance.</param>
     internal void AddUpdateOXIDs(Session session, string IPID, ObjectId oid)
     {
         System.Diagnostics.Debug.Assert(IPID != null);
@@ -287,9 +287,9 @@ internal sealed class ComOxidRuntime : IDisposable
     /// <summary>
     /// Delete reference
     /// </summary>
-    /// <param name="IPID"></param>
-    /// <param name="oid"></param>
-    /// <param name="session"></param>
+    /// <param name="IPID">DCOM IPID identifying the per-interface object reference.</param>
+    /// <param name="oid">DCOM OID identifying the exported object instance.</param>
+    /// <param name="session">Session that owns the COM object, transport, and authentication state.</param>
     internal void DelIPIDReference(string IPID, ObjectId oid, Session session)
     {
         lock (_mapOfSessionVsPingSetHolderLock)
@@ -342,7 +342,7 @@ internal sealed class ComOxidRuntime : IDisposable
     /// <summary>
     /// Clear ipds
     /// </summary>
-    /// <param name="session"></param>
+    /// <param name="session">Session that owns the COM object, transport, and authentication state.</param>
     internal void ClearIPIDsforSession(Session session)
     {
         lock (_mapOfSessionVsPingSetHolderLock)
@@ -381,10 +381,10 @@ internal sealed class ComOxidRuntime : IDisposable
     /// Returns the MIP for the Java Instance, this will also have the OXID,OID,IPID
     /// for the same.
     /// </summary>
-    /// <exception cref="InteropException"></exception>
-    /// <param name="session"></param>
-    /// <param name="component"></param>
-    /// <returns></returns>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
+    /// <param name="session">Session that owns the COM object, transport, and authentication state.</param>
+    /// <param name="component">Component value used to build the COM version or descriptor.</param>
+    /// <returns>The requested interface pointer value.</returns>
     internal InterfacePointer GetInterfacePointer(Session session, LocalCoClass component)
     {
         InterfacePointer ptr = null;
@@ -478,8 +478,8 @@ internal sealed class ComOxidRuntime : IDisposable
     /// field object having the IPID of the instance to call on. Pass this to the
     /// components (identified previously) invoke API., along with the rest of params
     /// </summary>
-    /// <param name="ipid"></param>
-    /// <returns></returns>
+    /// <param name="ipid">DCOM IPID identifying the per-interface object reference.</param>
+    /// <returns>The requested component from ipid value.</returns>
     internal ComOxidDetails GetComponentFromIPID(string ipid)
     {
         // How will the request get decoded without IDL info ??? Hard code for now for toString ??
@@ -492,9 +492,9 @@ internal sealed class ComOxidRuntime : IDisposable
     /// <summary>
     /// Add update sets
     /// </summary>
-    /// <param name="setId"></param>
-    /// <param name="objectIdsAdded"></param>
-    /// <param name="objectIdsDel"></param>
+    /// <param name="setId">Identifier of the ping set that owns the tracked object references.</param>
+    /// <param name="objectIdsAdded">Object identifiers added to the DCOM complex ping set.</param>
+    /// <param name="objectIdsDel">Object identifiers removed from the DCOM complex ping set.</param>
     internal void AddUpdateSets(SetId setId, List<ObjectId> objectIdsAdded,
         List<ObjectId> objectIdsDel)
     {
@@ -526,8 +526,8 @@ internal sealed class ComOxidRuntime : IDisposable
     /// <summary>
     /// Get component from ipid
     /// </summary>
-    /// <param name="ipid"></param>
-    /// <returns></returns>
+    /// <param name="ipid">DCOM IPID identifying the per-interface object reference.</param>
+    /// <returns>The requested local component from ipid value.</returns>
     internal LocalCoClass GetLocalComponentFromIPID(string ipid)
     {
         lock (_mapOfOIDVsComponentsLock)

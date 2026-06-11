@@ -18,9 +18,9 @@ public static class RectangularArrays
     /// <summary>
     /// Create
     /// </summary>
-    /// <param name="size1"></param>
-    /// <param name="size2"></param>
-    /// <returns></returns>
+    /// <param name="size1">Length of the first rectangular array dimension.</param>
+    /// <param name="size2">Length of the second rectangular array dimension.</param>
+    /// <returns>The sequence of return rectangular float array values produced by the operation.</returns>
     public static float[][] ReturnRectangularFloatArray(int size1, int size2)
     {
         float[][] newArray;
@@ -46,9 +46,9 @@ public static class RectangularArrays
     /// <summary>
     /// Create
     /// </summary>
-    /// <param name="size1"></param>
-    /// <param name="size2"></param>
-    /// <returns></returns>
+    /// <param name="size1">Length of the first rectangular array dimension.</param>
+    /// <param name="size2">Length of the second rectangular array dimension.</param>
+    /// <returns>The sequence of return rectangular int array values produced by the operation.</returns>
     public static int[][] ReturnRectangularIntArray(int size1, int size2)
     {
         int[][] newArray;
@@ -74,9 +74,9 @@ public static class RectangularArrays
     /// <summary>
     /// Create
     /// </summary>
-    /// <param name="size1"></param>
-    /// <param name="size2"></param>
-    /// <returns></returns>
+    /// <param name="size1">Length of the first rectangular array dimension.</param>
+    /// <param name="size2">Length of the second rectangular array dimension.</param>
+    /// <returns>The sequence of return rectangular double array values produced by the operation.</returns>
     public static double[][] ReturnRectangularDoubleArray(int size1, int size2)
     {
         double[][] newArray;
@@ -102,9 +102,9 @@ public static class RectangularArrays
     /// <summary>
     /// Create
     /// </summary>
-    /// <param name="size1"></param>
-    /// <param name="size2"></param>
-    /// <returns></returns>
+    /// <param name="size1">Length of the first rectangular array dimension.</param>
+    /// <param name="size2">Length of the second rectangular array dimension.</param>
+    /// <returns>The sequence of return rectangular char array values produced by the operation.</returns>
     public static char[][] ReturnRectangularCharArray(int size1, int size2)
     {
         char[][] newArray;
@@ -130,9 +130,9 @@ public static class RectangularArrays
     /// <summary>
     /// Create
     /// </summary>
-    /// <param name="size1"></param>
-    /// <param name="size2"></param>
-    /// <returns></returns>
+    /// <param name="size1">Length of the first rectangular array dimension.</param>
+    /// <param name="size2">Length of the second rectangular array dimension.</param>
+    /// <returns>The sequence of return rectangular bool array values produced by the operation.</returns>
     public static bool[][] ReturnRectangularBoolArray(int size1, int size2)
     {
         bool[][] newArray;
@@ -158,9 +158,9 @@ public static class RectangularArrays
     /// <summary>
     /// Create
     /// </summary>
-    /// <param name="size1"></param>
-    /// <param name="size2"></param>
-    /// <returns></returns>
+    /// <param name="size1">Length of the first rectangular array dimension.</param>
+    /// <param name="size2">Length of the second rectangular array dimension.</param>
+    /// <returns>The sequence of return rectangular sbyte array values produced by the operation.</returns>
     public static sbyte[][] ReturnRectangularSbyteArray(int size1, int size2)
     {
         sbyte[][] newArray;
@@ -186,9 +186,9 @@ public static class RectangularArrays
     /// <summary>
     /// Create
     /// </summary>
-    /// <param name="size1"></param>
-    /// <param name="size2"></param>
-    /// <returns></returns>
+    /// <param name="size1">Length of the first rectangular array dimension.</param>
+    /// <param name="size2">Length of the second rectangular array dimension.</param>
+    /// <returns>The sequence of return rectangular short array values produced by the operation.</returns>
     public static short[][] ReturnRectangularShortArray(int size1, int size2)
     {
         short[][] newArray;
@@ -214,9 +214,9 @@ public static class RectangularArrays
     /// <summary>
     /// Create
     /// </summary>
-    /// <param name="size1"></param>
-    /// <param name="size2"></param>
-    /// <returns></returns>
+    /// <param name="size1">Length of the first rectangular array dimension.</param>
+    /// <param name="size2">Length of the second rectangular array dimension.</param>
+    /// <returns>The sequence of return rectangular object array values produced by the operation.</returns>
     public static object[][] ReturnRectangularObjectArray(int size1, int size2)
     {
         object[][] newArray;
@@ -242,9 +242,9 @@ public static class RectangularArrays
     /// <summary>
     /// Create
     /// </summary>
-    /// <param name="size1"></param>
-    /// <param name="size2"></param>
-    /// <returns></returns>
+    /// <param name="size1">Length of the first rectangular array dimension.</param>
+    /// <param name="size2">Length of the second rectangular array dimension.</param>
+    /// <returns>The sequence of return rectangular variant array values produced by the operation.</returns>
     public static Variant[][] ReturnRectangularVariantArray(int size1, int size2)
     {
         Variant[][] newArray;

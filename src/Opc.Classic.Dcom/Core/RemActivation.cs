@@ -54,7 +54,7 @@ internal sealed class RemActivation : NdrOp, IServerActivation
     /// <summary>
     /// Create activation
     /// </summary>
-    /// <param name="clsid"></param>
+    /// <param name="clsid">CLSID identifying the COM class or OPC server to activate.</param>
     public RemActivation(string clsid)
     {
         ClientImpersonationLevel = RpcImpersonationLevel.RPC_C_IMP_LEVEL_IMPERSONATE;
@@ -65,7 +65,7 @@ internal sealed class RemActivation : NdrOp, IServerActivation
     /// <summary>
     /// Set file moniker
     /// </summary>
-    /// <param name="name"></param>
+    /// <param name="name">Name used to identify the field, interface, or server entry.</param>
     public void SetfileMonikerAtServer(string name)
     {
         if (name != null && !name.Equals("", StringComparison.CurrentCultureIgnoreCase))

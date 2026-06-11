@@ -27,28 +27,28 @@ public interface ITransport
     /// <summary>
     /// Attach
     /// </summary>
-    /// <param name="syntax"></param>
-    /// <exception cref="IOException"></exception>
-    /// <returns></returns>
+    /// <param name="syntax">Presentation syntax negotiated for the RPC context.</param>
+    /// <exception cref="IOException">Thrown when the underlying stream, socket, or named pipe read/write operation fails.</exception>
+    /// <returns>The bound RPC endpoint attached to the transport.</returns>
     IEndpoint Attach(PresentationSyntax syntax);
 
     /// <summary>
     /// Send
     /// </summary>
-    /// <param name="buffer"></param>
-    /// <exception cref="IOException"></exception>
+    /// <param name="buffer">Buffer containing the bytes or fields being processed.</param>
+    /// <exception cref="IOException">Thrown when the underlying stream, socket, or named pipe read/write operation fails.</exception>
     void Send(NdrBuffer buffer);
 
     /// <summary>
     /// Receive
     /// </summary>
-    /// <param name="buffer"></param>
-    /// <exception cref="IOException"></exception>
+    /// <param name="buffer">Buffer containing the bytes or fields being processed.</param>
+    /// <exception cref="IOException">Thrown when the underlying stream, socket, or named pipe read/write operation fails.</exception>
     void Receive(NdrBuffer buffer);
 
     /// <summary>
     /// Close
     /// </summary>
-    /// <exception cref="IOException"></exception>
+    /// <exception cref="IOException">Thrown when the underlying stream, socket, or named pipe read/write operation fails.</exception>
     void Close();
 }

@@ -21,10 +21,10 @@ internal static class MarshalUnMarshalHelper
     /// <summary>
     /// Serialize
     /// </summary>
-    /// <param name="ndr"></param>
-    /// <param name="c"></param>
-    /// <param name="value"></param>
-    /// <param name="context"></param>
+    /// <param name="ndr">NDR buffer used to encode or decode the wire representation.</param>
+    /// <param name="c">Character value being tested or transformed.</param>
+    /// <param name="value">Value being stored, encoded, or assigned.</param>
+    /// <param name="context">Codec context that tracks deferred pointers and per-call buffers.</param>
     internal static void Serialize(NdrCodec ndr, Type c, object value, CodecContext context = null)
     {
 
@@ -98,10 +98,10 @@ internal static class MarshalUnMarshalHelper
     /// <summary>
     /// Deserialize
     /// </summary>
-    /// <param name="ndr"></param>
-    /// <param name="obj"></param>
-    /// <param name="context"></param>
-    /// <returns></returns>
+    /// <param name="ndr">NDR buffer used to encode or decode the wire representation.</param>
+    /// <param name="obj">Object instance being marshaled, unmarshaled, or invoked.</param>
+    /// <param name="context">Codec context that tracks deferred pointers and per-call buffers.</param>
+    /// <returns>The object reconstructed from the serialized COM wire representation.</returns>
     internal static object Deserialize(NdrCodec ndr, object obj, CodecContext context = null)
     {
 
@@ -176,10 +176,10 @@ internal static class MarshalUnMarshalHelper
     /// <summary>
     /// Get length in bytes
     /// </summary>
-    /// <param name="c"></param>
-    /// <param name="obj"></param>
-    /// <param name="flag"></param>
-    /// <returns></returns>
+    /// <param name="c">Character value being tested or transformed.</param>
+    /// <param name="obj">Object instance being marshaled, unmarshaled, or invoked.</param>
+    /// <param name="flag">Flag value that controls the requested operation.</param>
+    /// <returns>The requested length in bytes value.</returns>
     internal static int GetLengthInBytes(Type c, object obj, int flag = InteropFlags.FLAG_NULL)
     {
         if (obj != null && obj.GetType().Equals(typeof(ComArray)))
@@ -203,9 +203,9 @@ internal static class MarshalUnMarshalHelper
     /// <summary>
     /// Align on write
     /// </summary>
-    /// <param name="ndr"></param>
-    /// <param name="c"></param>
-    /// <param name="obj"></param>
+    /// <param name="ndr">NDR buffer used to encode or decode the wire representation.</param>
+    /// <param name="c">Character value being tested or transformed.</param>
+    /// <param name="obj">Object instance being marshaled, unmarshaled, or invoked.</param>
     private static void AlignMemberWhileEncoding(NdrCodec ndr, Type c, object obj)
     {
         var index = (double)ndr.Buffer.Index;
@@ -240,9 +240,9 @@ internal static class MarshalUnMarshalHelper
     /// <summary>
     /// Align to read
     /// </summary>
-    /// <param name="ndr"></param>
-    /// <param name="c"></param>
-    /// <param name="obj"></param>
+    /// <param name="ndr">NDR buffer used to encode or decode the wire representation.</param>
+    /// <param name="c">Character value being tested or transformed.</param>
+    /// <param name="obj">Object instance being marshaled, unmarshaled, or invoked.</param>
     private static void AlignMemberWhileDecoding(NdrCodec ndr, Type c, object obj)
     {
         if (c.Equals(typeof(Struct)))
@@ -276,9 +276,9 @@ internal static class MarshalUnMarshalHelper
     /// <summary>
     /// Read buffer
     /// </summary>
-    /// <param name="ndr"></param>
-    /// <param name="length"></param>
-    /// <returns></returns>
+    /// <param name="ndr">NDR buffer used to encode or decode the wire representation.</param>
+    /// <param name="length">Number of bytes or elements to process.</param>
+    /// <returns>The sequence of octet array le values produced by the operation.</returns>
     internal static byte[] ReadOctetArrayLE(NdrCodec ndr, int length)
     {
         System.Diagnostics.Debug.Assert(length == 8); // TODO: Should be generic.
@@ -296,8 +296,8 @@ internal static class MarshalUnMarshalHelper
     /// <summary>
     /// Write buffer
     /// </summary>
-    /// <param name="ndr"></param>
-    /// <param name="b"></param>
+    /// <param name="ndr">NDR buffer used to encode or decode the wire representation.</param>
+    /// <param name="b">Wire-format bytes consumed or produced by the operation.</param>
     internal static void WriteOctetArrayLE(NdrCodec ndr, byte[] b)
     {
         for (var i = 0; i < b.Length; i++)
@@ -315,25 +315,25 @@ internal static class MarshalUnMarshalHelper
         /// <summary>
         /// Serialize data
         /// </summary>
-        /// <param name="ndr"></param>
-        /// <param name="value"></param>
-        /// <param name="context"></param>
+        /// <param name="ndr">NDR buffer used to encode or decode the wire representation.</param>
+        /// <param name="value">Value being stored, encoded, or assigned.</param>
+        /// <param name="context">Codec context that tracks deferred pointers and per-call buffers.</param>
         void SerializeData(NdrCodec ndr, object value, CodecContext context);
 
         /// <summary>
         /// Deserialize
         /// </summary>
-        /// <param name="ndr"></param>
-        /// <param name="context"></param>
-        /// <returns></returns>
+        /// <param name="ndr">NDR buffer used to encode or decode the wire representation.</param>
+        /// <param name="context">Codec context that tracks deferred pointers and per-call buffers.</param>
+        /// <returns>The decoded COM values produced from the serialized byte stream.</returns>
         object DeserializeData(NdrCodec ndr, CodecContext context);
 
         /// <summary>
         /// Get length in bytes
         /// </summary>
-        /// <param name="value"></param>
-        /// <param name="flag"></param>
-        /// <returns></returns>
+        /// <param name="value">Value being stored, encoded, or assigned.</param>
+        /// <param name="flag">Flag value that controls the requested operation.</param>
+        /// <returns>The requested data length in bytes value.</returns>
         int GetDataLengthInBytes(object value, int flag = InteropFlags.FLAG_NULL);
     }
 

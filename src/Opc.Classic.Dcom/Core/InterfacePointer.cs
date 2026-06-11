@@ -59,7 +59,7 @@ public /*internal*/ sealed class InterfacePointer
     /// <summary>
     /// Object reference of specified type
     /// </summary>
-    /// <param name="objectType"></param>
+    /// <param name="objectType">Type descriptor that determines how the value is marshaled.</param>
     internal object GetObjectReference(int objectType) =>
         ((InterfacePointerBody)_member.Referent).GetObjectReference(objectType);
 
@@ -106,17 +106,17 @@ public /*internal*/ sealed class InterfacePointer
     /// <summary>
     /// Called from Oxid Resolver master, the resolver address are put in here itself
     /// </summary>
-    /// <param name="iid"> </param>
-    /// <param name="port"></param>
-    /// <param name="objref"></param>
+    /// <param name="iid">Interface IID identifying the COM interface being queried or marshaled.</param>
+    /// <param name="port">Network port used by the RPC endpoint or string binding.</param>
+    /// <param name="objref">OBJREF structure that carries the marshaled COM object reference.</param>
     internal InterfacePointer(string iid, int port, StdObjRef objref) =>
         _member = new ComPointer(new InterfacePointerBody(iid, port, objref), false);
 
     /// <summary>
     /// Create interface pointer
     /// </summary>
-    /// <param name="iid"></param>
-    /// <param name="interfacePointer"></param>
+    /// <param name="iid">Interface IID identifying the COM interface being queried or marshaled.</param>
+    /// <param name="interfacePointer">Marshaled interface pointer that describes the remote COM interface reference.</param>
     internal InterfacePointer(string iid, InterfacePointer interfacePointer) =>
         _member = new ComPointer(new InterfacePointerBody(iid, interfacePointer), false);
 
@@ -131,9 +131,9 @@ public /*internal*/ sealed class InterfacePointer
     /// <summary>
     /// Helper to compare to interface pointers
     /// </summary>
-    /// <param name="src"></param>
-    /// <param name="target"></param>
-    /// <returns></returns>
+    /// <param name="src">Source NDR buffer that supplies the field data to decode.</param>
+    /// <param name="target">Target object or buffer that receives the operation result.</param>
+    /// <returns><c>true</c> when is oxid equal is satisfied; otherwise <c>false</c>.</returns>
     public static bool IsOxidEqual(InterfacePointer src, InterfacePointer target)
     {
         ArgumentNullException.ThrowIfNull(src);
@@ -144,9 +144,9 @@ public /*internal*/ sealed class InterfacePointer
     /// <summary>
     /// Decode
     /// </summary>
-    /// <param name="ndr"></param>
-    /// <param name="context"></param>
-    /// <returns></returns>
+    /// <param name="ndr">NDR buffer used to encode or decode the wire representation.</param>
+    /// <param name="context">Codec context that tracks deferred pointers and per-call buffers.</param>
+    /// <returns>A new <see cref="InterfacePointer"/> instance built from <paramref name="ndr"/>.</returns>
     internal static InterfacePointer Decode(NdrCodec ndr, CodecContext context)
     {
         var ptr = new InterfacePointer();
@@ -172,8 +172,8 @@ public /*internal*/ sealed class InterfacePointer
     /// <summary>
     /// Encode
     /// </summary>
-    /// <param name="ndr"></param>
-    /// <param name="context"></param>
+    /// <param name="ndr">NDR buffer used to encode or decode the wire representation.</param>
+    /// <param name="context">Codec context that tracks deferred pointers and per-call buffers.</param>
     internal void Encode(NdrCodec ndr, CodecContext context)
     {
         if ((context.Flag & InteropFlags.FLAG_REPRESENTATION_SET_INTERFACEPTR_NULL_FOR_VARIANT) ==

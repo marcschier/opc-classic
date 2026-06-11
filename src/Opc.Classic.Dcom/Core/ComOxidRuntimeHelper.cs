@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: MIT
+﻿// SPDX-License-Identifier: MIT
 
 using Opc.Classic.Dcom.Common;
 using Opc.Classic.Dcom.Transport;
@@ -30,7 +30,7 @@ internal sealed class ComOxidRuntimeHelper : Stub
     /// <summary>
     /// Create runtime helper
     /// </summary>
-    /// <param name="properties"></param>
+    /// <param name="properties">Property values used to initialize the COM descriptor.</param>
     internal ComOxidRuntimeHelper(PropertyBag properties)
     {
         TransportFactory = ComRuntimeTransportFactory.Instance;
@@ -46,9 +46,9 @@ internal sealed class ComOxidRuntimeHelper : Stub
     /// <summary>
     /// Start
     /// </summary>
-    /// <exception cref="IOException"></exception>
-    /// <param name="portNumLocal"></param>
-    /// <param name="portNumRemote"></param>
+    /// <exception cref="IOException">Thrown when the underlying stream, socket, or named pipe read/write operation fails.</exception>
+    /// <param name="portNumLocal">Local TCP port assigned to the OXID resolver listener.</param>
+    /// <param name="portNumRemote">Remote TCP port used when connecting to the OXID resolver.</param>
     internal void StartOxid(int portNumLocal, int portNumRemote)
     {
         var threadName = "jI_OxidResolver_Client[" + portNumLocal + ", " + portNumRemote + "]";
@@ -95,13 +95,13 @@ internal sealed class ComOxidRuntimeHelper : Stub
     /// <summary>
     /// Returns the port to which the server is listening.
     /// </summary>
-    /// <param name="baseIID"></param>
-    /// <param name="ipidOfRemUnknown"></param>
-    /// <param name="ipidOfComponent"></param>
-    /// <param name="listOfSupportedInterfaces"></param>
+    /// <param name="baseIID">Base interface IID used to derive the requested COM interface metadata.</param>
+    /// <param name="ipidOfRemUnknown">IPID of the remote IRemUnknown interface exposed by the listener.</param>
+    /// <param name="ipidOfComponent">IPID of the component interface served by the listener.</param>
+    /// <param name="listOfSupportedInterfaces">Interfaces supported by the COM object or runtime endpoint.</param>
     /// <param name="cancellationSource">Cancellation source the caller can use to cooperatively stop the RemUnknown listener and any per-connection worker threads it spawns. The caller owns the lifetime.</param>
-    /// <exception cref="IOException"></exception>
-    /// <returns></returns>
+    /// <exception cref="IOException">Thrown when the underlying stream, socket, or named pipe read/write operation fails.</exception>
+    /// <returns>The numeric start rem unknown value.</returns>
     internal int StartRemUnknown(string baseIID, string ipidOfRemUnknown,
         string ipidOfComponent, List<string> listOfSupportedInterfaces,
         out CancellationTokenSource cancellationSource)
@@ -251,7 +251,7 @@ internal sealed class ComOxidRuntimeHelper : Stub
         /// <summary>
         /// Create resolver
         /// </summary>
-        /// <param name="p"></param>
+        /// <param name="p">Property bag that supplies resolver configuration for the OXID worker.</param>
         /// <inheritdoc/>
         public OxidResolverImpl(PropertyBag p) => _p = p;
 #pragma warning restore RECS0154 // Parameter is never used
@@ -308,8 +308,8 @@ internal sealed class ComOxidRuntimeHelper : Stub
         /// <summary>
         /// Process simple ping
         /// </summary>
-        /// <param name="ndr"></param>
-        /// <returns></returns>
+        /// <param name="ndr">NDR buffer used to encode or decode the wire representation.</param>
+        /// <returns>The ping set identifier returned by the simple ping operation.</returns>
         private NdrBuffer ProcessSimplePing(NdrCodec ndr)
         {
             Log.Logger.Information("Oxid Object: SimplePing");
@@ -327,8 +327,8 @@ internal sealed class ComOxidRuntimeHelper : Stub
         /// <summary>
         /// Process complex ping
         /// </summary>
-        /// <param name="ndr"></param>
-        /// <returns></returns>
+        /// <param name="ndr">NDR buffer used to encode or decode the wire representation.</param>
+        /// <returns>The ping set identifier and sequence information returned by the complex ping operation.</returns>
         private NdrBuffer ProcessComplexPing(NdrCodec ndr)
         {
             Log.Logger.Information("Oxid Object: ComplexPing");
@@ -381,8 +381,8 @@ internal sealed class ComOxidRuntimeHelper : Stub
         /// <summary>
         /// Process server alive
         /// </summary>
-        /// <param name="ndr"></param>
-        /// <returns></returns>
+        /// <param name="ndr">NDR buffer used to encode or decode the wire representation.</param>
+        /// <returns>The server-alive response indicating that the OXID resolver is reachable.</returns>
         private NdrBuffer ProcessServerAlive(NdrCodec ndr)
         {
             System.Diagnostics.Debug.Assert(ndr != null);
@@ -399,8 +399,8 @@ internal sealed class ComOxidRuntimeHelper : Stub
         /// <summary>
         /// Process server alive
         /// </summary>
-        /// <param name="ndr"></param>
-        /// <returns></returns>
+        /// <param name="ndr">NDR buffer used to encode or decode the wire representation.</param>
+        /// <returns>The extended server-alive response with resolver binding information.</returns>
         private NdrBuffer ProcessServerAlive2(NdrCodec ndr)
         {
             System.Diagnostics.Debug.Assert(ndr != null);
@@ -433,8 +433,8 @@ internal sealed class ComOxidRuntimeHelper : Stub
         /// <summary>
         /// Process resolve
         /// </summary>
-        /// <param name="ndr"></param>
-        /// <returns></returns>
+        /// <param name="ndr">NDR buffer used to encode or decode the wire representation.</param>
+        /// <returns>The resolved OXID bindings and remote unknown IPID information.</returns>
         private NdrBuffer ProcessResolveOxid2(NdrCodec ndr)
         {
             Log.Logger.Information("Oxid Object: ResolveOxid2");
@@ -812,8 +812,8 @@ internal sealed class ComOxidRuntimeHelper : Stub
         /// <summary>
         /// Query interface
         /// </summary>
-        /// <param name="ndr"></param>
-        /// <returns></returns>
+        /// <param name="ndr">NDR buffer used to encode or decode the wire representation.</param>
+        /// <returns>The marshaled interface pointer returned by the query-interface request.</returns>
         private NdrBuffer QueryInterface(NdrCodec ndr)
         {
             // now to decompose all

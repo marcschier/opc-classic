@@ -38,8 +38,8 @@ internal sealed class StringBinding
     /// <summary>
     /// Create string binding
     /// </summary>
-    /// <param name="port"></param>
-    /// <param name="hostname"></param>
+    /// <param name="port">Network port used by the RPC endpoint or string binding.</param>
+    /// <param name="hostname">Name used to identify the target server, member, or descriptor.</param>
     internal StringBinding(int port, bool hostname)
     {
         string hostaddress;
@@ -67,7 +67,7 @@ internal sealed class StringBinding
     /// <summary>
     /// Create string binding
     /// </summary>
-    /// <param name="port"></param>
+    /// <param name="port">Network port used by the RPC endpoint or string binding.</param>
     internal StringBinding(int port) : this(port, false)
     {
     }
@@ -75,8 +75,8 @@ internal sealed class StringBinding
     /// <summary>
     /// Decode
     /// </summary>
-    /// <param name="ndr"></param>
-    /// <returns></returns>
+    /// <param name="ndr">NDR buffer used to encode or decode the wire representation.</param>
+    /// <returns>A new <see cref="StringBinding"/> instance built from <paramref name="ndr"/>.</returns>
     internal static StringBinding Decode(NdrCodec ndr)
     {
         var stringBinding = new StringBinding
@@ -110,7 +110,7 @@ internal sealed class StringBinding
     /// <summary>
     /// Encode
     /// </summary>
-    /// <param name="ndr"></param>
+    /// <param name="ndr">NDR buffer used to encode or decode the wire representation.</param>
     public void Encode(NdrCodec ndr)
     {
         ndr.WriteUnsignedShort(TowerId);

@@ -58,7 +58,7 @@ public class ComObjectImplWrapper : IComObject, IComObjectInternal
     /// <summary>
     /// Create wrapper
     /// </summary>
-    /// <param name="comObject"></param>
+    /// <param name="comObject">COM object instance whose exported interfaces are being managed.</param>
     protected internal ComObjectImplWrapper(IComObject comObject) =>
         ComObject = comObject;
 

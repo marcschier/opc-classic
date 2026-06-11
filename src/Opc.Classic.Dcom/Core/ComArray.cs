@@ -233,10 +233,10 @@ public sealed class ComArray
     /// <summary>
     /// Init
     /// </summary>
-    /// <param name="upperBounds"></param>
-    /// <param name="dimension"></param>
-    /// <param name="isConformant"></param>
-    /// <param name="isVarying"></param>
+    /// <param name="upperBounds">Upper bound for each SAFEARRAY dimension.</param>
+    /// <param name="dimension">Array dimension being inspected or converted.</param>
+    /// <param name="isConformant">Value indicating whether the array carries NDR conformant-array bounds.</param>
+    /// <param name="isVarying">Value indicating whether the array carries NDR varying-array range metadata.</param>
     private void Init2(int[] upperBounds, int dimension, bool isConformant, bool isVarying)
     {
         UpperBounds = upperBounds;
@@ -333,7 +333,7 @@ public sealed class ComArray
     /// <summary>
     /// Init
     /// </summary>
-    /// <param name="array"></param>
+    /// <param name="array">Array instance being inspected, encoded, or copied.</param>
     private void Init(object array)
     {
         if (!array.GetType().IsArray)
@@ -400,8 +400,8 @@ public sealed class ComArray
     /// <summary>
     /// Compute length
     /// </summary>
-    /// <param name="array"></param>
-    /// <returns></returns>
+    /// <param name="array">Array instance being inspected, encoded, or copied.</param>
+    /// <returns>The numeric compute length array value.</returns>
     private int ComputeLengthArray(object array)
     {
         var length = 0;
@@ -432,9 +432,9 @@ public sealed class ComArray
     /// <summary>
     /// Encode
     /// </summary>
-    /// <param name="ndr"></param>
-    /// <param name="array"></param>
-    /// <param name="context"></param>
+    /// <param name="ndr">NDR buffer used to encode or decode the wire representation.</param>
+    /// <param name="array">Array instance being inspected, encoded, or copied.</param>
+    /// <param name="context">Codec context that tracks deferred pointers and per-call buffers.</param>
     internal void Encode(NdrCodec ndr, object array, CodecContext context)
     {
         if (_isConformantProxy)
@@ -490,11 +490,11 @@ public sealed class ComArray
     /// <summary>
     /// Decode
     /// </summary>
-    /// <param name="ndr"></param>
-    /// <param name="arrayType"></param>
-    /// <param name="dimension"></param>
-    /// <param name="context"></param>
-    /// <returns></returns>
+    /// <param name="ndr">NDR buffer used to encode or decode the wire representation.</param>
+    /// <param name="arrayType">Element type used by the SAFEARRAY or COM array descriptor.</param>
+    /// <param name="dimension">Array dimension being inspected or converted.</param>
+    /// <param name="context">Codec context that tracks deferred pointers and per-call buffers.</param>
+    /// <returns>A new <see cref="object"/> instance built from <paramref name="ndr"/>.</returns>
     internal object Decode(NdrCodec ndr, Type arrayType, int dimension, CodecContext context)
     {
         var retVal = new ComArray
@@ -706,12 +706,12 @@ public sealed class ComArray
     /// <summary>
     /// Recurse decoder
     /// </summary>
-    /// <param name="retVal"></param>
-    /// <param name="ndr"></param>
-    /// <param name="arrayType"></param>
-    /// <param name="dimension"></param>
-    /// <param name="context"></param>
-    /// <returns></returns>
+    /// <param name="retVal">Return value produced by the invoked COM method.</param>
+    /// <param name="ndr">NDR buffer used to encode or decode the wire representation.</param>
+    /// <param name="arrayType">Element type used by the SAFEARRAY or COM array descriptor.</param>
+    /// <param name="dimension">Array dimension being inspected or converted.</param>
+    /// <param name="context">Codec context that tracks deferred pointers and per-call buffers.</param>
+    /// <returns>The decoded array contents, including nested arrays when present.</returns>
     private object RecurseDecode(ComArray retVal, NdrCodec ndr, Type arrayType,
         int dimension, CodecContext context)
     {
@@ -832,7 +832,7 @@ public sealed class ComArray
     /// flag only to set the <see cref="Variant"/>.class, whereever the "type" does not specify it but
     /// the "feature" does.
     /// </summary>
-    /// <param name="c"> </param>
+    /// <param name="c">Character value being tested or transformed.</param>
     internal void UpdateType(Type c) => ArrayType = c;
 
     /// <inheritdoc/>

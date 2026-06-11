@@ -39,7 +39,7 @@ internal sealed class OxidResolver : NdrOp
     /// <summary>
     /// Create resolver
     /// </summary>
-    /// <param name="oxid"></param>
+    /// <param name="oxid">DCOM OXID identifying the object exporter process.</param>
     internal OxidResolver(byte[] oxid) => _odix = oxid;
 #pragma warning restore RECS0154 // Parameter is never used
 

@@ -20,7 +20,7 @@ public class PresentationException : BindException
     /// <summary>
     /// Create
     /// </summary>
-    /// <param name="message"></param>
+    /// <param name="message">Human-readable description of the failure condition.</param>
     public PresentationException(string? message) :
         base(message)
     {
@@ -29,8 +29,8 @@ public class PresentationException : BindException
     /// <summary>
     /// Create presentation exception
     /// </summary>
-    /// <param name="message"></param>
-    /// <param name="result"></param>
+    /// <param name="message">Human-readable description of the failure condition.</param>
+    /// <param name="result">Result value returned by the RPC or COM operation.</param>
     public PresentationException(string message, PresentationResult result) :
         base(ToString(message, result))
     {
@@ -59,9 +59,9 @@ public class PresentationException : BindException
     /// <summary>
     /// Create message
     /// </summary>
-    /// <param name="message"></param>
-    /// <param name="result"></param>
-    /// <returns></returns>
+    /// <param name="message">Human-readable description of the failure condition.</param>
+    /// <param name="result">Result value returned by the RPC or COM operation.</param>
+    /// <returns>Returns a human-readable representation suitable for diagnostic logging.</returns>
     private static string ToString(string message, PresentationResult result)
     {
         if (result == null)

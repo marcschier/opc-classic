@@ -47,7 +47,7 @@ public class ProgId
     /// <summary>
     /// Create prog id
     /// </summary>
-    /// <param name="progId"></param>
+    /// <param name="progId">Programmatic identifier of the OPC server to resolve or activate.</param>
     private ProgId(string progId)
     {
         _progId = progId;
@@ -57,9 +57,9 @@ public class ProgId
     /// <summary>
     /// Returns the <code>CLSID</code> for this <code>ProgId</code>.
     /// </summary>
-    /// <param name="server"></param>
-    /// <param name="session"></param>
-    /// <exception cref="InteropException"> </exception>
+    /// <param name="server">Server instance that owns the exported COM object.</param>
+    /// <param name="session">Session that owns the COM object, transport, and authentication state.</param>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     public Clsid GetCorrespondingClsid(
         string server, Session session)
     {
@@ -73,15 +73,15 @@ public class ProgId
     /// <summary>
     /// Returns the <code>CLSID</code> for this <code>ProgId</code>.
     /// </summary>
-    /// <exception cref="InteropException"> </exception>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     public Clsid GetCorrespondingClsid() => _clsid;
 
     /// <summary>
     /// Get id from remote registry
     /// </summary>
-    /// <param name="server"></param>
-    /// <param name="session"></param>
-    /// <exception cref="InteropException"></exception>
+    /// <param name="server">Server instance that owns the exported COM object.</param>
+    /// <param name="session">Session that owns the COM object, transport, and authentication state.</param>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     private Clsid GetIdFromWinReg(string server, Session session)
     {
         IRegistry winreg;

@@ -35,7 +35,7 @@ public sealed class TypeDesc
     /// <summary>
     /// Create description
     /// </summary>
-    /// <param name="values"></param>
+    /// <param name="values">Values being stored, encoded, or assigned.</param>
     internal TypeDesc(ComPointer values) :
         this(values.IsNull ? null : (Struct)values.Referent)
     {
@@ -44,7 +44,7 @@ public sealed class TypeDesc
     /// <summary>
     /// Create type description
     /// </summary>
-    /// <param name="values"></param>
+    /// <param name="values">Values being stored, encoded, or assigned.</param>
     internal TypeDesc(Struct values)
     {
         if (values == null)

@@ -36,7 +36,7 @@ public sealed class VarDesc
     /// <summary>
     /// Create description
     /// </summary>
-    /// <param name="values"></param>
+    /// <param name="values">Values being stored, encoded, or assigned.</param>
     internal VarDesc(ComPointer values) :
         this(values.IsNull ? null : (Struct)values.Referent)
     {
@@ -45,7 +45,7 @@ public sealed class VarDesc
     /// <summary>
     /// Create description
     /// </summary>
-    /// <param name="filledStruct"></param>
+    /// <param name="filledStruct">Structure instance populated with decoded COM field values.</param>
     internal VarDesc(Struct filledStruct)
     {
         if (filledStruct == null)

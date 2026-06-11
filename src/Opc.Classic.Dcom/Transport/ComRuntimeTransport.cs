@@ -19,9 +19,9 @@ internal sealed class ComRuntimeTransport : ITransport, IDisposable
     /// <summary>
     /// Create transport
     /// </summary>
-    /// <exception cref="ProviderException"></exception>
-    /// <param name="address"></param>
-    /// <param name="properties"></param>
+    /// <exception cref="ProviderException">Thrown when the provider cannot complete the requested RPC transport operation.</exception>
+    /// <param name="address">Network address or binding address for the remote endpoint.</param>
+    /// <param name="properties">Property values used to initialize the COM descriptor.</param>
     public ComRuntimeTransport(string address, PropertyBag properties)
     {
         // address is ignored but should not be null

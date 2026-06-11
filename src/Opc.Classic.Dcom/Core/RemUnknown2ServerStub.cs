@@ -60,10 +60,10 @@ internal sealed class RemUnknown2ServerStub : Stub
     /// initialized. And closeStub must be called where we
     /// call closeStub of <see cref="ComServer"/>.
     /// </summary>
-    /// <param name="session"> </param>
-    /// <param name="remUnknownIpid"> </param>
+    /// <param name="session">Session that owns the COM object, transport, and authentication state.</param>
+    /// <param name="remUnknownIpid">IPID of the IRemUnknown interface handled by the server stub.</param>
     /// <param name="address"> in the "ncacn_ip_tcp:host[port]" format </param>
-    /// <exception cref="InteropException"> </exception>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     internal RemUnknown2ServerStub(Session session, string remUnknownIpid,
         string address)
     {
@@ -109,12 +109,12 @@ internal sealed class RemUnknown2ServerStub : Stub
 
     /// <summary>
     /// Execute a Method on the COM Interface identified by the IID
-    /// <param name="obj"> </param>
-    /// <param name="targetIID"></param>
-    /// <param name="socketTimeout"></param>
+    /// <param name="obj">Object instance being marshaled, unmarshaled, or invoked.</param>
+    /// <param name="targetIID">Interface IID requested from the target COM object.</param>
+    /// <param name="socketTimeout">Socket timeout, in milliseconds, used for blocking transport operations.</param>
     /// </summary>
-    /// <exception cref="InteropException"> </exception>
-    /// <returns></returns>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
+    /// <returns>The sequence of call values produced by the operation.</returns>
     internal object[] Call(CallBuilder obj, string targetIID, int socketTimeout)
     {
         lock (_mutex)
@@ -171,8 +171,8 @@ internal sealed class RemUnknown2ServerStub : Stub
     /// <summary>
     /// Add ref release
     /// </summary>
-    /// <param name="obj"></param>
-    /// <exception cref="InteropException"></exception>
+    /// <param name="obj">Object instance being marshaled, unmarshaled, or invoked.</param>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     internal void AddRef_ReleaseRef(CallBuilder obj)
     {
         lock (_mutex)

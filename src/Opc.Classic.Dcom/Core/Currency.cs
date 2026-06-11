@@ -43,7 +43,7 @@ public sealed class Currency
     /// <summary>
     /// Create currency
     /// </summary>
-    /// <param name="value"></param>
+    /// <param name="value">Value being stored, encoded, or assigned.</param>
     public Currency(string value)
     {
         if (value.StartsWith('.'))
@@ -68,8 +68,8 @@ public sealed class Currency
     /// <summary>
     /// Create currency
     /// </summary>
-    /// <param name="units"></param>
-    /// <param name="fractionalUnits"></param>
+    /// <param name="units">Whole currency units stored in the COM currency value.</param>
+    /// <param name="fractionalUnits">Fractional currency units stored in ten-thousandths.</param>
     public Currency(int units, int fractionalUnits)
     {
         Units = units;

@@ -19,7 +19,7 @@ internal sealed class TypeInfoImpl : ComObjectImplWrapper, ITypeInfo
     /// <summary>
     /// Create implementation
     /// </summary>
-    /// <param name="comObject"></param>
+    /// <param name="comObject">COM object instance whose exported interfaces are being managed.</param>
     internal TypeInfoImpl(IComObject comObject) :
         base(comObject)
     {

@@ -13,19 +13,19 @@ public abstract class CustomCallBuilder : CallBuilder
     /// <summary>
     /// Write
     /// </summary>
-    /// <param name="ndr"></param>
+    /// <param name="ndr">NDR buffer used to encode or decode the wire representation.</param>
     public abstract void WriteObject(NdrCodec ndr);
 
     /// <summary>
     /// Read
     /// </summary>
-    /// <param name="ndr"></param>
+    /// <param name="ndr">NDR buffer used to encode or decode the wire representation.</param>
     public abstract void ReadObject(NdrCodec ndr);
 
     /// <summary>
     /// Create
     /// </summary>
-    /// <param name="dispatchNotSupported"></param>
+    /// <param name="dispatchNotSupported">Value indicating whether IDispatch invocation should be rejected for this call.</param>
     protected CustomCallBuilder(bool dispatchNotSupported) :
         base(dispatchNotSupported)
     {

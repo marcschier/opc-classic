@@ -38,7 +38,7 @@ public class Clsid
     /// <summary>
     /// Private constructor
     /// </summary>
-    /// <param name="uuid"></param>
+    /// <param name="uuid">UUID value encoded in the RPC or COM descriptor.</param>
     private Clsid(string uuid) => _nestedUUID.Parse(uuid);
 #pragma warning restore RECS0154 // Parameter is never used
 

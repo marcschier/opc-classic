@@ -83,16 +83,16 @@ public abstract class ConnectionOrientedPdu : NdrOp, IProtocolDataUnit
     /// <summary>
     /// Test flag
     /// </summary>
-    /// <param name="flag"></param>
-    /// <returns></returns>
+    /// <param name="flag">Flag value that controls the requested operation.</param>
+    /// <returns><c>true</c> when flag is satisfied; otherwise <c>false</c>.</returns>
     public bool GetFlag(int flag) =>
         (Flags & flag) != 0;
 
     /// <summary>
     /// Set flag
     /// </summary>
-    /// <param name="flag"></param>
-    /// <param name="value"></param>
+    /// <param name="flag">Flag value that controls the requested operation.</param>
+    /// <param name="value">Value being stored, encoded, or assigned.</param>
     public void SetFlag(int flag, bool value) =>
         Flags = value ? (Flags | flag) : (Flags & ~flag);
 
@@ -123,8 +123,8 @@ public abstract class ConnectionOrientedPdu : NdrOp, IProtocolDataUnit
     /// <summary>
     /// Decode
     /// </summary>
-    /// <param name="ndr"></param>
-    /// <param name="src"></param>
+    /// <param name="ndr">NDR buffer used to encode or decode the wire representation.</param>
+    /// <param name="src">Source NDR buffer that supplies the field data to decode.</param>
     public override void Decode(NdrCodec ndr, NdrBuffer src)
     {
         ndr.Buffer = src;
@@ -134,8 +134,8 @@ public abstract class ConnectionOrientedPdu : NdrOp, IProtocolDataUnit
     /// <summary>
     /// Encode
     /// </summary>
-    /// <param name="ndr"></param>
-    /// <param name="dst"></param>
+    /// <param name="ndr">NDR buffer used to encode or decode the wire representation.</param>
+    /// <param name="dst">Destination NDR buffer that receives the encoded field data.</param>
     public override void Encode(NdrCodec ndr, NdrBuffer dst)
     {
         ndr.Buffer = dst;
@@ -154,7 +154,7 @@ public abstract class ConnectionOrientedPdu : NdrOp, IProtocolDataUnit
     /// <summary>
     /// Read pdu
     /// </summary>
-    /// <param name="ndr"></param>
+    /// <param name="ndr">NDR buffer used to encode or decode the wire representation.</param>
     protected internal virtual void ReadPdu(NdrCodec ndr)
     {
         ReadHeader(ndr);
@@ -164,7 +164,7 @@ public abstract class ConnectionOrientedPdu : NdrOp, IProtocolDataUnit
     /// <summary>
     /// Write pdu
     /// </summary>
-    /// <param name="ndr"></param>
+    /// <param name="ndr">NDR buffer used to encode or decode the wire representation.</param>
     protected internal virtual void WritePdu(NdrCodec ndr)
     {
         WriteHeader(ndr);
@@ -174,7 +174,7 @@ public abstract class ConnectionOrientedPdu : NdrOp, IProtocolDataUnit
     /// <summary>
     /// Read header
     /// </summary>
-    /// <param name="ndr"></param>
+    /// <param name="ndr">NDR buffer used to encode or decode the wire representation.</param>
     protected internal void ReadHeader(NdrCodec ndr)
     {
         if (ndr.ReadUnsignedSmall() != CONNECTION_ORIENTED_MAJOR_VERSION)
@@ -199,7 +199,7 @@ public abstract class ConnectionOrientedPdu : NdrOp, IProtocolDataUnit
     /// <summary>
     /// Write header
     /// </summary>
-    /// <param name="ndr"></param>
+    /// <param name="ndr">NDR buffer used to encode or decode the wire representation.</param>
     protected internal void WriteHeader(NdrCodec ndr)
     {
         ndr.WriteUnsignedSmall((short)MajorVersion);
@@ -216,7 +216,7 @@ public abstract class ConnectionOrientedPdu : NdrOp, IProtocolDataUnit
     /// <summary>
     /// Read body
     /// </summary>
-    /// <param name="ndr"></param>
+    /// <param name="ndr">NDR buffer used to encode or decode the wire representation.</param>
     protected internal virtual void ReadBody(NdrCodec ndr)
     {
         // override
@@ -225,7 +225,7 @@ public abstract class ConnectionOrientedPdu : NdrOp, IProtocolDataUnit
     /// <summary>
     /// Write body
     /// </summary>
-    /// <param name="ndr"></param>
+    /// <param name="ndr">NDR buffer used to encode or decode the wire representation.</param>
     protected internal virtual void WriteBody(NdrCodec ndr)
     {
         // override

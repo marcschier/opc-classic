@@ -55,7 +55,7 @@ public class RegistryFactory
     /// <param name="smbTransport"> true if SMB transport
     /// is required, false will return null.
     /// </param>
-    /// <exception cref="System.Net.Sockets.SocketException"> </exception>
+    /// <exception cref="System.Net.Sockets.SocketException">Thrown when the remote host cannot be resolved or the connection is refused.</exception>
     public IRegistry GetRegistryClient(IAuthInfo authInfo, string serverName,
         bool smbTransport)
     {
@@ -70,11 +70,11 @@ public class RegistryFactory
     /// Gets an Implementation of IRegistry interface,
     /// currently only SMB transport is supported.
     /// </summary>
-    /// <param name="serverName"></param>
+    /// <param name="serverName">Name of the remote COM server host.</param>
     /// <param name="smbTransport"> true if SMB transport
     /// is required, false will return null.
     /// </param>
-    /// <exception cref="System.Net.Sockets.SocketException"> </exception>
+    /// <exception cref="System.Net.Sockets.SocketException">Thrown when the remote host cannot be resolved or the connection is refused.</exception>
     public IRegistry GetRegistryClient(string serverName, bool smbTransport)
     {
         if (smbTransport)

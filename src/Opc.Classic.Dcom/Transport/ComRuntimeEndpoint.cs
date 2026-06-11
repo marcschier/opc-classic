@@ -21,8 +21,8 @@ public sealed class ComRuntimeEndpoint : ConnectionOrientedEndpoint
     /// <summary>
     /// Create endpoint
     /// </summary>
-    /// <param name="transport"></param>
-    /// <param name="syntax"></param>
+    /// <param name="transport">Underlying RPC transport handle, such as a TCP socket or SMB named pipe.</param>
+    /// <param name="syntax">Presentation syntax negotiated for the RPC context.</param>
     internal ComRuntimeEndpoint(ITransport transport, PresentationSyntax syntax) :
         base(transport, syntax)
     {
@@ -35,10 +35,10 @@ public sealed class ComRuntimeEndpoint : ConnectionOrientedEndpoint
     /// <summary>
     /// Process requests on endpoint
     /// </summary>
-    /// <param name="workerObject"></param>
-    /// <param name="baseIID"></param>
-    /// <param name="listOfSupportedInterfaces"></param>
-    /// <param name="cancellationToken"></param>
+    /// <param name="workerObject">COM runtime worker that dispatches incoming RPC requests.</param>
+    /// <param name="baseIID">Base interface IID used to derive the requested COM interface metadata.</param>
+    /// <param name="listOfSupportedInterfaces">Interfaces supported by the COM object or runtime endpoint.</param>
+    /// <param name="cancellationToken">Token used to cancel the asynchronous operation.</param>
 #pragma warning disable MA0051 // Legacy request loop is deliberately kept as one state machine.
     public void ProcessRequests(IComRuntimeWorker workerObject, string baseIID,
         IReadOnlyList<string> listOfSupportedInterfaces, CancellationToken cancellationToken)

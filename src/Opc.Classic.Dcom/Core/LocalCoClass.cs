@@ -241,10 +241,10 @@ public sealed class LocalCoClass
     /// <summary>
     /// Initialize
     /// </summary>
-    /// <param name="interfaceDefinition"></param>
-    /// <param name="type"></param>
-    /// <param name="instance"></param>
-    /// <param name="realIID"></param>
+    /// <param name="interfaceDefinition">Interface metadata used to build the local COM class descriptor.</param>
+    /// <param name="type">COM or NDR type descriptor for the value being processed.</param>
+    /// <param name="instance">Instance used to initialize or wrap the descriptor.</param>
+    /// <param name="realIID">Actual interface IID exposed by the local COM class.</param>
     private void Init(LocalInterfaceDefinition interfaceDefinition, Type type,
         object instance, bool realIID)
     {
@@ -339,8 +339,8 @@ public sealed class LocalCoClass
     /// <summary>
     /// Iid present
     /// </summary>
-    /// <param name="iid"></param>
-    /// <returns></returns>
+    /// <param name="iid">Interface IID identifying the COM interface being queried or marshaled.</param>
+    /// <returns><c>true</c> when is iidpresent is satisfied; otherwise <c>false</c>.</returns>
     internal bool IsIIDPresent(string iid)
     {
         iid = iid.ToUpper(CultureInfo.InvariantCulture);
@@ -350,8 +350,8 @@ public sealed class LocalCoClass
     /// <summary>
     /// Get interface definition from ipid
     /// </summary>
-    /// <param name="IPID"></param>
-    /// <returns></returns>
+    /// <param name="IPID">DCOM IPID identifying the per-interface object reference.</param>
+    /// <returns>The requested interface definition from ipid value.</returns>
     internal LocalInterfaceDefinition GetInterfaceDefinitionFromIPID(string IPID)
     {
         if (_ipidVsIID.TryGetValue(IPID.ToUpper(CultureInfo.InvariantCulture), out var iid))
@@ -364,24 +364,24 @@ public sealed class LocalCoClass
     /// <summary>
     /// Get ipid from iid helper
     /// </summary>
-    /// <param name="uniqueIID"></param>
-    /// <returns></returns>
+    /// <param name="uniqueIID">Synthetic interface IID used to disambiguate local interface registrations.</param>
+    /// <returns>The requested ipid from iid value.</returns>
     internal string GetIpidFromIID(string uniqueIID) =>
         _iIDvsIpid.GetOrDefault(uniqueIID.ToUpper(CultureInfo.InvariantCulture));
 
     /// <summary>
     /// Get iid from ipid helper
     /// </summary>
-    /// <param name="ipid"></param>
-    /// <returns></returns>
+    /// <param name="ipid">DCOM IPID identifying the per-interface object reference.</param>
+    /// <returns>The requested iidfrom ipid value.</returns>
     internal string GetIIDFromIpid(string ipid) =>
         _ipidVsIID.GetOrDefault(ipid.ToUpper(CultureInfo.InvariantCulture));
 
     /// <summary>
     /// advances the index...it cannot be reversed.
     /// </summary>
-    /// <param name="uniqueIID"> </param>
-    /// <param name="IPID"> </param>
+    /// <param name="uniqueIID">Synthetic interface IID used to disambiguate local interface registrations.</param>
+    /// <param name="IPID">DCOM IPID identifying the per-interface object reference.</param>
     internal bool ExportInstance(string uniqueIID, string IPID)
     {
         lock (_syncRoot)
@@ -406,10 +406,10 @@ public sealed class LocalCoClass
     /// results of the call back to the actual COM object.
     /// This API is to be invoked via the RemUnknown Object
     /// </summary>
-    /// <param name="IPID"> </param>
-    /// <param name="Opnum"> </param>
-    /// <param name="ndr"></param>
-    /// <exception cref="InteropException"> </exception>
+    /// <param name="IPID">DCOM IPID identifying the per-interface object reference.</param>
+    /// <param name="Opnum">RPC operation number to dispatch on the local interface.</param>
+    /// <param name="ndr">NDR buffer used to encode or decode the wire representation.</param>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     internal object[] InvokeMethod(string IPID, int Opnum, NdrCodec ndr)
     {
         IPID = IPID.ToUpper(CultureInfo.InvariantCulture);

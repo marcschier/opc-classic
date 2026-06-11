@@ -16,14 +16,14 @@ internal sealed class ComOxidDetails
     /// <summary>
     /// Create details
     /// </summary>
-    /// <param name="localInstance"></param>
-    /// <param name="oxid"></param>
-    /// <param name="oid"></param>
-    /// <param name="iid"></param>
-    /// <param name="ipid"></param>
-    /// <param name="ptr"></param>
-    /// <param name="helper"></param>
-    /// <param name="protectionLevel"></param>
+    /// <param name="localInstance">Local COM object instance represented by the OXID details.</param>
+    /// <param name="oxid">DCOM OXID identifying the object exporter process.</param>
+    /// <param name="oid">DCOM OID identifying the exported object instance.</param>
+    /// <param name="iid">Interface IID identifying the COM interface being queried or marshaled.</param>
+    /// <param name="ipid">DCOM IPID identifying the per-interface object reference.</param>
+    /// <param name="ptr">Pointer referent being encoded, decoded, or dereferenced.</param>
+    /// <param name="helper">Runtime helper that owns the OXID resolver binding.</param>
+    /// <param name="protectionLevel">RPC authentication protection level applied to the message.</param>
     internal ComOxidDetails(LocalCoClass localInstance, Oxid oxid,
         ObjectId oid, string iid, string ipid, InterfacePointer ptr,
         ComOxidRuntimeHelper helper, ProtectionLevel protectionLevel)
@@ -92,7 +92,7 @@ internal sealed class ComOxidDetails
     /// torn down so the listener loop and any in-flight RemUnknown worker
     /// threads exit cooperatively.
     /// </summary>
-    /// <param name="cts"></param>
+    /// <param name="cts">Cancellation source that owns the timeout or shutdown token for the operation.</param>
     internal void SetRemUnknownCancellation(CancellationTokenSource cts) =>
         _remUnknownCts = cts;
 

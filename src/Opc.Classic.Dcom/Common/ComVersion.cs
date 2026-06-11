@@ -23,8 +23,8 @@ public sealed class ComVersion
     /// <summary>
     /// Create version
     /// </summary>
-    /// <param name="majorVersion"></param>
-    /// <param name="minorVersion"></param>
+    /// <param name="majorVersion">Major version component of the protocol or COM descriptor.</param>
+    /// <param name="minorVersion">Minor version component of the protocol or COM descriptor.</param>
     public ComVersion(int majorVersion, int minorVersion)
     {
         MajorVersion = majorVersion;

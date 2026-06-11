@@ -184,7 +184,7 @@ public class ResponseCoPdu : ConnectionOrientedPdu, IFragmentable
     /// <summary>
     /// Read stub
     /// </summary>
-    /// <param name="ndr"></param>
+    /// <param name="ndr">NDR buffer used to encode or decode the wire representation.</param>
     private void ReadStub(NdrCodec ndr)
     {
         ndr.Buffer.Align(8);
@@ -201,7 +201,7 @@ public class ResponseCoPdu : ConnectionOrientedPdu, IFragmentable
     /// <summary>
     /// Write stub
     /// </summary>
-    /// <param name="ndr"></param>
+    /// <param name="ndr">NDR buffer used to encode or decode the wire representation.</param>
     private void WriteStub(NdrCodec ndr)
     {
         ndr.Buffer.Align(8, 0);

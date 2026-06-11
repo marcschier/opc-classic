@@ -24,7 +24,7 @@ public sealed class ParamDesc
     /// <summary>
     /// Create param description
     /// </summary>
-    /// <param name="values"></param>
+    /// <param name="values">Values being stored, encoded, or assigned.</param>
     internal ParamDesc(Struct values)
     {
         if (values == null)

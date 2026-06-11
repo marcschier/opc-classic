@@ -39,9 +39,9 @@ public class Ntlm1 : ISecurity
     /// <summary>
     /// Create
     /// </summary>
-    /// <param name="flags"></param>
-    /// <param name="sessionKey"></param>
-    /// <param name="isServer"></param>
+    /// <param name="flags">Bit flags governing the requested operation.</param>
+    /// <param name="sessionKey">Lookup key used to identify the cached or serialized value.</param>
+    /// <param name="isServer">Value indicating whether the NTLM context is running on the server side.</param>
     public Ntlm1(NtlmFlags flags, byte[] sessionKey, bool isServer)
     {
 
@@ -72,12 +72,12 @@ public class Ntlm1 : ISecurity
     /// <summary>
     /// Process incoming
     /// </summary>
-    /// <param name="ndr"></param>
-    /// <param name="index"></param>
-    /// <param name="length"></param>
-    /// <param name="verifierIndex"></param>
-    /// <param name="isFragmented"></param>
-    /// <exception cref="IOException"></exception>
+    /// <param name="ndr">NDR buffer used to encode or decode the wire representation.</param>
+    /// <param name="index">Zero-based index at which the read or write operation begins.</param>
+    /// <param name="length">Number of bytes or elements to process.</param>
+    /// <param name="verifierIndex">Index at which the authentication verifier begins in the PDU buffer.</param>
+    /// <param name="isFragmented">Value indicating whether the PDU payload spans additional fragments.</param>
+    /// <exception cref="IOException">Thrown when the underlying stream, socket, or named pipe read/write operation fails.</exception>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Meziantou.Analyzer", "MA0051:Method is too long", Justification = "NTLM signing/sealing reverse path must remain inline so the cipher selection, signature verification, and decrypt steps stay correlated against MS-NLMP §3.4.4.")]
     public void ProcessIncoming(NdrCodec ndr, int index, int length,
         int verifierIndex, bool isFragmented)
@@ -147,11 +147,11 @@ public class Ntlm1 : ISecurity
     /// <summary>
     /// Process outgoing
     /// </summary>
-    /// <param name="ndr"></param>
-    /// <param name="index"></param>
-    /// <param name="length"></param>
-    /// <param name="verifierIndex"></param>
-    /// <param name="isFragmented"></param>
+    /// <param name="ndr">NDR buffer used to encode or decode the wire representation.</param>
+    /// <param name="index">Zero-based index at which the read or write operation begins.</param>
+    /// <param name="length">Number of bytes or elements to process.</param>
+    /// <param name="verifierIndex">Index at which the authentication verifier begins in the PDU buffer.</param>
+    /// <param name="isFragmented">Value indicating whether the PDU payload spans additional fragments.</param>
     public void ProcessOutgoing(NdrCodec ndr, int index, int length,
         int verifierIndex, bool isFragmented)
     {

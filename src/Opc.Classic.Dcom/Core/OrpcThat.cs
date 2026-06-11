@@ -52,7 +52,7 @@ internal sealed class OrpcThat
     /// <summary>
     /// Encode
     /// </summary>
-    /// <param name="ndr"></param>
+    /// <param name="ndr">NDR buffer used to encode or decode the wire representation.</param>
     internal static void Encode(NdrCodec ndr)
     {
         ndr.WriteUnsignedLong(0);
@@ -62,8 +62,8 @@ internal sealed class OrpcThat
     /// <summary>
     /// Decode
     /// </summary>
-    /// <param name="ndr"></param>
-    /// <returns></returns>
+    /// <param name="ndr">NDR buffer used to encode or decode the wire representation.</param>
+    /// <returns>A new <see cref="OrpcThat"/> instance built from <paramref name="ndr"/>.</returns>
     internal static OrpcThat Decode(NdrCodec ndr)
     {
         var orpcthat = new OrpcThat

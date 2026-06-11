@@ -29,7 +29,7 @@ internal sealed class ObjectId
     /// <summary>
     /// Returns whether object expired
     /// </summary>
-    /// <returns></returns>
+    /// <returns><c>true</c> when has expired is satisfied; otherwise <c>false</c>.</returns>
     internal bool HasExpired()
     {
         if ((DcomTimings.UtcNow - _lastPingTime) > DcomTimings.ObjectExpiryPeriod)
@@ -42,8 +42,8 @@ internal sealed class ObjectId
     /// <summary>
     /// Create object id
     /// </summary>
-    /// <param name="oid"></param>
-    /// <param name="dontping"></param>
+    /// <param name="oid">DCOM OID identifying the exported object instance.</param>
+    /// <param name="dontping">Value indicating whether the remote object should be excluded from ping tracking.</param>
     internal ObjectId(byte[] oid, bool dontping)
     {
         OID = oid;

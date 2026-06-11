@@ -42,7 +42,7 @@ public class InterfacePointerBody
     /// <summary>
     /// Returns object reference
     /// </summary>
-    /// <param name="type"></param>
+    /// <param name="type">COM or NDR type descriptor for the value being processed.</param>
     /// <returns>object reference</returns>
     public virtual object GetObjectReference(int type)
     {
@@ -86,9 +86,9 @@ public class InterfacePointerBody
     /// <summary>
     /// Called from Oxid Resolver master, the resolver address are put in here itself
     /// </summary>
-    /// <param name="iid"> </param>
-    /// <param name="port"></param>
-    /// <param name="objref"></param>
+    /// <param name="iid">Interface IID identifying the COM interface being queried or marshaled.</param>
+    /// <param name="port">Network port used by the RPC endpoint or string binding.</param>
+    /// <param name="objref">OBJREF structure that carries the marshaled COM object reference.</param>
     internal InterfacePointerBody(string iid, int port, StdObjRef objref)
     {
         ObjectType = InterfacePointer.OBJREF_STANDARD;
@@ -102,8 +102,8 @@ public class InterfacePointerBody
     /// <summary>
     /// Create body
     /// </summary>
-    /// <param name="iid"></param>
-    /// <param name="interfacePointer"></param>
+    /// <param name="iid">Interface IID identifying the COM interface being queried or marshaled.</param>
+    /// <param name="interfacePointer">Marshaled interface pointer that describes the remote COM interface reference.</param>
     internal InterfacePointerBody(string iid, InterfacePointer interfacePointer)
     {
         ObjectType = InterfacePointer.OBJREF_STANDARD;
@@ -124,9 +124,9 @@ public class InterfacePointerBody
     /// <summary>
     /// Decode
     /// </summary>
-    /// <param name="ndr"></param>
-    /// <param name="Flags"></param>
-    /// <returns></returns>
+    /// <param name="ndr">NDR buffer used to encode or decode the wire representation.</param>
+    /// <param name="Flags">Bit flags stored in the serialized descriptor.</param>
+    /// <returns>A new <see cref="InterfacePointerBody"/> instance built from <paramref name="ndr"/>.</returns>
     public static InterfacePointerBody Decode(NdrCodec ndr, int Flags)
     {
         if ((Flags & InteropFlags.FLAG_REPRESENTATION_INTERFACEPTR_DECODE2) ==
@@ -144,16 +144,16 @@ public class InterfacePointerBody
     /// <summary>
     /// Decode
     /// </summary>
-    /// <param name="ndr"></param>
-    /// <returns></returns>
+    /// <param name="ndr">NDR buffer used to encode or decode the wire representation.</param>
+    /// <returns>A new <see cref="InterfacePointerBody"/> instance built from <paramref name="ndr"/>.</returns>
     public static InterfacePointerBody Decode2(NdrCodec ndr) =>
         DecodeObjRef(ndr, GetRemainingByteCount(ndr));
 
     /// <summary>
     /// Encode
     /// </summary>
-    /// <param name="ndr"></param>
-    /// <param name="flags"></param>
+    /// <param name="ndr">NDR buffer used to encode or decode the wire representation.</param>
+    /// <param name="flags">Bit flags governing the requested operation.</param>
     public void Encode(NdrCodec ndr, int flags)
     {
         var length = GetEncodedLength();

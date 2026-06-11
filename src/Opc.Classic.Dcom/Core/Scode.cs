@@ -26,14 +26,14 @@ public sealed class Scode
     /// <summary>
     /// Create error code
     /// </summary>
-    /// <param name="errorCode"></param>
+    /// <param name="errorCode">Protocol or HRESULT error code reported by the operation.</param>
     public Scode(int errorCode) => ErrorCode = errorCode;
 #pragma warning restore RECS0154 // Parameter is never used
 
     /// <summary>
     /// Create error code
     /// </summary>
-    /// <param name="errorCode"></param>
+    /// <param name="errorCode">Protocol or HRESULT error code reported by the operation.</param>
     public Scode(ErrorCode errorCode) :
         this((int)errorCode)
     {

@@ -33,7 +33,7 @@ public class CodecContext
     /// <summary>
     /// Decodes the deferred pointers
     /// </summary>
-    /// <param name="ndr"></param>
+    /// <param name="ndr">NDR buffer used to encode or decode the wire representation.</param>
     public void DecodeDeferredPointers(NdrCodec ndr)
     {
         var x = 0;
@@ -56,8 +56,8 @@ public class CodecContext
     /// <summary>
     /// Encodes the deferred pointers
     /// </summary>
-    /// <param name="ndr"></param>
-    /// <param name="flatten"></param>
+    /// <param name="ndr">NDR buffer used to encode or decode the wire representation.</param>
+    /// <param name="flatten">Value indicating whether deferred pointer data should be flattened into the primary buffer.</param>
     public void EncodeDeferredPointers(NdrCodec ndr, bool flatten = true)
     { // TODO: Understand flatten
         // The deferred pointers need to be completely serialized here. 

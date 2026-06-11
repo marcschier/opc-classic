@@ -44,15 +44,15 @@ public sealed class LocalParamsDescriptor
     /// <summary>
     /// Set current session
     /// </summary>
-    /// <param name="value"></param>
+    /// <param name="value">Value being stored, encoded, or assigned.</param>
     internal void SetSession(Session value) =>
         _callObject.AttachSession(value);
 
     /// <summary>
     /// Read
     /// </summary>
-    /// <param name="ndr"></param>
-    /// <returns></returns>
+    /// <param name="ndr">NDR buffer used to encode or decode the wire representation.</param>
+    /// <returns>The sequence of read values produced by the operation.</returns>
     internal object[] Read(NdrCodec ndr)
     {
         _callObject.Read2(ndr);
@@ -63,8 +63,8 @@ public sealed class LocalParamsDescriptor
     /// Add <code>[in]</code> parameter of the type
     /// <code>clazz</code> at the end of the out parameter list.
     /// </summary>
-    /// <param name="type"> </param>
-    /// <param name="flags"> </param>
+    /// <param name="type">COM or NDR type descriptor for the value being processed.</param>
+    /// <param name="flags">Bit flags governing the requested operation.</param>
     public void AddInParamAsType(Type type, int flags = InteropFlags.FLAG_NULL) =>
         _callObject.AddOutParamAsType(type, flags);
 
@@ -75,16 +75,16 @@ public sealed class LocalParamsDescriptor
     /// <code><see cref="Union"/>s</code>, <code><see cref="ComPointer"/></code>
     /// and <code><see cref="ComString"/></code> .
     /// </summary>
-    /// <param name="inparam"> </param>
-    /// <param name="flags"> </param>
+    /// <param name="inparam">Object value supplied as an input parameter for local invocation.</param>
+    /// <param name="flags">Bit flags governing the requested operation.</param>
     public void AddInParamAsObject(object inparam, int flags = InteropFlags.FLAG_NULL) =>
         _callObject.AddOutParamAsObject(inparam, flags);
 
     /// <summary>
     /// set params
     /// </summary>
-    /// <param name="inparams"> </param>
-    /// <param name="flags"> </param>
+    /// <param name="inparams">Input parameters supplied to the remote COM method invocation.</param>
+    /// <param name="flags">Bit flags governing the requested operation.</param>
     internal void SetInParams(object[] inparams, int flags = InteropFlags.FLAG_NULL) =>
         _callObject.SetOutParams(inparams, flags);
 

@@ -24,7 +24,7 @@ public sealed class ElemDesc
     /// <summary>
     /// Element descriptor
     /// </summary>
-    /// <param name="values"></param>
+    /// <param name="values">Values being stored, encoded, or assigned.</param>
     public ElemDesc(Struct values)
     {
         if (values == null)
@@ -40,7 +40,7 @@ public sealed class ElemDesc
     /// <summary>
     /// Element descriptor
     /// </summary>
-    /// <param name="ptrValues"></param>
+    /// <param name="ptrValues">Pointer referent values being encoded or decoded.</param>
     internal ElemDesc(ComPointer ptrValues) :
         this(ptrValues.IsNull ? null : (Struct)ptrValues.Referent)
     {

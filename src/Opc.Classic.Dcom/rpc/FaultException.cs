@@ -26,7 +26,7 @@ public class FaultException : RpcException
     /// <summary>
     /// Create fault
     /// </summary>
-    /// <param name="message"></param>
+    /// <param name="message">Human-readable description of the failure condition.</param>
     public FaultException(string message) : base(message)
     {
         Stub = null;
@@ -36,8 +36,8 @@ public class FaultException : RpcException
     /// <summary>
     /// Create exception
     /// </summary>
-    /// <param name="message"></param>
-    /// <param name="status"></param>
+    /// <param name="message">Human-readable description of the failure condition.</param>
+    /// <param name="status">Status code reported by the RPC or COM operation.</param>
     public FaultException(string message, FaultCode status) :
         base(ToString(message, status))
     {
@@ -48,9 +48,9 @@ public class FaultException : RpcException
     /// <summary>
     /// Crate exception
     /// </summary>
-    /// <param name="message"></param>
-    /// <param name="status"></param>
-    /// <param name="stub"></param>
+    /// <param name="message">Human-readable description of the failure condition.</param>
+    /// <param name="status">Status code reported by the RPC or COM operation.</param>
+    /// <param name="stub">Wire-format bytes consumed or produced by the operation.</param>
     public FaultException(string message, FaultCode status, byte[] stub) :
         base(ToString(message, status))
     {
@@ -69,9 +69,9 @@ public class FaultException : RpcException
     /// <summary>
     /// Convert to string
     /// </summary>
-    /// <param name="message"></param>
-    /// <param name="status"></param>
-    /// <returns></returns>
+    /// <param name="message">Human-readable description of the failure condition.</param>
+    /// <param name="status">Status code reported by the RPC or COM operation.</param>
+    /// <returns>Returns a human-readable representation suitable for diagnostic logging.</returns>
     private static string ToString(string message, FaultCode status) =>
         !string.IsNullOrEmpty(message) ? message +
             " (" + ToString(status) + ")" : ToString(status);
@@ -79,8 +79,8 @@ public class FaultException : RpcException
     /// <summary>
     /// TODO: As extension
     /// </summary>
-    /// <param name="status"></param>
-    /// <returns></returns>
+    /// <param name="status">Status code reported by the RPC or COM operation.</param>
+    /// <returns>Returns a human-readable representation suitable for diagnostic logging.</returns>
     private static string ToString(FaultCode status)
     {
         switch (status)

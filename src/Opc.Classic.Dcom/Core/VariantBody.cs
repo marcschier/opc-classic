@@ -41,8 +41,8 @@ internal sealed class VariantBody
     /// Setting up a <code>VARIANT</code> with an object. Used via serializing the <code>VARIANT</code>.
     /// The class of the object determines its type.
     /// </summary>
-    /// <param name="referent"> </param>
-    /// <param name="isByRef"></param>
+    /// <param name="referent">NDR referent identifier used when the VARIANT body is marshaled by reference.</param>
+    /// <param name="isByRef">Value indicating whether the variant stores a by-reference value.</param>
     internal VariantBody(object referent, bool isByRef) :
         this(referent, isByRef, (VariantType)(-1))
     {
@@ -51,9 +51,9 @@ internal sealed class VariantBody
     /// <summary>
     /// Private constructor
     /// </summary>
-    /// <param name="referent"></param>
-    /// <param name="isByRef"></param>
-    /// <param name="dataType"></param>
+    /// <param name="referent">NDR referent identifier used when the VARIANT body is marshaled by reference.</param>
+    /// <param name="isByRef">Value indicating whether the variant stores a by-reference value.</param>
+    /// <param name="dataType">Type descriptor that determines how the value is marshaled.</param>
     private VariantBody(object referent, bool isByRef, VariantType dataType)
     {
         _object = referent ?? new Empty();
@@ -84,7 +84,7 @@ internal sealed class VariantBody
     /// Setting up a <code>VARIANT</code> with a NULL value.
     /// Used via serializing the <code>VARIANT</code>.
     /// </summary>
-    /// <param name="value"> </param>
+    /// <param name="value">Value being stored, encoded, or assigned.</param>
     internal VariantBody(Null value) : this(0, false)
     {
         ArgumentNullException.ThrowIfNull(value);
@@ -96,8 +96,8 @@ internal sealed class VariantBody
     /// Setting up a <code>VARIANT</code> with a SCODE value and it's errorCode.
     /// Used via serializing the <code>VARIANT</code>.
     /// </summary>
-    /// <param name="value"> </param>
-    /// <param name="isByRef"></param>
+    /// <param name="value">Value being stored, encoded, or assigned.</param>
+    /// <param name="isByRef">Value indicating whether the variant stores a by-reference value.</param>
     internal VariantBody(Scode value, bool isByRef) :
         this(value.ErrorCode, isByRef)
     {
@@ -108,11 +108,11 @@ internal sealed class VariantBody
     /// <summary>
     /// Create safe array
     /// </summary>
-    /// <param name="safeArray"></param>
-    /// <param name="nestedClass"></param>
-    /// <param name="is2Dimensional"></param>
-    /// <param name="isByRef"></param>
-    /// <param name="flag"></param>
+    /// <param name="safeArray">SAFEARRAY payload stored by the VARIANT body.</param>
+    /// <param name="nestedClass">Nested COM class metadata used when the VARIANT contains a structured value.</param>
+    /// <param name="is2Dimensional">Value indicating whether the SAFEARRAY contains two dimensions.</param>
+    /// <param name="isByRef">Value indicating whether the variant stores a by-reference value.</param>
+    /// <param name="flag">Flag value that controls the requested operation.</param>
     internal VariantBody(Struct safeArray, Type nestedClass, bool is2Dimensional, bool isByRef, int flag = InteropFlags.FLAG_NULL)
     {
         _flag = flag;
@@ -143,13 +143,13 @@ internal sealed class VariantBody
     /// <summary>
     /// Returns the contained object.
     /// </summary>
-    /// <exception cref="InteropException"></exception>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     internal object Object => _object ?? Array;
 
     /// <summary>
     /// Returns the array
     /// </summary>
-    /// <exception cref="InteropException"></exception>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     internal ComArray Array
     {
         get
@@ -521,8 +521,8 @@ internal sealed class VariantBody
     /// <summary>
     /// Encode object
     /// </summary>
-    /// <param name="ndr"></param>
-    /// <param name="context"></param>
+    /// <param name="ndr">NDR buffer used to encode or decode the wire representation.</param>
+    /// <param name="context">Codec context that tracks deferred pointers and per-call buffers.</param>
     internal void Encode(NdrCodec ndr, CodecContext context)
     {
 
@@ -620,9 +620,9 @@ internal sealed class VariantBody
     /// <summary>
     /// Returns the length in bytes
     /// </summary>
-    /// <param name="c"></param>
-    /// <param name="obj"></param>
-    /// <returns></returns>
+    /// <param name="c">Character value being tested or transformed.</param>
+    /// <param name="obj">Object instance being marshaled, unmarshaled, or invoked.</param>
+    /// <returns>The requested max length2 value.</returns>
     private int GetMaxLength2(Type c, object obj)
     {
         var length = 0;
@@ -657,7 +657,7 @@ internal sealed class VariantBody
     /// <summary>
     /// Get array length for var type
     /// </summary>
-    /// <exception cref="InteropException"></exception>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     private int ArrayLengthForVarType
     {
         get
@@ -720,9 +720,9 @@ internal sealed class VariantBody
     /// <summary>
     /// Decode
     /// </summary>
-    /// <param name="ndr"></param>
-    /// <param name="context"></param>
-    /// <returns></returns>
+    /// <param name="ndr">NDR buffer used to encode or decode the wire representation.</param>
+    /// <param name="context">Codec context that tracks deferred pointers and per-call buffers.</param>
+    /// <returns>A new <see cref="VariantBody"/> instance built from <paramref name="ndr"/>.</returns>
     internal static VariantBody Decode(NdrCodec ndr, CodecContext context)
     {
 
@@ -858,8 +858,8 @@ internal sealed class VariantBody
     /// <summary>
     /// Variants need specialised handling and the standard serializers may or maynot be used.
     /// </summary>
-    /// <param name="type"></param>
-    /// <returns></returns>
+    /// <param name="type">COM or NDR type descriptor for the value being processed.</param>
+    /// <returns>The requested var class value.</returns>
     private static Type GetVarClass(VariantType type)
     {
         // now first to check if this is a pointer or not.
@@ -891,9 +891,9 @@ internal sealed class VariantBody
     /// <summary>
     /// Get var type
     /// </summary>
-    /// <param name="c"></param>
-    /// <param name="obj"></param>
-    /// <returns></returns>
+    /// <param name="c">Character value being tested or transformed.</param>
+    /// <param name="obj">Object instance being marshaled, unmarshaled, or invoked.</param>
+    /// <returns>The requested var type value.</returns>
     private VariantType GetVarType(Type c, object obj)
     {
         var type = VariantType.VT_EMPTY;
@@ -944,11 +944,11 @@ internal sealed class VariantBody
     /// <summary>
     /// Get decoded value
     /// </summary>
-    /// <param name="ndr"></param>
-    /// <param name="type"></param>
-    /// <param name="isByRef"></param>
-    /// <param name="context"></param>
-    /// <returns></returns>
+    /// <param name="ndr">NDR buffer used to encode or decode the wire representation.</param>
+    /// <param name="type">COM or NDR type descriptor for the value being processed.</param>
+    /// <param name="isByRef">Value indicating whether the variant stores a by-reference value.</param>
+    /// <param name="context">Codec context that tracks deferred pointers and per-call buffers.</param>
+    /// <returns>The requested decoded value value.</returns>
     private static object GetDecodedValue(NdrCodec ndr, VariantType type, bool isByRef,
         CodecContext context)
     {
@@ -998,11 +998,11 @@ internal sealed class VariantBody
     /// <summary>
     /// Get decoded value
     /// </summary>
-    /// <param name="ndr"></param>
-    /// <param name="type"></param>
-    /// <param name="isByRef"></param>
-    /// <param name="context"></param>
-    /// <returns></returns>
+    /// <param name="ndr">NDR buffer used to encode or decode the wire representation.</param>
+    /// <param name="type">COM or NDR type descriptor for the value being processed.</param>
+    /// <param name="isByRef">Value indicating whether the variant stores a by-reference value.</param>
+    /// <param name="context">Codec context that tracks deferred pointers and per-call buffers.</param>
+    /// <returns>The requested decoded value as array value.</returns>
     private static Struct GetDecodedValueAsArray(NdrCodec ndr,
         VariantType type, bool isByRef, CodecContext context)
     {
@@ -1101,9 +1101,9 @@ internal sealed class VariantBody
     /// <summary>
     /// Set value
     /// </summary>
-    /// <param name="ndr"></param>
-    /// <param name="obj"></param>
-    /// <param name="context"></param>
+    /// <param name="ndr">NDR buffer used to encode or decode the wire representation.</param>
+    /// <param name="obj">Object instance being marshaled, unmarshaled, or invoked.</param>
+    /// <param name="context">Codec context that tracks deferred pointers and per-call buffers.</param>
     private void SetValue(NdrCodec ndr, object obj, CodecContext context)
     {
         if (IsNull)

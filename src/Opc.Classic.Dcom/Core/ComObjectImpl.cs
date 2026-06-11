@@ -102,8 +102,8 @@ internal sealed class ComObjectImpl : IComObject, IComObjectInternal
     /// <summary>
     /// Create object
     /// </summary>
-    /// <param name="session"></param>
-    /// <param name="ptr"></param>
+    /// <param name="session">Session that owns the COM object, transport, and authentication state.</param>
+    /// <param name="ptr">Pointer referent being encoded, decoded, or dereferenced.</param>
     internal ComObjectImpl(Session session, InterfacePointer ptr) :
         this(session, ptr, false)
     {
@@ -112,9 +112,9 @@ internal sealed class ComObjectImpl : IComObject, IComObjectInternal
     /// <summary>
     /// Create object
     /// </summary>
-    /// <param name="session"></param>
-    /// <param name="ptr"></param>
-    /// <param name="isLocal"></param>
+    /// <param name="session">Session that owns the COM object, transport, and authentication state.</param>
+    /// <param name="ptr">Pointer referent being encoded, decoded, or dereferenced.</param>
+    /// <param name="isLocal">Value indicating whether the COM object is hosted by the local runtime.</param>
     internal ComObjectImpl(Session session, InterfacePointer ptr, bool isLocal)
     {
         _session = session;
@@ -292,7 +292,7 @@ internal sealed class ComObjectImpl : IComObject, IComObjectInternal
     /// <summary>
     /// Replace members
     /// </summary>
-    /// <param name="comObject"></param>
+    /// <param name="comObject">COM object instance whose exported interfaces are being managed.</param>
     internal void ReplaceMembers(IComObject comObject)
     {
         _session = comObject.AssociatedSession;

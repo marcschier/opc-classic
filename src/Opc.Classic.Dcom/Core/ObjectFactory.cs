@@ -37,7 +37,7 @@ public static class ObjectFactory
     /// <returns> string identifier for this connection, please save this for
     /// eventual release using <seealso cref="DetachEventHandler(IComObject, string)"/>
     /// </returns>
-    /// <exception cref="InteropException"> </exception>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     /// <exception cref="System.ArgumentException"> if any parameter is
     /// <code>null</code> or <code>sourceUUID</code> is empty. </exception>
     public static string AttachEventHandler(IComObject comObject, string sourceUUID,
@@ -49,9 +49,9 @@ public static class ObjectFactory
     /// associated with this <code>comObject</code>. This method
     /// will raise an exception if the <code>identifier</code> is invalid.
     /// </summary>
-    /// <param name="comObject"> </param>
-    /// <param name="identifier"> </param>
-    /// <exception cref="InteropException"> </exception>
+    /// <param name="comObject">COM object instance whose exported interfaces are being managed.</param>
+    /// <param name="identifier">Connection-point identifier returned when the mapping was registered.</param>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     public static void DetachEventHandler(IComObject comObject, string identifier) =>
         FrameworkHelper.DetachEventHandler(comObject, identifier);
 
@@ -64,7 +64,7 @@ public static class ObjectFactory
     /// </summary>
     /// <param name="comObject">
     /// </param>
-    /// <exception cref="InteropException"> </exception>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     /// <exception cref="System.ArgumentException"> if <code>comObject</code>
     /// is <code>null</code> or a local reference. </exception>
     public static IComObject NarrowObject(IComObject comObject)
@@ -89,8 +89,8 @@ public static class ObjectFactory
     /// </summary>
     /// <param name="session"> session to attach <code>comObject</code> to.
     /// </param>
-    /// <param name="localComponent"></param>
-    /// <exception cref="InteropException"> </exception>
+    /// <param name="localComponent">Local component of the COM version or RPC syntax identifier.</param>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     public static IComObject BuildObject(Session session, LocalCoClass localComponent) =>
         FrameworkHelper.InstantiateLocalComObject(session, localComponent);
 
@@ -99,9 +99,9 @@ public static class ObjectFactory
     /// Recommended to be called from the <code>finalize()</code> method of the
     /// local CoClass.
     /// </summary>
-    /// <param name="session"> </param>
-    /// <param name="localComponent"> </param>
-    /// <exception cref="InteropException"> </exception>
+    /// <param name="session">Session that owns the COM object, transport, and authentication state.</param>
+    /// <param name="localComponent">Local component of the COM version or RPC syntax identifier.</param>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     public static void ReleaseObject(Session session, LocalCoClass localComponent) =>
         FrameworkHelper.ReleaseLocalComponent(session, localComponent);
 
@@ -116,7 +116,7 @@ public static class ObjectFactory
     /// destroyed when the parent <code>session</code> is destroyed. </param>
     /// <param name="rawBytes"> bytes representing the interface pointer.
     /// </param>
-    /// <exception cref="InteropException"> </exception>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     /// <exception cref="System.ArgumentException"> if <code>rawBytes</code>
     /// is an invalid representation. </exception>
     public static IComObject BuildObject(Session session, byte[] rawBytes) =>
@@ -143,7 +143,7 @@ public static class ObjectFactory
     /// binding will be used. If this param is <code>null</code> then the first
     /// binding obtained from the interface pointer is used.
     /// </param>
-    /// <exception cref="InteropException"> </exception>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     /// <exception cref="System.ArgumentException"> if <code>rawBytes</code> is an
     /// invalid representation. </exception>
     public static IComObject BuildObject(Session session, byte[] rawBytes, string ipAddress) =>
@@ -167,7 +167,7 @@ public static class ObjectFactory
     /// </param>
     /// <param name="comObject"> <i>drifting</i> object.
     /// </param>
-    /// <exception cref="InteropException"> </exception>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     /// <exception cref="System.ArgumentException"> if <code>comObject</code>
     /// is <code>null</code> or a local reference. </exception>
     /// <seealso cref="IComObject.LocalReference"></seealso>

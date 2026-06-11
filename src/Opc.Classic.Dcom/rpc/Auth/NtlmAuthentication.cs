@@ -33,7 +33,7 @@ public class NtlmAuthentication
     /// <summary>
     /// Create auth
     /// </summary>
-    /// <param name="properties"></param>
+    /// <param name="properties">Property values used to initialize the COM descriptor.</param>
     public NtlmAuthentication(PropertyBag properties)
     {
         _properties = properties;
@@ -270,8 +270,8 @@ public class NtlmAuthentication
     /// <summary>
     /// Create type 1 message
     /// </summary>
-    /// <exception cref="IOException"></exception>
-    /// <returns></returns>
+    /// <exception cref="IOException">Thrown when the underlying stream, socket, or named pipe read/write operation fails.</exception>
+    /// <returns>A new <see cref="Type1Message"/> instance initialized from the supplied data.</returns>
     public Type1Message CreateType1()
     {
         if (_useSSO)
@@ -289,9 +289,9 @@ public class NtlmAuthentication
     /// <summary>
     /// Create type 2 message
     /// </summary>
-    /// <param name="type1"></param>
-    /// <exception cref="IOException"></exception>
-    /// <returns></returns>
+    /// <param name="type1">NTLM Type 1 negotiate message that seeds the challenge response.</param>
+    /// <exception cref="IOException">Thrown when the underlying stream, socket, or named pipe read/write operation fails.</exception>
+    /// <returns>A new <see cref="Type2Message"/> instance built from <paramref name="type1"/>.</returns>
     public Type2Message CreateType2(Type1Message type1)
     {
         NtlmFlags flags;
@@ -327,9 +327,9 @@ public class NtlmAuthentication
     /// <summary>
     /// Create type 3 message
     /// </summary>
-    /// <param name="type2"></param>
-    /// <exception cref="IOException"></exception>
-    /// <returns></returns>
+    /// <param name="type2">Type descriptor that determines how the value is marshaled.</param>
+    /// <exception cref="IOException">Thrown when the underlying stream, socket, or named pipe read/write operation fails.</exception>
+    /// <returns>The initialized NTLM authentication context for the connection.</returns>
 #pragma warning disable MA0051 // Legacy NTLM type-3 negotiation flow; refactor would risk authentication behavior.
     public Type3Message CreateType3(Type2Message type2)
     {
@@ -595,8 +595,8 @@ public class NtlmAuthentication
     /// <summary>
     /// Get target
     /// </summary>
-    /// <param name="targetInformation"></param>
-    /// <returns></returns>
+    /// <param name="targetInformation">Wire-format bytes consumed or produced by the operation.</param>
+    /// <returns>The requested target from target information value.</returns>
     private string GetTargetFromTargetInformation(byte[] targetInformation)
     {
         string target = null;
@@ -641,7 +641,7 @@ public class NtlmAuthentication
     /// <summary>
     /// Create security
     /// </summary>
-    /// <param name="type3"></param>
+    /// <param name="type3">Type descriptor that determines how the value is marshaled.</param>
     internal void CreateSecurityWhenServer(object type3) => CreateSecurityWhenServerCore(type3, null);
 
     internal void CreateSecurityWhenServerWithMic(object type3, byte[] authenticateMessage) =>

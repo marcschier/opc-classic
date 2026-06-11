@@ -128,7 +128,7 @@ public sealed class ComRuntimeNtlmConnectionContext : NtlmConnectionContext
     /// <summary>
     /// Update interfaces
     /// </summary>
-    /// <param name="newList"></param>
+    /// <param name="newList">Updated list of interface IIDs supported by the runtime connection context.</param>
     internal void UpdateListOfInterfacesSupported(IReadOnlyList<string> newList)
     {
         lock (_listOfInterfacesSupported)

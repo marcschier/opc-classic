@@ -16,9 +16,9 @@ public static class AutomationFactory
     /// <summary>
     /// Narrow object
     /// </summary>
-    /// <param name="comObject"></param>
-    /// <exception cref="InteropException"></exception>
-    /// <returns></returns>
+    /// <param name="comObject">COM object instance whose exported interfaces are being managed.</param>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
+    /// <returns>The COM object narrowed to the requested Automation interface type.</returns>
     public static IComObject NarrowObject(IComObject comObject)
     {
         var retval = comObject;

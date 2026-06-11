@@ -21,9 +21,9 @@ internal sealed class SecurityBinding
     /// <summary>
     /// Create binding
     /// </summary>
-    /// <param name="authnSvc"></param>
-    /// <param name="authzSvc"></param>
-    /// <param name="princName"></param>
+    /// <param name="authnSvc">RPC authentication service code advertised in the security binding.</param>
+    /// <param name="authzSvc">RPC authorization service code advertised in the security binding.</param>
+    /// <param name="princName">Name used to identify the target server, member, or descriptor.</param>
     internal SecurityBinding(int authnSvc, int authzSvc, string princName)
     {
         _authnSvc = authnSvc;
@@ -49,8 +49,8 @@ internal sealed class SecurityBinding
     /// <summary>
     /// Decode
     /// </summary>
-    /// <param name="ndr"></param>
-    /// <returns></returns>
+    /// <param name="ndr">NDR buffer used to encode or decode the wire representation.</param>
+    /// <returns>A new <see cref="SecurityBinding"/> instance built from <paramref name="ndr"/>.</returns>
     internal static SecurityBinding Decode(NdrCodec ndr)
     {
         var securityBinding = new SecurityBinding
@@ -85,7 +85,7 @@ internal sealed class SecurityBinding
     /// <summary>
     /// Encode
     /// </summary>
-    /// <param name="ndr"></param>
+    /// <param name="ndr">NDR buffer used to encode or decode the wire representation.</param>
     public void Encode(NdrCodec ndr)
     {
         ndr.WriteUnsignedShort(_authnSvc);

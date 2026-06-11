@@ -24,7 +24,7 @@ internal sealed class DispatchImpl : ComObjectImplWrapper, IDispatch
     /// <summary>
     /// Create implementation
     /// </summary>
-    /// <param name="comObject"></param>
+    /// <param name="comObject">COM object instance whose exported interfaces are being managed.</param>
     internal DispatchImpl(IComObject comObject) :
         base(comObject)
     {
@@ -198,13 +198,13 @@ internal sealed class DispatchImpl : ComObjectImplWrapper, IDispatch
     /// <summary>
     /// Invoke
     /// </summary>
-    /// <param name="dispId"></param>
-    /// <param name="dispatchFlags"></param>
-    /// <param name="arrayOfVariantsInParams"></param>
-    /// <param name="arrayOfNamedDispIds"></param>
-    /// <param name="outParamType"></param>
-    /// <exception cref="InteropException"></exception>
-    /// <returns></returns>
+    /// <param name="dispId">Automation dispatch identifier of the property or method.</param>
+    /// <param name="dispatchFlags">Flag value that controls the requested operation.</param>
+    /// <param name="arrayOfVariantsInParams">Automation VARIANT arguments supplied to the invoked dispatch member.</param>
+    /// <param name="arrayOfNamedDispIds">Name used to identify the target server, member, or descriptor.</param>
+    /// <param name="outParamType">Type descriptor that determines how the value is marshaled.</param>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
+    /// <returns>The sequence of invoke values produced by the operation.</returns>
     public Variant[] Invoke(int dispId, int dispatchFlags, ComArray arrayOfVariantsInParams,
         ComArray arrayOfNamedDispIds, Variant outParamType)
     {
@@ -335,10 +335,10 @@ internal sealed class DispatchImpl : ComObjectImplWrapper, IDispatch
     /// <summary>
     /// Internal put
     /// </summary>
-    /// <param name="dispId"></param>
-    /// <param name="inparams"></param>
-    /// <param name="isRef"></param>
-    /// <exception cref="InteropException"></exception>
+    /// <param name="dispId">Automation dispatch identifier of the property or method.</param>
+    /// <param name="inparams">Input parameters supplied to the remote COM method invocation.</param>
+    /// <param name="isRef">Value indicating whether the Automation argument is passed by reference.</param>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     private void Put(int dispId, object[] inparams, bool isRef)
     {
         var propertyFlag = isRef ?
@@ -436,11 +436,11 @@ internal sealed class DispatchImpl : ComObjectImplWrapper, IDispatch
     /// <summary>
     /// Call ansi method
     /// </summary>
-    /// <param name="dispId"></param>
-    /// <param name="inparams"></param>
-    /// <param name="flag"></param>
-    /// <exception cref="InteropException"></exception>
-    /// <returns></returns>
+    /// <param name="dispId">Automation dispatch identifier of the property or method.</param>
+    /// <param name="inparams">Input parameters supplied to the remote COM method invocation.</param>
+    /// <param name="flag">Flag value that controls the requested operation.</param>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
+    /// <returns>The sequence of call method a values produced by the operation.</returns>
     private Variant[] CallMethodA(int dispId, object[] inparams, int flag = InteropFlags.FLAG_NULL)
     {
         var objectParams = inparams;

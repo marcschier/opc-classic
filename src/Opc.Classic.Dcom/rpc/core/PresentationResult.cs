@@ -38,7 +38,7 @@ public class PresentationResult : NdrOp
     /// <summary>
     /// Create result
     /// </summary>
-    /// <param name="transferSyntax"></param>
+    /// <param name="transferSyntax">Transfer syntax used to encode the RPC presentation context.</param>
     public PresentationResult(PresentationSyntax transferSyntax) :
         this(PresentationResultCode.ACCEPTANCE,
             PresentationResultReason.REASON_NOT_SPECIFIED, transferSyntax)
@@ -48,8 +48,8 @@ public class PresentationResult : NdrOp
     /// <summary>
     /// Create result
     /// </summary>
-    /// <param name="result"></param>
-    /// <param name="reason"></param>
+    /// <param name="result">Result value returned by the RPC or COM operation.</param>
+    /// <param name="reason">Diagnostic reason associated with the RPC or COM failure.</param>
     public PresentationResult(PresentationResultCode result,
         PresentationResultReason reason) :
         this(result, reason, null)
@@ -59,9 +59,9 @@ public class PresentationResult : NdrOp
     /// <summary>
     /// Create result
     /// </summary>
-    /// <param name="result"></param>
-    /// <param name="reason"></param>
-    /// <param name="transferSyntax"></param>
+    /// <param name="result">Result value returned by the RPC or COM operation.</param>
+    /// <param name="reason">Diagnostic reason associated with the RPC or COM failure.</param>
+    /// <param name="transferSyntax">Transfer syntax used to encode the RPC presentation context.</param>
     public PresentationResult(PresentationResultCode result,
         PresentationResultReason reason, PresentationSyntax transferSyntax)
     {

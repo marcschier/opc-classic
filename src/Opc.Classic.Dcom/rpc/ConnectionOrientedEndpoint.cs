@@ -37,8 +37,8 @@ public class ConnectionOrientedEndpoint : IEndpoint
     /// <summary>
     /// Create endpoint
     /// </summary>
-    /// <param name="transport"></param>
-    /// <param name="syntax"></param>
+    /// <param name="transport">Underlying RPC transport handle, such as a TCP socket or SMB named pipe.</param>
+    /// <param name="syntax">Presentation syntax negotiated for the RPC context.</param>
     public ConnectionOrientedEndpoint(ITransport transport, PresentationSyntax syntax)
     {
         _contextIdToUse = _contextIdCounter;
@@ -112,7 +112,7 @@ public class ConnectionOrientedEndpoint : IEndpoint
     /// <summary>
     /// Rebind
     /// </summary>
-    /// <exception cref="IOException"></exception>
+    /// <exception cref="IOException">Thrown when the underlying stream, socket, or named pipe read/write operation fails.</exception>
     protected void Rebind()
     {
         _bound = false;
@@ -122,7 +122,7 @@ public class ConnectionOrientedEndpoint : IEndpoint
     /// <summary>
     /// Bind
     /// </summary>
-    /// <exception cref="IOException"></exception>
+    /// <exception cref="IOException">Thrown when the underlying stream, socket, or named pipe read/write operation fails.</exception>
 #pragma warning disable MA0051 // Legacy bind state machine; refactor would risk RPC handshake behavior.
     protected void Bind()
     {
@@ -210,8 +210,8 @@ public class ConnectionOrientedEndpoint : IEndpoint
     /// <summary>
     /// Send
     /// </summary>
-    /// <param name="request"></param>
-    /// <exception cref="IOException"></exception>
+    /// <param name="request">RPC request PDU to send to the remote endpoint.</param>
+    /// <exception cref="IOException">Thrown when the underlying stream, socket, or named pipe read/write operation fails.</exception>
     protected void Send(ConnectionOrientedPdu request)
     {
         Bind();
@@ -221,13 +221,13 @@ public class ConnectionOrientedEndpoint : IEndpoint
     /// <summary>
     /// Receive
     /// </summary>
-    /// <exception cref="IOException"></exception>
+    /// <exception cref="IOException">Thrown when the underlying stream, socket, or named pipe read/write operation fails.</exception>
     protected ConnectionOrientedPdu Receive() => Context.Connection.Receive(Transport);
 
     /// <summary>
     /// Connect
     /// </summary>
-    /// <exception cref="IOException"></exception>
+    /// <exception cref="IOException">Thrown when the underlying stream, socket, or named pipe read/write operation fails.</exception>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Meziantou.Analyzer", "MA0051:Method is too long", Justification = "DCE/RPC connection-oriented bind sequence orchestrates context allocation, auth negotiation, and PDU handshake; splitting fragments the state machine.")]
     private void Connect()
     {
@@ -299,8 +299,8 @@ public class ConnectionOrientedEndpoint : IEndpoint
     /// <summary>
     /// Create context
     /// </summary>
-    /// <returns></returns>
-    /// <exception cref="ProviderException"></exception>
+    /// <returns>A new <see cref="IConnectionContext"/> instance initialized from the supplied data.</returns>
+    /// <exception cref="ProviderException">Thrown when the provider cannot complete the requested RPC transport operation.</exception>
     private IConnectionContext CreateContext()
     {
         var properties = Transport.Properties;

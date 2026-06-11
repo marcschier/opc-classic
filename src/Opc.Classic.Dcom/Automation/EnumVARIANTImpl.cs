@@ -14,7 +14,7 @@ internal sealed class EnumVARIANTImpl : ComObjectImplWrapper, IEnumVariant
     /// <summary>
     /// Create implementation
     /// </summary>
-    /// <param name="comObject"></param>
+    /// <param name="comObject">COM object instance whose exported interfaces are being managed.</param>
     internal EnumVARIANTImpl(IComObject comObject) : base(comObject)
     {
     }

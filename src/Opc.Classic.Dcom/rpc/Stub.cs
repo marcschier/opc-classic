@@ -60,7 +60,7 @@ public abstract class Stub
     /// <summary>
     /// Detach
     /// </summary>
-    /// <exception cref="IOException"></exception>
+    /// <exception cref="IOException">Thrown when the underlying stream, socket, or named pipe read/write operation fails.</exception>
     protected void Detach()
     {
         var endpoint = Endpoint;
@@ -81,8 +81,8 @@ public abstract class Stub
     /// <summary>
     /// Attach
     /// </summary>
-    /// <exception cref="IOException"></exception>
-    /// <exception cref="RpcException"></exception>
+    /// <exception cref="IOException">Thrown when the underlying stream, socket, or named pipe read/write operation fails.</exception>
+    /// <exception cref="RpcException">Thrown when the RPC runtime reports a bind, transport, or protocol failure.</exception>
     protected void Attach()
     {
         var endpoint = Endpoint;
@@ -102,9 +102,9 @@ public abstract class Stub
     /// <summary>
     /// Call on the endpoint using the ndr operation
     /// </summary>
-    /// <param name="semantics"></param>
-    /// <param name="ndrobj"></param>
-    /// <exception cref="IOException"></exception>
+    /// <param name="semantics">Parameter semantics flags that describe direction and marshaling behavior.</param>
+    /// <param name="ndrobj">NDR object whose wire fields are being encoded or decoded.</param>
+    /// <exception cref="IOException">Thrown when the underlying stream, socket, or named pipe read/write operation fails.</exception>
     public void Call(Semantics semantics, NdrOp ndrobj)
     {
         Attach();

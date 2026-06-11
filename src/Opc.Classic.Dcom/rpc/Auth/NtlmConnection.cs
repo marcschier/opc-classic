@@ -20,7 +20,7 @@ public class NtlmConnection : DefaultConnection
     /// <summary>
     /// Create connection
     /// </summary>
-    /// <param name="properties"></param>
+    /// <param name="properties">Property values used to initialize the COM descriptor.</param>
     public NtlmConnection(PropertyBag properties)
     {
         _authentication = new NtlmAuthentication(properties);

@@ -23,7 +23,7 @@ public sealed class IdlDesc
     /// <summary>
     /// Create description
     /// </summary>
-    /// <param name="values"></param>
+    /// <param name="values">Values being stored, encoded, or assigned.</param>
     internal IdlDesc(Struct values)
     {
         if (values == null)

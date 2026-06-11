@@ -37,7 +37,7 @@ internal sealed class DualStringArray
     /// <summary>
     /// Will get called from Oxid Resolver
     /// </summary>
-    /// <param name="port"></param>
+    /// <param name="port">Network port used by the RPC endpoint or string binding.</param>
     internal DualStringArray(int port)
     {
         // create bindings here.
@@ -62,8 +62,8 @@ internal sealed class DualStringArray
     /// <summary>
     /// Decode
     /// </summary>
-    /// <param name="ndr"></param>
-    /// <returns></returns>
+    /// <param name="ndr">NDR buffer used to encode or decode the wire representation.</param>
+    /// <returns>A new <see cref="DualStringArray"/> instance built from <paramref name="ndr"/>.</returns>
     internal static DualStringArray Decode(NdrCodec ndr)
     {
         var dualStringArray = new DualStringArray();
@@ -127,7 +127,7 @@ internal sealed class DualStringArray
     /// <summary>
     /// Encode
     /// </summary>
-    /// <param name="ndr"></param>
+    /// <param name="ndr">NDR buffer used to encode or decode the wire representation.</param>
     public void Encode(NdrCodec ndr)
     {
         // fill num entries

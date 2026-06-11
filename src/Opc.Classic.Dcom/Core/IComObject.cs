@@ -142,7 +142,7 @@ public interface IComObject
     /// <seealso cref="ObjectFactory.NarrowObject(IComObject)"></seealso>
     /// </summary>
     /// <param name="iid"> string representation of the IID. </param>
-    /// <exception cref="InteropException"> </exception>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     /// <exception cref="System.InvalidOperationException"> if there is no session associated
     /// with this object or this object represents a local reference. </exception>
     /// <returns> reference to the requested unknown. </returns>
@@ -156,7 +156,7 @@ public interface IComObject
     /// with <code>addRef</code> then the COM Instance will not get garbage collected
     /// at the server.
     /// </P> </summary>
-    /// <exception cref="InteropException"> </exception>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     /// <exception cref="System.InvalidOperationException"> if there is no 
     /// session associated with this object or this object represents a local 
     /// reference. </exception>
@@ -170,7 +170,7 @@ public interface IComObject
     /// with <seealso cref="AddRef()"/> then the COM Instance will not get garbage
     /// collected at the server.
     /// </summary>
-    /// <exception cref="InteropException"> </exception>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     /// <exception cref="System.InvalidOperationException"> if there is no session 
     /// associated with this object or this object represents a local reference. 
     /// </exception>
@@ -203,7 +203,7 @@ public interface IComObject
     /// the call successfully. </param>
     /// <returns> Object[] array representing the results in the order expected or
     /// set in <code>CallBuilder</code>. </returns>
-    /// <exception cref="InteropException"> </exception>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     /// <exception cref="System.InvalidOperationException"> if there is no 
     /// session associated
     /// with this object or this object represents a local reference. </exception>
@@ -219,7 +219,7 @@ public interface IComObject
     /// timeout. </param>
     /// <returns> Object[] array representing the results in the order expected
     /// or set in <code>CallBuilder</code>. </returns>
-    /// <exception cref="InteropException"> </exception>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     /// <exception cref="System.InvalidOperationException"> if there is no 
     /// session associated with this object or this object represents a local 
     /// reference. </exception>

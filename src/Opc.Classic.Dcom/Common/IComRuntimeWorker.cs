@@ -41,6 +41,6 @@ public interface IComRuntimeWorker
     /// <summary>
     /// Worker
     /// </summary>
-    /// <returns></returns>
+    /// <returns><c>true</c> when worker over is satisfied; otherwise <c>false</c>.</returns>
     bool WorkerOver();
 }

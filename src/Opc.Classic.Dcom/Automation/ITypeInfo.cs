@@ -36,7 +36,7 @@ public interface ITypeInfo : IComObject
     /// Retrieves a TypeAttr structure that contains the attributes
     /// of the type description.
     /// </summary>
-    /// <exception cref="InteropException"> </exception>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     TypeAttr TypeAttr { get; }
 
     /// <summary>
@@ -44,7 +44,7 @@ public interface ITypeInfo : IComObject
     /// type description within that type library.
     /// </summary>
     /// <returns> Object[0] = ITypeLib, Object[1] = Integer </returns>
-    /// <exception cref="InteropException"> </exception>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     object[] ContainingTypeLib { get; }
 
     /// <summary>
@@ -55,7 +55,7 @@ public interface ITypeInfo : IComObject
     /// is to be returned. The index should be in the range
     /// of 0 to 1 less than the number of functions in this type.
     /// </param>
-    /// <exception cref="InteropException"> </exception>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     FuncDesc GetFuncDesc(int index);
 
     /// <summary>
@@ -69,7 +69,7 @@ public interface ITypeInfo : IComObject
     /// Object[0] = <see cref="ComString"/> of BSTR type,
     /// Object[1] = <see cref="ComString"/> of BSTR type,
     /// Object[3] = <see cref="ComString"/> of BSTR type </returns>
-    /// <exception cref="InteropException"> </exception>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     object[] GetDocumentation(int memberId);
 
     /// <summary>
@@ -85,7 +85,7 @@ public interface ITypeInfo : IComObject
     /// Object[0] = <see cref="ComString"/> of BSTR type,
     /// Object[1] = <see cref="ComString"/> of BSTR type,
     /// Object[2] = Short </returns>
-    /// <exception cref="InteropException"> </exception>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     object[] GetDllEntry(int memberId, int invKind);
 
     /// <summary>
@@ -96,7 +96,7 @@ public interface ITypeInfo : IComObject
     /// is to be returned. The index should be in the range
     /// of 0 to 1 less than the number of variables in this type.
     /// </param>
-    /// <exception cref="InteropException"> </exception>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     VarDesc GetVarDesc(int index);
 
     /// <summary>
@@ -111,7 +111,7 @@ public interface ITypeInfo : IComObject
     /// Object[0] = <see cref="ComString"/>[] of BSTR type,
     /// Object[1] = Integer
     /// </returns>
-    /// <exception cref="InteropException"> </exception>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     object[] GetNames(int memberId, int maxNames);
 
     /// <summary>
@@ -124,7 +124,7 @@ public interface ITypeInfo : IComObject
     /// is returned. The valid range is 0 to the
     /// cImplTypes field in the TypeAttr structure.
     /// </param>
-    /// <exception cref="InteropException"> </exception>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     int GetRefTypeOfImplType(int index);
 
     /// <summary>
@@ -134,7 +134,7 @@ public interface ITypeInfo : IComObject
     /// <param name="index"> index of the implemented interface or base
     /// interface for which to get the flags.
     /// </param>
-    /// <exception cref="InteropException"> </exception>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     int GetImplTypeFlags(int index);
 
     /// <summary>
@@ -144,7 +144,7 @@ public interface ITypeInfo : IComObject
     /// <param name="hrefType"> handle to the referenced type description
     /// to be returned.
     /// </param>
-    /// <exception cref="InteropException"> </exception>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     ITypeInfo GetRefTypeInfo(int hrefType);
 
     /// <summary>
@@ -153,7 +153,7 @@ public interface ITypeInfo : IComObject
     /// </summary>
     /// <param name="riid">
     /// </param>
-    /// <exception cref="InteropException"> </exception>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     IComObject CreateInstance(string riid);
 
     /// <summary>
@@ -162,6 +162,6 @@ public interface ITypeInfo : IComObject
     /// <param name="memberId"> member ID that indicates which
     /// marshaling information is needed.
     /// </param>
-    /// <exception cref="InteropException"> </exception>
+    /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     ComString GetMops(int memberId);
 }

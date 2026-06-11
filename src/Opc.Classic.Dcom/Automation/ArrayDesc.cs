@@ -26,7 +26,7 @@ public sealed class ArrayDesc
     /// <summary>
     /// Create description
     /// </summary>
-    /// <param name="values"></param>
+    /// <param name="values">Values being stored, encoded, or assigned.</param>
     internal ArrayDesc(Struct values)
     {
         if (values == null)
@@ -59,7 +59,7 @@ public sealed class ArrayDesc
     /// <summary>
     /// Create description
     /// </summary>
-    /// <param name="values"></param>
+    /// <param name="values">Values being stored, encoded, or assigned.</param>
     internal ArrayDesc(ComPointer values) : this(values.IsNull ? null :
         (Struct)values.Referent)
     {

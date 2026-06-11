@@ -18,12 +18,12 @@ internal sealed class NTLMKeyFactory
     /// <summary>
     /// Get user session key
     /// </summary>
-    /// <param name="target"></param>
-    /// <param name="user"></param>
-    /// <param name="password"></param>
-    /// <param name="challenge"></param>
-    /// <param name="blob"></param>
-    /// <returns></returns>
+    /// <param name="target">Target object or buffer that receives the operation result.</param>
+    /// <param name="user">User name or account principal used for authentication.</param>
+    /// <param name="password">Password used for the NTLM or Kerberos handshake.</param>
+    /// <param name="challenge">Wire-format bytes consumed or produced by the operation.</param>
+    /// <param name="blob">Wire-format bytes consumed or produced by the operation.</param>
+    /// <returns>The sequence of ntlmv2 user session key values produced by the operation.</returns>
     public byte[] GetNTLMv2UserSessionKey(string target, string user,
         string password, byte[] challenge, byte[] blob)
     {
@@ -49,12 +49,12 @@ internal sealed class NTLMKeyFactory
     /// <summary>
     /// Password of the user
     /// </summary>
-    /// <param name="password"> </param>
+    /// <param name="password">Password used for the NTLM or Kerberos handshake.</param>
     /// <param name="servernonce"> challenge + nonce from NTLM2 Session Response
     /// </param>
-    /// <exception cref="SecurityUtilityException"> </exception>
-    /// <exception cref="ArgumentException"> </exception>
-    /// <exception cref="Opc.Classic.Dcom.Common.Ntlm.NoSuchAlgorithmException"> </exception>
+    /// <exception cref="SecurityUtilityException">Thrown when the get ntlm2 session response user session key operation cannot be completed.</exception>
+    /// <exception cref="ArgumentException">Thrown when <paramref name="password"/> is not valid for this operation.</exception>
+    /// <exception cref="Opc.Classic.Dcom.Common.Ntlm.NoSuchAlgorithmException">Thrown when the requested NTLM cryptographic algorithm is not available.</exception>
     public byte[] GetNTLM2SessionResponseUserSessionKey(string password, byte[] servernonce)
     {
         var userSessionKey = GetNTLMUserSessionKey(password);
@@ -84,8 +84,8 @@ internal sealed class NTLMKeyFactory
     /// <summary>
     /// Get stream cipher
     /// </summary>
-    /// <param name="key"></param>
-    /// <returns></returns>
+    /// <param name="key">Lookup key used to select the value from the collection.</param>
+    /// <returns>The requested arcfour value.</returns>
     public IStreamCipher GetARCFOUR(byte[] key)
     {
         var keystream = new RC4Engine();
@@ -97,9 +97,9 @@ internal sealed class NTLMKeyFactory
     /// <summary>
     /// Apply stream cypher
     /// </summary>
-    /// <param name="keystream"></param>
-    /// <param name="data"></param>
-    /// <returns></returns>
+    /// <param name="keystream">Stream used to read or write the wire-format data.</param>
+    /// <param name="data">Wire-format payload bytes to process.</param>
+    /// <returns>The sequence of apply arcfour values produced by the operation.</returns>
     internal byte[] ApplyARCFOUR(IStreamCipher keystream, byte[] data)
     {
         var retData = new byte[data.Length];
@@ -114,8 +114,8 @@ internal sealed class NTLMKeyFactory
     /// </summary>
     /// <param name="password">
     /// </param>
-    /// <exception cref="ArgumentException"> </exception>
-    /// <exception cref="SecurityUtilityException"> </exception>
+    /// <exception cref="ArgumentException">Thrown when <paramref name="password"/> is not valid for this operation.</exception>
+    /// <exception cref="SecurityUtilityException">Thrown when the get ntlmuser session key operation cannot be completed.</exception>
     private byte[] GetNTLMUserSessionKey(string password)
     {
         // The old Opc.Classic.Dcom.Common.Ntlm credential helper supported only
@@ -139,26 +139,26 @@ internal sealed class NTLMKeyFactory
     /// <summary>
     /// Decrypt
     /// </summary>
-    /// <param name="encryptedData"></param>
-    /// <param name="key"></param>
-    /// <returns></returns>
+    /// <param name="encryptedData">Wire-format bytes consumed or produced by the operation.</param>
+    /// <param name="key">Lookup key used to select the value from the collection.</param>
+    /// <returns>The sequence of decrypt secondary session key values produced by the operation.</returns>
     public byte[] DecryptSecondarySessionKey(byte[] encryptedData, byte[] key) =>
         ApplyARCFOUR(GetARCFOUR(key), encryptedData);
 
     /// <summary>
     /// Encrypt
     /// </summary>
-    /// <param name="plainData"></param>
-    /// <param name="key"></param>
-    /// <returns></returns>
+    /// <param name="plainData">Wire-format bytes consumed or produced by the operation.</param>
+    /// <param name="key">Lookup key used to select the value from the collection.</param>
+    /// <returns>The sequence of encrypt secondary session key values produced by the operation.</returns>
     public byte[] EncryptSecondarySessionKey(byte[] plainData, byte[] key) =>
         ApplyARCFOUR(GetARCFOUR(key), plainData);
 
     /// <summary>
     /// Generate client signing key
     /// </summary>
-    /// <param name="secondarySessionKey"></param>
-    /// <returns></returns>
+    /// <param name="secondarySessionKey">Secondary session key used to sign or seal NTLM messages.</param>
+    /// <returns>The sequence of generate client signing key using negotiated secondary session key values produced by the operation.</returns>
     public byte[] GenerateClientSigningKeyUsingNegotiatedSecondarySessionKey(
         byte[] secondarySessionKey) => GenerateExtendedSessionSecurityKey(secondarySessionKey, kClientSigningMagicConstant);
 
@@ -168,8 +168,8 @@ internal sealed class NTLMKeyFactory
     /// <summary>
     /// Generate sealing key
     /// </summary>
-    /// <param name="secondarySessionKey"></param>
-    /// <returns></returns>
+    /// <param name="secondarySessionKey">Secondary session key used to sign or seal NTLM messages.</param>
+    /// <returns>The sequence of generate client sealing key using negotiated secondary session key values produced by the operation.</returns>
     public byte[] GenerateClientSealingKeyUsingNegotiatedSecondarySessionKey(
         byte[] secondarySessionKey) => GenerateExtendedSessionSecurityKey(secondarySessionKey, kClientSealingMagicConstant);
 
@@ -179,8 +179,8 @@ internal sealed class NTLMKeyFactory
     /// <summary>
     /// Generate server signing key
     /// </summary>
-    /// <param name="secondarySessionKey"></param>
-    /// <returns></returns>
+    /// <param name="secondarySessionKey">Secondary session key used to sign or seal NTLM messages.</param>
+    /// <returns>The sequence of generate server signing key using negotiated secondary session key values produced by the operation.</returns>
     public byte[] GenerateServerSigningKeyUsingNegotiatedSecondarySessionKey(
         byte[] secondarySessionKey) => GenerateExtendedSessionSecurityKey(secondarySessionKey, kServerSigningMagicConstant);
 
@@ -190,8 +190,8 @@ internal sealed class NTLMKeyFactory
     /// <summary>
     /// Generate server sealing key
     /// </summary>
-    /// <param name="secondarySessionKey"></param>
-    /// <returns></returns>
+    /// <param name="secondarySessionKey">Secondary session key used to sign or seal NTLM messages.</param>
+    /// <returns>The sequence of generate server sealing key using negotiated secondary session key values produced by the operation.</returns>
     public byte[] GenerateServerSealingKeyUsingNegotiatedSecondarySessionKey(
         byte[] secondarySessionKey) => GenerateExtendedSessionSecurityKey(secondarySessionKey, kServerSealingMagicConstant);
 
@@ -201,13 +201,13 @@ internal sealed class NTLMKeyFactory
     /// <summary>
     /// Signing part 1
     /// </summary>
-    /// <param name="sequenceNumber"></param>
-    /// <param name="signingKey"></param>
-    /// <param name="data"></param>
-    /// <param name="lengthOfBuffer"></param>
-    /// <exception cref="Opc.Classic.Dcom.Common.Ntlm.NoSuchAlgorithmException"></exception>
-    /// <exception cref="InvalidOperationException"></exception>
-    /// <returns></returns>
+    /// <param name="sequenceNumber">Sequence number used when signing or verifying the message.</param>
+    /// <param name="signingKey">Lookup key used to identify the cached or serialized value.</param>
+    /// <param name="data">Wire-format payload bytes to process.</param>
+    /// <param name="lengthOfBuffer">Length in bytes of the buffer that contains the verifier or payload.</param>
+    /// <exception cref="Opc.Classic.Dcom.Common.Ntlm.NoSuchAlgorithmException">Thrown when the requested NTLM cryptographic algorithm is not available.</exception>
+    /// <exception cref="InvalidOperationException">Thrown when the object is not in the state required to perform the operation.</exception>
+    /// <returns>The sequence of signing pt1 values produced by the operation.</returns>
     public byte[] SigningPt1(int sequenceNumber, byte[] signingKey,
         byte[] data, int lengthOfBuffer)
     {
@@ -252,9 +252,9 @@ internal sealed class NTLMKeyFactory
     /// <summary>
     /// Signing part 2
     /// </summary>
-    /// <param name="verifier"></param>
-    /// <param name="rc4"></param>
-    /// <exception cref="InvalidOperationException"></exception>
+    /// <param name="verifier">Authentication verifier attached to the RPC PDU.</param>
+    /// <param name="rc4">RC4 stream cipher used to seal or unseal the NTLM message payload.</param>
+    /// <exception cref="InvalidOperationException">Thrown when the object is not in the state required to perform the operation.</exception>
     public void SigningPt2(byte[] verifier, IStreamCipher rc4)
     {
         for (var i = 0; i < 8; i++)
@@ -267,9 +267,9 @@ internal sealed class NTLMKeyFactory
     /// <summary>
     /// Test signatures
     /// </summary>
-    /// <param name="src"></param>
-    /// <param name="target"></param>
-    /// <returns></returns>
+    /// <param name="src">Source NDR buffer that supplies the field data to decode.</param>
+    /// <param name="target">Target object or buffer that receives the operation result.</param>
+    /// <returns><c>true</c> when compare signature is satisfied; otherwise <c>false</c>.</returns>
     public bool CompareSignature(byte[] src, byte[] target) => src.SequenceEqual(target);
 
     private static byte[] GenerateSigningKey(NtlmFlags flags, byte[] exportedSessionKey, byte[] magicConstant)
