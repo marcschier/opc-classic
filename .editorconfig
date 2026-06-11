@@ -21,7 +21,7 @@ charset = utf-8-bom
 # Modern C# conventions (file-scoped namespaces, usings outside)
 csharp_using_directive_placement = outside_namespace:warning
 csharp_style_namespace_declarations = file_scoped:warning
-csharp_prefer_braces = true:warning
+csharp_prefer_braces = true:error
 csharp_style_prefer_primary_constructors = true:suggestion
 csharp_style_prefer_collection_expression = true:suggestion
 csharp_style_prefer_extended_property_pattern = true:suggestion
@@ -45,11 +45,14 @@ csharp_style_expression_bodied_accessors = true:suggestion
 csharp_style_pattern_matching_over_as_with_null_check = true:warning
 csharp_style_pattern_matching_over_is_with_cast_check = true:warning
 
-# Line breaks
-csharp_new_line_before_open_brace = none
+# Line breaks - Allman brace style (open brace on a new line for all block types)
+csharp_new_line_before_open_brace = all
 csharp_new_line_before_catch = true
 csharp_new_line_before_else = true
 csharp_new_line_before_finally = true
+csharp_new_line_before_members_in_object_initializers = true
+csharp_new_line_before_members_in_anonymous_types = true
+csharp_new_line_between_query_expression_clauses = true
 
 # Spaces
 csharp_space_after_cast = false
