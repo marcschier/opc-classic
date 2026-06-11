@@ -16,7 +16,7 @@ in parallel:
 
 - Use SemVer: `<MAJOR>.<MINOR>.<PATCH>[-<prerelease>.<N>]`.
 - Use prerelease labels in the order `alpha`, `beta`, then `rc`.
-- Tags going forward should use the canonical `v` prefix (e.g. `v1.0.0-rc.11`); the workflow tolerates bare tags (`1.0.0-rc.11`) for compatibility with the existing `1.0.0-rc.1`..`1.0.0-rc.10` history.
+- Tags going forward should use the canonical `v` prefix (e.g. `v1.0.0`); the workflow tolerates bare tags (`1.0.0`) for compatibility with non-prefixed tag history.
 - Do not reuse release tags. If a package must be replaced, cut a higher version.
 - Package IDs and namespaces remain under `Opc.Classic.*`.
 - The Docker image tag tracks the release version. `:latest` moves only on **stable** releases (no `-<prerelease>` suffix).
@@ -57,7 +57,7 @@ Before tagging, verify:
 Use the exact version string, including any prerelease suffix. `v` prefix is preferred going forward; bare tags are tolerated:
 
 ```powershell
-$version = "1.0.0-rc.11"
+$version = "1.0.0"
 git tag -a "v$version" -m "Opc.Classic $version"
 ```
 
@@ -67,7 +67,7 @@ Do **not** push tags automatically. Push only after explicit maintainer approval
 git push origin "v$version"
 ```
 
-The workflow trigger `.github\workflows\release.yml` accepts tag patterns `v*`, `1.*`, and `2.*` and validates that the tag matches `[v]<MAJOR>.<MINOR>.<PATCH>[-<prerelease>.<N>]`. A leading `v` is stripped from the version derived for package and image tags, so a `v1.0.0-rc.11` tag still produces `Opc.Classic.Core.1.0.0-rc.11.nupkg` and `ghcr.io/marcschier/opc-classic-managed:1.0.0-rc.11`.
+The workflow trigger `.github\workflows\release.yml` accepts tag patterns `v*`, `1.*`, and `2.*` and validates that the tag matches `[v]<MAJOR>.<MINOR>.<PATCH>[-<prerelease>.<N>]`. A leading `v` is stripped from the version derived for package and image tags, so a `v1.0.0` tag still produces `Opc.Classic.Core.1.0.0.nupkg` and `ghcr.io/marcschier/opc-classic-managed:1.0.0`.
 
 When the `release` workflow runs, it:
 
@@ -105,7 +105,7 @@ The manual input must match an existing release tag and the tag format accepted 
 ### NuGet packages (nuget.org)
 
 ```powershell
-dotnet add package Opc.Classic.Core --version 1.0.0-rc.11
+dotnet add package Opc.Classic.Core --version 1.0.0
 ```
 
 ### NuGet packages (GitHub Packages NuGet feed)
@@ -130,7 +130,7 @@ GitHub Packages NuGet requires **authenticated reads even for public packages**.
 Where `%GITHUB_PACKAGES_TOKEN%` is a Personal Access Token with `read:packages` scope. Then:
 
 ```powershell
-dotnet add package Opc.Classic.Core --version 1.0.0-rc.11 --source github-marcschier
+dotnet add package Opc.Classic.Core --version 1.0.0 --source github-marcschier
 ```
 
 ### Docker images (GHCR)
@@ -140,14 +140,14 @@ GHCR allows anonymous reads for public images (no PAT needed for `docker pull`).
 **Linux (preferred for non-Windows consumers; multi-arch amd64+arm64):**
 
 ```bash
-docker pull ghcr.io/marcschier/opc-classic-managed-linux:1.0.0-rc.11
+docker pull ghcr.io/marcschier/opc-classic-managed-linux:1.0.0
 docker pull ghcr.io/marcschier/opc-classic-managed-linux:latest  # stable releases only
 ```
 
 **Windows (when the consumer needs Windows SCM-style registration):**
 
 ```powershell
-docker pull ghcr.io/marcschier/opc-classic-managed:1.0.0-rc.11
+docker pull ghcr.io/marcschier/opc-classic-managed:1.0.0
 docker pull ghcr.io/marcschier/opc-classic-managed:latest  # stable releases only
 ```
 
@@ -159,7 +159,7 @@ Every Docker image push from the release workflow is signed via cosign keyless (
 cosign verify \
   --certificate-identity-regexp 'https://github.com/marcschier/opc-classic/\.github/workflows/release\.yml@.*' \
   --certificate-oidc-issuer 'https://token.actions.githubusercontent.com' \
-  ghcr.io/marcschier/opc-classic-managed-linux:1.0.0-rc.11
+  ghcr.io/marcschier/opc-classic-managed-linux:1.0.0
 ```
 
 Same command shape verifies the Windows variant (`opc-classic-managed`) and the optional reference images (`opc-classic-c-server`, `opc-classic-c-client`). On success, cosign prints the signing certificate and Rekor transparency-log entry; on signature failure it exits non-zero.
@@ -169,7 +169,7 @@ Same command shape verifies the Windows variant (`opc-classic-managed`) and the 
 After packages are available, verify install and build with the published version:
 
 ```powershell
-$version = "1.0.0-rc.11"
+$version = "1.0.0"
 dotnet new console -n PackageSmoke
 Set-Location PackageSmoke
 dotnet add package Opc.Classic.Core --version $version

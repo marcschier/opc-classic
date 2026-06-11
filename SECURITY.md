@@ -9,8 +9,6 @@ This project is still pre-1.0 and has no stable released version line. During th
 | Version | Supported |
 | --- | --- |
 | Default branch pre-1.0 commits | Yes |
-| Current pre-1.0 prerelease packages (`1.0.0-rc.11`) | Yes, best effort |
-| Older pre-1.0 snapshots | Best effort |
 | 1.0.0 and later | Not released yet |
 
 When 1.0.0 is released, this table will be updated with explicit supported release lines.

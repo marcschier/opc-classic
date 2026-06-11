@@ -135,4 +135,4 @@ Opc.Classic .NET is licensed under MIT. See [LICENSE](LICENSE).
 - Source: OPC Foundation specification PDFs + Microsoft Open Specifications
 - Location: [marcschier/opc-classic-docs](https://github.com/marcschier/opc-classic-docs) (private)
 - License: OPC Foundation specification distribution terms + Microsoft Open Specifications Promise (see `NOTICES.md` in that repo)
-- Status: Internal reference only. The mirrors were extracted from `docs` of this repo in commit `(see Changelog [Unreleased] Removed)` to keep this repo lean.
+- Status: Internal reference only. The mirrors live in the companion repo to keep this repo lean.

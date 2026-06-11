@@ -3,7 +3,6 @@
 [![Build](https://github.com/marcschier/opc-classic/actions/workflows/build.yml/badge.svg)](https://github.com/marcschier/opc-classic/actions/workflows/build.yml)
 [![Docker test fleet](https://github.com/marcschier/opc-classic/actions/workflows/docker-test-fleet.yml/badge.svg)](https://github.com/marcschier/opc-classic/actions/workflows/docker-test-fleet.yml)
 [![.NET 10](https://img.shields.io/badge/.NET-10.0-512BD4)](https://dotnet.microsoft.com/)
-[![Version](https://img.shields.io/badge/version-1.0.0--rc.11-blue)](CHANGELOG.md)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 A cross-platform, NativeAOT-compatible **.NET 10** implementation of OPC Classic for clients and servers. Managed DCOM/MSRPC with no Windows COM runtime interop, XML-DA over HTTP, source-generated proxies and dispatchers, and self-contained NTLMv2 / Kerberos / SPNEGO authentication.
@@ -75,7 +74,6 @@ Start with the [documentation hub](docs/README.md). Common entry points:
 - [MCP integration](docs/mcp/README.md) — using Opc.Classic from VS Code Copilot, Cursor, Claude Desktop, Copilot CLI.
 - [Docker test fleet](interop/docker/README.md) — the multi-container Windows interop test setup.
 - [Roadmap](docs/ROADMAP.md) — forward-looking gates and gaps.
-- [Release blockers](docs/release-blockers.md) — what stands between the rc.* series and 1.0.0 FINAL.
 - [Changelog](CHANGELOG.md) — release-by-release detail.
 
 ## Build from source
