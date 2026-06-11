@@ -1,7 +1,7 @@
 # Docker test fleet — adopter cookbook
 
 How to use the `docker` fleet for end-to-end DCOM testing of the managed
-implementation. For the architectural overview see [`docker`](../interop/docker/README.md).
+implementation. For the architectural overview see [docker](../interop/docker/README.md).
 The fleet contains five Windows-container targets from docker-compose.test:
 `c-server`, `managed-server`, `testserver`, `c-client`, and `testclient`.
 

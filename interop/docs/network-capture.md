@@ -105,7 +105,7 @@ wireshark "$(opc-classic-mcp call opcclassic.capture.get sessionId=4d8f… forma
 
 ## Inspired by
 
-[`netcap`](https://github.com/marcschier/netcap) — pluggable
+[netcap](https://github.com/marcschier/netcap) — pluggable
 `ICaptureSource`, session manager, format registry, MCP tool surface.
 Built native here so the decoder reuses
 `Opc.Classic.Dcom.Transport.PduCodec` and produces `.hex` files

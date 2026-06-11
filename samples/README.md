@@ -8,20 +8,20 @@ Each sample folder ships its own `README.md` with run instructions. DA/AE/HDA/Ct
 
 | Folder | What it demonstrates |
 | --- | --- |
-| [`Opc.Classic.Samples.DaServer/`](Opc.Classic.Samples.DaServer/README.md) | Managed DA server with browse, reads, writes, and data-change publishing. |
-| [`Opc.Classic.Samples.OpcSecurityServer/`](Opc.Classic.Samples.OpcSecurityServer/README.md) | Managed DA reference server exposing OPC Security 1.00 `IOPCSecurityNT` and `IOPCSecurityPrivate`. |
-| [`Opc.Classic.Samples.AeServer/`](Opc.Classic.Samples.AeServer/README.md) | Managed AE server with areas, sources, conditions, and event metadata. |
-| [`Opc.Classic.Samples.HdaServer/`](Opc.Classic.Samples.HdaServer/README.md) | Managed HDA server with historical values, aggregates, and annotations. |
-| [`Opc.Classic.Samples.DaClient/`](Opc.Classic.Samples.DaClient/README.md) | DA client bootstrap: browse, read, write, subscribe. |
-| [`Opc.Classic.Samples.AeClient/`](Opc.Classic.Samples.AeClient/README.md) | AE client subscription + event acknowledgement. |
-| [`Opc.Classic.Samples.HdaClient/`](Opc.Classic.Samples.HdaClient/README.md) | HDA client reads, aggregates, annotations, updates. |
-| [`Opc.Classic.Samples.LoopbackDemo/`](Opc.Classic.Samples.LoopbackDemo/) | In-process DA client/server loopback through the managed channel stack. |
-| [`Opc.Classic.Samples.CttServer/`](Opc.Classic.Samples.CttServer/README.md) | Additional managed DA sample registered as `Opc.Classic.DaSample.1` (different CLSID from `samples-da`). |
-| [`Opc.Classic.Samples.AotCanary/`](Opc.Classic.Samples.AotCanary/) | NativeAOT publish verification used in CI. |
+| [Opc.Classic.Samples.DaServer/](Opc.Classic.Samples.DaServer/README.md) | Managed DA server with browse, reads, writes, and data-change publishing. |
+| [Opc.Classic.Samples.OpcSecurityServer/](Opc.Classic.Samples.OpcSecurityServer/README.md) | Managed DA reference server exposing OPC Security 1.00 `IOPCSecurityNT` and `IOPCSecurityPrivate`. |
+| [Opc.Classic.Samples.AeServer/](Opc.Classic.Samples.AeServer/README.md) | Managed AE server with areas, sources, conditions, and event metadata. |
+| [Opc.Classic.Samples.HdaServer/](Opc.Classic.Samples.HdaServer/README.md) | Managed HDA server with historical values, aggregates, and annotations. |
+| [Opc.Classic.Samples.DaClient/](Opc.Classic.Samples.DaClient/README.md) | DA client bootstrap: browse, read, write, subscribe. |
+| [Opc.Classic.Samples.AeClient/](Opc.Classic.Samples.AeClient/README.md) | AE client subscription + event acknowledgement. |
+| [Opc.Classic.Samples.HdaClient/](Opc.Classic.Samples.HdaClient/README.md) | HDA client reads, aggregates, annotations, updates. |
+| [Opc.Classic.Samples.LoopbackDemo/](Opc.Classic.Samples.LoopbackDemo/) | In-process DA client/server loopback through the managed channel stack. |
+| [Opc.Classic.Samples.CttServer/](Opc.Classic.Samples.CttServer/README.md) | Additional managed DA sample registered as `Opc.Classic.DaSample.1` (different CLSID from `samples-da`). |
+| [Opc.Classic.Samples.AotCanary/](Opc.Classic.Samples.AotCanary/) | NativeAOT publish verification used in CI. |
 
 ## Sample container deployment
 
-The DA/AE/HDA sample server/client pairs are designed to interop over DCOM-over-IP between containers. `OpcSecurityServer` uses the same server env-var contract at port 51304 and can be run from source today. See [`README.docker.md`](README.docker.md) for the multi-service Compose deployment and the NoOpAuthContext caveat for the demo path.
+The DA/AE/HDA sample server/client pairs are designed to interop over DCOM-over-IP between containers. `OpcSecurityServer` uses the same server env-var contract at port 51304 and can be run from source today. See [README.docker.md](README.docker.md) for the multi-service Compose deployment and the NoOpAuthContext caveat for the demo path.
 
 ## Environment variables
 

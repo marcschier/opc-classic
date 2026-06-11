@@ -37,7 +37,7 @@ flowchart LR
     end
 ```
 
-For an in-process variant of the same architecture (single container, no network), see [`Opc.Classic.Samples.LoopbackDemo`](Opc.Classic.Samples.LoopbackDemo/README.md).
+For an in-process variant of the same architecture (single container, no network), see [Opc.Classic.Samples.LoopbackDemo](Opc.Classic.Samples.LoopbackDemo/README.md).
 
 ## Images, ports, and environment
 

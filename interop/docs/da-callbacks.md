@@ -207,7 +207,7 @@ For Matrikon Simulation Server to reach the MCP host's listener:
 3. **DCOM ACLs on MCP host**: if MCP runs as a service identity, that
    identity needs to be granted COM Activation / Access permissions on
    the callback CLSID's AppID. See
-   [`opcenum-auth.md`](opcenum-auth.md) for the equivalent OPCEnum-side
+   [opcenum-auth.md](opcenum-auth.md) for the equivalent OPCEnum-side
    recipe and the
    grant-opcenum-acl helper.
 4. **Authentication compatibility**: Matrikon's outbound callback uses

@@ -2,7 +2,7 @@
 
 Native OPC Classic network packet capture + DCE/RPC PDU decode for
 the [Opc.Classic.Mcp](../Opc.Classic.Mcp) server. Inspired by
-[`netcap`](https://github.com/marcschier/netcap); built fresh here so
+[netcap](https://github.com/marcschier/netcap); built fresh here so
 the decoder reuses our existing
 `PduCodec` +
 `OrpcEnvelope`

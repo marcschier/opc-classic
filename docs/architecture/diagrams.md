@@ -53,7 +53,7 @@ flowchart TB
 - `IAsyncTransport` describes the pipelines-backed transport contract.
 - `TcpClientTransport` and `DcomCallChannelFactory` implement the direct TCP client path.
 - `OpcServerListener` and `RpcServerConnectionProcessor` implement the managed listener path.
-- See also [`docs\ARCHITECTURE.md`](../ARCHITECTURE.md#L35-L63) and [`docs\ADOPTION.md`](../ADOPTION.md#L37-L79).
+- See also [docs\ARCHITECTURE.md](../ARCHITECTURE.md#L35-L63) and [docs\ADOPTION.md](../ADOPTION.md#L37-L79).
 
 ## Call shim flow
 
@@ -113,7 +113,7 @@ sequenceDiagram
 - `ICallChannel` is the generated-shim call seam.
 - `DcomCallChannel` sends the DCE/RPC request and maps response or fault PDUs into `NdrCallResult`.
 - `TcpClientTransport` and `DcomCallChannelFactory` are the direct TCP transport entry points.
-- See also [`docs\ARCHITECTURE.md`](../ARCHITECTURE.md#L157-L168) and [`docs\ADOPTION.md`](../ADOPTION.md#L39-L79).
+- See also [docs\ARCHITECTURE.md](../ARCHITECTURE.md#L157-L168) and [docs\ADOPTION.md](../ADOPTION.md#L39-L79).
 
 ## Server dispatch flow
 
@@ -175,7 +175,7 @@ sequenceDiagram
 - `OpcServerDispatchGenerator` emits request decoding, implementation calls, and response encoding.
 - `IOpcDaServer` is the managed implementation contract the dispatcher calls.
 - `OpcAeServerDispatcher` and `OpcHdaServerDispatcher` follow the same adapter shape for AE and HDA.
-- See also [`docs\ARCHITECTURE.md`](../ARCHITECTURE.md#L170-L200).
+- See also [docs\ARCHITECTURE.md](../ARCHITECTURE.md#L170-L200).
 
 ## NTLM handshake
 
@@ -217,7 +217,7 @@ sequenceDiagram
 - `NtlmAuthentication` adapts NTLM to `IAuthContext`, including `BuildInitialToken`, `ProcessChallengeToken`, `SignAndSeal`, and `VerifyAndUnseal`.
 - `Type1Message`, `Type2Message`, and `Type3Message` model the three NTLMSSP messages.
 - `ChannelBindingsFactory` and `ChannelBindingsHash` implement CBT construction and hashing.
-- Protocol references: [MS-NLMP](https://learn.microsoft.com/openspecs/windows_protocols/ms-nlmp/) and [`docs\cookbook\05-dcom-hardening-pkt-integrity-explainer.md`](../cookbook/05-dcom-hardening-pkt-integrity-explainer.md#L49-L53).
+- Protocol references: [MS-NLMP](https://learn.microsoft.com/openspecs/windows_protocols/ms-nlmp/) and [docs\cookbook\05-dcom-hardening-pkt-integrity-explainer.md](../cookbook/05-dcom-hardening-pkt-integrity-explainer.md#L49-L53).
 
 ## Kerberos handshake
 
@@ -261,7 +261,7 @@ sequenceDiagram
 - `IKerberosConnectionContext` defines the AP-REQ and AP-REP abstraction.
 - `SpnegoTokenBuilder` wraps Kerberos AP-REQ tokens in SPNEGO.
 - `KerberosSession` implements RFC 4121 wrap and unwrap tokens.
-- Protocol references: [MS-KILE](https://learn.microsoft.com/openspecs/windows_protocols/ms-kile/) and [`docs\cookbook\03-kerberos-in-active-directory.md`](../cookbook/03-kerberos-in-active-directory.md#L36-L52).
+- Protocol references: [MS-KILE](https://learn.microsoft.com/openspecs/windows_protocols/ms-kile/) and [docs\cookbook\03-kerberos-in-active-directory.md](../cookbook/03-kerberos-in-active-directory.md#L36-L52).
 
 ## SPNEGO negotiation
 
@@ -355,7 +355,7 @@ sequenceDiagram
 - `IOPCInterfaces` defines `IOPCEnumGUID`, `IOPCServerList`, and `IOPCServerList2` projections.
 - `RemoteRegistryEnum` enumerates registry entries, and `RemoteRegistryEnum` reads category and CLSID metadata.
 - `WinRegClient`, `RemoteRegistryEnum`, and `NcacnNpTransport` show the `ncacn_np` / `\\PIPE\\winreg` path.
-- See also [`docs\ARCHITECTURE.md`](../ARCHITECTURE.md#L216-L236) and [`docs\ADOPTION.md`](../ADOPTION.md#L242-L280).
+- See also [docs\ARCHITECTURE.md](../ARCHITECTURE.md#L216-L236) and [docs\ADOPTION.md](../ADOPTION.md#L242-L280).
 
 ## Source generator pipeline
 
@@ -401,7 +401,7 @@ flowchart LR
 - `OpcProxyGenerator` is the generator codec table.
 - `OpcProxyGenerator` emits generated `InvokeAsync` bodies.
 - `OpcServerDispatchGenerator` emits generated dispatcher classes, and `OpcServerDispatchGenerator` emits their opnum switches.
-- See also [`docs\ARCHITECTURE.md`](../ARCHITECTURE.md#L135-L168).
+- See also [docs\ARCHITECTURE.md](../ARCHITECTURE.md#L135-L168).
 
 ## Subscription data flow
 
@@ -498,4 +498,4 @@ flowchart TD
 - `Opc.Classic.Generators` explains why generators are build-time only and why their output must be AOT-safe.
 - `Opc.Classic.Dcom` defines the pure-managed DCOM assembly identity, and `DcomCallChannel` shows channel-level packet protection.
 - AotCanary sample and `Program` show the AOT smoke sample.
-- See also [`docs\ARCHITECTURE.md`](../ARCHITECTURE.md#L281-L292) and [`docs\ADOPTION.md`](../ADOPTION.md#L302-L312).
+- See also [docs\ARCHITECTURE.md](../ARCHITECTURE.md#L281-L292) and [docs\ADOPTION.md](../ADOPTION.md#L302-L312).

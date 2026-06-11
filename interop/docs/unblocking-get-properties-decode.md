@@ -53,7 +53,7 @@ Shipped scaffolding that makes this cheap:
       ```
 
       (Idempotent; rolls back via `-Unregister`. See
-      [`opcenum-auth.md`](opcenum-auth.md) for details.)
+      [opcenum-auth.md](opcenum-auth.md) for details.)
 - [ ] Python 3.10+ with `requests` package: `pip install requests`.
 - [ ] `dotnet` 10.0.100+ available in PATH.
 
