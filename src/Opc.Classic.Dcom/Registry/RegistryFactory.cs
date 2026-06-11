@@ -2,7 +2,7 @@
 
 using Opc.Classic.Dcom.Common;
 using Opc.Classic.Dcom.Registry.Smb;
-using SharpCifs.Util.Sharpen;
+using Opc.Classic.Dcom.Common.Ntlm;
 using System.Threading;
 
 namespace Opc.Classic.Dcom.Registry;

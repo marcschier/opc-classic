@@ -3,7 +3,7 @@
 using System;
 using System.Globalization;
 
-namespace SharpCifs.Dcerpc;
+namespace Opc.Classic.Dcom.Common.Ntlm;
 
 public sealed class Uuid
 {

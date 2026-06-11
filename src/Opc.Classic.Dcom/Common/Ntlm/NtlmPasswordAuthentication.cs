@@ -1,9 +1,9 @@
 ﻿// SPDX-License-Identifier: MIT
 
-namespace SharpCifs.Smb;
+namespace Opc.Classic.Dcom.Common.Ntlm;
 
 /// <summary>
-/// Stores NTLM credentials for legacy SharpCifs-compatible call sites.
+/// Stores NTLM credentials for legacy Opc.Classic.Dcom.Common.Ntlm-compatible call sites.
 /// </summary>
 /// <remarks>
 /// The public API preserves <see cref="string" /> credentials for source compatibility. Plaintext

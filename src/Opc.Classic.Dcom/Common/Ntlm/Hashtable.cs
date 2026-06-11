@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace SharpCifs.Util.Sharpen;
+namespace Opc.Classic.Dcom.Common.Ntlm;
 
 public sealed class Hashtable : IEnumerable<KeyValuePair<object, object>>
 {

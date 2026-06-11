@@ -2,7 +2,7 @@
 
 using System;
 
-namespace SharpCifs.Util.Sharpen;
+namespace Opc.Classic.Dcom.Common.Ntlm;
 
 public static class Arrays
 {

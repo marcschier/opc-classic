@@ -2,7 +2,7 @@
 
 using System;
 
-namespace SharpCifs.Util.Sharpen;
+namespace Opc.Classic.Dcom.Common.Ntlm;
 
 public sealed class MissingResourceException : Exception
 {

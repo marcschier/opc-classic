@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Opc.Classic;
-using SharpCifs.Util.Sharpen;
+using Opc.Classic.Dcom.Common.Ntlm;
 using Opc.Classic.Dcom.Common;
 using Opc.Classic.Dcom.Registry;
 

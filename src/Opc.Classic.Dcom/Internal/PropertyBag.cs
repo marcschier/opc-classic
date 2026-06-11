@@ -9,7 +9,7 @@ using System.Text;
 namespace Opc.Classic.Dcom.Internal;
 
 /// <summary>
-/// Managed replacement for SharpCifs.Util.Sharpen.Properties.
+/// Managed replacement for Opc.Classic.Dcom.Common.Ntlm.Properties.
 /// Drop-in API-compatible at the Opc.Classic.Dcom call sites that use
 /// GetProperty, SetProperty, Load, Store, and the copy constructor for defaults.
 /// </summary>

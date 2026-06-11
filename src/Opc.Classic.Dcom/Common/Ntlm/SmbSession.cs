@@ -2,11 +2,11 @@
 
 using System;
 
-namespace SharpCifs.Smb;
+namespace Opc.Classic.Dcom.Common.Ntlm;
 
 public static class SmbSession
 {
-    public static void Logon(SharpCifs.UniAddress address, NtlmPasswordAuthentication authentication)
+    public static void Logon(Opc.Classic.Dcom.Common.Ntlm.UniAddress address, NtlmPasswordAuthentication authentication)
     {
         ArgumentNullException.ThrowIfNull(address);
         ArgumentNullException.ThrowIfNull(authentication);

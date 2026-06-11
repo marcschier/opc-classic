@@ -3,7 +3,7 @@
 using System;
 using System.Threading;
 
-namespace SharpCifs.Util.Sharpen;
+namespace Opc.Classic.Dcom.Common.Ntlm;
 
 public class Thread
 {

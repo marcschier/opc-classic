@@ -8,8 +8,8 @@ using Opc.Classic.Dcom.Kerberos;
 using Opc.Classic.Security;
 using System;
 using System.Buffers.Binary;
-using SharpCifs;
-using SharpCifs.Util.Sharpen;
+using Opc.Classic.Dcom.Common.Ntlm;
+
 using System.Globalization;
 using System.IO;
 using System.Net;
@@ -811,7 +811,7 @@ public class NtlmAuthentication
         (NtlmFlags.NtlmsspNegotiateKeyExch | NtlmFlags.NtlmsspNegotiateVersion);
 
     private static readonly byte[] kDefaultServerChallenge = { 1, 2, 3, 4, 5, 6, 7, 8 };
-    private static readonly bool kUnicodeSupported = Config.GetBoolean("SharpCifs.smb.client.useUnicode", true);
+    private static readonly bool kUnicodeSupported = Config.GetBoolean("Opc.Classic.Dcom.Common.Ntlm.useUnicode", true);
     private static readonly NtlmFlags kBASICFLAGS =
         NtlmFlags.NtlmsspRequestTarget | NtlmFlags.NtlmsspNegotiateNtlm |
         NtlmFlags.NtlmsspNegotiateOem | NtlmFlags.NtlmsspNegotiateAlwaysSign |

@@ -27,7 +27,7 @@
 
     <ItemGroup>
         <!--
-          The TRANSITIONAL package set is cleared: SharpCifs.Std is replaced by
+          The TRANSITIONAL package set is cleared: the jcifs-port shim is replaced by
           self-contained NTLM/NDR compatibility code; BouncyCastle is replaced
           with hand-rolled MD4 + RC4 in Crypto/ plus BCL MD5/HMAC-MD5/DES via the
           transitional Crypto/BcCompat.cs shim; Serilog is removed.

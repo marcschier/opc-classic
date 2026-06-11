@@ -26,7 +26,7 @@ public class FirstContact_Stub : FirstContact
         // ComArray array = new ComArray(new short[]{0});
         Interop.UseAutoRegistration = true;
 
-        // Config.setProperty("SharpCifs.smb.client.domain","ITLINFOSYS");
+        // Config.setProperty("Opc.Classic.Dcom.Common.Ntlm.domain","ITLINFOSYS");
         _session = Session.CreateSession("FDGNT", "testuser", "QweQwe007");
         // session = Session.createSession("10.74.85.56","itl-hw-38602a\\testuser","Infosys@123");
         // session = Session.createSession("federation","administrator","enterprise");

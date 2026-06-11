@@ -2,7 +2,7 @@
 
 using Opc.Classic.Dcom.Common;
 using Opc.Classic.Dcom.Registry;
-using SharpCifs.Util.Sharpen;
+using Opc.Classic.Dcom.Common.Ntlm;
 using System;
 
 namespace Opc.Classic.Dcom.Core;

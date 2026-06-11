@@ -6,7 +6,7 @@ using System.Globalization;
 using System.Linq;
 using System.Net;
 
-namespace SharpCifs.Util.Sharpen;
+namespace Opc.Classic.Dcom.Common.Ntlm;
 
 public static class SharpenCompatibilityExtensions
 {

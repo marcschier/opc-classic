@@ -9,7 +9,7 @@
 
 using Opc.Classic.Dcom.Internal;
 using Opc.Classic.Dcom.Internal.Ntlm;
-using SharpCifs.Util.Sharpen;
+using Opc.Classic.Dcom.Common.Ntlm;
 using System;
 using System.IO;
 using System.Threading;

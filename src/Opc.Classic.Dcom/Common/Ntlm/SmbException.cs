@@ -2,7 +2,7 @@
 
 using System.IO;
 
-namespace SharpCifs.Smb;
+namespace Opc.Classic.Dcom.Common.Ntlm;
 
 public class SmbException : IOException
 {

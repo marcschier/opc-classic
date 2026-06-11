@@ -13,8 +13,8 @@ using Opc.Classic.Dcom.Rpc.Core;
 using Opc.Classic.Dcom.Smb;
 using Opc.Classic.Dcom.Smb.Rpc;
 using Opc.Classic.Dcom.Transport;
-using SharpCifs;
-using SharpCifs.Util.Sharpen;
+using Opc.Classic.Dcom.Common.Ntlm;
+
 
 namespace Opc.Classic.Dcom.Rpc.Ncacn_Np;
 
@@ -183,9 +183,9 @@ public sealed class RpcTransport : ITransport, IDisposable
         CopyNtlmProperty(ntlmProperties, "rpc.ntlm.ntlmv2", "true");
         CopyNtlmProperty(ntlmProperties, "rpc.ntlm.allowV1", "false");
         ntlmProperties.SetProperty("rpc.ntlm.sso", "false");
-        ntlmProperties.SetProperty("rpc.ntlm.domain", ReadProperty("rpc.ncacn_np.domain", "SharpCifs.smb.client.domain"));
-        ntlmProperties.SetProperty(Security.USERNAME, ReadProperty("rpc.ncacn_np.username", "SharpCifs.smb.client.username"));
-        ntlmProperties.SetProperty(Security.PASSWORD, Uri.UnescapeDataString(ReadProperty("rpc.ncacn_np.password", "SharpCifs.smb.client.password") ?? string.Empty));
+        ntlmProperties.SetProperty("rpc.ntlm.domain", ReadProperty("rpc.ncacn_np.domain", "Opc.Classic.Dcom.Common.Ntlm.domain"));
+        ntlmProperties.SetProperty(Security.USERNAME, ReadProperty("rpc.ncacn_np.username", "Opc.Classic.Dcom.Common.Ntlm.username"));
+        ntlmProperties.SetProperty(Security.PASSWORD, Uri.UnescapeDataString(ReadProperty("rpc.ncacn_np.password", "Opc.Classic.Dcom.Common.Ntlm.password") ?? string.Empty));
         return new NtlmAuthentication(ntlmProperties);
     }
 
@@ -195,14 +195,14 @@ public sealed class RpcTransport : ITransport, IDisposable
         target.SetProperty(propertyName, value ?? defaultValue);
     }
 
-    private string? ReadProperty(string propertyName, string sharpCifsPropertyName)
+    private string? ReadProperty(string propertyName, string jcifsPortPropertyName)
     {
         if (Properties.GetProperty(propertyName) is string value)
         {
             return value;
         }
 
-        return Config.GetProperty(sharpCifsPropertyName);
+        return Config.GetProperty(jcifsPortPropertyName);
     }
 
     private int MaxSmb2MessageSize() => RpcTransportQuotas.GetInt32(

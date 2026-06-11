@@ -2,7 +2,7 @@
 
 using System.Net;
 
-namespace SharpCifs.Netbios;
+namespace Opc.Classic.Dcom.Common.Ntlm;
 
 public sealed class NbtAddress
 {

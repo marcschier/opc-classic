@@ -3,7 +3,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace SharpCifs;
+namespace Opc.Classic.Dcom.Common.Ntlm;
 
 public static class Config
 {

@@ -1,7 +1,7 @@
 ﻿// SPDX-License-Identifier: MIT
 
 using Opc.Classic.Dcom.Internal;
-using SharpCifs.Util.Sharpen;
+using Opc.Classic.Dcom.Common.Ntlm;
 using Opc.Classic.Dcom.Core;
 using Opc.Classic.Dcom.Resources;
 using System;

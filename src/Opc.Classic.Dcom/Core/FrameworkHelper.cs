@@ -3,7 +3,7 @@
 using Opc.Classic.Dcom.Common;
 using Opc.Classic.Dcom.Internal;
 using Opc.Classic.Dcom.Internal.LegacyNdr;
-using SharpCifs.Util.Sharpen;
+using Opc.Classic.Dcom.Common.Ntlm;
 using System;
 using System.Collections.Generic;
 

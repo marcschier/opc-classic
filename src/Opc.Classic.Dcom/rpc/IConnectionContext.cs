@@ -2,7 +2,7 @@
 
 using Opc.Classic.Dcom.Internal;
 using Opc.Classic.Dcom.Rpc.Core;
-using SharpCifs.Util.Sharpen;
+using Opc.Classic.Dcom.Common.Ntlm;
 using System.IO;
 
 namespace Opc.Classic.Dcom.Rpc;

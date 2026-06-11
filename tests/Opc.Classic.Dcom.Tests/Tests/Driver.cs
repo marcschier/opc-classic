@@ -4,7 +4,7 @@ namespace org.jinterop.dcom.test
 
     using System;
     using System.Collections.Generic;
-    using Encdec = SharpCifs.util.Encdec;
+    using Encdec = Opc.Classic.Dcom.Common.Ntlm.Encdec;
     using IJIDispatch = impls.automation.IJIDispatch;
     using JIArray = core.JIArray;
     using JIFlags = core.JIFlags;

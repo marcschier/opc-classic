@@ -130,7 +130,7 @@ public static class Responses
     /// <returns> The NTLM2 Session Response.  This is placed in the NTLM
     /// response field of the Type 3 message; the LM response field contains
     /// the client nonce, null-padded to 24 bytes. </returns>
-    /// <exception cref="SharpCifs.Util.Sharpen.NoSuchAlgorithmException"> </exception>
+    /// <exception cref="Opc.Classic.Dcom.Common.Ntlm.NoSuchAlgorithmException"> </exception>
     /// <exception cref="InvalidOperationException"> </exception>
     /// <exception cref="InvalidKeyException">  </exception>
     public static byte[] GetNTLM2SessionResponse(string password,
@@ -274,7 +274,7 @@ public static class Responses
     /// </param>
     /// <returns> The response (either LM or NTLM, depending on the provided
     /// hash). </returns>
-    /// <exception cref="SharpCifs.Util.Sharpen.NoSuchAlgorithmException"> </exception>
+    /// <exception cref="Opc.Classic.Dcom.Common.Ntlm.NoSuchAlgorithmException"> </exception>
     /// <exception cref="InvalidKeyException"> </exception>
     /// <exception cref="InvalidOperationException">  </exception>
     private static byte[] LmResponse(byte[] hash, byte[] challenge)
@@ -399,7 +399,7 @@ public static class Responses
     /// <param name="data"> The data for which the hash will be calculated. </param>
     /// <param name="key"> The hashing key.
     /// </param>
-    /// <exception cref="SharpCifs.Util.Sharpen.NoSuchAlgorithmException"> </exception>
+    /// <exception cref="Opc.Classic.Dcom.Common.Ntlm.NoSuchAlgorithmException"> </exception>
     /// <returns> The HMAC-MD5 hash of the given data. </returns>
 #pragma warning disable CA5351 // NTLM requires HMAC-MD5 per [MS-NLMP].
     internal static byte[] HmacMD5(byte[] data, byte[] key) => HmacMD5(data.AsSpan(), key.AsSpan());

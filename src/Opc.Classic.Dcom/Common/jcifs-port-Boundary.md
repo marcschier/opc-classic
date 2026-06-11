@@ -1,6 +1,6 @@
 <!-- SPDX-License-Identifier: MIT -->
 
-# SharpCifs.Std compatibility boundary
+# Legacy jcifs-port compatibility boundary
 
 This checklist covers the `Common` compatibility wrappers only. All tracked wrappers are self-contained and the transitional package reference has been removed.
 
@@ -16,6 +16,6 @@ This checklist covers the `Common` compatibility wrappers only. All tracked wrap
 | Ntlm.Type3Message | ✅ self-contained |
 | Ntlm.NtlmMessage abstract base | ✅ self-contained |
 
-**Total deferred wrapper work**: complete. The Common compatibility boundary is clear and `SharpCifs.Std` is not required by the NTLMSSP message wrappers.
+**Total deferred wrapper work**: complete. The Common compatibility boundary is clear and the external jcifs-port package is not required by the NTLMSSP message wrappers.
 
-Current SMB work in `Opc.Classic.Dcom` is SharpCifs-free: it provides its own SMB2 packet/state-machine types plus `Smb2RpcTransportAdapter` for the future `ncacn_np` handoff. Some legacy DCOM code still references `SharpCifs.*` namespaces, but those names resolve to in-tree compatibility shims in this repository rather than the removed package.
+Current SMB work in `Opc.Classic.Dcom` is package-free: it provides its own SMB2 packet/state-machine types plus `Smb2RpcTransportAdapter` for the future `ncacn_np` handoff. Legacy DCOM code still references types under the `Opc.Classic.Dcom.Common.Ntlm` namespace, but those resolve to the in-tree compatibility shims in this repository (originally adapted from the jcifs-port codebase) rather than any external package.

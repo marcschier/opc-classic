@@ -4,7 +4,7 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 
-namespace SharpCifs.Smb;
+namespace Opc.Classic.Dcom.Common.Ntlm;
 
 public sealed class SmbNamedPipe : IDisposable
 {

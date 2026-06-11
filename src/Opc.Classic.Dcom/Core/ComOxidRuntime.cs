@@ -3,7 +3,7 @@
 using Opc.Classic.Dcom.Common;
 using Opc.Classic.Dcom.Rpc;
 using Opc.Classic.Dcom.Internal;
-using SharpCifs.Util.Sharpen;
+using Opc.Classic.Dcom.Common.Ntlm;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -721,7 +721,7 @@ internal sealed class ComOxidRuntime : IDisposable
     /// <summary>
     /// Oxid resolver thread
     /// </summary>
-    private sealed class OxidResolverThread : SharpCifs.Util.Sharpen.Thread
+    private sealed class OxidResolverThread : Opc.Classic.Dcom.Common.Ntlm.Thread
     {
 
         /// <summary>

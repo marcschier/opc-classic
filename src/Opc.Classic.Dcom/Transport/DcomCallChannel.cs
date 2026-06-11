@@ -16,7 +16,7 @@ using Opc.Classic.Dcom.Channels;
 using Opc.Classic.Dcom.Internal.LegacyNdr;
 using Opc.Classic.Dcom.Orpc;
 using Opc.Classic.Ndr;
-using SharpCifs.Util.Sharpen;
+using Opc.Classic.Dcom.Common.Ntlm;
 using Opc.Classic.Dcom.Rpc;
 using Opc.Classic.Dcom.Rpc.Core;
 using Opc.Classic.Dcom.Rpc.pdu;

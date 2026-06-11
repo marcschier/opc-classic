@@ -3,7 +3,7 @@
 using Opc.Classic.Dcom.Common;
 using Opc.Classic.Dcom.Core;
 using Opc.Classic.Dcom;
-using SharpCifs.Util.Sharpen;
+using Opc.Classic.Dcom.Common.Ntlm;
 using System;
 
 namespace Opc.Classic.Dcom.Test;

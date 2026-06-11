@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using Opc.Classic.Dcom.Rpc.pdu;
 using Opc.Classic.Dcom.Rpc.Auth.ntlm;
 using Opc.Classic.Dcom.Rpc.Core;
-using SharpCifs.Util.Sharpen;
+using Opc.Classic.Dcom.Common.Ntlm;
 using Opc.Classic.Dcom.Rpc;
 
 namespace Opc.Classic.Dcom.Transport;

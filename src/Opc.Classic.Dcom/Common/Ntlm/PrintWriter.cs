@@ -3,7 +3,7 @@
 using System;
 using System.IO;
 
-namespace SharpCifs.Util.Sharpen;
+namespace Opc.Classic.Dcom.Common.Ntlm;
 
 public sealed class PrintWriter : IDisposable
 {

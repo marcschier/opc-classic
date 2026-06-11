@@ -1,8 +1,8 @@
 ﻿// SPDX-License-Identifier: MIT
 
-using SharpCifs;
-using SharpCifs.Smb;
-using SharpCifs.Util.Sharpen;
+using Opc.Classic.Dcom.Common.Ntlm;
+
+
 using System;
 using System.IO;
 
@@ -27,11 +27,11 @@ public class Test
             //     NtlmPasswordAuthentication mycreds = new NtlmPasswordAuthentication( "itlinfosys", "testuser_testuser", "Dilbert007" );
             //
             //     SmbSession.logon( mydomaincontoller, mycreds );
-            //     Config.setProperty("SharpCifs.smb.client.laddr","10.24.10.65");
-            //     Config.setProperty("SharpCifs.smb.client.domain","itl-hw-lt15522.ad.infosys.com");
-            //         System.setProperty("SharpCifs.smb.client.laddr","10.24.10.65");
-            //         System.setProperty("SharpCifs.smb.client.domain","itl-hw-lt15522.ad.infosys.com");
-            //         System.setProperty("SharpCifs.netbios.hostname","itl-hw-lt15522.ad.infosys.com");
+            //     Config.setProperty("Opc.Classic.Dcom.Common.Ntlm.laddr","10.24.10.65");
+            //     Config.setProperty("Opc.Classic.Dcom.Common.Ntlm.domain","itl-hw-lt15522.ad.infosys.com");
+            //         System.setProperty("Opc.Classic.Dcom.Common.Ntlm.laddr","10.24.10.65");
+            //         System.setProperty("Opc.Classic.Dcom.Common.Ntlm.domain","itl-hw-lt15522.ad.infosys.com");
+            //         System.setProperty("Opc.Classic.Dcom.Common.Ntlm.hostname","itl-hw-lt15522.ad.infosys.com");
 
             // NtlmChallenge challenge = SmbSession.getChallengeForDomain();
 

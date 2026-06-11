@@ -1,6 +1,6 @@
 ﻿// SPDX-License-Identifier: MIT
 
-namespace SharpCifs;
+namespace Opc.Classic.Dcom.Common.Ntlm;
 
 public sealed class UniAddress
 {

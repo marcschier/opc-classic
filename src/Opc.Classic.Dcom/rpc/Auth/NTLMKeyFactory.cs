@@ -2,7 +2,7 @@
 
 using Opc.Classic.Dcom.Crypto;
 using Opc.Classic.Dcom.Internal.Ntlm;
-using SharpCifs.Util.Sharpen;
+using Opc.Classic.Dcom.Common.Ntlm;
 using System;
 using System.Linq;
 using System.Security.Cryptography;
@@ -54,7 +54,7 @@ internal sealed class NTLMKeyFactory
     /// </param>
     /// <exception cref="SecurityUtilityException"> </exception>
     /// <exception cref="UnsupportedEncodingException"> </exception>
-    /// <exception cref="SharpCifs.Util.Sharpen.NoSuchAlgorithmException"> </exception>
+    /// <exception cref="Opc.Classic.Dcom.Common.Ntlm.NoSuchAlgorithmException"> </exception>
     public byte[] GetNTLM2SessionResponseUserSessionKey(string password, byte[] servernonce)
     {
         var userSessionKey = GetNTLMUserSessionKey(password);
@@ -119,7 +119,7 @@ internal sealed class NTLMKeyFactory
     /// <exception cref="SecurityUtilityException"> </exception>
     private byte[] GetNTLMUserSessionKey(string password)
     {
-        // The old SharpCifs credential helper supported only
+        // The old Opc.Classic.Dcom.Common.Ntlm credential helper supported only
         // the NTLMUserSessionKey and the LMv2UserSessionKey...we need more :(
         //         byte key[] = new byte[16];
         var ntlmHash = Responses.NtlmHash(password);
@@ -206,7 +206,7 @@ internal sealed class NTLMKeyFactory
     /// <param name="signingKey"></param>
     /// <param name="data"></param>
     /// <param name="lengthOfBuffer"></param>
-    /// <exception cref="SharpCifs.Util.Sharpen.NoSuchAlgorithmException"></exception>
+    /// <exception cref="Opc.Classic.Dcom.Common.Ntlm.NoSuchAlgorithmException"></exception>
     /// <exception cref="InvalidOperationException"></exception>
     /// <returns></returns>
     public byte[] SigningPt1(int sequenceNumber, byte[] signingKey,

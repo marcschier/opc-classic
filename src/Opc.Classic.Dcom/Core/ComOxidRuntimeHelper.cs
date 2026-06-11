@@ -6,8 +6,8 @@ using Opc.Classic.Dcom.Rpc;
 using Opc.Classic.Dcom.Rpc.Core;
 using Opc.Classic.Dcom.Internal;
 using Opc.Classic.Dcom.Internal.LegacyNdr;
-using SharpCifs.Smb;
-using SharpCifs.Util.Sharpen;
+using Opc.Classic.Dcom.Common.Ntlm;
+
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -91,7 +91,7 @@ internal sealed class ComOxidRuntimeHelper : Stub
     /// <summary>
     /// Oxid resolver thread
     /// </summary>
-    private sealed class OxidResolverThread : SharpCifs.Util.Sharpen.Thread
+    private sealed class OxidResolverThread : Opc.Classic.Dcom.Common.Ntlm.Thread
     {
 #pragma warning disable RECS0154 // Parameter is never used
         /// <summary>
@@ -140,7 +140,7 @@ internal sealed class ComOxidRuntimeHelper : Stub
     /// <summary>
     /// Listener
     /// </summary>
-    private sealed class RemUnknownListenerThread : SharpCifs.Util.Sharpen.Thread
+    private sealed class RemUnknownListenerThread : Opc.Classic.Dcom.Common.Ntlm.Thread
     {
 
         /// <summary>
@@ -222,7 +222,7 @@ internal sealed class ComOxidRuntimeHelper : Stub
         /// <summary>
         /// Inner thread
         /// </summary>
-        private sealed class RemUnknownThread : SharpCifs.Util.Sharpen.Thread
+        private sealed class RemUnknownThread : Opc.Classic.Dcom.Common.Ntlm.Thread
         {
 
             /// <summary>

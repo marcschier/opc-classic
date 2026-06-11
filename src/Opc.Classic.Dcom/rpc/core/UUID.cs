@@ -29,7 +29,7 @@ public class UUID : NdrOp
     /// Create from string
     /// </summary>
     /// <param name="str"></param>
-    public UUID(string str) => _internal = new SharpCifs.Dcerpc.Uuid(str);
+    public UUID(string str) => _internal = new Opc.Classic.Dcom.Common.Ntlm.Uuid(str);
 #pragma warning restore RECS0154 // Parameter is never used
 
     /// <inheritdoc/>
@@ -64,7 +64,7 @@ public class UUID : NdrOp
     /// Parse uuid
     /// </summary>
     /// <param name="uuid"></param>
-    public void Parse(string uuid) => _internal = new SharpCifs.Dcerpc.Uuid(uuid);
+    public void Parse(string uuid) => _internal = new Opc.Classic.Dcom.Common.Ntlm.Uuid(uuid);
 
-    private SharpCifs.Dcerpc.Uuid _internal;
+    private Opc.Classic.Dcom.Common.Ntlm.Uuid _internal;
 }
