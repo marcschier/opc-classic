@@ -96,9 +96,7 @@ public sealed class OpcHdaServerDispatcherTests
     private sealed class StubHdaServer : IOpcHdaServer
     {
         public int[] ValidateResults { get; init; } = [];
-
         public string[] LastItemIds { get; private set; } = [];
-
         public int GetStatusCallCount { get; private set; }
 
         public Task<OpcServerStatus> GetStatusAsync(CancellationToken cancellationToken = default)

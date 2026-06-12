@@ -514,19 +514,12 @@ public sealed class DaFullLifecycleTests
         }
 
         public string Name { get; private set; }
-
         public int ServerHandle { get; }
-
         public int ClientHandle { get; private set; }
-
         public bool Active { get; private set; }
-
         public int UpdateRate { get; private set; }
-
         public int TimeBias { get; private set; }
-
         public float PercentDeadband { get; private set; }
-
         public int LocaleId { get; private set; }
 
         public void SetIpid(Guid ipid) => _ipid = ipid;
@@ -999,17 +992,11 @@ public sealed class DaFullLifecycleTests
         }
 
         public int ServerHandle { get; }
-
         public string ItemId { get; }
-
         public int ClientHandle { get; set; }
-
         public bool Active { get; set; }
-
         public VarType CanonicalDataType { get; }
-
         public OpcVariant Value { get; set; }
-
         public DateTimeOffset Timestamp { get; set; }
 
         public OpcItemState ToState() => new(ClientHandle, Timestamp, OpcQuality.Good, Value);

@@ -844,9 +844,7 @@ internal static class OpcClassicDcomConnectionFactory
         }
 
         public EndPoint RemoteEndpoint { get; }
-
         public PipeReader Input { get; }
-
         public PipeWriter Output { get; }
 
         public async ValueTask FlushAsync(CancellationToken cancellationToken = default) =>

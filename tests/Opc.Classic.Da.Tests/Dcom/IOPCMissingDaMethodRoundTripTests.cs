@@ -664,7 +664,6 @@ public sealed class IOPCMissingDaMethodRoundTripTests
     }
 
     private static int[] ReadInt32Array(ref NdrReader reader) => reader.ReadConformantInt32Array();
-
     private static float[] ReadSingleArray(ref NdrReader reader) => reader.ReadConformantSingleArray();
 
     private static string?[] ReadStringArray(ref NdrReader reader)
@@ -776,10 +775,7 @@ public sealed class IOPCMissingDaMethodRoundTripTests
     }
 
     private delegate ReadOnlyMemory<byte> NdrHandler(ref NdrReader reader);
-
     private delegate ReadOnlyMemory<byte> NdrOpnumHandler(int opnum, ref NdrReader reader);
-
     private delegate T NdrReadFunc<T>(ref NdrReader reader);
-
     private delegate void NdrWriteFunc<T>(ref NdrWriter writer, T value);
 }

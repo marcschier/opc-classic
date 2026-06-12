@@ -157,6 +157,5 @@ public sealed class IOPCSyncIOClientProxy : IOPCSyncIO
     }
 
     private delegate T NdrReadFunc<T>(ref NdrReader reader);
-
     private delegate void NdrWriteAction(ref NdrWriter writer);
 }

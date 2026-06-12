@@ -17,7 +17,6 @@ public sealed class Type1Message : NtlmMessage
     }
 
     public Type1Message(byte[] raw) => Parse(raw, DefaultMaxMessageSize);
-
     internal Type1Message(byte[] raw, int maxMessageSize) => Parse(raw, maxMessageSize);
 
     public Type1Message(NtlmFlags flags, string suppliedDomain, string suppliedWorkstation)
@@ -33,9 +32,7 @@ public sealed class Type1Message : NtlmMessage
     }
 
     public override int MessageType => 1;
-
     public string? SuppliedDomain { get; set; }
-
     public string? SuppliedWorkstation { get; set; }
 
     public static string GetDefaultDomain() => string.Empty;
@@ -44,13 +41,9 @@ public sealed class Type1Message : NtlmMessage
         NtlmFlags.NtlmsspNegotiateUnicode | NtlmFlags.NtlmsspNegotiateNtlm;
 
     public static string GetDefaultWorkstation() => Environment.MachineName;
-
     public string? GetSuppliedDomain() => SuppliedDomain;
-
     public string? GetSuppliedWorkstation() => SuppliedWorkstation;
-
     public void SetSuppliedDomain(string suppliedDomain) => SuppliedDomain = suppliedDomain;
-
     public void SetSuppliedWorkstation(string suppliedWorkstation) => SuppliedWorkstation = suppliedWorkstation;
 
     public override byte[] ToByteArray()

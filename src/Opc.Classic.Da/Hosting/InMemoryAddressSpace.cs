@@ -100,7 +100,6 @@ public sealed class InMemoryAddressSpace : IOpcAddressSpace
     private sealed class BranchNode
     {
         public List<string> SubBranches { get; } = new();
-
         public List<string> Items { get; } = new();
     }
 }

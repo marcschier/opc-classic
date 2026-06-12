@@ -306,11 +306,8 @@ public sealed class IOPCAeDeferredMethodRoundTripTests
     private sealed class RoundTripEventServer : IOPCEventServer
     {
         public int LastEventType { get; private set; }
-
         public int LastAttributeCategory { get; private set; }
-
         public string? LastTranslateSource { get; private set; }
-
         public Guid[] TranslateClassIds { get; set; } = [Guid.Empty];
 
         public Task<OpcServerStatus> GetStatusAsync(CancellationToken cancellationToken = default) =>
@@ -417,11 +414,8 @@ public sealed class IOPCAeDeferredMethodRoundTripTests
                 errors: []));
 
         public Task EnableConditionByAreaAsync(string[] areas, CancellationToken cancellationToken = default) => Task.CompletedTask;
-
         public Task EnableConditionBySourceAsync(string[] sources, CancellationToken cancellationToken = default) => Task.CompletedTask;
-
         public Task DisableConditionByAreaAsync(string[] areas, CancellationToken cancellationToken = default) => Task.CompletedTask;
-
         public Task DisableConditionBySourceAsync(string[] sources, CancellationToken cancellationToken = default) => Task.CompletedTask;
 
         public Task<int[]> AckConditionAsync(
@@ -448,7 +442,6 @@ public sealed class IOPCAeDeferredMethodRoundTripTests
     private sealed class RoundTripEventServer2 : IOPCEventServer2
     {
         public string[] LastAreas { get; private set; } = [];
-
         public string[] LastSources { get; private set; } = [];
 
         public Task<int[]> EnableConditionByArea2Async(string[] areas, CancellationToken cancellationToken = default) =>
@@ -495,7 +488,6 @@ public sealed class IOPCAeDeferredMethodRoundTripTests
     private sealed class RoundTripSubscriptionMgt : IOPCEventSubscriptionMgt
     {
         public bool Active { get; private set; } = true;
-
         public int ClientSubscription { get; private set; } = 0xCAFE;
 
         public Task SetFilterAsync(
@@ -533,7 +525,6 @@ public sealed class IOPCAeDeferredMethodRoundTripTests
             Task.FromResult(new[] { 10, 11 });
 
         public Task RefreshAsync(int connection, CancellationToken cancellationToken = default) => Task.CompletedTask;
-
         public Task CancelRefreshAsync(int connection, CancellationToken cancellationToken = default) => Task.CompletedTask;
 
         public Task GetStateAsync(

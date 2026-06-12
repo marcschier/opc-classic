@@ -171,7 +171,6 @@ public sealed class OpcEnumGuidProxyAndDispatcherTests
             _classIds = classIds;
 
         public IOpcInterfaceRef CloneRef { get; init; } = CreateInterfaceRef();
-
         public int ResetCount { get; private set; }
 
         public Task<OpcEnumGuidNextResult> NextAsync(int count, CancellationToken cancellationToken = default)

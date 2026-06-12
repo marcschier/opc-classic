@@ -23,11 +23,8 @@ public sealed class CustomInterfacePointerBody : InterfacePointerBody
     }
 
     public string CLSID => CustomCLSID;
-
     public int ExtensionSize { get; private set; }
-
     public int Reserved { get; private set; }
-
     public byte[] ObjectData { get; private set; }
 
     internal static CustomInterfacePointerBody Decode(NdrCodec ndr, string iid, int bodyLength)

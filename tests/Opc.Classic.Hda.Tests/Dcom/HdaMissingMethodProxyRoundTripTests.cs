@@ -432,7 +432,6 @@ public sealed class HdaMissingMethodProxyRoundTripTests
     }
 
     private static OpcHdaTime SampleStart() => OpcHdaTime.FromString("NOW-1H");
-
     private static OpcHdaTime SampleEnd() => OpcHdaTime.FromString("NOW");
 
     private static OpcHdaItem SampleItem() => new(

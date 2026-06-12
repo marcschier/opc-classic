@@ -61,7 +61,6 @@ public static class DcomTimings
     }
 
     internal static DateTimeOffset UtcNow => TimeProvider.GetUtcNow();
-
     internal static TimeProvider TimeProvider { get; set; } = TimeProvider.System;
 
     internal static void ResetForTesting()

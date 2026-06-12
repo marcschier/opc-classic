@@ -13,7 +13,6 @@ public sealed class OpcSessionManager : IOpcSessionManager, IDisposable
 {
     private static readonly TimeSpan DefaultIdleExpiry = TimeSpan.FromMinutes(30);
     private static readonly TimeSpan SweepInterval = TimeSpan.FromSeconds(60);
-
     private readonly ConcurrentDictionary<string, OpcSession> _sessions = new(StringComparer.Ordinal);
     private readonly Timer _timer;
     private bool _disposed;

@@ -209,7 +209,6 @@ public sealed class RemoteRegistryEnumTests
         }
 
         private static string Normalize(string keyPath) => keyPath.Trim('\\');
-
         private static string ValueName(string? valueName) => valueName ?? string.Empty;
     }
 
@@ -218,7 +217,6 @@ public sealed class RemoteRegistryEnumTests
         private readonly List<string> _subKeyNames = new();
 
         public IReadOnlyList<string> SubKeyNames => _subKeyNames;
-
         public Dictionary<string, string> Values { get; } = new(StringComparer.OrdinalIgnoreCase);
 
         public void AddSubKey(string name)

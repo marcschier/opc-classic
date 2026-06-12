@@ -23,7 +23,6 @@ internal static unsafe class OpcDaGroupCcwSyncIoMethods
     private const int OpcItemVqtTrailerSize = 24;
 
     private static int OpcItemStateSize => OpcItemStateVariantOffset + ComVariantMarshaler.VariantSize;
-
     private static int OpcItemVqtSize => ComVariantMarshaler.VariantSize + OpcItemVqtTrailerSize;
 
     [UnmanagedCallersOnly]

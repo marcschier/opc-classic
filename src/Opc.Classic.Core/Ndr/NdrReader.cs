@@ -91,9 +91,7 @@ public ref struct NdrReader
     }
 
     public bool ReadBoolean() => ReadByte() != 0;
-
     public sbyte ReadInt8() => unchecked((sbyte)ReadByte());
-
     public byte ReadUInt8() => ReadByte();
 
     public short ReadInt16()

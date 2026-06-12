@@ -157,12 +157,18 @@ public sealed class OpcUrl : IEquatable<OpcUrl>
     {
         switch (text.ToLowerInvariant())
         {
-            case "opcda": scheme = OpcUrlScheme.Da; return true;
-            case "opcae": scheme = OpcUrlScheme.Ae; return true;
-            case "opchda": scheme = OpcUrlScheme.Hda; return true;
-            case "opcdx": scheme = OpcUrlScheme.Dx; return true;
-            case "opc.xml-da": scheme = OpcUrlScheme.XmlDa; return true;
-            default: scheme = default; return false;
+            case "opcda":
+                scheme = OpcUrlScheme.Da; return true;
+            case "opcae":
+                scheme = OpcUrlScheme.Ae; return true;
+            case "opchda":
+                scheme = OpcUrlScheme.Hda; return true;
+            case "opcdx":
+                scheme = OpcUrlScheme.Dx; return true;
+            case "opc.xml-da":
+                scheme = OpcUrlScheme.XmlDa; return true;
+            default:
+                scheme = default; return false;
         }
     }
 

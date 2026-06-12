@@ -77,9 +77,7 @@ public sealed class SetClientNameTests
     }
 
     private static string ReadFirstClientName() => "diagnostic-client";
-
     private static string ReadSecondClientName() => "updated-client";
-
     private static string ReadCcwClientName() => "ccw-client";
 
     private static unsafe int InvokeCcwSetClientName(IntPtr ccw, string clientName)
@@ -302,7 +300,6 @@ public sealed class SetClientNameTests
     private sealed class EmptySubscription : IDaSubscription
     {
         public SubscriptionState State => new();
-
         public IAsyncEnumerable<DataChange> DataChanges => EmptyDataChanges();
 
         public Task SetStateAsync(SubscriptionState state, CancellationToken cancellationToken = default) =>

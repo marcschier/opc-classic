@@ -558,6 +558,5 @@ internal sealed class LoopbackDaRuntime
     }
 
     private static NdrCallResult Ok(ReadOnlyMemory<byte> response) => new(OpcResultId.Ok.Code, response);
-
     private static NdrCallResult NotImplemented() => new(OpcResultId.NotImplemented.Code, ReadOnlyMemory<byte>.Empty);
 }

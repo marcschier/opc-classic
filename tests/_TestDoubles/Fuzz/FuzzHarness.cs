@@ -25,7 +25,6 @@ public static class FuzzHarness
 
     /// <summary>Deep workflow_dispatch / weekly iteration default.</summary>
     public const int DeepIterations = 10_000;
-
     private const int MaxFragmentSize = 65_535;
     private const string IterationsEnvironmentVariable = "OPCCLASSIC_FUZZ_ITERATIONS";
     private const string SeedEnvironmentVariable = "OPCCLASSIC_FUZZ_SEED";

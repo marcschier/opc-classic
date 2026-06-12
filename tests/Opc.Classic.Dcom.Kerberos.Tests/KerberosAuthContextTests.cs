@@ -126,13 +126,9 @@ public sealed class KerberosAuthContextTests
         }
 
         public int AcquireCallCount { get; private set; }
-
         public int ProcessCallCount { get; private set; }
-
         public ReadOnlyMemory<byte>? LastChannelBindingsHash { get; private set; }
-
         public ReadOnlyMemory<byte> LastApReply { get; private set; }
-
         public KerberosSessionKey? EstablishedSessionKey { get; }
 
         public Task<byte[]> AcquireApRequestAsync(

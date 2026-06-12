@@ -71,9 +71,7 @@ public sealed class OpcAeServerDispatcherTests
     private sealed class StubAeServer : IOpcAeServer
     {
         public int FilterMask { get; init; }
-
         public int GetStatusCallCount { get; private set; }
-
         public int QueryAvailableFiltersCallCount { get; private set; }
 
         public Task<OpcServerStatus> GetStatusAsync(CancellationToken cancellationToken = default)

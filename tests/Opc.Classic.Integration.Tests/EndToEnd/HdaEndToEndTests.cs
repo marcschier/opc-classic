@@ -1027,21 +1027,13 @@ public sealed class HdaEndToEndTests
     private sealed class DataCallbackSink : IOPCHDA_DataCallback
     {
         public int DataChangeTransactionId { get; private set; }
-
         public double? ReadCompleteValue { get; private set; }
-
         public string? ModifiedUser { get; private set; }
-
         public int AttributeClientHandle { get; private set; }
-
         public string? AnnotationUser { get; private set; }
-
         public int InsertAnnotationClientHandle { get; private set; }
-
         public double? PlaybackValue { get; private set; }
-
         public int UpdateError { get; private set; }
-
         public int CancelId { get; private set; }
 
         public Task OnDataChangeAsync(int transactionId, int status, OpcHdaItem[] itemValues, int[] errors, CancellationToken cancellationToken = default)

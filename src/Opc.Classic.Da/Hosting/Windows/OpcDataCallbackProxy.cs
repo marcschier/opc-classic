@@ -30,7 +30,6 @@ public sealed unsafe class OpcDataCallbackProxy : IOpcDataCallbackSink
 
     private static readonly Guid s_iidUnknown = Guid.Parse("00000000-0000-0000-C000-000000000046");
     private static readonly Guid s_iidDataCallback = IOPCDataCallback.InterfaceId;
-
     private readonly Lock _syncRoot = new();
     private IntPtr _callbackPtr;
 

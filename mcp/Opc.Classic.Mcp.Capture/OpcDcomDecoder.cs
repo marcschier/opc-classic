@@ -263,7 +263,6 @@ public sealed class OpcDcomDecoder
     // auth_type field for NTLM-protected RPC PDUs. Other values include 0x09 SPNEGO,
     // 0x10 Kerberos — we only attempt unwrap for NTLM.
     private const byte AuthServiceCodeNtlm = 0x0A;
-
     // DCE/RPC PDU PTYPE constants (subset relevant to sign/seal unwrap).
     private const byte PtypeRequest = 0x00;
     private const byte PtypeResponse = 0x02;

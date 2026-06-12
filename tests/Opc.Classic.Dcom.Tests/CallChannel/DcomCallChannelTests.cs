@@ -331,7 +331,6 @@ public sealed class DcomCallChannelTests
     private sealed class RecordingTransportFactory : IAsyncTransportFactory
     {
         public RecordingTransport Transport { get; } = new();
-
         public EndPoint? Endpoint { get; private set; }
 
         public ValueTask<IAsyncTransport> ConnectAsync(
@@ -348,11 +347,8 @@ public sealed class DcomCallChannelTests
         private readonly InMemoryAsyncTransport _inner = new();
 
         public bool IsDisposed { get; private set; }
-
         public EndPoint RemoteEndpoint => _inner.RemoteEndpoint;
-
         public System.IO.Pipelines.PipeReader Input => _inner.Input;
-
         public System.IO.Pipelines.PipeWriter Output => _inner.Output;
 
         public ValueTask FlushAsync(CancellationToken cancellationToken = default) =>

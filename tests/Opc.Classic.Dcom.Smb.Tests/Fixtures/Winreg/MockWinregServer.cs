@@ -172,7 +172,6 @@ public sealed class MockWinregServer
         }
 
         public string Protocol => "mock-winreg";
-
         public PropertyBag Properties { get; }
 
         public IEndpoint Attach(PresentationSyntax syntax)

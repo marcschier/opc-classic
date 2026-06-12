@@ -36,7 +36,6 @@ public sealed class RC4Engine : IStreamCipher
     }
 
     public byte ReturnByte(byte b) => ProcessByte(b);
-
     public void Reset() => _cipher = null;
 
     private Rc4 Require()

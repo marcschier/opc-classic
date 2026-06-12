@@ -35,9 +35,7 @@ public sealed class OpcDaServerDispatcher : IOpcDaServerDispatcher, IOPCCommon
 
     /// <summary>Gets the latest client name supplied through <c>IOPCCommon::SetClientName</c>.</summary>
     public string ClientName => _connectionContext.ClientName;
-
     internal IOpcServerDispatcher ServerDispatcher => _serverDispatcher;
-
     internal IOpcServerDispatcher CommonDispatcher => _commonDispatcher;
 
     /// <inheritdoc />

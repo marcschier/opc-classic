@@ -642,7 +642,6 @@ public sealed class OpcEnumClient : IOpcDiscovery
     }
 
     private sealed record ActivatedServerList(IOpcInterfaceRef InterfaceRef, ReadOnlyMemory<byte> OxidBindings, bool SupportsServerList2);
-
     private sealed record ActivationOutcome(IOpcInterfaceRef InterfaceRef, ReadOnlyMemory<byte> OxidBindings);
 
     private sealed record CategoryMerge(

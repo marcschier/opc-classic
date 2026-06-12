@@ -134,9 +134,7 @@ public sealed class OpcRecordValueRegistryTests
     private sealed class TestRecordInfo(Guid id) : IRecordInfo
     {
         public Guid Id { get; } = id;
-
         public string Name => "Invalid";
-
         public IReadOnlyList<OpcRecordField> Fields => Array.Empty<OpcRecordField>();
     }
 }

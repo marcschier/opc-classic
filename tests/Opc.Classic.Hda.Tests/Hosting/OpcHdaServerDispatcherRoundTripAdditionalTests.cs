@@ -157,19 +157,12 @@ public sealed class OpcHdaServerDispatcherRoundTripAdditionalTests
     private sealed class RecordingHdaServer : IOpcHdaServer, IOPCHDA_SyncUpdate
     {
         public int GetStatusCallCount { get; private set; }
-
         public string[] LastItemIds { get; private set; } = [];
-
         public int[] LastClientHandles { get; private set; } = [];
-
         public int[] LastReleasedHandles { get; private set; } = [];
-
         public string? LastBrowseBranch { get; private set; }
-
         public int[] LastInsertHandles { get; private set; } = [];
-
         public OpcVariant[] LastInsertValues { get; private set; } = [];
-
         public int[] LastInsertQualities { get; private set; } = [];
 
         public Task GetItemAttributesAsync(

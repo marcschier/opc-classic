@@ -1081,11 +1081,8 @@ namespace Opc.Classic.Generators
     }
 
     private static string DispatchMethodName(MethodModel method) => "Dispatch_" + method.Name;
-
     private static string CoreMethodName(MethodModel method) => "Dispatch_" + method.Name + "CoreAsync";
-
     private static string EncodeResponseName(MethodModel method) => "Encode_" + method.Name + "Response";
-
     private static string ReturnValueLocal(MethodModel method) => UniqueLocalName(method.ParameterNames, "__opcReturnValue");
 
     private static void AppendCoreParameters(StringBuilder sb, MethodModel method)

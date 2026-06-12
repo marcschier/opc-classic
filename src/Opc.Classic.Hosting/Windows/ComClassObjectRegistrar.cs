@@ -58,7 +58,6 @@ public static unsafe class ComClassObjectRegistrar
 
     private static readonly Guid IID_IUnknown = Guid.Parse("00000000-0000-0000-C000-000000000046");
     private static readonly Guid IID_IClassFactory = Guid.Parse("00000001-0000-0000-C000-000000000046");
-
     private static readonly ConcurrentDictionary<IntPtr, FactoryEntry> s_factories = new();
 
     /// <summary>
@@ -340,7 +339,6 @@ public static unsafe class ComClassObjectRegistrar
         }
 
         public Guid Clsid { get; }
-
         public Func<Guid, IntPtr>? CreateInstanceCallback { get; }
 
         public long RefCount;

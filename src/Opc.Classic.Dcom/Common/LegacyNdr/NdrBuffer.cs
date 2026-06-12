@@ -46,17 +46,11 @@ public class NdrBuffer
     }
 
     public int GetIndex() => Index;
-
     public void SetIndex(int index) => Index = index;
-
     public int GetCapacity() => Buf.Length - Start;
-
     public int GetTailSpace() => Buf.Length - Index;
-
     public byte[] GetBuffer() => Buf;
-
     public int GetLength() => Length;
-
     public void SetLength(int length) => Length = length;
 
     public void Advance(int n)

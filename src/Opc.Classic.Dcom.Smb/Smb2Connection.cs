@@ -829,7 +829,6 @@ public sealed class Smb2NamedPipe : IAsyncDisposable
     }
 
     internal ulong FileIdPersistent { get; }
-
     internal ulong FileIdVolatile { get; }
 
     /// <summary>Sends data with an SMB2 WRITE request.</summary>

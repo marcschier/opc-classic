@@ -50,7 +50,6 @@ public sealed class SampleAeServer : IAeServer, IOpcAeServer
             "GetConditionState: source={Source}, condition={Condition}");
 
     private static readonly DateTimeOffset StartupTime = DateTimeOffset.UtcNow;
-
     private readonly ConcurrentDictionary<ConditionRef, bool> _acknowledgedConditions = new();
     private readonly ILogger<SampleAeServer> _logger;
 

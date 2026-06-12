@@ -164,11 +164,8 @@ public sealed class HostingExtensionsTests
     private sealed class TestOpcServerHost : IOpcServerHost
     {
         public string SpecName { get; init; } = "Test";
-
         public OpcClsidRegistration Registration { get; init; } = CreateRegistration("Vendor.Test.1");
-
         public bool Started { get; private set; }
-
         public bool Stopped { get; private set; }
 
         public Task StartAsync(CancellationToken cancellationToken)
@@ -187,11 +184,9 @@ public sealed class HostingExtensionsTests
     private sealed class SecondTestOpcServerHost : IOpcServerHost
     {
         public string SpecName { get; init; } = "SecondTest";
-
         public OpcClsidRegistration Registration { get; init; } = CreateRegistration("Vendor.SecondTest.1");
 
         public Task StartAsync(CancellationToken cancellationToken) => Task.CompletedTask;
-
         public Task StopAsync(CancellationToken cancellationToken) => Task.CompletedTask;
     }
 

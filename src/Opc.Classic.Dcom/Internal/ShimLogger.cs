@@ -11,9 +11,7 @@ namespace Opc.Classic.Dcom.Internal;
 internal sealed class ShimLogger : IShimLogger
 {
     private static ILogger Get() => LogHost.CreateLogger("Opc.Classic.Dcom");
-
     public bool IsEnabled(LogLevel level) => Get().IsEnabled(level);
-
     public void Information(string message) => Get().LogInformation("{Message}", message);
     public void Information(string template, params object?[] args)
         => Get().LogInformation(template, args);

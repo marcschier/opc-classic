@@ -20,7 +20,6 @@ internal sealed class LoopbackHdaCallRouter
     private const long FileTimeEpochOffsetTicks = 504911232000000000L;
 
     private static readonly TimeSpan AsyncReadDelay = TimeSpan.FromSeconds(5);
-
     private readonly IOpcHdaServer _server;
     private readonly HistoricalDataStore _store;
     private readonly ConcurrentDictionary<int, ItemRegistration> _registrations = new();
@@ -422,7 +421,6 @@ internal sealed class LoopbackHdaCallRouter
         value.UtcTicks - FileTimeEpochOffsetTicks;
 
     private static NdrCallResult Ok(ReadOnlyMemory<byte> payload) => new(OpcResultId.Ok.Code, payload);
-
     private static NdrCallResult NotImplemented() => new(OpcResultId.NotImplemented.Code, ReadOnlyMemory<byte>.Empty);
 
     private static ReadOnlyMemory<byte> WritePayload(NdrWriteAction write)

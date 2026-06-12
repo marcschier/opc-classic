@@ -14,15 +14,10 @@ internal sealed class StubHdaServer : IOpcHdaServer
     private int _validateCallCount;
 
     public int StatusCallCount => Volatile.Read(ref _statusCallCount);
-
     public int AttributeCallCount => Volatile.Read(ref _attributeCallCount);
-
     public int ValidateCallCount => Volatile.Read(ref _validateCallCount);
-
     public string[] LastItemIds { get; private set; } = [];
-
     public int[] LastClientHandles { get; private set; } = [];
-
     public int[] LastReleasedHandles { get; private set; } = [];
 
     public Task GetItemAttributesAsync(

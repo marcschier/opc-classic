@@ -14,6 +14,5 @@ public sealed class OpcBatchErrorsTests
     }
 
     private static int ReadNotMeaningful() => OpcBatchErrors.OPCB_E_NOT_MEANINGFUL;
-
     private static int ReadExpectedNotMeaningful() => unchecked((int)0xC0040300u);
 }

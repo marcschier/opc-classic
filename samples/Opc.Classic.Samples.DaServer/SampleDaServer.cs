@@ -25,7 +25,6 @@ public sealed class SampleDaServer : IOpcDaServer
         "RemoveGroup: handle={Handle}, force={Force}");
 
     private static readonly DateTimeOffset StartTime = DateTimeOffset.UtcNow;
-
     private readonly ILogger<SampleDaServer> _logger;
     private readonly TagTree _tags;
 

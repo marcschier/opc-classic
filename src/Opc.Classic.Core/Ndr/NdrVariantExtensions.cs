@@ -15,7 +15,6 @@ public static class NdrVariantExtensions
 {
     /// <summary>Maximum nested VT_VARIANT depth accepted by the codec.</summary>
     public const int MaxVariantRecursionDepth = 64;
-
     private const int VariantHeaderBytes = 16;
     private const ushort BoolTrueWire = unchecked((ushort)-1);
     private const ushort BoolFalseWire = 0;
@@ -127,12 +126,18 @@ public static class NdrVariantExtensions
     {
         switch (vt)
         {
-            case VarType.VT_EMPTY: case VarType.VT_NULL: return true;
-            case VarType.VT_I1: writer.WriteByte(unchecked((byte)((sbyte)boxed!))); return true;
-            case VarType.VT_UI1: writer.WriteByte((byte)boxed!); return true;
-            case VarType.VT_I2: writer.WriteInt16((short)boxed!); return true;
-            case VarType.VT_UI2: writer.WriteUInt16((ushort)boxed!); return true;
-            case VarType.VT_BOOL: writer.WriteUInt16(((bool)boxed!) ? BoolTrueWire : BoolFalseWire); return true;
+            case VarType.VT_EMPTY: case VarType.VT_NULL:
+                return true;
+            case VarType.VT_I1:
+                writer.WriteByte(unchecked((byte)((sbyte)boxed!))); return true;
+            case VarType.VT_UI1:
+                writer.WriteByte((byte)boxed!); return true;
+            case VarType.VT_I2:
+                writer.WriteInt16((short)boxed!); return true;
+            case VarType.VT_UI2:
+                writer.WriteUInt16((ushort)boxed!); return true;
+            case VarType.VT_BOOL:
+                writer.WriteUInt16(((bool)boxed!) ? BoolTrueWire : BoolFalseWire); return true;
             case VarType.VT_I4:
             case VarType.VT_INT:
             case VarType.VT_ERROR:
@@ -141,14 +146,22 @@ public static class NdrVariantExtensions
             case VarType.VT_UI4:
             case VarType.VT_UINT:
                 writer.AlignTo(4); writer.WriteUInt32((uint)boxed!); return true;
-            case VarType.VT_R4: writer.AlignTo(4); writer.WriteSingle((float)boxed!); return true;
-            case VarType.VT_I8: writer.AlignTo(8); writer.WriteInt64((long)boxed!); return true;
-            case VarType.VT_UI8: writer.AlignTo(8); writer.WriteUInt64((ulong)boxed!); return true;
-            case VarType.VT_R8: writer.AlignTo(8); writer.WriteDouble((double)boxed!); return true;
-            case VarType.VT_DATE: writer.AlignTo(8); writer.WriteDouble(((DateTime)boxed!).ToOADate()); return true;
-            case VarType.VT_FILETIME: writer.AlignTo(8); writer.WriteFileTime((long)boxed!); return true;
-            case VarType.VT_BSTR: writer.AlignTo(4); WriteElementBstrBody(ref writer, (string?)boxed); return true;
-            default: return false;
+            case VarType.VT_R4:
+                writer.AlignTo(4); writer.WriteSingle((float)boxed!); return true;
+            case VarType.VT_I8:
+                writer.AlignTo(8); writer.WriteInt64((long)boxed!); return true;
+            case VarType.VT_UI8:
+                writer.AlignTo(8); writer.WriteUInt64((ulong)boxed!); return true;
+            case VarType.VT_R8:
+                writer.AlignTo(8); writer.WriteDouble((double)boxed!); return true;
+            case VarType.VT_DATE:
+                writer.AlignTo(8); writer.WriteDouble(((DateTime)boxed!).ToOADate()); return true;
+            case VarType.VT_FILETIME:
+                writer.AlignTo(8); writer.WriteFileTime((long)boxed!); return true;
+            case VarType.VT_BSTR:
+                writer.AlignTo(4); WriteElementBstrBody(ref writer, (string?)boxed); return true;
+            default:
+                return false;
         }
     }
 
@@ -186,25 +199,44 @@ public static class NdrVariantExtensions
         }
         switch (vt)
         {
-            case VarType.VT_EMPTY: return OpcVariant.Empty;
-            case VarType.VT_NULL: return OpcVariant.Null;
-            case VarType.VT_I1: return OpcVariant.FromInt8(unchecked((sbyte)reader.ReadByte()));
-            case VarType.VT_UI1: return OpcVariant.FromUInt8(reader.ReadByte());
-            case VarType.VT_I2: return OpcVariant.FromInt16(reader.ReadInt16());
-            case VarType.VT_UI2: return OpcVariant.FromUInt16(reader.ReadUInt16());
-            case VarType.VT_BOOL: return OpcVariant.FromBoolean(reader.ReadUInt16() != 0);
-            case VarType.VT_I4: reader.AlignTo(4); return OpcVariant.FromInt32(reader.ReadInt32());
-            case VarType.VT_UI4: reader.AlignTo(4); return OpcVariant.FromUInt32(reader.ReadUInt32());
-            case VarType.VT_INT: reader.AlignTo(4); return OpcVariant.FromInt32(reader.ReadInt32());
-            case VarType.VT_UINT: reader.AlignTo(4); return OpcVariant.FromUInt32(reader.ReadUInt32());
-            case VarType.VT_ERROR: reader.AlignTo(4); return OpcVariant.FromError(reader.ReadInt32());
-            case VarType.VT_HRESULT: reader.AlignTo(4); return new OpcVariant(VarType.VT_HRESULT, reader.ReadInt32());
-            case VarType.VT_R4: reader.AlignTo(4); return OpcVariant.FromSingle(reader.ReadSingle());
-            case VarType.VT_I8: reader.AlignTo(8); return OpcVariant.FromInt64(reader.ReadInt64());
-            case VarType.VT_UI8: reader.AlignTo(8); return OpcVariant.FromUInt64(reader.ReadUInt64());
-            case VarType.VT_R8: reader.AlignTo(8); return OpcVariant.FromDouble(reader.ReadDouble());
-            case VarType.VT_DATE: reader.AlignTo(8); return OpcVariant.FromDate(DateTime.FromOADate(reader.ReadDouble()));
-            case VarType.VT_FILETIME: reader.AlignTo(8); return OpcVariant.FromFileTime(reader.ReadFileTime());
+            case VarType.VT_EMPTY:
+                return OpcVariant.Empty;
+            case VarType.VT_NULL:
+                return OpcVariant.Null;
+            case VarType.VT_I1:
+                return OpcVariant.FromInt8(unchecked((sbyte)reader.ReadByte()));
+            case VarType.VT_UI1:
+                return OpcVariant.FromUInt8(reader.ReadByte());
+            case VarType.VT_I2:
+                return OpcVariant.FromInt16(reader.ReadInt16());
+            case VarType.VT_UI2:
+                return OpcVariant.FromUInt16(reader.ReadUInt16());
+            case VarType.VT_BOOL:
+                return OpcVariant.FromBoolean(reader.ReadUInt16() != 0);
+            case VarType.VT_I4:
+                reader.AlignTo(4); return OpcVariant.FromInt32(reader.ReadInt32());
+            case VarType.VT_UI4:
+                reader.AlignTo(4); return OpcVariant.FromUInt32(reader.ReadUInt32());
+            case VarType.VT_INT:
+                reader.AlignTo(4); return OpcVariant.FromInt32(reader.ReadInt32());
+            case VarType.VT_UINT:
+                reader.AlignTo(4); return OpcVariant.FromUInt32(reader.ReadUInt32());
+            case VarType.VT_ERROR:
+                reader.AlignTo(4); return OpcVariant.FromError(reader.ReadInt32());
+            case VarType.VT_HRESULT:
+                reader.AlignTo(4); return new OpcVariant(VarType.VT_HRESULT, reader.ReadInt32());
+            case VarType.VT_R4:
+                reader.AlignTo(4); return OpcVariant.FromSingle(reader.ReadSingle());
+            case VarType.VT_I8:
+                reader.AlignTo(8); return OpcVariant.FromInt64(reader.ReadInt64());
+            case VarType.VT_UI8:
+                reader.AlignTo(8); return OpcVariant.FromUInt64(reader.ReadUInt64());
+            case VarType.VT_R8:
+                reader.AlignTo(8); return OpcVariant.FromDouble(reader.ReadDouble());
+            case VarType.VT_DATE:
+                reader.AlignTo(8); return OpcVariant.FromDate(DateTime.FromOADate(reader.ReadDouble()));
+            case VarType.VT_FILETIME:
+                reader.AlignTo(8); return OpcVariant.FromFileTime(reader.ReadFileTime());
             case VarType.VT_BSTR:
                 reader.AlignTo(4);
                 {

@@ -300,13 +300,9 @@ public sealed class CaptureSession : IAsyncDisposable
         }
 
         public OpcDcomDecoder Decoder { get; }
-
         public NtlmPassiveUnwrapper? Unwrapper { get; }
-
         public List<DecodedOpcPdu> Pdus { get; } = new();
-
         public long PacketsConsumed { get; set; }
-
         public SemaphoreSlim Lock { get; } = new(1, 1);
     }
 

@@ -15,7 +15,6 @@ public static class NdrSafeArrayExtensions
 {
     /// <summary>Maximum SAFEARRAY rank accepted by the codec.</summary>
     public const int MaxSafeArrayDimensions = 256;
-
     private const ulong MaxSafeArrayPayloadBytes = 2UL * 1024UL * 1024UL * 1024UL;
 
     /// <summary>Encodes a SAFEARRAY descriptor and flattened element data.</summary>
@@ -87,23 +86,40 @@ public static class NdrSafeArrayExtensions
     {
         switch (value.ElementType)
         {
-            case VarType.VT_I1: WriteInt8Elements(ref writer, (sbyte[])value.Data); return;
-            case VarType.VT_UI1: writer.WriteRawBytes((byte[])value.Data); return;
-            case VarType.VT_I2: WriteInt16Elements(ref writer, (short[])value.Data); return;
-            case VarType.VT_UI2: WriteUInt16Elements(ref writer, (ushort[])value.Data); return;
-            case VarType.VT_BOOL: WriteBoolElements(ref writer, (bool[])value.Data); return;
-            case VarType.VT_I4: WriteInt32Elements(ref writer, (int[])value.Data); return;
-            case VarType.VT_UI4: WriteUInt32Elements(ref writer, (uint[])value.Data); return;
-            case VarType.VT_R4: WriteSingleElements(ref writer, (float[])value.Data); return;
-            case VarType.VT_ERROR: WriteInt32Elements(ref writer, (int[])value.Data); return;
-            case VarType.VT_I8: WriteInt64Elements(ref writer, (long[])value.Data); return;
-            case VarType.VT_UI8: WriteUInt64Elements(ref writer, (ulong[])value.Data); return;
-            case VarType.VT_R8: WriteDoubleElements(ref writer, (double[])value.Data); return;
-            case VarType.VT_DATE: WriteDateElements(ref writer, (DateTime[])value.Data); return;
-            case VarType.VT_CLSID: WriteGuidElements(ref writer, (Guid[])value.Data); return;
-            case VarType.VT_BSTR: WriteBstrElements(ref writer, (string?[])value.Data); return;
-            case VarType.VT_VARIANT: WriteVariantElements(ref writer, (OpcVariant[])value.Data); return;
-            case VarType.VT_RECORD: WriteRecordElements(ref writer, (OpcRecordValue?[])value.Data); return;
+            case VarType.VT_I1:
+                WriteInt8Elements(ref writer, (sbyte[])value.Data); return;
+            case VarType.VT_UI1:
+                writer.WriteRawBytes((byte[])value.Data); return;
+            case VarType.VT_I2:
+                WriteInt16Elements(ref writer, (short[])value.Data); return;
+            case VarType.VT_UI2:
+                WriteUInt16Elements(ref writer, (ushort[])value.Data); return;
+            case VarType.VT_BOOL:
+                WriteBoolElements(ref writer, (bool[])value.Data); return;
+            case VarType.VT_I4:
+                WriteInt32Elements(ref writer, (int[])value.Data); return;
+            case VarType.VT_UI4:
+                WriteUInt32Elements(ref writer, (uint[])value.Data); return;
+            case VarType.VT_R4:
+                WriteSingleElements(ref writer, (float[])value.Data); return;
+            case VarType.VT_ERROR:
+                WriteInt32Elements(ref writer, (int[])value.Data); return;
+            case VarType.VT_I8:
+                WriteInt64Elements(ref writer, (long[])value.Data); return;
+            case VarType.VT_UI8:
+                WriteUInt64Elements(ref writer, (ulong[])value.Data); return;
+            case VarType.VT_R8:
+                WriteDoubleElements(ref writer, (double[])value.Data); return;
+            case VarType.VT_DATE:
+                WriteDateElements(ref writer, (DateTime[])value.Data); return;
+            case VarType.VT_CLSID:
+                WriteGuidElements(ref writer, (Guid[])value.Data); return;
+            case VarType.VT_BSTR:
+                WriteBstrElements(ref writer, (string?[])value.Data); return;
+            case VarType.VT_VARIANT:
+                WriteVariantElements(ref writer, (OpcVariant[])value.Data); return;
+            case VarType.VT_RECORD:
+                WriteRecordElements(ref writer, (OpcRecordValue?[])value.Data); return;
             default:
                 throw new InvalidOperationException(
                     $"NDR SAFEARRAY codec does not support element type {value.ElementType}.");

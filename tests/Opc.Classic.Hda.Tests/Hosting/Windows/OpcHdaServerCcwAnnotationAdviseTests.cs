@@ -171,7 +171,6 @@ public sealed class OpcHdaServerCcwAnnotationAdviseTests
         public TimeSpan RawDelay { get; init; } = TimeSpan.FromMilliseconds(10);
         public TimeSpan ProcessedDelay { get; init; } = TimeSpan.FromMilliseconds(10);
         public int ProcessedMaxUpdates { get; init; } = int.MaxValue;
-
         public int[] LastInsertHandles { get; private set; } = [];
         public int[] LastInsertAnnotationValueCounts { get; private set; } = [];
         public int LastProcessedIntervalCount { get; private set; }
@@ -549,7 +548,6 @@ public sealed class OpcHdaServerCcwAnnotationAdviseTests
         private static readonly HdaAttributeCallback s_onIgnoredAttribute = OnIgnoredAttribute;
         private static readonly InsertAnnotationsCallback s_onInsertAnnotations = OnInsertAnnotations;
         private static readonly CancelCallback s_onCancelComplete = OnCancelComplete;
-
         private readonly object _syncRoot = new();
         private readonly IntPtr _vtable;
         private int _dataChangeCount;

@@ -9,7 +9,6 @@ namespace Opc.Classic.Samples.AeClient;
 internal sealed class InProcessAeSubscription : IAeSubscription
 {
     private static readonly TimeSpan EventDeliveryDelay = TimeSpan.FromMilliseconds(250);
-
     private readonly Func<IReadOnlyList<EventNotification>> _eventsFactory;
     private readonly int _bufferTimeMs;
     private readonly int _maxBufferSize;
@@ -29,9 +28,7 @@ internal sealed class InProcessAeSubscription : IAeSubscription
     }
 
     public bool Active => _active;
-
     public SubscriptionFilter Filter { get; private set; } = new();
-
     public IAsyncEnumerable<EventNotification> Events => ReadEventsAsync();
 
     public Task SetActiveAsync(bool active, CancellationToken cancellationToken = default)

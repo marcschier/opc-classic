@@ -342,7 +342,6 @@ public sealed class GeneratedServerDispatcherTests
     private sealed class StubCommon : IOPCCommon
     {
         public int LastLocaleId { get; private set; }
-
         public int CurrentLocaleId { get; set; }
 
         public Task SetLocaleIdAsync(int localeId, CancellationToken cancellationToken = default)
@@ -367,9 +366,7 @@ public sealed class GeneratedServerDispatcherTests
     private sealed class StubGroupStateMgt : IOPCGroupStateMgt
     {
         public int GetStateCallCount { get; private set; }
-
         public string? LastSetName { get; private set; }
-
         public OpcGroupState? CurrentState { get; set; }
 
         public Task<OpcGroupState> GetStateAsync(CancellationToken cancellationToken = default)
@@ -417,7 +414,6 @@ public sealed class GeneratedServerDispatcherTests
     private sealed class StubConnectionPoint : IConnectionPoint
     {
         public Guid ConnectionIid { get; set; }
-
         public int LastUnadvisedCookie { get; private set; }
 
         public Task<Guid> GetConnectionInterfaceAsync(CancellationToken cancellationToken = default) =>
@@ -470,9 +466,7 @@ public sealed class GeneratedServerDispatcherTests
     private sealed class StubEnumGuid : IOPCEnumGUID
     {
         public int LastNextCount { get; private set; }
-
         public int ResetCallCount { get; private set; }
-
         public Guid[] NextGuids { get; set; } = Array.Empty<Guid>();
 
         public Task<Guid[]> NextAsync(int count, CancellationToken cancellationToken = default)
@@ -494,7 +488,6 @@ public sealed class GeneratedServerDispatcherTests
     private sealed class StubServerList : IOPCServerList
     {
         public string? LastProgId { get; private set; }
-
         public Guid LookupResult { get; set; }
 
         public Task<Guid> ClsidFromProgIdAsync(string progId, CancellationToken cancellationToken = default)

@@ -14,20 +14,16 @@ public abstract class NtlmMessage
     internal const int DefaultMaxMessageSize = 64 * 1024 - 1;
 
     protected static ReadOnlySpan<byte> DefaultVersion => [10, 0, 0, 0, 0, 0, 0, 15];
-
     public abstract int MessageType { get; }
-
     public NtlmFlags Flags { get; set; }
 
     public abstract byte[] ToByteArray();
-
     public bool GetFlag(NtlmFlags flag) => (Flags & flag) != NtlmFlags.None;
 
     public void SetFlag(NtlmFlags flag, bool value) =>
         Flags = value ? (Flags | flag) : (Flags & ~flag);
 
     internal static NtlmFlags FromInt32(int flags) => (NtlmFlags)unchecked((uint)flags);
-
     internal static int ToInt32(NtlmFlags flags) => unchecked((int)(uint)flags);
 
     protected static void WriteHeader(Span<byte> dest, int messageType)

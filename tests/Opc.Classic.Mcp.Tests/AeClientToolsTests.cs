@@ -304,7 +304,6 @@ internal sealed class SyntheticAeServer : IOpcAeServer, IAeServer
     public event EventHandler<EventArgs>? ServerShutdown;
 
     public InMemoryCallChannel Channel { get; }
-
     public string? LastAckActor { get; private set; }
 
     public Task<OpcServerStatus> GetStatusAsync(CancellationToken cancellationToken = default)
@@ -547,9 +546,7 @@ internal sealed class SyntheticAeSubscription : IAeSubscription
     }
 
     public bool Active { get; private set; }
-
     public SubscriptionFilter Filter { get; private set; } = new();
-
     public IAsyncEnumerable<EventNotification> Events => ReadAllAsync();
 
     public Task SetActiveAsync(bool active, CancellationToken cancellationToken = default)

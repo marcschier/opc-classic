@@ -188,7 +188,6 @@ public /*internal*/ sealed class InterfacePointer
     internal const int OBJREF_HANDLER = 0x2; // handler marshaled objref
     internal const int OBJREF_CUSTOM = 0x4; // custom marshaled objref
     internal const int OBJREF_EXTENDED = 0x8; // extended standard marshaled objref
-
     // Flag values for a STDOBJREF (standard part of an OBJREF).
     // SORF_OXRES1 - SORF_OXRES8 are reserved for the object exporters
     // use only, object importers must ignore them and must not enforce MBZ.

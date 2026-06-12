@@ -217,29 +217,17 @@ public sealed class OpcAeServerDispatcherRoundTripAdditionalTests
             [Guid.Parse("aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"), Guid.Parse("ffffffff-1111-2222-3333-444444444444")];
 
         public int LastEventType { get; private set; }
-
         public int LastAttributeCategory { get; private set; }
-
         public string? LastConditionSource { get; private set; }
-
         public int[] LastConditionAttributeIds { get; private set; } = [];
-
         public int[] LastTranslateAttributeIds { get; private set; } = [];
-
         public string[] EnabledAreas { get; private set; } = [];
-
         public string[] EnabledSources { get; private set; } = [];
-
         public string[] DisabledAreas { get; private set; } = [];
-
         public string[] DisabledSources { get; private set; } = [];
-
         public string? LastAckActor { get; private set; }
-
         public int[] LastAckCookies { get; private set; } = [];
-
         public int QueryAvailableFiltersCallCount { get; private set; }
-
         public RecordingAeSubscription? CreatedSubscription { get; private set; }
 
         public event EventHandler<EventArgs>? ServerShutdown
@@ -484,15 +472,10 @@ public sealed class OpcAeServerDispatcherRoundTripAdditionalTests
         public RecordingAeSubscription(bool active) => Active = active;
 
         public bool Active { get; private set; }
-
         public SubscriptionFilter Filter { get; private set; } = new();
-
         public IAsyncEnumerable<EventNotification> Events => ReadEventsAsync();
-
         public int RefreshCalls { get; private set; }
-
         public int CancelRefreshCalls { get; private set; }
-
         public bool Disposed { get; private set; }
 
         public Task SetActiveAsync(bool active, CancellationToken cancellationToken = default)
@@ -535,11 +518,8 @@ public sealed class OpcAeServerDispatcherRoundTripAdditionalTests
     private sealed class RecordingEventSink : IOPCEventSink
     {
         public int LastClientSubscription { get; private set; }
-
         public bool LastRefresh { get; private set; }
-
         public bool LastRefreshComplete { get; private set; }
-
         public OpcEventNotification[] LastEvents { get; private set; } = [];
 
         public Task OnEventAsync(

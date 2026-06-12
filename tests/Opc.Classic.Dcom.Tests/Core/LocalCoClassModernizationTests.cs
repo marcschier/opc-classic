@@ -137,7 +137,6 @@ public sealed class LocalCoClassModernizationTests
         private readonly Channel<IAsyncTransport> _connections = Channel.CreateUnbounded<IAsyncTransport>();
 
         public EndPoint LocalEndpoint { get; } = new IPEndPoint(IPAddress.Loopback, 0);
-
         public bool IsDisposed { get; private set; }
 
         public async IAsyncEnumerable<IAsyncTransport> AcceptConnectionsAsync(

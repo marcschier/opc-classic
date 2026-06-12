@@ -203,6 +203,5 @@ public sealed class DxNdrCodecTests
     }
 
     private delegate void NdrWriteFunc<in T>(ref NdrWriter writer, T value);
-
     private delegate T NdrReadFunc<out T>(ref NdrReader reader);
 }

@@ -1469,9 +1469,7 @@ internal static class OpcMcpDcomConnectionHelper
         }
 
         public EndPoint RemoteEndpoint { get; }
-
         public PipeReader Input { get; }
-
         public PipeWriter Output { get; }
 
         public async ValueTask FlushAsync(CancellationToken cancellationToken = default) =>

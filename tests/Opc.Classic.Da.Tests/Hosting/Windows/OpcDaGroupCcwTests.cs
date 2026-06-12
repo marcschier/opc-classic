@@ -1265,13 +1265,9 @@ public sealed class OpcDaGroupCcwTests
     private static unsafe class Helpers
     {
         internal readonly record struct GetStateResult(int Hr, int UpdateRate, int Active, string? Name, int LocaleId);
-
         internal readonly record struct RemoveItemsResult(int Hr, int[] Errors);
-
         internal readonly record struct ErrorsResult(int Hr, int[] Errors);
-
         internal readonly record struct SyncReadResult(int Hr, NativeItemState[] States, int[] Errors);
-
         internal readonly record struct NativeItemState(int ClientHandle, long Timestamp, ushort Quality, OpcVariant Value);
 
         internal readonly record struct SyncReadMaxAgeResult(
@@ -1282,31 +1278,18 @@ public sealed class OpcDaGroupCcwTests
             int[] Errors);
 
         internal readonly record struct CloneGroupResult(int Hr, IntPtr Pointer);
-
         internal readonly record struct CreateEnumeratorResult(int Hr, IntPtr Pointer);
-
         internal readonly record struct ItemMethodResult(int Hr, NativeItemResult[] Results, int[] Errors);
-
         internal readonly record struct NativeItemResult(int ServerHandle, ushort CanonicalDataType, int AccessRights, int BlobSize);
-
         internal readonly record struct EnumNextResult(int Hr, uint Fetched, string?[] ItemIds);
-
         internal readonly record struct AsyncErrorsResult(int Hr, int CancelId, int[] Errors);
-
         internal readonly record struct CancelResult(int Hr, int CancelId);
-
         internal readonly record struct GetEnableResult(int Hr, bool Enabled);
-
         internal readonly record struct GuidResult(int Hr, Guid Value);
-
         internal readonly record struct PointerResult(int Hr, IntPtr Pointer);
-
         internal readonly record struct AdviseResult(int Hr, int Cookie);
-
         internal readonly record struct ConnectionDataResult(int Hr, uint Fetched, NativeConnectionData[] Connections);
-
         internal readonly record struct NativeConnectionData(IntPtr Unknown, int Cookie);
-
         internal readonly record struct ConnectionPointsResult(int Hr, uint Fetched, IntPtr[] Points);
 
         internal sealed record DataCallbackWriteInvocation(
@@ -1388,7 +1371,6 @@ public sealed class OpcDaGroupCcwTests
         private const int OpcItemVqtTrailerSize = 24;
 
         private static int OpcItemStateSize => OpcItemStateVariantOffset + ComVariantMarshaler.VariantSize;
-
         private static int OpcItemVqtSize => ComVariantMarshaler.VariantSize + OpcItemVqtTrailerSize;
 
         private static readonly Guid s_iidDataCallback = IOPCDataCallback.InterfaceId;

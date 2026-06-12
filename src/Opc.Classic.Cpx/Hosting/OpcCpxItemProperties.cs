@@ -282,7 +282,6 @@ public sealed class OpcCpxItemProperties : IOpcItemPropertyProvider, IOpcItemPro
     }
 
     private static (string ItemId, int Error) OkItemId(string itemId) => (itemId, OpcResultId.Ok.Code);
-
     private static (string ItemId, int Error) InvalidItemId() => (string.Empty, OpcResultId.InvalidPid.Code);
 
     private static void AddIfMissing(List<OpcStandardProperty> properties, OpcStandardProperty property)

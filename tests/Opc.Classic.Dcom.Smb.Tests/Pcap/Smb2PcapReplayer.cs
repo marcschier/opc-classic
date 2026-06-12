@@ -47,7 +47,6 @@ public sealed class Smb2PcapReplayer
         private const uint EncryptionCapabilityMask = 0x00000040;
 
         public bool SigningRequired => (SecurityMode & SigningRequiredMask) != 0;
-
         public bool EncryptionSupported => (Capabilities & EncryptionCapabilityMask) != 0;
     }
 
@@ -60,7 +59,6 @@ public sealed class Smb2PcapReplayer
             _packets = packets;
 
         public int MatchedClientPackets { get; private set; }
-
         public int FedServerPackets { get; private set; }
 
         public Task SendAsync(ReadOnlyMemory<byte> packet, CancellationToken cancellationToken)

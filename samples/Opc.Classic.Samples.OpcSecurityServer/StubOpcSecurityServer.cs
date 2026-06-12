@@ -33,7 +33,6 @@ public sealed class StubOpcSecurityServer : IOpcSecurity, IOPCSecurityNT, IOPCSe
     private string _currentIdentity = string.Empty;
 
     public bool SupportsWindowsAuthentication => true;
-
     public bool SupportsPrivateAuthentication => true;
 
     public bool IsAuthenticated

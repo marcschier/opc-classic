@@ -15,9 +15,7 @@ internal sealed class RemoteAeSubscription : IAeSubscription
     }
 
     public bool Active { get; private set; }
-
     public SubscriptionFilter Filter { get; private set; } = new();
-
     public IAsyncEnumerable<EventNotification> Events => ReadEventsAsync();
 
     public Task SetActiveAsync(bool active, CancellationToken cancellationToken = default)

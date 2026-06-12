@@ -637,9 +637,7 @@ internal sealed class SyntheticHdaServer : IOpcHdaServer, IHdaServer, IOPCHDA_Sy
     }
 
     private double ReadValue(int serverHandle) => _values.GetValueOrDefault(ItemId(serverHandle));
-
     private int ClientHandle(int serverHandle) => _handles.TryGetValue(serverHandle, out HandleRegistration registration) ? registration.ClientHandle : serverHandle;
-
     private string ItemId(int serverHandle) => _handles.TryGetValue(serverHandle, out HandleRegistration registration) ? registration.ItemId : string.Empty;
 
     private readonly record struct HandleRegistration(string ItemId, int ClientHandle);

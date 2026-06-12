@@ -333,7 +333,6 @@ public sealed class KerberosSession : IKerberosSession
     }
 
     private static KeyUsage GetSealUsage(byte flags) => (flags & SentByAcceptorFlag) != 0 ? KeyUsage.AcceptorSeal : KeyUsage.InitiatorSeal;
-
     private static KeyUsage GetSignUsage(byte flags) => (flags & SentByAcceptorFlag) != 0 ? KeyUsage.AcceptorSign : KeyUsage.InitiatorSign;
 
     private int GetChecksumSize()

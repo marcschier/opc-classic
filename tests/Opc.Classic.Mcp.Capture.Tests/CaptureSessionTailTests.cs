@@ -164,7 +164,6 @@ public sealed class CaptureSessionTailTests
     }
 
     private static CapturedPacket HexRequest(string tag) => MakeHexPacket(tag, direction: "request");
-
     private static CapturedPacket HexResponse(string tag) => MakeHexPacket(tag, direction: "response");
 
     private static CapturedPacket MakeHexPacket(string tag, string direction)

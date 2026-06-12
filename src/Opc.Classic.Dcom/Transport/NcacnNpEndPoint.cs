@@ -104,7 +104,6 @@ public sealed class NcacnNpEndPoint : EndPoint
 
     /// <inheritdoc />
     public override string ToString() => $"ncacn_np:{Host}[\\PIPE\\{PipeName}]";
-
     private static string TrimServerSlashes(string host) => TrimLeadingSlashes(host);
 
     private static string TrimLeadingSlashes(string value)

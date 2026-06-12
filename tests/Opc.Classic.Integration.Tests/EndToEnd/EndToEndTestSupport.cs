@@ -110,7 +110,6 @@ internal static class EndToEndNdr
     }
 
     public static long ToFileTime(DateTimeOffset value) => value.UtcTicks - FileTimeEpochOffsetTicks;
-
     public static DateTimeOffset FromFileTime(long fileTimeTicks) => new(fileTimeTicks + FileTimeEpochOffsetTicks, TimeSpan.Zero);
 }
 
@@ -183,23 +182,14 @@ internal sealed class DaEndToEndPipeline
     }
 
     public InMemoryCallChannel Channel { get; }
-
     public IOPCServerClientProxy Server { get; }
-
     public IOPCGroupStateMgtClientProxy GroupState { get; }
-
     public IOPCGroupStateMgt2ClientProxy GroupState2 { get; }
-
     public IOPCItemMgtClientProxy ItemMgt { get; }
-
     public IOPCSyncIOClientProxy SyncIo { get; }
-
     public IOPCSyncIO2ClientProxy SyncIo2 { get; }
-
     public IOPCAsyncIO2ClientProxy AsyncIo2 { get; }
-
     public IOPCBrowseServerAddressSpaceClientProxy Browse { get; }
-
     public IReadOnlyList<DaWriteObservation> LastWrites { get; private set; } = Array.Empty<DaWriteObservation>();
 
     public int GroupCount
@@ -689,7 +679,6 @@ internal sealed class DaEndToEndPipeline
     };
 
     private static NdrCallResult Ok(ReadOnlyMemory<byte> payload) => new(OpcResultId.Ok.Code, payload);
-
     private static NdrCallResult NotImplemented() => new(OpcResultId.NotImplemented.Code, ReadOnlyMemory<byte>.Empty);
 
     private static void ThrowIfFailure(NdrCallResult result)
@@ -881,23 +870,14 @@ internal sealed class DaEndToEndPipeline
         }
 
         public int ServerHandle { get; }
-
         public string Name { get; set; }
-
         public bool Active { get; set; }
-
         public int UpdateRate { get; set; }
-
         public int ClientHandle { get; set; }
-
         public int LocaleId { get; set; }
-
         public int TimeBias { get; set; }
-
         public float PercentDeadband { get; set; }
-
         public int KeepAlive { get; set; }
-
         public Dictionary<int, DaItemBinding> Items { get; } = new();
     }
 
@@ -912,11 +892,8 @@ internal sealed class DaEndToEndPipeline
         }
 
         public int ServerHandle { get; }
-
         public string ItemId { get; }
-
         public int ClientHandle { get; set; }
-
         public bool Active { get; set; }
     }
 
@@ -1258,17 +1235,11 @@ internal sealed class AeEndToEndPipeline
     }
 
     public InMemoryCallChannel Channel { get; }
-
     public IOPCEventServerClientProxy EventServer { get; }
-
     public IOPCEventServer2ClientProxy EventServer2 { get; }
-
     public IOPCEventSubscriptionMgtClientProxy SubscriptionMgt { get; }
-
     public IOPCEventSubscriptionMgt2ClientProxy SubscriptionMgt2 { get; }
-
     public IOPCEventAreaBrowserClientProxy AreaBrowser { get; }
-
     public AeAckObservation? LastAck => _serverImpl.LastAck;
 
     public int ActiveSubscriptionCount
@@ -1413,7 +1384,6 @@ internal sealed class AeEndToEndPipeline
     }
 
     private static NdrCallResult Ok(ReadOnlyMemory<byte> payload) => new(OpcResultId.Ok.Code, payload);
-
     private static NdrCallResult NotImplemented() => new(OpcResultId.NotImplemented.Code, ReadOnlyMemory<byte>.Empty);
 
     private static void ThrowIfFailure(NdrCallResult result)
@@ -1880,7 +1850,6 @@ internal sealed class AeEventSink
 }
 
 internal sealed record HdaAnnotationWireResult(string ItemId, HdaAnnotation[] Annotations, int Error);
-
 internal sealed record HdaBrowseWireElement(string Name, string ItemId, HdaBrowseType BrowseType);
 
 internal sealed class HdaEndToEndPipeline
@@ -1907,15 +1876,10 @@ internal sealed class HdaEndToEndPipeline
     }
 
     public HistoricalDataStore Store { get; }
-
     public InMemoryCallChannel Channel { get; }
-
     public IOPCHDA_ServerClientProxy Server { get; }
-
     public IOPCHDA_SyncReadClientProxy SyncRead { get; }
-
     public IOPCHDA_SyncAnnotationsClientProxy SyncAnnotations { get; }
-
     public HdaAggregate LastProcessedAggregate => _serverImpl.LastProcessedAggregate;
 
     public async Task<HdaAnnotationWireResult[]> ReadAnnotationsViaWireAsync(
@@ -2059,7 +2023,6 @@ internal sealed class HdaEndToEndPipeline
     }
 
     private static NdrCallResult Ok(ReadOnlyMemory<byte> payload) => new(OpcResultId.Ok.Code, payload);
-
     private static NdrCallResult NotImplemented() => new(OpcResultId.NotImplemented.Code, ReadOnlyMemory<byte>.Empty);
 
     private static void ThrowIfFailure(NdrCallResult result)
@@ -2383,7 +2346,6 @@ internal sealed class OrpcTrackingInMemoryChannel
     }
 
     public InMemoryCallChannel Channel => _channel;
-
     public IReadOnlyList<ObservedOrpcCall> Calls => _calls.ToArray();
 
     private async Task<NdrCallResult> InvokeWithOrpcAsync(

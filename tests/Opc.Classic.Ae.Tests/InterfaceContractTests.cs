@@ -113,7 +113,6 @@ internal sealed class FakeAeSubscription : IAeSubscription
 
     public bool Active { get; private set; }
     public SubscriptionFilter Filter { get; private set; } = new();
-
     public IAsyncEnumerable<EventNotification> Events => EventsImpl();
 
     private async IAsyncEnumerable<EventNotification> EventsImpl(
@@ -146,7 +145,6 @@ internal sealed class FakeAeSubscription : IAeSubscription
 
     public Task RefreshAsync(CancellationToken ct = default) => Task.CompletedTask;
     public Task CancelRefreshAsync(CancellationToken ct = default) => Task.CompletedTask;
-
     public ValueTask DisposeAsync() => ValueTask.CompletedTask;
 }
 

@@ -1,4 +1,5 @@
 ﻿// SPDX-License-Identifier: MIT
+
 namespace Opc.Classic.Dcom.Automation;
 
 /// <summary>

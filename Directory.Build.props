@@ -26,6 +26,16 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <!--
+      Roslynator.Formatting.Analyzers (RCS0xxx rule family). All rules ship at
+      severity 'none' by default; a curated subset is promoted to 'warning' in
+      .editorconfig. See the RCS0xxx entries near the Roslynator section in
+      .editorconfig for the per-rule rationale.
+    -->
+    <PackageReference Include="Roslynator.Formatting.Analyzers">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
 </Project>

@@ -187,6 +187,5 @@ public sealed class PcapCaptureSourceTests
     }
 
     private static string GetPcapSourceName() => PcapCaptureSource.SourceName;
-
     private static string GetDefaultOpcBpfFilter() => PcapCaptureSource.DefaultOpcBpfFilter;
 }

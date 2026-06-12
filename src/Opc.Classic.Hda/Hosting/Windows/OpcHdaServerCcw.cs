@@ -35,7 +35,6 @@ public static unsafe class OpcHdaServerCcw
     internal const int CONNECT_E_NOCONNECTION = unchecked((int)0x80040200);
 
     internal static readonly Guid IID_IUnknown = Guid.Parse("00000000-0000-0000-C000-000000000046");
-
     internal static readonly ConcurrentDictionary<IntPtr, CcwSession> s_tearoffs = new();
 
     /// <summary>Builds a CCW and returns the requested interface tearoff with refcount = 1.</summary>

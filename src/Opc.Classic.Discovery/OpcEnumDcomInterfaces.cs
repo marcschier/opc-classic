@@ -98,7 +98,6 @@ public sealed class IOPCEnumGUIDClientProxy
 {
     /// <summary>OPC Common <c>IOPCEnumGUID</c> interface identifier.</summary>
     public static readonly Guid InterfaceId = OpcGuids.IID_IOPCEnumGUID;
-
     private readonly ICallChannel _channel;
 
     /// <summary>Initializes a new instance of the <see cref="IOPCEnumGUIDClientProxy" /> class.</summary>

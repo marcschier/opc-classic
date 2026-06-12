@@ -21,7 +21,6 @@ public sealed class KdcFixture : IAsyncInitializer, IAsyncDisposable
     public const string ServerSpn = "host/opcserver.opcclassic.local";
     public const string ClientSpn = "host/opcclient.opcclassic.local";
     public const string ShortLivedServerSpn = "host/short.opcclassic.local";
-
     private const int KdcContainerPort = 88;
     private const string MasterPassword = "testcontainers-master";
 
@@ -33,27 +32,16 @@ public sealed class KdcFixture : IAsyncInitializer, IAsyncDisposable
     private KeyTable? _testUserKeyTable;
 
     public string Realm => RealmName;
-
     public string KdcHost => _container?.Hostname ?? "127.0.0.1";
-
     public int KdcPort => _container?.GetMappedPublicPort(KdcContainerPort) ?? 0;
-
     public string KdcEndpoint => $"{KdcHost}:{KdcPort}";
-
     public string Krb5Conf { get; private set; } = string.Empty;
-
     public string Krb5ConfPath { get; private set; } = string.Empty;
-
     public string TestUserKeytabPath { get; private set; } = string.Empty;
-
     public KeyTable ServerKeyTable => _serverKeyTable ?? throw new InvalidOperationException("The KDC fixture is not initialized.");
-
     public KeyTable ShortLivedServerKeyTable => _shortLivedServerKeyTable ?? throw new InvalidOperationException("The KDC fixture is not initialized.");
-
     public KeyTable TestUserKeyTable => _testUserKeyTable ?? throw new InvalidOperationException("The KDC fixture is not initialized.");
-
     public string? SkipReason { get; private set; }
-
     public bool IsAvailable => SkipReason is null;
 
     public async Task InitializeAsync()

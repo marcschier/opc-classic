@@ -125,9 +125,7 @@ public sealed class LocalEnumTests
         }
 
         public string Key { get; }
-
         public string Path { get; }
-
         public string? Value { get; set; }
 
         public string? this[string key]
@@ -137,7 +135,6 @@ public sealed class LocalEnumTests
         }
 
         public IEnumerable<IConfigurationSection> GetChildren() => _children;
-
         public IChangeToken GetReloadToken() => NoopChangeToken.Instance;
 
         public IConfigurationSection GetSection(string key)
@@ -184,9 +181,7 @@ public sealed class LocalEnumTests
     private sealed class NoopChangeToken : IChangeToken
     {
         public static NoopChangeToken Instance { get; } = new();
-
         public bool HasChanged => false;
-
         public bool ActiveChangeCallbacks => false;
 
         public IDisposable RegisterChangeCallback(Action<object?> callback, object? state) => NoopDisposable.Instance;

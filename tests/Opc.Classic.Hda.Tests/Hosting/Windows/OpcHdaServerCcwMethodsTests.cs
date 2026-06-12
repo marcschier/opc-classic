@@ -175,11 +175,8 @@ public sealed class OpcHdaServerCcwMethodsTests
     private sealed class StubHdaServer : IOpcHdaServer
     {
         public int StatusCalls { get; private set; }
-
         public string[]? LastValidatedItemIds { get; private set; }
-
         public int[]? LastClientHandles { get; private set; }
-
         public int[]? LastReleasedHandles { get; private set; }
 
         public Task<OpcServerStatus> GetStatusAsync(CancellationToken cancellationToken = default)
@@ -232,9 +229,7 @@ public sealed class OpcHdaServerCcwMethodsTests
             string? VendorInfo);
 
         internal readonly record struct ErrorsResult(int Hr, int[] Errors);
-
         internal readonly record struct ItemHandlesResult(int Hr, int[] ServerHandles, int[] Errors);
-
         private readonly record struct StringArrayAllocation(IntPtr Array, IntPtr[] Strings);
 
         internal static IntPtr InvokeQI(IntPtr ccw, Guid iid)

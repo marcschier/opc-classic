@@ -37,7 +37,6 @@ public sealed class PcapCaptureSource : ICaptureSource
 {
     /// <summary>Stable source name surfaced via the MCP info DTO.</summary>
     public const string SourceName = "pcap";
-
     private const int kDefaultMaxBytes = 50 * 1024 * 1024;
     private const int kDefaultMaxDurationSeconds = 30 * 60;
     private const string kPcapFileName = "capture.pcap";
@@ -103,7 +102,6 @@ public sealed class PcapCaptureSource : ICaptureSource
     private readonly ILogger _logger;
     private readonly string _filePath;
     private readonly Lock _lock = new();
-
     private LibPcapLiveDevice? _device;
     private CaptureFileWriterDevice? _writer;
     private long _packetCount;

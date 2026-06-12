@@ -60,15 +60,10 @@ internal sealed class LoopbackGroup
     }
 
     public int ServerHandle { get; }
-
     public string Name { get; }
-
     public bool Active { get; }
-
     public int UpdateRateMs { get; }
-
     public int ClientHandle { get; }
-
     public Dictionary<int, LoopbackItemBinding> Items { get; } = new();
 }
 

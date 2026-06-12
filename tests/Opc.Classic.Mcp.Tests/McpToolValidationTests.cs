@@ -164,7 +164,6 @@ public sealed class McpToolValidationTests
     private sealed class CapturingDaConnectionFactory : IOpcDaConnectionFactory
     {
         public static readonly Guid FactoryClassId = Guid.Parse("10138C2C-0000-0000-0000-00000000C003");
-
         private readonly SyntheticDaServer _server = new();
 
         public DaConnectionRequest? LastRequest { get; private set; }

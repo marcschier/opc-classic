@@ -164,7 +164,6 @@ public static unsafe class OpcHdaBrowserCcw
         }
 
         public IOpcHdaServerDispatcher Dispatcher { get; }
-
         public OpcHdaBrowseFilter[] Filters { get; }
 
         public string GetBranchPosition()

@@ -19,7 +19,6 @@ internal static unsafe class OpcHdaItemMarshaler
     private static int PointerAlignedAfterTwoDwords => Align(2 * sizeof(int), IntPtr.Size);
     private static int HdaTimeStringOffset => IntPtr.Size == 8 ? 8 : 4;
     private static int HdaTimeFileTimeOffset => HdaTimeStringOffset + IntPtr.Size;
-
     public static int ItemSize => PointerAlignedAfterThreeDwords + (3 * IntPtr.Size);
     public static int AttributeSize => PointerAlignedAfterThreeDwords + (2 * IntPtr.Size);
     public static int ModifiedItemSize => PointerAlignedAfterTwoDwords + (6 * IntPtr.Size);
@@ -487,11 +486,8 @@ internal static unsafe class OpcHdaItemMarshaler
     }
 
     private static long ToFileTime(DateTimeOffset value) => value == default ? 0L : value.ToFileTime();
-
     private static int Align(int value, int alignment) => (value + alignment - 1) & ~(alignment - 1);
-
     private static void WritePointer(IntPtr basePtr, int offset, IntPtr value) => Marshal.WriteIntPtr(basePtr, offset, value);
-
     private static IntPtr ReadPointer(IntPtr basePtr, int offset) => Marshal.ReadIntPtr(basePtr, offset);
 }
 
@@ -704,19 +700,32 @@ internal static unsafe class OpcHdaVariantMarshaler
             object? value = data.GetValue(i);
             switch (baseVt)
             {
-                case VT_I1: Marshal.WriteByte(slot, unchecked((byte)(sbyte)(value ?? (sbyte)0))); break;
-                case VT_UI1: Marshal.WriteByte(slot, (byte)(value ?? (byte)0)); break;
-                case VT_I2: Marshal.WriteInt16(slot, (short)(value ?? (short)0)); break;
-                case VT_UI2: Marshal.WriteInt16(slot, unchecked((short)(ushort)(value ?? (ushort)0))); break;
-                case VT_BOOL: Marshal.WriteInt16(slot, value is bool b && b ? unchecked((short)0xFFFF) : (short)0); break;
-                case VT_I4: case VT_INT: case VT_ERROR: Marshal.WriteInt32(slot, (int)(value ?? 0)); break;
-                case VT_UI4: case VT_UINT: Marshal.WriteInt32(slot, unchecked((int)(uint)(value ?? 0u))); break;
-                case VT_R4: Marshal.WriteInt32(slot, BitConverter.SingleToInt32Bits((float)(value ?? 0f))); break;
-                case VT_I8: case VT_FILETIME: case VT_CY: Marshal.WriteInt64(slot, (long)(value ?? 0L)); break;
-                case VT_UI8: Marshal.WriteInt64(slot, unchecked((long)(ulong)(value ?? 0ul))); break;
-                case VT_R8: Marshal.WriteInt64(slot, BitConverter.DoubleToInt64Bits((double)(value ?? 0d))); break;
-                case VT_DATE: Marshal.WriteInt64(slot, BitConverter.DoubleToInt64Bits(((DateTime?)value ?? DateTime.UnixEpoch).ToOADate())); break;
-                case VT_BSTR: Marshal.WriteIntPtr(slot, value is null ? IntPtr.Zero : Marshal.StringToBSTR((string)value)); break;
+                case VT_I1:
+                    Marshal.WriteByte(slot, unchecked((byte)(sbyte)(value ?? (sbyte)0))); break;
+                case VT_UI1:
+                    Marshal.WriteByte(slot, (byte)(value ?? (byte)0)); break;
+                case VT_I2:
+                    Marshal.WriteInt16(slot, (short)(value ?? (short)0)); break;
+                case VT_UI2:
+                    Marshal.WriteInt16(slot, unchecked((short)(ushort)(value ?? (ushort)0))); break;
+                case VT_BOOL:
+                    Marshal.WriteInt16(slot, value is bool b && b ? unchecked((short)0xFFFF) : (short)0); break;
+                case VT_I4: case VT_INT: case VT_ERROR:
+                    Marshal.WriteInt32(slot, (int)(value ?? 0)); break;
+                case VT_UI4: case VT_UINT:
+                    Marshal.WriteInt32(slot, unchecked((int)(uint)(value ?? 0u))); break;
+                case VT_R4:
+                    Marshal.WriteInt32(slot, BitConverter.SingleToInt32Bits((float)(value ?? 0f))); break;
+                case VT_I8: case VT_FILETIME: case VT_CY:
+                    Marshal.WriteInt64(slot, (long)(value ?? 0L)); break;
+                case VT_UI8:
+                    Marshal.WriteInt64(slot, unchecked((long)(ulong)(value ?? 0ul))); break;
+                case VT_R8:
+                    Marshal.WriteInt64(slot, BitConverter.DoubleToInt64Bits((double)(value ?? 0d))); break;
+                case VT_DATE:
+                    Marshal.WriteInt64(slot, BitConverter.DoubleToInt64Bits(((DateTime?)value ?? DateTime.UnixEpoch).ToOADate())); break;
+                case VT_BSTR:
+                    Marshal.WriteIntPtr(slot, value is null ? IntPtr.Zero : Marshal.StringToBSTR((string)value)); break;
             }
         }
     }

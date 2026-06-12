@@ -1,4 +1,5 @@
 ﻿// SPDX-License-Identifier: MIT
+
 using Opc.Classic.Dcom.Common;
 using Opc.Classic.Dcom.Automation;
 using Opc.Classic.Dcom.Rpc.Core;

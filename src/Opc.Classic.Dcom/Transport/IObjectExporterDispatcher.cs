@@ -58,13 +58,11 @@ public sealed class IObjectExporterDispatcher : IOpcServerDispatcher
 
     private const int E_INVALIDARG = unchecked((int)0x80070057u);
     private const int RPC_S_PROCNUM_OUT_OF_RANGE = unchecked((int)0x800706D1u);
-
     // DCOM 5.4 — the version reported by the legacy ComOxidRuntimeHelper.
     // Modern Windows DCOM (5.6+) accepts 5.4 in interop, so we stay at
     // 5.4 unless a follow-up requires bumping.
     private const ushort ComVersionMajor = 5;
     private const ushort ComVersionMinor = 4;
-
     // Authn hint: RPC_C_AUTHN_LEVEL_NONE (1). Loopback callbacks don't
     // require authentication; if the server insists, it'll renegotiate.
     private const uint AuthnHintNone = 1;

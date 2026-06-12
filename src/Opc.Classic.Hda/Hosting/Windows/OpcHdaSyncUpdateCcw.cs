@@ -265,7 +265,6 @@ internal static class OpcHdaCcwUpdateHelpers
     }
 
     public static int[] CreateSucceededErrors(int count) => new int[count];
-
     public static int GetMasterHResult(int[] errors) => HasAnyFailure(errors) ? OpcHdaServerCcw.S_FALSE : OpcHdaServerCcw.S_OK;
 
     public static int MapHResult(Exception ex) => ex switch

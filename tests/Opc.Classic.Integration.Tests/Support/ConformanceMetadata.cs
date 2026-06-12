@@ -19,8 +19,6 @@ internal static class ConformanceMetadata
     }
 
     public static Type ReadType<T>() => typeof(T);
-
     public static string ReadString(string value) => value;
-
     public static int ReadInt32(int value) => value;
 }

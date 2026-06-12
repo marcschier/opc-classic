@@ -21,13 +21,9 @@ public sealed class ObjRefExtension
     }
 
     public string DataId { get; }
-
     public int Size { get; }
-
     public int RoundedSize { get; }
-
     public byte[] Data { get; }
-
     public int Length => 16 + 4 + 4 + RoundedSize;
 
     internal static ObjRefExtension Decode(NdrCodec ndr)

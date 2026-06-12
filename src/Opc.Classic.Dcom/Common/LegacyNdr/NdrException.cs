@@ -7,7 +7,6 @@ public class NdrException : IOException
     public const int Subprotocol = 0;
     public const int NoNullRefReason = 1;
     public const int InvalidArrayConformance = 2;
-
     public const string NoNullRef = "ref pointer cannot be null";
     public const string InvalidConformance = "invalid array conformance";
 

@@ -453,9 +453,7 @@ public sealed class OpcDaServerCcwTests
     private sealed class RecordingDaServer : IOpcDaServer
     {
         public int RemoveGroupCallCount { get; private set; }
-
         public int LastRemovedGroupHandle { get; private set; }
-
         public bool LastRemoveGroupForce { get; private set; }
 
         public Task<OpcServerStatus> GetStatusAsync(CancellationToken cancellationToken = default) =>

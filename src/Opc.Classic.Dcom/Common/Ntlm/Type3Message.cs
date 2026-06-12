@@ -25,7 +25,6 @@ public sealed class Type3Message : NtlmMessage
     }
 
     public Type3Message(byte[] raw) => Parse(raw, DefaultMaxMessageSize);
-
     internal Type3Message(byte[] raw, int maxMessageSize) => Parse(raw, maxMessageSize);
 
     public Type3Message(NtlmFlags flags, byte[] lmResponse, byte[] ntResponse,
@@ -66,13 +65,9 @@ public sealed class Type3Message : NtlmMessage
     }
 
     public override int MessageType => 3;
-
     public byte[]? LmResponse { get; set; }
-
     public byte[]? NtResponse { get; set; }
-
     public string? Domain { get; set; }
-
     public string? User { get; set; }
 
     public string? Username
@@ -82,7 +77,6 @@ public sealed class Type3Message : NtlmMessage
     }
 
     public string? Workstation { get; set; }
-
     public byte[]? EncryptedRandomSessionKey { get; set; }
 
     public static string GetDefaultDomain() => string.Empty;
@@ -94,9 +88,7 @@ public sealed class Type3Message : NtlmMessage
         type2Message?.Flags ?? GetDefaultFlags();
 
     public static string GetDefaultPassword() => string.Empty;
-
     public static string GetDefaultUser() => string.Empty;
-
     public static string GetDefaultWorkstation() => Environment.MachineName;
 
     public static byte[] GetLMResponse(Type2Message type2Message, string password)
@@ -138,29 +130,19 @@ public sealed class Type3Message : NtlmMessage
     }
 
     public string? GetDomain() => Domain;
-
     public byte[] GetLMResponse() => CloneOrEmpty(LmResponse);
-
     public byte[] GetMasterKey() => CloneOrEmpty(EncryptedRandomSessionKey);
-
     public byte[] GetNTResponse() => CloneOrEmpty(NtResponse);
-
     public byte[] GetSessionKey() => CloneOrEmpty(EncryptedRandomSessionKey);
-
     public byte[] GetMic() => CloneOrEmpty(_mic);
 
     public bool HasMic => _mic is { Length: MicLength };
 
     public string? GetUser() => User;
-
     public string? GetWorkstation() => Workstation;
-
     public void SetDomain(string domain) => Domain = domain;
-
     public void SetLmResponse(byte[] lmResponse) => LmResponse = CloneOrEmpty(lmResponse);
-
     public void SetNtResponse(byte[] ntResponse) => NtResponse = CloneOrEmpty(ntResponse);
-
     public void SetSessionKey(byte[] sessionKey) => EncryptedRandomSessionKey = CloneOrEmpty(sessionKey);
 
     public void SetMic(byte[] mic)
@@ -175,9 +157,7 @@ public sealed class Type3Message : NtlmMessage
     }
 
     public void ClearMic() => _mic = null;
-
     public void SetUser(string user) => User = user;
-
     public void SetWorkstation(string workstation) => Workstation = workstation;
 
     public override byte[] ToByteArray()

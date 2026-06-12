@@ -167,7 +167,6 @@ internal sealed class SyntheticDxClient : IOpcDxClient
     private readonly Dictionary<string, DxSourceServer> _sources = new(StringComparer.Ordinal);
 
     public bool Disposed { get; private set; }
-
     public int ConnectionCount => _connections.Count;
 
     public ValueTask DisposeAsync()

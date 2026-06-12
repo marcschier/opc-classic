@@ -262,7 +262,6 @@ public sealed class OpcHdaAsyncUpdateCcwTests
         private static readonly CancelCallback s_onCancelComplete = OnCancelComplete;
         private static readonly HdaItemsCallback s_ignoredItems = OnIgnoredItems;
         private static readonly AttributeCallback s_ignoredAttribute = OnIgnoredAttribute;
-
         private readonly IntPtr _vtable;
         private int _updateCount;
         private int _cancelId;

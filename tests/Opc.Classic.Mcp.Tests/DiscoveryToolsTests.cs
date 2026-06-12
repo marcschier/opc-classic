@@ -46,7 +46,6 @@ public sealed class DiscoveryToolsTests
 internal sealed class SyntheticOpcEnumServer : IOpcEnumCallChannelFactory
 {
     private static readonly Guid RemoteScmActivatorInterfaceId = new("000001A0-0000-0000-C000-000000000046");
-
     private readonly Dictionary<Guid, List<Guid>> _categoryClasses = new();
     private readonly Dictionary<Guid, SyntheticOpcServerDetails> _details = new();
     private readonly Queue<IReadOnlyList<Guid>> _pendingEnums = new();

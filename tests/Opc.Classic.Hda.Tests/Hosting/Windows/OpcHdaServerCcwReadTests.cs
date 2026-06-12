@@ -630,7 +630,6 @@ public sealed class OpcHdaServerCcwReadTests
         private static readonly HdaItemsCallback s_onReadAnnotations = OnReadAnnotations;
         private static readonly HdaItemsCallback s_onIgnored = OnIgnored;
         private static readonly CancelCallback s_onCancelComplete = OnCancelComplete;
-
         private readonly IntPtr _vtable;
 
         public CallbackCcw()

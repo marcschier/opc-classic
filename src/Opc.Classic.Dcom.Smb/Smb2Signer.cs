@@ -28,7 +28,6 @@ public sealed class Smb2Signer
 {
     /// <summary>Length of the SMB2 Signature header field in bytes; see [MS-SMB2] §2.2.1.2.</summary>
     public const int SignatureLength = 16;
-
     private const int AesBlockLength = 16;
     private const int SmbSigningKeyLengthBits = 128;
     private const byte AesCmacRb = 0x87;

@@ -254,9 +254,7 @@ public sealed class DaBrowseContinuationPointTests
         }
 
         public IOPCBrowseClientProxy Proxy { get; }
-
         public string ItemId { get; }
-
         public string[] ExpectedItemIds { get; }
 
         public static async Task<BrowseLoopback> StartAsync(bool hierarchical)

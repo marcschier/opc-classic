@@ -18,7 +18,6 @@ internal sealed class FakeCaptureSource : ICaptureSource
     public int DisposeCallCount { get; private set; }
     public int LinkType { get; set; }
     public string? RawPcapFilePath { get; set; }
-
     public long PacketCount => Packets.Count;
 
     public long ByteCount

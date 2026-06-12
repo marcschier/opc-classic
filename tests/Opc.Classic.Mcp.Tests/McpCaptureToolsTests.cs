@@ -221,11 +221,8 @@ public sealed class McpCaptureToolsTests
         public SyntheticCaptureSource(string? rawPcapPath) => _rawPcapPath = rawPcapPath;
 
         public long PacketCount { get; init; }
-
         public long ByteCount { get; init; }
-
         public int LinkType => 0;
-
         public CaptureStartRequest? StartRequest { get; private set; }
 
         public Task StartAsync(CaptureStartRequest request, CancellationToken cancellationToken)
@@ -252,7 +249,6 @@ public sealed class McpCaptureToolsTests
         }
 
         public string? GetRawPcapFilePath() => _rawPcapPath;
-
         public ValueTask DisposeAsync() => ValueTask.CompletedTask;
     }
 }

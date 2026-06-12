@@ -4,6 +4,7 @@
 //
 //    This class is used to convert some aspects of the Java String class.
 // -------------------------------------------------------------------------------------------
+
 namespace System;
 
 /// <summary>

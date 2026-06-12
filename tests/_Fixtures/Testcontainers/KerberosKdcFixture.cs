@@ -28,11 +28,8 @@ public sealed class KerberosKdcFixture : IAsyncDisposable
     }
 
     public string Realm { get; }
-
     public string Host => _container.Hostname;
-
     public int Port => _container.GetMappedPublicPort(KdcPort);
-
     public string Kdc => $"{Host}:{Port}";
 
     public static async Task<KerberosKdcFixture> StartAsync(

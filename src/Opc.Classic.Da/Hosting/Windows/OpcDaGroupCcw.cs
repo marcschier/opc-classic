@@ -58,7 +58,6 @@ public static unsafe class OpcDaGroupCcw
     internal const int CONNECT_E_NOCONNECTION = unchecked((int)0x80040200);
 
     internal static readonly Guid IID_IUnknown = Guid.Parse("00000000-0000-0000-C000-000000000046");
-
     // Tearoff pointer -> session. Multiple tearoffs map to the same session.
     internal static readonly ConcurrentDictionary<IntPtr, CcwSession> s_tearoffs = new();
 

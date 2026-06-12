@@ -20,7 +20,6 @@ public sealed class LegacyActivationServer : IActivationServer
     private const int E_NOINTERFACE = unchecked((int)0x80004002u);
     private const uint AuthnHintPacketIntegrity = 5;
     private static readonly (ushort Major, ushort Minor) ServerComVersion = (5, 1);
-
     private readonly RemoteSCMActivatorServer _modernActivator;
 
     /// <summary>Initializes a new legacy activation server backed by the modern activator.</summary>

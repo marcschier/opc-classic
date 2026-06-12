@@ -405,20 +405,34 @@ public static unsafe class ComVariantMarshaler
             object? value = data.GetValue(i);
             switch (baseVt)
             {
-                case VT_I1: Marshal.WriteByte(slot, (byte)(sbyte)(value ?? (sbyte)0)); break;
-                case VT_UI1: Marshal.WriteByte(slot, (byte)(value ?? (byte)0)); break;
-                case VT_I2: Marshal.WriteInt16(slot, (short)(value ?? (short)0)); break;
-                case VT_UI2: Marshal.WriteInt16(slot, (short)(ushort)(value ?? (ushort)0)); break;
-                case VT_BOOL: Marshal.WriteInt16(slot, (value is bool b && b) ? unchecked((short)0xFFFF) : (short)0); break;
-                case VT_I4: case VT_ERROR: Marshal.WriteInt32(slot, (int)(value ?? 0)); break;
-                case VT_UI4: Marshal.WriteInt32(slot, unchecked((int)(uint)(value ?? 0u))); break;
-                case VT_R4: Marshal.WriteInt32(slot, BitConverter.SingleToInt32Bits((float)(value ?? 0f))); break;
-                case VT_I8: Marshal.WriteInt64(slot, (long)(value ?? 0L)); break;
-                case VT_UI8: Marshal.WriteInt64(slot, unchecked((long)(ulong)(value ?? 0ul))); break;
-                case VT_R8: Marshal.WriteInt64(slot, BitConverter.DoubleToInt64Bits((double)(value ?? 0d))); break;
-                case VT_DATE: Marshal.WriteInt64(slot, BitConverter.DoubleToInt64Bits(((DateTime?)value ?? DateTime.UnixEpoch).ToOADate())); break;
-                case VT_BSTR: Marshal.WriteIntPtr(slot, AllocateBstr(value as string)); break;
-                default: break;
+                case VT_I1:
+                    Marshal.WriteByte(slot, (byte)(sbyte)(value ?? (sbyte)0)); break;
+                case VT_UI1:
+                    Marshal.WriteByte(slot, (byte)(value ?? (byte)0)); break;
+                case VT_I2:
+                    Marshal.WriteInt16(slot, (short)(value ?? (short)0)); break;
+                case VT_UI2:
+                    Marshal.WriteInt16(slot, (short)(ushort)(value ?? (ushort)0)); break;
+                case VT_BOOL:
+                    Marshal.WriteInt16(slot, (value is bool b && b) ? unchecked((short)0xFFFF) : (short)0); break;
+                case VT_I4: case VT_ERROR:
+                    Marshal.WriteInt32(slot, (int)(value ?? 0)); break;
+                case VT_UI4:
+                    Marshal.WriteInt32(slot, unchecked((int)(uint)(value ?? 0u))); break;
+                case VT_R4:
+                    Marshal.WriteInt32(slot, BitConverter.SingleToInt32Bits((float)(value ?? 0f))); break;
+                case VT_I8:
+                    Marshal.WriteInt64(slot, (long)(value ?? 0L)); break;
+                case VT_UI8:
+                    Marshal.WriteInt64(slot, unchecked((long)(ulong)(value ?? 0ul))); break;
+                case VT_R8:
+                    Marshal.WriteInt64(slot, BitConverter.DoubleToInt64Bits((double)(value ?? 0d))); break;
+                case VT_DATE:
+                    Marshal.WriteInt64(slot, BitConverter.DoubleToInt64Bits(((DateTime?)value ?? DateTime.UnixEpoch).ToOADate())); break;
+                case VT_BSTR:
+                    Marshal.WriteIntPtr(slot, AllocateBstr(value as string)); break;
+                default:
+                    break;
             }
         }
     }

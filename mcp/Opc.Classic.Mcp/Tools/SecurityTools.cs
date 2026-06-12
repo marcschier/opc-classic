@@ -135,7 +135,6 @@ public sealed class SecurityTools
         }
 
         public bool IsAuthenticated { get; private set; }
-
         public string CurrentIdentity { get; private set; } = string.Empty;
 
         public async Task<bool> IsAvailableNtAsync(CancellationToken cancellationToken = default)

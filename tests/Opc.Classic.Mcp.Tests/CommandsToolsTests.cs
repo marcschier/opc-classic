@@ -106,9 +106,7 @@ public sealed class CommandsToolsTests
         public SyntheticCommandsServer() => Channel = new InMemoryCallChannel(DispatchAsync);
 
         public InMemoryCallChannel Channel { get; }
-
         public string? LastControl { get; private set; }
-
         public string? DisconnectedInvocationId { get; private set; }
 
         private Task<NdrCallResult> DispatchAsync(Guid interfaceId, int opnum, ReadOnlyMemory<byte> requestPayload, CancellationToken cancellationToken)

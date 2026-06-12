@@ -169,11 +169,8 @@ public sealed class NcacnNpTransportTests
         private byte[] _lastRequestPacket = [];
 
         public List<Smb2Command> SentCommands { get; } = [];
-
         public string? OpenedPipeName { get; private set; }
-
         public byte[] LastTransceivePayload { get; private set; } = [];
-
         public bool IsDisposed { get; private set; }
 
         public void OnNegotiate()

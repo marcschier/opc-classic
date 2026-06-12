@@ -121,6 +121,5 @@ internal static class LoopbackNdr
     }
 
     public static long ToFileTime(DateTimeOffset value) => value.UtcTicks - FileTimeEpochOffsetTicks;
-
     public static DateTimeOffset FromFileTime(long fileTimeTicks) => new(fileTimeTicks + FileTimeEpochOffsetTicks, TimeSpan.Zero);
 }

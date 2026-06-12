@@ -213,13 +213,9 @@ public sealed class HostingAdditionalTests
         }
 
         public string SpecName { get; }
-
         public OpcClsidRegistration Registration { get; }
-
         public Exception? StartException { get; init; }
-
         public int StartCount { get; private set; }
-
         public int StopCount { get; private set; }
 
         public Task StartAsync(CancellationToken cancellationToken)
@@ -331,9 +327,7 @@ public sealed class HostingAdditionalTests
         }
 
         public string Key { get; }
-
         public string Path { get; }
-
         public string? Value { get; set; }
 
         public string? this[string key]
@@ -343,7 +337,6 @@ public sealed class HostingAdditionalTests
         }
 
         public IEnumerable<IConfigurationSection> GetChildren() => _children;
-
         public IChangeToken GetReloadToken() => NoopChangeToken.Instance;
 
         public IConfigurationSection GetSection(string key)
@@ -390,9 +383,7 @@ public sealed class HostingAdditionalTests
     private sealed class NoopChangeToken : IChangeToken
     {
         public static NoopChangeToken Instance { get; } = new();
-
         public bool HasChanged => false;
-
         public bool ActiveChangeCallbacks => false;
 
         public IDisposable RegisterChangeCallback(Action<object?> callback, object? state) => NoopDisposable.Instance;

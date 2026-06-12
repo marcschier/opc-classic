@@ -56,14 +56,12 @@ public sealed class TagTree
 public interface ITagSource
 {
     object? Read();
-
     bool TryWrite(object? value);
 }
 
 internal abstract class ReadOnlyTag : ITagSource
 {
     public abstract object? Read();
-
     public bool TryWrite(object? value) => false;
 }
 
@@ -204,14 +202,12 @@ internal sealed class BucketString : BucketTag<string>
 internal abstract class WaveReal4Tag : ReadOnlyTag
 {
     public sealed override object Read() => (float)Sample();
-
     protected abstract double Sample();
 }
 
 internal abstract class WaveReal8Tag : ReadOnlyTag
 {
     public sealed override object Read() => Sample();
-
     protected abstract double Sample();
 }
 
@@ -266,17 +262,11 @@ internal sealed class WriteErrorTag : ITagSource
 internal static class RandomValues
 {
     public static float NextSingle() => RandomNumberGenerator.GetInt32(0, 1_000_000) / 1_000_000.0F;
-
     public static double NextDouble() => RandomNumberGenerator.GetInt32(0, 1_000_000) / 1_000_000.0D;
-
     public static sbyte NextSByte() => (sbyte)RandomNumberGenerator.GetInt32(sbyte.MinValue, sbyte.MaxValue + 1);
-
     public static short NextInt16() => (short)RandomNumberGenerator.GetInt32(short.MinValue, short.MaxValue + 1);
-
     public static int NextInt32() => RandomNumberGenerator.GetInt32(0, int.MaxValue);
-
     public static byte NextByte() => (byte)RandomNumberGenerator.GetInt32(byte.MinValue, byte.MaxValue + 1);
-
     public static ushort NextUInt16() => (ushort)RandomNumberGenerator.GetInt32(ushort.MinValue, ushort.MaxValue + 1);
 
     public static uint NextUInt32()
@@ -298,7 +288,6 @@ internal static class WaveMath
     private const long PeriodMilliseconds = 10_000;
 
     public static double Sawtooth() => Phase() * 100.0D;
-
     public static double Square() => Phase() < 0.5D ? 100.0D : 0.0D;
 
     public static double Triangle()

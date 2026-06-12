@@ -17,7 +17,6 @@ public sealed class ActivationClient : IActivationClient, IAsyncDisposable
     private const ushort RpcProtocolSequenceTcp = 0x07;
 
     private static readonly Guid ActivationInterfaceId = Guid.Parse(Interfaces.IID_IActivation);
-
     private readonly ICallChannel _channel;
     private readonly IAsyncDisposable? _ownedChannel;
 

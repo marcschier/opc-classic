@@ -18,7 +18,6 @@ internal delegate T NdrValueReader<T>(ref NdrReader reader);
 internal static class CodecProperty
 {
     internal const int SampleIterations = 100;
-
     private const int InitialCapacity = 4096;
     private const int MaxCapacity = 4 * 1024 * 1024;
     private static readonly long MinUtcTicks = new DateTimeOffset(1900, 1, 1, 0, 0, 0, TimeSpan.Zero).Ticks;

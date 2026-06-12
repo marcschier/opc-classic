@@ -151,12 +151,10 @@ public sealed class NtlmPassiveUnwrapper : IDisposable
     private readonly NtlmFlags _flags;
     private readonly ProtectionLevel _protection;
     private readonly bool _encryptMessageSignature;
-
     private byte[] _clientSigningKey;
     private byte[] _serverSigningKey;
     private readonly RC4Engine _clientCipher;
     private readonly RC4Engine _serverCipher;
-
     private int _clientSequence;
     private int _serverSequence;
     private bool _disposed;

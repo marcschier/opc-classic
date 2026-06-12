@@ -402,7 +402,6 @@ public static class Responses
     /// <returns> The HMAC-MD5 hash of the given data. </returns>
 #pragma warning disable CA5351 // NTLM requires HMAC-MD5 per [MS-NLMP].
     internal static byte[] HmacMD5(byte[] data, byte[] key) => HmacMD5(data.AsSpan(), key.AsSpan());
-
     internal static byte[] HmacMD5(ReadOnlySpan<byte> data, ReadOnlySpan<byte> key) => HMACMD5.HashData(key, data);
 #pragma warning restore CA5351
 

@@ -846,7 +846,6 @@ namespace Opc.Classic.Generators
         sb.Append(indent).Append("        ").Append(staticOrInstance).Append(ResponseValueType(method)).Append(' ').Append(DecodeResponseName(method)).Append("(global::System.ReadOnlyMemory<byte> ").Append(responsePayloadLocal).AppendLine(")"); sb.Append(indent).AppendLine("        {"); sb.Append(indent).Append("            var ").Append(responseSpanLocal).Append(" = ").Append(responsePayloadLocal).AppendLine(".Span;"); sb.Append(indent).Append("            var ").Append(readerLocal).Append(" = new global::Opc.Classic.Ndr.NdrReader(").Append(responseSpanLocal).AppendLine(");"); EmitCodecReadResponse(sb, indent, readerLocal, method, responsePayloadLocal, responseSpanLocal); sb.Append(indent).AppendLine("        }");
     }
     private static string InvokeCoreName(MethodModel method) => "__opcInvoke" + method.Name + "CoreAsync";
-
     private static string DecodeResponseName(MethodModel method) => "__opcDecode" + method.Name + "Response";
 
     private static void EmitFailureCheck(StringBuilder sb, string indent, string resultLocal)
@@ -2110,7 +2109,6 @@ namespace Opc.Classic.Generators
         /// despite <c>pointer_default(unique)</c> at the interface level.
         /// </summary>
         public bool RefString { get; }
-
         public bool IsRequestValue => !IsCancellationToken && RefKind != RefKind.Out;
         public bool IsResponseValue => !IsCancellationToken && (RefKind == RefKind.Out || RefKind == RefKind.Ref);
     }

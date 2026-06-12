@@ -201,7 +201,6 @@ public sealed class OpcEnumClientTests
 internal sealed class SyntheticOpcEnumServer : IOpcEnumCallChannelFactory
 {
     private static readonly Guid RemoteScmActivatorInterfaceId = new("000001A0-0000-0000-C000-000000000046");
-
     private readonly Dictionary<Guid, List<Guid>> _categoryClasses = new();
     private readonly Dictionary<Guid, SyntheticOpcServerDetails> _details = new();
     private readonly Queue<IReadOnlyList<Guid>> _pendingEnums = new();
@@ -213,7 +212,6 @@ internal sealed class SyntheticOpcEnumServer : IOpcEnumCallChannelFactory
         _channel = new InMemoryCallChannel(HandleCallAsync);
 
     public int GetClassDetailsHresult { get; init; }
-
     public OpcProtectionLevel ActivationProtectionLevel { get; init; } = OpcProtectionLevel.Integrity;
 
     /// <summary>
@@ -226,9 +224,7 @@ internal sealed class SyntheticOpcEnumServer : IOpcEnumCallChannelFactory
     /// <c>OpcEnumClient.EnumerateAsync</c>.
     /// </summary>
     public bool RejectServerList2Bind { get; init; }
-
     public List<ActivationProperties> ActivationRequests { get; } = new();
-
     public IReadOnlyList<InMemoryCall> Calls => _channel.CallLog;
 
     public SyntheticOpcEnumServer AddServer(

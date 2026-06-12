@@ -34,7 +34,6 @@ public sealed class Smb2Crypter
 
     /// <summary>Length of the AES-GCM nonce carried in TRANSFORM_HEADER.Nonce; see [MS-SMB2] §2.2.41.</summary>
     public const int AesGcmNonceLength = 12;
-
     private const int SmbEncryptionKeyLengthBits = 128;
 
     private readonly byte[] _key;

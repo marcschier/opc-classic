@@ -209,7 +209,6 @@ internal sealed class FakeDaSubscription : IDaSubscription
         Task.FromResult<IReadOnlyList<IdentifiedResult>>(serverHandles.Select(h => new IdentifiedResult($"#{h}")).ToList());
 
     public Task<int> RefreshAsync(bool fromCache, CancellationToken ct = default) => Task.FromResult(42);
-
     public ValueTask DisposeAsync() => ValueTask.CompletedTask;
 }
 

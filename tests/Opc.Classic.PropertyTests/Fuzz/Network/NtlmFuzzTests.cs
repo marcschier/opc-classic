@@ -172,8 +172,6 @@ public sealed class NtlmFuzzTests
         FuzzHarness.AssertParseDoesNotCrash(input, parse, AllowedNtlmExceptions);
 
     private static NtlmMessage ParseType1(ReadOnlyMemory<byte> bytes) => new Type1Message(bytes.ToArray());
-
     private static NtlmMessage ParseType2(ReadOnlyMemory<byte> bytes) => new Type2Message(bytes.ToArray());
-
     private static NtlmMessage ParseType3(ReadOnlyMemory<byte> bytes) => new Type3Message(bytes.ToArray());
 }

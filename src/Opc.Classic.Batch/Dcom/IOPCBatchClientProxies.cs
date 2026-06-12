@@ -313,7 +313,6 @@ internal static class OpcBatchProxyCodec
     private const int MaximumPayloadSize = 65536;
 
     internal delegate void NdrWriteAction(ref NdrWriter writer);
-
     internal delegate T NdrReadFunc<T>(ref NdrReader reader);
 
     public static async Task<IOpcInterfaceRef> InvokeInterfaceRefAsync(

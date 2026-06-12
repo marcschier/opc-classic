@@ -99,7 +99,6 @@ internal sealed class SyntheticSecurityClient : IOpcSecurityClient
     }
 
     public bool IsAuthenticated { get; private set; }
-
     public string CurrentIdentity { get; private set; } = string.Empty;
 
     public ValueTask DisposeAsync() => ValueTask.CompletedTask;

@@ -16,11 +16,8 @@ internal sealed class StubAeServer : IOpcAeServer
     private int _categoryCallCount;
 
     public int StatusCallCount => Volatile.Read(ref _statusCallCount);
-
     public int FilterCallCount => Volatile.Read(ref _filterCallCount);
-
     public int CategoryCallCount => Volatile.Read(ref _categoryCallCount);
-
     public int LastEventType { get; private set; }
 
     public Task<OpcServerStatus> GetStatusAsync(CancellationToken cancellationToken = default)

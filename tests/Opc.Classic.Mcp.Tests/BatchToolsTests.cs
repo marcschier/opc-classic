@@ -108,7 +108,6 @@ public sealed class BatchToolsTests
         public SyntheticBatchServer() => Channel = new InMemoryCallChannel(DispatchAsync);
 
         public InMemoryCallChannel Channel { get; }
-
         public OpcBatchSummaryFilter? ObservedFilter { get; private set; }
 
         private Task<NdrCallResult> DispatchAsync(Guid interfaceId, int opnum, ReadOnlyMemory<byte> requestPayload, CancellationToken cancellationToken)

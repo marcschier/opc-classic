@@ -13,7 +13,6 @@ internal static class RpcTransportQuotas
     public const int DefaultMaxNdrPayloadSize = 16 * 1024 * 1024;
     public const int DefaultMaxNtlmMessageSize = 64 * 1024 - 1;
     public const int DefaultMaxSmb2MessageSize = 0x1FFFF;
-
     public const string MaxNdrPayloadSizeProperty = "rpc.maxNdrPayloadSize";
     public const string MaxNtlmMessageSizeProperty = "rpc.maxNtlmMessageSize";
     public const string MaxSmb2MessageSizeProperty = "rpc.maxSmb2MessageSize";

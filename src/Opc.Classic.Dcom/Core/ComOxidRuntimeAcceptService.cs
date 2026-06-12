@@ -49,11 +49,8 @@ internal sealed class ComOxidRuntimeAcceptService : BackgroundService, IAsyncDis
     }
 
     public int WorkerCount => _workerCount;
-
     public int AcceptedConnectionCount => Volatile.Read(ref _acceptedConnectionCount);
-
     public int QueuedConnectionCount => Volatile.Read(ref _queuedConnectionCount);
-
     public int ProcessedConnectionCount => Volatile.Read(ref _processedConnectionCount);
 
     public override async Task StopAsync(CancellationToken cancellationToken)

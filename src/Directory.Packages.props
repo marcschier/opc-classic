@@ -33,6 +33,7 @@
     <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="8.0.0" />
     <PackageVersion Include="Microsoft.VisualStudio.Threading.Analyzers" Version="17.13.61" />
     <PackageVersion Include="Roslynator.Analyzers" Version="4.15.0" />
+    <PackageVersion Include="Roslynator.Formatting.Analyzers" Version="4.15.0" />
   </ItemGroup>
 
   <ItemGroup Label="Roslyn (only consumed by the source-generator project — netstandard2.0 build-time)">

@@ -357,21 +357,13 @@ public sealed class OpcHdaBrowserCcwTests
     private sealed class TestHdaDispatcher : IOpcHdaServerDispatcher
     {
         public IReadOnlyList<string> BrowseValues { get; init; } = [];
-
         public int BrowseCalls { get; private set; }
-
         public HdaBrowseType LastBrowseType { get; private set; }
-
         public string LastBrowsePosition { get; private set; } = string.Empty;
-
         public int LastBrowseDirection { get; private set; }
-
         public string? LastBrowseString { get; private set; }
-
         public string LastItemIdBranch { get; private set; } = string.Empty;
-
         public string LastItemIdNode { get; private set; } = string.Empty;
-
         public string LastBranchPosition { get; private set; } = string.Empty;
 
         public Task<NdrCallResult> DispatchAsync(

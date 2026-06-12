@@ -25,7 +25,6 @@ internal sealed class LoopbackTagStore
     public IReadOnlyCollection<LoopbackTag> Tags => _tags.Values;
 
     public bool TryGet(string itemId, out LoopbackTag tag) => _tags.TryGetValue(itemId, out tag!);
-
     public string[] Browse() => _tags.Keys.Order(StringComparer.Ordinal).ToArray();
 
     private static OpcVariant ReadRandomSingle()
@@ -65,11 +64,8 @@ internal sealed class LoopbackTag
     }
 
     public string ItemId { get; }
-
     public bool Writable { get; }
-
     public VarType CanonicalDataType => _canonicalDataType;
-
     public int AccessRights => Writable ? 0x3 : 0x1;
 
     public static LoopbackTag ReadOnly(string itemId, VarType canonicalDataType, Func<OpcVariant> read)

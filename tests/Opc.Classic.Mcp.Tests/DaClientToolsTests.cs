@@ -164,7 +164,6 @@ public sealed class DaClientToolsTests
     }
 
     private static double GetDouble(object? value) => ((JsonElement)value!).GetDouble();
-
     private static bool GetBoolean(object? value) => ((JsonElement)value!).GetBoolean();
 }
 
@@ -567,21 +566,13 @@ internal sealed class SyntheticDaServer : IOpcDaServer, IOPCBrowse, IOPCItemMgt,
         }
 
         public int ServerHandle { get; }
-
         public string Name { get; }
-
         public bool Active { get; }
-
         public int UpdateRate { get; }
-
         public int ClientHandle { get; }
-
         public int LocaleId { get; }
-
         public int TimeBias { get; init; }
-
         public float PercentDeadband { get; init; }
-
         public Dictionary<int, SyntheticItem> Items { get; } = new();
     }
 

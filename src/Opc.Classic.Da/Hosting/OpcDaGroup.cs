@@ -46,7 +46,6 @@ public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItem
     /// DCOM transport sinks. (cap-c8)
     /// </summary>
     private readonly ConcurrentDictionary<int, IOpcDataCallbackSink> _directSinks = new();
-
     private int _nextItemHandle = 1;
     private int _nextCancelId = 1;
     private int _nextSubscriptionCookie = 1;

@@ -37,7 +37,6 @@ public sealed class DcomDaSubscription : IDaSubscription
     }
 
     public SubscriptionState State { get; private set; }
-
     public IAsyncEnumerable<DataChange> DataChanges => ReadChangesAsync();
 
     public Task SetStateAsync(SubscriptionState state, CancellationToken cancellationToken = default)

@@ -187,13 +187,9 @@ public sealed class OpcAeServerCcwMethodsTests
         };
 
         public int FilterMask { get; init; } = 0x13;
-
         public bool Active { get; private set; } = true;
-
         public int BufferTime { get; private set; } = 100;
-
         public int MaxSize { get; private set; } = 25;
-
         public int ClientSubscription { get; private set; } = 400;
 
         public Task<OpcServerStatus> GetStatusAsync(CancellationToken cancellationToken = default) =>
@@ -252,9 +248,7 @@ public sealed class OpcAeServerCcwMethodsTests
     private static class Helpers
     {
         internal readonly record struct GetStatusResult(int Hr, long StartTime, long CurrentTime, long LastUpdateTime, int State, (int Major, int Minor, int Build) Version, string? VendorInfo);
-
         internal readonly record struct SubscriptionStateResult(int Hr, int Active, int BufferTime, int MaxSize, int ClientSubscription);
-
         internal readonly record struct SetStateResult(int Hr, int RevisedBufferTime, int RevisedMaxSize);
 
         internal static IntPtr InvokeQI(IntPtr ccw, Guid iid)

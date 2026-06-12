@@ -19,7 +19,6 @@ public sealed class Type2Message : NtlmMessage
     }
 
     public Type2Message(byte[] raw) => Parse(raw, DefaultMaxMessageSize);
-
     internal Type2Message(byte[] raw, int maxMessageSize) => Parse(raw, maxMessageSize);
 
     public Type2Message(NtlmFlags flags, byte[] challenge, string target)
@@ -51,19 +50,13 @@ public sealed class Type2Message : NtlmMessage
     }
 
     public override int MessageType => 2;
-
     public string? Target { get; set; }
-
     public byte[]? Challenge { get; set; }
-
     public byte[]? TargetInformation { get; set; }
-
     public byte[]? Context { get; set; }
 
     public byte[] GetChallenge() => CloneOrEmpty(Challenge);
-
     public byte[] GetContext() => CloneOrEmpty(Context);
-
     public static string GetDefaultDomain() => string.Empty;
 
     public static NtlmFlags GetDefaultFlags() =>
@@ -83,7 +76,6 @@ public sealed class Type2Message : NtlmMessage
     }
 
     public string? GetTarget() => Target;
-
     public byte[] GetTargetInformation() => CloneOrEmpty(TargetInformation);
 
     public void SetChallenge(byte[] challenge)

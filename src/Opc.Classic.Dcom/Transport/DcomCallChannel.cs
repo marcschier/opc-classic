@@ -687,9 +687,7 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable
     private int NextCallId() => _nextCallId++;
 
     private readonly record struct PendingPresentationContext(Guid InterfaceId, PresentationContext Context);
-
     private readonly record struct DecodedPdu(ConnectionOrientedPdu Pdu, byte[] AuthenticationBody);
-
     private readonly record struct AuthenticationStrippedFrame(byte[] PduBytes, byte[] AuthenticationBody);
 }
 

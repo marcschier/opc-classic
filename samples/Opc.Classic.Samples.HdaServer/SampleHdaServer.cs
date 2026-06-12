@@ -27,7 +27,6 @@ public sealed partial class SampleHdaServer : IOpcHdaServer
 
     private static readonly DateTimeOffset StartupTime = DateTimeOffset.UtcNow;
     private static readonly uint GoodQuality = OpcQuality.Good.RawValue;
-
     private readonly HistoricalDataStore _store;
     private readonly ILogger<SampleHdaServer> _logger;
 

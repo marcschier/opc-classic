@@ -1224,7 +1224,6 @@ internal static unsafe class OpcHdaServerCcwMethods
     }
 
     private static int GetAttributeClientHandle(OpcHdaAttribute[] attributes) => attributes.Length == 0 ? 0 : attributes[0].ClientHandle;
-
     private static int GetMasterHResult(int[] errors) => HasAnyFailure(errors) ? OpcHdaServerCcw.S_FALSE : OpcHdaServerCcw.S_OK;
 
     private static bool TryResolveServer(IntPtr pThis, out IOpcHdaServer? server)
@@ -1468,7 +1467,6 @@ internal static unsafe class OpcHdaServerCcwMethods
     }
 
     private static int AnnotationInputSize => PointerAlignedAfterTwoDwords + (4 * IntPtr.Size);
-
     private static int PointerAlignedAfterTwoDwords => Align(2 * sizeof(int), IntPtr.Size);
 
     private static int Align(int value, int alignment) => (value + alignment - 1) & ~(alignment - 1);

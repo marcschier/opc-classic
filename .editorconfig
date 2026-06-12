@@ -132,6 +132,39 @@ dotnet_diagnostic.CA2007.severity = error
 dotnet_diagnostic.CA1031.severity = error
 
 # ============================================================================
+# Roslynator.Formatting.Analyzers (RCS0xxx) — curated opt-in subset
+#
+# All RCS0xxx rules ship at severity 'none' in Roslynator.Formatting.Analyzers
+# 4.15.0; the entries below promote a small set of universally-useful rules
+# to 'warning' so the build enforces them. Rules deliberately left at the
+# shipped 'none' default include RCS0023 (already covered by
+# csharp_new_line_before_open_brace = all), RCS0056 (max-line-length —
+# legacy NTLM/Type1Message code intentionally has long lines), RCS0044 /
+# RCS0045 (line endings — handled by .gitattributes), RCS0010 (blank line
+# between declarations — too noisy on tightly-grouped fields), and RCS0042
+# (single-line accessors — codebase mixes both styles intentionally).
+# ============================================================================
+# RCS0006: Add blank line before using directive list
+dotnet_diagnostic.RCS0006.severity = warning
+# RCS0024: Add new line after switch label (Allman-style switches)
+dotnet_diagnostic.RCS0024.severity = warning
+# RCS0036: Remove blank line between single-line declarations of same kind
+# — set to 'silent' because the codebase prefers XML doc per property even
+# when adjacent properties share a kind (blank lines around the doc blocks
+# improve readability and reflect semantic boundaries).
+dotnet_diagnostic.RCS0036.severity = silent
+# RCS0046: Use spaces instead of tabs
+dotnet_diagnostic.RCS0046.severity = warning
+# RCS0049: Add blank line after top comment (SPDX/copyright banner spacing)
+dotnet_diagnostic.RCS0049.severity = warning
+# RCS0050: Add blank line before top declaration
+dotnet_diagnostic.RCS0050.severity = warning
+# RCS0058: Add new line at end of file
+dotnet_diagnostic.RCS0058.severity = warning
+# RCS0061: Add blank line between switch sections
+dotnet_diagnostic.RCS0061.severity = warning
+
+# ============================================================================
 # AnalysisMode=All + AnalysisLevel=latest-all suppressions (root scope)
 #
 # These rules are intentional design choices that cannot be trivially fixed

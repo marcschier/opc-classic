@@ -29,15 +29,12 @@ public sealed class CttDaServer : IOpcDaServer
         "RemoveGroup: handle={Handle}");
 
     private static readonly DateTimeOffset StartupTime = DateTimeOffset.UtcNow;
-
     private readonly ILogger<CttDaServer> _logger;
     private readonly OpcObjectRegistry _objectRegistry;
-
     // Per-instance group state. Keyed by server-assigned handle. The same
     // entry is tracked in _groupIpids (handle -> IPID) so RemoveGroup can
     // unregister from the OpcObjectRegistry without an extra lookup.
     private readonly ConcurrentDictionary<int, GroupEntry> _groups = new();
-
     // Atomically-allocated server-handle counter. Starts above the legacy
     // "clientHandle + 1000" sentinel range to make handles easy to recognize
     // in logs while still being correct.
@@ -273,7 +270,6 @@ public sealed class CttDaServer : IOpcDaServer
         }
 
         public OpcDaGroup Group { get; set; }
-
         public Guid Ipid { get; set; }
     }
 }

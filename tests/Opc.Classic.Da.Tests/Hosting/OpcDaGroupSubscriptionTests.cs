@@ -309,15 +309,10 @@ public sealed class OpcDaGroupSubscriptionTests
     private sealed class RecordingDataCallbackSink : IOpcDataCallbackSink
     {
         public int DataChangeCount { get; private set; }
-
         public int ReadCompleteCount { get; private set; }
-
         public int WriteCompleteCount { get; private set; }
-
         public int CancelCompleteCount { get; private set; }
-
         public OpcDaGroup.DataChangePayload? LastDataChange { get; private set; }
-
         public OpcDaGroup.CancelCompletePayload? LastCancelComplete { get; private set; }
 
         public void OnDataChange(OpcDaGroup.DataChangePayload payload)

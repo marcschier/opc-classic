@@ -170,33 +170,21 @@ public sealed class OpcDaServerDispatcherTests
     };
 
     private static Guid ReadUnknownInterfaceId() => Guid.Parse("11111111-2222-3333-4444-555555555555");
-
     private static int ReadUnknownOpnum() => 999;
-
     private static int ReadFailHresult() => unchecked((int)0x80004005u);
-
     private static string ReadVendorInfo() => "DA Dispatcher Test Server";
-
     private static string ReadErrorString() => "The operation failed.";
 
     private sealed class StubDaServer : IOpcDaServer
     {
         public OpcServerStatus Status { get; init; } = BuildStatus();
-
         public OpcException? GetStatusException { get; init; }
-
         public string ErrorString { get; init; } = string.Empty;
-
         public int GetStatusCallCount { get; private set; }
-
         public int RemoveGroupCallCount { get; private set; }
-
         public int LastRemovedGroupHandle { get; private set; }
-
         public bool LastRemoveGroupForce { get; private set; }
-
         public int LastErrorCode { get; private set; }
-
         public int LastLocaleId { get; private set; }
 
         public Task<OpcServerStatus> GetStatusAsync(CancellationToken cancellationToken = default)

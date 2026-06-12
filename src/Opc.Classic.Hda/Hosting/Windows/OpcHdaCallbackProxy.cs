@@ -18,7 +18,6 @@ public sealed unsafe class OpcHdaCallbackProxy : IDisposable
 
     private static readonly Guid s_iidUnknown = Guid.Parse("00000000-0000-0000-C000-000000000046");
     private static readonly Guid s_iidDataCallback = IOPCHDA_DataCallback.InterfaceId;
-
     private readonly Lock _syncRoot = new();
     private IntPtr _callbackPtr;
 

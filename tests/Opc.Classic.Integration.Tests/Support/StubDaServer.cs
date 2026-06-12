@@ -22,9 +22,7 @@ internal sealed class StubDaServer : IOpcDaServer
     }
 
     public string VendorInfo { get; }
-
     public IReadOnlyCollection<string> KnownItemIds => _knownItemIds;
-
     public List<RemovedGroup> RemovedGroups { get; } = [];
 
     public static StubDaServer NativeSample() => new(

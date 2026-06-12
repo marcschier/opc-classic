@@ -145,13 +145,9 @@ public sealed class OutboundCallbackOverTransportTests
     private sealed class RecordingDataCallback : IOPCDataCallback
     {
         public int OnCancelCompleteCallCount { get; private set; }
-
         public int LastTransactionId { get; private set; }
-
         public int LastGroupHandle { get; private set; }
-
         public int[] LastClientHandles { get; private set; } = Array.Empty<int>();
-
         public int[] LastWriteErrors { get; private set; } = Array.Empty<int>();
 
         public Task OnDataChangeAsync(
@@ -201,9 +197,7 @@ public sealed class OutboundCallbackOverTransportTests
         }
 
         public EndPoint RemoteEndpoint { get; }
-
         public PipeReader Input { get; }
-
         public PipeWriter Output { get; }
 
         public async ValueTask FlushAsync(CancellationToken cancellationToken = default) =>

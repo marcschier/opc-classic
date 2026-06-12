@@ -6,7 +6,6 @@ namespace Opc.Classic.Samples.HdaServer;
 public sealed class HistoricalDataStore
 {
     private static readonly string[] s_tagIds = ["Sensor.Temperature", "Sensor.Pressure", "Sensor.FlowRate"];
-
     // Lazily seed each tag on first access so the SCM-launched HDA EXE
     // can complete CoRegisterClassObject without waiting on the seed
     // loop. Constructing the store itself is now effectively free (the
@@ -25,9 +24,7 @@ public sealed class HistoricalDataStore
     }
 
     public DateTimeOffset StartTime { get; }
-
     public DateTimeOffset EndTime { get; }
-
     public IReadOnlyCollection<string> ItemIds => _data.Value.Keys;
 
     public bool Contains(string tagId) => _data.Value.ContainsKey(tagId);

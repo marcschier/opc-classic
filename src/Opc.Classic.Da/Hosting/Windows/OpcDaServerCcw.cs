@@ -59,7 +59,6 @@ public static unsafe class OpcDaServerCcw
     private const int E_INVALIDARG = unchecked((int)0x80070057);
     private const int E_NOTIMPL = unchecked((int)0x80004001);
     private const int E_FAIL = unchecked((int)0x80004005);
-
     private const int ServerVtableSlotCount = 12; // 3 IUnknown + 9 IOPCServer
     private const int CommonVtableSlotCount = 8; // 3 IUnknown + 5 IOPCCommon
     private const int BrowseVtableSlotCount = 5; // 3 IUnknown + 2 IOPCBrowse (Browse, GetProperties)
@@ -70,7 +69,6 @@ public static unsafe class OpcDaServerCcw
     private const int SecurityPrivateVtableSlotCount = 6; // 3 IUnknown + 3 IOPCSecurityPrivate
 
     private static readonly Guid IID_IUnknown = Guid.Parse("00000000-0000-0000-C000-000000000046");
-
     private static readonly ConcurrentDictionary<IntPtr, CcwEntry> s_ccws = new();
 
     /// <summary>
@@ -907,23 +905,14 @@ public static unsafe class OpcDaServerCcw
         }
 
         public GCHandle ServerHandle { get; }
-
         public IntPtr ServerPointer { get; }
-
         public IntPtr CommonPointer { get; }
-
         public IntPtr BrowsePointer { get; }
-
         public IntPtr ItemPropertiesPointer { get; }
-
         public IntPtr ItemIoPointer { get; }
-
         public IntPtr BrowseSasPointer { get; }
-
         public IntPtr SecurityNtPointer { get; }
-
         public IntPtr SecurityPrivatePointer { get; }
-
         public string ClientName { get; set; } = string.Empty;
 
         public long RefCount;
