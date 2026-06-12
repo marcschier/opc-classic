@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>Opc.Classic.Hosting.Windows</RootNamespace>
+    <AssemblyName>Opc.Classic.Hosting.Windows</AssemblyName>
+    <Description>Windows-only COM-vtable interop for Opc.Classic.Hosting: AOT-friendly IClassFactory registration via ComClassObjectRegistrar plus HKLM CLSID writers.</Description>
+    <!-- ComClassObjectRegistrar uses unsafe COM-vtable interop for AOT-friendly IClassFactory. -->
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Opc.Classic.Hosting\Opc.Classic.Hosting.csproj" />
+  </ItemGroup>
+</Project>

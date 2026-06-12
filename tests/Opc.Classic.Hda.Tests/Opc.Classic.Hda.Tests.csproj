@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Opc.Classic.Hda\Opc.Classic.Hda.csproj" />
+    <ProjectReference Include="..\..\src\Opc.Classic.Hda.Windows\Opc.Classic.Hda.Windows.csproj" />
   </ItemGroup>
 
 </Project>

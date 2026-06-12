@@ -4,8 +4,6 @@
     <Description>OPC Data Access (DA) 2.05a / 3.00 managed records and NDR wire codecs.</Description>
     <RootNamespace>Opc.Classic.Da</RootNamespace>
     <AssemblyName>Opc.Classic.Da</AssemblyName>
-    <!-- Hosting/Windows/OpcDaServerCcw uses unsafe COM-vtable interop for AOT-friendly CCW. -->
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <ItemGroup>
@@ -18,6 +16,10 @@
     <ProjectReference Include="..\Opc.Classic.Core\Opc.Classic.Core.csproj" />
     <ProjectReference Include="..\Opc.Classic.Hosting\Opc.Classic.Hosting.csproj" />
     <ProjectReference Include="..\Opc.Classic.Dcom\Opc.Classic.Dcom.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="Opc.Classic.Da.Windows" Key="$(OpcClassicPublicKey)" />
   </ItemGroup>
 
 </Project>

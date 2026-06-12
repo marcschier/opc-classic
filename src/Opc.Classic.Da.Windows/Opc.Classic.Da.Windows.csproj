@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>Opc.Classic.Da</RootNamespace>
+    <AssemblyName>Opc.Classic.Da.Windows</AssemblyName>
+    <Description>Windows-only CCW + COM-variant marshaling for Opc.Classic.Da: AOT-friendly IClassFactory-registered OpcDaServerCcw + OpcDaGroupCcw vtables, ComVariantMarshaler, and Windows connection-point enumerators.</Description>
+    <!-- Hosting/Windows/OpcDaServerCcw uses unsafe COM-vtable interop for AOT-friendly CCW. -->
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Opc.Classic.Da\Opc.Classic.Da.csproj" />
+    <ProjectReference Include="..\Opc.Classic.Hosting.Windows\Opc.Classic.Hosting.Windows.csproj" />
+  </ItemGroup>
+</Project>

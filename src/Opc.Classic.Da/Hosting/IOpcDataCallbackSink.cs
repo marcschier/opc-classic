@@ -21,7 +21,7 @@ namespace Opc.Classic.Da.Hosting;
 ///   host's call-channel adapter. Each <c>OpcDaGroup.AdviseAsync</c>
 ///   call wraps the client's <c>IOpcInterfaceRef</c> in a sink that
 ///   marshals the payload over the managed DCOM transport.</description></item>
-///   <item><description>Windows SCM CCW: <see cref="Windows.OpcDataCallbackProxy"/>
+///   <item><description>Windows SCM CCW: <c>Opc.Classic.Da.Hosting.Windows.OpcDataCallbackProxy</c> (in the sibling <c>Opc.Classic.Da.Windows</c> assembly)
 ///   implements this interface and invokes the client-supplied COM vtable
 ///   directly.</description></item>
 /// </list>

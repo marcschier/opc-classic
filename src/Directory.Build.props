@@ -69,6 +69,13 @@
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)..\build\Opc.Classic.snk</AssemblyOriginatorKeyFile>
     <PublicSign Condition="'$(OS)' != 'Windows_NT'">true</PublicSign>
+    <!--
+      Full public key extracted from Opc.Classic.snk. Used by per-project
+      <InternalsVisibleTo Include="..." Key="$(OpcClassicPublicKey)" /> entries so
+      that src/<Spec>.Windows sibling assemblies can reach the internal helpers
+      they need without widening the parent's public API surface.
+    -->
+    <OpcClassicPublicKey>002400000480000014010000060200000024000052534131000800000100010095cd88cd047cdd3992b9b818872dfc4983f3c8a62fe0a82cc6c69320b2119ae46fb545090e0ee61d54840d32556d2caa720c86cc086abc3bf9c6acf7add65684d8a7e5fe70b8120c9dead91826dad9d53a36287566a4ee76d0f9e37200c7052f61a1941e7693b09c6ed21899fc536797d33c12c7fb3cd30b99a32966c68acabc8a3760dadcfbf7ae9d9eeb342ea054c20382c49acbe1c891b2835ed42f664c8ff71b7e699a1550635eb1d11a225238ebe21641c53f5f6f0d498d45b76cc684fcfe6baa064064e5b03c3f1640ae4d1132c8f5d6360f83ff1eb838c51b7cb0c225317497b8e0ab030ace66026993ef4805ebe86020e3167839e29f4b2641eafef4</OpcClassicPublicKey>
   </PropertyGroup>
 
   <!-- Analyzers (PrivateAssets=all — they're build-time only, no runtime dep) -->

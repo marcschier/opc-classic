@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>Opc.Classic.Hda</RootNamespace>
+    <AssemblyName>Opc.Classic.Hda.Windows</AssemblyName>
+    <Description>Windows-only CCW + COM-item marshaling for Opc.Classic.Hda: AOT-friendly IClassFactory-registered OpcHdaServerCcw + OpcHdaBrowserCcw vtables, OpcHdaItemMarshaler, OpcHdaCallbackProxy.</Description>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Opc.Classic.Hda\Opc.Classic.Hda.csproj" />
+    <ProjectReference Include="..\Opc.Classic.Hosting.Windows\Opc.Classic.Hosting.Windows.csproj" />
+  </ItemGroup>
+</Project>

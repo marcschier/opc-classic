@@ -1,14 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <RootNamespace>Opc.Classic.Dcom.Kerberos</RootNamespace>
     <Description>Kerberos / SPNEGO authentication backend for Opc.Classic.Dcom (cross-platform, via Kerberos.NET).</Description>
-    <!-- Inherits AOT-strict settings from src/Directory.Build.props -->
   </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="Kerberos.NET" />
     <ProjectReference Include="..\Opc.Classic.Core\Opc.Classic.Core.csproj" />
   </ItemGroup>
-
 </Project>

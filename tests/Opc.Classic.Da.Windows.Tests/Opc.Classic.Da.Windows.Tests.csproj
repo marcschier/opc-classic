@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>Windows-only TUnit tests for Opc.Classic.Da.Windows (CCW vtables, ComVariantMarshaler, callback proxies).</Description>
+    <RootNamespace>Opc.Classic.Da.Tests</RootNamespace>
+    <AssemblyName>Opc.Classic.Da.Windows.Tests</AssemblyName>
+    <!-- Tests invoke CCW vtable thunks through function pointers. -->
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Opc.Classic.Da.Windows\Opc.Classic.Da.Windows.csproj" />
+  </ItemGroup>
+
+</Project>

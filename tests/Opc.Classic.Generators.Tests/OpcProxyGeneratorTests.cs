@@ -62,9 +62,9 @@ public sealed class OpcProxyGeneratorTests
     {
         string generated = GeneratedProxySource(SampleSource);
 
-        await Assert.That(generated).Contains("per-method shim for 'ITestProxy.ReadAsync' TBD");
-        await Assert.That(generated).Contains("per-method shim for 'ITestProxy.WriteAsync' TBD");
-        await Assert.That(generated).Contains("per-method shim for 'ITestProxy.GetValueAsync' TBD");
+        await Assert.That(generated).Contains("Per-method shim for 'ITestProxy.ReadAsync' TBD");
+        await Assert.That(generated).Contains("Per-method shim for 'ITestProxy.WriteAsync' TBD");
+        await Assert.That(generated).Contains("Per-method shim for 'ITestProxy.GetValueAsync' TBD");
         await Assert.That(CountOccurrences(generated, "throw new global::System.NotImplementedException")).IsEqualTo(3);
     }
 

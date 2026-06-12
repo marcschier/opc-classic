@@ -1,13 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <Description>OPC Data eXchange (DX) 1.00 managed records and NDR wire codecs.</Description>
     <RootNamespace>Opc.Classic.Dx</RootNamespace>
     <AssemblyName>Opc.Classic.Dx</AssemblyName>
   </PropertyGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\Opc.Classic.Core\Opc.Classic.Core.csproj" />
   </ItemGroup>
-
 </Project>
