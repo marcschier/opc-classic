@@ -13,10 +13,14 @@ namespace Opc.Classic.Da;
 /// </summary>
 public sealed class ItemValueResult : ItemValue
 {
-    /// <summary>Construct.</summary>
+    /// <summary>
+    /// Construct.
+    /// </summary>
     public ItemValueResult(string itemName, string? path = null) : base(itemName, path) { }
 
-    /// <summary>Copy-construct from an <see cref="ItemValue"/>.</summary>
+    /// <summary>
+    /// Copy-construct from an <see cref="ItemValue"/>.
+    /// </summary>
     public ItemValueResult(ItemValue value)
         : base(value)
     {
@@ -26,6 +30,8 @@ public sealed class ItemValueResult : ItemValue
         Timestamp = value.Timestamp;
     }
 
-    /// <summary>The per-item HRESULT the server returned.</summary>
+    /// <summary>
+    /// The per-item HRESULT the server returned.
+    /// </summary>
     public OpcResultId ResultId { get; init; } = OpcResultId.Ok;
 }

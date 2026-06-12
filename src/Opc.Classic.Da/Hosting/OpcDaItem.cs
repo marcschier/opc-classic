@@ -26,7 +26,9 @@ public sealed class OpcDaItem
     private int? _samplingRate;
     private bool _bufferEnabled;
 
-    /// <summary>Initializes a new item.</summary>
+    /// <summary>
+    /// Initializes a new item.
+    /// </summary>
     public OpcDaItem(
         int serverHandle,
         string itemId,
@@ -47,30 +49,42 @@ public sealed class OpcDaItem
         _timestamp = DateTimeOffset.UtcNow;
     }
 
-    /// <summary>Server-assigned handle.</summary>
+    /// <summary>
+    /// Server-assigned handle.
+    /// </summary>
     public int ServerHandle { get; }
 
-    /// <summary>OPC item ID (server's namespace path to the data point).</summary>
+    /// <summary>
+    /// OPC item ID (server's namespace path to the data point).
+    /// </summary>
     public string ItemId { get; }
 
-    /// <summary>Optional server-defined access path supplied at add time.</summary>
+    /// <summary>
+    /// Optional server-defined access path supplied at add time.
+    /// </summary>
     public string? AccessPath { get; }
 
-    /// <summary>Client-side handle to echo back in callbacks.</summary>
+    /// <summary>
+    /// Client-side handle to echo back in callbacks.
+    /// </summary>
     public int ClientHandle
     {
         get { lock (_lock) { return _clientHandle; } }
         set { lock (_lock) { _clientHandle = value; } }
     }
 
-    /// <summary>Whether this item is currently sampled/published.</summary>
+    /// <summary>
+    /// Whether this item is currently sampled/published.
+    /// </summary>
     public bool Active
     {
         get { lock (_lock) { return _active; } }
         set { lock (_lock) { _active = value; } }
     }
 
-    /// <summary>The client's requested VARTYPE for reads/writes.</summary>
+    /// <summary>
+    /// The client's requested VARTYPE for reads/writes.
+    /// </summary>
     public ushort RequestedDatatype
     {
         get { lock (_lock) { return _requestedDatatype; } }
@@ -108,7 +122,9 @@ public sealed class OpcDaItem
         set { lock (_lock) { _bufferEnabled = value; } }
     }
 
-    /// <summary>Gets a snapshot of the current value+quality+timestamp.</summary>
+    /// <summary>
+    /// Gets a snapshot of the current value+quality+timestamp.
+    /// </summary>
     public OpcItemState GetSnapshot()
     {
         lock (_lock)
@@ -121,7 +137,9 @@ public sealed class OpcDaItem
         }
     }
 
-    /// <summary>Atomically updates the value+quality+timestamp (server writes from the simulator or from caller writes).</summary>
+    /// <summary>
+    /// Atomically updates the value+quality+timestamp (server writes from the simulator or from caller writes).
+    /// </summary>
     public void Update(OpcVariant value, ushort quality, DateTimeOffset timestamp)
     {
         lock (_lock)

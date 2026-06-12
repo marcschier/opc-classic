@@ -26,7 +26,9 @@ public static class NdrOpcHdaItemCodec
 {
     private const long FileTimeEpochOffsetTicks = 504911232000000000L;
 
-    /// <summary>Encodes a single OPCHDA_ITEM in NDR.</summary>
+    /// <summary>
+    /// Encodes a single OPCHDA_ITEM in NDR.
+    /// </summary>
     public static void Write(ref NdrWriter writer, OpcHdaItem item)
     {
         ArgumentNullException.ThrowIfNull(item);
@@ -51,7 +53,9 @@ public static class NdrOpcHdaItemCodec
         }
     }
 
-    /// <summary>Decodes a single OPCHDA_ITEM from NDR.</summary>
+    /// <summary>
+    /// Decodes a single OPCHDA_ITEM from NDR.
+    /// </summary>
     public static OpcHdaItem Read(ref NdrReader reader)
     {
         uint hClient = reader.ReadUInt32();

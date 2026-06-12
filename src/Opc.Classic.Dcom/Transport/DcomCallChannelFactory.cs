@@ -15,7 +15,9 @@ public sealed class DcomCallChannelFactory
 {
     private readonly IAsyncTransportFactory _transportFactory;
 
-    /// <summary>Initializes a new instance of the <see cref="DcomCallChannelFactory" /> class.</summary>
+    /// <summary>
+    /// Initializes a new instance of the <see cref="DcomCallChannelFactory" /> class.
+    /// </summary>
     /// <param name="transportFactory">The transport factory used to connect to remote endpoints.</param>
     public DcomCallChannelFactory(IAsyncTransportFactory transportFactory)
     {
@@ -24,7 +26,9 @@ public sealed class DcomCallChannelFactory
         _transportFactory = transportFactory;
     }
 
-    /// <summary>Connects to a DCOM endpoint and returns a call channel over the connected transport.</summary>
+    /// <summary>
+    /// Connects to a DCOM endpoint and returns a call channel over the connected transport.
+    /// </summary>
     /// <param name="endpoint">The remote ncacn_ip_tcp endpoint.</param>
     /// <param name="clsidToActivate">CLSID reserved for the activation path; use <see cref="Guid.Empty" /> for already-activated channels.</param>
     /// <param name="authContext">The authentication context for the channel.</param>
@@ -37,7 +41,9 @@ public sealed class DcomCallChannelFactory
         CancellationToken cancellationToken = default) =>
         ConnectAsync(endpoint, clsidToActivate, authContext, preBindIids: null, cancellationToken);
 
-    /// <summary>Connects to a DCOM endpoint and pre-declares presentation contexts in the initial bind.</summary>
+    /// <summary>
+    /// Connects to a DCOM endpoint and pre-declares presentation contexts in the initial bind.
+    /// </summary>
     /// <param name="endpoint">The remote ncacn_ip_tcp endpoint.</param>
     /// <param name="clsidToActivate">CLSID reserved for the activation path; use <see cref="Guid.Empty" /> for already-activated channels.</param>
     /// <param name="authContext">The authentication context for the channel.</param>

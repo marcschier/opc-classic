@@ -19,7 +19,9 @@ public sealed record InstanceDescription
 {
     private readonly Dictionary<string, object?> _fieldValues;
 
-    /// <summary>Create an item instance description.</summary>
+    /// <summary>
+    /// Create an item instance description.
+    /// </summary>
     public InstanceDescription(
         string itemId,
         string typeId,
@@ -52,28 +54,44 @@ public sealed record InstanceDescription
         FieldValues = new ReadOnlyDictionary<string, object?>(_fieldValues);
     }
 
-    /// <summary>OPC item identifier for this complex item instance.</summary>
+    /// <summary>
+    /// OPC item identifier for this complex item instance.
+    /// </summary>
     public string ItemId { get; }
 
-    /// <summary>Type identifier selected for this instance.</summary>
+    /// <summary>
+    /// Type identifier selected for this instance.
+    /// </summary>
     public string TypeId { get; }
 
-    /// <summary>Type-system identifier, usually <c>OPCBinary</c>.</summary>
+    /// <summary>
+    /// Type-system identifier, usually <c>OPCBinary</c>.
+    /// </summary>
     public string TypeSystemId { get; }
 
-    /// <summary>Dictionary identifier that supplied <see cref="TypeId"/>, if known.</summary>
+    /// <summary>
+    /// Dictionary identifier that supplied <see cref="TypeId"/>, if known.
+    /// </summary>
     public string? DictionaryId { get; }
 
-    /// <summary>True when this instance represents a structured complex value.</summary>
+    /// <summary>
+    /// True when this instance represents a structured complex value.
+    /// </summary>
     public bool IsComplex { get; }
 
-    /// <summary>Decoded field values, keyed by type-description field name.</summary>
+    /// <summary>
+    /// Decoded field values, keyed by type-description field name.
+    /// </summary>
     public IReadOnlyDictionary<string, object?> FieldValues { get; }
 
-    /// <summary>Get a decoded field value by name.</summary>
+    /// <summary>
+    /// Get a decoded field value by name.
+    /// </summary>
     public object? this[string fieldName] => FieldValues[fieldName];
 
-    /// <summary>Try to read a field value with a strongly typed cast.</summary>
+    /// <summary>
+    /// Try to read a field value with a strongly typed cast.
+    /// </summary>
     public bool TryGet<T>(string fieldName, out T value)
     {
         if (FieldValues.TryGetValue(fieldName, out var raw) && raw is T typed)

@@ -5,7 +5,9 @@
 
 namespace Opc.Classic.Mcp.Dtos;
 
-/// <summary>JSON-friendly OPC DA browse element.</summary>
+/// <summary>
+/// JSON-friendly OPC DA browse element.
+/// </summary>
 public sealed record OpcBrowseElementDto(
     string Name,
     string ItemName,
@@ -14,7 +16,9 @@ public sealed record OpcBrowseElementDto(
     bool HasChildren,
     IReadOnlyList<OpcItemPropertyDto> Properties);
 
-/// <summary>JSON-friendly OPC DA item property.</summary>
+/// <summary>
+/// JSON-friendly OPC DA item property.
+/// </summary>
 public sealed record OpcItemPropertyDto(
     int PropertyId,
     string? Name,

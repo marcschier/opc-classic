@@ -24,7 +24,9 @@ public sealed class OpcDaDataChangePublisher : IOpcDaDataChangePublisher, IAsync
     private readonly ConcurrentDictionary<int, OpcDaSubscriberEntry> _subscribers;
     private int _nextCookie;
 
-    /// <summary>Initializes a new instance of the <see cref="OpcDaDataChangePublisher" /> class.</summary>
+    /// <summary>
+    /// Initializes a new instance of the <see cref="OpcDaDataChangePublisher" /> class.
+    /// </summary>
     public OpcDaDataChangePublisher(ILogger<OpcDaDataChangePublisher> logger)
     {
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -45,7 +47,9 @@ public sealed class OpcDaDataChangePublisher : IOpcDaDataChangePublisher, IAsync
         return cookie;
     }
 
-    /// <summary>Removes an advised callback by cookie.</summary>
+    /// <summary>
+    /// Removes an advised callback by cookie.
+    /// </summary>
     /// <param name="cookie">The cookie returned from <see cref="Advise" />.</param>
     public void Unadvise(int cookie) => _subscribers.TryRemove(cookie, out _);
 

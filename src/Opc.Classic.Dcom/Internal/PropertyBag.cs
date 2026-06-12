@@ -32,34 +32,44 @@ public sealed class PropertyBag
         }
     }
 
-    /// <summary>Returns the value for <paramref name="key"/>, or <see langword="null"/> if not present.</summary>
+    /// <summary>
+    /// Returns the value for <paramref name="key"/>, or <see langword="null"/> if not present.
+    /// </summary>
     public object? GetProperty(string key)
     {
         ArgumentNullException.ThrowIfNull(key);
         return _items.TryGetValue(key, out var value) ? value : null;
     }
 
-    /// <summary>Returns the value for <paramref name="key"/>, or <paramref name="defaultValue"/> if not present.</summary>
+    /// <summary>
+    /// Returns the value for <paramref name="key"/>, or <paramref name="defaultValue"/> if not present.
+    /// </summary>
     public string GetProperty(string key, string defaultValue)
     {
         ArgumentNullException.ThrowIfNull(defaultValue);
         return GetProperty(key) as string ?? defaultValue;
     }
 
-    /// <summary>Returns the value for <paramref name="key"/>, or <paramref name="defaultValue"/> if not present.</summary>
+    /// <summary>
+    /// Returns the value for <paramref name="key"/>, or <paramref name="defaultValue"/> if not present.
+    /// </summary>
     public object? GetProperty(string key, object? defaultValue)
     {
         return GetProperty(key) ?? defaultValue;
     }
 
-    /// <summary>Sets <paramref name="key"/> to <paramref name="value"/>.</summary>
+    /// <summary>
+    /// Sets <paramref name="key"/> to <paramref name="value"/>.
+    /// </summary>
     public void SetProperty(string key, object? value)
     {
         ArgumentNullException.ThrowIfNull(key);
         _items[key] = value;
     }
 
-    /// <summary>Loads simple key/value pairs from a Java-properties-style stream.</summary>
+    /// <summary>
+    /// Loads simple key/value pairs from a Java-properties-style stream.
+    /// </summary>
     public void Load(Stream input)
     {
         ArgumentNullException.ThrowIfNull(input);
@@ -89,7 +99,9 @@ public sealed class PropertyBag
         }
     }
 
-    /// <summary>Stores simple key/value pairs to a Java-properties-style stream.</summary>
+    /// <summary>
+    /// Stores simple key/value pairs to a Java-properties-style stream.
+    /// </summary>
     public void Store(Stream output)
     {
         ArgumentNullException.ThrowIfNull(output);

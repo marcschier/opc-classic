@@ -23,13 +23,21 @@ public sealed class VarDesc
 #pragma warning restore IDE1006 // Naming Styles
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
-    /// <summary> Per instance discriminant </summary>
+    /// <summary>
+    /// Per instance discriminant
+    /// </summary>
     public const int VAR_PERINSTANCE = 0;
-    /// <summary> Static discriminant </summary>
+    /// <summary>
+    /// Static discriminant
+    /// </summary>
     public const int VAR_STATIC = 1;
-    /// <summary> Const discriminant </summary>
+    /// <summary>
+    /// Const discriminant
+    /// </summary>
     public const int VAR_CONST = 2;
-    /// <summary> Dispatch discriminant </summary>
+    /// <summary>
+    /// Dispatch discriminant
+    /// </summary>
     public const int VAR_DISPATCH = 3;
 
     /// <summary>

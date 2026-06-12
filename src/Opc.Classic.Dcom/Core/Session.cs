@@ -712,7 +712,8 @@ public sealed class Session
     /// the use of NTLMv2 security <b>cannot</b> be enabled or disabled.
     /// </para>
     /// <para>
-    ///
+    /// <para>
+    /// </para>
     /// </para>
     /// </summary>
     /// <param name="enable"> <code>true</code> to enable. </param>

@@ -42,7 +42,10 @@ public static class NdrOpcItemAttributesCodec
 {
     private const int Win32BoolTrue = unchecked((int)0xFFFFFFFFu);
 
-    /// <summary>Encodes a conformant OPCITEMATTRIBUTES array using DCE/RPC deferred-pointer pile layout, including the outer unique-pointer referent.</summary>
+    /// <summary>
+    /// Encodes a conformant OPCITEMATTRIBUTES array using DCE/RPC deferred-pointer pile layout, including the outer unique-pointer
+    /// referent.
+    /// </summary>
     public static void WriteConformantArray(ref NdrWriter writer, OpcItemAttributes[]? attributes)
     {
         if (attributes is null || attributes.Length == 0)
@@ -63,7 +66,10 @@ public static class NdrOpcItemAttributesCodec
         }
     }
 
-    /// <summary>Decodes a conformant OPCITEMATTRIBUTES array using DCE/RPC deferred-pointer pile layout, including the outer unique-pointer referent.</summary>
+    /// <summary>
+    /// Decodes a conformant OPCITEMATTRIBUTES array using DCE/RPC deferred-pointer pile layout, including the outer unique-pointer
+    /// referent.
+    /// </summary>
     public static OpcItemAttributes[] ReadConformantArray(ref NdrReader reader)
     {
         if (!reader.TryReadReferentId(out _))
@@ -89,7 +95,9 @@ public static class NdrOpcItemAttributesCodec
         return result;
     }
 
-    /// <summary>Encodes a single OPCITEMATTRIBUTES in NDR using the inline + deferred shape.</summary>
+    /// <summary>
+    /// Encodes a single OPCITEMATTRIBUTES in NDR using the inline + deferred shape.
+    /// </summary>
     public static void Write(ref NdrWriter writer, OpcItemAttributes attributes)
     {
         ArgumentNullException.ThrowIfNull(attributes);
@@ -98,7 +106,9 @@ public static class NdrOpcItemAttributesCodec
         WriteDeferred(ref writer, attributes);
     }
 
-    /// <summary>Decodes a single OPCITEMATTRIBUTES from NDR using the inline + deferred shape.</summary>
+    /// <summary>
+    /// Decodes a single OPCITEMATTRIBUTES from NDR using the inline + deferred shape.
+    /// </summary>
     public static OpcItemAttributes Read(ref NdrReader reader)
     {
         ItemAttributesInline inlinePart = ReadInline(ref reader);

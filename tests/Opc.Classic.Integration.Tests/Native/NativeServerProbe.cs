@@ -7,14 +7,18 @@ namespace Opc.Classic.Tests.Integration.Native;
 
 internal static class NativeServerProbe
 {
-    /// <summary>True if a server with the given ProgID is registered (Windows only).</summary>
+    /// <summary>
+    /// True if a server with the given ProgID is registered (Windows only).
+    /// </summary>
     [System.Runtime.Versioning.SupportedOSPlatform("windows")]
     public static bool IsRegistered(string progId)
     {
         return TryGetRegisteredClsid(progId, out _);
     }
 
-    /// <summary>True if a server with the given ProgID is registered with the expected CLSID (Windows only).</summary>
+    /// <summary>
+    /// True if a server with the given ProgID is registered with the expected CLSID (Windows only).
+    /// </summary>
     [System.Runtime.Versioning.SupportedOSPlatform("windows")]
     public static bool IsRegistered(string progId, Guid expectedClsid)
     {

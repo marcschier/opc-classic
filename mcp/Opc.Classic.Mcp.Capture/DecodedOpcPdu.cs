@@ -14,7 +14,9 @@ namespace Opc.Classic.Mcp.Capture;
 /// </summary>
 public sealed record class DecodedOpcPdu
 {
-    /// <summary>UTC timestamp of the frame that completed this PDU.</summary>
+    /// <summary>
+    /// UTC timestamp of the frame that completed this PDU.
+    /// </summary>
     public required DateTimeOffset Timestamp { get; init; }
 
     /// <summary>
@@ -26,13 +28,19 @@ public sealed record class DecodedOpcPdu
     /// </summary>
     public required string PduType { get; init; }
 
-    /// <summary>Source TCP endpoint <c>host:port</c>; null for hex-source records.</summary>
+    /// <summary>
+    /// Source TCP endpoint <c>host:port</c>; null for hex-source records.
+    /// </summary>
     public string? SourceEndpoint { get; init; }
 
-    /// <summary>Destination TCP endpoint <c>host:port</c>; null for hex-source records.</summary>
+    /// <summary>
+    /// Destination TCP endpoint <c>host:port</c>; null for hex-source records.
+    /// </summary>
     public string? DestinationEndpoint { get; init; }
 
-    /// <summary>DCE/RPC <c>call_id</c> common-header field; -1 when not available.</summary>
+    /// <summary>
+    /// DCE/RPC <c>call_id</c> common-header field; -1 when not available.
+    /// </summary>
     public int CallId { get; init; } = -1;
 
     /// <summary>
@@ -42,7 +50,9 @@ public sealed record class DecodedOpcPdu
     /// </summary>
     public int? ContextId { get; init; }
 
-    /// <summary>Operation number (request).</summary>
+    /// <summary>
+    /// Operation number (request).
+    /// </summary>
     public int? Opnum { get; init; }
 
     /// <summary>
@@ -53,25 +63,39 @@ public sealed record class DecodedOpcPdu
     /// </summary>
     public Guid? InterfaceId { get; init; }
 
-    /// <summary>Object IPID from RequestCoPdu (PFC_OBJECT_UUID); null for non-request PDUs and root-routed requests.</summary>
+    /// <summary>
+    /// Object IPID from RequestCoPdu (PFC_OBJECT_UUID); null for non-request PDUs and root-routed requests.
+    /// </summary>
     public Guid? ObjectIpid { get; init; }
 
-    /// <summary>HRESULT extracted from a response PDU's ORPC envelope; null for non-response PDUs or when the envelope is too short to carry one.</summary>
+    /// <summary>
+    /// HRESULT extracted from a response PDU's ORPC envelope; null for non-response PDUs or when the envelope is too short to carry one.
+    /// </summary>
     public int? Hresult { get; init; }
 
-    /// <summary>RPC fault status code (FaultCoPdu); null for non-fault PDUs.</summary>
+    /// <summary>
+    /// RPC fault status code (FaultCoPdu); null for non-fault PDUs.
+    /// </summary>
     public int? FaultStatus { get; init; }
 
-    /// <summary>Request stub length in bytes (request); null for non-request PDUs.</summary>
+    /// <summary>
+    /// Request stub length in bytes (request); null for non-request PDUs.
+    /// </summary>
     public int? RequestStubLength { get; init; }
 
-    /// <summary>Response stub length in bytes (response); null for non-response PDUs.</summary>
+    /// <summary>
+    /// Response stub length in bytes (response); null for non-response PDUs.
+    /// </summary>
     public int? ResponseStubLength { get; init; }
 
-    /// <summary>Bind / alter context presentation-context list; empty for other PDUs.</summary>
+    /// <summary>
+    /// Bind / alter context presentation-context list; empty for other PDUs.
+    /// </summary>
     public IReadOnlyList<PresentationContextInfo> ContextList { get; init; } = Array.Empty<PresentationContextInfo>();
 
-    /// <summary>Bind-ack / alter-context-response presentation result list; empty for other PDUs.</summary>
+    /// <summary>
+    /// Bind-ack / alter-context-response presentation result list; empty for other PDUs.
+    /// </summary>
     public IReadOnlyList<PresentationResultInfo> ResultList { get; init; } = Array.Empty<PresentationResultInfo>();
 
     /// <summary>
@@ -100,8 +124,12 @@ public sealed record class DecodedOpcPdu
     public IReadOnlyDictionary<string, string?>? Annotations { get; init; }
 }
 
-/// <summary>Presentation context advertised in a bind / alter_context PDU.</summary>
+/// <summary>
+/// Presentation context advertised in a bind / alter_context PDU.
+/// </summary>
 public sealed record class PresentationContextInfo(int ContextId, Guid AbstractSyntaxIid, int MajorVersion, int MinorVersion);
 
-/// <summary>Presentation result returned in a bind_ack / alter_context_resp PDU.</summary>
+/// <summary>
+/// Presentation result returned in a bind_ack / alter_context_resp PDU.
+/// </summary>
 public sealed record class PresentationResultInfo(string Result, string Reason);

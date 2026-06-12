@@ -7,12 +7,16 @@ using Opc.Classic.Ndr;
 
 namespace Opc.Classic.Hda.Ndr;
 
-/// <summary>NDR encoder / decoder for the OPC HDA historian status response.</summary>
+/// <summary>
+/// NDR encoder / decoder for the OPC HDA historian status response.
+/// </summary>
 public static class NdrOpcHdaServerStatusCodec
 {
     private const long FileTimeEpochOffsetTicks = 504911232000000000L;
 
-    /// <summary>Encodes an HDA historian status structure.</summary>
+    /// <summary>
+    /// Encodes an HDA historian status structure.
+    /// </summary>
     public static void Write(ref NdrWriter writer, OpcServerStatus status)
     {
         ArgumentNullException.ThrowIfNull(status);
@@ -36,7 +40,9 @@ public static class NdrOpcHdaServerStatusCodec
         writer.WriteUnicodeStringPtr(status.VendorInfo);
     }
 
-    /// <summary>Decodes an HDA historian status structure.</summary>
+    /// <summary>
+    /// Decodes an HDA historian status structure.
+    /// </summary>
     public static OpcServerStatus Read(ref NdrReader reader)
     {
         OpcServerState state = FromHistorianStatus(reader.ReadUInt32());

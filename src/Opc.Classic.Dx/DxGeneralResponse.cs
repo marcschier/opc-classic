@@ -7,7 +7,9 @@
 
 namespace Opc.Classic.Dx;
 
-/// <summary>Per-item HRESULT and optional diagnostic information returned by DX operations.</summary>
+/// <summary>
+/// Per-item HRESULT and optional diagnostic information returned by DX operations.
+/// </summary>
 public sealed record DxIdentifiedResult(
     string? ItemPath,
     string? ItemName,
@@ -21,7 +23,9 @@ public sealed record DxIdentifiedResult(
 /// </summary>
 public sealed record DxGeneralResponse
 {
-    /// <summary>Constructs a general DX response.</summary>
+    /// <summary>
+    /// Constructs a general DX response.
+    /// </summary>
     public DxGeneralResponse(
         string? configurationVersion = null,
         DxIdentifiedResult[]? errors = null,
@@ -32,16 +36,24 @@ public sealed record DxGeneralResponse
         Reserved = reserved;
     }
 
-    /// <summary>Configuration version returned by the server.</summary>
+    /// <summary>
+    /// Configuration version returned by the server.
+    /// </summary>
     public string? ConfigurationVersion { get; init; }
 
-    /// <summary>Per-entity operation results. Empty when the operation returned no item-level errors.</summary>
+    /// <summary>
+    /// Per-entity operation results. Empty when the operation returned no item-level errors.
+    /// </summary>
     public DxIdentifiedResult[] Errors { get; init; }
 
-    /// <summary>Per-entity operation results using the OPC DX IDL member name.</summary>
+    /// <summary>
+    /// Per-entity operation results using the OPC DX IDL member name.
+    /// </summary>
     public DxIdentifiedResult[] IdentifiedResults => Errors;
 
-    /// <summary>Reserved DWORD carried by the native structure.</summary>
+    /// <summary>
+    /// Reserved DWORD carried by the native structure.
+    /// </summary>
     public int Reserved { get; init; }
 
     private static DxIdentifiedResult[] NormalizeErrors(DxIdentifiedResult[]? errors)

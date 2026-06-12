@@ -8,7 +8,9 @@ using Opc.Classic.Ndr;
 
 namespace Opc.Classic.Dcom.Activation;
 
-/// <summary>NDR codec for the legacy <c>IActivation::RemoteActivation</c> method body.</summary>
+/// <summary>
+/// NDR codec for the legacy <c>IActivation::RemoteActivation</c> method body.
+/// </summary>
 public static class IActivationCodec
 {
     private const int InitialBufferSize = 4096;
@@ -18,7 +20,9 @@ public static class IActivationCodec
 
     private delegate void NdrWriteAction(ref NdrWriter writer);
 
-    /// <summary>Encodes a legacy <c>RemoteActivation</c> request body, excluding the ORPC envelope.</summary>
+    /// <summary>
+    /// Encodes a legacy <c>RemoteActivation</c> request body, excluding the ORPC envelope.
+    /// </summary>
     public static byte[] EncodeRemoteActivationRequest(RemoteActivationRequest request)
     {
         ArgumentNullException.ThrowIfNull(request);
@@ -49,7 +53,9 @@ public static class IActivationCodec
         });
     }
 
-    /// <summary>Decodes a legacy <c>RemoteActivation</c> request body, excluding the ORPC envelope.</summary>
+    /// <summary>
+    /// Decodes a legacy <c>RemoteActivation</c> request body, excluding the ORPC envelope.
+    /// </summary>
     public static RemoteActivationRequest DecodeRemoteActivationRequest(ReadOnlySpan<byte> payload)
     {
         var reader = new NdrReader(payload);
@@ -107,7 +113,9 @@ public static class IActivationCodec
         };
     }
 
-    /// <summary>Encodes a legacy <c>RemoteActivation</c> response body, excluding the ORPC envelope.</summary>
+    /// <summary>
+    /// Encodes a legacy <c>RemoteActivation</c> response body, excluding the ORPC envelope.
+    /// </summary>
     public static byte[] EncodeRemoteActivationResponse(RemoteActivationResponse response)
     {
         ArgumentNullException.ThrowIfNull(response);
@@ -156,7 +164,9 @@ public static class IActivationCodec
         });
     }
 
-    /// <summary>Decodes a legacy <c>RemoteActivation</c> response body, excluding the ORPC envelope.</summary>
+    /// <summary>
+    /// Decodes a legacy <c>RemoteActivation</c> response body, excluding the ORPC envelope.
+    /// </summary>
     public static RemoteActivationResponse DecodeRemoteActivationResponse(ReadOnlySpan<byte> payload, int expectedInterfaceCount)
     {
         if (expectedInterfaceCount is <= 0 or > MaxRequestedInterfaces)

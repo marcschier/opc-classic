@@ -16,7 +16,9 @@ public static class XmlSchemaParser
 {
     private const string XmlSchemaNamespace = "http://www.w3.org/2001/XMLSchema";
 
-    /// <summary>Parse an XML Schema document into a CPX type dictionary.</summary>
+    /// <summary>
+    /// Parse an XML Schema document into a CPX type dictionary.
+    /// </summary>
     public static TypeDictionary Parse(string schemaXml)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(schemaXml);
@@ -27,7 +29,9 @@ public static class XmlSchemaParser
         return Parse(document.Root ?? throw new FormatException("XML Schema document is empty."));
     }
 
-    /// <summary>Parse an XML Schema root element into a CPX type dictionary.</summary>
+    /// <summary>
+    /// Parse an XML Schema root element into a CPX type dictionary.
+    /// </summary>
     public static TypeDictionary Parse(XElement schema)
     {
         ArgumentNullException.ThrowIfNull(schema);

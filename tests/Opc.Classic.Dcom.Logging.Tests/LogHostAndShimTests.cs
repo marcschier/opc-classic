@@ -11,7 +11,9 @@ namespace Opc.Classic.Dcom.Logging.Tests;
 
 public sealed class LogHostAndShimTests
 {
-    /// <summary>Recording logger that captures every Log invocation for inspection.</summary>
+    /// <summary>
+    /// Recording logger that captures every Log invocation for inspection.
+    /// </summary>
     private sealed class CapturingLogger : ILogger
     {
         public List<(LogLevel Level, string Message, Exception? Exception)> Calls { get; } = new();

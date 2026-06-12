@@ -39,10 +39,14 @@ namespace Opc.Classic.Generators
     /// </remarks>
     internal static class ClassicGeneratorMarker
     {
-        /// <summary>Tracks the generator surface as it evolves. Bumped per phase.</summary>
+        /// <summary>
+        /// Tracks the generator surface as it evolves. Bumped per phase.
+        /// </summary>
         public const string Version = ""0.2.0-dev"";
 
-        /// <summary>Human-readable description of the current generator surface.</summary>
+        /// <summary>
+        /// Human-readable description of the current generator surface.
+        /// </summary>
         public const string Description = ""Marker + OpcInterface generators"";
     }
 }

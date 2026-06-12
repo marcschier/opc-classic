@@ -28,14 +28,20 @@ using Opc.Classic.Transport;
 
 namespace Opc.Classic.Mcp.Tools;
 
-/// <summary>Creates AE client state for a session.</summary>
+/// <summary>
+/// Creates AE client state for a session.
+/// </summary>
 public interface IOpcAeConnectionFactory
 {
-    /// <summary>Connects to an AE server and returns a client state object.</summary>
+    /// <summary>
+    /// Connects to an AE server and returns a client state object.
+    /// </summary>
     Task<AeClientState> ConnectAsync(AeConnectionRequest request, CancellationToken cancellationToken = default);
 }
 
-/// <summary>Connection request used by AE tools.</summary>
+/// <summary>
+/// Connection request used by AE tools.
+/// </summary>
 public sealed record AeConnectionRequest(
     string Host,
     string? ProgId,
@@ -46,12 +52,16 @@ public sealed record AeConnectionRequest(
     string? ConnectionString,
     string? AuthLevel = null);
 
-/// <summary>Registers in-memory AE call channels for MCP tests and loopback scenarios.</summary>
+/// <summary>
+/// Registers in-memory AE call channels for MCP tests and loopback scenarios.
+/// </summary>
 public static class InMemoryAeConnectionRegistry
 {
     private static readonly ConcurrentDictionary<string, InMemoryAeConnection> Channels = new(StringComparer.OrdinalIgnoreCase);
 
-    /// <summary>Registers an in-memory AE call channel by name.</summary>
+    /// <summary>
+    /// Registers an in-memory AE call channel by name.
+    /// </summary>
     public static IDisposable Register(string name, ICallChannel channel, IAeServer? managedServer = null)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(name);
@@ -83,16 +93,22 @@ public static class InMemoryAeConnectionRegistry
     }
 }
 
-/// <summary>In-memory AE connection endpoints.</summary>
+/// <summary>
+/// In-memory AE connection endpoints.
+/// </summary>
 public sealed record InMemoryAeConnection(ICallChannel Channel, IAeServer? ManagedServer);
 
-/// <summary>MCP tools for OPC AE client operations.</summary>
+/// <summary>
+/// MCP tools for OPC AE client operations.
+/// </summary>
 public sealed class AeClientTools
 {
     private readonly IOpcSessionManager _sessionManager;
     private readonly IOpcAeConnectionFactory _connectionFactory;
 
-    /// <summary>Creates the AE client tool set.</summary>
+    /// <summary>
+    /// Creates the AE client tool set.
+    /// </summary>
     public AeClientTools(IOpcSessionManager sessionManager, IEnumerable<IOpcAeConnectionFactory> connectionFactories)
     {
         _sessionManager = sessionManager ?? throw new ArgumentNullException(nameof(sessionManager));
@@ -100,7 +116,9 @@ public sealed class AeClientTools
         _connectionFactory = connectionFactories.FirstOrDefault() ?? new DefaultOpcAeConnectionFactory();
     }
 
-    /// <summary>Connects a session to an OPC AE server.</summary>
+    /// <summary>
+    /// Connects a session to an OPC AE server.
+    /// </summary>
     [McpServerTool(Name = "opcclassic.ae.connect", ReadOnly = false, Idempotent = true, Destructive = false, OpenWorld = true)]
     [Description("Connects an existing MCP session to an OPC AE server using DCOM, a tcp://host:port managed-listener direct connect, or an in-memory test channel.")]
     public async Task<OpcResultDto> Connect(
@@ -141,7 +159,9 @@ public sealed class AeClientTools
         return new OpcResultDto(0, $"AE client connected to {status.VendorInfo}.", Succeeded: true);
     }
 
-    /// <summary>Gets OPC AE server status for a connected session.</summary>
+    /// <summary>
+    /// Gets OPC AE server status for a connected session.
+    /// </summary>
     [McpServerTool(Name = "opcclassic.ae.get_status", ReadOnly = true, Idempotent = true, Destructive = false, OpenWorld = true)]
     [Description("Gets the OPC AE event server status, including runtime state, version, vendor information, and operational state.")]
     public async Task<OpcServerStatusDto> GetStatus(
@@ -154,7 +174,9 @@ public sealed class AeClientTools
         return ToStatusDto(status);
     }
 
-    /// <summary>Browses the OPC AE area space.</summary>
+    /// <summary>
+    /// Browses the OPC AE area space.
+    /// </summary>
     [McpServerTool(Name = "opcclassic.ae.browse_areas", ReadOnly = true, Idempotent = true, Destructive = false, OpenWorld = true)]
     [Description("Browses the OPC AE area/source tree below a qualified area name. Use an empty area for the root.")]
     public async Task<IReadOnlyList<OpcAreaBrowseElementDto>> BrowseAreas(
@@ -179,7 +201,9 @@ public sealed class AeClientTools
         return elements;
     }
 
-    /// <summary>Queries OPC AE event categories.</summary>
+    /// <summary>
+    /// Queries OPC AE event categories.
+    /// </summary>
     [McpServerTool(Name = "opcclassic.ae.query_event_categories", ReadOnly = true, Idempotent = true, Destructive = false, OpenWorld = true)]
     [Description("Queries event categories supported by the AE server for simple, tracking, condition, or all event types.")]
     public async Task<IReadOnlyList<OpcEventCategoryDto>> QueryEventCategories(
@@ -206,7 +230,9 @@ public sealed class AeClientTools
         }
     }
 
-    /// <summary>Queries OPC AE event attributes for a category.</summary>
+    /// <summary>
+    /// Queries OPC AE event attributes for a category.
+    /// </summary>
     [McpServerTool(Name = "opcclassic.ae.query_event_attributes", ReadOnly = true, Idempotent = true, Destructive = false, OpenWorld = true)]
     [Description("Queries server-defined attribute metadata for an OPC AE event category.")]
     public async Task<IReadOnlyList<OpcEventAttributeDto>> QueryEventAttributes(
@@ -225,7 +251,9 @@ public sealed class AeClientTools
             ((VarType)(index < types.Length ? types[index] : (ushort)VarType.VT_EMPTY)).ToString())).ToArray();
     }
 
-    /// <summary>Creates an OPC AE event subscription.</summary>
+    /// <summary>
+    /// Creates an OPC AE event subscription.
+    /// </summary>
     [McpServerTool(Name = "opcclassic.ae.create_subscription", ReadOnly = false, Idempotent = false, Destructive = false, OpenWorld = true)]
     [Description("Creates a poll-based AE subscription. MCP cannot push callbacks, so use opcclassic.ae.poll_events to retrieve queued events.")]
     public async Task<OpcAeSubscriptionDto> CreateSubscription(
@@ -276,7 +304,9 @@ public sealed class AeClientTools
         return ToSubscriptionDto(context);
     }
 
-    /// <summary>Sets an AE subscription filter.</summary>
+    /// <summary>
+    /// Sets an AE subscription filter.
+    /// </summary>
     [McpServerTool(Name = "opcclassic.ae.set_filter", ReadOnly = false, Idempotent = true, Destructive = false, OpenWorld = true)]
     [Description("Sets an AE subscription filter using event type, category, severity, area, and source criteria.")]
     public async Task<OpcAeSubscriptionDto> SetFilter(
@@ -330,7 +360,9 @@ public sealed class AeClientTools
         return ToSubscriptionDto(context);
     }
 
-    /// <summary>Polls queued AE event notifications.</summary>
+    /// <summary>
+    /// Polls queued AE event notifications.
+    /// </summary>
     [McpServerTool(Name = "opcclassic.ae.poll_events", ReadOnly = true, Idempotent = false, Destructive = false, OpenWorld = true)]
     [Description("Polls a subscription queue for AE notifications. MCP cannot receive pushed callbacks directly.")]
     public async Task<IReadOnlyList<OpcEventNotificationDto>> PollEvents(
@@ -368,7 +400,9 @@ public sealed class AeClientTools
         return events;
     }
 
-    /// <summary>Refreshes an AE subscription.</summary>
+    /// <summary>
+    /// Refreshes an AE subscription.
+    /// </summary>
     [McpServerTool(Name = "opcclassic.ae.refresh_subscription", ReadOnly = false, Idempotent = false, Destructive = false, OpenWorld = true)]
     [Description("Triggers an AE condition refresh so active conditions are re-emitted to the subscription queue.")]
     public async Task<OpcResultDto> RefreshSubscription(
@@ -392,7 +426,9 @@ public sealed class AeClientTools
         return new OpcResultDto(0, $"AE subscription '{subscriptionId}' refreshed.", Succeeded: true, SubscriptionId: subscriptionId);
     }
 
-    /// <summary>Acknowledges an AE condition.</summary>
+    /// <summary>
+    /// Acknowledges an AE condition.
+    /// </summary>
     [McpServerTool(Name = "opcclassic.ae.ack_condition", ReadOnly = false, Idempotent = false, Destructive = false, OpenWorld = true)]
     [Description("Acknowledges an AE condition by source and condition name. For DCOM servers, activeTime and cookie identify the event instance.")]
     public async Task<IReadOnlyList<OpcResultDto>> AckCondition(
@@ -432,7 +468,9 @@ public sealed class AeClientTools
         return errors.Select(error => new OpcResultDto(error, DescribeHResult(error), new OpcResultId(error, null).IsSuccess, ItemName: source + "::" + conditionName)).ToArray();
     }
 
-    /// <summary>Gets current state for an AE condition.</summary>
+    /// <summary>
+    /// Gets current state for an AE condition.
+    /// </summary>
     [McpServerTool(Name = "opcclassic.ae.get_condition_state", ReadOnly = true, Idempotent = true, Destructive = false, OpenWorld = true)]
     [Description("Gets the current server state for a named AE condition and optional attribute IDs.")]
     public async Task<OpcConditionStateDto> GetConditionState(
@@ -451,7 +489,9 @@ public sealed class AeClientTools
         return ToConditionStateDto(state, attributeIds ?? []);
     }
 
-    /// <summary>Cancels an AE subscription.</summary>
+    /// <summary>
+    /// Cancels an AE subscription.
+    /// </summary>
     [McpServerTool(Name = "opcclassic.ae.cancel_subscription", ReadOnly = false, Idempotent = true, Destructive = true, OpenWorld = true)]
     [Description("Cancels and removes an AE subscription from the MCP session.")]
     public async Task<OpcResultDto> CancelSubscription(
@@ -470,7 +510,9 @@ public sealed class AeClientTools
         return new OpcResultDto(0, $"AE subscription '{subscriptionId}' canceled.", Succeeded: true, SubscriptionId: subscriptionId);
     }
 
-    /// <summary>Disconnects from an AE server.</summary>
+    /// <summary>
+    /// Disconnects from an AE server.
+    /// </summary>
     [McpServerTool(Name = "opcclassic.ae.disconnect", ReadOnly = false, Idempotent = true, Destructive = true, OpenWorld = true)]
     [Description("Disconnects the session from its OPC AE server and releases AE subscriptions and channels.")]
     public async Task<OpcResultDto> Disconnect(

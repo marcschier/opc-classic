@@ -17,7 +17,9 @@ namespace Opc.Classic.Da;
 /// </remarks>
 public sealed class BrowseElement
 {
-    /// <summary>Short display name (last component of the path).</summary>
+    /// <summary>
+    /// Short display name (last component of the path).
+    /// </summary>
     public string Name { get; init; } = string.Empty;
 
     /// <summary>

@@ -10,7 +10,9 @@ namespace Opc.Classic;
 /// </summary>
 public sealed class NoOpAuthContext : IAuthContext
 {
-    /// <summary>Gets the reusable no-op authentication context.</summary>
+    /// <summary>
+    /// Gets the reusable no-op authentication context.
+    /// </summary>
     public static NoOpAuthContext Instance { get; } = new();
 
     /// <inheritdoc />

@@ -8,7 +8,9 @@ using System.Text;
 
 namespace Opc.Classic.Dcom.Smb;
 
-/// <summary>SMB2 CREATE request body, per [MS-SMB2] §2.2.13.</summary>
+/// <summary>
+/// SMB2 CREATE request body, per [MS-SMB2] §2.2.13.
+/// </summary>
 internal readonly record struct Smb2CreateRequest(
     uint DesiredAccess,
     uint FileAttributes,
@@ -69,7 +71,9 @@ internal readonly record struct Smb2CreateRequest(
     }
 }
 
-/// <summary>SMB2 CREATE response body, per [MS-SMB2] §2.2.14.</summary>
+/// <summary>
+/// SMB2 CREATE response body, per [MS-SMB2] §2.2.14.
+/// </summary>
 internal readonly record struct Smb2CreateResponse(
     ulong FileIdPersistent,
     ulong FileIdVolatile)
@@ -92,7 +96,9 @@ internal readonly record struct Smb2CreateResponse(
     }
 }
 
-/// <summary>SMB2 CLOSE request body, per [MS-SMB2] §2.2.15.</summary>
+/// <summary>
+/// SMB2 CLOSE request body, per [MS-SMB2] §2.2.15.
+/// </summary>
 internal readonly record struct Smb2CloseRequest(
     ulong FileIdPersistent,
     ulong FileIdVolatile)

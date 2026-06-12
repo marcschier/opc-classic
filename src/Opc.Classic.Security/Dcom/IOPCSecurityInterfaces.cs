@@ -22,40 +22,56 @@ using Opc.Classic.Generators;
 
 namespace Opc.Classic.Security.Dcom;
 
-/// <summary><c>IOPCSecurityNT</c> - Windows-integrated authentication (IID_IOPCSecurityNT).</summary>
+/// <summary>
+/// <c>IOPCSecurityNT</c> - Windows-integrated authentication (IID_IOPCSecurityNT).
+/// </summary>
 [OpcInterface("7AA83A01-6C77-11D3-84F9-00008630A38B")]
 [GenerateOpcProxy]
 [OpcGenerateServerDispatch]
 public partial interface IOPCSecurityNT
 {
-    /// <summary><c>IOPCSecurityNT::IsAvailableNT</c> (opnum 3).</summary>
+    /// <summary>
+    /// <c>IOPCSecurityNT::IsAvailableNT</c> (opnum 3).
+    /// </summary>
     [OpcMethod(3)]
     Task<bool> IsAvailableNTAsync(CancellationToken cancellationToken = default);
 
-    /// <summary><c>IOPCSecurityNT::QueryMinImpersonationLevel</c> (opnum 4).</summary>
+    /// <summary>
+    /// <c>IOPCSecurityNT::QueryMinImpersonationLevel</c> (opnum 4).
+    /// </summary>
     [OpcMethod(4)]
     Task<int> QueryMinImpersonationLevelAsync(CancellationToken cancellationToken = default);
 
-    /// <summary><c>IOPCSecurityNT::ChangeUser</c> (opnum 5).</summary>
+    /// <summary>
+    /// <c>IOPCSecurityNT::ChangeUser</c> (opnum 5).
+    /// </summary>
     [OpcMethod(5)]
     Task ChangeUserAsync(CancellationToken cancellationToken = default);
 }
 
-/// <summary><c>IOPCSecurityPrivate</c> - server-defined username/password (IID_IOPCSecurityPrivate).</summary>
+/// <summary>
+/// <c>IOPCSecurityPrivate</c> - server-defined username/password (IID_IOPCSecurityPrivate).
+/// </summary>
 [OpcInterface("7AA83A02-6C77-11D3-84F9-00008630A38B")]
 [GenerateOpcProxy]
 [OpcGenerateServerDispatch]
 public partial interface IOPCSecurityPrivate
 {
-    /// <summary><c>IOPCSecurityPrivate::IsAvailablePriv</c> (opnum 3).</summary>
+    /// <summary>
+    /// <c>IOPCSecurityPrivate::IsAvailablePriv</c> (opnum 3).
+    /// </summary>
     [OpcMethod(3)]
     Task<bool> IsAvailablePrivAsync(CancellationToken cancellationToken = default);
 
-    /// <summary><c>IOPCSecurityPrivate::Logon</c> (opnum 4).</summary>
+    /// <summary>
+    /// <c>IOPCSecurityPrivate::Logon</c> (opnum 4).
+    /// </summary>
     [OpcMethod(4)]
     Task LogonAsync(string userId, string password, CancellationToken cancellationToken = default);
 
-    /// <summary><c>IOPCSecurityPrivate::Logoff</c> (opnum 5).</summary>
+    /// <summary>
+    /// <c>IOPCSecurityPrivate::Logoff</c> (opnum 5).
+    /// </summary>
     [OpcMethod(5)]
     Task LogoffAsync(CancellationToken cancellationToken = default);
 }

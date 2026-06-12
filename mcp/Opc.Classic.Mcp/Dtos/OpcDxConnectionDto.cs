@@ -5,7 +5,9 @@
 
 namespace Opc.Classic.Mcp.Dtos;
 
-/// <summary>JSON-friendly OPC DX connection definition.</summary>
+/// <summary>
+/// JSON-friendly OPC DX connection definition.
+/// </summary>
 public sealed record OpcDxConnectionDto(
     string? Name = null,
     string? Description = null,

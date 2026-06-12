@@ -30,13 +30,17 @@ public sealed class OpcCpxItemProperties : IOpcItemPropertyProvider, IOpcItemPro
     private readonly IOpcItemPropertyProvider _fallbackProvider;
     private readonly IOpcItemPropertyMetadataProvider? _fallbackMetadataProvider;
 
-    /// <summary>Creates a CPX property provider.</summary>
+    /// <summary>
+    /// Creates a CPX property provider.
+    /// </summary>
     public OpcCpxItemProperties(OpcCpxOptions options)
         : this(options, NullItemPropertyProvider.Instance)
     {
     }
 
-    /// <summary>Creates a CPX property provider with a fallback provider for non-CPX properties.</summary>
+    /// <summary>
+    /// Creates a CPX property provider with a fallback provider for non-CPX properties.
+    /// </summary>
     public OpcCpxItemProperties(OpcCpxOptions options, IOpcItemPropertyProvider fallbackProvider)
     {
         _options = options ?? throw new ArgumentNullException(nameof(options));
@@ -44,7 +48,9 @@ public sealed class OpcCpxItemProperties : IOpcItemPropertyProvider, IOpcItemPro
         _fallbackMetadataProvider = fallbackProvider as IOpcItemPropertyMetadataProvider;
     }
 
-    /// <summary>Descriptors for CPX properties 600-609.</summary>
+    /// <summary>
+    /// Descriptors for CPX properties 600-609.
+    /// </summary>
     public static IReadOnlyList<OpcStandardProperty> Properties => CpxPropertyDescriptors;
 
     /// <inheritdoc />

@@ -14,14 +14,20 @@ using Opc.Classic.Mcp.Sessions;
 
 namespace Opc.Classic.Mcp.Tools;
 
-/// <summary>Creates DX client state for a session.</summary>
+/// <summary>
+/// Creates DX client state for a session.
+/// </summary>
 public interface IOpcDxConnectionFactory
 {
-    /// <summary>Connects to a DX server and returns a client state object.</summary>
+    /// <summary>
+    /// Connects to a DX server and returns a client state object.
+    /// </summary>
     Task<DxClientState> ConnectAsync(DxConnectionRequest request, CancellationToken cancellationToken = default);
 }
 
-/// <summary>Connection request used by DX tools.</summary>
+/// <summary>
+/// Connection request used by DX tools.
+/// </summary>
 public sealed record DxConnectionRequest(
     string Host,
     string? ProgId,
@@ -32,12 +38,16 @@ public sealed record DxConnectionRequest(
     string? ConnectionString,
     string? AuthLevel = null);
 
-/// <summary>Registers in-memory DX clients for MCP tests and loopback scenarios.</summary>
+/// <summary>
+/// Registers in-memory DX clients for MCP tests and loopback scenarios.
+/// </summary>
 public static class InMemoryDxConnectionRegistry
 {
     private static readonly System.Collections.Concurrent.ConcurrentDictionary<string, IOpcDxClient> Clients = new(StringComparer.OrdinalIgnoreCase);
 
-    /// <summary>Registers an in-memory DX client by name.</summary>
+    /// <summary>
+    /// Registers an in-memory DX client by name.
+    /// </summary>
     public static IDisposable Register(string name, IOpcDxClient client)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(name);
@@ -69,13 +79,17 @@ public static class InMemoryDxConnectionRegistry
     }
 }
 
-/// <summary>MCP tools for OPC DX configuration operations.</summary>
+/// <summary>
+/// MCP tools for OPC DX configuration operations.
+/// </summary>
 public sealed class DxTools
 {
     private readonly IOpcSessionManager _sessionManager;
     private readonly IOpcDxConnectionFactory _connectionFactory;
 
-    /// <summary>Creates the DX tool set.</summary>
+    /// <summary>
+    /// Creates the DX tool set.
+    /// </summary>
     public DxTools(IOpcSessionManager sessionManager, IEnumerable<IOpcDxConnectionFactory> connectionFactories)
     {
         _sessionManager = sessionManager ?? throw new ArgumentNullException(nameof(sessionManager));
@@ -83,7 +97,9 @@ public sealed class DxTools
         _connectionFactory = connectionFactories.FirstOrDefault() ?? new DefaultOpcDxConnectionFactory();
     }
 
-    /// <summary>Connects a session to an OPC DX server.</summary>
+    /// <summary>
+    /// Connects a session to an OPC DX server.
+    /// </summary>
     [McpServerTool(Name = "opcclassic.dx.connect", ReadOnly = false, Idempotent = true, Destructive = false, OpenWorld = true)]
     [Description("Connects an existing MCP session to an OPC DX server. Use connectionString=inmemory://name for registered test clients.")]
     public async Task<OpcSessionDto> Connect(
@@ -124,7 +140,9 @@ public sealed class DxTools
         return ToSessionDto(session);
     }
 
-    /// <summary>Gets OPC DX server status for a connected session.</summary>
+    /// <summary>
+    /// Gets OPC DX server status for a connected session.
+    /// </summary>
     [McpServerTool(Name = "opcclassic.dx.get_status", ReadOnly = true, Idempotent = true, Destructive = false, OpenWorld = true)]
     [Description("Gets the OPC DX server status exposed by the connected server.")]
     public async Task<OpcServerStatusDto> GetStatus(
@@ -137,7 +155,9 @@ public sealed class DxTools
         return ToDto(status);
     }
 
-    /// <summary>Queries DX connection names.</summary>
+    /// <summary>
+    /// Queries DX connection names.
+    /// </summary>
     [McpServerTool(Name = "opcclassic.dx.query_connections", ReadOnly = true, Idempotent = true, Destructive = false, OpenWorld = true)]
     [Description("Queries OPC DX connection names using QueryDXConnectionNames semantics.")]
     public async Task<IReadOnlyList<string>> QueryConnections(
@@ -155,7 +175,9 @@ public sealed class DxTools
         return await client.Client.QueryConnectionNamesAsync(browsePath ?? string.Empty, connectionMasks ?? [], recursive, cancellationToken).ConfigureAwait(false);
     }
 
-    /// <summary>Queries configured DX source servers.</summary>
+    /// <summary>
+    /// Queries configured DX source servers.
+    /// </summary>
     [McpServerTool(Name = "opcclassic.dx.query_source_servers", ReadOnly = true, Idempotent = true, Destructive = false, OpenWorld = true)]
     [Description("Lists the source servers configured in the connected OPC DX server.")]
     public async Task<IReadOnlyList<OpcDxSourceServerDto>> QuerySourceServers(
@@ -168,7 +190,9 @@ public sealed class DxTools
         return sources.Select(ToDto).ToArray();
     }
 
-    /// <summary>Adds a DX connection.</summary>
+    /// <summary>
+    /// Adds a DX connection.
+    /// </summary>
     [McpServerTool(Name = "opcclassic.dx.add_connection", ReadOnly = false, Idempotent = false, Destructive = false, OpenWorld = true)]
     [Description("Adds an OPC DX connection definition.")]
     public async Task<OpcResultDto> AddConnection(
@@ -184,7 +208,9 @@ public sealed class DxTools
         return ToResult(result, connection.Name, "DX connection added.");
     }
 
-    /// <summary>Modifies a DX connection.</summary>
+    /// <summary>
+    /// Modifies a DX connection.
+    /// </summary>
     [McpServerTool(Name = "opcclassic.dx.modify_connection", ReadOnly = false, Idempotent = true, Destructive = false, OpenWorld = true)]
     [Description("Modifies an existing OPC DX connection definition.")]
     public async Task<OpcResultDto> ModifyConnection(
@@ -200,7 +226,9 @@ public sealed class DxTools
         return ToResult(result, connection.Name, "DX connection modified.");
     }
 
-    /// <summary>Updates matching DX connections.</summary>
+    /// <summary>
+    /// Updates matching DX connections.
+    /// </summary>
     [McpServerTool(Name = "opcclassic.dx.update_connection", ReadOnly = false, Idempotent = true, Destructive = false, OpenWorld = true)]
     [Description("Updates OPC DX connections matching a connection name and browse path.")]
     public async Task<OpcResultDto> UpdateConnection(
@@ -223,7 +251,9 @@ public sealed class DxTools
         return ToResult(result, connectionName, "DX connection updated.");
     }
 
-    /// <summary>Deletes a DX connection.</summary>
+    /// <summary>
+    /// Deletes a DX connection.
+    /// </summary>
     [McpServerTool(Name = "opcclassic.dx.delete_connection", ReadOnly = false, Idempotent = true, Destructive = true, OpenWorld = true)]
     [Description("Deletes an OPC DX connection by name.")]
     public async Task<OpcResultDto> DeleteConnection(
@@ -243,7 +273,9 @@ public sealed class DxTools
         return ToResult(result, connectionName, "DX connection deleted.");
     }
 
-    /// <summary>Adds a DX source server.</summary>
+    /// <summary>
+    /// Adds a DX source server.
+    /// </summary>
     [McpServerTool(Name = "opcclassic.dx.add_source_server", ReadOnly = false, Idempotent = false, Destructive = false, OpenWorld = true)]
     [Description("Adds an OPC DX source-server definition.")]
     public async Task<OpcResultDto> AddSourceServer(
@@ -259,7 +291,9 @@ public sealed class DxTools
         return ToResult(result, sourceServer.Name, "DX source server added.");
     }
 
-    /// <summary>Modifies a DX source server.</summary>
+    /// <summary>
+    /// Modifies a DX source server.
+    /// </summary>
     [McpServerTool(Name = "opcclassic.dx.modify_source_server", ReadOnly = false, Idempotent = true, Destructive = false, OpenWorld = true)]
     [Description("Modifies an existing OPC DX source-server definition.")]
     public async Task<OpcResultDto> ModifySourceServer(
@@ -275,7 +309,9 @@ public sealed class DxTools
         return ToResult(result, sourceServer.Name, "DX source server modified.");
     }
 
-    /// <summary>Resets DX configuration.</summary>
+    /// <summary>
+    /// Resets DX configuration.
+    /// </summary>
     [McpServerTool(Name = "opcclassic.dx.reset_configuration", ReadOnly = false, Idempotent = false, Destructive = true, OpenWorld = true)]
     [Description("Resets all configured OPC DX connections and source servers.")]
     public async Task<OpcResultDto> ResetConfiguration(
@@ -290,7 +326,9 @@ public sealed class DxTools
         return new OpcResultDto(0, string.IsNullOrEmpty(newVersion) ? "DX configuration reset." : $"DX configuration reset. New version: {newVersion}", Succeeded: true, ValueType: newVersion);
     }
 
-    /// <summary>Disconnects DX client state from the session.</summary>
+    /// <summary>
+    /// Disconnects DX client state from the session.
+    /// </summary>
     [McpServerTool(Name = "opcclassic.dx.disconnect", ReadOnly = false, Idempotent = true, Destructive = true, OpenWorld = true)]
     [Description("Disconnects the session from its OPC DX server and releases DX client state.")]
     public async Task<OpcResultDto> Disconnect(

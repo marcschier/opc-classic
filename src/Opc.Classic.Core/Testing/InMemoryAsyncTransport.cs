@@ -35,10 +35,14 @@ public sealed class InMemoryAsyncTransport : IAsyncTransport
         await _outbound.Writer.FlushAsync(cancellationToken).ConfigureAwait(false);
     }
 
-    /// <summary>Gets the outbound side that tests read as if they were the remote endpoint.</summary>
+    /// <summary>
+    /// Gets the outbound side that tests read as if they were the remote endpoint.
+    /// </summary>
     public PipeReader ReadOutbound => _outbound.Reader;
 
-    /// <summary>Test helper: feed bytes onto the inbound side as if the remote endpoint sent them.</summary>
+    /// <summary>
+    /// Test helper: feed bytes onto the inbound side as if the remote endpoint sent them.
+    /// </summary>
     /// <param name="data">The bytes to feed to <see cref="Input"/>.</param>
     /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>A task that completes after bytes are written.</returns>

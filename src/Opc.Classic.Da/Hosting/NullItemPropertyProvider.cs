@@ -12,7 +12,9 @@ namespace Opc.Classic.Da.Hosting;
 /// </summary>
 public sealed class NullItemPropertyProvider : IOpcItemPropertyProvider
 {
-    /// <summary>Singleton instance.</summary>
+    /// <summary>
+    /// Singleton instance.
+    /// </summary>
     public static NullItemPropertyProvider Instance { get; } = new();
 
     private NullItemPropertyProvider()

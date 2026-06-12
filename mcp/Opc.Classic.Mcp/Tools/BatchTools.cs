@@ -25,14 +25,20 @@ using Opc.Classic.Transport;
 
 namespace Opc.Classic.Mcp.Tools;
 
-/// <summary>Creates Batch client state for a session.</summary>
+/// <summary>
+/// Creates Batch client state for a session.
+/// </summary>
 public interface IOpcBatchConnectionFactory
 {
-    /// <summary>Connects to a Batch server and returns a client state object.</summary>
+    /// <summary>
+    /// Connects to a Batch server and returns a client state object.
+    /// </summary>
     Task<BatchClientState> ConnectAsync(BatchConnectionRequest request, CancellationToken cancellationToken = default);
 }
 
-/// <summary>Connection request used by Batch tools.</summary>
+/// <summary>
+/// Connection request used by Batch tools.
+/// </summary>
 public sealed record BatchConnectionRequest(
     string Host,
     string? ProgId,
@@ -43,12 +49,16 @@ public sealed record BatchConnectionRequest(
     string? ConnectionString,
     string? AuthLevel = null);
 
-/// <summary>Registers in-memory Batch call channels for MCP tests and loopback scenarios.</summary>
+/// <summary>
+/// Registers in-memory Batch call channels for MCP tests and loopback scenarios.
+/// </summary>
 public static class InMemoryBatchConnectionRegistry
 {
     private static readonly System.Collections.Concurrent.ConcurrentDictionary<string, ICallChannel> Channels = new(StringComparer.OrdinalIgnoreCase);
 
-    /// <summary>Registers an in-memory Batch call channel by name.</summary>
+    /// <summary>
+    /// Registers an in-memory Batch call channel by name.
+    /// </summary>
     public static IDisposable Register(string name, ICallChannel channel)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(name);
@@ -80,13 +90,17 @@ public static class InMemoryBatchConnectionRegistry
     }
 }
 
-/// <summary>MCP tools for OPC Batch client operations.</summary>
+/// <summary>
+/// MCP tools for OPC Batch client operations.
+/// </summary>
 public sealed class BatchTools
 {
     private readonly IOpcSessionManager _sessionManager;
     private readonly IOpcBatchConnectionFactory _connectionFactory;
 
-    /// <summary>Creates the Batch tool set.</summary>
+    /// <summary>
+    /// Creates the Batch tool set.
+    /// </summary>
     public BatchTools(IOpcSessionManager sessionManager, IEnumerable<IOpcBatchConnectionFactory> connectionFactories)
     {
         _sessionManager = sessionManager ?? throw new ArgumentNullException(nameof(sessionManager));
@@ -94,7 +108,9 @@ public sealed class BatchTools
         _connectionFactory = connectionFactories.FirstOrDefault() ?? new DefaultOpcBatchConnectionFactory();
     }
 
-    /// <summary>Connects a session to an OPC Batch server.</summary>
+    /// <summary>
+    /// Connects a session to an OPC Batch server.
+    /// </summary>
     [McpServerTool(Name = "opcclassic.batch.connect", ReadOnly = false, Idempotent = true, Destructive = false, OpenWorld = true)]
     [Description("Connects an existing MCP session to an OPC Batch server using DCOM or an in-memory test channel.")]
     public async Task<OpcResultDto> Connect(
@@ -134,7 +150,9 @@ public sealed class BatchTools
         return new OpcResultDto(0, "Batch client connected.", Succeeded: true, ValueType: "Batch");
     }
 
-    /// <summary>Gets OPC Batch connection status for a connected session.</summary>
+    /// <summary>
+    /// Gets OPC Batch connection status for a connected session.
+    /// </summary>
     [McpServerTool(Name = "opcclassic.batch.get_status", ReadOnly = true, Idempotent = true, Destructive = false, OpenWorld = true)]
     [Description("Gets Batch connection status and verifies the server delimiter when supported.")]
     public async Task<OpcResultDto> GetStatus(
@@ -147,7 +165,9 @@ public sealed class BatchTools
         return new OpcResultDto(0, $"Batch client connected to {client.Host}; delimiter='{delimiter}'.", Succeeded: true, ValueType: "Batch");
     }
 
-    /// <summary>Disconnects a session from its OPC Batch server.</summary>
+    /// <summary>
+    /// Disconnects a session from its OPC Batch server.
+    /// </summary>
     [McpServerTool(Name = "opcclassic.batch.disconnect", ReadOnly = false, Idempotent = true, Destructive = true, OpenWorld = true)]
     [Description("Disconnects the session from its OPC Batch server and releases the Batch channel.")]
     public async Task<OpcResultDto> Disconnect(
@@ -166,7 +186,9 @@ public sealed class BatchTools
         return new OpcResultDto(1, "Batch client was not connected.", Succeeded: false, ValueType: "Batch");
     }
 
-    /// <summary>Queries OPC Batch summary records using Batch 2.0 filters.</summary>
+    /// <summary>
+    /// Queries OPC Batch summary records using Batch 2.0 filters.
+    /// </summary>
     [McpServerTool(Name = "opcclassic.batch.query_batch_summaries", ReadOnly = true, Idempotent = true, Destructive = false, OpenWorld = true)]
     [Description("Queries OPC Batch summaries with optional Batch 2.0 filter fields and returns JSON-friendly summary DTOs.")]
     public async Task<IReadOnlyList<OpcBatchSummaryDto>> QueryBatchSummaries(
@@ -248,7 +270,9 @@ public sealed class BatchTools
         return summaries;
     }
 
-    /// <summary>Queries the Batch enumeration-set catalog.</summary>
+    /// <summary>
+    /// Queries the Batch enumeration-set catalog.
+    /// </summary>
     [McpServerTool(Name = "opcclassic.batch.query_enumeration_sets", ReadOnly = true, Idempotent = true, Destructive = false, OpenWorld = true)]
     [Description("Queries the OPC Batch enumeration-set IDs and names exposed by IOPCEnumerationSets.")]
     public async Task<IReadOnlyList<OpcBatchEnumerationSetDto>> QueryEnumerationSets(
@@ -268,7 +292,9 @@ public sealed class BatchTools
         return results;
     }
 
-    /// <summary>Queries a Batch enumeration value name.</summary>
+    /// <summary>
+    /// Queries a Batch enumeration value name.
+    /// </summary>
     [McpServerTool(Name = "opcclassic.batch.query_enumeration", ReadOnly = true, Idempotent = true, Destructive = false, OpenWorld = true)]
     [Description("Queries the display name for a single OPC Batch enumeration value.")]
     public async Task<OpcBatchEnumerationDto> QueryEnumeration(
@@ -285,7 +311,9 @@ public sealed class BatchTools
         return new OpcBatchEnumerationDto(enumerationSetId, enumerationValue, name);
     }
 
-    /// <summary>Queries all Batch enumeration values in a set.</summary>
+    /// <summary>
+    /// Queries all Batch enumeration values in a set.
+    /// </summary>
     [McpServerTool(Name = "opcclassic.batch.query_enumeration_list", ReadOnly = true, Idempotent = true, Destructive = false, OpenWorld = true)]
     [Description("Queries the complete OPC Batch enumeration-value list for an enumeration set.")]
     public async Task<IReadOnlyList<OpcBatchEnumerationDto>> QueryEnumerationList(

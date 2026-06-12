@@ -19,13 +19,17 @@ public sealed class DefaultItemProperties : IOPCItemProperties
 {
     private readonly IOpcItemPropertyProvider _provider;
 
-    /// <summary>Initializes with the no-op property provider.</summary>
+    /// <summary>
+    /// Initializes with the no-op property provider.
+    /// </summary>
     public DefaultItemProperties()
         : this(NullItemPropertyProvider.Instance)
     {
     }
 
-    /// <summary>Initializes with the supplied provider.</summary>
+    /// <summary>
+    /// Initializes with the supplied provider.
+    /// </summary>
     public DefaultItemProperties(IOpcItemPropertyProvider provider)
     {
         _provider = provider ?? throw new ArgumentNullException(nameof(provider));

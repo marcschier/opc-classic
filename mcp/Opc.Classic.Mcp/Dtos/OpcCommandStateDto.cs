@@ -5,7 +5,9 @@
 
 namespace Opc.Classic.Mcp.Dtos;
 
-/// <summary>JSON-friendly OPC Commands state-change notification.</summary>
+/// <summary>
+/// JSON-friendly OPC Commands state-change notification.
+/// </summary>
 public sealed record OpcCommandStateDto(
     string InvocationId,
     int EventCount,

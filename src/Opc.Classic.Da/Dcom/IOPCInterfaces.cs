@@ -22,7 +22,9 @@ using Opc.Classic.Generators;
 
 namespace Opc.Classic.Da.Dcom;
 
-/// <summary><c>IOPCServer</c> — top-level OPC DA server interface (IID_IOPCServer).</summary>
+/// <summary>
+/// <c>IOPCServer</c> — top-level OPC DA server interface (IID_IOPCServer).
+/// </summary>
 [OpcInterface("39C13A4D-011E-11D0-9675-0020AFD8ADB3")]
 [GenerateOpcProxy]
 [OpcGenerateServerDispatch]
@@ -99,7 +101,9 @@ public partial interface IOPCServer
     Task<IOpcInterfaceRef> CreateGroupEnumeratorAsync(int scope, Guid requestedInterfaceId, CancellationToken cancellationToken = default);
 }
 
-/// <summary><c>IOPCCommon</c> — common DA locale, error-text, and client-name interface (IID_IOPCCommon).</summary>
+/// <summary>
+/// <c>IOPCCommon</c> — common DA locale, error-text, and client-name interface (IID_IOPCCommon).
+/// </summary>
 [OpcInterface("F31DFDE2-07B6-11D2-B2D8-0060083BA1FB")]
 [GenerateOpcProxy]
 [OpcGenerateServerDispatch]
@@ -136,7 +140,9 @@ public partial interface IOPCCommon
     Task SetClientNameAsync(string name, CancellationToken cancellationToken = default);
 }
 
-/// <summary><c>IOPCBrowse</c> — DA 3.0 unified browse interface (IID_IOPCBrowse).</summary>
+/// <summary>
+/// <c>IOPCBrowse</c> — DA 3.0 unified browse interface (IID_IOPCBrowse).
+/// </summary>
 [OpcInterface("39227004-A18F-4B57-8B0A-5235670F4468")]
 [GenerateOpcProxy]
 [OpcGenerateServerDispatch]
@@ -172,7 +178,9 @@ public partial interface IOPCBrowse
         CancellationToken cancellationToken = default);
 }
 
-/// <summary><c>IOPCBrowseServerAddressSpace</c> — DA 2.x browse interface (IID_IOPCBrowseServerAddressSpace).</summary>
+/// <summary>
+/// <c>IOPCBrowseServerAddressSpace</c> — DA 2.x browse interface (IID_IOPCBrowseServerAddressSpace).
+/// </summary>
 [OpcInterface("39C13A4F-011E-11D0-9675-0020AFD8ADB3")]
 [GenerateOpcProxy]
 [OpcGenerateServerDispatch]
@@ -214,7 +222,9 @@ public partial interface IOPCBrowseServerAddressSpace
     Task<IOpcInterfaceRef> BrowseAccessPathsAsync(string itemId, CancellationToken cancellationToken = default);
 }
 
-/// <summary><c>IOPCItemProperties</c> — DA 2.x item-property interface (IID_IOPCItemProperties).</summary>
+/// <summary>
+/// <c>IOPCItemProperties</c> — DA 2.x item-property interface (IID_IOPCItemProperties).
+/// </summary>
 [OpcInterface("39C13A72-011E-11D0-9675-0020AFD8ADB3")]
 [GenerateOpcProxy]
 [OpcGenerateServerDispatch]
@@ -257,7 +267,9 @@ public partial interface IOPCItemProperties
         CancellationToken cancellationToken = default);
 }
 
-/// <summary><c>IOPCItemDeadbandMgt</c> — per-item deadband management (IID_IOPCItemDeadbandMgt).</summary>
+/// <summary>
+/// <c>IOPCItemDeadbandMgt</c> — per-item deadband management (IID_IOPCItemDeadbandMgt).
+/// </summary>
 [OpcInterface("5946DA93-8B39-4EC8-AB3D-AA73DF5BC86F")]
 [GenerateOpcProxy]
 [OpcGenerateServerDispatch]
@@ -289,7 +301,9 @@ public partial interface IOPCItemDeadbandMgt
     Task<int[]> ClearItemDeadbandAsync([OpcEmitArrayCount] int[] serverHandles, CancellationToken cancellationToken = default);
 }
 
-/// <summary><c>IOPCItemSamplingMgt</c> — per-item sampling-rate/buffer management (IID_IOPCItemSamplingMgt).</summary>
+/// <summary>
+/// <c>IOPCItemSamplingMgt</c> — per-item sampling-rate/buffer management (IID_IOPCItemSamplingMgt).
+/// </summary>
 [OpcInterface("3E22D313-F08B-41A5-86C8-95E95CB49FFC")]
 [GenerateOpcProxy]
 [OpcGenerateServerDispatch]
@@ -344,7 +358,9 @@ public partial interface IOPCItemSamplingMgt
         CancellationToken cancellationToken = default);
 }
 
-/// <summary><c>IOPCItemIO</c> — DA 3.0 stateless item I/O (IID_IOPCItemIO).</summary>
+/// <summary>
+/// <c>IOPCItemIO</c> — DA 3.0 stateless item I/O (IID_IOPCItemIO).
+/// </summary>
 [OpcInterface("85C0B427-2893-4CBC-BD78-E5FC5146F08F")]
 [GenerateOpcProxy]
 [OpcGenerateServerDispatch]
@@ -399,7 +415,9 @@ public partial interface IOPCItemIO
     Task<int[]> WriteVqtAsync([OpcEmitArrayCount, OpcDeferredElements] string[] itemIds, OpcItemVqt[] values, CancellationToken cancellationToken = default);
 }
 
-/// <summary><c>IOPCItemMgt</c> — group item management (IID_IOPCItemMgt).</summary>
+/// <summary>
+/// <c>IOPCItemMgt</c> — group item management (IID_IOPCItemMgt).
+/// </summary>
 [OpcInterface("39C13A54-011E-11D0-9675-0020AFD8ADB3")]
 [GenerateOpcProxy]
 [OpcGenerateServerDispatch]
@@ -463,7 +481,9 @@ public partial interface IOPCItemMgt
     Task<IOpcInterfaceRef> CreateEnumeratorAsync(Guid requestedInterfaceId, CancellationToken cancellationToken = default);
 }
 
-/// <summary><c>IOPCGroupStateMgt</c> — group state (active, rate, deadband, ...) (IID_IOPCGroupStateMgt).</summary>
+/// <summary>
+/// <c>IOPCGroupStateMgt</c> — group state (active, rate, deadband, ...) (IID_IOPCGroupStateMgt).
+/// </summary>
 [OpcInterface("39C13A50-011E-11D0-9675-0020AFD8ADB3")]
 [GenerateOpcProxy]
 [OpcGenerateServerDispatch]
@@ -503,7 +523,9 @@ public partial interface IOPCGroupStateMgt
     Task<IOpcInterfaceRef> CloneGroupAsync(string name, Guid requestedInterfaceId, CancellationToken cancellationToken = default);
 }
 
-/// <summary><c>IOPCGroupStateMgt2</c> — DA 3.0 group state with keep-alive (IID_IOPCGroupStateMgt2).</summary>
+/// <summary>
+/// <c>IOPCGroupStateMgt2</c> — DA 3.0 group state with keep-alive (IID_IOPCGroupStateMgt2).
+/// </summary>
 [OpcInterface("8E368666-D72E-4F78-87ED-647611C61C9F")]
 [GenerateOpcProxy]
 [OpcGenerateServerDispatch]
@@ -522,7 +544,9 @@ public partial interface IOPCGroupStateMgt2
     Task<int> GetKeepAliveAsync(CancellationToken cancellationToken = default);
 }
 
-/// <summary><c>IOPCSyncIO</c> — DA 2.x synchronous read/write (IID_IOPCSyncIO).</summary>
+/// <summary>
+/// <c>IOPCSyncIO</c> — DA 2.x synchronous read/write (IID_IOPCSyncIO).
+/// </summary>
 [OpcInterface("39C13A52-011E-11D0-9675-0020AFD8ADB3")]
 [OpcGenerateServerDispatch]
 public partial interface IOPCSyncIO
@@ -550,7 +574,9 @@ public partial interface IOPCSyncIO
         CancellationToken cancellationToken = default);
 }
 
-/// <summary><c>IOPCSyncIO2</c> — DA 3.0 max-age synchronous I/O (IID_IOPCSyncIO2).</summary>
+/// <summary>
+/// <c>IOPCSyncIO2</c> — DA 3.0 max-age synchronous I/O (IID_IOPCSyncIO2).
+/// </summary>
 [OpcInterface("730F5F0F-55B1-4C81-9E18-FF8A0904E1FA")]
 [GenerateOpcProxy]
 [OpcGenerateServerDispatch]
@@ -596,7 +622,9 @@ public partial interface IOPCSyncIO2
     Task<int[]> WriteVqtAsync([OpcEmitArrayCount] int[] serverHandles, OpcItemVqt[] values, CancellationToken cancellationToken = default);
 }
 
-/// <summary><c>IOPCAsyncIO2</c> — DA 2.05a asynchronous I/O (IID_IOPCAsyncIO2).</summary>
+/// <summary>
+/// <c>IOPCAsyncIO2</c> — DA 2.05a asynchronous I/O (IID_IOPCAsyncIO2).
+/// </summary>
 [OpcInterface("39C13A71-011E-11D0-9675-0020AFD8ADB3")]
 [GenerateOpcProxy]
 [OpcGenerateServerDispatch]
@@ -649,7 +677,9 @@ public partial interface IOPCAsyncIO2
 
 }
 
-/// <summary><c>IOPCAsyncIO3</c> — DA 3.0 asynchronous I/O with max-age/VQT methods (IID_IOPCAsyncIO3).</summary>
+/// <summary>
+/// <c>IOPCAsyncIO3</c> — DA 3.0 asynchronous I/O with max-age/VQT methods (IID_IOPCAsyncIO3).
+/// </summary>
 [OpcInterface("0967B97B-36EF-423E-B6F8-6BFF1E40D39D")]
 [GenerateOpcProxy]
 [OpcGenerateServerDispatch]
@@ -708,7 +738,9 @@ public partial interface IOPCAsyncIO3
     Task<int> RefreshMaxAgeAsync(int maxAge, int transactionId, CancellationToken cancellationToken = default);
 }
 
-/// <summary><c>IEnumOPCItemAttributes</c> — enumerates items in a DA group with their full attribute set (IID_IEnumOPCItemAttributes).</summary>
+/// <summary>
+/// <c>IEnumOPCItemAttributes</c> — enumerates items in a DA group with their full attribute set (IID_IEnumOPCItemAttributes).
+/// </summary>
 [OpcInterface("39C13A55-011E-11D0-9675-0020AFD8ADB3")]
 [GenerateOpcProxy]
 [OpcGenerateServerDispatch]
@@ -755,7 +787,9 @@ public partial interface IEnumOPCItemAttributes
     Task<IOpcInterfaceRef> CloneAsync(CancellationToken cancellationToken = default);
 }
 
-/// <summary><c>IConnectionPointContainer</c> — enumerates connection points (IID_IConnectionPointContainer).</summary>
+/// <summary>
+/// <c>IConnectionPointContainer</c> — enumerates connection points (IID_IConnectionPointContainer).
+/// </summary>
 [OpcInterface("B196B284-BAB4-101A-B69C-00AA00341D07")]
 [OpcGenerateServerDispatch]
 public partial interface IConnectionPointContainer
@@ -777,7 +811,9 @@ public partial interface IConnectionPointContainer
     Task<IOpcInterfaceRef> FindConnectionPointAsync(Guid iid, CancellationToken cancellationToken = default);
 }
 
-/// <summary><c>IConnectionPoint</c> — the subscription sink-binding interface (IID_IConnectionPoint).</summary>
+/// <summary>
+/// <c>IConnectionPoint</c> — the subscription sink-binding interface (IID_IConnectionPoint).
+/// </summary>
 [OpcInterface("B196B286-BAB4-101A-B69C-00AA00341D07")]
 [OpcGenerateServerDispatch]
 public partial interface IConnectionPoint
@@ -803,7 +839,9 @@ public partial interface IConnectionPoint
     // GetConnectionPointContainer and EnumConnections return interface pointers.
 }
 
-/// <summary><c>IOPCShutdown</c> — server -&gt; client shutdown notification sink (IID_IOPCShutdown).</summary>
+/// <summary>
+/// <c>IOPCShutdown</c> — server -&gt; client shutdown notification sink (IID_IOPCShutdown).
+/// </summary>
 [OpcInterface("F31DFDE1-07B6-11D2-B2D8-0060083BA1FB")]
 [GenerateOpcProxy]
 [OpcGenerateServerDispatch]
@@ -816,7 +854,9 @@ public partial interface IOPCShutdown
     Task ShutdownRequestAsync(string reason, CancellationToken cancellationToken = default);
 }
 
-/// <summary><c>IOPCDataCallback</c> — server -&gt; client OnDataChange/OnReadComplete/OnWriteComplete/OnCancelComplete (IID_IOPCDataCallback).</summary>
+/// <summary>
+/// <c>IOPCDataCallback</c> — server -&gt; client OnDataChange/OnReadComplete/OnWriteComplete/OnCancelComplete (IID_IOPCDataCallback).
+/// </summary>
 [OpcInterface("39C13A70-011E-11D0-9675-0020AFD8ADB3")]
 [GenerateOpcProxy]
 [OpcGenerateServerDispatch]
@@ -873,7 +913,9 @@ public partial interface IOPCDataCallback
     Task OnCancelCompleteAsync(int transactionId, int groupHandle, CancellationToken cancellationToken = default);
 }
 
-/// <summary><c>IOPCEnumGUID</c> — enumerates OPC category/server class IDs (IID_IOPCEnumGUID).</summary>
+/// <summary>
+/// <c>IOPCEnumGUID</c> — enumerates OPC category/server class IDs (IID_IOPCEnumGUID).
+/// </summary>
 [OpcInterface("55C382C8-21C7-4E88-96C1-BECFB1E3F483")]
 [GenerateOpcProxy]
 [OpcGenerateServerDispatch]
@@ -900,7 +942,9 @@ public partial interface IOPCEnumGUID
     // Clone returns another enumerator interface pointer.
 }
 
-/// <summary><c>IOPCServerList</c> — OPC Discovery 1.0 server list (IID_IOPCServerList).</summary>
+/// <summary>
+/// <c>IOPCServerList</c> — OPC Discovery 1.0 server list (IID_IOPCServerList).
+/// </summary>
 [OpcInterface("13486D50-4821-11D2-A494-3CB306C10000")]
 [GenerateOpcProxy]
 [OpcGenerateServerDispatch]
@@ -949,7 +993,9 @@ public partial interface IOPCServerList
     Task<Guid> ClsidFromProgIdAsync(string progId, CancellationToken cancellationToken = default);
 }
 
-/// <summary><c>IOPCServerList2</c> — OPC Discovery 2.0 server list (IID_IOPCServerList2).</summary>
+/// <summary>
+/// <c>IOPCServerList2</c> — OPC Discovery 2.0 server list (IID_IOPCServerList2).
+/// </summary>
 [OpcInterface("9DD0B56C-AD9E-43EE-8305-487F3188BF7A")]
 [GenerateOpcProxy]
 [OpcGenerateServerDispatch]

@@ -16,7 +16,9 @@ namespace Opc.Classic.Dx;
 /// </remarks>
 public sealed record DxConnection
 {
-    /// <summary>Constructs a DX connection definition or query mask.</summary>
+    /// <summary>
+    /// Constructs a DX connection definition or query mask.
+    /// </summary>
     public DxConnection(
         string? name = null,
         string? description = null,
@@ -82,73 +84,119 @@ public sealed record DxConnection
         Mask = mask == 0 ? ComputeMask(this) : mask;
     }
 
-    /// <summary>Native <c>dwMask</c> presence bits.</summary>
+    /// <summary>
+    /// Native <c>dwMask</c> presence bits.
+    /// </summary>
     public int Mask { get; init; }
 
-    /// <summary>Server-assigned DX connection name.</summary>
+    /// <summary>
+    /// Server-assigned DX connection name.
+    /// </summary>
     public string? Name { get; init; }
 
-    /// <summary>Server-defined description.</summary>
+    /// <summary>
+    /// Server-defined description.
+    /// </summary>
     public string? Description { get; init; }
 
-    /// <summary>Configuration item path that identifies the connection object.</summary>
+    /// <summary>
+    /// Configuration item path that identifies the connection object.
+    /// </summary>
     public string? ItemPath { get; init; }
 
-    /// <summary>Configuration item name that identifies the connection object.</summary>
+    /// <summary>
+    /// Configuration item name that identifies the connection object.
+    /// </summary>
     public string? ItemName { get; init; }
 
-    /// <summary>Configuration version associated with the connection object.</summary>
+    /// <summary>
+    /// Configuration version associated with the connection object.
+    /// </summary>
     public string? Version { get; init; }
 
-    /// <summary>Browse hierarchy paths that contain this connection.</summary>
+    /// <summary>
+    /// Browse hierarchy paths that contain this connection.
+    /// </summary>
     public string[] BrowsePaths { get; init; }
 
-    /// <summary>Optional keyword used by servers for classification/search.</summary>
+    /// <summary>
+    /// Optional keyword used by servers for classification/search.
+    /// </summary>
     public string? Keyword { get; init; }
 
-    /// <summary>Default source-item connectivity setting, or null when unspecified.</summary>
+    /// <summary>
+    /// Default source-item connectivity setting, or null when unspecified.
+    /// </summary>
     public bool? DefaultSourceItemConnected { get; init; }
 
-    /// <summary>Default target-item connectivity setting, or null when unspecified.</summary>
+    /// <summary>
+    /// Default target-item connectivity setting, or null when unspecified.
+    /// </summary>
     public bool? DefaultTargetItemConnected { get; init; }
 
-    /// <summary>Default override setting, or null when unspecified.</summary>
+    /// <summary>
+    /// Default override setting, or null when unspecified.
+    /// </summary>
     public bool? DefaultOverridden { get; init; }
 
-    /// <summary>Value to use when a connection is overridden.</summary>
+    /// <summary>
+    /// Value to use when a connection is overridden.
+    /// </summary>
     public OpcVariant? DefaultOverrideValue { get; init; }
 
-    /// <summary>Substitute value to publish when live source data is unavailable.</summary>
+    /// <summary>
+    /// Substitute value to publish when live source data is unavailable.
+    /// </summary>
     public OpcVariant? SubstituteValue { get; init; }
 
-    /// <summary>Whether <see cref="SubstituteValue"/> is enabled, or null when unspecified.</summary>
+    /// <summary>
+    /// Whether <see cref="SubstituteValue"/> is enabled, or null when unspecified.
+    /// </summary>
     public bool? EnableSubstituteValue { get; init; }
 
-    /// <summary>Target-server item path where values are mirrored.</summary>
+    /// <summary>
+    /// Target-server item path where values are mirrored.
+    /// </summary>
     public string? TargetItemPath { get; init; }
 
-    /// <summary>Target-server item name where values are mirrored.</summary>
+    /// <summary>
+    /// Target-server item name where values are mirrored.
+    /// </summary>
     public string? TargetItemName { get; init; }
 
-    /// <summary>Name of the registered source server used by this connection.</summary>
+    /// <summary>
+    /// Name of the registered source server used by this connection.
+    /// </summary>
     public string? SourceServerName { get; init; }
 
-    /// <summary>Source-server item path read by this connection.</summary>
+    /// <summary>
+    /// Source-server item path read by this connection.
+    /// </summary>
     public string? SourceItemPath { get; init; }
 
-    /// <summary>Source-server item name read by this connection.</summary>
+    /// <summary>
+    /// Source-server item name read by this connection.
+    /// </summary>
     public string? SourceItemName { get; init; }
 
-    /// <summary>Source-item queue size, or null when unspecified.</summary>
+    /// <summary>
+    /// Source-item queue size, or null when unspecified.
+    /// </summary>
     public int? SourceItemQueueSize { get; init; }
 
-    /// <summary>Requested source update rate in milliseconds, or null when unspecified.</summary>
+    /// <summary>
+    /// Requested source update rate in milliseconds, or null when unspecified.
+    /// </summary>
     public int? UpdateRateMilliseconds { get; init; }
 
-    /// <summary>Deadband percentage applied to source updates, or null when unspecified.</summary>
+    /// <summary>
+    /// Deadband percentage applied to source updates, or null when unspecified.
+    /// </summary>
     public float? DeadbandPercent { get; init; }
 
-    /// <summary>Opaque vendor-defined connection data.</summary>
+    /// <summary>
+    /// Opaque vendor-defined connection data.
+    /// </summary>
     public string? VendorData { get; init; }
 
     private static string[] NormalizeBrowsePaths(string[]? browsePaths)

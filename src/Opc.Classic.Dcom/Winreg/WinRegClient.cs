@@ -14,10 +14,14 @@ namespace Opc.Classic.Dcom.Winreg;
 /// </summary>
 public sealed class WinRegClient : IAsyncDisposable
 {
-    /// <summary>Default named pipe endpoint for WINREG over SMB.</summary>
+    /// <summary>
+    /// Default named pipe endpoint for WINREG over SMB.
+    /// </summary>
     public const string PipeName = "winreg";
 
-    /// <summary>MS-RRP WINREG RPC interface identifier.</summary>
+    /// <summary>
+    /// MS-RRP WINREG RPC interface identifier.
+    /// </summary>
     public static Guid InterfaceId => OpcGuids.IID_WINREG;
 
     private readonly DisposableRegistryStub _registry;
@@ -46,11 +50,15 @@ public sealed class WinRegClient : IAsyncDisposable
         return Task.FromResult(new WinRegClient(new DisposableRegistryStub(authInfo, host)));
     }
 
-    /// <summary>Calls <c>OpenLocalMachine</c> (opnum 2) and returns an HKLM context handle.</summary>
+    /// <summary>
+    /// Calls <c>OpenLocalMachine</c> (opnum 2) and returns an HKLM context handle.
+    /// </summary>
     public Task<PolicyHandle> OpenHKLMAsync(CancellationToken cancellationToken = default) =>
         InvokeAsync(static registry => registry.OpenHKLM(), cancellationToken);
 
-    /// <summary>Calls <c>BaseRegEnumKey</c> (opnum 9) for the supplied handle and index.</summary>
+    /// <summary>
+    /// Calls <c>BaseRegEnumKey</c> (opnum 9) for the supplied handle and index.
+    /// </summary>
     public Task<string[]> EnumKeyAsync(
         PolicyHandle handle,
         int index,
@@ -62,7 +70,9 @@ public sealed class WinRegClient : IAsyncDisposable
         return InvokeAsync(registry => registry.EnumKey(handle, index), cancellationToken);
     }
 
-    /// <summary>Calls <c>BaseRegCloseKey</c> (opnum 5) for the supplied handle.</summary>
+    /// <summary>
+    /// Calls <c>BaseRegCloseKey</c> (opnum 5) for the supplied handle.
+    /// </summary>
     public Task CloseKeyAsync(PolicyHandle handle, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(handle);

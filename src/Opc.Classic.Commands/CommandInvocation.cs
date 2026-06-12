@@ -16,6 +16,8 @@ public sealed record CommandInvocation(
     int Hresult,
     DateTimeOffset StateTimestamp)
 {
-    /// <summary>Server identifier associated with the command invocation.</summary>
+    /// <summary>
+    /// Server identifier associated with the command invocation.
+    /// </summary>
     public string ServerName { get; init; } = ServerName ?? throw new ArgumentNullException(nameof(ServerName));
 }

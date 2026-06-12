@@ -10,6 +10,8 @@ namespace Opc.Classic;
 /// </summary>
 public interface IAuthSessionKeyProvider
 {
-    /// <summary>Gets the negotiated NTLMSSP/Kerberos session key, if one is established.</summary>
+    /// <summary>
+    /// Gets the negotiated NTLMSSP/Kerberos session key, if one is established.
+    /// </summary>
     ReadOnlyMemory<byte>? GetSessionKey();
 }

@@ -11,7 +11,9 @@ namespace Opc.Classic.Ae;
 /// </summary>
 public sealed record OpcConditionState
 {
-    /// <summary>Constructor for the immutable condition-state payload.</summary>
+    /// <summary>
+    /// Constructor for the immutable condition-state payload.
+    /// </summary>
     public OpcConditionState(
         ushort state,
         string? activeSubCondition,
@@ -65,64 +67,104 @@ public sealed record OpcConditionState
         Errors = errors;
     }
 
-    /// <summary>Condition state flags as the AE wire <c>WORD</c>.</summary>
+    /// <summary>
+    /// Condition state flags as the AE wire <c>WORD</c>.
+    /// </summary>
     public ushort State { get; }
 
-    /// <summary>Currently active sub-condition name.</summary>
+    /// <summary>
+    /// Currently active sub-condition name.
+    /// </summary>
     public string? ActiveSubCondition { get; }
 
-    /// <summary>Definition text for the active sub-condition.</summary>
+    /// <summary>
+    /// Definition text for the active sub-condition.
+    /// </summary>
     public string? ActiveSubConditionDefinition { get; }
 
-    /// <summary>Severity associated with the active sub-condition.</summary>
+    /// <summary>
+    /// Severity associated with the active sub-condition.
+    /// </summary>
     public uint ActiveSubConditionSeverity { get; }
 
-    /// <summary>Description text for the active sub-condition.</summary>
+    /// <summary>
+    /// Description text for the active sub-condition.
+    /// </summary>
     public string? ActiveSubConditionDescription { get; }
 
-    /// <summary>OPC quality associated with the condition state.</summary>
+    /// <summary>
+    /// OPC quality associated with the condition state.
+    /// </summary>
     public OpcQuality Quality { get; }
 
-    /// <summary>UTC time when the condition was last acknowledged.</summary>
+    /// <summary>
+    /// UTC time when the condition was last acknowledged.
+    /// </summary>
     public DateTimeOffset LastAckTime { get; }
 
-    /// <summary>UTC time when this sub-condition last became active.</summary>
+    /// <summary>
+    /// UTC time when this sub-condition last became active.
+    /// </summary>
     public DateTimeOffset SubConditionLastActive { get; }
 
-    /// <summary>UTC time when the condition last became active.</summary>
+    /// <summary>
+    /// UTC time when the condition last became active.
+    /// </summary>
     public DateTimeOffset ConditionLastActive { get; }
 
-    /// <summary>UTC time when the condition last became inactive.</summary>
+    /// <summary>
+    /// UTC time when the condition last became inactive.
+    /// </summary>
     public DateTimeOffset ConditionLastInactive { get; }
 
-    /// <summary>Identifier of the last acknowledger.</summary>
+    /// <summary>
+    /// Identifier of the last acknowledger.
+    /// </summary>
     public string? AcknowledgerId { get; }
 
-    /// <summary>Acknowledgement comment.</summary>
+    /// <summary>
+    /// Acknowledgement comment.
+    /// </summary>
     public string? Comment { get; }
 
-    /// <summary>Configured sub-condition names.</summary>
+    /// <summary>
+    /// Configured sub-condition names.
+    /// </summary>
     public string?[] SubConditionNames { get; }
 
-    /// <summary>Configured sub-condition definitions.</summary>
+    /// <summary>
+    /// Configured sub-condition definitions.
+    /// </summary>
     public string?[] SubConditionDefinitions { get; }
 
-    /// <summary>Configured sub-condition severities.</summary>
+    /// <summary>
+    /// Configured sub-condition severities.
+    /// </summary>
     public uint[] SubConditionSeverities { get; }
 
-    /// <summary>Configured sub-condition descriptions.</summary>
+    /// <summary>
+    /// Configured sub-condition descriptions.
+    /// </summary>
     public string?[] SubConditionDescriptions { get; }
 
-    /// <summary>Server-defined event attribute values.</summary>
+    /// <summary>
+    /// Server-defined event attribute values.
+    /// </summary>
     public OpcVariant[] EventAttributes { get; }
 
-    /// <summary>Per-event-attribute HRESULT values.</summary>
+    /// <summary>
+    /// Per-event-attribute HRESULT values.
+    /// </summary>
     public int[] Errors { get; }
 
-    /// <summary>Number of configured sub-conditions.</summary>
+    /// <summary>
+    /// Number of configured sub-conditions.
+    /// </summary>
     public int SubConditionCount => SubConditionNames.Length;
 
-    /// <summary>Number of event attributes.</summary>
+    /// <summary>
+    /// Number of event attributes.
+    /// </summary>
     public int EventAttributeCount => EventAttributes.Length;
 
     private static void ValidateLength(Array array, int expectedLength, string arrayName, string wireCountName)

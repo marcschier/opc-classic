@@ -38,7 +38,9 @@ public sealed class OpcDaItemAttributesEnumerator : IEnumOPCItemAttributes
     private readonly OpcObjectRegistry? _registry;
     private int _cursor;
 
-    /// <summary>Initializes a new enumerator over the supplied snapshot.</summary>
+    /// <summary>
+    /// Initializes a new enumerator over the supplied snapshot.
+    /// </summary>
     /// <param name="snapshot">The full item attributes array; iteration starts at index 0.</param>
     /// <param name="registry">Optional registry used to register clones (<see cref="CloneAsync"/>); when null, clones return a synthetic ref.</param>
     public OpcDaItemAttributesEnumerator(OpcItemAttributes[] snapshot, OpcObjectRegistry? registry = null)
@@ -49,10 +51,14 @@ public sealed class OpcDaItemAttributesEnumerator : IEnumOPCItemAttributes
         _cursor = 0;
     }
 
-    /// <summary>Returns the total number of items in the snapshot (test diagnostic).</summary>
+    /// <summary>
+    /// Returns the total number of items in the snapshot (test diagnostic).
+    /// </summary>
     public int Length => _snapshot.Length;
 
-    /// <summary>Returns the current cursor position (test diagnostic).</summary>
+    /// <summary>
+    /// Returns the current cursor position (test diagnostic).
+    /// </summary>
     public int Position => _cursor;
 
     /// <inheritdoc />

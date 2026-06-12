@@ -5,7 +5,9 @@
 
 namespace Opc.Classic.Mcp.Dtos;
 
-/// <summary>JSON-friendly OPC DA value with quality, timestamp, and HRESULT.</summary>
+/// <summary>
+/// JSON-friendly OPC DA value with quality, timestamp, and HRESULT.
+/// </summary>
 public sealed record OpcItemValueDto(
     string ItemName,
     string? ItemPath,

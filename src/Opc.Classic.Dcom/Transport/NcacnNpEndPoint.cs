@@ -7,14 +7,18 @@ using System.Net;
 
 namespace Opc.Classic.Dcom.Transport;
 
-/// <summary>Endpoint for DCE/RPC over SMB named pipes (<c>ncacn_np</c>).</summary>
+/// <summary>
+/// Endpoint for DCE/RPC over SMB named pipes (<c>ncacn_np</c>).
+/// </summary>
 public sealed class NcacnNpEndPoint : EndPoint
 {
     private const int DefaultSmbPort = 445;
     private const string ProtocolSequence = "ncacn_np:";
     private const string DefaultHost = "localhost";
 
-    /// <summary>Initializes a named-pipe RPC endpoint.</summary>
+    /// <summary>
+    /// Initializes a named-pipe RPC endpoint.
+    /// </summary>
     public NcacnNpEndPoint(string host, string pipeEndpoint, int port = DefaultSmbPort)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(host);
@@ -28,16 +32,24 @@ public sealed class NcacnNpEndPoint : EndPoint
         Port = port;
     }
 
-    /// <summary>Gets the SMB server host name or address.</summary>
+    /// <summary>
+    /// Gets the SMB server host name or address.
+    /// </summary>
     public string Host { get; }
 
-    /// <summary>Gets the normalized named-pipe path relative to IPC$.</summary>
+    /// <summary>
+    /// Gets the normalized named-pipe path relative to IPC$.
+    /// </summary>
     public string PipeName { get; }
 
-    /// <summary>Gets the SMB TCP port.</summary>
+    /// <summary>
+    /// Gets the SMB TCP port.
+    /// </summary>
     public int Port { get; }
 
-    /// <summary>Parses <c>ncacn_np:host[\PIPE\name]</c> or a bare pipe endpoint.</summary>
+    /// <summary>
+    /// Parses <c>ncacn_np:host[\PIPE\name]</c> or a bare pipe endpoint.
+    /// </summary>
     public static NcacnNpEndPoint Parse(string address, string defaultHost = DefaultHost, int port = DefaultSmbPort)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(address);
@@ -67,7 +79,9 @@ public sealed class NcacnNpEndPoint : EndPoint
         return new NcacnNpEndPoint(host, pipe, port);
     }
 
-    /// <summary>Normalizes <c>\PIPE\name</c> endpoints to the pipe path used by SMB2 CREATE.</summary>
+    /// <summary>
+    /// Normalizes <c>\PIPE\name</c> endpoints to the pipe path used by SMB2 CREATE.
+    /// </summary>
     public static string NormalizePipeName(string pipeEndpoint)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(pipeEndpoint);

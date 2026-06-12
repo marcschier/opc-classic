@@ -31,7 +31,9 @@ public static class NdrOpcServerStatusCodec
 {
     private const long FileTimeEpochOffsetTicks = 504911232000000000L;
 
-    /// <summary>Encodes an OPCSERVERSTATUS in NDR (DA variant — assumes Spec == DA).</summary>
+    /// <summary>
+    /// Encodes an OPCSERVERSTATUS in NDR (DA variant — assumes Spec == DA).
+    /// </summary>
     public static void Write(ref NdrWriter writer, OpcServerStatus status)
     {
         ArgumentNullException.ThrowIfNull(status);
@@ -49,7 +51,9 @@ public static class NdrOpcServerStatusCodec
         writer.WriteUnicodeStringPtr(status.VendorInfo);
     }
 
-    /// <summary>Decodes an OPCSERVERSTATUS from NDR (DA variant).</summary>
+    /// <summary>
+    /// Decodes an OPCSERVERSTATUS from NDR (DA variant).
+    /// </summary>
     public static OpcServerStatus Read(ref NdrReader reader)
     {
         DateTimeOffset start = ReadAndDecodeFileTime(ref reader, "ftStartTime");

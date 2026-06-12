@@ -22,13 +22,21 @@ public sealed class TypeDesc
 #pragma warning restore IDE1006 // Naming Styles
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
-    /// <summary> pointer </summary>
+    /// <summary>
+    /// pointer
+    /// </summary>
     public static readonly short VT_PTR = 0x1a;
-    /// <summary> safe array </summary>
+    /// <summary>
+    /// safe array
+    /// </summary>
     public static readonly short VT_SAFEARRAY = 0x1b;
-    /// <summary> c-style array </summary>
+    /// <summary>
+    /// c-style array
+    /// </summary>
     public static readonly short VT_CARRAY = 0x1c;
-    /// <summary> user </summary>
+    /// <summary>
+    /// user
+    /// </summary>
     public static readonly short VT_USERDEFINED = 0x1d;
 
     /// <summary>

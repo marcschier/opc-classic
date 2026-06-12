@@ -14,7 +14,9 @@ namespace Opc.Classic.Hda;
 /// </summary>
 public sealed record OpcHdaAttribute
 {
-    /// <summary>Constructor — validates the parallel arrays have the same length.</summary>
+    /// <summary>
+    /// Constructor — validates the parallel arrays have the same length.
+    /// </summary>
     /// <param name="clientHandle">Client correlation handle.</param>
     /// <param name="attributeId">The HDA attribute being read (1=DataType, 2=Description, 100..=vendor).</param>
     /// <param name="timestamps">UTC timestamps; same length as <paramref name="values"/>.</param>
@@ -40,15 +42,23 @@ public sealed record OpcHdaAttribute
         Values = values;
     }
 
-    /// <summary>Client correlation handle.</summary>
+    /// <summary>
+    /// Client correlation handle.
+    /// </summary>
     public int ClientHandle { get; }
 
-    /// <summary>HDA attribute ID.</summary>
+    /// <summary>
+    /// HDA attribute ID.
+    /// </summary>
     public int AttributeId { get; }
 
-    /// <summary>UTC timestamps; parallel with <see cref="Values"/>.</summary>
+    /// <summary>
+    /// UTC timestamps; parallel with <see cref="Values"/>.
+    /// </summary>
     public DateTimeOffset[] Timestamps { get; }
 
-    /// <summary>Per-sample attribute values.</summary>
+    /// <summary>
+    /// Per-sample attribute values.
+    /// </summary>
     public OpcVariant[] Values { get; }
 }

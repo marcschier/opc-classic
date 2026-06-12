@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <InternalsVisibleTo Include="Opc.Classic.Da.Windows" Key="$(OpcClassicPublicKey)" />
+    <InternalsVisibleTo Include="Opc.Classic.Hosting.Windows" Key="$(OpcClassicPublicKey)" />
   </ItemGroup>
 
 </Project>

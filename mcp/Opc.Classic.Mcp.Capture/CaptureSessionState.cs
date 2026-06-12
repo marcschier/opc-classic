@@ -11,21 +11,33 @@ namespace Opc.Classic.Mcp.Capture;
 /// </summary>
 public enum CaptureSessionState
 {
-    /// <summary>The session has been allocated but <see cref="ICaptureSource.StartAsync"/> hasn't completed yet.</summary>
+    /// <summary>
+    /// The session has been allocated but <see cref="ICaptureSource.StartAsync"/> hasn't completed yet.
+    /// </summary>
     Starting,
 
-    /// <summary>The source is actively capturing.</summary>
+    /// <summary>
+    /// The source is actively capturing.
+    /// </summary>
     Running,
 
-    /// <summary>A stop request is in flight.</summary>
+    /// <summary>
+    /// A stop request is in flight.
+    /// </summary>
     Stopping,
 
-    /// <summary>The session completed normally; the trace can be read.</summary>
+    /// <summary>
+    /// The session completed normally; the trace can be read.
+    /// </summary>
     Completed,
 
-    /// <summary>The session failed; see <see cref="CaptureSession.Error"/>.</summary>
+    /// <summary>
+    /// The session failed; see <see cref="CaptureSession.Error"/>.
+    /// </summary>
     Failed,
 
-    /// <summary>The session was disposed (LRU evicted or explicitly cleaned up).</summary>
+    /// <summary>
+    /// The session was disposed (LRU evicted or explicitly cleaned up).
+    /// </summary>
     Disposed,
 }

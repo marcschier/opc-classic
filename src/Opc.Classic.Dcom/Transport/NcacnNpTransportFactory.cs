@@ -11,14 +11,18 @@ using Opc.Classic.Transport;
 
 namespace Opc.Classic.Dcom.Transport;
 
-/// <summary>Factory that creates <see cref="NcacnNpTransport" /> instances for <see cref="NcacnNpEndPoint" /> values.</summary>
+/// <summary>
+/// Factory that creates <see cref="NcacnNpTransport" /> instances for <see cref="NcacnNpEndPoint" /> values.
+/// </summary>
 public sealed class NcacnNpTransportFactory : IAsyncTransportFactory
 {
     private readonly IAuthContext _smbAuthContext;
     private readonly int _maxSmb2MessageSize;
     private readonly Smb2TransportConnector? _transportConnector;
 
-    /// <summary>Initializes a new named-pipe transport factory.</summary>
+    /// <summary>
+    /// Initializes a new named-pipe transport factory.
+    /// </summary>
     public NcacnNpTransportFactory(
         IAuthContext smbAuthContext,
         PropertyBag? properties = null,

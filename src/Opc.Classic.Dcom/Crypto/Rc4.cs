@@ -22,7 +22,9 @@ public sealed class Rc4
     private byte _i;
     private byte _j;
 
-    /// <summary>Construct + key-schedule (KSA).</summary>
+    /// <summary>
+    /// Construct + key-schedule (KSA).
+    /// </summary>
     public Rc4(ReadOnlySpan<byte> key)
     {
         if (key.IsEmpty)
@@ -42,7 +44,9 @@ public sealed class Rc4
         }
     }
 
-    /// <summary>PRGA: produce <paramref name="output"/> = XOR(input, keystream).</summary>
+    /// <summary>
+    /// PRGA: produce <paramref name="output"/> = XOR(input, keystream).
+    /// </summary>
     public void Process(ReadOnlySpan<byte> input, Span<byte> output)
     {
         if (output.Length < input.Length)
@@ -59,10 +63,14 @@ public sealed class Rc4
         }
     }
 
-    /// <summary>Convenience: XOR <paramref name="data"/> in place against the keystream.</summary>
+    /// <summary>
+    /// Convenience: XOR <paramref name="data"/> in place against the keystream.
+    /// </summary>
     public void XorInPlace(Span<byte> data) => Process(data, data);
 
-    /// <summary>Convenience: returns a fresh <paramref name="input"/>.Length-sized byte[] of XOR output.</summary>
+    /// <summary>
+    /// Convenience: returns a fresh <paramref name="input"/>.Length-sized byte[] of XOR output.
+    /// </summary>
     public byte[] Process(ReadOnlySpan<byte> input)
     {
         var output = new byte[input.Length];

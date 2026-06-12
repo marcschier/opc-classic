@@ -11,13 +11,19 @@ namespace Opc.Classic.Hda;
 /// </summary>
 public sealed class HdaReadResult
 {
-    /// <summary>The item these values belong to.</summary>
+    /// <summary>
+    /// The item these values belong to.
+    /// </summary>
     public string ItemId { get; init; } = string.Empty;
 
-    /// <summary>Per-item HRESULT.</summary>
+    /// <summary>
+    /// Per-item HRESULT.
+    /// </summary>
     public OpcResultId ResultId { get; init; } = OpcResultId.Ok;
 
-    /// <summary>The historical values in chronological order.</summary>
+    /// <summary>
+    /// The historical values in chronological order.
+    /// </summary>
     public IReadOnlyList<HdaItemValue> Values { get; init; } = Array.Empty<HdaItemValue>();
 
     /// <summary>

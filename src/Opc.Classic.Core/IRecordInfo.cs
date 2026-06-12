@@ -16,12 +16,18 @@ namespace Opc.Classic;
 /// </remarks>
 public interface IRecordInfo
 {
-    /// <summary>The GUID that identifies this record layout.</summary>
+    /// <summary>
+    /// The GUID that identifies this record layout.
+    /// </summary>
     Guid Id { get; }
 
-    /// <summary>A human-readable layout name for diagnostics.</summary>
+    /// <summary>
+    /// A human-readable layout name for diagnostics.
+    /// </summary>
     string Name { get; }
 
-    /// <summary>The fields encoded in declaration order.</summary>
+    /// <summary>
+    /// The fields encoded in declaration order.
+    /// </summary>
     IReadOnlyList<OpcRecordField> Fields { get; }
 }

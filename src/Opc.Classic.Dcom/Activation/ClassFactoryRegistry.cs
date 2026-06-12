@@ -15,10 +15,14 @@ public sealed class ClassFactoryRegistry
 {
     private readonly ConcurrentDictionary<Guid, IClassFactory> _factories = new();
 
-    /// <summary>Number of registered factories.</summary>
+    /// <summary>
+    /// Number of registered factories.
+    /// </summary>
     public int Count => _factories.Count;
 
-    /// <summary>Registers or replaces a factory delegate that returns a managed instance.</summary>
+    /// <summary>
+    /// Registers or replaces a factory delegate that returns a managed instance.
+    /// </summary>
     public void Register(
         Guid clsid,
         Func<ClassFactoryActivationContext, object> factory,
@@ -28,7 +32,9 @@ public sealed class ClassFactoryRegistry
         Register(clsid, new DelegateClassFactory(factory, supportsGetClassObject));
     }
 
-    /// <summary>Registers or replaces a factory delegate that returns a full activation result.</summary>
+    /// <summary>
+    /// Registers or replaces a factory delegate that returns a full activation result.
+    /// </summary>
     public void Register(
         Guid clsid,
         Func<ClassFactoryActivationContext, ClassFactoryActivationResult> factory,
@@ -38,7 +44,9 @@ public sealed class ClassFactoryRegistry
         Register(clsid, new DelegateClassFactory(factory, supportsGetClassObject));
     }
 
-    /// <summary>Registers or replaces a factory object.</summary>
+    /// <summary>
+    /// Registers or replaces a factory object.
+    /// </summary>
     public void Register(Guid clsid, IClassFactory factory)
     {
         if (clsid == Guid.Empty)
@@ -49,10 +57,14 @@ public sealed class ClassFactoryRegistry
         _factories[clsid] = factory ?? throw new ArgumentNullException(nameof(factory));
     }
 
-    /// <summary>Attempts to resolve a CLSID to its factory.</summary>
+    /// <summary>
+    /// Attempts to resolve a CLSID to its factory.
+    /// </summary>
     public bool TryResolve(Guid clsid, out IClassFactory factory) => _factories.TryGetValue(clsid, out factory);
 
-    /// <summary>Removes a registered factory.</summary>
+    /// <summary>
+    /// Removes a registered factory.
+    /// </summary>
     public bool Unregister(Guid clsid) => _factories.TryRemove(clsid, out _);
 
     private sealed class DelegateClassFactory : IClassFactory

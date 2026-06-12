@@ -12,15 +12,23 @@ namespace Opc.Classic.Da;
 /// </summary>
 public sealed class ItemPropertyResult
 {
-    /// <summary>The item these properties belong to.</summary>
+    /// <summary>
+    /// The item these properties belong to.
+    /// </summary>
     public string ItemName { get; init; } = string.Empty;
 
-    /// <summary>Optional access path of the originating item.</summary>
+    /// <summary>
+    /// Optional access path of the originating item.
+    /// </summary>
     public string? ItemPath { get; init; }
 
-    /// <summary>Per-item HRESULT (success/failure of resolving this item).</summary>
+    /// <summary>
+    /// Per-item HRESULT (success/failure of resolving this item).
+    /// </summary>
     public OpcResultId ResultId { get; init; } = OpcResultId.Ok;
 
-    /// <summary>The property values returned for this item.</summary>
+    /// <summary>
+    /// The property values returned for this item.
+    /// </summary>
     public IReadOnlyList<ItemProperty> Properties { get; init; } = Array.Empty<ItemProperty>();
 }

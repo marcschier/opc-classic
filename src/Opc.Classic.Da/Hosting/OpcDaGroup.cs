@@ -51,10 +51,14 @@ public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItem
     private int _nextSubscriptionCookie = 1;
     private int _lastCancel2Id;
 
-    /// <summary>Async I/O callbacks enabled (the GetEnable/SetEnable state).</summary>
+    /// <summary>
+    /// Async I/O callbacks enabled (the GetEnable/SetEnable state).
+    /// </summary>
     private bool _callbacksEnabled = true;
 
-    /// <summary>Initializes a new group with the supplied creation parameters.</summary>
+    /// <summary>
+    /// Initializes a new group with the supplied creation parameters.
+    /// </summary>
     public OpcDaGroup(
         string name,
         int serverHandle,
@@ -97,49 +101,79 @@ public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItem
         _objectRegistry = objectRegistry;
     }
 
-    /// <summary>Server-assigned group handle.</summary>
+    /// <summary>
+    /// Server-assigned group handle.
+    /// </summary>
     public int ServerHandle { get; }
 
-    /// <summary>Current group name (settable via SetName).</summary>
+    /// <summary>
+    /// Current group name (settable via SetName).
+    /// </summary>
     public string Name { get; private set; }
 
-    /// <summary>Client-supplied handle echoed back to the client in callbacks.</summary>
+    /// <summary>
+    /// Client-supplied handle echoed back to the client in callbacks.
+    /// </summary>
     public int ClientHandle { get; private set; }
 
-    /// <summary>Whether the group is currently active (publishes updates).</summary>
+    /// <summary>
+    /// Whether the group is currently active (publishes updates).
+    /// </summary>
     public bool Active { get; private set; }
 
-    /// <summary>The negotiated update rate in milliseconds.</summary>
+    /// <summary>
+    /// The negotiated update rate in milliseconds.
+    /// </summary>
     public int UpdateRate { get; private set; }
 
-    /// <summary>Group time bias in minutes from UTC.</summary>
+    /// <summary>
+    /// Group time bias in minutes from UTC.
+    /// </summary>
     public int TimeBias { get; private set; }
 
-    /// <summary>Analog deadband percentage (0..100).</summary>
+    /// <summary>
+    /// Analog deadband percentage (0..100).
+    /// </summary>
     public float PercentDeadband { get; private set; }
 
-    /// <summary>LCID used for server-supplied text.</summary>
+    /// <summary>
+    /// LCID used for server-supplied text.
+    /// </summary>
     public int LocaleId { get; private set; }
 
-    /// <summary>Keep-alive period in milliseconds (0 = disabled).</summary>
+    /// <summary>
+    /// Keep-alive period in milliseconds (0 = disabled).
+    /// </summary>
     public int KeepAliveTime { get; private set; }
 
-    /// <summary>Read-only view of the items currently in the group.</summary>
+    /// <summary>
+    /// Read-only view of the items currently in the group.
+    /// </summary>
     public IReadOnlyCollection<OpcDaItem> Items => (IReadOnlyCollection<OpcDaItem>)_items.Values;
 
-    /// <summary>Test helper: returns the number of items currently in the group.</summary>
+    /// <summary>
+    /// Test helper: returns the number of items currently in the group.
+    /// </summary>
     public int ItemCount => _items.Count;
 
-    /// <summary>Read-only view of the data-callback subscriptions registered via <see cref="IConnectionPoint.AdviseAsync"/>.</summary>
+    /// <summary>
+    /// Read-only view of the data-callback subscriptions registered via <see cref="IConnectionPoint.AdviseAsync"/>.
+    /// </summary>
     public IReadOnlyDictionary<int, IOpcInterfaceRef> Subscriptions => _sinks;
 
-    /// <summary>Test helper: returns the number of active <c>IOPCDataCallback</c> subscriptions.</summary>
+    /// <summary>
+    /// Test helper: returns the number of active <c>IOPCDataCallback</c> subscriptions.
+    /// </summary>
     public int SubscriptionCount => _sinks.Count;
 
-    /// <summary>Test helper: the most recent cancel ID passed to <see cref="Cancel2Async"/>.</summary>
+    /// <summary>
+    /// Test helper: the most recent cancel ID passed to <see cref="Cancel2Async"/>.
+    /// </summary>
     public int LastCancel2Id => _lastCancel2Id;
 
-    /// <summary>Returns the item for a given server handle, or <see langword="null"/> if unknown.</summary>
+    /// <summary>
+    /// Returns the item for a given server handle, or <see langword="null"/> if unknown.
+    /// </summary>
     public OpcDaItem? GetItem(int serverHandle) =>
         _items.TryGetValue(serverHandle, out OpcDaItem? item) ? item : null;
 

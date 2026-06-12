@@ -34,7 +34,9 @@ public static class NdrOpcItemVqtCodec
     private const int Win32BoolFalse = 0;
     private const long FileTimeEpochOffsetTicks = 504911232000000000L; // 1601-01-01 UTC in DateTimeOffset.Ticks
 
-    /// <summary>Encodes a single OPCITEMVQT in NDR.</summary>
+    /// <summary>
+    /// Encodes a single OPCITEMVQT in NDR.
+    /// </summary>
     public static void Write(ref NdrWriter writer, OpcItemVqt vqt)
     {
         ArgumentNullException.ThrowIfNull(vqt);
@@ -54,7 +56,9 @@ public static class NdrOpcItemVqtCodec
         writer.WriteFileTime(fileTimeTicks);
     }
 
-    /// <summary>Decodes a single OPCITEMVQT from NDR.</summary>
+    /// <summary>
+    /// Decodes a single OPCITEMVQT from NDR.
+    /// </summary>
     public static OpcItemVqt Read(ref NdrReader reader)
     {
         OpcVariant value = reader.ReadVariant();

@@ -23,7 +23,9 @@ namespace Opc.Classic.Dcom;
 /// </remarks>
 public static class NdrRemQIResultCodec
 {
-    /// <summary>Encodes a single REMQIRESULT (used by managed-server loopback fakes).</summary>
+    /// <summary>
+    /// Encodes a single REMQIRESULT (used by managed-server loopback fakes).
+    /// </summary>
     public static void Write(ref NdrWriter writer, OpcRemQIResult result)
     {
         ArgumentNullException.ThrowIfNull(result);
@@ -36,7 +38,9 @@ public static class NdrRemQIResultCodec
         writer.WriteGuid(result.Ipid);
     }
 
-    /// <summary>Decodes a single REMQIRESULT element.</summary>
+    /// <summary>
+    /// Decodes a single REMQIRESULT element.
+    /// </summary>
     public static OpcRemQIResult Read(ref NdrReader reader)
     {
         int hresult = reader.ReadInt32();

@@ -7,7 +7,9 @@ using Opc.Classic.Ndr;
 
 namespace Opc.Classic.Dcom;
 
-/// <summary>Managed proxy for the OPC Common <c>IOPCCommon</c> debug/metadata methods.</summary>
+/// <summary>
+/// Managed proxy for the OPC Common <c>IOPCCommon</c> debug/metadata methods.
+/// </summary>
 public sealed class OpcCommonClientProxy
 {
     private const int DefaultPayloadSize = 256;
@@ -15,20 +17,28 @@ public sealed class OpcCommonClientProxy
 
     private readonly ICallChannel _channel;
 
-    /// <summary>Initializes a new instance of the <see cref="OpcCommonClientProxy" /> class.</summary>
+    /// <summary>
+    /// Initializes a new instance of the <see cref="OpcCommonClientProxy" /> class.
+    /// </summary>
     public OpcCommonClientProxy(ICallChannel channel) =>
         _channel = channel ?? throw new ArgumentNullException(nameof(channel));
 
-    /// <summary>OPC Common <c>IOPCCommon</c> interface identifier.</summary>
+    /// <summary>
+    /// OPC Common <c>IOPCCommon</c> interface identifier.
+    /// </summary>
     public static Guid InterfaceId => OpcGuids.IID_IOPCCommon;
 
-    /// <summary>OPC Common <c>IOPCCommon</c> DCE/RPC operation numbers.</summary>
+    /// <summary>
+    /// OPC Common <c>IOPCCommon</c> DCE/RPC operation numbers.
+    /// </summary>
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
         "Design", "CA1034:Nested types should not be visible",
         Justification = "Opnums is the conventional nested constants table for proxy classes across the Opc.Classic.* code base and matches the shape emitted by OpcInterfaceGenerator.")]
     public static class Opnums
     {
-        /// <summary><c>IOPCCommon::SetClientName</c> operation number.</summary>
+        /// <summary>
+        /// <c>IOPCCommon::SetClientName</c> operation number.
+        /// </summary>
         public const int SetClientName = 7;
     }
 

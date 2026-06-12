@@ -17,7 +17,9 @@ namespace Opc.Classic.Da.Ndr;
 /// </remarks>
 public static class NdrOpcGroupStateCodec
 {
-    /// <summary>Encodes a group-state response payload.</summary>
+    /// <summary>
+    /// Encodes a group-state response payload.
+    /// </summary>
     public static void Write(ref NdrWriter writer, OpcGroupState state)
     {
         ArgumentNullException.ThrowIfNull(state);
@@ -32,7 +34,9 @@ public static class NdrOpcGroupStateCodec
         writer.WriteUInt32(unchecked((uint)state.ServerHandle));
     }
 
-    /// <summary>Decodes a group-state response payload.</summary>
+    /// <summary>
+    /// Decodes a group-state response payload.
+    /// </summary>
     public static OpcGroupState Read(ref NdrReader reader)
     {
         uint updateRate = reader.ReadUInt32();

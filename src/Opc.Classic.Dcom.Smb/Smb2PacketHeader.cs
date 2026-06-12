@@ -25,7 +25,9 @@ public readonly record struct Smb2PacketHeader(
     ulong SessionId,
     ReadOnlyMemory<byte> Signature)
 {
-    /// <summary>Writes the synchronous header to <paramref name="destination" /> starting at offset 0.</summary>
+    /// <summary>
+    /// Writes the synchronous header to <paramref name="destination" /> starting at offset 0.
+    /// </summary>
     public void Write(Span<byte> destination)
     {
         if (destination.Length < Smb2Constants.PacketHeaderSize)
@@ -59,7 +61,9 @@ public readonly record struct Smb2PacketHeader(
         }
     }
 
-    /// <summary>Parses a synchronous SMB2 header from <paramref name="source" />.</summary>
+    /// <summary>
+    /// Parses a synchronous SMB2 header from <paramref name="source" />.
+    /// </summary>
     public static Smb2PacketHeader Read(ReadOnlySpan<byte> source)
     {
         if (source.Length < Smb2Constants.PacketHeaderSize)
@@ -104,10 +108,14 @@ public readonly record struct Smb2PacketHeader(
 /// </summary>
 public static class NetBiosFraming
 {
-    /// <summary>Size of the NetBIOS frame header in bytes.</summary>
+    /// <summary>
+    /// Size of the NetBIOS frame header in bytes.
+    /// </summary>
     public const int HeaderSize = 4;
 
-    /// <summary>Writes the NetBIOS frame header for an SMB2 payload of the given length.</summary>
+    /// <summary>
+    /// Writes the NetBIOS frame header for an SMB2 payload of the given length.
+    /// </summary>
     public static void WriteHeader(Span<byte> destination, int payloadLength)
     {
         if (payloadLength < 0 || payloadLength > Smb2Constants.MaxNetBiosFrameSize)
@@ -130,11 +138,15 @@ public static class NetBiosFraming
         destination[3] = (byte)(payloadLength & 0xFF);
     }
 
-    /// <summary>Parses a NetBIOS frame header and returns the payload length.</summary>
+    /// <summary>
+    /// Parses a NetBIOS frame header and returns the payload length.
+    /// </summary>
     public static int ReadPayloadLength(ReadOnlySpan<byte> source) =>
         ReadPayloadLength(source, Smb2Constants.MaxNetBiosFrameSize);
 
-    /// <summary>Parses a NetBIOS frame header and enforces a payload quota.</summary>
+    /// <summary>
+    /// Parses a NetBIOS frame header and enforces a payload quota.
+    /// </summary>
     internal static int ReadPayloadLength(ReadOnlySpan<byte> source, int maxPayloadLength)
     {
         if (maxPayloadLength < 0 || maxPayloadLength > Smb2Constants.MaxNetBiosFrameSize)

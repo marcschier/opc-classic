@@ -17,7 +17,9 @@ public static class ActivationInfoCodec
 
     private delegate void NdrWriteCallback(ref NdrWriter writer);
 
-    /// <summary>Encodes activation properties into a versioned NDR property array.</summary>
+    /// <summary>
+    /// Encodes activation properties into a versioned NDR property array.
+    /// </summary>
     public static byte[] Encode(ActivationProperties properties)
     {
         ArgumentNullException.ThrowIfNull(properties);
@@ -76,7 +78,9 @@ public static class ActivationInfoCodec
         return buffer.AsSpan(0, writer.Position).ToArray();
     }
 
-    /// <summary>Decodes activation properties from a versioned NDR property array.</summary>
+    /// <summary>
+    /// Decodes activation properties from a versioned NDR property array.
+    /// </summary>
     public static ActivationProperties Decode(ReadOnlySpan<byte> payload)
     {
         if (payload.IsEmpty)
@@ -200,7 +204,9 @@ public static class ActivationInfoCodec
         }
     }
 
-    /// <summary>Attempts to decode activation properties without throwing.</summary>
+    /// <summary>
+    /// Attempts to decode activation properties without throwing.
+    /// </summary>
     public static bool TryDecode(ReadOnlySpan<byte> payload, out ActivationProperties properties)
     {
         try

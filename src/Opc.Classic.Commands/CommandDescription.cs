@@ -13,7 +13,9 @@ public sealed record CommandDescription
     private readonly string[] _inputArguments;
     private readonly string[] _returnArguments;
 
-    /// <summary>Create a command description.</summary>
+    /// <summary>
+    /// Create a command description.
+    /// </summary>
     public CommandDescription(
         string commandName,
         string commandCategory,
@@ -38,25 +40,39 @@ public sealed record CommandDescription
         ReturnArguments = Array.AsReadOnly(_returnArguments);
     }
 
-    /// <summary>Command name used for invocation.</summary>
+    /// <summary>
+    /// Command name used for invocation.
+    /// </summary>
     public string CommandName { get; }
 
-    /// <summary>Human-readable command category.</summary>
+    /// <summary>
+    /// Human-readable command category.
+    /// </summary>
     public string CommandCategory { get; }
 
-    /// <summary>Help text supplied by the server for operators or clients.</summary>
+    /// <summary>
+    /// Help text supplied by the server for operators or clients.
+    /// </summary>
     public string CommandHelp { get; }
 
-    /// <summary>Expected number of result items the command produces.</summary>
+    /// <summary>
+    /// Expected number of result items the command produces.
+    /// </summary>
     public int CommandResultCount { get; }
 
-    /// <summary>Stable category identifier from the Commands metadata.</summary>
+    /// <summary>
+    /// Stable category identifier from the Commands metadata.
+    /// </summary>
     public Guid CategoryId { get; }
 
-    /// <summary>Command input argument names, in wire order.</summary>
+    /// <summary>
+    /// Command input argument names, in wire order.
+    /// </summary>
     public IReadOnlyList<string> InputArguments { get; }
 
-    /// <summary>Command return argument names, in wire order.</summary>
+    /// <summary>
+    /// Command return argument names, in wire order.
+    /// </summary>
     public IReadOnlyList<string> ReturnArguments { get; }
 
     /// <inheritdoc />

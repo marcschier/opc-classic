@@ -54,9 +54,13 @@ public interface ICallChannel
 [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Auto)]
 public readonly record struct NdrCallResult(int Hresult, ReadOnlyMemory<byte> ResponsePayload)
 {
-    /// <summary>True if the HRESULT severity bit is clear (success).</summary>
+    /// <summary>
+    /// True if the HRESULT severity bit is clear (success).
+    /// </summary>
     public bool IsSuccess => (Hresult & unchecked((int)0x80000000u)) == 0;
 
-    /// <summary>True if the HRESULT severity bit is set (failure).</summary>
+    /// <summary>
+    /// True if the HRESULT severity bit is set (failure).
+    /// </summary>
     public bool IsFailure => !IsSuccess;
 }

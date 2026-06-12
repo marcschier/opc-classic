@@ -12,7 +12,9 @@ namespace Opc.Classic.Hda;
 /// </summary>
 public sealed record OpcHdaItem
 {
-    /// <summary>Constructor — validates the three parallel arrays have the same length.</summary>
+    /// <summary>
+    /// Constructor — validates the three parallel arrays have the same length.
+    /// </summary>
     /// <param name="clientHandle">Client correlation handle.</param>
     /// <param name="aggregateHandle">Aggregate ID (0 = no aggregate applied).</param>
     /// <param name="timestamps">UTC timestamps; same length as <paramref name="qualities"/> and <paramref name="values"/>.</param>
@@ -42,18 +44,28 @@ public sealed record OpcHdaItem
         Values = values;
     }
 
-    /// <summary>Client correlation handle.</summary>
+    /// <summary>
+    /// Client correlation handle.
+    /// </summary>
     public int ClientHandle { get; }
 
-    /// <summary>Aggregate ID (0 = no aggregate).</summary>
+    /// <summary>
+    /// Aggregate ID (0 = no aggregate).
+    /// </summary>
     public int AggregateHandle { get; }
 
-    /// <summary>UTC timestamps. Same length as <see cref="Qualities"/> and <see cref="Values"/>.</summary>
+    /// <summary>
+    /// UTC timestamps. Same length as <see cref="Qualities"/> and <see cref="Values"/>.
+    /// </summary>
     public DateTimeOffset[] Timestamps { get; }
 
-    /// <summary>HDA quality DWORDs.</summary>
+    /// <summary>
+    /// HDA quality DWORDs.
+    /// </summary>
     public uint[] Qualities { get; }
 
-    /// <summary>Per-sample values.</summary>
+    /// <summary>
+    /// Per-sample values.
+    /// </summary>
     public OpcVariant[] Values { get; }
 }

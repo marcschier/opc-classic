@@ -12,14 +12,20 @@ using Opc.Classic.Mcp.Sessions;
 
 namespace Opc.Classic.Mcp.Tools;
 
-/// <summary>Creates Commands client state for a session.</summary>
+/// <summary>
+/// Creates Commands client state for a session.
+/// </summary>
 public interface IOpcCommandsConnectionFactory
 {
-    /// <summary>Connects to a Commands server and returns a client state object.</summary>
+    /// <summary>
+    /// Connects to a Commands server and returns a client state object.
+    /// </summary>
     Task<CommandsClientState> ConnectAsync(CommandsConnectionRequest request, CancellationToken cancellationToken = default);
 }
 
-/// <summary>Connection request used by Commands tools.</summary>
+/// <summary>
+/// Connection request used by Commands tools.
+/// </summary>
 public sealed record CommandsConnectionRequest(
     string Host,
     string? ProgId,
@@ -30,12 +36,16 @@ public sealed record CommandsConnectionRequest(
     string? ConnectionString,
     string? AuthLevel = null);
 
-/// <summary>Registers in-memory Commands call channels for MCP tests and loopback scenarios.</summary>
+/// <summary>
+/// Registers in-memory Commands call channels for MCP tests and loopback scenarios.
+/// </summary>
 public static class InMemoryCommandsConnectionRegistry
 {
     private static readonly System.Collections.Concurrent.ConcurrentDictionary<string, ICallChannel> Channels = new(StringComparer.OrdinalIgnoreCase);
 
-    /// <summary>Registers an in-memory Commands call channel by name.</summary>
+    /// <summary>
+    /// Registers an in-memory Commands call channel by name.
+    /// </summary>
     public static IDisposable Register(string name, ICallChannel channel)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(name);
@@ -67,13 +77,17 @@ public static class InMemoryCommandsConnectionRegistry
     }
 }
 
-/// <summary>MCP tools for OPC Commands client operations.</summary>
+/// <summary>
+/// MCP tools for OPC Commands client operations.
+/// </summary>
 public sealed class CommandsTools
 {
     private readonly IOpcSessionManager _sessionManager;
     private readonly IOpcCommandsConnectionFactory _connectionFactory;
 
-    /// <summary>Creates the Commands tool set.</summary>
+    /// <summary>
+    /// Creates the Commands tool set.
+    /// </summary>
     public CommandsTools(IOpcSessionManager sessionManager, IEnumerable<IOpcCommandsConnectionFactory> connectionFactories)
     {
         _sessionManager = sessionManager ?? throw new ArgumentNullException(nameof(sessionManager));
@@ -81,7 +95,9 @@ public sealed class CommandsTools
         _connectionFactory = connectionFactories.FirstOrDefault() ?? new DefaultOpcCommandsConnectionFactory();
     }
 
-    /// <summary>Connects a session to an OPC Commands server.</summary>
+    /// <summary>
+    /// Connects a session to an OPC Commands server.
+    /// </summary>
     [McpServerTool(Name = "opcclassic.commands.connect", ReadOnly = false, Idempotent = true, Destructive = false, OpenWorld = true)]
     [Description("Connects an existing MCP session to an OPC Commands server using DCOM or an in-memory test channel.")]
     public async Task<OpcResultDto> Connect(
@@ -121,7 +137,9 @@ public sealed class CommandsTools
         return new OpcResultDto(0, "Commands client connected.", Succeeded: true, ValueType: "Commands");
     }
 
-    /// <summary>Gets OPC Commands connection status for a connected session.</summary>
+    /// <summary>
+    /// Gets OPC Commands connection status for a connected session.
+    /// </summary>
     [McpServerTool(Name = "opcclassic.commands.get_status", ReadOnly = true, Idempotent = true, Destructive = false, OpenWorld = true)]
     [Description("Gets OPC Commands connection status, maximum storage time, and command count.")]
     public async Task<OpcResultDto> GetStatus(
@@ -135,7 +153,9 @@ public sealed class CommandsTools
         return new OpcResultDto(0, $"Commands client connected to {client.Host}; maxStorageTime={maxStorageTime}; commands={commandNames.Length}.", Succeeded: true, ValueType: "Commands");
     }
 
-    /// <summary>Disconnects a session from its OPC Commands server.</summary>
+    /// <summary>
+    /// Disconnects a session from its OPC Commands server.
+    /// </summary>
     [McpServerTool(Name = "opcclassic.commands.disconnect", ReadOnly = false, Idempotent = true, Destructive = true, OpenWorld = true)]
     [Description("Disconnects the session from its OPC Commands server and releases the Commands channel.")]
     public async Task<OpcResultDto> Disconnect(
@@ -154,7 +174,9 @@ public sealed class CommandsTools
         return new OpcResultDto(1, "Commands client was not connected.", Succeeded: false, ValueType: "Commands");
     }
 
-    /// <summary>Gets OPC Commands command descriptions.</summary>
+    /// <summary>
+    /// Gets OPC Commands command descriptions.
+    /// </summary>
     [McpServerTool(Name = "opcclassic.commands.get_command_descriptions", ReadOnly = true, Idempotent = true, Destructive = false, OpenWorld = true)]
     [Description("Lists command names and retrieves the server description text for each command.")]
     public async Task<IReadOnlyList<OpcCommandDescriptionDto>> GetCommandDescriptions(
@@ -184,7 +206,9 @@ public sealed class CommandsTools
         return descriptions;
     }
 
-    /// <summary>Invokes an OPC Commands command.</summary>
+    /// <summary>
+    /// Invokes an OPC Commands command.
+    /// </summary>
     [McpServerTool(Name = "opcclassic.commands.invoke_command", ReadOnly = false, Idempotent = false, Destructive = false, OpenWorld = true)]
     [Description("Invokes an OPC Commands command. Asynchronous invocations return an invocationId for polling and cancellation.")]
     public async Task<OpcCommandInvocationDto> InvokeCommand(
@@ -264,7 +288,9 @@ public sealed class CommandsTools
             Array.Empty<string>());
     }
 
-    /// <summary>Polls OPC Commands state-change notifications.</summary>
+    /// <summary>
+    /// Polls OPC Commands state-change notifications.
+    /// </summary>
     [McpServerTool(Name = "opcclassic.commands.poll_command_state", ReadOnly = true, Idempotent = false, Destructive = false, OpenWorld = true)]
     [Description("Polls a command invocation for state-change notifications using IOPCCommandExecution::QueryState.")]
     public async Task<OpcCommandStateDto> PollCommandState(
@@ -303,7 +329,9 @@ public sealed class CommandsTools
             DateTimeOffset.UtcNow);
     }
 
-    /// <summary>Cancels an OPC Commands invocation.</summary>
+    /// <summary>
+    /// Cancels an OPC Commands invocation.
+    /// </summary>
     [McpServerTool(Name = "opcclassic.commands.cancel_command", ReadOnly = false, Idempotent = true, Destructive = false, OpenWorld = true)]
     [Description("Sends the Cancel control to an OPC Commands invocation and disconnects the poll connection.")]
     public async Task<OpcResultDto> CancelCommand(

@@ -61,7 +61,9 @@ public sealed class KerberosAuthContext : IAuthContext, IAuthSessionKeyProvider
     /// <inheritdoc />
     public OpcProtectionLevel ProtectionLevel { get; }
 
-    /// <summary>SPNEGO auth-service code (MS-RPCE §2.2.1.1.7).</summary>
+    /// <summary>
+    /// SPNEGO auth-service code (MS-RPCE §2.2.1.1.7).
+    /// </summary>
     public byte AuthenticationServiceCode => 0x09;
 
     /// <inheritdoc />

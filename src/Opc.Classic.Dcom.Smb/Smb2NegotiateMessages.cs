@@ -145,7 +145,9 @@ public readonly record struct Smb2NegotiateResponse(
     ReadOnlyMemory<byte> SecurityBuffer,
     Smb2EncryptionAlgorithm? EncryptionAlgorithm = null)
 {
-    /// <summary>Parses an SMB2 NEGOTIATE response body (excluding the 64-byte packet header).</summary>
+    /// <summary>
+    /// Parses an SMB2 NEGOTIATE response body (excluding the 64-byte packet header).
+    /// </summary>
     public static Smb2NegotiateResponse Read(ReadOnlySpan<byte> source)
     {
         Smb2MessageBounds.EnsureBodyWithinDefaultQuota(source, "SMB2 NEGOTIATE response");

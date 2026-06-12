@@ -64,7 +64,9 @@ public sealed class SubscriptionState
     /// </summary>
     public int KeepAliveMs { get; init; }
 
-    /// <summary>Convenience: create a subscription that polls every <paramref name="updateRate"/>.</summary>
+    /// <summary>
+    /// Convenience: create a subscription that polls every <paramref name="updateRate"/>.
+    /// </summary>
     public static SubscriptionState At(TimeSpan updateRate, bool active = true)
     {
         if (updateRate <= TimeSpan.Zero)

@@ -22,10 +22,14 @@ namespace Opc.Classic;
 /// </remarks>
 public static class FileTimeHelper
 {
-    /// <summary>Number of 100-nanosecond ticks per second.</summary>
+    /// <summary>
+    /// Number of 100-nanosecond ticks per second.
+    /// </summary>
     public const long TicksPerSecond = 10_000_000L;
 
-    /// <summary>The Windows <c>FILETIME</c> epoch: 1601-01-01 00:00:00 UTC.</summary>
+    /// <summary>
+    /// The Windows <c>FILETIME</c> epoch: 1601-01-01 00:00:00 UTC.
+    /// </summary>
     public static readonly DateTimeOffset Epoch =
         new(year: 1601, month: 1, day: 1, hour: 0, minute: 0, second: 0, offset: TimeSpan.Zero);
 

@@ -30,18 +30,26 @@ public static class LogHost
 {
     private static ILoggerFactory _factory = NullLoggerFactory.Instance;
 
-    /// <summary>The current logger factory; defaults to <see cref="NullLoggerFactory"/>.</summary>
+    /// <summary>
+    /// The current logger factory; defaults to <see cref="NullLoggerFactory"/>.
+    /// </summary>
     public static ILoggerFactory Factory => _factory;
 
-    /// <summary>Installs a new logger factory. Pass <see langword="null"/> to revert to no-op logging.</summary>
+    /// <summary>
+    /// Installs a new logger factory. Pass <see langword="null"/> to revert to no-op logging.
+    /// </summary>
     public static void ConfigureFactory(ILoggerFactory? factory)
     {
         _factory = factory ?? NullLoggerFactory.Instance;
     }
 
-    /// <summary>Creates a category logger from the configured factory.</summary>
+    /// <summary>
+    /// Creates a category logger from the configured factory.
+    /// </summary>
     public static ILogger CreateLogger(string category) => _factory.CreateLogger(category);
 
-    /// <summary>Creates a typed category logger from the configured factory.</summary>
+    /// <summary>
+    /// Creates a typed category logger from the configured factory.
+    /// </summary>
     public static ILogger<T> CreateLogger<T>() => _factory.CreateLogger<T>();
 }

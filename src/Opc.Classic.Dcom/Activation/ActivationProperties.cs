@@ -11,10 +11,14 @@ namespace Opc.Classic.Dcom.Core;
 /// </summary>
 public sealed class ActivationProperties
 {
-    /// <summary>Empty v5.6 activation property set.</summary>
+    /// <summary>
+    /// Empty v5.6 activation property set.
+    /// </summary>
     public static ActivationProperties Empty { get; } = new();
 
-    /// <summary>Creates an empty v5.6 activation property set.</summary>
+    /// <summary>
+    /// Creates an empty v5.6 activation property set.
+    /// </summary>
     public ActivationProperties()
         : this(
             SpecialPropertiesData.Empty,
@@ -26,7 +30,9 @@ public sealed class ActivationProperties
     {
     }
 
-    /// <summary>Creates an activation property set.</summary>
+    /// <summary>
+    /// Creates an activation property set.
+    /// </summary>
     public ActivationProperties(
         SpecialPropertiesData? specialProperties,
         InstanceInfo? instanceInfo,
@@ -43,25 +49,39 @@ public sealed class ActivationProperties
         CustomProperties = CopyCustomProperties(customProperties);
     }
 
-    /// <summary>SPECIAL_PROPERTIES_DATA.</summary>
+    /// <summary>
+    /// SPECIAL_PROPERTIES_DATA.
+    /// </summary>
     public SpecialPropertiesData SpecialProperties { get; }
 
-    /// <summary>Requested class and interface information.</summary>
+    /// <summary>
+    /// Requested class and interface information.
+    /// </summary>
     public InstanceInfo? InstanceInfo { get; }
 
-    /// <summary>Location and protocol sequence information.</summary>
+    /// <summary>
+    /// Location and protocol sequence information.
+    /// </summary>
     public LocationInfo? LocationInfo { get; }
 
-    /// <summary>SCM reply information returned to the client.</summary>
+    /// <summary>
+    /// SCM reply information returned to the client.
+    /// </summary>
     public ScmReplyInfo? ScmReplyInfo { get; }
 
-    /// <summary>Security information.</summary>
+    /// <summary>
+    /// Security information.
+    /// </summary>
     public SecurityInfo? SecurityInfo { get; }
 
-    /// <summary>Unrecognized properties preserved for round-trip compatibility.</summary>
+    /// <summary>
+    /// Unrecognized properties preserved for round-trip compatibility.
+    /// </summary>
     public IReadOnlyList<ActivationProperty> CustomProperties { get; }
 
-    /// <summary>Returns a copy with SCM reply information populated.</summary>
+    /// <summary>
+    /// Returns a copy with SCM reply information populated.
+    /// </summary>
     public ActivationProperties WithScmReplyInfo(ScmReplyInfo reply) => new(
         SpecialProperties,
         InstanceInfo,
@@ -70,7 +90,9 @@ public sealed class ActivationProperties
         SecurityInfo,
         CustomProperties);
 
-    /// <summary>Returns the requested IID in activation-priority order.</summary>
+    /// <summary>
+    /// Returns the requested IID in activation-priority order.
+    /// </summary>
     public Guid GetRequestedIidOr(Guid fallback)
     {
         if (InstanceInfo is { RequestedIid: var instanceIid } && instanceIid != Guid.Empty)

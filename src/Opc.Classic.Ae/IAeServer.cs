@@ -10,10 +10,14 @@ namespace Opc.Classic.Ae;
 /// </summary>
 public interface IAeServer : IAsyncDisposable
 {
-    /// <summary>Raised when the server emits <c>IOPCShutdown::ShutdownRequest</c>.</summary>
+    /// <summary>
+    /// Raised when the server emits <c>IOPCShutdown::ShutdownRequest</c>.
+    /// </summary>
     event EventHandler<EventArgs>? ServerShutdown;
 
-    /// <summary>Retrieve AE server runtime state.</summary>
+    /// <summary>
+    /// Retrieve AE server runtime state.
+    /// </summary>
     Task<OpcServerStatus> GetStatusAsync(CancellationToken cancellationToken = default);
 
     /// <summary>
@@ -24,34 +28,46 @@ public interface IAeServer : IAsyncDisposable
         string areaQualifiedName,
         CancellationToken cancellationToken = default);
 
-    /// <summary>List event categories the server supports for the given event types.</summary>
+    /// <summary>
+    /// List event categories the server supports for the given event types.
+    /// </summary>
     Task<IReadOnlyList<uint>> QueryEventCategoriesAsync(
         EventType eventTypes,
         CancellationToken cancellationToken = default);
 
-    /// <summary>List the conditions the server defines for the given category.</summary>
+    /// <summary>
+    /// List the conditions the server defines for the given category.
+    /// </summary>
     Task<IReadOnlyList<string>> QueryConditionNamesAsync(
         uint eventCategory,
         CancellationToken cancellationToken = default);
 
-    /// <summary>Acknowledge a batch of condition events.</summary>
+    /// <summary>
+    /// Acknowledge a batch of condition events.
+    /// </summary>
     Task<IReadOnlyList<AckResult>> AcknowledgeAsync(
         string actor,
         string? comment,
         IReadOnlyList<ConditionRef> conditions,
         CancellationToken cancellationToken = default);
 
-    /// <summary>Enable monitoring of conditions for an area / source.</summary>
+    /// <summary>
+    /// Enable monitoring of conditions for an area / source.
+    /// </summary>
     Task<OpcResultId> EnableConditionsByAreaAsync(
         IReadOnlyList<string> areaQualifiedNames,
         CancellationToken cancellationToken = default);
 
-    /// <summary>Disable monitoring of conditions for an area / source.</summary>
+    /// <summary>
+    /// Disable monitoring of conditions for an area / source.
+    /// </summary>
     Task<OpcResultId> DisableConditionsByAreaAsync(
         IReadOnlyList<string> areaQualifiedNames,
         CancellationToken cancellationToken = default);
 
-    /// <summary>Create a server-side event subscription and return its handle.</summary>
+    /// <summary>
+    /// Create a server-side event subscription and return its handle.
+    /// </summary>
     Task<IAeSubscription> CreateSubscriptionAsync(
         bool active,
         int bufferTimeMs,

@@ -46,7 +46,9 @@ public sealed class OrpcReplayTool
         _logger = logger ?? NullLogger.Instance;
     }
 
-    /// <summary>Replays the supplied decoded PDU stream and returns the per-call results.</summary>
+    /// <summary>
+    /// Replays the supplied decoded PDU stream and returns the per-call results.
+    /// </summary>
     public ReplayReport Replay(IEnumerable<DecodedOpcPdu> pdus, byte[]? stubBytes = null)
     {
         ArgumentNullException.ThrowIfNull(pdus);
@@ -149,7 +151,9 @@ public sealed class OrpcReplayTool
     }
 }
 
-/// <summary>Per-(IID,opnum,direction) replay statistics.</summary>
+/// <summary>
+/// Per-(IID,opnum,direction) replay statistics.
+/// </summary>
 public sealed class ReplayKeyStats
 {
     public string Key { get; }
@@ -161,7 +165,9 @@ public sealed class ReplayKeyStats
     public ReplayKeyStats(string key) => Key = key;
 }
 
-/// <summary>Aggregate result of an <see cref="OrpcReplayTool"/> run.</summary>
+/// <summary>
+/// Aggregate result of an <see cref="OrpcReplayTool"/> run.
+/// </summary>
 public sealed record class ReplayReport
 {
     public required IReadOnlyList<ReplayKeyStats> Buckets { get; init; }

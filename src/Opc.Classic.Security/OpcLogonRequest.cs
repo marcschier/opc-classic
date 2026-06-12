@@ -24,9 +24,13 @@ public sealed record OpcLogonRequest
         Password = password;
     }
 
-    /// <summary>Server-private user identifier.</summary>
+    /// <summary>
+    /// Server-private user identifier.
+    /// </summary>
     public string UserId { get; init; }
 
-    /// <summary>Server-private password. May be empty, but not <see langword="null" />.</summary>
+    /// <summary>
+    /// Server-private password. May be empty, but not <see langword="null" />.
+    /// </summary>
     public string Password { get; init; }
 }

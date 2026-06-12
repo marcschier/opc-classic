@@ -232,10 +232,14 @@ public sealed class CttDaServer : IOpcDaServer
         return Task.FromResult<OpcDaGroup?>(null);
     }
 
-    /// <summary>Test helper: returns the number of currently tracked groups.</summary>
+    /// <summary>
+    /// Test helper: returns the number of currently tracked groups.
+    /// </summary>
     public int GroupCount => _groups.Count;
 
-    /// <summary>Test helper: returns the IPID assigned to a registered group.</summary>
+    /// <summary>
+    /// Test helper: returns the IPID assigned to a registered group.
+    /// </summary>
     public Guid? GetIpidForGroup(int serverGroupHandle) =>
         _groups.TryGetValue(serverGroupHandle, out GroupEntry? entry) ? entry.Ipid : null;
 

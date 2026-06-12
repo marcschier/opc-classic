@@ -19,20 +19,26 @@ namespace Opc.Classic.Ndr;
 [StructLayout(LayoutKind.Auto)]
 public ref struct NdrReader
 {
-    /// <summary>Default maximum decoded payload, in bytes.</summary>
+    /// <summary>
+    /// Default maximum decoded payload, in bytes.
+    /// </summary>
     public const int DefaultMaxPayloadSize = 16 * 1024 * 1024;
 
     private readonly ReadOnlySpan<byte> _buffer;
     private readonly int _maxPayloadSize;
     private int _position;
 
-    /// <summary>Creates a new reader over the supplied buffer.</summary>
+    /// <summary>
+    /// Creates a new reader over the supplied buffer.
+    /// </summary>
     public NdrReader(ReadOnlySpan<byte> buffer)
         : this(buffer, DefaultMaxPayloadSize)
     {
     }
 
-    /// <summary>Creates a new reader over the supplied buffer with a decoded-payload quota.</summary>
+    /// <summary>
+    /// Creates a new reader over the supplied buffer with a decoded-payload quota.
+    /// </summary>
     public NdrReader(ReadOnlySpan<byte> buffer, int maxPayloadSize)
     {
         if (maxPayloadSize <= 0)
@@ -50,13 +56,19 @@ public ref struct NdrReader
         _position = 0;
     }
 
-    /// <summary>Current byte position in the buffer (also the number of bytes consumed).</summary>
+    /// <summary>
+    /// Current byte position in the buffer (also the number of bytes consumed).
+    /// </summary>
     public int Position => _position;
 
-    /// <summary>Total length of the underlying buffer.</summary>
+    /// <summary>
+    /// Total length of the underlying buffer.
+    /// </summary>
     public int Length => _buffer.Length;
 
-    /// <summary>Remaining readable bytes.</summary>
+    /// <summary>
+    /// Remaining readable bytes.
+    /// </summary>
     public int RemainingBytes => _buffer.Length - _position;
 
     /// <summary>
@@ -189,7 +201,9 @@ public ref struct NdrReader
         return unchecked((long)(((ulong)high << 32) | low));
     }
 
-    /// <summary>Reads a conformance header (a single uint, aligned to 4).</summary>
+    /// <summary>
+    /// Reads a conformance header (a single uint, aligned to 4).
+    /// </summary>
     public int ReadConformanceHeader()
     {
         uint value = ReadUInt32();
@@ -266,7 +280,9 @@ public ref struct NdrReader
     /// followed by a FLAGGED_WORD_BLOB. Returns <see langword="null"/>
     /// when the referent is zero (null BSTR).
     /// </summary>
-    /// <summary>Reads a [unique] BSTR (FLAGGED_WORD_BLOB) per MS-OAUT 2.2.23.</summary>
+    /// <summary>
+    /// Reads a [unique] BSTR (FLAGGED_WORD_BLOB) per MS-OAUT 2.2.23.
+    /// </summary>
     /// <remarks>
     /// Wire layout: <c>referent + max_count + cBytes + clSize + char[clSize]</c>.
     /// max_count is the implicit conformant-array prefix (always equals clSize
@@ -319,7 +335,9 @@ public ref struct NdrReader
         return ReadUnicodeString();
     }
 
-    /// <summary>Reads a span of raw bytes verbatim (no alignment, no length prefix).</summary>
+    /// <summary>
+    /// Reads a span of raw bytes verbatim (no alignment, no length prefix).
+    /// </summary>
     public ReadOnlySpan<byte> ReadRawBytes(int count)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(count);
@@ -332,7 +350,9 @@ public ref struct NdrReader
 
     // -------- Conformant arrays of primitive types --------
 
-    /// <summary>Reads a conformant array of bytes (uint count + raw bytes).</summary>
+    /// <summary>
+    /// Reads a conformant array of bytes (uint count + raw bytes).
+    /// </summary>
     public byte[] ReadConformantByteArray()
     {
         int count = ReadBoundedConformanceCount(1, "NDR conformant byte array");
@@ -343,7 +363,9 @@ public ref struct NdrReader
         return result;
     }
 
-    /// <summary>Reads a conformant array of Int16 values.</summary>
+    /// <summary>
+    /// Reads a conformant array of Int16 values.
+    /// </summary>
     public short[] ReadConformantInt16Array()
     {
         int count = ReadBoundedConformanceCount(sizeof(short), "NDR conformant Int16 array");
@@ -358,7 +380,9 @@ public ref struct NdrReader
         return result;
     }
 
-    /// <summary>Reads a conformant array of UInt16 values.</summary>
+    /// <summary>
+    /// Reads a conformant array of UInt16 values.
+    /// </summary>
     public ushort[] ReadConformantUInt16Array()
     {
         int count = ReadBoundedConformanceCount(sizeof(ushort), "NDR conformant UInt16 array");
@@ -373,7 +397,9 @@ public ref struct NdrReader
         return result;
     }
 
-    /// <summary>Reads a conformant array of Int32 values.</summary>
+    /// <summary>
+    /// Reads a conformant array of Int32 values.
+    /// </summary>
     public int[] ReadConformantInt32Array()
     {
         int count = ReadBoundedConformanceCount(sizeof(int), "NDR conformant Int32 array");
@@ -387,7 +413,9 @@ public ref struct NdrReader
         return result;
     }
 
-    /// <summary>Reads a conformant array of UInt32 values.</summary>
+    /// <summary>
+    /// Reads a conformant array of UInt32 values.
+    /// </summary>
     public uint[] ReadConformantUInt32Array()
     {
         int count = ReadBoundedConformanceCount(sizeof(uint), "NDR conformant UInt32 array");
@@ -401,7 +429,9 @@ public ref struct NdrReader
         return result;
     }
 
-    /// <summary>Reads a conformant array of Int64 values.</summary>
+    /// <summary>
+    /// Reads a conformant array of Int64 values.
+    /// </summary>
     public long[] ReadConformantInt64Array()
     {
         int count = ReadBoundedConformanceCount(sizeof(long), "NDR conformant Int64 array");
@@ -437,7 +467,9 @@ public ref struct NdrReader
         return result;
     }
 
-    /// <summary>Reads a conformant array of Single (float) values.</summary>
+    /// <summary>
+    /// Reads a conformant array of Single (float) values.
+    /// </summary>
     public float[] ReadConformantSingleArray()
     {
         int count = ReadBoundedConformanceCount(sizeof(float), "NDR conformant Single array");
@@ -451,7 +483,9 @@ public ref struct NdrReader
         return result;
     }
 
-    /// <summary>Reads a conformant array of Double values.</summary>
+    /// <summary>
+    /// Reads a conformant array of Double values.
+    /// </summary>
     public double[] ReadConformantDoubleArray()
     {
         int count = ReadBoundedConformanceCount(sizeof(double), "NDR conformant Double array");
@@ -466,7 +500,9 @@ public ref struct NdrReader
         return result;
     }
 
-    /// <summary>Reads a conformant array of Guid values.</summary>
+    /// <summary>
+    /// Reads a conformant array of Guid values.
+    /// </summary>
     public Guid[] ReadConformantGuidArray()
     {
         int count = ReadBoundedConformanceCount(16, "NDR conformant Guid array");

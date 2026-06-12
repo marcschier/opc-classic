@@ -31,7 +31,9 @@ namespace Opc.Classic.Da.Ndr;
 /// </remarks>
 public static class NdrOpcItemResultCodec
 {
-    /// <summary>Encodes a conformant OPCITEMRESULT array using DCE/RPC deferred-pointer pile layout, including the outer unique-pointer referent.</summary>
+    /// <summary>
+    /// Encodes a conformant OPCITEMRESULT array using DCE/RPC deferred-pointer pile layout, including the outer unique-pointer referent.
+    /// </summary>
     /// <remarks>
     /// Self-contained encoder for <c>[out, size_is(,N)] OPCITEMRESULT**</c> wire shape:
     /// emits the unique-pointer referent (or 0 for null/empty) followed by max_count + N inline + N deferred.
@@ -57,7 +59,9 @@ public static class NdrOpcItemResultCodec
         }
     }
 
-    /// <summary>Decodes a conformant OPCITEMRESULT array using DCE/RPC deferred-pointer pile layout.</summary>
+    /// <summary>
+    /// Decodes a conformant OPCITEMRESULT array using DCE/RPC deferred-pointer pile layout.
+    /// </summary>
     /// <remarks>
     /// Self-contained helper for the <c>[out, size_is(,N)] OPCITEMRESULT**</c> wire shape under
     /// <c>pointer_default(unique)</c>. Reads the outer unique-pointer referent first; a null
@@ -89,7 +93,9 @@ public static class NdrOpcItemResultCodec
         return result;
     }
 
-    /// <summary>Encodes a single OPCITEMRESULT in NDR using the inline + deferred shape.</summary>
+    /// <summary>
+    /// Encodes a single OPCITEMRESULT in NDR using the inline + deferred shape.
+    /// </summary>
     public static void Write(ref NdrWriter writer, OpcItemResult result)
     {
         ArgumentNullException.ThrowIfNull(result);
@@ -98,7 +104,9 @@ public static class NdrOpcItemResultCodec
         WriteDeferred(ref writer, result);
     }
 
-    /// <summary>Decodes a single OPCITEMRESULT from NDR using the inline + deferred shape.</summary>
+    /// <summary>
+    /// Decodes a single OPCITEMRESULT from NDR using the inline + deferred shape.
+    /// </summary>
     public static OpcItemResult Read(ref NdrReader reader)
     {
         ItemResultInline inlinePart = ReadInline(ref reader);

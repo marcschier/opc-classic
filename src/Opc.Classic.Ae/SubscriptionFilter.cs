@@ -12,13 +12,19 @@ namespace Opc.Classic.Ae;
 /// </summary>
 public sealed class SubscriptionFilter
 {
-    /// <summary>Event-type kinds to deliver. Default is all (Simple|Tracking|Condition).</summary>
+    /// <summary>
+    /// Event-type kinds to deliver. Default is all (Simple|Tracking|Condition).
+    /// </summary>
     public EventType EventTypes { get; init; } = EventType.All;
 
-    /// <summary>Minimum severity (0..1000) — events below this are suppressed.</summary>
+    /// <summary>
+    /// Minimum severity (0..1000) — events below this are suppressed.
+    /// </summary>
     public int MinSeverity { get; init; }
 
-    /// <summary>Maximum severity (0..1000) — events above this are suppressed. 1000 by default.</summary>
+    /// <summary>
+    /// Maximum severity (0..1000) — events above this are suppressed. 1000 by default.
+    /// </summary>
     public int MaxSeverity { get; init; } = 1000;
 
     /// <summary>
@@ -38,7 +44,9 @@ public sealed class SubscriptionFilter
     /// </summary>
     public IReadOnlyList<string> Sources { get; init; } = Array.Empty<string>();
 
-    /// <summary>True if any non-trivial filter criterion is set.</summary>
+    /// <summary>
+    /// True if any non-trivial filter criterion is set.
+    /// </summary>
     public bool HasAnyCriterion =>
         EventTypes != EventType.All
         || MinSeverity > 0

@@ -47,7 +47,9 @@ public sealed class NcacnNpTransport : IAsyncTransport
     /// <inheritdoc />
     public PipeWriter Output => _output.Writer;
 
-    /// <summary>Connects to the endpoint and opens the named pipe over IPC$.</summary>
+    /// <summary>
+    /// Connects to the endpoint and opens the named pipe over IPC$.
+    /// </summary>
     public static async ValueTask<NcacnNpTransport> ConnectAsync(
         NcacnNpEndPoint endpoint,
         IAuthContext smbAuthContext,

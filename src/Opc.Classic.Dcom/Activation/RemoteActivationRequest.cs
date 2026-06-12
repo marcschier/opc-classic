@@ -21,9 +21,13 @@ public sealed record RemoteActivationRequest(
     uint Mode,
     IReadOnlyList<ushort> RequestedProtocolSequences)
 {
-    /// <summary>Optional object name (used by <c>MODE_GET_CLASS_OBJECT</c> handlers).</summary>
+    /// <summary>
+    /// Optional object name (used by <c>MODE_GET_CLASS_OBJECT</c> handlers).
+    /// </summary>
     public string? ObjectName { get; init; }
 
-    /// <summary>Optional pre-marshaled object-storage interface pointer (rarely populated).</summary>
+    /// <summary>
+    /// Optional pre-marshaled object-storage interface pointer (rarely populated).
+    /// </summary>
     public ReadOnlyMemory<byte> ObjectStorage { get; init; }
 }

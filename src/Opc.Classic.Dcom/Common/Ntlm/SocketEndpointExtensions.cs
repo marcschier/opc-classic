@@ -13,11 +13,15 @@ namespace Opc.Classic.Dcom.Common.Ntlm;
 /// </summary>
 public static class SocketEndpointExtensions
 {
-    /// <summary>Gets the bound local TCP/UDP port for <paramref name="socket"/>, or 0 if unbound.</summary>
+    /// <summary>
+    /// Gets the bound local TCP/UDP port for <paramref name="socket"/>, or 0 if unbound.
+    /// </summary>
     public static int GetLocalPort(this Socket socket) =>
         socket.LocalEndPoint is IPEndPoint endpoint ? endpoint.Port : 0;
 
-    /// <summary>Gets the connected remote TCP/UDP port for <paramref name="socket"/>, or 0 if unconnected.</summary>
+    /// <summary>
+    /// Gets the connected remote TCP/UDP port for <paramref name="socket"/>, or 0 if unconnected.
+    /// </summary>
     public static int GetPort(this Socket socket) =>
         socket.RemoteEndPoint is IPEndPoint endpoint ? endpoint.Port : 0;
 }

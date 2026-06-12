@@ -25,7 +25,9 @@ public sealed class DcomOpcEnumCallChannelFactory : IOpcEnumCallChannelFactory
     private readonly DcomCallChannelFactory _channelFactory;
     private readonly Func<IAuthContext> _authContextFactory;
 
-    /// <summary>Creates a default unauthenticated DCOM channel factory.</summary>
+    /// <summary>
+    /// Creates a default unauthenticated DCOM channel factory.
+    /// </summary>
     public DcomOpcEnumCallChannelFactory()
         : this(
             new DcomCallChannelFactory(new TcpSocketTransportFactory()),
@@ -34,7 +36,9 @@ public sealed class DcomOpcEnumCallChannelFactory : IOpcEnumCallChannelFactory
     {
     }
 
-    /// <summary>Creates a DCOM channel factory from OPC connection authentication settings.</summary>
+    /// <summary>
+    /// Creates a DCOM channel factory from OPC connection authentication settings.
+    /// </summary>
     public DcomOpcEnumCallChannelFactory(OpcConnectData connectData)
         : this(
             new DcomCallChannelFactory(new TcpSocketTransportFactory()),
@@ -43,7 +47,9 @@ public sealed class DcomOpcEnumCallChannelFactory : IOpcEnumCallChannelFactory
     {
     }
 
-    /// <summary>Creates a DCOM channel factory with injectable transport and authentication.</summary>
+    /// <summary>
+    /// Creates a DCOM channel factory with injectable transport and authentication.
+    /// </summary>
     public DcomOpcEnumCallChannelFactory(
         DcomCallChannelFactory channelFactory,
         Func<IAuthContext> authContextFactory)
@@ -51,7 +57,9 @@ public sealed class DcomOpcEnumCallChannelFactory : IOpcEnumCallChannelFactory
     {
     }
 
-    /// <summary>Creates a DCOM channel factory with injectable transport, authentication, and activation protection.</summary>
+    /// <summary>
+    /// Creates a DCOM channel factory with injectable transport, authentication, and activation protection.
+    /// </summary>
     public DcomOpcEnumCallChannelFactory(
         DcomCallChannelFactory channelFactory,
         Func<IAuthContext> authContextFactory,

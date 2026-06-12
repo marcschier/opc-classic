@@ -5,7 +5,9 @@
 
 namespace Opc.Classic;
 
-/// <summary>OPC Data Access (DA) specification errors.</summary>
+/// <summary>
+/// OPC Data Access (DA) specification errors.
+/// </summary>
 public sealed class OpcDaException : OpcException
 {
     public OpcDaException() { }

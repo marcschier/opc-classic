@@ -32,13 +32,19 @@ public sealed class WireCaptureFile
         @"^[0-9A-Fa-f]{4}:\s+((?:[0-9A-Fa-f]{2}\s+)+)",
         RegexOptions.Compiled | RegexOptions.CultureInvariant);
 
-    /// <summary>The case-insensitive banner metadata block (e.g. iid, opnum, hresult, timestamp_utc).</summary>
+    /// <summary>
+    /// The case-insensitive banner metadata block (e.g. iid, opnum, hresult, timestamp_utc).
+    /// </summary>
     public IReadOnlyDictionary<string, string> Metadata { get; }
 
-    /// <summary>The decoded request payload bytes (proxy → server).</summary>
+    /// <summary>
+    /// The decoded request payload bytes (proxy → server).
+    /// </summary>
     public byte[] RequestPayload { get; }
 
-    /// <summary>The decoded response payload bytes (server → proxy).</summary>
+    /// <summary>
+    /// The decoded response payload bytes (server → proxy).
+    /// </summary>
     public byte[] ResponsePayload { get; }
 
     private WireCaptureFile(
@@ -51,7 +57,9 @@ public sealed class WireCaptureFile
         ResponsePayload = responsePayload;
     }
 
-    /// <summary>Loads a capture file from disk.</summary>
+    /// <summary>
+    /// Loads a capture file from disk.
+    /// </summary>
     public static WireCaptureFile Load(string path)
     {
         ArgumentNullException.ThrowIfNull(path);
@@ -62,7 +70,9 @@ public sealed class WireCaptureFile
         return Parse(File.ReadAllText(path));
     }
 
-    /// <summary>Parses a capture file contents (typically the result of <see cref="File.ReadAllText(string)"/>).</summary>
+    /// <summary>
+    /// Parses a capture file contents (typically the result of <see cref="File.ReadAllText(string)"/>).
+    /// </summary>
     public static WireCaptureFile Parse(string text)
     {
         ArgumentNullException.ThrowIfNull(text);
@@ -123,13 +133,17 @@ public sealed class WireCaptureFile
     public string FormatResponseContext(int position, int contextBytes = 16) =>
         global::Opc.Classic.Ndr.NdrReader.FormatHexContext(ResponsePayload, position, contextBytes);
 
-    /// <summary>Returns the parsed IID metadata key, or <see cref="Guid.Empty"/> if not present.</summary>
+    /// <summary>
+    /// Returns the parsed IID metadata key, or <see cref="Guid.Empty"/> if not present.
+    /// </summary>
     public Guid Iid =>
         Metadata.TryGetValue("iid", out string? value) && Guid.TryParse(value, out Guid parsed)
             ? parsed
             : Guid.Empty;
 
-    /// <summary>Returns the parsed opnum, or -1 if not present.</summary>
+    /// <summary>
+    /// Returns the parsed opnum, or -1 if not present.
+    /// </summary>
     public int Opnum =>
         Metadata.TryGetValue("opnum", out string? value)
         && int.TryParse(value, NumberStyles.Integer, CultureInfo.InvariantCulture, out int parsed)

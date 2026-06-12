@@ -10,10 +10,14 @@ namespace Opc.Classic.Hda.Hosting;
 
 #pragma warning disable MA0048
 
-/// <summary>Service registration helpers for managed OPC HDA server hosting.</summary>
+/// <summary>
+/// Service registration helpers for managed OPC HDA server hosting.
+/// </summary>
 public static class OpcHdaHostingServiceCollectionExtensions
 {
-    /// <summary>Registers a managed OPC HDA server implementation and host.</summary>
+    /// <summary>
+    /// Registers a managed OPC HDA server implementation and host.
+    /// </summary>
     public static IServiceCollection AddOpcHdaServer<
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] T>(
         this IServiceCollection services,

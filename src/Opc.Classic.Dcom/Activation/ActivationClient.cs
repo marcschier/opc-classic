@@ -7,7 +7,9 @@ using Opc.Classic.Dcom.Transport;
 
 namespace Opc.Classic.Dcom.Activation;
 
-/// <summary>TCP-capable client for legacy <c>IActivation::RemoteActivation</c> (opnum 0).</summary>
+/// <summary>
+/// TCP-capable client for legacy <c>IActivation::RemoteActivation</c> (opnum 0).
+/// </summary>
 public sealed class ActivationClient : IActivationClient, IAsyncDisposable
 {
     private const int EndpointMapperPort = 135;
@@ -20,7 +22,9 @@ public sealed class ActivationClient : IActivationClient, IAsyncDisposable
     private readonly ICallChannel _channel;
     private readonly IAsyncDisposable? _ownedChannel;
 
-    /// <summary>Creates a client over an existing DCOM call channel.</summary>
+    /// <summary>
+    /// Creates a client over an existing DCOM call channel.
+    /// </summary>
     public ActivationClient(ICallChannel channel)
         : this(channel, null)
     {
@@ -32,20 +36,26 @@ public sealed class ActivationClient : IActivationClient, IAsyncDisposable
         _ownedChannel = ownedChannel;
     }
 
-    /// <summary>Connects to the endpoint mapper on TCP port 135 with no RPC authentication.</summary>
+    /// <summary>
+    /// Connects to the endpoint mapper on TCP port 135 with no RPC authentication.
+    /// </summary>
     public static Task<ActivationClient> ConnectTcpAsync(
         string host,
         CancellationToken cancellationToken = default) =>
         ConnectTcpAsync(host, EndpointMapperPort, NoOpAuthContext.Instance, cancellationToken);
 
-    /// <summary>Connects to a TCP DCOM endpoint with the supplied authentication context.</summary>
+    /// <summary>
+    /// Connects to a TCP DCOM endpoint with the supplied authentication context.
+    /// </summary>
     public static Task<ActivationClient> ConnectTcpAsync(
         string host,
         IAuthContext authContext,
         CancellationToken cancellationToken = default) =>
         ConnectTcpAsync(host, EndpointMapperPort, authContext, cancellationToken);
 
-    /// <summary>Connects to a TCP DCOM endpoint with the supplied authentication context.</summary>
+    /// <summary>
+    /// Connects to a TCP DCOM endpoint with the supplied authentication context.
+    /// </summary>
     public static async Task<ActivationClient> ConnectTcpAsync(
         string host,
         int port,

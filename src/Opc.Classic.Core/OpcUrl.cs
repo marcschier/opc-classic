@@ -27,22 +27,34 @@ namespace Opc.Classic;
 /// </remarks>
 public sealed class OpcUrl : IEquatable<OpcUrl>
 {
-    /// <summary>The full original URL string.</summary>
+    /// <summary>
+    /// The full original URL string.
+    /// </summary>
     public string Original { get; }
 
-    /// <summary>The scheme (e.g. <c>opcda</c>, <c>opcae</c>, <c>opchda</c>).</summary>
+    /// <summary>
+    /// The scheme (e.g. <c>opcda</c>, <c>opcae</c>, <c>opchda</c>).
+    /// </summary>
     public OpcUrlScheme Scheme { get; }
 
-    /// <summary>The host name or IP address (empty string for <c>localhost</c>).</summary>
+    /// <summary>
+    /// The host name or IP address (empty string for <c>localhost</c>).
+    /// </summary>
     public string Host { get; }
 
-    /// <summary>The TCP port. Zero if not specified.</summary>
+    /// <summary>
+    /// The TCP port. Zero if not specified.
+    /// </summary>
     public int Port { get; }
 
-    /// <summary>The ProgID or CLSID identifying the server on the host.</summary>
+    /// <summary>
+    /// The ProgID or CLSID identifying the server on the host.
+    /// </summary>
     public string ServerId { get; }
 
-    /// <summary>True if <see cref="ServerId"/> is a string-formatted CLSID.</summary>
+    /// <summary>
+    /// True if <see cref="ServerId"/> is a string-formatted CLSID.
+    /// </summary>
     public bool IsClsid { get; }
 
     private OpcUrl(string original, OpcUrlScheme scheme, string host, int port, string serverId, bool isClsid)
@@ -55,7 +67,9 @@ public sealed class OpcUrl : IEquatable<OpcUrl>
         IsClsid = isClsid;
     }
 
-    /// <summary>Parse a URL. Throws <see cref="FormatException"/> on syntax errors.</summary>
+    /// <summary>
+    /// Parse a URL. Throws <see cref="FormatException"/> on syntax errors.
+    /// </summary>
     /// <remarks>
     /// OPC Classic URL schemes (<c>opcda</c>, <c>opcae</c>, <c>opchda</c>, <c>opcdx</c>, <c>opc.xml-da</c>) are not
     /// registered <see cref="Uri"/> schemes; the URL is parsed directly rather than going through

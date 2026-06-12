@@ -37,7 +37,9 @@ public sealed class OpcAeServerHost : IOpcServerHost, IDisposable, IAsyncDisposa
     private readonly ILogger<OpcAeServerHost> _logger;
     private OpcServerListener? _listener;
 
-    /// <summary>Initializes a new instance of the <see cref="OpcAeServerHost"/> class.</summary>
+    /// <summary>
+    /// Initializes a new instance of the <see cref="OpcAeServerHost"/> class.
+    /// </summary>
     public OpcAeServerHost(
         IOpcAeServer serverImpl,
         IOptions<OpcAeServerOptions> options,

@@ -11,12 +11,18 @@ namespace Opc.Classic.Hda;
 /// </summary>
 public sealed class HdaItemValue
 {
-    /// <summary>Server-supplied UTC timestamp.</summary>
+    /// <summary>
+    /// Server-supplied UTC timestamp.
+    /// </summary>
     public DateTimeOffset Timestamp { get; init; }
 
-    /// <summary>The historical value (or aggregate result for aggregated reads).</summary>
+    /// <summary>
+    /// The historical value (or aggregate result for aggregated reads).
+    /// </summary>
     public object? Value { get; init; }
 
-    /// <summary>HDA-specific quality. Defaults to <see cref="OpcQuality.Bad"/>.</summary>
+    /// <summary>
+    /// HDA-specific quality. Defaults to <see cref="OpcQuality.Bad"/>.
+    /// </summary>
     public OpcQuality Quality { get; init; } = OpcQuality.Bad;
 }

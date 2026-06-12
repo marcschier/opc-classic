@@ -43,13 +43,17 @@ public sealed class CaptureTools
 
     private readonly CaptureSessionManager _manager;
 
-    /// <summary>Creates the capture tool set, injected by the host.</summary>
+    /// <summary>
+    /// Creates the capture tool set, injected by the host.
+    /// </summary>
     public CaptureTools(CaptureSessionManager manager)
     {
         _manager = manager ?? throw new ArgumentNullException(nameof(manager));
     }
 
-    /// <summary>Lists NICs available for live capture.</summary>
+    /// <summary>
+    /// Lists NICs available for live capture.
+    /// </summary>
     [McpServerTool(Name = "opcclassic.capture.list_interfaces", ReadOnly = true, Idempotent = true, Destructive = false, OpenWorld = false)]
     [Description("Enumerate NICs that can be used as 'interfaceName' for opcclassic.capture.start. On Windows requires Npcap; on Linux a libpcap install.")]
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1031:Do not catch general exception types",
@@ -107,7 +111,9 @@ public sealed class CaptureTools
         return result;
     }
 
-    /// <summary>Starts a new capture session.</summary>
+    /// <summary>
+    /// Starts a new capture session.
+    /// </summary>
     [McpServerTool(Name = "opcclassic.capture.start", ReadOnly = false, Idempotent = false, Destructive = false, OpenWorld = false)]
     [Description("Begin a network packet capture session. Defaults the BPF filter to TCP DCOM (port 135 + dynamic range). Returns the capture session id; use opcclassic.capture.stop + opcclassic.capture.get to retrieve the trace.")]
     public async Task<CaptureSessionDto> StartCapture(
@@ -201,7 +207,9 @@ public sealed class CaptureTools
         return sb.ToString();
     }
 
-    /// <summary>Stops a capture session and finalises the trace.</summary>
+    /// <summary>
+    /// Stops a capture session and finalises the trace.
+    /// </summary>
     [McpServerTool(Name = "opcclassic.capture.stop", ReadOnly = false, Idempotent = true, Destructive = false, OpenWorld = false)]
     [Description("Stop an in-progress capture. After this returns, the trace is safe to read via opcclassic.capture.get.")]
     public async Task<CaptureSessionDto> StopCapture(
@@ -226,7 +234,9 @@ public sealed class CaptureTools
         return CaptureSessionDto.From(session);
     }
 
-    /// <summary>Lists known capture sessions.</summary>
+    /// <summary>
+    /// Lists known capture sessions.
+    /// </summary>
     [McpServerTool(Name = "opcclassic.capture.list", ReadOnly = true, Idempotent = true, Destructive = false, OpenWorld = false)]
     [Description("List capture sessions; pass state=active|running|completed|failed|all (default = all).")]
     public IReadOnlyList<CaptureSessionDto> ListCaptures(
@@ -251,7 +261,9 @@ public sealed class CaptureTools
         return result;
     }
 
-    /// <summary>Returns the trace bytes in the requested format.</summary>
+    /// <summary>
+    /// Returns the trace bytes in the requested format.
+    /// </summary>
     [McpServerTool(Name = "opcclassic.capture.get", ReadOnly = true, Idempotent = true, Destructive = false, OpenWorld = false)]
     [Description("Return the captured trace as text. Formats: 'pcap-path' (returns full path to the libpcap file, suitable for opening in Wireshark), 'dcom' (decoded DCE/RPC PDU summary, default), 'json' (raw PDU records). Binary pcap bytes are NOT inlined to keep MCP payload bounded; open the file path with Wireshark.")]
     public async Task<string> GetCapture(
@@ -391,7 +403,9 @@ public sealed class CaptureTools
         }
     }
 
-    /// <summary>Returns a top-N roll-up of a completed capture.</summary>
+    /// <summary>
+    /// Returns a top-N roll-up of a completed capture.
+    /// </summary>
     [McpServerTool(Name = "opcclassic.capture.summarize", ReadOnly = true, Idempotent = true, Destructive = false, OpenWorld = false)]
     [Description("Returns top-N talkers, ports, IIDs, opnums, IPIDs, fault codes, and bind-reject reasons for a completed capture session.")]
     public async Task<CaptureSummary> SummarizeCapture(
@@ -576,7 +590,9 @@ public sealed class CaptureTools
     }
 }
 
-/// <summary>NIC info DTO surfaced by opcclassic.capture.list_interfaces.</summary>
+/// <summary>
+/// NIC info DTO surfaced by opcclassic.capture.list_interfaces.
+/// </summary>
 public sealed record class CaptureInterfaceDto(
     string Name,
     string? FriendlyName,
@@ -593,26 +609,40 @@ public sealed record class CaptureInterfaceDto(
 /// </summary>
 public sealed record class CaptureTailResultDto
 {
-    /// <summary>The capture session id that owns this drain.</summary>
+    /// <summary>
+    /// The capture session id that owns this drain.
+    /// </summary>
     public required string SessionId { get; init; }
 
-    /// <summary>The next decoded-PDU window (length &le; <c>max</c>).</summary>
+    /// <summary>
+    /// The next decoded-PDU window (length &le; <c>max</c>).
+    /// </summary>
     public required IReadOnlyList<DecodedOpcPdu> Pdus { get; init; }
 
-    /// <summary>Cursor to pass as <c>sinceIndex</c> on the next call.</summary>
+    /// <summary>
+    /// Cursor to pass as <c>sinceIndex</c> on the next call.
+    /// </summary>
     public required long NextIndex { get; init; }
 
-    /// <summary>Total PDU count emitted by the session decoder so far.</summary>
+    /// <summary>
+    /// Total PDU count emitted by the session decoder so far.
+    /// </summary>
     public required long TotalEmitted { get; init; }
 
-    /// <summary>True when the session has ended AND the cursor is caught up.</summary>
+    /// <summary>
+    /// True when the session has ended AND the cursor is caught up.
+    /// </summary>
     public required bool Done { get; init; }
 
-    /// <summary>Underlying session lifecycle state at the time of the drain.</summary>
+    /// <summary>
+    /// Underlying session lifecycle state at the time of the drain.
+    /// </summary>
     public required CaptureSessionState SessionState { get; init; }
 }
 
-/// <summary>Capture session info DTO surfaced by opcclassic.capture.* tools.</summary>
+/// <summary>
+/// Capture session info DTO surfaced by opcclassic.capture.* tools.
+/// </summary>
 public sealed record class CaptureSessionDto
 {
     public required string SessionId { get; init; }

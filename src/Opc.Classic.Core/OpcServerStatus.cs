@@ -16,13 +16,19 @@ namespace Opc.Classic;
 /// </remarks>
 public sealed class OpcServerStatus
 {
-    /// <summary>The OPC specification that produced this status.</summary>
+    /// <summary>
+    /// The OPC specification that produced this status.
+    /// </summary>
     public OpcStatusSpec Spec { get; init; }
 
-    /// <summary>Server start time (UTC).</summary>
+    /// <summary>
+    /// Server start time (UTC).
+    /// </summary>
     public DateTimeOffset StartTime { get; init; }
 
-    /// <summary>Server current time at the moment the status was sampled (UTC).</summary>
+    /// <summary>
+    /// Server current time at the moment the status was sampled (UTC).
+    /// </summary>
     public DateTimeOffset CurrentTime { get; init; }
 
     /// <summary>
@@ -32,13 +38,19 @@ public sealed class OpcServerStatus
     /// </summary>
     public DateTimeOffset LastUpdateTime { get; init; }
 
-    /// <summary>Runtime state.</summary>
+    /// <summary>
+    /// Runtime state.
+    /// </summary>
     public OpcServerState State { get; init; }
 
-    /// <summary>Server version (major.minor.build).</summary>
+    /// <summary>
+    /// Server version (major.minor.build).
+    /// </summary>
     public Version ServerVersion { get; init; } = new Version(0, 0, 0);
 
-    /// <summary>Server-supplied vendor / product description string.</summary>
+    /// <summary>
+    /// Server-supplied vendor / product description string.
+    /// </summary>
     public string VendorInfo { get; init; } = string.Empty;
 
     /// <summary>
@@ -58,7 +70,9 @@ public sealed class OpcServerStatus
     /// </summary>
     public int MaxReturnValues { get; init; }
 
-    /// <summary>The status reading is "good": <see cref="State"/> is <see cref="OpcServerState.Running"/>.</summary>
+    /// <summary>
+    /// The status reading is "good": <see cref="State"/> is <see cref="OpcServerState.Running"/>.
+    /// </summary>
     public bool IsOperational => State is OpcServerState.Running;
 
     public override string ToString()

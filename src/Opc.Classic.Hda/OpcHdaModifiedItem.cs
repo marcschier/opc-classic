@@ -11,7 +11,9 @@ namespace Opc.Classic.Hda;
 /// </summary>
 public sealed record OpcHdaModifiedItem
 {
-    /// <summary>Constructor — validates all six parallel arrays have the same length.</summary>
+    /// <summary>
+    /// Constructor — validates all six parallel arrays have the same length.
+    /// </summary>
     /// <param name="clientHandle">Client correlation handle.</param>
     /// <param name="timestamps">UTC timestamps; parallel with all per-sample arrays.</param>
     /// <param name="qualities">HDA-style quality DWORDs.</param>
@@ -45,25 +47,39 @@ public sealed record OpcHdaModifiedItem
         Users = users;
     }
 
-    /// <summary>Client correlation handle.</summary>
+    /// <summary>
+    /// Client correlation handle.
+    /// </summary>
     public int ClientHandle { get; }
 
-    /// <summary>UTC timestamps; parallel with <see cref="Values"/>.</summary>
+    /// <summary>
+    /// UTC timestamps; parallel with <see cref="Values"/>.
+    /// </summary>
     public DateTimeOffset[] Timestamps { get; }
 
-    /// <summary>HDA quality DWORDs.</summary>
+    /// <summary>
+    /// HDA quality DWORDs.
+    /// </summary>
     public uint[] Qualities { get; }
 
-    /// <summary>Per-sample values.</summary>
+    /// <summary>
+    /// Per-sample values.
+    /// </summary>
     public OpcVariant[] Values { get; }
 
-    /// <summary>UTC timestamps when each value was modified.</summary>
+    /// <summary>
+    /// UTC timestamps when each value was modified.
+    /// </summary>
     public DateTimeOffset[] ModificationTimes { get; }
 
-    /// <summary>OPCHDA_EDITTYPE values, carried as UInt32.</summary>
+    /// <summary>
+    /// OPCHDA_EDITTYPE values, carried as UInt32.
+    /// </summary>
     public uint[] EditTypes { get; }
 
-    /// <summary>User names associated with each modification; entries may be null.</summary>
+    /// <summary>
+    /// User names associated with each modification; entries may be null.
+    /// </summary>
     public string?[] Users { get; }
 
     private static void ValidateParallelArrayLengths(

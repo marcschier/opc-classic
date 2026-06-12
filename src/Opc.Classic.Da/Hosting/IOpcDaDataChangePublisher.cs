@@ -12,7 +12,9 @@ namespace Opc.Classic.Da.Hosting;
 /// </summary>
 public interface IOpcDaDataChangePublisher
 {
-    /// <summary>Publishes a data-change batch to advised callback subscribers.</summary>
+    /// <summary>
+    /// Publishes a data-change batch to advised callback subscribers.
+    /// </summary>
     ValueTask PublishAsync(
         OpcDaDataChange change,
         CancellationToken cancellationToken = default);

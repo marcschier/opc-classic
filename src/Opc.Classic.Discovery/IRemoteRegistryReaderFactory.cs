@@ -12,6 +12,8 @@ namespace Opc.Classic.Discovery;
 /// </summary>
 public interface IRemoteRegistryReaderFactory
 {
-    /// <summary>Connects to the remote registry on <paramref name="host" />.</summary>
+    /// <summary>
+    /// Connects to the remote registry on <paramref name="host" />.
+    /// </summary>
     IRemoteRegistryReader Open(string host, NetworkCredential credentials);
 }

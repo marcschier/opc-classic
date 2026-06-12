@@ -7,49 +7,71 @@
 
 namespace Opc.Classic.Dx;
 
-/// <summary>Controls which DX browse nodes a query should return.</summary>
+/// <summary>
+/// Controls which DX browse nodes a query should return.
+/// </summary>
 public enum DxBrowseFilter
 {
-    /// <summary>Return all matching browse nodes.</summary>
+    /// <summary>
+    /// Return all matching browse nodes.
+    /// </summary>
     All = 0,
 
-    /// <summary>Return branch/folder nodes only.</summary>
+    /// <summary>
+    /// Return branch/folder nodes only.
+    /// </summary>
     Branches = 1,
 
-    /// <summary>Return DX connection leaves only.</summary>
+    /// <summary>
+    /// Return DX connection leaves only.
+    /// </summary>
     Connections = 2,
 
-    /// <summary>Return DX source-server leaves only.</summary>
+    /// <summary>
+    /// Return DX source-server leaves only.
+    /// </summary>
     SourceServers = 3,
 }
 
-/// <summary>Path within the DX browse hierarchy.</summary>
+/// <summary>
+/// Path within the DX browse hierarchy.
+/// </summary>
 public readonly record struct DxBrowsePath
 {
-    /// <summary>Constructs a browse path.</summary>
+    /// <summary>
+    /// Constructs a browse path.
+    /// </summary>
     public DxBrowsePath(string path)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(path);
         Path = path;
     }
 
-    /// <summary>Server-defined browse path.</summary>
+    /// <summary>
+    /// Server-defined browse path.
+    /// </summary>
     public string Path { get; }
 
     /// <inheritdoc />
     public override string ToString() => Path;
 }
 
-/// <summary>Optional item identifier used to narrow DX source-server or connection queries.</summary>
+/// <summary>
+/// Optional item identifier used to narrow DX source-server or connection queries.
+/// </summary>
 public sealed record DxItemQuery(
     string? ItemPath = null,
     string? ItemName = null,
     string? Version = null);
 
-/// <summary>Query parameters used to browse or operate on matching DX entities.</summary>
+/// <summary>
+/// Query parameters used to browse or operate on matching DX entities.
+/// </summary>
 public sealed record DxQueryParameters
 {
-    /// <summary>Constructs DX query parameters.</summary>
+    /// <summary>
+    /// Constructs DX query parameters.
+    /// </summary>
     public DxQueryParameters(
         DxBrowsePath? browsePath = null,
         bool recursive = false,
@@ -64,19 +86,29 @@ public sealed record DxQueryParameters
         ItemQuery = itemQuery;
     }
 
-    /// <summary>Browse path to search from. Null means the server's DX root.</summary>
+    /// <summary>
+    /// Browse path to search from. Null means the server's DX root.
+    /// </summary>
     public DxBrowsePath? BrowsePath { get; init; }
 
-    /// <summary>Whether descendant folders under <see cref="BrowsePath"/> should be searched.</summary>
+    /// <summary>
+    /// Whether descendant folders under <see cref="BrowsePath"/> should be searched.
+    /// </summary>
     public bool Recursive { get; init; }
 
-    /// <summary>Connection masks supplied to DX query/update/delete methods.</summary>
+    /// <summary>
+    /// Connection masks supplied to DX query/update/delete methods.
+    /// </summary>
     public DxConnection[] ConnectionMasks { get; init; }
 
-    /// <summary>Browse-node kind filter.</summary>
+    /// <summary>
+    /// Browse-node kind filter.
+    /// </summary>
     public DxBrowseFilter BrowseFilter { get; init; }
 
-    /// <summary>Optional item identifier query for source-server operations.</summary>
+    /// <summary>
+    /// Optional item identifier query for source-server operations.
+    /// </summary>
     public DxItemQuery? ItemQuery { get; init; }
 
     private static DxConnection[] NormalizeConnectionMasks(DxConnection[]? connectionMasks)

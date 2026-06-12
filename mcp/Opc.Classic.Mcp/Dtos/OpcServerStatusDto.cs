@@ -5,7 +5,9 @@
 
 namespace Opc.Classic.Mcp.Dtos;
 
-/// <summary>JSON-friendly OPC server runtime status.</summary>
+/// <summary>
+/// JSON-friendly OPC server runtime status.
+/// </summary>
 public sealed record OpcServerStatusDto(
     string Spec,
     DateTimeOffset StartTime,

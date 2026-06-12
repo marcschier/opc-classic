@@ -18,10 +18,14 @@ namespace Opc.Classic.Cpx;
 /// </remarks>
 public sealed class ComplexValue
 {
-    /// <summary>The struct type this value conforms to.</summary>
+    /// <summary>
+    /// The struct type this value conforms to.
+    /// </summary>
     public required StructType Type { get; init; }
 
-    /// <summary>Decoded field values, keyed by <see cref="StructField.Name"/>.</summary>
+    /// <summary>
+    /// Decoded field values, keyed by <see cref="StructField.Name"/>.
+    /// </summary>
     public IReadOnlyDictionary<string, object?> Fields { get; init; } =
         new Dictionary<string, object?>(StringComparer.Ordinal);
 

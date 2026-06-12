@@ -30,7 +30,9 @@ public static class NdrOpcBatchSummaryCodec
 {
     private const long FileTimeEpochOffsetTicks = 504911232000000000L; // 1601-01-01 UTC in .NET ticks
 
-    /// <summary>Encodes a single OPCBATCHSUMMARY in NDR.</summary>
+    /// <summary>
+    /// Encodes a single OPCBATCHSUMMARY in NDR.
+    /// </summary>
     public static void Write(ref NdrWriter writer, OpcBatchSummary summary)
     {
         ArgumentNullException.ThrowIfNull(summary);
@@ -47,7 +49,9 @@ public static class NdrOpcBatchSummaryCodec
         writer.WriteFileTime(ToFileTime(summary.ActualEndTime));
     }
 
-    /// <summary>Decodes a single OPCBATCHSUMMARY from NDR.</summary>
+    /// <summary>
+    /// Decodes a single OPCBATCHSUMMARY from NDR.
+    /// </summary>
     public static OpcBatchSummary Read(ref NdrReader reader)
     {
         string? id = reader.ReadUnicodeStringPtr();

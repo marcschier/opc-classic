@@ -16,7 +16,9 @@ public sealed class InMemoryAddressSpace : IOpcAddressSpace
     private const char BranchSeparator = '.';
     private readonly Dictionary<string, BranchNode> _branches;
 
-    /// <summary>Initializes a new in-memory hierarchical address-space.</summary>
+    /// <summary>
+    /// Initializes a new in-memory hierarchical address-space.
+    /// </summary>
     /// <param name="rootBranches">
     /// Root-level branch names; each branch is created empty and populated
     /// via <see cref="AddItem"/> / <see cref="AddBranch"/>.
@@ -34,10 +36,14 @@ public sealed class InMemoryAddressSpace : IOpcAddressSpace
         }
     }
 
-    /// <summary>Always reports as hierarchical (OPCNS_HIERARCHIAL = 2).</summary>
+    /// <summary>
+    /// Always reports as hierarchical (OPCNS_HIERARCHIAL = 2).
+    /// </summary>
     public bool IsHierarchical => true;
 
-    /// <summary>Adds a branch to the address space; intermediate branches are auto-created.</summary>
+    /// <summary>
+    /// Adds a branch to the address space; intermediate branches are auto-created.
+    /// </summary>
     public void AddBranch(string branchPath)
     {
         ArgumentException.ThrowIfNullOrEmpty(branchPath);
@@ -55,7 +61,9 @@ public sealed class InMemoryAddressSpace : IOpcAddressSpace
         }
     }
 
-    /// <summary>Adds a leaf item ID under <paramref name="branchPath"/> (empty = root).</summary>
+    /// <summary>
+    /// Adds a leaf item ID under <paramref name="branchPath"/> (empty = root).
+    /// </summary>
     public void AddItem(string branchPath, string itemName)
     {
         ArgumentNullException.ThrowIfNull(branchPath);

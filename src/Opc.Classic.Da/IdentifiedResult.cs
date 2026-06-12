@@ -11,21 +11,31 @@ namespace Opc.Classic.Da;
 /// </summary>
 public sealed class IdentifiedResult : ItemIdentifier
 {
-    /// <summary>Construct.</summary>
+    /// <summary>
+    /// Construct.
+    /// </summary>
     public IdentifiedResult(string itemName, string? path = null) : base(itemName, path) { }
 
-    /// <summary>Copy-construct from an identifier.</summary>
+    /// <summary>
+    /// Copy-construct from an identifier.
+    /// </summary>
     public IdentifiedResult(ItemIdentifier identifier) : base(
         (identifier ?? throw new ArgumentNullException(nameof(identifier))).ItemName,
         identifier.Path)
     { }
 
-    /// <summary>Client handle as set on the originating <see cref="Item"/>.</summary>
+    /// <summary>
+    /// Client handle as set on the originating <see cref="Item"/>.
+    /// </summary>
     public int ClientHandle { get; init; }
 
-    /// <summary>Per-item HRESULT.</summary>
+    /// <summary>
+    /// Per-item HRESULT.
+    /// </summary>
     public OpcResultId ResultId { get; init; } = OpcResultId.Ok;
 
-    /// <summary>Per-item server diagnostic info (server-supplied, optional).</summary>
+    /// <summary>
+    /// Per-item server diagnostic info (server-supplied, optional).
+    /// </summary>
     public string? DiagnosticInfo { get; init; }
 }

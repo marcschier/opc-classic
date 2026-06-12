@@ -13,7 +13,9 @@ namespace Opc.Classic.Xml.Serialization;
 /// </summary>
 public static class SubscribeSerializer
 {
-    /// <summary>Writes a complete SOAP envelope carrying a <c>Subscribe</c> request.</summary>
+    /// <summary>
+    /// Writes a complete SOAP envelope carrying a <c>Subscribe</c> request.
+    /// </summary>
     public static void WriteRequest(SoapEnvelopeWriter writer, XmlDaSubscribeRequest request)
     {
         ArgumentNullException.ThrowIfNull(writer);
@@ -91,7 +93,9 @@ public static class SubscribeSerializer
         xw.WriteEndElement();
     }
 
-    /// <summary>Reads a SOAP-wrapped <c>SubscribeResponse</c>.</summary>
+    /// <summary>
+    /// Reads a SOAP-wrapped <c>SubscribeResponse</c>.
+    /// </summary>
     public static XmlDaSubscribeResponse ReadResponse(SoapEnvelopeReader reader)
     {
         ArgumentNullException.ThrowIfNull(reader);

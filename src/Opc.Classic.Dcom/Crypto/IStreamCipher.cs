@@ -5,7 +5,9 @@
 
 namespace Opc.Classic.Dcom.Crypto;
 
-/// <summary>BouncyCastle <c>IStreamCipher</c>-shaped stream-cipher interface (transitional).</summary>
+/// <summary>
+/// BouncyCastle <c>IStreamCipher</c>-shaped stream-cipher interface (transitional).
+/// </summary>
 public interface IStreamCipher
 {
     void Init(bool forEncryption, ICipherParameters parameters);

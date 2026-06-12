@@ -52,8 +52,9 @@ namespace Opc.Classic.Generators
     /// the C# parameter type cannot carry the unique-pointer hint via
     /// nullability (e.g. when the parameter is a non-nullable struct, or a
     /// string with no null-distinguishing convention).
-    ///
+    /// <para>
     /// Nullable value types (int?, float?, Guid?) imply this automatically.
+    /// </para>
     /// </summary>
     [global::System.AttributeUsage(global::System.AttributeTargets.Parameter | global::System.AttributeTargets.ReturnValue, AllowMultiple = false, Inherited = false)]
     internal sealed class OpcUniquePointerAttribute : global::System.Attribute { }
@@ -1108,14 +1109,18 @@ namespace Opc.Classic.Generators
         sb.Append(statementIndent).AppendLine("}");
     }
 
-    /// <summary>Detects whether the marshalling type is a top-level <c>string</c> (with or without nullable annotation).</summary>
+    /// <summary>
+    /// Detects whether the marshalling type is a top-level <c>string</c> (with or without nullable annotation).
+    /// </summary>
     private static bool IsStringMarshallingType(string marshallingType) =>
         string.Equals(marshallingType, "string", System.StringComparison.Ordinal) ||
         string.Equals(marshallingType, "string?", System.StringComparison.Ordinal) ||
         string.Equals(marshallingType, "global::System.String", System.StringComparison.Ordinal) ||
         string.Equals(marshallingType, "global::System.String?", System.StringComparison.Ordinal);
 
-    /// <summary>Detects the string-array codec by inspecting its element-write expression for the WriteUnicodeStringPtr inline-pointer pattern.</summary>
+    /// <summary>
+    /// Detects the string-array codec by inspecting its element-write expression for the WriteUnicodeStringPtr inline-pointer pattern.
+    /// </summary>
     private static bool IsStringElementCodec(CodecEmitter codec) =>
         codec.WriteExpression.Contains("WriteUnicodeStringPtr", System.StringComparison.Ordinal);
 

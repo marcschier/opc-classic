@@ -11,16 +11,22 @@ using Opc.Classic.Mcp.Dtos;
 
 namespace Opc.Classic.Mcp.Tools;
 
-/// <summary>MCP tools for OPC Classic server discovery.</summary>
+/// <summary>
+/// MCP tools for OPC Classic server discovery.
+/// </summary>
 public sealed class DiscoveryTools
 {
     private readonly IReadOnlyList<IOpcDiscovery> _discoveries;
 
-    /// <summary>Creates the discovery tool set.</summary>
+    /// <summary>
+    /// Creates the discovery tool set.
+    /// </summary>
     public DiscoveryTools(IEnumerable<IOpcDiscovery> discoveries) =>
         _discoveries = (discoveries ?? throw new ArgumentNullException(nameof(discoveries))).ToArray();
 
-    /// <summary>Enumerates registered OPC Classic servers on a host.</summary>
+    /// <summary>
+    /// Enumerates registered OPC Classic servers on a host.
+    /// </summary>
     [McpServerTool(Name = "opcclassic.discovery.enumerate_servers", ReadOnly = true, Idempotent = true, Destructive = false, OpenWorld = true)]
     [Description("Enumerates OPC Classic server registrations on a host through OPCEnum / OPC.ServerList.1.")]
     public async Task<IReadOnlyList<OpcServerDescriptorDto>> EnumerateServers(

@@ -80,7 +80,9 @@ internal sealed class ComRuntimeTransport : ITransport, IDisposable
         }
     }
 
-    /// <summary>Releases the accepted runtime socket resources.</summary>
+    /// <summary>
+    /// Releases the accepted runtime socket resources.
+    /// </summary>
     public void Dispose()
     {
         Close();

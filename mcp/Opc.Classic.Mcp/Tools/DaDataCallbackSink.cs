@@ -63,7 +63,9 @@ public sealed record DataChangeNotification(
 /// </remarks>
 public sealed class DaDataCallbackSink : IOPCDataCallback, IDisposable
 {
-    /// <summary>Default queue capacity if the caller does not specify one.</summary>
+    /// <summary>
+    /// Default queue capacity if the caller does not specify one.
+    /// </summary>
     public const int DefaultCapacity = 1024;
 
     private readonly Channel<DataChangeNotification> _queue;
@@ -76,13 +78,17 @@ public sealed class DaDataCallbackSink : IOPCDataCallback, IDisposable
     private long _onCancelCompleteCount;
     private bool _disposed;
 
-    /// <summary>Creates a sink with the default capacity (<see cref="DefaultCapacity"/>).</summary>
+    /// <summary>
+    /// Creates a sink with the default capacity (<see cref="DefaultCapacity"/>).
+    /// </summary>
     public DaDataCallbackSink()
         : this(DefaultCapacity, clock: null)
     {
     }
 
-    /// <summary>Creates a sink with the supplied capacity and optional clock override (for tests).</summary>
+    /// <summary>
+    /// Creates a sink with the supplied capacity and optional clock override (for tests).
+    /// </summary>
     public DaDataCallbackSink(int capacity, Func<DateTimeOffset>? clock)
     {
         if (capacity < 1)
@@ -100,26 +106,40 @@ public sealed class DaDataCallbackSink : IOPCDataCallback, IDisposable
         _capacity = capacity;
     }
 
-    /// <summary>Number of <see cref="OnDataChangeAsync"/> invocations seen since creation.</summary>
+    /// <summary>
+    /// Number of <see cref="OnDataChangeAsync"/> invocations seen since creation.
+    /// </summary>
     public long OnDataChangeCount => Interlocked.Read(ref _onDataChangeCount);
 
-    /// <summary>Number of <see cref="OnReadCompleteAsync"/> invocations seen since creation.</summary>
+    /// <summary>
+    /// Number of <see cref="OnReadCompleteAsync"/> invocations seen since creation.
+    /// </summary>
     public long OnReadCompleteCount => Interlocked.Read(ref _onReadCompleteCount);
 
-    /// <summary>Number of <see cref="OnWriteCompleteAsync"/> invocations seen since creation.</summary>
+    /// <summary>
+    /// Number of <see cref="OnWriteCompleteAsync"/> invocations seen since creation.
+    /// </summary>
     public long OnWriteCompleteCount => Interlocked.Read(ref _onWriteCompleteCount);
 
-    /// <summary>Number of <see cref="OnCancelCompleteAsync"/> invocations seen since creation.</summary>
+    /// <summary>
+    /// Number of <see cref="OnCancelCompleteAsync"/> invocations seen since creation.
+    /// </summary>
     public long OnCancelCompleteCount => Interlocked.Read(ref _onCancelCompleteCount);
 
-    /// <summary>Number of notifications dropped due to a full bounded queue.</summary>
+    /// <summary>
+    /// Number of notifications dropped due to a full bounded queue.
+    /// </summary>
     public long DroppedNotifications => Interlocked.Read(ref _droppedNotifications);
 
-    /// <summary>True once at least one <see cref="OnDataChangeAsync"/> or <see cref="OnReadCompleteAsync"/> has been observed.</summary>
+    /// <summary>
+    /// True once at least one <see cref="OnDataChangeAsync"/> or <see cref="OnReadCompleteAsync"/> has been observed.
+    /// </summary>
     public bool HasReceivedAnyData =>
         Interlocked.Read(ref _onDataChangeCount) + Interlocked.Read(ref _onReadCompleteCount) > 0;
 
-    /// <summary>Drains up to <paramref name="maxItems"/> flattened items from the queue.</summary>
+    /// <summary>
+    /// Drains up to <paramref name="maxItems"/> flattened items from the queue.
+    /// </summary>
     /// <remarks>
     /// <para>
     /// Returns one <see cref="DataChangeItem"/> per item in the order they were
@@ -238,7 +258,9 @@ public sealed class DaDataCallbackSink : IOPCDataCallback, IDisposable
         return Task.CompletedTask;
     }
 
-    /// <summary>Completes the channel writer; further enqueue attempts are dropped.</summary>
+    /// <summary>
+    /// Completes the channel writer; further enqueue attempts are dropped.
+    /// </summary>
     public void Dispose()
     {
         if (_disposed)

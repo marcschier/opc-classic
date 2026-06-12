@@ -5,7 +5,9 @@
 
 namespace Opc.Classic.Mcp.Dtos;
 
-/// <summary>JSON-friendly OPC Batch summary.</summary>
+/// <summary>
+/// JSON-friendly OPC Batch summary.
+/// </summary>
 public sealed record OpcBatchSummaryDto(
     string? Id,
     string? Description,

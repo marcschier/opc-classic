@@ -5,12 +5,16 @@
 
 namespace Opc.Classic;
 
-/// <summary>Immutable <see cref="IRecordInfo"/> implementation for custom VT_RECORD layouts.</summary>
+/// <summary>
+/// Immutable <see cref="IRecordInfo"/> implementation for custom VT_RECORD layouts.
+/// </summary>
 public sealed class OpcRecordInfo : IRecordInfo
 {
     private readonly IReadOnlyList<OpcRecordField> _fields;
 
-    /// <summary>Creates a record layout descriptor.</summary>
+    /// <summary>
+    /// Creates a record layout descriptor.
+    /// </summary>
     public OpcRecordInfo(Guid id, string name, IReadOnlyList<OpcRecordField> fields)
     {
         if (id == Guid.Empty)

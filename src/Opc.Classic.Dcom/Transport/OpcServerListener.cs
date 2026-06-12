@@ -76,10 +76,14 @@ public sealed class OpcServerListener : IAsyncDisposable
         _logger = logger ?? NullLogger.Instance;
     }
 
-    /// <summary>Gets the bound network endpoint (resolves dynamic-port-0).</summary>
+    /// <summary>
+    /// Gets the bound network endpoint (resolves dynamic-port-0).
+    /// </summary>
     public EndPoint LocalEndpoint => _endpoint.LocalEndpoint;
 
-    /// <summary>Gets the number of connections currently being processed.</summary>
+    /// <summary>
+    /// Gets the number of connections currently being processed.
+    /// </summary>
     public int InFlightConnectionCount => _inFlight.Count;
 
     /// <summary>

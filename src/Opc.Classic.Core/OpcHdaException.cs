@@ -5,7 +5,9 @@
 
 namespace Opc.Classic;
 
-/// <summary>OPC Historical Data Access (HDA) specification errors.</summary>
+/// <summary>
+/// OPC Historical Data Access (HDA) specification errors.
+/// </summary>
 public sealed class OpcHdaException : OpcException
 {
     public OpcHdaException() { }

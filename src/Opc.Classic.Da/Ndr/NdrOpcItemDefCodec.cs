@@ -29,7 +29,9 @@ public static class NdrOpcItemDefCodec
 {
     private const int Win32BoolTrue = 1;
 
-    /// <summary>Encodes a conformant OPCITEMDEF array using DCE/RPC deferred-pointer pile layout.</summary>
+    /// <summary>
+    /// Encodes a conformant OPCITEMDEF array using DCE/RPC deferred-pointer pile layout.
+    /// </summary>
     public static void WriteConformantArray(ref NdrWriter writer, OpcItemDef[]? definitions)
     {
         if (definitions is null || definitions.Length == 0)
@@ -49,7 +51,9 @@ public static class NdrOpcItemDefCodec
         }
     }
 
-    /// <summary>Decodes a conformant OPCITEMDEF array using DCE/RPC deferred-pointer pile layout.</summary>
+    /// <summary>
+    /// Decodes a conformant OPCITEMDEF array using DCE/RPC deferred-pointer pile layout.
+    /// </summary>
     public static OpcItemDef[] ReadConformantArray(ref NdrReader reader)
     {
         uint maxCount = reader.ReadUInt32();
@@ -71,7 +75,9 @@ public static class NdrOpcItemDefCodec
         return result;
     }
 
-    /// <summary>Encodes a single OPCITEMDEF in NDR.</summary>
+    /// <summary>
+    /// Encodes a single OPCITEMDEF in NDR.
+    /// </summary>
     public static void Write(ref NdrWriter writer, OpcItemDef def)
     {
         ArgumentNullException.ThrowIfNull(def);
@@ -85,7 +91,9 @@ public static class NdrOpcItemDefCodec
         writer.WriteUInt16(0);  // wReserved
     }
 
-    /// <summary>Decodes a single OPCITEMDEF from NDR.</summary>
+    /// <summary>
+    /// Decodes a single OPCITEMDEF from NDR.
+    /// </summary>
     public static OpcItemDef Read(ref NdrReader reader)
     {
         string? accessPath = reader.ReadUnicodeStringPtr();

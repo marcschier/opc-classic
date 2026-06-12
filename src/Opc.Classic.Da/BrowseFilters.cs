@@ -11,10 +11,16 @@ namespace Opc.Classic.Da;
 /// </summary>
 public enum BrowseFilters
 {
-    /// <summary>Return both branches and leaves.</summary>
+    /// <summary>
+    /// Return both branches and leaves.
+    /// </summary>
     All = 1,
-    /// <summary>Return only branches (sub-namespaces / folders).</summary>
+    /// <summary>
+    /// Return only branches (sub-namespaces / folders).
+    /// </summary>
     Branch = 2,
-    /// <summary>Return only leaves (items / tags).</summary>
+    /// <summary>
+    /// Return only leaves (items / tags).
+    /// </summary>
     Leaf = 3,
 }

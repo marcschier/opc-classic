@@ -18,22 +18,34 @@ public readonly record struct Smb2TransformHeader(
     ushort Flags,
     ulong SessionId)
 {
-    /// <summary>Fixed size of SMB2 TRANSFORM_HEADER in bytes; see [MS-SMB2] §2.2.41.</summary>
+    /// <summary>
+    /// Fixed size of SMB2 TRANSFORM_HEADER in bytes; see [MS-SMB2] §2.2.41.
+    /// </summary>
     public const int Size = 52;
 
-    /// <summary>Size of the Signature field in bytes; see [MS-SMB2] §2.2.41.</summary>
+    /// <summary>
+    /// Size of the Signature field in bytes; see [MS-SMB2] §2.2.41.
+    /// </summary>
     public const int SignatureLength = 16;
 
-    /// <summary>Size of the Nonce field in bytes; see [MS-SMB2] §2.2.41.</summary>
+    /// <summary>
+    /// Size of the Nonce field in bytes; see [MS-SMB2] §2.2.41.
+    /// </summary>
     public const int NonceLength = 16;
 
-    /// <summary>Offset of authenticated data within the transform header; see [MS-SMB2] §3.1.4.3.</summary>
+    /// <summary>
+    /// Offset of authenticated data within the transform header; see [MS-SMB2] §3.1.4.3.
+    /// </summary>
     public const int AuthenticatedDataOffset = 20;
 
-    /// <summary>Length of authenticated data within the transform header; see [MS-SMB2] §3.1.4.3.</summary>
+    /// <summary>
+    /// Length of authenticated data within the transform header; see [MS-SMB2] §3.1.4.3.
+    /// </summary>
     public const int AuthenticatedDataLength = Size - AuthenticatedDataOffset;
 
-    /// <summary>Writes this transform header to <paramref name="destination" />; see [MS-SMB2] §2.2.41.</summary>
+    /// <summary>
+    /// Writes this transform header to <paramref name="destination" />; see [MS-SMB2] §2.2.41.
+    /// </summary>
     public void Write(Span<byte> destination)
     {
         if (destination.Length < Size)
@@ -67,7 +79,9 @@ public readonly record struct Smb2TransformHeader(
         BinaryPrimitives.WriteUInt64LittleEndian(destination[44..], SessionId);
     }
 
-    /// <summary>Parses an SMB2 TRANSFORM_HEADER from <paramref name="source" />; see [MS-SMB2] §2.2.41.</summary>
+    /// <summary>
+    /// Parses an SMB2 TRANSFORM_HEADER from <paramref name="source" />; see [MS-SMB2] §2.2.41.
+    /// </summary>
     public static Smb2TransformHeader Read(ReadOnlySpan<byte> source)
     {
         if (source.Length < Size)
@@ -93,7 +107,9 @@ public readonly record struct Smb2TransformHeader(
             SessionId: BinaryPrimitives.ReadUInt64LittleEndian(source[44..]));
     }
 
-    /// <summary>Returns whether <paramref name="source" /> starts with the SMB2 transform ProtocolId; see [MS-SMB2] §2.2.41.</summary>
+    /// <summary>
+    /// Returns whether <paramref name="source" /> starts with the SMB2 transform ProtocolId; see [MS-SMB2] §2.2.41.
+    /// </summary>
     public static bool HasTransformProtocolId(ReadOnlySpan<byte> source) =>
         source.Length >= 4 && source[..4].SequenceEqual(Smb2Constants.TransformProtocolId);
 

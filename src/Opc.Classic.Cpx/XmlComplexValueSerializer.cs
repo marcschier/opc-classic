@@ -17,7 +17,9 @@ public static class XmlComplexValueSerializer
 {
     private static readonly XNamespace XsiNamespace = "http://www.w3.org/2001/XMLSchema-instance";
 
-    /// <summary>Serialize a complex value as an XML document.</summary>
+    /// <summary>
+    /// Serialize a complex value as an XML document.
+    /// </summary>
     public static string Serialize(ComplexValue value, TypeDescription type, TypeDictionary? dictionary = null)
     {
         ArgumentNullException.ThrowIfNull(value);
@@ -27,7 +29,9 @@ public static class XmlComplexValueSerializer
         return new XDocument(root).ToString(SaveOptions.DisableFormatting);
     }
 
-    /// <summary>Deserialize an XML document into a complex value.</summary>
+    /// <summary>
+    /// Deserialize an XML document into a complex value.
+    /// </summary>
     public static ComplexValue Deserialize(string xml, TypeDescription type, TypeDictionary? dictionary = null)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(xml);

@@ -16,14 +16,20 @@ using Opc.Classic.Mcp.Sessions;
 
 namespace Opc.Classic.Mcp.Tools;
 
-/// <summary>Creates HDA client state for a session.</summary>
+/// <summary>
+/// Creates HDA client state for a session.
+/// </summary>
 public interface IOpcHdaConnectionFactory
 {
-    /// <summary>Connects to an HDA server and returns a client state object.</summary>
+    /// <summary>
+    /// Connects to an HDA server and returns a client state object.
+    /// </summary>
     Task<HdaClientState> ConnectAsync(HdaConnectionRequest request, CancellationToken cancellationToken = default);
 }
 
-/// <summary>Connection request used by HDA tools.</summary>
+/// <summary>
+/// Connection request used by HDA tools.
+/// </summary>
 public sealed record HdaConnectionRequest(
     string Host,
     string? ProgId,
@@ -34,12 +40,16 @@ public sealed record HdaConnectionRequest(
     string? ConnectionString,
     string? AuthLevel = null);
 
-/// <summary>Registers in-memory HDA call channels for MCP tests and loopback scenarios.</summary>
+/// <summary>
+/// Registers in-memory HDA call channels for MCP tests and loopback scenarios.
+/// </summary>
 public static class InMemoryHdaConnectionRegistry
 {
     private static readonly ConcurrentDictionary<string, InMemoryHdaConnection> Channels = new(StringComparer.OrdinalIgnoreCase);
 
-    /// <summary>Registers an in-memory HDA call channel by name.</summary>
+    /// <summary>
+    /// Registers an in-memory HDA call channel by name.
+    /// </summary>
     public static IDisposable Register(string name, ICallChannel channel, IHdaServer? managedServer = null)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(name);
@@ -71,16 +81,22 @@ public static class InMemoryHdaConnectionRegistry
     }
 }
 
-/// <summary>In-memory HDA connection endpoints.</summary>
+/// <summary>
+/// In-memory HDA connection endpoints.
+/// </summary>
 public sealed record InMemoryHdaConnection(ICallChannel Channel, IHdaServer? ManagedServer);
 
-/// <summary>MCP tools for OPC HDA client operations.</summary>
+/// <summary>
+/// MCP tools for OPC HDA client operations.
+/// </summary>
 public sealed class HdaClientTools
 {
     private readonly IOpcSessionManager _sessionManager;
     private readonly IOpcHdaConnectionFactory _connectionFactory;
 
-    /// <summary>Creates the HDA client tool set.</summary>
+    /// <summary>
+    /// Creates the HDA client tool set.
+    /// </summary>
     public HdaClientTools(IOpcSessionManager sessionManager, IEnumerable<IOpcHdaConnectionFactory> connectionFactories)
     {
         _sessionManager = sessionManager ?? throw new ArgumentNullException(nameof(sessionManager));
@@ -88,7 +104,9 @@ public sealed class HdaClientTools
         _connectionFactory = connectionFactories.FirstOrDefault() ?? new DefaultOpcHdaConnectionFactory();
     }
 
-    /// <summary>Connects a session to an OPC HDA server.</summary>
+    /// <summary>
+    /// Connects a session to an OPC HDA server.
+    /// </summary>
     [McpServerTool(Name = "opcclassic.hda.connect", ReadOnly = false, Idempotent = true, Destructive = false, OpenWorld = true)]
     [Description("Connects an existing MCP session to an OPC HDA server using DCOM or an in-memory test channel.")]
     public async Task<OpcResultDto> Connect(
@@ -129,7 +147,9 @@ public sealed class HdaClientTools
         return new OpcResultDto(0, $"HDA client connected to {status.VendorInfo}.", Succeeded: true);
     }
 
-    /// <summary>Gets OPC HDA historian status.</summary>
+    /// <summary>
+    /// Gets OPC HDA historian status.
+    /// </summary>
     [McpServerTool(Name = "opcclassic.hda.get_status", ReadOnly = true, Idempotent = true, Destructive = false, OpenWorld = true)]
     [Description("Gets the OPC HDA historian status, including runtime state, version, vendor information, and max return values.")]
     public async Task<OpcServerStatusDto> GetStatus(
@@ -142,7 +162,9 @@ public sealed class HdaClientTools
         return ToStatusDto(status);
     }
 
-    /// <summary>Browses the OPC HDA address space.</summary>
+    /// <summary>
+    /// Browses the OPC HDA address space.
+    /// </summary>
     [McpServerTool(Name = "opcclassic.hda.browse", ReadOnly = true, Idempotent = true, Destructive = false, OpenWorld = true)]
     [Description("Browses the OPC HDA address space below an item ID prefix. In-memory loopback connections return branch and leaf metadata directly.")]
     public async Task<IReadOnlyList<OpcHdaBrowseElementDto>> Browse(
@@ -170,7 +192,9 @@ public sealed class HdaClientTools
         return elements;
     }
 
-    /// <summary>Validates HDA item IDs.</summary>
+    /// <summary>
+    /// Validates HDA item IDs.
+    /// </summary>
     [McpServerTool(Name = "opcclassic.hda.validate_items", ReadOnly = true, Idempotent = true, Destructive = false, OpenWorld = true)]
     [Description("Validates OPC HDA item IDs and returns per-item HRESULTs.")]
     public async Task<IReadOnlyList<OpcHdaItemHandleDto>> ValidateItems(
@@ -186,7 +210,9 @@ public sealed class HdaClientTools
         return itemIds.Select((itemId, index) => ToHandleDto(itemId, index + 1, 0, index < errors.Length ? errors[index] : OpcResultId.Fail.Code)).ToArray();
     }
 
-    /// <summary>Gets HDA server handles for item IDs.</summary>
+    /// <summary>
+    /// Gets HDA server handles for item IDs.
+    /// </summary>
     [McpServerTool(Name = "opcclassic.hda.get_item_handles", ReadOnly = false, Idempotent = false, Destructive = false, OpenWorld = true)]
     [Description("Gets server handles for OPC HDA item IDs and stores them in the MCP session for subsequent reads and updates.")]
     public async Task<IReadOnlyList<OpcHdaItemHandleDto>> GetItemHandles(
@@ -218,7 +244,9 @@ public sealed class HdaClientTools
         return results;
     }
 
-    /// <summary>Releases HDA server handles.</summary>
+    /// <summary>
+    /// Releases HDA server handles.
+    /// </summary>
     [McpServerTool(Name = "opcclassic.hda.release_item_handles", ReadOnly = false, Idempotent = true, Destructive = true, OpenWorld = true)]
     [Description("Releases OPC HDA server handles and removes them from the MCP session.")]
     public async Task<IReadOnlyList<OpcResultDto>> ReleaseItemHandles(
@@ -242,7 +270,9 @@ public sealed class HdaClientTools
         return results;
     }
 
-    /// <summary>Reads raw historical values.</summary>
+    /// <summary>
+    /// Reads raw historical values.
+    /// </summary>
     [McpServerTool(Name = "opcclassic.hda.read_raw", ReadOnly = true, Idempotent = true, Destructive = false, OpenWorld = true)]
     [Description("Synchronously reads raw historical values over a time range using HDA server handles or item IDs.")]
     public async Task<IReadOnlyList<OpcHdaReadResultDto>> ReadRaw(
@@ -268,7 +298,9 @@ public sealed class HdaClientTools
         return ToReadResultDtos(client, handles, items);
     }
 
-    /// <summary>Reads processed historical values.</summary>
+    /// <summary>
+    /// Reads processed historical values.
+    /// </summary>
     [McpServerTool(Name = "opcclassic.hda.read_processed", ReadOnly = true, Idempotent = true, Destructive = false, OpenWorld = true)]
     [Description("Synchronously reads processed/aggregated historical values over fixed resample intervals.")]
     public async Task<IReadOnlyList<OpcHdaReadResultDto>> ReadProcessed(
@@ -297,7 +329,9 @@ public sealed class HdaClientTools
         return ToReadResultDtos(client, handles, items);
     }
 
-    /// <summary>Reads historical values at specific timestamps.</summary>
+    /// <summary>
+    /// Reads historical values at specific timestamps.
+    /// </summary>
     [McpServerTool(Name = "opcclassic.hda.read_at_time", ReadOnly = true, Idempotent = true, Destructive = false, OpenWorld = true)]
     [Description("Synchronously reads interpolated or nearest historical values at specific timestamps.")]
     public async Task<IReadOnlyList<OpcHdaReadResultDto>> ReadAtTime(
@@ -319,7 +353,9 @@ public sealed class HdaClientTools
         return ToReadResultDtos(client, handles, items);
     }
 
-    /// <summary>Reads modified/audit historical data.</summary>
+    /// <summary>
+    /// Reads modified/audit historical data.
+    /// </summary>
     [McpServerTool(Name = "opcclassic.hda.read_modified", ReadOnly = true, Idempotent = true, Destructive = false, OpenWorld = true)]
     [Description("Synchronously reads modified historical data, including modification time, edit type, and user metadata.")]
     public async Task<IReadOnlyList<OpcHdaModifiedReadResultDto>> ReadModified(
@@ -343,7 +379,9 @@ public sealed class HdaClientTools
         return ToModifiedResultDtos(client, handles, items);
     }
 
-    /// <summary>Reads HDA item attributes.</summary>
+    /// <summary>
+    /// Reads HDA item attributes.
+    /// </summary>
     [McpServerTool(Name = "opcclassic.hda.read_attribute", ReadOnly = true, Idempotent = true, Destructive = false, OpenWorld = true)]
     [Description("Synchronously reads one or more HDA attributes for a server handle over a time range.")]
     public async Task<IReadOnlyList<OpcHdaAttributeResultDto>> ReadAttribute(
@@ -365,7 +403,9 @@ public sealed class HdaClientTools
         return ToAttributeResultDtos(client, serverHandle, attributes);
     }
 
-    /// <summary>Reads HDA annotations.</summary>
+    /// <summary>
+    /// Reads HDA annotations.
+    /// </summary>
     [McpServerTool(Name = "opcclassic.hda.read_annotations", ReadOnly = true, Idempotent = true, Destructive = false, OpenWorld = true)]
     [Description("Synchronously reads annotations for HDA items over a time range.")]
     public async Task<IReadOnlyList<OpcHdaAnnotationResultDto>> ReadAnnotations(
@@ -387,7 +427,9 @@ public sealed class HdaClientTools
         return ToAnnotationResultDtos(client, handles, annotations);
     }
 
-    /// <summary>Inserts HDA historical data.</summary>
+    /// <summary>
+    /// Inserts HDA historical data.
+    /// </summary>
     [McpServerTool(Name = "opcclassic.hda.insert_data", ReadOnly = false, Idempotent = false, Destructive = false, OpenWorld = true)]
     [Description("Inserts historical values for HDA server handles.")]
     public Task<IReadOnlyList<OpcResultDto>> InsertData(
@@ -404,7 +446,9 @@ public sealed class HdaClientTools
         CancellationToken cancellationToken = default) =>
         UpdateDataAsync(sessionId, serverHandles, timestamps, values, qualities, UpdateKind.Insert, cancellationToken);
 
-    /// <summary>Replaces HDA historical data.</summary>
+    /// <summary>
+    /// Replaces HDA historical data.
+    /// </summary>
     [McpServerTool(Name = "opcclassic.hda.replace_data", ReadOnly = false, Idempotent = false, Destructive = true, OpenWorld = true)]
     [Description("Replaces existing historical values for HDA server handles.")]
     public Task<IReadOnlyList<OpcResultDto>> ReplaceData(
@@ -421,7 +465,9 @@ public sealed class HdaClientTools
         CancellationToken cancellationToken = default) =>
         UpdateDataAsync(sessionId, serverHandles, timestamps, values, qualities, UpdateKind.Replace, cancellationToken);
 
-    /// <summary>Inserts or replaces HDA historical data.</summary>
+    /// <summary>
+    /// Inserts or replaces HDA historical data.
+    /// </summary>
     [McpServerTool(Name = "opcclassic.hda.insert_replace_data", ReadOnly = false, Idempotent = true, Destructive = false, OpenWorld = true)]
     [Description("Inserts historical values or replaces existing values for HDA server handles.")]
     public Task<IReadOnlyList<OpcResultDto>> InsertReplaceData(
@@ -438,7 +484,9 @@ public sealed class HdaClientTools
         CancellationToken cancellationToken = default) =>
         UpdateDataAsync(sessionId, serverHandles, timestamps, values, qualities, UpdateKind.InsertReplace, cancellationToken);
 
-    /// <summary>Deletes raw HDA historical data over a time range.</summary>
+    /// <summary>
+    /// Deletes raw HDA historical data over a time range.
+    /// </summary>
     [McpServerTool(Name = "opcclassic.hda.delete_raw", ReadOnly = false, Idempotent = true, Destructive = true, OpenWorld = true)]
     [Description("Deletes raw historical values over a time range for one or more HDA server handles.")]
     public async Task<IReadOnlyList<OpcResultDto>> DeleteRaw(
@@ -458,7 +506,9 @@ public sealed class HdaClientTools
         return ToUpdateResults(client, serverHandles, errors);
     }
 
-    /// <summary>Deletes HDA historical data at specific timestamps.</summary>
+    /// <summary>
+    /// Deletes HDA historical data at specific timestamps.
+    /// </summary>
     [McpServerTool(Name = "opcclassic.hda.delete_at_time", ReadOnly = false, Idempotent = true, Destructive = true, OpenWorld = true)]
     [Description("Deletes historical values at exact timestamps for HDA server handles.")]
     public async Task<IReadOnlyList<OpcResultDto>> DeleteAtTime(
@@ -478,7 +528,9 @@ public sealed class HdaClientTools
         return ToUpdateResults(client, serverHandles, errors);
     }
 
-    /// <summary>Inserts HDA annotations.</summary>
+    /// <summary>
+    /// Inserts HDA annotations.
+    /// </summary>
     [McpServerTool(Name = "opcclassic.hda.insert_annotations", ReadOnly = false, Idempotent = false, Destructive = false, OpenWorld = true)]
     [Description("Inserts annotations attached to exact HDA timestamps for server handles.")]
     public async Task<IReadOnlyList<OpcResultDto>> InsertAnnotations(
@@ -529,7 +581,9 @@ public sealed class HdaClientTools
         return ToUpdateResults(client, serverHandles, errors);
     }
 
-    /// <summary>Gets supported HDA aggregates.</summary>
+    /// <summary>
+    /// Gets supported HDA aggregates.
+    /// </summary>
     [McpServerTool(Name = "opcclassic.hda.get_aggregates", ReadOnly = true, Idempotent = true, Destructive = false, OpenWorld = true)]
     [Description("Enumerates aggregate functions supported by the HDA server.")]
     public async Task<IReadOnlyList<OpcHdaAggregateDto>> GetAggregates(
@@ -553,7 +607,9 @@ public sealed class HdaClientTools
         }
     }
 
-    /// <summary>Disconnects from an HDA server.</summary>
+    /// <summary>
+    /// Disconnects from an HDA server.
+    /// </summary>
     [McpServerTool(Name = "opcclassic.hda.disconnect", ReadOnly = false, Idempotent = true, Destructive = true, OpenWorld = true)]
     [Description("Disconnects the session from its OPC HDA server and releases HDA state.")]
     public async Task<OpcResultDto> Disconnect(

@@ -8,13 +8,17 @@ using Opc.Classic.Ae.Dcom;
 
 namespace Opc.Classic.Ae.Hosting;
 
-/// <summary>AE dispatcher adapter that delegates to the source-generated IOPCEventServer dispatcher.</summary>
+/// <summary>
+/// AE dispatcher adapter that delegates to the source-generated IOPCEventServer dispatcher.
+/// </summary>
 public sealed class OpcAeServerDispatcher : IOpcAeServerDispatcher
 {
     private readonly IOpcAeServer _server;
     private readonly IOPCEventServerServerDispatcher _serverDispatcher;
 
-    /// <summary>Initializes a new instance of the <see cref="OpcAeServerDispatcher" /> class.</summary>
+    /// <summary>
+    /// Initializes a new instance of the <see cref="OpcAeServerDispatcher" /> class.
+    /// </summary>
     public OpcAeServerDispatcher(IOpcAeServer server)
     {
         _server = server ?? throw new ArgumentNullException(nameof(server));

@@ -131,7 +131,9 @@ public sealed class RpcServerConnectionProcessor
         _logger = logger ?? NullLogger.Instance;
     }
 
-    /// <summary>Gets the registered interface IDs (for diagnostics / tests).</summary>
+    /// <summary>
+    /// Gets the registered interface IDs (for diagnostics / tests).
+    /// </summary>
     public IReadOnlyCollection<Guid> SupportedInterfaces => (IReadOnlyCollection<Guid>)_dispatchers.Keys;
 
     /// <summary>

@@ -5,7 +5,9 @@
 
 namespace Opc.Classic.Da.Hosting;
 
-/// <summary>OPC DA quality constants used as default starting quality.</summary>
+/// <summary>
+/// OPC DA quality constants used as default starting quality.
+/// </summary>
 internal static class OpcDaItemQuality
 {
     public const ushort GoodNonSpecific = 0x00C0;

@@ -10,12 +10,16 @@ using Opc.Classic.Xml;
 
 namespace Opc.Classic.Mcp.Sessions;
 
-/// <summary>Holds MCP session state and per-OPC-spec client state.</summary>
+/// <summary>
+/// Holds MCP session state and per-OPC-spec client state.
+/// </summary>
 public sealed class OpcSession : IAsyncDisposable
 {
     private bool _disposed;
 
-    /// <summary>Creates a new session with the requested idle expiry.</summary>
+    /// <summary>
+    /// Creates a new session with the requested idle expiry.
+    /// </summary>
     public OpcSession(string sessionId, TimeSpan idleExpiry)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(sessionId);
@@ -30,49 +34,79 @@ public sealed class OpcSession : IAsyncDisposable
         LastUsedAt = CreatedAt;
     }
 
-    /// <summary>Opaque session identifier passed to subsequent tools.</summary>
+    /// <summary>
+    /// Opaque session identifier passed to subsequent tools.
+    /// </summary>
     public string SessionId { get; }
 
-    /// <summary>UTC time at which the session was created.</summary>
+    /// <summary>
+    /// UTC time at which the session was created.
+    /// </summary>
     public DateTimeOffset CreatedAt { get; }
 
-    /// <summary>UTC time at which the session was last used.</summary>
+    /// <summary>
+    /// UTC time at which the session was last used.
+    /// </summary>
     public DateTimeOffset LastUsedAt { get; private set; }
 
-    /// <summary>Idle expiry duration after the last tool use.</summary>
+    /// <summary>
+    /// Idle expiry duration after the last tool use.
+    /// </summary>
     public TimeSpan IdleExpiry { get; }
 
-    /// <summary>Per-session OPC DA client state.</summary>
+    /// <summary>
+    /// Per-session OPC DA client state.
+    /// </summary>
     public DaClientState? DaClient { get; set; }
 
-    /// <summary>Per-session OPC AE client state.</summary>
+    /// <summary>
+    /// Per-session OPC AE client state.
+    /// </summary>
     public AeClientState? AeClient { get; set; }
 
-    /// <summary>Per-session OPC HDA client state.</summary>
+    /// <summary>
+    /// Per-session OPC HDA client state.
+    /// </summary>
     public HdaClientState? HdaClient { get; set; }
 
-    /// <summary>Per-session OPC Batch client state.</summary>
+    /// <summary>
+    /// Per-session OPC Batch client state.
+    /// </summary>
     public BatchClientState? BatchClient { get; set; }
 
-    /// <summary>Per-session OPC Commands client state.</summary>
+    /// <summary>
+    /// Per-session OPC Commands client state.
+    /// </summary>
     public CommandsClientState? CommandsClient { get; set; }
 
-    /// <summary>Per-session OPC Complex Data client state.</summary>
+    /// <summary>
+    /// Per-session OPC Complex Data client state.
+    /// </summary>
     public CpxClientState? CpxClient { get; set; }
 
-    /// <summary>Per-session OPC DX client state.</summary>
+    /// <summary>
+    /// Per-session OPC DX client state.
+    /// </summary>
     public DxClientState? DxClient { get; set; }
 
-    /// <summary>Per-session OPC Security client state.</summary>
+    /// <summary>
+    /// Per-session OPC Security client state.
+    /// </summary>
     public SecurityClientState? SecurityClient { get; set; }
 
-    /// <summary>Per-session OPC XML-DA client state.</summary>
+    /// <summary>
+    /// Per-session OPC XML-DA client state.
+    /// </summary>
     public XmlDaClientState? XmlDaClient { get; set; }
 
-    /// <summary>Returns true when the session has exceeded its idle expiry.</summary>
+    /// <summary>
+    /// Returns true when the session has exceeded its idle expiry.
+    /// </summary>
     public bool IsExpired(DateTimeOffset now) => now - LastUsedAt >= IdleExpiry;
 
-    /// <summary>Updates the last-used timestamp.</summary>
+    /// <summary>
+    /// Updates the last-used timestamp.
+    /// </summary>
     public void Touch() => LastUsedAt = DateTimeOffset.UtcNow;
 
     /// <inheritdoc />
@@ -149,14 +183,18 @@ public sealed class OpcSession : IAsyncDisposable
     }
 }
 
-/// <summary>Holds OPC DA wire proxies and server-side group/subscription handles.</summary>
+/// <summary>
+/// Holds OPC DA wire proxies and server-side group/subscription handles.
+/// </summary>
 public sealed class DaClientState : IAsyncDisposable
 {
     private readonly ICallChannel _channel;
     private readonly bool _ownsChannel;
     private bool _disposed;
 
-    /// <summary>Creates DA client state over an existing call channel.</summary>
+    /// <summary>
+    /// Creates DA client state over an existing call channel.
+    /// </summary>
     public DaClientState(string host, string? progId, Guid? clsid, ICallChannel channel, bool ownsChannel)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(host);
@@ -179,52 +217,84 @@ public sealed class DaClientState : IAsyncDisposable
         ConnectionPoint = new IConnectionPointClientProxy(channel);
     }
 
-    /// <summary>Underlying DCOM call channel used by optional companion interfaces.</summary>
+    /// <summary>
+    /// Underlying DCOM call channel used by optional companion interfaces.
+    /// </summary>
     internal ICallChannel CallChannel => _channel;
 
-    /// <summary>Target host.</summary>
+    /// <summary>
+    /// Target host.
+    /// </summary>
     public string Host { get; }
 
-    /// <summary>Connected DA server ProgID, if known.</summary>
+    /// <summary>
+    /// Connected DA server ProgID, if known.
+    /// </summary>
     public string? ProgId { get; }
 
-    /// <summary>Connected DA server CLSID, if known.</summary>
+    /// <summary>
+    /// Connected DA server CLSID, if known.
+    /// </summary>
     public Guid? Clsid { get; }
 
-    /// <summary>Top-level DA server proxy.</summary>
+    /// <summary>
+    /// Top-level DA server proxy.
+    /// </summary>
     public IOPCServerClientProxy Server { get; }
 
-    /// <summary>DA 3.0 browse proxy.</summary>
+    /// <summary>
+    /// DA 3.0 browse proxy.
+    /// </summary>
     public IOPCBrowseClientProxy Browse { get; }
 
-    /// <summary>DA 2.x item properties proxy.</summary>
+    /// <summary>
+    /// DA 2.x item properties proxy.
+    /// </summary>
     public IOPCItemPropertiesClientProxy ItemProperties { get; }
 
-    /// <summary>DA 3.0 stateless item I/O proxy.</summary>
+    /// <summary>
+    /// DA 3.0 stateless item I/O proxy.
+    /// </summary>
     public IOPCItemIOClientProxy ItemIo { get; }
 
-    /// <summary>Group item-management proxy.</summary>
+    /// <summary>
+    /// Group item-management proxy.
+    /// </summary>
     public IOPCItemMgtClientProxy ItemMgt { get; }
 
-    /// <summary>Synchronous DA I/O proxy.</summary>
+    /// <summary>
+    /// Synchronous DA I/O proxy.
+    /// </summary>
     public IOPCSyncIOClientProxy SyncIo { get; }
 
-    /// <summary>Asynchronous DA I/O proxy.</summary>
+    /// <summary>
+    /// Asynchronous DA I/O proxy.
+    /// </summary>
     public IOPCAsyncIO2ClientProxy AsyncIo2 { get; }
 
-    /// <summary>Group state proxy.</summary>
+    /// <summary>
+    /// Group state proxy.
+    /// </summary>
     public IOPCGroupStateMgtClientProxy GroupState { get; }
 
-    /// <summary>DA 3.0 group state proxy.</summary>
+    /// <summary>
+    /// DA 3.0 group state proxy.
+    /// </summary>
     public IOPCGroupStateMgt2ClientProxy GroupState2 { get; }
 
-    /// <summary>Connection point proxy for callback setup.</summary>
+    /// <summary>
+    /// Connection point proxy for callback setup.
+    /// </summary>
     public IConnectionPointClientProxy ConnectionPoint { get; }
 
-    /// <summary>Known groups by server handle.</summary>
+    /// <summary>
+    /// Known groups by server handle.
+    /// </summary>
     public ConcurrentDictionary<int, DaGroupContext> Groups { get; } = new();
 
-    /// <summary>Known poll-based subscriptions by identifier.</summary>
+    /// <summary>
+    /// Known poll-based subscriptions by identifier.
+    /// </summary>
     public ConcurrentDictionary<string, DaSubscriptionContext> Subscriptions { get; } = new(StringComparer.Ordinal);
 
     /// <summary>
@@ -353,10 +423,14 @@ public sealed class DaClientState : IAsyncDisposable
     }
 }
 
-/// <summary>Tracks a DA group created in a session.</summary>
+/// <summary>
+/// Tracks a DA group created in a session.
+/// </summary>
 public sealed class DaGroupContext
 {
-    /// <summary>Creates a group context.</summary>
+    /// <summary>
+    /// Creates a group context.
+    /// </summary>
     public DaGroupContext(
         int serverGroupHandle,
         string? name,
@@ -385,47 +459,75 @@ public sealed class DaGroupContext
             : new Dictionary<Guid, Guid>(interfaceIpids);
     }
 
-    /// <summary>Server-assigned group handle.</summary>
+    /// <summary>
+    /// Server-assigned group handle.
+    /// </summary>
     public int ServerGroupHandle { get; }
 
-    /// <summary>Group name.</summary>
+    /// <summary>
+    /// Group name.
+    /// </summary>
     public string? Name { get; }
 
-    /// <summary>Client group handle.</summary>
+    /// <summary>
+    /// Client group handle.
+    /// </summary>
     public int ClientHandle { get; }
 
-    /// <summary>Whether the group is active.</summary>
+    /// <summary>
+    /// Whether the group is active.
+    /// </summary>
     public bool Active { get; }
 
-    /// <summary>Requested update rate.</summary>
+    /// <summary>
+    /// Requested update rate.
+    /// </summary>
     public int UpdateRateMs { get; }
 
-    /// <summary>Server-revised update rate.</summary>
+    /// <summary>
+    /// Server-revised update rate.
+    /// </summary>
     public int RevisedUpdateRateMs { get; }
 
-    /// <summary>Time bias in minutes.</summary>
+    /// <summary>
+    /// Time bias in minutes.
+    /// </summary>
     public int TimeBiasMinutes { get; }
 
-    /// <summary>Deadband percentage.</summary>
+    /// <summary>
+    /// Deadband percentage.
+    /// </summary>
     public float DeadbandPercent { get; }
 
-    /// <summary>Locale identifier.</summary>
+    /// <summary>
+    /// Locale identifier.
+    /// </summary>
     public int LocaleId { get; }
 
-    /// <summary>Keep-alive interval.</summary>
+    /// <summary>
+    /// Keep-alive interval.
+    /// </summary>
     public int KeepAliveMs { get; }
 
-    /// <summary>Per-interface IPIDs returned for this group object.</summary>
+    /// <summary>
+    /// Per-interface IPIDs returned for this group object.
+    /// </summary>
     internal IReadOnlyDictionary<Guid, Guid> InterfaceIpids { get; }
 
-    /// <summary>Known items in the group by server handle.</summary>
+    /// <summary>
+    /// Known items in the group by server handle.
+    /// </summary>
     public ConcurrentDictionary<int, DaItemBindingContext> Items { get; } = new();
 }
 
-/// <summary>Tracks a DA item binding returned by AddItems.</summary>
+/// <summary>
+/// Tracks a DA item binding returned by AddItems.
+/// </summary>
 public sealed record DaItemBindingContext(string ItemName, string? ItemPath, int ClientHandle, int ServerHandle);
 
-/// <summary>Tracks a poll-based DA subscription.</summary>
+/// <summary>
+/// Tracks a poll-based DA subscription.
+/// </summary>
 /// <remarks>
 /// The <see cref="Sink"/> is constructed eagerly even though the production
 /// callback bind path is not yet wired. This makes the
@@ -435,7 +537,9 @@ public sealed record DaItemBindingContext(string ItemName, string? ItemPath, int
 /// </remarks>
 public sealed class DaSubscriptionContext
 {
-    /// <summary>Creates a new subscription context with a fresh callback sink.</summary>
+    /// <summary>
+    /// Creates a new subscription context with a fresh callback sink.
+    /// </summary>
     public DaSubscriptionContext(
         string subscriptionId,
         int groupHandle,
@@ -452,22 +556,34 @@ public sealed class DaSubscriptionContext
         Sink = new Tools.DaDataCallbackSink();
     }
 
-    /// <summary>Opaque subscription identifier returned to the caller.</summary>
+    /// <summary>
+    /// Opaque subscription identifier returned to the caller.
+    /// </summary>
     public string SubscriptionId { get; }
 
-    /// <summary>Server-assigned group handle this subscription targets.</summary>
+    /// <summary>
+    /// Server-assigned group handle this subscription targets.
+    /// </summary>
     public int GroupHandle { get; }
 
-    /// <summary>True when the subscription polls from the server cache; false for device reads.</summary>
+    /// <summary>
+    /// True when the subscription polls from the server cache; false for device reads.
+    /// </summary>
     public bool FromCache { get; }
 
-    /// <summary>Transaction identifier used for refresh callbacks.</summary>
+    /// <summary>
+    /// Transaction identifier used for refresh callbacks.
+    /// </summary>
     public int TransactionId { get; }
 
-    /// <summary>Cancel identifier returned by <c>IOPCAsyncIO2::Refresh2</c>, if any.</summary>
+    /// <summary>
+    /// Cancel identifier returned by <c>IOPCAsyncIO2::Refresh2</c>, if any.
+    /// </summary>
     public int? CancelId { get; }
 
-    /// <summary>Sink that receives <c>IOPCDataCallback</c> push notifications for this subscription.</summary>
+    /// <summary>
+    /// Sink that receives <c>IOPCDataCallback</c> push notifications for this subscription.
+    /// </summary>
     public Tools.DaDataCallbackSink Sink { get; }
 
     /// <summary>
@@ -490,44 +606,70 @@ public sealed class DaSubscriptionContext
     public int? AdviseCookie { get; set; }
 }
 
-/// <summary>Operations required by MCP DX tools.</summary>
+/// <summary>
+/// Operations required by MCP DX tools.
+/// </summary>
 public interface IOpcDxClient : IAsyncDisposable
 {
-    /// <summary>Gets DX server status.</summary>
+    /// <summary>
+    /// Gets DX server status.
+    /// </summary>
     Task<OpcServerStatus> GetStatusAsync(CancellationToken cancellationToken = default);
 
-    /// <summary>Lists DX connection names.</summary>
+    /// <summary>
+    /// Lists DX connection names.
+    /// </summary>
     Task<IReadOnlyList<string>> QueryConnectionNamesAsync(string browsePath, IReadOnlyList<string> connectionMasks, bool recursive, CancellationToken cancellationToken = default);
 
-    /// <summary>Lists configured source servers.</summary>
+    /// <summary>
+    /// Lists configured source servers.
+    /// </summary>
     Task<IReadOnlyList<DxSourceServer>> QuerySourceServersAsync(CancellationToken cancellationToken = default);
 
-    /// <summary>Adds a DX connection.</summary>
+    /// <summary>
+    /// Adds a DX connection.
+    /// </summary>
     Task<OpcResultId> AddConnectionAsync(DxConnection connection, CancellationToken cancellationToken = default);
 
-    /// <summary>Modifies a DX connection.</summary>
+    /// <summary>
+    /// Modifies a DX connection.
+    /// </summary>
     Task<OpcResultId> ModifyConnectionAsync(DxConnection connection, CancellationToken cancellationToken = default);
 
-    /// <summary>Updates DX connections matching a mask.</summary>
+    /// <summary>
+    /// Updates DX connections matching a mask.
+    /// </summary>
     Task<OpcResultId> UpdateConnectionAsync(string browsePath, string connectionName, bool recursive, DxConnection connectionDefinition, CancellationToken cancellationToken = default);
 
-    /// <summary>Deletes a DX connection.</summary>
+    /// <summary>
+    /// Deletes a DX connection.
+    /// </summary>
     Task<OpcResultId> DeleteConnectionAsync(string browsePath, string connectionName, bool recursive, CancellationToken cancellationToken = default);
 
-    /// <summary>Adds a source server.</summary>
+    /// <summary>
+    /// Adds a source server.
+    /// </summary>
     Task<OpcResultId> AddSourceServerAsync(DxSourceServer sourceServer, CancellationToken cancellationToken = default);
 
-    /// <summary>Modifies a source server.</summary>
+    /// <summary>
+    /// Modifies a source server.
+    /// </summary>
     Task<OpcResultId> ModifySourceServerAsync(DxSourceServer sourceServer, CancellationToken cancellationToken = default);
 
-    /// <summary>Resets the DX configuration and returns the new version.</summary>
+    /// <summary>
+    /// Resets the DX configuration and returns the new version.
+    /// </summary>
     Task<string> ResetConfigurationAsync(string configurationVersion, CancellationToken cancellationToken = default);
 }
 
-/// <summary>Holds OPC DX client state for an MCP session.</summary>
+/// <summary>
+/// Holds OPC DX client state for an MCP session.
+/// </summary>
 public sealed class DxClientState : IAsyncDisposable
 {
-    /// <summary>Creates DX client state.</summary>
+    /// <summary>
+    /// Creates DX client state.
+    /// </summary>
     public DxClientState(string host, string? progId, Guid? clsid, IOpcDxClient client)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(host);
@@ -539,69 +681,101 @@ public sealed class DxClientState : IAsyncDisposable
         Client = client;
     }
 
-    /// <summary>Target host or connection scheme.</summary>
+    /// <summary>
+    /// Target host or connection scheme.
+    /// </summary>
     public string Host { get; }
 
-    /// <summary>Connected DX server ProgID, if known.</summary>
+    /// <summary>
+    /// Connected DX server ProgID, if known.
+    /// </summary>
     public string? ProgId { get; }
 
-    /// <summary>Connected DX server CLSID, if known.</summary>
+    /// <summary>
+    /// Connected DX server CLSID, if known.
+    /// </summary>
     public Guid? Clsid { get; }
 
-    /// <summary>DX client implementation.</summary>
+    /// <summary>
+    /// DX client implementation.
+    /// </summary>
     public IOpcDxClient Client { get; }
 
     /// <inheritdoc />
     public async ValueTask DisposeAsync() => await Client.DisposeAsync().ConfigureAwait(false);
 }
 
-/// <summary>Operations required by MCP OPC Security tools.</summary>
+/// <summary>
+/// Operations required by MCP OPC Security tools.
+/// </summary>
 public interface IOpcSecurityClient : IAsyncDisposable
 {
-    /// <summary>True when authenticated.</summary>
+    /// <summary>
+    /// True when authenticated.
+    /// </summary>
     bool IsAuthenticated { get; }
 
-    /// <summary>Current identity, or empty when anonymous/default.</summary>
+    /// <summary>
+    /// Current identity, or empty when anonymous/default.
+    /// </summary>
     string CurrentIdentity { get; }
 
-    /// <summary>Checks whether Windows-integrated OPC Security is available.</summary>
+    /// <summary>
+    /// Checks whether Windows-integrated OPC Security is available.
+    /// </summary>
     Task<bool> IsAvailableNtAsync(CancellationToken cancellationToken = default);
 
-    /// <summary>Checks whether private username/password OPC Security is available.</summary>
+    /// <summary>
+    /// Checks whether private username/password OPC Security is available.
+    /// </summary>
     Task<bool> IsAvailablePrivateAsync(CancellationToken cancellationToken = default);
 
-    /// <summary>Logs on with server-private credentials.</summary>
+    /// <summary>
+    /// Logs on with server-private credentials.
+    /// </summary>
     Task<bool> LogonPrivateAsync(string username, string password, CancellationToken cancellationToken = default);
 
-    /// <summary>Logs off and returns to the connection default identity.</summary>
+    /// <summary>
+    /// Logs off and returns to the connection default identity.
+    /// </summary>
     Task LogoffAsync(CancellationToken cancellationToken = default);
 }
 
-/// <summary>Holds OPC Security client state for an MCP session.</summary>
+/// <summary>
+/// Holds OPC Security client state for an MCP session.
+/// </summary>
 public sealed class SecurityClientState : IAsyncDisposable
 {
-    /// <summary>Creates OPC Security client state.</summary>
+    /// <summary>
+    /// Creates OPC Security client state.
+    /// </summary>
     public SecurityClientState(IOpcSecurityClient client)
     {
         ArgumentNullException.ThrowIfNull(client);
         Client = client;
     }
 
-    /// <summary>Security client implementation.</summary>
+    /// <summary>
+    /// Security client implementation.
+    /// </summary>
     public IOpcSecurityClient Client { get; }
 
     /// <inheritdoc />
     public async ValueTask DisposeAsync() => await Client.DisposeAsync().ConfigureAwait(false);
 }
 
-/// <summary>Holds OPC XML-DA client state for an MCP session.</summary>
+/// <summary>
+/// Holds OPC XML-DA client state for an MCP session.
+/// </summary>
 public sealed class XmlDaClientState : IAsyncDisposable
 {
     private readonly IDisposable? _ownedDisposable;
     private readonly IAsyncDisposable? _ownedAsyncDisposable;
     private bool _disposed;
 
-    /// <summary>Creates XML-DA client state.</summary>
+    /// <summary>
+    /// Creates XML-DA client state.
+    /// </summary>
     public XmlDaClientState(string endpointUrl, IXmlDaClient client, IDisposable? ownedDisposable = null, IAsyncDisposable? ownedAsyncDisposable = null)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(endpointUrl);
@@ -613,10 +787,14 @@ public sealed class XmlDaClientState : IAsyncDisposable
         _ownedAsyncDisposable = ownedAsyncDisposable;
     }
 
-    /// <summary>HTTP/SOAP endpoint URL.</summary>
+    /// <summary>
+    /// HTTP/SOAP endpoint URL.
+    /// </summary>
     public string EndpointUrl { get; }
 
-    /// <summary>XML-DA client implementation.</summary>
+    /// <summary>
+    /// XML-DA client implementation.
+    /// </summary>
     public IXmlDaClient Client { get; }
 
     /// <inheritdoc />

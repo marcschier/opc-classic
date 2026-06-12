@@ -11,12 +11,18 @@ namespace Opc.Classic.Hda;
 /// </summary>
 public sealed class HdaAnnotationResult
 {
-    /// <summary>The item these annotations belong to.</summary>
+    /// <summary>
+    /// The item these annotations belong to.
+    /// </summary>
     public string ItemId { get; init; } = string.Empty;
 
-    /// <summary>Per-item HRESULT.</summary>
+    /// <summary>
+    /// Per-item HRESULT.
+    /// </summary>
     public OpcResultId ResultId { get; init; } = OpcResultId.Ok;
 
-    /// <summary>The annotations in chronological order.</summary>
+    /// <summary>
+    /// The annotations in chronological order.
+    /// </summary>
     public IReadOnlyList<HdaAnnotation> Annotations { get; init; } = Array.Empty<HdaAnnotation>();
 }

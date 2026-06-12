@@ -10,10 +10,14 @@ namespace Opc.Classic.Ae.Hosting;
 
 #pragma warning disable MA0048
 
-/// <summary>Service registration helpers for managed OPC AE server hosting.</summary>
+/// <summary>
+/// Service registration helpers for managed OPC AE server hosting.
+/// </summary>
 public static class OpcAeHostingServiceCollectionExtensions
 {
-    /// <summary>Registers a managed OPC AE server implementation and host.</summary>
+    /// <summary>
+    /// Registers a managed OPC AE server implementation and host.
+    /// </summary>
     public static IServiceCollection AddOpcAeServer<
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] T>(
         this IServiceCollection services,

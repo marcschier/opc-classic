@@ -27,7 +27,9 @@ public static class NdrOpcHdaTimeCodec
     private const int Win32BoolTrue = unchecked((int)0xFFFFFFFFu);
     private const long FileTimeEpochOffsetTicks = 504911232000000000L;
 
-    /// <summary>Encodes a single OPCHDA_TIME in NDR.</summary>
+    /// <summary>
+    /// Encodes a single OPCHDA_TIME in NDR.
+    /// </summary>
     /// <remarks>
     /// NDR layout per OPC HDA 1.20 §3.4 (OPCHDA_TIME struct):
     ///   primary part:  BOOL bString (4) + LPWSTR szTime referent (4) + FILETIME ftTime (8)
@@ -64,7 +66,9 @@ public static class NdrOpcHdaTimeCodec
         }
     }
 
-    /// <summary>Decodes a single OPCHDA_TIME from NDR.</summary>
+    /// <summary>
+    /// Decodes a single OPCHDA_TIME from NDR.
+    /// </summary>
     public static OpcHdaTime Read(ref NdrReader reader)
     {
         int bString = reader.ReadInt32();

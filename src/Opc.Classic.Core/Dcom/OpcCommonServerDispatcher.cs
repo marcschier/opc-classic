@@ -8,12 +8,16 @@ using Opc.Classic.Ndr;
 
 namespace Opc.Classic.Dcom;
 
-/// <summary>Server-side dispatcher for OPC Common <c>IOPCCommon</c> debug/metadata methods.</summary>
+/// <summary>
+/// Server-side dispatcher for OPC Common <c>IOPCCommon</c> debug/metadata methods.
+/// </summary>
 public sealed class OpcCommonServerDispatcher : IOpcServerDispatcher
 {
     private readonly IOpcCommonServer _server;
 
-    /// <summary>Initializes a new instance of the <see cref="OpcCommonServerDispatcher" /> class.</summary>
+    /// <summary>
+    /// Initializes a new instance of the <see cref="OpcCommonServerDispatcher" /> class.
+    /// </summary>
     public OpcCommonServerDispatcher(IOpcCommonServer server) =>
         _server = server ?? throw new ArgumentNullException(nameof(server));
 

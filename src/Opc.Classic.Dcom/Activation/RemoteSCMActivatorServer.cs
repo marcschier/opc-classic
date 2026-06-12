@@ -28,7 +28,9 @@ public sealed class RemoteSCMActivatorServer : IRemoteSCMActivatorServer
     private readonly Lock _sessionLock = new();
     private Session? _serverSession;
 
-    /// <summary>Initializes an activator backed by managed class factories.</summary>
+    /// <summary>
+    /// Initializes an activator backed by managed class factories.
+    /// </summary>
     public RemoteSCMActivatorServer(ClassFactoryRegistry classFactories)
     {
         _classFactories = classFactories ?? throw new ArgumentNullException(nameof(classFactories));
@@ -44,7 +46,9 @@ public sealed class RemoteSCMActivatorServer : IRemoteSCMActivatorServer
         _classFactories = new ClassFactoryRegistry();
     }
 
-    /// <summary>Initializes an activator with metadata and class factories.</summary>
+    /// <summary>
+    /// Initializes an activator with metadata and class factories.
+    /// </summary>
     public RemoteSCMActivatorServer(IClsidRegistry registry, ClassFactoryRegistry classFactories)
     {
         _metadataRegistry = registry ?? throw new ArgumentNullException(nameof(registry));

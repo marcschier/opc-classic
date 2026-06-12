@@ -14,7 +14,9 @@ namespace Opc.Classic.Xml.Serialization;
 /// </summary>
 public static class WriteSerializer
 {
-    /// <summary>Writes a complete SOAP envelope carrying a <c>Write</c> request.</summary>
+    /// <summary>
+    /// Writes a complete SOAP envelope carrying a <c>Write</c> request.
+    /// </summary>
     public static void WriteRequest(SoapEnvelopeWriter writer, XmlDaWriteRequest request)
     {
         ArgumentNullException.ThrowIfNull(writer);

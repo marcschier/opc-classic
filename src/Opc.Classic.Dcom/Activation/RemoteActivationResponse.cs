@@ -23,6 +23,8 @@ public sealed record RemoteActivationResponse(
     (ushort Major, ushort Minor) ServerVersion,
     IReadOnlyList<RemoteActivationInterfaceResult> InterfaceResults)
 {
-    /// <summary>Encoded DUALSTRINGARRAY of OXID resolver bindings.</summary>
+    /// <summary>
+    /// Encoded DUALSTRINGARRAY of OXID resolver bindings.
+    /// </summary>
     public ReadOnlyMemory<byte> OxidBindings { get; init; }
 }

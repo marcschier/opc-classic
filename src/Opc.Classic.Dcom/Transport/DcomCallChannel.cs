@@ -35,7 +35,9 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable
     private bool _bound;
     private bool _disposed;
 
-    /// <summary>Initializes a new instance of the <see cref="DcomCallChannel" /> class.</summary>
+    /// <summary>
+    /// Initializes a new instance of the <see cref="DcomCallChannel" /> class.
+    /// </summary>
     /// <param name="transport">The connected async transport.</param>
     /// <param name="authContext">The authentication context for bind and packet protection.</param>
     public DcomCallChannel(IAsyncTransport transport, IAuthContext authContext)
@@ -43,7 +45,9 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable
     {
     }
 
-    /// <summary>Initializes a new instance with presentation contexts to include in the first bind.</summary>
+    /// <summary>
+    /// Initializes a new instance with presentation contexts to include in the first bind.
+    /// </summary>
     /// <param name="transport">The connected async transport.</param>
     /// <param name="authContext">The authentication context for bind and packet protection.</param>
     /// <param name="preBindIids">Interface IIDs to pre-declare in the initial DCE bind.</param>
@@ -55,7 +59,9 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable
     {
     }
 
-    /// <summary>Initializes a channel that routes calls to a specific DCOM object IPID.</summary>
+    /// <summary>
+    /// Initializes a channel that routes calls to a specific DCOM object IPID.
+    /// </summary>
     /// <param name="transport">The connected async transport.</param>
     /// <param name="authContext">The authentication context for bind and packet protection.</param>
     /// <param name="objectIpid">The object IPID to place in request PDUs.</param>
@@ -68,7 +74,9 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable
         }
     }
 
-    /// <summary>Initializes an object-routed channel with presentation contexts to include in the first bind.</summary>
+    /// <summary>
+    /// Initializes an object-routed channel with presentation contexts to include in the first bind.
+    /// </summary>
     /// <param name="transport">The connected async transport.</param>
     /// <param name="authContext">The authentication context for bind and packet protection.</param>
     /// <param name="objectIpid">The object IPID to place in request PDUs.</param>

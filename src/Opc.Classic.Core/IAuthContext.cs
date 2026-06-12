@@ -10,7 +10,9 @@ namespace Opc.Classic;
 /// </summary>
 public interface IAuthContext
 {
-    /// <summary>Builds the NTLM/Kerberos type1/AP-REQ token for the bind PDU.</summary>
+    /// <summary>
+    /// Builds the NTLM/Kerberos type1/AP-REQ token for the bind PDU.
+    /// </summary>
     /// <returns>The initial authentication token, or an empty array when unauthenticated.</returns>
     byte[] BuildInitialToken();
 
@@ -21,18 +23,24 @@ public interface IAuthContext
     /// <returns>The next token to send, or an empty array when the handshake is complete.</returns>
     byte[] ProcessChallengeToken(ReadOnlyMemory<byte> serverToken);
 
-    /// <summary>Signs and optionally seals a PDU body according to the negotiated protection level.</summary>
+    /// <summary>
+    /// Signs and optionally seals a PDU body according to the negotiated protection level.
+    /// </summary>
     /// <param name="pduBody">The mutable PDU body, excluding the common DCE/RPC header.</param>
     /// <param name="signature">The generated signature/verifier bytes.</param>
     void SignAndSeal(Span<byte> pduBody, out byte[] signature);
 
-    /// <summary>Verifies and optionally unseals a PDU body according to the negotiated protection level.</summary>
+    /// <summary>
+    /// Verifies and optionally unseals a PDU body according to the negotiated protection level.
+    /// </summary>
     /// <param name="pduBody">The mutable PDU body, excluding the common DCE/RPC header.</param>
     /// <param name="signature">The signature/verifier bytes supplied by the peer.</param>
     /// <returns><see langword="true" /> when verification succeeds.</returns>
     bool VerifyAndUnseal(Span<byte> pduBody, ReadOnlyMemory<byte> signature);
 
-    /// <summary>Gets the negotiated DCE/RPC packet-protection level.</summary>
+    /// <summary>
+    /// Gets the negotiated DCE/RPC packet-protection level.
+    /// </summary>
     OpcProtectionLevel ProtectionLevel { get; }
 
     /// <summary>

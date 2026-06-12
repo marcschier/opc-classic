@@ -11,10 +11,14 @@ namespace Opc.Classic.Ae;
 /// </summary>
 public interface IAeSubscription : IAsyncDisposable
 {
-    /// <summary>True if the subscription is currently delivering events.</summary>
+    /// <summary>
+    /// True if the subscription is currently delivering events.
+    /// </summary>
     bool Active { get; }
 
-    /// <summary>Current filter applied server-side.</summary>
+    /// <summary>
+    /// Current filter applied server-side.
+    /// </summary>
     SubscriptionFilter Filter { get; }
 
     /// <summary>
@@ -24,10 +28,14 @@ public interface IAeSubscription : IAsyncDisposable
     /// </summary>
     IAsyncEnumerable<EventNotification> Events { get; }
 
-    /// <summary>Activate or deactivate event delivery.</summary>
+    /// <summary>
+    /// Activate or deactivate event delivery.
+    /// </summary>
     Task SetActiveAsync(bool active, CancellationToken cancellationToken = default);
 
-    /// <summary>Apply a new server-side filter.</summary>
+    /// <summary>
+    /// Apply a new server-side filter.
+    /// </summary>
     Task SetFilterAsync(SubscriptionFilter filter, CancellationToken cancellationToken = default);
 
     /// <summary>

@@ -8,7 +8,9 @@ using System.Text;
 
 namespace Opc.Classic.Dcom.Smb;
 
-/// <summary>SMB2 TREE_CONNECT request body, per [MS-SMB2] §2.2.9.</summary>
+/// <summary>
+/// SMB2 TREE_CONNECT request body, per [MS-SMB2] §2.2.9.
+/// </summary>
 public readonly record struct Smb2TreeConnectRequest(string Path)
 {
     public int WriteTo(Span<byte> destination)
@@ -41,14 +43,18 @@ public readonly record struct Smb2TreeConnectRequest(string Path)
     }
 }
 
-/// <summary>SMB2 TREE_CONNECT response body, per [MS-SMB2] §2.2.10.</summary>
+/// <summary>
+/// SMB2 TREE_CONNECT response body, per [MS-SMB2] §2.2.10.
+/// </summary>
 public readonly record struct Smb2TreeConnectResponse(
     byte ShareType,
     uint ShareFlags,
     uint Capabilities,
     uint MaximalAccess)
 {
-    /// <summary>Parses an SMB2 TREE_CONNECT response body (excluding the 64-byte packet header).</summary>
+    /// <summary>
+    /// Parses an SMB2 TREE_CONNECT response body (excluding the 64-byte packet header).
+    /// </summary>
     public static Smb2TreeConnectResponse Read(ReadOnlySpan<byte> source)
     {
         Smb2MessageBounds.EnsureBodyWithinDefaultQuota(source, "SMB2 TREE_CONNECT response");
@@ -70,7 +76,9 @@ public readonly record struct Smb2TreeConnectResponse(
     }
 }
 
-/// <summary>SMB2 TREE_DISCONNECT request (empty body except 4-byte structure-size, per [MS-SMB2] §2.2.11).</summary>
+/// <summary>
+/// SMB2 TREE_DISCONNECT request (empty body except 4-byte structure-size, per [MS-SMB2] §2.2.11).
+/// </summary>
 internal static class Smb2TreeDisconnect
 {
     public static int Write(Span<byte> destination)
@@ -85,7 +93,9 @@ internal static class Smb2TreeDisconnect
     }
 }
 
-/// <summary>SMB2 LOGOFF request (empty body except 4-byte structure-size, per [MS-SMB2] §2.2.7).</summary>
+/// <summary>
+/// SMB2 LOGOFF request (empty body except 4-byte structure-size, per [MS-SMB2] §2.2.7).
+/// </summary>
 internal static class Smb2Logoff
 {
     public static int Write(Span<byte> destination)

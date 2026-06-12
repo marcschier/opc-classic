@@ -12,7 +12,9 @@ public sealed class OpcInterfaceRef : IOpcInterfaceRef
 {
     private readonly ushort[] _resolverBindings;
 
-    /// <summary>Creates a new managed interface-reference handle.</summary>
+    /// <summary>
+    /// Creates a new managed interface-reference handle.
+    /// </summary>
     public OpcInterfaceRef(
         Guid iid,
         uint flags,

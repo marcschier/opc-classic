@@ -7,13 +7,17 @@
 
 namespace Opc.Classic.Xml;
 
-/// <summary>A single item-read request entry inside a <see cref="XmlDaReadRequest"/>.</summary>
+/// <summary>
+/// A single item-read request entry inside a <see cref="XmlDaReadRequest"/>.
+/// </summary>
 /// <param name="ItemName">The OPC-Foundation-defined item identifier (e.g. <c>Channel1.Device1.Tag1</c>).</param>
 /// <param name="ClientItemHandle">Free-form client correlation ID — echoed in the response.</param>
 /// <param name="MaxAge">Maximum age (in ms) of a cached value the server may return. 0 = force read from device.</param>
 public sealed record XmlDaReadItem(string ItemName, string? ClientItemHandle, int MaxAge = 0);
 
-/// <summary>An XML-DA <c>Read</c> request payload.</summary>
+/// <summary>
+/// An XML-DA <c>Read</c> request payload.
+/// </summary>
 /// <param name="Header">Common LocaleID / ClientRequestHandle header.</param>
 /// <param name="Items">The items to read.</param>
 /// <param name="ReturnErrorText">If true, server fills the ErrorText field on per-item errors.</param>
@@ -22,7 +26,9 @@ public sealed record XmlDaReadRequest(
     IReadOnlyList<XmlDaReadItem> Items,
     bool ReturnErrorText = true);
 
-/// <summary>A single item-read result in an XML-DA <c>ReadResponse</c>.</summary>
+/// <summary>
+/// A single item-read result in an XML-DA <c>ReadResponse</c>.
+/// </summary>
 /// <param name="ItemName">The server-echoed item name (matches the request).</param>
 /// <param name="ClientItemHandle">The server-echoed client handle.</param>
 /// <param name="Value">The current value, or <see langword="null"/> if the read failed.</param>
@@ -37,11 +43,15 @@ public sealed record XmlDaItemValueResult(
     DateTimeOffset? Timestamp,
     string? ResultId)
 {
-    /// <summary>Type-safe interpretation of <see cref="ResultId"/>.</summary>
+    /// <summary>
+    /// Type-safe interpretation of <see cref="ResultId"/>.
+    /// </summary>
     public XmlDaErrorCode ResultCode => XmlDaErrorCodes.ParseResultId(ResultId);
 }
 
-/// <summary>An XML-DA <c>ReadResponse</c> payload.</summary>
+/// <summary>
+/// An XML-DA <c>ReadResponse</c> payload.
+/// </summary>
 /// <param name="ServerState">Top-level <c>ReadResult.ServerState</c>.</param>
 /// <param name="Items">Per-item read results.</param>
 public sealed record XmlDaReadResponse(

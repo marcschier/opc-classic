@@ -29,6 +29,8 @@ public static class OpcDiscoverySpecCatalog
         OpcGuids.IID_IRemUnknown2,
     };
 
-    /// <summary>OPC Discovery (OPCEnum) IIDs to pre-declare in the initial DCE bind.</summary>
+    /// <summary>
+    /// OPC Discovery (OPCEnum) IIDs to pre-declare in the initial DCE bind.
+    /// </summary>
     public static IReadOnlyList<Guid> Discovery => s_discovery;
 }

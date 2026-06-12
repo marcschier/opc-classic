@@ -11,10 +11,14 @@ namespace Opc.Classic.Cpx;
 /// </summary>
 public sealed class StructField
 {
-    /// <summary>Field name (for diagnostics; not part of the wire encoding).</summary>
+    /// <summary>
+    /// Field name (for diagnostics; not part of the wire encoding).
+    /// </summary>
     public required string Name { get; init; }
 
-    /// <summary>Type of this field.</summary>
+    /// <summary>
+    /// Type of this field.
+    /// </summary>
     public TypeKind Kind { get; init; }
 
     /// <summary>

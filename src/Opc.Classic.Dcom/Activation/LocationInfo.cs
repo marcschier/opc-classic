@@ -5,5 +5,7 @@
 
 namespace Opc.Classic.Dcom.Core;
 
-/// <summary>Location and requested RPC protocol-sequence details.</summary>
+/// <summary>
+/// Location and requested RPC protocol-sequence details.
+/// </summary>
 public sealed record LocationInfo(string? MachineName, int ProcessId, IReadOnlyList<int> ProtocolSequences);

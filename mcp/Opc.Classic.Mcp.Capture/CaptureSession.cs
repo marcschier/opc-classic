@@ -24,7 +24,9 @@ public sealed class CaptureSession : IAsyncDisposable
     private readonly ILogger _logger;
     private int _disposed;
 
-    /// <summary>Creates a session wrapping <paramref name="source"/> under the supplied identity.</summary>
+    /// <summary>
+    /// Creates a session wrapping <paramref name="source"/> under the supplied identity.
+    /// </summary>
     public CaptureSession(
         string id,
         string sourceName,
@@ -47,37 +49,59 @@ public sealed class CaptureSession : IAsyncDisposable
         _logger = logger ?? NullLogger.Instance;
     }
 
-    /// <summary>Opaque session identifier surfaced to the MCP caller.</summary>
+    /// <summary>
+    /// Opaque session identifier surfaced to the MCP caller.
+    /// </summary>
     public string Id { get; }
 
-    /// <summary>Name of the capture source ("pcap", "wirecapture", ...).</summary>
+    /// <summary>
+    /// Name of the capture source ("pcap", "wirecapture", ...).
+    /// </summary>
     public string SourceName { get; }
 
-    /// <summary>Underlying capture source.</summary>
+    /// <summary>
+    /// Underlying capture source.
+    /// </summary>
     public ICaptureSource Source { get; }
 
-    /// <summary>Per-session scratch directory (auto-cleaned on Dispose).</summary>
+    /// <summary>
+    /// Per-session scratch directory (auto-cleaned on Dispose).
+    /// </summary>
     public string SessionFolder { get; }
 
-    /// <summary>Caller-supplied start parameters; surfaced via the MCP session info DTO.</summary>
+    /// <summary>
+    /// Caller-supplied start parameters; surfaced via the MCP session info DTO.
+    /// </summary>
     public CaptureStartRequest Request { get; }
 
-    /// <summary>Current state in the lifecycle.</summary>
+    /// <summary>
+    /// Current state in the lifecycle.
+    /// </summary>
     public CaptureSessionState State { get; private set; } = CaptureSessionState.Starting;
 
-    /// <summary>UTC time <see cref="StartAsync"/> completed; null until then.</summary>
+    /// <summary>
+    /// UTC time <see cref="StartAsync"/> completed; null until then.
+    /// </summary>
     public DateTimeOffset? StartedAt { get; private set; }
 
-    /// <summary>UTC time <see cref="StopAsync"/> completed; null until then.</summary>
+    /// <summary>
+    /// UTC time <see cref="StopAsync"/> completed; null until then.
+    /// </summary>
     public DateTimeOffset? StoppedAt { get; private set; }
 
-    /// <summary>UTC time the session was last touched (for LRU eviction).</summary>
+    /// <summary>
+    /// UTC time the session was last touched (for LRU eviction).
+    /// </summary>
     public DateTimeOffset LastTouchedAt { get; private set; } = DateTimeOffset.UtcNow;
 
-    /// <summary>Error message when <see cref="State"/> is <see cref="CaptureSessionState.Failed"/>; null otherwise.</summary>
+    /// <summary>
+    /// Error message when <see cref="State"/> is <see cref="CaptureSessionState.Failed"/>; null otherwise.
+    /// </summary>
     public string? Error { get; private set; }
 
-    /// <summary>Starts the underlying source. Sets <see cref="State"/> to Running on success or Failed on throw.</summary>
+    /// <summary>
+    /// Starts the underlying source. Sets <see cref="State"/> to Running on success or Failed on throw.
+    /// </summary>
     public async Task StartAsync(CancellationToken cancellationToken)
     {
         await _lock.WaitAsync(cancellationToken).ConfigureAwait(false);
@@ -108,7 +132,9 @@ public sealed class CaptureSession : IAsyncDisposable
         }
     }
 
-    /// <summary>Stops the underlying source. Idempotent.</summary>
+    /// <summary>
+    /// Stops the underlying source. Idempotent.
+    /// </summary>
     public async Task StopAsync(CancellationToken cancellationToken)
     {
         await _lock.WaitAsync(cancellationToken).ConfigureAwait(false);
@@ -149,7 +175,9 @@ public sealed class CaptureSession : IAsyncDisposable
         }
     }
 
-    /// <summary>Marks the session as touched for LRU bookkeeping.</summary>
+    /// <summary>
+    /// Marks the session as touched for LRU bookkeeping.
+    /// </summary>
     public void Touch() => LastTouchedAt = DateTimeOffset.UtcNow;
 
     private DecodeCursor? _cursor;

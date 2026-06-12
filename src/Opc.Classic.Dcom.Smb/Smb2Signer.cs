@@ -13,10 +13,14 @@ namespace Opc.Classic.Dcom.Smb;
 /// </summary>
 public enum Smb2SigningAlgorithm
 {
-    /// <summary>HMAC-SHA256 with the session key, truncated to 16 bytes for SMB 2.0.2/2.1.</summary>
+    /// <summary>
+    /// HMAC-SHA256 with the session key, truncated to 16 bytes for SMB 2.0.2/2.1.
+    /// </summary>
     HmacSha256,
 
-    /// <summary>AES-128-CMAC with a derived signing key for SMB 3.x.</summary>
+    /// <summary>
+    /// AES-128-CMAC with a derived signing key for SMB 3.x.
+    /// </summary>
     AesCmac,
 }
 
@@ -26,7 +30,9 @@ public enum Smb2SigningAlgorithm
 /// </summary>
 public sealed class Smb2Signer
 {
-    /// <summary>Length of the SMB2 Signature header field in bytes; see [MS-SMB2] §2.2.1.2.</summary>
+    /// <summary>
+    /// Length of the SMB2 Signature header field in bytes; see [MS-SMB2] §2.2.1.2.
+    /// </summary>
     public const int SignatureLength = 16;
     private const int AesBlockLength = 16;
     private const int SmbSigningKeyLengthBits = 128;
@@ -55,7 +61,9 @@ public sealed class Smb2Signer
         _signingKey = signingKey.ToArray();
     }
 
-    /// <summary>Gets the SMB2 signing algorithm used by this signer; see [MS-SMB2] §3.1.5.1.</summary>
+    /// <summary>
+    /// Gets the SMB2 signing algorithm used by this signer; see [MS-SMB2] §3.1.5.1.
+    /// </summary>
     public Smb2SigningAlgorithm Algorithm { get; }
 
     /// <summary>

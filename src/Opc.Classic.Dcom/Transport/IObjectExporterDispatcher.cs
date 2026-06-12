@@ -53,7 +53,9 @@ namespace Opc.Classic.Dcom.Transport;
 /// </remarks>
 public sealed class IObjectExporterDispatcher : IOpcServerDispatcher
 {
-    /// <summary>OPC well-known <c>IObjectExporter</c> interface identifier.</summary>
+    /// <summary>
+    /// OPC well-known <c>IObjectExporter</c> interface identifier.
+    /// </summary>
     public static readonly Guid InterfaceId = OpcGuids.IID_IObjectExporter;
 
     private const int E_INVALIDARG = unchecked((int)0x80070057u);
@@ -70,7 +72,9 @@ public sealed class IObjectExporterDispatcher : IOpcServerDispatcher
     private readonly Func<IPEndPoint?> _endpointProvider;
     private readonly Guid _remUnknownIpid;
 
-    /// <summary>Creates a dispatcher that resolves bindings via <paramref name="endpointProvider"/>.</summary>
+    /// <summary>
+    /// Creates a dispatcher that resolves bindings via <paramref name="endpointProvider"/>.
+    /// </summary>
     /// <param name="endpointProvider">Returns the listener's current TCP endpoint, or null when not bound.</param>
     /// <param name="remUnknownIpid">IPID to report as the listener's <c>IRemUnknown</c>; a freshly-generated GUID when omitted.</param>
     public IObjectExporterDispatcher(Func<IPEndPoint?> endpointProvider, Guid? remUnknownIpid = null)
@@ -80,7 +84,9 @@ public sealed class IObjectExporterDispatcher : IOpcServerDispatcher
         _remUnknownIpid = remUnknownIpid ?? Guid.NewGuid();
     }
 
-    /// <summary>The IPID this dispatcher reports as the listener's <c>IRemUnknown</c>.</summary>
+    /// <summary>
+    /// The IPID this dispatcher reports as the listener's <c>IRemUnknown</c>.
+    /// </summary>
     public Guid IRemUnknownIpid => _remUnknownIpid;
 
     /// <inheritdoc/>

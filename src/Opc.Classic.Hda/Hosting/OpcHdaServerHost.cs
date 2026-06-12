@@ -37,7 +37,9 @@ public sealed class OpcHdaServerHost : IOpcServerHost, IDisposable, IAsyncDispos
     private readonly ILogger<OpcHdaServerHost> _logger;
     private OpcServerListener? _listener;
 
-    /// <summary>Initializes a new instance of the <see cref="OpcHdaServerHost"/> class.</summary>
+    /// <summary>
+    /// Initializes a new instance of the <see cref="OpcHdaServerHost"/> class.
+    /// </summary>
     public OpcHdaServerHost(
         IOpcHdaServer serverImpl,
         IOptions<OpcHdaServerOptions> options,

@@ -35,10 +35,14 @@ public sealed class SoapEnvelopeWriter : IDisposable
     private readonly XmlWriter _writer;
     private readonly bool _ownsWriter;
 
-    /// <summary>The underlying XML writer (useful for emitting operation-specific elements).</summary>
+    /// <summary>
+    /// The underlying XML writer (useful for emitting operation-specific elements).
+    /// </summary>
     public XmlWriter Writer => _writer;
 
-    /// <summary>Wraps an existing XmlWriter (ownership stays with caller).</summary>
+    /// <summary>
+    /// Wraps an existing XmlWriter (ownership stays with caller).
+    /// </summary>
     public SoapEnvelopeWriter(XmlWriter writer)
     {
         ArgumentNullException.ThrowIfNull(writer);
@@ -46,7 +50,9 @@ public sealed class SoapEnvelopeWriter : IDisposable
         _ownsWriter = false;
     }
 
-    /// <summary>Creates a writer that emits to the given stream with UTF-8 encoding.</summary>
+    /// <summary>
+    /// Creates a writer that emits to the given stream with UTF-8 encoding.
+    /// </summary>
     public SoapEnvelopeWriter(Stream stream)
     {
         ArgumentNullException.ThrowIfNull(stream);
@@ -62,7 +68,9 @@ public sealed class SoapEnvelopeWriter : IDisposable
         _ownsWriter = true;
     }
 
-    /// <summary>Writes <c>&lt;soap:Envelope xmlns:soap="..."&gt;</c>.</summary>
+    /// <summary>
+    /// Writes <c>&lt;soap:Envelope xmlns:soap="..."&gt;</c>.
+    /// </summary>
     public void WriteEnvelopeStart()
     {
         _writer.WriteStartDocument();
@@ -71,20 +79,26 @@ public sealed class SoapEnvelopeWriter : IDisposable
         _writer.WriteAttributeString("xmlns", "xsd", null, XmlDaConstants.XsdNamespace);
     }
 
-    /// <summary>Writes the closing <c>&lt;/soap:Envelope&gt;</c> and end-of-document.</summary>
+    /// <summary>
+    /// Writes the closing <c>&lt;/soap:Envelope&gt;</c> and end-of-document.
+    /// </summary>
     public void WriteEnvelopeEnd()
     {
         _writer.WriteEndElement();
         _writer.WriteEndDocument();
     }
 
-    /// <summary>Writes <c>&lt;soap:Body&gt;</c>.</summary>
+    /// <summary>
+    /// Writes <c>&lt;soap:Body&gt;</c>.
+    /// </summary>
     public void WriteBodyStart()
     {
         _writer.WriteStartElement("soap", "Body", XmlDaConstants.SoapEnvelopeNamespace);
     }
 
-    /// <summary>Writes <c>&lt;/soap:Body&gt;</c>.</summary>
+    /// <summary>
+    /// Writes <c>&lt;/soap:Body&gt;</c>.
+    /// </summary>
     public void WriteBodyEnd()
     {
         _writer.WriteEndElement();
@@ -102,13 +116,17 @@ public sealed class SoapEnvelopeWriter : IDisposable
         _writer.WriteStartElement(localName, XmlDaConstants.XmlDaNamespace);
     }
 
-    /// <summary>Closes the operation element.</summary>
+    /// <summary>
+    /// Closes the operation element.
+    /// </summary>
     public void WriteOperationEnd()
     {
         _writer.WriteEndElement();
     }
 
-    /// <summary>Flushes the underlying writer.</summary>
+    /// <summary>
+    /// Flushes the underlying writer.
+    /// </summary>
     public void Flush() => _writer.Flush();
 
     /// <inheritdoc />

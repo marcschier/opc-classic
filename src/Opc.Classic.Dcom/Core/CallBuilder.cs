@@ -17,7 +17,7 @@ namespace Opc.Classic.Dcom.Core;
 /// <see cref="CallBuilder"/> obj = new <see cref="CallBuilder"/>();
 /// obj.ReInit();
 /// objOpnum = 0; // 0 based index, can be obtained from the IDL or the Type Library of COM server.
-///
+/// <para>
 /// obj.AddInParamAsString(new <see cref="ComString"/>("Go Vikings!"));
 /// obj.AddInParamAsInt(100);
 /// // handle is previously obtained <seealso cref="IComObject"/>
@@ -28,6 +28,7 @@ namespace Opc.Classic.Dcom.Core;
 /// obj.AddOutParamAsType(typeof(<see cref="Variant"/>));
 /// obj.AddOutParamAsObject(new <see cref="ComPointer"/>(typeof(short),true));
 /// </code>
+/// </para>
 /// </summary>
 [Serializable]
 public class CallBuilder : NdrOp
@@ -63,7 +64,6 @@ public class CallBuilder : NdrOp
     /// <summary>
     /// Reinitializes all members of this object. It is ready to be used again on a
     /// fresh <code><seealso cref="IComObject.Call(CallBuilder)"/></code> after this step.
-    ///
     /// </summary>
     // after reinit, except parent, nothing is available.
     public void ReInit()

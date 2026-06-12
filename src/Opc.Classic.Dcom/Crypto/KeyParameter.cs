@@ -5,7 +5,9 @@
 
 namespace Opc.Classic.Dcom.Crypto;
 
-/// <summary>BouncyCastle <c>KeyParameter</c>: wraps a key byte[].</summary>
+/// <summary>
+/// BouncyCastle <c>KeyParameter</c>: wraps a key byte[].
+/// </summary>
 public sealed class KeyParameter : ICipherParameters
 {
     public KeyParameter(byte[] key)

@@ -5,7 +5,9 @@
 
 namespace Opc.Classic.Mcp.Dtos;
 
-/// <summary>JSON-friendly description of an MCP OPC Classic session.</summary>
+/// <summary>
+/// JSON-friendly description of an MCP OPC Classic session.
+/// </summary>
 public sealed record OpcSessionDto(
     string SessionId,
     DateTimeOffset CreatedAt,

@@ -18,11 +18,15 @@ public sealed record OpcHdaTime(
     string? StringExpression,
     DateTimeOffset Timestamp)
 {
-    /// <summary>Creates an OPCHDA_TIME carrying a server-evaluated expression.</summary>
+    /// <summary>
+    /// Creates an OPCHDA_TIME carrying a server-evaluated expression.
+    /// </summary>
     public static OpcHdaTime FromString(string expression) =>
         new(IsStringExpression: true, StringExpression: expression, Timestamp: default);
 
-    /// <summary>Creates an OPCHDA_TIME carrying an absolute timestamp.</summary>
+    /// <summary>
+    /// Creates an OPCHDA_TIME carrying an absolute timestamp.
+    /// </summary>
     public static OpcHdaTime FromTimestamp(DateTimeOffset timestamp) =>
         new(IsStringExpression: false, StringExpression: null, Timestamp: timestamp);
 }

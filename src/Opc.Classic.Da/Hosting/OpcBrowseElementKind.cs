@@ -10,12 +10,18 @@ namespace Opc.Classic.Da.Hosting;
 /// </summary>
 public enum OpcBrowseElementKind
 {
-    /// <summary>Both branches and items.</summary>
+    /// <summary>
+    /// Both branches and items.
+    /// </summary>
     All,
 
-    /// <summary>Branches only (intermediate nodes).</summary>
+    /// <summary>
+    /// Branches only (intermediate nodes).
+    /// </summary>
     Branches,
 
-    /// <summary>Leaf items only.</summary>
+    /// <summary>
+    /// Leaf items only.
+    /// </summary>
     Items,
 }

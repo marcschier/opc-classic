@@ -5,14 +5,18 @@
 
 namespace Opc.Classic.Mcp.Dtos;
 
-/// <summary>JSON input model for inserting or replacing an HDA value.</summary>
+/// <summary>
+/// JSON input model for inserting or replacing an HDA value.
+/// </summary>
 public sealed record OpcHdaWriteValueDto(
     int ServerHandle,
     DateTimeOffset Timestamp,
     object? Value,
     int? Quality = null);
 
-/// <summary>JSON input model for inserting an HDA annotation.</summary>
+/// <summary>
+/// JSON input model for inserting an HDA annotation.
+/// </summary>
 public sealed record OpcHdaWriteAnnotationDto(
     int ServerHandle,
     DateTimeOffset Timestamp,

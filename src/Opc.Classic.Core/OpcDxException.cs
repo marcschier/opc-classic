@@ -5,7 +5,9 @@
 
 namespace Opc.Classic;
 
-/// <summary>OPC Data eXchange (DX) specification errors.</summary>
+/// <summary>
+/// OPC Data eXchange (DX) specification errors.
+/// </summary>
 public sealed class OpcDxException : OpcException
 {
     public OpcDxException() { }

@@ -10,7 +10,9 @@ using Opc.Classic.Hosting;
 
 namespace Opc.Classic.Da.Hosting;
 
-/// <summary>DA dispatcher adapter that delegates to source-generated OPC DA dispatchers.</summary>
+/// <summary>
+/// DA dispatcher adapter that delegates to source-generated OPC DA dispatchers.
+/// </summary>
 public sealed class OpcDaServerDispatcher : IOpcDaServerDispatcher, IOPCCommon
 {
     private static readonly Action<ILogger, string, Exception?> ClientNameSet = LoggerMessage.Define<string>(
@@ -24,7 +26,9 @@ public sealed class OpcDaServerDispatcher : IOpcDaServerDispatcher, IOPCCommon
     private readonly ConnectionDiagnostics _connectionContext = new();
     private readonly ILogger _logger;
 
-    /// <summary>Initializes a new instance of the <see cref="OpcDaServerDispatcher" /> class.</summary>
+    /// <summary>
+    /// Initializes a new instance of the <see cref="OpcDaServerDispatcher" /> class.
+    /// </summary>
     public OpcDaServerDispatcher(IOpcDaServer server, ILogger? logger = null)
     {
         _server = server ?? throw new ArgumentNullException(nameof(server));
@@ -33,7 +37,9 @@ public sealed class OpcDaServerDispatcher : IOpcDaServerDispatcher, IOPCCommon
         _commonDispatcher = new IOPCCommonServerDispatcher(this);
     }
 
-    /// <summary>Gets the latest client name supplied through <c>IOPCCommon::SetClientName</c>.</summary>
+    /// <summary>
+    /// Gets the latest client name supplied through <c>IOPCCommon::SetClientName</c>.
+    /// </summary>
     public string ClientName => _connectionContext.ClientName;
     internal IOpcServerDispatcher ServerDispatcher => _serverDispatcher;
     internal IOpcServerDispatcher CommonDispatcher => _commonDispatcher;

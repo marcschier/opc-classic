@@ -29,14 +29,20 @@ using Opc.Classic.Transport;
 
 namespace Opc.Classic.Mcp.Tools;
 
-/// <summary>Creates DA client state for a session.</summary>
+/// <summary>
+/// Creates DA client state for a session.
+/// </summary>
 public interface IOpcDaConnectionFactory
 {
-    /// <summary>Connects to a DA server and returns a client state object.</summary>
+    /// <summary>
+    /// Connects to a DA server and returns a client state object.
+    /// </summary>
     Task<DaClientState> ConnectAsync(DaConnectionRequest request, CancellationToken cancellationToken = default);
 }
 
-/// <summary>Connection request used by DA tools.</summary>
+/// <summary>
+/// Connection request used by DA tools.
+/// </summary>
 public sealed record DaConnectionRequest(
     string Host,
     string? ProgId,
@@ -48,12 +54,16 @@ public sealed record DaConnectionRequest(
     bool UseSso = false,
     string? AuthLevel = null);
 
-/// <summary>Registers in-memory DA call channels for MCP tests and loopback scenarios.</summary>
+/// <summary>
+/// Registers in-memory DA call channels for MCP tests and loopback scenarios.
+/// </summary>
 public static class InMemoryDaConnectionRegistry
 {
     private static readonly System.Collections.Concurrent.ConcurrentDictionary<string, ICallChannel> Channels = new(StringComparer.OrdinalIgnoreCase);
 
-    /// <summary>Registers an in-memory DA call channel by name.</summary>
+    /// <summary>
+    /// Registers an in-memory DA call channel by name.
+    /// </summary>
     public static IDisposable Register(string name, ICallChannel channel)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(name);
@@ -85,7 +95,9 @@ public static class InMemoryDaConnectionRegistry
     }
 }
 
-/// <summary>MCP tools for OPC DA client operations.</summary>
+/// <summary>
+/// MCP tools for OPC DA client operations.
+/// </summary>
 public sealed class DaClientTools
 {
     private static readonly IReadOnlyList<Guid> DaSessionPreBindIids = BuildDaSessionPreBindIids();
@@ -132,7 +144,9 @@ public sealed class DaClientTools
     private readonly IOpcSessionManager _sessionManager;
     private readonly IOpcDaConnectionFactory _connectionFactory;
 
-    /// <summary>Creates the DA client tool set.</summary>
+    /// <summary>
+    /// Creates the DA client tool set.
+    /// </summary>
     public DaClientTools(IOpcSessionManager sessionManager, IEnumerable<IOpcDaConnectionFactory> connectionFactories)
     {
         _sessionManager = sessionManager ?? throw new ArgumentNullException(nameof(sessionManager));
@@ -140,7 +154,9 @@ public sealed class DaClientTools
         _connectionFactory = connectionFactories.FirstOrDefault() ?? new DefaultOpcDaConnectionFactory();
     }
 
-    /// <summary>Connects a session to an OPC DA server.</summary>
+    /// <summary>
+    /// Connects a session to an OPC DA server.
+    /// </summary>
     [McpServerTool(Name = "opcclassic.da.connect", ReadOnly = false, Idempotent = true, Destructive = false, OpenWorld = true)]
     [Description("Connects an existing MCP session to an OPC DA server using DCOM or an in-memory test channel.")]
     public async Task<OpcSessionDto> Connect(
@@ -183,7 +199,9 @@ public sealed class DaClientTools
         return ToSessionDto(session);
     }
 
-    /// <summary>Gets OPC DA server status for a connected session.</summary>
+    /// <summary>
+    /// Gets OPC DA server status for a connected session.
+    /// </summary>
     [McpServerTool(Name = "opcclassic.da.get_status", ReadOnly = true, Idempotent = true, Destructive = false, OpenWorld = true)]
     [Description("Gets the OPC DA server status, including runtime state, version, vendor information, and group count.")]
     public async Task<OpcServerStatusDto> GetStatus(
@@ -196,7 +214,9 @@ public sealed class DaClientTools
         return ToDto(status);
     }
 
-    /// <summary>Browses an OPC DA server address space.</summary>
+    /// <summary>
+    /// Browses an OPC DA server address space.
+    /// </summary>
     [McpServerTool(Name = "opcclassic.da.browse", ReadOnly = true, Idempotent = true, Destructive = false, OpenWorld = true)]
     [Description("Browses the OPC DA address space below an item ID using DA 3.0 browse semantics.")]
     public async Task<IReadOnlyList<OpcBrowseElementDto>> Browse(
@@ -245,7 +265,9 @@ public sealed class DaClientTools
         return elements;
     }
 
-    /// <summary>Gets OPC DA item properties.</summary>
+    /// <summary>
+    /// Gets OPC DA item properties.
+    /// </summary>
     [McpServerTool(Name = "opcclassic.da.get_properties", ReadOnly = true, Idempotent = true, Destructive = false, OpenWorld = true)]
     [Description("Gets OPC DA item properties for one or more item IDs.")]
     public async Task<IReadOnlyList<OpcBrowseElementDto>> GetProperties(
@@ -283,7 +305,9 @@ public sealed class DaClientTools
         return results;
     }
 
-    /// <summary>Creates an OPC DA group.</summary>
+    /// <summary>
+    /// Creates an OPC DA group.
+    /// </summary>
     [McpServerTool(Name = "opcclassic.da.add_group", ReadOnly = false, Idempotent = false, Destructive = false, OpenWorld = true)]
     [Description("Creates an OPC DA server-side group used for item add, synchronous I/O, and subscriptions.")]
     public async Task<OpcGroupStateDto> AddGroup(
@@ -347,7 +371,9 @@ public sealed class DaClientTools
         return ToGroupDto(group);
     }
 
-    /// <summary>Adds OPC DA items to a group.</summary>
+    /// <summary>
+    /// Adds OPC DA items to a group.
+    /// </summary>
     [McpServerTool(Name = "opcclassic.da.add_items", ReadOnly = false, Idempotent = false, Destructive = false, OpenWorld = true)]
     [Description("Adds item IDs to an OPC DA group and returns per-item server handles and HRESULTs.")]
     public async Task<IReadOnlyList<OpcResultDto>> AddItems(
@@ -395,7 +421,9 @@ public sealed class DaClientTools
         return results;
     }
 
-    /// <summary>Synchronously reads OPC DA item values by item ID via IOPCItemIO (stateless, no group required).</summary>
+    /// <summary>
+    /// Synchronously reads OPC DA item values by item ID via IOPCItemIO (stateless, no group required).
+    /// </summary>
     [McpServerTool(Name = "opcclassic.da.read_items_by_id", ReadOnly = true, Idempotent = true, Destructive = false, OpenWorld = true)]
     [Description("Reads OPC DA item values by item ID using the DA 3.0 stateless IOPCItemIO interface — no AddGroup/AddItems required. Recommended for quick reads against well-known item IDs.")]
     public async Task<IReadOnlyList<OpcItemValueDto>> ReadItemsById(
@@ -450,7 +478,9 @@ public sealed class DaClientTools
         return results;
     }
 
-    /// <summary>Synchronously reads OPC DA item values by group server handle.</summary>
+    /// <summary>
+    /// Synchronously reads OPC DA item values by group server handle.
+    /// </summary>
     [McpServerTool(Name = "opcclassic.da.read_sync", ReadOnly = true, Idempotent = true, Destructive = false, OpenWorld = true)]
     [Description("Synchronously reads item values from an OPC DA group by server handles.")]
     public async Task<IReadOnlyList<OpcItemValueDto>> ReadSync(
@@ -481,7 +511,9 @@ public sealed class DaClientTools
         return ToValueDtos(group, handles, states, errors);
     }
 
-    /// <summary>Synchronously writes OPC DA item values by group server handle.</summary>
+    /// <summary>
+    /// Synchronously writes OPC DA item values by group server handle.
+    /// </summary>
     [McpServerTool(Name = "opcclassic.da.write_sync", ReadOnly = false, Idempotent = false, Destructive = false, OpenWorld = true)]
     [Description("Synchronously writes values to OPC DA group items by server handles.")]
     public async Task<IReadOnlyList<OpcResultDto>> WriteSync(
@@ -523,7 +555,9 @@ public sealed class DaClientTools
         return results;
     }
 
-    /// <summary>Starts a poll-based OPC DA subscription for a group.</summary>
+    /// <summary>
+    /// Starts a poll-based OPC DA subscription for a group.
+    /// </summary>
     [McpServerTool(Name = "opcclassic.da.subscribe", ReadOnly = false, Idempotent = false, Destructive = false, OpenWorld = true)]
     [Description("Starts a poll-based OPC DA subscription for a group. MCP cannot push callbacks, so use opcclassic.da.poll_subscription to retrieve values.")]
     public async Task<OpcResultDto> Subscribe(
@@ -599,7 +633,9 @@ public sealed class DaClientTools
         return new OpcResultDto(0, $"Subscription '{subscriptionId}' created. Poll for values with opcclassic.da.poll_subscription.", Succeeded: true, SubscriptionId: subscriptionId, TransactionId: transactionId, CancelId: cancelId);
     }
 
-    /// <summary>Polls a DA subscription queue for new notifications.</summary>
+    /// <summary>
+    /// Polls a DA subscription queue for new notifications.
+    /// </summary>
     [McpServerTool(Name = "opcclassic.da.poll_subscription", ReadOnly = true, Idempotent = false, Destructive = false, OpenWorld = true)]
     [Description("Polls a DA subscription for values. When IOPCDataCallback push notifications have been received they are returned first; otherwise a synchronous pull read of the group is performed as a fallback.")]
     public async Task<IReadOnlyList<OpcItemValueDto>> PollSubscription(
@@ -640,7 +676,9 @@ public sealed class DaClientTools
         return ToValueDtos(group, handles, states, errors);
     }
 
-    /// <summary>Removes an OPC DA group.</summary>
+    /// <summary>
+    /// Removes an OPC DA group.
+    /// </summary>
     [McpServerTool(Name = "opcclassic.da.remove_group", ReadOnly = false, Idempotent = true, Destructive = true, OpenWorld = true)]
     [Description("Removes an OPC DA server-side group and forgets its item handles and poll subscriptions.")]
     public async Task<OpcResultDto> RemoveGroup(
@@ -711,7 +749,9 @@ public sealed class DaClientTools
         }
     }
 
-    /// <summary>Translates an HRESULT to an OPC DA server-localized message.</summary>
+    /// <summary>
+    /// Translates an HRESULT to an OPC DA server-localized message.
+    /// </summary>
     [McpServerTool(Name = "opcclassic.da.get_error_string", ReadOnly = true, Idempotent = true, Destructive = false, OpenWorld = true)]
     [Description("Translates an OPC HRESULT to a server-localized message using IOPCServer::GetErrorString.")]
     public async Task<OpcResultDto> GetErrorString(
@@ -728,7 +768,9 @@ public sealed class DaClientTools
         return new OpcResultDto(hresult, message, new OpcResultId(hresult, null).IsSuccess);
     }
 
-    /// <summary>Disconnects a session from its OPC DA server.</summary>
+    /// <summary>
+    /// Disconnects a session from its OPC DA server.
+    /// </summary>
     [McpServerTool(Name = "opcclassic.da.disconnect", ReadOnly = false, Idempotent = true, Destructive = true, OpenWorld = true)]
     [Description("Disconnects the session from its OPC DA server and releases the DA channel.")]
     public async Task<OpcResultDto> Disconnect(

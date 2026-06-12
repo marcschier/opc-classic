@@ -18,32 +18,46 @@ namespace Opc.Classic.Cpx;
 /// </remarks>
 public sealed record TypeDictionary
 {
-    /// <summary>The OPC DA type-system identifier for XML Schema dictionaries.</summary>
+    /// <summary>
+    /// The OPC DA type-system identifier for XML Schema dictionaries.
+    /// </summary>
     public const string XmlSchemaTypeSystemId = "XMLSchema";
 
-    /// <summary>The OPC DA type-system identifier for OPCBinary dictionaries.</summary>
+    /// <summary>
+    /// The OPC DA type-system identifier for OPCBinary dictionaries.
+    /// </summary>
     public const string OpcBinaryTypeSystemId = "OPCBinary";
 
-    /// <summary>The OPCBinary XML namespace used by the type-dictionary schema.</summary>
+    /// <summary>
+    /// The OPCBinary XML namespace used by the type-dictionary schema.
+    /// </summary>
     public const string OpcBinaryNamespace = "http://opcfoundation.org/OPCBinary/1.0/";
 
-    /// <summary>The OPCBinary default string encoding.</summary>
+    /// <summary>
+    /// The OPCBinary default string encoding.
+    /// </summary>
     public const string DefaultOpcBinaryStringEncoding = "UCS-2";
 
-    /// <summary>The OPCBinary default floating-point format.</summary>
+    /// <summary>
+    /// The OPCBinary default floating-point format.
+    /// </summary>
     public const string DefaultOpcBinaryFloatFormat = "IEEE-754";
 
     private readonly TypeDescription[] _types;
     private readonly Dictionary<string, TypeDescription> _typesByName;
     private readonly Dictionary<string, TypeDescription> _typesById;
 
-    /// <summary>Create an unnamed dictionary with the supplied types.</summary>
+    /// <summary>
+    /// Create an unnamed dictionary with the supplied types.
+    /// </summary>
     public TypeDictionary(IEnumerable<TypeDescription> types)
         : this(string.Empty, types)
     {
     }
 
-    /// <summary>Create a dictionary with the supplied metadata and types.</summary>
+    /// <summary>
+    /// Create a dictionary with the supplied metadata and types.
+    /// </summary>
     public TypeDictionary(
         string name,
         IEnumerable<TypeDescription> types,
@@ -95,43 +109,63 @@ public sealed record TypeDictionary
         Types = Array.AsReadOnly(_types);
     }
 
-    /// <summary>Dictionary name or URI.</summary>
+    /// <summary>
+    /// Dictionary name or URI.
+    /// </summary>
     public string Name { get; }
 
-    /// <summary>Default byte-order flag from the OPCBinary dictionary.</summary>
+    /// <summary>
+    /// Default byte-order flag from the OPCBinary dictionary.
+    /// </summary>
     public bool DefaultBigEndian { get; }
 
-    /// <summary>Default string encoding for character fields.</summary>
+    /// <summary>
+    /// Default string encoding for character fields.
+    /// </summary>
     public string DefaultStringEncoding { get; }
 
-    /// <summary>Default character width for character fields.</summary>
+    /// <summary>
+    /// Default character width for character fields.
+    /// </summary>
     public int DefaultCharWidth { get; }
 
-    /// <summary>Default floating-point format.</summary>
+    /// <summary>
+    /// Default floating-point format.
+    /// </summary>
     public string DefaultFloatFormat { get; }
 
-    /// <summary>All type descriptions in dictionary order.</summary>
+    /// <summary>
+    /// All type descriptions in dictionary order.
+    /// </summary>
     public IReadOnlyList<TypeDescription> Types { get; }
 
-    /// <summary>Create an unnamed dictionary from type descriptions.</summary>
+    /// <summary>
+    /// Create an unnamed dictionary from type descriptions.
+    /// </summary>
     public static TypeDictionary FromTypes(params TypeDescription[] types) =>
         new(types);
 
-    /// <summary>Look up a type description by name. Returns <see langword="null"/> when not found.</summary>
+    /// <summary>
+    /// Look up a type description by name. Returns <see langword="null"/> when not found.
+    /// </summary>
     public TypeDescription? TryGet(string name)
     {
         ArgumentNullException.ThrowIfNull(name);
         return _typesByName.TryGetValue(name, out var type) ? type : null;
     }
 
-    /// <summary>Look up a type description by type identifier. Returns <see langword="null"/> when not found.</summary>
+    /// <summary>
+    /// Look up a type description by type identifier. Returns <see langword="null"/> when not found.
+    /// </summary>
     public TypeDescription? TryGetByTypeId(string typeId)
     {
         ArgumentNullException.ThrowIfNull(typeId);
         return _typesById.TryGetValue(typeId, out var type) ? type : null;
     }
 
-    /// <summary>True if this dictionary defines a type with <paramref name="name"/>.</summary>
+    /// <summary>
+    /// True if this dictionary defines a type with <paramref name="name"/>.
+    /// </summary>
     public bool Contains(string name)
     {
         ArgumentNullException.ThrowIfNull(name);

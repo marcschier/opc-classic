@@ -11,15 +11,23 @@ namespace Opc.Classic.Ae;
 [Flags]
 public enum ConditionState
 {
-    /// <summary>No state bits set.</summary>
+    /// <summary>
+    /// No state bits set.
+    /// </summary>
     None = 0,
 
-    /// <summary>The condition is currently in alarm.</summary>
+    /// <summary>
+    /// The condition is currently in alarm.
+    /// </summary>
     Active = 0x0001,
 
-    /// <summary>The condition has been acknowledged by an operator.</summary>
+    /// <summary>
+    /// The condition has been acknowledged by an operator.
+    /// </summary>
     Acknowledged = 0x0002,
 
-    /// <summary>The condition is enabled (server is monitoring it).</summary>
+    /// <summary>
+    /// The condition is enabled (server is monitoring it).
+    /// </summary>
     Enabled = 0x0004,
 }

@@ -18,13 +18,19 @@ namespace Opc.Classic.Dcom.Crypto;
 /// </summary>
 public static class Md4
 {
-    /// <summary>Size of the produced hash, in bytes.</summary>
+    /// <summary>
+    /// Size of the produced hash, in bytes.
+    /// </summary>
     public const int HashSizeInBytes = 16;
 
-    /// <summary>Compression-function block size, in bytes.</summary>
+    /// <summary>
+    /// Compression-function block size, in bytes.
+    /// </summary>
     public const int BlockSizeInBytes = 64;
 
-    /// <summary>One-shot hashing: returns a 16-byte MD4 of <paramref name="source"/>.</summary>
+    /// <summary>
+    /// One-shot hashing: returns a 16-byte MD4 of <paramref name="source"/>.
+    /// </summary>
     public static byte[] HashData(ReadOnlySpan<byte> source)
     {
         var result = new byte[HashSizeInBytes];
@@ -32,7 +38,9 @@ public static class Md4
         return result;
     }
 
-    /// <summary>One-shot hashing into a caller-provided 16-byte destination.</summary>
+    /// <summary>
+    /// One-shot hashing into a caller-provided 16-byte destination.
+    /// </summary>
     public static void HashData(ReadOnlySpan<byte> source, Span<byte> destination)
     {
         if (destination.Length < HashSizeInBytes)

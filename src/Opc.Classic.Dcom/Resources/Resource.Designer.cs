@@ -70,7 +70,9 @@ namespace Opc.Classic.Dcom.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The system cannot find the file specified. Please check the path provided as parameter. If this exception is being thrown from the WinReg package, please check if the library is registered properly or do so using regsvr32..
+        /// Looks up a localized string similar to The system cannot find the file specified. Please check the path provided as parameter.
+        /// If this exception is being thrown from the WinReg package, please check if the library is registered properly or do so using
+        /// regsvr32..
         /// </summary>
         internal static string _0x00000002 {
             get {
@@ -88,7 +90,9 @@ namespace Opc.Classic.Dcom.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Access is denied, please check whether the [domain-username-password] are correct. Also, if not already done please check the GETTING STARTED and FAQ sections in readme.htm. They provide information on how to correctly configure the Windows machine for DCOM access, so as to avoid such exceptions. .
+        /// Looks up a localized string similar to Access is denied, please check whether the [domain-username-password] are correct. Also,
+        /// if not already done please check the GETTING STARTED and FAQ sections in readme.htm. They provide information on how to
+        /// correctly configure the Windows machine for DCOM access, so as to avoid such exceptions. .
         /// </summary>
         internal static string _0x00000005 {
             get {
@@ -160,7 +164,8 @@ namespace Opc.Classic.Dcom.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Discriminant class type mismatch, please provide object of the same class as discriminant..
+        /// Looks up a localized string similar to Discriminant class type mismatch, please provide object of the same class as
+        /// discriminant..
         /// </summary>
         internal static string _0x00001005 {
             get {
@@ -169,7 +174,8 @@ namespace Opc.Classic.Dcom.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only 1 discriminant allowed for serialization, please remove the rest or no discriminant has been added at all..
+        /// Looks up a localized string similar to Only 1 discriminant allowed for serialization, please remove the rest or no discriminant
+        /// has been added at all..
         /// </summary>
         internal static string _0x00001006 {
             get {
@@ -196,7 +202,8 @@ namespace Opc.Classic.Dcom.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Internal Library Error. This method should not have been called. Please check the parameters which you have passed to CallBuilder. They have been sent incorrectly..
+        /// Looks up a localized string similar to Internal Library Error. This method should not have been called. Please check the
+        /// parameters which you have passed to CallBuilder. They have been sent incorrectly..
         /// </summary>
         internal static string _0x00001009 {
             get {
@@ -205,7 +212,8 @@ namespace Opc.Classic.Dcom.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Outparams cannot have more than 1 parameter here. It should be a Variant class parameter..
+        /// Looks up a localized string similar to Outparams cannot have more than 1 parameter here. It should be a Variant class
+        /// parameter..
         /// </summary>
         internal static string _0x0000100A {
             get {
@@ -250,7 +258,8 @@ namespace Opc.Classic.Dcom.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Internal Library Error, the serializer\deserializer was not found for {0}.  Please check the parameters passed to CallBuilder..
+        /// Looks up a localized string similar to Internal Library Error, the serializer\deserializer was not found for {0}. Please check
+        /// the parameters passed to CallBuilder..
         /// </summary>
         internal static string _0x0000100F {
             get {
@@ -358,7 +367,8 @@ namespace Opc.Classic.Dcom.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to An array has already been added as member and it has to be the last member of this Struct. Please insert this member elsewhere..
+        /// Looks up a localized string similar to An array has already been added as member and it has to be the last member of this
+        /// Struct. Please insert this member elsewhere..
         /// </summary>
         internal static string _0x0000101B {
             get {
@@ -376,7 +386,8 @@ namespace Opc.Classic.Dcom.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This Struct already has an array and the member (which also happens to be a Struct) has an array too. This member can only be present in the second last position of this new Struct..
+        /// Looks up a localized string similar to This Struct already has an array and the member (which also happens to be a Struct) has
+        /// an array too. This member can only be present in the second last position of this new Struct..
         /// </summary>
         internal static string _0x0000101D {
             get {
@@ -385,7 +396,8 @@ namespace Opc.Classic.Dcom.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Member(which happens to be a Struct) has an array and hence can only be added to the end of this Struct, not in between..
+        /// Looks up a localized string similar to Member(which happens to be a Struct) has an array and hence can only be added to the end
+        /// of this Struct, not in between..
         /// </summary>
         internal static string _0x0000101E {
             get {
@@ -394,7 +406,8 @@ namespace Opc.Classic.Dcom.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Authentication failure for the credentials sent by the COM server for performing call back. The identity is checked via a call back to the source COM server using SMB..
+        /// Looks up a localized string similar to Authentication failure for the credentials sent by the COM server for performing call
+        /// back. The identity is checked via a call back to the source COM server using SMB..
         /// </summary>
         internal static string _0x0000101F {
             get {
@@ -403,7 +416,8 @@ namespace Opc.Classic.Dcom.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SMB connection failure, please check whether SERVER service is running on Target machine (where COM server) is hosted..
+        /// Looks up a localized string similar to SMB connection failure, please check whether SERVER service is running on Target machine
+        /// (where COM server) is hosted..
         /// </summary>
         internal static string _0x00001020 {
             get {
@@ -502,7 +516,8 @@ namespace Opc.Classic.Dcom.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unable to access Windows Registry, please check whether the SERVER service is running on the Target Workstation..
+        /// Looks up a localized string similar to Unable to access Windows Registry, please check whether the SERVER service is running on
+        /// the Target Workstation..
         /// </summary>
         internal static string _0x00001031 {
             get {
@@ -511,7 +526,8 @@ namespace Opc.Classic.Dcom.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid Identifier, or there is no Connection Info associated with this identifier on this comObject..
+        /// Looks up a localized string similar to Invalid Identifier, or there is no Connection Info associated with this identifier on
+        /// this comObject..
         /// </summary>
         internal static string _0x00001032 {
             get {
@@ -556,7 +572,8 @@ namespace Opc.Classic.Dcom.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MethodDescriptor is being added to a InterfaceDefinition supporting dispInterface, but it itself does not have a dispId..
+        /// Looks up a localized string similar to MethodDescriptor is being added to a InterfaceDefinition supporting dispInterface, but it
+        /// itself does not have a dispId..
         /// </summary>
         internal static string _0x00001037 {
             get {
@@ -610,7 +627,8 @@ namespace Opc.Classic.Dcom.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This LocalCoClass has already been exported with one COM object, please use a new instance of this class to get a new reference to a local COM object..
+        /// Looks up a localized string similar to This LocalCoClass has already been exported with one COM object, please use a new
+        /// instance of this class to get a new reference to a local COM object..
         /// </summary>
         internal static string _0x00001043 {
             get {
@@ -628,7 +646,7 @@ namespace Opc.Classic.Dcom.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Direct Marshalling, UnMarshalling of Strings are not allowed, please use String instead..
+        /// Looks up a localized string similar to Direct Marshalling, UnMarshalling of Strings are not allowed, please use String instead..
         /// </summary>
         internal static string _0x00001045 {
             get {
@@ -637,7 +655,8 @@ namespace Opc.Classic.Dcom.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to createInstance() cannot be called since the ComServer(Session, InterfacePointer, String) ctor was used to create this COM server instance, please use getInstance() instead..
+        /// Looks up a localized string similar to createInstance() cannot be called since the ComServer(Session, InterfacePointer, String)
+        /// ctor was used to create this COM server instance, please use getInstance() instead..
         /// </summary>
         internal static string _0x00001046 {
             get {
@@ -646,7 +665,8 @@ namespace Opc.Classic.Dcom.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to getInstance() cannot be called since the ComServer(Session, InterfacePointer, String) ctor was NOT used to create this COM server instance, please use createInstance() instead..
+        /// Looks up a localized string similar to getInstance() cannot be called since the ComServer(Session, InterfacePointer, String)
+        /// ctor was NOT used to create this COM server instance, please use createInstance() instead..
         /// </summary>
         internal static string _0x00001047 {
             get {
@@ -673,7 +693,8 @@ namespace Opc.Classic.Dcom.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A session is not attached with this object, use ObjectFactory.buildObject(Session, IComObject) to attach a session with this object..
+        /// Looks up a localized string similar to A session is not attached with this object, use ObjectFactory.buildObject(Session,
+        /// IComObject) to attach a session with this object..
         /// </summary>
         internal static string _0x00001050 {
             get {
@@ -682,7 +703,8 @@ namespace Opc.Classic.Dcom.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The associated session is being destroyed. Current call to COM server has been terminated..
+        /// Looks up a localized string similar to The associated session is being destroyed. Current call to COM server has been
+        /// terminated..
         /// </summary>
         internal static string _0x00001051 {
             get {
@@ -691,7 +713,8 @@ namespace Opc.Classic.Dcom.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This functionality is available only under &quot;Microsoft Windows&quot; line of Operating systems. .
+        /// Looks up a localized string similar to This functionality is available only under &quot;Microsoft Windows&quot; line of
+        /// Operating systems. .
         /// </summary>
         internal static string _0x00001052 {
             get {
@@ -754,7 +777,8 @@ namespace Opc.Classic.Dcom.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The server process could not be started as the configured identity, the pathname may be incorrect or unavailable. .
+        /// Looks up a localized string similar to The server process could not be started as the configured identity, the pathname may be
+        /// incorrect or unavailable. .
         /// </summary>
         internal static string _0x80004019 {
             get {
@@ -763,7 +787,8 @@ namespace Opc.Classic.Dcom.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The server process could not be started because the configured identity is incorrect.  Check the username and password..
+        /// Looks up a localized string similar to The server process could not be started because the configured identity is incorrect.
+        /// Check the username and password..
         /// </summary>
         internal static string _0x8000401A {
             get {
@@ -997,7 +1022,8 @@ namespace Opc.Classic.Dcom.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Class not registered. If you are using a DLL/OCX, please make sure it has &quot;DllSurrogate&quot; flag set. Faq A(6) in readme.html..
+        /// Looks up a localized string similar to Class not registered. If you are using a DLL/OCX, please make sure it has
+        /// &quot;DllSurrogate&quot; flag set. Faq A(6) in readme.html..
         /// </summary>
         internal static string _0x80040154 {
             get {
@@ -1033,7 +1059,8 @@ namespace Opc.Classic.Dcom.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The system cannot find the file specified. Is the COM Server present ? Please check DCOMCNFG for it&apos;s listing..
+        /// Looks up a localized string similar to The system cannot find the file specified. Is the COM Server present ? Please check
+        /// DCOMCNFG for it&apos;s listing..
         /// </summary>
         internal static string _0x80070002 {
             get {
@@ -1078,7 +1105,8 @@ namespace Opc.Classic.Dcom.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The specified module could not be found. Please check if the COM server is present at it&apos;s location..
+        /// Looks up a localized string similar to The specified module could not be found. Please check if the COM server is present at
+        /// it&apos;s location..
         /// </summary>
         internal static string _0x8007007E {
             get {
@@ -1087,7 +1115,9 @@ namespace Opc.Classic.Dcom.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The RPC server is unavailable. Please check if the COM server is up and running and that route to the COM Server is accessible (A simple &quot;Ping&quot; to the Server machine would do). Also please confirm if the Windows Firewall is not blocking DCOM access..
+        /// Looks up a localized string similar to The RPC server is unavailable. Please check if the COM server is up and running and that
+        /// route to the COM Server is accessible (A simple &quot;Ping&quot; to the Server machine would do). Also please confirm if the
+        /// Windows Firewall is not blocking DCOM access..
         /// </summary>
         internal static string _0x800706BA {
             get {
@@ -1096,7 +1126,8 @@ namespace Opc.Classic.Dcom.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The remote procedure call failed. This could be an internal library error or the COM server simply declined the request. Please contact library development team. .
+        /// Looks up a localized string similar to The remote procedure call failed. This could be an internal library error or the COM
+        /// server simply declined the request. Please contact library development team. .
         /// </summary>
         internal static string _0x800706BE {
             get {
@@ -1123,7 +1154,8 @@ namespace Opc.Classic.Dcom.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The stub received bad data. Please check whether the API has been called in the right way, with correct parameter formation..
+        /// Looks up a localized string similar to The stub received bad data. Please check whether the API has been called in the right
+        /// way, with correct parameter formation..
         /// </summary>
         internal static string _0x800706F7 {
             get {
@@ -1168,7 +1200,8 @@ namespace Opc.Classic.Dcom.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The attempted logon is invalid. This is either due to a bad username or authentication information..
+        /// Looks up a localized string similar to The attempted logon is invalid. This is either due to a bad username or authentication
+        /// information..
         /// </summary>
         internal static string _0xC000006D {
             get {

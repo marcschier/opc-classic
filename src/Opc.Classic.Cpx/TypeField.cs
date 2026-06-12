@@ -32,37 +32,59 @@ public sealed record TypeField(
     int? CharWidth = null,
     string? Format = null)
 {
-    /// <summary>Field name. Empty when the OPCBinary field is anonymous.</summary>
+    /// <summary>
+    /// Field name. Empty when the OPCBinary field is anonymous.
+    /// </summary>
     public string Name { get; init; } = Name ?? string.Empty;
 
-    /// <summary>OPCBinary field kind.</summary>
+    /// <summary>
+    /// OPCBinary field kind.
+    /// </summary>
     public TypeKind Kind { get; init; } = ValidateKind(Kind);
 
-    /// <summary>Referenced type identifier for <see cref="TypeKind.StructReference"/> fields.</summary>
+    /// <summary>
+    /// Referenced type identifier for <see cref="TypeKind.StructReference"/> fields.
+    /// </summary>
     public string? TypeId { get; init; } = Normalize(TypeId);
 
-    /// <summary>Fixed field length, in bits, bytes, or characters depending on <see cref="Kind"/>.</summary>
+    /// <summary>
+    /// Fixed field length, in bits, bytes, or characters depending on <see cref="Kind"/>.
+    /// </summary>
     public int? Length { get; init; } = ValidateNonNegative(Length, nameof(Length));
 
-    /// <summary>Fixed element count for array fields.</summary>
+    /// <summary>
+    /// Fixed element count for array fields.
+    /// </summary>
     public int? ElementCount { get; init; } = ValidateNonNegative(ElementCount, nameof(ElementCount));
 
-    /// <summary>Sibling field that supplies a variable element count.</summary>
+    /// <summary>
+    /// Sibling field that supplies a variable element count.
+    /// </summary>
     public string? ElementCountFieldName { get; init; } = Normalize(ElementCountFieldName);
 
-    /// <summary>Hex-encoded field terminator for terminated arrays.</summary>
+    /// <summary>
+    /// Hex-encoded field terminator for terminated arrays.
+    /// </summary>
     public string? FieldTerminator { get; init; } = Normalize(FieldTerminator);
 
-    /// <summary>Optional per-field byte-order override.</summary>
+    /// <summary>
+    /// Optional per-field byte-order override.
+    /// </summary>
     public ByteOrder? ByteOrder { get; init; } = ByteOrder;
 
-    /// <summary>Optional per-field string encoding.</summary>
+    /// <summary>
+    /// Optional per-field string encoding.
+    /// </summary>
     public string? StringEncoding { get; init; } = Normalize(StringEncoding);
 
-    /// <summary>Optional per-field character width in bytes.</summary>
+    /// <summary>
+    /// Optional per-field character width in bytes.
+    /// </summary>
     public int? CharWidth { get; init; } = ValidatePositive(CharWidth, nameof(CharWidth));
 
-    /// <summary>Optional field format metadata.</summary>
+    /// <summary>
+    /// Optional field format metadata.
+    /// </summary>
     public string? Format { get; init; } = Normalize(Format);
 
     private static TypeKind ValidateKind(TypeKind kind)

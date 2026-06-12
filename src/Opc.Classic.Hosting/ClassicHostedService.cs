@@ -26,7 +26,9 @@ public sealed class ClassicHostedService : IHostedService
     private readonly IEnumerable<IOpcServerHost> _hosts;
     private readonly ILogger<ClassicHostedService> _logger;
 
-    /// <summary>Initializes a new instance of the <see cref="ClassicHostedService"/> class.</summary>
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ClassicHostedService"/> class.
+    /// </summary>
     public ClassicHostedService(
         IEnumerable<IOpcServerHost> hosts,
         ILogger<ClassicHostedService> logger)

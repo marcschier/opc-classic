@@ -23,7 +23,9 @@ namespace Opc.Classic.Da.Ndr;
 /// </remarks>
 public static class NdrOpcBrowseElementCodec
 {
-    /// <summary>Encodes a single OPCBROWSEELEMENT in NDR.</summary>
+    /// <summary>
+    /// Encodes a single OPCBROWSEELEMENT in NDR.
+    /// </summary>
     public static void Write(ref NdrWriter writer, OpcBrowseElementResult element)
     {
         ArgumentNullException.ThrowIfNull(element);
@@ -35,7 +37,9 @@ public static class NdrOpcBrowseElementCodec
         NdrOpcItemPropertiesCodec.Write(ref writer, element.Properties);
     }
 
-    /// <summary>Decodes a single OPCBROWSEELEMENT from NDR.</summary>
+    /// <summary>
+    /// Decodes a single OPCBROWSEELEMENT from NDR.
+    /// </summary>
     public static OpcBrowseElementResult Read(ref NdrReader reader)
     {
         string? name = reader.ReadUnicodeStringPtr();

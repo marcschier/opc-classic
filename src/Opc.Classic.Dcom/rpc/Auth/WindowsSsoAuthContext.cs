@@ -34,7 +34,9 @@ public sealed class WindowsSsoAuthContext : IAuthContext, IDisposable
     private readonly NegotiateAuthentication _negotiate;
     private bool _disposed;
 
-    /// <summary>Initializes a new instance.</summary>
+    /// <summary>
+    /// Initializes a new instance.
+    /// </summary>
     /// <param name="connectData">The OPC connection data with auth mode <see cref="OpcAuthMode.WindowsSso"/>.</param>
     public WindowsSsoAuthContext(OpcConnectData connectData)
     {
@@ -71,10 +73,14 @@ public sealed class WindowsSsoAuthContext : IAuthContext, IDisposable
         _negotiate = new NegotiateAuthentication(options);
     }
 
-    /// <summary>The DCE/RPC packet-protection level negotiated for this context.</summary>
+    /// <summary>
+    /// The DCE/RPC packet-protection level negotiated for this context.
+    /// </summary>
     public OpcProtectionLevel ProtectionLevel { get; }
 
-    /// <summary>NTLM auth-service code per MS-RPCE §2.2.1.1.7.</summary>
+    /// <summary>
+    /// NTLM auth-service code per MS-RPCE §2.2.1.1.7.
+    /// </summary>
     public byte AuthenticationServiceCode => AuthenticationServiceNtlm;
 
     /// <inheritdoc />

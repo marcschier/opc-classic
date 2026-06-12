@@ -28,15 +28,21 @@ public sealed record class CaptureSummary
     public IReadOnlyList<TopEntry> TopBindRejectReasons { get; init; } = Array.Empty<TopEntry>();
 }
 
-/// <summary>One bucket in a top-N roll-up.</summary>
+/// <summary>
+/// One bucket in a top-N roll-up.
+/// </summary>
 public sealed record class TopEntry(string Key, long Count);
 
-/// <summary>Builds <see cref="CaptureSummary"/> from a decoded-PDU stream.</summary>
+/// <summary>
+/// Builds <see cref="CaptureSummary"/> from a decoded-PDU stream.
+/// </summary>
 public static class CaptureSummarizer
 {
     private const int kDefaultTop = 10;
 
-    /// <summary>Build a summary; top-N defaults to 10 entries per category.</summary>
+    /// <summary>
+    /// Build a summary; top-N defaults to 10 entries per category.
+    /// </summary>
     public static CaptureSummary Summarize(string sessionId, IEnumerable<DecodedOpcPdu> pdus, int top = kDefaultTop)
     {
         ArgumentException.ThrowIfNullOrEmpty(sessionId);

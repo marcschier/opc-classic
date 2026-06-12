@@ -20,7 +20,9 @@ public sealed record OpcBrowseElementResult(
 {
     private OpcItemProperties _properties = Properties ?? throw new ArgumentNullException(nameof(Properties));
 
-    /// <summary>Inline property results returned for the element.</summary>
+    /// <summary>
+    /// Inline property results returned for the element.
+    /// </summary>
     public OpcItemProperties Properties
     {
         get => _properties;
@@ -31,9 +33,13 @@ public sealed record OpcBrowseElementResult(
         }
     }
 
-    /// <summary>True when <see cref="FlagValue"/> marks the browse element as a branch.</summary>
+    /// <summary>
+    /// True when <see cref="FlagValue"/> marks the browse element as a branch.
+    /// </summary>
     public bool IsBranch => (FlagValue & 1) != 0;
 
-    /// <summary>True when <see cref="FlagValue"/> marks the browse element as an item.</summary>
+    /// <summary>
+    /// True when <see cref="FlagValue"/> marks the browse element as an item.
+    /// </summary>
     public bool IsItem => (FlagValue & 2) != 0;
 }

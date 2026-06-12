@@ -176,7 +176,9 @@ public class NtlmAuthentication
 
         public OpcProtectionLevel ProtectionLevel { get; }
 
-        /// <summary>NTLMSSP auth-service code (MS-RPCE §2.2.1.1.7).</summary>
+        /// <summary>
+        /// NTLMSSP auth-service code (MS-RPCE §2.2.1.1.7).
+        /// </summary>
         public byte AuthenticationServiceCode => 0x0A;
 
         public byte[] BuildInitialToken()
@@ -260,7 +262,9 @@ public class NtlmAuthentication
     /// </summary>
     public ISecurity Security { get; private set; }
 
-    /// <summary>Gets the exported NTLM session key established by the latest type-3 exchange.</summary>
+    /// <summary>
+    /// Gets the exported NTLM session key established by the latest type-3 exchange.
+    /// </summary>
     public ReadOnlyMemory<byte>? EstablishedSessionKey { get; private set; }
 
     /// <summary>

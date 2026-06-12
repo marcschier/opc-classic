@@ -17,10 +17,14 @@ public sealed class SoapEnvelopeReader : IDisposable
     private readonly XmlReader _reader;
     private readonly bool _ownsReader;
 
-    /// <summary>The underlying XML reader (caller may consume operation-specific elements through it).</summary>
+    /// <summary>
+    /// The underlying XML reader (caller may consume operation-specific elements through it).
+    /// </summary>
     public XmlReader Reader => _reader;
 
-    /// <summary>Wraps an existing XmlReader (ownership stays with caller).</summary>
+    /// <summary>
+    /// Wraps an existing XmlReader (ownership stays with caller).
+    /// </summary>
     public SoapEnvelopeReader(XmlReader reader)
     {
         ArgumentNullException.ThrowIfNull(reader);
@@ -28,7 +32,9 @@ public sealed class SoapEnvelopeReader : IDisposable
         _ownsReader = false;
     }
 
-    /// <summary>Creates a reader over the given stream.</summary>
+    /// <summary>
+    /// Creates a reader over the given stream.
+    /// </summary>
     public SoapEnvelopeReader(Stream stream)
     {
         ArgumentNullException.ThrowIfNull(stream);

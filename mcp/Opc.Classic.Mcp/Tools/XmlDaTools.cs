@@ -14,22 +14,32 @@ using Opc.Classic.Xml;
 
 namespace Opc.Classic.Mcp.Tools;
 
-/// <summary>Creates XML-DA client state for a session.</summary>
+/// <summary>
+/// Creates XML-DA client state for a session.
+/// </summary>
 public interface IOpcXmlDaConnectionFactory
 {
-    /// <summary>Connects to an XML-DA endpoint and returns client state.</summary>
+    /// <summary>
+    /// Connects to an XML-DA endpoint and returns client state.
+    /// </summary>
     Task<XmlDaClientState> ConnectAsync(XmlDaConnectionRequest request, CancellationToken cancellationToken = default);
 }
 
-/// <summary>Connection request used by XML-DA tools.</summary>
+/// <summary>
+/// Connection request used by XML-DA tools.
+/// </summary>
 public sealed record XmlDaConnectionRequest(string EndpointUrl);
 
-/// <summary>Registers in-memory XML-DA clients for MCP tests and loopback scenarios.</summary>
+/// <summary>
+/// Registers in-memory XML-DA clients for MCP tests and loopback scenarios.
+/// </summary>
 public static class InMemoryXmlDaConnectionRegistry
 {
     private static readonly System.Collections.Concurrent.ConcurrentDictionary<string, IXmlDaClient> Clients = new(StringComparer.OrdinalIgnoreCase);
 
-    /// <summary>Registers an in-memory XML-DA client by name.</summary>
+    /// <summary>
+    /// Registers an in-memory XML-DA client by name.
+    /// </summary>
     public static IDisposable Register(string name, IXmlDaClient client)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(name);
@@ -61,13 +71,17 @@ public static class InMemoryXmlDaConnectionRegistry
     }
 }
 
-/// <summary>MCP tools for OPC XML-DA SOAP/HTTP operations.</summary>
+/// <summary>
+/// MCP tools for OPC XML-DA SOAP/HTTP operations.
+/// </summary>
 public sealed class XmlDaTools
 {
     private readonly IOpcSessionManager _sessionManager;
     private readonly IOpcXmlDaConnectionFactory _connectionFactory;
 
-    /// <summary>Creates the XML-DA tool set.</summary>
+    /// <summary>
+    /// Creates the XML-DA tool set.
+    /// </summary>
     public XmlDaTools(IOpcSessionManager sessionManager, IEnumerable<IOpcXmlDaConnectionFactory> connectionFactories)
     {
         _sessionManager = sessionManager ?? throw new ArgumentNullException(nameof(sessionManager));
@@ -75,7 +89,9 @@ public sealed class XmlDaTools
         _connectionFactory = connectionFactories.FirstOrDefault() ?? new DefaultOpcXmlDaConnectionFactory();
     }
 
-    /// <summary>Connects a session to an OPC XML-DA HTTP endpoint.</summary>
+    /// <summary>
+    /// Connects a session to an OPC XML-DA HTTP endpoint.
+    /// </summary>
     [McpServerTool(Name = "opcclassic.xmlda.connect", ReadOnly = false, Idempotent = true, Destructive = false, OpenWorld = true)]
     [Description("Connects an existing MCP session to an OPC XML-DA HTTP/SOAP endpoint URL.")]
     public async Task<OpcResultDto> Connect(
@@ -99,7 +115,9 @@ public sealed class XmlDaTools
         return new OpcResultDto(0, $"XML-DA client connected to {client.EndpointUrl}.", Succeeded: true, ItemName: client.EndpointUrl);
     }
 
-    /// <summary>Gets XML-DA server status.</summary>
+    /// <summary>
+    /// Gets XML-DA server status.
+    /// </summary>
     [McpServerTool(Name = "opcclassic.xmlda.get_status", ReadOnly = true, Idempotent = true, Destructive = false, OpenWorld = true)]
     [Description("Calls XML-DA GetStatus on the connected HTTP endpoint.")]
     public async Task<OpcXmlDaServerStatusDto> GetStatus(
@@ -116,7 +134,9 @@ public sealed class XmlDaTools
         return ToDto(status);
     }
 
-    /// <summary>Browses an XML-DA address space.</summary>
+    /// <summary>
+    /// Browses an XML-DA address space.
+    /// </summary>
     [McpServerTool(Name = "opcclassic.xmlda.browse", ReadOnly = true, Idempotent = true, Destructive = false, OpenWorld = true)]
     [Description("Calls XML-DA Browse on the connected HTTP endpoint.")]
     public async Task<OpcXmlDaBrowseResponseDto> Browse(
@@ -153,7 +173,9 @@ public sealed class XmlDaTools
         return ToDto(response);
     }
 
-    /// <summary>Gets XML-DA item properties.</summary>
+    /// <summary>
+    /// Gets XML-DA item properties.
+    /// </summary>
     [McpServerTool(Name = "opcclassic.xmlda.get_properties", ReadOnly = true, Idempotent = true, Destructive = false, OpenWorld = true)]
     [Description("Calls XML-DA GetProperties for one or more item names.")]
     public async Task<OpcXmlDaGetPropertiesResponseDto> GetProperties(
@@ -191,7 +213,9 @@ public sealed class XmlDaTools
         return ToDto(response);
     }
 
-    /// <summary>Synchronously reads XML-DA item values.</summary>
+    /// <summary>
+    /// Synchronously reads XML-DA item values.
+    /// </summary>
     [McpServerTool(Name = "opcclassic.xmlda.read", ReadOnly = true, Idempotent = true, Destructive = false, OpenWorld = true)]
     [Description("Calls XML-DA Read for one or more items.")]
     public async Task<IReadOnlyList<OpcXmlDaItemValueDto>> Read(
@@ -214,7 +238,9 @@ public sealed class XmlDaTools
         return response.Items.Select(ToDto).ToArray();
     }
 
-    /// <summary>Synchronously writes XML-DA item values.</summary>
+    /// <summary>
+    /// Synchronously writes XML-DA item values.
+    /// </summary>
     [McpServerTool(Name = "opcclassic.xmlda.write", ReadOnly = false, Idempotent = false, Destructive = false, OpenWorld = true)]
     [Description("Calls XML-DA Write for one or more items.")]
     public async Task<IReadOnlyList<OpcXmlDaWriteResultDto>> Write(
@@ -239,7 +265,9 @@ public sealed class XmlDaTools
         return response.Items.Select(ToDto).ToArray();
     }
 
-    /// <summary>Creates an XML-DA subscription.</summary>
+    /// <summary>
+    /// Creates an XML-DA subscription.
+    /// </summary>
     [McpServerTool(Name = "opcclassic.xmlda.subscribe", ReadOnly = false, Idempotent = false, Destructive = false, OpenWorld = true)]
     [Description("Calls XML-DA Subscribe. Use opcclassic.xmlda.poll_subscription to retrieve changes.")]
     public async Task<OpcXmlDaSubscriptionDto> Subscribe(
@@ -281,7 +309,9 @@ public sealed class XmlDaTools
         return ToDto(response);
     }
 
-    /// <summary>Polls XML-DA subscriptions for changes.</summary>
+    /// <summary>
+    /// Polls XML-DA subscriptions for changes.
+    /// </summary>
     [McpServerTool(Name = "opcclassic.xmlda.poll_subscription", ReadOnly = true, Idempotent = false, Destructive = false, OpenWorld = true)]
     [Description("Calls XML-DA SubscriptionPolledRefresh for one or more server subscription handles.")]
     public async Task<OpcXmlDaSubscriptionPollDto> PollSubscription(
@@ -316,7 +346,9 @@ public sealed class XmlDaTools
         return ToDto(response);
     }
 
-    /// <summary>Cancels an XML-DA subscription.</summary>
+    /// <summary>
+    /// Cancels an XML-DA subscription.
+    /// </summary>
     [McpServerTool(Name = "opcclassic.xmlda.cancel_subscription", ReadOnly = false, Idempotent = true, Destructive = true, OpenWorld = true)]
     [Description("Calls XML-DA SubscriptionCancel for a server subscription handle.")]
     public async Task<OpcResultDto> CancelSubscription(
@@ -334,7 +366,9 @@ public sealed class XmlDaTools
         return new OpcResultDto(0, $"XML-DA subscription '{serverSubHandle}' cancelled.", Succeeded: true, SubscriptionId: serverSubHandle, ValueType: response.ClientRequestHandle);
     }
 
-    /// <summary>Disconnects XML-DA client state from the session.</summary>
+    /// <summary>
+    /// Disconnects XML-DA client state from the session.
+    /// </summary>
     [McpServerTool(Name = "opcclassic.xmlda.disconnect", ReadOnly = false, Idempotent = true, Destructive = true, OpenWorld = true)]
     [Description("Disconnects the session from its OPC XML-DA endpoint and releases HTTP client state.")]
     public async Task<OpcResultDto> Disconnect(

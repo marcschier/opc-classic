@@ -15,7 +15,9 @@ using Opc.Classic.Dcom.Transport;
 
 namespace Opc.Classic.Dcom.Rpc.Ncacn_Np;
 
-/// <summary>Legacy DCE/RPC transport over SMB2 named pipes.</summary>
+/// <summary>
+/// Legacy DCE/RPC transport over SMB2 named pipes.
+/// </summary>
 public sealed class RpcTransport : ITransport, IDisposable
 {
     private readonly MemoryStream _pendingRequest = new();
@@ -31,13 +33,17 @@ public sealed class RpcTransport : ITransport, IDisposable
     /// <inheritdoc />
     public PropertyBag Properties { get; }
 
-    /// <summary>Create transport.</summary>
+    /// <summary>
+    /// Create transport.
+    /// </summary>
     public RpcTransport(string address, PropertyBag properties)
         : this(address, properties, transportConnector: null)
     {
     }
 
-    /// <summary>Create transport with an injectable SMB2 connector.</summary>
+    /// <summary>
+    /// Create transport with an injectable SMB2 connector.
+    /// </summary>
     public RpcTransport(
         string address,
         PropertyBag properties,

@@ -93,34 +93,52 @@ internal sealed class IOPCServerList2ClientProxy
     }
 }
 
-/// <summary>Managed proxy for OPC Common <c>IOPCEnumGUID</c> enumerators returned by OPCEnum.</summary>
+/// <summary>
+/// Managed proxy for OPC Common <c>IOPCEnumGUID</c> enumerators returned by OPCEnum.
+/// </summary>
 public sealed class IOPCEnumGUIDClientProxy
 {
-    /// <summary>OPC Common <c>IOPCEnumGUID</c> interface identifier.</summary>
+    /// <summary>
+    /// OPC Common <c>IOPCEnumGUID</c> interface identifier.
+    /// </summary>
     public static readonly Guid InterfaceId = OpcGuids.IID_IOPCEnumGUID;
     private readonly ICallChannel _channel;
 
-    /// <summary>Initializes a new instance of the <see cref="IOPCEnumGUIDClientProxy" /> class.</summary>
+    /// <summary>
+    /// Initializes a new instance of the <see cref="IOPCEnumGUIDClientProxy" /> class.
+    /// </summary>
     public IOPCEnumGUIDClientProxy(ICallChannel channel) =>
         _channel = channel ?? throw new ArgumentNullException(nameof(channel));
 
-    /// <summary>OPC Common <c>IOPCEnumGUID</c> DCE/RPC operation numbers.</summary>
+    /// <summary>
+    /// OPC Common <c>IOPCEnumGUID</c> DCE/RPC operation numbers.
+    /// </summary>
     public static class Opnums
     {
-        /// <summary><c>IOPCEnumGUID::Next</c> operation number.</summary>
+        /// <summary>
+        /// <c>IOPCEnumGUID::Next</c> operation number.
+        /// </summary>
         public const int Next = 3;
 
-        /// <summary><c>IOPCEnumGUID::Skip</c> operation number.</summary>
+        /// <summary>
+        /// <c>IOPCEnumGUID::Skip</c> operation number.
+        /// </summary>
         public const int Skip = 4;
 
-        /// <summary><c>IOPCEnumGUID::Reset</c> operation number.</summary>
+        /// <summary>
+        /// <c>IOPCEnumGUID::Reset</c> operation number.
+        /// </summary>
         public const int Reset = 5;
 
-        /// <summary><c>IOPCEnumGUID::Clone</c> operation number.</summary>
+        /// <summary>
+        /// <c>IOPCEnumGUID::Clone</c> operation number.
+        /// </summary>
         public const int Clone = 6;
     }
 
-    /// <summary>Fetches up to <paramref name="count" /> GUIDs from the enumerator.</summary>
+    /// <summary>
+    /// Fetches up to <paramref name="count" /> GUIDs from the enumerator.
+    /// </summary>
     public async Task<OpcEnumGuidNextResult> NextAsync(int count, CancellationToken cancellationToken = default)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(count);
@@ -140,7 +158,9 @@ public sealed class IOPCEnumGUIDClientProxy
         return new OpcEnumGuidNextResult(classIds, fetched);
     }
 
-    /// <summary>Skips <paramref name="count" /> GUIDs in the enumerator.</summary>
+    /// <summary>
+    /// Skips <paramref name="count" /> GUIDs in the enumerator.
+    /// </summary>
     public Task SkipAsync(int count, CancellationToken cancellationToken = default)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(count);
@@ -155,7 +175,9 @@ public sealed class IOPCEnumGUIDClientProxy
             cancellationToken);
     }
 
-    /// <summary>Resets the enumerator to its first GUID.</summary>
+    /// <summary>
+    /// Resets the enumerator to its first GUID.
+    /// </summary>
     public Task ResetAsync(CancellationToken cancellationToken = default) =>
         OpcEnumProxyCodec.InvokeAsync(
             _channel,
@@ -165,7 +187,9 @@ public sealed class IOPCEnumGUIDClientProxy
             "IOPCEnumGUID::Reset",
             cancellationToken);
 
-    /// <summary>Clones the enumerator at its current position.</summary>
+    /// <summary>
+    /// Clones the enumerator at its current position.
+    /// </summary>
     public Task<IOpcInterfaceRef> CloneAsync(CancellationToken cancellationToken = default) =>
         OpcEnumProxyCodec.InvokeInterfaceRefAsync(
             _channel,
@@ -176,28 +200,42 @@ public sealed class IOPCEnumGUIDClientProxy
             cancellationToken);
 }
 
-/// <summary>Server implementation contract for OPC Common <c>IOPCEnumGUID</c>.</summary>
+/// <summary>
+/// Server implementation contract for OPC Common <c>IOPCEnumGUID</c>.
+/// </summary>
 public interface IOPCEnumGUIDServer
 {
-    /// <summary>Fetches up to <paramref name="count" /> GUIDs from the enumerator.</summary>
+    /// <summary>
+    /// Fetches up to <paramref name="count" /> GUIDs from the enumerator.
+    /// </summary>
     Task<OpcEnumGuidNextResult> NextAsync(int count, CancellationToken cancellationToken = default);
 
-    /// <summary>Skips up to <paramref name="count" /> GUIDs and returns the number actually skipped.</summary>
+    /// <summary>
+    /// Skips up to <paramref name="count" /> GUIDs and returns the number actually skipped.
+    /// </summary>
     Task<int> SkipAsync(int count, CancellationToken cancellationToken = default);
 
-    /// <summary>Resets the enumerator to its first GUID.</summary>
+    /// <summary>
+    /// Resets the enumerator to its first GUID.
+    /// </summary>
     Task ResetAsync(CancellationToken cancellationToken = default);
 
-    /// <summary>Clones the enumerator at its current position.</summary>
+    /// <summary>
+    /// Clones the enumerator at its current position.
+    /// </summary>
     Task<IOpcInterfaceRef> CloneAsync(CancellationToken cancellationToken = default);
 }
 
-/// <summary>Server-side dispatcher for OPC Common <c>IOPCEnumGUID</c>.</summary>
+/// <summary>
+/// Server-side dispatcher for OPC Common <c>IOPCEnumGUID</c>.
+/// </summary>
 public sealed class IOPCEnumGUIDServerDispatcher : IOpcServerDispatcher
 {
     private readonly IOPCEnumGUIDServer _server;
 
-    /// <summary>Initializes a new instance of the <see cref="IOPCEnumGUIDServerDispatcher" /> class.</summary>
+    /// <summary>
+    /// Initializes a new instance of the <see cref="IOPCEnumGUIDServerDispatcher" /> class.
+    /// </summary>
     public IOPCEnumGUIDServerDispatcher(IOPCEnumGUIDServer server) =>
         _server = server ?? throw new ArgumentNullException(nameof(server));
 
@@ -268,7 +306,9 @@ public sealed class IOPCEnumGUIDServerDispatcher : IOpcServerDispatcher
 
 internal sealed record OpcServerListClassDetails(string? ProgId, string? UserType, string? VerIndProgId);
 
-/// <summary>Result returned by <c>IOPCEnumGUID::Next</c>.</summary>
+/// <summary>
+/// Result returned by <c>IOPCEnumGUID::Next</c>.
+/// </summary>
 /// <param name="ClassIds">The GUIDs returned by the enumerator.</param>
 /// <param name="Fetched">The number of valid entries returned in <paramref name="ClassIds" />.</param>
 public sealed record OpcEnumGuidNextResult(Guid[] ClassIds, int Fetched);

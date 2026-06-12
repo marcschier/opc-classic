@@ -36,7 +36,9 @@ namespace Opc.Classic.Mcp.Capture;
 /// </remarks>
 public sealed class OpcWireCaptureSource : ICaptureSource
 {
-    /// <summary>Stable source name surfaced via the MCP info DTO.</summary>
+    /// <summary>
+    /// Stable source name surfaced via the MCP info DTO.
+    /// </summary>
     public const string SourceName = "wirecapture";
 
     private static readonly Regex s_bannerLine = new(

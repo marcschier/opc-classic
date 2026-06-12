@@ -5,10 +5,14 @@
 
 namespace Opc.Classic.Dcom.Core;
 
-/// <summary>SCM activation reply data with the returned OBJREF.</summary>
+/// <summary>
+/// SCM activation reply data with the returned OBJREF.
+/// </summary>
 public sealed record ScmReplyInfo(int Hresult, Guid Oxid, Guid Oid, Guid Ipid, byte[] ObjRef)
 {
-    /// <summary>Creates a reply and defensively copies the OBJREF payload.</summary>
+    /// <summary>
+    /// Creates a reply and defensively copies the OBJREF payload.
+    /// </summary>
     public ScmReplyInfo(int hresult, Guid oxid, Guid oid, Guid ipid, byte[] objRef, bool copy)
         : this(hresult, oxid, oid, ipid, copy ? Copy(objRef) : objRef)
     {

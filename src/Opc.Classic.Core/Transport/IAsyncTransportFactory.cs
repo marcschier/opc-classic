@@ -12,7 +12,9 @@ namespace Opc.Classic.Transport;
 /// </summary>
 public interface IAsyncTransportFactory
 {
-    /// <summary>Connects to a remote DCE/RPC endpoint.</summary>
+    /// <summary>
+    /// Connects to a remote DCE/RPC endpoint.
+    /// </summary>
     /// <param name="endpoint">The remote endpoint to connect to.</param>
     /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>The connected transport.</returns>

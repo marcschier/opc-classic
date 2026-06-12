@@ -78,20 +78,28 @@ public sealed class Smb2Connection : IAsyncDisposable
     private bool _treeEncryptData;
     private bool _disposed;
 
-    /// <summary>Initializes a new SMB2 connection over the supplied transport.</summary>
+    /// <summary>
+    /// Initializes a new SMB2 connection over the supplied transport.
+    /// </summary>
     public Smb2Connection(Smb2ConnectionOptions options, ISmb2Transport transport)
     {
         _options = ValidateOptions(options ?? throw new ArgumentNullException(nameof(options)));
         _transport = transport ?? throw new ArgumentNullException(nameof(transport));
     }
 
-    /// <summary>Gets the negotiated SMB2 dialect (valid after <see cref="NegotiateAsync" />).</summary>
+    /// <summary>
+    /// Gets the negotiated SMB2 dialect (valid after <see cref="NegotiateAsync" />).
+    /// </summary>
     public Smb2Dialect NegotiatedDialect => _negotiatedDialect;
 
-    /// <summary>Gets the session identifier (valid after authentication).</summary>
+    /// <summary>
+    /// Gets the session identifier (valid after authentication).
+    /// </summary>
     public ulong SessionId => _sessionId;
 
-    /// <summary>Gets the tree identifier for the current tree connect (0 if none).</summary>
+    /// <summary>
+    /// Gets the tree identifier for the current tree connect (0 if none).
+    /// </summary>
     public uint TreeId => _treeId;
 
     /// <summary>
@@ -253,7 +261,9 @@ public sealed class Smb2Connection : IAsyncDisposable
         }
     }
 
-    /// <summary>Connects to the <c>IPC$</c> share on the server.</summary>
+    /// <summary>
+    /// Connects to the <c>IPC$</c> share on the server.
+    /// </summary>
     public async Task<Smb2TreeConnectResponse> TreeConnectIpcAsync(CancellationToken cancellationToken = default)
     {
         ThrowIfDisposed();
@@ -277,7 +287,9 @@ public sealed class Smb2Connection : IAsyncDisposable
         return response;
     }
 
-    /// <summary>Opens a named pipe on the IPC$ share (e.g. <c>"winreg"</c>).</summary>
+    /// <summary>
+    /// Opens a named pipe on the IPC$ share (e.g. <c>"winreg"</c>).
+    /// </summary>
     public async Task<Smb2NamedPipe> OpenNamedPipeAsync(
         string pipeName,
         CancellationToken cancellationToken = default)
@@ -309,7 +321,9 @@ public sealed class Smb2Connection : IAsyncDisposable
         return new Smb2NamedPipe(this, response.FileIdPersistent, response.FileIdVolatile);
     }
 
-    /// <summary>Issues an SMB2 WRITE against the opened named pipe.</summary>
+    /// <summary>
+    /// Issues an SMB2 WRITE against the opened named pipe.
+    /// </summary>
     public async Task PipeWriteAsync(
         Smb2NamedPipe pipe,
         ReadOnlyMemory<byte> data,
@@ -338,7 +352,9 @@ public sealed class Smb2Connection : IAsyncDisposable
         }
     }
 
-    /// <summary>Issues an SMB2 READ against the opened named pipe.</summary>
+    /// <summary>
+    /// Issues an SMB2 READ against the opened named pipe.
+    /// </summary>
     public async Task<ReadOnlyMemory<byte>> PipeReadAsync(
         Smb2NamedPipe pipe,
         int maxLength,
@@ -365,7 +381,9 @@ public sealed class Smb2Connection : IAsyncDisposable
         return Smb2ReadResponse.Read(responseBytes.Span).Data;
     }
 
-    /// <summary>Issues a raw SMB2 IOCTL with <c>FSCTL_PIPE_TRANSCEIVE</c>.</summary>
+    /// <summary>
+    /// Issues a raw SMB2 IOCTL with <c>FSCTL_PIPE_TRANSCEIVE</c>.
+    /// </summary>
     public async Task<ReadOnlyMemory<byte>> PipeTransceiveAsync(
         Smb2NamedPipe pipe,
         ReadOnlyMemory<byte> data,
@@ -394,7 +412,9 @@ public sealed class Smb2Connection : IAsyncDisposable
         return Smb2IoctlResponse.Read(responseBytes.Span).Output;
     }
 
-    /// <summary>Closes a previously-opened named pipe handle.</summary>
+    /// <summary>
+    /// Closes a previously-opened named pipe handle.
+    /// </summary>
     public async Task ClosePipeAsync(Smb2NamedPipe pipe, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(pipe);
@@ -807,7 +827,9 @@ public sealed class Smb2Connection : IAsyncDisposable
     }
 }
 
-/// <summary>Allocates monotonic SMB2 MessageIds (per [MS-SMB2] §3.2.4.1.4).</summary>
+/// <summary>
+/// Allocates monotonic SMB2 MessageIds (per [MS-SMB2] §3.2.4.1.4).
+/// </summary>
 internal sealed class Smb2MessageCounter
 {
     private ulong _next;
@@ -815,7 +837,9 @@ internal sealed class Smb2MessageCounter
     public ulong Next() => Interlocked.Increment(ref _next);
 }
 
-/// <summary>Handle to an opened SMB2 named pipe (FileId on the wire).</summary>
+/// <summary>
+/// Handle to an opened SMB2 named pipe (FileId on the wire).
+/// </summary>
 public sealed class Smb2NamedPipe : IAsyncDisposable
 {
     private readonly Smb2Connection _connection;
@@ -831,15 +855,21 @@ public sealed class Smb2NamedPipe : IAsyncDisposable
     internal ulong FileIdPersistent { get; }
     internal ulong FileIdVolatile { get; }
 
-    /// <summary>Sends data with an SMB2 WRITE request.</summary>
+    /// <summary>
+    /// Sends data with an SMB2 WRITE request.
+    /// </summary>
     public Task WriteAsync(ReadOnlyMemory<byte> data, CancellationToken cancellationToken = default) =>
         _connection.PipeWriteAsync(this, data, cancellationToken);
 
-    /// <summary>Reads data with an SMB2 READ request.</summary>
+    /// <summary>
+    /// Reads data with an SMB2 READ request.
+    /// </summary>
     public Task<ReadOnlyMemory<byte>> ReadAsync(int maxLength, CancellationToken cancellationToken = default) =>
         _connection.PipeReadAsync(this, maxLength, cancellationToken);
 
-    /// <summary>Sends data and waits for a response in one round-trip via FSCTL_PIPE_TRANSCEIVE.</summary>
+    /// <summary>
+    /// Sends data and waits for a response in one round-trip via FSCTL_PIPE_TRANSCEIVE.
+    /// </summary>
     public Task<ReadOnlyMemory<byte>> TransceiveAsync(
         ReadOnlyMemory<byte> data,
         int maxOutputResponse = 64 * 1024,

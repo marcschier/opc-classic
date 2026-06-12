@@ -34,13 +34,19 @@ namespace Opc.Classic.Da.Hosting;
 /// </remarks>
 public interface IOpcDataCallbackSink : IDisposable
 {
-    /// <summary>Delivers an OnDataChange callback (opnum 3).</summary>
+    /// <summary>
+    /// Delivers an OnDataChange callback (opnum 3).
+    /// </summary>
     void OnDataChange(OpcDaGroup.DataChangePayload payload);
 
-    /// <summary>Delivers an OnReadComplete callback (opnum 4).</summary>
+    /// <summary>
+    /// Delivers an OnReadComplete callback (opnum 4).
+    /// </summary>
     void OnReadComplete(OpcDaGroup.DataChangePayload payload);
 
-    /// <summary>Delivers an OnWriteComplete callback (opnum 5).</summary>
+    /// <summary>
+    /// Delivers an OnWriteComplete callback (opnum 5).
+    /// </summary>
     void OnWriteComplete(
         int transactionId,
         int groupHandle,
@@ -48,6 +54,8 @@ public interface IOpcDataCallbackSink : IDisposable
         int[] clientHandles,
         int[] errors);
 
-    /// <summary>Delivers an OnCancelComplete callback (opnum 6).</summary>
+    /// <summary>
+    /// Delivers an OnCancelComplete callback (opnum 6).
+    /// </summary>
     void OnCancelComplete(OpcDaGroup.CancelCompletePayload payload);
 }

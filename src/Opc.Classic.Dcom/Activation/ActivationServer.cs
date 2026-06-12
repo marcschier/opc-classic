@@ -11,7 +11,9 @@ using Opc.Classic.Hosting;
 
 namespace Opc.Classic.Dcom.Activation;
 
-/// <summary>Server-side dispatcher for legacy <c>IActivation::RemoteActivation</c>.</summary>
+/// <summary>
+/// Server-side dispatcher for legacy <c>IActivation::RemoteActivation</c>.
+/// </summary>
 public sealed class ActivationServer : IRpcRequestContextDispatcher
 {
     private const int RemoteActivationOpnum = 0;
@@ -34,29 +36,39 @@ public sealed class ActivationServer : IRpcRequestContextDispatcher
     private readonly IActivationServer _activationServer;
     private readonly ILogger _logger;
 
-    /// <summary>Initializes a dispatcher backed by a decoded legacy activation server.</summary>
+    /// <summary>
+    /// Initializes a dispatcher backed by a decoded legacy activation server.
+    /// </summary>
     public ActivationServer(IActivationServer activationServer, ILogger? logger = null)
     {
         _activationServer = activationServer ?? throw new ArgumentNullException(nameof(activationServer));
         _logger = logger ?? NullLogger.Instance;
     }
 
-    /// <summary>Initializes a dispatcher backed by the modern activation implementation.</summary>
+    /// <summary>
+    /// Initializes a dispatcher backed by the modern activation implementation.
+    /// </summary>
     public ActivationServer(RemoteSCMActivatorServer modernActivator, ILogger? logger = null)
         : this(new LegacyActivationServer(modernActivator ?? throw new ArgumentNullException(nameof(modernActivator))), logger)
     {
     }
 
-    /// <summary>Initializes a dispatcher backed by managed class factories.</summary>
+    /// <summary>
+    /// Initializes a dispatcher backed by managed class factories.
+    /// </summary>
     public ActivationServer(ClassFactoryRegistry classFactories, ILogger? logger = null)
         : this(new RemoteSCMActivatorServer(classFactories ?? throw new ArgumentNullException(nameof(classFactories))), logger)
     {
     }
 
-    /// <summary>Gets the legacy activation interface IID.</summary>
+    /// <summary>
+    /// Gets the legacy activation interface IID.
+    /// </summary>
     public static Guid InterfaceId { get; } = Guid.Parse(Interfaces.IID_IActivation);
 
-    /// <summary>Adds this dispatcher to an endpoint dispatcher registry.</summary>
+    /// <summary>
+    /// Adds this dispatcher to an endpoint dispatcher registry.
+    /// </summary>
     public static void Register(
         IDictionary<Guid, IOpcServerDispatcher> dispatchers,
         IActivationServer activationServer,
@@ -66,7 +78,9 @@ public sealed class ActivationServer : IRpcRequestContextDispatcher
         dispatchers[InterfaceId] = new ActivationServer(activationServer, logger);
     }
 
-    /// <summary>Adds this dispatcher to an endpoint dispatcher registry.</summary>
+    /// <summary>
+    /// Adds this dispatcher to an endpoint dispatcher registry.
+    /// </summary>
     public static void Register(
         IDictionary<Guid, IOpcServerDispatcher> dispatchers,
         RemoteSCMActivatorServer modernActivator,
@@ -76,7 +90,9 @@ public sealed class ActivationServer : IRpcRequestContextDispatcher
         dispatchers[InterfaceId] = new ActivationServer(modernActivator, logger);
     }
 
-    /// <summary>Dispatches <c>IActivation::RemoteActivation</c> from an already-decoded RPC request body.</summary>
+    /// <summary>
+    /// Dispatches <c>IActivation::RemoteActivation</c> from an already-decoded RPC request body.
+    /// </summary>
     public static ValueTask<DispatchResult> DispatchRemoteActivationAsync(
         IActivationServer activationServer,
         ReadOnlyMemory<byte> requestPayload,
@@ -91,7 +107,9 @@ public sealed class ActivationServer : IRpcRequestContextDispatcher
             logger,
             cancellationToken);
 
-    /// <summary>Dispatches <c>IActivation::RemoteActivation</c> from an already-decoded RPC request body.</summary>
+    /// <summary>
+    /// Dispatches <c>IActivation::RemoteActivation</c> from an already-decoded RPC request body.
+    /// </summary>
     public static async ValueTask<DispatchResult> DispatchRemoteActivationAsync(
         IActivationServer activationServer,
         ReadOnlyMemory<byte> requestPayload,

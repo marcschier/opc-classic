@@ -10,10 +10,14 @@ namespace Opc.Classic.Cpx;
 /// </summary>
 public sealed class StructType
 {
-    /// <summary>Struct type name — referenced by <see cref="StructField.TypeReference"/>.</summary>
+    /// <summary>
+    /// Struct type name — referenced by <see cref="StructField.TypeReference"/>.
+    /// </summary>
     public required string Name { get; init; }
 
-    /// <summary>Default byte order applied to fields that don't specify one.</summary>
+    /// <summary>
+    /// Default byte order applied to fields that don't specify one.
+    /// </summary>
     public ByteOrder DefaultByteOrder { get; init; } = ByteOrder.LittleEndian;
 
     /// <summary>
@@ -23,6 +27,8 @@ public sealed class StructType
     /// </summary>
     public bool IsDefault { get; init; }
 
-    /// <summary>The struct's fields, in declared order.</summary>
+    /// <summary>
+    /// The struct's fields, in declared order.
+    /// </summary>
     public IReadOnlyList<StructField> Fields { get; init; } = Array.Empty<StructField>();
 }

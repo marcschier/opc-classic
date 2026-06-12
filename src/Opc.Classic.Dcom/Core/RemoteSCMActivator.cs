@@ -328,7 +328,6 @@ internal sealed class RemoteSCMActivator
         /// DWORD thisSize;
         /// COMVERSION clientCOMVersion;
         /// } InstantiationInfoData
-        ///
         /// </summary>
         internal Struct GetInstantiationInfoData()
         {

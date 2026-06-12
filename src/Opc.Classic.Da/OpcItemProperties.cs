@@ -15,7 +15,9 @@ public sealed record OpcItemProperties(int ErrorId, OpcItemPropertyResult[] Prop
 {
     private OpcItemPropertyResult[] _properties = Properties ?? throw new ArgumentNullException(nameof(Properties));
 
-    /// <summary>Per-property results; empty when no properties were returned.</summary>
+    /// <summary>
+    /// Per-property results; empty when no properties were returned.
+    /// </summary>
     public OpcItemPropertyResult[] Properties
     {
         get => _properties;

@@ -5,7 +5,9 @@
 
 namespace Opc.Classic.Dcom.Core;
 
-/// <summary>Managed shadow of SPECIAL_PROPERTIES_DATA.</summary>
+/// <summary>
+/// Managed shadow of SPECIAL_PROPERTIES_DATA.
+/// </summary>
 public sealed record SpecialPropertiesData(
     ActivationComVersion ClientVersion,
     int Mode,
@@ -13,7 +15,9 @@ public sealed record SpecialPropertiesData(
     Guid RequestedIid,
     IReadOnlyList<int> SpecialProperties)
 {
-    /// <summary>An empty v5.6 special-properties set.</summary>
+    /// <summary>
+    /// An empty v5.6 special-properties set.
+    /// </summary>
     public static SpecialPropertiesData Empty { get; } = new(
         ActivationComVersion.V5_6,
         0,

@@ -38,6 +38,8 @@ public sealed class DataChange
     /// </summary>
     public IReadOnlyList<ItemValueResult> Items { get; init; } = Array.Empty<ItemValueResult>();
 
-    /// <summary>True if this is a keep-alive heartbeat with no item updates.</summary>
+    /// <summary>
+    /// True if this is a keep-alive heartbeat with no item updates.
+    /// </summary>
     public bool IsKeepAlive => Items.Count == 0;
 }

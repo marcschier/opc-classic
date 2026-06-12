@@ -780,15 +780,25 @@ public class DefaultConnection : IConnection
         }
     }
 
-    /// <summary> Codec </summary>
+    /// <summary>
+    /// Codec
+    /// </summary>
     protected internal NdrCodec _ndr;
-    /// <summary> Buffer </summary>
+    /// <summary>
+    /// Buffer
+    /// </summary>
     protected internal NdrBuffer _transmitBuffer;
-    /// <summary> Buffer </summary>
+    /// <summary>
+    /// Buffer
+    /// </summary>
     protected internal NdrBuffer _receiveBuffer;
-    /// <summary> Securit </summary>
+    /// <summary>
+    /// Securit
+    /// </summary>
     protected internal ISecurity _security;
-    /// <summary> Context </summary>
+    /// <summary>
+    /// Context
+    /// </summary>
     protected internal int _contextId;
     private bool _bytesRemainingInRecieveBuffer;
 }

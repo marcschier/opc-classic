@@ -56,19 +56,27 @@ public sealed class DaCallbackEndpoint : IAsyncDisposable
     private IObjectExporterDispatcher? _objectExporter;
     private bool _disposed;
 
-    /// <summary>Creates an unstarted endpoint.</summary>
+    /// <summary>
+    /// Creates an unstarted endpoint.
+    /// </summary>
     public DaCallbackEndpoint(ILogger? logger = null)
     {
         _logger = logger ?? NullLogger.Instance;
     }
 
-    /// <summary>True once <see cref="StartAsync"/> has bound the listener.</summary>
+    /// <summary>
+    /// True once <see cref="StartAsync"/> has bound the listener.
+    /// </summary>
     public bool IsRunning => _listener is not null;
 
-    /// <summary>Gets the bound network endpoint; null until <see cref="StartAsync"/> completes.</summary>
+    /// <summary>
+    /// Gets the bound network endpoint; null until <see cref="StartAsync"/> completes.
+    /// </summary>
     public IPEndPoint? LocalEndpoint => _listener?.LocalEndpoint as IPEndPoint;
 
-    /// <summary>Number of currently-registered sink IPIDs.</summary>
+    /// <summary>
+    /// Number of currently-registered sink IPIDs.
+    /// </summary>
     public int RegisteredSinkCount => _sinksByIpid.Count;
 
     /// <summary>
@@ -78,7 +86,9 @@ public sealed class DaCallbackEndpoint : IAsyncDisposable
     /// </summary>
     public Guid IRemUnknownIpid => _objectExporter?.IRemUnknownIpid ?? Guid.Empty;
 
-    /// <summary>Starts the loopback listener. Idempotent — calling again is a no-op.</summary>
+    /// <summary>
+    /// Starts the loopback listener. Idempotent — calling again is a no-op.
+    /// </summary>
     public async Task StartAsync(CancellationToken cancellationToken)
     {
         ObjectDisposedException.ThrowIf(_disposed, this);
@@ -155,7 +165,9 @@ public sealed class DaCallbackEndpoint : IAsyncDisposable
         }
     }
 
-    /// <summary>Unregisters a previously-registered sink IPID. Returns false when the IPID is not known.</summary>
+    /// <summary>
+    /// Unregisters a previously-registered sink IPID. Returns false when the IPID is not known.
+    /// </summary>
     public bool UnregisterSink(Guid ipid)
     {
         if (ipid == Guid.Empty || _disposed)
@@ -211,7 +223,9 @@ public sealed class DaCallbackEndpoint : IAsyncDisposable
         }
     }
 
-    /// <summary>Stops the listener; idempotent.</summary>
+    /// <summary>
+    /// Stops the listener; idempotent.
+    /// </summary>
     public Task StopAsync(CancellationToken cancellationToken)
     {
         if (_disposed)

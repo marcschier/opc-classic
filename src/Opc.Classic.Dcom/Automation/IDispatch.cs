@@ -7,7 +7,7 @@ namespace Opc.Classic.Dcom.Automation;
 
 /// <summary>
 /// Represents the Windows COM <code>IDispatch</code> Interface.
-///
+/// <para>
 /// Sample Usage :
 /// <code>
 /// // Assume comServer is the reference to <see cref="ComServer"/>, obtained earlier...
@@ -17,7 +17,8 @@ namespace Opc.Classic.Dcom.Automation;
 ///    (<see cref="IDispatch"/>)<see cref="ObjectFactory"/>.NarrowObject(
 ///    comObject.QueryInterface(<see cref="IDispatch"/>.IID));
 /// </code>
-///
+/// </para>
+/// <para>
 /// Another example :
 /// <code>
 /// int dispId = dispatch.getIDsOfNames("Workbooks");
@@ -32,7 +33,8 @@ namespace Opc.Classic.Dcom.Automation;
 /// dispatchOfWorkSheets =
 ///    (<see cref="IDispatch"/>)<see cref="ObjectFactory"/>.NarrowObject(outVal.GetObjectAsComObject());
 /// </code>
-///
+/// </para>
+/// <para>
 /// Please note that all <code>[in]</code> parameters are converted to
 /// <code><seealso cref="Variant"/></code>
 /// before being sent to the COM server through the <code><see cref="IDispatch"/></code>
@@ -60,6 +62,7 @@ namespace Opc.Classic.Dcom.Automation;
 /// Where ever the corresponding COM interface API requires an <code>[optional]</code> 
 /// parameter, the developer can use <code><see cref="Variant"/>.OPTIONAL_PARAM()</code>,
 /// like in the example above.
+/// </para>
 /// </summary>
 public interface IDispatch : IComObject
 {

@@ -23,12 +23,16 @@ public sealed class DefaultBrowse : IOPCBrowse
 {
     private readonly IOpcAddressSpace _addressSpace;
 
-    /// <summary>Initializes with an empty flat address space.</summary>
+    /// <summary>
+    /// Initializes with an empty flat address space.
+    /// </summary>
     public DefaultBrowse() : this(new FlatHierarchicalNamespace())
     {
     }
 
-    /// <summary>Initializes with the supplied address space.</summary>
+    /// <summary>
+    /// Initializes with the supplied address space.
+    /// </summary>
     public DefaultBrowse(IOpcAddressSpace addressSpace)
     {
         _addressSpace = addressSpace ?? throw new ArgumentNullException(nameof(addressSpace));

@@ -77,10 +77,14 @@ public sealed class RemoteRegistryEnum : IOpcDiscovery
         _logger = logger ?? NullLogger<RemoteRegistryEnum>.Instance;
     }
 
-    /// <summary>The remote host whose registry will be enumerated by default.</summary>
+    /// <summary>
+    /// The remote host whose registry will be enumerated by default.
+    /// </summary>
     public string Host { get; }
 
-    /// <summary>The credentials that authenticate to the remote registry transport.</summary>
+    /// <summary>
+    /// The credentials that authenticate to the remote registry transport.
+    /// </summary>
     public NetworkCredential Credentials { get; }
 
     /// <inheritdoc />

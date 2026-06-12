@@ -18,12 +18,16 @@ public interface IOpcEnumCallChannelFactory
     /// </summary>
     OpcProtectionLevel ActivationProtectionLevel => OpcProtectionLevel.Integrity;
 
-    /// <summary>Creates a channel bound to the remote SCM activation interface.</summary>
+    /// <summary>
+    /// Creates a channel bound to the remote SCM activation interface.
+    /// </summary>
     ValueTask<ICallChannel> CreateActivationChannelAsync(
         string host,
         CancellationToken cancellationToken = default);
 
-    /// <summary>Creates a channel bound to an activated OPCEnum interface pointer.</summary>
+    /// <summary>
+    /// Creates a channel bound to an activated OPCEnum interface pointer.
+    /// </summary>
     ValueTask<ICallChannel> CreateObjectChannelAsync(
         string host,
         IOpcInterfaceRef interfaceRef,

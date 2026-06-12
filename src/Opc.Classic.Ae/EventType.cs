@@ -12,14 +12,24 @@ namespace Opc.Classic.Ae;
 [Flags]
 public enum EventType
 {
-    /// <summary>No event type selected.</summary>
+    /// <summary>
+    /// No event type selected.
+    /// </summary>
     None = 0,
-    /// <summary>A simple event (a notification without a condition).</summary>
+    /// <summary>
+    /// A simple event (a notification without a condition).
+    /// </summary>
     Simple = 0x0001,
-    /// <summary>A tracking event (an operator action).</summary>
+    /// <summary>
+    /// A tracking event (an operator action).
+    /// </summary>
     Tracking = 0x0002,
-    /// <summary>A condition-related event (alarm).</summary>
+    /// <summary>
+    /// A condition-related event (alarm).
+    /// </summary>
     Condition = 0x0004,
-    /// <summary>Any/all of the above.</summary>
+    /// <summary>
+    /// Any/all of the above.
+    /// </summary>
     All = Simple | Tracking | Condition,
 }

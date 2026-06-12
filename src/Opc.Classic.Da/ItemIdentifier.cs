@@ -15,7 +15,9 @@ namespace Opc.Classic.Da;
 /// </remarks>
 public class ItemIdentifier : IEquatable<ItemIdentifier>
 {
-    /// <summary>Construct an identifier.</summary>
+    /// <summary>
+    /// Construct an identifier.
+    /// </summary>
     /// <param name="itemName">
     /// Fully-qualified item name as the server understands it (e.g.
     /// <c>"Random.Int1"</c> or <c>"PLC1.MotorSpeed"</c>).
@@ -31,13 +33,19 @@ public class ItemIdentifier : IEquatable<ItemIdentifier>
         Path = path;
     }
 
-    /// <summary>Fully-qualified item name.</summary>
+    /// <summary>
+    /// Fully-qualified item name.
+    /// </summary>
     public string ItemName { get; init; }
 
-    /// <summary>Optional access path.</summary>
+    /// <summary>
+    /// Optional access path.
+    /// </summary>
     public string? Path { get; init; }
 
-    /// <summary>Value equality on <see cref="ItemName"/> + <see cref="Path"/>.</summary>
+    /// <summary>
+    /// Value equality on <see cref="ItemName"/> + <see cref="Path"/>.
+    /// </summary>
     public bool Equals(ItemIdentifier? other) =>
         other is not null &&
         string.Equals(ItemName, other.ItemName, StringComparison.Ordinal) &&
@@ -50,11 +58,15 @@ public class ItemIdentifier : IEquatable<ItemIdentifier>
     /// <inheritdoc />
     public override int GetHashCode() => HashCode.Combine(ItemName, Path);
 
-    /// <summary>Value-equality operator.</summary>
+    /// <summary>
+    /// Value-equality operator.
+    /// </summary>
     public static bool operator ==(ItemIdentifier? left, ItemIdentifier? right) =>
         Equals(left, right);
 
-    /// <summary>Value-inequality operator.</summary>
+    /// <summary>
+    /// Value-inequality operator.
+    /// </summary>
     public static bool operator !=(ItemIdentifier? left, ItemIdentifier? right) =>
         !Equals(left, right);
 

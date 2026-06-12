@@ -18,7 +18,9 @@ namespace Opc.Classic;
 /// </remarks>
 public class OpcException : Exception
 {
-    /// <summary>The OPC HRESULT result-ID that caused this exception.</summary>
+    /// <summary>
+    /// The OPC HRESULT result-ID that caused this exception.
+    /// </summary>
     public OpcResultId ResultId { get; }
 
     public OpcException()

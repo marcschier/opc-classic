@@ -15,6 +15,6 @@
     <ProjectReference Include="..\Opc.Classic.Dcom\Opc.Classic.Dcom.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <InternalsVisibleTo Include="Opc.Classic.Ae.Windows" Key="$(OpcClassicPublicKey)" />
+    <InternalsVisibleTo Include="Opc.Classic.Hosting.Windows" Key="$(OpcClassicPublicKey)" />
   </ItemGroup>
 </Project>

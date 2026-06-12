@@ -12,6 +12,8 @@ namespace Opc.Classic.Batch;
 /// </summary>
 public static class OpcBatchErrors
 {
-    /// <summary><c>OPCB_E_NOT_MEANINGFUL</c> (0xC0040300) — data is not meaningful at the present time.</summary>
+    /// <summary>
+    /// <c>OPCB_E_NOT_MEANINGFUL</c> (0xC0040300) — data is not meaningful at the present time.
+    /// </summary>
     public const int OPCB_E_NOT_MEANINGFUL = unchecked((int)0xC0040300u);
 }

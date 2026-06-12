@@ -5,17 +5,29 @@
 
 namespace Opc.Classic;
 
-/// <summary>Identifies which OPC specification produced an <see cref="OpcServerStatus"/>.</summary>
+/// <summary>
+/// Identifies which OPC specification produced an <see cref="OpcServerStatus"/>.
+/// </summary>
 public enum OpcStatusSpec
 {
-    /// <summary>Source is unknown (default / uninitialized).</summary>
+    /// <summary>
+    /// Source is unknown (default / uninitialized).
+    /// </summary>
     Unknown = 0,
-    /// <summary>OPC Data Access — <c>OPCSERVERSTATUS</c>.</summary>
+    /// <summary>
+    /// OPC Data Access — <c>OPCSERVERSTATUS</c>.
+    /// </summary>
     Da,
-    /// <summary>OPC Alarms &amp; Events — <c>OPCEVENTSERVERSTATUS</c>.</summary>
+    /// <summary>
+    /// OPC Alarms &amp; Events — <c>OPCEVENTSERVERSTATUS</c>.
+    /// </summary>
     Ae,
-    /// <summary>OPC Historical Data Access — <c>OPCHDA_SERVERSTATUS</c>.</summary>
+    /// <summary>
+    /// OPC Historical Data Access — <c>OPCHDA_SERVERSTATUS</c>.
+    /// </summary>
     Hda,
-    /// <summary>OPC Data eXchange.</summary>
+    /// <summary>
+    /// OPC Data eXchange.
+    /// </summary>
     Dx,
 }

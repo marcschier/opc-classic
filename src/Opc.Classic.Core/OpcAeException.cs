@@ -5,7 +5,9 @@
 
 namespace Opc.Classic;
 
-/// <summary>OPC Alarms &amp; Events (AE) specification errors.</summary>
+/// <summary>
+/// OPC Alarms &amp; Events (AE) specification errors.
+/// </summary>
 public sealed class OpcAeException : OpcException
 {
     public OpcAeException() { }

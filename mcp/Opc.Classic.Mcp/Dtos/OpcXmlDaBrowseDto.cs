@@ -5,14 +5,18 @@
 
 namespace Opc.Classic.Mcp.Dtos;
 
-/// <summary>JSON-friendly OPC XML-DA browse response.</summary>
+/// <summary>
+/// JSON-friendly OPC XML-DA browse response.
+/// </summary>
 public sealed record OpcXmlDaBrowseResponseDto(
     string ServerState,
     IReadOnlyList<OpcXmlDaBrowseElementDto> Elements,
     string ContinuationPoint,
     bool MoreElements);
 
-/// <summary>JSON-friendly OPC XML-DA browse element.</summary>
+/// <summary>
+/// JSON-friendly OPC XML-DA browse element.
+/// </summary>
 public sealed record OpcXmlDaBrowseElementDto(
     string Name,
     string ItemPath,
@@ -20,12 +24,16 @@ public sealed record OpcXmlDaBrowseElementDto(
     bool IsItem,
     bool HasChildren);
 
-/// <summary>JSON-friendly OPC XML-DA get-properties response.</summary>
+/// <summary>
+/// JSON-friendly OPC XML-DA get-properties response.
+/// </summary>
 public sealed record OpcXmlDaGetPropertiesResponseDto(
     string ServerState,
     IReadOnlyList<OpcXmlDaItemPropertyListDto> PropertyLists);
 
-/// <summary>JSON-friendly OPC XML-DA properties for one item.</summary>
+/// <summary>
+/// JSON-friendly OPC XML-DA properties for one item.
+/// </summary>
 public sealed record OpcXmlDaItemPropertyListDto(
     string ItemName,
     string ItemPath,
@@ -33,7 +41,9 @@ public sealed record OpcXmlDaItemPropertyListDto(
     string? ResultId,
     string ResultCode);
 
-/// <summary>JSON-friendly OPC XML-DA property value.</summary>
+/// <summary>
+/// JSON-friendly OPC XML-DA property value.
+/// </summary>
 public sealed record OpcXmlDaPropertyValueDto(
     string Name,
     string? Description,

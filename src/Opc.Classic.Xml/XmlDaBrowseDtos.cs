@@ -12,17 +12,25 @@ namespace Opc.Classic.Xml;
 /// </summary>
 public enum XmlDaBrowseFilter
 {
-    /// <summary>Return both branches and leaves.</summary>
+    /// <summary>
+    /// Return both branches and leaves.
+    /// </summary>
     All = 0,
 
-    /// <summary>Return only branches (organizational levels).</summary>
+    /// <summary>
+    /// Return only branches (organizational levels).
+    /// </summary>
     Branch = 1,
 
-    /// <summary>Return only items (leaf nodes).</summary>
+    /// <summary>
+    /// Return only items (leaf nodes).
+    /// </summary>
     Item = 2,
 }
 
-/// <summary>An XML-DA <c>Browse</c> request payload.</summary>
+/// <summary>
+/// An XML-DA <c>Browse</c> request payload.
+/// </summary>
 /// <param name="Header">Common LocaleID / ClientRequestHandle header.</param>
 /// <param name="ItemName">The branch to browse below. Empty = browse the root.</param>
 /// <param name="ItemPath">Optional vendor-defined path scoping.</param>
@@ -39,7 +47,9 @@ public sealed record XmlDaBrowseRequest(
     XmlDaBrowseFilter BrowseFilter = XmlDaBrowseFilter.All,
     string ElementNameFilter = "");
 
-/// <summary>A single browse element in an XML-DA <c>BrowseResponse</c>.</summary>
+/// <summary>
+/// A single browse element in an XML-DA <c>BrowseResponse</c>.
+/// </summary>
 /// <param name="Name">Display name of the element.</param>
 /// <param name="ItemPath">Vendor-defined path (typically empty).</param>
 /// <param name="ItemName">Fully-qualified item identifier (the address-space path).</param>
@@ -52,7 +62,9 @@ public sealed record XmlDaBrowseElement(
     bool IsItem,
     bool HasChildren);
 
-/// <summary>An XML-DA <c>BrowseResponse</c> payload.</summary>
+/// <summary>
+/// An XML-DA <c>BrowseResponse</c> payload.
+/// </summary>
 /// <param name="ServerState">Top-level <c>BrowseResult.ServerState</c>.</param>
 /// <param name="Elements">The browsed elements.</param>
 /// <param name="ContinuationPoint">Server-supplied token for paging; empty when no more pages exist.</param>

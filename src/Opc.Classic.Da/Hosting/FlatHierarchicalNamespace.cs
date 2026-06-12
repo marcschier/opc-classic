@@ -12,7 +12,9 @@ namespace Opc.Classic.Da.Hosting;
 /// </summary>
 public sealed class FlatHierarchicalNamespace : IOpcAddressSpace
 {
-    /// <summary>Per OPC DA 2.05a §4.6.4, FLAT = OPCNS_FLAT (1).</summary>
+    /// <summary>
+    /// Per OPC DA 2.05a §4.6.4, FLAT = OPCNS_FLAT (1).
+    /// </summary>
     public bool IsHierarchical => false;
 
     /// <inheritdoc />

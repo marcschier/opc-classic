@@ -13,17 +13,23 @@ using Opc.Classic.Mcp.Sessions;
 
 namespace Opc.Classic.Mcp.Tools;
 
-/// <summary>MCP tools for OPC Complex Data (CPX) metadata operations.</summary>
+/// <summary>
+/// MCP tools for OPC Complex Data (CPX) metadata operations.
+/// </summary>
 public sealed class CpxTools
 {
     private static readonly string[] SupportedTypeSystemIds = [TypeDictionary.OpcBinaryTypeSystemId, TypeDictionary.XmlSchemaTypeSystemId];
     private readonly IOpcSessionManager _sessionManager;
 
-    /// <summary>Creates the CPX tool set.</summary>
+    /// <summary>
+    /// Creates the CPX tool set.
+    /// </summary>
     public CpxTools(IOpcSessionManager sessionManager) =>
         _sessionManager = sessionManager ?? throw new ArgumentNullException(nameof(sessionManager));
 
-    /// <summary>Gets the complex-type description for a DA item.</summary>
+    /// <summary>
+    /// Gets the complex-type description for a DA item.
+    /// </summary>
     [McpServerTool(Name = "opcclassic.cpx.get_complex_type", ReadOnly = true, Idempotent = true, Destructive = false, OpenWorld = true)]
     [Description("Gets OPC Complex Data metadata for a DA item, including type ID, dictionary ID, type item ID, unconverted item ID, and available filters.")]
     public async Task<OpcComplexTypeDto> GetComplexType(
@@ -60,7 +66,9 @@ public sealed class CpxTools
             availableFilters);
     }
 
-    /// <summary>Gets an OPC Complex Data type-system descriptor.</summary>
+    /// <summary>
+    /// Gets an OPC Complex Data type-system descriptor.
+    /// </summary>
     [McpServerTool(Name = "opcclassic.cpx.get_type_system", ReadOnly = true, Idempotent = true, Destructive = false, OpenWorld = true)]
     [Description("Gets the OPC Complex Data namespace descriptor for a supported type system: OPCBinary or XMLSchema.")]
     public OpcTypeSystemDto GetTypeSystem(
@@ -76,7 +84,9 @@ public sealed class CpxTools
         return new OpcTypeSystemDto(normalized, supported, namespacePath, SupportedTypeSystemIds);
     }
 
-    /// <summary>Gets a CPX type dictionary.</summary>
+    /// <summary>
+    /// Gets a CPX type dictionary.
+    /// </summary>
     [McpServerTool(Name = "opcclassic.cpx.get_dictionary", ReadOnly = true, Idempotent = true, Destructive = false, OpenWorld = true)]
     [Description("Gets a Complex Data type dictionary by dictionary ID and parses OPCBinary or XMLSchema dictionaries when possible.")]
     public async Task<OpcTypeDictionaryDto> GetDictionary(

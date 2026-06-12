@@ -141,7 +141,9 @@ internal sealed class ComTransport : ITransport, IDisposable
         }
     }
 
-    /// <summary>Releases the underlying TCP resources.</summary>
+    /// <summary>
+    /// Releases the underlying TCP resources.
+    /// </summary>
     public void Dispose()
     {
         Close();

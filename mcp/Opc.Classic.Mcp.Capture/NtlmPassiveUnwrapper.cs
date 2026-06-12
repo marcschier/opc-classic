@@ -18,10 +18,14 @@ namespace Opc.Classic.Mcp.Capture;
 /// </summary>
 public enum NtlmDirection
 {
-    /// <summary>Frame sent by the DCOM client to the server (request side).</summary>
+    /// <summary>
+    /// Frame sent by the DCOM client to the server (request side).
+    /// </summary>
     ClientToServer,
 
-    /// <summary>Frame sent by the DCOM server to the client (response / notification side).</summary>
+    /// <summary>
+    /// Frame sent by the DCOM server to the client (response / notification side).
+    /// </summary>
     ServerToClient,
 }
 
@@ -35,10 +39,14 @@ public enum NtlmDirection
 /// </summary>
 public enum NtlmUnwrapStatus
 {
-    /// <summary>Body decrypted + signature verified (privacy mode).</summary>
+    /// <summary>
+    /// Body decrypted + signature verified (privacy mode).
+    /// </summary>
     Decrypted,
 
-    /// <summary>Body left as-is (already plaintext) + signature verified (integrity-only mode).</summary>
+    /// <summary>
+    /// Body left as-is (already plaintext) + signature verified (integrity-only mode).
+    /// </summary>
     IntegrityVerified,
 
     /// <summary>
@@ -49,10 +57,14 @@ public enum NtlmUnwrapStatus
     /// </summary>
     SignatureMismatch,
 
-    /// <summary>The auth trailer length did not match the NTLM verifier length (16 bytes); not an NTLMSSP-signed PDU.</summary>
+    /// <summary>
+    /// The auth trailer length did not match the NTLM verifier length (16 bytes); not an NTLMSSP-signed PDU.
+    /// </summary>
     InvalidTrailerLength,
 
-    /// <summary>The unwrapper was constructed with the disabled-/no-key sentinel and silently passes through.</summary>
+    /// <summary>
+    /// The unwrapper was constructed with the disabled-/no-key sentinel and silently passes through.
+    /// </summary>
     Disabled,
 }
 
@@ -67,7 +79,9 @@ public enum NtlmUnwrapStatus
 /// </param>
 public readonly record struct NtlmUnwrapResult(NtlmUnwrapStatus Status, string? Reason)
 {
-    /// <summary>Convenience: true when the stub buffer contains plaintext after the call.</summary>
+    /// <summary>
+    /// Convenience: true when the stub buffer contains plaintext after the call.
+    /// </summary>
     public bool Succeeded => Status is NtlmUnwrapStatus.Decrypted or NtlmUnwrapStatus.IntegrityVerified;
 }
 
@@ -133,7 +147,9 @@ public sealed class NtlmPassiveUnwrapper : IDisposable
         NtlmFlags.NtlmsspNegotiateKeyExch |
         NtlmFlags.NtlmsspNegotiate128;
 
-    /// <summary>NTLM verifier length (auth trailer length on RPC PDUs).</summary>
+    /// <summary>
+    /// NTLM verifier length (auth trailer length on RPC PDUs).
+    /// </summary>
     public const int VerifierLength = 16;
 
     // MS-NLMP §3.4.5.3 magic constants used to derive 4 sub-keys from
@@ -249,16 +265,24 @@ public sealed class NtlmPassiveUnwrapper : IDisposable
         IsDisabled = true;
     }
 
-    /// <summary>Singleton no-op unwrapper used when no session key is configured.</summary>
+    /// <summary>
+    /// Singleton no-op unwrapper used when no session key is configured.
+    /// </summary>
     public static NtlmPassiveUnwrapper Disabled { get; } = new();
 
-    /// <summary>True for the disabled sentinel; false for a real keyed unwrapper.</summary>
+    /// <summary>
+    /// True for the disabled sentinel; false for a real keyed unwrapper.
+    /// </summary>
     public bool IsDisabled { get; }
 
-    /// <summary>Current direction-specific sequence counter (test-visible).</summary>
+    /// <summary>
+    /// Current direction-specific sequence counter (test-visible).
+    /// </summary>
     public int ClientSequence => _clientSequence;
 
-    /// <summary>Current direction-specific sequence counter (test-visible).</summary>
+    /// <summary>
+    /// Current direction-specific sequence counter (test-visible).
+    /// </summary>
     public int ServerSequence => _serverSequence;
 
     /// <summary>

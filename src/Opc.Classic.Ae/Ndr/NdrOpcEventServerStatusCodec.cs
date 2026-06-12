@@ -29,7 +29,9 @@ public static class NdrOpcEventServerStatusCodec
 {
     private const long FileTimeEpochOffsetTicks = 504911232000000000L;
 
-    /// <summary>Encodes an OPCEVENTSERVERSTATUS in NDR (AE variant — assumes Spec == AE).</summary>
+    /// <summary>
+    /// Encodes an OPCEVENTSERVERSTATUS in NDR (AE variant — assumes Spec == AE).
+    /// </summary>
     public static void Write(ref NdrWriter writer, OpcServerStatus status)
     {
         ArgumentNullException.ThrowIfNull(status);
@@ -45,7 +47,9 @@ public static class NdrOpcEventServerStatusCodec
         writer.WriteUnicodeStringPtr(status.VendorInfo);
     }
 
-    /// <summary>Decodes an OPCEVENTSERVERSTATUS from NDR (AE variant).</summary>
+    /// <summary>
+    /// Decodes an OPCEVENTSERVERSTATUS from NDR (AE variant).
+    /// </summary>
     public static OpcServerStatus Read(ref NdrReader reader)
     {
         DateTimeOffset start = ReadAndDecodeFileTime(ref reader, "ftStartTime");

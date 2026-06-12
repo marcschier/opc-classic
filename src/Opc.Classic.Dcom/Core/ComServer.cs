@@ -59,18 +59,25 @@ public sealed class ComServer : Stub
     }
 
     /// <summary>
-    ///<para> Instantiates a <see cref="ComServer"/> represented by the interfacePointer param. There are cases where a COM server may hand down a
+    /// <para> Instantiates a <see cref="ComServer"/> represented by the interfacePointer param. There are cases where a COM server may hand
+    /// down a
     /// reference to a different COM server(which may or may not be on the same machine) and we would like to hook in between.
-    /// The <code><see cref="IComObject"/></code> interface is usable only in the context of the current <see cref="ComServer"/>, but when the interfacePointer
-    /// is of a completely different COM server, the <see cref="ObjectFactory"/> APIs will not work. The reason is the interface pointer passed to those
+    /// The <code><see cref="IComObject"/></code> interface is usable only in the context of the current <see cref="ComServer"/>, but when
+    /// the interfacePointer
+    /// is of a completely different COM server, the <see cref="ObjectFactory"/> APIs will not work. The reason is the interface pointer
+    /// passed to those
     /// APIs expects to belong only to a single and same COM server (say 'A'). If by any chance, that COM server passes a reference to you
-    /// of another COM server (say 'B') on a different machine, the <code><see cref="IComObject"/></code> so returned from <code><see cref="ObjectFactory"/></code> APIs
-    /// will result in "Method not found" Exceptions (or others) since the pointer returned via that will always place calls to  'A' instead of 'B'.
-    /// Under such scenarios you must use this API. This is not a usual case and for reasons related to nature of DCOM, will be very well documented
+    /// of another COM server (say 'B') on a different machine, the <code><see cref="IComObject"/></code> so returned from
+    /// <code><see cref="ObjectFactory"/></code> APIs
+    /// will result in "Method not found" Exceptions (or others) since the pointer returned via that will always place calls to 'A' instead
+    /// of 'B'.
+    /// Under such scenarios you must use this API. This is not a usual case and for reasons related to nature of DCOM, will be very well
+    /// documented
     /// in the Developers guide of your COM server.
-    ///
+    /// <para>
     /// </para>
     /// <para>The DCOM specs refer to this as the "middleman" case. (Section 3.3.1) </para>
+    /// </para>
     /// </summary>
     /// <exception cref="InteropException">Thrown when the remote COM or DCOM operation reports a protocol or HRESULT failure.</exception>
     /// <param name="session"> Please use a new session and not an already bounded one. The <code><see cref="Session"/>.createSession(<see cref="Session"/>)</code> can be used to create a new session. </param>

@@ -10,10 +10,14 @@ using Opc.Classic.Da.Hosting;
 
 namespace Opc.Classic.Cpx.Hosting;
 
-/// <summary>Service registration helpers for CPX-enabled managed DA hosts.</summary>
+/// <summary>
+/// Service registration helpers for CPX-enabled managed DA hosts.
+/// </summary>
 public static class ServiceCollectionExtensions
 {
-    /// <summary>Registers CPX address-space and item-property decorators.</summary>
+    /// <summary>
+    /// Registers CPX address-space and item-property decorators.
+    /// </summary>
     public static IServiceCollection AddOpcCpxAddressSpace(
         this IServiceCollection services,
         Action<OpcCpxOptions> configure)

@@ -15,6 +15,8 @@ namespace Opc.Classic.Dcom.Internal;
 /// </summary>
 public static class Log
 {
-    /// <summary>The shim logger — call <c>Log.Logger.Information(...)</c> etc.</summary>
+    /// <summary>
+    /// The shim logger — call <c>Log.Logger.Information(...)</c> etc.
+    /// </summary>
     public static IShimLogger Logger { get; } = new ShimLogger();
 }

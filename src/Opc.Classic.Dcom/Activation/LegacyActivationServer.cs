@@ -22,7 +22,9 @@ public sealed class LegacyActivationServer : IActivationServer
     private static readonly (ushort Major, ushort Minor) ServerComVersion = (5, 1);
     private readonly RemoteSCMActivatorServer _modernActivator;
 
-    /// <summary>Initializes a new legacy activation server backed by the modern activator.</summary>
+    /// <summary>
+    /// Initializes a new legacy activation server backed by the modern activator.
+    /// </summary>
     public LegacyActivationServer(RemoteSCMActivatorServer modernActivator)
     {
         _modernActivator = modernActivator ?? throw new ArgumentNullException(nameof(modernActivator));

@@ -8,7 +8,9 @@ using Opc.Classic.Mcp.Dtos;
 
 namespace Opc.Classic.Mcp.Sessions;
 
-/// <summary>Thread-safe in-memory OPC Classic session manager.</summary>
+/// <summary>
+/// Thread-safe in-memory OPC Classic session manager.
+/// </summary>
 public sealed class OpcSessionManager : IOpcSessionManager, IDisposable
 {
     private static readonly TimeSpan DefaultIdleExpiry = TimeSpan.FromMinutes(30);
@@ -17,7 +19,9 @@ public sealed class OpcSessionManager : IOpcSessionManager, IDisposable
     private readonly Timer _timer;
     private bool _disposed;
 
-    /// <summary>Creates a session manager and starts the expiry sweeper.</summary>
+    /// <summary>
+    /// Creates a session manager and starts the expiry sweeper.
+    /// </summary>
     public OpcSessionManager() => _timer = new Timer(SweepExpiredSessions, null, SweepInterval, SweepInterval);
 
     /// <inheritdoc />

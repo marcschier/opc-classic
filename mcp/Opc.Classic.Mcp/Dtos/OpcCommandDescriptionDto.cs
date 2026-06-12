@@ -5,7 +5,9 @@
 
 namespace Opc.Classic.Mcp.Dtos;
 
-/// <summary>JSON-friendly OPC Commands command description.</summary>
+/// <summary>
+/// JSON-friendly OPC Commands command description.
+/// </summary>
 public sealed record OpcCommandDescriptionDto(
     string CommandName,
     string CommandNamespace,

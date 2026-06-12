@@ -46,7 +46,9 @@ public ref struct NdrWriter
     private int _position;
     private uint _nextReferentId;
 
-    /// <summary>Creates a new writer over the supplied buffer.</summary>
+    /// <summary>
+    /// Creates a new writer over the supplied buffer.
+    /// </summary>
     public NdrWriter(Span<byte> buffer)
     {
         _buffer = buffer;
@@ -54,13 +56,19 @@ public ref struct NdrWriter
         _nextReferentId = 0x00020000u;  // matches DCE/RPC conventional starting referent
     }
 
-    /// <summary>Current byte position in the buffer (also the number of bytes written).</summary>
+    /// <summary>
+    /// Current byte position in the buffer (also the number of bytes written).
+    /// </summary>
     public int Position => _position;
 
-    /// <summary>Capacity of the underlying buffer.</summary>
+    /// <summary>
+    /// Capacity of the underlying buffer.
+    /// </summary>
     public int Capacity => _buffer.Length;
 
-    /// <summary>Remaining writable bytes.</summary>
+    /// <summary>
+    /// Remaining writable bytes.
+    /// </summary>
     public int RemainingBytes => _buffer.Length - _position;
 
     /// <summary>
@@ -86,7 +94,9 @@ public ref struct NdrWriter
         _position += padding;
     }
 
-    /// <summary>Writes a single byte (no alignment required — byte is 1-aligned).</summary>
+    /// <summary>
+    /// Writes a single byte (no alignment required — byte is 1-aligned).
+    /// </summary>
     public void WriteByte(byte value)
     {
         EnsureCapacity(1);
@@ -94,16 +104,24 @@ public ref struct NdrWriter
         _position += 1;
     }
 
-    /// <summary>Writes a boolean as a 1-byte 0/1.</summary>
+    /// <summary>
+    /// Writes a boolean as a 1-byte 0/1.
+    /// </summary>
     public void WriteBoolean(bool value) => WriteByte(value ? (byte)1 : (byte)0);
 
-    /// <summary>Writes a signed 8-bit integer.</summary>
+    /// <summary>
+    /// Writes a signed 8-bit integer.
+    /// </summary>
     public void WriteInt8(sbyte value) => WriteByte(unchecked((byte)value));
 
-    /// <summary>Writes an unsigned 8-bit integer (alias for <see cref="WriteByte"/>).</summary>
+    /// <summary>
+    /// Writes an unsigned 8-bit integer (alias for <see cref="WriteByte"/>).
+    /// </summary>
     public void WriteUInt8(byte value) => WriteByte(value);
 
-    /// <summary>Writes a little-endian signed 16-bit integer, aligned to 2.</summary>
+    /// <summary>
+    /// Writes a little-endian signed 16-bit integer, aligned to 2.
+    /// </summary>
     public void WriteInt16(short value)
     {
         AlignTo(2);
@@ -112,7 +130,9 @@ public ref struct NdrWriter
         _position += 2;
     }
 
-    /// <summary>Writes a little-endian unsigned 16-bit integer, aligned to 2.</summary>
+    /// <summary>
+    /// Writes a little-endian unsigned 16-bit integer, aligned to 2.
+    /// </summary>
     public void WriteUInt16(ushort value)
     {
         AlignTo(2);
@@ -121,7 +141,9 @@ public ref struct NdrWriter
         _position += 2;
     }
 
-    /// <summary>Writes a little-endian signed 32-bit integer, aligned to 4.</summary>
+    /// <summary>
+    /// Writes a little-endian signed 32-bit integer, aligned to 4.
+    /// </summary>
     public void WriteInt32(int value)
     {
         AlignTo(4);
@@ -130,7 +152,9 @@ public ref struct NdrWriter
         _position += 4;
     }
 
-    /// <summary>Writes a little-endian unsigned 32-bit integer, aligned to 4.</summary>
+    /// <summary>
+    /// Writes a little-endian unsigned 32-bit integer, aligned to 4.
+    /// </summary>
     public void WriteUInt32(uint value)
     {
         AlignTo(4);
@@ -139,7 +163,9 @@ public ref struct NdrWriter
         _position += 4;
     }
 
-    /// <summary>Writes a little-endian signed 64-bit integer, aligned to 8.</summary>
+    /// <summary>
+    /// Writes a little-endian signed 64-bit integer, aligned to 8.
+    /// </summary>
     public void WriteInt64(long value)
     {
         AlignTo(8);
@@ -148,7 +174,9 @@ public ref struct NdrWriter
         _position += 8;
     }
 
-    /// <summary>Writes a little-endian unsigned 64-bit integer, aligned to 8.</summary>
+    /// <summary>
+    /// Writes a little-endian unsigned 64-bit integer, aligned to 8.
+    /// </summary>
     public void WriteUInt64(ulong value)
     {
         AlignTo(8);
@@ -157,7 +185,9 @@ public ref struct NdrWriter
         _position += 8;
     }
 
-    /// <summary>Writes a single-precision IEEE-754 float, aligned to 4.</summary>
+    /// <summary>
+    /// Writes a single-precision IEEE-754 float, aligned to 4.
+    /// </summary>
     public void WriteSingle(float value)
     {
         AlignTo(4);
@@ -166,7 +196,9 @@ public ref struct NdrWriter
         _position += 4;
     }
 
-    /// <summary>Writes a double-precision IEEE-754 float, aligned to 8.</summary>
+    /// <summary>
+    /// Writes a double-precision IEEE-754 float, aligned to 8.
+    /// </summary>
     public void WriteDouble(double value)
     {
         AlignTo(8);
@@ -243,7 +275,9 @@ public ref struct NdrWriter
         return id;
     }
 
-    /// <summary>Writes a null referent (encoded as 4 zero bytes, aligned to 4).</summary>
+    /// <summary>
+    /// Writes a null referent (encoded as 4 zero bytes, aligned to 4).
+    /// </summary>
     public void WriteNullReferent() => WriteUInt32(0u);
 
     /// <summary>
@@ -332,7 +366,9 @@ public ref struct NdrWriter
         }
     }
 
-    /// <summary>Writes a null BSTR (a single zero referent UInt32).</summary>
+    /// <summary>
+    /// Writes a null BSTR (a single zero referent UInt32).
+    /// </summary>
     public void WriteNullBstr() => WriteNullReferent();
 
     /// <summary>
@@ -362,7 +398,9 @@ public ref struct NdrWriter
         WriteRawBytes(values);
     }
 
-    /// <summary>Writes a conformant array of Int16 values.</summary>
+    /// <summary>
+    /// Writes a conformant array of Int16 values.
+    /// </summary>
     public void WriteConformantInt16Array(ReadOnlySpan<short> values)
     {
         WriteConformanceHeader(values.Length);
@@ -375,7 +413,9 @@ public ref struct NdrWriter
         }
     }
 
-    /// <summary>Writes a conformant array of UInt16 values.</summary>
+    /// <summary>
+    /// Writes a conformant array of UInt16 values.
+    /// </summary>
     public void WriteConformantUInt16Array(ReadOnlySpan<ushort> values)
     {
         WriteConformanceHeader(values.Length);
@@ -388,7 +428,9 @@ public ref struct NdrWriter
         }
     }
 
-    /// <summary>Writes a conformant array of Int32 values.</summary>
+    /// <summary>
+    /// Writes a conformant array of Int32 values.
+    /// </summary>
     public void WriteConformantInt32Array(ReadOnlySpan<int> values)
     {
         WriteConformanceHeader(values.Length);
@@ -400,7 +442,9 @@ public ref struct NdrWriter
         }
     }
 
-    /// <summary>Writes a conformant array of UInt32 values.</summary>
+    /// <summary>
+    /// Writes a conformant array of UInt32 values.
+    /// </summary>
     public void WriteConformantUInt32Array(ReadOnlySpan<uint> values)
     {
         WriteConformanceHeader(values.Length);
@@ -412,7 +456,9 @@ public ref struct NdrWriter
         }
     }
 
-    /// <summary>Writes a conformant array of Int64 values.</summary>
+    /// <summary>
+    /// Writes a conformant array of Int64 values.
+    /// </summary>
     public void WriteConformantInt64Array(ReadOnlySpan<long> values)
     {
         WriteConformanceHeader(values.Length);
@@ -446,7 +492,9 @@ public ref struct NdrWriter
         }
     }
 
-    /// <summary>Writes a conformant array of Single (float) values.</summary>
+    /// <summary>
+    /// Writes a conformant array of Single (float) values.
+    /// </summary>
     public void WriteConformantSingleArray(ReadOnlySpan<float> values)
     {
         WriteConformanceHeader(values.Length);
@@ -458,7 +506,9 @@ public ref struct NdrWriter
         }
     }
 
-    /// <summary>Writes a conformant array of Double values.</summary>
+    /// <summary>
+    /// Writes a conformant array of Double values.
+    /// </summary>
     public void WriteConformantDoubleArray(ReadOnlySpan<double> values)
     {
         WriteConformanceHeader(values.Length);
@@ -471,7 +521,9 @@ public ref struct NdrWriter
         }
     }
 
-    /// <summary>Writes a conformant array of Guid values (each 16 bytes, aligned to 4).</summary>
+    /// <summary>
+    /// Writes a conformant array of Guid values (each 16 bytes, aligned to 4).
+    /// </summary>
     public void WriteConformantGuidArray(ReadOnlySpan<Guid> values)
     {
         WriteConformanceHeader(values.Length);

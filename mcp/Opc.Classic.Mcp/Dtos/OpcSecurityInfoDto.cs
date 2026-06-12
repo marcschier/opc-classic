@@ -5,7 +5,9 @@
 
 namespace Opc.Classic.Mcp.Dtos;
 
-/// <summary>JSON-friendly OPC Security state and capability information.</summary>
+/// <summary>
+/// JSON-friendly OPC Security state and capability information.
+/// </summary>
 public sealed record OpcSecurityInfoDto(
     bool SupportsWindowsAuthentication,
     bool SupportsPrivateAuthentication,

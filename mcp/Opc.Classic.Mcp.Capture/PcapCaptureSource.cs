@@ -35,7 +35,9 @@ namespace Opc.Classic.Mcp.Capture;
 /// </remarks>
 public sealed class PcapCaptureSource : ICaptureSource
 {
-    /// <summary>Stable source name surfaced via the MCP info DTO.</summary>
+    /// <summary>
+    /// Stable source name surfaced via the MCP info DTO.
+    /// </summary>
     public const string SourceName = "pcap";
     private const int kDefaultMaxBytes = 50 * 1024 * 1024;
     private const int kDefaultMaxDurationSeconds = 30 * 60;

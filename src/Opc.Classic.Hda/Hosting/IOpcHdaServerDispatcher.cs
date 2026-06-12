@@ -9,17 +9,23 @@ using System.Runtime.CompilerServices;
 
 namespace Opc.Classic.Hda.Hosting;
 
-/// <summary>Dispatches NDR-encoded HDA DCOM calls to a managed HDA server implementation.</summary>
+/// <summary>
+/// Dispatches NDR-encoded HDA DCOM calls to a managed HDA server implementation.
+/// </summary>
 public interface IOpcHdaServerDispatcher
 {
-    /// <summary>Routes an incoming interface/opnum request and returns an HRESULT plus NDR response body.</summary>
+    /// <summary>
+    /// Routes an incoming interface/opnum request and returns an HRESULT plus NDR response body.
+    /// </summary>
     Task<NdrCallResult> DispatchAsync(
         Guid interfaceId,
         int opnum,
         ReadOnlyMemory<byte> requestPayload,
         CancellationToken cancellationToken);
 
-    /// <summary>Validates HDA browse filters and returns one HRESULT per filter.</summary>
+    /// <summary>
+    /// Validates HDA browse filters and returns one HRESULT per filter.
+    /// </summary>
     Task<int[]> ValidateBrowseFiltersAsync(
         IReadOnlyList<OpcHdaBrowseFilter> filters,
         CancellationToken cancellationToken = default)
@@ -29,7 +35,9 @@ public interface IOpcHdaServerDispatcher
         return Task.FromResult(new int[filters.Count]);
     }
 
-    /// <summary>Returns display strings for the requested HDA browse type at the supplied branch position.</summary>
+    /// <summary>
+    /// Returns display strings for the requested HDA browse type at the supplied branch position.
+    /// </summary>
     Task<IReadOnlyList<string>> BrowseAsync(
         string branchPosition,
         HdaBrowseType browseType,
@@ -43,7 +51,9 @@ public interface IOpcHdaServerDispatcher
         return Task.FromResult<IReadOnlyList<string>>(Array.Empty<string>());
     }
 
-    /// <summary>Returns the next branch position for an HDA browser cursor move.</summary>
+    /// <summary>
+    /// Returns the next branch position for an HDA browser cursor move.
+    /// </summary>
     Task<string> ChangeBrowsePositionAsync(
         string currentBranchPosition,
         int browseDirection,
@@ -62,7 +72,9 @@ public interface IOpcHdaServerDispatcher
         });
     }
 
-    /// <summary>Resolves an HDA browse node to a fully qualified item ID.</summary>
+    /// <summary>
+    /// Resolves an HDA browse node to a fully qualified item ID.
+    /// </summary>
     Task<string> GetItemIdAsync(
         string branchPosition,
         string node,
@@ -79,7 +91,9 @@ public interface IOpcHdaServerDispatcher
             : branchPosition + "." + node);
     }
 
-    /// <summary>Returns the browser's current branch position string.</summary>
+    /// <summary>
+    /// Returns the browser's current branch position string.
+    /// </summary>
     Task<string> GetBranchPositionAsync(
         string branchPosition,
         CancellationToken cancellationToken = default)
@@ -88,11 +102,15 @@ public interface IOpcHdaServerDispatcher
         return Task.FromResult(branchPosition);
     }
 
-    /// <summary>Returns the server's HDA update capability bitmask.</summary>
+    /// <summary>
+    /// Returns the server's HDA update capability bitmask.
+    /// </summary>
     Task<int> UpdateCapabilitiesAsync(CancellationToken cancellationToken = default) =>
         Task.FromException<int>(NotImplemented());
 
-    /// <summary>Synchronously inserts historical values.</summary>
+    /// <summary>
+    /// Synchronously inserts historical values.
+    /// </summary>
     Task<int[]> InsertAsync(int[] serverHandles, long[] timestampFileTimes, OpcVariant[] dataValues, int[] qualities, CancellationToken cancellationToken = default)
     {
         _ = serverHandles;
@@ -102,7 +120,9 @@ public interface IOpcHdaServerDispatcher
         return Task.FromException<int[]>(NotImplemented());
     }
 
-    /// <summary>Synchronously replaces historical values at exact timestamps.</summary>
+    /// <summary>
+    /// Synchronously replaces historical values at exact timestamps.
+    /// </summary>
     Task<int[]> ReplaceAsync(int[] serverHandles, long[] timestampFileTimes, OpcVariant[] dataValues, int[] qualities, CancellationToken cancellationToken = default)
     {
         _ = serverHandles;
@@ -112,7 +132,9 @@ public interface IOpcHdaServerDispatcher
         return Task.FromException<int[]>(NotImplemented());
     }
 
-    /// <summary>Synchronously inserts or replaces historical values.</summary>
+    /// <summary>
+    /// Synchronously inserts or replaces historical values.
+    /// </summary>
     Task<int[]> InsertReplaceAsync(int[] serverHandles, long[] timestampFileTimes, OpcVariant[] dataValues, int[] qualities, CancellationToken cancellationToken = default)
     {
         _ = serverHandles;
@@ -122,7 +144,9 @@ public interface IOpcHdaServerDispatcher
         return Task.FromException<int[]>(NotImplemented());
     }
 
-    /// <summary>Synchronously deletes raw values in a historical range.</summary>
+    /// <summary>
+    /// Synchronously deletes raw values in a historical range.
+    /// </summary>
     Task<int[]> DeleteRawAsync(OpcHdaTime startTime, OpcHdaTime endTime, int[] serverHandles, CancellationToken cancellationToken = default)
     {
         _ = startTime;
@@ -131,7 +155,9 @@ public interface IOpcHdaServerDispatcher
         return Task.FromException<int[]>(NotImplemented());
     }
 
-    /// <summary>Synchronously deletes values at exact timestamps.</summary>
+    /// <summary>
+    /// Synchronously deletes values at exact timestamps.
+    /// </summary>
     Task<int[]> DeleteAtTimeAsync(int[] serverHandles, long[] timestampFileTimes, CancellationToken cancellationToken = default)
     {
         _ = serverHandles;
@@ -139,7 +165,9 @@ public interface IOpcHdaServerDispatcher
         return Task.FromException<int[]>(NotImplemented());
     }
 
-    /// <summary>Begins an asynchronous insert and returns its cancel ID, callback handles, and immediate item errors.</summary>
+    /// <summary>
+    /// Begins an asynchronous insert and returns its cancel ID, callback handles, and immediate item errors.
+    /// </summary>
     Task<OpcHdaAsyncUpdateResult> BeginAsyncInsertAsync(int transactionId, int[] serverHandles, long[] timestampFileTimes, OpcVariant[] dataValues, int[] qualities, CancellationToken cancellationToken = default)
     {
         _ = transactionId;
@@ -150,7 +178,9 @@ public interface IOpcHdaServerDispatcher
         return Task.FromException<OpcHdaAsyncUpdateResult>(NotImplemented());
     }
 
-    /// <summary>Begins an asynchronous replace and returns its cancel ID, callback handles, and immediate item errors.</summary>
+    /// <summary>
+    /// Begins an asynchronous replace and returns its cancel ID, callback handles, and immediate item errors.
+    /// </summary>
     Task<OpcHdaAsyncUpdateResult> BeginAsyncReplaceAsync(int transactionId, int[] serverHandles, long[] timestampFileTimes, OpcVariant[] dataValues, int[] qualities, CancellationToken cancellationToken = default)
     {
         _ = transactionId;
@@ -161,7 +191,9 @@ public interface IOpcHdaServerDispatcher
         return Task.FromException<OpcHdaAsyncUpdateResult>(NotImplemented());
     }
 
-    /// <summary>Begins an asynchronous insert-or-replace and returns its cancel ID, callback handles, and immediate item errors.</summary>
+    /// <summary>
+    /// Begins an asynchronous insert-or-replace and returns its cancel ID, callback handles, and immediate item errors.
+    /// </summary>
     Task<OpcHdaAsyncUpdateResult> BeginAsyncInsertReplaceAsync(int transactionId, int[] serverHandles, long[] timestampFileTimes, OpcVariant[] dataValues, int[] qualities, CancellationToken cancellationToken = default)
     {
         _ = transactionId;
@@ -172,7 +204,9 @@ public interface IOpcHdaServerDispatcher
         return Task.FromException<OpcHdaAsyncUpdateResult>(NotImplemented());
     }
 
-    /// <summary>Begins an asynchronous raw-range delete and returns its cancel ID, callback handles, and immediate item errors.</summary>
+    /// <summary>
+    /// Begins an asynchronous raw-range delete and returns its cancel ID, callback handles, and immediate item errors.
+    /// </summary>
     Task<OpcHdaAsyncUpdateResult> BeginAsyncDeleteRawAsync(int transactionId, OpcHdaTime startTime, OpcHdaTime endTime, int[] serverHandles, CancellationToken cancellationToken = default)
     {
         _ = transactionId;
@@ -182,7 +216,9 @@ public interface IOpcHdaServerDispatcher
         return Task.FromException<OpcHdaAsyncUpdateResult>(NotImplemented());
     }
 
-    /// <summary>Begins an asynchronous exact-time delete and returns its cancel ID, callback handles, and immediate item errors.</summary>
+    /// <summary>
+    /// Begins an asynchronous exact-time delete and returns its cancel ID, callback handles, and immediate item errors.
+    /// </summary>
     Task<OpcHdaAsyncUpdateResult> BeginAsyncDeleteAtTimeAsync(int transactionId, int[] serverHandles, long[] timestampFileTimes, CancellationToken cancellationToken = default)
     {
         _ = transactionId;
@@ -191,7 +227,9 @@ public interface IOpcHdaServerDispatcher
         return Task.FromException<OpcHdaAsyncUpdateResult>(NotImplemented());
     }
 
-    /// <summary>Begins raw playback and yields callback batches until complete or cancelled.</summary>
+    /// <summary>
+    /// Begins raw playback and yields callback batches until complete or cancelled.
+    /// </summary>
     async IAsyncEnumerable<OpcHdaPlaybackEvent> BeginPlaybackRawAsync(
         int transactionId,
         OpcHdaTime startTime,
@@ -214,7 +252,9 @@ public interface IOpcHdaServerDispatcher
         yield break;
     }
 
-    /// <summary>Begins processed playback and yields callback batches until complete or cancelled.</summary>
+    /// <summary>
+    /// Begins processed playback and yields callback batches until complete or cancelled.
+    /// </summary>
     async IAsyncEnumerable<OpcHdaPlaybackEvent> BeginPlaybackProcessedAsync(
         int transactionId,
         OpcHdaTime startTime,
@@ -239,7 +279,9 @@ public interface IOpcHdaServerDispatcher
         yield break;
     }
 
-    /// <summary>Cancels an asynchronous update or playback operation.</summary>
+    /// <summary>
+    /// Cancels an asynchronous update or playback operation.
+    /// </summary>
     Task CancelAsync(int cancelId, CancellationToken cancellationToken = default)
     {
         _ = cancelId;
@@ -247,7 +289,9 @@ public interface IOpcHdaServerDispatcher
         return Task.CompletedTask;
     }
 
-    /// <summary>Inserts HDA annotations and returns one HRESULT per requested server handle.</summary>
+    /// <summary>
+    /// Inserts HDA annotations and returns one HRESULT per requested server handle.
+    /// </summary>
     Task<int[]> InsertAnnotationsAsync(
         int[] serverHandles,
         long[] timestampFileTimes,
@@ -261,7 +305,9 @@ public interface IOpcHdaServerDispatcher
         throw new OpcException(OpcResultId.NotImplemented);
     }
 
-    /// <summary>Starts an HDA raw advise stream and returns call-time item validation plus update events.</summary>
+    /// <summary>
+    /// Starts an HDA raw advise stream and returns call-time item validation plus update events.
+    /// </summary>
     Task<OpcHdaAdviseSubscription> AdviseRawAsync(
         int[] serverHandles,
         OpcHdaTime startTime,
@@ -275,7 +321,9 @@ public interface IOpcHdaServerDispatcher
         throw new OpcException(OpcResultId.NotImplemented);
     }
 
-    /// <summary>Starts an HDA processed advise stream and returns call-time item validation plus update events.</summary>
+    /// <summary>
+    /// Starts an HDA processed advise stream and returns call-time item validation plus update events.
+    /// </summary>
     Task<OpcHdaAdviseSubscription> AdviseProcessedAsync(
         int[] serverHandles,
         OpcHdaTime startTime,
@@ -307,30 +355,40 @@ public interface IOpcHdaServerDispatcher
     }
 }
 
-/// <summary>One HDA browser attribute filter supplied to <c>IOPCHDA_Server::CreateBrowse</c>.</summary>
+/// <summary>
+/// One HDA browser attribute filter supplied to <c>IOPCHDA_Server::CreateBrowse</c>.
+/// </summary>
 /// <param name="AttributeId">The HDA attribute ID being filtered.</param>
 /// <param name="OperatorCode">The <c>OPCHDA_OPERATORCODES</c> comparison operator.</param>
 /// <param name="Value">The native VARIANT filter value converted to a managed carrier.</param>
 public sealed record OpcHdaBrowseFilter(int AttributeId, int OperatorCode, OpcVariant Value);
 
-/// <summary>Immediate result metadata for an HDA asynchronous update call.</summary>
+/// <summary>
+/// Immediate result metadata for an HDA asynchronous update call.
+/// </summary>
 /// <param name="CancelId">Server-supplied cancel ID, or 0 when the CCW should allocate one.</param>
 /// <param name="ClientHandles">Handles to echo through <c>IOPCHDA_DataCallback::OnUpdateComplete</c>.</param>
 /// <param name="Errors">Per-item immediate HRESULTs.</param>
 public sealed record OpcHdaAsyncUpdateResult(int CancelId, int[] ClientHandles, int[] Errors);
 
-/// <summary>One playback callback batch for <c>IOPCHDA_DataCallback::OnPlayback</c>.</summary>
+/// <summary>
+/// One playback callback batch for <c>IOPCHDA_DataCallback::OnPlayback</c>.
+/// </summary>
 /// <param name="Status">Master HRESULT for the batch.</param>
 /// <param name="Items">Playback item values.</param>
 /// <param name="Errors">Per-item HRESULTs.</param>
 public sealed record OpcHdaPlaybackEvent(int Status, OpcHdaItem[] Items, int[] Errors);
 
-/// <summary>One update emitted by an HDA advise stream.</summary>
+/// <summary>
+/// One update emitted by an HDA advise stream.
+/// </summary>
 /// <param name="ItemValues">HDA item values for the update interval.</param>
 /// <param name="Errors">Per-item HRESULTs for <paramref name="ItemValues" />.</param>
 public sealed record OpcHdaDataUpdate(OpcHdaItem[] ItemValues, int[] Errors);
 
-/// <summary>Call-time validation plus the update stream for an HDA advise request.</summary>
+/// <summary>
+/// Call-time validation plus the update stream for an HDA advise request.
+/// </summary>
 /// <param name="Errors">Per-requested-item HRESULTs returned from the initiating advise call.</param>
 /// <param name="Updates">Periodic HDA data-change updates.</param>
 public sealed record OpcHdaAdviseSubscription(int[] Errors, IAsyncEnumerable<OpcHdaDataUpdate> Updates);

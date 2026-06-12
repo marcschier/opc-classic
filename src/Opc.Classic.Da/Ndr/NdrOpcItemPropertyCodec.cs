@@ -26,7 +26,9 @@ namespace Opc.Classic.Da.Ndr;
 /// </remarks>
 public static class NdrOpcItemPropertyCodec
 {
-    /// <summary>Encodes a single OPCITEMPROPERTY in NDR.</summary>
+    /// <summary>
+    /// Encodes a single OPCITEMPROPERTY in NDR.
+    /// </summary>
     public static void Write(ref NdrWriter writer, OpcItemPropertyResult prop)
     {
         ArgumentNullException.ThrowIfNull(prop);
@@ -41,7 +43,9 @@ public static class NdrOpcItemPropertyCodec
         writer.WriteUInt32(0u);  // dwReserved
     }
 
-    /// <summary>Decodes a single OPCITEMPROPERTY from NDR.</summary>
+    /// <summary>
+    /// Decodes a single OPCITEMPROPERTY from NDR.
+    /// </summary>
     public static OpcItemPropertyResult Read(ref NdrReader reader)
     {
         var vt = (VarType)reader.ReadUInt16();

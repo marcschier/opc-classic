@@ -5,7 +5,9 @@
 
 namespace Opc.Classic.Dcom.Crypto;
 
-/// <summary>BouncyCastle <c>IDigest</c>-shaped hash interface (transitional).</summary>
+/// <summary>
+/// BouncyCastle <c>IDigest</c>-shaped hash interface (transitional).
+/// </summary>
 public interface IDigest
 {
     int GetDigestSize();

@@ -12,7 +12,9 @@ namespace Opc.Classic.Hda;
 /// </summary>
 public sealed record OpcHdaAnnotation
 {
-    /// <summary>Constructor — validates the four parallel arrays have the same length.</summary>
+    /// <summary>
+    /// Constructor — validates the four parallel arrays have the same length.
+    /// </summary>
     /// <param name="clientHandle">Client correlation handle.</param>
     /// <param name="timestamps">UTC value timestamps; same length as all other arrays.</param>
     /// <param name="annotations">Per-sample annotation text.</param>
@@ -43,18 +45,28 @@ public sealed record OpcHdaAnnotation
         Users = users;
     }
 
-    /// <summary>Client correlation handle.</summary>
+    /// <summary>
+    /// Client correlation handle.
+    /// </summary>
     public int ClientHandle { get; }
 
-    /// <summary>UTC value timestamps; parallel with <see cref="Annotations"/>.</summary>
+    /// <summary>
+    /// UTC value timestamps; parallel with <see cref="Annotations"/>.
+    /// </summary>
     public DateTimeOffset[] Timestamps { get; }
 
-    /// <summary>Per-sample annotation text.</summary>
+    /// <summary>
+    /// Per-sample annotation text.
+    /// </summary>
     public string?[] Annotations { get; }
 
-    /// <summary>UTC annotation timestamps; parallel with <see cref="Annotations"/>.</summary>
+    /// <summary>
+    /// UTC annotation timestamps; parallel with <see cref="Annotations"/>.
+    /// </summary>
     public DateTimeOffset[] AnnotationTimes { get; }
 
-    /// <summary>Per-sample annotation user names.</summary>
+    /// <summary>
+    /// Per-sample annotation user names.
+    /// </summary>
     public string?[] Users { get; }
 }

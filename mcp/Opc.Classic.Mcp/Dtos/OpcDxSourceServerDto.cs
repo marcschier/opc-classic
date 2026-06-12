@@ -5,7 +5,9 @@
 
 namespace Opc.Classic.Mcp.Dtos;
 
-/// <summary>JSON-friendly OPC DX source-server definition.</summary>
+/// <summary>
+/// JSON-friendly OPC DX source-server definition.
+/// </summary>
 public sealed record OpcDxSourceServerDto(
     string? Name = null,
     string? ServerUrl = null,

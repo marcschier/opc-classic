@@ -13,27 +13,43 @@ namespace Opc.Classic.Dcom;
 /// </remarks>
 public interface IOpcInterfaceRef
 {
-    /// <summary>Interface identifier carried by the OBJREF iid field.</summary>
+    /// <summary>
+    /// Interface identifier carried by the OBJREF iid field.
+    /// </summary>
     Guid Iid { get; }
 
-    /// <summary>STDOBJREF flags.</summary>
+    /// <summary>
+    /// STDOBJREF flags.
+    /// </summary>
     uint Flags { get; }
 
-    /// <summary>STDOBJREF public reference count.</summary>
+    /// <summary>
+    /// STDOBJREF public reference count.
+    /// </summary>
     uint PublicRefs { get; }
 
-    /// <summary>Object exporter identifier (OXID).</summary>
+    /// <summary>
+    /// Object exporter identifier (OXID).
+    /// </summary>
     ulong Oxid { get; }
 
-    /// <summary>Object identifier (OID).</summary>
+    /// <summary>
+    /// Object identifier (OID).
+    /// </summary>
     ulong Oid { get; }
 
-    /// <summary>Interface pointer identifier (IPID).</summary>
+    /// <summary>
+    /// Interface pointer identifier (IPID).
+    /// </summary>
     Guid Ipid { get; }
 
-    /// <summary>DUALSTRINGARRAY security-offset value.</summary>
+    /// <summary>
+    /// DUALSTRINGARRAY security-offset value.
+    /// </summary>
     ushort SecurityOffset { get; }
 
-    /// <summary>Raw DUALSTRINGARRAY entries used to resolve OXID bindings.</summary>
+    /// <summary>
+    /// Raw DUALSTRINGARRAY entries used to resolve OXID bindings.
+    /// </summary>
     IReadOnlyList<ushort> ResolverBindings { get; }
 }

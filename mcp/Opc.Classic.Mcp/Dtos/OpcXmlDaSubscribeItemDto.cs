@@ -5,7 +5,9 @@
 
 namespace Opc.Classic.Mcp.Dtos;
 
-/// <summary>JSON-friendly OPC XML-DA subscribe item request.</summary>
+/// <summary>
+/// JSON-friendly OPC XML-DA subscribe item request.
+/// </summary>
 public sealed record OpcXmlDaSubscribeItemDto(
     string ItemName,
     string? ClientItemHandle = null,

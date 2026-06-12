@@ -29,10 +29,14 @@ namespace Opc.Classic.Security;
 /// </remarks>
 public interface IOpcSecurity
 {
-    /// <summary>True if the server implements <c>IOPCSecurityNT</c>.</summary>
+    /// <summary>
+    /// True if the server implements <c>IOPCSecurityNT</c>.
+    /// </summary>
     bool SupportsWindowsAuthentication { get; }
 
-    /// <summary>True if the server implements <c>IOPCSecurityPrivate</c>.</summary>
+    /// <summary>
+    /// True if the server implements <c>IOPCSecurityPrivate</c>.
+    /// </summary>
     bool SupportsPrivateAuthentication { get; }
 
     /// <summary>
@@ -50,7 +54,9 @@ public interface IOpcSecurity
     /// <param name="cancellationToken">Cancellation token.</param>
     Task<bool> LoginPrivateAsync(string username, string password, CancellationToken cancellationToken = default);
 
-    /// <summary>Switch back to the connection's anonymous / default identity.</summary>
+    /// <summary>
+    /// Switch back to the connection's anonymous / default identity.
+    /// </summary>
     Task LogoutAsync(CancellationToken cancellationToken = default);
 
     /// <summary>
@@ -59,6 +65,8 @@ public interface IOpcSecurity
     /// </summary>
     bool IsAuthenticated { get; }
 
-    /// <summary>The currently active identity ("CORP\\alice", "private:operator", or empty when anonymous).</summary>
+    /// <summary>
+    /// The currently active identity ("CORP\\alice", "private:operator", or empty when anonymous).
+    /// </summary>
     string CurrentIdentity { get; }
 }

@@ -12,23 +12,33 @@ namespace Opc.Classic.Dcom.Orpc;
 /// </summary>
 public sealed class OrpcThat
 {
-    /// <summary>Wire size when the extensions pointer is null.</summary>
+    /// <summary>
+    /// Wire size when the extensions pointer is null.
+    /// </summary>
     public const int NullExtensionsWireSize = 8;
 
-    /// <summary>Gets or initializes ORPC response flags.</summary>
+    /// <summary>
+    /// Gets or initializes ORPC response flags.
+    /// </summary>
     public uint Flags { get; init; }
 
-    /// <summary>Gets or initializes the optional ORPC extension array. Null encodes a null pointer.</summary>
+    /// <summary>
+    /// Gets or initializes the optional ORPC extension array. Null encodes a null pointer.
+    /// </summary>
     public IReadOnlyList<OrpcExtent>? Extensions { get; init; }
 
-    /// <summary>Writes this envelope using NDR encoding.</summary>
+    /// <summary>
+    /// Writes this envelope using NDR encoding.
+    /// </summary>
     public void Write(ref NdrWriter writer)
     {
         writer.WriteUInt32(Flags);
         OrpcExtentArrayCodec.Write(ref writer, Extensions);
     }
 
-    /// <summary>Reads an ORPC_THAT envelope using NDR encoding.</summary>
+    /// <summary>
+    /// Reads an ORPC_THAT envelope using NDR encoding.
+    /// </summary>
     public static OrpcThat Read(ref NdrReader reader)
     {
         uint flags = reader.ReadUInt32();

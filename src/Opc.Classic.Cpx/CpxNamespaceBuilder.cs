@@ -12,27 +12,39 @@ namespace Opc.Classic.Cpx;
 /// </summary>
 public static class CpxNamespaceBuilder
 {
-    /// <summary>Reserved CPX branch name.</summary>
+    /// <summary>
+    /// Reserved CPX branch name.
+    /// </summary>
     public const string RootSegment = "CPX";
 
-    /// <summary>Reserved data-filter branch name.</summary>
+    /// <summary>
+    /// Reserved data-filter branch name.
+    /// </summary>
     public const string DataFiltersSegment = "DataFilters";
 
-    /// <summary>Root path for CPX type dictionaries.</summary>
+    /// <summary>
+    /// Root path for CPX type dictionaries.
+    /// </summary>
     public const string RootPath = "/CPX";
 
-    /// <summary>Build <c>/CPX/{TypeSystem}</c>.</summary>
+    /// <summary>
+    /// Build <c>/CPX/{TypeSystem}</c>.
+    /// </summary>
     public static string BuildTypeSystemPath(string typeSystemId) =>
         CombineAbsolute(RootSegment, RequireSegment(typeSystemId, nameof(typeSystemId)));
 
-    /// <summary>Build <c>/CPX/{TypeSystem}/{Dictionary}</c>.</summary>
+    /// <summary>
+    /// Build <c>/CPX/{TypeSystem}/{Dictionary}</c>.
+    /// </summary>
     public static string BuildDictionaryPath(string typeSystemId, string dictionary) =>
         CombineAbsolute(
             RootSegment,
             RequireSegment(typeSystemId, nameof(typeSystemId)),
             RequireSegment(dictionary, nameof(dictionary)));
 
-    /// <summary>Build <c>/CPX/{TypeSystem}/{Dictionary}/{TypeID}</c>.</summary>
+    /// <summary>
+    /// Build <c>/CPX/{TypeSystem}/{Dictionary}/{TypeID}</c>.
+    /// </summary>
     public static string BuildTypePath(string typeSystemId, string dictionary, string typeId) =>
         CombineAbsolute(
             RootSegment,
@@ -40,14 +52,18 @@ public static class CpxNamespaceBuilder
             RequireSegment(dictionary, nameof(dictionary)),
             RequirePathSuffix(typeId, nameof(typeId)));
 
-    /// <summary>Build <c>{ItemID}/CPX/{Format}</c> for type conversions.</summary>
+    /// <summary>
+    /// Build <c>{ItemID}/CPX/{Format}</c> for type conversions.
+    /// </summary>
     public static string BuildConversionPath(string itemId, string format) =>
         CombineItemPath(
             RequireItemId(itemId, nameof(itemId)),
             RootSegment,
             RequireSegment(format, nameof(format)));
 
-    /// <summary>Build <c>{ItemID}/CPX/{Format}/DataFilters</c>.</summary>
+    /// <summary>
+    /// Build <c>{ItemID}/CPX/{Format}/DataFilters</c>.
+    /// </summary>
     public static string BuildDataFiltersPath(string itemId, string format) =>
         CombineItemPath(
             RequireItemId(itemId, nameof(itemId)),
@@ -55,7 +71,9 @@ public static class CpxNamespaceBuilder
             RequireSegment(format, nameof(format)),
             DataFiltersSegment);
 
-    /// <summary>Build <c>{ItemID}/CPX/{Format}/DataFilters/{FilterName}</c>.</summary>
+    /// <summary>
+    /// Build <c>{ItemID}/CPX/{Format}/DataFilters/{FilterName}</c>.
+    /// </summary>
     public static string BuildDataFilterPath(string itemId, string format, string filterName) =>
         CombineItemPath(
             RequireItemId(itemId, nameof(itemId)),
@@ -64,7 +82,9 @@ public static class CpxNamespaceBuilder
             DataFiltersSegment,
             RequireSegment(filterName, nameof(filterName)));
 
-    /// <summary>Build a stable dictionary branch name from a dictionary identifier.</summary>
+    /// <summary>
+    /// Build a stable dictionary branch name from a dictionary identifier.
+    /// </summary>
     public static string GetDictionarySegment(string dictionaryId)
     {
         var normalized = RequirePathSuffix(dictionaryId, nameof(dictionaryId));

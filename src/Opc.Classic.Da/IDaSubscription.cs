@@ -18,21 +18,31 @@ namespace Opc.Classic.Da;
 /// </remarks>
 public interface IDaSubscription : IAsyncDisposable
 {
-    /// <summary>Current state of the subscription (server-confirmed).</summary>
+    /// <summary>
+    /// Current state of the subscription (server-confirmed).
+    /// </summary>
     SubscriptionState State { get; }
 
-    /// <summary>The per-callback stream of pushed data updates from the server.</summary>
+    /// <summary>
+    /// The per-callback stream of pushed data updates from the server.
+    /// </summary>
     IAsyncEnumerable<DataChange> DataChanges { get; }
 
-    /// <summary>Update the subscription's state on the server (rate, active, deadband, ...).</summary>
+    /// <summary>
+    /// Update the subscription's state on the server (rate, active, deadband, ...).
+    /// </summary>
     Task SetStateAsync(SubscriptionState state, CancellationToken cancellationToken = default);
 
-    /// <summary>Add items to the subscription. Returns per-item add results.</summary>
+    /// <summary>
+    /// Add items to the subscription. Returns per-item add results.
+    /// </summary>
     Task<IReadOnlyList<IdentifiedResult>> AddItemsAsync(
         IReadOnlyList<Item> items,
         CancellationToken cancellationToken = default);
 
-    /// <summary>Remove previously-added items by their server-assigned handles.</summary>
+    /// <summary>
+    /// Remove previously-added items by their server-assigned handles.
+    /// </summary>
     Task<IReadOnlyList<IdentifiedResult>> RemoveItemsAsync(
         IReadOnlyList<int> serverHandles,
         CancellationToken cancellationToken = default);

@@ -24,7 +24,9 @@ namespace Opc.Classic;
 /// </remarks>
 public sealed record OpcSafeArray
 {
-    /// <summary>Constructs a SAFEARRAY descriptor.</summary>
+    /// <summary>
+    /// Constructs a SAFEARRAY descriptor.
+    /// </summary>
     /// <param name="elementType">The element VARTYPE.</param>
     /// <param name="data">The element data as a 1-D array. For multi-dimensional logical shapes, callers row-major-pack into a 1-D array sized as the product of <paramref name="lengths"/>.</param>
     /// <param name="lengths">Per-dimension element counts. <see langword="null"/> defaults to a single dimension of <c>data.Length</c>.</param>
@@ -93,54 +95,86 @@ public sealed record OpcSafeArray
     private readonly int[] _lengths;
     private readonly int[] _lowerBounds;
 
-    /// <summary>The element <see cref="VarType"/> (without VT_ARRAY).</summary>
+    /// <summary>
+    /// The element <see cref="VarType"/> (without VT_ARRAY).
+    /// </summary>
     public VarType ElementType { get; }
 
-    /// <summary>Per-dimension element counts. The number of dimensions equals <c>Lengths.Length</c>.</summary>
+    /// <summary>
+    /// Per-dimension element counts. The number of dimensions equals <c>Lengths.Length</c>.
+    /// </summary>
     public ReadOnlySpan<int> Lengths => _lengths;
 
-    /// <summary>Per-dimension lower bounds (typically all zero).</summary>
+    /// <summary>
+    /// Per-dimension lower bounds (typically all zero).
+    /// </summary>
     public ReadOnlySpan<int> LowerBounds => _lowerBounds;
 
-    /// <summary>SAFEARRAY FADF_* descriptor flags preserved on encode/decode.</summary>
+    /// <summary>
+    /// SAFEARRAY FADF_* descriptor flags preserved on encode/decode.
+    /// </summary>
     public SafeArrayFeatures Features { get; }
 
-    /// <summary>The element data as a 1-D array (row-major for multi-dimensional logical shapes).</summary>
+    /// <summary>
+    /// The element data as a 1-D array (row-major for multi-dimensional logical shapes).
+    /// </summary>
     public Array Data { get; }
 
-    /// <summary>Number of dimensions.</summary>
+    /// <summary>
+    /// Number of dimensions.
+    /// </summary>
     public int Rank => _lengths.Length;
 
-    /// <summary>Total element count (product of <see cref="Lengths"/>).</summary>
+    /// <summary>
+    /// Total element count (product of <see cref="Lengths"/>).
+    /// </summary>
     public int TotalElements => Data.Length;
 
     // ---- Factory methods for the common 1-D scalar arrays ----
 
-    /// <summary>Creates a 1-D VT_I2 SAFEARRAY from a managed short[].</summary>
+    /// <summary>
+    /// Creates a 1-D VT_I2 SAFEARRAY from a managed short[].
+    /// </summary>
     public static OpcSafeArray OfInt16(short[] values) => new(VarType.VT_I2, values);
 
-    /// <summary>Creates a 1-D VT_I4 SAFEARRAY from a managed int[].</summary>
+    /// <summary>
+    /// Creates a 1-D VT_I4 SAFEARRAY from a managed int[].
+    /// </summary>
     public static OpcSafeArray OfInt32(int[] values) => new(VarType.VT_I4, values);
 
-    /// <summary>Creates a 1-D VT_I8 SAFEARRAY from a managed long[].</summary>
+    /// <summary>
+    /// Creates a 1-D VT_I8 SAFEARRAY from a managed long[].
+    /// </summary>
     public static OpcSafeArray OfInt64(long[] values) => new(VarType.VT_I8, values);
 
-    /// <summary>Creates a 1-D VT_UI1 SAFEARRAY from a managed byte[].</summary>
+    /// <summary>
+    /// Creates a 1-D VT_UI1 SAFEARRAY from a managed byte[].
+    /// </summary>
     public static OpcSafeArray OfUInt8(byte[] values) => new(VarType.VT_UI1, values);
 
-    /// <summary>Creates a 1-D VT_R4 SAFEARRAY from a managed float[].</summary>
+    /// <summary>
+    /// Creates a 1-D VT_R4 SAFEARRAY from a managed float[].
+    /// </summary>
     public static OpcSafeArray OfSingle(float[] values) => new(VarType.VT_R4, values);
 
-    /// <summary>Creates a 1-D VT_R8 SAFEARRAY from a managed double[].</summary>
+    /// <summary>
+    /// Creates a 1-D VT_R8 SAFEARRAY from a managed double[].
+    /// </summary>
     public static OpcSafeArray OfDouble(double[] values) => new(VarType.VT_R8, values);
 
-    /// <summary>Creates a 1-D VT_BSTR SAFEARRAY from a managed string[].</summary>
+    /// <summary>
+    /// Creates a 1-D VT_BSTR SAFEARRAY from a managed string[].
+    /// </summary>
     public static OpcSafeArray OfString(string[] values) => new(VarType.VT_BSTR, values);
 
-    /// <summary>Creates a 1-D VT_BOOL SAFEARRAY from a managed bool[].</summary>
+    /// <summary>
+    /// Creates a 1-D VT_BOOL SAFEARRAY from a managed bool[].
+    /// </summary>
     public static OpcSafeArray OfBoolean(bool[] values) => new(VarType.VT_BOOL, values);
 
-    /// <summary>Creates a 1-D VT_VARIANT SAFEARRAY from managed variants.</summary>
+    /// <summary>
+    /// Creates a 1-D VT_VARIANT SAFEARRAY from managed variants.
+    /// </summary>
     public static OpcSafeArray OfVariant(OpcVariant[] values) =>
         new(VarType.VT_VARIANT, values, features: SafeArrayFeatures.HaveVartype | SafeArrayFeatures.Variant);
 

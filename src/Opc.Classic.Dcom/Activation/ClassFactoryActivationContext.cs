@@ -5,7 +5,9 @@
 
 namespace Opc.Classic.Dcom.Core;
 
-/// <summary>Activation context supplied to registered class factories.</summary>
+/// <summary>
+/// Activation context supplied to registered class factories.
+/// </summary>
 public sealed record ClassFactoryActivationContext(
     Guid Clsid,
     Guid RequestedIid,

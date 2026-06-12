@@ -10,18 +10,28 @@ namespace Opc.Classic.Security;
 /// </summary>
 public enum OpcImpersonationLevel
 {
-    /// <summary>Use the COM default impersonation level.</summary>
+    /// <summary>
+    /// Use the COM default impersonation level.
+    /// </summary>
     Default = 0,
 
-    /// <summary>The client is anonymous to the server.</summary>
+    /// <summary>
+    /// The client is anonymous to the server.
+    /// </summary>
     Anonymous = 1,
 
-    /// <summary>The server can identify the client but cannot impersonate it.</summary>
+    /// <summary>
+    /// The server can identify the client but cannot impersonate it.
+    /// </summary>
     Identify = 2,
 
-    /// <summary>The server can impersonate the client on the local system.</summary>
+    /// <summary>
+    /// The server can impersonate the client on the local system.
+    /// </summary>
     Impersonate = 3,
 
-    /// <summary>The server can impersonate the client across remote systems.</summary>
+    /// <summary>
+    /// The server can impersonate the client across remote systems.
+    /// </summary>
     Delegate = 4,
 }

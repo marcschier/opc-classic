@@ -25,7 +25,9 @@ public static class NdrOpcItemStateCodec
 {
     private const long FileTimeEpochOffsetTicks = 504911232000000000L;
 
-    /// <summary>Encodes a single OPCITEMSTATE (inline + deferred VARIANT body).</summary>
+    /// <summary>
+    /// Encodes a single OPCITEMSTATE (inline + deferred VARIANT body).
+    /// </summary>
     public static void Write(ref NdrWriter writer, OpcItemState state)
     {
         ArgumentNullException.ThrowIfNull(state);
@@ -33,7 +35,9 @@ public static class NdrOpcItemStateCodec
         writer.WriteVariant(state.Value);
     }
 
-    /// <summary>Decodes a single OPCITEMSTATE (inline + immediately deferred VARIANT body).</summary>
+    /// <summary>
+    /// Decodes a single OPCITEMSTATE (inline + immediately deferred VARIANT body).
+    /// </summary>
     public static OpcItemState Read(ref NdrReader reader)
     {
         InlinePart inline = ReadInlinePart(ref reader);

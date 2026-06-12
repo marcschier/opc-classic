@@ -12,7 +12,9 @@ namespace Opc.Classic.Xml.Serialization;
 /// </summary>
 public static class GetPropertiesSerializer
 {
-    /// <summary>Writes a complete SOAP envelope carrying a <c>GetProperties</c> request.</summary>
+    /// <summary>
+    /// Writes a complete SOAP envelope carrying a <c>GetProperties</c> request.
+    /// </summary>
     public static void WriteRequest(SoapEnvelopeWriter writer, XmlDaGetPropertiesRequest request)
     {
         ArgumentNullException.ThrowIfNull(writer);
@@ -63,7 +65,9 @@ public static class GetPropertiesSerializer
         writer.Flush();
     }
 
-    /// <summary>Reads a SOAP-wrapped <c>GetPropertiesResponse</c>.</summary>
+    /// <summary>
+    /// Reads a SOAP-wrapped <c>GetPropertiesResponse</c>.
+    /// </summary>
     public static XmlDaGetPropertiesResponse ReadResponse(SoapEnvelopeReader reader)
     {
         ArgumentNullException.ThrowIfNull(reader);

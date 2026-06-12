@@ -11,21 +11,33 @@ namespace Opc.Classic.Dcom.Core;
 /// </summary>
 public enum ActivationPropertyId : uint
 {
-    /// <summary>Unrecognized or opaque activation property payload.</summary>
+    /// <summary>
+    /// Unrecognized or opaque activation property payload.
+    /// </summary>
     Unknown = 0,
 
-    /// <summary>MS-DCOM SPECIAL_PROPERTIES_DATA.</summary>
+    /// <summary>
+    /// MS-DCOM SPECIAL_PROPERTIES_DATA.
+    /// </summary>
     SpecialProperties = 1,
 
-    /// <summary>Requested class and interface activation data.</summary>
+    /// <summary>
+    /// Requested class and interface activation data.
+    /// </summary>
     InstanceInfo = 2,
 
-    /// <summary>Client/server location and protocol-sequence data.</summary>
+    /// <summary>
+    /// Client/server location and protocol-sequence data.
+    /// </summary>
     LocationInfo = 3,
 
-    /// <summary>SCM reply data containing returned interface references.</summary>
+    /// <summary>
+    /// SCM reply data containing returned interface references.
+    /// </summary>
     ScmReplyInfo = 4,
 
-    /// <summary>Authentication, impersonation, and capability data.</summary>
+    /// <summary>
+    /// Authentication, impersonation, and capability data.
+    /// </summary>
     SecurityInfo = 5,
 }

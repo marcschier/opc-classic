@@ -32,29 +32,53 @@ namespace Opc.Classic.Dcom.Core;
 public sealed class Variant
 {
 
-    /// <summary> array is allocated on the stack </summary>
+    /// <summary>
+    /// array is allocated on the stack
+    /// </summary>
     public const int FADF_AUTO = 0x0001;
-    /// <summary> array is staticly allocated </summary>
+    /// <summary>
+    /// array is staticly allocated
+    /// </summary>
     public const int FADF_STATIC = 0x0002;
-    /// <summary> array is embedded in a structure </summary>
+    /// <summary>
+    /// array is embedded in a structure
+    /// </summary>
     public const int FADF_EMBEDDED = 0x0004;
-    /// <summary> may not be resized or reallocated </summary>
+    /// <summary>
+    /// may not be resized or reallocated
+    /// </summary>
     public const int FADF_FIXEDSIZE = 0x0010;
-    /// <summary>  an array of records </summary>
+    /// <summary>
+    /// an array of records
+    /// </summary>
     public const int FADF_RECORD = 0x0020;
-    /// <summary> with FADF_DISPATCH, FADF_UNKNOWN </summary>
+    /// <summary>
+    /// with FADF_DISPATCH, FADF_UNKNOWN
+    /// </summary>
     public const int FADF_HAVEIID = 0x0040;
-    /// <summary> array has a VT type </summary>
+    /// <summary>
+    /// array has a VT type
+    /// </summary>
     public const int FADF_HAVEVARTYPE = 0x0080;
-    /// <summary> an array of BSTRs </summary>
+    /// <summary>
+    /// an array of BSTRs
+    /// </summary>
     public const int FADF_BSTR = 0x0100;
-    /// <summary> an array of IUnknown* </summary>
+    /// <summary>
+    /// an array of IUnknown*
+    /// </summary>
     public const int FADF_UNKNOWN = 0x0200;
-    /// <summary> an array of IDispatch* </summary>
+    /// <summary>
+    /// an array of IDispatch*
+    /// </summary>
     public const int FADF_DISPATCH = 0x0400;
-    /// <summary> an array of VARIANTs </summary>
+    /// <summary>
+    /// an array of VARIANTs
+    /// </summary>
     public const int FADF_VARIANT = 0x0800;
-    /// <summary> reserved bits </summary>
+    /// <summary>
+    /// reserved bits
+    /// </summary>
     public const int FADF_RESERVED = 0xF008;
 
 

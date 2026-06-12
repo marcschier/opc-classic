@@ -41,7 +41,9 @@ public sealed class OpcDaServerHost : IOpcServerHost, IDisposable, IAsyncDisposa
     private readonly IOPCItemProperties? _itemProperties;
     private OpcServerListener? _listener;
 
-    /// <summary>Initializes a new instance of the <see cref="OpcDaServerHost"/> class.</summary>
+    /// <summary>
+    /// Initializes a new instance of the <see cref="OpcDaServerHost"/> class.
+    /// </summary>
     public OpcDaServerHost(
         IOpcDaServer serverImpl,
         IOptions<OpcDaServerOptions> options,

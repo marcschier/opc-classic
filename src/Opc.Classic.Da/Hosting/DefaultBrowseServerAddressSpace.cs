@@ -27,19 +27,25 @@ public sealed class DefaultBrowseServerAddressSpace : IOPCBrowseServerAddressSpa
     private readonly Lock _lock = new();
     private string _browsePosition = string.Empty;
 
-    /// <summary>Initializes with an empty flat address space.</summary>
+    /// <summary>
+    /// Initializes with an empty flat address space.
+    /// </summary>
     public DefaultBrowseServerAddressSpace()
         : this(new FlatHierarchicalNamespace())
     {
     }
 
-    /// <summary>Initializes with the supplied address space.</summary>
+    /// <summary>
+    /// Initializes with the supplied address space.
+    /// </summary>
     public DefaultBrowseServerAddressSpace(IOpcAddressSpace addressSpace)
     {
         _addressSpace = addressSpace ?? throw new ArgumentNullException(nameof(addressSpace));
     }
 
-    /// <summary>Test helper: the current browse position.</summary>
+    /// <summary>
+    /// Test helper: the current browse position.
+    /// </summary>
     public string CurrentBrowsePosition
     {
         get

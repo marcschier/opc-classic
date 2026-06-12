@@ -11,11 +11,12 @@ namespace Opc.Classic.Dcom.Smb.Tests;
 /// Wire-format fixtures — byte sequences crafted from the published [MS-SMB2] spec
 /// examples + worked-by-hand intermediate values. These regression tests prevent
 /// drift in the codec layout away from the published Microsoft Open Specifications.
-///
+/// <para>
 /// Capturing real-server fixtures (Wireshark `.pcapng` → byte arrays) is documented
 /// in `src/Opc.Classic.Dcom.Smb/FIXTURES.md`; until that capture is performed against
 /// a real Samba/Windows server, the synthetic fixtures below validate that our
 /// codec implementations match the spec's documented wire layouts.
+/// </para>
 /// </summary>
 public sealed class Smb2WireFixtureTests
 {

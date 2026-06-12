@@ -5,7 +5,9 @@
 
 namespace Opc.Classic.Mcp.Dtos;
 
-/// <summary>JSON-friendly OPC XML-DA server status.</summary>
+/// <summary>
+/// JSON-friendly OPC XML-DA server status.
+/// </summary>
 public sealed record OpcXmlDaServerStatusDto(
     DateTimeOffset StartTime,
     string ProductVersion,

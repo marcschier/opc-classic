@@ -10,7 +10,9 @@ namespace Opc.Classic.Ae;
 /// </summary>
 public sealed record OpcEventNotification
 {
-    /// <summary>Constructor for the immutable event notification payload.</summary>
+    /// <summary>
+    /// Constructor for the immutable event notification payload.
+    /// </summary>
     public OpcEventNotification(
         ushort changeMask,
         ushort newState,
@@ -49,51 +51,83 @@ public sealed record OpcEventNotification
         ActorId = actorId;
     }
 
-    /// <summary>Condition change mask.</summary>
+    /// <summary>
+    /// Condition change mask.
+    /// </summary>
     public ushort ChangeMask { get; }
 
-    /// <summary>New condition state.</summary>
+    /// <summary>
+    /// New condition state.
+    /// </summary>
     public ushort NewState { get; }
 
-    /// <summary>Event source name.</summary>
+    /// <summary>
+    /// Event source name.
+    /// </summary>
     public string? Source { get; }
 
-    /// <summary>Server-supplied UTC event timestamp.</summary>
+    /// <summary>
+    /// Server-supplied UTC event timestamp.
+    /// </summary>
     public DateTimeOffset Time { get; }
 
-    /// <summary>Human-readable event message.</summary>
+    /// <summary>
+    /// Human-readable event message.
+    /// </summary>
     public string? Message { get; }
 
-    /// <summary>OPC AE event type.</summary>
+    /// <summary>
+    /// OPC AE event type.
+    /// </summary>
     public uint EventType { get; }
 
-    /// <summary>Server-defined event category.</summary>
+    /// <summary>
+    /// Server-defined event category.
+    /// </summary>
     public uint EventCategory { get; }
 
-    /// <summary>Event severity.</summary>
+    /// <summary>
+    /// Event severity.
+    /// </summary>
     public uint Severity { get; }
 
-    /// <summary>Condition name for condition events.</summary>
+    /// <summary>
+    /// Condition name for condition events.
+    /// </summary>
     public string? ConditionName { get; }
 
-    /// <summary>Subcondition name for condition events.</summary>
+    /// <summary>
+    /// Subcondition name for condition events.
+    /// </summary>
     public string? SubconditionName { get; }
 
-    /// <summary>OPC quality associated with the event data.</summary>
+    /// <summary>
+    /// OPC quality associated with the event data.
+    /// </summary>
     public OpcQuality Quality { get; }
 
-    /// <summary>Whether the event requires acknowledgment.</summary>
+    /// <summary>
+    /// Whether the event requires acknowledgment.
+    /// </summary>
     public bool AckRequired { get; }
 
-    /// <summary>UTC timestamp when the condition became active.</summary>
+    /// <summary>
+    /// UTC timestamp when the condition became active.
+    /// </summary>
     public DateTimeOffset ActiveTime { get; }
 
-    /// <summary>Server-assigned cookie used when acknowledging the event.</summary>
+    /// <summary>
+    /// Server-assigned cookie used when acknowledging the event.
+    /// </summary>
     public uint Cookie { get; }
 
-    /// <summary>Event attribute values in server-defined attribute order.</summary>
+    /// <summary>
+    /// Event attribute values in server-defined attribute order.
+    /// </summary>
     public OpcVariant[] EventAttributes { get; }
 
-    /// <summary>Tracking-event actor identifier.</summary>
+    /// <summary>
+    /// Tracking-event actor identifier.
+    /// </summary>
     public string? ActorId { get; }
 }

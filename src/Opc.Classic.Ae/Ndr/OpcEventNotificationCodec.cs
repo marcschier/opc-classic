@@ -18,7 +18,9 @@ public static class NdrOpcEventNotificationCodec
     private const int Win32BoolFalse = 0;
     private const long FileTimeEpochOffsetTicks = 504911232000000000L;
 
-    /// <summary>Encodes a single ONEVENTSTRUCT in NDR.</summary>
+    /// <summary>
+    /// Encodes a single ONEVENTSTRUCT in NDR.
+    /// </summary>
     public static void Write(ref NdrWriter writer, OpcEventNotification notification)
     {
         ArgumentNullException.ThrowIfNull(notification);
@@ -42,7 +44,9 @@ public static class NdrOpcEventNotificationCodec
         writer.WriteUnicodeStringPtr(notification.ActorId);
     }
 
-    /// <summary>Decodes a single ONEVENTSTRUCT from NDR.</summary>
+    /// <summary>
+    /// Decodes a single ONEVENTSTRUCT from NDR.
+    /// </summary>
     public static OpcEventNotification Read(ref NdrReader reader)
     {
         ushort changeMask = reader.ReadUInt16();

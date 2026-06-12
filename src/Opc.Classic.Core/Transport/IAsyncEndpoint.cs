@@ -12,7 +12,9 @@ namespace Opc.Classic.Transport;
 /// </summary>
 public interface IAsyncEndpoint : IAsyncDisposable
 {
-    /// <summary>Gets the local endpoint where this listener accepts connections.</summary>
+    /// <summary>
+    /// Gets the local endpoint where this listener accepts connections.
+    /// </summary>
     EndPoint LocalEndpoint { get; }
 
     /// <summary>

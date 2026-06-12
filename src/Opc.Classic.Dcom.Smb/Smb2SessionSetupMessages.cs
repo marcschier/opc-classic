@@ -7,7 +7,9 @@ using System.Buffers.Binary;
 
 namespace Opc.Classic.Dcom.Smb;
 
-/// <summary>SMB2 SESSION_SETUP request body, per [MS-SMB2] §2.2.5.</summary>
+/// <summary>
+/// SMB2 SESSION_SETUP request body, per [MS-SMB2] §2.2.5.
+/// </summary>
 internal readonly record struct Smb2SessionSetupRequest(
     byte Flags,
     byte SecurityMode,
@@ -47,7 +49,9 @@ internal readonly record struct Smb2SessionSetupRequest(
     }
 }
 
-/// <summary>SMB2 SESSION_SETUP response body, per [MS-SMB2] §2.2.6.</summary>
+/// <summary>
+/// SMB2 SESSION_SETUP response body, per [MS-SMB2] §2.2.6.
+/// </summary>
 internal readonly record struct Smb2SessionSetupResponse(
     ushort SessionFlags,
     ReadOnlyMemory<byte> SecurityBlob)

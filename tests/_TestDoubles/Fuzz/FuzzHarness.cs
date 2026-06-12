@@ -20,10 +20,14 @@ namespace Opc.Classic.Tests.Fuzz;
 /// </summary>
 public static class FuzzHarness
 {
-    /// <summary>Quick CI iteration default.</summary>
+    /// <summary>
+    /// Quick CI iteration default.
+    /// </summary>
     public const int DefaultIterations = 200;
 
-    /// <summary>Deep workflow_dispatch / weekly iteration default.</summary>
+    /// <summary>
+    /// Deep workflow_dispatch / weekly iteration default.
+    /// </summary>
     public const int DeepIterations = 10_000;
     private const int MaxFragmentSize = 65_535;
     private const string IterationsEnvironmentVariable = "OPCCLASSIC_FUZZ_ITERATIONS";

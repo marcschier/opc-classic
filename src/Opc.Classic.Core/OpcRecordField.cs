@@ -5,10 +5,14 @@
 
 namespace Opc.Classic;
 
-/// <summary>A named field in an optional VT_RECORD type description.</summary>
+/// <summary>
+/// A named field in an optional VT_RECORD type description.
+/// </summary>
 public readonly record struct OpcRecordField
 {
-    /// <summary>Creates a record field descriptor.</summary>
+    /// <summary>
+    /// Creates a record field descriptor.
+    /// </summary>
     public OpcRecordField(string name, VarType type)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(name);
@@ -16,9 +20,13 @@ public readonly record struct OpcRecordField
         Type = type;
     }
 
-    /// <summary>The field name from the record layout.</summary>
+    /// <summary>
+    /// The field name from the record layout.
+    /// </summary>
     public string Name { get; }
 
-    /// <summary>The field VARTYPE used by the record codec.</summary>
+    /// <summary>
+    /// The field VARTYPE used by the record codec.
+    /// </summary>
     public VarType Type { get; }
 }

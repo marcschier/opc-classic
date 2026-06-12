@@ -35,7 +35,9 @@ public struct Md4State
 #pragma warning restore IDE0051, CS0169
     }
 
-    /// <summary>Reset to RFC 1320 §3.3 initial values.</summary>
+    /// <summary>
+    /// Reset to RFC 1320 §3.3 initial values.
+    /// </summary>
     public void Initialize()
     {
         _a = 0x67452301u;
@@ -46,7 +48,9 @@ public struct Md4State
         _bufferedBytes = 0;
     }
 
-    /// <summary>Append <paramref name="data"/> to the running hash.</summary>
+    /// <summary>
+    /// Append <paramref name="data"/> to the running hash.
+    /// </summary>
     public void AppendData(ReadOnlySpan<byte> data)
     {
         _bitsProcessed += (ulong)data.Length * 8;
@@ -83,7 +87,9 @@ public struct Md4State
         }
     }
 
-    /// <summary>Finalize, write the 16-byte hash, and reset state for reuse.</summary>
+    /// <summary>
+    /// Finalize, write the 16-byte hash, and reset state for reuse.
+    /// </summary>
     public void GetHashAndReset(Span<byte> destination)
     {
         if (destination.Length < Md4.HashSizeInBytes)

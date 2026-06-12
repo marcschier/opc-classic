@@ -7,7 +7,9 @@
 
 namespace Opc.Classic.Xml;
 
-/// <summary>A single item entry inside a <see cref="XmlDaSubscribeRequest"/>.</summary>
+/// <summary>
+/// A single item entry inside a <see cref="XmlDaSubscribeRequest"/>.
+/// </summary>
 /// <param name="ItemName">Item identifier.</param>
 /// <param name="ClientItemHandle">Client correlation ID.</param>
 /// <param name="RequestedSamplingRate">Per-item sampling rate in ms. 0 = use the subscription's default.</param>
@@ -18,7 +20,9 @@ public sealed record XmlDaSubscribeItem(
     int RequestedSamplingRate = 0,
     float Deadband = 0f);
 
-/// <summary>An XML-DA <c>Subscribe</c> request payload.</summary>
+/// <summary>
+/// An XML-DA <c>Subscribe</c> request payload.
+/// </summary>
 /// <param name="Header">Common LocaleID / ClientRequestHandle header.</param>
 /// <param name="Items">Items to subscribe to.</param>
 /// <param name="ItemPath">Vendor-defined path scoping (applied to all items).</param>
@@ -37,7 +41,9 @@ public sealed record XmlDaSubscribeRequest(
     bool ReturnErrorText = true,
     bool EnableBuffering = false);
 
-/// <summary>An XML-DA <c>SubscribeResponse</c> payload.</summary>
+/// <summary>
+/// An XML-DA <c>SubscribeResponse</c> payload.
+/// </summary>
 /// <param name="ServerState">Top-level server state.</param>
 /// <param name="ServerSubHandle">The opaque server-side subscription handle. Pass to SubscriptionPolledRefresh / SubscriptionCancel.</param>
 /// <param name="RevisedSamplingRate">The server-revised default sampling rate; may differ from the requested rate.</param>

@@ -13,11 +13,15 @@ namespace Opc.Classic.Ndr;
 /// </summary>
 public static class NdrSafeArrayExtensions
 {
-    /// <summary>Maximum SAFEARRAY rank accepted by the codec.</summary>
+    /// <summary>
+    /// Maximum SAFEARRAY rank accepted by the codec.
+    /// </summary>
     public const int MaxSafeArrayDimensions = 256;
     private const ulong MaxSafeArrayPayloadBytes = 2UL * 1024UL * 1024UL * 1024UL;
 
-    /// <summary>Encodes a SAFEARRAY descriptor and flattened element data.</summary>
+    /// <summary>
+    /// Encodes a SAFEARRAY descriptor and flattened element data.
+    /// </summary>
     public static void WriteSafeArray(this ref NdrWriter writer, OpcSafeArray value)
     {
         ArgumentNullException.ThrowIfNull(value);
@@ -164,7 +168,9 @@ public static class NdrSafeArrayExtensions
         }
     }
 
-    /// <summary>Decodes a SAFEARRAY descriptor and flattened element data.</summary>
+    /// <summary>
+    /// Decodes a SAFEARRAY descriptor and flattened element data.
+    /// </summary>
     public static OpcSafeArray ReadSafeArray(this ref NdrReader reader)
     {
         reader.AlignTo(4);

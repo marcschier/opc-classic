@@ -17,43 +17,69 @@ namespace Opc.Classic.Da.Hosting;
 /// </remarks>
 public static class OpcStandardProperties
 {
-    /// <summary>Property ID 1 = item canonical data type (VT_I2).</summary>
+    /// <summary>
+    /// Property ID 1 = item canonical data type (VT_I2).
+    /// </summary>
     public const int CanonicalDataType = 1;
 
-    /// <summary>Property ID 2 = item value (VARIANT).</summary>
+    /// <summary>
+    /// Property ID 2 = item value (VARIANT).
+    /// </summary>
     public const int Value = 2;
 
-    /// <summary>Property ID 3 = item quality (VT_I2).</summary>
+    /// <summary>
+    /// Property ID 3 = item quality (VT_I2).
+    /// </summary>
     public const int Quality = 3;
 
-    /// <summary>Property ID 4 = item timestamp (VT_DATE).</summary>
+    /// <summary>
+    /// Property ID 4 = item timestamp (VT_DATE).
+    /// </summary>
     public const int Timestamp = 4;
 
-    /// <summary>Property ID 5 = item access rights (VT_I4 bitmask).</summary>
+    /// <summary>
+    /// Property ID 5 = item access rights (VT_I4 bitmask).
+    /// </summary>
     public const int AccessRights = 5;
 
-    /// <summary>Property ID 6 = server scan rate in milliseconds (VT_R4).</summary>
+    /// <summary>
+    /// Property ID 6 = server scan rate in milliseconds (VT_R4).
+    /// </summary>
     public const int ScanRate = 6;
 
-    /// <summary>Property ID 7 = engineering units type (VT_I2, 0=NoEU, 1=Analog, 2=Enumerated).</summary>
+    /// <summary>
+    /// Property ID 7 = engineering units type (VT_I2, 0=NoEU, 1=Analog, 2=Enumerated).
+    /// </summary>
     public const int EuType = 7;
 
-    /// <summary>Property ID 8 = engineering units info (VARIANT: SAFEARRAY of double for analog, BSTR for enumerated).</summary>
+    /// <summary>
+    /// Property ID 8 = engineering units info (VARIANT: SAFEARRAY of double for analog, BSTR for enumerated).
+    /// </summary>
     public const int EuInfo = 8;
 
-    /// <summary>Property ID 100 = EU label (VT_BSTR, e.g. "RPM", "psi"). Vendor-private but conventional.</summary>
+    /// <summary>
+    /// Property ID 100 = EU label (VT_BSTR, e.g. "RPM", "psi"). Vendor-private but conventional.
+    /// </summary>
     public const int EuLabel = 100;
 
-    /// <summary>Property ID 101 = item description (VT_BSTR).</summary>
+    /// <summary>
+    /// Property ID 101 = item description (VT_BSTR).
+    /// </summary>
     public const int Description = 101;
 
-    /// <summary>Property ID 102 = high-EU bound (VT_R8).</summary>
+    /// <summary>
+    /// Property ID 102 = high-EU bound (VT_R8).
+    /// </summary>
     public const int HighEu = 102;
 
-    /// <summary>Property ID 103 = low-EU bound (VT_R8).</summary>
+    /// <summary>
+    /// Property ID 103 = low-EU bound (VT_R8).
+    /// </summary>
     public const int LowEu = 103;
 
-    /// <summary>The full list of property descriptors published by the default impl.</summary>
+    /// <summary>
+    /// The full list of property descriptors published by the default impl.
+    /// </summary>
     public static IReadOnlyList<OpcStandardProperty> All { get; } =
     [
         new(CanonicalDataType, VarType.VT_I2, "Item Canonical DataType"),

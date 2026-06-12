@@ -11,15 +11,23 @@ namespace Opc.Classic.Ae;
 /// </summary>
 public sealed class AreaBrowseElement
 {
-    /// <summary>Short display name of this area or source.</summary>
+    /// <summary>
+    /// Short display name of this area or source.
+    /// </summary>
     public string Name { get; init; } = string.Empty;
 
-    /// <summary>Fully-qualified path (server-canonical).</summary>
+    /// <summary>
+    /// Fully-qualified path (server-canonical).
+    /// </summary>
     public string QualifiedName { get; init; } = string.Empty;
 
-    /// <summary>True if this is a sub-area (has child areas).</summary>
+    /// <summary>
+    /// True if this is a sub-area (has child areas).
+    /// </summary>
     public bool IsArea { get; init; }
 
-    /// <summary>True if this is an event source (leaf).</summary>
+    /// <summary>
+    /// True if this is an event source (leaf).
+    /// </summary>
     public bool IsSource { get; init; }
 }

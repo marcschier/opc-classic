@@ -15,7 +15,9 @@ using Microsoft.CodeAnalysis.Text;
 
 namespace Opc.Classic.Generators;
 
-/// <summary>Emits AOT-safe server-side NDR dispatchers for OPC interface projections.</summary>
+/// <summary>
+/// Emits AOT-safe server-side NDR dispatchers for OPC interface projections.
+/// </summary>
 [Generator(LanguageNames.CSharp)]
 public sealed class OpcServerDispatchGenerator : IIncrementalGenerator
 {
@@ -36,7 +38,9 @@ public sealed class OpcServerDispatchGenerator : IIncrementalGenerator
 
 namespace Opc.Classic.Generators
 {
-    /// <summary>Requests an AOT-safe server-side dispatcher for an OPC interface projection.</summary>
+    /// <summary>
+    /// Requests an AOT-safe server-side dispatcher for an OPC interface projection.
+    /// </summary>
     [global::System.AttributeUsage(global::System.AttributeTargets.Interface, AllowMultiple = false, Inherited = false)]
     internal sealed class OpcGenerateServerDispatchAttribute : global::System.Attribute { }
 }
@@ -1601,9 +1605,14 @@ namespace Opc.Classic.Generators
         public bool EmitArrayCount { get; }
         public bool FileTimeElements { get; }
         public bool VariantElements { get; }
-        /// <summary>True when [OpcRefString] is present — bare conformant string with no referent.</summary>
+        /// <summary>
+        /// True when [OpcRefString] is present — bare conformant string with no referent.
+        /// </summary>
         public bool RefString { get; }
-        /// <summary>True when [OpcDeferredElements] is present: the array decoder expects per-element referent IDs followed by deferred per-element string bodies (matching the proxy's two-pass write).</summary>
+        /// <summary>
+        /// True when [OpcDeferredElements] is present: the array decoder expects per-element referent IDs followed by deferred per-element
+        /// string bodies (matching the proxy's two-pass write).
+        /// </summary>
         public bool DeferredElements { get; }
         public bool IsRequestValue => !IsCancellationToken && RefKind != RefKind.Out;
         public bool IsResponseValue => !IsCancellationToken && (RefKind == RefKind.Out || RefKind == RefKind.Ref);
@@ -1656,7 +1665,9 @@ namespace Opc.Classic.Generators
         public string? TaskResultType { get; }
         public string? TaskResultMarshallingType { get; }
         public bool TaskResultIsOpcInterface { get; }
-        /// <summary>True when the Task&lt;T&gt; result wire-encodes as a unique pointer (referent + value).</summary>
+        /// <summary>
+        /// True when the Task&lt;T&gt; result wire-encodes as a unique pointer (referent + value).
+        /// </summary>
         public bool TaskResultIsUniquePointer { get; }
         public string? UnsupportedSignatureReason { get; }
         public string? UnsupportedMarshallingType { get; }

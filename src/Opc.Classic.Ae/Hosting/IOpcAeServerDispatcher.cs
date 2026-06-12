@@ -7,23 +7,31 @@ using Opc.Classic.Ae.Dcom;
 
 namespace Opc.Classic.Ae.Hosting;
 
-/// <summary>Dispatches NDR-encoded AE DCOM calls to a managed AE server implementation.</summary>
+/// <summary>
+/// Dispatches NDR-encoded AE DCOM calls to a managed AE server implementation.
+/// </summary>
 public interface IOpcAeServerDispatcher
 {
-    /// <summary>Routes an incoming interface/opnum request and returns an HRESULT plus NDR response body.</summary>
+    /// <summary>
+    /// Routes an incoming interface/opnum request and returns an HRESULT plus NDR response body.
+    /// </summary>
     Task<NdrCallResult> DispatchAsync(
         Guid interfaceId,
         int opnum,
         ReadOnlyMemory<byte> requestPayload,
         CancellationToken cancellationToken);
 
-    /// <summary>Creates a dispatcher for an <c>IOPCEventAreaBrowser</c> instance.</summary>
+    /// <summary>
+    /// Creates a dispatcher for an <c>IOPCEventAreaBrowser</c> instance.
+    /// </summary>
     Task<IOpcAeAreaBrowserDispatcher> CreateAreaBrowserAsync(
         Guid requestedInterfaceId,
         CancellationToken cancellationToken = default) =>
         throw new OpcException(OpcResultId.NotImplemented);
 
-    /// <summary>Creates a dispatcher for an <c>IOPCEventSubscriptionMgt</c> instance.</summary>
+    /// <summary>
+    /// Creates a dispatcher for an <c>IOPCEventSubscriptionMgt</c> instance.
+    /// </summary>
     Task<IOPCEventSubscriptionMgt> CreateEventSubscriptionAsync(
         bool active,
         int bufferTime,
@@ -35,7 +43,9 @@ public interface IOpcAeServerDispatcher
         CancellationToken cancellationToken = default) =>
         throw NotImplemented(out revisedBufferTime, out revisedMaxSize);
 
-    /// <summary>Returns event category IDs and descriptions.</summary>
+    /// <summary>
+    /// Returns event category IDs and descriptions.
+    /// </summary>
     Task QueryEventCategoriesAsync(
         int eventType,
         out int[] eventCategories,
@@ -43,19 +53,27 @@ public interface IOpcAeServerDispatcher
         CancellationToken cancellationToken = default) =>
         throw NotImplemented(out eventCategories, out eventCategoryDescriptions);
 
-    /// <summary>Returns condition names for an event category.</summary>
+    /// <summary>
+    /// Returns condition names for an event category.
+    /// </summary>
     Task<string[]> QueryConditionNamesAsync(int eventCategory, CancellationToken cancellationToken = default) =>
         throw new OpcException(OpcResultId.NotImplemented);
 
-    /// <summary>Returns sub-condition names for a condition.</summary>
+    /// <summary>
+    /// Returns sub-condition names for a condition.
+    /// </summary>
     Task<string[]> QuerySubConditionNamesAsync(string conditionName, CancellationToken cancellationToken = default) =>
         throw new OpcException(OpcResultId.NotImplemented);
 
-    /// <summary>Returns condition names for a source.</summary>
+    /// <summary>
+    /// Returns condition names for a source.
+    /// </summary>
     Task<string[]> QuerySourceConditionsAsync(string source, CancellationToken cancellationToken = default) =>
         throw new OpcException(OpcResultId.NotImplemented);
 
-    /// <summary>Returns event attribute IDs, descriptions, and VARIANT types.</summary>
+    /// <summary>
+    /// Returns event attribute IDs, descriptions, and VARIANT types.
+    /// </summary>
     Task QueryEventAttributesAsync(
         int eventCategory,
         out int[] attributeIds,
@@ -64,7 +82,9 @@ public interface IOpcAeServerDispatcher
         CancellationToken cancellationToken = default) =>
         throw NotImplemented(out attributeIds, out attributeDescriptions, out attributeTypes);
 
-    /// <summary>Maps event attributes to DA item identifiers.</summary>
+    /// <summary>
+    /// Maps event attributes to DA item identifiers.
+    /// </summary>
     Task TranslateToItemIDsAsync(
         string source,
         int eventCategory,
@@ -77,27 +97,39 @@ public interface IOpcAeServerDispatcher
         CancellationToken cancellationToken = default) =>
         throw NotImplemented(out attributeItemIds, out nodeNames, out classIds);
 
-    /// <summary>Returns a condition-state snapshot.</summary>
+    /// <summary>
+    /// Returns a condition-state snapshot.
+    /// </summary>
     Task<OpcConditionState> GetConditionStateAsync(string source, string conditionName, int[] attributeIds, CancellationToken cancellationToken = default) =>
         throw new OpcException(OpcResultId.NotImplemented);
 
-    /// <summary>Enables conditions by area.</summary>
+    /// <summary>
+    /// Enables conditions by area.
+    /// </summary>
     Task EnableConditionByAreaAsync(string[] areas, CancellationToken cancellationToken = default) =>
         throw new OpcException(OpcResultId.NotImplemented);
 
-    /// <summary>Enables conditions by source.</summary>
+    /// <summary>
+    /// Enables conditions by source.
+    /// </summary>
     Task EnableConditionBySourceAsync(string[] sources, CancellationToken cancellationToken = default) =>
         throw new OpcException(OpcResultId.NotImplemented);
 
-    /// <summary>Disables conditions by area.</summary>
+    /// <summary>
+    /// Disables conditions by area.
+    /// </summary>
     Task DisableConditionByAreaAsync(string[] areas, CancellationToken cancellationToken = default) =>
         throw new OpcException(OpcResultId.NotImplemented);
 
-    /// <summary>Disables conditions by source.</summary>
+    /// <summary>
+    /// Disables conditions by source.
+    /// </summary>
     Task DisableConditionBySourceAsync(string[] sources, CancellationToken cancellationToken = default) =>
         throw new OpcException(OpcResultId.NotImplemented);
 
-    /// <summary>Acknowledges conditions and returns per-event HRESULTs.</summary>
+    /// <summary>
+    /// Acknowledges conditions and returns per-event HRESULTs.
+    /// </summary>
     /// <remarks>
     /// IDL signature: <c>HRESULT AckCondition(DWORD dwCount, LPWSTR szAcknowledgerID, LPWSTR szComment,
     /// [size_is(dwCount)] LPWSTR *pszSource, [size_is(dwCount)] LPWSTR *pszConditionName,
@@ -114,7 +146,9 @@ public interface IOpcAeServerDispatcher
         CancellationToken cancellationToken = default) =>
         throw new OpcException(OpcResultId.NotImplemented);
 
-    /// <summary>Registers a client <c>IOPCEventSink</c> for a subscription connection point.</summary>
+    /// <summary>
+    /// Registers a client <c>IOPCEventSink</c> for a subscription connection point.
+    /// </summary>
     Task<int> AdviseEventSinkAsync(IOPCEventSubscriptionMgt subscription, IOPCEventSink sink, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(subscription);
@@ -125,7 +159,9 @@ public interface IOpcAeServerDispatcher
             : throw new OpcException(OpcResultId.NotImplemented);
     }
 
-    /// <summary>Unregisters a client <c>IOPCEventSink</c> from a subscription connection point.</summary>
+    /// <summary>
+    /// Unregisters a client <c>IOPCEventSink</c> from a subscription connection point.
+    /// </summary>
     Task UnadviseEventSinkAsync(IOPCEventSubscriptionMgt subscription, int connection, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(subscription);
@@ -135,7 +171,9 @@ public interface IOpcAeServerDispatcher
             : throw new OpcException(OpcResultId.NotImplemented);
     }
 
-    /// <summary>Removes a subscription created by <see cref="CreateEventSubscriptionAsync" />.</summary>
+    /// <summary>
+    /// Removes a subscription created by <see cref="CreateEventSubscriptionAsync" />.
+    /// </summary>
     Task RemoveSubscriptionAsync(IOPCEventSubscriptionMgt subscription, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(subscription);

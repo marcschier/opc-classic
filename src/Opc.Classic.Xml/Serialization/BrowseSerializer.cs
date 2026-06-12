@@ -13,7 +13,9 @@ namespace Opc.Classic.Xml.Serialization;
 /// </summary>
 public static class BrowseSerializer
 {
-    /// <summary>Writes a complete SOAP envelope carrying a <c>Browse</c> request.</summary>
+    /// <summary>
+    /// Writes a complete SOAP envelope carrying a <c>Browse</c> request.
+    /// </summary>
     public static void WriteRequest(SoapEnvelopeWriter writer, XmlDaBrowseRequest request)
     {
         ArgumentNullException.ThrowIfNull(writer);

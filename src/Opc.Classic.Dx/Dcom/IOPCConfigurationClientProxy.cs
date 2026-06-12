@@ -11,13 +11,17 @@ using Opc.Classic.Ndr;
 
 namespace Opc.Classic.Dx.Dcom;
 
-/// <summary>Hand-written DX configuration proxy with OPCDX structure codec support.</summary>
+/// <summary>
+/// Hand-written DX configuration proxy with OPCDX structure codec support.
+/// </summary>
 public sealed class IOPCConfigurationClientProxy : IOPCConfiguration
 {
     private const int PayloadCapacity = 64 * 1024;
     private readonly ICallChannel _channel;
 
-    /// <summary>Creates an <c>IOPCConfiguration</c> client proxy.</summary>
+    /// <summary>
+    /// Creates an <c>IOPCConfiguration</c> client proxy.
+    /// </summary>
     public IOPCConfigurationClientProxy(ICallChannel channel)
     {
         _channel = channel ?? throw new ArgumentNullException(nameof(channel));

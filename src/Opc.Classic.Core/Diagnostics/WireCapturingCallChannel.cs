@@ -30,7 +30,9 @@ public sealed class WireCapturingCallChannel : ICallChannel
     private readonly string _contextTag;
     private long _sequence;
 
-    /// <summary>Creates a new capturing decorator.</summary>
+    /// <summary>
+    /// Creates a new capturing decorator.
+    /// </summary>
     public WireCapturingCallChannel(ICallChannel inner, string directory, string contextTag)
     {
         ArgumentNullException.ThrowIfNull(inner);

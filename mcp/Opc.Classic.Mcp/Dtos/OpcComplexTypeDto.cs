@@ -5,7 +5,9 @@
 
 namespace Opc.Classic.Mcp.Dtos;
 
-/// <summary>JSON-friendly OPC Complex Data item type description.</summary>
+/// <summary>
+/// JSON-friendly OPC Complex Data item type description.
+/// </summary>
 public sealed record OpcComplexTypeDto(
     string ItemId,
     Guid TypeId,
@@ -15,14 +17,18 @@ public sealed record OpcComplexTypeDto(
     string? DataFilter,
     IReadOnlyList<string> AvailableFilters);
 
-/// <summary>JSON-friendly OPC Complex Data type-system descriptor.</summary>
+/// <summary>
+/// JSON-friendly OPC Complex Data type-system descriptor.
+/// </summary>
 public sealed record OpcTypeSystemDto(
     string TypeSystemId,
     bool Supported,
     string NamespacePath,
     IReadOnlyList<string> SupportedTypeSystemIds);
 
-/// <summary>JSON-friendly OPC Complex Data dictionary.</summary>
+/// <summary>
+/// JSON-friendly OPC Complex Data dictionary.
+/// </summary>
 public sealed record OpcTypeDictionaryDto(
     string DictionaryId,
     string TypeSystemId,
@@ -31,7 +37,9 @@ public sealed record OpcTypeDictionaryDto(
     IReadOnlyList<OpcComplexTypeDescriptionDto> Types,
     string? ParseError);
 
-/// <summary>JSON-friendly OPC Complex Data type description.</summary>
+/// <summary>
+/// JSON-friendly OPC Complex Data type description.
+/// </summary>
 public sealed record OpcComplexTypeDescriptionDto(
     string Name,
     string TypeId,
@@ -39,7 +47,9 @@ public sealed record OpcComplexTypeDescriptionDto(
     bool IsComplex,
     IReadOnlyList<OpcComplexTypeFieldDto> Fields);
 
-/// <summary>JSON-friendly OPC Complex Data type field.</summary>
+/// <summary>
+/// JSON-friendly OPC Complex Data type field.
+/// </summary>
 public sealed record OpcComplexTypeFieldDto(
     string Name,
     string Kind,

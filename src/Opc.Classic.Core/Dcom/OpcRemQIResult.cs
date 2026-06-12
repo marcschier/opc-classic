@@ -20,7 +20,9 @@ namespace Opc.Classic.Dcom;
 /// </remarks>
 public sealed class OpcRemQIResult
 {
-    /// <summary>Creates a new RemQI result entry.</summary>
+    /// <summary>
+    /// Creates a new RemQI result entry.
+    /// </summary>
     public OpcRemQIResult(int hresult, uint flags, uint publicRefs, ulong oxid, ulong oid, Guid ipid)
     {
         Hresult = hresult;
@@ -31,21 +33,33 @@ public sealed class OpcRemQIResult
         Ipid = ipid;
     }
 
-    /// <summary>HRESULT for the IID's QI attempt (S_OK on success, E_NOINTERFACE on miss).</summary>
+    /// <summary>
+    /// HRESULT for the IID's QI attempt (S_OK on success, E_NOINTERFACE on miss).
+    /// </summary>
     public int Hresult { get; }
 
-    /// <summary>STDOBJREF flags (typically 0).</summary>
+    /// <summary>
+    /// STDOBJREF flags (typically 0).
+    /// </summary>
     public uint Flags { get; }
 
-    /// <summary>STDOBJREF cPublicRefs (number of references the server-side proxy must hold).</summary>
+    /// <summary>
+    /// STDOBJREF cPublicRefs (number of references the server-side proxy must hold).
+    /// </summary>
     public uint PublicRefs { get; }
 
-    /// <summary>The OXID this IPID lives on (matches the parent OBJREF's OXID).</summary>
+    /// <summary>
+    /// The OXID this IPID lives on (matches the parent OBJREF's OXID).
+    /// </summary>
     public ulong Oxid { get; }
 
-    /// <summary>OID — object identifier, distinct per object within the OXID.</summary>
+    /// <summary>
+    /// OID — object identifier, distinct per object within the OXID.
+    /// </summary>
     public ulong Oid { get; }
 
-    /// <summary>IPID — interface pointer identifier; the routing key for subsequent calls.</summary>
+    /// <summary>
+    /// IPID — interface pointer identifier; the routing key for subsequent calls.
+    /// </summary>
     public Guid Ipid { get; }
 }

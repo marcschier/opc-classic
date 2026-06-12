@@ -16,7 +16,9 @@ public static class OpcBinaryDictionaryParser
 {
     private static readonly XNamespace XsiNamespace = "http://www.w3.org/2001/XMLSchema-instance";
 
-    /// <summary>Parse a complete <c>TypeDictionary</c> XML document.</summary>
+    /// <summary>
+    /// Parse a complete <c>TypeDictionary</c> XML document.
+    /// </summary>
     public static TypeDictionary Parse(string xml)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(xml);
@@ -27,7 +29,9 @@ public static class OpcBinaryDictionaryParser
         return Parse(document.Root ?? throw new FormatException("OPCBinary XML is empty."));
     }
 
-    /// <summary>Parse a complete <c>TypeDictionary</c> element or a single <c>TypeDescription</c> element.</summary>
+    /// <summary>
+    /// Parse a complete <c>TypeDictionary</c> element or a single <c>TypeDescription</c> element.
+    /// </summary>
     public static TypeDictionary Parse(XElement root)
     {
         ArgumentNullException.ThrowIfNull(root);
@@ -72,7 +76,9 @@ public static class OpcBinaryDictionaryParser
         throw new FormatException($"Unexpected OPCBinary root element '{root.Name.LocalName}'.");
     }
 
-    /// <summary>Parse a single OPCBinary <c>TypeDescription</c> XML document.</summary>
+    /// <summary>
+    /// Parse a single OPCBinary <c>TypeDescription</c> XML document.
+    /// </summary>
     public static TypeDescription ParseTypeDescription(string xml)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(xml);

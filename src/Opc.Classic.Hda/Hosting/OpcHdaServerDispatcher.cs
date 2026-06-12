@@ -8,7 +8,9 @@ using Opc.Classic.Hda.Dcom;
 
 namespace Opc.Classic.Hda.Hosting;
 
-/// <summary>HDA dispatcher adapter that delegates to the source-generated IOPCHDA_Server dispatcher.</summary>
+/// <summary>
+/// HDA dispatcher adapter that delegates to the source-generated IOPCHDA_Server dispatcher.
+/// </summary>
 public sealed class OpcHdaServerDispatcher : IOpcHdaServerDispatcher
 {
     private const int OpchdaEqual = 1;
@@ -17,7 +19,9 @@ public sealed class OpcHdaServerDispatcher : IOpcHdaServerDispatcher
     private readonly IOpcHdaServer _server;
     private readonly IOPCHDA_ServerServerDispatcher _serverDispatcher;
 
-    /// <summary>Initializes a new instance of the <see cref="OpcHdaServerDispatcher" /> class.</summary>
+    /// <summary>
+    /// Initializes a new instance of the <see cref="OpcHdaServerDispatcher" /> class.
+    /// </summary>
     public OpcHdaServerDispatcher(IOpcHdaServer server)
     {
         _server = server ?? throw new ArgumentNullException(nameof(server));

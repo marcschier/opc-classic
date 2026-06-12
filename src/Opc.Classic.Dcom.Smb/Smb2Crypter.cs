@@ -7,13 +7,19 @@ using System.Security.Cryptography;
 
 namespace Opc.Classic.Dcom.Smb;
 
-/// <summary>SMB 3.x encryption algorithms; see [MS-SMB2] §2.2.3.1.2 and §3.1.4.3.</summary>
+/// <summary>
+/// SMB 3.x encryption algorithms; see [MS-SMB2] §2.2.3.1.2 and §3.1.4.3.
+/// </summary>
 public enum Smb2EncryptionAlgorithm
 {
-    /// <summary>AES-128-CCM with an 11-byte nonce and a 16-byte tag.</summary>
+    /// <summary>
+    /// AES-128-CCM with an 11-byte nonce and a 16-byte tag.
+    /// </summary>
     AesCcm,
 
-    /// <summary>AES-128-GCM with a 12-byte nonce and a 16-byte tag.</summary>
+    /// <summary>
+    /// AES-128-GCM with a 12-byte nonce and a 16-byte tag.
+    /// </summary>
     AesGcm,
 }
 
@@ -23,22 +29,32 @@ public enum Smb2EncryptionAlgorithm
 /// </summary>
 public sealed class Smb2Crypter
 {
-    /// <summary>Length of SMB 3.x AES-128 encryption keys in bytes; see [MS-SMB2] §3.1.4.2.</summary>
+    /// <summary>
+    /// Length of SMB 3.x AES-128 encryption keys in bytes; see [MS-SMB2] §3.1.4.2.
+    /// </summary>
     public const int KeyLength = 16;
 
-    /// <summary>Length of the SMB2 transform Signature/authentication tag in bytes; see [MS-SMB2] §2.2.41.</summary>
+    /// <summary>
+    /// Length of the SMB2 transform Signature/authentication tag in bytes; see [MS-SMB2] §2.2.41.
+    /// </summary>
     public const int AuthenticationTagLength = 16;
 
-    /// <summary>Length of the AES-CCM nonce carried in TRANSFORM_HEADER.Nonce; see [MS-SMB2] §2.2.41.</summary>
+    /// <summary>
+    /// Length of the AES-CCM nonce carried in TRANSFORM_HEADER.Nonce; see [MS-SMB2] §2.2.41.
+    /// </summary>
     public const int AesCcmNonceLength = 11;
 
-    /// <summary>Length of the AES-GCM nonce carried in TRANSFORM_HEADER.Nonce; see [MS-SMB2] §2.2.41.</summary>
+    /// <summary>
+    /// Length of the AES-GCM nonce carried in TRANSFORM_HEADER.Nonce; see [MS-SMB2] §2.2.41.
+    /// </summary>
     public const int AesGcmNonceLength = 12;
     private const int SmbEncryptionKeyLengthBits = 128;
 
     private readonly byte[] _key;
 
-    /// <summary>Initializes an SMB3 crypter with a derived encryption or decryption key; see [MS-SMB2] §3.1.4.3.</summary>
+    /// <summary>
+    /// Initializes an SMB3 crypter with a derived encryption or decryption key; see [MS-SMB2] §3.1.4.3.
+    /// </summary>
     public Smb2Crypter(ReadOnlySpan<byte> key, Smb2EncryptionAlgorithm algorithm)
     {
         if (key.Length != KeyLength)
@@ -50,10 +66,14 @@ public sealed class Smb2Crypter
         _key = key.ToArray();
     }
 
-    /// <summary>Gets the negotiated SMB3 encryption algorithm; see [MS-SMB2] §2.2.3.1.2.</summary>
+    /// <summary>
+    /// Gets the negotiated SMB3 encryption algorithm; see [MS-SMB2] §2.2.3.1.2.
+    /// </summary>
     public Smb2EncryptionAlgorithm Algorithm { get; }
 
-    /// <summary>Gets the algorithm nonce length used as AEAD input; see [MS-SMB2] §2.2.41.</summary>
+    /// <summary>
+    /// Gets the algorithm nonce length used as AEAD input; see [MS-SMB2] §2.2.41.
+    /// </summary>
     public int NonceLength => GetNonceLength(Algorithm);
 
     /// <summary>

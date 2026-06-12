@@ -5,7 +5,9 @@
 
 namespace Opc.Classic.Dcom.Smb.Rpc;
 
-/// <summary>Connects the SMB2 state machine to an underlying transport.</summary>
+/// <summary>
+/// Connects the SMB2 state machine to an underlying transport.
+/// </summary>
 public delegate Task<ISmb2Transport> Smb2TransportConnector(
     string host,
     int port,
@@ -39,21 +41,27 @@ public sealed class Smb2RpcTransportAdapter : IDisposable, IAsyncDisposable
     private readonly Smb2NamedPipe _pipe;
     private bool _disposed;
 
-    /// <summary>Initializes a new adapter over an established named-pipe handle.</summary>
+    /// <summary>
+    /// Initializes a new adapter over an established named-pipe handle.
+    /// </summary>
     public Smb2RpcTransportAdapter(Smb2Connection connection, Smb2NamedPipe pipe)
     {
         _connection = connection ?? throw new ArgumentNullException(nameof(connection));
         _pipe = pipe ?? throw new ArgumentNullException(nameof(pipe));
     }
 
-    /// <summary>Sends data with an SMB2 WRITE request.</summary>
+    /// <summary>
+    /// Sends data with an SMB2 WRITE request.
+    /// </summary>
     public async Task WriteAsync(ReadOnlyMemory<byte> request, CancellationToken cancellationToken = default)
     {
         ObjectDisposedException.ThrowIf(_disposed, this);
         await _pipe.WriteAsync(request, cancellationToken).ConfigureAwait(false);
     }
 
-    /// <summary>Reads data with an SMB2 READ request.</summary>
+    /// <summary>
+    /// Reads data with an SMB2 READ request.
+    /// </summary>
     public async Task<ReadOnlyMemory<byte>> ReadAsync(int maxLength, CancellationToken cancellationToken = default)
     {
         ObjectDisposedException.ThrowIf(_disposed, this);
@@ -73,14 +81,18 @@ public sealed class Smb2RpcTransportAdapter : IDisposable, IAsyncDisposable
         return await _pipe.TransceiveAsync(request, maxOutputResponse, cancellationToken).ConfigureAwait(false);
     }
 
-    /// <summary>Synchronous write wrapper for legacy callers.</summary>
+    /// <summary>
+    /// Synchronous write wrapper for legacy callers.
+    /// </summary>
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
         "Usage", "VSTHRD002:Avoid problematic synchronous waits",
         Justification = "Intentional sync-over-async bridge to the legacy Opc.Classic.Dcom.Rpc.ITransport contract (which is itself synchronous).")]
     public void Write(ReadOnlyMemory<byte> request, CancellationToken cancellationToken = default) =>
         WriteAsync(request, cancellationToken).GetAwaiter().GetResult();
 
-    /// <summary>Synchronous read wrapper for legacy callers.</summary>
+    /// <summary>
+    /// Synchronous read wrapper for legacy callers.
+    /// </summary>
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
         "Usage", "VSTHRD002:Avoid problematic synchronous waits",
         Justification = "Intentional sync-over-async bridge to the legacy Opc.Classic.Dcom.Rpc.ITransport contract (which is itself synchronous).")]
@@ -129,7 +141,9 @@ public sealed class Smb2RpcTransportAdapter : IDisposable, IAsyncDisposable
 /// </summary>
 public static class SmbRpcAddress
 {
-    /// <summary>Parsed components of an SMB pipe URL.</summary>
+    /// <summary>
+    /// Parsed components of an SMB pipe URL.
+    /// </summary>
     public sealed record Parsed(
         string Host,
         string ShareName,
@@ -243,7 +257,9 @@ public sealed class Smb2RpcTransportBuilder
     private int _port = 445;
     private int _maxSmb2MessageSize = Smb2Constants.MaxNetBiosFrameSize;
 
-    /// <summary>Initializes a new builder from a parsed SMB URL.</summary>
+    /// <summary>
+    /// Initializes a new builder from a parsed SMB URL.
+    /// </summary>
     /// <param name="address">Parsed SMB endpoint.</param>
     /// <param name="blobProvider">Callback that emits NTLMSSP/Kerberos SESSION_SETUP blobs.</param>
     /// <param name="sessionKeyProvider">Optional callback that exposes the SessionKey for SMB signing; see [MS-SMB2] §3.1.5.1.</param>
@@ -257,7 +273,9 @@ public sealed class Smb2RpcTransportBuilder
         _sessionKeyProvider = sessionKeyProvider;
     }
 
-    /// <summary>Sets the TCP port for the SMB2 transport (default 445).</summary>
+    /// <summary>
+    /// Sets the TCP port for the SMB2 transport (default 445).
+    /// </summary>
     public Smb2RpcTransportBuilder UsePort(int port)
     {
         if (port is <= 0 or > 65535)
@@ -268,7 +286,9 @@ public sealed class Smb2RpcTransportBuilder
         return this;
     }
 
-    /// <summary>Sets the maximum SMB2 message size for inbound and outbound frames.</summary>
+    /// <summary>
+    /// Sets the maximum SMB2 message size for inbound and outbound frames.
+    /// </summary>
     public Smb2RpcTransportBuilder UseMaxSmb2MessageSize(int maxSmb2MessageSize)
     {
         _ = new Smb2ConnectionOptions(_address.Host, _port) { MaxSmb2MessageSize = maxSmb2MessageSize };
@@ -276,7 +296,9 @@ public sealed class Smb2RpcTransportBuilder
         return this;
     }
 
-    /// <summary>Overrides the SMB2 byte transport connector, primarily for tests.</summary>
+    /// <summary>
+    /// Overrides the SMB2 byte transport connector, primarily for tests.
+    /// </summary>
     public Smb2RpcTransportBuilder UseTransportConnector(Smb2TransportConnector transportConnector)
     {
         _transportConnector = transportConnector ?? throw new ArgumentNullException(nameof(transportConnector));
@@ -313,7 +335,9 @@ public sealed class Smb2RpcTransportBuilder
         CancellationToken cancellationToken) =>
         await TcpSmb2Transport.ConnectAsync(host, port, maxSmb2MessageSize, cancellationToken).ConfigureAwait(false);
 
-    /// <summary>Convenience wrapper that runs <see cref="BuildAsync" /> synchronously.</summary>
+    /// <summary>
+    /// Convenience wrapper that runs <see cref="BuildAsync" /> synchronously.
+    /// </summary>
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
         "Usage", "VSTHRD002:Avoid problematic synchronous waits",
         Justification = "Convenience sync wrapper for the legacy ncacn_np transport callers. Prefer BuildAsync from new code.")]

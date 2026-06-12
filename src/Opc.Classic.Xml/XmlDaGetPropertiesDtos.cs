@@ -7,7 +7,9 @@
 
 namespace Opc.Classic.Xml;
 
-/// <summary>An XML-DA <c>GetProperties</c> request payload.</summary>
+/// <summary>
+/// An XML-DA <c>GetProperties</c> request payload.
+/// </summary>
 /// <param name="Header">Common LocaleID / ClientRequestHandle header.</param>
 /// <param name="ItemPath">Optional vendor-defined path scoping (applied to all items).</param>
 /// <param name="ItemNames">Items whose properties to fetch.</param>
@@ -24,7 +26,9 @@ public sealed record XmlDaGetPropertiesRequest(
     bool ReturnPropertyValues = false,
     bool ReturnErrorText = true);
 
-/// <summary>A single property's metadata + (optionally) value.</summary>
+/// <summary>
+/// A single property's metadata + (optionally) value.
+/// </summary>
 /// <param name="Name">Property name (e.g. <c>DataType</c>, <c>EUType</c>).</param>
 /// <param name="Description">Human-readable description.</param>
 /// <param name="Value">Current value (only set when ReturnPropertyValues was true on the request).</param>
@@ -35,11 +39,15 @@ public sealed record XmlDaPropertyValue(
     XmlDaValue? Value,
     string? ResultId)
 {
-    /// <summary>Type-safe interpretation of <see cref="ResultId"/>.</summary>
+    /// <summary>
+    /// Type-safe interpretation of <see cref="ResultId"/>.
+    /// </summary>
     public XmlDaErrorCode ResultCode => XmlDaErrorCodes.ParseResultId(ResultId);
 }
 
-/// <summary>All properties available for one item.</summary>
+/// <summary>
+/// All properties available for one item.
+/// </summary>
 /// <param name="ItemName">The item these properties belong to.</param>
 /// <param name="ItemPath">Vendor-defined path.</param>
 /// <param name="Properties">The properties.</param>
@@ -50,11 +58,15 @@ public sealed record XmlDaItemPropertyList(
     IReadOnlyList<XmlDaPropertyValue> Properties,
     string? ResultId)
 {
-    /// <summary>Type-safe interpretation of <see cref="ResultId"/>.</summary>
+    /// <summary>
+    /// Type-safe interpretation of <see cref="ResultId"/>.
+    /// </summary>
     public XmlDaErrorCode ResultCode => XmlDaErrorCodes.ParseResultId(ResultId);
 }
 
-/// <summary>An XML-DA <c>GetPropertiesResponse</c> payload.</summary>
+/// <summary>
+/// An XML-DA <c>GetPropertiesResponse</c> payload.
+/// </summary>
 public sealed record XmlDaGetPropertiesResponse(
     XmlDaServerState ServerState,
     IReadOnlyList<XmlDaItemPropertyList> PropertyLists);

@@ -5,14 +5,20 @@
 
 namespace Opc.Classic.Xml;
 
-/// <summary>Helpers for converting OPC XML-DA QName result IDs to <see cref="XmlDaErrorCode"/>.</summary>
+/// <summary>
+/// Helpers for converting OPC XML-DA QName result IDs to <see cref="XmlDaErrorCode"/>.
+/// </summary>
 public static class XmlDaErrorCodes
 {
-    /// <summary>Parses an optional per-item <c>ResultID</c>; missing values map to <see cref="XmlDaErrorCode.Ok"/>.</summary>
+    /// <summary>
+    /// Parses an optional per-item <c>ResultID</c>; missing values map to <see cref="XmlDaErrorCode.Ok"/>.
+    /// </summary>
     public static XmlDaErrorCode ParseResultId(string? resultId) =>
         string.IsNullOrWhiteSpace(resultId) ? XmlDaErrorCode.Ok : Parse(resultId);
 
-    /// <summary>Returns true when <paramref name="code"/> is an XML-DA success result.</summary>
+    /// <summary>
+    /// Returns true when <paramref name="code"/> is an XML-DA success result.
+    /// </summary>
     public static bool IsSuccess(this XmlDaErrorCode code) => code switch
     {
         XmlDaErrorCode.Ok or XmlDaErrorCode.Clamp or XmlDaErrorCode.DataQueueOverflow or
@@ -20,7 +26,9 @@ public static class XmlDaErrorCodes
         _ => false,
     };
 
-    /// <summary>Parses a SOAP fault code or non-empty <c>ResultID</c>.</summary>
+    /// <summary>
+    /// Parses a SOAP fault code or non-empty <c>ResultID</c>.
+    /// </summary>
     public static XmlDaErrorCode Parse(string? qualifiedName)
     {
         if (string.IsNullOrWhiteSpace(qualifiedName))
@@ -62,7 +70,9 @@ public static class XmlDaErrorCodes
         };
     }
 
-    /// <summary>Returns the XML-DA result ID text for a known code.</summary>
+    /// <summary>
+    /// Returns the XML-DA result ID text for a known code.
+    /// </summary>
     public static string ToResultId(XmlDaErrorCode code) => code switch
     {
         XmlDaErrorCode.Ok => "S_OK",

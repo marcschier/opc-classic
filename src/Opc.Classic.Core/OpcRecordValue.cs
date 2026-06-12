@@ -5,13 +5,17 @@
 
 namespace Opc.Classic;
 
-/// <summary>A VT_RECORD value paired with the GUID of its registered layout.</summary>
+/// <summary>
+/// A VT_RECORD value paired with the GUID of its registered layout.
+/// </summary>
 public sealed class OpcRecordValue : IEquatable<OpcRecordValue>
 {
     private readonly object?[] _values;
     private readonly IReadOnlyList<object?> _readOnlyValues;
 
-    /// <summary>Creates a record value for the supplied layout id.</summary>
+    /// <summary>
+    /// Creates a record value for the supplied layout id.
+    /// </summary>
     public OpcRecordValue(Guid recordInfoId, IReadOnlyList<object?> values)
     {
         if (recordInfoId == Guid.Empty)
@@ -29,7 +33,9 @@ public sealed class OpcRecordValue : IEquatable<OpcRecordValue>
         _readOnlyValues = Array.AsReadOnly(_values);
     }
 
-    /// <summary>Creates a record value for the supplied registered layout.</summary>
+    /// <summary>
+    /// Creates a record value for the supplied registered layout.
+    /// </summary>
     public OpcRecordValue(IRecordInfo recordInfo, IReadOnlyList<object?> values)
         : this((recordInfo ?? throw new ArgumentNullException(nameof(recordInfo))).Id, values)
     {
@@ -41,10 +47,14 @@ public sealed class OpcRecordValue : IEquatable<OpcRecordValue>
         }
     }
 
-    /// <summary>The GUID identifying the record layout.</summary>
+    /// <summary>
+    /// The GUID identifying the record layout.
+    /// </summary>
     public Guid RecordInfoId { get; }
 
-    /// <summary>Field values in <see cref="IRecordInfo.Fields"/> order.</summary>
+    /// <summary>
+    /// Field values in <see cref="IRecordInfo.Fields"/> order.
+    /// </summary>
     public IReadOnlyList<object?> Values => _readOnlyValues;
 
     /// <inheritdoc />

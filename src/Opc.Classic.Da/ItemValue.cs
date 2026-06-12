@@ -17,10 +17,14 @@ namespace Opc.Classic.Da;
 /// </remarks>
 public class ItemValue : ItemIdentifier
 {
-    /// <summary>Construct.</summary>
+    /// <summary>
+    /// Construct.
+    /// </summary>
     public ItemValue(string itemName, string? path = null) : base(itemName, path) { }
 
-    /// <summary>Copy-construct from a bare identifier.</summary>
+    /// <summary>
+    /// Copy-construct from a bare identifier.
+    /// </summary>
     public ItemValue(ItemIdentifier identifier) : base(
         (identifier ?? throw new ArgumentNullException(nameof(identifier))).ItemName,
         identifier.Path)
@@ -32,7 +36,9 @@ public class ItemValue : ItemIdentifier
     /// </summary>
     public int ClientHandle { get; init; }
 
-    /// <summary>The current value. May be <see langword="null"/> for bad-quality reads.</summary>
+    /// <summary>
+    /// The current value. May be <see langword="null"/> for bad-quality reads.
+    /// </summary>
     public object? Value { get; init; }
 
     /// <summary>
@@ -41,6 +47,8 @@ public class ItemValue : ItemIdentifier
     /// </summary>
     public OpcQuality Quality { get; init; } = OpcQuality.Bad;
 
-    /// <summary>Server-supplied UTC timestamp.</summary>
+    /// <summary>
+    /// Server-supplied UTC timestamp.
+    /// </summary>
     public DateTimeOffset Timestamp { get; init; }
 }

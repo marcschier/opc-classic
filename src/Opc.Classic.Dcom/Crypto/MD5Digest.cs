@@ -8,7 +8,9 @@ using System.Security.Cryptography;
 
 namespace Opc.Classic.Dcom.Crypto;
 
-/// <summary>MD5Digest backed by <see cref="System.Security.Cryptography.MD5"/> (BCL).</summary>
+/// <summary>
+/// MD5Digest backed by <see cref="System.Security.Cryptography.MD5"/> (BCL).
+/// </summary>
 [SuppressMessage("Naming", "CA1709", Justification = "Legacy NTLM API shape preserves BC casing")]
 public sealed class MD5Digest : IDigest
 {

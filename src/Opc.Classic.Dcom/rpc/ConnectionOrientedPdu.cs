@@ -253,13 +253,19 @@ public abstract class ConnectionOrientedPdu : NdrOp, IProtocolDataUnit
     /// <private/>
     public const int HEADER_LENGTH = 16;
 
-    /// <summary>Reset the call id counter.</summary>
+    /// <summary>
+    /// Reset the call id counter.
+    /// </summary>
     protected internal static void ResetCallIdCounterValue() => s_callIdCounter = 0;
 
-    /// <summary>Allocate the next call id.</summary>
+    /// <summary>
+    /// Allocate the next call id.
+    /// </summary>
     protected internal static int AllocateCallId() => s_callIdCounter++;
 
-    /// <summary>Current call id counter value.</summary>
+    /// <summary>
+    /// Current call id counter value.
+    /// </summary>
     protected internal static int CurrentCallId => s_callIdCounter;
 
     private static int s_callIdCounter;

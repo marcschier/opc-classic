@@ -14,10 +14,14 @@ namespace Opc.Classic.Dcom.Smb;
 /// </summary>
 public interface ISmb2Transport : IAsyncDisposable
 {
-    /// <summary>Send a complete SMB2 message (header + body) framed for the wire.</summary>
+    /// <summary>
+    /// Send a complete SMB2 message (header + body) framed for the wire.
+    /// </summary>
     Task SendAsync(ReadOnlyMemory<byte> packet, CancellationToken cancellationToken);
 
-    /// <summary>Receive the next complete SMB2 message (header + body), de-framed.</summary>
+    /// <summary>
+    /// Receive the next complete SMB2 message (header + body), de-framed.
+    /// </summary>
     Task<ReadOnlyMemory<byte>> ReceiveAsync(CancellationToken cancellationToken);
 }
 
@@ -38,7 +42,9 @@ public sealed class TcpSmb2Transport : ISmb2Transport
         _maxPayloadLength = maxPayloadLength;
     }
 
-    /// <summary>Opens a TCP connection to <paramref name="host" /> on the SMB port.</summary>
+    /// <summary>
+    /// Opens a TCP connection to <paramref name="host" /> on the SMB port.
+    /// </summary>
     public static Task<TcpSmb2Transport> ConnectAsync(
         string host,
         int port = 445,

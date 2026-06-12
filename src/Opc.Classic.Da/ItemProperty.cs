@@ -12,13 +12,19 @@ namespace Opc.Classic.Da;
 /// </summary>
 public sealed class ItemProperty
 {
-    /// <summary>The property identifier.</summary>
+    /// <summary>
+    /// The property identifier.
+    /// </summary>
     public PropertyID PropertyId { get; init; }
 
-    /// <summary>Server-supplied human description of the property.</summary>
+    /// <summary>
+    /// Server-supplied human description of the property.
+    /// </summary>
     public string Description { get; init; } = string.Empty;
 
-    /// <summary>Canonical CLR type of the property value (may be <see langword="null"/> if unknown).</summary>
+    /// <summary>
+    /// Canonical CLR type of the property value (may be <see langword="null"/> if unknown).
+    /// </summary>
     public Type? DataType { get; init; }
 
     /// <summary>
@@ -28,7 +34,9 @@ public sealed class ItemProperty
     /// </summary>
     public object? Value { get; init; }
 
-    /// <summary>HRESULT for this property — may indicate that the value is unsupported.</summary>
+    /// <summary>
+    /// HRESULT for this property — may indicate that the value is unsupported.
+    /// </summary>
     public OpcResultId ResultId { get; init; } = OpcResultId.Ok;
 
     /// <summary>
@@ -38,6 +46,8 @@ public sealed class ItemProperty
     /// </summary>
     public string? ItemName { get; init; }
 
-    /// <summary>Associated item path (mirror of <see cref="ItemName"/>).</summary>
+    /// <summary>
+    /// Associated item path (mirror of <see cref="ItemName"/>).
+    /// </summary>
     public string? ItemPath { get; init; }
 }

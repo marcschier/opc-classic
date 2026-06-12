@@ -12,20 +12,28 @@ using Opc.Classic.Security.Dcom;
 
 namespace Opc.Classic.Mcp.Tools;
 
-/// <summary>Creates OPC Security client state for a session.</summary>
+/// <summary>
+/// Creates OPC Security client state for a session.
+/// </summary>
 public interface IOpcSecurityClientFactory
 {
-    /// <summary>Creates or resolves an OPC Security client for the supplied session.</summary>
+    /// <summary>
+    /// Creates or resolves an OPC Security client for the supplied session.
+    /// </summary>
     Task<SecurityClientState> CreateAsync(OpcSession session, CancellationToken cancellationToken = default);
 }
 
-/// <summary>MCP tools for optional OPC Security interfaces.</summary>
+/// <summary>
+/// MCP tools for optional OPC Security interfaces.
+/// </summary>
 public sealed class SecurityTools
 {
     private readonly IOpcSessionManager _sessionManager;
     private readonly IOpcSecurityClientFactory _clientFactory;
 
-    /// <summary>Creates the OPC Security tool set.</summary>
+    /// <summary>
+    /// Creates the OPC Security tool set.
+    /// </summary>
     public SecurityTools(IOpcSessionManager sessionManager, IEnumerable<IOpcSecurityClientFactory> clientFactories)
     {
         _sessionManager = sessionManager ?? throw new ArgumentNullException(nameof(sessionManager));
@@ -33,7 +41,9 @@ public sealed class SecurityTools
         _clientFactory = clientFactories.FirstOrDefault() ?? new DefaultOpcSecurityClientFactory();
     }
 
-    /// <summary>Checks whether Windows-integrated OPC Security is available.</summary>
+    /// <summary>
+    /// Checks whether Windows-integrated OPC Security is available.
+    /// </summary>
     [McpServerTool(Name = "opcclassic.security.is_available_nt", ReadOnly = true, Idempotent = true, Destructive = false, OpenWorld = true)]
     [Description("Checks whether the connected OPC server supports IOPCSecurityNT Windows-integrated authentication.")]
     public async Task<OpcSecurityInfoDto> IsAvailableNt(
@@ -47,7 +57,9 @@ public sealed class SecurityTools
         return ToInfo(state.Client, nt, priv, nt ? "OPC Security NT is available." : "OPC Security NT is not available.");
     }
 
-    /// <summary>Checks whether private OPC Security is available.</summary>
+    /// <summary>
+    /// Checks whether private OPC Security is available.
+    /// </summary>
     [McpServerTool(Name = "opcclassic.security.is_available_private", ReadOnly = true, Idempotent = true, Destructive = false, OpenWorld = true)]
     [Description("Checks whether the connected OPC server supports IOPCSecurityPrivate username/password authentication.")]
     public async Task<OpcSecurityInfoDto> IsAvailablePrivate(
@@ -61,7 +73,9 @@ public sealed class SecurityTools
         return ToInfo(state.Client, nt, priv, priv ? "OPC Security private authentication is available." : "OPC Security private authentication is not available.");
     }
 
-    /// <summary>Logs on using IOPCSecurityPrivate credentials.</summary>
+    /// <summary>
+    /// Logs on using IOPCSecurityPrivate credentials.
+    /// </summary>
     [McpServerTool(Name = "opcclassic.security.logon", ReadOnly = false, Idempotent = false, Destructive = false, OpenWorld = true)]
     [Description("Logs on to IOPCSecurityPrivate with server-managed username/password credentials.")]
     public async Task<OpcResultDto> Logon(
@@ -82,7 +96,9 @@ public sealed class SecurityTools
             : new OpcResultDto(1, "OPC Security logon failed.", Succeeded: false, ItemName: username);
     }
 
-    /// <summary>Logs off from private OPC Security.</summary>
+    /// <summary>
+    /// Logs off from private OPC Security.
+    /// </summary>
     [McpServerTool(Name = "opcclassic.security.logoff", ReadOnly = false, Idempotent = true, Destructive = false, OpenWorld = true)]
     [Description("Logs off IOPCSecurityPrivate and returns to the connection's default identity.")]
     public async Task<OpcResultDto> Logoff(

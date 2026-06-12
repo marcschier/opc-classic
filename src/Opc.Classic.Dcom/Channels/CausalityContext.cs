@@ -10,7 +10,9 @@ namespace Opc.Classic.Dcom.Channels;
 /// </summary>
 public static class CausalityContext
 {
-    /// <summary>Gets the current call-chain causality identifier.</summary>
+    /// <summary>
+    /// Gets the current call-chain causality identifier.
+    /// </summary>
     public static AsyncLocal<Guid?> Current { get; } = new();
 
     /// <summary>
@@ -23,7 +25,9 @@ public static class CausalityContext
         return new Scope(previous);
     }
 
-    /// <summary>Starts a causality scope with an explicit parent identifier.</summary>
+    /// <summary>
+    /// Starts a causality scope with an explicit parent identifier.
+    /// </summary>
     public static IDisposable BeginCall(Guid causalityId)
     {
         Guid? previous = Current.Value;

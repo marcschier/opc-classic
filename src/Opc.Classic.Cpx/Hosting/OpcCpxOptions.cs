@@ -5,19 +5,27 @@
 
 namespace Opc.Classic.Cpx.Hosting;
 
-/// <summary>Configuration used by CPX DA-hosting helpers.</summary>
+/// <summary>
+/// Configuration used by CPX DA-hosting helpers.
+/// </summary>
 public sealed class OpcCpxOptions
 {
     private readonly List<DictionaryRegistration> _dictionaries = new();
     private readonly List<ComplexItemRegistration> _complexItems = new();
 
-    /// <summary>Registered CPX type dictionaries.</summary>
+    /// <summary>
+    /// Registered CPX type dictionaries.
+    /// </summary>
     public IReadOnlyList<DictionaryRegistration> Dictionaries => _dictionaries;
 
-    /// <summary>Registered DA items that expose complex-data metadata.</summary>
+    /// <summary>
+    /// Registered DA items that expose complex-data metadata.
+    /// </summary>
     public IReadOnlyList<ComplexItemRegistration> ComplexItems => _complexItems;
 
-    /// <summary>Adds a type dictionary to the CPX browse namespace.</summary>
+    /// <summary>
+    /// Adds a type dictionary to the CPX browse namespace.
+    /// </summary>
     public OpcCpxOptions AddDictionary(
         string typeSystemId,
         string dictionaryId,
@@ -36,7 +44,9 @@ public sealed class OpcCpxOptions
         return this;
     }
 
-    /// <summary>Adds a DA item whose value is described by a CPX type dictionary.</summary>
+    /// <summary>
+    /// Adds a DA item whose value is described by a CPX type dictionary.
+    /// </summary>
     public OpcCpxOptions AddComplexItem(
         string itemId,
         string typeSystemId,
@@ -108,7 +118,9 @@ public sealed class OpcCpxOptions
         return false;
     }
 
-    /// <summary>A dictionary exposed under <c>/CPX/{TypeSystem}/{Dictionary}</c>.</summary>
+    /// <summary>
+    /// A dictionary exposed under <c>/CPX/{TypeSystem}/{Dictionary}</c>.
+    /// </summary>
     public sealed class DictionaryRegistration
     {
         private readonly Dictionary<string, string> _typeDescriptionValues;
@@ -136,22 +148,34 @@ public sealed class OpcCpxOptions
             TypeDescriptionValues = _typeDescriptionValues;
         }
 
-        /// <summary>Type-system identifier, such as <c>XMLSchema</c> or <c>OPCBinary</c>.</summary>
+        /// <summary>
+        /// Type-system identifier, such as <c>XMLSchema</c> or <c>OPCBinary</c>.
+        /// </summary>
         public string TypeSystemId { get; }
 
-        /// <summary>Dictionary identifier exposed through property 601.</summary>
+        /// <summary>
+        /// Dictionary identifier exposed through property 601.
+        /// </summary>
         public string DictionaryId { get; }
 
-        /// <summary>Browse segment used below the type-system branch.</summary>
+        /// <summary>
+        /// Browse segment used below the type-system branch.
+        /// </summary>
         public string DictionarySegment { get; }
 
-        /// <summary>Parsed type dictionary.</summary>
+        /// <summary>
+        /// Parsed type dictionary.
+        /// </summary>
         public TypeDictionary Dictionary { get; }
 
-        /// <summary>Optional serialized dictionary value for property 603.</summary>
+        /// <summary>
+        /// Optional serialized dictionary value for property 603.
+        /// </summary>
         public string? DictionaryValue { get; }
 
-        /// <summary>Optional serialized type descriptions keyed by TypeID for property 604.</summary>
+        /// <summary>
+        /// Optional serialized type descriptions keyed by TypeID for property 604.
+        /// </summary>
         public IReadOnlyDictionary<string, string> TypeDescriptionValues { get; }
 
         internal bool TryGetTypeDescriptionValue(string typeId, out string value) =>
@@ -176,7 +200,9 @@ public sealed class OpcCpxOptions
         }
     }
 
-    /// <summary>A DA item that publishes CPX properties 600-609.</summary>
+    /// <summary>
+    /// A DA item that publishes CPX properties 600-609.
+    /// </summary>
     public sealed class ComplexItemRegistration
     {
         internal ComplexItemRegistration(
@@ -206,31 +232,49 @@ public sealed class OpcCpxOptions
             DataFilterValue = Normalize(dataFilterValue);
         }
 
-        /// <summary>DA item identifier.</summary>
+        /// <summary>
+        /// DA item identifier.
+        /// </summary>
         public string ItemId { get; }
 
-        /// <summary>Type-system identifier exposed through property 600.</summary>
+        /// <summary>
+        /// Type-system identifier exposed through property 600.
+        /// </summary>
         public string TypeSystemId { get; }
 
-        /// <summary>Dictionary identifier exposed through property 601.</summary>
+        /// <summary>
+        /// Dictionary identifier exposed through property 601.
+        /// </summary>
         public string DictionaryId { get; }
 
-        /// <summary>Type identifier exposed through property 602.</summary>
+        /// <summary>
+        /// Type identifier exposed through property 602.
+        /// </summary>
         public string TypeId { get; }
 
-        /// <summary>Optional consistency-window value for property 605.</summary>
+        /// <summary>
+        /// Optional consistency-window value for property 605.
+        /// </summary>
         public string? ConsistencyWindow { get; }
 
-        /// <summary>Optional write-behavior value for property 606.</summary>
+        /// <summary>
+        /// Optional write-behavior value for property 606.
+        /// </summary>
         public string? WriteBehavior { get; }
 
-        /// <summary>Optional unconverted source item for property 607.</summary>
+        /// <summary>
+        /// Optional unconverted source item for property 607.
+        /// </summary>
         public string? UnconvertedItemId { get; }
 
-        /// <summary>Optional unfiltered source item for property 608.</summary>
+        /// <summary>
+        /// Optional unfiltered source item for property 608.
+        /// </summary>
         public string? UnfilteredItemId { get; }
 
-        /// <summary>Optional active data-filter expression for property 609.</summary>
+        /// <summary>
+        /// Optional active data-filter expression for property 609.
+        /// </summary>
         public string? DataFilterValue { get; }
 
         private static string? Normalize(string? value) => string.IsNullOrWhiteSpace(value) ? null : value;

@@ -7,13 +7,19 @@ using Opc.Classic.Ae.Dcom;
 
 namespace Opc.Classic.Ae.Hosting;
 
-/// <summary>Contract implemented by user code to provide an in-process managed AE server.</summary>
+/// <summary>
+/// Contract implemented by user code to provide an in-process managed AE server.
+/// </summary>
 public interface IOpcAeServer : IOPCEventServer
 {
-    /// <summary>Gets the AE server runtime status snapshot.</summary>
+    /// <summary>
+    /// Gets the AE server runtime status snapshot.
+    /// </summary>
     new Task<OpcServerStatus> GetStatusAsync(CancellationToken cancellationToken = default);
 
-    /// <summary>Gets the AE filter mask supported by the server.</summary>
+    /// <summary>
+    /// Gets the AE filter mask supported by the server.
+    /// </summary>
     new Task<int> QueryAvailableFiltersAsync(CancellationToken cancellationToken = default);
 
     Task IOPCEventServer.CreateEventSubscriptionAsync(

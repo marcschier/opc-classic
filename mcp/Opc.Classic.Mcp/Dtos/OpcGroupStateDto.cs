@@ -5,7 +5,9 @@
 
 namespace Opc.Classic.Mcp.Dtos;
 
-/// <summary>JSON-friendly OPC DA group state.</summary>
+/// <summary>
+/// JSON-friendly OPC DA group state.
+/// </summary>
 public sealed record OpcGroupStateDto(
     int ServerGroupHandle,
     int ClientHandle,

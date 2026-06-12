@@ -18,40 +18,64 @@ namespace Opc.Classic;
 /// </summary>
 public readonly record struct OpcQuality(ushort RawValue)
 {
-    /// <summary>Bit mask for the quality sub-field (bits 0-1).</summary>
+    /// <summary>
+    /// Bit mask for the quality sub-field (bits 0-1).
+    /// </summary>
     public const ushort QualityMask = 0b0000_0000_0000_0011;
 
-    /// <summary>Bit mask for the substatus sub-field (bits 2-5).</summary>
+    /// <summary>
+    /// Bit mask for the substatus sub-field (bits 2-5).
+    /// </summary>
     public const ushort SubstatusMask = 0b0000_0000_0011_1100;
 
-    /// <summary>Bit mask for the limit sub-field (bits 6-7).</summary>
+    /// <summary>
+    /// Bit mask for the limit sub-field (bits 6-7).
+    /// </summary>
     public const ushort LimitMask = 0b0000_0000_1100_0000;
 
-    /// <summary>Bit mask for the vendor extension (bits 8-15).</summary>
+    /// <summary>
+    /// Bit mask for the vendor extension (bits 8-15).
+    /// </summary>
     public const ushort VendorMask = 0b1111_1111_0000_0000;
 
-    /// <summary>Bad quality (0).</summary>
+    /// <summary>
+    /// Bad quality (0).
+    /// </summary>
     public static OpcQuality Bad { get; } = new(0b00);
 
-    /// <summary>Uncertain quality (1).</summary>
+    /// <summary>
+    /// Uncertain quality (1).
+    /// </summary>
     public static OpcQuality Uncertain { get; } = new(0b01);
 
-    /// <summary>Good quality (3) — substatus "Non-Specific Good".</summary>
+    /// <summary>
+    /// Good quality (3) — substatus "Non-Specific Good".
+    /// </summary>
     public static OpcQuality Good { get; } = new(0b11);
 
-    /// <summary>The top-level quality category.</summary>
+    /// <summary>
+    /// The top-level quality category.
+    /// </summary>
     public OpcQualityKind Quality => (OpcQualityKind)(RawValue & QualityMask);
 
-    /// <summary>The substatus code (0-15 within the current quality).</summary>
+    /// <summary>
+    /// The substatus code (0-15 within the current quality).
+    /// </summary>
     public int Substatus => (RawValue & SubstatusMask) >> 2;
 
-    /// <summary>The limit field.</summary>
+    /// <summary>
+    /// The limit field.
+    /// </summary>
     public OpcQualityLimit Limit => (OpcQualityLimit)((RawValue & LimitMask) >> 6);
 
-    /// <summary>Vendor-specific extension byte (upper 8 bits).</summary>
+    /// <summary>
+    /// Vendor-specific extension byte (upper 8 bits).
+    /// </summary>
     public byte VendorExtension => (byte)((RawValue & VendorMask) >> 8);
 
-    /// <summary>Compose a quality value from its sub-fields.</summary>
+    /// <summary>
+    /// Compose a quality value from its sub-fields.
+    /// </summary>
     public static OpcQuality Compose(
         OpcQualityKind quality,
         int substatus = 0,
@@ -71,11 +95,15 @@ public readonly record struct OpcQuality(ushort RawValue)
         return new OpcQuality(raw);
     }
 
-    /// <summary>Returns a new quality with the substatus replaced.</summary>
+    /// <summary>
+    /// Returns a new quality with the substatus replaced.
+    /// </summary>
     public OpcQuality WithSubstatus(int substatus) =>
         Compose(Quality, substatus, Limit, VendorExtension);
 
-    /// <summary>Returns a new quality with the limit replaced.</summary>
+    /// <summary>
+    /// Returns a new quality with the limit replaced.
+    /// </summary>
     public OpcQuality WithLimit(OpcQualityLimit limit) =>
         Compose(Quality, Substatus, limit, VendorExtension);
 

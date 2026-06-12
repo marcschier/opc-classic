@@ -16,10 +16,14 @@ namespace Opc.Classic.Hda;
 /// </remarks>
 public interface IHdaServer : IAsyncDisposable
 {
-    /// <summary>Raised when the server emits a shutdown notification.</summary>
+    /// <summary>
+    /// Raised when the server emits a shutdown notification.
+    /// </summary>
     event EventHandler<EventArgs>? ServerShutdown;
 
-    /// <summary>Retrieve HDA server runtime state.</summary>
+    /// <summary>
+    /// Retrieve HDA server runtime state.
+    /// </summary>
     Task<OpcServerStatus> GetStatusAsync(CancellationToken cancellationToken = default);
 
     /// <summary>
@@ -79,7 +83,9 @@ public interface IHdaServer : IAsyncDisposable
         IReadOnlyList<DateTimeOffset> timestamps,
         CancellationToken cancellationToken = default);
 
-    /// <summary>Read annotations for the given items in the given time range.</summary>
+    /// <summary>
+    /// Read annotations for the given items in the given time range.
+    /// </summary>
     Task<IReadOnlyList<HdaAnnotationResult>> ReadAnnotationsAsync(
         IReadOnlyList<string> itemIds,
         HdaTime startTime,

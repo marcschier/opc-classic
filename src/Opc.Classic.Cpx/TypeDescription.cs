@@ -16,7 +16,9 @@ public sealed record TypeDescription
 {
     private readonly TypeField[] _fields;
 
-    /// <summary>Create a type description.</summary>
+    /// <summary>
+    /// Create a type description.
+    /// </summary>
     public TypeDescription(
         string name,
         string typeId,
@@ -70,31 +72,49 @@ public sealed record TypeDescription
         Fields = Array.AsReadOnly(_fields);
     }
 
-    /// <summary>Human-readable schema entry name.</summary>
+    /// <summary>
+    /// Human-readable schema entry name.
+    /// </summary>
     public string Name { get; }
 
-    /// <summary>Stable type identifier used by DA complex-data properties.</summary>
+    /// <summary>
+    /// Stable type identifier used by DA complex-data properties.
+    /// </summary>
     public string TypeId { get; }
 
-    /// <summary>Top-level OPCBinary type kind.</summary>
+    /// <summary>
+    /// Top-level OPCBinary type kind.
+    /// </summary>
     public TypeKind Type { get; }
 
-    /// <summary>True when the type is composed from child fields.</summary>
+    /// <summary>
+    /// True when the type is composed from child fields.
+    /// </summary>
     public bool IsComplex { get; }
 
-    /// <summary>Optional byte-order override inherited by child fields.</summary>
+    /// <summary>
+    /// Optional byte-order override inherited by child fields.
+    /// </summary>
     public bool? DefaultBigEndian { get; }
 
-    /// <summary>Optional string-encoding override inherited by child fields.</summary>
+    /// <summary>
+    /// Optional string-encoding override inherited by child fields.
+    /// </summary>
     public string? DefaultStringEncoding { get; }
 
-    /// <summary>Optional character-width override inherited by child fields.</summary>
+    /// <summary>
+    /// Optional character-width override inherited by child fields.
+    /// </summary>
     public int? DefaultCharWidth { get; }
 
-    /// <summary>Optional floating-point format override inherited by child fields.</summary>
+    /// <summary>
+    /// Optional floating-point format override inherited by child fields.
+    /// </summary>
     public string? DefaultFloatFormat { get; }
 
-    /// <summary>Fields that make up the type, in schema order.</summary>
+    /// <summary>
+    /// Fields that make up the type, in schema order.
+    /// </summary>
     public IReadOnlyList<TypeField> Fields { get; }
 
     /// <inheritdoc />

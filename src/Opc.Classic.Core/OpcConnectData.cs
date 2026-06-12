@@ -19,7 +19,9 @@ namespace Opc.Classic;
 /// </remarks>
 public sealed class OpcConnectData
 {
-    /// <summary>Construct connection data.</summary>
+    /// <summary>
+    /// Construct connection data.
+    /// </summary>
     /// <param name="url">Target OPC URL (scheme + host + port + ProgID/CLSID).</param>
     /// <param name="credentials">
     /// User credentials. Pass <see langword="null"/> for anonymous (rare —
@@ -83,29 +85,45 @@ public sealed class OpcConnectData
         ChannelBindings = channelBindings;
     }
 
-    /// <summary>Target OPC URL.</summary>
+    /// <summary>
+    /// Target OPC URL.
+    /// </summary>
     public OpcUrl Url { get; }
 
-    /// <summary>Caller-supplied credentials (<see langword="null"/> for anonymous).</summary>
+    /// <summary>
+    /// Caller-supplied credentials (<see langword="null"/> for anonymous).
+    /// </summary>
     public NetworkCredential? Credentials { get; }
 
-    /// <summary>Negotiated authentication mechanism.</summary>
+    /// <summary>
+    /// Negotiated authentication mechanism.
+    /// </summary>
     public OpcAuthMode AuthMode { get; }
 
-    /// <summary>Negotiated packet-protection level (defaults expanded from <see cref="OpcProtectionLevel.Default"/>).</summary>
+    /// <summary>
+    /// Negotiated packet-protection level (defaults expanded from <see cref="OpcProtectionLevel.Default"/>).
+    /// </summary>
     public OpcProtectionLevel ProtectionLevel { get; }
 
-    /// <summary>Per-operation timeout, or <see langword="null"/> for global default.</summary>
+    /// <summary>
+    /// Per-operation timeout, or <see langword="null"/> for global default.
+    /// </summary>
     public TimeSpan? OperationTimeout { get; }
 
-    /// <summary>Optional RFC 5056 channel bindings for TLS-protected endpoints.</summary>
+    /// <summary>
+    /// Optional RFC 5056 channel bindings for TLS-protected endpoints.
+    /// </summary>
     public ChannelBindings? ChannelBindings { get; }
 
-    /// <summary>Construct anonymous connection data (no credentials, no NTLM).</summary>
+    /// <summary>
+    /// Construct anonymous connection data (no credentials, no NTLM).
+    /// </summary>
     public static OpcConnectData Anonymous(OpcUrl url, TimeSpan? operationTimeout = null)
         => new(url, credentials: null, authMode: OpcAuthMode.Anonymous, operationTimeout: operationTimeout);
 
-    /// <summary>Construct NTLMv2 connection data (the recommended default).</summary>
+    /// <summary>
+    /// Construct NTLMv2 connection data (the recommended default).
+    /// </summary>
     public static OpcConnectData WithNtlmV2(
         OpcUrl url,
         NetworkCredential credentials,
@@ -117,7 +135,9 @@ public sealed class OpcConnectData
         return new OpcConnectData(url, credentials, OpcAuthMode.NtlmV2, protectionLevel, operationTimeout, channelBindings);
     }
 
-    /// <summary>Construct Kerberos / SPNEGO connection data (requires the Opc.Classic.Dcom.Kerberos package).</summary>
+    /// <summary>
+    /// Construct Kerberos / SPNEGO connection data (requires the Opc.Classic.Dcom.Kerberos package).
+    /// </summary>
     public static OpcConnectData WithKerberos(
         OpcUrl url,
         NetworkCredential credentials,

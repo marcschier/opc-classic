@@ -5,27 +5,35 @@
 
 namespace Opc.Classic.Mcp.Dtos;
 
-/// <summary>JSON-friendly OPC AE area or source browse element.</summary>
+/// <summary>
+/// JSON-friendly OPC AE area or source browse element.
+/// </summary>
 public sealed record OpcAreaBrowseElementDto(
     string Name,
     string QualifiedName,
     bool IsArea,
     bool IsSource);
 
-/// <summary>JSON-friendly OPC AE event category metadata.</summary>
+/// <summary>
+/// JSON-friendly OPC AE event category metadata.
+/// </summary>
 public sealed record OpcEventCategoryDto(
     int EventCategory,
     string Description,
     string EventTypes);
 
-/// <summary>JSON-friendly OPC AE event attribute metadata.</summary>
+/// <summary>
+/// JSON-friendly OPC AE event attribute metadata.
+/// </summary>
 public sealed record OpcEventAttributeDto(
     int AttributeId,
     string Description,
     ushort VarType,
     string DataType);
 
-/// <summary>JSON-friendly OPC AE event attribute value.</summary>
+/// <summary>
+/// JSON-friendly OPC AE event attribute value.
+/// </summary>
 public sealed record OpcEventAttributeValueDto(
     int? AttributeId,
     object? Value,
@@ -33,7 +41,9 @@ public sealed record OpcEventAttributeValueDto(
     int HResult,
     string Message);
 
-/// <summary>JSON-friendly OPC AE event notification.</summary>
+/// <summary>
+/// JSON-friendly OPC AE event notification.
+/// </summary>
 public sealed record OpcEventNotificationDto(
     ushort ChangeMask,
     ushort NewState,
@@ -54,7 +64,9 @@ public sealed record OpcEventNotificationDto(
     string? ActorId,
     IReadOnlyList<OpcEventAttributeValueDto> Attributes);
 
-/// <summary>JSON-friendly OPC AE condition state snapshot.</summary>
+/// <summary>
+/// JSON-friendly OPC AE condition state snapshot.
+/// </summary>
 public sealed record OpcConditionStateDto(
     ushort State,
     string StateText,
@@ -76,7 +88,9 @@ public sealed record OpcConditionStateDto(
     IReadOnlyList<string?> SubConditionDescriptions,
     IReadOnlyList<OpcEventAttributeValueDto> EventAttributes);
 
-/// <summary>JSON-friendly OPC AE subscription state.</summary>
+/// <summary>
+/// JSON-friendly OPC AE subscription state.
+/// </summary>
 public sealed record OpcAeSubscriptionDto(
     string SubscriptionId,
     int ClientSubscription,

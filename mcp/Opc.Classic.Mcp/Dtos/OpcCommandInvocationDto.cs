@@ -5,7 +5,9 @@
 
 namespace Opc.Classic.Mcp.Dtos;
 
-/// <summary>JSON-friendly OPC Commands invocation result.</summary>
+/// <summary>
+/// JSON-friendly OPC Commands invocation result.
+/// </summary>
 public sealed record OpcCommandInvocationDto(
     string? InvocationId,
     string CommandName,

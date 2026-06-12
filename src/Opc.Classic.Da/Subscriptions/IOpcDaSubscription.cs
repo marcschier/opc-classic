@@ -12,6 +12,8 @@ namespace Opc.Classic.Da;
 /// </summary>
 public interface IOpcDaSubscription : IAsyncDisposable
 {
-    /// <summary>Streams incoming <c>IOPCDataCallback::OnDataChange</c> deliveries.</summary>
+    /// <summary>
+    /// Streams incoming <c>IOPCDataCallback::OnDataChange</c> deliveries.
+    /// </summary>
     IAsyncEnumerable<OpcDaDataChange> DataChanges(CancellationToken ct = default);
 }

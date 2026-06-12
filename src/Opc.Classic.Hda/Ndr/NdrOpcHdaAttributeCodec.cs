@@ -25,7 +25,9 @@ public static class NdrOpcHdaAttributeCodec
 {
     private const long FileTimeEpochOffsetTicks = 504911232000000000L;
 
-    /// <summary>Encodes a single OPCHDA_ATTRIBUTE in NDR.</summary>
+    /// <summary>
+    /// Encodes a single OPCHDA_ATTRIBUTE in NDR.
+    /// </summary>
     public static void Write(ref NdrWriter writer, OpcHdaAttribute attribute)
     {
         ArgumentNullException.ThrowIfNull(attribute);
@@ -48,7 +50,9 @@ public static class NdrOpcHdaAttributeCodec
         }
     }
 
-    /// <summary>Decodes a single OPCHDA_ATTRIBUTE from NDR.</summary>
+    /// <summary>
+    /// Decodes a single OPCHDA_ATTRIBUTE from NDR.
+    /// </summary>
     public static OpcHdaAttribute Read(ref NdrReader reader)
     {
         uint hClient = reader.ReadUInt32();

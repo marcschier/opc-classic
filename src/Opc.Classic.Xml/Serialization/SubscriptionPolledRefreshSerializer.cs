@@ -15,7 +15,9 @@ namespace Opc.Classic.Xml.Serialization;
 /// </summary>
 public static class SubscriptionPolledRefreshSerializer
 {
-    /// <summary>Writes a complete SOAP envelope carrying a polled-refresh request.</summary>
+    /// <summary>
+    /// Writes a complete SOAP envelope carrying a polled-refresh request.
+    /// </summary>
     public static void WriteRequest(SoapEnvelopeWriter writer, XmlDaSubscriptionPolledRefreshRequest request)
     {
         ArgumentNullException.ThrowIfNull(writer);
@@ -62,7 +64,9 @@ public static class SubscriptionPolledRefreshSerializer
         writer.Flush();
     }
 
-    /// <summary>Reads a SOAP-wrapped polled-refresh response.</summary>
+    /// <summary>
+    /// Reads a SOAP-wrapped polled-refresh response.
+    /// </summary>
     public static XmlDaSubscriptionPolledRefreshResponse ReadResponse(SoapEnvelopeReader reader)
     {
         ArgumentNullException.ThrowIfNull(reader);

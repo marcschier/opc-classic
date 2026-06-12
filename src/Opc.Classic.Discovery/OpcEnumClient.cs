@@ -44,13 +44,17 @@ public sealed class OpcEnumClient : IOpcDiscovery
 
     private delegate void NdrWriteAction(ref NdrWriter writer);
 
-    /// <summary>Initializes an OPCEnum client from an OPC URL.</summary>
+    /// <summary>
+    /// Initializes an OPCEnum client from an OPC URL.
+    /// </summary>
     public OpcEnumClient(OpcUrl serverListUrl)
         : this(serverListUrl, new DcomOpcEnumCallChannelFactory(), null)
     {
     }
 
-    /// <summary>Initializes an OPCEnum client from an OPC URL and injectable DCOM channel factory.</summary>
+    /// <summary>
+    /// Initializes an OPCEnum client from an OPC URL and injectable DCOM channel factory.
+    /// </summary>
     public OpcEnumClient(
         OpcUrl serverListUrl,
         IOpcEnumCallChannelFactory channelFactory,
@@ -66,7 +70,9 @@ public sealed class OpcEnumClient : IOpcDiscovery
         _activationProtectionLevel = NormalizeActivationProtection(channelFactory.ActivationProtectionLevel);
     }
 
-    /// <summary>Initializes an OPCEnum client for a host and injectable DCOM channel factory.</summary>
+    /// <summary>
+    /// Initializes an OPCEnum client for a host and injectable DCOM channel factory.
+    /// </summary>
     public OpcEnumClient(
         string host,
         IOpcEnumCallChannelFactory channelFactory,
@@ -75,20 +81,30 @@ public sealed class OpcEnumClient : IOpcDiscovery
     {
     }
 
-    /// <summary>The default OPCEnum category IDs used by discovery.</summary>
+    /// <summary>
+    /// The default OPCEnum category IDs used by discovery.
+    /// </summary>
     public static IReadOnlyList<Guid> DefaultCategoryIds { get; } = Array.AsReadOnly(DefaultCategoryIdsArray);
 
-    /// <summary>The OpcEnum server-list endpoint URL.</summary>
+    /// <summary>
+    /// The OpcEnum server-list endpoint URL.
+    /// </summary>
     public OpcUrl ServerListUrl { get; }
 
-    /// <summary>The default host passed to OPCEnum activation.</summary>
+    /// <summary>
+    /// The default host passed to OPCEnum activation.
+    /// </summary>
     public string Host { get; }
 
-    /// <summary>Enumerates OPCEnum descriptors for the configured host and categories.</summary>
+    /// <summary>
+    /// Enumerates OPCEnum descriptors for the configured host and categories.
+    /// </summary>
     public Task<OpcServerDescriptor[]> EnumerateAsync(CancellationToken cancellationToken = default) =>
         EnumerateAsync(null, null, cancellationToken);
 
-    /// <summary>Enumerates OPCEnum descriptors for a host and category list.</summary>
+    /// <summary>
+    /// Enumerates OPCEnum descriptors for a host and category list.
+    /// </summary>
     public async Task<OpcServerDescriptor[]> EnumerateAsync(
         string? host = null,
         IEnumerable<Guid>? categories = null,

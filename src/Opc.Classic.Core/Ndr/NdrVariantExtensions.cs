@@ -13,13 +13,17 @@ namespace Opc.Classic.Ndr;
 /// </summary>
 public static class NdrVariantExtensions
 {
-    /// <summary>Maximum nested VT_VARIANT depth accepted by the codec.</summary>
+    /// <summary>
+    /// Maximum nested VT_VARIANT depth accepted by the codec.
+    /// </summary>
     public const int MaxVariantRecursionDepth = 64;
     private const int VariantHeaderBytes = 16;
     private const ushort BoolTrueWire = unchecked((ushort)-1);
     private const ushort BoolFalseWire = 0;
 
-    /// <summary>Encodes a <see cref="OpcVariant"/> per [MS-OAUT] §2.2.29.</summary>
+    /// <summary>
+    /// Encodes a <see cref="OpcVariant"/> per [MS-OAUT] §2.2.29.
+    /// </summary>
     public static void WriteVariant(this ref NdrWriter writer, OpcVariant value) =>
         WriteVariantCore(ref writer, value, depth: 0);
 
@@ -559,7 +563,9 @@ public static class NdrVariantExtensions
         }
     }
 
-    /// <summary>Decodes a <see cref="OpcVariant"/>.</summary>
+    /// <summary>
+    /// Decodes a <see cref="OpcVariant"/>.
+    /// </summary>
     public static OpcVariant ReadVariant(this ref NdrReader reader) => ReadVariantCore(ref reader, depth: 0);
 
     private static OpcVariant ReadVariantCore(ref NdrReader reader, int depth)

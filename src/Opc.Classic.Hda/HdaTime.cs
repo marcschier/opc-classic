@@ -34,7 +34,9 @@ public readonly struct HdaTime : IEquatable<HdaTime>
         _relative = relative;
     }
 
-    /// <summary>True if this is a relative-time expression (e.g. <c>"NOW-1H"</c>).</summary>
+    /// <summary>
+    /// True if this is a relative-time expression (e.g. <c>"NOW-1H"</c>).
+    /// </summary>
     public bool IsRelative => _relative is not null;
 
     /// <summary>
@@ -50,13 +52,19 @@ public readonly struct HdaTime : IEquatable<HdaTime>
         return ResolveRelative(_relative, evaluationTime);
     }
 
-    /// <summary>The relative-expression string, or <see langword="null"/> if absolute.</summary>
+    /// <summary>
+    /// The relative-expression string, or <see langword="null"/> if absolute.
+    /// </summary>
     public string? Expression => _relative;
 
-    /// <summary>Create an absolute HDA time.</summary>
+    /// <summary>
+    /// Create an absolute HDA time.
+    /// </summary>
     public static HdaTime Absolute(DateTimeOffset utc) => new(utc.ToUniversalTime());
 
-    /// <summary>Create a relative HDA time from an expression like <c>"NOW-1H"</c>.</summary>
+    /// <summary>
+    /// Create a relative HDA time from an expression like <c>"NOW-1H"</c>.
+    /// </summary>
     public static HdaTime Relative(string expression)
     {
         ArgumentNullException.ThrowIfNull(expression);
@@ -70,7 +78,9 @@ public readonly struct HdaTime : IEquatable<HdaTime>
         return new HdaTime(trimmed);
     }
 
-    /// <summary>Convenience: <c>HdaTime.Now</c> = the relative expression <c>"NOW"</c>.</summary>
+    /// <summary>
+    /// Convenience: <c>HdaTime.Now</c> = the relative expression <c>"NOW"</c>.
+    /// </summary>
     public static HdaTime Now { get; } = Relative("NOW");
 
     /// <inheritdoc />
@@ -84,10 +94,14 @@ public readonly struct HdaTime : IEquatable<HdaTime>
     /// <inheritdoc />
     public override int GetHashCode() => HashCode.Combine(_relative, _absolute);
 
-    /// <summary>Value-equality operator.</summary>
+    /// <summary>
+    /// Value-equality operator.
+    /// </summary>
     public static bool operator ==(HdaTime left, HdaTime right) => left.Equals(right);
 
-    /// <summary>Value-inequality operator.</summary>
+    /// <summary>
+    /// Value-inequality operator.
+    /// </summary>
     public static bool operator !=(HdaTime left, HdaTime right) => !left.Equals(right);
 
     /// <inheritdoc />

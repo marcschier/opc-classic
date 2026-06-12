@@ -15,7 +15,9 @@ internal static class TestServerProbe
     /// or by <c>interop\tools\register-testserver.ps1</c>.</summary>
     public const string TestServerProgId = "OpcTestServer_x64.1";
 
-    /// <summary>The three items exposed by <c>OpcTestServer.config.xml</c>.</summary>
+    /// <summary>
+    /// The three items exposed by <c>OpcTestServer.config.xml</c>.
+    /// </summary>
     public static readonly string[] WellKnownItems = ["Test.Int32", "Test.Float", "Test.String"];
 
     /// <summary>Returns true when the live TestServer integration tests

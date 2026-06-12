@@ -7,7 +7,9 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Opc.Classic;
 
-/// <summary>Process-wide registry for optional VT_RECORD layouts.</summary>
+/// <summary>
+/// Process-wide registry for optional VT_RECORD layouts.
+/// </summary>
 /// <remarks>
 /// OPC DA/HDA payloads rarely use VT_RECORD. Applications that need it register
 /// their known layouts up front so the NDR codec can map the wire GUID to an
@@ -18,7 +20,9 @@ public static class RecordInfoRegistry
     private static readonly Lock Gate = new();
     private static readonly Dictionary<Guid, IRecordInfo> Records = new();
 
-    /// <summary>Registers or replaces a record layout.</summary>
+    /// <summary>
+    /// Registers or replaces a record layout.
+    /// </summary>
     public static void Register(IRecordInfo recordInfo)
     {
         ArgumentNullException.ThrowIfNull(recordInfo);
@@ -33,7 +37,9 @@ public static class RecordInfoRegistry
         }
     }
 
-    /// <summary>Attempts to find a registered layout by GUID.</summary>
+    /// <summary>
+    /// Attempts to find a registered layout by GUID.
+    /// </summary>
     public static bool TryGet(Guid id, [NotNullWhen(true)] out IRecordInfo? recordInfo)
     {
         lock (Gate)
@@ -42,7 +48,9 @@ public static class RecordInfoRegistry
         }
     }
 
-    /// <summary>Gets a registered layout or throws when the GUID is unknown.</summary>
+    /// <summary>
+    /// Gets a registered layout or throws when the GUID is unknown.
+    /// </summary>
     public static IRecordInfo Get(Guid id)
     {
         if (TryGet(id, out IRecordInfo? recordInfo))
@@ -53,7 +61,9 @@ public static class RecordInfoRegistry
         throw new KeyNotFoundException($"No VT_RECORD layout is registered for {id}.");
     }
 
-    /// <summary>Removes a registered layout.</summary>
+    /// <summary>
+    /// Removes a registered layout.
+    /// </summary>
     public static bool Unregister(Guid id)
     {
         lock (Gate)

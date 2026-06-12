@@ -28,13 +28,19 @@ namespace Opc.Classic.Da;
 /// </remarks>
 public interface IDaServer : IAsyncDisposable
 {
-    /// <summary>Raised when the server emits <c>IOPCShutdown::ShutdownRequest</c>.</summary>
+    /// <summary>
+    /// Raised when the server emits <c>IOPCShutdown::ShutdownRequest</c>.
+    /// </summary>
     event EventHandler<ServerShutdownEventArgs>? ServerShutdown;
 
-    /// <summary>Negotiated server LCID — the locale the server is serving messages in.</summary>
+    /// <summary>
+    /// Negotiated server LCID — the locale the server is serving messages in.
+    /// </summary>
     int LocaleId { get; }
 
-    /// <summary>Retrieve server runtime state (start time, current time, version, ...).</summary>
+    /// <summary>
+    /// Retrieve server runtime state (start time, current time, version, ...).
+    /// </summary>
     Task<OpcServerStatus> GetStatusAsync(CancellationToken cancellationToken = default);
 
     /// <summary>
@@ -43,13 +49,19 @@ public interface IDaServer : IAsyncDisposable
     /// </summary>
     Task SetLocaleAsync(int localeId, CancellationToken cancellationToken = default);
 
-    /// <summary>List the locale IDs the server supports.</summary>
+    /// <summary>
+    /// List the locale IDs the server supports.
+    /// </summary>
     Task<IReadOnlyList<int>> GetSupportedLocalesAsync(CancellationToken cancellationToken = default);
 
-    /// <summary>Resolve an OPC HRESULT to the server's human-readable text in the current locale.</summary>
+    /// <summary>
+    /// Resolve an OPC HRESULT to the server's human-readable text in the current locale.
+    /// </summary>
     Task<string> GetErrorTextAsync(OpcResultId resultId, CancellationToken cancellationToken = default);
 
-    /// <summary>Supply a client name that servers may use for diagnostics and logging.</summary>
+    /// <summary>
+    /// Supply a client name that servers may use for diagnostics and logging.
+    /// </summary>
     Task SetClientNameAsync(string clientName, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(clientName);
@@ -76,12 +88,16 @@ public interface IDaServer : IAsyncDisposable
         IReadOnlyList<Item> items,
         CancellationToken cancellationToken = default);
 
-    /// <summary>One-shot write using DA 3.0's stateless <c>IOPCItemIO::WriteVQT</c>.</summary>
+    /// <summary>
+    /// One-shot write using DA 3.0's stateless <c>IOPCItemIO::WriteVQT</c>.
+    /// </summary>
     Task<IReadOnlyList<IdentifiedResult>> WriteAsync(
         IReadOnlyList<ItemValue> values,
         CancellationToken cancellationToken = default);
 
-    /// <summary>Validate that <paramref name="items"/> exist on the server (no side effects).</summary>
+    /// <summary>
+    /// Validate that <paramref name="items"/> exist on the server (no side effects).
+    /// </summary>
     Task<IReadOnlyList<IdentifiedResult>> ValidateItemsAsync(
         IReadOnlyList<Item> items,
         CancellationToken cancellationToken = default);
@@ -97,7 +113,9 @@ public interface IDaServer : IAsyncDisposable
         bool returnValues,
         CancellationToken cancellationToken = default);
 
-    /// <summary>Create a server-side subscription (group) and return its handle.</summary>
+    /// <summary>
+    /// Create a server-side subscription (group) and return its handle.
+    /// </summary>
     Task<IDaSubscription> CreateSubscriptionAsync(
         SubscriptionState state,
         CancellationToken cancellationToken = default);

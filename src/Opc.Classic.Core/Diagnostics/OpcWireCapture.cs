@@ -25,10 +25,14 @@ public static class OpcWireCapture
 {
     private const string EnvVarName = "OPCCLASSIC_WIRE_CAPTURE_DIR";
 
-    /// <summary>Returns the configured capture directory, or <see langword="null"/> when capture is disabled.</summary>
+    /// <summary>
+    /// Returns the configured capture directory, or <see langword="null"/> when capture is disabled.
+    /// </summary>
     public static string? CaptureDirectory => Environment.GetEnvironmentVariable(EnvVarName);
 
-    /// <summary>True when the <c>OPCCLASSIC_WIRE_CAPTURE_DIR</c> environment variable is set.</summary>
+    /// <summary>
+    /// True when the <c>OPCCLASSIC_WIRE_CAPTURE_DIR</c> environment variable is set.
+    /// </summary>
     public static bool IsEnabled => !string.IsNullOrWhiteSpace(CaptureDirectory);
 
     /// <summary>

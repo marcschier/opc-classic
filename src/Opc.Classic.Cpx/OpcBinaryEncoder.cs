@@ -14,7 +14,9 @@ namespace Opc.Classic.Cpx;
 /// </summary>
 public static class OpcBinaryEncoder
 {
-    /// <summary>Encode a value using a type from <paramref name="dictionary"/>.</summary>
+    /// <summary>
+    /// Encode a value using a type from <paramref name="dictionary"/>.
+    /// </summary>
     public static byte[] Encode(ComplexValue value, TypeDictionary dictionary, string typeId)
     {
         ArgumentNullException.ThrowIfNull(dictionary);
@@ -24,7 +26,9 @@ public static class OpcBinaryEncoder
         return Encode(value, type, dictionary);
     }
 
-    /// <summary>Encode a value using the supplied type description.</summary>
+    /// <summary>
+    /// Encode a value using the supplied type description.
+    /// </summary>
     public static byte[] Encode(ComplexValue value, TypeDescription type, TypeDictionary? dictionary = null)
     {
         ArgumentNullException.ThrowIfNull(value);

@@ -12,241 +12,407 @@ public static class OpcBatchPropertyId
 {
     private const string VariesVarType = "<varies>";
 
-    /// <summary><c>OPC_PROP_B_ID</c> (400) — item name, equipment ID, batch ID, internal ID, or alias used to build the qualified item ID (VT_BSTR).</summary>
+    /// <summary>
+    /// <c>OPC_PROP_B_ID</c> (400) — item name, equipment ID, batch ID, internal ID, or alias used to build the qualified item ID (VT_BSTR).
+    /// </summary>
     public const int Id = 400;
 
-    /// <summary><c>OPC_PROP_B_VALUE</c> (401) — item value derived from OPC Data Access property ID 2 (<c>&lt;varies&gt;</c>).</summary>
+    /// <summary>
+    /// <c>OPC_PROP_B_VALUE</c> (401) — item value derived from OPC Data Access property ID 2 (<c>&lt;varies&gt;</c>).
+    /// </summary>
     public const int Value = 401;
 
-    /// <summary><c>OPC_PROP_B_RIGHTS</c> (402) — item access rights derived from OPC Data Access property ID 5 (VT_I4).</summary>
+    /// <summary>
+    /// <c>OPC_PROP_B_RIGHTS</c> (402) — item access rights derived from OPC Data Access property ID 5 (VT_I4).
+    /// </summary>
     public const int AccessRights = 402;
 
-    /// <summary><c>OPC_PROP_B_EU</c> (403) — engineering units derived from OPC Data Access property ID 100 (VT_BSTR).</summary>
+    /// <summary>
+    /// <c>OPC_PROP_B_EU</c> (403) — engineering units derived from OPC Data Access property ID 100 (VT_BSTR).
+    /// </summary>
     public const int Eu = 403;
 
-    /// <summary><c>OPC_PROP_B_DESC</c> (404) — item description derived from OPC Data Access property ID 101 (VT_BSTR).</summary>
+    /// <summary>
+    /// <c>OPC_PROP_B_DESC</c> (404) — item description derived from OPC Data Access property ID 101 (VT_BSTR).
+    /// </summary>
     public const int Description = 404;
 
-    /// <summary><c>OPC_PROP_B_HIGH_VALUE_LIMIT</c> (405) — highest value this item may take on (<c>&lt;varies&gt;</c>).</summary>
+    /// <summary>
+    /// <c>OPC_PROP_B_HIGH_VALUE_LIMIT</c> (405) — highest value this item may take on (<c>&lt;varies&gt;</c>).
+    /// </summary>
     public const int HighValueLimit = 405;
 
-    /// <summary><c>OPC_PROP_B_LOW_VALUE_LIMIT</c> (406) — lowest value this item may take on (<c>&lt;varies&gt;</c>).</summary>
+    /// <summary>
+    /// <c>OPC_PROP_B_LOW_VALUE_LIMIT</c> (406) — lowest value this item may take on (<c>&lt;varies&gt;</c>).
+    /// </summary>
     public const int LowValueLimit = 406;
 
-    /// <summary><c>OPC_PROP_B_TIME_ZONE</c> (407) — item timezone derived from OPC Data Access property ID 108 (VT_I4).</summary>
+    /// <summary>
+    /// <c>OPC_PROP_B_TIME_ZONE</c> (407) — item timezone derived from OPC Data Access property ID 108 (VT_I4).
+    /// </summary>
     public const int TimeZone = 407;
 
-    /// <summary><c>OPC_PROP_B_CONDITION_STATUS</c> (408) — condition status derived from OPC Alarms and Events property ID 300 (VT_BSTR).</summary>
+    /// <summary>
+    /// <c>OPC_PROP_B_CONDITION_STATUS</c> (408) — condition status derived from OPC Alarms and Events property ID 300 (VT_BSTR).
+    /// </summary>
     public const int ConditionStatus = 408;
 
-    /// <summary><c>OPC_PROP_B_PHYSICAL_MODEL_LEVEL</c> (409) — physical model level associated with equipment, using <c>OPCB_ENUM_PHYS</c> (VT_I4).</summary>
+    /// <summary>
+    /// <c>OPC_PROP_B_PHYSICAL_MODEL_LEVEL</c> (409) — physical model level associated with equipment, using <c>OPCB_ENUM_PHYS</c> (VT_I4).
+    /// </summary>
     public const int PhysicalModelLevel = 409;
 
-    /// <summary><c>OPC_PROP_B_BATCH_MODEL_LEVEL</c> (410) — IEC 61512-1 procedural model level for a batch or recipe procedural element, using <c>OPCB_ENUM_PROC</c> (VT_I4).</summary>
+    /// <summary>
+    /// <c>OPC_PROP_B_BATCH_MODEL_LEVEL</c> (410) — IEC 61512-1 procedural model level for a batch or recipe procedural element, using
+    /// <c>OPCB_ENUM_PROC</c> (VT_I4).
+    /// </summary>
     public const int BatchModelLevel = 410;
 
-    /// <summary><c>OPC_PROP_B_RELATED_BATCH_IDS</c> (411) — batch ID or batch ID list related to a physical model item (VT_ARRAY | VT_BSTR).</summary>
+    /// <summary>
+    /// <c>OPC_PROP_B_RELATED_BATCH_IDS</c> (411) — batch ID or batch ID list related to a physical model item (VT_ARRAY | VT_BSTR).
+    /// </summary>
     public const int RelatedBatchIds = 411;
 
-    /// <summary><c>OPC_PROP_B_VERSION</c> (412) — server-specific version identifier for the associated item (VT_BSTR).</summary>
+    /// <summary>
+    /// <c>OPC_PROP_B_VERSION</c> (412) — server-specific version identifier for the associated item (VT_BSTR).
+    /// </summary>
     public const int Version = 412;
 
-    /// <summary><c>OPC_PROP_B_EQUIPMENT_CLASS</c> (413) — class of the associated equipment, such as reactor or mixer (VT_BSTR).</summary>
+    /// <summary>
+    /// <c>OPC_PROP_B_EQUIPMENT_CLASS</c> (413) — class of the associated equipment, such as reactor or mixer (VT_BSTR).
+    /// </summary>
     public const int EquipmentClass = 413;
 
-    /// <summary><c>OPC_PROP_B_LOCATION</c> (414) — building or physical location where the item exists (VT_BSTR).</summary>
+    /// <summary>
+    /// <c>OPC_PROP_B_LOCATION</c> (414) — building or physical location where the item exists (VT_BSTR).
+    /// </summary>
     public const int Location = 414;
 
-    /// <summary><c>OPC_PROP_B_MAXIMUM_USER_COUNT</c> (415) — maximum concurrent users of the item, with -1 meaning unlimited (VT_I4).</summary>
+    /// <summary>
+    /// <c>OPC_PROP_B_MAXIMUM_USER_COUNT</c> (415) — maximum concurrent users of the item, with -1 meaning unlimited (VT_I4).
+    /// </summary>
     public const int MaximumUserCount = 415;
 
-    /// <summary><c>OPC_PROP_B_CURRENT_USER_COUNT</c> (416) — current number of users of the associated item (VT_I4).</summary>
+    /// <summary>
+    /// <c>OPC_PROP_B_CURRENT_USER_COUNT</c> (416) — current number of users of the associated item (VT_I4).
+    /// </summary>
     public const int CurrentUserCount = 416;
 
-    /// <summary><c>OPC_PROP_B_CURRENT_USER_LIST</c> (417) — item IDs that are using the associated item (VT_ARRAY | VT_BSTR).</summary>
+    /// <summary>
+    /// <c>OPC_PROP_B_CURRENT_USER_LIST</c> (417) — item IDs that are using the associated item (VT_ARRAY | VT_BSTR).
+    /// </summary>
     public const int CurrentUserList = 417;
 
-    /// <summary><c>OPC_PROP_B_ALLOCATED_EQUIPMENT_LIST</c> (418) — equipment item IDs allocated by this item (VT_ARRAY | VT_BSTR).</summary>
+    /// <summary>
+    /// <c>OPC_PROP_B_ALLOCATED_EQUIPMENT_LIST</c> (418) — equipment item IDs allocated by this item (VT_ARRAY | VT_BSTR).
+    /// </summary>
     public const int AllocatedEquipmentList = 418;
 
-    /// <summary><c>OPC_PROP_B_REQUESTER_LIST</c> (419) — item IDs queued to allocate the associated item, in precedence order (VT_ARRAY | VT_BSTR).</summary>
+    /// <summary>
+    /// <c>OPC_PROP_B_REQUESTER_LIST</c> (419) — item IDs queued to allocate the associated item, in precedence order (VT_ARRAY | VT_BSTR).
+    /// </summary>
     public const int RequesterList = 419;
 
-    /// <summary><c>OPC_PROP_B_REQUESTED_LIST</c> (420) — item IDs for which this item has a pending allocation request (VT_ARRAY | VT_BSTR).</summary>
+    /// <summary>
+    /// <c>OPC_PROP_B_REQUESTED_LIST</c> (420) — item IDs for which this item has a pending allocation request (VT_ARRAY | VT_BSTR).
+    /// </summary>
     public const int RequestedList = 420;
 
-    /// <summary><c>OPC_PROP_B_SHARED_BY_LIST</c> (421) — item IDs that can share this item (VT_ARRAY | VT_BSTR).</summary>
+    /// <summary>
+    /// <c>OPC_PROP_B_SHARED_BY_LIST</c> (421) — item IDs that can share this item (VT_ARRAY | VT_BSTR).
+    /// </summary>
     public const int SharedByList = 421;
 
-    /// <summary><c>OPC_PROP_B_EQUIPMENT_STATE</c> (422) — current state of the equipment (VT_BSTR).</summary>
+    /// <summary>
+    /// <c>OPC_PROP_B_EQUIPMENT_STATE</c> (422) — current state of the equipment (VT_BSTR).
+    /// </summary>
     public const int EquipmentState = 422;
 
-    /// <summary><c>OPC_PROP_B_EQUIPMENT_MODE</c> (423) — current mode of the equipment (VT_BSTR).</summary>
+    /// <summary>
+    /// <c>OPC_PROP_B_EQUIPMENT_MODE</c> (423) — current mode of the equipment (VT_BSTR).
+    /// </summary>
     public const int EquipmentMode = 423;
 
-    /// <summary><c>OPC_PROP_B_UPSTREAM_EQUIPMENT_LIST</c> (424) — equipment item IDs from which material is directly received (VT_ARRAY | VT_BSTR).</summary>
+    /// <summary>
+    /// <c>OPC_PROP_B_UPSTREAM_EQUIPMENT_LIST</c> (424) — equipment item IDs from which material is directly received (VT_ARRAY | VT_BSTR).
+    /// </summary>
     public const int UpstreamEquipmentList = 424;
 
-    /// <summary><c>OPC_PROP_B_DOWNSTREAM_EQUIPMENT_LIST</c> (425) — equipment item IDs to which material is directly sent (VT_ARRAY | VT_BSTR).</summary>
+    /// <summary>
+    /// <c>OPC_PROP_B_DOWNSTREAM_EQUIPMENT_LIST</c> (425) — equipment item IDs to which material is directly sent (VT_ARRAY | VT_BSTR).
+    /// </summary>
     public const int DownstreamEquipmentList = 425;
 
-    /// <summary><c>OPC_PROP_B_EQUIPMENT_PROCEDURAL_ELEMENT_LIST</c> (426) — equipment procedural elements this equipment can perform (VT_ARRAY | VT_BSTR).</summary>
+    /// <summary>
+    /// <c>OPC_PROP_B_EQUIPMENT_PROCEDURAL_ELEMENT_LIST</c> (426) — equipment procedural elements this equipment can perform (VT_ARRAY |
+    /// VT_BSTR).
+    /// </summary>
     public const int EquipmentProceduralElementList = 426;
 
-    /// <summary><c>OPC_PROP_B_CURRENT_PROCEDURE_LIST</c> (427) — lowest-level active recipe procedural element item IDs on this equipment item (VT_ARRAY | VT_BSTR).</summary>
+    /// <summary>
+    /// <c>OPC_PROP_B_CURRENT_PROCEDURE_LIST</c> (427) — lowest-level active recipe procedural element item IDs on this equipment item
+    /// (VT_ARRAY | VT_BSTR).
+    /// </summary>
     public const int CurrentProcedureList = 427;
 
-    /// <summary><c>OPC_PROP_B_TRAIN_LIST</c> (428) — withdrawn two-dimensional processing train list; replaced by TrainList2 (VT_ARRAY | VT_ARRAY | VT_BSTR).</summary>
+    /// <summary>
+    /// <c>OPC_PROP_B_TRAIN_LIST</c> (428) — withdrawn two-dimensional processing train list; replaced by TrainList2 (VT_ARRAY | VT_ARRAY |
+    /// VT_BSTR).
+    /// </summary>
     public const int TrainList = 428;
 
-    /// <summary><c>OPC_PROP_B_DEVICE_DATA_SOURCE</c> (429) — vendor-specific address data, such as an OPC data server item ID (VT_BSTR).</summary>
+    /// <summary>
+    /// <c>OPC_PROP_B_DEVICE_DATA_SOURCE</c> (429) — vendor-specific address data, such as an OPC data server item ID (VT_BSTR).
+    /// </summary>
     public const int DeviceDataSource = 429;
 
-    /// <summary><c>OPC_PROP_B_DEVICE_DATA_SERVER</c> (430) — vendor-specific address data, such as an OPC data server name (VT_BSTR).</summary>
+    /// <summary>
+    /// <c>OPC_PROP_B_DEVICE_DATA_SERVER</c> (430) — vendor-specific address data, such as an OPC data server name (VT_BSTR).
+    /// </summary>
     public const int DeviceDataServer = 430;
 
-    /// <summary><c>OPC_PROP_B_CAMPAIGN_ID</c> (431) — production group of which this batch is a member (VT_BSTR).</summary>
+    /// <summary>
+    /// <c>OPC_PROP_B_CAMPAIGN_ID</c> (431) — production group of which this batch is a member (VT_BSTR).
+    /// </summary>
     public const int CampaignId = 431;
 
-    /// <summary><c>OPC_PROP_B_LOT_ID_LIST</c> (432) — strings identifying lots related to this item (VT_ARRAY | VT_BSTR).</summary>
+    /// <summary>
+    /// <c>OPC_PROP_B_LOT_ID_LIST</c> (432) — strings identifying lots related to this item (VT_ARRAY | VT_BSTR).
+    /// </summary>
     public const int LotIdList = 432;
 
-    /// <summary><c>OPC_PROP_B_CONTROL_RECIPE_ID</c> (433) — control recipe used for this batch (VT_BSTR).</summary>
+    /// <summary>
+    /// <c>OPC_PROP_B_CONTROL_RECIPE_ID</c> (433) — control recipe used for this batch (VT_BSTR).
+    /// </summary>
     public const int ControlRecipeId = 433;
 
-    /// <summary><c>OPC_PROP_B_CONTROL_RECIPE_VERSION</c> (434) — version of the control recipe used (VT_BSTR).</summary>
+    /// <summary>
+    /// <c>OPC_PROP_B_CONTROL_RECIPE_VERSION</c> (434) — version of the control recipe used (VT_BSTR).
+    /// </summary>
     public const int ControlRecipeVersion = 434;
 
-    /// <summary><c>OPC_PROP_B_MASTER_RECIPE_ID</c> (435) — master recipe used for this batch (VT_BSTR).</summary>
+    /// <summary>
+    /// <c>OPC_PROP_B_MASTER_RECIPE_ID</c> (435) — master recipe used for this batch (VT_BSTR).
+    /// </summary>
     public const int MasterRecipeId = 435;
 
-    /// <summary><c>OPC_PROP_B_MASTER_RECIPE_VERSION</c> (436) — version of the master recipe used (VT_BSTR).</summary>
+    /// <summary>
+    /// <c>OPC_PROP_B_MASTER_RECIPE_VERSION</c> (436) — version of the master recipe used (VT_BSTR).
+    /// </summary>
     public const int MasterRecipeVersion = 436;
 
-    /// <summary><c>OPC_PROP_B_PRODUCT_ID</c> (437) — product produced by executing the control or master recipe (VT_BSTR).</summary>
+    /// <summary>
+    /// <c>OPC_PROP_B_PRODUCT_ID</c> (437) — product produced by executing the control or master recipe (VT_BSTR).
+    /// </summary>
     public const int ProductId = 437;
 
-    /// <summary><c>OPC_PROP_B_GRADE</c> (438) — grade of material being produced (VT_BSTR).</summary>
+    /// <summary>
+    /// <c>OPC_PROP_B_GRADE</c> (438) — grade of material being produced (VT_BSTR).
+    /// </summary>
     public const int Grade = 438;
 
-    /// <summary><c>OPC_PROP_B_BATCH_SIZE</c> (439) — application-specific batch-size reference value (<c>&lt;varies&gt;</c>).</summary>
+    /// <summary>
+    /// <c>OPC_PROP_B_BATCH_SIZE</c> (439) — application-specific batch-size reference value (<c>&lt;varies&gt;</c>).
+    /// </summary>
     public const int BatchSize = 439;
 
-    /// <summary><c>OPC_PROP_B_PRIORITY</c> (440) — relative processing priority, where lower numbers have higher priority (VT_I4).</summary>
+    /// <summary>
+    /// <c>OPC_PROP_B_PRIORITY</c> (440) — relative processing priority, where lower numbers have higher priority (VT_I4).
+    /// </summary>
     public const int Priority = 440;
 
-    /// <summary><c>OPC_PROP_B_EXECUTION_STATE</c> (441) — current execution state using the vendor's state names (VT_BSTR).</summary>
+    /// <summary>
+    /// <c>OPC_PROP_B_EXECUTION_STATE</c> (441) — current execution state using the vendor's state names (VT_BSTR).
+    /// </summary>
     public const int ExecutionState = 441;
 
-    /// <summary><c>OPC_PROP_B_IEC61512_1_STATE</c> (442) — execution state using IEC 61512-1 example state names, using <c>OPCB_ENUM_STATE</c> (VT_I4).</summary>
+    /// <summary>
+    /// <c>OPC_PROP_B_IEC61512_1_STATE</c> (442) — execution state using IEC 61512-1 example state names, using <c>OPCB_ENUM_STATE</c>
+    /// (VT_I4).
+    /// </summary>
     public const int Iec61512State = 442;
 
-    /// <summary><c>OPC_PROP_B_EXECUTION_MODE</c> (443) — current execution mode using the vendor's mode names (VT_BSTR).</summary>
+    /// <summary>
+    /// <c>OPC_PROP_B_EXECUTION_MODE</c> (443) — current execution mode using the vendor's mode names (VT_BSTR).
+    /// </summary>
     public const int ExecutionMode = 443;
 
-    /// <summary><c>OPC_PROP_B_IEC61512_1_MODE</c> (444) — execution mode using IEC 61512-1 example mode names, using <c>OPCB_ENUM_MODE</c> (VT_I4).</summary>
+    /// <summary>
+    /// <c>OPC_PROP_B_IEC61512_1_MODE</c> (444) — execution mode using IEC 61512-1 example mode names, using <c>OPCB_ENUM_MODE</c> (VT_I4).
+    /// </summary>
     public const int Iec61512Mode = 444;
 
-    /// <summary><c>OPC_PROP_B_SCHEDULED_START_TIME</c> (445) — scheduled start time for the batch or item (VT_DATE).</summary>
+    /// <summary>
+    /// <c>OPC_PROP_B_SCHEDULED_START_TIME</c> (445) — scheduled start time for the batch or item (VT_DATE).
+    /// </summary>
     public const int ScheduledStartTime = 445;
 
-    /// <summary><c>OPC_PROP_B_ACTUAL_START_TIME</c> (446) — time when the batch or item actually started (VT_DATE).</summary>
+    /// <summary>
+    /// <c>OPC_PROP_B_ACTUAL_START_TIME</c> (446) — time when the batch or item actually started (VT_DATE).
+    /// </summary>
     public const int ActualStartTime = 446;
 
-    /// <summary><c>OPC_PROP_B_ESTIMATED_END_TIME</c> (447) — planned end time for the batch or item (VT_DATE).</summary>
+    /// <summary>
+    /// <c>OPC_PROP_B_ESTIMATED_END_TIME</c> (447) — planned end time for the batch or item (VT_DATE).
+    /// </summary>
     public const int EstimatedEndTime = 447;
 
-    /// <summary><c>OPC_PROP_B_ACTUAL_END_TIME</c> (448) — time when the batch or item actually ended (VT_DATE).</summary>
+    /// <summary>
+    /// <c>OPC_PROP_B_ACTUAL_END_TIME</c> (448) — time when the batch or item actually ended (VT_DATE).
+    /// </summary>
     public const int ActualEndTime = 448;
 
-    /// <summary><c>OPC_PROP_B_PHYSICAL_MODEL_REFERENCE</c> (449) — lowest-level physical-model item ID encompassing all equipment for this batch (VT_BSTR).</summary>
+    /// <summary>
+    /// <c>OPC_PROP_B_PHYSICAL_MODEL_REFERENCE</c> (449) — lowest-level physical-model item ID encompassing all equipment for this batch
+    /// (VT_BSTR).
+    /// </summary>
     public const int PhysicalModelReference = 449;
 
-    /// <summary><c>OPC_PROP_B_EQUIPMENT_PROCEDURAL_ELEMENT</c> (450) — equipment procedural element corresponding to this item (VT_BSTR).</summary>
+    /// <summary>
+    /// <c>OPC_PROP_B_EQUIPMENT_PROCEDURAL_ELEMENT</c> (450) — equipment procedural element corresponding to this item (VT_BSTR).
+    /// </summary>
     public const int EquipmentProceduralElement = 450;
 
-    /// <summary><c>OPC_PROP_B_PARAMETER_COUNT</c> (451) — number of parameters associated with this item (VT_I4).</summary>
+    /// <summary>
+    /// <c>OPC_PROP_B_PARAMETER_COUNT</c> (451) — number of parameters associated with this item (VT_I4).
+    /// </summary>
     public const int ParameterCount = 451;
 
-    /// <summary><c>OPC_PROP_B_PARAMETER_TYPE</c> (452) — IEC 61512-1 formula type, using <c>OPCB_ENUM_PARAM</c> (VT_I4).</summary>
+    /// <summary>
+    /// <c>OPC_PROP_B_PARAMETER_TYPE</c> (452) — IEC 61512-1 formula type, using <c>OPCB_ENUM_PARAM</c> (VT_I4).
+    /// </summary>
     public const int ParameterType = 452;
 
-    /// <summary><c>OPC_PROP_B_VALID_VALUES</c> (453) — valid values for the item (VT_ARRAY | VT_BSTR).</summary>
+    /// <summary>
+    /// <c>OPC_PROP_B_VALID_VALUES</c> (453) — valid values for the item (VT_ARRAY | VT_BSTR).
+    /// </summary>
     public const int ValidValues = 453;
 
-    /// <summary><c>OPC_PROP_B_SCALING_RULE</c> (454) — special scaling rules for this item (VT_BSTR).</summary>
+    /// <summary>
+    /// <c>OPC_PROP_B_SCALING_RULE</c> (454) — special scaling rules for this item (VT_BSTR).
+    /// </summary>
     public const int ScalingRule = 454;
 
-    /// <summary><c>OPC_PROP_B_EXPRESSION_RULE</c> (455) — indicates whether a string value is a literal or expression (VT_BOOL).</summary>
+    /// <summary>
+    /// <c>OPC_PROP_B_EXPRESSION_RULE</c> (455) — indicates whether a string value is a literal or expression (VT_BOOL).
+    /// </summary>
     public const int ExpressionRule = 455;
 
-    /// <summary><c>OPC_PROP_B_RESULT_COUNT</c> (456) — number of results associated with this item (VT_I4).</summary>
+    /// <summary>
+    /// <c>OPC_PROP_B_RESULT_COUNT</c> (456) — number of results associated with this item (VT_I4).
+    /// </summary>
     public const int ResultCount = 456;
 
-    /// <summary><c>OPC_PROP_B_ENUMERATION_SET_ID</c> (457) — vendor-specific enumeration set ID associated with this item's value (VT_I4).</summary>
+    /// <summary>
+    /// <c>OPC_PROP_B_ENUMERATION_SET_ID</c> (457) — vendor-specific enumeration set ID associated with this item's value (VT_I4).
+    /// </summary>
     public const int EnumerationSetId = 457;
 
-    /// <summary><c>OPC_PROP_B_MASTER_RECIPE_MODEL_LEVEL</c> (458) — IEC 61512-1 procedural model level for a master-recipe element, using <c>OPCB_ENUM_MR_PROC</c> (VT_I4).</summary>
+    /// <summary>
+    /// <c>OPC_PROP_B_MASTER_RECIPE_MODEL_LEVEL</c> (458) — IEC 61512-1 procedural model level for a master-recipe element, using
+    /// <c>OPCB_ENUM_MR_PROC</c> (VT_I4).
+    /// </summary>
     public const int MasterRecipeModelLevel = 458;
 
-    /// <summary><c>OPC_PROP_B_PROCEDURE_LOGIC</c> (459) — XML data required to recreate the procedure function chart and procedural logic (VT_BSTR).</summary>
+    /// <summary>
+    /// <c>OPC_PROP_B_PROCEDURE_LOGIC</c> (459) — XML data required to recreate the procedure function chart and procedural logic (VT_BSTR).
+    /// </summary>
     public const int ProcedureLogic = 459;
 
-    /// <summary><c>OPC_PROP_B_PROCEDURE_LOGIC_SCHEMA</c> (460) — XML schema URI for the procedure logic property (VT_BSTR).</summary>
+    /// <summary>
+    /// <c>OPC_PROP_B_PROCEDURE_LOGIC_SCHEMA</c> (460) — XML schema URI for the procedure logic property (VT_BSTR).
+    /// </summary>
     public const int ProcedureLogicSchema = 460;
 
-    /// <summary><c>OPC_PROP_B_EQUIPMENT_CANDIDATE_LIST</c> (461) — individual equipment that may be used by a control recipe or RPE (VT_BSTR).</summary>
+    /// <summary>
+    /// <c>OPC_PROP_B_EQUIPMENT_CANDIDATE_LIST</c> (461) — individual equipment that may be used by a control recipe or RPE (VT_BSTR).
+    /// </summary>
     public const int EquipmentCandidateList = 461;
 
-    /// <summary><c>OPC_PROP_B_EQUIPMENT_CLASS_CANDIDATE_LIST</c> (462) — equipment classes that may be used by a control recipe or RPE (VT_BSTR).</summary>
+    /// <summary>
+    /// <c>OPC_PROP_B_EQUIPMENT_CLASS_CANDIDATE_LIST</c> (462) — equipment classes that may be used by a control recipe or RPE (VT_BSTR).
+    /// </summary>
     public const int EquipmentClassCandidateList = 462;
 
-    /// <summary><c>OPC_PROP_B_VERSION_DATE</c> (463) — date and time this version of the item was last modified (VT_DATE).</summary>
+    /// <summary>
+    /// <c>OPC_PROP_B_VERSION_DATE</c> (463) — date and time this version of the item was last modified (VT_DATE).
+    /// </summary>
     public const int VersionDate = 463;
 
-    /// <summary><c>OPC_PROP_B_APPROVAL_DATE</c> (464) — date and time this version of the item was last approved (VT_DATE).</summary>
+    /// <summary>
+    /// <c>OPC_PROP_B_APPROVAL_DATE</c> (464) — date and time this version of the item was last approved (VT_DATE).
+    /// </summary>
     public const int ApprovalDate = 464;
 
-    /// <summary><c>OPC_PROP_B_EFFECTIVE_DATE</c> (465) — date and time this version of the item is effective (VT_DATE).</summary>
+    /// <summary>
+    /// <c>OPC_PROP_B_EFFECTIVE_DATE</c> (465) — date and time this version of the item is effective (VT_DATE).
+    /// </summary>
     public const int EffectiveDate = 465;
 
-    /// <summary><c>OPC_PROP_B_EXPIRATION_DATE</c> (466) — date and time this version of the item expires (VT_DATE).</summary>
+    /// <summary>
+    /// <c>OPC_PROP_B_EXPIRATION_DATE</c> (466) — date and time this version of the item expires (VT_DATE).
+    /// </summary>
     public const int ExpirationDate = 466;
 
-    /// <summary><c>OPC_PROP_B_AUTHOR</c> (467) — person or system that authored this version of the item (VT_BSTR).</summary>
+    /// <summary>
+    /// <c>OPC_PROP_B_AUTHOR</c> (467) — person or system that authored this version of the item (VT_BSTR).
+    /// </summary>
     public const int Author = 467;
 
-    /// <summary><c>OPC_PROP_B_APPROVED_BY</c> (468) — person or system that approved this version of the item (VT_BSTR).</summary>
+    /// <summary>
+    /// <c>OPC_PROP_B_APPROVED_BY</c> (468) — person or system that approved this version of the item (VT_BSTR).
+    /// </summary>
     public const int ApprovedBy = 468;
 
-    /// <summary><c>OPC_PROP_B_USAGE_CONSTRAINT</c> (469) — rules that determine usage constraints for the item (VT_BSTR).</summary>
+    /// <summary>
+    /// <c>OPC_PROP_B_USAGE_CONSTRAINT</c> (469) — rules that determine usage constraints for the item (VT_BSTR).
+    /// </summary>
     public const int UsageConstraint = 469;
 
-    /// <summary><c>OPC_PROP_B_RECIPE_STATUS</c> (470) — status of an item (VT_BSTR).</summary>
+    /// <summary>
+    /// <c>OPC_PROP_B_RECIPE_STATUS</c> (470) — status of an item (VT_BSTR).
+    /// </summary>
     public const int RecipeStatus = 470;
 
-    /// <summary><c>OPC_PROP_B_RE_USE</c> (471) — relationship between a recipe element and a class or library entry, using <c>OPCB_ENUM_RE_USE</c> (VT_I4).</summary>
+    /// <summary>
+    /// <c>OPC_PROP_B_RE_USE</c> (471) — relationship between a recipe element and a class or library entry, using <c>OPCB_ENUM_RE_USE</c>
+    /// (VT_I4).
+    /// </summary>
     public const int ReUse = 471;
 
-    /// <summary><c>OPC_PROP_B_DERIVED_RE</c> (472) — recipe element from which this recipe element was derived (VT_BSTR).</summary>
+    /// <summary>
+    /// <c>OPC_PROP_B_DERIVED_RE</c> (472) — recipe element from which this recipe element was derived (VT_BSTR).
+    /// </summary>
     public const int DerivedRe = 472;
 
-    /// <summary><c>OPC_PROP_B_DERIVED_VERSION</c> (473) — version of the recipe element from which this recipe element was derived (VT_BSTR).</summary>
+    /// <summary>
+    /// <c>OPC_PROP_B_DERIVED_VERSION</c> (473) — version of the recipe element from which this recipe element was derived (VT_BSTR).
+    /// </summary>
     public const int DerivedVersion = 473;
 
-    /// <summary><c>OPC_PROP_B_SCALABLE</c> (474) — identifies whether a parameter is scalable (VT_BOOL).</summary>
+    /// <summary>
+    /// <c>OPC_PROP_B_SCALABLE</c> (474) — identifies whether a parameter is scalable (VT_BOOL).
+    /// </summary>
     public const int Scalable = 474;
 
-    /// <summary><c>OPC_PROP_B_EXPECTED_DURATION</c> (475) — expected duration of an item in seconds (VT_I4).</summary>
+    /// <summary>
+    /// <c>OPC_PROP_B_EXPECTED_DURATION</c> (475) — expected duration of an item in seconds (VT_I4).
+    /// </summary>
     public const int ExpectedDuration = 475;
 
-    /// <summary><c>OPC_PROP_B_ACTUAL_DURATION</c> (476) — actual duration of an item in seconds (VT_I4).</summary>
+    /// <summary>
+    /// <c>OPC_PROP_B_ACTUAL_DURATION</c> (476) — actual duration of an item in seconds (VT_I4).
+    /// </summary>
     public const int ActualDuration = 476;
 
-    /// <summary><c>OPC_PROP_B_TRAIN_LIST2</c> (477) — XML document containing processing trains and equipment item IDs (VT_BSTR).</summary>
+    /// <summary>
+    /// <c>OPC_PROP_B_TRAIN_LIST2</c> (477) — XML document containing processing trains and equipment item IDs (VT_BSTR).
+    /// </summary>
     public const int TrainList2 = 477;
 
-    /// <summary><c>OPC_PROP_B_TRAIN_LIST2_SCHEMA</c> (478) — XML schema URI for the TrainList2 property (VT_BSTR).</summary>
+    /// <summary>
+    /// <c>OPC_PROP_B_TRAIN_LIST2_SCHEMA</c> (478) — XML schema URI for the TrainList2 property (VT_BSTR).
+    /// </summary>
     public const int TrainList2Schema = 478;
 
     /// <summary>

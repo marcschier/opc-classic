@@ -11,15 +11,23 @@ namespace Opc.Classic.Hosting;
 /// </summary>
 public interface IOpcServerHost
 {
-    /// <summary>Gets the OPC Classic specification name implemented by this host.</summary>
+    /// <summary>
+    /// Gets the OPC Classic specification name implemented by this host.
+    /// </summary>
     string SpecName { get; }
 
-    /// <summary>Gets the COM class registration metadata for this host.</summary>
+    /// <summary>
+    /// Gets the COM class registration metadata for this host.
+    /// </summary>
     OpcClsidRegistration Registration { get; }
 
-    /// <summary>Starts the server host.</summary>
+    /// <summary>
+    /// Starts the server host.
+    /// </summary>
     Task StartAsync(CancellationToken cancellationToken);
 
-    /// <summary>Stops the server host.</summary>
+    /// <summary>
+    /// Stops the server host.
+    /// </summary>
     Task StopAsync(CancellationToken cancellationToken);
 }

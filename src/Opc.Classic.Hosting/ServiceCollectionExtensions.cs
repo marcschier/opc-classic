@@ -41,7 +41,9 @@ public static class ClassicHostingServiceCollectionExtensions
         return services;
     }
 
-    /// <summary>Registers an AE server-host implementation.</summary>
+    /// <summary>
+    /// Registers an AE server-host implementation.
+    /// </summary>
     public static IServiceCollection AddOpcAeServer<
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] T>(
         this IServiceCollection services)
@@ -52,7 +54,9 @@ public static class ClassicHostingServiceCollectionExtensions
         return services;
     }
 
-    /// <summary>Registers an HDA server-host implementation.</summary>
+    /// <summary>
+    /// Registers an HDA server-host implementation.
+    /// </summary>
     public static IServiceCollection AddOpcHdaServer<
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] T>(
         this IServiceCollection services)

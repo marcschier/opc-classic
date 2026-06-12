@@ -12,7 +12,9 @@ namespace Opc.Classic.Xml.Serialization;
 /// </summary>
 public static class SubscriptionCancelSerializer
 {
-    /// <summary>Writes a complete SOAP envelope carrying a <c>SubscriptionCancel</c> request.</summary>
+    /// <summary>
+    /// Writes a complete SOAP envelope carrying a <c>SubscriptionCancel</c> request.
+    /// </summary>
     public static void WriteRequest(SoapEnvelopeWriter writer, XmlDaSubscriptionCancelRequest request)
     {
         ArgumentNullException.ThrowIfNull(writer);

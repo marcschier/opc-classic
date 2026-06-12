@@ -1,13 +1,11 @@
 <Solution>
   <Folder Name="/src/">
     <Project Path="src/Opc.Classic.Ae/Opc.Classic.Ae.csproj" />
-    <Project Path="src/Opc.Classic.Ae.Windows/Opc.Classic.Ae.Windows.csproj" />
     <Project Path="src/Opc.Classic.Batch/Opc.Classic.Batch.csproj" />
     <Project Path="src/Opc.Classic.Commands/Opc.Classic.Commands.csproj" />
     <Project Path="src/Opc.Classic.Core/Opc.Classic.Core.csproj" />
     <Project Path="src/Opc.Classic.Cpx/Opc.Classic.Cpx.csproj" />
     <Project Path="src/Opc.Classic.Da/Opc.Classic.Da.csproj" />
-    <Project Path="src/Opc.Classic.Da.Windows/Opc.Classic.Da.Windows.csproj" />
     <Project Path="src/Opc.Classic.Dcom/Opc.Classic.Dcom.csproj" />
     <Project Path="src/Opc.Classic.Dcom.Kerberos/Opc.Classic.Dcom.Kerberos.csproj" />
     <Project Path="src/Opc.Classic.Dcom.Smb/Opc.Classic.Dcom.Smb.csproj" />
@@ -16,7 +14,6 @@
     <Project Path="src/Opc.Classic.Generators/Opc.Classic.Generators.csproj" />
     <Project Path="src/Opc.Classic.MigrationAnalyzer/Opc.Classic.MigrationAnalyzer.csproj" />
     <Project Path="src/Opc.Classic.Hda/Opc.Classic.Hda.csproj" />
-    <Project Path="src/Opc.Classic.Hda.Windows/Opc.Classic.Hda.Windows.csproj" />
     <Project Path="src/Opc.Classic.Hosting/Opc.Classic.Hosting.csproj" />
     <Project Path="src/Opc.Classic.Hosting.Windows/Opc.Classic.Hosting.Windows.csproj" />
     <Project Path="src/Opc.Classic.Security/Opc.Classic.Security.csproj" />
@@ -24,13 +21,11 @@
   </Folder>
   <Folder Name="/tests/">
     <Project Path="tests/Opc.Classic.Ae.Tests/Opc.Classic.Ae.Tests.csproj" />
-    <Project Path="tests/Opc.Classic.Ae.Windows.Tests/Opc.Classic.Ae.Windows.Tests.csproj" />
     <Project Path="tests/Opc.Classic.Batch.Tests/Opc.Classic.Batch.Tests.csproj" />
     <Project Path="tests/Opc.Classic.Commands.Tests/Opc.Classic.Commands.Tests.csproj" />
     <Project Path="tests/Opc.Classic.Core.Tests/Opc.Classic.Core.Tests.csproj" />
     <Project Path="tests/Opc.Classic.Cpx.Tests/Opc.Classic.Cpx.Tests.csproj" />
     <Project Path="tests/Opc.Classic.Da.Tests/Opc.Classic.Da.Tests.csproj" />
-    <Project Path="tests/Opc.Classic.Da.Windows.Tests/Opc.Classic.Da.Windows.Tests.csproj" />
     <Project Path="tests/Opc.Classic.Dcom.Crypto.Tests/Opc.Classic.Dcom.Crypto.Tests.csproj" />
     <Project Path="tests/Opc.Classic.Dcom.Kerberos.Tests/Opc.Classic.Dcom.Kerberos.Tests.csproj" />
     <Project Path="tests/Opc.Classic.Integration.Tests/Opc.Classic.Integration.Tests.csproj" />
@@ -48,6 +43,7 @@
     <Project Path="tests/Opc.Classic.MigrationAnalyzer.Tests/Opc.Classic.MigrationAnalyzer.Tests.csproj" />
     <Project Path="tests/Opc.Classic.Hda.Tests/Opc.Classic.Hda.Tests.csproj" />
     <Project Path="tests/Opc.Classic.Hosting.Tests/Opc.Classic.Hosting.Tests.csproj" />
+    <Project Path="tests/Opc.Classic.Hosting.Windows.Tests/Opc.Classic.Hosting.Windows.Tests.csproj" />
     <Project Path="tests/Opc.Classic.PropertyTests/Opc.Classic.PropertyTests.csproj" />
     <Project Path="tests/Opc.Classic.Security.Tests/Opc.Classic.Security.Tests.csproj" />
     <Project Path="tests/Opc.Classic.SnapshotTests/Opc.Classic.SnapshotTests.csproj" />

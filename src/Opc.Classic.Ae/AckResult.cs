@@ -10,9 +10,13 @@ namespace Opc.Classic.Ae;
 /// </summary>
 public sealed class AckResult
 {
-    /// <summary>The condition that was acked.</summary>
+    /// <summary>
+    /// The condition that was acked.
+    /// </summary>
     public required ConditionRef Condition { get; init; }
 
-    /// <summary>HRESULT — Ok if acked successfully.</summary>
+    /// <summary>
+    /// HRESULT — Ok if acked successfully.
+    /// </summary>
     public OpcResultId ResultId { get; init; } = OpcResultId.Ok;
 }

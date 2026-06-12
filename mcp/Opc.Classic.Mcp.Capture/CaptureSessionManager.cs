@@ -39,7 +39,9 @@ public sealed class CaptureSessionManager : IAsyncDisposable
     private readonly string _scratchRoot;
     private int _disposed;
 
-    /// <summary>Creates a manager rooted at the given scratch directory (per-session subfolders created lazily).</summary>
+    /// <summary>
+    /// Creates a manager rooted at the given scratch directory (per-session subfolders created lazily).
+    /// </summary>
     /// <param name="scratchRoot">Parent directory for per-session scratch folders (raw pcap files etc.). Created if missing.</param>
     /// <param name="logger">Logger or null for none.</param>
     /// <param name="maxActiveSessions">Cap on concurrent Running/Starting sessions (default 8). Must be >= 1.</param>
@@ -61,16 +63,24 @@ public sealed class CaptureSessionManager : IAsyncDisposable
         Directory.CreateDirectory(scratchRoot);
     }
 
-    /// <summary>Cap on concurrently Running/Starting sessions.</summary>
+    /// <summary>
+    /// Cap on concurrently Running/Starting sessions.
+    /// </summary>
     public int MaxActiveSessions { get; }
 
-    /// <summary>Cap on retained sessions in any state.</summary>
+    /// <summary>
+    /// Cap on retained sessions in any state.
+    /// </summary>
     public int MaxRetainedSessions { get; }
 
-    /// <summary>Current registered session count (all states).</summary>
+    /// <summary>
+    /// Current registered session count (all states).
+    /// </summary>
     public int Count => _sessions.Count;
 
-    /// <summary>Currently Running or Starting sessions.</summary>
+    /// <summary>
+    /// Currently Running or Starting sessions.
+    /// </summary>
     public int ActiveCount
     {
         get
@@ -138,7 +148,9 @@ public sealed class CaptureSessionManager : IAsyncDisposable
         }
     }
 
-    /// <summary>Looks up a session by id. Touches it for LRU bookkeeping.</summary>
+    /// <summary>
+    /// Looks up a session by id. Touches it for LRU bookkeeping.
+    /// </summary>
     public bool TryGet(string id, out CaptureSession session)
     {
         ArgumentException.ThrowIfNullOrEmpty(id);
@@ -153,7 +165,9 @@ public sealed class CaptureSessionManager : IAsyncDisposable
         return false;
     }
 
-    /// <summary>Enumerates sessions, optionally filtered by state.</summary>
+    /// <summary>
+    /// Enumerates sessions, optionally filtered by state.
+    /// </summary>
     public IReadOnlyList<CaptureSession> List(CaptureSessionState? state = null)
     {
         if (state is null)

@@ -142,7 +142,7 @@ public sealed class ComArray
     /// <code><see cref="ComString"/></code> where more information on the
     /// structure of the composite is required before trying to deserialize it.
     /// Sample Usage:
-    ///
+    /// <para>
     /// <code>
     ///  <see cref="Struct"/> safeArrayBounds = new <see cref="Struct"/>();
     ///  safeArrayBounds.AddMember(typeof(int));
@@ -155,6 +155,7 @@ public sealed class ComArray
     ///  arrayDesc.AddMember(typeof(short));
     ///  arrayDesc.AddMember(<b>new ComArray(safeArrayBounds,new int[]{1},1,true)</b>);
     /// </code>
+    /// </para>
     /// </summary>
     /// <param name="template"> can be only of the type <code><see cref="Struct"/></code>,
     /// <code><see cref="ComPointer"/></code>, <code><see cref="Union"/></code>,

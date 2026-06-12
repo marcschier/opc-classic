@@ -7,7 +7,9 @@ using System.Buffers.Binary;
 
 namespace Opc.Classic.Dcom.Smb;
 
-/// <summary>SMB2 READ request body, per [MS-SMB2] §2.2.19.</summary>
+/// <summary>
+/// SMB2 READ request body, per [MS-SMB2] §2.2.19.
+/// </summary>
 internal readonly record struct Smb2ReadRequest(
     uint Length,
     ulong Offset,
@@ -39,7 +41,9 @@ internal readonly record struct Smb2ReadRequest(
     }
 }
 
-/// <summary>SMB2 READ response body, per [MS-SMB2] §2.2.20.</summary>
+/// <summary>
+/// SMB2 READ response body, per [MS-SMB2] §2.2.20.
+/// </summary>
 internal readonly record struct Smb2ReadResponse(ReadOnlyMemory<byte> Data)
 {
     public static Smb2ReadResponse Read(ReadOnlySpan<byte> source)
@@ -74,7 +78,9 @@ internal readonly record struct Smb2ReadResponse(ReadOnlyMemory<byte> Data)
     }
 }
 
-/// <summary>SMB2 WRITE request body, per [MS-SMB2] §2.2.21.</summary>
+/// <summary>
+/// SMB2 WRITE request body, per [MS-SMB2] §2.2.21.
+/// </summary>
 internal readonly record struct Smb2WriteRequest(
     ulong Offset,
     ulong FileIdPersistent,
@@ -114,7 +120,9 @@ internal readonly record struct Smb2WriteRequest(
     }
 }
 
-/// <summary>SMB2 WRITE response body, per [MS-SMB2] §2.2.22.</summary>
+/// <summary>
+/// SMB2 WRITE response body, per [MS-SMB2] §2.2.22.
+/// </summary>
 internal readonly record struct Smb2WriteResponse(uint Count)
 {
     public static Smb2WriteResponse Read(ReadOnlySpan<byte> source)
@@ -133,7 +141,9 @@ internal readonly record struct Smb2WriteResponse(uint Count)
     }
 }
 
-/// <summary>SMB2 IOCTL request body, per [MS-SMB2] §2.2.31. Designed for FSCTL_PIPE_TRANSCEIVE.</summary>
+/// <summary>
+/// SMB2 IOCTL request body, per [MS-SMB2] §2.2.31. Designed for FSCTL_PIPE_TRANSCEIVE.
+/// </summary>
 internal readonly record struct Smb2IoctlRequest(
     uint CtlCode,
     ulong FileIdPersistent,
@@ -180,7 +190,9 @@ internal readonly record struct Smb2IoctlRequest(
     }
 }
 
-/// <summary>SMB2 IOCTL response body, per [MS-SMB2] §2.2.32.</summary>
+/// <summary>
+/// SMB2 IOCTL response body, per [MS-SMB2] §2.2.32.
+/// </summary>
 internal readonly record struct Smb2IoctlResponse(
     uint CtlCode,
     ulong FileIdPersistent,

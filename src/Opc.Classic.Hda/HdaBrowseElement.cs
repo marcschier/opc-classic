@@ -10,12 +10,18 @@ namespace Opc.Classic.Hda;
 /// </summary>
 public sealed class HdaBrowseElement
 {
-    /// <summary>Short display name.</summary>
+    /// <summary>
+    /// Short display name.
+    /// </summary>
     public string Name { get; init; } = string.Empty;
 
-    /// <summary>Fully-qualified item ID for historical-read operations.</summary>
+    /// <summary>
+    /// Fully-qualified item ID for historical-read operations.
+    /// </summary>
     public string ItemId { get; init; } = string.Empty;
 
-    /// <summary>Branch / Leaf / Flat classification.</summary>
+    /// <summary>
+    /// Branch / Leaf / Flat classification.
+    /// </summary>
     public HdaBrowseType BrowseType { get; init; }
 }

@@ -5,19 +5,27 @@
 
 namespace Opc.Classic.Dcom.Core;
 
-/// <summary>Result produced by a class factory for DCOM export.</summary>
+/// <summary>
+/// Result produced by a class factory for DCOM export.
+/// </summary>
 public sealed class ClassFactoryActivationResult
 {
-    /// <summary>Creates a result with the managed instance and interface definition to export.</summary>
+    /// <summary>
+    /// Creates a result with the managed instance and interface definition to export.
+    /// </summary>
     public ClassFactoryActivationResult(object instance, LocalInterfaceDefinition interfaceDefinition)
     {
         Instance = instance ?? throw new ArgumentNullException(nameof(instance));
         InterfaceDefinition = interfaceDefinition ?? throw new ArgumentNullException(nameof(interfaceDefinition));
     }
 
-    /// <summary>The managed object instance implementing the requested interface.</summary>
+    /// <summary>
+    /// The managed object instance implementing the requested interface.
+    /// </summary>
     public object Instance { get; }
 
-    /// <summary>The DCOM interface definition used by <see cref="LocalCoClass" />.</summary>
+    /// <summary>
+    /// The DCOM interface definition used by <see cref="LocalCoClass" />.
+    /// </summary>
     public LocalInterfaceDefinition InterfaceDefinition { get; }
 }

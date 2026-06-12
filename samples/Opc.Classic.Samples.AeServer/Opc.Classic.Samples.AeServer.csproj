@@ -9,7 +9,6 @@
     <PackageReference Include="Microsoft.Extensions.Hosting" />
     <ProjectReference Include="..\..\src\Opc.Classic.Core\Opc.Classic.Core.csproj" />
     <ProjectReference Include="..\..\src\Opc.Classic.Ae\Opc.Classic.Ae.csproj" />
-    <ProjectReference Include="..\..\src\Opc.Classic.Ae.Windows\Opc.Classic.Ae.Windows.csproj" />
     <ProjectReference Include="..\..\src\Opc.Classic.Hosting\Opc.Classic.Hosting.csproj" />
     <ProjectReference Include="..\..\src\Opc.Classic.Hosting.Windows\Opc.Classic.Hosting.Windows.csproj" />
   </ItemGroup>

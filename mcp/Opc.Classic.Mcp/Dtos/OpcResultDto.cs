@@ -5,7 +5,9 @@
 
 namespace Opc.Classic.Mcp.Dtos;
 
-/// <summary>JSON-friendly OPC operation result with HRESULT details.</summary>
+/// <summary>
+/// JSON-friendly OPC operation result with HRESULT details.
+/// </summary>
 public sealed record OpcResultDto(
     int HResult,
     string Message,

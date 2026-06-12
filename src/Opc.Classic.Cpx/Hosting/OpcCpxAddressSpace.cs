@@ -15,7 +15,9 @@ public sealed class OpcCpxAddressSpace : IOpcAddressSpace
     private readonly IOpcAddressSpace _inner;
     private readonly OpcCpxOptions _options;
 
-    /// <summary>Creates a CPX address-space decorator.</summary>
+    /// <summary>
+    /// Creates a CPX address-space decorator.
+    /// </summary>
     public OpcCpxAddressSpace(IOpcAddressSpace inner, OpcCpxOptions options)
     {
         _inner = inner ?? throw new ArgumentNullException(nameof(inner));

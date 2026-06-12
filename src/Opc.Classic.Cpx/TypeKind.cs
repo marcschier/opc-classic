@@ -15,40 +15,76 @@ namespace Opc.Classic.Cpx;
 /// </summary>
 public enum TypeKind
 {
-    /// <summary>Not a recognized type.</summary>
+    /// <summary>
+    /// Not a recognized type.
+    /// </summary>
     Unknown = 0,
-    /// <summary>Boolean.</summary>
+    /// <summary>
+    /// Boolean.
+    /// </summary>
     Boolean = 1,
-    /// <summary>Signed 8-bit integer.</summary>
+    /// <summary>
+    /// Signed 8-bit integer.
+    /// </summary>
     Int8 = 2,
-    /// <summary>Signed 16-bit integer.</summary>
+    /// <summary>
+    /// Signed 16-bit integer.
+    /// </summary>
     Int16 = 3,
-    /// <summary>Signed 32-bit integer.</summary>
+    /// <summary>
+    /// Signed 32-bit integer.
+    /// </summary>
     Int32 = 4,
-    /// <summary>Signed 64-bit integer.</summary>
+    /// <summary>
+    /// Signed 64-bit integer.
+    /// </summary>
     Int64 = 5,
-    /// <summary>Unsigned 8-bit integer.</summary>
+    /// <summary>
+    /// Unsigned 8-bit integer.
+    /// </summary>
     UInt8 = 6,
-    /// <summary>Unsigned 16-bit integer.</summary>
+    /// <summary>
+    /// Unsigned 16-bit integer.
+    /// </summary>
     UInt16 = 7,
-    /// <summary>Unsigned 32-bit integer.</summary>
+    /// <summary>
+    /// Unsigned 32-bit integer.
+    /// </summary>
     UInt32 = 8,
-    /// <summary>Unsigned 64-bit integer.</summary>
+    /// <summary>
+    /// Unsigned 64-bit integer.
+    /// </summary>
     UInt64 = 9,
-    /// <summary>IEEE 32-bit float.</summary>
+    /// <summary>
+    /// IEEE 32-bit float.
+    /// </summary>
     Single = 10,
-    /// <summary>IEEE 64-bit float.</summary>
+    /// <summary>
+    /// IEEE 64-bit float.
+    /// </summary>
     Double = 11,
-    /// <summary>Length-prefixed bytes (CharWidth / StringEncoding determined by field options).</summary>
+    /// <summary>
+    /// Length-prefixed bytes (CharWidth / StringEncoding determined by field options).
+    /// </summary>
     String = 12,
-    /// <summary>Windows FILETIME (8 bytes).</summary>
+    /// <summary>
+    /// Windows FILETIME (8 bytes).
+    /// </summary>
     FileTime = 13,
-    /// <summary>16-byte GUID.</summary>
+    /// <summary>
+    /// 16-byte GUID.
+    /// </summary>
     Guid = 14,
-    /// <summary>Length-prefixed byte blob.</summary>
+    /// <summary>
+    /// Length-prefixed byte blob.
+    /// </summary>
     Blob = 15,
-    /// <summary>Bit-packed sequence of bits.</summary>
+    /// <summary>
+    /// Bit-packed sequence of bits.
+    /// </summary>
     BitString = 16,
-    /// <summary>Reference to a struct defined in the same dictionary.</summary>
+    /// <summary>
+    /// Reference to a struct defined in the same dictionary.
+    /// </summary>
     StructReference = 17,
 }

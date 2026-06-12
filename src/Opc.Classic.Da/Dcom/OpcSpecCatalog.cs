@@ -32,6 +32,8 @@ public static class OpcSpecCatalog
         IRemUnknown.InterfaceId,
     };
 
-    /// <summary>OPC DA IIDs to pre-declare in the initial DCE bind.</summary>
+    /// <summary>
+    /// OPC DA IIDs to pre-declare in the initial DCE bind.
+    /// </summary>
     public static IReadOnlyList<Guid> Da => s_da;
 }

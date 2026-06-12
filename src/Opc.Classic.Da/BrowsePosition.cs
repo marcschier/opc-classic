@@ -20,15 +20,23 @@ namespace Opc.Classic.Da;
 /// </remarks>
 public sealed class BrowsePosition
 {
-    /// <summary>The server-side continuation point.</summary>
+    /// <summary>
+    /// The server-side continuation point.
+    /// </summary>
     public string ContinuationPoint { get; init; } = string.Empty;
 
-    /// <summary>True when no further browse calls are required.</summary>
+    /// <summary>
+    /// True when no further browse calls are required.
+    /// </summary>
     public bool IsCompleted { get; init; }
 
-    /// <summary>A completed (drained) browse position.</summary>
+    /// <summary>
+    /// A completed (drained) browse position.
+    /// </summary>
     public static BrowsePosition Completed { get; } = new() { IsCompleted = true };
 
-    /// <summary>True when this represents "no more results".</summary>
+    /// <summary>
+    /// True when this represents "no more results".
+    /// </summary>
     public bool IsTerminal => IsCompleted || ContinuationPoint.Length == 0;
 }

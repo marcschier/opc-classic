@@ -8,13 +8,19 @@ using Opc.Classic.Hda.Dcom;
 
 namespace Opc.Classic.Hda.Hosting;
 
-/// <summary>Contract implemented by user code to provide an in-process managed HDA server.</summary>
+/// <summary>
+/// Contract implemented by user code to provide an in-process managed HDA server.
+/// </summary>
 public interface IOpcHdaServer : IOPCHDA_Server
 {
-    /// <summary>Gets the HDA historian runtime status snapshot.</summary>
+    /// <summary>
+    /// Gets the HDA historian runtime status snapshot.
+    /// </summary>
     new Task<OpcServerStatus> GetStatusAsync(CancellationToken cancellationToken = default);
 
-    /// <summary>Validates HDA item IDs and returns per-item HRESULTs.</summary>
+    /// <summary>
+    /// Validates HDA item IDs and returns per-item HRESULTs.
+    /// </summary>
     Task<int[]> ValidateItemIdsAsync(string[] itemIds, CancellationToken cancellationToken = default);
 
     Task<int[]> IOPCHDA_Server.GetItemHandlesAsync(string[] itemIds, int[] clientHandles, CancellationToken cancellationToken) =>
@@ -43,7 +49,9 @@ public interface IOpcHdaServer : IOPCHDA_Server
         throw NotImplemented();
     }
 
-    /// <summary>Browses the HDA address space at the supplied branch position.</summary>
+    /// <summary>
+    /// Browses the HDA address space at the supplied branch position.
+    /// </summary>
     async IAsyncEnumerable<HdaBrowseElement> BrowseAsync(
         string branchPosition,
         HdaBrowseType browseType,
@@ -58,7 +66,9 @@ public interface IOpcHdaServer : IOPCHDA_Server
 
     private static OpcException NotImplemented() => new(OpcResultId.NotImplemented);
 
-    /// <summary>Reads raw historical values for each item in the requested time range.</summary>
+    /// <summary>
+    /// Reads raw historical values for each item in the requested time range.
+    /// </summary>
     Task<OpcHdaItem[]> ReadRawAsync(
         string[] itemIds,
         OpcHdaTime startTime,
@@ -74,7 +84,9 @@ public interface IOpcHdaServer : IOPCHDA_Server
         return Task.FromResult(Array.Empty<OpcHdaItem>());
     }
 
-    /// <summary>Reads processed historical values for each item in fixed resample intervals.</summary>
+    /// <summary>
+    /// Reads processed historical values for each item in fixed resample intervals.
+    /// </summary>
     Task<OpcHdaItem[]> ReadProcessedAsync(
         string[] itemIds,
         OpcHdaTime startTime,

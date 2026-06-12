@@ -12,7 +12,9 @@ namespace Opc.Classic.Cpx;
 /// </summary>
 public static class OpcBinaryDecoder
 {
-    /// <summary>Decode a payload using a type from <paramref name="dictionary"/>.</summary>
+    /// <summary>
+    /// Decode a payload using a type from <paramref name="dictionary"/>.
+    /// </summary>
     public static ComplexValue Decode(byte[] data, TypeDictionary dictionary, string typeId)
     {
         ArgumentNullException.ThrowIfNull(dictionary);
@@ -22,14 +24,18 @@ public static class OpcBinaryDecoder
         return Decode(data, type, dictionary);
     }
 
-    /// <summary>Decode a payload using the supplied type description.</summary>
+    /// <summary>
+    /// Decode a payload using the supplied type description.
+    /// </summary>
     public static ComplexValue Decode(byte[] data, TypeDescription type, TypeDictionary? dictionary = null)
     {
         ArgumentNullException.ThrowIfNull(data);
         return Decode(data.AsSpan(), type, dictionary);
     }
 
-    /// <summary>Decode a payload using the supplied type description.</summary>
+    /// <summary>
+    /// Decode a payload using the supplied type description.
+    /// </summary>
     public static ComplexValue Decode(ReadOnlySpan<byte> data, TypeDescription type, TypeDictionary? dictionary = null)
     {
         ArgumentNullException.ThrowIfNull(type);

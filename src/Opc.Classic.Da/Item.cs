@@ -13,10 +13,14 @@ namespace Opc.Classic.Da;
 /// </summary>
 public sealed class Item : ItemIdentifier
 {
-    /// <summary>Construct from an identifier.</summary>
+    /// <summary>
+    /// Construct from an identifier.
+    /// </summary>
     public Item(string itemName, string? path = null) : base(itemName, path) { }
 
-    /// <summary>Copy-construct from an existing identifier.</summary>
+    /// <summary>
+    /// Copy-construct from an existing identifier.
+    /// </summary>
     public Item(ItemIdentifier identifier) : base(
         (identifier ?? throw new ArgumentNullException(nameof(identifier))).ItemName,
         identifier.Path)
