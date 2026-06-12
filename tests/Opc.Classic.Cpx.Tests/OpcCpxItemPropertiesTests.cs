@@ -3,11 +3,8 @@
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
 
-using System.Collections.Generic;
-using Opc.Classic;
 using Opc.Classic.Cpx.Hosting;
 using Opc.Classic.Da.Hosting;
-using TUnit.Core;
 
 namespace Opc.Classic.Cpx.Tests;
 

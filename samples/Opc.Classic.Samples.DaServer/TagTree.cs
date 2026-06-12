@@ -3,7 +3,6 @@
 
 using System.Globalization;
 using System.Security.Cryptography;
-using Opc.Classic;
 
 namespace Opc.Classic.Samples.DaServer;
 

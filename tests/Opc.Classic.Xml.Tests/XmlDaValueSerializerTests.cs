@@ -3,14 +3,9 @@
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
 
-using System;
-using System.IO;
-using System.Linq;
 using System.Text;
 using System.Xml;
-using Opc.Classic.Xml;
 using Opc.Classic.Xml.Serialization;
-using TUnit.Core;
 
 namespace Opc.Classic.Xml.Tests;
 

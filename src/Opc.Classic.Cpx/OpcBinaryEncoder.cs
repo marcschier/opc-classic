@@ -3,10 +3,8 @@
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
 
-using System;
 using System.Buffers.Binary;
 using System.Collections;
-using System.Collections.Generic;
 using System.Globalization;
 
 namespace Opc.Classic.Cpx;

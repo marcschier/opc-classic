@@ -7,7 +7,6 @@ using Opc.Classic.Dx;
 using Opc.Classic.Mcp.Dtos;
 using Opc.Classic.Mcp.Sessions;
 using Opc.Classic.Mcp.Tools;
-using TUnit.Core;
 
 namespace Opc.Classic.Mcp.Tests;
 

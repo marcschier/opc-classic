@@ -1,6 +1,5 @@
 ﻿// SPDX-License-Identifier: MIT
 
-using System.IO;
 using Opc.Classic.Dcom.Internal.LegacyNdr;
 
 namespace Opc.Classic.Dcom.Rpc;

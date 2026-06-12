@@ -6,7 +6,6 @@
 using Opc.Classic.Hda.Dcom;
 using Opc.Classic.Hda.Hosting;
 using Opc.Classic.Integration.Tests.Support;
-using TUnit.Core;
 
 namespace Opc.Classic.Tests.Integration.Native;
 

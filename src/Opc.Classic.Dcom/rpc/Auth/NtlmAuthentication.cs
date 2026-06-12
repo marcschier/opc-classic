@@ -1,17 +1,13 @@
 ﻿// SPDX-License-Identifier: MIT
 
-using Opc.Classic;
 using Opc.Classic.Dcom.Internal;
 using Opc.Classic.Dcom.Internal.LegacyNdr;
 using Opc.Classic.Dcom.Internal.Ntlm;
 using Opc.Classic.Dcom.Kerberos;
 using Opc.Classic.Security;
-using System;
 using System.Buffers.Binary;
-using Opc.Classic.Dcom.Common.Ntlm;
 
 using System.Globalization;
-using System.IO;
 using System.Net;
 using System.Security;
 using System.Security.Cryptography;

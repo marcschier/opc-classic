@@ -3,11 +3,7 @@
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
 
-using System;
-using System.Threading;
-using Opc.Classic;
 using Opc.Classic.Da.Hosting;
-using TUnit.Core;
 using TUnit.Assertions.AssertConditions.Throws;
 
 namespace Opc.Classic.Da.Tests.Hosting;

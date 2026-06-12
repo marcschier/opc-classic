@@ -7,16 +7,8 @@
 //   serialize -> POST -> response body -> deserialize.
 //
 
-using System;
-using System.IO;
-using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using Opc.Classic.Xml;
-using TUnit.Core;
 
 namespace Opc.Classic.Xml.Tests;
 

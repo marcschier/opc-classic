@@ -1,8 +1,6 @@
 ﻿// SPDX-License-Identifier: MIT
 
-using System;
 using System.Buffers.Binary;
-using System.IO;
 using System.Runtime.CompilerServices;
 
 namespace Opc.Classic.Dcom.Internal.LegacyNdr;

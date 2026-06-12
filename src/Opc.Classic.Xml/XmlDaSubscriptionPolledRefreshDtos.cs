@@ -5,9 +5,6 @@
 
 #pragma warning disable MA0048 // Related PolledRefresh DTO record types are clearer grouped than fragmented
 
-using System;
-using System.Collections.Generic;
-
 namespace Opc.Classic.Xml;
 
 /// <summary>An XML-DA <c>SubscriptionPolledRefresh</c> request payload.</summary>

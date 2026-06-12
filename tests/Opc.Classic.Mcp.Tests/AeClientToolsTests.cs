@@ -16,13 +16,10 @@ using ModelContextProtocol.Protocol;
 using Opc.Classic.Ae;
 using Opc.Classic.Ae.Dcom;
 using Opc.Classic.Ae.Hosting;
-using Opc.Classic.Hosting;
 using Opc.Classic.Mcp.Dtos;
 using Opc.Classic.Mcp.Sessions;
 using Opc.Classic.Mcp.Tools;
-using Opc.Classic.Ndr;
 using Opc.Classic.Testing;
-using TUnit.Core;
 
 namespace Opc.Classic.Mcp.Tests;
 

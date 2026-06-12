@@ -7,7 +7,6 @@
 // Timestamp + Value + Quality + ResultID).
 //
 
-using System;
 using System.Globalization;
 using System.Xml;
 

@@ -2,8 +2,6 @@
 
 using Opc.Classic.Dcom.Internal;
 using Opc.Classic.Dcom.Common;
-using System;
-using System.Linq;
 
 namespace Opc.Classic.Dcom.Core;
 

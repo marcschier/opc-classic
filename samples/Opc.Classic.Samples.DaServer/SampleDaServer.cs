@@ -2,7 +2,6 @@
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 
 using Microsoft.Extensions.Logging;
-using Opc.Classic;
 using Opc.Classic.Da.Hosting;
 using Opc.Classic.Dcom;
 

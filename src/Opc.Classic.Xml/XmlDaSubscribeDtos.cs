@@ -5,8 +5,6 @@
 
 #pragma warning disable MA0048 // Related Subscribe-operation DTO record types are clearer grouped than fragmented
 
-using System.Collections.Generic;
-
 namespace Opc.Classic.Xml;
 
 /// <summary>A single item entry inside a <see cref="XmlDaSubscribeRequest"/>.</summary>

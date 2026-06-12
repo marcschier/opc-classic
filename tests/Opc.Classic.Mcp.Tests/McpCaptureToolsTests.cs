@@ -3,14 +3,11 @@
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
 
-using System.Collections.Generic;
-using System.IO;
 using System.Runtime.CompilerServices;
 using ModelContextProtocol;
 using Opc.Classic.Mcp.Capture;
 using Opc.Classic.Mcp.Tools;
 using TUnit.Assertions.AssertConditions.Throws;
-using TUnit.Core;
 
 namespace Opc.Classic.Mcp.Tests;
 

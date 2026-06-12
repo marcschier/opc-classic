@@ -3,7 +3,6 @@
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
 
-using System;
 using Microsoft.Extensions.Logging;
 
 namespace Opc.Classic.Dcom.Internal;

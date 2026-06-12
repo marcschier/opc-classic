@@ -1,7 +1,6 @@
 ﻿// SPDX-License-Identifier: MIT
 
 using Opc.Classic.Dcom.Core;
-using System;
 
 namespace Opc.Classic.Dcom.Common;
 

@@ -5,15 +5,10 @@
 // MS-NLMP §4.2.4.1 NTLMv2 sample handshake fixture replay tests.
 //
 
-using System;
-using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
-using Opc.Classic.Dcom.Crypto;
 using Opc.Classic.Dcom.Internal.Ntlm;
-using TUnit.Core;
 
 namespace Opc.Classic.Dcom.Crypto.Tests.Fixtures.Ntlm;
 

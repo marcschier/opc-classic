@@ -8,7 +8,6 @@ using Opc.Classic.Mcp.Dtos;
 using Opc.Classic.Mcp.Tools;
 using Opc.Classic.Ndr;
 using Opc.Classic.Testing;
-using TUnit.Core;
 
 namespace Opc.Classic.Mcp.Tests;
 

@@ -9,7 +9,6 @@
 // the canonical wire layout for IOPCBrowse::Browse responses.
 //
 
-using System;
 using System.Runtime.InteropServices;
 using Opc.Classic.Ndr;
 

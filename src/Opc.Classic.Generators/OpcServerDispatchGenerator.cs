@@ -5,7 +5,6 @@
 
 #pragma warning disable MA0051 // Source-emission helpers are easier to audit when grouped by generated member.
 
-using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Globalization;
 using System.Text;

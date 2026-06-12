@@ -3,11 +3,9 @@
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
 
-using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
-using System.Threading;
 
 namespace Opc.Classic.Hda.Hosting.Windows;
 

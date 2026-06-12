@@ -5,10 +5,6 @@
 
 #pragma warning disable MA0048 // ICallChannel + NdrCallResult are tightly-coupled grouped types
 
-using System;
-using System.Threading;
-using System.Threading.Tasks;
-
 namespace Opc.Classic;
 
 /// <summary>

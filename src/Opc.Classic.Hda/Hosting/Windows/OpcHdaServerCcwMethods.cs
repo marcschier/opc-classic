@@ -5,13 +5,9 @@
 
 #pragma warning disable MA0048 // Server CCW method bodies and async callback pump share session internals.
 
-using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
-using System.Threading;
-using System.Threading.Tasks;
 using Opc.Classic.Hda.Dcom;
 
 namespace Opc.Classic.Hda.Hosting.Windows;

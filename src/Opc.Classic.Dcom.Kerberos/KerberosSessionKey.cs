@@ -3,7 +3,6 @@
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
 
-using System;
 using Kerberos.NET.Crypto;
 
 namespace Opc.Classic.Dcom.Kerberos;

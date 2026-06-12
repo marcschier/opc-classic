@@ -8,10 +8,7 @@
 // codec doesn't silently drift from the Microsoft RPC reference shape.
 //
 
-using System;
-using Opc.Classic;
 using Opc.Classic.Ndr;
-using TUnit.Core;
 
 namespace Opc.Classic.Da.Tests.Wire;
 

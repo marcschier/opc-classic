@@ -5,15 +5,11 @@
 
 #pragma warning disable MA0048 // Browser CCW, vtable methods, and IEnumString helper are tightly coupled.
 
-using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
-using System.Threading;
 using Opc.Classic.Hda.Dcom;
-using Opc.Classic.Hda.Hosting;
 
 namespace Opc.Classic.Hda.Hosting.Windows;
 

@@ -13,9 +13,6 @@
 #pragma warning disable MA0048 // Multiple interface declarations grouped for readability
 #pragma warning disable OPCGEN104, OPCGEN105 // IFACE pointer responses are decoded by generated client proxies.
 
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 using Opc.Classic.Generators;
 
 namespace Opc.Classic.Ae.Dcom;

@@ -1,8 +1,6 @@
 ﻿// SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 
-using Opc.Classic.Da;
-
 namespace Opc.Classic.Samples.LoopbackDemo;
 
 internal sealed record LoopbackItemRequest(string ItemId, int ClientHandle);

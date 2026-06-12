@@ -5,8 +5,6 @@
 
 #pragma warning disable CA1711 // Identifier ending in 'Attribute' - OPCHDA_ATTRIBUTE spec name preserved
 
-using System;
-
 namespace Opc.Classic.Hda;
 
 /// <summary>

@@ -6,11 +6,6 @@
 #pragma warning disable MA0025 // Scaffold is intentionally not implemented yet.
 #pragma warning disable VSTHRD200 // Public DA callback terminology uses DataChanges without an Async suffix.
 
-using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-
 namespace Opc.Classic.Da;
 
 /// <summary>

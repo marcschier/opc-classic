@@ -3,7 +3,6 @@
 
 using System.Runtime.Versioning;
 using System.Security.Principal;
-using Opc.Classic;
 using Opc.Classic.Security;
 using Opc.Classic.Security.Dcom;
 

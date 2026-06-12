@@ -3,13 +3,10 @@
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
 
-using System;
 using Opc.Classic.Dcom.Internal.LegacyNdr;
 using Opc.Classic.Dcom.Internal.Ntlm;
 using Opc.Classic.Dcom.Rpc;
 using Opc.Classic.Dcom.Rpc.Auth.ntlm;
-using Opc.Classic.Mcp.Capture;
-using TUnit.Core;
 
 namespace Opc.Classic.Mcp.Capture.Tests;
 

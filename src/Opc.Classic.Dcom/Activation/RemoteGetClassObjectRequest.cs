@@ -3,9 +3,6 @@
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
 
-using System;
-using System.Collections.Generic;
-
 namespace Opc.Classic.Dcom.Core;
 
 /// <summary>Decoded server-side IRemoteSCMActivator::RemoteGetClassObject request fields.</summary>

@@ -5,11 +5,7 @@
 // Round-trip + invariant tests for the NDR VARIANT scalar wire format.
 //
 
-using System;
-using System.IO;
-using Opc.Classic;
 using Opc.Classic.Ndr;
-using TUnit.Core;
 
 namespace Opc.Classic.Tests;
 

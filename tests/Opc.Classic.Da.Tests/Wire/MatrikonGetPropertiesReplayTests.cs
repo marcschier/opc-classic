@@ -1,14 +1,9 @@
 ﻿// SPDX-License-Identifier: MIT
 // Replay test for the captured Matrikon GetProperties response.
 
-using System;
-using System.IO;
-using Opc.Classic;
-using Opc.Classic.Da;
 using Opc.Classic.Da.Ndr;
 using Opc.Classic.Da.Tests.Wire.Replay;
 using Opc.Classic.Ndr;
-using TUnit.Core;
 
 namespace Opc.Classic.Da.Tests.Wire;
 

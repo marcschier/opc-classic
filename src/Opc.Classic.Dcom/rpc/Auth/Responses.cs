@@ -7,7 +7,6 @@
 //
 
 using Opc.Classic.Dcom.Crypto;
-using System;
 using System.Security.Cryptography;
 using System.Text;
 

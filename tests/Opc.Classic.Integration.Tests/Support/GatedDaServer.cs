@@ -3,10 +3,6 @@
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
 
-using System;
-using System.Threading;
-using System.Threading.Tasks;
-using Opc.Classic;
 using Opc.Classic.Da.Hosting;
 
 namespace Opc.Classic.Integration.Tests.Support;

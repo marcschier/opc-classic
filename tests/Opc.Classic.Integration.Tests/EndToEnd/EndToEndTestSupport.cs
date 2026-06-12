@@ -10,7 +10,6 @@ using Microsoft.Extensions.Logging.Abstractions;
 using Opc.Classic.Ae;
 using Opc.Classic.Ae.Dcom;
 using Opc.Classic.Ae.Hosting;
-using Opc.Classic.Ae.Ndr;
 using Opc.Classic.Da;
 using Opc.Classic.Da.Dcom;
 using Opc.Classic.Da.Hosting;

@@ -1,6 +1,5 @@
 ﻿// SPDX-License-Identifier: MIT
 
-using System;
 using System.Globalization;
 
 namespace Opc.Classic.Dcom.Core;

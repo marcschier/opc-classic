@@ -12,11 +12,7 @@
 // coverage gate (which BB will lift) accurately reflects the surface.
 //
 
-using System;
-using System.IO;
-using Opc.Classic;
 using Opc.Classic.Ndr;
-using TUnit.Core;
 using TUnit.Assertions.AssertConditions.Throws;
 
 namespace Opc.Classic.Tests;

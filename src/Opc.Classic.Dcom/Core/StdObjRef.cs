@@ -2,7 +2,6 @@
 
 using Opc.Classic.Dcom.Internal.LegacyNdr;
 using Opc.Classic.Dcom.Rpc.Core;
-using System;
 using Opc.Classic.Dcom.Internal;
 
 namespace Opc.Classic.Dcom.Core;

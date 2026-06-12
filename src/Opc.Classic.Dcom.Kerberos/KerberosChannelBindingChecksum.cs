@@ -3,7 +3,6 @@
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
 
-using System;
 using Kerberos.NET.Entities;
 
 namespace Opc.Classic.Dcom.Kerberos;

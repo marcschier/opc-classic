@@ -2,8 +2,6 @@
 
 using Opc.Classic.Dcom.Rpc;
 using Opc.Classic.Dcom.Internal;
-using System;
-using System.Threading;
 
 namespace Opc.Classic.Dcom.Core;
 

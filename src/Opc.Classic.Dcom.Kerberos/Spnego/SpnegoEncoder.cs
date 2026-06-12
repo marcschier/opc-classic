@@ -3,8 +3,6 @@
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
 
-using System;
-using System.Collections.Generic;
 using System.Formats.Asn1;
 
 namespace Opc.Classic.Dcom.Kerberos.Spnego;

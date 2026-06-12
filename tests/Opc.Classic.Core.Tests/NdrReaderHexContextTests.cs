@@ -8,10 +8,7 @@
 // capture or canonical MIDL layout.
 //
 
-using System;
-using Opc.Classic;
 using Opc.Classic.Ndr;
-using TUnit.Core;
 
 namespace Opc.Classic.Tests;
 

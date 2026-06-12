@@ -3,12 +3,9 @@
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
 
-using System;
 using System.IO.Pipelines;
 using System.Net;
 using System.Net.Sockets;
-using System.Threading;
-using System.Threading.Tasks;
 using Opc.Classic.Transport;
 
 namespace Opc.Classic.Dcom.Transport;

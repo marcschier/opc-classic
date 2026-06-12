@@ -3,9 +3,6 @@
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
 
-using System.Threading;
-using System.Threading.Tasks;
-
 namespace Opc.Classic.Dcom;
 
 /// <summary>Server implementation contract for OPC Common <c>IOPCCommon</c> debug metadata.</summary>

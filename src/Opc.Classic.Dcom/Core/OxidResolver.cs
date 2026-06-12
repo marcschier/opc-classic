@@ -4,7 +4,6 @@ using Opc.Classic.Dcom.Common;
 using Opc.Classic.Dcom.Rpc.Core;
 using Opc.Classic.Dcom.Internal;
 using Opc.Classic.Dcom.Internal.LegacyNdr;
-using System.Collections.Generic;
 
 namespace Opc.Classic.Dcom.Core;
 

@@ -10,12 +10,7 @@
 // System.Xml; no DCOM, no NTLM, no Win32 dependencies.
 //
 
-using System;
-using System.IO;
-using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Xml;
 using Opc.Classic.Xml.Serialization;
 

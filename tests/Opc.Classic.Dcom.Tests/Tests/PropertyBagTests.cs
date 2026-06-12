@@ -2,7 +2,6 @@
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 
 using Opc.Classic.Dcom.Internal;
-using TUnit.Core;
 
 namespace Opc.Classic.Dcom.Test;
 

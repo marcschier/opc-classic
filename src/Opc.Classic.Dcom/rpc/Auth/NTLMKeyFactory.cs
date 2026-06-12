@@ -2,9 +2,6 @@
 
 using Opc.Classic.Dcom.Crypto;
 using Opc.Classic.Dcom.Internal.Ntlm;
-using Opc.Classic.Dcom.Common.Ntlm;
-using System;
-using System.Linq;
 using System.Security.Cryptography;
 
 namespace Opc.Classic.Dcom.Rpc.Auth.ntlm;

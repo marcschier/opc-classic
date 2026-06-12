@@ -9,10 +9,6 @@
 
 using Opc.Classic.Dcom.Internal;
 using Opc.Classic.Dcom.Internal.Ntlm;
-using Opc.Classic.Dcom.Common.Ntlm;
-using System;
-using System.IO;
-using System.Threading;
 
 namespace Opc.Classic.Dcom.Rpc.Auth.ntlm;
 

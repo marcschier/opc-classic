@@ -5,10 +5,7 @@
 
 #pragma warning disable CA1031 // Subscriber failures are isolated so fan-out can continue.
 
-using System;
 using System.Collections.Concurrent;
-using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 
 namespace Opc.Classic.Da.Hosting;

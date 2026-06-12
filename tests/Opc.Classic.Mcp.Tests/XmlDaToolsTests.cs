@@ -8,7 +8,6 @@ using System.Text.Json;
 using Opc.Classic.Mcp.Dtos;
 using Opc.Classic.Mcp.Tools;
 using Opc.Classic.Xml;
-using TUnit.Core;
 
 namespace Opc.Classic.Mcp.Tests;
 

@@ -4,11 +4,8 @@ using Opc.Classic.Dcom.Rpc.Core;
 using Opc.Classic.Dcom.Rpc.pdu;
 using Opc.Classic.Dcom.Internal;
 using Opc.Classic.Dcom.Internal.LegacyNdr;
-using Opc.Classic.Dcom.Common.Ntlm;
 using Opc.Classic.Dcom.Rpc.Auth.ntlm;
 using Opc.Classic.Dcom.Transport;
-using System;
-using System.IO;
 
 namespace Opc.Classic.Dcom.Rpc;
 

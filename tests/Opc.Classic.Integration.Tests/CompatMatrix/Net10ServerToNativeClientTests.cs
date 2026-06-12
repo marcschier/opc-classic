@@ -3,11 +3,9 @@
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
 
-using Opc.Classic;
 using Opc.Classic.Da.Dcom;
 using Opc.Classic.Da.Hosting;
 using Opc.Classic.Integration.Tests.Support;
-using TUnit.Core;
 
 namespace Opc.Classic.Integration.Tests.CompatMatrix;
 

@@ -8,10 +8,6 @@
 #pragma warning disable CA1707 // OPC IDL naming preserved (IOPCBatchServer)
 #pragma warning disable MA0048 // Multiple small interface projections grouped for readability
 
-using System;
-using System.Threading;
-using System.Threading.Tasks;
-using Opc.Classic.Batch;
 using Opc.Classic.Dcom;
 using Opc.Classic.Generators;
 

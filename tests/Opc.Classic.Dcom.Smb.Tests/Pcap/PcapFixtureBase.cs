@@ -3,12 +3,7 @@
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
 
-using System;
-using System.IO;
 using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
-using Opc.Classic.Dcom.Smb;
-using TUnit.Assertions;
 
 namespace Opc.Classic.Dcom.Smb.Tests.Pcap;
 

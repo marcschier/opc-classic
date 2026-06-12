@@ -4,7 +4,6 @@
 //
 
 using Opc.Classic.Ae.Dcom;
-using TUnit.Core;
 
 namespace Opc.Classic.Ae.Tests;
 

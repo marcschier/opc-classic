@@ -24,7 +24,6 @@
 // the partial interface will drive emission of CallBuilder-based shims.
 //
 
-using System.Collections.Immutable;
 using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;

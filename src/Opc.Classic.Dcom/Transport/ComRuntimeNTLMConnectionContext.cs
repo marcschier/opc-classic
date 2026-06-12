@@ -2,13 +2,10 @@
 
 
 using Opc.Classic.Dcom.Internal;
-using System;
 using System.Globalization;
-using System.Collections.Generic;
 using Opc.Classic.Dcom.Rpc.pdu;
 using Opc.Classic.Dcom.Rpc.Auth.ntlm;
 using Opc.Classic.Dcom.Rpc.Core;
-using Opc.Classic.Dcom.Common.Ntlm;
 using Opc.Classic.Dcom.Rpc;
 
 namespace Opc.Classic.Dcom.Transport;

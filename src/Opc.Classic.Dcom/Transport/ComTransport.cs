@@ -4,10 +4,7 @@ using Opc.Classic.Dcom.Rpc;
 using Opc.Classic.Dcom.Rpc.Core;
 using Opc.Classic.Dcom.Internal;
 using Opc.Classic.Dcom.Internal.LegacyNdr;
-using Opc.Classic.Dcom.Common.Ntlm;
-using System;
 using System.Globalization;
-using System.IO;
 using System.Net;
 using System.Net.Sockets;
 

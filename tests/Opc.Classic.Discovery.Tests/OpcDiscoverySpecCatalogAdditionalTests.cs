@@ -4,7 +4,6 @@
 //
 
 using Opc.Classic.Discovery.Dcom;
-using TUnit.Core;
 
 namespace Opc.Classic.Discovery.Tests;
 

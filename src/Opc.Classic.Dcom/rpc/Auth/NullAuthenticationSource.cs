@@ -2,8 +2,6 @@
 
 using Opc.Classic.Dcom.Internal;
 using Opc.Classic.Dcom.Internal.Ntlm;
-using Opc.Classic.Dcom.Common.Ntlm;
-using System;
 
 namespace Opc.Classic.Dcom.Rpc.Auth.ntlm;
 

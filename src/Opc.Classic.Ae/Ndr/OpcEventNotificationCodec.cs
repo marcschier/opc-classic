@@ -5,8 +5,6 @@
 
 #pragma warning disable MA0048 // File name is fixed by phase contract; type name preserves NDR codec convention.
 
-using System;
-using System.IO;
 using Opc.Classic.Ndr;
 
 namespace Opc.Classic.Ae.Ndr;

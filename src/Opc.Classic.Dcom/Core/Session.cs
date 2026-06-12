@@ -3,14 +3,8 @@
 using Opc.Classic.Dcom.Common;
 using Opc.Classic.Dcom.Rpc.Core;
 using Opc.Classic.Dcom.Internal;
-using Opc.Classic.Dcom.Common.Ntlm;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-using System.Threading;
 using System.Globalization;
 
 #pragma warning disable MA0051 // Legacy DCOM protocol methods are intentionally kept intact during analyzer cleanup.

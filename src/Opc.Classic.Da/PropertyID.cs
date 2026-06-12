@@ -6,8 +6,6 @@
 #pragma warning disable CA1707 // OPC IDL naming convention preserves underscores for the well-known property names
 #pragma warning disable IDE1006
 
-using System;
-
 namespace Opc.Classic.Da;
 
 /// <summary>

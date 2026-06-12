@@ -3,8 +3,6 @@
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
 
-using System;
-
 namespace Opc.Classic.Hda.Hosting;
 
 /// <summary>Configuration for a managed OPC HDA server host.</summary>

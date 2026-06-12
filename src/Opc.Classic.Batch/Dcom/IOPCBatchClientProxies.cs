@@ -6,9 +6,6 @@
 #pragma warning disable CA1707 // OPC IDL naming preserved (IOPCBatchServer)
 #pragma warning disable MA0048 // Related Batch proxy shims are grouped for readability
 
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 using Opc.Classic.Batch.Ndr;
 using Opc.Classic.Dcom;
 using Opc.Classic.Hosting;

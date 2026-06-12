@@ -3,9 +3,6 @@
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
 
-using System.Threading;
-using System.Threading.Tasks;
-
 namespace Opc.Classic.Dcom.Core;
 
 /// <summary>Server-side contract for IRemoteSCMActivator activation handling.</summary>

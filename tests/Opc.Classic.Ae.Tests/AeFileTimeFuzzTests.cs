@@ -7,13 +7,8 @@
 // Mirrors NdrOpcServerStatusCodecTests AS3 pattern.
 //
 
-using System;
-using System.IO;
-using Opc.Classic;
 using Opc.Classic.Ae.Ndr;
 using Opc.Classic.Ndr;
-using TUnit.Core;
-using TUnit.Assertions.AssertConditions.Throws;
 
 namespace Opc.Classic.Ae.Tests;
 

@@ -11,7 +11,6 @@ using Opc.Classic.Dcom;
 using Opc.Classic.Dcom.Transport;
 using Opc.Classic.Transport;
 using TUnit.Assertions.AssertConditions.Throws;
-using TUnit.Core;
 
 namespace Opc.Classic.Discovery.Tests;
 

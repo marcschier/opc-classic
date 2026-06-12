@@ -9,15 +9,9 @@
 // (without matching the proxy decode), these fixtures fail with a hex diff.
 //
 
-using System;
-using System.Threading;
-using System.Threading.Tasks;
-using Opc.Classic;
-using Opc.Classic.Da;
 using Opc.Classic.Da.Dcom;
 using Opc.Classic.Hosting;
 using Opc.Classic.Ndr;
-using TUnit.Core;
 
 namespace Opc.Classic.Da.Tests.Wire;
 

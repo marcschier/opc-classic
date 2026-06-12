@@ -3,10 +3,8 @@
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
 
-using System;
 using System.Buffers;
 using System.Security.Cryptography;
-using System.Threading;
 
 namespace Opc.Classic.Dcom.Rpc.Auth.ntlm;
 

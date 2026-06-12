@@ -3,8 +3,6 @@
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
 
-using System.Collections.Generic;
-
 namespace Opc.Classic.Da.Hosting;
 
 /// <summary>

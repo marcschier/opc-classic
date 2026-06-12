@@ -3,9 +3,6 @@
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
 
-using System.Threading;
-using System.Threading.Tasks;
-
 namespace Opc.Classic.Ae.Hosting;
 
 /// <summary>Dispatches Windows CCW calls for one AE area-browser cursor.</summary>

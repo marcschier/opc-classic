@@ -3,10 +3,6 @@
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
 
-using System;
-using System.Threading;
-using System.Threading.Tasks;
-
 namespace Opc.Classic.Dcom.Activation;
 
 /// <summary>Client contract for legacy <c>IActivation::RemoteActivation</c>.</summary>

@@ -4,7 +4,6 @@
 using System.Collections.Concurrent;
 using System.Runtime.CompilerServices;
 using Microsoft.Extensions.Logging;
-using Opc.Classic;
 using Opc.Classic.Ae;
 using Opc.Classic.Ae.Hosting;
 using Opc.Classic.Samples.AeServer;

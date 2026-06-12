@@ -5,9 +5,7 @@
 
 #pragma warning disable TUnitAssertions0005 // Protocol tests assert exact NTLM wire bytes.
 
-using System;
 using System.Buffers.Binary;
-using System.Linq;
 using System.Net;
 using System.Reflection;
 using System.Runtime.ExceptionServices;
@@ -18,7 +16,6 @@ using Opc.Classic.Dcom.Kerberos;
 using Opc.Classic.Dcom.Rpc.Auth.ntlm;
 using Opc.Classic.Security;
 using TUnit.Assertions.AssertConditions.Throws;
-using TUnit.Core;
 
 namespace Opc.Classic.Integration.Tests.EndToEnd;
 

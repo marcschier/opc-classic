@@ -17,14 +17,9 @@
 //   (response: phServerGroup + pRevisedUpdateRate inline, ppUnk wrapped in MInterfacePointer)
 //
 
-using System;
-using System.Threading;
-using System.Threading.Tasks;
-using Opc.Classic;
 using Opc.Classic.Da.Dcom;
 using Opc.Classic.Dcom;
 using Opc.Classic.Testing;
-using TUnit.Core;
 
 namespace Opc.Classic.Da.Tests.Wire;
 

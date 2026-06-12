@@ -12,7 +12,6 @@ using System.Net.Sockets;
 using System.Text.Json;
 using ModelContextProtocol;
 using ModelContextProtocol.Server;
-using Opc.Classic;
 using Opc.Classic.Cpx.Dcom;
 using Opc.Classic.Da;
 using Opc.Classic.Discovery;

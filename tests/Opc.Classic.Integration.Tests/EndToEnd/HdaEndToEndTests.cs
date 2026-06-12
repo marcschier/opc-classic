@@ -12,7 +12,6 @@ using Opc.Classic.Hda.Hosting;
 using Opc.Classic.Hosting;
 using Opc.Classic.Ndr;
 using Opc.Classic.Testing;
-using TUnit.Core;
 
 namespace Opc.Classic.Integration.Tests.EndToEnd;
 

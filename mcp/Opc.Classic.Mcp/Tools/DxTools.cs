@@ -11,7 +11,6 @@ using ModelContextProtocol.Server;
 using Opc.Classic.Dx;
 using Opc.Classic.Mcp.Dtos;
 using Opc.Classic.Mcp.Sessions;
-using Opc.Classic.Ndr;
 
 namespace Opc.Classic.Mcp.Tools;
 

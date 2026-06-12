@@ -3,13 +3,10 @@
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
 
-using System;
 using System.Formats.Asn1;
-using System.IO;
 using CsCheck;
 using Opc.Classic.Dcom.Kerberos.Spnego;
 using Opc.Classic.Tests.Fuzz;
-using TUnit.Core;
 
 namespace Opc.Classic.Dcom.Kerberos.Tests.Fuzz;
 

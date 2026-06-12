@@ -11,9 +11,6 @@
 #pragma warning disable CA1707 // OPC IDL naming preserved (IOPCSyncIO not IOpcSyncIO)
 #pragma warning disable MA0048 // Legacy DA 2.05a shims are clearer grouped than split across files
 
-using System.Threading;
-using System.Threading.Tasks;
-using Opc.Classic;
 using Opc.Classic.Generators;
 
 namespace Opc.Classic.Da.V20.Dcom;

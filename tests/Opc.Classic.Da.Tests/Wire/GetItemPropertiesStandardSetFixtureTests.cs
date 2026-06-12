@@ -17,14 +17,7 @@
 // vendor-specific padding / VARTYPE encoding the codec doesn't yet model.
 //
 
-using System;
-using System.Threading;
-using System.Threading.Tasks;
-using Opc.Classic;
-using Opc.Classic.Da.Dcom;
 using Opc.Classic.Ndr;
-using Opc.Classic.Testing;
-using TUnit.Core;
 
 namespace Opc.Classic.Da.Tests;
 

@@ -5,9 +5,6 @@
 
 #pragma warning disable MA0048 // Related Read-operation DTO record types are clearer grouped than fragmented
 
-using System;
-using System.Collections.Generic;
-
 namespace Opc.Classic.Xml;
 
 /// <summary>A single item-read request entry inside a <see cref="XmlDaReadRequest"/>.</summary>

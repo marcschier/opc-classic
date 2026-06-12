@@ -14,7 +14,6 @@ using System.Runtime.CompilerServices;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Opc.Classic;
 using Opc.Classic.Da;
 using Opc.Classic.Da.Dcom;
 using Opc.Classic.Da.Hosting;

@@ -5,10 +5,6 @@
 
 #pragma warning disable CA1711 // Identifiers should not have incorrect suffix — OPCBinary "type dictionary" is the spec term
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
 namespace Opc.Classic.Cpx;
 
 /// <summary>

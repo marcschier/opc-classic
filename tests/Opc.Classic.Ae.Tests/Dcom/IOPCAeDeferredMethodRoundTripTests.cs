@@ -5,15 +5,10 @@
 
 #pragma warning disable TUnitAssertions0005 // Tests assert captured wire metadata.
 
-using System;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using Opc.Classic.Ae.Dcom;
 using Opc.Classic.Hosting;
 using Opc.Classic.Ndr;
 using Opc.Classic.Testing;
-using TUnit.Core;
 
 namespace Opc.Classic.Ae.Tests.Dcom;
 

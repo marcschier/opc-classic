@@ -5,8 +5,6 @@
 
 #pragma warning disable TUnitAssertions0005 // Constants are verified against the OPC Foundation header as a single table.
 
-using TUnit.Core;
-
 namespace Opc.Classic.Hda.Tests;
 
 public sealed class OpcHdaErrorsTests

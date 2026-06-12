@@ -5,7 +5,6 @@
 
 using Microsoft.Extensions.DependencyInjection;
 using Opc.Classic.Transport;
-using TUnit.Core;
 using TUnit.Assertions.AssertConditions.Throws;
 
 namespace Opc.Classic.Tests.Transport;

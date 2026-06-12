@@ -1,7 +1,5 @@
 ﻿// SPDX-License-Identifier: MIT
 
-using System;
-
 namespace Opc.Classic.Dcom.Rpc;
 
 /// <summary>

@@ -5,10 +5,8 @@
 
 #pragma warning disable TUnitAssertions0005 // End-to-end tests assert captured pipeline state.
 
-using Opc.Classic;
 using Opc.Classic.Ae;
 using Opc.Classic.Ae.Dcom;
-using TUnit.Core;
 
 namespace Opc.Classic.Integration.Tests.EndToEnd;
 

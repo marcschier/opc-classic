@@ -3,8 +3,6 @@
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
 
-using System;
-
 #pragma warning disable MA0048 // DxIdentifiedResult is intentionally grouped with its response container.
 
 namespace Opc.Classic.Dx;

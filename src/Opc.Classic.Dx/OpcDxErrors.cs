@@ -3,8 +3,6 @@
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
 
-using System.Collections.Generic;
-
 #pragma warning disable CA1707 // OPC DX HRESULT names intentionally preserve IDL underscore casing.
 #pragma warning disable MA0048 // File name is plural per repository task; type is singular per OPC result-family convention.
 

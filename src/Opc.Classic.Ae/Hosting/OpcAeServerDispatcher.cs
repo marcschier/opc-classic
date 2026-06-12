@@ -3,12 +3,7 @@
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
 
-using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using Opc.Classic.Ae.Dcom;
 
 namespace Opc.Classic.Ae.Hosting;

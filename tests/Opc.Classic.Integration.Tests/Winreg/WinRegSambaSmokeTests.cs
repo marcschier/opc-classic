@@ -5,7 +5,6 @@
 
 using Opc.Classic.Dcom.Registry;
 using Opc.Classic.Dcom.Winreg;
-using TUnit.Core;
 
 namespace Opc.Classic.Tests.Integration.Winreg;
 

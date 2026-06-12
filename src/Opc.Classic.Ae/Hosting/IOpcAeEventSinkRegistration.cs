@@ -3,8 +3,6 @@
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
 
-using System.Threading;
-using System.Threading.Tasks;
 using Opc.Classic.Ae.Dcom;
 
 namespace Opc.Classic.Ae.Hosting;

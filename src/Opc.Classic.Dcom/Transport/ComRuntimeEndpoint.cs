@@ -6,9 +6,6 @@ using Opc.Classic.Dcom.Rpc.Core;
 using Opc.Classic.Dcom.Rpc.pdu;
 using Opc.Classic.Dcom.Internal;
 using Opc.Classic.Dcom.Internal.LegacyNdr;
-using System;
-using System.Collections.Generic;
-using System.Threading;
 
 namespace Opc.Classic.Dcom.Transport;
 

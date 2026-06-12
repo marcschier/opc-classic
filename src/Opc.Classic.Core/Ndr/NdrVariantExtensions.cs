@@ -6,9 +6,6 @@
 // nested VT_VARIANT values, VT_BYREF pointers, and optional VT_RECORD payloads.
 //
 
-using System;
-using System.IO;
-
 namespace Opc.Classic.Ndr;
 
 /// <summary>

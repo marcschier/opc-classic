@@ -5,7 +5,6 @@
 
 #pragma warning disable MA0048 // VARIANT writer is grouped with OPCHDA_* marshaling for native buffer locality.
 
-using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;

@@ -3,19 +3,13 @@
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
 
-using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
-using System.Threading;
-using System.Threading.Tasks;
 using Opc.Classic.Hda.Dcom;
 using Opc.Classic.Hda.Hosting;
 using Opc.Classic.Hda.Hosting.Windows;
-using Opc.Classic.Ndr;
-using TUnit.Core;
 
 namespace Opc.Classic.Hda.Tests.Hosting.Windows;
 

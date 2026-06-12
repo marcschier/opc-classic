@@ -3,19 +3,11 @@
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
 
-using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.IO;
 using System.Net;
-using System.Net.Sockets;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
-using Opc.Classic;
-using Opc.Classic.Dcom.Common.Ntlm;
 using Opc.Classic.Dcom.Common;
 using Opc.Classic.Dcom.Registry;
 

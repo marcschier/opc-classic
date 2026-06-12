@@ -8,9 +8,6 @@
 #pragma warning disable CA1707 // OPC IDL naming preserved (IOPCConfiguration)
 #pragma warning disable MA0048 // Multiple small interface projections grouped for readability
 
-using System.Threading;
-using System.Threading.Tasks;
-using Opc.Classic.Dx;
 using Opc.Classic.Generators;
 
 namespace Opc.Classic.Dx.Dcom;

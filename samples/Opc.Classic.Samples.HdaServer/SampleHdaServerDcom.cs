@@ -2,7 +2,6 @@
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 
 using System.Collections.Concurrent;
-using Opc.Classic;
 using Opc.Classic.Hda;
 using Opc.Classic.Hda.Dcom;
 

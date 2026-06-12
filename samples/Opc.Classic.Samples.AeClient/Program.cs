@@ -5,7 +5,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Opc.Classic.Ae.Dcom;
-using Opc.Classic;
 using Opc.Classic.Ae.Hosting;
 using Opc.Classic.Dcom.Transport;
 using Opc.Classic.Samples.AeServer;

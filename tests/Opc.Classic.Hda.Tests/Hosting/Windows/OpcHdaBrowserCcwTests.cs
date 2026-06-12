@@ -5,16 +5,11 @@
 
 #pragma warning disable TUnitAssertions0005 // CCW tests assert HRESULT constants and raw vtable outputs.
 
-using System;
-using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
-using System.Threading;
-using System.Threading.Tasks;
 using Opc.Classic.Hda.Dcom;
 using Opc.Classic.Hda.Hosting;
 using Opc.Classic.Hda.Hosting.Windows;
-using TUnit.Core;
 
 namespace Opc.Classic.Hda.Tests.Hosting.Windows;
 

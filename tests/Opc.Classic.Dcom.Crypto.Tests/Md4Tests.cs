@@ -6,10 +6,7 @@
 // Test vectors come from RFC 1320 Appendix A.5 (the canonical MD4 reference).
 //
 
-using System;
 using System.Text;
-using Opc.Classic.Dcom.Crypto;
-using TUnit.Core;
 
 namespace Opc.Classic.Dcom.Crypto.Tests;
 

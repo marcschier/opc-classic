@@ -3,11 +3,6 @@
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
 
-using System;
-using Opc.Classic;
-using Opc.Classic.Ae;
-using TUnit.Core;
-
 namespace Opc.Classic.Ae.Tests;
 
 public sealed class EventTypeFlagsTests

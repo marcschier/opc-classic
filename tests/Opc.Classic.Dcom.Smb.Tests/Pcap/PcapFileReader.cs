@@ -3,10 +3,7 @@
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
 
-using System;
 using System.Buffers.Binary;
-using System.Collections.Generic;
-using System.IO;
 using System.Text;
 
 namespace Opc.Classic.Dcom.Smb.Tests.Pcap;

@@ -3,16 +3,10 @@
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
 
-using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
 using System.Net;
-using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Primitives;
-using Opc.Classic;
-using TUnit.Core;
 
 namespace Opc.Classic.Discovery.Tests;
 

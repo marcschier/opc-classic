@@ -3,8 +3,6 @@
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
 
-using Opc.Classic;
-
 namespace Opc.Classic.Mcp.Tools;
 
 internal static class OpcMcpAuthLevel

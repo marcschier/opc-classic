@@ -3,13 +3,10 @@
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
 
-using System;
-using System.IO;
 using System.Text;
 using System.Xml;
 using CsCheck;
 using Opc.Classic.Tests.Fuzz;
-using TUnit.Core;
 
 namespace Opc.Classic.Cpx.Tests.Fuzz;
 

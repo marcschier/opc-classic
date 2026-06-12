@@ -3,9 +3,6 @@
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
 
-using Opc.Classic.Xml;
-using TUnit.Core;
-
 namespace Opc.Classic.Xml.Tests;
 
 public sealed class XmlDaServerStateTests

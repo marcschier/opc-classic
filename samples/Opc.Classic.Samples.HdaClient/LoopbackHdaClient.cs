@@ -2,7 +2,6 @@
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 
 using System.Runtime.CompilerServices;
-using Opc.Classic;
 using Opc.Classic.Hda;
 using Opc.Classic.Hda.Dcom;
 using Opc.Classic.Testing;

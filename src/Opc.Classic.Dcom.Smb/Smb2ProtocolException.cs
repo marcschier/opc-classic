@@ -3,8 +3,6 @@
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
 
-using System;
-
 namespace Opc.Classic.Dcom.Smb;
 
 /// <summary>Base exception for SMB2 protocol errors.</summary>

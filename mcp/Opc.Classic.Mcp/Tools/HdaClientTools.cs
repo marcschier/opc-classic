@@ -9,7 +9,6 @@ using System.Globalization;
 using System.Text.Json;
 using ModelContextProtocol;
 using ModelContextProtocol.Server;
-using Opc.Classic.Dcom;
 using Opc.Classic.Hda;
 using Opc.Classic.Hda.Dcom;
 using Opc.Classic.Mcp.Dtos;

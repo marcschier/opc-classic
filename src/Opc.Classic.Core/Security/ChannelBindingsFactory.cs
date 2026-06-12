@@ -3,7 +3,6 @@
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
 
-using System;
 using System.Net.Security;
 using System.Security.Authentication;
 using System.Security.Cryptography;

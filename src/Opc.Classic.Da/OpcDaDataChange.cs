@@ -5,9 +5,6 @@
 
 #pragma warning disable MA0048 // Keep the OnDataChange batch and item records together.
 
-using System;
-using System.Collections.Generic;
-
 namespace Opc.Classic.Da;
 
 /// <summary>

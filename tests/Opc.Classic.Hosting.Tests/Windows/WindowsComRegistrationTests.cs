@@ -3,14 +3,10 @@
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
 
-using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Runtime.Versioning;
 using Microsoft.Win32;
-using Opc.Classic.Hosting;
 using Opc.Classic.Hosting.Windows;
-using TUnit.Core;
 
 namespace Opc.Classic.Hosting.Tests.Windows;
 

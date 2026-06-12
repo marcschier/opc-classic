@@ -5,8 +5,6 @@
 // AOT-safe SOAP 1.1 envelope reader. Symmetric to SoapEnvelopeWriter.
 //
 
-using System;
-using System.IO;
 using System.Xml;
 
 namespace Opc.Classic.Xml.Serialization;

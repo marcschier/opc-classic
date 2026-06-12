@@ -2,9 +2,6 @@
 
 using Opc.Classic.Dcom.Internal;
 using Opc.Classic.Dcom.Internal.LegacyNdr;
-using Opc.Classic.Dcom.Common.Ntlm;
-using System;
-using System.IO;
 
 namespace Opc.Classic.Dcom.Rpc.pdu;
 

@@ -4,7 +4,6 @@ using Opc.Classic.Dcom.Internal;
 using Opc.Classic.Dcom.Rpc;
 using Opc.Classic.Dcom.Rpc.Core;
 using Opc.Classic.Dcom.Rpc.pdu;
-using System;
 using System.Globalization;
 
 namespace Opc.Classic.Dcom.Transport;

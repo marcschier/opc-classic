@@ -5,12 +5,9 @@
 
 #pragma warning disable TUnitAssertions0005 // Native marshaling tests assert HRESULT constants and pointer-backed values.
 
-using System;
-using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using Opc.Classic.Hda.Hosting.Windows;
-using TUnit.Core;
 
 namespace Opc.Classic.Hda.Tests.Hosting.Windows;
 

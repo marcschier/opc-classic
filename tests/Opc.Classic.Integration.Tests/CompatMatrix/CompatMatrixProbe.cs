@@ -3,11 +3,6 @@
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-
 namespace Opc.Classic.Integration.Tests.CompatMatrix;
 
 internal static class CompatMatrixProbe

@@ -5,8 +5,6 @@
 // NDR wire codec for OPC DA's OPCITEMVQT struct.
 //
 
-using System;
-using System.IO;
 using Opc.Classic.Ndr;
 
 namespace Opc.Classic.Da.Ndr;

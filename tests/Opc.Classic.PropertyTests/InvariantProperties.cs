@@ -6,11 +6,7 @@
 // Complements the example-based TUnit tests in tests/Opc.Classic.Core.Tests/.
 //
 
-using System;
-using System.Threading.Tasks;
 using CsCheck;
-using Opc.Classic;
-using TUnit.Core;
 
 namespace Opc.Classic.PropertyTests;
 

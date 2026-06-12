@@ -3,17 +3,11 @@
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
 
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
-using System.IO;
-using System.Linq;
 using System.Net.NetworkInformation;
 using System.Text;
 using System.Text.Json;
-using System.Threading;
-using System.Threading.Tasks;
 using ModelContextProtocol;
 using ModelContextProtocol.Server;
 using Opc.Classic.Mcp.Capture;

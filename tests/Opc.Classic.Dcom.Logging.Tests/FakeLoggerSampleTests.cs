@@ -7,7 +7,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Logging.Testing;
 using Opc.Classic.Dcom.Internal;
-using TUnit.Core;
 
 namespace Opc.Classic.Dcom.Logging.Tests;
 

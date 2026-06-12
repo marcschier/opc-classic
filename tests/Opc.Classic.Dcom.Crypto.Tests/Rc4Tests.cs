@@ -6,10 +6,6 @@
 // Test vectors come from RFC 6229 §2.1 — the IETF reference RC4 test vectors.
 //
 
-using System;
-using Opc.Classic.Dcom.Crypto;
-using TUnit.Core;
-
 namespace Opc.Classic.Dcom.Crypto.Tests;
 
 public sealed class Rc4Tests

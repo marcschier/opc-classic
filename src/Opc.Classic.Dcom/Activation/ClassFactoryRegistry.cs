@@ -3,7 +3,6 @@
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
 
-using System;
 using System.Collections.Concurrent;
 
 namespace Opc.Classic.Dcom.Core;

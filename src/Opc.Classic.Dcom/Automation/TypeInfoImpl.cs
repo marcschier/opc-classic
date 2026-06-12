@@ -3,7 +3,6 @@
 using Opc.Classic.Dcom.Common;
 using Opc.Classic.Dcom.Core;
 using Opc.Classic.Dcom.Rpc.Core;
-using System;
 
 #pragma warning disable MA0051 // OLE Automation type marshaling mirrors the protocol layout.
 

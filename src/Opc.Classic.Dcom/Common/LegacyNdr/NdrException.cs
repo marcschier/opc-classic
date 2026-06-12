@@ -1,8 +1,5 @@
 ﻿// SPDX-License-Identifier: MIT
 
-using System;
-using System.IO;
-
 namespace Opc.Classic.Dcom.Internal.LegacyNdr;
 
 public class NdrException : IOException

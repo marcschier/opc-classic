@@ -17,7 +17,6 @@ using Opc.Classic.Dcom.Internal.Ntlm;
 using Opc.Classic.Dcom.Orpc;
 using Opc.Classic.Security;
 using Opc.Classic.Dcom.Rpc.Auth.ntlm;
-using TUnit.Core;
 
 namespace Opc.Classic.Integration.Tests.EndToEnd;
 

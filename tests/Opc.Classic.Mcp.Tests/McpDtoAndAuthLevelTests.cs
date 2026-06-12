@@ -9,7 +9,6 @@ using System.Runtime.ExceptionServices;
 using Opc.Classic.Mcp.Dtos;
 using Opc.Classic.Mcp.Tools;
 using TUnit.Assertions.AssertConditions.Throws;
-using TUnit.Core;
 
 namespace Opc.Classic.Mcp.Tests;
 

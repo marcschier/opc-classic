@@ -3,10 +3,6 @@
 using Opc.Classic.Dcom.Transport;
 using Opc.Classic.Dcom.Rpc;
 using Opc.Classic.Dcom.Internal;
-using Opc.Classic.Dcom.Common.Ntlm;
-using System;
-using System.Collections.Generic;
-using System.IO;
 
 namespace Opc.Classic.Dcom.Core;
 

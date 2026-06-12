@@ -1,6 +1,5 @@
 ﻿// SPDX-License-Identifier: MIT
 
-using System;
 using System.Security.Cryptography;
 
 #pragma warning disable CA5351 // NTLMSSP MIC computation is specified as HMAC-MD5.

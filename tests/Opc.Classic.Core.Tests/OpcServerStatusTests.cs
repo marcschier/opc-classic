@@ -3,10 +3,6 @@
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
 
-using System;
-using Opc.Classic;
-using TUnit.Core;
-
 namespace Opc.Classic.Tests;
 
 public sealed class OpcServerStatusTests

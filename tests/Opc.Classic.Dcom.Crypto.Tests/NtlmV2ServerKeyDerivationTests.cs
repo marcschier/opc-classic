@@ -5,7 +5,6 @@
 // MS-NLMP §4.2.4.1 NTLMv2 sample vectors and server-side key derivation tests.
 //
 
-using System;
 using System.Reflection;
 using System.Runtime.ExceptionServices;
 using System.Security;
@@ -13,10 +12,8 @@ using System.Security.Cryptography;
 using System.Text;
 using Opc.Classic.Dcom.Internal;
 using Opc.Classic.Dcom.Internal.Ntlm;
-using Opc.Classic.Dcom.Crypto;
 using Opc.Classic.Dcom.Rpc.Auth.ntlm;
 using TUnit.Assertions.AssertConditions.Throws;
-using TUnit.Core;
 
 namespace Opc.Classic.Dcom.Crypto.Tests;
 

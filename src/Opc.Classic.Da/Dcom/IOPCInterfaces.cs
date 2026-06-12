@@ -17,11 +17,6 @@
 #pragma warning disable CA1707 // OPC IDL naming preserved (IOPCServer not IOpcServer)
 #pragma warning disable MA0048 // 14 trivial 4-line interface stubs are clearer grouped than fragmented across files
 
-using System;
-using System.Threading;
-using System.Threading.Tasks;
-using Opc.Classic;
-using Opc.Classic.Da;
 using Opc.Classic.Dcom;
 using Opc.Classic.Generators;
 

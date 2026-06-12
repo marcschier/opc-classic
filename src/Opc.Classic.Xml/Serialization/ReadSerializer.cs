@@ -5,10 +5,7 @@
 // AOT-safe serializer for OPC XML-DA 1.0 Read request + response.
 //
 
-using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
 using System.Xml;
 
 namespace Opc.Classic.Xml.Serialization;

@@ -5,13 +5,9 @@
 // Round-trip tests for the SOAP 1.1 envelope writer/reader pair.
 //
 
-using System;
-using System.IO;
 using System.Text;
 using System.Xml;
-using Opc.Classic.Xml;
 using Opc.Classic.Xml.Serialization;
-using TUnit.Core;
 
 namespace Opc.Classic.Xml.Tests;
 

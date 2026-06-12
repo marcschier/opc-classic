@@ -3,8 +3,6 @@
 using Opc.Classic.Dcom.Common;
 using Opc.Classic.Dcom.Internal.LegacyNdr;
 using Opc.Classic.Dcom.Rpc.Core;
-using System;
-using System.Collections.Generic;
 using Opc.Classic.Dcom.Automation;
 
 #pragma warning disable MA0051 // Legacy DCOM protocol methods are intentionally kept intact during analyzer cleanup.

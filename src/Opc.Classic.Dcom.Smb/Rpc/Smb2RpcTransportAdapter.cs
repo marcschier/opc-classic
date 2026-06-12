@@ -3,10 +3,6 @@
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
 
-using System;
-using System.Threading;
-using System.Threading.Tasks;
-
 namespace Opc.Classic.Dcom.Smb.Rpc;
 
 /// <summary>Connects the SMB2 state machine to an underlying transport.</summary>

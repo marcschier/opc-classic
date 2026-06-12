@@ -10,7 +10,6 @@
 //
 
 using Opc.Classic.Generators;
-using TUnit.Core;
 
 namespace Opc.Classic.Tests;
 

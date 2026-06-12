@@ -3,12 +3,9 @@
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
 
-using System;
-using System.Collections.Generic;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Opc.Classic.Dcom.Internal;
-using TUnit.Core;
 
 namespace Opc.Classic.Dcom.Logging.Tests;
 

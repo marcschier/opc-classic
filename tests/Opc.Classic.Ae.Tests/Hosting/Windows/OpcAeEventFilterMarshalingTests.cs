@@ -3,14 +3,10 @@
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
 
-using System;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
-using System.Threading;
-using System.Threading.Tasks;
 using Opc.Classic.Ae.Dcom;
 using Opc.Classic.Ae.Hosting.Windows;
-using TUnit.Core;
 
 namespace Opc.Classic.Ae.Tests.Hosting.Windows;
 

@@ -3,8 +3,6 @@ using Opc.Classic.Dcom.Internal.LegacyNdr;
 using Opc.Classic.Dcom.Common;
 using Opc.Classic.Dcom.Rpc.Core;
 using Opc.Classic.Dcom.Internal;
-using System.Collections.Generic;
-using Opc.Classic.Dcom.Common.Ntlm;
 
 namespace Opc.Classic.Dcom.Core;
 

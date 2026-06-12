@@ -1,8 +1,6 @@
 ﻿// SPDX-License-Identifier: MIT
 
-using System;
 using System.Buffers.Binary;
-using System.Text;
 using Opc.Classic.Dcom.Rpc.Auth.ntlm;
 
 namespace Opc.Classic.Dcom.Internal.Ntlm;

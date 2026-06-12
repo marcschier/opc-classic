@@ -3,13 +3,6 @@
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
 
-using System;
-using System.IO;
-using System.Linq;
-using System.Threading;
-using Opc.Classic.Mcp.Capture;
-using TUnit.Core;
-
 namespace Opc.Classic.Mcp.Capture.Tests;
 
 public sealed class OpcWireCaptureSourceTests

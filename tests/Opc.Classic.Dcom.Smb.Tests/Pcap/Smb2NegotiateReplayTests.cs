@@ -3,9 +3,6 @@
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
 
-using Opc.Classic.Dcom.Smb;
-using TUnit.Core;
-
 namespace Opc.Classic.Dcom.Smb.Tests.Pcap;
 
 public sealed class Smb2NegotiateReplayTests : PcapFixtureBase

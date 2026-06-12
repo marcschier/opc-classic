@@ -16,7 +16,6 @@
 //   3. Once all files migrated, remove the Serilog package reference.
 //
 
-using System;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 

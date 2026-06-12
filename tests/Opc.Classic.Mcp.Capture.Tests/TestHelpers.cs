@@ -3,13 +3,7 @@
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
 
-using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Runtime.CompilerServices;
-using System.Threading;
-using System.Threading.Tasks;
-using Opc.Classic.Mcp.Capture;
 
 namespace Opc.Classic.Mcp.Capture.Tests;
 

@@ -5,9 +5,6 @@
 
 #pragma warning disable CA1707, MA0048 // OPC IDL naming preserved; grouped internal proxy types share this file
 
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 using Opc.Classic.Dcom;
 using Opc.Classic.Hosting;
 using Opc.Classic.Ndr;

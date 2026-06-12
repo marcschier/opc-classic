@@ -3,8 +3,6 @@
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
 
-using System;
-
 #pragma warning disable MA0048 // OPC DX status records are grouped by specification section.
 
 namespace Opc.Classic.Dx;

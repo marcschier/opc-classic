@@ -3,10 +3,7 @@
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
 
-using System;
-using System.Linq;
 using Opc.Classic.Dcom.Registry;
-using TUnit.Core;
 
 namespace Opc.Classic.Dcom.Smb.Tests.Fixtures.Winreg;
 

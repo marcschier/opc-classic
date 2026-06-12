@@ -7,7 +7,6 @@
 // format. See NdrWriter.cs for the spec reference and design notes.
 //
 
-using System;
 using System.Buffers.Binary;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;

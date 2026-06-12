@@ -7,8 +7,6 @@
 // canonical MIDL layout without re-running the live server.
 //
 
-using System;
-
 namespace Opc.Classic.Diagnostics;
 
 /// <summary>

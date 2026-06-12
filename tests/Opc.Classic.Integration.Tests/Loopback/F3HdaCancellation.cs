@@ -3,8 +3,6 @@
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
 
-using TUnit.Core;
-
 namespace Opc.Classic.Integration.Tests.Loopback;
 
 public sealed class F3HdaCancellation

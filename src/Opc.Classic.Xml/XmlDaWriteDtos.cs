@@ -5,8 +5,6 @@
 
 #pragma warning disable MA0048 // Related Write-operation DTO record types are clearer grouped than fragmented
 
-using System.Collections.Generic;
-
 namespace Opc.Classic.Xml;
 
 /// <summary>A single item-write request entry inside a <see cref="XmlDaWriteRequest"/>.</summary>

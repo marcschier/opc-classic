@@ -3,12 +3,7 @@
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
 
-using System;
-using System.Collections.Generic;
-using System.Threading;
 using System.Threading.Channels;
-using System.Threading.Tasks;
-using Opc.Classic.Da;
 using Opc.Classic.Da.Dcom;
 
 namespace Opc.Classic.Mcp.Tools;

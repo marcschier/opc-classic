@@ -11,7 +11,6 @@
 //
 
 using Opc.Classic.Da.Dcom;
-using TUnit.Core;
 
 namespace Opc.Classic.Da.Tests;
 

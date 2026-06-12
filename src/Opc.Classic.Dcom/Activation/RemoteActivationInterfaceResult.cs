@@ -3,8 +3,6 @@
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
 
-using System;
-
 namespace Opc.Classic.Dcom.Activation;
 
 /// <summary>Per-IID activation outcome inside a <see cref="RemoteActivationResponse" />.</summary>

@@ -2,7 +2,6 @@
 
 
 using Opc.Classic.Dcom.Core;
-using System;
 
 namespace Opc.Classic.Dcom.Automation;
 

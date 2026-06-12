@@ -6,9 +6,6 @@
 // FADF_* feature flags, scalar elements, and VT_VARIANT elements.
 //
 
-using System;
-using System.IO;
-
 namespace Opc.Classic.Ndr;
 
 /// <summary>

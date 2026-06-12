@@ -3,8 +3,6 @@
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
 
-using System;
-
 namespace Opc.Classic.Xml;
 
 /// <summary>Helpers for converting OPC XML-DA QName result IDs to <see cref="XmlDaErrorCode"/>.</summary>

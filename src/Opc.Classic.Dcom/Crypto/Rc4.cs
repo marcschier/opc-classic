@@ -10,9 +10,6 @@
 // per MS-NLMP §3.4.5). Do NOT use for new security primitives.
 //
 
-
-using System;
-
 namespace Opc.Classic.Dcom.Crypto;
 /// <summary>
 /// Pure-managed RC4 stream cipher (KSA + PRGA).

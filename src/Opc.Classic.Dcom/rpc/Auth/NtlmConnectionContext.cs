@@ -1,12 +1,9 @@
 ﻿// SPDX-License-Identifier: MIT
 
 using Opc.Classic.Dcom.Internal;
-using System;
 using System.Globalization;
-using System.IO;
 using Opc.Classic.Dcom.Rpc.Core;
 using Opc.Classic.Dcom.Rpc.pdu;
-using Opc.Classic.Dcom.Common.Ntlm;
 
 namespace Opc.Classic.Dcom.Rpc.Auth.ntlm;
 

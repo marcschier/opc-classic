@@ -3,9 +3,6 @@
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
 
-using System;
-using Opc.Classic;
-using TUnit.Core;
 using TUnit.Assertions.AssertConditions.Throws;
 
 namespace Opc.Classic.Tests;

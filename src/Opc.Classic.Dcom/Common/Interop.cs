@@ -1,13 +1,9 @@
 ﻿// SPDX-License-Identifier: MIT
 
 using Opc.Classic.Dcom.Internal;
-using Opc.Classic.Dcom.Common.Ntlm;
 using Opc.Classic.Dcom.Core;
 using Opc.Classic.Dcom.Resources;
-using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
 using System.Net.Sockets;
 
 namespace Opc.Classic.Dcom.Common;

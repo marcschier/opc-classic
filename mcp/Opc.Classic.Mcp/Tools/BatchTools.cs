@@ -11,7 +11,6 @@ using System.Net;
 using System.Net.Sockets;
 using ModelContextProtocol;
 using ModelContextProtocol.Server;
-using Opc.Classic;
 using Opc.Classic.Batch;
 using Opc.Classic.Batch.Dcom;
 using Opc.Classic.Dcom;

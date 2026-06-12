@@ -3,8 +3,6 @@
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
 
-using System;
-
 namespace Opc.Classic;
 
 /// <summary>OPC Alarms &amp; Events (AE) specification errors.</summary>

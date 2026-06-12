@@ -3,9 +3,6 @@
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
 
-using System;
-using System.Collections.Generic;
-
 namespace Opc.Classic;
 
 /// <summary>A VT_RECORD value paired with the GUID of its registered layout.</summary>

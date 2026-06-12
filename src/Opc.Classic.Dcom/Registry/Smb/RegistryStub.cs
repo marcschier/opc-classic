@@ -7,9 +7,6 @@ using Opc.Classic.Dcom.Rpc;
 using Opc.Classic.Dcom.Common;
 using System.Text;
 using System.Net;
-using System.Linq;
-using System.IO;
-using System;
 using System.Web;
 
 namespace Opc.Classic.Dcom.Registry.Smb;

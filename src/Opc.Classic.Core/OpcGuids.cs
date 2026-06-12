@@ -15,8 +15,6 @@
 #pragma warning disable CA1707 // OPC IDL naming convention preserves underscores
 #pragma warning disable IDE1006 // CA1707 covers the same naming concern
 
-using System;
-
 namespace Opc.Classic;
 
 /// <summary>

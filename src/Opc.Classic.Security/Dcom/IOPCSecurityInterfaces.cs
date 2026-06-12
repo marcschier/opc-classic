@@ -18,8 +18,6 @@
 #pragma warning disable CA1707 // OPC IDL naming preserved (IOPCSecurityNT)
 #pragma warning disable MA0048 // Two trivial interface stubs grouped for readability
 
-using System.Threading;
-using System.Threading.Tasks;
 using Opc.Classic.Generators;
 
 namespace Opc.Classic.Security.Dcom;

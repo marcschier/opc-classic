@@ -3,9 +3,6 @@
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
 
-using System.Collections.Generic;
-using TUnit.Core;
-
 namespace Opc.Classic.Cpx.Tests;
 
 public sealed class OpcBinaryBitStringTests

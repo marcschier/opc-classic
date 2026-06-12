@@ -10,11 +10,8 @@
 #pragma warning disable CA1707 // OPC IDL naming preserved (IOPCHDA_Server with underscore)
 #pragma warning disable MA0048 // Multiple small interface projections grouped for readability
 
-using System.Threading;
-using System.Threading.Tasks;
 using Opc.Classic.Dcom;
 using Opc.Classic.Generators;
-using Opc.Classic.Hda;
 
 namespace Opc.Classic.Hda.Dcom;
 

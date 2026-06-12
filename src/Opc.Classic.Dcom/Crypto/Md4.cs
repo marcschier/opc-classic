@@ -11,8 +11,6 @@
 // security primitives.
 //
 
-using System;
-
 namespace Opc.Classic.Dcom.Crypto;
 
 /// <summary>

@@ -3,10 +3,6 @@
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
 
-using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 using Opc.Classic.Da.Dcom;
 
 namespace Opc.Classic.Da.Hosting;

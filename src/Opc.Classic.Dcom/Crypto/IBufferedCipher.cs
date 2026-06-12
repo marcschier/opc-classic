@@ -3,8 +3,6 @@
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
 
-using System;
-
 namespace Opc.Classic.Dcom.Crypto;
 
 /// <summary>BouncyCastle <c>IBufferedCipher</c>-shaped buffered cipher (transitional).</summary>

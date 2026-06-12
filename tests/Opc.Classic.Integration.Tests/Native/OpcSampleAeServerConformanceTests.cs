@@ -6,7 +6,6 @@
 using Opc.Classic.Ae.Dcom;
 using Opc.Classic.Ae.Hosting;
 using Opc.Classic.Integration.Tests.Support;
-using TUnit.Core;
 
 namespace Opc.Classic.Tests.Integration.Native;
 

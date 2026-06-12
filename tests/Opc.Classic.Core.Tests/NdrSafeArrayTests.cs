@@ -5,12 +5,7 @@
 // Round-trip tests for the NDR SAFEARRAY (1-D scalar subset) codec.
 //
 
-using System;
-using System.IO;
-using System.Linq;
-using Opc.Classic;
 using Opc.Classic.Ndr;
-using TUnit.Core;
 
 namespace Opc.Classic.Tests;
 

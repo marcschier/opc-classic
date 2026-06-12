@@ -3,7 +3,6 @@
 
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Opc.Classic;
 using Opc.Classic.Ae;
 
 namespace Opc.Classic.Samples.AeClient;

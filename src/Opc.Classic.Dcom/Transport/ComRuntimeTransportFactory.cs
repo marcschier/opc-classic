@@ -2,7 +2,6 @@
 
 using Opc.Classic.Dcom.Internal;
 using Opc.Classic.Dcom.Rpc;
-using System.Threading;
 
 namespace Opc.Classic.Dcom.Transport;
 

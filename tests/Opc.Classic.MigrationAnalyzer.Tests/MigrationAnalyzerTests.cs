@@ -12,7 +12,6 @@ using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
 using Opc.Classic.MigrationAnalyzer.Analyzers;
 using Opc.Classic.MigrationAnalyzer.CodeFixes;
-using TUnit.Core;
 
 namespace Opc.Classic.MigrationAnalyzer.Tests;
 

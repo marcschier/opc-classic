@@ -3,8 +3,6 @@
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
 
-using System;
-
 #pragma warning disable MA0048 // Small query helper types are intentionally grouped with DxQueryParameters.
 
 namespace Opc.Classic.Dx;

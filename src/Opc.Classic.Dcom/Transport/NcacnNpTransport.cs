@@ -3,12 +3,9 @@
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
 
-using System;
 using System.Buffers;
 using System.IO.Pipelines;
 using System.Net;
-using System.Threading;
-using System.Threading.Tasks;
 using Opc.Classic.Dcom.Rpc;
 using Opc.Classic.Dcom.Smb;
 using Opc.Classic.Dcom.Smb.Rpc;

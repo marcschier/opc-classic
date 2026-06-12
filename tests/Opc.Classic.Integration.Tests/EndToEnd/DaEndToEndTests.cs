@@ -8,7 +8,6 @@
 using Opc.Classic.Da;
 using Opc.Classic.Da.Dcom;
 using Opc.Classic.Dcom;
-using TUnit.Core;
 
 namespace Opc.Classic.Integration.Tests.EndToEnd;
 

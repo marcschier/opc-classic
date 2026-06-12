@@ -6,7 +6,6 @@
 using System.Reflection;
 using System.Runtime.ExceptionServices;
 using Opc.Classic.Mcp.Tools;
-using TUnit.Core;
 
 namespace Opc.Classic.Mcp.Tests;
 

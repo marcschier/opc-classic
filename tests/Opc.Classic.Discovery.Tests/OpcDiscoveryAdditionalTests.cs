@@ -5,7 +5,6 @@
 
 using System.Net;
 using TUnit.Assertions.AssertConditions.Throws;
-using TUnit.Core;
 
 namespace Opc.Classic.Discovery.Tests;
 

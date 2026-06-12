@@ -3,9 +3,6 @@
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
 
-using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Xml;
 
 namespace Opc.Classic.Xml.Serialization;

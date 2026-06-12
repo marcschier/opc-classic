@@ -3,8 +3,6 @@
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
 
-using System;
-using TUnit.Core;
 using TUnit.Assertions.AssertConditions.Throws;
 
 namespace Opc.Classic.Cpx.Tests;

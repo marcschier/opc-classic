@@ -5,7 +5,6 @@
 // Pure-managed implementation of MD4 per RFC 1320.
 //
 
-using System;
 using System.Buffers.Binary;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;

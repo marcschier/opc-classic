@@ -3,7 +3,6 @@
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
 
-using System.Threading.Tasks;
 using VerifyTUnit;
 
 namespace Opc.Classic.SnapshotTests.Support;

@@ -4,7 +4,6 @@
 //
 
 using System.Reflection;
-using TUnit.Core;
 
 namespace Opc.Classic.Security.Tests;
 

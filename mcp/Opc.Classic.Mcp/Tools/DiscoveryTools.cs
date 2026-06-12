@@ -6,7 +6,6 @@
 using System.ComponentModel;
 using System.Net;
 using ModelContextProtocol.Server;
-using Opc.Classic;
 using Opc.Classic.Discovery;
 using Opc.Classic.Mcp.Dtos;
 

@@ -4,8 +4,6 @@ using Opc.Classic.Dcom.Crypto;
 using Opc.Classic.Dcom.Internal;
 using Opc.Classic.Dcom.Internal.Ntlm;
 using Opc.Classic.Dcom.Internal.LegacyNdr;
-using System;
-using System.IO;
 
 namespace Opc.Classic.Dcom.Rpc.Auth.ntlm;
 

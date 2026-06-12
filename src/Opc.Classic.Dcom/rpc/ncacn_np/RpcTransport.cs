@@ -3,8 +3,6 @@
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
 
-using System;
-using System.IO;
 using Opc.Classic.Dcom.Internal;
 using Opc.Classic.Dcom.Internal.LegacyNdr;
 using Opc.Classic.Dcom.Internal.Ntlm;
@@ -13,7 +11,6 @@ using Opc.Classic.Dcom.Rpc.Core;
 using Opc.Classic.Dcom.Smb;
 using Opc.Classic.Dcom.Smb.Rpc;
 using Opc.Classic.Dcom.Transport;
-using Opc.Classic.Dcom.Common.Ntlm;
 
 
 namespace Opc.Classic.Dcom.Rpc.Ncacn_Np;

@@ -5,10 +5,6 @@ using Opc.Classic.Dcom.Common;
 using Opc.Classic.Dcom.Core;
 using Opc.Classic.Dcom.Rpc.Core;
 using Opc.Classic.Dcom.Internal;
-using Opc.Classic.Dcom.Common.Ntlm;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 #pragma warning disable MA0051 // OLE Automation marshaling methods intentionally mirror wire structures.
 

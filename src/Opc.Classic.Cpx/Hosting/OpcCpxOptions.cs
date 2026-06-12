@@ -3,9 +3,6 @@
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
 
-using System;
-using System.Collections.Generic;
-
 namespace Opc.Classic.Cpx.Hosting;
 
 /// <summary>Configuration used by CPX DA-hosting helpers.</summary>

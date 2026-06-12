@@ -5,7 +5,6 @@ using Opc.Classic.Dcom.Common;
 using Opc.Classic.Dcom.Rpc;
 using Opc.Classic.Dcom.Rpc.Core;
 using Opc.Classic.Dcom.Internal.LegacyNdr;
-using System.IO;
 using System.Net.Sockets;
 
 namespace Opc.Classic.Dcom.Transport;

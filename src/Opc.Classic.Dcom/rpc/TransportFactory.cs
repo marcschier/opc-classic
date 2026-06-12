@@ -1,7 +1,6 @@
 ﻿// SPDX-License-Identifier: MIT
 
 using Opc.Classic.Dcom.Internal;
-using Opc.Classic.Dcom.Common.Ntlm;
 
 namespace Opc.Classic.Dcom.Rpc;
 
