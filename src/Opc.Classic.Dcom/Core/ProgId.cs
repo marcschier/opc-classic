@@ -22,7 +22,6 @@ namespace Opc.Classic.Dcom.Core;
 /// </summary>
 public class ProgId
 {
-
     /// <summary>
     /// Indicates to the framework, if Windows Registry settings for
     /// DLL\OCX component identified by this object should be

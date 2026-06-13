@@ -9,7 +9,6 @@ namespace Opc.Classic.Dcom.Rpc;
 /// </summary>
 public interface ISecurity
 {
-
     /// <summary>
     /// Verifier length
     /// </summary>

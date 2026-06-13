@@ -15,7 +15,6 @@ namespace Opc.Classic.Dcom.Core;
 /// </summary>
 internal static class MarshalUnMarshalHelper
 {
-
     /// <summary>
     /// Serialize
     /// </summary>
@@ -25,7 +24,6 @@ internal static class MarshalUnMarshalHelper
     /// <param name="context">Codec context that tracks deferred pointers and per-call buffers.</param>
     internal static void Serialize(NdrCodec ndr, Type c, object value, CodecContext context = null)
     {
-
         if (context == null)
         {
             context = new CodecContext();
@@ -102,7 +100,6 @@ internal static class MarshalUnMarshalHelper
     /// <returns>The object reconstructed from the serialized COM wire representation.</returns>
     internal static object Deserialize(NdrCodec ndr, object obj, CodecContext context = null)
     {
-
         if (context == null)
         {
             context = new CodecContext();
@@ -168,7 +165,6 @@ internal static class MarshalUnMarshalHelper
                 Interop.GetLocalizedMessage(ErrorCode.INTEROP_UTIL_SERDESER_NOT_FOUND), obj));
         }
         return kMapOfSerializers[c].DeserializeData(ndr, context);
-
     }
 
     /// <summary>
@@ -196,7 +192,6 @@ internal static class MarshalUnMarshalHelper
         }
         return kMapOfSerializers[c].GetDataLengthInBytes(obj, flag);
     }
-
 
     /// <summary>
     /// Align on write
@@ -309,7 +304,6 @@ internal static class MarshalUnMarshalHelper
     /// </summary>
     private interface ISerializerDeserializer
     {
-
         /// <summary>
         /// Serialize data
         /// </summary>
@@ -335,11 +329,9 @@ internal static class MarshalUnMarshalHelper
         int GetDataLengthInBytes(object value, int flag = InteropFlags.FLAG_NULL);
     }
 
-
     /// <inheritdoc/>
     private sealed class PointerImpl : ISerializerDeserializer
     {
-
         /// <inheritdoc/>
         public void SerializeData(NdrCodec ndr, object value, CodecContext context) =>
             throw new InvalidOperationException(Interop.GetLocalizedMessage(ErrorCode.INTEROP_UTIL_INCORRECT_CALL));
@@ -355,7 +347,6 @@ internal static class MarshalUnMarshalHelper
     /// <inheritdoc/>
     private sealed class UIntImpl : ISerializerDeserializer
     {
-
         /// <inheritdoc/>
         public void SerializeData(NdrCodec ndr, object value, CodecContext context) =>
             Serialize(ndr, typeof(uint), (uint)value, context);
@@ -366,13 +357,11 @@ internal static class MarshalUnMarshalHelper
 
         /// <inheritdoc/>
         public int GetDataLengthInBytes(object value, int flag = InteropFlags.FLAG_NULL) => 4;
-
     }
 
     /// <inheritdoc/>
     private sealed class DualStringArrayImpl : ISerializerDeserializer
     {
-
         /// <inheritdoc/>
         public void SerializeData(NdrCodec ndr, object value, CodecContext context) =>
             throw new InvalidOperationException(Interop.GetLocalizedMessage(ErrorCode.INTEROP_UTIL_INCORRECT_CALL));
@@ -382,13 +371,11 @@ internal static class MarshalUnMarshalHelper
 
         /// <inheritdoc/>
         public int GetDataLengthInBytes(object value, int flag = InteropFlags.FLAG_NULL) => ((DualStringArray)value).Length;
-
     }
 
     /// <inheritdoc/>
     private sealed class ByteImpl : ISerializerDeserializer
     {
-
         /// <inheritdoc/>
         public void SerializeData(NdrCodec ndr, object value, CodecContext context) =>
             Serialize(ndr, typeof(byte), (byte)value, context);
@@ -399,13 +386,11 @@ internal static class MarshalUnMarshalHelper
 
         /// <inheritdoc/>
         public int GetDataLengthInBytes(object value, int flag = InteropFlags.FLAG_NULL) => 1;
-
     }
 
     /// <inheritdoc/>
     private sealed class UShortImpl : ISerializerDeserializer
     {
-
         /// <inheritdoc/>
         public void SerializeData(NdrCodec ndr, object value, CodecContext context) =>
             Serialize(ndr, typeof(ushort), (ushort)value, context);
@@ -418,11 +403,9 @@ internal static class MarshalUnMarshalHelper
         public int GetDataLengthInBytes(object value, int flag = InteropFlags.FLAG_NULL) => 2;
     }
 
-
     /// <inheritdoc/>
     private sealed class StructImpl : ISerializerDeserializer
     {
-
         /// <inheritdoc/>
         public void SerializeData(NdrCodec ndr, object value, CodecContext context) =>
             throw new InvalidOperationException(Interop.GetLocalizedMessage(ErrorCode.INTEROP_UTIL_INCORRECT_CALL));
@@ -438,7 +421,6 @@ internal static class MarshalUnMarshalHelper
     /// <inheritdoc/>
     private sealed class UnionImpl : ISerializerDeserializer
     {
-
         /// <inheritdoc/>
         public void SerializeData(NdrCodec ndr, object value, CodecContext context) =>
             throw new InvalidOperationException(Interop.GetLocalizedMessage(ErrorCode.INTEROP_UTIL_INCORRECT_CALL));
@@ -454,7 +436,6 @@ internal static class MarshalUnMarshalHelper
     /// <inheritdoc/>
     private sealed class ComObjectSerDer : ISerializerDeserializer
     {
-
         /// <inheritdoc/>
         public void SerializeData(NdrCodec ndr, object value, CodecContext context)
         {
@@ -519,7 +500,6 @@ internal static class MarshalUnMarshalHelper
     /// <inheritdoc/>
     private sealed class VariantBodyImpl : ISerializerDeserializer
     {
-
         /// <inheritdoc/>
         public void SerializeData(NdrCodec ndr, object value, CodecContext context) =>
             throw new InvalidOperationException(Interop.GetLocalizedMessage(ErrorCode.INTEROP_UTIL_INCORRECT_CALL));
@@ -535,7 +515,6 @@ internal static class MarshalUnMarshalHelper
     /// <inheritdoc/>
     private sealed class VariantImpl : ISerializerDeserializer
     {
-
         /// <inheritdoc/>
         public void SerializeData(NdrCodec ndr, object value, CodecContext context) =>
             throw new InvalidOperationException(Interop.GetLocalizedMessage(ErrorCode.INTEROP_UTIL_INCORRECT_CALL));
@@ -562,7 +541,6 @@ internal static class MarshalUnMarshalHelper
     /// <inheritdoc/>
     private sealed class CharacterImpl : ISerializerDeserializer
     {
-
         /// <inheritdoc/>
         public void SerializeData(NdrCodec ndr, object value, CodecContext context) =>
             ndr.WriteUnsignedSmall((char)value);
@@ -577,7 +555,6 @@ internal static class MarshalUnMarshalHelper
     /// <inheritdoc/>
     private sealed class SByteImpl : ISerializerDeserializer
     {
-
         /// <inheritdoc/>
         public void SerializeData(NdrCodec ndr, object value, CodecContext context) =>
             ndr.WriteUnsignedSmall((sbyte)value);
@@ -592,7 +569,6 @@ internal static class MarshalUnMarshalHelper
     /// <inheritdoc/>
     private sealed class ShortImpl : ISerializerDeserializer
     {
-
         /// <inheritdoc/>
         public void SerializeData(NdrCodec ndr, object value, CodecContext context)
         {
@@ -617,7 +593,6 @@ internal static class MarshalUnMarshalHelper
     /// <inheritdoc/>
     private sealed class BooleanImpl : ISerializerDeserializer
     {
-
         /// <inheritdoc/>
         public void SerializeData(NdrCodec ndr, object value, CodecContext context)
         {
@@ -665,7 +640,6 @@ internal static class MarshalUnMarshalHelper
     /// <inheritdoc/>
     private sealed class IntegerImpl : ISerializerDeserializer
     {
-
         /// <inheritdoc/>
         public void SerializeData(NdrCodec ndr, object value, CodecContext context)
         {
@@ -686,7 +660,6 @@ internal static class MarshalUnMarshalHelper
     /// <inheritdoc/>
     private sealed class LongImpl : ISerializerDeserializer
     {
-
         /// <inheritdoc/>
         public void SerializeData(NdrCodec ndr, object value, CodecContext context)
         {
@@ -715,7 +688,6 @@ internal static class MarshalUnMarshalHelper
     /// <inheritdoc/>
     private sealed class DoubleImpl : ISerializerDeserializer
     {
-
         /// <inheritdoc/>
         public void SerializeData(NdrCodec ndr, object value, CodecContext context)
         {
@@ -739,13 +711,11 @@ internal static class MarshalUnMarshalHelper
 
         /// <inheritdoc/>
         public int GetDataLengthInBytes(object value, int flag = InteropFlags.FLAG_NULL) => 8;
-
     }
 
     /// <inheritdoc/>
     private sealed class CurrencyImpl : ISerializerDeserializer
     {
-
         /// <inheritdoc/>
         public void SerializeData(NdrCodec ndr, object value,
             CodecContext context)
@@ -819,14 +789,12 @@ internal static class MarshalUnMarshalHelper
     /// <inheritdoc/>
     private sealed class DateImpl : ISerializerDeserializer
     {
-
         /// <inheritdoc/>
         public void SerializeData(NdrCodec ndr, object value, CodecContext context)
         {
             ndr.Buffer.Align(8);
             BinaryPrimitives.WriteInt64LittleEndian(ndr.Buffer.Buf.AsSpan(ndr.Buffer.Index, sizeof(double)), BitConverter.DoubleToInt64Bits(((DateTime)value).ToOADate()));
             ndr.Buffer.Advance(8);
-
         }
 
         /// <inheritdoc/>
@@ -845,7 +813,6 @@ internal static class MarshalUnMarshalHelper
     /// <inheritdoc/>
     private sealed class FloatImpl : ISerializerDeserializer
     {
-
         /// <inheritdoc/>
         public void SerializeData(NdrCodec ndr, object value, CodecContext context)
         {
@@ -869,13 +836,11 @@ internal static class MarshalUnMarshalHelper
 
         /// <inheritdoc/>
         public int GetDataLengthInBytes(object value, int flag = InteropFlags.FLAG_NULL) => 4;
-
     }
 
     /// <inheritdoc/>
     private sealed class StringImpl : ISerializerDeserializer
     {
-
         /// <inheritdoc/>
         public void SerializeData(NdrCodec ndr, object value, CodecContext context)
         {
@@ -915,7 +880,6 @@ internal static class MarshalUnMarshalHelper
                     ndr.WriteUnsignedSmall(strBytes[i]);
                     i++;
                 }
-
             }
             else // Normal String
             {
@@ -982,7 +946,6 @@ internal static class MarshalUnMarshalHelper
 
                         // null termination
                         ndr.WriteUnsignedShort(0);
-
                     }
                 }
             }
@@ -1116,7 +1079,6 @@ internal static class MarshalUnMarshalHelper
     /// <inheritdoc/>
     private sealed class ComStringImpl : ISerializerDeserializer
     {
-
         /// <inheritdoc/>
         public void SerializeData(NdrCodec ndr, object value, CodecContext context) =>
             throw new InvalidOperationException(Interop.GetLocalizedMessage(ErrorCode.INTEROP_UTIL_INCORRECT_CALL));
@@ -1141,11 +1103,9 @@ internal static class MarshalUnMarshalHelper
         }
     }
 
-
     /// <inheritdoc/>
     private sealed class UUIDImpl : ISerializerDeserializer
     {
-
         /// <inheritdoc/>
         public void SerializeData(NdrCodec ndr, object value, CodecContext context)
         {
@@ -1179,11 +1139,9 @@ internal static class MarshalUnMarshalHelper
         public int GetDataLengthInBytes(object value, int flag = InteropFlags.FLAG_NULL) => 16;
     }
 
-
     /// <inheritdoc/>
     private sealed class MInterfacePointerImpl : ISerializerDeserializer
     {
-
         /// <inheritdoc/>
         public void SerializeData(NdrCodec ndr, object value, CodecContext context) =>
             throw new InvalidOperationException(Interop.GetLocalizedMessage(ErrorCode.INTEROP_UTIL_INCORRECT_CALL));
@@ -1200,7 +1158,6 @@ internal static class MarshalUnMarshalHelper
     /// <inheritdoc/>
     private sealed class MInterfacePointerImpl2 : ISerializerDeserializer
     {
-
         /// <inheritdoc/>
         public void SerializeData(NdrCodec ndr, object value, CodecContext context) =>
             ((InterfacePointerBody)value).Encode(ndr, context.Flag);

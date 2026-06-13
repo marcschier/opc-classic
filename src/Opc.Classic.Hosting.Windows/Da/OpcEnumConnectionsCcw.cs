@@ -155,4 +155,3 @@ public static unsafe class OpcEnumConnectionsCcw
         public int Disposed;
     }
 }
-

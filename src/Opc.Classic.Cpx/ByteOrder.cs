@@ -14,6 +14,7 @@ public enum ByteOrder
     /// Little-endian (default in OPCBinary, native on x86/x64).
     /// </summary>
     LittleEndian = 0,
+
     /// <summary>
     /// Big-endian.
     /// </summary>

@@ -31,7 +31,6 @@ namespace Opc.Classic.Dcom.Core;
 [Serializable]
 public sealed class Variant
 {
-
     /// <summary>
     /// array is allocated on the stack
     /// </summary>
@@ -80,7 +79,6 @@ public sealed class Variant
     /// reserved bits
     /// </summary>
     public const int FADF_RESERVED = 0xF008;
-
 
     /// <summary>
     /// Get out param for type
@@ -1486,7 +1484,6 @@ public sealed class Variant
     /// <inheritdoc/>
     public override string ToString() =>
         _member == null ? "[null]" : "[" + _member + "]";
-
 
     // CAUTION NO PTR TYPE SHOULD BE PART OF THIS MAP !!!
     private static readonly Dictionary<Type, VariantType> _supportedTypes =

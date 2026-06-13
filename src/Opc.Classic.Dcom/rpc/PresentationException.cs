@@ -9,7 +9,6 @@ namespace Opc.Classic.Dcom.Rpc;
 /// </summary>
 public class PresentationException : BindException
 {
-
     /// <summary>
     /// Create default
     /// </summary>

@@ -12,7 +12,6 @@ namespace Opc.Classic.Dcom.Rpc;
 /// </summary>
 public class BasicConnectionContext : IConnectionContext
 {
-
     /// <inheritdoc/>
     public IConnection Connection { get; private set; }
 

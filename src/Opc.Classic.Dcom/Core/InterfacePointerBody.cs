@@ -138,7 +138,6 @@ public class InterfacePointerBody
         return DecodeObjRef(ndr, length);
     }
 
-
     /// <summary>
     /// Decode
     /// </summary>

@@ -27,7 +27,6 @@ namespace Opc.Classic.Dcom.Core;
 [Serializable]
 public sealed class Union
 {
-
     /// <summary>
     /// Returns the discriminant Vs there members Map.
     /// </summary>

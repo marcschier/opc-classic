@@ -41,4 +41,3 @@ public sealed class OcmDa02_LegacyBrowse : DiagnosticAnalyzer
         context.ReportDiagnostic(Diagnostic.Create(MigrationDiagnosticDescriptors.LegacyBrowse, invocation.GetLocation()));
     }
 }
-

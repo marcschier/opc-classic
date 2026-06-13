@@ -31,7 +31,6 @@ namespace Opc.Classic.Dcom.Automation;
 /// </summary>
 public interface ITypeInfo : IComObject
 {
-
     /// <summary>
     /// Retrieves a TypeAttr structure that contains the attributes
     /// of the type description.

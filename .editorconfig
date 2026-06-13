@@ -165,6 +165,17 @@ dotnet_diagnostic.RCS0058.severity = warning
 dotnet_diagnostic.RCS0061.severity = warning
 
 # ============================================================================
+# Roslynator.Analyzers (RCS1xxx) — curated opt-in subset
+#
+# RCS1xxx rules ship with a mix of default severities in Roslynator.Analyzers
+# 4.15.0; the entries below promote a small set to 'warning' so the build
+# enforces them (TreatWarningsAsErrors=true makes that hard-fail).
+# ============================================================================
+# RCS0063: Remove unnecessary blank line
+# (Modern replacement for the now-deprecated RCS1036.)
+dotnet_diagnostic.RCS0063.severity = warning
+
+# ============================================================================
 # AnalysisMode=All + AnalysisLevel=latest-all suppressions (root scope)
 #
 # These rules are intentional design choices that cannot be trivially fixed

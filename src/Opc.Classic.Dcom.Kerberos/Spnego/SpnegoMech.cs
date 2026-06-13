@@ -25,4 +25,3 @@ public enum SpnegoMech
     /// </summary>
     Ntlmssp,
 }
-

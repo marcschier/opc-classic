@@ -8,7 +8,6 @@ namespace Opc.Classic.Dcom.Automation;
 [Flags]
 public enum ImplTypeFlags
 {
-
     /// <summary>
     /// The interface or dispinterface represents the default for the source or sink.
     /// </summary>

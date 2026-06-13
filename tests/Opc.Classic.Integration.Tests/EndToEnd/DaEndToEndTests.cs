@@ -159,7 +159,6 @@ public sealed class DaEndToEndTests
         await Assert.That(browsed.Where(static id => id.StartsWith("Bucket Brigade.", StringComparison.Ordinal)).Count()).IsEqualTo(10);
     }
 
-
     [Test, Category("EndToEnd")]
     public async Task InterfacePointerMethods_Then_ObjrefsFlowBack()
     {

@@ -28,7 +28,6 @@ namespace Opc.Classic.Dcom.Core;
 /// </summary>
 public sealed class Currency
 {
-
     /// <summary>
     /// Returns the units value.
     /// </summary>

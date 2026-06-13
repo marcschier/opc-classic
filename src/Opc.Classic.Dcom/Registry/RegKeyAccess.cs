@@ -9,7 +9,6 @@ namespace Opc.Classic.Dcom.Registry;
 [Flags]
 public enum RegKeyAccess
 {
-
     /// <summary>
     /// Query
     /// </summary>
@@ -59,6 +58,5 @@ public enum RegKeyAccess
     /// Write
     /// </summary>
     KEY_WRITE = 0x00020006,
-
 }
 #pragma warning restore MA0062, CA1069

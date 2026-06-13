@@ -58,7 +58,3 @@ public sealed class OcmGeneral01_UsingOpcRcwCodeFix : CodeFixProvider
         return await MigrationCodeFixHelpers.FormatRootAsync(document, root, cancellationToken).ConfigureAwait(false);
     }
 }
-
-
-
-

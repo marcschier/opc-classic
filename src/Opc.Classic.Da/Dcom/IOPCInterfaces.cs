@@ -674,7 +674,6 @@ public partial interface IOPCAsyncIO2
     /// </summary>
     [OpcMethod(8)]
     Task<bool> GetEnableAsync(CancellationToken cancellationToken = default);
-
 }
 
 /// <summary>

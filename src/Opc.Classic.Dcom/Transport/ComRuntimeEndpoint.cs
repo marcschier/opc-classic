@@ -14,7 +14,6 @@ namespace Opc.Classic.Dcom.Transport;
 /// </summary>
 public sealed class ComRuntimeEndpoint : ConnectionOrientedEndpoint
 {
-
     /// <summary>
     /// Create endpoint
     /// </summary>
@@ -40,7 +39,6 @@ public sealed class ComRuntimeEndpoint : ConnectionOrientedEndpoint
     public void ProcessRequests(IComRuntimeWorker workerObject, string baseIID,
         IReadOnlyList<string> listOfSupportedInterfaces, CancellationToken cancellationToken)
     {
-
         Log.Logger.Information("processRequests: [ComRuntimeEndPoint] started new thread " +
             Thread.CurrentThread.Name);
 

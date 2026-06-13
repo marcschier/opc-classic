@@ -9,7 +9,6 @@ namespace Opc.Classic.Dcom.Rpc;
 /// </summary>
 public abstract class TransportFactory
 {
-
     /// <summary>
     /// Create transport
     /// </summary>

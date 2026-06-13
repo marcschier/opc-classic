@@ -7,7 +7,6 @@ namespace Opc.Classic.Dcom.Core;
 /// </summary>
 public sealed class InteropFlags
 {
-
     /// <summary>
     /// FLAG representing nothing. Use this if no other flag is to be set.
     /// </summary>

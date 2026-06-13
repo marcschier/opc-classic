@@ -13,7 +13,6 @@ namespace Opc.Classic.Dcom.Core;
 [Serializable]
 internal sealed class ComObjectImpl : IComObject, IComObjectInternal
 {
-
     /// <summary>
     /// Dual interface
     /// </summary>

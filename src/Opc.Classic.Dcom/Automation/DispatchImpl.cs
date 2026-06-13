@@ -1,6 +1,5 @@
 ﻿// SPDX-License-Identifier: MIT
 
-
 using Opc.Classic.Dcom.Common;
 using Opc.Classic.Dcom.Core;
 using Opc.Classic.Dcom.Rpc.Core;
@@ -16,7 +15,6 @@ namespace Opc.Classic.Dcom.Automation;
 [Serializable]
 internal sealed class DispatchImpl : ComObjectImplWrapper, IDispatch
 {
-
     /// <summary>
     /// Create implementation
     /// </summary>
@@ -127,7 +125,6 @@ internal sealed class DispatchImpl : ComObjectImplWrapper, IDispatch
             }
         }
 
-
         var obj = new CallBuilder(true)
         {
             Opnum = 2 // size of the array
@@ -234,7 +231,6 @@ internal sealed class DispatchImpl : ComObjectImplWrapper, IDispatch
                 }
             }
         }
-
 
         var lengthPtr = 0;
         if (arrayOfNamedDispIds != null)

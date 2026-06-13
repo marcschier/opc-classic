@@ -19,7 +19,6 @@ namespace Opc.Classic.Dcom.Core;
 /// </remarks>
 public class Clsid
 {
-
     /// <summary>
     /// String representation of the wrapped class identifier.
     /// </summary>

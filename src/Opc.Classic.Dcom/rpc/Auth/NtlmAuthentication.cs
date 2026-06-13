@@ -19,12 +19,10 @@ namespace Opc.Classic.Dcom.Rpc.Auth.ntlm;
 /// </summary>
 public class NtlmAuthentication
 {
-
     /// <summary>
     /// Type of auth
     /// </summary>
     public const int AUTHENTICATIONSERVICENTLM = 10;
-
 
     /// <summary>
     /// Create auth
@@ -383,7 +381,6 @@ public class NtlmAuthentication
                 {
                     throw new InvalidOperationException("Exception occurred while forming NTLMv2 Type3Response", e);
                 }
-
             }
             else
             {
@@ -458,7 +455,6 @@ public class NtlmAuthentication
                     {
                         throw new InvalidOperationException("Exception occurred while forming Session Security for Type3Response", e);
                     }
-
                 }
                 try
                 {

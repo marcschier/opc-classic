@@ -12,7 +12,6 @@ namespace Opc.Classic.Dcom.Rpc;
 /// </summary>
 public class DefaultConnection : IConnection
 {
-
     /// <summary>
     /// Create connection
     /// </summary>
@@ -126,7 +125,6 @@ public class DefaultConnection : IConnection
 
         if (_bytesRemainingInRecieveBuffer)
         {
-
             // receiver buffer always falls on the boundary of a new Fragment.
             //
             // Earlier code commented out: 2-byte packets caused this logic to fail

@@ -1,6 +1,5 @@
 ﻿// SPDX-License-Identifier: MIT
 
-
 using Opc.Classic.Dcom.Core;
 
 namespace Opc.Classic.Dcom.Automation;
@@ -10,7 +9,6 @@ namespace Opc.Classic.Dcom.Automation;
 /// </summary>
 internal sealed class EnumVARIANTImpl : ComObjectImplWrapper, IEnumVariant
 {
-
     /// <summary>
     /// Create implementation
     /// </summary>

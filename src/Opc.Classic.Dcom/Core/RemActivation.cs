@@ -12,7 +12,6 @@ namespace Opc.Classic.Dcom.Core;
 
 internal sealed class RemActivation : NdrOp, IServerActivation
 {
-
     /// <summary>
     /// That
     /// </summary>
@@ -145,7 +144,6 @@ internal sealed class RemActivation : NdrOp, IServerActivation
     /// <inheritdoc/>
     public override void Read(NdrCodec ndr)
     {
-
         // first take out OrpcThat
         ORPCThat = OrpcThat.Decode(ndr);
 
@@ -217,7 +215,6 @@ internal sealed class RemActivation : NdrOp, IServerActivation
         MarshalUnMarshalHelper.Deserialize(ndr, array);
 
         ActivationSuccessful = true;
-
     }
 
     /// <inheritdoc/>

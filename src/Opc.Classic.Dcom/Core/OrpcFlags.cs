@@ -4,7 +4,6 @@ namespace Opc.Classic.Dcom.Core;
 
 internal enum OrpcFlags
 {
-
     /// <summary>
     /// no additional info in packet
     /// </summary>

@@ -73,9 +73,3 @@ public sealed class OcmDa01_LegacyServerCreationCodeFix : CodeFixProvider
         return await MigrationCodeFixHelpers.FormatRootAsync(document, root, cancellationToken).ConfigureAwait(false);
     }
 }
-
-
-
-
-
-

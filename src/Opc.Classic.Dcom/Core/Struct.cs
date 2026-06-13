@@ -14,7 +14,6 @@ namespace Opc.Classic.Dcom.Core;
 [Serializable]
 public sealed class Struct
 {
-
     /// <summary>
     /// Empty struct
     /// </summary>
@@ -208,7 +207,6 @@ public sealed class Struct
 
                     _listOfDimensions.AddRange(structMember._listOfDimensions);
                     structMember._listOfDimensions.Clear();
-
                 }
                 else if (!_arrayAdded && structMember._arrayAdded)
                 {
@@ -273,7 +271,6 @@ public sealed class Struct
             {
                 ArrayMaxCounts.Remove(value);
             }
-
         }
         else if (member is Struct structMember && structMember._arrayAdded)
         {

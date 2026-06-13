@@ -14,7 +14,6 @@ namespace Opc.Classic.Dcom.Common;
 /// </remarks>
 public sealed class InteropRuntimeException : Exception
 {
-
     /// <summary>
     /// Create exception
     /// </summary>

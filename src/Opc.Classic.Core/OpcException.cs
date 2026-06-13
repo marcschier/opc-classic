@@ -71,4 +71,3 @@ public class OpcException : Exception
         return resultId;
     }
 }
-

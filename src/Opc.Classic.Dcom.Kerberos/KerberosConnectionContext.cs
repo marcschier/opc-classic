@@ -126,7 +126,6 @@ public sealed class KerberosConnectionContext : IKerberosConnectionContext
         };
     }
 
-
     private KerberosClient CreateKerberosClient()
     {
         var configuration = Krb5Config.CurrentUser();

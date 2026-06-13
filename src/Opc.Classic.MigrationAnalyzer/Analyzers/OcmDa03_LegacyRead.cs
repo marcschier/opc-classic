@@ -41,4 +41,3 @@ public sealed class OcmDa03_LegacyRead : DiagnosticAnalyzer
         context.ReportDiagnostic(Diagnostic.Create(MigrationDiagnosticDescriptors.LegacyRead, invocation.GetLocation()));
     }
 }
-

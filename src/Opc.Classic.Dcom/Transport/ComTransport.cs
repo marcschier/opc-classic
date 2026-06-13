@@ -15,7 +15,6 @@ namespace Opc.Classic.Dcom.Transport;
 /// </summary>
 internal sealed class ComTransport : ITransport, IDisposable
 {
-
     /// <inheritdoc/>
     public string Protocol => "ncacn_ip_tcp";
 

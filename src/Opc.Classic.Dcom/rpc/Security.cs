@@ -7,7 +7,6 @@ namespace Opc.Classic.Dcom.Rpc;
 /// </summary>
 public static class Security
 {
-
     /// <summary>
     /// User name key
     /// </summary>

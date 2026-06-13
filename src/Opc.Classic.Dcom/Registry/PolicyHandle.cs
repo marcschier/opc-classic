@@ -7,7 +7,6 @@ namespace Opc.Classic.Dcom.Registry;
 /// </summary>
 public class PolicyHandle
 {
-
     /// <summary>
     /// Handle to the Key
     /// </summary>

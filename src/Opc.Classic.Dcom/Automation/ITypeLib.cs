@@ -19,7 +19,6 @@ namespace Opc.Classic.Dcom.Automation;
 /// </summary>
 public interface ITypeLib : IComObject
 {
-
     /// <summary>
     /// Returns the number of type descriptions in the type library.
     /// </summary>

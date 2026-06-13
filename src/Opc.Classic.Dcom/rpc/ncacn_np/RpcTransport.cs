@@ -12,7 +12,6 @@ using Opc.Classic.Dcom.Smb;
 using Opc.Classic.Dcom.Smb.Rpc;
 using Opc.Classic.Dcom.Transport;
 
-
 namespace Opc.Classic.Dcom.Rpc.Ncacn_Np;
 
 /// <summary>

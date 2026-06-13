@@ -8,7 +8,6 @@ namespace Opc.Classic.Dcom.Rpc;
 [Flags]
 public enum Semantics
 {
-
     /// <summary>
     /// No special call semantics.
     /// </summary>

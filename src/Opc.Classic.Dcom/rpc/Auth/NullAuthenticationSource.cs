@@ -13,7 +13,6 @@ namespace Opc.Classic.Dcom.Rpc.Auth.ntlm;
 /// </summary>
 public sealed class NullAuthenticationSource : AuthenticationSource
 {
-
     /// <summary>
     /// Singleton instance.
     /// </summary>

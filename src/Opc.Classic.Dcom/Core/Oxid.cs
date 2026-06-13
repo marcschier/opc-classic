@@ -8,7 +8,6 @@ namespace Opc.Classic.Dcom.Core;
 [Serializable]
 internal sealed class Oxid
 {
-
 #pragma warning disable RECS0154 // Parameter is never used
     /// <summary>
     /// Create

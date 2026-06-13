@@ -19,7 +19,6 @@ namespace Opc.Classic.Dcom.Core;
 [Serializable]
 public sealed class LocalCoClass
 {
-
     /// <summary>
     /// Returns <code>true</code> if the primary interface definition 
     /// represents a real <code>IID</code>.
@@ -122,7 +121,6 @@ public sealed class LocalCoClass
     /// <seealso cref="LocalCoClass(LocalInterfaceDefinition, object)"></seealso>
     /// <returns>primary interfaceDefinition. </returns>
     public LocalInterfaceDefinition InterfaceDefinition { get; private set; }
-
 
     /// <summary>
     /// Creates a local class instance. The framework will try to create

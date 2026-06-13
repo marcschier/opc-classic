@@ -1,6 +1,5 @@
 ﻿// SPDX-License-Identifier: MIT
 
-
 using Opc.Classic.Dcom.Common;
 using Opc.Classic.Dcom.Core;
 
@@ -12,7 +11,6 @@ namespace Opc.Classic.Dcom.Automation;
 /// </summary>
 public static class AutomationFactory
 {
-
     /// <summary>
     /// Narrow object
     /// </summary>

@@ -10,7 +10,6 @@ namespace System.Collections.Generic;
 /// </summary>
 public static class CollectionsEx
 {
-
     /// <summary>
     /// Mimics java
     /// </summary>

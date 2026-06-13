@@ -214,5 +214,4 @@ internal sealed class LoopbackHdaClient : IAsyncDisposable
     private static OpcHdaTime ToOpcHdaTime(HdaTime time) => time.IsRelative
         ? OpcHdaTime.FromString(time.Expression ?? "NOW")
         : OpcHdaTime.FromTimestamp(time.ResolveAt(DateTimeOffset.UtcNow));
-
 }

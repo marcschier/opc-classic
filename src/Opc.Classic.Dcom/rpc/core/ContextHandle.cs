@@ -9,7 +9,6 @@ namespace Opc.Classic.Dcom.Rpc.Core;
 /// </summary>
 public class ContextHandle : NdrOp
 {
-
     /// <summary>
     /// Attributes
     /// </summary>

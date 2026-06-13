@@ -7,7 +7,6 @@ namespace Opc.Classic.Dcom.Automation;
 /// </summary>
 public enum FuncKind
 {
-
     /// <summary>
     /// The function is accessed the same as PUREVIRTUAL,
     /// except the function has an implementation.

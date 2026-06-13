@@ -8,7 +8,6 @@ namespace Opc.Classic.Dcom.Registry;
 [Flags]
 public enum RegOption
 {
-
     /// <summary>
     /// This key is not volatile; this is the default. The information
     /// is stored in a file and is preserved when the system is restarted.

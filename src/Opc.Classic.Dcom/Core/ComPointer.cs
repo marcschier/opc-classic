@@ -11,7 +11,6 @@ namespace Opc.Classic.Dcom.Core;
 [Serializable]
 public sealed class ComPointer
 {
-
     /// <summary>
     /// Deferred
     /// </summary>
@@ -216,7 +215,6 @@ public sealed class ComPointer
             context.Flag = oldFlags;
         }
     }
-
 
     /// <summary>
     /// class of type being decoded. If the type being expected is an array, the varType

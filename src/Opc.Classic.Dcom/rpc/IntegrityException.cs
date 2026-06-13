@@ -5,7 +5,6 @@ namespace Opc.Classic.Dcom.Rpc;
 /// <inheritdoc/>
 public class IntegrityException : RpcException
 {
-
     /// <inheritdoc/>
     public IntegrityException()
     {

@@ -16,7 +16,6 @@ namespace Opc.Classic.Dcom.Rpc.Auth.ntlm;
     "servers, set OpcConnectData.AllowNtlmV1 = true or properties.SetProperty(\"rpc.ntlm.allowV1\", \"true\").")]
 public class Ntlm1 : ISecurity
 {
-
     private const int kNTLM1_VERIFIER_LENGTH = 16;
 
     /// <summary>
@@ -42,7 +41,6 @@ public class Ntlm1 : ISecurity
     /// <param name="isServer">Value indicating whether the NTLM context is running on the server side.</param>
     public Ntlm1(NtlmFlags flags, byte[] sessionKey, bool isServer)
     {
-
         Protection = ((flags & NtlmFlags.NtlmsspNegotiateSeal) != NtlmFlags.None) ?
             ProtectionLevel.PROTECTION_LEVEL_PRIVACY :
                 ((flags & NtlmFlags.NtlmsspNegotiateSign) != NtlmFlags.None) ?
@@ -59,13 +57,11 @@ public class Ntlm1 : ISecurity
         _serverSigningKey = _keyFactory.GenerateServerSigningKey(flags, sessionKey);
         var serverSealingKey = _keyFactory.GenerateServerSealingKey(flags, sessionKey);
 
-
         // Used by the server to decrypt client messages
         _clientCipher = _keyFactory.GetARCFOUR(clientSealingKey);
         // Used by the client to decrypt server messages
         _serverCipher = _keyFactory.GetARCFOUR(serverSealingKey);
     }
-
 
     /// <summary>
     /// Process incoming

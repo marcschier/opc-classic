@@ -9,7 +9,6 @@ namespace Opc.Classic.Dcom.Rpc;
 /// </summary>
 public abstract class ConnectionOrientedPdu : NdrOp, IProtocolDataUnit
 {
-
     /// <summary>
     /// Flag indicating the PDU is the first fragment.
     /// </summary>
@@ -117,7 +116,6 @@ public abstract class ConnectionOrientedPdu : NdrOp, IProtocolDataUnit
     /// Auth length
     /// </summary>
     public int AuthenticatorLength { get; set; }
-
 
     /// <summary>
     /// Decode

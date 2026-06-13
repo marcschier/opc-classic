@@ -14,7 +14,6 @@ namespace Opc.Classic.Dcom.Core;
 /// </summary>
 public sealed class LocalMethodDescriptor
 {
-
     /// <summary>
     /// Method number
     /// </summary>

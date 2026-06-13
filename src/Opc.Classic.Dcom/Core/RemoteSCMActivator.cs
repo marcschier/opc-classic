@@ -13,7 +13,6 @@ namespace Opc.Classic.Dcom.Core;
 /// </summary>
 internal sealed class RemoteSCMActivator
 {
-
     //        HRESULT RemoteCreateInstance(
     //                [in] handle_t hRpc,
     //                [in] ORPCTHIS* orpcthis,
@@ -232,12 +231,10 @@ internal sealed class RemoteSCMActivator
         /// </summary>
         internal Struct GetCustomHeader()
         {
-
             var strukt = new Struct();
 
             try
             {
-
                 strukt.AddMember(0); // Total Activation Blob size
 
                 // Correct length set in getCustomHeader.
@@ -301,11 +298,9 @@ internal sealed class RemoteSCMActivator
                 tempStruct = ScmRequestInfoData;
                 var lenScmRequestInfoDataProp = AddCommonTypeHeaderAndEncode(ndr2, tempStruct, lentempStruct);
 
-
                 strukt.AddMember(new ComPointer(new ComArray(new int[] { lenSpecialSystemProp, lenInstantiationInfoProp, lenSecurityInfoProp, lenServerLocationProp, lenScmRequestInfoDataProp }, true)));
 
                 strukt.AddMember(0); // reserved
-
             }
             catch (InteropException e)
             {
@@ -331,11 +326,9 @@ internal sealed class RemoteSCMActivator
         /// </summary>
         internal Struct GetInstantiationInfoData()
         {
-
             var strukt = new Struct();
             try
             {
-
                 strukt.AddMember(new UUID(_targetClsid));
                 strukt.AddMember(0x14); //  CLSCTX_INPROC_HANDLER | CLSCTX_LOCAL_SERVER | CLSCTX_INPROC_SERVER16
                 strukt.AddMember(0);
@@ -350,13 +343,11 @@ internal sealed class RemoteSCMActivator
                 strukt.AddMember(0); // don't know will replace later on. (remove and add)
                 strukt.AddMember(Convert.ToInt16((short)Interop.COMVersion.MajorVersion));
                 strukt.AddMember(Convert.ToInt16((short)Interop.COMVersion.MinorVersion));
-
             }
             catch (InteropException e)
             {
                 Log.Logger.Error(e, "Adding member");
             }
-
 
             return strukt;
         }
@@ -409,12 +400,10 @@ internal sealed class RemoteSCMActivator
                 var strukt = new Struct();
                 try
                 {
-
                     strukt.AddMember(0);
                     strukt.AddMember(0);
                     strukt.AddMember(0);
                     strukt.AddMember(0);
-
                 }
                 catch (InteropException e)
                 {
@@ -438,7 +427,6 @@ internal sealed class RemoteSCMActivator
                 var strukt = new Struct();
                 try
                 {
-
                     strukt.AddMember(0);
 
                     var _customRemoteRequestSCMInfo = new Struct();
@@ -446,7 +434,6 @@ internal sealed class RemoteSCMActivator
                     _customRemoteRequestSCMInfo.AddMember((short)1);
                     _customRemoteRequestSCMInfo.AddMember(new ComPointer(new ComArray(new short[] { 0x07 }, true)));
                     strukt.AddMember(new ComPointer(_customRemoteRequestSCMInfo));
-
                 }
                 catch (InteropException e)
                 {
@@ -456,7 +443,6 @@ internal sealed class RemoteSCMActivator
                 return strukt;
             }
         }
-
 
         internal Struct InstantiationInfoData
         {
@@ -508,7 +494,6 @@ internal sealed class RemoteSCMActivator
         {
             get
             {
-
                 var strukt = new Struct();
                 try
                 {
@@ -538,7 +523,6 @@ internal sealed class RemoteSCMActivator
             }
         }
 
-
         // discard this struct after use and create a new one
         internal int GetLengthOfStruct(Struct strukt)
         {
@@ -552,7 +536,6 @@ internal sealed class RemoteSCMActivator
             context.EncodeDeferredPointers(ndr);
             return ndr.Buffer.Index - startI;
         }
-
 
         // Skip common header and return total length of the object buffer inside. We will need to skip the
         // padded bytes as well once we have analyzed the complete objectBuffer.
@@ -576,11 +559,8 @@ internal sealed class RemoteSCMActivator
             }
         }
 
-
-
         public override void Read(NdrCodec ndr)
         {
-
             OrpcThat.Decode(ndr);
 
             // MInterfacePointer** ppActProperties
@@ -668,7 +648,6 @@ internal sealed class RemoteSCMActivator
                     {
                         try
                         { // ScmReplyInfo
-
                             // typedef struct tagScmReplyInfoData {
                             // DWORD* pdwReserved;
                             // customREMOTE_REPLY_SCM_INFO* remoteReply;
@@ -704,7 +683,6 @@ internal sealed class RemoteSCMActivator
                             remoteReplyStruct.AddMember(typeof(short));
 
                             strukt.AddMember(new ComPointer(remoteReplyStruct));
-
                         }
                         catch (InteropException e)
                         {
@@ -739,7 +717,6 @@ internal sealed class RemoteSCMActivator
                         {
                             try
                             { // PropsOutInfo
-
                                 // typedef struct tagPropsOutInfo {
                                 // [range(1, MAX_REQUESTED_INTERFACES)]
                                 // DWORD cIfs;
@@ -753,7 +730,6 @@ internal sealed class RemoteSCMActivator
                                 strukt.AddMember(new ComPointer(new ComArray(typeof(int), null, 1, true))); // Hresult,
                                                                                                             // 0 is good anything else is bad and corresponding MInterfacePointer will not exist.
                                 strukt.AddMember(new ComPointer(new ComArray(typeof(InterfacePointer), null, 1, true)));
-
                             }
                             catch (InteropException e)
                             {
@@ -792,13 +768,10 @@ internal sealed class RemoteSCMActivator
                                     }
                                 }
                             }
-
                         }
                     }
 
                     SkipBytes(objectBufferLength, startIndex, ndr);
-
-
                 }
                 else
                 {

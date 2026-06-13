@@ -11,7 +11,6 @@ namespace Opc.Classic.Dcom.Core;
 [Serializable]
 internal sealed class SecurityBinding
 {
-
     /// <summary>
     /// Length
     /// </summary>
@@ -99,7 +98,6 @@ internal sealed class SecurityBinding
         }
         ndr.WriteUnsignedShort(0); // null termination
     }
-
 
     public const int COM_C_AUTHZ_NONE = 0xffff;
     private int _authnSvc; // Cannot be zero.

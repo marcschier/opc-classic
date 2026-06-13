@@ -17,7 +17,6 @@ namespace Opc.Classic.Dcom.Rpc.Auth.ntlm;
 /// </summary>
 public static class Responses
 {
-
     /// <summary>
     /// Calculates the LM Response for the given challenge, using the specified
     /// password.

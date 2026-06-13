@@ -31,11 +31,9 @@ namespace Opc.Classic.Dcom.Core;
 /// </summary>
 public sealed class ComServer : Stub
 {
-
     private static readonly PropertyBag kDefaults = new PropertyBag();
     static ComServer()
     {
-
         kDefaults.SetProperty("rpc.ntlm.lanManagerKey", "false");
         kDefaults.SetProperty("rpc.ntlm.sign", "false");
         kDefaults.SetProperty("rpc.ntlm.seal", "false");
@@ -52,7 +50,6 @@ public sealed class ComServer : Stub
         //        rpc.ntlm.keyExchange = false
 
     }
-
 
     private ComServer()
     {
@@ -276,7 +273,6 @@ public sealed class ComServer : Stub
                     }
                     catch (FormatException)
                     {
-
                     }
                 }
                 else
@@ -485,7 +481,6 @@ public sealed class ComServer : Stub
 
                 if (Interop.UseAutoRegistration || clsid.UseAutoRegistration)
                 {
-
                     // first create the registry entries.
                     try
                     {
@@ -719,7 +714,6 @@ public sealed class ComServer : Stub
                 }
                 catch (FormatException)
                 {
-
                 }
             }
             else
@@ -842,7 +836,6 @@ public sealed class ComServer : Stub
         }
 
         return retval;
-
     }
 
     /// <summary>
@@ -950,7 +943,6 @@ public sealed class ComServer : Stub
     {
         lock (_mutex)
         {
-
             if (_session.SessionInDestroy && !obj.FromDestroySession)
             {
                 throw new InteropException(ErrorCode.INTEROP_SESSION_DESTROYED);
@@ -1013,7 +1005,6 @@ public sealed class ComServer : Stub
     {
         lock (_mutex)
         {
-
             if (_remunknownIPID == null)
             {
                 return;
@@ -1030,7 +1021,6 @@ public sealed class ComServer : Stub
             {
                 throw new InteropException(e1);
             }
-
         }
     }
 

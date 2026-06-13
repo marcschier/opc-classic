@@ -74,4 +74,3 @@ public class ItemIdentifier : IEquatable<ItemIdentifier>
     public override string ToString() =>
         Path is null ? ItemName : $"{Path}::{ItemName}";
 }
-

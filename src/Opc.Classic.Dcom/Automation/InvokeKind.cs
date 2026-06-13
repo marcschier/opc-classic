@@ -7,7 +7,6 @@ namespace Opc.Classic.Dcom.Automation;
 /// </summary>
 public enum InvokeKind
 {
-
     /// <summary>
     /// The member is called using a normal function invocation syntax
     /// </summary>

@@ -66,7 +66,6 @@ namespace Opc.Classic.Dcom.Automation;
 /// </summary>
 public interface IDispatch : IComObject
 {
-
     /// <summary>
     /// Returns the COM <code>EXCEPINFO</code> structure wrapped as a
     /// data object for the <b>last</b> operation. Note this will only be

@@ -110,4 +110,3 @@ public readonly record struct OpcQuality(ushort RawValue)
     public override string ToString()
         => $"{Quality} (sub={Substatus}, limit={Limit}, vendor=0x{VendorExtension:X2})";
 }
-

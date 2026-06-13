@@ -10,7 +10,6 @@ namespace Opc.Classic.Dcom.Core;
 [Serializable]
 public class ComObjectImplWrapper : IComObject, IComObjectInternal
 {
-
     /// <summary>
     /// Wrapped Com object
     /// </summary>

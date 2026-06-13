@@ -23,7 +23,6 @@ namespace Opc.Classic.Dcom.Core;
 // TODO(p4e-security): Harden server-side SimplePing/ComplexPing before they mutate ping-set state.
 internal sealed class OxidResolver : NdrOp
 {
-
     /// <summary>
     /// Bindings
     /// </summary>

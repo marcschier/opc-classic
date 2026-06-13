@@ -26,7 +26,6 @@ namespace Opc.Classic.Dcom.Core;
 [Serializable]
 public sealed class ComArray
 {
-
     /// <summary>
     /// Returns the nested Array.
     /// </summary>
@@ -182,7 +181,6 @@ public sealed class ComArray
         ArrayType = template.GetType();
         Init2(upperBounds, dimension, isConformant, false);
     }
-
 
     /// <summary>
     /// Refer to <seealso cref="ComArray(object, int[], int, bool)"/> for details.
@@ -474,7 +472,6 @@ public sealed class ComArray
                 context.Flag |= InteropFlags.FLAG_REPRESENTATION_ARRAY;
                 for (var j = 0; j < o1.Length; j++)
                 {
-
                     MarshalUnMarshalHelper.Serialize(ndr, ArrayType, o1[j], context);
                 }
                 context.Flag = oldFlag;
@@ -503,7 +500,6 @@ public sealed class ComArray
         };
         if (_isConformantProxy)
         {
-
             // first read the max counts ...First to last dimension.
             var i = 0;
             while (i < dimension)

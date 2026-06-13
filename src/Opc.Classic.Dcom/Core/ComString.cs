@@ -13,7 +13,6 @@ namespace Opc.Classic.Dcom.Core;
 [Serializable]
 public sealed class ComString
 {
-
     /// <summary>
     /// Represents <code><see cref="Variant"/></code> for this object,
     /// it is valid only if this object is a <code>BSTR</code>
@@ -96,7 +95,6 @@ public sealed class ComString
                 Interop.GetLocalizedMessage(ErrorCode.INTEROP_UTIL_FLAG_ERROR), nameof(type));
         }
         _member.SetFlags(type | InteropFlags.FLAG_REPRESENTATION_VALID_STRING);
-
     }
 
     /// <summary>

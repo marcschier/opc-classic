@@ -65,9 +65,3 @@ public sealed class OcmAe01_LegacyEventSubscriptionCodeFix : CodeFixProvider
         return await MigrationCodeFixHelpers.FormatRootAsync(document, root, cancellationToken).ConfigureAwait(false);
     }
 }
-
-
-
-
-
-

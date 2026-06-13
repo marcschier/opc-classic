@@ -10,7 +10,6 @@ namespace Opc.Classic.Dcom.Rpc.Core;
 /// </summary>
 public class PresentationContext : NdrOp
 {
-
     /// <summary>
     /// Context
     /// </summary>

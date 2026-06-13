@@ -7,7 +7,6 @@ namespace Opc.Classic.Dcom;
 /// </summary>
 public static class Interfaces
 {
-
     /// <summary>
     /// IID representing the COM <code>IDispatch</code>.
     /// </summary>

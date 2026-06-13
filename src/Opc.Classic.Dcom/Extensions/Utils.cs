@@ -9,7 +9,6 @@ namespace System;
 /// </summary>
 public static class Utils
 {
-
     /// <summary>
     /// Helper to convert buffer into hex
     /// </summary>

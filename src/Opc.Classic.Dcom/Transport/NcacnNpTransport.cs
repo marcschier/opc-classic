@@ -191,4 +191,3 @@ public sealed class NcacnNpTransport : IAsyncTransport
     private static bool IsLastFragment(ReadOnlySpan<byte> pdu) =>
         pdu.Length <= PduFlagsOffset || (pdu[PduFlagsOffset] & PfcLastFrag) != 0;
 }
-

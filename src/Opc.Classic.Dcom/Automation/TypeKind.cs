@@ -7,7 +7,6 @@ namespace Opc.Classic.Dcom.Automation;
 /// </summary>
 public enum TypeKind
 {
-
     /// <summary>
     /// A set of enumerators.
     /// </summary>

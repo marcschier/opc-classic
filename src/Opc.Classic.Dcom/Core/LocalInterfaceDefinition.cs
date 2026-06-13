@@ -14,7 +14,6 @@ namespace Opc.Classic.Dcom.Core;
 [Serializable]
 public sealed class LocalInterfaceDefinition
 {
-
     /// <summary>
     /// Returns status whether this interface supports
     /// <code>IDispatch</code> or not.
@@ -111,7 +110,6 @@ public sealed class LocalInterfaceDefinition
     /// <code>dispId</code> was found. </returns>
     public LocalMethodDescriptor GetMethodDescriptorForDispId(int dispId) =>
         _dispIdVsMethodInfo.GetOrDefault(dispId);
-
 
     /// <summary>
     ///Returns the method descriptor identified by it's name.

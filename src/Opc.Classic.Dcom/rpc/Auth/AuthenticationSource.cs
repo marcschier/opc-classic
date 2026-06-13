@@ -34,7 +34,6 @@ namespace Opc.Classic.Dcom.Rpc.Auth.ntlm;
 /// </remarks>
 public abstract class AuthenticationSource
 {
-
     private static AuthenticationSource? s_default;
 
     /// <summary>

@@ -7,7 +7,6 @@ namespace Opc.Classic.Dcom.Rpc.Core;
 /// </summary>
 public enum PresentationResultCode
 {
-
     /// <summary>
     /// Accept
     /// </summary>

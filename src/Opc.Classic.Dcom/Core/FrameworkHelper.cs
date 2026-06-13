@@ -11,7 +11,6 @@ namespace Opc.Classic.Dcom.Core;
 /// </summary>
 public static class FrameworkHelper
 {
-
     /// <summary>
     /// link session
     /// </summary>

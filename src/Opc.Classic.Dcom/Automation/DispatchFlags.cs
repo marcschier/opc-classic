@@ -7,7 +7,6 @@ namespace Opc.Classic.Dcom.Automation;
 /// </summary>
 public static class DispatchFlags
 {
-
     /// <summary>
     /// Flag for selecting a <code>method</code>.
     /// </summary>

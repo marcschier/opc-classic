@@ -9,7 +9,6 @@ namespace Opc.Classic.Dcom.Core;
 [Serializable]
 internal sealed class StdObjRef
 {
-
     /// <summary>
     /// Flags
     /// </summary>
@@ -114,7 +113,6 @@ internal sealed class StdObjRef
         }
         catch (NdrException e)
         {
-
             Log.Logger.Error(e, "StdObjRef encode");
         }
     }

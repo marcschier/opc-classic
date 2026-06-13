@@ -10,7 +10,6 @@ namespace Opc.Classic.Dcom.Transport;
 /// </summary>
 public sealed class ComRuntimeTransportFactory : TransportFactory
 {
-
     /// <summary>
     /// Private constructor
     /// </summary>

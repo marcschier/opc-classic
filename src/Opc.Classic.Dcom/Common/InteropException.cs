@@ -8,7 +8,6 @@ namespace Opc.Classic.Dcom.Common;
 /// </summary>
 public class InteropException : Exception
 {
-
     /// <summary>
     /// Create exception
     /// </summary>

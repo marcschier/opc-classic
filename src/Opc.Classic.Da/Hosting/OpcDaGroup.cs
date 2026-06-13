@@ -1250,4 +1250,3 @@ public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItem
             OpcResultId.Ok.Code);
     }
 }
-

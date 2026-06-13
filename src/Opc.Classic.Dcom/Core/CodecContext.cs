@@ -9,7 +9,6 @@ namespace Opc.Classic.Dcom.Core;
 /// </summary>
 public class CodecContext
 {
-
     /// <summary>
     /// List of deferred pointers
     /// </summary>

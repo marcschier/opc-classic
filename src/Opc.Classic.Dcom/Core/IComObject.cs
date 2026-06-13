@@ -41,7 +41,6 @@ namespace Opc.Classic.Dcom.Core;
 /// </summary>
 public interface IComObject
 {
-
     /// <summary>
     /// Unique 128 bit uuid representing the interface on the COM server.
     /// This value can and should be used to map an <see cref="IUnreferenced"/>

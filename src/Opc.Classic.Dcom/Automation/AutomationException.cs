@@ -9,7 +9,6 @@ namespace Opc.Classic.Dcom.Automation;
 /// </summary>
 public sealed class AutomationException : InteropException
 {
-
     /// <summary>
     /// Create exception
     /// </summary>

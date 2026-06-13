@@ -9,7 +9,6 @@ namespace Opc.Classic.Dcom.Rpc.Core;
 /// </summary>
 public class ProtocolVersion : NdrOp
 {
-
     /// <summary>
     /// Major version
     /// </summary>

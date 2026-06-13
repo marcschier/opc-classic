@@ -40,4 +40,3 @@ public sealed class OcmDa01_LegacyServerCreation : DiagnosticAnalyzer
         context.ReportDiagnostic(Diagnostic.Create(MigrationDiagnosticDescriptors.LegacyServerCreation, objectCreation.GetLocation()));
     }
 }
-

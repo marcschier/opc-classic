@@ -25,7 +25,6 @@ namespace Opc.Classic.Dcom.Core;
 /// </summary>
 public sealed class Session
 {
-
     /// <summary>
     /// Local host
     /// </summary>
@@ -186,7 +185,6 @@ public sealed class Session
         }
     }
 
-
     /// <summary>
     /// Creates a session with the <code>authInfo</code> of the user.
     /// This session is not yet attached to a COM server.
@@ -258,7 +256,6 @@ public sealed class Session
             return session;
         }
     }
-
 
     /// <summary>
     /// Creates a new session using credentials of the <code>session</code>parameter.
@@ -473,7 +470,6 @@ public sealed class Session
     /// </summary>
     internal sealed class IPID_SessionID_Holder
     {
-
         /// <summary>
         /// Ipid
         /// </summary>
@@ -629,19 +625,6 @@ public sealed class Session
     private static readonly List<Session> kListOfSessions = new List<Session>();
     private static readonly ConditionalWeakTable<object, IPID_SessionID_Holder> kWeakTable =
         new ConditionalWeakTable<object, IPID_SessionID_Holder>();
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     /// <summary>
     /// Returns the <see cref="IAuthInfo"/> (if any) associated with this session.

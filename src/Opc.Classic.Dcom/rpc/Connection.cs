@@ -7,7 +7,6 @@ namespace Opc.Classic.Dcom.Rpc;
 /// </summary>
 public static class Connection
 {
-
     /// <summary>
     /// Key to read max fragments
     /// </summary>

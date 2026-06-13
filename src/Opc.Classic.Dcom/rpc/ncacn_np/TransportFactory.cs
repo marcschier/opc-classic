@@ -9,7 +9,6 @@ namespace Opc.Classic.Dcom.Rpc.Ncacn_Np;
 /// </summary>
 public class TransportFactory : Opc.Classic.Dcom.Rpc.TransportFactory
 {
-
     /// <summary>
     /// Create transport
     /// </summary>

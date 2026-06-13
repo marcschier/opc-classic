@@ -31,7 +31,6 @@ namespace Opc.Classic.Dcom.Common;
 /// </remarks>
 public interface IUnreferenced
 {
-
     /// <summary>
     /// Called when the <code><see cref="IComObject"/></code> associated with this
     /// interface is garbage collected by the framework.

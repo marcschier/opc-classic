@@ -7,7 +7,6 @@ namespace Opc.Classic.Dcom.Core;
 /// </summary>
 internal interface IServerActivation
 {
-
     /// <summary>
     /// Activation successful
     /// </summary>

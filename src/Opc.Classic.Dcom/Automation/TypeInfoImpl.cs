@@ -14,7 +14,6 @@ namespace Opc.Classic.Dcom.Automation;
 [Serializable]
 internal sealed class TypeInfoImpl : ComObjectImplWrapper, ITypeInfo
 {
-
     /// <summary>
     /// Create implementation
     /// </summary>
@@ -307,7 +306,6 @@ internal sealed class TypeInfoImpl : ComObjectImplWrapper, ITypeInfo
         var result = ComObject.Call(callObject);
 
         return new VarDesc((ComPointer)result[0]);
-
     }
 
     /// <inheritdoc/>

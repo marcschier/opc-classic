@@ -10,7 +10,6 @@ namespace Opc.Classic.Dcom.Core;
 /// </summary>
 public abstract class ComCustomMarshallerUnMarshaller
 {
-
     /// <summary>
     /// Clsid
     /// </summary>

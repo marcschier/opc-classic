@@ -9,7 +9,6 @@ namespace Opc.Classic.Dcom.Automation;
 /// </summary>
 public sealed class ExcepInfo
 {
-
     /// <summary>
     /// Create exception info
     /// </summary>

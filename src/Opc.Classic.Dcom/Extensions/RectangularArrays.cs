@@ -15,7 +15,6 @@ namespace System;
 /// </summary>
 public static class RectangularArrays
 {
-
     /// <summary>
     /// Create
     /// </summary>

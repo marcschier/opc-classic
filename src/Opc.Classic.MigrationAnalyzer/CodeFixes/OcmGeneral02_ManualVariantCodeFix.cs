@@ -58,7 +58,3 @@ public sealed class OcmGeneral02_ManualVariantCodeFix : CodeFixProvider
         return await MigrationCodeFixHelpers.FormatRootAsync(document, root, cancellationToken).ConfigureAwait(false);
     }
 }
-
-
-
-

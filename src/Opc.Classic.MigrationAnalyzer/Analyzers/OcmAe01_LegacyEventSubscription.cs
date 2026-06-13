@@ -62,4 +62,3 @@ public sealed class OcmAe01_LegacyEventSubscription : DiagnosticAnalyzer
                LegacySyntaxFacts.IsLegacyOpcSymbol(type);
     }
 }
-

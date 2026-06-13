@@ -41,4 +41,3 @@ public sealed class OcmHda01_LegacySyncReadRaw : DiagnosticAnalyzer
         context.ReportDiagnostic(Diagnostic.Create(MigrationDiagnosticDescriptors.LegacySyncReadRaw, invocation.GetLocation()));
     }
 }
-

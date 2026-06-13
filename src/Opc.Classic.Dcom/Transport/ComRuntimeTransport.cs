@@ -14,7 +14,6 @@ namespace Opc.Classic.Dcom.Transport;
 /// </summary>
 internal sealed class ComRuntimeTransport : ITransport, IDisposable
 {
-
     /// <summary>
     /// Create transport
     /// </summary>

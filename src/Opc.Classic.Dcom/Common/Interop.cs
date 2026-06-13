@@ -17,7 +17,6 @@ namespace Opc.Classic.Dcom.Common;
 /// </summary>
 public static class Interop
 {
-
     /// <summary>
     /// Indicates to the framework, if Windows Registry settings for
     /// DLL\OCX component identified by this object should be modified

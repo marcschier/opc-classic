@@ -8,7 +8,6 @@ namespace Opc.Classic.Dcom.Automation;
 [Flags]
 public enum TypeFlag : short
 {
-
     /// <summary>
     /// App object
     /// </summary>

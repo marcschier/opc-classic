@@ -9,7 +9,6 @@ namespace Opc.Classic.Dcom.Common;
 /// </summary>
 public interface IComRuntimeWorker
 {
-
     /// <summary>
     /// Set op number
     /// </summary>

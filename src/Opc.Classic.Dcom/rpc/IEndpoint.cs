@@ -10,7 +10,6 @@ namespace Opc.Classic.Dcom.Rpc;
 /// </summary>
 public interface IEndpoint
 {
-
     /// <summary>
     /// Transport
     /// </summary>

@@ -10,7 +10,6 @@ namespace Opc.Classic.Dcom.Rpc.pdu;
 /// </summary>
 public class AlterContextPdu : ConnectionOrientedPdu
 {
-
     public const int ALTER_CONTEXT_TYPE = 0x0e;
 
     /// <inheritdoc/>
@@ -35,7 +34,6 @@ public class AlterContextPdu : ConnectionOrientedPdu
     /// Context list
     /// </summary>
     public PresentationContext[] ContextList { get; set; }
-
 
     /// <inheritdoc/>
     protected internal override void ReadBody(NdrCodec ndr)

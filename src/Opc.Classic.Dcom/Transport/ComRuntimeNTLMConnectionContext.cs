@@ -1,6 +1,5 @@
 ﻿// SPDX-License-Identifier: MIT
 
-
 using Opc.Classic.Dcom.Internal;
 using System.Globalization;
 using Opc.Classic.Dcom.Rpc.pdu;
@@ -15,7 +14,6 @@ namespace Opc.Classic.Dcom.Transport;
 /// </summary>
 public sealed class ComRuntimeNtlmConnectionContext : NtlmConnectionContext
 {
-
     /// <inheritdoc/>
     public override bool Established => base.Established | _established;
 

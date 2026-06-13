@@ -29,7 +29,6 @@ namespace Opc.Classic.Dcom.Automation;
 /// </summary>
 public interface IEnumVariant
 {
-
     /// <summary>
     /// Attempts to get the next celt items in the enumeration
     /// sequence. If fewer than the requested number

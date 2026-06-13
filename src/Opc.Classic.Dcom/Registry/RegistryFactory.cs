@@ -14,7 +14,6 @@ namespace Opc.Classic.Dcom.Registry;
 /// </summary>
 public class RegistryFactory
 {
-
     /// <summary>
     /// Private constructor
     /// </summary>

@@ -12,7 +12,6 @@ namespace Opc.Classic.Dcom.Core;
 [Serializable]
 internal sealed class OrpcThis
 {
-
     /// <summary>
     /// Create orpcthis
     /// </summary>
@@ -102,7 +101,6 @@ internal sealed class OrpcThis
     /// <returns>A new <see cref="OrpcThis"/> instance built from <paramref name="ndr"/>.</returns>
     internal static OrpcThis Decode(NdrCodec ndr)
     {
-
         var retval = new OrpcThis();
         var context = new CodecContext();
         var majorVersion = (int)(short)MarshalUnMarshalHelper.Deserialize(ndr, typeof(short), context);
@@ -122,7 +120,6 @@ internal sealed class OrpcThis
         {
             Log.Logger.Error(e, "OrpcThis decode");
         }
-
 
         var orpcextentarray = new Struct();
         try
@@ -181,7 +178,6 @@ internal sealed class OrpcThis
 
                 extentArrays.Add(new OrpcExtentArray(((UUID)orpcextent2.GetMember(0)).ToString(), byteArray.Length, byteArray));
             }
-
         }
         retval.ExtentArray = extentArrays.ToArray();
         // decode can only be executed incase of a request made from the

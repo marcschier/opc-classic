@@ -5,7 +5,6 @@ namespace Opc.Classic.Dcom.Core;
 [Serializable]
 internal sealed class SetId
 {
-
     /// <summary>
     /// Identifier
     /// </summary>

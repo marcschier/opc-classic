@@ -11,7 +11,6 @@ namespace Opc.Classic.Dcom.Transport;
 /// </summary>
 public sealed class ComTransportFactory : TransportFactory
 {
-
     /// <summary>
     /// private constructor
     /// </summary>

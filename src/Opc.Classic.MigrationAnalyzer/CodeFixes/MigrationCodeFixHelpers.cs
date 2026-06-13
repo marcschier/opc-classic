@@ -122,10 +122,3 @@ internal static class MigrationCodeFixHelpers
                text.StartsWith("System.Threading.Tasks.Task<", StringComparison.Ordinal);
     }
 }
-
-
-
-
-
-
-

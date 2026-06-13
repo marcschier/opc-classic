@@ -10,7 +10,6 @@ namespace Opc.Classic.Dcom.Core;
 [Serializable]
 public sealed class Scode
 {
-
     /// <summary>
     /// Null value
     /// </summary>

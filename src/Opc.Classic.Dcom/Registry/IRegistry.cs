@@ -11,7 +11,6 @@ namespace Opc.Classic.Dcom.Registry;
 /// </summary>
 public interface IRegistry
 {
-
     /// <summary>
     /// Opens the HKEY_CLASSES_ROOT key
     /// </summary>

@@ -8,7 +8,6 @@ namespace Opc.Classic.Dcom.Registry;
 /// <inheritdoc/>
 public class EnumKey : NdrOp
 {
-
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 #pragma warning disable IDE1006 // Naming Styles
     public PolicyHandle parentKey;
@@ -23,7 +22,6 @@ public class EnumKey : NdrOp
     /// <inheritdoc/>
     public override void Write(NdrCodec ndr)
     {
-
         // Write parent handle
         ndr.WriteOctetArray(parentKey.Handle, 0, 20);
 

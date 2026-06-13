@@ -56,9 +56,3 @@ public sealed class OcmHda01_LegacySyncReadRawCodeFix : CodeFixProvider
         return await MigrationCodeFixHelpers.FormatRootAsync(document, root, cancellationToken).ConfigureAwait(false);
     }
 }
-
-
-
-
-
-

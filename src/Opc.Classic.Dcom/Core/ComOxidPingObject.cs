@@ -11,7 +11,6 @@ namespace Opc.Classic.Dcom.Core;
 /// </summary>
 internal sealed class ComOxidPingObject : NdrOp
 {
-
     /// <summary>
     /// Set id
     /// </summary>

@@ -11,7 +11,6 @@ namespace Opc.Classic.Dcom.Rpc.Core;
 /// </summary>
 public class PresentationResult : NdrOp
 {
-
     /// <summary>
     /// Result
     /// </summary>

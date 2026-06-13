@@ -12,7 +12,6 @@ namespace Opc.Classic.Dcom.Core;
 /// </summary>
 internal sealed class RemUnknown2 : NdrOp
 {
-
     /// <summary>
     /// Interface pointer
     /// </summary>

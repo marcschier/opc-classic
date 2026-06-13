@@ -10,7 +10,6 @@ namespace Opc.Classic.Dcom.Common;
 [Serializable]
 public sealed class ComVersion
 {
-
     /// <summary>
     /// Create version
     /// </summary>

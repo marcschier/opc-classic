@@ -70,4 +70,3 @@ public sealed class OcmGeneral02_ManualVariant : DiagnosticAnalyzer
         invocationName.Equals("GetObjectForNativeVariant", StringComparison.Ordinal) ||
         invocationName.Equals("GetNativeVariantForObject", StringComparison.Ordinal);
 }
-

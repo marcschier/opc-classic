@@ -7,7 +7,6 @@ namespace Opc.Classic.Dcom.Rpc.pdu;
 /// </summary>
 public enum BindNoAcknowledgeReason
 {
-
     /// <summary>
     /// reason not specified
     /// </summary>

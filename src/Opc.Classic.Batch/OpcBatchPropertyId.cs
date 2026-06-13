@@ -616,5 +616,4 @@ public static class OpcBatchPropertyId
         TrainList2Schema => "VT_BSTR",
         _ => null,
     };
-
 }

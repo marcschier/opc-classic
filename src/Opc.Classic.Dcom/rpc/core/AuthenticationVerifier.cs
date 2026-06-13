@@ -9,7 +9,6 @@ namespace Opc.Classic.Dcom.Rpc.Core;
 /// </summary>
 public class AuthenticationVerifier : NdrOp
 {
-
     /// <summary>
     /// Service
     /// </summary>

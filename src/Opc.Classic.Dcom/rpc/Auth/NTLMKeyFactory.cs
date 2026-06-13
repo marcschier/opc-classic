@@ -11,7 +11,6 @@ namespace Opc.Classic.Dcom.Rpc.Auth.ntlm;
 /// </summary>
 internal sealed class NTLMKeyFactory
 {
-
     /// <summary>
     /// Get user session key
     /// </summary>
@@ -244,7 +243,6 @@ internal sealed class NTLMKeyFactory
             CryptographicOperations.ZeroMemory(sign);
         }
     }
-
 
     /// <summary>
     /// Signing part 2

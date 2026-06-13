@@ -7,7 +7,6 @@ namespace Opc.Classic.Dcom.Rpc;
 /// </summary>
 public interface IConnection
 {
-
     /// <summary>
     /// Transmit
     /// </summary>

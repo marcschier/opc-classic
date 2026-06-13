@@ -7,7 +7,6 @@ namespace Opc.Classic.Dcom.Rpc;
 /// </summary>
 public class Buffer
 {
-
     /// <summary>
     /// Length
     /// </summary>
@@ -23,7 +22,6 @@ public class Buffer
             }
         }
     }
-
 
     /// <summary>
     /// Current index

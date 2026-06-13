@@ -16,7 +16,6 @@ namespace Opc.Classic.Dcom.Registry.Smb;
 /// </summary>
 public class RegistryStub : Stub, IRegistry
 {
-
     /// <inheritdoc/>
     protected override string Syntax => // WinReg Service
             "338cd001-2244-31f1-aaaa-900038001003:1.0";
@@ -62,7 +61,6 @@ public class RegistryStub : Stub, IRegistry
         serverName = serverName.Trim();
         serverName = Dns.GetHostAddresses(serverName).First().ToString();
         Address = "ncacn_np:" + serverName + "[\\PIPE\\winreg]";
-
     }
 
     /// <summary>
@@ -356,7 +354,6 @@ public class RegistryStub : Stub, IRegistry
         {
             throw new InteropException(e);
         }
-
     }
 
     /// <inheritdoc/>

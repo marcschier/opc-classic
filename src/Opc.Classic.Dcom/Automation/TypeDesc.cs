@@ -12,7 +12,6 @@ namespace Opc.Classic.Dcom.Automation;
 [Serializable]
 public sealed class TypeDesc
 {
-
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 #pragma warning disable IDE1006 // Naming Styles
     public readonly ComPointer typeDesc;

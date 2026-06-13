@@ -11,7 +11,6 @@ namespace Opc.Classic.Dcom.Automation;
 [Serializable]
 internal sealed class TypeLibImpl : ComObjectImplWrapper, ITypeLib
 {
-
     /// <summary>
     /// Create type lib
     /// </summary>

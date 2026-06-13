@@ -10,7 +10,6 @@ namespace Opc.Classic.Dcom.Rpc.pdu;
 /// </summary>
 public class BindNoAcknowledgePdu : ConnectionOrientedPdu
 {
-
     public const int BIND_NO_ACKNOWLEDGE_TYPE = 0x0d;
 
     /// <inheritdoc/>

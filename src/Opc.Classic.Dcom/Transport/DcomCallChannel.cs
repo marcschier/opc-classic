@@ -698,4 +698,3 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable
     private readonly record struct DecodedPdu(ConnectionOrientedPdu Pdu, byte[] AuthenticationBody);
     private readonly record struct AuthenticationStrippedFrame(byte[] PduBytes, byte[] AuthenticationBody);
 }
-

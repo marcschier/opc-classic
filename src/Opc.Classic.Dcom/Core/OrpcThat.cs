@@ -11,7 +11,6 @@ namespace Opc.Classic.Dcom.Core;
 [Serializable]
 internal sealed class OrpcThat
 {
-
     /// <summary>
     /// Create that
     /// </summary>
@@ -107,7 +106,6 @@ internal sealed class OrpcThat
 
              */
 
-
             orpcextentarray.AddMember(typeof(int));
             orpcextentarray.AddMember(typeof(int));
             // this is since the pointer is [unique]
@@ -144,7 +142,6 @@ internal sealed class OrpcThat
 
                 extentArrays.Add(new OrpcExtentArray(((UUID)orpcextent2.GetMember(0)).ToString(), byteArray.Length, byteArray));
             }
-
         }
 
         orpcthat.ExtentArray = extentArrays.ToArray();

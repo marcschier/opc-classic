@@ -8,7 +8,6 @@ namespace Opc.Classic.Dcom.Core;
 [Serializable]
 internal sealed class OrpcExtentArray
 {
-
     /// <summary>
     /// Create
     /// </summary>

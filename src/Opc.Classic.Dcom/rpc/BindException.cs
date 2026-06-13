@@ -7,7 +7,6 @@ namespace Opc.Classic.Dcom.Rpc;
 /// <inheritdoc/>
 public class BindException : RpcException
 {
-
     /// <inheritdoc/>
     public BindException()
     {

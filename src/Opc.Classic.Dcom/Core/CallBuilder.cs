@@ -33,7 +33,6 @@ namespace Opc.Classic.Dcom.Core;
 [Serializable]
 public class CallBuilder : NdrOp
 {
-
     /// <summary>
     /// From destroy
     /// </summary>
@@ -88,7 +87,6 @@ public class CallBuilder : NdrOp
     /// <param name="flags"> from <see cref="InteropFlags"/> (if need be) </param>
     public void AddInParamAsComObject(IComObject comObject, int flags = InteropFlags.FLAG_NULL) =>
         InsertInParamAsComObjectAt(_inParams.Count, comObject, flags);
-
 
     /// <summary>
     /// Add <code>[in]</code> parameter as <code>int</code> at the
@@ -622,7 +620,6 @@ public class CallBuilder : NdrOp
             _outParams.Add(values[i]);
             _outparamFlags.Add(flags);
         }
-
     }
 
     /// <summary>
@@ -845,7 +842,6 @@ public class CallBuilder : NdrOp
     /// <inheritdoc/>
     public override void Write(NdrCodec ndr)
     {
-
         // reset buffer size here...
         // calculate rough length required length + 16 for the last bytes
         // plus adding 30 more for the verifier etc.
@@ -873,7 +869,6 @@ public class CallBuilder : NdrOp
         OrpcThat.Encode(ndr);
         WritePacket(ndr);
     }
-
 
     private void WritePacket(NdrCodec ndr)
     {
@@ -947,7 +942,6 @@ public class CallBuilder : NdrOp
     /// <param name="fromCallback">Value indicating whether the call originated from a server callback path.</param>
     private void ReadPacket(NdrCodec ndr, bool fromCallback)
     {
-
         if (Session == null)
         {
             throw new InvalidOperationException(
@@ -1022,7 +1016,6 @@ public class CallBuilder : NdrOp
                     {
                         comObjectImpl.AddRef();
                     }
-
                 }
                 catch (InteropException e)
                 {

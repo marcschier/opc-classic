@@ -14,12 +14,10 @@ namespace Opc.Classic.Dcom.Core;
 /// </summary>
 internal sealed class ComOxidStub : Stub
 {
-
     private static readonly PropertyBag kDefaults = new PropertyBag();
 
     static ComOxidStub()
     {
-
         kDefaults.SetProperty("rpc.ntlm.lanManagerKey", "false");
         kDefaults.SetProperty("rpc.ntlm.sign", "false");
         kDefaults.SetProperty("rpc.ntlm.seal", "false");

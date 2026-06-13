@@ -13,7 +13,6 @@ namespace Opc.Classic.Dcom.Transport;
 /// </summary>
 public sealed class ComRuntimeConnectionContext : BasicConnectionContext
 {
-
     /// <inheritdoc/>
     public override bool Established => base.Established | _established;
 

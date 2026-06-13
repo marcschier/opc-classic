@@ -14,7 +14,6 @@ namespace Opc.Classic.Dcom.Rpc;
 /// </summary>
 public class ConnectionOrientedEndpoint : IEndpoint
 {
-
     /// <inheritdoc/>
     public ITransport Transport { get; }
 

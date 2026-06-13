@@ -592,4 +592,3 @@ public sealed class OpcDcomDecoderTests
             new Dictionary<string, string?>());
     }
 }
-

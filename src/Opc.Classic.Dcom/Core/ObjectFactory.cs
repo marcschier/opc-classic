@@ -20,7 +20,6 @@ namespace Opc.Classic.Dcom;
 /// </summary>
 public static class ObjectFactory
 {
-
     /// <summary>
     /// Attaches an event handler to <code>comObject</code> for the source
     /// event interface of COM, identified by the <code>sourceUUID</code>.

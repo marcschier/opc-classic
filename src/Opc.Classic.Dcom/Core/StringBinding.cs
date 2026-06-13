@@ -11,7 +11,6 @@ namespace Opc.Classic.Dcom.Core;
 [Serializable]
 internal sealed class StringBinding
 {
-
     /// <summary>
     /// Tower id
     /// </summary>

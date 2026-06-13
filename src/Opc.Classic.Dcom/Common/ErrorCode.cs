@@ -9,7 +9,6 @@ namespace Opc.Classic.Dcom.Common;
 /// </summary>
 public enum ErrorCode : uint
 {
-
     /// <summary>
     /// Success
     /// </summary>
@@ -23,7 +22,6 @@ public enum ErrorCode : uint
     /// <summary>
     /// The system cannot find the file specified.
     /// </summary>
-
     ERROR_FILE_NOT_FOUND = 0x00000002,
 
     /// <summary>
@@ -75,7 +73,6 @@ public enum ErrorCode : uint
     /// Not enough storage is available to complete this operation.
     /// </summary>
     E_OUTOFMEMORY = 0x8007000E,
-
 
     /// <summary>
     /// The parameter is incorrect.
@@ -293,7 +290,6 @@ public enum ErrorCode : uint
     /// Unspecified Error.
     /// </summary>
     E_FAIL = 0x80004005,
-
 
     //// /System's Own ...start from 0x00001001 to 0x00002001
 

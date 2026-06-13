@@ -10,7 +10,6 @@ namespace Opc.Classic.Dcom.Core;
 /// </summary>
 internal sealed class ComOxidDetails
 {
-
     /// <summary>
     /// Create details
     /// </summary>

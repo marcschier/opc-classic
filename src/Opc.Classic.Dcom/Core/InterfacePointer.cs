@@ -27,7 +27,6 @@ namespace Opc.Classic.Dcom.Core;
 [Serializable]
 public /*internal*/ sealed class InterfacePointer
 {
-
     /// <summary>
     /// Custom object
     /// </summary>

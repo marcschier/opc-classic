@@ -156,8 +156,6 @@ internal sealed class ComOxidRuntime : IDisposable
         }
     }
 
-
-
     /// <summary>
     /// Helper method to force release of a local component, so we dont
     /// wait until the session is destroyed.
@@ -427,7 +425,6 @@ internal sealed class ComOxidRuntime : IDisposable
 
             var remUnknown = new ComOxidRuntimeHelper(properties);
 
-
             // this carries a reference to the local Instance, incase we do not get pings from the client
             // at the right times, the cleaup thread will remove this entry and it's OXID as well from both the maps.
             var details = new ComOxidDetails(component, oxid, oid, iid, ipid, ptr, remUnknown, protectionLevel);
@@ -549,7 +546,6 @@ internal sealed class ComOxidRuntime : IDisposable
     /// </summary>
     private void ServerPingTimerTask()
     {
-
         lock (_mapOfOIDVsComponentsLock)
         {
             Log.Logger.Information("Running ServerPingTimerTask !");
@@ -590,7 +586,6 @@ internal sealed class ComOxidRuntime : IDisposable
     /// </summary>
     private void ClientPingTimerTask()
     {
-
         List<KeyValuePair<Session, PingSetHolder>> sessionsPingSet;
         lock (_mapOfSessionVsPingSetHolderLock)
         {
@@ -804,7 +799,6 @@ internal sealed class ComOxidRuntime : IDisposable
     private readonly Lock _mapOfSessionVsPingSetHolderLock = new();
     // for access to the mapOfAddressVsStub
     private readonly Lock _mapOfAddressVsStubLock = new();
-
 
     public void Dispose()
     {

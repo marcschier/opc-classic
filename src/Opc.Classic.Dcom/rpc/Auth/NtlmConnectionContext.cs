@@ -12,7 +12,6 @@ namespace Opc.Classic.Dcom.Rpc.Auth.ntlm;
 /// </summary>
 public class NtlmConnectionContext : IConnectionContext
 {
-
     /// <summary>
     /// Connection
     /// </summary>
@@ -60,7 +59,6 @@ public class NtlmConnectionContext : IConnectionContext
     /// <inheritdoc/>
     public virtual ConnectionOrientedPdu Init(PresentationContext context, PropertyBag properties)
     {
-
         var pdu = (BindPdu)Init2(context, properties);
         pdu.ResetCallIdCounter();
         return pdu;

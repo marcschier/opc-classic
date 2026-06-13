@@ -12,7 +12,6 @@ namespace Opc.Classic.Dcom.Rpc.Auth.ntlm;
 /// </summary>
 public class NtlmConnection : DefaultConnection
 {
-
     /// <summary>
     /// Create connection
     /// </summary>

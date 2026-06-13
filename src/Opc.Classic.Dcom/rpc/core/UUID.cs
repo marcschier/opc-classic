@@ -14,7 +14,6 @@ namespace Opc.Classic.Dcom.Rpc.Core;
 /// </summary>
 public class UUID : NdrOp
 {
-
     /// <summary>
     /// Canonical "nil" UUID (all zero bytes) per RFC 4122 §4.1.7.
     /// </summary>

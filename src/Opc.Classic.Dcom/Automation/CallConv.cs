@@ -8,7 +8,6 @@ namespace Opc.Classic.Dcom.Automation;
 /// </summary>
 public enum CallConv
 {
-
     /// <summary>
     /// Fast call
     /// </summary>

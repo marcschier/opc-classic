@@ -13,7 +13,6 @@ namespace Opc.Classic.Dcom.Core;
 /// </summary>
 internal sealed class RemUnknown2ServerStub : Stub
 {
-
     private static readonly PropertyBag kDefaults = new PropertyBag();
     static RemUnknown2ServerStub()
     {
@@ -65,7 +64,6 @@ internal sealed class RemUnknown2ServerStub : Stub
     internal RemUnknown2ServerStub(Session session, string remUnknownIpid,
         string address)
     {
-
         _session = session;
         TransportFactory = ComTransportFactory.Instance;
         Properties = new PropertyBag(kDefaults);

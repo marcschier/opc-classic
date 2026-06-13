@@ -7,7 +7,6 @@ namespace Opc.Classic.Dcom.Common;
 /// </summary>
 public interface IAuthInfo
 {
-
     /// <summary>
     /// Returns username.
     /// </summary>

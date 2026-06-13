@@ -1,6 +1,5 @@
 ﻿// SPDX-License-Identifier: MIT
 
-
 using Opc.Classic.Dcom.Core;
 
 namespace Opc.Classic.Dcom.Automation;
@@ -11,7 +10,6 @@ namespace Opc.Classic.Dcom.Automation;
 [Serializable]
 public sealed class VarDesc
 {
-
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 #pragma warning disable IDE1006 // Naming Styles
     public readonly int memberId;

@@ -10,7 +10,6 @@ namespace Opc.Classic.Dcom.Rpc.pdu;
 /// </summary>
 public class ResponseCoPdu : ConnectionOrientedPdu, IFragmentable
 {
-
     public const int RESPONSE_TYPE = 0x02;
 
     /// <inheritdoc/>
@@ -35,7 +34,6 @@ public class ResponseCoPdu : ConnectionOrientedPdu, IFragmentable
     /// Cancel count
     /// </summary>
     public int CancelCount { get; set; }
-
 
     /// <inheritdoc/>
     protected internal override void ReadPdu(NdrCodec ndr)

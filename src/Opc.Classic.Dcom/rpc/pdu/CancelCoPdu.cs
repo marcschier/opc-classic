@@ -7,7 +7,6 @@ namespace Opc.Classic.Dcom.Rpc.pdu;
 /// </summary>
 public class CancelCoPdu : ConnectionOrientedPdu
 {
-
     public const int CANCEL_TYPE = 0x12;
 
     /// <inheritdoc/>

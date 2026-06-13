@@ -66,4 +66,3 @@ public sealed class OcmGeneral01_UsingOpcRcw : DiagnosticAnalyzer
         context.ReportDiagnostic(Diagnostic.Create(MigrationDiagnosticDescriptors.UsingOpcRcw, memberAccess.GetLocation()));
     }
 }
-

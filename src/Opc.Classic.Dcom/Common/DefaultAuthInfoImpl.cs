@@ -7,7 +7,6 @@ namespace Opc.Classic.Dcom.Common;
 /// </summary>
 public sealed class DefaultAuthInfoImpl : IAuthInfo
 {
-
     /// <summary>
     ///Creates the AuthInfo Object.
     /// </summary>

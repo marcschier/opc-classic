@@ -34,7 +34,6 @@ namespace Opc.Classic.Dcom.Core;
 [Serializable]
 public sealed class LocalParamsDescriptor
 {
-
     /// <summary>
     /// Parameters
     /// </summary>

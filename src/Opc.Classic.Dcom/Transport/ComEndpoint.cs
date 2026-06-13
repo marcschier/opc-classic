@@ -10,7 +10,6 @@ namespace Opc.Classic.Dcom.Transport;
 /// </summary>
 public sealed class ComEndpoint : ConnectionOrientedEndpoint
 {
-
     /// <summary>
     /// Create endpoint
     /// </summary>

@@ -7,7 +7,6 @@ namespace Opc.Classic.Dcom.Rpc;
 /// </summary>
 public class ProviderException : RpcException
 {
-
     /// <inheritdoc/>
     public ProviderException()
     {

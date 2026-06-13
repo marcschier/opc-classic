@@ -218,4 +218,3 @@ public sealed class OpcUrl : IEquatable<OpcUrl>
     /// <inheritdoc />
     public override string ToString() => Original;
 }
-

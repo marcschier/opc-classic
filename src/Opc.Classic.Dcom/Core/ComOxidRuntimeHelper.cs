@@ -20,7 +20,6 @@ namespace Opc.Classic.Dcom.Core;
 /// </summary>
 internal sealed class ComOxidRuntimeHelper : Stub
 {
-
     /// <summary>
     /// Create runtime helper
     /// </summary>
@@ -240,7 +239,6 @@ internal sealed class ComOxidRuntimeHelper : Stub
     /// </summary>
     internal sealed class OxidResolverImpl : NdrOp, IComRuntimeWorker
     {
-
 #pragma warning disable RECS0154 // Parameter is never used
         /// <summary>
         /// Create resolver
@@ -536,7 +534,6 @@ internal sealed class ComOxidRuntimeHelper : Stub
     /// </summary>
     internal sealed class RemUnknownObject : NdrOp, IComRuntimeWorker
     {
-
         internal RemUnknownObject(string ipidOfme, string ipidOfComponent)
         {
             _selfIPID = ipidOfme;
@@ -755,7 +752,6 @@ internal sealed class ComOxidRuntimeHelper : Stub
                                 ((object[])result)[0] = Variant.CreateEMPTY();
                                 // now update the array at the end.
                                 ((object[])result)[3] = new ComArray(new Variant[] { variant }, true);
-
                             }
                             else
                             {
@@ -780,7 +776,6 @@ internal sealed class ComOxidRuntimeHelper : Stub
                 callObject.AttachSession(_component.Session);
                 if (result != null)
                 {
-
                     if (retArray != null)
                     {
                         // serialize all members sequentially.
@@ -933,7 +928,6 @@ internal sealed class ComOxidRuntimeHelper : Stub
                     }
 
                     Log.Logger.Verbose("RemUnknownObject: [QI] for which the stdObjRef is " + objRef);
-
                 }
                 catch (MemberAccessException e)
                 {

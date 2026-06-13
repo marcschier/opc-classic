@@ -11,7 +11,6 @@ namespace Opc.Classic.Dcom.Rpc;
 /// </summary>
 public abstract class Stub
 {
-
     /// <summary>
     /// Address
     /// </summary>

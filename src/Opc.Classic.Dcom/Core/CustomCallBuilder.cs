@@ -9,7 +9,6 @@ namespace Opc.Classic.Dcom.Core;
 /// </summary>
 public abstract class CustomCallBuilder : CallBuilder
 {
-
     /// <summary>
     /// Write
     /// </summary>

@@ -14,7 +14,6 @@ namespace Opc.Classic.Dcom.Core;
 [Serializable]
 internal sealed class VariantBody
 {
-
     public const short VT_PTR = 0x1A;
     public const short VT_SAFEARRAY = 0x1B;
     public const short VT_CARRAY = 0x1C;
@@ -193,11 +192,9 @@ internal sealed class VariantBody
                     }
 
                     retVal = new ComArray(obj2);
-
                 }
                 else
                 {
-
                     if (_nestedArraysRealClass != null)
                     {
                         var obj = (Array)retVal.ArrayInstance; // these will all be variants
@@ -523,7 +520,6 @@ internal sealed class VariantBody
     /// <param name="context">Codec context that tracks deferred pointers and per-call buffers.</param>
     internal void Encode(NdrCodec ndr, CodecContext context)
     {
-
         // Start local decoder context
         var localContext = new CodecContext
         {
@@ -723,7 +719,6 @@ internal sealed class VariantBody
     /// <returns>A new <see cref="VariantBody"/> instance built from <paramref name="ndr"/>.</returns>
     internal static VariantBody Decode(NdrCodec ndr, CodecContext context)
     {
-
         // Start local decoder context
         var localContext = new CodecContext
         {
@@ -950,7 +945,6 @@ internal sealed class VariantBody
     private static object GetDecodedValue(NdrCodec ndr, VariantType type, bool isByRef,
         CodecContext context)
     {
-
         object obj = null;
         var c = GetVarClass(type);
         if (c != null)
@@ -1124,7 +1118,6 @@ internal sealed class VariantBody
         }
         else
         {
-
             ndr.WriteUnsignedLong(new object().GetHashCode()); // pointer referentId
             ndr.WriteUnsignedLong(1);
 
