@@ -74,9 +74,20 @@ public sealed class OpcAeServerHost : IOpcServerHost, IDisposable, IAsyncDisposa
 
         IPEndPoint listenEndpoint = ListenAddressParser.Parse(_options.ListenAddress ?? "127.0.0.1:0");
         var endpoint = new TcpServerEndpoint(listenEndpoint);
+        // When the user-supplied server also implements IAeServer, interpose
+        // the IAeServer-to-IOpcAeServer bridge so the source-generated
+        // dispatcher transparently routes wire-shape methods (e.g.
+        // QueryEventCategoriesAsync, CreateEventSubscriptionAsync) to the
+        // high-level IAeServer API for methods the underlying server did not
+        // explicitly override. The CCW path on Windows is unaffected because
+        // it uses OpcAeServerDispatcher directly and has its own IAeServer
+        // fallback for CreateEventSubscription.
+        IOpcAeServer effectiveServer = _serverImpl is IAeServer
+            ? new IAeServerToOpcAeServerAdapter(_serverImpl)
+            : _serverImpl;
         var dispatchers = new Dictionary<Guid, IOpcServerDispatcher>
         {
-            [IOPCEventServer.InterfaceId] = new IOPCEventServerServerDispatcher(_serverImpl),
+            [IOPCEventServer.InterfaceId] = new IOPCEventServerServerDispatcher(effectiveServer),
         };
 
         // Register additional AE interface dispatchers when the impl provides

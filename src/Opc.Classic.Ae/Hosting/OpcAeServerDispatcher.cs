@@ -237,6 +237,10 @@ public sealed class OpcAeServerDispatcher : IOpcAeServerDispatcher
         return new EventSubscriptionAdapter(subscription, bufferTime, maxSize, clientSubscription);
     }
 
+    internal static IOPCEventSubscriptionMgt CreateEventSubscriptionAdapter(
+        IAeSubscription subscription, int bufferTime, int maxSize, int clientSubscription) =>
+        new EventSubscriptionAdapter(subscription, bufferTime, maxSize, clientSubscription);
+
     private sealed class EventAreaBrowserAdapter : IOpcAeAreaBrowserDispatcher
     {
         private readonly IOPCEventAreaBrowser _browser;
