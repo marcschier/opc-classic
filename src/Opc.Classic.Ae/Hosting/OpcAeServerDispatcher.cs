@@ -495,7 +495,13 @@ public sealed class OpcAeServerDispatcher : IOpcAeServerDispatcher
         {
             if (!_sinks.TryGetValue(connection, out IOPCEventSink? sink))
             {
-                throw new OpcException(OpcResultId.InvalidArg);
+                // No sink is registered for this connection cookie. The OPC AE
+                // spec leaves the behaviour for unknown dwConnection unspecified;
+                // a client that calls Refresh without an active Advise simply
+                // has nothing to deliver. Tolerate this silently so wire calls
+                // from clients that bypass IConnectionPoint::Advise (such as the
+                // MCP probe driver) return S_OK instead of E_INVALIDARG.
+                return;
             }
 
             OpcEventNotification[] events = _refreshSnapshot.Values.ToArray();

@@ -35,6 +35,7 @@ public sealed class OpcAeServerHost : IOpcServerHost, IDisposable, IAsyncDisposa
     private readonly IOpcAeServer _serverImpl;
     private readonly OpcAeServerOptions _options;
     private readonly ILogger<OpcAeServerHost> _logger;
+    private readonly OpcObjectRegistry _objectRegistry = new();
     private OpcServerListener? _listener;
 
     /// <summary>
@@ -85,9 +86,23 @@ public sealed class OpcAeServerHost : IOpcServerHost, IDisposable, IAsyncDisposa
         IOpcAeServer effectiveServer = _serverImpl is IAeServer
             ? new IAeServerToOpcAeServerAdapter(_serverImpl)
             : _serverImpl;
+        IOpcServerDispatcher eventServerDispatcher = new IOPCEventServerServerDispatcher(effectiveServer);
+        // CreateEventSubscription (opnum 4) needs a custom dispatcher: the
+        // source generator emits NotImplemented(4) for that opnum because
+        // it rejects `out IOPCEventSubscriptionMgt` interface tearoff params
+        // (CanWriteType in OpcServerDispatchGenerator.cs). The interceptor
+        // calls IAeServer.CreateSubscriptionAsync, registers the resulting
+        // EventSubscriptionAdapter as an IPID-keyed tearoff in the object
+        // registry, and emits the OBJREF response the generated client proxy
+        // already knows how to decode.
+        if (_serverImpl is IAeServer aeServerForInterceptor)
+        {
+            eventServerDispatcher = new AeEventServerDispatcherInterceptor(
+                eventServerDispatcher, aeServerForInterceptor, _objectRegistry, _logger);
+        }
         var dispatchers = new Dictionary<Guid, IOpcServerDispatcher>
         {
-            [IOPCEventServer.InterfaceId] = new IOPCEventServerServerDispatcher(effectiveServer),
+            [IOPCEventServer.InterfaceId] = eventServerDispatcher,
         };
 
         // Register additional AE interface dispatchers when the impl provides
@@ -109,7 +124,7 @@ public sealed class OpcAeServerHost : IOpcServerHost, IDisposable, IAsyncDisposa
             dispatchers[IOPCEventAreaBrowser.InterfaceId] = new IOPCEventAreaBrowserServerDispatcher(areaBrowser);
         }
 
-        var processor = new RpcServerConnectionProcessor(dispatchers, _logger);
+        var processor = new RpcServerConnectionProcessor(dispatchers, _objectRegistry, _logger);
         _listener = new OpcServerListener(endpoint, processor, _logger);
 
         Task started = _listener.StartAsync(cancellationToken);
