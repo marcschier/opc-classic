@@ -363,7 +363,8 @@ public class NtlmAuthentication
             byte[] exportedSessionKey = null;
             if (_useNtlmV2)
             {
-                kRandomGen.NextBytes(clientNonce);
+                // CWE-330/338: NTLMv2 client nonce MUST be cryptographically random.
+                RandomNumberGenerator.Fill(clientNonce);
                 try
                 {
                     var lmv2Response = Responses.GetLMv2Response(target,
@@ -393,7 +394,8 @@ public class NtlmAuthentication
                     // LMReponse is 24 bytes. 8 byte random client nonce and the rest is null padded.
                     var lmResponse = new byte[24];
 
-                    kRandomGen.NextBytes(clientNonce);
+                    // CWE-330/338: NTLM2 session security nonce MUST be cryptographically random.
+                    RandomNumberGenerator.Fill(clientNonce);
                     Array.Copy(clientNonce, 0, lmResponse, 0, clientNonce.Length);
                     byte[] ntResponse;
                     try
@@ -981,5 +983,4 @@ public class NtlmAuthentication
     private byte[]? _challengeMessage;
     private const ushort MsvAvEol = 0x0000;
     private const ushort MsvAvChannelBindings = 0x000A;
-    private static readonly Random kRandomGen = new Random();
 }

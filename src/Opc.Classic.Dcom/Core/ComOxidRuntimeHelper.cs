@@ -1,5 +1,6 @@
 ﻿// SPDX-License-Identifier: MIT
 
+using System.Security.Cryptography;
 using Opc.Classic.Dcom.Common;
 using Opc.Classic.Dcom.Transport;
 using Opc.Classic.Dcom.Rpc;
@@ -352,7 +353,8 @@ internal sealed class ComOxidRuntimeHelper : Stub
 
             if (b.AsSpan().SequenceEqual(new byte[] { 0, 0, 0, 0, 0, 0, 0, 0 }))
             {
-                _random.NextBytes(b);
+                // CWE-330/338: SetId regeneration uses cryptographic RNG so peers cannot predict the assigned id.
+                RandomNumberGenerator.Fill(b);
             }
 
             ComOxidRuntime.Instance.AddUpdateSets(new SetId(b), listOfAdds, listOfDels);
@@ -520,7 +522,6 @@ internal sealed class ComOxidRuntimeHelper : Stub
             return ndrBuffer;
         }
 
-        private readonly Random _random = new Random();
         private NdrBuffer _buffer;
 #pragma warning disable IDE0052 // Remove unread private members
         private readonly PropertyBag _p;

@@ -1,5 +1,6 @@
 ﻿// SPDX-License-Identifier: MIT
 
+using System.Security.Cryptography;
 using Opc.Classic.Dcom.Common;
 using Opc.Classic.Dcom.Rpc.Core;
 using Opc.Classic.Dcom.Internal;
@@ -143,7 +144,7 @@ public sealed class LocalCoClass
             throw new ArgumentException(Interop.GetLocalizedMessage(
                 ErrorCode.INTEROP_COM_RUNTIME_INVALID_CONTAINER_INFO), nameof(interfaceDefinition));
         }
-        _identifier = type.GetHashCode() ^ new object().GetHashCode() ^ kRandomGen.Next();
+        _identifier = type.GetHashCode() ^ new object().GetHashCode() ^ RandomNumberGenerator.GetInt32(int.MaxValue);
         Init(interfaceDefinition, type, null, false);
     }
 
@@ -173,7 +174,7 @@ public sealed class LocalCoClass
             throw new ArgumentException(Interop.GetLocalizedMessage(
                 ErrorCode.INTEROP_COM_RUNTIME_INVALID_CONTAINER_INFO), nameof(interfaceDefinition));
         }
-        _identifier = type.GetHashCode() ^ new object().GetHashCode() ^ kRandomGen.Next();
+        _identifier = type.GetHashCode() ^ new object().GetHashCode() ^ RandomNumberGenerator.GetInt32(int.MaxValue);
         Init(interfaceDefinition, type, null, useInterfaceDefinitionIID);
     }
 
@@ -196,7 +197,7 @@ public sealed class LocalCoClass
             throw new ArgumentException(Interop.GetLocalizedMessage(
                 ErrorCode.INTEROP_COM_RUNTIME_INVALID_CONTAINER_INFO), nameof(interfaceDefinition));
         }
-        _identifier = instance.GetHashCode() ^ new object().GetHashCode() ^ kRandomGen.Next();
+        _identifier = instance.GetHashCode() ^ new object().GetHashCode() ^ RandomNumberGenerator.GetInt32(int.MaxValue);
         Init(interfaceDefinition, null, instance, false);
     }
 
@@ -226,7 +227,7 @@ public sealed class LocalCoClass
             throw new ArgumentException(Interop.GetLocalizedMessage(
                 ErrorCode.INTEROP_COM_RUNTIME_INVALID_CONTAINER_INFO), nameof(interfaceDefinition));
         }
-        _identifier = instance.GetHashCode() ^ new object().GetHashCode() ^ kRandomGen.Next();
+        _identifier = instance.GetHashCode() ^ new object().GetHashCode() ^ RandomNumberGenerator.GetInt32(int.MaxValue);
         Init(interfaceDefinition, null, instance, useInterfaceDefinitionIID);
     }
 
@@ -672,7 +673,6 @@ public sealed class LocalCoClass
     /// <inheritdoc/>
     public override int GetHashCode() => _identifier;
 
-    private static readonly Random kRandomGen = new Random();
     private readonly int _identifier;
     private WeakReference _interfacePointer;
     private readonly List<string> _listOfSupportedEventInterfaces = new List<string>();

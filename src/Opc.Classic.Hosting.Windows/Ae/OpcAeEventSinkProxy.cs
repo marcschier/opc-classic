@@ -523,7 +523,8 @@ public sealed unsafe class OpcAeEventSinkProxy : IOPCEventSink, IDisposable
                         Marshal.WriteInt16(slot, (short)(ushort)(value ?? (ushort)0)); break;
                     case VT_BOOL:
                         Marshal.WriteInt16(slot, (value is bool b && b) ? unchecked((short)0xFFFF) : (short)0); break;
-                    case VT_I4: case VT_ERROR:
+                    case VT_I4:
+                    case VT_ERROR:
                         Marshal.WriteInt32(slot, (int)(value ?? 0)); break;
                     case VT_UI4:
                         Marshal.WriteInt32(slot, unchecked((int)(uint)(value ?? 0u))); break;

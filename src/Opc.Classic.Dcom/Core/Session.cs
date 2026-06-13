@@ -1,5 +1,6 @@
 ﻿// SPDX-License-Identifier: MIT
 
+using System.Security.Cryptography;
 using Opc.Classic.Dcom.Common;
 using Opc.Classic.Dcom.Rpc.Core;
 using Opc.Classic.Dcom.Internal;
@@ -202,7 +203,7 @@ public sealed class Session
             int id;
             do
             {
-                id = kRandomGen.Next();
+                id = RandomNumberGenerator.GetInt32(int.MaxValue);
             }
             while (kMapOfSessionIdsVsSessions.ContainsKey(id));
             var session = new Session
@@ -240,7 +241,7 @@ public sealed class Session
             int id;
             do
             {
-                id = kRandomGen.Next();
+                id = RandomNumberGenerator.GetInt32(int.MaxValue);
             }
             while (kMapOfSessionIdsVsSessions.ContainsKey(id));
             var session = new Session
@@ -299,7 +300,7 @@ public sealed class Session
             int id;
             do
             {
-                id = kRandomGen.Next();
+                id = RandomNumberGenerator.GetInt32(int.MaxValue);
             }
             while (kMapOfSessionIdsVsSessions.ContainsKey(id));
 
@@ -613,7 +614,6 @@ public sealed class Session
 
     private static readonly Lock kMutex = new();
     private static readonly Timer kReleaseRefsTimer;
-    private static readonly Random kRandomGen = new Random();
     private static readonly Dictionary<WeakReference, Tuple<string, int>> kMapOfObjects =
         new Dictionary<WeakReference, Tuple<string, int>>();
     private static readonly Dictionary<Oxid, Session> kMapOfOxidsVsSessions =

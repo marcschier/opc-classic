@@ -1,5 +1,6 @@
 ﻿// SPDX-License-Identifier: MIT
 
+using System.Security.Cryptography;
 using Opc.Classic.Dcom.Common;
 using Opc.Classic.Dcom.Rpc;
 using Opc.Classic.Dcom.Internal;
@@ -395,11 +396,12 @@ internal sealed class ComOxidRuntime : IDisposable
             var ipid = Guid.NewGuid().ToString();
             var iid = component.ICoClassUnderRealIID ?
                 component.CoClassIID : Interfaces.IID_IUnknown; // has to be IUnknown's IID.
+            // CWE-330/338: OXID/OID MUST be unguessable to prevent DCOM object reference hijacking.
             var bytes = new byte[8];
-            _randomGen.NextBytes(bytes);
+            RandomNumberGenerator.Fill(bytes);
             var oxid = new Oxid(bytes);
             var bytes2 = new byte[8];
-            _randomGen.NextBytes(bytes2);
+            RandomNumberGenerator.Fill(bytes2);
 
             var oid = new ObjectId(bytes2, false);
 
@@ -808,7 +810,6 @@ internal sealed class ComOxidRuntime : IDisposable
 
     private readonly PropertyBag _defaults = new PropertyBag();
     private readonly PropertyBag _defaults2 = new PropertyBag();
-    private readonly Random _randomGen = new Random();
     private Timer _clientPing;
     private Timer _serverPing;
     private Thread _thread;

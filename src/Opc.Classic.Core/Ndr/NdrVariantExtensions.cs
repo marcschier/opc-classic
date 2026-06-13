@@ -130,7 +130,8 @@ public static class NdrVariantExtensions
     {
         switch (vt)
         {
-            case VarType.VT_EMPTY: case VarType.VT_NULL:
+            case VarType.VT_EMPTY:
+            case VarType.VT_NULL:
                 return true;
             case VarType.VT_I1:
                 writer.WriteByte(unchecked((byte)((sbyte)boxed!))); return true;

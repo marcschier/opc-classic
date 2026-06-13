@@ -71,8 +71,9 @@ internal sealed class NTLMKeyFactory
     {
         get
         {
+            // CWE-330/338: NTLM secondary session key MUST come from a cryptographic RNG.
             var key = new byte[16];
-            _random.NextBytes(key);
+            RandomNumberGenerator.Fill(key);
             return key;
         }
     }
@@ -265,7 +266,7 @@ internal sealed class NTLMKeyFactory
     /// <param name="src">Source NDR buffer that supplies the field data to decode.</param>
     /// <param name="target">Target object or buffer that receives the operation result.</param>
     /// <returns><c>true</c> when compare signature is satisfied; otherwise <c>false</c>.</returns>
-    public bool CompareSignature(byte[] src, byte[] target) => src.SequenceEqual(target);
+    public bool CompareSignature(byte[] src, byte[] target) => CryptographicOperations.FixedTimeEquals(src, target);
 
     private static byte[] GenerateSigningKey(NtlmFlags flags, byte[] exportedSessionKey, byte[] magicConstant)
     {
@@ -343,7 +344,6 @@ internal sealed class NTLMKeyFactory
         return result;
     }
 
-    private readonly Random _random = new Random();
     private static readonly byte[] kClientSigningMagicConstant = {
         0x73, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x20,
         0x6b, 0x65, 0x79, 0x20, 0x74, 0x6f, 0x20, 0x63,
