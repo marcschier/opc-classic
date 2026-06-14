@@ -1108,7 +1108,7 @@ public sealed class DaClientTools
                 };
                 Opc.Classic.Dcom.Activation.RemoteActivationResponse activation = await activationClient.RemoteActivationAsync(
                     clsid,
-                    new[] { "ncacn_ip_tcp" },
+                    new[] { "ncacn_ip_tcp", "ncacn_np" },
                     null,
                     requestedIids,
                     cancellationToken).ConfigureAwait(false);
@@ -1134,14 +1134,18 @@ public sealed class DaClientTools
                     throw new InvalidOperationException("IActivation::RemoteActivation returned an OBJREF that could not be decoded.");
                 }
 
-                EndPoint endpoint = ResolveObjectEndpointFromOxidBindings(normalized.Host, activation.OxidBindings.Span)
+                EndPoint endpoint = DualStringArrayResolver.ResolveFirstTransport(normalized.Host, activation.OxidBindings.Span)
                     ?? ResolveObjectEndpoint(normalized.Host, serverRef!);
 
-                IAuthContext serverAuth = CreateAuthContext(normalized, clsid);
+                IAuthContext serverAuth = endpoint is NcacnNpEndPoint
+                    ? NoOpAuthContext.Instance
+                    : CreateAuthContext(normalized, clsid);
                 ICallChannel serverChannel;
                 if (!serverRef!.Ipid.Equals(Guid.Empty))
                 {
-                    var transportFactory = new TcpSocketTransportFactory();
+                    IAsyncTransportFactory transportFactory = OperatingSystem.IsWindows()
+                        ? TransportFactoryDispatcher.CreateWindowsLocal(new TcpSocketTransportFactory())
+                        : new TcpSocketTransportFactory();
                     var transport = await transportFactory.ConnectAsync(endpoint, cancellationToken).ConfigureAwait(false);
                     serverChannel = new DcomCallChannel(
                         transport,

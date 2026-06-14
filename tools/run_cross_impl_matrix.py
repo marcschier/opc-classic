@@ -94,7 +94,9 @@ EXTERNAL_INSTALL_HINTS: dict[str, str] = {
         "F8582CF8 to the runtime UUID F8582CF9 so CoRegisterClassObject "
         "registers under the SCM-expected CLSID); "
         "3) grant non-admin DCOM Launch+Access via "
-        "'interop\\tools\\grant-testserver-acl.ps1' (elevated, once)."
+        "'interop\\tools\\grant-testserver-acl.ps1' (elevated, once). "
+        "Activation uses LRPC (ncacn_np) via the in-repo "
+        "LocalNamedPipeTransport."
     ),
 }
 
@@ -103,20 +105,7 @@ EXTERNAL_INSTALL_HINTS: dict[str, str] = {
 # they need an environment-specific setup the in-repo .NET stack cannot
 # satisfy. Operators can still target them with '--profile <name>' to test
 # the underlying scenario.
-#
-# testserver: the OPC Foundation native TestServer is a Windows COM EXE
-# that binds RPC via the LRPC protocol (ncalrpc / ncacn_np). Our managed
-# Opc.Classic.Dcom.Activation.ActivationClient only supports
-# ncacn_ip_tcp (see ActivationClient.NormalizeProtocolSequence), so SCM
-# returns HRESULT_FROM_WIN32(RPC_S_SERVER_UNAVAILABLE) = 0x800706BA on
-# every activation attempt. Adding LRPC transport support is tracked as
-# follow-up work; until then, this profile is opt-in only. The OPC
-# Foundation's own native OpcTestClient_x64.exe still drives the
-# TestServer successfully (it uses Windows native COM, which negotiates
-# LRPC for local activations); see
-# 'interop\\build\\x64\\Release\\OpcTestClient_x64.exe' for the
-# reference console exerciser.
-DEFAULT_PROFILE_EXCLUSIONS: frozenset[str] = frozenset({"testserver"})
+DEFAULT_PROFILE_EXCLUSIONS: frozenset[str] = frozenset()
 
 
 # Default per-profile CLSIDs / ProgIDs / kind. Each profile picks ONE

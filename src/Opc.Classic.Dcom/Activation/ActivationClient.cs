@@ -17,6 +17,7 @@ public sealed class ActivationClient : IActivationClient, IAsyncDisposable
     private const uint DefaultClientImpersonationLevel = 3;
     private const uint DefaultMode = 0;
     private const ushort RpcProtocolSequenceTcp = 0x07;
+    private const ushort RpcProtocolSequenceNamedPipe = 0x0F;
 
     private static readonly Guid ActivationInterfaceId = Guid.Parse(Interfaces.IID_IActivation);
     private readonly ICallChannel _channel;
@@ -161,7 +162,25 @@ public sealed class ActivationClient : IActivationClient, IAsyncDisposable
             return RpcProtocolSequenceTcp;
         }
 
-        throw new ArgumentException($"Unsupported RPC protocol sequence '{protseq}'. Only ncacn_ip_tcp is supported by the TCP activation client.", nameof(protseq));
+        // DCE/RPC over named pipes (protocol ID 0x0F). The local SCM matches
+        // this against any server that calls RpcServerUseProtseq("ncacn_np", ...),
+        // which is the default protseq for Windows-hosted local DCOM servers
+        // (e.g. the OPC Foundation native TestServer). The activation
+        // response carries an OBJREF whose string bindings encode the
+        // server's pipe name; clients reach the server via
+        // LocalNamedPipeTransport (kernel pipe) or NcacnNpTransport (SMB2)
+        // depending on whether the host is local or remote.
+        if (value.Equals("ncacn_np", StringComparison.OrdinalIgnoreCase)
+            || value.Equals("np", StringComparison.OrdinalIgnoreCase)
+            || value.Equals("pipe", StringComparison.OrdinalIgnoreCase)
+            || value.Equals("15", StringComparison.Ordinal))
+        {
+            return RpcProtocolSequenceNamedPipe;
+        }
+
+        throw new ArgumentException(
+            $"Unsupported RPC protocol sequence '{protseq}'. Supported values: ncacn_ip_tcp, ncacn_np.",
+            nameof(protseq));
     }
 
     private static Guid[] CopyIids(IReadOnlyList<Guid> iids)

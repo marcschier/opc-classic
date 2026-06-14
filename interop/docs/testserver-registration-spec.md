@@ -9,6 +9,22 @@ reference for auditing register-testserver and the
 suspected `CO_E_SERVER_EXEC_FAILURE` root cause (Issue B in
 probe-coverage).
 
+> **Status (June 2026)**: TestServer activates end-to-end from the
+> in-repo MCP matrix after the standard build + register + ACL flow.
+> Activation uses LRPC (`ncacn_np`, protocol ID `0x0F`) via
+> `src/Opc.Classic.Dcom/Transport/LocalNamedPipeTransport.cs`
+> (kernel `NamedPipeClientStream`, bypasses SMB2). `DaClientTools`,
+> `AeClientTools`, and `HdaClientTools` request both `ncacn_ip_tcp`
+> and `ncacn_np` from `IActivation::RemoteActivation`; the local SCM
+> picks the matching protocol and the
+> `TransportFactoryDispatcher` (also in
+> `src/Opc.Classic.Dcom/Transport/`) routes the per-OBJREF
+> resolver-binding to the right transport (TCP for sockets,
+> `LocalNamedPipeTransport` for local pipes,
+> `NcacnNpTransport` for remote pipes via SMB2). The DCOM cross-impl
+> matrix profile `testserver` is enabled by default and reports
+> `105 MATCH / 0 REGR` end-to-end.
+
 ## Source artifacts audited
 
 - Legacy upstream installer manifests (not vendored in this tree)

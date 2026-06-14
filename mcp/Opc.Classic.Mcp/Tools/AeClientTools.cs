@@ -1001,7 +1001,7 @@ internal static class OpcMcpDcomConnectionHelper
             Opc.Classic.Dcom.Activation.RemoteActivationResponse activation =
                 await activationClient.RemoteActivationAsync(
                     clsid,
-                    new[] { "ncacn_ip_tcp" },
+                    new[] { "ncacn_ip_tcp", "ncacn_np" },
                     null,
                     requestedIids,
                     cancellationToken).ConfigureAwait(false);
@@ -1027,11 +1027,15 @@ internal static class OpcMcpDcomConnectionHelper
                 throw new InvalidOperationException("IActivation::RemoteActivation returned an OBJREF that could not be decoded.");
             }
 
-            EndPoint endpoint = ResolveObjectEndpointFromOxidBindings(request.Host, activation.OxidBindings.Span)
+            EndPoint endpoint = Opc.Classic.Dcom.Transport.DualStringArrayResolver.ResolveFirstTransport(request.Host, activation.OxidBindings.Span)
                 ?? ResolveObjectEndpoint(request.Host, serverRef!);
 
-            IAuthContext serverAuth = CreateAuthContext(request, clsid, opcScheme);
-            var transportFactory = new TcpSocketTransportFactory();
+            IAuthContext serverAuth = endpoint is Opc.Classic.Dcom.Transport.NcacnNpEndPoint
+                ? NoOpAuthContext.Instance
+                : CreateAuthContext(request, clsid, opcScheme);
+            IAsyncTransportFactory transportFactory = OperatingSystem.IsWindows()
+                ? Opc.Classic.Dcom.Transport.TransportFactoryDispatcher.CreateWindowsLocal(new TcpSocketTransportFactory())
+                : new TcpSocketTransportFactory();
             ICallChannel serverChannel;
             if (!serverRef!.Ipid.Equals(Guid.Empty))
             {
@@ -1044,7 +1048,7 @@ internal static class OpcMcpDcomConnectionHelper
             }
             else
             {
-                var channelFactory = new DcomCallChannelFactory(new TcpSocketTransportFactory());
+                var channelFactory = new DcomCallChannelFactory(transportFactory);
                 serverChannel = await channelFactory.ConnectAsync(
                     endpoint,
                     Guid.Empty,
