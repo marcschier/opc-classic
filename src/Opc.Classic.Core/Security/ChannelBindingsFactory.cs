@@ -20,9 +20,13 @@ public static class ChannelBindingsFactory
     private const string TlsServerEndpointPrefix = "tls-server-end-point:";
 
     /// <summary>
-    /// Per MS-CSSP §2.1.1.2: the tls-server-end-point application data is
-    /// the literal prefix "tls-server-end-point:" followed by the certificate
-    /// hash selected by RFC 5929, with TLS 1.3 endpoints using SHA-384.
+    /// Per RFC 5929 §4.1 (tls-server-end-point channel binding) — the
+    /// application-data field is the literal prefix
+    /// "tls-server-end-point:" followed by the certificate hash selected
+    /// by the cert's signing algorithm. Consumed by MS-NLMP §3.1.5.1.2
+    /// (NTLM CHANNEL_BINDINGS_HASH av-pair) and the equivalent Kerberos
+    /// channel-binding checksum (RFC 4121 §4.1.1). TLS 1.3 endpoints
+    /// use SHA-384.
     /// </summary>
     public static ChannelBindings ForTlsServerEndpoint(ReadOnlySpan<byte> serverCertDer) =>
         ForTlsServerEndpoint(serverCertDer, SslProtocols.None);

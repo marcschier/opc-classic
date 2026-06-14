@@ -58,7 +58,7 @@ public static class ChannelBindingsHash
         WriteU32((uint)bindings.ApplicationData.Length);
         bindings.ApplicationData.Span.CopyTo(buffer.AsSpan(offset));
 
-#pragma warning disable CA5351 // MS-NLMP/MS-CSSP require MD5 for the channel-bindings checksum.
+#pragma warning disable CA5351 // MS-NLMP §3.1.5.1.2 requires MD5 for the EXTENDED_BINDING channel-bindings checksum.
         return System.Security.Cryptography.MD5.HashData(buffer);
 #pragma warning restore CA5351
     }
