@@ -17,7 +17,7 @@ namespace Opc.Classic.Dcom.Activation;
 public sealed class LegacyActivationServer : IActivationServer
 {
     private const uint ModeGetClassObject = 1;
-    private const int E_NOINTERFACE = unchecked((int)0x80004002u);
+    private static readonly int E_NOINTERFACE = global::Opc.Classic.OpcResultId.NoInterface.Code;
     private const uint AuthnHintPacketIntegrity = 5;
     private static readonly (ushort Major, ushort Minor) ServerComVersion = (5, 1);
     private readonly RemoteSCMActivatorServer _modernActivator;

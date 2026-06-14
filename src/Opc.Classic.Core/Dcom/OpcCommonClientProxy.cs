@@ -37,9 +37,89 @@ public sealed class OpcCommonClientProxy
     public static class Opnums
     {
         /// <summary>
+        /// <c>IOPCCommon::SetLocaleID</c> operation number.
+        /// </summary>
+        public const int SetLocaleId = 3;
+
+        /// <summary>
+        /// <c>IOPCCommon::GetLocaleID</c> operation number.
+        /// </summary>
+        public const int GetLocaleId = 4;
+
+        /// <summary>
+        /// <c>IOPCCommon::QueryAvailableLocaleIDs</c> operation number.
+        /// </summary>
+        public const int QueryAvailableLocaleIds = 5;
+
+        /// <summary>
+        /// <c>IOPCCommon::GetErrorString</c> operation number.
+        /// </summary>
+        public const int GetErrorString = 6;
+
+        /// <summary>
         /// <c>IOPCCommon::SetClientName</c> operation number.
         /// </summary>
         public const int SetClientName = 7;
+    }
+
+    /// <summary>
+    /// Sets the locale used for subsequent localized server strings.
+    /// </summary>
+    public async Task SetLocaleIdAsync(int localeId, CancellationToken cancellationToken = default)
+    {
+        byte[] payload = WritePayload((ref NdrWriter writer) => writer.WriteInt32(localeId));
+        NdrCallResult result = await _channel.InvokeAsync(
+            InterfaceId,
+            Opnums.SetLocaleId,
+            payload,
+            cancellationToken).ConfigureAwait(false);
+        OpcException.ThrowIfFailed(new OpcResultId(result.Hresult, null), "IOPCCommon::SetLocaleID");
+    }
+
+    /// <summary>
+    /// Gets the current locale used for localized server strings.
+    /// </summary>
+    public async Task<int> GetLocaleIdAsync(CancellationToken cancellationToken = default)
+    {
+        NdrCallResult result = await _channel.InvokeAsync(
+            InterfaceId,
+            Opnums.GetLocaleId,
+            ReadOnlyMemory<byte>.Empty,
+            cancellationToken).ConfigureAwait(false);
+        OpcException.ThrowIfFailed(new OpcResultId(result.Hresult, null), "IOPCCommon::GetLocaleID");
+        var reader = new NdrReader(result.ResponsePayload.Span);
+        return reader.ReadInt32();
+    }
+
+    /// <summary>
+    /// Lists locale IDs supported by the server.
+    /// </summary>
+    public async Task<int[]> QueryAvailableLocaleIdsAsync(CancellationToken cancellationToken = default)
+    {
+        NdrCallResult result = await _channel.InvokeAsync(
+            InterfaceId,
+            Opnums.QueryAvailableLocaleIds,
+            ReadOnlyMemory<byte>.Empty,
+            cancellationToken).ConfigureAwait(false);
+        OpcException.ThrowIfFailed(new OpcResultId(result.Hresult, null), "IOPCCommon::QueryAvailableLocaleIDs");
+        var reader = new NdrReader(result.ResponsePayload.Span);
+        return reader.ReadConformantInt32Array();
+    }
+
+    /// <summary>
+    /// Resolves an HRESULT to localized server text.
+    /// </summary>
+    public async Task<string> GetErrorStringAsync(int errorCode, CancellationToken cancellationToken = default)
+    {
+        byte[] payload = WritePayload((ref NdrWriter writer) => writer.WriteInt32(errorCode));
+        NdrCallResult result = await _channel.InvokeAsync(
+            InterfaceId,
+            Opnums.GetErrorString,
+            payload,
+            cancellationToken).ConfigureAwait(false);
+        OpcException.ThrowIfFailed(new OpcResultId(result.Hresult, null), "IOPCCommon::GetErrorString");
+        var reader = new NdrReader(result.ResponsePayload.Span);
+        return reader.ReadUnicodeStringPtr() ?? string.Empty;
     }
 
     /// <summary>

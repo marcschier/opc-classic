@@ -78,10 +78,10 @@ public partial interface IOPCConfiguration
     Task<DxGeneralResponse> ModifyDXConnectionsAsync(DxConnection[] connections, CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// <c>IOPCConfiguration::DeleteDXConnections</c> (opnum 12) projected as per-connection HRESULTs.
+    /// <c>IOPCConfiguration::DeleteDXConnections</c> (opnum 12).
     /// </summary>
     [OpcMethod(12)]
-    Task<int[]> DeleteDXConnectionsAsync(string browsePath, string[] connectionNames, bool recursive, CancellationToken cancellationToken = default);
+    Task<DxDeleteConnectionsResult> DeleteDXConnectionsAsync(string browsePath, DxConnection[] connectionMasks, bool recursive, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// <c>IOPCConfiguration::CopyDXConnectionDefaultAttributes</c> (opnum 13).

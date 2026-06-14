@@ -69,6 +69,7 @@ public sealed class OpcAeServerHost : IOpcServerHost, IDisposable, IAsyncDisposa
     public EndPoint? LocalEndpoint => _listener?.LocalEndpoint;
 
     /// <inheritdoc />
+#pragma warning disable MA0051 // StartAsync wires multiple dispatchers + tearoffs in one place; splitting harms readability.
     public Task StartAsync(CancellationToken cancellationToken)
     {
         StartingHost(_logger, _options.Clsid, _options.ProgId, null);
@@ -86,7 +87,8 @@ public sealed class OpcAeServerHost : IOpcServerHost, IDisposable, IAsyncDisposa
         IOpcAeServer effectiveServer = _serverImpl is IAeServer
             ? new IAeServerToOpcAeServerAdapter(_serverImpl)
             : _serverImpl;
-        IOpcServerDispatcher eventServerDispatcher = new IOPCEventServerServerDispatcher(effectiveServer);
+        var rootDispatcher = new OpcAeServerDispatcher(effectiveServer);
+        IOpcServerDispatcher eventServerDispatcher = rootDispatcher.EventServerDispatcher;
         // CreateEventSubscription (opnum 4) needs a custom dispatcher: the
         // source generator emits NotImplemented(4) for that opnum because
         // it rejects `out IOPCEventSubscriptionMgt` interface tearoff params
@@ -103,6 +105,7 @@ public sealed class OpcAeServerHost : IOpcServerHost, IDisposable, IAsyncDisposa
         var dispatchers = new Dictionary<Guid, IOpcServerDispatcher>
         {
             [IOPCEventServer.InterfaceId] = eventServerDispatcher,
+            [Opc.Classic.Dcom.OpcCommonClientProxy.InterfaceId] = rootDispatcher.CommonDispatcher,
         };
 
         // Register additional AE interface dispatchers when the impl provides
@@ -131,6 +134,7 @@ public sealed class OpcAeServerHost : IOpcServerHost, IDisposable, IAsyncDisposa
         HostListeningOn(_logger, _options.Clsid, _listener.LocalEndpoint, null);
         return started;
     }
+#pragma warning restore MA0051
 
     /// <inheritdoc />
     public async Task StopAsync(CancellationToken cancellationToken)

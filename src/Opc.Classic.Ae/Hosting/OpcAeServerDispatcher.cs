@@ -4,17 +4,26 @@
 //
 
 using System.Collections.Concurrent;
+using Opc.Classic.Dcom;
 using Opc.Classic.Ae.Dcom;
+using Opc.Classic.Hosting;
 
 namespace Opc.Classic.Ae.Hosting;
 
 /// <summary>
 /// AE dispatcher adapter that delegates to the source-generated IOPCEventServer dispatcher.
 /// </summary>
-public sealed class OpcAeServerDispatcher : IOpcAeServerDispatcher
+public sealed class OpcAeServerDispatcher : IOpcAeServerDispatcher, IConnectionPointContainer, IConnectionPoint, IOpcCommonServer
 {
     private readonly IOpcAeServer _server;
     private readonly IOPCEventServerServerDispatcher _serverDispatcher;
+    private readonly OpcCommonServerDispatcher _commonDispatcher;
+    private readonly IConnectionPointContainerServerDispatcher _connectionPointContainerDispatcher;
+    private readonly IConnectionPointServerDispatcher _connectionPointDispatcher;
+    private readonly ConcurrentDictionary<int, IOPCShutdown> _shutdownSinks = new();
+    private int _localeId;
+    private string _clientName = string.Empty;
+    private int _nextShutdownCookie;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="OpcAeServerDispatcher" /> class.
@@ -23,7 +32,19 @@ public sealed class OpcAeServerDispatcher : IOpcAeServerDispatcher
     {
         _server = server ?? throw new ArgumentNullException(nameof(server));
         _serverDispatcher = new IOPCEventServerServerDispatcher(server);
+        _commonDispatcher = new OpcCommonServerDispatcher(this);
+        _connectionPointContainerDispatcher = new IConnectionPointContainerServerDispatcher(this);
+        _connectionPointDispatcher = new IConnectionPointServerDispatcher(this);
+        _localeId = server.LocaleId;
+        if (_server is IAeServer aeServer)
+        {
+            aeServer.ServerShutdown += OnServerShutdown;
+        }
     }
+
+    internal IOpcServerDispatcher EventServerDispatcher => _serverDispatcher;
+
+    internal IOpcServerDispatcher CommonDispatcher => _commonDispatcher;
 
     /// <inheritdoc />
     public async Task<NdrCallResult> DispatchAsync(
@@ -32,14 +53,134 @@ public sealed class OpcAeServerDispatcher : IOpcAeServerDispatcher
         ReadOnlyMemory<byte> requestPayload,
         CancellationToken cancellationToken)
     {
-        if (interfaceId != IOPCEventServer.InterfaceId)
+        if (interfaceId == IOPCEventServer.InterfaceId)
         {
-            return new NdrCallResult(OpcResultId.NotImplemented.Code, ReadOnlyMemory<byte>.Empty);
+            return (await _serverDispatcher.DispatchAsync(opnum, requestPayload, cancellationToken).ConfigureAwait(false))
+                .ToNdrCallResult();
         }
 
-        return (await _serverDispatcher.DispatchAsync(opnum, requestPayload, cancellationToken).ConfigureAwait(false))
-            .ToNdrCallResult();
+        if (interfaceId == OpcCommonClientProxy.InterfaceId)
+        {
+            return (await _commonDispatcher.DispatchAsync(opnum, requestPayload, cancellationToken).ConfigureAwait(false))
+                .ToNdrCallResult();
+        }
+
+        if (interfaceId == IConnectionPointContainer.InterfaceId)
+        {
+            return (await _connectionPointContainerDispatcher.DispatchAsync(opnum, requestPayload, cancellationToken).ConfigureAwait(false))
+                .ToNdrCallResult();
+        }
+
+        if (interfaceId == IConnectionPoint.InterfaceId)
+        {
+            return (await _connectionPointDispatcher.DispatchAsync(opnum, requestPayload, cancellationToken).ConfigureAwait(false))
+                .ToNdrCallResult();
+        }
+
+        return new NdrCallResult(OpcResultId.NotImplemented.Code, ReadOnlyMemory<byte>.Empty);
     }
+
+    /// <inheritdoc />
+    public async Task SetLocaleIdAsync(int localeId, CancellationToken cancellationToken = default)
+    {
+        await _server.SetLocaleAsync(localeId, cancellationToken).ConfigureAwait(false);
+        _localeId = localeId;
+    }
+
+    /// <inheritdoc />
+    public Task<int> GetLocaleIdAsync(CancellationToken cancellationToken = default)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+        return Task.FromResult(_localeId);
+    }
+
+    /// <inheritdoc />
+    public async Task<int[]> QueryAvailableLocaleIdsAsync(CancellationToken cancellationToken = default)
+    {
+        IReadOnlyList<int> localeIds = await _server.GetSupportedLocalesAsync(cancellationToken).ConfigureAwait(false);
+        return localeIds switch
+        {
+            int[] array => array,
+            _ => localeIds.ToArray(),
+        };
+    }
+
+    /// <inheritdoc />
+    public Task<string> GetErrorStringAsync(int errorCode, CancellationToken cancellationToken = default) =>
+        _server.GetErrorTextAsync(new OpcResultId(errorCode, null), cancellationToken);
+
+    /// <inheritdoc />
+    public async Task SetClientNameAsync(string clientName, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(clientName);
+        await _server.SetClientNameAsync(clientName, cancellationToken).ConfigureAwait(false);
+        _clientName = clientName;
+    }
+
+    /// <inheritdoc />
+    public Task<IOpcInterfaceRef> EnumConnectionPointsAsync(CancellationToken cancellationToken = default)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+        return Task.FromResult<IOpcInterfaceRef>(CreateSyntheticInterfaceRef(OpcGuids.IID_IEnumConnectionPoints));
+    }
+
+    /// <inheritdoc />
+    public Task<IOpcInterfaceRef> FindConnectionPointAsync(Guid iid, CancellationToken cancellationToken = default)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+        if (iid != IOPCShutdown.InterfaceId)
+        {
+            throw new OpcException(new OpcResultId(unchecked((int)0x80040200), "CONNECT_E_NOCONNECTION"));
+        }
+
+        return Task.FromResult<IOpcInterfaceRef>(CreateSyntheticInterfaceRef(IConnectionPoint.InterfaceId));
+    }
+
+    /// <inheritdoc />
+    public Task<Guid> GetConnectionInterfaceAsync(CancellationToken cancellationToken = default)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+        return Task.FromResult(IOPCShutdown.InterfaceId);
+    }
+
+    /// <inheritdoc />
+    public Task<int> AdviseAsync(IOpcInterfaceRef sink, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(sink);
+        cancellationToken.ThrowIfCancellationRequested();
+        if (sink.Iid != IOPCShutdown.InterfaceId || sink is not OpcAeShutdownSinkRef directSink)
+        {
+            throw new OpcException(new OpcResultId(unchecked((int)0x80040200), "CONNECT_E_NOCONNECTION"));
+        }
+
+        int cookie = Interlocked.Increment(ref _nextShutdownCookie);
+        _shutdownSinks[cookie] = directSink.Sink;
+        return Task.FromResult(cookie);
+    }
+
+    /// <inheritdoc />
+    public Task UnadviseAsync(int cookie, CancellationToken cancellationToken = default)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+        if (!_shutdownSinks.TryRemove(cookie, out _))
+        {
+            throw new OpcException(new OpcResultId(unchecked((int)0x80040200), "CONNECT_E_NOCONNECTION"));
+        }
+        return Task.CompletedTask;
+    }
+
+    private void OnServerShutdown(object? sender, EventArgs e)
+    {
+        foreach (IOPCShutdown sink in _shutdownSinks.Values)
+        {
+#pragma warning disable VSTHRD002
+            sink.ShutdownRequestAsync(string.Empty, CancellationToken.None).GetAwaiter().GetResult();
+#pragma warning restore VSTHRD002
+        }
+    }
+
+    private static IOpcInterfaceRef CreateSyntheticInterfaceRef(Guid iid) =>
+        new OpcInterfaceRef(iid, 0, 1, 1, 1, Guid.CreateVersion7(), 0, Array.Empty<ushort>());
 
     /// <inheritdoc />
     public Task QueryEventCategoriesAsync(

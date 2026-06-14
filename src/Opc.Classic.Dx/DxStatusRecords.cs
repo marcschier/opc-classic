@@ -80,3 +80,19 @@ public sealed record DxConnectionQueryResult(int[] Errors, DxConnection[] Connec
 /// Response shape for DX operations that return per-mask errors plus a general response.
 /// </summary>
 public sealed record DxUpdateConnectionsResult(int[] Errors, DxGeneralResponse Response);
+
+/// <summary>
+/// Response shape for <c>DeleteDXConnections</c>.
+/// </summary>
+public sealed record DxDeleteConnectionsResult(int[] MaskErrors, DxGeneralResponse Response)
+{
+    /// <summary>
+    /// Configuration version returned by the server after delete processing.
+    /// </summary>
+    public string? ConfigurationVersion => Response.ConfigurationVersion;
+
+    /// <summary>
+    /// Per-connection results identified by the server as deleted or failed.
+    /// </summary>
+    public DxIdentifiedResult[] IdentifiedResults => Response.IdentifiedResults;
+}

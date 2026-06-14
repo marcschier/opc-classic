@@ -841,6 +841,7 @@ The implementation is still intentionally **configuration-focused**. It does not
 | `ResetConfiguration` | 14 | ✅ | `IOPCDxInterfaces` |
 
 The hand-written `IOPCConfigurationClientProxy` implements payload encode/decode for these methods.
+`DeleteDXConnections` follows OPC DX 1.00 §5.2.2.5/App. B.1.4: the proxy accepts `DxConnection[]` masks and returns mask errors plus a `DxGeneralResponse` (`DxDeleteConnectionsResult`).
 
 ---
 

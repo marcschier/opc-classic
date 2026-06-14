@@ -145,6 +145,61 @@ public sealed class IOPCDxProxyTests
         await Assert.That(result.Response.ConfigurationVersion).IsEqualTo("cfg-5");
     }
 
+    [Test]
+    public async Task Configuration_DeleteDXConnections_encodes_masks_and_decodes_response()
+    {
+        Guid observedIid = Guid.Empty;
+        int observedOpnum = -1;
+        string? observedBrowsePath = null;
+        bool observedRecursive = false;
+        DxConnection[] observedMasks = Array.Empty<DxConnection>();
+        ReadOnlyMemory<byte> responsePayload = WritePayload((ref NdrWriter writer) =>
+        {
+            NdrOpcDxInt32ArrayCodec.Write(ref writer, new[] { 0, OpcDxError.E_INVALID_BROWSE_PATH.Code });
+            NdrOpcDxGeneralResponseCodec.Write(
+                ref writer,
+                new DxGeneralResponse(
+                    "cfg-delete-1",
+                    new[]
+                    {
+                        new DxIdentifiedResult("Area1", "C1", "v7", OpcDxError.S_OK),
+                    }));
+        }, capacity: 4096);
+        var channel = new InMemoryCallChannel((iid, opnum, payload, _) =>
+        {
+            observedIid = iid;
+            observedOpnum = opnum;
+            var reader = new NdrReader(payload.Span);
+            observedBrowsePath = reader.ReadUnicodeStringPtr();
+            observedMasks = NdrOpcDxConnectionArrayCodec.Read(ref reader);
+            observedRecursive = reader.ReadInt32() != 0;
+            return Task.FromResult(new NdrCallResult(0, responsePayload));
+        });
+
+        var proxy = new IOPCConfigurationClientProxy(channel);
+        DxDeleteConnectionsResult result = await proxy.DeleteDXConnectionsAsync(
+            "Area1",
+            new[]
+            {
+                new DxConnection(name: "C1", mask: (int)DxMask.Name),
+                new DxConnection(sourceServerName: "PLC1", sourceItemName: "Level"),
+            },
+            recursive: true,
+            CancellationToken.None);
+
+        await Assert.That(observedIid).IsEqualTo(IOPCConfiguration.InterfaceId);
+        await Assert.That(observedOpnum).IsEqualTo(IOPCConfiguration.Opnums.DeleteDXConnectionsAsync);
+        await Assert.That(observedBrowsePath).IsEqualTo("Area1");
+        await Assert.That(observedRecursive).IsTrue();
+        await Assert.That(observedMasks.Length).IsEqualTo(2);
+        await Assert.That(observedMasks[0].Name).IsEqualTo("C1");
+        await Assert.That(observedMasks[1].SourceServerName).IsEqualTo("PLC1");
+        await Assert.That(result.MaskErrors[0]).IsEqualTo(0);
+        await Assert.That(result.MaskErrors[1]).IsEqualTo(OpcDxError.E_INVALID_BROWSE_PATH.Code);
+        await Assert.That(result.ConfigurationVersion).IsEqualTo("cfg-delete-1");
+        await Assert.That(result.IdentifiedResults[0].ItemName).IsEqualTo("C1");
+    }
+
     private static ReadOnlyMemory<byte> WritePayload(NdrWriteAction write, int capacity = 512)
     {
         var buffer = new byte[capacity];

@@ -104,10 +104,27 @@ public sealed class OpcCommonClientProxyTests
     {
         public string? ClientName { get; private set; }
 
+        public int LocaleId { get; private set; }
+
         public Task SetClientNameAsync(string clientName, CancellationToken cancellationToken = default)
         {
             ClientName = clientName;
             return Task.CompletedTask;
         }
+
+        public Task SetLocaleIdAsync(int localeId, CancellationToken cancellationToken = default)
+        {
+            LocaleId = localeId;
+            return Task.CompletedTask;
+        }
+
+        public Task<int> GetLocaleIdAsync(CancellationToken cancellationToken = default) =>
+            Task.FromResult(LocaleId);
+
+        public Task<int[]> QueryAvailableLocaleIdsAsync(CancellationToken cancellationToken = default) =>
+            Task.FromResult<int[]>([0x0409]);
+
+        public Task<string> GetErrorStringAsync(int errorCode, CancellationToken cancellationToken = default) =>
+            Task.FromResult($"stub-error-0x{errorCode:X8}");
     }
 }

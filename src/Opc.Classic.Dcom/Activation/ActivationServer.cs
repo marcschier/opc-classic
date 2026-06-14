@@ -17,7 +17,6 @@ namespace Opc.Classic.Dcom.Activation;
 public sealed class ActivationServer : IRpcRequestContextDispatcher
 {
     private const int RemoteActivationOpnum = 0;
-    private const int E_ACCESSDENIED = unchecked((int)0x80070005u);
     private const int E_INVALIDARG = unchecked((int)0x80070057u);
     private const OpcProtectionLevel RequiredActivationProtectionLevel = OpcProtectionLevel.Integrity;
 
@@ -128,7 +127,7 @@ public sealed class ActivationServer : IRpcRequestContextDispatcher
         if (!isAuthenticated || protectionLevel < RequiredActivationProtectionLevel)
         {
             AuthenticationRejected(logger, protectionLevel, null);
-            return DispatchResult.Fault(E_ACCESSDENIED);
+            return DispatchResult.Fault(global::Opc.Classic.OpcResultId.AccessDenied.Code);
         }
 
         RemoteActivationRequest request;

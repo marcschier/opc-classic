@@ -27,6 +27,49 @@ public interface IHdaServer : IAsyncDisposable
     Task<OpcServerStatus> GetStatusAsync(CancellationToken cancellationToken = default);
 
     /// <summary>
+    /// Negotiated server LCID for localized HDA server strings.
+    /// </summary>
+    int LocaleId => 0;
+
+    /// <summary>
+    /// Set the active locale for subsequent server-supplied strings.
+    /// </summary>
+    Task SetLocaleAsync(int localeId, CancellationToken cancellationToken = default)
+    {
+        _ = localeId;
+        cancellationToken.ThrowIfCancellationRequested();
+        return Task.CompletedTask;
+    }
+
+    /// <summary>
+    /// List the locale IDs the server supports.
+    /// </summary>
+    Task<IReadOnlyList<int>> GetSupportedLocalesAsync(CancellationToken cancellationToken = default)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+        return Task.FromResult<IReadOnlyList<int>>(new[] { LocaleId });
+    }
+
+    /// <summary>
+    /// Resolve an HRESULT to the server's human-readable text in the current locale.
+    /// </summary>
+    Task<string> GetErrorTextAsync(OpcResultId resultId, CancellationToken cancellationToken = default)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+        return Task.FromResult(resultId.ToString());
+    }
+
+    /// <summary>
+    /// Supply a client name that servers may use for diagnostics and logging.
+    /// </summary>
+    Task SetClientNameAsync(string clientName, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(clientName);
+        cancellationToken.ThrowIfCancellationRequested();
+        return Task.CompletedTask;
+    }
+
+    /// <summary>
     /// Browse the HDA address space starting at <paramref name="itemIdPrefix"/>
     /// (use empty string for the root).
     /// </summary>

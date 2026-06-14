@@ -78,6 +78,38 @@ public interface IOpcDaServer : IOPCServer
     Task<OpcDaGroup?> ResolveGroupByNameAsync(string name, CancellationToken cancellationToken = default) =>
         Task.FromResult<OpcDaGroup?>(null);
 
+    /// <summary>
+    /// Returns a point-in-time snapshot of the server's currently registered
+    /// private groups. Used by the Windows CCW to implement
+    /// <c>IOPCServer::CreateGroupEnumerator</c>.
+    /// </summary>
+    /// <remarks>
+    /// The default implementation returns an empty snapshot; implementations
+    /// that maintain in-process groups should override this member.
+    /// </remarks>
+    Task<IReadOnlyList<OpcDaGroup>> SnapshotGroupsAsync(CancellationToken cancellationToken = default) =>
+        Task.FromResult<IReadOnlyList<OpcDaGroup>>(Array.Empty<OpcDaGroup>());
+
+    /// <summary>
+    /// Reads DA 3.0 top-level item values for <c>IOPCItemIO::Read</c>.
+    /// </summary>
+    Task<IReadOnlyList<ItemValueResult>> ReadAsync(
+        IReadOnlyList<Item> items,
+        CancellationToken cancellationToken = default) =>
+        this is IDaServer daServer
+            ? daServer.ReadAsync(items, cancellationToken)
+            : Task.FromException<IReadOnlyList<ItemValueResult>>(new OpcException(OpcResultId.NotImplemented));
+
+    /// <summary>
+    /// Writes DA 3.0 top-level item value/quality/timestamp tuples for <c>IOPCItemIO::WriteVQT</c>.
+    /// </summary>
+    Task<IReadOnlyList<IdentifiedResult>> WriteVQTAsync(
+        IReadOnlyList<ItemValue> values,
+        CancellationToken cancellationToken = default) =>
+        this is IDaServer daServer
+            ? daServer.WriteAsync(values, cancellationToken)
+            : Task.FromException<IReadOnlyList<IdentifiedResult>>(new OpcException(OpcResultId.NotImplemented));
+
     Task IOPCServer.AddGroupAsync(
         string name,
         bool active,
@@ -132,5 +164,5 @@ public interface IOpcDaServer : IOPCServer
             securityOffset: 0,
             resolverBindings: Array.Empty<ushort>());
 
-    // Future follow-up adds item-level read/write and subscriptions.
+    // Future follow-up adds subscriptions.
 }

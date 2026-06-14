@@ -8,6 +8,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 using Opc.Classic.Ae.Dcom;
+using Opc.Classic.Hosting.Windows;
 
 namespace Opc.Classic.Ae.Hosting.Windows;
 
@@ -35,7 +36,7 @@ namespace Opc.Classic.Ae.Hosting.Windows;
 public static unsafe class OpcAeServerCcw
 {
     internal const int S_OK = 0;
-    internal const int E_NOINTERFACE = unchecked((int)0x80004002);
+    internal static readonly int E_NOINTERFACE = global::Opc.Classic.OpcResultId.NoInterface.Code;
     internal const int E_INVALIDARG = unchecked((int)0x80070057);
     internal const int E_NOTIMPL = unchecked((int)0x80004001);
     internal const int E_FAIL = unchecked((int)0x80004005);
@@ -63,10 +64,14 @@ public static unsafe class OpcAeServerCcw
         IntPtr* unknownVtable = AllocateUnknownVtable();
         IntPtr* eventServerVtable = AllocateEventServerVtable();
         IntPtr* subscriptionMgtVtable = AllocateSubscriptionMgtVtable();
+        IntPtr* connectionPointVtable = AllocateConnectionPointVtable();
+        IntPtr* connectionPointContainerVtable = AllocateConnectionPointContainerVtable();
 
         IntPtr unknownTearoff = AllocateTearoff(unknownVtable);
         IntPtr eventServerTearoff = AllocateTearoff(eventServerVtable);
         IntPtr subscriptionMgtTearoff = AllocateTearoff(subscriptionMgtVtable);
+        IntPtr connectionPointTearoff = AllocateTearoff(connectionPointVtable);
+        IntPtr connectionPointContainerTearoff = AllocateTearoff(connectionPointContainerVtable);
 
         session.UnknownTearoff = unknownTearoff;
         session.UnknownVtable = unknownVtable;
@@ -74,10 +79,20 @@ public static unsafe class OpcAeServerCcw
         session.EventServerVtable = eventServerVtable;
         session.SubscriptionMgtTearoff = subscriptionMgtTearoff;
         session.SubscriptionMgtVtable = subscriptionMgtVtable;
+        session.ConnectionPointTearoff = connectionPointTearoff;
+        session.ConnectionPointVtable = connectionPointVtable;
+        session.ConnectionPointContainerTearoff = connectionPointContainerTearoff;
+        session.ConnectionPointContainerVtable = connectionPointContainerVtable;
+        if (server is IAeServer aeServerWithShutdown)
+        {
+            aeServerWithShutdown.ServerShutdown += session.OnServerShutdown;
+        }
 
         s_tearoffs[unknownTearoff] = session;
         s_tearoffs[eventServerTearoff] = session;
         s_tearoffs[subscriptionMgtTearoff] = session;
+        s_tearoffs[connectionPointTearoff] = session;
+        s_tearoffs[connectionPointContainerTearoff] = session;
 
         return ResolveTearoff(session, requestedIid);
     }
@@ -100,10 +115,14 @@ public static unsafe class OpcAeServerCcw
         IntPtr* unknownVtable = AllocateUnknownVtable();
         IntPtr* eventServerVtable = AllocateEventServerVtable();
         IntPtr* subscriptionMgtVtable = AllocateSubscriptionMgtVtable();
+        IntPtr* connectionPointVtable = AllocateConnectionPointVtable();
+        IntPtr* connectionPointContainerVtable = AllocateConnectionPointContainerVtable();
 
         IntPtr unknownTearoff = AllocateTearoff(unknownVtable);
         IntPtr eventServerTearoff = AllocateTearoff(eventServerVtable);
         IntPtr subscriptionMgtTearoff = AllocateTearoff(subscriptionMgtVtable);
+        IntPtr connectionPointTearoff = AllocateTearoff(connectionPointVtable);
+        IntPtr connectionPointContainerTearoff = AllocateTearoff(connectionPointContainerVtable);
 
         session.UnknownTearoff = unknownTearoff;
         session.UnknownVtable = unknownVtable;
@@ -111,10 +130,18 @@ public static unsafe class OpcAeServerCcw
         session.EventServerVtable = eventServerVtable;
         session.SubscriptionMgtTearoff = subscriptionMgtTearoff;
         session.SubscriptionMgtVtable = subscriptionMgtVtable;
+        session.ConnectionPointTearoff = connectionPointTearoff;
+        session.ConnectionPointVtable = connectionPointVtable;
+        session.ConnectionPointContainerTearoff = connectionPointContainerTearoff;
+        session.ConnectionPointContainerVtable = connectionPointContainerVtable;
+        // Dispatcher-only overload does not directly hold an IAeServer reference;
+        // shutdown wiring is provided by the dispatcher itself via OnServerShutdown.
 
         s_tearoffs[unknownTearoff] = session;
         s_tearoffs[eventServerTearoff] = session;
         s_tearoffs[subscriptionMgtTearoff] = session;
+        s_tearoffs[connectionPointTearoff] = session;
+        s_tearoffs[connectionPointContainerTearoff] = session;
 
         return ResolveTearoff(session, requestedIid);
     }
@@ -122,7 +149,9 @@ public static unsafe class OpcAeServerCcw
     public static bool SupportsInterface(Guid iid) =>
         iid == IID_IUnknown ||
         iid == IOPCEventServer.InterfaceId ||
-        iid == IOPCEventSubscriptionMgt.InterfaceId;
+        iid == IOPCEventSubscriptionMgt.InterfaceId ||
+        iid == OpcGuids.IID_IConnectionPoint ||
+        iid == OpcGuids.IID_IConnectionPointContainer;
 
     /// <summary>
     /// Test helper: returns the current refcount, or -1 if the pointer is not a known tearoff.
@@ -205,6 +234,29 @@ public static unsafe class OpcAeServerCcw
         return v;
     }
 
+    [SuppressMessage("Reliability", "CA2018:Buffer size argument matches element count", Justification = "Explicit byte size.")]
+    private static IntPtr* AllocateConnectionPointVtable()
+    {
+        IntPtr* v = (IntPtr*)NativeMemory.Alloc((nuint)(8 * sizeof(IntPtr)));
+        FillUnknownSlots(v);
+        v[3] = (IntPtr)(delegate* unmanaged<IntPtr, Guid*, int>)&ShutdownGetConnectionInterface;
+        v[4] = (IntPtr)(delegate* unmanaged<IntPtr, IntPtr*, int>)&ShutdownGetConnectionPointContainer;
+        v[5] = (IntPtr)(delegate* unmanaged<IntPtr, IntPtr, uint*, int>)&ShutdownAdvise;
+        v[6] = (IntPtr)(delegate* unmanaged<IntPtr, uint, int>)&ShutdownUnadvise;
+        v[7] = (IntPtr)(delegate* unmanaged<IntPtr, IntPtr*, int>)&ShutdownEnumConnections;
+        return v;
+    }
+
+    [SuppressMessage("Reliability", "CA2018:Buffer size argument matches element count", Justification = "Explicit byte size.")]
+    private static IntPtr* AllocateConnectionPointContainerVtable()
+    {
+        IntPtr* v = (IntPtr*)NativeMemory.Alloc((nuint)(5 * sizeof(IntPtr)));
+        FillUnknownSlots(v);
+        v[3] = (IntPtr)(delegate* unmanaged<IntPtr, IntPtr*, int>)&ShutdownEnumConnectionPoints;
+        v[4] = (IntPtr)(delegate* unmanaged<IntPtr, Guid*, IntPtr*, int>)&ShutdownFindConnectionPoint;
+        return v;
+    }
+
     private static void FillUnknownSlots(IntPtr* v)
     {
         v[0] = (IntPtr)(delegate* unmanaged<IntPtr, Guid*, IntPtr*, int>)&QueryInterface;
@@ -264,6 +316,14 @@ public static unsafe class OpcAeServerCcw
         {
             return session.SubscriptionMgtTearoff;
         }
+        if (iid == OpcGuids.IID_IConnectionPoint)
+        {
+            return session.ConnectionPointTearoff;
+        }
+        if (iid == OpcGuids.IID_IConnectionPointContainer)
+        {
+            return session.ConnectionPointContainerTearoff;
+        }
         return IntPtr.Zero;
     }
 
@@ -302,10 +362,16 @@ public static unsafe class OpcAeServerCcw
         s_tearoffs.TryRemove(session.UnknownTearoff, out _);
         s_tearoffs.TryRemove(session.EventServerTearoff, out _);
         s_tearoffs.TryRemove(session.SubscriptionMgtTearoff, out _);
+        s_tearoffs.TryRemove(session.ConnectionPointTearoff, out _);
+        s_tearoffs.TryRemove(session.ConnectionPointContainerTearoff, out _);
         FreeTearoffs(session);
         FreeVtables(session);
         if (session.ServerHandle.IsAllocated)
         {
+            if (session.ServerHandle.Target is IAeServer aeServer)
+            {
+                aeServer.ServerShutdown -= session.OnServerShutdown;
+            }
             session.ServerHandle.Free();
         }
         if (session.DispatcherHandle.IsAllocated)
@@ -328,6 +394,14 @@ public static unsafe class OpcAeServerCcw
         {
             NativeMemory.Free((void*)session.SubscriptionMgtTearoff);
         }
+        if (session.ConnectionPointTearoff != IntPtr.Zero)
+        {
+            NativeMemory.Free((void*)session.ConnectionPointTearoff);
+        }
+        if (session.ConnectionPointContainerTearoff != IntPtr.Zero)
+        {
+            NativeMemory.Free((void*)session.ConnectionPointContainerTearoff);
+        }
     }
 
     private static void FreeVtables(CcwSession session)
@@ -343,6 +417,177 @@ public static unsafe class OpcAeServerCcw
         if (session.SubscriptionMgtVtable != null)
         {
             NativeMemory.Free(session.SubscriptionMgtVtable);
+        }
+        if (session.ConnectionPointVtable != null)
+        {
+            NativeMemory.Free(session.ConnectionPointVtable);
+        }
+        if (session.ConnectionPointContainerVtable != null)
+        {
+            NativeMemory.Free(session.ConnectionPointContainerVtable);
+        }
+    }
+
+    [UnmanagedCallersOnly]
+    private static int ShutdownGetConnectionInterface(IntPtr pThis, Guid* piid)
+    {
+        _ = pThis;
+        if (piid == null)
+        {
+            return E_INVALIDARG;
+        }
+        *piid = OpcGuids.IID_IOPCShutdown;
+        return S_OK;
+    }
+
+    [UnmanagedCallersOnly]
+    private static int ShutdownGetConnectionPointContainer(IntPtr pThis, IntPtr* ppCpc)
+    {
+        WriteNull(ppCpc);
+        if (ppCpc == null)
+        {
+            return E_INVALIDARG;
+        }
+        return s_tearoffs.TryGetValue(pThis, out CcwSession? session)
+            ? ReturnTearoff(session, session.ConnectionPointContainerTearoff, ppCpc)
+            : E_FAIL;
+    }
+
+    [UnmanagedCallersOnly]
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
+    private static int ShutdownAdvise(IntPtr pThis, IntPtr pUnk, uint* pdwCookie)
+    {
+        if (pdwCookie != null)
+        {
+            *pdwCookie = 0;
+        }
+        if (pdwCookie == null || pUnk == IntPtr.Zero)
+        {
+            return E_INVALIDARG;
+        }
+        if (!s_tearoffs.TryGetValue(pThis, out CcwSession? session))
+        {
+            return E_FAIL;
+        }
+        OpcShutdownSinkProxy? proxy = null;
+        try
+        {
+            proxy = new OpcShutdownSinkProxy(pUnk);
+            int cookie = Interlocked.Increment(ref session.NextShutdownCookie);
+            if (!session.ShutdownSinks.TryAdd(cookie, proxy))
+            {
+                proxy.Dispose();
+                return E_FAIL;
+            }
+            proxy = null;
+            *pdwCookie = unchecked((uint)cookie);
+            return S_OK;
+        }
+        catch (Exception ex)
+        {
+            proxy?.Dispose();
+            return MapHResult(ex);
+        }
+    }
+
+    [UnmanagedCallersOnly]
+    private static int ShutdownUnadvise(IntPtr pThis, uint cookie)
+    {
+        if (!s_tearoffs.TryGetValue(pThis, out CcwSession? session))
+        {
+            return E_FAIL;
+        }
+        if (!session.ShutdownSinks.TryRemove(unchecked((int)cookie), out OpcShutdownSinkProxy? proxy))
+        {
+            return unchecked((int)0x80040200);
+        }
+        proxy.Dispose();
+        return S_OK;
+    }
+
+    [UnmanagedCallersOnly]
+    private static int ShutdownEnumConnections(IntPtr pThis, IntPtr* ppEnum)
+    {
+        _ = pThis;
+        WriteNull(ppEnum);
+        return ppEnum == null ? E_INVALIDARG : E_NOTIMPL;
+    }
+
+    [UnmanagedCallersOnly]
+    private static int ShutdownEnumConnectionPoints(IntPtr pThis, IntPtr* ppEnum)
+    {
+        WriteNull(ppEnum);
+        if (ppEnum == null)
+        {
+            return E_INVALIDARG;
+        }
+        if (!s_tearoffs.TryGetValue(pThis, out CcwSession? session))
+        {
+            return E_FAIL;
+        }
+        AddRefComPointer(session.ConnectionPointTearoff);
+        Opc.Classic.Da.Hosting.Windows.OpcEnumConnectionPointsEnumerator? enumerator = null;
+        try
+        {
+            enumerator = new Opc.Classic.Da.Hosting.Windows.OpcEnumConnectionPointsEnumerator([session.ConnectionPointTearoff]);
+            *ppEnum = Opc.Classic.Da.Hosting.Windows.OpcEnumConnectionPointsCcw.Create(enumerator);
+            enumerator = null;
+            return S_OK;
+        }
+        finally
+        {
+            enumerator?.Dispose();
+        }
+    }
+
+    [UnmanagedCallersOnly]
+    private static int ShutdownFindConnectionPoint(IntPtr pThis, Guid* riid, IntPtr* ppCp)
+    {
+        WriteNull(ppCp);
+        if (riid == null || ppCp == null)
+        {
+            return E_INVALIDARG;
+        }
+        if (!s_tearoffs.TryGetValue(pThis, out CcwSession? session))
+        {
+            return E_FAIL;
+        }
+        return *riid == OpcGuids.IID_IOPCShutdown
+            ? ReturnTearoff(session, session.ConnectionPointTearoff, ppCp)
+            : E_NOINTERFACE;
+    }
+
+    private static int ReturnTearoff(CcwSession session, IntPtr tearoff, IntPtr* ppv)
+    {
+        if (ppv == null || tearoff == IntPtr.Zero)
+        {
+            return E_INVALIDARG;
+        }
+        *ppv = tearoff;
+        Interlocked.Increment(ref session.RefCount);
+        return S_OK;
+    }
+
+    private static void AddRefComPointer(IntPtr pointer)
+    {
+        IntPtr* vtable = *(IntPtr**)pointer;
+        var addRef = (delegate* unmanaged<IntPtr, uint>)vtable[1];
+        _ = addRef(pointer);
+    }
+
+    private static int MapHResult(Exception ex) => ex switch
+    {
+        COMException comEx => comEx.ErrorCode,
+        ArgumentException => E_INVALIDARG,
+        ObjectDisposedException => E_FAIL,
+        _ => E_FAIL,
+    };
+
+    private static void WriteNull(IntPtr* ppv)
+    {
+        if (ppv != null)
+        {
+            *ppv = IntPtr.Zero;
         }
     }
 
@@ -368,5 +613,19 @@ public static unsafe class OpcAeServerCcw
         public IntPtr* EventServerVtable;
         public IntPtr SubscriptionMgtTearoff;
         public IntPtr* SubscriptionMgtVtable;
+        public IntPtr ConnectionPointTearoff;
+        public IntPtr* ConnectionPointVtable;
+        public IntPtr ConnectionPointContainerTearoff;
+        public IntPtr* ConnectionPointContainerVtable;
+        public ConcurrentDictionary<int, OpcShutdownSinkProxy> ShutdownSinks { get; } = new();
+        public int NextShutdownCookie;
+
+        public void OnServerShutdown(object? sender, EventArgs e)
+        {
+            foreach (OpcShutdownSinkProxy sink in ShutdownSinks.Values)
+            {
+                sink.ShutdownRequest(string.Empty);
+            }
+        }
     }
 }

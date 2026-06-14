@@ -495,10 +495,10 @@ public sealed class LoopbackDaServer : IOpcDaServer
     }
 
     public IReadOnlyList<BrowseElement> Browse(string itemPath, BrowseFilters filters) => _tags.Browse(itemPath, filters);
-    public Task<IReadOnlyList<ItemValueResult>> ReadAsync(IReadOnlyList<Item> items, CancellationToken ct) => Task.FromResult(_tags.Read(items));
-    public Task<IReadOnlyList<IdentifiedResult>> WriteAsync(IReadOnlyList<ItemValue> values, CancellationToken ct) => Task.FromResult<IReadOnlyList<IdentifiedResult>>(values.Select(static value => new IdentifiedResult(value.ItemName) { ClientHandle = value.ClientHandle, ResultId = OpcResultId.BadRights }).ToArray());
-    public Task<IReadOnlyList<IdentifiedResult>> ValidateAsync(IReadOnlyList<Item> items, CancellationToken ct) => Task.FromResult<IReadOnlyList<IdentifiedResult>>(items.Select(item => new IdentifiedResult(item.ItemName) { ClientHandle = item.ClientHandle, ResultId = _tags.Contains(item.ItemName) ? OpcResultId.Ok : OpcResultId.UnknownItemId }).ToArray());
-    public Task<IReadOnlyList<ItemPropertyResult>> GetPropertiesAsync(IReadOnlyList<ItemIdentifier> itemIds, IReadOnlyList<PropertyID> propertyIds, bool returnValues, CancellationToken ct) => Task.FromResult<IReadOnlyList<ItemPropertyResult>>(Array.Empty<ItemPropertyResult>());
+    public Task<IReadOnlyList<ItemValueResult>> ReadAsync(IReadOnlyList<Item> items, CancellationToken cancellationToken) => Task.FromResult(_tags.Read(items));
+    public Task<IReadOnlyList<IdentifiedResult>> WriteAsync(IReadOnlyList<ItemValue> values, CancellationToken cancellationToken) => Task.FromResult<IReadOnlyList<IdentifiedResult>>(values.Select(static value => new IdentifiedResult(value.ItemName) { ClientHandle = value.ClientHandle, ResultId = OpcResultId.BadRights }).ToArray());
+    public Task<IReadOnlyList<IdentifiedResult>> ValidateAsync(IReadOnlyList<Item> items, CancellationToken cancellationToken) => Task.FromResult<IReadOnlyList<IdentifiedResult>>(items.Select(item => new IdentifiedResult(item.ItemName) { ClientHandle = item.ClientHandle, ResultId = _tags.Contains(item.ItemName) ? OpcResultId.Ok : OpcResultId.UnknownItemId }).ToArray());
+    public Task<IReadOnlyList<ItemPropertyResult>> GetPropertiesAsync(IReadOnlyList<ItemIdentifier> itemIds, IReadOnlyList<PropertyID> propertyIds, bool returnValues, CancellationToken cancellationToken) => Task.FromResult<IReadOnlyList<ItemPropertyResult>>(Array.Empty<ItemPropertyResult>());
 }
 
 public sealed class LoopbackDaSubscription : IDaSubscription

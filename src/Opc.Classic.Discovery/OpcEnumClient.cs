@@ -25,7 +25,6 @@ public sealed class OpcEnumClient : IOpcDiscovery
     private const int MaximumPayloadSize = 65536;
     private const int ClassContext = 0x14;
     private const int RpcProtocolSequenceTcp = 7;
-    private const int ENoInterface = unchecked((int)0x80004002u);
     private const uint ObjRefSignature = 0x574F454D;
 
     private static readonly Guid RemoteScmActivatorInterfaceId = new("000001A0-0000-0000-C000-000000000046");
@@ -354,7 +353,7 @@ public sealed class OpcEnumClient : IOpcDiscovery
                 .ConfigureAwait(false);
             return new ActivatedServerList(serverList2.InterfaceRef, serverList2.OxidBindings, SupportsServerList2: true);
         }
-        catch (OpcException ex) when (ex.ResultId.Code == ENoInterface)
+        catch (OpcException ex) when (ex.ResultId.Code == global::Opc.Classic.OpcResultId.NoInterface.Code)
         {
             ActivationOutcome serverList = await RemoteCreateInstanceAsync(host, OpcGuids.IID_IOPCServerList, cancellationToken)
                 .ConfigureAwait(false);

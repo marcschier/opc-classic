@@ -13,6 +13,7 @@
 #pragma warning disable MA0048 // Multiple interface declarations grouped for readability
 #pragma warning disable OPCGEN104, OPCGEN105 // IFACE pointer responses are decoded by generated client proxies.
 
+using Opc.Classic.Dcom;
 using Opc.Classic.Generators;
 
 namespace Opc.Classic.Ae.Dcom;
@@ -429,6 +430,67 @@ public partial interface IOPCEventSink
         bool lastRefresh,
         OpcEventNotification[] events,
         CancellationToken cancellationToken = default);
+}
+
+/// <summary>
+/// <c>IConnectionPointContainer</c> — enumerates connection points (IID_IConnectionPointContainer).
+/// </summary>
+[OpcInterface("B196B284-BAB4-101A-B69C-00AA00341D07")]
+[OpcGenerateServerDispatch]
+public partial interface IConnectionPointContainer
+{
+    /// <summary>
+    /// <c>IConnectionPointContainer::EnumConnectionPoints</c> (opnum 3).
+    /// </summary>
+    [OpcMethod(3)]
+    Task<IOpcInterfaceRef> EnumConnectionPointsAsync(CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// <c>IConnectionPointContainer::FindConnectionPoint</c> (opnum 4).
+    /// </summary>
+    [OpcMethod(4)]
+    Task<IOpcInterfaceRef> FindConnectionPointAsync(Guid iid, CancellationToken cancellationToken = default);
+}
+
+/// <summary>
+/// <c>IConnectionPoint</c> — the shutdown sink-binding interface (IID_IConnectionPoint).
+/// </summary>
+[OpcInterface("B196B286-BAB4-101A-B69C-00AA00341D07")]
+[OpcGenerateServerDispatch]
+public partial interface IConnectionPoint
+{
+    /// <summary>
+    /// <c>IConnectionPoint::GetConnectionInterface</c> (opnum 3).
+    /// </summary>
+    [OpcMethod(3)]
+    Task<Guid> GetConnectionInterfaceAsync(CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// <c>IConnectionPoint::Advise</c> (opnum 5).
+    /// </summary>
+    [OpcMethod(5)]
+    Task<int> AdviseAsync(IOpcInterfaceRef sink, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// <c>IConnectionPoint::Unadvise</c> (opnum 6).
+    /// </summary>
+    [OpcMethod(6)]
+    Task UnadviseAsync(int cookie, CancellationToken cancellationToken = default);
+}
+
+/// <summary>
+/// <c>IOPCShutdown</c> — server-to-client shutdown notification sink (IID_IOPCShutdown).
+/// </summary>
+[OpcInterface("F31DFDE1-07B6-11D2-B2D8-0060083BA1FB")]
+[GenerateOpcProxy]
+[OpcGenerateServerDispatch]
+public partial interface IOPCShutdown
+{
+    /// <summary>
+    /// <c>IOPCShutdown::ShutdownRequest</c> (opnum 3).
+    /// </summary>
+    [OpcMethod(3)]
+    Task ShutdownRequestAsync(string reason, CancellationToken cancellationToken = default);
 }
 
 /// <summary>

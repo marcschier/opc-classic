@@ -243,6 +243,17 @@ public sealed class CttDaServer : IOpcDaServer
     public Guid? GetIpidForGroup(int serverGroupHandle) =>
         _groups.TryGetValue(serverGroupHandle, out GroupEntry? entry) ? entry.Ipid : null;
 
+    /// <inheritdoc />
+    public Task<IReadOnlyList<OpcDaGroup>> SnapshotGroupsAsync(CancellationToken cancellationToken = default)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+        OpcDaGroup[] snapshot = _groups
+            .OrderBy(static pair => pair.Key)
+            .Select(static pair => pair.Value.Group)
+            .ToArray();
+        return Task.FromResult<IReadOnlyList<OpcDaGroup>>(snapshot);
+    }
+
     private OpcDaGroup CreateGroup(
         string name,
         int clientHandle,

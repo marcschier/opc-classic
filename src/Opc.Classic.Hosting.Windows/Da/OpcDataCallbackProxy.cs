@@ -25,9 +25,6 @@ namespace Opc.Classic.Da.Hosting.Windows;
 [SupportedOSPlatform("windows")]
 public sealed unsafe class OpcDataCallbackProxy : IOpcDataCallbackSink
 {
-    private const int E_NOINTERFACE = unchecked((int)0x80004002);
-    private const int E_POINTER = unchecked((int)0x80004003);
-
     private static readonly Guid s_iidUnknown = Guid.Parse("00000000-0000-0000-C000-000000000046");
     private static readonly Guid s_iidDataCallback = IOPCDataCallback.InterfaceId;
     private readonly Lock _syncRoot = new();
@@ -44,7 +41,7 @@ public sealed unsafe class OpcDataCallbackProxy : IOpcDataCallbackSink
     {
         if (clientUnknown == IntPtr.Zero)
         {
-            throw new COMException("Client IUnknown pointer is null.", E_POINTER);
+            throw new COMException("Client IUnknown pointer is null.", global::Opc.Classic.OpcResultId.Pointer.Code);
         }
 
         InvokeAddRef(clientUnknown);
@@ -186,7 +183,7 @@ public sealed unsafe class OpcDataCallbackProxy : IOpcDataCallbackSink
         }
         if (returned == IntPtr.Zero)
         {
-            throw new COMException(failureMessage, E_NOINTERFACE);
+            throw new COMException(failureMessage, global::Opc.Classic.OpcResultId.NoInterface.Code);
         }
         return returned;
     }

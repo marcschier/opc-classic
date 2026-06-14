@@ -1,4 +1,4 @@
-﻿//
+//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -7,15 +7,14 @@ using System.Collections.Concurrent;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
-using Opc.Classic.Da.Dcom;
 
-namespace Opc.Classic.Da.Hosting.Windows;
+namespace Opc.Classic.Hda.Hosting.Windows;
 
 /// <summary>
-/// Single-tearoff Windows CCW for <see cref="IEnumOPCItemAttributes"/>.
+/// Single-tearoff Windows CCW for OAIDL <c>IEnumConnections</c>.
 /// </summary>
 [SupportedOSPlatform("windows")]
-public static unsafe class OpcEnumOpcItemAttributesCcw
+public static unsafe class OpcHdaEnumConnectionsCcw
 {
     internal const int S_OK = 0;
     internal const int S_FALSE = 1;
@@ -27,9 +26,9 @@ public static unsafe class OpcEnumOpcItemAttributesCcw
     private static readonly ConcurrentDictionary<IntPtr, CcwEntry> s_entries = new();
 
     /// <summary>
-    /// Creates an IEnumOPCItemAttributes CCW with refcount = 1.
+    /// Creates an <c>IEnumConnections</c> CCW with refcount = 1.
     /// </summary>
-    public static IntPtr Create(OpcDaItemAttributesEnumerator enumerator)
+    internal static IntPtr Create(OpcHdaEnumConnectionsEnumerator enumerator)
     {
         ArgumentNullException.ThrowIfNull(enumerator);
 
@@ -48,9 +47,9 @@ public static unsafe class OpcEnumOpcItemAttributesCcw
             ? Interlocked.Read(ref entry.RefCount)
             : -1L;
 
-    internal static OpcDaItemAttributesEnumerator? ResolveEnumerator(IntPtr instance) =>
+    internal static OpcHdaEnumConnectionsEnumerator? ResolveEnumerator(IntPtr instance) =>
         s_entries.TryGetValue(instance, out CcwEntry? entry)
-            ? entry.EnumeratorHandle.Target as OpcDaItemAttributesEnumerator
+            ? entry.EnumeratorHandle.Target as OpcHdaEnumConnectionsEnumerator
             : null;
 
     [SuppressMessage("Reliability", "CA2018:Buffer size argument matches element count", Justification = "Explicit byte size.")]
@@ -60,10 +59,10 @@ public static unsafe class OpcEnumOpcItemAttributesCcw
         v[0] = (IntPtr)(delegate* unmanaged<IntPtr, Guid*, IntPtr*, int>)&QueryInterface;
         v[1] = (IntPtr)(delegate* unmanaged<IntPtr, uint>)&AddRef;
         v[2] = (IntPtr)(delegate* unmanaged<IntPtr, uint>)&Release;
-        v[3] = (IntPtr)(delegate* unmanaged<IntPtr, uint, IntPtr*, uint*, int>)&OpcEnumOpcItemAttributesCcwMethods.Next;
-        v[4] = (IntPtr)(delegate* unmanaged<IntPtr, uint, int>)&OpcEnumOpcItemAttributesCcwMethods.Skip;
-        v[5] = (IntPtr)(delegate* unmanaged<IntPtr, int>)&OpcEnumOpcItemAttributesCcwMethods.Reset;
-        v[6] = (IntPtr)(delegate* unmanaged<IntPtr, IntPtr*, int>)&OpcEnumOpcItemAttributesCcwMethods.Clone;
+        v[3] = (IntPtr)(delegate* unmanaged<IntPtr, uint, OpcHdaConnectData*, uint*, int>)&OpcHdaEnumConnectionsCcwMethods.Next;
+        v[4] = (IntPtr)(delegate* unmanaged<IntPtr, uint, int>)&OpcHdaEnumConnectionsCcwMethods.Skip;
+        v[5] = (IntPtr)(delegate* unmanaged<IntPtr, int>)&OpcHdaEnumConnectionsCcwMethods.Reset;
+        v[6] = (IntPtr)(delegate* unmanaged<IntPtr, IntPtr*, int>)&OpcHdaEnumConnectionsCcwMethods.Clone;
         return v;
     }
 
@@ -87,7 +86,7 @@ public static unsafe class OpcEnumOpcItemAttributesCcw
         {
             return riid == null ? E_INVALIDARG : E_NOINTERFACE;
         }
-        if (*riid != IID_IUnknown && *riid != IEnumOPCItemAttributes.InterfaceId)
+        if (*riid != IID_IUnknown && *riid != OpcGuids.IID_IEnumConnections)
         {
             return E_NOINTERFACE;
         }
@@ -130,6 +129,10 @@ public static unsafe class OpcEnumOpcItemAttributesCcw
             return;
         }
         s_entries.TryRemove(instance, out _);
+        if (entry.EnumeratorHandle.Target is IDisposable disposable)
+        {
+            disposable.Dispose();
+        }
         NativeMemory.Free((void*)instance);
         NativeMemory.Free(entry.Vtable);
         if (entry.EnumeratorHandle.IsAllocated)

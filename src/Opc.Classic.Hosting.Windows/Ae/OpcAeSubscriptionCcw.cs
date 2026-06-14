@@ -18,7 +18,7 @@ namespace Opc.Classic.Ae.Hosting.Windows;
 public static unsafe class OpcAeSubscriptionCcw
 {
     internal const int S_OK = 0;
-    internal const int E_NOINTERFACE = unchecked((int)0x80004002);
+    internal static readonly int E_NOINTERFACE = global::Opc.Classic.OpcResultId.NoInterface.Code;
     internal const int E_INVALIDARG = unchecked((int)0x80070057);
     internal const int E_NOTIMPL = unchecked((int)0x80004001);
     internal const int E_FAIL = unchecked((int)0x80004005);

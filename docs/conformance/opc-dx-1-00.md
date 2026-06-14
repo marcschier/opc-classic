@@ -13,7 +13,7 @@
 | DX component category + `IOPCConfiguration` IID | App. B.1.4 | ✅ `OpcGuids.CATID_OPCDXServer10`, `OpcGuids.IID_IOPCConfiguration`, `[OpcInterface]` | ✅ | conformant |
 | `IOPCConfiguration` source-server services | §5.2.1, App. B.1.4 | ✅ hand-written client proxy | ✅ partial | conformant for client calls |
 | `IOPCConfiguration` DXConnection query/add/update/modify/copy/reset services | §5.2.2 - §5.2.3, App. B.1.4 | ✅ hand-written client proxy | ✅ partial | conformant for implemented calls |
-| `IOPCConfiguration::DeleteDXConnections` | §5.2.2.5, App. B.1.4 | ❌ projected as names + `HRESULT[]` only, not DXConnection masks + `GeneralResponse` | ❌ no direct proxy test | hard gap — see §3.2.1 (unverified — Phase 2 deep-validation will close) |
+| `IOPCConfiguration::DeleteDXConnections` | §5.2.2.5, App. B.1.4 | ✅ accepts DXConnection masks and returns mask errors plus `DXGeneralResponse` | ✅ proxy + fixture tests | conformant — closed in commit `<future>` |
 | DX parameter structures (`ItemIdentifier`, `DXConnection`, `SourceServer`, `DXGeneralResponse`, `IdentifiedResult`) | §5.1 | ✅ records + NDR codecs | ✅ | conformant |
 | DX status structures (`ServerStatus`, `DXConnectionStatus`, `DXSourceServerStatus`, `DXQuality`) | §4.2 - §4.4 | ✅ records + NDR codecs | ✅ | conformant as data model/codecs |
 | DX enums and masks | §4.2.2, §4.3.2.19, §4.4.1.6, App. B.1.3 | ✅ `DxEnums`, `ConnectionState`, `OverrideState` | ✅ | conformant |
@@ -57,7 +57,7 @@ The Phase 0 interface inventory also flags `IOPCBrowseServerAddressSpace::GetIte
 | `AddDXConnections` | 9 | `DXConnection[1:N]` -> `DXGeneralResponse` | same | `IOPCDxProxyTests.cs` | ✅ |
 | `UpdateDXConnections` | 10 | `BrowsePath`, masks, `Recursive`, definition -> mask errors or `DXGeneralResponse` | same | `IOPCDxProxyTests.cs` | ✅ |
 | `ModifyDXConnections` | 11 | `DXConnectionDefinition[1:N]` -> `DXGeneralResponse` | same | codec coverage | ✅ |
-| `DeleteDXConnections` | 12 | `BrowsePath`, `DXConnectionMasks[0:M]`, `Recursive` -> mask errors and/or `DXGeneralResponse` | same | no direct proxy test | ❌ hard gap: exposed as `string[] connectionNames` + `int[]` only |
+| `DeleteDXConnections` | 12 | `BrowsePath`, `DXConnectionMasks[0:M]`, `Recursive` -> mask errors and/or `DXGeneralResponse` | same | `IOPCDxProxyTests.cs`, `DxNdrCodecTests.cs` | ✅ |
 | `CopyDefaultDXConnectionAttributes` | 13 | `ConfigToStatus`, `BrowsePath`, `Recursive`, masks -> mask errors or `DXGeneralResponse` | same | codec coverage | ✅ |
 | `ResetConfiguration` | 14 | old configuration version -> new configuration version | same | `IOPCDxProxyTests.cs` | ✅ |
 
@@ -138,11 +138,11 @@ Spec §6 defines startup restore, source-server connection/recovery, DA/XML-DA s
 
 Appendix A maps DX services to Web Services/XML-DA. The package has DCOM configuration-client coverage but no DX XML-DA service endpoint. Status: **WAIVED** as a lower-priority transport mapping until a generic DX server runtime exists.
 
-### 3.2 Hard gaps
+### 3.2 Closed hard gaps
 
-#### 3.2.1 `IOPCConfiguration::DeleteDXConnections` DCOM projection is incomplete
+#### 3.2.1 Closed: `IOPCConfiguration::DeleteDXConnections` DCOM projection
 
-Spec §5.2.2.5 and App. B.1.4 define `DeleteDXConnections` as `BrowsePath`, `DXConnectionMasks[0:M]`, `Recursive`, returning per-mask errors and a `DXGeneralResponse`. The current projection exposes `DeleteDXConnectionsAsync(string browsePath, string[] connectionNames, bool recursive)` and decodes only `int[]` errors. This loses mask-based selection and the returned `ConfigurationVersion`/`IdentifiedResult` response. Suggested fix: change the interface/proxy to accept `DxConnection[] connectionMasks`, encode `NdrOpcDxConnectionArrayCodec`, return `DxUpdateConnectionsResult` or an equivalent response type, and add proxy tests for opnum 12 payload/response decoding.
+Spec §5.2.2.5 and App. B.1.4 define `DeleteDXConnections` as `BrowsePath`, `DXConnectionMasks[0:M]`, `Recursive`, returning per-mask errors and a `DXGeneralResponse`. Status: **CLOSED** in commit `<future>`. The projection now exposes `DeleteDXConnectionsAsync(string browsePath, DxConnection[] connectionMasks, bool recursive)`, encodes `NdrOpcDxConnectionArrayCodec`, returns `DxDeleteConnectionsResult`, and has direct proxy/fixture coverage for opnum 12 payload and response decoding.
 
 ---
 
@@ -164,5 +164,3 @@ Phase 0 inventory:
 - `files/conformance/inventory/opc-dx-1-00-headings.csv` (193 entries)
 - `files/conformance/inventory/opc-dx-1-00-clauses.csv` (1 normative entry)
 - `files/conformance/inventory/opc-dx-1-00-interfaces.csv` (3 interface references + 1 method reference)
-
-

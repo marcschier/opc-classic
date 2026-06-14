@@ -57,7 +57,6 @@ namespace Opc.Classic.Dcom.Transport;
 public sealed class RpcServerConnectionProcessor
 {
     private const int AuthenticationVerifierHeaderLength = 8;
-    private const int E_ACCESSDENIED = unchecked((int)0x80070005u);
 
     private static readonly Action<ILogger, EndPoint, Exception?> ProcessorStarted =
         LoggerMessage.Define<EndPoint>(LogLevel.Debug, new EventId(1, nameof(ProcessorStarted)),
@@ -489,7 +488,7 @@ public sealed class RpcServerConnectionProcessor
             if (authentication.IsAuthenticated)
             {
                 AuthRejected(_logger, transport.RemoteEndpoint, authentication.AuthLength, null);
-                return DispatchResult.Fault(E_ACCESSDENIED);
+                return DispatchResult.Fault(global::Opc.Classic.OpcResultId.AccessDenied.Code);
             }
 
             return await dispatcher.DispatchAsync(request.Opnum, body, cancellationToken).ConfigureAwait(false);

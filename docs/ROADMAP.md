@@ -94,12 +94,6 @@ per-spec doc that catalogued the gap.
   returns E_NOTIMPL.** Implement `IEnumUnknown` / `IEnumString` group
   enumeration in `OpcDaServerCcw`. See
   [`docs/conformance/opc-da-3-00.md`](conformance/opc-da-3-00.md) §3.
-- **OPC DX 1.00 — IOPCConfiguration::DeleteDXConnections wire shape
-  mismatch.** Currently projected as connection names returning
-  `HRESULT[]` only; spec §5.2.2.5 / App. B.1.4 requires
-  `DXConnection[]` masks and a `GeneralResponse` with
-  `ConfigurationVersion` and `IdentifiedResult` entries. See
-  [`docs/conformance/opc-dx-1-00.md`](conformance/opc-dx-1-00.md) §3.
 - **OPC HDA 1.20 — IConnectionPointContainer::EnumConnectionPoints
   returns E_NOTIMPL.** Should enumerate the `IOPCHDA_DataCallback`
   connection point. See

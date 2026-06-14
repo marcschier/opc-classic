@@ -233,11 +233,38 @@ internal static class Program
 
     private sealed class SampleCommonServer : IOpcCommonServer
     {
+        private int _localeId = 0x0409;
+
         public Task SetClientNameAsync(string clientName, CancellationToken cancellationToken = default)
         {
             ArgumentNullException.ThrowIfNull(clientName);
             cancellationToken.ThrowIfCancellationRequested();
             return Task.CompletedTask;
+        }
+
+        public Task SetLocaleIdAsync(int localeId, CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            _localeId = localeId;
+            return Task.CompletedTask;
+        }
+
+        public Task<int> GetLocaleIdAsync(CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            return Task.FromResult(_localeId);
+        }
+
+        public Task<int[]> QueryAvailableLocaleIdsAsync(CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            return Task.FromResult<int[]>([0x0409]);
+        }
+
+        public Task<string> GetErrorStringAsync(int errorCode, CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            return Task.FromResult($"0x{errorCode:X8}");
         }
     }
 

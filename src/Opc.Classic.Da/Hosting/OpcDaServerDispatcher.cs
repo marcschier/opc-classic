@@ -1,11 +1,13 @@
-﻿//
+//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
 
+using System.Collections.Concurrent;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Opc.Classic.Da.Dcom;
+using Opc.Classic.Dcom;
 using Opc.Classic.Hosting;
 
 namespace Opc.Classic.Da.Hosting;
@@ -13,7 +15,7 @@ namespace Opc.Classic.Da.Hosting;
 /// <summary>
 /// DA dispatcher adapter that delegates to source-generated OPC DA dispatchers.
 /// </summary>
-public sealed class OpcDaServerDispatcher : IOpcDaServerDispatcher, IOPCCommon
+public sealed class OpcDaServerDispatcher : IOpcDaServerDispatcher, IOPCCommon, IConnectionPointContainer, IConnectionPoint
 {
     private static readonly Action<ILogger, string, Exception?> ClientNameSet = LoggerMessage.Define<string>(
         LogLevel.Debug,
@@ -23,6 +25,10 @@ public sealed class OpcDaServerDispatcher : IOpcDaServerDispatcher, IOPCCommon
     private readonly IOpcDaServer _server;
     private readonly IOPCServerServerDispatcher _serverDispatcher;
     private readonly IOPCCommonServerDispatcher _commonDispatcher;
+    private readonly IConnectionPointContainerServerDispatcher _connectionPointContainerDispatcher;
+    private readonly IConnectionPointServerDispatcher _connectionPointDispatcher;
+    private readonly ConcurrentDictionary<int, IOPCShutdown> _shutdownSinks = new();
+    private int _nextShutdownCookie;
     private readonly ConnectionDiagnostics _connectionContext = new();
     private readonly ILogger _logger;
 
@@ -35,6 +41,12 @@ public sealed class OpcDaServerDispatcher : IOpcDaServerDispatcher, IOPCCommon
         _logger = logger ?? NullLogger.Instance;
         _serverDispatcher = new IOPCServerServerDispatcher(_server);
         _commonDispatcher = new IOPCCommonServerDispatcher(this);
+        _connectionPointContainerDispatcher = new IConnectionPointContainerServerDispatcher(this);
+        _connectionPointDispatcher = new IConnectionPointServerDispatcher(this);
+        if (_server is IDaServer daServer)
+        {
+            daServer.ServerShutdown += OnServerShutdown;
+        }
     }
 
     /// <summary>
@@ -43,6 +55,8 @@ public sealed class OpcDaServerDispatcher : IOpcDaServerDispatcher, IOPCCommon
     public string ClientName => _connectionContext.ClientName;
     internal IOpcServerDispatcher ServerDispatcher => _serverDispatcher;
     internal IOpcServerDispatcher CommonDispatcher => _commonDispatcher;
+    internal IOpcServerDispatcher ConnectionPointContainerDispatcher => _connectionPointContainerDispatcher;
+    internal IOpcServerDispatcher ConnectionPointDispatcher => _connectionPointDispatcher;
 
     /// <inheritdoc />
     public async Task<NdrCallResult> DispatchAsync(
@@ -60,6 +74,18 @@ public sealed class OpcDaServerDispatcher : IOpcDaServerDispatcher, IOPCCommon
         if (interfaceId == IOPCCommon.InterfaceId)
         {
             return (await _commonDispatcher.DispatchAsync(opnum, requestPayload, cancellationToken).ConfigureAwait(false))
+                .ToNdrCallResult();
+        }
+
+        if (interfaceId == IConnectionPointContainer.InterfaceId)
+        {
+            return (await _connectionPointContainerDispatcher.DispatchAsync(opnum, requestPayload, cancellationToken).ConfigureAwait(false))
+                .ToNdrCallResult();
+        }
+
+        if (interfaceId == IConnectionPoint.InterfaceId)
+        {
+            return (await _connectionPointDispatcher.DispatchAsync(opnum, requestPayload, cancellationToken).ConfigureAwait(false))
                 .ToNdrCallResult();
         }
 
@@ -102,6 +128,71 @@ public sealed class OpcDaServerDispatcher : IOpcDaServerDispatcher, IOPCCommon
             ? daServer.SetClientNameAsync(name, cancellationToken)
             : Task.CompletedTask;
     }
+
+    /// <inheritdoc />
+    public Task<IOpcInterfaceRef> EnumConnectionPointsAsync(CancellationToken cancellationToken = default)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+        return Task.FromResult<IOpcInterfaceRef>(CreateSyntheticInterfaceRef(OpcGuids.IID_IEnumConnectionPoints));
+    }
+
+    /// <inheritdoc />
+    public Task<IOpcInterfaceRef> FindConnectionPointAsync(Guid iid, CancellationToken cancellationToken = default)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+        if (iid != IOPCShutdown.InterfaceId)
+        {
+            throw new OpcException(new OpcResultId(unchecked((int)0x80040200), "CONNECT_E_NOCONNECTION"));
+        }
+
+        return Task.FromResult<IOpcInterfaceRef>(CreateSyntheticInterfaceRef(IConnectionPoint.InterfaceId));
+    }
+
+    /// <inheritdoc />
+    public Task<Guid> GetConnectionInterfaceAsync(CancellationToken cancellationToken = default)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+        return Task.FromResult(IOPCShutdown.InterfaceId);
+    }
+
+    /// <inheritdoc />
+    public Task<int> AdviseAsync(IOpcInterfaceRef sink, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(sink);
+        cancellationToken.ThrowIfCancellationRequested();
+        if (sink.Iid != IOPCShutdown.InterfaceId || sink is not OpcDaShutdownSinkRef directSink)
+        {
+            throw new OpcException(new OpcResultId(unchecked((int)0x80040200), "CONNECT_E_NOCONNECTION"));
+        }
+
+        int cookie = Interlocked.Increment(ref _nextShutdownCookie);
+        _shutdownSinks[cookie] = directSink.Sink;
+        return Task.FromResult(cookie);
+    }
+
+    /// <inheritdoc />
+    public Task UnadviseAsync(int cookie, CancellationToken cancellationToken = default)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+        if (!_shutdownSinks.TryRemove(cookie, out _))
+        {
+            throw new OpcException(new OpcResultId(unchecked((int)0x80040200), "CONNECT_E_NOCONNECTION"));
+        }
+        return Task.CompletedTask;
+    }
+
+    private void OnServerShutdown(object? sender, ServerShutdownEventArgs e)
+    {
+        foreach (IOPCShutdown sink in _shutdownSinks.Values)
+        {
+#pragma warning disable VSTHRD002
+            sink.ShutdownRequestAsync(e.Reason ?? string.Empty, CancellationToken.None).GetAwaiter().GetResult();
+#pragma warning restore VSTHRD002
+        }
+    }
+
+    private static IOpcInterfaceRef CreateSyntheticInterfaceRef(Guid iid) =>
+        new OpcInterfaceRef(iid, 0, 1, 1, 1, Guid.CreateVersion7(), 0, Array.Empty<ushort>());
 
     private static Task NotImplementedAsync() =>
         Task.FromException(new OpcException(OpcResultId.NotImplemented));

@@ -16,8 +16,6 @@ namespace Opc.Classic.Ae.Hosting.Windows;
 [SupportedOSPlatform("windows")]
 public sealed unsafe class OpcAeEventSinkProxy : IOPCEventSink, IDisposable
 {
-    private const int E_NOINTERFACE = unchecked((int)0x80004002);
-    private const int E_POINTER = unchecked((int)0x80004003);
     private const int Win32BoolTrue = unchecked((int)0xFFFFFFFFu);
     private const int Win32BoolFalse = 0;
 
@@ -35,7 +33,7 @@ public sealed unsafe class OpcAeEventSinkProxy : IOPCEventSink, IDisposable
     {
         if (clientUnknown == IntPtr.Zero)
         {
-            throw new COMException("Client IUnknown pointer is null.", E_POINTER);
+            throw new COMException("Client IUnknown pointer is null.", global::Opc.Classic.OpcResultId.Pointer.Code);
         }
 
         InvokeAddRef(clientUnknown);
@@ -133,7 +131,7 @@ public sealed unsafe class OpcAeEventSinkProxy : IOPCEventSink, IDisposable
         }
         if (returned == IntPtr.Zero)
         {
-            throw new COMException(failureMessage, E_NOINTERFACE);
+            throw new COMException(failureMessage, global::Opc.Classic.OpcResultId.NoInterface.Code);
         }
         return returned;
     }

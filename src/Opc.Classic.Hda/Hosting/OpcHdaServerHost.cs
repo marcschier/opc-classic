@@ -74,9 +74,11 @@ public sealed class OpcHdaServerHost : IOpcServerHost, IDisposable, IAsyncDispos
 
         IPEndPoint listenEndpoint = ListenAddressParser.Parse(_options.ListenAddress ?? "127.0.0.1:0");
         var endpoint = new TcpServerEndpoint(listenEndpoint);
+        var rootDispatcher = new OpcHdaServerDispatcher(_serverImpl);
         var dispatchers = new Dictionary<Guid, IOpcServerDispatcher>
         {
-            [IOPCHDA_Server.InterfaceId] = new IOPCHDA_ServerServerDispatcher(_serverImpl),
+            [IOPCHDA_Server.InterfaceId] = rootDispatcher.ServerDispatcher,
+            [Opc.Classic.Dcom.OpcCommonClientProxy.InterfaceId] = rootDispatcher.CommonDispatcher,
         };
 
         // Register additional HDA interface dispatchers when the user impl

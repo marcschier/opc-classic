@@ -123,6 +123,8 @@ public sealed class OpcDaServerHost : IOpcServerHost, IDisposable, IAsyncDisposa
         dispatchers[IOPCItemDeadbandMgt.InterfaceId] = new IOPCItemDeadbandMgtServerDispatcher(deadband);
         var sampling = (_serverImpl as IOPCItemSamplingMgt) ?? new DefaultItemSamplingMgt();
         dispatchers[IOPCItemSamplingMgt.InterfaceId] = new IOPCItemSamplingMgtServerDispatcher(sampling);
+        var itemIo = (_serverImpl as IOPCItemIO) ?? new DefaultItemIO(_serverImpl);
+        dispatchers[IOPCItemIO.InterfaceId] = new IOPCItemIOServerDispatcher(itemIo);
         return dispatchers;
     }
 

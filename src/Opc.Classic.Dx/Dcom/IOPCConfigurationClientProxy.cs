@@ -125,16 +125,16 @@ public sealed class IOPCConfigurationClientProxy : IOPCConfiguration
             cancellationToken);
 
     /// <inheritdoc />
-    public Task<int[]> DeleteDXConnectionsAsync(string browsePath, string[] connectionNames, bool recursive, CancellationToken cancellationToken = default) =>
+    public Task<DxDeleteConnectionsResult> DeleteDXConnectionsAsync(string browsePath, DxConnection[] connectionMasks, bool recursive, CancellationToken cancellationToken = default) =>
         InvokeAsync(
             IOPCConfiguration.Opnums.DeleteDXConnectionsAsync,
             WritePayload((ref NdrWriter writer) =>
             {
                 writer.WriteUnicodeStringPtr(browsePath);
-                NdrOpcDxStringArrayCodec.Write(ref writer, connectionNames);
+                NdrOpcDxConnectionArrayCodec.Write(ref writer, connectionMasks);
                 writer.WriteInt32(recursive ? NdrOpcDxClientProxyHelpers.Win32BoolTrue : 0);
             }),
-            DecodeInt32Array,
+            DecodeDeleteConnectionsResult,
             cancellationToken);
 
     /// <inheritdoc />
@@ -203,10 +203,12 @@ public sealed class IOPCConfigurationClientProxy : IOPCConfiguration
         return new DxUpdateConnectionsResult(errors, response);
     }
 
-    private static int[] DecodeInt32Array(ReadOnlyMemory<byte> payload)
+    private static DxDeleteConnectionsResult DecodeDeleteConnectionsResult(ReadOnlyMemory<byte> payload)
     {
         var reader = new NdrReader(payload.Span);
-        return NdrOpcDxInt32ArrayCodec.Read(ref reader);
+        int[] maskErrors = NdrOpcDxInt32ArrayCodec.Read(ref reader);
+        DxGeneralResponse response = NdrOpcDxGeneralResponseCodec.Read(ref reader);
+        return new DxDeleteConnectionsResult(maskErrors, response);
     }
 
     private static string DecodeString(ReadOnlyMemory<byte> payload)

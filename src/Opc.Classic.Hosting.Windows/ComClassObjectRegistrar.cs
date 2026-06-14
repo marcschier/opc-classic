@@ -48,7 +48,7 @@ namespace Opc.Classic.Hosting.Windows;
 public static unsafe class ComClassObjectRegistrar
 {
     private const int S_OK = 0;
-    private const int E_NOINTERFACE = unchecked((int)0x80004002);
+    private static readonly int E_NOINTERFACE = global::Opc.Classic.OpcResultId.NoInterface.Code;
     private const int E_INVALIDARG = unchecked((int)0x80070057);
     private const int CLSCTX_LOCAL_SERVER = 0x4;
     private const int REGCLS_MULTIPLEUSE = 1;

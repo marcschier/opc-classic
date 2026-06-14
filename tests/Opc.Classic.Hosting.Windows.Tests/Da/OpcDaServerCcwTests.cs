@@ -317,6 +317,80 @@ public sealed class OpcDaServerCcwTests
         await Assert.That(OpcDaServerCcw.SupportsInterface(Guid.NewGuid())).IsFalse();
     }
 
+    [Test]
+    public async Task IOPCCommon_SetLocaleID_via_CCW_delegates_to_IDaServer()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
+            return;
+        }
+
+        var stub = new RecordingCommonDaServer(localeId: 1033, supportedLocales: [1033, 1031]);
+        IntPtr ccw = OpcDaServerCcw.Create(stub, IOPCCommon.InterfaceId);
+
+        int hr = InvokeCommonSetLocaleId(ccw, 1031);
+
+        await Assert.That(hr).IsEqualTo(S_OK);
+        await Assert.That(stub.LocaleId).IsEqualTo(1031);
+        await Assert.That(stub.LastSetLocaleId).IsEqualTo(1031);
+        await Assert.That(stub.SetLocaleCallCount).IsEqualTo(1);
+    }
+
+    [Test]
+    public async Task IOPCCommon_GetLocaleID_via_CCW_reads_IDaServer_locale()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
+            return;
+        }
+
+        var stub = new RecordingCommonDaServer(localeId: 1041, supportedLocales: [1033, 1041]);
+        IntPtr ccw = OpcDaServerCcw.Create(stub, IOPCCommon.InterfaceId);
+
+        (int hr, uint lcid) = InvokeCommonGetLocaleId(ccw);
+
+        await Assert.That(hr).IsEqualTo(S_OK);
+        await Assert.That(lcid).IsEqualTo(1041u);
+    }
+
+    [Test]
+    public async Task IOPCCommon_QueryAvailableLocaleIDs_via_CCW_returns_IDaServer_supported_locales()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
+            return;
+        }
+
+        var stub = new RecordingCommonDaServer(localeId: 1033, supportedLocales: [1033, 1031, 1041]);
+        IntPtr ccw = OpcDaServerCcw.Create(stub, IOPCCommon.InterfaceId);
+
+        (int hr, uint[] locales) = InvokeCommonQueryAvailableLocaleIds(ccw);
+
+        await Assert.That(hr).IsEqualTo(S_OK);
+        await Assert.That(locales).IsEquivalentTo([1033u, 1031u, 1041u]);
+        await Assert.That(stub.GetSupportedLocalesCallCount).IsEqualTo(1);
+    }
+
+    [Test]
+    public async Task IOPCCommon_GetErrorString_via_CCW_delegates_to_IDaServer_error_text()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
+            return;
+        }
+
+        const int Error = unchecked((int)0x80004005);
+        var stub = new RecordingCommonDaServer(localeId: 1031, supportedLocales: [1031]);
+        IntPtr ccw = OpcDaServerCcw.Create(stub, IOPCCommon.InterfaceId);
+
+        (int hr, string? text) = InvokeCommonGetErrorString(ccw, Error);
+
+        await Assert.That(hr).IsEqualTo(S_OK);
+        await Assert.That(text).IsEqualTo("text:80004005:1031");
+        await Assert.That(stub.LastErrorTextResultId).IsEqualTo(new OpcResultId(Error, null));
+        await Assert.That(stub.GetErrorTextCallCount).IsEqualTo(1);
+    }
+
     // ----- sync unsafe helpers (await is illegal in unsafe context) -----
 
     private readonly record struct QueryInterfaceResult(IntPtr Returned, int Hr);
@@ -388,6 +462,61 @@ public sealed class OpcDaServerCcwTests
         IntPtr stringOut;
         int hr = getErrorString(ccw, dwError, dwLocale, &stringOut);
         return (hr, stringOut);
+    }
+
+    private static unsafe int InvokeCommonSetLocaleId(IntPtr ccw, uint dwLcid)
+    {
+        IntPtr* vtable = *(IntPtr**)ccw;
+        var setLocaleId = (delegate* unmanaged<IntPtr, uint, int>)vtable[3];
+        return setLocaleId(ccw, dwLcid);
+    }
+
+    private static unsafe (int Hr, uint Lcid) InvokeCommonGetLocaleId(IntPtr ccw)
+    {
+        IntPtr* vtable = *(IntPtr**)ccw;
+        var getLocaleId = (delegate* unmanaged<IntPtr, uint*, int>)vtable[4];
+        uint lcid;
+        int hr = getLocaleId(ccw, &lcid);
+        return (hr, lcid);
+    }
+
+    private static unsafe (int Hr, uint[] Locales) InvokeCommonQueryAvailableLocaleIds(IntPtr ccw)
+    {
+        IntPtr* vtable = *(IntPtr**)ccw;
+        var queryAvailableLocaleIds = (delegate* unmanaged<IntPtr, uint*, IntPtr*, int>)vtable[5];
+        uint count;
+        IntPtr localesPtr;
+        int hr = queryAvailableLocaleIds(ccw, &count, &localesPtr);
+        try
+        {
+            var locales = new uint[count];
+            for (int i = 0; i < locales.Length; i++)
+            {
+                locales[i] = unchecked((uint)Marshal.ReadInt32(localesPtr, i * sizeof(uint)));
+            }
+
+            return (hr, locales);
+        }
+        finally
+        {
+            Marshal.FreeCoTaskMem(localesPtr);
+        }
+    }
+
+    private static unsafe (int Hr, string? Text) InvokeCommonGetErrorString(IntPtr ccw, int dwError)
+    {
+        IntPtr* vtable = *(IntPtr**)ccw;
+        var getErrorString = (delegate* unmanaged<IntPtr, int, IntPtr*, int>)vtable[6];
+        IntPtr stringOut;
+        int hr = getErrorString(ccw, dwError, &stringOut);
+        try
+        {
+            return (hr, Marshal.PtrToStringUni(stringOut));
+        }
+        finally
+        {
+            Marshal.FreeCoTaskMem(stringOut);
+        }
     }
 
     private static unsafe int InvokeRemoveGroup(IntPtr ccw, uint hServerGroup, int bForce)
@@ -481,6 +610,95 @@ public sealed class OpcDaServerCcwTests
 
         public Task<string> GetErrorStringAsync(int errorCode, int localeId, CancellationToken cancellationToken = default) =>
             Task.FromResult("ok");
+    }
+
+    private sealed class RecordingCommonDaServer : IOpcDaServer, IDaServer
+    {
+        private readonly int[] _supportedLocales;
+
+        public RecordingCommonDaServer(int localeId, int[] supportedLocales)
+        {
+            LocaleId = localeId;
+            _supportedLocales = supportedLocales;
+        }
+
+        public int LocaleId { get; private set; }
+        public int LastSetLocaleId { get; private set; }
+        public int SetLocaleCallCount { get; private set; }
+        public int GetSupportedLocalesCallCount { get; private set; }
+        public int GetErrorTextCallCount { get; private set; }
+        public OpcResultId LastErrorTextResultId { get; private set; }
+
+        public Task<OpcServerStatus> GetStatusAsync(CancellationToken cancellationToken = default) =>
+            Task.FromResult(new OpcServerStatus
+            {
+                Spec = OpcStatusSpec.Da,
+                StartTime = DateTimeOffset.UnixEpoch,
+                CurrentTime = DateTimeOffset.UnixEpoch,
+                LastUpdateTime = DateTimeOffset.UnixEpoch,
+                State = OpcServerState.Running,
+                ServerVersion = new Version(1, 0, 0),
+                VendorInfo = "recording-common-test",
+            });
+
+        public Task<int> AddGroupAsync(string name, bool active, int requestedUpdateRate, int clientHandle, int localeId, CancellationToken cancellationToken = default) =>
+            Task.FromResult(1);
+
+        public Task RemoveGroupAsync(int serverGroupHandle, bool force, CancellationToken cancellationToken = default) =>
+            Task.CompletedTask;
+
+        public Task SetLocaleAsync(int localeId, CancellationToken cancellationToken = default)
+        {
+            SetLocaleCallCount++;
+            LastSetLocaleId = localeId;
+            LocaleId = localeId;
+            return Task.CompletedTask;
+        }
+
+        public Task<IReadOnlyList<int>> GetSupportedLocalesAsync(CancellationToken cancellationToken = default)
+        {
+            GetSupportedLocalesCallCount++;
+            return Task.FromResult<IReadOnlyList<int>>(_supportedLocales);
+        }
+
+        public Task<string> GetErrorTextAsync(OpcResultId resultId, CancellationToken cancellationToken = default)
+        {
+            GetErrorTextCallCount++;
+            LastErrorTextResultId = resultId;
+            var hex = unchecked((uint)resultId.Code).ToString("X8", System.Globalization.CultureInfo.InvariantCulture);
+            return Task.FromResult($"text:{hex}:{LocaleId}");
+        }
+
+        public Task<string> GetErrorStringAsync(int errorCode, int localeId, CancellationToken cancellationToken = default) =>
+            GetErrorTextAsync(new OpcResultId(errorCode, null), cancellationToken);
+
+        public Task<IReadOnlyList<ItemValueResult>> ReadAsync(IReadOnlyList<Item> items, CancellationToken cancellationToken = default) =>
+            Task.FromResult<IReadOnlyList<ItemValueResult>>(Array.Empty<ItemValueResult>());
+
+        public Task<IReadOnlyList<IdentifiedResult>> WriteAsync(IReadOnlyList<ItemValue> values, CancellationToken cancellationToken = default) =>
+            Task.FromResult<IReadOnlyList<IdentifiedResult>>(Array.Empty<IdentifiedResult>());
+
+        public Task<IReadOnlyList<IdentifiedResult>> ValidateItemsAsync(IReadOnlyList<Item> items, CancellationToken cancellationToken = default) =>
+            Task.FromResult<IReadOnlyList<IdentifiedResult>>(Array.Empty<IdentifiedResult>());
+
+        public Task<IReadOnlyList<ItemPropertyResult>> GetPropertiesAsync(IReadOnlyList<ItemIdentifier> itemIds, IReadOnlyList<PropertyID> propertyIds, bool returnValues, CancellationToken cancellationToken = default) =>
+            Task.FromResult<IReadOnlyList<ItemPropertyResult>>(Array.Empty<ItemPropertyResult>());
+
+        public Task<IDaSubscription> CreateSubscriptionAsync(SubscriptionState state, CancellationToken cancellationToken = default) =>
+            throw new NotSupportedException();
+
+        public IAsyncEnumerable<BrowseElement> BrowseAsync(string itemPath, BrowseFilters filters, CancellationToken cancellationToken = default) =>
+            EmptyBrowse();
+
+        private static async IAsyncEnumerable<BrowseElement> EmptyBrowse()
+        {
+            await Task.CompletedTask.ConfigureAwait(false);
+            yield break;
+        }
+
+        public event EventHandler<ServerShutdownEventArgs>? ServerShutdown { add { } remove { } }
+
+        public ValueTask DisposeAsync() => ValueTask.CompletedTask;
     }
 
     private sealed class StubDaServer : IOpcDaServer

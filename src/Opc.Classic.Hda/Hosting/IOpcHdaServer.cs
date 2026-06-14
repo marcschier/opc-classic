@@ -23,6 +23,46 @@ public interface IOpcHdaServer : IOPCHDA_Server
     /// </summary>
     Task<int[]> ValidateItemIdsAsync(string[] itemIds, CancellationToken cancellationToken = default);
 
+    /// <summary>
+    /// Negotiated server LCID for localized HDA server strings.
+    /// </summary>
+    int LocaleId => this is IHdaServer hdaServer ? hdaServer.LocaleId : 0;
+
+    /// <summary>
+    /// Sets the active locale for subsequent server-supplied strings.
+    /// </summary>
+    Task SetLocaleAsync(int localeId, CancellationToken cancellationToken = default) =>
+        this is IHdaServer hdaServer
+            ? hdaServer.SetLocaleAsync(localeId, cancellationToken)
+            : CompletedWithCancellationCheck(cancellationToken);
+
+    /// <summary>
+    /// Lists the locale IDs the server supports.
+    /// </summary>
+    Task<IReadOnlyList<int>> GetSupportedLocalesAsync(CancellationToken cancellationToken = default) =>
+        this is IHdaServer hdaServer
+            ? hdaServer.GetSupportedLocalesAsync(cancellationToken)
+            : Task.FromResult<IReadOnlyList<int>>(new[] { LocaleId });
+
+    /// <summary>
+    /// Resolves an HRESULT to the server's human-readable text in the current locale.
+    /// </summary>
+    Task<string> GetErrorTextAsync(OpcResultId resultId, CancellationToken cancellationToken = default) =>
+        this is IHdaServer hdaServer
+            ? hdaServer.GetErrorTextAsync(resultId, cancellationToken)
+            : Task.FromResult(resultId.ToString());
+
+    /// <summary>
+    /// Supplies a client name that servers may use for diagnostics and logging.
+    /// </summary>
+    Task SetClientNameAsync(string clientName, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(clientName);
+        return this is IHdaServer hdaServer
+            ? hdaServer.SetClientNameAsync(clientName, cancellationToken)
+            : CompletedWithCancellationCheck(cancellationToken);
+    }
+
     Task<int[]> IOPCHDA_Server.GetItemHandlesAsync(string[] itemIds, int[] clientHandles, CancellationToken cancellationToken) =>
         throw NotImplemented();
 
@@ -65,6 +105,14 @@ public interface IOpcHdaServer : IOPCHDA_Server
     }
 
     private static OpcException NotImplemented() => new(OpcResultId.NotImplemented);
+
+#pragma warning disable VSTHRD200 // Helper used internally to forward immediate completion; no Async suffix needed.
+    private static Task CompletedWithCancellationCheck(CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+        return Task.CompletedTask;
+    }
+#pragma warning restore VSTHRD200
 
     /// <summary>
     /// Reads raw historical values for each item in the requested time range.

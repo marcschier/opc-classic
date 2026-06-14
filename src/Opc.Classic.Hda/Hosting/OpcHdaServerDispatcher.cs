@@ -4,20 +4,25 @@
 //
 
 using System.Runtime.CompilerServices;
+using Opc.Classic.Dcom;
 using Opc.Classic.Hda.Dcom;
+using Opc.Classic.Hosting;
 
 namespace Opc.Classic.Hda.Hosting;
 
 /// <summary>
 /// HDA dispatcher adapter that delegates to the source-generated IOPCHDA_Server dispatcher.
 /// </summary>
-public sealed class OpcHdaServerDispatcher : IOpcHdaServerDispatcher
+public sealed class OpcHdaServerDispatcher : IOpcHdaServerDispatcher, IOpcCommonServer
 {
     private const int OpchdaEqual = 1;
     private const int OpchdaNotEqual = 6;
 
     private readonly IOpcHdaServer _server;
     private readonly IOPCHDA_ServerServerDispatcher _serverDispatcher;
+    private readonly OpcCommonServerDispatcher _commonDispatcher;
+    private int _localeId;
+    private string _clientName = string.Empty;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="OpcHdaServerDispatcher" /> class.
@@ -26,7 +31,13 @@ public sealed class OpcHdaServerDispatcher : IOpcHdaServerDispatcher
     {
         _server = server ?? throw new ArgumentNullException(nameof(server));
         _serverDispatcher = new IOPCHDA_ServerServerDispatcher(_server);
+        _commonDispatcher = new OpcCommonServerDispatcher(this);
+        _localeId = server.LocaleId;
     }
+
+    internal IOpcServerDispatcher ServerDispatcher => _serverDispatcher;
+
+    internal IOpcServerDispatcher CommonDispatcher => _commonDispatcher;
 
     /// <inheritdoc />
     public async Task<NdrCallResult> DispatchAsync(
@@ -35,13 +46,56 @@ public sealed class OpcHdaServerDispatcher : IOpcHdaServerDispatcher
         ReadOnlyMemory<byte> requestPayload,
         CancellationToken cancellationToken)
     {
-        if (interfaceId != IOPCHDA_Server.InterfaceId)
+        if (interfaceId == IOPCHDA_Server.InterfaceId)
         {
-            return new NdrCallResult(OpcResultId.NotImplemented.Code, ReadOnlyMemory<byte>.Empty);
+            return (await _serverDispatcher.DispatchAsync(opnum, requestPayload, cancellationToken).ConfigureAwait(false))
+                .ToNdrCallResult();
         }
 
-        return (await _serverDispatcher.DispatchAsync(opnum, requestPayload, cancellationToken).ConfigureAwait(false))
-            .ToNdrCallResult();
+        if (interfaceId == OpcCommonClientProxy.InterfaceId)
+        {
+            return (await _commonDispatcher.DispatchAsync(opnum, requestPayload, cancellationToken).ConfigureAwait(false))
+                .ToNdrCallResult();
+        }
+
+        return new NdrCallResult(OpcResultId.NotImplemented.Code, ReadOnlyMemory<byte>.Empty);
+    }
+
+    /// <inheritdoc />
+    public async Task SetLocaleIdAsync(int localeId, CancellationToken cancellationToken = default)
+    {
+        await _server.SetLocaleAsync(localeId, cancellationToken).ConfigureAwait(false);
+        _localeId = localeId;
+    }
+
+    /// <inheritdoc />
+    public Task<int> GetLocaleIdAsync(CancellationToken cancellationToken = default)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+        return Task.FromResult(_localeId);
+    }
+
+    /// <inheritdoc />
+    public async Task<int[]> QueryAvailableLocaleIdsAsync(CancellationToken cancellationToken = default)
+    {
+        IReadOnlyList<int> localeIds = await _server.GetSupportedLocalesAsync(cancellationToken).ConfigureAwait(false);
+        return localeIds switch
+        {
+            int[] array => array,
+            _ => localeIds.ToArray(),
+        };
+    }
+
+    /// <inheritdoc />
+    public Task<string> GetErrorStringAsync(int errorCode, CancellationToken cancellationToken = default) =>
+        _server.GetErrorTextAsync(new OpcResultId(errorCode, null), cancellationToken);
+
+    /// <inheritdoc />
+    public async Task SetClientNameAsync(string clientName, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(clientName);
+        await _server.SetClientNameAsync(clientName, cancellationToken).ConfigureAwait(false);
+        _clientName = clientName;
     }
 
     /// <inheritdoc />

@@ -95,6 +95,34 @@ public sealed class DxNdrCodecTests
     }
 
     [Test]
+    public async Task DeleteConnectionsResponseFixture_DecodesMaskErrorsAndGeneralResponse()
+    {
+        ReadOnlyMemory<byte> fixtureBytes = WritePayload((ref NdrWriter writer) =>
+        {
+            NdrOpcDxInt32ArrayCodec.Write(ref writer, new[] { 0, OpcDxError.E_INVALID_BROWSE_PATH.Code });
+            NdrOpcDxGeneralResponseCodec.Write(
+                ref writer,
+                new DxGeneralResponse(
+                    "cfg-delete-2",
+                    new[]
+                    {
+                        new DxIdentifiedResult("Area1", "C1", "v8", OpcDxError.S_OK),
+                    }));
+        });
+        var reader = new NdrReader(fixtureBytes.Span);
+
+        int[] maskErrors = NdrOpcDxInt32ArrayCodec.Read(ref reader);
+        DxGeneralResponse response = NdrOpcDxGeneralResponseCodec.Read(ref reader);
+
+        await Assert.That(fixtureBytes.Length).IsGreaterThan(0);
+        await Assert.That(maskErrors.Length).IsEqualTo(2);
+        await Assert.That(maskErrors[0]).IsEqualTo(0);
+        await Assert.That(maskErrors[1]).IsEqualTo(OpcDxError.E_INVALID_BROWSE_PATH.Code);
+        await Assert.That(response.ConfigurationVersion).IsEqualTo("cfg-delete-2");
+        await Assert.That(response.IdentifiedResults[0].ResultId.Code).IsEqualTo(0);
+    }
+
+    [Test]
     public async Task ServerStatusCodec_RoundTripsStatusRecord()
     {
         var status = new DxServerStatus(

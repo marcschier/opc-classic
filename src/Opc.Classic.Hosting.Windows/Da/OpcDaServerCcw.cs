@@ -55,7 +55,6 @@ namespace Opc.Classic.Da.Hosting.Windows;
 public static unsafe class OpcDaServerCcw
 {
     private const int S_OK = 0;
-    private const int E_NOINTERFACE = unchecked((int)0x80004002);
     private const int E_INVALIDARG = unchecked((int)0x80070057);
     private const int E_NOTIMPL = unchecked((int)0x80004001);
     private const int E_FAIL = unchecked((int)0x80004005);
@@ -494,7 +493,7 @@ public static unsafe class OpcDaServerCcw
         }
 
         *ppv = IntPtr.Zero;
-        return E_NOINTERFACE;
+        return global::Opc.Classic.OpcResultId.NoInterface.Code;
     }
 
     [UnmanagedCallersOnly]
@@ -520,50 +519,177 @@ public static unsafe class OpcDaServerCcw
         return next < 0 ? 0 : (uint)next;
     }
 
-    // ===== IOPCCommon stubs =====
+    // ===== IOPCCommon =====
 
     [UnmanagedCallersOnly]
     private static int CommonSetLocaleId(IntPtr pThis, uint dwLcid)
     {
-        _ = pThis; _ = dwLcid;
-        return E_NOTIMPL;
+        if (!s_ccws.TryGetValue(pThis, out CcwEntry? entry))
+        {
+            return E_NOTIMPL;
+        }
+        if (entry.ServerHandle.Target is not IDaServer daServer)
+        {
+            return E_NOTIMPL;
+        }
+
+        try
+        {
+#pragma warning disable VSTHRD002 // Synchronous bridge across the COM ABI.
+            daServer.SetLocaleAsync((int)dwLcid, CancellationToken.None).GetAwaiter().GetResult();
+#pragma warning restore VSTHRD002
+            return S_OK;
+        }
+#pragma warning disable CA1031 // Cross-unmanaged-boundary catch.
+        catch (Opc.Classic.OpcException opcEx)
+        {
+            return opcEx.ResultId.Code;
+        }
+        catch (ArgumentException)
+        {
+            return E_INVALIDARG;
+        }
+        catch (Exception)
+        {
+            return E_FAIL;
+        }
+#pragma warning restore CA1031
     }
 
     [UnmanagedCallersOnly]
     private static int CommonGetLocaleId(IntPtr pThis, uint* pdwLcid)
     {
-        _ = pThis;
-        if (pdwLcid != null)
+        if (pdwLcid == null)
         {
-            *pdwLcid = 0;
+            return E_INVALIDARG;
         }
-        return E_NOTIMPL;
+        *pdwLcid = 0;
+        if (!s_ccws.TryGetValue(pThis, out CcwEntry? entry))
+        {
+            return E_NOTIMPL;
+        }
+        if (entry.ServerHandle.Target is not IDaServer daServer)
+        {
+            return E_NOTIMPL;
+        }
+
+        try
+        {
+            *pdwLcid = (uint)daServer.LocaleId;
+            return S_OK;
+        }
+#pragma warning disable CA1031 // Cross-unmanaged-boundary catch.
+        catch (Exception)
+        {
+            return E_FAIL;
+        }
+#pragma warning restore CA1031
     }
 
     [UnmanagedCallersOnly]
     private static int CommonQueryAvailableLocaleIds(IntPtr pThis, uint* pdwCount, IntPtr* ppdwLcid)
     {
-        _ = pThis;
-        if (pdwCount != null)
+        if (pdwCount == null || ppdwLcid == null)
         {
-            *pdwCount = 0;
+            return E_INVALIDARG;
         }
-        if (ppdwLcid != null)
+        *pdwCount = 0;
+        *ppdwLcid = IntPtr.Zero;
+        if (!s_ccws.TryGetValue(pThis, out CcwEntry? entry))
         {
-            *ppdwLcid = IntPtr.Zero;
+            return E_NOTIMPL;
         }
-        return E_NOTIMPL;
+        if (entry.ServerHandle.Target is not IDaServer daServer)
+        {
+            return E_NOTIMPL;
+        }
+
+        try
+        {
+#pragma warning disable VSTHRD002 // Synchronous bridge across the COM ABI.
+            IReadOnlyList<int> locales = daServer.GetSupportedLocalesAsync(CancellationToken.None)
+                .GetAwaiter().GetResult();
+#pragma warning restore VSTHRD002
+            if (locales.Count == 0)
+            {
+                return S_OK;
+            }
+
+            IntPtr lcidArray = Marshal.AllocCoTaskMem(checked(locales.Count * sizeof(uint)));
+            uint* lcids = (uint*)lcidArray;
+            for (int i = 0; i < locales.Count; i++)
+            {
+                lcids[i] = (uint)locales[i];
+            }
+
+            *pdwCount = (uint)locales.Count;
+            *ppdwLcid = lcidArray;
+            return S_OK;
+        }
+#pragma warning disable CA1031 // Cross-unmanaged-boundary catch.
+        catch (Opc.Classic.OpcException opcEx)
+        {
+            return opcEx.ResultId.Code;
+        }
+        catch (ArgumentException)
+        {
+            return E_INVALIDARG;
+        }
+        catch (OverflowException)
+        {
+            return E_INVALIDARG;
+        }
+        catch (OutOfMemoryException)
+        {
+            return Opc.Classic.OpcResultId.OutOfMemory.Code;
+        }
+        catch (Exception)
+        {
+            return E_FAIL;
+        }
+#pragma warning restore CA1031
     }
 
     [UnmanagedCallersOnly]
     private static int CommonGetErrorString(IntPtr pThis, int dwError, IntPtr* ppString)
     {
-        _ = pThis; _ = dwError;
-        if (ppString != null)
+        if (ppString == null)
         {
-            *ppString = IntPtr.Zero;
+            return E_INVALIDARG;
         }
-        return E_NOTIMPL;
+        *ppString = IntPtr.Zero;
+        if (!s_ccws.TryGetValue(pThis, out CcwEntry? entry))
+        {
+            return E_NOTIMPL;
+        }
+        if (entry.ServerHandle.Target is not IDaServer daServer)
+        {
+            return E_NOTIMPL;
+        }
+
+        try
+        {
+#pragma warning disable VSTHRD002 // Synchronous bridge across the COM ABI.
+            string text = daServer.GetErrorTextAsync(new Opc.Classic.OpcResultId(dwError, null), CancellationToken.None)
+                .GetAwaiter().GetResult();
+#pragma warning restore VSTHRD002
+            *ppString = AllocateLpwStr(text);
+            return S_OK;
+        }
+#pragma warning disable CA1031 // Cross-unmanaged-boundary catch.
+        catch (Opc.Classic.OpcException opcEx)
+        {
+            return opcEx.ResultId.Code;
+        }
+        catch (ArgumentException)
+        {
+            return E_INVALIDARG;
+        }
+        catch (Exception)
+        {
+            return E_FAIL;
+        }
+#pragma warning restore CA1031
     }
 
     [UnmanagedCallersOnly]
