@@ -51,6 +51,11 @@ import sys
 import time
 from typing import Optional
 
+try:
+    import winreg  # type: ignore[import-not-found]
+except ImportError:  # pragma: no cover - non-Windows hosts
+    winreg = None  # type: ignore[assignment]
+
 _HERE = os.path.dirname(os.path.abspath(__file__))
 _REPO = os.path.dirname(_HERE)
 
@@ -69,6 +74,26 @@ LEFTOVER_PROCESS_NAMES = (
     "Opc.Classic.Mcp",
     "OpcTestServer_x64",
 )
+
+
+# Profiles that require an externally-installed COM server (registered in
+# HKLM with admin elevation) and a per-profile install hint shown when the
+# CLSID is not registered or the LocalServer32 path is stale. Profiles not
+# listed here either auto-register themselves (the in-repo samples) or use
+# a direct tcp:// connection_string that bypasses DCOM activation entirely.
+# Vendor servers whose ProgID -> activation path is reliable (e.g. Matrikon
+# via OPCEnum) are intentionally omitted: if the server is installed, the
+# probe activates normally; if it is missing, the probe records the real
+# wire-level activation failure and the operator sees a normal REGRESSION.
+EXTERNAL_INSTALL_HINTS: dict[str, str] = {
+    "testserver": (
+        "OPC Foundation TestServer not installed. Build via "
+        "'interop\\tools\\build-testserver.ps1' then register elevated via "
+        "'interop\\tools\\register-testserver.ps1'. After registration, "
+        "grant non-admin DCOM activation via "
+        "'interop\\tools\\grant-testserver-acl.ps1' (elevated, once)."
+    ),
+}
 
 
 # Default per-profile CLSIDs / ProgIDs / kind. Each profile picks ONE
@@ -365,11 +390,187 @@ def stop_tcp_listener_sample(proc: subprocess.Popen | None, profile: str) -> Non
             pass
 
 
+def is_clsid_registered(clsid: str) -> tuple[bool, str | None]:
+    """Returns (registered, missing_path) where:
+
+    - ``registered`` is True when the CLSID has a LocalServer32 or
+      InProcServer32 entry in any of the standard COM CLSID hives
+      (HKLM\\SOFTWARE\\Classes, HKLM WOW6432, HKCU\\Software\\Classes).
+    - ``missing_path`` is the registered EXE path when the LocalServer32
+      entry points to a file that does not exist on disk (the registration
+      survived a repo rename or partial uninstall and DCOM SCM activation
+      will return CO_E_SERVER_EXEC_FAILURE / REGDB_E_CLASSNOTREG). Returns
+      ``None`` when every registered server path resolves to an existing
+      file on disk.
+
+    On non-Windows hosts (where this script is never expected to drive a
+    DCOM matrix) returns ``(True, None)`` so the probe can still report
+    its own activation failure mode.
+    """
+    if winreg is None:
+        return True, None
+
+    guid = clsid.strip()
+    if not guid.startswith("{"):
+        guid = "{" + guid + "}"
+
+    hives = (
+        (winreg.HKEY_LOCAL_MACHINE, "SOFTWARE\\Classes\\CLSID"),
+        (winreg.HKEY_LOCAL_MACHINE, "SOFTWARE\\WOW6432Node\\Classes\\CLSID"),
+        (winreg.HKEY_CURRENT_USER, "Software\\Classes\\CLSID"),
+        (winreg.HKEY_CURRENT_USER, "Software\\Classes\\WOW6432Node\\CLSID"),
+    )
+    found_any = False
+    stale_path: str | None = None
+    for root, prefix in hives:
+        for subkey in ("LocalServer32", "InProcServer32"):
+            path = f"{prefix}\\{guid}\\{subkey}"
+            try:
+                with winreg.OpenKey(root, path) as key:
+                    found_any = True
+                    try:
+                        value, _ = winreg.QueryValueEx(key, "")
+                    except OSError:
+                        continue
+                    candidate = _resolve_server_path(value)
+                    if candidate and os.path.exists(candidate):
+                        return True, None
+                    if candidate and stale_path is None:
+                        stale_path = candidate
+            except OSError:
+                continue
+    return found_any, stale_path
+
+
+def resolve_progid_to_clsid(progid: str) -> str | None:
+    """Resolves a ProgID to its registered CLSID via the standard COM
+    progid -> CLSID lookup. Returns ``None`` when the ProgID is not
+    registered or when running on a non-Windows host.
+    """
+    if winreg is None:
+        return None
+    name = progid.strip()
+    if not name:
+        return None
+    for root, prefix in (
+        (winreg.HKEY_LOCAL_MACHINE, "SOFTWARE\\Classes"),
+        (winreg.HKEY_LOCAL_MACHINE, "SOFTWARE\\WOW6432Node\\Classes"),
+        (winreg.HKEY_CURRENT_USER, "Software\\Classes"),
+        (winreg.HKEY_CURRENT_USER, "Software\\Classes\\WOW6432Node"),
+    ):
+        path = f"{prefix}\\{name}\\CLSID"
+        try:
+            with winreg.OpenKey(root, path) as key:
+                value, _ = winreg.QueryValueEx(key, "")
+                if value:
+                    return str(value)
+        except OSError:
+            continue
+    return None
+
+
+def is_profile_server_available(clsid: str, progid: str | None) -> tuple[bool, str | None]:
+    """Composite check that returns (available, hint_extra):
+
+    - ``available`` is True when either the configured CLSID or the
+      configured ProgID resolves to a LocalServer32 / InProcServer32 entry
+      whose underlying path exists on disk.
+    - ``hint_extra`` is an operator-facing diagnostic detail when the
+      registration exists but is stale (LocalServer32 -> missing file),
+      or ``None`` otherwise.
+    """
+    available, stale_path = is_clsid_registered(clsid)
+    if available and stale_path is None:
+        return True, None
+
+    # CLSID lookup failed or only found stale paths -- try the ProgID
+    # next. Many vendor servers ship with a documented ProgID whose CLSID
+    # may differ from whatever the matrix profile config hard-codes (the
+    # profile is allowed to drift one digit and still discover the server
+    # because the probe activates by ProgID, not CLSID, when neither
+    # --use-clsid nor a connection_string are set).
+    if progid:
+        resolved = resolve_progid_to_clsid(progid)
+        if resolved:
+            progid_available, progid_stale = is_clsid_registered(resolved)
+            if progid_available and progid_stale is None:
+                return True, None
+            if progid_stale and stale_path is None:
+                stale_path = progid_stale
+
+    return False, stale_path
+
+
+def _resolve_server_path(raw: str | None) -> str | None:
+    """Normalizes a LocalServer32 default value (which may be quoted, may
+    include trailing /Embedding switches, and may use the COM "command"
+    form) to a plain absolute file path. Returns ``None`` when the value
+    is empty or unparseable."""
+    if raw is None:
+        return None
+    text = str(raw).strip()
+    if not text:
+        return None
+    if text.startswith("\""):
+        end = text.find("\"", 1)
+        if end > 1:
+            return text[1:end]
+    space = text.find(" ")
+    return text if space < 0 else text[:space]
+
+
+def _skipped_entry(profile: str, clsid: str, target: dict[str, str], kind: str, reason: str) -> dict[str, object]:
+    return {
+        "profile": profile,
+        "clsid": clsid,
+        "progid": target["progid"],
+        "kind": kind,
+        "totals": {},
+        "regressions": [],
+        "skipped": True,
+        "skip_reason": reason,
+    }
+
+
 def run_profile(args: argparse.Namespace, profile: str, overrides: dict[str, str]) -> dict[str, object]:
     target = PROFILE_TARGETS[profile]
     kind = target["kind"]
     clsid = overrides.get(profile, target["clsid"])
     connection_string = target.get("connection_string")
+
+    # Pre-flight: profiles that activate via DCOM need their CLSID
+    # registered in HKLM (or HKCU when our managed activation stack is
+    # used). External-install profiles (e.g. OPC Foundation TestServer,
+    # Matrikon) cannot be auto-registered without admin elevation; skip
+    # gracefully with a setup hint instead of recording 15+ cascade
+    # REGRESSIONS that obscure the real story. Also detect a stale
+    # registration whose LocalServer32 path no longer exists on disk
+    # (typical aftermath of a repo rename or partial uninstall): the
+    # SCM activation would fail with CO_E_SERVER_EXEC_FAILURE without
+    # any actionable diagnostic.
+    if connection_string is None and not args.use_clsid and profile in EXTERNAL_INSTALL_HINTS:
+        progid = target.get("progid")
+        available, stale_path = is_profile_server_available(clsid, progid)
+        if not available:
+            base_hint = EXTERNAL_INSTALL_HINTS[profile]
+            if stale_path:
+                reason = (
+                    f"CLSID {clsid} is registered but LocalServer32 points to "
+                    f"a missing path '{stale_path}'. The registration probably "
+                    f"predates a repo rename or partial uninstall; SCM activation "
+                    f"will fail with CO_E_SERVER_EXEC_FAILURE. " + base_hint
+                )
+                print(
+                    f"==> skipping profile '{profile}' (stale registration -> {stale_path})",
+                    file=sys.stderr,
+                )
+            else:
+                reason = base_hint
+                print(
+                    f"==> skipping profile '{profile}' (server not registered)",
+                    file=sys.stderr,
+                )
+            return _skipped_entry(profile, clsid, target, kind, reason)
 
     cmd = [
         sys.executable,
@@ -496,6 +697,13 @@ def main() -> int:
     print_summary(aggregate)
     print(f"\nReports written under {args.output_dir}/", file=sys.stderr)
 
+    skipped = [entry for entry in aggregate if entry.get("skipped")]
+    if skipped:
+        print("", file=sys.stderr)
+        print("Skipped profiles:", file=sys.stderr)
+        for entry in skipped:
+            print(f"  {entry['profile']}: {entry.get('skip_reason', 'not installed')}", file=sys.stderr)
+
     if any_fatal:
         return 3
     has_regression = any(entry.get("regressions") for entry in aggregate)
@@ -506,6 +714,12 @@ def print_summary(aggregate: list[dict[str, object]]) -> None:
     print("\n=== Cross-impl matrix summary ===", file=sys.stderr)
     print(f"{'profile':<14} {'kind':<5} {'MATCH':>6} {'REGR':>6} {'UNEXP':>6} {'MISS':>6}", file=sys.stderr)
     for entry in aggregate:
+        if entry.get("skipped"):
+            print(
+                f"{entry['profile']:<14} {entry.get('kind') or '?':<5} {'-':>6} {'-':>6} {'-':>6} {'-':>6}  SKIP (server not installed)",
+                file=sys.stderr,
+            )
+            continue
         totals = entry.get("totals", {}) or {}
         regr = totals.get("REGRESSION", 0) if isinstance(totals, dict) else 0
         match = totals.get("MATCH", 0) if isinstance(totals, dict) else 0
