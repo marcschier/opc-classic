@@ -60,57 +60,27 @@ spec) identify the following soft gaps that warrant follow-up work but
 do not block any current OPC scenario. Each entry references the
 per-spec doc that catalogued the gap.
 
-- **OPC AE 1.10 — IOPCCommon carry-over on AE EventServer.** The AE
-  host does not expose `IOPCCommon` (locale / error-text / client-name)
-  on the EventServer object. Track in
-  [`docs/conformance/opc-ae-1-10.md`](conformance/opc-ae-1-10.md) §3.
-- **OPC AE 1.10 — server-level IConnectionPointContainer / IOPCShutdown
-  connection point.** AE EventServer lacks the
-  `FindConnectionPoint(IID_IOPCShutdown)` tearoff on the root object.
-  See [`docs/conformance/opc-ae-1-10.md`](conformance/opc-ae-1-10.md) §3.
-- **OPC DA 2.05a — Windows CCW IOPCServer::CreateGroupEnumerator
-  returns E_NOTIMPL.** Needs `IEnumUnknown` group-enumerator CCW. See
-  [`docs/conformance/opc-da-2-05a.md`](conformance/opc-da-2-05a.md) §3.
-- **OPC DA 2.05a — Windows CCW IOPCCommon tearoff returns E_NOTIMPL
-  for locale + error-string methods.** Needs routing to
-  `IOpcDaServer` / `IOPCCommon` plus CCW locale / error-string tests.
-  See [`docs/conformance/opc-da-2-05a.md`](conformance/opc-da-2-05a.md) §3.
-- **OPC DA 2.05a — Windows DA root server CCW lacks
-  IConnectionPointContainer for IOPCShutdown callbacks.** Add the
-  root-server connection-point container + point for
-  `IID_IOPCShutdown`. See
-  [`docs/conformance/opc-da-2-05a.md`](conformance/opc-da-2-05a.md) §3.
-- **OPC DA 3.00 — top-level IOPCItemIO not registered by the default
-  managed DA host.** Needs an `IOPCItemIO` dispatcher in
-  `OpcDaServerHost` routing `Read` / `WriteVQT` to
-  `IDaServer` / `IOpcDaServer` item I/O. See
-  [`docs/conformance/opc-da-3-00.md`](conformance/opc-da-3-00.md) §3.
-- **OPC DA 3.00 — OPCServer IConnectionPointContainer for IOPCShutdown
-  not verified as wired.** Add server-level
-  `IConnectionPointContainer` / `IOPCShutdown` connection point
-  support and tests. See
-  [`docs/conformance/opc-da-3-00.md`](conformance/opc-da-3-00.md) §3.
-- **OPC DA 3.00 — Windows CCW IOPCServer::CreateGroupEnumerator
-  returns E_NOTIMPL.** Implement `IEnumUnknown` / `IEnumString` group
-  enumeration in `OpcDaServerCcw`. See
-  [`docs/conformance/opc-da-3-00.md`](conformance/opc-da-3-00.md) §3.
-- **OPC HDA 1.20 — IConnectionPointContainer::EnumConnectionPoints
-  returns E_NOTIMPL.** Should enumerate the `IOPCHDA_DataCallback`
-  connection point. See
-  [`docs/conformance/opc-hda-1-20.md`](conformance/opc-hda-1-20.md) §3.
-- **OPC HDA 1.20 — IConnectionPoint::EnumConnections returns
-  E_NOTIMPL.** Implement `IEnumConnections` over the HDA CCW sink
-  cookie table. See
-  [`docs/conformance/opc-hda-1-20.md`](conformance/opc-hda-1-20.md) §3.
-- **OPC HDA 1.20 — HDA IOPCCommon + shutdown carry-over exposure.**
-  Expose / verify `IOPCCommon` and shutdown callback support on the
-  HDA root object or document the cross-spec host mechanism. See
-  [`docs/conformance/opc-hda-1-20.md`](conformance/opc-hda-1-20.md) §3.
-- **OPC HDA 1.20 — HdaAggregate enum missing standard identifiers
-  through OPCHDA_ANNOTATIONS.** Add missing standard HDA aggregate
-  helper values + tests, preserving raw-int aggregate-ID wire
-  compatibility. See
-  [`docs/conformance/opc-hda-1-20.md`](conformance/opc-hda-1-20.md) §3.
+Most of the original 13 follow-ups from the conformance review have
+been closed in commit `9a77c9d7`; the items below are the residual
+work that remains:
+
+- **OPC DA 2.05a + DA 3.00 — Windows CCW IOPCServer::CreateGroupEnumerator
+  still returns E_NOTIMPL.** Implementation requires building a
+  Windows CCW `IEnumString` (for the `*_NAMES` scope) and `IEnumUnknown`
+  (for the `*_CONNECTIONS` scope) backed by `IOpcDaServer.SnapshotGroupsAsync`.
+  The pattern from `OpcEnumOpcItemAttributesCcw` applies (~400 lines per
+  enumerator including ref-counted vtables). See
+  [`docs/conformance/opc-da-2-05a.md`](conformance/opc-da-2-05a.md) §3
+  and [`docs/conformance/opc-da-3-00.md`](conformance/opc-da-3-00.md) §3.
+
+- **OpcResultId standard HRESULT migration sweep (residual).** The
+  initial sweep (commit `9a77c9d7`) migrated the explicit
+  `private const int E_NOINTERFACE = unchecked((int)0x80004002);`
+  declarations to `OpcResultId.NoInterface.Code`. Some files that
+  define `E_NOINTERFACE` as `internal static readonly int E_NOINTERFACE = OpcResultId.NoInterface.Code;`
+  could be further simplified by removing the per-file alias entirely
+  and using `OpcResultId.NoInterface.Code` at every call site. Cosmetic
+  cleanup; no behavior change.
 
 ## Capture engine enhancements
 
