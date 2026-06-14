@@ -7,13 +7,15 @@ using System.Collections.Concurrent;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
+using Opc.Classic.Dcom;
 using Opc.Classic.Hda.Dcom;
+using Opc.Classic.Ndr;
 
 namespace Opc.Classic.Hda.Hosting.Windows;
 
 /// <summary>
 /// Windows COM-callable wrapper (CCW) over an <see cref="IOpcHdaServer" />.
-/// Exposes separate tearoff vtables for <c>IUnknown</c>, <c>IOPCHDA_Server</c>,
+/// Exposes separate tearoff vtables for <c>IUnknown</c>, <c>IOPCHDA_Server</c>, <c>IOPCCommon</c>,
 /// HDA read interfaces, and the connection-point callback surface.
 /// </summary>
 /// <remarks>
@@ -58,6 +60,7 @@ public static unsafe class OpcHdaServerCcw
     public static bool SupportsInterface(Guid iid) =>
         iid == IID_IUnknown ||
         iid == IOPCHDA_Server.InterfaceId ||
+        iid == OpcCommonClientProxy.InterfaceId ||
         iid == IOPCHDA_SyncRead.InterfaceId ||
         iid == IOPCHDA_SyncUpdate.InterfaceId ||
         iid == IOPCHDA_SyncAnnotations.InterfaceId ||
@@ -105,6 +108,7 @@ public static unsafe class OpcHdaServerCcw
     {
         session.UnknownVtable = AllocateUnknownVtable();
         session.ServerVtable = AllocateServerVtable();
+        session.CommonVtable = AllocateCommonVtable();
         session.SyncReadVtable = AllocateSyncReadVtable();
         session.SyncUpdateVtable = AllocateSyncUpdateVtable();
         session.SyncAnnotationsVtable = AllocateSyncAnnotationsVtable();
@@ -117,6 +121,7 @@ public static unsafe class OpcHdaServerCcw
 
         session.UnknownTearoff = AllocateTearoff(session.UnknownVtable);
         session.ServerTearoff = AllocateTearoff(session.ServerVtable);
+        session.CommonTearoff = AllocateTearoff(session.CommonVtable);
         session.SyncReadTearoff = AllocateTearoff(session.SyncReadVtable);
         session.SyncUpdateTearoff = AllocateTearoff(session.SyncUpdateVtable);
         session.SyncAnnotationsTearoff = AllocateTearoff(session.SyncAnnotationsVtable);
@@ -132,6 +137,7 @@ public static unsafe class OpcHdaServerCcw
     {
         s_tearoffs[session.UnknownTearoff] = session;
         s_tearoffs[session.ServerTearoff] = session;
+        s_tearoffs[session.CommonTearoff] = session;
         s_tearoffs[session.SyncReadTearoff] = session;
         s_tearoffs[session.SyncUpdateTearoff] = session;
         s_tearoffs[session.SyncAnnotationsTearoff] = session;
@@ -166,6 +172,20 @@ public static unsafe class OpcHdaServerCcw
         v[7] = (IntPtr)(delegate* unmanaged<IntPtr, uint, IntPtr, IntPtr*, int>)&OpcHdaServerCcwMethods.ReleaseItemHandles;
         v[8] = (IntPtr)(delegate* unmanaged<IntPtr, uint, IntPtr, IntPtr*, int>)&OpcHdaServerCcwMethods.ValidateItemIDs;
         v[9] = (IntPtr)(delegate* unmanaged<IntPtr, uint, IntPtr, IntPtr, IntPtr, IntPtr*, IntPtr*, int>)&OpcHdaServerCcwMethods.CreateBrowse;
+        return v;
+    }
+
+    [SuppressMessage("Reliability", "CA2018:Buffer size argument matches element count", Justification = "Explicit byte size.")]
+    private static IntPtr* AllocateCommonVtable()
+    {
+        // 3 IUnknown + 5 IOPCCommon methods.
+        IntPtr* v = (IntPtr*)NativeMemory.Alloc((nuint)(8 * sizeof(IntPtr)));
+        PopulateIUnknown(v);
+        v[3] = (IntPtr)(delegate* unmanaged<IntPtr, uint, int>)&CommonSetLocaleId;
+        v[4] = (IntPtr)(delegate* unmanaged<IntPtr, uint*, int>)&CommonGetLocaleId;
+        v[5] = (IntPtr)(delegate* unmanaged<IntPtr, uint*, IntPtr*, int>)&CommonQueryAvailableLocaleIds;
+        v[6] = (IntPtr)(delegate* unmanaged<IntPtr, int, IntPtr*, int>)&CommonGetErrorString;
+        v[7] = (IntPtr)(delegate* unmanaged<IntPtr, IntPtr, int>)&CommonSetClientName;
         return v;
     }
 
@@ -343,6 +363,10 @@ public static unsafe class OpcHdaServerCcw
         {
             return session.ServerTearoff;
         }
+        if (iid == OpcCommonClientProxy.InterfaceId)
+        {
+            return session.CommonTearoff;
+        }
         if (iid == IOPCHDA_SyncRead.InterfaceId)
         {
             return session.SyncReadTearoff;
@@ -415,8 +439,20 @@ public static unsafe class OpcHdaServerCcw
             return;
         }
 
+        UnregisterTearoffs(session);
+        DisposeSessionState(session);
+        FreeSessionNative(session);
+        if (session.ServerHandle.IsAllocated)
+        {
+            session.ServerHandle.Free();
+        }
+    }
+
+    private static void UnregisterTearoffs(CcwSession session)
+    {
         s_tearoffs.TryRemove(session.UnknownTearoff, out _);
         s_tearoffs.TryRemove(session.ServerTearoff, out _);
+        s_tearoffs.TryRemove(session.CommonTearoff, out _);
         s_tearoffs.TryRemove(session.SyncReadTearoff, out _);
         s_tearoffs.TryRemove(session.SyncUpdateTearoff, out _);
         s_tearoffs.TryRemove(session.SyncAnnotationsTearoff, out _);
@@ -426,11 +462,13 @@ public static unsafe class OpcHdaServerCcw
         s_tearoffs.TryRemove(session.PlaybackTearoff, out _);
         s_tearoffs.TryRemove(session.ConnectionPointTearoff, out _);
         s_tearoffs.TryRemove(session.ConnectionPointContainerTearoff, out _);
+    }
 
-        DisposeSessionState(session);
-
+    private static void FreeSessionNative(CcwSession session)
+    {
         FreeNative(session.UnknownTearoff);
         FreeNative(session.ServerTearoff);
+        FreeNative(session.CommonTearoff);
         FreeNative(session.SyncReadTearoff);
         FreeNative(session.SyncUpdateTearoff);
         FreeNative(session.SyncAnnotationsTearoff);
@@ -442,6 +480,7 @@ public static unsafe class OpcHdaServerCcw
         FreeNative(session.ConnectionPointContainerTearoff);
         FreeNative(session.UnknownVtable);
         FreeNative(session.ServerVtable);
+        FreeNative(session.CommonVtable);
         FreeNative(session.SyncReadVtable);
         FreeNative(session.SyncUpdateVtable);
         FreeNative(session.SyncAnnotationsVtable);
@@ -451,10 +490,6 @@ public static unsafe class OpcHdaServerCcw
         FreeNative(session.PlaybackVtable);
         FreeNative(session.ConnectionPointVtable);
         FreeNative(session.ConnectionPointContainerVtable);
-        if (session.ServerHandle.IsAllocated)
-        {
-            session.ServerHandle.Free();
-        }
     }
 
     private static void DisposeSessionState(CcwSession session)
@@ -489,6 +524,135 @@ public static unsafe class OpcHdaServerCcw
         }
     }
 
+    [UnmanagedCallersOnly]
+    private static int CommonSetLocaleId(IntPtr pThis, uint dwLcid) =>
+        InvokeCommonNoPayloadResult(pThis, OpcCommonClientProxy.Opnums.SetLocaleId, (ref NdrWriter writer) => writer.WriteInt32(unchecked((int)dwLcid)));
+
+    [UnmanagedCallersOnly]
+    private static int CommonGetLocaleId(IntPtr pThis, uint* pdwLcid)
+    {
+        if (pdwLcid == null)
+        {
+            return E_INVALIDARG;
+        }
+        *pdwLcid = 0;
+        int hr = InvokeCommon(pThis, OpcCommonClientProxy.Opnums.GetLocaleId, null, out ReadOnlyMemory<byte> payload);
+        if (hr != S_OK)
+        {
+            return hr;
+        }
+        var reader = new NdrReader(payload.Span);
+        *pdwLcid = unchecked((uint)reader.ReadInt32());
+        return S_OK;
+    }
+
+    [UnmanagedCallersOnly]
+    private static int CommonQueryAvailableLocaleIds(IntPtr pThis, uint* pdwCount, IntPtr* ppdwLcid)
+    {
+        if (pdwCount == null || ppdwLcid == null)
+        {
+            return E_INVALIDARG;
+        }
+        *pdwCount = 0;
+        *ppdwLcid = IntPtr.Zero;
+        int hr = InvokeCommon(pThis, OpcCommonClientProxy.Opnums.QueryAvailableLocaleIds, null, out ReadOnlyMemory<byte> payload);
+        if (hr != S_OK)
+        {
+            return hr;
+        }
+        var reader = new NdrReader(payload.Span);
+        int[] localeIds = reader.ReadConformantInt32Array();
+        IntPtr native = Marshal.AllocCoTaskMem(checked(localeIds.Length * sizeof(int)));
+        for (int i = 0; i < localeIds.Length; i++)
+        {
+            Marshal.WriteInt32(native, i * sizeof(int), localeIds[i]);
+        }
+        *pdwCount = (uint)localeIds.Length;
+        *ppdwLcid = native;
+        return S_OK;
+    }
+
+    [UnmanagedCallersOnly]
+    private static int CommonGetErrorString(IntPtr pThis, int dwError, IntPtr* ppString)
+    {
+        if (ppString == null)
+        {
+            return E_INVALIDARG;
+        }
+        *ppString = IntPtr.Zero;
+        int hr = InvokeCommon(pThis, OpcCommonClientProxy.Opnums.GetErrorString, (ref NdrWriter writer) => writer.WriteInt32(dwError), out ReadOnlyMemory<byte> payload);
+        if (hr != S_OK)
+        {
+            return hr;
+        }
+        var reader = new NdrReader(payload.Span);
+        *ppString = Marshal.StringToCoTaskMemUni(reader.ReadUnicodeStringPtr() ?? string.Empty);
+        return S_OK;
+    }
+
+    [UnmanagedCallersOnly]
+    private static int CommonSetClientName(IntPtr pThis, IntPtr szName) =>
+        InvokeCommonNoPayloadResult(
+            pThis,
+            OpcCommonClientProxy.Opnums.SetClientName,
+            (ref NdrWriter writer) => writer.WriteUnicodeStringPtr(szName == IntPtr.Zero ? string.Empty : Marshal.PtrToStringUni(szName) ?? string.Empty));
+
+    private static int InvokeCommonNoPayloadResult(IntPtr pThis, int opnum, NdrWriteAction? write) =>
+        InvokeCommon(pThis, opnum, write, out _);
+
+    private static int InvokeCommon(IntPtr pThis, int opnum, NdrWriteAction? write, out ReadOnlyMemory<byte> responsePayload)
+    {
+        responsePayload = ReadOnlyMemory<byte>.Empty;
+        IOpcHdaServerDispatcher? dispatcher = ResolveDispatcher(pThis);
+        if (dispatcher is null)
+        {
+            return E_NOTIMPL;
+        }
+        try
+        {
+            byte[] request = write is null ? Array.Empty<byte>() : WritePayload(write);
+#pragma warning disable VSTHRD002 // Synchronous bridge across the COM ABI.
+            NdrCallResult result = dispatcher.DispatchAsync(
+                OpcCommonClientProxy.InterfaceId,
+                opnum,
+                request,
+                CancellationToken.None).GetAwaiter().GetResult();
+#pragma warning restore VSTHRD002
+            responsePayload = result.ResponsePayload;
+            return result.Hresult;
+        }
+#pragma warning disable CA1031 // Cross-unmanaged-boundary catch.
+        catch (ArgumentException)
+        {
+            return E_INVALIDARG;
+        }
+        catch (Exception)
+        {
+            return E_FAIL;
+        }
+#pragma warning restore CA1031
+    }
+
+    private static byte[] WritePayload(NdrWriteAction write)
+    {
+        for (int size = 256; size <= 8192; size *= 2)
+        {
+            var buffer = new byte[size];
+            var writer = new NdrWriter(buffer);
+            try
+            {
+                write(ref writer);
+                return buffer.AsSpan(0, writer.Position).ToArray();
+            }
+            catch (InvalidOperationException) when (size < 8192)
+            {
+            }
+        }
+        throw new InvalidOperationException("Unable to encode the IOPCCommon CCW payload.");
+    }
+
+    private delegate void NdrWriteAction(ref NdrWriter writer);
+
     internal sealed class CcwSession
     {
         public CcwSession(GCHandle serverHandle, IOpcHdaServerDispatcher dispatcher)
@@ -506,6 +670,8 @@ public static unsafe class OpcHdaServerCcw
         public IntPtr* UnknownVtable;
         public IntPtr ServerTearoff;
         public IntPtr* ServerVtable;
+        public IntPtr CommonTearoff;
+        public IntPtr* CommonVtable;
         public IntPtr SyncReadTearoff;
         public IntPtr* SyncReadVtable;
         public IntPtr SyncUpdateTearoff;

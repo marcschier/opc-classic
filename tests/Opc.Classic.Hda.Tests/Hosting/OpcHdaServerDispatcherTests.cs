@@ -7,6 +7,7 @@
 
 using Opc.Classic.Hda.Dcom;
 using Opc.Classic.Hda.Hosting;
+using Opc.Classic.Dcom;
 using Opc.Classic.Ndr;
 
 namespace Opc.Classic.Hda.Tests.Hosting;
@@ -73,6 +74,47 @@ public sealed class OpcHdaServerDispatcherTests
         await Assert.That(second).IsEqualTo(OpcResultId.UnknownItemId.Code);
     }
 
+    [Test]
+    public async Task DispatchCommon_round_trips_locale_error_text_and_client_name()
+    {
+        var server = new StubHdaServer { SupportedLocales = [0x0409, 0x0411] };
+        var dispatcher = new OpcHdaServerDispatcher(server);
+
+        NdrCallResult setLocale = await dispatcher.DispatchAsync(
+            OpcCommonClientProxy.InterfaceId,
+            OpcCommonClientProxy.Opnums.SetLocaleId,
+            WritePayload((ref NdrWriter writer) => writer.WriteInt32(0x0411)),
+            CancellationToken.None);
+        NdrCallResult getLocale = await dispatcher.DispatchAsync(
+            OpcCommonClientProxy.InterfaceId,
+            OpcCommonClientProxy.Opnums.GetLocaleId,
+            ReadOnlyMemory<byte>.Empty,
+            CancellationToken.None);
+        NdrCallResult locales = await dispatcher.DispatchAsync(
+            OpcCommonClientProxy.InterfaceId,
+            OpcCommonClientProxy.Opnums.QueryAvailableLocaleIds,
+            ReadOnlyMemory<byte>.Empty,
+            CancellationToken.None);
+        NdrCallResult errorText = await dispatcher.DispatchAsync(
+            OpcCommonClientProxy.InterfaceId,
+            OpcCommonClientProxy.Opnums.GetErrorString,
+            WritePayload((ref NdrWriter writer) => writer.WriteInt32(OpcResultId.Fail.Code)),
+            CancellationToken.None);
+        NdrCallResult clientName = await dispatcher.DispatchAsync(
+            OpcCommonClientProxy.InterfaceId,
+            OpcCommonClientProxy.Opnums.SetClientName,
+            WritePayload((ref NdrWriter writer) => writer.WriteUnicodeStringPtr("hda-client")),
+            CancellationToken.None);
+
+        await Assert.That(setLocale.Hresult).IsEqualTo(OpcResultId.Ok.Code);
+        await Assert.That(ReadInt32(getLocale.ResponsePayload)).IsEqualTo(0x0411);
+        await Assert.That(ReadInt32Array(locales.ResponsePayload)).IsEquivalentTo([0x0409, 0x0411]);
+        await Assert.That(ReadString(errorText.ResponsePayload)).IsEqualTo("HDA text 0x80004005");
+        await Assert.That(clientName.Hresult).IsEqualTo(OpcResultId.Ok.Code);
+        await Assert.That(server.LocaleId).IsEqualTo(0x0411);
+        await Assert.That(server.ClientName).IsEqualTo("hda-client");
+    }
+
     private static byte[] WritePayload(NdrWriteAction write, int capacity = 512)
     {
         var buffer = new byte[capacity];
@@ -93,9 +135,30 @@ public sealed class OpcHdaServerDispatcherTests
         VendorInfo = "HDA Dispatcher Test Server",
     };
 
+    private static int ReadInt32(ReadOnlyMemory<byte> payload)
+    {
+        var reader = new NdrReader(payload.Span);
+        return reader.ReadInt32();
+    }
+
+    private static int[] ReadInt32Array(ReadOnlyMemory<byte> payload)
+    {
+        var reader = new NdrReader(payload.Span);
+        return reader.ReadConformantInt32Array();
+    }
+
+    private static string ReadString(ReadOnlyMemory<byte> payload)
+    {
+        var reader = new NdrReader(payload.Span);
+        return reader.ReadUnicodeStringPtr() ?? string.Empty;
+    }
+
     private sealed class StubHdaServer : IOpcHdaServer
     {
         public int[] ValidateResults { get; init; } = [];
+        public IReadOnlyList<int> SupportedLocales { get; init; } = [0];
+        public int LocaleId { get; private set; }
+        public string ClientName { get; private set; } = string.Empty;
         public string[] LastItemIds { get; private set; } = [];
         public int GetStatusCallCount { get; private set; }
 
@@ -109,6 +172,24 @@ public sealed class OpcHdaServerDispatcherTests
         {
             LastItemIds = itemIds;
             return Task.FromResult(ValidateResults);
+        }
+
+        public Task SetLocaleAsync(int localeId, CancellationToken cancellationToken = default)
+        {
+            LocaleId = localeId;
+            return Task.CompletedTask;
+        }
+
+        public Task<IReadOnlyList<int>> GetSupportedLocalesAsync(CancellationToken cancellationToken = default) =>
+            Task.FromResult(SupportedLocales);
+
+        public Task<string> GetErrorTextAsync(OpcResultId resultId, CancellationToken cancellationToken = default) =>
+            Task.FromResult($"HDA text 0x{resultId.Code:X8}");
+
+        public Task SetClientNameAsync(string clientName, CancellationToken cancellationToken = default)
+        {
+            ClientName = clientName;
+            return Task.CompletedTask;
         }
     }
 }

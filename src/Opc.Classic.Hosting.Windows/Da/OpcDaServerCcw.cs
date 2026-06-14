@@ -7,6 +7,7 @@ using System.Collections.Concurrent;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
+using Opc.Classic.Hosting.Windows;
 
 namespace Opc.Classic.Da.Hosting.Windows;
 
@@ -55,6 +56,7 @@ namespace Opc.Classic.Da.Hosting.Windows;
 public static unsafe class OpcDaServerCcw
 {
     private const int S_OK = 0;
+    private const int E_NOINTERFACE = unchecked((int)0x80004002);
     private const int E_INVALIDARG = unchecked((int)0x80070057);
     private const int E_NOTIMPL = unchecked((int)0x80004001);
     private const int E_FAIL = unchecked((int)0x80004005);
@@ -66,6 +68,8 @@ public static unsafe class OpcDaServerCcw
     private const int BrowseSasVtableSlotCount = 8; // 3 IUnknown + 5 IOPCBrowseServerAddressSpace
     private const int SecurityNtVtableSlotCount = 6; // 3 IUnknown + 3 IOPCSecurityNT
     private const int SecurityPrivateVtableSlotCount = 6; // 3 IUnknown + 3 IOPCSecurityPrivate
+    private const int ConnectionPointVtableSlotCount = 8; // 3 IUnknown + 5 IConnectionPoint
+    private const int ConnectionPointContainerVtableSlotCount = 5; // 3 IUnknown + 2 IConnectionPointContainer
 
     private static readonly Guid IID_IUnknown = Guid.Parse("00000000-0000-0000-C000-000000000046");
     private static readonly ConcurrentDictionary<IntPtr, CcwEntry> s_ccws = new();
@@ -113,9 +117,17 @@ public static unsafe class OpcDaServerCcw
         IntPtr securityNtInstance = AllocateInstance(securityNtVtable);
         IntPtr* securityPrivVtable = AllocateSecurityPrivateVtable();
         IntPtr securityPrivInstance = AllocateInstance(securityPrivVtable);
+        IntPtr* connectionPointVtable = AllocateShutdownConnectionPointVtable();
+        IntPtr connectionPointInstance = AllocateInstance(connectionPointVtable);
+        IntPtr* connectionPointContainerVtable = AllocateShutdownConnectionPointContainerVtable();
+        IntPtr connectionPointContainerInstance = AllocateInstance(connectionPointContainerVtable);
         var handle = GCHandle.Alloc(server, GCHandleType.Normal);
-        var entry = new CcwEntry(handle, serverInstance, commonInstance, browseInstance, itemPropsInstance, itemIoInstance, browseSasInstance, securityNtInstance, securityPrivInstance);
+        var entry = new CcwEntry(handle, serverInstance, commonInstance, browseInstance, itemPropsInstance, itemIoInstance, browseSasInstance, securityNtInstance, securityPrivInstance, connectionPointInstance, connectionPointContainerInstance);
         entry.RefCount = 1;
+        if (server is IDaServer daServer)
+        {
+            daServer.ServerShutdown += entry.OnServerShutdown;
+        }
         s_ccws[serverInstance] = entry;
         s_ccws[commonInstance] = entry;
         s_ccws[browseInstance] = entry;
@@ -124,6 +136,8 @@ public static unsafe class OpcDaServerCcw
         s_ccws[browseSasInstance] = entry;
         s_ccws[securityNtInstance] = entry;
         s_ccws[securityPrivInstance] = entry;
+        s_ccws[connectionPointInstance] = entry;
+        s_ccws[connectionPointContainerInstance] = entry;
         return entry.GetInterfacePointer(requestedIid);
     }
 
@@ -140,7 +154,9 @@ public static unsafe class OpcDaServerCcw
         || iid == Dcom.IOPCItemIO.InterfaceId
         || iid == Dcom.IOPCBrowseServerAddressSpace.InterfaceId
         || iid == OpcGuids.IID_IOPCSecurityNT
-        || iid == OpcGuids.IID_IOPCSecurityPrivate;
+        || iid == OpcGuids.IID_IOPCSecurityPrivate
+        || iid == OpcGuids.IID_IConnectionPoint
+        || iid == OpcGuids.IID_IConnectionPointContainer;
 
     /// <summary>
     /// Test helper: returns the current reference count for a CCW pointer, or
@@ -174,7 +190,6 @@ public static unsafe class OpcDaServerCcw
         }
         return vtable;
     }
-
     [SuppressMessage(
         "Reliability", "CA2018:Buffer size argument matches element count",
         Justification = "Allocating IntPtr-sized native vtable with explicit byte count.")]
@@ -193,7 +208,6 @@ public static unsafe class OpcDaServerCcw
         vtable[7] = (IntPtr)(delegate* unmanaged<IntPtr, IntPtr, int>)&CommonSetClientName;
         return vtable;
     }
-
     [SuppressMessage(
         "Reliability", "CA2018:Buffer size argument matches element count",
         Justification = "Allocating IntPtr-sized CCW header with explicit byte count.")]
@@ -410,7 +424,6 @@ public static unsafe class OpcDaServerCcw
         v[5] = (IntPtr)(delegate* unmanaged<IntPtr, int>)&SecurityNtChangeUser;
         return v;
     }
-
     [SuppressMessage("Reliability", "CA2018:Buffer size argument matches element count", Justification = "Explicit byte count.")]
     private static IntPtr* AllocateSecurityPrivateVtable()
     {
@@ -422,6 +435,31 @@ public static unsafe class OpcDaServerCcw
         v[3] = (IntPtr)(delegate* unmanaged<IntPtr, int*, int>)&SecurityPrivateIsAvailablePriv;
         v[4] = (IntPtr)(delegate* unmanaged<IntPtr, IntPtr, IntPtr, int>)&SecurityPrivateLogon;
         v[5] = (IntPtr)(delegate* unmanaged<IntPtr, int>)&SecurityPrivateLogoff;
+        return v;
+    }
+    [SuppressMessage("Reliability", "CA2018:Buffer size argument matches element count", Justification = "Explicit byte count.")]
+    private static IntPtr* AllocateShutdownConnectionPointVtable()
+    {
+        IntPtr* v = (IntPtr*)NativeMemory.Alloc((nuint)(ConnectionPointVtableSlotCount * sizeof(IntPtr)));
+        v[0] = (IntPtr)(delegate* unmanaged<IntPtr, Guid*, IntPtr*, int>)&QueryInterface;
+        v[1] = (IntPtr)(delegate* unmanaged<IntPtr, uint>)&AddRef;
+        v[2] = (IntPtr)(delegate* unmanaged<IntPtr, uint>)&Release;
+        v[3] = (IntPtr)(delegate* unmanaged<IntPtr, Guid*, int>)&ShutdownGetConnectionInterface;
+        v[4] = (IntPtr)(delegate* unmanaged<IntPtr, IntPtr*, int>)&ShutdownGetConnectionPointContainer;
+        v[5] = (IntPtr)(delegate* unmanaged<IntPtr, IntPtr, uint*, int>)&ShutdownAdvise;
+        v[6] = (IntPtr)(delegate* unmanaged<IntPtr, uint, int>)&ShutdownUnadvise;
+        v[7] = (IntPtr)(delegate* unmanaged<IntPtr, IntPtr*, int>)&ShutdownEnumConnections;
+        return v;
+    }
+    [SuppressMessage("Reliability", "CA2018:Buffer size argument matches element count", Justification = "Explicit byte count.")]
+    private static IntPtr* AllocateShutdownConnectionPointContainerVtable()
+    {
+        IntPtr* v = (IntPtr*)NativeMemory.Alloc((nuint)(ConnectionPointContainerVtableSlotCount * sizeof(IntPtr)));
+        v[0] = (IntPtr)(delegate* unmanaged<IntPtr, Guid*, IntPtr*, int>)&QueryInterface;
+        v[1] = (IntPtr)(delegate* unmanaged<IntPtr, uint>)&AddRef;
+        v[2] = (IntPtr)(delegate* unmanaged<IntPtr, uint>)&Release;
+        v[3] = (IntPtr)(delegate* unmanaged<IntPtr, IntPtr*, int>)&ShutdownEnumConnectionPoints;
+        v[4] = (IntPtr)(delegate* unmanaged<IntPtr, Guid*, IntPtr*, int>)&ShutdownFindConnectionPoint;
         return v;
     }
 
@@ -1014,10 +1052,172 @@ public static unsafe class OpcDaServerCcw
         }
         return E_NOTIMPL;
     }
+    [UnmanagedCallersOnly]
+    private static int ShutdownGetConnectionInterface(IntPtr pThis, Guid* piid)
+    {
+        _ = pThis;
+        if (piid == null)
+        {
+            return E_INVALIDARG;
+        }
+        *piid = OpcGuids.IID_IOPCShutdown;
+        return S_OK;
+    }
+
+    [UnmanagedCallersOnly]
+    private static int ShutdownGetConnectionPointContainer(IntPtr pThis, IntPtr* ppCpc)
+    {
+        ZeroOut(ppCpc);
+        if (ppCpc == null)
+        {
+            return E_INVALIDARG;
+        }
+        return s_ccws.TryGetValue(pThis, out CcwEntry? entry)
+            ? ReturnTearoff(entry, entry.ConnectionPointContainerPointer, ppCpc)
+            : E_FAIL;
+    }
+
+    [UnmanagedCallersOnly]
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
+    private static int ShutdownAdvise(IntPtr pThis, IntPtr pUnk, uint* pdwCookie)
+    {
+        if (pdwCookie != null)
+        {
+            *pdwCookie = 0;
+        }
+        if (pdwCookie == null || pUnk == IntPtr.Zero)
+        {
+            return E_INVALIDARG;
+        }
+        if (!s_ccws.TryGetValue(pThis, out CcwEntry? entry))
+        {
+            return E_FAIL;
+        }
+        OpcShutdownSinkProxy? proxy = null;
+        try
+        {
+            proxy = new OpcShutdownSinkProxy(pUnk);
+            int cookie = Interlocked.Increment(ref entry.NextShutdownCookie);
+            if (!entry.ShutdownSinks.TryAdd(cookie, proxy))
+            {
+                proxy.Dispose();
+                return E_FAIL;
+            }
+            proxy = null;
+            *pdwCookie = unchecked((uint)cookie);
+            return S_OK;
+        }
+        catch (Exception ex)
+        {
+            proxy?.Dispose();
+            return MapShutdownHResult(ex);
+        }
+    }
+
+    [UnmanagedCallersOnly]
+    private static int ShutdownUnadvise(IntPtr pThis, uint cookie)
+    {
+        if (!s_ccws.TryGetValue(pThis, out CcwEntry? entry))
+        {
+            return E_FAIL;
+        }
+        if (!entry.ShutdownSinks.TryRemove(unchecked((int)cookie), out OpcShutdownSinkProxy? proxy))
+        {
+            return unchecked((int)0x80040200);
+        }
+        proxy.Dispose();
+        return S_OK;
+    }
+
+    [UnmanagedCallersOnly]
+    private static int ShutdownEnumConnections(IntPtr pThis, IntPtr* ppEnum)
+    {
+        _ = pThis;
+        ZeroOut(ppEnum);
+        return ppEnum == null ? E_INVALIDARG : E_NOTIMPL;
+    }
+
+    [UnmanagedCallersOnly]
+    private static int ShutdownEnumConnectionPoints(IntPtr pThis, IntPtr* ppEnum)
+    {
+        ZeroOut(ppEnum);
+        if (ppEnum == null)
+        {
+            return E_INVALIDARG;
+        }
+        if (!s_ccws.TryGetValue(pThis, out CcwEntry? entry))
+        {
+            return E_FAIL;
+        }
+        AddRefComPointer(entry.ConnectionPointPointer);
+        OpcEnumConnectionPointsEnumerator? enumerator = null;
+        try
+        {
+            enumerator = new OpcEnumConnectionPointsEnumerator([entry.ConnectionPointPointer]);
+            *ppEnum = OpcEnumConnectionPointsCcw.Create(enumerator);
+            enumerator = null;
+            return S_OK;
+        }
+        finally
+        {
+            enumerator?.Dispose();
+        }
+    }
+
+    [UnmanagedCallersOnly]
+    private static int ShutdownFindConnectionPoint(IntPtr pThis, Guid* riid, IntPtr* ppCp)
+    {
+        ZeroOut(ppCp);
+        if (riid == null || ppCp == null)
+        {
+            return E_INVALIDARG;
+        }
+        if (!s_ccws.TryGetValue(pThis, out CcwEntry? entry))
+        {
+            return E_FAIL;
+        }
+        return *riid == OpcGuids.IID_IOPCShutdown
+            ? ReturnTearoff(entry, entry.ConnectionPointPointer, ppCp)
+            : global::Opc.Classic.OpcResultId.NoInterface.Code;
+    }
+
+    private static int ReturnTearoff(CcwEntry entry, IntPtr tearoff, IntPtr* ppv)
+    {
+        if (ppv == null || tearoff == IntPtr.Zero)
+        {
+            return E_INVALIDARG;
+        }
+        *ppv = tearoff;
+        Interlocked.Increment(ref entry.RefCount);
+        return S_OK;
+    }
+
+    private static void AddRefComPointer(IntPtr pointer)
+    {
+        IntPtr* vtable = *(IntPtr**)pointer;
+        var addRef = (delegate* unmanaged<IntPtr, uint>)vtable[1];
+        _ = addRef(pointer);
+    }
+
+    private static int MapShutdownHResult(Exception ex) => ex switch
+    {
+        COMException comEx => comEx.ErrorCode,
+        ArgumentException => E_INVALIDARG,
+        ObjectDisposedException => E_FAIL,
+        _ => E_FAIL,
+    };
+
+    private static void ZeroOut(IntPtr* ppv)
+    {
+        if (ppv != null)
+        {
+            *ppv = IntPtr.Zero;
+        }
+    }
 
     private sealed class CcwEntry
     {
-        public CcwEntry(GCHandle serverHandle, IntPtr serverPointer, IntPtr commonPointer, IntPtr browsePointer, IntPtr itemPropsPointer, IntPtr itemIoPointer, IntPtr browseSasPointer, IntPtr securityNtPointer, IntPtr securityPrivPointer)
+        public CcwEntry(GCHandle serverHandle, IntPtr serverPointer, IntPtr commonPointer, IntPtr browsePointer, IntPtr itemPropsPointer, IntPtr itemIoPointer, IntPtr browseSasPointer, IntPtr securityNtPointer, IntPtr securityPrivPointer, IntPtr connectionPointPointer, IntPtr connectionPointContainerPointer)
         {
             ServerHandle = serverHandle;
             ServerPointer = serverPointer;
@@ -1028,6 +1228,8 @@ public static unsafe class OpcDaServerCcw
             BrowseSasPointer = browseSasPointer;
             SecurityNtPointer = securityNtPointer;
             SecurityPrivatePointer = securityPrivPointer;
+            ConnectionPointPointer = connectionPointPointer;
+            ConnectionPointContainerPointer = connectionPointContainerPointer;
         }
 
         public GCHandle ServerHandle { get; }
@@ -1039,9 +1241,21 @@ public static unsafe class OpcDaServerCcw
         public IntPtr BrowseSasPointer { get; }
         public IntPtr SecurityNtPointer { get; }
         public IntPtr SecurityPrivatePointer { get; }
+        public IntPtr ConnectionPointPointer { get; }
+        public IntPtr ConnectionPointContainerPointer { get; }
         public string ClientName { get; set; } = string.Empty;
+        public ConcurrentDictionary<int, OpcShutdownSinkProxy> ShutdownSinks { get; } = new();
+        public int NextShutdownCookie;
 
         public long RefCount;
+
+        public void OnServerShutdown(object? sender, ServerShutdownEventArgs e)
+        {
+            foreach (OpcShutdownSinkProxy sink in ShutdownSinks.Values)
+            {
+                sink.ShutdownRequest(e.Reason ?? string.Empty);
+            }
+        }
 
         public IntPtr GetInterfacePointer(Guid iid)
         {
@@ -1052,6 +1266,8 @@ public static unsafe class OpcDaServerCcw
             if (iid == Dcom.IOPCBrowseServerAddressSpace.InterfaceId) { return BrowseSasPointer; }
             if (iid == OpcGuids.IID_IOPCSecurityNT) { return SecurityNtPointer; }
             if (iid == OpcGuids.IID_IOPCSecurityPrivate) { return SecurityPrivatePointer; }
+            if (iid == OpcGuids.IID_IConnectionPoint) { return ConnectionPointPointer; }
+            if (iid == OpcGuids.IID_IConnectionPointContainer) { return ConnectionPointContainerPointer; }
             return ServerPointer;
         }
     }
