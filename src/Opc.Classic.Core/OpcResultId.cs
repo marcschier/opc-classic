@@ -46,6 +46,50 @@ public readonly record struct OpcResultId(int Code, string? Description)
     public const int FacilityOpc = 4;
 
     /// <summary>
+    /// <c>HRESULT_FROM_WIN32(w)</c> per [MS-ERREF] §2.1.1: maps a non-zero
+    /// Win32 error code to its canonical HRESULT representation
+    /// (sets the severity bit and <c>FACILITY_WIN32 = 7</c>).
+    /// Zero codes return <see cref="Ok"/>.
+    /// </summary>
+    /// <param name="win32Code">The Win32 error code (typically from <c>GetLastError</c>).</param>
+    /// <returns>The HRESULT-shaped <see cref="OpcResultId"/>.</returns>
+    public static OpcResultId FromWin32(uint win32Code)
+    {
+        if (win32Code == 0)
+        {
+            return Ok;
+        }
+
+        // Already a wrapped HRESULT? (severity-bit + FACILITY_WIN32)
+        const uint Win32WrappedMask = 0xFFFF0000u;
+        const uint Win32WrappedPrefix = 0x80070000u;
+        if ((win32Code & Win32WrappedMask) == Win32WrappedPrefix)
+        {
+            return new OpcResultId(unchecked((int)win32Code), $"WIN32({win32Code & 0xFFFFu})");
+        }
+
+        var hresult = unchecked((int)(0x80070000u | (win32Code & 0xFFFFu)));
+        return new OpcResultId(hresult, $"WIN32({win32Code & 0xFFFFu})");
+    }
+
+    /// <summary>
+    /// Maps an <c>NTSTATUS</c> value into HRESULT space per
+    /// [MS-ERREF] §2.1.1: the N bit (0x10000000) is set so callers can
+    /// distinguish promoted-NTSTATUS HRESULTs from native ones.
+    /// Already-promoted NTSTATUS values (N bit already set) are returned
+    /// as-is.
+    /// </summary>
+    /// <param name="ntStatus">The NTSTATUS value (typically from <c>NtStatus</c> enum).</param>
+    /// <returns>The HRESULT-shaped <see cref="OpcResultId"/>.</returns>
+    public static OpcResultId FromNtStatus(uint ntStatus)
+    {
+        // N bit already set => spec says return as-is.
+        const uint NtBit = 0x10000000u;
+        var hresult = unchecked((int)(ntStatus | NtBit));
+        return new OpcResultId(hresult, $"NTSTATUS(0x{ntStatus:X8})");
+    }
+
+    /// <summary>
     /// <c>S_OK</c> (0x00000000).
     /// </summary>
     public static OpcResultId Ok { get; } = new(0x00000000, "S_OK");
@@ -74,6 +118,26 @@ public readonly record struct OpcResultId(int Code, string? Description)
     /// <c>E_OUTOFMEMORY</c> (0x8007000E).
     /// </summary>
     public static OpcResultId OutOfMemory { get; } = new(unchecked((int)0x8007000Eu), "E_OUTOFMEMORY");
+
+    /// <summary>
+    /// <c>E_NOINTERFACE</c> (0x80004002) — the requested interface is not supported by the object.
+    /// </summary>
+    public static OpcResultId NoInterface { get; } = new(unchecked((int)0x80004002u), "E_NOINTERFACE");
+
+    /// <summary>
+    /// <c>E_POINTER</c> (0x80004003) — invalid pointer argument.
+    /// </summary>
+    public static OpcResultId Pointer { get; } = new(unchecked((int)0x80004003u), "E_POINTER");
+
+    /// <summary>
+    /// <c>E_ABORT</c> (0x80004004) — operation aborted.
+    /// </summary>
+    public static OpcResultId Abort { get; } = new(unchecked((int)0x80004004u), "E_ABORT");
+
+    /// <summary>
+    /// <c>E_ACCESSDENIED</c> (0x80070005) — general access-denied error.
+    /// </summary>
+    public static OpcResultId AccessDenied { get; } = new(unchecked((int)0x80070005u), "E_ACCESSDENIED");
 
     // --- OPC Foundation general result codes (FACILITY_OPC) ---
 

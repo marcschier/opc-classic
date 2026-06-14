@@ -85,4 +85,90 @@ public sealed class OpcResultIdTests
         await Assert.That(OpcResultId.InvalidArg.Facility).IsEqualTo(7);
         await Assert.That(OpcResultId.InvalidArg.CodePart).IsEqualTo(0x0057);
     }
+
+    [Test]
+    public async Task FromWin32_Zero_ReturnsOk()
+    {
+        await Assert.That(OpcResultId.FromWin32(0u)).IsEqualTo(OpcResultId.Ok);
+    }
+
+    [Test]
+    [Arguments(5u, 0x80070005u)]      // ERROR_ACCESS_DENIED
+    [Arguments(2u, 0x80070002u)]      // ERROR_FILE_NOT_FOUND
+    [Arguments(0x57u, 0x80070057u)]   // ERROR_INVALID_PARAMETER (E_INVALIDARG)
+    public async Task FromWin32_WrapsErrorCodeWithFacilityWin32(uint win32, uint expectedHResult)
+    {
+        var result = OpcResultId.FromWin32(win32);
+
+        await Assert.That(unchecked((uint)result.Code)).IsEqualTo(expectedHResult);
+        await Assert.That(result.IsFailure).IsTrue();
+        await Assert.That(result.Facility).IsEqualTo(OpcFacility.Win32);
+    }
+
+    [Test]
+    public async Task FromWin32_AlreadyPromoted_IsIdempotent()
+    {
+        // If caller passes an already-promoted HRESULT (0x80070005), the
+        // result should be the same HRESULT (no double-promotion).
+        var first = OpcResultId.FromWin32(5u);
+        var second = OpcResultId.FromWin32(unchecked((uint)first.Code));
+
+        await Assert.That(unchecked((uint)second.Code)).IsEqualTo(unchecked((uint)first.Code));
+    }
+
+    [Test]
+    [Arguments(0xC0000022u)]   // STATUS_ACCESS_DENIED
+    [Arguments(0xC000006Du)]   // STATUS_LOGON_FAILURE
+    [Arguments(0xC0000017u)]   // STATUS_NO_MEMORY
+    public async Task FromNtStatus_SetsNBit(uint ntStatus)
+    {
+        var result = OpcResultId.FromNtStatus(ntStatus);
+        const uint NBit = 0x10000000u;
+
+        await Assert.That(unchecked((uint)result.Code) & NBit).IsEqualTo(NBit);
+        // The original NTSTATUS bits below the N bit are preserved.
+        await Assert.That(unchecked((uint)result.Code) & 0xCFFFFFFFu).IsEqualTo(ntStatus & 0xCFFFFFFFu);
+    }
+
+    [Test]
+    public async Task NoInterface_HasCanonicalValue()
+    {
+        await Assert.That(unchecked((uint)OpcResultId.NoInterface.Code)).IsEqualTo(0x80004002u);
+    }
+
+    [Test]
+    public async Task Pointer_HasCanonicalValue()
+    {
+        await Assert.That(unchecked((uint)OpcResultId.Pointer.Code)).IsEqualTo(0x80004003u);
+    }
+
+    [Test]
+    public async Task Abort_HasCanonicalValue()
+    {
+        await Assert.That(unchecked((uint)OpcResultId.Abort.Code)).IsEqualTo(0x80004004u);
+    }
+
+    [Test]
+    public async Task AccessDenied_HasCanonicalValue()
+    {
+        await Assert.That(unchecked((uint)OpcResultId.AccessDenied.Code)).IsEqualTo(0x80070005u);
+    }
+
+    [Test]
+    public async Task Facility_Win32_IsSeven()
+    {
+        var win32 = OpcFacility.Win32;
+        await Assert.That(win32).IsEqualTo(7);
+    }
+
+    [Test]
+    public async Task Facility_Opc_EqualsItf_EqualsFour()
+    {
+        var opc = OpcFacility.Opc;
+        var itf = OpcFacility.Itf;
+        var facilityOpc = OpcResultId.FacilityOpc;
+        await Assert.That(opc).IsEqualTo(4);
+        await Assert.That(itf).IsEqualTo(4);
+        await Assert.That(facilityOpc).IsEqualTo(opc);
+    }
 }
