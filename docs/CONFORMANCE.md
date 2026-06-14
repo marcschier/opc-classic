@@ -2,6 +2,8 @@
 
 This document consolidates the OPC Classic specification coverage reviews, XML-DA client status, and cross-cutting conformance themes for `Opc.Classic` so implementers can assess protocol coverage, remaining gaps, validation evidence, and release gates from one place.
 
+For per-spec deep-dive coverage matrices (10 OPC + 12 directly-cited MS-\* protocols), see [`docs/conformance/README.md`](conformance/README.md).
+
 ## Contents
 
 - [Spec coverage overview](#spec-coverage-overview)

@@ -49,6 +49,8 @@ Current baseline: **10 sample apps** and **2758 passed / 13 skipped / 0 failed a
 
 ## Specification coverage
 
+- [Per-spec conformance index](conformance/README.md) — 22 per-spec coverage matrices (10 OPC + 12 directly-cited MS-\* protocols)
+- [Aggregate spec review](CONFORMANCE.md)
 - [Architecture diagrams](architecture/diagrams.md) — 10 Mermaid diagrams
 - [Generator diagnostics](generators/diagnostics.md) — OPCGEN*+ OCM* reference
 - [XML-DA status](CONFORMANCE.md#opc-xml-da-101)
