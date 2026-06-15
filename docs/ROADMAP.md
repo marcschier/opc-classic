@@ -40,8 +40,13 @@ OPC surfaces, and optional vendor-specific payload shapes.
 - **Multi-out record generation** for Batch enumeration-set discovery
   (`IOPCEnumerationSets`) and DX configuration record arrays
   (`IOPCConfiguration::QueryDXConnections`).
-- **Complex Data conversion / filter engines** and vendor-specific XML
-  payload carriers beyond the current dictionary / type / value helpers.
+- **Complex Data hosting integration and sample coverage.** The CPX
+  type-conversion (§7) and data-filter (§8) engines themselves are
+  implemented in `Opc.Classic.Cpx` (commit `15d86ed5`), but they are
+  not yet wired into `OpcCpxAddressSpace` / `OpcCpxItemProperties`,
+  and no `samples/Opc.Classic.Samples.CpxServer` exists. Plus
+  vendor-specific XML payload carriers beyond the current
+  dictionary / type / value helpers.
 
 ### Compatibility and conformance gaps
 
