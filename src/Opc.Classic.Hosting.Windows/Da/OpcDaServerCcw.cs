@@ -56,7 +56,7 @@ namespace Opc.Classic.Da.Hosting.Windows;
 public static unsafe class OpcDaServerCcw
 {
     private const int S_OK = 0;
-    private const int E_NOINTERFACE = unchecked((int)0x80004002);
+    private static readonly int E_NOINTERFACE = global::Opc.Classic.OpcResultId.NoInterface.Code;
     private const int E_INVALIDARG = unchecked((int)0x80070057);
     private const int E_NOTIMPL = unchecked((int)0x80004001);
     private const int E_FAIL = unchecked((int)0x80004005);

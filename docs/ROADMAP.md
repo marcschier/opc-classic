@@ -73,14 +73,13 @@ work that remains:
   [`docs/conformance/opc-da-2-05a.md`](conformance/opc-da-2-05a.md) §3
   and [`docs/conformance/opc-da-3-00.md`](conformance/opc-da-3-00.md) §3.
 
-- **OpcResultId standard HRESULT migration sweep (residual).** The
-  initial sweep (commit `9a77c9d7`) migrated the explicit
-  `private const int E_NOINTERFACE = unchecked((int)0x80004002);`
-  declarations to `OpcResultId.NoInterface.Code`. Some files that
-  define `E_NOINTERFACE` as `internal static readonly int E_NOINTERFACE = OpcResultId.NoInterface.Code;`
-  could be further simplified by removing the per-file alias entirely
-  and using `OpcResultId.NoInterface.Code` at every call site. Cosmetic
-  cleanup; no behavior change.
+- **OpcResultId alias pattern (decided: keep as-is).** The
+  `internal static readonly int E_NOINTERFACE = OpcResultId.NoInterface.Code;`
+  per-file alias pattern in ~13 CCW files is intentional. The aliases
+  give a short readable local symbol while still pointing at the single
+  canonical source per MS-ERREF. The 2 remaining `private const int E_NOINTERFACE = unchecked((int)0x80004002);`
+  declarations were migrated to the alias pattern in the Sprint A
+  cleanup (commit follows). No further consolidation is planned.
 
 ## Capture engine enhancements
 

@@ -15,8 +15,8 @@ namespace Opc.Classic.Hosting.Windows;
 [SupportedOSPlatform("windows")]
 public sealed unsafe class OpcShutdownSinkProxy : IDisposable
 {
-    private const int E_NOINTERFACE = unchecked((int)0x80004002);
-    private const int E_POINTER = unchecked((int)0x80004003);
+    private static readonly int E_NOINTERFACE = global::Opc.Classic.OpcResultId.NoInterface.Code;
+    private static readonly int E_POINTER = global::Opc.Classic.OpcResultId.Pointer.Code;
 
     private static readonly Guid s_iidUnknown = Guid.Parse("00000000-0000-0000-C000-000000000046");
     private readonly Lock _syncRoot = new();
