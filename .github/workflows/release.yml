@@ -69,14 +69,36 @@ jobs:
       - name: Restore
         run: dotnet restore Opc.Classic.slnx
 
+      # Versioning: Nerdbank.GitVersioning (nbgv) derives versions from the
+      # repo-root version.json at build time. nbgv intentionally IGNORES
+      # `-p:Version`, so to keep the Git tag authoritative for the released
+      # package version we stamp the exact tag version into version.json here
+      # (ephemeral — the CI workspace only; never committed) and build as a
+      # public release so no `-g<commit>` height suffix is appended.
+      # `fetch-depth: 0` above gives nbgv the history it needs. semVer:2 (set in
+      # version.json) preserves prerelease dots (e.g. 1.0.0-rc.11). See
+      # docs/RELEASE_PROCESS.md.
+      - name: Stamp release version into version.json
+        run: |
+          cat > version.json <<JSON
+          {
+            "\$schema": "https://raw.githubusercontent.com/dotnet/Nerdbank.GitVersioning/main/src/NerdBank.GitVersioning/version.schema.json",
+            "version": "${VERSION}",
+            "nuGetPackageVersion": { "semVer": 2 }
+          }
+          JSON
+          dotnet tool restore
+          echo "nbgv version.json now pins: ${VERSION}"
+          dotnet nbgv get-version || true
+
       - name: Build
-        run: dotnet build Opc.Classic.slnx --no-restore -c Release -p:Version=${{ env.VERSION }}
+        run: dotnet build Opc.Classic.slnx --no-restore -c Release -p:PublicRelease=true
 
       - name: Test
         run: dotnet test Opc.Classic.slnx --no-build -c Release --filter "Category!=NativeConformance&Category!=MatrikonConformance&Category!=CompatMatrix"
 
       - name: Pack
-        run: dotnet pack Opc.Classic.slnx --no-build -c Release -p:Version=${{ env.VERSION }} -o ./.nupkg
+        run: dotnet pack Opc.Classic.slnx --no-build -c Release -p:PublicRelease=true -o ./.nupkg
 
       - name: Push to nuget.org
         env:

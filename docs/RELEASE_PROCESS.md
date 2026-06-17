@@ -14,6 +14,34 @@ in parallel:
 
 ## Versioning and cadence
 
+Build-time versions are computed by [Nerdbank.GitVersioning](https://github.com/dotnet/Nerdbank.GitVersioning)
+(nbgv) from the repo-root [`version.json`](../version.json) plus git
+height. `src/Directory.Build.props` no longer hard-codes a `<Version>`;
+nbgv supplies `Version` / `AssemblyVersion` / `FileVersion` /
+`AssemblyInformationalVersion` / `PackageVersion` automatically.
+
+- **Dev / CI builds.** On a GitHub Actions build of `master`
+  (`GITHUB_REF=refs/heads/master` matches `publicReleaseRefs`) nbgv emits
+  a clean `1.0.<height>`. Local builds and non-`master` refs are not
+  public releases, so they append a `-g<commit>` suffix
+  (`1.0.<height>-g<commit>`). Query the current value with
+  `dotnet tool restore` then `dotnet nbgv get-version`.
+- **Tagged releases are authoritative.** nbgv intentionally ignores
+  `-p:Version`, so the release workflow makes the tag authoritative by
+  stamping the exact tag version into `version.json` (ephemeral — the CI
+  workspace only, never committed) and building with
+  `-p:PublicRelease=true`. The published package version is therefore
+  exactly the tag (minus any leading `v`), for both stable (`1.0.0`) and
+  prerelease (`1.0.0-rc.11`) tags. `version.json` sets
+  `nuGetPackageVersion.semVer: 2` so prerelease dots are preserved.
+- nbgv needs full git history. CI checkouts use `fetch-depth: 0`; the
+  managed Docker image build relies on `.git` being present in the build
+  context (there is intentionally **no** root `.dockerignore` excluding
+  it — if one is ever added, the Dockerfile must instead stamp the
+  version via the same `version.json` rewrite or a build-arg). Assemblies
+  built inside the Docker image carry the nbgv dev version
+  (`1.0.<height>`); the image is identified by its registry tag, which is
+  the release version.
 - Use SemVer: `<MAJOR>.<MINOR>.<PATCH>[-<prerelease>.<N>]`.
 - Use prerelease labels in the order `alpha`, `beta`, then `rc`.
 - Tags going forward should use the canonical `v` prefix (e.g. `v1.0.0`); the workflow tolerates bare tags (`1.0.0`) for compatibility with non-prefixed tag history.
@@ -48,8 +76,8 @@ Before tagging, verify:
 ## Prepare the release change
 
 1. Move the relevant `CHANGELOG.md` entries from `Unreleased` into a section named for the release version.
-2. Confirm `Directory.Build` contains the intended default package version for package builds or pass `-p:Version=<version>` consistently.
-3. Confirm the release workflow can derive the same package version from the tag you intend to publish.
+2. The package version is derived by the release workflow from the Git tag: it stamps the tag version into `version.json` and builds with `-p:PublicRelease=true`, so Nerdbank.GitVersioning emits exactly the tag version. There is no per-release `Directory.Build.props` or `version.json` edit to commit; confirm only that the intended tag string is correct.
+3. Confirm the tag string matches the `[v]<MAJOR>.<MINOR>.<PATCH>[-<prerelease>.<N>]` format the workflow validates. (`dotnet nbgv get-version` shows the nbgv *dev* default for the current commit — the release stamps the tag over it.)
 4. Create the release-prep Git change on the release branch.
 
 ## Tag and publish

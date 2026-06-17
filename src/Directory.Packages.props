@@ -36,6 +36,10 @@
     <PackageVersion Include="Roslynator.Formatting.Analyzers" Version="4.15.0" />
   </ItemGroup>
 
+  <ItemGroup Label="Versioning (build-time; PrivateAssets=all in Directory.Build.props)">
+    <PackageVersion Include="Nerdbank.GitVersioning" Version="3.9.50" />
+  </ItemGroup>
+
   <ItemGroup Label="Roslyn (only consumed by the source-generator project — netstandard2.0 build-time)">
     <PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="4.11.0" />
     <PackageVersion Include="Microsoft.CodeAnalysis.Analyzers" Version="3.11.0" />

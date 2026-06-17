@@ -49,7 +49,14 @@
   <PropertyGroup>
     <IsPackable>true</IsPackable>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <Version>1.0.0-rc.11</Version>
+    <!--
+      Version, AssemblyVersion, FileVersion, AssemblyInformationalVersion, and
+      PackageVersion are computed at build time by Nerdbank.GitVersioning from
+      the repo-root version.json + git height. Tagged releases are made
+      authoritative by .github/workflows/release.yml, which stamps the tag
+      version into version.json and builds with -p:PublicRelease=true (nbgv
+      ignores -p:Version). See docs/RELEASE_PROCESS.md.
+    -->
     <Authors>Opc.Classic .NET Contributors</Authors>
     <Company>Opc.Classic .NET</Company>
     <Copyright>Copyright (c) 2026 Opc.Classic .NET Contributors</Copyright>
@@ -81,6 +88,16 @@
   <!-- Analyzers (PrivateAssets=all — they're build-time only, no runtime dep) -->
   <ItemGroup>
     <PackageReference Include="Microsoft.SourceLink.GitHub" PrivateAssets="All" />
+    <!--
+      Nerdbank.GitVersioning: computes Version/AssemblyVersion/FileVersion/
+      AssemblyInformationalVersion/PackageVersion at build time from the
+      repo-root version.json + git height. Build-time only (PrivateAssets=all)
+      so it adds no runtime dependency and does not affect NativeAOT/trim.
+    -->
+    <PackageReference Include="Nerdbank.GitVersioning">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Meziantou.Analyzer">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
