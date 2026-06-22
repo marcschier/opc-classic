@@ -1,7 +1,4 @@
-﻿//
-// SPDX-License-Identifier: MIT
-// Copyright (c) 2026 Opc.Classic .NET Contributors
-//
+﻿// Copyright (c) 2026 marcschier. Licensed under the MIT License.
 // OPC Security DCOM-projection interfaces. Each [OpcInterface] partial
 // interface is extended by the OpcInterfaceGenerator to carry a
 // compile-time-known InterfaceId.

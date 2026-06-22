@@ -1,7 +1,4 @@
-﻿//
-// SPDX-License-Identifier: MIT
-// Copyright (c) 2026 Opc.Classic .NET Contributors
-//
+﻿// Copyright (c) 2026 marcschier. Licensed under the MIT License.
 // FILETIME-decode hypothesis-matrix fuzz tests for every AE NDR
 // codec swept by AW2 (OPCEVENTSERVERSTATUS, OPCCONDITIONSTATE, ONEVENTSTRUCT).
 // Mirrors NdrOpcServerStatusCodecTests AS3 pattern.

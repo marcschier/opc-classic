@@ -1,7 +1,4 @@
-﻿//
-// SPDX-License-Identifier: MIT
-// Copyright (c) 2026 Opc.Classic .NET Contributors
-//
+﻿// Copyright (c) 2026 marcschier. Licensed under the MIT License.
 // byte-exact response-decoding fixtures. Each test synthesizes
 // a wire payload that matches the MIDL canonical layout for one of the
 // Matrikon-OK methods, then asserts the proxy decodes it to the expected

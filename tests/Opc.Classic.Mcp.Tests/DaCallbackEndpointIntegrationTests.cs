@@ -1,7 +1,4 @@
-﻿//
-// SPDX-License-Identifier: MIT
-// Copyright (c) 2026 Opc.Classic .NET Contributors
-//
+﻿// Copyright (c) 2026 marcschier. Licensed under the MIT License.
 // Loopback integration: proves the loopback IOPCDataCallback scaffold lights up
 // end-to-end inside one process:
 //

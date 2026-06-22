@@ -1,7 +1,4 @@
-﻿//
-// SPDX-License-Identifier: MIT
-// Copyright (c) 2026 Opc.Classic .NET Contributors
-//
+﻿// Copyright (c) 2026 marcschier. Licensed under the MIT License.
 // Extracted from http://davenport.sourceforge.net/ntlm.html
 // Copyright (c) 2003, 2006 Eric Glass (eric.glass@gmail.com)
 //

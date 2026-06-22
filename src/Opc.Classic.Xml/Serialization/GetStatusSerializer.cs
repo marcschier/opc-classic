@@ -1,7 +1,4 @@
-﻿//
-// SPDX-License-Identifier: MIT
-// Copyright (c) 2026 Opc.Classic .NET Contributors
-//
+﻿// Copyright (c) 2026 marcschier. Licensed under the MIT License.
 // AOT-safe serializer for OPC XML-DA 1.0 GetStatus request + response.
 //
 // Wire shape (request):

@@ -1,7 +1,4 @@
-﻿//
-// SPDX-License-Identifier: MIT
-// Copyright (c) 2026 Opc.Classic .NET Contributors
-//
+﻿// Copyright (c) 2026 marcschier. Licensed under the MIT License.
 // byte-exact server-write fixtures. Loops back through the
 // generated *ServerDispatcher classes and asserts the response payload
 // matches the canonical MIDL wire layout — symmetric counterpart to AL2.

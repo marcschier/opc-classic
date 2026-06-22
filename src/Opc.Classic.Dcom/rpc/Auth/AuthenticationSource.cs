@@ -1,4 +1,4 @@
-﻿// SPDX-License-Identifier: MIT
+﻿// Copyright (c) 2026 marcschier. Licensed under the MIT License.
 //
 // replaced the original Java SPI / META-INF/services service-loader
 // (incompatible with NativeAOT because it uses runtime ClassLoader / Type.GetType

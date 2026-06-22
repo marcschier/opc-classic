@@ -28,12 +28,12 @@ RUN set -eux; \
 FROM --platform=$TARGETPLATFORM mcr.microsoft.com/dotnet/runtime:10.0-noble-chiseled AS runtime
 WORKDIR /app
 
-LABEL maintainer="Opc.Classic .NET Contributors" \
+LABEL maintainer="marcschier" \
       org.opencontainers.image.title="Opc.Classic Loopback Demo sample" \
       org.opencontainers.image.description="Containerized OPC Classic DA loopback demo sample." \
       org.opencontainers.image.source="https://github.com/marcschier/opc-classic" \
       org.opencontainers.image.licenses="MIT" \
-      org.opencontainers.image.authors="Opc.Classic .NET Contributors"
+      org.opencontainers.image.authors="marcschier"
 
 COPY --from=build --chown=1654:1654 /app/publish ./
 

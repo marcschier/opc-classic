@@ -1,7 +1,4 @@
-﻿//
-// SPDX-License-Identifier: MIT
-// Copyright (c) 2026 Opc.Classic .NET Contributors
-//
+﻿// Copyright (c) 2026 marcschier. Licensed under the MIT License.
 // NDR wire encoding for OPC SAFEARRAYs, including multi-dimensional bounds,
 // FADF_* feature flags, scalar elements, and VT_VARIANT elements.
 //

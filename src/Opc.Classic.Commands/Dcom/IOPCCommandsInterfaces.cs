@@ -1,7 +1,4 @@
-﻿//
-// SPDX-License-Identifier: MIT
-// Copyright (c) 2026 Opc.Classic .NET Contributors
-//
+﻿// Copyright (c) 2026 marcschier. Licensed under the MIT License.
 // OPC Commands DCOM-projection interfaces. Generated proxy coverage starts
 // with listing, invocation-status, and control methods that can be represented
 // with primitive/string payloads.

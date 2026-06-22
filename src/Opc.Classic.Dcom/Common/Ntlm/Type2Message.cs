@@ -1,4 +1,4 @@
-﻿// SPDX-License-Identifier: MIT
+﻿// Copyright (c) 2026 marcschier. Licensed under the MIT License.
 
 using System.Buffers.Binary;
 using System.Text;

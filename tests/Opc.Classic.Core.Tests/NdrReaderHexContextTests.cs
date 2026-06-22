@@ -1,7 +1,4 @@
-﻿//
-// SPDX-License-Identifier: MIT
-// Copyright (c) 2026 Opc.Classic .NET Contributors
-//
+﻿// Copyright (c) 2026 marcschier. Licensed under the MIT License.
 // Exercises NdrReader/NdrVariantExtensions decode-fail messages:
 // must include a multi-line hex window centered on the failure offset so
 // a developer can compare the failing wire bytes against a Wireshark

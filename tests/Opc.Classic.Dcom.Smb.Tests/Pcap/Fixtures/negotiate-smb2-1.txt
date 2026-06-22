@@ -1,5 +1,4 @@
-# SPDX-License-Identifier: MIT
-# Copyright (c) 2026 Opc.Classic .NET Contributors
+# Copyright (c) 2026 marcschier. Licensed under the MIT License.
 # Minimal SMB2 NEGOTIATE exchange, post-NetBIOS framing.
 # The replayer masks the client GUID bytes because Smb2Connection generates a fresh GUID per run.
 # Client advertises SMB3 encryption and SMB 3.1.1 preauth/encryption negotiate contexts.

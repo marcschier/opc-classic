@@ -1,7 +1,4 @@
-﻿//
-// SPDX-License-Identifier: MIT
-// Copyright (c) 2026 Opc.Classic .NET Contributors
-//
+﻿// Copyright (c) 2026 marcschier. Licensed under the MIT License.
 // Two-pass NDR deferred-pointer pile decoder for OPCBROWSEELEMENT[]
 // (DCE 1.1 §14.3.12.3). Splits each struct read into an inline part
 // (scalars + embedded referent IDs) and a deferred part (pointed-to

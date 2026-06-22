@@ -1,7 +1,4 @@
-﻿//
-// SPDX-License-Identifier: MIT
-// Copyright (c) 2026 Opc.Classic .NET Contributors
-//
+﻿// Copyright (c) 2026 marcschier. Licensed under the MIT License.
 // Wire-format fixture tests for OpcMInterfacePointerCodec.
 // Pins the MS-DCOM §2.2.1.10 MInterfacePointer wrapping shape:
 //   uint  referent_id;

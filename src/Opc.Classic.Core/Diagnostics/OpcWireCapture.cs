@@ -1,7 +1,4 @@
-﻿//
-// SPDX-License-Identifier: MIT
-// Copyright (c) 2026 Opc.Classic .NET Contributors
-//
+﻿// Copyright (c) 2026 marcschier. Licensed under the MIT License.
 // opt-in diagnostic that writes every NDR request + response payload
 // to disk so an engineer can compare wire bytes against a Wireshark capture or a
 // canonical MIDL layout without re-running the live server.

@@ -1,7 +1,4 @@
-﻿//
-// SPDX-License-Identifier: MIT
-// Copyright (c) 2026 Opc.Classic .NET Contributors
-//
+﻿// Copyright (c) 2026 marcschier. Licensed under the MIT License.
 // Round-trip + alignment + edge-case tests for the managed NDR writer/reader pair.
 //
 // IMPORTANT: NdrReader and NdrWriter are ref structs containing Span<T>.

@@ -1,7 +1,4 @@
-﻿//
-// SPDX-License-Identifier: MIT
-// Copyright (c) 2026 Opc.Classic .NET Contributors
-//
+﻿// Copyright (c) 2026 marcschier. Licensed under the MIT License.
 
 #pragma warning disable CA1707 // OPC DX HRESULT names intentionally preserve IDL underscore casing.
 #pragma warning disable MA0048 // File name is plural per repository task; type is singular per OPC result-family convention.

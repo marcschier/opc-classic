@@ -1,7 +1,4 @@
-﻿//
-// SPDX-License-Identifier: MIT
-// Copyright (c) 2026 Opc.Classic .NET Contributors
-//
+﻿// Copyright (c) 2026 marcschier. Licensed under the MIT License.
 // Conformance tests for the hand-rolled MD4 in Opc.Classic.Dcom.Crypto.Md4.
 // Test vectors come from RFC 1320 Appendix A.5 (the canonical MD4 reference).
 //

@@ -1,7 +1,4 @@
-﻿//
-// SPDX-License-Identifier: MIT
-// Copyright (c) 2026 Opc.Classic .NET Contributors
-//
+﻿// Copyright (c) 2026 marcschier. Licensed under the MIT License.
 // Wire-format fixture tests for OPC DA NDR codecs. Pins the on-the-wire
 // layout at specific byte offsets so that codec refactors (e.g. the
 // Y9b deferred-pointer migration) must explicitly update the fixture.

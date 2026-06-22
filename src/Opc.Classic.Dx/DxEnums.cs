@@ -1,7 +1,4 @@
-﻿//
-// SPDX-License-Identifier: MIT
-// Copyright (c) 2026 Opc.Classic .NET Contributors
-//
+﻿// Copyright (c) 2026 marcschier. Licensed under the MIT License.
 
 #pragma warning disable MA0048 // OPC DX enums are grouped by specification section.
 #pragma warning disable MA0062 // OpcDxMask_All intentionally preserves the IDL value.

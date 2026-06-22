@@ -1,7 +1,4 @@
-﻿//
-// SPDX-License-Identifier: MIT
-// Copyright (c) 2026 Opc.Classic .NET Contributors
-//
+﻿// Copyright (c) 2026 marcschier. Licensed under the MIT License.
 // Shared per-item reader for Read / Subscribe / SubscriptionPolledRefresh
 // responses — they all carry the same <Items> shape (Name + Handle +
 // Timestamp + Value + Quality + ResultID).

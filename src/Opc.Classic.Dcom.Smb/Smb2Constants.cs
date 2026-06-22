@@ -1,7 +1,4 @@
-﻿//
-// SPDX-License-Identifier: MIT
-// Copyright (c) 2026 Opc.Classic .NET Contributors
-//
+﻿// Copyright (c) 2026 marcschier. Licensed under the MIT License.
 // Wire constants for [MS-SMB2]. Section references in comments target
 // MS-SMB2.md in the private companion repo marcschier/opc-classic-docs
 // (formerly vendored under interop/private/docs/MS-SMB2.md).

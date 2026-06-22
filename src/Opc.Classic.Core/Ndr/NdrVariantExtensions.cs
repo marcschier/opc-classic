@@ -1,7 +1,4 @@
-﻿//
-// SPDX-License-Identifier: MIT
-// Copyright (c) 2026 Opc.Classic .NET Contributors
-//
+﻿// Copyright (c) 2026 marcschier. Licensed under the MIT License.
 // NDR wire encoding for OPC VARIANTs, including scalar values, SAFEARRAYs,
 // nested VT_VARIANT values, VT_BYREF pointers, and optional VT_RECORD payloads.
 //

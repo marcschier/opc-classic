@@ -1,4 +1,4 @@
-﻿// SPDX-License-Identifier: MIT
+﻿// Copyright (c) 2026 marcschier. Licensed under the MIT License.
 
 using Opc.Classic.Dcom.Transport;
 using Opc.Classic.Dcom.Rpc;

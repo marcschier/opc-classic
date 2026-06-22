@@ -1,7 +1,4 @@
-﻿//
-// SPDX-License-Identifier: MIT
-// Copyright (c) 2026 Opc.Classic .NET Contributors
-//
+﻿// Copyright (c) 2026 marcschier. Licensed under the MIT License.
 // Pure-managed RC4 (Rivest Cipher 4) — symmetric stream cipher.
 // In-tree replacement for BouncyCastle's RC4Engine. BCL removed RC4 in net6.
 //

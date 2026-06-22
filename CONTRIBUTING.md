@@ -34,11 +34,10 @@ The portable stack must not introduce Windows-only COM runtime dependencies such
 
 ## Code style
 
-Every new source file in `src\` must carry the repository SPDX and copyright header:
+Every new source file outside `interop\` must carry the single-line copyright header:
 
 ```csharp
-// SPDX-License-Identifier: MIT
-// Copyright (c) 2026 Opc.Classic .NET Contributors
+// Copyright (c) 2026 marcschier. Licensed under the MIT License.
 ```
 
 Follow the style enforced by `.editorconfig` and `Directory.Build`:
@@ -200,8 +199,7 @@ This project is licensed under MIT. Preserved OPC Foundation material under `int
 Every new project source file should include:
 
 ```csharp
-// SPDX-License-Identifier: MIT
-// Copyright (c) 2026 Opc.Classic .NET Contributors
+// Copyright (c) 2026 marcschier. Licensed under the MIT License.
 ```
 
 Do not remove third-party notices, OPC Foundation sample-code disclaimers, or entries from `THIRD-PARTY-NOTICES.md`.

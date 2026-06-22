@@ -1,7 +1,4 @@
-﻿//
-// SPDX-License-Identifier: MIT
-// Copyright (c) 2026 Opc.Classic .NET Contributors
-//
+﻿// Copyright (c) 2026 marcschier. Licensed under the MIT License.
 // Network Data Representation (NDR) primitive writers.
 //
 // NDR is the wire-format spec used by DCE/RPC and (transitively) DCOM.

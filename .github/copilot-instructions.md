@@ -79,7 +79,7 @@ Use source generation for static dispatch tables, proxy methods, and server disp
 
 - **C# style**: file-scoped namespaces, usings outside namespace declarations, `_camelCase` private fields, predefined C# type aliases, and no broad analyzer suppressions.
 - **IDL names**: OPC/MS-DCOM wire identifiers keep their original casing, underscores, and reserved-word shapes where needed for spec readability.
-- **License headers**: every new `src/` file carries `SPDX-License-Identifier: MIT` and the repository copyright header.
+- **License headers**: every new file outside `interop/` carries a single-line copyright header `// Copyright (c) 2026 marcschier. Licensed under the MIT License.` (no `SPDX-License-Identifier` line).
 - **Crypto**: MD4 and RC4 live in `Crypto`; MD5, HMAC, DES, and AES primitives come from the BCL where available. Do not add new crypto dependencies without a security review.
 - **Tests**: use TUnit, `[Test]`, `[Arguments]`, and `await Assert.That(actual).IsEqualTo(expected)`. Prefer hand-written test doubles over runtime-proxy mocking frameworks.
 - **Solutions**: `Opc.Classic.slnx` is the only root solution and uses the .NET XML solution format.

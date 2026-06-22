@@ -1,7 +1,4 @@
-﻿//
-// SPDX-License-Identifier: MIT
-// Copyright (c) 2026 Opc.Classic .NET Contributors
-//
+﻿// Copyright (c) 2026 marcschier. Licensed under the MIT License.
 // Verifies the OpcInterfaceGenerator-emitted InterfaceId on every DA DCOM
 // interface stub matches the canonical IID recorded in Opc.Classic.Core.OpcGuids.
 //

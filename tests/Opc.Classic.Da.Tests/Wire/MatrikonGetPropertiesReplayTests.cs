@@ -1,4 +1,4 @@
-﻿// SPDX-License-Identifier: MIT
+﻿// Copyright (c) 2026 marcschier. Licensed under the MIT License.
 // Replay test for the captured Matrikon GetProperties response.
 
 using Opc.Classic.Da.Ndr;

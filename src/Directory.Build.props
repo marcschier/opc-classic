@@ -57,9 +57,9 @@
       version into version.json and builds with -p:PublicRelease=true (nbgv
       ignores -p:Version). See docs/RELEASE_PROCESS.md.
     -->
-    <Authors>Opc.Classic .NET Contributors</Authors>
+    <Authors>marcschier</Authors>
     <Company>Opc.Classic .NET</Company>
-    <Copyright>Copyright (c) 2026 Opc.Classic .NET Contributors</Copyright>
+    <Copyright>Copyright (c) 2026 marcschier</Copyright>
     <PackageProjectUrl>https://github.com/marcschier/opc-classic</PackageProjectUrl>
     <RepositoryUrl>https://github.com/marcschier/opc-classic.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>

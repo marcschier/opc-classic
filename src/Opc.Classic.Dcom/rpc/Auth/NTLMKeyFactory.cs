@@ -1,4 +1,4 @@
-﻿// SPDX-License-Identifier: MIT
+﻿// Copyright (c) 2026 marcschier. Licensed under the MIT License.
 
 using Opc.Classic.Dcom.Crypto;
 using Opc.Classic.Dcom.Internal.Ntlm;

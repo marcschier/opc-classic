@@ -1,7 +1,4 @@
-﻿//
-// SPDX-License-Identifier: MIT
-// Copyright (c) 2026 Opc.Classic .NET Contributors
-//
+﻿// Copyright (c) 2026 marcschier. Licensed under the MIT License.
 // Conformance tests for the hand-rolled RC4 in Opc.Classic.Dcom.Crypto.Rc4.
 // Test vectors come from RFC 6229 §2.1 — the IETF reference RC4 test vectors.
 //

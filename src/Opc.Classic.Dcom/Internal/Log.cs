@@ -1,7 +1,4 @@
-﻿//
-// SPDX-License-Identifier: MIT
-// Copyright (c) 2026 Opc.Classic .NET Contributors
-//
+﻿// Copyright (c) 2026 marcschier. Licensed under the MIT License.
 // Serilog-API-shaped shim that routes through Microsoft.Extensions.Logging.
 // Source-compatible drop-in for `Log.Logger.{Information|Warning|Error|Debug|Verbose|Fatal}`
 // calls — see LogHost.cs file header for the migration plan.

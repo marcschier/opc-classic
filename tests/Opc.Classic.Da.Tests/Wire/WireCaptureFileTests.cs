@@ -1,7 +1,4 @@
-﻿//
-// SPDX-License-Identifier: MIT
-// Copyright (c) 2026 Opc.Classic .NET Contributors
-//
+﻿// Copyright (c) 2026 marcschier. Licensed under the MIT License.
 // Verifies the round-trip between WireCapturingCallChannel (the writer) and
 // WireCaptureFile (the loader): a payload written through the decorator must
 // be loadable byte-for-byte by the replay helper.

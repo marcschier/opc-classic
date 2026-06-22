@@ -1,7 +1,4 @@
-﻿//
-// SPDX-License-Identifier: MIT
-// Copyright (c) 2026 Opc.Classic .NET Contributors
-//
+﻿// Copyright (c) 2026 marcschier. Licensed under the MIT License.
 // synthetic Matrikon-shaped fixtures for IOPCItemProperties::GetItemProperties.
 //
 // The blocker (ag-get-properties-decode) is that against a live Matrikon Simulation

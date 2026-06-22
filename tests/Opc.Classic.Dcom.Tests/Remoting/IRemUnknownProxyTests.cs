@@ -1,7 +1,4 @@
-﻿//
-// SPDX-License-Identifier: MIT
-// Copyright (c) 2026 Opc.Classic .NET Contributors
-//
+﻿// Copyright (c) 2026 marcschier. Licensed under the MIT License.
 // Smoke + wire fixture tests for the IRemUnknown proxy generated from
 // src/Opc.Classic.Dcom/Remoting/IRemUnknown.cs. Verifies that:
 //   - The generator produces a working IRemUnknownClientProxy.

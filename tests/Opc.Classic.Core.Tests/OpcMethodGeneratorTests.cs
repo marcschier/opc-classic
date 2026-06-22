@@ -1,7 +1,4 @@
-﻿//
-// SPDX-License-Identifier: MIT
-// Copyright (c) 2026 Opc.Classic .NET Contributors
-//
+﻿// Copyright (c) 2026 marcschier. Licensed under the MIT License.
 // End-to-end test for the OpcMethod opnum-emission half of
 // OpcInterfaceGenerator. Declares a sample partial interface decorated
 // with [OpcInterface] + [OpcMethod(opnum)] on three members, then

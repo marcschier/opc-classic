@@ -1,7 +1,4 @@
-﻿//
-// SPDX-License-Identifier: MIT
-// Copyright (c) 2026 Opc.Classic .NET Contributors
-//
+﻿// Copyright (c) 2026 marcschier. Licensed under the MIT License.
 // End-to-end test for OpcInterfaceGenerator. If this test file compiles and
 // passes, the [OpcInterface(iid)] -> static Guid InterfaceId pipeline is
 // alive end-to-end:

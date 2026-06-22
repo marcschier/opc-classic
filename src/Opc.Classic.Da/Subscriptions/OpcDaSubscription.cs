@@ -1,7 +1,4 @@
-﻿//
-// SPDX-License-Identifier: MIT
-// Copyright (c) 2026 Opc.Classic .NET Contributors
-//
+﻿// Copyright (c) 2026 marcschier. Licensed under the MIT License.
 
 #pragma warning disable MA0025 // Scaffold is intentionally not implemented yet.
 #pragma warning disable VSTHRD200 // Public DA callback terminology uses DataChanges without an Async suffix.

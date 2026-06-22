@@ -1,7 +1,4 @@
-﻿//
-// SPDX-License-Identifier: MIT
-// Copyright (c) 2026 Opc.Classic .NET Contributors
-//
+﻿// Copyright (c) 2026 marcschier. Licensed under the MIT License.
 // OPC Complex Data (Cpx) DCOM-projection interfaces. Generated proxy coverage
 // starts with string/Guid metadata calls; CPX codecs parse dictionary and
 // binary/XML payloads in the managed type-system layer.

@@ -1,7 +1,4 @@
-﻿//
-// SPDX-License-Identifier: MIT
-// Copyright (c) 2026 Opc.Classic .NET Contributors
-//
+﻿// Copyright (c) 2026 marcschier. Licensed under the MIT License.
 // Smoke test for the Opc.Classic.Generators source-generator pipeline.
 // If this test fails to COMPILE, the generator wiring is broken (the
 // ProjectReference OutputItemType="Analyzer" trick is the most likely

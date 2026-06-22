@@ -1,7 +1,4 @@
-﻿//
-// SPDX-License-Identifier: MIT
-// Copyright (c) 2026 Opc.Classic .NET Contributors
-//
+﻿// Copyright (c) 2026 marcschier. Licensed under the MIT License.
 // Comprehensive registry of OPC Foundation Classic IIDs, CLSIDs, and CATIDs.
 // Values are sourced from the OPC Foundation interface IDL headers (verified
 // against the [Guid] attributes that previously lived in DotNet/Rcw/*.cs).

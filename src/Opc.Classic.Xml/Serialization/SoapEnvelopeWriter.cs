@@ -1,7 +1,4 @@
-﻿//
-// SPDX-License-Identifier: MIT
-// Copyright (c) 2026 Opc.Classic .NET Contributors
-//
+﻿// Copyright (c) 2026 marcschier. Licensed under the MIT License.
 // AOT-safe SOAP 1.1 envelope serialization for OPC XML-DA 1.0.
 //
 // Hand-rolled XmlWriter / XmlReader pipeline — System.Xml.Serialization

@@ -1,7 +1,4 @@
-﻿//
-// SPDX-License-Identifier: MIT
-// Copyright (c) 2026 Opc.Classic .NET Contributors
-//
+﻿// Copyright (c) 2026 marcschier. Licensed under the MIT License.
 // FILETIME-decode hypothesis-matrix fuzz tests for the Batch
 // NdrOpcBatchSummaryCodec + NdrOpcBatchSummaryFilterCodec swept by AW2.
 //

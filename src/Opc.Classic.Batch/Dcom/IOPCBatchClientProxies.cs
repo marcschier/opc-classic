@@ -1,7 +1,4 @@
-﻿//
-// SPDX-License-Identifier: MIT
-// Copyright (c) 2026 Opc.Classic .NET Contributors
-//
+﻿// Copyright (c) 2026 marcschier. Licensed under the MIT License.
 
 #pragma warning disable CA1707 // OPC IDL naming preserved (IOPCBatchServer)
 #pragma warning disable MA0048 // Related Batch proxy shims are grouped for readability

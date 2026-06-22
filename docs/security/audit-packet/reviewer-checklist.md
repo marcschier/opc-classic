@@ -1,4 +1,4 @@
-<!-- SPDX-License-Identifier: MIT -->
+<!-- Copyright (c) 2026 marcschier. Licensed under the MIT License. -->
 <!-- Last-updated: 2026-06-09T08:19:11+02:00; Commit: 3db24c2050a80a3d28c58e801516088d30aa8592 -->
 
 # Reviewer checklist

@@ -1,7 +1,4 @@
-﻿//
-// SPDX-License-Identifier: MIT
-// Copyright (c) 2026 Opc.Classic .NET Contributors
-//
+﻿// Copyright (c) 2026 marcschier. Licensed under the MIT License.
 // targeted unit tests for the per-element VARIANT codec in
 // NdrVariantExtensions. AR identified this file at 52% line / 41% branch
 // in Core.Tests-only coverage; the element-path methods (WriteVariantElement,

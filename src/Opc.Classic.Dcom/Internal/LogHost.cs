@@ -1,7 +1,4 @@
-﻿//
-// SPDX-License-Identifier: MIT
-// Copyright (c) 2026 Opc.Classic .NET Contributors
-//
+﻿// Copyright (c) 2026 marcschier. Licensed under the MIT License.
 // Microsoft.Extensions.Logging-backed shim that mimics Serilog's
 // "Log.Logger.Information(...)" surface. Lets existing Serilog call sites
 // migrate file-by-file with a single using-directive

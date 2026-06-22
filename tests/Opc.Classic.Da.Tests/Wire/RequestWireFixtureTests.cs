@@ -1,7 +1,4 @@
-﻿//
-// SPDX-License-Identifier: MIT
-// Copyright (c) 2026 Opc.Classic .NET Contributors
-//
+﻿// Copyright (c) 2026 marcschier. Licensed under the MIT License.
 // byte-exact wire fixtures that lock in the proxy's request
 // encoding for the Matrikon-OK methods. If a generator/codec change ever
 // silently mutates the wire shape, these fixtures fail with a hex diff so

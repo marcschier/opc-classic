@@ -1,7 +1,4 @@
-﻿//
-// SPDX-License-Identifier: MIT
-// Copyright (c) 2026 Opc.Classic .NET Contributors
-//
+﻿// Copyright (c) 2026 marcschier. Licensed under the MIT License.
 // Network Data Representation (NDR) primitive reader.
 // Symmetric to NdrWriter — same alignment rules, same little-endian wire
 // format. See NdrWriter.cs for the spec reference and design notes.
