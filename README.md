@@ -50,7 +50,7 @@ Walk through the [first DA client tutorial](docs/tutorials/01-build-your-first-d
 | --- | --- |
 | `src` | Runtime assemblies, source generators, shared build props, central package versions, and the AOT/trim ban list. |
 | `tests` | TUnit projects on Microsoft.Testing.Platform: primitives, transports, auth, generators, codecs, hosting, discovery, integration matrices, property-based, snapshot, and crypto. |
-| [samples/](samples/README.md) | Ten runnable apps — three DA/AE/HDA servers, three clients, a loopback demo, an additional managed DA sample (CttServer), the OPC Security sample server, and a NativeAOT canary. |
+| [samples/](samples/README.md) | Eleven runnable apps — three DA/AE/HDA servers, three clients, a loopback demo, an additional managed DA sample (CttServer), the OPC Security sample server, a full-feature simulation server (all specs + MCP), and a NativeAOT canary. |
 | [docs/](docs/README.md) | Documentation hub: architecture, adoption, tutorials, cookbook, migration analyzer, security, conformance, roadmap, and architecture diagrams. |
 | [Docker test fleet](interop/docker/README.md) | Windows Docker test fleet — managed-server image, C-built native server/client images, OPC Foundation TestServer/TestClient images, and the docker-compose. |
 | [interop/](interop/README.md) | OPC Foundation conformance assets: vendored IDL headers, CMake-built native sample servers/test apps, and helper scripts. |
@@ -58,7 +58,7 @@ Walk through the [first DA client tutorial](docs/tutorials/01-build-your-first-d
 
 ## Samples
 
-Ten runnable apps live under [samples/](samples/README.md) — three DA/AE/HDA managed servers, three clients, an in-process loopback, an additional managed DA sample (CttServer), the OPC Security sample server, and a NativeAOT canary. See the [samples README](samples/README.md) for the map, run instructions, env-var conventions, and sample-container deployment.
+Eleven runnable apps live under [samples/](samples/README.md) — three DA/AE/HDA managed servers, three clients, an in-process loopback, an additional managed DA sample (CttServer), the OPC Security sample server, a full-feature simulation server (every OPC Classic spec behind one MCP server), and a NativeAOT canary. See the [samples README](samples/README.md) for the map, run instructions, env-var conventions, and sample-container deployment.
 
 ## Documentation
 

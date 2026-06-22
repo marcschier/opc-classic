@@ -24,7 +24,7 @@ dotnet test Opc.Classic.slnx
 | --- | --- |
 | `src\` | Production libraries and generators. `Directory.Build` applies .NET 10, nullable, analyzer, package, NativeAOT, and trimming settings. |
 | `tests\` | TUnit and Microsoft.Testing.Platform test projects, including unit, property, snapshot, generator, logging, conformance, and integration scaffolds. |
-| `samples\` | Ten runnable managed samples for DA/AE/HDA clients and servers, loopback, an additional managed DA sample (CttServer), the OPC Security reference server, and AOT publishing. |
+| `samples\` | Eleven runnable managed samples for DA/AE/HDA clients and servers, loopback, an additional managed DA sample (CttServer), the OPC Security reference server, a full-feature simulation server (all specs + MCP), and AOT publishing. |
 | `docs\` | Plain Markdown architecture, adoption, cookbook, tutorials, security, migration, architecture diagrams, conformance, release, and roadmap docs. |
 | `docker` | Windows-container test fleet for managed server and native C server/client interop. |
 | `samples` | OPC Foundation native C++ sample servers and test applications used as conformance references. Do not casually rewrite or relicense them. |
@@ -149,6 +149,7 @@ Use samples to demonstrate public APIs, not test-only shortcuts.
 | Opc.Classic.Samples sample | In-process client/server loopback. |
 | Opc.Classic.Samples sample | Additional managed DA sample (different CLSID from samples-da). |
 | Opc.Classic.Samples sample | Managed OPC Security reference server. |
+| Opc.Classic.Samples sample | Full-feature simulation server: every OPC Classic spec over one deterministic plant model, hosting an MCP server over in-memory channels. |
 | Opc.Classic.Samples sample | NativeAOT publish canary. |
 
 Build or run a sample with the XML solution restored:

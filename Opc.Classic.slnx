@@ -39,6 +39,7 @@
     <Project Path="mcp/Opc.Classic.Mcp/Opc.Classic.Mcp.csproj" />
     <Project Path="mcp/Opc.Classic.Mcp.Capture/Opc.Classic.Mcp.Capture.csproj" />
     <Project Path="tests/Opc.Classic.Mcp.Tests/Opc.Classic.Mcp.Tests.csproj" />
+    <Project Path="tests/Opc.Classic.Mcp.Integration.Tests/Opc.Classic.Mcp.Integration.Tests.csproj" />
     <Project Path="tests/Opc.Classic.Mcp.Capture.Tests/Opc.Classic.Mcp.Capture.Tests.csproj" />
     <Project Path="tests/Opc.Classic.MigrationAnalyzer.Tests/Opc.Classic.MigrationAnalyzer.Tests.csproj" />
     <Project Path="tests/Opc.Classic.Hda.Tests/Opc.Classic.Hda.Tests.csproj" />
@@ -59,6 +60,7 @@
     <Project Path="samples/Opc.Classic.Samples.DaServer/Opc.Classic.Samples.DaServer.csproj" />
     <Project Path="samples/Opc.Classic.Samples.OpcSecurityServer/Opc.Classic.Samples.OpcSecurityServer.csproj" />
     <Project Path="samples/Opc.Classic.Samples.HdaServer/Opc.Classic.Samples.HdaServer.csproj" />
+    <Project Path="samples/Opc.Classic.Samples.SimulationServer/Opc.Classic.Samples.SimulationServer.csproj" />
     <Project Path="samples/Opc.Classic.Samples.HdaClient/Opc.Classic.Samples.HdaClient.csproj" />
     <Project Path="samples/Opc.Classic.Samples.LoopbackDemo/Opc.Classic.Samples.LoopbackDemo.csproj" />
   </Folder>

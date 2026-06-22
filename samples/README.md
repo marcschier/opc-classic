@@ -1,6 +1,6 @@
 # Opc.Classic samples
 
-This folder contains ten runnable apps demonstrating the `Opc.Classic.*` stack — four managed servers, three clients, an in-process loopback, an additional managed DA sample (CttServer), and the NativeAOT canary.
+This folder contains eleven runnable apps demonstrating the `Opc.Classic.*` stack — four managed servers, three clients, an in-process loopback, an additional managed DA sample (CttServer), a full-feature simulation server, and the NativeAOT canary.
 
 Each sample folder ships its own `README.md` with run instructions. DA/AE/HDA/CttServer/Security sample servers bind `OPC_CLASSIC_SAMPLE_PORT` on `0.0.0.0` by default, and the DA/AE/HDA sample clients dial TCP when `OPC_CLASSIC_SERVER_HOST` + `OPC_CLASSIC_SERVER_PORT` are set (otherwise they fall back to the in-process channel for local dev).
 
@@ -17,6 +17,7 @@ Each sample folder ships its own `README.md` with run instructions. DA/AE/HDA/Ct
 | [Opc.Classic.Samples.HdaClient/](Opc.Classic.Samples.HdaClient/README.md) | HDA client reads, aggregates, annotations, updates. |
 | [Opc.Classic.Samples.LoopbackDemo/](Opc.Classic.Samples.LoopbackDemo/) | In-process DA client/server loopback through the managed channel stack. |
 | [Opc.Classic.Samples.CttServer/](Opc.Classic.Samples.CttServer/README.md) | Additional managed DA sample registered as `Opc.Classic.DaSample.1` (different CLSID from `samples-da`). |
+| [Opc.Classic.Samples.SimulationServer/](Opc.Classic.Samples.SimulationServer/README.md) | Full-feature simulation server: one deterministic plant model projected through every OPC Classic spec (DA/AE/HDA/Batch/Commands/Cpx/DX/Security/Discovery/XML-DA), hosting an MCP server over the in-memory channels. |
 | [Opc.Classic.Samples.AotCanary/](Opc.Classic.Samples.AotCanary/) | NativeAOT publish verification used in CI. |
 
 ## Sample container deployment
