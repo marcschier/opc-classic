@@ -21,6 +21,9 @@
     <ProjectReference Include="..\..\src\Opc.Classic.Security\Opc.Classic.Security.csproj" />
     <ProjectReference Include="..\..\src\Opc.Classic.Discovery\Opc.Classic.Discovery.csproj" />
     <ProjectReference Include="..\..\src\Opc.Classic.Xml\Opc.Classic.Xml.csproj" />
+    <ProjectReference Include="..\..\src\Opc.Classic.Dcom\Opc.Classic.Dcom.csproj" />
+    <ProjectReference Include="..\..\src\Opc.Classic.Hosting\Opc.Classic.Hosting.csproj" />
+    <ProjectReference Include="..\..\src\Opc.Classic.Hosting.Windows\Opc.Classic.Hosting.Windows.csproj" />
     <ProjectReference Include="..\..\mcp\Opc.Classic.Mcp\Opc.Classic.Mcp.csproj" />
   </ItemGroup>
 </Project>
