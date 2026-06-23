@@ -51,8 +51,10 @@ public sealed class SimDaHostServer : IOpcDaServer
     }
 
     /// <summary>
-    /// Refreshes every active group's item values from the model. Called by the transport host's
-    /// background ticker so sync reads (and future subscription pushes) reflect live data.
+    /// Reconciles every active group's items with the model. Read-only/generated tags are pushed
+    /// model -> item so reads return live values; writable tags persist the explorer's group write
+    /// item -> model (after seeding an initial value), so write+readback stays consistent across the
+    /// group cache and the DA 3.0 <c>IOPCItemIO</c> surface. Called by the transport host's ticker.
     /// </summary>
     public void RefreshFromModel()
     {
@@ -66,9 +68,27 @@ public sealed class SimDaHostServer : IOpcDaServer
 
             foreach (OpcDaItem item in entry.Group.Items)
             {
-                if (_model.TryGetTag(item.ItemId, out SimulatedTag tag))
+                if (!_model.TryGetTag(item.ItemId, out SimulatedTag tag))
+                {
+                    continue;
+                }
+
+                if (!tag.Writable)
+                {
+                    // Live generated value.
+                    item.Update(ToVariant(_model.CurrentValue(tag, now)), GoodQuality, now);
+                    continue;
+                }
+
+                // Writable: seed once, then let client writes flow item -> model so they stick.
+                object? cached = item.GetSnapshot().Value.Boxed;
+                if (cached is null)
                 {
                     item.Update(ToVariant(_model.CurrentValue(tag, now)), GoodQuality, now);
+                }
+                else
+                {
+                    _model.TryWrite(item.ItemId, cached);
                 }
             }
         }

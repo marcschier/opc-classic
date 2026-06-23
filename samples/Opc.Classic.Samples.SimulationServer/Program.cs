@@ -14,22 +14,49 @@ using Opc.Classic.Mcp.Tools;
 using Opc.Classic.Samples.SimulationServer;
 using Opc.Classic.Samples.SimulationServer.Transports;
 
-// Handle Windows DCOM registration (--register / --unregister) before standing up
-// anything else, so the simulation DA server appears in OpcEnum and can be activated
-// by native DCOM clients such as Matrikon OPC Explorer. No-op (with a message) off Windows.
-var simDaRegistration = new OpcClsidRegistration(
-    Clsid: new Guid("D9A0B0C1-5E21-49C7-9C0E-2D7B6A1F0001"),
-    ProgId: "Opc.Classic.Simulation.DA.1",
-    AssemblyName: "Opc.Classic.Samples.SimulationServer",
-    TypeName: typeof(Opc.Classic.Samples.SimulationServer.Transports.SimDaHostServer).FullName!,
-    FriendlyName: "Opc.Classic Full-Feature Simulation Server (DA)");
-if (SampleServerRegistrationCommand.TryHandle(
-        args,
-        simDaRegistration,
-        [OpcComponentCategories.OpcDaServer20, OpcComponentCategories.OpcDaServer30],
-        out int simRegistrationExitCode))
+// Handle Windows DCOM registration (--register / --unregister) before standing up anything
+// else, so the simulation DA/AE/HDA servers appear in OpcEnum and can be activated by native
+// DCOM clients such as Matrikon OPC Explorer. No-op (with a message) off Windows.
+(OpcClsidRegistration Registration, OpcComponentCategory[] Categories)[] simServerRegistrations =
+[
+    (new OpcClsidRegistration(
+        Clsid: new Guid("D9A0B0C1-5E21-49C7-9C0E-2D7B6A1F0001"),
+        ProgId: "Opc.Classic.Simulation.DA.1",
+        AssemblyName: "Opc.Classic.Samples.SimulationServer",
+        TypeName: typeof(SimDaHostServer).FullName!,
+        FriendlyName: "Opc.Classic Full-Feature Simulation Server (DA)"),
+        [OpcComponentCategories.OpcDaServer20, OpcComponentCategories.OpcDaServer30]),
+    (new OpcClsidRegistration(
+        Clsid: new Guid("D9A0B0C1-5E21-49C7-9C0E-2D7B6A1F0002"),
+        ProgId: "Opc.Classic.Simulation.AE.1",
+        AssemblyName: "Opc.Classic.Samples.SimulationServer",
+        TypeName: typeof(SimAeHostServer).FullName!,
+        FriendlyName: "Opc.Classic Full-Feature Simulation Server (AE)"),
+        [OpcComponentCategories.OpcAeServer10]),
+    (new OpcClsidRegistration(
+        Clsid: new Guid("D9A0B0C1-5E21-49C7-9C0E-2D7B6A1F0003"),
+        ProgId: "Opc.Classic.Simulation.HDA.1",
+        AssemblyName: "Opc.Classic.Samples.SimulationServer",
+        TypeName: typeof(SimHdaHostServer).FullName!,
+        FriendlyName: "Opc.Classic Full-Feature Simulation Server (HDA)"),
+        [OpcComponentCategories.OpcHdaServer10]),
+];
+bool registrationHandled = false;
+foreach ((OpcClsidRegistration registration, OpcComponentCategory[] categories) in simServerRegistrations)
 {
-    return simRegistrationExitCode;
+    if (SampleServerRegistrationCommand.TryHandle(args, registration, categories, out int registrationExit))
+    {
+        registrationHandled = true;
+        if (registrationExit != 0)
+        {
+            return registrationExit;
+        }
+    }
+}
+
+if (registrationHandled)
+{
+    return 0;
 }
 
 using ILoggerFactory loggerFactory = LoggerFactory.Create(b =>

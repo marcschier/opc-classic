@@ -118,10 +118,11 @@ DCOM and discovers servers via OpcEnum. Two topologies are supported:
    ```
 
 2. Let the explorer **activate** it: in **Matrikon OPC Explorer** → *Connect* → browse the local
-   OPC server list (OpcEnum) and select **`Opc.Classic.Simulation.DA.1`**. Windows SCM launches
-   the sample with `-Embedding`, which runs in **OPC-servers-only** mode (no MCP stdio) and
-   registers the DA COM class object (CCW). You can also pre-start it explicitly with
-   `-- --opc-only`.
+   OPC server list (OpcEnum) and select **`Opc.Classic.Simulation.DA.1`** (the **AE** and **HDA**
+   servers, `Opc.Classic.Simulation.AE.1` / `.HDA.1`, are registered too and appear under the AE /
+   HDA categories). Windows SCM launches the sample with `-Embedding`, which runs in
+   **OPC-servers-only** mode (no MCP stdio) and registers the DA COM class object (CCW). You can
+   also pre-start it explicitly with `-- --opc-only`.
 
 3. **Fully interact**: browse the address space (`Plant.Reactor1.Temperature`, `Random.Real8`,
    `Bucket Brigade.Int4`, …), add items to a group, and watch **live values** update (the server's
@@ -155,12 +156,13 @@ native↔managed fleet.
 > simulation from Windows via the Opc.Classic managed client / MCP server over `tcp://`/`dcom://`,
 > or run Topology 1 for native-explorer interaction.
 
-> Status: **DA full group lifecycle** (browse, AddGroup, AddItems, live sync read, write, remove)
-> works over the real transport and is covered by `DaLifecycleTransportTests`; AE/HDA expose
-> status + metadata over TCP (`TransportSmokeTests`). Windows native hosting (`-Embedding`/CCW +
-> `--register`) is wired for DA. Server-side LRPC, the XML-DA HTTP endpoint, DX-over-DCOM, AE/HDA
-> Windows registration, full AE event / HDA history delivery over transport, and native remote
-> activation to a Linux host are incremental follow-ups tracked in the project plan.
+> Status: **DA full group lifecycle** (browse, AddGroup, AddItems, live sync read, write with
+> persistence, remove) works over the real transport and is covered by `DaLifecycleTransportTests`;
+> AE/HDA expose status + metadata over TCP (`TransportSmokeTests`). Windows native hosting
+> (`-Embedding`/CCW for DA) + OpcEnum registration for **DA, AE, and HDA** (`--register`) are wired.
+> Server-side LRPC, the XML-DA HTTP endpoint, DX-over-DCOM, AE/HDA SCM activation, full AE event /
+> HDA history delivery over transport, and native remote activation to a Linux host are incremental
+> follow-ups tracked in the project plan.
 
 ## Integration testing
 

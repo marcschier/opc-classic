@@ -90,6 +90,13 @@ public sealed class DaLifecycleTransportTests
             .ConfigureAwait(false);
         await Assert.That(writeErrors.All(static e => e >= 0)).IsTrue();
 
+        // The write to the writable Bucket Brigade.Int4 must persist across ticker cycles.
+        await Task.Delay(TimeSpan.FromMilliseconds(600)).ConfigureAwait(false);
+        OpcItemState[] afterWrite = await syncIo.ReadAsync(CacheDataSource, [serverHandles[2]], out int[] afterErrors, CancellationToken.None)
+            .ConfigureAwait(false);
+        await Assert.That(afterErrors[0]).IsGreaterThanOrEqualTo(0);
+        await Assert.That(afterWrite[0].Value.AsInt32()).IsEqualTo(42);
+
         await server.RemoveGroupAsync(serverGroupHandle, force: true, CancellationToken.None).ConfigureAwait(false);
     }
 
