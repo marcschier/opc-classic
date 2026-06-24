@@ -5,9 +5,10 @@ name: nuget
 # (OIDC) instead of a long-lived API key.
 #
 # What it does when run:
-#   1. Lists the Opc.Classic.* packages on the GitHub Packages feed for this owner.
+#   1. Probes the GitHub Packages NuGet feed (flat-container protocol) for the
+#      repo's packages and the versions each has published.
 #   2. Picks the latest published version (or the version you supply as input).
-#   3. Downloads every family package at that version straight from the GitHub feed
+#   3. Downloads every package at that version straight from the GitHub feed
 #      (no rebuild/repack — the exact bytes that were released are promoted).
 #   4. Exchanges the workflow's OIDC token for a short-lived nuget.org key via
 #      NuGet/login@v1 and pushes the packages to nuget.org (idempotent).
@@ -50,65 +51,73 @@ jobs:
       - name: Resolve and download packages from the GitHub feed
         id: resolve
         env:
+          # GITHUB_TOKEN (with packages: read) authenticates to the GitHub Packages
+          # NuGet feed over the NuGet V3 protocol — no read:packages PAT needed.
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           OWNER: ${{ github.repository_owner }}
           INPUT_VERSION: ${{ github.event.inputs.version }}
         shell: bash
         run: |
           set -euo pipefail
-          FEED="https://nuget.pkg.github.com/${OWNER}"
+          # PackageBaseAddress (flat container) of the GitHub Packages NuGet feed.
+          BASE="https://nuget.pkg.github.com/${OWNER}/download"
 
-          # 1. Enumerate the Opc.Classic.* family on the GitHub Packages feed.
-          mapfile -t PKGS < <(gh api "/users/${OWNER}/packages?package_type=nuget&per_page=100" \
-            --jq '.[] | select(.name | startswith("Opc.Classic.")) | .name' | sort -u)
-          if [ "${#PKGS[@]}" -eq 0 ]; then
-            echo "::error::No Opc.Classic.* NuGet packages found on the GitHub feed for ${OWNER}."
-            exit 1
-          fi
-          echo "Found ${#PKGS[@]} package(s) on the GitHub feed."
+          # 1. Candidate package IDs = every project in the repo. Candidates that
+          #    aren't published return 404 on the feed and are skipped, so this is
+          #    self-correcting (covers src/* and mcp/* today; future packages too).
+          mapfile -t CANDIDATES < <(find . -path '*/bin/*' -prune -o -path '*/obj/*' -prune -o \
+            -name '*.csproj' -printf '%f\n' | sed 's/\.csproj$//' | sort -u)
 
-          # 2. Cache each package's version list and track the newest publish overall.
-          mkdir -p vers artifacts
-          NEWEST_TS=""
-          LATEST=""
-          for p in "${PKGS[@]}"; do
-            gh api "/users/${OWNER}/packages/nuget/${p}/versions?per_page=100" > "vers/${p}.json"
-            line="$(jq -r 'sort_by(.created_at) | last | "\(.name)\t\(.created_at)"' "vers/${p}.json")"
-            [ -n "$line" ] || continue
-            v="${line%%$'\t'*}"
-            ts="${line#*$'\t'}"
-            if [ -z "$NEWEST_TS" ] || [[ "$ts" > "$NEWEST_TS" ]]; then
-              NEWEST_TS="$ts"
-              LATEST="$v"
-            fi
+          mkdir -p artifacts versions
+          ALL_VERSIONS="$(mktemp)"
+          PUBLISHED=()
+
+          # 2. Probe each candidate's flat-container index for its published versions.
+          for id in "${CANDIDATES[@]}"; do
+            idl="$(echo "$id" | tr '[:upper:]' '[:lower:]')"
+            body="$(curl -fsSL -H "Authorization: Bearer ${GH_TOKEN}" "${BASE}/${idl}/index.json" 2>/dev/null || true)"
+            [ -n "$body" ] || continue
+            vers="$(echo "$body" | jq -r '.versions[]?' 2>/dev/null || true)"
+            [ -n "$vers" ] || continue
+            PUBLISHED+=("$id")
+            printf '%s\n' "$vers" > "versions/${idl}.txt"
+            printf '%s\n' "$vers" >> "$ALL_VERSIONS"
           done
 
-          # 3. Decide the version to promote.
+          if [ "${#PUBLISHED[@]}" -eq 0 ]; then
+            echo "::error::No packages found on the GitHub feed for ${OWNER}. Confirm the release workflow pushed to https://nuget.pkg.github.com/${OWNER}/index.json."
+            exit 1
+          fi
+          echo "Found ${#PUBLISHED[@]} published package(s) on the GitHub feed."
+
+          # 3. Choose the version to promote. Auto = highest by semver precedence
+          #    (map the leading '-' to Debian '~' so `sort -V` ranks prereleases
+          #    below the matching stable and orders rc.9 < rc.10 correctly).
           if [ -n "${INPUT_VERSION}" ]; then
             TARGET="${INPUT_VERSION}"
             echo "Promoting requested version: ${TARGET}"
           else
-            TARGET="${LATEST}"
+            TARGET="$(sed 's/-/~/' "$ALL_VERSIONS" | sort -V | tail -n1 | sed 's/~/-/')"
             if [ -z "$TARGET" ]; then
               echo "::error::Could not determine the latest published version from the GitHub feed."
               exit 1
             fi
-            echo "Auto-selected latest published version: ${TARGET} (published ${NEWEST_TS})."
+            echo "Auto-selected latest published version: ${TARGET}"
           fi
 
-          # 4. Download every family package that has the target version.
+          # 4. Download every published package that carries the target version.
           downloaded=0
-          for p in "${PKGS[@]}"; do
-            has="$(jq --arg v "$TARGET" '[.[].name] | index($v) != null' "vers/${p}.json")"
-            if [ "$has" != "true" ]; then
-              echo "::notice::Skipping ${p}: version ${TARGET} is not on the feed."
+          for id in "${PUBLISHED[@]}"; do
+            idl="$(echo "$id" | tr '[:upper:]' '[:lower:]')"
+            if ! grep -qxF "$TARGET" "versions/${idl}.txt"; then
+              echo "::notice::Skipping ${id}: version ${TARGET} is not on the feed."
               continue
             fi
-            idl="$(echo "$p" | tr '[:upper:]' '[:lower:]')"
             verl="$(echo "$TARGET" | tr '[:upper:]' '[:lower:]')"
-            url="${FEED}/download/${idl}/${verl}/${idl}.${verl}.nupkg"
-            echo "Downloading ${p} ${TARGET}"
-            curl -fSL -H "Authorization: Bearer ${GH_TOKEN}" -o "artifacts/${p}.${TARGET}.nupkg" "${url}"
+            echo "Downloading ${id} ${TARGET}"
+            curl -fSL -H "Authorization: Bearer ${GH_TOKEN}" \
+              -o "artifacts/${idl}.${verl}.nupkg" \
+              "${BASE}/${idl}/${verl}/${idl}.${verl}.nupkg"
             downloaded=$((downloaded + 1))
           done
 
