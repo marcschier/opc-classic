@@ -20,7 +20,7 @@ Reference: the vendored `MS-DCOM.md` spec sections 3.1.2.5.2.3 (legacy) and
 | `IRemoteSCMActivator::RemoteCreateInstance` over TCP | ✅ Client + server | source-generated `IRemoteSCMActivator` + `RemoteSCMActivatorServer` |
 | `IActivation::RemoteActivation` over TCP | ✅ Client + server | `ActivationClient` + `IActivationCodec.cs` + `ActivationServer` / `LegacyActivationServer` |
 | `IActivation::RemoteActivation` over SMB (ncacn_np) | ✅ Client + server | channel-pluggable `ActivationClient` / `ActivationServer` over `NcacnNpTransport` |
-| Simulation DA cold-activation over managed TCP | ⚠️ Handler + listener test path | `SimulationActivationHost` hosts `ActivationServer` + `SimulationActivationServer`, registers DA dispatchers in `OpcObjectRegistry`, and returns an `OBJREF_STANDARD` encoded by `OpcInterfaceRefCodec`; full authenticated cold-activation waits on server-side NTLM bind handling in `RpcServerConnectionProcessor` |
+| Simulation DA cold-activation over managed TCP | ⚠️ Handler + listener test path | `SimulationActivationHost` hosts `ActivationServer` + `SimulationActivationServer`, registers DA dispatchers in `OpcObjectRegistry`, and can optionally host the MS-RPCE Endpoint Mapper (`ept` on TCP 135) via `EndpointMapperDispatcher`; full authenticated cold-activation waits on server-side NTLM bind handling in `RpcServerConnectionProcessor` |
 | `IRemoteSCMActivator` over SMB | ❌ Not implemented + not normally used | per [MS-DCOM] the modern activator is registered with `ncacn_ip_tcp` only |
 
 The Windows SCM path is also wired for local/native client activation.
@@ -41,6 +41,13 @@ processes PDUs through `RpcServerConnectionProcessor`, and uses
 transport hosting. Its separate `SimulationActivationHost` exercises the
 modern cold-activation shape for DA by serving `IActivation::RemoteActivation`
 and the activated object on one listener.
+
+`SimulationActivationHost.Create(..., endpointMapperListenAddress: "0.0.0.0:135")`
+starts a managed Endpoint Mapper beside the activation/object listener. Its
+`ept_map` responder maps `IRemoteSCMActivator` / `IObjectExporter` towers to the
+actual bound activation endpoint. On Linux, binding TCP 135 requires root or a
+capability grant such as `setcap cap_net_bind_service=+ep <published-binary>`;
+tests and unprivileged development can pass a non-privileged override port.
 
 ## When to use which
 
@@ -85,7 +92,7 @@ additional opnum dispatcher and a wrapper that adapts the legacy wire shape
 | Talk to a legacy XP/Server-2003 server over TCP | ✅ Shipped via `ActivationClient` and the shared activation NDR codec. |
 | Talk to a legacy server over SMB (firewall scenario) | ✅ Shipped via the SMB2 client, `ncacn_np` transport, and channel-pluggable `ActivationClient`; real-world SMB activation captures remain useful validation inputs. |
 | Accept legacy clients into our managed server | ✅ Shipped via `ActivationServer`, which adapts legacy activation to `LegacyActivationServer` / `RemoteSCMActivatorServer` when backed by class factories. |
-| Simulation DA cold-activation returns routable IPID | ⚠️ Handler shipped and covered by MCP integration tests: `SimulationActivationServer` returns a spec-conformant `OBJREF_STANDARD` and registers the activated DA object in `OpcObjectRegistry`; anonymous network activation is denied, and full authenticated cold-activation still needs server-side NTLM bind handling on the managed listener. |
+| Simulation DA cold-activation returns routable IPID | ⚠️ Handler shipped and covered by MCP integration tests: `SimulationActivationServer` returns a spec-conformant `OBJREF_STANDARD` and registers the activated DA object in `OpcObjectRegistry`; `EndpointMapperDispatcher` answers `ept_map` for activation and OXID resolver endpoints; anonymous network activation is denied, and full authenticated cold-activation still needs server-side NTLM bind handling on the managed listener. |
 | Cross-platform WINREG discovery | ✅ Shipped via WINREG opnums, `ncacn_np`, fixture replay, and Samba smoke coverage. |
 
 ## References
@@ -95,6 +102,7 @@ additional opnum dispatcher and a wrapper that adapts the legacy wire shape
 - `IRemoteSCMActivator` — modern activator definition
 - `RemoteSCMActivatorServer` — modern activator server
 - `ActivationServer` / `LegacyActivationServer` — legacy `IActivation` dispatcher and adapter
+- `EndpointMapperDispatcher` / `EndpointMapperTower` — managed MS-RPCE `ept_map` responder and TCP tower codec
 - `SimulationActivationServer` / `SimulationActivationHost` — simulation DA cold-activation host and handler
 - `ActivationProperties` — shared activation-property carrier
 - `ComClassObjectRegistrar` — Windows SCM `IClassFactory` registration

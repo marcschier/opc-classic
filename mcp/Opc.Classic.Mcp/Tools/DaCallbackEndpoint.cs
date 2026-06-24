@@ -108,7 +108,8 @@ public sealed class DaCallbackEndpoint : IAsyncDisposable
             // server's Advise call appears to succeed but the subsequent
             // probe times out and the callback channel is abandoned.
             var objectExporter = new IObjectExporterDispatcher(
-                endpointProvider: () => _listener?.LocalEndpoint as IPEndPoint);
+                endpointProvider: () => _listener?.LocalEndpoint as IPEndPoint,
+                objectRegistry: _registry);
             var rootDispatchers = new Dictionary<Guid, IOpcServerDispatcher>
             {
                 [IObjectExporterDispatcher.InterfaceId] = objectExporter,

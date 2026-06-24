@@ -98,6 +98,44 @@ public sealed class DaActivationTransportTests
     }
 
     [Test]
+    public async Task Activation_handler_returns_non_empty_oxid_bindings_for_listener_endpoint()
+    {
+        var endpoint = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 24680);
+        var remUnknownIpid = new Guid("12345678-1234-1234-1234-1234567890ab");
+        var model = new SimulatedPlantModel();
+        var registry = new OpcObjectRegistry();
+        var daServer = new SimDaHostServer(model, registry);
+        var activationServer = new SimulationActivationServer(
+            SimDaClsid,
+            daServer,
+            registry,
+            endpointProvider: () => endpoint,
+            remUnknownIpid: remUnknownIpid);
+
+        RemoteActivationResponse response = await activationServer.RemoteActivationAsync(
+            new RemoteActivationRequest(
+                Clsid: SimDaClsid,
+                RequestedIids: new[] { IOPCServer.InterfaceId },
+                ClientImpLevel: 3,
+                Mode: 0,
+                RequestedProtocolSequences: new ushort[] { 0x07 }),
+            CancellationToken.None).ConfigureAwait(false);
+
+        await Assert.That(response.Hresult).IsEqualTo(0);
+        await Assert.That(response.IpidRemUnknown).IsEqualTo(remUnknownIpid);
+        (ushort[] bindings, ushort securityOffset) = DecodeDualStringArray(response.OxidBindings.Span);
+        await Assert.That(bindings.Length).IsGreaterThan(0);
+        await Assert.That(bindings[0]).IsEqualTo((ushort)0x07);
+        await Assert.That(securityOffset).IsGreaterThan((ushort)0);
+        await Assert.That(ReadStringBinding(bindings)).IsEqualTo("127.0.0.1[24680]");
+
+        var reader = new NdrReader(response.InterfaceResults[0].ObjRef.Span);
+        IOpcInterfaceRef objRef = OpcInterfaceRefCodec.Read(ref reader);
+        await Assert.That(objRef.ResolverBindings.Count).IsEqualTo(bindings.Length);
+        await Assert.That(objRef.SecurityOffset).IsEqualTo(securityOffset);
+    }
+
+    [Test]
     public async Task Wrong_clsid_activation_returns_class_not_registered_with_per_iid_results()
     {
         var model = new SimulatedPlantModel();
@@ -130,5 +168,31 @@ public sealed class DaActivationTransportTests
         return objectIpid is { } ipid
             ? new DcomCallChannel(transport, new NoOpAuthContext(), ipid, preBind)
             : new DcomCallChannel(transport, new NoOpAuthContext(), preBind);
+    }
+
+    private static (ushort[] Bindings, ushort SecurityOffset) DecodeDualStringArray(ReadOnlySpan<byte> dualStringArray)
+    {
+        var reader = new NdrReader(dualStringArray);
+        ushort entryCount = reader.ReadUInt16();
+        ushort securityOffset = reader.ReadUInt16();
+        var bindings = new ushort[entryCount];
+        for (int i = 0; i < bindings.Length; i++)
+        {
+            bindings[i] = reader.ReadUInt16();
+        }
+
+        return (bindings, securityOffset);
+    }
+
+    private static string ReadStringBinding(ushort[] bindings)
+    {
+        var chars = new char[bindings.Length - 1];
+        int count = 0;
+        for (int i = 1; i < bindings.Length && bindings[i] != 0; i++)
+        {
+            chars[count++] = (char)bindings[i];
+        }
+
+        return new string(chars, 0, count);
     }
 }

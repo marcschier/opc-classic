@@ -21,11 +21,13 @@ namespace Opc.Classic.Samples.SimulationServer.Transports;
 public sealed class SimulationActivationHost : IAsyncDisposable
 {
     private readonly OpcServerListener _listener;
+    private readonly OpcServerListener? _endpointMapperListener;
     private bool _started;
 
-    private SimulationActivationHost(OpcServerListener listener, Guid daClsid)
+    private SimulationActivationHost(OpcServerListener listener, OpcServerListener? endpointMapperListener, Guid daClsid)
     {
         _listener = listener;
+        _endpointMapperListener = endpointMapperListener;
         DaClsid = daClsid;
     }
 
@@ -35,12 +37,16 @@ public sealed class SimulationActivationHost : IAsyncDisposable
     /// <summary>The bound activation/object endpoint after <see cref="StartAsync" />.</summary>
     public IPEndPoint? Endpoint => _listener.LocalEndpoint as IPEndPoint;
 
+    /// <summary>The bound endpoint-mapper endpoint after <see cref="StartAsync" />.</summary>
+    public IPEndPoint? EndpointMapperEndpoint => _endpointMapperListener?.LocalEndpoint as IPEndPoint;
+
     /// <summary>Creates an activation host over the given model.</summary>
     public static SimulationActivationHost Create(
         SimulatedPlantModel model,
         Guid daClsid,
         string listenAddress,
-        ILoggerFactory loggerFactory)
+        ILoggerFactory loggerFactory,
+        string? endpointMapperListenAddress = null)
     {
         ArgumentNullException.ThrowIfNull(model);
         ArgumentNullException.ThrowIfNull(listenAddress);
@@ -48,29 +54,55 @@ public sealed class SimulationActivationHost : IAsyncDisposable
 
         var objectRegistry = new OpcObjectRegistry();
         var daServer = new SimDaHostServer(model, objectRegistry);
+        OpcServerListener? listener = null;
+        var objectExporter = new IObjectExporterDispatcher(
+            endpointProvider: () => listener?.LocalEndpoint as IPEndPoint,
+            objectRegistry: objectRegistry);
         var activationServer = new SimulationActivationServer(
             daClsid,
             daServer,
             objectRegistry,
+            endpointProvider: () => listener?.LocalEndpoint as IPEndPoint,
+            remUnknownIpid: objectExporter.IRemUnknownIpid,
             loggerFactory.CreateLogger<SimulationActivationServer>());
 
         var rootDispatchers = new Dictionary<Guid, IOpcServerDispatcher>
         {
             [ActivationServer.InterfaceId] = new ActivationServer(activationServer, loggerFactory.CreateLogger<ActivationServer>()),
+            [IObjectExporterDispatcher.InterfaceId] = objectExporter,
         };
         var processor = new RpcServerConnectionProcessor(
             rootDispatchers,
             objectRegistry,
             loggerFactory.CreateLogger<RpcServerConnectionProcessor>());
         var endpoint = new TcpServerEndpoint(ListenAddressParser.Parse(listenAddress));
-        var listener = new OpcServerListener(endpoint, processor, loggerFactory.CreateLogger<OpcServerListener>());
-        return new SimulationActivationHost(listener, daClsid);
+        listener = new OpcServerListener(endpoint, processor, loggerFactory.CreateLogger<OpcServerListener>());
+
+        OpcServerListener? endpointMapperListener = null;
+        if (!string.IsNullOrWhiteSpace(endpointMapperListenAddress))
+        {
+            var epmDispatchers = new Dictionary<Guid, IOpcServerDispatcher>
+            {
+                [EndpointMapperDispatcher.InterfaceId] = new EndpointMapperDispatcher(() => listener.LocalEndpoint as IPEndPoint),
+            };
+            var epmProcessor = new RpcServerConnectionProcessor(
+                epmDispatchers,
+                loggerFactory.CreateLogger<RpcServerConnectionProcessor>());
+            var epmEndpoint = new TcpServerEndpoint(ListenAddressParser.Parse(endpointMapperListenAddress));
+            endpointMapperListener = new OpcServerListener(epmEndpoint, epmProcessor, loggerFactory.CreateLogger<OpcServerListener>());
+        }
+
+        return new SimulationActivationHost(listener, endpointMapperListener, daClsid);
     }
 
     /// <summary>Starts the activation/object listener.</summary>
     public async Task StartAsync(CancellationToken cancellationToken = default)
     {
         await _listener.StartAsync(cancellationToken).ConfigureAwait(false);
+        if (_endpointMapperListener is not null)
+        {
+            await _endpointMapperListener.StartAsync(cancellationToken).ConfigureAwait(false);
+        }
         _started = true;
     }
 
@@ -79,6 +111,10 @@ public sealed class SimulationActivationHost : IAsyncDisposable
     {
         if (_started)
         {
+            if (_endpointMapperListener is not null)
+            {
+                await _endpointMapperListener.StopAsync(cancellationToken).ConfigureAwait(false);
+            }
             await _listener.StopAsync(cancellationToken).ConfigureAwait(false);
             _started = false;
         }
@@ -88,6 +124,10 @@ public sealed class SimulationActivationHost : IAsyncDisposable
     public async ValueTask DisposeAsync()
     {
         await StopAsync(CancellationToken.None).ConfigureAwait(false);
+        if (_endpointMapperListener is not null)
+        {
+            await _endpointMapperListener.DisposeAsync().ConfigureAwait(false);
+        }
         await _listener.DisposeAsync().ConfigureAwait(false);
     }
 }

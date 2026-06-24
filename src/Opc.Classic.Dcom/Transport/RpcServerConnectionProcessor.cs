@@ -606,7 +606,8 @@ public sealed class RpcServerConnectionProcessor
             return;
         }
 
-        if (!TryExtractRequestBody(request, out ReadOnlyMemory<byte> body))
+        bool isRawNdr = dispatcher is IRpcRawNdrDispatcher;
+        if (!TryExtractRequestBody(request, isRawNdr, out ReadOnlyMemory<byte> body))
         {
             await WriteFaultAsync(transport, request.CallId, request.ContextId,
                 FaultCode.UNSPECIFIED_REJECTION, maxTransmitFragment, authState, cancellationToken).ConfigureAwait(false);
@@ -622,15 +623,20 @@ public sealed class RpcServerConnectionProcessor
             return;
         }
 
-        await WriteRequestOutcomeAsync(transport, request, result.Value, maxTransmitFragment, authState, cancellationToken)
+        await WriteRequestOutcomeAsync(transport, request, result.Value, isRawNdr, maxTransmitFragment, authState, cancellationToken)
             .ConfigureAwait(false);
     }
 
-    private static bool TryExtractRequestBody(RequestCoPdu request, out ReadOnlyMemory<byte> body)
+    private static bool TryExtractRequestBody(RequestCoPdu request, bool isRawNdr, out ReadOnlyMemory<byte> body)
     {
         body = ReadOnlyMemory<byte>.Empty;
         if (request.Stub is null)
         {
+            return true;
+        }
+        if (isRawNdr)
+        {
+            body = request.Stub;
             return true;
         }
         try
@@ -688,6 +694,7 @@ public sealed class RpcServerConnectionProcessor
         IAsyncTransport transport,
         RequestCoPdu request,
         DispatchResult result,
+        bool isRawNdr,
         int maxTransmitFragment,
         RpcServerAuthenticationState authState,
         CancellationToken cancellationToken)
@@ -699,7 +706,7 @@ public sealed class RpcServerConnectionProcessor
             return;
         }
 
-        byte[] responseStub = OrpcEnvelope.BuildResponseStub(result.Payload);
+        byte[] responseStub = isRawNdr ? result.Payload.ToArray() : OrpcEnvelope.BuildResponseStub(result.Payload);
         var response = new ResponseCoPdu
         {
             AllocationHint = responseStub.Length,

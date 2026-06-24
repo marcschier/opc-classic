@@ -84,6 +84,12 @@ public sealed class OpcObjectRegistry
     public bool Unregister(Guid ipid) => _objects.TryRemove(ipid, out _);
 
     /// <summary>
+    /// Attempts to resolve the full interface-dispatcher map for an IPID.
+    /// </summary>
+    public bool TryGetInterfaceDispatchers(Guid ipid, out IReadOnlyDictionary<Guid, IOpcServerDispatcher> interfaceDispatchers) =>
+        _objects.TryGetValue(ipid, out interfaceDispatchers!);
+
+    /// <summary>
     /// Attempts to resolve a dispatcher for a specific (IPID, interface)
     /// pair.
     /// </summary>

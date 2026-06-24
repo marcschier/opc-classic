@@ -14,7 +14,7 @@ namespace Opc.Classic.Dcom.Transport;
 /// </summary>
 /// <remarks>
 /// <para>
-/// Every DCOM endpoint that hosts a callback sink (for example
+/// Every DCOM endpoint that hosts a callback sink or activated object (for example
 /// <c>DaCallbackEndpoint</c>) must expose <c>IObjectExporter</c> so that
 /// remote OPC servers can resolve the listener's data-port bindings and
 /// the IPID of its <c>IRemUnknown</c> before delivering inbound
@@ -40,12 +40,8 @@ namespace Opc.Classic.Dcom.Transport;
 /// <see cref="Func{IPEndPoint}"/> supplied at construction so the
 /// reported bindings always reflect the actual port (resolves dynamic
 /// port-0 binds). The <see cref="IRemUnknownIpid"/> property exposes
-/// the IPID handed out in <c>ResolveOxid2</c> responses; today it's a
-/// fixed throw-away GUID because the inbound-callback path does not
-/// require <c>RemQueryInterface</c> / <c>RemAddRef</c> /
-/// <c>RemRelease</c> (the sink dispatcher is registered under its
-/// caller-supplied IPID in <see cref="OpcObjectRegistry"/> and the
-/// remote server uses that IPID directly).
+/// the IPID handed out in <c>ResolveOxid2</c> responses and registered in
+/// <see cref="OpcObjectRegistry"/> for <c>IRemUnknown</c>/<c>IRemUnknown2</c>.
 /// </para>
 /// </remarks>
 public sealed class IObjectExporterDispatcher : IOpcServerDispatcher
@@ -79,6 +75,28 @@ public sealed class IObjectExporterDispatcher : IOpcServerDispatcher
         ArgumentNullException.ThrowIfNull(endpointProvider);
         _endpointProvider = endpointProvider;
         _remUnknownIpid = remUnknownIpid ?? Guid.NewGuid();
+    }
+
+    /// <summary>
+    /// Creates a dispatcher and registers its routable <c>IRemUnknown</c> object in the shared registry.
+    /// </summary>
+    public IObjectExporterDispatcher(
+        Func<IPEndPoint?> endpointProvider,
+        OpcObjectRegistry objectRegistry,
+        Guid? remUnknownIpid = null)
+        : this(endpointProvider, remUnknownIpid)
+    {
+        ArgumentNullException.ThrowIfNull(objectRegistry);
+        var remUnknown = new RemUnknownServerDispatcher(objectRegistry);
+        var dispatchers = new Dictionary<Guid, IOpcServerDispatcher>
+        {
+            [RemUnknownServerDispatcher.InterfaceId] = remUnknown,
+            [RemUnknownServerDispatcher.InterfaceId2] = remUnknown,
+        };
+        if (!objectRegistry.RegisterWithIpid(_remUnknownIpid, dispatchers))
+        {
+            throw new InvalidOperationException("The IRemUnknown IPID is already registered.");
+        }
     }
 
     /// <summary>
@@ -194,7 +212,7 @@ public sealed class IObjectExporterDispatcher : IOpcServerDispatcher
         return DispatchResult.Success(buffer.AsSpan(0, writer.Position).ToArray());
     }
 
-    private static byte[] EncodeDualStringArrayForListener(IPEndPoint? endpoint)
+    public static byte[] EncodeDualStringArrayForListener(IPEndPoint? endpoint)
     {
         // Empty DUALSTRINGARRAY when the listener hasn't bound yet —
         // wire shape is two USHORT zeros (entryCount=0, securityOffset=0).
@@ -214,7 +232,7 @@ public sealed class IObjectExporterDispatcher : IOpcServerDispatcher
         return buffer;
     }
 
-    private static (ushort[] Bindings, ushort SecurityOffset) BuildResolverBindings(IPEndPoint listenerEndpoint)
+    public static (ushort[] Bindings, ushort SecurityOffset) BuildResolverBindings(IPEndPoint listenerEndpoint)
     {
         // Mirrors mcp/Opc.Classic.Mcp/Tools/OpcSinkObjRefBuilder.BuildResolverBindings
         // but inlined here so the Dcom assembly has no dependency on the MCP host.

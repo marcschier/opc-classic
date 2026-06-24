@@ -1,5 +1,6 @@
 // Copyright (c) 2026 marcschier. Licensed under the MIT License.
 
+using System.Net;
 using Microsoft.Extensions.Logging;
 using Opc.Classic.Da.Dcom;
 using Opc.Classic.Da.Hosting;
@@ -25,9 +26,8 @@ namespace Opc.Classic.Samples.SimulationServer.Transports;
 /// incompatible with the AOT generated dispatchers. The activation response carries a real
 /// <c>OBJREF_STANDARD</c> (MS-DCOM §2.2.18.1) in <c>InterfaceResults[0]</c> whose STDOBJREF IPID is
 /// the registry IPID, so the client locates the activated interface exactly as it does for a native
-/// server (per MS-DCOM §3.2.4.1.2). The OXID-resolver string bindings are left empty for now
-/// (loopback clients reuse the activation endpoint); emitting a byte-correct DUALSTRINGARRAY
-/// data-port for unmodified native clients is a follow-up.
+/// server (per MS-DCOM §3.2.4.1.2). The activation response carries the listener's
+/// OXID-resolver string bindings so native clients can resolve the object's ORPC data port.
 /// </remarks>
 public sealed class SimulationActivationServer : IActivationServer
 {
@@ -40,22 +40,30 @@ public sealed class SimulationActivationServer : IActivationServer
     private readonly Guid _daClsid;
     private readonly SimDaHostServer _daServer;
     private readonly OpcObjectRegistry _objectRegistry;
+    private readonly Func<IPEndPoint?> _endpointProvider;
+    private readonly Guid _remUnknownIpid;
     private readonly ILogger? _logger;
 
     /// <summary>Initializes a new instance of the <see cref="SimulationActivationServer" /> class.</summary>
     /// <param name="daClsid">CLSID this activator instantiates.</param>
     /// <param name="daServer">The managed DA server to expose on activation.</param>
     /// <param name="objectRegistry">Shared per-IPID object registry served by the host listener.</param>
+    /// <param name="endpointProvider">Returns the listener's current TCP endpoint.</param>
+    /// <param name="remUnknownIpid">IPID of the listener's registered <c>IRemUnknown</c>.</param>
     /// <param name="logger">Optional logger.</param>
     public SimulationActivationServer(
         Guid daClsid,
         SimDaHostServer daServer,
         OpcObjectRegistry objectRegistry,
+        Func<IPEndPoint?>? endpointProvider = null,
+        Guid? remUnknownIpid = null,
         ILogger? logger = null)
     {
         _daClsid = daClsid;
         _daServer = daServer ?? throw new ArgumentNullException(nameof(daServer));
         _objectRegistry = objectRegistry ?? throw new ArgumentNullException(nameof(objectRegistry));
+        _endpointProvider = endpointProvider ?? (() => null);
+        _remUnknownIpid = remUnknownIpid ?? Guid.Empty;
         _logger = logger;
     }
 
@@ -98,7 +106,10 @@ public sealed class SimulationActivationServer : IActivationServer
                 IpidRemUnknown: Guid.Empty,
                 AuthnHint: AuthnHintPacketIntegrity,
                 ServerVersion: ServerComVersion,
-                InterfaceResults: failed));
+                InterfaceResults: failed)
+            {
+                OxidBindings = IObjectExporterDispatcher.EncodeDualStringArrayForListener(_endpointProvider()),
+            });
         }
 
         var dispatchers = new Dictionary<Guid, IOpcServerDispatcher>
@@ -111,7 +122,8 @@ public sealed class SimulationActivationServer : IActivationServer
         // OBJREF_STANDARD carrying the registry IPID; any additional IIDs are reported as
         // E_NOINTERFACE (mirrors LegacyActivationServer.TranslateCreateInstanceResponse).
         Guid primaryIid = request.RequestedIids.Count > 0 ? request.RequestedIids[0] : IOPCServer.InterfaceId;
-        byte[] objRef = EncodeStandardObjRef(primaryIid, ipid);
+        byte[] oxidBindings = IObjectExporterDispatcher.EncodeDualStringArrayForListener(_endpointProvider());
+        byte[] objRef = EncodeStandardObjRef(primaryIid, ipid, oxidBindings);
 
         int requested = Math.Max(1, request.RequestedIids.Count);
         var results = new RemoteActivationInterfaceResult[requested];
@@ -124,18 +136,21 @@ public sealed class SimulationActivationServer : IActivationServer
         return Task.FromResult(new RemoteActivationResponse(
             Hresult: 0,
             Oxid: Guid.NewGuid(),
-            IpidRemUnknown: ipid,
+            IpidRemUnknown: _remUnknownIpid == Guid.Empty ? ipid : _remUnknownIpid,
             AuthnHint: AuthnHintPacketIntegrity,
             ServerVersion: ServerComVersion,
-            InterfaceResults: results));
+            InterfaceResults: results)
+        {
+            OxidBindings = oxidBindings,
+        });
     }
 
     // Builds an OBJREF_STANDARD (MEOW + STDOBJREF + DUALSTRINGARRAY) whose STDOBJREF IPID is the
     // registry IPID, encoded exactly as a native server would so the modern client decodes it via
-    // OpcInterfaceRefCodec.Read and routes ORPC to that IPID. Resolver bindings are empty for the
-    // loopback case (the client reuses the activation endpoint).
-    private static byte[] EncodeStandardObjRef(Guid iid, Guid ipid)
+    // OpcInterfaceRefCodec.Read and routes ORPC to that IPID.
+    private static byte[] EncodeStandardObjRef(Guid iid, Guid ipid, ReadOnlyMemory<byte> oxidBindings)
     {
+        (ushort securityOffset, ushort[] resolverBindings) = DecodeDualStringArray(oxidBindings.Span);
         var interfaceRef = new OpcInterfaceRef(
             iid,
             flags: 0,
@@ -143,12 +158,31 @@ public sealed class SimulationActivationServer : IActivationServer
             oxid: BitConverter.ToUInt64(Guid.NewGuid().ToByteArray(), 0),
             oid: BitConverter.ToUInt64(Guid.NewGuid().ToByteArray(), 0),
             ipid: ipid,
-            securityOffset: 0,
-            resolverBindings: Array.Empty<ushort>());
+            securityOffset: securityOffset,
+            resolverBindings: resolverBindings);
 
-        var buffer = new byte[128];
+        var buffer = new byte[256 + resolverBindings.Length * sizeof(ushort)];
         var writer = new NdrWriter(buffer);
         OpcInterfaceRefCodec.Write(ref writer, interfaceRef);
         return buffer.AsSpan(0, writer.Position).ToArray();
+    }
+
+    private static (ushort SecurityOffset, ushort[] Bindings) DecodeDualStringArray(ReadOnlySpan<byte> dualStringArray)
+    {
+        if (dualStringArray.Length < 4)
+        {
+            return (0, Array.Empty<ushort>());
+        }
+
+        var reader = new NdrReader(dualStringArray);
+        ushort entryCount = reader.ReadUInt16();
+        ushort securityOffset = reader.ReadUInt16();
+        var bindings = new ushort[entryCount];
+        for (int i = 0; i < bindings.Length; i++)
+        {
+            bindings[i] = reader.ReadUInt16();
+        }
+
+        return (securityOffset, bindings);
     }
 }
