@@ -148,13 +148,20 @@ to that listener cross-platform and gets the full browse/group/read/write/subscr
 this is the path verified end-to-end by `DaLifecycleTransportTests` and the `interop/docker`
 native↔managed fleet.
 
-> Note on **native** Windows explorers → Linux: classic Matrikon activation uses the Windows
-> RPC runtime against the remote SCM (TCP 135) + the OXID resolver, with NTLM. The managed Linux
-> host exposes the ORPC object endpoints used by managed clients today; surfacing the full remote
-> **activation** endpoint (so an unmodified native explorer cold-activates a Linux-hosted server)
-> is the remaining cross-platform item, tracked in the plan. Until then, reach a Linux-hosted
-> simulation from Windows via the Opc.Classic managed client / MCP server over `tcp://`/`dcom://`,
-> or run Topology 1 for native-explorer interaction.
+> Note on **native** Windows explorers → Linux: a **modern, non-reflection cold-activation
+> server** is now implemented (`SimulationActivationHost` + `SimulationActivationServer`): it serves
+> `IActivation::RemoteActivation` and, for the sim DA CLSID, registers the DA generated dispatchers
+> in the shared object registry and returns the activated object's IPID — the path a modern
+> `dcom://` client (and ultimately a native explorer) uses. The activation endpoint is hosted and
+> verified (`DaActivationTransportTests`), and correctly **denies anonymous** activation. The
+> remaining blocker to a fully working authenticated cold-activation is **server-side NTLM bind
+> handling on the managed listener** (the managed `RpcServerConnectionProcessor` does not yet accept
+> authenticated binds — `NtlmConnectionContext.Accept` is unimplemented; see `F4Auth` /
+> `NtlmHandshakeProtocolTests`), plus an EPM/135 front-end. Because `IActivation` mandates
+> authenticated, integrity-protected activation (threat-model defense against activation RCE),
+> anonymous cold-activation is intentionally rejected. Until server-side NTLM lands, reach a
+> Linux-hosted simulation from Windows via the Opc.Classic managed client / MCP server over
+> `tcp://`/`dcom://`, or run Topology 1 for native-explorer interaction.
 
 > Status: **DA full group lifecycle** (browse, AddGroup, AddItems, live sync read, write with
 > persistence, remove) works over the real transport and is covered by `DaLifecycleTransportTests`;
