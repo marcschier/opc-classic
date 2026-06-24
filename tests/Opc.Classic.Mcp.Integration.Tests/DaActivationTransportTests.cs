@@ -81,6 +81,43 @@ public sealed class DaActivationTransportTests
         await Assert.That(response.IpidRemUnknown).IsNotEqualTo(Guid.Empty);
         // The activated IPID is registered for IOPCServer, so object calls route to the DA server.
         await Assert.That(registry.ContainsInterface(IOPCServer.InterfaceId)).IsTrue();
+
+        // The response must carry a real OBJREF that the production client decode path consumes
+        // (OpcEnumClient reads InterfaceResults[0].ObjRef, never IpidRemUnknown). Decode it the
+        // same way and verify it points at the registered IOPCServer IPID.
+        await Assert.That(response.InterfaceResults.Count).IsEqualTo(1);
+        RemoteActivationInterfaceResult interfaceResult = response.InterfaceResults[0];
+        await Assert.That(interfaceResult.Hresult).IsEqualTo(0);
+        await Assert.That(interfaceResult.ObjRef.IsEmpty).IsFalse();
+
+        var reader = new NdrReader(interfaceResult.ObjRef.Span);
+        IOpcInterfaceRef objRef = OpcInterfaceRefCodec.Read(ref reader);
+        await Assert.That(objRef.Iid).IsEqualTo(IOPCServer.InterfaceId);
+        await Assert.That(objRef.Ipid).IsEqualTo(response.IpidRemUnknown);
+        await Assert.That(registry.Contains(objRef.Ipid)).IsTrue();
+    }
+
+    [Test]
+    public async Task Wrong_clsid_activation_returns_class_not_registered_with_per_iid_results()
+    {
+        var model = new SimulatedPlantModel();
+        var registry = new OpcObjectRegistry();
+        var daServer = new SimDaHostServer(model, registry);
+        var activationServer = new SimulationActivationServer(SimDaClsid, daServer, registry);
+
+        RemoteActivationResponse response = await activationServer.RemoteActivationAsync(
+            new RemoteActivationRequest(
+                Clsid: new Guid("11111111-2222-3333-4444-555555555555"),
+                RequestedIids: new[] { IOPCServer.InterfaceId },
+                ClientImpLevel: 3,
+                Mode: 0,
+                RequestedProtocolSequences: new ushort[] { 0x07 }),
+            CancellationToken.None).ConfigureAwait(false);
+
+        // REGDB_E_CLASSNOTREG, with one zeroed per-IID result so the client decode succeeds
+        // (MS-DCOM §3.1.2.5.2.3.1: pResults carries one entry per requested IID even on failure).
+        await Assert.That(response.Hresult).IsEqualTo(unchecked((int)0x80040154u));
+        await Assert.That(response.InterfaceResults.Count).IsEqualTo(1);
     }
 
     private static async Task<DcomCallChannel> ConnectAsync(IPEndPoint endpoint, Guid? objectIpid, Guid preBindIid)

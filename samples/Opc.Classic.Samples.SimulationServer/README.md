@@ -151,13 +151,16 @@ native↔managed fleet.
 > Note on **native** Windows explorers → Linux: a **modern, non-reflection cold-activation
 > server** is now implemented (`SimulationActivationHost` + `SimulationActivationServer`): it serves
 > `IActivation::RemoteActivation` and, for the sim DA CLSID, registers the DA generated dispatchers
-> in the shared object registry and returns the activated object's IPID — the path a modern
-> `dcom://` client (and ultimately a native explorer) uses. The activation endpoint is hosted and
-> verified (`DaActivationTransportTests`), and correctly **denies anonymous** activation. The
-> remaining blocker to a fully working authenticated cold-activation is **server-side NTLM bind
-> handling on the managed listener** (the managed `RpcServerConnectionProcessor` does not yet accept
-> authenticated binds — `NtlmConnectionContext.Accept` is unimplemented; see `F4Auth` /
-> `NtlmHandshakeProtocolTests`), plus an EPM/135 front-end. Because `IActivation` mandates
+> in the shared object registry and returns a spec-conformant `OBJREF_STANDARD` (MS-DCOM §2.2.18.1)
+> whose STDOBJREF IPID is the activated object — exactly what a modern `dcom://` client (and
+> ultimately a native explorer) unmarshals to locate the interface (MS-DCOM §3.2.4.1.2). The
+> activation endpoint is hosted and verified (`DaActivationTransportTests` decodes the returned
+> OBJREF through the production `OpcInterfaceRefCodec` path), and correctly **denies anonymous**
+> activation. The remaining blocker to a fully working authenticated cold-activation is **server-side
+> NTLM bind handling on the managed listener** (the managed `RpcServerConnectionProcessor` does not
+> yet accept authenticated binds — `NtlmConnectionContext.Accept` is unimplemented; see `F4Auth` /
+> `NtlmHandshakeProtocolTests`), plus an EPM/135 front-end and a byte-correct OXID-resolver
+> DUALSTRINGARRAY data-port for unmodified native clients. Because `IActivation` mandates
 > authenticated, integrity-protected activation (threat-model defense against activation RCE),
 > anonymous cold-activation is intentionally rejected. Until server-side NTLM lands, reach a
 > Linux-hosted simulation from Windows via the Opc.Classic managed client / MCP server over

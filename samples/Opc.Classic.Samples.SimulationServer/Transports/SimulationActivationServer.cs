@@ -7,6 +7,7 @@ using Opc.Classic.Dcom;
 using Opc.Classic.Dcom.Activation;
 using Opc.Classic.Dcom.Transport;
 using Opc.Classic.Hosting;
+using Opc.Classic.Ndr;
 
 namespace Opc.Classic.Samples.SimulationServer.Transports;
 
@@ -21,15 +22,19 @@ namespace Opc.Classic.Samples.SimulationServer.Transports;
 /// <remarks>
 /// This deliberately does NOT use the legacy <c>RemoteSCMActivatorServer</c>/<c>ComOxidRuntime</c>
 /// export path, which is reflection-based and serves objects from its own legacy socket runtime —
-/// incompatible with the AOT generated dispatchers. The OXID-resolver string bindings are left
-/// empty for now (loopback clients reuse the activation endpoint); emitting a byte-correct
-/// DUALSTRINGARRAY data-port for unmodified native clients is a follow-up.
+/// incompatible with the AOT generated dispatchers. The activation response carries a real
+/// <c>OBJREF_STANDARD</c> (MS-DCOM §2.2.18.1) in <c>InterfaceResults[0]</c> whose STDOBJREF IPID is
+/// the registry IPID, so the client locates the activated interface exactly as it does for a native
+/// server (per MS-DCOM §3.2.4.1.2). The OXID-resolver string bindings are left empty for now
+/// (loopback clients reuse the activation endpoint); emitting a byte-correct DUALSTRINGARRAY
+/// data-port for unmodified native clients is a follow-up.
 /// </remarks>
 public sealed class SimulationActivationServer : IActivationServer
 {
     private const uint AuthnHintPacketIntegrity = 5;
     private static readonly (ushort Major, ushort Minor) ServerComVersion = (5, 1);
     private const int RegdbEClassNotReg = unchecked((int)0x80040154u);
+    private static readonly int ENoInterface = global::Opc.Classic.OpcResultId.NoInterface.Code;
     private static readonly Guid IidIUnknown = Guid.Parse(Interfaces.IID_IUnknown);
 
     private readonly Guid _daClsid;
@@ -78,13 +83,22 @@ public sealed class SimulationActivationServer : IActivationServer
 
         if (request.Clsid != _daClsid)
         {
+            // MS-DCOM §3.1.2.5.2.3.1: on failure, pResults MUST contain one zeroed entry per
+            // requested IID (not an empty array), so the client's per-IID decode succeeds and
+            // surfaces the overall HRESULT.
+            var failed = new RemoteActivationInterfaceResult[request.RequestedIids.Count];
+            for (int i = 0; i < failed.Length; i++)
+            {
+                failed[i] = new RemoteActivationInterfaceResult(0, Array.Empty<byte>());
+            }
+
             return Task.FromResult(new RemoteActivationResponse(
                 Hresult: RegdbEClassNotReg,
                 Oxid: Guid.Empty,
                 IpidRemUnknown: Guid.Empty,
                 AuthnHint: AuthnHintPacketIntegrity,
                 ServerVersion: ServerComVersion,
-                InterfaceResults: Array.Empty<RemoteActivationInterfaceResult>()));
+                InterfaceResults: failed));
         }
 
         var dispatchers = new Dictionary<Guid, IOpcServerDispatcher>
@@ -93,12 +107,18 @@ public sealed class SimulationActivationServer : IActivationServer
         };
         Guid ipid = _objectRegistry.Register(dispatchers);
 
+        // The simulation only exposes IOPCServer. The primary requested IID gets a real
+        // OBJREF_STANDARD carrying the registry IPID; any additional IIDs are reported as
+        // E_NOINTERFACE (mirrors LegacyActivationServer.TranslateCreateInstanceResponse).
+        Guid primaryIid = request.RequestedIids.Count > 0 ? request.RequestedIids[0] : IOPCServer.InterfaceId;
+        byte[] objRef = EncodeStandardObjRef(primaryIid, ipid);
+
         int requested = Math.Max(1, request.RequestedIids.Count);
         var results = new RemoteActivationInterfaceResult[requested];
-        results[0] = new RemoteActivationInterfaceResult(0, Array.Empty<byte>());
+        results[0] = new RemoteActivationInterfaceResult(0, objRef);
         for (int i = 1; i < requested; i++)
         {
-            results[i] = new RemoteActivationInterfaceResult(0, Array.Empty<byte>());
+            results[i] = new RemoteActivationInterfaceResult(ENoInterface, Array.Empty<byte>());
         }
 
         return Task.FromResult(new RemoteActivationResponse(
@@ -108,5 +128,27 @@ public sealed class SimulationActivationServer : IActivationServer
             AuthnHint: AuthnHintPacketIntegrity,
             ServerVersion: ServerComVersion,
             InterfaceResults: results));
+    }
+
+    // Builds an OBJREF_STANDARD (MEOW + STDOBJREF + DUALSTRINGARRAY) whose STDOBJREF IPID is the
+    // registry IPID, encoded exactly as a native server would so the modern client decodes it via
+    // OpcInterfaceRefCodec.Read and routes ORPC to that IPID. Resolver bindings are empty for the
+    // loopback case (the client reuses the activation endpoint).
+    private static byte[] EncodeStandardObjRef(Guid iid, Guid ipid)
+    {
+        var interfaceRef = new OpcInterfaceRef(
+            iid,
+            flags: 0,
+            publicRefs: 1,
+            oxid: BitConverter.ToUInt64(Guid.NewGuid().ToByteArray(), 0),
+            oid: BitConverter.ToUInt64(Guid.NewGuid().ToByteArray(), 0),
+            ipid: ipid,
+            securityOffset: 0,
+            resolverBindings: Array.Empty<ushort>());
+
+        var buffer = new byte[128];
+        var writer = new NdrWriter(buffer);
+        OpcInterfaceRefCodec.Write(ref writer, interfaceRef);
+        return buffer.AsSpan(0, writer.Position).ToArray();
     }
 }
