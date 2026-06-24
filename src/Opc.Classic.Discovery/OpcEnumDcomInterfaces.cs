@@ -268,7 +268,14 @@ public sealed class IOPCEnumGUIDServerDispatcher : IOpcServerDispatcher
         OpcEnumGuidNextResult next = await _server.NextAsync(count, cancellationToken).ConfigureAwait(false);
         byte[] payload = OpcEnumProxyCodec.WritePayload((ref NdrWriter writer) =>
         {
-            writer.WriteConformantGuidArray(next.ClassIds);
+            writer.WriteUInt32((uint)count);
+            writer.WriteUInt32(0);
+            writer.WriteUInt32((uint)next.ClassIds.Length);
+            for (int i = 0; i < next.ClassIds.Length; i++)
+            {
+                writer.WriteGuid(next.ClassIds[i]);
+            }
+
             writer.WriteInt32(next.Fetched);
         });
         int hresult = next.Fetched < count ? OpcResultId.False.Code : OpcResultId.Ok.Code;

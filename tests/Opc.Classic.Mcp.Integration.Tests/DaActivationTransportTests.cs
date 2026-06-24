@@ -141,6 +141,30 @@ public sealed class DaActivationTransportTests
     }
 
     [Test]
+    public async Task RemoteCreateInstance_for_opcenum_registers_server_list_interfaces()
+    {
+        var model = new SimulatedPlantModel();
+        var registry = new OpcObjectRegistry();
+        var daServer = new SimDaHostServer(model, registry);
+        var activationServer = new SimulationActivationServer(SimDaClsid, daServer, registry);
+
+        RemoteCreateInstanceResponse response = await activationServer.RemoteCreateInstanceAsync(
+            new RemoteCreateInstanceRequest(OpcGuids.CLSID_OpcEnum, OpcGuids.IID_IOPCServerList2, [0x07]),
+            CancellationToken.None).ConfigureAwait(false);
+
+        await Assert.That(response.Hresult).IsEqualTo(0);
+        await Assert.That(response.IpidRemUnknown).IsNotEqualTo(Guid.Empty);
+        await Assert.That(registry.TryGetDispatcher(response.IpidRemUnknown, RemUnknownServerDispatcher.InterfaceId, out _)).IsTrue();
+        await Assert.That(registry.TryGetDispatcher(response.Ipid, OpcGuids.IID_IOPCServerList, out _)).IsTrue();
+        await Assert.That(registry.TryGetDispatcher(response.Ipid, OpcGuids.IID_IOPCServerList2, out _)).IsTrue();
+
+        var reader = new NdrReader(response.ObjRef);
+        IOpcInterfaceRef objRef = OpcInterfaceRefCodec.Read(ref reader);
+        await Assert.That(objRef.Iid).IsEqualTo(OpcGuids.IID_IOPCServerList2);
+        await Assert.That(objRef.Ipid).IsEqualTo(response.Ipid);
+    }
+
+    [Test]
     public async Task Activation_handler_returns_non_empty_oxid_bindings_for_listener_endpoint()
     {
         var endpoint = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 24680);

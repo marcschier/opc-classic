@@ -28,6 +28,8 @@
     <Compile Include="..\..\samples\Opc.Classic.Samples.DaServer\TagTree.cs" Link="Samples\DaServer\TagTree.cs" />
     <Compile Include="..\..\samples\Opc.Classic.Samples.HdaServer\HistoricalDataStore.cs" Link="Samples\HdaServer\HistoricalDataStore.cs" />
     <Compile Include="..\..\samples\Opc.Classic.Samples.HdaServer\SampleHdaServer.cs" Link="Samples\HdaServer\SampleHdaServer.cs" />
+    <Compile Include="..\..\samples\Opc.Classic.Samples.SimulationServer\SimulatedPlantModel.cs" Link="Samples\SimulationServer\SimulatedPlantModel.cs" />
+    <Compile Include="..\..\samples\Opc.Classic.Samples.SimulationServer\Transports\SimDaHostServer.cs" Link="Samples\SimulationServer\Transports\SimDaHostServer.cs" />
   </ItemGroup>
 
 </Project>

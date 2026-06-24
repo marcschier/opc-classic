@@ -9,6 +9,7 @@ using Opc.Classic.Da.Hosting;
 using Opc.Classic.Dcom;
 using Opc.Classic.Dcom.Activation;
 using Opc.Classic.Dcom.Transport;
+using Opc.Classic.Discovery.Dcom;
 using Opc.Classic.Hda.Dcom;
 using Opc.Classic.Hda.Hosting;
 using Opc.Classic.Hosting;
@@ -52,6 +53,7 @@ public sealed class SimulationActivationServer : IActivationServer, IRemoteSCMAc
     private readonly Guid _daClsid;
     private readonly Guid _aeClsid;
     private readonly Guid _hdaClsid;
+    private readonly IClsidRegistry _clsidRegistry;
     private readonly SimDaHostServer _daServer;
     private readonly SimAeHostServer _aeServer;
     private readonly SimHdaHostServer _hdaServer;
@@ -75,6 +77,7 @@ public sealed class SimulationActivationServer : IActivationServer, IRemoteSCMAc
         SimAeHostServer? aeServer = null,
         Guid? hdaClsid = null,
         SimHdaHostServer? hdaServer = null,
+        IClsidRegistry? clsidRegistry = null,
         Func<IPEndPoint?>? endpointProvider = null,
         Guid? remUnknownIpid = null,
         ILogger? logger = null)
@@ -82,6 +85,7 @@ public sealed class SimulationActivationServer : IActivationServer, IRemoteSCMAc
         _daClsid = daClsid;
         _aeClsid = aeClsid ?? new Guid("D9A0B0C1-5E21-49C7-9C0E-2D7B6A1F0002");
         _hdaClsid = hdaClsid ?? new Guid("D9A0B0C1-5E21-49C7-9C0E-2D7B6A1F0003");
+        _clsidRegistry = clsidRegistry ?? CreateDefaultClsidRegistry(daClsid, _aeClsid, _hdaClsid);
         _daServer = daServer ?? throw new ArgumentNullException(nameof(daServer));
         _aeServer = aeServer ?? new SimAeHostServer(new SimulatedPlantModel());
         _hdaServer = hdaServer ?? new SimHdaHostServer(new SimulatedPlantModel());
@@ -138,15 +142,17 @@ public sealed class SimulationActivationServer : IActivationServer, IRemoteSCMAc
 
         ActivationExport export = Activate(request.Clsid, primaryIid: request.RequestedIids.Count > 0 ? request.RequestedIids[0] : IOPCServer.InterfaceId);
 
-        // The simulation only exposes IOPCServer. The primary requested IID gets a real
-        // OBJREF_STANDARD carrying the registry IPID; any additional IIDs are reported as
-        // E_NOINTERFACE (mirrors LegacyActivationServer.TranslateCreateInstanceResponse).
+        // Every root interface backed by the activated object is registered under the
+        // same object IPID. Return a native-style OBJREF for each supported requested IID so
+        // activation and subsequent IRemUnknown::RemQueryInterface agree on reachability.
         int requested = Math.Max(1, request.RequestedIids.Count);
         var results = new RemoteActivationInterfaceResult[requested];
-        results[0] = new RemoteActivationInterfaceResult(0, export.ObjRef);
-        for (int i = 1; i < requested; i++)
+        for (int i = 0; i < requested; i++)
         {
-            results[i] = new RemoteActivationInterfaceResult(ENoInterface, Array.Empty<byte>());
+            Guid iid = request.RequestedIids.Count == 0 ? IOPCServer.InterfaceId : request.RequestedIids[i];
+            results[i] = export.SupportedIids.Contains(iid)
+                ? new RemoteActivationInterfaceResult(0, EncodeStandardObjRef(iid, export.Oxid, export.Oid, export.Ipid, export.OxidBindings))
+                : new RemoteActivationInterfaceResult(ENoInterface, Array.Empty<byte>());
         }
 
         return Task.FromResult(new Opc.Classic.Dcom.Activation.RemoteActivationResponse(
@@ -256,7 +262,7 @@ public sealed class SimulationActivationServer : IActivationServer, IRemoteSCMAc
         Guid oid = Guid.NewGuid();
         byte[] oxidBindings = IObjectExporterDispatcher.EncodeDualStringArrayForListener(_endpointProvider());
         byte[] objRef = EncodeStandardObjRef(primaryIid, oxid, oid, ipid, oxidBindings);
-        return new ActivationExport(oxid, oid, ipid, oxidBindings, objRef);
+        return new ActivationExport(oxid, oid, ipid, oxidBindings, objRef, dispatchers.Keys.ToArray());
     }
 
     private IReadOnlyDictionary<Guid, IOpcServerDispatcher> BuildDispatchers(Guid clsid)
@@ -281,6 +287,19 @@ public sealed class SimulationActivationServer : IActivationServer, IRemoteSCMAc
             };
         }
 
+        if (clsid == OpcGuids.CLSID_OpcEnum)
+        {
+            var opcEnum = new OpcEnumServer(
+                _clsidRegistry,
+                _objectRegistry,
+                () => IObjectExporterDispatcher.EncodeDualStringArrayForListener(_endpointProvider()));
+            return new Dictionary<Guid, IOpcServerDispatcher>
+            {
+                [OpcGuids.IID_IOPCServerList] = new Opc.Classic.Discovery.Dcom.IOPCServerListServerDispatcher(opcEnum),
+                [OpcGuids.IID_IOPCServerList2] = new Opc.Classic.Discovery.Dcom.IOPCServerList2ServerDispatcher(opcEnum),
+            };
+        }
+
         var daDispatcher = new OpcDaServerDispatcher(_daServer, _logger);
         IOpcAddressSpace addressSpace = _daServer.BuildAddressSpace();
         return new Dictionary<Guid, IOpcServerDispatcher>
@@ -296,7 +315,34 @@ public sealed class SimulationActivationServer : IActivationServer, IRemoteSCMAc
         };
     }
 
-    private bool IsKnownClsid(Guid clsid) => clsid == _daClsid || clsid == _aeClsid || clsid == _hdaClsid;
+    private bool IsKnownClsid(Guid clsid) => clsid == _daClsid || clsid == _aeClsid || clsid == _hdaClsid || clsid == OpcGuids.CLSID_OpcEnum;
+
+    private static IClsidRegistry CreateDefaultClsidRegistry(Guid daClsid, Guid aeClsid, Guid hdaClsid)
+    {
+        var registry = new InMemoryClsidRegistry();
+        registry.Register(new OpcClsidRegistration(
+            daClsid,
+            "Opc.Classic.Simulation.DA.1",
+            "Opc.Classic.Samples.SimulationServer",
+            typeof(SimDaHostServer).FullName!,
+            "Opc.Classic Full-Feature Simulation Server (DA)",
+            [OpcGuids.CATID_OPCDAServer20, OpcGuids.CATID_OPCDAServer30]));
+        registry.Register(new OpcClsidRegistration(
+            aeClsid,
+            "Opc.Classic.Simulation.AE.1",
+            "Opc.Classic.Samples.SimulationServer",
+            typeof(SimAeHostServer).FullName!,
+            "Opc.Classic Full-Feature Simulation Server (AE)",
+            [OpcGuids.CATID_OPCAEServer10]));
+        registry.Register(new OpcClsidRegistration(
+            hdaClsid,
+            "Opc.Classic.Simulation.HDA.1",
+            "Opc.Classic.Samples.SimulationServer",
+            typeof(SimHdaHostServer).FullName!,
+            "Opc.Classic Full-Feature Simulation Server (HDA)",
+            [OpcGuids.CATID_OPCHDAServer10]));
+        return registry;
+    }
 
     private static Guid EnsureRemUnknownRegistered(OpcObjectRegistry objectRegistry, Guid remUnknownIpid)
     {
@@ -383,5 +429,5 @@ public sealed class SimulationActivationServer : IActivationServer, IRemoteSCMAc
         return (securityOffset, bindings);
     }
 
-    private sealed record ActivationExport(Guid Oxid, Guid Oid, Guid Ipid, byte[] OxidBindings, byte[] ObjRef);
+    private sealed record ActivationExport(Guid Oxid, Guid Oid, Guid Ipid, byte[] OxidBindings, byte[] ObjRef, IReadOnlyCollection<Guid> SupportedIids);
 }

@@ -9,5 +9,6 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
     <ProjectReference Include="..\Opc.Classic.Core\Opc.Classic.Core.csproj" />
     <ProjectReference Include="..\Opc.Classic.Dcom\Opc.Classic.Dcom.csproj" />
+    <ProjectReference Include="..\Opc.Classic.Hosting\Opc.Classic.Hosting.csproj" />
   </ItemGroup>
 </Project>

@@ -84,7 +84,7 @@ public sealed class OpcEnumGuidProxyAndDispatcherTests
             CancellationToken.None);
 
         var reader = new NdrReader(result.Payload.Span);
-        Guid[] classIds = reader.ReadConformantGuidArray();
+        Guid[] classIds = reader.ReadVaryingConformantGuidArray();
         int fetched = reader.ReadInt32();
         await Assert.That(result.Hresult).IsEqualTo(OpcResultId.False.Code);
         await Assert.That(fetched).IsEqualTo(2);
