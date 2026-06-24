@@ -31,6 +31,7 @@ public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItem
     IOPCItemDeadbandMgt, IOPCItemSamplingMgt
 {
     private readonly OpcObjectRegistry? _objectRegistry;
+    private readonly IOpcDataCallbackSinkFactory? _callbackSinkFactory;
     private readonly ConcurrentDictionary<int, OpcDaItem> _items = new();
     private readonly ConcurrentDictionary<int, IOpcInterfaceRef> _sinks = new();
 
@@ -43,6 +44,7 @@ public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItem
     /// DCOM transport sinks. (cap-c8)
     /// </summary>
     private readonly ConcurrentDictionary<int, IOpcDataCallbackSink> _directSinks = new();
+    private readonly ConcurrentDictionary<int, byte> _ownedDirectSinks = new();
     private int _nextItemHandle = 1;
     private int _nextCancelId = 1;
     private int _nextSubscriptionCookie = 1;
@@ -83,7 +85,8 @@ public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItem
         int timeBias,
         float percentDeadband,
         int localeId,
-        OpcObjectRegistry? objectRegistry)
+        OpcObjectRegistry? objectRegistry,
+        IOpcDataCallbackSinkFactory? callbackSinkFactory = null)
     {
         ArgumentNullException.ThrowIfNull(name);
         Name = name;
@@ -96,6 +99,7 @@ public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItem
         LocaleId = localeId;
         KeepAliveTime = 0;
         _objectRegistry = objectRegistry;
+        _callbackSinkFactory = callbackSinkFactory;
     }
 
     /// <summary>
@@ -990,7 +994,15 @@ public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItem
         ArgumentNullException.ThrowIfNull(sink);
         cancellationToken.ThrowIfCancellationRequested();
         int cookie = Interlocked.Increment(ref _nextSubscriptionCookie);
-        _sinks[cookie] = sink;
+        if (_callbackSinkFactory is null)
+        {
+            _sinks[cookie] = sink;
+        }
+        else
+        {
+            _directSinks[cookie] = _callbackSinkFactory.Create(sink);
+            _ownedDirectSinks[cookie] = 0;
+        }
         return Task.FromResult(cookie);
     }
 
@@ -1020,8 +1032,12 @@ public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItem
         cancellationToken.ThrowIfCancellationRequested();
         // Check both subscription dictionaries before deciding CONNECT_E_NOCONNECTION.
         bool removedAny = _sinks.TryRemove(cookie, out _);
-        if (_directSinks.TryRemove(cookie, out _))
+        if (_directSinks.TryRemove(cookie, out IOpcDataCallbackSink? directSink))
         {
+            if (_ownedDirectSinks.TryRemove(cookie, out _))
+            {
+                directSink.Dispose();
+            }
             removedAny = true;
         }
         // OLE / COM IConnectionPoint convention: unknown cookies return CONNECT_E_NOCONNECTION.
@@ -1122,6 +1138,7 @@ public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItem
         foreach (KeyValuePair<int, IOpcDataCallbackSink> entry in _directSinks)
         {
             entry.Value.OnDataChange(payload);
+            DropUnreachableSink(entry);
         }
     }
 
@@ -1161,6 +1178,21 @@ public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItem
         foreach (KeyValuePair<int, IOpcDataCallbackSink> entry in _directSinks)
         {
             entry.Value.OnCancelComplete(payload);
+            DropUnreachableSink(entry);
+        }
+    }
+
+    private void DropUnreachableSink(KeyValuePair<int, IOpcDataCallbackSink> entry)
+    {
+        if (entry.Value is not IOpcDataCallbackSinkStatus { IsUnreachable: true })
+        {
+            return;
+        }
+
+        if (_directSinks.TryRemove(entry.Key, out IOpcDataCallbackSink? removed)
+            && _ownedDirectSinks.TryRemove(entry.Key, out _))
+        {
+            removed.Dispose();
         }
     }
 

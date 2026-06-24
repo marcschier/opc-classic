@@ -4,6 +4,7 @@ using System.Net;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Opc.Classic.Da.Dcom;
+using Opc.Classic.Dcom.Rpc.Auth.ntlm;
 using Opc.Classic.Dcom.Transport;
 using Opc.Classic.Hosting;
 
@@ -36,6 +37,7 @@ public sealed class OpcDaServerHost : IOpcServerHost, IDisposable, IAsyncDisposa
     private readonly IOpcAddressSpace? _addressSpace;
     private readonly IOpcItemPropertyProvider? _itemPropertyProvider;
     private readonly IOPCItemProperties? _itemProperties;
+    private readonly AuthenticationSource? _authenticationSource;
     private OpcServerListener? _listener;
 
     /// <summary>
@@ -48,7 +50,8 @@ public sealed class OpcDaServerHost : IOpcServerHost, IDisposable, IAsyncDisposa
         ILogger<OpcDaServerHost> logger,
         IOpcAddressSpace? addressSpace = null,
         IOpcItemPropertyProvider? itemPropertyProvider = null,
-        IOPCItemProperties? itemProperties = null)
+        IOPCItemProperties? itemProperties = null,
+        AuthenticationSource? authenticationSource = null)
     {
         _serverImpl = serverImpl ?? throw new ArgumentNullException(nameof(serverImpl));
         _options = options?.Value ?? throw new ArgumentNullException(nameof(options));
@@ -57,6 +60,7 @@ public sealed class OpcDaServerHost : IOpcServerHost, IDisposable, IAsyncDisposa
         _addressSpace = addressSpace;
         _itemPropertyProvider = itemPropertyProvider;
         _itemProperties = itemProperties;
+        _authenticationSource = authenticationSource;
     }
 
     /// <inheritdoc />
@@ -88,6 +92,7 @@ public sealed class OpcDaServerHost : IOpcServerHost, IDisposable, IAsyncDisposa
         var processor = new RpcServerConnectionProcessor(
             serverDispatchers,
             _objectRegistry,
+            _authenticationSource,
             _logger);
         _listener = new OpcServerListener(endpoint, processor, _logger);
 

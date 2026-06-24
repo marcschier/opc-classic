@@ -182,7 +182,7 @@ public sealed class SimulationTransportHost : IAsyncDisposable
         using var timer = new PeriodicTimer(_tickInterval);
         while (await timer.WaitForNextTickAsync(cancellationToken).ConfigureAwait(false))
         {
-            _daServer.RefreshFromModel();
+            await _daServer.RefreshFromModelAsync(cancellationToken).ConfigureAwait(false);
         }
     }
 

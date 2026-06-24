@@ -26,16 +26,21 @@ public sealed class SimDaHostServer : IOpcDaServer
     private static readonly DateTimeOffset StartTime = DateTimeOffset.UtcNow;
     private readonly SimulatedPlantModel _model;
     private readonly OpcObjectRegistry _objectRegistry;
+    private readonly IOpcDataCallbackSinkFactory? _callbackSinkFactory;
     private readonly ConcurrentDictionary<int, GroupEntry> _groups = new();
     private int _nextGroupHandle = 0x4000;
 
     /// <summary>Initializes a new instance of the <see cref="SimDaHostServer" /> class.</summary>
     /// <param name="model">The shared deterministic plant model to serve.</param>
     /// <param name="objectRegistry">The host's per-CLSID object/IPID registry for group tearoffs.</param>
-    public SimDaHostServer(SimulatedPlantModel model, OpcObjectRegistry objectRegistry)
+    public SimDaHostServer(
+        SimulatedPlantModel model,
+        OpcObjectRegistry objectRegistry,
+        IOpcDataCallbackSinkFactory? callbackSinkFactory = null)
     {
         _model = model ?? throw new ArgumentNullException(nameof(model));
         _objectRegistry = objectRegistry ?? throw new ArgumentNullException(nameof(objectRegistry));
+        _callbackSinkFactory = callbackSinkFactory;
     }
 
     /// <summary>Builds the hierarchical address space exposed for browsing, from the model.</summary>
@@ -58,14 +63,24 @@ public sealed class SimDaHostServer : IOpcDaServer
     /// </summary>
     public void RefreshFromModel()
     {
+        RefreshFromModelAsync(CancellationToken.None).GetAwaiter().GetResult();
+    }
+
+    /// <summary>
+    /// Reconciles every active group's items with the model and publishes DA callbacks.
+    /// </summary>
+    public async Task RefreshFromModelAsync(CancellationToken cancellationToken = default)
+    {
         DateTimeOffset now = DateTimeOffset.UtcNow;
         foreach (GroupEntry entry in _groups.Values)
         {
+            cancellationToken.ThrowIfCancellationRequested();
             if (!entry.Group.Active)
             {
                 continue;
             }
 
+            var changedHandles = new List<int>();
             foreach (OpcDaItem item in entry.Group.Items)
             {
                 if (!_model.TryGetTag(item.ItemId, out SimulatedTag tag))
@@ -77,6 +92,7 @@ public sealed class SimDaHostServer : IOpcDaServer
                 {
                     // Live generated value.
                     item.Update(ToVariant(_model.CurrentValue(tag, now)), GoodQuality, now);
+                    changedHandles.Add(item.ServerHandle);
                     continue;
                 }
 
@@ -85,11 +101,21 @@ public sealed class SimDaHostServer : IOpcDaServer
                 if (cached is null)
                 {
                     item.Update(ToVariant(_model.CurrentValue(tag, now)), GoodQuality, now);
+                    changedHandles.Add(item.ServerHandle);
                 }
                 else
                 {
                     _model.TryWrite(item.ItemId, cached);
                 }
+            }
+
+            if (changedHandles.Count > 0)
+            {
+                await entry.Group.TriggerDataChangeAsync(
+                    transactionId: 0,
+                    changedHandles.ToArray(),
+                    static (_, _, _) => Task.CompletedTask,
+                    cancellationToken).ConfigureAwait(false);
             }
         }
     }
@@ -330,7 +356,8 @@ public sealed class SimDaHostServer : IOpcDaServer
             timeBias: timeBias,
             percentDeadband: percentDeadband,
             localeId: localeId,
-            objectRegistry: _objectRegistry);
+            objectRegistry: _objectRegistry,
+            callbackSinkFactory: _callbackSinkFactory);
     }
 
     private static OpcVariant ToVariant(object? value) =>

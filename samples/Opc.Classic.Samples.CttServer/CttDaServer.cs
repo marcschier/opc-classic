@@ -30,6 +30,7 @@ public sealed class CttDaServer : IOpcDaServer
     private static readonly DateTimeOffset StartupTime = DateTimeOffset.UtcNow;
     private readonly ILogger<CttDaServer> _logger;
     private readonly OpcObjectRegistry _objectRegistry;
+    private readonly IOpcDataCallbackSinkFactory? _callbackSinkFactory;
     // Per-instance group state. Keyed by server-assigned handle. The same
     // entry is tracked in _groupIpids (handle -> IPID) so RemoveGroup can
     // unregister from the OpcObjectRegistry without an extra lookup.
@@ -39,10 +40,14 @@ public sealed class CttDaServer : IOpcDaServer
     // in logs while still being correct.
     private int _nextServerHandle = 1_000_000;
 
-    public CttDaServer(OpcObjectRegistry objectRegistry, ILogger<CttDaServer> logger)
+    public CttDaServer(
+        OpcObjectRegistry objectRegistry,
+        ILogger<CttDaServer> logger,
+        IOpcDataCallbackSinkFactory? callbackSinkFactory = null)
     {
         _objectRegistry = objectRegistry ?? throw new ArgumentNullException(nameof(objectRegistry));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        _callbackSinkFactory = callbackSinkFactory;
     }
 
     public Task<OpcServerStatus> GetStatusAsync(CancellationToken cancellationToken = default)
@@ -272,7 +277,8 @@ public sealed class CttDaServer : IOpcDaServer
             timeBias: timeBias,
             percentDeadband: percentDeadband,
             localeId: localeId,
-            objectRegistry: _objectRegistry);
+            objectRegistry: _objectRegistry,
+            callbackSinkFactory: _callbackSinkFactory);
     }
 
     private sealed class GroupEntry
