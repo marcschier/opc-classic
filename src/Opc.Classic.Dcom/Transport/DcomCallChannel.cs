@@ -475,8 +475,10 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable
         BinaryPrimitives.WriteUInt16LittleEndian(protectedPdu.AsSpan(ConnectionOrientedPdu.FRAG_LENGTH_OFFSET), (ushort)fragmentLength);
         BinaryPrimitives.WriteUInt16LittleEndian(protectedPdu.AsSpan(ConnectionOrientedPdu.AUTH_LENGTH_OFFSET), (ushort)authValueLength);
 
-        Span<byte> signedRegion = protectedPdu.AsSpan(0, verifierStart + AuthenticationVerifierHeaderLength);
-        _authContext.SignAndSeal(signedRegion, out byte[] signature);
+        int bodyStart = ConnectionOrientedPdu.HEADER_LENGTH;
+        int bodyLength = verifierStart - bodyStart;
+        Span<byte> protectedBody = protectedPdu.AsSpan(bodyStart, bodyLength);
+        _authContext.SignAndSeal(protectedBody, out byte[] signature);
         if (signature is null || signature.Length == 0)
         {
             return pduBytes;
