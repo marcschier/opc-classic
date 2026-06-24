@@ -1,5 +1,7 @@
 ﻿// Copyright (c) 2026 marcschier. Licensed under the MIT License.
 
+using System.Globalization;
+using System.Net;
 using Opc.Classic.Dcom;
 using Opc.Classic.Dcom.Rpc.Auth.ntlm;
 using Opc.Classic.Dcom.Transport;
@@ -45,6 +47,15 @@ public sealed class DcomOpcHdaDataCallbackSender : IAsyncDisposable
         OpcConnectData connectData,
         string fallbackHost = "localhost") =>
         new(sinkRef, channelFactory, () => NtlmAuthentication.CreateAuthContext(connectData), fallbackHost);
+
+    /// <summary>
+    /// Creates a TCP-only callback sender for ncacn_ip_tcp callback OBJREFs.
+    /// </summary>
+    public static DcomOpcHdaDataCallbackSender CreateTcpOnly(
+        IOpcInterfaceRef sinkRef,
+        OpcConnectData connectData,
+        string fallbackHost = "localhost") =>
+        Create(sinkRef, new DcomCallChannelFactory(new CallbackTcpTransportFactory()), connectData, fallbackHost);
 
     /// <summary>
     /// Delivers <c>IOPCHDA_DataCallback::OnDataChange</c>.
@@ -99,5 +110,19 @@ public sealed class DcomOpcHdaDataCallbackSender : IAsyncDisposable
             cancellationToken).ConfigureAwait(false);
         _proxy = new IOPCHDA_DataCallbackClientProxy(_channel);
         return _proxy;
+    }
+
+    private sealed class CallbackTcpTransportFactory : IAsyncTransportFactory
+    {
+        public async ValueTask<IAsyncTransport> ConnectAsync(EndPoint endpoint, CancellationToken cancellationToken = default)
+        {
+            ArgumentNullException.ThrowIfNull(endpoint);
+            return endpoint switch
+            {
+                DnsEndPoint dns => await TcpClientTransport.ConnectAsync(dns.Host, dns.Port, cancellationToken).ConfigureAwait(false),
+                IPEndPoint ip => await TcpClientTransport.ConnectAsync(ip.Address.ToString(), ip.Port, cancellationToken).ConfigureAwait(false),
+                _ => throw new NotSupportedException(string.Format(CultureInfo.InvariantCulture, "Endpoint type '{0}' is not supported by the TCP-only HDA callback transport.", endpoint.GetType().FullName)),
+            };
+        }
     }
 }

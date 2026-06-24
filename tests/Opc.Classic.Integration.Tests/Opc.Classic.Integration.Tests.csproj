@@ -30,6 +30,7 @@
     <Compile Include="..\..\samples\Opc.Classic.Samples.HdaServer\SampleHdaServer.cs" Link="Samples\HdaServer\SampleHdaServer.cs" />
     <Compile Include="..\..\samples\Opc.Classic.Samples.SimulationServer\SimulatedPlantModel.cs" Link="Samples\SimulationServer\SimulatedPlantModel.cs" />
     <Compile Include="..\..\samples\Opc.Classic.Samples.SimulationServer\Transports\SimDaHostServer.cs" Link="Samples\SimulationServer\Transports\SimDaHostServer.cs" />
+    <Compile Include="..\..\samples\Opc.Classic.Samples.SimulationServer\Transports\SimHdaHostServer.cs" Link="Samples\SimulationServer\Transports\SimHdaHostServer.cs" />
   </ItemGroup>
 
 </Project>

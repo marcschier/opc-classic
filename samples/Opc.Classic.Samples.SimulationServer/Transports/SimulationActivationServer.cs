@@ -2,6 +2,7 @@
 
 using System.Net;
 using Microsoft.Extensions.Logging;
+using Opc.Classic.Ae;
 using Opc.Classic.Ae.Dcom;
 using Opc.Classic.Ae.Hosting;
 using Opc.Classic.Da.Dcom;
@@ -14,6 +15,7 @@ using Opc.Classic.Hda.Dcom;
 using Opc.Classic.Hda.Hosting;
 using Opc.Classic.Hosting;
 using Opc.Classic.Ndr;
+using Opc.Classic.Samples.SimulationServer.Ae;
 using ActivationProperties = Opc.Classic.Dcom.Core.ActivationProperties;
 using ActivationInfoCodec = Opc.Classic.Dcom.Core.ActivationInfoCodec;
 using IRemoteSCMActivatorServer = Opc.Classic.Dcom.Core.IRemoteSCMActivatorServer;
@@ -55,9 +57,10 @@ public sealed class SimulationActivationServer : IActivationServer, IRemoteSCMAc
     private readonly Guid _hdaClsid;
     private readonly IClsidRegistry _clsidRegistry;
     private readonly SimDaHostServer _daServer;
-    private readonly SimAeHostServer _aeServer;
+    private readonly IOpcAeServer _aeServer;
     private readonly SimHdaHostServer _hdaServer;
     private readonly OpcObjectRegistry _objectRegistry;
+    private readonly Func<IOpcInterfaceRef, IOPCEventSink>? _aeEventSinkFactory;
     private readonly Func<IPEndPoint?> _endpointProvider;
     private readonly Guid _remUnknownIpid;
     private readonly ILogger? _logger;
@@ -74,10 +77,11 @@ public sealed class SimulationActivationServer : IActivationServer, IRemoteSCMAc
         SimDaHostServer daServer,
         OpcObjectRegistry objectRegistry,
         Guid? aeClsid = null,
-        SimAeHostServer? aeServer = null,
+        IOpcAeServer? aeServer = null,
         Guid? hdaClsid = null,
         SimHdaHostServer? hdaServer = null,
         IClsidRegistry? clsidRegistry = null,
+        Func<IOpcInterfaceRef, IOPCEventSink>? aeEventSinkFactory = null,
         Func<IPEndPoint?>? endpointProvider = null,
         Guid? remUnknownIpid = null,
         ILogger? logger = null)
@@ -90,6 +94,7 @@ public sealed class SimulationActivationServer : IActivationServer, IRemoteSCMAc
         _aeServer = aeServer ?? new SimAeHostServer(new SimulatedPlantModel());
         _hdaServer = hdaServer ?? new SimHdaHostServer(new SimulatedPlantModel());
         _objectRegistry = objectRegistry ?? throw new ArgumentNullException(nameof(objectRegistry));
+        _aeEventSinkFactory = aeEventSinkFactory;
         _endpointProvider = endpointProvider ?? (() => null);
         _remUnknownIpid = EnsureRemUnknownRegistered(objectRegistry, remUnknownIpid ?? Guid.NewGuid());
         _logger = logger;
@@ -269,22 +274,55 @@ public sealed class SimulationActivationServer : IActivationServer, IRemoteSCMAc
     {
         if (clsid == _aeClsid)
         {
-            var aeDispatcher = new OpcAeServerDispatcher(_aeServer);
+            IOpcAeServer effectiveAeServer = _aeServer is IAeServer
+                ? new IAeServerToOpcAeServerAdapter(_aeServer, _aeEventSinkFactory)
+                : _aeServer;
+            var aeDispatcher = new OpcAeServerDispatcher(effectiveAeServer, _aeEventSinkFactory);
+            IOpcServerDispatcher eventServerDispatcher = aeDispatcher.EventServerDispatcher;
+            if (_aeServer is IAeServer aeServerForInterceptor)
+            {
+                eventServerDispatcher = new AeEventServerDispatcherInterceptor(
+                    eventServerDispatcher,
+                    aeServerForInterceptor,
+                    _objectRegistry,
+                    _logger ?? Microsoft.Extensions.Logging.Abstractions.NullLogger.Instance,
+                    _aeEventSinkFactory);
+            }
             return new Dictionary<Guid, IOpcServerDispatcher>
             {
-                [IOPCEventServer.InterfaceId] = aeDispatcher.EventServerDispatcher,
+                [IOPCEventServer.InterfaceId] = eventServerDispatcher,
                 [OpcCommonClientProxy.InterfaceId] = aeDispatcher.CommonDispatcher,
+                [Opc.Classic.Ae.Dcom.IConnectionPointContainer.InterfaceId] = new Opc.Classic.Ae.Dcom.IConnectionPointContainerServerDispatcher(aeDispatcher),
+                [Opc.Classic.Ae.Dcom.IConnectionPoint.InterfaceId] = new Opc.Classic.Ae.Dcom.IConnectionPointServerDispatcher(aeDispatcher),
             };
         }
 
         if (clsid == _hdaClsid)
         {
             var hdaDispatcher = new OpcHdaServerDispatcher(_hdaServer);
-            return new Dictionary<Guid, IOpcServerDispatcher>
+            var dispatchers = new Dictionary<Guid, IOpcServerDispatcher>
             {
                 [IOPCHDA_Server.InterfaceId] = hdaDispatcher.ServerDispatcher,
                 [OpcCommonClientProxy.InterfaceId] = hdaDispatcher.CommonDispatcher,
             };
+            if (_hdaServer is IOPCHDA_SyncRead syncRead)
+            {
+                dispatchers[IOPCHDA_SyncRead.InterfaceId] = new IOPCHDA_SyncReadServerDispatcher(syncRead);
+            }
+            if (_hdaServer is IOPCHDA_AsyncRead asyncRead)
+            {
+                dispatchers[IOPCHDA_AsyncRead.InterfaceId] = new IOPCHDA_AsyncReadServerDispatcher(asyncRead);
+            }
+            if (_hdaServer is Opc.Classic.Da.Dcom.IConnectionPointContainer connectionPointContainer)
+            {
+                dispatchers[Opc.Classic.Da.Dcom.IConnectionPointContainer.InterfaceId] = new Opc.Classic.Da.Dcom.IConnectionPointContainerServerDispatcher(connectionPointContainer);
+            }
+            if (_hdaServer is Opc.Classic.Da.Dcom.IConnectionPoint connectionPoint)
+            {
+                dispatchers[Opc.Classic.Da.Dcom.IConnectionPoint.InterfaceId] = new Opc.Classic.Da.Dcom.IConnectionPointServerDispatcher(connectionPoint);
+            }
+
+            return dispatchers;
         }
 
         if (clsid == OpcGuids.CLSID_OpcEnum)

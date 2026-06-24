@@ -8,6 +8,7 @@ using Opc.Classic.Da.Hosting;
 using Opc.Classic.Dcom.Transport;
 using Opc.Classic.Hda.Hosting;
 using Opc.Classic.Hosting;
+using Opc.Classic.Samples.SimulationServer.Ae;
 
 namespace Opc.Classic.Samples.SimulationServer.Transports;
 
@@ -119,7 +120,7 @@ public sealed class SimulationTransportHost : IAsyncDisposable
         providers.Add(daProvider);
         var daHost = daProvider.GetRequiredService<OpcDaServerHost>();
 
-        ServiceProvider aeProvider = BuildAeProvider(new SimAeHostServer(model), options, loggerFactory);
+        ServiceProvider aeProvider = BuildAeProvider(new SimAeServer(model, loggerFactory), options, loggerFactory);
         providers.Add(aeProvider);
         var aeHost = aeProvider.GetRequiredService<OpcAeServerHost>();
 
@@ -222,7 +223,7 @@ public sealed class SimulationTransportHost : IAsyncDisposable
     }
 
     private static ServiceProvider BuildAeProvider(
-        SimAeHostServer aeServer,
+        IOpcAeServer aeServer,
         SimulationTransportOptions options,
         ILoggerFactory loggerFactory)
     {

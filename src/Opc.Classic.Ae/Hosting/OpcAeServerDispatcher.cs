@@ -17,6 +17,7 @@ public sealed class OpcAeServerDispatcher : IOpcAeServerDispatcher, IConnectionP
     private readonly OpcCommonServerDispatcher _commonDispatcher;
     private readonly IConnectionPointContainerServerDispatcher _connectionPointContainerDispatcher;
     private readonly IConnectionPointServerDispatcher _connectionPointDispatcher;
+    private readonly Func<IOpcInterfaceRef, IOPCEventSink>? _eventSinkFactory;
     private readonly ConcurrentDictionary<int, IOPCShutdown> _shutdownSinks = new();
     private int _localeId;
     private string _clientName = string.Empty;
@@ -25,9 +26,10 @@ public sealed class OpcAeServerDispatcher : IOpcAeServerDispatcher, IConnectionP
     /// <summary>
     /// Initializes a new instance of the <see cref="OpcAeServerDispatcher" /> class.
     /// </summary>
-    public OpcAeServerDispatcher(IOpcAeServer server)
+    public OpcAeServerDispatcher(IOpcAeServer server, Func<IOpcInterfaceRef, IOPCEventSink>? eventSinkFactory = null)
     {
         _server = server ?? throw new ArgumentNullException(nameof(server));
+        _eventSinkFactory = eventSinkFactory;
         _serverDispatcher = new IOPCEventServerServerDispatcher(server);
         _commonDispatcher = new OpcCommonServerDispatcher(this);
         _connectionPointContainerDispatcher = new IConnectionPointContainerServerDispatcher(this);
@@ -335,7 +337,7 @@ public sealed class OpcAeServerDispatcher : IOpcAeServerDispatcher, IConnectionP
         {
             revisedBufferTime = bufferTime;
             revisedMaxSize = maxSize;
-            return CreateEventSubscriptionAdapterAsync(aeServer, active, bufferTime, maxSize, clientSubscription, cancellationToken);
+            return CreateEventSubscriptionAdapterAsync(aeServer, active, bufferTime, maxSize, clientSubscription, _eventSinkFactory, cancellationToken);
         }
     }
 
@@ -369,15 +371,16 @@ public sealed class OpcAeServerDispatcher : IOpcAeServerDispatcher, IConnectionP
         int bufferTime,
         int maxSize,
         int clientSubscription,
+        Func<IOpcInterfaceRef, IOPCEventSink>? eventSinkFactory,
         CancellationToken cancellationToken)
     {
         IAeSubscription subscription = await server.CreateSubscriptionAsync(active, bufferTime, maxSize, cancellationToken).ConfigureAwait(false);
-        return new EventSubscriptionAdapter(subscription, bufferTime, maxSize, clientSubscription);
+        return new EventSubscriptionAdapter(subscription, bufferTime, maxSize, clientSubscription, eventSinkFactory);
     }
 
     internal static IOPCEventSubscriptionMgt CreateEventSubscriptionAdapter(
-        IAeSubscription subscription, int bufferTime, int maxSize, int clientSubscription) =>
-        new EventSubscriptionAdapter(subscription, bufferTime, maxSize, clientSubscription);
+        IAeSubscription subscription, int bufferTime, int maxSize, int clientSubscription, Func<IOpcInterfaceRef, IOPCEventSink>? eventSinkFactory = null) =>
+        new EventSubscriptionAdapter(subscription, bufferTime, maxSize, clientSubscription, eventSinkFactory);
 
     private sealed class EventAreaBrowserAdapter : IOpcAeAreaBrowserDispatcher
     {
@@ -406,9 +409,10 @@ public sealed class OpcAeServerDispatcher : IOpcAeServerDispatcher, IConnectionP
             _browser.GetQualifiedSourceNameAsync(sourceName, cancellationToken);
     }
 
-    private sealed class EventSubscriptionAdapter : IOPCEventSubscriptionMgt, IOpcAeEventSinkRegistration, IAsyncDisposable
+    private sealed class EventSubscriptionAdapter : IOPCEventSubscriptionMgt, IOpcAeEventSinkRegistration, IConnectionPointContainer, IConnectionPoint, IAsyncDisposable
     {
         private readonly IAeSubscription _subscription;
+        private readonly Func<IOpcInterfaceRef, IOPCEventSink>? _eventSinkFactory;
         private readonly ConcurrentDictionary<int, int[]> _returnedAttributes = new();
         private readonly ConcurrentDictionary<int, IOPCEventSink> _sinks = new();
         private readonly ConcurrentDictionary<int, CancellationTokenSource> _refreshes = new();
@@ -421,13 +425,52 @@ public sealed class OpcAeServerDispatcher : IOpcAeServerDispatcher, IConnectionP
         private int _clientSubscription;
         private int _nextSinkCookie;
 
-        public EventSubscriptionAdapter(IAeSubscription subscription, int bufferTime, int maxSize, int clientSubscription)
+        public EventSubscriptionAdapter(IAeSubscription subscription, int bufferTime, int maxSize, int clientSubscription, Func<IOpcInterfaceRef, IOPCEventSink>? eventSinkFactory)
         {
             _subscription = subscription ?? throw new ArgumentNullException(nameof(subscription));
+            _eventSinkFactory = eventSinkFactory;
             _bufferTime = bufferTime;
             _maxSize = maxSize;
             _clientSubscription = clientSubscription;
         }
+
+        public Task<IOpcInterfaceRef> EnumConnectionPointsAsync(CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            return Task.FromResult<IOpcInterfaceRef>(CreateSyntheticInterfaceRef(OpcGuids.IID_IEnumConnectionPoints));
+        }
+
+        public Task<IOpcInterfaceRef> FindConnectionPointAsync(Guid iid, CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            if (iid != IOPCEventSink.InterfaceId)
+            {
+                throw new OpcException(new OpcResultId(unchecked((int)0x80040200), "CONNECT_E_NOCONNECTION"));
+            }
+
+            return Task.FromResult<IOpcInterfaceRef>(CreateSyntheticInterfaceRef(IConnectionPoint.InterfaceId));
+        }
+
+        public Task<Guid> GetConnectionInterfaceAsync(CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            return Task.FromResult(IOPCEventSink.InterfaceId);
+        }
+
+        public Task<int> AdviseAsync(IOpcInterfaceRef sink, CancellationToken cancellationToken = default)
+        {
+            ArgumentNullException.ThrowIfNull(sink);
+            cancellationToken.ThrowIfCancellationRequested();
+            if (sink.Iid != IOPCEventSink.InterfaceId || _eventSinkFactory is null)
+            {
+                throw new OpcException(new OpcResultId(unchecked((int)0x80040200), "CONNECT_E_NOCONNECTION"));
+            }
+
+            return AdviseEventSinkAsync(_eventSinkFactory(sink), cancellationToken);
+        }
+
+        public Task UnadviseAsync(int cookie, CancellationToken cancellationToken = default) =>
+            UnadviseEventSinkAsync(cookie, cancellationToken);
 
         public async Task SetFilterAsync(
             int eventType,
@@ -501,7 +544,10 @@ public sealed class OpcAeServerDispatcher : IOpcAeServerDispatcher, IConnectionP
         public Task UnadviseEventSinkAsync(int connection, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            _sinks.TryRemove(connection, out _);
+            if (_sinks.TryRemove(connection, out IOPCEventSink? sink) && sink is IAsyncDisposable asyncDisposable)
+            {
+                return asyncDisposable.DisposeAsync().AsTask();
+            }
             return Task.CompletedTask;
         }
 
@@ -579,6 +625,14 @@ public sealed class OpcAeServerDispatcher : IOpcAeServerDispatcher, IConnectionP
                 refresh.Dispose();
             }
             _refreshes.Clear();
+            foreach (IOPCEventSink sink in _sinks.Values)
+            {
+                if (sink is IAsyncDisposable asyncDisposable)
+                {
+                    await asyncDisposable.DisposeAsync().ConfigureAwait(false);
+                }
+            }
+            _sinks.Clear();
             _disposeCts.Dispose();
             await _subscription.DisposeAsync().ConfigureAwait(false);
         }

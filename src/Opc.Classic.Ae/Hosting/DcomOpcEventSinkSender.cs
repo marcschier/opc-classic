@@ -1,6 +1,8 @@
 ﻿// Copyright (c) 2026 marcschier. Licensed under the MIT License.
 
 using Opc.Classic.Ae.Dcom;
+using System.Globalization;
+using System.Net;
 using Opc.Classic.Dcom;
 using Opc.Classic.Dcom.Rpc.Auth.ntlm;
 using Opc.Classic.Dcom.Transport;
@@ -11,7 +13,7 @@ namespace Opc.Classic.Ae.Hosting;
 /// <summary>
 /// Cross-platform outbound DCOM sender for <see cref="IOPCEventSink"/> callbacks.
 /// </summary>
-public sealed class DcomOpcEventSinkSender : IAsyncDisposable
+public sealed class DcomOpcEventSinkSender : IOPCEventSink, IAsyncDisposable
 {
     private readonly IOpcInterfaceRef _sinkRef;
     private readonly DcomCallChannelFactory _channelFactory;
@@ -45,6 +47,15 @@ public sealed class DcomOpcEventSinkSender : IAsyncDisposable
         OpcConnectData connectData,
         string fallbackHost = "localhost") =>
         new(sinkRef, channelFactory, () => NtlmAuthentication.CreateAuthContext(connectData), fallbackHost);
+
+    /// <summary>
+    /// Creates a TCP-only sender for ncacn_ip_tcp callback OBJREFs.
+    /// </summary>
+    public static DcomOpcEventSinkSender CreateTcpOnly(
+        IOpcInterfaceRef sinkRef,
+        OpcConnectData connectData,
+        string fallbackHost = "localhost") =>
+        Create(sinkRef, new DcomCallChannelFactory(new CallbackTcpTransportFactory()), connectData, fallbackHost);
 
     /// <summary>
     /// Delivers <c>IOPCEventSink::OnEvent</c>.
@@ -85,5 +96,19 @@ public sealed class DcomOpcEventSinkSender : IAsyncDisposable
             cancellationToken).ConfigureAwait(false);
         _proxy = new IOPCEventSinkClientProxy(_channel);
         return _proxy;
+    }
+
+    private sealed class CallbackTcpTransportFactory : IAsyncTransportFactory
+    {
+        public async ValueTask<IAsyncTransport> ConnectAsync(EndPoint endpoint, CancellationToken cancellationToken = default)
+        {
+            ArgumentNullException.ThrowIfNull(endpoint);
+            return endpoint switch
+            {
+                DnsEndPoint dns => await TcpClientTransport.ConnectAsync(dns.Host, dns.Port, cancellationToken).ConfigureAwait(false),
+                IPEndPoint ip => await TcpClientTransport.ConnectAsync(ip.Address.ToString(), ip.Port, cancellationToken).ConfigureAwait(false),
+                _ => throw new NotSupportedException(string.Format(CultureInfo.InvariantCulture, "Endpoint type '{0}' is not supported by the TCP-only AE callback transport.", endpoint.GetType().FullName)),
+            };
+        }
     }
 }

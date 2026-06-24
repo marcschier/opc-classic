@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using Opc.Classic.Dcom.Activation;
 using Opc.Classic.Dcom.Transport;
 using Opc.Classic.Hosting;
+using Opc.Classic.Samples.SimulationServer.Ae;
 
 namespace Opc.Classic.Samples.SimulationServer.Transports;
 
@@ -54,7 +55,7 @@ public sealed class SimulationActivationHost : IAsyncDisposable
 
         var objectRegistry = new OpcObjectRegistry();
         var daServer = new SimDaHostServer(model, objectRegistry);
-        var aeServer = new SimAeHostServer(model);
+        var aeServer = new SimAeServer(model, loggerFactory);
         var hdaServer = new SimHdaHostServer(model);
         OpcServerListener? listener = null;
         var objectExporter = new IObjectExporterDispatcher(

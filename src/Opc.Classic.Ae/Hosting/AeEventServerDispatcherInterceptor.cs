@@ -41,7 +41,7 @@ namespace Opc.Classic.Ae.Hosting;
 /// never invokes this interceptor.
 /// </para>
 /// </remarks>
-internal sealed class AeEventServerDispatcherInterceptor : IOpcServerDispatcher
+public sealed class AeEventServerDispatcherInterceptor : IOpcServerDispatcher
 {
     private const int CreateEventSubscriptionOpnum = 4;
 
@@ -54,17 +54,20 @@ internal sealed class AeEventServerDispatcherInterceptor : IOpcServerDispatcher
     private readonly IAeServer _aeServer;
     private readonly OpcObjectRegistry _objectRegistry;
     private readonly ILogger _logger;
+    private readonly Func<IOpcInterfaceRef, IOPCEventSink>? _eventSinkFactory;
 
     public AeEventServerDispatcherInterceptor(
         IOpcServerDispatcher inner,
         IAeServer aeServer,
         OpcObjectRegistry objectRegistry,
-        ILogger logger)
+        ILogger logger,
+        Func<IOpcInterfaceRef, IOPCEventSink>? eventSinkFactory = null)
     {
         _inner = inner ?? throw new ArgumentNullException(nameof(inner));
         _aeServer = aeServer ?? throw new ArgumentNullException(nameof(aeServer));
         _objectRegistry = objectRegistry ?? throw new ArgumentNullException(nameof(objectRegistry));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        _eventSinkFactory = eventSinkFactory;
     }
 
     public ValueTask<DispatchResult> DispatchAsync(
@@ -144,7 +147,7 @@ internal sealed class AeEventServerDispatcherInterceptor : IOpcServerDispatcher
 #pragma warning restore CA1031
 
         IOPCEventSubscriptionMgt subscriptionMgt = OpcAeServerDispatcher.CreateEventSubscriptionAdapter(
-            aeSubscription, request.BufferTime, request.MaxSize, request.ClientSubscription);
+            aeSubscription, request.BufferTime, request.MaxSize, request.ClientSubscription, _eventSinkFactory);
 
         // Register the new subscription tearoff under a fresh IPID. The
         // generated client proxy decodes the OBJREF, registers the
@@ -157,6 +160,14 @@ internal sealed class AeEventServerDispatcherInterceptor : IOpcServerDispatcher
         {
             [IOPCEventSubscriptionMgt.InterfaceId] = new IOPCEventSubscriptionMgtServerDispatcher(subscriptionMgt),
         };
+        if (subscriptionMgt is IConnectionPointContainer connectionPointContainer)
+        {
+            subscriptionDispatchers[IConnectionPointContainer.InterfaceId] = new IConnectionPointContainerServerDispatcher(connectionPointContainer);
+        }
+        if (subscriptionMgt is IConnectionPoint connectionPoint)
+        {
+            subscriptionDispatchers[IConnectionPoint.InterfaceId] = new IConnectionPointServerDispatcher(connectionPoint);
+        }
         Guid ipid = _objectRegistry.Register(subscriptionDispatchers);
         SubscriptionRegistered(_logger, ipid, request.BufferTime, request.MaxSize, null);
         return new SubscriptionRegistration(ipid);

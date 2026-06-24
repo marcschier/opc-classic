@@ -1,6 +1,7 @@
 // Copyright (c) 2026 marcschier. Licensed under the MIT License.
 
 using Opc.Classic.Ae.Dcom;
+using Opc.Classic.Dcom;
 
 namespace Opc.Classic.Ae.Hosting;
 
@@ -23,17 +24,19 @@ namespace Opc.Classic.Ae.Hosting;
 /// <c>SampleAeServer</c>'s explicit <c>GetConditionStateAsync</c> and
 /// <c>AckConditionAsync</c> overrides).
 /// </remarks>
-internal sealed class IAeServerToOpcAeServerAdapter : IOpcAeServer
+public sealed class IAeServerToOpcAeServerAdapter : IOpcAeServer
 {
     private readonly IOpcAeServer _underlying;
     private readonly IAeServer _aeServer;
+    private readonly Func<IOpcInterfaceRef, IOPCEventSink>? _eventSinkFactory;
 
-    public IAeServerToOpcAeServerAdapter(IOpcAeServer underlying)
+    public IAeServerToOpcAeServerAdapter(IOpcAeServer underlying, Func<IOpcInterfaceRef, IOPCEventSink>? eventSinkFactory = null)
     {
         ArgumentNullException.ThrowIfNull(underlying);
         _underlying = underlying;
         _aeServer = underlying as IAeServer
             ?? throw new ArgumentException("Underlying server must also implement IAeServer.", nameof(underlying));
+        _eventSinkFactory = eventSinkFactory;
     }
 
     public Task<OpcServerStatus> GetStatusAsync(CancellationToken cancellationToken = default) =>
@@ -75,7 +78,7 @@ internal sealed class IAeServerToOpcAeServerAdapter : IOpcAeServer
                 .ConfigureAwait(false).GetAwaiter().GetResult();
 #pragma warning restore VSTHRD002, VSTHRD103
             subscription = OpcAeServerDispatcher.CreateEventSubscriptionAdapter(
-                aeSubscription, bufferTime, maxSize, clientSubscription);
+                aeSubscription, bufferTime, maxSize, clientSubscription, _eventSinkFactory);
             return Task.CompletedTask;
         }
     }
