@@ -26,7 +26,7 @@ These gates are required before the first stable tag.
 ## Recently landed
 
 - **Full-feature SimulationServer.** `samples/Opc.Classic.Samples.SimulationServer` now provides one simulated plant model across DA, AE, HDA, Batch, Commands, Cpx, DX, Security, Discovery, and XML-DA, with MCP tooling integration and optional DA/AE/HDA real TCP hosting via `--listen`.
-- **Simulation DA cold-activation handler.** `SimulationActivationServer` / `SimulationActivationHost` can serve `IActivation::RemoteActivation`, register the activated DA dispatchers in `OpcObjectRegistry`, and return a spec-conformant `OBJREF_STANDARD` encoded by `OpcInterfaceRefCodec` so the client locates the activated IPID. Full authenticated cold-activation remains in progress because the managed listener still needs server-side NTLM bind handling.
+- **Managed DCOM server capstone.** Server-side NTLMv2 authenticated bind, EPM `ept_map`, OXID `ResolveOxid2`, routable `IRemUnknown`, OpcEnum server discovery, DA activation/group/read-write/subscription callbacks, and AE/HDA activation delivery paths have landed. `ManagedDcomFullStackE2ETests` keeps the in-sandbox managed proxy close to the native Matrikon flow.
 
 ## Known coverage gaps
 
@@ -58,14 +58,8 @@ activation plumbing.
 - Native-client interoperability hardening — additional cross-vendor matrix
   coverage beyond the current Matrikon Simulation Server + OPC Foundation
   TestServer profiles.
-- Server-side NTLM bind handling on `RpcServerConnectionProcessor`, so the
-  SimulationServer cold-activation path can progress from anonymous-denied
-  integration coverage to full authenticated activation.
-- Endpoint Mapper / port 135 front-end and byte-correct native-client
-  `DUALSTRINGARRAY` data-port publication for unmodified native cold
-  activation.
-- OPCEnum server hosting for managed server discovery, complementing the
-  existing OPCEnum client/discovery path.
+- Server-side Kerberos/SPNEGO acceptor wiring for incoming managed listeners.
+- Native-fleet execution and cross-vendor triage for Matrikon/Windows-runner scenarios beyond the checked-in scaffold.
 - Live Windows Server / Active Directory NTLMv2 verification (see
   the release gate above).
 - External third-party NTLMSSP crypto / security review (see the release

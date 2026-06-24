@@ -92,3 +92,19 @@ services:
       - testserver
     profiles:
       - interactive
+
+  native-matrikon-proxy:
+    image: opc-classic/native-matrikon-proxy
+    container_name: opc-classic-native-matrikon-proxy
+    build:
+      context: ../..
+      dockerfile: interop/docker/native-matrikon-proxy/Dockerfile
+    networks:
+      opc-test-net:
+        ipv4_address: 10.0.1.23
+    environment:
+      OPC_CLASSIC_TARGET_HOST: ${OPC_CLASSIC_TARGET_HOST:-opc-classic-managed-linux}
+      OPC_CLASSIC_TARGET_PROGID: ${OPC_CLASSIC_TARGET_PROGID:-Opc.Classic.Simulation.DA.1}
+      OPC_CLASSIC_TARGET_ITEMID: ${OPC_CLASSIC_TARGET_ITEMID:-Plant.Reactor1.Temperature}
+    profiles:
+      - native-matrikon-proxy

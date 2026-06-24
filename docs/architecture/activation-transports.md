@@ -20,8 +20,10 @@ Reference: the vendored `MS-DCOM.md` spec sections 3.1.2.5.2.3 (legacy) and
 | `IRemoteSCMActivator::RemoteCreateInstance` over TCP | ✅ Client + server | source-generated `IRemoteSCMActivator` + `RemoteSCMActivatorServer` |
 | `IActivation::RemoteActivation` over TCP | ✅ Client + server | `ActivationClient` + `IActivationCodec.cs` + `ActivationServer` / `LegacyActivationServer` |
 | `IActivation::RemoteActivation` over SMB (ncacn_np) | ✅ Client + server | channel-pluggable `ActivationClient` / `ActivationServer` over `NcacnNpTransport` |
-| Simulation DA cold-activation over managed TCP | ⚠️ Handler + listener test path | `SimulationActivationHost` hosts `ActivationServer` + `SimulationActivationServer`, registers DA dispatchers in `OpcObjectRegistry`, and can optionally host the MS-RPCE Endpoint Mapper (`ept` on TCP 135) via `EndpointMapperDispatcher`; full authenticated cold-activation waits on server-side NTLM bind handling in `RpcServerConnectionProcessor` |
+| Simulation DA/AE/HDA cold-activation over managed TCP | ✅ Authenticated managed-server path | `SimulationActivationHost` hosts `ActivationServer`, `RemoteSCMActivatorDispatcher`, `IObjectExporterDispatcher`, and `SimulationActivationServer`; it registers activated objects and `IRemUnknown` in `OpcObjectRegistry`, can host EPM `ept_map`, and uses `ConfiguredAuthenticationSource` for server-side NTLMv2 binds. |
 | `IRemoteSCMActivator` over SMB | ❌ Not implemented + not normally used | per [MS-DCOM] the modern activator is registered with `ncacn_ip_tcp` only |
+
+The full remote path is now: native-style client asks EPM (`EndpointMapperDispatcher`) for the activation/OXID endpoint; authenticates to the managed listener with NTLMv2; activates OpcEnum or Simulation DA/AE/HDA through `IRemoteSCMActivator::RemoteCreateInstance`; receives `OBJREF_STANDARD` plus `pipidRemUnknown`; calls `IObjectExporter::ResolveOxid2` to confirm TCP `DUALSTRINGARRAY` bindings; uses `IRemUnknown::RemQueryInterface` for root and tear-off interfaces; then invokes DA/AE/HDA generated dispatchers by IPID. DA reverse callbacks use a client-hosted `IObjectExporter` + `IOPCDataCallback` sink so the managed server becomes a DCOM client for `OnDataChange`.
 
 The Windows SCM path is also wired for local/native client activation.
 `ComClassObjectRegistrar` registers an AOT-friendly `IClassFactory`; DA, AE,
@@ -92,7 +94,7 @@ additional opnum dispatcher and a wrapper that adapts the legacy wire shape
 | Talk to a legacy XP/Server-2003 server over TCP | ✅ Shipped via `ActivationClient` and the shared activation NDR codec. |
 | Talk to a legacy server over SMB (firewall scenario) | ✅ Shipped via the SMB2 client, `ncacn_np` transport, and channel-pluggable `ActivationClient`; real-world SMB activation captures remain useful validation inputs. |
 | Accept legacy clients into our managed server | ✅ Shipped via `ActivationServer`, which adapts legacy activation to `LegacyActivationServer` / `RemoteSCMActivatorServer` when backed by class factories. |
-| Simulation DA cold-activation returns routable IPID | ⚠️ Handler shipped and covered by MCP integration tests: `SimulationActivationServer` returns a spec-conformant `OBJREF_STANDARD` and registers the activated DA object in `OpcObjectRegistry`; `EndpointMapperDispatcher` answers `ept_map` for activation and OXID resolver endpoints; anonymous network activation is denied, and full authenticated cold-activation still needs server-side NTLM bind handling on the managed listener. |
+| Simulation DA/AE/HDA cold-activation returns routable IPIDs | ✅ Covered by `ManagedDcomFullStackE2ETests`, `DaActivationTransportTests`, `OpcEnumServerTests`, `RemUnknownServerDispatcherTests`, and `EndpointMapperDispatcherTests`. |
 | Cross-platform WINREG discovery | ✅ Shipped via WINREG opnums, `ncacn_np`, fixture replay, and Samba smoke coverage. |
 
 ## References

@@ -4,11 +4,11 @@ on:
   workflow_dispatch:
     inputs:
       profile:
-        description: 'Which smoke to run: matrix (default) or interactive-build-only'
+        description: 'Which smoke to run: matrix (default), interactive-build-only, or native-matrikon-proxy'
         required: false
         default: 'matrix'
         type: choice
-        options: [matrix, interactive-build-only]
+        options: [matrix, interactive-build-only, native-matrikon-proxy]
   schedule:
     # Monthly on the 1st at 04:00 UTC. Windows-container builds are expensive
     # (~10-15 min build stage + ~3-5 GB image disk); monthly cadence matches
@@ -105,6 +105,13 @@ jobs:
             Write-Warning 'CoreComponents missing; running existing managed-only Docker fleet smoke.'
             interop/docker/run-matrix.ps1 -SkipBuild:$false -OnlyManaged
           }
+
+      - name: Build native Matrikon proxy scaffold
+        if: github.event_name == 'workflow_dispatch' && inputs.profile == 'native-matrikon-proxy'
+        shell: pwsh
+        run: |
+          docker compose --file interop/docker/docker-compose.test.yml --profile native-matrikon-proxy build native-matrikon-proxy
+          Write-Host 'Built native Matrikon proxy image. Runtime execution requires a routable Linux SimulationServer and matching DCOM credentials.'
 
       - name: Upload Docker fleet matrix results
         if: always()

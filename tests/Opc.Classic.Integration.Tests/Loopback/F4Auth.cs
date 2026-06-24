@@ -24,10 +24,10 @@ namespace Opc.Classic.Integration.Tests.Loopback;
 public sealed class F4Auth
 {
     private const string KerberosSkipReason =
-        "Authenticated calls over the managed TCP listener are not yet supported: Kerberos requires the KDC fixture covered by KerberosKdcFixtureTests plus server-side Kerberos acceptor wiring on the listener.";
+        "NTLMv2 authenticated calls over the managed TCP listener are supported; Kerberos still requires the KDC fixture covered by KerberosKdcFixtureTests plus server-side Kerberos acceptor wiring on the listener.";
 
     private const string SpnegoSkipReason =
-        "Authenticated calls over the managed TCP listener are not yet supported: SPNEGO requires server-side negotiation wiring on the listener before it can select NTLMv2 or Kerberos.";
+        "NTLMv2 authenticated calls over the managed TCP listener are supported; SPNEGO still requires server-side negotiation wiring on the listener before it can select NTLMv2 or Kerberos.";
 
     private const string Domain = "LOOPBACK";
     private const string User = "phase1-user";

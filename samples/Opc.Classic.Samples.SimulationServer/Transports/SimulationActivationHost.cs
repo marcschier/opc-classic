@@ -2,7 +2,13 @@
 
 using System.Net;
 using Microsoft.Extensions.Logging;
+using Opc.Classic.Ae.Dcom;
+using Opc.Classic.Ae.Hosting;
+using Opc.Classic.Da.Hosting;
+using Opc.Classic.Dcom;
 using Opc.Classic.Dcom.Activation;
+using Opc.Classic.Dcom.Core;
+using Opc.Classic.Dcom.Rpc.Auth.ntlm;
 using Opc.Classic.Dcom.Transport;
 using Opc.Classic.Hosting;
 using Opc.Classic.Samples.SimulationServer.Ae;
@@ -23,17 +29,41 @@ public sealed class SimulationActivationHost : IAsyncDisposable
 {
     private readonly OpcServerListener _listener;
     private readonly OpcServerListener? _endpointMapperListener;
+    private readonly SimDaHostServer _daServer;
+    private readonly TimeSpan _tickInterval = TimeSpan.FromMilliseconds(250);
+    private CancellationTokenSource? _tickerCts;
+    private Task? _tickerTask;
     private bool _started;
 
-    private SimulationActivationHost(OpcServerListener listener, OpcServerListener? endpointMapperListener, Guid daClsid)
+    private SimulationActivationHost(
+        OpcServerListener listener,
+        OpcServerListener? endpointMapperListener,
+        SimDaHostServer daServer,
+        IRemoteSCMActivatorServer activationServer,
+        Guid daClsid,
+        Guid aeClsid,
+        Guid hdaClsid)
     {
         _listener = listener;
         _endpointMapperListener = endpointMapperListener;
+        _daServer = daServer;
+        Activator = activationServer;
         DaClsid = daClsid;
+        AeClsid = aeClsid;
+        HdaClsid = hdaClsid;
     }
 
     /// <summary>The CLSID clients activate to obtain the DA server.</summary>
     public Guid DaClsid { get; }
+
+    /// <summary>The CLSID clients activate to obtain the AE server.</summary>
+    public Guid AeClsid { get; }
+
+    /// <summary>The CLSID clients activate to obtain the HDA server.</summary>
+    public Guid HdaClsid { get; }
+
+    /// <summary>The activation handler hosted on the listener.</summary>
+    public IRemoteSCMActivatorServer Activator { get; }
 
     /// <summary>The bound activation/object endpoint after <see cref="StartAsync" />.</summary>
     public IPEndPoint? Endpoint => _listener.LocalEndpoint as IPEndPoint;
@@ -47,14 +77,21 @@ public sealed class SimulationActivationHost : IAsyncDisposable
         Guid daClsid,
         string listenAddress,
         ILoggerFactory loggerFactory,
-        string? endpointMapperListenAddress = null)
+        string? endpointMapperListenAddress = null,
+        Guid? aeClsid = null,
+        Guid? hdaClsid = null,
+        ConfiguredAuthenticationSource? authenticationSource = null,
+        IOpcDataCallbackSinkFactory? dataCallbackSinkFactory = null,
+        Func<IOpcInterfaceRef, IOPCEventSink>? eventSinkFactory = null)
     {
         ArgumentNullException.ThrowIfNull(model);
         ArgumentNullException.ThrowIfNull(listenAddress);
         ArgumentNullException.ThrowIfNull(loggerFactory);
 
         var objectRegistry = new OpcObjectRegistry();
-        var daServer = new SimDaHostServer(model, objectRegistry);
+        var effectiveAeClsid = aeClsid ?? new Guid("D9A0B0C1-5E21-49C7-9C0E-2D7B6A1F0002");
+        var effectiveHdaClsid = hdaClsid ?? new Guid("D9A0B0C1-5E21-49C7-9C0E-2D7B6A1F0003");
+        var daServer = new SimDaHostServer(model, objectRegistry, dataCallbackSinkFactory);
         var aeServer = new SimAeServer(model, loggerFactory);
         var hdaServer = new SimHdaHostServer(model);
         OpcServerListener? listener = null;
@@ -65,8 +102,11 @@ public sealed class SimulationActivationHost : IAsyncDisposable
             daClsid,
             daServer,
             objectRegistry,
+            aeClsid: effectiveAeClsid,
             aeServer: aeServer,
+            hdaClsid: effectiveHdaClsid,
             hdaServer: hdaServer,
+            aeEventSinkFactory: eventSinkFactory,
             endpointProvider: () => listener?.LocalEndpoint as IPEndPoint,
             remUnknownIpid: objectExporter.IRemUnknownIpid,
             logger: loggerFactory.CreateLogger<SimulationActivationServer>());
@@ -80,6 +120,7 @@ public sealed class SimulationActivationHost : IAsyncDisposable
         var processor = new RpcServerConnectionProcessor(
             rootDispatchers,
             objectRegistry,
+            authenticationSource,
             loggerFactory.CreateLogger<RpcServerConnectionProcessor>());
         var endpoint = new TcpServerEndpoint(ListenAddressParser.Parse(listenAddress));
         listener = new OpcServerListener(endpoint, processor, loggerFactory.CreateLogger<OpcServerListener>());
@@ -98,7 +139,7 @@ public sealed class SimulationActivationHost : IAsyncDisposable
             endpointMapperListener = new OpcServerListener(epmEndpoint, epmProcessor, loggerFactory.CreateLogger<OpcServerListener>());
         }
 
-        return new SimulationActivationHost(listener, endpointMapperListener, daClsid);
+        return new SimulationActivationHost(listener, endpointMapperListener, daServer, activationServer, daClsid, effectiveAeClsid, effectiveHdaClsid);
     }
 
     /// <summary>Starts the activation/object listener.</summary>
@@ -109,6 +150,8 @@ public sealed class SimulationActivationHost : IAsyncDisposable
         {
             await _endpointMapperListener.StartAsync(cancellationToken).ConfigureAwait(false);
         }
+        _tickerCts = new CancellationTokenSource();
+        _tickerTask = RunTickerAsync(_tickerCts.Token);
         _started = true;
     }
 
@@ -121,8 +164,34 @@ public sealed class SimulationActivationHost : IAsyncDisposable
             {
                 await _endpointMapperListener.StopAsync(cancellationToken).ConfigureAwait(false);
             }
+            if (_tickerCts is not null)
+            {
+                await _tickerCts.CancelAsync().ConfigureAwait(false);
+            }
+            if (_tickerTask is not null)
+            {
+                try
+                {
+                    await _tickerTask.ConfigureAwait(false);
+                }
+                catch (OperationCanceledException)
+                {
+                }
+            }
+            _tickerCts?.Dispose();
+            _tickerCts = null;
+            _tickerTask = null;
             await _listener.StopAsync(cancellationToken).ConfigureAwait(false);
             _started = false;
+        }
+    }
+
+    private async Task RunTickerAsync(CancellationToken cancellationToken)
+    {
+        using var timer = new PeriodicTimer(_tickInterval);
+        while (await timer.WaitForNextTickAsync(cancellationToken).ConfigureAwait(false))
+        {
+            await _daServer.RefreshFromModelAsync(cancellationToken).ConfigureAwait(false);
         }
     }
 

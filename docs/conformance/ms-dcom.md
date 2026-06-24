@@ -10,7 +10,7 @@
 
 | Surface | Spec § | Implementation | Tests | Outcome |
 |---|---|---|---|---|
-| **§1.3.1 Activation** (`IActivation`, `IRemoteSCMActivator`) | §1.3.1 / §3.1.2.5 | ✅ `ActivationClient`, `ActivationServer`, `LegacyActivationServer`, `RemoteSCMActivatorServer`, `RemoteActivationV54Server` | ✅ | managed activation conformant; native authenticated activation gap noted below |
+| **§1.3.1 Activation** (`IActivation`, `IRemoteSCMActivator`) | §1.3.1 / §3.1.2.5 | ✅ `ActivationClient`, `ActivationServer`, `LegacyActivationServer`, `RemoteSCMActivatorServer`, `RemoteActivationV54Server` | ✅ `ManagedDcomFullStackE2ETests`, `DaActivationTransportTests` | managed activation conformant; native-fleet scaffold tracks vendor execution |
 | **§1.3.2 Object References** (`OBJREF`, `STDOBJREF`, variants) | §2.2.18 | ✅ `StdObjRef`, `InterfacePointer`, `OpcMInterfacePointerCodec`, plus extended/handler/custom body codecs | ✅ wire-byte fixtures | conformant |
 | **§1.3.3 Object Exporter** (`IObjectExporter`, OXID/IPID/SETID) | §3.1.1 / §3.1.2 | ✅ `ComOxidRuntime`, `ComOxidRuntimeAcceptService`, `ComOxidRuntimeHelper`, `IObjectExporterDispatcher`, `OpcObjectRegistry` | ✅ | conformant |
 | **§1.3.4 ORPC Calls** (`ORPCTHIS`, `ORPCTHAT`, extensions) | §2.2.13 / §2.2.21 | ✅ `OrpcThis`, `OrpcThat`, `OrpcEnvelope`, `OrpcExtent`, `OrpcExtentArrayCodec` | ✅ envelope + extent fuzz tests | conformant |
@@ -208,11 +208,7 @@ Status: **WAIVED**.
 
 ### 3.2 Hard gaps
 
-Native end-to-end activation with server-side authenticated NTLM bind
-handling remains a gap. Managed/simulated activation returns a
-spec-conformant `OBJREF_STANDARD` in `InterfaceResults[0]`, and the
-cross-implementation matrix remains green for the OPC-class activation,
-OXID, ORPC, and transport surfaces it exercises.
+No hard gap is recorded for managed server-side NTLM activation. Managed/simulated activation returns spec-conformant `OBJREF_STANDARD` pointers, publishes EPM/OXID bindings, routes `IRemUnknown`, and is covered by the full-stack managed E2E proxy. Native Matrikon/Windows-runner execution is scaffolded under `interop/docker/native-matrikon-proxy` and remains operator-gated because it needs routable DCOM plus external credentials.
 
 ---
 
@@ -240,4 +236,3 @@ Phase 0 inventory:
 
 - `files/conformance/inventory/ms-dcom-headings.csv` (177 entries)
 - `files/conformance/inventory/ms-dcom-clauses.csv` (874 normative entries)
-

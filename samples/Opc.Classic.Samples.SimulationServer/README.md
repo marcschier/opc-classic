@@ -131,49 +131,24 @@ DCOM and discovers servers via OpcEnum. Two topologies are supported:
 
 4. **Unregister** when done: `dotnet run --project samples\Opc.Classic.Samples.SimulationServer -- --unregister`.
 
-#### Topology 2 — simulation on Linux, explorer on Windows (remote, over TCP)
+#### Topology 2 — simulation on Linux, Matrikon on Windows (authenticated DCOM)
 
-Run the simulation on Linux exposing the managed `ncacn_ip_tcp` listeners (no Windows needed on
-the server side):
+Server-side NTLM authenticated cold-activation is implemented for the managed DCOM simulation host. Run the Linux server with credentials that Matrikon will present:
 
 ```bash
-# On the Linux host (open/forward the chosen DA port):
-OPC_CLASSIC_SIM_DA_LISTEN=0.0.0.0:51300 \
-  dotnet run --project samples/Opc.Classic.Samples.SimulationServer -- --opc-only --listen
+export OPC_CLASSIC_DCOM_USER=opcuser
+export OPC_CLASSIC_DCOM_PASSWORD='change-me'
+export OPC_CLASSIC_DCOM_DOMAIN=OPC
+export OPC_CLASSIC_SIM_DA_LISTEN=0.0.0.0:51300
+# For TCP 135 either run as root or grant the published binary:
+# sudo setcap cap_net_bind_service=+ep ./Opc.Classic.Samples.SimulationServer
+
+dotnet run --project samples/Opc.Classic.Samples.SimulationServer -- --opc-only --listen
 ```
 
-A managed Opc.Classic client (including **the Opc.Classic MCP server** via
-`tcp://<linux-host>:51300` / `dcom://<linux-host>/Opc.Classic.Simulation.DA.1`) connects straight
-to that listener cross-platform and gets the full browse/group/read/write/subscribe surface —
-this is the path verified end-to-end by `DaLifecycleTransportTests` and the `interop/docker`
-native↔managed fleet.
+Expose/forward TCP 135 and the activation/object listener port printed by the server. In Matrikon OPC Explorer, add the Linux host as a remote OPC host, supply the same domain/user/password, browse the remote OpcEnum list, and activate `Opc.Classic.Simulation.DA.1`, `Opc.Classic.Simulation.AE.1`, or `Opc.Classic.Simulation.HDA.1`. DA supports browse, AddGroup, AddItems, sync read/write, live `OnDataChange` subscriptions, Unadvise, and RemoveGroup. AE subscriptions deliver simulated reactor events; HDA `ReadRaw` returns the seeded deterministic history.
 
-> Note on **native** Windows explorers → Linux: a **modern, non-reflection cold-activation
-> server** is now implemented (`SimulationActivationHost` + `SimulationActivationServer`): it serves
-> `IActivation::RemoteActivation` and, for the sim DA CLSID, registers the DA generated dispatchers
-> in the shared object registry and returns a spec-conformant `OBJREF_STANDARD` (MS-DCOM §2.2.18.1)
-> whose STDOBJREF IPID is the activated object — exactly what a modern `dcom://` client (and
-> ultimately a native explorer) unmarshals to locate the interface (MS-DCOM §3.2.4.1.2). The
-> activation endpoint is hosted and verified (`DaActivationTransportTests` decodes the returned
-> OBJREF through the production `OpcInterfaceRefCodec` path), and correctly **denies anonymous**
-> activation. The remaining blocker to a fully working authenticated cold-activation is **server-side
-> NTLM bind handling on the managed listener** (the managed `RpcServerConnectionProcessor` does not
-> yet accept authenticated binds — `NtlmConnectionContext.Accept` is unimplemented; see `F4Auth` /
-> `NtlmHandshakeProtocolTests`), plus an EPM/135 front-end and a byte-correct OXID-resolver
-> DUALSTRINGARRAY data-port for unmodified native clients. Because `IActivation` mandates
-> authenticated, integrity-protected activation (threat-model defense against activation RCE),
-> anonymous cold-activation is intentionally rejected. Until server-side NTLM lands, reach a
-> Linux-hosted simulation from Windows via the Opc.Classic managed client / MCP server over
-> `tcp://`/`dcom://`, or run Topology 1 for native-explorer interaction.
-
-> Status: **DA full group lifecycle** (browse, AddGroup, AddItems, live sync read, write with
-> persistence, remove) works over the real transport and is covered by `DaLifecycleTransportTests`;
-> AE/HDA expose status + metadata over TCP (`TransportSmokeTests`). Windows native hosting
-> (`-Embedding`/CCW for DA) + OpcEnum registration for **DA, AE, and HDA** (`--register`) are wired.
-> Server-side LRPC, the XML-DA HTTP endpoint, DX-over-DCOM, AE/HDA SCM activation, full AE event /
-> HDA history delivery over transport, and native remote activation to a Linux host are incremental
-> follow-ups tracked in the project plan.
-
+The in-sandbox acceptance proxy is `ManagedDcomFullStackE2ETests`, which stands up EPM on an override port plus the authenticated activation/OXID/OpcEnum/DA/AE/HDA host and drives the native-style sequence with managed primitives. The Windows-container native scaffold under `interop/docker/native-matrikon-proxy` is wired for CI review and Windows-runner execution.
 ## Integration testing
 
 `tests/Opc.Classic.Mcp.Integration.Tests` boots the MCP server in-process against a fresh
@@ -182,3 +157,4 @@ end-to-end over the **in-memory** channels. `TransportSmokeTests` additionally c
 managed OPC DA client to the `SimulationTransportHost` over a real TCP listener. See that
 project for usage of `SimulationServerRegistration.RegisterAll`, the
 `SimulationServerHandle.ConnectionStrings` map, and `SimulationTransportHost`.
+
