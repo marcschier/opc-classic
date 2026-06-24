@@ -210,7 +210,7 @@ jobs:
           ref: ${{ github.event.inputs.tag || github.ref }}
 
       - name: Log in to GHCR
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
@@ -238,7 +238,7 @@ jobs:
 
       - name: Build and push opc-classic-managed
         id: build-managed
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           context: .
           file: interop/docker/opc-managed/Dockerfile
@@ -269,7 +269,7 @@ jobs:
       - name: Build and push opc-classic-c-server (optional)
         id: build-cserver
         if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.publish_reference_images == 'true' }}
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           context: .
           file: interop/docker/opc-c-server/Dockerfile
@@ -293,7 +293,7 @@ jobs:
       - name: Build and push opc-classic-c-client (optional)
         id: build-cclient
         if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.publish_reference_images == 'true' }}
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           context: .
           file: interop/docker/opc-c-client/Dockerfile
@@ -330,15 +330,15 @@ jobs:
           ref: ${{ github.event.inputs.tag || github.ref }}
 
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
+        uses: docker/setup-qemu-action@v4
         with:
           platforms: linux/amd64,linux/arm64
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@v4
 
       - name: Log in to GHCR
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
@@ -361,7 +361,7 @@ jobs:
 
       - name: Build and push opc-classic-managed-linux (multi-arch)
         id: build-managed-linux
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           context: .
           file: interop/docker/opc-managed/Dockerfile.linux
