@@ -1,0 +1,148 @@
+name: nuget
+
+# Manual action: promote the latest already-published Opc.Classic.* packages from
+# the GitHub Packages NuGet feed to nuget.org, using NuGet trusted publishing
+# (OIDC) instead of a long-lived API key.
+#
+# What it does when run:
+#   1. Lists the Opc.Classic.* packages on the GitHub Packages feed for this owner.
+#   2. Picks the latest published version (or the version you supply as input).
+#   3. Downloads every family package at that version straight from the GitHub feed
+#      (no rebuild/repack — the exact bytes that were released are promoted).
+#   4. Exchanges the workflow's OIDC token for a short-lived nuget.org key via
+#      NuGet/login@v1 and pushes the packages to nuget.org (idempotent).
+#
+# One-time setup on nuget.org (https://www.nuget.org/account/trustedpublishing):
+#   Add policy -> Repository Owner: marcschier, Repository: opc-classic,
+#   Workflow File: nuget.yml, Environment: release.
+# And a `release` GitHub Environment with secret NUGET_USER = your nuget.org
+# username (NOT email).
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Exact package version to promote from the GitHub feed (e.g. 1.0.0-rc.11). Leave blank to promote the latest published version.'
+        required: false
+        type: string
+
+permissions:
+  id-token: write   # required: OIDC token for NuGet trusted publishing to nuget.org
+  packages: read    # required: read packages from the GitHub Packages NuGet feed
+  contents: read
+
+concurrency:
+  group: nuget-promote
+  cancel-in-progress: false
+
+jobs:
+  promote:
+    name: Promote latest GitHub-feed packages to nuget.org
+    runs-on: ubuntu-latest
+    environment: release
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: global.json
+
+      - name: Resolve and download packages from the GitHub feed
+        id: resolve
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          OWNER: ${{ github.repository_owner }}
+          INPUT_VERSION: ${{ github.event.inputs.version }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          FEED="https://nuget.pkg.github.com/${OWNER}"
+
+          # 1. Enumerate the Opc.Classic.* family on the GitHub Packages feed.
+          mapfile -t PKGS < <(gh api "/users/${OWNER}/packages?package_type=nuget&per_page=100" \
+            --jq '.[] | select(.name | startswith("Opc.Classic.")) | .name' | sort -u)
+          if [ "${#PKGS[@]}" -eq 0 ]; then
+            echo "::error::No Opc.Classic.* NuGet packages found on the GitHub feed for ${OWNER}."
+            exit 1
+          fi
+          echo "Found ${#PKGS[@]} package(s) on the GitHub feed."
+
+          # 2. Cache each package's version list and track the newest publish overall.
+          mkdir -p vers artifacts
+          NEWEST_TS=""
+          LATEST=""
+          for p in "${PKGS[@]}"; do
+            gh api "/users/${OWNER}/packages/nuget/${p}/versions?per_page=100" > "vers/${p}.json"
+            line="$(jq -r 'sort_by(.created_at) | last | "\(.name)\t\(.created_at)"' "vers/${p}.json")"
+            [ -n "$line" ] || continue
+            v="${line%%$'\t'*}"
+            ts="${line#*$'\t'}"
+            if [ -z "$NEWEST_TS" ] || [[ "$ts" > "$NEWEST_TS" ]]; then
+              NEWEST_TS="$ts"
+              LATEST="$v"
+            fi
+          done
+
+          # 3. Decide the version to promote.
+          if [ -n "${INPUT_VERSION}" ]; then
+            TARGET="${INPUT_VERSION}"
+            echo "Promoting requested version: ${TARGET}"
+          else
+            TARGET="${LATEST}"
+            if [ -z "$TARGET" ]; then
+              echo "::error::Could not determine the latest published version from the GitHub feed."
+              exit 1
+            fi
+            echo "Auto-selected latest published version: ${TARGET} (published ${NEWEST_TS})."
+          fi
+
+          # 4. Download every family package that has the target version.
+          downloaded=0
+          for p in "${PKGS[@]}"; do
+            has="$(jq --arg v "$TARGET" '[.[].name] | index($v) != null' "vers/${p}.json")"
+            if [ "$has" != "true" ]; then
+              echo "::notice::Skipping ${p}: version ${TARGET} is not on the feed."
+              continue
+            fi
+            idl="$(echo "$p" | tr '[:upper:]' '[:lower:]')"
+            verl="$(echo "$TARGET" | tr '[:upper:]' '[:lower:]')"
+            url="${FEED}/download/${idl}/${verl}/${idl}.${verl}.nupkg"
+            echo "Downloading ${p} ${TARGET}"
+            curl -fSL -H "Authorization: Bearer ${GH_TOKEN}" -o "artifacts/${p}.${TARGET}.nupkg" "${url}"
+            downloaded=$((downloaded + 1))
+          done
+
+          if [ "$downloaded" -eq 0 ]; then
+            echo "::error::No .nupkg files were downloaded for version ${TARGET}."
+            exit 1
+          fi
+          echo "Downloaded ${downloaded} package(s) at version ${TARGET}."
+          {
+            echo "version=${TARGET}"
+            echo "count=${downloaded}"
+          } >> "$GITHUB_OUTPUT"
+
+      # NuGet login happens right before the push so the short-lived token is fresh.
+      - name: NuGet login (OIDC trusted publishing)
+        id: login
+        uses: NuGet/login@v1
+        with:
+          user: ${{ secrets.NUGET_USER }}
+
+      - name: Push to nuget.org
+        run: |
+          dotnet nuget push "artifacts/*.nupkg" \
+            --api-key "${{ steps.login.outputs.NUGET_API_KEY }}" \
+            --source https://api.nuget.org/v3/index.json \
+            --skip-duplicate
+
+      - name: Summary
+        if: always()
+        run: |
+          {
+            echo "### nuget.org promotion"
+            echo ""
+            echo "- Version: \`${{ steps.resolve.outputs.version }}\`"
+            echo "- Packages promoted: \`${{ steps.resolve.outputs.count }}\`"
+            echo "- Source: GitHub Packages feed → nuget.org (trusted publishing)"
+          } >> "$GITHUB_STEP_SUMMARY"
