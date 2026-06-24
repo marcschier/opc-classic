@@ -54,6 +54,8 @@ public sealed class SimulationActivationHost : IAsyncDisposable
 
         var objectRegistry = new OpcObjectRegistry();
         var daServer = new SimDaHostServer(model, objectRegistry);
+        var aeServer = new SimAeHostServer(model);
+        var hdaServer = new SimHdaHostServer(model);
         OpcServerListener? listener = null;
         var objectExporter = new IObjectExporterDispatcher(
             endpointProvider: () => listener?.LocalEndpoint as IPEndPoint,
@@ -62,13 +64,16 @@ public sealed class SimulationActivationHost : IAsyncDisposable
             daClsid,
             daServer,
             objectRegistry,
+            aeServer: aeServer,
+            hdaServer: hdaServer,
             endpointProvider: () => listener?.LocalEndpoint as IPEndPoint,
             remUnknownIpid: objectExporter.IRemUnknownIpid,
-            loggerFactory.CreateLogger<SimulationActivationServer>());
+            logger: loggerFactory.CreateLogger<SimulationActivationServer>());
 
         var rootDispatchers = new Dictionary<Guid, IOpcServerDispatcher>
         {
             [ActivationServer.InterfaceId] = new ActivationServer(activationServer, loggerFactory.CreateLogger<ActivationServer>()),
+            [RemoteSCMActivatorDispatcher.InterfaceId] = new RemoteSCMActivatorDispatcher(activationServer, loggerFactory.CreateLogger<RemoteSCMActivatorDispatcher>()),
             [IObjectExporterDispatcher.InterfaceId] = objectExporter,
         };
         var processor = new RpcServerConnectionProcessor(

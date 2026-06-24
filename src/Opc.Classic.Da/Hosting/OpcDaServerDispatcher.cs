@@ -50,10 +50,10 @@ public sealed class OpcDaServerDispatcher : IOpcDaServerDispatcher, IOPCCommon, 
     /// Gets the latest client name supplied through <c>IOPCCommon::SetClientName</c>.
     /// </summary>
     public string ClientName => _connectionContext.ClientName;
-    internal IOpcServerDispatcher ServerDispatcher => _serverDispatcher;
-    internal IOpcServerDispatcher CommonDispatcher => _commonDispatcher;
-    internal IOpcServerDispatcher ConnectionPointContainerDispatcher => _connectionPointContainerDispatcher;
-    internal IOpcServerDispatcher ConnectionPointDispatcher => _connectionPointDispatcher;
+    public IOpcServerDispatcher ServerDispatcher => _serverDispatcher;
+    public IOpcServerDispatcher CommonDispatcher => _commonDispatcher;
+    public IOpcServerDispatcher ConnectionPointContainerDispatcher => _connectionPointContainerDispatcher;
+    public IOpcServerDispatcher ConnectionPointDispatcher => _connectionPointDispatcher;
 
     /// <inheritdoc />
     public async Task<NdrCallResult> DispatchAsync(

@@ -9,6 +9,8 @@ using Opc.Classic.Dcom.Transport;
 using Opc.Classic.Ndr;
 using Opc.Classic.Samples.SimulationServer;
 using Opc.Classic.Samples.SimulationServer.Transports;
+using RemoteCreateInstanceRequest = Opc.Classic.Dcom.Core.RemoteCreateInstanceRequest;
+using RemoteCreateInstanceResponse = Opc.Classic.Dcom.Core.RemoteCreateInstanceResponse;
 
 namespace Opc.Classic.Mcp.Integration.Tests;
 
@@ -93,8 +95,49 @@ public sealed class DaActivationTransportTests
         var reader = new NdrReader(interfaceResult.ObjRef.Span);
         IOpcInterfaceRef objRef = OpcInterfaceRefCodec.Read(ref reader);
         await Assert.That(objRef.Iid).IsEqualTo(IOPCServer.InterfaceId);
-        await Assert.That(objRef.Ipid).IsEqualTo(response.IpidRemUnknown);
+        await Assert.That(objRef.Ipid).IsNotEqualTo(response.IpidRemUnknown);
         await Assert.That(registry.Contains(objRef.Ipid)).IsTrue();
+        await Assert.That(registry.TryGetDispatcher(response.IpidRemUnknown, RemUnknownServerDispatcher.InterfaceId, out _)).IsTrue();
+    }
+
+    [Test]
+    public async Task RemoteCreateInstance_registers_root_interfaces_remunknown_and_bindings()
+    {
+        var endpoint = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 24680);
+        var model = new SimulatedPlantModel();
+        var registry = new OpcObjectRegistry();
+        var daServer = new SimDaHostServer(model, registry);
+        var activationServer = new SimulationActivationServer(
+            SimDaClsid,
+            daServer,
+            registry,
+            endpointProvider: () => endpoint);
+
+        RemoteCreateInstanceResponse response = await activationServer.RemoteCreateInstanceAsync(
+            new RemoteCreateInstanceRequest(SimDaClsid, IOPCServer.InterfaceId, [0x07]),
+            CancellationToken.None).ConfigureAwait(false);
+
+        await Assert.That(response.Hresult).IsEqualTo(0);
+        await Assert.That(response.IpidRemUnknown).IsNotEqualTo(Guid.Empty);
+        await Assert.That(registry.TryGetDispatcher(response.IpidRemUnknown, RemUnknownServerDispatcher.InterfaceId, out _)).IsTrue();
+        await Assert.That(registry.Contains(response.Ipid)).IsTrue();
+        await Assert.That(registry.TryGetDispatcher(response.Ipid, IOPCServer.InterfaceId, out _)).IsTrue();
+        await Assert.That(registry.TryGetDispatcher(response.Ipid, IOPCCommon.InterfaceId, out _)).IsTrue();
+        await Assert.That(registry.TryGetDispatcher(response.Ipid, IOPCBrowse.InterfaceId, out _)).IsTrue();
+        await Assert.That(registry.TryGetDispatcher(response.Ipid, IOPCBrowseServerAddressSpace.InterfaceId, out _)).IsTrue();
+        await Assert.That(registry.TryGetDispatcher(response.Ipid, IOPCItemProperties.InterfaceId, out _)).IsTrue();
+
+        var reader = new NdrReader(response.ObjRef);
+        IOpcInterfaceRef objRef = OpcInterfaceRefCodec.Read(ref reader);
+        await Assert.That(objRef.Iid).IsEqualTo(IOPCServer.InterfaceId);
+        await Assert.That(objRef.Ipid).IsEqualTo(response.Ipid);
+        await Assert.That(objRef.Oxid).IsNotEqualTo(0UL);
+        await Assert.That(objRef.Oid).IsNotEqualTo(0UL);
+        (ushort[] bindings, ushort securityOffset) = DecodeDualStringArray(response.OxidBindings);
+        await Assert.That(bindings.Length).IsGreaterThan(0);
+        await Assert.That(ReadStringBinding(bindings)).IsEqualTo("127.0.0.1[24680]");
+        await Assert.That(objRef.ResolverBindings.Count).IsEqualTo(bindings.Length);
+        await Assert.That(objRef.SecurityOffset).IsEqualTo(securityOffset);
     }
 
     [Test]
@@ -156,6 +199,24 @@ public sealed class DaActivationTransportTests
         // (MS-DCOM §3.1.2.5.2.3.1: pResults carries one entry per requested IID even on failure).
         await Assert.That(response.Hresult).IsEqualTo(unchecked((int)0x80040154u));
         await Assert.That(response.InterfaceResults.Count).IsEqualTo(1);
+    }
+
+    [Test]
+    public async Task RemoteCreateInstance_wrong_clsid_returns_class_not_registered_without_objref()
+    {
+        var model = new SimulatedPlantModel();
+        var registry = new OpcObjectRegistry();
+        var daServer = new SimDaHostServer(model, registry);
+        var activationServer = new SimulationActivationServer(SimDaClsid, daServer, registry);
+
+        RemoteCreateInstanceResponse response = await activationServer.RemoteCreateInstanceAsync(
+            new RemoteCreateInstanceRequest(new Guid("11111111-2222-3333-4444-555555555555"), IOPCServer.InterfaceId, [0x07]),
+            CancellationToken.None).ConfigureAwait(false);
+
+        await Assert.That(response.Hresult).IsEqualTo(unchecked((int)0x80040154u));
+        await Assert.That(response.Ipid).IsEqualTo(Guid.Empty);
+        await Assert.That(response.ObjRef.Length).IsEqualTo(0);
+        await Assert.That(registry.TryGetDispatcher(response.IpidRemUnknown, RemUnknownServerDispatcher.InterfaceId, out _)).IsTrue();
     }
 
     private static async Task<DcomCallChannel> ConnectAsync(IPEndPoint endpoint, Guid? objectIpid, Guid preBindIid)

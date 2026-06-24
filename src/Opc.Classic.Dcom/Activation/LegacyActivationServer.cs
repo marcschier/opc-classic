@@ -103,7 +103,7 @@ public sealed class LegacyActivationServer : IActivationServer
         return new RemoteActivationResponse(
             Hresult: modern.Hresult,
             Oxid: modern.Oxid,
-            IpidRemUnknown: modern.Ipid,
+            IpidRemUnknown: modern.IpidRemUnknown == Guid.Empty ? modern.Ipid : modern.IpidRemUnknown,
             AuthnHint: AuthnHintPacketIntegrity,
             ServerVersion: ServerComVersion,
             InterfaceResults: perIid)
@@ -128,7 +128,7 @@ public sealed class LegacyActivationServer : IActivationServer
         return new RemoteActivationResponse(
             Hresult: modern.Hresult,
             Oxid: modern.Oxid,
-            IpidRemUnknown: modern.Ipid,
+            IpidRemUnknown: modern.IpidRemUnknown == Guid.Empty ? modern.Ipid : modern.IpidRemUnknown,
             AuthnHint: AuthnHintPacketIntegrity,
             ServerVersion: ServerComVersion,
             InterfaceResults: perIid)

@@ -39,9 +39,9 @@ public sealed class OpcAeServerDispatcher : IOpcAeServerDispatcher, IConnectionP
         }
     }
 
-    internal IOpcServerDispatcher EventServerDispatcher => _serverDispatcher;
+    public IOpcServerDispatcher EventServerDispatcher => _serverDispatcher;
 
-    internal IOpcServerDispatcher CommonDispatcher => _commonDispatcher;
+    public IOpcServerDispatcher CommonDispatcher => _commonDispatcher;
 
     /// <inheritdoc />
     public async Task<NdrCallResult> DispatchAsync(

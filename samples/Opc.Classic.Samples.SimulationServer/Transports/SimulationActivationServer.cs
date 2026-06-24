@@ -2,13 +2,25 @@
 
 using System.Net;
 using Microsoft.Extensions.Logging;
+using Opc.Classic.Ae.Dcom;
+using Opc.Classic.Ae.Hosting;
 using Opc.Classic.Da.Dcom;
 using Opc.Classic.Da.Hosting;
 using Opc.Classic.Dcom;
 using Opc.Classic.Dcom.Activation;
 using Opc.Classic.Dcom.Transport;
+using Opc.Classic.Hda.Dcom;
+using Opc.Classic.Hda.Hosting;
 using Opc.Classic.Hosting;
 using Opc.Classic.Ndr;
+using ActivationProperties = Opc.Classic.Dcom.Core.ActivationProperties;
+using ActivationInfoCodec = Opc.Classic.Dcom.Core.ActivationInfoCodec;
+using IRemoteSCMActivatorServer = Opc.Classic.Dcom.Core.IRemoteSCMActivatorServer;
+using RemoteCreateInstanceRequest = Opc.Classic.Dcom.Core.RemoteCreateInstanceRequest;
+using RemoteCreateInstanceResponse = Opc.Classic.Dcom.Core.RemoteCreateInstanceResponse;
+using RemoteGetClassObjectRequest = Opc.Classic.Dcom.Core.RemoteGetClassObjectRequest;
+using RemoteGetClassObjectResponse = Opc.Classic.Dcom.Core.RemoteGetClassObjectResponse;
+using ScmReplyInfo = Opc.Classic.Dcom.Core.ScmReplyInfo;
 
 namespace Opc.Classic.Samples.SimulationServer.Transports;
 
@@ -29,7 +41,7 @@ namespace Opc.Classic.Samples.SimulationServer.Transports;
 /// server (per MS-DCOM §3.2.4.1.2). The activation response carries the listener's
 /// OXID-resolver string bindings so native clients can resolve the object's ORPC data port.
 /// </remarks>
-public sealed class SimulationActivationServer : IActivationServer
+public sealed class SimulationActivationServer : IActivationServer, IRemoteSCMActivatorServer
 {
     private const uint AuthnHintPacketIntegrity = 5;
     private static readonly (ushort Major, ushort Minor) ServerComVersion = (5, 1);
@@ -38,7 +50,11 @@ public sealed class SimulationActivationServer : IActivationServer
     private static readonly Guid IidIUnknown = Guid.Parse(Interfaces.IID_IUnknown);
 
     private readonly Guid _daClsid;
+    private readonly Guid _aeClsid;
+    private readonly Guid _hdaClsid;
     private readonly SimDaHostServer _daServer;
+    private readonly SimAeHostServer _aeServer;
+    private readonly SimHdaHostServer _hdaServer;
     private readonly OpcObjectRegistry _objectRegistry;
     private readonly Func<IPEndPoint?> _endpointProvider;
     private readonly Guid _remUnknownIpid;
@@ -55,23 +71,31 @@ public sealed class SimulationActivationServer : IActivationServer
         Guid daClsid,
         SimDaHostServer daServer,
         OpcObjectRegistry objectRegistry,
+        Guid? aeClsid = null,
+        SimAeHostServer? aeServer = null,
+        Guid? hdaClsid = null,
+        SimHdaHostServer? hdaServer = null,
         Func<IPEndPoint?>? endpointProvider = null,
         Guid? remUnknownIpid = null,
         ILogger? logger = null)
     {
         _daClsid = daClsid;
+        _aeClsid = aeClsid ?? new Guid("D9A0B0C1-5E21-49C7-9C0E-2D7B6A1F0002");
+        _hdaClsid = hdaClsid ?? new Guid("D9A0B0C1-5E21-49C7-9C0E-2D7B6A1F0003");
         _daServer = daServer ?? throw new ArgumentNullException(nameof(daServer));
+        _aeServer = aeServer ?? new SimAeHostServer(new SimulatedPlantModel());
+        _hdaServer = hdaServer ?? new SimHdaHostServer(new SimulatedPlantModel());
         _objectRegistry = objectRegistry ?? throw new ArgumentNullException(nameof(objectRegistry));
         _endpointProvider = endpointProvider ?? (() => null);
-        _remUnknownIpid = remUnknownIpid ?? Guid.Empty;
+        _remUnknownIpid = EnsureRemUnknownRegistered(objectRegistry, remUnknownIpid ?? Guid.NewGuid());
         _logger = logger;
     }
 
     /// <inheritdoc />
     public async Task<int> RemoteActivationAsync(Guid clsid, Guid requestedIid, CancellationToken cancellationToken = default)
     {
-        RemoteActivationResponse response = await RemoteActivationAsync(
-            new RemoteActivationRequest(
+        Opc.Classic.Dcom.Activation.RemoteActivationResponse response = await RemoteActivationAsync(
+            new Opc.Classic.Dcom.Activation.RemoteActivationRequest(
                 Clsid: clsid,
                 RequestedIids: new[] { requestedIid == Guid.Empty ? IidIUnknown : requestedIid },
                 ClientImpLevel: 2,
@@ -82,14 +106,14 @@ public sealed class SimulationActivationServer : IActivationServer
     }
 
     /// <inheritdoc />
-    public Task<RemoteActivationResponse> RemoteActivationAsync(
-        RemoteActivationRequest request,
+    public Task<Opc.Classic.Dcom.Activation.RemoteActivationResponse> RemoteActivationAsync(
+        Opc.Classic.Dcom.Activation.RemoteActivationRequest request,
         CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(request);
         cancellationToken.ThrowIfCancellationRequested();
 
-        if (request.Clsid != _daClsid)
+        if (!IsKnownClsid(request.Clsid))
         {
             // MS-DCOM §3.1.2.5.2.3.1: on failure, pResults MUST contain one zeroed entry per
             // requested IID (not an empty array), so the client's per-IID decode succeeds and
@@ -100,10 +124,10 @@ public sealed class SimulationActivationServer : IActivationServer
                 failed[i] = new RemoteActivationInterfaceResult(0, Array.Empty<byte>());
             }
 
-            return Task.FromResult(new RemoteActivationResponse(
+            return Task.FromResult(new Opc.Classic.Dcom.Activation.RemoteActivationResponse(
                 Hresult: RegdbEClassNotReg,
                 Oxid: Guid.Empty,
-                IpidRemUnknown: Guid.Empty,
+                IpidRemUnknown: _remUnknownIpid,
                 AuthnHint: AuthnHintPacketIntegrity,
                 ServerVersion: ServerComVersion,
                 InterfaceResults: failed)
@@ -112,51 +136,212 @@ public sealed class SimulationActivationServer : IActivationServer
             });
         }
 
-        var dispatchers = new Dictionary<Guid, IOpcServerDispatcher>
-        {
-            [IOPCServer.InterfaceId] = new IOPCServerServerDispatcher(_daServer),
-        };
-        Guid ipid = _objectRegistry.Register(dispatchers);
+        ActivationExport export = Activate(request.Clsid, primaryIid: request.RequestedIids.Count > 0 ? request.RequestedIids[0] : IOPCServer.InterfaceId);
 
         // The simulation only exposes IOPCServer. The primary requested IID gets a real
         // OBJREF_STANDARD carrying the registry IPID; any additional IIDs are reported as
         // E_NOINTERFACE (mirrors LegacyActivationServer.TranslateCreateInstanceResponse).
-        Guid primaryIid = request.RequestedIids.Count > 0 ? request.RequestedIids[0] : IOPCServer.InterfaceId;
-        byte[] oxidBindings = IObjectExporterDispatcher.EncodeDualStringArrayForListener(_endpointProvider());
-        byte[] objRef = EncodeStandardObjRef(primaryIid, ipid, oxidBindings);
-
         int requested = Math.Max(1, request.RequestedIids.Count);
         var results = new RemoteActivationInterfaceResult[requested];
-        results[0] = new RemoteActivationInterfaceResult(0, objRef);
+        results[0] = new RemoteActivationInterfaceResult(0, export.ObjRef);
         for (int i = 1; i < requested; i++)
         {
             results[i] = new RemoteActivationInterfaceResult(ENoInterface, Array.Empty<byte>());
         }
 
-        return Task.FromResult(new RemoteActivationResponse(
+        return Task.FromResult(new Opc.Classic.Dcom.Activation.RemoteActivationResponse(
             Hresult: 0,
-            Oxid: Guid.NewGuid(),
-            IpidRemUnknown: _remUnknownIpid == Guid.Empty ? ipid : _remUnknownIpid,
+            Oxid: export.Oxid,
+            IpidRemUnknown: _remUnknownIpid,
             AuthnHint: AuthnHintPacketIntegrity,
             ServerVersion: ServerComVersion,
             InterfaceResults: results)
         {
-            OxidBindings = oxidBindings,
+            OxidBindings = export.OxidBindings,
+        });
+    }
+
+    /// <inheritdoc />
+    public async Task<int> RemoteCreateInstanceAsync(Guid clsid, Guid requestedIid, CancellationToken cancellationToken = default)
+    {
+        RemoteCreateInstanceResponse response = await RemoteCreateInstanceAsync(
+            new RemoteCreateInstanceRequest(clsid, requestedIid, Array.Empty<int>()),
+            cancellationToken).ConfigureAwait(false);
+        return response.Hresult;
+    }
+
+    /// <inheritdoc />
+    public async Task<int> RemoteGetClassObjectAsync(Guid clsid, Guid requestedIid, CancellationToken cancellationToken = default)
+    {
+        RemoteGetClassObjectResponse response = await RemoteGetClassObjectAsync(
+            new RemoteGetClassObjectRequest(clsid, requestedIid, Array.Empty<int>()),
+            cancellationToken).ConfigureAwait(false);
+        return response.Hresult;
+    }
+
+    /// <inheritdoc />
+    public Task<RemoteCreateInstanceResponse> RemoteCreateInstanceAsync(
+        RemoteCreateInstanceRequest request,
+        CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(request);
+        cancellationToken.ThrowIfCancellationRequested();
+
+        if (!IsKnownClsid(request.Clsid))
+        {
+            return Task.FromResult(new RemoteCreateInstanceResponse(RegdbEClassNotReg, Guid.Empty, Guid.Empty, Array.Empty<byte>())
+            {
+                IpidRemUnknown = _remUnknownIpid,
+                OxidBindings = IObjectExporterDispatcher.EncodeDualStringArrayForListener(_endpointProvider()),
+                ActivationProperties = ResolveActivationProperties(request.ActivationProperties, request.RawActivationProperties),
+            });
+        }
+
+        ActivationProperties activationProperties = ResolveActivationProperties(request.ActivationProperties, request.RawActivationProperties);
+        Guid requestedIid = activationProperties.GetRequestedIidOr(request.RequestedIid == Guid.Empty ? IidIUnknown : request.RequestedIid);
+        ActivationExport export = Activate(request.Clsid, requestedIid);
+        ScmReplyInfo reply = new(0, export.Oxid, export.Oid, export.Ipid, export.ObjRef, copy: true);
+        ActivationProperties responseProperties = activationProperties.WithScmReplyInfo(reply);
+        return Task.FromResult(new RemoteCreateInstanceResponse(0, export.Oxid, export.Ipid, export.ObjRef)
+        {
+            Oid = export.Oid,
+            IpidRemUnknown = _remUnknownIpid,
+            ActivationProperties = responseProperties,
+            EncodedActivationProperties = ActivationInfoCodec.Encode(responseProperties),
+            OxidBindings = export.OxidBindings,
+        });
+    }
+
+    /// <inheritdoc />
+    public Task<RemoteGetClassObjectResponse> RemoteGetClassObjectAsync(
+        RemoteGetClassObjectRequest request,
+        CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(request);
+        cancellationToken.ThrowIfCancellationRequested();
+
+        if (!IsKnownClsid(request.Clsid))
+        {
+            return Task.FromResult(new RemoteGetClassObjectResponse(RegdbEClassNotReg, Guid.Empty, Guid.Empty, Array.Empty<byte>())
+            {
+                IpidRemUnknown = _remUnknownIpid,
+                OxidBindings = IObjectExporterDispatcher.EncodeDualStringArrayForListener(_endpointProvider()),
+                ActivationProperties = ResolveActivationProperties(request.ActivationProperties, request.RawActivationProperties),
+            });
+        }
+
+        ActivationProperties activationProperties = ResolveActivationProperties(request.ActivationProperties, request.RawActivationProperties);
+        Guid requestedIid = request.RequestedIid == Guid.Empty ? IidIUnknown : request.RequestedIid;
+        ActivationExport export = Activate(request.Clsid, requestedIid);
+        ScmReplyInfo reply = new(0, export.Oxid, export.Oid, export.Ipid, export.ObjRef, copy: true);
+        ActivationProperties responseProperties = activationProperties.WithScmReplyInfo(reply);
+        return Task.FromResult(new RemoteGetClassObjectResponse(0, export.Oxid, export.Ipid, export.ObjRef)
+        {
+            Oid = export.Oid,
+            IpidRemUnknown = _remUnknownIpid,
+            ActivationProperties = responseProperties,
+            EncodedActivationProperties = ActivationInfoCodec.Encode(responseProperties),
+            OxidBindings = export.OxidBindings,
         });
     }
 
     // Builds an OBJREF_STANDARD (MEOW + STDOBJREF + DUALSTRINGARRAY) whose STDOBJREF IPID is the
     // registry IPID, encoded exactly as a native server would so the modern client decodes it via
     // OpcInterfaceRefCodec.Read and routes ORPC to that IPID.
-    private static byte[] EncodeStandardObjRef(Guid iid, Guid ipid, ReadOnlyMemory<byte> oxidBindings)
+    private ActivationExport Activate(Guid clsid, Guid primaryIid)
+    {
+        IReadOnlyDictionary<Guid, IOpcServerDispatcher> dispatchers = BuildDispatchers(clsid);
+        Guid ipid = _objectRegistry.Register(dispatchers);
+        Guid oxid = Guid.NewGuid();
+        Guid oid = Guid.NewGuid();
+        byte[] oxidBindings = IObjectExporterDispatcher.EncodeDualStringArrayForListener(_endpointProvider());
+        byte[] objRef = EncodeStandardObjRef(primaryIid, oxid, oid, ipid, oxidBindings);
+        return new ActivationExport(oxid, oid, ipid, oxidBindings, objRef);
+    }
+
+    private IReadOnlyDictionary<Guid, IOpcServerDispatcher> BuildDispatchers(Guid clsid)
+    {
+        if (clsid == _aeClsid)
+        {
+            var aeDispatcher = new OpcAeServerDispatcher(_aeServer);
+            return new Dictionary<Guid, IOpcServerDispatcher>
+            {
+                [IOPCEventServer.InterfaceId] = aeDispatcher.EventServerDispatcher,
+                [OpcCommonClientProxy.InterfaceId] = aeDispatcher.CommonDispatcher,
+            };
+        }
+
+        if (clsid == _hdaClsid)
+        {
+            var hdaDispatcher = new OpcHdaServerDispatcher(_hdaServer);
+            return new Dictionary<Guid, IOpcServerDispatcher>
+            {
+                [IOPCHDA_Server.InterfaceId] = hdaDispatcher.ServerDispatcher,
+                [OpcCommonClientProxy.InterfaceId] = hdaDispatcher.CommonDispatcher,
+            };
+        }
+
+        var daDispatcher = new OpcDaServerDispatcher(_daServer, _logger);
+        IOpcAddressSpace addressSpace = _daServer.BuildAddressSpace();
+        return new Dictionary<Guid, IOpcServerDispatcher>
+        {
+            [IOPCServer.InterfaceId] = daDispatcher.ServerDispatcher,
+            [IOPCCommon.InterfaceId] = daDispatcher.CommonDispatcher,
+            [IOPCBrowseServerAddressSpace.InterfaceId] = new IOPCBrowseServerAddressSpaceServerDispatcher(new DefaultBrowseServerAddressSpace(addressSpace)),
+            [IOPCBrowse.InterfaceId] = new IOPCBrowseServerDispatcher(new DefaultBrowse(addressSpace)),
+            [IOPCItemProperties.InterfaceId] = new IOPCItemPropertiesServerDispatcher(new DefaultItemProperties(NullItemPropertyProvider.Instance)),
+            [IOPCItemIO.InterfaceId] = new IOPCItemIOServerDispatcher(new DefaultItemIO(_daServer)),
+            [Opc.Classic.Da.Dcom.IConnectionPointContainer.InterfaceId] = daDispatcher.ConnectionPointContainerDispatcher,
+            [Opc.Classic.Da.Dcom.IConnectionPoint.InterfaceId] = daDispatcher.ConnectionPointDispatcher,
+        };
+    }
+
+    private bool IsKnownClsid(Guid clsid) => clsid == _daClsid || clsid == _aeClsid || clsid == _hdaClsid;
+
+    private static Guid EnsureRemUnknownRegistered(OpcObjectRegistry objectRegistry, Guid remUnknownIpid)
+    {
+        if (objectRegistry.Contains(remUnknownIpid))
+        {
+            return remUnknownIpid;
+        }
+
+        var remUnknown = new RemUnknownServerDispatcher(objectRegistry);
+        var dispatchers = new Dictionary<Guid, IOpcServerDispatcher>
+        {
+            [RemUnknownServerDispatcher.InterfaceId] = remUnknown,
+            [RemUnknownServerDispatcher.InterfaceId2] = remUnknown,
+        };
+        if (!objectRegistry.RegisterWithIpid(remUnknownIpid, dispatchers))
+        {
+            throw new InvalidOperationException("The IRemUnknown IPID is already registered.");
+        }
+
+        return remUnknownIpid;
+    }
+
+    private static ActivationProperties ResolveActivationProperties(
+        ActivationProperties activationProperties,
+        byte[] rawActivationProperties)
+    {
+        if (rawActivationProperties.Length == 0)
+        {
+            return activationProperties ?? ActivationProperties.Empty;
+        }
+
+        return ActivationInfoCodec.TryDecode(rawActivationProperties, out ActivationProperties decoded)
+            ? decoded
+            : activationProperties ?? ActivationProperties.Empty;
+    }
+
+    private static byte[] EncodeStandardObjRef(Guid iid, Guid oxid, Guid oid, Guid ipid, ReadOnlyMemory<byte> oxidBindings)
     {
         (ushort securityOffset, ushort[] resolverBindings) = DecodeDualStringArray(oxidBindings.Span);
         var interfaceRef = new OpcInterfaceRef(
             iid,
             flags: 0,
             publicRefs: 1,
-            oxid: BitConverter.ToUInt64(Guid.NewGuid().ToByteArray(), 0),
-            oid: BitConverter.ToUInt64(Guid.NewGuid().ToByteArray(), 0),
+            oxid: UInt64FromGuid(oxid),
+            oid: UInt64FromGuid(oid),
             ipid: ipid,
             securityOffset: securityOffset,
             resolverBindings: resolverBindings);
@@ -165,6 +350,18 @@ public sealed class SimulationActivationServer : IActivationServer
         var writer = new NdrWriter(buffer);
         OpcInterfaceRefCodec.Write(ref writer, interfaceRef);
         return buffer.AsSpan(0, writer.Position).ToArray();
+    }
+
+    private static ulong UInt64FromGuid(Guid value)
+    {
+        Span<byte> bytes = stackalloc byte[16];
+        bool ok = value.TryWriteBytes(bytes);
+        if (!ok)
+        {
+            throw new InvalidOperationException("Guid.TryWriteBytes failed unexpectedly.");
+        }
+
+        return BitConverter.ToUInt64(bytes);
     }
 
     private static (ushort SecurityOffset, ushort[] Bindings) DecodeDualStringArray(ReadOnlySpan<byte> dualStringArray)
@@ -185,4 +382,6 @@ public sealed class SimulationActivationServer : IActivationServer
 
         return (securityOffset, bindings);
     }
+
+    private sealed record ActivationExport(Guid Oxid, Guid Oid, Guid Ipid, byte[] OxidBindings, byte[] ObjRef);
 }

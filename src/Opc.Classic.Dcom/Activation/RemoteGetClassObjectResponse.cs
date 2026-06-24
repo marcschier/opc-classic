@@ -8,6 +8,11 @@ namespace Opc.Classic.Dcom.Core;
 public sealed record RemoteGetClassObjectResponse(int Hresult, Guid Oxid, Guid Ipid, byte[] ObjRef)
 {
     /// <summary>
+    /// IPID of the object exporter's IRemUnknown endpoint.
+    /// </summary>
+    public Guid IpidRemUnknown { get; init; }
+
+    /// <summary>
     /// Object identifier allocated for the exported class factory.
     /// </summary>
     public Guid Oid { get; init; }

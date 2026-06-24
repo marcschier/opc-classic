@@ -32,9 +32,9 @@ public sealed class OpcHdaServerDispatcher : IOpcHdaServerDispatcher, IOpcCommon
         _localeId = server.LocaleId;
     }
 
-    internal IOpcServerDispatcher ServerDispatcher => _serverDispatcher;
+    public IOpcServerDispatcher ServerDispatcher => _serverDispatcher;
 
-    internal IOpcServerDispatcher CommonDispatcher => _commonDispatcher;
+    public IOpcServerDispatcher CommonDispatcher => _commonDispatcher;
 
     /// <inheritdoc />
     public async Task<NdrCallResult> DispatchAsync(
