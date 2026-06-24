@@ -49,7 +49,7 @@ NTLMv2 carries CBT in the NTLMv2 client challenge target-info AV_PAIR list insid
 | `AvLen` | `0x0010` |
 | `Value` | 16-byte RFC 2744 MD5 channel-bindings hash |
 
-When a TLS channel binding hash is configured, `NtlmAuthentication.CreateType3` inserts or replaces that AV_PAIR before generating the NTLMv2 proof and MIC. The server-side verifier validates the returned AV_PAIR against the expected TLS endpoint hash. Without TLS, the pair is omitted (or a peer may send an all-zero value per MS-NLMP 3.1.5.1.2).
+When a TLS channel binding hash is configured, `NtlmAuthentication.CreateType3` inserts or replaces that AV_PAIR before generating the NTLMv2 proof and MIC. The protocol-level verifier validates the returned AV_PAIR against the expected TLS endpoint hash; this verifier is tested but is not yet wired into the managed listener's server-side NTLM bind handshake. Without TLS, the pair is omitted (or a peer may send an all-zero value per MS-NLMP 3.1.5.1.2).
 
 Source: `NtlmAuthentication`.
 
@@ -63,4 +63,4 @@ Source: `KerberosChannelBindingChecksum`, `KerberosConnectionContext`, and `Kerb
 
 ## Tests
 
-Coverage lives in `ChannelBindingsTests`, `ChannelBindingTlsTests`, `KerberosChannelBindingChecksumTests`, `KerberosAuthContextTests.cs`, and `KerberosKdcIntegrationTests.cs`. It covers fixed SHA-256/SHA-384 certificate vectors, `SslStream` loopback extraction, NTLM AUTHENTICATE AV_PAIR insertion and no-TLS behavior, NTLM server verification, Kerberos GSS checksum encoding, and KDC-backed CBT tamper rejection.
+Coverage lives in `ChannelBindingsTests`, `ChannelBindingTlsTests`, `KerberosChannelBindingChecksumTests`, `KerberosAuthContextTests.cs`, and `KerberosKdcIntegrationTests.cs`. It covers fixed SHA-256/SHA-384 certificate vectors, `SslStream` loopback extraction, NTLM AUTHENTICATE AV_PAIR insertion and no-TLS behavior, protocol-level NTLM verifier matching, Kerberos GSS checksum encoding, and KDC-backed CBT tamper rejection.

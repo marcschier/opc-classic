@@ -2,7 +2,7 @@
 
 ## What this covers
 
-OPC Security 1.00 is an optional session-level identity switch layered above DCOM. The reference server in Opc.Classic.Samples sample shows how to publish `IOPCSecurityNT` and `IOPCSecurityPrivate` beside a minimal DA server.
+OPC Security 1.00 is an optional session-level identity switch layered above DCOM. The reference server in `Opc.Classic.Samples.OpcSecurityServer` shows how to publish `IOPCSecurityNT` and `IOPCSecurityPrivate` beside a minimal DA server.
 
 Run it with:
 
@@ -43,10 +43,10 @@ Use DCOM-layer authentication for connection trust and packet protection. Add OP
 
 ### Windows-account policy
 
-Use the authenticated DCOM caller identity as the principal. In deployments that expose an application-level `OpcAuthMode.Windows` switch, back it with the current transport choices (`OpcAuthMode.NtlmV2` or `OpcAuthMode.Kerberos`) and validate roles before changing `CurrentIdentity`.
+Use the authenticated DCOM caller identity as the principal. In deployments that expose an application-level `OpcAuthMode.WindowsSso` switch, back it with the current transport choices (`OpcAuthMode.NtlmV2` or `OpcAuthMode.Kerberos`) and validate roles before changing `CurrentIdentity`.
 
 ```csharp
-if (policy.AuthMode == OpcAuthMode.Windows) // application policy over NTLMv2 or Kerberos transport
+if (policy.AuthMode == OpcAuthMode.WindowsSso) // or your own Windows-account policy over NTLMv2/Kerberos transport
 {
     using WindowsIdentity identity = WindowsIdentity.GetCurrent();
     if (!rolePolicy.IsOperator(identity.Name))
@@ -81,4 +81,4 @@ Use `OpcSecurityErrors.OPC_E_PRIVATE_ACTIVE` when a second private logon is atte
 - `IOpcSecurity` — managed async-first OPC Security abstraction.
 - `IOPCSecurityInterfaces` — DCOM interface declarations and generated dispatcher inputs.
 - `OpcSecurityErrors` — OPC Security HRESULT constants.
-- Opc.Classic.Samples sample — runnable reference server.
+- `Opc.Classic.Samples.OpcSecurityServer` — runnable reference server.

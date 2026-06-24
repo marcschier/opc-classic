@@ -1,21 +1,21 @@
 # Opc.Classic.Mcp tool reference
 
-This reference is generated from the MCP tool metadata in Tools compatibility helpers: `[McpServerTool]` names, `[Description]` text, and public method signatures.
+This reference is maintained from the MCP tool metadata in Tools compatibility helpers: `[McpServerTool]` names, `[Description]` text, and public method signatures.
 
-| Sub-spec | Tools |
-| --- | ---: |
-| Session | 3 |
-| Discovery | 1 |
-| DA | 13 |
-| AE | 13 |
-| HDA | 20 |
-| Batch | 7 |
-| Commands | 7 |
-| Cpx | 3 |
-| Dx | 12 |
-| Security | 4 |
-| XmlDa | 10 |
-| **Total** | **93** |
+| Area | Coverage |
+| --- | --- |
+| Session | Session lifecycle tools |
+| Discovery | OPCEnum / OPC.ServerList discovery |
+| DA | Data Access tools |
+| AE | Alarms & Events tools |
+| HDA | Historical Data Access tools |
+| Batch | Batch model tools |
+| Commands | Commands tools |
+| Cpx | Complex Data metadata tools |
+| Dx | Data eXchange configuration tools |
+| Security | OPC Security tools |
+| XmlDa | XML-DA HTTP/SOAP tools |
+| Capture | Packet capture, DCE/RPC decode, and replay tools |
 
 ## Session
 
@@ -178,6 +178,20 @@ Adds item IDs to an OPC DA group and returns per-item server handles and HRESULT
 | `requestedVarType` | `ushort` | `0` | Requested VARTYPE numeric code. Use 0 (VT_EMPTY) for the server canonical type. |
 
 **Returns:** `Task<IReadOnlyList<OpcResultDto>>`
+
+### `opcclassic.da.read_items_by_id`
+
+Reads OPC DA item values by item ID using the DA 3.0 stateless IOPCItemIO interface; no group is required.
+
+**Parameters**
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `sessionId` | `string` | `required` | The connected OPC Classic sessionId. |
+| `itemIds` | `string[]` | `required` | OPC DA item IDs to read, such as Random.Int1 or Random.Real8. |
+| `maxAges` | `int[]?` | `null` | Optional per-item max-age values in milliseconds. Omit or pass an empty array for no cache constraint. |
+
+**Returns:** `Task<IReadOnlyList<OpcItemValueDto>>`
 
 ### `opcclassic.da.read_sync`
 
@@ -1426,3 +1440,134 @@ Disconnects the session from its OPC XML-DA endpoint and releases HTTP client st
 
 **Returns:** `Task<OpcResultDto>`
 
+## Capture
+
+### `opcclassic.capture.list_interfaces`
+
+Enumerates NICs that can be used as `interfaceName` for live capture.
+
+**Parameters**
+
+None.
+
+**Returns:** `IReadOnlyList<CaptureInterfaceDto>`
+
+### `opcclassic.capture.start`
+
+Begins a network packet capture session. Defaults the BPF filter to TCP DCOM traffic and returns a capture session id.
+
+**Parameters**
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `interfaceName` | `string` | `required` | Network interface name from `opcclassic.capture.list_interfaces`. |
+| `bpfFilter` | `string?` | `null` | Optional BPF filter override. Takes precedence over `serverPorts`. |
+| `promiscuous` | `bool` | `true` | True to open the interface in promiscuous mode. |
+| `maxBytes` | `long?` | `null` | Optional cap on captured bytes; the capture source applies its default when omitted. |
+| `maxPackets` | `long?` | `null` | Optional cap on captured frame count. |
+| `maxDurationSeconds` | `int?` | `null` | Optional cap on wall-clock duration; the capture source applies its default when omitted. |
+| `serverPorts` | `int[]?` | `null` | Optional explicit OPC server data ports used to narrow the default DCOM capture filter. |
+| `ntlmSessionKeyHex` | `string?` | `null` | Developer-only 32-character hex NTLMv2 session key for opt-in auth-trailer unwrap plumbing. |
+
+**Returns:** `Task<CaptureSessionDto>`
+
+### `opcclassic.capture.stop`
+
+Stops an in-progress capture and finalizes the trace.
+
+**Parameters**
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `sessionId` | `string` | `required` | Capture session id returned by `opcclassic.capture.start`. |
+
+**Returns:** `Task<CaptureSessionDto>`
+
+### `opcclassic.capture.list`
+
+Lists known capture sessions.
+
+**Parameters**
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `state` | `string?` | `null` | Optional state filter: active, running, completed, failed, or all. |
+
+**Returns:** `IReadOnlyList<CaptureSessionDto>`
+
+### `opcclassic.capture.get`
+
+Returns captured trace data as a decoded summary, JSON records, or a pcap file path.
+
+**Parameters**
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `sessionId` | `string` | `required` | Capture session id from `opcclassic.capture.start`. |
+| `format` | `string` | `"dcom"` | Output format: dcom, json, or pcap-path. |
+| `maxPdus` | `int` | `200` | Maximum decoded PDUs to return. |
+
+**Returns:** `Task<string>`
+
+### `opcclassic.capture.tail`
+
+Returns the next decoded-PDU window for a live or completed capture using a polling cursor.
+
+**Parameters**
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `sessionId` | `string` | `required` | Capture session id from `opcclassic.capture.start`. |
+| `max` | `int` | `200` | Maximum PDUs to return in this call. |
+| `sinceIndex` | `long` | `0` | Cursor returned by the previous tail call as `nextIndex`; pass 0 for the first call. |
+
+**Returns:** `Task<CaptureTailResultDto>`
+
+### `opcclassic.capture.summarize`
+
+Returns top-N roll-ups for a completed capture, including talkers, ports, IIDs, opnums, IPIDs, fault codes, and bind-reject reasons.
+
+**Parameters**
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `sessionId` | `string` | `required` | Capture session id from `opcclassic.capture.start`. |
+| `top` | `int` | `10` | Top-N entries per category. |
+
+**Returns:** `Task<CaptureSummary>`
+
+### `opcclassic.capture.remove`
+
+Stops a capture if needed, disposes it, and removes its scratch folder.
+
+**Parameters**
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `sessionId` | `string` | `required` | Capture session id from `opcclassic.capture.start`. |
+
+**Returns:** `Task<bool>`
+
+### `opcclassic.capture.decode_pdu`
+
+Decodes a single ad-hoc DCE/RPC PDU frame from hex bytes.
+
+**Parameters**
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `hex` | `string` | `required` | Hex string of the raw frame bytes, with or without whitespace or a 0x prefix. |
+
+**Returns:** `string`
+
+### `opcclassic.capture.replay`
+
+Walks captured ORPC bodies through `NdrReader` and reports per-(IID,opnum) success/failure counts.
+
+**Parameters**
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `sessionId` | `string` | `required` | Capture session id from `opcclassic.capture.start`. |
+
+**Returns:** `Task<ReplayReport>`

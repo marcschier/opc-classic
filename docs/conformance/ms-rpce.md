@@ -198,7 +198,7 @@ for firewall-traversal scenarios; non-OPC use case.
 
 None at present. PDU codecs, presentation context, auth verifier,
 protection level handling, fragmentation, and per-call multiplexing
-are all conformant and exercised by the 8/8-GREEN cross-impl matrix
+are all conformant and exercised by the green cross-impl matrix
 plus the unit/property/fuzz test fleet.
 
 ---

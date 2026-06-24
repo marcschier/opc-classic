@@ -1,7 +1,7 @@
 # Opc.Classic STRIDE Threat Model
 
 **Document owner:** Opc.Classic maintainers
-**Scope:** current managed OPC Classic client/server stack
+**Scope:** current managed OPC Classic client/server stack, with documented listener-authentication gaps
 **Method:** STRIDE over assets, trust boundaries, and the Connect / Authenticate / Invoke / Receive flows
 **Status key:** **MITIGATED** = implemented control with cited code; **PARTIAL** = control exists but has residual gaps; **NOT MITIGATED** = no effective in-scope control identified.
 
@@ -13,8 +13,8 @@ The threat model covers the security-sensitive Opc.Classic stack identified by t
 
 - Client proxy stack and generated call shims.
 - Server hosting, source-generated dispatch, IRemoteSCMActivator v5.6 hosting, and the Windows SCM CCW activation/vtable path.
-- Self-contained NTLMv2; Kerberos RC4-HMAC and AES128/256; SPNEGO with `mechListMIC`.
-- DCE/RPC and ORPC envelope handling, fragmentation, packet integrity, packet privacy, and RFC 5056/RFC 5929 channel binding tokens.
+- Self-contained NTLMv2 client and protocol-codec support; Kerberos RC4-HMAC and AES128/256; SPNEGO with `mechListMIC`.
+- DCE/RPC and ORPC envelope handling, fragmentation, packet integrity, packet privacy, and RFC 5056/RFC 5929 channel binding tokens. Managed server-side NTLM bind challenge handling for incoming listener binds is a documented gap.
 - NDR marshaling / unmarshaling, including full OAUT VARIANT and SAFEARRAY handling.
 - OPCEnum discovery through `OpcEnumClient` and remote-registry discovery through WINREG over SMB/ncacn_np.
 
@@ -142,7 +142,7 @@ flowchart LR
     PDU <-->|signed/sealed request/response PDUs| SSession
 ```
 
-Implementation anchors for the NTLMv2 flow are `Type1Message`, `Type2Message`, and `Type3Message` parsing/encoding, NTLMv2 response construction and server proof verification, and NTLM packet MIC/sign/seal.
+Implementation anchors for the NTLMv2 flow are `Type1Message`, `Type2Message`, and `Type3Message` parsing/encoding, NTLMv2 response construction and protocol-level server proof verification, and NTLM packet MIC/sign/seal. The managed server listener does not yet complete the server-side NTLM bind challenge for incoming `BindPdu`/`AlterContextPdu`; `NtlmConnectionContext` throws for that path and `RpcServerConnectionProcessor` strips or rejects authenticated binds unless a context-aware dispatcher explicitly accepts the metadata. The skipped `F4Auth` integration test documents this end-to-end hosting gap; `NtlmHandshakeProtocolTests` covers the protocol handshake.
 
 ### 2.4 Level 2 auth-flow DFD: Kerberos/SPNEGO negotiation
 
@@ -188,8 +188,8 @@ Kerberos packet protection is implemented by `KerberosSession` for RFC 4121 MIC 
 
 | STRIDE | Threat | Status | Evidence and mitigation | Residual risk |
 | --- | --- | --- | --- | --- |
-| Spoofing | Forged client or forged server credentials. | **PARTIAL** | NTLMv2 is the default NTLM path and NTLMv1 is rejected unless explicitly allowed. Kerberos uses configured realm/SPN values and validates AP-REP for mutual authentication. | NTLM lacks Kerberos-style mutual authentication; server ACL enforcement remains application/hosting policy. |
-| Tampering | Crafted NTLM/Kerberos/SPNEGO tokens alter negotiated state. | **MITIGATED** | NTLMSSP parsers validate signatures, message types, lengths, security-buffer bounds, MIC, and CBT. SPNEGO validates the initial-context OID, preserves the offered mechanism list, and verifies `mechListMIC` when the peer supplies it. Kerberos AP-REQ/AP-REP processing is delegated to Kerberos.NET and then bound to the local GSS session. | Keep mechanism policy explicit when enabling additional inner mechanisms. |
+| Spoofing | Forged client or forged server credentials. | **PARTIAL** | NTLMv2 is the default NTLM path and NTLMv1 is rejected unless explicitly allowed. Kerberos uses configured realm/SPN values and validates AP-REP for mutual authentication. | NTLM lacks Kerberos-style mutual authentication; the managed listener does not yet implement the server-side NTLM bind handshake, and server ACL enforcement remains application/hosting policy. |
+| Tampering | Crafted NTLM/Kerberos/SPNEGO tokens alter negotiated state. | **MITIGATED** | At the protocol/codec layer, NTLMSSP parsers validate signatures, message types, lengths, security-buffer bounds, MIC, and CBT. SPNEGO validates the initial-context OID, preserves the offered mechanism list, and verifies `mechListMIC` when the peer supplies it. Kerberos AP-REQ/AP-REP processing is delegated to Kerberos.NET and then bound to the local GSS session. | Keep mechanism policy explicit when enabling additional inner mechanisms; listener-level server NTLM bind completion remains separate follow-up work. |
 | Repudiation | Authentication success/failure cannot be audited. | **PARTIAL** | Generic logging infrastructure exists for DCOM and hosting. | Authentication paths need structured success/failure events with peer identity, mechanism, protection level, and failure reason. |
 | Information disclosure | Plaintext credentials and auth material remain in memory; timing leaks. | **PARTIAL** | NTLMv2 proof verification uses fixed-time comparison, Kerberos MIC verification uses fixed-time comparisons in `KerberosSession`, and packet protection hides payloads when privacy is selected. | Passwords are immutable strings in public credential shapes, and NTLM packet signature comparison still uses `SequenceEqual`. |
 | Denial of service | Malformed or oversized auth tokens consume CPU/memory. | **PARTIAL** | NTLM Type1/Type2/Type3 parsers reject short messages and out-of-message fields; SPNEGO uses DER `AsnReader` and checks for trailing data. | Add explicit token-size ceilings, handshake deadlines, and authentication-rate limiting. |
@@ -290,7 +290,7 @@ The deep cadence is `.github\workflows\fuzz-deep.yml`, which runs manually (`wor
 
 | IEC 62443 security requirement | Relevance to OPC Classic OT deployments | Status |
 | --- | --- | --- |
-| SR 1.1 / SR 1.2 Identification and authentication | Authenticate OPC clients and servers. | **PARTIAL**: NTLMv2/Kerberos/SPNEGO exist; ACL and audit gaps remain. |
+| SR 1.1 / SR 1.2 Identification and authentication | Authenticate OPC clients and servers. | **PARTIAL**: NTLMv2/Kerberos/SPNEGO client and protocol-codec support exists; managed listener server-side NTLM bind, ACL, and audit gaps remain. |
 | SR 1.5 Authenticator management | Password/keytab handling. | **PARTIAL**: no zeroization or secret-provider abstraction yet. |
 | SR 2.1 Authorization enforcement | Restrict OPC operations to authorized identities. | **PARTIAL**: host applications can enforce policy; common server authorization hooks remain recommended. |
 | SR 3.1 Communication integrity | Detect modified RPC PDUs. | **MITIGATED** for negotiated packet integrity with NTLM or Kerberos. |
@@ -304,7 +304,7 @@ The deep cadence is `.github\workflows\fuzz-deep.yml`, which runs manually (`wor
 | Transport | Current default | Recommended privacy path |
 | --- | --- | --- |
 | DCOM/TCP client | `OpcConnectData` defaults to `OpcAuthMode.NtlmV2` and `OpcProtectionLevel.Integrity`, so PDUs are signed but not encrypted. | Use `OpcConnectData.WithNtlmV2(..., OpcProtectionLevel.Privacy)` or `OpcConnectData.WithKerberos(..., OpcProtectionLevel.Privacy)` so DCE/RPC uses `RPC_C_AUTHN_LEVEL_PKT_PRIVACY`. |
-| DCOM/TCP managed server listener | DA/AE/HDA/CttServer/Security hosted samples expose `ListenAddress`; `RpcServerConnectionProcessor` accepts authenticated PDUs only for dispatchers that consume `RpcRequestContext` and otherwise rejects them. | Do not expose the managed listener outside local-only or disposable interop rigs until listener authentication/privacy policy is available; production hosts should require packet privacy at the DCOM listener or gateway. |
+| DCOM/TCP managed server listener | DA/AE/HDA/CttServer/Security hosted samples expose `ListenAddress`; `RpcServerConnectionProcessor` strips auth verifier metadata and rejects authenticated binds unless the dispatcher consumes `RpcRequestContext`. The listener does not complete the server-side NTLM bind challenge/Type3 validation path today. | Do not expose the managed listener outside local-only or disposable interop rigs until listener authentication/privacy policy is available; production hosts should require packet privacy at a DCOM listener or gateway that performs authentication. |
 | DCOM/SMB named pipe | `ncacn_np` is available through `NcacnNpTransport` and the focused SMB2 client. The SMB2 client signs when signing is negotiated and the caller supplies the NTLM/Kerberos SessionKey; SMB3 AES-128-CCM/GCM encryption is implemented for encrypted sessions. | Require SMB signing in server policy and require SMB encryption for confidentiality-sensitive named-pipe deployments after validating the target server's dialect and encryption policy. |
 | XML-DA/HTTP | `HttpXmlDaClient` uses the caller-owned `HttpClient`; confidentiality depends on the supplied endpoint URI, TLS handler, and SOAP/security configuration. | Use `https://` endpoints, validate TLS, configure client credentials on `HttpClient`, and add WS-Security where the XML-DA server requires message-level security. |
 
@@ -334,6 +334,6 @@ Samples audit: Opc.Classic.Samples sample, `AeClient`, and `HdaClient` use `NoOp
 
 ## 8. Status summary
 
-- STRIDE flow rows: **7 MITIGATED**, **17 PARTIAL**, **0 NOT MITIGATED**.
+- STRIDE flow rows are mostly **PARTIAL**, with protocol-level mitigations called out above and listener-authentication gaps tracked as open work.
 - Highest-priority open recommendations: server authorization policy (R1), secret lifetime/zeroization (R3), NTLM randomness (R4), constant-time comparisons (R5), and independent crypto review (R9).
-- Security posture: NTLMv2, Kerberos/SPNEGO, CBT, NTLM MIC, SPNEGO `mechListMIC`, ORPC envelope handling, full VARIANT handling, IRemoteSCMActivator v5.6 hosting, legacy IActivation, Windows SCM CCW activation, OPCEnum and WINREG discovery, SMB signing/encryption, object-IPID dispatch, and Kerberos GSS packet protection are present; deployment policy and audit controls remain the main hardening work.
+- Security posture: NTLMv2 client/protocol codecs, Kerberos/SPNEGO, CBT, NTLM MIC, SPNEGO `mechListMIC`, ORPC envelope handling, full VARIANT handling, IRemoteSCMActivator v5.6 hosting, legacy IActivation, Windows SCM CCW activation, OPCEnum and WINREG discovery, SMB signing/encryption, object-IPID dispatch, and Kerberos GSS packet protection are present; managed listener server-side NTLM bind, deployment policy, and audit controls remain main hardening work.

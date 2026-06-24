@@ -1,6 +1,6 @@
 # Host an OPC DA server with Opc.Classic.Hosting
 
-This tutorial walks through hosting a managed OPC Data Access server. The canonical repository example is Opc.Classic.Samples sample, which registers `Opc.Classic.Samples.DaServer.1`, wires a `TagTree`, and exposes a small `IOpcDaServer` implementation through `Opc.Classic.Hosting`. Here we build the same production shape from scratch and explain the pieces you need to keep stable when a legacy Windows DA client connects through `IOPCServer`, `IOPCGroupStateMgt`, and subscription callbacks.
+This tutorial walks through hosting a managed OPC Data Access server. The canonical repository example is `Opc.Classic.Samples.DaServer`, which registers `Opc.Classic.Samples.DaServer.1`, wires a `TagTree`, and exposes a small `IOpcDaServer` implementation through `Opc.Classic.Hosting`. Here we build the same production shape from scratch and explain the pieces you need to keep stable when a legacy Windows DA client connects through `IOPCServer`, `IOPCGroupStateMgt`, and subscription callbacks.
 
 The server-hosting surface keeps protocol hosting separate from business state: `IOpcDaServer` provides status, group lifecycle, and localized error strings, while generated dispatchers and callback publishers route protocol calls through the common host infrastructure. Design your server with tag storage separate from group lifecycle, explicit HRESULT mapping, data-change publishing as a server-side stream, and stable CLSID/ProgID metadata. The concepts in this article match OPC DA 3.00 and the IDL terminology in the vendored `opcda.idl`.
 
@@ -395,7 +395,7 @@ Treat the server's public namespace as an API. A tag rename can break a client j
 
 ## Next steps
 
-- Compare your implementation with SampleDaServer sample and `TagTree.cs`.
+- Compare your implementation with `samples\Opc.Classic.Samples.DaServer\SampleDaServer.cs` and `TagTree.cs`.
 - Build a client with [01-build-your-first-da-client.md](01-build-your-first-da-client.md).
 - Deploy the server with [03-cross-platform-deployment.md](03-cross-platform-deployment.md) and [../../samples/README.docker.md](../../samples/README.docker.md).
 - Review DCOM packet-integrity requirements in [../cookbook/05-dcom-hardening-pkt-integrity-explainer.md](../cookbook/05-dcom-hardening-pkt-integrity-explainer.md).
@@ -405,5 +405,5 @@ Treat the server's public namespace as an API. A tag rename can break a client j
 - OPC Data Access 3.00, especially `IOPCServer`, `IOPCGroupStateMgt`, `IOPCItemMgt`, `IOPCSyncIO`, and `IOPCDataCallback`.
 - [MS-DCOM] for activation and object references.
 - [MS-RPCE] for packet signing, fragmentation, and call semantics.
-- Repository: Opc.Classic.Samples sample and `Hosting`.
+- Repository: `Opc.Classic.Samples.DaServer` and `Opc.Classic.Hosting`.
 

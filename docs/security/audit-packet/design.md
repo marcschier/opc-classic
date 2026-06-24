@@ -7,10 +7,10 @@
 
 1. Client auth context is created by `NtlmAuthentication.CreateAuthContext` from `OpcConnectData`.
 2. Client creates Type1 with `NtlmAuthentication.CreateType1` (`NtlmAuthentication`) or `NtlmAuthContext.BuildInitialToken` (`NtlmAuthentication`).
-3. Server-side verifier code creates Type2 with `AuthenticationSource.CreateChallenge` and `NtlmAuthentication.CreateType2` (`NtlmAuthentication`).
+3. Protocol-level verifier code can create Type2 with `AuthenticationSource.CreateChallenge` and `NtlmAuthentication.CreateType2` (`NtlmAuthentication`); the managed listener does not invoke this for inbound binds today.
 4. Client processes Type2 and creates Type3 with `NtlmAuthContext.ProcessChallengeToken` (`NtlmAuthentication`) and `NtlmAuthentication.CreateType3` (`NtlmAuthentication`).
 5. Type3 includes NTLMv2 response material from `Responses.GetLMv2Response` / `GetNTLMv2Response` and session-key setup through `NTLMKeyFactory`.
-6. Server verifies Type3 through `AuthenticationSource.Authenticate` (`AuthenticationSource`) and `NtlmAuthentication.CreateSecurityWhenServerWithMic` (`NtlmAuthentication`).
+6. Protocol-level verification of Type3 goes through `AuthenticationSource.Authenticate` (`AuthenticationSource`) and `NtlmAuthentication.CreateSecurityWhenServerWithMic` (`NtlmAuthentication`); this path is covered by tests but not wired into listener bind handling.
 7. Established calls use `NtlmConnection.OutgoingRebind` or modern `IAuthContext.SignAndSeal` / `VerifyAndUnseal` (`NtlmAuthentication`).
 8. `NtlmConnectionContext.Accept` accepts client-side bind acks, but server-side `BindPdu`/`AlterContextPdu` paths throw because listener-level authenticated binds are not implemented.
 
@@ -28,16 +28,16 @@
 sequenceDiagram
     participant C as Client NtlmAuthentication
     participant R as DCE/RPC bind/auth PDUs
-    participant S as Server AuthenticationSource
+    participant S as Protocol verifier / AuthenticationSource
     participant CBT as ChannelBindingsHash
     C->>CBT: Compute RFC 2744/RFC 5056 CBT hash
     C->>R: Type1 NEGOTIATE flags/domain/workstation
-    R->>S: CreateChallenge(Type1)
+    R->>S: CreateChallenge(Type1) (protocol path; not listener-wired)
     S->>R: Type2 CHALLENGE flags/challenge/target-info + MIC flag
     R->>C: Type2 bytes
     C->>C: NTOWFv2/LMOWFv2, blob, MsvAvChannelBindings, session key
     C->>R: Type3 AUTHENTICATE LMv2/NTLMv2/session key/MIC
-    R->>S: Authenticate(Type2, Type3)
+    R->>S: Authenticate(Type2, Type3) (protocol path; not listener-wired)
     S->>S: verify NT proof, MIC, CBT, derive session key
     C-->>S: subsequent DCE/RPC PDUs signed/sealed by Ntlm1
 ```

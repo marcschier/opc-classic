@@ -33,13 +33,13 @@ The portable runtime is pure managed code. Windows-specific features, such as lo
 | Framework | .NET 10, SDK pinned by `global.json` |
 | License | MIT |
 | Public namespace root | `Opc.Classic.*` |
-| OPC areas | DA, AE, HDA, Batch, Commands, Cpx, DX, Security, Discovery |
+| OPC areas | DA, AE, HDA, Batch, Commands, Cpx, DX, Security, Discovery, XML-DA |
 | DCOM stack | Managed MSRPC/DCOM over async transports with v5.6 activation, `OpcServerListener`, per-connection PDU processing, and per-IPID object routing; cross-platform `ncacn_ip_tcp` and `ncacn_np` (RPC over SMB2) |
 | Authentication | Self-contained NTLMv2, Kerberos, SPNEGO, channel binding, RFC 5056 / RFC 5929 helpers; SMB2 signing (HMAC-SHA256 / AES-CMAC) and SMB 3.x encryption (AES-128-CCM / GCM) for the SMB transport |
-| Generation | Source-generated client proxies and server dispatchers: 47 dispatchers, 127 opnums |
+| Generation | Source-generated client proxies and server dispatchers for the OPC Classic DCOM surfaces |
 | AOT stance | Runtime libraries are trimmable; `Opc.Classic.Dcom` runs with strict AOT/trimming analyzers enabled |
-| Samples | 10 sample apps: DA/AE/HDA server+client, LoopbackDemo, CttServer, OpcSecurityServer, AotCanary; sample containers now exchange DCOM-over-IP |
-| Verification | 0 build errors / 0 warnings; the current sweep has 2758 passed / 13 skipped / 0 failed across 25 .NET test projects |
+| Samples | DA/AE/HDA server+client, LoopbackDemo, CttServer, OpcSecurityServer, SimulationServer, and AotCanary; sample containers exchange DCOM-over-IP |
+| Verification | 0 build errors / 0 warnings; all test projects green with only expected skipped tests |
 
 ## 2. Assembly layout
 
@@ -60,7 +60,8 @@ Runtime source is organized by protocol boundary rather than by sample scenario.
 | `Opc.Classic.Dx` | Data eXchange configuration, source server, and connection models. |
 | `Opc.Classic.Security` | OPC Security abstractions plus channel-binding helpers and sample-server-facing ACL semantics. |
 | `Opc.Classic.Discovery` | Local configuration, Windows registry, remote registry, and OPCEnum discovery strategies. |
-| `Opc.Classic.Hosting` | Microsoft.Extensions.Hosting integration, CLSID/ProgID registry abstractions, and Windows COM registration. |
+| `Opc.Classic.Hosting` | Microsoft.Extensions.Hosting integration and CLSID/ProgID registry abstractions. |
+| `Opc.Classic.Hosting.Windows` | Windows COM registration helpers for native client activation compatibility. |
 | `Opc.Classic.Xml` | XML-DA HTTP/SOAP DTOs, serializers, and client transport shape. |
 | `Opc.Classic.Generators` | Build-time Roslyn incremental generators for `[OpcInterface]`/`[OpcMethod]` metadata, client proxies, server dispatchers, and codec tables. |
 | `Opc.Classic.MigrationAnalyzer` | Roslyn analyzer that emits porting diagnostics for legacy `.NET Framework OPC .NET API` consumers migrating to `Opc.Classic.*`. |
@@ -117,7 +118,7 @@ Tests and loopback samples use `InMemoryCallChannel` to exercise the exact gener
 - `OpcServerListener` for TCP/ncacn_ip_tcp server accept loops;
 - `RpcServerConnectionProcessor` for bind, alter-context, request, response, shutdown, fragmentation, ORPC envelope, and authentication-trailer PDU handling;
 - `OpcObjectRegistry` for per-IPID routing so server-created groups, enumerators, and subscriptions receive calls on the right managed object;
-- endpoint mapper and activation flows (`IRemoteSCMActivator` + legacy `IActivation` per MS-DCOM §2.2.18 / §3.1.2.5);
+- activation flows (`IRemoteSCMActivator`, legacy `IActivation`, and the SimulationServer cold-activation host) per MS-DCOM §2.2.18 / §3.1.2.5;
 - OBJREF and OXID runtime structures;
 - packet signing and sealing according to the negotiated protection level.
 
@@ -148,6 +149,8 @@ Managed activation has two complementary paths: portable DCOM activation over th
 | --- | --- |
 | `IRemoteSCMActivator` | Source-generated DCOM projection for `RemoteGetClassObject` and `RemoteCreateInstance`. |
 | `RemoteSCMActivatorServer` | Server-side v5.6 activation implementation for managed class factories and object export. |
+| `ActivationServer` / `LegacyActivationServer` | Legacy `IActivation::RemoteActivation` dispatcher and adapter over `IActivationServer` / `RemoteSCMActivatorServer`. |
+| `SimulationActivationServer` / `SimulationActivationHost` | Simulation DA cold-activation path: registers DA dispatchers in `OpcObjectRegistry` and returns an `OBJREF_STANDARD` encoded by `OpcInterfaceRefCodec` so clients can locate the activated IPID. Full authenticated cold-activation still needs server-side NTLM bind handling on the managed listener. |
 | `IActivation` (legacy) | Shipped client + server implementation of MS-DCOM §2.2.18.3 `RemoteActivation` for XP / Server-2003 / pre-W2K3-SP1 interop, sharing the authentication policy of the modern activator. |
 | `ClassFactoryRegistry` | Maps CLSIDs and ProgIDs to managed factories. |
 | `LocalCoClass` / OXID runtime | Exports managed objects as DCOM object references and maintains object lifetime. |
@@ -229,7 +232,7 @@ Example generated type names include `IOPCServerClientProxy`, `IOPCEventServerCl
 
 ### Server dispatchers
 
-A generated `<InterfaceName>ServerDispatcher` mirrors the proxy path. It decodes the request, calls the managed server implementation, and encodes the response. The current generated server-dispatch surface covers 47 dispatchers and 127 opnums.
+A generated `<InterfaceName>ServerDispatcher` mirrors the proxy path. It decodes the request, calls the managed server implementation, and encodes the response. The generated server-dispatch surface covers the current annotated OPC DCOM projections without runtime reflection.
 
 ## 7. Server hosting
 
@@ -266,7 +269,7 @@ await builder.Build().RunAsync();
 | `IOpcDataCallbackSink` | Unified outbound callback abstraction used by both cross-platform `IOpcInterfaceRef` sinks and Windows `OpcDataCallbackProxy` sinks. |
 | Data-change publishers | Bridge managed subscription updates to `IOPCDataCallback` callbacks. |
 
-AE and HDA hosting use the same pattern with their per-spec server contracts and sample applications.
+AE and HDA hosting use the same pattern with their per-spec server contracts and sample applications. The full-feature `Opc.Classic.Samples.SimulationServer` shares one simulated plant model across DA, AE, HDA, Batch, Commands, Cpx, DX, Security, Discovery, and XML-DA modules; with `--listen` it also hosts DA/AE/HDA over real managed TCP transports.
 
 ## 8. Authentication and packet protection
 
@@ -304,7 +307,7 @@ Discovery is separate from activation. A gateway can discover through OPCEnum, e
 
 ## 10. Spec coverage
 
-All nine OPC Classic areas targeted by the repository are implemented in the current tree.
+All OPC Classic areas targeted by the repository are implemented in the current tree.
 
 | Area | Current support |
 | --- | --- |
@@ -317,25 +320,27 @@ All nine OPC Classic areas targeted by the repository are implemented in the cur
 | DX | Source server, connection, configuration, and generated DX projections. |
 | Security | OPC Security interfaces plus DCOM authentication and channel-binding integration. |
 | Discovery | Local registry/configuration, remote registry, and OPCEnum discovery paths. |
+| XML-DA | HTTP/SOAP client DTOs, serializers, and transport shape for XML-DA deployments. |
 
 XML-DA support is available through the HTTP/SOAP assembly for deployments that expose Classic data through XML-DA endpoints rather than DCOM.
 
 ## 11. Samples
 
-The sample suite contains 10 apps:
+The sample suite includes:
 
 | Sample | Purpose |
 | --- | --- |
-| Opc.Classic.Samples sample | Managed DA server with a tag tree and hosting registration. |
-| Opc.Classic.Samples sample | DA client flow using generated proxies and the managed DA abstraction. |
-| Opc.Classic.Samples sample | Managed AE event source and hosting pattern. |
-| Opc.Classic.Samples sample | AE subscription and event consumption pattern. |
-| Opc.Classic.Samples sample | Managed HDA historical data server. |
-| Opc.Classic.Samples sample | HDA query and playback client pattern. |
-| Opc.Classic.Samples sample | In-memory generated proxy/dispatcher loopback for DA. |
-| Opc.Classic.Samples sample | Additional managed DA sample (different CLSID from samples-da). |
-| Opc.Classic.Samples sample | OPC Security reference server and ACL semantics. |
-| Opc.Classic.Samples sample | NativeAOT publish smoke test for consumer applications. |
+| `Opc.Classic.Samples.DaServer` | Managed DA server with a tag tree and hosting registration. |
+| `Opc.Classic.Samples.DaClient` | DA client flow using generated proxies and the managed DA abstraction. |
+| `Opc.Classic.Samples.AeServer` | Managed AE event source and hosting pattern. |
+| `Opc.Classic.Samples.AeClient` | AE subscription and event consumption pattern. |
+| `Opc.Classic.Samples.HdaServer` | Managed HDA historical data server. |
+| `Opc.Classic.Samples.HdaClient` | HDA query and playback client pattern. |
+| `Opc.Classic.Samples.LoopbackDemo` | In-memory generated proxy/dispatcher loopback for DA. |
+| `Opc.Classic.Samples.CttServer` | Conformance-test DA sample server. |
+| `Opc.Classic.Samples.OpcSecurityServer` | OPC Security reference server and ACL semantics. |
+| `Opc.Classic.Samples.SimulationServer` | Full-feature DA/AE/HDA/Batch/Commands/Cpx/DX/Security/Discovery/XML-DA simulation with optional real TCP hosting and cold-activation test path. |
+| `Opc.Classic.Samples.AotCanary` | NativeAOT publish smoke test for consumer applications. |
 
 ## 12. Related architecture documents
 
@@ -343,13 +348,13 @@ The `docs/architecture/` folder contains the diagram suite and topic-deep narrat
 
 ### Topic-deep architecture notes
 
-- [architecture/activation-transports.md](architecture/activation-transports.md) — TCP vs SMB activation paths; legacy `IActivation` interop matrix; client/server status per transport.
+- [architecture/activation-transports.md](architecture/activation-transports.md) — TCP vs SMB activation paths; `ActivationServer`, `RemoteSCMActivatorServer`, legacy and simulation activation status.
 - [architecture/smb-transport.md](architecture/smb-transport.md) — SMB2 connection lifecycle, `ncacn_np` wire-up, signing, encryption, PCAP fixtures, and phase ledger.
 - [architecture/dcom-container-networking.md](architecture/dcom-container-networking.md) — container-network considerations for DCOM-over-IP between sample servers and clients.
 
 ### Diagram suite
 
-The diagrams describe the current `Opc.Classic.*` architecture: source-generated client proxies and server dispatchers, `ICallChannel` with in-memory and DCOM implementations, channel-level NTLM/Kerberos/SPNEGO/CBT, NativeAOT-compatible libraries, and coverage across DA, AE, HDA, Batch, Commands, Security, DX, Cpx, and Discovery.
+The diagrams describe the current `Opc.Classic.*` architecture: source-generated client proxies and server dispatchers, `ICallChannel` with in-memory and DCOM implementations, channel-level NTLM/Kerberos/SPNEGO/CBT, NativeAOT-compatible libraries, and coverage across DA, AE, HDA, Batch, Commands, Security, DX, Cpx, Discovery, and XML-DA.
 
 1. [architecture/diagrams.md#high-level-architecture](architecture/diagrams.md#high-level-architecture) — top-level client, generated proxy, `ICallChannel`, DCOM/in-memory channels, NDR, `TcpClientTransport`, and managed listener shape.
 2. [architecture/diagrams.md#call-shim-flow](architecture/diagrams.md#call-shim-flow) — outbound generated proxy call sequence for `IOPCServer::GetStatus`.

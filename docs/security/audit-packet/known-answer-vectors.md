@@ -22,7 +22,7 @@ Fixture binaries live under Ntlm tests:
 - `negotiate.bin` — 46 bytes.
 - `challenge.bin` — 104 bytes.
 - `authenticate.bin` — 232 bytes.
-- `NtlmHandshakeFixtureTests.cs` — 5 tests replay [MS-NLMP] §4.2.4.1 handshake bytes.
+- `NtlmHandshakeFixtureTests.cs` — fixture replay coverage for [MS-NLMP] §4.2.4.1 handshake bytes.
 
 Quote: `MS-NLMP §4.2.4.1 NTLMv2 sample handshake fixture replay tests.`
 
@@ -32,7 +32,7 @@ The fixture test also cites [MS-NLMP] §4.2.4.3 for authenticate-message field o
 
 - Empty GSS channel-bindings MD5: `441018525208457705BF09A8EE3C1093` in `ChannelBindingsTests`.
 - TLS `tls-server-end-point` SHA-256/SHA-384 certificates in `ChannelBindingTlsTests`.
-- NTLMv2 CBT AV-pair insertion and server verification in `ChannelBindingTlsTests`.
+- NTLMv2 CBT AV-pair insertion and protocol-verifier rejection in `ChannelBindingTlsTests`.
 
 ## Kerberos RFC 4757 note
 

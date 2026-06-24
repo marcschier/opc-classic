@@ -123,7 +123,7 @@ backlog item.
 
 #### 3.1.3 No matrix profile against a third-party Batch server
 
-The cross-impl matrix has 8/8 GREEN profiles (DA / AE / HDA flavors)
+The cross-impl matrix is green for the DA / AE / HDA profiles
 but no `batch-*` profile. Same rationale as §3.1.2 — third-party
 Batch servers are rare. Status: **WAIVED**.
 

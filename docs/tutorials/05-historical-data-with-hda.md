@@ -313,7 +313,7 @@ Also schedule periodic drills. Run the tutorial scenario in a staging environmen
 
 ## Next steps
 
-- Run Opc.Classic.Samples sample and Opc.Classic.Samples sample; for container ports and `OPC_CLASSIC_SERVER_HOST` / `OPC_CLASSIC_SERVER_PORT`, see [../../samples/README.docker.md](../../samples/README.docker.md).
+- Run `Opc.Classic.Samples.HdaServer` and `Opc.Classic.Samples.HdaClient`; for container ports and `OPC_CLASSIC_SERVER_HOST` / `OPC_CLASSIC_SERVER_PORT`, see [../../samples/README.docker.md](../../samples/README.docker.md).
 - Compare server hosting with [02-host-an-opc-server.md](02-host-an-opc-server.md).
 - Read [09-troubleshooting-and-diagnostics.md](09-troubleshooting-and-diagnostics.md) for HRESULT and NDR diagnostics.
 - Review [../ARCHITECTURE.md](../ARCHITECTURE.md) for NDR codec and generated proxy flow.
@@ -322,7 +322,7 @@ Also schedule periodic drills. Run the tutorial scenario in a staging environmen
 
 - OPC HDA 1.20: `IOPCHDA_Server`, `IOPCHDA_SyncRead`, `IOPCHDA_SyncUpdate`, `IOPCHDA_SyncAnnotations`, `IOPCHDA_AsyncRead`, `IOPCHDA_AsyncUpdate`, and `IOPCHDA_Playback`.
 - OPC HDA aggregate definitions for Average, TimeAverage, Minimum, Maximum, Total, Count, and StandardDeviation.
-- Repository: `Opc.Classic`, Opc.Classic.Samples sample, and Opc.Classic.Samples sample.
+- Repository: `Opc.Classic.Hda`, `Opc.Classic.Samples.HdaServer`, and `Opc.Classic.Samples.HdaClient`.
 
 
 

@@ -133,7 +133,7 @@ var proxy = new IOPCServerClientProxy(channel);
 OpcServerStatus status = await proxy.GetStatusAsync(cancellationToken);
 ```
 
-For a runnable client pattern, see Opc.Classic.Samples sample and Opc.Classic.Samples sample.
+For runnable client patterns, see `Opc.Classic.Samples.DaClient` and the full-feature `Opc.Classic.Samples.SimulationServer`.
 
 ## 5. Managed DA server hosting
 
@@ -294,7 +294,7 @@ Typical deployment:
 3. connect through the managed DCOM channel;
 4. expose values, events, or HDA data through the application.
 
-The DA/AE/HDA sample servers can bind a real TCP listener by setting `OPC_CLASSIC_SAMPLE_PORT` (or `OPC_CLASSIC_LISTEN_ADDRESS`), and the sample clients dial that listener when `OPC_CLASSIC_SERVER_HOST` + `OPC_CLASSIC_SERVER_PORT` are set. Without those variables, the clients keep the in-process loopback path for local development.
+The DA/AE/HDA sample servers can bind a real TCP listener by setting `OPC_CLASSIC_SAMPLE_PORT` (or `OPC_CLASSIC_LISTEN_ADDRESS`), and the sample clients dial that listener when `OPC_CLASSIC_SERVER_HOST` + `OPC_CLASSIC_SERVER_PORT` are set. `Opc.Classic.Samples.SimulationServer --listen` hosts DA/AE/HDA over real managed TCP transports from one simulated plant model. Without those variables, the clients keep the in-process loopback path for local development.
 
 ### Windows-specific integration
 
@@ -304,7 +304,7 @@ Writing HKLM usually requires administrative rights. Treat registry writes as in
 
 ### Native COM clients
 
-Native Windows COM clients can activate managed `Opc.Classic` servers when the CLSID/ProgID registration and DCOM activation path are configured. Test native interop with the preserved C++ sample servers and representative client tools.
+Native Windows COM clients can activate managed `Opc.Classic` servers through the Windows SCM/CCW path when CLSID/ProgID registration is configured. Full remote cold-activation through the managed listener is still gated on server-side NTLM bind handling; test native interop with the preserved C++ sample servers and representative client tools.
 
 ## 9. AOT publishing
 
@@ -335,8 +335,9 @@ Keep reflection-heavy plugins, runtime-generated serializers, and dynamic dispat
 | DX | Data eXchange source server, connection, and configuration models. |
 | Security | OPC Security projections plus DCOM authentication and packet-protection integration. |
 | Discovery | Local, remote-registry, and OPCEnum discovery strategies. |
+| XML-DA | HTTP/SOAP XML-DA DTOs, serializers, and client transport shape. |
 
-The generated DCOM surface contains 47 dispatchers and 127 opnums. The current validation sweep has 0 build errors / 0 warnings and 2758 passed / 13 skipped / 0 failed across 25 .NET test projects (DA 475, AE 128, HDA 177, DCOM 123, Crypto 65, Kerberos 48, SMB 61, Integration 109, plus the remaining suites).
+The generated DCOM surface covers the current annotated OPC projections. The current validation sweep has 0 build errors / 0 warnings and all test projects green with only expected skipped tests.
 
 ## 11. Adoption from OPC NET API projects
 
@@ -437,17 +438,18 @@ An OPC URL can identify a server by ProgID or CLSID. Discovery results and serve
 
 ## 13. Samples to start from
 
-The sample suite contains 10 runnable apps.
+The sample suite contains runnable apps for the main adopter paths.
 
 | Sample | Start here when you need |
 | --- | --- |
-| Opc.Classic.Samples sample | DA reads, browse, subscriptions, and generated proxy wiring. |
-| Opc.Classic.Samples sample | Managed DA server hosting. |
-| Opc.Classic.Samples sample | AE subscription consumption. |
-| Opc.Classic.Samples sample | Managed AE server hosting. |
-| Opc.Classic.Samples sample | HDA query/playback client flow. |
-| Opc.Classic.Samples sample | Managed HDA historical server hosting. |
-| Opc.Classic.Samples sample | In-memory generated proxy/dispatcher loopback. |
-| Opc.Classic.Samples sample | Additional managed DA sample (different CLSID from samples-da). |
-| Opc.Classic.Samples sample | OPC Security reference server and ACL semantics. |
-| Opc.Classic.Samples sample | NativeAOT publish validation. |
+| `Opc.Classic.Samples.DaClient` | DA reads, browse, subscriptions, and generated proxy wiring. |
+| `Opc.Classic.Samples.DaServer` | Managed DA server hosting. |
+| `Opc.Classic.Samples.AeClient` | AE subscription consumption. |
+| `Opc.Classic.Samples.AeServer` | Managed AE server hosting. |
+| `Opc.Classic.Samples.HdaClient` | HDA query/playback client flow. |
+| `Opc.Classic.Samples.HdaServer` | Managed HDA historical server hosting. |
+| `Opc.Classic.Samples.LoopbackDemo` | In-memory generated proxy/dispatcher loopback. |
+| `Opc.Classic.Samples.CttServer` | Conformance-test DA server behavior. |
+| `Opc.Classic.Samples.OpcSecurityServer` | OPC Security reference server and ACL semantics. |
+| `Opc.Classic.Samples.SimulationServer` | Full-feature simulation across DA/AE/HDA/Batch/Commands/Cpx/DX/Security/Discovery/XML-DA, MCP sessions, and optional real TCP hosting. |
+| `Opc.Classic.Samples.AotCanary` | NativeAOT publish validation. |

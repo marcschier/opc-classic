@@ -16,10 +16,11 @@ Reference: the vendored `MS-DCOM.md` spec sections 3.1.2.5.2.3 (legacy) and
 
 | Path | Status | Implemented in |
 | --- | --- | --- |
-| `IRemoteSCMActivator::RemoteGetClassObject` over TCP | ✅ Client + server | `Activation` + `OpcEnumClient` |
-| `IRemoteSCMActivator::RemoteCreateInstance` over TCP | ✅ Client + server | same |
-| `IActivation::RemoteActivation` over TCP | ✅ Client + server | `ActivationClient` + `IActivationCodec.cs` + `ActivationServer.cs` |
-| `IActivation::RemoteActivation` over SMB (ncacn_np) | ✅ Client + server | channel-pluggable `ActivationClient`/`ActivationServer` over `NcacnNpTransport` |
+| `IRemoteSCMActivator::RemoteGetClassObject` over TCP | ✅ Client + server | source-generated `IRemoteSCMActivator` + `RemoteSCMActivatorServer` |
+| `IRemoteSCMActivator::RemoteCreateInstance` over TCP | ✅ Client + server | source-generated `IRemoteSCMActivator` + `RemoteSCMActivatorServer` |
+| `IActivation::RemoteActivation` over TCP | ✅ Client + server | `ActivationClient` + `IActivationCodec.cs` + `ActivationServer` / `LegacyActivationServer` |
+| `IActivation::RemoteActivation` over SMB (ncacn_np) | ✅ Client + server | channel-pluggable `ActivationClient` / `ActivationServer` over `NcacnNpTransport` |
+| Simulation DA cold-activation over managed TCP | ⚠️ Handler + listener test path | `SimulationActivationHost` hosts `ActivationServer` + `SimulationActivationServer`, registers DA dispatchers in `OpcObjectRegistry`, and returns an `OBJREF_STANDARD` encoded by `OpcInterfaceRefCodec`; full authenticated cold-activation waits on server-side NTLM bind handling in `RpcServerConnectionProcessor` |
 | `IRemoteSCMActivator` over SMB | ❌ Not implemented + not normally used | per [MS-DCOM] the modern activator is registered with `ncacn_ip_tcp` only |
 
 The Windows SCM path is also wired for local/native client activation.
@@ -35,7 +36,11 @@ clients can skip endpoint-mapper activation and dial the managed listener
 directly. `DcomCallChannelFactory.ConnectTcpAsync` opens a public
 `TcpClientTransport`; the server side accepts with `OpcServerListener`,
 processes PDUs through `RpcServerConnectionProcessor`, and uses
-`OpcObjectRegistry` for per-IPID object routing.
+`OpcObjectRegistry` for per-IPID object routing. The full-feature
+`Opc.Classic.Samples.SimulationServer --listen` uses this for DA/AE/HDA real
+transport hosting. Its separate `SimulationActivationHost` exercises the
+modern cold-activation shape for DA by serving `IActivation::RemoteActivation`
+and the activated object on one listener.
 
 ## When to use which
 
@@ -44,7 +49,7 @@ processes PDUs through `RpcServerConnectionProcessor`, and uses
 | Modern Windows server (Vista+, Server 2008+) | `IRemoteSCMActivator` over TCP — what we implement today |
 | Windows XP / Server 2003 / older Samba-DCE-RPC bridge | `IActivation` over TCP if available, otherwise `IActivation` over SMB |
 | Server with TCP port 135 blocked but SMB (445) open | `IActivation` over SMB via `ncacn_np` / `NcacnNpTransport` (the typical "firewall-friendly" DCOM scenario described in Microsoft's MSDN archives) |
-| Linux/macOS client talking to Windows | TCP-based modern path (works today; no platform OS dependency in our code) |
+| Linux/macOS client talking to Windows | TCP-based modern path (works for direct known endpoints; native SCM/EPM flows still depend on the target server and network policy) |
 | Linux/macOS client talking to legacy Windows (XP / 2003) with TCP blocked | Now supported via the `ncacn_np` transport + the legacy `IActivation` client/server in `Activation` |
 
 ## Activation property surface
@@ -79,7 +84,8 @@ additional opnum dispatcher and a wrapper that adapts the legacy wire shape
 | --- | --- |
 | Talk to a legacy XP/Server-2003 server over TCP | ✅ Shipped via `ActivationClient` and the shared activation NDR codec. |
 | Talk to a legacy server over SMB (firewall scenario) | ✅ Shipped via the SMB2 client, `ncacn_np` transport, and channel-pluggable `ActivationClient`; real-world SMB activation captures remain useful validation inputs. |
-| Accept legacy clients into our managed server | ✅ Shipped via `ActivationServer`, which adapts legacy activation to the same class-factory registry as `RemoteSCMActivatorServer`. |
+| Accept legacy clients into our managed server | ✅ Shipped via `ActivationServer`, which adapts legacy activation to `LegacyActivationServer` / `RemoteSCMActivatorServer` when backed by class factories. |
+| Simulation DA cold-activation returns routable IPID | ⚠️ Handler shipped and covered by MCP integration tests: `SimulationActivationServer` returns a spec-conformant `OBJREF_STANDARD` and registers the activated DA object in `OpcObjectRegistry`; anonymous network activation is denied, and full authenticated cold-activation still needs server-side NTLM bind handling on the managed listener. |
 | Cross-platform WINREG discovery | ✅ Shipped via WINREG opnums, `ncacn_np`, fixture replay, and Samba smoke coverage. |
 
 ## References
@@ -88,6 +94,8 @@ additional opnum dispatcher and a wrapper that adapts the legacy wire shape
 - `MS-RPCE.md` (vendored Microsoft spec) — RPC Protocol Extensions
 - `IRemoteSCMActivator` — modern activator definition
 - `RemoteSCMActivatorServer` — modern activator server
+- `ActivationServer` / `LegacyActivationServer` — legacy `IActivation` dispatcher and adapter
+- `SimulationActivationServer` / `SimulationActivationHost` — simulation DA cold-activation host and handler
 - `ActivationProperties` — shared activation-property carrier
 - `ComClassObjectRegistrar` — Windows SCM `IClassFactory` registration
 - `OpcDaServerCcw` — DA root server CCW returned by SCM activation

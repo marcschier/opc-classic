@@ -22,8 +22,8 @@ probe-coverage).
 > resolver-binding to the right transport (TCP for sockets,
 > `LocalNamedPipeTransport` for local pipes,
 > `NcacnNpTransport` for remote pipes via SMB2). The DCOM cross-impl
-> matrix profile `testserver` is enabled by default and reports
-> `105 MATCH / 0 REGR` end-to-end.
+> matrix profile `testserver` is enabled by default and reports a
+> green end-to-end result with no regressions.
 
 ## Source artifacts audited
 
@@ -359,14 +359,12 @@ configuration), NOT in our codebase. Fixing it requires either:
 
 ### Recommended workaround
 
-Use **Matrikon OPC Simulation Server** as the primary DA 2.05a reference
+Use **Matrikon OPC Simulation Server** as an additional DA 2.05a reference
 server in the cross-impl matrix. Foundation `OpcTestClient_x64.exe` and
 our managed MCP probe both successfully activate Matrikon end-to-end.
-Matrikon is the only DA server currently demonstrating full activation
-on this dev box. The `testserver` profile in
-probe matrix tool remains the
-"strict" reference for when TestServer activation is fixed upstream,
-but the `matrikon` profile is the practical baseline.
+The `testserver` profile in probe matrix tool remains the strict in-repo
+reference and is expected to stay green after the standard build,
+registration, and ACL flow.
 
 ### Diagnostic helper: `OPC_CLASSIC_DCOM_WIRE_DUMP=1`
 

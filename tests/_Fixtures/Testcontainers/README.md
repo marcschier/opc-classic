@@ -12,7 +12,7 @@ Docker must be running locally. CI runs on a Linux runner with Docker preinstall
 
 ## Adding a fixture
 
-1. Place under <Name>Fixture tests
+1. Place the fixture under `tests\_Fixtures\Testcontainers\`.
 2. Implement `IAsyncDisposable`
 3. Use `DotNet.Testcontainers.Builders.ContainerBuilder` to define the image + ports + env
 4. Return strongly-typed connection info via fixture properties

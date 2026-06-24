@@ -6,6 +6,6 @@ Copyright (c) 2026 Opc.Classic .NET Contributors
 # OPC Foundation OpcTestClient sample
 
 This directory contains the native OPC Foundation-derived C++ TestClient source
-relocated from CoreComponents. It is built by `external` CMake
+relocated from CoreComponents. It is built by the `interop` CMake
 through build-testserver and the Docker test fleet, not as a
 standalone project.

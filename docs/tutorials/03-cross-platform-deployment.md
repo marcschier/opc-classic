@@ -65,7 +65,7 @@ dotnet publish src/MyOpcClient/MyOpcClient.csproj \
   -p:TreatWarningsAsErrors=true
 ```
 
-The contract is zero `IL2xxx` and `IL3xxx` warnings. If a warning appears, fix the root cause before deploying. Do not suppress trimming warnings casually; a suppressed warning can become a production-only failure when a generated proxy, codec, or configuration-bound type is removed.
+Treat `IL2xxx` and `IL3xxx` warnings as release blockers. If a warning appears, fix the root cause before deploying. Do not suppress trimming warnings casually; a suppressed warning can become a production-only failure when a generated proxy, codec, or configuration-bound type is removed.
 
 ## Multi-architecture container images
 
@@ -382,7 +382,7 @@ Also schedule periodic drills. Run the tutorial scenario in a staging environmen
 - [MS-DCOM] and [MS-RPCE] for DCOM activation and packet protection.
 - [MS-KILE] for Kerberos behavior in Windows domains.
 - OPC DA 3.00, AE 1.10, and HDA 1.20 for subscription and callback expectations.
-- Repository samples: Opc.Classic.Samples sample and [../../samples/README.docker.md](../../samples/README.docker.md).
+- Repository samples: [../../samples/README.md](../../samples/README.md) and [../../samples/README.docker.md](../../samples/README.docker.md).
 
 
 

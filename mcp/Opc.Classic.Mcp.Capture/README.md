@@ -7,7 +7,7 @@ the decoder reuses our existing
 `PduCodec` +
 `OrpcEnvelope`
 and writes capture-derived `.hex` files in the same format as
-`Opc.Classic.Diagnostics.OpcWireCapture`.
+`OpcWireCapture`.
 
 ## API
 

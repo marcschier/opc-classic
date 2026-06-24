@@ -6,13 +6,13 @@ implementation against:
 - A **native (C-built) OPC DA smoke server** — hand-rolled in `build` with OPC Foundation headers.
 - A **native (C-built) OPC DA smoke client** — hand-rolled in `build` with OPC Foundation headers.
 - The **OPC Foundation TestServer/TestClient x64 pair** — built from the
-  vendored `external` CMake tree and gated behind
+  vendored `interop` CMake tree and gated behind
   run-matrix.
 
 The managed `Opc.Classic.Samples.CttServer` runs beside the native C and OPC
 Foundation reference containers so cross-implementation client/server pairs can
-be tested on a single Windows host. The current baseline is 0 build warnings/errors and
-2758 passed / 13 skipped / 0 failed across 25 .NET test projects.
+be tested on a single Windows host. The current baseline is a clean build and
+green .NET test sweep.
 
 ## Status
 
@@ -21,7 +21,7 @@ be tested on a single Windows host. The current baseline is 0 build warnings/err
 | `opc-classic/managed` | ✅ Ready — publishes `Opc.Classic.Samples.CttServer` and registers `Opc.Classic.DaSample.1` |
 | `opc-classic/c-server` | ✅ Ready — builds the hand-rolled native DA smoke server (`opc_exe.exe`) from `opc-sample-server.cpp` |
 | `opc-classic/c-client` | ✅ Ready — builds the hand-rolled native DA smoke client (`opc-test.exe`) from `opc-test.cpp` |
-| `opc-classic/testserver` | 🧱 Scaffolded — builds OPC Foundation `OpcTestServer_x64.exe` from `external`; validate on a Windows Docker host |
+| `opc-classic/testserver` | 🧱 Scaffolded — builds OPC Foundation `OpcTestServer_x64.exe` from `interop`; validate on a Windows Docker host |
 | `opc-classic/testclient` | 🧱 Scaffolded — copies `OpcTestClient_x64.exe` from the testserver image; validate on a Windows Docker host |
 | `docker-compose.test.yml` | ✅ Ready — orchestrates the five images on `opc-test-net` |
 | `.github/workflows/docker-test-fleet.yml` | ✅ Ready — CI entry point for the fleet |
@@ -59,10 +59,10 @@ The `opc-classic/managed` container runs `Opc.Classic.Samples.CttServer` with th
   installs VS Build Tools in a Server Core layer).
 - **One `l2bridge` Docker network** named `opc-test-net` (created on first
   run-matrix invocation).
-- **Optional `external` vendor tree** for
-  `opc-classic/testserver` and `opc-classic/testclient`. OPERATOR: if the tree
-  is omitted locally, restore `Release` from CI or
-  build the TestServer image on a machine with the vendored sources.
+- The vendored `interop` tree for `opc-classic/testserver` and
+  `opc-classic/testclient`. OPERATOR: if the tree is omitted locally,
+  restore `Release` from CI or build the TestServer image on a machine with
+  the vendored sources.
 
 ## Quick start
 
@@ -73,7 +73,7 @@ docker compose --file interop/docker/docker-compose.test.yml --profile interacti
 ```
 
 This includes `opc-classic/testserver` and `opc-classic/testclient`, so it
-requires `external`. To keep the historical three-image smoke path,
+requires `interop`. To keep the historical three-image smoke path,
 use run-matrix without `-IncludeTestServer`.
 
 ### Bring the server fleet up

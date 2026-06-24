@@ -11,12 +11,12 @@ Server profiles exercised:
   `F8582CF9-88FB-11DA-A5ED-0060B0692061` (built via
   build-testserver; no MSI).
 
-## Headline numbers
+## Headline status
 
 | Profile | Result | Notes |
 | --- | --- | --- |
-| Matrikon | 25/95 OK (70 FAIL) | All DA tools pass with `--da-clsid F8582CF2-88FB-11D0-B850-00C0F0104305` (direct activation). The `--da-progid` path fails because OPCEnum's data port rejects `IOPCServerList2` and `IOPCServerList` binds with `PROVIDER_REJECTION; ABSTRACT_SYNTAX_NOT_SUPPORTED` ([Issue D](#issue-d-opcenum-data-port-bind-rejects-iopcserverlist2)). |
-| TestServer | 104/104 MATCH, 0 REGRESSION, 0 UNEXPECTED_PASS, 0 MISSING | Full cross-impl matrix green end-to-end via run-cross-impl-matrix `-Profile testserver`. Foundation `OpcTestClient_x64.exe` also activates and runs the full DA 2.x lifecycle exerciser (GetStatus, AddGroup, AddItems, read/write). |
+| Matrikon | DA subset passing by direct CLSID activation | All DA tools pass with `--da-clsid F8582CF2-88FB-11D0-B850-00C0F0104305` (direct activation). The `--da-progid` path fails because OPCEnum's data port rejects `IOPCServerList2` and `IOPCServerList` binds with `PROVIDER_REJECTION; ABSTRACT_SYNTAX_NOT_SUPPORTED` ([Issue D](#issue-d-opcenum-data-port-bind-rejects-iopcserverlist2)). |
+| TestServer | Cross-impl matrix green | Full cross-impl matrix green end-to-end via run-cross-impl-matrix `-Profile testserver`. Foundation `OpcTestClient_x64.exe` also activates and runs the full DA 2.x lifecycle exerciser (GetStatus, AddGroup, AddItems, read/write). |
 
 DA `get_properties`, `read_sync`, and `poll_subscription` work end-to-end
 against Matrikon. The NDR VARIANT decoder handles the embedded `[unique]`
@@ -56,8 +56,7 @@ Validated by:
 - Foundation `OpcTestClient_x64.exe` successfully `CoCreateInstance` +
   `GetStatus` + `AddGroup` + `AddItem`.
 - run-cross-impl-matrix
-  `-Profile testserver` reports 104 MATCH / 0 REGRESSION /
-  0 UNEXPECTED_PASS / 0 MISSING.
+  `-Profile testserver` reports a green matrix with no regressions.
 
 ## TestServer (DA 2.05a + DA 3.0): per-tool outcome
 
@@ -68,7 +67,7 @@ applicable MCP tool passes against TestServer. The matrix invocation is:
 
 ```powershell
 .\tools\run-cross-impl-matrix.ps1 -Profile testserver
-# expected: testserver  da  104  0  0  0
+# expected: testserver profile completes green with no regressions
 ```
 
 The full per-tool outcome list mirrors the Matrikon table below; key
@@ -115,7 +114,7 @@ opcclassic.cpx.get_type_system | OK | reports namespace/supported state
 
 opcclassic.session.create / list / close | OK | session lifecycle
 opcclassic.da.connect | OK | succeeds after the Issue E config-XML patch and the DCOM ACL grant from `grant-testserver-acl.ps1`
-all other DA tools | OK | full DA 2.x lifecycle works end-to-end (see headline 104/104)
+all other DA tools | OK | full DA 2.x lifecycle works end-to-end (see headline status)
 opcclassic.{hda,ae,batch,commands,dx,xmlda}.* | NOT_APPLICABLE | TestServer is DA-only
 
 ## HDA / AE / Batch / Commands / DX / XML-DA on Matrikon
@@ -162,7 +161,7 @@ required timeout") on a fresh install. The fix is to run
 grant-testserver-acl once after
 the EXE is registered, which writes the DCOM AppID Launch/Access SD for
 the TestServer CLSID. Combined with the Issue E config-XML patch above,
-the matrix reaches 104/104.
+the matrix reaches a green end-to-end result.
 
 ### Issue C: OPCEnum **activation** requires DCOM ACL grant
 
@@ -203,7 +202,7 @@ transfer-syntax alternative beyond the default NDR
 
 **Workaround:** pass `--da-clsid <CLSID>` to the probe driver (bypasses
 OPCEnum and dials the target server's `IRemoteActivation` directly) —
-this is what the current 25/95 OK baseline uses.
+this is what the current direct-CLSID baseline uses.
 
 **Fix surface:** an `OpcSpecCatalog.Discovery` collection that the
 `DcomOpcEnumCallChannelFactory` passes through is the suspected fix. If

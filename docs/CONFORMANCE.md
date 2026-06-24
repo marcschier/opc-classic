@@ -43,7 +43,7 @@ The former per-spec review set compared each OPC specification's protocol surfac
 
 ### Current validation baseline
 
-The solution baseline is 0 build warnings / 0 build errors and 2758 passed / 13 skipped / 0 failed across 25 .NET test projects.
+The solution baseline is warning-free, with all .NET test projects green.
 
 ### Read order
 
@@ -97,8 +97,8 @@ Opnums 3-24 are represented in `IOPCInterfaces`, and subscription/browser/callba
 Two cross-implementation interop-matrix tools — `opcclassic.ae.get_condition_state`
 and `opcclassic.ae.ack_condition` — are marked `EXPECTED_FAIL` in
 probe matrix tool (`_ae_matrix`). They therefore count as MATCH and the
-`samples-ae` profile reads 104/0/0/0; this is a **documented external-component
-limitation, not a defect in the managed stack** — proven conclusively by the
+`samples-ae` profile treats those EXPECTED_FAIL tools as matching; this is a
+**documented external-component limitation, not a defect in the managed stack** — proven conclusively by the
 elevated matrix re-run: with byte-for-byte spec-correct wire bytes,
 `opcae_ps.dll` still forcibly closes the connection rather than processing
 the response (for `GetConditionState`) or the request (for `AckCondition`).
@@ -110,7 +110,8 @@ the response (for `GetConditionState`) or the request (for `AckCondition`).
   the vendored `opc_ae_p.c` proxy/stub source, that stub marks the AE `LPWSTR`
   params as `[simple ref]`; tagging them `[OpcRefString]` makes
   `GetConditionState`'s request decode succeed (the managed CCW logs
-  `ENTER → decoded → RETURN S_OK` and the matrix briefly reaches 103/1), but
+  `ENTER → decoded → RETURN S_OK` and the matrix reaches the residual
+  native-stub response failure), but
   the `OPCCONDITIONSTATE` response round-trip then crashes `opcae_ps.dll`, and
   `AckCondition`'s `[in]` unmarshal is rejected by the stub before the CCW is
   entered.
@@ -1056,7 +1057,7 @@ HDA should be described as declaration- and codec-complete for the managed DCOM 
 ### Executive Summary
 
 **Coverage**: **100%** of required interfaces and methods
-**Test coverage**: 6 test classes, 17 unit tests
+**Test coverage**: current security test classes cover the interface, proxy, enum, request-validation, IID, and HRESULT paths
 **Gaps**: 0 blocking, 0 minor (server-side reference sample shipped ✅)
 
 OPC Security 1.00 defines two **optional** interfaces for managing client identity changes within a single OPC server connection:
@@ -1217,14 +1218,14 @@ public async Task SecurityNT_IsAvailable_decodes_boolean()
 
 | Test Class | Focus | Coverage |
 | --- | --- | --- |
-| `OpcSecurityTests` (`IOpcSecurityContractTests`) | `IOpcSecurity` behavior (login/logout state machine) | ✅ 6 tests |
-| `IOPCSecurityProxyTests` | Client proxy marshaling (opnum, IID, payload encoding) | ✅ 2 tests |
-| `OpcImpersonationLevelTests` | Enum values | ✅ 1 test covering all 5 values |
-| `OpcLogonRequestTests` | Record validation | ✅ 4 tests |
-| `DcomInterfaceIdTests` | IID correctness | ✅ 3 tests |
-| `OpcSecurityErrorsTests` | HRESULT constants | ✅ 1 test |
+| `OpcSecurityTests` (`IOpcSecurityContractTests`) | `IOpcSecurity` behavior (login/logout state machine) | ✅ covered |
+| `IOPCSecurityProxyTests` | Client proxy marshaling (opnum, IID, payload encoding) | ✅ covered |
+| `OpcImpersonationLevelTests` | Enum values | ✅ all defined values covered |
+| `OpcLogonRequestTests` | Record validation | ✅ covered |
+| `DcomInterfaceIdTests` | IID correctness | ✅ covered |
+| `OpcSecurityErrorsTests` | HRESULT constants | ✅ covered |
 
-✅ **Total**: 17 unit tests covering:
+✅ **Security-focused unit tests cover:**
 - Interface presence detection
 - Authentication state transitions
 - DCOM wire-level encoding/decoding
@@ -1788,27 +1789,27 @@ The spec defines 111 standard property IDs. Implementation **does not** have an 
 
 #### 9.1 Unit Tests
 
-15 test files provide comprehensive coverage of serialization/deserialization:
+The XML-DA test suite provides comprehensive coverage of serialization/deserialization:
 
-| Test File | Lines | Coverage Focus |
+| Test File | Status | Coverage Focus |
 | --- | --- | --- |
-| `GetStatusSerializerTests` | 272 | GetStatus request/response |
-| `ReadSerializerTests` | 298 | Read request/response, scalar types |
-| `WriteSerializerTests` | 164 | Write request/response, scalar types |
-| `BrowseSerializerTests` | 167 | Browse request/response |
-| `GetPropertiesSerializerTests` | 187 | GetProperties request/response |
-| `SubscribeSerializerTests` | 155 | Subscribe request/response |
-| `SubscriptionPolledRefreshSerializerTests` | 151 | SubscriptionPolledRefresh request/response |
-| `SubscriptionCancelSerializerTests` | 118 | SubscriptionCancel request/response |
-| `XmlDaQualityCompatTests` | 38 | Quality bit mapping |
-| `XmlDaConstantsTests` | 50 | Namespace/SOAPAction constants |
-| `XmlDaErrorCodesTests` | 64 | XML-DA success/error code mapping |
-| `XmlDaServerStateTests` | 35 | ServerState enum |
-| `HttpXmlDaClientTests` | 290 | HTTP client integration |
-| `SoapEnvelopeTests` | 222 | SOAP envelope serialization |
-| `XmlDaValueSerializerTests` | 215 | Array, base64Binary, and extended scalar value round-trips |
+| `GetStatusSerializerTests` | covered | GetStatus request/response |
+| `ReadSerializerTests` | covered | Read request/response, scalar types |
+| `WriteSerializerTests` | covered | Write request/response, scalar types |
+| `BrowseSerializerTests` | covered | Browse request/response |
+| `GetPropertiesSerializerTests` | covered | GetProperties request/response |
+| `SubscribeSerializerTests` | covered | Subscribe request/response |
+| `SubscriptionPolledRefreshSerializerTests` | covered | SubscriptionPolledRefresh request/response |
+| `SubscriptionCancelSerializerTests` | covered | SubscriptionCancel request/response |
+| `XmlDaQualityCompatTests` | covered | Quality bit mapping |
+| `XmlDaConstantsTests` | covered | Namespace/SOAPAction constants |
+| `XmlDaErrorCodesTests` | covered | XML-DA success/error code mapping |
+| `XmlDaServerStateTests` | covered | ServerState enum |
+| `HttpXmlDaClientTests` | covered | HTTP client integration |
+| `SoapEnvelopeTests` | covered | SOAP envelope serialization |
+| `XmlDaValueSerializerTests` | covered | Array, base64Binary, and extended scalar value round-trips |
 
-**Total**: 2426 lines of test code
+Together these test files cover the XML-DA serialization, quality, constants, error, HTTP, SOAP, and value paths.
 
 #### 9.2 Integration Tests
 
@@ -1894,7 +1895,7 @@ None identified. Spec is clear and implementation follows closely.
 
 - **Specification**: vendored `OPC-XMLDA-1.01.md` spec (4914 lines)
 - **Implementation**: `Opc.Classic` (HttpXmlDaClient.cs, IXmlDaClient.cs, XmlDaValue.cs, XmlDaValueType.cs, XmlDaQualityCompat.cs, Serialization/)
-- **Tests**: Opc.Classic.Xml tests (15 test files, 2426 lines)
+- **Tests**: Opc.Classic.Xml test suite
 - **Status**: this section
 
 ---
@@ -1923,3 +1924,4 @@ Earlier reviews flagged missing CPX, DX, HDA, Batch, XML-DA array, and DA VARIAN
 ### Current validation baseline
 
 See [Spec coverage overview](#spec-coverage-overview) for the repository-wide baseline.
+

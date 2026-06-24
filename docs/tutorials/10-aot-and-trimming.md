@@ -2,7 +2,7 @@
 
 Opc.Classic is designed for NativeAOT-compatible libraries. That matters for plant gateways, edge containers, and small service deployments where startup time, image size, and predictable dependencies are important. It also means application code must avoid patterns that only work when the full runtime and reflection metadata are available. This tutorial shows how to publish AOT-trimmed binaries, how to use root descriptors when you really need them, and what is safe or unsafe in the Opc.Classic stack.
 
-The repository's canary is Opc.Classic.Samples sample. It references `Opc.Classic.Core` and `Opc.Classic.Da`, creates `OpcUrl`, `OpcVariant`, `OpcItemState`, and round-trips `NdrOpcItemStateCodec`. The CI contract is zero AOT/trimming warnings for the canary.
+The repository's canary is `Opc.Classic.Samples.AotCanary`. It references `Opc.Classic.Core` and `Opc.Classic.Da`, creates `OpcUrl`, `OpcVariant`, `OpcItemState`, and round-trips `NdrOpcItemStateCodec`. The CI contract treats AOT/trimming warnings as errors for the canary.
 
 ## Prerequisites
 
@@ -243,8 +243,8 @@ Look for hidden reflection, dynamic serialization, culture/globalization differe
 
 ## Production checklist
 
-- Canary publish passes with zero warnings.
-- Application publish passes with zero warnings.
+- Canary publish passes with AOT/trimming warnings treated as errors.
+- Application publish passes with AOT/trimming warnings treated as errors.
 - Release binary runs on the target OS/architecture.
 - Health check performs an authenticated OPC status call.
 - Logs include version, target URL, auth mode, and protection level.
@@ -331,7 +331,7 @@ Add a command-line switch such as `--smoke-test` that starts configuration, vali
 
 ## References
 
-- Repository canary: Opc.Classic.Samples sample.
+- Repository canary: `Opc.Classic.Samples.AotCanary`.
 - Repository rules: `Directory.Build` and `BannedSymbols`.
 - [../ARCHITECTURE.md](../ARCHITECTURE.md) for source-generated proxy and explicit codec design.
 

@@ -308,7 +308,7 @@ capture (`matrikon-getproperties-random-int4.hex`):
   - #9 Item Description (BSTR)
   - #10-14 Matrikon-private waveform properties
 
-Full solution test sweep: **all green** (0 failures across 17 test projects).
+Full solution test sweep: **all test projects green**.
 
 ## Wire-replay findings against Matrikon (analysis archive)
 

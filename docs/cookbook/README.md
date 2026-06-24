@@ -15,15 +15,16 @@ These recipes use the current `Opc.Classic.*` package and namespace names. They 
 
 ## Sample apps referenced
 
-- Opc.Classic.Samples sample — managed DA server registered as `Opc.Classic.Samples.DaServer.1`.
-- Opc.Classic.Samples sample — DA reference server that publishes OPC Security 1.00 interfaces.
-- Opc.Classic.Samples sample — DA client flow with browse, read, subscription, and generated proxy wiring.
-- Opc.Classic.Samples sample — managed AE sample server.
-- Opc.Classic.Samples sample — AE client/subscription flow.
-- Opc.Classic.Samples sample — managed HDA sample server.
-- Opc.Classic.Samples sample — HDA query/playback client flow.
-- Opc.Classic.Samples sample — in-memory generated proxy/dispatcher loopback.
-- Opc.Classic.Samples sample — additional managed DA sample registered as `Opc.Classic.DaSample.1` (different CLSID from samples-da).
-- Opc.Classic.Samples sample — NativeAOT publish smoke test.
+- `Opc.Classic.Samples.DaServer` — managed DA server registered as `Opc.Classic.Samples.DaServer.1`.
+- `Opc.Classic.Samples.OpcSecurityServer` — DA reference server that publishes OPC Security 1.00 interfaces.
+- `Opc.Classic.Samples.DaClient` — DA client flow with browse, read, subscription, and generated proxy wiring.
+- `Opc.Classic.Samples.AeServer` — managed AE sample server.
+- `Opc.Classic.Samples.AeClient` — AE client/subscription flow.
+- `Opc.Classic.Samples.HdaServer` — managed HDA sample server.
+- `Opc.Classic.Samples.HdaClient` — HDA query/playback client flow.
+- `Opc.Classic.Samples.LoopbackDemo` — in-memory generated proxy/dispatcher loopback.
+- `Opc.Classic.Samples.CttServer` — additional managed DA sample registered as `Opc.Classic.DaSample.1` (different CLSID from `samples-da`).
+- `Opc.Classic.Samples.SimulationServer` — full-feature simulation server across OPC Classic feature areas.
+- `Opc.Classic.Samples.AotCanary` — NativeAOT publish smoke test.
 
 See also [Architecture](../ARCHITECTURE.md), [Adoption guide](../ADOPTION.md) and [sample Docker guide](../../samples/README.docker.md).

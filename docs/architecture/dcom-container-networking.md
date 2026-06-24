@@ -54,16 +54,19 @@ DCOM bindings advertise stable, peer-routable addresses.
 
 ### Functional managed DCOM-over-IP sample path
 
-The sample DA, AE, HDA, CttServer, and OPC Security servers support direct
+The sample DA, AE, HDA, CttServer, OPC Security, and SimulationServer apps support direct
 DCOM-over-IP listeners without Windows SCM endpoint mapping. Server samples bind
 `OPC_CLASSIC_SAMPLE_PORT` on `0.0.0.0` (defaults DA=51300, AE=51301,
 HDA=51302, CttServer=51303, Security=51304), and DA/AE/HDA client samples dial
 `OPC_CLASSIC_SERVER_HOST` / `OPC_CLASSIC_SERVER_PORT` through
-`DcomCallChannelFactory.ConnectTcpAsync` and `TcpClientTransport`. When those
+`DcomCallChannelFactory.ConnectTcpAsync` and `TcpClientTransport`.
+`Opc.Classic.Samples.SimulationServer --listen` hosts DA/AE/HDA over real managed TCP
+listeners from one simulated plant model (DA address override: `OPC_CLASSIC_SIM_DA_LISTEN`;
+AE/HDA default to ephemeral loopback addresses unless changed in options). When those
 environment variables are absent, clients keep their original in-process
 `InMemoryCallChannel` fallback for local development.
 
-This DCOM-over-IP path is separate from the Windows COM/OXID dynamic-port path below:
+This direct DCOM-over-IP path is separate from the Windows COM/OXID dynamic-port path below:
 it uses a known TCP port on the managed listener instead of SCM activation plus
 endpoint-mapper-discovered object bindings. See README.docker sample for
 the DA/AE/HDA compose topology and samples sample for the full sample port table.

@@ -26,7 +26,7 @@ Requires:
 - OPC Foundation Core Components available on the host (provides
   `opcproxy.dll` for marshalling and OpcEnum). The redistributable installers
   are no longer vendored; build/register the CoreComponents tree under
-  `external` or install the official OPC Foundation package
+  `interop` or install the official OPC Foundation package
   externally.
 - C++ desktop workload with ATL/MFC components
 

@@ -1,6 +1,6 @@
 # Opc.Classic Documentation
 
-Current baseline: **10 sample apps** and **2758 passed / 13 skipped / 0 failed across 25 .NET test projects** with 0 build warnings / 0 build errors.
+Current baseline: **the sample apps** and **all test projects green** with 0 build warnings / 0 build errors.
 
 ## Getting Started
 
@@ -13,7 +13,7 @@ Current baseline: **10 sample apps** and **2758 passed / 13 skipped / 0 failed a
 - [Cookbook recipes](cookbook/README.md) — short focused how-tos
 - [Implementing OPC Security](cookbook/08-implementing-opc-security.md) — OPC-layer security sample and production guidance
 - [Tutorials](tutorials/README.md) — long-form walkthroughs
-- [Samples](../samples/README.md) — 10 runnable sample apps
+- [Samples](../samples/README.md) — runnable sample apps, including the full-feature SimulationServer
 - [Migrating from OPC Foundation .NET API](tutorials/07-migrating-from-opc-foundation-net-api.md)
 - [Migration analyzer diagnostics](migration/README.md) — OCM* code-fix providers
 
@@ -51,7 +51,7 @@ Current baseline: **10 sample apps** and **2758 passed / 13 skipped / 0 failed a
 
 - [Per-spec conformance index](conformance/README.md) — 22 per-spec coverage matrices (10 OPC + 12 directly-cited MS-\* protocols)
 - [Aggregate spec review](CONFORMANCE.md)
-- [Architecture diagrams](architecture/diagrams.md) — 10 Mermaid diagrams
+- [Architecture diagrams](architecture/diagrams.md) — Mermaid diagrams
 - [Generator diagnostics](generators/diagnostics.md) — OPCGEN*+ OCM* reference
 - [XML-DA status](CONFORMANCE.md#opc-xml-da-101)
 - [Roadmap](ROADMAP.md) — release gates and beyond

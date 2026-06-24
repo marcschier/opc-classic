@@ -10,7 +10,7 @@
 
 | Surface | Spec § | Implementation | Tests | Outcome |
 |---|---|---|---|---|
-| **§1.3.1 Activation** (`IActivation`, `IRemoteSCMActivator`) | §1.3.1 / §3.1.2.5 | ✅ `ActivationClient`, `ActivationServer`, `LegacyActivationServer`, `RemoteSCMActivatorServer`, `RemoteActivationV54Server` | ✅ | conformant |
+| **§1.3.1 Activation** (`IActivation`, `IRemoteSCMActivator`) | §1.3.1 / §3.1.2.5 | ✅ `ActivationClient`, `ActivationServer`, `LegacyActivationServer`, `RemoteSCMActivatorServer`, `RemoteActivationV54Server` | ✅ | managed activation conformant; native authenticated activation gap noted below |
 | **§1.3.2 Object References** (`OBJREF`, `STDOBJREF`, variants) | §2.2.18 | ✅ `StdObjRef`, `InterfacePointer`, `OpcMInterfacePointerCodec`, plus extended/handler/custom body codecs | ✅ wire-byte fixtures | conformant |
 | **§1.3.3 Object Exporter** (`IObjectExporter`, OXID/IPID/SETID) | §3.1.1 / §3.1.2 | ✅ `ComOxidRuntime`, `ComOxidRuntimeAcceptService`, `ComOxidRuntimeHelper`, `IObjectExporterDispatcher`, `OpcObjectRegistry` | ✅ | conformant |
 | **§1.3.4 ORPC Calls** (`ORPCTHIS`, `ORPCTHAT`, extensions) | §2.2.13 / §2.2.21 | ✅ `OrpcThis`, `OrpcThat`, `OrpcEnvelope`, `OrpcExtent`, `OrpcExtentArrayCodec` | ✅ envelope + extent fuzz tests | conformant |
@@ -20,7 +20,7 @@
 | **§2.2 Common data types** (OID, SETID, GUID, CID, CLSID, IID, IPID, OXID, COMVERSION) | §2.2.1 - §2.2.11 | ✅ `ObjectId`, `SetId`, `Oxid`, `Session`, `Clsid`, `ActivationComVersion` | ✅ | conformant |
 | **§2.2.13 ORPCTHIS / ORPCTHAT** | §2.2.13 | ✅ `OrpcThis`, `OrpcThat`, `OrpcExtentArray` | ✅ envelope tests | conformant |
 | **§2.2.18 OBJREF variants** (STANDARD / HANDLER / CUSTOM / EXTENDED) | §2.2.18 | ✅ all 4 body codecs (`InterfacePointerBody`, `HandlerInterfacePointerBody`, `CustomInterfacePointerBody`, `ExtendedInterfacePointerBody`); spec-mandated `OBJREF_UNKNOWN` shape supported via `UnknownInterfacePointerBody` | ✅ `ObjrefShapesTests`, `ObjrefSnapshotTests`, `ObjrefFuzzTests` | conformant |
-| **§2.2.19 DUALSTRINGARRAY** (packet + IDL forms) | §2.2.19 | ✅ `DualStringArray`, `StringBinding`, `SecurityBinding`, `DualStringArrayResolver` | ✅ `DualStringArrayResolverTests` (10 cases covering TCP tower 0x0007 + named-pipe tower 0x000F + DCE/UNC forms) | conformant |
+| **§2.2.19 DUALSTRINGARRAY** (packet + IDL forms) | §2.2.19 | ✅ `DualStringArray`, `StringBinding`, `SecurityBinding`, `DualStringArrayResolver` | ✅ `DualStringArrayResolverTests` (covers TCP tower 0x0007 + named-pipe tower 0x000F + DCE/UNC forms) | conformant |
 | **§2.2.21 ORPC Extensions** (Error Info, Context, Custom-Marshaled errors) | §2.2.21 | ✅ `OrpcExtent`, `OrpcExtentArrayCodec`, `OrpcExtentRegressionTests` | ✅ | conformant |
 | **§2.2.22 Activation Properties BLOB** | §2.2.22 | ✅ `ActivationProperties`, `ActivationProperty`, `ActivationPropertyId`, `SpecialPropertiesData`, `InstanceInfo`, `LocationInfo`, `SecurityInfo`, `ScmReplyInfo` | ✅ | conformant |
 | **§3.1.1 Object Exporter (server)** — abstract data model, message processing | §3.1.1 | ✅ `ComOxidRuntime`, `IObjectExporterDispatcher`, server-side OXID/IPID allocation, pinging | ⚠️ partial — ping timer behaviour (`SETID` table aging) is implementer-controlled | soft gap — see §3.1 |
@@ -47,6 +47,7 @@ The spec defines a 2-tier activation model: legacy `IActivation` (opnum 0 of `Re
 | `ActivationServer` (server dispatcher) | §3.1.2.5.4 | `src/Opc.Classic.Dcom/Activation/ActivationServer.cs` | `tests/Opc.Classic.Dcom.Tests/ActivationServerTests.cs` |
 | `ActivationProperties` BLOB encode / decode | §2.2.22 | `src/Opc.Classic.Dcom/Activation/ActivationProperties.cs`, `ActivationPropertyId.cs`, `ActivationInfoCodec.cs`, `SpecialPropertiesData.cs`, `InstanceInfo.cs`, `LocationInfo.cs`, `SecurityInfo.cs`, `ScmReplyInfo.cs` | `tests/Opc.Classic.Dcom.Tests/ActivationServerTests.cs` |
 | Class factory registration (`IClassFactory`) | §3.1.1.5.4 | `src/Opc.Classic.Dcom/Activation/IClassFactory.cs`, `ClassFactoryRegistry.cs`, `ClassFactoryActivationContext.cs`, `ClassFactoryActivationResult.cs` | covered by `ActivationServerTests` |
+| Simulation cold activation OBJREF | §2.2.18 / §3.1.2.5.2.3.1 / §3.2.4.1.2 | `RemoteSCMActivatorServer` emits `InterfaceResults[0].ObjRef` as `OBJREF_STANDARD` (`MEOW` + `STDOBJREF` + `DUALSTRINGARRAY`), decoded by `OpcInterfaceRefCodec`; the activated IPID is carried in the `STDOBJREF`, not inferred from `IpidRemUnknown` | `DaActivationTransportTests` |
 
 ### 1.2 Object References (spec §2.2.18)
 
@@ -98,7 +99,7 @@ The spec defines a 2-tier activation model: legacy `IActivation` (opnum 0 of `Re
 
 | Surface | Spec § | Source | Tests |
 |---|---|---|---|
-| `DUALSTRINGARRAY` (packet form) | §2.2.19.1 | `src/Opc.Classic.Dcom/Core/DualStringArray.cs`, `src/Opc.Classic.Dcom/Transport/DualStringArrayResolver.cs` | `tests/Opc.Classic.Dcom.Tests/Transport/DualStringArrayResolverTests.cs` (10 tower-ID + address-form combinations) |
+| `DUALSTRINGARRAY` (packet form) | §2.2.19.1 | `src/Opc.Classic.Dcom/Core/DualStringArray.cs`, `src/Opc.Classic.Dcom/Transport/DualStringArrayResolver.cs` | `tests/Opc.Classic.Dcom.Tests/Transport/DualStringArrayResolverTests.cs` (tower-ID + address-form coverage) |
 | `STRINGBINDING` (per tower ID) | §2.2.19.3 | `src/Opc.Classic.Dcom/Core/StringBinding.cs` | `tests/Opc.Classic.Dcom.Tests/Transport/DualStringArrayResolverTests.cs` |
 | `SECURITYBINDING` | §2.2.19.4 | `src/Opc.Classic.Dcom/Core/SecurityBinding.cs` | covered by activation tests |
 | Tower ID `0x0007` (TCP) | §2.2.19.3 | `DualStringArrayResolver.ResolveFirstTcp` | `DualStringArrayResolverTests` |
@@ -199,7 +200,7 @@ stack handles. Status: **WAIVED** — see the previous ALPC plan.
 
 #### 3.1.3 No matrix profile against a non-OPC DCOM target
 
-The cross-impl matrix (8/8 GREEN) targets OPC-class DCOM servers
+The cross-impl matrix targets OPC-class DCOM servers
 only. Generic DCOM interop against non-OPC servers (e.g. Exchange
 RPC, Active Directory Replication) would exercise more obscure
 activation paths but is out of scope for the OPC project.
@@ -207,11 +208,11 @@ Status: **WAIVED**.
 
 ### 3.2 Hard gaps
 
-None at present beyond the documentation-citation issues already
-captured against MS-CSSP and MS-ERREF. The empirical evidence (8/8
-matrix GREEN against Foundation TestServer + Matrikon + CTT +
-managed samples) confirms wire-level conformance for the activation
-+ OXID + ORPC + transport surfaces this spec defines.
+Native end-to-end activation with server-side authenticated NTLM bind
+handling remains a gap. Managed/simulated activation returns a
+spec-conformant `OBJREF_STANDARD` in `InterfaceResults[0]`, and the
+cross-implementation matrix remains green for the OPC-class activation,
+OXID, ORPC, and transport surfaces it exercises.
 
 ---
 
@@ -239,3 +240,4 @@ Phase 0 inventory:
 
 - `files/conformance/inventory/ms-dcom-headings.csv` (177 entries)
 - `files/conformance/inventory/ms-dcom-clauses.csv` (874 normative entries)
+

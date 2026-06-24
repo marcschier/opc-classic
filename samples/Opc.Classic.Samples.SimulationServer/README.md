@@ -61,8 +61,8 @@ string is needed for those two.
 
 By default the server is only reachable in-process via `inmemory://`. Pass `--listen` to
 also start the real cross-platform **DA, AE, and HDA** listeners (managed `ncacn_ip_tcp`), so
-external OPC clients — the Opc.Classic MCP server over `tcp://` / `dcom://`, or (on Windows)
-Matrikon OPC Explorer over native DCOM — can connect:
+managed Opc.Classic clients — including the Opc.Classic MCP server over `tcp://` / `dcom://`
+— can connect. Native Windows DCOM interaction is covered in the topologies below:
 
 ```powershell
 dotnet run --project samples\Opc.Classic.Samples.SimulationServer -- --listen
@@ -129,7 +129,7 @@ DCOM and discovers servers via OpcEnum. Two topologies are supported:
    value ticker refreshes the model every 250 ms); sync-read, write to `Bucket Brigade.*`, and
    remove the group — the exact flow `DaLifecycleTransportTests` exercises programmatically.
 
-4. **Unregister** when done: `dotnet run --project … -- --unregister`.
+4. **Unregister** when done: `dotnet run --project samples\Opc.Classic.Samples.SimulationServer -- --unregister`.
 
 #### Topology 2 — simulation on Linux, explorer on Windows (remote, over TCP)
 

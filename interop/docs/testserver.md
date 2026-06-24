@@ -20,7 +20,7 @@ built without an external clone. Key paths:
 | Vendored OPC Foundation TestServer `COpcTestGroup.h` | Group class derived from `COpcDaGroup`. |
 | Vendored OPC Foundation TestServer `OpcTestServer.{cpp,idl,rc}` | Local-server entry point (`_tWinMain`), per-bitness CLSIDs, MIDL IDL for the empty server interface. |
 | Vendored OPC Foundation TestServer `OpcTestServer.config.xml` | 3-item address space: `Test.Int32` (=42), `Test.Float` (=3.14159), `Test.String` ("OPC Test"), each carrying property 6 (Item Quality) = 100. |
-| Vendored OPC Foundation TestClient `OpcTestClient.cpp` | 179-line console exerciser — enumerates DA 2.0 servers via OpcEnum, calls `GetStatus` on each. |
+| Vendored OPC Foundation TestClient `OpcTestClient.cpp` | Native console exerciser — enumerates DA 2.0 servers via OpcEnum, calls `GetStatus`, then runs the repo lifecycle extension (`AddGroup`, `AddItems`, sync read/write, cleanup). |
 | `Shared` | Sample server scaffolding TestServer derives from (`OpcUtilityClasses`, `SampleServerClasses`, `SampleDevice`, `SampleServer205`). |
 | `Common`, `DataAccess`, `Security` | Per-spec IDLs + proxy/stub builds for `opccomn_ps.dll`, `opcproxy.dll`, `opcsec_ps.dll` (the DLLs the TestServer's COM activation needs for marshalling). |
 | `Include` | Shared headers (CATID GUIDs, error codes). |
@@ -50,9 +50,9 @@ Both register under the `OPC DA 2.05a Test Server` ProgID prefix.
 
 The script discovers VS's bundled CMake (or any cmake.exe on PATH),
 configures `x64`, and builds the
-`OpcTestServer`, `OpcTestClient`, `OpcCategoryManager`, `opccomn_ps`
-and `opcproxy` targets. Output lands in
-`Release`.
+`OpcTestServer`, `OpcTestClient`, `OpcCategoryManager`, and the proxy/stub
+targets. Output lands in
+`interop\build\x64\Release`.
 
 Prerequisites: Visual Studio 2022 17.14+ (Desktop development with
 C++ + ATL + Win11 SDK + MSVC v14.44 or later), CMake 3.20+ (bundled
@@ -61,7 +61,7 @@ with VS).
 ### Option 2 — upstream `build.ps1` directly
 
 ```powershell
-cd external
+cd interop
 .\build.ps1
 ```
 
@@ -94,7 +94,7 @@ The script performs the no-MSI setup needed for x64 DCOM activation:
    AppID + Implemented Categories for DA 1.0, DA 2.0, and DA 3.0).
 
 Defaults to looking for the EXE and sibling proxy/stub DLLs under
-`Release`; pass `-ExePath` to override.
+`interop\build\x64\Release`; pass `-ExePath` to override.
 
 To remove the TestServer entries and the System32 proxy/stub DLLs
 copied by this script: `.\interop\tools\register-testserver.ps1 -Unregister`.

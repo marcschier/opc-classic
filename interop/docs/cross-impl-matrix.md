@@ -23,6 +23,7 @@ probe matrix tool.
 | `ctt-da` | Opc.Classic.Samples sample | DA 2.05a + 3.0 | `Opc.Classic.DaSample.1` |
 | `samples-hda` | Opc.Classic.Samples sample | HDA 1.0 | `Opc.Classic.Samples.HdaServer.1` |
 | `samples-ae` | Opc.Classic.Samples sample | AE 1.0 | `Opc.Classic.Samples.AeServer.1` |
+| `samples-ae-managed` | Opc.Classic.Samples sample over managed TCP | AE 1.0 | `tcp://127.0.0.1:51301` |
 | `security-da` | Opc.Classic.Samples sample | DA 2.05a + IOPCSecurityNT + IOPCSecurityPrivate | `Opc.Classic.Samples.OpcSecurityServer.1` |
 
 ## Client inventory
@@ -30,7 +31,7 @@ probe matrix tool.
 | Client | What it exercises |
 | --- | --- |
 | MCP probe | Every `opcclassic.*` MCP tool. Curated probe specs per tool. Mirrors what end-user LLMs see through the MCP server. |
-| OPC Foundation `OpcTestClient_x64.exe` | Minimal DA enumerator: `IOPCServerList::EnumClassesOfCategories(CATID_OPCDAServer20)` + per-server `IOPCServer::GetStatus`. Does NOT browse / add groups / read / write / subscribe. |
+| OPC Foundation `OpcTestClient_x64.exe` | Native DA exerciser: enumerates DA servers via OpcEnum, then runs `GetStatus` plus the repo lifecycle extension (`AddGroup`, `AddItems`, sync read/write, cleanup). |
 | Managed Opc.Classic.Samples sample | Demonstrates full DA flow: connect, browse, add group, add items, sync read, write, subscribe + callback. |
 | Managed Opc.Classic.Samples sample | Full AE flow: connect, browse areas, create subscription, refresh, poll events, ack condition. |
 | Managed Opc.Classic.Samples sample | Full HDA flow: connect, browse, get item handles, read raw / processed / at time. |
@@ -53,7 +54,7 @@ Cell legend:
 
 | Client ↓ \ Server → | `testserver` | `matrikon` | `samples-da` | `ctt-da` | `samples-hda` | `samples-ae` | `security-da` |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| MCP probe (DA tools, DA 2.05a subset) | ✅ **104/0** | ✅ (26/95 OK, 0 DA failures) | 🚧 TODO | 🚧 TODO | ⛔ wrong spec | ⛔ wrong spec | 🚧 TODO 🔒 |
+| MCP probe (DA tools, DA 2.05a subset) | ✅ **PASS** | ✅ (DA subset passing) | 🚧 TODO | 🚧 TODO | ⛔ wrong spec | ⛔ wrong spec | 🚧 TODO 🔒 |
 | MCP probe (DA tools, DA 3.0 IOPCItemIO) | ✅ (TestServer advertises CATID_OPCDAServer30) | ✅ | 🚧 TODO | 🚧 TODO | ⛔ | ⛔ | ❌ NOINTERFACE |
 | MCP probe (HDA tools) | ⛔ | ⛔ | ⛔ | ⛔ | 🚧 TODO | ⛔ | ⛔ |
 | MCP probe (AE tools) | ⛔ | ⛔ | ⛔ | ⛔ | ⛔ | 🚧 TODO | ⛔ |
@@ -142,7 +143,7 @@ These cells are spec-mandated and will never be PASS for the given pair:
 | `opcclassic.security.*` against non-`security-da` profiles | Only `Opc.Classic.Samples.OpcSecurityServer` registers `IOPCSecurityNT`/`IOPCSecurityPrivate`. |
 | `opcclassic.cpx.*` against profiles without OPCBinary type system | CPX needs an OPCBinary `IOPCComplexType` registered; sample servers don't. |
 | `opcclassic.hda.*` / `opcclassic.ae.*` / `opcclassic.batch.*` / `opcclassic.commands.*` / `opcclassic.dx.*` / `opcclassic.xmlda.*` against DA-only profiles | Wrong spec entirely. |
-| All non-DA tools against DA-only `OpcTestClient.exe` | TestClient only exercises DA enumerate + GetStatus. |
+| All non-DA tools against DA-only `OpcTestClient.exe` | TestClient only exercises DA enumeration, status, and DA lifecycle calls. |
 
 ## Automation wrapper
 

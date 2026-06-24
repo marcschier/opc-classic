@@ -222,4 +222,4 @@ Phase 0 inventory:
 - `files/conformance/inventory/opc-da-2-05a-clauses.csv` (2 normative entries)
 - `files/conformance/inventory/opc-da-2-05a-interfaces.csv` (21 interfaces + 46 methods)
 
-Validation context: cross-implementation profiles `ctt-da`, `matrikon`, `testserver`, `samples-da`, and `security-da` are reported 105/0 GREEN; OPC Foundation native `OpcTestClient_x64.exe` drives the DA 2.x lifecycle against the managed samples server end-to-end.
+Validation context: cross-implementation profiles `ctt-da`, `matrikon`, `testserver`, `samples-da`, and `security-da` are green; OPC Foundation native `OpcTestClient_x64.exe` drives the DA 2.x lifecycle against the managed samples server end-to-end.

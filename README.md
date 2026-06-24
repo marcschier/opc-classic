@@ -17,7 +17,7 @@ A cross-platform, NativeAOT-compatible **.NET 10** implementation of OPC Classic
 - **Source-generated proxies and dispatchers** — Roslyn `IIncrementalGenerator` emits a client proxy and a server dispatcher for every OPC interface marked `[OpcInterface]`. No reflection at runtime; AOT-clean and trim-safe.
 - **Windows COM-callable wrappers** — when running on Windows, SCM-activated servers are exposed through raw-vtable CCWs (also `[ComImport]`-free). Full release-scope vtables cover DA server/group/item/sync/async I/O/connection-point paths, AE server/subscription array-heavy methods, and HDA server/read/update/advise/playback paths.
 - **NativeAOT + trimming compatible** across every runtime project, enforced by `IsAotCompatible`, `EnableTrimAnalyzer`, `EnableAotAnalyzer`, and an explicit `BannedSymbols.txt`.
-- **Validation baseline** — 0 build warnings, 0 build errors, 2758 passed / 13 skipped / 0 failed across all 25 test projects (DA 475, AE 128, HDA 177, DCOM 123, Crypto 65, Kerberos 48, SMB 61, Integration 109, MCP 118, MCP Capture 99, plus core, discovery, generators, property-based, snapshot, XML-DA, and more).
+- **Validation baseline** — 0 build warnings, 0 build errors, and all test projects green, including DA, AE, HDA, DCOM, crypto, Kerberos, SMB, integration, MCP, discovery, generators, property-based, snapshot, XML-DA, and more.
 
 ## Quick start
 
@@ -49,8 +49,8 @@ Walk through the [first DA client tutorial](docs/tutorials/01-build-your-first-d
 | Path | What's inside |
 | --- | --- |
 | `src` | Runtime assemblies, source generators, shared build props, central package versions, and the AOT/trim ban list. |
-| `tests` | TUnit projects on Microsoft.Testing.Platform: primitives, transports, auth, generators, codecs, hosting, discovery, integration matrices, property-based, snapshot, and crypto. |
-| [samples/](samples/README.md) | Eleven runnable apps — three DA/AE/HDA servers, three clients, a loopback demo, an additional managed DA sample (CttServer), the OPC Security sample server, a full-feature simulation server (all specs + MCP), and a NativeAOT canary. |
+| `tests` | TUnit projects on Microsoft.Testing.Platform: primitives, transports, auth, generators, codecs, hosting, discovery, integration matrices, MCP integration (`Opc.Classic.Mcp.Integration.Tests`), property-based, snapshot, and crypto. |
+| [samples/](samples/README.md) | Runnable apps — DA/AE/HDA servers and clients, a loopback demo, an additional managed DA sample (CttServer), the OPC Security sample server, a full-feature simulation server (all specs + MCP, DA/AE/HDA TCP hosting, and `SimulationActivationServer`/`SimulationActivationHost` cold activation returning `OBJREF_STANDARD`), and a NativeAOT canary. |
 | [docs/](docs/README.md) | Documentation hub: architecture, adoption, tutorials, cookbook, migration analyzer, security, conformance, roadmap, and architecture diagrams. |
 | [Docker test fleet](interop/docker/README.md) | Windows Docker test fleet — managed-server image, C-built native server/client images, OPC Foundation TestServer/TestClient images, and the docker-compose. |
 | [interop/](interop/README.md) | OPC Foundation conformance assets: vendored IDL headers, CMake-built native sample servers/test apps, and helper scripts. |
@@ -58,7 +58,7 @@ Walk through the [first DA client tutorial](docs/tutorials/01-build-your-first-d
 
 ## Samples
 
-Eleven runnable apps live under [samples/](samples/README.md) — three DA/AE/HDA managed servers, three clients, an in-process loopback, an additional managed DA sample (CttServer), the OPC Security sample server, a full-feature simulation server (every OPC Classic spec behind one MCP server), and a NativeAOT canary. See the [samples README](samples/README.md) for the map, run instructions, env-var conventions, and sample-container deployment.
+The runnable apps under [samples/](samples/README.md) include DA/AE/HDA managed servers and clients, an in-process loopback, an additional managed DA sample (CttServer), the OPC Security sample server, a full-feature simulation server (every OPC Classic spec behind one MCP server, with DA/AE/HDA over TCP and `SimulationActivationServer`/`SimulationActivationHost` cold activation returning `OBJREF_STANDARD`), and a NativeAOT canary. See the [samples README](samples/README.md) for the map, run instructions, env-var conventions, and sample-container deployment.
 
 ## Documentation
 

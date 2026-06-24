@@ -23,12 +23,18 @@ These gates are required before the first stable tag.
   build wiring are in place under [interop/docker/](../interop/docker/);
   full fleet execution + result triage is still pending.
 
+## Recently landed
+
+- **Full-feature SimulationServer.** `samples/Opc.Classic.Samples.SimulationServer` now provides one simulated plant model across DA, AE, HDA, Batch, Commands, Cpx, DX, Security, Discovery, and XML-DA, with MCP tooling integration and optional DA/AE/HDA real TCP hosting via `--listen`.
+- **Simulation DA cold-activation handler.** `SimulationActivationServer` / `SimulationActivationHost` can serve `IActivation::RemoteActivation`, register the activated DA dispatchers in `OpcObjectRegistry`, and return a spec-conformant `OBJREF_STANDARD` encoded by `OpcInterfaceRefCodec` so the client locates the activated IPID. Full authenticated cold-activation remains in progress because the managed listener still needs server-side NTLM bind handling.
+
 ## Known coverage gaps
 
 Generated client and server DCOM projections cover the main DA / AE / HDA /
-Batch / Commands / Cpx / DX / Security / Discovery paths. Current gaps are
+Batch / Commands / Cpx / DX / Security / Discovery / XML-DA paths. Current gaps are
 concentrated in advanced COM interface-pointer returns, legacy / deprecated
-OPC surfaces, and optional vendor-specific payload shapes.
+OPC surfaces, optional vendor-specific payload shapes, and native SCM/EPM
+activation plumbing.
 
 ### Runtime and CCW gaps
 
@@ -40,19 +46,26 @@ OPC surfaces, and optional vendor-specific payload shapes.
 - **Multi-out record generation** for Batch enumeration-set discovery
   (`IOPCEnumerationSets`) and DX configuration record arrays
   (`IOPCConfiguration::QueryDXConnections`).
-- **Complex Data hosting integration and sample coverage.** The CPX
-  type-conversion (§7) and data-filter (§8) engines themselves are
-  implemented in `Opc.Classic.Cpx` (commit `15d86ed5`), but they are
-  not yet wired into `OpcCpxAddressSpace` / `OpcCpxItemProperties`,
-  and no `samples/Opc.Classic.Samples.CpxServer` exists. Plus
-  vendor-specific XML payload carriers beyond the current
-  dictionary / type / value helpers.
+- **Complex Data sample coverage.** The CPX type-conversion (§7),
+  data-filter (§8), `OpcCpxAddressSpace`, and `OpcCpxItemProperties`
+  integration are implemented, and the SimulationServer exposes CPX
+  behavior. A standalone `samples/Opc.Classic.Samples.CpxServer` does
+  not exist; vendor-specific XML payload carriers beyond the current
+  dictionary / type / value helpers remain follow-up work.
 
 ### Compatibility and conformance gaps
 
 - Native-client interoperability hardening — additional cross-vendor matrix
   coverage beyond the current Matrikon Simulation Server + OPC Foundation
   TestServer profiles.
+- Server-side NTLM bind handling on `RpcServerConnectionProcessor`, so the
+  SimulationServer cold-activation path can progress from anonymous-denied
+  integration coverage to full authenticated activation.
+- Endpoint Mapper / port 135 front-end and byte-correct native-client
+  `DUALSTRINGARRAY` data-port publication for unmodified native cold
+  activation.
+- OPCEnum server hosting for managed server discovery, complementing the
+  existing OPCEnum client/discovery path.
 - Live Windows Server / Active Directory NTLMv2 verification (see
   the release gate above).
 - External third-party NTLMSSP crypto / security review (see the release

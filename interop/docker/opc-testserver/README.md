@@ -1,12 +1,12 @@
 # `opc-classic/testserver` — OPC Foundation TestServer
 
 Windows-container image that builds and runs `OpcTestServer_x64.exe` from the
-vendored OPC Foundation `external` tree.
+vendored OPC Foundation `interop` tree.
 
 ## Prerequisites
 
 - Windows Docker host using Windows containers.
-- `external` present in the build context.
+- `interop` present in the build context.
 - `opc-test-net` l2bridge network from `docker`.
 - OPERATOR: verify the Visual Studio Build Tools component IDs in the
   Dockerfile against the host's current VS 2022 bootstrapper if the cold build

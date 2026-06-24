@@ -1,6 +1,6 @@
 # Opc.Classic long-form tutorials
 
-These tutorials are deeper than the short recipes in [../cookbook/README.md](../cookbook/README.md). They walk through complete production scenarios, explain the sequence of calls, and call out the platform, security, and diagnostics traps that appear in production OPC Classic deployments. Opc.Classic implements all nine OPC Classic sub-specifications under MIT licensing, uses the `Opc.Classic.*` namespace family, provides self-contained NTLMv2/Kerberos/SPNEGO with channel binding, and keeps proxies and dispatchers source-generated for NativeAOT compatibility.
+These tutorials are deeper than the short recipes in [../cookbook/README.md](../cookbook/README.md). They walk through complete production scenarios, explain the sequence of calls, and call out the platform, security, and diagnostics traps that appear in production OPC Classic deployments. Opc.Classic implements OPC Classic feature areas under MIT licensing, uses the `Opc.Classic.*` namespace family, provides self-contained NTLMv2/Kerberos/SPNEGO with channel binding, and keeps proxies and dispatchers source-generated for NativeAOT compatibility.
 
 ## Start here
 

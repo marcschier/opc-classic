@@ -323,7 +323,7 @@ Before release, replay the complete AE scenario: browse areas, query categories,
 
 ## Next steps
 
-- Run Opc.Classic.Samples sample and Opc.Classic.Samples sample; for container ports and `OPC_CLASSIC_SERVER_HOST` / `OPC_CLASSIC_SERVER_PORT`, see [../../samples/README.docker.md](../../samples/README.docker.md).
+- Run `Opc.Classic.Samples.AeServer` and `Opc.Classic.Samples.AeClient`; for container ports and `OPC_CLASSIC_SERVER_HOST` / `OPC_CLASSIC_SERVER_PORT`, see [../../samples/README.docker.md](../../samples/README.docker.md).
 - Deploy AE workloads with [03-cross-platform-deployment.md](03-cross-platform-deployment.md).
 - Harden authentication with [04-security-with-kerberos-and-channel-binding.md](04-security-with-kerberos-and-channel-binding.md).
 - Diagnose event stream failures with [09-troubleshooting-and-diagnostics.md](09-troubleshooting-and-diagnostics.md).
@@ -332,7 +332,7 @@ Before release, replay the complete AE scenario: browse areas, query categories,
 
 - OPC AE 1.10: `IOPCEventServer`, `IOPCEventSubscriptionMgt`, `IOPCEventSink`, condition refresh, and acknowledgements.
 - [MS-DCOM] for callback object references and activation.
-- Repository: `Opc.Classic`, Opc.Classic.Samples sample, and Opc.Classic.Samples sample.
+- Repository: `Opc.Classic.Ae`, `Opc.Classic.Samples.AeServer`, and `Opc.Classic.Samples.AeClient`.
 
 
 

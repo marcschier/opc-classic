@@ -226,7 +226,7 @@ Use the repository benchmark project for microbenchmarks around `NdrWriter`, `Nd
 
 Start with Opc.Classic benchmark, then create a small local harness for payloads unique to your application. Benchmark three layers separately: pure codec encode/decode, in-memory call-channel round trips, and real server calls. Mixing them together makes results hard to interpret. A codec benchmark should not open sockets; a network benchmark should not allocate random item lists every iteration.
 
-Representative payloads are more important than synthetic extremes. Include a DA read of 10 items, 100 items, and 1000 items; an HDA raw response with 100 and 10,000 samples; an AE event burst with simple, tracking, and condition events; and a callback batch with good and failed item rows. Keep payloads in source-controlled fixtures so regressions are comparable.
+Representative payloads are more important than synthetic extremes. Include representative small, medium, and large DA reads; HDA raw responses with short and long ranges; AE event bursts with simple, tracking, and condition events; and callback batches with good and failed item rows. Keep payloads in source-controlled fixtures so regressions are comparable.
 
 Use release builds and pin CPU settings where possible. Container CPU throttling, laptop power saving, and debugger attachment can dwarf codec changes. Record runtime version, OS, architecture, and commit hash with every benchmark result.
 

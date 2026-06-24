@@ -1,6 +1,6 @@
 # Test projects and categories
 
-The repository uses TUnit on Microsoft.Testing.Platform. The current baseline is 2758 passed / 13 skipped / 0 failed across 25 .NET test projects. Run the full solution with:
+The repository uses TUnit on Microsoft.Testing.Platform. Run the full solution with:
 
 ```powershell
 dotnet test Opc.Classic.slnx
@@ -16,10 +16,11 @@ dotnet test Opc.Classic.slnx --filter "Category!=NativeConformance&Category!=Mat
 
 Support folders:
 
-- `_Fixtures` — shared fixture infrastructure; `Testcontainers\` contains `KerberosKdcFixture`.
-- `_TestDoubles` — policy docs for shared hand-written doubles.
+- `_Fixtures` — shared fixture infrastructure; `Testcontainers\` contains `KerberosKdcFixture`, and `Fuzz\` contains parser corpus inputs.
+- `_TestDoubles` — policy docs for shared hand-written doubles; `Fuzz\` contains the shared fuzz harness source.
+- `Opc.Classic.Tests.Fuzz` — shared parser-fuzz helper project.
 
-TUnit projects (23):
+TUnit project directories:
 
 - `Opc.Classic.Ae.Tests`
 - `Opc.Classic.Batch.Tests`
@@ -37,7 +38,10 @@ TUnit projects (23):
 - `Opc.Classic.Generators.Tests`
 - `Opc.Classic.Hda.Tests`
 - `Opc.Classic.Hosting.Tests`
+- `Opc.Classic.Hosting.Windows.Tests`
 - `Opc.Classic.Integration.Tests`
+- `Opc.Classic.Mcp.Capture.Tests`
+- `Opc.Classic.Mcp.Integration.Tests`
 - `Opc.Classic.Mcp.Tests`
 - `Opc.Classic.MigrationAnalyzer.Tests`
 - `Opc.Classic.PropertyTests`
@@ -45,7 +49,7 @@ TUnit projects (23):
 - `Opc.Classic.SnapshotTests`
 - `Opc.Classic.Xml.Tests`
 
-This list matches the current `tests\` top-level project directories.
+`Opc.Classic.Mcp.Integration.Tests` runs against the managed simulation server in-memory, so it stays environment-independent.
 
 ## Environment-dependent categories
 

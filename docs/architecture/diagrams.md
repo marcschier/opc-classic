@@ -1,10 +1,10 @@
 # Architecture diagrams
 
-This page collects the architectural diagrams for `Opc.Classic.*`: source-generated client proxies and server dispatchers, `ICallChannel` with in-memory and DCOM implementations, channel-level NTLM/Kerberos/SPNEGO/CBT, NativeAOT-compatible libraries, and coverage across DA, AE, HDA, Batch, Commands, Security, DX, Cpx, and Discovery.
+This page collects the architectural diagrams for `Opc.Classic.*`: source-generated client proxies and server dispatchers, `ICallChannel` with in-memory and DCOM implementations, channel-level NTLM/Kerberos/SPNEGO/CBT, NativeAOT-compatible libraries, and coverage across DA, AE, HDA, Batch, Commands, Security, DX, Cpx, Discovery, and XML-DA.
 
 ## High-level architecture
 
-This diagram shows the portable OPC Classic path at the level most adopters encounter first. A client application talks to managed `Opc.Classic.*` facades and projection packages for DA, AE, HDA, Batch, Commands, Security, DX, Cpx, and Discovery instead of creating Windows COM runtime callable wrappers.
+This diagram shows the portable OPC Classic path at the level most adopters encounter first. A client application talks to managed `Opc.Classic.*` facades and projection packages for DA, AE, HDA, Batch, Commands, Security, DX, Cpx, Discovery, and XML-DA instead of creating Windows COM runtime callable wrappers.
 
 The facade delegates DCOM-shaped calls to generator-emitted proxies such as `IOPCServerClientProxy`. Those proxies use compile-time interface IDs, opnums, and codec emitters to produce NDR request payloads and decode NDR response payloads. Server hosting uses generated dispatchers for the matching interface/opnum tables.
 
@@ -121,7 +121,7 @@ This diagram shows the server-side mirror of a generated client proxy. A TCP con
 
 `OpcDaServerDispatcher.DispatchAsync` is the DA hosting adapter. It recognizes `IOPCServer.InterfaceId` and delegates to the source-generated `IOPCServerServerDispatcher`. For group, item, and enumerator calls that carry `PFC_OBJECT_UUID`, `OpcObjectRegistry` resolves the IPID to the per-object dispatcher map before the adapter/generator handoff.
 
-The same adapter plus generated-dispatcher pattern exists for AE and HDA hosting, and generated dispatchers cover annotated `Opc.Classic.*` DCOM projections across the sub-spec packages. Keeping dispatch generated and explicit preserves OPC IDL opnums while avoiding reflection-based invocation in the portable server path.
+The same adapter plus generated-dispatcher pattern exists for AE and HDA hosting, and generated dispatchers cover annotated `Opc.Classic.*` DCOM projections across the sub-spec packages. `Opc.Classic.Samples.SimulationServer --listen` hosts DA/AE/HDA over this real managed TCP path. Keeping dispatch generated and explicit preserves OPC IDL opnums while avoiding reflection-based invocation in the portable server path.
 
 ```mermaid
 sequenceDiagram
@@ -361,7 +361,7 @@ sequenceDiagram
 
 This flowchart shows the compile-time path for source-generated OPC projections. Source interfaces declare their DCOM identity and method opnums with `[OpcInterface]`, `[GenerateOpcProxy]`, `[OpcGenerateServerDispatch]`, and `[OpcMethod]` attributes.
 
-Roslyn runs the generator package during compilation. `OpcInterfaceGenerator` emits interface metadata such as `InterfaceId` and nested `Opnums`; `OpcProxyGenerator` inspects annotated interfaces, validates supported method shapes, and maps parameter and return types through its codec table; and `OpcServerDispatchGenerator` emits server-side dispatchers for the same opnum tables. The current projection set covers 49 generated dispatchers and 228 annotated OPC opnums.
+Roslyn runs the generator package during compilation. `OpcInterfaceGenerator` emits interface metadata such as `InterfaceId` and nested `Opnums`; `OpcProxyGenerator` inspects annotated interfaces, validates supported method shapes, and maps parameter and return types through its codec table; and `OpcServerDispatchGenerator` emits server-side dispatchers for the same opnum tables. The projection set covers the current annotated OPC interfaces without runtime reflection.
 
 The outputs are generated partial client proxy classes and server dispatcher classes. Proxy method bodies allocate NDR buffers, emit direct codec calls, call `ICallChannel.InvokeAsync`, check HRESULTs, decode response payloads, and return managed values. Dispatcher bodies switch on generated opnum constants, decode request payloads, call managed implementations, and encode response payloads without runtime reflection or expression-tree compilation.
 

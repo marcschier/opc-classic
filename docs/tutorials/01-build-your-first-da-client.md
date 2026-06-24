@@ -36,7 +36,7 @@ Create a folder named `FirstDaClient` beside the repository or inside a scratch 
     <PackageReference Include="Microsoft.Extensions.Hosting" />
     <PackageReference Include="Microsoft.Extensions.Logging.Console" />
     <PackageReference Include="Opc.Classic.Core" />
-    <PackageReference Include="Classic.Da" />
+    <PackageReference Include="Opc.Classic.Da" />
   </ItemGroup>
 </Project>
 ```
@@ -56,7 +56,7 @@ Add `appsettings.json` so configuration has a place for real-server settings eve
 }
 ```
 
-`Mode=Loopback` keeps the sample self-contained. The repository sample in Program sample keeps the same worker shape but switches from `InMemoryCallChannel` to TCP when `OPC_CLASSIC_SERVER_HOST` and `OPC_CLASSIC_SERVER_PORT` are set. For a real server, keep this configuration shape and register the production DCOM-backed `IDaServer` adapter for your deployment. `OpcUrl.Parse`, `OpcConnectData.WithNtlmV2`, `OpcProtectionLevel.Integrity`, and `DcomCallChannelFactory.ConnectTcpAsync` are stable connection primitives described in [../ADOPTION.md](../ADOPTION.md).
+`Mode=Loopback` keeps the sample self-contained. The `Opc.Classic.Samples.DaClient` sample keeps the same worker shape but switches from `InMemoryCallChannel` to TCP when `OPC_CLASSIC_SERVER_HOST` and `OPC_CLASSIC_SERVER_PORT` are set. For a real server, keep this configuration shape and register the production DCOM-backed `IDaServer` adapter for your deployment. `OpcUrl.Parse`, `OpcConnectData.WithNtlmV2`, `OpcProtectionLevel.Integrity`, and `DcomCallChannelFactory.ConnectTcpAsync` are stable connection primitives described in [../ADOPTION.md](../ADOPTION.md).
 
 ## Program.cs
 
@@ -569,4 +569,4 @@ Finally, treat write operations differently from reads. Writes should carry stro
 
 - OPC Data Access 3.00: `IOPCServer`, `IOPCItemMgt`, `IOPCSyncIO`, `IOPCAsyncIO2`, `IOPCDataCallback`.
 - [MS-DCOM] and [MS-RPCE] for activation, bind, request, response, fragmentation, and packet protection.
-- Repository samples: Opc.Classic.Samples sample and Opc.Classic.Samples sample.
+- Repository samples: `Opc.Classic.Samples.DaClient` and `Opc.Classic.Samples.DaServer`.

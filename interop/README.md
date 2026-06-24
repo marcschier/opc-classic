@@ -6,8 +6,8 @@ This directory is a pruned and restructured vendoring of the public OPC Foundati
 [OPC-Classic-CoreComponents](https://github.com/OPCF-Members/OPC-Classic-CoreComponents)
 repository. The relevant parts are checked into the Opc.Classic tree so that the
 native C++ TestServer + TestClient + supporting proxy/stub DLLs can
-be built without a clone — see `testserver`
-in the repo root for the end-to-end build, install, and run flow.
+be built without a clone — see `interop\docs\testserver.md`
+for the end-to-end build, install, and run flow.
 
 It provides a build system for the OPC Classic COM proxy/stub DLLs, server enumerator,
 and native OPC Foundation test applications — the core runtime
@@ -16,7 +16,7 @@ components that OPC Classic (COM/DCOM) clients and servers need to communicate.
 ## License
 
 The code is licensed under this [LICENSE](LICENSE.md) and is not part of the rest
-of the code in this repository which is licensed under [LICENSE](../../LICENSE).
+of the code in this repository, which is licensed under [LICENSE](../LICENSE).
 
 ## What's in this repo
 

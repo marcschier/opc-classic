@@ -7,9 +7,9 @@
 
 Server-side NTLM bind challenge handling is **not implemented** in the managed listener. `NtlmConnectionContext.Accept` throws `RpcException` for inbound `BindPdu` and `AlterContextPdu` with the messages `Server-side NTLM bind challenge handling is not implemented.` and `Server-side NTLM alter-context challenge handling is not implemented.`.
 
-F4Auth tests documents the skip reason: authenticated calls over the managed TCP listener are not yet supported; `RpcServerConnectionProcessor` rejects authenticated binds unless a dispatcher consumes RPC auth context, and protocol-level NTLMv2 handshake coverage lives in `NtlmHandshakeProtocolTests`.
+`F4Auth` documents the skip reason: authenticated calls over the managed TCP listener are not yet supported; `RpcServerConnectionProcessor` strips auth verifier metadata and rejects authenticated binds unless a dispatcher consumes RPC auth context, and protocol-level NTLMv2 handshake coverage lives in `NtlmHandshakeProtocolTests`.
 
-Result: clients can drive authenticated binds against external servers; servers in this stack are anonymous-only at listener level today.
+Result: clients can drive authenticated binds against external servers, and the NTLM protocol codecs/verifiers are tested, but managed servers in this stack do not provide end-to-end authenticated NTLM listener hosting today.
 
 ## Hand-rolled MD4 and RC4
 
@@ -31,7 +31,7 @@ NTLMv1 is disabled by default. `NtlmAuthentication` throws when `rpc.ntlm.ntlmv2
 
 ## Channel binding depends on caller-provided TLS evidence
 
-`ChannelBindingsFactory` and `ChannelBindingsHash` can compute RFC 5056/RFC 2744/RFC 5929-style CBT hashes, but TLS certificate validation and endpoint trust are delegated to .NET and the hosting application. The NTLM code verifies hash equality once configured.
+`ChannelBindingsFactory` and `ChannelBindingsHash` can compute RFC 5056/RFC 2744/RFC 5929-style CBT hashes, but TLS certificate validation and endpoint trust are delegated to .NET and the hosting application. The NTLM protocol verifier checks hash equality once configured; this is not yet wired into managed listener bind handling.
 
 ## SMB3 encryption status
 

@@ -84,7 +84,7 @@ The `OPC_*_*` ranges (`0x0300-0x03FF` Batch and Security per OPC-COMMON §5) are
 - implements `IOPCSecurityPrivate` with a demo private credential (`operator` / `demo`),
 - demonstrates how to wire ACL checks via the managed dispatcher.
 
-Cross-impl matrix profile `security-da` exercises this server end-to-end (105/0 GREEN).
+Cross-impl matrix profile `security-da` exercises this server end-to-end and is green.
 
 ### 1.6 Informative DCOM-security guidelines (spec §6.3)
 
@@ -149,7 +149,7 @@ This is the same deferred-by-design choice tracked under OPC-COMMON-1.10
 
 None at present. All required interfaces, methods, IIDs, opnums, and
 HRESULTs are implemented and tested; the reference sample server
-exists; the cross-impl matrix `security-da` profile is 105/0 GREEN.
+exists; the cross-impl matrix `security-da` profile is green.
 
 ---
 

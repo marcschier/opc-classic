@@ -13,10 +13,10 @@ opc-classic/
 │   ├── Opc.Classic.Dcom/         managed MSRPC/DCOM stack, activation, auth, OBJREF/ORPC, and transports
 │   ├── Opc.Classic.Generators/   source generators for OPC interfaces, proxies, dispatchers, and diagnostics
 │   └── Opc.Classic.*             per-spec runtime assemblies
-├── tests/                        TUnit projects on Microsoft.Testing.Platform
-├── samples/                      10 sample apps: DA/AE/HDA servers + clients, LoopbackDemo, CttServer (additional managed DA sample), OpcSecurityServer, AotCanary
+├── tests/                        TUnit projects on Microsoft.Testing.Platform, including MCP integration coverage
+├── samples/                      sample apps: DA/AE/HDA servers + clients, LoopbackDemo, CttServer, OpcSecurityServer, SimulationServer, AotCanary
 ├── docs/                         plain Markdown documentation hub and topic pages
-├── interop/                     OPC Foundation IDL, redistributables (`external`), and native C++ samples/test apps; spec reference markdown lives in the private `marcschier/opc-classic-docs` repo
+├── interop/                     OPC Foundation IDL, redistributables, and native C++ samples/test apps; spec reference markdown lives in the private `marcschier/opc-classic-docs` repo
 │   └── docker/                   Windows-container managed/native interop test fleet
 ├── .github/workflows/            build, release, and Docker test fleet workflows
 ├── Opc.Classic.slnx              .NET 10 XML solution format
@@ -49,7 +49,7 @@ Publish the NativeAOT canary:
 dotnet publish samples\Opc.Classic.Samples.AotCanary -c Release -p:PublishAot=true -p:TreatWarningsAsErrors=true
 ```
 
-The expected baseline is 0 build warnings and 0 build errors. The current validation sweep has all 25 .NET test projects green (DA 475, AE 128, HDA 177, DCOM 123, Crypto 65, SMB 61, Integration 109, plus the remaining suites).
+The expected baseline is 0 build warnings and 0 build errors, with all test projects green.
 
 ## NativeAOT requirements
 
@@ -79,7 +79,7 @@ Use source generation for static dispatch tables, proxy methods, and server disp
 
 - **C# style**: file-scoped namespaces, usings outside namespace declarations, `_camelCase` private fields, predefined C# type aliases, and no broad analyzer suppressions.
 - **IDL names**: OPC/MS-DCOM wire identifiers keep their original casing, underscores, and reserved-word shapes where needed for spec readability.
-- **License headers**: every new file outside `interop/` carries a single-line copyright header `// Copyright (c) 2026 marcschier. Licensed under the MIT License.` (no `SPDX-License-Identifier` line).
+- **License headers**: every new source file outside `interop/` carries a single-line copyright header `// Copyright (c) 2026 marcschier. Licensed under the MIT License.` (no `SPDX-License-Identifier` line).
 - **Crypto**: MD4 and RC4 live in `Crypto`; MD5, HMAC, DES, and AES primitives come from the BCL where available. Do not add new crypto dependencies without a security review.
 - **Tests**: use TUnit, `[Test]`, `[Arguments]`, and `await Assert.That(actual).IsEqualTo(expected)`. Prefer hand-written test doubles over runtime-proxy mocking frameworks.
 - **Solutions**: `Opc.Classic.slnx` is the only root solution and uses the .NET XML solution format.
@@ -96,4 +96,4 @@ Use source generation for static dispatch tables, proxy methods, and server disp
 - **DCOM activation**: `Activation` and `RemActivation`.
 - **Server dispatch path**: generated dispatchers plus `ComRuntimeEndpoint` and ComOxidRuntime*.
 - **Discovery**: `OpcEnumClient` and `OpcEnumDcomInterfaces`.
-- **Samples**: Opc.Classic.Samples sample.
+- **Samples**: `samples\Opc.Classic.Samples.*`, including `Opc.Classic.Samples.SimulationServer` for the full-feature simulation server, MCP integration, DA/AE/HDA TCP hosting, and `SimulationActivationServer`/`SimulationActivationHost` cold activation.

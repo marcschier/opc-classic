@@ -175,7 +175,7 @@ write path is exercised by integration tests).
 None at present. VARIANT, SAFEARRAY, BSTR, CURRENCY, DECIMAL, DATE,
 and the per-VT_* discriminator are all conformant. The matrix
 exercises VARIANT payloads end-to-end via DA item reads + writes
-across all 8/8 profiles.
+across all configured profiles.
 
 ---
 

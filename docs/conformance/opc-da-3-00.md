@@ -131,7 +131,7 @@ Per-item implementations live in `OpcDaGroup`; default server-object helpers liv
 | OPC DA HRESULTs | `src/Opc.Classic.Core/OpcResultId.cs` | `tests/Opc.Classic.Da.Tests/IdentifiedResultAdditionalTests.cs`, `tests/Opc.Classic.Core.Tests/OpcResultIdTests.cs` |
 | DA 3.0 CATID/IIDs | `src/Opc.Classic.Core/OpcGuids.cs` | `tests/Opc.Classic.Core.Tests/OpcGuidsTests.cs`, `tests/Opc.Classic.Da.Tests/DcomInterfaceIdTests.cs` |
 
-The cross-implementation matrix reported in the aggregate conformance notes is 8/8 GREEN at 105/0 per implementation, providing empirical wire-level conformance evidence for the generated proxy/dispatcher and codec paths.
+The cross-implementation matrix reported in the aggregate conformance notes is green, providing empirical wire-level conformance evidence for the generated proxy/dispatcher and codec paths.
 
 ---
 

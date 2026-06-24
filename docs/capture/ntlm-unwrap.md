@@ -22,14 +22,12 @@ advances the per-direction sequence counter and returns the plaintext;
 on mismatch it surfaces a clean `SignatureMismatch` and leaves the
 counter untouched.
 
-The unwrapper is a **self-contained primitive**. The full integration
-into `OpcDcomDecoder`'s byte-level frame parsing — extracting the auth
-trailer from each captured frame using `auth_length` from the common
-header, parsing `auth_pad_length` from the auth verifier header, then
-calling `TryUnwrap` and surfacing the result on
-`DecodedOpcPdu.AuthUnwrapStatus` — is a follow-up. Today the unwrapper
-is usable directly from offline pcap-analysis scripts (see
-"Direct use" below).
+The unwrapper is a **self-contained primitive** and is also integrated
+into `OpcDcomDecoder`'s byte-level frame parsing: the decoder extracts the
+auth trailer using `auth_length`, accounts for `auth_pad_length`, calls
+`TryUnwrap`, and surfaces the result on
+`DecodedOpcPdu.AuthUnwrapStatus`. It remains usable directly from offline
+pcap-analysis scripts (see "Direct use" below).
 
 ## When (not) to use it
 

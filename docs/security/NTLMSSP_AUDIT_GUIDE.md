@@ -22,11 +22,11 @@ Use `docs\security\CHANNEL_BINDING.md` for the channel-binding design that
 feeds NTLMv2 and Kerberos/SPNEGO.
 Component names are guideposts from the current checkout and should be
 revalidated before an audit report cites exact implementation details.
-The legacy NTLM auth subdirectory mentioned in the task is not present as
-a directory in this checkout.
-The namespace is `Opc.Classic.Dcom.Rpc.Auth.ntlm`, while the implementation
-is grouped with the RPC authentication components. The NTLM message DTOs and
-helpers are grouped with the shared NTLM compatibility components.
+The NTLM implementation is split across `src\Opc.Classic.Dcom\rpc\Auth`
+for DCE/RPC authentication/session security and `src\Opc.Classic.Dcom\Common\Ntlm`
+for NTLMSSP message DTOs and helpers. Kerberos companion code lives in
+`src\Opc.Classic.Dcom.Kerberos`; SPNEGO code is under
+`src\Opc.Classic.Dcom.Kerberos\Spnego` in this checkout.
 
 ## 2. Why a self-contained NTLMSSP
 
@@ -73,83 +73,82 @@ HMAC-MD5, MD5 wrappers, DES, SHA-256/SHA-384, and certificate handling.
 
 ### 3.1 NTLM authentication and session-security files
 
-| File | Lines | Purpose | Trust boundary |
-| --- | ---: | --- | --- |
-| `AuthenticationSource` | 1-79 | Pluggable server-side credential source contract and default registration API. | Server process to credential store. |
-| `NullAuthenticationSource` | 1-35 | Fail-closed placeholder when no credential source is registered. | Server process configuration boundary. |
-| `NtlmAuthentication` | 1-855 | Main NTLMSSP orchestrator: properties, Type1/2/3, MIC, CBT, proof verification, session key setup. | Client/server auth handshake over network. |
-| `NtlmConnection` | 1-141 | Legacy DCE/RPC bind/rebind state machine for NTLM tokens. | DCE/RPC auth verifier boundary. |
-| `NtlmConnectionContext` | 1-141 | Client bind/alter-context context and bind-ack validation. | Network PDU to connection state. |
-| `Ntlm1` | 1-190 | DCE/RPC packet integrity/privacy using NTLM signing and RC4 sealing keys. | Protected RPC PDU body and verifier. |
-| `NTLMKeyFactory` | 1-355 | Session key derivation, RC4 key wrapping, signing/sealing key derivation, SIGNATURE_BLOCK generation. | Password-derived keys to packet protection. |
-| `Responses` | 1-428 | LM/NTLM/NTLMv2 response functions, NTOWFv1/v2, blob creation, HMAC-MD5, DES key expansion, and sensitive-buffer cleanup hooks. | Password material to wire challenge response. |
+| File | Purpose | Trust boundary |
+| --- | --- | --- |
+| `AuthenticationSource` | Pluggable server-side credential source contract and default registration API. | Server process to credential store. |
+| `NullAuthenticationSource` | Fail-closed placeholder when no credential source is registered. | Server process configuration boundary. |
+| `NtlmAuthentication` | Main NTLMSSP orchestrator: properties, Type1/2/3, MIC, CBT, proof verification, session key setup. | Client/server auth handshake over network. |
+| `NtlmConnection` | Legacy DCE/RPC bind/rebind state machine for NTLM tokens. | DCE/RPC auth verifier boundary. |
+| `NtlmConnectionContext` | Client bind/alter-context context and bind-ack validation. | Network PDU to connection state. |
+| `Ntlm1` | DCE/RPC packet integrity/privacy using NTLM signing and RC4 sealing keys. | Protected RPC PDU body and verifier. |
+| `NTLMKeyFactory` | Session key derivation, RC4 key wrapping, signing/sealing key derivation, SIGNATURE_BLOCK generation. | Password-derived keys to packet protection. |
+| `Responses` | LM/NTLM/NTLMv2 response functions, NTOWFv1/v2, blob creation, HMAC-MD5, DES key expansion, and sensitive-buffer cleanup hooks. | Password material to wire challenge response. |
 
 ### 3.2 NTLM message DTOs and helpers
 
-| File | Lines | Purpose | Trust boundary |
-| --- | ---: | --- | --- |
-| `NtlmMessage` | 1-160 | Shared NTLMSSP signature, message type, flags, security-buffer bounds, string encoding. | Untrusted token bytes to typed messages. |
-| `Type1Message` | 1-128 | NEGOTIATE encode/decode, supplied domain/workstation, optional version. | Client-supplied Type1 token. |
-| `Type2Message` | 1-193 | CHALLENGE encode/decode, challenge, target, target-info AV pairs. | Server-supplied Type2 token. |
-| `Type3Message` | 1-321 | AUTHENTICATE encode/decode, LM/NT responses, identity fields, session key, MIC. | Client-supplied Type3 token. |
-| `NtlmFlags` | 1-38 | MS-NLMP negotiate flag constants used by the message classes. | Negotiated protocol-policy input. |
-| `NtlmAvPairs` | 1-107 | Target-info AV_PAIR add/replace/read helpers, MIC flag, CBT AV ID. | Type2/Type3 target-info boundary. |
-| `NtlmMic` | 1-44 | AUTHENTICATE MIC compute/verify with fixed-time comparison. | Handshake transcript integrity. |
-| `NtlmMessageSignature` | 1-71 | NTLM SIGNATURE_BLOCK generation and verification. | SPNEGO mechListMIC and packet MIC helpers. |
-| `NtlmMicProvider` | 1-43 | SPNEGO `IGssMicProvider` adapter for NTLMSSP signing keys. | SPNEGO mechanism-list integrity. |
-| `NtlmPasswordAuthentication` | 1-17 | Small legacy credential holder used by NTLM call sites. | Credential object boundary. |
-| `Arrays` | 1-10 | Java compatibility helper for filling arrays. | None; local utility. |
-| `Config` | 1-27 | Legacy configuration lookup shim. | Local configuration boundary. |
-| `Hashtable` | 1-42 | Java compatibility dictionary wrapper. | None; local utility. |
-| `InstantiationException` | 1-10 | Compatibility exception type. | None. |
-| `Iterator` | 1-13 | Compatibility iterator wrapper. | None. |
-| `MissingResourceException` | 1-10 | Compatibility exception type. | None. |
-| `NbtAddress` | 1-15 | NetBIOS address compatibility shim. | Name-resolution compatibility. |
-| `NoSuchElementException` | 1-10 | Compatibility exception type. | None. |
-| `PrintWriter` | 1-20 | Compatibility writer shim. | None. |
-| `SharpenCompatibilityExtensions` | 1-96 | Legacy compatibility extension helpers. | Local utility. |
-| `SmbAuthException` | 1-12 | Compatibility exception type. | Auth error propagation. |
-| `SmbException` | 1-20 | Compatibility exception type. | Protocol error propagation. |
-| `SmbNamedPipe` | 1-43 | Compatibility stream wrapper for named-pipe-style I/O. | Local stream boundary. |
-| `SmbSession` | 1-12 | Compatibility session stub. | None. |
-| `StringTokenizer` | 1-21 | Compatibility tokenizer. | Local parsing utility. |
-| `Thread` | 1-51 | Compatibility thread wrapper. | Local threading utility. |
-| `ThreadGroup` | 1-27 | Compatibility thread-group wrapper. | Local threading utility. |
-| `UniAddress` | 1-13 | Compatibility address holder. | Name/address input. |
-| `UnknownHostException` | 1-14 | Compatibility exception type. | Name-resolution error propagation. |
-| `UnsupportedEncodingException` | 1-10 | Compatibility exception type. | Encoding error propagation. |
-| `Uuid` | 1-43 | Compatibility UUID wrapper. | Local identifier parsing. |
+| File | Purpose | Trust boundary |
+| --- | --- | --- |
+| `NtlmMessage` | Shared NTLMSSP signature, message type, flags, security-buffer bounds, string encoding. | Untrusted token bytes to typed messages. |
+| `Type1Message` | NEGOTIATE encode/decode, supplied domain/workstation, optional version. | Client-supplied Type1 token. |
+| `Type2Message` | CHALLENGE encode/decode, challenge, target, target-info AV pairs. | Server-supplied Type2 token. |
+| `Type3Message` | AUTHENTICATE encode/decode, LM/NT responses, identity fields, session key, MIC. | Client-supplied Type3 token. |
+| `NtlmFlags` | MS-NLMP negotiate flag constants used by the message classes. | Negotiated protocol-policy input. |
+| `NtlmAvPairs` | Target-info AV_PAIR add/replace/read helpers, MIC flag, CBT AV ID. | Type2/Type3 target-info boundary. |
+| `NtlmMic` | AUTHENTICATE MIC compute/verify with fixed-time comparison. | Handshake transcript integrity. |
+| `NtlmMessageSignature` | NTLM SIGNATURE_BLOCK generation and verification. | SPNEGO mechListMIC and packet MIC helpers. |
+| `NtlmMicProvider` | SPNEGO `IGssMicProvider` adapter for NTLMSSP signing keys. | SPNEGO mechanism-list integrity. |
+| `NtlmPasswordAuthentication` | Small legacy credential holder used by NTLM call sites. | Credential object boundary. |
+| `Arrays` | Java compatibility helper for filling arrays. | None; local utility. |
+| `Config` | Legacy configuration lookup shim. | Local configuration boundary. |
+| `Hashtable` | Java compatibility dictionary wrapper. | None; local utility. |
+| `InstantiationException` | Compatibility exception type. | None. |
+| `Iterator` | Compatibility iterator wrapper. | None. |
+| `MissingResourceException` | Compatibility exception type. | None. |
+| `NbtAddress` | NetBIOS address compatibility shim. | Name-resolution compatibility. |
+| `NoSuchElementException` | Compatibility exception type. | None. |
+| `PrintWriter` | Compatibility writer shim. | None. |
+| `SharpenCompatibilityExtensions` | Legacy compatibility extension helpers. | Local utility. |
+| `SmbAuthException` | Compatibility exception type. | Auth error propagation. |
+| `SmbException` | Compatibility exception type. | Protocol error propagation. |
+| `SmbNamedPipe` | Compatibility stream wrapper for named-pipe-style I/O. | Local stream boundary. |
+| `SmbSession` | Compatibility session stub. | None. |
+| `StringTokenizer` | Compatibility tokenizer. | Local parsing utility. |
+| `Thread` | Compatibility thread wrapper. | Local threading utility. |
+| `ThreadGroup` | Compatibility thread-group wrapper. | Local threading utility. |
+| `UniAddress` | Compatibility address holder. | Name/address input. |
+| `UnknownHostException` | Compatibility exception type. | Name-resolution error propagation. |
+| `UnsupportedEncodingException` | Compatibility exception type. | Encoding error propagation. |
+| `Uuid` | Compatibility UUID wrapper. | Local identifier parsing. |
 
 ### 3.3 Kerberos companion surface
 
-| File | Lines | Purpose | Trust boundary |
-| --- | ---: | --- | --- |
-| `IKerberosAuthInfo` | 1-32 | Public Kerberos realm/SPN/user contract. | Caller configuration to Kerberos client. |
-| `KerberosAuthInfo` | 1-63 | Immutable Kerberos auth configuration with password/keytab options. | Caller secrets/configuration boundary. |
-| `IKerberosConnectionContext` | 1-42 | AP-REQ/AP-REP handshake abstraction. | KDC/service-ticket boundary. |
-| `KerberosConnectionContext` | 1-203 | Kerberos.NET-backed ticket acquisition, AP-REP validation, GSS token extraction, CBT checksum injection. | Client to KDC and service. |
-| `IKerberosSession` | 1-50 | RFC 4121 MIC/Wrap session abstraction. | Protected PDU body boundary. |
-| `KerberosSession` | 1-561 | RFC 4121 MIC/Wrap and RC4-HMAC/AES packet protection. | Kerberos session key to network tokens. |
-| `KerberosSessionKey` | 1-20 | Session-key metadata record. | AP exchange to packet protection. |
-| `KerberosChannelBindingChecksum` | 1-40 | MS-KILE GSS channel-binding checksum builder. | TLS channel binding to Kerberos AP-REQ. |
-| `KerberosAuthContext` | 1-199 | DCOM `IAuthContext` implementation for Kerberos/SPNEGO. | DCOM bind/call to Kerberos/SPNEGO. |
+| File | Purpose | Trust boundary |
+| --- | --- | --- |
+| `IKerberosAuthInfo` | Public Kerberos realm/SPN/user contract. | Caller configuration to Kerberos client. |
+| `KerberosAuthInfo` | Immutable Kerberos auth configuration with password/keytab options. | Caller secrets/configuration boundary. |
+| `IKerberosConnectionContext` | AP-REQ/AP-REP handshake abstraction. | KDC/service-ticket boundary. |
+| `KerberosConnectionContext` | Kerberos.NET-backed ticket acquisition, AP-REP validation, GSS token extraction, CBT checksum injection. | Client to KDC and service. |
+| `IKerberosSession` | RFC 4121 MIC/Wrap session abstraction. | Protected PDU body boundary. |
+| `KerberosSession` | RFC 4121 MIC/Wrap and RC4-HMAC/AES packet protection. | Kerberos session key to network tokens. |
+| `KerberosSessionKey` | Session-key metadata record. | AP exchange to packet protection. |
+| `KerberosChannelBindingChecksum` | MS-KILE GSS channel-binding checksum builder. | TLS channel binding to Kerberos AP-REQ. |
+| `KerberosAuthContext` | DCOM `IAuthContext` implementation for Kerberos/SPNEGO. | DCOM bind/call to Kerberos/SPNEGO. |
 
 ### 3.4 SPNEGO surface
 
-There is no separate DCOM SPNEGO directory in this checkout.
-SPNEGO code is under `Spnego`.
-| File | Lines | Purpose | Trust boundary |
-| --- | ---: | --- | --- |
-| `IGssMicProvider` | 1-29 | Mechanism-independent MIC provider contract. | Inner mechanism to SPNEGO verifier. |
-| `KerberosMicProvider` | 1-78 | Kerberos-backed `mechListMIC` provider. | Kerberos session to SPNEGO response. |
-| `SpnegoDecoder` | 1-224 | DER decoder for NegTokenInit/NegTokenResp, preserving MechTypeList bytes. | Untrusted SPNEGO token to typed fields. |
-| `SpnegoEncoder` | 1-157 | DER encoder for NegTokenInit/NegTokenResp and mechListMIC creation. | Local negotiation state to network token. |
-| `SpnegoMech` | 1-28 | Mechanism enum. | Policy/display helper. |
-| `SpnegoNegState` | 1-32 | RFC 4178 negotiation-state enum. | SPNEGO response policy. |
-| `SpnegoNegTokenInit` | 1-22 | NegTokenInit record, including exact MechTypeList bytes. | Initiator token model. |
-| `SpnegoNegTokenResp` | 1-35 | NegTokenResp record and mechListMIC verification. | Acceptor token model. |
-| `SpnegoOids` | 1-27 | SPNEGO, Kerberos, and NTLMSSP OID constants. | Mechanism-selection policy. |
-| `SpnegoTokenBuilder` | 1-49 | Kerberos-preferred token builder offering Kerberos then NTLMSSP. | Mechanism-list downgrade boundary. |
+SPNEGO code is under `src\Opc.Classic.Dcom.Kerberos\Spnego` in this checkout.
+| File | Purpose | Trust boundary |
+| --- | --- | --- |
+| `IGssMicProvider` | Mechanism-independent MIC provider contract. | Inner mechanism to SPNEGO verifier. |
+| `KerberosMicProvider` | Kerberos-backed `mechListMIC` provider. | Kerberos session to SPNEGO response. |
+| `SpnegoDecoder` | DER decoder for NegTokenInit/NegTokenResp, preserving MechTypeList bytes. | Untrusted SPNEGO token to typed fields. |
+| `SpnegoEncoder` | DER encoder for NegTokenInit/NegTokenResp and mechListMIC creation. | Local negotiation state to network token. |
+| `SpnegoMech` | Mechanism enum. | Policy/display helper. |
+| `SpnegoNegState` | RFC 4178 negotiation-state enum. | SPNEGO response policy. |
+| `SpnegoNegTokenInit` | NegTokenInit record, including exact MechTypeList bytes. | Initiator token model. |
+| `SpnegoNegTokenResp` | NegTokenResp record and mechListMIC verification. | Acceptor token model. |
+| `SpnegoOids` | SPNEGO, Kerberos, and NTLMSSP OID constants. | Mechanism-selection policy. |
+| `SpnegoTokenBuilder` | Kerberos-preferred token builder offering Kerberos then NTLMSSP. | Mechanism-list downgrade boundary. |
 
 ## 4. Cryptographic primitives in use
 
@@ -240,13 +239,14 @@ MIC if required.
 challenge, and client nonce.
 `Responses` creates the NTLMv2 blob with timestamp, nonce, target
 info, and terminator bytes.
-`NtlmAuthentication` is the server-side Type3 session-security setup.
+`NtlmAuthentication` contains the protocol-level server-side Type3 session-security setup.
 `NtlmAuthentication` validates the NTLMv2 proof using
 `CryptographicOperations.FixedTimeEquals`, derives the session base key, and
 unwraps the encrypted random session key when key exchange was negotiated.
-Auditor focus: prove the server verifies the exact challenge it issued, the
-exact target-info/CBT bytes, and the MIC over the original Type1/Type2/Type3
-transcript.
+Auditor focus: prove the protocol verifier checks the exact challenge it issued,
+the exact target-info/CBT bytes, and the MIC over the original Type1/Type2/Type3
+transcript. Also verify this remains documented as not wired into managed listener
+server-side bind handling.
 
 ### 5.4 MIC and channel-binding flow
 
@@ -293,7 +293,7 @@ covered by `NtlmNegotiateFlagsTests.cs` for the documented combinations.
 | `NtlmAuthentication.cs` default policy | ✅ | ❌ | ❌ | `NtlmDefaultsTests.cs` covers NTLMv2 defaults and NTLMv1 opt-in guard. |
 | `NtlmAuthentication.cs` Type1/2/3 round trip | ✅ | ⚠️ partial | ❌ blocked by `rw-e1` live interop | Client/server in-memory round trips exist. |
 | `NtlmAuthentication.cs` MIC | ✅ | ⚠️ synthetic vectors | ❌ | `NtlmMicTests.cs` covers compute, verify, tamper, fixed-time source check. |
-| `NtlmAuthentication.cs` CBT | ✅ | ⚠️ synthetic TLS cert vectors | ❌ | `ChannelBindingTlsTests.cs` covers AV_PAIR insertion and matching server verification. |
+| `NtlmAuthentication.cs` CBT | ✅ | ⚠️ synthetic TLS cert vectors | ❌ | `ChannelBindingTlsTests.cs` covers AV_PAIR insertion and matching protocol-verifier rejection. |
 | `Type1Message.cs` | ✅ bounds | ⚠️ malformed synthetic corpus | ❌ | `DecoderBoundsFuzzTests.cs` covers truncated, bad-signature, wrong-type, oversized, out-of-range, overlapping, and version-truncated cases. |
 | `Type2Message.cs` | ✅ bounds | ⚠️ malformed synthetic corpus | ❌ | `DecoderBoundsFuzzTests.cs` covers truncated, wrong-type, oversized, target, target-info, and overlap cases. |
 | `Type3Message.cs` | ✅ partial | ⚠️ MS-NLMP fixture plus malformed synthetic corpus | ❌ | MIC offset, parser paths, bounded malformed inputs, and fixture replay are covered; broader structure-aware fuzzing remains recommended. |
@@ -379,7 +379,7 @@ Mitigations present:
 - NTLMv2 is the default and avoids LM/NTLMv1 by default.
 - NTOWFv2 derives `HMAC-MD5(NTOWFv1, UppercaseUser || Target)` in
   `Responses`.
-- The server verifies proofs in fixed time (`NtlmAuthentication`).
+- The protocol verifier checks proofs in fixed time (`NtlmAuthentication`).
 Residual risk:
 - Captured NTLMv2 exchanges are still offline password-guessing material.
 - Password strength, lockout, account policy, and credential rotation are
@@ -423,7 +423,7 @@ Mitigations present:
   16-byte CBT hash is configured (`NtlmAuthentication`).
 - Kerberos carries the same hash in the AP-REQ checksum
   (`KerberosChannelBindingChecksum`).
-- Tests cover NTLM insertion, no-TLS behavior, and server-side matching
+- Tests cover NTLM insertion, no-TLS behavior, and protocol-level verifier matching
   (`ChannelBindingTlsTests`).
 Residual risk:
 - CBT is optional and caller-supplied; no-TLS sessions omit it.
@@ -442,9 +442,11 @@ Residual risk:
 - NTLM SSO / Windows SSPI is intentionally unsupported.
   `NtlmAuthentication` throws `PlatformNotSupportedException` for
   `rpc.ntlm.sso=true` and points callers to Kerberos/SPNEGO.
-- Server-side generic NTLM bind challenge handling is incomplete.
-  `NtlmConnectionContext` throws for server-side bind and
-  alter-context challenge handling.
+- Server-side NTLM bind challenge handling is incomplete in the managed listener.
+  `NtlmConnectionContext` throws for server-side bind and alter-context challenge
+  handling, and `RpcServerConnectionProcessor` strips auth verifier metadata and
+  rejects authenticated binds unless a dispatcher explicitly consumes
+  `RpcRequestContext`; it does not run NTLM challenge/Type3 proof validation.
 - `AuthenticationSource` is not wired into the main proof-validation path.
   `NtlmAuthentication` contains the old reflection-based source hook
   as commented-out code, and `AuthenticationSource` is currently a
@@ -573,7 +575,7 @@ The audit report should include:
   orchestrator.
 - `Ntlm` — NTLM message and MIC helpers.
 - `Crypto` — MD4, RC4, and compatibility crypto wrappers.
-- `Opc.Classic.Dcom` — Kerberos and SPNEGO companion implementation.
+- `Opc.Classic.Dcom.Kerberos` and its `Spnego` subdirectory — Kerberos and SPNEGO companion implementation.
 - Microsoft NTLM overview — Kerberos is preferred in Active Directory, NTLM is
   retained for compatibility/workgroup scenarios.
 - Microsoft "The evolution of Windows authentication" — platform direction is

@@ -69,7 +69,7 @@ Before tagging, verify:
 - Public APIs and package IDs use the `Opc.Classic.*` namespace family.
 - NativeAOT and trimming checks remain clean.
 - All OPC Classic sub-spec packages are included in the release set.
-- The 127 routed server opnums are covered by the generated dispatch path.
+- The generated dispatch path covers the routed OPC server opnums.
 - Conformance gates required for the release line have completed or are explicitly waived by maintainers.
 - `CHANGELOG.md` has a dated section for the exact release version, and `[Unreleased]` contains only intentional unreleased work.
 

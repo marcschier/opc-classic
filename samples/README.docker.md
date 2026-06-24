@@ -1,6 +1,6 @@
 # Dockerized Opc.Classic samples
 
-These files let adopters run the sample apps from Linux/macOS containers without installing the .NET 10 SDK locally.
+These files let adopters run the Dockerized sample apps from Linux/macOS containers without installing the .NET 10 SDK locally.
 
 ## Quick start
 

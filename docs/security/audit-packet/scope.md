@@ -12,14 +12,14 @@
 - DCE/RPC `PKT_INTEGRITY` / `PKT_PRIVACY` signing and sealing in `Ntlm1`, `NtlmAuthentication`, and `DcomCallChannel`.
 - MD4 and RC4 hand-rolled primitives and compatibility wrappers in Md4*, `Rc4.cs`, `MD4Digest.cs`, and `RC4Engine.cs`.
 - Password-derived buffer zeroization in `SensitiveBufferPool`, covered by `PasswordZeroizationTests`.
-- DCE/RPC bind-time auth verifier wrapping: `NtlmConnection`, `NtlmConnectionContext.cs`, `PduCodec`, and `DcomCallChannel`.
+- DCE/RPC bind-time auth verifier wrapping on the client/protocol path: `NtlmConnection`, `NtlmConnectionContext.cs`, `PduCodec`, and `DcomCallChannel`.
 
 ## Out of scope
 
 - Kerberos and SPNEGO protocol review; those are separate audit tracks if needed.
 - TLS and certificate-chain validation; the CBT input depends on .NET BCL certificate/TLS APIs.
 - OPC DA/AE/HDA/Batch/Commands/Security/DX/XML-DA behavior above the authentication layer.
-- The managed listener's anonymous-bind path and application-level authorization policy.
+- The managed listener's anonymous-bind path, incomplete server-side NTLM bind handshake, and application-level authorization policy.
 
 ## Non-goals
 
