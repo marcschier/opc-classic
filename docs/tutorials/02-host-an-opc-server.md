@@ -359,6 +359,27 @@ OpcException.ThrowIfFailed(result, "ValidateItems");
 
 Do not collapse everything to `E_FAIL`. Good clients show per-item text to operators; bad mapping makes troubleshooting impossible.
 
+## Authenticated remote hosting for native clients
+
+The basic `AddOpcDaServer<T>` shape is still useful for managed direct transports and Windows-local registration, but the authenticated native Windows-client path uses the managed DCOM activation stack. The reference composition is `SimulationActivationHost` in `samples\Opc.Classic.Samples.SimulationServer\Transports\SimulationActivationHost.cs`.
+
+For that topology, configure server-side NTLM with `ConfiguredAuthenticationSource` from `OPC_CLASSIC_DCOM_USER`, `OPC_CLASSIC_DCOM_PASSWORD`, and optional `OPC_CLASSIC_DCOM_DOMAIN`. Then expose:
+
+- an endpoint mapper listener on TCP 135 with `EndpointMapperDispatcher`;
+- a routable activation/object listener using `RpcServerConnectionProcessor` and the configured authentication source;
+- `RemoteSCMActivatorDispatcher`, `IObjectExporterDispatcher`, and `IRemUnknown` routing;
+- DA dispatchers for group, item, read/write, browse, and `IConnectionPoint` subscription calls.
+
+A native client such as Matrikon OPC Explorer first asks EPM for the activation endpoint, authenticates with NTLMv2, activates OpcEnum or the server CLSID through `IRemoteSCMActivator::RemoteCreateInstance`, resolves OXID bindings, queries interfaces through `IRemUnknown`, and then performs DA calls such as `AddGroup`, `AddItems`, `Read`, `Write`, and `IConnectionPoint::Advise`. Subscriptions are reverse DCOM callbacks: the managed server calls the client's `IOPCDataCallback::OnDataChange` sink.
+
+On Linux, TCP 135 requires root or a published-binary capability grant such as:
+
+```bash
+sudo setcap cap_net_bind_service=+ep ./Opc.Classic.Samples.SimulationServer
+```
+
+Use [../cookbook/01-connect-to-matrikon-from-linux.md](../cookbook/01-connect-to-matrikon-from-linux.md) for the Matrikon operator flow and [../cookbook/09-authenticated-dcom-server-for-native-clients.md](../cookbook/09-authenticated-dcom-server-for-native-clients.md) for the authenticated DCOM server checklist.
+
 ## Production pitfalls
 
 - Start with `ListenAddress = "127.0.0.1:0"` only for development. Production hosts need a stable endpoint and firewall rules.

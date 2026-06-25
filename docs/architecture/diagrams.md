@@ -177,6 +177,69 @@ sequenceDiagram
 - `OpcAeServerDispatcher` and `OpcHdaServerDispatcher` follow the same adapter shape for AE and HDA.
 - See also [docs\ARCHITECTURE.md](../ARCHITECTURE.md#L170-L200).
 
+
+## Managed authenticated DCOM server flow
+
+This sequence shows the native-style cold-activation and subscription path hosted by the managed server stack. The Endpoint Mapper (`EndpointMapperDispatcher`) can run on TCP 135 while the activation/object listener (`OpcServerListener` + `RpcServerConnectionProcessor`) handles authenticated MSRPC/DCOM traffic. With `ConfiguredAuthenticationSource`, bind/auth3 establish NTLMv2 state and later protected PDUs are verified and signed or sealed before dispatch.
+
+`SimulationActivationHost` composes the server-side dispatchers: `RemoteSCMActivatorDispatcher` creates DA/AE/HDA/OpcEnum objects, `IObjectExporterDispatcher` answers `ResolveOxid2` with real `DUALSTRINGARRAY` bindings and the `IRemUnknown` IPID, `RemUnknownServerDispatcher` performs `RemQueryInterface`, and `OpcObjectRegistry` routes object IPIDs to generated DA/AE/HDA/OpcEnum dispatchers. Reverse callbacks use `DcomOutboundCallbackChannel`, making the managed server a DCOM client of the callback OBJREF supplied during `Advise`.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant Native as Native OPC client
+    participant EPM as EPM TCP 135<br/>EndpointMapperDispatcher
+    participant Listener as OpcServerListener<br/>RpcServerConnectionProcessor
+    participant Auth as ConfiguredAuthenticationSource
+    participant Activator as RemoteSCMActivatorDispatcher
+    participant Exporter as IObjectExporterDispatcher
+    participant Unknown as RemUnknownServerDispatcher
+    participant Registry as OpcObjectRegistry
+    participant DA as DA group and connection point
+    participant Callback as Client callback endpoint<br/>IOPCDataCallback sink
+
+    Native->>EPM: ept_map for IRemoteSCMActivator or IObjectExporter
+    EPM-->>Native: TCP tower for activation and OXID endpoint
+    Native->>Listener: bind with NTLM Type 1
+    Listener->>Auth: CreateChallenge(Type1)
+    Auth-->>Listener: NTLM Type 2 challenge
+    Listener-->>Native: bind_ack with challenge
+    Native->>Listener: auth3 with NTLM Type 3
+    Listener->>Auth: Authenticate(Type3)
+    Auth-->>Listener: session security established
+    Native->>Listener: signed RemoteCreateInstance(CLSID, IID_IOPCServer)
+    Listener->>Activator: opnum 4 RemoteCreateInstance
+    Activator->>Registry: Register root object dispatchers by IPID
+    Activator-->>Native: OBJREF_STANDARD with IPID and OXID
+    Native->>Listener: signed ResolveOxid2(OXID)
+    Listener->>Exporter: opnum 4 ResolveOxid2
+    Exporter-->>Native: DUALSTRINGARRAY bindings and IRemUnknown IPID
+    Native->>Listener: signed RemQueryInterface(root IPID, DA IIDs)
+    Listener->>Unknown: RemQueryInterface
+    Unknown->>Registry: Look up requested interfaces
+    Registry-->>Unknown: matching dispatcher IPIDs
+    Unknown-->>Native: QI results
+    Native->>Listener: signed AddGroup and AddItems
+    Listener->>DA: Route by group IPID
+    DA->>Registry: Register group, item, and connection point IPIDs
+    Native->>Listener: signed Advise(callback OBJREF)
+    Listener->>DA: Connection point Advise
+    DA->>Callback: Resolve callback binding and signed OnDataChange
+    Callback-->>DA: callback response
+    Listener-->>Native: signed responses on protected PDUs
+```
+
+### Where to read more
+
+- `SimulationActivationHost` composes the activation/object listener and optional Endpoint Mapper listener.
+- `RpcServerConnectionProcessor` owns server-side NTLM bind/auth3 handling and per-PDU protection enforcement.
+- `ConfiguredAuthenticationSource` validates the configured NTLMv2 credential.
+- `EndpointMapperDispatcher` and `EndpointMapperTower` implement the managed EPM tower response.
+- `IObjectExporterDispatcher` implements `ResolveOxid2`; `RemUnknownServerDispatcher` implements `RemQueryInterface`, `RemAddRef`, and `RemRelease`.
+- `OpcEnumServer`, `IOPCServerListServerDispatcher`, and `IOPCServerList2ServerDispatcher` provide managed OPCEnum server-list browse.
+- `DcomOutboundCallbackChannel`, `DcomOpcDataCallbackSinkFactory`, `DcomOpcEventSinkSender`, and `DcomOpcHdaDataCallbackSender` deliver reverse callbacks.
+- See also [activation-transports.md](activation-transports.md) and `ManagedDcomFullStackE2ETests`.
+
 ## NTLM handshake
 
 This sequence shows the NTLMSSP handshake used by the DCOM authentication context. The client starts with a NEGOTIATE message, the server returns a CHALLENGE, and the client completes the exchange with an AUTHENTICATE message carrying NTLMv2 responses and negotiated flags.

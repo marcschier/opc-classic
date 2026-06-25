@@ -15,7 +15,7 @@
 | **§1.3.3 Object Exporter** (`IObjectExporter`, OXID/IPID/SETID) | §3.1.1 / §3.1.2 | ✅ `ComOxidRuntime`, `ComOxidRuntimeAcceptService`, `ComOxidRuntimeHelper`, `IObjectExporterDispatcher`, `OpcObjectRegistry` | ✅ | conformant |
 | **§1.3.4 ORPC Calls** (`ORPCTHIS`, `ORPCTHAT`, extensions) | §2.2.13 / §2.2.21 | ✅ `OrpcThis`, `OrpcThat`, `OrpcEnvelope`, `OrpcExtent`, `OrpcExtentArrayCodec` | ✅ envelope + extent fuzz tests | conformant |
 | **§1.3.5 Causality Identifiers** (`CID`) | §2.2.6 / §2.2.13.3 | ✅ embedded in `OrpcThis` | ✅ | conformant |
-| **§1.3.6 Reference Counts** (`IRemUnknown`, `IRemUnknown2`) | §3.1.1.5.4 / §3.1.1.5.5 | ✅ `RemUnknown2`, `RemUnknown2ServerStub`, `IRemUnknownProxy` | ✅ `IRemUnknownProxyTests` | conformant |
+| **§1.3.6 Reference Counts** (`IRemUnknown`, `IRemUnknown2`) | §3.1.1.5.4 / §3.1.1.5.5 | ✅ `RemUnknown2`, `RemUnknown2ServerStub`, `RemUnknownServerDispatcher`, `IRemUnknownProxy` | ✅ `IRemUnknownProxyTests`, `ManagedDcomFullStackE2ETests` | conformant |
 | **§1.3.7 Object Resolver Service** (`IObjectExporter::ResolveOxid2`) | §3.1.2.5.1 | ✅ `OxidResolver`, `DualStringArrayResolver` | ✅ | conformant |
 | **§2.2 Common data types** (OID, SETID, GUID, CID, CLSID, IID, IPID, OXID, COMVERSION) | §2.2.1 - §2.2.11 | ✅ `ObjectId`, `SetId`, `Oxid`, `Session`, `Clsid`, `ActivationComVersion` | ✅ | conformant |
 | **§2.2.13 ORPCTHIS / ORPCTHAT** | §2.2.13 | ✅ `OrpcThis`, `OrpcThat`, `OrpcExtentArray` | ✅ envelope tests | conformant |
@@ -27,7 +27,7 @@
 | **§3.1.2 Object Resolver (server)** — OXID resolution + ping replies | §3.1.2 | ✅ via the same `ComOxidRuntime` surface | ✅ | conformant |
 | **§3.2 Client Details** — activation request building, OXID cache, ping client | §3.2 | ✅ `ActivationClient`, `RemoteSCMActivator`, `OxidResolver` | ✅ | conformant |
 | **§4 Protocol Examples** | §4 | n/a — informative | n/a | n/a |
-| **§5 Security** (authentication, authorization, integrity, privacy) | §5 | ✅ NTLM / Kerberos / SPNEGO through `Opc.Classic.Dcom/rpc/Auth/` + `Opc.Classic.Dcom.Kerberos/` + `Opc.Classic.Dcom/Spnego/` — covered in detail by [`docs/conformance/ms-nlmp.md`](ms-nlmp.md) + [`docs/conformance/ms-kile.md`](ms-kile.md) + [`docs/conformance/ms-spng.md`](ms-spng.md) (forthcoming) | ✅ | conformant |
+| **§5 Security** (authentication, authorization, integrity, privacy) | §5 | ✅ client-side NTLM / Kerberos / SPNEGO plus managed-listener NTLMv2 accept through `Opc.Classic.Dcom/rpc/Auth/` + `Opc.Classic.Dcom.Kerberos/` + `Opc.Classic.Dcom/Spnego/` — covered in detail by [`docs/conformance/ms-nlmp.md`](ms-nlmp.md) + [`docs/conformance/ms-kile.md`](ms-kile.md) + [`docs/conformance/ms-spng.md`](ms-spng.md) | ✅ for NTLM; Kerberos/SPNEGO server acceptor remains follow-up | conformant with noted acceptor gap |
 | **Transport** — ncacn_ip_tcp, ncacn_np (LRPC) | §2.1 | ✅ `TcpClientTransport`, `TcpServerEndpoint`, `LocalNamedPipeTransport`, `LocalNamedPipeTransportFactory`, `NcacnNpTransport`, `NcacnNpEndPoint`, `TransportFactoryDispatcher` | ✅ | conformant |
 | **Transport** — ncalrpc (ALPC) | §2.1 | ❌ not implemented (server-side LRPC ncacn_np covers the local case) | n/a | deferred-by-design — see ALPC plan |
 
@@ -90,7 +90,7 @@ The spec defines a 2-tier activation model: legacy `IActivation` (opnum 0 of `Re
 
 | Method | Opnum | Source | Tests |
 |---|---|---|---|
-| `IRemUnknown::RemQueryInterface` | 3 | `src/Opc.Classic.Dcom/Common/IRemUnknown.cs`, `src/Opc.Classic.Core/Dcom/OpcRemQIResult.cs` | `tests/Opc.Classic.Dcom.Tests/IRemUnknownProxyTests.cs` |
+| `IRemUnknown::RemQueryInterface` | 3 | `src/Opc.Classic.Dcom/Common/IRemUnknown.cs`, `src/Opc.Classic.Dcom/Transport/RemUnknownServerDispatcher.cs`, `src/Opc.Classic.Core/Dcom/OpcRemQIResult.cs` | `tests/Opc.Classic.Dcom.Tests/IRemUnknownProxyTests.cs`, `ManagedDcomFullStackE2ETests` |
 | `IRemUnknown::RemAddRef` | 4 | same | same |
 | `IRemUnknown::RemRelease` | 5 | same | same |
 | `IRemUnknown2::RemQueryInterface2` | 6 | `src/Opc.Classic.Dcom/Core/RemUnknown2.cs`, `RemUnknown2ServerStub.cs` | same |
@@ -217,10 +217,10 @@ No hard gap is recorded for managed server-side NTLM activation. Managed/simulat
 - Existing aggregate doc: [`docs/CONFORMANCE.md`](../CONFORMANCE.md)
 - Architecture: [`docs/architecture/activation-transports.md`](../architecture/activation-transports.md), [`docs/architecture/diagrams.md`](../architecture/diagrams.md)
 - NDR pointer marshalling: [`docs/architecture/ndr-pointer-marshaling.md`](../architecture/ndr-pointer-marshaling.md)
-- Related spec: [`docs/conformance/ms-rpce.md`](ms-rpce.md) — RPCE bind / fault / fragmentation, ORPC PFC flags (forthcoming).
-- Related spec: [`docs/conformance/ms-nlmp.md`](ms-nlmp.md) — NTLM security provider (forthcoming).
-- Related spec: [`docs/conformance/ms-kile.md`](ms-kile.md) — Kerberos security provider (forthcoming).
-- Related spec: [`docs/conformance/ms-spng.md`](ms-spng.md) — SPNEGO mech-list negotiation (forthcoming).
+- Related spec: [`docs/conformance/ms-rpce.md`](ms-rpce.md) — RPCE bind / fault / fragmentation, ORPC PFC flags, and EPM `ept_map`.
+- Related spec: [`docs/conformance/ms-nlmp.md`](ms-nlmp.md) — NTLM security provider.
+- Related spec: [`docs/conformance/ms-kile.md`](ms-kile.md) — Kerberos security provider.
+- Related spec: [`docs/conformance/ms-spng.md`](ms-spng.md) — SPNEGO mech-list negotiation.
 - Related spec: [`docs/conformance/ms-oaut.md`](ms-oaut.md) — VARIANT / SAFEARRAY / BSTR marshalling (forthcoming).
 - ROADMAP open items: [`docs/ROADMAP.md`](../ROADMAP.md)
 

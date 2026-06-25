@@ -5,7 +5,7 @@ These tutorials are deeper than the short recipes in [../cookbook/README.md](../
 ## Start here
 
 1. [Build your first DA client](01-build-your-first-da-client.md) — create a .NET 10 hosted service that browses tags, reads values, subscribes to changes, handles OPC HRESULTs, and shuts down cleanly.
-2. [Host an OPC DA server](02-host-an-opc-server.md) — implement a managed `IOpcDaServer`, register it with `Opc.Classic.Hosting`, model a tag tree, and preserve DA group/HRESULT semantics.
+2. [Host an OPC DA server](02-host-an-opc-server.md) — implement a managed `IOpcDaServer`, register it with `Opc.Classic.Hosting`, model a tag tree, preserve DA group/HRESULT semantics, and understand the authenticated native-client hosting path.
 3. [Cross-platform deployment](03-cross-platform-deployment.md) — package clients and servers for Linux, macOS, containers, and Kubernetes, including NativeAOT, multi-arch images, health checks, and Kerberos files.
 
 ## Security and operations

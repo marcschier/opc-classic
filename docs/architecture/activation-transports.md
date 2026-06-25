@@ -21,9 +21,14 @@ Reference: the vendored `MS-DCOM.md` spec sections 3.1.2.5.2.3 (legacy) and
 | `IActivation::RemoteActivation` over TCP | ✅ Client + server | `ActivationClient` + `IActivationCodec.cs` + `ActivationServer` / `LegacyActivationServer` |
 | `IActivation::RemoteActivation` over SMB (ncacn_np) | ✅ Client + server | channel-pluggable `ActivationClient` / `ActivationServer` over `NcacnNpTransport` |
 | Simulation DA/AE/HDA cold-activation over managed TCP | ✅ Authenticated managed-server path | `SimulationActivationHost` hosts `ActivationServer`, `RemoteSCMActivatorDispatcher`, `IObjectExporterDispatcher`, and `SimulationActivationServer`; it registers activated objects and `IRemUnknown` in `OpcObjectRegistry`, can host EPM `ept_map`, and uses `ConfiguredAuthenticationSource` for server-side NTLMv2 binds. |
+| OPCEnum server-list browse over managed TCP | ✅ Authenticated managed-server path | `OpcEnumServer` plus `IOPCServerListServerDispatcher` / `IOPCServerList2ServerDispatcher` expose `IOPCServerList(2)` and routable `IEnumGUID` / `IOPCEnumGUID` enumerators from the configured `IClsidRegistry`. |
 | `IRemoteSCMActivator` over SMB | ❌ Not implemented + not normally used | per [MS-DCOM] the modern activator is registered with `ncacn_ip_tcp` only |
 
-The full remote path is now: native-style client asks EPM (`EndpointMapperDispatcher`) for the activation/OXID endpoint; authenticates to the managed listener with NTLMv2; activates OpcEnum or Simulation DA/AE/HDA through `IRemoteSCMActivator::RemoteCreateInstance`; receives `OBJREF_STANDARD` plus `pipidRemUnknown`; calls `IObjectExporter::ResolveOxid2` to confirm TCP `DUALSTRINGARRAY` bindings; uses `IRemUnknown::RemQueryInterface` for root and tear-off interfaces; then invokes DA/AE/HDA generated dispatchers by IPID. DA reverse callbacks use a client-hosted `IObjectExporter` + `IOPCDataCallback` sink so the managed server becomes a DCOM client for `OnDataChange`.
+The full remote path is now: native-style client asks EPM (`EndpointMapperDispatcher`) for the activation/OXID endpoint; authenticates to the managed listener with NTLMv2; activates OpcEnum or Simulation DA/AE/HDA through `IRemoteSCMActivator::RemoteCreateInstance`; receives `OBJREF_STANDARD` plus `pipidRemUnknown`; calls `IObjectExporter::ResolveOxid2` to confirm TCP `DUALSTRINGARRAY` bindings; uses `IRemUnknown::RemQueryInterface` for root and tear-off interfaces; then invokes DA/AE/HDA generated dispatchers by IPID. Reverse callbacks use client-hosted `IObjectExporter` endpoints and server-as-client channels: DA `DcomOpcDataCallbackSinkFactory` delivers `IOPCDataCallback`, AE `DcomOpcEventSinkSender` delivers `IOPCEventSink::OnEvent`, and HDA `DcomOpcHdaDataCallbackSender` delivers `IOPCHDA_DataCallback` methods.
+
+The authenticated server flow is drawn in [diagrams.md#managed-authenticated-dcom-server-flow](diagrams.md#managed-authenticated-dcom-server-flow).
+
+When `RpcServerConnectionProcessor` is constructed with `ConfiguredAuthenticationSource`, each connection owns a `RpcServerAuthenticationState`: an authenticated bind carrying NTLM Type 1 receives a Type 2 challenge, the following `auth3` Type 3 is verified against the configured credential, and later request/response PDUs are verified and signed/sealed when the negotiated protection level is at least packet integrity. `ConfiguredAuthenticationSource.FromEnvironment()` reads `OPC_CLASSIC_DCOM_USER`, `OPC_CLASSIC_DCOM_PASSWORD`, and optional `OPC_CLASSIC_DCOM_DOMAIN`. On the server path, a configured source is not advisory: requests before successful authentication are faulted, and once packet protection is required, unsigned or invalidly signed request PDUs are rejected before dispatch.
 
 The Windows SCM path is also wired for local/native client activation.
 `ComClassObjectRegistrar` registers an AOT-friendly `IClassFactory`; DA, AE,
@@ -41,8 +46,8 @@ processes PDUs through `RpcServerConnectionProcessor`, and uses
 `OpcObjectRegistry` for per-IPID object routing. The full-feature
 `Opc.Classic.Samples.SimulationServer --listen` uses this for DA/AE/HDA real
 transport hosting. Its separate `SimulationActivationHost` exercises the
-modern cold-activation shape for DA by serving `IActivation::RemoteActivation`
-and the activated object on one listener.
+managed cold-activation shape for DA/AE/HDA/OpcEnum by serving `IActivation`,
+`IRemoteSCMActivator`, `IObjectExporter`, and the activated objects on one listener.
 
 `SimulationActivationHost.Create(..., endpointMapperListenAddress: "0.0.0.0:135")`
 starts a managed Endpoint Mapper beside the activation/object listener. Its
@@ -105,9 +110,11 @@ additional opnum dispatcher and a wrapper that adapts the legacy wire shape
 - `RemoteSCMActivatorServer` — modern activator server
 - `ActivationServer` / `LegacyActivationServer` — legacy `IActivation` dispatcher and adapter
 - `EndpointMapperDispatcher` / `EndpointMapperTower` — managed MS-RPCE `ept_map` responder and TCP tower codec
-- `SimulationActivationServer` / `SimulationActivationHost` — simulation DA cold-activation host and handler
+- `SimulationActivationServer` / `SimulationActivationHost` — simulation DA/AE/HDA/OpcEnum cold-activation host and handler
 - `ActivationProperties` — shared activation-property carrier
 - `ComClassObjectRegistrar` — Windows SCM `IClassFactory` registration
 - `OpcDaServerCcw` — DA root server CCW returned by SCM activation
 - `DcomCallChannelFactory` and `TcpClientTransport.cs` — direct TCP client transport
 - `OpcServerListener`, `RpcServerConnectionProcessor.cs`, and `OpcObjectRegistry.cs` — managed DCOM-over-IP listener path
+- `OpcEnumServer`, `IOPCServerListServerDispatcher`, and `IOPCServerList2ServerDispatcher` — managed OPCEnum server-list browse
+- `DcomOutboundCallbackChannel`, `DcomOpcDataCallbackSinkFactory`, `DcomOpcEventSinkSender`, and `DcomOpcHdaDataCallbackSender` — reverse callback delivery

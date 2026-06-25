@@ -17,7 +17,7 @@
 | `OPC_S_LOW_AUTHN_LEVEL` | §6.2 | ✅ `OpcSecurityErrors.OPC_S_LOW_AUTHN_LEVEL` | ✅ | conformant |
 | Managed `IOpcSecurity` facade | n/a | ✅ unified client-side API | ✅ | conformant |
 | Reference sample server | §4.5 | ✅ `samples/Opc.Classic.Samples.OpcSecurityServer` | ✅ via `Hosting.Windows.Tests` | conformant |
-| §6.3 DCOM-security guidelines (informative) | §6.3 | n/a — wire-protocol-irrelevant, deferred to `Opc.Classic.Dcom` | n/a | n/a |
+| §6.3 DCOM-security guidelines (informative) | §6.3 | n/a — informative guidance mapped to `Opc.Classic.Dcom` authentication/protection policy | n/a | documented |
 | Win9x in-process server considerations | §6.3.1.2 / §6.3.2 | n/a — not supported on .NET 10 | n/a | deferred-by-design |
 
 ---
@@ -97,7 +97,7 @@ considerations is **informative** rather than normative. Coverage:
 | `CoInitializeSecurity` recommendations | §6.3.1.1 | n/a — managed runtime; equivalent behavior is set via `Opc.Classic.Dcom.Security.AuthenticationLevel` policy. |
 | Authentication levels (`RPC_C_AUTHN_LEVEL_*`) | §6.3.4.4 | Mapped to `OpcAuthenticationLevel` in `Opc.Classic.Dcom`. |
 | Impersonation levels (`RPC_C_IMP_LEVEL_*`) | §6.3.4.5 | Mapped to `OpcImpersonationLevel` (this assembly). |
-| Authentication services (`RPC_C_AUTHN_*`) | §6.3.4.6 | Mapped to `OpcAuthenticationService` in `Opc.Classic.Dcom`. |
+| Authentication services (`RPC_C_AUTHN_*`) | §6.3.4.6 | Mapped to `OpcAuthenticationService` in `Opc.Classic.Dcom`; managed listeners can require configured NTLMv2 bind authentication with packet integrity/privacy, while Kerberos/SPNEGO server acceptor wiring remains a DCOM-layer follow-up. |
 | In-process server considerations | §6.3.2 | n/a — Opc.Classic uses out-of-proc DCOM only. |
 | Windows 95/98 DCOM differences | §6.3.1.2 | n/a — .NET 10 targets modern OSes. |
 | Local/remote configuration parameters | §6.3.3 | n/a — vendor-specific, not part of the wire protocol. |

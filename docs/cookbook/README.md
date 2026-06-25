@@ -4,14 +4,15 @@ These recipes use the current `Opc.Classic.*` package and namespace names. They 
 
 ## Recipes
 
-- [Connect to Matrikon from Linux](01-connect-to-matrikon-from-linux.md): NTLMv2 or Kerberos, packet integrity, DA reads/subscriptions, and firewall notes.
-- [Host a managed DA server for Windows clients](02-host-managed-da-server-consumed-by-windows-client.md): `AddClassicServer`, `AddClassicClsidRegistry`, `AddOpcDaServer<T>`, and native COM activation expectations.
+- [Connect Matrikon OPC Explorer to the Linux simulation server](01-connect-to-matrikon-from-linux.md): native Windows client to Linux-hosted authenticated DCOM simulation flow.
+- [Host an authenticated managed DA server for Windows clients](02-host-managed-da-server-consumed-by-windows-client.md): `SimulationActivationHost`, server-side NTLM, EPM/135, activation, and callbacks.
 - [Kerberos in Active Directory](03-kerberos-in-active-directory.md): SPNs, Kerberos/SPNEGO, channel binding, and diagnostics.
 - [Adopt Opc.Classic in OPC NET API projects](04-migrate-from-net-framework-opc-net-api.md): current type and API mappings from OPC NET API concepts to `Opc.Classic.*`.
 - [DCOM hardening and packet integrity](05-dcom-hardening-pkt-integrity-explainer.md): why `OpcProtectionLevel.Integrity` is the default and when to use `Privacy`.
 - [XML-DA client flows](06-xmlda-client-flows.md): `GetStatus`, read/write calls, and polled subscriptions over HTTP/SOAP.
 - [Enabling packet privacy](07-enabling-packet-privacy.md): DCOM `Privacy`, XML-DA over HTTPS, SMB signing, and sample-default caveats.
 - [Implementing OPC Security](08-implementing-opc-security.md): server-side `IOPCSecurityNT` / `IOPCSecurityPrivate` wiring and production ACL guidance.
+- [Authenticated DCOM server for native OPC clients](09-authenticated-dcom-server-for-native-clients.md): credential model, ports/firewall, activation-to-subscription flow, and troubleshooting.
 
 ## Sample apps referenced
 

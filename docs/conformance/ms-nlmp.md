@@ -2,7 +2,7 @@
 
 **Spec:** `opc-classic-docs/MS-NLMP.md` (NT LAN Manager (NTLM) Authentication Protocol).
 
-**Scope:** The full NTLMv2 three-message authentication handshake (`NEGOTIATE_MESSAGE`, `CHALLENGE_MESSAGE`, `AUTHENTICATE_MESSAGE`), key derivation (LM v2 response, NT v2 response, session key, signing keys, sealing keys, sequence-number keys), AV-pair encoding, MIC field calculation + verification, channel-bindings hash, target-info construction, and the per-PDU `NTLMSSP_MESSAGE_SIGNATURE` block. Both client + server roles are implemented; per-spec connection-oriented mode (datagram NTLM not implemented — out of scope for DCOM).
+**Scope:** The full NTLMv2 three-message authentication handshake (`NEGOTIATE_MESSAGE`, `CHALLENGE_MESSAGE`, `AUTHENTICATE_MESSAGE`), key derivation (LM v2 response, NT v2 response, session key, signing keys, sealing keys, sequence-number keys), AV-pair encoding, MIC field calculation + verification, channel-bindings hash, target-info construction, and the per-PDU `NTLMSSP_MESSAGE_SIGNATURE` block. Both client + server roles are implemented, including configured managed-listener NTLMv2 bind accept; per-spec connection-oriented mode is in scope (datagram NTLM is not implemented and is out of scope for DCOM).
 
 **Implementing assemblies:** `Opc.Classic.Dcom` (`rpc/Auth/Ntlm*.cs` for the auth-trailer flow, `Common/Ntlm/*.cs` for the wire-message + MIC + key infrastructure), `Opc.Classic.Dcom.Crypto` (MD4, RC4, MD5, HMAC), `Opc.Classic.Core/Security/ChannelBindingsHash.cs` (EXTENDED_BINDING MD5 for the `gss_channel_bindings_struct`).
 
@@ -25,8 +25,8 @@
 | MIC field (`MessageIntegrityCheck`) | §3.1.5.1.2 | ✅ `NtlmMic`, `NtlmMicProvider` | ✅ `NtlmMicTests` | conformant |
 | Channel-bindings hash (`MD5(EXTENDED_BINDING)`) | §2.2.2.1 (AvPair `MsvAvChannelBindings = 0x000A`) | ✅ `ChannelBindingsHash` (in `Opc.Classic.Core/Security/`) | ✅ `ChannelBindingsTests`, `ChannelBindingTlsTests` | conformant |
 | Channel-bindings token: `tls-server-end-point` prefix | RFC 5929 (referenced) | ✅ `ChannelBindingsFactory` | ✅ same | conformant |
-| Server: `CHALLENGE_MESSAGE` synthesis with TargetInfo + ServerChallenge | §3.2.5.1.1 | ✅ `NtlmConnectionContext`, `ComRuntimeNTLMConnectionContext` | ✅ `NtlmHandshakeProtocolTests` | conformant |
-| Server: `AUTHENTICATE_MESSAGE` verification + reproducing client's session key | §3.2.5.1.2 | ✅ same | ✅ same | conformant |
+| Server: `CHALLENGE_MESSAGE` synthesis with TargetInfo + ServerChallenge | §3.2.5.1.1 | ✅ `NtlmConnectionContext`, `ComRuntimeNTLMConnectionContext`, `ConfiguredAuthenticationSource` + `RpcServerConnectionProcessor` | ✅ `NtlmHandshakeProtocolTests`, `F4Auth` | conformant |
+| Server: `AUTHENTICATE_MESSAGE` verification + reproducing client's session key | §3.2.5.1.2 | ✅ same | ✅ same, including wrong-password and anonymous-bypass rejection | conformant |
 | Anonymous authentication (`NTLMSSP_ANONYMOUS` flow) | §3.2.5.1.2 | ✅ `NtlmAuthentication` (anonymous path) | ✅ `NtlmDefaultsTests` | conformant |
 | Datagram NTLM (`SECPKG_CONTEXT_FLAG_ALWAYS_*`) | §3.4.5.4 | ❌ not implemented | n/a | deferred-by-design (DCOM is connection-oriented) |
 
@@ -117,7 +117,7 @@ The `AUTHENTICATE_MESSAGE` carries an optional 16-byte MIC at offset
 | `tls-server-end-point:` prefix selection | RFC 5929 §4.1 | `src/Opc.Classic.Core/Security/ChannelBindingsFactory.cs` | same |
 | MD5 hash | §3.1.5.1.2 | `ChannelBindingsHash.cs` | same |
 | Insertion into `AUTHENTICATE_MESSAGE`'s `MsvAvChannelBindings` av-pair | §3.1.5.1.2 | `NtlmAvPairs.cs` + `NtlmAuthentication.cs` | covered by `NtlmHandshakeProtocolTests` |
-| Server-side verification | §3.2.5.1.2 | `NtlmConnectionContext.cs` | covered by `NtlmHandshakeProtocolTests` |
+| Server-side verification | §3.2.5.1.2 | `NtlmConnectionContext.cs`; managed listener via `ConfiguredAuthenticationSource` | covered by `NtlmHandshakeProtocolTests` and `F4Auth` |
 
 ### 1.8 Negotiate-Sign / Negotiate-Seal / Negotiate-Always-Sign defaults
 
@@ -137,7 +137,8 @@ The `AUTHENTICATE_MESSAGE` carries an optional 16-byte MIC at offset
 |---|---|---|
 | `ComRuntimeNTLMConnectionContext` (wires NTLM into the COM-runtime auth-context surface) | `src/Opc.Classic.Dcom/Transport/ComRuntimeNTLMConnectionContext.cs` | `tests/Opc.Classic.Dcom.Tests/NtlmHandshakeProtocolTests.cs` |
 | `NtlmConnection` (per-call sequence numbers + per-direction sealing handles) | `src/Opc.Classic.Dcom/rpc/Auth/NtlmConnection.cs` | `NtlmSignatureBlockTests.cs` |
-| `NtlmConnectionContext` (handshake-state machine) | `src/Opc.Classic.Dcom/rpc/Auth/NtlmConnectionContext.cs` | `NtlmHandshakeProtocolTests.cs` |
+| `NtlmConnectionContext` (legacy handshake-state machine) | `src/Opc.Classic.Dcom/rpc/Auth/NtlmConnectionContext.cs` | `NtlmHandshakeProtocolTests.cs` |
+| `ConfiguredAuthenticationSource` + `RpcServerConnectionProcessor` (managed-listener NTLM acceptor) | `src/Opc.Classic.Dcom/rpc/Auth/ConfiguredAuthenticationSource.cs`, `src/Opc.Classic.Dcom/Transport/RpcServerConnectionProcessor.cs` | `F4Auth.cs` |
 | `Ntlm1` (NTLMv1 minimal fallback, gated for legacy peers only) | `src/Opc.Classic.Dcom/rpc/Auth/Ntlm1.cs` | covered by `NtlmDefaultsTests` |
 | `NtlmAuthentication` (top-level orchestrator) | `src/Opc.Classic.Dcom/rpc/Auth/NtlmAuthentication.cs` | `NtlmHandshakeFixtureTests` |
 | `NTLMKeyFactory` (NTOWFv2, sign / seal key derivation) | `src/Opc.Classic.Dcom/rpc/Auth/NTLMKeyFactory.cs` | `NtlmV2ServerKeyDerivationTests.cs` |
@@ -205,11 +206,12 @@ item).
 
 None at present. NTLMv2 three-message handshake, AV-pair encoding
 (including `MsvAvChannelBindings`), key derivation, MIC verification,
-signing, sealing, replay detection, and target-info construction all
-conform to MS-NLMP. The cross-impl matrix exercises the full handshake
-against Foundation TestServer + Matrikon + managed peers; passive
-NTLM-trailer unwrap is verified against captured Windows native PDUs in
-`NtlmPassiveUnwrapperTests` and the [`docs/capture/ntlm-unwrap.md`](../capture/ntlm-unwrap.md) playbook.
+signing, sealing, replay detection, target-info construction, and the
+configured managed-listener server acceptor conform to MS-NLMP. The
+cross-implementation matrix exercises the full handshake against managed
+peers and external-server profiles; passive NTLM-trailer unwrap is verified
+against captured Windows native PDUs in `NtlmPassiveUnwrapperTests` and the
+[`docs/capture/ntlm-unwrap.md`](../capture/ntlm-unwrap.md) playbook.
 
 ---
 

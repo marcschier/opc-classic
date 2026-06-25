@@ -19,7 +19,7 @@ This packet intentionally extracts only NTLM-relevant headings and evidence, not
 
 ## Extracted NTLM flow
 
-The NTLM flow in `docs\security\THREAT_MODEL.md:114-145` has credentials entering the client NTLM auth context; Type1, Type2, and Type3 tokens crossing the network in DCE/RPC bind/auth PDUs; protocol-level verification of NT proof, MIC, and CBT; and later signed/sealed request/response PDUs. Managed listener server-side NTLM bind completion is not implemented today.
+The NTLM flow in `docs\security\THREAT_MODEL.md:114-145` has credentials entering the client NTLM auth context; Type1, Type2, and Type3 tokens crossing the network in DCE/RPC bind/auth PDUs; server-side verification of NT proof, MIC, and CBT when the managed listener is configured with `ConfiguredAuthenticationSource`; and later signed/sealed request/response PDUs.
 
 Implementation anchors listed there are:
 
@@ -44,7 +44,7 @@ Implementation anchors listed there are:
 - Network token boundary: untrusted bytes enter `Type1Message`, `Type2Message`, `Type3Message`, `NtlmAvPairs`, and `NtlmMic.Verify`.
 - Channel-binding boundary: TLS endpoint evidence becomes `ChannelBindingsHash` and then `MsvAvChannelBindings`.
 - Packet-protection boundary: DCE/RPC body bytes and auth verifier bytes enter `SignAndSeal` / `VerifyAndUnseal`.
-- Server credential-store boundary: `AuthenticationSource.CreateChallenge` and `AuthenticationSource.Authenticate` bridge protocol verifier code to application credential policy; the managed listener does not yet invoke this for inbound NTLM binds.
+- Server credential-store boundary: `AuthenticationSource.CreateChallenge` and `AuthenticationSource.Authenticate` bridge protocol verifier code to application credential policy; `RpcServerConnectionProcessor` invokes this boundary for inbound NTLM binds when an authentication source is configured.
 
 ## STRIDE evidence to cross-check
 

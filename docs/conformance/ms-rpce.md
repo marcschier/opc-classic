@@ -32,6 +32,7 @@
 | Fragmentation + reassembly | §3.3.1.5.6 | ✅ `IFragmentable`, fragment-loop in `RpcServerConnectionProcessor` + client channel | ✅ exercised by activation + ORPC tests | conformant |
 | Call multiplexing (`CONC_MPX`) | §2.2.2.13 / §3.1.1.5 | ✅ per-call-id state in `RpcServerConnectionProcessor`, `DcomCallChannel` | ✅ `DcomCallChannelTests`, `DcomCallChannelOrpcTests` | conformant |
 | Server connection processor | §3.3 | ✅ `RpcServerConnectionProcessor` | ✅ `RpcServerConnectionProcessorTests` | conformant |
+| Endpoint mapper `ept_map` server | MS-RPCE EPM | ✅ `EndpointMapperDispatcher` | ✅ `EndpointMapperDispatcherTests`, `ManagedDcomFullStackE2ETests` | conformant for TCP tower lookup |
 | Client call channel | §3.2 | ✅ `DcomCallChannel`, `DcomCallChannelFactory` | ✅ | conformant |
 | Connection establishment + tear-down | §3.3.1.5.x | ✅ `IConnection`, `Connection`, `DefaultConnection`, `IConnectionContext`, `BasicConnectionContext` | ✅ | conformant |
 | Sensitive buffer pool (clear-on-return) | §5 | ✅ `SensitiveBufferPool` | ✅ exercised by all PDU codec tests | conformant |
@@ -128,9 +129,14 @@ DCOM connection per Windows 2008+ Extended Protection policy
 | Cancellation propagation (CO_CANCEL → CallId cancellation token) | same | same |
 | Per-call-id state | same | same |
 | Auth-trailer validation on every PDU | same + `AuthenticationVerifier.cs` | covered by NLMP + KILE tests |
+| Server-side NTLM authenticated bind and per-PDU protection | same + `ConfiguredAuthenticationSource` | `F4Auth` |
 | `AcceptUnauthenticated` gate for `ncacn_np` connections (named-pipe kernel impersonation) | same | covered by LRPC tests |
 
-### 1.7 Client call channel (spec §3.2)
+### 1.7 Endpoint mapper (`ept_map`)
+
+`EndpointMapperDispatcher` implements the managed TCP endpoint-mapper path needed by DCOM activation discovery. It decodes incoming map towers, returns TCP tower bindings for registered interfaces, and returns `EPT_S_NOT_REGISTERED` when no mapped interface or endpoint is available.
+
+### 1.8 Client call channel (spec §3.2)
 
 | Surface | Source | Tests |
 |---|---|---|
@@ -139,14 +145,14 @@ DCOM connection per Windows 2008+ Extended Protection policy
 | Per-call cancellation, request fragmentation, response reassembly | same | same |
 | OXID + IPID routing for `IRemUnknown` calls | same | `IRemUnknownProxyTests` |
 
-### 1.8 Fragmentation + reassembly (spec §3.3.1.5.6)
+### 1.9 Fragmentation + reassembly (spec §3.3.1.5.6)
 
 `PFC_FIRST_FRAG` / `PFC_LAST_FRAG` driven request + response
 fragmentation is implemented in `RpcServerConnectionProcessor` (server
 side) and `DcomCallChannel` (client side). Default fragment size 5840
 bytes (Windows COM default), configurable via `RpcTransportQuotas`.
 
-### 1.9 Transport (spec §3.1.1.1)
+### 1.10 Transport (spec §3.1.1.1)
 
 See [`ms-dcom.md`](ms-dcom.md) §1.9 — the same `IAsyncTransport` /
 `IAsyncEndpoint` surface is used for both DCOM activation and ORPC
@@ -162,10 +168,10 @@ MS-RPCE contains **575 MUST/SHALL clauses** per Phase 0 inventory
 | § range | Topic | Clause count | Status | Evidence |
 |---|---|---|---|---|
 | §1 | Introduction | 18 | ✅ informative | n/a |
-| §2.1 | Transport | 42 | ✅ TCP + pipe conformant; ALPC deferred | §1.9 |
+| §2.1 | Transport | 42 | ✅ TCP + pipe conformant; ALPC deferred | §1.10 |
 | §2.2.1 | Common data types (DREP, conformant arrays) | 86 | ✅ conformant | `PduCodec` |
 | §2.2.2 | PDU formats | 215 | ✅ all 12 PDU types conformant | §1.1 - §1.5 |
-| §3.1 - 3.2 | Client side | 92 | ✅ conformant | §1.7 |
+| §3.1 - 3.2 | Client side | 92 | ✅ conformant | §1.8 |
 | §3.3 | Server side | 98 | ✅ conformant | §1.6 |
 | §5 | Security | 24 | ✅ covered by MS-NLMP / MS-KILE / MS-SPNG docs | §1.4 |
 
@@ -208,9 +214,9 @@ plus the unit/property/fuzz test fleet.
 - Architecture: [`docs/architecture/activation-transports.md`](../architecture/activation-transports.md)
 - NDR pointer marshalling: [`docs/architecture/ndr-pointer-marshaling.md`](../architecture/ndr-pointer-marshaling.md)
 - Related spec: [`docs/conformance/ms-dcom.md`](ms-dcom.md) — DCOM activation + ORPC layered atop RPCE.
-- Related spec: [`docs/conformance/ms-nlmp.md`](ms-nlmp.md) — NTLM auth-value provider (forthcoming).
-- Related spec: [`docs/conformance/ms-kile.md`](ms-kile.md) — Kerberos auth-value provider (forthcoming).
-- Related spec: [`docs/conformance/ms-spng.md`](ms-spng.md) — SPNEGO auth-value provider (forthcoming).
+- Related spec: [`docs/conformance/ms-nlmp.md`](ms-nlmp.md) — NTLM auth-value provider.
+- Related spec: [`docs/conformance/ms-kile.md`](ms-kile.md) — Kerberos auth-value provider.
+- Related spec: [`docs/conformance/ms-spng.md`](ms-spng.md) — SPNEGO auth-value provider.
 - ROADMAP open items: [`docs/ROADMAP.md`](../ROADMAP.md)
 
 ---

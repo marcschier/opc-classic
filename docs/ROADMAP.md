@@ -33,8 +33,8 @@ These gates are required before the first stable tag.
 Generated client and server DCOM projections cover the main DA / AE / HDA /
 Batch / Commands / Cpx / DX / Security / Discovery / XML-DA paths. Current gaps are
 concentrated in advanced COM interface-pointer returns, legacy / deprecated
-OPC surfaces, optional vendor-specific payload shapes, and native SCM/EPM
-activation plumbing.
+OPC surfaces, optional vendor-specific payload shapes, native SCM activation
+hardening, and broader cross-vendor execution.
 
 ### Runtime and CCW gaps
 

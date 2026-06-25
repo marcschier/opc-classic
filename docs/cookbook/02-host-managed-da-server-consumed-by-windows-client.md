@@ -1,79 +1,85 @@
-# Host a managed OPC DA server consumed by a Windows COM client
+# Host an authenticated managed OPC DA server consumed by a Windows COM client
 
 ## What this covers
 
-Run a managed OPC DA server on Linux, macOS, or Windows while Windows DA clients connect through Classic DA COM interfaces.
+Run a managed OPC DA server on Linux, macOS, or Windows while native Windows OPC clients connect through Classic DCOM. The authenticated native-client reference is the full-feature simulation activation host: `samples\Opc.Classic.Samples.SimulationServer\Transports\SimulationActivationHost.cs`.
 
-The reference is the DA server sample. It uses `AddClassicServer`, `AddClassicClsidRegistry`, and `AddOpcDaServer<T>`, registers `Opc.Classic.Samples.DaServer.1`, and reads `OPC_CLASSIC_SAMPLE_PORT` (default `51300`) or `OPC_CLASSIC_LISTEN_ADDRESS`. Related samples cover AE, HDA, loopback, an additional managed DA target (CttServer), the full-feature `Opc.Classic.Samples.SimulationServer`, OPC Security, and AOT scenarios; container conventions are in [../../samples/README.docker.md](../../samples/README.docker.md).
+For an operator runbook with Matrikon OPC Explorer, see [Connect Matrikon OPC Explorer to the Linux simulation server](01-connect-to-matrikon-from-linux.md). For a focused native-client deployment checklist, see [Authenticated DCOM server for native OPC clients](09-authenticated-dcom-server-for-native-clients.md).
 
 ## Hosting shape
 
-```csharp
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Opc.Classic.Da.Hosting;
-using Opc.Classic.Hosting;
+`SimulationActivationHost` composes the pieces a native Windows client expects:
 
-var builder = Host.CreateApplicationBuilder(args);
+- `EndpointMapperDispatcher` for EPM `ept_map` on TCP 135 when `endpointMapperListenAddress` is set.
+- `RemoteSCMActivatorDispatcher` and `ActivationServer` for activation.
+- `SimulationActivationServer` for DA, AE, HDA, and OpcEnum class activation.
+- `IObjectExporterDispatcher` plus `RemUnknownServerDispatcher` registration through `OpcObjectRegistry` for OXID and `IRemUnknown` routing.
+- `RpcServerConnectionProcessor` with an optional `ConfiguredAuthenticationSource` for server-side NTLMv2 and per-PDU integrity/privacy after authentication.
 
-int port = int.TryParse(
-    Environment.GetEnvironmentVariable("OPC_CLASSIC_SAMPLE_PORT"),
-    out int parsedPort) && parsedPort > 0 ? parsedPort : 51300;
-string listenAddress = Environment.GetEnvironmentVariable("OPC_CLASSIC_LISTEN_ADDRESS")
-    ?? $"0.0.0.0:{port}";
-
-builder.Services.AddClassicServer();
-builder.Services.AddClassicClsidRegistry(builder.Configuration);
-builder.Services.AddOpcDaServer<MyDaServer>(options =>
-{
-    options.Clsid = Guid.Parse("7f41b3e9-32ec-40c9-9e42-3e0e0fce5a11");
-    options.ProgId = "Contoso.ManagedOpcDa.1";
-    options.FriendlyName = "Contoso Managed OPC DA Server";
-    options.ListenAddress = listenAddress;
-});
-
-await builder.Build().RunAsync();
-```
-
-## Managed DA implementation
-
-`MyDaServer` implements `IOpcDaServer`. Generated server dispatchers route DCOM opnums to the managed methods.
+A host for native clients should create the activation host over its shared server model:
 
 ```csharp
-using Opc.Classic.Da.Hosting;
+using Microsoft.Extensions.Logging;
+using Opc.Classic.Dcom.Rpc.Auth.ntlm;
+using Opc.Classic.Samples.SimulationServer;
+using Opc.Classic.Samples.SimulationServer.Transports;
 
-public sealed class MyDaServer : IOpcDaServer
+var model = new SimulatedPlantModel();
+using ILoggerFactory loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());
+
+ConfiguredAuthenticationSource? auth = ConfiguredAuthenticationSource.FromEnvironment();
+if (auth is null)
 {
-    public Task<OpcServerStatus> GetStatusAsync(CancellationToken ct = default) => ...;
-
-    public Task<int> AddGroupAsync(
-        string name,
-        bool active,
-        int requestedUpdateRate,
-        int clientHandle,
-        int localeId,
-        CancellationToken ct = default) => ...;
-
-    public Task RemoveGroupAsync(int serverGroupHandle, bool force, CancellationToken ct = default) => ...;
-
-    public Task<string> GetErrorStringAsync(int errorCode, int localeId, CancellationToken ct = default) => ...;
+    throw new InvalidOperationException(
+        "Set OPC_CLASSIC_DCOM_USER and OPC_CLASSIC_DCOM_PASSWORD before exposing native DCOM.");
 }
+
+await using SimulationActivationHost host = SimulationActivationHost.Create(
+    model,
+    daClsid: new Guid("D9A0B0C1-5E21-49C7-9C0E-2D7B6A1F0001"),
+    listenAddress: "0.0.0.0:51300",
+    loggerFactory,
+    endpointMapperListenAddress: "0.0.0.0:135",
+    authenticationSource: auth);
+
+await host.StartAsync();
+await Task.Delay(Timeout.InfiniteTimeSpan);
 ```
 
-## Authentication model
+`OPC_CLASSIC_DCOM_DOMAIN` is optional; `ConfiguredAuthenticationSource.FromEnvironment()` treats a missing domain as empty. The DA/AE/HDA simulation ProgIDs are `Opc.Classic.Simulation.DA.1`, `Opc.Classic.Simulation.AE.1`, and `Opc.Classic.Simulation.HDA.1`.
 
-Use NTLMv2 or Kerberos/SPNEGO with `OpcProtectionLevel.Integrity` or `Privacy`. The DCOM stack validates NTLMv2 messages per [MS-NLMP], supports Kerberos/SPNEGO, and includes RFC 5056 / RFC 5929 channel-binding support.
+## Running the sample topology
 
-For Kerberos setup, see [Kerberos in Active Directory](03-kerberos-in-active-directory.md).
+The SimulationServer README contains the Matrikon topology and should stay the step-by-step sample runbook:
+
+```bash
+export OPC_CLASSIC_DCOM_USER=opcuser
+export OPC_CLASSIC_DCOM_PASSWORD='change-me'
+export OPC_CLASSIC_DCOM_DOMAIN=OPC
+
+dotnet run --project samples/Opc.Classic.Samples.SimulationServer -- --opc-only --listen
+```
+
+Use the process output to verify which transport mode is active. Native Windows DCOM consumption requires the `SimulationActivationHost` endpoint mapper plus activation/object listener. Separate `DA`, `AE`, and `HDA` `tcp://` endpoints are useful for managed direct transports, but they are not by themselves the EPM-driven native activation path.
 
 ## Windows client side
 
-The Windows client asks for `Contoso.ManagedOpcDa.1`. Registry setup maps that ProgID and CLSID to the managed server endpoint. After activation, `IOPCServer`, `IOPCGroupStateMgt(2)`, `IOPCItemMgt`, `IOPCSyncIO(2)`, `IOPCAsyncIO2/3`, and `IConnectionPoint(Container)` calls flow to generated server dispatchers or Windows CCW vtables. VARIANT and SAFEARRAY marshaling is implemented for the shipped DA paths; AE has full array marshaling for its shipped CCW methods, and HDA covers sync read/update, async update, playback, annotation insert, and async advise sample paths.
+The Windows client discovers OpcEnum on the Linux host through TCP 135, authenticates to the activation listener with the configured NTLMv2 credential, activates the selected CLSID with `IRemoteSCMActivator::RemoteCreateInstance`, resolves OXID bindings, queries interfaces through `IRemUnknown`, and then calls DA group/item/read/write interfaces.
 
-Native COM clients require normal Windows COM registration, DCOM permissions, firewall rules, and process identity configuration. Use the preserved OPC Foundation C++ sample clients and servers as compatibility references when validating a deployment.
+For DA subscriptions, the client advises an `IOPCDataCallback` sink through `IConnectionPoint::Advise`; the managed server sends `OnDataChange` back to that sink. AE and HDA activation use the same authenticated activation/OXID path; AE subscriptions deliver event callbacks and HDA supports raw history reads in the verified full-stack path.
+
+## Network requirements
+
+Open TCP 135 and the activation/object listener port from the Windows client to the managed server. On Linux, binding TCP 135 requires root or a capability grant on the published executable:
+
+```bash
+sudo setcap cap_net_bind_service=+ep ./Opc.Classic.Samples.SimulationServer
+```
+
+Keep the ProgID and CLSID stable. Legacy clients often store `Opc.Classic.Simulation.DA.1` or a production ProgID in project files, while the wire activation uses the CLSID.
 
 ## Validation aids
 
-- `Opc.Classic.Samples.DaServer` — hosted managed DA server.
-- `Opc.Classic.Samples.CttServer` — additional managed DA sample (different CLSID from `samples-da`).
-- `Opc.Classic.Samples.LoopbackDemo` — generated proxy/dispatcher loopback without Windows COM registration.
+- `ManagedDcomFullStackE2ETests` verifies the EPM, authenticated activation, OpcEnum, DA group/read/write/callback, AE event, and HDA raw-read path.
+- `SimulationActivationHost` is the reusable authenticated native-client host composition.
+- [DCOM activation transports](../architecture/activation-transports.md) documents the expected activation and OXID sequence.

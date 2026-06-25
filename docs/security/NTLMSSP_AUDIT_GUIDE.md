@@ -245,8 +245,8 @@ info, and terminator bytes.
 unwraps the encrypted random session key when key exchange was negotiated.
 Auditor focus: prove the protocol verifier checks the exact challenge it issued,
 the exact target-info/CBT bytes, and the MIC over the original Type1/Type2/Type3
-transcript. Also verify this remains documented as not wired into managed listener
-server-side bind handling.
+transcript. Also verify the managed listener continues to route configured
+server-side NTLM binds through this verifier before dispatch.
 
 ### 5.4 MIC and channel-binding flow
 
@@ -299,8 +299,8 @@ covered by `NtlmNegotiateFlagsTests.cs` for the documented combinations.
 | `Type3Message.cs` | ✅ partial | ⚠️ MS-NLMP fixture plus malformed synthetic corpus | ❌ | MIC offset, parser paths, bounded malformed inputs, and fixture replay are covered; broader structure-aware fuzzing remains recommended. |
 | `NtlmAvPairs.cs` | ✅ indirect | ❌ | ❌ | Covered through MIC/CBT tests; direct invalid-length tests recommended. |
 | `NtlmMessageSignature.cs` | ✅ direct | ✅ MS-NLMP §3.4.4/§3.4.5 SIGNATURE_BLOCK vectors | ❌ | Covered directly by `NtlmSignatureBlockTests.cs` plus SPNEGO NTLM MIC provider paths. |
-| `NtlmConnection.cs` / `NtlmConnectionContext.cs` | ❌ | ❌ | ❌ | Needs bind/auth verifier state-machine tests. |
-| `AuthenticationSource.cs` / `NullAuthenticationSource.cs` | ❌ | ❌ | ❌ | Contract is fail-closed but should get server-host tests. |
+| `NtlmConnection.cs` / `NtlmConnectionContext.cs` | ❌ | ❌ | ❌ | Legacy rebind/context path needs direct state-machine tests; the managed listener now uses `RpcServerConnectionProcessor` for server-side NTLM binds. |
+| `AuthenticationSource.cs` / `ConfiguredAuthenticationSource.cs` / `NullAuthenticationSource.cs` | ✅ | ⚠️ synthetic | ❌ | Server-host tests cover configured NTLMv2 bind success, wrong-password rejection, anonymous rejection, and privacy mode. |
 | `KerberosAuthContext.cs` | ✅ | ⚠️ synthetic | ⚠️ integration KDC | Companion coverage under Kerberos test project. |
 | `KerberosSession.cs` | ✅ | ✅ RFC 4121/4757/3962/8009 | ⚠️ integration KDC | Good separate Kerberos audit input. |
 | `SpnegoEncoder.cs` / `SpnegoDecoder.cs` | ✅ | ✅ known DER fragments | ❌ | `SpnegoTests.cs` and `SpnegoNegTokenRespTests.cs`. |
@@ -442,15 +442,10 @@ Residual risk:
 - NTLM SSO / Windows SSPI is intentionally unsupported.
   `NtlmAuthentication` throws `PlatformNotSupportedException` for
   `rpc.ntlm.sso=true` and points callers to Kerberos/SPNEGO.
-- Server-side NTLM bind challenge handling is incomplete in the managed listener.
-  `NtlmConnectionContext` throws for server-side bind and alter-context challenge
-  handling, and `RpcServerConnectionProcessor` strips auth verifier metadata and
-  rejects authenticated binds unless a dispatcher explicitly consumes
-  `RpcRequestContext`; it does not run NTLM challenge/Type3 proof validation.
-- `AuthenticationSource` is not wired into the main proof-validation path.
-  `NtlmAuthentication` contains the old reflection-based source hook
-  as commented-out code, and `AuthenticationSource` is currently a
-  contract for future server-host integration.
+- Server-side Kerberos/SPNEGO acceptor wiring remains deferred for managed
+  listeners. NTLMv2 authenticated binds are implemented via
+  `RpcServerConnectionProcessor` + `ConfiguredAuthenticationSource`, but
+  `F4Auth` still skips Kerberos and SPNEGO acceptor scenarios.
 - NTLM challenge and key randomness need hardening.
   `NtlmAuthentication` uses a fixed challenge for the current server
   helper, and `NtlmAuthentication` / `NTLMKeyFactory` use

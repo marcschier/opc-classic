@@ -3,13 +3,13 @@
 
 # NTLMSSP limitations and design choices
 
-## Server-side listener bind auth is not implemented
+## Server-side listener bind auth status
 
-Server-side NTLM bind challenge handling is **not implemented** in the managed listener. `NtlmConnectionContext.Accept` throws `RpcException` for inbound `BindPdu` and `AlterContextPdu` with the messages `Server-side NTLM bind challenge handling is not implemented.` and `Server-side NTLM alter-context challenge handling is not implemented.`.
+Server-side NTLMv2 bind challenge handling is implemented in the managed listener when it is configured with an `AuthenticationSource`. `RpcServerConnectionProcessor` issues the Type2 challenge, completes Type3 verification through `ConfiguredAuthenticationSource`, and then uses the established NTLM session security for per-PDU integrity/privacy.
 
-`F4Auth` documents the skip reason: authenticated calls over the managed TCP listener are not yet supported; `RpcServerConnectionProcessor` strips auth verifier metadata and rejects authenticated binds unless a dispatcher consumes RPC auth context, and protocol-level NTLMv2 handshake coverage lives in `NtlmHandshakeProtocolTests`.
+`F4Auth` now exercises NTLMv2 authenticated managed-loopback calls, wrong-password rejection, required-auth anonymous/plain-request rejection, and privacy-mode sealing. Its remaining skipped listener-auth tests are Kerberos and SPNEGO acceptor paths.
 
-Result: clients can drive authenticated binds against external servers, and the NTLM protocol codecs/verifiers are tested, but managed servers in this stack do not provide end-to-end authenticated NTLM listener hosting today.
+Result: clients can drive authenticated binds against external servers, and managed servers can require NTLMv2 authenticated binds when a credential source is configured. The remaining listener-auth gap is server-side Kerberos/SPNEGO acceptor wiring.
 
 ## Hand-rolled MD4 and RC4
 
@@ -31,7 +31,7 @@ NTLMv1 is disabled by default. `NtlmAuthentication` throws when `rpc.ntlm.ntlmv2
 
 ## Channel binding depends on caller-provided TLS evidence
 
-`ChannelBindingsFactory` and `ChannelBindingsHash` can compute RFC 5056/RFC 2744/RFC 5929-style CBT hashes, but TLS certificate validation and endpoint trust are delegated to .NET and the hosting application. The NTLM protocol verifier checks hash equality once configured; this is not yet wired into managed listener bind handling.
+`ChannelBindingsFactory` and `ChannelBindingsHash` can compute RFC 5056/RFC 2744/RFC 5929-style CBT hashes, but TLS certificate validation and endpoint trust are delegated to .NET and the hosting application. The NTLM protocol verifier checks hash equality once configured; `ConfiguredAuthenticationSource` passes the configured CBT hash into server-side NTLMv2 bind verification.
 
 ## SMB3 encryption status
 

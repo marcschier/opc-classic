@@ -43,6 +43,7 @@ Current baseline: **the sample apps** and **all test projects green** with 0 bui
 - [Threat model](security/THREAT_MODEL.md)
 - [Channel binding (CBT) on TLS](security/CHANNEL_BINDING.md)
 - [NTLMSSP audit prep guide](security/NTLMSSP_AUDIT_GUIDE.md)
+- Managed DCOM listener security now includes configured server-side NTLMv2 authenticated bind with packet integrity/privacy; server-side Kerberos/SPNEGO acceptor wiring remains tracked in the roadmap.
 - [Kerberos in Active Directory](cookbook/03-kerberos-in-active-directory.md)
 - [DCOM hardening explainer](cookbook/05-dcom-hardening-pkt-integrity-explainer.md)
 - [Implementing OPC Security](cookbook/08-implementing-opc-security.md)
@@ -51,6 +52,7 @@ Current baseline: **the sample apps** and **all test projects green** with 0 bui
 
 - [Per-spec conformance index](conformance/README.md) — 22 per-spec coverage matrices (10 OPC + 12 directly-cited MS-\* protocols)
 - [Aggregate spec review](CONFORMANCE.md)
+- Managed server conformance includes EPM `ept_map`, OXID/activation, `IRemUnknown`, OpcEnum discovery, and reverse-callback listener coverage.
 - [Architecture diagrams](architecture/diagrams.md) — Mermaid diagrams
 - [Generator diagnostics](generators/diagnostics.md) — OPCGEN*+ OCM* reference
 - [XML-DA status](CONFORMANCE.md#opc-xml-da-101)

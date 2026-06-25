@@ -33,7 +33,7 @@
 - [ ] Does `DcomCallChannel.ApplyPacketProtectionCore` sign the correct PDU byte range per MS-RPCE: full PDU including verifier header, excluding `auth_value`?
 - [ ] Are `frag_length`, `auth_length`, padding, auth type, auth level, and verifier start offsets validated before slicing?
 - [ ] Is `PduCodec.ReadPduFrameAsync` robust against short frames and invalid fragment length?
-- [ ] Are server-side authenticated bind limitations accurately reflected in docs and skips (`F4Auth.cs`) so deployments do not assume listener-level NTLM authentication?
+- [ ] Does the managed listener's server-side NTLM authenticated-bind path fail closed when an `AuthenticationSource` is configured: wrong passwords rejected, anonymous/plain requests rejected before dispatch, and per-PDU integrity/privacy verified in `F4Auth.cs`?
 
 ## Open questions for reviewer comment
 

@@ -49,7 +49,7 @@ NTLMv2 carries CBT in the NTLMv2 client challenge target-info AV_PAIR list insid
 | `AvLen` | `0x0010` |
 | `Value` | 16-byte RFC 2744 MD5 channel-bindings hash |
 
-When a TLS channel binding hash is configured, `NtlmAuthentication.CreateType3` inserts or replaces that AV_PAIR before generating the NTLMv2 proof and MIC. The protocol-level verifier validates the returned AV_PAIR against the expected TLS endpoint hash; this verifier is tested but is not yet wired into the managed listener's server-side NTLM bind handshake. Without TLS, the pair is omitted (or a peer may send an all-zero value per MS-NLMP 3.1.5.1.2).
+When a TLS channel binding hash is configured, `NtlmAuthentication.CreateType3` inserts or replaces that AV_PAIR before generating the NTLMv2 proof and MIC. The protocol-level verifier validates the returned AV_PAIR against the expected TLS endpoint hash; `ConfiguredAuthenticationSource` wires that verifier into the managed listener's server-side NTLMv2 bind handshake. Without TLS, the pair is omitted (or a peer may send an all-zero value per MS-NLMP 3.1.5.1.2).
 
 Source: `NtlmAuthentication`.
 
