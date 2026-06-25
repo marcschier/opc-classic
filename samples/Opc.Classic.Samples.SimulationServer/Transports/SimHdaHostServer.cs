@@ -1,5 +1,7 @@
 // Copyright (c) 2026 marcschier. Licensed under the MIT License.
 
+#pragma warning disable CA1031 // Detached HDA callback completion must isolate faulting clients.
+
 using System.Collections.Concurrent;
 using Opc.Classic.Dcom;
 using Opc.Classic.Hda;
@@ -320,25 +322,48 @@ public sealed class SimHdaHostServer : IOpcHdaServer, IOPCHDA_SyncRead, IOPCHDA_
         {
             OpcHdaItem[] items = await ReadRawAsync(startTime, endTime, maxValues, bounds, serverHandles, cts.Token).ConfigureAwait(false);
             int[] errors = Array.ConvertAll(serverHandles, handle => _handles.ContainsKey(handle) ? OpcResultId.Ok.Code : OpcResultId.InvalidHandle.Code);
-            foreach (DcomOpcHdaDataCallbackSender sender in _callbacks.Values)
+            foreach (KeyValuePair<int, DcomOpcHdaDataCallbackSender> entry in _callbacks.ToArray())
             {
-               if (dataChange)
-               {
-                   await sender.OnDataChangeAsync(transactionId, OpcResultId.Ok.Code, items, errors, cts.Token).ConfigureAwait(false);
-               }
-               else
-               {
-                   await sender.OnReadCompleteAsync(transactionId, OpcResultId.Ok.Code, items, errors, cts.Token).ConfigureAwait(false);
-               }
+                try
+                {
+                    if (dataChange)
+                    {
+                        await entry.Value.OnDataChangeAsync(transactionId, OpcResultId.Ok.Code, items, errors, cts.Token).ConfigureAwait(false);
+                    }
+                    else
+                    {
+                        await entry.Value.OnReadCompleteAsync(transactionId, OpcResultId.Ok.Code, items, errors, cts.Token).ConfigureAwait(false);
+                    }
+                }
+                catch (OperationCanceledException) when (cts.IsCancellationRequested)
+                {
+                    throw;
+                }
+                catch (Exception)
+                {
+                    await DropCallbackAsync(entry.Key).ConfigureAwait(false);
+                }
             }
         }
         catch (OperationCanceledException)
         {
         }
+        catch (Exception ex)
+        {
+            _ = ex;
+        }
         finally
         {
             _asyncOperations.TryRemove(cancelId, out _);
             cts.Dispose();
+        }
+    }
+
+    private async Task DropCallbackAsync(int cookie)
+    {
+        if (_callbacks.TryRemove(cookie, out DcomOpcHdaDataCallbackSender? sender))
+        {
+            await sender.DisposeAsync().ConfigureAwait(false);
         }
     }
 

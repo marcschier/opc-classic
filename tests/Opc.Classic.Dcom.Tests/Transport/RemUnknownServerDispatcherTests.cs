@@ -78,6 +78,78 @@ public sealed class RemUnknownServerDispatcherTests
     }
 
     [Test]
+    public async Task Seeded_public_refs_are_not_destroyed_by_over_release()
+    {
+        var registry = new OpcObjectRegistry();
+        Guid ipid = registry.Register(
+            new Dictionary<Guid, IOpcServerDispatcher> { [Iid1] = new StubDispatcher() },
+            publicRefs: 1);
+        var dispatcher = new RemUnknownServerDispatcher(registry);
+
+        DispatchResult overRelease = await dispatcher.DispatchAsync(
+            5,
+            WriteInterfaceRefRequest(ipid, publicRefs: 2),
+            CancellationToken.None);
+
+        await Assert.That(overRelease.Hresult).IsEqualTo(0);
+        await Assert.That(registry.Contains(ipid)).IsTrue();
+
+        _ = await dispatcher.DispatchAsync(4, WriteInterfaceRefRequest(ipid, publicRefs: 1), CancellationToken.None);
+        _ = await dispatcher.DispatchAsync(5, WriteInterfaceRefRequest(ipid, publicRefs: 1), CancellationToken.None);
+        await Assert.That(registry.Contains(ipid)).IsTrue();
+
+        _ = await dispatcher.DispatchAsync(5, WriteInterfaceRefRequest(ipid, publicRefs: 1), CancellationToken.None);
+        await Assert.That(registry.Contains(ipid)).IsFalse();
+    }
+
+    [Test]
+    public async Task Concurrent_addref_and_release_do_not_unregister_after_successful_addref()
+    {
+        for (int i = 0; i < 64; i++)
+        {
+            var registry = new OpcObjectRegistry();
+            Guid ipid = registry.Register(
+                new Dictionary<Guid, IOpcServerDispatcher> { [Iid1] = new StubDispatcher() },
+                publicRefs: 1);
+            var dispatcher = new RemUnknownServerDispatcher(registry);
+
+            Task<DispatchResult> add = dispatcher.DispatchAsync(4, WriteInterfaceRefRequest(ipid, 1), CancellationToken.None).AsTask();
+            Task<DispatchResult> release = dispatcher.DispatchAsync(5, WriteInterfaceRefRequest(ipid, 1), CancellationToken.None).AsTask();
+            await Task.WhenAll(add, release);
+
+            int[] addResults = add.Result.Payload.IsEmpty ? [] : ReadAddRefResponse(add.Result.Payload.Span);
+            if (addResults.Length == 1 && addResults[0] == 0)
+            {
+                await Assert.That(registry.Contains(ipid)).IsTrue();
+            }
+        }
+    }
+
+    [Test]
+    public async Task Unauthenticated_remrelease_is_rejected_by_context_dispatch()
+    {
+        var registry = new OpcObjectRegistry();
+        Guid ipid = registry.Register(
+            new Dictionary<Guid, IOpcServerDispatcher> { [Iid1] = new StubDispatcher() },
+            publicRefs: 1);
+        var dispatcher = new RemUnknownServerDispatcher(registry);
+        var requestContext = new RpcRequestContext(
+            IsAuthenticated: false,
+            IsEstablished: false,
+            ProtectionLevel: OpcProtectionLevel.None,
+            RemoteEndpoint: new IPEndPoint(IPAddress.Loopback, 12345));
+
+        DispatchResult result = await ((IRpcRequestContextDispatcher)dispatcher).DispatchAsync(
+            5,
+            WriteInterfaceRefRequest(ipid, publicRefs: 1),
+            requestContext,
+            CancellationToken.None);
+
+        await Assert.That(result.Hresult).IsEqualTo(OpcResultId.AccessDenied.Code);
+        await Assert.That(registry.Contains(ipid)).IsTrue();
+    }
+
+    [Test]
     public async Task ObjectExporter_registers_routable_remunknown_ipid()
     {
         var registry = new OpcObjectRegistry();

@@ -93,7 +93,7 @@ public sealed class IObjectExporterDispatcher : IOpcServerDispatcher
             [RemUnknownServerDispatcher.InterfaceId] = remUnknown,
             [RemUnknownServerDispatcher.InterfaceId2] = remUnknown,
         };
-        if (!objectRegistry.RegisterWithIpid(_remUnknownIpid, dispatchers))
+        if (!objectRegistry.RegisterWithIpid(_remUnknownIpid, dispatchers, publicRefs: 1))
         {
             throw new InvalidOperationException("The IRemUnknown IPID is already registered.");
         }

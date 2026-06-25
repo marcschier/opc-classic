@@ -74,7 +74,7 @@ public sealed class OpcEnumServer
             [OpcGuids.IID_IOPCEnumGUID] = dispatcher,
             [OpcGuids.IID_IEnumGUID] = dispatcher,
         };
-        Guid ipid = _objectRegistry.Register(dispatchers);
+        Guid ipid = _objectRegistry.Register(dispatchers, publicRefs: 1);
         return CreateInterfaceRef(enumeratorIid, ipid);
     }
 
@@ -116,7 +116,7 @@ public sealed class OpcEnumServer
         {
             [OpcGuids.IID_IOPCEnumGUID] = dispatcher,
             [OpcGuids.IID_IEnumGUID] = dispatcher,
-        });
+        }, publicRefs: 1);
         return CreateInterfaceRef(interfaceId, ipid);
     }
 

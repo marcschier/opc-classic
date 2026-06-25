@@ -282,7 +282,7 @@ public sealed class RpcServerConnectionProcessor
             frame.AsSpan(ConnectionOrientedPdu.AUTH_LENGTH_OFFSET));
         if (authLength == 0)
         {
-            return new AuthenticationStrippedFrame(frame, RpcPduAuthentication.None);
+            return new AuthenticationStrippedFrame(frame, frame, RpcPduAuthentication.None);
         }
 
         int fragmentLength = BinaryPrimitives.ReadUInt16LittleEndian(
@@ -311,10 +311,14 @@ public sealed class RpcServerConnectionProcessor
             contextId,
             authValue);
 
+        byte[] verificationPduBytes = frame.AsSpan(0, verifierStart).ToArray();
+        BinaryPrimitives.WriteUInt16LittleEndian(verificationPduBytes.AsSpan(ConnectionOrientedPdu.FRAG_LENGTH_OFFSET), (ushort)verifierStart);
+        BinaryPrimitives.WriteUInt16LittleEndian(verificationPduBytes.AsSpan(ConnectionOrientedPdu.AUTH_LENGTH_OFFSET), 0);
+
         byte[] pduBytes = frame.AsSpan(0, strippedLength).ToArray();
         BinaryPrimitives.WriteUInt16LittleEndian(pduBytes.AsSpan(ConnectionOrientedPdu.FRAG_LENGTH_OFFSET), (ushort)strippedLength);
         BinaryPrimitives.WriteUInt16LittleEndian(pduBytes.AsSpan(ConnectionOrientedPdu.AUTH_LENGTH_OFFSET), 0);
-        return new AuthenticationStrippedFrame(pduBytes, authentication);
+        return new AuthenticationStrippedFrame(pduBytes, verificationPduBytes, authentication);
     }
 
     private bool TryDecodePdu(IAsyncTransport transport, byte[] frame, out ConnectionOrientedPdu? pdu)
@@ -666,7 +670,8 @@ public sealed class RpcServerConnectionProcessor
             {
                 var requestContext = new RpcRequestContext(
                     authentication.IsAuthenticated,
-                    authentication.ProtectionLevel,
+                    authState.IsEstablished,
+                    authentication.IsAuthenticated ? authentication.ProtectionLevel : authState.ProtectionLevel,
                     transport.RemoteEndpoint);
                 return await contextDispatcher.DispatchAsync(request.Opnum, body, requestContext, cancellationToken).ConfigureAwait(false);
             }
@@ -857,12 +862,15 @@ public sealed class RpcServerConnectionProcessor
             return false;
         }
 
-        if (!authState.VerifyAndUnseal(stripped.PduBytes.AsSpan(ConnectionOrientedPdu.HEADER_LENGTH), stripped.Authentication.AuthValue))
+        Span<byte> verificationBody = stripped.VerificationPduBytes.AsSpan(ConnectionOrientedPdu.HEADER_LENGTH);
+        if (!authState.VerifyAndUnseal(verificationBody, stripped.Authentication.AuthValue))
         {
             AuthRejected(_logger, transport.RemoteEndpoint, stripped.Authentication.AuthLength, null);
             return false;
         }
 
+        verificationBody[..(stripped.PduBytes.Length - ConnectionOrientedPdu.HEADER_LENGTH)]
+            .CopyTo(stripped.PduBytes.AsSpan(ConnectionOrientedPdu.HEADER_LENGTH));
         return true;
     }
 
@@ -1049,6 +1057,7 @@ public sealed class RpcServerConnectionProcessor
     [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Auto)]
     private readonly record struct AuthenticationStrippedFrame(
         byte[] PduBytes,
+        byte[] VerificationPduBytes,
         RpcPduAuthentication Authentication);
 
     private sealed class RpcServerAuthenticationState
@@ -1057,6 +1066,7 @@ public sealed class RpcServerConnectionProcessor
         private readonly PropertyBag _properties = new();
         private Type2Message? _type2;
         private NtlmAuthentication? _context;
+        private OpcProtectionLevel _protectionFloor;
 
         public RpcServerAuthenticationState(AuthenticationSource source) =>
             _source = source;
@@ -1067,12 +1077,21 @@ public sealed class RpcServerConnectionProcessor
 
         public OpcProtectionLevel ProtectionLevel { get; private set; }
 
-        public bool ShouldProtectPackets => IsEstablished && ProtectionLevel >= OpcProtectionLevel.Integrity;
+        public bool ShouldProtectPackets => IsEstablished && _protectionFloor >= OpcProtectionLevel.Integrity;
 
         public int VerifierLength => EstablishedSecurity.VerifierLength;
 
         public byte[] CreateChallenge(Type1Message type1, OpcProtectionLevel protectionLevel)
         {
+            if (IsEstablished)
+            {
+                _context = null;
+                if (protectionLevel < _protectionFloor)
+                {
+                    throw new InvalidOperationException("DCE/RPC authentication protection level cannot be downgraded.");
+                }
+            }
+
             ProtectionLevel = protectionLevel;
             byte[] token = _source.CreateChallenge(_properties, type1);
             _type2 = new Type2Message(token);
@@ -1089,11 +1108,15 @@ public sealed class RpcServerConnectionProcessor
             _source.Authenticate(_properties, _type2, type3);
             _context = ConfiguredAuthenticationSource.GetEstablishedContext(_properties)
                 ?? throw new InvalidOperationException("Authentication source did not establish an NTLM security context.");
+            if (ProtectionLevel > _protectionFloor)
+            {
+                _protectionFloor = ProtectionLevel;
+            }
         }
 
         public void SignAndSeal(Span<byte> pduBody, out byte[] signature)
         {
-            if (ProtectionLevel < OpcProtectionLevel.Integrity)
+            if (_protectionFloor < OpcProtectionLevel.Integrity)
             {
                 signature = [];
                 return;
@@ -1110,7 +1133,7 @@ public sealed class RpcServerConnectionProcessor
 
         public bool VerifyAndUnseal(Span<byte> pduBody, ReadOnlyMemory<byte> signature)
         {
-            if (ProtectionLevel < OpcProtectionLevel.Integrity)
+            if (_protectionFloor < OpcProtectionLevel.Integrity)
             {
                 return signature.IsEmpty;
             }

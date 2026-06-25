@@ -34,6 +34,8 @@ namespace Opc.Classic.Dcom.Transport;
 public sealed class OpcObjectRegistry
 {
     private readonly ConcurrentDictionary<Guid, IReadOnlyDictionary<Guid, IOpcServerDispatcher>> _objects = new();
+    private readonly Dictionary<Guid, uint> _publicRefs = new();
+    private readonly Lock _lifetimeGate = new();
 
     /// <summary>
     /// Gets the number of currently registered objects.
@@ -49,7 +51,7 @@ public sealed class OpcObjectRegistry
     /// each mapped to the source-generated dispatcher wrapping the
     /// managed implementation.
     /// </param>
-    public Guid Register(IReadOnlyDictionary<Guid, IOpcServerDispatcher> interfaceDispatchers)
+    public Guid Register(IReadOnlyDictionary<Guid, IOpcServerDispatcher> interfaceDispatchers, uint publicRefs = 0)
     {
         ArgumentNullException.ThrowIfNull(interfaceDispatchers);
         Guid ipid = Guid.NewGuid();
@@ -63,6 +65,7 @@ public sealed class OpcObjectRegistry
                 throw new InvalidOperationException("OpcObjectRegistry could not allocate a fresh IPID.");
             }
         }
+        SeedPublicRefs(ipid, publicRefs);
         return ipid;
     }
 
@@ -70,10 +73,16 @@ public sealed class OpcObjectRegistry
     /// Registers an object under a caller-supplied stable IPID.
     /// Returns <see langword="false"/> if the IPID is already in use.
     /// </summary>
-    public bool RegisterWithIpid(Guid ipid, IReadOnlyDictionary<Guid, IOpcServerDispatcher> interfaceDispatchers)
+    public bool RegisterWithIpid(Guid ipid, IReadOnlyDictionary<Guid, IOpcServerDispatcher> interfaceDispatchers, uint publicRefs = 0)
     {
         ArgumentNullException.ThrowIfNull(interfaceDispatchers);
-        return _objects.TryAdd(ipid, interfaceDispatchers);
+        if (!_objects.TryAdd(ipid, interfaceDispatchers))
+        {
+            return false;
+        }
+
+        SeedPublicRefs(ipid, publicRefs);
+        return true;
     }
 
     /// <summary>
@@ -81,7 +90,74 @@ public sealed class OpcObjectRegistry
     /// the managed lifetime expires).
     /// </summary>
     /// <returns><see langword="true"/> if the IPID was present.</returns>
-    public bool Unregister(Guid ipid) => _objects.TryRemove(ipid, out _);
+    public bool Unregister(Guid ipid)
+    {
+        lock (_lifetimeGate)
+        {
+            _publicRefs.Remove(ipid);
+            return _objects.TryRemove(ipid, out _);
+        }
+    }
+
+    public bool AddPublicRefs(Guid ipid, uint publicRefs)
+    {
+        if (publicRefs == 0)
+        {
+            return Contains(ipid);
+        }
+
+        lock (_lifetimeGate)
+        {
+            if (!_objects.ContainsKey(ipid))
+            {
+                return false;
+            }
+
+            _publicRefs.TryGetValue(ipid, out uint current);
+            _publicRefs[ipid] = unchecked(current + publicRefs);
+            return true;
+        }
+    }
+
+    public bool ReleasePublicRefs(Guid ipid, uint publicRefs)
+    {
+        if (publicRefs == 0)
+        {
+            return false;
+        }
+
+        lock (_lifetimeGate)
+        {
+            if (!_objects.ContainsKey(ipid) || !_publicRefs.TryGetValue(ipid, out uint current) || publicRefs > current)
+            {
+                return false;
+            }
+
+            uint remaining = current - publicRefs;
+            if (remaining != 0)
+            {
+                _publicRefs[ipid] = remaining;
+                return false;
+            }
+
+            _publicRefs.Remove(ipid);
+            _objects.TryRemove(ipid, out _);
+            return true;
+        }
+    }
+
+    private void SeedPublicRefs(Guid ipid, uint publicRefs)
+    {
+        if (publicRefs == 0)
+        {
+            return;
+        }
+
+        lock (_lifetimeGate)
+        {
+            _publicRefs[ipid] = publicRefs;
+        }
+    }
 
     /// <summary>
     /// Attempts to resolve the full interface-dispatcher map for an IPID.

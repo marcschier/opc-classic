@@ -17,6 +17,7 @@ namespace Opc.Classic.Da.Hosting;
 /// </summary>
 public sealed class DcomOpcDataCallbackSink : IOpcDataCallbackSink, IOpcDataCallbackSinkStatus
 {
+    private static readonly TimeSpan DefaultDeliveryTimeout = TimeSpan.FromSeconds(5);
     private static readonly Action<ILogger, Guid, Exception?> CallbackDeliveryFailed = LoggerMessage.Define<Guid>(
         LogLevel.Warning,
         new EventId(1, nameof(CallbackDeliveryFailed)),
@@ -27,6 +28,7 @@ public sealed class DcomOpcDataCallbackSink : IOpcDataCallbackSink, IOpcDataCall
     private readonly Func<IAuthContext> _authContextFactory;
     private readonly string _fallbackHost;
     private readonly ILogger _logger;
+    private readonly TimeSpan _deliveryTimeout;
     private readonly SemaphoreSlim _connectLock = new(1, 1);
     private DcomCallChannel? _channel;
     private IOPCDataCallbackClientProxy? _proxy;
@@ -40,7 +42,8 @@ public sealed class DcomOpcDataCallbackSink : IOpcDataCallbackSink, IOpcDataCall
         DcomCallChannelFactory channelFactory,
         Func<IAuthContext> authContextFactory,
         string fallbackHost,
-        ILogger? logger = null)
+        ILogger? logger = null,
+        TimeSpan? deliveryTimeout = null)
     {
         ArgumentNullException.ThrowIfNull(sinkRef);
         ArgumentNullException.ThrowIfNull(channelFactory);
@@ -56,6 +59,11 @@ public sealed class DcomOpcDataCallbackSink : IOpcDataCallbackSink, IOpcDataCall
         _authContextFactory = authContextFactory;
         _fallbackHost = fallbackHost;
         _logger = logger ?? NullLogger.Instance;
+        _deliveryTimeout = deliveryTimeout ?? DefaultDeliveryTimeout;
+        if (_deliveryTimeout <= TimeSpan.Zero)
+        {
+            throw new ArgumentOutOfRangeException(nameof(deliveryTimeout), "The callback delivery timeout must be positive.");
+        }
     }
 
     /// <inheritdoc />
@@ -65,7 +73,7 @@ public sealed class DcomOpcDataCallbackSink : IOpcDataCallbackSink, IOpcDataCall
     public void OnDataChange(OpcDaGroup.DataChangePayload payload)
     {
         ArgumentNullException.ThrowIfNull(payload);
-        DeliverAsync(proxy => proxy.OnDataChangeAsync(
+        DeliverAsync((proxy, cancellationToken) => proxy.OnDataChangeAsync(
             payload.TransactionId,
             payload.GroupHandle,
             payload.MasterQuality,
@@ -75,14 +83,14 @@ public sealed class DcomOpcDataCallbackSink : IOpcDataCallbackSink, IOpcDataCall
             payload.Qualities,
             payload.Timestamps,
             payload.Errors,
-            CancellationToken.None)).GetAwaiter().GetResult();
+            cancellationToken)).GetAwaiter().GetResult();
     }
 
     /// <inheritdoc />
     public void OnReadComplete(OpcDaGroup.DataChangePayload payload)
     {
         ArgumentNullException.ThrowIfNull(payload);
-        DeliverAsync(proxy => proxy.OnReadCompleteAsync(
+        DeliverAsync((proxy, cancellationToken) => proxy.OnReadCompleteAsync(
             payload.TransactionId,
             payload.GroupHandle,
             payload.MasterQuality,
@@ -92,7 +100,7 @@ public sealed class DcomOpcDataCallbackSink : IOpcDataCallbackSink, IOpcDataCall
             payload.Qualities,
             payload.Timestamps,
             payload.Errors,
-            CancellationToken.None)).GetAwaiter().GetResult();
+            cancellationToken)).GetAwaiter().GetResult();
     }
 
     /// <inheritdoc />
@@ -105,23 +113,23 @@ public sealed class DcomOpcDataCallbackSink : IOpcDataCallbackSink, IOpcDataCall
     {
         ArgumentNullException.ThrowIfNull(clientHandles);
         ArgumentNullException.ThrowIfNull(errors);
-        DeliverAsync(proxy => proxy.OnWriteCompleteAsync(
+        DeliverAsync((proxy, cancellationToken) => proxy.OnWriteCompleteAsync(
             transactionId,
             groupHandle,
             masterError,
             clientHandles,
             errors,
-            CancellationToken.None)).GetAwaiter().GetResult();
+            cancellationToken)).GetAwaiter().GetResult();
     }
 
     /// <inheritdoc />
     public void OnCancelComplete(OpcDaGroup.CancelCompletePayload payload)
     {
         ArgumentNullException.ThrowIfNull(payload);
-        DeliverAsync(proxy => proxy.OnCancelCompleteAsync(
+        DeliverAsync((proxy, cancellationToken) => proxy.OnCancelCompleteAsync(
             payload.TransactionId,
             payload.GroupHandle,
-            CancellationToken.None)).GetAwaiter().GetResult();
+            cancellationToken)).GetAwaiter().GetResult();
     }
 
     /// <inheritdoc />
@@ -137,7 +145,7 @@ public sealed class DcomOpcDataCallbackSink : IOpcDataCallbackSink, IOpcDataCall
         _channel?.DisposeAsync().AsTask().GetAwaiter().GetResult();
     }
 
-    private async Task DeliverAsync(Func<IOPCDataCallbackClientProxy, Task> invoke)
+    private async Task DeliverAsync(Func<IOPCDataCallbackClientProxy, CancellationToken, Task> invoke)
     {
         if (_disposed || IsUnreachable)
         {
@@ -146,8 +154,9 @@ public sealed class DcomOpcDataCallbackSink : IOpcDataCallbackSink, IOpcDataCall
 
         try
         {
-            IOPCDataCallbackClientProxy proxy = await GetProxyAsync(CancellationToken.None).ConfigureAwait(false);
-            await invoke(proxy).ConfigureAwait(false);
+            using var timeoutCts = new CancellationTokenSource(_deliveryTimeout);
+            IOPCDataCallbackClientProxy proxy = await GetProxyAsync(timeoutCts.Token).ConfigureAwait(false);
+            await invoke(proxy, timeoutCts.Token).ConfigureAwait(false);
         }
         catch (Exception ex)
         {

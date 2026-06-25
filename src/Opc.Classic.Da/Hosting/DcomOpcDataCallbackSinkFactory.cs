@@ -21,6 +21,7 @@ public sealed class DcomOpcDataCallbackSinkFactory : IOpcDataCallbackSinkFactory
     private readonly OpcConnectData _connectData;
     private readonly string _fallbackHost;
     private readonly ILoggerFactory _loggerFactory;
+    private readonly TimeSpan? _deliveryTimeout;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="DcomOpcDataCallbackSinkFactory"/> class.
@@ -29,13 +30,15 @@ public sealed class DcomOpcDataCallbackSinkFactory : IOpcDataCallbackSinkFactory
         DcomCallChannelFactory channelFactory,
         OpcConnectData connectData,
         string fallbackHost = "localhost",
-        ILoggerFactory? loggerFactory = null)
+        ILoggerFactory? loggerFactory = null,
+        TimeSpan? deliveryTimeout = null)
     {
         _channelFactory = channelFactory ?? throw new ArgumentNullException(nameof(channelFactory));
         _connectData = connectData ?? throw new ArgumentNullException(nameof(connectData));
         ArgumentException.ThrowIfNullOrWhiteSpace(fallbackHost);
         _fallbackHost = fallbackHost;
         _loggerFactory = loggerFactory ?? NullLoggerFactory.Instance;
+        _deliveryTimeout = deliveryTimeout;
     }
 
     /// <summary>
@@ -44,8 +47,9 @@ public sealed class DcomOpcDataCallbackSinkFactory : IOpcDataCallbackSinkFactory
     public static DcomOpcDataCallbackSinkFactory CreateTcpOnly(
         OpcConnectData connectData,
         string fallbackHost = "localhost",
-        ILoggerFactory? loggerFactory = null) =>
-        new(new DcomCallChannelFactory(new CallbackTcpTransportFactory()), connectData, fallbackHost, loggerFactory);
+        ILoggerFactory? loggerFactory = null,
+        TimeSpan? deliveryTimeout = null) =>
+        new(new DcomCallChannelFactory(new CallbackTcpTransportFactory()), connectData, fallbackHost, loggerFactory, deliveryTimeout);
 
     /// <inheritdoc />
     public IOpcDataCallbackSink Create(IOpcInterfaceRef sink) =>
@@ -54,7 +58,8 @@ public sealed class DcomOpcDataCallbackSinkFactory : IOpcDataCallbackSinkFactory
             _channelFactory,
             () => NtlmAuthentication.CreateAuthContext(_connectData),
             _fallbackHost,
-            _loggerFactory.CreateLogger<DcomOpcDataCallbackSink>());
+            _loggerFactory.CreateLogger<DcomOpcDataCallbackSink>(),
+            _deliveryTimeout);
 
     private sealed class CallbackTcpTransportFactory : IAsyncTransportFactory
     {

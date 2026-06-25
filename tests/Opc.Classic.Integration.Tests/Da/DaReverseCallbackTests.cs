@@ -83,6 +83,41 @@ public sealed class DaReverseCallbackTests
         await Assert.That(callback.CallCount).IsEqualTo(1);
     }
 
+    [Test]
+    [Category("Da.ReverseCallbacks")]
+    public async Task TriggerDataChange_drops_faulting_direct_sink_and_continues_delivery()
+    {
+        var group = new OpcDaGroup(
+            name: "fault-isolation",
+            serverHandle: 0x7200,
+            clientHandle: ClientGroupHandle,
+            active: true,
+            requestedUpdateRate: 100,
+            timeBias: 0,
+            percentDeadband: 0,
+            localeId: 1033);
+        using var faultingSink = new FaultingDataCallbackSink();
+        using var healthySink = new RecordingDataCallbackSink();
+
+        await group.AdviseAsync(faultingSink, TestContext.Current!.CancellationToken);
+        await group.AdviseAsync(healthySink, TestContext.Current.CancellationToken);
+
+        await group.TriggerDataChangeAsync(
+            transactionId: 0x7201,
+            serverHandles: [],
+            static (_, _, _) => Task.CompletedTask,
+            TestContext.Current.CancellationToken);
+        await group.TriggerDataChangeAsync(
+            transactionId: 0x7202,
+            serverHandles: [],
+            static (_, _, _) => Task.CompletedTask,
+            TestContext.Current.CancellationToken);
+
+        await Assert.That(faultingSink.DataChangeCount).IsEqualTo(1);
+        await Assert.That(healthySink.DataChangeCount).IsEqualTo(2);
+        await group.DisposeAsync();
+    }
+
     private static IOpcDataCallbackSinkFactory CreateSinkFactory(IPEndPoint endpoint)
     {
         var credentials = new NetworkCredential(User, Password, Domain);
@@ -367,4 +402,61 @@ public sealed class DaReverseCallbackTests
         ushort[] Qualities,
         long[] Timestamps,
         int[] Errors);
+
+    private sealed class FaultingDataCallbackSink : IOpcDataCallbackSink
+    {
+        public int DataChangeCount { get; private set; }
+
+        public void OnDataChange(OpcDaGroup.DataChangePayload payload)
+        {
+            _ = payload;
+            DataChangeCount++;
+            throw new InvalidOperationException("Simulated faulting DA callback sink.");
+        }
+
+        public void OnReadComplete(OpcDaGroup.DataChangePayload payload) => _ = payload;
+
+        public void OnWriteComplete(int transactionId, int groupHandle, int masterError, int[] clientHandles, int[] errors)
+        {
+            _ = transactionId;
+            _ = groupHandle;
+            _ = masterError;
+            _ = clientHandles;
+            _ = errors;
+        }
+
+        public void OnCancelComplete(OpcDaGroup.CancelCompletePayload payload) => _ = payload;
+
+        public void Dispose()
+        {
+        }
+    }
+
+    private sealed class RecordingDataCallbackSink : IOpcDataCallbackSink
+    {
+        public int DataChangeCount { get; private set; }
+
+        public void OnDataChange(OpcDaGroup.DataChangePayload payload)
+        {
+            _ = payload;
+            DataChangeCount++;
+        }
+
+        public void OnReadComplete(OpcDaGroup.DataChangePayload payload) => _ = payload;
+
+        public void OnWriteComplete(int transactionId, int groupHandle, int masterError, int[] clientHandles, int[] errors)
+        {
+            _ = transactionId;
+            _ = groupHandle;
+            _ = masterError;
+            _ = clientHandles;
+            _ = errors;
+        }
+
+        public void OnCancelComplete(OpcDaGroup.CancelCompletePayload payload) => _ = payload;
+
+        public void Dispose()
+        {
+        }
+    }
 }

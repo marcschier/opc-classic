@@ -1,5 +1,7 @@
 ﻿// Copyright (c) 2026 marcschier. Licensed under the MIT License.
 
+#pragma warning disable CA1031 // Reverse-callback fan-out must isolate faulting clients.
+
 using System.Collections.Concurrent;
 using Opc.Classic.Da.Dcom;
 using Opc.Classic.Dcom;
@@ -28,7 +30,7 @@ namespace Opc.Classic.Da.Hosting;
 /// </remarks>
 public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItemMgt, IOPCSyncIO,
     IOPCSyncIO2, IOPCAsyncIO2, IOPCAsyncIO3, IConnectionPoint, IConnectionPointContainer,
-    IOPCItemDeadbandMgt, IOPCItemSamplingMgt
+    IOPCItemDeadbandMgt, IOPCItemSamplingMgt, IDisposable, IAsyncDisposable
 {
     private readonly OpcObjectRegistry? _objectRegistry;
     private readonly IOpcDataCallbackSinkFactory? _callbackSinkFactory;
@@ -49,6 +51,7 @@ public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItem
     private int _nextCancelId = 1;
     private int _nextSubscriptionCookie = 1;
     private int _lastCancel2Id;
+    private bool _disposed;
 
     /// <summary>
     /// Async I/O callbacks enabled (the GetEnable/SetEnable state).
@@ -1048,6 +1051,36 @@ public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItem
         return Task.CompletedTask;
     }
 
+    /// <inheritdoc />
+    public void Dispose()
+    {
+        if (_disposed)
+        {
+            return;
+        }
+
+        _disposed = true;
+        foreach (KeyValuePair<int, IOpcDataCallbackSink> entry in _directSinks.ToArray())
+        {
+            if (_directSinks.TryRemove(entry.Key, out IOpcDataCallbackSink? sink)
+                && _ownedDirectSinks.TryRemove(entry.Key, out _))
+            {
+                sink.Dispose();
+            }
+        }
+
+        _ownedDirectSinks.Clear();
+        _sinks.Clear();
+        GC.SuppressFinalize(this);
+    }
+
+    /// <inheritdoc />
+    public ValueTask DisposeAsync()
+    {
+        Dispose();
+        return ValueTask.CompletedTask;
+    }
+
     // ----- IConnectionPointContainer -----
 
     /// <inheritdoc />
@@ -1131,14 +1164,32 @@ public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItem
         }
 
         DataChangePayload payload = BuildDataChangePayload(transactionId, serverHandles);
-        foreach (KeyValuePair<int, IOpcInterfaceRef> entry in _sinks)
+        foreach (KeyValuePair<int, IOpcInterfaceRef> entry in _sinks.ToArray())
         {
-            await sender(entry.Value, payload, cancellationToken).ConfigureAwait(false);
+            try
+            {
+                await sender(entry.Value, payload, cancellationToken).ConfigureAwait(false);
+            }
+            catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+            {
+                throw;
+            }
+            catch (Exception)
+            {
+                _sinks.TryRemove(entry.Key, out _);
+            }
         }
-        foreach (KeyValuePair<int, IOpcDataCallbackSink> entry in _directSinks)
+        foreach (KeyValuePair<int, IOpcDataCallbackSink> entry in _directSinks.ToArray())
         {
-            entry.Value.OnDataChange(payload);
-            DropUnreachableSink(entry);
+            try
+            {
+                entry.Value.OnDataChange(payload);
+                DropUnreachableSink(entry);
+            }
+            catch (Exception)
+            {
+                DropDirectSink(entry);
+            }
         }
     }
 
@@ -1171,14 +1222,32 @@ public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItem
         }
 
         var payload = new CancelCompletePayload(transactionId, ClientHandle);
-        foreach (KeyValuePair<int, IOpcInterfaceRef> entry in _sinks)
+        foreach (KeyValuePair<int, IOpcInterfaceRef> entry in _sinks.ToArray())
         {
-            await sender(entry.Value, payload, cancellationToken).ConfigureAwait(false);
+            try
+            {
+                await sender(entry.Value, payload, cancellationToken).ConfigureAwait(false);
+            }
+            catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+            {
+                throw;
+            }
+            catch (Exception)
+            {
+                _sinks.TryRemove(entry.Key, out _);
+            }
         }
-        foreach (KeyValuePair<int, IOpcDataCallbackSink> entry in _directSinks)
+        foreach (KeyValuePair<int, IOpcDataCallbackSink> entry in _directSinks.ToArray())
         {
-            entry.Value.OnCancelComplete(payload);
-            DropUnreachableSink(entry);
+            try
+            {
+                entry.Value.OnCancelComplete(payload);
+                DropUnreachableSink(entry);
+            }
+            catch (Exception)
+            {
+                DropDirectSink(entry);
+            }
         }
     }
 
@@ -1189,6 +1258,11 @@ public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItem
             return;
         }
 
+        DropDirectSink(entry);
+    }
+
+    private void DropDirectSink(KeyValuePair<int, IOpcDataCallbackSink> entry)
+    {
         if (_directSinks.TryRemove(entry.Key, out IOpcDataCallbackSink? removed)
             && _ownedDirectSinks.TryRemove(entry.Key, out _))
         {

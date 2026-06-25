@@ -50,6 +50,46 @@ public sealed class F8AeHdaParity
     }
 
     [Test]
+    public async Task Ae_subscription_drops_faulting_sink_and_keeps_event_pump_alive()
+    {
+        var server = new MinimalAeServer();
+        var faultingSink = new FaultingEventSink();
+        var healthySink = new RecordingEventSink();
+        var sinks = new Queue<IOPCEventSink>([faultingSink, healthySink]);
+        IOPCEventSink NextSink(IOpcInterfaceRef _) => sinks.Dequeue();
+        var dispatcher = new OpcAeServerDispatcher(
+            new IAeServerToOpcAeServerAdapter(server, NextSink),
+            NextSink);
+
+        IOPCEventSubscriptionMgt subscription = await dispatcher.CreateEventSubscriptionAsync(
+            active: true,
+            bufferTime: 50,
+            maxSize: 10,
+            clientSubscription: 0x8002,
+            requestedInterfaceId: IOPCEventSubscriptionMgt.InterfaceId,
+            out _,
+            out _,
+            TestContext.Current!.CancellationToken);
+
+        var connectionPoint = (Opc.Classic.Ae.Dcom.IConnectionPoint)subscription;
+        await connectionPoint.AdviseAsync(
+            new OpcInterfaceRef(IOPCEventSink.InterfaceId, 0, 1, 1, 1, Guid.CreateVersion7(), 0, []),
+            TestContext.Current.CancellationToken);
+        await connectionPoint.AdviseAsync(
+            new OpcInterfaceRef(IOPCEventSink.InterfaceId, 0, 1, 1, 2, Guid.CreateVersion7(), 0, []),
+            TestContext.Current.CancellationToken);
+
+        await subscription.SetFilterAsync((int)EventType.Condition, [], 1, 1000, [], [], TestContext.Current.CancellationToken);
+        await healthySink.WaitForCountAsync(1, TestContext.Current.CancellationToken);
+
+        await subscription.SetFilterAsync((int)EventType.Condition, [], 1, 1000, [], [], TestContext.Current.CancellationToken);
+        await healthySink.WaitForCountAsync(2, TestContext.Current.CancellationToken);
+
+        await Assert.That(faultingSink.CallCount).IsEqualTo(1);
+        await Assert.That(healthySink.CallCount).IsEqualTo(2);
+    }
+
+    [Test]
     public async Task Hda_sync_read_raw_returns_seeded_simulation_history()
     {
         var model = new SimulatedPlantModel();
@@ -76,9 +116,19 @@ public sealed class F8AeHdaParity
 
     private sealed class RecordingEventSink : IOPCEventSink
     {
-        private readonly TaskCompletionSource<OpcEventNotification[]> _next = new(TaskCreationOptions.RunContinuationsAsynchronously);
+        private readonly List<OpcEventNotification[]> _events = new();
+        private TaskCompletionSource<OpcEventNotification[]> _next = new(TaskCreationOptions.RunContinuationsAsynchronously);
 
-        public int CallCount { get; private set; }
+        public int CallCount
+        {
+            get
+            {
+                lock (_events)
+                {
+                    return _events.Count;
+                }
+            }
+        }
 
         public Task OnEventAsync(int clientSubscription, bool refresh, bool lastRefresh, OpcEventNotification[] events, CancellationToken cancellationToken = default)
         {
@@ -86,13 +136,42 @@ public sealed class F8AeHdaParity
             _ = refresh;
             _ = lastRefresh;
             cancellationToken.ThrowIfCancellationRequested();
-            CallCount++;
-            _next.TrySetResult(events);
+            lock (_events)
+            {
+                _events.Add(events);
+                _next.TrySetResult(events);
+                _next = new TaskCompletionSource<OpcEventNotification[]>(TaskCreationOptions.RunContinuationsAsynchronously);
+            }
+
             return Task.CompletedTask;
         }
 
         public Task<OpcEventNotification[]> WaitForAsync(CancellationToken cancellationToken) =>
-            _next.Task.WaitAsync(cancellationToken);
+            WaitForCountAsync(1, cancellationToken);
+
+        public Task<OpcEventNotification[]> WaitForCountAsync(int count, CancellationToken cancellationToken)
+        {
+            lock (_events)
+            {
+                return _events.Count >= count ? Task.FromResult(_events[^1]) : _next.Task.WaitAsync(cancellationToken);
+            }
+        }
+    }
+
+    private sealed class FaultingEventSink : IOPCEventSink
+    {
+        public int CallCount { get; private set; }
+
+        public Task OnEventAsync(int clientSubscription, bool refresh, bool lastRefresh, OpcEventNotification[] events, CancellationToken cancellationToken = default)
+        {
+            _ = clientSubscription;
+            _ = refresh;
+            _ = lastRefresh;
+            _ = events;
+            cancellationToken.ThrowIfCancellationRequested();
+            CallCount++;
+            throw new InvalidOperationException("Simulated faulting AE callback sink.");
+        }
     }
 
     private sealed class MinimalAeServer : IOpcAeServer, IAeServer

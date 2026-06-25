@@ -1,5 +1,7 @@
 ﻿// Copyright (c) 2026 marcschier. Licensed under the MIT License.
 
+#pragma warning disable CA1031 // Reverse-callback fan-out must isolate faulting clients.
+
 using System.Collections.Concurrent;
 using Opc.Classic.Dcom;
 using Opc.Classic.Ae.Dcom;
@@ -657,17 +659,33 @@ public sealed class OpcAeServerDispatcher : IOpcAeServerDispatcher, IConnectionP
 
         private async Task PumpEventsAsync()
         {
-            try
+            while (!_disposeCts.IsCancellationRequested)
             {
-                await foreach (EventNotification notification in _subscription.Events.WithCancellation(_disposeCts.Token).ConfigureAwait(false))
+                try
                 {
-                    OpcEventNotification opcNotification = ToOpcEventNotification(notification);
-                    RememberRefreshCandidate(opcNotification);
-                    await FanOutAsync(refresh: false, lastRefresh: false, [opcNotification], _disposeCts.Token).ConfigureAwait(false);
+                    await foreach (EventNotification notification in _subscription.Events.WithCancellation(_disposeCts.Token).ConfigureAwait(false))
+                    {
+                        OpcEventNotification opcNotification = ToOpcEventNotification(notification);
+                        RememberRefreshCandidate(opcNotification);
+                        await FanOutAsync(refresh: false, lastRefresh: false, [opcNotification], _disposeCts.Token).ConfigureAwait(false);
+                    }
+                    return;
                 }
-            }
-            catch (OperationCanceledException) when (_disposeCts.IsCancellationRequested)
-            {
+                catch (OperationCanceledException) when (_disposeCts.IsCancellationRequested)
+                {
+                    return;
+                }
+                catch (Exception)
+                {
+                    try
+                    {
+                        await Task.Delay(TimeSpan.FromSeconds(1), _disposeCts.Token).ConfigureAwait(false);
+                    }
+                    catch (OperationCanceledException) when (_disposeCts.IsCancellationRequested)
+                    {
+                        return;
+                    }
+                }
             }
         }
 
@@ -679,7 +697,7 @@ public sealed class OpcAeServerDispatcher : IOpcAeServerDispatcher, IConnectionP
             }
             foreach (KeyValuePair<int, IOPCEventSink> sink in _sinks.ToArray())
             {
-                await sink.Value.OnEventAsync(_clientSubscription, refresh, lastRefresh, events, cancellationToken).ConfigureAwait(false);
+                await DeliverToSinkAsync(sink.Key, sink.Value, refresh, lastRefresh, events, cancellationToken).ConfigureAwait(false);
             }
         }
 
@@ -699,7 +717,7 @@ public sealed class OpcAeServerDispatcher : IOpcAeServerDispatcher, IConnectionP
             OpcEventNotification[] events = _refreshSnapshot.Values.ToArray();
             if (events.Length == 0)
             {
-                await sink.OnEventAsync(_clientSubscription, refresh: true, lastRefresh: true, Array.Empty<OpcEventNotification>(), cancellationToken).ConfigureAwait(false);
+                await DeliverToSinkAsync(connection, sink, refresh: true, lastRefresh: true, Array.Empty<OpcEventNotification>(), cancellationToken).ConfigureAwait(false);
                 return;
             }
 
@@ -711,7 +729,39 @@ public sealed class OpcAeServerDispatcher : IOpcAeServerDispatcher, IConnectionP
                 var fragment = new OpcEventNotification[count];
                 Array.Copy(events, offset, fragment, 0, count);
                 bool lastRefresh = offset + count >= events.Length;
-                await sink.OnEventAsync(_clientSubscription, refresh: true, lastRefresh, fragment, cancellationToken).ConfigureAwait(false);
+                bool delivered = await DeliverToSinkAsync(connection, sink, refresh: true, lastRefresh, fragment, cancellationToken).ConfigureAwait(false);
+                if (!delivered)
+                {
+                    return;
+                }
+            }
+        }
+
+        private async Task<bool> DeliverToSinkAsync(
+            int connection,
+            IOPCEventSink sink,
+            bool refresh,
+            bool lastRefresh,
+            OpcEventNotification[] events,
+            CancellationToken cancellationToken)
+        {
+            try
+            {
+                await sink.OnEventAsync(_clientSubscription, refresh, lastRefresh, events, cancellationToken).ConfigureAwait(false);
+                return true;
+            }
+            catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+            {
+                throw;
+            }
+            catch (Exception)
+            {
+                if (_sinks.TryRemove(connection, out IOPCEventSink? removed)
+                    && removed is IAsyncDisposable asyncDisposable)
+                {
+                    await asyncDisposable.DisposeAsync().ConfigureAwait(false);
+                }
+                return false;
             }
         }
 

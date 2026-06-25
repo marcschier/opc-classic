@@ -262,7 +262,7 @@ public sealed class SimulationActivationServer : IActivationServer, IRemoteSCMAc
     private ActivationExport Activate(Guid clsid, Guid primaryIid)
     {
         IReadOnlyDictionary<Guid, IOpcServerDispatcher> dispatchers = BuildDispatchers(clsid);
-        Guid ipid = _objectRegistry.Register(dispatchers);
+        Guid ipid = _objectRegistry.Register(dispatchers, publicRefs: 1);
         Guid oxid = Guid.NewGuid();
         Guid oid = Guid.NewGuid();
         byte[] oxidBindings = IObjectExporterDispatcher.EncodeDualStringArrayForListener(_endpointProvider());
@@ -395,7 +395,7 @@ public sealed class SimulationActivationServer : IActivationServer, IRemoteSCMAc
             [RemUnknownServerDispatcher.InterfaceId] = remUnknown,
             [RemUnknownServerDispatcher.InterfaceId2] = remUnknown,
         };
-        if (!objectRegistry.RegisterWithIpid(remUnknownIpid, dispatchers))
+        if (!objectRegistry.RegisterWithIpid(remUnknownIpid, dispatchers, publicRefs: 1))
         {
             throw new InvalidOperationException("The IRemUnknown IPID is already registered.");
         }

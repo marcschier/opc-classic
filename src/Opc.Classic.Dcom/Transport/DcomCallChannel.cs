@@ -430,11 +430,14 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable
 
     private void VerifyPacketProtection(AuthenticationStrippedFrame stripped)
     {
-        Span<byte> pduBody = stripped.PduBytes.AsSpan(ConnectionOrientedPdu.HEADER_LENGTH);
+        Span<byte> pduBody = stripped.VerificationPduBytes.AsSpan(ConnectionOrientedPdu.HEADER_LENGTH);
         if (!_authContext.VerifyAndUnseal(pduBody, stripped.AuthenticationBody))
         {
             throw new InvalidOperationException("DCE/RPC authentication verifier validation failed.");
         }
+
+        pduBody[..(stripped.PduBytes.Length - ConnectionOrientedPdu.HEADER_LENGTH)]
+            .CopyTo(stripped.PduBytes.AsSpan(ConnectionOrientedPdu.HEADER_LENGTH));
     }
 
     private byte[] ApplyPacketProtection(byte[] pduBytes)
@@ -534,7 +537,7 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable
         int authLength = BinaryPrimitives.ReadUInt16LittleEndian(frame.AsSpan(ConnectionOrientedPdu.AUTH_LENGTH_OFFSET));
         if (authLength == 0)
         {
-            return new AuthenticationStrippedFrame(frame, []);
+            return new AuthenticationStrippedFrame(frame, frame, []);
         }
 
         int verifierStart = fragmentLength - authLength - AuthenticationVerifierHeaderLength;
@@ -551,10 +554,14 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable
         }
 
         byte[] authenticationBody = frame.AsSpan(verifierStart + AuthenticationVerifierHeaderLength, authLength).ToArray();
+        byte[] verificationPduBytes = frame.AsSpan(0, verifierStart).ToArray();
+        BinaryPrimitives.WriteUInt16LittleEndian(verificationPduBytes.AsSpan(ConnectionOrientedPdu.FRAG_LENGTH_OFFSET), (ushort)verifierStart);
+        BinaryPrimitives.WriteUInt16LittleEndian(verificationPduBytes.AsSpan(ConnectionOrientedPdu.AUTH_LENGTH_OFFSET), 0);
+
         byte[] pduBytes = frame.AsSpan(0, strippedLength).ToArray();
         BinaryPrimitives.WriteUInt16LittleEndian(pduBytes.AsSpan(ConnectionOrientedPdu.FRAG_LENGTH_OFFSET), (ushort)strippedLength);
         BinaryPrimitives.WriteUInt16LittleEndian(pduBytes.AsSpan(ConnectionOrientedPdu.AUTH_LENGTH_OFFSET), 0);
-        return new AuthenticationStrippedFrame(pduBytes, authenticationBody);
+        return new AuthenticationStrippedFrame(pduBytes, verificationPduBytes, authenticationBody);
     }
 
     private PendingPresentationContext[] CreateInitialPresentationContexts(Guid interfaceId)
@@ -695,5 +702,5 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable
 
     private readonly record struct PendingPresentationContext(Guid InterfaceId, PresentationContext Context);
     private readonly record struct DecodedPdu(ConnectionOrientedPdu Pdu, byte[] AuthenticationBody);
-    private readonly record struct AuthenticationStrippedFrame(byte[] PduBytes, byte[] AuthenticationBody);
+    private readonly record struct AuthenticationStrippedFrame(byte[] PduBytes, byte[] VerificationPduBytes, byte[] AuthenticationBody);
 }

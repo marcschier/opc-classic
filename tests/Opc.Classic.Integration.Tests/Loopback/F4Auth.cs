@@ -1,5 +1,6 @@
 ﻿// Copyright (c) 2026 marcschier. Licensed under the MIT License.
 
+using System.Buffers.Binary;
 using System.Net;
 using Microsoft.Extensions.Logging;
 using Opc.Classic;
@@ -9,7 +10,10 @@ using Opc.Classic.Da.Hosting;
 using Opc.Classic.Dcom;
 using Opc.Classic.Dcom.Activation;
 using Opc.Classic.Dcom.Remoting;
+using Opc.Classic.Dcom.Rpc;
 using Opc.Classic.Dcom.Rpc.Auth.ntlm;
+using Opc.Classic.Dcom.Rpc.Core;
+using Opc.Classic.Dcom.Rpc.pdu;
 using Opc.Classic.Dcom.Transport;
 using Opc.Classic.Hosting;
 using Opc.Classic.Integration.Tests.Support;
@@ -85,6 +89,64 @@ public sealed class F4Auth
         OpcServerStatus status = await proxy.GetStatusAsync(TestContext.Current!.CancellationToken);
 
         await Assert.That(status.VendorInfo).IsEqualTo(server.VendorInfo);
+    }
+
+    [Test]
+    [Arguments(OpcProtectionLevel.Integrity)]
+    [Arguments(OpcProtectionLevel.Privacy)]
+    public async Task Ntlmv2_packet_protection_accepts_non_aligned_request_stubs(OpcProtectionLevel protectionLevel)
+    {
+        Guid interfaceId = Guid.NewGuid();
+        var dispatcher = new EchoDispatcher();
+        await using OpcServerListener listener = await StartListenerAsync(interfaceId, dispatcher);
+        await using DcomCallChannel channel = await ConnectAsync(listener, Password, protectionLevel);
+
+        NdrCallResult result = await channel.InvokeAsync(
+            interfaceId,
+            opnum: 7,
+            requestPayload: new byte[] { 0x5A },
+            TestContext.Current!.CancellationToken);
+
+        await Assert.That(result.Hresult).IsEqualTo(0);
+        await Assert.That(dispatcher.LastPayload.ToArray()).IsEquivalentTo(new byte[] { 0x5A });
+        await Assert.That(result.ResponsePayload.ToArray()).IsEquivalentTo(new byte[] { 0xA5, 0x01, 0x02 });
+    }
+
+    [Test]
+    public async Task Established_privacy_session_rejects_weaker_rechallenge_before_unsigned_requests()
+    {
+        Guid interfaceId = Guid.NewGuid();
+        await using OpcServerListener listener = await StartListenerAsync(interfaceId, new EchoDispatcher());
+        var endpoint = (IPEndPoint)listener.LocalEndpoint;
+        await using TcpClientTransport transport = await TcpClientTransport.ConnectAsync(
+            endpoint.Address.ToString(),
+            endpoint.Port,
+            TestContext.Current!.CancellationToken);
+
+        IAuthContext privacy = CreateAuthContext(endpoint, Password, OpcProtectionLevel.Privacy);
+        byte[] type1 = privacy.BuildInitialToken();
+        await WriteFrameAsync(transport, AttachAuthenticationVerifier(
+            PduCodec.EncodePdu(NewBindForInterface(interfaceId, contextId: 0, callId: 1), ConnectionOrientedPdu.MUST_RECEIVE_FRAGMENT_SIZE),
+            OpcProtectionLevel.Privacy,
+            type1));
+        byte[] bindAck = await PduCodec.ReadPduFrameAsync(transport.Input, TestContext.Current!.CancellationToken);
+        byte[] type2 = ExtractAuthenticationValue(bindAck);
+        byte[] type3 = privacy.ProcessChallengeToken(type2);
+        await WriteFrameAsync(transport, AttachAuthenticationVerifier(
+            PduCodec.EncodePdu(new Auth3Pdu { CallId = 1 }, ConnectionOrientedPdu.MUST_RECEIVE_FRAGMENT_SIZE),
+            OpcProtectionLevel.Privacy,
+            type3));
+
+        IAuthContext weaker = CreateAuthContext(endpoint, Password, OpcProtectionLevel.Connect);
+        byte[] weakerType1 = weaker.BuildInitialToken();
+        await WriteFrameAsync(transport, AttachAuthenticationVerifier(
+            PduCodec.EncodePdu(NewAlterContextForInterface(interfaceId, contextId: 1, callId: 2), ConnectionOrientedPdu.MUST_RECEIVE_FRAGMENT_SIZE),
+            OpcProtectionLevel.Connect,
+            weakerType1));
+
+        byte[] rejection = await PduCodec.ReadPduFrameAsync(transport.Input, TestContext.Current!.CancellationToken);
+        ConnectionOrientedPdu pdu = PduCodec.DecodePdu(rejection);
+        await Assert.That(pdu).IsTypeOf<BindNoAcknowledgePdu>();
     }
 
     [Test]
@@ -255,6 +317,20 @@ public sealed class F4Auth
         return listener;
     }
 
+    private static async Task<OpcServerListener> StartListenerAsync(Guid interfaceId, IOpcServerDispatcher dispatcher)
+    {
+        var endpoint = new TcpServerEndpoint(new IPEndPoint(IPAddress.Loopback, 0));
+        var processor = new RpcServerConnectionProcessor(
+            new Dictionary<Guid, IOpcServerDispatcher>
+            {
+                [interfaceId] = dispatcher,
+            },
+            new ConfiguredAuthenticationSource(User, Password, Domain));
+        var listener = new OpcServerListener(endpoint, processor);
+        await listener.StartAsync(TestContext.Current!.CancellationToken);
+        return listener;
+    }
+
     private static async Task<AuthenticatedActivationFixture> StartActivationListenerAsync(CancellationToken cancellationToken)
     {
         var endpoint = new TcpServerEndpoint(new IPEndPoint(IPAddress.Loopback, 0));
@@ -341,6 +417,83 @@ public sealed class F4Auth
             credentials,
             protectionLevel);
         return NtlmAuthentication.CreateAuthContext(connectData);
+    }
+
+    private static BindPdu NewBindForInterface(Guid interfaceId, int contextId, int callId) =>
+        new()
+        {
+            CallId = callId,
+            AssociationGroupId = 0,
+            MaxTransmitFragment = ConnectionOrientedPdu.MUST_RECEIVE_FRAGMENT_SIZE,
+            MaxReceiveFragment = ConnectionOrientedPdu.MUST_RECEIVE_FRAGMENT_SIZE,
+            ContextList = [BuildContext(interfaceId, contextId)],
+        };
+
+    private static AlterContextPdu NewAlterContextForInterface(Guid interfaceId, int contextId, int callId) =>
+        new()
+        {
+            CallId = callId,
+            AssociationGroupId = 0,
+            MaxTransmitFragment = ConnectionOrientedPdu.MUST_RECEIVE_FRAGMENT_SIZE,
+            MaxReceiveFragment = ConnectionOrientedPdu.MUST_RECEIVE_FRAGMENT_SIZE,
+            ContextList = [BuildContext(interfaceId, contextId)],
+        };
+
+    private static PresentationContext BuildContext(Guid interfaceId, int contextId) =>
+        new(contextId, new PresentationSyntax(new UUID(interfaceId.ToString("D")), 0, 0));
+
+    private static async Task WriteFrameAsync(TcpClientTransport transport, byte[] frame)
+    {
+        Memory<byte> output = transport.Output.GetMemory(frame.Length);
+        frame.AsSpan().CopyTo(output.Span);
+        transport.Output.Advance(frame.Length);
+        await transport.FlushAsync(TestContext.Current!.CancellationToken);
+    }
+
+    private static byte[] AttachAuthenticationVerifier(byte[] pduBytes, OpcProtectionLevel protectionLevel, ReadOnlySpan<byte> authValue)
+    {
+        const int headerLength = 8;
+        int padding = PaddingTo(pduBytes.Length, 4);
+        int verifierStart = pduBytes.Length + padding;
+        int fragmentLength = verifierStart + headerLength + authValue.Length;
+        var result = new byte[fragmentLength];
+        pduBytes.CopyTo(result, 0);
+        Span<byte> verifier = result.AsSpan(verifierStart, headerLength);
+        verifier[0] = NtlmAuthentication.AUTHENTICATIONSERVICENTLM;
+        verifier[1] = (byte)ToRpcProtectionLevel(protectionLevel);
+        verifier[2] = (byte)padding;
+        verifier[3] = 0;
+        BinaryPrimitives.WriteInt32LittleEndian(verifier[4..], 0);
+        authValue.CopyTo(result.AsSpan(verifierStart + headerLength));
+        BinaryPrimitives.WriteUInt16LittleEndian(result.AsSpan(ConnectionOrientedPdu.FRAG_LENGTH_OFFSET), (ushort)fragmentLength);
+        BinaryPrimitives.WriteUInt16LittleEndian(result.AsSpan(ConnectionOrientedPdu.AUTH_LENGTH_OFFSET), (ushort)authValue.Length);
+        return result;
+    }
+
+    private static byte[] ExtractAuthenticationValue(byte[] frame)
+    {
+        const int headerLength = 8;
+        int authLength = BinaryPrimitives.ReadUInt16LittleEndian(frame.AsSpan(ConnectionOrientedPdu.AUTH_LENGTH_OFFSET));
+        int fragmentLength = BinaryPrimitives.ReadUInt16LittleEndian(frame.AsSpan(ConnectionOrientedPdu.FRAG_LENGTH_OFFSET));
+        int verifierStart = fragmentLength - authLength - headerLength;
+        return frame.AsSpan(verifierStart + headerLength, authLength).ToArray();
+    }
+
+    private static ProtectionLevel ToRpcProtectionLevel(OpcProtectionLevel protectionLevel) => protectionLevel switch
+    {
+        OpcProtectionLevel.None => ProtectionLevel.PROTECTION_LEVEL_NONE,
+        OpcProtectionLevel.Connect => ProtectionLevel.PROTECTION_LEVEL_CONNECT,
+        OpcProtectionLevel.Call => ProtectionLevel.PROTECTION_LEVEL_CALL,
+        OpcProtectionLevel.Packet => ProtectionLevel.PROTECTION_LEVEL_PACKET,
+        OpcProtectionLevel.Integrity => ProtectionLevel.PROTECTION_LEVEL_INTEGRITY,
+        OpcProtectionLevel.Privacy => ProtectionLevel.PROTECTION_LEVEL_PRIVACY,
+        _ => ProtectionLevel.PROTECTION_LEVEL_NONE,
+    };
+
+    private static int PaddingTo(int length, int alignment)
+    {
+        int remainder = length % alignment;
+        return remainder == 0 ? 0 : alignment - remainder;
     }
 
     private static IOpcInterfaceRef ReadObjRef(ReadOnlyMemory<byte> objRef)
@@ -433,6 +586,21 @@ public sealed class F4Auth
         public async ValueTask DisposeAsync() => await Listener.DisposeAsync();
     }
 
+    private sealed class EchoDispatcher : IOpcServerDispatcher
+    {
+        public ReadOnlyMemory<byte> LastPayload { get; private set; }
+
+        public ValueTask<DispatchResult> DispatchAsync(
+            int opnum,
+            ReadOnlyMemory<byte> requestPayload,
+            CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            LastPayload = requestPayload.ToArray();
+            return ValueTask.FromResult(DispatchResult.Success(new byte[] { 0xA5, 0x01, 0x02 }));
+        }
+    }
+
     private sealed class DaActivationServer : IActivationServer
     {
         private const uint AuthnHintPacketIntegrity = 5;
@@ -484,7 +652,7 @@ public sealed class F4Auth
             }
 
             IReadOnlyDictionary<Guid, IOpcServerDispatcher> dispatchers = BuildDispatchers();
-            Guid ipid = _objectRegistry.Register(dispatchers);
+            Guid ipid = _objectRegistry.Register(dispatchers, publicRefs: 1);
             Guid oxid = Guid.NewGuid();
             Guid oid = Guid.NewGuid();
             byte[] bindings = IObjectExporterDispatcher.EncodeDualStringArrayForListener(_endpointProvider());

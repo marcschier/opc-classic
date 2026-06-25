@@ -19,6 +19,7 @@ public sealed class DcomOpcHdaDataCallbackSender : IAsyncDisposable
     private readonly DcomCallChannelFactory _channelFactory;
     private readonly Func<IAuthContext> _authContextFactory;
     private readonly string _fallbackHost;
+    private readonly SemaphoreSlim _connectLock = new(1, 1);
     private DcomCallChannel? _channel;
     private IOPCHDA_DataCallbackClientProxy? _proxy;
 
@@ -92,6 +93,7 @@ public sealed class DcomOpcHdaDataCallbackSender : IAsyncDisposable
         {
             await _channel.DisposeAsync().ConfigureAwait(false);
         }
+        _connectLock.Dispose();
     }
 
     private async Task<IOPCHDA_DataCallbackClientProxy> GetProxyAsync(CancellationToken cancellationToken)
@@ -101,15 +103,28 @@ public sealed class DcomOpcHdaDataCallbackSender : IAsyncDisposable
             return _proxy;
         }
 
-        _channel = await DcomOutboundCallbackChannel.ConnectAsync(
-            _sinkRef,
-            _channelFactory,
-            _authContextFactory,
-            _fallbackHost,
-            IOPCHDA_DataCallback.InterfaceId,
-            cancellationToken).ConfigureAwait(false);
-        _proxy = new IOPCHDA_DataCallbackClientProxy(_channel);
-        return _proxy;
+        await _connectLock.WaitAsync(cancellationToken).ConfigureAwait(false);
+        try
+        {
+            if (_proxy is not null)
+            {
+                return _proxy;
+            }
+
+            _channel = await DcomOutboundCallbackChannel.ConnectAsync(
+                _sinkRef,
+                _channelFactory,
+                _authContextFactory,
+                _fallbackHost,
+                IOPCHDA_DataCallback.InterfaceId,
+                cancellationToken).ConfigureAwait(false);
+            _proxy = new IOPCHDA_DataCallbackClientProxy(_channel);
+            return _proxy;
+        }
+        finally
+        {
+            _connectLock.Release();
+        }
     }
 
     private sealed class CallbackTcpTransportFactory : IAsyncTransportFactory

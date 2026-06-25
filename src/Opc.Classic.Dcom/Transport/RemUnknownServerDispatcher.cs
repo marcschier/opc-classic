@@ -1,6 +1,5 @@
 // Copyright (c) 2026 marcschier. Licensed under the MIT License.
 
-using System.Collections.Concurrent;
 using System.Runtime.InteropServices;
 using Opc.Classic.Hosting;
 using Opc.Classic.Ndr;
@@ -10,7 +9,7 @@ namespace Opc.Classic.Dcom.Transport;
 /// <summary>
 /// Server-side dispatcher for <c>IRemUnknown</c>/<c>IRemUnknown2</c>.
 /// </summary>
-public sealed class RemUnknownServerDispatcher : IOpcServerDispatcher
+public sealed class RemUnknownServerDispatcher : IRpcRequestContextDispatcher
 {
     /// <summary><c>IRemUnknown</c> interface identifier.</summary>
     public static readonly Guid InterfaceId = OpcGuids.IID_IRemUnknown;
@@ -24,7 +23,6 @@ public sealed class RemUnknownServerDispatcher : IOpcServerDispatcher
     private const int RpcSProcnumOutOfRange = unchecked((int)0x800706D1u);
     private const int MaxInterfaceRefs = 0x8000;
     private readonly OpcObjectRegistry _objectRegistry;
-    private readonly ConcurrentDictionary<Guid, uint> _publicRefs = new();
     private readonly ulong _oxid;
 
     /// <summary>Initializes a new instance of the <see cref="RemUnknownServerDispatcher" /> class.</summary>
@@ -38,9 +36,28 @@ public sealed class RemUnknownServerDispatcher : IOpcServerDispatcher
     public ValueTask<DispatchResult> DispatchAsync(
         int opnum,
         ReadOnlyMemory<byte> requestPayload,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default) =>
+        DispatchAsync(opnum, requestPayload, isEstablished: true, cancellationToken);
+
+    ValueTask<DispatchResult> IRpcRequestContextDispatcher.DispatchAsync(
+        int opnum,
+        ReadOnlyMemory<byte> requestPayload,
+        RpcRequestContext requestContext,
+        CancellationToken cancellationToken) =>
+        DispatchAsync(opnum, requestPayload, requestContext.IsEstablished, cancellationToken);
+
+    private ValueTask<DispatchResult> DispatchAsync(
+        int opnum,
+        ReadOnlyMemory<byte> requestPayload,
+        bool isEstablished,
+        CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
+
+        if (!isEstablished)
+        {
+            return new ValueTask<DispatchResult>(DispatchResult.Fault(global::Opc.Classic.OpcResultId.AccessDenied.Code));
+        }
 
         try
         {
@@ -89,7 +106,7 @@ public sealed class RemUnknownServerDispatcher : IOpcServerDispatcher
             {
                 if (cRefs != 0)
                 {
-                    _publicRefs.AddOrUpdate(ripid, cRefs, (_, current) => unchecked(current + cRefs));
+                    _objectRegistry.AddPublicRefs(ripid, cRefs);
                 }
 
                 results[i] = new OpcRemQIResult(0, flags: 0, publicRefs: cRefs, oxid: _oxid, oid: UInt64FromGuid(ripid), ipid: ripid);
@@ -127,7 +144,11 @@ public sealed class RemUnknownServerDispatcher : IOpcServerDispatcher
             _ = refs[i].PrivateRefs;
             if (publicRefs != 0)
             {
-                _publicRefs.AddOrUpdate(refs[i].Ipid, publicRefs, (_, current) => unchecked(current + publicRefs));
+                if (!_objectRegistry.AddPublicRefs(refs[i].Ipid, publicRefs))
+                {
+                    results[i] = CoEObjectNotRegistered;
+                    continue;
+                }
             }
 
             results[i] = 0;
@@ -160,18 +181,7 @@ public sealed class RemUnknownServerDispatcher : IOpcServerDispatcher
                 continue;
             }
 
-            bool remove = false;
-            _publicRefs.AddOrUpdate(refs[i].Ipid, 0, (_, current) => releaseCount >= current ? 0 : current - releaseCount);
-            if (_publicRefs.TryGetValue(refs[i].Ipid, out uint current) && current == 0)
-            {
-                remove = true;
-            }
-
-            if (remove)
-            {
-                _publicRefs.TryRemove(refs[i].Ipid, out _);
-                _objectRegistry.Unregister(refs[i].Ipid);
-            }
+            _objectRegistry.ReleasePublicRefs(refs[i].Ipid, releaseCount);
         }
 
         return DispatchResult.Success(ReadOnlyMemory<byte>.Empty);

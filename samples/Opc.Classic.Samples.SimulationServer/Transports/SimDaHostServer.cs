@@ -20,7 +20,7 @@ namespace Opc.Classic.Samples.SimulationServer.Transports;
 /// item values are kept live by <see cref="RefreshFromModel" /> (driven by the transport host's
 /// value ticker). It also implements the DA 3.0 stateless <c>IOPCItemIO</c> read/write surface.
 /// </summary>
-public sealed class SimDaHostServer : IOpcDaServer
+public sealed class SimDaHostServer : IOpcDaServer, IDisposable
 {
     private const ushort GoodQuality = 0x00C0;
     private static readonly DateTimeOffset StartTime = DateTimeOffset.UtcNow;
@@ -213,9 +213,22 @@ public sealed class SimDaHostServer : IOpcDaServer
         if (_groups.TryRemove(serverGroupHandle, out GroupEntry? entry))
         {
             _objectRegistry.Unregister(entry.Ipid);
+            entry.Group.Dispose();
         }
 
         return Task.CompletedTask;
+    }
+
+    /// <inheritdoc />
+    public void Dispose()
+    {
+        foreach (GroupEntry entry in _groups.Values)
+        {
+            entry.Group.Dispose();
+        }
+
+        _groups.Clear();
+        GC.SuppressFinalize(this);
     }
 
     /// <inheritdoc />
