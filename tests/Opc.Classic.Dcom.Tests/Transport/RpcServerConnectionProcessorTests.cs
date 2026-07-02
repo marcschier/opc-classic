@@ -182,6 +182,38 @@ public sealed class RpcServerConnectionProcessorTests
     }
 
     [Test]
+    public async Task ForgedAuthVerifier_on_unestablished_session_is_not_reported_as_authenticated()
+    {
+        // Regression (security): a request PDU can carry a forged sec_trailer
+        // (auth_length > 0, attacker-chosen auth_level) that is never verified
+        // when no NTLM context is established (ShouldProtectPackets is false).
+        // The context reported to an IRpcRequestContextDispatcher must reflect
+        // the (absent) established session — not the spoofable per-packet trailer
+        // — otherwise an unauthenticated client could satisfy the activation
+        // authorization gate (authenticated + integrity) and reach class-factory
+        // creation. See RpcServerConnectionProcessor.TryDispatchAsync.
+        var dispatcher = new RecordingContextDispatcher();
+        var processor = new RpcServerConnectionProcessor(
+            new Dictionary<Guid, IOpcServerDispatcher> { [InterfaceId] = dispatcher });
+        await using var transport = new InMemoryAsyncTransport();
+        await WritePduToInbound(transport, NewBindForInterface(InterfaceId, contextId: 0, callId: 1));
+        // Forge PKT_INTEGRITY in the trailer on a connection that never authenticated.
+        await WriteFrameWithAuthVerifier(
+            transport,
+            NewRequest(contextId: 0, opnum: 5, callId: 2, payload: []),
+            authBodyLength: 16,
+            authLevel: (byte)ProtectionLevel.PROTECTION_LEVEL_INTEGRITY);
+
+        await RunProcessorAndShutdown(processor, transport);
+
+        await Assert.That(dispatcher.LastContext.HasValue).IsTrue();
+        RpcRequestContext context = dispatcher.LastContext!.Value;
+        await Assert.That(context.IsAuthenticated).IsFalse();
+        await Assert.That(context.IsEstablished).IsFalse();
+        await Assert.That(context.ProtectionLevel).IsNotEqualTo(OpcProtectionLevel.Integrity);
+    }
+
+    [Test]
     public async Task Constructor_throws_on_null_dispatcher_map()
     {
         await TUnit.Assertions.Assert.That(() => { _ = new RpcServerConnectionProcessor(null!); })
@@ -283,7 +315,7 @@ public sealed class RpcServerConnectionProcessorTests
     }
 
     private static async Task WriteFrameWithAuthVerifier(
-        InMemoryAsyncTransport transport, ConnectionOrientedPdu pdu, int authBodyLength)
+        InMemoryAsyncTransport transport, ConnectionOrientedPdu pdu, int authBodyLength, byte authLevel = 0)
     {
         byte[] frame = PduCodec.EncodePdu(pdu, ConnectionOrientedPdu.MUST_RECEIVE_FRAGMENT_SIZE);
         // Stamp the auth length so the processor's auth check triggers.
@@ -296,6 +328,9 @@ public sealed class RpcServerConnectionProcessorTests
         forged[ConnectionOrientedPdu.FRAG_LENGTH_OFFSET + 1] = (byte)((totalLength >> 8) & 0xFF);
         forged[ConnectionOrientedPdu.AUTH_LENGTH_OFFSET] = (byte)(authBodyLength & 0xFF);
         forged[ConnectionOrientedPdu.AUTH_LENGTH_OFFSET + 1] = (byte)((authBodyLength >> 8) & 0xFF);
+        // The sec_trailer header begins immediately after the original frame:
+        // [auth_type, auth_level, pad_length, reserved, context_id(4)].
+        forged[frame.Length + 1] = authLevel;
         await transport.WriteInboundAsync(forged);
     }
 
@@ -364,6 +399,21 @@ public sealed class RpcServerConnectionProcessorTests
         {
             LastOpnum = opnum;
             return ValueTask.FromResult(_handler(opnum));
+        }
+    }
+
+    private sealed class RecordingContextDispatcher : IRpcRequestContextDispatcher
+    {
+        public RpcRequestContext? LastContext { get; private set; }
+
+        public ValueTask<DispatchResult> DispatchAsync(int opnum, ReadOnlyMemory<byte> requestPayload, CancellationToken cancellationToken) =>
+            ValueTask.FromResult(DispatchResult.Success(Array.Empty<byte>()));
+
+        public ValueTask<DispatchResult> DispatchAsync(
+            int opnum, ReadOnlyMemory<byte> requestPayload, RpcRequestContext requestContext, CancellationToken cancellationToken = default)
+        {
+            LastContext = requestContext;
+            return ValueTask.FromResult(DispatchResult.Success(Array.Empty<byte>()));
         }
     }
 }

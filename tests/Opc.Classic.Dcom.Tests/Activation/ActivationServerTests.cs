@@ -25,8 +25,13 @@ public sealed class ActivationServerTests
     private static readonly Guid IidIUnknown = OpcGuids.IID_IUnknown;
 
     [Test]
-    public async Task RemoteActivation_via_rpc_processor_activates_known_clsid_and_returns_objref()
+    public async Task RemoteActivation_via_rpc_processor_rejects_forged_verifier_without_established_session()
     {
+        // Security regression: a forged sec_trailer (auth_length > 0, auth_level = PKT_INTEGRITY)
+        // on a connection that never completed an NTLM handshake must NOT satisfy the
+        // authenticated-and-integrity activation gate. The processor derives authorization from the
+        // established NTLM session, not the spoofable per-packet trailer, so this request is rejected
+        // with E_ACCESSDENIED before any class factory runs.
         LegacyActivationServer legacy = CreateLegacyServer(TestClsid, IidIUnknown);
         var processor = new RpcServerConnectionProcessor(
             new Dictionary<Guid, IOpcServerDispatcher>
@@ -46,12 +51,38 @@ public sealed class ActivationServerTests
         await RunProcessorAndShutdown(processor, transport);
 
         BindAcknowledgePdu ack = await ReadOutboundPduAs<BindAcknowledgePdu>(transport);
-        ResponseCoPdu responsePdu = await ReadOutboundPduAs<ResponseCoPdu>(transport);
-        LegacyRemoteActivationResponse response = IActivationCodec.DecodeRemoteActivationResponse(
-            OrpcEnvelope.ExtractResponseBody(responsePdu.Stub).Span,
-            expectedInterfaceCount: 1);
+        FaultCoPdu fault = await ReadOutboundPduAs<FaultCoPdu>(transport);
 
         await Assert.That(ack.ResultList[0].Result).IsEqualTo(PresentationResultCode.ACCEPTANCE);
+        await Assert.That(fault.CallId).IsEqualTo(2);
+        await Assert.That(unchecked((int)fault.Status)).IsEqualTo(E_ACCESSDENIED);
+    }
+
+    [Test]
+    public async Task RemoteActivation_with_integrity_session_activates_known_clsid_and_returns_objref()
+    {
+        // Happy path: an integrity-protected (authenticated) session activating a known CLSID
+        // yields a well-formed OBJREF_STANDARD for the requested interface. The RPC-processor
+        // gate is exercised by the rejection test above; here the dispatch path is driven with an
+        // established integrity level so the class factory runs and the OBJREF is produced.
+        LegacyActivationServer legacy = CreateLegacyServer(TestClsid, IidIUnknown);
+        byte[] requestPayload = IActivationCodec.EncodeRemoteActivationRequest(new LegacyRemoteActivationRequest(
+            TestClsid,
+            new[] { IidIUnknown },
+            ClientImpLevel: 3,
+            Mode: 0,
+            RequestedProtocolSequences: new ushort[] { 7 }));
+
+        DispatchResult result = await ActivationServer.DispatchRemoteActivationAsync(
+            legacy,
+            requestPayload,
+            OpcProtectionLevel.Integrity);
+
+        await Assert.That(result.IsSuccess).IsTrue();
+        LegacyRemoteActivationResponse response = IActivationCodec.DecodeRemoteActivationResponse(
+            result.Payload.Span,
+            expectedInterfaceCount: 1);
+
         await Assert.That(response.Hresult).IsEqualTo(0);
         await Assert.That(response.AuthnHint).IsEqualTo(5u);
         await Assert.That(response.Oxid).IsNotEqualTo(Guid.Empty);

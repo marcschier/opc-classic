@@ -668,10 +668,19 @@ public sealed class RpcServerConnectionProcessor
         {
             if (dispatcher is IRpcRequestContextDispatcher contextDispatcher)
             {
+                // Authorization for context-aware dispatchers (activation, IRemUnknown) must be
+                // derived from the established NTLM session, never from the per-packet sec_trailer.
+                // A request PDU can carry a forged trailer (auth_length > 0, attacker-chosen
+                // auth_level) that is never cryptographically verified when no context is
+                // established (ShouldProtectPackets is false), so trusting authentication.* here
+                // would let an unauthenticated/downgraded client spoof authenticated, integrity-
+                // protected activation. Report the established-session signal and its negotiated
+                // protection floor instead.
+                bool establishedAndAuthenticated = authentication.IsAuthenticated && authState.IsEstablished;
                 var requestContext = new RpcRequestContext(
-                    authentication.IsAuthenticated,
+                    establishedAndAuthenticated,
                     authState.IsEstablished,
-                    authentication.IsAuthenticated ? authentication.ProtectionLevel : authState.ProtectionLevel,
+                    authState.ProtectionLevel,
                     transport.RemoteEndpoint);
                 return await contextDispatcher.DispatchAsync(request.Opnum, body, requestContext, cancellationToken).ConfigureAwait(false);
             }
