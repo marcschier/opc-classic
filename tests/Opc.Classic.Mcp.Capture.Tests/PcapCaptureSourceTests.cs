@@ -143,6 +143,11 @@ public sealed class PcapCaptureSourceTests
     [Test]
     public async Task ReadAllAsync_ExistingPcapFile_ReplaysPacketsAndReportsRawPcapPath()
     {
+        if (!NativePcapAvailable())
+        {
+            Skip.Test("Requires native libpcap/npcap (wpcap), which is not installed on this host (e.g. hosted CI runners without npcap).");
+        }
+
         string directory = TestDirectories.CreateUniqueTempDirectory();
         try
         {
@@ -185,4 +190,23 @@ public sealed class PcapCaptureSourceTests
 
     private static string GetPcapSourceName() => PcapCaptureSource.SourceName;
     private static string GetDefaultOpcBpfFilter() => PcapCaptureSource.DefaultOpcBpfFilter;
+
+    // Probes a native libpcap entry point so tests that exercise the real capture
+    // path can skip (rather than fail) on hosts without npcap/libpcap installed.
+    private static bool NativePcapAvailable()
+    {
+        try
+        {
+            _ = Pcap.Version;
+            return true;
+        }
+        catch (DllNotFoundException)
+        {
+            return false;
+        }
+        catch (TypeInitializationException)
+        {
+            return false;
+        }
+    }
 }
