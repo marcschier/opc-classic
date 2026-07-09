@@ -37,7 +37,7 @@ public sealed class Smb2SignerTests
     public async Task Smb3Kdf_Smb300KnownAnswer_DerivesSigningKey()
     {
         byte[] sessionKey = Convert.FromHexString("000102030405060708090A0B0C0D0E0F");
-        byte[] expected = Convert.FromHexString("D3AE02925B058C68B16D609099D64D16");
+        byte[] expected = Convert.FromHexString("6234814CBB8EA9227440EBFEB5EACBE1");
 
         byte[] actual = Smb2Signer.DeriveSmb3SigningKey(Smb2Dialect.Smb300, sessionKey);
 

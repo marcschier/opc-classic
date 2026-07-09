@@ -42,8 +42,8 @@ public sealed class Smb2CrypterTests
     public async Task Smb3Kdf_Smb300KnownAnswer_DerivesEncryptionAndDecryptionKeys()
     {
         byte[] sessionKey = Convert.FromHexString("000102030405060708090A0B0C0D0E0F");
-        byte[] expectedEncryptionKey = Convert.FromHexString("86EFCAD258778BC261FB4584AC60F5C1");
-        byte[] expectedDecryptionKey = Convert.FromHexString("7471AF66CBAC2334799A8F81BBA69B84");
+        byte[] expectedEncryptionKey = Convert.FromHexString("8E21F3CAE16D07D84C03D74467F57878");
+        byte[] expectedDecryptionKey = Convert.FromHexString("95D8B55C852CD25349994B3842FA4105");
 
         byte[] encryptionKey = Smb2Crypter.DeriveSmb3ClientEncryptionKey(Smb2Dialect.Smb300, sessionKey);
         byte[] decryptionKey = Smb2Crypter.DeriveSmb3ClientDecryptionKey(Smb2Dialect.Smb300, sessionKey);
@@ -61,8 +61,8 @@ public sealed class Smb2CrypterTests
         {
             preauthHash[i] = (byte)i;
         }
-        byte[] expectedEncryptionKey = Convert.FromHexString("421F424EB573336F616F4385D774587F");
-        byte[] expectedDecryptionKey = Convert.FromHexString("E10E8988123DD9A9CA35CECE19DFFCFB");
+        byte[] expectedEncryptionKey = Convert.FromHexString("F1B6250CA4D9F8877E41071F59228CE4");
+        byte[] expectedDecryptionKey = Convert.FromHexString("99676AEDFBFD18E61CA5BB60D502E8F2");
 
         byte[] encryptionKey = Smb2Crypter.DeriveSmb3ClientEncryptionKey(Smb2Dialect.Smb311, sessionKey, preauthHash);
         byte[] decryptionKey = Smb2Crypter.DeriveSmb3ClientDecryptionKey(Smb2Dialect.Smb311, sessionKey, preauthHash);

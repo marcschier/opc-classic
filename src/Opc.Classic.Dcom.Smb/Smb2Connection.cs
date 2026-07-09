@@ -800,8 +800,21 @@ public sealed class Smb2Connection : IAsyncDisposable
             return;
         }
 
+        // Per [MS-SMB2] §3.2.5.3, the client folds every SESSION_SETUP request into
+        // the preauth integrity hash, but only folds a SESSION_SETUP *response* whose
+        // status is STATUS_MORE_PROCESSING_REQUIRED. The final response
+        // (STATUS_SUCCESS) is excluded: signing/encryption keys are derived from the
+        // hash value taken through the final request. Folding the final response in
+        // here produces a different PreauthIntegrityHashValue — and therefore a
+        // different SigningKey — than the server computes, so a server that mandates
+        // signing rejects the first signed request (TREE_CONNECT) with
+        // STATUS_ACCESS_DENIED.
         UpdatePreauthIntegrityHash(requestPacket);
-        UpdatePreauthIntegrityHash(responsePacket);
+
+        if (Smb2PacketHeader.Read(responsePacket).Status == NtStatus.MoreProcessingRequired)
+        {
+            UpdatePreauthIntegrityHash(responsePacket);
+        }
     }
 
     private void UpdatePreauthIntegrityHash(ReadOnlySpan<byte> packet)
@@ -831,7 +844,13 @@ internal sealed class Smb2MessageCounter
 {
     private ulong _next;
 
-    public ulong Next() => Interlocked.Increment(ref _next);
+    // Yields 0, 1, 2, ... The first SMB2 message on a connection (NEGOTIATE)
+    // MUST use MessageId 0 per [MS-SMB2] §3.2.4.1.4; the id is drawn from
+    // Connection.SequenceWindow, which starts at 0. Interlocked.Increment
+    // returns the post-increment value, so subtract 1 to start the sequence
+    // at 0. Servers such as smbd validate the id against the sequence window
+    // and terminate the connection when the NEGOTIATE arrives with id 1.
+    public ulong Next() => Interlocked.Increment(ref _next) - 1UL;
 }
 
 /// <summary>

@@ -99,8 +99,10 @@ public sealed class Smb2Signer
 
     /// <summary>
     /// Derives the SMB3 SigningKey with the SP800-108 counter-mode KDF cited by [MS-SMB2] §3.1.5.1.
-    /// SMB 3.0/3.0.2 use label "SMB2AESCMAC" and context "SmbSign\0"; SMB 3.1.1 uses
-    /// label "SMBSigningKey" and the PreauthIntegrityHashValue as context.
+    /// SMB 3.0/3.0.2 use the null-terminated label "SMB2AESCMAC\0" (length 12) and context
+    /// "SmbSign\0" (length 8); SMB 3.1.1 uses the null-terminated label "SMBSigningKey\0"
+    /// (length 14) and the PreauthIntegrityHashValue as context. The trailing NUL is part of the
+    /// label per [MS-SMB2] §3.1.4.2 and is required to interoperate with Windows/Samba.
     /// </summary>
     /// <param name="dialect">Negotiated SMB3 dialect.</param>
     /// <param name="sessionKey">Session key exported by NTLMSSP or Kerberos.</param>
@@ -115,7 +117,7 @@ public sealed class Smb2Signer
         {
             Smb2Dialect.Smb300 or Smb2Dialect.Smb302 => DeriveKeyCounterMode(
                 sessionKey,
-                "SMB2AESCMAC"u8,
+                "SMB2AESCMAC\0"u8,
                 "SmbSign\0"u8,
                 SmbSigningKeyLengthBits),
             Smb2Dialect.Smb311 => preauthIntegrityHash.IsEmpty
@@ -124,7 +126,7 @@ public sealed class Smb2Signer
                     nameof(preauthIntegrityHash))
                 : DeriveKeyCounterMode(
                     sessionKey,
-                    "SMBSigningKey"u8,
+                    "SMBSigningKey\0"u8,
                     preauthIntegrityHash,
                     SmbSigningKeyLengthBits),
             _ => throw new ArgumentOutOfRangeException(nameof(dialect), dialect, "SMB3 signing key derivation requires an SMB 3.x dialect."),

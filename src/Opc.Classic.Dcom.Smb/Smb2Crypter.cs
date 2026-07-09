@@ -211,7 +211,7 @@ public sealed class Smb2Crypter
         {
             Smb2Dialect.Smb300 or Smb2Dialect.Smb302 => Smb2Signer.DeriveKeyCounterMode(
                 sessionKey,
-                "SMB2AESCCM"u8,
+                "SMB2AESCCM\0"u8,
                 clientToServer ? "ServerIn \0"u8 : "ServerOut\0"u8,
                 SmbEncryptionKeyLengthBits),
             Smb2Dialect.Smb311 => preauthIntegrityHash.IsEmpty
@@ -220,7 +220,7 @@ public sealed class Smb2Crypter
                     nameof(preauthIntegrityHash))
                 : Smb2Signer.DeriveKeyCounterMode(
                     sessionKey,
-                    clientToServer ? "SMBC2SCipherKey"u8 : "SMBS2CCipherKey"u8,
+                    clientToServer ? "SMBC2SCipherKey\0"u8 : "SMBS2CCipherKey\0"u8,
                     preauthIntegrityHash,
                     SmbEncryptionKeyLengthBits),
             _ => throw new ArgumentOutOfRangeException(nameof(dialect), dialect, "SMB3 encryption key derivation requires an SMB 3.x dialect."),
