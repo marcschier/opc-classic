@@ -191,13 +191,18 @@ public sealed class PcapCaptureSourceTests
     private static string GetPcapSourceName() => PcapCaptureSource.SourceName;
     private static string GetDefaultOpcBpfFilter() => PcapCaptureSource.DefaultOpcBpfFilter;
 
-    // Probes a native libpcap entry point so tests that exercise the real capture
-    // path can skip (rather than fail) on hosts without npcap/libpcap installed.
+    // Probes the native libpcap entry point (pcap_open_dead, via CaptureFileWriterDevice.Open)
+    // that the real capture path uses, so tests can skip (rather than fail) on hosts without
+    // npcap/libpcap installed. Pcap.Version is NOT a valid probe: its getter swallows the native
+    // load failure and returns a managed fallback string, so it never surfaces the missing DLL.
     private static bool NativePcapAvailable()
     {
+        string probePath = Path.Combine(Path.GetTempPath(), $"pcap-probe-{Guid.NewGuid():N}.pcap");
         try
         {
-            _ = Pcap.Version;
+            using var writer = new CaptureFileWriterDevice(probePath, FileMode.Create);
+            writer.Open(new DeviceConfiguration { LinkLayerType = LinkLayers.Ethernet });
+            writer.Close();
             return true;
         }
         catch (DllNotFoundException)
@@ -207,6 +212,19 @@ public sealed class PcapCaptureSourceTests
         catch (TypeInitializationException)
         {
             return false;
+        }
+        finally
+        {
+            try
+            {
+                if (File.Exists(probePath))
+                {
+                    File.Delete(probePath);
+                }
+            }
+            catch (IOException)
+            {
+            }
         }
     }
 }
