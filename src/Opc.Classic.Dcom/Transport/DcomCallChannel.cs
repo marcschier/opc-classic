@@ -166,7 +166,7 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable
             NdrCallResult result = reply switch
             {
                 ResponseCoPdu response => new NdrCallResult(0, OrpcEnvelope.ExtractResponseBody(response.Stub)),
-                FaultCoPdu fault => new NdrCallResult(unchecked((int)fault.Status), ReadOnlyMemory<byte>.Empty),
+                FaultCoPdu fault => new NdrCallResult(unchecked((int)fault.Status), ReadOnlyMemory<byte>.Empty, IsFault: true),
                 _ => throw new InvalidOperationException($"Unexpected DCE/RPC PDU type {reply.Type}.")
             };
             // Optional diagnostic hex-dump: set OPC_CLASSIC_DCOM_WIRE_DUMP=1 to log

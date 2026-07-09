@@ -48,16 +48,20 @@ public interface ICallChannel
 /// </summary>
 /// <param name="Hresult">The HRESULT (e.g. <c>S_OK = 0</c>, <c>OPC_E_UNKNOWNITEMID = 0xC0040007</c>).</param>
 /// <param name="ResponsePayload">The NDR-encoded response body — empty on failed calls.</param>
+/// <param name="IsFault">True when the reply was a DCE/RPC fault PDU; <paramref name="Hresult"/> then carries the fault status.</param>
 [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Auto)]
-public readonly record struct NdrCallResult(int Hresult, ReadOnlyMemory<byte> ResponsePayload)
+public readonly record struct NdrCallResult(int Hresult, ReadOnlyMemory<byte> ResponsePayload, bool IsFault = false)
 {
     /// <summary>
-    /// True if the HRESULT severity bit is clear (success).
+    /// True if the call completed without an RPC fault and the HRESULT severity bit is clear.
     /// </summary>
-    public bool IsSuccess => (Hresult & unchecked((int)0x80000000u)) == 0;
+    public bool IsSuccess => !IsFault && (Hresult & unchecked((int)0x80000000u)) == 0;
 
     /// <summary>
-    /// True if the HRESULT severity bit is set (failure).
+    /// True if the call returned a DCE/RPC fault PDU or the HRESULT severity bit is set.
+    /// RPC fault status codes (e.g. 0x00000721 RPC_S_SEC_PKG_ERROR) are positive Win32
+    /// values with the severity bit clear, so an explicit fault flag is required to avoid
+    /// mis-classifying them as success.
     /// </summary>
     public bool IsFailure => !IsSuccess;
 }

@@ -461,6 +461,12 @@ public sealed class OpcEnumClient : IOpcDiscovery
 
     private static ActivationOutcome DecodeLegacyRemoteActivationResponse(NdrCallResult result)
     {
+        if (result.IsFailure)
+        {
+            throw new InvalidOperationException(
+                $"IActivation::RemoteActivation RPC fault 0x{unchecked((uint)result.Hresult):X8}.");
+        }
+
         ThrowIfFailed(result.Hresult, "IActivation::RemoteActivation");
         var response = Opc.Classic.Dcom.Activation.IActivationCodec.DecodeRemoteActivationResponse(
             result.ResponsePayload.Span,
@@ -503,6 +509,7 @@ public sealed class OpcEnumClient : IOpcDiscovery
             {
                 0 => "no RPC fault status; the SCM may have returned an empty activation result.",
                 0x00000005 => "rpc_s_access_denied (0x05) - supply NTLMv2/Kerberos credentials with sufficient DCOM Launch/Access permission for OPCEnum (the OPC.ServerList AppID).",
+                0x00000721 => "rpc_s_sec_pkg_error (0x721) - the DCOM per-call security check failed on the server; the RPC bind authenticated but the signed request was rejected (packet-integrity/NTLM signing mismatch).",
                 _ => $"RPC fault status 0x{rpcFault:X8}.",
             };
             throw new InvalidOperationException("IRemoteSCMActivator::RemoteCreateInstance returned no OPCEnum OBJREF: " + hint);
