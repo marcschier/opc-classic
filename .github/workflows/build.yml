@@ -288,7 +288,24 @@ jobs:
 
       - name: Run cross-platform managed tests on Windows
         shell: pwsh
-        run: dotnet test Opc.Classic.slnx --no-build -c Release --filter "Category!=NativeConformance" --logger "trx;LogFileName=windows-tests.trx"
+        run: |
+          # Run each test project in its own `dotnet test` invocation instead of a
+          # single solution-wide run. `dotnet test <solution>` launches the TUnit/MTP
+          # test executables in parallel, and each one's GitHub reporter appends to
+          # $GITHUB_STEP_SUMMARY -- the concurrent writes race and crash a test host
+          # with "The process cannot access the file ... step_summary_... because it
+          # is being used by another process." Sequential per-project runs (as in the
+          # Linux build-test job) serialize those writes. Exit code 8 = "zero tests
+          # ran", expected for projects whose tests are all NativeConformance.
+          $failed = $false
+          $projects = Get-ChildItem -Path "tests" -Filter "*.csproj" -Recurse | Sort-Object FullName
+          foreach ($project in $projects) {
+            $name = [IO.Path]::GetFileNameWithoutExtension($project.Name)
+            Write-Host "== Testing $name =="
+            dotnet test $project.FullName --no-build -c Release --filter "Category!=NativeConformance" --logger "trx;LogFileName=$name.trx"
+            if ($LASTEXITCODE -ne 0 -and $LASTEXITCODE -ne 8) { $failed = $true }
+          }
+          if ($failed) { exit 1 }
 
       - name: Run native COM conformance tests
         shell: pwsh
