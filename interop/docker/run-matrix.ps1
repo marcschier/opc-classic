@@ -17,12 +17,14 @@
 #   interop/docker/run-matrix.ps1 -SkipBuild             # use existing images
 #   interop/docker/run-matrix.ps1 -IncludeTestServer     # also start OpcTestServer_x64 (requires external)
 #   interop/docker/run-matrix.ps1 -SkipBuild -SkipUp     # just verify config
+#   interop/docker/run-matrix.ps1 -OnlyManaged           # managed-only (no native OPC SDK CoreComponents)
 
 [CmdletBinding()]
 param(
     [switch] $SkipBuild,
     [switch] $SkipUp,
-    [switch] $IncludeTestServer
+    [switch] $IncludeTestServer,
+    [switch] $OnlyManaged
 )
 
 $ErrorActionPreference = 'Stop'
@@ -56,9 +58,15 @@ if (-not $existing) {
 # 1. Build (unless skipped).
 if (-not $SkipBuild) {
     Invoke-Step 'Building fleet images' {
-        $buildServices = @('c-server', 'managed-server', 'c-client')
-        if ($IncludeTestServer) {
-            $buildServices += 'testserver'
+        # -OnlyManaged skips the native C++ services (c-server/c-client),
+        # which require the OPC Foundation CoreComponents SDK to build.
+        if ($OnlyManaged) {
+            $buildServices = @('managed-server')
+        } else {
+            $buildServices = @('c-server', 'managed-server', 'c-client')
+            if ($IncludeTestServer) {
+                $buildServices += 'testserver'
+            }
         }
 
         # mcr.microsoft.com transient pull failures (rate-limit / CDN edge
@@ -96,9 +104,13 @@ if (-not $SkipBuild) {
 # 2. Bring up the servers so interactive clients can attach.
 if (-not $SkipUp) {
     Invoke-Step 'Starting server containers' {
-        $serverServices = @('c-server', 'managed-server')
-        if ($IncludeTestServer) {
-            $serverServices += 'testserver'
+        if ($OnlyManaged) {
+            $serverServices = @('managed-server')
+        } else {
+            $serverServices = @('c-server', 'managed-server')
+            if ($IncludeTestServer) {
+                $serverServices += 'testserver'
+            }
         }
         docker compose --file $compose up -d @serverServices
     }
@@ -108,14 +120,18 @@ if (-not $SkipUp) {
 
     Write-Host ''
     Write-Host '== Servers up ==' -ForegroundColor Green
-    Write-Host '  c-server         (Opc.Classic.DaSample.1 via native C build)        opc-classic-c-server'
+    if (-not $OnlyManaged) {
+        Write-Host '  c-server         (Opc.Classic.DaSample.1 via native C build)        opc-classic-c-server'
+    }
     Write-Host '  managed-server   (Opc.Classic.DaSample.1 via managed DA stack)      opc-classic-managed'
     if ($IncludeTestServer) {
         Write-Host '  testserver       (OpcTestServer_x64.1 via vendored CMake build)    opc-classic-testserver'
     }
     Write-Host ''
     Write-Host 'Run an interactive client against one of these hosts via:'
-    Write-Host '  docker compose --file interop/docker/docker-compose.test.yml --profile interactive run --rm c-client'
+    if (-not $OnlyManaged) {
+        Write-Host '  docker compose --file interop/docker/docker-compose.test.yml --profile interactive run --rm c-client'
+    }
     if ($IncludeTestServer) {
         Write-Host '  docker compose --file interop/docker/docker-compose.test.yml --profile interactive run --rm testclient'
     }
