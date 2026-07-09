@@ -1,0 +1,16 @@
+# `opc-classic/c-client` — native OPC DA smoke client
+
+Windows-container image that builds and runs the hand-rolled native OPC DA smoke client used by the Docker interop fleet.
+
+## Build and run
+
+```pwsh
+docker build --file interop/docker/opc-c-client/Dockerfile --tag opc-classic/c-client .
+docker run --rm --network opc-test-net opc-classic/c-client `
+    -ProgId Opc.Classic.DaSample.1 `
+    -TargetHost opc-classic-managed
+```
+
+The image compiles opc-test against headers from `inc`; `client.ps1` forwards `-ProgId` and `-TargetHost` to `opc-test.exe`.
+
+See `build\README.md` for the native project details and `docker` for the full fleet.

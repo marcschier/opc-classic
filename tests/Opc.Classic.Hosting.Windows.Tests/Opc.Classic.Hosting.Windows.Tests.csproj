@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>Windows-only TUnit tests for Opc.Classic.Hosting.Windows: IClassFactory registration, HKLM CLSID writers, and DA/AE/HDA CCW vtable verification.</Description>
+    <RootNamespace>Opc.Classic.Hosting.Windows.Tests</RootNamespace>
+    <AssemblyName>Opc.Classic.Hosting.Windows.Tests</AssemblyName>
+    <!-- Tests invoke CCW vtable thunks through function pointers. -->
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Opc.Classic.Hosting.Windows\Opc.Classic.Hosting.Windows.csproj" />
+  </ItemGroup>
+
+</Project>

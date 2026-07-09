@@ -1,0 +1,76 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>OPC Classic SDK meta-package: a single self-contained package that bundles the cross-platform Opc.Classic runtime assemblies (DA, AE, HDA, Batch, Commands, Complex Data, DX, Security, Discovery, XML-DA, managed DCOM/MSRPC, auth) needed to build an OPC Classic client and a managed (cross-platform) server. Add Opc.Classic.Windows for Windows DCOM server hosting.</Description>
+    <RootNamespace>Opc.Classic</RootNamespace>
+    <AssemblyName>Opc.Classic</AssemblyName>
+    <PackageId>Opc.Classic</PackageId>
+    <PackageTags>opc;opc-classic;opc-da;opc-ae;opc-hda;dcom;sdk;industrial;automation;dotnet-10</PackageTags>
+    <!--
+      This is a self-contained aggregation package: it physically bundles the
+      referenced runtime DLLs (see IncludeProjectReferenceDllsInPackage below) and
+      declares only its 3rd-party dependencies. Per-assembly symbols ship with the
+      granular packages on the GitHub Packages feed, so skip an (empty) snupkg here.
+    -->
+    <IncludeSymbols>false</IncludeSymbols>
+  </PropertyGroup>
+
+  <!--
+    Bundle every referenced Opc.Classic.* runtime assembly (and its XML doc) directly
+    into lib/<tfm>/ so nuget.org consumers need nothing but this package plus the
+    3rd-party dependencies declared below. The project references are PrivateAssets=all
+    so they do NOT surface as package <dependency> entries; the custom target adds their
+    compiled output as package content instead. BuildOutputInPackage (not ILRepack)
+    keeps strong names, InternalsVisibleTo, and AOT/trim compatibility intact.
+  -->
+  <PropertyGroup>
+    <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);IncludeProjectReferenceDllsInPackage</TargetsForTfmSpecificBuildOutput>
+  </PropertyGroup>
+
+  <ItemGroup Label="Bundled runtime assemblies (15 cross-platform projects; excludes Hosting.Windows)">
+    <ProjectReference Include="..\Opc.Classic.Core\Opc.Classic.Core.csproj" PrivateAssets="all" />
+    <ProjectReference Include="..\Opc.Classic.Hosting\Opc.Classic.Hosting.csproj" PrivateAssets="all" />
+    <ProjectReference Include="..\Opc.Classic.Dcom\Opc.Classic.Dcom.csproj" PrivateAssets="all" />
+    <ProjectReference Include="..\Opc.Classic.Dcom.Kerberos\Opc.Classic.Dcom.Kerberos.csproj" PrivateAssets="all" />
+    <ProjectReference Include="..\Opc.Classic.Dcom.Smb\Opc.Classic.Dcom.Smb.csproj" PrivateAssets="all" />
+    <ProjectReference Include="..\Opc.Classic.Da\Opc.Classic.Da.csproj" PrivateAssets="all" />
+    <ProjectReference Include="..\Opc.Classic.Ae\Opc.Classic.Ae.csproj" PrivateAssets="all" />
+    <ProjectReference Include="..\Opc.Classic.Hda\Opc.Classic.Hda.csproj" PrivateAssets="all" />
+    <ProjectReference Include="..\Opc.Classic.Discovery\Opc.Classic.Discovery.csproj" PrivateAssets="all" />
+    <ProjectReference Include="..\Opc.Classic.Security\Opc.Classic.Security.csproj" PrivateAssets="all" />
+    <ProjectReference Include="..\Opc.Classic.Xml\Opc.Classic.Xml.csproj" PrivateAssets="all" />
+    <ProjectReference Include="..\Opc.Classic.Batch\Opc.Classic.Batch.csproj" PrivateAssets="all" />
+    <ProjectReference Include="..\Opc.Classic.Commands\Opc.Classic.Commands.csproj" PrivateAssets="all" />
+    <ProjectReference Include="..\Opc.Classic.Cpx\Opc.Classic.Cpx.csproj" PrivateAssets="all" />
+    <ProjectReference Include="..\Opc.Classic.Dx\Opc.Classic.Dx.csproj" PrivateAssets="all" />
+  </ItemGroup>
+
+  <!--
+    The union of 3rd-party dependencies across the bundled closure. These live on
+    nuget.org, so they are declared as real package dependencies (versions come from
+    src/Directory.Packages.props). PrivateAssets=all on the ProjectReferences above
+    stops their transitive deps from flowing, so this list must stay in sync with the
+    bundled assemblies' external references.
+  -->
+  <ItemGroup Label="3rd-party dependencies (declared, not bundled)">
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
+    <PackageReference Include="Microsoft.Extensions.Options" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" />
+    <PackageReference Include="Kerberos.NET" />
+  </ItemGroup>
+
+  <Target Name="IncludeProjectReferenceDllsInPackage" DependsOnTargets="ResolveReferences">
+    <ItemGroup>
+      <_OpcBundledProjectDll Include="@(ReferenceCopyLocalPaths)"
+                             Condition="'%(ReferenceCopyLocalPaths.ReferenceSourceTarget)' == 'ProjectReference' And '%(Extension)' == '.dll'" />
+      <BuildOutputInPackage Include="@(_OpcBundledProjectDll)" />
+      <!-- Bundle each referenced assembly's XML doc (sibling of the DLL) for IntelliSense. -->
+      <BuildOutputInPackage Include="@(_OpcBundledProjectDll->'%(RootDir)%(Directory)%(Filename).xml')"
+                            Condition="Exists('%(RootDir)%(Directory)%(Filename).xml')" />
+    </ItemGroup>
+  </Target>
+
+</Project>

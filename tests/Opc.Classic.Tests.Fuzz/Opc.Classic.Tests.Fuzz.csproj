@@ -1,0 +1,15 @@
+<!-- Copyright (c) 2026 Opc.Classic Contributors. Licensed under the MIT License. -->
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>Shared parser-fuzz helpers for Opc.Classic test projects.</Description>
+    <RootNamespace>Opc.Classic.Tests.Fuzz</RootNamespace>
+    <AssemblyName>Opc.Classic.Tests.Fuzz</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\_TestDoubles\Fuzz\FuzzHarness.cs" Link="FuzzHarness.cs" />
+    <PackageReference Include="CsCheck" />
+  </ItemGroup>
+
+</Project>

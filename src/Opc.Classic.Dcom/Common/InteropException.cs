@@ -1,0 +1,117 @@
+﻿// Copyright (c) 2026 Opc.Classic Contributors. Licensed under the MIT License.
+
+namespace Opc.Classic.Dcom.Common;
+
+/// <summary>
+/// Exception class for the framework. Developers are expected to catch
+/// or re-throw these exceptions and not create one themselves.
+/// </summary>
+public class InteropException : Exception
+{
+    /// <summary>
+    /// Create exception
+    /// </summary>
+    /// <param name="errorCode">Protocol or HRESULT error code reported by the operation.</param>
+    /// <param name="message">Human-readable description of the failure condition.</param>
+    public InteropException(int errorCode, string message) :
+        this(errorCode, message, null)
+    {
+    }
+
+    /// <summary>
+    /// Create exception
+    /// </summary>
+    /// <param name="errorCode">Protocol or HRESULT error code reported by the operation.</param>
+    /// <param name="message">Human-readable description of the failure condition.</param>
+    public InteropException(ErrorCode errorCode, string message) :
+        this(errorCode, message, null)
+    {
+    }
+
+    /// <summary>
+    /// Create exception
+    /// </summary>
+    /// <param name="errorCode">Protocol or HRESULT error code reported by the operation.</param>
+    public InteropException(int errorCode) :
+        this(errorCode, (Exception)null)
+    {
+    }
+
+    /// <summary>
+    /// Create exception
+    /// </summary>
+    /// <param name="errorCode">Protocol or HRESULT error code reported by the operation.</param>
+    public InteropException(ErrorCode errorCode) :
+        this(errorCode, (Exception)null)
+    {
+    }
+
+    /// <summary>
+    /// Create exception
+    /// </summary>
+    public InteropException(int errorCode, Exception cause) :
+        this(errorCode, null, cause)
+    {
+    }
+
+    /// <summary>
+    /// Create exception
+    /// </summary>
+    public InteropException(ErrorCode errorCode, Exception cause) :
+        this(errorCode, null, cause)
+    {
+    }
+
+    /// <summary>
+    /// Create exception
+    /// </summary>
+    public InteropException(InteropRuntimeException exception) :
+        this(exception.HResult, null, exception)
+    {
+    }
+
+    /// <summary>
+    /// Create exception
+    /// </summary>
+    public InteropException(int errorCode, string message, Exception cause) :
+        base(message, cause)
+    {
+        ErrorCode = (ErrorCode)errorCode;
+        _message = message;
+    }
+
+    /// <summary>
+    /// Create exception
+    /// </summary>
+    public InteropException(ErrorCode errorCode, string message, Exception cause) :
+        base(message, cause)
+    {
+        ErrorCode = errorCode;
+        _message = message;
+    }
+
+    public InteropException() : base()
+    {
+    }
+
+    public InteropException(string? message) : base(message)
+    {
+    }
+
+    public InteropException(string? message, Exception? innerException) : base(message, innerException)
+    {
+    }
+
+    /// <summary>
+    /// Returns the localized error messages.
+    /// </summary>
+    public override string Message =>
+        _message ?? (_message = Interop.GetLocalizedMessage(ErrorCode));
+
+    /// <summary>
+    /// Returns the error code associated with this exception. 
+    /// </summary>
+    public ErrorCode ErrorCode { get; } = ErrorCode.UNDEFINED;
+
+    private string _message;
+}

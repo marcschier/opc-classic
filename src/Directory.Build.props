@@ -1,0 +1,145 @@
+<Project>
+
+  <!-- Inherit Roslynator analyzer + future cross-tree settings from the repo-root Directory.Build.props. -->
+  <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)..'))" />
+
+  <!--
+    Applies to every src/*/*.csproj. Sibling tests/Directory.Build.props applies
+    to test projects (which intentionally are NOT AOT-strict per the libs_only
+    NativeAOT scope decision).
+
+    The settings below are HARD requirements per the implementation plan:
+    every src/ assembly publishes AOT-clean with zero IL2xxx/IL3xxx warnings.
+  -->
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <InvariantGlobalization>true</InvariantGlobalization>
+    <AnalysisLevel>latest-all</AnalysisLevel>
+    <AnalysisMode>All</AnalysisMode>
+    <!-- CS1591 (missing XML doc) is noisy on forwarding ctors / record positional members.
+         Public types still carry full docs; suppressing the warning avoids per-member churn. -->
+    <NoWarn>$(NoWarn);CS1591</NoWarn>
+  </PropertyGroup>
+
+  <!-- NativeAOT enforcement (HARD requirement, plan §NativeAOT requirements) -->
+  <PropertyGroup>
+    <IsAotCompatible>true</IsAotCompatible>
+    <IsTrimmable>true</IsTrimmable>
+    <EnableTrimAnalyzer>true</EnableTrimAnalyzer>
+    <EnableSingleFileAnalyzer>true</EnableSingleFileAnalyzer>
+    <EnableAotAnalyzer>true</EnableAotAnalyzer>
+  </PropertyGroup>
+
+  <!-- Determinism + reproducible builds -->
+  <PropertyGroup>
+    <Deterministic>true</Deterministic>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <DeterministicSourcePaths Condition="'$(GITHUB_ACTIONS)' == 'true'">true</DeterministicSourcePaths>
+    <ContinuousIntegrationBuild Condition="'$(GITHUB_ACTIONS)' == 'true'">true</ContinuousIntegrationBuild>
+  </PropertyGroup>
+
+  <!-- NuGet package metadata (shared across all src/ projects) -->
+  <PropertyGroup>
+    <IsPackable>true</IsPackable>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <!--
+      Version, AssemblyVersion, FileVersion, AssemblyInformationalVersion, and
+      PackageVersion are computed at build time by Nerdbank.GitVersioning from
+      the repo-root version.json + git height. Tagged releases are made
+      authoritative by .github/workflows/release.yml, which stamps the tag
+      version into version.json and builds with -p:PublicRelease=true (nbgv
+      ignores -p:Version). See docs/RELEASE_PROCESS.md.
+    -->
+    <Authors>Opc.Classic Contributors</Authors>
+    <Company>Opc.Classic .NET</Company>
+    <Copyright>Copyright (c) 2026 Opc.Classic Contributors</Copyright>
+    <PackageProjectUrl>https://github.com/marcschier/opc-classic</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/marcschier/opc-classic.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageTags>opc;opc-classic;opc-da;opc-ae;opc-hda;dcom;industrial;automation;dotnet-10</PackageTags>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+  </PropertyGroup>
+
+  <!-- Strong naming (key in build/Opc.Classic.snk; not a secret) -->
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)..\build\Opc.Classic.snk</AssemblyOriginatorKeyFile>
+    <PublicSign Condition="'$(OS)' != 'Windows_NT'">true</PublicSign>
+    <!--
+      Full public key extracted from Opc.Classic.snk. Used by per-project
+      <InternalsVisibleTo Include="..." Key="$(OpcClassicPublicKey)" /> entries so
+      that src/<Spec>.Windows sibling assemblies can reach the internal helpers
+      they need without widening the parent's public API surface.
+    -->
+    <OpcClassicPublicKey>002400000480000014010000060200000024000052534131000800000100010095cd88cd047cdd3992b9b818872dfc4983f3c8a62fe0a82cc6c69320b2119ae46fb545090e0ee61d54840d32556d2caa720c86cc086abc3bf9c6acf7add65684d8a7e5fe70b8120c9dead91826dad9d53a36287566a4ee76d0f9e37200c7052f61a1941e7693b09c6ed21899fc536797d33c12c7fb3cd30b99a32966c68acabc8a3760dadcfbf7ae9d9eeb342ea054c20382c49acbe1c891b2835ed42f664c8ff71b7e699a1550635eb1d11a225238ebe21641c53f5f6f0d498d45b76cc684fcfe6baa064064e5b03c3f1640ae4d1132c8f5d6360f83ff1eb838c51b7cb0c225317497b8e0ab030ace66026993ef4805ebe86020e3167839e29f4b2641eafef4</OpcClassicPublicKey>
+  </PropertyGroup>
+
+  <!-- Analyzers (PrivateAssets=all — they're build-time only, no runtime dep) -->
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" PrivateAssets="All" />
+    <!--
+      Nerdbank.GitVersioning: computes Version/AssemblyVersion/FileVersion/
+      AssemblyInformationalVersion/PackageVersion at build time from the
+      repo-root version.json + git height. Build-time only (PrivateAssets=all)
+      so it adds no runtime dependency and does not affect NativeAOT/trim.
+    -->
+    <PackageReference Include="Nerdbank.GitVersioning">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Meziantou.Analyzer">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <!--
+    Banned-API analyzer enforces the NativeAOT "banned patterns" list from the
+    implementation plan. BannedSymbols.txt sits next to this file.
+  -->
+  <ItemGroup Condition="Exists('$(MSBuildThisFileDirectory)BannedSymbols.txt')">
+    <PackageReference Include="Microsoft.CodeAnalysis.BannedApiAnalyzers">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <AdditionalFiles Include="$(MSBuildThisFileDirectory)BannedSymbols.txt" />
+  </ItemGroup>
+
+  <!-- Include the repo README in NuGet packages -->
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)..\README.md" Pack="true" PackagePath="\" Visible="false" Condition="Exists('$(MSBuildThisFileDirectory)..\README.md')" />
+  </ItemGroup>
+
+  <!--
+    Opc.Classic.Generators is referenced as an analyzer in every src/ project
+    except itself. Analyzer references are NOT transitive through ProjectReference,
+    so they must be declared per-consumer; centralizing here keeps that wiring
+    in exactly one place.
+
+    Excluded:
+      - Opc.Classic.Generators itself (would create a circular reference).
+      - Opc.Classic.Dcom: transitional Java-ported code awaiting unit-test conversion
+        completes its modernization sweep.
+  -->
+  <ItemGroup Condition="'$(MSBuildProjectName)' != 'Opc.Classic.Generators' and '$(MSBuildProjectName)' != 'Opc.Classic.Dcom'">
+    <ProjectReference Include="$(MSBuildThisFileDirectory)Opc.Classic.Generators\Opc.Classic.Generators.csproj"
+                      OutputItemType="Analyzer"
+                      ReferenceOutputAssembly="false" />
+  </ItemGroup>
+
+</Project>

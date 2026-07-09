@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>TUnit-based unit tests for Opc.Classic.Generators source generators.</Description>
+    <RootNamespace>Opc.Classic.Generators.Tests</RootNamespace>
+    <AssemblyName>Opc.Classic.Generators.Tests</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Opc.Classic.Ae\Opc.Classic.Ae.csproj" />
+    <ProjectReference Include="..\..\src\Opc.Classic.Core\Opc.Classic.Core.csproj" />
+    <ProjectReference Include="..\..\src\Opc.Classic.Da\Opc.Classic.Da.csproj" />
+    <ProjectReference Include="..\..\src\Opc.Classic.Generators\Opc.Classic.Generators.csproj" />
+    <!-- Opc.Classic.Generators is also wired as an analyzer via tests/Directory.Build.props. -->
+  </ItemGroup>
+
+</Project>

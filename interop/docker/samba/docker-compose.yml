@@ -1,0 +1,20 @@
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2026 Opc.Classic .NET Contributors
+
+services:
+  samba:
+    image: opc-classic/samba-winreg:latest
+    container_name: opc-classic-samba
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "445:445"
+    volumes:
+      - ./smb.conf:/etc/samba/smb.conf:ro
+    healthcheck:
+      test: ["CMD-SHELL", "smbclient -L //127.0.0.1 -U 'opcuser%opcpass' -m SMB3 >/dev/null 2>&1 || exit 1"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 10s

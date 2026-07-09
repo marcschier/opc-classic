@@ -1,0 +1,4 @@
+﻿Codec: NdrBoolean true
+Bytes: 1
+
+00000000  01                                                | .|

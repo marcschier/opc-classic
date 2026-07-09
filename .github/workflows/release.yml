@@ -1,0 +1,432 @@
+name: Release
+
+on:
+  push:
+    tags:
+      # Accept both v-prefixed (v1.0.0) and bare semver (1.0.0) tags.
+      # The `v` prefix is the canonical convention going forward; bare tags
+      # are tolerated for compatibility with the existing 1.0.0-rc.N history.
+      - 'v*'
+      - '1.*'
+      - '2.*'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag to release (e.g. v1.0.0-rc.11 or 1.0.0-rc.11). Required when triggering manually.'
+        required: true
+        type: string
+      publish_reference_images:
+        description: 'Also publish opc-c-server and opc-c-client images to GHCR (for downstream interop consumers). Default: opc-managed only.'
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: write      # for creating the GitHub Release
+  packages: write      # for publishing to GitHub Packages NuGet feed + GHCR Docker registry
+  id-token: write      # for SourceLink reproducible-build attestation
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.tag.outputs.version }}
+      tag: ${{ steps.tag.outputs.tag }}
+      is_stable: ${{ steps.tag.outputs.is_stable }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.inputs.tag || github.ref }}
+
+      - uses: actions/setup-dotnet@v5
+        with:
+          global-json-file: global.json
+
+      - name: Validate tag format
+        id: tag
+        shell: bash
+        run: |
+          TAG="${{ github.event.inputs.tag || github.ref_name }}"
+          # Accept optional leading "v": v1.0.0, v1.0.0-rc.11, 1.0.0, 1.0.0-rc.11.
+          if [[ ! "$TAG" =~ ^v?[0-9]+\.[0-9]+\.[0-9]+(-(alpha|beta|rc)\.[0-9]+)?$ ]]; then
+            echo "::error::Tag '$TAG' must match [v]<MAJOR>.<MINOR>.<PATCH>[-<prerelease>.<N>]"
+            exit 1
+          fi
+          # Strip leading "v" so the package/image version stays canonical (1.0.0-rc.11, not v1.0.0-rc.11).
+          VERSION="${TAG#v}"
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          # is_stable=true only for releases without a prerelease suffix (no `-`).
+          if [[ "$VERSION" == *-* ]]; then
+            echo "is_stable=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "is_stable=true" >> "$GITHUB_OUTPUT"
+          fi
+          # Also export VERSION as env for downstream steps in this job.
+          echo "VERSION=$VERSION" >> "$GITHUB_ENV"
+
+      - name: Restore
+        run: dotnet restore Opc.Classic.slnx
+
+      # Versioning: Nerdbank.GitVersioning (nbgv) derives versions from the
+      # repo-root version.json at build time. nbgv intentionally IGNORES
+      # `-p:Version`, so to keep the Git tag authoritative for the released
+      # package version we stamp the exact tag version into version.json here
+      # (ephemeral — the CI workspace only; never committed) and build as a
+      # public release so no `-g<commit>` height suffix is appended.
+      # `fetch-depth: 0` above gives nbgv the history it needs. semVer:2 (set in
+      # version.json) preserves prerelease dots (e.g. 1.0.0-rc.11). See
+      # docs/RELEASE_PROCESS.md.
+      - name: Stamp release version into version.json
+        run: |
+          cat > version.json <<JSON
+          {
+            "\$schema": "https://raw.githubusercontent.com/dotnet/Nerdbank.GitVersioning/main/src/NerdBank.GitVersioning/version.schema.json",
+            "version": "${VERSION}",
+            "nuGetPackageVersion": { "semVer": 2 }
+          }
+          JSON
+          dotnet tool restore
+          echo "nbgv version.json now pins: ${VERSION}"
+          dotnet nbgv get-version || true
+
+      - name: Build
+        run: dotnet build Opc.Classic.slnx --no-restore -c Release -p:PublicRelease=true
+
+      - name: Test
+        run: dotnet test Opc.Classic.slnx --no-build -c Release --filter "Category!=NativeConformance&Category!=MatrikonConformance&Category!=CompatMatrix"
+
+      - name: Pack
+        # Use --no-restore (not --no-build): a solution-level `dotnet pack --no-build`
+        # trips NETSDK1085 ("NoBuild was set but the Build target was invoked") on the
+        # netstandard2.0 analyzer projects -- Opc.Classic.Generators is referenced as an
+        # analyzer across the graph and pack re-invokes its Build target. --no-restore
+        # still skips the redundant restore while letting pack do an incremental
+        # (already-built) compile. PublicRelease + the stamped version.json keep the
+        # package version identical to the Build step above.
+        run: dotnet pack Opc.Classic.slnx --no-restore -c Release -p:PublicRelease=true -o ./.nupkg
+
+      - name: Push curated packages to nuget.org
+        env:
+          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+        shell: bash
+        run: |
+          if [ -z "$NUGET_API_KEY" ]; then
+            echo "::warning::NUGET_API_KEY not configured - skipping nuget.org push (artifacts uploaded for manual review)"
+            exit 0
+          fi
+          # nuget.org gets ONLY the curated set: the Opc.Classic SDK meta-package, the
+          # Opc.Classic.Windows add-on, the two analyzer packages (Generators +
+          # MigrationAnalyzer), and the Opc.Classic.Mcp server (base + per-RID variants).
+          # Every other package -- the granular per-spec libraries AND
+          # Opc.Classic.Mcp.Capture -- stays on the GitHub Packages feed (pushed in the
+          # next step). Match by exact <id>.<version>.nupkg so a substring like
+          # "Mcp.Capture" can never leak in. Keep the RID list in sync with
+          # <RuntimeIdentifiers> in mcp/Opc.Classic.Mcp.csproj.
+          IDS=(
+            Opc.Classic
+            Opc.Classic.Windows
+            Opc.Classic.Generators
+            Opc.Classic.MigrationAnalyzer
+            Opc.Classic.Mcp
+            Opc.Classic.Mcp.win-x64
+            Opc.Classic.Mcp.win-arm64
+            Opc.Classic.Mcp.osx-arm64
+            Opc.Classic.Mcp.linux-x64
+            Opc.Classic.Mcp.linux-arm64
+            Opc.Classic.Mcp.linux-musl-x64
+          )
+          FILES=()
+          for id in "${IDS[@]}"; do
+            f="./.nupkg/${id}.${VERSION}.nupkg"
+            if [ -f "$f" ]; then FILES+=("$f"); else echo "::notice::Curated package not produced, skipping: ${f}"; fi
+          done
+          if [ "${#FILES[@]}" -eq 0 ]; then
+            echo "::error::No curated packages found under ./.nupkg for version ${VERSION}."
+            exit 1
+          fi
+          echo "Pushing to nuget.org:"; printf '  %s\n' "${FILES[@]}"
+          for f in "${FILES[@]}"; do
+            dotnet nuget push "$f" --api-key "$NUGET_API_KEY" --source https://api.nuget.org/v3/index.json --skip-duplicate
+          done
+
+      - name: Push to GitHub Packages NuGet feed
+        # Always runs on tag push. GITHUB_TOKEN is auto-issued and the workflow
+        # has `permissions: packages: write`, so no additional secret is needed.
+        # Consumers will need a PAT with `read:packages` scope to install from
+        # this feed (GitHub Packages NuGet requires authenticated reads even
+        # for public packages). See docs/RELEASE_PROCESS.md.
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          dotnet nuget push ./.nupkg/*.nupkg \
+            --api-key "$GITHUB_TOKEN" \
+            --source https://nuget.pkg.github.com/marcschier/index.json \
+            --skip-duplicate
+
+      - name: Upload packages artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: opcclassic-${{ env.VERSION }}-nupkgs
+          path: ./.nupkg
+
+      - name: Extract changelog notes
+        id: changelog
+        shell: bash
+        run: |
+          # Extract the section for this version from CHANGELOG.md (Keep a Changelog format).
+          NOTES=$(awk -v ver="${{ env.VERSION }}" '
+            $0 ~ "^## \\[" ver "\\]" { sec=1; next }
+            /^## \[/{ if (sec) exit }
+            sec { print }
+          ' CHANGELOG.md)
+          if [ -z "$NOTES" ]; then
+            echo "::error::No CHANGELOG.md section found for ${{ env.VERSION }}"
+            exit 1
+          fi
+          {
+            echo "notes<<EOF"
+            echo "$NOTES"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v3
+        with:
+          tag_name: ${{ github.event.inputs.tag || github.ref_name }}
+          name: 'Opc.Classic ${{ env.VERSION }}'
+          body: |
+            ## What's new
+
+            ${{ steps.changelog.outputs.notes }}
+
+            ## Packages
+
+            Published at version `${{ env.VERSION }}`.
+
+            **nuget.org** (curated, self-contained set):
+
+            - **`Opc.Classic`** — SDK meta-package bundling the cross-platform runtime (client + managed server). `dotnet add package Opc.Classic --version ${{ env.VERSION }}`.
+            - **`Opc.Classic.Windows`** — Windows DCOM server-hosting add-on. `dotnet add package Opc.Classic.Windows --version ${{ env.VERSION }}`.
+            - **`Opc.Classic.Generators`**, **`Opc.Classic.MigrationAnalyzer`** — Roslyn source-generator and migration analyzer packages.
+            - **`Opc.Classic.Mcp`** — MCP server tool. `dotnet tool install --global Opc.Classic.Mcp --version ${{ env.VERSION }}`.
+
+            **GitHub Packages NuGet feed** — the full granular `Opc.Classic.*` per-spec set at `https://nuget.pkg.github.com/marcschier/index.json` (requires a PAT with `read:packages` scope to install; see `docs/RELEASE_PROCESS.md`).
+
+            ## Container images
+
+            Managed OPC DA server image published to **GHCR**:
+
+            - `ghcr.io/marcschier/opc-classic-managed:${{ env.VERSION }}`
+            - `ghcr.io/marcschier/opc-classic-managed:latest` *(stable releases only)*
+
+            ## Status
+
+            Pre-1.0 alpha. See [Phase 14D compat matrix](docs/COMPAT_MATRIX_STATUS.md) for release-readiness.
+          files: ./.nupkg/*.nupkg
+          prerelease: ${{ contains(env.VERSION, '-') }}
+          generate_release_notes: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  docker-publish:
+    # Build and push the distributable Windows Docker image(s) to GHCR.
+    # Tagged-only: runs on tag push or workflow_dispatch (same trigger as the
+    # `release` job). Gated on `release` succeeding so we never publish a
+    # Docker image for a tag whose NuGet packages failed to build.
+    #
+    # By default only the `opc-managed` image (the Windows distributable
+    # managed OPC DA server) is published. The C-built reference images
+    # (`opc-c-server`, `opc-c-client`) can be opted-in via the
+    # `publish_reference_images` workflow_dispatch input (off for tag-push to
+    # avoid surprising the registry with test/interop infrastructure on every
+    # release).
+    #
+    # The Linux variant of `opc-managed` is published by the cheaper
+    # `docker-publish-linux` job below; both target the same registry path
+    # but use distinct image names (`opc-classic-managed` for Windows,
+    # `opc-classic-managed-linux` for Linux) so downstream consumers can pick
+    # the right OS image without needing a multi-arch manifest list.
+    needs: release
+    runs-on: windows-2022
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.inputs.tag || github.ref }}
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Install cosign
+        uses: sigstore/cosign-installer@v3
+
+      - name: Compute Docker tag list
+        id: tags
+        shell: pwsh
+        run: |
+          $version = '${{ needs.release.outputs.version }}'
+          $stable  = '${{ needs.release.outputs.is_stable }}' -eq 'true'
+
+          function Compose-Tags([string] $image) {
+              $tags = @("ghcr.io/marcschier/$image`:$version")
+              if ($stable) { $tags += "ghcr.io/marcschier/$image`:latest" }
+              return ($tags -join ',')
+          }
+
+          "managed_tags=$(Compose-Tags 'opc-classic-managed')" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+          "cserver_tags=$(Compose-Tags 'opc-classic-c-server')" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+          "cclient_tags=$(Compose-Tags 'opc-classic-c-client')" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+
+      - name: Build and push opc-classic-managed
+        id: build-managed
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          file: interop/docker/opc-managed/Dockerfile
+          push: true
+          tags: ${{ steps.tags.outputs.managed_tags }}
+          labels: |
+            org.opencontainers.image.source=https://github.com/marcschier/opc-classic
+            org.opencontainers.image.revision=${{ github.sha }}
+            org.opencontainers.image.version=${{ needs.release.outputs.version }}
+            org.opencontainers.image.licenses=MIT
+            org.opencontainers.image.title=Opc.Classic managed OPC DA server
+            org.opencontainers.image.description=Cross-platform .NET 10 managed OPC Classic DA server container.
+
+      - name: Sign opc-classic-managed (cosign keyless)
+        env:
+          DIGEST: ${{ steps.build-managed.outputs.digest }}
+        shell: pwsh
+        run: |
+          # Cosign keyless signing uses the workflow's OIDC token (we already
+          # have `id-token: write` at the workflow level). The signature is
+          # uploaded to the Sigstore Rekor transparency log and as a co-located
+          # `.sig` artifact in GHCR. Verify with:
+          #   cosign verify ghcr.io/marcschier/opc-classic-managed@${{ env.DIGEST }} \
+          #     --certificate-identity-regexp 'https://github.com/marcschier/opc-classic/\.github/workflows/release\.yml@.*' \
+          #     --certificate-oidc-issuer 'https://token.actions.githubusercontent.com'
+          cosign sign --yes "ghcr.io/marcschier/opc-classic-managed@${env:DIGEST}"
+
+      - name: Build and push opc-classic-c-server (optional)
+        id: build-cserver
+        if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.publish_reference_images == 'true' }}
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          file: interop/docker/opc-c-server/Dockerfile
+          push: true
+          tags: ${{ steps.tags.outputs.cserver_tags }}
+          labels: |
+            org.opencontainers.image.source=https://github.com/marcschier/opc-classic
+            org.opencontainers.image.revision=${{ github.sha }}
+            org.opencontainers.image.version=${{ needs.release.outputs.version }}
+            org.opencontainers.image.licenses=MIT
+            org.opencontainers.image.title=Opc.Classic native C OPC DA reference server
+            org.opencontainers.image.description=C-built OPC DA reference server for downstream interop testing.
+
+      - name: Sign opc-classic-c-server (cosign keyless, optional)
+        if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.publish_reference_images == 'true' }}
+        env:
+          DIGEST: ${{ steps.build-cserver.outputs.digest }}
+        shell: pwsh
+        run: cosign sign --yes "ghcr.io/marcschier/opc-classic-c-server@${env:DIGEST}"
+
+      - name: Build and push opc-classic-c-client (optional)
+        id: build-cclient
+        if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.publish_reference_images == 'true' }}
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          file: interop/docker/opc-c-client/Dockerfile
+          push: true
+          tags: ${{ steps.tags.outputs.cclient_tags }}
+          labels: |
+            org.opencontainers.image.source=https://github.com/marcschier/opc-classic
+            org.opencontainers.image.revision=${{ github.sha }}
+            org.opencontainers.image.version=${{ needs.release.outputs.version }}
+            org.opencontainers.image.licenses=MIT
+            org.opencontainers.image.title=Opc.Classic native C OPC DA reference client
+            org.opencontainers.image.description=C-built headless OPC DA test client for downstream interop testing.
+
+      - name: Sign opc-classic-c-client (cosign keyless, optional)
+        if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.publish_reference_images == 'true' }}
+        env:
+          DIGEST: ${{ steps.build-cclient.outputs.digest }}
+        shell: pwsh
+        run: cosign sign --yes "ghcr.io/marcschier/opc-classic-c-client@${env:DIGEST}"
+
+  docker-publish-linux:
+    # Build and push the LINUX variant of opc-classic-managed to GHCR as a
+    # multi-arch (linux/amd64 + linux/arm64) manifest. Ubuntu runner +
+    # docker buildx + QEMU; ~10x cheaper than the Windows servercore
+    # variant above, and the right choice for non-Windows-COM scenarios
+    # (the managed listener speaks plain TCP RPC — no Windows DCOM required
+    # at runtime).
+    needs: release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.inputs.tag || github.ref }}
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v4
+        with:
+          platforms: linux/amd64,linux/arm64
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v4
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Install cosign
+        uses: sigstore/cosign-installer@v3
+
+      - name: Compute Linux Docker tag list
+        id: tags
+        shell: bash
+        run: |
+          VERSION='${{ needs.release.outputs.version }}'
+          STABLE='${{ needs.release.outputs.is_stable }}'
+          TAGS="ghcr.io/marcschier/opc-classic-managed-linux:${VERSION}"
+          if [ "$STABLE" = "true" ]; then
+            TAGS="${TAGS},ghcr.io/marcschier/opc-classic-managed-linux:latest"
+          fi
+          echo "linux_tags=${TAGS}" >> "$GITHUB_OUTPUT"
+
+      - name: Build and push opc-classic-managed-linux (multi-arch)
+        id: build-managed-linux
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          file: interop/docker/opc-managed/Dockerfile.linux
+          push: true
+          platforms: linux/amd64,linux/arm64
+          tags: ${{ steps.tags.outputs.linux_tags }}
+          labels: |
+            org.opencontainers.image.source=https://github.com/marcschier/opc-classic
+            org.opencontainers.image.revision=${{ github.sha }}
+            org.opencontainers.image.version=${{ needs.release.outputs.version }}
+            org.opencontainers.image.licenses=MIT
+            org.opencontainers.image.title=Opc.Classic managed OPC DA server (Linux)
+            org.opencontainers.image.description=Cross-platform .NET 10 managed OPC Classic DA server container (Linux variant).
+
+      - name: Sign opc-classic-managed-linux (cosign keyless)
+        env:
+          DIGEST: ${{ steps.build-managed-linux.outputs.digest }}
+        run: |
+          # See docker-publish.Sign-opc-classic-managed for the cosign verify
+          # command shape (same workflow identity).
+          cosign sign --yes "ghcr.io/marcschier/opc-classic-managed-linux@${DIGEST}"

@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>TUnit-based unit tests for the hand-rolled MD4 and RC4 in Opc.Classic.Dcom.Crypto.</Description>
+    <RootNamespace>Opc.Classic.Dcom.Crypto.Tests</RootNamespace>
+    <AssemblyName>Opc.Classic.Dcom.Crypto.Tests</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Opc.Classic.Dcom\Opc.Classic.Dcom.csproj" />
+  </ItemGroup>
+
+</Project>

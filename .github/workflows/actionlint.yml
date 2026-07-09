@@ -1,0 +1,39 @@
+name: actionlint
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/**'
+      - '.github/actions/**'
+  push:
+    branches: [master, main]
+    paths:
+      - '.github/workflows/**'
+      - '.github/actions/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# A single small job that runs the official `actionlint` action against every
+# workflow under .github/workflows/. Catches YAML / GitHub-Actions expression /
+# shellcheck-against-`run:` bugs before they break a release.
+#
+# Color output is honored on the runner; PR annotations land via the action's
+# built-in `::error::` directives.
+
+concurrency:
+  group: actionlint-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  actionlint:
+    name: Lint workflows
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Run actionlint
+        uses: docker://rhysd/actionlint:1.7.7
+        with:
+          args: -color

@@ -1,0 +1,4 @@
+﻿Codec: NdrUInt32 0xDEADBEEF
+Bytes: 4
+
+00000000  ef be ad de                                       | ....|

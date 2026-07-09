@@ -1,0 +1,73 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <RuntimeIdentifiers>win-x64;win-arm64;osx-arm64;linux-x64;linux-arm64;linux-musl-x64</RuntimeIdentifiers>
+    <OutputType>Exe</OutputType>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>Opc.Classic.Mcp</RootNamespace>
+  </PropertyGroup>
+  <PropertyGroup>
+    <!-- MCP server packaging -->
+    <PackAsTool>true</PackAsTool>
+    <PackageType>McpServer</PackageType>
+    <ToolCommandName>opc-classic-mcp</ToolCommandName>
+    <!-- Self-contained single-file delivery so AI agents launch us without runtime hassle -->
+    <SelfContained Condition="'$(SelfContained)' == ''">false</SelfContained>
+    <PublishSelfContained Condition="'$(PublishSelfContained)' == ''">true</PublishSelfContained>
+    <PublishSingleFile Condition="'$(PublishSingleFile)' == ''">true</PublishSingleFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <!-- Package metadata -->
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageId>Opc.Classic.Mcp</PackageId>
+    <PackageTags>AI; MCP; server; stdio; opc; opc-da; opc-ae; opc-hda; opc-classic; dcom</PackageTags>
+    <Description>Model Context Protocol (MCP) server exposing the Opc.Classic client surface so AI agents can browse OPC servers, read/write items, subscribe to data changes, query historical data, and consume events through chat.</Description>
+    <!-- nuget.org metadata (mcp/ does not inherit src/Directory.Build.props). -->
+    <Authors>Opc.Classic Contributors</Authors>
+    <Company>Opc.Classic .NET</Company>
+    <Copyright>Copyright (c) 2026 Opc.Classic Contributors</Copyright>
+    <PackageProjectUrl>https://github.com/marcschier/opc-classic</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/marcschier/opc-classic.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <!-- Suppress XML doc warnings until tool implementations land -->
+    <NoWarn>$(NoWarn);CS1591</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include=".mcp\server.json" Pack="true" PackagePath="/.mcp/" />
+    <None Include="README.md" Pack="true" PackagePath="/" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Hosting" />
+    <PackageReference Include="ModelContextProtocol" />
+    <!--
+      Version this tool package in lockstep with the src/ libraries. mcp/ inherits the
+      lean repo-root Directory.Build.props (no nbgv), so without this the package would
+      be frozen at 1.0.0 and could never publish an update to the immutable nuget.org
+      feed. Build-time only (PrivateAssets=all) — no runtime/AOT impact.
+    -->
+    <PackageReference Include="Nerdbank.GitVersioning">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Opc.Classic.Core\Opc.Classic.Core.csproj" />
+    <ProjectReference Include="..\..\src\Opc.Classic.Discovery\Opc.Classic.Discovery.csproj" />
+    <ProjectReference Include="..\..\src\Opc.Classic.Da\Opc.Classic.Da.csproj" />
+    <ProjectReference Include="..\..\src\Opc.Classic.Ae\Opc.Classic.Ae.csproj" />
+    <ProjectReference Include="..\..\src\Opc.Classic.Hda\Opc.Classic.Hda.csproj" />
+    <ProjectReference Include="..\..\src\Opc.Classic.Batch\Opc.Classic.Batch.csproj" />
+    <ProjectReference Include="..\..\src\Opc.Classic.Commands\Opc.Classic.Commands.csproj" />
+    <ProjectReference Include="..\..\src\Opc.Classic.Cpx\Opc.Classic.Cpx.csproj" />
+    <ProjectReference Include="..\..\src\Opc.Classic.Dx\Opc.Classic.Dx.csproj" />
+    <ProjectReference Include="..\..\src\Opc.Classic.Security\Opc.Classic.Security.csproj" />
+    <ProjectReference Include="..\..\src\Opc.Classic.Xml\Opc.Classic.Xml.csproj" />
+    <ProjectReference Include="..\..\src\Opc.Classic.Dcom\Opc.Classic.Dcom.csproj" />
+    <ProjectReference Include="..\..\src\Opc.Classic.Dcom.Kerberos\Opc.Classic.Dcom.Kerberos.csproj" />
+    <ProjectReference Include="..\..\src\Opc.Classic.Hosting\Opc.Classic.Hosting.csproj" />
+    <ProjectReference Include="..\Opc.Classic.Mcp.Capture\Opc.Classic.Mcp.Capture.csproj" />
+  </ItemGroup>
+</Project>

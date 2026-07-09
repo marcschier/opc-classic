@@ -1,0 +1,35 @@
+﻿// Copyright (c) 2026 Opc.Classic Contributors. Licensed under the MIT License.
+
+namespace Opc.Classic.Dcom.Kerberos;
+
+/// <summary>
+/// Abstraction over per-connection Kerberos AP-REQ / AP-REP handshake state.
+/// </summary>
+public interface IKerberosConnectionContext
+{
+    /// <summary>
+    /// Acquires an AP-REQ token for the configured service principal.
+    /// </summary>
+    /// <param name="channelBindingsHash">
+    /// Optional RFC 2744 MD5 channel-bindings hash to embed in the
+    /// KRB_AP_CHKSUM_TYPE_GSS authenticator checksum.
+    /// </param>
+    /// <param name="cancellationToken">Cancellation token for KDC I/O.</param>
+    /// <returns>The AP-REQ token bytes.</returns>
+    Task<byte[]> AcquireApRequestAsync(
+        ReadOnlyMemory<byte>? channelBindingsHash,
+        CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Processes the server AP-REP token and returns the derived session key.
+    /// </summary>
+    /// <param name="apReply">AP-REP token bytes returned by the server.</param>
+    /// <param name="cancellationToken">Cancellation token for AP-REP processing.</param>
+    /// <returns>The derived session key bytes.</returns>
+    Task<byte[]> ProcessApResponseAsync(ReadOnlyMemory<byte> apReply, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Gets the established per-message key metadata when the concrete implementation can expose it.
+    /// </summary>
+    KerberosSessionKey? EstablishedSessionKey => null;
+}

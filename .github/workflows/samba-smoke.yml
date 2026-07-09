@@ -1,0 +1,65 @@
+name: Samba WINREG smoke
+
+# Only on PR + manual: master push already had the smoke run during PR
+# review, so re-running post-merge is redundant CI spend.
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  DOTNET_NOLOGO: 1
+  DOTNET_CLI_TELEMETRY_OPTOUT: 1
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
+  DOTNET_GENERATE_ASPNET_CERTIFICATE: false
+
+jobs:
+  winreg-samba-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-dotnet@v5
+        with:
+          global-json-file: global.json
+
+      - name: Restore
+        run: dotnet restore Opc.Classic.slnx
+
+      - name: Build integration tests
+        run: dotnet build tests/Opc.Classic.Integration.Tests --configuration Release --no-restore
+
+      - name: Start Samba fixture
+        run: docker compose -f interop/docker/samba/docker-compose.yml up -d --build
+
+      - name: Wait for Samba health
+        shell: bash
+        run: |
+          for _ in {1..60}; do
+            status=$(docker inspect -f '{{.State.Health.Status}}' opc-classic-samba 2>/dev/null || echo starting)
+            echo "Samba health: ${status}"
+            if [ "${status}" = "healthy" ]; then
+              exit 0
+            fi
+            sleep 2
+          done
+          docker logs opc-classic-samba || true
+          exit 1
+
+      - name: Run WINREG smoke
+        env:
+          OPC_CLASSIC_INTEGRATION_SAMBA: "1"
+          OPC_CLASSIC_SAMBA_HOST: 127.0.0.1
+          OPC_CLASSIC_SAMBA_USER: opcuser
+          OPC_CLASSIC_SAMBA_PASSWORD: opcpass
+          OPC_CLASSIC_SAMBA_DOMAIN: TESTDOMAIN
+        run: dotnet test tests/Opc.Classic.Integration.Tests --configuration Release --no-build --logger "console;verbosity=normal" -- --treenode-filter "/*/*/WinRegSambaSmokeTests/*"
+
+      - name: Stop Samba fixture
+        if: always()
+        run: docker compose -f interop/docker/samba/docker-compose.yml down -v

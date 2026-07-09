@@ -1,0 +1,39 @@
+# Default behavior: if Git thinks a file is text (as opposed to binary), it
+# will normalize line endings to LF in the repository, but convert to your
+# platform's native line endings on checkout (e.g., CRLF for Windows).
+* text=auto
+
+# Explicitly declare text files you want to always be normalized and converted
+# to native line endings on checkout. E.g.,
+#*.c text
+
+# Declare files that will always have CRLF line endings on checkout.
+# These tracks .editorconfig's [*.{cs,csx}] end_of_line = crlf rule plus
+# the [*.{cmd,bat,ps1}] CRLF rule. Without these the line endings are
+# converted to LF on Linux CI checkouts, then dotnet format --verify-no-
+# changes correctly flags the resulting LF endings as needing CRLF.
+*.cs text eol=crlf
+*.csx text eol=crlf
+*.cmd text eol=crlf
+*.bat text eol=crlf
+*.ps1 text eol=crlf
+
+# Declare files that will always have LF line endings on checkout.
+*.sh text eol=lf
+*.json text eol=lf
+*.yaml text eol=lf
+*.yml text eol=lf
+*.md text eol=lf
+*.verified.* text eol=crlf
+
+# Denote all files that should not have line endings normalized, should not be
+# merged, and should not show in a textual diff.
+*.docm binary
+*.docx binary
+*.ico binary
+*.lib binary
+*.png binary
+*.pptx binary
+*.snk binary
+*.vsdx binary
+*.xps binary

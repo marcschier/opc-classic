@@ -1,0 +1,80 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!--
+    Opc.Classic.Generators — Roslyn IIncrementalGenerator project.
+
+    Source generators MUST target netstandard2.0 per Roslyn requirements.
+    This project intentionally OVERRIDES the inherited net10 + AOT-strict
+    properties from src/Directory.Build.props because:
+      - Generators are build-time only (they run inside csc / MSBuild and emit
+        source into consumer projects); they're never AOT-published.
+      - The generator's *output* must be AOT-safe — that's the contract this
+        project upholds. The generator itself need not be.
+  -->
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+
+    <IsRoslynComponent>true</IsRoslynComponent>
+    <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
+
+    <Description>Roslyn IIncrementalGenerator(s) for Opc.Classic.* — emits AOT-safe call shims, NDR marshallers, GUID tables, and dispatch tables.</Description>
+    <RootNamespace>Opc.Classic.Generators</RootNamespace>
+    <AssemblyName>Opc.Classic.Generators</AssemblyName>
+
+    <!-- Override inherited AOT / trim properties — generators are build-time only. -->
+    <IsAotCompatible>false</IsAotCompatible>
+    <IsTrimmable>false</IsTrimmable>
+    <EnableTrimAnalyzer>false</EnableTrimAnalyzer>
+    <EnableAotAnalyzer>false</EnableAotAnalyzer>
+    <EnableSingleFileAnalyzer>false</EnableSingleFileAnalyzer>
+    <!-- The PublishAot=true global property set by a downstream AOT publish
+         (AotCanary) propagates through the project graph and triggers
+         "ahead-of-time compilation is not supported for the target framework"
+         on this netstandard2.0 generator. Explicitly override to false so the
+         project never participates in the AOT-publish step (the generator
+         only runs at consumer compile time anyway; it isn't published). -->
+    <PublishAot>false</PublishAot>
+
+    <!-- Published as a standalone Roslyn analyzer/generator NuGet package (analyzers/dotnet/cs).
+         In-repo consumers still use it via <ProjectReference OutputItemType="Analyzer"
+         ReferenceOutputAssembly="false"/>, which is independent of packaging. -->
+    <IsPackable>true</IsPackable>
+    <IsPublishable>false</IsPublishable>
+    <PackageId>Opc.Classic.Generators</PackageId>
+    <PackageTags>opc;opc-classic;roslyn;source-generator;analyzer;dotnet-10</PackageTags>
+    <!-- Analyzer-package conventions: DLL under analyzers/, no lib/ assembly, no runtime
+         dependencies (the Roslyn host supplies Microsoft.CodeAnalysis). SuppressDependencies
+         + NU5128 NoWarn keep the pack clean under the repo-wide TreatWarningsAsErrors. -->
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+    <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
+    <IncludeSymbols>false</IncludeSymbols>
+    <NoWarn>$(NoWarn);NU5128</NoWarn>
+
+    <!-- Don't emit XML doc file for the generator project; we have CS1591 noise from
+         the Roslyn API surface that doesn't carry forward into consumers. -->
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp">
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.CodeAnalysis.Analyzers">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Per Roslyn analyzer release tracking convention; satisfies RS2008. -->
+    <AdditionalFiles Include="AnalyzerReleases.Shipped.md" />
+    <AdditionalFiles Include="AnalyzerReleases.Unshipped.md" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Ship the generator assembly in the analyzer well-known folder so NuGet installs it as an analyzer. -->
+    <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" Condition="Exists('$(OutputPath)\$(AssemblyName).dll')" />
+  </ItemGroup>
+</Project>

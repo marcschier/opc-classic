@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>Verify.TUnit golden-file snapshot tests for OPC Classic wire-format codecs.</Description>
+    <RootNamespace>Opc.Classic.SnapshotTests</RootNamespace>
+    <AssemblyName>Opc.Classic.SnapshotTests</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Opc.Classic.Core\Opc.Classic.Core.csproj" />
+    <ProjectReference Include="..\..\src\Opc.Classic.Da\Opc.Classic.Da.csproj" />
+    <ProjectReference Include="..\..\src\Opc.Classic.Hda\Opc.Classic.Hda.csproj" />
+    <ProjectReference Include="..\..\src\Opc.Classic.Ae\Opc.Classic.Ae.csproj" />
+    <ProjectReference Include="..\..\src\Opc.Classic.Dcom\Opc.Classic.Dcom.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Verify.TUnit" />
+  </ItemGroup>
+
+</Project>

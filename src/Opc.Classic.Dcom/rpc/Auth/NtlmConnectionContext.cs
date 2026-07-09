@@ -1,0 +1,155 @@
+﻿// Copyright (c) 2026 Opc.Classic Contributors. Licensed under the MIT License.
+
+using Opc.Classic.Dcom.Internal;
+using System.Globalization;
+using Opc.Classic.Dcom.Rpc.Core;
+using Opc.Classic.Dcom.Rpc.pdu;
+
+namespace Opc.Classic.Dcom.Rpc.Auth.ntlm;
+
+/// <summary>
+/// Connection context
+/// </summary>
+public class NtlmConnectionContext : IConnectionContext
+{
+    /// <summary>
+    /// Connection
+    /// </summary>
+    public IConnection Connection { get; private set; }
+
+    /// <summary>
+    /// Established
+    /// </summary>
+    public virtual bool Established { get; private set; }
+
+    /// <summary>
+    /// Initialize
+    /// </summary>
+    /// <param name="context">Codec context that tracks deferred pointers and per-call buffers.</param>
+    /// <param name="properties">Property values used to initialize the COM descriptor.</param>
+    /// <exception cref="IOException">Thrown when the underlying stream, socket, or named pipe read/write operation fails.</exception>
+    /// <returns>The NTLM Type 1 token produced while initializing the connection context.</returns>
+    public virtual ConnectionOrientedPdu Init2(PresentationContext context, PropertyBag properties)
+    {
+        Established = false;
+        if (properties != null)
+        {
+            var maxTransmit = (string)properties.GetProperty(Opc.Classic.Dcom.Rpc.Connection.MAX_TRANSMIT_FRAGMENT);
+            if (maxTransmit != null)
+            {
+                _maxTransmitFragment = int.Parse(maxTransmit, CultureInfo.InvariantCulture);
+            }
+            var maxReceive = (string)properties.GetProperty(Opc.Classic.Dcom.Rpc.Connection.MAX_RECEIVE_FRAGMENT);
+            if (maxReceive != null)
+            {
+                _maxReceiveFragment = int.Parse(maxReceive, CultureInfo.InvariantCulture);
+            }
+        }
+        var pdu = new BindPdu
+        {
+            ContextList = new PresentationContext[] { context },
+            MaxTransmitFragment = _maxTransmitFragment,
+            MaxReceiveFragment = _maxReceiveFragment
+        };
+        Connection = new NtlmConnection(properties);
+        _assocGroupId = 0;
+        return pdu;
+    }
+
+    /// <inheritdoc/>
+    public virtual ConnectionOrientedPdu Init(PresentationContext context, PropertyBag properties)
+    {
+        var pdu = (BindPdu)Init2(context, properties);
+        pdu.ResetCallIdCounter();
+        return pdu;
+    }
+
+    /// <inheritdoc/>
+    public virtual ConnectionOrientedPdu Alter(PresentationContext context)
+    {
+        Established = false;
+        var pdu = new AlterContextPdu
+        {
+            ContextList = new PresentationContext[] { context },
+            AssociationGroupId = _assocGroupId
+        };
+        return pdu;
+    }
+
+    /// <inheritdoc/>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Meziantou.Analyzer", "MA0051:Method is too long", Justification = "NTLM bind-acknowledge / alter-context / auth3 PDU handling forms a single state machine; splitting per PDU type fragments the auth handshake.")]
+    public virtual ConnectionOrientedPdu Accept(ConnectionOrientedPdu pdu)
+    {
+        PresentationResult[] results;
+        switch (pdu.Type)
+        {
+            case BindAcknowledgePdu.BIND_ACKNOWLEDGE_TYPE:
+                var bindAck = (BindAcknowledgePdu)pdu;
+                results = bindAck.ResultList;
+                if (results == null)
+                {
+                    throw new BindException("No presentation context results.");
+                }
+                for (var i = results.Length - 1; i >= 0; i--)
+                {
+                    if (results[i].Result != PresentationResultCode.ACCEPTANCE)
+                    {
+                        throw new PresentationException("Context rejected.", results[i]);
+                    }
+                }
+                _transmitLength = bindAck.MaxReceiveFragment;
+                _receiveLength = bindAck.MaxTransmitFragment;
+                Established = true;
+                ((NtlmConnection)Connection).TransmitLength = _transmitLength;
+                ((NtlmConnection)Connection).ReceiveLength = _receiveLength;
+                _assocGroupId = bindAck.AssociationGroupId;
+                return new Auth3Pdu();
+            case AlterContextResponsePdu.ALTER_CONTEXT_RESPONSE_TYPE:
+                var alterContextResponse = (AlterContextResponsePdu)pdu;
+                results = alterContextResponse.ResultList;
+                if (results == null)
+                {
+                    throw new BindException("No presentation context results.");
+                }
+                for (var i = results.Length - 1; i >= 0; i--)
+                {
+                    if (results[i].Result != PresentationResultCode.ACCEPTANCE)
+                    {
+                        throw new PresentationException("Context rejected.", results[i]);
+                    }
+                }
+                Established = true;
+                // return new Auth3Pdu();
+                return null;
+            case BindNoAcknowledgePdu.BIND_NO_ACKNOWLEDGE_TYPE:
+                throw new BindException("Unable to bind.", ((BindNoAcknowledgePdu)pdu).RejectReason);
+            case FaultCoPdu.FAULT_TYPE:
+                throw new FaultException("Fault occurred.", ((FaultCoPdu)pdu).Status);
+            case ShutdownPdu.SHUTDOWN_TYPE:
+                throw new RpcException("Server shutdown connection.");
+            case BindPdu.BIND_TYPE:
+                Established = false;
+                // CHECK PRESENTATION CONTEXT
+                // CHALLENGE
+                throw new RpcException("Server-side NTLM bind challenge handling is not implemented.");
+            case AlterContextPdu.ALTER_CONTEXT_TYPE:
+                Established = false;
+                // CHECK PRESENTATION CONTEXT
+                // CHALLENGE
+                throw new RpcException("Server-side NTLM alter-context challenge handling is not implemented.");
+            case Auth3Pdu.AUTH3_TYPE:
+                // AUTHENTICATE
+                // TWEAK CONNECTION
+                Established = true;
+                return null;
+            default:
+                throw new RpcException("Unknown/unacceptable PDU type.");
+        }
+    }
+
+    private int _maxTransmitFragment = Opc.Classic.Dcom.Rpc.Connection.DEFAULT_MAX_TRANSMIT_FRAGMENT;
+    private int _maxReceiveFragment = Opc.Classic.Dcom.Rpc.Connection.DEFAULT_MAX_RECEIVE_FRAGMENT;
+    private int _transmitLength;
+    private int _receiveLength;
+    private int _assocGroupId;
+}

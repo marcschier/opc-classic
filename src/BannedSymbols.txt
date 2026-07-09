@@ -1,0 +1,37 @@
+; Banned APIs inside src/ — these patterns are incompatible with NativeAOT
+; (or strongly suggest it) and must be replaced by source-generated code.
+;
+; Format: one banned symbol per line.
+;   T:Full.Type.Name;Justification message shown on violation.
+;   M:Full.Type.Name.Method(args);Justification.
+;   F:Full.Type.Name.field;Justification.
+;
+; See: https://github.com/dotnet/roslyn-analyzers/blob/main/docs/Banned%20API%20Analyzers.md
+
+T:System.Reflection.Emit.DynamicMethod;Reflection.Emit is RequiresDynamicCode and breaks NativeAOT. Use a source generator (Opc.Classic.Generators) instead.
+T:System.Reflection.Emit.AssemblyBuilder;Reflection.Emit is RequiresDynamicCode and breaks NativeAOT. Use a source generator instead.
+T:System.Reflection.Emit.MethodBuilder;Reflection.Emit is RequiresDynamicCode and breaks NativeAOT. Use a source generator instead.
+T:System.Reflection.Emit.TypeBuilder;Reflection.Emit is RequiresDynamicCode and breaks NativeAOT. Use a source generator instead.
+T:System.Reflection.Emit.ModuleBuilder;Reflection.Emit is RequiresDynamicCode and breaks NativeAOT. Use a source generator instead.
+
+M:System.Linq.Expressions.LambdaExpression.Compile();Compiling expression trees at runtime is RequiresDynamicCode and breaks NativeAOT. Use a source generator instead.
+M:System.Linq.Expressions.LambdaExpression.Compile(System.Boolean);Compiling expression trees at runtime is RequiresDynamicCode and breaks NativeAOT.
+M:System.Linq.Expressions.Expression`1.Compile;Compiling expression trees at runtime is RequiresDynamicCode and breaks NativeAOT. Use a source generator instead.
+
+M:System.Activator.CreateInstance(System.Type);Reflection-based creation defeats NativeAOT trim analysis. Use `new T()` with a `new()` constraint, a factory delegate, or a source generator.
+M:System.Activator.CreateInstance(System.Type,System.Object[]);Reflection-based creation defeats NativeAOT trim analysis.
+M:System.Activator.CreateInstance``1;Use `new T()` with a `new()` constraint, a factory delegate, or a source generator.
+
+M:System.Reflection.MethodInfo.Invoke(System.Object,System.Object[]);MethodInfo.Invoke is incompatible with NativeAOT trim. Use a source-generated dispatch table (Opc.Classic.Generators DispatchGenerator).
+M:System.Reflection.MethodInfo.Invoke(System.Object,System.Reflection.BindingFlags,System.Reflection.Binder,System.Object[],System.Globalization.CultureInfo);MethodInfo.Invoke is incompatible with NativeAOT trim.
+M:System.Reflection.MethodBase.Invoke(System.Object,System.Object[]);MethodBase.Invoke is incompatible with NativeAOT trim.
+
+M:System.Type.GetType(System.String);Runtime type resolution by string defeats NativeAOT trim. Use `typeof(T)` directly.
+M:System.Type.GetType(System.String,System.Boolean);Runtime type resolution by string defeats NativeAOT trim.
+M:System.Type.GetType(System.String,System.Boolean,System.Boolean);Runtime type resolution by string defeats NativeAOT trim.
+
+T:System.Runtime.InteropServices.ComImportAttribute;[ComImport] requires the Windows COM runtime and is meaningless in a cross-platform DCOM stack. The managed DCOM client (Opc.Classic.Dcom) replaces every COM RCW with IComObject + CallBuilder.
+
+M:System.Runtime.InteropServices.Marshal.GetObjectForNativeVariant(System.IntPtr);Windows COM Automation marshaling is meaningless cross-platform. Use NDR/VARIANT encoder in Opc.Classic.Dcom.
+M:System.Runtime.InteropServices.Marshal.GetNativeVariantForObject(System.Object,System.IntPtr);Windows COM Automation marshaling is meaningless cross-platform.
+M:System.Runtime.InteropServices.Marshal.ReleaseComObject(System.Object);CLR COM reference counting only applies to Windows COM RCWs. The managed DCOM stack uses IComObject.Dispose() instead.

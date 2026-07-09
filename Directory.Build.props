@@ -1,0 +1,41 @@
+<Project>
+
+  <!--
+    Repo-root Directory.Build.props. MSBuild walks up the directory tree from
+    each .csproj looking for the first Directory.Build.props; this file is
+    picked up automatically by projects under mcp/ and benchmarks/ which have
+    no per-tree Directory.Build.props of their own.
+
+    The per-tree files under src/, tests/, and samples/ Import this file at
+    the top via $([MSBuild]::GetPathOfFileAbove(...)) so the analyzer set
+    here is wired into every project in the repo.
+
+    Keep this file LEAN — anything tree-specific (TreatWarningsAsErrors,
+    AnalysisMode, AOT settings, package metadata, etc.) lives in the
+    appropriate per-tree Directory.Build.props.
+  -->
+
+  <ItemGroup>
+    <!--
+      Roslynator.Analyzers (RCS1xxx + ROS rule families). Centralized version
+      in src/Directory.Packages.props under the "Build-time analyzers" group.
+      Rule severity is configured in .editorconfig alongside the existing
+      CA/MA/VSTHRD severity entries.
+    -->
+    <PackageReference Include="Roslynator.Analyzers">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <!--
+      Roslynator.Formatting.Analyzers (RCS0xxx rule family). All rules ship at
+      severity 'none' by default; a curated subset is promoted to 'warning' in
+      .editorconfig. See the RCS0xxx entries near the Roslynator section in
+      .editorconfig for the per-rule rationale.
+    -->
+    <PackageReference Include="Roslynator.Formatting.Analyzers">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+</Project>

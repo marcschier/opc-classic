@@ -1,0 +1,174 @@
+name: nuget
+
+# Manual action: promote the curated nuget.org set (the Opc.Classic SDK meta-package,
+# the Opc.Classic.Windows add-on, the Opc.Classic.Generators + Opc.Classic.MigrationAnalyzer
+# analyzer packages, and the Opc.Classic.Mcp server + its per-RID variants) from the
+# GitHub Packages NuGet feed to nuget.org, using NuGet trusted publishing
+# (OIDC) instead of a long-lived API key. The granular per-spec Opc.Classic.* packages
+# stay GitHub-feed-only and are intentionally not promoted.
+#
+# What it does when run:
+#   1. Probes the GitHub Packages NuGet feed (flat-container protocol) for the
+#      curated candidate ids and the versions each has published.
+#   2. Picks the latest published version (or the version you supply as input).
+#   3. Downloads every package at that version straight from the GitHub feed
+#      (no rebuild/repack — the exact bytes that were released are promoted).
+#   4. Exchanges the workflow's OIDC token for a short-lived nuget.org key via
+#      NuGet/login@v1 and pushes the packages to nuget.org (idempotent).
+#
+# One-time setup on nuget.org (https://www.nuget.org/account/trustedpublishing):
+#   Add policy -> Repository Owner: marcschier, Repository: opc-classic,
+#   Workflow File: nuget.yml, Environment: release.
+# And a `release` GitHub Environment with secret NUGET_USER = your nuget.org
+# username (NOT email).
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Exact package version to promote from the GitHub feed (e.g. 1.0.0-rc.11). Leave blank to promote the latest published version.'
+        required: false
+        type: string
+
+permissions:
+  id-token: write   # required: OIDC token for NuGet trusted publishing to nuget.org
+  packages: read    # required: read packages from the GitHub Packages NuGet feed
+  contents: read
+
+concurrency:
+  group: nuget-promote
+  cancel-in-progress: false
+
+jobs:
+  promote:
+    name: Promote latest GitHub-feed packages to nuget.org
+    runs-on: ubuntu-latest
+    environment: release
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-dotnet@v5
+        with:
+          global-json-file: global.json
+
+      - name: Resolve and download packages from the GitHub feed
+        id: resolve
+        env:
+          # GITHUB_TOKEN (with packages: read) authenticates to the GitHub Packages
+          # NuGet feed over the NuGet V3 protocol — no read:packages PAT needed.
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          OWNER: ${{ github.repository_owner }}
+          INPUT_VERSION: ${{ github.event.inputs.version }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          # PackageBaseAddress (flat container) of the GitHub Packages NuGet feed.
+          BASE="https://nuget.pkg.github.com/${OWNER}/download"
+
+          # 1. Candidate package IDs = the curated nuget.org set ONLY. Every other
+          #    Opc.Classic.* per-spec package stays GitHub-feed-only and is deliberately
+          #    not promoted. Candidates missing from the feed return 404 and are skipped.
+          #    The MCP server (PackageType=McpServer) also ships per-RID runtime packages
+          #    that the base tool package pulls in, so they must be promoted too. Keep the
+          #    RID list in sync with <RuntimeIdentifiers> in mcp/Opc.Classic.Mcp.csproj.
+          CANDIDATES=(
+            Opc.Classic
+            Opc.Classic.Windows
+            Opc.Classic.Generators
+            Opc.Classic.MigrationAnalyzer
+            Opc.Classic.Mcp
+            Opc.Classic.Mcp.win-x64
+            Opc.Classic.Mcp.win-arm64
+            Opc.Classic.Mcp.osx-arm64
+            Opc.Classic.Mcp.linux-x64
+            Opc.Classic.Mcp.linux-arm64
+            Opc.Classic.Mcp.linux-musl-x64
+          )
+
+          mkdir -p artifacts versions
+          ALL_VERSIONS="$(mktemp)"
+          PUBLISHED=()
+
+          # 2. Probe each candidate's flat-container index for its published versions.
+          for id in "${CANDIDATES[@]}"; do
+            idl="$(echo "$id" | tr '[:upper:]' '[:lower:]')"
+            body="$(curl -fsSL -H "Authorization: Bearer ${GH_TOKEN}" "${BASE}/${idl}/index.json" 2>/dev/null || true)"
+            [ -n "$body" ] || continue
+            vers="$(echo "$body" | jq -r '.versions[]?' 2>/dev/null || true)"
+            [ -n "$vers" ] || continue
+            PUBLISHED+=("$id")
+            printf '%s\n' "$vers" > "versions/${idl}.txt"
+            printf '%s\n' "$vers" >> "$ALL_VERSIONS"
+          done
+
+          if [ "${#PUBLISHED[@]}" -eq 0 ]; then
+            echo "::error::No packages found on the GitHub feed for ${OWNER}. Confirm the release workflow pushed to https://nuget.pkg.github.com/${OWNER}/index.json."
+            exit 1
+          fi
+          echo "Found ${#PUBLISHED[@]} published package(s) on the GitHub feed."
+
+          # 3. Choose the version to promote. Auto = highest by semver precedence
+          #    (map the leading '-' to Debian '~' so `sort -V` ranks prereleases
+          #    below the matching stable and orders rc.9 < rc.10 correctly).
+          if [ -n "${INPUT_VERSION}" ]; then
+            TARGET="${INPUT_VERSION}"
+            echo "Promoting requested version: ${TARGET}"
+          else
+            TARGET="$(sed 's/-/~/' "$ALL_VERSIONS" | sort -V | tail -n1 | sed 's/~/-/')"
+            if [ -z "$TARGET" ]; then
+              echo "::error::Could not determine the latest published version from the GitHub feed."
+              exit 1
+            fi
+            echo "Auto-selected latest published version: ${TARGET}"
+          fi
+
+          # 4. Download every published package that carries the target version.
+          downloaded=0
+          for id in "${PUBLISHED[@]}"; do
+            idl="$(echo "$id" | tr '[:upper:]' '[:lower:]')"
+            if ! grep -qxF "$TARGET" "versions/${idl}.txt"; then
+              echo "::notice::Skipping ${id}: version ${TARGET} is not on the feed."
+              continue
+            fi
+            verl="$(echo "$TARGET" | tr '[:upper:]' '[:lower:]')"
+            echo "Downloading ${id} ${TARGET}"
+            curl -fSL -H "Authorization: Bearer ${GH_TOKEN}" \
+              -o "artifacts/${idl}.${verl}.nupkg" \
+              "${BASE}/${idl}/${verl}/${idl}.${verl}.nupkg"
+            downloaded=$((downloaded + 1))
+          done
+
+          if [ "$downloaded" -eq 0 ]; then
+            echo "::error::No .nupkg files were downloaded for version ${TARGET}."
+            exit 1
+          fi
+          echo "Downloaded ${downloaded} package(s) at version ${TARGET}."
+          {
+            echo "version=${TARGET}"
+            echo "count=${downloaded}"
+          } >> "$GITHUB_OUTPUT"
+
+      # NuGet login happens right before the push so the short-lived token is fresh.
+      - name: NuGet login (OIDC trusted publishing)
+        id: login
+        uses: NuGet/login@v1
+        with:
+          user: ${{ secrets.NUGET_USER }}
+
+      - name: Push to nuget.org
+        run: |
+          dotnet nuget push "artifacts/*.nupkg" \
+            --api-key "${{ steps.login.outputs.NUGET_API_KEY }}" \
+            --source https://api.nuget.org/v3/index.json \
+            --skip-duplicate
+
+      - name: Summary
+        if: always()
+        run: |
+          {
+            echo "### nuget.org promotion"
+            echo ""
+            echo "- Version: \`${{ steps.resolve.outputs.version }}\`"
+            echo "- Packages promoted: \`${{ steps.resolve.outputs.count }}\`"
+            echo "- Source: GitHub Packages feed → nuget.org (trusted publishing)"
+          } >> "$GITHUB_STEP_SUMMARY"

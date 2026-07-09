@@ -1,0 +1,17 @@
+# Copyright (c) 2026 Opc.Classic Contributors. Licensed under the MIT License.
+#
+# Project-scoped suppressions for the SMB2 codec.
+#
+# MA0048 (file name must match type name): the SMB2 codec naturally groups
+# request/response record-struct pairs (Negotiate{Request,Response},
+# Read{Request,Response}, etc.) into one file per command. Splitting these
+# into one file per record produces 30+ near-empty files that hurt readability.
+#
+# MA0008 (Add StructLayoutAttribute): every codec record-struct carries
+# a ReadOnlyMemory<byte> field or similar that prevents blittable layout.
+# StructLayout(Auto) is the default for record structs; the attribute would be
+# pure noise on every type.
+
+[*.cs]
+dotnet_diagnostic.MA0048.severity = none
+dotnet_diagnostic.MA0008.severity = none

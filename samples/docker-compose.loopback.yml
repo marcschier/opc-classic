@@ -1,0 +1,17 @@
+name: opc-classic-loopback
+
+services:
+  loopbackdemo:
+    image: opcclassic/loopbackdemo:local
+    build:
+      context: ..
+      dockerfile: samples/Opc.Classic.Samples.LoopbackDemo/Dockerfile
+    environment:
+      DOTNET_ENVIRONMENT: Production
+    networks:
+      - opcclassic-loopback
+    restart: "no"
+
+networks:
+  opcclassic-loopback:
+    driver: bridge

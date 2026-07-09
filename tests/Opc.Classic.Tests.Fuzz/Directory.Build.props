@@ -1,0 +1,8 @@
+<!-- Copyright (c) 2026 Opc.Classic Contributors. Licensed under the MIT License. -->
+<Project>
+  <PropertyGroup>
+    <IsTestProject>false</IsTestProject>
+  </PropertyGroup>
+
+  <Import Project="$(MSBuildThisFileDirectory)..\Directory.Build.props" />
+</Project>

@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>TUnit-based unit tests for Opc.Classic.Ae managed types.</Description>
+    <RootNamespace>Opc.Classic.Ae.Tests</RootNamespace>
+    <AssemblyName>Opc.Classic.Ae.Tests</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Opc.Classic.Ae\Opc.Classic.Ae.csproj" />
+  </ItemGroup>
+
+</Project>

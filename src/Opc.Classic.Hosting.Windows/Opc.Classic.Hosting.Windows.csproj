@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>Opc.Classic.Hosting.Windows</RootNamespace>
+    <AssemblyName>Opc.Classic.Hosting.Windows</AssemblyName>
+    <Description>Windows-only COM-vtable interop for OPC Classic: AOT-friendly IClassFactory registration (ComClassObjectRegistrar) + HKLM CLSID writers + DA/AE/HDA CCW vtables, marshalers, and callback proxies.</Description>
+    <!-- Hosting/Da/Ae/Hda CCWs use unsafe COM-vtable interop for AOT-friendly IClassFactory + CCWs. -->
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Opc.Classic.Hosting\Opc.Classic.Hosting.csproj" />
+    <ProjectReference Include="..\Opc.Classic.Da\Opc.Classic.Da.csproj" />
+    <ProjectReference Include="..\Opc.Classic.Ae\Opc.Classic.Ae.csproj" />
+    <ProjectReference Include="..\Opc.Classic.Hda\Opc.Classic.Hda.csproj" />
+  </ItemGroup>
+</Project>

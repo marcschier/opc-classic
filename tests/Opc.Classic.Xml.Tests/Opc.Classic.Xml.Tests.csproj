@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>TUnit tests for Opc.Classic.Xml.</Description>
+    <RootNamespace>Opc.Classic.Xml.Tests</RootNamespace>
+    <AssemblyName>Opc.Classic.Xml.Tests</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Opc.Classic.Tests.Fuzz\Opc.Classic.Tests.Fuzz.csproj" />
+    <ProjectReference Include="..\..\src\Opc.Classic.Xml\Opc.Classic.Xml.csproj" />
+  </ItemGroup>
+
+</Project>

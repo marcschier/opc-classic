@@ -1,0 +1,56 @@
+<Project>
+
+  <!-- Inherit central package versions from the repo-root Directory.Packages.props
+       (which re-exports src/Directory.Packages.props). Roslynator.Analyzers,
+       Meziantou.Analyzer, and the other build-time analyzer versions live there. -->
+  <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Packages.props', '$(MSBuildThisFileDirectory)..'))" />
+
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
+  </PropertyGroup>
+
+  <ItemGroup Label="Test framework — TUnit on Microsoft.Testing.Platform">
+    <PackageVersion Include="TUnit" Version="0.13.0" />
+    <PackageVersion Include="TUnit.Assertions" Version="0.13.0" />
+  </ItemGroup>
+
+  <ItemGroup Label="Cross-process integration tests">
+    <PackageVersion Include="Testcontainers" Version="4.0.0" />
+  </ItemGroup>
+
+  <ItemGroup Label="Coverage">
+    <PackageVersion Include="coverlet.collector" Version="6.0.4" />
+    <PackageVersion Include="coverlet.msbuild" Version="6.0.4" />
+  </ItemGroup>
+
+  <ItemGroup Label="Property-based tests (CsCheck — framework-agnostic, no reflection generators)">
+    <PackageVersion Include="CsCheck" Version="4.4.0" />
+  </ItemGroup>
+
+  <ItemGroup Label="Snapshot tests (Verify with the TUnit adapter)">
+    <PackageVersion Include="Verify.TUnit" Version="28.10.0" />
+  </ItemGroup>
+
+  <ItemGroup Label="Roslyn source-generator tests">
+    <!-- Microsoft.CodeAnalysis.CSharp inherited from src/Directory.Packages.props via repo-root import. -->
+  </ItemGroup>
+
+  <ItemGroup Label="Microsoft.Extensions test helpers">
+    <!-- DependencyInjection / Logging / Logging.Abstractions inherited from src/Directory.Packages.props. -->
+    <PackageVersion Include="Microsoft.Extensions.Diagnostics.Testing" Version="10.1.0" />
+  </ItemGroup>
+
+  <ItemGroup Label="TRANSITIONAL — Serilog package removed once ILogger migration complete.">
+    <!-- Serilog removed — all Opc.Classic.Dcom consumers migrated to ILogger shim. -->
+  </ItemGroup>
+
+  <!--
+    Mocking: hand-written test doubles are the default AOT-clean
+    strategy. Do not add Castle-proxy, Reflection.Emit, or DispatchProxy-based
+    packages. Shared doubles live in tests/_TestDoubles/; ILogger assertions use
+    Microsoft.Extensions.Diagnostics.Testing (FakeLogger APIs).
+  -->
+
+</Project>
+

@@ -1,0 +1,39 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>Windows DCOM server-hosting add-on for the Opc.Classic SDK. Bundles Opc.Classic.Hosting.Windows (COM registration/activation) so a managed Opc.Classic server can be exposed as a real Windows DCOM server. Depends on the Opc.Classic package for the shared runtime assemblies.</Description>
+    <RootNamespace>Opc.Classic.Windows</RootNamespace>
+    <AssemblyName>Opc.Classic.Windows</AssemblyName>
+    <PackageId>Opc.Classic.Windows</PackageId>
+    <PackageTags>opc;opc-classic;opc-da;dcom;windows;com;server;hosting;sdk;dotnet-10</PackageTags>
+    <!-- Add-on package: bundles only Hosting.Windows and depends on Opc.Classic. Per-assembly symbols ship on the GitHub feed. -->
+    <IncludeSymbols>false</IncludeSymbols>
+  </PropertyGroup>
+
+  <!--
+    Bundle ONLY Opc.Classic.Hosting.Windows.dll (the Windows COM host) into lib/<tfm>/;
+    every other assembly it needs (Hosting/Da/Ae/Hda/Core/Dcom/...) ships in the
+    Opc.Classic package this add-on depends on, so we must NOT re-bundle them here.
+  -->
+  <PropertyGroup>
+    <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);IncludeHostingWindowsInPackage</TargetsForTfmSpecificBuildOutput>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Source of the single bundled assembly; PrivateAssets=all so it is not emitted as a package dependency. -->
+    <ProjectReference Include="..\Opc.Classic.Hosting.Windows\Opc.Classic.Hosting.Windows.csproj" PrivateAssets="all" />
+    <!-- Normal reference => emits <dependency id="Opc.Classic" version="…"/>; the shared DLLs come from that package. -->
+    <ProjectReference Include="..\Opc.Classic\Opc.Classic.csproj" />
+  </ItemGroup>
+
+  <Target Name="IncludeHostingWindowsInPackage" DependsOnTargets="ResolveReferences">
+    <ItemGroup>
+      <_OpcHostingWindowsDll Include="@(ReferenceCopyLocalPaths)"
+                             Condition="'%(ReferenceCopyLocalPaths.ReferenceSourceTarget)' == 'ProjectReference' And '%(Filename)' == 'Opc.Classic.Hosting.Windows' And '%(Extension)' == '.dll'" />
+      <BuildOutputInPackage Include="@(_OpcHostingWindowsDll)" />
+      <BuildOutputInPackage Include="@(_OpcHostingWindowsDll->'%(RootDir)%(Directory)%(Filename).xml')"
+                            Condition="Exists('%(RootDir)%(Directory)%(Filename).xml')" />
+    </ItemGroup>
+  </Target>
+
+</Project>

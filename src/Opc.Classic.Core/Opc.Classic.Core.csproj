@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <Description>Cross-spec primitives (OpcVariant, OpcQuality, OpcUrl, FILETIME helpers, NDR codec primitives) for the OPC Classic .NET stack.</Description>
+    <RootNamespace>Opc.Classic</RootNamespace>
+    <AssemblyName>Opc.Classic.Core</AssemblyName>
+  </PropertyGroup>
+  <!-- Opc.Classic.Generators is wired in centrally via src/Directory.Build.props. -->
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
+  </ItemGroup>
+</Project>

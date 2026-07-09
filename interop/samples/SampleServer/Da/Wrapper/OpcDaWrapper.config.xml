@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Server 
+  xmlns="http://schemas.opcfoundation.org/OPCSample/" 
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  ServerWrapper="true"
+ > 
+  <SelfRegInfo xmlns="http://schemas.opcfoundation.org/OPC/">
+	  <VendorName>OPC</VendorName>
+	  <ApplicationName>OpcDaWrapper</ApplicationName>
+	  <ApplicationDescription>OPC DA Server Wrapper</ApplicationDescription>
+	  <AppID>{12E2FD32-D48E-4B66-9AF5-8C409AC2C481}</AppID>
+	  <ClassName>DaWrapper</ClassName>
+	  <ClassDescription>OPC DA Server Wrapper</ClassDescription>
+	  <ClassVersion>1</ClassVersion>
+	  <CLSID>{1437DC7F-D66E-4AA3-BA79-2CD0A4A6F3D8}</CLSID>
+	  <WrappedServerID>OPCSample.NET.DaServer</WrappedServerID>
+  </SelfRegInfo>
+</Server>

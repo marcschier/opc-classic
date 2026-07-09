@@ -1,0 +1,106 @@
+<Project>
+
+  <!-- Inherit Roslynator analyzer + future cross-tree settings from the repo-root Directory.Build.props. -->
+  <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)..'))" />
+
+  <!--
+    Applies to every tests/*/*.csproj. Per the implementation plan's libs_only
+    NativeAOT scope, test projects are NOT AOT-strict — they may use reflection-
+    heavy testing infrastructure (Verify snapshot diffs, CsCheck shrinking, etc.)
+    without affecting the AOT-cleanliness of the libraries they test.
+
+    Test projects opt in by default (IsTestProject=true) and get TUnit on
+    Microsoft.Testing.Platform plus coverlet. Transitional / legacy projects
+    can opt out with <IsTestProject>false</IsTestProject> in their csproj —
+    that suppresses both the framework PackageReferences and the OutputType=Exe
+    runner configuration.
+
+    The libraries under test are still subject to the strict src/Directory.Build.props
+    constraints, so violations in the LIBRARIES will fail the build even if the
+    TESTS exercise them via reflection.
+  -->
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <AnalysisLevel>latest-all</AnalysisLevel>
+    <AnalysisMode>All</AnalysisMode>
+
+    <IsPackable>false</IsPackable>
+    <IsPublishable>false</IsPublishable>
+
+    <!-- Default: opt-in to TUnit test runner. Override with <IsTestProject>false</IsTestProject>. -->
+    <IsTestProject Condition="'$(IsTestProject)' == ''">true</IsTestProject>
+
+    <!-- Test projects intentionally not AOT-strict (libs_only scope). -->
+    <IsAotCompatible>false</IsAotCompatible>
+    <IsTrimmable>false</IsTrimmable>
+    <EnableTrimAnalyzer>false</EnableTrimAnalyzer>
+    <EnableAotAnalyzer>false</EnableAotAnalyzer>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(IsTestProject)' == 'true'">
+    <!-- Microsoft.Testing.Platform (MTP) — not VSTest. TUnit is MTP-native. -->
+    <UseMicrosoftTestingPlatformRunner>true</UseMicrosoftTestingPlatformRunner>
+    <TestingPlatformDotnetTestSupport>true</TestingPlatformDotnetTestSupport>
+    <OutputType>Exe</OutputType>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(IsTestProject)' == 'true'">
+    <!-- TUnit (source-generated test discovery, AOT-friendly) + its built-in assertions library -->
+    <PackageReference Include="TUnit" />
+
+    <!-- Coverage collection for `dotnet test` with the XPlat Code Coverage collector -->
+    <PackageReference Include="coverlet.collector">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+
+    <!-- MSBuild-integrated coverage collection for Microsoft.Testing.Platform/TUnit projects. -->
+    <PackageReference Include="coverlet.msbuild">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <PropertyGroup Condition="'$(IsTestProject)' == 'true' and '$(VSTestCollect)' == 'XPlat Code Coverage'">
+    <!-- Bridge VSTest-style coverage collection to coverlet.msbuild for Microsoft.Testing.Platform/TUnit projects. -->
+    <CollectCoverage>true</CollectCoverage>
+    <CoverletOutputFormat>cobertura</CoverletOutputFormat>
+    <CoverletOutput Condition="'$(CoverletOutput)' == '' and '$(VSTestResultsDirectory)' != ''">$(VSTestResultsDirectory)\</CoverletOutput>
+    <Exclude>[*]Opc.Classic.Dcom.*,[Opc.Classic.Generators]*,[*Tests]*,[*]*.Generated.*</Exclude>
+    <ExcludeByAttribute>Obsolete,GeneratedCodeAttribute,CompilerGeneratedAttribute</ExcludeByAttribute>
+    <ExcludeByFile>**/obj/**,**/bin/**,**/*.g.cs</ExcludeByFile>
+    <IncludeTestAssembly>false</IncludeTestAssembly>
+    <DeterministicReport>true</DeterministicReport>
+    <UseSourceLink>true</UseSourceLink>
+  </PropertyGroup>
+
+  <!--
+    Test-only analyzer relaxations: test methods often take parameters from
+    [Arguments] / [ClassDataSource] attributes where null-checking each one
+    is noise; XML doc comments on tests add no value; etc.
+  -->
+  <PropertyGroup Condition="'$(IsTestProject)' == 'true'">
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);CA1062;CA1707;CA1812;CA1822;CA1031;CA2007;CS1591;IDE0290;IDE0010;IDE0058</NoWarn>
+  </PropertyGroup>
+
+  <!--
+    Opc.Classic.Generators is referenced as an analyzer in every test project,
+    so test fixtures (mocks, sample interfaces) can use [OpcInterface] etc.
+    without per-project wiring. Analyzer references are not transitive through
+    ProjectReference, so they must be declared per-consumer.
+  -->
+  <ItemGroup Condition="'$(IsTestProject)' == 'true'">
+    <ProjectReference Include="$(MSBuildThisFileDirectory)..\src\Opc.Classic.Generators\Opc.Classic.Generators.csproj"
+                      OutputItemType="Analyzer"
+                      ReferenceOutputAssembly="false" />
+  </ItemGroup>
+
+</Project>
+

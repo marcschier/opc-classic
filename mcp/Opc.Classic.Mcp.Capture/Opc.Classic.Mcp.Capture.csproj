@@ -1,0 +1,43 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>Opc.Classic.Mcp.Capture</RootNamespace>
+    <!--
+      Live outside src/ so we are NOT subject to the AOT-strict rules in
+      src/Directory.Build.props. SharpPcap + PacketDotNet use reflection
+      patterns that the AOT analyzer rejects; that's fine because the MCP
+      host is a self-contained single-file deployment, not a NativeAOT
+      shipping artifact.
+    -->
+    <IsAotCompatible>false</IsAotCompatible>
+    <IsTrimmable>false</IsTrimmable>
+    <EnableTrimAnalyzer>false</EnableTrimAnalyzer>
+    <EnableAotAnalyzer>false</EnableAotAnalyzer>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <PackageId>Opc.Classic.Mcp.Capture</PackageId>
+    <Description>OPC Classic network packet capture + DCE/RPC PDU decode engine for the Opc.Classic MCP server. Inspired by netcap; built native against Opc.Classic.Dcom's existing PduCodec / OrpcEnvelope / NdrReader so captured live traffic flows into the same offline diagnostic pipeline used by tools/probe_servers.py and tests/Opc.Classic.Da.Tests/Wire/Replay/.</Description>
+    <PackageTags>opc; opc-classic; opc-da; opc-ae; opc-hda; dcom; pcap; pcapng; network; capture; sharppcap; tracing</PackageTags>
+    <NoWarn>$(NoWarn);CS1591</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
+    <PackageReference Include="SharpPcap" />
+    <PackageReference Include="PacketDotNet" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Opc.Classic.Core\Opc.Classic.Core.csproj" />
+    <ProjectReference Include="..\..\src\Opc.Classic.Dcom\Opc.Classic.Dcom.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="Opc.Classic.Mcp" />
+    <InternalsVisibleTo Include="Opc.Classic.Mcp.Capture.Tests" />
+    <InternalsVisibleTo Include="Opc.Classic.Mcp.Tests" />
+  </ItemGroup>
+</Project>

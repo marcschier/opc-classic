@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>TUnit-based unit tests for Opc.Classic.MigrationAnalyzer analyzers and code fixes.</Description>
+    <RootNamespace>Opc.Classic.MigrationAnalyzer.Tests</RootNamespace>
+    <AssemblyName>Opc.Classic.MigrationAnalyzer.Tests</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Analyzer.Testing" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.CodeFix.Testing" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Opc.Classic.MigrationAnalyzer\Opc.Classic.MigrationAnalyzer.csproj" />
+    <ProjectReference Remove="..\..\src\Opc.Classic.Generators\Opc.Classic.Generators.csproj" />
+  </ItemGroup>
+
+</Project>

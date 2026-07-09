@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>TUnit-based tests for Opc.Classic.Mcp tools.</Description>
+    <RootNamespace>Opc.Classic.Mcp.Tests</RootNamespace>
+    <AssemblyName>Opc.Classic.Mcp.Tests</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\mcp\Opc.Classic.Mcp\Opc.Classic.Mcp.csproj" />
+    <ProjectReference Include="..\..\src\Opc.Classic.Core\Opc.Classic.Core.csproj" />
+    <ProjectReference Include="..\..\src\Opc.Classic.Discovery\Opc.Classic.Discovery.csproj" />
+    <ProjectReference Include="..\..\src\Opc.Classic.Da\Opc.Classic.Da.csproj" />
+    <ProjectReference Include="..\..\src\Opc.Classic.Batch\Opc.Classic.Batch.csproj" />
+    <ProjectReference Include="..\..\src\Opc.Classic.Commands\Opc.Classic.Commands.csproj" />
+    <ProjectReference Include="..\..\src\Opc.Classic.Cpx\Opc.Classic.Cpx.csproj" />
+    <ProjectReference Include="..\..\src\Opc.Classic.Dx\Opc.Classic.Dx.csproj" />
+    <ProjectReference Include="..\..\src\Opc.Classic.Security\Opc.Classic.Security.csproj" />
+    <ProjectReference Include="..\..\src\Opc.Classic.Xml\Opc.Classic.Xml.csproj" />
+    <ProjectReference Include="..\..\src\Opc.Classic.Hosting\Opc.Classic.Hosting.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
+  </ItemGroup>
+
+</Project>

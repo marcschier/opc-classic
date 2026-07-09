@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>Container-backed cross-process integration tests and fixtures for OPC Classic.</Description>
+    <RootNamespace>Opc.Classic.Integration.Tests</RootNamespace>
+    <AssemblyName>Opc.Classic.Integration.Tests</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Testcontainers" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
+    <PackageReference Include="Microsoft.Extensions.Logging" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Opc.Classic.Ae\Opc.Classic.Ae.csproj" />
+    <ProjectReference Include="..\..\src\Opc.Classic.Da\Opc.Classic.Da.csproj" />
+    <ProjectReference Include="..\..\src\Opc.Classic.Dcom\Opc.Classic.Dcom.csproj" />
+    <ProjectReference Include="..\..\src\Opc.Classic.Hda\Opc.Classic.Hda.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\_Fixtures\Testcontainers\KerberosKdcFixture.cs" Link="Fixtures\Testcontainers\KerberosKdcFixture.cs" />
+    <Compile Include="..\..\samples\Opc.Classic.Samples.AeServer\SampleAeServer.cs" Link="Samples\AeServer\SampleAeServer.cs" />
+    <Compile Include="..\..\samples\Opc.Classic.Samples.AeServer\SampleAeSubscription.cs" Link="Samples\AeServer\SampleAeSubscription.cs" />
+    <Compile Include="..\..\samples\Opc.Classic.Samples.DaServer\SampleDaServer.cs" Link="Samples\DaServer\SampleDaServer.cs" />
+    <Compile Include="..\..\samples\Opc.Classic.Samples.DaServer\TagTree.cs" Link="Samples\DaServer\TagTree.cs" />
+    <Compile Include="..\..\samples\Opc.Classic.Samples.HdaServer\HistoricalDataStore.cs" Link="Samples\HdaServer\HistoricalDataStore.cs" />
+    <Compile Include="..\..\samples\Opc.Classic.Samples.HdaServer\SampleHdaServer.cs" Link="Samples\HdaServer\SampleHdaServer.cs" />
+    <Compile Include="..\..\samples\Opc.Classic.Samples.SimulationServer\SimulatedPlantModel.cs" Link="Samples\SimulationServer\SimulatedPlantModel.cs" />
+    <Compile Include="..\..\samples\Opc.Classic.Samples.SimulationServer\Transports\SimDaHostServer.cs" Link="Samples\SimulationServer\Transports\SimDaHostServer.cs" />
+    <Compile Include="..\..\samples\Opc.Classic.Samples.SimulationServer\Transports\SimHdaHostServer.cs" Link="Samples\SimulationServer\Transports\SimHdaHostServer.cs" />
+  </ItemGroup>
+
+</Project>

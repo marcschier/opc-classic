@@ -1,0 +1,119 @@
+﻿// Copyright (c) 2026 Opc.Classic Contributors. Licensed under the MIT License.
+
+namespace Opc.Classic.Cpx;
+
+/// <summary>
+/// A field declared by an OPC Complex Data type description.
+/// </summary>
+/// <param name="Name">Field name. Empty when the OPCBinary field is anonymous.</param>
+/// <param name="Kind">OPCBinary field kind.</param>
+/// <param name="TypeId">Referenced type identifier for <see cref="TypeKind.StructReference"/> fields.</param>
+/// <param name="Length">Fixed field length, in bits, bytes, or characters depending on <paramref name="Kind"/>.</param>
+/// <param name="ElementCount">Fixed element count for array fields.</param>
+/// <param name="ElementCountFieldName">Sibling field that supplies a variable element count.</param>
+/// <param name="FieldTerminator">Hex-encoded field terminator for terminated arrays.</param>
+/// <param name="ByteOrder">Optional per-field byte-order override.</param>
+/// <param name="StringEncoding">Optional per-field string encoding.</param>
+/// <param name="CharWidth">Optional per-field character width in bytes.</param>
+/// <param name="Format">Optional field format metadata.</param>
+public sealed record TypeField(
+    string Name,
+    TypeKind Kind,
+    string? TypeId = null,
+    int? Length = null,
+    int? ElementCount = null,
+    string? ElementCountFieldName = null,
+    string? FieldTerminator = null,
+    ByteOrder? ByteOrder = null,
+    string? StringEncoding = null,
+    int? CharWidth = null,
+    string? Format = null)
+{
+    /// <summary>
+    /// Field name. Empty when the OPCBinary field is anonymous.
+    /// </summary>
+    public string Name { get; init; } = Name ?? string.Empty;
+
+    /// <summary>
+    /// OPCBinary field kind.
+    /// </summary>
+    public TypeKind Kind { get; init; } = ValidateKind(Kind);
+
+    /// <summary>
+    /// Referenced type identifier for <see cref="TypeKind.StructReference"/> fields.
+    /// </summary>
+    public string? TypeId { get; init; } = Normalize(TypeId);
+
+    /// <summary>
+    /// Fixed field length, in bits, bytes, or characters depending on <see cref="Kind"/>.
+    /// </summary>
+    public int? Length { get; init; } = ValidateNonNegative(Length, nameof(Length));
+
+    /// <summary>
+    /// Fixed element count for array fields.
+    /// </summary>
+    public int? ElementCount { get; init; } = ValidateNonNegative(ElementCount, nameof(ElementCount));
+
+    /// <summary>
+    /// Sibling field that supplies a variable element count.
+    /// </summary>
+    public string? ElementCountFieldName { get; init; } = Normalize(ElementCountFieldName);
+
+    /// <summary>
+    /// Hex-encoded field terminator for terminated arrays.
+    /// </summary>
+    public string? FieldTerminator { get; init; } = Normalize(FieldTerminator);
+
+    /// <summary>
+    /// Optional per-field byte-order override.
+    /// </summary>
+    public ByteOrder? ByteOrder { get; init; } = ByteOrder;
+
+    /// <summary>
+    /// Optional per-field string encoding.
+    /// </summary>
+    public string? StringEncoding { get; init; } = Normalize(StringEncoding);
+
+    /// <summary>
+    /// Optional per-field character width in bytes.
+    /// </summary>
+    public int? CharWidth { get; init; } = ValidatePositive(CharWidth, nameof(CharWidth));
+
+    /// <summary>
+    /// Optional field format metadata.
+    /// </summary>
+    public string? Format { get; init; } = Normalize(Format);
+
+    private static TypeKind ValidateKind(TypeKind kind)
+    {
+        if (kind == TypeKind.Unknown)
+        {
+            throw new ArgumentOutOfRangeException(nameof(kind), kind, "A field must declare a concrete OPCBinary type kind.");
+        }
+
+        return kind;
+    }
+
+    private static int? ValidateNonNegative(int? value, string parameterName)
+    {
+        if (value is < 0)
+        {
+            throw new ArgumentOutOfRangeException(parameterName, value, "Field counts and lengths cannot be negative.");
+        }
+
+        return value;
+    }
+
+    private static int? ValidatePositive(int? value, string parameterName)
+    {
+        if (value is <= 0)
+        {
+            throw new ArgumentOutOfRangeException(parameterName, value, "Field character width must be positive when specified.");
+        }
+
+        return value;
+    }
+
+    private static string? Normalize(string? value) =>
+        string.IsNullOrWhiteSpace(value) ? null : value;
+}

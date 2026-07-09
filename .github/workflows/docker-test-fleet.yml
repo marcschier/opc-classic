@@ -1,0 +1,248 @@
+name: Docker test fleet
+
+on:
+  workflow_dispatch:
+    inputs:
+      profile:
+        description: 'Which smoke to run: matrix (default), interactive-build-only, or native-matrikon-proxy'
+        required: false
+        default: 'matrix'
+        type: choice
+        options: [matrix, interactive-build-only, native-matrikon-proxy]
+  schedule:
+    # Monthly on the 1st at 04:00 UTC. Windows-container builds are expensive
+    # (~10-15 min build stage + ~3-5 GB image disk); monthly cadence matches
+    # the value of the matrix smoke vs the cost.
+    - cron: '0 4 1 * *'
+
+permissions:
+  contents: read
+
+jobs:
+  docker-test-fleet:
+    runs-on: windows-2022
+    if: github.repository == 'marcschier/opc-classic'
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Detect CoreComponents vendor tree
+        id: corecomponents
+        shell: pwsh
+        run: |
+          $root = "$env:GITHUB_WORKSPACE\external"
+          $required = @(
+            "$root\CMakeLists.txt",
+            "$env:GITHUB_WORKSPACE\interop\samples\OpcTestServer\OpcTestServer.cpp",
+            "$env:GITHUB_WORKSPACE\interop\samples\OpcTestClient\OpcTestClient.cpp"
+          )
+          $missing = $required | Where-Object { -not (Test-Path $_) }
+          if ($missing.Count -gt 0) {
+            Write-Warning "CoreComponents vendor tree is not complete; TestServer/TestClient Docker cells will soft-skip."
+            "present=false" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
+          } else {
+            "present=true" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
+          }
+
+      - name: Restore CoreComponents CMake cache
+        if: steps.corecomponents.outputs.present == 'true'
+        id: corecomponents-cache
+        uses: actions/cache@v6
+        with:
+          path: interop/build/x64/Release
+          key: corecomponents-ltsc2022-vs2022-${{ runner.os }}-${{ hashFiles('interop/CMakeLists.txt', 'interop/cmake/**', 'interop/src/**', 'interop/samples/OpcTestServer/**', 'interop/samples/OpcTestClient/**', 'interop/tools/build-testserver.ps1', 'interop/docker/opc-testserver/Dockerfile') }}
+          restore-keys: |
+            corecomponents-ltsc2022-vs2022-${{ runner.os }}-
+
+      - name: Prime CoreComponents CMake cache
+        if: steps.corecomponents.outputs.present == 'true'
+        shell: pwsh
+        run: |
+          $release = "$env:GITHUB_WORKSPACE\interop\build\x64\Release"
+          $required = @(
+            'OpcTestServer_x64.exe',
+            'OpcTestClient_x64.exe',
+            'OpcCategoryManager.exe',
+            'opccomn_ps.dll',
+            'opcproxy.dll',
+            'opc_aeps.dll',
+            'opcbc_ps.dll',
+            'OpcCmdPs.dll',
+            'OpcDxPs.dll',
+            'opchda_ps.dll',
+            'opcsec_ps.dll'
+          )
+          $missing = $required | Where-Object { -not (Test-Path (Join-Path $release $_)) }
+          if ($missing.Count -gt 0) {
+            Write-Host "CoreComponents cache miss; building Release artifacts on the Windows runner."
+            .\interop\tools\build-testserver.ps1 -Configuration Release
+          } else {
+            Write-Host "CoreComponents Release artifacts already present."
+          }
+
+      - name: Switch Docker daemon to Windows containers
+        shell: pwsh
+        run: |
+          # The windows-2022 runner ships Docker Desktop in Linux mode by default.
+          # Toggle to Windows mode for the fleet build.
+          $dockerCli = "$env:ProgramFiles\Docker\Docker\DockerCli.exe"
+          if (Test-Path $dockerCli) {
+            & $dockerCli -SwitchWindowsEngine
+            Start-Sleep -Seconds 10
+          } else {
+            Write-Warning 'DockerCli.exe not found at expected path; assuming Windows mode is already active.'
+          }
+          docker version
+
+      - name: Build fleet images
+        shell: pwsh
+        run: |
+          if ('${{ steps.corecomponents.outputs.present }}' -eq 'true') {
+            interop/docker/run-matrix.ps1 -SkipBuild:$false -IncludeTestServer
+          } else {
+            Write-Warning 'CoreComponents missing; running existing managed-only Docker fleet smoke.'
+            interop/docker/run-matrix.ps1 -SkipBuild:$false -OnlyManaged
+          }
+
+      - name: Build native Matrikon proxy scaffold
+        if: github.event_name == 'workflow_dispatch' && inputs.profile == 'native-matrikon-proxy'
+        shell: pwsh
+        run: |
+          docker compose --file interop/docker/docker-compose.test.yml --profile native-matrikon-proxy build native-matrikon-proxy
+          Write-Host 'Built native Matrikon proxy image. Runtime execution requires a routable Linux SimulationServer and matching DCOM credentials.'
+
+      - name: Upload Docker fleet matrix results
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: docker-test-fleet-results
+          path: interop/docker/results/*.xml
+          if-no-files-found: warn
+
+  cross-impl-matrix:
+    # Track DV2: run the MCP probe + every sample server through the
+    # tools/run-cross-impl-matrix.ps1 driver and upload the per-profile
+    # JSON reports + (optional) wire captures. This validates that every
+    # opcclassic.* MCP tool that's expected to work against a given
+    # server profile actually works, and that the spec-mandated failures
+    # (e.g. IOPCItemIO on a DA 2.05a server) fail in the documented way.
+    #
+    # Gated on workflow_dispatch so the matrix only runs when an operator
+    # explicitly triggers it. The TestServer/TestClient Docker containers are
+    # covered by the standard fleet cadence above when external is
+    # available; this job remains sample-server-only.
+    runs-on: windows-2022
+    if: github.event_name == 'workflow_dispatch' && github.repository == 'marcschier/opc-classic'
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+
+      - name: Build sample servers
+        shell: pwsh
+        run: |
+          $projects = @(
+            'samples\Opc.Classic.Samples.DaServer\Opc.Classic.Samples.DaServer.csproj',
+            'samples\Opc.Classic.Samples.CttServer\Opc.Classic.Samples.CttServer.csproj',
+            'samples\Opc.Classic.Samples.AeServer\Opc.Classic.Samples.AeServer.csproj',
+            'samples\Opc.Classic.Samples.HdaServer\Opc.Classic.Samples.HdaServer.csproj',
+            'samples\Opc.Classic.Samples.OpcSecurityServer\Opc.Classic.Samples.OpcSecurityServer.csproj'
+          )
+          foreach ($p in $projects) {
+            dotnet build $p --nologo -v:m
+            if ($LASTEXITCODE -ne 0) { throw "Build failed: $p" }
+          }
+
+      - name: Build MCP host
+        shell: pwsh
+        run: dotnet build mcp\Opc.Classic.Mcp\Opc.Classic.Mcp.csproj --nologo -v:m
+
+      - name: Install Npcap (required for capture.list_interfaces)
+        shell: pwsh
+        continue-on-error: true
+        run: |
+          # Npcap provides wpcap.dll which SharpPcap loads. The chocolatey
+          # community feed does NOT ship npcap (commercial-licensed); pull
+          # the redistributable installer directly from npcap.com and use
+          # its silent-install flags (/S). winpcap_mode=yes installs
+          # wpcap.dll under C:\Windows\System32\Npcap\ on PATH so SharpPcap
+          # finds it without code changes. admin_only=no opens the driver
+          # to non-admin processes (the MCP host launched by probe_servers
+          # runs as the runner user).
+          $url = 'https://npcap.com/dist/npcap-1.79.exe'
+          $exe = "$env:RUNNER_TEMP\npcap-1.79.exe"
+          Invoke-WebRequest -Uri $url -OutFile $exe -UseBasicParsing
+          Write-Host "Downloaded Npcap installer: $((Get-Item $exe).Length) bytes"
+          $p = Start-Process $exe -ArgumentList '/S', '/winpcap_mode=yes', '/admin_only=no' -Wait -PassThru -NoNewWindow
+          Write-Host "Npcap install exit code: $($p.ExitCode)"
+          if ($p.ExitCode -ne 0) {
+            Write-Host "::warning::Npcap install failed (exit $($p.ExitCode)); capture.* tools will regress"
+          } else {
+            Write-Host "Npcap install OK -- wpcap.dll under:"
+            Get-ChildItem 'C:\Windows\System32\Npcap\wpcap.dll', 'C:\Windows\SysWOW64\Npcap\wpcap.dll' -ErrorAction SilentlyContinue | Select-Object FullName
+          }
+
+      - name: Build + register OpcEnum service (vendored source)
+        shell: pwsh
+        run: |
+          # OPCEnum is the OPC Foundation server-enumeration service that
+          # opcclassic.discovery.enumerate_servers dials over DCOM. Build
+          # OpcEnum.exe from the vendored source under
+          # interop/src/Common/ServerEnumerator/ (x86 binary; see
+          # interop/tools/build-opcenum.ps1 for details), then install
+          # it as a Windows service via OpcEnum.exe /Service.
+          .\interop\tools\build-opcenum.ps1 -Configuration Release
+          $exe = Resolve-Path 'interop\build\x86\Release\OpcEnum.exe'
+          Write-Host "Registering OpcEnum service: $exe /Service"
+          $p = Start-Process $exe -ArgumentList '/Service' -Wait -PassThru -NoNewWindow
+          Write-Host "OpcEnum /Service exit code: $($p.ExitCode)"
+          if ($p.ExitCode -ne 0) {
+            Write-Host "::warning::OpcEnum /Service registration failed (exit $($p.ExitCode)); discovery.enumerate_servers will regress"
+          }
+          $svc = Get-Service -Name OpcEnum -ErrorAction SilentlyContinue
+          if ($svc -and $svc.Status -ne 'Running') {
+            Start-Service OpcEnum
+            Write-Host "Started OpcEnum service"
+          } elseif (-not $svc) {
+            Write-Host "::warning::OpcEnum service not registered; discovery.enumerate_servers will regress"
+          }
+
+      - name: Run cross-impl matrix (sample servers only)
+        shell: pwsh
+        # Exclude the testserver + matrikon profiles because they need
+        # external prerequisites (TestServer install + BH3 ACL grant;
+        # Matrikon vendor binary on a different host). The sample-only
+        # subset validates everything we own end-to-end.
+        #
+        # -HklmRegister + -UseClsid: the CI runner runs as administrative
+        # so HKLM is writable; CLSID-based activation bypasses ProgID
+        # resolution via OPCEnum (still installed by the build step
+        # above, but -UseClsid keeps activation working defense-in-depth
+        # if the OpcEnum build / install ever fails).
+        run: |
+          .\tools\run-cross-impl-matrix.ps1 `
+            -Profile samples-da,ctt-da,samples-ae,samples-hda,security-da `
+            -HklmRegister `
+            -UseClsid `
+            -OutputDir matrix-out
+
+      - name: Upload cross-impl matrix reports
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: cross-impl-matrix-reports
+          path: matrix-out/*.json
+          if-no-files-found: warn

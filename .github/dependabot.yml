@@ -1,0 +1,58 @@
+version: 2
+updates:
+  # NuGet package updates across the solution. The central-package-management
+  # version pin in src/Directory.Packages.props (and the tests overlay) means
+  # Dependabot opens PRs against those files, not each csproj.
+  - package-ecosystem: nuget
+    directory: "/"
+    schedule:
+      interval: weekly
+      day: monday
+      time: "06:00"
+    open-pull-requests-limit: 10
+    labels:
+      - dependencies
+      - nuget
+    groups:
+      microsoft-extensions:
+        patterns:
+          - "Microsoft.Extensions.*"
+      microsoft-analyzers:
+        patterns:
+          - "Microsoft.CodeAnalysis.*"
+          - "Microsoft.VisualStudio.Threading.Analyzers"
+          - "Microsoft.SourceLink.*"
+      roslynator:
+        patterns:
+          - "Roslynator.*"
+      test-libs:
+        patterns:
+          - "TUnit*"
+          - "Verify.*"
+          - "coverlet.*"
+          - "CsCheck"
+          - "Testcontainers"
+
+  # GitHub Actions updates. Combined with manual SHA pinning of third-party
+  # actions (sigstore/*, softprops/*, docker/*) this keeps the supply-chain
+  # surface narrow without losing security patches.
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: weekly
+      day: monday
+      time: "06:00"
+    open-pull-requests-limit: 5
+    labels:
+      - dependencies
+      - github-actions
+    groups:
+      actions:
+        patterns:
+          - "actions/*"
+      docker-actions:
+        patterns:
+          - "docker/*"
+      sigstore-actions:
+        patterns:
+          - "sigstore/*"

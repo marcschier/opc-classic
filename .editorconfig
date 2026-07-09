@@ -1,0 +1,490 @@
+# EditorConfig — root of opc-classic
+# Promoted and extended from COM.Net/.editorconfig (the original COM.Net one).
+# AOT/trim analyzer severities defined here are the source of truth and
+# match the BannedSymbols.txt + Directory.Build.props enforcement under src/.
+
+root = true
+
+# All files
+[*]
+indent_style = space
+trim_trailing_whitespace = true
+insert_final_newline = true
+
+# C# source
+[*.{cs,csx}]
+indent_size = 4
+tab_width = 4
+end_of_line = crlf
+charset = utf-8-bom
+
+# Modern C# conventions (file-scoped namespaces, usings outside)
+csharp_using_directive_placement = outside_namespace:warning
+csharp_style_namespace_declarations = file_scoped:warning
+csharp_prefer_braces = true:error
+csharp_style_prefer_primary_constructors = true:suggestion
+csharp_style_prefer_collection_expression = true:suggestion
+csharp_style_prefer_extended_property_pattern = true:suggestion
+csharp_style_prefer_pattern_matching = true:suggestion
+csharp_style_prefer_top_level_statements = false:silent
+
+# var preferences
+csharp_style_var_when_type_is_apparent = true:suggestion
+csharp_style_var_for_built_in_types = true:silent
+csharp_style_var_elsewhere = true:silent
+
+# Expression-bodied members
+csharp_style_expression_bodied_methods = when_on_single_line:suggestion
+csharp_style_expression_bodied_constructors = false:silent
+csharp_style_expression_bodied_operators = when_on_single_line:suggestion
+csharp_style_expression_bodied_properties = true:suggestion
+csharp_style_expression_bodied_indexers = true:suggestion
+csharp_style_expression_bodied_accessors = true:suggestion
+
+# Pattern matching / nullability
+csharp_style_pattern_matching_over_as_with_null_check = true:warning
+csharp_style_pattern_matching_over_is_with_cast_check = true:warning
+
+# Line breaks - Allman brace style (open brace on a new line for all block types)
+csharp_new_line_before_open_brace = all
+csharp_new_line_before_catch = true
+csharp_new_line_before_else = true
+csharp_new_line_before_finally = true
+csharp_new_line_before_members_in_object_initializers = true
+csharp_new_line_before_members_in_anonymous_types = true
+csharp_new_line_between_query_expression_clauses = true
+
+# Spaces
+csharp_space_after_cast = false
+csharp_space_after_keywords_in_control_flow_statements = true
+csharp_space_after_comma = true
+csharp_space_between_method_call_name_and_opening_parenthesis = false
+
+# Naming — _camelCase for private instance fields ONLY.
+# The editorconfig naming-rule engine matches rules top-to-bottom; the
+# first rule that applies to a symbol wins. We declare two rules so the
+# IDE1006 analyzer doesn't false-positive on:
+#   - `private const` fields (PascalCase per C# convention)
+#   - `private static readonly` fields (PascalCase or s_camelCase or UPPER_SNAKE
+#     IDL identifiers like IID_IOPCServerList2 that must stay as-is for spec
+#     readability — see the IDL-names note in copilot-instructions.md)
+# By matching static/const FIRST with severity=none we silently accept any
+# naming for those, then the second rule enforces _camelCase on remaining
+# (i.e. instance) private fields only.
+dotnet_naming_rule.private_static_or_const_fields_any.severity = none
+dotnet_naming_rule.private_static_or_const_fields_any.symbols = private_static_or_const_fields
+dotnet_naming_rule.private_static_or_const_fields_any.style = any_style
+dotnet_naming_symbols.private_static_or_const_fields.applicable_kinds = field
+dotnet_naming_symbols.private_static_or_const_fields.applicable_accessibilities = private,internal,protected,protected_internal,private_protected
+dotnet_naming_symbols.private_static_or_const_fields.required_modifiers = static
+dotnet_naming_style.any_style.capitalization = pascal_case
+
+dotnet_naming_rule.private_fields_underscored.severity = warning
+dotnet_naming_rule.private_fields_underscored.symbols = private_fields
+dotnet_naming_rule.private_fields_underscored.style = underscore_camel
+dotnet_naming_symbols.private_fields.applicable_kinds = field
+dotnet_naming_symbols.private_fields.applicable_accessibilities = private
+dotnet_naming_style.underscore_camel.required_prefix = _
+dotnet_naming_style.underscore_camel.capitalization = camel_case
+
+# Modifier ordering
+csharp_preferred_modifier_order = public,private,protected,internal,file,static,extern,new,virtual,abstract,sealed,override,readonly,unsafe,required,volatile,async:warning
+dotnet_style_readonly_field = true:warning
+
+# Predefined types (int vs Int32)
+dotnet_style_predefined_type_for_locals_parameters_members = true:warning
+dotnet_style_predefined_type_for_member_access = true:warning
+
+# Disallowed: this. qualification
+dotnet_style_qualification_for_event = false:warning
+dotnet_style_qualification_for_field = false:warning
+dotnet_style_qualification_for_method = false:warning
+dotnet_style_qualification_for_property = false:warning
+
+# AOT analyzer codes — errors inside src/
+dotnet_diagnostic.IL2026.severity = error
+dotnet_diagnostic.IL2027.severity = error
+dotnet_diagnostic.IL2046.severity = error
+dotnet_diagnostic.IL2050.severity = error
+dotnet_diagnostic.IL2055.severity = error
+dotnet_diagnostic.IL2057.severity = error
+dotnet_diagnostic.IL2060.severity = error
+dotnet_diagnostic.IL2067.severity = error
+dotnet_diagnostic.IL2070.severity = error
+dotnet_diagnostic.IL2075.severity = error
+dotnet_diagnostic.IL2087.severity = error
+dotnet_diagnostic.IL2090.severity = error
+dotnet_diagnostic.IL3050.severity = error
+dotnet_diagnostic.IL3051.severity = error
+dotnet_diagnostic.IL3052.severity = error
+dotnet_diagnostic.IL3053.severity = error
+
+# Microsoft.VisualStudio.Threading analyzer
+dotnet_diagnostic.VSTHRD002.severity = error
+dotnet_diagnostic.VSTHRD003.severity = error
+dotnet_diagnostic.VSTHRD100.severity = error
+dotnet_diagnostic.VSTHRD110.severity = error
+dotnet_diagnostic.VSTHRD200.severity = warning
+
+# Code quality / API surface
+dotnet_diagnostic.CA1062.severity = error
+dotnet_diagnostic.CA2007.severity = error
+dotnet_diagnostic.CA1031.severity = error
+
+# ============================================================================
+# Roslynator.Formatting.Analyzers (RCS0xxx) — curated opt-in subset
+#
+# All RCS0xxx rules ship at severity 'none' in Roslynator.Formatting.Analyzers
+# 4.15.0; the entries below promote a small set of universally-useful rules
+# to 'warning' so the build enforces them. Rules deliberately left at the
+# shipped 'none' default include RCS0023 (already covered by
+# csharp_new_line_before_open_brace = all), RCS0056 (max-line-length —
+# legacy NTLM/Type1Message code intentionally has long lines), RCS0044 /
+# RCS0045 (line endings — handled by .gitattributes), RCS0010 (blank line
+# between declarations — too noisy on tightly-grouped fields), and RCS0042
+# (single-line accessors — codebase mixes both styles intentionally).
+# ============================================================================
+# RCS0006: Add blank line before using directive list
+dotnet_diagnostic.RCS0006.severity = warning
+# RCS0024: Add new line after switch label (Allman-style switches)
+dotnet_diagnostic.RCS0024.severity = warning
+# RCS0036: Remove blank line between single-line declarations of same kind
+# — set to 'silent' because the codebase prefers XML doc per property even
+# when adjacent properties share a kind (blank lines around the doc blocks
+# improve readability and reflect semantic boundaries).
+dotnet_diagnostic.RCS0036.severity = silent
+# RCS0046: Use spaces instead of tabs
+dotnet_diagnostic.RCS0046.severity = warning
+# RCS0049: Add blank line after top comment (SPDX/copyright banner spacing)
+dotnet_diagnostic.RCS0049.severity = warning
+# RCS0050: Add blank line before top declaration
+dotnet_diagnostic.RCS0050.severity = warning
+# RCS0058: Add new line at end of file
+dotnet_diagnostic.RCS0058.severity = warning
+# RCS0061: Add blank line between switch sections
+dotnet_diagnostic.RCS0061.severity = warning
+
+# ============================================================================
+# Roslynator.Analyzers (RCS1xxx) — curated opt-in subset
+#
+# RCS1xxx rules ship with a mix of default severities in Roslynator.Analyzers
+# 4.15.0; the entries below promote a small set to 'warning' so the build
+# enforces them (TreatWarningsAsErrors=true makes that hard-fail).
+# ============================================================================
+# RCS0063: Remove unnecessary blank line
+# (Modern replacement for the now-deprecated RCS1036.)
+dotnet_diagnostic.RCS0063.severity = warning
+
+# ============================================================================
+# AnalysisMode=All + AnalysisLevel=latest-all suppressions (root scope)
+#
+# These rules are intentional design choices that cannot be trivially fixed
+# via a code fix provider. They are documented per-rule below. Spec-mandated
+# wire-protocol shapes are 'none' (would never be enabled). Public-API
+# suggestions are 'suggestion' so adopters see them but the build stays green.
+# ============================================================================
+
+# CA1054: URI parameters should be Uri instead of string — Opc.Classic.Core.OpcUrl
+# exposes string-based Parse/TryParse because opc.tcp:// / opcda:// schemes are
+# NOT registered with System.Uri's parser and lose information when round-tripped.
+dotnet_diagnostic.CA1054.severity = suggestion
+
+# CA1819: Properties should not return arrays — wire-format DTOs (DispatchResult.Payload,
+# OpcSafeArray bounds, NDR record fields) intentionally expose arrays because the
+# DCOM wire shape requires direct field-ordered serialization. Wrapping in ReadOnlyMemory
+# would force per-call copies in the NDR encoder/decoder hot paths.
+dotnet_diagnostic.CA1819.severity = suggestion
+
+# CA1815: Override equality on value types — applies to RPC payload structs like
+# DispatchResult where equality is not a meaningful operation (these structs are
+# carriers, never compared). Adding Equals/== would add weight without benefit.
+dotnet_diagnostic.CA1815.severity = none
+
+# CA1028: Enum storage should be Int32 — VarType / SafeArrayFeatures / similar enums
+# are spec-mandated 16-bit per MS-OAUT and the OPC IDL. Changing to Int32 would
+# corrupt the wire format.
+dotnet_diagnostic.CA1028.severity = none
+
+# CA1700: Don't name enum values 'Reserved' — spec-mandated identifiers
+# (OpcQualityKind.Reserved, VarType.VT_RESERVED) per OPC and MS-OAUT.
+dotnet_diagnostic.CA1700.severity = none
+
+# CA1814: Prefer jagged arrays over multidimensional — string-filter memoization
+# (OpcStringFilter) uses true 2D arrays because every cell is touched in O(NM) DP
+# and jagged-array allocation overhead dominates the hot path.
+dotnet_diagnostic.CA1814.severity = suggestion
+
+# CA1034: Don't nest types — generator-emitted Opnums helper structs and similar
+# code-gen idioms are intentionally nested for namespace cleanliness.
+dotnet_diagnostic.CA1034.severity = suggestion
+
+# CA1515: Public types in apps should be internal — applies to test fixtures and
+# sample app entry points where TUnit / hosting infrastructure requires public access.
+# Lib projects keep this enforced via per-project overrides if needed.
+dotnet_diagnostic.CA1515.severity = none
+
+# CA5398: Avoid hardcoding SslProtocols — Channel binding (RFC 5929) requires
+# explicit TLS-version detection (1.2 vs 1.3 selects SHA-256 vs SHA-384). The
+# "None" recommendation breaks deterministic CBT hash-algo selection.
+dotnet_diagnostic.CA5398.severity = none
+
+# CA1812: Avoid uninstantiated internal classes — generator/DI-resolved types
+# (analyzers, hosted services, factories) often appear unused to static analysis
+# but are instantiated dynamically. Demoting to suggestion stops the build noise.
+dotnet_diagnostic.CA1812.severity = suggestion
+
+# CA1848: Use LoggerMessage delegates — performance optimization; not always
+# warranted (rare-path logging). Project-scoped overrides upgrade per assembly.
+dotnet_diagnostic.CA1848.severity = suggestion
+
+# CA1716: Identifier conflicts with reserved language keyword (other-language) —
+# public surface frozen pre-1.0; renaming would break adopters.
+dotnet_diagnostic.CA1716.severity = suggestion
+
+# CA1720: Identifier contains type name — OPC type-suffix conventions (Int, Bool,
+# Float etc.) match the underlying IDL field names; renaming breaks correlation.
+dotnet_diagnostic.CA1720.severity = suggestion
+
+# CA1707: Underscores in identifiers — IDL-spec wire identifiers (IOPCHDA_Server,
+# ORPC_THIS, etc.) at root scope are already suppressed per-directory below.
+# At the root scope this stays warning so NEW code is held to PascalCase.
+
+# CA1861: Avoid constant arrays as arguments — pervasive in wire-format encoders
+# (NDR struct field tables, opnum dispatch tables) where converting to cached
+# static readonly arrays would obscure the wire layout for marginal perf benefit.
+dotnet_diagnostic.CA1861.severity = suggestion
+
+# CA2000: Dispose objects before losing scope — high false-positive rate with
+# async ownership transfers (factories, builder patterns). Real leaks are caught
+# by integration tests.
+dotnet_diagnostic.CA2000.severity = suggestion
+
+# CA1033: Interface methods should be callable by child types — generator-emitted
+# explicit interface implementations are intentionally not virtual.
+dotnet_diagnostic.CA1033.severity = none
+
+# CA1832: Use AsSpan or AsMemory instead of Range-based indexer — performance
+# suggestion; not always clearer. Keep as suggestion.
+dotnet_diagnostic.CA1832.severity = suggestion
+
+# CA1008: Enums should have zero value — spec-mandated enum values without
+# zero (OPC_QUALITY_*) match the wire format.
+dotnet_diagnostic.CA1008.severity = none
+
+# CA1859: Use concrete types — performance suggestion; abstract-type returns
+# from public surface preserve API stability.
+dotnet_diagnostic.CA1859.severity = suggestion
+
+# CA1849: Call async methods when in async method — by-design synchronous
+# variants (e.g. ReadOnlySpan<T>-based parsers) inside async wrappers.
+dotnet_diagnostic.CA1849.severity = suggestion
+
+# CA1056: URI properties should be of type Uri — same justification as CA1054
+# (opc.tcp:// / opcda:// schemes are not System.Uri-compatible).
+dotnet_diagnostic.CA1056.severity = suggestion
+
+# CA1508: Avoid dead conditional code — defensive null checks on params decorated
+# with [DisallowNull] but provided by external callers.
+dotnet_diagnostic.CA1508.severity = suggestion
+
+# CA2217: Don't mark enums with FlagsAttribute — OPC_QUALITY etc. are
+# bit-pattern enums per spec even though sub-fields aren't pure flags.
+dotnet_diagnostic.CA2217.severity = none
+
+# ============================================================================
+# AnalysisLevel=latest-all additional suppressions (second pass)
+# ============================================================================
+
+# CA1024: Use properties where appropriate — would convert dozens of GetXxx()
+# methods to properties; breaks public API and IDL-correspondence naming.
+dotnet_diagnostic.CA1024.severity = suggestion
+
+# CA1032: Implement standard exception constructors — auto-fixable via code fix.
+# Demoted to suggestion until a sweep adds the missing ctors.
+dotnet_diagnostic.CA1032.severity = suggestion
+
+# CA5394: Don't use insecure randomness (Random) — used for non-security IDs
+# (session/correlation/transaction IDs). Cryptographic RNG is used in NTLMSSP
+# / Kerberos paths where it matters.
+dotnet_diagnostic.CA5394.severity = suggestion
+
+# CA1721: Property names should not match get methods — generator-emitted
+# accessor pairs (GetState() + State property) follow IDL convention.
+dotnet_diagnostic.CA1721.severity = suggestion
+
+# CA1820: Test for empty strings using string length — perf-only suggestion;
+# string.IsNullOrEmpty is more idiomatic and equally fast.
+dotnet_diagnostic.CA1820.severity = suggestion
+
+# CA2235: Mark non-serializable fields — BinaryFormatter is deprecated in .NET 10;
+# the rule is anachronistic.
+dotnet_diagnostic.CA2235.severity = none
+
+# CA1303: Don't pass literals as localized parameters — log messages and exception
+# strings don't need resource files (the project targets a single locale).
+dotnet_diagnostic.CA1303.severity = none
+
+# CA2227: Collection properties should be read only — DTO setters required for
+# deserialization round-trips.
+dotnet_diagnostic.CA2227.severity = suggestion
+
+# CA1865: Use char overload of string.StartsWith — auto-fixable via code fix.
+# Demoted to suggestion until a sweep applies the fixes.
+dotnet_diagnostic.CA1865.severity = suggestion
+
+# CA1810: Initialize reference type static fields inline — static-ctor patterns
+# where initialization ORDER matters.
+dotnet_diagnostic.CA1810.severity = suggestion
+
+# CA2213: Disposable fields should be disposed — false-positive on factory-owned
+# disposables (e.g. DI-resolved logger factories).
+dotnet_diagnostic.CA2213.severity = suggestion
+
+# CA1823: Avoid unused private fields — pinned/reserved fields for NDR layout
+# preservation (struct field ordering matters for wire format).
+dotnet_diagnostic.CA1823.severity = suggestion
+
+# CA1724: Type names should not match namespaces — public surface frozen pre-1.0.
+dotnet_diagnostic.CA1724.severity = suggestion
+
+# CA1065: Don't throw exceptions in unexpected locations — by-design factory
+# methods that fail-fast on invalid input.
+dotnet_diagnostic.CA1065.severity = suggestion
+
+# CA1044: Properties should not be write-only — DTO patterns and Deconstruct
+# usage make this a low-value warning.
+dotnet_diagnostic.CA1044.severity = suggestion
+
+# CA1040: Avoid empty interfaces — marker interfaces used for codec dispatch
+# and DI type-discrimination.
+dotnet_diagnostic.CA1040.severity = none
+
+# CA1027: Mark enums with FlagsAttribute — conflicts with CA2217 above on the
+# same enums; both can't be satisfied for OPC_QUALITY-style hybrid enums.
+dotnet_diagnostic.CA1027.severity = none
+
+# CA5358: Do not use unsafe cipher modes — by-design RC4-HMAC NTLM and CTR
+# modes per MS-NLMP / RFC 4757 (spec mandates these algorithms).
+dotnet_diagnostic.CA5358.severity = none
+
+# CA1002: Don't expose generic lists in public APIs — DTO patterns benefit from
+# List<T> mutability; switching to IReadOnlyList<T> breaks deserializers.
+dotnet_diagnostic.CA1002.severity = suggestion
+
+# ============================================================================
+# AnalysisLevel=latest-all additional suppressions (third pass)
+# ============================================================================
+
+# CA1826: Use Span/Memory based methods on enumerable — performance suggestion
+# applied across 60+ sites; mechanical and pervasive but not always clearer.
+dotnet_diagnostic.CA1826.severity = suggestion
+
+# CA1308: Normalize strings to uppercase — applied where lowercase is the
+# domain-correct form (e.g. URL schemes, lowercase OPC paths). Use case-insensitive
+# comparisons instead.
+dotnet_diagnostic.CA1308.severity = suggestion
+
+# CA2201: Don't raise reserved exception types — used in tests and rare scaffolds.
+dotnet_diagnostic.CA2201.severity = suggestion
+
+# CA5351: Do not use broken cipher algorithms — RC4 / MD4 / MD5 are mandated
+# by MS-NLMP (NTLM) and MS-KILE (RC4-HMAC etype). Cannot be replaced.
+dotnet_diagnostic.CA5351.severity = none
+
+# CA5359: Do not disable cert validation — test fixtures with self-signed certs
+# and TLS-loopback CBT vectors require this.
+dotnet_diagnostic.CA5359.severity = suggestion
+
+# CA1825: Use Array.Empty<T>() — auto-fixable via code fix; demoted to
+# suggestion until a sweep applies the fixes.
+dotnet_diagnostic.CA1825.severity = suggestion
+
+# CA1852: Type can be sealed — perf suggestion; some internal types are
+# intentionally unsealed for testability.
+dotnet_diagnostic.CA1852.severity = suggestion
+
+# CA2025: Don't pass IDisposable as parameter unless ownership is documented —
+# common pattern for borrow semantics; demoted to suggestion.
+dotnet_diagnostic.CA2025.severity = suggestion
+
+# CA1309: Use ordinal string comparison — auto-fixable; demoted to suggestion.
+dotnet_diagnostic.CA1309.severity = suggestion
+
+# CA1711: Identifier suffix — at root scope, allow OPC-spec class names like
+# OpcEventCollection (not just Opc.Classic.Dcom). Per-directory rule above
+# overrides this for IDL types.
+dotnet_diagnostic.CA1711.severity = suggestion
+
+# CA1715: Identifiers prefixed with letter — same justification.
+dotnet_diagnostic.CA1715.severity = suggestion
+
+# JSON / YAML / Markdown — 2-space LF
+[*.{json,yaml,yml,md}]
+indent_size = 2
+end_of_line = lf
+
+# MSBuild / .csproj / .props / .targets — 2-space
+[*.{xml,csproj,props,targets,ruleset}]
+indent_size = 2
+
+# Shell scripts — LF
+[*.{sh,bash}]
+end_of_line = lf
+indent_size = 2
+
+# Batch / cmd / PowerShell — CRLF
+[*.{cmd,bat,ps1}]
+end_of_line = crlf
+
+# Reference folders — preserve upstream style and analyzer behavior
+[{COM,ext}/**.cs]
+csharp_style_namespace_declarations = block_scoped:silent
+csharp_using_directive_placement = inside_namespace:silent
+dotnet_diagnostic.IL2026.severity = silent
+dotnet_diagnostic.IL2050.severity = silent
+dotnet_diagnostic.IL2055.severity = silent
+dotnet_diagnostic.IL3050.severity = silent
+dotnet_diagnostic.CA1062.severity = silent
+dotnet_diagnostic.CA1031.severity = silent
+
+# Opc.Classic.Dcom — IDL-spec wire types
+# These types intentionally retain wire-protocol identifier conventions:
+#   - Underscored names (IOPCHDA_Server, OPCHDA_ANNOTATION, ORPC_THIS, etc.) per OPC/MS-DCOM IDL
+#   - Public fields for inline NDR-serialized struct layout (NDR encoding mirrors C struct field order)
+#   - Reserved-keyword method names (Error, Type, Default) — public API surface frozen pre-1.0
+#   - Tracking TODO/HACK comments for cross-referenced roadmap findings
+# Targeted suppressions applied at directory scope; real code-quality issues (CA1852 sealed,
+# CA1848 logger delegates, MA0011 IFormatProvider, etc.) remain enforced.
+[src/Opc.Classic.Dcom/**.cs]
+# CA1707: Identifiers should not contain underscores — IDL-spec wire names (intentional)
+dotnet_diagnostic.CA1707.severity = none
+# CA1712: Enum value should not be prefixed with type name — IDL enum naming convention
+dotnet_diagnostic.CA1712.severity = none
+# CA1720: Identifier contains type name — IDL primitive names (e.g. ResolverId, FloatValue)
+dotnet_diagnostic.CA1720.severity = none
+# CA1715: Identifiers prefixed with letter — IDL interface I* and type T* prefixes
+dotnet_diagnostic.CA1715.severity = none
+# CA1711: Identifier suffix — IDL types ending in _Server, _Client, _Stream are spec-mandated
+dotnet_diagnostic.CA1711.severity = none
+# CA1716: Identifier matches keyword — public surface frozen pre-1.0 (Error/Type methods)
+dotnet_diagnostic.CA1716.severity = none
+# CA1051: Visible instance fields — NDR struct layout requires public field ordering
+dotnet_diagnostic.CA1051.severity = none
+# MA0026: TODO/HACK comments — used as tracking markers for roadmap findings (intentional)
+dotnet_diagnostic.MA0026.severity = none
+# CA1725: Parameter name in override — IDL parameter names retained for spec readability
+dotnet_diagnostic.CA1725.severity = none
+# RS0030: Banned API — Activator.CreateInstance(Type) banned by src/BannedSymbols.txt;
+# documented compatibility helpers are tracked in docs/ROADMAP.md.
+dotnet_diagnostic.RS0030.severity = warning
+# RCS1138/RCS1139: Add (summary element to) documentation comment — assembly opts out
+# of XML doc generation (GenerateDocumentationFile=false) for transitional Java-ported code.
+dotnet_diagnostic.RCS1138.severity = none
+dotnet_diagnostic.RCS1139.severity = none
+
+# Opc.Classic.Dcom.Tests — exercises the transitional Java-ported Dcom assembly with
+# legacy test fixtures (MSWord.cs, Main.cs, etc.). Same doc-comment
+# relaxation as the src/Opc.Classic.Dcom section above.
+[tests/Opc.Classic.Dcom.Tests/**.cs]
+dotnet_diagnostic.RCS1138.severity = none
+dotnet_diagnostic.RCS1139.severity = none

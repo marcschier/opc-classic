@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>Focused TUnit coverage for hardened DCOM protection defaults plus the cross-platform managed DCOM/RPC stack.</Description>
+    <RootNamespace>Opc.Classic.Dcom.Test</RootNamespace>
+    <AssemblyName>Opc.Classic.Dcom.LegacyTests</AssemblyName>
+
+    <IsTestProject>true</IsTestProject>
+    <OutputType>Exe</OutputType>
+
+    <IsPackable>false</IsPackable>
+    <IsPublishable>false</IsPublishable>
+
+    <!-- Relax inherited strictness so existing TUnit tests (which assert against
+         in-process state and intentionally pass null sentinels) keep compiling. -->
+    <Nullable>annotations</Nullable>
+    <NoWarn>$(NoWarn);CS8600;CS8601;CS8602;CS8603;CS8604;CS8618;CS8625;CA1305;CA1307;CA1310</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Update="TestData\*.cer" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Opc.Classic.Tests.Fuzz\Opc.Classic.Tests.Fuzz.csproj" />
+    <ProjectReference Include="..\..\src\Opc.Classic.Da\Opc.Classic.Da.csproj" />
+    <ProjectReference Include="..\..\src\Opc.Classic.Dcom\Opc.Classic.Dcom.csproj" />
+  </ItemGroup>
+
+</Project>

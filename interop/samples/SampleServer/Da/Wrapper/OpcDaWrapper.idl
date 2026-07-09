@@ -1,0 +1,64 @@
+//============================================================================
+// TITLE: XxxDaServer.idl
+//
+// CONTENTS:
+// 
+// The OPC Data Access Sample Server IDL file.
+//
+// (c) Copyright 2002-2003 The OPC Foundation
+// ALL RIGHTS RESERVED.
+//
+// DISCLAIMER:
+//  This code is provided by the OPC Foundation solely to assist in 
+//  understanding and use of the appropriate OPC Specification(s) and may be 
+//  used as set forth in the License Grant section of the OPC Specification.
+//  This code is provided as-is and without warranty or support of any sort
+//  and is subject to the Warranty and Liability Disclaimers which appear
+//  in the printed OPC Specification.
+//
+// MODIFICATION LOG:
+//
+// Date       By    Notes
+// ---------- ---   -----
+// 2002/09/03 RSA   First release.
+//
+
+import "opccomn.idl";
+import "opcda.idl";
+
+//==============================================================================
+// IOPCWrappedServer
+
+[
+    object,
+	uuid(50E8496C-FA60-46a4-AF72-512494C664C6),
+	pointer_default(unique)
+]
+interface IOPCWrappedServer : IUnknown
+{
+	HRESULT Load([in] REFCLSID tClsid);
+
+	HRESULT Unload();
+}
+
+[
+	uuid(1437DC7E-D66D-4aa3-BA79-2CD0A4A6F3D8),
+	version(1.0)
+]
+library OpcDaServerLib
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	[
+		uuid(1437DC7F-D66E-4aa3-BA79-2CD0A4A6F3D8),
+        helpstring("Data Access .NET Server Wrapper")
+	]
+	coclass OpcDaWrapper
+	{
+		interface IOPCWrappedServer;
+
+		[default] interface IOPCServer;
+        [source]  interface IOPCShutdown;
+	};
+};

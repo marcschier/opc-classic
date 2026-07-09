@@ -1,0 +1,13 @@
+bin/
+obj/
+TestResults/
+coverage/
+.vs/
+.vscode/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+*.log
+*.nupkg
+*.snupkg
