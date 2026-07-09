@@ -96,7 +96,20 @@ jobs:
         run: dotnet build Opc.Classic.slnx --no-restore -c Release -p:PublicRelease=true
 
       - name: Test
-        run: dotnet test Opc.Classic.slnx --no-build -c Release --filter "Category!=NativeConformance&Category!=MatrikonConformance&Category!=CompatMatrix"
+        shell: pwsh
+        run: |
+          # Per-project test runs avoid the $GITHUB_STEP_SUMMARY write race that
+          # `dotnet test <solution>` triggers when its parallel TUnit/MTP executables
+          # append the same summary file (crashing a host with "file ... used by
+          # another process"). Exit code 8 = "zero tests ran", treated as OK.
+          $failed = $false
+          $projects = Get-ChildItem -Path "tests" -Filter "*.csproj" -Recurse | Sort-Object FullName
+          foreach ($project in $projects) {
+            Write-Host "== Testing $([IO.Path]::GetFileNameWithoutExtension($project.Name)) =="
+            dotnet test $project.FullName --no-build -c Release --filter "Category!=NativeConformance&Category!=MatrikonConformance&Category!=CompatMatrix"
+            if ($LASTEXITCODE -ne 0 -and $LASTEXITCODE -ne 8) { $failed = $true }
+          }
+          if ($failed) { exit 1 }
 
       - name: Pack
         # Use --no-restore (not --no-build): a solution-level `dotnet pack --no-build`
