@@ -1,4 +1,4 @@
-// Copyright (c) 2026 marcschier. Licensed under the MIT License.
+﻿// Copyright (c) 2026 marcschier. Licensed under the MIT License.
 
 namespace Opc.Classic;
 

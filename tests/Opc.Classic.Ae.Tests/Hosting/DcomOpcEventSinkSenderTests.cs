@@ -1,4 +1,4 @@
-// Copyright (c) 2026 Opc.Classic Contributors. Licensed under the MIT License.
+﻿// Copyright (c) 2026 Opc.Classic Contributors. Licensed under the MIT License.
 
 using System.Net;
 using Opc.Classic.Ae.Hosting;
@@ -14,28 +14,37 @@ public sealed class DcomOpcEventSinkSenderTests
     [Test]
     public async Task Constructor_null_sinkRef_throws()
     {
-        await Assert.That(() => { _ = new DcomOpcEventSinkSender(
+        await Assert.That(() =>
+        {
+            _ = new DcomOpcEventSinkSender(
             sinkRef: null!,
             NewFactory(),
-            () => new NoOpAuthContext()); }).Throws<ArgumentNullException>();
+            () => new NoOpAuthContext());
+        }).Throws<ArgumentNullException>();
     }
 
     [Test]
     public async Task Constructor_null_channelFactory_throws()
     {
-        await Assert.That(() => { _ = new DcomOpcEventSinkSender(
+        await Assert.That(() =>
+        {
+            _ = new DcomOpcEventSinkSender(
             SinkRef(),
             channelFactory: null!,
-            () => new NoOpAuthContext()); }).Throws<ArgumentNullException>();
+            () => new NoOpAuthContext());
+        }).Throws<ArgumentNullException>();
     }
 
     [Test]
     public async Task Constructor_null_authContextFactory_throws()
     {
-        await Assert.That(() => { _ = new DcomOpcEventSinkSender(
+        await Assert.That(() =>
+        {
+            _ = new DcomOpcEventSinkSender(
             SinkRef(),
             NewFactory(),
-            authContextFactory: null!); }).Throws<ArgumentNullException>();
+            authContextFactory: null!);
+        }).Throws<ArgumentNullException>();
     }
 
     [Test]
@@ -43,11 +52,14 @@ public sealed class DcomOpcEventSinkSenderTests
     [Arguments("   ")]
     public async Task Constructor_blank_fallbackHost_throws(string host)
     {
-        await Assert.That(() => { _ = new DcomOpcEventSinkSender(
+        await Assert.That(() =>
+        {
+            _ = new DcomOpcEventSinkSender(
             SinkRef(),
             NewFactory(),
             () => new NoOpAuthContext(),
-            host); }).Throws<ArgumentException>();
+            host);
+        }).Throws<ArgumentException>();
     }
 
     [Test]

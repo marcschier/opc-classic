@@ -1,4 +1,4 @@
-// Copyright (c) 2026 Opc.Classic Contributors. Licensed under the MIT License.
+﻿// Copyright (c) 2026 Opc.Classic Contributors. Licensed under the MIT License.
 
 using System.Net;
 using Opc.Classic.Da.Dcom;
@@ -18,31 +18,40 @@ public sealed class DcomOpcDataCallbackSinkTests
     [Test]
     public async Task Constructor_null_sinkRef_throws()
     {
-        await Assert.That(() => { _ = new DcomOpcDataCallbackSink(
+        await Assert.That(() =>
+        {
+            _ = new DcomOpcDataCallbackSink(
             sinkRef: null!,
             NewFactory(),
             () => new NoOpAuthContext(),
-            "localhost"); }).Throws<ArgumentNullException>();
+            "localhost");
+        }).Throws<ArgumentNullException>();
     }
 
     [Test]
     public async Task Constructor_null_channelFactory_throws()
     {
-        await Assert.That(() => { _ = new DcomOpcDataCallbackSink(
+        await Assert.That(() =>
+        {
+            _ = new DcomOpcDataCallbackSink(
             CallbackRef([]),
             channelFactory: null!,
             () => new NoOpAuthContext(),
-            "localhost"); }).Throws<ArgumentNullException>();
+            "localhost");
+        }).Throws<ArgumentNullException>();
     }
 
     [Test]
     public async Task Constructor_null_authContextFactory_throws()
     {
-        await Assert.That(() => { _ = new DcomOpcDataCallbackSink(
+        await Assert.That(() =>
+        {
+            _ = new DcomOpcDataCallbackSink(
             CallbackRef([]),
             NewFactory(),
             authContextFactory: null!,
-            "localhost"); }).Throws<ArgumentNullException>();
+            "localhost");
+        }).Throws<ArgumentNullException>();
     }
 
     [Test]
@@ -50,11 +59,14 @@ public sealed class DcomOpcDataCallbackSinkTests
     [Arguments("   ")]
     public async Task Constructor_blank_fallbackHost_throws(string host)
     {
-        await Assert.That(() => { _ = new DcomOpcDataCallbackSink(
+        await Assert.That(() =>
+        {
+            _ = new DcomOpcDataCallbackSink(
             CallbackRef([]),
             NewFactory(),
             () => new NoOpAuthContext(),
-            host); }).Throws<ArgumentException>();
+            host);
+        }).Throws<ArgumentException>();
     }
 
     [Test]
@@ -70,23 +82,29 @@ public sealed class DcomOpcDataCallbackSinkTests
             securityOffset: 0,
             resolverBindings: []);
 
-        await Assert.That(() => { _ = new DcomOpcDataCallbackSink(
+        await Assert.That(() =>
+        {
+            _ = new DcomOpcDataCallbackSink(
             wrongRef,
             NewFactory(),
             () => new NoOpAuthContext(),
-            "localhost"); }).Throws<ArgumentException>();
+            "localhost");
+        }).Throws<ArgumentException>();
     }
 
     [Test]
     public async Task Constructor_non_positive_timeout_throws()
     {
-        await Assert.That(() => { _ = new DcomOpcDataCallbackSink(
+        await Assert.That(() =>
+        {
+            _ = new DcomOpcDataCallbackSink(
             CallbackRef([]),
             NewFactory(),
             () => new NoOpAuthContext(),
             "localhost",
             logger: null,
-            deliveryTimeout: TimeSpan.Zero); }).Throws<ArgumentOutOfRangeException>();
+            deliveryTimeout: TimeSpan.Zero);
+        }).Throws<ArgumentOutOfRangeException>();
     }
 
     [Test]
