@@ -7,8 +7,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-Initial development toward the first Opc.Classic release. See
-[docs/ROADMAP.md](docs/ROADMAP.md) for the planned scope and open gates.
+## [0.1.0-alpha] - 2026-07-09
+
+First public preview of Opc.Classic — a cross-platform, NativeAOT-compatible .NET 10
+implementation of OPC Classic. See [docs/ROADMAP.md](docs/ROADMAP.md) for the planned
+scope and open gates.
+
+### Added
+
+- Managed OPC Classic stack covering DA, AE, HDA, Batch, Commands, Complex Data, DX,
+  Security, Discovery, and XML-DA over a fully managed DCOM/MSRPC transport (no Windows
+  COM required at runtime), with self-contained NTLMv2 / Kerberos / SPNEGO authentication
+  and channel-binding support.
+- Source-generated client proxies and server dispatchers; every runtime assembly is
+  NativeAOT- and trim-compatible.
+- NuGet packaging: the self-contained `Opc.Classic` SDK meta-package, the
+  `Opc.Classic.Windows` Windows DCOM server-hosting add-on, the `Opc.Classic.Generators`
+  and `Opc.Classic.MigrationAnalyzer` Roslyn packages, and the `Opc.Classic.Mcp` MCP
+  server tool are published to nuget.org; the granular per-spec `Opc.Classic.*`
+  assemblies ship to the GitHub Packages feed.
 
 ### Changed
 

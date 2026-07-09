@@ -48,9 +48,10 @@ jobs:
         shell: bash
         run: |
           TAG="${{ github.event.inputs.tag || github.ref_name }}"
-          # Accept optional leading "v": v1.0.0, v1.0.0-rc.11, 1.0.0, 1.0.0-rc.11.
-          if [[ ! "$TAG" =~ ^v?[0-9]+\.[0-9]+\.[0-9]+(-(alpha|beta|rc)\.[0-9]+)?$ ]]; then
-            echo "::error::Tag '$TAG' must match [v]<MAJOR>.<MINOR>.<PATCH>[-<prerelease>.<N>]"
+          # Accept optional leading "v" and prerelease labels alpha/beta/rc/preview with an
+          # optional numeric identifier: v0.1.0-alpha, 0.1.0-preview, v1.0.0-rc.11, 1.0.0.
+          if [[ ! "$TAG" =~ ^v?[0-9]+\.[0-9]+\.[0-9]+(-(alpha|beta|rc|preview)(\.[0-9]+)?)?$ ]]; then
+            echo "::error::Tag '$TAG' must match [v]<MAJOR>.<MINOR>.<PATCH>[-(alpha|beta|rc|preview)[.<N>]]"
             exit 1
           fi
           # Strip leading "v" so the package/image version stays canonical (1.0.0-rc.11, not v1.0.0-rc.11).
