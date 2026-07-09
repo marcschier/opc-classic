@@ -173,6 +173,7 @@ jobs:
       - name: Install Npcap (required for capture.list_interfaces)
         shell: pwsh
         continue-on-error: true
+        timeout-minutes: 8
         run: |
           # Npcap provides wpcap.dll which SharpPcap loads. The chocolatey
           # community feed does NOT ship npcap (commercial-licensed); pull
@@ -182,17 +183,31 @@ jobs:
           # finds it without code changes. admin_only=no opens the driver
           # to non-admin processes (the MCP host launched by probe_servers
           # runs as the runner user).
+          #
+          # Both the download and the silent install are bounded: the npcap
+          # installer has been observed to hang indefinitely on hosted
+          # runners (waiting on a driver-install dialog that never appears
+          # headless), which previously consumed the whole 30-minute job
+          # budget instead of degrading. Anything unexpected drops to the
+          # documented ::warning:: path so the matrix step still runs.
+          $ErrorActionPreference = 'Continue'
           $url = 'https://npcap.com/dist/npcap-1.79.exe'
           $exe = "$env:RUNNER_TEMP\npcap-1.79.exe"
-          Invoke-WebRequest -Uri $url -OutFile $exe -UseBasicParsing
-          Write-Host "Downloaded Npcap installer: $((Get-Item $exe).Length) bytes"
-          $p = Start-Process $exe -ArgumentList '/S', '/winpcap_mode=yes', '/admin_only=no' -Wait -PassThru -NoNewWindow
-          Write-Host "Npcap install exit code: $($p.ExitCode)"
-          if ($p.ExitCode -ne 0) {
-            Write-Host "::warning::Npcap install failed (exit $($p.ExitCode)); capture.* tools will regress"
-          } else {
-            Write-Host "Npcap install OK -- wpcap.dll under:"
-            Get-ChildItem 'C:\Windows\System32\Npcap\wpcap.dll', 'C:\Windows\SysWOW64\Npcap\wpcap.dll' -ErrorAction SilentlyContinue | Select-Object FullName
+          try {
+            Invoke-WebRequest -Uri $url -OutFile $exe -UseBasicParsing -TimeoutSec 120
+            Write-Host "Downloaded Npcap installer: $((Get-Item $exe).Length) bytes"
+            $p = Start-Process $exe -ArgumentList '/S', '/winpcap_mode=yes', '/admin_only=no' -PassThru -NoNewWindow
+            if (-not $p.WaitForExit(300000)) {
+              Write-Host "::warning::Npcap installer did not exit within 300s; killing and continuing (capture.* tools will regress)"
+              try { $p.Kill($true) } catch { }
+            } elseif ($p.ExitCode -ne 0) {
+              Write-Host "::warning::Npcap install failed (exit $($p.ExitCode)); capture.* tools will regress"
+            } else {
+              Write-Host "Npcap install OK -- wpcap.dll under:"
+              Get-ChildItem 'C:\Windows\System32\Npcap\wpcap.dll', 'C:\Windows\SysWOW64\Npcap\wpcap.dll' -ErrorAction SilentlyContinue | Select-Object FullName
+            }
+          } catch {
+            Write-Host "::warning::Npcap install step error: $($_.Exception.Message); capture.* tools will regress"
           }
 
       - name: Build + register OpcEnum service (vendored source)
