@@ -114,16 +114,16 @@ public sealed class DaClientTools
 
     private static IReadOnlyList<Guid> BuildDaSessionPreBindIids()
     {
-        var iids = new List<Guid>(OpcSpecCatalog.Da.Count + 5);
-        AddPreBindIid(iids, OpcSpecCatalog.Da);
-        AddPreBindIid(iids, IOPCComplexDataItem.InterfaceId);
-        AddPreBindIid(iids, IOPCComplexDataItem2.InterfaceId);
-        AddPreBindIid(iids, IOPCTypeLibrary.InterfaceId);
-        // OPC Security tools (SecurityTools) reuse the DA session's call channel,
-        // so pre-declare IOPCSecurityNT / IOPCSecurityPrivate here to avoid an
-        // AlterContext rebind that some servers reject (PROVIDER_REJECTION).
-        AddPreBindIid(iids, OpcGuids.IID_IOPCSecurityNT);
-        AddPreBindIid(iids, OpcGuids.IID_IOPCSecurityPrivate);
+        // Pre-declare only interfaces that live on the DA SERVER object and are mandatory on
+        // every DA server (IOPCServer + IOPCCommon). Real OPC servers (e.g. Matrikon) reject a
+        // BIND that declares interfaces the server object does not implement: the OPC group
+        // interfaces (IOPCItemMgt / IOPCSyncIO / IOPCGroupStateMgt / ...) live on GROUP objects,
+        // not the server, and CPX / typelib / security / DA3 interfaces are optional. Those are
+        // negotiated lazily via AlterContext-on-demand when a tool actually calls them (which
+        // real servers accept per-interface). Over-declaring them up front produced a BIND_NAK
+        // against Matrikon (see interop/docs/probe-coverage.md).
+        var iids = new List<Guid>(2);
+        AddPreBindIid(iids, new[] { IOPCServer.InterfaceId, IOPCCommon.InterfaceId });
         return iids;
     }
 

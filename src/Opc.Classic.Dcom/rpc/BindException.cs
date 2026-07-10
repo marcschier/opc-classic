@@ -22,7 +22,14 @@ public class BindException : RpcException
     public BindException(string message, BindNoAcknowledgeReason rejectReason) :
         base(ToString(message, rejectReason))
     {
+        RejectReason = rejectReason;
     }
+
+    /// <summary>
+    /// Gets the DCE/RPC <c>bind_nak</c> reject reason, when the bind was rejected with a
+    /// BIND_NAK PDU. <see langword="null" /> for other bind failures.
+    /// </summary>
+    public BindNoAcknowledgeReason? RejectReason { get; }
 
     public BindException(string? message, Exception? innerException) : base(message, innerException)
     {

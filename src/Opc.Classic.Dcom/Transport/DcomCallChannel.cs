@@ -261,6 +261,10 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable
             {
                 throw new InvalidOperationException($"AlterContext failed with fault 0x{unchecked((int)fault.Status):X8}.");
             }
+            if (decoded.Pdu is BindNoAcknowledgePdu nak)
+            {
+                throw new BindException("DCE/RPC alter_context rejected (BIND_NAK).", nak.RejectReason);
+            }
             throw new InvalidOperationException($"Expected alter_context_response PDU, received type {decoded.Pdu.Type}.");
         }
 
@@ -291,6 +295,10 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable
             if (decoded.Pdu is FaultCoPdu fault)
             {
                 throw new InvalidOperationException($"Bind failed with fault 0x{unchecked((int)fault.Status):X8}.");
+            }
+            if (decoded.Pdu is BindNoAcknowledgePdu nak)
+            {
+                throw new BindException("DCE/RPC bind rejected (BIND_NAK).", nak.RejectReason);
             }
             throw new InvalidOperationException($"Expected bind_ack PDU, received type {decoded.Pdu.Type}.");
         }

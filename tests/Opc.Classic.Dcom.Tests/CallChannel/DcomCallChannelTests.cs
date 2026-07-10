@@ -82,6 +82,31 @@ public sealed class DcomCallChannelTests
             .IsEqualTo(authContext.CapturedConfidentialOffset + authContext.CapturedConfidentialLength + 8);
     }
 
+    // The channel must surface the DCE/RPC bind_nak reject_reason (MS-RPCE §2.2.2.10) as a
+    // typed BindException so callers can adapt (e.g. retry with fewer presentation contexts
+    // when a server answers LOCAL_LIMIT_EXCEEDED), rather than a generic "received type 13".
+    [Test]
+    public async Task InvokeAsync_BindNak_throws_BindException_carrying_reject_reason()
+    {
+        await using var transport = new InMemoryAsyncTransport();
+        await transport.WriteInboundAsync(CreateBindNakBytes(BindNoAcknowledgeReason.LOCAL_LIMIT_EXCEEDED));
+        var channel = new DcomCallChannel(transport, NoOpAuthContext.Instance);
+
+        BindException? caught = null;
+        try
+        {
+            _ = await channel.InvokeAsync(Guid.NewGuid(), 3, ReadOnlyMemory<byte>.Empty);
+        }
+        catch (BindException ex)
+        {
+            caught = ex;
+        }
+
+        await Assert.That(caught).IsNotNull();
+        await Assert.That(caught!.RejectReason).IsEqualTo(BindNoAcknowledgeReason.LOCAL_LIMIT_EXCEEDED);
+        await Assert.That(caught.Message).Contains("LOCAL_LIMIT_EXCEEDED");
+    }
+
     [Test]
     public async Task InvokeAsync_fragmented_response_assembles_correctly()
     {
@@ -288,6 +313,17 @@ public sealed class DcomCallChannelTests
         };
 
         return EncodePdu(fault);
+    }
+
+    private static byte[] CreateBindNakBytes(BindNoAcknowledgeReason reason)
+    {
+        var nak = new BindNoAcknowledgePdu
+        {
+            CallId = 1,
+            RejectReason = reason,
+        };
+
+        return EncodePdu(nak);
     }
 
     private static byte[] CreateResponseStub(byte[] responsePayload)
