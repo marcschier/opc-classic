@@ -35,7 +35,7 @@ public sealed class NoOpAuthContextTests
     {
         byte[] pdu = [0x10, 0x20, 0x30];
 
-        NoOpAuthContext.Instance.SignAndSeal(pdu, out byte[] signature);
+        NoOpAuthContext.Instance.SignAndSeal(pdu, 0, pdu.Length, out byte[] signature);
 
         await Assert.That(signature.Length).IsEqualTo(0);
         await Assert.That(pdu).IsEquivalentTo(new byte[] { 0x10, 0x20, 0x30 });
@@ -46,7 +46,7 @@ public sealed class NoOpAuthContextTests
     {
         byte[] pdu = [0x40, 0x50];
 
-        bool verified = NoOpAuthContext.Instance.VerifyAndUnseal(pdu, ReadOnlyMemory<byte>.Empty);
+        bool verified = NoOpAuthContext.Instance.VerifyAndUnseal(pdu, 0, pdu.Length, ReadOnlyMemory<byte>.Empty);
 
         await Assert.That(verified).IsTrue();
         await Assert.That(pdu).IsEquivalentTo(new byte[] { 0x40, 0x50 });
@@ -57,7 +57,7 @@ public sealed class NoOpAuthContextTests
     {
         byte[] pdu = [0x40, 0x50];
 
-        bool verified = NoOpAuthContext.Instance.VerifyAndUnseal(pdu, new byte[] { 0xAA });
+        bool verified = NoOpAuthContext.Instance.VerifyAndUnseal(pdu, 0, pdu.Length, new byte[] { 0xAA });
 
         await Assert.That(verified).IsFalse();
         await Assert.That(pdu).IsEquivalentTo(new byte[] { 0x40, 0x50 });

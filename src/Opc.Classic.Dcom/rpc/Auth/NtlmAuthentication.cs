@@ -195,7 +195,7 @@ public class NtlmAuthentication
             return _authentication.CreateType3(type2).ToByteArray();
         }
 
-        public void SignAndSeal(Span<byte> pduBody, out byte[] signature)
+        public void SignAndSeal(Span<byte> signedRegion, int confidentialOffset, int confidentialLength, out byte[] signature)
         {
             if (ProtectionLevel < OpcProtectionLevel.Integrity)
             {
@@ -204,15 +204,15 @@ public class NtlmAuthentication
             }
 
             var security = EstablishedSecurity;
-            var buffer = new byte[pduBody.Length + security.VerifierLength];
-            pduBody.CopyTo(buffer.AsSpan());
+            var buffer = new byte[signedRegion.Length + security.VerifierLength];
+            signedRegion.CopyTo(buffer.AsSpan());
             var ndr = CreateNdrCodec(buffer);
-            security.ProcessOutgoing(ndr, 0, pduBody.Length, pduBody.Length, isFragmented: false);
-            buffer.AsSpan(0, pduBody.Length).CopyTo(pduBody);
-            signature = buffer.AsSpan(pduBody.Length, security.VerifierLength).ToArray();
+            security.ProcessOutgoing(ndr, confidentialOffset, confidentialLength, signedRegion.Length, isFragmented: false);
+            buffer.AsSpan(0, signedRegion.Length).CopyTo(signedRegion);
+            signature = buffer.AsSpan(signedRegion.Length, security.VerifierLength).ToArray();
         }
 
-        public bool VerifyAndUnseal(Span<byte> pduBody, ReadOnlyMemory<byte> signature)
+        public bool VerifyAndUnseal(Span<byte> signedRegion, int confidentialOffset, int confidentialLength, ReadOnlyMemory<byte> signature)
         {
             if (ProtectionLevel < OpcProtectionLevel.Integrity)
             {
@@ -225,20 +225,20 @@ public class NtlmAuthentication
                 return false;
             }
 
-            var buffer = new byte[pduBody.Length + security.VerifierLength];
-            pduBody.CopyTo(buffer.AsSpan());
-            signature.Span.CopyTo(buffer.AsSpan(pduBody.Length));
+            var buffer = new byte[signedRegion.Length + security.VerifierLength];
+            signedRegion.CopyTo(buffer.AsSpan());
+            signature.Span.CopyTo(buffer.AsSpan(signedRegion.Length));
             var ndr = CreateNdrCodec(buffer);
             try
             {
-                security.ProcessIncoming(ndr, 0, pduBody.Length, pduBody.Length, isFragmented: false);
+                security.ProcessIncoming(ndr, confidentialOffset, confidentialLength, signedRegion.Length, isFragmented: false);
             }
             catch (IntegrityException)
             {
                 return false;
             }
 
-            buffer.AsSpan(0, pduBody.Length).CopyTo(pduBody);
+            buffer.AsSpan(0, signedRegion.Length).CopyTo(signedRegion);
             return true;
         }
 

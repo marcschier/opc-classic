@@ -235,14 +235,22 @@ live server.
   pre-declare their IID set in the initial DCE bind, so the AlterContext
   `PROVIDER_REJECTION` class is addressed at the code level. These are covered by
   unit tests (catalog contents + the `DcomCallChannelTests` bind-PDU assertions).
+- **NTLM RPC signing against real Windows RPCSS is fixed.** Managed `IActivation` /
+  `IRemoteSCMActivator` activation calls previously faulted with
+  `RPC_S_SEC_PKG_ERROR (0x00000721)` because the connection-oriented NTLM per-PDU
+  signature covered only the post-header stub, not the whole PDU. Per MS-RPCE
+  §3.3.1.5.2.2 the signature must cover the entire PDU except the trailing
+  `auth_value` (common header + body + auth pad + `sec_trailer` header). The
+  `IAuthContext.SignAndSeal` / `VerifyAndUnseal` contract now takes the full signed
+  region plus the confidential (sealed) sub-range, and both the client
+  (`DcomCallChannel`) and managed server (`RpcServerConnectionProcessor`) sign/verify
+  that region. Verified against local Windows RPCSS: the signed activation call is now
+  accepted (it returns `REGDB_E_CLASSNOTREG` for an unregistered CLSID instead of a
+  `0x721` fault), and the managed↔managed integration suite still round-trips.
 - **End-to-end re-validation** against live Matrikon / OPCEnum (`--da-progid`,
   `discovery.enumerate_servers`) has NOT been re-run in this environment
-  (Matrikon/TestServer are not installed) and is separately gated by an unrelated
-  DCOM **activation** issue: managed `IActivation` / `IRemoteSCMActivator` calls to
-  the real Windows RPCSS currently fault with `RPC_S_SEC_PKG_ERROR (0x00000721)` — a
-  per-call NTLM RPC signing mismatch tracked in the follow-up plans — which aborts
-  activation before any data-port bind. Confirm the `--da-progid` / discovery paths
-  once that activation fault is fixed.
+  (Matrikon/TestServer are not installed), but the activation signing fault that
+  previously blocked it is resolved.
 - **DX-over-DCOM**: the MCP DX tool has no DCOM connection factory yet
   (`inmemory://` only), so a DX pre-bind catalog is deferred until that path exists.
 - **XML-DA**: SOAP/HTTP client, no DCE bind — not applicable.

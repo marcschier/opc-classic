@@ -142,7 +142,7 @@ public sealed class KerberosAuthContext : IAuthContext, IAuthSessionKeyProvider
     public ReadOnlyMemory<byte>? GetSessionKey() => _kerberosCtx.EstablishedSessionKey?.Key;
 
     /// <inheritdoc />
-    public void SignAndSeal(Span<byte> pduBody, out byte[] signature)
+    public void SignAndSeal(Span<byte> signedRegion, int confidentialOffset, int confidentialLength, out byte[] signature)
     {
         if (ProtectionLevel < OpcProtectionLevel.Integrity)
         {
@@ -150,36 +150,45 @@ public sealed class KerberosAuthContext : IAuthContext, IAuthSessionKeyProvider
             return;
         }
 
-        bool confidential = ProtectionLevel >= OpcProtectionLevel.Privacy;
-        signature = EstablishedSession.WrapMessage(pduBody, confidential);
-        if (confidential)
+        if (ProtectionLevel >= OpcProtectionLevel.Privacy)
         {
-            signature.AsSpan(Rfc4121WrapHeaderLength, pduBody.Length).CopyTo(pduBody);
+            // Seal only the confidential stub sub-range; RFC4121 Wrap returns a 16-byte
+            // header followed by the ciphertext, which we copy back in place.
+            Span<byte> confidential = signedRegion.Slice(confidentialOffset, confidentialLength);
+            signature = EstablishedSession.WrapMessage(confidential, confidential: true);
+            signature.AsSpan(Rfc4121WrapHeaderLength, confidential.Length).CopyTo(confidential);
+            return;
         }
+
+        // Integrity: MIC over the entire signed region (the PDU minus its auth_value,
+        // per MS-RPCE §3.3.1.5.2.2).
+        signature = EstablishedSession.WrapMessage(signedRegion, confidential: false);
     }
 
     /// <inheritdoc />
-    public bool VerifyAndUnseal(Span<byte> pduBody, ReadOnlyMemory<byte> signature)
+    public bool VerifyAndUnseal(Span<byte> signedRegion, int confidentialOffset, int confidentialLength, ReadOnlyMemory<byte> signature)
     {
         if (ProtectionLevel < OpcProtectionLevel.Integrity)
         {
             return signature.IsEmpty;
         }
 
+        bool privacy = ProtectionLevel >= OpcProtectionLevel.Privacy;
+        Span<byte> target = privacy ? signedRegion.Slice(confidentialOffset, confidentialLength) : signedRegion;
         try
         {
             byte[] plaintext = EstablishedSession.UnwrapMessage(signature.Span, out bool wasConfidential);
-            if (wasConfidential != (ProtectionLevel >= OpcProtectionLevel.Privacy) || plaintext.Length != pduBody.Length)
+            if (wasConfidential != privacy || plaintext.Length != target.Length)
             {
                 return false;
             }
 
-            if (!wasConfidential && !plaintext.AsSpan().SequenceEqual(pduBody))
+            if (!wasConfidential && !plaintext.AsSpan().SequenceEqual(target))
             {
                 return false;
             }
 
-            plaintext.CopyTo(pduBody);
+            plaintext.CopyTo(target);
             return true;
         }
         catch (ArgumentException)

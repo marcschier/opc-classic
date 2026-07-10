@@ -48,8 +48,8 @@ public sealed class KerberosAuthContextTests
         byte[] pduBody = [0x01, 0x02, 0x03];
         byte[] expected = pduBody.ToArray();
 
-        context.SignAndSeal(pduBody, out byte[] signature);
-        bool verified = context.VerifyAndUnseal(pduBody, signature);
+        context.SignAndSeal(pduBody, 0, pduBody.Length, out byte[] signature);
+        bool verified = context.VerifyAndUnseal(pduBody, 0, pduBody.Length, signature);
 
         await Assert.That(signature.Length > 0).IsTrue();
         await Assert.That(verified).IsTrue();

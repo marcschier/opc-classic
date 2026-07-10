@@ -21,19 +21,35 @@ public interface IAuthContext
     byte[] ProcessChallengeToken(ReadOnlyMemory<byte> serverToken);
 
     /// <summary>
-    /// Signs and optionally seals a PDU body according to the negotiated protection level.
+    /// Signs and optionally seals a DCE/RPC PDU according to the negotiated protection level.
     /// </summary>
-    /// <param name="pduBody">The mutable PDU body, excluding the common DCE/RPC header.</param>
+    /// <param name="signedRegion">
+    /// The mutable signed region: the entire PDU EXCEPT the trailing <c>auth_value</c> field, i.e.
+    /// the common header, body, authentication padding, and the 8-byte <c>sec_trailer</c> header.
+    /// Per MS-RPCE §3.3.1.5.2.2 the per-PDU signature covers exactly these bytes. When sealing is
+    /// active the confidential sub-range identified by <paramref name="confidentialOffset" /> and
+    /// <paramref name="confidentialLength" /> is encrypted in place.
+    /// </param>
+    /// <param name="confidentialOffset">
+    /// Offset (within <paramref name="signedRegion" />) of the stub sub-range that is encrypted at
+    /// <see cref="OpcProtectionLevel.Privacy" />. Ignored for integrity-only protection.
+    /// </param>
+    /// <param name="confidentialLength">Length of the encrypted stub sub-range. Ignored for integrity-only protection.</param>
     /// <param name="signature">The generated signature/verifier bytes.</param>
-    void SignAndSeal(Span<byte> pduBody, out byte[] signature);
+    void SignAndSeal(Span<byte> signedRegion, int confidentialOffset, int confidentialLength, out byte[] signature);
 
     /// <summary>
-    /// Verifies and optionally unseals a PDU body according to the negotiated protection level.
+    /// Verifies and optionally unseals a DCE/RPC PDU according to the negotiated protection level.
     /// </summary>
-    /// <param name="pduBody">The mutable PDU body, excluding the common DCE/RPC header.</param>
+    /// <param name="signedRegion">
+    /// The mutable signed region: the entire PDU EXCEPT the trailing <c>auth_value</c> field (see
+    /// <see cref="SignAndSeal" />). When sealing is active the confidential sub-range is decrypted in place.
+    /// </param>
+    /// <param name="confidentialOffset">Offset of the encrypted stub sub-range. Ignored for integrity-only protection.</param>
+    /// <param name="confidentialLength">Length of the encrypted stub sub-range. Ignored for integrity-only protection.</param>
     /// <param name="signature">The signature/verifier bytes supplied by the peer.</param>
     /// <returns><see langword="true" /> when verification succeeds.</returns>
-    bool VerifyAndUnseal(Span<byte> pduBody, ReadOnlyMemory<byte> signature);
+    bool VerifyAndUnseal(Span<byte> signedRegion, int confidentialOffset, int confidentialLength, ReadOnlyMemory<byte> signature);
 
     /// <summary>
     /// Gets the negotiated DCE/RPC packet-protection level.

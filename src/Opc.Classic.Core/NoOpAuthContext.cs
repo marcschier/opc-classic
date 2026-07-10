@@ -26,16 +26,20 @@ public sealed class NoOpAuthContext : IAuthContext
     }
 
     /// <inheritdoc />
-    public void SignAndSeal(Span<byte> pduBody, out byte[] signature)
+    public void SignAndSeal(Span<byte> signedRegion, int confidentialOffset, int confidentialLength, out byte[] signature)
     {
-        _ = pduBody;
+        _ = signedRegion;
+        _ = confidentialOffset;
+        _ = confidentialLength;
         signature = [];
     }
 
     /// <inheritdoc />
-    public bool VerifyAndUnseal(Span<byte> pduBody, ReadOnlyMemory<byte> signature)
+    public bool VerifyAndUnseal(Span<byte> signedRegion, int confidentialOffset, int confidentialLength, ReadOnlyMemory<byte> signature)
     {
-        _ = pduBody;
+        _ = signedRegion;
+        _ = confidentialOffset;
+        _ = confidentialLength;
         return signature.IsEmpty;
     }
 }

@@ -113,7 +113,7 @@ public sealed class WindowsSsoAuthContext : IAuthContext, IDisposable
     }
 
     /// <inheritdoc />
-    public void SignAndSeal(Span<byte> pduBody, out byte[] signature)
+    public void SignAndSeal(Span<byte> signedRegion, int confidentialOffset, int confidentialLength, out byte[] signature)
     {
         ObjectDisposedException.ThrowIf(_disposed, this);
         if (ProtectionLevel < OpcProtectionLevel.Integrity)
@@ -128,18 +128,23 @@ public sealed class WindowsSsoAuthContext : IAuthContext, IDisposable
 
         if (ProtectionLevel == OpcProtectionLevel.Integrity)
         {
-            // NTLMSSP per-message signature (16 bytes for NTLMv2 with extended session security).
-            // DCE/RPC stores this as the auth_value following the auth verifier header.
+            // NTLMSSP per-message signature (16 bytes for NTLMv2 with extended session
+            // security), computed over the ENTIRE signed region: the common header, body,
+            // auth padding, and the sec_trailer header, excluding the auth_value itself
+            // (MS-RPCE §3.3.1.5.2.2). SSPI MakeSignature tracks the outgoing sequence number
+            // internally, starting at 0 for the first protected PDU on the connection.
             var sigWriter = new ArrayBufferWriter<byte>(16);
-            _negotiate.ComputeIntegrityCheck(pduBody, sigWriter);
+            _negotiate.ComputeIntegrityCheck(signedRegion, sigWriter);
             signature = sigWriter.WrittenSpan.ToArray();
             return;
         }
 
-        // Privacy: Wrap produces encrypted_body || signature in one blob.
-        var writer = new ArrayBufferWriter<byte>(pduBody.Length + 32);
+        // Privacy: seal only the confidential stub sub-range in place; the 16-byte signature
+        // follows the sealed body per the NTLMSSP wire format (MS-NLMP §2.2.2.9).
+        Span<byte> confidential = signedRegion.Slice(confidentialOffset, confidentialLength);
+        var writer = new ArrayBufferWriter<byte>(confidential.Length + 32);
         NegotiateAuthenticationStatusCode wrapStatus = _negotiate.Wrap(
-            pduBody,
+            confidential,
             writer,
             requestEncryption: true,
             out _);
@@ -149,19 +154,17 @@ public sealed class WindowsSsoAuthContext : IAuthContext, IDisposable
                 "NegotiateAuthentication.Wrap failed with status: " + wrapStatus);
         }
         ReadOnlySpan<byte> wrapped = writer.WrittenSpan;
-        if (wrapped.Length < pduBody.Length + 16)
+        if (wrapped.Length < confidential.Length + 16)
         {
             throw new InvalidOperationException(
                 "NegotiateAuthentication.Wrap returned fewer bytes than expected for NTLMSSP Privacy.");
         }
-        // Per NTLMSSP wire format (MS-NLMP §2.2.2.9): the 16-byte signature follows the
-        // encrypted body. The encrypted body length matches the input plaintext length.
-        wrapped.Slice(0, pduBody.Length).CopyTo(pduBody);
-        signature = wrapped.Slice(pduBody.Length).ToArray();
+        wrapped.Slice(0, confidential.Length).CopyTo(confidential);
+        signature = wrapped.Slice(confidential.Length).ToArray();
     }
 
     /// <inheritdoc />
-    public bool VerifyAndUnseal(Span<byte> pduBody, ReadOnlyMemory<byte> signature)
+    public bool VerifyAndUnseal(Span<byte> signedRegion, int confidentialOffset, int confidentialLength, ReadOnlyMemory<byte> signature)
     {
         ObjectDisposedException.ThrowIf(_disposed, this);
         if (ProtectionLevel < OpcProtectionLevel.Integrity)
@@ -169,16 +172,27 @@ public sealed class WindowsSsoAuthContext : IAuthContext, IDisposable
             return true;
         }
 
-        // The DCE/RPC channel currently passes only the PDU body to VerifyAndUnseal,
-        // but per MS-RPCE §3.3.1.5.2.2 the server signs over the entire PDU (header +
-        // body + verifier header) minus the auth_value placeholder. Without access to
-        // the full PDU bytes here, NegotiateAuthentication.VerifyIntegrityCheck would
-        // reject every response. For now we accept the server's response as long as a
-        // signature is present; this is acceptable for local loopback DCOM where the
-        // bind handshake already established the peer identity. A follow-up should
-        // extend the channel/IAuthContext contract to pass the full signed-region span
-        // for spec-compliant verification on hostile networks.
-        return signature.Length > 0;
+        if (ProtectionLevel == OpcProtectionLevel.Integrity)
+        {
+            // Verify the peer's NTLMSSP signature over the full signed region (MS-RPCE
+            // §3.3.1.5.2.2). SSPI VerifySignature tracks the incoming sequence number
+            // internally, starting at 0 for the first protected response on the connection.
+            return _negotiate.VerifyIntegrityCheck(signedRegion, signature.Span);
+        }
+
+        // Privacy: reassemble sealed_body || signature and unseal in place.
+        Span<byte> confidential = signedRegion.Slice(confidentialOffset, confidentialLength);
+        byte[] sealedBytes = new byte[confidential.Length + signature.Length];
+        confidential.CopyTo(sealedBytes);
+        signature.Span.CopyTo(sealedBytes.AsSpan(confidential.Length));
+        var writer = new ArrayBufferWriter<byte>(confidential.Length);
+        NegotiateAuthenticationStatusCode status = _negotiate.Unwrap(sealedBytes, writer, out _);
+        if (status != NegotiateAuthenticationStatusCode.Completed)
+        {
+            return false;
+        }
+        writer.WrittenSpan.CopyTo(confidential);
+        return true;
     }
 
     /// <inheritdoc />

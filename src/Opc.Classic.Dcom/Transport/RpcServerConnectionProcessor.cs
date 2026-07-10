@@ -311,9 +311,10 @@ public sealed class RpcServerConnectionProcessor
             contextId,
             authValue);
 
-        byte[] verificationPduBytes = frame.AsSpan(0, verifierStart).ToArray();
-        BinaryPrimitives.WriteUInt16LittleEndian(verificationPduBytes.AsSpan(ConnectionOrientedPdu.FRAG_LENGTH_OFFSET), (ushort)verifierStart);
-        BinaryPrimitives.WriteUInt16LittleEndian(verificationPduBytes.AsSpan(ConnectionOrientedPdu.AUTH_LENGTH_OFFSET), 0);
+        // The verification input per MS-RPCE §3.3.1.5.2.2 is the entire PDU except the
+        // trailing auth_value: the common header (with its ORIGINAL on-the-wire
+        // frag_length/auth_length), body, auth padding, and the 8-byte sec_trailer header.
+        byte[] verificationPduBytes = frame.AsSpan(0, verifierStart + AuthenticationVerifierHeaderLength).ToArray();
 
         byte[] pduBytes = frame.AsSpan(0, strippedLength).ToArray();
         BinaryPrimitives.WriteUInt16LittleEndian(pduBytes.AsSpan(ConnectionOrientedPdu.FRAG_LENGTH_OFFSET), (ushort)strippedLength);
@@ -871,14 +872,17 @@ public sealed class RpcServerConnectionProcessor
             return false;
         }
 
-        Span<byte> verificationBody = stripped.VerificationPduBytes.AsSpan(ConnectionOrientedPdu.HEADER_LENGTH);
-        if (!authState.VerifyAndUnseal(verificationBody, stripped.Authentication.AuthValue))
+        Span<byte> signedRegion = stripped.VerificationPduBytes;
+        int confidentialOffset = ConnectionOrientedPdu.HEADER_LENGTH;
+        int confidentialLength = signedRegion.Length - AuthenticationVerifierHeaderLength - confidentialOffset;
+        if (!authState.VerifyAndUnseal(signedRegion, confidentialOffset, confidentialLength, stripped.Authentication.AuthValue))
         {
             AuthRejected(_logger, transport.RemoteEndpoint, stripped.Authentication.AuthLength, null);
             return false;
         }
 
-        verificationBody[..(stripped.PduBytes.Length - ConnectionOrientedPdu.HEADER_LENGTH)]
+        signedRegion
+            .Slice(ConnectionOrientedPdu.HEADER_LENGTH, stripped.PduBytes.Length - ConnectionOrientedPdu.HEADER_LENGTH)
             .CopyTo(stripped.PduBytes.AsSpan(ConnectionOrientedPdu.HEADER_LENGTH));
         return true;
     }
@@ -935,9 +939,13 @@ public sealed class RpcServerConnectionProcessor
         BinaryPrimitives.WriteUInt16LittleEndian(protectedPdu.AsSpan(ConnectionOrientedPdu.FRAG_LENGTH_OFFSET), (ushort)fragmentLength);
         BinaryPrimitives.WriteUInt16LittleEndian(protectedPdu.AsSpan(ConnectionOrientedPdu.AUTH_LENGTH_OFFSET), (ushort)authValueLength);
 
-        int bodyStart = ConnectionOrientedPdu.HEADER_LENGTH;
-        int bodyLength = verifierStart - bodyStart;
-        authState.SignAndSeal(protectedPdu.AsSpan(bodyStart, bodyLength), out byte[] signature);
+        // Sign the entire signed region (common header + body + auth padding + sec_trailer
+        // header), excluding the trailing auth_value (MS-RPCE §3.3.1.5.2.2). At Privacy the
+        // stub sub-range is sealed in place.
+        int signedLength = verifierStart + AuthenticationVerifierHeaderLength;
+        int confidentialOffset = ConnectionOrientedPdu.HEADER_LENGTH;
+        int confidentialLength = verifierStart - confidentialOffset;
+        authState.SignAndSeal(protectedPdu.AsSpan(0, signedLength), confidentialOffset, confidentialLength, out byte[] signature);
         if (signature.Length != authValueLength)
         {
             throw new InvalidOperationException(
@@ -1123,7 +1131,7 @@ public sealed class RpcServerConnectionProcessor
             }
         }
 
-        public void SignAndSeal(Span<byte> pduBody, out byte[] signature)
+        public void SignAndSeal(Span<byte> signedRegion, int confidentialOffset, int confidentialLength, out byte[] signature)
         {
             if (_protectionFloor < OpcProtectionLevel.Integrity)
             {
@@ -1132,15 +1140,15 @@ public sealed class RpcServerConnectionProcessor
             }
 
             ISecurity security = EstablishedSecurity;
-            var buffer = new byte[pduBody.Length + security.VerifierLength];
-            pduBody.CopyTo(buffer.AsSpan());
+            var buffer = new byte[signedRegion.Length + security.VerifierLength];
+            signedRegion.CopyTo(buffer.AsSpan());
             NdrCodec ndr = CreateNdrCodec(buffer);
-            security.ProcessOutgoing(ndr, 0, pduBody.Length, pduBody.Length, isFragmented: false);
-            buffer.AsSpan(0, pduBody.Length).CopyTo(pduBody);
-            signature = buffer.AsSpan(pduBody.Length, security.VerifierLength).ToArray();
+            security.ProcessOutgoing(ndr, confidentialOffset, confidentialLength, signedRegion.Length, isFragmented: false);
+            buffer.AsSpan(0, signedRegion.Length).CopyTo(signedRegion);
+            signature = buffer.AsSpan(signedRegion.Length, security.VerifierLength).ToArray();
         }
 
-        public bool VerifyAndUnseal(Span<byte> pduBody, ReadOnlyMemory<byte> signature)
+        public bool VerifyAndUnseal(Span<byte> signedRegion, int confidentialOffset, int confidentialLength, ReadOnlyMemory<byte> signature)
         {
             if (_protectionFloor < OpcProtectionLevel.Integrity)
             {
@@ -1153,20 +1161,20 @@ public sealed class RpcServerConnectionProcessor
                 return false;
             }
 
-            var buffer = new byte[pduBody.Length + security.VerifierLength];
-            pduBody.CopyTo(buffer.AsSpan());
-            signature.Span.CopyTo(buffer.AsSpan(pduBody.Length));
+            var buffer = new byte[signedRegion.Length + security.VerifierLength];
+            signedRegion.CopyTo(buffer.AsSpan());
+            signature.Span.CopyTo(buffer.AsSpan(signedRegion.Length));
             NdrCodec ndr = CreateNdrCodec(buffer);
             try
             {
-                security.ProcessIncoming(ndr, 0, pduBody.Length, pduBody.Length, isFragmented: false);
+                security.ProcessIncoming(ndr, confidentialOffset, confidentialLength, signedRegion.Length, isFragmented: false);
             }
             catch (IntegrityException)
             {
                 return false;
             }
 
-            buffer.AsSpan(0, pduBody.Length).CopyTo(pduBody);
+            buffer.AsSpan(0, signedRegion.Length).CopyTo(signedRegion);
             return true;
         }
 

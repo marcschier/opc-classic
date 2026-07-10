@@ -52,6 +52,36 @@ public sealed class DcomCallChannelTests
         await Assert.That(result.ResponsePayload.Length).IsEqualTo(0);
     }
 
+    // Regression guard for the NTLM RPC signing fix: at Integrity the channel must sign the
+    // ENTIRE PDU except the trailing auth_value (common header + body + auth pad + sec_trailer
+    // header), per MS-RPCE §3.3.1.5.2.2 — NOT just the post-header body. Real Windows RPCSS
+    // rejects a body-only signature with RPC_S_SEC_PKG_ERROR (0x721).
+    [Test]
+    public async Task InvokeAsync_at_Integrity_signs_full_pdu_including_header_and_sec_trailer()
+    {
+        await using var transport = new InMemoryAsyncTransport();
+        await transport.WriteInboundAsync(CreateBindAckBytes());
+        await transport.WriteInboundAsync(CreateResponseBytes([0x55]));
+        var authContext = new RecordingIntegrityAuthContext();
+        var channel = new DcomCallChannel(transport, authContext);
+
+        _ = await channel.InvokeAsync(Guid.NewGuid(), 3, new byte[] { 0x10, 0x11, 0x12 });
+
+        byte[] region = authContext.CapturedRegion
+            ?? throw new InvalidOperationException("SignAndSeal was not invoked.");
+        // Common header is included: byte 0 is the DCE/RPC major version (5) and TYPE_OFFSET
+        // carries the REQUEST ptype.
+        await Assert.That(region[0]).IsEqualTo((byte)5);
+        await Assert.That(region[ConnectionOrientedPdu.TYPE_OFFSET]).IsEqualTo((byte)RequestCoPdu.REQUEST_TYPE);
+        // The confidential (sealed) sub-range starts after the common header.
+        await Assert.That(authContext.CapturedConfidentialOffset).IsEqualTo(ConnectionOrientedPdu.HEADER_LENGTH);
+        // The signed region ends with the 8-byte sec_trailer header (auth_type 0x0A = NTLM).
+        await Assert.That(region[^8]).IsEqualTo((byte)0x0A);
+        // region == header + confidential body + 8-byte sec_trailer header (auth_value excluded).
+        await Assert.That(region.Length)
+            .IsEqualTo(authContext.CapturedConfidentialOffset + authContext.CapturedConfidentialLength + 8);
+    }
+
     [Test]
     public async Task InvokeAsync_fragmented_response_assembles_correctly()
     {
@@ -356,5 +386,32 @@ public sealed class DcomCallChannelTests
             IsDisposed = true;
             await _inner.DisposeAsync().ConfigureAwait(false);
         }
+    }
+
+    private sealed class RecordingIntegrityAuthContext : IAuthContext
+    {
+        public byte[]? CapturedRegion { get; private set; }
+
+        public int CapturedConfidentialOffset { get; private set; } = -1;
+
+        public int CapturedConfidentialLength { get; private set; } = -1;
+
+        public OpcProtectionLevel ProtectionLevel => OpcProtectionLevel.Integrity;
+
+        public byte AuthenticationServiceCode => 0x0A;
+
+        public byte[] BuildInitialToken() => [];
+
+        public byte[] ProcessChallengeToken(ReadOnlyMemory<byte> serverToken) => [];
+
+        public void SignAndSeal(Span<byte> signedRegion, int confidentialOffset, int confidentialLength, out byte[] signature)
+        {
+            CapturedRegion = signedRegion.ToArray();
+            CapturedConfidentialOffset = confidentialOffset;
+            CapturedConfidentialLength = confidentialLength;
+            signature = new byte[16];
+        }
+
+        public bool VerifyAndUnseal(Span<byte> signedRegion, int confidentialOffset, int confidentialLength, ReadOnlyMemory<byte> signature) => true;
     }
 }
