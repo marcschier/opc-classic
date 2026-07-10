@@ -266,15 +266,18 @@ live server.
     against local Matrikon: `da.connect`, `da.get_status`, and `da.browse` (which uses
     `IOPCBrowse` via AlterContext) all succeed; managed↔managed suites unaffected.
     `DcomCallChannel` now also surfaces the `bind_nak` reject_reason as a typed `BindException`.
-  - **`discovery.enumerate_servers` opnum-4 decode (CI, still open).** The real Windows RPCSS
-    `IRemoteSCMActivator::RemoteCreateInstance` **success** response (MS-DCOM
-    activation-properties BLOB) mis-parses: `ActivationInfoCodec.TryDecode` lands in
-    `OrpcExtentArrayCodec.ReadExtent` at the wrong offset (bogus size `0x46000000`).
-  - **Local repro recipe** (fast, no CI): build the Debug MCP host, then run
-    `tools/probe_servers.py --da-clsid {F8582CF2-88FB-11D0-B850-00C0F0104305} --host localhost
-    --probe opcclassic.da.connect` with `OPC_CLASSIC_DCOM_WIRE_DUMP=1`. (Point `launch_server`
-    at `bin/Debug/net10.0/Opc.Classic.Mcp.exe` directly to beat the 60 s MCP init timeout that
-    `dotnet run` overhead causes.)
+  - **Activation-response ORPC extent decode — FIXED.** The real Windows RPCSS activation
+    response (`IActivation::RemoteActivation` opnum 0 for `da.connect`, and
+    `IRemoteSCMActivator::RemoteCreateInstance` opnum 4 for `discovery`) carries an ORPC extent
+    (e.g. a `MEOW` OBJREF) in its `ORPC_THAT` envelope. `ORPC_EXTENT` ([MS-DCOM] §2.2.9) has a
+    conformant `data` array as its last member, so per NDR conformance hoisting (C706
+    §14.3.7.2) the array `max_count` is emitted at the **start** of the struct, before `id`.
+    `OrpcExtentArrayCodec` placed it after `size`; because Write/Read were symmetric,
+    managed↔managed round-tripped, but the parser read Windows's hoisted `max_count` as the
+    first GUID bytes and decoded a bogus extent size (`0x46000000`), failing every
+    activation/discovery response that carried an extent. `ReadExtent`/`WriteExtent` now hoist
+    the conformance; verified against the real Windows stub captured in CI (`max_count` 1256 =
+    `(1250+7)&~7`, id `{0000031c-...}`, size 1250, data `MEOW`). Known-answer regression test added.
   - **Local repro recipe** (fast, no CI): build the Debug MCP host, then run
     `tools/probe_servers.py --da-clsid {F8582CF2-88FB-11D0-B850-00C0F0104305} --host localhost
     --probe opcclassic.da.connect` with `OPC_CLASSIC_DCOM_WIRE_DUMP=1`. (Point `launch_server`
