@@ -247,17 +247,30 @@ live server.
   that region. Verified against local Windows RPCSS: the signed activation call is now
   accepted (it returns `REGDB_E_CLASSNOTREG` for an unregistered CLSID instead of a
   `0x721` fault), and the managed↔managed integration suite still round-trips.
-- **End-to-end re-validation** against live Matrikon / OPCEnum (`--da-progid`,
-  `discovery.enumerate_servers`) has NOT gone fully green yet. The activation *signing*
-  fault (`0x721`) that previously blocked it is resolved (confirmed in the
-  `cross-impl-matrix` CI job: `0x721` no longer appears, and the `capture.*` regressions
-  are gone via the npcap fallback). The **next** blocker is now exposed: decoding the real
-  Windows RPCSS `IRemoteSCMActivator::RemoteCreateInstance` **success** response — the
-  MS-DCOM activation-properties BLOB — currently mis-parses (`ActivationInfoCodec.TryDecode`
-  lands in `OrpcExtentArrayCodec.ReadExtent` at the wrong offset and reads a bogus extent
-  size). This decode path was never reached before because `0x721` always faulted
-  activation first, so it is a pre-existing gap, tracked separately. Re-run the matrix with
-  `-WireCapture` to capture a real RPCSS success response for byte-exact decoder work.
+- **End-to-end re-validation** against live Matrikon / OPCEnum has NOT gone fully green
+  yet. The activation *signing* fault (`0x721`) that previously blocked it is resolved
+  (confirmed in the `cross-impl-matrix` CI job: `0x721` no longer appears, and the
+  `capture.*` regressions are gone via the npcap fallback). Fixing `0x721` unblocked the
+  activation call and exposed **multiple independent downstream interop layers**, tracked
+  together for follow-up:
+  - **`da.connect` data-port bind (local Matrikon repro).** Against a real
+    `Matrikon.OPC.Simulation` server, activation now succeeds (`IActivation::RemoteActivation`
+    returns `hresult=0` with a full ~2.8 KB response), but the follow-up bind to the server's
+    data port returns **`BIND_NAK` (PDU type 13)**. That bind pre-declares **21 presentation
+    contexts** (the DA session pre-bind IID set: `OpcSpecCatalog.Da` + CPX + Security); real
+    Matrikon rejects a 21-context `BIND`. This is the tension inherent in the pre-bind design:
+    a large initial context list avoids `AlterContext` `PROVIDER_REJECTION` on some servers but
+    triggers `BIND_NAK` on others. The right fix (fewer initial contexts + incremental
+    `AlterContext`, or per-server negotiation) needs its own investigation.
+  - **`discovery.enumerate_servers` opnum-4 decode (CI).** The real Windows RPCSS
+    `IRemoteSCMActivator::RemoteCreateInstance` **success** response (MS-DCOM
+    activation-properties BLOB) mis-parses: `ActivationInfoCodec.TryDecode` lands in
+    `OrpcExtentArrayCodec.ReadExtent` at the wrong offset (bogus size `0x46000000`).
+  - **Local repro recipe** (fast, no CI): build the Debug MCP host, then run
+    `tools/probe_servers.py --da-clsid {F8582CF2-88FB-11D0-B850-00C0F0104305} --host localhost
+    --probe opcclassic.da.connect` with `OPC_CLASSIC_DCOM_WIRE_DUMP=1`. (Point `launch_server`
+    at `bin/Debug/net10.0/Opc.Classic.Mcp.exe` directly to beat the 60 s MCP init timeout that
+    `dotnet run` overhead causes.)
 - **DX-over-DCOM**: the MCP DX tool has no DCOM connection factory yet
   (`inmemory://` only), so a DX pre-bind catalog is deferred until that path exists.
 - **XML-DA**: SOAP/HTTP client, no DCE bind — not applicable.
