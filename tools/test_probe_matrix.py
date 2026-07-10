@@ -19,6 +19,7 @@ if _HERE not in sys.path:
     sys.path.insert(0, _HERE)
 
 import probe_matrix
+import probe_servers
 
 
 _MCP_TOOL_REGEX = __import__("re").compile(r'McpServerTool\(Name = "([^"]+)"')
@@ -82,6 +83,56 @@ class MatrixSmokeTests(unittest.TestCase):
             "matrikon", "opcclassic.da.get_status", success=False)
         self.assertEqual(expected, "PASS")
         self.assertEqual(verdict, "REGRESSION")
+
+    def test_capture_tools_pass_when_npcap_available(self) -> None:
+        for tool in probe_matrix.CAPTURE_TOOLS:
+            with self.subTest(tool=tool):
+                expected, verdict = probe_matrix.classify(
+                    "testserver", tool, success=True, npcap_available=True)
+                self.assertEqual(expected, "PASS")
+                self.assertEqual(verdict, "MATCH")
+
+                expected, verdict = probe_matrix.classify(
+                    "testserver", tool, success=False, npcap_available=True)
+                self.assertEqual(expected, "PASS")
+                self.assertEqual(verdict, "REGRESSION")
+
+    def test_capture_tools_expected_fail_when_npcap_unavailable(self) -> None:
+        for tool in probe_matrix.CAPTURE_TOOLS:
+            with self.subTest(tool=tool):
+                expected, verdict = probe_matrix.classify(
+                    "testserver", tool, success=False, npcap_available=False)
+                self.assertEqual(expected, "EXPECTED_FAIL")
+                self.assertEqual(verdict, "MATCH")
+
+    def test_session_tools_stay_pass_when_npcap_unavailable(self) -> None:
+        expected, verdict = probe_matrix.classify(
+            "testserver", "opcclassic.session.create", success=False, npcap_available=False)
+        self.assertEqual(expected, "PASS")
+        self.assertEqual(verdict, "REGRESSION")
+
+    def test_annotate_uses_npcap_availability_for_capture_only(self) -> None:
+        results = [
+            {"tool": "opcclassic.capture.start", "success": False, "args": {}, "error": "Unable to load DLL 'wpcap'", "summary": ""},
+            {"tool": "opcclassic.session.create", "success": False, "args": {}, "error": "boom", "summary": ""},
+        ]
+        probe_matrix.annotate(results, "testserver", npcap_available=False)
+        self.assertEqual(results[0]["expectedOutcome"], "EXPECTED_FAIL")
+        self.assertEqual(results[0]["verdict"], "MATCH")
+        self.assertEqual(results[1]["expectedOutcome"], "PASS")
+        self.assertEqual(results[1]["verdict"], "REGRESSION")
+
+    def test_npcap_detection_uses_list_interfaces_wpcap_failure(self) -> None:
+        results = [
+            {"tool": "opcclassic.capture.list_interfaces", "success": False, "args": {}, "error": "Unable to load DLL 'wpcap'", "summary": ""},
+        ]
+        self.assertFalse(probe_servers.npcap_available_from_results(results))
+
+    def test_npcap_detection_defaults_available_for_other_failures(self) -> None:
+        results = [
+            {"tool": "opcclassic.capture.list_interfaces", "success": False, "args": {}, "error": "network timeout", "summary": ""},
+        ]
+        self.assertTrue(probe_servers.npcap_available_from_results(results))
 
     def test_hda_tool_against_da_server_is_not_applicable(self) -> None:
         expected, verdict = probe_matrix.classify(

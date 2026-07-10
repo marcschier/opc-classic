@@ -37,10 +37,14 @@ from typing import Any, Optional
 # -- shared tool buckets -------------------------------------------------------
 
 
-SESSION_AND_CAPTURE = {
+SESSION_TOOLS = {
     "opcclassic.session.create": "PASS",
     "opcclassic.session.list": "PASS",
     "opcclassic.session.close": "PASS",
+}
+
+
+CAPTURE_TOOLS = {
     "opcclassic.capture.list_interfaces": "PASS",
     "opcclassic.capture.start": "PASS",
     "opcclassic.capture.stop": "PASS",
@@ -51,6 +55,12 @@ SESSION_AND_CAPTURE = {
     "opcclassic.capture.remove": "PASS",
     "opcclassic.capture.decode_pdu": "PASS",
     "opcclassic.capture.replay": "PASS",
+}
+
+
+SESSION_AND_CAPTURE = {
+    **SESSION_TOOLS,
+    **CAPTURE_TOOLS,
 }
 
 
@@ -383,7 +393,7 @@ for _profile in PROFILES.values():
     _profile.update(DISCONNECT_TOOLS_ALWAYS_PASS)
 
 
-def classify(profile_name: str, tool: str, success: bool) -> tuple[str, str]:
+def classify(profile_name: str, tool: str, success: bool, npcap_available: bool = True) -> tuple[str, str]:
     """Return (expected_outcome, verdict) for a result row.
 
     expected_outcome is one of: PASS / EXPECTED_FAIL / NOT_APPLICABLE /
@@ -397,6 +407,8 @@ def classify(profile_name: str, tool: str, success: bool) -> tuple[str, str]:
         return ("MISSING_CLASSIFICATION", "MISSING_CLASSIFICATION")
 
     expected = matrix.get(tool, "MISSING_CLASSIFICATION")
+    if expected != "MISSING_CLASSIFICATION" and not npcap_available and tool in CAPTURE_TOOLS:
+        expected = "EXPECTED_FAIL"
     if expected == "MISSING_CLASSIFICATION":
         return (expected, "MISSING_CLASSIFICATION")
 
@@ -427,7 +439,11 @@ def known_profile_names() -> list[str]:
     return sorted(PROFILES.keys())
 
 
-def annotate(results: list[dict[str, Any]], profile_name: Optional[str]) -> list[dict[str, Any]]:
+def annotate(
+    results: list[dict[str, Any]],
+    profile_name: Optional[str],
+    npcap_available: bool = True,
+) -> list[dict[str, Any]]:
     """Add expectedOutcome + verdict columns to each row. No-op when
     profile_name is None."""
     if not profile_name:
@@ -436,7 +452,7 @@ def annotate(results: list[dict[str, Any]], profile_name: Optional[str]) -> list
         tool = row.get("tool")
         success = bool(row.get("success"))
         if isinstance(tool, str):
-            expected, verdict = classify(profile_name, tool, success)
+            expected, verdict = classify(profile_name, tool, success, npcap_available=npcap_available)
             row["expectedOutcome"] = expected
             row["verdict"] = verdict
     return results

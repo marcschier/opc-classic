@@ -621,6 +621,18 @@ def make_result(tool: str, arguments: dict[str, Any], success: bool, error: Opti
     }
 
 
+def npcap_available_from_results(results: list[dict[str, Any]]) -> bool:
+    """Infer native pcap availability from the canonical interface probe."""
+    for row in results:
+        if row.get("tool") != "opcclassic.capture.list_interfaces" or row.get("success"):
+            continue
+        error = str(row.get("error") or "")
+        lowered = error.lower()
+        if "wpcap" in lowered or "dllnotfound" in lowered or "unable to load dll" in lowered:
+            return False
+    return True
+
+
 def redact(value: Any) -> Any:
     if isinstance(value, dict):
         result: dict[str, Any] = {}
@@ -827,7 +839,8 @@ def main() -> int:
         # This must run AFTER the probe sweep so failures during teardown
         # still get classified, and BEFORE the json.dump so the output
         # already carries the verdict columns the consumer cares about.
-        probe_matrix.annotate(results, getattr(args, "expect_matrix", None))
+        npcap_available = npcap_available_from_results(results)
+        probe_matrix.annotate(results, getattr(args, "expect_matrix", None), npcap_available=npcap_available)
         if probe_matrix.has_regressions(results) and exit_code == 0:
             exit_code = 2
         json.dump(results, sys.stdout, indent=2, default=str)
