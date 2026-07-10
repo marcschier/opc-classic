@@ -111,21 +111,27 @@ internal static class OrpcExtentArrayCodec
 
     private static void WriteExtent(ref NdrWriter writer, OrpcExtent extent)
     {
-        writer.WriteGuid(extent.Id);
+        // NDR conformance hoisting (C706 §14.3.7.2): ORPC_EXTENT ([MS-DCOM] §2.2.9) has a
+        // conformant `data` array as its last member, so the array's max_count is emitted at
+        // the START of the struct, before `id` -- not after `size`. Real Windows RPCSS uses
+        // this hoisted layout; emitting it here keeps us wire-compatible.
         ReadOnlySpan<byte> data = extent.Data.Span;
-        writer.WriteUInt32(unchecked((uint)data.Length));
         int paddedLength = RoundExtentDataLength(unchecked((uint)data.Length));
         writer.WriteConformanceHeader(paddedLength);
+        writer.WriteGuid(extent.Id);
+        writer.WriteUInt32(unchecked((uint)data.Length));
         writer.WriteRawBytes(data);
         WriteZeroPadding(ref writer, paddedLength - data.Length);
     }
 
     private static OrpcExtent ReadExtent(ref NdrReader reader)
     {
+        // NDR conformance hoisting (C706 §14.3.7.2): the ORPC_EXTENT `data` array's max_count
+        // is at the START of the struct, before `id`.
+        int encodedLength = reader.ReadConformanceHeader();
         Guid id = reader.ReadGuid();
         uint size = reader.ReadUInt32();
         int paddedLength = RoundExtentDataLength(size);
-        int encodedLength = reader.ReadConformanceHeader();
         if (encodedLength < checked((int)size) || encodedLength < paddedLength)
         {
             throw new InvalidOperationException(

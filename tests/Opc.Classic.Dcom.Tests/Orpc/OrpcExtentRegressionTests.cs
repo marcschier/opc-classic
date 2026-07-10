@@ -46,9 +46,9 @@ public sealed class OrpcExtentRegressionTests
             "02000000" +
             "08000200" +
             "00000000" +
+            "08000000" +
             "403020106050807090A0B0C0D0E0F001" +
             "03000000" +
-            "08000000" +
             "0A0B0C0000000000");
     }
 
@@ -202,6 +202,36 @@ public sealed class OrpcExtentRegressionTests
         });
 
         await Assert.That(exception.Message).IsEqualTo("ORPC_EXTENT_ARRAY extent pointer is null for a non-empty array.");
+    }
+
+    [Test]
+    public async Task OrpcThat_ReadsHoistedConformance_FromRealWindowsExtentLayout()
+    {
+        // Real Windows RPCSS emits ORPC_EXTENT with the `data` array's max_count HOISTED to the
+        // start of the struct (NDR C706 §14.3.7.2), before `id` -- e.g. an activation response
+        // whose extent carries a "MEOW" OBJREF. The pre-fix codec read `id` starting at the
+        // hoisted max_count and decoded a bogus size (0x46000000). This asserts we now parse the
+        // spec-compliant hoisted layout.
+        byte[] bytes = Convert.FromHexString(
+            "1F000000" +                          // ORPC_THAT flags
+            "00000200" +                          // extensions referent (non-null)
+            "01000000" +                          // ORPC_EXTENT_ARRAY size = 1
+            "00000000" +                          // reserved
+            "04000200" +                          // extent** referent (non-null)
+            "02000000" +                          // pointer-array max_count = (1+1)&~1 = 2
+            "08000200" +                          // extent[0] referent (non-null)
+            "00000000" +                          // extent[1] referent (null)
+            "08000000" +                          // HOISTED extent data max_count = (4+7)&~7 = 8
+            "1C03000000000000C000000000000046" +  // extent id {0000031c-0000-0000-c000-000000000046}
+            "04000000" +                          // extent size = 4
+            "4D454F5700000000");                  // data "MEOW" + padding to 8
+
+        (OrpcThat actual, int position) = ReadOrpcThat(bytes);
+
+        await Assert.That(actual.Extensions!.Count).IsEqualTo(1);
+        await Assert.That(actual.Extensions[0].Id).IsEqualTo(new Guid("0000031c-0000-0000-c000-000000000046"));
+        await Assert.That(Convert.ToHexString(actual.Extensions[0].Data.ToArray())).IsEqualTo("4D454F57");
+        await Assert.That(position).IsEqualTo(bytes.Length);
     }
 
     private static byte[] WriteOrpcThis(OrpcThis value)
