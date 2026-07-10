@@ -383,6 +383,7 @@ public sealed class BatchTools
                 static (host, progId, clsid, channel, ownsChannel) => new BatchClientState(host, progId, clsid, channel, ownsChannel),
                 InMemoryBatchConnectionRegistry.TryGet,
                 "Batch",
+                OpcBatchSpecCatalog.Batch,
                 cancellationToken);
         }
     }
@@ -419,6 +420,7 @@ internal static class OpcClassicDcomConnectionFactory
         Func<string, string?, Guid?, ICallChannel, bool, TClient> createClient,
         TryGetOpcClassicInMemoryChannel tryGetInMemoryChannel,
         string specName,
+        IReadOnlyList<Guid>? preBindIids = null,
         CancellationToken cancellationToken = default)
         where TClient : class
     {
@@ -452,11 +454,18 @@ internal static class OpcClassicDcomConnectionFactory
                 cancellationToken).ConfigureAwait(false);
             IOpcInterfaceRef serverRef = DecodeRemoteCreateInstanceResponse(activationResult);
             EndPoint endpoint = ResolveObjectEndpoint(normalized.Host, serverRef);
-            ICallChannel serverChannel = await channelFactory.ConnectAsync(
-                endpoint,
-                Guid.Empty,
-                CreateAuthContext(normalized, clsid),
-                cancellationToken).ConfigureAwait(false);
+            ICallChannel serverChannel = preBindIids is null || preBindIids.Count == 0
+                ? await channelFactory.ConnectAsync(
+                    endpoint,
+                    Guid.Empty,
+                    CreateAuthContext(normalized, clsid),
+                    cancellationToken).ConfigureAwait(false)
+                : await channelFactory.ConnectAsync(
+                    endpoint,
+                    Guid.Empty,
+                    CreateAuthContext(normalized, clsid),
+                    preBindIids,
+                    cancellationToken).ConfigureAwait(false);
             return createClient(normalized.Host, normalized.ProgId, clsid, serverChannel, true);
         }
         finally

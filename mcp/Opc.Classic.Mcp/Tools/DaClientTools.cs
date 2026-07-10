@@ -114,11 +114,16 @@ public sealed class DaClientTools
 
     private static IReadOnlyList<Guid> BuildDaSessionPreBindIids()
     {
-        var iids = new List<Guid>(OpcSpecCatalog.Da.Count + 3);
+        var iids = new List<Guid>(OpcSpecCatalog.Da.Count + 5);
         AddPreBindIid(iids, OpcSpecCatalog.Da);
         AddPreBindIid(iids, IOPCComplexDataItem.InterfaceId);
         AddPreBindIid(iids, IOPCComplexDataItem2.InterfaceId);
         AddPreBindIid(iids, IOPCTypeLibrary.InterfaceId);
+        // OPC Security tools (SecurityTools) reuse the DA session's call channel,
+        // so pre-declare IOPCSecurityNT / IOPCSecurityPrivate here to avoid an
+        // AlterContext rebind that some servers reject (PROVIDER_REJECTION).
+        AddPreBindIid(iids, OpcGuids.IID_IOPCSecurityNT);
+        AddPreBindIid(iids, OpcGuids.IID_IOPCSecurityPrivate);
         return iids;
     }
 

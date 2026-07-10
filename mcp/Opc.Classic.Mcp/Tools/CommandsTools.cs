@@ -364,6 +364,7 @@ public sealed class CommandsTools
                 static (host, progId, clsid, channel, ownsChannel) => new CommandsClientState(host, progId, clsid, channel, ownsChannel),
                 InMemoryCommandsConnectionRegistry.TryGet,
                 "Commands",
+                OpcCommandsSpecCatalog.Commands,
                 cancellationToken);
         }
     }

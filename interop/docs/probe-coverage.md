@@ -148,10 +148,18 @@ their RPC endpoint did not advertise the IIDs during `bind_ack`.
 full DA IID set in the initial bind PDU. With the catalog in place, all
 DA AlterContext rejections went away.
 
-Residual gap: non-DA specs (`Cpx`, `Security`, `Discovery`, and the
-HDA/AE/Batch/Commands/DX surfaces) do not yet have catalog entries, so the
-same rejection class persists for their non-DA IIDs. Extending the
-catalog to those specs is the open follow-up.
+Resolved (2026-07): every spec now pre-declares its IID set in the initial
+bind, so the AlterContext rejection class no longer applies. DA via
+`OpcSpecCatalog.Da`; CPX and OPC Security via the shared DA-session pre-bind
+(`DaClientTools.BuildDaSessionPreBindIids`, which adds the CPX IIDs and
+`IOPCSecurityNT`/`IOPCSecurityPrivate` — the Security tools reuse the DA
+channel); Discovery via `OpcDiscoverySpecCatalog.Discovery`; HDA and AE inline
+via the multi-IID activation + pre-bind list each `*ClientTools.ConnectAsync`
+passes; and Batch + Commands via `OpcBatchSpecCatalog`/`OpcCommandsSpecCatalog`
+threaded through the shared `OpcClassicDcomConnectionFactory.ConnectAsync`
+(`preBindIids` parameter). XML-DA is a SOAP/HTTP client (no DCE bind), and
+DX-over-DCOM is not yet wired (its MCP path is `inmemory://`-only today), so a
+DX catalog is deferred until a DCOM DX connection factory exists.
 
 ### Issue B: TestServer activation requires DCOM ACL grant
 
@@ -204,11 +212,14 @@ transfer-syntax alternative beyond the default NDR
 OPCEnum and dials the target server's `IRemoteActivation` directly) —
 this is what the current direct-CLSID baseline uses.
 
-**Fix surface:** an `OpcSpecCatalog.Discovery` collection that the
-`DcomOpcEnumCallChannelFactory` passes through is the suspected fix. If
-the issue persists after adding the IID to the catalog, per-tower-syntax
-presentation-context experiments (adding the OPC-Common type-library
-64-bit transfer-syntax alternative) are the next layer.
+**Fix (implemented):** `OpcDiscoverySpecCatalog.Discovery`
+(`src/Opc.Classic.Discovery/OpcDiscoverySpecCatalog.cs`) declares the
+`IOPCServerList2`/`IOPCServerList`, `IOPCEnumGUID`/`IEnumGUID` and
+`IRemUnknown`/`IRemUnknown2` IIDs, and
+`DcomOpcEnumCallChannelFactory.CreateObjectChannelAsync` passes it as the
+OPCEnum data-port `preBindIids`. If a specific server still rejects the bind,
+per-tower-syntax presentation-context experiments (adding the OPC-Common
+type-library 64-bit transfer-syntax alternative) are the next layer.
 
 ## What works today (Matrikon DA)
 
@@ -219,16 +230,22 @@ live server.
 
 ## What is blocked today
 
-- **Non-DA AlterContext on Matrikon** (CPX `get_complex_type` /
-  `get_dictionary`, Security): same Issue A class for non-DA IIDs.
-  Extending `OpcSpecCatalog` per spec to declare the full IID set in
-  the initial bind is the planned resolution.
-- **`--da-progid` activation** ([Issue D](#issue-d-opcenum-data-port-bind-rejects-iopcserverlist2)):
-  OPCEnum data-port rejects `IOPCServerList`(`2`) bind. Catalog
-  extension is the suspect-fix; if catalog alone doesn't close it,
-  presentation-context attribute experiments are the next step.
-- **`discovery.enumerate_servers`**: same Issue D root cause.
-- **Non-DA specs (HDA / AE / Batch / Commands / DX / XML-DA)**:
-  Matrikon Simulation does not implement them. The Foundation
-  `OpcTestServer` + bundled spec plugins cover all those specs as the
-  alternative probe target.
+- **Per-spec pre-bind catalogs are in place** (see the resolved Issue A / Issue D
+  notes above): DA, CPX, Security, Discovery, HDA, AE, Batch and Commands each
+  pre-declare their IID set in the initial DCE bind, so the AlterContext
+  `PROVIDER_REJECTION` class is addressed at the code level. These are covered by
+  unit tests (catalog contents + the `DcomCallChannelTests` bind-PDU assertions).
+- **End-to-end re-validation** against live Matrikon / OPCEnum (`--da-progid`,
+  `discovery.enumerate_servers`) has NOT been re-run in this environment
+  (Matrikon/TestServer are not installed) and is separately gated by an unrelated
+  DCOM **activation** issue: managed `IActivation` / `IRemoteSCMActivator` calls to
+  the real Windows RPCSS currently fault with `RPC_S_SEC_PKG_ERROR (0x00000721)` — a
+  per-call NTLM RPC signing mismatch tracked in the follow-up plans — which aborts
+  activation before any data-port bind. Confirm the `--da-progid` / discovery paths
+  once that activation fault is fixed.
+- **DX-over-DCOM**: the MCP DX tool has no DCOM connection factory yet
+  (`inmemory://` only), so a DX pre-bind catalog is deferred until that path exists.
+- **XML-DA**: SOAP/HTTP client, no DCE bind — not applicable.
+- **Non-DA specs on Matrikon specifically**: Matrikon Simulation implements only
+  OPC DA. The Foundation `OpcTestServer` + bundled spec plugins remain the
+  alternative probe target for HDA / AE / Batch / Commands / DX.
