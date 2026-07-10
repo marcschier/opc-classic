@@ -283,6 +283,17 @@ live server.
     --probe opcclassic.da.connect` with `OPC_CLASSIC_DCOM_WIRE_DUMP=1`. (Point `launch_server`
     at `bin/Debug/net10.0/Opc.Classic.Mcp.exe` directly to beat the 60 s MCP init timeout that
     `dotnet run` overhead causes.)
+  - **Managed sample-server activation returns `E_NOINTERFACE` (CI, still open — NEW next layer).**
+    With the client-side layers above fixed, the CI's `cross-impl-matrix` `da.connect`/`discovery`
+    now decode the activation response cleanly but read
+    `IActivation::RemoteActivation` HRESULT `0x80004002` (`E_NOINTERFACE`) against the **managed
+    sample servers** (samples-da/ctt-da/samples-hda/security-da), whereas the same client against
+    real `Matrikon.OPC.Simulation` returns `hr=0` and connects end-to-end. So the managed client
+    interop is validated; the remaining CI blocker is the managed **server** side — a managed DCOM
+    server hosted/launched by real Windows RPCSS not surfacing the requested interface on
+    `CreateInstance`/`QueryInterface`. This is a distinct server-hosting capability
+    (`Opc.Classic.Windows` / `SimulationActivationServer`), CI-gated (needs HKLM registration i.e.
+    an elevated session to repro locally), and is tracked separately from the client interop fixes.
 - **DX-over-DCOM**: the MCP DX tool has no DCOM connection factory yet
   (`inmemory://` only), so a DX pre-bind catalog is deferred until that path exists.
 - **XML-DA**: SOAP/HTTP client, no DCE bind — not applicable.
