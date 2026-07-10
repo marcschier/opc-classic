@@ -83,6 +83,40 @@ public sealed class OpcDaServerCcwTests
     }
 
     [Test]
+    public async Task QueryInterface_succeeds_for_every_activation_requested_iid()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
+            return;
+        }
+
+        // The DA connect path (DaClientTools) requests exactly these IIDs from
+        // IActivation::RemoteActivation; a server activated by real Windows RPCSS must
+        // answer QueryInterface with S_OK for each, or activation surfaces E_NOINTERFACE.
+        Guid[] requestedIids =
+        [
+            IID_IUnknown,
+            IOPCServer.InterfaceId,
+            IOPCCommon.InterfaceId,
+            IOPCBrowse.InterfaceId,
+            IOPCBrowseServerAddressSpace.InterfaceId,
+            IOPCItemProperties.InterfaceId,
+            IOPCItemIO.InterfaceId,
+            OpcGuids.IID_IOPCSecurityNT,
+            OpcGuids.IID_IOPCSecurityPrivate,
+        ];
+
+        IntPtr ccw = OpcDaServerCcw.Create(new StubDaServer(), IID_IUnknown);
+
+        foreach (Guid iid in requestedIids)
+        {
+            QueryInterfaceResult result = InvokeQueryInterface(ccw, iid);
+            await Assert.That(result.Hr).IsEqualTo(S_OK);
+            await Assert.That(result.Returned).IsNotEqualTo(IntPtr.Zero);
+        }
+    }
+
+    [Test]
     public async Task QueryInterface_returns_E_NOINTERFACE_for_unknown_iid()
     {
         if (!OperatingSystem.IsWindows())
