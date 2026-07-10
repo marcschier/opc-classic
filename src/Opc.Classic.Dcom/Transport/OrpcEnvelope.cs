@@ -73,7 +73,21 @@ public static class OrpcEnvelope
         }
 
         var reader = new NdrReader(stub);
-        _ = OrpcThat.Read(ref reader);
+        try
+        {
+            _ = OrpcThat.Read(ref reader);
+        }
+        catch (InvalidOperationException ex)
+        {
+            // The ORPC_THAT envelope parse failed (e.g. an unexpected ORPC extent-array
+            // layout in a real server's activation response). Surface the raw stub bytes so
+            // the wire format can be diagnosed offline -- this parse runs before the optional
+            // OPC_CLASSIC_DCOM_WIRE_DUMP hex-dump, which would otherwise never capture it.
+            throw new InvalidOperationException(
+                $"Failed to parse the ORPC_THAT response envelope ({stub.Length}-byte stub): {Convert.ToHexString(stub)}",
+                ex);
+        }
+
         return stub.AsMemory(reader.Position);
     }
 }
