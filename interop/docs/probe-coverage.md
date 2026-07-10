@@ -248,9 +248,16 @@ live server.
   accepted (it returns `REGDB_E_CLASSNOTREG` for an unregistered CLSID instead of a
   `0x721` fault), and the managed↔managed integration suite still round-trips.
 - **End-to-end re-validation** against live Matrikon / OPCEnum (`--da-progid`,
-  `discovery.enumerate_servers`) has NOT been re-run in this environment
-  (Matrikon/TestServer are not installed), but the activation signing fault that
-  previously blocked it is resolved.
+  `discovery.enumerate_servers`) has NOT gone fully green yet. The activation *signing*
+  fault (`0x721`) that previously blocked it is resolved (confirmed in the
+  `cross-impl-matrix` CI job: `0x721` no longer appears, and the `capture.*` regressions
+  are gone via the npcap fallback). The **next** blocker is now exposed: decoding the real
+  Windows RPCSS `IRemoteSCMActivator::RemoteCreateInstance` **success** response — the
+  MS-DCOM activation-properties BLOB — currently mis-parses (`ActivationInfoCodec.TryDecode`
+  lands in `OrpcExtentArrayCodec.ReadExtent` at the wrong offset and reads a bogus extent
+  size). This decode path was never reached before because `0x721` always faulted
+  activation first, so it is a pre-existing gap, tracked separately. Re-run the matrix with
+  `-WireCapture` to capture a real RPCSS success response for byte-exact decoder work.
 - **DX-over-DCOM**: the MCP DX tool has no DCOM connection factory yet
   (`inmemory://` only), so a DX pre-bind catalog is deferred until that path exists.
 - **XML-DA**: SOAP/HTTP client, no DCE bind — not applicable.
