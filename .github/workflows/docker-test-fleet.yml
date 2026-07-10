@@ -252,6 +252,7 @@ jobs:
             -Profile samples-da,ctt-da,samples-ae,samples-hda,security-da `
             -HklmRegister `
             -UseClsid `
+            -TraceActivation `
             -OutputDir matrix-out
 
       - name: Upload cross-impl matrix reports
@@ -259,5 +260,7 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           name: cross-impl-matrix-reports
-          path: matrix-out/*.json
+          path: |
+            matrix-out/*.json
+            matrix-out/*.log
           if-no-files-found: warn

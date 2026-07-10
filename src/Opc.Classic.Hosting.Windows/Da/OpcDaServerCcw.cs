@@ -524,11 +524,41 @@ public static unsafe class OpcDaServerCcw
         {
             *ppv = entry.GetInterfacePointer(requestedIid);
             Interlocked.Increment(ref entry.RefCount);
+            if (ComActivationDiagnostics.IsEnabled)
+            {
+                ComActivationDiagnostics.Trace($"OpcDaServerCcw::QueryInterface riid={DescribeIid(requestedIid)} -> S_OK");
+            }
             return S_OK;
         }
 
+        if (ComActivationDiagnostics.IsEnabled)
+        {
+            ComActivationDiagnostics.Trace($"OpcDaServerCcw::QueryInterface riid={DescribeIid(requestedIid)} -> E_NOINTERFACE");
+        }
         *ppv = IntPtr.Zero;
         return global::Opc.Classic.OpcResultId.NoInterface.Code;
+    }
+
+    /// <summary>
+    /// Maps an IID to a human-readable label for activation diagnostics. Covers
+    /// the interfaces this CCW exposes plus the well-known COM marshaling IIDs
+    /// RPCSS probes during activation, so <c>ccw-trace.log</c> can be diffed
+    /// across hosts without a GUID lookup. Unknown IIDs render as their GUID.
+    /// </summary>
+    private static string DescribeIid(Guid iid)
+    {
+        if (iid == IID_IUnknown) { return "IUnknown"; }
+        if (iid == Dcom.IOPCServer.InterfaceId) { return "IOPCServer"; }
+        if (iid == Dcom.IOPCCommon.InterfaceId) { return "IOPCCommon"; }
+        if (iid == Dcom.IOPCBrowse.InterfaceId) { return "IOPCBrowse"; }
+        if (iid == Dcom.IOPCItemProperties.InterfaceId) { return "IOPCItemProperties"; }
+        if (iid == Dcom.IOPCItemIO.InterfaceId) { return "IOPCItemIO"; }
+        if (iid == Dcom.IOPCBrowseServerAddressSpace.InterfaceId) { return "IOPCBrowseServerAddressSpace"; }
+        if (iid == OpcGuids.IID_IOPCSecurityNT) { return "IOPCSecurityNT"; }
+        if (iid == OpcGuids.IID_IOPCSecurityPrivate) { return "IOPCSecurityPrivate"; }
+        if (iid == OpcGuids.IID_IConnectionPoint) { return "IConnectionPoint"; }
+        if (iid == OpcGuids.IID_IConnectionPointContainer) { return "IConnectionPointContainer"; }
+        return WellKnownComIid.Describe(iid);
     }
 
     [UnmanagedCallersOnly]
