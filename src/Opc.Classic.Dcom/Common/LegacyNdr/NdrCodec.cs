@@ -54,7 +54,10 @@ public class NdrCodec
         length += offset;
         for (int i = offset; i < length; i++)
         {
-            array[i] = (char)Buffer.Buf[Buffer.Index++];
+            // Route through Dec_ndr_small so a wire-supplied length that runs
+            // past the end of the buffer raises the documented EndOfStreamException
+            // ("NDR buffer underflow.") instead of an IndexOutOfRangeException.
+            array[i] = (char)Buffer.Dec_ndr_small();
         }
     }
 
