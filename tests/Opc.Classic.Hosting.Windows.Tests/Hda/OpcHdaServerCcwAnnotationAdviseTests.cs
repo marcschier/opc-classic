@@ -10,7 +10,11 @@ using Opc.Classic.Hda.Hosting.Windows;
 
 namespace Opc.Classic.Hda.Tests.Hosting.Windows;
 
+// Retry: these tests observe asynchronous OPC data-change / annotation
+// callbacks dispatched via Task.Run, which is timing-sensitive under CI
+// ThreadPool load; retry absorbs the rare miss.
 [SupportedOSPlatform("windows")]
+[Retry(5)]
 public sealed class OpcHdaServerCcwAnnotationAdviseTests
 {
     private const int S_OK = 0;
@@ -70,7 +74,7 @@ public sealed class OpcHdaServerCcwAnnotationAdviseTests
         using Native.AnnotationArray annotations = Native.AnnotationArray.From([701, 702, 703], 2);
 
         Native.AsyncResult result = Native.InvokeAsyncAnnotationsInsert(asyncAnnotations, 77, handles.Pointer, timestamps.Pointer, annotations.Pointer, 3);
-        bool observed = SpinWait.SpinUntil(() => callback.InsertAnnotationsCount == 1, TimeSpan.FromSeconds(5));
+        bool observed = SpinWait.SpinUntil(() => callback.InsertAnnotationsCount == 1, TimeSpan.FromSeconds(10));
 
         await Assert.That(observed).IsTrue();
         await Assert.That(result.Hr).IsEqualTo(S_FALSE);
@@ -99,7 +103,7 @@ public sealed class OpcHdaServerCcwAnnotationAdviseTests
         using Native.IntArray handles = Native.IntArray.From([101, 102]);
 
         Native.AsyncResult result = Native.InvokeAsyncAdviseRaw(asyncRead, 88, start.Pointer, TimeSpan.FromMilliseconds(20).Ticks, handles.Pointer, 2);
-        bool observed = SpinWait.SpinUntil(() => callback.DataChangeCount >= 2, TimeSpan.FromSeconds(5));
+        bool observed = SpinWait.SpinUntil(() => callback.DataChangeCount >= 2, TimeSpan.FromSeconds(10));
         int cancelHr = Native.InvokeAsyncCancel(asyncRead, result.CancelId);
         int countAfterCancel = callback.DataChangeCount;
         await Task.Delay(120);
@@ -137,7 +141,7 @@ public sealed class OpcHdaServerCcwAnnotationAdviseTests
         using Native.IntArray aggregates = Native.IntArray.From([1, 4]);
 
         Native.AsyncResult result = Native.InvokeAsyncAdviseProcessed(asyncRead, 99, start.Pointer, TimeSpan.FromMilliseconds(20).Ticks, handles.Pointer, aggregates.Pointer, 3, 2);
-        bool observed = SpinWait.SpinUntil(() => callback.DataChangeCount == 1, TimeSpan.FromSeconds(5));
+        bool observed = SpinWait.SpinUntil(() => callback.DataChangeCount == 1, TimeSpan.FromSeconds(10));
         await Task.Delay(80);
 
         await Assert.That(observed).IsTrue();

@@ -1,6 +1,7 @@
 ﻿// Copyright (c) 2026 Opc.Classic Contributors. Licensed under the MIT License.
 
 using System.Buffers.Binary;
+using System.Security.Cryptography;
 
 namespace Opc.Classic.Dcom.Smb.Tests;
 
@@ -11,6 +12,11 @@ public sealed class Smb2CrypterTests
     [Test]
     public async Task AesCcm_KnownAnswer_ProducesTransformHeaderAndCiphertext()
     {
+        if (!AesCcm.IsSupported)
+        {
+            return;
+        }
+
         byte[] key = Convert.FromHexString("000102030405060708090A0B0C0D0E0F");
         byte[] nonce = Convert.FromHexString("101112131415161718191A");
         byte[] expected = Convert.FromHexString(
@@ -88,6 +94,11 @@ public sealed class Smb2CrypterTests
     [Test]
     public async Task Decrypt_RejectsTamperedCiphertext()
     {
+        if (!AesCcm.IsSupported)
+        {
+            return;
+        }
+
         var crypter = CreateCcmCrypter(out byte[] encrypted);
         encrypted[^1] ^= 0x01;
 
@@ -97,6 +108,11 @@ public sealed class Smb2CrypterTests
     [Test]
     public async Task Decrypt_RejectsTamperedNonce()
     {
+        if (!AesCcm.IsSupported)
+        {
+            return;
+        }
+
         var crypter = CreateCcmCrypter(out byte[] encrypted);
         encrypted[20] ^= 0x01;
 
@@ -106,6 +122,11 @@ public sealed class Smb2CrypterTests
     [Test]
     public async Task Decrypt_RejectsWrongKey()
     {
+        if (!AesCcm.IsSupported)
+        {
+            return;
+        }
+
         _ = CreateCcmCrypter(out byte[] encrypted);
         var wrongKeyCrypter = new Smb2Crypter(
             Convert.FromHexString("606162636465666768696A6B6C6D6E6F"),
@@ -117,6 +138,11 @@ public sealed class Smb2CrypterTests
     [Test]
     public async Task Decrypt_RejectsTamperedTransformHeaderSessionId()
     {
+        if (!AesCcm.IsSupported)
+        {
+            return;
+        }
+
         var crypter = CreateCcmCrypter(out byte[] encrypted);
         encrypted[44] ^= 0x01;
 
