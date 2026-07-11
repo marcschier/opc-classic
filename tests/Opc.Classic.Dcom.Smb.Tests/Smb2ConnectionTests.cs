@@ -1,6 +1,7 @@
 ﻿// Copyright (c) 2026 Opc.Classic Contributors. Licensed under the MIT License.
 
 using System.Buffers.Binary;
+using System.Security.Cryptography;
 
 namespace Opc.Classic.Dcom.Smb.Tests;
 
@@ -86,6 +87,11 @@ public sealed class Smb2ConnectionTests
     [Test]
     public async Task OpenNamedPipeAsync_EncryptsRequestAndDecryptsResponse_WhenShareRequiresEncryption()
     {
+        if (!AesCcm.IsSupported)
+        {
+            return;
+        }
+
         byte[] sessionKey = Convert.FromHexString("000102030405060708090A0B0C0D0E0F");
         byte[] encryptionKey = Smb2Crypter.DeriveSmb3ClientEncryptionKey(Smb2Dialect.Smb300, sessionKey);
         byte[] decryptionKey = Smb2Crypter.DeriveSmb3ClientDecryptionKey(Smb2Dialect.Smb300, sessionKey);

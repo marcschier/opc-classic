@@ -78,6 +78,7 @@ param(
     [switch]$UseClsid,
     [switch]$WireCapture,
     [switch]$HklmRegister,
+    [switch]$TraceActivation,
     [int]$RequestTimeoutSeconds = 60
 )
 
@@ -163,6 +164,26 @@ try {
         Write-Host "-- skipping registration (per -SkipRegistration) --" -ForegroundColor Yellow
     }
 
+    # --- activation tracing (opt-in) ---
+    # Drop the ccw-trace.enabled marker next to each in-scope sample exe so the
+    # RPCSS-launched server writes ccw-trace.log via ComActivationDiagnostics.
+    # An SCM-launched server cannot see our environment variables, so a marker
+    # file next to the exe (AppContext.BaseDirectory) is the reliable switch.
+    # Used to diagnose activation HRESULTs (e.g. E_NOINTERFACE) that only
+    # reproduce on some hosts by diffing the CreateInstance/QueryInterface
+    # sequence RPCSS drives across environments.
+    if ($TraceActivation) {
+        Write-Host "=== Activation tracing enabled (ccw-trace.log per sample) ===" -ForegroundColor Cyan
+        foreach ($sample in $sampleRegistrations) {
+            if ($Profile -and ($Profile -notcontains $sample.Profile)) { continue }
+            $exeDir = Split-Path (Join-Path $RepoRoot $sample.Exe) -Parent
+            if (Test-Path $exeDir) {
+                New-Item -ItemType File -Path (Join-Path $exeDir 'ccw-trace.enabled') -Force | Out-Null
+                Remove-Item (Join-Path $exeDir 'ccw-trace.log') -ErrorAction SilentlyContinue
+            }
+        }
+    }
+
     # --- run the cross-impl driver ---
 
     Write-Host ""
@@ -198,6 +219,26 @@ try {
         Write-Host ""
         Write-Host "Cross-impl matrix completed cleanly (exit 0)" -ForegroundColor Green
     }
+
+    # --- collect activation traces ---
+    # Copy each in-scope sample's ccw-trace.log into the output dir so CI can
+    # upload it as an artifact (and local runs keep it alongside the reports).
+    if ($TraceActivation) {
+        New-Item -ItemType Directory -Force -Path $OutputDir | Out-Null
+        foreach ($sample in $sampleRegistrations) {
+            if ($Profile -and ($Profile -notcontains $sample.Profile)) { continue }
+            $exeDir = Split-Path (Join-Path $RepoRoot $sample.Exe) -Parent
+            $log = Join-Path $exeDir 'ccw-trace.log'
+            if (Test-Path $log) {
+                $dest = Join-Path $OutputDir "$($sample.Profile)-ccw-trace.log"
+                Copy-Item $log $dest -Force
+                Write-Host "  Collected activation trace: $dest" -ForegroundColor Green
+            } else {
+                Write-Host "  No activation trace for $($sample.Profile) (server may not have launched)" -ForegroundColor Yellow
+            }
+        }
+    }
+
     exit $matrixExit
 
 } finally {
