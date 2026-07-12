@@ -59,8 +59,18 @@ internal sealed class ComOxidDetails
     internal Dictionary<string, int> InitialIpidPublicRefs { get; } =
         new(StringComparer.OrdinalIgnoreCase);
 
+    internal HashSet<string> AdditionalIpids { get; } =
+        new(StringComparer.OrdinalIgnoreCase);
+
     internal void RegisterIpidReference(Guid ipid, uint publicRefs) =>
         InitialIpidPublicRefs[ipid.ToString("D").ToUpper(CultureInfo.InvariantCulture)] = checked((int)publicRefs);
+
+    internal string RegisterAdditionalIpid(Guid ipid)
+    {
+        string ipidText = ipid.ToString("D").ToUpper(CultureInfo.InvariantCulture);
+        AdditionalIpids.Add(ipidText);
+        return ipidText;
+    }
 
     /// <summary>
     /// Oid

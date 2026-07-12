@@ -176,6 +176,8 @@ public sealed class RemoteSCMActivatorDispatcherTests
         await Assert.That(decoded.InterfaceResults[1].Iid).IsEqualTo(optionalIid);
         await Assert.That(decoded.InterfaceResults[1].Hresult).IsEqualTo(ENoInterface);
         await Assert.That(decoded.InterfaceResults[1].ObjRef.Length).IsEqualTo(0);
+        await Assert.That(decoded.AuthnHint).IsEqualTo(6u);
+        await Assert.That(decoded.ServerVersion).IsEqualTo(((ushort)5, (ushort)4));
     }
 
     [Test]
@@ -310,6 +312,8 @@ public sealed class RemoteSCMActivatorDispatcherTests
             {
                 OxidValue = 0x0102030405060708,
                 IpidRemUnknown = new Guid("11111111-2222-3333-4444-555555555555"),
+                AuthnHint = 6,
+                ServerVersion = (5, 4),
                 OxidBindings = CreateDualStringArray(),
             });
 

@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 using Opc.Classic.Dcom;
 using Opc.Classic.Dcom.Activation;
 using Opc.Classic.Dcom.Core;
+using Opc.Classic.Dcom.Rpc;
 using Opc.Classic.Discovery.Dcom;
 using Opc.Classic.Ndr;
 
@@ -380,6 +381,10 @@ public sealed class OpcEnumClient : IOpcDiscovery
         {
             return await LegacyRemoteActivationAsync(host, requestedIid, cancellationToken).ConfigureAwait(false);
         }
+        catch (BindException ex) when (ShouldFallbackToLegacyActivation(ex))
+        {
+            return await LegacyRemoteActivationAsync(host, requestedIid, cancellationToken).ConfigureAwait(false);
+        }
         finally
         {
             await DisposeChannelAsync(activationChannel).ConfigureAwait(false);
@@ -484,8 +489,16 @@ public sealed class OpcEnumClient : IOpcDiscovery
         throw new InvalidOperationException("IActivation::RemoteActivation returned an invalid OPCEnum OBJREF.");
     }
 
-    private static bool ShouldFallbackToLegacyActivation(InvalidOperationException exception) =>
-        exception.Message.Contains("IRemoteSCMActivator::RemoteCreateInstance", StringComparison.Ordinal);
+    private static bool ShouldFallbackToLegacyActivation(Exception exception) =>
+        exception.Message.Contains("IRemoteSCMActivator::RemoteCreateInstance", StringComparison.Ordinal)
+        || exception is BindException
+        || IsRemoteScmPresentationRejection(exception.Message);
+
+    private static bool IsRemoteScmPresentationRejection(string message) =>
+        message.Contains(RemoteScmActivatorInterfaceId.ToString("D"), StringComparison.OrdinalIgnoreCase)
+        && (message.Contains("Presentation context rejected", StringComparison.Ordinal)
+            || message.Contains("presentation context", StringComparison.OrdinalIgnoreCase)
+            || message.Contains("Bind acknowledge did not accept", StringComparison.Ordinal));
 
     private static ActivationOutcome DecodeRemoteCreateInstanceResponse(NdrCallResult result, Guid requestedIid)
     {

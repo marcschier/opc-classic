@@ -172,7 +172,7 @@ internal sealed class ComOxidRuntime : IDisposable
             var details = _mapOfLocalVsOxidDetails.GetOrDefault(component);
             _mapOfOIDVsComponents.Remove(details.Oid);
             _mapOfOxidVsOxidDetails.Remove(details.Oxid);
-            _mapOfIPIDVsComponent.Remove(details.Ipid);
+            RemoveIpidMappings(details);
             _mapOfLocalVsOxidDetails.Remove(component);
             _listOfExportedComponents.Remove(component);
             _mapOfSessionIdsVsOIDs.Remove(session.SessionIdentifier);
@@ -209,7 +209,7 @@ internal sealed class ComOxidRuntime : IDisposable
                 if (details != null)
                 {
                     _mapOfOxidVsOxidDetails.Remove(details.Oxid);
-                    _mapOfIPIDVsComponent.Remove(details.Ipid);
+                    RemoveIpidMappings(details);
                 }
                 _mapOfLocalVsOxidDetails.Remove(component);
                 _listOfExportedComponents.Remove(component);
@@ -483,6 +483,16 @@ internal sealed class ComOxidRuntime : IDisposable
         }
     }
 
+    internal void RegisterAdditionalIpid(ComOxidDetails details, Guid ipid)
+    {
+        ArgumentNullException.ThrowIfNull(details);
+        lock (_mapOfOIDVsComponentsLock)
+        {
+            string ipidText = details.RegisterAdditionalIpid(ipid);
+            _mapOfIPIDVsComponent.AddOrUpdate(ipidText, details);
+        }
+    }
+
     /// <summary>
     /// Add update sets
     /// </summary>
@@ -568,7 +578,7 @@ internal sealed class ComOxidRuntime : IDisposable
                 }
                 var details = _mapOfLocalVsOxidDetails.GetOrDefault(component);
                 _mapOfOxidVsOxidDetails.Remove(details.Oxid);
-                _mapOfIPIDVsComponent.Remove(details.Ipid);
+                RemoveIpidMappings(details);
                 _mapOfLocalVsOxidDetails.Remove(component);
                 _listOfExportedComponents.Remove(component);
                 expiredOids.Add(oid);
@@ -580,6 +590,15 @@ internal sealed class ComOxidRuntime : IDisposable
             {
                 _mapOfOIDVsComponents.Remove(oid);
             }
+        }
+    }
+
+    private void RemoveIpidMappings(ComOxidDetails details)
+    {
+        _mapOfIPIDVsComponent.Remove(details.Ipid);
+        foreach (string ipid in details.AdditionalIpids)
+        {
+            _mapOfIPIDVsComponent.Remove(ipid);
         }
     }
 

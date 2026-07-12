@@ -109,6 +109,8 @@ public sealed class RemoteSCMActivatorServer : IRemoteSCMActivatorServer
             Oid = exported.Oid,
             OxidValue = exported.OxidValue,
             IpidRemUnknown = exported.IpidRemUnknown,
+            AuthnHint = exported.AuthnHint,
+            ServerVersion = exported.ServerVersion,
             ActivationProperties = responseProperties,
             InterfaceResults = interfaceResults,
             EncodedActivationProperties = ActivationInfoCodec.Encode(responseProperties),
@@ -222,6 +224,7 @@ public sealed class RemoteSCMActivatorServer : IRemoteSCMActivatorServer
                     ipid,
                     exported.PrimaryRef.SecurityOffset,
                     exported.PrimaryRef.ResolverBindings));
+            ComOxidRuntime.Instance.RegisterAdditionalIpid(exported.OxidDetails, ipid);
             exported.OxidDetails.RegisterIpidReference(ipid, exported.PrimaryRef.PublicRefs);
             results[i] = new ActivationInterfaceResult(iid, 0, objRef);
         }
@@ -310,6 +313,8 @@ public sealed class RemoteSCMActivatorServer : IRemoteSCMActivatorServer
             decodedObjRef.Oxid,
             decodedObjRef.Oid,
             Guid.Parse(details.RemUnknownIpid),
+            (uint)details.AuthHint,
+            (5, 4),
             details,
             decodedObjRef,
             oxidBindings,
@@ -419,6 +424,8 @@ public sealed class RemoteSCMActivatorServer : IRemoteSCMActivatorServer
         ulong OxidValue,
         ulong OidValue,
         Guid IpidRemUnknown,
+        uint AuthnHint,
+        (ushort Major, ushort Minor) ServerVersion,
         ComOxidDetails OxidDetails,
         IOpcInterfaceRef PrimaryRef,
         byte[] OxidBindings,

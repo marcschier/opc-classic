@@ -81,6 +81,11 @@ public sealed class RemoteSCMActivatorTests
         await Assert.That(secondaryRef.Oid).IsEqualTo(primaryRef.Oid);
         await Assert.That(response.IpidRemUnknown).IsNotEqualTo(Guid.Empty);
         await Assert.That(response.IpidRemUnknown).IsNotEqualTo(primaryRef.Ipid);
+        await Assert.That(response.AuthnHint).IsEqualTo(5u);
+        await Assert.That(response.ServerVersion).IsEqualTo(((ushort)5, (ushort)4));
+        object? secondaryDetails = GetComponentFromIpid(secondaryRef.Ipid);
+        await Assert.That(secondaryDetails).IsNotNull();
+        await Assert.That(GetReferent(secondaryDetails!)).IsEqualTo(localCoClass);
     }
 
     [Test]
@@ -159,6 +164,16 @@ public sealed class RemoteSCMActivatorTests
         var reader = new NdrReader(objRef);
         return OpcInterfaceRefCodec.Read(ref reader);
     }
+
+    private static object? GetComponentFromIpid(Guid ipid)
+    {
+        Type runtimeType = typeof(RemoteSCMActivatorServer).Assembly.GetType("Opc.Classic.Dcom.Core.ComOxidRuntime")!;
+        object instance = runtimeType.GetProperty("Instance", System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)!.GetValue(null)!;
+        return runtimeType.GetMethod("GetComponentFromIPID", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)!.Invoke(instance, [ipid.ToString("D")]);
+    }
+
+    private static object? GetReferent(object details) =>
+        details.GetType().GetProperty("Referent", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)!.GetValue(details);
 
     private sealed class TestServer
     {

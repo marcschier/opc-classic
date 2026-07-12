@@ -174,8 +174,8 @@ public sealed class RemoteSCMActivatorDispatcher : IRpcRequestContextDispatcher
             response.OxidValue,
             response.OxidBindings,
             response.IpidRemUnknown == Guid.Empty ? response.Ipid : response.IpidRemUnknown,
-            authnHint: 1,
-            serverVersion: (5, 7),
+            response.AuthnHint,
+            response.ServerVersion,
             interfaceResults,
             response.Hresult);
     }

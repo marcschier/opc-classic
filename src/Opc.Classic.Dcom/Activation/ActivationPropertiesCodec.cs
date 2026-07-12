@@ -873,14 +873,33 @@ public static class ActivationPropertiesCodec
             return;
         }
 
+        ushort entryCount = BinaryPrimitives.ReadUInt16LittleEndian(dualStringArray);
+        writer.WriteConformanceHeader(entryCount);
         writer.WriteRawBytes(dualStringArray);
         writer.AlignTo(4);
     }
 
     private static byte[] ReadDualStringArray(ref NdrReader reader)
     {
-        ushort entryCount = reader.ReadUInt16();
-        ushort securityOffset = reader.ReadUInt16();
+        uint first = reader.ReadUInt32();
+        ushort entryCount;
+        ushort securityOffset;
+        if ((first >> 16) == 0 && first > 0 && reader.RemainingBytes >= checked(4 + ((int)first * sizeof(ushort))))
+        {
+            uint maxCount = first;
+            entryCount = reader.ReadUInt16();
+            securityOffset = reader.ReadUInt16();
+            if (maxCount < entryCount)
+            {
+                throw new InvalidOperationException("DUALSTRINGARRAY conformance count is smaller than entry count.");
+            }
+        }
+        else
+        {
+            entryCount = unchecked((ushort)first);
+            securityOffset = unchecked((ushort)(first >> 16));
+        }
+
         if (entryCount > reader.RemainingBytes / sizeof(ushort))
         {
             throw new InvalidOperationException("DUALSTRINGARRAY entry count exceeds the remaining payload.");

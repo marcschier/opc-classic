@@ -25,6 +25,16 @@ public sealed record RemoteCreateInstanceResponse(int Hresult, Guid Oxid, Guid I
     public ulong OxidValue { get; init; }
 
     /// <summary>
+    /// Authentication-level hint for subsequent calls.
+    /// </summary>
+    public uint AuthnHint { get; init; } = 1;
+
+    /// <summary>
+    /// DCOM version of the object exporter.
+    /// </summary>
+    public (ushort Major, ushort Minor) ServerVersion { get; init; } = (5, 7);
+
+    /// <summary>
     /// Activation properties returned to the client.
     /// </summary>
     public ActivationProperties ActivationProperties { get; init; } = ActivationProperties.Empty;

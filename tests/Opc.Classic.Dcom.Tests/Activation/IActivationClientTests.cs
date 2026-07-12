@@ -1,6 +1,7 @@
 ﻿// Copyright (c) 2026 Opc.Classic Contributors. Licensed under the MIT License.
 
 using Opc.Classic.Dcom.Activation;
+using Opc.Classic.Dcom.Rpc;
 using Opc.Classic.Testing;
 using TUnit.Assertions.AssertConditions.Throws;
 
@@ -106,6 +107,42 @@ public sealed class IActivationClientTests
         await Assert.That(actual.InterfaceResults.Count).IsEqualTo(1);
         await Assert.That(actual.InterfaceResults[0].Iid).IsEqualTo(IidIUnknown);
         await Assert.That(Convert.ToHexString(actual.InterfaceResults[0].ObjRef)).IsEqualTo(Convert.ToHexString(objRef));
+    }
+
+    [Test]
+    public async Task RemoteCreateInstanceAsync_wraps_bind_availability_failures_for_legacy_fallback()
+    {
+        var channel = new InMemoryCallChannelBuilder()
+            .Register(new Guid("000001A0-0000-0000-C000-000000000046"), 4, (_, _, _, _) =>
+                throw new BindException("DCE/RPC bind rejected (BIND_NAK)."))
+            .Build();
+        var client = new ActivationClient(channel);
+
+        InvalidOperationException exception = await Assert.That(async () =>
+        {
+            _ = await client.RemoteCreateInstanceAsync(TestClsid, new[] { "ncacn_ip_tcp" }, new[] { IidIUnknown });
+        }).Throws<InvalidOperationException>();
+
+        await Assert.That(exception.Message.Contains("IRemoteSCMActivator::RemoteCreateInstance", StringComparison.Ordinal)).IsTrue();
+        await Assert.That(exception.InnerException is BindException).IsTrue();
+    }
+
+    [Test]
+    public async Task RemoteCreateInstanceAsync_does_not_wrap_auth_or_unrelated_invalid_operation_failures()
+    {
+        var channel = new InMemoryCallChannelBuilder()
+            .Register(new Guid("000001A0-0000-0000-C000-000000000046"), 4, (_, _, _, _) =>
+                throw new InvalidOperationException("Packet integrity verification failed."))
+            .Build();
+        var client = new ActivationClient(channel);
+
+        InvalidOperationException exception = await Assert.That(async () =>
+        {
+            _ = await client.RemoteCreateInstanceAsync(TestClsid, new[] { "ncacn_ip_tcp" }, new[] { IidIUnknown });
+        }).Throws<InvalidOperationException>();
+
+        await Assert.That(exception.Message).IsEqualTo("Packet integrity verification failed.");
+        await Assert.That(exception.InnerException).IsNull();
     }
 
     [Test]

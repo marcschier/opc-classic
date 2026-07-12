@@ -1,5 +1,6 @@
 ﻿// Copyright (c) 2026 Opc.Classic Contributors. Licensed under the MIT License.
 
+using Opc.Classic.Dcom.Rpc;
 using Opc.Classic.Dcom.Transport;
 
 namespace Opc.Classic.Dcom.Activation;
@@ -153,13 +154,21 @@ public sealed class ActivationClient : IActivationClient, IAsyncDisposable
             clsid,
             iids,
             protocolSequences);
-        NdrCallResult result = await _channel.InvokeAsync(
-            RemoteScmActivatorInterfaceId,
-            RemoteCreateInstanceOpnum,
-            payload,
-            cancellationToken).ConfigureAwait(false);
-
         const string operation = "IRemoteSCMActivator::RemoteCreateInstance";
+        NdrCallResult result;
+        try
+        {
+            result = await _channel.InvokeAsync(
+                RemoteScmActivatorInterfaceId,
+                RemoteCreateInstanceOpnum,
+                payload,
+                cancellationToken).ConfigureAwait(false);
+        }
+        catch (Exception ex) when (ShouldWrapRemoteCreateInstanceAvailabilityFailure(ex))
+        {
+            throw new InvalidOperationException($"{operation} is unavailable on the remote SCM.", ex);
+        }
+
         if (result.IsFailure)
         {
             throw new InvalidOperationException($"{operation} RPC fault 0x{unchecked((uint)result.Hresult):X8}.");
@@ -174,6 +183,27 @@ public sealed class ActivationClient : IActivationClient, IAsyncDisposable
             throw new InvalidOperationException($"{operation} returned malformed activation properties.", ex);
         }
     }
+
+    internal static bool ShouldWrapRemoteCreateInstanceAvailabilityFailure(Exception exception)
+    {
+        if (exception is BindException)
+        {
+            return true;
+        }
+
+        if (exception is not InvalidOperationException invalid)
+        {
+            return false;
+        }
+
+        return IsRemoteScmPresentationRejection(invalid.Message);
+    }
+
+    private static bool IsRemoteScmPresentationRejection(string message) =>
+        message.Contains(RemoteScmActivatorInterfaceId.ToString("D"), StringComparison.OrdinalIgnoreCase)
+        && (message.Contains("Presentation context rejected", StringComparison.Ordinal)
+            || message.Contains("presentation context", StringComparison.OrdinalIgnoreCase)
+            || message.Contains("Bind acknowledge did not accept", StringComparison.Ordinal));
 
     /// <inheritdoc />
     public async ValueTask DisposeAsync()

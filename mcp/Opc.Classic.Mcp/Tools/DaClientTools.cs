@@ -1300,56 +1300,14 @@ public sealed class DaClientTools
                     return resolverEndpoint;
                 }
 
-                ICallChannel resolverChannel = await channelFactory.ConnectAsync(
-                    resolverEndpoint,
-                    Guid.Empty,
+                byte[] resolvedBindings = await DcomOxidResolverClient.ResolveOxidBindingsAsync(
+                    fallbackHost,
+                    activation.Oxid,
+                    interfaceRef.ResolverBindings,
+                    channelFactory,
                     authContext,
-                    new[] { OpcGuids.IID_IObjectExporter },
                     cancellationToken).ConfigureAwait(false);
-                byte[] resolvedBindings;
-                try
-                {
-                    if (resolverChannel is not DcomCallChannel rawResolverChannel)
-                    {
-                        throw new InvalidOperationException("IObjectExporter::ResolveOxid2 requires a DCE/RPC channel.");
-                    }
-
-                    ReadOnlyMemory<byte> resolvePayload = WritePayload((ref NdrWriter writer) =>
-                    {
-                        writer.WriteUInt64(activation.Oxid);
-                        writer.WriteUInt16(1);
-                        writer.AlignTo(4);
-                        writer.WriteConformanceHeader(1);
-                        writer.WriteUInt16(RpcProtocolSequenceTcp);
-                        writer.AlignTo(4);
-                    });
-                    NdrCallResult result = await rawResolverChannel.InvokeRawAsync(
-                        OpcGuids.IID_IObjectExporter,
-                        4,
-                        resolvePayload,
-                        cancellationToken).ConfigureAwait(false);
-                    if (result.IsFailure && IsProcnumOutOfRange(result.Hresult))
-                    {
-                        result = await rawResolverChannel.InvokeRawAsync(
-                            OpcGuids.IID_IObjectExporter,
-                            0,
-                            resolvePayload,
-                            cancellationToken).ConfigureAwait(false);
-                        resolvedBindings = ReadResolveOxidBindings(result, expectComVersion: false);
-                    }
-                    else
-                    {
-                        resolvedBindings = ReadResolveOxidBindings(result, expectComVersion: true);
-                    }
-                }
-                finally
-                {
-                    if (resolverChannel is IAsyncDisposable disposable)
-                    {
-                        await disposable.DisposeAsync().ConfigureAwait(false);
-                    }
-                }
-
+                authContext = NoOpAuthContext.Instance;
                 return DualStringArrayResolver.ResolveFirstTransport(fallbackHost, resolvedBindings)
                     ?? resolverEndpoint;
             }
@@ -1360,64 +1318,17 @@ public sealed class DaClientTools
         }
 
         private static byte[] ReadResolveOxidBindings(NdrCallResult result, bool expectComVersion)
-        {
-            if (result.IsFailure)
-            {
-                string operation = expectComVersion ? "IObjectExporter::ResolveOxid2" : "IObjectExporter::ResolveOxid";
-                throw new InvalidOperationException($"{operation} RPC fault 0x{unchecked((uint)result.Hresult):X8}.");
-            }
-
-            byte[] bindings = ReadResolveOxidBindings(result.ResponsePayload.Span, expectComVersion, out _, out int hresult);
-            OpcException.ThrowIfFailed(new OpcResultId(hresult, null), expectComVersion ? "IObjectExporter::ResolveOxid2" : "IObjectExporter::ResolveOxid");
-            return bindings;
-        }
+            => DcomOxidResolverClient.ReadResolveOxidBindings(result, expectComVersion);
 
         internal static bool IsProcnumOutOfRange(int hresult) =>
-            hresult is RpcSProcnumOutOfRange
-                or unchecked((int)0x800706D1u)
-                or unchecked((int)0x1C010002u)
-                or unchecked((int)0xC002002Eu);
+            DcomOxidResolverClient.IsProcnumOutOfRange(hresult);
 
         internal static byte[] ReadResolveOxidBindings(
             ReadOnlySpan<byte> payload,
             bool expectComVersion,
             out Guid remUnknownIpid,
             out int hresult)
-        {
-            var reader = new NdrReader(payload);
-            if (!reader.TryReadReferentId(out uint dsaReferentId) || dsaReferentId == 0)
-            {
-                throw new InvalidOperationException("IObjectExporter returned a NULL DUALSTRINGARRAY pointer.");
-            }
-
-            uint maxCount = reader.ReadUInt32();
-            ushort entryCount = reader.ReadUInt16();
-            ushort securityOffset = reader.ReadUInt16();
-            if (maxCount < entryCount)
-            {
-                throw new InvalidOperationException("IObjectExporter returned an invalid DUALSTRINGARRAY conformance count.");
-            }
-
-            var bindings = new byte[checked(4 + (entryCount * sizeof(ushort)))];
-            BinaryPrimitives.WriteUInt16LittleEndian(bindings, entryCount);
-            BinaryPrimitives.WriteUInt16LittleEndian(bindings.AsSpan(2), securityOffset);
-            for (int i = 0; i < entryCount; i++)
-            {
-                BinaryPrimitives.WriteUInt16LittleEndian(bindings.AsSpan(4 + i * sizeof(ushort)), reader.ReadUInt16());
-            }
-
-            reader.AlignTo(4);
-            remUnknownIpid = reader.ReadGuid();
-            _ = reader.ReadUInt32();
-            if (expectComVersion)
-            {
-                _ = reader.ReadUInt16();
-                _ = reader.ReadUInt16();
-            }
-
-            hresult = reader.ReadInt32();
-            return bindings;
-        }
+            => DcomOxidResolverClient.ReadResolveOxidBindings(payload, expectComVersion, out remUnknownIpid, out hresult);
 
         private static async ValueTask DisposeAuthContextAsync(IAuthContext authContext)
         {
