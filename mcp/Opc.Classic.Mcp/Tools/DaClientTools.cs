@@ -1204,7 +1204,46 @@ public sealed class DaClientTools
             }
         }
 
+        private const int MaxActivationAttempts = 5;
+        private const int ActivationRetryBaseDelayMs = 500;
+
+        // RPCSS can report a freshly launched LocalServer32 as unavailable while
+        // the (managed, generic-host) server is still cold-starting: the first
+        // activation loses the race, but the server stays alive, so a bounded
+        // retry finds it running. Retry the transient "server not ready yet"
+        // activation HRESULTs.
+        internal static bool IsTransientActivationFailure(int hresult) => unchecked((uint)hresult) switch
+        {
+            0x800706BAu => true, // RPC_S_SERVER_UNAVAILABLE
+            0x800706BFu => true, // RPC_S_CALL_FAILED_DNE
+            0x80080005u => true, // CO_E_SERVER_EXEC_FAILURE
+            0x8001010Au => true, // RPC_E_SERVERCALL_RETRYLATER
+            _ => false,
+        };
+
         private static async Task<DaActivationResult> ActivateDaServerAsync(
+            ActivationClient activationClient,
+            Guid clsid,
+            Guid[] requestedIids,
+            CancellationToken cancellationToken)
+        {
+            for (int attempt = 1; ; attempt++)
+            {
+                DaActivationResult result = await ActivateDaServerOnceAsync(
+                    activationClient,
+                    clsid,
+                    requestedIids,
+                    cancellationToken).ConfigureAwait(false);
+                if (result.Hresult == 0 || attempt >= MaxActivationAttempts || !IsTransientActivationFailure(result.Hresult))
+                {
+                    return result;
+                }
+
+                await Task.Delay(TimeSpan.FromMilliseconds(ActivationRetryBaseDelayMs * attempt), cancellationToken).ConfigureAwait(false);
+            }
+        }
+
+        private static async Task<DaActivationResult> ActivateDaServerOnceAsync(
             ActivationClient activationClient,
             Guid clsid,
             Guid[] requestedIids,

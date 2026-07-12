@@ -22,6 +22,8 @@ public sealed class OpcEnumClient : IOpcDiscovery
     private const int EnumerationBatchSize = 64;
     private const int DefaultPayloadSize = 4096;
     private const int MaximumPayloadSize = 65536;
+    private const int MaxActivationAttempts = 5;
+    private const int ActivationRetryBaseDelayMs = 500;
     private const int ClassContext = 0x14;
     private const int RpcProtocolSequenceTcp = 7;
     private const uint ObjRefSignature = 0x574F454D;
@@ -365,31 +367,65 @@ public sealed class OpcEnumClient : IOpcDiscovery
         Guid requestedIid,
         CancellationToken cancellationToken)
     {
-        ICallChannel? activationChannel = null;
-        try
+        for (int attempt = 1; ; attempt++)
         {
-            activationChannel = await _channelFactory.CreateActivationChannelAsync(host, cancellationToken).ConfigureAwait(false);
-            byte[] payload = EncodeRemoteCreateInstanceRequest(host, OpcGuids.CLSID_OpcEnum, requestedIid, _activationProtectionLevel);
-            NdrCallResult result = await activationChannel.InvokeAsync(
-                RemoteScmActivatorInterfaceId,
-                RemoteCreateInstanceOpnum,
-                payload,
-                cancellationToken).ConfigureAwait(false);
-            return DecodeRemoteCreateInstanceResponse(result, requestedIid);
-        }
-        catch (InvalidOperationException ex) when (ShouldFallbackToLegacyActivation(ex))
-        {
-            return await LegacyRemoteActivationAsync(host, requestedIid, cancellationToken).ConfigureAwait(false);
-        }
-        catch (BindException ex) when (ShouldFallbackToLegacyActivation(ex))
-        {
-            return await LegacyRemoteActivationAsync(host, requestedIid, cancellationToken).ConfigureAwait(false);
-        }
-        finally
-        {
-            await DisposeChannelAsync(activationChannel).ConfigureAwait(false);
+            ICallChannel? activationChannel = null;
+            try
+            {
+                activationChannel = await _channelFactory.CreateActivationChannelAsync(host, cancellationToken).ConfigureAwait(false);
+                byte[] payload = EncodeRemoteCreateInstanceRequest(host, OpcGuids.CLSID_OpcEnum, requestedIid, _activationProtectionLevel);
+                NdrCallResult result = await activationChannel.InvokeAsync(
+                    RemoteScmActivatorInterfaceId,
+                    RemoteCreateInstanceOpnum,
+                    payload,
+                    cancellationToken).ConfigureAwait(false);
+                if (attempt >= MaxActivationAttempts || !IsTransientColdStartResult(result))
+                {
+                    return DecodeRemoteCreateInstanceResponse(result, requestedIid);
+                }
+            }
+            catch (InvalidOperationException ex) when (ShouldFallbackToLegacyActivation(ex))
+            {
+                return await LegacyRemoteActivationAsync(host, requestedIid, cancellationToken).ConfigureAwait(false);
+            }
+            catch (BindException ex) when (ShouldFallbackToLegacyActivation(ex))
+            {
+                return await LegacyRemoteActivationAsync(host, requestedIid, cancellationToken).ConfigureAwait(false);
+            }
+            finally
+            {
+                await DisposeChannelAsync(activationChannel).ConfigureAwait(false);
+            }
+
+            // OPCEnum is launched on demand by the SCM, so the first activation can lose
+            // the race against its cold start and return a NULL result with a transient
+            // "server unavailable" HRESULT. The service then stays up, so retry.
+            await Task.Delay(TimeSpan.FromMilliseconds(ActivationRetryBaseDelayMs * attempt), cancellationToken).ConfigureAwait(false);
         }
     }
+
+    // A NULL ppActProperties referent (first 4 bytes == 0) followed by a transient
+    // "server not ready yet" HRESULT is how the SCM reports a lost cold-start race.
+    private static bool IsTransientColdStartResult(NdrCallResult result)
+    {
+        ReadOnlySpan<byte> response = result.ResponsePayload.Span;
+        if (response.Length < 8 || BinaryPrimitives.ReadUInt32LittleEndian(response) != 0)
+        {
+            return false;
+        }
+
+        int hresult = BinaryPrimitives.ReadInt32LittleEndian(response[4..]);
+        return IsTransientActivationFailure(hresult);
+    }
+
+    internal static bool IsTransientActivationFailure(int hresult) => unchecked((uint)hresult) switch
+    {
+        0x800706BAu => true, // RPC_S_SERVER_UNAVAILABLE
+        0x800706BFu => true, // RPC_S_CALL_FAILED_DNE
+        0x80080005u => true, // CO_E_SERVER_EXEC_FAILURE
+        0x8001010Au => true, // RPC_E_SERVERCALL_RETRYLATER
+        _ => false,
+    };
 
     private async Task<ActivationOutcome> LegacyRemoteActivationAsync(
         string host,
