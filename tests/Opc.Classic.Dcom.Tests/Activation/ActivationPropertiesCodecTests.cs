@@ -23,10 +23,18 @@ public sealed class ActivationPropertiesCodecTests
         uint pActProperties = wireReader.ReadUInt32();
         uint maxCount = wireReader.ReadUInt32();
         uint ulCntData = wireReader.ReadUInt32();
+        _ = wireReader.ReadUInt32();
+        _ = wireReader.ReadUInt32();
+        _ = wireReader.ReadGuid();
+        _ = wireReader.ReadGuid();
+        uint customExtensionSize = wireReader.ReadUInt32();
+        uint objectReferenceSize = wireReader.ReadUInt32();
         await Assert.That(pUnkOuter).IsEqualTo(0u);
         await Assert.That(pActProperties).IsNotEqualTo(0u);
         await Assert.That(maxCount).IsEqualTo(ulCntData);
         await Assert.That(maxCount).IsGreaterThan(100u);
+        await Assert.That(customExtensionSize).IsEqualTo(0u);
+        await Assert.That(objectReferenceSize).IsEqualTo(ulCntData - 40u);
 
         RemoteCreateInstanceActivationRequest decoded =
             ActivationPropertiesCodec.DecodeRemoteCreateInstanceRequest(encoded);

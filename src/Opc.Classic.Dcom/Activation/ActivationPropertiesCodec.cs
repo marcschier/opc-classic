@@ -819,7 +819,7 @@ public static class ActivationPropertiesCodec
             writer.WriteGuid(iid);
             writer.WriteGuid(clsid);
             writer.WriteUInt32(0);
-            writer.WriteUInt32(0);
+            writer.WriteUInt32(checked((uint)encodedObjectData.Length + 8));
             writer.WriteRawBytes(encodedObjectData);
         });
     }
@@ -832,10 +832,15 @@ public static class ActivationPropertiesCodec
         Guid iid = reader.ReadGuid();
         Guid clsid = reader.ReadGuid();
         _ = reader.ReadUInt32();
-        _ = reader.ReadUInt32();
+        uint objectReferenceSize = reader.ReadUInt32();
         if (signature != ObjRefSignature || flags != ObjRefCustom || iid != expectedIid || clsid != expectedClsid)
         {
             throw new InvalidOperationException("OBJREF_CUSTOM did not contain the expected activation-properties identifiers.");
+        }
+
+        if (objectReferenceSize != 0 && objectReferenceSize != reader.RemainingBytes + 8u)
+        {
+            throw new InvalidOperationException("OBJREF_CUSTOM ObjectReferenceSize does not match the custom object data length.");
         }
 
         return objRef.Slice(reader.Position);
