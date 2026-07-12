@@ -66,9 +66,13 @@ public sealed class RemoteSCMActivatorDispatcher : IRpcRequestContextDispatcher
         {
             if (opnum == RemoteCreateInstanceOpnum)
             {
-                RemoteCreateInstanceRequest request = DecodeCreateInstanceRequest(requestPayload.Span);
-                RemoteCreateInstanceResponse response = await _activator.RemoteCreateInstanceAsync(request, cancellationToken).ConfigureAwait(false);
-                return DispatchResult.Success(EncodeResponse(response.Hresult, response.EncodedActivationProperties, response.ObjRef), response.Hresult);
+                DecodedCreateInstanceRequest decoded = DecodeCreateInstanceRequest(requestPayload.Span);
+                RemoteCreateInstanceResponse response = await _activator.RemoteCreateInstanceAsync(decoded.Request, cancellationToken).ConfigureAwait(false);
+                return DispatchResult.Success(
+                    decoded.IsModern
+                        ? EncodeModernCreateInstanceResponse(response, decoded.Request)
+                        : EncodeResponse(response.Hresult, response.EncodedActivationProperties, response.ObjRef),
+                    response.Hresult);
             }
             else
             {
@@ -84,7 +88,7 @@ public sealed class RemoteSCMActivatorDispatcher : IRpcRequestContextDispatcher
         }
     }
 
-    private static RemoteCreateInstanceRequest DecodeCreateInstanceRequest(ReadOnlySpan<byte> payload)
+    private static DecodedCreateInstanceRequest DecodeCreateInstanceRequest(ReadOnlySpan<byte> payload)
     {
         if (ActivationPropertiesCodec.TryDecodeRemoteCreateInstanceRequest(payload, out RemoteCreateInstanceActivationRequest activationRequest))
         {
@@ -95,17 +99,18 @@ public sealed class RemoteSCMActivatorDispatcher : IRpcRequestContextDispatcher
             }
 
             Guid requestedIid = activationRequest.RequestedIids.Count == 0 ? Guid.Empty : activationRequest.RequestedIids[0];
-            return new RemoteCreateInstanceRequest(activationRequest.ClassId, requestedIid, protocolSequences)
+            return new DecodedCreateInstanceRequest(new RemoteCreateInstanceRequest(activationRequest.ClassId, requestedIid, protocolSequences)
             {
+                RequestedIids = activationRequest.RequestedIids,
                 RawActivationProperties = activationRequest.ActivationPropertiesBlob,
-            };
+            }, IsModern: true);
         }
 
         DecodedRequest decoded = DecodeRequest(payload);
-        return new RemoteCreateInstanceRequest(decoded.Clsid, decoded.RequestedIid, decoded.ProtocolSequences)
+        return new DecodedCreateInstanceRequest(new RemoteCreateInstanceRequest(decoded.Clsid, decoded.RequestedIid, decoded.ProtocolSequences)
         {
             RawActivationProperties = decoded.ActivationProperties,
-        };
+        }, IsModern: false);
     }
 
     private static RemoteGetClassObjectRequest DecodeGetClassObjectRequest(ReadOnlySpan<byte> payload)
@@ -161,6 +166,35 @@ public sealed class RemoteSCMActivatorDispatcher : IRpcRequestContextDispatcher
         });
     }
 
+    private static byte[] EncodeModernCreateInstanceResponse(RemoteCreateInstanceResponse response, RemoteCreateInstanceRequest request)
+    {
+        IReadOnlyList<ActivationInterfaceResult> interfaceResults = response.InterfaceResults.Count == 0
+            ? CreateFailureInterfaceResults(request, response.Hresult)
+            : response.InterfaceResults;
+        return ActivationPropertiesCodec.EncodeRemoteCreateInstanceResponse(
+            response.OxidValue,
+            response.OxidBindings,
+            response.IpidRemUnknown == Guid.Empty ? response.Ipid : response.IpidRemUnknown,
+            authnHint: 1,
+            serverVersion: (5, 7),
+            interfaceResults,
+            response.Hresult);
+    }
+
+    private static ActivationInterfaceResult[] CreateFailureInterfaceResults(RemoteCreateInstanceRequest request, int hresult)
+    {
+        IReadOnlyList<Guid> requestedIids = request.RequestedIids.Count == 0
+            ? new[] { request.RequestedIid == Guid.Empty ? Guid.Parse(Interfaces.IID_IUnknown) : request.RequestedIid }
+            : request.RequestedIids;
+        var results = new ActivationInterfaceResult[requestedIids.Count];
+        for (int i = 0; i < results.Length; i++)
+        {
+            results[i] = new ActivationInterfaceResult(requestedIids[i], hresult, Array.Empty<byte>());
+        }
+
+        return results;
+    }
+
     private static byte[] WritePayload(NdrWriteAction action)
     {
         for (int size = 256; size <= 1024 * 1024; size *= 2)
@@ -195,4 +229,6 @@ public sealed class RemoteSCMActivatorDispatcher : IRpcRequestContextDispatcher
     private delegate void NdrWriteAction(ref NdrWriter writer);
 
     private sealed record DecodedRequest(Guid Clsid, Guid RequestedIid, int[] ProtocolSequences, byte[] ActivationProperties);
+
+    private sealed record DecodedCreateInstanceRequest(RemoteCreateInstanceRequest Request, bool IsModern);
 }

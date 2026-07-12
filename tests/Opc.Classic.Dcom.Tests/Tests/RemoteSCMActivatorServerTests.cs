@@ -74,8 +74,9 @@ public sealed class RemoteSCMActivatorServerTests
         var clsid = Guid.NewGuid();
         var iid = Guid.NewGuid();
         IReadOnlyList<int> protocolSequences = [7, 9];
-        var left = new RemoteCreateInstanceRequest(clsid, iid, protocolSequences);
-        var right = new RemoteCreateInstanceRequest(clsid, iid, protocolSequences);
+        IReadOnlyList<Guid> requestedIids = [iid];
+        var left = new RemoteCreateInstanceRequest(clsid, iid, protocolSequences) { RequestedIids = requestedIids };
+        var right = new RemoteCreateInstanceRequest(clsid, iid, protocolSequences) { RequestedIids = requestedIids };
 
         await Assert.That(left).IsEqualTo(right);
     }

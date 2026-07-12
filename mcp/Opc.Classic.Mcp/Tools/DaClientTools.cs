@@ -1053,12 +1053,13 @@ public sealed class DaClientTools
             da?.Clsid);
     }
 
-    private sealed class DefaultOpcDaConnectionFactory : IOpcDaConnectionFactory
+    internal sealed class DefaultOpcDaConnectionFactory : IOpcDaConnectionFactory
     {
         private const int EndpointMapperPort = 135;
         private const int RemoteCreateInstanceOpnum = 4;
         private const int ClassContext = 0x14;
         private const int RpcProtocolSequenceTcp = 7;
+        private const int RpcSProcnumOutOfRange = 0x000006D1;
         private const int DefaultPayloadSize = 4096;
         private const int MaximumPayloadSize = 65536;
         private const uint ObjRefSignature = 0x574F454D;
@@ -1118,13 +1119,15 @@ public sealed class DaClientTools
                 {
                     throw new InvalidOperationException("DCOM activation returned no per-IID results.");
                 }
-                if (activation.InterfaceResults[0].Hresult != 0 || activation.InterfaceResults[0].ObjRef.Length == 0)
+                DaActivationInterfaceResult? serverResult = FindInterfaceResult(activation.InterfaceResults, IOPCServer.InterfaceId);
+                if (serverResult is null || serverResult.Hresult != 0 || serverResult.ObjRef.Length == 0)
                 {
+                    int hresult = serverResult?.Hresult ?? unchecked((int)0x80004002u);
                     throw new InvalidOperationException(
-                        $"DCOM activation did not return an OBJREF for IOPCServer (per-IID HRESULT 0x{unchecked((uint)activation.InterfaceResults[0].Hresult):X8}).");
+                        $"DCOM activation did not return an OBJREF for IOPCServer (per-IID HRESULT 0x{unchecked((uint)hresult):X8}).");
                 }
 
-                ReadOnlyMemory<byte> objRefBytes = activation.InterfaceResults[0].ObjRef;
+                ReadOnlyMemory<byte> objRefBytes = serverResult.ObjRef;
                 if (!TryDecodeObjRef(objRefBytes.Span, out IOpcInterfaceRef? serverRef))
                 {
                     throw new InvalidOperationException("DCOM activation returned an OBJREF that could not be decoded.");
@@ -1167,8 +1170,7 @@ public sealed class DaClientTools
                         cancellationToken).ConfigureAwait(false);
                 }
 
-                // Register per-IID IPID routes for the optional interfaces returned by activation.
-                // Index 0 is IOPCServer (the channel default); register slots 1.. as per-interface IPIDs.
+                // Register per-IID IPID routes for the interfaces returned by activation.
                 if (serverChannel is DcomCallChannel routableChannel)
                 {
                     if (!activation.IpidRemUnknown.Equals(Guid.Empty))
@@ -1176,10 +1178,10 @@ public sealed class DaClientTools
                         routableChannel.RegisterInterfaceIpid(IRemUnknown.InterfaceId, activation.IpidRemUnknown);
                     }
 
-                    for (int i = 0; i < activation.InterfaceResults.Count && i < requestedIids.Length; i++)
+                    for (int i = 0; i < activation.InterfaceResults.Count; i++)
                     {
                         var ir = activation.InterfaceResults[i];
-                        if (ir.Hresult != 0 || ir.ObjRef.Length == 0)
+                        if (ir.Iid == Guid.Empty || ir.Hresult != 0 || ir.ObjRef.Length == 0)
                         {
                             continue;
                         }
@@ -1187,7 +1189,7 @@ public sealed class DaClientTools
                         {
                             continue;
                         }
-                        routableChannel.RegisterInterfaceIpid(requestedIids[i], ifaceRef.Ipid);
+                        routableChannel.RegisterInterfaceIpid(ir.Iid, ifaceRef.Ipid);
                     }
                 }
 
@@ -1236,7 +1238,7 @@ public sealed class DaClientTools
                     0,
                     legacy.IpidRemUnknown,
                     legacy.OxidBindings,
-                    ToDaInterfaceResults(legacy.InterfaceResults),
+                    ToDaInterfaceResults(legacy.InterfaceResults, requestedIids),
                     UsedModernActivation: false);
             }
         }
@@ -1245,26 +1247,40 @@ public sealed class DaClientTools
             exception.Message.Contains("IRemoteSCMActivator::RemoteCreateInstance", StringComparison.Ordinal)
             || exception.InnerException is InvalidOperationException inner && IsRemoteCreateInstanceFailure(inner);
 
-        private static DaActivationInterfaceResult[] ToDaInterfaceResults(IReadOnlyList<ActivationInterfaceResult> results)
+        internal static DaActivationInterfaceResult[] ToDaInterfaceResults(IReadOnlyList<ActivationInterfaceResult> results)
         {
             var converted = new DaActivationInterfaceResult[results.Count];
             for (int i = 0; i < results.Count; i++)
             {
-                converted[i] = new DaActivationInterfaceResult(results[i].Hresult, results[i].ObjRef);
+                converted[i] = new DaActivationInterfaceResult(results[i].Iid, results[i].Hresult, results[i].ObjRef);
             }
 
             return converted;
         }
 
-        private static DaActivationInterfaceResult[] ToDaInterfaceResults(IReadOnlyList<RemoteActivationInterfaceResult> results)
+        internal static DaActivationInterfaceResult[] ToDaInterfaceResults(IReadOnlyList<RemoteActivationInterfaceResult> results, IReadOnlyList<Guid> requestedIids)
         {
             var converted = new DaActivationInterfaceResult[results.Count];
             for (int i = 0; i < results.Count; i++)
             {
-                converted[i] = new DaActivationInterfaceResult(results[i].Hresult, results[i].ObjRef);
+                Guid iid = i < requestedIids.Count ? requestedIids[i] : Guid.Empty;
+                converted[i] = new DaActivationInterfaceResult(iid, results[i].Hresult, results[i].ObjRef);
             }
 
             return converted;
+        }
+
+        internal static DaActivationInterfaceResult? FindInterfaceResult(IReadOnlyList<DaActivationInterfaceResult> results, Guid iid)
+        {
+            for (int i = 0; i < results.Count; i++)
+            {
+                if (results[i].Iid == iid)
+                {
+                    return results[i];
+                }
+            }
+
+            return null;
         }
 
         private static async Task<EndPoint> ResolveModernObjectEndpointAsync(
@@ -1275,31 +1291,30 @@ public sealed class DaClientTools
             IAuthContext authContext,
             CancellationToken cancellationToken)
         {
-            EndPoint resolverEndpoint = DualStringArrayResolver.ResolveFirstTransport(fallbackHost, activation.OxidBindings.Span)
-                ?? ResolveObjectEndpoint(fallbackHost, interfaceRef);
-            if (activation.Oxid == 0)
-            {
-                return resolverEndpoint;
-            }
-
-            ICallChannel resolverChannel = await channelFactory.ConnectAsync(
-                resolverEndpoint,
-                Guid.Empty,
-                authContext,
-                new[] { OpcGuids.IID_IObjectExporter },
-                cancellationToken).ConfigureAwait(false);
-            byte[] resolvedBindings;
             try
             {
-                if (resolverChannel is not DcomCallChannel rawResolverChannel)
+                EndPoint resolverEndpoint = DualStringArrayResolver.ResolveFirstTransport(fallbackHost, activation.OxidBindings.Span)
+                    ?? ResolveObjectEndpoint(fallbackHost, interfaceRef);
+                if (activation.Oxid == 0)
                 {
-                    throw new InvalidOperationException("IObjectExporter::ResolveOxid2 requires a DCE/RPC channel.");
+                    return resolverEndpoint;
                 }
 
-                NdrCallResult result = await rawResolverChannel.InvokeRawAsync(
-                    OpcGuids.IID_IObjectExporter,
-                    4,
-                    WritePayload((ref NdrWriter writer) =>
+                ICallChannel resolverChannel = await channelFactory.ConnectAsync(
+                    resolverEndpoint,
+                    Guid.Empty,
+                    authContext,
+                    new[] { OpcGuids.IID_IObjectExporter },
+                    cancellationToken).ConfigureAwait(false);
+                byte[] resolvedBindings;
+                try
+                {
+                    if (resolverChannel is not DcomCallChannel rawResolverChannel)
+                    {
+                        throw new InvalidOperationException("IObjectExporter::ResolveOxid2 requires a DCE/RPC channel.");
+                    }
+
+                    ReadOnlyMemory<byte> resolvePayload = WritePayload((ref NdrWriter writer) =>
                     {
                         writer.WriteUInt64(activation.Oxid);
                         writer.WriteUInt16(1);
@@ -1307,30 +1322,76 @@ public sealed class DaClientTools
                         writer.WriteConformanceHeader(1);
                         writer.WriteUInt16(RpcProtocolSequenceTcp);
                         writer.AlignTo(4);
-                    }),
-                    cancellationToken).ConfigureAwait(false);
-                OpcException.ThrowIfFailed(new OpcResultId(result.Hresult, null), "IObjectExporter::ResolveOxid2");
-                resolvedBindings = ReadResolveOxid2Bindings(result.ResponsePayload.Span, out _);
+                    });
+                    NdrCallResult result = await rawResolverChannel.InvokeRawAsync(
+                        OpcGuids.IID_IObjectExporter,
+                        4,
+                        resolvePayload,
+                        cancellationToken).ConfigureAwait(false);
+                    if (result.IsFailure && result.IsFault && result.Hresult == RpcSProcnumOutOfRange)
+                    {
+                        result = await rawResolverChannel.InvokeRawAsync(
+                            OpcGuids.IID_IObjectExporter,
+                            0,
+                            resolvePayload,
+                            cancellationToken).ConfigureAwait(false);
+                        resolvedBindings = ReadResolveOxidBindings(result, expectComVersion: false);
+                    }
+                    else
+                    {
+                        resolvedBindings = ReadResolveOxidBindings(result, expectComVersion: true);
+                    }
+                }
+                finally
+                {
+                    if (resolverChannel is IAsyncDisposable disposable)
+                    {
+                        await disposable.DisposeAsync().ConfigureAwait(false);
+                    }
+                }
+
+                return DualStringArrayResolver.ResolveFirstTransport(fallbackHost, resolvedBindings)
+                    ?? resolverEndpoint;
             }
             finally
             {
-                if (resolverChannel is IAsyncDisposable disposable)
-                {
-                    await disposable.DisposeAsync().ConfigureAwait(false);
-                }
+                await DisposeAuthContextAsync(authContext).ConfigureAwait(false);
             }
-
-            return DualStringArrayResolver.ResolveFirstTransport(fallbackHost, resolvedBindings)
-                ?? resolverEndpoint;
         }
 
-        private static byte[] ReadResolveOxid2Bindings(ReadOnlySpan<byte> payload, out Guid remUnknownIpid)
+        private static byte[] ReadResolveOxidBindings(NdrCallResult result, bool expectComVersion)
+        {
+            if (result.IsFailure)
+            {
+                string operation = expectComVersion ? "IObjectExporter::ResolveOxid2" : "IObjectExporter::ResolveOxid";
+                throw new InvalidOperationException($"{operation} RPC fault 0x{unchecked((uint)result.Hresult):X8}.");
+            }
+
+            byte[] bindings = ReadResolveOxidBindings(result.ResponsePayload.Span, expectComVersion, out _, out int hresult);
+            OpcException.ThrowIfFailed(new OpcResultId(hresult, null), expectComVersion ? "IObjectExporter::ResolveOxid2" : "IObjectExporter::ResolveOxid");
+            return bindings;
+        }
+
+        internal static byte[] ReadResolveOxidBindings(
+            ReadOnlySpan<byte> payload,
+            bool expectComVersion,
+            out Guid remUnknownIpid,
+            out int hresult)
         {
             var reader = new NdrReader(payload);
-            _ = reader.TryReadReferentId(out _);
-            _ = reader.TryReadReferentId(out _);
+            if (!reader.TryReadReferentId(out uint dsaReferentId) || dsaReferentId == 0)
+            {
+                throw new InvalidOperationException("IObjectExporter returned a NULL DUALSTRINGARRAY pointer.");
+            }
+
+            uint maxCount = reader.ReadUInt32();
             ushort entryCount = reader.ReadUInt16();
             ushort securityOffset = reader.ReadUInt16();
+            if (maxCount < entryCount)
+            {
+                throw new InvalidOperationException("IObjectExporter returned an invalid DUALSTRINGARRAY conformance count.");
+            }
+
             var bindings = new byte[checked(4 + (entryCount * sizeof(ushort)))];
             BinaryPrimitives.WriteUInt16LittleEndian(bindings, entryCount);
             BinaryPrimitives.WriteUInt16LittleEndian(bindings.AsSpan(2), securityOffset);
@@ -1341,7 +1402,32 @@ public sealed class DaClientTools
 
             reader.AlignTo(4);
             remUnknownIpid = reader.ReadGuid();
+            _ = reader.ReadUInt32();
+            if (expectComVersion)
+            {
+                _ = reader.ReadUInt16();
+                _ = reader.ReadUInt16();
+            }
+
+            hresult = reader.ReadInt32();
             return bindings;
+        }
+
+        private static async ValueTask DisposeAuthContextAsync(IAuthContext authContext)
+        {
+            if (ReferenceEquals(authContext, NoOpAuthContext.Instance))
+            {
+                return;
+            }
+
+            if (authContext is IAsyncDisposable asyncDisposable)
+            {
+                await asyncDisposable.DisposeAsync().ConfigureAwait(false);
+            }
+            else if (authContext is IDisposable disposable)
+            {
+                disposable.Dispose();
+            }
         }
 
         // Wraps the active call channel in an OPCCLASSIC_WIRE_CAPTURE_DIR-driven
@@ -1813,7 +1899,7 @@ public sealed class DaClientTools
             IReadOnlyList<DaActivationInterfaceResult> InterfaceResults,
             bool UsedModernActivation);
 
-        private sealed record DaActivationInterfaceResult(int Hresult, ReadOnlyMemory<byte> ObjRef);
+        internal sealed record DaActivationInterfaceResult(Guid Iid, int Hresult, ReadOnlyMemory<byte> ObjRef);
 
         private delegate void NdrWriteAction(ref NdrWriter writer);
 

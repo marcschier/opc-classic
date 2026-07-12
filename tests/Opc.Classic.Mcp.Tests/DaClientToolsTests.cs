@@ -6,6 +6,7 @@ using Opc.Classic.Da;
 using Opc.Classic.Da.Dcom;
 using Opc.Classic.Da.Hosting;
 using Opc.Classic.Dcom;
+using Opc.Classic.Dcom.Activation;
 using Opc.Classic.Hosting;
 using Opc.Classic.Mcp.Dtos;
 using Opc.Classic.Mcp.Tools;
@@ -160,8 +161,85 @@ public sealed class DaClientToolsTests
         await Assert.That(disconnected.Succeeded).IsTrue();
     }
 
+    [Test]
+    public async Task Modern_activation_mapping_selects_iopcserver_by_iid_when_results_are_reordered()
+    {
+        Guid optionalIid = IOPCCommon.InterfaceId;
+        byte[] serverObjRef = { 0x4d, 0x45, 0x4f, 0x57, 0x01 };
+        byte[] optionalObjRef = { 0x4d, 0x45, 0x4f, 0x57, 0x02 };
+        ActivationInterfaceResult[] modernResults =
+        [
+            new(optionalIid, 0, optionalObjRef),
+            new(IOPCServer.InterfaceId, 0, serverObjRef),
+        ];
+
+        var normalized = DaClientTools.DefaultOpcDaConnectionFactory.ToDaInterfaceResults(modernResults);
+        var server = DaClientTools.DefaultOpcDaConnectionFactory.FindInterfaceResult(normalized, IOPCServer.InterfaceId);
+
+        await Assert.That(server).IsNotNull();
+        await Assert.That(Convert.ToHexString(server!.ObjRef.Span)).IsEqualTo(Convert.ToHexString(serverObjRef));
+        await Assert.That(normalized[0].Iid).IsEqualTo(optionalIid);
+        await Assert.That(normalized[1].Iid).IsEqualTo(IOPCServer.InterfaceId);
+    }
+
+    [Test]
+    public async Task Modern_activation_mapping_handles_subset_without_positional_requested_iids()
+    {
+        ActivationInterfaceResult[] modernResults =
+        [
+            new(IOPCServer.InterfaceId, 0, [0x4d, 0x45, 0x4f, 0x57]),
+        ];
+
+        var normalized = DaClientTools.DefaultOpcDaConnectionFactory.ToDaInterfaceResults(modernResults);
+        var browse = DaClientTools.DefaultOpcDaConnectionFactory.FindInterfaceResult(normalized, IOPCBrowse.InterfaceId);
+
+        await Assert.That(normalized.Length).IsEqualTo(1);
+        await Assert.That(normalized[0].Iid).IsEqualTo(IOPCServer.InterfaceId);
+        await Assert.That(browse).IsNull();
+    }
+
+    [Test]
+    public async Task ResolveOxid2_parser_reads_pointer_conformance_dsa_and_final_status()
+    {
+        var ipid = new Guid("11111111-2222-3333-4444-555555555555");
+        byte[] payload = BuildResolveOxidResponse(ipid, includeComVersion: true);
+
+        byte[] bindings = DaClientTools.DefaultOpcDaConnectionFactory.ReadResolveOxidBindings(
+            payload,
+            expectComVersion: true,
+            out Guid actualIpid,
+            out int hresult);
+
+        await Assert.That(Convert.ToHexString(bindings)).IsEqualTo("0200010007000000");
+        await Assert.That(actualIpid).IsEqualTo(ipid);
+        await Assert.That(hresult).IsEqualTo(0);
+    }
+
     private static double GetDouble(object? value) => ((JsonElement)value!).GetDouble();
     private static bool GetBoolean(object? value) => ((JsonElement)value!).GetBoolean();
+
+    private static byte[] BuildResolveOxidResponse(Guid ipid, bool includeComVersion)
+    {
+        var buffer = new byte[64];
+        var writer = new Opc.Classic.Ndr.NdrWriter(buffer);
+        writer.WriteUInt32(0x00020000);
+        writer.WriteUInt32(2);
+        writer.WriteUInt16(2);
+        writer.WriteUInt16(1);
+        writer.WriteUInt16(0x07);
+        writer.WriteUInt16(0);
+        writer.AlignTo(4);
+        writer.WriteGuid(ipid);
+        writer.WriteUInt32(5);
+        if (includeComVersion)
+        {
+            writer.WriteUInt16(5);
+            writer.WriteUInt16(7);
+        }
+
+        writer.WriteInt32(0);
+        return buffer.AsSpan(0, writer.Position).ToArray();
+    }
 }
 
 internal sealed class SyntheticDaServer : IOpcDaServer, IOPCBrowse, IOPCItemMgt, IOPCSyncIO, IOPCAsyncIO2

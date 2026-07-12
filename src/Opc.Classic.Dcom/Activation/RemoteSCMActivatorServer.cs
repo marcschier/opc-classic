@@ -4,6 +4,8 @@ using Opc.Classic.Dcom.Internal.LegacyNdr;
 using Opc.Classic.Hosting;
 using Opc.Classic.Ndr;
 using Opc.Classic.Dcom.Common;
+using Opc.Classic.Dcom.Activation;
+using Opc.Classic.Dcom;
 
 namespace Opc.Classic.Dcom.Core;
 
@@ -17,6 +19,7 @@ public sealed class RemoteSCMActivatorServer : IRemoteSCMActivatorServer
     internal const int E_NOTIMPL = unchecked((int)0x80004001u);
     internal const int CO_E_CLASSSTRING = unchecked((int)0x800401F3u);
     internal const int CLASS_E_CLASSNOTAVAILABLE = unchecked((int)0x80040111u);
+    internal const int E_NOINTERFACE = unchecked((int)0x80004002u);
 
     private static readonly Guid IidIUnknown = Guid.Parse(Opc.Classic.Dcom.Interfaces.IID_IUnknown);
     private static readonly Guid IidIClassFactory = Guid.Parse("00000001-0000-0000-C000-000000000046");
@@ -87,22 +90,27 @@ public sealed class RemoteSCMActivatorServer : IRemoteSCMActivatorServer
         if (!_classFactories.TryResolve(request.Clsid, out IClassFactory factory))
         {
             int hresult = ResolveMissingClass(request.Clsid);
-            return Task.FromResult(new RemoteCreateInstanceResponse(hresult, Guid.Empty, Guid.Empty, Array.Empty<byte>()));
+            return Task.FromResult(CreateFailureResponse(request, hresult));
         }
 
         ActivationProperties activationProperties = ResolveActivationProperties(request.ActivationProperties, request.RawActivationProperties);
-        Guid requestedIid = activationProperties.GetRequestedIidOr(request.RequestedIid == Guid.Empty ? IidIUnknown : request.RequestedIid);
+        Guid[] requestedIids = ResolveRequestedIids(request, activationProperties);
+        Guid requestedIid = requestedIids[0];
         var context = new ClassFactoryActivationContext(request.Clsid, requestedIid, activationProperties);
         ClassFactoryActivationResult activationResult = factory.CreateInstance(context);
         LocalCoClass localCoClass = CreateLocalCoClass(activationResult);
         ExportedInterface exported = Export(localCoClass, requestedIid);
         var reply = new ScmReplyInfo(0, exported.Oxid, exported.Oid, exported.Ipid, exported.ObjRef, copy: true);
         ActivationProperties responseProperties = activationProperties.WithScmReplyInfo(reply);
+        ActivationInterfaceResult[] interfaceResults = CreateInterfaceResults(requestedIids, requestedIid, exported.ObjRef);
 
         return Task.FromResult(new RemoteCreateInstanceResponse(0, exported.Oxid, exported.Ipid, exported.ObjRef)
         {
             Oid = exported.Oid,
+            OxidValue = exported.OxidValue,
+            IpidRemUnknown = exported.Ipid,
             ActivationProperties = responseProperties,
+            InterfaceResults = interfaceResults,
             EncodedActivationProperties = ActivationInfoCodec.Encode(responseProperties),
             OxidBindings = exported.OxidBindings,
         });
@@ -142,6 +150,58 @@ public sealed class RemoteSCMActivatorServer : IRemoteSCMActivatorServer
             EncodedActivationProperties = ActivationInfoCodec.Encode(responseProperties),
             OxidBindings = exported.OxidBindings,
         });
+    }
+
+    private static RemoteCreateInstanceResponse CreateFailureResponse(RemoteCreateInstanceRequest request, int hresult)
+    {
+        Guid[] requestedIids = NormalizeRequestedIids(request.RequestedIids, request.RequestedIid == Guid.Empty ? IidIUnknown : request.RequestedIid);
+        var interfaceResults = new ActivationInterfaceResult[requestedIids.Length];
+        for (int i = 0; i < interfaceResults.Length; i++)
+        {
+            interfaceResults[i] = new ActivationInterfaceResult(requestedIids[i], hresult, Array.Empty<byte>());
+        }
+
+        return new RemoteCreateInstanceResponse(hresult, Guid.Empty, Guid.Empty, Array.Empty<byte>())
+        {
+            InterfaceResults = interfaceResults,
+        };
+    }
+
+    private static Guid[] ResolveRequestedIids(RemoteCreateInstanceRequest request, ActivationProperties activationProperties)
+    {
+        Guid fallback = activationProperties.GetRequestedIidOr(request.RequestedIid == Guid.Empty ? IidIUnknown : request.RequestedIid);
+        return NormalizeRequestedIids(request.RequestedIids, fallback == Guid.Empty ? IidIUnknown : fallback);
+    }
+
+    private static Guid[] NormalizeRequestedIids(IReadOnlyList<Guid> requestedIids, Guid fallback)
+    {
+        if (requestedIids.Count == 0)
+        {
+            return new[] { fallback == Guid.Empty ? IidIUnknown : fallback };
+        }
+
+        var normalized = new Guid[requestedIids.Count];
+        for (int i = 0; i < normalized.Length; i++)
+        {
+            normalized[i] = requestedIids[i] == Guid.Empty ? IidIUnknown : requestedIids[i];
+        }
+
+        return normalized;
+    }
+
+    private static ActivationInterfaceResult[] CreateInterfaceResults(Guid[] requestedIids, Guid primaryIid, byte[] primaryObjRef)
+    {
+        var results = new ActivationInterfaceResult[requestedIids.Length];
+        for (int i = 0; i < results.Length; i++)
+        {
+            bool isPrimary = requestedIids[i] == primaryIid;
+            results[i] = new ActivationInterfaceResult(
+                requestedIids[i],
+                isPrimary ? 0 : E_NOINTERFACE,
+                isPrimary ? primaryObjRef : Array.Empty<byte>());
+        }
+
+        return results;
     }
 
     private int ResolveMissingClass(Guid clsid)
@@ -187,10 +247,14 @@ public sealed class RemoteSCMActivatorServer : IRemoteSCMActivatorServer
         InterfacePointer pointer = ComOxidRuntime.Instance.GetInterfacePointer(session, localCoClass);
         byte[] oxidBindings = EncodeDualStringArray(pointer.StringBindings);
         byte[] objRef = EncodeObjRef(pointer, requestedIid == Guid.Empty ? IidIUnknown : requestedIid, oxidBindings);
+        var reader = new NdrReader(objRef);
+        IOpcInterfaceRef decodedObjRef = OpcInterfaceRefCodec.Read(ref reader);
         return new ExportedInterface(
             GuidFromEightBytes(pointer.OXID),
             GuidFromEightBytes(pointer.OID),
             Guid.Parse(pointer.IPID),
+            decodedObjRef.Oxid,
+            decodedObjRef.Oid,
             oxidBindings,
             objRef);
     }
@@ -262,5 +326,5 @@ public sealed class RemoteSCMActivatorServer : IRemoteSCMActivatorServer
         return new Guid(guidBytes);
     }
 
-    private sealed record ExportedInterface(Guid Oxid, Guid Oid, Guid Ipid, byte[] OxidBindings, byte[] ObjRef);
+    private sealed record ExportedInterface(Guid Oxid, Guid Oid, Guid Ipid, ulong OxidValue, ulong OidValue, byte[] OxidBindings, byte[] ObjRef);
 }
