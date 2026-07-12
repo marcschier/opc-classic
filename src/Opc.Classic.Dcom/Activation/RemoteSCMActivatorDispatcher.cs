@@ -86,6 +86,21 @@ public sealed class RemoteSCMActivatorDispatcher : IRpcRequestContextDispatcher
 
     private static RemoteCreateInstanceRequest DecodeCreateInstanceRequest(ReadOnlySpan<byte> payload)
     {
+        if (ActivationPropertiesCodec.TryDecodeRemoteCreateInstanceRequest(payload, out RemoteCreateInstanceActivationRequest activationRequest))
+        {
+            int[] protocolSequences = new int[activationRequest.RequestedProtocolSequences.Count];
+            for (int i = 0; i < protocolSequences.Length; i++)
+            {
+                protocolSequences[i] = activationRequest.RequestedProtocolSequences[i];
+            }
+
+            Guid requestedIid = activationRequest.RequestedIids.Count == 0 ? Guid.Empty : activationRequest.RequestedIids[0];
+            return new RemoteCreateInstanceRequest(activationRequest.ClassId, requestedIid, protocolSequences)
+            {
+                RawActivationProperties = activationRequest.ActivationPropertiesBlob,
+            };
+        }
+
         DecodedRequest decoded = DecodeRequest(payload);
         return new RemoteCreateInstanceRequest(decoded.Clsid, decoded.RequestedIid, decoded.ProtocolSequences)
         {

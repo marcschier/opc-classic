@@ -4,9 +4,10 @@ using System.Buffers.Binary;
 using System.Collections.ObjectModel;
 using System.Runtime.CompilerServices;
 using Opc.Classic.Dcom;
+using Opc.Classic.Dcom.Activation;
+using Opc.Classic.Dcom.Core;
 using Opc.Classic.Discovery.Dcom;
 using Opc.Classic.Ndr;
-using Opc.Classic.Dcom.Core;
 
 namespace Opc.Classic.Discovery;
 
@@ -373,8 +374,7 @@ public sealed class OpcEnumClient : IOpcDiscovery
                 RemoteCreateInstanceOpnum,
                 payload,
                 cancellationToken).ConfigureAwait(false);
-            IOpcInterfaceRef objRef = DecodeRemoteCreateInstanceResponse(result);
-            return new ActivationOutcome(objRef, ReadOnlyMemory<byte>.Empty);
+            return DecodeRemoteCreateInstanceResponse(result, requestedIid);
         }
         catch (InvalidOperationException ex) when (ShouldFallbackToLegacyActivation(ex))
         {
@@ -434,23 +434,15 @@ public sealed class OpcEnumClient : IOpcDiscovery
         Guid requestedIid,
         OpcProtectionLevel activationProtectionLevel)
     {
-        var activationProperties = new ActivationProperties(
-            new SpecialPropertiesData(ActivationComVersion.V5_6, Mode: 0, ClassContext, requestedIid, Array.Empty<int>()),
-            new InstanceInfo(clsid, requestedIid, ClassContext, Mode: 0),
-            new LocationInfo(host, Environment.ProcessId, new[] { RpcProtocolSequenceTcp }),
-            null,
-            new SecurityInfo(ToActivationAuthenticationLevel(activationProtectionLevel), ImpersonationLevel: 3, Capabilities: 0));
-        byte[] encodedProperties = ActivationInfoCodec.Encode(activationProperties);
-
-        return WritePayload((ref NdrWriter writer) =>
-        {
-            writer.WriteGuid(clsid);
-            writer.WriteGuid(requestedIid);
-            writer.WriteUInt32(1);
-            writer.WriteInt32(RpcProtocolSequenceTcp);
-            writer.WriteUInt32((uint)encodedProperties.Length);
-            writer.WriteRawBytes(encodedProperties);
-        });
+        _ = host;
+        _ = activationProtectionLevel;
+        return ActivationPropertiesCodec.EncodeRemoteCreateInstanceRequest(
+            clsid,
+            new[] { requestedIid },
+            new[] { (ushort)RpcProtocolSequenceTcp },
+            ClassContext,
+            clientImpersonationLevel: 2,
+            clientComVersion: (5, 7));
     }
 
     private static OpcProtectionLevel NormalizeActivationProtection(OpcProtectionLevel protectionLevel) =>
@@ -495,7 +487,7 @@ public sealed class OpcEnumClient : IOpcDiscovery
     private static bool ShouldFallbackToLegacyActivation(InvalidOperationException exception) =>
         exception.Message.Contains("IRemoteSCMActivator::RemoteCreateInstance", StringComparison.Ordinal);
 
-    private static IOpcInterfaceRef DecodeRemoteCreateInstanceResponse(NdrCallResult result)
+    private static ActivationOutcome DecodeRemoteCreateInstanceResponse(NdrCallResult result, Guid requestedIid)
     {
         ThrowIfFailed(result.Hresult, "IRemoteSCMActivator::RemoteCreateInstance");
         if (result.ResponsePayload.IsEmpty)
@@ -516,20 +508,55 @@ public sealed class OpcEnumClient : IOpcDiscovery
         }
 
         ReadOnlySpan<byte> response = result.ResponsePayload.Span;
+        if (ActivationPropertiesCodec.TryDecodeRemoteCreateInstanceResponse(response, out ActivationPropertiesOutData activationPropertiesOut))
+        {
+            if (activationPropertiesOut.InterfaceResults.Count == 0)
+            {
+                throw new InvalidOperationException("IRemoteSCMActivator::RemoteCreateInstance returned no interface results.");
+            }
+
+            ActivationInterfaceResult interfaceResult = SelectInterfaceResult(activationPropertiesOut.InterfaceResults, requestedIid);
+            ThrowIfFailed(interfaceResult.Hresult, "IRemoteSCMActivator::RemoteCreateInstance");
+            if (interfaceResult.ObjRef.Length == 0)
+            {
+                throw new InvalidOperationException("IRemoteSCMActivator::RemoteCreateInstance returned no interface OBJREF.");
+            }
+
+            if (TryDecodeObjRef(interfaceResult.ObjRef, out IOpcInterfaceRef? objRef))
+            {
+                return new ActivationOutcome(objRef!, activationPropertiesOut.OxidBindings);
+            }
+
+            throw new InvalidOperationException("IRemoteSCMActivator::RemoteCreateInstance returned an invalid interface OBJREF.");
+        }
+
         if (TryDecodeObjRef(response, out IOpcInterfaceRef? directObjRef))
         {
-            return directObjRef!;
+            return new ActivationOutcome(directObjRef!, ReadOnlyMemory<byte>.Empty);
         }
 
         if (TryDecodeActivationProperties(response, out IOpcInterfaceRef? activationObjRef))
         {
-            return activationObjRef!;
+            return new ActivationOutcome(activationObjRef!, ReadOnlyMemory<byte>.Empty);
         }
 
         return DecodeLengthPrefixedObjRef(response);
     }
 
-    private static IOpcInterfaceRef DecodeLengthPrefixedObjRef(ReadOnlySpan<byte> response)
+    private static ActivationInterfaceResult SelectInterfaceResult(IReadOnlyList<ActivationInterfaceResult> interfaceResults, Guid requestedIid)
+    {
+        for (int i = 0; i < interfaceResults.Count; i++)
+        {
+            if (interfaceResults[i].Iid == requestedIid)
+            {
+                return interfaceResults[i];
+            }
+        }
+
+        return interfaceResults[0];
+    }
+
+    private static ActivationOutcome DecodeLengthPrefixedObjRef(ReadOnlySpan<byte> response)
     {
         var reader = new NdrReader(response);
         int innerHresult = reader.ReadInt32();
@@ -548,7 +575,7 @@ public sealed class OpcEnumClient : IOpcDiscovery
         byte[] objRefBytes = reader.ReadRawBytes((int)objRefLength).ToArray();
         if (TryDecodeObjRef(objRefBytes, out IOpcInterfaceRef? objRef))
         {
-            return objRef!;
+            return new ActivationOutcome(objRef!, ReadOnlyMemory<byte>.Empty);
         }
 
         throw new InvalidOperationException("RemoteCreateInstance returned an invalid OPCEnum OBJREF.");
