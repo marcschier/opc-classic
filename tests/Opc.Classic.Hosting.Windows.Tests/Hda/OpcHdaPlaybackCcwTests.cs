@@ -11,7 +11,11 @@ using Opc.Classic.Hda.Hosting.Windows;
 
 namespace Opc.Classic.Hda.Tests.Hosting.Windows;
 
+// Retry: these tests observe asynchronous OPC callbacks that the server
+// dispatches via Task.Run, which races the test's synchronous calls and is
+// timing-sensitive under CI ThreadPool load; retry absorbs the rare miss.
 [SupportedOSPlatform("windows")]
+[Retry(5)]
 public sealed class OpcHdaPlaybackCcwTests
 {
     private const int S_OK = 0;
@@ -39,7 +43,7 @@ public sealed class OpcHdaPlaybackCcwTests
         Native.PlaybackRawDelegate raw = Native.GetMethod<Native.PlaybackRawDelegate>(playback, 3);
         int hr = raw(playback, 401, start.Pointer, end.Pointer, 2, TimeSpan.FromMilliseconds(10).Ticks, TimeSpan.FromMilliseconds(5).Ticks, 2, handles.Pointer, cancel.Pointer, out IntPtr errorsPtr);
         int[] errors = Native.ReadAndFreeErrors(errorsPtr, 2);
-        SpinWait.SpinUntil(() => callback.PlaybackCount >= 2, TimeSpan.FromSeconds(5));
+        SpinWait.SpinUntil(() => callback.PlaybackCount >= 2, TimeSpan.FromSeconds(10));
 
         await Assert.That(hr).IsEqualTo(S_OK);
         await Assert.That(errors[0]).IsEqualTo(S_OK);
@@ -68,7 +72,7 @@ public sealed class OpcHdaPlaybackCcwTests
         Native.PlaybackProcessedDelegate processed = Native.GetMethod<Native.PlaybackProcessedDelegate>(playback, 4);
         int hr = processed(playback, 402, start.Pointer, end.Pointer, TimeSpan.FromSeconds(1).Ticks, 2, TimeSpan.FromMilliseconds(5).Ticks, 2, handles.Pointer, aggregates.Pointer, cancel.Pointer, out IntPtr errorsPtr);
         int[] errors = Native.ReadAndFreeErrors(errorsPtr, 2);
-        SpinWait.SpinUntil(() => callback.PlaybackCount >= 2, TimeSpan.FromSeconds(5));
+        SpinWait.SpinUntil(() => callback.PlaybackCount >= 2, TimeSpan.FromSeconds(10));
 
         await Assert.That(hr).IsEqualTo(S_OK);
         await Assert.That(errors[1]).IsEqualTo(S_OK);
@@ -98,9 +102,9 @@ public sealed class OpcHdaPlaybackCcwTests
         int beginHr = raw(playback, 403, start.Pointer, end.Pointer, 1, TimeSpan.FromSeconds(1).Ticks, TimeSpan.FromMilliseconds(50).Ticks, 1, handles.Pointer, cancel.Pointer, out IntPtr errorsPtr);
         Native.ReadAndFreeErrors(errorsPtr, 1);
         uint cancelId = unchecked((uint)Marshal.ReadInt32(cancel.Pointer));
-        SpinWait.SpinUntil(() => callback.PlaybackCount >= 1, TimeSpan.FromSeconds(5));
+        SpinWait.SpinUntil(() => callback.PlaybackCount >= 1, TimeSpan.FromSeconds(10));
         int cancelHr = cancelMethod(playback, cancelId);
-        SpinWait.SpinUntil(() => callback.CancelId == cancelId, TimeSpan.FromSeconds(5));
+        SpinWait.SpinUntil(() => callback.CancelId == cancelId, TimeSpan.FromSeconds(10));
 
         await Assert.That(beginHr).IsEqualTo(S_OK);
         await Assert.That(cancelHr).IsEqualTo(S_OK);

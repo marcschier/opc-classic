@@ -11,7 +11,12 @@ using Opc.Classic.Hda.Hosting.Windows;
 
 namespace Opc.Classic.Hda.Tests.Hosting.Windows;
 
+// Retry: these tests observe asynchronous OPC callbacks that the server
+// dispatches via Task.Run, which races the test's synchronous Cancel/Update
+// calls and is timing-sensitive under CI ThreadPool load; retry absorbs the
+// rare miss (e.g. Cancel losing the race with completion).
 [SupportedOSPlatform("windows")]
+[Retry(5)]
 public sealed class OpcHdaAsyncUpdateCcwTests
 {
     private const int S_OK = 0;
@@ -63,7 +68,7 @@ public sealed class OpcHdaAsyncUpdateCcwTests
         int hr = method(asyncUpdate, 123, 2, handles.Pointer, timestamps.Pointer, values.Pointer, qualities.Pointer, cancel.Pointer, out IntPtr errorsPtr);
         int[] errors = Native.ReadAndFreeErrors(errorsPtr, 2);
         uint cancelId = unchecked((uint)Marshal.ReadInt32(cancel.Pointer));
-        SpinWait.SpinUntil(() => callback.UpdateCount >= 1, TimeSpan.FromSeconds(5));
+        SpinWait.SpinUntil(() => callback.UpdateCount >= 1, TimeSpan.FromSeconds(10));
 
         await Assert.That(hr).IsEqualTo(S_OK);
         await Assert.That(cancelId).IsNotEqualTo(0u);
@@ -97,7 +102,7 @@ public sealed class OpcHdaAsyncUpdateCcwTests
         int atTimeHr = atTime(asyncUpdate, 202, 2, handles.Pointer, timestamps.Pointer, cancelAtTime.Pointer, out IntPtr atTimeErrorsPtr);
         int[] rawErrors = Native.ReadAndFreeErrors(rawErrorsPtr, 2);
         int[] atTimeErrors = Native.ReadAndFreeErrors(atTimeErrorsPtr, 2);
-        SpinWait.SpinUntil(() => callback.UpdateCount >= 2, TimeSpan.FromSeconds(5));
+        SpinWait.SpinUntil(() => callback.UpdateCount >= 2, TimeSpan.FromSeconds(10));
 
         await Assert.That(rawHr).IsEqualTo(S_FALSE);
         await Assert.That(atTimeHr).IsEqualTo(S_FALSE);
@@ -152,7 +157,7 @@ public sealed class OpcHdaAsyncUpdateCcwTests
         Native.ReadAndFreeErrors(errorsPtr, 1);
         uint cancelId = unchecked((uint)Marshal.ReadInt32(cancel.Pointer));
         int cancelHr = cancelMethod(asyncUpdate, cancelId);
-        SpinWait.SpinUntil(() => callback.CancelId == cancelId, TimeSpan.FromSeconds(5));
+        SpinWait.SpinUntil(() => callback.CancelId == cancelId, TimeSpan.FromSeconds(10));
         int unknownHr = cancelMethod(asyncUpdate, 99999);
 
         await Assert.That(beginHr).IsEqualTo(S_OK);

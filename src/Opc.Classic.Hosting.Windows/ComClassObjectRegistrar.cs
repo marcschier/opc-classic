@@ -217,12 +217,27 @@ public static unsafe class ComClassObjectRegistrar
         Guid iid = *riid;
         if (iid == IID_IUnknown || iid == IID_IClassFactory)
         {
+            if (ComActivationDiagnostics.IsEnabled)
+            {
+                ComActivationDiagnostics.Trace($"IClassFactory::QueryInterface riid={Describe(iid)} -> S_OK");
+            }
             *ppv = pThis;
             return S_OK;
         }
 
+        if (ComActivationDiagnostics.IsEnabled)
+        {
+            ComActivationDiagnostics.Trace($"IClassFactory::QueryInterface riid={Describe(iid)} -> E_NOINTERFACE");
+        }
         *ppv = IntPtr.Zero;
         return E_NOINTERFACE;
+    }
+
+    private static string Describe(Guid iid)
+    {
+        if (iid == IID_IUnknown) { return "IUnknown"; }
+        if (iid == IID_IClassFactory) { return "IClassFactory"; }
+        return WellKnownComIid.Describe(iid);
     }
 
     [UnmanagedCallersOnly]
@@ -265,30 +280,49 @@ public static unsafe class ComClassObjectRegistrar
             return E_INVALIDARG;
         }
 
+        Guid iid = *riid;
+        if (ComActivationDiagnostics.IsEnabled)
+        {
+            ComActivationDiagnostics.Trace($"IClassFactory::CreateInstance riid={Describe(iid)}");
+        }
+
         if (!s_factories.TryGetValue(pThis, out FactoryEntry? entry)
             || entry.CreateInstanceCallback is null)
         {
+            ComActivationDiagnostics.Trace("IClassFactory::CreateInstance -> E_NOINTERFACE (no factory/callback registered)");
             return E_NOINTERFACE;
         }
 
         IntPtr ccw;
         try
         {
-            ccw = entry.CreateInstanceCallback(*riid);
+            ccw = entry.CreateInstanceCallback(iid);
         }
 #pragma warning disable CA1031 // Crossing the unmanaged COM boundary; any managed exception here would escape into ole32 and crash the process.
-        catch (Exception)
+        catch (Exception ex)
 #pragma warning restore CA1031
         {
+            if (ComActivationDiagnostics.IsEnabled)
+            {
+                ComActivationDiagnostics.Trace($"IClassFactory::CreateInstance -> E_NOINTERFACE (callback threw {ex.GetType().Name}: {ex.Message})");
+            }
             return E_NOINTERFACE;
         }
 
         if (ccw == IntPtr.Zero)
         {
+            if (ComActivationDiagnostics.IsEnabled)
+            {
+                ComActivationDiagnostics.Trace($"IClassFactory::CreateInstance -> E_NOINTERFACE (callback returned Zero for riid={Describe(iid)})");
+            }
             return E_NOINTERFACE;
         }
 
         *ppv = ccw;
+        if (ComActivationDiagnostics.IsEnabled)
+        {
+            ComActivationDiagnostics.Trace($"IClassFactory::CreateInstance -> S_OK (riid={Describe(iid)})");
+        }
         return S_OK;
     }
 

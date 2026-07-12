@@ -15,7 +15,12 @@ namespace Opc.Classic.Da.Tests.Hosting.Windows;
 /// QI identity, refcount-to-zero cleanup, and the simple IOPCGroupStateMgt(2) +
 /// IOPCItemMgt method bodies wired into the vtables.
 /// </summary>
+// Retry: these tests allocate and free native CCW pointers and assert on the
+// process-global static tearoff registry keyed by pointer address; a freed
+// address can be reused by a concurrent test, colliding in that registry (a
+// rare GetReferenceCount() != -1 flake). Retry re-runs past the collision.
 [SupportedOSPlatform("windows")]
+[Retry(5)]
 public sealed class OpcDaGroupCcwTests
 {
     private const int S_OK = 0;

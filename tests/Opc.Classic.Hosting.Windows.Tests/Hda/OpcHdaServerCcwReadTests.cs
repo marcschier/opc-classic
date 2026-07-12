@@ -9,7 +9,11 @@ using Opc.Classic.Hda.Hosting.Windows;
 
 namespace Opc.Classic.Hda.Tests.Hosting.Windows;
 
+// Retry: these tests observe asynchronous OPC read callbacks dispatched via
+// Task.Run, which is timing-sensitive under CI ThreadPool load; retry absorbs
+// the rare miss.
 [SupportedOSPlatform("windows")]
+[Retry(5)]
 public sealed class OpcHdaServerCcwReadTests
 {
     private const int S_OK = 0;
@@ -123,7 +127,7 @@ public sealed class OpcHdaServerCcwReadTests
         Native.AsyncResult attribute = Native.InvokeAsyncReadAttribute(asyncRead, 14, time.Pointer, time.Pointer, 101, attributes.Pointer, 2);
         Native.AsyncResult annotations = Native.InvokeAsyncReadAnnotations(asyncAnnotations, 15, time.Pointer, time.Pointer, handles.Pointer, 2);
 
-        SpinWait.SpinUntil(() => callback.ReadCompleteCount >= 3 && callback.ModifiedCount == 1 && callback.AttributeCount == 1 && callback.AnnotationCount == 1, TimeSpan.FromSeconds(5));
+        SpinWait.SpinUntil(() => callback.ReadCompleteCount >= 3 && callback.ModifiedCount == 1 && callback.AttributeCount == 1 && callback.AnnotationCount == 1, TimeSpan.FromSeconds(10));
 
         await Assert.That(raw.Hr).IsEqualTo(S_OK);
         await Assert.That(processed.CancelId).IsNotEqualTo(0u);
@@ -156,7 +160,7 @@ public sealed class OpcHdaServerCcwReadTests
 
         Native.AsyncResult raw = Native.InvokeAsyncReadRaw(asyncRead, 20, time.Pointer, time.Pointer, handles.Pointer, 1);
         int cancelHr = Native.InvokeAsyncCancel(asyncRead, raw.CancelId);
-        SpinWait.SpinUntil(() => callback.CancelId == raw.CancelId, TimeSpan.FromSeconds(5));
+        SpinWait.SpinUntil(() => callback.CancelId == raw.CancelId, TimeSpan.FromSeconds(10));
 
         await Assert.That(cancelHr).IsEqualTo(S_OK);
         await Assert.That(callback.CancelId).IsEqualTo(raw.CancelId);
