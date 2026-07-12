@@ -1,5 +1,6 @@
 ﻿// Copyright (c) 2026 Opc.Classic Contributors. Licensed under the MIT License.
 
+using System.Globalization;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -17,9 +18,51 @@ internal static class Program
     private const string SampleAssemblyName = "Opc.Classic.Samples.DaServer";
     private const string SampleTypeName = "Opc.Classic.Samples.DaServer.SampleDaServer";
 
+    // DIAGNOSTIC (temporary): mirror the ccw-trace.log lifecycle so the SCM-launched
+    // (console-less) server records whether its generic host crashes/exits after RPCSS
+    // marshals its interfaces. Gated on the same ccw-trace.enabled marker so it is inert
+    // unless activation tracing is turned on.
+    private static readonly Lock s_diagGate = new();
+
+    private static void DiagLog(string message)
+    {
+        try
+        {
+            string baseDir = AppContext.BaseDirectory;
+            if (string.IsNullOrEmpty(baseDir) || !File.Exists(Path.Combine(baseDir, "ccw-trace.enabled")))
+            {
+                return;
+            }
+
+            string line = string.Create(
+                CultureInfo.InvariantCulture,
+                $"{DateTime.UtcNow:yyyy-MM-ddTHH:mm:ss.fffffffZ} [pid {Environment.ProcessId} tid {Environment.CurrentManagedThreadId}] [host] {message}{Environment.NewLine}");
+            lock (s_diagGate)
+            {
+                File.AppendAllText(Path.Combine(baseDir, "ccw-trace.log"), line);
+            }
+        }
+#pragma warning disable CA1031 // A diagnostic must never disrupt the server it is observing.
+        catch (Exception)
+#pragma warning restore CA1031
+        {
+            // Intentionally swallowed: a diagnostic write must never disrupt the server.
+            return;
+        }
+    }
+
     public static async Task<int> Main(string[] args)
     {
         ArgumentNullException.ThrowIfNull(args);
+
+        AppDomain.CurrentDomain.UnhandledException += static (_, e) =>
+            DiagLog($"AppDomain.UnhandledException terminating={e.IsTerminating}: {e.ExceptionObject}");
+        AppDomain.CurrentDomain.ProcessExit += static (_, _) => DiagLog("ProcessExit");
+        TaskScheduler.UnobservedTaskException += static (_, e) =>
+        {
+            DiagLog($"TaskScheduler.UnobservedTaskException: {e.Exception}");
+            e.SetObserved();
+        };
 
         var registration = new OpcClsidRegistration(
             Clsid: SampleClsid,
@@ -39,6 +82,7 @@ internal static class Program
         }
 
         bool embedded = SampleServerRegistrationCommand.HasEmbeddingFlag(args);
+        DiagLog($"Main entered embedded={embedded} args=[{string.Join(' ', args)}]");
         int port = int.TryParse(
             Environment.GetEnvironmentVariable("OPC_CLASSIC_SAMPLE_PORT"),
             out int parsed) && parsed > 0 ? parsed : 51300;
@@ -80,16 +124,25 @@ internal static class Program
         if (embedded && OperatingSystem.IsWindows())
         {
             comClassObjectCookie = RegisterScmFactory(host.Services);
+            DiagLog($"RegisterScmFactory returned cookie={comClassObjectCookie}");
         }
 
         try
         {
+            DiagLog("host.RunAsync starting");
             await host.RunAsync().ConfigureAwait(false);
+            DiagLog("host.RunAsync returned normally");
+        }
+        catch (Exception ex)
+        {
+            DiagLog($"host.RunAsync THREW: {ex}");
+            throw;
         }
         finally
         {
             if (embedded && OperatingSystem.IsWindows() && comClassObjectCookie != 0)
             {
+                DiagLog("revoking class object + CoUninitialize");
                 ComClassObjectRegistrar.RevokeClassObject(comClassObjectCookie);
                 ComClassObjectRegistrar.Uninitialize();
             }
