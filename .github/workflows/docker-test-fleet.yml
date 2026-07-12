@@ -259,11 +259,23 @@ jobs:
         # still 0x800706BA's, the fault is specific to our managed CCW / combase
         # OLE-endpoint hosting; if the native server also fails, it is runner-wide.
         run: |
-          .\interop\tools\build-testserver.ps1 -Configuration Release
-          .\interop\tools\register-testserver.ps1
-          $acct = (whoami)
-          Write-Host "granting testserver DCOM ACL to $acct"
-          .\interop\tools\grant-testserver-acl.ps1 -Account $acct
+          $ErrorActionPreference = 'Continue'
+          # build-register-proxystubs configured interop/build/x64 with
+          # OPC_BUILD_TESTS=OFF, so OpcTestServer.vcxproj was not generated. Drop the
+          # CMake cache to force a default (tests ON) reconfigure; the already-built +
+          # regsvr32'd proxy/stub DLLs on disk are preserved (build-testserver only
+          # builds the OpcTestServer target).
+          Remove-Item interop\build\x64\CMakeCache.txt -ErrorAction SilentlyContinue
+          try { .\interop\tools\build-testserver.ps1 -Configuration Release } catch { Write-Host "::warning::build-testserver failed: $($_.Exception.Message)" }
+          try { .\interop\tools\register-testserver.ps1 } catch { Write-Host "::warning::register-testserver failed: $($_.Exception.Message)" }
+          try {
+            $acct = (whoami)
+            Write-Host "granting testserver DCOM ACL to $acct"
+            .\interop\tools\grant-testserver-acl.ps1 -Account $acct
+          } catch { Write-Host "::warning::grant-testserver-acl failed: $($_.Exception.Message)" }
+          # Confirm the testserver CLSID resolves to a LocalServer32 before the matrix.
+          $ls = (Get-ItemProperty 'HKLM:\SOFTWARE\Classes\CLSID\{F8582CF9-88FB-11DA-A5ED-0060B0692061}\LocalServer32' -EA SilentlyContinue).'(default)'
+          Write-Host "testserver LocalServer32 = $ls"
 
       - name: Run cross-impl matrix (sample servers only)
         shell: pwsh
