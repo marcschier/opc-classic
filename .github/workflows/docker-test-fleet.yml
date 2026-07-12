@@ -273,6 +273,30 @@ jobs:
             -TraceActivation `
             -OutputDir matrix-out
 
+      - name: Capture DCOM / server event logs
+        if: always()
+        shell: pwsh
+        # DIAGNOSTIC (temporary): the sample server marshals all interfaces S_OK yet
+        # RPCSS returns 0x800706BA (RPC_S_SERVER_UNAVAILABLE) to the client. The
+        # System/DistributedCOM event log records the exact SCM reason (e.g. 10010
+        # "server did not register within timeout", or DCOM hardening 10036/10037).
+        run: |
+          $ErrorActionPreference = 'Continue'
+          $since = (Get-Date).AddMinutes(-20)
+          $out = 'matrix-out\dcom-events.log'
+          New-Item -ItemType Directory -Force -Path matrix-out | Out-Null
+          "=== System / DistributedCOM (since $since) ===" | Out-File $out
+          Get-WinEvent -FilterHashtable @{ LogName='System'; ProviderName='Microsoft-Windows-DistributedCOM'; StartTime=$since } -ErrorAction SilentlyContinue |
+            Sort-Object TimeCreated |
+            ForEach-Object { "$($_.TimeCreated.ToString('o')) [$($_.Id)] $($_.LevelDisplayName): $(($_.Message -replace '\s+',' '))" } |
+            Out-File -Append $out
+          "=== Application errors/warnings (since $since) ===" | Out-File -Append $out
+          Get-WinEvent -FilterHashtable @{ LogName='Application'; Level=1,2,3; StartTime=$since } -ErrorAction SilentlyContinue |
+            Sort-Object TimeCreated | Select-Object -Last 60 |
+            ForEach-Object { "$($_.TimeCreated.ToString('o')) [$($_.ProviderName)/$($_.Id)] $($_.LevelDisplayName): $(($_.Message -replace '\s+',' '))" } |
+            Out-File -Append $out
+          Get-Content $out
+
       - name: Upload cross-impl matrix reports
         if: always()
         uses: actions/upload-artifact@v7
