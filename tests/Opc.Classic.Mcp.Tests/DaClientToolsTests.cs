@@ -215,6 +215,16 @@ public sealed class DaClientToolsTests
         await Assert.That(hresult).IsEqualTo(0);
     }
 
+    [Test]
+    [Arguments(0x000006D1)]
+    [Arguments(unchecked((int)0x800706D1))]
+    [Arguments(0x1C010002)]
+    [Arguments(unchecked((int)0xC002002E))]
+    public async Task ResolveOxid_fallback_recognizes_procnum_out_of_range_representations(int hresult)
+    {
+        await Assert.That(DaClientTools.DefaultOpcDaConnectionFactory.IsProcnumOutOfRange(hresult)).IsTrue();
+    }
+
     private static double GetDouble(object? value) => ((JsonElement)value!).GetDouble();
     private static bool GetBoolean(object? value) => ((JsonElement)value!).GetBoolean();
 

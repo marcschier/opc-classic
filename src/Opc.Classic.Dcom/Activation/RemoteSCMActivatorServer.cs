@@ -102,13 +102,13 @@ public sealed class RemoteSCMActivatorServer : IRemoteSCMActivatorServer
         ExportedInterface exported = Export(localCoClass, requestedIid);
         var reply = new ScmReplyInfo(0, exported.Oxid, exported.Oid, exported.Ipid, exported.ObjRef, copy: true);
         ActivationProperties responseProperties = activationProperties.WithScmReplyInfo(reply);
-        ActivationInterfaceResult[] interfaceResults = CreateInterfaceResults(requestedIids, requestedIid, exported.ObjRef);
+        ActivationInterfaceResult[] interfaceResults = CreateInterfaceResults(localCoClass, requestedIids, requestedIid, exported);
 
         return Task.FromResult(new RemoteCreateInstanceResponse(0, exported.Oxid, exported.Ipid, exported.ObjRef)
         {
             Oid = exported.Oid,
             OxidValue = exported.OxidValue,
-            IpidRemUnknown = exported.Ipid,
+            IpidRemUnknown = exported.IpidRemUnknown,
             ActivationProperties = responseProperties,
             InterfaceResults = interfaceResults,
             EncodedActivationProperties = ActivationInfoCodec.Encode(responseProperties),
@@ -189,19 +189,62 @@ public sealed class RemoteSCMActivatorServer : IRemoteSCMActivatorServer
         return normalized;
     }
 
-    private static ActivationInterfaceResult[] CreateInterfaceResults(Guid[] requestedIids, Guid primaryIid, byte[] primaryObjRef)
+    private static ActivationInterfaceResult[] CreateInterfaceResults(
+        LocalCoClass localCoClass,
+        Guid[] requestedIids,
+        Guid primaryIid,
+        ExportedInterface exported)
     {
         var results = new ActivationInterfaceResult[requestedIids.Length];
         for (int i = 0; i < results.Length; i++)
         {
-            bool isPrimary = requestedIids[i] == primaryIid;
-            results[i] = new ActivationInterfaceResult(
-                requestedIids[i],
-                isPrimary ? 0 : E_NOINTERFACE,
-                isPrimary ? primaryObjRef : Array.Empty<byte>());
+            Guid iid = requestedIids[i];
+            if (iid == primaryIid)
+            {
+                results[i] = new ActivationInterfaceResult(iid, 0, exported.ObjRef);
+                continue;
+            }
+
+            if (!localCoClass.IsIIDPresent(iid.ToString("D")))
+            {
+                results[i] = new ActivationInterfaceResult(iid, E_NOINTERFACE, Array.Empty<byte>());
+                continue;
+            }
+
+            Guid ipid = GetOrExportIpid(localCoClass, iid);
+            byte[] objRef = EncodeObjRef(
+                new OpcInterfaceRef(
+                    iid,
+                    exported.PrimaryRef.Flags,
+                    exported.PrimaryRef.PublicRefs,
+                    exported.PrimaryRef.Oxid,
+                    exported.PrimaryRef.Oid,
+                    ipid,
+                    exported.PrimaryRef.SecurityOffset,
+                    exported.PrimaryRef.ResolverBindings));
+            exported.OxidDetails.RegisterIpidReference(ipid, exported.PrimaryRef.PublicRefs);
+            results[i] = new ActivationInterfaceResult(iid, 0, objRef);
         }
 
         return results;
+    }
+
+    private static Guid GetOrExportIpid(LocalCoClass localCoClass, Guid iid)
+    {
+        string iidText = iid.ToString("D");
+        string? existing = localCoClass.GetIpidFromIID(iidText);
+        if (!string.IsNullOrEmpty(existing))
+        {
+            return Guid.Parse(existing);
+        }
+
+        Guid ipid = Guid.NewGuid();
+        if (!localCoClass.ExportInstance(iidText, ipid.ToString("D")))
+        {
+            throw new InvalidOperationException($"Unable to export supported IID {iid:D}.");
+        }
+
+        return ipid;
     }
 
     private int ResolveMissingClass(Guid clsid)
@@ -249,12 +292,26 @@ public sealed class RemoteSCMActivatorServer : IRemoteSCMActivatorServer
         byte[] objRef = EncodeObjRef(pointer, requestedIid == Guid.Empty ? IidIUnknown : requestedIid, oxidBindings);
         var reader = new NdrReader(objRef);
         IOpcInterfaceRef decodedObjRef = OpcInterfaceRefCodec.Read(ref reader);
+        ComOxidDetails details = ComOxidRuntime.Instance.GetOxidDetails(new Oxid(pointer.OXID));
+        if (details is null)
+        {
+            throw new InvalidOperationException("Unable to resolve exported OXID details.");
+        }
+
+        if (string.IsNullOrEmpty(details.RemUnknownIpid))
+        {
+            details.RemUnknownIpid = Guid.NewGuid().ToString("D");
+        }
+
         return new ExportedInterface(
             GuidFromEightBytes(pointer.OXID),
             GuidFromEightBytes(pointer.OID),
             Guid.Parse(pointer.IPID),
             decodedObjRef.Oxid,
             decodedObjRef.Oid,
+            Guid.Parse(details.RemUnknownIpid),
+            details,
+            decodedObjRef,
             oxidBindings,
             objRef);
     }
@@ -289,6 +346,33 @@ public sealed class RemoteSCMActivatorServer : IRemoteSCMActivatorServer
         writer.WriteGuid(Guid.Parse(stdObjRef.Ipid));
         writer.WriteRawBytes(dualStringArray);
         return buffer.AsSpan(0, writer.Position).ToArray();
+    }
+
+    private static byte[] EncodeObjRef(IOpcInterfaceRef interfaceRef)
+    {
+        return WritePayload((ref NdrWriter writer) =>
+        {
+            OpcInterfaceRefCodec.Write(ref writer, interfaceRef);
+        });
+    }
+
+    private static byte[] WritePayload(NdrWriteAction action)
+    {
+        for (int size = 256; size <= 1024 * 1024; size *= 2)
+        {
+            var buffer = new byte[size];
+            var writer = new NdrWriter(buffer);
+            try
+            {
+                action(ref writer);
+                return buffer.AsSpan(0, writer.Position).ToArray();
+            }
+            catch (InvalidOperationException) when (size < 1024 * 1024)
+            {
+            }
+        }
+
+        throw new InvalidOperationException("Unable to encode the OBJREF.");
     }
 
     private static byte[] EncodeDualStringArray(DualStringArray dualStringArray)
@@ -326,5 +410,17 @@ public sealed class RemoteSCMActivatorServer : IRemoteSCMActivatorServer
         return new Guid(guidBytes);
     }
 
-    private sealed record ExportedInterface(Guid Oxid, Guid Oid, Guid Ipid, ulong OxidValue, ulong OidValue, byte[] OxidBindings, byte[] ObjRef);
+    private delegate void NdrWriteAction(ref NdrWriter writer);
+
+    private sealed record ExportedInterface(
+        Guid Oxid,
+        Guid Oid,
+        Guid Ipid,
+        ulong OxidValue,
+        ulong OidValue,
+        Guid IpidRemUnknown,
+        ComOxidDetails OxidDetails,
+        IOpcInterfaceRef PrimaryRef,
+        byte[] OxidBindings,
+        byte[] ObjRef);
 }

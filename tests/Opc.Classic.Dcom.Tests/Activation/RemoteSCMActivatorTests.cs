@@ -9,6 +9,8 @@ public sealed class RemoteSCMActivatorTests
 {
     private const int CO_E_CLASSSTRING = unchecked((int)0x800401F3u);
     private static readonly Guid IidIClassFactory = Guid.Parse("00000001-0000-0000-C000-000000000046");
+    private static readonly Guid IidPrimary = new("aaaaaaaa-0000-0000-c000-000000000046");
+    private static readonly Guid IidSecondary = new("bbbbbbbb-0000-0000-c000-000000000046");
 
     [Test]
     public async Task RemoteCreateInstance_registered_factory_returns_standard_objref()
@@ -43,6 +45,42 @@ public sealed class RemoteSCMActivatorTests
         await Assert.That(objRef.ResolverBindings.Count).IsGreaterThan(0);
         await Assert.That(response.ActivationProperties.ScmReplyInfo).IsNotNull();
         await Assert.That(response.EncodedActivationProperties.Length).IsGreaterThan(0);
+    }
+
+    [Test]
+    public async Task RemoteCreateInstance_supported_second_iid_gets_distinct_objref_and_remunknown_ipid()
+    {
+        Guid clsid = Guid.NewGuid();
+        var instance = new TestServer();
+        var primaryDefinition = new LocalInterfaceDefinition(IidPrimary.ToString("D"), isDispInterface: false);
+        var secondaryDefinition = new LocalInterfaceDefinition(IidSecondary.ToString("D"), isDispInterface: false);
+        var localCoClass = new LocalCoClass(primaryDefinition, instance, useInterfaceDefinitionIID: true);
+        localCoClass.AddInterfaceDefinition(secondaryDefinition, instance);
+        var registry = new ClassFactoryRegistry();
+        registry.Register(
+            clsid,
+            _ => new ClassFactoryActivationResult(localCoClass, primaryDefinition));
+        var server = new RemoteSCMActivatorServer(registry);
+
+        RemoteCreateInstanceResponse response = await server.RemoteCreateInstanceAsync(
+            new RemoteCreateInstanceRequest(clsid, IidPrimary, [7])
+            {
+                RequestedIids = [IidPrimary, IidSecondary],
+            });
+
+        IOpcInterfaceRef primaryRef = DecodeObjRef(response.InterfaceResults[0].ObjRef);
+        IOpcInterfaceRef secondaryRef = DecodeObjRef(response.InterfaceResults[1].ObjRef);
+        await Assert.That(response.Hresult).IsEqualTo(0);
+        await Assert.That(response.InterfaceResults.Count).IsEqualTo(2);
+        await Assert.That(response.InterfaceResults[0].Hresult).IsEqualTo(0);
+        await Assert.That(response.InterfaceResults[1].Hresult).IsEqualTo(0);
+        await Assert.That(primaryRef.Iid).IsEqualTo(IidPrimary);
+        await Assert.That(secondaryRef.Iid).IsEqualTo(IidSecondary);
+        await Assert.That(secondaryRef.Ipid).IsNotEqualTo(primaryRef.Ipid);
+        await Assert.That(secondaryRef.Oxid).IsEqualTo(primaryRef.Oxid);
+        await Assert.That(secondaryRef.Oid).IsEqualTo(primaryRef.Oid);
+        await Assert.That(response.IpidRemUnknown).IsNotEqualTo(Guid.Empty);
+        await Assert.That(response.IpidRemUnknown).IsNotEqualTo(primaryRef.Ipid);
     }
 
     [Test]

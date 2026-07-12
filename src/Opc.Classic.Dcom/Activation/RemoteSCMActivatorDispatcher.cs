@@ -71,14 +71,13 @@ public sealed class RemoteSCMActivatorDispatcher : IRpcRequestContextDispatcher
                 return DispatchResult.Success(
                     decoded.IsModern
                         ? EncodeModernCreateInstanceResponse(response, decoded.Request)
-                        : EncodeResponse(response.Hresult, response.EncodedActivationProperties, response.ObjRef),
-                    response.Hresult);
+                        : EncodeResponse(response.Hresult, response.EncodedActivationProperties, response.ObjRef));
             }
             else
             {
                 RemoteGetClassObjectRequest request = DecodeGetClassObjectRequest(requestPayload.Span);
                 RemoteGetClassObjectResponse response = await _activator.RemoteGetClassObjectAsync(request, cancellationToken).ConfigureAwait(false);
-                return DispatchResult.Success(EncodeResponse(response.Hresult, response.EncodedActivationProperties, response.ObjRef), response.Hresult);
+                return DispatchResult.Success(EncodeResponse(response.Hresult, response.EncodedActivationProperties, response.ObjRef));
             }
         }
         catch (Exception ex) when (ex is InvalidOperationException or ArgumentException or OverflowException)
@@ -169,7 +168,7 @@ public sealed class RemoteSCMActivatorDispatcher : IRpcRequestContextDispatcher
     private static byte[] EncodeModernCreateInstanceResponse(RemoteCreateInstanceResponse response, RemoteCreateInstanceRequest request)
     {
         IReadOnlyList<ActivationInterfaceResult> interfaceResults = response.InterfaceResults.Count == 0
-            ? CreateFailureInterfaceResults(request, response.Hresult)
+            ? CreateInterfaceResultsFromLegacyResponse(request, response)
             : response.InterfaceResults;
         return ActivationPropertiesCodec.EncodeRemoteCreateInstanceResponse(
             response.OxidValue,
@@ -181,7 +180,7 @@ public sealed class RemoteSCMActivatorDispatcher : IRpcRequestContextDispatcher
             response.Hresult);
     }
 
-    private static ActivationInterfaceResult[] CreateFailureInterfaceResults(RemoteCreateInstanceRequest request, int hresult)
+    private static ActivationInterfaceResult[] CreateInterfaceResultsFromLegacyResponse(RemoteCreateInstanceRequest request, RemoteCreateInstanceResponse response)
     {
         IReadOnlyList<Guid> requestedIids = request.RequestedIids.Count == 0
             ? new[] { request.RequestedIid == Guid.Empty ? Guid.Parse(Interfaces.IID_IUnknown) : request.RequestedIid }
@@ -189,7 +188,14 @@ public sealed class RemoteSCMActivatorDispatcher : IRpcRequestContextDispatcher
         var results = new ActivationInterfaceResult[requestedIids.Count];
         for (int i = 0; i < results.Length; i++)
         {
-            results[i] = new ActivationInterfaceResult(requestedIids[i], hresult, Array.Empty<byte>());
+            bool primarySuccess = response.Hresult == 0 && response.ObjRef.Length > 0 && i == 0;
+            int hresult = response.Hresult != 0
+                ? response.Hresult
+                : primarySuccess ? 0 : RemoteSCMActivatorServer.E_NOINTERFACE;
+            results[i] = new ActivationInterfaceResult(
+                requestedIids[i],
+                hresult,
+                primarySuccess ? response.ObjRef : Array.Empty<byte>());
         }
 
         return results;

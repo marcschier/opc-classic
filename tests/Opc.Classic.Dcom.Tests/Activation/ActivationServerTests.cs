@@ -92,7 +92,7 @@ public sealed class ActivationServerTests
         byte[] objRef = response.InterfaceResults[0].ObjRef.ToArray();
         await Assert.That(ReadObjRefSignature(objRef)).IsEqualTo(0x574F454Du);
         await Assert.That(ReadObjRefIid(objRef)).IsEqualTo(IidIUnknown);
-        await Assert.That(ReadObjRefIpid(objRef)).IsEqualTo(response.IpidRemUnknown);
+        await Assert.That(ReadObjRefIpid(objRef)).IsNotEqualTo(response.IpidRemUnknown);
     }
 
     [Test]

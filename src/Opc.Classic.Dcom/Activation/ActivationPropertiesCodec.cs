@@ -247,11 +247,7 @@ public static class ActivationPropertiesCodec
             objRef = ReadMInterfacePointer(ref reader);
             if (reader.RemainingBytes >= sizeof(int))
             {
-                int hresult = reader.ReadInt32();
-                if (hresult < 0)
-                {
-                    throw new InvalidOperationException($"IRemoteSCMActivator returned HRESULT 0x{unchecked((uint)hresult):X8}.");
-                }
+                _ = reader.ReadInt32();
             }
         }
 

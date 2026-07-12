@@ -100,13 +100,27 @@ internal sealed class ComOxidRuntimeHelper : Stub
         string ipidOfComponent, List<string> listOfSupportedInterfaces,
         out CancellationTokenSource cancellationSource)
     {
+        return StartRemUnknown(
+            baseIID,
+            ipidOfRemUnknown,
+            ipidOfComponent,
+            listOfSupportedInterfaces,
+            null,
+            out cancellationSource);
+    }
+
+    internal int StartRemUnknown(string baseIID, string ipidOfRemUnknown,
+        string ipidOfComponent, List<string> listOfSupportedInterfaces,
+        IReadOnlyDictionary<string, int>? initialIpidPublicRefs,
+        out CancellationTokenSource cancellationSource)
+    {
         var serverSocket = new Socket(SocketType.Stream, ProtocolType.Tcp);
         serverSocket.Bind(new IPEndPoint(IPAddress.Any, 0));
         var remUnknownPort = serverSocket.GetLocalPort();
         cancellationSource = new CancellationTokenSource();
         var threadName = "jI_RemUnknownListener[" + baseIID + ", " + remUnknownPort + "]";
         var state = new RemUnknownListenerState(this, baseIID, ipidOfRemUnknown,
-            ipidOfComponent, listOfSupportedInterfaces, serverSocket, cancellationSource);
+            ipidOfComponent, listOfSupportedInterfaces, initialIpidPublicRefs, serverSocket, cancellationSource);
         var thread = new Thread(() => RunRemUnknownListener(state, threadName))
         {
             IsBackground = true,
@@ -174,7 +188,7 @@ internal sealed class ComOxidRuntimeHelper : Stub
         try
         {
             ((ComRuntimeEndpoint)remUnknownHelper.Endpoint).ProcessRequests(
-                new RemUnknownObject(state.IpidOfRemUnknown, state.IpidOfComponent),
+                new RemUnknownObject(state.IpidOfRemUnknown, state.IpidOfComponent, state.InitialIpidPublicRefs),
                 state.BaseIID, state.ListOfSupportedInterfaces, cancellationToken);
         }
         catch (SmbAuthException e)
@@ -212,7 +226,7 @@ internal sealed class ComOxidRuntimeHelper : Stub
     {
         public RemUnknownListenerState(ComOxidRuntimeHelper outerInstance, string baseIID,
             string ipidOfRemUnknown, string ipidOfComponent,
-            List<string> listOfSupportedInterfaces, Socket serverSocket,
+            List<string> listOfSupportedInterfaces, IReadOnlyDictionary<string, int>? initialIpidPublicRefs, Socket serverSocket,
             CancellationTokenSource cancellationSource)
         {
             OuterInstance = outerInstance;
@@ -220,6 +234,7 @@ internal sealed class ComOxidRuntimeHelper : Stub
             IpidOfRemUnknown = ipidOfRemUnknown;
             IpidOfComponent = ipidOfComponent;
             ListOfSupportedInterfaces = listOfSupportedInterfaces;
+            InitialIpidPublicRefs = initialIpidPublicRefs;
             ServerSocket = serverSocket;
             CancellationSource = cancellationSource;
         }
@@ -229,6 +244,7 @@ internal sealed class ComOxidRuntimeHelper : Stub
         public string IpidOfRemUnknown { get; }
         public string IpidOfComponent { get; }
         public List<string> ListOfSupportedInterfaces { get; }
+        public IReadOnlyDictionary<string, int>? InitialIpidPublicRefs { get; }
         public Socket ServerSocket { get; }
         public CancellationTokenSource CancellationSource { get; }
     }
@@ -471,7 +487,9 @@ internal sealed class ComOxidRuntimeHelper : Stub
                     var remunknownipid = uuid.ToString();
                     port = details.COMRuntimeHelper.StartRemUnknown(
                         details.IID, remunknownipid, details.Ipid,
-                        details.Referent.SupportedInterfaces, out var cancellationSource);
+                        details.Referent.SupportedInterfaces,
+                        details.InitialIpidPublicRefs,
+                        out var cancellationSource);
                     details.SetRemUnknownCancellation(cancellationSource);
                     details.RemUnknownIpid = remunknownipid;
                 }
@@ -535,10 +553,17 @@ internal sealed class ComOxidRuntimeHelper : Stub
     /// </summary>
     internal sealed class RemUnknownObject : NdrOp, IComRuntimeWorker
     {
-        internal RemUnknownObject(string ipidOfme, string ipidOfComponent)
+        internal RemUnknownObject(string ipidOfme, string ipidOfComponent, IReadOnlyDictionary<string, int>? initialIpidPublicRefs = null)
         {
             _selfIPID = ipidOfme;
             _mapOfIpidsVsRef.AddOrUpdate(ipidOfComponent.ToUpper(CultureInfo.InvariantCulture), 5);
+            if (initialIpidPublicRefs is not null)
+            {
+                foreach (KeyValuePair<string, int> pair in initialIpidPublicRefs)
+                {
+                    _mapOfIpidsVsRef.AddOrUpdate(pair.Key.ToUpper(CultureInfo.InvariantCulture), pair.Value);
+                }
+            }
         }
 
         /// <inheritdoc/>

@@ -1328,7 +1328,7 @@ public sealed class DaClientTools
                         4,
                         resolvePayload,
                         cancellationToken).ConfigureAwait(false);
-                    if (result.IsFailure && result.IsFault && result.Hresult == RpcSProcnumOutOfRange)
+                    if (result.IsFailure && IsProcnumOutOfRange(result.Hresult))
                     {
                         result = await rawResolverChannel.InvokeRawAsync(
                             OpcGuids.IID_IObjectExporter,
@@ -1371,6 +1371,12 @@ public sealed class DaClientTools
             OpcException.ThrowIfFailed(new OpcResultId(hresult, null), expectComVersion ? "IObjectExporter::ResolveOxid2" : "IObjectExporter::ResolveOxid");
             return bindings;
         }
+
+        internal static bool IsProcnumOutOfRange(int hresult) =>
+            hresult is RpcSProcnumOutOfRange
+                or unchecked((int)0x800706D1u)
+                or unchecked((int)0x1C010002u)
+                or unchecked((int)0xC002002Eu);
 
         internal static byte[] ReadResolveOxidBindings(
             ReadOnlySpan<byte> payload,

@@ -25,6 +25,7 @@ public sealed class RemoteSCMActivatorDispatcherTests
 
     private const int EInvalidArg = unchecked((int)0x80070057u);
     private const int ENoInterface = unchecked((int)0x80004002u);
+    private const int REGDB_E_CLASSNOTREG = unchecked((int)0x80040154u);
 
     [Test]
     public async Task Unknown_opnum_is_not_routed_to_the_activator()
@@ -123,6 +124,58 @@ public sealed class RemoteSCMActivatorDispatcherTests
         await Assert.That(response.InterfaceResults[1].Iid).IsEqualTo(optionalIid);
         await Assert.That(response.InterfaceResults[1].Hresult).IsEqualTo(ENoInterface);
         await Assert.That(response.InterfaceResults[1].ObjRef.Length).IsEqualTo(0);
+    }
+
+    [Test]
+    public async Task Modern_unknown_clsid_returns_response_payload_not_rpc_fault()
+    {
+        var dispatcher = new RemoteSCMActivatorDispatcher(new RemoteSCMActivatorServer(new InMemoryClsidRegistry()));
+        byte[] request = ActivationPropertiesCodec.EncodeRemoteCreateInstanceRequest(
+            Clsid,
+            new[] { RequestedIid },
+            new ushort[] { 7 });
+
+        DispatchResult result = await ((IRpcRequestContextDispatcher)dispatcher).DispatchAsync(
+            4,
+            request,
+            Context(OpcProtectionLevel.Integrity),
+            CancellationToken.None);
+        var callResult = result.ToNdrCallResult();
+        ActivationPropertiesOutData decoded = ActivationPropertiesCodec.DecodeRemoteCreateInstanceResponse(result.Payload.Span);
+
+        await Assert.That(result.Hresult).IsEqualTo(0);
+        await Assert.That(callResult.IsFault).IsFalse();
+        await Assert.That(decoded.InterfaceResults.Count).IsEqualTo(1);
+        await Assert.That(decoded.InterfaceResults[0].Iid).IsEqualTo(RequestedIid);
+        await Assert.That(decoded.InterfaceResults[0].Hresult).IsEqualTo(REGDB_E_CLASSNOTREG);
+        await Assert.That(decoded.InterfaceResults[0].ObjRef.Length).IsEqualTo(0);
+    }
+
+    [Test]
+    public async Task Modern_success_with_legacy_shaped_response_maps_primary_objref_and_remaining_failures()
+    {
+        Guid optionalIid = new("f31dfde2-07b6-11d2-b2d8-0060083ba1fb");
+        var dispatcher = new RemoteSCMActivatorDispatcher(new LegacyShapeActivator(ObjRefBytes));
+        byte[] request = ActivationPropertiesCodec.EncodeRemoteCreateInstanceRequest(
+            Clsid,
+            new[] { RequestedIid, optionalIid },
+            new ushort[] { 7 });
+
+        DispatchResult result = await ((IRpcRequestContextDispatcher)dispatcher).DispatchAsync(
+            4,
+            request,
+            Context(OpcProtectionLevel.Integrity),
+            CancellationToken.None);
+        ActivationPropertiesOutData decoded = ActivationPropertiesCodec.DecodeRemoteCreateInstanceResponse(result.Payload.Span);
+
+        await Assert.That(result.Hresult).IsEqualTo(0);
+        await Assert.That(decoded.InterfaceResults.Count).IsEqualTo(2);
+        await Assert.That(decoded.InterfaceResults[0].Iid).IsEqualTo(RequestedIid);
+        await Assert.That(decoded.InterfaceResults[0].Hresult).IsEqualTo(0);
+        await Assert.That(decoded.InterfaceResults[0].ObjRef.SequenceEqual(ObjRefBytes)).IsTrue();
+        await Assert.That(decoded.InterfaceResults[1].Iid).IsEqualTo(optionalIid);
+        await Assert.That(decoded.InterfaceResults[1].Hresult).IsEqualTo(ENoInterface);
+        await Assert.That(decoded.InterfaceResults[1].ObjRef.Length).IsEqualTo(0);
     }
 
     [Test]
@@ -236,6 +289,34 @@ public sealed class RemoteSCMActivatorDispatcherTests
             LastGetClassRequest = request;
             return Task.FromResult(new RemoteGetClassObjectResponse(0, Guid.NewGuid(), Guid.NewGuid(), _objRef));
         }
+
+        public Task<int> RemoteGetClassObjectAsync(Guid clsid, Guid requestedIid, CancellationToken cancellationToken = default) =>
+            Task.FromResult(0);
+
+        public Task<int> RemoteCreateInstanceAsync(Guid clsid, Guid requestedIid, CancellationToken cancellationToken = default) =>
+            Task.FromResult(0);
+    }
+
+    private sealed class LegacyShapeActivator : IRemoteSCMActivatorServer
+    {
+        private readonly byte[] _objRef;
+
+        public LegacyShapeActivator(byte[] objRef) => _objRef = objRef;
+
+        public Task<RemoteCreateInstanceResponse> RemoteCreateInstanceAsync(
+            RemoteCreateInstanceRequest request,
+            CancellationToken cancellationToken = default) =>
+            Task.FromResult(new RemoteCreateInstanceResponse(0, Guid.NewGuid(), Guid.NewGuid(), _objRef)
+            {
+                OxidValue = 0x0102030405060708,
+                IpidRemUnknown = new Guid("11111111-2222-3333-4444-555555555555"),
+                OxidBindings = CreateDualStringArray(),
+            });
+
+        public Task<RemoteGetClassObjectResponse> RemoteGetClassObjectAsync(
+            RemoteGetClassObjectRequest request,
+            CancellationToken cancellationToken = default) =>
+            Task.FromResult(new RemoteGetClassObjectResponse(0, Guid.NewGuid(), Guid.NewGuid(), _objRef));
 
         public Task<int> RemoteGetClassObjectAsync(Guid clsid, Guid requestedIid, CancellationToken cancellationToken = default) =>
             Task.FromResult(0);
