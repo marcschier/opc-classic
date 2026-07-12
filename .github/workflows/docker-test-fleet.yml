@@ -237,19 +237,21 @@ jobs:
 
       - name: Run cross-impl matrix (sample servers only)
         shell: pwsh
-        # Exclude the testserver + matrikon profiles because they need
-        # external prerequisites (TestServer install + BH3 ACL grant;
-        # Matrikon vendor binary on a different host). The sample-only
-        # subset validates everything we own end-to-end.
+        # DIAGNOSTIC (temporary): narrowed to samples-da and OPC_CLASSIC_DCOM_WIRE_DUMP=1
+        # to capture the full Server-2022 IRemoteSCMActivator opnum4 request+response
+        # (and any fault status) so the modern-activation decode failure can be diffed
+        # against the Win11 baseline. Revert to the full 5-profile list once diagnosed.
         #
         # -HklmRegister + -UseClsid: the CI runner runs as administrative
         # so HKLM is writable; CLSID-based activation bypasses ProgID
         # resolution via OPCEnum (still installed by the build step
         # above, but -UseClsid keeps activation working defense-in-depth
         # if the OpcEnum build / install ever fails).
+        env:
+          OPC_CLASSIC_DCOM_WIRE_DUMP: '1'
         run: |
           .\tools\run-cross-impl-matrix.ps1 `
-            -Profile samples-da,ctt-da,samples-ae,samples-hda,security-da `
+            -Profile samples-da `
             -HklmRegister `
             -UseClsid `
             -TraceActivation `
