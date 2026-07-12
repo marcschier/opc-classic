@@ -418,6 +418,14 @@ dotnet_diagnostic.CA1711.severity = suggestion
 # CA1715: Identifiers prefixed with letter — same justification.
 dotnet_diagnostic.CA1715.severity = suggestion
 
+# MA0015: Specify the parameter name in ArgumentException — Meziantou.Analyzer 3.x
+# extended this to flag ArgumentNullException.ThrowIfNull / ThrowIfNullOrWhiteSpace
+# whose [CallerArgumentExpression]-captured argument is not a bare parameter
+# (e.g. ThrowIfNull(request.Items), ThrowIfNull(loopVariable)). Those are correct,
+# idiomatic defensive checks; the codebase already uses nameof(...) for explicit
+# parameter names, so MA0015's genuine typo-catching value is redundant here.
+dotnet_diagnostic.MA0015.severity = suggestion
+
 # JSON / YAML / Markdown — 2-space LF
 [*.{json,yaml,yml,md}]
 indent_size = 2
