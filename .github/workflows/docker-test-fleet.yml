@@ -251,43 +251,21 @@ jobs:
         run: |
           .\interop\tools\build-register-proxystubs.ps1 -Configuration Release
 
-      - name: Build + register native OpcTestServer (ISOLATION DIAG)
-        shell: pwsh
-        # DIAGNOSTIC (temporary): build + register the vendored native OPC Foundation
-        # OpcTestServer (CLSID F8582CF9-...) so we can activate a NATIVE C++ DA server
-        # on the same runner. If it activates cleanly while our managed sample server
-        # still 0x800706BA's, the fault is specific to our managed CCW / combase
-        # OLE-endpoint hosting; if the native server also fails, it is runner-wide.
-        run: |
-          $ErrorActionPreference = 'Continue'
-          # build-register-proxystubs configured interop/build/x64 with
-          # OPC_BUILD_TESTS=OFF, so OpcTestServer.vcxproj was not generated. Drop the
-          # CMake cache to force a default (tests ON) reconfigure; the already-built +
-          # regsvr32'd proxy/stub DLLs on disk are preserved (build-testserver only
-          # builds the OpcTestServer target).
-          Remove-Item interop\build\x64\CMakeCache.txt -ErrorAction SilentlyContinue
-          try { .\interop\tools\build-testserver.ps1 -Configuration Release } catch { Write-Host "::warning::build-testserver failed: $($_.Exception.Message)" }
-          try { .\interop\tools\register-testserver.ps1 } catch { Write-Host "::warning::register-testserver failed: $($_.Exception.Message)" }
-          try {
-            $acct = (whoami)
-            Write-Host "granting testserver DCOM ACL to $acct"
-            .\interop\tools\grant-testserver-acl.ps1 -Account $acct
-          } catch { Write-Host "::warning::grant-testserver-acl failed: $($_.Exception.Message)" }
-          # Confirm the testserver CLSID resolves to a LocalServer32 before the matrix.
-          $ls = (Get-ItemProperty 'HKLM:\SOFTWARE\Classes\CLSID\{F8582CF9-88FB-11DA-A5ED-0060B0692061}\LocalServer32' -EA SilentlyContinue).'(default)'
-          Write-Host "testserver LocalServer32 = $ls"
-
       - name: Run cross-impl matrix (sample servers only)
         shell: pwsh
-        # ISOLATION DIAG (temporary): samples-da (managed) + testserver (native) with
-        # OPC_CLASSIC_DCOM_WIRE_DUMP to compare the opnum4 activation result of a
-        # managed vs a native OPC server on the clean runner. Restore the full
-        # 5-profile list (no testserver, no wire dump) once diagnosed.
-        env:
-          OPC_CLASSIC_DCOM_WIRE_DUMP: '1'
+        # Exclude the testserver + matrikon profiles because they need
+        # external prerequisites (TestServer install + BH3 ACL grant;
+        # Matrikon vendor binary on a different host). The sample-only
+        # subset validates everything we own end-to-end.
+        #
+        # -HklmRegister + -UseClsid: the CI runner runs as administrative
+        # so HKLM is writable; CLSID-based activation bypasses ProgID
+        # resolution via OPCEnum (still installed by the build step
+        # above, but -UseClsid keeps activation working defense-in-depth
+        # if the OpcEnum build / install ever fails).
         run: |
           .\tools\run-cross-impl-matrix.ps1 `
-            -Profile samples-da,testserver `
+            -Profile samples-da,ctt-da,samples-ae,samples-hda,security-da `
             -HklmRegister `
             -UseClsid `
             -TraceActivation `
