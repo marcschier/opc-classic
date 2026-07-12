@@ -1077,14 +1077,9 @@ public sealed class DaClientTools
             Guid clsid = await ResolveClsidAsync(normalized, cancellationToken).ConfigureAwait(false);
             var channelFactory = new DcomCallChannelFactory(new TcpSocketTransportFactory());
 
-            // Use the legacy IActivation::RemoteActivation (opnum 0) path rather than the
-            // newer IRemoteSCMActivator::RemoteCreateInstance (opnum 4). The former is the
-            // only activation path whose wire format the in-repo encoder produces correctly;
-            // the modern SCM activator's CustomREMOTE_TYPED_HEADER + ActivationPropertiesIn
-            // marshaling per MS-DCOM §2.2.22 is not yet implemented here. Modern Windows
-            // (Win10/Win11/Server 2019+) still services the legacy interface for backwards
-            // compatibility, so this path works end-to-end against real OPC DCOM servers
-            // including Matrikon, Kepware, and OPC Foundation reference implementations.
+            // Prefer the MS-DCOM IRemoteSCMActivator::RemoteCreateInstance (opnum 4)
+            // activation path. Fall back to legacy IActivation::RemoteActivation only
+            // when the remote SCM does not support or rejects the modern call.
             ActivationClient? activationClient = null;
             try
             {
@@ -1108,36 +1103,43 @@ public sealed class DaClientTools
                     OpcGuids.IID_IOPCSecurityNT,
                     OpcGuids.IID_IOPCSecurityPrivate,
                 };
-                Opc.Classic.Dcom.Activation.RemoteActivationResponse activation = await activationClient.RemoteActivationAsync(
+                DaActivationResult activation = await ActivateDaServerAsync(
+                    activationClient,
                     clsid,
-                    new[] { "ncacn_ip_tcp", "ncacn_np" },
-                    null,
                     requestedIids,
                     cancellationToken).ConfigureAwait(false);
 
                 if (activation.Hresult != 0)
                 {
                     throw new InvalidOperationException(
-                        $"IActivation::RemoteActivation returned HRESULT 0x{unchecked((uint)activation.Hresult):X8}.");
+                        $"DCOM activation returned HRESULT 0x{unchecked((uint)activation.Hresult):X8}.");
                 }
                 if (activation.InterfaceResults is null || activation.InterfaceResults.Count == 0)
                 {
-                    throw new InvalidOperationException("IActivation::RemoteActivation returned no per-IID results.");
+                    throw new InvalidOperationException("DCOM activation returned no per-IID results.");
                 }
                 if (activation.InterfaceResults[0].Hresult != 0 || activation.InterfaceResults[0].ObjRef.Length == 0)
                 {
                     throw new InvalidOperationException(
-                        $"IActivation::RemoteActivation did not return an OBJREF for IOPCServer (per-IID HRESULT 0x{unchecked((uint)activation.InterfaceResults[0].Hresult):X8}).");
+                        $"DCOM activation did not return an OBJREF for IOPCServer (per-IID HRESULT 0x{unchecked((uint)activation.InterfaceResults[0].Hresult):X8}).");
                 }
 
                 ReadOnlyMemory<byte> objRefBytes = activation.InterfaceResults[0].ObjRef;
                 if (!TryDecodeObjRef(objRefBytes.Span, out IOpcInterfaceRef? serverRef))
                 {
-                    throw new InvalidOperationException("IActivation::RemoteActivation returned an OBJREF that could not be decoded.");
+                    throw new InvalidOperationException("DCOM activation returned an OBJREF that could not be decoded.");
                 }
 
-                EndPoint endpoint = DualStringArrayResolver.ResolveFirstTransport(normalized.Host, activation.OxidBindings.Span)
-                    ?? ResolveObjectEndpoint(normalized.Host, serverRef!);
+                EndPoint endpoint = activation.UsedModernActivation
+                    ? await ResolveModernObjectEndpointAsync(
+                        normalized.Host,
+                        serverRef!,
+                        activation,
+                        channelFactory,
+                        CreateAuthContext(normalized, clsid),
+                        cancellationToken).ConfigureAwait(false)
+                    : DualStringArrayResolver.ResolveFirstTransport(normalized.Host, activation.OxidBindings.Span)
+                        ?? ResolveObjectEndpoint(normalized.Host, serverRef!);
 
                 IAuthContext serverAuth = endpoint is NcacnNpEndPoint
                     ? NoOpAuthContext.Instance
@@ -1198,6 +1200,148 @@ public sealed class DaClientTools
                     await activationClient.DisposeAsync().ConfigureAwait(false);
                 }
             }
+        }
+
+        private static async Task<DaActivationResult> ActivateDaServerAsync(
+            ActivationClient activationClient,
+            Guid clsid,
+            Guid[] requestedIids,
+            CancellationToken cancellationToken)
+        {
+            try
+            {
+                ActivationPropertiesOutData modern = await activationClient.RemoteCreateInstanceAsync(
+                    clsid,
+                    new[] { "ncacn_ip_tcp", "ncacn_np" },
+                    requestedIids,
+                    cancellationToken).ConfigureAwait(false);
+                return new DaActivationResult(
+                    0,
+                    modern.Oxid,
+                    modern.IpidRemUnknown,
+                    modern.OxidBindings,
+                    ToDaInterfaceResults(modern.InterfaceResults),
+                    UsedModernActivation: true);
+            }
+            catch (InvalidOperationException ex) when (IsRemoteCreateInstanceFailure(ex))
+            {
+                Opc.Classic.Dcom.Activation.RemoteActivationResponse legacy = await activationClient.RemoteActivationAsync(
+                    clsid,
+                    new[] { "ncacn_ip_tcp", "ncacn_np" },
+                    null,
+                    requestedIids,
+                    cancellationToken).ConfigureAwait(false);
+                return new DaActivationResult(
+                    legacy.Hresult,
+                    0,
+                    legacy.IpidRemUnknown,
+                    legacy.OxidBindings,
+                    ToDaInterfaceResults(legacy.InterfaceResults),
+                    UsedModernActivation: false);
+            }
+        }
+
+        private static bool IsRemoteCreateInstanceFailure(InvalidOperationException exception) =>
+            exception.Message.Contains("IRemoteSCMActivator::RemoteCreateInstance", StringComparison.Ordinal)
+            || exception.InnerException is InvalidOperationException inner && IsRemoteCreateInstanceFailure(inner);
+
+        private static DaActivationInterfaceResult[] ToDaInterfaceResults(IReadOnlyList<ActivationInterfaceResult> results)
+        {
+            var converted = new DaActivationInterfaceResult[results.Count];
+            for (int i = 0; i < results.Count; i++)
+            {
+                converted[i] = new DaActivationInterfaceResult(results[i].Hresult, results[i].ObjRef);
+            }
+
+            return converted;
+        }
+
+        private static DaActivationInterfaceResult[] ToDaInterfaceResults(IReadOnlyList<RemoteActivationInterfaceResult> results)
+        {
+            var converted = new DaActivationInterfaceResult[results.Count];
+            for (int i = 0; i < results.Count; i++)
+            {
+                converted[i] = new DaActivationInterfaceResult(results[i].Hresult, results[i].ObjRef);
+            }
+
+            return converted;
+        }
+
+        private static async Task<EndPoint> ResolveModernObjectEndpointAsync(
+            string fallbackHost,
+            IOpcInterfaceRef interfaceRef,
+            DaActivationResult activation,
+            DcomCallChannelFactory channelFactory,
+            IAuthContext authContext,
+            CancellationToken cancellationToken)
+        {
+            EndPoint resolverEndpoint = DualStringArrayResolver.ResolveFirstTransport(fallbackHost, activation.OxidBindings.Span)
+                ?? ResolveObjectEndpoint(fallbackHost, interfaceRef);
+            if (activation.Oxid == 0)
+            {
+                return resolverEndpoint;
+            }
+
+            ICallChannel resolverChannel = await channelFactory.ConnectAsync(
+                resolverEndpoint,
+                Guid.Empty,
+                authContext,
+                new[] { OpcGuids.IID_IObjectExporter },
+                cancellationToken).ConfigureAwait(false);
+            byte[] resolvedBindings;
+            try
+            {
+                if (resolverChannel is not DcomCallChannel rawResolverChannel)
+                {
+                    throw new InvalidOperationException("IObjectExporter::ResolveOxid2 requires a DCE/RPC channel.");
+                }
+
+                NdrCallResult result = await rawResolverChannel.InvokeRawAsync(
+                    OpcGuids.IID_IObjectExporter,
+                    4,
+                    WritePayload((ref NdrWriter writer) =>
+                    {
+                        writer.WriteUInt64(activation.Oxid);
+                        writer.WriteUInt16(1);
+                        writer.AlignTo(4);
+                        writer.WriteConformanceHeader(1);
+                        writer.WriteUInt16(RpcProtocolSequenceTcp);
+                        writer.AlignTo(4);
+                    }),
+                    cancellationToken).ConfigureAwait(false);
+                OpcException.ThrowIfFailed(new OpcResultId(result.Hresult, null), "IObjectExporter::ResolveOxid2");
+                resolvedBindings = ReadResolveOxid2Bindings(result.ResponsePayload.Span, out _);
+            }
+            finally
+            {
+                if (resolverChannel is IAsyncDisposable disposable)
+                {
+                    await disposable.DisposeAsync().ConfigureAwait(false);
+                }
+            }
+
+            return DualStringArrayResolver.ResolveFirstTransport(fallbackHost, resolvedBindings)
+                ?? resolverEndpoint;
+        }
+
+        private static byte[] ReadResolveOxid2Bindings(ReadOnlySpan<byte> payload, out Guid remUnknownIpid)
+        {
+            var reader = new NdrReader(payload);
+            _ = reader.TryReadReferentId(out _);
+            _ = reader.TryReadReferentId(out _);
+            ushort entryCount = reader.ReadUInt16();
+            ushort securityOffset = reader.ReadUInt16();
+            var bindings = new byte[checked(4 + (entryCount * sizeof(ushort)))];
+            BinaryPrimitives.WriteUInt16LittleEndian(bindings, entryCount);
+            BinaryPrimitives.WriteUInt16LittleEndian(bindings.AsSpan(2), securityOffset);
+            for (int i = 0; i < entryCount; i++)
+            {
+                BinaryPrimitives.WriteUInt16LittleEndian(bindings.AsSpan(4 + i * sizeof(ushort)), reader.ReadUInt16());
+            }
+
+            reader.AlignTo(4);
+            remUnknownIpid = reader.ReadGuid();
+            return bindings;
         }
 
         // Wraps the active call channel in an OPCCLASSIC_WIRE_CAPTURE_DIR-driven
@@ -1660,6 +1804,16 @@ public sealed class DaClientTools
         }
 
         private static string? NormalizeText(string? text) => string.IsNullOrWhiteSpace(text) ? null : text.Trim();
+
+        private sealed record DaActivationResult(
+            int Hresult,
+            ulong Oxid,
+            Guid IpidRemUnknown,
+            ReadOnlyMemory<byte> OxidBindings,
+            IReadOnlyList<DaActivationInterfaceResult> InterfaceResults,
+            bool UsedModernActivation);
+
+        private sealed record DaActivationInterfaceResult(int Hresult, ReadOnlyMemory<byte> ObjRef);
 
         private delegate void NdrWriteAction(ref NdrWriter writer);
 
