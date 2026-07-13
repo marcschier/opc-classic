@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.0-alpha] - 2026-07-13
+
+### Changed
+
+- **Release workflow:** the Windows `opc-classic-managed` container image is no longer built on
+  every tag push. GitHub-hosted Windows runners can no longer build Windows-container images (the
+  Docker daemon / `docker_engine` named pipe was removed and buildx does not support Windows
+  containers), so the `docker-publish` job is now opt-in via the `publish_windows_image`
+  `workflow_dispatch` input and requires a self-hosted Windows runner. The Linux
+  `opc-classic-managed-linux` image continues to publish automatically on every release.
+- Bumped the `Microsoft.Extensions.*` dependency group.
+
 ## [0.1.0-alpha.1] - 2026-07-13
 
 ### Added
