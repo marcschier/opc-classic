@@ -7,6 +7,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.0-alpha.1] - 2026-07-13
+
+### Added
+
+- MS-DCOM-conformant `IRemoteSCMActivator::RemoteCreateInstance` (opnum 4) activation for DA and
+  Discovery: byte-exact `ActivationPropertiesIn` / `ActivationPropertiesOut` marshaling, a shared
+  `IObjectExporter` `ResolveOxid2` / `ResolveOxid` client, and a legacy `IActivation` fallback for
+  older RPCSS.
+- Bounded activation retry on transient "server unavailable" HRESULTs so cold-starting DCOM servers
+  are retried rather than failed on the first attempt.
+- `interop/tools/build-register-proxystubs.ps1`, which builds and registers the vendored OPC
+  interface proxy/stubs (`opcproxy` / `opccomn_ps` / `opcsec_ps` / `opc_aeps` / `opchda_ps`) so the
+  real Windows COM runtime can standard-marshal the managed sample servers' OPC interfaces on a CI
+  runner.
+
+### Fixed
+
+- cross-impl-matrix `E_NOINTERFACE` (`0x80004002`): sample servers activated by the real Windows SCM
+  now marshal their OPC interfaces correctly once the OPC interface proxy/stubs are registered on the
+  host (previously only present on machines with OPC Core Components installed).
+
 ## [0.1.0-alpha] - 2026-07-09
 
 First public preview of Opc.Classic — a cross-platform, NativeAOT-compatible .NET 10
