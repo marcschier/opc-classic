@@ -16,20 +16,20 @@
   </ItemGroup>
 
   <ItemGroup Label="Cross-process integration tests">
-    <PackageVersion Include="Testcontainers" Version="4.0.0" />
+    <PackageVersion Include="Testcontainers" Version="4.13.0" />
   </ItemGroup>
 
   <ItemGroup Label="Coverage">
-    <PackageVersion Include="coverlet.collector" Version="6.0.4" />
-    <PackageVersion Include="coverlet.msbuild" Version="6.0.4" />
+    <PackageVersion Include="coverlet.collector" Version="10.0.1" />
+    <PackageVersion Include="coverlet.msbuild" Version="10.0.1" />
   </ItemGroup>
 
   <ItemGroup Label="Property-based tests (CsCheck — framework-agnostic, no reflection generators)">
-    <PackageVersion Include="CsCheck" Version="4.4.0" />
+    <PackageVersion Include="CsCheck" Version="4.7.0" />
   </ItemGroup>
 
   <ItemGroup Label="Snapshot tests (Verify with the TUnit adapter)">
-    <PackageVersion Include="Verify.TUnit" Version="28.10.0" />
+    <PackageVersion Include="Verify.TUnit" Version="31.24.1" />
   </ItemGroup>
 
   <ItemGroup Label="Roslyn source-generator tests">
