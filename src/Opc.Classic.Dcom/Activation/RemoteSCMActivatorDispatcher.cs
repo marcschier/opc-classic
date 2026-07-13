@@ -66,15 +66,18 @@ public sealed class RemoteSCMActivatorDispatcher : IRpcRequestContextDispatcher
         {
             if (opnum == RemoteCreateInstanceOpnum)
             {
-                RemoteCreateInstanceRequest request = DecodeCreateInstanceRequest(requestPayload.Span);
-                RemoteCreateInstanceResponse response = await _activator.RemoteCreateInstanceAsync(request, cancellationToken).ConfigureAwait(false);
-                return DispatchResult.Success(EncodeResponse(response.Hresult, response.EncodedActivationProperties, response.ObjRef), response.Hresult);
+                DecodedCreateInstanceRequest decoded = DecodeCreateInstanceRequest(requestPayload.Span);
+                RemoteCreateInstanceResponse response = await _activator.RemoteCreateInstanceAsync(decoded.Request, cancellationToken).ConfigureAwait(false);
+                return DispatchResult.Success(
+                    decoded.IsModern
+                        ? EncodeModernCreateInstanceResponse(response, decoded.Request)
+                        : EncodeResponse(response.Hresult, response.EncodedActivationProperties, response.ObjRef));
             }
             else
             {
                 RemoteGetClassObjectRequest request = DecodeGetClassObjectRequest(requestPayload.Span);
                 RemoteGetClassObjectResponse response = await _activator.RemoteGetClassObjectAsync(request, cancellationToken).ConfigureAwait(false);
-                return DispatchResult.Success(EncodeResponse(response.Hresult, response.EncodedActivationProperties, response.ObjRef), response.Hresult);
+                return DispatchResult.Success(EncodeResponse(response.Hresult, response.EncodedActivationProperties, response.ObjRef));
             }
         }
         catch (Exception ex) when (ex is InvalidOperationException or ArgumentException or OverflowException)
@@ -84,13 +87,29 @@ public sealed class RemoteSCMActivatorDispatcher : IRpcRequestContextDispatcher
         }
     }
 
-    private static RemoteCreateInstanceRequest DecodeCreateInstanceRequest(ReadOnlySpan<byte> payload)
+    private static DecodedCreateInstanceRequest DecodeCreateInstanceRequest(ReadOnlySpan<byte> payload)
     {
+        if (ActivationPropertiesCodec.TryDecodeRemoteCreateInstanceRequest(payload, out RemoteCreateInstanceActivationRequest activationRequest))
+        {
+            int[] protocolSequences = new int[activationRequest.RequestedProtocolSequences.Count];
+            for (int i = 0; i < protocolSequences.Length; i++)
+            {
+                protocolSequences[i] = activationRequest.RequestedProtocolSequences[i];
+            }
+
+            Guid requestedIid = activationRequest.RequestedIids.Count == 0 ? Guid.Empty : activationRequest.RequestedIids[0];
+            return new DecodedCreateInstanceRequest(new RemoteCreateInstanceRequest(activationRequest.ClassId, requestedIid, protocolSequences)
+            {
+                RequestedIids = activationRequest.RequestedIids,
+                RawActivationProperties = activationRequest.ActivationPropertiesBlob,
+            }, IsModern: true);
+        }
+
         DecodedRequest decoded = DecodeRequest(payload);
-        return new RemoteCreateInstanceRequest(decoded.Clsid, decoded.RequestedIid, decoded.ProtocolSequences)
+        return new DecodedCreateInstanceRequest(new RemoteCreateInstanceRequest(decoded.Clsid, decoded.RequestedIid, decoded.ProtocolSequences)
         {
             RawActivationProperties = decoded.ActivationProperties,
-        };
+        }, IsModern: false);
     }
 
     private static RemoteGetClassObjectRequest DecodeGetClassObjectRequest(ReadOnlySpan<byte> payload)
@@ -146,6 +165,42 @@ public sealed class RemoteSCMActivatorDispatcher : IRpcRequestContextDispatcher
         });
     }
 
+    private static byte[] EncodeModernCreateInstanceResponse(RemoteCreateInstanceResponse response, RemoteCreateInstanceRequest request)
+    {
+        IReadOnlyList<ActivationInterfaceResult> interfaceResults = response.InterfaceResults.Count == 0
+            ? CreateInterfaceResultsFromLegacyResponse(request, response)
+            : response.InterfaceResults;
+        return ActivationPropertiesCodec.EncodeRemoteCreateInstanceResponse(
+            response.OxidValue,
+            response.OxidBindings,
+            response.IpidRemUnknown == Guid.Empty ? response.Ipid : response.IpidRemUnknown,
+            response.AuthnHint,
+            response.ServerVersion,
+            interfaceResults,
+            response.Hresult);
+    }
+
+    private static ActivationInterfaceResult[] CreateInterfaceResultsFromLegacyResponse(RemoteCreateInstanceRequest request, RemoteCreateInstanceResponse response)
+    {
+        IReadOnlyList<Guid> requestedIids = request.RequestedIids.Count == 0
+            ? new[] { request.RequestedIid == Guid.Empty ? Guid.Parse(Interfaces.IID_IUnknown) : request.RequestedIid }
+            : request.RequestedIids;
+        var results = new ActivationInterfaceResult[requestedIids.Count];
+        for (int i = 0; i < results.Length; i++)
+        {
+            bool primarySuccess = response.Hresult == 0 && response.ObjRef.Length > 0 && i == 0;
+            int hresult = response.Hresult != 0
+                ? response.Hresult
+                : primarySuccess ? 0 : RemoteSCMActivatorServer.E_NOINTERFACE;
+            results[i] = new ActivationInterfaceResult(
+                requestedIids[i],
+                hresult,
+                primarySuccess ? response.ObjRef : Array.Empty<byte>());
+        }
+
+        return results;
+    }
+
     private static byte[] WritePayload(NdrWriteAction action)
     {
         for (int size = 256; size <= 1024 * 1024; size *= 2)
@@ -180,4 +235,6 @@ public sealed class RemoteSCMActivatorDispatcher : IRpcRequestContextDispatcher
     private delegate void NdrWriteAction(ref NdrWriter writer);
 
     private sealed record DecodedRequest(Guid Clsid, Guid RequestedIid, int[] ProtocolSequences, byte[] ActivationProperties);
+
+    private sealed record DecodedCreateInstanceRequest(RemoteCreateInstanceRequest Request, bool IsModern);
 }

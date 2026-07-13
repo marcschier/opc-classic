@@ -11,6 +11,11 @@ public sealed record RemoteCreateInstanceRequest(
     IReadOnlyList<int> ProtocolSequences)
 {
     /// <summary>
+    /// All interfaces requested by the activation call.
+    /// </summary>
+    public IReadOnlyList<Guid> RequestedIids { get; init; } = DefaultRequestedIids(RequestedIid);
+
+    /// <summary>
     /// Decoded activation properties supplied by the client.
     /// </summary>
     public ActivationProperties ActivationProperties { get; init; } = ActivationProperties.Empty;
@@ -19,4 +24,7 @@ public sealed record RemoteCreateInstanceRequest(
     /// Raw activation property payload, when the caller has not decoded it yet.
     /// </summary>
     public byte[] RawActivationProperties { get; init; } = Array.Empty<byte>();
+
+    private static IReadOnlyList<Guid> DefaultRequestedIids(Guid requestedIid) =>
+        requestedIid == Guid.Empty ? Array.Empty<Guid>() : new[] { requestedIid };
 }

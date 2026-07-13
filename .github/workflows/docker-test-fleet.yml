@@ -235,6 +235,22 @@ jobs:
             Write-Host "::warning::OpcEnum service not registered; discovery.enumerate_servers will regress"
           }
 
+      - name: Build + register OPC interface proxy/stubs
+        shell: pwsh
+        # When the managed sample servers are activated by the real Windows SCM,
+        # real combase marshals their OPC interface pointers via *standard
+        # marshaling*, which requires the OPC interface proxy/stubs
+        # (opcproxy.dll / opccomn_ps.dll / opcsec_ps.dll / opc_aeps.dll /
+        # opchda_ps.dll) to be registered under HKCR\Interface\{IID}\
+        # ProxyStubClsid32. A clean runner has none, so combase cannot marshal
+        # IOPCServer et al. and RPCSS returns E_NOINTERFACE (0x80004002) for
+        # every activation (dev boxes work only because OPC Core Components is
+        # installed). Build + regsvr32 the vendored proxy/stubs (x64 for the
+        # AnyCPU=>64-bit sample servers, x86 opccomn_ps for the x86 OpcEnum's
+        # IOPCServerList marshaling) to close that gap.
+        run: |
+          .\interop\tools\build-register-proxystubs.ps1 -Configuration Release
+
       - name: Run cross-impl matrix (sample servers only)
         shell: pwsh
         # Exclude the testserver + matrikon profiles because they need

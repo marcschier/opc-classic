@@ -95,7 +95,7 @@ public sealed class DcomOpcEnumCallChannelFactory : IOpcEnumCallChannelFactory
         CreateObjectChannelAsync(host, interfaceRef, interfaceId, oxidBindings: default, cancellationToken);
 
     /// <inheritdoc />
-    public ValueTask<ICallChannel> CreateObjectChannelAsync(
+    public async ValueTask<ICallChannel> CreateObjectChannelAsync(
         string host,
         IOpcInterfaceRef interfaceRef,
         Guid interfaceId,
@@ -105,7 +105,7 @@ public sealed class DcomOpcEnumCallChannelFactory : IOpcEnumCallChannelFactory
         ArgumentException.ThrowIfNullOrWhiteSpace(host);
         ArgumentNullException.ThrowIfNull(interfaceRef);
 
-        DnsEndPoint endpoint = ResolveDataPortEndpoint(host, interfaceRef, oxidBindings);
+        EndPoint endpoint = await ResolveDataPortEndpointAsync(host, interfaceRef, oxidBindings, cancellationToken).ConfigureAwait(false);
         // Data-port channel binds the activated OPCEnum endpoint which exposes the
         // Discovery interface family. Pre-declare the full Discovery IID set so the
         // bind PDU's presentation-context list covers IOPCServerList(2),
@@ -113,7 +113,7 @@ public sealed class DcomOpcEnumCallChannelFactory : IOpcEnumCallChannelFactory
         // server preloads all stub marshalers. Route every RequestCoPdu to the
         // activated IPID — without that, OPCEnum cannot identify which object the
         // call targets and returns RPC_E_DISCONNECTED (0x80010108).
-        return ConnectActivatedAsync(endpoint, interfaceRef.Ipid, OpcDiscoverySpecCatalog.Discovery, cancellationToken);
+        return await ConnectActivatedAsync(endpoint, interfaceRef.Ipid, OpcDiscoverySpecCatalog.Discovery, cancellationToken).ConfigureAwait(false);
     }
 
     private async ValueTask<ICallChannel> ConnectActivatedAsync(EndPoint endpoint, Guid objectIpid, IReadOnlyList<Guid> preBindIids, CancellationToken cancellationToken) =>
@@ -133,6 +133,29 @@ public sealed class DcomOpcEnumCallChannelFactory : IOpcEnumCallChannelFactory
         }
 
         return ResolveObjectEndpoint(fallbackHost, interfaceRef);
+    }
+
+    private async ValueTask<EndPoint> ResolveDataPortEndpointAsync(
+        string fallbackHost,
+        IOpcInterfaceRef interfaceRef,
+        ReadOnlyMemory<byte> oxidBindings,
+        CancellationToken cancellationToken)
+    {
+        if (!oxidBindings.IsEmpty && interfaceRef.Oxid != 0)
+        {
+            IAuthContext resolverAuth = _authContextFactory();
+            byte[] resolvedBindings = await DcomOxidResolverClient.ResolveOxidBindingsAsync(
+                fallbackHost,
+                interfaceRef.Oxid,
+                interfaceRef.ResolverBindings,
+                _channelFactory,
+                resolverAuth,
+                cancellationToken).ConfigureAwait(false);
+            return DualStringArrayResolver.ResolveFirstTransport(fallbackHost, resolvedBindings)
+                ?? ResolveDataPortEndpoint(fallbackHost, interfaceRef, oxidBindings);
+        }
+
+        return ResolveDataPortEndpoint(fallbackHost, interfaceRef, oxidBindings);
     }
 
     private static bool TryResolveDataPortFromOxidBindings(string fallbackHost, ReadOnlySpan<byte> bindings, out DnsEndPoint? endpoint)

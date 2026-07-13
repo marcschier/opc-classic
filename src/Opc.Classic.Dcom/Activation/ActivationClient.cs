@@ -1,5 +1,6 @@
 ﻿// Copyright (c) 2026 Opc.Classic Contributors. Licensed under the MIT License.
 
+using Opc.Classic.Dcom.Rpc;
 using Opc.Classic.Dcom.Transport;
 
 namespace Opc.Classic.Dcom.Activation;
@@ -11,12 +12,14 @@ public sealed class ActivationClient : IActivationClient, IAsyncDisposable
 {
     private const int EndpointMapperPort = 135;
     private const int RemoteActivationOpnum = 0;
+    private const int RemoteCreateInstanceOpnum = 4;
     private const uint DefaultClientImpersonationLevel = 3;
     private const uint DefaultMode = 0;
     private const ushort RpcProtocolSequenceTcp = 0x07;
     private const ushort RpcProtocolSequenceNamedPipe = 0x0F;
 
     private static readonly Guid ActivationInterfaceId = Guid.Parse(Interfaces.IID_IActivation);
+    private static readonly Guid RemoteScmActivatorInterfaceId = Guid.Parse("000001A0-0000-0000-C000-000000000046");
     private readonly ICallChannel _channel;
     private readonly IAsyncDisposable? _ownedChannel;
 
@@ -117,6 +120,90 @@ public sealed class ActivationClient : IActivationClient, IAsyncDisposable
 
         return IActivationCodec.DecodeRemoteActivationResponse(result.ResponsePayload.Span, request.RequestedIids.Count);
     }
+
+    /// <summary>
+    /// Invokes MS-DCOM <c>IRemoteSCMActivator::RemoteCreateInstance</c> (opnum 4).
+    /// </summary>
+    public Task<ActivationPropertiesOutData> RemoteCreateInstanceAsync(
+        Guid clsid,
+        string[] protseqs,
+        Guid[] iids,
+        CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(protseqs);
+        ArgumentNullException.ThrowIfNull(iids);
+
+        ushort[] protocolSequences = NormalizeProtocolSequences(protseqs);
+        return RemoteCreateInstanceAsync(clsid, protocolSequences, iids, cancellationToken);
+    }
+
+    /// <summary>
+    /// Invokes MS-DCOM <c>IRemoteSCMActivator::RemoteCreateInstance</c> (opnum 4).
+    /// </summary>
+    public async Task<ActivationPropertiesOutData> RemoteCreateInstanceAsync(
+        Guid clsid,
+        IReadOnlyList<ushort> protocolSequences,
+        IReadOnlyList<Guid> iids,
+        CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(protocolSequences);
+        ArgumentNullException.ThrowIfNull(iids);
+        cancellationToken.ThrowIfCancellationRequested();
+
+        byte[] payload = ActivationPropertiesCodec.EncodeRemoteCreateInstanceRequest(
+            clsid,
+            iids,
+            protocolSequences);
+        const string operation = "IRemoteSCMActivator::RemoteCreateInstance";
+        NdrCallResult result;
+        try
+        {
+            result = await _channel.InvokeAsync(
+                RemoteScmActivatorInterfaceId,
+                RemoteCreateInstanceOpnum,
+                payload,
+                cancellationToken).ConfigureAwait(false);
+        }
+        catch (Exception ex) when (ShouldWrapRemoteCreateInstanceAvailabilityFailure(ex))
+        {
+            throw new InvalidOperationException($"{operation} is unavailable on the remote SCM.", ex);
+        }
+
+        if (result.IsFailure)
+        {
+            throw new InvalidOperationException($"{operation} RPC fault 0x{unchecked((uint)result.Hresult):X8}.");
+        }
+
+        try
+        {
+            return ActivationPropertiesCodec.DecodeRemoteCreateInstanceResponse(result.ResponsePayload.Span);
+        }
+        catch (InvalidOperationException ex)
+        {
+            throw new InvalidOperationException($"{operation} returned malformed activation properties.", ex);
+        }
+    }
+
+    internal static bool ShouldWrapRemoteCreateInstanceAvailabilityFailure(Exception exception)
+    {
+        if (exception is BindException)
+        {
+            return true;
+        }
+
+        if (exception is not InvalidOperationException invalid)
+        {
+            return false;
+        }
+
+        return IsRemoteScmPresentationRejection(invalid.Message);
+    }
+
+    private static bool IsRemoteScmPresentationRejection(string message) =>
+        message.Contains(RemoteScmActivatorInterfaceId.ToString("D"), StringComparison.OrdinalIgnoreCase)
+        && (message.Contains("Presentation context rejected", StringComparison.Ordinal)
+            || message.Contains("presentation context", StringComparison.OrdinalIgnoreCase)
+            || message.Contains("Bind acknowledge did not accept", StringComparison.Ordinal));
 
     /// <inheritdoc />
     public async ValueTask DisposeAsync()

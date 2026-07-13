@@ -1,5 +1,7 @@
 ﻿// Copyright (c) 2026 Opc.Classic Contributors. Licensed under the MIT License.
 
+using Opc.Classic.Dcom.Activation;
+
 namespace Opc.Classic.Dcom.Core;
 
 /// <summary>
@@ -18,9 +20,29 @@ public sealed record RemoteCreateInstanceResponse(int Hresult, Guid Oxid, Guid I
     public Guid Oid { get; init; }
 
     /// <summary>
+    /// Numeric OXID value used by ActivationPropertiesOut.
+    /// </summary>
+    public ulong OxidValue { get; init; }
+
+    /// <summary>
+    /// Authentication-level hint for subsequent calls.
+    /// </summary>
+    public uint AuthnHint { get; init; } = 1;
+
+    /// <summary>
+    /// DCOM version of the object exporter.
+    /// </summary>
+    public (ushort Major, ushort Minor) ServerVersion { get; init; } = (5, 7);
+
+    /// <summary>
     /// Activation properties returned to the client.
     /// </summary>
     public ActivationProperties ActivationProperties { get; init; } = ActivationProperties.Empty;
+
+    /// <summary>
+    /// Per-requested-IID activation results returned to modern clients.
+    /// </summary>
+    public IReadOnlyList<ActivationInterfaceResult> InterfaceResults { get; init; } = Array.Empty<ActivationInterfaceResult>();
 
     /// <summary>
     /// Encoded activation properties returned to the client.

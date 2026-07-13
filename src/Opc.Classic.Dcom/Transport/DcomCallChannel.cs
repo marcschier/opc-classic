@@ -186,6 +186,58 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable
         }
     }
 
+    /// <summary>
+    /// Invokes a non-ORPC DCE/RPC method on this connection.
+    /// </summary>
+    public async Task<NdrCallResult> InvokeRawAsync(
+        Guid interfaceId,
+        int opnum,
+        ReadOnlyMemory<byte> requestPayload,
+        CancellationToken cancellationToken = default)
+    {
+        ArgumentOutOfRangeException.ThrowIfNegative(opnum);
+        cancellationToken.ThrowIfCancellationRequested();
+
+        bool diag = string.Equals(System.Environment.GetEnvironmentVariable("OPC_CLASSIC_DCOM_WIRE_DUMP"), "1", System.StringComparison.Ordinal);
+        await _callLock.WaitAsync(cancellationToken).ConfigureAwait(false);
+        try
+        {
+            ObjectDisposedException.ThrowIf(_disposed, this);
+
+            int contextId = await EnsurePresentationContextAsync(interfaceId, cancellationToken).ConfigureAwait(false);
+            await BindTraceAsync(diag, $"InvokeRawAsync: iid={interfaceId:D} opnum={opnum} ctx={contextId} payload={requestPayload.Length}b").ConfigureAwait(false);
+            var request = new RequestCoPdu
+            {
+                AllocationHint = requestPayload.Length,
+                ContextId = contextId,
+                Opnum = opnum,
+                Stub = requestPayload.ToArray(),
+                CallId = NextCallId(),
+            };
+            await WritePduAsync(request, cancellationToken).ConfigureAwait(false);
+
+            ConnectionOrientedPdu reply = await ReadFragmentedPduAsync(cancellationToken).ConfigureAwait(false);
+            NdrCallResult result = reply switch
+            {
+                ResponseCoPdu response => new NdrCallResult(0, response.Stub),
+                FaultCoPdu fault => new NdrCallResult(unchecked((int)fault.Status), ReadOnlyMemory<byte>.Empty, IsFault: true),
+                _ => throw new InvalidOperationException($"Unexpected DCE/RPC PDU type {reply.Type}.")
+            };
+            if (diag)
+            {
+                await System.Console.Error.WriteLineAsync($"[wire] iid={interfaceId:D} opnum={opnum} hresult=0x{unchecked((uint)result.Hresult):X8}").ConfigureAwait(false);
+                await System.Console.Error.WriteLineAsync($"[wire] request  ({requestPayload.Length}b): {System.Convert.ToHexString(requestPayload.Span)}").ConfigureAwait(false);
+                await System.Console.Error.WriteLineAsync($"[wire] response ({result.ResponsePayload.Length}b): {System.Convert.ToHexString(result.ResponsePayload.Span)}").ConfigureAwait(false);
+            }
+
+            return result;
+        }
+        finally
+        {
+            _callLock.Release();
+        }
+    }
+
     /// <inheritdoc />
     public async ValueTask DisposeAsync()
     {
