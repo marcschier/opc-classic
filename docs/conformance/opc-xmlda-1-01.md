@@ -105,7 +105,7 @@ The Phase 0 inventory CSV `opc-xmlda-1-01-clauses.csv` contains 1 `SHALL` entry,
 
 The specification defines request and response messages for XML-DA services and discusses server compliance (§2.9). The current `Opc.Classic.Xml` package is a managed SOAP-over-HTTP **client**: `IXmlDaClient` exposes outbound operation methods, and `HttpXmlDaClient` posts serialized SOAP requests to a caller-provided endpoint. There is no ASP.NET Core middleware, inbound SOAP dispatcher, operation handler set, or XML-DA-to-DA bridge under `src/Opc.Classic.Xml/`.
 
-Status: **WAIVED**. This is a deliberate client-only scope decision for the current package, and the existing aggregate conformance doc records XML-DA server hosting as deferred-by-design.
+Status: **WAIVED**. This is a deliberate repository-level client-only scope decision, not a deferred server-hosting roadmap item.
 
 #### 3.1.2 SOAP 1.2 binding is not implemented
 

@@ -465,7 +465,7 @@ public sealed class HdaClientTools
     /// <summary>
     /// Inserts or replaces HDA historical data.
     /// </summary>
-    [McpServerTool(Name = "opcclassic.hda.insert_replace_data", ReadOnly = false, Idempotent = true, Destructive = false, OpenWorld = true)]
+    [McpServerTool(Name = "opcclassic.hda.insert_replace_data", ReadOnly = false, Idempotent = true, Destructive = true, OpenWorld = true)]
     [Description("Inserts historical values or replaces existing values for HDA server handles.")]
     public Task<IReadOnlyList<OpcResultDto>> InsertReplaceData(
         [Description("The connected OPC Classic sessionId.")]

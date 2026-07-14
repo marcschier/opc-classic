@@ -1,13 +1,13 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-10-17/server.schema.json",
-  "description": "<your description here>",
-  "name": "io.github.<your GitHub username here>/<your repo name>",
-  "version": "0.1.0-beta",
+  "description": "Cross-platform MCP server for OPC Classic discovery and DA, AE, HDA, and XML-DA clients.",
+  "name": "io.github.marcschier/opc-classic",
+  "version": "0.0.0-placeholder",
   "packages": [
     {
       "registryType": "nuget",
-      "identifier": "<your package ID here>",
-      "version": "0.1.0-beta",
+      "identifier": "Opc.Classic.Mcp",
+      "version": "0.0.0-placeholder",
       "transport": {
         "type": "stdio"
       },
@@ -16,7 +16,7 @@
     }
   ],
   "repository": {
-    "url": "https://github.com/<your GitHub username here>/<your repo name>",
+    "url": "https://github.com/marcschier/opc-classic",
     "source": "github"
   }
 }

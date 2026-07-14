@@ -4,65 +4,68 @@ on:
   workflow_dispatch:
     inputs:
       profile:
-        description: 'Which smoke to run: matrix (default), interactive-build-only, or native-matrikon-proxy'
+        description: 'Which validation to run'
         required: false
-        default: 'matrix'
+        default: matrix
         type: choice
-        options: [matrix, interactive-build-only, native-matrikon-proxy]
-  schedule:
-    # Monthly on the 1st at 04:00 UTC. Windows-container builds are expensive
-    # (~10-15 min build stage + ~3-5 GB image disk); monthly cadence matches
-    # the value of the matrix smoke vs the cost.
-    - cron: '0 4 1 * *'
+        options:
+          - matrix
+          - interactive-build-only
+          - native-matrikon-proxy
 
 permissions:
   contents: read
 
 jobs:
   docker-test-fleet:
-    runs-on: windows-2022
     if: github.repository == 'marcschier/opc-classic'
+    runs-on: [self-hosted, Windows, X64, opc-classic-dcom]
     timeout-minutes: 120
     steps:
       - uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
-      - name: Detect CoreComponents vendor tree
-        id: corecomponents
+      - name: Verify self-hosted runner and CoreComponents tree
         shell: pwsh
         run: |
-          $root = "$env:GITHUB_WORKSPACE\external"
+          $isAdmin = ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole(
+            [Security.Principal.WindowsBuiltInRole]::Administrator)
+          if (-not $isAdmin) {
+            throw 'The opc-classic-dcom runner must run elevated.'
+          }
+
+          $root = "$env:GITHUB_WORKSPACE\interop"
           $required = @(
             "$root\CMakeLists.txt",
-            "$env:GITHUB_WORKSPACE\interop\samples\OpcTestServer\OpcTestServer.cpp",
-            "$env:GITHUB_WORKSPACE\interop\samples\OpcTestClient\OpcTestClient.cpp"
+            "$root\samples\OpcTestServer\OpcTestServer.cpp",
+            "$root\samples\OpcTestClient\OpcTestClient.cpp",
+            "$root\tools\build-testserver.ps1",
+            "$root\tools\build-opcenum.ps1"
           )
-          $missing = $required | Where-Object { -not (Test-Path $_) }
+          $missing = $required | Where-Object { -not (Test-Path -LiteralPath $_) }
           if ($missing.Count -gt 0) {
-            Write-Warning "CoreComponents vendor tree is not complete; TestServer/TestClient Docker cells will soft-skip."
-            "present=false" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
-          } else {
-            "present=true" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
+            throw "CoreComponents vendor tree is incomplete under interop:`n$($missing -join "`n")"
+          }
+
+          if (-not (Get-Command docker -ErrorAction SilentlyContinue)) {
+            throw 'docker.exe is required on the self-hosted Windows runner.'
           }
 
       - name: Restore CoreComponents CMake cache
-        if: steps.corecomponents.outputs.present == 'true'
         id: corecomponents-cache
         uses: actions/cache@v6
         with:
           path: interop/build/x64/Release
-          key: corecomponents-ltsc2022-vs2022-${{ runner.os }}-${{ hashFiles('interop/CMakeLists.txt', 'interop/cmake/**', 'interop/src/**', 'interop/samples/OpcTestServer/**', 'interop/samples/OpcTestClient/**', 'interop/tools/build-testserver.ps1', 'interop/docker/opc-testserver/Dockerfile') }}
-          restore-keys: |
-            corecomponents-ltsc2022-vs2022-${{ runner.os }}-
+          key: corecomponents-ltsc2022-vs2022-${{ runner.os }}-${{ hashFiles('interop/CMakeLists.txt', 'interop/cmake/**', 'interop/inc/**', 'interop/src/**', 'interop/samples/OpcTestServer/**', 'interop/samples/OpcTestClient/**', 'interop/tools/build-testserver.ps1', 'interop/docker/opc-testserver/Dockerfile') }}
 
-      - name: Prime CoreComponents CMake cache
-        if: steps.corecomponents.outputs.present == 'true'
+      - name: Build and verify CoreComponents native assets
         shell: pwsh
         run: |
           $release = "$env:GITHUB_WORKSPACE\interop\build\x64\Release"
           $required = @(
             'OpcTestServer_x64.exe',
+            'OpcTestServer_x64.config.xml',
             'OpcTestClient_x64.exe',
             'OpcCategoryManager.exe',
             'opccomn_ps.dll',
@@ -74,84 +77,220 @@ jobs:
             'opchda_ps.dll',
             'opcsec_ps.dll'
           )
-          $missing = $required | Where-Object { -not (Test-Path (Join-Path $release $_)) }
-          if ($missing.Count -gt 0) {
-            Write-Host "CoreComponents cache miss; building Release artifacts on the Windows runner."
-            .\interop\tools\build-testserver.ps1 -Configuration Release
-          } else {
-            Write-Host "CoreComponents Release artifacts already present."
+          if ('${{ steps.corecomponents-cache.outputs.cache-hit }}' -ne 'true') {
+            Write-Host 'No exact CoreComponents cache hit; forcing a clean x64 rebuild.'
+            .\interop\tools\build-testserver.ps1 -Configuration Release -Clean
+            if ($LASTEXITCODE -ne 0) {
+              throw "CoreComponents build failed with exit code $LASTEXITCODE."
+            }
           }
 
-      - name: Switch Docker daemon to Windows containers
+          $missing = $required | Where-Object { -not (Test-Path -LiteralPath (Join-Path $release $_)) }
+          if ($missing.Count -gt 0) {
+            throw "Required native asset(s) are missing after the build: $($missing -join ', ')"
+          }
+
+          .\interop\tools\build-opcenum.ps1 -Configuration Release -Clean
+          if ($LASTEXITCODE -ne 0) {
+            throw "OpcEnum x86 build failed with exit code $LASTEXITCODE."
+          }
+          $x86Release = "$env:GITHUB_WORKSPACE\interop\build\x86\Release"
+          $x86Required = @('OpcEnum.exe', 'opccomn_ps.dll')
+          $x86Missing = $x86Required | Where-Object {
+            -not (Test-Path -LiteralPath (Join-Path $x86Release $_))
+          }
+          if ($x86Missing.Count -gt 0) {
+            throw "Required x86 OpcEnum asset(s) are missing after the build: $($x86Missing -join ', ')"
+          }
+
+      - name: Verify Windows-container Docker daemon
         shell: pwsh
         run: |
-          # The windows-2022 runner ships Docker Desktop in Linux mode by default.
-          # Toggle to Windows mode for the fleet build.
-          $dockerCli = "$env:ProgramFiles\Docker\Docker\DockerCli.exe"
-          if (Test-Path $dockerCli) {
+          $daemonOs = (& docker info --format '{{.OSType}}' 2>$null)
+          if ($LASTEXITCODE -ne 0 -or $daemonOs -ne 'windows') {
+            $dockerCli = "$env:ProgramFiles\Docker\Docker\DockerCli.exe"
+            if (-not (Test-Path -LiteralPath $dockerCli)) {
+              throw 'Docker is not running in Windows-container mode and DockerCli.exe is unavailable.'
+            }
+
             & $dockerCli -SwitchWindowsEngine
-            Start-Sleep -Seconds 10
-          } else {
-            Write-Warning 'DockerCli.exe not found at expected path; assuming Windows mode is already active.'
+            if ($LASTEXITCODE -ne 0) {
+              throw "DockerCli.exe failed to switch to Windows containers (exit $LASTEXITCODE)."
+            }
+
+            $deadline = [DateTime]::UtcNow.AddMinutes(2)
+            do {
+              Start-Sleep -Seconds 5
+              $daemonOs = (& docker info --format '{{.OSType}}' 2>$null)
+            } while (($LASTEXITCODE -ne 0 -or $daemonOs -ne 'windows') -and [DateTime]::UtcNow -lt $deadline)
+          }
+
+          if ($daemonOs -ne 'windows') {
+            throw "Docker daemon OS is '$daemonOs'; Windows containers are required."
           }
           docker version
 
-      - name: Build fleet images
+      - name: Build Windows-container fleet
         shell: pwsh
         run: |
-          if ('${{ steps.corecomponents.outputs.present }}' -eq 'true') {
-            interop/docker/run-matrix.ps1 -SkipBuild:$false -IncludeTestServer
-          } else {
-            Write-Warning 'CoreComponents missing; running existing managed-only Docker fleet smoke.'
-            interop/docker/run-matrix.ps1 -SkipBuild:$false -OnlyManaged
+          Remove-Item interop\docker\results -Recurse -Force -ErrorAction SilentlyContinue
+          $skipUp = '${{ inputs.profile }}' -ne 'matrix'
+          .\interop\docker\run-matrix.ps1 -IncludeTestServer -SkipUp:$skipUp
+          if ($LASTEXITCODE -ne 0) {
+            throw "Windows-container fleet build failed with exit code $LASTEXITCODE."
           }
 
+      - name: Run native Windows-container DCOM probes
+        if: inputs.profile == 'matrix'
+        shell: pwsh
+        run: |
+          $compose = 'interop\docker\docker-compose.test.yml'
+          $results = 'interop\docker\results'
+          New-Item -ItemType Directory -Path $results -Force | Out-Null
+
+          function Invoke-FleetProbe {
+            param(
+              [Parameter(Mandatory)] [string] $Name,
+              [Parameter(Mandatory)] [string] $Service,
+              [string[]] $Arguments = @()
+            )
+
+            $log = Join-Path $results "$Name.log"
+            $output = & docker compose --file $compose --profile interactive run --rm $Service @Arguments 2>&1
+            $exitCode = $LASTEXITCODE
+            $output | Tee-Object -FilePath $log | ForEach-Object { Write-Host $_ }
+            if ($exitCode -ne 0) {
+              throw "Fleet probe '$Name' failed with exit code $exitCode."
+            }
+            if (-not (Test-Path -LiteralPath $log) -or (Get-Item -LiteralPath $log).Length -eq 0) {
+              throw "Fleet probe '$Name' produced no report."
+            }
+          }
+
+          Invoke-FleetProbe -Name native-client-to-native-server -Service c-client `
+            -Arguments @('-ProgId', 'OPC.SampleServer.1', '-TargetHost', 'opc-classic-c-server')
+          Invoke-FleetProbe -Name native-client-to-managed-server -Service c-client `
+            -Arguments @('-ProgId', 'Opc.Classic.DaSample.1', '-TargetHost', 'opc-classic-managed')
+          Invoke-FleetProbe -Name foundation-testclient-to-testserver -Service testclient
+
       - name: Build native Matrikon proxy scaffold
-        if: github.event_name == 'workflow_dispatch' && inputs.profile == 'native-matrikon-proxy'
+        if: inputs.profile == 'native-matrikon-proxy'
         shell: pwsh
         run: |
           docker compose --file interop/docker/docker-compose.test.yml --profile native-matrikon-proxy build native-matrikon-proxy
-          Write-Host 'Built native Matrikon proxy image. Runtime execution requires a routable Linux SimulationServer and matching DCOM credentials.'
+          if ($LASTEXITCODE -ne 0) {
+            throw "Native Matrikon proxy image build failed with exit code $LASTEXITCODE."
+          }
 
-      - name: Upload Docker fleet matrix results
+      - name: Verify fleet images and write report
+        shell: pwsh
+        run: |
+          $profile = '${{ inputs.profile }}'
+          $results = 'interop\docker\results'
+          New-Item -ItemType Directory -Path $results -Force | Out-Null
+
+          $images = @(
+            'opc-classic/c-server',
+            'opc-classic/managed',
+            'opc-classic/c-client',
+            'opc-classic/testserver',
+            'opc-classic/testclient'
+          )
+          if ($profile -eq 'native-matrikon-proxy') {
+            $images += 'opc-classic/native-matrikon-proxy'
+          }
+
+          $imageIds = @{}
+          foreach ($image in $images) {
+            $imageId = & docker image inspect --format '{{.Id}}' $image 2>$null
+            if ($LASTEXITCODE -ne 0 -or [string]::IsNullOrWhiteSpace($imageId)) {
+              throw "Expected fleet image is missing: $image"
+            }
+            $imageIds[$image] = $imageId
+          }
+
+          $logs = @(Get-ChildItem -Path $results -Filter '*.log' -File -ErrorAction SilentlyContinue)
+          if ($profile -eq 'matrix' -and $logs.Count -ne 3) {
+            throw "Expected three DCOM probe reports, found $($logs.Count)."
+          }
+
+          [ordered]@{
+            profile = $profile
+            commit = '${{ github.sha }}'
+            generatedAtUtc = [DateTime]::UtcNow.ToString('O')
+            images = $imageIds
+            probeReports = @($logs.Name)
+          } | ConvertTo-Json -Depth 4 | Set-Content -Path (Join-Path $results 'fleet-summary.json') -Encoding utf8
+
+          $report = Get-Item -LiteralPath (Join-Path $results 'fleet-summary.json')
+          if ($report.Length -eq 0) {
+            throw 'Fleet summary report is empty.'
+          }
+
+      - name: Upload Docker fleet reports
         if: always()
         uses: actions/upload-artifact@v7
         with:
           name: docker-test-fleet-results
-          path: interop/docker/results/*.xml
-          if-no-files-found: warn
+          path: |
+            interop/docker/results/*.json
+            interop/docker/results/*.log
+          if-no-files-found: error
+
+      - name: Stop Windows-container fleet
+        if: always()
+        shell: pwsh
+        run: docker compose --file interop/docker/docker-compose.test.yml down --remove-orphans
 
   cross-impl-matrix:
-    # Track DV2: run the MCP probe + every sample server through the
-    # tools/run-cross-impl-matrix.ps1 driver and upload the per-profile
-    # JSON reports + (optional) wire captures. This validates that every
-    # opcclassic.* MCP tool that's expected to work against a given
-    # server profile actually works, and that the spec-mandated failures
-    # (e.g. IOPCItemIO on a DA 2.05a server) fail in the documented way.
-    #
-    # Gated on workflow_dispatch so the matrix only runs when an operator
-    # explicitly triggers it. The TestServer/TestClient Docker containers are
-    # covered by the standard fleet cadence above when external is
-    # available; this job remains sample-server-only.
-    runs-on: windows-2022
-    if: github.event_name == 'workflow_dispatch' && github.repository == 'marcschier/opc-classic'
-    timeout-minutes: 30
+    if: github.repository == 'marcschier/opc-classic'
+    runs-on: [self-hosted, Windows, X64, opc-classic-dcom]
+    timeout-minutes: 90
     steps:
       - uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
+      - name: Verify self-hosted conformance prerequisites
+        shell: pwsh
+        run: |
+          $isAdmin = ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole(
+            [Security.Principal.WindowsBuiltInRole]::Administrator)
+          if (-not $isAdmin) {
+            throw 'The opc-classic-dcom runner must run elevated.'
+          }
+
+          $required = @(
+            'interop\CMakeLists.txt',
+            'interop\samples\OpcTestServer\OpcTestServer.cpp',
+            'interop\samples\OpcTestClient\OpcTestClient.cpp',
+            'interop\tools\build-testserver.ps1',
+            'interop\tools\build-register-proxystubs.ps1'
+          )
+          $missing = $required | Where-Object { -not (Test-Path -LiteralPath $_) }
+          if ($missing.Count -gt 0) {
+            throw "Required native source asset(s) are missing: $($missing -join ', ')"
+          }
+
+          $npcap = @(
+            "$env:WINDIR\System32\Npcap\wpcap.dll",
+            "$env:WINDIR\SysWOW64\Npcap\wpcap.dll"
+          ) | Where-Object { Test-Path -LiteralPath $_ }
+          if ($npcap.Count -eq 0) {
+            throw 'Npcap with WinPcap compatibility must be preinstalled on the opc-classic-dcom runner.'
+          }
+
       - name: Setup .NET SDK
         uses: actions/setup-dotnet@v5
         with:
-          dotnet-version: '10.0.x'
+          global-json-file: global.json
 
       - name: Setup Python
         uses: actions/setup-python@v6
         with:
           python-version: '3.12'
 
-      - name: Build sample servers
+      - name: Build sample servers and MCP host
         shell: pwsh
         run: |
           $projects = @(
@@ -159,119 +298,219 @@ jobs:
             'samples\Opc.Classic.Samples.CttServer\Opc.Classic.Samples.CttServer.csproj',
             'samples\Opc.Classic.Samples.AeServer\Opc.Classic.Samples.AeServer.csproj',
             'samples\Opc.Classic.Samples.HdaServer\Opc.Classic.Samples.HdaServer.csproj',
-            'samples\Opc.Classic.Samples.OpcSecurityServer\Opc.Classic.Samples.OpcSecurityServer.csproj'
+            'samples\Opc.Classic.Samples.OpcSecurityServer\Opc.Classic.Samples.OpcSecurityServer.csproj',
+            'mcp\Opc.Classic.Mcp\Opc.Classic.Mcp.csproj'
           )
-          foreach ($p in $projects) {
-            dotnet build $p --nologo -v:m
-            if ($LASTEXITCODE -ne 0) { throw "Build failed: $p" }
-          }
-
-      - name: Build MCP host
-        shell: pwsh
-        run: dotnet build mcp\Opc.Classic.Mcp\Opc.Classic.Mcp.csproj --nologo -v:m
-
-      - name: Install Npcap (required for capture.list_interfaces)
-        shell: pwsh
-        continue-on-error: true
-        timeout-minutes: 8
-        run: |
-          # Npcap provides wpcap.dll which SharpPcap loads. The chocolatey
-          # community feed does NOT ship npcap (commercial-licensed); pull
-          # the redistributable installer directly from npcap.com and use
-          # its silent-install flags (/S). winpcap_mode=yes installs
-          # wpcap.dll under C:\Windows\System32\Npcap\ on PATH so SharpPcap
-          # finds it without code changes. admin_only=no opens the driver
-          # to non-admin processes (the MCP host launched by probe_servers
-          # runs as the runner user).
-          #
-          # Both the download and the silent install are bounded: the npcap
-          # installer has been observed to hang indefinitely on hosted
-          # runners (waiting on a driver-install dialog that never appears
-          # headless), which previously consumed the whole 30-minute job
-          # budget instead of degrading. Anything unexpected drops to the
-          # documented ::warning:: path so the matrix step still runs.
-          $ErrorActionPreference = 'Continue'
-          $url = 'https://npcap.com/dist/npcap-1.79.exe'
-          $exe = "$env:RUNNER_TEMP\npcap-1.79.exe"
-          try {
-            Invoke-WebRequest -Uri $url -OutFile $exe -UseBasicParsing -TimeoutSec 120
-            Write-Host "Downloaded Npcap installer: $((Get-Item $exe).Length) bytes"
-            $p = Start-Process $exe -ArgumentList '/S', '/winpcap_mode=yes', '/admin_only=no' -PassThru -NoNewWindow
-            if (-not $p.WaitForExit(300000)) {
-              Write-Host "::warning::Npcap installer did not exit within 300s; killing and continuing (capture.* tools will regress)"
-              try { $p.Kill($true) } catch { }
-            } elseif ($p.ExitCode -ne 0) {
-              Write-Host "::warning::Npcap install failed (exit $($p.ExitCode)); capture.* tools will regress"
-            } else {
-              Write-Host "Npcap install OK -- wpcap.dll under:"
-              Get-ChildItem 'C:\Windows\System32\Npcap\wpcap.dll', 'C:\Windows\SysWOW64\Npcap\wpcap.dll' -ErrorAction SilentlyContinue | Select-Object FullName
+          foreach ($project in $projects) {
+            dotnet build $project --nologo -v:m
+            if ($LASTEXITCODE -ne 0) {
+              throw "Build failed: $project"
             }
-          } catch {
-            Write-Host "::warning::Npcap install step error: $($_.Exception.Message); capture.* tools will regress"
           }
 
-      - name: Build + register OpcEnum service (vendored source)
+      - name: Build and register native TestServer
         shell: pwsh
         run: |
-          # OPCEnum is the OPC Foundation server-enumeration service that
-          # opcclassic.discovery.enumerate_servers dials over DCOM. Build
-          # OpcEnum.exe from the vendored source under
-          # interop/src/Common/ServerEnumerator/ (x86 binary; see
-          # interop/tools/build-opcenum.ps1 for details), then install
-          # it as a Windows service via OpcEnum.exe /Service.
+          .\interop\tools\build-testserver.ps1 -Configuration Release
+          if ($LASTEXITCODE -ne 0) {
+            throw "CoreComponents TestServer build failed with exit code $LASTEXITCODE."
+          }
+
+          $release = 'interop\build\x64\Release'
+          $required = @(
+            'OpcTestServer_x64.exe',
+            'OpcTestServer_x64.config.xml',
+            'OpcTestClient_x64.exe',
+            'OpcCategoryManager.exe',
+            'opccomn_ps.dll',
+            'opcproxy.dll',
+            'opc_aeps.dll',
+            'opcbc_ps.dll',
+            'OpcCmdPs.dll',
+            'OpcDxPs.dll',
+            'opchda_ps.dll',
+            'opcsec_ps.dll'
+          )
+          $missing = $required | Where-Object { -not (Test-Path -LiteralPath (Join-Path $release $_)) }
+          if ($missing.Count -gt 0) {
+            throw "Required native artifact(s) are missing: $($missing -join ', ')"
+          }
+
+          .\interop\tools\register-testserver.ps1
+          if ($LASTEXITCODE -ne 0) {
+            throw "TestServer registration failed with exit code $LASTEXITCODE."
+          }
+          .\interop\tools\grant-testserver-acl.ps1
+          if ($LASTEXITCODE -ne 0) {
+            throw "TestServer DCOM ACL grant failed with exit code $LASTEXITCODE."
+          }
+
+      - name: Build and register OpcEnum service
+        shell: pwsh
+        run: |
           .\interop\tools\build-opcenum.ps1 -Configuration Release
-          $exe = Resolve-Path 'interop\build\x86\Release\OpcEnum.exe'
-          Write-Host "Registering OpcEnum service: $exe /Service"
-          $p = Start-Process $exe -ArgumentList '/Service' -Wait -PassThru -NoNewWindow
-          Write-Host "OpcEnum /Service exit code: $($p.ExitCode)"
-          if ($p.ExitCode -ne 0) {
-            Write-Host "::warning::OpcEnum /Service registration failed (exit $($p.ExitCode)); discovery.enumerate_servers will regress"
+          if ($LASTEXITCODE -ne 0) {
+            throw "OpcEnum build failed with exit code $LASTEXITCODE."
           }
-          $svc = Get-Service -Name OpcEnum -ErrorAction SilentlyContinue
-          if ($svc -and $svc.Status -ne 'Running') {
+
+          $exe = (Resolve-Path 'interop\build\x86\Release\OpcEnum.exe').Path
+          $process = Start-Process $exe -ArgumentList '/Service' -Wait -PassThru -NoNewWindow
+          if ($process.ExitCode -ne 0) {
+            throw "OpcEnum service registration failed with exit code $($process.ExitCode)."
+          }
+
+          $service = Get-Service -Name OpcEnum -ErrorAction Stop
+          if ($service.Status -ne 'Running') {
             Start-Service OpcEnum
-            Write-Host "Started OpcEnum service"
-          } elseif (-not $svc) {
-            Write-Host "::warning::OpcEnum service not registered; discovery.enumerate_servers will regress"
+            $service.WaitForStatus('Running', [TimeSpan]::FromSeconds(30))
+          }
+          if ((Get-Service -Name OpcEnum).Status -ne 'Running') {
+            throw 'OpcEnum service is not running.'
           }
 
-      - name: Build + register OPC interface proxy/stubs
+      - name: Build and register OPC interface proxy stubs
         shell: pwsh
-        # When the managed sample servers are activated by the real Windows SCM,
-        # real combase marshals their OPC interface pointers via *standard
-        # marshaling*, which requires the OPC interface proxy/stubs
-        # (opcproxy.dll / opccomn_ps.dll / opcsec_ps.dll / opc_aeps.dll /
-        # opchda_ps.dll) to be registered under HKCR\Interface\{IID}\
-        # ProxyStubClsid32. A clean runner has none, so combase cannot marshal
-        # IOPCServer et al. and RPCSS returns E_NOINTERFACE (0x80004002) for
-        # every activation (dev boxes work only because OPC Core Components is
-        # installed). Build + regsvr32 the vendored proxy/stubs (x64 for the
-        # AnyCPU=>64-bit sample servers, x86 opccomn_ps for the x86 OpcEnum's
-        # IOPCServerList marshaling) to close that gap.
-        run: |
-          .\interop\tools\build-register-proxystubs.ps1 -Configuration Release
+        run: .\interop\tools\build-register-proxystubs.ps1 -Configuration Release
 
-      - name: Run cross-impl matrix (sample servers only)
+      - name: Verify proxy stub and activation registry
         shell: pwsh
-        # Exclude the testserver + matrikon profiles because they need
-        # external prerequisites (TestServer install + BH3 ACL grant;
-        # Matrikon vendor binary on a different host). The sample-only
-        # subset validates everything we own end-to-end.
-        #
-        # -HklmRegister + -UseClsid: the CI runner runs as administrative
-        # so HKLM is writable; CLSID-based activation bypasses ProgID
-        # resolution via OPCEnum (still installed by the build step
-        # above, but -UseClsid keeps activation working defense-in-depth
-        # if the OpcEnum build / install ever fails).
         run: |
+          function Assert-ProxyRegistration {
+            param(
+              [Parameter(Mandatory)] [Microsoft.Win32.RegistryView] $View,
+              [Parameter(Mandatory)] [string] $InterfaceId
+            )
+
+            $baseKey = [Microsoft.Win32.RegistryKey]::OpenBaseKey(
+              [Microsoft.Win32.RegistryHive]::LocalMachine, $View)
+            try {
+              $interfaceKey = $baseKey.OpenSubKey("SOFTWARE\Classes\Interface\{$InterfaceId}\ProxyStubClsid32")
+              if (-not $interfaceKey) {
+                throw "Missing $View ProxyStubClsid32 for interface {$InterfaceId}."
+              }
+              try {
+                $proxyClsid = [string] $interfaceKey.GetValue($null)
+              } finally {
+                $interfaceKey.Dispose()
+              }
+              if ([string]::IsNullOrWhiteSpace($proxyClsid)) {
+                throw "Empty $View ProxyStubClsid32 for interface {$InterfaceId}."
+              }
+
+              $proxyClsid = $proxyClsid.Trim('{}')
+              $serverKey = $baseKey.OpenSubKey("SOFTWARE\Classes\CLSID\{$proxyClsid}\InprocServer32")
+              if (-not $serverKey) {
+                throw "Missing $View InprocServer32 for proxy/stub {$proxyClsid}."
+              }
+              try {
+                $dll = [Environment]::ExpandEnvironmentVariables([string] $serverKey.GetValue($null)).Trim('"')
+              } finally {
+                $serverKey.Dispose()
+              }
+              if ([string]::IsNullOrWhiteSpace($dll) -or -not (Test-Path -LiteralPath $dll)) {
+                throw "Registered $View proxy/stub DLL is missing for {$InterfaceId}: '$dll'"
+              }
+              Write-Host "$View {$InterfaceId} -> {$proxyClsid} -> $dll"
+            } finally {
+              $baseKey.Dispose()
+            }
+          }
+
+          $x64Interfaces = @(
+            'F31DFDE2-07B6-11D2-B2D8-0060083BA1FB',
+            '39C13A4D-011E-11D0-9675-0020AFD8ADB3',
+            '65168851-5783-11D1-84A0-00608CB8A7E9',
+            '1F1217B0-DEE0-11D2-A5E5-000086339399',
+            '7AA83A01-6C77-11D3-84F9-00008630A38B'
+          )
+          foreach ($interfaceId in $x64Interfaces) {
+            Assert-ProxyRegistration -View Registry64 -InterfaceId $interfaceId
+          }
+          foreach ($interfaceId in @(
+            '13486D50-4821-11D2-A494-3CB306C10000',
+            '9DD0B56C-AD9E-43EE-8305-487F3188BF7A'
+          )) {
+            Assert-ProxyRegistration -View Registry32 -InterfaceId $interfaceId
+          }
+
+          $registry = [Microsoft.Win32.RegistryKey]::OpenBaseKey(
+            [Microsoft.Win32.RegistryHive]::LocalMachine,
+            [Microsoft.Win32.RegistryView]::Registry64)
+          try {
+            $testServerKey = $registry.OpenSubKey(
+              'SOFTWARE\Classes\CLSID\{F8582CF9-88FB-11DA-A5ED-0060B0692061}\LocalServer32')
+            if (-not $testServerKey) {
+              throw 'TestServer LocalServer32 registration is missing.'
+            }
+            try {
+              $testServerExe = [Environment]::ExpandEnvironmentVariables(
+                [string] $testServerKey.GetValue($null)).Trim('"')
+            } finally {
+              $testServerKey.Dispose()
+            }
+            if (-not (Test-Path -LiteralPath $testServerExe)) {
+              throw "TestServer LocalServer32 target is missing: '$testServerExe'"
+            }
+          } finally {
+            $registry.Dispose()
+          }
+
+      - name: Run real out-of-process DCOM conformance matrix
+        shell: pwsh
+        run: |
+          Remove-Item matrix-out -Recurse -Force -ErrorAction SilentlyContinue
           .\tools\run-cross-impl-matrix.ps1 `
-            -Profile samples-da,ctt-da,samples-ae,samples-hda,security-da `
+            -Profile testserver,samples-da,ctt-da,samples-ae,samples-hda,security-da `
             -HklmRegister `
             -UseClsid `
             -TraceActivation `
             -OutputDir matrix-out
 
-      - name: Upload cross-impl matrix reports
+      - name: Verify activation probes and reports
+        shell: pwsh
+        run: |
+          $expectedProfiles = @(
+            'testserver',
+            'samples-da',
+            'ctt-da',
+            'samples-ae',
+            'samples-hda',
+            'security-da'
+          )
+          $matrixPath = 'matrix-out\matrix.json'
+          if (-not (Test-Path -LiteralPath $matrixPath)) {
+            throw "Aggregate conformance report is missing: $matrixPath"
+          }
+
+          $matrix = Get-Content -LiteralPath $matrixPath -Raw | ConvertFrom-Json
+          $profiles = @($matrix.profiles)
+          foreach ($profile in $expectedProfiles) {
+            $entry = @($profiles | Where-Object { $_.profile -eq $profile })
+            if ($entry.Count -ne 1) {
+              throw "Expected exactly one aggregate entry for '$profile', found $($entry.Count)."
+            }
+            if ($entry[0].skipped -or $entry[0].fatal -or $entry[0].probe_exit_code -ne 0) {
+              throw "Activation/conformance probe '$profile' did not complete cleanly."
+            }
+
+            $reportPath = "matrix-out\$profile.json"
+            if (-not (Test-Path -LiteralPath $reportPath) -or (Get-Item -LiteralPath $reportPath).Length -eq 0) {
+              throw "Probe report is missing or empty: $reportPath"
+            }
+            $rows = @(Get-Content -LiteralPath $reportPath -Raw | ConvertFrom-Json)
+            if ($rows.Count -eq 0) {
+              throw "Probe report contains no activation/conformance results: $reportPath"
+            }
+          }
+
+          foreach ($profile in ($expectedProfiles | Where-Object { $_ -ne 'testserver' })) {
+            $tracePath = "matrix-out\$profile-ccw-trace.log"
+            if (-not (Test-Path -LiteralPath $tracePath) -or (Get-Item -LiteralPath $tracePath).Length -eq 0) {
+              throw "Out-of-process activation trace is missing or empty: $tracePath"
+            }
+          }
+
+      - name: Upload cross-implementation reports
         if: always()
         uses: actions/upload-artifact@v7
         with:
@@ -279,4 +518,126 @@ jobs:
           path: |
             matrix-out/*.json
             matrix-out/*.log
-          if-no-files-found: warn
+          if-no-files-found: error
+
+      - name: Clean up self-hosted DCOM registrations
+        if: always()
+        shell: pwsh
+        run: |
+          $cleanupErrors = [Collections.Generic.List[string]]::new()
+
+          function Invoke-Cleanup {
+            param(
+              [Parameter(Mandatory)] [string] $Description,
+              [Parameter(Mandatory)] [scriptblock] $Action
+            )
+
+            try {
+              Write-Host "==> $Description"
+              & $Action
+            } catch {
+              $message = "$Description failed: $($_.Exception.Message)"
+              Write-Host "::error::$message"
+              $cleanupErrors.Add($message)
+            }
+          }
+
+          $processNames = @(
+            'Opc.Classic.Samples.DaServer',
+            'Opc.Classic.Samples.CttServer',
+            'Opc.Classic.Samples.AeServer',
+            'Opc.Classic.Samples.HdaServer',
+            'Opc.Classic.Samples.OpcSecurityServer',
+            'OpcTestServer_x64'
+          )
+          foreach ($processName in $processNames) {
+            foreach ($process in @(Get-Process -Name $processName -ErrorAction SilentlyContinue)) {
+              Invoke-Cleanup "Stop $processName PID $($process.Id)" {
+                Stop-Process -Id $process.Id -Force -ErrorAction Stop
+                Wait-Process -Id $process.Id -Timeout 15 -ErrorAction SilentlyContinue
+              }
+            }
+          }
+
+          $sampleExecutables = @(
+            'samples\Opc.Classic.Samples.DaServer\bin\Debug\net10.0\Opc.Classic.Samples.DaServer.exe',
+            'samples\Opc.Classic.Samples.CttServer\bin\Debug\net10.0\Opc.Classic.Samples.CttServer.exe',
+            'samples\Opc.Classic.Samples.AeServer\bin\Debug\net10.0\Opc.Classic.Samples.AeServer.exe',
+            'samples\Opc.Classic.Samples.HdaServer\bin\Debug\net10.0\Opc.Classic.Samples.HdaServer.exe',
+            'samples\Opc.Classic.Samples.OpcSecurityServer\bin\Debug\net10.0\Opc.Classic.Samples.OpcSecurityServer.exe'
+          )
+          foreach ($sampleExe in $sampleExecutables) {
+            if (Test-Path -LiteralPath $sampleExe) {
+              Invoke-Cleanup "Unregister $sampleExe" {
+                & $sampleExe --unregister --registry-hive=hklm
+                if ($LASTEXITCODE -ne 0) {
+                  throw "exit code $LASTEXITCODE"
+                }
+              }
+            }
+          }
+
+          $testServerAppId = 'Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Classes\AppID\{F8582CF9-88FB-11DA-A5ED-0060B0692061}'
+          if ((Test-Path -LiteralPath $testServerAppId) -and
+              (Test-Path -LiteralPath 'interop\tools\grant-testserver-acl.ps1')) {
+            Invoke-Cleanup 'Remove TestServer DCOM ACL grant' {
+              .\interop\tools\grant-testserver-acl.ps1 -Unregister
+              if ($LASTEXITCODE -ne 0) {
+                throw "exit code $LASTEXITCODE"
+              }
+            }
+          }
+          $testServerClsid = 'Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Classes\CLSID\{F8582CF9-88FB-11DA-A5ED-0060B0692061}'
+          $testServerMarker = 'Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Opc.Classic\TestServerNoMsi'
+          if (((Test-Path -LiteralPath $testServerClsid) -or (Test-Path -LiteralPath $testServerMarker)) -and
+              (Test-Path -LiteralPath 'interop\tools\register-testserver.ps1')) {
+            Invoke-Cleanup 'Unregister native TestServer and proxy stubs' {
+              .\interop\tools\register-testserver.ps1 -Unregister
+              if ($LASTEXITCODE -ne 0) {
+                throw "exit code $LASTEXITCODE"
+              }
+            }
+          }
+
+          $opcEnumService = Get-Service -Name OpcEnum -ErrorAction SilentlyContinue
+          if ($opcEnumService) {
+            Invoke-Cleanup 'Stop OpcEnum service' {
+              if ($opcEnumService.Status -ne 'Stopped') {
+                Stop-Service -Name OpcEnum -Force -ErrorAction Stop
+                $opcEnumService.WaitForStatus('Stopped', [TimeSpan]::FromSeconds(30))
+              }
+            }
+          }
+          foreach ($process in @(Get-Process -Name OpcEnum -ErrorAction SilentlyContinue)) {
+            Invoke-Cleanup "Stop OpcEnum PID $($process.Id)" {
+              Stop-Process -Id $process.Id -Force -ErrorAction Stop
+              Wait-Process -Id $process.Id -Timeout 15 -ErrorAction SilentlyContinue
+            }
+          }
+
+          $opcEnumExe = 'interop\build\x86\Release\OpcEnum.exe'
+          if (Test-Path -LiteralPath $opcEnumExe) {
+            Invoke-Cleanup 'Unregister OpcEnum service and COM entries' {
+              & $opcEnumExe /UnregServer
+              if ($LASTEXITCODE -ne 0) {
+                throw "exit code $LASTEXITCODE"
+              }
+            }
+          }
+
+          $x86ProxyStub = 'interop\build\x86\Release\opccomn_ps.dll'
+          if (Test-Path -LiteralPath $x86ProxyStub) {
+            Invoke-Cleanup 'Unregister x86 OPC Common proxy stub' {
+              $regsvr32 = Join-Path $env:WINDIR 'SysWOW64\regsvr32.exe'
+              $process = Start-Process $regsvr32 `
+                -ArgumentList '/u', '/s', "`"$((Resolve-Path -LiteralPath $x86ProxyStub).Path)`"" `
+                -Wait -PassThru -NoNewWindow
+              if ($process.ExitCode -ne 0) {
+                throw "regsvr32 exit code $($process.ExitCode)"
+              }
+            }
+          }
+
+          if ($cleanupErrors.Count -gt 0) {
+            throw "Self-hosted DCOM cleanup reported $($cleanupErrors.Count) failure(s)."
+          }

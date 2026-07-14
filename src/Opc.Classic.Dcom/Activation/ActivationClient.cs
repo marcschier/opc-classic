@@ -164,46 +164,22 @@ public sealed class ActivationClient : IActivationClient, IAsyncDisposable
                 payload,
                 cancellationToken).ConfigureAwait(false);
         }
-        catch (Exception ex) when (ShouldWrapRemoteCreateInstanceAvailabilityFailure(ex))
+        catch (BindException ex)
         {
-            throw new InvalidOperationException($"{operation} is unavailable on the remote SCM.", ex);
+            throw new RemoteScmUnavailableException($"{operation} is unavailable on the remote SCM.", ex);
+        }
+        catch (PresentationContextRejectedException ex) when (ex.InterfaceId == RemoteScmActivatorInterfaceId)
+        {
+            throw new RemoteScmUnavailableException($"{operation} is unavailable on the remote SCM.", ex);
         }
 
         if (result.IsFailure)
         {
-            throw new InvalidOperationException($"{operation} RPC fault 0x{unchecked((uint)result.Hresult):X8}.");
+            throw new ActivationRpcException(operation, result.Hresult);
         }
 
-        try
-        {
-            return ActivationPropertiesCodec.DecodeRemoteCreateInstanceResponse(result.ResponsePayload.Span);
-        }
-        catch (InvalidOperationException ex)
-        {
-            throw new InvalidOperationException($"{operation} returned malformed activation properties.", ex);
-        }
+        return ActivationPropertiesCodec.DecodeRemoteCreateInstanceResponse(result.ResponsePayload.Span);
     }
-
-    internal static bool ShouldWrapRemoteCreateInstanceAvailabilityFailure(Exception exception)
-    {
-        if (exception is BindException)
-        {
-            return true;
-        }
-
-        if (exception is not InvalidOperationException invalid)
-        {
-            return false;
-        }
-
-        return IsRemoteScmPresentationRejection(invalid.Message);
-    }
-
-    private static bool IsRemoteScmPresentationRejection(string message) =>
-        message.Contains(RemoteScmActivatorInterfaceId.ToString("D"), StringComparison.OrdinalIgnoreCase)
-        && (message.Contains("Presentation context rejected", StringComparison.Ordinal)
-            || message.Contains("presentation context", StringComparison.OrdinalIgnoreCase)
-            || message.Contains("Bind acknowledge did not accept", StringComparison.Ordinal));
 
     /// <inheritdoc />
     public async ValueTask DisposeAsync()

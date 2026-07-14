@@ -7,6 +7,7 @@ on:
       # The `v` prefix is the canonical convention going forward; bare tags
       # are tolerated for compatibility with the existing 1.0.0-rc.N history.
       - 'v*'
+      - '0.*'
       - '1.*'
       - '2.*'
   workflow_dispatch:
@@ -16,12 +17,12 @@ on:
         required: true
         type: string
       publish_reference_images:
-        description: 'Also publish opc-c-server and opc-c-client images to GHCR (for downstream interop consumers). Default: opc-managed only.'
+        description: 'Also publish Windows opc-c-server and opc-c-client images. Requires publish_windows_image and the self-hosted DCOM runner.'
         required: false
         type: boolean
         default: false
       publish_windows_image:
-        description: 'Build+push the WINDOWS opc-classic-managed image. Requires a self-hosted Windows runner (GitHub-hosted runners cannot build Windows containers). Default: off.'
+        description: 'Optionally build and push Windows images on the self-hosted opc-classic-dcom runner. Default: off.'
         required: false
         type: boolean
         default: false
@@ -235,49 +236,44 @@ jobs:
 
             ## Container images
 
-            Managed OPC DA server image published to **GHCR**:
+            The hosted Linux publication job automatically publishes:
 
-            - `ghcr.io/marcschier/opc-classic-managed:${{ env.VERSION }}`
-            - `ghcr.io/marcschier/opc-classic-managed:latest` *(stable releases only)*
+            - `ghcr.io/marcschier/opc-classic-managed-linux:${{ env.VERSION }}`
+            - `ghcr.io/marcschier/opc-classic-managed-linux:latest` *(stable releases only)*
+
+            The Windows image is **not** automatic. Maintainers may publish
+            `ghcr.io/marcschier/opc-classic-managed:${{ env.VERSION }}` from a
+            manual workflow dispatch on the labeled self-hosted Windows runner.
 
             ## Status
 
-            Pre-1.0 alpha. See [Phase 14D compat matrix](docs/COMPAT_MATRIX_STATUS.md) for release-readiness.
+            See [conformance and probe coverage](https://github.com/marcschier/opc-classic/blob/${{ steps.tag.outputs.tag }}/docs/CONFORMANCE.md) for release-readiness.
           files: ./.nupkg/*.nupkg
           prerelease: ${{ contains(env.VERSION, '-') }}
           generate_release_notes: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  docker-publish:
-    # Build and push the WINDOWS Docker image (windowsservercore-based
-    # `opc-classic-managed`) to GHCR.
-    #
-    # OPT-IN ONLY (skipped on tag-push). GitHub-hosted Windows runners no
-    # longer run the Docker daemon and cannot build Windows-container images
-    # (the `docker_engine` named pipe is absent -> "Docker daemon not
-    # running"), and buildx/BuildKit does not support Windows containers, so
-    # this job can never succeed on a `windows-2022` hosted runner. Enabling it
-    # requires a SELF-HOSTED Windows runner with Windows-container support
-    # (change `runs-on` accordingly) and, because buildx cannot build Windows
-    # images, a switch to a classic `docker build` / `docker push`.
-    #
-    # Until then the Linux variant (`docker-publish-linux`,
-    # `opc-classic-managed-linux`) is the published managed container -- the
-    # managed listener speaks plain TCP RPC and needs no Windows COM at
-    # runtime. Trigger this job manually with `publish_windows_image: true`
-    # once a suitable self-hosted runner exists.
-    #
-    # Gated on `release` succeeding so we never publish a Docker image for a
-    # tag whose NuGet packages failed to build.
-    if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.publish_windows_image == 'true' }}
+  docker-publish-windows:
+    # Windows-container publication is opt-in and runs only on the dedicated
+    # self-hosted DCOM runner. Windows images use classic docker build/push;
+    # buildx does not support this path.
+    if: needs.release.result == 'success' && github.event_name == 'workflow_dispatch' && inputs.publish_windows_image
     needs: release
-    runs-on: windows-2022
+    runs-on: [self-hosted, Windows, X64, opc-classic-dcom]
     steps:
       - uses: actions/checkout@v7
         with:
           fetch-depth: 0
           ref: ${{ github.event.inputs.tag || github.ref }}
+
+      - name: Verify Windows-container Docker daemon
+        shell: pwsh
+        run: |
+          $daemonOs = & docker info --format '{{.OSType}}'
+          if ($LASTEXITCODE -ne 0 -or $daemonOs -ne 'windows') {
+            throw "The self-hosted runner must provide a Windows-container Docker daemon; detected '$daemonOs'."
+          }
 
       - name: Log in to GHCR
         uses: docker/login-action@v4
@@ -296,31 +292,58 @@ jobs:
           $version = '${{ needs.release.outputs.version }}'
           $stable  = '${{ needs.release.outputs.is_stable }}' -eq 'true'
 
-          function Compose-Tags([string] $image) {
-              $tags = @("ghcr.io/marcschier/$image`:$version")
-              if ($stable) { $tags += "ghcr.io/marcschier/$image`:latest" }
-              return ($tags -join ',')
+          function Write-Tags([string] $outputName, [string] $image) {
+            $versionTag = "ghcr.io/marcschier/$image`:$version"
+            $latestTag = if ($stable) { "ghcr.io/marcschier/$image`:latest" } else { '' }
+            "$($outputName)_version=$versionTag" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+            "$($outputName)_latest=$latestTag" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
           }
 
-          "managed_tags=$(Compose-Tags 'opc-classic-managed')" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
-          "cserver_tags=$(Compose-Tags 'opc-classic-c-server')" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
-          "cclient_tags=$(Compose-Tags 'opc-classic-c-client')" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+          Write-Tags managed opc-classic-managed
+          Write-Tags cserver opc-classic-c-server
+          Write-Tags cclient opc-classic-c-client
 
       - name: Build and push opc-classic-managed
         id: build-managed
-        uses: docker/build-push-action@v7
-        with:
-          context: .
-          file: interop/docker/opc-managed/Dockerfile
-          push: true
-          tags: ${{ steps.tags.outputs.managed_tags }}
-          labels: |
-            org.opencontainers.image.source=https://github.com/marcschier/opc-classic
-            org.opencontainers.image.revision=${{ github.sha }}
-            org.opencontainers.image.version=${{ needs.release.outputs.version }}
-            org.opencontainers.image.licenses=MIT
-            org.opencontainers.image.title=Opc.Classic managed OPC DA server
-            org.opencontainers.image.description=Cross-platform .NET 10 managed OPC Classic DA server container.
+        env:
+          VERSION_TAG: ${{ steps.tags.outputs.managed_version }}
+          LATEST_TAG: ${{ steps.tags.outputs.managed_latest }}
+          VERSION: ${{ needs.release.outputs.version }}
+        shell: pwsh
+        run: |
+          $tags = @($env:VERSION_TAG)
+          if ($env:LATEST_TAG) { $tags += $env:LATEST_TAG }
+
+          $buildArgs = @(
+            'build',
+            '--file', 'interop/docker/opc-managed/Dockerfile',
+            '--label', 'org.opencontainers.image.source=https://github.com/marcschier/opc-classic',
+            '--label', 'org.opencontainers.image.revision=${{ github.sha }}',
+            '--label', "org.opencontainers.image.version=$env:VERSION",
+            '--label', 'org.opencontainers.image.licenses=MIT',
+            '--label', 'org.opencontainers.image.title=Opc.Classic managed OPC DA server',
+            '--label', 'org.opencontainers.image.description=Cross-platform .NET 10 managed OPC Classic DA server container.'
+          )
+          foreach ($tag in $tags) { $buildArgs += @('--tag', $tag) }
+          $buildArgs += '.'
+
+          & docker @buildArgs
+          if ($LASTEXITCODE -ne 0) { throw "docker build failed with exit code $LASTEXITCODE." }
+
+          $digest = $null
+          foreach ($tag in $tags) {
+            $output = & docker push $tag 2>&1
+            $exitCode = $LASTEXITCODE
+            $output | ForEach-Object { Write-Host $_ }
+            if ($exitCode -ne 0) { throw "docker push failed for $tag with exit code $exitCode." }
+            if ($tag -eq $env:VERSION_TAG) {
+              foreach ($line in $output) {
+                if ("$line" -match 'digest:\s+(sha256:[0-9a-f]{64})') { $digest = $Matches[1] }
+              }
+            }
+          }
+          if (-not $digest) { throw "Could not capture the pushed digest for $env:VERSION_TAG." }
+          "digest=$digest" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
 
       - name: Sign opc-classic-managed (cosign keyless)
         env:
@@ -338,23 +361,46 @@ jobs:
 
       - name: Build and push opc-classic-c-server (optional)
         id: build-cserver
-        if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.publish_reference_images == 'true' }}
-        uses: docker/build-push-action@v7
-        with:
-          context: .
-          file: interop/docker/opc-c-server/Dockerfile
-          push: true
-          tags: ${{ steps.tags.outputs.cserver_tags }}
-          labels: |
-            org.opencontainers.image.source=https://github.com/marcschier/opc-classic
-            org.opencontainers.image.revision=${{ github.sha }}
-            org.opencontainers.image.version=${{ needs.release.outputs.version }}
-            org.opencontainers.image.licenses=MIT
-            org.opencontainers.image.title=Opc.Classic native C OPC DA reference server
-            org.opencontainers.image.description=C-built OPC DA reference server for downstream interop testing.
+        if: inputs.publish_reference_images
+        env:
+          VERSION_TAG: ${{ steps.tags.outputs.cserver_version }}
+          LATEST_TAG: ${{ steps.tags.outputs.cserver_latest }}
+          VERSION: ${{ needs.release.outputs.version }}
+        shell: pwsh
+        run: |
+          $tags = @($env:VERSION_TAG)
+          if ($env:LATEST_TAG) { $tags += $env:LATEST_TAG }
+          $buildArgs = @(
+            'build', '--file', 'interop/docker/opc-c-server/Dockerfile',
+            '--label', 'org.opencontainers.image.source=https://github.com/marcschier/opc-classic',
+            '--label', 'org.opencontainers.image.revision=${{ github.sha }}',
+            '--label', "org.opencontainers.image.version=$env:VERSION",
+            '--label', 'org.opencontainers.image.licenses=MIT',
+            '--label', 'org.opencontainers.image.title=Opc.Classic native C OPC DA reference server',
+            '--label', 'org.opencontainers.image.description=C-built OPC DA reference server for downstream interop testing.'
+          )
+          foreach ($tag in $tags) { $buildArgs += @('--tag', $tag) }
+          $buildArgs += '.'
+          & docker @buildArgs
+          if ($LASTEXITCODE -ne 0) { throw "docker build failed with exit code $LASTEXITCODE." }
+
+          $digest = $null
+          foreach ($tag in $tags) {
+            $output = & docker push $tag 2>&1
+            $exitCode = $LASTEXITCODE
+            $output | ForEach-Object { Write-Host $_ }
+            if ($exitCode -ne 0) { throw "docker push failed for $tag with exit code $exitCode." }
+            if ($tag -eq $env:VERSION_TAG) {
+              foreach ($line in $output) {
+                if ("$line" -match 'digest:\s+(sha256:[0-9a-f]{64})') { $digest = $Matches[1] }
+              }
+            }
+          }
+          if (-not $digest) { throw "Could not capture the pushed digest for $env:VERSION_TAG." }
+          "digest=$digest" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
 
       - name: Sign opc-classic-c-server (cosign keyless, optional)
-        if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.publish_reference_images == 'true' }}
+        if: inputs.publish_reference_images
         env:
           DIGEST: ${{ steps.build-cserver.outputs.digest }}
         shell: pwsh
@@ -362,23 +408,46 @@ jobs:
 
       - name: Build and push opc-classic-c-client (optional)
         id: build-cclient
-        if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.publish_reference_images == 'true' }}
-        uses: docker/build-push-action@v7
-        with:
-          context: .
-          file: interop/docker/opc-c-client/Dockerfile
-          push: true
-          tags: ${{ steps.tags.outputs.cclient_tags }}
-          labels: |
-            org.opencontainers.image.source=https://github.com/marcschier/opc-classic
-            org.opencontainers.image.revision=${{ github.sha }}
-            org.opencontainers.image.version=${{ needs.release.outputs.version }}
-            org.opencontainers.image.licenses=MIT
-            org.opencontainers.image.title=Opc.Classic native C OPC DA reference client
-            org.opencontainers.image.description=C-built headless OPC DA test client for downstream interop testing.
+        if: inputs.publish_reference_images
+        env:
+          VERSION_TAG: ${{ steps.tags.outputs.cclient_version }}
+          LATEST_TAG: ${{ steps.tags.outputs.cclient_latest }}
+          VERSION: ${{ needs.release.outputs.version }}
+        shell: pwsh
+        run: |
+          $tags = @($env:VERSION_TAG)
+          if ($env:LATEST_TAG) { $tags += $env:LATEST_TAG }
+          $buildArgs = @(
+            'build', '--file', 'interop/docker/opc-c-client/Dockerfile',
+            '--label', 'org.opencontainers.image.source=https://github.com/marcschier/opc-classic',
+            '--label', 'org.opencontainers.image.revision=${{ github.sha }}',
+            '--label', "org.opencontainers.image.version=$env:VERSION",
+            '--label', 'org.opencontainers.image.licenses=MIT',
+            '--label', 'org.opencontainers.image.title=Opc.Classic native C OPC DA reference client',
+            '--label', 'org.opencontainers.image.description=C-built headless OPC DA test client for downstream interop testing.'
+          )
+          foreach ($tag in $tags) { $buildArgs += @('--tag', $tag) }
+          $buildArgs += '.'
+          & docker @buildArgs
+          if ($LASTEXITCODE -ne 0) { throw "docker build failed with exit code $LASTEXITCODE." }
+
+          $digest = $null
+          foreach ($tag in $tags) {
+            $output = & docker push $tag 2>&1
+            $exitCode = $LASTEXITCODE
+            $output | ForEach-Object { Write-Host $_ }
+            if ($exitCode -ne 0) { throw "docker push failed for $tag with exit code $exitCode." }
+            if ($tag -eq $env:VERSION_TAG) {
+              foreach ($line in $output) {
+                if ("$line" -match 'digest:\s+(sha256:[0-9a-f]{64})') { $digest = $Matches[1] }
+              }
+            }
+          }
+          if (-not $digest) { throw "Could not capture the pushed digest for $env:VERSION_TAG." }
+          "digest=$digest" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
 
       - name: Sign opc-classic-c-client (cosign keyless, optional)
-        if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.publish_reference_images == 'true' }}
+        if: inputs.publish_reference_images
         env:
           DIGEST: ${{ steps.build-cclient.outputs.digest }}
         shell: pwsh

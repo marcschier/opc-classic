@@ -225,8 +225,98 @@ public sealed class DaClientToolsTests
         await Assert.That(DaClientTools.DefaultOpcDaConnectionFactory.IsProcnumOutOfRange(hresult)).IsTrue();
     }
 
+    [Test]
+    public async Task Da_activation_falls_back_only_for_typed_modern_scm_unavailability()
+    {
+        bool legacyCalled = false;
+        Guid requestedIid = IOPCServer.InterfaceId;
+
+        DaClientTools.DefaultOpcDaConnectionFactory.DaActivationResult result =
+            await DaClientTools.DefaultOpcDaConnectionFactory.ActivateDaServerOnceAsync(
+                _ => Task.FromException<ActivationPropertiesOutData>(
+                    new RemoteScmUnavailableException("Modern SCM unavailable.")),
+                _ =>
+                {
+                    legacyCalled = true;
+                    return Task.FromResult(new RemoteActivationResponse(
+                        0,
+                        Guid.Empty,
+                        Guid.Empty,
+                        0,
+                        default,
+                        new[] { new RemoteActivationInterfaceResult(0, new byte[] { 1, 2, 3 }) }));
+                },
+                new[] { requestedIid },
+                CancellationToken.None);
+
+        await Assert.That(legacyCalled).IsTrue();
+        await Assert.That(result.UsedModernActivation).IsFalse();
+    }
+
+    [Test]
+    public async Task Da_activation_does_not_fallback_for_outer_application_hresult()
+    {
+        bool legacyCalled = false;
+        const int accessDenied = unchecked((int)0x80070005u);
+
+        DaClientTools.DefaultOpcDaConnectionFactory.DaActivationResult result =
+            await DaClientTools.DefaultOpcDaConnectionFactory.ActivateDaServerOnceAsync(
+                _ => Task.FromResult(ActivationPropertiesOutData.Empty with { Hresult = accessDenied }),
+                _ =>
+                {
+                    legacyCalled = true;
+                    return Task.FromResult<RemoteActivationResponse>(null!);
+                },
+                new[] { IOPCServer.InterfaceId },
+                CancellationToken.None);
+
+        await Assert.That(result.Hresult).IsEqualTo(accessDenied);
+        await Assert.That(result.UsedModernActivation).IsTrue();
+        await Assert.That(legacyCalled).IsFalse();
+    }
+
+    [Test]
+    public async Task Da_activation_does_not_fallback_for_rpc_or_malformed_failures()
+    {
+        foreach (Exception expected in new Exception[]
+        {
+            new ActivationRpcException("IRemoteSCMActivator::RemoteCreateInstance", unchecked((int)0x80004005u)),
+            new ActivationPropertiesFormatException("Malformed activation properties."),
+        })
+        {
+            bool legacyCalled = false;
+            Exception actual = await CaptureAsync(() =>
+                DaClientTools.DefaultOpcDaConnectionFactory.ActivateDaServerOnceAsync(
+                    _ => Task.FromException<ActivationPropertiesOutData>(expected),
+                    _ =>
+                    {
+                        legacyCalled = true;
+                        return Task.FromResult<RemoteActivationResponse>(null!);
+                    },
+                    new[] { IOPCServer.InterfaceId },
+                    CancellationToken.None));
+
+            await Assert.That(actual.GetType()).IsEqualTo(expected.GetType());
+            await Assert.That(legacyCalled).IsFalse();
+        }
+    }
+
     private static double GetDouble(object? value) => ((JsonElement)value!).GetDouble();
     private static bool GetBoolean(object? value) => ((JsonElement)value!).GetBoolean();
+
+    private static async Task<Exception> CaptureAsync(Func<Task> action)
+    {
+        try
+        {
+            await action().ConfigureAwait(false);
+        }
+        catch (Exception ex)
+        {
+            return ex;
+        }
+
+        throw new InvalidOperationException("Expected an exception.");
+    }
 
     private static byte[] BuildResolveOxidResponse(Guid ipid, bool includeComVersion)
     {

@@ -36,9 +36,30 @@
     <NoWarn>$(NoWarn);CS1591</NoWarn>
   </PropertyGroup>
   <ItemGroup>
-    <None Include=".mcp\server.json" Pack="true" PackagePath="/.mcp/" />
+    <None Remove=".mcp/server.json" />
+    <McpServerMetadataTemplate Include=".mcp/server.json" />
     <None Include="README.md" Pack="true" PackagePath="/" />
   </ItemGroup>
+  <Target Name="GenerateMcpServerMetadata"
+          BeforeTargets="GenerateNuspec;_GetPackageFiles"
+          DependsOnTargets="GetBuildVersion">
+    <PropertyGroup>
+      <_McpServerMetadataSource>$([System.IO.Path]::Combine('$(MSBuildProjectDirectory)', '.mcp', 'server.json'))</_McpServerMetadataSource>
+      <_McpServerMetadataOutput>$([System.IO.Path]::Combine('$(MSBuildProjectDirectory)', '$(IntermediateOutputPath)', 'mcp', 'server.generated.json'))</_McpServerMetadataOutput>
+      <_McpServerMetadataJson>$([System.IO.File]::ReadAllText('$(_McpServerMetadataSource)').Replace('0.0.0-placeholder', '$(PackageVersion)'))</_McpServerMetadataJson>
+    </PropertyGroup>
+    <MakeDir Directories="$([System.IO.Path]::GetDirectoryName('$(_McpServerMetadataOutput)'))" />
+    <WriteLinesToFile
+      File="$(_McpServerMetadataOutput)"
+      Lines="$(_McpServerMetadataJson)"
+      Overwrite="true"
+      WriteOnlyWhenDifferent="true" />
+    <ItemGroup>
+      <None Include="$(_McpServerMetadataOutput)"
+            Pack="true"
+            PackagePath="/.mcp/server.json" />
+    </ItemGroup>
+  </Target>
   <ItemGroup>
     <InternalsVisibleTo Include="Opc.Classic.Mcp.Tests" />
   </ItemGroup>

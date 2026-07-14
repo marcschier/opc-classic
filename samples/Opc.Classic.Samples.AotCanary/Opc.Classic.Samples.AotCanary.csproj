@@ -5,7 +5,23 @@
     <RootNamespace>Opc.Classic.Samples.AotCanary</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\src\Opc.Classic\Opc.Classic.csproj" />
+    <ProjectReference Include="..\..\src\Opc.Classic.Ae\Opc.Classic.Ae.csproj" />
+    <ProjectReference Include="..\..\src\Opc.Classic.Batch\Opc.Classic.Batch.csproj" />
+    <ProjectReference Include="..\..\src\Opc.Classic.Commands\Opc.Classic.Commands.csproj" />
     <ProjectReference Include="..\..\src\Opc.Classic.Core\Opc.Classic.Core.csproj" />
+    <ProjectReference Include="..\..\src\Opc.Classic.Cpx\Opc.Classic.Cpx.csproj" />
     <ProjectReference Include="..\..\src\Opc.Classic.Da\Opc.Classic.Da.csproj" />
+    <ProjectReference Include="..\..\src\Opc.Classic.Dcom.Kerberos\Opc.Classic.Dcom.Kerberos.csproj" />
+    <ProjectReference Include="..\..\src\Opc.Classic.Dcom.Smb\Opc.Classic.Dcom.Smb.csproj" />
+    <ProjectReference Include="..\..\src\Opc.Classic.Dcom\Opc.Classic.Dcom.csproj" />
+    <ProjectReference Include="..\..\src\Opc.Classic.Discovery\Opc.Classic.Discovery.csproj" />
+    <ProjectReference Include="..\..\src\Opc.Classic.Dx\Opc.Classic.Dx.csproj" />
+    <ProjectReference Include="..\..\src\Opc.Classic.Hda\Opc.Classic.Hda.csproj" />
+    <ProjectReference Include="..\..\src\Opc.Classic.Hosting.Windows\Opc.Classic.Hosting.Windows.csproj" />
+    <ProjectReference Include="..\..\src\Opc.Classic.Hosting\Opc.Classic.Hosting.csproj" />
+    <ProjectReference Include="..\..\src\Opc.Classic.Security\Opc.Classic.Security.csproj" />
+    <ProjectReference Include="..\..\src\Opc.Classic.Xml\Opc.Classic.Xml.csproj" />
+    <ProjectReference Include="..\..\src\Opc.Classic.Windows\Opc.Classic.Windows.csproj" />
   </ItemGroup>
 </Project>

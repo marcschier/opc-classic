@@ -62,7 +62,7 @@ Runtime source is organized by protocol boundary rather than by sample scenario.
 | `Opc.Classic.Discovery` | Local configuration, Windows registry, remote registry, and OPCEnum discovery strategies. |
 | `Opc.Classic.Hosting` | Microsoft.Extensions.Hosting integration and CLSID/ProgID registry abstractions. |
 | `Opc.Classic.Hosting.Windows` | Windows COM registration helpers for native client activation compatibility. |
-| `Opc.Classic.Xml` | XML-DA HTTP/SOAP DTOs, serializers, and client transport shape. |
+| `Opc.Classic.Xml` | Client-only XML-DA HTTP/SOAP DTOs, serializers, and transport. |
 | `Opc.Classic.Generators` | Build-time Roslyn incremental generators for `[OpcInterface]`/`[OpcMethod]` metadata, client proxies, server dispatchers, and codec tables. |
 | `Opc.Classic.MigrationAnalyzer` | Roslyn analyzer that emits porting diagnostics for legacy `.NET Framework OPC .NET API` consumers migrating to `Opc.Classic.*`. |
 
@@ -139,7 +139,7 @@ See [architecture/smb-transport.md](architecture/smb-transport.md) and [architec
 
 ### XML-DA over HTTP/SOAP
 
-`Opc.Classic.Xml` implements the XML-DA 1.01 HTTP/SOAP shape. XML-DA is independent of DCOM but shares core concepts such as item IDs, result IDs, quality, timestamps, and value conversion.
+`Opc.Classic.Xml` implements the client side of the XML-DA 1.01 HTTP/SOAP shape. XML-DA server hosting is intentionally out of scope. XML-DA is independent of DCOM but shares core concepts such as item IDs, result IDs, quality, timestamps, and value conversion.
 
 ## 4. Activation and object lifetime
 
@@ -317,7 +317,7 @@ Discovery is separate from activation. A gateway can discover through OPCEnum, e
 
 ## 10. Spec coverage
 
-All OPC Classic areas targeted by the repository are implemented in the current tree.
+The repository implements broad coverage across its targeted OPC Classic areas, but it does not claim complete conformance. Residual interface, interoperability, and external-validation gaps are tracked in [ROADMAP.md](ROADMAP.md) and the per-spec reviews under [conformance/](conformance/).
 
 | Area | Current support |
 | --- | --- |
@@ -330,9 +330,11 @@ All OPC Classic areas targeted by the repository are implemented in the current 
 | DX | Source server, connection, configuration, and generated DX projections. |
 | Security | OPC Security interfaces plus DCOM authentication and channel-binding integration. |
 | Discovery | Local registry/configuration, remote registry, and OPCEnum discovery paths. |
-| XML-DA | HTTP/SOAP client DTOs, serializers, and transport shape for XML-DA deployments. |
+| XML-DA | Client-only HTTP/SOAP DTOs, serializers, and transport for XML-DA endpoints. |
 
-XML-DA support is available through the HTTP/SOAP assembly for deployments that expose Classic data through XML-DA endpoints rather than DCOM.
+One known DA hosting gap is `IOPCServer::CreateGroupEnumerator` on the Windows CCW path, which still returns `E_NOTIMPL`. A conformant implementation needs an `IEnumString` for the `*_NAMES` scopes and an `IEnumUnknown` for the `*_CONNECTIONS` scopes, backed by the managed group snapshot. This remains on the [ROADMAP](ROADMAP.md#open-conformance-follow-ups).
+
+XML-DA client support is available through the HTTP/SOAP assembly for deployments that expose Classic data through XML-DA endpoints rather than DCOM.
 
 ## 11. Samples
 
@@ -349,7 +351,7 @@ The sample suite includes:
 | `Opc.Classic.Samples.LoopbackDemo` | In-memory generated proxy/dispatcher loopback for DA. |
 | `Opc.Classic.Samples.CttServer` | Conformance-test DA sample server. |
 | `Opc.Classic.Samples.OpcSecurityServer` | OPC Security reference server and ACL semantics. |
-| `Opc.Classic.Samples.SimulationServer` | Full-feature DA/AE/HDA/Batch/Commands/Cpx/DX/Security/Discovery/XML-DA simulation with optional real TCP hosting and cold-activation test path. |
+| `Opc.Classic.Samples.SimulationServer` | Full-feature DA/AE/HDA/Batch/Commands/Cpx/DX/Security/Discovery simulation, plus XML-DA client-facing MCP tools, optional real TCP hosting, and a cold-activation test path. |
 | `Opc.Classic.Samples.AotCanary` | NativeAOT publish smoke test for consumer applications. |
 
 ## 12. Related architecture documents

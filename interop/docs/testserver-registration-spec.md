@@ -180,90 +180,37 @@ IIDs (via TypeLib imports) — so `opccomn_ps.dll` must be registered FIRST.
 Otherwise the dependent DLLs will fail to load their type library
 references when registering.
 
-## What our register-testserver does TODAY (script-only path)
+## Current `register-testserver.ps1` behavior
 
-From `D:\git\marcschier\opc-classic\interop\tools\register-testserver.ps1`:
+The no-MSI script now implements the registration work that was previously
+listed as follow-up:
 
-1. Copies `opccomn_ps.dll` and `opcproxy.dll` to `%SystemRoot%\System32`.
-2. Runs `regsvr32 %SystemRoot%\System32\opccomn_ps.dll`.
-3. Runs `regsvr32 %SystemRoot%\System32\opcproxy.dll`.
-4. Runs `OpcTestServer_x64.exe /RegServer` with working directory =
-   `%SystemRoot%\System32`.
-5. (Writes some HKLM CLSID/ProgID/LocalServer32/category entries
-   directly, per the doc-string at the top of the script.)
+1. Copies the full canonical proxy/stub set to `%SystemRoot%\System32` and
+   registers it in dependency order:
+   `opccomn_ps.dll` → `opcproxy.dll` → `opc_aeps.dll` → `opcbc_ps.dll` →
+   `OpcCmdPs.dll` → `OpcDxPs.dll` → `opchda_ps.dll` → `opcsec_ps.dll`.
+   Missing artifacts produce warnings; DA requires the first two.
+2. Records the installed path and SHA-256 for each copied DLL so
+   unregistration removes only files installed by this script and leaves
+   replaced or externally managed copies intact.
+3. Copies `OpcTestServer_x64.config.xml` beside the EXE. It patches the
+   upstream generated `<CLSID>` from the IDL coclass UUID (`F8582CF8-...`)
+   to the runtime local-server CLSID (`F8582CF9-...`) before activation.
+4. Runs `OpcCategoryManager.exe /RegServer` when the artifact is present.
+5. Runs `OpcTestServer_x64.exe /regserver` from the native System32 working
+   directory.
+6. Writes compatibility HKLM entries for CLSID, LocalServer32, AppID,
+   versioned/version-independent ProgIDs (including the upstream `OPC.`
+   aliases), and DA 1.0/2.0/3.0 Implemented Categories.
+7. On `-Unregister`, runs the TestServer unregister action, removes the
+   compatibility keys, unregisters proxy/stubs in reverse order, unregisters
+   `OpcCategoryManager`, and removes the script's install markers.
 
-## Diff: script vs. canonical (BH2 fix-list)
-
-| # | Item                                       | Installer canonical                       | Script today                          | Verdict       |
-| - | ------------------------------------------ | ----------------------------------------- | ------------------------------------- | ------------- |
-| 1 | Install path for proxy/stub DLLs            | `[CommonFiles64Folder]\OPC Foundation\Bin\` | `%SystemRoot%\System32`                | Diverges (script's choice still works — System32 is on the DLL search path — but inconsistent with vendor install) |
-| 2 | Number of proxy/stub DLLs registered        | All 8 (`opccomn_ps`, `opcproxy`, `opc_aeps`, `opcbc_ps`, `OpcCmdPs`, `OpcDxPs`, `opchda_ps`, `opcsec_ps`) | 2 (`opccomn_ps`, `opcproxy`)          | **Gap — DA-only works; AE/HDA/Batch/Commands/DX/Security marshalling will fail without the missing PS DLLs** |
-| 3 | `OpcCategoryManager.exe /RegServer`         | Yes (deferred CustomAction, SYSTEM)       | Not run                               | **Gap — x64 category enumeration needs it (used by the category-resolution helpers in OPCEnum)** |
-| 4 | `OpcTestServer_x64.exe /RegServer`          | Yes (deferred CustomAction, SYSTEM)       | Yes                                   | ✅ Match     |
-| 5 | `OpcTestServer_x64.config.xml` deployed alongside the EXE | Yes (`comp_OpcTestServerConfig`)          | Not copied                            | **Likely gap — the EXE may load this on startup; without it the EXE could fail to initialize and never register its class factory (could cause `CO_E_SERVER_EXEC_FAILURE`)** |
-| 6 | `OpcTestServer_x64.exe` path stability      | Stable (`Common Files\OPC Foundation\Bin\`) | Build directory | **Risk — if the path contains characters DCOM SCM can't handle, or if SYSTEM lacks read access, activation fails. Build dir is typically OK but worth verifying.** |
-| 7 | Registry entries written by `/RegServer`    | CLSID + LocalServer32 + ProgID + AppID + TypeLib + Implemented Categories | Same (the EXE writes them itself)     | ✅ Match (the EXE does the work; script just invokes /RegServer) |
-| 8 | DCOM AppID `LaunchPermission` / `AccessPermission` | None written (SCM defaults apply)         | None written                          | ✅ Match     |
-| 9 | DCOM AppID `RunAs`                          | None written                              | None written                          | ✅ Match (means activation uses default "Launching User") |
-| 10 | Working directory for `/RegServer`         | None set (CustomAction runs with default) | `%SystemRoot%\System32`                | Probably OK — the EXE uses its own image path for LocalServer32, not the working dir. |
-
-## Most-likely root causes for `CO_E_SERVER_EXEC_FAILURE`
-
-Based on the diff above + live verification on the dev box (2026-06-04),
-the suspected causes ranked by likelihood:
-
-1. **DCOM AppID has no explicit `LaunchPermission`/`AccessPermission` set.**
-   Without these, DCOM SCM falls back to the per-host
-   `DefaultLaunchPermission` ACL — which on a typical Windows install
-   grants `Administrators` + `INTERACTIVE` only. A non-admin caller
-   (for example `REDMOND\mschier` running the probe) gets DCOM access
-   denied, and SCM cannot communicate the activation to the launched
-   EXE. The symptom from the calling side is a tools/call timeout
-   because the SCM keeps re-trying until the channel times out.
-   **Verified**: launching `OpcTestServer_x64.exe -Embedding` manually
-   (no DCOM involved) succeeds — the EXE stays alive and registers
-   its class factory normally. So the EXE itself is healthy; the
-   failure is in the SCM activation path.
-   **Fix surface**: a new helper grant-testserver-acl
-   modeled on grant-opcenum-acl that writes a permissive
-   `LaunchPermission` + `AccessPermission` SD on the TestServer AppID
-   (CLSID `{F8582CF9-...}`).
-2. **Missing `OpcTestServer_x64.config.xml`** alongside the EXE. BH2's
-   fix copies it; live verification confirmed the absence alone does
-   NOT cause activation timeout (the EXE runs without the XML). Keep
-   the copy because the config file controls the TestServer's runtime
-   tag list — without it the server is empty and DA browse/read tests
-   would return no items.
-3. **EXE crashes for other reasons** (missing DLL dependency). Ruled
-   out: manual launch succeeds with the EXE staying alive.
-4. **DCOM SCM cannot read the EXE path**. Ruled out for the dev box
-   path; may matter on hardened Windows installs with strict NTFS ACLs.
-5. **Missing proxy/stub registration** for one of the DA-marshalled
-   interfaces. Only matters AFTER activation succeeds (DCOM uses the
-   proxy/stub DLLs for the call marshalling); not the cause of
-   activation timeout itself. BH2's full-DLL registration is still
-   correct for ensuring AE/HDA/Batch/Commands/DX/Security call paths
-   work once activation succeeds.
-
-## BH2 actionable script changes (next-track fix list)
-
-1. **Copy `OpcTestServer_x64.config.xml`** to the same directory as the
-   EXE before running `/RegServer`. (Cited from the legacy
-   `Installer.wxs:85-90` `comp_OpcTestServerConfig` component.)
-2. **Register all 8 proxy/stub DLLs**, in the order:
-   `opccomn_ps.dll` → `opcproxy.dll` → `opc_aeps.dll` → `opcbc_ps.dll`
-   → `OpcCmdPs.dll` → `OpcDxPs.dll` → `opchda_ps.dll` → `opcsec_ps.dll`.
-   (Cited from `MergeModule.wxs:156-219`.)
-3. **Register `OpcCategoryManager.exe /RegServer`** before the
-   TestServer. (Cited from `MergeModule.wxs:233-253`.)
-4. **Mirror unregistration order** on `-Unregister` (reverse of
-   registration; TestServer `/UnRegServer` first, then EXEs, then DLLs
-   from `opcsec_ps` back to `opccomn_ps`).
-5. Document the divergence from the installer `Common Files\OPC Foundation\Bin\`
-   install path (System32 is acceptable but non-standard).
-6. Add a unit test under Opc.Classic.Tools tests (new project
-   if needed) that parses the script and asserts each installer-cited entry
-   from the table above is covered.
+The deliberate difference from the legacy MSI is location: the MSI used
+`Common Files\OPC Foundation\Bin`, while this developer shortcut registers
+native x64 proxy/stubs from System32. The script requires elevated 64-bit
+PowerShell so SCM and native COM registration see the same HKLM/System32
+view.
 
 ## What canonical install would do for non-Matrikon-cwd-style test
 
@@ -280,91 +227,28 @@ the post-install state is:
   `MergeModule.wxs:88-94`); the x64 MSI installs the x86 merge module
   which provides OpcEnum on the SysWOW64 side.
 
-register-testserver is a no-MSI shortcut for developer
-machines. The BH2 fixes above bring it to functional parity with the
-MSI for the **TestServer-only DA case**; full multi-spec marshalling
-would also require the additional proxy/stub registrations from the
-table.
+`register-testserver.ps1` is a no-MSI shortcut for developer machines. It
+now installs every proxy/stub artifact produced by the build, so the
+registration surface is not limited to the two DA DLLs.
 
-## Verified live findings (2026-06-04, post-DR1)
+## Current validation status
 
-Live diagnostic instrumentation (`OPC_CLASSIC_DCOM_WIRE_DUMP=1`,
-`DcomCallChannel.cs` bind+invoke tracing) against a partially-registered
-TestServer revealed the actual symptom chain:
+The standard build + register + ACL flow activates TestServer end-to-end in
+the in-repo MCP matrix. The fixes that made this path reliable are:
 
-1. **MCP `da.connect` opens TCP to localhost:135** (RPCSS). ✅
-2. **NTLM SPNEGO bind succeeds**: BIND PDU written, BIND_ACK received
-   (238-byte auth body), AUTH3 written, IActivation presentation
-   context accepted. ✅
-3. **IActivation::RemoteActivation REQUEST written** (opnum 0,
-   150-byte payload, 182-byte signed stub). ✅
-4. **SCM launches TestServer** — process appears in Task Manager
-   listening for the SCM's class-factory registration callback. ✅
-5. **TestServer never calls `CoRegisterClassObject`** within the
-   SCM timeout window (~2 minutes). The Windows Event Log shows
-   recurring `Microsoft-Windows-DistributedCOM` event:
-   > `The server {F8582CF9-88FB-11DA-A5ED-0060B0692061} did not
-   > register with DCOM within the required timeout.`
-6. **SCM eventually returns `CO_E_SERVER_EXEC_FAILURE` (0x80080005)**
-   to our managed activation client (~180s after the request was
-   sent). Our MCP probe times out before this response arrives
-   (default 60s).
+- full proxy/stub registration in canonical order;
+- deploying and correcting `OpcTestServer_x64.config.xml`;
+- registering `OpcCategoryManager`;
+- writing the stable HKLM compatibility identities and DA categories;
+- removing stale per-user registrations that can shadow HKLM through HKCR;
+- applying TestServer launch/access ACLs on restrictive hosts; and
+- using packet integrity or stronger authentication under current Windows
+  DCOM hardening.
 
-### Why TestServer fails to register — DEEP-DIVE (DR3 round 3-5)
-
-After extensive bisection:
-
-1. **HKCU shadow registration**: an earlier non-elevated `OpcTestServer_x64.exe /regserver`
-   run from a DIFFERENT build path (`D:\git\marcschier\OPC-Classic-CoreComponents\build\...`)
-   left HKCU entries that override HKLM via HKCR merge. Removing them
-   via `Remove-Item HKCU:\SOFTWARE\Classes\CLSID\{F8582CF9-...}` etc.
-   restored HKLM as the source of truth. **Did NOT fix the activation**.
-2. **DCOM hardening (KB5004442)**: TestServer's `COpcComModule::Run` and
-   `COpcComModule::RegisterFromFiles` called `CoInitializeSecurity` with
-   `RPC_C_AUTHN_LEVEL_PKT` (level 4). Microsoft's June-2021 DCOM
-   hardening REQUIRES `RPC_C_AUTHN_LEVEL_PKT_INTEGRITY` (level 5) for
-   servers. **Fixed in the vendored OPC Foundation `COpcComModule.cpp`**
-   (both call sites). **Did NOT fix the activation** either — the
-   fundamental issue is elsewhere.
-3. **Comparison with Matrikon (working baseline)**: Foundation TestClient
-   successfully activates Matrikon's CoCreateInstance. Matrikon is
-   registered as a **Windows Service** (`MatrikonOPC Server for
-   Simulation and Testing`, x86 LocalServer process under WoW64). SCM
-   activates services via a different code path than EXE-launch.
-4. **TestServer activation fails for ALL DCOM clients**: Foundation
-   `OpcTestClient_x64.exe` (Microsoft's native DCOM client) gets the
-   identical `0x80080005` failure. Our managed MCP client gets the same.
-   This rules out our managed DCOM stack as the cause.
-
-### Conclusion
-
-The TestServer C++ EXE has a fundamental activation-time problem that
-prevents it from successfully registering its class factory with SCM
-within the required timeout window, regardless of which DCOM client is
-attempting activation. The issue persists across:
-
-- Fresh build-testserver builds.
-- Both binary builds present on the dev box.
-- HKLM-only registration (after HKCU shadow removal).
-- Both Microsoft's native DCOM client and our managed client.
-
-Root cause is **TestServer-side** (C++ source or DCOM/Windows
-configuration), NOT in our codebase. Fixing it requires either:
-
-- Source-level debug of TestServer's `COpcComModule::Run` to determine
-  why `CoRegisterClassObject` or its surrounding plumbing aborts.
-- Upstream fix from OPC Foundation `OPC-Classic-CoreComponents`.
-- Switch to a different reference server (Matrikon, which is the only
-  one currently demonstrating end-to-end DA activation).
-
-### Recommended workaround
-
-Use **Matrikon OPC Simulation Server** as an additional DA 2.05a reference
-server in the cross-impl matrix. Foundation `OpcTestClient_x64.exe` and
-our managed MCP probe both successfully activate Matrikon end-to-end.
-The `testserver` profile in probe matrix tool remains the strict in-repo
-reference and is expected to stay green after the standard build,
-registration, and ACL flow.
+If a clean machine still reports `CO_E_SERVER_EXEC_FAILURE` or
+DistributedCOM event 10010, compare the installed state against the steps
+above before investigating the RPC client. The `testserver` matrix profile
+is the acceptance reference.
 
 ### Diagnostic helper: `OPC_CLASSIC_DCOM_WIRE_DUMP=1`
 

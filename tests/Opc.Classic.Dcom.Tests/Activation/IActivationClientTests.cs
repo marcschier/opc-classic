@@ -118,10 +118,10 @@ public sealed class IActivationClientTests
             .Build();
         var client = new ActivationClient(channel);
 
-        InvalidOperationException exception = await Assert.That(async () =>
+        RemoteScmUnavailableException exception = await Assert.That(async () =>
         {
             _ = await client.RemoteCreateInstanceAsync(TestClsid, new[] { "ncacn_ip_tcp" }, new[] { IidIUnknown });
-        }).Throws<InvalidOperationException>();
+        }).Throws<RemoteScmUnavailableException>();
 
         await Assert.That(exception.Message.Contains("IRemoteSCMActivator::RemoteCreateInstance", StringComparison.Ordinal)).IsTrue();
         await Assert.That(exception.InnerException is BindException).IsTrue();
@@ -143,6 +143,39 @@ public sealed class IActivationClientTests
 
         await Assert.That(exception.Message).IsEqualTo("Packet integrity verification failed.");
         await Assert.That(exception.InnerException).IsNull();
+    }
+
+    [Test]
+    public async Task RemoteCreateInstanceAsync_surfaces_rpc_fault_as_typed_exception()
+    {
+        const int accessDenied = unchecked((int)0x80070005u);
+        var channel = new InMemoryCallChannelBuilder()
+            .Register(new Guid("000001A0-0000-0000-C000-000000000046"), 4, (_, _, _, _) =>
+                Task.FromResult(new NdrCallResult(accessDenied, ReadOnlyMemory<byte>.Empty, IsFault: true)))
+            .Build();
+        var client = new ActivationClient(channel);
+
+        ActivationRpcException exception = await Assert.That(async () =>
+        {
+            _ = await client.RemoteCreateInstanceAsync(TestClsid, new[] { "ncacn_ip_tcp" }, new[] { IidIUnknown });
+        }).Throws<ActivationRpcException>();
+
+        await Assert.That(exception.Hresult).IsEqualTo(accessDenied);
+    }
+
+    [Test]
+    public async Task RemoteCreateInstanceAsync_surfaces_malformed_properties_as_typed_exception()
+    {
+        var channel = new InMemoryCallChannelBuilder()
+            .Register(new Guid("000001A0-0000-0000-C000-000000000046"), 4, (_, _, _, _) =>
+                Task.FromResult(new NdrCallResult(0, new byte[] { 1, 2, 3 })))
+            .Build();
+        var client = new ActivationClient(channel);
+
+        await Assert.That(async () =>
+        {
+            _ = await client.RemoteCreateInstanceAsync(TestClsid, new[] { "ncacn_ip_tcp" }, new[] { IidIUnknown });
+        }).Throws<ActivationPropertiesFormatException>();
     }
 
     [Test]

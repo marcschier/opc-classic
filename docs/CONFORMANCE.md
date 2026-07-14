@@ -39,7 +39,7 @@ The former per-spec review set compared each OPC specification's protocol surfac
 | [OPC DX 1.00](#opc-dx-100) | Data eXchange | `IOPCConfiguration` has a complete hand-written client proxy backed by DX structure codecs, status records, enums, namespace helpers, and error constants. | DX server runtime/DA bridge, persistence, and live data-transfer state machine are not implemented. |
 | [OPC HDA 1.20](#opc-hda-120) | Historical Data Access | 56/56 methods and 5/5 codecs are declared; CCW now covers browser, sync/async read, sync/async update, playback, annotation insert, and raw/processed advise paths. | Remaining items are server-policy concerns such as aggregate semantics, relative time parsing, persistence, and connection-point enumeration stubs. |
 | [OPC Security 1.00](#opc-security-100) | Security | 6/6 methods across `IOPCSecurityNT` and `IOPCSecurityPrivate` are projected and tested. | Reference sample server ships in this release. |
-| [OPC XML-DA 1.01](#opc-xml-da-101) | XML-DA (SOAP transport) | Client supports all 8 operations, SOAP 1.1, scalar/extended scalar values, array values, base64Binary, quality, errors, and polled subscriptions. | XML-DA server hosting and SOAP 1.2 are not implemented. |
+| [OPC XML-DA 1.01](#opc-xml-da-101) | XML-DA (SOAP transport) | Client supports all 8 operations, SOAP 1.1, scalar/extended scalar values, array values, base64Binary, quality, errors, and polled subscriptions. | Client-only by design; SOAP 1.2 is not implemented. |
 
 ### Current validation baseline
 
@@ -1433,7 +1433,7 @@ The `Opc.Classic.Security` implementation is **complete** for client-side usage:
 
 ### Executive Summary
 
-The `Opc.Classic.Xml` library provides a **complete client implementation** for all 8 OPC XML-DA 1.01 operations with scalar, extended scalar, XML-DA array, base64Binary, typed error-code, and quality-bit support. It is an AOT- and trim-compatible SOAP 1.1/HTTP client surface built around caller-owned `HttpClient` instances; XML-DA server hosting remains out of scope for the current package.
+The `Opc.Classic.Xml` library provides a **complete client implementation** for all 8 OPC XML-DA 1.01 operations with scalar, extended scalar, XML-DA array, base64Binary, typed error-code, and quality-bit support. It is an AOT- and trim-compatible SOAP 1.1/HTTP client surface built around caller-owned `HttpClient` instances; XML-DA server hosting is outside the repository's intended scope.
 
 #### Coverage overview
 
@@ -1445,11 +1445,10 @@ The `Opc.Classic.Xml` library provides a **complete client implementation** for 
 - **Server Hosting**: Not implemented (pending)
 - **SOAP Transport**: 1.1 only (1.2 not implemented)
 
-#### Major gaps
+#### Client limitations and validation gaps
 
-1. **Server hosting** — No ASP.NET/ASP.NET Core server implementation (pending)
-2. **SOAP 1.2 bindings** — Only SOAP 1.1 supported
-3. **Third-party interop runs** — No integration tests against representative XML-DA servers yet
+1. **SOAP 1.2 bindings** — Only SOAP 1.1 supported
+2. **Third-party interop runs** — No integration tests against representative XML-DA servers yet
 
 ---
 
@@ -1769,7 +1768,7 @@ The spec defines 111 standard property IDs. Implementation **does not** have an 
 
 **Impact**: Cannot host an XML-DA server in .NET; only client connections to existing servers are supported.
 
-**Roadmap**: Evaluate XML-DA server hosting for a future major release.
+**Scope decision**: XML-DA remains client-only; server hosting is not a roadmap item.
 
 
 ---
@@ -1829,9 +1828,8 @@ Opc.Classic.Xml tests covers the HTTP client path and per-operation serializers.
 
 #### 10.1 Critical Gaps (Blocking Production Use)
 
-| Gap | Impact | Recommendation |
-| --- | --- | --- |
-| **No server hosting** | Cannot expose .NET applications as XML-DA servers | **2.0.0**: Implement ASP.NET Core server |
+None for the intended client-only scope. Production readiness depends on
+validating the client against the XML-DA servers used by the deployment.
 
 #### 10.2 Non-Critical Gaps
 
@@ -1847,8 +1845,7 @@ Opc.Classic.Xml tests covers the HTTP client path and per-operation serializers.
 - ✅ All 8 operations, scalar values, extended scalar values, array values, base64Binary, type-safe error codes, and SOAP 1.1 complete
 - ⚠️ **Add integration tests** — Validate against real XML-DA servers
 
-##### 2.0.0 (Full Feature Set)
-- 🎯 **Implement server hosting** — ASP.NET Core middleware + subscription manager (pending)
+##### Potential client enhancements
 - 🔍 **Consider SOAP 1.2** — If user demand exists
 - 🔍 **Consider type-safe property accessors** — `XmlDaPropertyId` enum
 
@@ -1870,11 +1867,11 @@ Opc.Classic.Xml tests covers the HTTP client path and per-operation serializers.
 | **Properties** | 100% | All 111 properties queryable |
 | **Server Hosting** | 0% | Client-only |
 
-**Overall**: ~85% spec compliance (client-side, scalar + array values; server hosting pending)
+**Overall**: complete intended client operation coverage, with remaining client interoperability validation and optional SOAP 1.2 work.
 
 #### 11.2 Deviations from Spec
 
-1. **No server hosting** — Pending ASP.NET Core server implementation
+1. **No server hosting** — Deliberate client-only scope, not an implementation backlog item
 2. **No SOAP 1.2** — Acceptable; SOAP 1.1 universally supported
 
 #### 11.3 Spec Ambiguities / Open Questions
@@ -1885,7 +1882,6 @@ None identified. Spec is clear and implementation follows closely.
 ### Roadmap
 
 - complete XML-DA interop runs against representative third-party servers when access is available.
-- evaluate XML-DA server hosting;
 - add vendor-specific value carriers where interop demand justifies them;
 - consider optional SOAP security helpers layered on top of `HttpClient`.
 
@@ -1901,7 +1897,7 @@ None identified. Spec is clear and implementation follows closely.
 ---
 
 **Analysis Completed**: 2025-01-24
-**Next Review**: After server hosting implementation
+**Next Review**: After representative third-party client interoperability runs
 
 ## Cross-cutting themes
 
@@ -1915,7 +1911,7 @@ The cross-platform managed DCOM path usually has broader interface coverage than
 
 ### Runtime semantics are server-specific
 
-Several specs define server behavior beyond wire projection: Batch namespace models, CPX type-conversion/data filters, DX runtime transfer state, HDA aggregate calculations, and XML-DA server hosting. The docs mark those separately from client proxy/dispatcher coverage.
+Several specs define server behavior beyond wire projection: Batch namespace models, CPX type-conversion/data filters, DX runtime transfer state, and HDA aggregate calculations. XML-DA is separately documented as a client-only package by design.
 
 ### Error constants and codecs have moved forward
 
@@ -1924,4 +1920,3 @@ Earlier reviews flagged missing CPX, DX, HDA, Batch, XML-DA array, and DA VARIAN
 ### Current validation baseline
 
 See [Spec coverage overview](#spec-coverage-overview) for the repository-wide baseline.
-

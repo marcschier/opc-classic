@@ -1204,9 +1204,6 @@ public sealed class DaClientTools
             }
         }
 
-        private const int MaxActivationAttempts = 5;
-        private const int ActivationRetryBaseDelayMs = 500;
-
         // RPCSS can report a freshly launched LocalServer32 as unavailable while
         // the (managed, generic-host) server is still cold-starting: the first
         // activation loses the race, but the server stays alive, so a bounded
@@ -1227,20 +1224,14 @@ public sealed class DaClientTools
             Guid[] requestedIids,
             CancellationToken cancellationToken)
         {
-            for (int attempt = 1; ; attempt++)
-            {
-                DaActivationResult result = await ActivateDaServerOnceAsync(
+            return await ActivationRetryPolicy.Default.ExecuteAsync(
+                token => ActivateDaServerOnceAsync(
                     activationClient,
                     clsid,
                     requestedIids,
-                    cancellationToken).ConfigureAwait(false);
-                if (result.Hresult == 0 || attempt >= MaxActivationAttempts || !IsTransientActivationFailure(result.Hresult))
-                {
-                    return result;
-                }
-
-                await Task.Delay(TimeSpan.FromMilliseconds(ActivationRetryBaseDelayMs * attempt), cancellationToken).ConfigureAwait(false);
-            }
+                    token),
+                static result => IsTransientActivationFailure(result.Hresult),
+                cancellationToken).ConfigureAwait(false);
         }
 
         private static async Task<DaActivationResult> ActivateDaServerOnceAsync(
@@ -1249,29 +1240,47 @@ public sealed class DaClientTools
             Guid[] requestedIids,
             CancellationToken cancellationToken)
         {
-            try
-            {
-                ActivationPropertiesOutData modern = await activationClient.RemoteCreateInstanceAsync(
+            return await ActivateDaServerOnceAsync(
+                token => activationClient.RemoteCreateInstanceAsync(
                     clsid,
                     new[] { "ncacn_ip_tcp", "ncacn_np" },
                     requestedIids,
-                    cancellationToken).ConfigureAwait(false);
+                    token),
+                token => activationClient.RemoteActivationAsync(
+                    clsid,
+                    new[] { "ncacn_ip_tcp", "ncacn_np" },
+                    null,
+                    requestedIids,
+                    token),
+                requestedIids,
+                cancellationToken).ConfigureAwait(false);
+        }
+
+        internal static async Task<DaActivationResult> ActivateDaServerOnceAsync(
+            Func<CancellationToken, Task<ActivationPropertiesOutData>> modernActivation,
+            Func<CancellationToken, Task<Opc.Classic.Dcom.Activation.RemoteActivationResponse>> legacyActivation,
+            IReadOnlyList<Guid> requestedIids,
+            CancellationToken cancellationToken)
+        {
+            ArgumentNullException.ThrowIfNull(modernActivation);
+            ArgumentNullException.ThrowIfNull(legacyActivation);
+            ArgumentNullException.ThrowIfNull(requestedIids);
+
+            try
+            {
+                ActivationPropertiesOutData modern = await modernActivation(cancellationToken).ConfigureAwait(false);
                 return new DaActivationResult(
-                    0,
+                    modern.Hresult,
                     modern.Oxid,
                     modern.IpidRemUnknown,
                     modern.OxidBindings,
                     ToDaInterfaceResults(modern.InterfaceResults),
                     UsedModernActivation: true);
             }
-            catch (InvalidOperationException ex) when (IsRemoteCreateInstanceFailure(ex))
+            catch (RemoteScmUnavailableException)
             {
-                Opc.Classic.Dcom.Activation.RemoteActivationResponse legacy = await activationClient.RemoteActivationAsync(
-                    clsid,
-                    new[] { "ncacn_ip_tcp", "ncacn_np" },
-                    null,
-                    requestedIids,
-                    cancellationToken).ConfigureAwait(false);
+                Opc.Classic.Dcom.Activation.RemoteActivationResponse legacy =
+                    await legacyActivation(cancellationToken).ConfigureAwait(false);
                 return new DaActivationResult(
                     legacy.Hresult,
                     0,
@@ -1281,10 +1290,6 @@ public sealed class DaClientTools
                     UsedModernActivation: false);
             }
         }
-
-        private static bool IsRemoteCreateInstanceFailure(InvalidOperationException exception) =>
-            exception.Message.Contains("IRemoteSCMActivator::RemoteCreateInstance", StringComparison.Ordinal)
-            || exception.InnerException is InvalidOperationException inner && IsRemoteCreateInstanceFailure(inner);
 
         internal static DaActivationInterfaceResult[] ToDaInterfaceResults(IReadOnlyList<ActivationInterfaceResult> results)
         {
@@ -1847,7 +1852,7 @@ public sealed class DaClientTools
 
         private static string? NormalizeText(string? text) => string.IsNullOrWhiteSpace(text) ? null : text.Trim();
 
-        private sealed record DaActivationResult(
+        internal sealed record DaActivationResult(
             int Hresult,
             ulong Oxid,
             Guid IpidRemUnknown,

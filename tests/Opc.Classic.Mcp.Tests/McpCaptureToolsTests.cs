@@ -2,6 +2,9 @@
 
 using System.Runtime.CompilerServices;
 using ModelContextProtocol;
+using Opc.Classic.Dcom.Rpc;
+using Opc.Classic.Dcom.Rpc.pdu;
+using Opc.Classic.Dcom.Transport;
 using Opc.Classic.Mcp.Capture;
 using Opc.Classic.Mcp.Tools;
 using TUnit.Assertions.AssertConditions.Throws;
@@ -185,17 +188,93 @@ public sealed class McpCaptureToolsTests
     }
 
     [Test]
-    public async Task CaptureTools_DecodePdu_Strips_hex_formatting_and_rejects_odd_nibbles()
+    public async Task CaptureTools_DecodePdu_DecodesKnownRequestResponseAndFaultFrames()
     {
         await using CaptureSessionManager manager = CreateManager();
         var tools = new CaptureTools(manager);
 
-        string emptyDecoded = tools.DecodePdu("0x, ; :");
+        string request = tools.DecodePdu(FormatHex(EncodeRequest()));
+        string response = tools.DecodePdu(Convert.ToHexString(EncodeResponse()));
+        string fault = tools.DecodePdu(Convert.ToHexString(EncodeFault()));
 
-        await Assert.That(emptyDecoded).Contains("\"PduType\": \"orpc_body\"");
-        await Assert.That(emptyDecoded).Contains("\"CallId\": -1");
-        await Assert.That(emptyDecoded).Contains("\"RequestStubLength\": 0");
-        await Assert.That(() => tools.DecodePdu("0x0")).Throws<McpException>();
+        await Assert.That(request).Contains("\"PduType\": \"request\"");
+        await Assert.That(request).Contains("\"CallId\": 21");
+        await Assert.That(request).Contains("\"Opnum\": 7");
+        await Assert.That(request).DoesNotContain("RawFrame");
+        await Assert.That(request).DoesNotContain("StubBytes");
+        await Assert.That(response).Contains("\"PduType\": \"response\"");
+        await Assert.That(response).Contains("\"CallId\": 21");
+        await Assert.That(fault).Contains("\"PduType\": \"fault\"");
+        await Assert.That(fault).Contains("\"FaultStatus\":");
+    }
+
+    [Test]
+    public async Task CaptureTools_DecodePdu_RejectsEmptyTruncatedAndUndecodableInputWithStructuredErrors()
+    {
+        await using CaptureSessionManager manager = CreateManager();
+        var tools = new CaptureTools(manager);
+        byte[] truncated = EncodeRequest()[..^1];
+        byte[] undecodable = new byte[ConnectionOrientedPdu.HEADER_LENGTH];
+        undecodable[0] = 5;
+        undecodable[2] = 0xEF;
+        undecodable[8] = (byte)undecodable.Length;
+
+        var empty = await Assert.That(() => tools.DecodePdu("0x, ; :"))
+            .Throws<McpException>();
+        var shortFrame = await Assert.That(() => tools.DecodePdu(Convert.ToHexString(truncated)))
+            .Throws<McpException>();
+        var badType = await Assert.That(() => tools.DecodePdu(Convert.ToHexString(undecodable)))
+            .Throws<McpException>();
+        var odd = await Assert.That(() => tools.DecodePdu("0x0"))
+            .Throws<McpException>();
+
+        await Assert.That(empty!.Message).Contains("\"code\":\"capture_decode_failed\"");
+        await Assert.That(empty.Message).Contains("\"reason\":\"empty_frame\"");
+        await Assert.That(shortFrame!.Message).Contains("\"reason\":\"fragment_length_mismatch\"");
+        await Assert.That(badType!.Message).Contains("\"stage\":\"pdu_codec\"");
+        await Assert.That(odd!.Message).Contains("\"reason\":\"odd_nibble_count\"");
+    }
+
+    [Test]
+    public async Task CaptureTools_DecodePdu_ParsesFramesLargerThanFormer8192ByteLimit()
+    {
+        await using CaptureSessionManager manager = CreateManager();
+        var tools = new CaptureTools(manager);
+        byte[] payload = Enumerable.Range(0, 9000).Select(i => (byte)i).ToArray();
+        byte[] stub = OrpcEnvelope.BuildRequestStub(payload, Guid.Empty);
+        byte[] frame = PduCodec.EncodePdu(
+            new RequestCoPdu
+            {
+                AllocationHint = stub.Length,
+                ContextId = 0,
+                Opnum = 7,
+                Stub = stub,
+                CallId = 22,
+            },
+            ushort.MaxValue);
+
+        string decoded = tools.DecodePdu(Convert.ToHexString(frame));
+
+        await Assert.That(frame.Length).IsGreaterThan(8192);
+        await Assert.That(decoded).Contains("\"PduType\": \"request\"");
+        await Assert.That(decoded).Contains($"\"RequestStubLength\": {stub.Length}");
+    }
+
+    [Test]
+    public async Task CaptureTools_DecodePdu_RejectsTooLargeEmbeddedPrefixAndTrailingBytes()
+    {
+        await using CaptureSessionManager manager = CreateManager();
+        var tools = new CaptureTools(manager);
+        string tooLarge = new('0', (ushort.MaxValue + 1) * 2);
+        byte[] trailing = [.. EncodeRequest(), 0x00];
+
+        var oversized = await Assert.That(() => tools.DecodePdu(tooLarge)).Throws<McpException>();
+        var embeddedPrefix = await Assert.That(() => tools.DecodePdu("05 0x00")).Throws<McpException>();
+        var extraBytes = await Assert.That(() => tools.DecodePdu(Convert.ToHexString(trailing))).Throws<McpException>();
+
+        await Assert.That(oversized!.Message).Contains("\"reason\":\"input_too_large\"");
+        await Assert.That(embeddedPrefix!.Message).Contains("\"reason\":\"invalid_character\"");
+        await Assert.That(extraBytes!.Message).Contains("\"reason\":\"fragment_length_mismatch\"");
     }
 
     private static CaptureSessionManager CreateManager()
@@ -210,6 +289,50 @@ public sealed class McpCaptureToolsTests
         Directory.CreateDirectory(folder);
         return folder;
     }
+
+    private static string FormatHex(byte[] bytes)
+        => "0x" + string.Join(" ", bytes.Select(b => b.ToString("X2", System.Globalization.CultureInfo.InvariantCulture)));
+
+    private static byte[] EncodeRequest()
+    {
+        byte[] stub = OrpcEnvelope.BuildRequestStub(new byte[] { 0x10, 0x20 }, Guid.Empty);
+        return PduCodec.EncodePdu(
+            new RequestCoPdu
+            {
+                AllocationHint = stub.Length,
+                ContextId = 0,
+                Opnum = 7,
+                Stub = stub,
+                CallId = 21,
+            },
+            ConnectionOrientedPdu.MUST_RECEIVE_FRAGMENT_SIZE);
+    }
+
+    private static byte[] EncodeResponse()
+    {
+        byte[] stub = OrpcEnvelope.BuildResponseStub(new byte[] { 0x30, 0x40 });
+        return PduCodec.EncodePdu(
+            new ResponseCoPdu
+            {
+                AllocationHint = stub.Length,
+                ContextId = 0,
+                Stub = stub,
+                CallId = 21,
+            },
+            ConnectionOrientedPdu.MUST_RECEIVE_FRAGMENT_SIZE);
+    }
+
+    private static byte[] EncodeFault()
+        => PduCodec.EncodePdu(
+            new FaultCoPdu
+            {
+                AllocationHint = 0,
+                ContextId = 0,
+                Status = (FaultCode)0x1C010003,
+                Stub = [],
+                CallId = 21,
+            },
+            ConnectionOrientedPdu.MUST_RECEIVE_FRAGMENT_SIZE);
 
     private sealed class SyntheticCaptureSource : ICaptureSource
     {

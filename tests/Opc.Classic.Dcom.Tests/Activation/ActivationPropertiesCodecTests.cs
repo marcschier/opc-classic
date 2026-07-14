@@ -2,6 +2,7 @@
 
 using Opc.Classic.Dcom.Activation;
 using Opc.Classic.Ndr;
+using TUnit.Assertions.AssertConditions.Throws;
 
 namespace Opc.Classic.Dcom.Tests.Activation;
 
@@ -70,10 +71,76 @@ public sealed class ActivationPropertiesCodecTests
         await Assert.That(decoded.IpidRemUnknown).IsEqualTo(ipidRemUnknown);
         await Assert.That(decoded.AuthnHint).IsEqualTo(6u);
         await Assert.That(decoded.ServerVersion).IsEqualTo(((ushort)5, (ushort)7));
+        await Assert.That(decoded.Hresult).IsEqualTo(0);
         await Assert.That(decoded.InterfaceResults.Count).IsEqualTo(1);
         await Assert.That(decoded.InterfaceResults[0].Iid).IsEqualTo(IidOpcServer);
         await Assert.That(decoded.InterfaceResults[0].Hresult).IsEqualTo(0);
         await Assert.That(Convert.ToHexString(decoded.InterfaceResults[0].ObjRef)).IsEqualTo(Convert.ToHexString(objRef));
+    }
+
+    [Test]
+    [Arguments(unchecked((int)0x80070005u))]
+    [Arguments(unchecked((int)0x80080005u))]
+    public async Task RemoteCreateInstance_NULL_response_preserves_outer_hresult(int hresult)
+    {
+        var buffer = new byte[8];
+        var writer = new NdrWriter(buffer);
+        writer.WriteUInt32(0);
+        writer.WriteInt32(hresult);
+
+        ActivationPropertiesOutData decoded =
+            ActivationPropertiesCodec.DecodeRemoteCreateInstanceResponse(buffer);
+
+        await Assert.That(decoded.Hresult).IsEqualTo(hresult);
+        await Assert.That(decoded.InterfaceResults.Count).IsEqualTo(0);
+        await Assert.That(decoded.Oxid).IsEqualTo(0ul);
+    }
+
+    [Test]
+    [Arguments(unchecked((int)0x80070005u))]
+    [Arguments(unchecked((int)0x80080005u))]
+    public async Task RemoteCreateInstance_populated_failure_returns_outer_hresult_without_decoding_properties(int hresult)
+    {
+        byte[] encoded = ActivationPropertiesCodec.EncodeRemoteCreateInstanceResponse(
+            0x0102030405060708,
+            new byte[] { 2, 0, 1, 0, 7, 0, 0, 0 },
+            Guid.NewGuid(),
+            authnHint: 6,
+            serverVersion: (5, 7),
+            new[] { new ActivationInterfaceResult(IidOpcServer, 0, CreateStandardObjRef(IidOpcServer)) },
+            hresult);
+
+        ActivationPropertiesOutData decoded =
+            ActivationPropertiesCodec.DecodeRemoteCreateInstanceResponse(encoded);
+
+        await Assert.That(decoded.Hresult).IsEqualTo(hresult);
+        await Assert.That(decoded.InterfaceResults.Count).IsEqualTo(0);
+        await Assert.That(decoded.Oxid).IsEqualTo(0ul);
+    }
+
+    [Test]
+    public async Task RemoteCreateInstance_malformed_populated_failure_preserves_outer_hresult()
+    {
+        const int accessDenied = unchecked((int)0x80070005u);
+        var buffer = new byte[12];
+        var writer = new NdrWriter(buffer);
+        writer.WriteUInt32(0x00020000);
+        writer.WriteUInt32(0xDEADBEEF);
+        writer.WriteInt32(accessDenied);
+
+        ActivationPropertiesOutData decoded =
+            ActivationPropertiesCodec.DecodeRemoteCreateInstanceResponse(buffer);
+
+        await Assert.That(decoded.Hresult).IsEqualTo(accessDenied);
+        await Assert.That(decoded.InterfaceResults.Count).IsEqualTo(0);
+    }
+
+    [Test]
+    public async Task RemoteCreateInstance_malformed_response_throws_typed_exception()
+    {
+        await Assert.That(() =>
+                ActivationPropertiesCodec.DecodeRemoteCreateInstanceResponse([1, 2, 3]))
+            .Throws<ActivationPropertiesFormatException>();
     }
 
     private static byte[] CreateStandardObjRef(Guid iid)

@@ -48,7 +48,8 @@ public sealed record class DecodedOpcPdu
     public int? ContextId { get; init; }
 
     /// <summary>
-    /// Operation number (request).
+    /// Operation number from the request, correlated onto matching
+    /// response/fault records by DCE/RPC call id when available.
     /// </summary>
     public int? Opnum { get; init; }
 

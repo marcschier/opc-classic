@@ -3,6 +3,7 @@
 using System.Globalization;
 using System.Text.Json;
 using ModelContextProtocol;
+using ModelContextProtocol.Server;
 using Opc.Classic.Discovery;
 using Opc.Classic.Mcp.Dtos;
 using Opc.Classic.Mcp.Sessions;
@@ -13,6 +14,22 @@ namespace Opc.Classic.Mcp.Tests;
 
 public sealed class McpToolValidationTests
 {
+    [Test]
+    public async Task HdaClientTools_InsertReplaceData_Is_marked_destructive()
+    {
+        System.Reflection.MethodInfo method = typeof(HdaClientTools).GetMethod(nameof(HdaClientTools.InsertReplaceData))
+            ?? throw new InvalidOperationException("InsertReplaceData method was not found.");
+        System.Reflection.CustomAttributeData attribute = method.CustomAttributes.Single(
+            candidate => candidate.AttributeType == typeof(McpServerToolAttribute));
+        System.Reflection.CustomAttributeNamedArgument name = attribute.NamedArguments.Single(
+            argument => argument.MemberName == nameof(McpServerToolAttribute.Name));
+        System.Reflection.CustomAttributeNamedArgument destructive = attribute.NamedArguments.Single(
+            argument => argument.MemberName == nameof(McpServerToolAttribute.Destructive));
+
+        await Assert.That(name.TypedValue.Value).IsEqualTo("opcclassic.hda.insert_replace_data");
+        await Assert.That(destructive.TypedValue.Value).IsEqualTo(true);
+    }
+
     [Test]
     public async Task DiscoveryTools_EnumerateServers_Uses_trimmed_host_and_projects_entries()
     {

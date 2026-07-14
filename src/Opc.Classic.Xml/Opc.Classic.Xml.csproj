@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Description>OPC XML-DA 1.01 SOAP-over-HTTP client and server, AOT-safe.</Description>
+    <Description>OPC XML-DA 1.01 SOAP-over-HTTP client, AOT-safe.</Description>
     <RootNamespace>Opc.Classic.Xml</RootNamespace>
     <AssemblyName>Opc.Classic.Xml</AssemblyName>
   </PropertyGroup>

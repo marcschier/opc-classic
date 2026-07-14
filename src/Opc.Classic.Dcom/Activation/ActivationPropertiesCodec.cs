@@ -230,29 +230,68 @@ public static class ActivationPropertiesCodec
     /// </summary>
     public static ActivationPropertiesOutData DecodeRemoteCreateInstanceResponse(ReadOnlySpan<byte> payload)
     {
-        var reader = new NdrReader(payload);
-        byte[] objRef;
-        if (payload.Length >= sizeof(uint) && BinaryPrimitives.ReadUInt32LittleEndian(payload) == ObjRefSignature)
+        try
         {
-            objRef = payload.ToArray();
-        }
-        else
-        {
+            if (payload.Length >= sizeof(uint) && BinaryPrimitives.ReadUInt32LittleEndian(payload) == ObjRefSignature)
+            {
+                ReadOnlySpan<byte> directBlob = DecodeCustomObjRef(
+                    payload,
+                    IidActivationPropertiesOut,
+                    ClsidActivationPropertiesOut);
+                return DecodeActivationPropertiesOutBlob(directBlob);
+            }
+
+            if (!TryReadRemoteCreateInstanceHresult(payload, out int hresult))
+            {
+                throw new InvalidOperationException("IRemoteSCMActivator returned activation properties without an HRESULT.");
+            }
+
+            if (hresult < 0)
+            {
+                return ActivationPropertiesOutData.Empty with { Hresult = hresult };
+            }
+
+            var reader = new NdrReader(payload[..^sizeof(int)]);
             if (!reader.TryReadReferentId(out _))
             {
-                int hresult = reader.RemainingBytes >= sizeof(int) ? reader.ReadInt32() : 0;
-                throw new InvalidOperationException($"IRemoteSCMActivator returned a NULL ppActProperties pointer (HRESULT 0x{unchecked((uint)hresult):X8}).");
+                return ActivationPropertiesOutData.Empty with { Hresult = hresult };
             }
 
-            objRef = ReadMInterfacePointer(ref reader);
-            if (reader.RemainingBytes >= sizeof(int))
-            {
-                _ = reader.ReadInt32();
-            }
+            byte[] objRef = ReadMInterfacePointer(ref reader);
+            ReadOnlySpan<byte> blob = DecodeCustomObjRef(
+                objRef,
+                IidActivationPropertiesOut,
+                ClsidActivationPropertiesOut);
+            return DecodeActivationPropertiesOutBlob(blob) with { Hresult = hresult };
+        }
+        catch (ActivationPropertiesFormatException)
+        {
+            throw;
+        }
+        catch (Exception ex) when (ex is InvalidOperationException or ArgumentException or OverflowException)
+        {
+            throw new ActivationPropertiesFormatException(
+                "IRemoteSCMActivator returned malformed activation properties.",
+                ex);
+        }
+    }
+
+    /// <summary>
+    /// Reads the authoritative outer HRESULT without decoding ppActProperties.
+    /// </summary>
+    public static bool TryReadRemoteCreateInstanceHresult(
+        ReadOnlySpan<byte> payload,
+        out int hresult)
+    {
+        if (payload.Length < (sizeof(uint) + sizeof(int))
+            || BinaryPrimitives.ReadUInt32LittleEndian(payload) == ObjRefSignature)
+        {
+            hresult = 0;
+            return false;
         }
 
-        ReadOnlySpan<byte> blob = DecodeCustomObjRef(objRef, IidActivationPropertiesOut, ClsidActivationPropertiesOut);
-        return DecodeActivationPropertiesOutBlob(blob);
+        hresult = BinaryPrimitives.ReadInt32LittleEndian(payload[^sizeof(int)..]);
+        return true;
     }
 
     /// <summary>
@@ -265,7 +304,7 @@ public static class ActivationPropertiesCodec
             response = DecodeRemoteCreateInstanceResponse(payload);
             return true;
         }
-        catch (InvalidOperationException)
+        catch (ActivationPropertiesFormatException)
         {
             response = ActivationPropertiesOutData.Empty;
             return false;
@@ -982,6 +1021,11 @@ public sealed record ActivationPropertiesOutData(
     (ushort Major, ushort Minor) ServerVersion,
     IReadOnlyList<ActivationInterfaceResult> InterfaceResults)
 {
+    /// <summary>
+    /// Authoritative HRESULT returned after the outer ppActProperties parameter.
+    /// </summary>
+    public int Hresult { get; init; }
+
     /// <summary>
     /// Empty sentinel used by TryDecode helpers.
     /// </summary>

@@ -5,13 +5,13 @@
 [![.NET 10](https://img.shields.io/badge/.NET-10.0-512BD4)](https://dotnet.microsoft.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-A cross-platform, NativeAOT-compatible **.NET 10** implementation of OPC Classic for clients and servers. Managed DCOM/MSRPC with no Windows COM runtime interop, XML-DA over HTTP, source-generated proxies and dispatchers, and self-contained NTLMv2 / Kerberos / SPNEGO authentication.
+A cross-platform, NativeAOT-compatible **.NET 10** implementation of OPC Classic for clients and servers. Managed DCOM/MSRPC with no Windows COM runtime interop, an XML-DA client over HTTP, source-generated proxies and dispatchers, and self-contained NTLMv2 / Kerberos / SPNEGO authentication.
 
-> **Status — release candidate.**
+> **Status — alpha preview.**
 
 ## What you get
 
-- **Cross-platform OPC Classic** — DA (1.0 / 2.05a / 3.0), AE 1.10, HDA 1.20, Batch 2.00, Commands, Complex Data, DX, Security, and XML-DA over HTTP. Runs on Windows, Linux, and macOS (.NET 10). No call to native OS code other than what .net provides.
+- **Cross-platform OPC Classic** — DA (1.0 / 2.05a / 3.0), AE 1.10, HDA 1.20, Batch 2.00, Commands, Complex Data, DX, Security, and an XML-DA client over HTTP. Runs on Windows, Linux, and macOS (.NET 10). No call to native OS code other than what .net provides.
 - **Managed DCOM/MSRPC stack** — full MS-DCOM PDU framing, NDR marshaling, OBJREF/ORPC, packet integrity + privacy, channel binding (RFC 5056/5929). No `[ComImport]`, no Windows COM runtime dependency.
 - **Self-contained authentication** — NTLMv2, Kerberos (RC4-HMAC + AES128/256), SPNEGO with `mechListMIC`, channel binding tokens. Cryptography (MD4, RC4) ships in-tree with RFC test vectors; MD5 / HMAC / DES / AES come from the BCL.
 - **Source-generated proxies and dispatchers** — Roslyn `IIncrementalGenerator` emits a client proxy and a server dispatcher for every OPC interface marked `[OpcInterface]`. No reflection at runtime; AOT-clean and trim-safe.

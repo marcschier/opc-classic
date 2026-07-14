@@ -67,14 +67,19 @@ OpcConnectData connectData = OpcConnectData.WithKerberos(
 
 ## DCOM server listener: require privacy before production exposure
 
-The current managed DA/AE/HDA host options expose `ListenAddress`, CLSID, ProgID, and friendly name. They do not expose a listener-level `OpcProtectionLevel` option yet, and the current managed TCP listener rejects authenticated PDUs. Keep these listeners on loopback or disposable interop networks unless an authenticated gateway or production DCOM host enforces packet privacy.
+The managed listener accepts NTLMv2 authenticated binds when its `RpcServerConnectionProcessor` receives a `ConfiguredAuthenticationSource`. The bind/auth3 exchange establishes the NTLM security context, and subsequent request/response PDUs use `ProcessIncoming` / `ProcessOutgoing` for negotiated packet integrity or packet privacy. Anonymous requests are rejected when an authentication source is configured.
 
 ```csharp
 using Microsoft.Extensions.DependencyInjection;
 using Opc.Classic.Da.Hosting;
+using Opc.Classic.Dcom.Rpc.Auth.ntlm;
 using Opc.Classic.Hosting;
 
 builder.Services.AddClassicServer();
+builder.Services.AddSingleton<AuthenticationSource>(
+    ConfiguredAuthenticationSource.FromEnvironment()
+        ?? throw new InvalidOperationException(
+            "Set OPC_CLASSIC_DCOM_USER and OPC_CLASSIC_DCOM_PASSWORD."));
 builder.Services.AddOpcDaServer<MyDaServer>(options =>
 {
     options.Clsid = Guid.Parse("7f41b3e9-32ec-40c9-9e42-3e0e0fce5a11");
@@ -84,7 +89,12 @@ builder.Services.AddOpcDaServer<MyDaServer>(options =>
 });
 ```
 
-When listener authentication policy is added, set its minimum protection to `OpcProtectionLevel.Privacy` rather than relying on clients to choose privacy.
+The remaining listener-policy gaps are narrower:
+
+- the hosting options do not yet expose a minimum protection level, so the server cannot require privacy independently of the level requested by the client;
+- `ConfiguredAuthenticationSource` represents one configured NTLMv2 credential; a multi-user identity provider and server-side Kerberos acceptance are not implemented.
+
+Until a minimum-protection option exists, configure native clients for `RPC_C_AUTHN_LEVEL_PKT_PRIVACY`, restrict network access, and verify the negotiated level in deployment tests.
 
 ## XML-DA client: use HTTPS and WS-Security policy
 
@@ -110,7 +120,7 @@ Do not use plain `http://` for sensitive tag values outside isolated loopback te
 
 ## SMB named-pipe transport
 
-The SMB2 client advertises signing and verifies signed responses when signing is negotiated and the caller supplies the NTLM/Kerberos SessionKey to `SessionSetupAsync`. SMB3 encryption is not available yet, and `ncacn_np` is not the default RPC transport.
+The SMB client ships signing and SMB 3.x encryption. It negotiates AES-128-CCM/GCM, derives encryption/decryption keys from the authenticated session key, and wraps post-session traffic in `SMB2 TRANSFORM_HEADER` messages when the session or IPC$ share requires encryption. `NcacnNpTransport` wires this path into remote `ncacn_np` RPC, including WINREG and legacy activation bindings.
 
 ```csharp
 using Opc.Classic.Dcom.Smb;
@@ -127,7 +137,7 @@ await connection.SessionSetupAsync(
     cancellationToken);
 ```
 
-Require SMB signing on the server side for current deployments. Require SMB encryption only after SMB3 encryption support is available and validated against your Windows or Samba policy.
+Require SMB signing or encryption in server policy as appropriate. The current client follows server session/share encryption requirements; it does not yet expose a client-side “fail unless encrypted” option when the server permits plaintext. Codec, key-derivation, transform, and encrypted-connection behavior are covered in-tree. Treat live Windows/Samba policy combinations and redacted real-world captures as external deployment validation rather than missing protocol implementation.
 
 ## Sample defaults
 

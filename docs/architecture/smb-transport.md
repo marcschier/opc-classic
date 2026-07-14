@@ -32,9 +32,18 @@ OpcEnumClient (OPC.ServerList.1) instead."` and returns an empty list.
 
 - OPC Classic uses WINREG and legacy activation; other named-pipe RPC services
   (eventlog, print spooler, workstation, SAM, etc.) are not modeled.
-- The PCAP replay harness is shipped, but real-world redacted PCAP captures are
-  still pending.
 - This is a named-pipe RPC client surface, not a general SMB file-share client.
+- The client follows server-required session/share encryption but does not
+  currently offer a client-side policy that rejects a server which permits
+  plaintext.
+
+## External validation limitations
+
+- The PCAP replay harness is shipped, but additional real-world redacted SMB3
+  encrypted captures are still pending.
+- Samba WINREG smoke is available as an opt-in test. Windows Server and the
+  range of Windows/Samba signing and encryption policy combinations require
+  environment-specific validation outside the default test run.
 
 ## Microsoft specifications driving the design
 

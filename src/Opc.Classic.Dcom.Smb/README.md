@@ -22,14 +22,20 @@ Minimal, MIT-licensed, AOT-clean SMB2 client tightly scoped to the named-pipe op
 | WINREG replay validation | ✅ captured request/response fixtures under Winreg tests |
 | Samba WINREG smoke | ✅ `samba` fixture + `.github\workflows\samba-smoke.yml` gated by `OPC_CLASSIC_INTEGRATION_SAMBA=1` |
 | SMB2 signing (HMAC-SHA256 for SMB 2.0.2/2.1; AES-CMAC for SMB 3.x) | ✅ signs outgoing PDUs and verifies signed responses when SessionKey is supplied |
-| SMB2 encryption (AES-128-CCM/GCM for SMB 3.x) | ⏳ deferred |
+| SMB3 encryption (AES-128-CCM/GCM with `SMB2 TRANSFORM_HEADER`) | ✅ negotiates ciphers, derives directional keys, encrypts requests, and authenticates/decrypts responses when the session or share requires encryption |
+| `ncacn_np` transport wire-up | ✅ `NcacnNpTransport` carries remote named-pipe RPC over this SMB stack |
+| WINREG and activation wiring | ✅ remote registry and legacy activation bindings can select `ncacn_np`; local named pipes use `LocalNamedPipeTransport` |
 
-## Not yet shipping
+## Implementation boundaries
 
-- SMB 3.x encryption (AES-128-CCM/GCM); signed sessions are supported, but encryption-required servers remain cap-h2 work.
-- Production wire-up into `Opc.Classic.Dcom.Rpc.Ncacn_Np.RpcTransport`; the adapter/builder exists, but the legacy transport still owns the default `ncacn_np` route.
-- Windows Server SMB/WINREG smoke in CI; the Samba fixture is covered by the dedicated smoke workflow.
-- Legacy `IActivation::RemoteActivation` over SMB named pipes.
+- This is a named-pipe RPC client, not a general SMB file-share client.
+- The client honors server-required session/share encryption but does not expose a client-side “require encryption” policy when the server permits plaintext.
+- Named-pipe RPC services beyond the OPC-related WINREG and activation scenarios are outside scope.
+
+## External validation limitations
+
+- The opt-in Samba WINREG smoke covers a live server, but Windows Server SMB/WINREG and encryption-policy combinations are not continuously exercised in the default test run.
+- The PCAP replay harness is shipped; additional redacted real-world SMB3 encrypted captures are still needed for broader implementation-to-implementation evidence.
 
 ## Public surface
 
@@ -44,7 +50,7 @@ await using var conn = new Smb2Connection(new Smb2ConnectionOptions("server-host
 // 2. Negotiate the SMB2 dialect
 var negotiate = await conn.NegotiateAsync();
 
-// 3. Authenticate via NTLMSSP (caller supplies blobs + the exported SessionKey for SMB signing)
+// 3. Authenticate via NTLMSSP (the exported SessionKey enables signing/encryption)
 await conn.SessionSetupAsync(
     serverBlob =>
     {
