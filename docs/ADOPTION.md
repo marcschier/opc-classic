@@ -304,7 +304,7 @@ Writing HKLM usually requires administrative rights. Treat registry writes as in
 
 ### Native COM clients
 
-Native Windows COM clients can activate managed `Opc.Classic` servers through the Windows SCM/CCW path when CLSID/ProgID registration is configured. The managed listener now includes server-side NTLMv2 authenticated bind handling, EPM/OXID publication, routable `IRemUnknown`, and OpcEnum discovery; Kerberos/SPNEGO acceptor wiring and broader native-client hardening remain follow-up work. Test native interop with the preserved C++ sample servers and representative client tools.
+Native Windows COM clients can activate managed `Opc.Classic` servers through the Windows SCM/CCW path when CLSID/ProgID registration is configured. The managed listener includes server-side NTLMv2 authenticated bind handling, EPM/OXID publication, routable `IRemUnknown`, and OpcEnum discovery; Kerberos/SPNEGO acceptor wiring and broader native-client hardening remain follow-up work. Test native interop with the preserved C++ sample servers and representative client tools.
 
 ## 9. AOT publishing
 

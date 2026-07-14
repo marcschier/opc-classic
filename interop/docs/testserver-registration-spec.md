@@ -180,10 +180,9 @@ IIDs (via TypeLib imports) — so `opccomn_ps.dll` must be registered FIRST.
 Otherwise the dependent DLLs will fail to load their type library
 references when registering.
 
-## Current `register-testserver.ps1` behavior
+## `register-testserver.ps1` behavior
 
-The no-MSI script now implements the registration work that was previously
-listed as follow-up:
+The no-MSI script performs the following registration work:
 
 1. Copies the full canonical proxy/stub set to `%SystemRoot%\System32` and
    registers it in dependency order:
@@ -206,11 +205,10 @@ listed as follow-up:
    compatibility keys, unregisters proxy/stubs in reverse order, unregisters
    `OpcCategoryManager`, and removes the script's install markers.
 
-The deliberate difference from the legacy MSI is location: the MSI used
-`Common Files\OPC Foundation\Bin`, while this developer shortcut registers
-native x64 proxy/stubs from System32. The script requires elevated 64-bit
-PowerShell so SCM and native COM registration see the same HKLM/System32
-view.
+This developer path registers native x64 proxy/stubs from System32. Official
+machine-wide installation uses `Common Files\OPC Foundation\Bin`. The script
+requires elevated 64-bit PowerShell so SCM and native COM registration see the
+same HKLM/System32 view.
 
 ## What canonical install would do for non-Matrikon-cwd-style test
 
@@ -228,13 +226,12 @@ the post-install state is:
   which provides OpcEnum on the SysWOW64 side.
 
 `register-testserver.ps1` is a no-MSI shortcut for developer machines. It
-now installs every proxy/stub artifact produced by the build, so the
-registration surface is not limited to the two DA DLLs.
+installs every proxy/stub artifact produced by the build.
 
 ## Current validation status
 
 The standard build + register + ACL flow activates TestServer end-to-end in
-the in-repo MCP matrix. The fixes that made this path reliable are:
+the in-repo MCP matrix. The required installation state includes:
 
 - full proxy/stub registration in canonical order;
 - deploying and correcting `OpcTestServer_x64.config.xml`;

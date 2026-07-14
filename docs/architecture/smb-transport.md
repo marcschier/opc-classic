@@ -9,7 +9,7 @@ server:
 | `ncacn_ip_tcp` | TCP/IP | Port 135 (endpoint mapper) + dynamic | Modern `IRemoteSCMActivator` (DCOM v5.6+, XP SP2+) |
 | `ncacn_np` | SMB | `\PIPE\<name>` | Legacy `IActivation`, all `[MS-RRP]` WINREG (`\PIPE\winreg`), event-log / print-spooler / SAM / workstation named-pipe RPC services, etc. |
 
-This repository implements `ncacn_ip_tcp` end-to-end and now ships the focused
+This repository implements `ncacn_ip_tcp` end-to-end and ships the focused
 `ncacn_np` client path required by OPC Classic discovery and legacy activation.
 The legacy `RpcTransport` and local
 Legacy compatibility shims still exist for older call sites, but the active
@@ -56,7 +56,7 @@ The repository vendors the relevant Microsoft Open Specifications; the key refer
 | `MS-RPCE.md §2.1.1.2` | RPC over SMB framing: same DCE/RPC PDUs sent as named-pipe writes / received as reads, with optional transact for synchronous calls |
 | `MS-DCOM.md §3.1.2.5.2.3` | Legacy `IActivation::RemoteActivation` opnum 0 |
 | `MS-RRP.md §2.1.2` | WINREG client guidance: SHOULD use `ncacn_np` on `\PIPE\winreg` |
-| `MS-NLMP.md` | NTLMSSP — already implemented in `Opc.Classic.Dcom\rpc\Auth\` for the TCP path, can be reused inside the SMB2 SESSION_SETUP security blob |
+| `MS-NLMP.md` | NTLMSSP — implemented in `Opc.Classic.Dcom\rpc\Auth\` for the TCP path and reused inside the SMB2 SESSION_SETUP security blob |
 
 ## Cross-platform implementation options
 
@@ -84,7 +84,7 @@ Only the connection / session / file / pipe primitives are needed:
 | `[MS-SMB2]` § | Command | Use |
 | --- | --- | --- |
 | §3.2.4.2 / §2.2.3-4 | SMB2 NEGOTIATE | Pick dialect (0x0202 / 0x0210 / 0x0300 / 0x0311) |
-| §3.2.4.3 / §2.2.5-6 | SMB2 SESSION_SETUP | Carry the NTLMSSP Type 1 / 2 / 3 GSS-API blobs (already implemented in `Opc.Classic.Dcom/rpc/Auth/`) |
+| §3.2.4.3 / §2.2.5-6 | SMB2 SESSION_SETUP | Carry the NTLMSSP Type 1 / 2 / 3 GSS-API blobs implemented in `Opc.Classic.Dcom/rpc/Auth/` |
 | §3.2.4.4 / §2.2.9-10 | SMB2 TREE_CONNECT | Open `\\host\IPC$` |
 | §3.2.4.5 / §2.2.13-14 | SMB2 CREATE | Open `\\host\IPC$\<pipename>` with `FILE_OPEN` + `FILE_NON_DIRECTORY_FILE` + `FILE_OPEN_NO_RECALL` |
 | §3.2.4.7 / §2.2.21-22 | SMB2 WRITE | Send DCE/RPC PDU (`bind`, `request`, `alter_context`) |

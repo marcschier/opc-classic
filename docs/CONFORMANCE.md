@@ -30,14 +30,14 @@ The former per-spec review set compared each OPC specification's protocol surfac
 
 | Spec | Doc | Current implementation coverage | Remaining status notes |
 | --- | --- | --- | --- |
-| [OPC AE 1.10](#opc-ae-110) | Alarms & Events | DCOM declarations, proxies, and dispatchers cover the AE interfaces; CCW now covers subscription, area browser, event sink delivery, and the 14 array-heavy query/translate/condition/returned-attribute methods. | Remaining items are server-policy/conformance concerns, including native-client stress coverage and connection-point enumeration stubs. |
+| [OPC AE 1.10](#opc-ae-110) | Alarms & Events | DCOM declarations, proxies, and dispatchers cover the AE interfaces; CCW covers subscription, area browser, event sink delivery, and the 14 array-heavy query/translate/condition/returned-attribute methods. | Remaining items are server-policy/conformance concerns, including native-client stress coverage and connection-point enumeration stubs. |
 | [OPC Batch 2.00](#opc-batch-200) | Batch | 4/4 interfaces and 11/11 methods projected; batch summary/filter codecs, Batch error constants, and `OpcBatchPropertyId` metadata for IDs 400-478 are present. | Server namespace/property population semantics remain implementation work for Batch servers. |
 | [OPC Common 1.10](#opc-common-110) | Common (locale, shutdown, server-list) | `IOPCCommon`, `IOPCShutdown`, `IOPCServerList(2)`, `IOPCEnumGUID`, `OpcStringFilter`, and `IDaServer.SetClientNameAsync` are covered. | All convenience helpers shipped; no open gaps. |
 | [OPC Complex Data 1.00](#opc-complex-data-100) | Complex Data | Interface projections, CPX property IDs/HRESULTs, OPCBinary/XMLSchema parsers, XML serialization, OPCBinary encode/decode including BitString, `OpcCpxAddressSpace`, and `OpcCpxItemProperties` are implemented. | Type-conversion and data-filter execution remain server-specific runtime work. |
 | [OPC DA 2.05a](#opc-da-205a) | DA (V20 back-compat + modern DCOM) | V20 remains a minimal compatibility shim; the modern DCOM surface covers DA 2.05a including `IOPCServer`, `IOPCCommon`, group/item management, sync/async I/O, browsing, properties, callbacks, connection points, and full lifecycle loopback coverage. | Remaining caveats are mostly V20-scope and native interop hardening, not missing modern DCOM methods. |
 | [OPC DA 3.00](#opc-da-300) | DA (flagship) | DA 3.0 DCOM projections and default hosting helpers cover browse, item I/O, group keep-alive, sync/async VQT and max-age I/O, deadband, sampling, callbacks, item enumeration, continuation points, and `vEUInfo` loopback paths. | Remaining DA work is native interop edge hardening and optional custom deadband/sampling policy samples. |
 | [OPC DX 1.00](#opc-dx-100) | Data eXchange | `IOPCConfiguration` has a complete hand-written client proxy backed by DX structure codecs, status records, enums, namespace helpers, and error constants. | DX server runtime/DA bridge, persistence, and live data-transfer state machine are not implemented. |
-| [OPC HDA 1.20](#opc-hda-120) | Historical Data Access | 56/56 methods and 5/5 codecs are declared; CCW now covers browser, sync/async read, sync/async update, playback, annotation insert, and raw/processed advise paths. | Remaining items are server-policy concerns such as aggregate semantics, relative time parsing, persistence, and connection-point enumeration stubs. |
+| [OPC HDA 1.20](#opc-hda-120) | Historical Data Access | 56/56 methods and 5/5 codecs are declared; CCW covers browser, sync/async read, sync/async update, playback, annotation insert, and raw/processed advise paths. | Remaining items are server-policy concerns such as aggregate semantics, relative time parsing, persistence, and connection-point enumeration stubs. |
 | [OPC Security 1.00](#opc-security-100) | Security | 6/6 methods across `IOPCSecurityNT` and `IOPCSecurityPrivate` are projected and tested. | Reference sample server ships in this release. |
 | [OPC XML-DA 1.01](#opc-xml-da-101) | XML-DA (SOAP transport) | Client supports all 8 operations, SOAP 1.1, scalar/extended scalar values, array values, base64Binary, quality, errors, and polled subscriptions. | Client-only by design; SOAP 1.2 is not implemented. |
 
@@ -73,12 +73,10 @@ Opnums 3-24 are represented in `IOPCInterfaces`, and subscription/browser/callba
 
 ### Documented waiver: condition-state round-trip via the native `opcae_ps.dll` stub
 
-> The wire-format root cause was extracted from `opc_ae_p`
-> ([ae-wire-format.md](conformance/ae-wire-format.md)), validated by
-> byte-level capture of the managed encoder's output, and fixed by
-> applying `[OpcRefString]` to the 4 simple_ref scalar LPWSTR
-> parameters in `IOPCInterfaces`. With the
-> fix in place the captured wire bytes match the MIDL spec EXACTLY for
+> The wire format follows `opc_ae_p`
+> ([ae-wire-format.md](conformance/ae-wire-format.md)) and applies
+> `[OpcRefString]` to the 4 simple_ref scalar LPWSTR parameters in
+> `IOPCInterfaces`. Captured managed-encoder bytes match the MIDL spec EXACTLY for
 > both the `GetConditionState` request+response and the `AckCondition`
 > request — including the OPCCONDITIONSTATE struct body byte layout,
 > the 4 FILETIMEs at offsets 24/32/40/48, and the deferred-pointer
@@ -159,11 +157,11 @@ limitation, the `samples-ae-managed` matrix profile bypasses
 "AE conformance proven"; use `samples-ae` when the goal is
 specifically "native-CCW + `opcae_ps.dll` conformance".
 
-### Closed AE coverage items and remaining gaps
+### AE implementation status and remaining gaps
 
-#### Closed high-priority gaps
+#### Implemented high-priority coverage
 
-##### 1. Windows CCW `CreateEventSubscription` now returns a subscription CCW
+##### 1. Windows CCW `CreateEventSubscription` returns a subscription CCW
 
 **Spec**: `IOPCEventServer::CreateEventSubscription` (opnum 4) returns an `IOPCEventSubscriptionMgt` interface pointer.
 
@@ -220,7 +218,7 @@ Current test coverage:
 
 ### Conclusion
 
-The AE DCOM projection is substantially more complete than older external reviews indicated: declarations and opnums are current, generated proxies/dispatchers cover the managed cross-platform path, and the Windows CCW covers the core server, subscription, browser, callback, and array-heavy AE surfaces. Remaining risk is concentrated in external native-client interoperability validation.
+The AE DCOM projection has complete declarations and opnums, generated proxies/dispatchers for the managed cross-platform path, and Windows CCW coverage for the core server, subscription, browser, callback, and array-heavy AE surfaces. Remaining risk is concentrated in external native-client interoperability validation.
 
 ## OPC Batch 2.00
 
@@ -280,13 +278,13 @@ The library projects Batch interfaces and codecs but does not provide a complete
 
 #### 2. Batch DA namespace integration
 
-`OpcBatchPropertyId` now provides the spec-defined Batch DA property IDs (400-478), descriptions, and expected VARTYPE metadata. Reference namespace population remains server-specific.
+`OpcBatchPropertyId` provides the spec-defined Batch DA property IDs (400-478), descriptions, and expected VARTYPE metadata. Reference namespace population remains server-specific.
 
 **Priority**: Low/Medium convenience for server authors.
 
 #### 3. Enumeration-set data source
 
-`IOPCEnumerationSets` is now projected, but a server implementation must still supply localized enumeration set names and values for standard and vendor-defined sets.
+`IOPCEnumerationSets` is projected, but a server implementation must still supply localized enumeration set names and values for standard and vendor-defined sets.
 
 ---
 
@@ -320,7 +318,7 @@ The library projects Batch interfaces and codecs but does not provide a complete
 
 ### Conclusion
 
-`Opc.Classic.Batch` now provides complete Batch DCOM projection coverage for the spec interfaces and the two required structures. The remaining work is not missing wire declarations; it is server-side semantics: maintaining the Batch namespace, property metadata, enumeration-set catalogs, and real batch summary data.
+`Opc.Classic.Batch` provides complete Batch DCOM projection coverage for the spec interfaces and the two required structures. The remaining work is server-side semantics: maintaining the Batch namespace, property metadata, enumeration-set catalogs, and real batch summary data.
 
 ## OPC Common 1.10
 
@@ -510,9 +508,9 @@ These are vendor/industry extension interfaces around the CPX property model; th
 
 #### HIGH
 
-##### 1. DA server runtime integration — closed
+##### 1. DA server runtime integration
 
-The CPX assembly now includes managed DA hosting helpers that wire registered dictionaries and complex items into a server's browse namespace and item-property provider.
+The CPX assembly includes managed DA hosting helpers that wire registered dictionaries and complex items into a server's browse namespace and item-property provider.
 
 Implemented helpers:
 
@@ -537,9 +535,9 @@ The spec's §7 type-conversion and §8 data-filter behavior require server-side 
 
 #### LOW
 
-##### 3. BitString support — closed
+##### 3. BitString support
 
-`TypeKind.BitString` and the OPCBinary encoder/decoder now handle bit lengths that do not align to byte boundaries, including consecutive bit fields and required padding before non-BitString fields.
+`TypeKind.BitString` and the OPCBinary encoder/decoder handle bit lengths that do not align to byte boundaries, including consecutive bit fields and required padding before non-BitString fields.
 
 ##### 4. End-to-end DA/CPX samples
 
@@ -558,7 +556,7 @@ No sample server/client currently demonstrates property-based type discovery, CP
 | `OpcCpxItemPropertiesTests` | `OpcCpxItemProperties` property IDs 600-609 publishing |
 | `IOPCCpxProxyTests` | DCOM proxy/interface projection |
 
-Missing tests are now mostly conversion/filter execution and end-to-end sample workflows rather than core codec/property/hosting-helper tests.
+The remaining test gaps are conversion/filter execution and end-to-end sample workflows rather than core codec/property/hosting-helper tests.
 
 ---
 
@@ -675,7 +673,7 @@ Current Windows CCW item and I/O tests exercise the marshaling paths.
 
 1. Keep V20 docs explicit about its intentionally minimal scope.
 2. Continue adding native interop coverage for Windows CCW edge cases.
-3. ✅ End-to-end DA 2.x client/server scenarios now combine group creation, item addition, sync reads, async callbacks, and group removal in `DaFullLifecycleTests`.
+3. ✅ End-to-end DA 2.x client/server scenarios combine group creation, item addition, sync reads, async callbacks, and group removal in `DaFullLifecycleTests`.
 4. Add public convenience wrappers only where adoption feedback shows raw DCOM projections are too low-level.
 
 ---
@@ -793,7 +791,7 @@ Recommended next tests:
 
 ### Conclusion
 
-The DA 3.0 coverage document should be read as a current implementation-status document, not as the older gap list. The flagship DA surface now has full DCOM declarations and broad Windows CCW support for practical DA server/client workflows. Remaining work is targeted conformance hardening and policy/sample coverage.
+The flagship DA surface has full DCOM declarations and broad Windows CCW support for practical DA server/client workflows. Remaining work is targeted conformance hardening and policy/sample coverage.
 
 ## OPC DX 1.00
 
@@ -936,9 +934,9 @@ DX is not codec-blocked. The library is ready for DX configuration-client scenar
 **Quality flags**: HDA-specific flags defined
 **Error constants**: HDA Appendix C constants present
 
-**Overall compliance**: **Full DCOM declaration/proxy/dispatcher coverage; Windows CCW now covers browser creation, HDA sync/async reads, sync/async update, playback, annotation insert, and async advise**.
+**Overall compliance**: **Full DCOM declaration/proxy/dispatcher coverage; Windows CCW covers browser creation, HDA sync/async reads, sync/async update, playback, annotation insert, and async advise**.
 
-Earlier claims that HDA was fully production-ready through all paths are too broad. The DCOM projection is complete, and the Windows CCW now has native `OPCHDA_ITEM[]`/`OPCHDA_ATTRIBUTE[]`/`OPCHDA_MODIFIEDITEM[]`/`OPCHDA_ANNOTATION[]` marshaling for history reads, annotation inserts, raw/processed advise updates, update operations, and playback callbacks. Remaining concerns are connection-point enumeration stubs plus server-policy semantics such as aggregate calculations, relative time parsing, and persistence.
+The DCOM projection is complete, and the Windows CCW has native `OPCHDA_ITEM[]`/`OPCHDA_ATTRIBUTE[]`/`OPCHDA_MODIFIEDITEM[]`/`OPCHDA_ANNOTATION[]` marshaling for history reads, annotation inserts, raw/processed advise updates, update operations, and playback callbacks. Remaining concerns are connection-point enumeration stubs plus server-policy semantics such as aggregate calculations, relative time parsing, and persistence.
 
 ---
 
@@ -1208,9 +1206,9 @@ public async Task SecurityNT_IsAvailable_decodes_boolean()
 - **Dispatch tables** for opnum → method routing
 - **Unmarshal/marshal logic** for request/response payloads
 
-✅ **Gap closed**: Program sample now publishes `IOPCSecurityNT` and `IOPCSecurityPrivate` with a documented stub implementation. This remains **optional** — OPC Security is rarely implemented by servers, and most deployments rely on DCOM-layer authentication instead.
+The Program sample publishes `IOPCSecurityNT` and `IOPCSecurityPrivate` with a documented stub implementation. This remains **optional** — OPC Security is rarely implemented by servers, and most deployments rely on DCOM-layer authentication instead.
 
-**Impact**: None for client usage; server implementers now have a reference for wiring `IOPCSecurityNT` / `IOPCSecurityPrivate` to actual ACL logic.
+**Impact**: None for client usage; server implementers have a reference for wiring `IOPCSecurityNT` / `IOPCSecurityPrivate` to actual ACL logic.
 
 ---
 
@@ -1901,7 +1899,7 @@ None identified. Spec is clear and implementation follows closely.
 
 ## Cross-cutting themes
 
-### Generated and hand-written projections now coexist
+### Generated and hand-written projections
 
 Most OPC Classic DCOM interfaces use `[GenerateOpcProxy]` and `[OpcGenerateServerDispatch]`. A few interface-pointer-heavy surfaces still use hand-written proxies or dispatchers, for example Batch enumerators and DX configuration calls with compound structures.
 
@@ -1913,9 +1911,9 @@ The cross-platform managed DCOM path usually has broader interface coverage than
 
 Several specs define server behavior beyond wire projection: Batch namespace models, CPX type-conversion/data filters, DX runtime transfer state, and HDA aggregate calculations. XML-DA is separately documented as a client-only package by design.
 
-### Error constants and codecs have moved forward
+### Error constants and codecs
 
-Earlier reviews flagged missing CPX, DX, HDA, Batch, XML-DA array, and DA VARIANT/OPCITEM codecs. Those are now implemented where noted in each document; do not carry forward old “codec-blocked” caveats without checking the source.
+CPX, DX, HDA, Batch, XML-DA array, and DA VARIANT/OPCITEM codecs are implemented where noted in each specification section.
 
 ### Current validation baseline
 

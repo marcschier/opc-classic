@@ -66,13 +66,12 @@ cd interop
 ```
 
 Builds **all** native targets for both platforms and installs outputs under
-`out\`. MSI packaging was removed from the vendored tree.
+`out\`. The vendored build does not produce MSI packages.
 
 ## Installation / registration
 
 After building, register the TestServer with DCOM so the managed Opc.Classic
-client can activate it. The redistributable installers are no longer vendored;
-use the local no-MSI registration path below, or install the official OPC
+client can activate it. Use the local no-MSI registration path below, or install the official OPC
 Foundation Core Components package externally when validating a machine-wide
 deployment.
 

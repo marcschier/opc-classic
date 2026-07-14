@@ -26,7 +26,7 @@ The nuget.org set is deliberately small so consumers get a curated, self-contain
 
 Build-time versions are computed by [Nerdbank.GitVersioning](https://github.com/dotnet/Nerdbank.GitVersioning)
 (nbgv) from the repo-root [`version.json`](../version.json) plus git
-height. `src/Directory.Build.props` no longer hard-codes a `<Version>`;
+height. `src/Directory.Build.props` does not hard-code a `<Version>`;
 nbgv supplies `Version` / `AssemblyVersion` / `FileVersion` /
 `AssemblyInformationalVersion` / `PackageVersion` automatically.
 
@@ -54,7 +54,7 @@ nbgv supplies `Version` / `AssemblyVersion` / `FileVersion` /
   the release version.
 - Use SemVer: `<MAJOR>.<MINOR>.<PATCH>[-<prerelease>.<N>]`.
 - Use prerelease labels in the order `alpha`, `beta`, then `rc`.
-- Tags going forward should use the canonical `v` prefix (e.g. `v1.0.0`); the workflow tolerates bare tags (`1.0.0`) for compatibility with non-prefixed tag history.
+- Tags should use the canonical `v` prefix (e.g. `v1.0.0`); the workflow also accepts bare tags (`1.0.0`).
 - Do not reuse release tags. If a package must be replaced, cut a higher version.
 - Package IDs and namespaces remain under `Opc.Classic.*`.
 - The Docker image tag tracks the release version. `:latest` moves only on **stable** releases (no `-<prerelease>` suffix).
