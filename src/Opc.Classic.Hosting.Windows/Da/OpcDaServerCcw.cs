@@ -53,6 +53,7 @@ namespace Opc.Classic.Da.Hosting.Windows;
 public static unsafe class OpcDaServerCcw
 {
     private const int S_OK = 0;
+    private const int S_FALSE = 1;
     private static readonly int E_NOINTERFACE = global::Opc.Classic.OpcResultId.NoInterface.Code;
     private const int E_INVALIDARG = unchecked((int)0x80070057);
     private const int E_NOTIMPL = unchecked((int)0x80004001);
@@ -823,11 +824,12 @@ public static unsafe class OpcDaServerCcw
             return E_NOTIMPL;
         }
         _ = riid; _ = pTimeBias; _ = pPercentDeadband;
-        return AddGroupCore(server, szName, bActive, dwRequestedUpdateRate, hClientGroup,
+        return AddGroupCore(entry, server, szName, bActive, dwRequestedUpdateRate, hClientGroup,
             dwLCID, phServerGroup, pRevisedUpdateRate, ppUnk);
     }
 
     private static int AddGroupCore(
+        CcwEntry entry,
         IOpcDaServer server,
         IntPtr szName,
         int bActive,
@@ -877,7 +879,7 @@ public static unsafe class OpcDaServerCcw
                 timeBias: 0,
                 percentDeadband: 0f,
                 localeId: (int)dwLCID);
-            *ppUnk = OpcDaGroupCcw.Create(target);
+            *ppUnk = entry.AcquireGroupIdentity(target);
             return S_OK;
         }
 #pragma warning disable CA1031 // Cross-unmanaged-boundary catch.
@@ -1014,7 +1016,7 @@ public static unsafe class OpcDaServerCcw
             {
                 return Opc.Classic.OpcResultId.UnknownPath.Code;
             }
-            *ppUnk = OpcDaGroupCcw.Create(group);
+            *ppUnk = entry.AcquireGroupIdentity(group);
             return S_OK;
         }
 #pragma warning disable CA1031 // Cross-unmanaged-boundary catch.
@@ -1051,6 +1053,7 @@ public static unsafe class OpcDaServerCcw
             server.RemoveGroupAsync((int)hServerGroup, bForce != 0, CancellationToken.None)
                 .GetAwaiter().GetResult();
 #pragma warning restore VSTHRD002
+            entry.ReleaseGroupIdentity((int)hServerGroup);
             return S_OK;
         }
 #pragma warning disable CA1031 // Cross-unmanaged-boundary catch: any escaping managed exception would crash the process.
@@ -1072,12 +1075,97 @@ public static unsafe class OpcDaServerCcw
     [UnmanagedCallersOnly]
     private static int CreateGroupEnumerator(IntPtr pThis, uint dwScope, Guid* riid, IntPtr* ppUnk)
     {
-        _ = pThis; _ = dwScope; _ = riid;
-        if (ppUnk != null)
+        if (ppUnk == null)
         {
-            *ppUnk = IntPtr.Zero;
+            return E_INVALIDARG;
         }
-        return E_NOTIMPL;
+        *ppUnk = IntPtr.Zero;
+        if (riid == null)
+        {
+            return E_INVALIDARG;
+        }
+        if (!s_ccws.TryGetValue(pThis, out CcwEntry? entry)
+            || entry.ServerHandle.Target is not IOpcDaServer server)
+        {
+            return E_NOTIMPL;
+        }
+        if (!TryGetGroupEnumerationScope(dwScope, out OpcDaGroupEnumerationScope scope))
+        {
+            return E_INVALIDARG;
+        }
+        Guid expectedIid = scope.IsConnectionScope()
+            ? OpcGuids.IID_IEnumUnknown
+            : OpcGuids.IID_IEnumString;
+        if (*riid != expectedIid)
+        {
+            return E_NOINTERFACE;
+        }
+
+        try
+        {
+#pragma warning disable VSTHRD002 // Synchronous bridge across the COM ABI.
+            OpcDaGroupEnumerationSnapshot snapshot = server
+                .CreateGroupEnumerationSnapshotAsync(scope, CancellationToken.None)
+                .GetAwaiter().GetResult();
+#pragma warning restore VSTHRD002
+            *ppUnk = snapshot.EnumeratesConnections
+                ? CreateGroupConnectionEnumerator(entry, snapshot.Groups)
+                : global::Opc.Classic.Ae.Hosting.Windows.OpcEnumStringCcw.Create(snapshot.Names);
+            return snapshot.Groups.Count == 0 ? S_FALSE : S_OK;
+        }
+#pragma warning disable CA1031 // Cross-unmanaged-boundary catch.
+        catch (Opc.Classic.OpcException opcEx)
+        {
+            return opcEx.ResultId.Code;
+        }
+        catch (ArgumentException)
+        {
+            return E_INVALIDARG;
+        }
+        catch (Exception)
+        {
+            return E_FAIL;
+        }
+#pragma warning restore CA1031
+    }
+
+    private static bool TryGetGroupEnumerationScope(
+        uint wireValue,
+        out OpcDaGroupEnumerationScope scope)
+    {
+        try
+        {
+            scope = OpcDaGroupEnumerationScopeExtensions.FromWireValue(checked((int)wireValue));
+            return true;
+        }
+        catch (Exception ex) when (ex is ArgumentException or OverflowException)
+        {
+            scope = default;
+            return false;
+        }
+    }
+
+    private static IntPtr CreateGroupConnectionEnumerator(
+        CcwEntry entry,
+        IReadOnlyList<OpcDaGroup> groups)
+    {
+        var pointers = new IntPtr[groups.Count];
+        int acquired = 0;
+        try
+        {
+            for (; acquired < groups.Count; acquired++)
+            {
+                pointers[acquired] = entry.AcquireGroupIdentity(groups[acquired]);
+            }
+            return OpcEnumUnknownCcw.Create(pointers);
+        }
+        finally
+        {
+            for (int i = 0; i < acquired; i++)
+            {
+                ReleaseComPointer(pointers[i]);
+            }
+        }
     }
     [UnmanagedCallersOnly]
     private static int ShutdownGetConnectionInterface(IntPtr pThis, Guid* piid)
@@ -1226,6 +1314,13 @@ public static unsafe class OpcDaServerCcw
         _ = addRef(pointer);
     }
 
+    private static void ReleaseComPointer(IntPtr pointer)
+    {
+        IntPtr* vtable = *(IntPtr**)pointer;
+        var release = (delegate* unmanaged<IntPtr, uint>)vtable[2];
+        _ = release(pointer);
+    }
+
     private static int MapShutdownHResult(Exception ex) => ex switch
     {
         COMException comEx => comEx.ErrorCode,
@@ -1272,6 +1367,8 @@ public static unsafe class OpcDaServerCcw
         public IntPtr ConnectionPointContainerPointer { get; }
         public string ClientName { get; set; } = string.Empty;
         public ConcurrentDictionary<int, OpcShutdownSinkProxy> ShutdownSinks { get; } = new();
+        private readonly Dictionary<int, IntPtr> _groupIdentities = [];
+        private readonly Lock _groupIdentityLock = new();
         public int NextShutdownCookie;
 
         public long RefCount;
@@ -1281,6 +1378,50 @@ public static unsafe class OpcDaServerCcw
             foreach (OpcShutdownSinkProxy sink in ShutdownSinks.Values)
             {
                 sink.ShutdownRequest(e.Reason ?? string.Empty);
+            }
+            ReleaseAllGroupIdentities();
+        }
+
+        public IntPtr AcquireGroupIdentity(OpcDaGroup group)
+        {
+            lock (_groupIdentityLock)
+            {
+                if (_groupIdentities.TryGetValue(group.ServerHandle, out IntPtr pointer))
+                {
+                    AddRefComPointer(pointer);
+                    return pointer;
+                }
+                pointer = OpcDaGroupCcw.Create(group);
+                _groupIdentities.Add(group.ServerHandle, pointer);
+                AddRefComPointer(pointer);
+                return pointer;
+            }
+        }
+
+        public void ReleaseGroupIdentity(int serverHandle)
+        {
+            IntPtr pointer;
+            lock (_groupIdentityLock)
+            {
+                if (!_groupIdentities.Remove(serverHandle, out pointer))
+                {
+                    return;
+                }
+            }
+            ReleaseComPointer(pointer);
+        }
+
+        private void ReleaseAllGroupIdentities()
+        {
+            IntPtr[] pointers;
+            lock (_groupIdentityLock)
+            {
+                pointers = [.. _groupIdentities.Values];
+                _groupIdentities.Clear();
+            }
+            foreach (IntPtr pointer in pointers)
+            {
+                ReleaseComPointer(pointer);
             }
         }
 

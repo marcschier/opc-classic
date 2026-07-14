@@ -286,11 +286,25 @@ public sealed class SimDaHostServer : IOpcDaServer, IDisposable
     }
 
     /// <inheritdoc />
-    public Task<IReadOnlyList<OpcDaGroup>> SnapshotGroupsAsync(CancellationToken cancellationToken = default)
+    public Task<IReadOnlyList<OpcDaGroup>> SnapshotPrivateGroupsAsync(CancellationToken cancellationToken = default)
     {
         cancellationToken.ThrowIfCancellationRequested();
-        OpcDaGroup[] snapshot = [.. _groups.OrderBy(static pair => pair.Key).Select(static pair => pair.Value.Group)];
-        return Task.FromResult<IReadOnlyList<OpcDaGroup>>(snapshot);
+        return Task.FromResult<IReadOnlyList<OpcDaGroup>>(CreatePrivateGroupSnapshot());
+    }
+
+    /// <inheritdoc />
+    public Task<OpcDaGroupSetSnapshot> SnapshotAllGroupsAsync(CancellationToken cancellationToken = default)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+        return Task.FromResult(new OpcDaGroupSetSnapshot(
+            CreatePrivateGroupSnapshot(),
+            Array.Empty<OpcDaGroup>()));
+    }
+
+    private OpcDaGroup[] CreatePrivateGroupSnapshot()
+    {
+        KeyValuePair<int, GroupEntry>[] entries = _groups.ToArray();
+        return [.. entries.OrderBy(static pair => pair.Key).Select(static pair => pair.Value.Group)];
     }
 
     /// <inheritdoc />

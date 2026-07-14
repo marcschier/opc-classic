@@ -211,7 +211,7 @@ public sealed class CttDaServer : IOpcDaServer, IDisposable
 
     Task<IOpcInterfaceRef> IOPCServer.CreateGroupEnumeratorAsync(int scope, Guid requestedInterfaceId, CancellationToken cancellationToken)
     {
-        _ = scope; // OPC_ENUM_PUBLIC / OPC_ENUM_PRIVATE / OPC_ENUM_ALL — single namespace today
+        _ = OpcDaGroupEnumerationScopeExtensions.FromWireValue(scope);
         cancellationToken.ThrowIfCancellationRequested();
         // Register a fresh IEnumUnknown-like enumerator IPID for the snapshot of groups.
         Guid ipid = _objectRegistry.Register(new Dictionary<Guid, IOpcServerDispatcher>());
@@ -261,14 +261,28 @@ public sealed class CttDaServer : IOpcDaServer, IDisposable
         _groups.TryGetValue(serverGroupHandle, out GroupEntry? entry) ? entry.Ipid : null;
 
     /// <inheritdoc />
-    public Task<IReadOnlyList<OpcDaGroup>> SnapshotGroupsAsync(CancellationToken cancellationToken = default)
+    public Task<IReadOnlyList<OpcDaGroup>> SnapshotPrivateGroupsAsync(CancellationToken cancellationToken = default)
     {
         cancellationToken.ThrowIfCancellationRequested();
-        OpcDaGroup[] snapshot = _groups
+        return Task.FromResult<IReadOnlyList<OpcDaGroup>>(CreatePrivateGroupSnapshot());
+    }
+
+    /// <inheritdoc />
+    public Task<OpcDaGroupSetSnapshot> SnapshotAllGroupsAsync(CancellationToken cancellationToken = default)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+        return Task.FromResult(new OpcDaGroupSetSnapshot(
+            CreatePrivateGroupSnapshot(),
+            Array.Empty<OpcDaGroup>()));
+    }
+
+    private OpcDaGroup[] CreatePrivateGroupSnapshot()
+    {
+        KeyValuePair<int, GroupEntry>[] entries = _groups.ToArray();
+        return entries
             .OrderBy(static pair => pair.Key)
             .Select(static pair => pair.Value.Group)
             .ToArray();
-        return Task.FromResult<IReadOnlyList<OpcDaGroup>>(snapshot);
     }
 
     private OpcDaGroup CreateGroup(

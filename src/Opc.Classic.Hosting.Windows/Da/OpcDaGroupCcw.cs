@@ -57,6 +57,9 @@ public static unsafe class OpcDaGroupCcw
     internal static readonly Guid IID_IUnknown = Guid.Parse("00000000-0000-0000-C000-000000000046");
     // Tearoff pointer -> session. Multiple tearoffs map to the same session.
     internal static readonly ConcurrentDictionary<IntPtr, CcwSession> s_tearoffs = new();
+    private static readonly Dictionary<OpcDaGroup, CcwSession> s_groupSessions =
+        new(ReferenceEqualityComparer.Instance);
+    private static readonly Lock s_registryLock = new();
 
     /// <summary>
     /// Builds a CCW around <paramref name="group"/> and returns the IUnknown identity pointer with refcount = 1.
@@ -65,11 +68,22 @@ public static unsafe class OpcDaGroupCcw
     {
         ArgumentNullException.ThrowIfNull(group);
 
-        var handle = GCHandle.Alloc(group, GCHandleType.Normal);
-        var session = new CcwSession(handle) { RefCount = 1 };
-        AllocateSessionTearoffs(session);
-        RegisterSessionTearoffs(session);
-        return session.UnknownTearoff;
+        lock (s_registryLock)
+        {
+            if (s_groupSessions.TryGetValue(group, out CcwSession? existing)
+                && existing.Disposed == 0)
+            {
+                existing.RefCount++;
+                return existing.UnknownTearoff;
+            }
+
+            var handle = GCHandle.Alloc(group, GCHandleType.Normal);
+            var session = new CcwSession(handle) { RefCount = 1 };
+            AllocateSessionTearoffs(session);
+            RegisterSessionTearoffs(session);
+            s_groupSessions[group] = session;
+            return session.UnknownTearoff;
+        }
     }
 
     /// <summary>
@@ -111,9 +125,17 @@ public static unsafe class OpcDaGroupCcw
             return E_INVALIDARG;
         }
 
-        *ppv = tearoff;
-        Interlocked.Increment(ref session.RefCount);
-        return S_OK;
+        lock (s_registryLock)
+        {
+            if (session.Disposed != 0)
+            {
+                *ppv = IntPtr.Zero;
+                return E_FAIL;
+            }
+            *ppv = tearoff;
+            session.RefCount++;
+            return S_OK;
+        }
     }
 
     private static void AllocateSessionTearoffs(CcwSession session)
@@ -310,22 +332,24 @@ public static unsafe class OpcDaGroupCcw
             *ppv = IntPtr.Zero;
             return E_INVALIDARG;
         }
-        if (!s_tearoffs.TryGetValue(pThis, out CcwSession? session))
+        lock (s_registryLock)
         {
-            *ppv = IntPtr.Zero;
-            return E_NOINTERFACE;
+            if (!s_tearoffs.TryGetValue(pThis, out CcwSession? session)
+                || session.Disposed != 0)
+            {
+                *ppv = IntPtr.Zero;
+                return E_NOINTERFACE;
+            }
+            IntPtr target = ResolveTearoff(session, *riid);
+            if (target == IntPtr.Zero)
+            {
+                *ppv = IntPtr.Zero;
+                return E_NOINTERFACE;
+            }
+            *ppv = target;
+            session.RefCount++;
+            return S_OK;
         }
-
-        IntPtr target = ResolveTearoff(session, *riid);
-        if (target == IntPtr.Zero)
-        {
-            *ppv = IntPtr.Zero;
-            return E_NOINTERFACE;
-        }
-
-        *ppv = target;
-        Interlocked.Increment(ref session.RefCount);
-        return S_OK;
     }
 
     private static IntPtr ResolveTearoff(CcwSession session, Guid iid)
@@ -372,38 +396,50 @@ public static unsafe class OpcDaGroupCcw
     [UnmanagedCallersOnly]
     private static uint AddRef(IntPtr pThis)
     {
-        if (!s_tearoffs.TryGetValue(pThis, out CcwSession? session))
+        lock (s_registryLock)
         {
-            return 1;
+            if (!s_tearoffs.TryGetValue(pThis, out CcwSession? session)
+                || session.Disposed != 0)
+            {
+                return 0;
+            }
+            return (uint)++session.RefCount;
         }
-        return (uint)Interlocked.Increment(ref session.RefCount);
     }
 
     [UnmanagedCallersOnly]
     private static uint Release(IntPtr pThis)
     {
-        if (!s_tearoffs.TryGetValue(pThis, out CcwSession? session))
+        CcwSession dispose;
+        lock (s_registryLock)
         {
-            return 0;
+            if (!s_tearoffs.TryGetValue(pThis, out CcwSession? session)
+                || session.Disposed != 0)
+            {
+                return 0;
+            }
+            long next = --session.RefCount;
+            if (next > 0)
+            {
+                return (uint)next;
+            }
+            session.Disposed = 1;
+            if (session.GroupHandle.Target is OpcDaGroup group
+                && s_groupSessions.TryGetValue(group, out CcwSession? registered)
+                && ReferenceEquals(registered, session))
+            {
+                s_groupSessions.Remove(group);
+            }
+            RemoveSessionTearoffs(session);
+            dispose = session;
         }
-        long next = Interlocked.Decrement(ref session.RefCount);
-        if (next > 0)
-        {
-            return (uint)next;
-        }
-        DisposeSession(session);
+        DisposeSession(dispose);
         return 0;
     }
 
     private static void DisposeSession(CcwSession session)
     {
-        if (Interlocked.Exchange(ref session.Disposed, 1) != 0)
-        {
-            return;
-        }
-
         DisposeScmSinks(session);
-        RemoveSessionTearoffs(session);
         FreeSessionTearoffs(session);
         FreeSessionVtables(session);
         if (session.GroupHandle.IsAllocated)
