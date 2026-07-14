@@ -282,10 +282,15 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable
             PresentationResult? result = FindPresentationResult(initialContexts, bindResults, interfaceId);
             if (result is not null)
             {
-                throw new InvalidOperationException($"Presentation context rejected for IID {interfaceId:D}: {result}.");
+                throw new PresentationContextRejectedException(
+                    interfaceId,
+                    result,
+                    $"Presentation context rejected for IID {interfaceId:D}: {result}.");
             }
 
-            throw new InvalidOperationException($"Bind acknowledge did not accept presentation context for IID {interfaceId:D}.");
+            throw new PresentationContextRejectedException(
+                interfaceId,
+                $"Bind acknowledge did not accept presentation context for IID {interfaceId:D}.");
         }
 
         contextId = _nextContextId++;
@@ -320,7 +325,11 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable
             throw new InvalidOperationException($"Expected alter_context_response PDU, received type {decoded.Pdu.Type}.");
         }
 
-        ValidatePresentationResults(alterAck.ResultList, "AlterContext response had no presentation results.", "AlterContext presentation context rejected");
+        ValidatePresentationResults(
+            interfaceId,
+            alterAck.ResultList,
+            "AlterContext response had no presentation results.",
+            "AlterContext presentation context rejected");
     }
 
     private async ValueTask<PresentationResult[]> BindAsync(PendingPresentationContext[] contexts, CancellationToken cancellationToken)
@@ -735,6 +744,7 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable
     }
 
     private static void ValidatePresentationResults(
+        Guid interfaceId,
         PresentationResult[]? results,
         string emptyMessage,
         string rejectionMessagePrefix)
@@ -743,7 +753,10 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable
         {
             if (result.Result != PresentationResultCode.ACCEPTANCE)
             {
-                throw new InvalidOperationException($"{rejectionMessagePrefix}: {result}.");
+                throw new PresentationContextRejectedException(
+                    interfaceId,
+                    result,
+                    $"{rejectionMessagePrefix}: {result}.");
             }
         }
     }

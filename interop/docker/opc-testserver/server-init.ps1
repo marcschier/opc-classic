@@ -14,6 +14,9 @@ $ErrorActionPreference = 'Stop'
 
 $serverRoot = 'C:/server'
 $serverExe = Join-Path $serverRoot 'OpcTestServer_x64.exe'
+$opcEnumRoot = 'C:/opcenum'
+$opcEnumExe = Join-Path $opcEnumRoot 'OpcEnum.exe'
+$opcEnumProxyStub = Join-Path $opcEnumRoot 'opccomn_ps.dll'
 $registerScript = 'C:/register-testserver.ps1'
 $requiredArtifacts = @(
     'OpcTestServer_x64.exe',
@@ -36,6 +39,12 @@ function Wait-Forever {
 
 function Assert-ArtifactSet {
     $missing = $requiredArtifacts | Where-Object { -not (Test-Path -LiteralPath (Join-Path $serverRoot $_)) }
+    if (-not (Test-Path -LiteralPath $opcEnumExe)) {
+        $missing += 'OpcEnum.exe (x86)'
+    }
+    if (-not (Test-Path -LiteralPath $opcEnumProxyStub)) {
+        $missing += 'opccomn_ps.dll (x86)'
+    }
     if ($missing.Count -gt 0) {
         Write-Warning "Missing CoreComponents artifact(s): $($missing -join ', ')"
         if ($Interactive) {
@@ -51,13 +60,73 @@ function Assert-ArtifactSet {
     }
 }
 
-function Start-OpcEnumIfPresent {
-    $opcEnum = Get-Service -Name OpcEnum -ErrorAction SilentlyContinue
-    if ($opcEnum -and $opcEnum.Status -ne 'Running') {
-        Start-Service OpcEnum
-        Write-Host 'Started OpcEnum service'
-    } elseif (-not $opcEnum) {
-        Write-Warning 'OpcEnum service is not present in this image. OPERATOR: verify whether CoreComponents should include/register OpcEnum for your test plan.'
+function Register-And-StartOpcEnum {
+    $regsvr32 = Join-Path $env:WINDIR 'SysWOW64\regsvr32.exe'
+    if (-not (Test-Path -LiteralPath $regsvr32)) {
+        throw "x86 regsvr32.exe not found: $regsvr32"
+    }
+
+    Write-Host '-- Registering x86 OPC Common proxy/stub for OpcEnum'
+    $registration = Start-Process $regsvr32 `
+        -ArgumentList '/s', "`"$opcEnumProxyStub`"" `
+        -Wait -PassThru -NoNewWindow
+    if ($registration.ExitCode -ne 0) {
+        throw "x86 opccomn_ps.dll registration failed with exit code $($registration.ExitCode)"
+    }
+
+    $service = Get-Service -Name OpcEnum -ErrorAction SilentlyContinue
+    if (-not $service) {
+        Write-Host '-- Registering x86 OpcEnum Windows service'
+        $registration = Start-Process $opcEnumExe `
+            -ArgumentList '/Service' `
+            -WorkingDirectory $opcEnumRoot `
+            -Wait -PassThru -NoNewWindow
+        if ($registration.ExitCode -ne 0) {
+            throw "OpcEnum.exe /Service failed with exit code $($registration.ExitCode)"
+        }
+        $service = Get-Service -Name OpcEnum -ErrorAction Stop
+    }
+
+    if ($service.Status -ne 'Running') {
+        Start-Service -Name OpcEnum -ErrorAction Stop
+        $service.WaitForStatus('Running', [TimeSpan]::FromSeconds(30))
+    }
+    if ((Get-Service -Name OpcEnum -ErrorAction Stop).Status -ne 'Running') {
+        throw 'OpcEnum service did not reach the Running state.'
+    }
+    Write-Host 'OpcEnum service is registered and running'
+}
+
+function Unregister-OpcEnum {
+    $service = Get-Service -Name OpcEnum -ErrorAction SilentlyContinue
+    if ($service -and $service.Status -ne 'Stopped') {
+        try {
+            Stop-Service -Name OpcEnum -Force -ErrorAction Stop
+            $service.WaitForStatus('Stopped', [TimeSpan]::FromSeconds(30))
+        }
+        catch {
+            Write-Warning "Could not stop OpcEnum service: $_"
+        }
+    }
+
+    if (Test-Path -LiteralPath $opcEnumExe) {
+        $unregistration = Start-Process $opcEnumExe `
+            -ArgumentList '/UnregServer' `
+            -WorkingDirectory $opcEnumRoot `
+            -Wait -PassThru -NoNewWindow
+        if ($unregistration.ExitCode -ne 0) {
+            Write-Warning "OpcEnum.exe /UnregServer exited with $($unregistration.ExitCode)"
+        }
+    }
+
+    $regsvr32 = Join-Path $env:WINDIR 'SysWOW64\regsvr32.exe'
+    if ((Test-Path -LiteralPath $regsvr32) -and (Test-Path -LiteralPath $opcEnumProxyStub)) {
+        $unregistration = Start-Process $regsvr32 `
+            -ArgumentList '/u', '/s', "`"$opcEnumProxyStub`"" `
+            -Wait -PassThru -NoNewWindow
+        if ($unregistration.ExitCode -ne 0) {
+            Write-Warning "x86 opccomn_ps.dll unregistration exited with $($unregistration.ExitCode)"
+        }
     }
 }
 
@@ -83,11 +152,17 @@ function Unregister-TestServer {
 
 Write-Host '== opc-classic/testserver init =='
 Assert-ArtifactSet
-Start-OpcEnumIfPresent
-Register-TestServer
 
 $process = $null
+$opcEnumCleanupRequired = $false
+$testServerCleanupRequired = $false
 try {
+    $opcEnumCleanupRequired = $true
+    Register-And-StartOpcEnum
+
+    $testServerCleanupRequired = $true
+    Register-TestServer
+
     Write-Host '-- Starting OPC Foundation TestServer (headless foreground wait)'
     $process = Start-Process -FilePath $serverExe -WorkingDirectory $serverRoot -PassThru
     Write-Host "OpcTestServer_x64.exe PID: $($process.Id)"
@@ -110,5 +185,10 @@ finally {
         }
     }
 
-    Unregister-TestServer
+    if ($testServerCleanupRequired) {
+        Unregister-TestServer
+    }
+    if ($opcEnumCleanupRequired) {
+        Unregister-OpcEnum
+    }
 }

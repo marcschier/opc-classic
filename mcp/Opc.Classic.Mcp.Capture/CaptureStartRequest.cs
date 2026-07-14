@@ -59,11 +59,10 @@ namespace Opc.Classic.Mcp.Capture;
 /// surface the outcome via <c>DecodedOpcPdu.AuthUnwrapStatus</c>.
 /// SECURITY: developer-only / authorised-traffic-only. Never log or
 /// persist the key. Capture must start BEFORE the NTLM Type3
-/// handshake or per-direction counters will drift. The full
-/// integration into the decoder's byte-level frame parsing is a
-/// follow-up (the wire-side helper at
-/// <see cref="NtlmPassiveUnwrapper.TryUnwrap"/> is usable directly
-/// today by offline pcap-analysis scripts).
+/// handshake or per-direction counters will drift. Live-session
+/// tail/get/summarize decoding performs the unwrap inline. Ad-hoc
+/// decode/replay key input and external-peer compatibility variants
+/// remain out of scope.
 /// </param>
 public sealed record class CaptureStartRequest(
     string? InterfaceName = null,

@@ -2,15 +2,14 @@
 
 This repository publishes MIT-licensed `Opc.Classic.*` NuGet packages and the
 distributable managed OPC DA server container image from plain Markdown
-documentation and the .NET 10 XML solution. Releases go to **three targets**
-in parallel:
+documentation and the .NET 10 XML solution. Releases go to **three targets**:
 
 - **nuget.org** — the curated consumer set only: `Opc.Classic` (self-contained SDK meta-package bundling the cross-platform runtime), `Opc.Classic.Windows` (Windows DCOM server-hosting add-on), `Opc.Classic.Generators` and `Opc.Classic.MigrationAnalyzer` (Roslyn analyzer packages), and `Opc.Classic.Mcp` (MCP server tool). Conditional on `NUGET_API_KEY`.
 - **GitHub Packages NuGet feed** — the full granular `Opc.Classic.*` per-spec set (every runtime assembly as its own package) mirrored to `https://nuget.pkg.github.com/marcschier/index.json` (always-on, uses `GITHUB_TOKEN`).
-- **GHCR (`ghcr.io`)** — Docker images (always-on, uses `GITHUB_TOKEN`, all images cosign-signed keyless):
-  - `ghcr.io/marcschier/opc-classic-managed:<version>` — **Windows** container variant (`windowsservercore:ltsc2022`); built for users registering the managed server through the Windows SCM.
-  - `ghcr.io/marcschier/opc-classic-managed-linux:<version>` — **Linux** multi-arch (`linux/amd64`+`linux/arm64`, `noble-chiseled`) variant; the preferred choice when the consumer only needs the managed TCP RPC listener (the managed code is fully cross-platform; no Windows COM dependency at runtime).
-  - The C-built reference images (`opc-c-server`, `opc-c-client`) are publishable on demand via the `publish_reference_images` workflow_dispatch input.
+- **GHCR (`ghcr.io`)** — cosign-signed Docker images:
+  - `ghcr.io/marcschier/opc-classic-managed-linux:<version>` — **Linux** multi-arch (`linux/amd64`+`linux/arm64`, `noble-chiseled`), published automatically on the hosted Ubuntu release job.
+  - `ghcr.io/marcschier/opc-classic-managed:<version>` — **Windows** (`windowsservercore:ltsc2022`), published only by an explicit manual dispatch on the labeled self-hosted Windows runner.
+  - The Windows C-built reference images (`opc-c-server`, `opc-c-client`) are also optional and require both `publish_windows_image: true` and `publish_reference_images: true`.
 
 ## nuget.org package layout
 
@@ -27,7 +26,7 @@ The nuget.org set is deliberately small so consumers get a curated, self-contain
 
 Build-time versions are computed by [Nerdbank.GitVersioning](https://github.com/dotnet/Nerdbank.GitVersioning)
 (nbgv) from the repo-root [`version.json`](../version.json) plus git
-height. `src/Directory.Build.props` no longer hard-codes a `<Version>`;
+height. `src/Directory.Build.props` does not hard-code a `<Version>`;
 nbgv supplies `Version` / `AssemblyVersion` / `FileVersion` /
 `AssemblyInformationalVersion` / `PackageVersion` automatically.
 
@@ -55,7 +54,7 @@ nbgv supplies `Version` / `AssemblyVersion` / `FileVersion` /
   the release version.
 - Use SemVer: `<MAJOR>.<MINOR>.<PATCH>[-<prerelease>.<N>]`.
 - Use prerelease labels in the order `alpha`, `beta`, then `rc`.
-- Tags going forward should use the canonical `v` prefix (e.g. `v1.0.0`); the workflow tolerates bare tags (`1.0.0`) for compatibility with non-prefixed tag history.
+- Tags should use the canonical `v` prefix (e.g. `v1.0.0`); the workflow also accepts bare tags (`1.0.0`).
 - Do not reuse release tags. If a package must be replaced, cut a higher version.
 - Package IDs and namespaces remain under `Opc.Classic.*`.
 - The Docker image tag tracks the release version. `:latest` moves only on **stable** releases (no `-<prerelease>` suffix).
@@ -106,7 +105,7 @@ Do **not** push tags automatically. Push only after explicit maintainer approval
 git push origin "v$version"
 ```
 
-The workflow trigger `.github\workflows\release.yml` accepts tag patterns `v*`, `1.*`, and `2.*` and validates that the tag matches `[v]<MAJOR>.<MINOR>.<PATCH>[-<prerelease>.<N>]`. A leading `v` is stripped from the version derived for package and image tags, so a `v1.0.0` tag still produces `Opc.Classic.Core.1.0.0.nupkg` and `ghcr.io/marcschier/opc-classic-managed:1.0.0`.
+The workflow trigger `.github\workflows\release.yml` accepts tag patterns `v*`, `0.*`, `1.*`, and `2.*` and validates that the tag matches `[v]<MAJOR>.<MINOR>.<PATCH>[-<prerelease>.<N>]`. A leading `v` is stripped from the version derived for package and image tags, so a `v1.0.0` tag still produces `Opc.Classic.Core.1.0.0.nupkg` and `ghcr.io/marcschier/opc-classic-managed-linux:1.0.0`.
 
 When the `release` workflow runs, it:
 
@@ -116,21 +115,65 @@ When the `release` workflow runs, it:
 - pushes **only the curated set** — `Opc.Classic`, `Opc.Classic.Windows`, `Opc.Classic.Generators`, `Opc.Classic.MigrationAnalyzer`, and `Opc.Classic.Mcp` (including its per-RID variants) — to **nuget.org** when `NUGET_API_KEY` is configured;
 - pushes **all** packages to the **GitHub Packages NuGet feed** at `https://nuget.pkg.github.com/marcschier/index.json` (always — uses the auto-issued `GITHUB_TOKEN`);
 - uploads package artifacts for review even when publishing is skipped;
-- creates a GitHub Release with the matching changelog section, the package files attached, and consumer install instructions.
+- creates a GitHub Release with the matching changelog section, the package files attached, consumer install instructions, the automatically published Linux image, and the optional status of the Windows image.
 
-Then the `docker-publish` job (gated on `release` succeeding, runs on `windows-2022`):
+Then the hosted `docker-publish-linux` job:
 
 - logs in to `ghcr.io` with `GITHUB_TOKEN`;
-- builds and pushes `ghcr.io/marcschier/opc-classic-managed:<version>` (plus `:latest` only on stable releases);
-- builds and pushes `ghcr.io/marcschier/opc-classic-c-server` and `opc-classic-c-client` **only** when `workflow_dispatch` is used with `publish_reference_images: true` (default is opc-managed only for tag-push releases — avoids surprising the registry with interop test infrastructure on every release).
+- builds and pushes the multi-arch `ghcr.io/marcschier/opc-classic-managed-linux:<version>` image (plus `:latest` only on stable releases);
+- captures the pushed digest and signs the immutable digest with cosign keyless.
+
+The `docker-publish-windows` job is skipped for tag pushes. On a manual dispatch
+with `publish_windows_image: true`, it waits for a runner labeled
+`[self-hosted, Windows, X64, opc-classic-dcom]`, uses classic `docker build` and
+`docker push`, captures each pushed digest, and signs the Windows image with
+cosign. Setting `publish_reference_images: true` in the same dispatch also
+publishes and signs `opc-classic-c-server` and `opc-classic-c-client`.
 
 ## Manual workflow dispatch
 
 If tag-triggered automation needs to be re-run, use:
 
-GitHub → Actions → Release → Run workflow → input `tag: <existing-release-tag>` (and optionally `publish_reference_images: true` to broaden the Docker push to the C-built reference images).
+GitHub → Actions → Release → Run workflow → input `tag: <existing-release-tag>`.
 
 The manual input must match an existing release tag and the tag format accepted by `.github\workflows\release.yml`.
+
+Linux publication remains automatic on every successful release run. To publish
+the optional Windows image, select `publish_windows_image: true`. To publish the
+two Windows reference images too, also select `publish_reference_images: true`.
+Do not select the reference-image input by itself.
+
+## Self-hosted Windows validation and publishing
+
+The optional Windows jobs require an elevated x64 runner with all four labels:
+
+```text
+self-hosted, Windows, X64, opc-classic-dcom
+```
+
+Provision the runner with Visual Studio 2022 C++/ATL/CMake components, .NET 10,
+Python 3.12, Npcap in WinPcap-compatibility mode, and Docker configured for
+Windows containers. The runner must be able to register services, write HKLM
+COM/DCOM keys, run `regsvr32`, and build `windowsservercore:ltsc2022` images.
+
+Run the operator-only validation from:
+
+```text
+GitHub → Actions → Docker test fleet → Run workflow
+```
+
+- `matrix` builds the complete native/managed Windows fleet and fails unless all
+  three DCOM client/server probes and their reports are present.
+- `interactive-build-only` builds every fleet image without starting the fleet.
+- `native-matrikon-proxy` additionally builds the optional proxy scaffold.
+
+The same dispatch also runs the real out-of-process DCOM conformance job. It
+builds and registers the vendored `interop` CoreComponents, OpcEnum,
+TestServer, and x86/x64 proxy/stubs; verifies `ProxyStubClsid32` and
+`InprocServer32` registry entries before activation; runs the native TestServer
+and managed sample profiles; and fails for missing assets, registrations,
+activation traces, probe rows, or JSON reports. This workflow has no schedule
+and never consumes a GitHub-hosted runner.
 
 ## Required secrets
 
@@ -204,7 +247,8 @@ docker pull ghcr.io/marcschier/opc-classic-managed-linux:1.0.0
 docker pull ghcr.io/marcschier/opc-classic-managed-linux:latest  # stable releases only
 ```
 
-**Windows (when the consumer needs Windows SCM-style registration):**
+**Windows (when the consumer needs Windows SCM-style registration and a
+maintainer has run the optional self-hosted publication):**
 
 ```powershell
 docker pull ghcr.io/marcschier/opc-classic-managed:1.0.0
@@ -213,7 +257,9 @@ docker pull ghcr.io/marcschier/opc-classic-managed:latest  # stable releases onl
 
 #### Verifying cosign signatures
 
-Every Docker image push from the release workflow is signed via cosign keyless (Sigstore Rekor transparency log + GHCR `.sig` co-located artifact). Verify before deploying production:
+Every Docker image pushed by either the automatic Linux job or optional
+self-hosted Windows job is signed via cosign keyless (Sigstore Rekor
+transparency log + GHCR `.sig` co-located artifact). Verify before deploying:
 
 ```bash
 cosign verify \
@@ -264,13 +310,13 @@ dotnet nuget push ".\.nupkg\*.nupkg" --source https://nuget.pkg.github.com/marcs
 - Confirm the GitHub Release links to the expected tag and artifacts.
 - Confirm nuget.org lists the curated set (`Opc.Classic`, `Opc.Classic.Windows`, `Opc.Classic.Generators`, `Opc.Classic.MigrationAnalyzer`, and `Opc.Classic.Mcp` + its per-RID variants) and that the granular per-spec packages are **not** on nuget.org.
 - Confirm the GitHub Packages NuGet feed lists the same packages (visit `https://github.com/marcschier/opc-classic/packages` or query the feed directly).
-- Confirm `ghcr.io/marcschier/opc-classic-managed:<version>` (Windows) and `ghcr.io/marcschier/opc-classic-managed-linux:<version>` (Linux multi-arch) are pullable (and `:latest` for stable releases).
-- Verify the cosign keyless signature on each pushed image with the command shape documented under "Docker images (GHCR)". A signature-verification failure blocks promotion.
+- Confirm `ghcr.io/marcschier/opc-classic-managed-linux:<version>` is pullable (and `:latest` for stable releases).
+- If Windows publication was explicitly requested, confirm `ghcr.io/marcschier/opc-classic-managed:<version>` and any requested reference images are pullable.
+- Verify the cosign keyless signature on each image that was actually pushed. A signature-verification failure blocks promotion.
 - Confirm the package install smoke project restores and builds.
 - Record Docker test fleet, live NTLMv2, and audit report locations in the release notes when applicable.
 
 ## Future enhancements (tracked separately)
 
 - **NuGet package code-signing** — would require a code-signing cert; out of scope for the current public-release flow. Strong-name assembly identity via `build/Opc.Classic.snk` is already in place.
-- **Broader Docker image set** — `opc-managed` (Windows + Linux variants) is the only distributable today. The fleet's C-built reference images (`opc-c-server`, `opc-c-client`) ship on demand via `publish_reference_images: true`. The test/fixture images (`opc-testserver`, `opc-testclient`, `samba`) are intentionally not published.
-
+- **Broader Docker image set** — the Linux managed image is automatic; the Windows managed and C-built reference images are optional self-hosted publications. The test/fixture images (`opc-testserver`, `opc-testclient`, `samba`) are intentionally not published.

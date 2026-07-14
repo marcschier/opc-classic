@@ -87,11 +87,33 @@ public sealed class OpcDcomDecoder
     /// </summary>
     public IEnumerable<DecodedOpcPdu> Decode(CapturedPacket packet)
     {
+        foreach (DecodedDcomFrame result in DecodeDetailed(packet))
+        {
+            if (result.Pdu is not null)
+            {
+                yield return result.Pdu;
+            }
+        }
+    }
+
+    /// <summary>
+    /// Internal decode surface that retains raw frame/stub bytes and
+    /// structured failures for replay without adding those bytes to the
+    /// ordinary MCP DTO.
+    /// </summary>
+    internal IEnumerable<DecodedDcomFrame> DecodeDetailed(CapturedPacket packet)
+    {
         ArgumentNullException.ThrowIfNull(packet);
 
         if (packet.LinkType == 0)
         {
-            yield return DecodeHexSourceRecord(packet);
+            DecodedOpcPdu pdu = DecodeHexSourceRecord(packet);
+            yield return new DecodedDcomFrame(
+                pdu,
+                pdu.PduType,
+                RawFrame: null,
+                StubBytes: packet.Data.ToArray(),
+                Failure: null);
             yield break;
         }
 
@@ -152,32 +174,14 @@ public sealed class OpcDcomDecoder
         }
 
         FlowKey key = new(srcIp, tcp.SourcePort, dstIp, tcp.DestinationPort);
-        if (!_flows.TryGetValue(key, out FlowState? flow))
-        {
-            flow = new FlowState(key);
-            _flows[key] = flow;
-        }
-
-        // Also pre-allocate the reverse-direction flow so the Bind-direction
-        // propagation in TryDecodeFrame can set KnownDirection on both sides
-        // without a second lookup. Reverse flow may not have buffered any
-        // packets yet — that's fine; it's identified solely by its FlowKey.
         FlowKey reverseKey = new(dstIp, tcp.DestinationPort, srcIp, tcp.SourcePort);
-        if (!_flows.TryGetValue(reverseKey, out FlowState? reverseFlow))
-        {
-            reverseFlow = new FlowState(reverseKey);
-            _flows[reverseKey] = reverseFlow;
-        }
+        (FlowState flow, FlowState reverseFlow) = GetOrCreateFlowPair(key, reverseKey);
 
         flow.Append(payload);
 
         while (flow.TryDequeueFrame(out byte[]? frame))
         {
-            DecodedOpcPdu? decoded = TryDecodeFrame(frame, packet.Timestamp, flow, reverseFlow, key);
-            if (decoded is not null)
-            {
-                yield return decoded;
-            }
+            yield return TryDecodeFrame(frame, packet.Timestamp, flow, reverseFlow, key);
         }
     }
 
@@ -201,7 +205,7 @@ public sealed class OpcDcomDecoder
         return output;
     }
 
-    private DecodedOpcPdu? TryDecodeFrame(byte[] frame, DateTimeOffset timestamp, FlowState flow, FlowState reverseFlow, FlowKey key)
+    private DecodedDcomFrame TryDecodeFrame(byte[] frame, DateTimeOffset timestamp, FlowState flow, FlowState reverseFlow, FlowKey key)
     {
         // Pre-PduCodec hook: peek at PTYPE (frame[2]) to (a) propagate the
         // client/server orientation across both halves of the bidirectional
@@ -223,6 +227,15 @@ public sealed class OpcDcomDecoder
         }
 
         (NtlmUnwrapStatus? authStatus, string? authReason) = TryUnwrapInPlace(frame, flow);
+        if (authStatus is NtlmUnwrapStatus.Decrypted or NtlmUnwrapStatus.IntegrityVerified)
+        {
+            int strippedLength = BinaryPrimitives.ReadUInt16LittleEndian(
+                frame.AsSpan(ConnectionOrientedPdu.FRAG_LENGTH_OFFSET, 2));
+            if (strippedLength < frame.Length)
+            {
+                Array.Resize(ref frame, strippedLength);
+            }
+        }
 
         ConnectionOrientedPdu pdu;
         try
@@ -235,10 +248,15 @@ public sealed class OpcDcomDecoder
             {
                 _logger.LogDebug(ex, "OpcDcomDecoder: PduCodec rejected frame ({Bytes} bytes) on flow {Flow}.", frame.Length, key);
             }
-            return null;
+            return new DecodedDcomFrame(
+                Pdu: null,
+                PduType: GetPduType(frame),
+                RawFrame: frame,
+                StubBytes: null,
+                Failure: new DcomDecodeFailure("pdu_codec", ex.GetType().Name, ex.Message));
         }
 
-        return pdu switch
+        DecodedOpcPdu? projected = pdu switch
         {
             BindPdu bind => ProjectBind(bind.ContextList, bind.CallId, timestamp, key, flow, isAlter: false),
             AlterContextPdu alter => ProjectBind(alter.ContextList, alter.CallId, timestamp, key, flow, isAlter: true),
@@ -254,6 +272,15 @@ public sealed class OpcDcomDecoder
             OrphanedPdu => ProjectSimple("orphaned", timestamp, key),
             _ => null,
         };
+
+        byte[]? stub = pdu switch
+        {
+            RequestCoPdu request => request.Stub,
+            ResponseCoPdu response => response.Stub,
+            FaultCoPdu fault => fault.Stub,
+            _ => null,
+        };
+        return new DecodedDcomFrame(projected, GetPduType(frame), frame, stub, Failure: null);
     }
 
     // NTLMSSP auth-service code (MS-RPCE §2.2.1.1.7). Set in the auth verifier header's
@@ -275,12 +302,9 @@ public sealed class OpcDcomDecoder
     /// caller can decorate the projected <see cref="DecodedOpcPdu"/>.
     /// </summary>
     /// <remarks>
-    /// Wire-format compatibility: matches the signing region used by
-    /// this codebase's <c>DcomCallChannel.ApplyPacketProtectionCore</c>,
-    /// which signs+seals from frame offset 0 (common header) through
-    /// the auth verifier header (inclusive of both). Real-Windows
-    /// traffic per MS-RPCE §13.3 should only encrypt the stub data;
-    /// that compatibility variant is a documented follow-up.
+    /// Wire-format compatibility: matches this codebase's body-only
+    /// signing/sealing region. Additional external-peer packet-protection
+    /// layouts remain a compatibility follow-up.
     /// </remarks>
     private (NtlmUnwrapStatus? Status, string? Reason) TryUnwrapInPlace(byte[] frame, FlowState flow)
     {
@@ -327,6 +351,15 @@ public sealed class OpcDcomDecoder
             return (null, null);
         }
 
+        int authPaddingLength = frame[verifierStart + 2];
+        int strippedLength = verifierStart - authPaddingLength;
+        if (strippedLength < ConnectionOrientedPdu.HEADER_LENGTH
+            || authPaddingLength > verifierStart - ConnectionOrientedPdu.HEADER_LENGTH)
+        {
+            return (NtlmUnwrapStatus.InvalidTrailerLength,
+                $"Invalid auth_pad_length={authPaddingLength} for verifier_start={verifierStart}.");
+        }
+
         if (flow.KnownDirection is not { } direction)
         {
             // The capture started after the bind — counters are unrecoverable.
@@ -358,12 +391,11 @@ public sealed class OpcDcomDecoder
             // so PduCodec sees a clean PDU body (it expects no auth trailer
             // once the wire layer has handled the protection).
             Array.Copy(cipherStub, 0, frame, bodyStart, bodyLength);
-            int strippedLength = verifierStart;
             BinaryPrimitives.WriteUInt16LittleEndian(frame.AsSpan(ConnectionOrientedPdu.FRAG_LENGTH_OFFSET, 2), (ushort)strippedLength);
             BinaryPrimitives.WriteUInt16LittleEndian(frame.AsSpan(ConnectionOrientedPdu.AUTH_LENGTH_OFFSET, 2), 0);
-            // Zero out the (now-orphan) auth verifier header + auth value
-            // bytes so they can't accidentally be read as stub data.
-            Array.Clear(frame, verifierStart, frame.Length - verifierStart);
+            // Zero out auth padding + verifier header + auth value so none of
+            // those bytes can be decoded as stub data.
+            Array.Clear(frame, strippedLength, frame.Length - strippedLength);
         }
 
         return (result.Status, result.Reason);
@@ -394,28 +426,156 @@ public sealed class OpcDcomDecoder
         ArgumentNullException.ThrowIfNull(dstIp);
 
         var key = new FlowKey(srcIp, srcPort, dstIp, dstPort);
-        if (!_flows.TryGetValue(key, out FlowState? flow))
-        {
-            flow = new FlowState(key);
-            _flows[key] = flow;
-        }
         var reverseKey = new FlowKey(dstIp, dstPort, srcIp, srcPort);
-        if (!_flows.TryGetValue(reverseKey, out FlowState? reverseFlow))
-        {
-            reverseFlow = new FlowState(reverseKey);
-            _flows[reverseKey] = reverseFlow;
-        }
+        (FlowState flow, FlowState reverseFlow) = GetOrCreateFlowPair(key, reverseKey);
 
         flow.Append(frame);
 
         while (flow.TryDequeueFrame(out byte[]? next))
         {
-            DecodedOpcPdu? decoded = TryDecodeFrame(next, timestamp, flow, reverseFlow, key);
-            if (decoded is not null)
+            DecodedDcomFrame decoded = TryDecodeFrame(next, timestamp, flow, reverseFlow, key);
+            if (decoded.Pdu is not null)
             {
-                yield return decoded;
+                yield return decoded.Pdu;
             }
         }
+    }
+
+    /// <summary>
+    /// Decodes exactly one raw DCE/RPC frame and reports framing or codec
+    /// failures instead of buffering/suppressing them.
+    /// </summary>
+    internal DecodedDcomFrame DecodeRawDcomFrameStrict(
+        byte[] frame,
+        IPAddress srcIp,
+        int srcPort,
+        IPAddress dstIp,
+        int dstPort,
+        DateTimeOffset timestamp)
+    {
+        ArgumentNullException.ThrowIfNull(frame);
+        ArgumentNullException.ThrowIfNull(srcIp);
+        ArgumentNullException.ThrowIfNull(dstIp);
+
+        if (frame.Length == 0)
+        {
+            return FramingFailure(frame, "empty_frame", "DCE/RPC frame is empty.");
+        }
+        if (frame.Length < ConnectionOrientedPdu.HEADER_LENGTH)
+        {
+            return FramingFailure(
+                frame,
+                "truncated_header",
+                $"DCE/RPC frame is {frame.Length} bytes; the common header requires {ConnectionOrientedPdu.HEADER_LENGTH}.");
+        }
+
+        int fragmentLength = BinaryPrimitives.ReadUInt16LittleEndian(
+            frame.AsSpan(ConnectionOrientedPdu.FRAG_LENGTH_OFFSET, 2));
+        if (fragmentLength < ConnectionOrientedPdu.HEADER_LENGTH)
+        {
+            return FramingFailure(
+                frame,
+                "invalid_fragment_length",
+                $"DCE/RPC frag_length {fragmentLength} is smaller than the {ConnectionOrientedPdu.HEADER_LENGTH}-byte common header.");
+        }
+        if (fragmentLength != frame.Length)
+        {
+            string reason = fragmentLength > frame.Length
+                ? $"DCE/RPC frame is truncated: frag_length={fragmentLength}, available={frame.Length}."
+                : $"DCE/RPC input contains trailing bytes: frag_length={fragmentLength}, available={frame.Length}.";
+            return FramingFailure(frame, "fragment_length_mismatch", reason);
+        }
+
+        var key = new FlowKey(srcIp, srcPort, dstIp, dstPort);
+        var reverseKey = new FlowKey(dstIp, dstPort, srcIp, srcPort);
+        (FlowState flow, FlowState reverseFlow) = GetOrCreateFlowPair(key, reverseKey);
+
+        return TryDecodeFrame(frame.ToArray(), timestamp, flow, reverseFlow, key);
+    }
+
+    private (FlowState Flow, FlowState ReverseFlow) GetOrCreateFlowPair(FlowKey key, FlowKey reverseKey)
+    {
+        if (_flows.TryGetValue(key, out FlowState? flow))
+        {
+            if (!_flows.TryGetValue(reverseKey, out FlowState? reverseFlow))
+            {
+                reverseFlow = new FlowState(reverseKey, flow.Connection);
+                _flows[reverseKey] = reverseFlow;
+            }
+            return (flow, reverseFlow);
+        }
+
+        if (_flows.TryGetValue(reverseKey, out FlowState? existingReverse))
+        {
+            flow = new FlowState(key, existingReverse.Connection);
+            _flows[key] = flow;
+            return (flow, existingReverse);
+        }
+
+        var connection = new ConnectionState();
+        flow = new FlowState(key, connection);
+        var reverse = new FlowState(reverseKey, connection);
+        _flows[key] = flow;
+        _flows[reverseKey] = reverse;
+        return (flow, reverse);
+    }
+
+    /// <summary>
+    /// Reports incomplete DCE/RPC bytes left in flow reassembly buffers after
+    /// an offline source has been fully consumed.
+    /// </summary>
+    internal IEnumerable<DecodedDcomFrame> CompleteDetailed()
+    {
+        foreach (FlowState flow in _flows.Values)
+        {
+            byte[] remaining = flow.TakeRemainingBytes();
+            if (remaining.Length == 0)
+            {
+                continue;
+            }
+
+            yield return FramingFailure(
+                remaining,
+                remaining.Length < ConnectionOrientedPdu.HEADER_LENGTH
+                    ? "truncated_header"
+                    : "truncated_fragment",
+                remaining.Length < ConnectionOrientedPdu.HEADER_LENGTH
+                    ? $"DCE/RPC stream ended with {remaining.Length} byte(s), before the common header completed."
+                    : $"DCE/RPC stream ended before frag_length completed ({remaining.Length} byte(s) available).");
+        }
+    }
+
+    private static DecodedDcomFrame FramingFailure(byte[] frame, string code, string message)
+        => new(
+            Pdu: null,
+            PduType: GetPduType(frame),
+            RawFrame: frame,
+            StubBytes: null,
+            Failure: new DcomDecodeFailure("framing", code, message));
+
+    private static string GetPduType(ReadOnlySpan<byte> frame)
+    {
+        if (frame.Length <= ConnectionOrientedPdu.TYPE_OFFSET)
+        {
+            return "unknown";
+        }
+
+        return frame[ConnectionOrientedPdu.TYPE_OFFSET] switch
+        {
+            RequestCoPdu.REQUEST_TYPE => "request",
+            ResponseCoPdu.RESPONSE_TYPE => "response",
+            FaultCoPdu.FAULT_TYPE => "fault",
+            BindPdu.BIND_TYPE => "bind",
+            BindAcknowledgePdu.BIND_ACKNOWLEDGE_TYPE => "bind_ack",
+            BindNoAcknowledgePdu.BIND_NO_ACKNOWLEDGE_TYPE => "bind_nak",
+            AlterContextPdu.ALTER_CONTEXT_TYPE => "alter_context",
+            AlterContextResponsePdu.ALTER_CONTEXT_RESPONSE_TYPE => "alter_context_resp",
+            ShutdownPdu.SHUTDOWN_TYPE => "shutdown",
+            Auth3Pdu.AUTH3_TYPE => "auth3",
+            CancelCoPdu.CANCEL_TYPE => "cancel",
+            OrphanedPdu.ORPHANED_TYPE => "orphaned",
+            _ => "unknown",
+        };
     }
 
     private static DecodedOpcPdu DecodeHexSourceRecord(CapturedPacket packet)
@@ -527,6 +687,7 @@ public sealed class OpcDcomDecoder
         }
 
         Guid? objectIpid = TryParseGuid(request.Object?.ToString());
+        flow.Calls[request.CallId] = new CallCorrelation(iid, request.Opnum, request.ContextId);
 
         return new DecodedOpcPdu
         {
@@ -552,6 +713,16 @@ public sealed class OpcDcomDecoder
         {
             iid = confirmed;
         }
+        int? opnum = null;
+        if (flow.Calls.TryGetValue(response.CallId, out CallCorrelation? call))
+        {
+            iid ??= call.InterfaceId;
+            opnum = call.Opnum;
+            if (response.GetFlag(ConnectionOrientedPdu.PFC_LAST_FRAG))
+            {
+                flow.Calls.Remove(response.CallId);
+            }
+        }
 
         // The HRESULT is the trailing 4 bytes of the ORPC envelope when present;
         // ResponseCoPdu.Stub = ORPCTHAT (header) + body + (optional) HRESULT.
@@ -572,6 +743,7 @@ public sealed class OpcDcomDecoder
             DestinationEndpoint = FormatEndpoint(key.DstIp, key.DstPort),
             CallId = response.CallId,
             ContextId = response.ContextId,
+            Opnum = opnum,
             InterfaceId = iid,
             Hresult = hresult,
             ResponseStubLength = response.Stub?.Length ?? 0,
@@ -587,6 +759,16 @@ public sealed class OpcDcomDecoder
         {
             iid = confirmed;
         }
+        int? opnum = null;
+        if (flow.Calls.TryGetValue(fault.CallId, out CallCorrelation? call))
+        {
+            iid ??= call.InterfaceId;
+            opnum = call.Opnum;
+            if (fault.GetFlag(ConnectionOrientedPdu.PFC_LAST_FRAG))
+            {
+                flow.Calls.Remove(fault.CallId);
+            }
+        }
 
         return new DecodedOpcPdu
         {
@@ -596,6 +778,7 @@ public sealed class OpcDcomDecoder
             DestinationEndpoint = FormatEndpoint(key.DstIp, key.DstPort),
             CallId = fault.CallId,
             ContextId = fault.ContextId,
+            Opnum = opnum,
             InterfaceId = iid,
             FaultStatus = unchecked((int)fault.Status),
             AuthUnwrapStatus = authStatus?.ToString(),
@@ -795,12 +978,24 @@ public sealed class OpcDcomDecoder
 
     private sealed record class FlowKey(IPAddress SrcIp, int SrcPort, IPAddress DstIp, int DstPort);
 
-    private sealed class FlowState
+    private sealed record CallCorrelation(Guid? InterfaceId, int Opnum, int ContextId);
+
+    private sealed class ConnectionState
     {
-        public FlowKey Key { get; }
         public Dictionary<int, Guid> PendingContexts { get; } = new();
         public Dictionary<int, Guid> ConfirmedContexts { get; } = new();
         public List<int> LastBindContextIds { get; } = new();
+        public Dictionary<int, CallCorrelation> Calls { get; } = new();
+    }
+
+    private sealed class FlowState
+    {
+        public FlowKey Key { get; }
+        public ConnectionState Connection { get; }
+        public Dictionary<int, Guid> PendingContexts => Connection.PendingContexts;
+        public Dictionary<int, Guid> ConfirmedContexts => Connection.ConfirmedContexts;
+        public List<int> LastBindContextIds => Connection.LastBindContextIds;
+        public Dictionary<int, CallCorrelation> Calls => Connection.Calls;
 
         /// <summary>
         /// Direction of this flow relative to the DCOM connection
@@ -817,7 +1012,11 @@ public sealed class OpcDcomDecoder
 
         private readonly List<byte> _buffer = new();
 
-        public FlowState(FlowKey key) => Key = key;
+        public FlowState(FlowKey key, ConnectionState connection)
+        {
+            Key = key;
+            Connection = connection;
+        }
 
         public void Append(ReadOnlySpan<byte> bytes) => _buffer.AddRange(bytes);
 
@@ -840,5 +1039,34 @@ public sealed class OpcDcomDecoder
             _buffer.RemoveRange(0, fragLength);
             return true;
         }
+
+        public byte[] TakeRemainingBytes()
+        {
+            if (_buffer.Count == 0)
+            {
+                return Array.Empty<byte>();
+            }
+
+            byte[] remaining = _buffer.ToArray();
+            _buffer.Clear();
+            return remaining;
+        }
     }
 }
+
+/// <summary>
+/// Internal decode result used by byte-level replay. Raw bytes stay off the
+/// public <see cref="DecodedOpcPdu"/> MCP serialization surface.
+/// </summary>
+internal sealed record DecodedDcomFrame(
+    DecodedOpcPdu? Pdu,
+    string PduType,
+    byte[]? RawFrame,
+    byte[]? StubBytes,
+    DcomDecodeFailure? Failure);
+
+/// <summary>
+/// Structured framing/codec failure retained for replay and ad-hoc decode
+/// diagnostics.
+/// </summary>
+internal sealed record DcomDecodeFailure(string Stage, string Code, string Message);

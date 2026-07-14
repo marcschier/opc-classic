@@ -1467,9 +1467,11 @@ Begins a network packet capture session. Defaults the BPF filter to TCP DCOM tra
 | `maxPackets` | `long?` | `null` | Optional cap on captured frame count. |
 | `maxDurationSeconds` | `int?` | `null` | Optional cap on wall-clock duration; the capture source applies its default when omitted. |
 | `serverPorts` | `int[]?` | `null` | Optional explicit OPC server data ports used to narrow the default DCOM capture filter. |
-| `ntlmSessionKeyHex` | `string?` | `null` | Developer-only 32-character hex NTLMv2 session key for opt-in auth-trailer unwrap plumbing. |
+| `ntlmSessionKeyHex` | `string?` | `null` | Developer-only 32-character hex NTLMv2 session key for inline auth-trailer unwrap in `capture.tail`, `capture.get`, and `capture.summarize`. Capture must begin before the NTLM Type3 handshake so direction counters remain synchronized. The key is cloned into session-owned storage, redacted from session metadata, and zeroed on failure/disposal. |
 
 **Returns:** `Task<CaptureSessionDto>`
+
+NTLM unwrap is implemented for live-session tail/get/summarize decoding. Remaining gaps are ad-hoc decode/replay key input and compatibility variants for externally produced protected traffic.
 
 ### `opcclassic.capture.stop`
 
@@ -1497,7 +1499,7 @@ Lists known capture sessions.
 
 ### `opcclassic.capture.get`
 
-Returns captured trace data as a decoded summary, JSON records, or a pcap file path.
+Returns captured trace data as a decoded summary, JSON records, or a pcap file path. When the session was started with `ntlmSessionKeyHex`, protected request/response/fault records are unwrapped inline and include `authUnwrapStatus` plus an operator-safe failure reason when applicable.
 
 **Parameters**
 
@@ -1511,7 +1513,7 @@ Returns captured trace data as a decoded summary, JSON records, or a pcap file p
 
 ### `opcclassic.capture.tail`
 
-Returns the next decoded-PDU window for a live or completed capture using a polling cursor.
+Returns the next decoded-PDU window for a live or completed capture using a polling cursor. Sessions started with `ntlmSessionKeyHex` unwrap protected request/response/fault records inline.
 
 **Parameters**
 
@@ -1525,7 +1527,7 @@ Returns the next decoded-PDU window for a live or completed capture using a poll
 
 ### `opcclassic.capture.summarize`
 
-Returns top-N roll-ups for a completed capture, including talkers, ports, IIDs, opnums, IPIDs, fault codes, and bind-reject reasons.
+Returns top-N roll-ups for a completed capture, including talkers, ports, IIDs, opnums, IPIDs, fault codes, and bind-reject reasons. Protected traffic is unwrapped inline when the session has an NTLM key.
 
 **Parameters**
 
@@ -1550,7 +1552,7 @@ Stops a capture if needed, disposes it, and removes its scratch folder.
 
 ### `opcclassic.capture.decode_pdu`
 
-Decodes a single ad-hoc DCE/RPC PDU frame from hex bytes.
+Decodes exactly one raw DCE/RPC PDU frame from hex bytes through the same `PduCodec` projection used by capture sessions. Empty, truncated, fragment-length-mismatched, and undecodable inputs return a structured MCP error with a bounded hex context.
 
 **Parameters**
 
@@ -1562,7 +1564,7 @@ Decodes a single ad-hoc DCE/RPC PDU frame from hex bytes.
 
 ### `opcclassic.capture.replay`
 
-Walks captured ORPC bodies through `NdrReader` and reports per-(IID,opnum) success/failure counts.
+Re-decodes captured request/response/fault frames through `PduCodec`, validates request `ORPC_THIS` and response `ORPC_THAT` envelopes, and reports per-(IID,opnum,direction) succeeded/failed/skipped counts. Each failing bucket includes the first failure message and a bounded hex context; records without retained raw frame bytes are skipped rather than reported as validated.
 
 **Parameters**
 

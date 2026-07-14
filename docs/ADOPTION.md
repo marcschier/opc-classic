@@ -304,7 +304,7 @@ Writing HKLM usually requires administrative rights. Treat registry writes as in
 
 ### Native COM clients
 
-Native Windows COM clients can activate managed `Opc.Classic` servers through the Windows SCM/CCW path when CLSID/ProgID registration is configured. The managed listener now includes server-side NTLMv2 authenticated bind handling, EPM/OXID publication, routable `IRemUnknown`, and OpcEnum discovery; Kerberos/SPNEGO acceptor wiring and broader native-client hardening remain follow-up work. Test native interop with the preserved C++ sample servers and representative client tools.
+Native Windows COM clients can activate managed `Opc.Classic` servers through the Windows SCM/CCW path when CLSID/ProgID registration is configured. The managed listener includes server-side NTLMv2 authenticated bind handling, EPM/OXID publication, routable `IRemUnknown`, and OpcEnum discovery; Kerberos/SPNEGO acceptor wiring and broader native-client hardening remain follow-up work. Test native interop with the preserved C++ sample servers and representative client tools.
 
 ## 9. AOT publishing
 
@@ -335,7 +335,7 @@ Keep reflection-heavy plugins, runtime-generated serializers, and dynamic dispat
 | DX | Data eXchange source server, connection, and configuration models. |
 | Security | OPC Security projections plus DCOM authentication and packet-protection integration. |
 | Discovery | Local, remote-registry, and OPCEnum discovery strategies. |
-| XML-DA | HTTP/SOAP XML-DA DTOs, serializers, and client transport shape. |
+| XML-DA | Client-only HTTP/SOAP XML-DA DTOs, serializers, and transport. |
 
 The generated DCOM surface covers the current annotated OPC projections. The current validation sweep has 0 build errors / 0 warnings and all test projects green with only expected skipped tests.
 
@@ -451,5 +451,5 @@ The sample suite contains runnable apps for the main adopter paths.
 | `Opc.Classic.Samples.LoopbackDemo` | In-memory generated proxy/dispatcher loopback. |
 | `Opc.Classic.Samples.CttServer` | Conformance-test DA server behavior. |
 | `Opc.Classic.Samples.OpcSecurityServer` | OPC Security reference server and ACL semantics. |
-| `Opc.Classic.Samples.SimulationServer` | Full-feature simulation across DA/AE/HDA/Batch/Commands/Cpx/DX/Security/Discovery/XML-DA, MCP sessions, and optional real TCP hosting. |
+| `Opc.Classic.Samples.SimulationServer` | Full-feature simulation across DA/AE/HDA/Batch/Commands/Cpx/DX/Security/Discovery, XML-DA client-facing MCP tools, MCP sessions, and optional real TCP hosting. |
 | `Opc.Classic.Samples.AotCanary` | NativeAOT publish validation. |

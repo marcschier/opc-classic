@@ -62,61 +62,49 @@ internal sealed class DualStringArray
     /// <returns>A new <see cref="DualStringArray"/> instance built from <paramref name="ndr"/>.</returns>
     internal static DualStringArray Decode(NdrCodec ndr)
     {
-        var dualStringArray = new DualStringArray();
+        (int numEntries, int securityOffset) = ReadHeader(ndr);
 
-        // first extract number of entries
-        var numEntries = ndr.ReadUnsignedShort();
+        if (securityOffset > numEntries)
+        {
+            throw new InvalidDataException(
+                $"DUALSTRINGARRAY security offset {securityOffset} exceeds the declared {numEntries} entries.");
+        }
 
-        // return empty
         if (numEntries == 0)
         {
-            return dualStringArray;
+            return new DualStringArray
+            {
+                StringBindings = [],
+                SecurityBindings = [],
+                Length = sizeof(ushort) + sizeof(ushort),
+                _secOffset = 0,
+            };
         }
 
-        // extract security offset
-        var securityOffset = ndr.ReadUnsignedShort();
-
-        var listOfStringBindings = new List<StringBinding>();
-        var listOfSecurityBindings = new List<SecurityBinding>();
-
-        var stringbinding = true;
-        while (true)
+        if (securityOffset == 0)
         {
-            if (stringbinding)
-            {
-                var s = StringBinding.Decode(ndr);
-                if (s == null)
-                {
-                    stringbinding = false;
-                    // null termination
-                    dualStringArray.Length += 2;
-                    dualStringArray._secOffset = dualStringArray.Length;
-                    continue;
-                }
-
-                listOfStringBindings.Add(s);
-                dualStringArray.Length += s.Length;
-            }
-            else
-            {
-                var s = SecurityBinding.Decode(ndr);
-                if (s == null)
-                {
-                    // null termination
-                    dualStringArray.Length += 2;
-                    break;
-                }
-
-                listOfSecurityBindings.Add(s);
-                dualStringArray.Length += s.Length;
-            }
+            throw new InvalidDataException("DUALSTRINGARRAY is missing the string-binding terminator.");
         }
 
-        // 2 bytes for num entries and 2 bytes for sec offset.
-        dualStringArray.Length = dualStringArray.Length + 2 + 2;
+        if (securityOffset == numEntries)
+        {
+            throw new InvalidDataException("DUALSTRINGARRAY is missing the security-binding terminator.");
+        }
 
-        dualStringArray.StringBindings = listOfStringBindings.ToArray();
-        dualStringArray.SecurityBindings = listOfSecurityBindings.ToArray();
+        byte[] payload = ReadPayload(ndr, numEntries);
+        int payloadLength = payload.Length;
+
+        int securityOffsetBytes = securityOffset * sizeof(ushort);
+        var stringCodec = CreateSectionCodec(payload, 0, securityOffsetBytes);
+        var securityCodec = CreateSectionCodec(payload, securityOffsetBytes, payloadLength - securityOffsetBytes);
+
+        var dualStringArray = new DualStringArray
+        {
+            StringBindings = DecodeStringBindings(stringCodec, securityOffsetBytes),
+            SecurityBindings = DecodeSecurityBindings(securityCodec, payloadLength),
+            Length = sizeof(ushort) + sizeof(ushort) + payloadLength,
+            _secOffset = securityOffsetBytes,
+        };
         return dualStringArray;
     }
 
@@ -130,6 +118,11 @@ internal sealed class DualStringArray
         // this is total length/2. since they are all shorts
         ndr.WriteUnsignedShort((Length - 4) / 2);
         ndr.WriteUnsignedShort(_secOffset / 2);
+
+        if (Length == sizeof(ushort) + sizeof(ushort))
+        {
+            return;
+        }
 
         var i = 0;
         if (StringBindings != null)
@@ -155,4 +148,108 @@ internal sealed class DualStringArray
     }
 
     private int _secOffset;
+
+    private static (int NumEntries, int SecurityOffset) ReadHeader(NdrCodec ndr)
+    {
+        try
+        {
+            return (ndr.ReadUnsignedShort(), ndr.ReadUnsignedShort());
+        }
+        catch (EndOfStreamException ex)
+        {
+            throw new EndOfStreamException("DUALSTRINGARRAY header is truncated.", ex);
+        }
+    }
+
+    private static byte[] ReadPayload(NdrCodec ndr, int numEntries)
+    {
+        int payloadLength = checked(numEntries * sizeof(ushort));
+        var payload = new byte[payloadLength];
+        try
+        {
+            ndr.ReadOctetArray(payload, 0, payload.Length);
+            return payload;
+        }
+        catch (EndOfStreamException ex)
+        {
+            throw new EndOfStreamException(
+                $"DUALSTRINGARRAY is truncated: declared {numEntries} entries ({payloadLength} bytes).",
+                ex);
+        }
+    }
+
+    private static NdrCodec CreateSectionCodec(byte[] payload, int offset, int length)
+    {
+        var buffer = new NdrBuffer(payload, offset);
+        buffer.SetLength(length);
+        return new NdrCodec { Buffer = buffer };
+    }
+
+    private static StringBinding[] DecodeStringBindings(NdrCodec ndr, int sectionEnd)
+    {
+        var bindings = new List<StringBinding>();
+        try
+        {
+            while (ndr.Buffer.Index < sectionEnd)
+            {
+                StringBinding binding = StringBinding.Decode(ndr);
+                if (binding is not null)
+                {
+                    bindings.Add(binding);
+                    continue;
+                }
+
+                if (ndr.Buffer.Index != sectionEnd)
+                {
+                    throw new InvalidDataException(
+                        "DUALSTRINGARRAY string bindings terminated before the declared security offset.");
+                }
+
+                return bindings.ToArray();
+            }
+        }
+        catch (EndOfStreamException ex)
+        {
+            throw new InvalidDataException(
+                "DUALSTRINGARRAY string bindings are unterminated at the declared security offset.",
+                ex);
+        }
+
+        throw new InvalidDataException(
+            "DUALSTRINGARRAY string bindings do not terminate at the declared security offset.");
+    }
+
+    private static SecurityBinding[] DecodeSecurityBindings(NdrCodec ndr, int sectionEnd)
+    {
+        var bindings = new List<SecurityBinding>();
+        try
+        {
+            while (ndr.Buffer.Index < sectionEnd)
+            {
+                SecurityBinding binding = SecurityBinding.Decode(ndr);
+                if (binding is not null)
+                {
+                    bindings.Add(binding);
+                    continue;
+                }
+
+                if (ndr.Buffer.Index != sectionEnd)
+                {
+                    throw new InvalidDataException(
+                        "DUALSTRINGARRAY security bindings contain trailing data after their terminator.");
+                }
+
+                return bindings.ToArray();
+            }
+        }
+        catch (EndOfStreamException ex)
+        {
+            throw new InvalidDataException(
+                "DUALSTRINGARRAY security bindings are unterminated within the declared entry count.",
+                ex);
+        }
+
+        throw new InvalidDataException(
+            "DUALSTRINGARRAY security bindings are missing their final terminator.");
+    }
 }

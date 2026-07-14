@@ -2,7 +2,9 @@
 
 using System.ComponentModel;
 using System.Globalization;
+using System.Net;
 using System.Net.NetworkInformation;
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
 using ModelContextProtocol;
@@ -126,9 +128,9 @@ public sealed class CaptureTools
         long? maxPackets = null,
         [Description("Optional cap on wall-clock duration in seconds; defaults to 1800 (30 min).")]
         int? maxDurationSeconds = null,
-        [Description("Optional explicit list of OPC server data ports. When set AND bpfFilter is null, narrows the default port-range filter to 'tcp and (port 135 or port P1 or port P2 …)'. Reduces captured noise dramatically when the target server ports are known (look them up via opcclassic.discovery.list_servers + opcclassic.da.connect, or read them from your operator run-book).")]
+        [Description("Optional explicit list of OPC server data ports. When set AND bpfFilter is null, narrows the default port-range filter to 'tcp and (port 135 or port P1 or port P2 …)'. Reduces captured noise dramatically when the target server ports are known (look them up via opcclassic.discovery.enumerate_servers + opcclassic.da.connect, or read them from your operator run-book).")]
         int[]? serverPorts = null,
-        [Description("DEVELOPER-ONLY. Optional 32-character hex-encoded 16-byte NTLMv2 session key for opt-in auth-trailer unwrap of sign/seal-protected DCOM traffic. Never log or persist the key. Capture MUST start BEFORE the NTLM Type3 handshake or per-direction sequence counters will drift and unwrap will fail. The wire-level NtlmPassiveUnwrapper is usable from offline pcap-analysis scripts today; full in-decoder integration (decoder reads auth_length from frame, extracts trailer, surfaces NtlmUnwrapStatus on each DecodedOpcPdu) is tracked as a CA9-c follow-up — passing this param today validates + plumbs the key but does not yet decrypt PDUs inline.")]
+        [Description("DEVELOPER-ONLY. Optional 32-character hex-encoded 16-byte NTLMv2 session key for opt-in auth-trailer unwrap of sign/seal-protected DCOM traffic in capture.tail/get/summarize. Never log or persist the key. Capture MUST start BEFORE the NTLM Type3 handshake or per-direction sequence counters will drift and unwrap will fail. Ad-hoc decode/replay key input and external-peer compatibility variants remain follow-ups.")]
         string? ntlmSessionKeyHex = null,
         CancellationToken cancellationToken = default)
     {
@@ -157,6 +159,13 @@ public sealed class CaptureTools
         catch (CaptureException ex)
         {
             throw new McpException(ex.Message);
+        }
+        finally
+        {
+            if (sessionKey is not null)
+            {
+                CryptographicOperations.ZeroMemory(sessionKey);
+            }
         }
     }
 
@@ -285,7 +294,7 @@ public sealed class CaptureTools
                 : path;
         }
 
-        NtlmPassiveUnwrapper? unwrapper = CaptureSession.BuildUnwrapper(session.Request);
+        NtlmPassiveUnwrapper? unwrapper = session.CreateUnwrapper();
         try
         {
             var decoder = new OpcDcomDecoder(unwrapper);
@@ -417,7 +426,7 @@ public sealed class CaptureTools
             throw new McpException($"Capture session '{sessionId}' not found.");
         }
 
-        NtlmPassiveUnwrapper? unwrapper = CaptureSession.BuildUnwrapper(session.Request);
+        NtlmPassiveUnwrapper? unwrapper = session.CreateUnwrapper();
         try
         {
             var decoder = new OpcDcomDecoder(unwrapper);
@@ -467,26 +476,40 @@ public sealed class CaptureTools
         [Description("Hex string of the raw frame bytes (with or without whitespace / 0x prefix).")]
         string hex)
     {
-        ArgumentException.ThrowIfNullOrEmpty(hex);
+        if (hex is null)
+        {
+            throw CreateDecodeException("hex", "null_input", "Hex input is required.", byteCount: 0, context: null);
+        }
         byte[] bytes = ParseHex(hex);
         var decoder = new OpcDcomDecoder();
-        IEnumerable<DecodedOpcPdu> decoded = decoder.Decode(new CapturedPacket(
-            Timestamp: DateTimeOffset.UtcNow,
-            OriginalLength: bytes.Length,
-            Data: bytes,
-            LinkType: 0,  // treat as a bare ORPC body; for raw DCE/RPC PDUs the caller wraps via opcclassic.capture.start instead
-            Annotations: new Dictionary<string, string?> { ["source"] = "ad-hoc decode_pdu" }));
+        DecodedDcomFrame decoded = decoder.DecodeRawDcomFrameStrict(
+            bytes,
+            IPAddress.Loopback,
+            srcPort: 49152,
+            IPAddress.Loopback,
+            dstPort: 135,
+            DateTimeOffset.UtcNow);
+        if (decoded.Failure is not null || decoded.Pdu is null)
+        {
+            DcomDecodeFailure failure = decoded.Failure
+                ?? new DcomDecodeFailure("projection", "unsupported_pdu", "The frame decoded but did not project to a supported PDU.");
+            throw CreateDecodeException(
+                failure.Stage,
+                failure.Code,
+                failure.Message,
+                bytes.Length,
+                bytes);
+        }
 
-        return JsonSerializer.Serialize(decoded.ToArray(), s_jsonOptions);
+        return JsonSerializer.Serialize(new[] { decoded.Pdu }, s_jsonOptions);
     }
 
     /// <summary>
-    /// Replay tool: walks the captured ORPC bodies and reports per-(IID,opnum)
-    /// success/failure counts. Highest-leverage diagnostic for live captures
-    /// against unfamiliar servers.
+    /// Replay tool: re-decodes captured DCE/RPC frames and validates their
+    /// ORPC envelopes, reporting per-(IID,opnum,direction) outcomes.
     /// </summary>
     [McpServerTool(Name = "opcclassic.capture.replay", ReadOnly = true, Idempotent = true, Destructive = false, OpenWorld = false)]
-    [Description("Replay captured ORPC bodies through NdrReader and report per-(IID,opnum) counts. Surfaces malformed payloads + serves as a regression harness against captured live traffic.")]
+    [Description("Replay captured request/response/fault frames through PduCodec, validate ORPC_THIS/ORPC_THAT envelopes, and report per-(IID,opnum,direction) succeeded/failed/skipped counts with bounded first-failure hex context.")]
     public async Task<ReplayReport> ReplayCapture(
         [Description("Capture session id from opcclassic.capture.start.")]
         string sessionId,
@@ -497,18 +520,24 @@ public sealed class CaptureTools
             throw new McpException($"Capture session '{sessionId}' not found.");
         }
 
-        var decoder = new OpcDcomDecoder();
-        var pdus = new List<DecodedOpcPdu>();
-        await foreach (CapturedPacket pkt in session.Source.ReadAllAsync(maxPackets: null, cancellationToken).ConfigureAwait(false))
+        NtlmPassiveUnwrapper? unwrapper = session.CreateUnwrapper();
+        try
         {
-            foreach (DecodedOpcPdu pdu in decoder.Decode(pkt))
+            var decoder = new OpcDcomDecoder(unwrapper);
+            var frames = new List<DecodedDcomFrame>();
+            await foreach (CapturedPacket pkt in session.Source.ReadAllAsync(maxPackets: null, cancellationToken).ConfigureAwait(false))
             {
-                pdus.Add(pdu);
+                frames.AddRange(decoder.DecodeDetailed(pkt));
             }
-        }
+            frames.AddRange(decoder.CompleteDetailed());
 
-        var replay = new OrpcReplayTool();
-        return replay.Replay(pdus);
+            var replay = new OrpcReplayTool();
+            return replay.ReplayDetailed(frames, cancellationToken);
+        }
+        finally
+        {
+            unwrapper?.Dispose();
+        }
     }
 
     private static CaptureSessionState? ParseStateFilter(string? state)
@@ -532,10 +561,12 @@ public sealed class CaptureTools
 
     private static byte[] ParseHex(string hex)
     {
-        // Strip whitespace + optional 0x prefix + commas; tolerate hex dumps like "01 02 0a, 0xff".
-        Span<char> buffer = stackalloc char[Math.Min(hex.Length, 16384)];
-        int idx = 0;
-        for (int i = 0; i < hex.Length && idx < buffer.Length; i++)
+        const int maxPduBytes = ushort.MaxValue;
+        const int maxHexChars = maxPduBytes * 2;
+        var cleaned = new StringBuilder(Math.Min(hex.Length, maxHexChars));
+        bool sawHexDigit = false;
+        bool consumedPrefix = false;
+        for (int i = 0; i < hex.Length; i++)
         {
             char c = hex[i];
             if (char.IsWhiteSpace(c) || c == ',' || c == ':' || c == ';')
@@ -543,25 +574,85 @@ public sealed class CaptureTools
                 continue;
             }
 
-            if (c == '0' && i + 1 < hex.Length && (hex[i + 1] == 'x' || hex[i + 1] == 'X'))
+            if (!sawHexDigit
+                && !consumedPrefix
+                && c == '0'
+                && i + 1 < hex.Length
+                && (hex[i + 1] == 'x' || hex[i + 1] == 'X'))
             {
+                consumedPrefix = true;
                 i++;
                 continue;
             }
-            buffer[idx++] = c;
+
+            if (!Uri.IsHexDigit(c))
+            {
+                throw CreateDecodeException(
+                    "hex",
+                    "invalid_character",
+                    $"Hex input contains invalid character '{c}' at offset {i}.",
+                    byteCount: cleaned.Length / 2,
+                    context: null);
+            }
+            if (cleaned.Length >= maxHexChars)
+            {
+                throw CreateDecodeException(
+                    "hex",
+                    "input_too_large",
+                    $"Hex input exceeds the maximum raw DCE/RPC PDU size of {maxPduBytes} bytes.",
+                    byteCount: cleaned.Length / 2,
+                    context: null);
+            }
+
+            cleaned.Append(c);
+            sawHexDigit = true;
         }
 
-        if ((idx & 1) != 0)
+        if ((cleaned.Length & 1) != 0)
         {
-            throw new McpException("Hex input has an odd nibble count after stripping whitespace/prefix.");
+            throw CreateDecodeException(
+                "hex",
+                "odd_nibble_count",
+                "Hex input has an odd nibble count after stripping whitespace/prefix.",
+                byteCount: cleaned.Length / 2,
+                context: null);
         }
 
-        byte[] result = new byte[idx / 2];
-        for (int i = 0; i < result.Length; i++)
+        try
         {
-            result[i] = byte.Parse(buffer.Slice(i * 2, 2), NumberStyles.HexNumber, CultureInfo.InvariantCulture);
+            return Convert.FromHexString(cleaned.ToString());
         }
-        return result;
+        catch (FormatException ex)
+        {
+            throw CreateDecodeException(
+                "hex",
+                "invalid_character",
+                ex.Message,
+                cleaned.Length / 2,
+                context: null);
+        }
+    }
+
+    private static McpException CreateDecodeException(
+        string stage,
+        string code,
+        string message,
+        int byteCount,
+        byte[]? context)
+    {
+        string? hexContext = context is { Length: > 0 }
+            ? Convert.ToHexString(context.AsSpan(0, Math.Min(context.Length, 16)))
+            : null;
+        string payload = JsonSerializer.Serialize(new Dictionary<string, object?>
+        {
+            ["code"] = "capture_decode_failed",
+            ["stage"] = stage,
+            ["reason"] = code,
+            ["message"] = message,
+            ["byteCount"] = byteCount,
+            ["hexContext"] = hexContext,
+        });
+        return new McpException(payload);
     }
 
     private static string? TryGetFriendlyName(string? interfaceName)

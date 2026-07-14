@@ -145,10 +145,8 @@ public sealed class RemoteSCMActivatorDispatcherTests
 
         await Assert.That(result.Hresult).IsEqualTo(0);
         await Assert.That(callResult.IsFault).IsFalse();
-        await Assert.That(decoded.InterfaceResults.Count).IsEqualTo(1);
-        await Assert.That(decoded.InterfaceResults[0].Iid).IsEqualTo(RequestedIid);
-        await Assert.That(decoded.InterfaceResults[0].Hresult).IsEqualTo(REGDB_E_CLASSNOTREG);
-        await Assert.That(decoded.InterfaceResults[0].ObjRef.Length).IsEqualTo(0);
+        await Assert.That(decoded.Hresult).IsEqualTo(REGDB_E_CLASSNOTREG);
+        await Assert.That(decoded.InterfaceResults.Count).IsEqualTo(0);
     }
 
     [Test]

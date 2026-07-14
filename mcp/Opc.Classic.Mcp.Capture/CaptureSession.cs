@@ -1,6 +1,7 @@
 ﻿// Copyright (c) 2026 Opc.Classic Contributors. Licensed under the MIT License.
 
 using System.Diagnostics.CodeAnalysis;
+using System.Security.Cryptography;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 
@@ -18,8 +19,13 @@ namespace Opc.Classic.Mcp.Capture;
 public sealed class CaptureSession : IAsyncDisposable
 {
     private readonly SemaphoreSlim _lock = new(1, 1);
+    private readonly object _keyLock = new();
     private readonly ILogger _logger;
+    private byte[]? _ntlmSessionKey;
+    private bool _secretStateCleared;
     private int _disposed;
+
+    internal Action? SecretCleanupObserved { get; set; }
 
     /// <summary>
     /// Creates a session wrapping <paramref name="source"/> under the supplied identity.
@@ -42,7 +48,8 @@ public sealed class CaptureSession : IAsyncDisposable
         SourceName = sourceName;
         Source = source;
         SessionFolder = sessionFolder;
-        Request = request;
+        _ntlmSessionKey = request.NtlmSessionKey?.ToArray();
+        Request = request with { NtlmSessionKey = null };
         _logger = logger ?? NullLogger.Instance;
     }
 
@@ -67,7 +74,8 @@ public sealed class CaptureSession : IAsyncDisposable
     public string SessionFolder { get; }
 
     /// <summary>
-    /// Caller-supplied start parameters; surfaced via the MCP session info DTO.
+    /// Sanitized start parameters surfaced via the MCP session info DTO. Secret
+    /// key material is retained only in session-owned storage.
     /// </summary>
     public CaptureStartRequest Request { get; }
 
@@ -119,6 +127,7 @@ public sealed class CaptureSession : IAsyncDisposable
             {
                 Error = ex.Message;
                 State = CaptureSessionState.Failed;
+                await ClearSecretStateAsync().ConfigureAwait(false);
                 _logger.LogError(ex, "Capture session {SessionId} failed to start.", Id);
                 throw;
             }
@@ -162,6 +171,7 @@ public sealed class CaptureSession : IAsyncDisposable
             {
                 Error = ex.Message;
                 State = CaptureSessionState.Failed;
+                await ClearSecretStateAsync().ConfigureAwait(false);
                 _logger.LogError(ex, "Capture session {SessionId} failed to stop.", Id);
                 throw;
             }
@@ -239,22 +249,25 @@ public sealed class CaptureSession : IAsyncDisposable
         await cursor.Lock.WaitAsync(cancellationToken).ConfigureAwait(false);
         try
         {
-            long packetIdx = 0;
-            await foreach (CapturedPacket pkt in Source.ReadAllAsync(maxPackets: null, cancellationToken).ConfigureAwait(false))
+            if (State is not (CaptureSessionState.Failed or CaptureSessionState.Disposed))
             {
-                if (packetIdx < cursor.PacketsConsumed)
+                long packetIdx = 0;
+                await foreach (CapturedPacket pkt in Source.ReadAllAsync(maxPackets: null, cancellationToken).ConfigureAwait(false))
                 {
-                    packetIdx++;
-                    continue;
-                }
+                    if (packetIdx < cursor.PacketsConsumed)
+                    {
+                        packetIdx++;
+                        continue;
+                    }
 
-                foreach (DecodedOpcPdu pdu in cursor.Decoder.Decode(pkt))
-                {
-                    cursor.Pdus.Add(pdu);
+                    foreach (DecodedOpcPdu pdu in cursor.Decoder.Decode(pkt))
+                    {
+                        cursor.Pdus.Add(pdu);
+                    }
+                    packetIdx++;
                 }
-                packetIdx++;
+                cursor.PacketsConsumed = packetIdx;
             }
-            cursor.PacketsConsumed = packetIdx;
 
             long totalEmitted = cursor.Pdus.Count;
             long startIdx = Math.Min(sinceIndex, totalEmitted);
@@ -281,17 +294,12 @@ public sealed class CaptureSession : IAsyncDisposable
 
     private DecodeCursor GetOrCreateCursor()
     {
-        DecodeCursor? cursor = _cursor;
-        if (cursor is not null)
-        {
-            return cursor;
-        }
-
         lock (_cursorInitLock)
         {
-            cursor = _cursor ??= new DecodeCursor(_logger, BuildUnwrapper(Request));
+            return _cursor ??= new DecodeCursor(
+                _logger,
+                _secretStateCleared ? null : CreateUnwrapper());
         }
-        return cursor;
     }
 
     /// <summary>
@@ -302,14 +310,63 @@ public sealed class CaptureSession : IAsyncDisposable
     /// <c>opcclassic.capture.get</c> and <c>.summarize</c> share the
     /// same construction logic.
     /// </summary>
-    internal static NtlmPassiveUnwrapper? BuildUnwrapper(CaptureStartRequest request)
+    internal NtlmPassiveUnwrapper? CreateUnwrapper()
     {
-        ArgumentNullException.ThrowIfNull(request);
-        if (request.NtlmSessionKey is not { Length: NtlmPassiveUnwrapper.VerifierLength } sk)
+        lock (_keyLock)
         {
-            return null;
+            if (_ntlmSessionKey is not { Length: NtlmPassiveUnwrapper.VerifierLength } sessionKey)
+            {
+                return null;
+            }
+            try
+            {
+                return new NtlmPassiveUnwrapper(sessionKey);
+            }
+            catch
+            {
+                CryptographicOperations.ZeroMemory(sessionKey);
+                _ntlmSessionKey = null;
+                throw;
+            }
         }
-        return new NtlmPassiveUnwrapper(sk);
+    }
+
+    private void ClearOwnedSessionKey()
+    {
+        lock (_keyLock)
+        {
+            if (_ntlmSessionKey is null)
+            {
+                return;
+            }
+
+            CryptographicOperations.ZeroMemory(_ntlmSessionKey);
+            _ntlmSessionKey = null;
+        }
+    }
+
+    private async Task ClearSecretStateAsync()
+    {
+        DecodeCursor? cursor;
+        lock (_cursorInitLock)
+        {
+            _secretStateCleared = true;
+            ClearOwnedSessionKey();
+            cursor = _cursor;
+            SecretCleanupObserved?.Invoke();
+        }
+        if (cursor is not null)
+        {
+            await cursor.Lock.WaitAsync(CancellationToken.None).ConfigureAwait(false);
+            try
+            {
+                cursor.ResetWithoutUnwrapper();
+            }
+            finally
+            {
+                cursor.Lock.Release();
+            }
+        }
     }
 
     /// <summary>
@@ -318,17 +375,27 @@ public sealed class CaptureSession : IAsyncDisposable
     /// </summary>
     private sealed class DecodeCursor
     {
+        private readonly ILogger _logger;
+
         public DecodeCursor(ILogger logger, NtlmPassiveUnwrapper? unwrapper)
         {
+            _logger = logger;
             Unwrapper = unwrapper;
             Decoder = new OpcDcomDecoder(unwrapper, logger);
         }
 
-        public OpcDcomDecoder Decoder { get; }
-        public NtlmPassiveUnwrapper? Unwrapper { get; }
+        public OpcDcomDecoder Decoder { get; private set; }
+        public NtlmPassiveUnwrapper? Unwrapper { get; private set; }
         public List<DecodedOpcPdu> Pdus { get; } = new();
         public long PacketsConsumed { get; set; }
         public SemaphoreSlim Lock { get; } = new(1, 1);
+
+        public void ResetWithoutUnwrapper()
+        {
+            Unwrapper?.Dispose();
+            Unwrapper = null;
+            Decoder = new OpcDcomDecoder(_logger);
+        }
     }
 
     /// <inheritdoc/>
@@ -363,8 +430,8 @@ public sealed class CaptureSession : IAsyncDisposable
         }
 
         State = CaptureSessionState.Disposed;
+        await ClearSecretStateAsync().ConfigureAwait(false);
         _cursor?.Lock.Dispose();
-        _cursor?.Unwrapper?.Dispose();
         _lock.Dispose();
     }
 }

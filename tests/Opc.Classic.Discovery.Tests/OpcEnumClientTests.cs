@@ -4,6 +4,8 @@ using System.Net;
 using Opc.Classic.Dcom;
 using Opc.Classic.Dcom.Activation;
 using Opc.Classic.Dcom.Core;
+using Opc.Classic.Dcom.Rpc;
+using Opc.Classic.Dcom.Rpc.Core;
 using Opc.Classic.Ndr;
 using Opc.Classic.Testing;
 
@@ -187,6 +189,79 @@ public sealed class OpcEnumClientTests
         await Assert.That(server.Calls.Any(call => call.InterfaceId == new Guid(Opc.Classic.Dcom.Interfaces.IID_IActivation))).IsFalse();
     }
 
+    [Test]
+    public async Task EnumerateAsync_does_not_fallback_for_modern_activation_application_hresult()
+    {
+        const int accessDenied = unchecked((int)0x80070005u);
+        var server = new SyntheticOpcEnumServer();
+        server.ModernActivationHresults.Enqueue(accessDenied);
+        var client = new OpcEnumClient("opc-host", server, new[] { OpcGuids.CATID_OPCDAServer20 });
+
+        Exception exception = await CaptureAsync(() => client.EnumerateAsync(CancellationToken.None));
+
+        await Assert.That(exception is OpcException).IsTrue();
+        await Assert.That(((OpcException)exception).ResultId.Code).IsEqualTo(accessDenied);
+        await Assert.That(server.Calls.Count(call => call.InterfaceId == RemoteScmActivatorInterfaceIdForTests)).IsEqualTo(1);
+        await Assert.That(server.Calls.Any(call => call.InterfaceId == new Guid(Opc.Classic.Dcom.Interfaces.IID_IActivation))).IsFalse();
+    }
+
+    [Test]
+    public async Task EnumerateAsync_does_not_fallback_for_malformed_modern_activation_properties()
+    {
+        var server = new SyntheticOpcEnumServer { ReturnMalformedModernActivation = true };
+        var client = new OpcEnumClient("opc-host", server, new[] { OpcGuids.CATID_OPCDAServer20 });
+
+        Exception exception = await CaptureAsync(() => client.EnumerateAsync(CancellationToken.None));
+
+        await Assert.That(exception is ActivationPropertiesFormatException).IsTrue();
+        await Assert.That(server.Calls.Any(call => call.InterfaceId == new Guid(Opc.Classic.Dcom.Interfaces.IID_IActivation))).IsFalse();
+    }
+
+    [Test]
+    public async Task EnumerateAsync_does_not_fallback_for_modern_activation_rpc_fault()
+    {
+        const int accessDenied = unchecked((int)0x80070005u);
+        var server = new SyntheticOpcEnumServer { ModernActivationRpcFault = accessDenied };
+        var client = new OpcEnumClient("opc-host", server, new[] { OpcGuids.CATID_OPCDAServer20 });
+
+        Exception exception = await CaptureAsync(() => client.EnumerateAsync(CancellationToken.None));
+
+        await Assert.That(exception is OpcException).IsTrue();
+        await Assert.That(((OpcException)exception).ResultId.Code).IsEqualTo(accessDenied);
+        await Assert.That(server.Calls.Any(call => call.InterfaceId == new Guid(Opc.Classic.Dcom.Interfaces.IID_IActivation))).IsFalse();
+    }
+
+    [Test]
+    public async Task EnumerateAsync_retries_populated_transient_modern_activation_without_sleeping()
+    {
+        var classId = Guid.Parse("10138C2C-0000-0000-0000-000000000040");
+        var server = new SyntheticOpcEnumServer { PopulateModernActivationFailures = true }
+            .AddServer(OpcGuids.CATID_OPCDAServer20, classId, "Vendor.Retry.1", "Vendor Retry", "Vendor.Retry");
+        server.ModernActivationHresults.Enqueue(unchecked((int)0x800706BAu));
+        server.ModernActivationHresults.Enqueue(unchecked((int)0x80080005u));
+        server.ModernActivationHresults.Enqueue(0);
+        var delays = new List<TimeSpan>();
+        var retryPolicy = new ActivationRetryPolicy(
+            5,
+            TimeSpan.FromMilliseconds(10),
+            (delay, _) =>
+            {
+                delays.Add(delay);
+                return Task.CompletedTask;
+            });
+        var client = new OpcEnumClient(
+            "opc-host",
+            server,
+            new[] { OpcGuids.CATID_OPCDAServer20 },
+            retryPolicy);
+
+        OpcServerDescriptor[] descriptors = await client.EnumerateAsync(CancellationToken.None);
+
+        await Assert.That(descriptors.Length).IsEqualTo(1);
+        await Assert.That(server.Calls.Count(call => call.InterfaceId == RemoteScmActivatorInterfaceIdForTests)).IsEqualTo(3);
+        await Assert.That(delays.Count).IsEqualTo(2);
+    }
+
     [Test, Skip("Requires reachable OPCEnum.exe host")]
     public async Task OpcEnum_real_network_enumerates_reachable_host()
     {
@@ -222,6 +297,9 @@ public sealed class OpcEnumClientTests
 
         throw new InvalidOperationException("Expected an exception.");
     }
+
+    private static readonly Guid RemoteScmActivatorInterfaceIdForTests =
+        new("000001A0-0000-0000-C000-000000000046");
 }
 
 internal sealed class SyntheticOpcEnumServer : IOpcEnumCallChannelFactory
@@ -253,6 +331,10 @@ internal sealed class SyntheticOpcEnumServer : IOpcEnumCallChannelFactory
     public bool RejectServerList2Bind { get; init; }
     public bool RejectModernActivationBind { get; init; }
     public bool RejectModernActivationWithAuthFailure { get; init; }
+    public bool ReturnMalformedModernActivation { get; init; }
+    public int ModernActivationRpcFault { get; init; }
+    public bool PopulateModernActivationFailures { get; init; }
+    public Queue<int> ModernActivationHresults { get; } = new();
     public List<ActivationProperties> ActivationRequests { get; } = new();
     public IReadOnlyList<InMemoryCall> Calls => _channel.CallLog;
 
@@ -312,8 +394,12 @@ internal sealed class SyntheticOpcEnumServer : IOpcEnumCallChannelFactory
         {
             if (RejectModernActivationBind)
             {
-                throw new InvalidOperationException(
-                    $"Presentation context rejected for IID {RemoteScmActivatorInterfaceId:D}: PROVIDER_REJECTION; ABSTRACT_SYNTAX_NOT_SUPPORTED.");
+                throw new PresentationContextRejectedException(
+                    RemoteScmActivatorInterfaceId,
+                    new PresentationResult(
+                        PresentationResultCode.PROVIDER_REJECTION,
+                        PresentationResultReason.ABSTRACT_SYNTAX_NOT_SUPPORTED),
+                    "Modern SCM presentation context rejected.");
             }
 
             if (RejectModernActivationWithAuthFailure)
@@ -321,16 +407,42 @@ internal sealed class SyntheticOpcEnumServer : IOpcEnumCallChannelFactory
                 throw new InvalidOperationException("Packet integrity verification failed.");
             }
 
+            if (ReturnMalformedModernActivation)
+            {
+                return Task.FromResult(new NdrCallResult(0, new byte[] { 1, 2, 3 }));
+            }
+
+            if (ModernActivationRpcFault != 0)
+            {
+                return Task.FromResult(
+                    new NdrCallResult(
+                        ModernActivationRpcFault,
+                        ReadOnlyMemory<byte>.Empty,
+                        IsFault: true));
+            }
+
+            if (ModernActivationHresults.TryDequeue(out int activationHresult)
+                && activationHresult != 0)
+            {
+                if (PopulateModernActivationFailures)
+                {
+                    RemoteCreateInstanceActivationRequest failedRequest =
+                        ActivationPropertiesCodec.DecodeRemoteCreateInstanceRequest(requestPayload.Span);
+                    return Task.FromResult(new NdrCallResult(
+                        0,
+                        EncodeModernActivationResponse(failedRequest, activationHresult)));
+                }
+
+                var buffer = new byte[8];
+                var writer = new NdrWriter(buffer);
+                writer.WriteUInt32(0);
+                writer.WriteInt32(activationHresult);
+                return Task.FromResult(new NdrCallResult(0, buffer));
+            }
+
             RemoteCreateInstanceActivationRequest request = ActivationPropertiesCodec.DecodeRemoteCreateInstanceRequest(requestPayload.Span);
             ActivationRequests.Add(CreateActivationProperties(request));
-            byte[] objRef = EncodeObjRef(request.RequestedIids.Count == 0 ? OpcGuids.IID_IOPCServerList2 : request.RequestedIids[0]);
-            byte[] response = ActivationPropertiesCodec.EncodeRemoteCreateInstanceResponse(
-                oxid: 1,
-                oxidBindings: CreateDualStringArray(),
-                ipidRemUnknown: Guid.NewGuid(),
-                authnHint: 5,
-                serverVersion: (5, 4),
-                new[] { new ActivationInterfaceResult(request.RequestedIids[0], 0, objRef) });
+            byte[] response = EncodeModernActivationResponse(request, hresult: 0);
             return Task.FromResult(new NdrCallResult(0, response));
         }
 
@@ -364,8 +476,12 @@ internal sealed class SyntheticOpcEnumServer : IOpcEnumCallChannelFactory
             // despite the activator returning an OBJREF claiming the IID. The IID
             // is embedded in the message so OpcEnumClient's IID-specific catch can
             // tell this rejection apart from downstream IEnumGUID bind failures.
-            throw new InvalidOperationException(
-                $"Presentation context rejected for IID {OpcGuids.IID_IOPCServerList2:D}: PROVIDER_REJECTION; ABSTRACT_SYNTAX_NOT_SUPPORTED.");
+            throw new PresentationContextRejectedException(
+                OpcGuids.IID_IOPCServerList2,
+                new PresentationResult(
+                    PresentationResultCode.PROVIDER_REJECTION,
+                    PresentationResultReason.ABSTRACT_SYNTAX_NOT_SUPPORTED),
+                "IOPCServerList2 presentation context rejected.");
         }
 
         if ((interfaceId == OpcGuids.IID_IOPCServerList2 || interfaceId == OpcGuids.IID_IOPCServerList) && opnum == 3)
@@ -395,6 +511,24 @@ internal sealed class SyntheticOpcEnumServer : IOpcEnumCallChannelFactory
         }
 
         return Task.FromResult(new NdrCallResult(unchecked((int)0x80004001u), ReadOnlyMemory<byte>.Empty));
+    }
+
+    private static byte[] EncodeModernActivationResponse(
+        RemoteCreateInstanceActivationRequest request,
+        int hresult)
+    {
+        Guid requestedIid = request.RequestedIids.Count == 0
+            ? OpcGuids.IID_IOPCServerList2
+            : request.RequestedIids[0];
+        byte[] objRef = EncodeObjRef(requestedIid);
+        return ActivationPropertiesCodec.EncodeRemoteCreateInstanceResponse(
+            oxid: 1,
+            oxidBindings: CreateDualStringArray(),
+            ipidRemUnknown: Guid.NewGuid(),
+            authnHint: 5,
+            serverVersion: (5, 4),
+            new[] { new ActivationInterfaceResult(requestedIid, 0, objRef) },
+            hresult);
     }
 
     private NdrCallResult HandleNext(ReadOnlyMemory<byte> requestPayload)

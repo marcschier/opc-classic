@@ -66,13 +66,12 @@ cd interop
 ```
 
 Builds **all** native targets for both platforms and installs outputs under
-`out\`. MSI packaging was removed from the vendored tree.
+`out\`. The vendored build does not produce MSI packages.
 
 ## Installation / registration
 
 After building, register the TestServer with DCOM so the managed Opc.Classic
-client can activate it. The redistributable installers are no longer vendored;
-use the local no-MSI registration path below, or install the official OPC
+client can activate it. Use the local no-MSI registration path below, or install the official OPC
 Foundation Core Components package externally when validating a machine-wide
 deployment.
 
@@ -81,17 +80,25 @@ deployment.
 ```powershell
 # From an ELEVATED 64-bit PowerShell window:
 .\interop\tools\register-testserver.ps1
+.\interop\tools\grant-testserver-acl.ps1
 ```
 
 The script performs the no-MSI setup needed for x64 DCOM activation:
 
-1. Copies `opccomn_ps.dll` and `opcproxy.dll` from the build output to
-   `%SystemRoot%\System32`.
-2. Registers those System32 copies with the native `regsvr32.exe`.
-3. Runs `OpcTestServer_x64.exe /regserver` with `%SystemRoot%\System32`
+1. Copies and registers the full proxy/stub set in canonical dependency
+   order: `opccomn_ps.dll`, `opcproxy.dll`, `opc_aeps.dll`, `opcbc_ps.dll`,
+   `OpcCmdPs.dll`, `OpcDxPs.dll`, `opchda_ps.dll`, and `opcsec_ps.dll`.
+   Missing optional artifacts are reported; DA requires at least
+   `opccomn_ps.dll` and `opcproxy.dll`.
+2. Copies `OpcTestServer_x64.config.xml` alongside the EXE and corrects the
+   upstream generated `<CLSID>` value to the runtime TestServer CLSID.
+3. Runs `OpcCategoryManager.exe /RegServer` when present so x64 OPC category
+   enumeration is registered.
+4. Runs `OpcTestServer_x64.exe /regserver` with `%SystemRoot%\System32`
    as the working directory.
-4. Writes compatibility HKLM entries (CLSID + LocalServer32 + ProgIDs +
-   AppID + Implemented Categories for DA 1.0, DA 2.0, and DA 3.0).
+5. Writes compatibility HKLM entries for the CLSID, LocalServer32, AppID,
+   versioned and version-independent ProgIDs, and Implemented Categories for
+   DA 1.0, DA 2.0, and DA 3.0.
 
 Defaults to looking for the EXE and sibling proxy/stub DLLs under
 `interop\build\x64\Release`; pass `-ExePath` to override.
@@ -108,6 +115,7 @@ non-elevated shell:
 # Elevated
 .\interop\tools\build-testserver.ps1
 .\interop\tools\register-testserver.ps1
+.\interop\tools\grant-testserver-acl.ps1
 Test-Path "$env:SystemRoot\System32\opccomn_ps.dll"
 Test-Path "$env:SystemRoot\System32\opcproxy.dll"
 
@@ -122,67 +130,46 @@ Expected probe results: `opcclassic.da.connect` succeeds and
 If `opcclassic.da.connect` times out and the System event log contains
 DistributedCOM event 10010 (`The server {F8582CF9-88FB-11DA-A5ED-0060B0692061}
 did not register with DCOM within the required timeout.`), first verify
-that the elevated registration actually completed and that both DLLs are
-present in `%SystemRoot%\System32`. If an elevation prompt was canceled
-(or the script was run from non-elevated PowerShell), the HKLM entries may
-exist while the required System32 proxy/stub DLLs are still missing.
+that both elevated setup scripts completed and that the proxy/stub DLLs are
+present in `%SystemRoot%\System32`. If an elevation prompt was canceled,
+the HKLM entries may exist while the required System32 files or AppID
+Launch/Access descriptors are still missing.
 
 ### DCOM ACL
 
-`OpcTestServer.config.xml` ships with `AllowEveryoneAccess="true"`,
-so launch/access permissions are permissive by default. If your
-machine's DCOM defaults are more restrictive, grant the
-`Distributed COM Users` group launch + access on the TestServer
-AppID via `dcomcnfg.exe`.
+`AllowEveryoneAccess` controls the TestServer's application-level OPC access
+checks after activation. It does not write the AppID `LaunchPermission` or
+`AccessPermission` security descriptors used by DCOM SCM, so it cannot make a
+fresh-machine SCM activation permissive.
 
-### Known residual blocker: `CO_E_SERVER_EXEC_FAILURE` after no-MSI registration
+Run `grant-testserver-acl.ps1` after registration to grant the current caller
+Launch, Activation, and Access rights. To grant a group instead:
 
-Even when register-testserver completes successfully — proxy/stub
-DLLs are copied into `%SystemRoot%\System32`, `regsvr32` reports no error,
-`OpcTestServer_x64.exe /regserver` exits 0, and the HKLM CLSID/AppID/Implemented
-Categories entries exist — DCOM SCM can still time out with
-`CO_E_SERVER_EXEC_FAILURE (0x80080005)` plus event log entry **DistributedCOM
-10010** when the managed `opcclassic.da.connect` activates the local CLSID.
+```powershell
+.\interop\tools\grant-testserver-acl.ps1 -Account "BUILTIN\Distributed COM Users"
+```
 
-This is the OPC Foundation's canonical "registered but the SCM cannot launch
-it" failure mode. It happens because the SCM runs as `SYSTEM`, launches the
-EXE as the calling user's interactive desktop process (per the AppID's
-RunAs/InteractiveUser semantics), but the launched EXE has 60 seconds to
-call `CoRegisterClassObject` for the CLSID before the SCM gives up. If the
-EXE crashes or returns before registering (because of a missing proxy/stub
-DLL, a hung COM initialization, or a service-side ACL that blocks the
-process from registering its class object), the timeout fires.
+The helper is idempotent and requires elevated 64-bit PowerShell. Use
+`-Unregister` to remove the selected account's ACEs.
 
-Investigation paths (in increasing complexity):
+### Registration troubleshooting
 
-1. **Watch the EXE launch interactively.** Run `OpcTestServer_x64.exe` (no
-   args, no `/regserver`) from an elevated shell to see if it opens its
-   own console / window without crashing. If it crashes immediately, the
-   stub-resolution path is broken — re-verify the System32 proxy/stub
-   copies match the EXE build flavor and bitness.
+The standard build + register + ACL flow is the current green TestServer
+path. If activation returns `CO_E_SERVER_EXEC_FAILURE (0x80080005)` or logs
+DistributedCOM event 10010, verify:
 
-2. **Add the calling identity to the AppID's RunAs.** Use `dcomcnfg.exe`
-   → Component Services → My Computer → DCOM Config → find the TestServer
-   AppID `{F8582CF9-88FB-11DA-A5ED-0060B0692061}` → Identity tab → set
-   "The interactive user". If the AppID is set to "The launching user"
-   (default) and the launching user is the calling SSO identity, this
-   should already work — but explicit "interactive user" can resolve
-   service-context launch failures.
+1. the config file exists beside `OpcTestServer_x64.exe` and contains CLSID
+   `F8582CF9-88FB-11DA-A5ED-0060B0692061`;
+2. all proxy/stub DLLs produced by the build are present and registered in
+   `%SystemRoot%\System32`;
+3. `OpcCategoryManager.exe /RegServer` and
+   `OpcTestServer_x64.exe /RegServer` completed from elevated 64-bit
+   PowerShell;
+4. no stale HKCU COM registration shadows the HKLM TestServer entries; and
+5. the TestServer AppID launch/access ACL permits the calling identity.
 
-3. **Compare against an official OPC Foundation Core Components install.** The
-   redistributable installer is no longer vendored here, but an external
-   official install can confirm AppID Launch/Activation/Access ACLs, RunAs
-   identity, and canonical proxy/stub registration independently of this
-   no-MSI path.
-
-4. **Capture the EXE's stderr at SCM launch.** Use
-   `procmon.exe` filtered to `Process Name = OpcTestServer_x64.exe` to
-   see exactly which file/registry access fails during startup.
-
-Once one of these resolves the activation, all of the AddItems / SyncIO /
-WriteSync / Subscribe flows that work against Matrikon should also work
-against TestServer because the wire format is identical (both are MIDL-
-generated DCOM endpoints implementing the same OPC IDL).
+The registration spec documents the exact files, ordering, compatibility
+keys, SCM ACL distinction, and unregistration behavior.
 
 ## Running against the managed Opc.Classic stack
 
