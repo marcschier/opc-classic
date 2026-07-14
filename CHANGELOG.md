@@ -7,6 +7,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.0-alpha] - 2026-07-14
+
+### Added
+
+- Real DCE/RPC capture decoding and fragment-aware ORPC replay with bidirectional presentation-context/call correlation, malformed-frame diagnostics, cancellation, and NTLM integrity/privacy trailer unwrapping.
+- Expanded NativeAOT canary coverage across every shipped runtime and SDK meta-assembly.
+- Optional self-hosted Windows workflows for real out-of-process DCOM conformance, native TestServer/OpcEnum validation, and Windows-container publication.
+- Package, documentation-consistency, activation retry, OXID fallback, DUALSTRINGARRAY, capture, and metadata regression tests.
+
+### Changed
+
+- `IRemoteSCMActivator::RemoteCreateInstance` preserves the authoritative outer HRESULT and uses typed availability, RPC, presentation-context, and malformed-response exceptions so legacy fallback occurs only when the modern SCM interface is unavailable.
+- Capture sessions own, redact, and zero NTLM session-key material across failure and disposal paths.
+- Legacy `DUALSTRINGARRAY` decoding enforces declared counts, security offsets, terminators, and truncation contracts while accepting valid empty Windows encodings.
+- `Opc.Classic.Mcp` generates one version-synchronized registry manifest for the base package and every RID package.
+- Documentation describes the current listener authentication, SMB3/`ncacn_np`, XML-DA client-only scope, TestServer registration, release images, conformance gaps, and MCP tool behavior.
+
+### Fixed
+
+- Corrected destructive metadata for HDA insert/replace operations.
+- Corrected Windows native-fleet artifact detection, cache reuse, proxy/stub registration checks, TestServer/OpcEnum image setup, persistent-runner cleanup, and classic Docker image publishing.
+
 ## [0.2.0-alpha] - 2026-07-13
 
 ### Changed
