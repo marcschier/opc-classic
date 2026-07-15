@@ -1,4 +1,4 @@
-// Copyright (c) 2026 Opc.Classic Contributors. Licensed under the MIT License.
+﻿// Copyright (c) 2026 Opc.Classic Contributors. Licensed under the MIT License.
 
 using System.Text.Json;
 using System.Text.Json.Serialization;

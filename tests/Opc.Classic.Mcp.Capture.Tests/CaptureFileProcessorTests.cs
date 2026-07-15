@@ -1,4 +1,4 @@
-// Copyright (c) 2026 Opc.Classic Contributors. Licensed under the MIT License.
+﻿// Copyright (c) 2026 Opc.Classic Contributors. Licensed under the MIT License.
 
 using System.Buffers.Binary;
 using Opc.Classic.Dcom.Rpc;

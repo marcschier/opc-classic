@@ -1,4 +1,4 @@
-// Copyright (c) 2026 Opc.Classic Contributors. Licensed under the MIT License.
+﻿// Copyright (c) 2026 Opc.Classic Contributors. Licensed under the MIT License.
 
 using System.Diagnostics.CodeAnalysis;
 using System.Security.Cryptography;
@@ -210,111 +210,111 @@ public sealed class CaptureSession : IAsyncDisposable
                 $"Capture session '{Id}' is not running."));
         }
 
-            CaptureStartRequest sanitizedRequest = request with
+        CaptureStartRequest sanitizedRequest = request with
+        {
+            BpfFilter = filter,
+            NtlmSessionKey = null,
+        };
+        if (string.Equals(previousFilter, filter, StringComparison.Ordinal))
+        {
+            lock (_snapshotLock)
             {
-                BpfFilter = filter,
-                NtlmSessionKey = null,
-            };
-            if (string.Equals(previousFilter, filter, StringComparison.Ordinal))
+                Request = sanitizedRequest;
+                LastTouchedAt = DateTimeOffset.UtcNow;
+                LastFilterTransition = CreateFilterTransition(
+                    filter,
+                    previousFilter,
+                    CaptureFilterTransitionStatus.Unchanged,
+                    startedAt,
+                    previousFilter,
+                    error: null);
+                return LastFilterTransition;
+            }
+        }
+
+        ICaptureSource current = Source;
+        if (current is ICaptureFilterController controller)
+        {
+            lock (_snapshotLock)
             {
-                lock (_snapshotLock)
+                try
                 {
-                    Request = sanitizedRequest;
+                    CaptureSourceFilterUpdateResult update =
+                        controller.TryUpdateFilter(filter, cancellationToken);
+                    if (update.Status == CaptureSourceFilterUpdateStatus.Updated)
+                    {
+                        Request = sanitizedRequest;
+                        LastTouchedAt = DateTimeOffset.UtcNow;
+                        LastFilterTransition = CreateFilterTransition(
+                            filter,
+                            previousFilter,
+                            CaptureFilterTransitionStatus.LiveUpdated,
+                            startedAt,
+                            controller.EffectiveFilter ?? filter,
+                            error: null);
+                        return LastFilterTransition;
+                    }
+                }
+                catch (OperationCanceledException)
+                {
                     LastTouchedAt = DateTimeOffset.UtcNow;
                     LastFilterTransition = CreateFilterTransition(
                         filter,
                         previousFilter,
-                        CaptureFilterTransitionStatus.Unchanged,
+                        CaptureFilterTransitionStatus.Canceled,
                         startedAt,
                         previousFilter,
-                        error: null);
+                        "The filter transition was canceled before it became visible.");
+                    throw;
+                }
+                catch (Exception ex) when (ex is not OutOfMemoryException and not ThreadAbortException)
+                {
+                    string error = ex.Message;
+                    if (!string.IsNullOrWhiteSpace(previousFilter)
+                        && !string.Equals(
+                            controller.EffectiveFilter,
+                            previousFilter,
+                            StringComparison.Ordinal))
+                    {
+                        try
+                        {
+                            CaptureSourceFilterUpdateResult rollback =
+                                controller.TryUpdateFilter(previousFilter, CancellationToken.None);
+                            if (rollback.Status != CaptureSourceFilterUpdateStatus.Updated)
+                            {
+                                error += " Rollback requires a source restart; the prior filter could not be confirmed.";
+                            }
+                        }
+                        catch (Exception rollbackException)
+                            when (rollbackException is not OutOfMemoryException and not ThreadAbortException)
+                        {
+                            error += $" Rollback failed: {rollbackException.Message}";
+                        }
+                    }
+
+                    LastTouchedAt = DateTimeOffset.UtcNow;
+                    LastFilterTransition = CreateFilterTransition(
+                        filter,
+                        previousFilter,
+                        CaptureFilterTransitionStatus.Failed,
+                        startedAt,
+                        controller.EffectiveFilter ?? previousFilter,
+                        error);
                     return LastFilterTransition;
                 }
             }
+        }
 
-            ICaptureSource current = Source;
-            if (current is ICaptureFilterController controller)
-            {
-                lock (_snapshotLock)
-                {
-                    try
-                    {
-                        CaptureSourceFilterUpdateResult update =
-                            controller.TryUpdateFilter(filter, cancellationToken);
-                        if (update.Status == CaptureSourceFilterUpdateStatus.Updated)
-                        {
-                            Request = sanitizedRequest;
-                            LastTouchedAt = DateTimeOffset.UtcNow;
-                            LastFilterTransition = CreateFilterTransition(
-                                filter,
-                                previousFilter,
-                                CaptureFilterTransitionStatus.LiveUpdated,
-                                startedAt,
-                                controller.EffectiveFilter ?? filter,
-                                error: null);
-                            return LastFilterTransition;
-                        }
-                    }
-                    catch (OperationCanceledException)
-                    {
-                        LastTouchedAt = DateTimeOffset.UtcNow;
-                        LastFilterTransition = CreateFilterTransition(
-                            filter,
-                            previousFilter,
-                            CaptureFilterTransitionStatus.Canceled,
-                            startedAt,
-                            previousFilter,
-                            "The filter transition was canceled before it became visible.");
-                        throw;
-                    }
-                    catch (Exception ex) when (ex is not OutOfMemoryException and not ThreadAbortException)
-                    {
-                        string error = ex.Message;
-                        if (!string.IsNullOrWhiteSpace(previousFilter)
-                            && !string.Equals(
-                                controller.EffectiveFilter,
-                                previousFilter,
-                                StringComparison.Ordinal))
-                        {
-                            try
-                            {
-                                CaptureSourceFilterUpdateResult rollback =
-                                    controller.TryUpdateFilter(previousFilter, CancellationToken.None);
-                                if (rollback.Status != CaptureSourceFilterUpdateStatus.Updated)
-                                {
-                                    error += " Rollback requires a source restart; the prior filter could not be confirmed.";
-                                }
-                            }
-                            catch (Exception rollbackException)
-                                when (rollbackException is not OutOfMemoryException and not ThreadAbortException)
-                            {
-                                error += $" Rollback failed: {rollbackException.Message}";
-                            }
-                        }
-
-                        LastTouchedAt = DateTimeOffset.UtcNow;
-                        LastFilterTransition = CreateFilterTransition(
-                            filter,
-                            previousFilter,
-                            CaptureFilterTransitionStatus.Failed,
-                            startedAt,
-                            controller.EffectiveFilter ?? previousFilter,
-                            error);
-                        return LastFilterTransition;
-                    }
-                }
-            }
-
-            if (_sourceFactory is null)
-            {
-                return SetFilterTransition(CreateFilterTransition(
-                    filter,
-                    previousFilter,
-                    CaptureFilterTransitionStatus.Failed,
-                    startedAt,
-                    previousFilter,
-                    "The capture source does not support live filter updates and no restart factory is available."));
-            }
+        if (_sourceFactory is null)
+        {
+            return SetFilterTransition(CreateFilterTransition(
+                filter,
+                previousFilter,
+                CaptureFilterTransitionStatus.Failed,
+                startedAt,
+                previousFilter,
+                "The capture source does not support live filter updates and no restart factory is available."));
+        }
 
         return await RestartSourceForFilterAsync(
             current,

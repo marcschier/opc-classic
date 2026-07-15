@@ -1,4 +1,4 @@
-// Copyright (c) 2026 Opc.Classic Contributors. Licensed under the MIT License.
+﻿// Copyright (c) 2026 Opc.Classic Contributors. Licensed under the MIT License.
 
 #pragma warning disable MA0048 // Enumerator state, snapshots, wire codecs, and dispatchers are one implementation unit.
 

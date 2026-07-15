@@ -1,4 +1,4 @@
-// Copyright (c) 2026 Opc.Classic Contributors. Licensed under the MIT License.
+﻿// Copyright (c) 2026 Opc.Classic Contributors. Licensed under the MIT License.
 
 using System.Security;
 using System.Security.Cryptography;

@@ -1,4 +1,4 @@
-// Copyright (c) 2026 Opc.Classic Contributors. Licensed under the MIT License.
+﻿// Copyright (c) 2026 Opc.Classic Contributors. Licensed under the MIT License.
 
 #pragma warning disable MA0048 // The bounded reference engine and its public contracts are cohesive.
 #pragma warning disable MA0051 // The transfer loop is intentionally kept as one explicit state machine.

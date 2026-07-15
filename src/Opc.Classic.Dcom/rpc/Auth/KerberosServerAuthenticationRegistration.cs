@@ -1,4 +1,4 @@
-// Copyright (c) 2026 Opc.Classic Contributors. Licensed under the MIT License.
+﻿// Copyright (c) 2026 Opc.Classic Contributors. Licensed under the MIT License.
 
 using Microsoft.Extensions.DependencyInjection;
 using Opc.Classic.Dcom.Kerberos;
