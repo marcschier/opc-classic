@@ -90,6 +90,10 @@ dotnet run --project samples\Opc.Classic.Samples.SimulationServer
 On first start the file is seeded. Later starts recover the committed revision and resume
 enabled transfers. Configuration add/modify/update/delete/reset operations all mutate the
 same engine state; no MCP- or DCOM-specific transfer implementation is duplicated.
+DX connection queries evaluate exactly the fields selected by each connection mask, and
+updates merge only the fields selected by the update-definition mask. Reset uses the current
+numeric configuration revision as an optimistic version: stale revisions fail without
+clearing configuration, while success returns the revision actually saved by the store.
 
 ### Reference-grade boundary
 

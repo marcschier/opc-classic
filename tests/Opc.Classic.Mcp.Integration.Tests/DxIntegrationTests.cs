@@ -102,7 +102,7 @@ public sealed class DxIntegrationTests
             new Dictionary<string, object>
             {
                 ["sessionId"] = sessionId,
-                ["configurationVersion"] = "cfg-1",
+                ["configurationVersion"] = "4",
             }).ConfigureAwait(false);
 
         await Assert.That(connected.DaConnected).IsTrue();
@@ -127,6 +127,6 @@ public sealed class DxIntegrationTests
         await Assert.That(deleted.Succeeded).IsTrue();
         await Assert.That(afterDelete.Length).IsEqualTo(0);
         await Assert.That(reset.Succeeded).IsTrue();
-        await Assert.That(reset.ValueType).IsEqualTo("cfg-1:reset");
+        await Assert.That(reset.ValueType).IsEqualTo("5");
     }
 }

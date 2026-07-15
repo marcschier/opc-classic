@@ -96,6 +96,10 @@ internal sealed class SimDxDcomDispatcher(IOPCConfiguration server)
         {
             throw;
         }
+        catch (OpcException ex)
+        {
+            return new NdrCallResult(ex.ResultId.Code, ReadOnlyMemory<byte>.Empty);
+        }
     }
 
     private async Task<NdrCallResult> DispatchSourceMutationAsync(

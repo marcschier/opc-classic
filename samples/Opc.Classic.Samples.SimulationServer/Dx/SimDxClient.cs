@@ -242,29 +242,12 @@ public sealed class SimDxClient : IOpcDxClient, IOPCConfiguration
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(connectionName);
         ArgumentNullException.ThrowIfNull(connectionDefinition);
-        DxConnection[] matches = await QueryConnectionsCoreAsync(
+        return await UpdateConnectionsCoreAsync(
             browsePath,
-            [new DxConnection(name: connectionName)],
+            new DxConnection(name: connectionName, mask: (int)DxMask.Name),
             recursive,
+            connectionDefinition,
             cancellationToken).ConfigureAwait(false);
-        if (matches.Length == 0)
-        {
-            return OpcResultId.UnknownItemId;
-        }
-
-        foreach (DxConnection match in matches)
-        {
-            OpcResultId result = await UpsertConnectionCoreAsync(
-                connectionDefinition with { Name = match.Name },
-                requireExisting: true,
-                cancellationToken).ConfigureAwait(false);
-            if (!result.IsSuccess)
-            {
-                return result;
-            }
-        }
-
-        return OpcResultId.Ok;
     }
 
     /// <inheritdoc />
@@ -313,10 +296,25 @@ public sealed class SimDxClient : IOpcDxClient, IOPCConfiguration
         CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(configurationVersion);
-        _ = await MutateAsync(
-            (revision, token) => Engine.ResetAsync(revision, token),
-            cancellationToken).ConfigureAwait(false);
-        return configurationVersion + ":reset";
+        await _mutationGate.WaitAsync(cancellationToken).ConfigureAwait(false);
+        try
+        {
+            DxConfigurationSnapshot current =
+                await Engine.GetConfigurationAsync(cancellationToken).ConfigureAwait(false);
+            string currentVersion = current.Version.ToString(CultureInfo.InvariantCulture);
+            if (!string.Equals(configurationVersion, currentVersion, StringComparison.Ordinal))
+            {
+                throw new OpcException(OpcDxError.OPCDX_E_VERSION_MISMATCH);
+            }
+
+            DxConfigurationSnapshot saved =
+                await Engine.ResetAsync(current.Version, cancellationToken).ConfigureAwait(false);
+            return saved.Version.ToString(CultureInfo.InvariantCulture);
+        }
+        finally
+        {
+            _mutationGate.Release();
+        }
     }
 
     /// <inheritdoc />
@@ -414,10 +412,9 @@ public sealed class SimDxClient : IOpcDxClient, IOPCConfiguration
         var errors = new int[connectionMasks.Length];
         for (var i = 0; i < connectionMasks.Length; i++)
         {
-            string name = connectionMasks[i].Name ?? "*";
-            errors[i] = (await UpdateConnectionAsync(
+            errors[i] = (await UpdateConnectionsCoreAsync(
                 browsePath,
-                name,
+                connectionMasks[i],
                 recursive,
                 connectionDefinition,
                 cancellationToken).ConfigureAwait(false)).Code;
@@ -555,6 +552,72 @@ public sealed class SimDxClient : IOpcDxClient, IOPCConfiguration
         catch (DxConfigurationValidationException)
         {
             return OpcResultId.InvalidArg;
+        }
+    }
+
+    private async Task<OpcResultId> UpdateConnectionsCoreAsync(
+        string browsePath,
+        DxConnection connectionMask,
+        bool recursive,
+        DxConnection connectionDefinition,
+        CancellationToken cancellationToken)
+    {
+        DxConnection[] matches = await QueryConnectionsCoreAsync(
+            browsePath,
+            [connectionMask],
+            recursive,
+            cancellationToken).ConfigureAwait(false);
+        if (matches.Length == 0)
+        {
+            return OpcResultId.UnknownItemId;
+        }
+
+        foreach (DxConnection match in matches)
+        {
+            OpcResultId result = await MergeConnectionCoreAsync(
+                match.Name ?? string.Empty,
+                connectionDefinition,
+                cancellationToken).ConfigureAwait(false);
+            if (!result.IsSuccess)
+            {
+                return result;
+            }
+        }
+
+        return OpcResultId.Ok;
+    }
+
+    private async Task<OpcResultId> MergeConnectionCoreAsync(
+        string name,
+        DxConnection connectionDefinition,
+        CancellationToken cancellationToken)
+    {
+        await _mutationGate.WaitAsync(cancellationToken).ConfigureAwait(false);
+        try
+        {
+            DxConfigurationSnapshot current =
+                await Engine.GetConfigurationAsync(cancellationToken).ConfigureAwait(false);
+            DxConnection? stored = current.Configuration.Connections.FirstOrDefault(candidate =>
+                string.Equals(candidate.Name, name, StringComparison.Ordinal));
+            if (stored is null)
+            {
+                return OpcResultId.UnknownItemId;
+            }
+
+            DxConnection merged = NormalizeConnection(MergeConnection(stored, connectionDefinition));
+            _ = await Engine.UpsertConnectionAsync(
+                merged,
+                current.Version,
+                cancellationToken).ConfigureAwait(false);
+            return OpcResultId.Ok;
+        }
+        catch (DxConfigurationValidationException)
+        {
+            return OpcResultId.InvalidArg;
+        }
+        finally
+        {
+            _mutationGate.Release();
         }
     }
 
@@ -728,32 +791,208 @@ public sealed class SimDxClient : IOpcDxClient, IOPCConfiguration
 
     private static bool MatchesConnection(DxConnection connection, DxConnection mask)
     {
-        if (!MatchesMask(connection.Name, mask.Name))
+        var selected = (DxMask)mask.Mask;
+        const DxMask connectionFields =
+            DxMask.ItemPath |
+            DxMask.ItemName |
+            DxMask.Version |
+            DxMask.BrowsePaths |
+            DxMask.Name |
+            DxMask.Description |
+            DxMask.Keyword |
+            DxMask.DefaultSourceItemConnected |
+            DxMask.DefaultTargetItemConnected |
+            DxMask.DefaultOverridden |
+            DxMask.DefaultOverrideValue |
+            DxMask.SubstituteValue |
+            DxMask.EnableSubstituteValue |
+            DxMask.TargetItemPath |
+            DxMask.TargetItemName |
+            DxMask.SourceServerName |
+            DxMask.SourceItemPath |
+            DxMask.SourceItemName |
+            DxMask.SourceItemQueueSize |
+            DxMask.UpdateRate |
+            DxMask.DeadBand |
+            DxMask.VendorData;
+
+        if ((selected & ~connectionFields) != DxMask.None)
         {
             return false;
         }
 
-        return string.IsNullOrEmpty(mask.SourceServerName) ||
-            string.Equals(
-                connection.SourceServerName,
-                mask.SourceServerName,
-                StringComparison.Ordinal);
+        return Matches(selected, DxMask.ItemPath, connection.ItemPath, mask.ItemPath) &&
+            Matches(selected, DxMask.ItemName, connection.ItemName, mask.ItemName) &&
+            Matches(selected, DxMask.Version, connection.Version, mask.Version) &&
+            Matches(selected, DxMask.BrowsePaths, connection.BrowsePaths, mask.BrowsePaths) &&
+            Matches(selected, DxMask.Name, connection.Name, mask.Name) &&
+            Matches(selected, DxMask.Description, connection.Description, mask.Description) &&
+            Matches(selected, DxMask.Keyword, connection.Keyword, mask.Keyword) &&
+            Matches(selected, DxMask.DefaultSourceItemConnected, connection.DefaultSourceItemConnected, mask.DefaultSourceItemConnected) &&
+            Matches(selected, DxMask.DefaultTargetItemConnected, connection.DefaultTargetItemConnected, mask.DefaultTargetItemConnected) &&
+            Matches(selected, DxMask.DefaultOverridden, connection.DefaultOverridden, mask.DefaultOverridden) &&
+            Matches(selected, DxMask.DefaultOverrideValue, connection.DefaultOverrideValue, mask.DefaultOverrideValue) &&
+            Matches(selected, DxMask.SubstituteValue, connection.SubstituteValue, mask.SubstituteValue) &&
+            Matches(selected, DxMask.EnableSubstituteValue, connection.EnableSubstituteValue, mask.EnableSubstituteValue) &&
+            Matches(selected, DxMask.TargetItemPath, connection.TargetItemPath, mask.TargetItemPath) &&
+            Matches(selected, DxMask.TargetItemName, connection.TargetItemName, mask.TargetItemName) &&
+            Matches(selected, DxMask.SourceServerName, connection.SourceServerName, mask.SourceServerName) &&
+            Matches(selected, DxMask.SourceItemPath, connection.SourceItemPath, mask.SourceItemPath) &&
+            Matches(selected, DxMask.SourceItemName, connection.SourceItemName, mask.SourceItemName) &&
+            Matches(selected, DxMask.SourceItemQueueSize, connection.SourceItemQueueSize, mask.SourceItemQueueSize) &&
+            Matches(selected, DxMask.UpdateRate, connection.UpdateRateMilliseconds, mask.UpdateRateMilliseconds) &&
+            Matches(selected, DxMask.DeadBand, connection.DeadbandPercent, mask.DeadbandPercent) &&
+            Matches(selected, DxMask.VendorData, connection.VendorData, mask.VendorData);
     }
 
-    private static bool MatchesMask(string? value, string? mask)
+    private static bool Matches(DxMask selected, DxMask field, string? value, string? pattern) =>
+        (selected & field) == DxMask.None || MatchesPattern(value, pattern);
+
+    private static bool Matches<T>(DxMask selected, DxMask field, T? value, T? pattern)
+        where T : struct =>
+        (selected & field) == DxMask.None || Nullable.Equals(value, pattern);
+
+    private static bool Matches(
+        DxMask selected,
+        DxMask field,
+        string[] values,
+        string[] patterns)
     {
-        if (string.IsNullOrEmpty(mask) || mask == "*")
+        if ((selected & field) == DxMask.None)
         {
             return true;
         }
 
-        if (string.IsNullOrEmpty(value))
+        if (values.Length != patterns.Length)
         {
             return false;
         }
 
-        return MatchWildcard(value, 0, mask, 0);
+        for (var i = 0; i < values.Length; i++)
+        {
+            if (!MatchesPattern(values[i], patterns[i]))
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
+
+    private static bool MatchesPattern(string? value, string? pattern)
+    {
+        if (pattern is null)
+        {
+            return value is null;
+        }
+
+        if (pattern == "*")
+        {
+            return true;
+        }
+
+        if (value is null)
+        {
+            return false;
+        }
+
+        return MatchWildcard(value, 0, pattern, 0);
+    }
+
+    private static DxConnection MergeConnection(DxConnection stored, DxConnection definition)
+    {
+        var selected = (DxMask)definition.Mask;
+        return stored with
+        {
+            Description = Select(selected, DxMask.Description, stored.Description, definition.Description),
+            ItemPath = Select(selected, DxMask.ItemPath, stored.ItemPath, definition.ItemPath),
+            ItemName = Select(selected, DxMask.ItemName, stored.ItemName, definition.ItemName),
+            Version = Select(selected, DxMask.Version, stored.Version, definition.Version),
+            BrowsePaths = (selected & DxMask.BrowsePaths) == DxMask.None
+                ? stored.BrowsePaths
+                : definition.BrowsePaths,
+            Keyword = Select(selected, DxMask.Keyword, stored.Keyword, definition.Keyword),
+            DefaultSourceItemConnected = Select(
+                selected,
+                DxMask.DefaultSourceItemConnected,
+                stored.DefaultSourceItemConnected,
+                definition.DefaultSourceItemConnected),
+            DefaultTargetItemConnected = Select(
+                selected,
+                DxMask.DefaultTargetItemConnected,
+                stored.DefaultTargetItemConnected,
+                definition.DefaultTargetItemConnected),
+            DefaultOverridden = Select(
+                selected,
+                DxMask.DefaultOverridden,
+                stored.DefaultOverridden,
+                definition.DefaultOverridden),
+            DefaultOverrideValue = Select(
+                selected,
+                DxMask.DefaultOverrideValue,
+                stored.DefaultOverrideValue,
+                definition.DefaultOverrideValue),
+            SubstituteValue = Select(
+                selected,
+                DxMask.SubstituteValue,
+                stored.SubstituteValue,
+                definition.SubstituteValue),
+            EnableSubstituteValue = Select(
+                selected,
+                DxMask.EnableSubstituteValue,
+                stored.EnableSubstituteValue,
+                definition.EnableSubstituteValue),
+            TargetItemPath = Select(
+                selected,
+                DxMask.TargetItemPath,
+                stored.TargetItemPath,
+                definition.TargetItemPath),
+            TargetItemName = Select(
+                selected,
+                DxMask.TargetItemName,
+                stored.TargetItemName,
+                definition.TargetItemName),
+            SourceServerName = Select(
+                selected,
+                DxMask.SourceServerName,
+                stored.SourceServerName,
+                definition.SourceServerName),
+            SourceItemPath = Select(
+                selected,
+                DxMask.SourceItemPath,
+                stored.SourceItemPath,
+                definition.SourceItemPath),
+            SourceItemName = Select(
+                selected,
+                DxMask.SourceItemName,
+                stored.SourceItemName,
+                definition.SourceItemName),
+            SourceItemQueueSize = Select(
+                selected,
+                DxMask.SourceItemQueueSize,
+                stored.SourceItemQueueSize,
+                definition.SourceItemQueueSize),
+            UpdateRateMilliseconds = Select(
+                selected,
+                DxMask.UpdateRate,
+                stored.UpdateRateMilliseconds,
+                definition.UpdateRateMilliseconds),
+            DeadbandPercent = Select(
+                selected,
+                DxMask.DeadBand,
+                stored.DeadbandPercent,
+                definition.DeadbandPercent),
+            VendorData = Select(
+                selected,
+                DxMask.VendorData,
+                stored.VendorData,
+                definition.VendorData),
+            Mask = stored.Mask | definition.Mask,
+        };
+    }
+
+    private static T? Select<T>(DxMask selected, DxMask field, T? stored, T? definition) =>
+        (selected & field) == DxMask.None ? stored : definition;
 
     private static bool MatchWildcard(
         string value,

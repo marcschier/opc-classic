@@ -54,12 +54,11 @@ public sealed class SimDxReferenceIntegrationTests
             await Assert.That(disabled.DefaultTargetItemConnected).IsFalse();
             await Assert.That(disabled.UpdateRateMilliseconds).IsEqualTo(150);
 
-            DxConnection updatedDefinition = modified with
-            {
-                DefaultSourceItemConnected = true,
-                DefaultTargetItemConnected = true,
-                UpdateRateMilliseconds = 200,
-            };
+            DxConnection updatedDefinition = new(
+                description: "must not replace stored fields",
+                updateRateMilliseconds: 200,
+                deadbandPercent: 99,
+                mask: (int)DxMask.UpdateRate);
             DxUpdateConnectionsResult update = await proxy.UpdateDXConnectionsAsync(
                 "Plant.Reactor1",
                 [new DxConnection(name: connection.Name)],
@@ -71,9 +70,12 @@ public sealed class SimDxReferenceIntegrationTests
             DxConfigurationSnapshot afterUpdate = await client.Engine.GetConfigurationAsync().ConfigureAwait(false);
             await Assert.That(afterUpdate.Version).IsEqualTo(3);
             DxConnection enabled = afterUpdate.Configuration.Connections.Single(c => c.Name == connection.Name);
-            await Assert.That(enabled.DefaultSourceItemConnected).IsTrue();
-            await Assert.That(enabled.DefaultTargetItemConnected).IsTrue();
+            await Assert.That(enabled.Description).IsEqualTo("disabled for CRUD test");
+            await Assert.That(enabled.DefaultSourceItemConnected).IsFalse();
+            await Assert.That(enabled.DefaultTargetItemConnected).IsFalse();
             await Assert.That(enabled.UpdateRateMilliseconds).IsEqualTo(200);
+            await Assert.That(enabled.DeadbandPercent).IsEqualTo(0.5f);
+            await Assert.That(enabled.Mask).IsEqualTo(disabled.Mask);
 
             DxDeleteConnectionsResult delete = await proxy.DeleteDXConnectionsAsync(
                 "Plant.Reactor1",
@@ -86,12 +88,93 @@ public sealed class SimDxReferenceIntegrationTests
             await Assert.That(afterDelete.Version).IsEqualTo(4);
             await Assert.That(afterDelete.Configuration.Connections.Any(c => c.Name == connection.Name)).IsFalse();
 
-            string reset = await proxy.ResetConfigurationAsync("proxy-crud").ConfigureAwait(false);
-            await Assert.That(reset).IsEqualTo("proxy-crud:reset");
+            OpcException? staleError = null;
+            try
+            {
+                _ = await proxy.ResetConfigurationAsync("3").ConfigureAwait(false);
+            }
+            catch (OpcException ex)
+            {
+                staleError = ex;
+            }
+
+            ArgumentNullException.ThrowIfNull(staleError);
+            await Assert.That(staleError.ResultId.Code).IsEqualTo(OpcDxError.OPCDX_E_VERSION_MISMATCH.Code);
+
+            DxConfigurationSnapshot afterStaleReset =
+                await client.Engine.GetConfigurationAsync().ConfigureAwait(false);
+            await Assert.That(afterStaleReset.Version).IsEqualTo(4);
+            await Assert.That(afterStaleReset.Configuration.SourceServers.Length).IsEqualTo(1);
+
+            string reset = await proxy.ResetConfigurationAsync("4").ConfigureAwait(false);
+            await Assert.That(reset).IsEqualTo("5");
 
             DxConfigurationSnapshot afterReset = await client.Engine.GetConfigurationAsync().ConfigureAwait(false);
             await Assert.That(afterReset.Version).IsEqualTo(5);
             await Assert.That(afterReset.Configuration.Connections.Length).IsEqualTo(0);
+        }
+        finally
+        {
+            await client.ShutdownAsync().ConfigureAwait(false);
+        }
+    }
+
+    [Test]
+    public async Task Iopcconfiguration_query_honors_every_selected_connection_mask_field()
+    {
+        SimDxClient client = await CreateClientAsync().ConfigureAwait(false);
+        try
+        {
+            var proxy = new IOPCConfigurationClientProxy(client.Channel);
+            var cases = new[]
+            {
+                (
+                    Mask: new DxConnection(
+                        name: "ignored-name",
+                        sourceItemName: "Temperature",
+                        mask: (int)DxMask.SourceItemName),
+                    Expected: new[] { "ReactorTemperatureToBucket" }),
+                (
+                    Mask: new DxConnection(
+                        targetItemName: "Int4",
+                        mask: (int)DxMask.TargetItemName),
+                    Expected: new[] { "ReactorPressureDisabled" }),
+                (
+                    Mask: new DxConnection(
+                        sourceItemName: "Temperature",
+                        targetItemName: "Int4",
+                        mask: (int)(DxMask.SourceItemName | DxMask.TargetItemName)),
+                    Expected: Array.Empty<string>()),
+                (
+                    Mask: new DxConnection(
+                        itemName: "Pressure*",
+                        mask: (int)DxMask.ItemName),
+                    Expected: new[] { "ReactorPressureDisabled" }),
+                (
+                    Mask: new DxConnection(
+                        name: "Reactor*",
+                        keyword: "pressure",
+                        mask: (int)(DxMask.Name | DxMask.Keyword)),
+                    Expected: new[] { "ReactorPressureDisabled" }),
+                (
+                    Mask: new DxConnection(
+                        sourceServerName: "SimulationDA",
+                        deadbandPercent: 0.5f,
+                        mask: (int)(DxMask.SourceServerName | DxMask.DeadBand)),
+                    Expected: new[] { "ReactorTemperatureToBucket" }),
+            };
+
+            foreach ((DxConnection mask, string[] expected) in cases)
+            {
+                DxConnectionQueryResult result = await proxy.QueryDXConnectionsAsync(
+                    "",
+                    [mask],
+                    recursive: true).ConfigureAwait(false);
+                string[] actual = result.Connections
+                    .Select(static connection => connection.Name ?? string.Empty)
+                    .ToArray();
+                await Assert.That(actual.SequenceEqual(expected)).IsTrue();
+            }
         }
         finally
         {
@@ -378,8 +461,8 @@ public sealed class SimDxReferenceIntegrationTests
             await proxy.AddDXConnectionsAsync([CreateDxConnection("ResetMirror", "Int4", 100)])
                 .ConfigureAwait(false);
 
-            string reset = await proxy.ResetConfigurationAsync("reset-probe").ConfigureAwait(false);
-            await Assert.That(reset).IsEqualTo("reset-probe:reset");
+            string reset = await proxy.ResetConfigurationAsync("1").ConfigureAwait(false);
+            await Assert.That(reset).IsEqualTo("2");
 
             DxConfigurationSnapshot afterReset = await resetClient.Engine.GetConfigurationAsync().ConfigureAwait(false);
             await Assert.That(afterReset.Configuration.Connections.Length).IsEqualTo(0);
@@ -451,12 +534,18 @@ public sealed class SimDxReferenceIntegrationTests
             snapshot => snapshot.State == DxTransferState.Disabled).ConfigureAwait(false);
         await Assert.That(disabledRuntime.State).IsEqualTo(DxTransferState.Disabled);
 
-        OpcDxConnectionDto enabledConnection = disabledConnection with
-        {
-            DefaultSourceItemConnected = true,
-            DefaultTargetItemConnected = true,
-            UpdateRateMilliseconds = 150,
-        };
+        int maskBeforePartialUpdate = (await client.Engine.GetConfigurationAsync().ConfigureAwait(false))
+            .Configuration.Connections.Single(connection => connection.Name == connectionName).Mask;
+        var enabledConnection = new OpcDxConnectionDto(
+            Description: "must not replace stored fields",
+            DefaultSourceItemConnected: true,
+            DefaultTargetItemConnected: true,
+            UpdateRateMilliseconds: 150,
+            DeadbandPercent: 99,
+            Mask: (int)(
+                DxMask.DefaultSourceItemConnected |
+                DxMask.DefaultTargetItemConnected |
+                DxMask.UpdateRate));
         OpcResultDto updated = await host.CallToolAsync<OpcResultDto>(
             "opcclassic.dx.update_connection",
             new Dictionary<string, object>
@@ -475,6 +564,13 @@ public sealed class SimDxReferenceIntegrationTests
                 snapshot.ReadCount >= 1).ConfigureAwait(false);
         await Assert.That(runningRuntime.State).IsEqualTo(DxTransferState.Running);
 
+        DxConnection afterPartialUpdate = (await client.Engine.GetConfigurationAsync().ConfigureAwait(false))
+            .Configuration.Connections.Single(connection => connection.Name == connectionName);
+        await Assert.That(afterPartialUpdate.Description).IsEqualTo("disabled by MCP");
+        await Assert.That(afterPartialUpdate.DeadbandPercent).IsEqualTo(0.5f);
+        await Assert.That(afterPartialUpdate.TargetItemName).IsEqualTo("Int4");
+        await Assert.That(afterPartialUpdate.Mask).IsEqualTo(maskBeforePartialUpdate);
+
         OpcResultDto deleted = await host.CallToolAsync<OpcResultDto>(
             "opcclassic.dx.delete_connection",
             new Dictionary<string, object>
@@ -489,16 +585,43 @@ public sealed class SimDxReferenceIntegrationTests
         await Assert.That(afterDelete.Configuration.Connections.Any(connection => connection.Name == connectionName))
             .IsFalse();
 
+        InvalidOperationException? staleResetError = null;
+        try
+        {
+            _ = await host.CallToolAsync<OpcResultDto>(
+                "opcclassic.dx.reset_configuration",
+                new Dictionary<string, object>
+                {
+                    ["sessionId"] = sessionId,
+                    ["configurationVersion"] = "3",
+                }).ConfigureAwait(false);
+        }
+        catch (InvalidOperationException ex)
+        {
+            staleResetError = ex;
+        }
+
+        ArgumentNullException.ThrowIfNull(staleResetError);
+        await Assert.That(staleResetError.Message)
+            .Contains("opcclassic.dx.reset_configuration");
+
+        DxConfigurationSnapshot afterStaleReset =
+            await client.Engine.GetConfigurationAsync().ConfigureAwait(false);
+        await Assert.That(afterStaleReset.Version).IsEqualTo(4);
+        await Assert.That(afterStaleReset.Configuration.SourceServers.Length).IsEqualTo(1);
+
         OpcResultDto reset = await host.CallToolAsync<OpcResultDto>(
             "opcclassic.dx.reset_configuration",
             new Dictionary<string, object>
             {
                 ["sessionId"] = sessionId,
-                ["configurationVersion"] = "mcp-reset",
+                ["configurationVersion"] = "4",
             }).ConfigureAwait(false);
         await Assert.That(reset.Succeeded).IsTrue();
+        await Assert.That(reset.ValueType).IsEqualTo("5");
 
         DxConfigurationSnapshot afterReset = await client.Engine.GetConfigurationAsync().ConfigureAwait(false);
+        await Assert.That(afterReset.Version).IsEqualTo(5);
         await Assert.That(afterReset.Configuration.Connections.Length).IsEqualTo(0);
         await Assert.That(client.Engine.GetStatusSnapshot().Connections.Length).IsEqualTo(0);
     }

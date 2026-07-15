@@ -64,6 +64,13 @@ The Phase 0 interface inventory also flags `IOPCBrowseServerAddressSpace::GetIte
 
 `DxConnection` covers the configurable attributes in §5.1.2, including browse paths, connection name, description, keyword, default runtime controls, override/substitute values, target/source item identifiers, queue size, update rate, deadband, vendor data, and the native mask. Tests round-trip masks, variants, arrays, and representative status fields.
 
+The SimulationServer reference implementation applies every selected `DxConnection.Mask`
+field when evaluating query/update masks, merges only update-definition fields selected by
+that definition's mask, and preserves all unrelated stored fields and mask bits.
+`ResetConfiguration` compares the supplied optimistic version while holding the mutation
+gate; stale versions return `OPCDX_E_VERSION_MISMATCH` without mutation, and successful
+calls return the actual saved revision.
+
 ### 1.4 DX parameter and status codecs (spec §4, §5.1, App. B.1.4)
 
 | Structure / area | Source | Tests | Status |
