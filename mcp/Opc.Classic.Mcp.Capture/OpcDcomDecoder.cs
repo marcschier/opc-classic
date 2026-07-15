@@ -53,7 +53,7 @@ public sealed class OpcDcomDecoder
     private readonly ILogger _logger;
     private readonly NtlmPassiveUnwrapper? _unwrapper;
     private readonly Dictionary<FlowKey, FlowState> _flows = new();
-    private readonly Dictionary<FlowKey, long> _completedFlowTombstones = new();
+    private readonly Dictionary<FlowKey, CompletedFlowTombstone> _completedFlowTombstones = new();
     private readonly Queue<CompletedFlowTombstone> _completedFlowTombstoneOrder = [];
     private long _nextConnectionGeneration;
     private long _nextTombstoneGeneration;
@@ -195,6 +195,14 @@ public sealed class OpcDcomDecoder
         FlowKey reverseKey = new(dstIp, tcp.DestinationPort, srcIp, tcp.SourcePort);
         if (tcp.Synchronize)
         {
+            if (_completedFlowTombstones.TryGetValue(
+                    key,
+                    out CompletedFlowTombstone? tombstone)
+                && tombstone.SynSequence == tcp.SequenceNumber)
+            {
+                yield break;
+            }
+
             RemoveCompletedFlowTombstone(key);
             RemoveCompletedFlowTombstone(reverseKey);
         }
@@ -752,31 +760,35 @@ public sealed class OpcDcomDecoder
 
     private void EvictCompletedConnection(ConnectionState connection)
     {
-        FlowKey[] keys = _flows
-            .Where(pair => ReferenceEquals(pair.Value.Connection, connection))
-            .Select(pair => pair.Key)
+        FlowState[] flows = _flows.Values
+            .Where(flow => ReferenceEquals(flow.Connection, connection))
             .ToArray();
         RemoveConnection(connection);
-        foreach (FlowKey key in keys)
+        foreach (FlowState flow in flows)
         {
-            AddCompletedFlowTombstone(key);
+            AddCompletedFlowTombstone(flow.Key, flow.SynSequence);
         }
     }
 
-    private void AddCompletedFlowTombstone(FlowKey key)
+    private void AddCompletedFlowTombstone(
+        FlowKey key,
+        uint? synSequence)
     {
         long generation = ++_nextTombstoneGeneration;
-        _completedFlowTombstones[key] = generation;
-        _completedFlowTombstoneOrder.Enqueue(
-            new CompletedFlowTombstone(key, generation));
+        var tombstone = new CompletedFlowTombstone(
+            key,
+            generation,
+            synSequence);
+        _completedFlowTombstones[key] = tombstone;
+        _completedFlowTombstoneOrder.Enqueue(tombstone);
         while (_completedFlowTombstoneOrder.Count > MaxCompletedFlowTombstones)
         {
             CompletedFlowTombstone expired =
                 _completedFlowTombstoneOrder.Dequeue();
             if (_completedFlowTombstones.TryGetValue(
                     expired.Key,
-                    out long currentGeneration)
-                && currentGeneration == expired.Generation)
+                    out CompletedFlowTombstone? current)
+                && current.Generation == expired.Generation)
             {
                 _completedFlowTombstones.Remove(expired.Key);
             }
@@ -794,7 +806,8 @@ public sealed class OpcDcomDecoder
 
     private sealed record CompletedFlowTombstone(
         FlowKey Key,
-        long Generation);
+        long Generation,
+        uint? SynSequence);
 
     private static DecodedDcomFrame FramingFailure(byte[] frame, string code, string message)
         => new(
@@ -1289,6 +1302,7 @@ public sealed class OpcDcomDecoder
         public bool ProtectionSequenceReliable { get; private set; } = true;
         public DateTimeOffset LastTimestamp { get; private set; } = DateTimeOffset.UnixEpoch;
         public bool FinObserved { get; private set; }
+        public uint? SynSequence => _synSequence;
 
         private readonly List<byte> _buffer = new();
         private readonly SortedDictionary<long, byte[]> _pendingSegments = new();

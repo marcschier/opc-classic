@@ -294,6 +294,11 @@ public sealed class OpcDcomDecoderTests
             timestamp.AddMilliseconds(2),
             sequenceNumber: 1_009,
             tcpFlags: 0x04)).ToArray();
+        DecodedOpcPdu[] retransmittedSyn = decoder.Decode(NewTcpPacket(
+            [],
+            timestamp.AddMilliseconds(2.25),
+            sequenceNumber: 1_000,
+            tcpFlags: 0x02)).ToArray();
         DecodedOpcPdu[] latePacket = decoder.Decode(NewTcpPacket(
             abandoned[8..],
             timestamp.AddMilliseconds(2.5),
@@ -301,6 +306,7 @@ public sealed class OpcDcomDecoderTests
 
         await Assert.That(decoder.TrackedFlowCount).IsEqualTo(0);
         await Assert.That(decoder.CompletedFlowTombstoneCount).IsEqualTo(2);
+        await Assert.That(retransmittedSyn).IsEmpty();
         await Assert.That(latePacket).IsEmpty();
         await Assert.That(decoder.TrackedFlowCount).IsEqualTo(0);
 
