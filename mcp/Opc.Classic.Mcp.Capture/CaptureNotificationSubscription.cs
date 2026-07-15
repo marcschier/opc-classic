@@ -135,7 +135,10 @@ internal sealed class CaptureNotificationSubscription : IAsyncDisposable
             }
             since = snapshot.NextIndex;
             previousState = snapshot.SessionState;
-            if (snapshot.Done) return;
+            if (snapshot.Done)
+            {
+                return;
+            }
             await Task.Delay(_interval, cancellationToken).ConfigureAwait(false);
         }
     }
@@ -152,7 +155,10 @@ internal sealed class CaptureNotificationSubscription : IAsyncDisposable
             {
                 if (_queue.Count == 0)
                 {
-                    if (_producerDone) return;
+                    if (_producerDone)
+                    {
+                        return;
+                    }
                     continue;
                 }
                 notification = ApplyDrops(_queue.Dequeue());
@@ -176,15 +182,24 @@ internal sealed class CaptureNotificationSubscription : IAsyncDisposable
         lock (_sync)
         {
             release = _queue.Count < _queueCapacity;
-            if (!release) RecordDrop(_queue.Dequeue());
+            if (!release)
+            {
+                RecordDrop(_queue.Dequeue());
+            }
             _queue.Enqueue(notification);
         }
-        if (release) _signal.Release();
+        if (release)
+        {
+            _signal.Release();
+        }
     }
 
     private CaptureNotification ApplyDrops(CaptureNotification notification)
     {
-        if (_pendingDrops == 0) return notification;
+        if (_pendingDrops == 0)
+        {
+            return notification;
+        }
         CaptureNotification result = notification with
         {
             NotificationDropCount = notification.NotificationDropCount + _pendingDrops,
@@ -221,7 +236,10 @@ internal sealed class CaptureNotificationSubscription : IAsyncDisposable
 
     public async ValueTask DisposeAsync()
     {
-        if (Interlocked.Exchange(ref _disposed, 1) != 0) return;
+        if (Interlocked.Exchange(ref _disposed, 1) != 0)
+        {
+            return;
+        }
         try
         {
             _stopping.Cancel();
@@ -230,13 +248,19 @@ internal sealed class CaptureNotificationSubscription : IAsyncDisposable
         catch (ObjectDisposedException)
         {
         }
-        if (_runTask is not null) await _runTask.ConfigureAwait(false);
+        if (_runTask is not null)
+        {
+            await _runTask.ConfigureAwait(false);
+        }
         DisposeResources();
     }
 
     private void DisposeResources()
     {
-        if (Interlocked.Exchange(ref _resourcesDisposed, 1) != 0) return;
+        if (Interlocked.Exchange(ref _resourcesDisposed, 1) != 0)
+        {
+            return;
+        }
         _stopping.Dispose();
         _signal.Dispose();
     }
