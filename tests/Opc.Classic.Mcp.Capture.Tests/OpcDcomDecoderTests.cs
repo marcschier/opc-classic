@@ -211,6 +211,8 @@ public sealed class OpcDcomDecoderTests
         await Assert.That(completed.Length).IsEqualTo(1);
         await Assert.That(completed[0].CallId).IsEqualTo(73);
         await Assert.That(decoder.CompleteDetailed().Count()).IsEqualTo(0);
+        await Assert.That(decoder.TrackedFlowCount).IsEqualTo(0);
+        await Assert.That(decoder.CompletedFlowTombstoneCount).IsEqualTo(0);
     }
 
     [Test]
@@ -292,6 +294,15 @@ public sealed class OpcDcomDecoderTests
             timestamp.AddMilliseconds(2),
             sequenceNumber: 1_009,
             tcpFlags: 0x04)).ToArray();
+        DecodedOpcPdu[] latePacket = decoder.Decode(NewTcpPacket(
+            abandoned[8..],
+            timestamp.AddMilliseconds(2.5),
+            sequenceNumber: 1_009)).ToArray();
+
+        await Assert.That(decoder.TrackedFlowCount).IsEqualTo(0);
+        await Assert.That(decoder.CompletedFlowTombstoneCount).IsEqualTo(2);
+        await Assert.That(latePacket).IsEmpty();
+        await Assert.That(decoder.TrackedFlowCount).IsEqualTo(0);
 
         byte[] replacement = Encode(NewRequestPdu(callId: 741));
         _ = decoder.Decode(NewTcpPacket(
@@ -306,7 +317,51 @@ public sealed class OpcDcomDecoderTests
 
         await Assert.That(decoded.Length).IsEqualTo(1);
         await Assert.That(decoded[0].CallId).IsEqualTo(741);
+        await Assert.That(decoder.CompletedFlowTombstoneCount).IsEqualTo(0);
         await Assert.That(decoder.CompleteDetailed().Any(frame => frame.Pdu?.CallId == 740)).IsFalse();
+    }
+
+    [Test]
+    public async Task Decode_TcpLifecycle_MutualFinEvictsFlowAndDropsLatePackets()
+    {
+        var decoder = new OpcDcomDecoder();
+        DateTimeOffset timestamp = DateTimeOffset.UnixEpoch;
+        byte[] request = Encode(NewRequestPdu(callId: 745));
+        const uint clientSyn = 70_000;
+        uint clientData = clientSyn + 1;
+
+        _ = decoder.Decode(NewTcpPacket(
+            [],
+            timestamp,
+            sequenceNumber: clientSyn,
+            tcpFlags: 0x02)).ToArray();
+        DecodedOpcPdu[] decoded = decoder.Decode(NewTcpPacket(
+            request,
+            timestamp.AddMilliseconds(1),
+            sequenceNumber: clientData)).ToArray();
+        _ = decoder.Decode(NewTcpPacket(
+            [],
+            timestamp.AddMilliseconds(2),
+            sequenceNumber: clientData + (uint)request.Length,
+            tcpFlags: 0x11)).ToArray();
+        _ = decoder.Decode(NewTcpPacket(
+            [],
+            timestamp.AddMilliseconds(3),
+            reverse: true,
+            sequenceNumber: 90_000,
+            tcpFlags: 0x11)).ToArray();
+
+        DecodedOpcPdu[] latePacket = decoder.Decode(NewTcpPacket(
+            request,
+            timestamp.AddMilliseconds(4),
+            sequenceNumber: clientData)).ToArray();
+
+        await Assert.That(decoded.Select(pdu => pdu.CallId))
+            .IsEquivalentTo([745]);
+        await Assert.That(decoder.TrackedFlowCount).IsEqualTo(0);
+        await Assert.That(decoder.CompletedFlowTombstoneCount).IsEqualTo(2);
+        await Assert.That(latePacket).IsEmpty();
+        await Assert.That(decoder.TrackedFlowCount).IsEqualTo(0);
     }
 
     [Test]

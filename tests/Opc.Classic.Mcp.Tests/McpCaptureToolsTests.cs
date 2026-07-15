@@ -433,6 +433,32 @@ public sealed class McpCaptureToolsTests
     }
 
     [Test]
+    public async Task CaptureTools_GetCapture_StopsReadingWhenMaxPdusIsReached()
+    {
+        await using CaptureSessionManager manager = CreateManager();
+        var source = new SyntheticCaptureSource(rawPcapPath: null);
+        source.Packets.Add(NewAnnotatedPacket("first"));
+        source.Packets.Add(NewAnnotatedPacket("second"));
+        source.Packets.Add(NewAnnotatedPacket("third"));
+        var tools = new CaptureTools(manager);
+        CaptureSession session = await manager.CreateAndStartAsync(
+            "synthetic",
+            _ => source,
+            new CaptureStartRequest(InterfaceName: "lo"),
+            CancellationToken.None);
+
+        string json = await tools.GetCapture(
+            session.Id,
+            "json",
+            maxPdus: 1,
+            cancellationToken: CancellationToken.None);
+        using JsonDocument document = JsonDocument.Parse(json);
+
+        await Assert.That(document.RootElement.GetArrayLength()).IsEqualTo(1);
+        await Assert.That(source.PacketsRead).IsEqualTo(1);
+    }
+
+    [Test]
     public async Task CaptureTools_Invalid_session_or_state_inputs_throw_mcp_exceptions()
     {
         await using CaptureSessionManager manager = CreateManager();
@@ -707,6 +733,7 @@ public sealed class McpCaptureToolsTests
         public int LinkType => 0;
         public CaptureStartRequest? StartRequest { get; private set; }
         public string? EffectiveFilter { get; private set; }
+        public int PacketsRead { get; private set; }
 
         public Task StartAsync(CaptureStartRequest request, CancellationToken cancellationToken)
         {
@@ -745,6 +772,7 @@ public sealed class McpCaptureToolsTests
                 {
                     yield break;
                 }
+                PacketsRead++;
                 yield return packet;
                 await Task.Yield();
             }

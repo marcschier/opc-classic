@@ -141,14 +141,17 @@ public sealed class BatchToolsTests
                 int count = reader.ReadInt32();
                 OpcBatchSummary[] page = _summaries.Skip(_position).Take(count).ToArray();
                 _position += page.Length;
-                return Result((ref NdrWriter writer) =>
+                ReadOnlyMemory<byte> payload = WritePayload((ref NdrWriter writer) =>
                 {
+                    writer.WriteUniquePointerReferent(true);
                     writer.WriteUInt32((uint)page.Length);
-                    foreach (OpcBatchSummary summary in page)
-                    {
-                        NdrOpcBatchSummaryCodec.Write(ref writer, summary);
-                    }
+                    NdrOpcBatchSummaryCodec.WriteConformantArrayBody(ref writer, page);
+                    writer.WriteUInt32((uint)page.Length);
                 });
+                int hresult = page.Length < count
+                    ? OpcResultId.False.Code
+                    : OpcResultId.Ok.Code;
+                return Task.FromResult(new NdrCallResult(hresult, payload));
             }
 
             if (interfaceId == IOPCEnumerationSets.InterfaceId)

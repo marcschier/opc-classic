@@ -423,23 +423,38 @@ public sealed class CaptureTools
         NtlmPassiveUnwrapper? unwrapper = session.CreateUnwrapper();
         try
         {
+            ArgumentOutOfRangeException.ThrowIfNegativeOrZero(maxPdus);
             var decoder = new OpcDcomDecoder(unwrapper);
             var pdus = new List<DecodedOpcPdu>();
+            bool limitReached = false;
             await foreach (CapturedPacket pkt in session.ReadAllAsync(maxPackets: null, cancellationToken).ConfigureAwait(false))
             {
                 foreach (DecodedOpcPdu pdu in decoder.Decode(pkt))
                 {
-                    if (pdus.Count < maxPdus)
+                    pdus.Add(pdu);
+                    if (pdus.Count == maxPdus)
                     {
-                        pdus.Add(pdu);
+                        limitReached = true;
+                        break;
                     }
                 }
-            }
-            foreach (DecodedDcomFrame completed in decoder.CompleteDetailed())
-            {
-                if (completed.Pdu is not null && pdus.Count < maxPdus)
+                if (limitReached)
                 {
-                    pdus.Add(completed.Pdu);
+                    break;
+                }
+            }
+            if (!limitReached)
+            {
+                foreach (DecodedDcomFrame completed in decoder.CompleteDetailed())
+                {
+                    if (completed.Pdu is not null)
+                    {
+                        pdus.Add(completed.Pdu);
+                        if (pdus.Count == maxPdus)
+                        {
+                            break;
+                        }
+                    }
                 }
             }
 
