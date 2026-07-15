@@ -39,6 +39,20 @@ class ProbeSpec:
     after: Optional[ProbeAfter] = None
 
 
+DESCRIPTOR_WORKFLOW_TOOLS: dict[str, tuple[str, ...]] = {
+    "da-reconnect": (
+        "opcclassic.da.connect",
+        "opcclassic.da.disconnect",
+        "opcclassic.da.get_status",
+    ),
+    "da-failover": (
+        "opcclassic.da.connect",
+        "opcclassic.da.disconnect",
+        "opcclassic.da.browse",
+    ),
+}
+
+
 class McpClient:
     """Minimal JSON-RPC-over-stdio client for the MCP server."""
 
@@ -213,8 +227,10 @@ class ProbeRunner:
         # implicitly because every other tool requires a session + a connected
         # client, so they must run first regardless of filter.
         probe_filter: set[str] | None = None
+        scenario_pairs = list(getattr(self.args, "probe_scenarios", None) or ())
+        workflow_pairs = list(getattr(self.args, "probe_workflows", None) or ())
         scenarios_by_tool: dict[str, list[str]] = {}
-        for probe_id, tool_name in getattr(self.args, "probe_scenarios", ()):
+        for probe_id, tool_name in scenario_pairs:
             scenarios_by_tool.setdefault(tool_name, []).append(probe_id)
         if getattr(self.args, "probe", None):
             requested = set(self.args.probe)
@@ -222,7 +238,7 @@ class ProbeRunner:
             probe_filter.add("opcclassic.session.create")
             for kind in ("da", "hda", "ae", "batch", "commands", "dx"):
                 probe_filter.add(f"opcclassic.{kind}.connect")
-        elif scenarios_by_tool:
+        elif scenarios_by_tool or workflow_pairs:
             requested = set(scenarios_by_tool)
             probe_filter = set(requested)
             probe_filter.add("opcclassic.session.create")
@@ -243,6 +259,12 @@ class ProbeRunner:
                 probe_filter.add("opcclassic.da.subscribe")
 
         specs = probe_specs()
+        curated_names = {spec.name for spec in specs}
+        schema_by_name = {
+            tool.get("name"): tool.get("inputSchema")
+            for tool in tools
+            if isinstance(tool, dict)
+        }
         last_scenario_spec = {
             spec.name: index
             for index, spec in enumerate(specs)
@@ -267,12 +289,159 @@ class ProbeRunner:
         # filter actually means "only these tools".
         if probe_filter is None:
             known = set(covered)
-            schema_by_name = {tool.get("name"): tool.get("inputSchema") for tool in tools if isinstance(tool, dict)}
             for name in exposed:
                 if name not in known:
                     self.probe(ProbeSpec(name, lambda runner, tool_name=name: runner.auto_args(schema_by_name.get(tool_name))))
 
+        completed_probe_ids = {
+            row.get("probeId")
+            for row in self.results
+            if isinstance(row.get("probeId"), str)
+        }
+        for probe_id, tool_name in scenario_pairs:
+            if probe_id in completed_probe_ids:
+                continue
+            if tool_name not in exposed_set:
+                self.results.append(make_result(
+                    tool_name,
+                    {},
+                    False,
+                    f"TOOL_UNAVAILABLE: MCP did not expose '{tool_name}'.",
+                    "",
+                    probe_id=probe_id,
+                ))
+            elif tool_name not in curated_names:
+                self.probe(
+                    ProbeSpec(
+                        tool_name,
+                        lambda runner, name=tool_name: runner.auto_args(
+                            schema_by_name.get(name)),
+                    ),
+                    probe_id,
+                )
+            else:
+                self.results.append(make_result(
+                    tool_name,
+                    {},
+                    False,
+                    f"PROBE_RESULT_MISSING: curated probe '{tool_name}' did not execute.",
+                    "",
+                    probe_id=probe_id,
+                ))
+
+        for probe_id, workflow_name in workflow_pairs:
+            self.run_descriptor_workflow(
+                probe_id,
+                workflow_name,
+                exposed_set,
+            )
+
         return self.results
+
+    def run_descriptor_workflow(
+        self,
+        probe_id: str,
+        workflow_name: str,
+        exposed_tools: set[str],
+    ) -> None:
+        required_tools = DESCRIPTOR_WORKFLOW_TOOLS.get(workflow_name)
+        workflow_tool = f"descriptor.workflow.{workflow_name}"
+        if required_tools is None:
+            self.results.append(make_result(
+                workflow_tool,
+                {},
+                False,
+                f"PROBE_MAPPING_MISSING: unknown workflow '{workflow_name}'.",
+                "",
+                probe_id=probe_id,
+            ))
+            return
+
+        missing = [
+            name
+            for name in ("opcclassic.session.create", *required_tools)
+            if name not in exposed_tools
+        ]
+        if missing:
+            self.results.append(make_result(
+                workflow_tool,
+                {},
+                False,
+                "TOOL_UNAVAILABLE: workflow requires " + ", ".join(missing) + ".",
+                "",
+                probe_id=probe_id,
+            ))
+            return
+
+        steps: list[dict[str, Any]] = []
+
+        def call_step(name: str, tool_name: str, arguments: dict[str, Any]) -> Any:
+            value = self.client.call_tool(tool_name, arguments)
+            steps.append({"name": name, "tool": tool_name, "success": True})
+            return value
+
+        try:
+            call_step(
+                "reset-disconnect",
+                "opcclassic.da.disconnect",
+                sid(self),
+            )
+            call_step(
+                "initial-connect",
+                "opcclassic.da.connect",
+                self.dcom_args("da", include_sso=True),
+            )
+            call_step(
+                "disconnect",
+                "opcclassic.da.disconnect",
+                sid(self),
+            )
+            call_step(
+                "reconnect",
+                "opcclassic.da.connect",
+                self.dcom_args("da", include_sso=True),
+            )
+            if workflow_name == "da-failover":
+                call_step(
+                    "followup-browse",
+                    "opcclassic.da.browse",
+                    {
+                        **sid(self),
+                        "itemId": self.args.da_browse_branch,
+                        "browseFilter": self.args.da_browse_filter,
+                    },
+                )
+            else:
+                call_step(
+                    "followup-status",
+                    "opcclassic.da.get_status",
+                    sid(self),
+                )
+            self.results.append(make_result(
+                workflow_tool,
+                {},
+                True,
+                None,
+                f"{len(steps)} workflow steps completed.",
+                result={"steps": steps},
+                probe_id=probe_id,
+            ))
+        except Exception as exception:
+            steps.append({
+                "name": "failed",
+                "success": False,
+                "error": first_line(str(exception)),
+            })
+            row = make_result(
+                workflow_tool,
+                {},
+                False,
+                first_line(str(exception)),
+                "",
+                probe_id=probe_id,
+            )
+            row["workflowSteps"] = steps
+            self.results.append(row)
 
     def probe(self, spec: ProbeSpec, probe_id: str | None = None) -> None:
         try:
@@ -826,6 +995,20 @@ def parse_probe_scenario(value: str) -> tuple[str, str]:
     return probe_id, tool_name
 
 
+def parse_probe_workflow(value: str) -> tuple[str, str]:
+    if "=" not in value:
+        raise argparse.ArgumentTypeError("expected PROBE_ID=WORKFLOW_NAME")
+    probe_id, workflow_name = value.split("=", 1)
+    if (
+        not probe_id
+        or not all(character.isalnum() or character == "-" for character in probe_id)
+        or workflow_name not in DESCRIPTOR_WORKFLOW_TOOLS
+    ):
+        raise argparse.ArgumentTypeError(
+            "expected kebab-case PROBE_ID and a supported descriptor workflow")
+    return probe_id, workflow_name
+
+
 def parse_bool(value: str) -> bool:
     if value.casefold() == "true":
         return True
@@ -889,6 +1072,16 @@ def parse_args() -> argparse.Namespace:
         metavar="PROBE_ID=TOOL_NAME",
         help="Execute a descriptor probe with a stable report identity. May "
              "be repeated, including multiple probe IDs for the same tool.",
+    )
+    parser.add_argument(
+        "--probe-workflow",
+        action="append",
+        type=parse_probe_workflow,
+        dest="probe_workflows",
+        default=None,
+        metavar="PROBE_ID=WORKFLOW_NAME",
+        help="Execute a descriptor-defined multi-step workflow. Supported "
+             "workflows perform disconnect, reconnect, and a follow-up DA call.",
     )
 
     parser.add_argument("--da-browse-branch", default="Random")

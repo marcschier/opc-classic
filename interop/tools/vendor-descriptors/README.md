@@ -15,15 +15,26 @@ credential remains operator-supplied and subject to its vendor's terms.
 
 Each probe declares `requires`. Selection occurs only when every required capability is declared. The generic catalog covers DA optional-interface queries, group lifecycle/callbacks, deadband/sampling, browse/property variants, sync/async I/O, reconnect/failover; AE subscriptions, filters, returned attributes, refresh/cancel and condition-state variants; and HDA browser, raw/processed/modified reads, annotations, advise/playback, aggregates and relative time.
 
-Malformed and truncated fixture decodes are expected failures. Synthetic vendor-extension fixtures are expected successes. Missing install-root mappings or external executables produce `BLOCKED`, never `REGRESSION`.
+Malformed and truncated fixture decodes are expected failures. Synthetic
+vendor-extension fixtures are expected successes. Fixture probes run
+specification-specific DA extension, AE condition-state, or HDA relative-time
+decoders after hex parsing; valid hex with an invalid protocol shape fails.
+Missing install-root mappings or external executables produce `BLOCKED`, never
+an external-product `REGRESSION`.
 
-Normalized reports include descriptor/catalog versions, descriptor identity, product/vendor, target kind, capability IDs, probe ID, expected/actual results and verdict.
+Normalized reports include descriptor/catalog versions, descriptor identity,
+product/vendor, target kind, capability IDs, probe ID, allow-listed
+expected/actual comparison metadata, and verdict.
 
-Every selected probe is executed independently, even when several probe IDs
-map to the same MCP tool; `probeId` remains the stable report identity. DA write
-expectations select the returned item by `expected.itemId` before comparing its
-HRESULT, and a missing item is a regression. Descriptor parsing and JSON-RPC
-dispatch reject `NaN`, positive infinity, and negative infinity.
+Every selected probe produces exactly one result row, even when several probe
+IDs map to the same MCP tool. An unavailable MCP tool produces an explicit
+failure row, and an unmapped selected probe produces
+`PROBE_MAPPING_MISSING`/`REGRESSION`; neither is silently omitted. `probeId`
+remains the stable report identity. Reconnect and failover probes are real
+multi-step workflows: they reset the connection, connect, disconnect,
+reconnect, and perform a status or browse follow-up. DA write expectations
+select the returned item by `expected.itemId` before comparing its HRESULT, and
+a missing item is a regression.
 
 To add a product, clone the generic descriptor, replace the placeholder target and item arguments, remove unsupported capabilities, and point prerequisites at `${OPERATOR_ROOT}` plus a relative artifact path. Do not add credentials, absolute customer paths, setup commands, or product files.
 
@@ -32,16 +43,30 @@ To add a product, clone the generic descriptor, replace the placeholder target a
 - Descriptor identity, schema version, target kind, capability names, probe
   references, expected results, and prerequisite paths are validated
   fail-closed.
+- The Python loader enforces the checked-in JSON schema recursively, including
+  nested `required`, `additionalProperties`, type, range, pattern, and array
+  constraints. Duplicate properties and all non-finite numbers are rejected.
 - Artifact prerequisites use an allow-listed root token plus a relative path.
   Absolute paths, parent traversal, environment expansion inside paths, setup
-  commands, and executable arguments from descriptors are rejected.
-- JSON parsing rejects duplicate ambiguity and non-finite numbers (`NaN`,
-  positive infinity, negative infinity).
+  commands, and executable arguments from descriptors are rejected. The final
+  resolved artifact and fixture paths must remain beneath their verified roots,
+  including after symlink resolution.
 - Each selected probe runs independently. A missing external installation or
   root mapping is `BLOCKED`; it is not converted into a product regression.
-- Reports contain descriptor identity and normalized results, not credentials
-  or proprietary payloads. Review reports before sharing because item names,
-  hostnames, and server metadata can still be operationally sensitive.
+- Matrix reports persist only allow-listed comparison fields and descriptor
+  metadata by default. Raw arguments, OPC values, payload-derived fields, full
+  errors, local paths, and free-form aggregate regression details are omitted;
+  aggregate regression rows are recursively reduced to fixed identity,
+  normalized-code, outcome, and numeric count fields. Use
+  `run-cross-impl-matrix.ps1 -IncludeSensitiveResults` (or Python
+  `--include-sensitive-results`) only when the resulting artifacts will be
+  handled as sensitive data. Wire captures remain a separate explicit opt-in.
+
+For the `testserver` profile, `OPC_TESTSERVER_INSTALL_ROOT` can be supplied by
+the operator. When it is absent, the matrix accepts only a verified existing
+`LocalServer32` executable and derives the install root from its parent
+directory. The self-hosted workflow exports that verified root for subsequent
+matrix steps.
 
 ## Licensing boundary
 

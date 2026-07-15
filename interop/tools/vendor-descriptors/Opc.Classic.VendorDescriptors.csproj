@@ -5,6 +5,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <IsPackable>false</IsPackable>
     <Description>Strict loading and validation for external OPC Classic vendor probe catalogs.</Description>
   </PropertyGroup>
 

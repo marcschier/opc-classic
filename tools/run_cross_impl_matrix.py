@@ -43,6 +43,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import math
 import os
 import shutil
 import socket
@@ -231,6 +232,11 @@ def parse_args() -> argparse.Namespace:
         "--save-wire-payloads", default=None,
         help="Per-profile wire-capture directory. The driver creates a "
              "subdirectory per profile under it.")
+    parser.add_argument(
+        "--include-sensitive-results",
+        action="store_true",
+        help="Persist raw probe arguments, OPC values, payload-derived fields, "
+             "and full errors in matrix reports. Disabled by default.")
     parser.add_argument(
         "--request-timeout", type=float, default=60.0,
         help="Per-tool request timeout in seconds. Default: 60.")
@@ -546,7 +552,429 @@ def _resolve_server_path(raw: str | None) -> str | None:
     return text if space < 0 else text[:space]
 
 
-def _skipped_entry(profile: str, clsid: str, target: dict[str, object], kind: str, reason: str) -> dict[str, object]:
+def verified_local_server_path(clsid: str, progid: str | None = None) -> str | None:
+    """Return an existing LocalServer32 executable for a CLSID or ProgID."""
+    if winreg is None:
+        return None
+
+    clsids = [clsid]
+    if progid:
+        resolved = resolve_progid_to_clsid(progid)
+        if resolved and resolved.casefold() != clsid.casefold():
+            clsids.append(resolved)
+
+    hives = (
+        (winreg.HKEY_LOCAL_MACHINE, "SOFTWARE\\Classes\\CLSID"),
+        (winreg.HKEY_LOCAL_MACHINE, "SOFTWARE\\WOW6432Node\\Classes\\CLSID"),
+        (winreg.HKEY_CURRENT_USER, "Software\\Classes\\CLSID"),
+        (winreg.HKEY_CURRENT_USER, "Software\\Classes\\WOW6432Node\\CLSID"),
+    )
+    for candidate_clsid in clsids:
+        guid = candidate_clsid.strip()
+        if not guid.startswith("{"):
+            guid = "{" + guid + "}"
+        for root, prefix in hives:
+            try:
+                with winreg.OpenKey(
+                    root,
+                    f"{prefix}\\{guid}\\LocalServer32",
+                ) as key:
+                    value, _ = winreg.QueryValueEx(key, "")
+            except OSError:
+                continue
+            command = os.path.expandvars(str(value))
+            candidate = _resolve_server_path(command)
+            if candidate and os.path.isfile(candidate):
+                return os.path.abspath(candidate)
+    return None
+
+
+def descriptor_roots_for_profile(
+    profile: str,
+    target: dict[str, object],
+    environment: dict[str, str],
+    effective_clsid: str | None = None,
+) -> dict[str, str]:
+    """Add verified registration-derived roots without trusting stale entries."""
+    roots = dict(environment)
+    if profile != "testserver" or roots.get("OPC_TESTSERVER_INSTALL_ROOT"):
+        return roots
+    executable = verified_local_server_path(
+        effective_clsid or str(target["clsid"]),
+        str(target.get("progid") or ""),
+    )
+    if executable:
+        roots["OPC_TESTSERVER_INSTALL_ROOT"] = os.path.dirname(executable)
+    return roots
+
+
+def _probe_execution_tool(plan: dict[str, object]) -> str:
+    if isinstance(plan.get("tool"), str):
+        return str(plan["tool"])
+    if plan.get("execution") == "workflow":
+        return f"descriptor.workflow.{plan['type']}"
+    if plan.get("execution") == "fixture":
+        return "descriptor.fixture.decode"
+    return f"descriptor.unmapped.{plan['type']}"
+
+
+def _workflow_steps(row: dict[str, object]) -> list[dict[str, object]]:
+    value = row.get("result")
+    steps = value.get("steps") if isinstance(value, dict) else None
+    if not isinstance(steps, list):
+        steps = row.get("workflowSteps")
+    result: list[dict[str, object]] = []
+    if not isinstance(steps, list):
+        return result
+    for step in steps:
+        if not isinstance(step, dict):
+            continue
+        normalized: dict[str, object] = {
+            "name": step.get("name"),
+            "success": bool(step.get("success")),
+        }
+        if isinstance(step.get("tool"), str):
+            normalized["tool"] = step["tool"]
+        error_code = vendor_probe_catalog.normalize_error_code(step.get("error"))
+        if error_code:
+            normalized["errorCode"] = error_code
+        result.append(normalized)
+    return result
+
+
+def finalize_descriptor_results(
+    descriptor: dict[str, object],
+    raw_results: object,
+) -> list[dict[str, object]]:
+    """Produce exactly one classified row for every selected descriptor probe."""
+    source_rows = raw_results if isinstance(raw_results, list) else []
+    rows_by_probe: dict[str, list[dict[str, object]]] = {}
+    for row in source_rows:
+        if not isinstance(row, dict):
+            continue
+        probe_id = row.get("probeId")
+        if isinstance(probe_id, str):
+            rows_by_probe.setdefault(probe_id, []).append(row)
+
+    probes = {
+        probe["id"]: probe
+        for probe in vendor_probe_catalog.selected_catalog_probes(descriptor)
+    }
+    metadata = vendor_probe_catalog.report_metadata(descriptor)
+    finalized: list[dict[str, object]] = []
+    for plan in vendor_probe_catalog.descriptor_execution_plan(descriptor):
+        probe_id = str(plan["probeId"])
+        probe = probes[probe_id]
+        execution = plan["execution"]
+        if execution == "fixture":
+            row = vendor_probe_catalog.decode_fixture(
+                descriptor,
+                str(plan["fixtureId"]),
+            )
+            row["probeId"] = probe_id
+        elif execution == "missing":
+            row = {
+                "probeId": probe_id,
+                "tool": _probe_execution_tool(plan),
+                "success": False,
+                "error": (
+                    "PROBE_MAPPING_MISSING: selected descriptor probe has no "
+                    "tool, fixture, or supported workflow mapping."
+                ),
+            }
+        else:
+            matches = rows_by_probe.get(probe_id, [])
+            if len(matches) == 1:
+                row = dict(matches[0])
+            elif not matches:
+                row = {
+                    "probeId": probe_id,
+                    "tool": _probe_execution_tool(plan),
+                    "success": False,
+                    "error": (
+                        "PROBE_RESULT_MISSING: selected descriptor probe "
+                        "produced no result row."
+                    ),
+                }
+            else:
+                row = {
+                    "probeId": probe_id,
+                    "tool": _probe_execution_tool(plan),
+                    "success": False,
+                    "error": (
+                        "DUPLICATE_PROBE_RESULTS: selected descriptor probe "
+                        f"produced {len(matches)} rows."
+                    ),
+                }
+
+        if execution != "fixture":
+            verdict, actual = vendor_probe_catalog.evaluate_probe_result(probe, row)
+            if execution == "workflow":
+                steps = _workflow_steps(row)
+                if steps:
+                    actual["steps"] = steps
+            row["expected"] = probe["expected"]
+            row["actual"] = actual
+            row["verdict"] = verdict
+        row.update(metadata)
+        finalized.append(row)
+    return finalized
+
+
+def blocked_descriptor_results(
+    descriptor: dict[str, object],
+    code: str,
+    verdict: str = "BLOCKED",
+) -> list[dict[str, object]]:
+    probes = {
+        probe["id"]: probe
+        for probe in vendor_probe_catalog.selected_catalog_probes(descriptor)
+    }
+    metadata = vendor_probe_catalog.report_metadata(descriptor)
+    results: list[dict[str, object]] = []
+    for plan in vendor_probe_catalog.descriptor_execution_plan(descriptor):
+        if plan["execution"] == "fixture":
+            row = vendor_probe_catalog.decode_fixture(
+                descriptor,
+                str(plan["fixtureId"]),
+            )
+            row["probeId"] = plan["probeId"]
+            results.append(row)
+            continue
+        probe = probes[str(plan["probeId"])]
+        results.append({
+            "probeId": plan["probeId"],
+            "tool": _probe_execution_tool(plan),
+            "success": False,
+            "expected": probe["expected"],
+            "actual": {
+                "outcome": "blocked" if verdict == "BLOCKED" else "failure",
+                "code": code,
+            },
+            "verdict": verdict,
+            **metadata,
+        })
+    return results
+
+
+_REPORT_METADATA_KEYS = (
+    "descriptorVersion",
+    "descriptorId",
+    "probeCatalogVersion",
+    "vendor",
+    "product",
+    "targetKind",
+    "capabilityIds",
+    "authMode",
+    "runnerOperatingSystem",
+    "runnerBitness",
+)
+
+
+def _allowlisted_actual(value: object) -> dict[str, object] | None:
+    if not isinstance(value, dict):
+        return None
+    allowed_scalars = {
+        "outcome",
+        "code",
+        "errorCode",
+        "count",
+        "hResult",
+        "itemMatched",
+        "byteLength",
+        "decoder",
+    }
+    result = {
+        key: child
+        for key, child in value.items()
+        if key in allowed_scalars
+        and isinstance(child, (str, int, float, bool, type(None)))
+    }
+    failures = value.get("expectationFailures")
+    if isinstance(failures, list) and all(isinstance(item, str) for item in failures):
+        result["expectationFailures"] = list(failures)
+    decoded = value.get("decoded")
+    if isinstance(decoded, dict):
+        decoded_allowlist = {
+            "decoder",
+            "extensionTag",
+            "revision",
+            "state",
+            "quality",
+            "payloadLength",
+            "encodingMarker",
+            "direction",
+            "magnitude",
+            "unit",
+            "empty",
+        }
+        result["decoded"] = {
+            key: child
+            for key, child in decoded.items()
+            if key in decoded_allowlist
+            and isinstance(child, (str, int, float, bool, type(None)))
+        }
+    steps = value.get("steps")
+    if isinstance(steps, list):
+        result["steps"] = [
+            {
+                key: child
+                for key, child in step.items()
+                if key in {"name", "tool", "success", "errorCode"}
+                and isinstance(child, (str, bool, type(None)))
+            }
+            for step in steps
+            if isinstance(step, dict)
+        ]
+    return result
+
+
+def allowlisted_report_row(row: object) -> dict[str, object]:
+    if not isinstance(row, dict):
+        return {"verdict": "REGRESSION", "errorCode": "INVALID_RESULT_ROW"}
+    result: dict[str, object] = {}
+    for key in ("probeId", "tool", "success", "expectedOutcome", "verdict"):
+        value = row.get(key)
+        if isinstance(value, (str, bool)):
+            result[key] = value
+    error_code = vendor_probe_catalog.normalize_error_code(row.get("error"))
+    if error_code:
+        result["errorCode"] = error_code
+    expected = row.get("expected")
+    if isinstance(expected, dict):
+        result["expected"] = {
+            key: value
+            for key, value in expected.items()
+            if key in {
+                "outcome",
+                "minimumCount",
+                "itemId",
+                "hResult",
+                "specification",
+                "variant",
+                "redistributable",
+            }
+            and isinstance(value, (str, int, bool))
+        }
+    actual = _allowlisted_actual(row.get("actual"))
+    if actual is not None:
+        result["actual"] = actual
+    for key in _REPORT_METADATA_KEYS:
+        value = row.get(key)
+        if isinstance(value, (str, list)):
+            result[key] = value
+    return result
+
+
+def persisted_results(
+    results: object,
+    include_sensitive_results: bool,
+) -> list[object]:
+    if not isinstance(results, list):
+        return []
+    if include_sensitive_results:
+        return list(results)
+    return [allowlisted_report_row(row) for row in results]
+
+
+_AGGREGATE_REGRESSION_STRING_KEYS = {
+    "probeId",
+    "tool",
+    "errorCode",
+    "expectedOutcome",
+    "outcome",
+    "verdict",
+}
+_AGGREGATE_REGRESSION_BOOLEAN_KEYS = {
+    "success",
+    "itemMatched",
+}
+_AGGREGATE_REGRESSION_COUNT_KEYS = {
+    "count",
+    "actualCount",
+    "expectedCount",
+    "minimumCount",
+    "maximumCount",
+    "matchedCount",
+    "totalCount",
+}
+_AGGREGATE_REGRESSION_HRESULT_KEYS = {"hResult"}
+_AGGREGATE_REGRESSION_CONTAINER_KEYS = {
+    "actual",
+    "expected",
+    "counts",
+}
+
+
+def _allowlisted_aggregate_regression(value: object) -> dict[str, object]:
+    if not isinstance(value, dict):
+        return {}
+    result: dict[str, object] = {}
+    for key, child in value.items():
+        if key in _AGGREGATE_REGRESSION_STRING_KEYS and isinstance(child, str):
+            result[key] = child
+        elif key in _AGGREGATE_REGRESSION_BOOLEAN_KEYS and isinstance(child, bool):
+            result[key] = child
+        elif (
+            key in _AGGREGATE_REGRESSION_COUNT_KEYS
+            and isinstance(child, (int, float))
+            and not isinstance(child, bool)
+            and math.isfinite(child)
+        ):
+            result[key] = child
+        elif (
+            key in _AGGREGATE_REGRESSION_HRESULT_KEYS
+            and isinstance(child, (str, int))
+            and not isinstance(child, bool)
+        ):
+            result[key] = child
+        elif key in _AGGREGATE_REGRESSION_CONTAINER_KEYS:
+            nested = _allowlisted_aggregate_regression(child)
+            if nested:
+                result[key] = nested
+    return result
+
+
+def persisted_matrix_entry(
+    entry: dict[str, object],
+    include_sensitive_results: bool,
+) -> dict[str, object]:
+    if include_sensitive_results:
+        return dict(entry)
+    allowed = {
+        "profile",
+        "clsid",
+        "progid",
+        "kind",
+        "totals",
+        "probe_exit_code",
+        "report_path",
+        "skipped",
+        "skip_code",
+        "fatal_code",
+        "sensitiveResultsIncluded",
+        *_REPORT_METADATA_KEYS,
+    }
+    result = {key: value for key, value in entry.items() if key in allowed}
+    regressions = entry.get("regressions")
+    if isinstance(regressions, list):
+        result["regressions"] = [
+            sanitized
+            for row in regressions
+            if (sanitized := _allowlisted_aggregate_regression(row))
+        ]
+    return result
+
+
+def _skipped_entry(
+    profile: str,
+    clsid: str,
+    target: dict[str, object],
+    kind: str,
+    reason: str,
+    code: str,
+    verdict: str = "BLOCKED",
+) -> dict[str, object]:
     entry: dict[str, object] = {
         "profile": profile,
         "clsid": clsid,
@@ -556,12 +984,26 @@ def _skipped_entry(profile: str, clsid: str, target: dict[str, object], kind: st
         "regressions": [],
         "skipped": True,
         "skip_reason": reason,
+        "skip_code": code,
     }
     descriptor = target.get("descriptor")
     if isinstance(descriptor, dict):
         entry.update(vendor_probe_catalog.report_metadata(descriptor))
-        entry["raw_results"] = vendor_probe_catalog.external_prerequisite_results(
-            descriptor, dict(os.environ))
+        entry["raw_results"] = blocked_descriptor_results(
+            descriptor,
+            code,
+            verdict,
+        )
+        entry["totals"] = probe_matrix.summarize_verdicts(entry["raw_results"])
+        entry["regressions"] = [
+            {
+                "probeId": row.get("probeId"),
+                "tool": row.get("tool"),
+                "errorCode": code,
+            }
+            for row in entry["raw_results"]
+            if row.get("verdict") == "REGRESSION"
+        ]
     return entry
 
 
@@ -573,10 +1015,38 @@ def run_profile(args: argparse.Namespace, profile: str, overrides: dict[str, str
     descriptor = target.get("descriptor")
 
     if isinstance(descriptor, dict):
+        descriptor_roots = descriptor_roots_for_profile(
+            profile,
+            target,
+            dict(os.environ),
+            clsid,
+        )
         preflight = vendor_probe_catalog.external_prerequisite_results(
-            descriptor, dict(os.environ))
+            descriptor,
+            descriptor_roots,
+        )
+        if any(row["verdict"] == "REGRESSION" for row in preflight):
+            first_code = next(
+                str(row["actual"]["code"])
+                for row in preflight
+                if row["verdict"] == "REGRESSION"
+            )
+            return _skipped_entry(
+                profile,
+                clsid,
+                target,
+                kind,
+                f"Descriptor external artifact prerequisite failed: {first_code}.",
+                first_code,
+                "REGRESSION",
+            )
         if any(row["verdict"] == "BLOCKED" for row in preflight):
             codes = ", ".join(
+                str(row["actual"]["code"])
+                for row in preflight
+                if row["verdict"] == "BLOCKED"
+            )
+            first_code = next(
                 str(row["actual"]["code"])
                 for row in preflight
                 if row["verdict"] == "BLOCKED"
@@ -587,6 +1057,7 @@ def run_profile(args: argparse.Namespace, profile: str, overrides: dict[str, str
                 target,
                 kind,
                 f"Descriptor external artifact prerequisite is BLOCKED: {codes}.",
+                first_code,
             )
 
     # Pre-flight: profiles that activate via DCOM need their CLSID
@@ -621,7 +1092,14 @@ def run_profile(args: argparse.Namespace, profile: str, overrides: dict[str, str
                     f"==> skipping profile '{profile}' (server not registered)",
                     file=sys.stderr,
                 )
-            return _skipped_entry(profile, clsid, target, kind, reason)
+            return _skipped_entry(
+                profile,
+                clsid,
+                target,
+                kind,
+                reason,
+                "SERVER_NOT_REGISTERED",
+            )
 
     cmd = [
         sys.executable,
@@ -648,6 +1126,11 @@ def run_profile(args: argparse.Namespace, profile: str, overrides: dict[str, str
             cmd += [
                 "--probe-scenario",
                 f"{scenario['probeId']}={scenario['tool']}",
+            ]
+        for workflow in vendor_probe_catalog.selected_probe_workflows(descriptor):
+            cmd += [
+                "--probe-workflow",
+                f"{workflow['probeId']}={workflow['workflow']}",
             ]
         cmd += vendor_probe_catalog.final_probe_arguments(descriptor)
     if args.username:
@@ -690,44 +1173,56 @@ def run_profile(args: argparse.Namespace, profile: str, overrides: dict[str, str
             result.stdout,
             parse_constant=reject_non_finite_json_constant,
         )
+        if not isinstance(payload, list):
+            raise ValueError("probe output must be a JSON array")
     except (json.JSONDecodeError, ValueError) as ex:
         # stderr was streamed live; we don't have it to include in the
         # fatal record, but the operator saw it on their terminal.
-        return {
+        entry: dict[str, object] = {
             "profile": profile,
             "clsid": clsid,
+            "progid": target["progid"],
+            "kind": kind,
             "totals": {},
             "regressions": [],
             "fatal": f"non-JSON probe output: {ex}. See the live stderr above for details.",
+            "fatal_code": "PROBE_OUTPUT_INVALID",
         }
+        if isinstance(descriptor, dict):
+            payload = finalize_descriptor_results(descriptor, [])
+            entry["raw_results"] = payload
+            entry["totals"] = probe_matrix.summarize_verdicts(payload)
+            entry["regressions"] = [
+                {
+                    "probeId": row.get("probeId"),
+                    "tool": row.get("tool"),
+                    "errorCode": row.get("actual", {}).get("errorCode"),
+                }
+                for row in payload
+                if row.get("verdict") == "REGRESSION"
+            ]
+            entry.update(vendor_probe_catalog.report_metadata(descriptor))
+        return entry
 
     if isinstance(descriptor, dict):
-        metadata = vendor_probe_catalog.report_metadata(descriptor)
-        for row in payload:
-            if not isinstance(row, dict):
-                continue
-            row.update(metadata)
-            probe_id = row.get("probeId")
-            probe = next(
-                (
-                    value for value in descriptor["probes"]
-                    if value["id"] == probe_id
-                ),
-                None,
-            )
-            if probe is not None:
-                verdict, actual = vendor_probe_catalog.evaluate_probe_result(
-                    probe, row)
-                row["expected"] = probe["expected"]
-                row["actual"] = actual
-                row["verdict"] = verdict
+        payload = finalize_descriptor_results(descriptor, payload)
 
     totals = probe_matrix.summarize_verdicts(payload)
     regressions = [
         {
+            "probeId": row.get("probeId"),
             "tool": row.get("tool"),
-            "error": row.get("error"),
+            "errorCode": (
+                row.get("actual", {}).get("errorCode")
+                if isinstance(row.get("actual"), dict)
+                else vendor_probe_catalog.normalize_error_code(row.get("error"))
+            ),
             "expectedOutcome": row.get("expectedOutcome"),
+            "expectationFailures": (
+                row.get("actual", {}).get("expectationFailures")
+                if isinstance(row.get("actual"), dict)
+                else None
+            ),
         }
         for row in payload
         if isinstance(row, dict) and row.get("verdict") == "REGRESSION"
@@ -774,8 +1269,18 @@ def main() -> int:
             cleanup_leftover_processes(f"after {profile}")
         report_path = os.path.join(args.output_dir, f"{profile}.json")
         with open(report_path, "w", encoding="utf-8") as fh:
-            json.dump(entry.get("raw_results", []), fh, indent=2, default=str)
+            json.dump(
+                persisted_results(
+                    entry.get("raw_results", []),
+                    args.include_sensitive_results,
+                ),
+                fh,
+                indent=2,
+                default=str,
+                allow_nan=False,
+            )
         entry["report_path"] = os.path.relpath(report_path, _REPO)
+        entry["sensitiveResultsIncluded"] = args.include_sensitive_results
         # Drop raw_results from the aggregate -- keeps the top-level
         # matrix.json scannable.
         entry.pop("raw_results", None)
@@ -785,7 +1290,22 @@ def main() -> int:
 
     matrix_path = os.path.join(args.output_dir, "matrix.json")
     with open(matrix_path, "w", encoding="utf-8") as fh:
-        json.dump({"profiles": aggregate}, fh, indent=2, default=str)
+        json.dump(
+            {
+                "sensitiveResultsIncluded": args.include_sensitive_results,
+                "profiles": [
+                    persisted_matrix_entry(
+                        entry,
+                        args.include_sensitive_results,
+                    )
+                    for entry in aggregate
+                ],
+            },
+            fh,
+            indent=2,
+            default=str,
+            allow_nan=False,
+        )
 
     print_summary(aggregate)
     print(f"\nReports written under {args.output_dir}/", file=sys.stderr)

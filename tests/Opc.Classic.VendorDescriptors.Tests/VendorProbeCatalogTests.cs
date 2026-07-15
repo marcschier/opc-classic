@@ -130,6 +130,53 @@ public sealed class VendorProbeCatalogTests
             expected.GetProperty("properties").TryGetProperty("hResult", out _)).IsTrue();
     }
 
+    [Test]
+    public async Task Schema_DefinesStrictNestedArgumentsAndSafePaths()
+    {
+        using JsonDocument schema =
+            JsonDocument.Parse(File.ReadAllText(FixturePath("vendor-probe-catalog-v1.schema.json")));
+        JsonElement definitions = schema.RootElement.GetProperty("$defs");
+        JsonElement daArguments = definitions.GetProperty("daArguments");
+        JsonElement fixture = definitions.GetProperty("fixture");
+        JsonElement prerequisite = schema.RootElement
+            .GetProperty("properties")
+            .GetProperty("prerequisites")
+            .GetProperty("items");
+
+        await Assert.That(daArguments.GetProperty("additionalProperties").GetBoolean())
+            .IsFalse();
+        await Assert.That(daArguments.GetProperty("required")
+            .EnumerateArray()
+            .Any(value => value.GetString() == "groupName")).IsTrue();
+        await Assert.That(fixture.GetProperty("properties")
+            .GetProperty("path")
+            .GetProperty("pattern")
+            .GetString()).IsEqualTo("^fixtures/[A-Za-z0-9_.-]+$");
+        await Assert.That(prerequisite.GetProperty("properties")
+            .GetProperty("artifact")
+            .GetProperty("properties")
+            .GetProperty("rootToken")
+            .GetProperty("pattern")
+            .GetString()).IsEqualTo("^[A-Z][A-Z0-9_]*$");
+    }
+
+    [Test]
+    public async Task Loader_RejectsUnsafeArtifactTokensAndTraversal()
+    {
+        JsonObject unsafeToken = ReadFixtureObject("opc-foundation-testserver.json");
+        unsafeToken["prerequisites"]![0]!["artifact"]!["rootToken"] = "bad-token";
+        VendorProbeValidationException tokenException = CaptureInvalid(unsafeToken);
+
+        JsonObject traversal = ReadFixtureObject("opc-foundation-testserver.json");
+        traversal["prerequisites"]![0]!["artifact"]!["relativePath"] = "../server.exe";
+        VendorProbeValidationException traversalException = CaptureInvalid(traversal);
+
+        await Assert.That(tokenException.Errors.Any(
+            error => error.Path.EndsWith(".rootToken", StringComparison.Ordinal))).IsTrue();
+        await Assert.That(traversalException.Errors.Any(
+            error => error.Path.EndsWith(".relativePath", StringComparison.Ordinal))).IsTrue();
+    }
+
     private static VendorProbeValidationException CaptureInvalid(JsonObject descriptor)
     {
         try

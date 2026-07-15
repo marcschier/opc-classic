@@ -36,6 +36,10 @@
     Enable network wire capture per profile. Artifacts land under
     matrix-out/wire-captures/<profile>/.
 
+.PARAMETER IncludeSensitiveResults
+    Persist raw probe arguments, OPC values, payload-derived fields, and full
+    errors in JSON reports. Reports are allowlisted and non-sensitive by default.
+
 .PARAMETER HklmRegister
     Register sample servers in HKLM (system-wide) instead of HKCU
     (per-user, default). HKLM registration is required for OPCEnum
@@ -77,6 +81,7 @@ param(
     [switch]$SkipRegistration,
     [switch]$UseClsid,
     [switch]$WireCapture,
+    [switch]$IncludeSensitiveResults,
     [switch]$HklmRegister,
     [switch]$TraceActivation,
     [int]$RequestTimeoutSeconds = 60
@@ -197,6 +202,7 @@ try {
         foreach ($p in $Profile) { $args += @("--profile", $p) }
     }
     if ($UseClsid) { $args += "--use-clsid" }
+    if ($IncludeSensitiveResults) { $args += "--include-sensitive-results" }
     if ($WireCapture) {
         $captureRoot = Join-Path $OutputDir "wire-captures"
         New-Item -ItemType Directory -Force -Path $captureRoot | Out-Null
