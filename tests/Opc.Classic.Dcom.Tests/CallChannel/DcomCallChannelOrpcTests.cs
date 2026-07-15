@@ -191,10 +191,16 @@ public sealed class DcomCallChannelOrpcTests
 
     private static byte[] CreateResponseStub(byte[] responsePayload)
     {
-        byte[] stub = new byte[OrpcThat.NullExtensionsWireSize + responsePayload.Length];
+        byte[] stub = new byte[
+            OrpcThat.NullExtensionsWireSize
+            + responsePayload.Length
+            + sizeof(int)];
         var writer = new NdrWriter(stub);
         new OrpcThat().Write(ref writer);
         responsePayload.CopyTo(stub.AsSpan(writer.Position));
+        BinaryPrimitives.WriteInt32LittleEndian(
+            stub.AsSpan(writer.Position + responsePayload.Length),
+            0);
         return stub;
     }
 

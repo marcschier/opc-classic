@@ -1,9 +1,13 @@
 ﻿// Copyright (c) 2026 Opc.Classic Contributors. Licensed under the MIT License.
 
+using System.Buffers.Binary;
 using System.IO.Pipelines;
 using System.Net;
 using System.Net.Sockets;
+using System.Security.Cryptography;
+using System.Security.Principal;
 using Opc.Classic.Dcom.Rpc;
+using Opc.Classic.Dcom.Rpc.Auth;
 using Opc.Classic.Dcom.Rpc.Core;
 using Opc.Classic.Dcom.Rpc.pdu;
 using Opc.Classic.Dcom.Transport;
@@ -65,8 +69,128 @@ public sealed class OpcServerListenerTests
         var response = (ResponseCoPdu)PduCodec.DecodePdu(responseFrame);
         await Assert.That(response.CallId).IsEqualTo(2);
         ReadOnlyMemory<byte> body = OrpcEnvelope.ExtractResponseBody(response.Stub);
-        await Assert.That(body.ToArray()).IsEquivalentTo(new byte[] { 0x10, 0x20, 0x30 });
+        await Assert.That(body[..^sizeof(int)].ToArray())
+            .IsEquivalentTo(new byte[] { 0x10, 0x20, 0x30 });
+        await Assert.That(
+            BinaryPrimitives.ReadInt32LittleEndian(body.Span[^sizeof(int)..]))
+            .IsEqualTo(0);
         await Assert.That(dispatcher.LastOpnum).IsEqualTo(7);
+    }
+
+    [Test]
+    public async Task Enumerator_end_of_sequence_preserves_S_FALSE_over_real_TCP()
+    {
+        byte[] enumeratedValue = [0xA1, 0xA2];
+        var dispatcher = new RecordingDispatcher(
+            enumeratedValue,
+            OpcResultId.False.Code);
+        var endpoint = new TcpServerEndpoint(
+            new IPEndPoint(IPAddress.Loopback, 0));
+        var processor = new RpcServerConnectionProcessor(
+            new Dictionary<Guid, IOpcServerDispatcher>
+            {
+                [InterfaceId] = dispatcher,
+            });
+        await using var listener = new OpcServerListener(endpoint, processor);
+        await listener.StartAsync(TestContext.Current!.CancellationToken);
+
+        var client = new TcpClient();
+        IPEndPoint bound = (IPEndPoint)listener.LocalEndpoint;
+        await client.ConnectAsync(
+            bound.Address,
+            bound.Port,
+            TestContext.Current!.CancellationToken);
+        await using var channel = new DcomCallChannel(
+            new TcpClientTransport(client),
+            NoOpAuthContext.Instance);
+
+        NdrCallResult result = await channel.InvokeAsync(
+            InterfaceId,
+            opnum: 3,
+            ReadOnlyMemory<byte>.Empty,
+            TestContext.Current!.CancellationToken);
+
+        await Assert.That(result.Hresult).IsEqualTo(OpcResultId.False.Code);
+        await Assert.That(result.IsSuccess).IsTrue();
+        await Assert.That(result.ResponsePayload.ToArray())
+            .IsEquivalentTo(enumeratedValue);
+    }
+
+    [Test]
+    public async Task Integrity_round_trip_uses_body_relative_16_byte_sec_trailer_alignment()
+    {
+        const byte authenticationService = 42;
+        byte[] key = Convert.FromHexString(
+            "00112233445566778899AABBCCDDEEFF");
+        var serverProtection = new HmacServerProtectionContext(
+            authenticationService,
+            key);
+        var provider = new SingleStepAuthenticationProvider(
+            authenticationService,
+            serverProtection);
+        var options = new RpcServerAuthenticationOptions(
+            new RpcServerAuthenticationProviderRegistry([provider]));
+        var dispatcher = new RecordingDispatcher(
+            [0x61, 0x62, 0x63, 0x64, 0x65]);
+        Guid secondInterfaceId = Guid.NewGuid();
+        var endpoint = new TcpServerEndpoint(
+            new IPEndPoint(IPAddress.Loopback, 0));
+        var processor = new RpcServerConnectionProcessor(
+            options,
+            new Dictionary<Guid, IOpcServerDispatcher>
+            {
+                [InterfaceId] = dispatcher,
+                [secondInterfaceId] = dispatcher,
+            });
+        await using var listener = new OpcServerListener(endpoint, processor);
+        await listener.StartAsync(TestContext.Current!.CancellationToken);
+
+        var client = new TcpClient();
+        IPEndPoint bound = (IPEndPoint)listener.LocalEndpoint;
+        await client.ConnectAsync(
+            bound.Address,
+            bound.Port,
+            TestContext.Current!.CancellationToken);
+        var clientAuth = new HmacClientAuthContext(
+            authenticationService,
+            key);
+        await using var channel = new DcomCallChannel(
+            new TcpClientTransport(client),
+            clientAuth);
+
+        NdrCallResult result = await channel.InvokeAsync(
+            InterfaceId,
+            7,
+            new byte[] { 0x10, 0x20, 0x30 },
+            TestContext.Current!.CancellationToken);
+        NdrCallResult alteredResult = await channel.InvokeAsync(
+            secondInterfaceId,
+            8,
+            new byte[] { 0x40, 0x50 },
+            TestContext.Current!.CancellationToken);
+
+        await Assert.That(result.Hresult).IsEqualTo(0);
+        await Assert.That(alteredResult.Hresult).IsEqualTo(0);
+        await Assert.That(result.ResponsePayload.ToArray())
+            .IsEquivalentTo(new byte[] { 0x61, 0x62, 0x63, 0x64, 0x65 });
+        await Assert.That(clientAuth.Outbound.Count).IsEqualTo(2);
+        await Assert.That(clientAuth.Inbound.Count).IsEqualTo(2);
+        await Assert.That(serverProtection.Inbound.Count).IsEqualTo(2);
+        await Assert.That(serverProtection.Outbound.Count).IsEqualTo(3);
+
+        foreach (AlignmentRecord record in clientAuth.Outbound
+            .Concat(clientAuth.Inbound)
+            .Concat(serverProtection.Inbound)
+            .Concat(serverProtection.Outbound))
+        {
+            await Assert.That(
+                (record.VerifierStart - ConnectionOrientedPdu.HEADER_LENGTH)
+                    % 16)
+                .IsEqualTo(0);
+            await Assert.That(record.Padding)
+                .IsEqualTo(record.ExpectedPadding);
+            await Assert.That(record.Padding).IsGreaterThan(0);
+        }
     }
 
     [Test]
@@ -222,15 +346,208 @@ public sealed class OpcServerListenerTests
     private sealed class RecordingDispatcher : IOpcServerDispatcher
     {
         private readonly byte[] _payload;
+        private readonly int _hresult;
 
-        public RecordingDispatcher(byte[] payload) { _payload = payload; }
+        public RecordingDispatcher(byte[] payload, int hresult = 0)
+        {
+            _payload = payload;
+            _hresult = hresult;
+        }
 
         public int LastOpnum { get; private set; } = -1;
 
         public ValueTask<DispatchResult> DispatchAsync(int opnum, ReadOnlyMemory<byte> requestPayload, CancellationToken cancellationToken)
         {
             LastOpnum = opnum;
-            return ValueTask.FromResult(DispatchResult.Success(_payload));
+            return ValueTask.FromResult(
+                DispatchResult.Success(_payload, _hresult));
         }
     }
+
+    private sealed class SingleStepAuthenticationProvider :
+        IRpcServerAuthenticationProvider
+    {
+        private readonly IRpcServerProtectionContext _protectionContext;
+
+        public SingleStepAuthenticationProvider(
+            int authenticationService,
+            IRpcServerProtectionContext protectionContext)
+        {
+            AuthenticationService = authenticationService;
+            _protectionContext = protectionContext;
+        }
+
+        public int AuthenticationService { get; }
+
+        public IRpcServerAuthenticationAcceptor CreateAcceptor() =>
+            new Acceptor(AuthenticationService, _protectionContext);
+
+        private sealed class Acceptor : IRpcServerAuthenticationAcceptor
+        {
+            private readonly int _authenticationService;
+            private readonly IRpcServerProtectionContext _protectionContext;
+
+            public Acceptor(
+                int authenticationService,
+                IRpcServerProtectionContext protectionContext)
+            {
+                _authenticationService = authenticationService;
+                _protectionContext = protectionContext;
+            }
+
+            public RpcServerAuthenticationTokenResult AcceptToken(
+                ReadOnlyMemory<byte> token,
+                OpcProtectionLevel protectionLevel)
+            {
+                if (!token.Span.SequenceEqual(new byte[] { 0x01 }))
+                {
+                    throw new InvalidOperationException(
+                        "Unexpected authentication token.");
+                }
+
+                var principal = new GenericPrincipal(
+                    new GenericIdentity("alignment-user", "TEST"),
+                    []);
+                return RpcServerAuthenticationTokenResult.Complete(
+                    new RpcServerAuthenticationSession(
+                        _authenticationService,
+                        principal,
+                        protectionLevel,
+                        _protectionContext));
+            }
+        }
+    }
+
+    private sealed class HmacClientAuthContext : IAuthContext
+    {
+        private readonly byte[] _key;
+
+        public HmacClientAuthContext(
+            byte authenticationService,
+            byte[] key)
+        {
+            AuthenticationServiceCode = authenticationService;
+            _key = key;
+        }
+
+        public List<AlignmentRecord> Outbound { get; } = [];
+
+        public List<AlignmentRecord> Inbound { get; } = [];
+
+        public OpcProtectionLevel ProtectionLevel =>
+            OpcProtectionLevel.Integrity;
+
+        public byte AuthenticationServiceCode { get; }
+
+        public byte[] BuildInitialToken() => [0x01];
+
+        public byte[] ProcessChallengeToken(
+            ReadOnlyMemory<byte> serverToken) => [];
+
+        public int GetVerifierLength(
+            int signedRegionLength,
+            int confidentialLength) => 16;
+
+        public void SignAndSeal(
+            Span<byte> signedRegion,
+            int confidentialOffset,
+            int confidentialLength,
+            out byte[] signature)
+        {
+            _ = confidentialOffset;
+            _ = confidentialLength;
+            Outbound.Add(ReadAlignment(signedRegion));
+            signature = ComputeVerifier(_key, signedRegion);
+        }
+
+        public bool VerifyAndUnseal(
+            Span<byte> signedRegion,
+            int confidentialOffset,
+            int confidentialLength,
+            ReadOnlyMemory<byte> signature)
+        {
+            _ = confidentialOffset;
+            _ = confidentialLength;
+            Inbound.Add(ReadAlignment(signedRegion));
+            return CryptographicOperations.FixedTimeEquals(
+                signature.Span,
+                ComputeVerifier(_key, signedRegion));
+        }
+    }
+
+    private sealed class HmacServerProtectionContext :
+        IRpcServerProtectionContext
+    {
+        private readonly byte[] _key;
+
+        public HmacServerProtectionContext(
+            int authenticationService,
+            byte[] key)
+        {
+            AuthenticationService = authenticationService;
+            _key = key;
+        }
+
+        public List<AlignmentRecord> Outbound { get; } = [];
+
+        public List<AlignmentRecord> Inbound { get; } = [];
+
+        public int AuthenticationService { get; }
+
+        public OpcProtectionLevel ProtectionLevel =>
+            OpcProtectionLevel.Integrity;
+
+        public int VerifierLength => 16;
+
+        public void Protect(
+            Span<byte> signedRegion,
+            int confidentialOffset,
+            int confidentialLength,
+            out byte[] verifier)
+        {
+            _ = confidentialOffset;
+            _ = confidentialLength;
+            Outbound.Add(ReadAlignment(signedRegion));
+            verifier = ComputeVerifier(_key, signedRegion);
+        }
+
+        public bool Unprotect(
+            Span<byte> signedRegion,
+            int confidentialOffset,
+            int confidentialLength,
+            ReadOnlyMemory<byte> verifier)
+        {
+            _ = confidentialOffset;
+            _ = confidentialLength;
+            Inbound.Add(ReadAlignment(signedRegion));
+            return CryptographicOperations.FixedTimeEquals(
+                verifier.Span,
+                ComputeVerifier(_key, signedRegion));
+        }
+    }
+
+    private static AlignmentRecord ReadAlignment(
+        ReadOnlySpan<byte> signedRegion)
+    {
+        int verifierStart = signedRegion.Length - 8;
+        int padding = signedRegion[verifierStart + 2];
+        int unpaddedPduLength = verifierStart - padding;
+        int bodyLength =
+            unpaddedPduLength - ConnectionOrientedPdu.HEADER_LENGTH;
+        int expectedPadding = (16 - (bodyLength % 16)) % 16;
+        return new AlignmentRecord(
+            verifierStart,
+            padding,
+            expectedPadding);
+    }
+
+    private static byte[] ComputeVerifier(
+        ReadOnlySpan<byte> key,
+        ReadOnlySpan<byte> signedRegion) =>
+        HMACSHA256.HashData(key, signedRegion)[..16];
+
+    private readonly record struct AlignmentRecord(
+        int VerifierStart,
+        int Padding,
+        int ExpectedPadding);
 }

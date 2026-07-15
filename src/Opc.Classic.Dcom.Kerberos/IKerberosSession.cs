@@ -8,6 +8,36 @@ namespace Opc.Classic.Dcom.Kerberos;
 public interface IKerberosSession
 {
     /// <summary>
+    /// Gets the MS-RPCE GSS_GetMICEx or GSS_WrapEx authentication verifier length.
+    /// </summary>
+    int GetRpcVerifierLength(bool confidential) =>
+        throw new NotSupportedException(
+            "This Kerberos session does not implement MS-RPCE packet protection.");
+
+    /// <summary>
+    /// Protects the ordered RPC header, body, and security-trailer segments.
+    /// </summary>
+    byte[] ProtectRpcMessage(
+        Span<byte> signedRegion,
+        int confidentialOffset,
+        int confidentialLength,
+        bool confidential) =>
+        throw new NotSupportedException(
+            "This Kerberos session does not implement MS-RPCE packet protection.");
+
+    /// <summary>
+    /// Verifies and optionally decrypts the ordered RPC header, body, and security-trailer segments.
+    /// </summary>
+    void UnprotectRpcMessage(
+        Span<byte> signedRegion,
+        int confidentialOffset,
+        int confidentialLength,
+        ReadOnlySpan<byte> verifier,
+        bool confidential) =>
+        throw new NotSupportedException(
+            "This Kerberos session does not implement MS-RPCE packet protection.");
+
+    /// <summary>
     /// Protects a plaintext message as an RFC 4121 Wrap token.
     /// </summary>
     /// <param name="plaintext">The application bytes to protect.</param>

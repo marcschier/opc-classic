@@ -21,6 +21,14 @@ public interface IAuthContext
     byte[] ProcessChallengeToken(ReadOnlyMemory<byte> serverToken);
 
     /// <summary>
+    /// Gets the authentication verifier length for a protected DCE/RPC PDU.
+    /// </summary>
+    /// <param name="signedRegionLength">Length of the PDU region covered by integrity protection.</param>
+    /// <param name="confidentialLength">Length of the PDU body encrypted at packet privacy.</param>
+    /// <returns>The authentication verifier length.</returns>
+    int GetVerifierLength(int signedRegionLength, int confidentialLength) => 16;
+
+    /// <summary>
     /// Signs and optionally seals a DCE/RPC PDU according to the negotiated protection level.
     /// </summary>
     /// <param name="signedRegion">

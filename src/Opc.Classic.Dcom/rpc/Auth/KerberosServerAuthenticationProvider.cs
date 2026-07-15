@@ -70,9 +70,6 @@ public sealed class KerberosServerAuthenticationProvider : IRpcServerAuthenticat
         private const byte KerberosApRequestApplicationTag = 0x6e;
         private const byte GssApRequestTokenId0 = 0x01;
         private const byte GssApRequestTokenId1 = 0x00;
-        private const byte SentByAcceptorFlag = 0x01;
-        private const byte AcceptorSubkeyFlag = 0x04;
-        private const int Rfc4121HeaderLength = 16;
 
         private readonly KerberosServerOptions _options;
         private readonly ConcurrentDictionary<string, DateTimeOffset> _replayCache;
@@ -190,20 +187,17 @@ public sealed class KerberosServerAuthenticationProvider : IRpcServerAuthenticat
             bool mutualAuthentication =
                 (decrypted.Options & ApOptions.MutualRequired)
                 == ApOptions.MutualRequired;
+            long receiveSequenceNumber = ToSequenceNumber(
+                decrypted.Authenticator.SequenceNumber,
+                "the AP-REQ authenticator is missing its required sequence number");
+            long sendSequenceNumber = receiveSequenceNumber;
             KerberosKey contextKey = decrypted.SessionKey;
             bool usesAcceptorSubkey = false;
             byte[] responseToken = [];
             if (mutualAuthentication)
             {
-                KrbApRep apReply = decrypted.CreateResponseMessage();
-                responseToken = apReply.EncodeApplication().ToArray();
-                var decryptedReply = new DecryptedKrbApRep(apReply);
-                decryptedReply.Decrypt(decrypted.SessionKey);
-                if (decryptedReply.Response.SubSessionKey is not null)
-                {
-                    contextKey = decryptedReply.Response.SubSessionKey.AsKey();
-                    usesAcceptorSubkey = true;
-                }
+                (contextKey, responseToken, usesAcceptorSubkey, sendSequenceNumber) =
+                    CreateMutualResponse(decrypted);
             }
             if (!_options.AllowedEncryptionTypes.Contains(
                     contextKey.EncryptionType))
@@ -217,6 +211,8 @@ public sealed class KerberosServerAuthenticationProvider : IRpcServerAuthenticat
                 contextKey,
                 mappedPrincipal,
                 protectionLevel,
+                sendSequenceNumber,
+                receiveSequenceNumber,
                 usesAcceptorSubkey);
             _established = true;
             AuthenticationAccepted(
@@ -232,21 +228,49 @@ public sealed class KerberosServerAuthenticationProvider : IRpcServerAuthenticat
                 responseToken);
         }
 
+        private static (
+            KerberosKey ContextKey,
+            byte[] ResponseToken,
+            bool UsesAcceptorSubkey,
+            long SendSequenceNumber) CreateMutualResponse(
+                DecryptedKrbApReq decrypted)
+        {
+            KrbApRep apReply = decrypted.CreateResponseMessage();
+            var decryptedReply = new DecryptedKrbApRep(apReply);
+            decryptedReply.Decrypt(decrypted.SessionKey);
+            bool usesAcceptorSubkey =
+                decryptedReply.Response.SubSessionKey is not null;
+            KerberosKey contextKey = usesAcceptorSubkey
+                ? decryptedReply.Response.SubSessionKey!.AsKey()
+                : decrypted.SessionKey;
+            long sendSequenceNumber = ToSequenceNumber(
+                decryptedReply.Response.SequenceNumber,
+                "the AP-REP is missing its required sequence number");
+            return (
+                contextKey,
+                apReply.EncodeApplication().ToArray(),
+                usesAcceptorSubkey,
+                sendSequenceNumber);
+        }
+
         private static RpcServerAuthenticationSession CreateRpcSession(
             KerberosKey contextKey,
             IPrincipal mappedPrincipal,
             OpcProtectionLevel protectionLevel,
+            long sendSequenceNumber,
+            long receiveSequenceNumber,
             bool usesAcceptorSubkey)
         {
             var session = new KerberosSession(
                 contextKey,
                 contextKey.EncryptionType,
+                sendSequenceNumber,
+                receiveSequenceNumber,
                 isAcceptor: true,
                 usesAcceptorSubkey: usesAcceptorSubkey);
             var protectionContext = new KerberosServerProtectionContext(
                 session,
-                protectionLevel,
-                usesAcceptorSubkey);
+                protectionLevel);
             return new RpcServerAuthenticationSession(
                 KerberosAuthenticationService,
                 mappedPrincipal,
@@ -353,6 +377,11 @@ public sealed class KerberosServerAuthenticationProvider : IRpcServerAuthenticat
 
         private void ValidateChannelBinding(DelegationInfo checksum)
         {
+            if (_options.ChannelBindingPolicy == KerberosChannelBindingPolicy.Disabled)
+            {
+                return;
+            }
+
             ReadOnlySpan<byte> supplied = checksum.ChannelBinding.Span;
             bool suppliedBinding = supplied.Length != 0 && !IsAllZero(supplied);
             if (supplied.Length != 0 && supplied.Length != 16)
@@ -464,6 +493,17 @@ public sealed class KerberosServerAuthenticationProvider : IRpcServerAuthenticat
             return combined == 0;
         }
 
+        private static long ToSequenceNumber(int? sequenceNumber, string reason)
+        {
+            if (!sequenceNumber.HasValue)
+            {
+                throw new SecurityException(
+                    $"Kerberos authentication rejected: {reason}.");
+            }
+
+            return unchecked((uint)sequenceNumber.Value);
+        }
+
         private SecurityException Reject(string reason, Exception? innerException = null)
         {
             AuthenticationRejected(_logger, reason, null);
@@ -477,16 +517,13 @@ public sealed class KerberosServerAuthenticationProvider : IRpcServerAuthenticat
             IGssMicProvider
         {
             private readonly KerberosSession _session;
-            private readonly bool _usesAcceptorSubkey;
 
             public KerberosServerProtectionContext(
                 KerberosSession session,
-                OpcProtectionLevel protectionLevel,
-                bool usesAcceptorSubkey)
+                OpcProtectionLevel protectionLevel)
             {
                 _session = session;
                 ProtectionLevel = protectionLevel;
-                _usesAcceptorSubkey = usesAcceptorSubkey;
             }
 
             public int AuthenticationService => KerberosAuthenticationService;
@@ -494,14 +531,17 @@ public sealed class KerberosServerAuthenticationProvider : IRpcServerAuthenticat
             public OpcProtectionLevel ProtectionLevel { get; }
 
             public int VerifierLength =>
-                _session.GetWrapTokenLength(0, ProtectionLevel >= OpcProtectionLevel.Privacy);
-
-            public int GetVerifierLength(int signedRegionLength, int confidentialLength) =>
-                _session.GetWrapTokenLength(
-                    ProtectionLevel >= OpcProtectionLevel.Privacy
-                        ? confidentialLength
-                        : signedRegionLength,
+                _session.GetRpcVerifierLength(
                     ProtectionLevel >= OpcProtectionLevel.Privacy);
+
+            public int GetVerifierLength(
+                int signedRegionLength,
+                int confidentialLength)
+            {
+                _ = signedRegionLength;
+                _ = confidentialLength;
+                return VerifierLength;
+            }
 
             public void Protect(
                 Span<byte> signedRegion,
@@ -509,18 +549,11 @@ public sealed class KerberosServerAuthenticationProvider : IRpcServerAuthenticat
                 int confidentialLength,
                 out byte[] verifier)
             {
-                if (ProtectionLevel >= OpcProtectionLevel.Privacy)
-                {
-                    Span<byte> confidential = signedRegion.Slice(
-                        confidentialOffset,
-                        confidentialLength);
-                    verifier = _session.WrapMessage(confidential, confidential: true);
-                    verifier.AsSpan(Rfc4121HeaderLength, confidential.Length)
-                        .CopyTo(confidential);
-                    return;
-                }
-
-                verifier = _session.WrapMessage(signedRegion, confidential: false);
+                verifier = _session.ProtectRpcMessage(
+                    signedRegion,
+                    confidentialOffset,
+                    confidentialLength,
+                    ProtectionLevel >= OpcProtectionLevel.Privacy);
             }
 
             public bool Unprotect(
@@ -529,30 +562,14 @@ public sealed class KerberosServerAuthenticationProvider : IRpcServerAuthenticat
                 int confidentialLength,
                 ReadOnlyMemory<byte> verifier)
             {
-                bool privacy = ProtectionLevel >= OpcProtectionLevel.Privacy;
-                if (!HasExpectedPeerFlags(verifier.Span, privacy))
-                {
-                    return false;
-                }
-
-                Span<byte> target = privacy
-                    ? signedRegion.Slice(confidentialOffset, confidentialLength)
-                    : signedRegion;
                 try
                 {
-                    byte[] plaintext = _session.UnwrapMessage(
+                    _session.UnprotectRpcMessage(
+                        signedRegion,
+                        confidentialOffset,
+                        confidentialLength,
                         verifier.Span,
-                        out bool wasConfidential);
-                    if (wasConfidential != privacy || plaintext.Length != target.Length)
-                    {
-                        return false;
-                    }
-                    if (!wasConfidential && !plaintext.AsSpan().SequenceEqual(target))
-                    {
-                        return false;
-                    }
-
-                    plaintext.CopyTo(target);
+                        ProtectionLevel >= OpcProtectionLevel.Privacy);
                     return true;
                 }
                 catch (Exception exception) when (
@@ -570,24 +587,6 @@ public sealed class KerberosServerAuthenticationProvider : IRpcServerAuthenticat
 
             public bool VerifyMic(ReadOnlySpan<byte> data, ReadOnlySpan<byte> mic) =>
                 _session.VerifyMic(data, mic);
-
-            private bool HasExpectedPeerFlags(
-                ReadOnlySpan<byte> verifier,
-                bool privacy)
-            {
-                if (verifier.Length < Rfc4121HeaderLength)
-                {
-                    return false;
-                }
-
-                byte flags = verifier[2];
-                bool sentByAcceptor = (flags & SentByAcceptorFlag) != 0;
-                bool acceptorSubkey = (flags & AcceptorSubkeyFlag) != 0;
-                bool sealedToken = (flags & 0x02) != 0;
-                return !sentByAcceptor
-                    && acceptorSubkey == _usesAcceptorSubkey
-                    && sealedToken == privacy;
-            }
         }
     }
 }

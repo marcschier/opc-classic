@@ -14,11 +14,15 @@ public sealed class Rfc4121MicTokenTests
     [Test]
     public async Task GetMic_and_VerifyMic_round_trip()
     {
-        var session = new KerberosSession(Aes256Key, EncryptionType.AES256_CTS_HMAC_SHA1_96);
+        var sender = new KerberosSession(Aes256Key, EncryptionType.AES256_CTS_HMAC_SHA1_96);
+        var receiver = new KerberosSession(
+            Aes256Key,
+            EncryptionType.AES256_CTS_HMAC_SHA1_96,
+            isAcceptor: true);
         byte[] data = [0xDE, 0xAD, 0xBE, 0xEF];
 
-        byte[] mic = session.GetMic(data);
-        bool verified = session.VerifyMic(data, mic);
+        byte[] mic = sender.GetMic(data);
+        bool verified = receiver.VerifyMic(data, mic);
 
         await Assert.That(verified).IsTrue();
     }

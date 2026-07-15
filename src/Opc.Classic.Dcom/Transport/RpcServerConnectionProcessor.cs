@@ -333,12 +333,22 @@ public sealed class RpcServerConnectionProcessor
         {
             throw new InvalidOperationException("DCE/RPC authentication verifier is malformed.");
         }
+        if ((verifierStart - ConnectionOrientedPdu.HEADER_LENGTH) % 16 != 0)
+        {
+            throw new InvalidOperationException(
+                "DCE/RPC authentication verifier is not 16-byte aligned relative to the PDU body.");
+        }
 
         int padding = frame[verifierStart + 2];
         int strippedLength = verifierStart - padding;
         if (strippedLength < ConnectionOrientedPdu.HEADER_LENGTH || strippedLength > frame.Length)
         {
             throw new InvalidOperationException("DCE/RPC authentication verifier padding is malformed.");
+        }
+        if (padding != GetAuthenticationPadding(strippedLength))
+        {
+            throw new InvalidOperationException(
+                "DCE/RPC authentication verifier padding does not match the PDU body alignment.");
         }
 
         int contextId = BinaryPrimitives.ReadInt32LittleEndian(frame.AsSpan(verifierStart + 4));
@@ -452,6 +462,7 @@ public sealed class RpcServerConnectionProcessor
                 transport,
                 authentication,
                 authState,
+                isFinalLeg: false,
                 cancellationToken,
                 out RpcServerAuthenticationTokenResult result);
             if (acceptance == AuthenticationTokenAcceptance.ProviderNotFound
@@ -514,6 +525,7 @@ public sealed class RpcServerConnectionProcessor
                 transport,
                 authentication,
                 authState,
+                isFinalLeg: false,
                 cancellationToken,
                 out RpcServerAuthenticationTokenResult result);
             if (acceptance != AuthenticationTokenAcceptance.Accepted)
@@ -552,6 +564,7 @@ public sealed class RpcServerConnectionProcessor
         IAsyncTransport transport,
         RpcPduAuthentication authentication,
         RpcServerAuthenticationState authState,
+        bool isFinalLeg,
         CancellationToken cancellationToken,
         out RpcServerAuthenticationTokenResult result)
     {
@@ -564,7 +577,11 @@ public sealed class RpcServerConnectionProcessor
 
         try
         {
-            if (!authState.TryAcceptToken(authentication, cancellationToken, out result))
+            if (!authState.TryAcceptToken(
+                    authentication,
+                    isFinalLeg,
+                    cancellationToken,
+                    out result))
             {
                 return AuthenticationTokenAcceptance.ProviderNotFound;
             }
@@ -593,6 +610,7 @@ public sealed class RpcServerConnectionProcessor
             transport,
             authentication,
             authState,
+            isFinalLeg: true,
             cancellationToken,
             out RpcServerAuthenticationTokenResult result);
         return acceptance == AuthenticationTokenAcceptance.Accepted
@@ -833,14 +851,16 @@ public sealed class RpcServerConnectionProcessor
         RpcServerAuthenticationState authState,
         CancellationToken cancellationToken)
     {
-        if (result.IsFailure)
+        if (isRawNdr && result.IsFailure)
         {
             await WriteFaultAsync(transport, request.CallId, request.ContextId,
                 (FaultCode)result.Hresult, maxTransmitFragment, authState, cancellationToken).ConfigureAwait(false);
             return;
         }
 
-        byte[] responseStub = isRawNdr ? result.Payload.ToArray() : OrpcEnvelope.BuildResponseStub(result.Payload);
+        byte[] responseStub = isRawNdr
+            ? result.Payload.ToArray()
+            : OrpcEnvelope.BuildResponseStub(AppendMethodHresult(result));
         var response = new ResponseCoPdu
         {
             AllocationHint = responseStub.Length,
@@ -849,6 +869,16 @@ public sealed class RpcServerConnectionProcessor
             CallId = request.CallId,
         };
         await WritePduAsync(transport, response, maxTransmitFragment, authState, cancellationToken).ConfigureAwait(false);
+    }
+
+    private static byte[] AppendMethodHresult(DispatchResult result)
+    {
+        byte[] responseBody = new byte[result.Payload.Length + sizeof(int)];
+        result.Payload.Span.CopyTo(responseBody);
+        BinaryPrimitives.WriteInt32LittleEndian(
+            responseBody.AsSpan(result.Payload.Length),
+            result.Hresult);
+        return responseBody;
     }
 
     private bool SupportsInterface(Guid interfaceId) =>
@@ -992,7 +1022,7 @@ public sealed class RpcServerConnectionProcessor
             return true;
         }
 
-        if (stripped.Authentication.AuthenticationServiceCode != authState.AuthenticationService
+        if (!authState.MatchesEstablishedContext(stripped.Authentication)
             || stripped.Authentication.AuthValue.Length == 0)
         {
             AuthRejected(_logger, transport.RemoteEndpoint, stripped.Authentication.AuthLength, null);
@@ -1046,7 +1076,7 @@ public sealed class RpcServerConnectionProcessor
             return pduBytes;
         }
 
-        int padding = PaddingTo(pduBytes.Length, 4);
+        int padding = GetAuthenticationPadding(pduBytes.Length);
         int verifierStart = pduBytes.Length + padding;
         int signedLengthWithoutAuthValue = verifierStart + AuthenticationVerifierHeaderLength;
         int confidentialLength = verifierStart - ConnectionOrientedPdu.HEADER_LENGTH;
@@ -1092,7 +1122,7 @@ public sealed class RpcServerConnectionProcessor
         RpcPduAuthentication authentication,
         ReadOnlyMemory<byte> body)
     {
-        int padding = PaddingTo(pduBytes.Length, 4);
+        int padding = GetAuthenticationPadding(pduBytes.Length);
         int verifierStart = pduBytes.Length + padding;
         int fragmentLength = verifierStart + AuthenticationVerifierHeaderLength + body.Length;
         if (fragmentLength > ushort.MaxValue)
@@ -1136,10 +1166,18 @@ public sealed class RpcServerConnectionProcessor
         _ => ProtectionLevel.PROTECTION_LEVEL_NONE,
     };
 
-    private static int PaddingTo(int length, int alignment)
+    private static int GetAuthenticationPadding(int pduLength)
     {
-        int remainder = length % alignment;
-        return remainder == 0 ? 0 : alignment - remainder;
+        int bodyLength = pduLength - ConnectionOrientedPdu.HEADER_LENGTH;
+        if (bodyLength < 0)
+        {
+            throw new ArgumentOutOfRangeException(
+                nameof(pduLength),
+                "DCE/RPC PDU length is shorter than the common header.");
+        }
+
+        int remainder = bodyLength % 16;
+        return remainder == 0 ? 0 : 16 - remainder;
     }
 
     private static bool TryGuidFromUuid(UUID? uuid, out Guid value)
@@ -1231,66 +1269,38 @@ public sealed class RpcServerConnectionProcessor
         public bool RequiresPacketProtection =>
             IsEstablished && _protectionFloor >= OpcProtectionLevel.Integrity;
 
+        public bool MatchesEstablishedContext(
+            RpcPduAuthentication authentication) =>
+            IsEstablished
+            && authentication.AuthenticationServiceCode
+                == AuthenticationService
+            && authentication.ContextId == ContextId
+            && authentication.ProtectionLevel == ProtectionLevel;
+
         public int GetVerifierLength(int signedRegionLength, int confidentialLength) =>
             EstablishedProtectionContext?.GetVerifierLength(signedRegionLength, confidentialLength)
             ?? throw new InvalidOperationException("RPC packet protection is not established.");
 
         public bool TryAcceptToken(
             RpcPduAuthentication authentication,
+            bool isFinalLeg,
             CancellationToken cancellationToken,
             out RpcServerAuthenticationTokenResult result)
         {
             result = default;
-            if (IsEstablished)
+            if (!EnsureAcceptor(authentication))
             {
-                if (authentication.ProtectionLevel < _protectionFloor)
-                {
-                    throw new InvalidOperationException("DCE/RPC authentication protection level cannot be downgraded.");
-                }
+                return false;
             }
 
-            if (_acceptor is null || AuthenticationService != authentication.AuthenticationServiceCode)
-            {
-                if (!_options.ProviderSelector.TryGetProvider(
-                    authentication.AuthenticationServiceCode,
-                    out IRpcServerAuthenticationProvider? provider))
-                {
-                    return false;
-                }
-                if (provider.AuthenticationService != authentication.AuthenticationServiceCode)
-                {
-                    throw new InvalidOperationException(
-                        "RPC authentication provider selector returned a provider for a different service.");
-                }
-
-                _acceptor = provider.CreateAcceptor()
-                    ?? throw new InvalidOperationException("RPC authentication provider returned no acceptor.");
-                AuthenticationService = provider.AuthenticationService;
-            }
-
-            ContextId = authentication.ContextId;
-            ProtectionLevel = authentication.ProtectionLevel;
             result = _acceptor.AcceptToken(
                 authentication.AuthValue,
                 authentication.ProtectionLevel,
+                isFinalLeg,
                 cancellationToken);
             if (result.Session is not null)
             {
-                if (result.Session.AuthenticationService != AuthenticationService)
-                {
-                    throw new InvalidOperationException(
-                        "Authentication session service does not match the selected provider.");
-                }
-
-                System.Security.Principal.IPrincipal principal =
-                    _options.AuthorizationMapper.MapPrincipal(result.Session.Principal)
-                    ?? throw new InvalidOperationException("Authorization mapper returned no principal.");
-                _session = result.Session.WithPrincipal(principal);
-                ProtectionLevel = _session.ProtectionLevel;
-                if (ProtectionLevel > _protectionFloor)
-                {
-                    _protectionFloor = ProtectionLevel;
-                }
+                EstablishSession(result.Session);
             }
             else if (!result.ResponseToken.IsEmpty)
             {
@@ -1298,6 +1308,67 @@ public sealed class RpcServerConnectionProcessor
             }
 
             return true;
+        }
+
+        private bool EnsureAcceptor(RpcPduAuthentication authentication)
+        {
+            if (_acceptor is not null)
+            {
+                if (AuthenticationService != authentication.AuthenticationServiceCode
+                    || ContextId != authentication.ContextId
+                    || ProtectionLevel != authentication.ProtectionLevel)
+                {
+                    throw new InvalidOperationException(
+                        "DCE/RPC authentication continuation fields must exactly match the initial handshake leg.");
+                }
+
+                return true;
+            }
+
+            if (!_options.ProviderSelector.TryGetProvider(
+                authentication.AuthenticationServiceCode,
+                out IRpcServerAuthenticationProvider? provider))
+            {
+                return false;
+            }
+            if (provider.AuthenticationService != authentication.AuthenticationServiceCode)
+            {
+                throw new InvalidOperationException(
+                    "RPC authentication provider selector returned a provider for a different service.");
+            }
+
+            _acceptor = provider.CreateAcceptor()
+                ?? throw new InvalidOperationException(
+                    "RPC authentication provider returned no acceptor.");
+            AuthenticationService = provider.AuthenticationService;
+            ContextId = authentication.ContextId;
+            ProtectionLevel = authentication.ProtectionLevel;
+            return true;
+        }
+
+        private void EstablishSession(RpcServerAuthenticationSession session)
+        {
+            if (session.AuthenticationService != AuthenticationService)
+            {
+                throw new InvalidOperationException(
+                    "Authentication session service does not match the selected provider.");
+            }
+            if (session.ProtectionLevel != ProtectionLevel)
+            {
+                throw new InvalidOperationException(
+                    "Authentication session protection level does not match the pinned RPC handshake level.");
+            }
+
+            System.Security.Principal.IPrincipal principal =
+                _options.AuthorizationMapper.MapPrincipal(session.Principal)
+                ?? throw new InvalidOperationException(
+                    "Authorization mapper returned no principal.");
+            _session = session.WithPrincipal(principal);
+            ProtectionLevel = _session.ProtectionLevel;
+            if (ProtectionLevel > _protectionFloor)
+            {
+                _protectionFloor = ProtectionLevel;
+            }
         }
 
         public void Reset()

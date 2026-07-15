@@ -25,4 +25,14 @@ public interface IRpcServerAuthenticationAcceptor
         cancellationToken.ThrowIfCancellationRequested();
         return AcceptToken(token, protectionLevel);
     }
+
+    /// <summary>
+    /// Accepts the next token and indicates whether it arrived in the one-way RPC auth3 leg.
+    /// </summary>
+    RpcServerAuthenticationTokenResult AcceptToken(
+        ReadOnlyMemory<byte> token,
+        OpcProtectionLevel protectionLevel,
+        bool isFinalLeg,
+        CancellationToken cancellationToken) =>
+        AcceptToken(token, protectionLevel, cancellationToken);
 }

@@ -15,7 +15,7 @@
 | `negState` (`accept-completed`, `accept-incomplete`, `reject`, `request-mic`) | §2.2.2 (RFC 4178 §4.2.2) | ✅ `SpnegoNegState` | ✅ | conformant |
 | Mech OIDs (Kerberos v5, NTLM, SPNEGO) | §1.4 (RFC 4178 §3.1) | ✅ `SpnegoOids` | ✅ | conformant |
 | Mech selection and fallback policy | §3.1.5.1 | ✅ Kerberos-first; NTLM only when explicitly enabled and Kerberos is unavailable | ✅ `SpnegoServerAuthenticationProviderTests` | conformant |
-| Mech-list MIC (RFC 4178 §4.2.2 + MS-SPNG §3.1.5.x) | §3.1.5.4 | ✅ `KerberosSpnegoMicProvider` + Kerberos MIC token | ✅ `KerberosSpnegoMicProviderTests` | conformant |
+| Mech-list MIC (RFC 4178 §4.2.2 + MS-SPNG §3.1.5.x) | §3.1.5.4 | ✅ required and direction-verified when selection can represent Kerberos-to-NTLM fallback | ✅ `KerberosSpnegoMicProviderTests`, `SpnegoServerAuthenticationProviderTests` | conformant |
 | Mech-list MIC mismatch handling (RFC 4178 §3) | §3.1.5.4 | ✅ rejected with `negState = reject` | ✅ same | conformant |
 | `SupportedMech` field in NegTokenResp | §2.2.2 | ✅ `SpnegoNegTokenResp.SupportedMech` | ✅ | conformant |
 | `MechToken` (opaque inner blob — Kerberos AP_REQ or NTLM message) | §2.2.1 / §2.2.2 | ✅ passthrough via `SpnegoMech` | ✅ | conformant |
@@ -53,13 +53,14 @@ The mech-list MIC is computed over the canonical DER-encoded
 `MechTypeList` from the initial `NegTokenInit`. Once both sides have
 established a session, each side computes the MIC using the selected
 mech's `GSS_GetMIC` primitive and exchanges it via the `mechListMIC`
-field of `NegTokenResp`. Mismatch ⇒ `negState = reject`.
+field of `NegTokenResp`. A fallback-capable NTLM selection cannot complete without the peer MIC, and reflected MIC direction is rejected. Mismatch or absence when required ⇒ `negState = reject`.
 
 | Surface | Source | Tests |
 |---|---|---|
 | MIC computation (delegates to Kerberos `Get_MIC` per RFC 4121 §4.2.6.1) | `src/Opc.Classic.Dcom.Kerberos/KerberosSpnegoMicProvider.cs` (or equivalent in `Spnego/`) | `tests/Opc.Classic.Dcom.Kerberos.Tests/KerberosSpnegoMicProviderTests.cs` |
 | MIC verification on receive | same | same |
 | Per-spec ordering: MIC is the LAST exchange in the negotiation | same | covered by `SpnegoTests.cs` |
+| Final `rpc_auth_3` leg | `SpnegoServerAuthenticationProvider` | completes without attempting an outbound response token |
 
 ### 1.4 Mech preference order (spec §3.1.5.1)
 

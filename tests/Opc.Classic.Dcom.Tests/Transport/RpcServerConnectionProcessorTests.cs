@@ -1,5 +1,6 @@
 ﻿// Copyright (c) 2026 Opc.Classic Contributors. Licensed under the MIT License.
 
+using System.Buffers.Binary;
 using Opc.Classic.Dcom.Rpc;
 using Opc.Classic.Dcom.Rpc.Auth;
 using Opc.Classic.Dcom.Rpc.Core;
@@ -66,8 +67,9 @@ public sealed class RpcServerConnectionProcessorTests
         ResponseCoPdu response = await ReadOutboundPduAs<ResponseCoPdu>(transport);
 
         await Assert.That(response.CallId).IsEqualTo(2);
-        ReadOnlyMemory<byte> body = OrpcEnvelope.ExtractResponseBody(response.Stub);
-        await Assert.That(body.ToArray()).IsEquivalentTo(responseBody);
+        (byte[] body, int hresult) = DecodeComResponse(response);
+        await Assert.That(body).IsEquivalentTo(responseBody);
+        await Assert.That(hresult).IsEqualTo(0);
         await Assert.That(dispatcher.LastOpnum).IsEqualTo(5);
     }
 
@@ -88,7 +90,7 @@ public sealed class RpcServerConnectionProcessorTests
     }
 
     [Test]
-    public async Task DispatcherFailure_returns_fault_with_hresult_status()
+    public async Task DispatcherFailure_returns_normal_response_with_trailing_hresult()
     {
         const int hresult = unchecked((int)0x80004005);
         var dispatcher = new StubDispatcher(opnum => DispatchResult.Fault(hresult));
@@ -101,10 +103,88 @@ public sealed class RpcServerConnectionProcessorTests
         await RunProcessorAndShutdown(processor, transport);
 
         await ReadOutboundPduAs<BindAcknowledgePdu>(transport);
-        FaultCoPdu fault = await ReadOutboundPduAs<FaultCoPdu>(transport);
+        ResponseCoPdu response = await ReadOutboundPduAs<ResponseCoPdu>(transport);
 
-        await Assert.That(fault.CallId).IsEqualTo(2);
-        await Assert.That(unchecked((int)fault.Status)).IsEqualTo(hresult);
+        (byte[] payload, int actualHresult) = DecodeComResponse(response);
+        await Assert.That(response.CallId).IsEqualTo(2);
+        await Assert.That(actualHresult).IsEqualTo(hresult);
+        await Assert.That(payload).IsEmpty();
+    }
+
+    [Test]
+    public async Task Dispatcher_S_FALSE_returns_payload_and_trailing_hresult()
+    {
+        byte[] responseBody = [0x10, 0x20];
+        var dispatcher = new StubDispatcher(
+            _ => DispatchResult.Success(
+                responseBody,
+                OpcResultId.False.Code));
+        var processor = new RpcServerConnectionProcessor(
+            new Dictionary<Guid, IOpcServerDispatcher>
+            {
+                [InterfaceId] = dispatcher,
+            });
+        await using var transport = new InMemoryAsyncTransport();
+        await WritePduToInbound(
+            transport,
+            NewBindForInterface(InterfaceId, contextId: 0, callId: 1));
+        await WritePduToInbound(
+            transport,
+            NewRequest(contextId: 0, opnum: 5, callId: 2, payload: []));
+
+        await RunProcessorAndShutdown(processor, transport);
+
+        await ReadOutboundPduAs<BindAcknowledgePdu>(transport);
+        ResponseCoPdu response =
+            await ReadOutboundPduAs<ResponseCoPdu>(transport);
+        (byte[] payload, int hresult) = DecodeComResponse(response);
+        await Assert.That(payload).IsEquivalentTo(responseBody);
+        await Assert.That(hresult).IsEqualTo(OpcResultId.False.Code);
+    }
+
+    [Test]
+    public async Task Raw_dispatcher_preserves_plain_NDR_and_uses_fault_for_RPC_status()
+    {
+        var success = new RawStubDispatcher(
+            _ => DispatchResult.Success([0x51, 0x52]));
+        var failure = new RawStubDispatcher(
+            _ => DispatchResult.Fault(unchecked((int)0x800706D1u)));
+        Guid successInterface = Guid.NewGuid();
+        Guid failureInterface = Guid.NewGuid();
+        var processor = new RpcServerConnectionProcessor(
+            new Dictionary<Guid, IOpcServerDispatcher>
+            {
+                [successInterface] = success,
+                [failureInterface] = failure,
+            });
+        await using var transport = new InMemoryAsyncTransport();
+        await WritePduToInbound(
+            transport,
+            NewBindForInterface(successInterface, contextId: 0, callId: 1));
+        await WritePduToInbound(
+            transport,
+            NewAlterContextForInterface(
+                failureInterface,
+                contextId: 1,
+                callId: 2));
+        await WritePduToInbound(
+            transport,
+            NewRawRequest(contextId: 0, opnum: 3, callId: 3));
+        await WritePduToInbound(
+            transport,
+            NewRawRequest(contextId: 1, opnum: 4, callId: 4));
+
+        await RunProcessorAndShutdown(processor, transport);
+
+        await ReadOutboundPduAs<BindAcknowledgePdu>(transport);
+        await ReadOutboundPduAs<AlterContextResponsePdu>(transport);
+        ResponseCoPdu response =
+            await ReadOutboundPduAs<ResponseCoPdu>(transport);
+        FaultCoPdu fault = await ReadOutboundPduAs<FaultCoPdu>(transport);
+        await Assert.That(response.Stub).IsEquivalentTo(
+            new byte[] { 0x51, 0x52 });
+        await Assert.That(unchecked((int)fault.Status))
+            .IsEqualTo(unchecked((int)0x800706D1u));
     }
 
     [Test]
@@ -252,16 +332,74 @@ public sealed class RpcServerConnectionProcessorTests
         await RunProcessorAndShutdown(processor, transport);
 
         byte[] bindAck = await ReadOutboundFrame(transport);
+        AssertAuthenticationAlignment(
+            bindAck,
+            expectedAuthLength: 1,
+            requirePadding: true);
         RpcPduAuthenticationData bindAuthentication = ReadAuthenticationData(bindAck);
         await Assert.That(bindAuthentication.AuthenticationService).IsEqualTo(authenticationService);
         await Assert.That(bindAuthentication.AuthValue).IsEquivalentTo(new byte[] { 2 });
         await ReadOutboundPduAs<ResponseCoPdu>(transport);
         await Assert.That(provider.CreateAcceptorCount).IsEqualTo(1);
         await Assert.That(provider.LastAcceptor!.AcceptedTokens.Count).IsEqualTo(2);
+        await Assert.That(provider.LastAcceptor.FinalLegFlags)
+            .IsEquivalentTo(new[] { false, true });
         await Assert.That(dispatcher.LastContext.HasValue).IsTrue();
         await Assert.That(dispatcher.LastContext!.Value.AuthenticationService).IsEqualTo(authenticationService);
         await Assert.That(dispatcher.LastContext.Value.Principal?.Identity?.Name)
             .IsEqualTo("mapped:mechanism-user");
+    }
+
+    [Test]
+    [Arguments(43, 7, (byte)ProtectionLevel.PROTECTION_LEVEL_CONNECT)]
+    [Arguments(42, 8, (byte)ProtectionLevel.PROTECTION_LEVEL_CONNECT)]
+    [Arguments(42, 7, (byte)ProtectionLevel.PROTECTION_LEVEL_INTEGRITY)]
+    [Arguments(42, 7, (byte)ProtectionLevel.PROTECTION_LEVEL_NONE)]
+    public async Task Authentication_continuation_requires_exact_pinned_fields(
+        int continuationService,
+        int continuationContextId,
+        byte continuationProtectionLevel)
+    {
+        const byte authenticationService = 42;
+        const int contextId = 7;
+        var provider = new StubAuthenticationProvider(
+            authenticationService);
+        var options = new RpcServerAuthenticationOptions(
+            new RpcServerAuthenticationProviderRegistry([provider]));
+        var processor = new RpcServerConnectionProcessor(
+            options,
+            new Dictionary<Guid, IOpcServerDispatcher>
+            {
+                [InterfaceId] = new RecordingContextDispatcher(),
+            });
+        await using var transport = new InMemoryAsyncTransport();
+        await WriteFrameWithAuthVerifier(
+            transport,
+            NewBindForInterface(InterfaceId, contextId: 0, callId: 1),
+            authenticationService,
+            authValue: [1],
+            authLevel: (byte)ProtectionLevel.PROTECTION_LEVEL_CONNECT,
+            contextId: contextId);
+        await WriteFrameWithAuthVerifier(
+            transport,
+            new Auth3Pdu { CallId = 2 },
+            checked((byte)continuationService),
+            authValue: [3],
+            authLevel: continuationProtectionLevel,
+            contextId: continuationContextId);
+
+        await processor.ProcessConnectionAsync(
+                transport,
+                TestContext.Current!.CancellationToken)
+            .AsTask()
+            .WaitAsync(
+                TimeSpan.FromSeconds(5),
+                TestContext.Current!.CancellationToken);
+
+        _ = await ReadOutboundFrame(transport);
+        await Assert.That(provider.CreateAcceptorCount).IsEqualTo(1);
+        await Assert.That(provider.LastAcceptor!.AcceptedTokens.Count)
+            .IsEqualTo(1);
     }
 
     [Test]
@@ -362,9 +500,10 @@ public sealed class RpcServerConnectionProcessorTests
         await RunProcessorAndShutdown(processor, transport);
 
         BindAcknowledgePdu ack = await ReadOutboundPduAs<BindAcknowledgePdu>(transport);
-        FaultCoPdu fault = await ReadOutboundPduAs<FaultCoPdu>(transport);
+        ResponseCoPdu response = await ReadOutboundPduAs<ResponseCoPdu>(transport);
         await Assert.That(ack.ResultList[0].Result).IsEqualTo(PresentationResultCode.ACCEPTANCE);
-        await Assert.That(unchecked((int)fault.Status))
+        (_, int hresult) = DecodeComResponse(response);
+        await Assert.That(hresult)
             .IsEqualTo(global::Opc.Classic.OpcResultId.AccessDenied.Code);
         await Assert.That(provider.CreateAcceptorCount).IsEqualTo(0);
         await Assert.That(dispatcher.LastContext!.Value.IsAuthenticated).IsFalse();
@@ -515,10 +654,12 @@ public sealed class RpcServerConnectionProcessorTests
         ResponseCoPdu rootResponse = await ReadOutboundPduAs<ResponseCoPdu>(transport);
         ResponseCoPdu objectResponse = await ReadOutboundPduAs<ResponseCoPdu>(transport);
 
-        ReadOnlyMemory<byte> rootBody = OrpcEnvelope.ExtractResponseBody(rootResponse.Stub);
-        ReadOnlyMemory<byte> objectBody = OrpcEnvelope.ExtractResponseBody(objectResponse.Stub);
-        await Assert.That(rootBody.ToArray()).IsEquivalentTo(rootPayload);
-        await Assert.That(objectBody.ToArray()).IsEquivalentTo(objectPayload);
+        (byte[] rootBody, int rootHresult) = DecodeComResponse(rootResponse);
+        (byte[] objectBody, int objectHresult) = DecodeComResponse(objectResponse);
+        await Assert.That(rootBody).IsEquivalentTo(rootPayload);
+        await Assert.That(objectBody).IsEquivalentTo(objectPayload);
+        await Assert.That(rootHresult).IsEqualTo(0);
+        await Assert.That(objectHresult).IsEqualTo(0);
     }
 
     [Test]
@@ -541,8 +682,9 @@ public sealed class RpcServerConnectionProcessorTests
 
         await ReadOutboundPduAs<BindAcknowledgePdu>(transport);
         ResponseCoPdu response = await ReadOutboundPduAs<ResponseCoPdu>(transport);
-        ReadOnlyMemory<byte> body = OrpcEnvelope.ExtractResponseBody(response.Stub);
-        await Assert.That(body.ToArray()).IsEquivalentTo(rootPayload);
+        (byte[] body, int hresult) = DecodeComResponse(response);
+        await Assert.That(body).IsEquivalentTo(rootPayload);
+        await Assert.That(hresult).IsEqualTo(0);
     }
 
     private static RequestCoPdu NewRequestWithObject(int contextId, int opnum, int callId, Guid ipid)
@@ -591,23 +733,38 @@ public sealed class RpcServerConnectionProcessorTests
         ConnectionOrientedPdu pdu,
         byte authenticationService,
         byte[] authValue,
-        byte authLevel = 0)
+        byte authLevel = 0,
+        int contextId = 0)
     {
         byte[] frame = PduCodec.EncodePdu(pdu, ConnectionOrientedPdu.MUST_RECEIVE_FRAGMENT_SIZE);
         int authBodyLength = authValue.Length;
-        int totalLength = frame.Length + 8 + authBodyLength;
+        int padding = PaddingTo(
+            frame.Length - ConnectionOrientedPdu.HEADER_LENGTH,
+            16);
+        int verifierStart = frame.Length + padding;
+        int totalLength = verifierStart + 8 + authBodyLength;
         byte[] forged = new byte[totalLength];
         frame.AsSpan().CopyTo(forged);
         forged[ConnectionOrientedPdu.FRAG_LENGTH_OFFSET] = (byte)(totalLength & 0xFF);
         forged[ConnectionOrientedPdu.FRAG_LENGTH_OFFSET + 1] = (byte)((totalLength >> 8) & 0xFF);
         forged[ConnectionOrientedPdu.AUTH_LENGTH_OFFSET] = (byte)(authBodyLength & 0xFF);
         forged[ConnectionOrientedPdu.AUTH_LENGTH_OFFSET + 1] = (byte)((authBodyLength >> 8) & 0xFF);
-        // The sec_trailer header begins immediately after the original frame:
+        // The sec_trailer follows body-relative 16-byte authentication padding:
         // [auth_type, auth_level, pad_length, reserved, context_id(4)].
-        forged[frame.Length] = authenticationService;
-        forged[frame.Length + 1] = authLevel;
-        authValue.CopyTo(forged.AsSpan(frame.Length + 8));
+        forged[verifierStart] = authenticationService;
+        forged[verifierStart + 1] = authLevel;
+        forged[verifierStart + 2] = checked((byte)padding);
+        BinaryPrimitives.WriteInt32LittleEndian(
+            forged.AsSpan(verifierStart + 4),
+            contextId);
+        authValue.CopyTo(forged.AsSpan(verifierStart + 8));
         await transport.WriteInboundAsync(forged);
+    }
+
+    private static int PaddingTo(int length, int alignment)
+    {
+        int remainder = length % alignment;
+        return remainder == 0 ? 0 : alignment - remainder;
     }
 
     private static async Task<byte[]> ReadOutboundFrame(InMemoryAsyncTransport transport) =>
@@ -631,6 +788,31 @@ public sealed class RpcServerConnectionProcessorTests
         frame[ConnectionOrientedPdu.AUTH_LENGTH_OFFSET]
         | (frame[ConnectionOrientedPdu.AUTH_LENGTH_OFFSET + 1] << 8);
 
+    private static void AssertAuthenticationAlignment(
+        byte[] frame,
+        int expectedAuthLength,
+        bool requirePadding)
+    {
+        int fragmentLength = BinaryPrimitives.ReadUInt16LittleEndian(
+            frame.AsSpan(ConnectionOrientedPdu.FRAG_LENGTH_OFFSET));
+        int authLength = BinaryPrimitives.ReadUInt16LittleEndian(
+            frame.AsSpan(ConnectionOrientedPdu.AUTH_LENGTH_OFFSET));
+        int verifierStart = fragmentLength - authLength - 8;
+        int padding = frame[verifierStart + 2];
+        int unpaddedPduLength = verifierStart - padding;
+        int bodyLength =
+            unpaddedPduLength - ConnectionOrientedPdu.HEADER_LENGTH;
+        int expectedPadding = (16 - (bodyLength % 16)) % 16;
+        if (authLength != expectedAuthLength
+            || (verifierStart - ConnectionOrientedPdu.HEADER_LENGTH) % 16 != 0
+            || padding != expectedPadding
+            || requirePadding && padding == 0)
+        {
+            throw new InvalidOperationException(
+                "Authentication verifier alignment did not match MS-RPCE.");
+        }
+    }
+
     private static async Task<T> ReadOutboundPduAs<T>(InMemoryAsyncTransport transport)
         where T : ConnectionOrientedPdu
     {
@@ -641,6 +823,17 @@ public sealed class RpcServerConnectionProcessorTests
             return typed;
         }
         throw new InvalidOperationException($"Expected {typeof(T).Name} but read {pdu.GetType().Name}.");
+    }
+
+    private static (byte[] Payload, int Hresult) DecodeComResponse(
+        ResponseCoPdu response)
+    {
+        ReadOnlyMemory<byte> body =
+            OrpcEnvelope.ExtractResponseBody(response.Stub);
+        int payloadLength = body.Length - sizeof(int);
+        return (
+            body[..payloadLength].ToArray(),
+            BinaryPrimitives.ReadInt32LittleEndian(body.Span[payloadLength..]));
     }
 
     private static BindPdu NewBindForInterface(Guid interfaceId, int contextId, int callId) =>
@@ -676,6 +869,19 @@ public sealed class RpcServerConnectionProcessorTests
         };
     }
 
+    private static RequestCoPdu NewRawRequest(
+        int contextId,
+        int opnum,
+        int callId) =>
+        new()
+        {
+            CallId = callId,
+            ContextId = contextId,
+            Opnum = opnum,
+            AllocationHint = 1,
+            Stub = [0x01],
+        };
+
     private static PresentationContext BuildContext(Guid interfaceId, int contextId) =>
         new(contextId, new PresentationSyntax(new UUID(interfaceId.ToString("D")), 0, 0));
 
@@ -695,6 +901,23 @@ public sealed class RpcServerConnectionProcessorTests
         public ValueTask<DispatchResult> DispatchAsync(int opnum, ReadOnlyMemory<byte> requestPayload, CancellationToken cancellationToken)
         {
             LastOpnum = opnum;
+            return ValueTask.FromResult(_handler(opnum));
+        }
+    }
+
+    private sealed class RawStubDispatcher : IRpcRawNdrDispatcher
+    {
+        private readonly Func<int, DispatchResult> _handler;
+
+        public RawStubDispatcher(Func<int, DispatchResult> handler) =>
+            _handler = handler;
+
+        public ValueTask<DispatchResult> DispatchAsync(
+            int opnum,
+            ReadOnlyMemory<byte> requestPayload,
+            CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
             return ValueTask.FromResult(_handler(opnum));
         }
     }
@@ -793,7 +1016,25 @@ public sealed class RpcServerConnectionProcessorTests
 
         public List<byte[]> AcceptedTokens { get; } = [];
 
+        public List<bool> FinalLegFlags { get; } = [];
+
         public RpcServerAuthenticationTokenResult AcceptToken(
+            ReadOnlyMemory<byte> token,
+            OpcProtectionLevel protectionLevel) =>
+            AcceptCore(token, protectionLevel);
+
+        public RpcServerAuthenticationTokenResult AcceptToken(
+            ReadOnlyMemory<byte> token,
+            OpcProtectionLevel protectionLevel,
+            bool isFinalLeg,
+            CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            FinalLegFlags.Add(isFinalLeg);
+            return AcceptCore(token, protectionLevel);
+        }
+
+        private RpcServerAuthenticationTokenResult AcceptCore(
             ReadOnlyMemory<byte> token,
             OpcProtectionLevel protectionLevel)
         {

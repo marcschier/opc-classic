@@ -45,6 +45,13 @@ public sealed class KerberosServerOptions
         ValidateProtocolPolicy(clockSkew, channelBindingPolicy, minimumProtectionLevel);
         byte[]? validatedChannelBindingsHash =
             ValidateChannelBindingsHash(channelBindingsHash);
+        if (channelBindingPolicy != KerberosChannelBindingPolicy.Disabled
+            && validatedChannelBindingsHash is null)
+        {
+            throw new ArgumentException(
+                "WhenPresent and Required channel-binding policies require an expected 16-byte hash.",
+                nameof(channelBindingsHash));
+        }
         if (!string.Equals(credentialProvider.Realm, normalizedRealm, StringComparison.OrdinalIgnoreCase))
         {
             throw new ArgumentException(

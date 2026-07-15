@@ -209,6 +209,94 @@ public sealed class SpnegoServerAuthenticationProviderTests
     }
 
     [Test]
+    public async Task Configured_Kerberos_fallback_requires_MIC_even_when_NTLM_is_first()
+    {
+        var kerberos = FakeAuthenticationProvider.Completes(
+            KerberosServerAuthenticationProvider.KerberosAuthenticationService,
+            [0x70],
+            [],
+            new TestProtectionContext(
+                KerberosServerAuthenticationProvider.KerberosAuthenticationService,
+                MicKey));
+        var ntlm = FakeAuthenticationProvider.ContinuesThenCompletes(
+            10,
+            [0x01],
+            [0x02],
+            [0x03],
+            new TestProtectionContext(10, MicKey));
+        var provider = new SpnegoServerAuthenticationProvider(
+            kerberos,
+            ntlm,
+            allowNtlmFallback: true);
+        var acceptor =
+            (SpnegoServerAuthenticationProvider.Acceptor)provider.CreateAcceptor();
+        string[] mechanisms = [SpnegoOids.Ntlmssp];
+
+        _ = acceptor.AcceptToken(
+            EncodeInit(mechanisms, [0x01]),
+            OpcProtectionLevel.Integrity);
+        Exception? missingMic = CaptureException(() => acceptor.AcceptToken(
+            SpnegoEncoder.EncodeNegTokenResp(
+                new SpnegoNegTokenResp(
+                    SpnegoNegState.AcceptIncomplete,
+                    SpnegoOids.Ntlmssp,
+                    new byte[] { 0x03 },
+                    null)),
+            OpcProtectionLevel.Integrity,
+            isFinalLeg: true,
+            CancellationToken.None));
+
+        await Assert.That(missingMic).IsTypeOf<SecurityException>();
+        await Assert.That(kerberos.AcceptCalls).IsEqualTo(0);
+    }
+
+    [Test]
+    public async Task Ntlm_over_SPNEGO_final_auth3_completes_without_outbound_token()
+    {
+        var kerberos = FakeAuthenticationProvider.Completes(
+            KerberosServerAuthenticationProvider.KerberosAuthenticationService,
+            [0x70],
+            [],
+            new TestProtectionContext(
+                KerberosServerAuthenticationProvider.KerberosAuthenticationService,
+                MicKey));
+        var ntlm = FakeAuthenticationProvider.ContinuesThenCompletes(
+            10,
+            [0x01],
+            [0x02],
+            [0x03],
+            new TestProtectionContext(10, MicKey));
+        var provider = new SpnegoServerAuthenticationProvider(
+            kerberos,
+            ntlm,
+            allowNtlmFallback: true);
+        var acceptor =
+            (SpnegoServerAuthenticationProvider.Acceptor)provider.CreateAcceptor();
+        string[] mechanisms = [SpnegoOids.Ntlmssp];
+        byte[] mechList = SpnegoEncoder.EncodeMechTypeList(mechanisms);
+        byte[] clientMic = new TestMicProvider(MicKey).GetMic(mechList);
+
+        _ = acceptor.AcceptToken(
+            EncodeInit(mechanisms, [0x01]),
+            OpcProtectionLevel.Integrity);
+        RpcServerAuthenticationTokenResult completed = acceptor.AcceptToken(
+            SpnegoEncoder.EncodeNegTokenResp(
+                new SpnegoNegTokenResp(
+                    SpnegoNegState.AcceptIncomplete,
+                    SpnegoOids.Ntlmssp,
+                    new byte[] { 0x03 },
+                    clientMic)),
+            OpcProtectionLevel.Integrity,
+            isFinalLeg: true,
+            CancellationToken.None);
+
+        await Assert.That(completed.Session).IsNotNull();
+        await Assert.That(completed.ResponseToken.IsEmpty).IsTrue();
+        await Assert.That(acceptor.NegotiationState)
+            .IsEqualTo(SpnegoNegState.AcceptCompleted);
+    }
+
+    [Test]
     public async Task Ntlm_fallback_verifies_and_generates_directional_mech_list_mic()
     {
         var client = CreateNtlmClient();

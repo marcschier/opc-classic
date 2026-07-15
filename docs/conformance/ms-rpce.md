@@ -25,7 +25,7 @@
 | PDU header (`rpc_vers`, `rpc_vers_minor`, `PTYPE`, `pfc_flags`, `packed_drep`, `frag_length`, `auth_length`, `call_id`) | §2.2.2.1 | ✅ `PduCodec.cs`, `IProtocolDataUnit.cs` | ✅ `PduCodecTests`, `PduCodecFuzzTests`, `RpcPduCodecRegressionTests`, `DecodedOpcPduTests` | conformant |
 | PFC flags (`PFC_FIRST_FRAG`, `PFC_LAST_FRAG`, `PFC_PENDING_CANCEL`, `PFC_SUPPORT_HEADER_SIGN`, `PFC_CONC_MPX`, `PFC_DID_NOT_EXECUTE`, `PFC_MAYBE`, `PFC_OBJECT_UUID`) | §2.2.2.3 | ✅ encoded in `PduCodec` | ✅ | conformant |
 | Presentation context list (multiple syntaxes per context, alter-context flow) | §2.2.2.13 | ✅ `PresentationContext`, `PresentationSyntax`, `PresentationResult`, `PresentationResultCode`, `PresentationResultReason`, `PresentationException` | ✅ | conformant |
-| Authentication verifier / `sec_trailer` | §2.2.2.11 / §2.2.2.12 | ✅ `AuthenticationVerifier`, `AuthenticationSource`, `NullAuthenticationSource` | ✅ | conformant |
+| Authentication verifier / `sec_trailer` | §2.2.2.11 / §2.2.2.12 | ✅ body-relative 16-byte alignment, strict inbound padding validation, provider-sized `auth_value` | ✅ client/server/TCP alignment tests | conformant |
 | Auth-trailer types (`RPC_C_AUTHN_*`): NTLM (10) / Kerberos (16) / SPNEGO (9) / Negotiate (9) | §2.2.1.1.7 | ✅ via NTLM / Kerberos / SPNEGO stacks | ✅ | conformant |
 | Protection levels (none / connect / call / pkt / pkt_integrity / pkt_privacy) | §2.2.1.1.8 | ✅ `ProtectionLevel`, `ProtectionLevelDefaultsTests` | ✅ | conformant |
 | Impersonation levels | §2.2.1.1.9 | ✅ `RpcImpersonationLevel` | ✅ | conformant |
@@ -97,7 +97,7 @@ connection can drive multiple interfaces.
 |---|---|---|
 | `auth_type` (1 byte: NTLM=10 / Kerberos=16 / SPNEGO=9 / Negotiate=9) | `AuthenticationVerifier.cs` | covered by NLMP + KILE + SPNG tests |
 | `auth_level` (1 byte: none=1 / connect=2 / call=3 / pkt=4 / pkt_integrity=5 / pkt_privacy=6) | `ProtectionLevel.cs`, `ProtectionLevelDefaultsTests` | `ProtectionLevelDefaultsTests.cs` |
-| `auth_pad_length` (1 byte) | `AuthenticationVerifier.cs` | same |
+| `auth_pad_length` (1 byte) | `DcomCallChannel`, `RpcServerConnectionProcessor` | verified against the required 16-byte alignment relative to the PDU body |
 | `auth_reserved` (1 byte) | same | same |
 | `auth_context_id` (4 bytes) | same | same |
 | `auth_value` (security-context-specific blob) | `AuthenticationSource.cs` (NTLM / Kerberos / SPNEGO source), `NullAuthenticationSource.cs` | `NtlmDefaultsTests.cs`, plus the security-provider-specific tests |
@@ -124,8 +124,8 @@ DCOM connection per Windows 2008+ Extended Protection policy
 |---|---|---|
 | Bind handling (associate group ID, presentation contexts) | `src/Opc.Classic.Dcom/Transport/RpcServerConnectionProcessor.cs` | `tests/Opc.Classic.Dcom.Tests/RpcServerConnectionProcessorTests.cs` |
 | Request → dispatcher routing | same | same |
-| Response framing | same | same |
-| Fault generation | same | same |
+| Response framing | same | normal COM responses carry the trailing method HRESULT after the NDR out payload |
+| Fault generation | same | DCE/RPC fault PDUs are reserved for RPC/runtime faults; COM method failures remain normal responses |
 | Cancellation propagation (CO_CANCEL → CallId cancellation token) | same | same |
 | Per-call-id state | same | same |
 | Auth-trailer validation on every PDU | same + `AuthenticationVerifier.cs` | covered by NLMP + KILE tests |

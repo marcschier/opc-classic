@@ -1,5 +1,6 @@
 ﻿// Copyright (c) 2026 Opc.Classic Contributors. Licensed under the MIT License.
 
+using System.Security.Cryptography;
 using Kerberos.NET;
 using Kerberos.NET.Client;
 using Kerberos.NET.Configuration;
@@ -71,10 +72,15 @@ public sealed class KerberosConnectionContext : IKerberosConnectionContext
             cancellationToken).ConfigureAwait(false);
 
         _sessionContext = sessionContext;
+        long sendSequenceNumber = ToSequenceNumber(
+            sessionContext.SequenceNumber,
+            "The Kerberos AP-REQ did not establish an initiator sequence number.");
         EstablishedSessionKey = new KerberosSessionKey(
             sessionContext.SessionKey.KeyValue.ToArray(),
             sessionContext.SessionKey.EType,
-            UsesAcceptorSubkey: false);
+            UsesAcceptorSubkey: false,
+            SendSequenceNumber: sendSequenceNumber,
+            ReceiveSequenceNumber: 0);
         return sessionContext.ApReq.EncodeGssApi().ToArray();
     }
 
@@ -93,11 +99,21 @@ public sealed class KerberosConnectionContext : IKerberosConnectionContext
         var sessionContext = _sessionContext ?? throw new InvalidOperationException(
             "AcquireApRequestAsync must complete before processing an AP-REP token.");
 
+        KrbApRep apRep = KrbApRep.DecodeApplication(applicationToken);
+        DecryptedKrbApRep decryptedReply =
+            DecryptApReply(apRep, sessionContext);
+        long receiveSequenceNumber = ToSequenceNumber(
+            decryptedReply.Response.SequenceNumber,
+            "The Kerberos AP-REP did not establish an acceptor sequence number.");
         var sessionKey = sessionContext.AuthenticateServiceResponse(applicationToken);
         EstablishedSessionKey = new KerberosSessionKey(
             sessionKey.KeyValue.ToArray(),
             sessionKey.EType,
-            UsesAcceptorSubkey: !ReferenceEquals(sessionKey, sessionContext.SessionKey));
+            UsesAcceptorSubkey: !ReferenceEquals(sessionKey, sessionContext.SessionKey),
+            SendSequenceNumber: ToSequenceNumber(
+                sessionContext.SequenceNumber,
+                "The Kerberos AP-REQ did not establish an initiator sequence number."),
+            ReceiveSequenceNumber: receiveSequenceNumber);
         return Task.FromResult(sessionKey.KeyValue.ToArray());
     }
 
@@ -198,5 +214,51 @@ public sealed class KerberosConnectionContext : IKerberosConnectionContext
             token[0] == GssApRepTokenId0 &&
             token[1] == GssApRepTokenId1 &&
             token[GssKerberosTokenHeaderLength] == KerberosApRepApplicationTag;
+    }
+
+    private static DecryptedKrbApRep DecryptApReply(
+        KrbApRep apRep,
+        ApplicationSessionContext sessionContext)
+    {
+        foreach (KrbEncryptionKey? key in new[]
+        {
+            sessionContext.SessionKey,
+            sessionContext.ServiceTicketSessionKey,
+            sessionContext.ClientSubSessionKey,
+        })
+        {
+            if (key is null)
+            {
+                continue;
+            }
+
+            try
+            {
+                var decrypted = new DecryptedKrbApRep(apRep);
+                decrypted.Decrypt(key.AsKey());
+                return decrypted;
+            }
+            catch (Exception exception) when (
+                exception is ArgumentException
+                    or CryptographicException
+                    or InvalidOperationException
+                    or KerberosProtocolException)
+            {
+                // AP-REP may be encrypted with the ticket, client, or negotiated session key.
+            }
+        }
+
+        throw new KerberosProtocolException(
+            "The Kerberos AP-REP could not be decrypted with the negotiated context keys.");
+    }
+
+    private static long ToSequenceNumber(int? sequenceNumber, string error)
+    {
+        if (!sequenceNumber.HasValue)
+        {
+            throw new KerberosProtocolException(error);
+        }
+
+        return unchecked((uint)sequenceNumber.Value);
     }
 }

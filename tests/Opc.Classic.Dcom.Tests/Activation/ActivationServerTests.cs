@@ -51,11 +51,14 @@ public sealed class ActivationServerTests
         await RunProcessorAndShutdown(processor, transport);
 
         BindAcknowledgePdu ack = await ReadOutboundPduAs<BindAcknowledgePdu>(transport);
-        FaultCoPdu fault = await ReadOutboundPduAs<FaultCoPdu>(transport);
+        ResponseCoPdu response = await ReadOutboundPduAs<ResponseCoPdu>(transport);
+        ReadOnlyMemory<byte> body =
+            OrpcEnvelope.ExtractResponseBody(response.Stub);
+        int hresult = BinaryPrimitives.ReadInt32LittleEndian(body.Span[^sizeof(int)..]);
 
         await Assert.That(ack.ResultList[0].Result).IsEqualTo(PresentationResultCode.ACCEPTANCE);
-        await Assert.That(fault.CallId).IsEqualTo(2);
-        await Assert.That(unchecked((int)fault.Status)).IsEqualTo(E_ACCESSDENIED);
+        await Assert.That(response.CallId).IsEqualTo(2);
+        await Assert.That(hresult).IsEqualTo(E_ACCESSDENIED);
     }
 
     [Test]
@@ -236,7 +239,9 @@ public sealed class ActivationServerTests
     {
         const int authBodyLength = 16;
         byte[] frame = PduCodec.EncodePdu(pdu, ConnectionOrientedPdu.MUST_RECEIVE_FRAGMENT_SIZE);
-        int padding = PaddingTo(frame.Length, 4);
+        int padding = PaddingTo(
+            frame.Length - ConnectionOrientedPdu.HEADER_LENGTH,
+            16);
         int verifierStart = frame.Length + padding;
         int totalLength = verifierStart + 8 + authBodyLength;
         byte[] forged = new byte[totalLength];

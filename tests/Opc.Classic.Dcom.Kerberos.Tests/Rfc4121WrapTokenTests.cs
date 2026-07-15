@@ -26,11 +26,15 @@ public sealed class Rfc4121WrapTokenTests
     [Test]
     public async Task Wrap_privacy_token_has_sealed_flag_and_round_trips()
     {
-        var session = new KerberosSession(Aes128Key, EncryptionType.AES128_CTS_HMAC_SHA1_96);
+        var sender = new KerberosSession(Aes128Key, EncryptionType.AES128_CTS_HMAC_SHA1_96);
+        var receiver = new KerberosSession(
+            Aes128Key,
+            EncryptionType.AES128_CTS_HMAC_SHA1_96,
+            isAcceptor: true);
         byte[] plaintext = [0x10, 0x20, 0x30, 0x40];
 
-        byte[] token = session.WrapMessage(plaintext, confidential: true);
-        byte[] unwrapped = session.UnwrapMessage(token, out bool wasConfidential);
+        byte[] token = sender.WrapMessage(plaintext, confidential: true);
+        byte[] unwrapped = receiver.UnwrapMessage(token, out bool wasConfidential);
 
         await Assert.That(BinaryPrimitives.ReadUInt16BigEndian(token)).IsEqualTo((ushort)0x0504);
         await Assert.That((token[2] & 0x02) != 0).IsTrue();
@@ -41,11 +45,15 @@ public sealed class Rfc4121WrapTokenTests
     [Test]
     public async Task Wrap_integrity_only_round_trips_without_confidentiality()
     {
-        var session = new KerberosSession(Aes128Key, EncryptionType.AES128_CTS_HMAC_SHA1_96);
+        var sender = new KerberosSession(Aes128Key, EncryptionType.AES128_CTS_HMAC_SHA1_96);
+        var receiver = new KerberosSession(
+            Aes128Key,
+            EncryptionType.AES128_CTS_HMAC_SHA1_96,
+            isAcceptor: true);
         byte[] plaintext = [0x41, 0x42, 0x43, 0x44, 0x45];
 
-        byte[] token = session.WrapMessage(plaintext, confidential: false);
-        byte[] unwrapped = session.UnwrapMessage(token, out bool wasConfidential);
+        byte[] token = sender.WrapMessage(plaintext, confidential: false);
+        byte[] unwrapped = receiver.UnwrapMessage(token, out bool wasConfidential);
 
         await Assert.That(wasConfidential).IsFalse();
         await Assert.That(unwrapped.SequenceEqual(plaintext)).IsTrue();

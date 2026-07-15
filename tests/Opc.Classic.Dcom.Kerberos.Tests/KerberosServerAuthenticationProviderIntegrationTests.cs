@@ -456,6 +456,9 @@ public sealed class KerberosServerAuthenticationProviderIntegrationTests
         return new KerberosSession(
             sessionKey.Key.Span,
             sessionKey.EncryptionType,
+            sessionKey.SendSequenceNumber,
+            sessionKey.ReceiveSequenceNumber,
+            isAcceptor: false,
             usesAcceptorSubkey: sessionKey.UsesAcceptorSubkey);
     }
 
@@ -520,13 +523,18 @@ public sealed class KerberosServerAuthenticationProviderIntegrationTests
     {
         if (protectionLevel >= OpcProtectionLevel.Privacy)
         {
-            Span<byte> confidential = signedRegion.Slice(confidentialOffset, confidentialLength);
-            byte[] verifier = clientSession.WrapMessage(confidential, confidential: true);
-            verifier.AsSpan(16, confidential.Length).CopyTo(confidential);
-            return verifier;
+            return clientSession.ProtectRpcMessage(
+                signedRegion,
+                confidentialOffset,
+                confidentialLength,
+                confidential: true);
         }
 
-        return clientSession.WrapMessage(signedRegion, confidential: false);
+        return clientSession.ProtectRpcMessage(
+            signedRegion,
+            confidentialOffset,
+            confidentialLength,
+            confidential: false);
     }
 
     private static bool UnprotectForClient(
@@ -537,22 +545,14 @@ public sealed class KerberosServerAuthenticationProviderIntegrationTests
         ReadOnlyMemory<byte> verifier,
         OpcProtectionLevel protectionLevel)
     {
-        bool privacy = protectionLevel >= OpcProtectionLevel.Privacy;
-        Span<byte> target = privacy ? signedRegion.Slice(confidentialOffset, confidentialLength) : signedRegion;
         try
         {
-            byte[] plaintext = clientSession.UnwrapMessage(verifier.Span, out bool wasConfidential);
-            if (wasConfidential != privacy || plaintext.Length != target.Length)
-            {
-                return false;
-            }
-
-            if (!wasConfidential && !plaintext.AsSpan().SequenceEqual(target))
-            {
-                return false;
-            }
-
-            plaintext.CopyTo(target);
+            clientSession.UnprotectRpcMessage(
+                signedRegion,
+                confidentialOffset,
+                confidentialLength,
+                verifier.Span,
+                protectionLevel >= OpcProtectionLevel.Privacy);
             return true;
         }
         catch (ArgumentException)

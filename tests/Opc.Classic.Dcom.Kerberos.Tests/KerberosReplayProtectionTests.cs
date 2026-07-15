@@ -12,7 +12,10 @@ public sealed class KerberosReplayProtectionTests
     public async Task UnwrapMessage_rejects_out_of_order_sequence_numbers()
     {
         var sender = new KerberosSession(Key, EncryptionType.AES128_CTS_HMAC_SHA1_96);
-        var receiver = new KerberosSession(Key, EncryptionType.AES128_CTS_HMAC_SHA1_96);
+        var receiver = new KerberosSession(
+            Key,
+            EncryptionType.AES128_CTS_HMAC_SHA1_96,
+            isAcceptor: true);
         _ = sender.WrapMessage([0x01], confidential: false);
         byte[] secondToken = sender.WrapMessage([0x02], confidential: false);
 
@@ -26,7 +29,10 @@ public sealed class KerberosReplayProtectionTests
     public async Task UnwrapMessage_rejects_replayed_old_sequence_numbers()
     {
         var sender = new KerberosSession(Key, EncryptionType.AES128_CTS_HMAC_SHA1_96);
-        var receiver = new KerberosSession(Key, EncryptionType.AES128_CTS_HMAC_SHA1_96);
+        var receiver = new KerberosSession(
+            Key,
+            EncryptionType.AES128_CTS_HMAC_SHA1_96,
+            isAcceptor: true);
         byte[] firstToken = sender.WrapMessage([0x01], confidential: false);
 
         _ = receiver.UnwrapMessage(firstToken, out _);

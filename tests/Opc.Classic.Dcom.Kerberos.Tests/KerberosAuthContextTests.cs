@@ -9,6 +9,10 @@ namespace Opc.Classic.Dcom.Kerberos.Tests;
 
 public sealed class KerberosAuthContextTests
 {
+    private static readonly byte[] SessionKey =
+        [0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17,
+         0x18, 0x19, 0x1A, 0x1B, 0x1C, 0x1D, 0x1E, 0x1F];
+
     [Test]
     public async Task BuildInitialToken_returns_SPNEGO_wrapped_AP_REQ_bytes()
     {
@@ -47,9 +51,28 @@ public sealed class KerberosAuthContextTests
         _ = context.BuildInitialToken();
         byte[] pduBody = [0x01, 0x02, 0x03];
         byte[] expected = pduBody.ToArray();
+        var peer = new KerberosSession(
+            SessionKey,
+            EncryptionType.AES128_CTS_HMAC_SHA1_96,
+            isAcceptor: true);
 
         context.SignAndSeal(pduBody, 0, pduBody.Length, out byte[] signature);
-        bool verified = context.VerifyAndUnseal(pduBody, 0, pduBody.Length, signature);
+        peer.UnprotectRpcMessage(
+            pduBody,
+            0,
+            pduBody.Length,
+            signature,
+            confidential: false);
+        byte[] peerSignature = peer.ProtectRpcMessage(
+            pduBody,
+            0,
+            pduBody.Length,
+            confidential: false);
+        bool verified = context.VerifyAndUnseal(
+            pduBody,
+            0,
+            pduBody.Length,
+            peerSignature);
 
         await Assert.That(signature.Length > 0).IsTrue();
         await Assert.That(verified).IsTrue();
@@ -117,7 +140,7 @@ public sealed class KerberosAuthContextTests
         {
             _apRequest = apRequest;
             EstablishedSessionKey = new KerberosSessionKey(
-                new byte[] { 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 0x19, 0x1A, 0x1B, 0x1C, 0x1D, 0x1E, 0x1F },
+                SessionKey,
                 EncryptionType.AES128_CTS_HMAC_SHA1_96,
                 UsesAcceptorSubkey: false);
         }

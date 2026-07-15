@@ -23,6 +23,7 @@
 | Channel-binding checksum (RFC 4121 §4.1.1 — gss-bnd, embedded in Authenticator.cksum) | RFC 4121 §4.1.1 | ✅ `KerberosChannelBindingChecksum` | ✅ `KerberosChannelBindingChecksumTests` | conformant |
 | MIC token (RFC 4121 §4.2.6.1) | RFC 4121 §4.2.6.1 | ✅ `Rfc4121MicTokenTests` | ✅ | conformant |
 | Wrap token (RFC 4121 §4.2.6.2) | RFC 4121 §4.2.6.2 | ✅ `Rfc4121WrapTokenTests` | ✅ | conformant |
+| MS-RPCE `GSS_GetMICEx` / `GSS_WrapEx` packet protection | MS-KILE §3.4.5.4-§3.4.5.7 | ✅ segmented header/body/trailer protection, directional AP sequence numbers, AES EC/RRC framing, RC4 DCE-style framing | ✅ `KerberosRpcPacketProtectionTests`, published MS-KILE §4.5 RC4 vector | conformant |
 | RFC 3962 AES-CTS encryption (`aes128-cts-hmac-sha1-96`, `aes256-cts-hmac-sha1-96`) | RFC 3962 | ✅ `Rfc3962AesCtsTests` | ✅ | conformant |
 | RFC 4757 RC4-HMAC (`rc4-hmac-md5`) | RFC 4757 | ✅ `Rfc4757Rc4HmacTests` | ✅ | conformant |
 | RFC 8009 AES-SHA2 (`aes128-cts-hmac-sha256-128`, `aes256-cts-hmac-sha384-192`) | RFC 8009 | ✅ `Rfc8009AesShaaTests` | ✅ | conformant |
@@ -58,8 +59,7 @@ policy.
 
 ### 1.2 GSS-API token wrapper (RFC 4121 §4)
 
-The wire byte stream embedded in the RPCE auth-trailer is an
-RFC 2743-style GSS-API token: OID `1.2.840.113554.1.2.2` + 2-byte tok_id + the actual Kerberos AP-REQ/AP-REP/MIC/Wrap blob.
+Context-establishment tokens carry the Kerberos mechanism directly or inside SPNEGO, depending on the selected RPC authentication service. Per-PDU `auth_value` framing depends on the negotiated encryption type: AES uses the RFC 4121 MIC/Wrap header with the MS-KILE `GSS_GetMICEx`/`GSS_WrapEx` EC/RRC split, while RC4 uses the RFC 4757 pseudo-ASN.1 InitialContextToken. The PDU body remains in its RPCE segment and only the confidentiality-selected body bytes are encrypted.
 
 | Surface | Source | Tests |
 |---|---|---|
@@ -73,6 +73,7 @@ RFC 2743-style GSS-API token: OID `1.2.840.113554.1.2.2` + 2-byte tok_id + the a
 | MIC token (16-byte header + checksum) | §4.2.6.1 | `src/Opc.Classic.Dcom.Kerberos/...MicProvider` (via `KerberosConnectionContext`) | `tests/Opc.Classic.Dcom.Kerberos.Tests/Rfc4121MicTokenTests.cs` |
 | Wrap token (16-byte header + RRC + EC + encrypted body) | §4.2.6.2 | same | `tests/Opc.Classic.Dcom.Kerberos.Tests/Rfc4121WrapTokenTests.cs` |
 | Per-sequence-number replay protection | §4.2.4 | `src/Opc.Classic.Dcom.Kerberos/KerberosSession.cs` | `tests/Opc.Classic.Dcom.Kerberos.Tests/KerberosReplayProtectionTests.cs` |
+| RPCE segmented packet protection | MS-KILE §3.4.5.4-§3.4.5.7 | `KerberosSession.ProtectRpcMessage` / `UnprotectRpcMessage` | `KerberosRpcPacketProtectionTests`, `Rfc4757Rc4HmacTests` |
 
 ### 1.4 Channel-binding checksum (RFC 4121 §4.1.1)
 
@@ -177,8 +178,7 @@ handshakes (`AP_REQ` / `AP_REP`), GSS-API token wrapping, per-PDU MIC + Wrap
 tokens, channel-binding policy, service credential validation, principal
 mapping, replay protection, and all five supported etypes
 (aes128-sha1, aes256-sha1, rc4-hmac, aes128-sha2, aes256-sha2) are
-implemented and tested. KDC integration is verified via an embedded
-Kerberos.NET KDC test fixture.
+implemented and tested. Packet protection uses AP-REQ/AP-REP directional sequence numbers and is checked against the published MS-KILE §4.5 RC4 `GSS_WrapEx` known-answer vector. KDC integration is verified via an embedded Kerberos.NET KDC test fixture.
 
 ---
 

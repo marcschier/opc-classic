@@ -13,12 +13,13 @@ public enum KerberosChannelBindingPolicy
     Disabled,
 
     /// <summary>
-    /// Validate a binding supplied by the peer, but permit an absent binding.
+    /// Validate a binding supplied by the peer against the configured expected
+    /// hash, but permit an absent binding.
     /// </summary>
     WhenPresent,
 
     /// <summary>
-    /// Require a binding and reject absent or mismatched bindings.
+    /// Require a configured expected hash and reject absent or mismatched bindings.
     /// </summary>
     Required,
 }

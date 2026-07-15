@@ -96,12 +96,20 @@ public sealed class SpnegoServerAuthenticationProvider : IRpcServerAuthenticatio
         public RpcServerAuthenticationTokenResult AcceptToken(
             ReadOnlyMemory<byte> token,
             OpcProtectionLevel protectionLevel) =>
-            AcceptToken(token, protectionLevel, CancellationToken.None);
+            AcceptToken(token, protectionLevel, isFinalLeg: false, CancellationToken.None);
 
         /// <inheritdoc />
         public RpcServerAuthenticationTokenResult AcceptToken(
             ReadOnlyMemory<byte> token,
             OpcProtectionLevel protectionLevel,
+            CancellationToken cancellationToken) =>
+            AcceptToken(token, protectionLevel, isFinalLeg: false, cancellationToken);
+
+        /// <inheritdoc />
+        public RpcServerAuthenticationTokenResult AcceptToken(
+            ReadOnlyMemory<byte> token,
+            OpcProtectionLevel protectionLevel,
+            bool isFinalLeg,
             CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -117,8 +125,8 @@ public sealed class SpnegoServerAuthenticationProvider : IRpcServerAuthenticatio
             try
             {
                 return !_receivedInitialToken
-                    ? AcceptInitialToken(token, protectionLevel, cancellationToken)
-                    : AcceptResponseToken(token, protectionLevel, cancellationToken);
+                    ? AcceptInitialToken(token, protectionLevel, isFinalLeg, cancellationToken)
+                    : AcceptResponseToken(token, protectionLevel, isFinalLeg, cancellationToken);
             }
             catch (OperationCanceledException)
             {
@@ -142,6 +150,7 @@ public sealed class SpnegoServerAuthenticationProvider : IRpcServerAuthenticatio
         private RpcServerAuthenticationTokenResult AcceptInitialToken(
             ReadOnlyMemory<byte> token,
             OpcProtectionLevel protectionLevel,
+            bool isFinalLeg,
             CancellationToken cancellationToken)
         {
             SpnegoNegTokenInit init = SpnegoDecoder.DecodeNegTokenInit(token);
@@ -152,7 +161,9 @@ public sealed class SpnegoServerAuthenticationProvider : IRpcServerAuthenticatio
 
             int selectedIndex = SelectMechanism(init.MechTypes, out IRpcServerAuthenticationProvider provider);
             _selectedMechanismOid = init.MechTypes[selectedIndex];
-            _peerMicRequired = selectedIndex != 0;
+            _peerMicRequired = selectedIndex != 0
+                || StringComparer.Ordinal.Equals(_selectedMechanismOid, SpnegoOids.Ntlmssp)
+                    && _options.KerberosProvider is not null;
             _innerAcceptor = provider.CreateAcceptor();
 
             if (selectedIndex != 0 || init.MechToken.IsEmpty)
@@ -164,12 +175,13 @@ public sealed class SpnegoServerAuthenticationProvider : IRpcServerAuthenticatio
                 init.MechToken,
                 protectionLevel,
                 cancellationToken);
-            return ProcessInnerResult(inner);
+            return ProcessInnerResult(inner, isFinalLeg);
         }
 
         private RpcServerAuthenticationTokenResult AcceptResponseToken(
             ReadOnlyMemory<byte> token,
             OpcProtectionLevel protectionLevel,
+            bool isFinalLeg,
             CancellationToken cancellationToken)
         {
             SpnegoNegTokenResp response = SpnegoDecoder.DecodeNegTokenResp(token);
@@ -204,7 +216,7 @@ public sealed class SpnegoServerAuthenticationProvider : IRpcServerAuthenticatio
                     throw Reject("a mechanism token was supplied after the mechanism completed");
                 }
 
-                return CompletePendingSession();
+                return CompletePendingSession(isFinalLeg);
             }
 
             if (response.ResponseToken is not { IsEmpty: false } mechanismToken)
@@ -216,11 +228,12 @@ public sealed class SpnegoServerAuthenticationProvider : IRpcServerAuthenticatio
                 mechanismToken,
                 protectionLevel,
                 cancellationToken);
-            return ProcessInnerResult(inner);
+            return ProcessInnerResult(inner, isFinalLeg);
         }
 
         private RpcServerAuthenticationTokenResult ProcessInnerResult(
-            RpcServerAuthenticationTokenResult inner)
+            RpcServerAuthenticationTokenResult inner,
+            bool isFinalLeg)
         {
             if (inner.Session is null)
             {
@@ -249,6 +262,10 @@ public sealed class SpnegoServerAuthenticationProvider : IRpcServerAuthenticatio
                     throw Reject(
                         "the selected mechanism cannot verify the required mechListMIC");
                 }
+                if (isFinalLeg)
+                {
+                    throw Reject("the required mechListMIC is absent from the final RPC authentication leg");
+                }
 
                 _pendingSession = session;
                 byte[] responseMic = micProvider.GetMic(_mechListBytes!);
@@ -256,6 +273,12 @@ public sealed class SpnegoServerAuthenticationProvider : IRpcServerAuthenticatio
                     SpnegoNegState.RequestMic,
                     inner.ResponseToken,
                     responseMic);
+            }
+
+            if (isFinalLeg
+                && StringComparer.Ordinal.Equals(_selectedMechanismOid, SpnegoOids.Ntlmssp))
+            {
+                return CompleteFinalNtlm(session, inner.ResponseToken);
             }
 
             byte[]? mechListMic = null;
@@ -266,10 +289,23 @@ public sealed class SpnegoServerAuthenticationProvider : IRpcServerAuthenticatio
                         "the selected mechanism cannot generate mechListMIC"))
                     .GetMic(_mechListBytes!);
             }
-            return Complete(session, inner.ResponseToken, mechListMic);
+            return Complete(session, inner.ResponseToken, mechListMic, emitResponseToken: true);
         }
 
-        private RpcServerAuthenticationTokenResult CompletePendingSession()
+        private RpcServerAuthenticationTokenResult CompleteFinalNtlm(
+            RpcServerAuthenticationSession session,
+            ReadOnlyMemory<byte> innerResponseToken)
+        {
+            if (!innerResponseToken.IsEmpty)
+            {
+                throw Reject(
+                    "NTLM completed with an unexpected mechanism response token");
+            }
+
+            return Complete(session, null, null, emitResponseToken: false);
+        }
+
+        private RpcServerAuthenticationTokenResult CompletePendingSession(bool isFinalLeg)
         {
             if (!_pendingPeerMic.HasValue)
             {
@@ -284,7 +320,9 @@ public sealed class SpnegoServerAuthenticationProvider : IRpcServerAuthenticatio
                 throw Reject("mechListMIC verification failed");
             }
 
-            return Complete(session, null, null);
+            bool emitResponseToken = !isFinalLeg
+                || !StringComparer.Ordinal.Equals(_selectedMechanismOid, SpnegoOids.Ntlmssp);
+            return Complete(session, null, null, emitResponseToken);
         }
 
         private RpcServerAuthenticationTokenResult Continue(
@@ -305,18 +343,21 @@ public sealed class SpnegoServerAuthenticationProvider : IRpcServerAuthenticatio
         private RpcServerAuthenticationTokenResult Complete(
             RpcServerAuthenticationSession session,
             ReadOnlyMemory<byte>? responseToken,
-            ReadOnlyMemory<byte>? mechListMic)
+            ReadOnlyMemory<byte>? mechListMic,
+            bool emitResponseToken)
         {
             NegotiationState = SpnegoNegState.AcceptCompleted;
             _established = true;
-            return RpcServerAuthenticationTokenResult.Complete(
-                session,
-                SpnegoEncoder.EncodeNegTokenResp(
-                    new SpnegoNegTokenResp(
-                        SpnegoNegState.AcceptCompleted,
-                        _selectedMechanismOid,
-                        responseToken,
-                        mechListMic)));
+            return emitResponseToken
+                ? RpcServerAuthenticationTokenResult.Complete(
+                    session,
+                    SpnegoEncoder.EncodeNegTokenResp(
+                        new SpnegoNegTokenResp(
+                            SpnegoNegState.AcceptCompleted,
+                            _selectedMechanismOid,
+                            responseToken,
+                            mechListMic)))
+                : RpcServerAuthenticationTokenResult.Complete(session);
         }
 
         private int SelectMechanism(

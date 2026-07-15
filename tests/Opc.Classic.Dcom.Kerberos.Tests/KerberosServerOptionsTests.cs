@@ -48,6 +48,16 @@ public sealed class KerberosServerOptionsTests
                 mapper,
                 channelBindingsHash: new byte[15]))
             .Throws<ArgumentException>();
+        await Assert.That(() => CreateOptions(
+                credentials,
+                mapper,
+                channelBinding: KerberosChannelBindingPolicy.WhenPresent))
+            .Throws<ArgumentException>();
+        await Assert.That(() => CreateOptions(
+                credentials,
+                mapper,
+                channelBinding: KerberosChannelBindingPolicy.Required))
+            .Throws<ArgumentException>();
     }
 
     [Test]
@@ -433,7 +443,7 @@ public sealed class KerberosServerOptionsTests
         string realm = Realm,
         IEnumerable<EncryptionType>? encryptionTypes = null,
         TimeSpan? clockSkew = null,
-        KerberosChannelBindingPolicy channelBinding = KerberosChannelBindingPolicy.Required,
+        KerberosChannelBindingPolicy channelBinding = KerberosChannelBindingPolicy.Disabled,
         OpcProtectionLevel minimumProtection = OpcProtectionLevel.Integrity,
         ReadOnlyMemory<byte>? channelBindingsHash = null) =>
         new(

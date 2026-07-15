@@ -453,7 +453,9 @@ public sealed class F4Auth
     private static byte[] AttachAuthenticationVerifier(byte[] pduBytes, OpcProtectionLevel protectionLevel, ReadOnlySpan<byte> authValue)
     {
         const int headerLength = 8;
-        int padding = PaddingTo(pduBytes.Length, 4);
+        int padding = PaddingTo(
+            pduBytes.Length - ConnectionOrientedPdu.HEADER_LENGTH,
+            16);
         int verifierStart = pduBytes.Length + padding;
         int fragmentLength = verifierStart + headerLength + authValue.Length;
         var result = new byte[fragmentLength];

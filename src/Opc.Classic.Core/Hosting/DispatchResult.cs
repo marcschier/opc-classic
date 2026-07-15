@@ -17,7 +17,7 @@ public readonly struct DispatchResult
     }
 
     /// <summary>
-    /// The NDR-encoded response payload, or an empty memory for failures without a body.
+    /// The NDR-encoded response payload, excluding the trailing COM method HRESULT.
     /// </summary>
     public ReadOnlyMemory<byte> Payload { get; }
 
@@ -61,7 +61,9 @@ public readonly struct DispatchResult
     }
 
     /// <summary>
-    /// Creates a failed dispatch result with no response payload.
+    /// Creates an application-level failed COM method result with no response payload.
+    /// The RPC transport returns the HRESULT in a normal response stub; it does not
+    /// convert application failures into DCE/RPC fault PDUs.
     /// </summary>
     public static DispatchResult Fault(int hr) => new(ReadOnlyMemory<byte>.Empty, hr);
 
