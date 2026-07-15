@@ -16,6 +16,10 @@ namespace Opc.Classic.Cpx;
 /// <param name="StringEncoding">Optional per-field string encoding.</param>
 /// <param name="CharWidth">Optional per-field character width in bytes.</param>
 /// <param name="Format">Optional field format metadata.</param>
+/// <param name="MinOccurs">
+/// XML Schema minimum occurrence count. <see langword="null"/> for OPCBinary
+/// fields, whose fixed counts are exact.
+/// </param>
 public sealed record TypeField(
     string Name,
     TypeKind Kind,
@@ -27,7 +31,8 @@ public sealed record TypeField(
     ByteOrder? ByteOrder = null,
     string? StringEncoding = null,
     int? CharWidth = null,
-    string? Format = null)
+    string? Format = null,
+    int? MinOccurs = null)
 {
     /// <summary>
     /// Field name. Empty when the OPCBinary field is anonymous.
@@ -83,6 +88,12 @@ public sealed record TypeField(
     /// Optional field format metadata.
     /// </summary>
     public string? Format { get; init; } = Normalize(Format);
+
+    /// <summary>
+    /// XML Schema minimum occurrence count. <see langword="null"/> identifies
+    /// OPCBinary occurrence semantics.
+    /// </summary>
+    public int? MinOccurs { get; init; } = ValidateNonNegative(MinOccurs, nameof(MinOccurs));
 
     private static TypeKind ValidateKind(TypeKind kind)
     {

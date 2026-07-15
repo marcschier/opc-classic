@@ -13,8 +13,16 @@ public readonly record struct OpcCpxConversionResult(object? Value, int Error)
     public static OpcCpxConversionResult Success(object? value) => new(value, OpcResultId.Ok.Code);
 
     /// <summary>
-    /// Creates the CPX §9 result used for unsupported conversions, malformed
-    /// runtime values, configured bound violations, and checked range failures.
+    /// Creates the CPX result used when dictionary or type metadata changed
+    /// while a conversion was in progress.
     /// </summary>
     public static OpcCpxConversionResult TypeChanged() => new(null, OpcComplexDataResult.OPCCPX_E_TYPE_CHANGED);
+
+    /// <summary>Creates an OPC_E_BADTYPE conversion result.</summary>
+    public static OpcCpxConversionResult BadType() => new(null, OpcResultId.BadType.Code);
+
+    /// <summary>Creates an OPC_E_RANGE conversion result.</summary>
+    public static OpcCpxConversionResult Range() => new(null, OpcResultId.Range.Code);
+
+    internal static OpcCpxConversionResult FromError(int error) => new(null, error);
 }

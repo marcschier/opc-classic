@@ -10,4 +10,15 @@ public interface IOpcCpxDataFilter
 
     /// <summary>Applies a data filter to a decoded complex value.</summary>
     OpcCpxFilterResult Apply(ComplexValue value, TypeDescription type, string expression);
+
+    /// <summary>
+    /// Applies a data filter with the dictionary required to resolve nested
+    /// declared field paths.
+    /// </summary>
+    OpcCpxFilterResult Apply(
+        ComplexValue value,
+        TypeDescription type,
+        TypeDictionary dictionary,
+        string expression) =>
+        Apply(value, type, expression);
 }

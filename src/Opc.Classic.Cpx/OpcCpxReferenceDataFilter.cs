@@ -52,6 +52,24 @@ public sealed class OpcCpxReferenceDataFilter : IOpcCpxDataFilter
 
     /// <inheritdoc />
     public OpcCpxFilterResult Apply(ComplexValue value, TypeDescription type, string expression)
+        => ApplyCore(value, type, null, expression);
+
+    /// <inheritdoc />
+    public OpcCpxFilterResult Apply(
+        ComplexValue value,
+        TypeDescription type,
+        TypeDictionary dictionary,
+        string expression)
+    {
+        ArgumentNullException.ThrowIfNull(dictionary);
+        return ApplyCore(value, type, dictionary, expression);
+    }
+
+    private static OpcCpxFilterResult ApplyCore(
+        ComplexValue value,
+        TypeDescription type,
+        TypeDictionary? dictionary,
+        string expression)
     {
         ArgumentNullException.ThrowIfNull(value);
         ArgumentNullException.ThrowIfNull(type);
@@ -61,7 +79,7 @@ public sealed class OpcCpxReferenceDataFilter : IOpcCpxDataFilter
             return OpcCpxFilterResult.Invalid();
         }
 
-        var result = root.Evaluate(new EvaluationContext(value, type));
+        var result = root.Evaluate(new EvaluationContext(value, type, dictionary));
         return result switch
         {
             Evaluation.True => OpcCpxFilterResult.Success(value),
@@ -111,7 +129,11 @@ public sealed class OpcCpxReferenceDataFilter : IOpcCpxDataFilter
         return false;
     }
 
-    private static Evaluation Compare(object? actual, ComparisonOperator comparisonOperator, Literal literal)
+    private static Evaluation Compare(
+        object? actual,
+        TypeField field,
+        ComparisonOperator comparisonOperator,
+        Literal literal)
     {
         if (actual is null)
         {
@@ -133,26 +155,24 @@ public sealed class OpcCpxReferenceDataFilter : IOpcCpxDataFilter
             };
         }
 
-        return actual switch
+        return field.Kind switch
         {
-            bool typed => CompareBoolean(typed, comparisonOperator, literal.Value),
-            sbyte typed => CompareDecimal(typed, comparisonOperator, literal.Value, NumberStyles.Integer),
-            byte typed => CompareDecimal(typed, comparisonOperator, literal.Value, NumberStyles.Integer),
-            short typed => CompareDecimal(typed, comparisonOperator, literal.Value, NumberStyles.Integer),
-            ushort typed => CompareDecimal(typed, comparisonOperator, literal.Value, NumberStyles.Integer),
-            int typed => CompareDecimal(typed, comparisonOperator, literal.Value, NumberStyles.Integer),
-            uint typed => CompareDecimal(typed, comparisonOperator, literal.Value, NumberStyles.Integer),
-            long typed => CompareDecimal(typed, comparisonOperator, literal.Value, NumberStyles.Integer),
-            ulong typed => CompareDecimal(typed, comparisonOperator, literal.Value, NumberStyles.Integer),
-            decimal typed => CompareDecimal(typed, comparisonOperator, literal.Value, NumberStyles.Float),
-            float typed => CompareSingle(typed, comparisonOperator, literal.Value),
-            double typed => CompareDouble(typed, comparisonOperator, literal.Value),
-            string typed => ApplyComparison(
-                string.Compare(typed, literal.Value, StringComparison.Ordinal),
+            TypeKind.Boolean => CompareBoolean((bool)actual, comparisonOperator, literal.Value),
+            TypeKind.Int8 => CompareSigned((sbyte)actual, sbyte.TryParse, comparisonOperator, literal.Value),
+            TypeKind.UInt8 => CompareUnsigned((byte)actual, byte.TryParse, comparisonOperator, literal.Value),
+            TypeKind.Int16 => CompareSigned((short)actual, short.TryParse, comparisonOperator, literal.Value),
+            TypeKind.UInt16 => CompareUnsigned((ushort)actual, ushort.TryParse, comparisonOperator, literal.Value),
+            TypeKind.Int32 => CompareSigned((int)actual, int.TryParse, comparisonOperator, literal.Value),
+            TypeKind.UInt32 => CompareUnsigned((uint)actual, uint.TryParse, comparisonOperator, literal.Value),
+            TypeKind.Int64 => CompareSigned((long)actual, long.TryParse, comparisonOperator, literal.Value),
+            TypeKind.UInt64 => CompareUnsigned((ulong)actual, ulong.TryParse, comparisonOperator, literal.Value),
+            TypeKind.Single => CompareSingle((float)actual, comparisonOperator, literal.Value),
+            TypeKind.Double => CompareDouble((double)actual, comparisonOperator, literal.Value),
+            TypeKind.String => ApplyComparison(
+                string.Compare((string)actual, literal.Value, StringComparison.Ordinal),
                 comparisonOperator),
-            DateTime typed => CompareDateTime(typed, comparisonOperator, literal.Value),
-            DateTimeOffset typed => CompareDateTimeOffset(typed, comparisonOperator, literal.Value),
-            Guid typed => CompareGuid(typed, comparisonOperator, literal.Value),
+            TypeKind.FileTime => CompareFileTime(actual, comparisonOperator, literal.Value),
+            TypeKind.Guid => CompareGuid((Guid)actual, comparisonOperator, literal.Value),
             _ => Evaluation.Error,
         };
     }
@@ -172,19 +192,34 @@ public sealed class OpcCpxReferenceDataFilter : IOpcCpxDataFilter
         };
     }
 
-    private static Evaluation CompareDecimal(
-        decimal actual,
+    private delegate bool TryParseNumber<T>(
+        string value,
+        NumberStyles styles,
+        IFormatProvider provider,
+        out T result);
+
+    private static Evaluation CompareSigned<T>(
+        T actual,
+        TryParseNumber<T> tryParse,
         ComparisonOperator comparisonOperator,
-        string literal,
-        NumberStyles styles)
+        string literal)
+        where T : struct, IComparable<T>
     {
-        if (!decimal.TryParse(literal, styles, CultureInfo.InvariantCulture, out var expected))
+        if (!tryParse(literal, NumberStyles.Integer, CultureInfo.InvariantCulture, out var expected))
         {
             return Evaluation.Error;
         }
 
         return ApplyComparison(actual.CompareTo(expected), comparisonOperator);
     }
+
+    private static Evaluation CompareUnsigned<T>(
+        T actual,
+        TryParseNumber<T> tryParse,
+        ComparisonOperator comparisonOperator,
+        string literal)
+        where T : struct, IComparable<T> =>
+        CompareSigned(actual, tryParse, comparisonOperator, literal);
 
     private static Evaluation CompareSingle(float actual, ComparisonOperator comparisonOperator, string literal)
     {
@@ -226,38 +261,30 @@ public sealed class OpcCpxReferenceDataFilter : IOpcCpxDataFilter
         return ApplyComparison(actual.CompareTo(expected), comparisonOperator);
     }
 
-    private static Evaluation CompareDateTime(
-        DateTime actual,
-        ComparisonOperator comparisonOperator,
-        string literal)
-    {
-        if (!DateTime.TryParse(
-            literal,
-            CultureInfo.InvariantCulture,
-            DateTimeStyles.AllowWhiteSpaces | DateTimeStyles.RoundtripKind,
-            out var expected))
-        {
-            return Evaluation.Error;
-        }
-
-        return ApplyComparison(actual.CompareTo(expected), comparisonOperator);
-    }
-
-    private static Evaluation CompareDateTimeOffset(
-        DateTimeOffset actual,
+    private static Evaluation CompareFileTime(
+        object actual,
         ComparisonOperator comparisonOperator,
         string literal)
     {
         if (!DateTimeOffset.TryParse(
             literal,
             CultureInfo.InvariantCulture,
-            DateTimeStyles.AllowWhiteSpaces | DateTimeStyles.RoundtripKind,
+            DateTimeStyles.AllowWhiteSpaces | DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal,
             out var expected))
         {
             return Evaluation.Error;
         }
 
-        return ApplyComparison(actual.CompareTo(expected), comparisonOperator);
+        var instant = actual switch
+        {
+            DateTimeOffset typed => typed.ToUniversalTime(),
+            DateTime typed when typed.Kind == DateTimeKind.Unspecified =>
+                new DateTimeOffset(DateTime.SpecifyKind(typed, DateTimeKind.Utc)),
+            DateTime typed => new DateTimeOffset(typed.ToUniversalTime()),
+            _ => default,
+        };
+
+        return ApplyComparison(instant.CompareTo(expected.ToUniversalTime()), comparisonOperator);
     }
 
     private static Evaluation CompareGuid(Guid actual, ComparisonOperator comparisonOperator, string literal)
@@ -328,12 +355,12 @@ public sealed class OpcCpxReferenceDataFilter : IOpcCpxDataFilter
     {
         public override Evaluation Evaluate(EvaluationContext context)
         {
-            if (!context.TryResolve(path, out var actual))
+            if (!context.TryResolve(path, out var actual, out var field))
             {
                 return Evaluation.Error;
             }
 
-            return Compare(actual, comparisonOperator, literal);
+            return Compare(actual, field, comparisonOperator, literal);
         }
     }
 
@@ -361,28 +388,69 @@ public sealed class OpcCpxReferenceDataFilter : IOpcCpxDataFilter
         }
     }
 
-    private sealed class EvaluationContext(ComplexValue value, TypeDescription type)
+    private sealed class EvaluationContext(
+        ComplexValue value,
+        TypeDescription type,
+        TypeDictionary? dictionary)
     {
-        public bool TryResolve(string[] path, out object? result)
+        public bool TryResolve(string[] path, out object? result, out TypeField field)
         {
             result = null;
-            if (path.Length == 0 || !ContainsTopLevelField(type, path[0]))
+            field = null!;
+            if (path.Length == 0)
             {
                 return false;
             }
 
-            object? current = value;
-            foreach (var segment in path)
+            var currentValue = value;
+            var currentType = type;
+            for (var index = 0; index < path.Length; index++)
             {
-                if (current is not ComplexValue complex
-                    || !complex.Fields.TryGetValue(segment, out current))
+                if (!OpcCpxTypeSemantics.TryGetField(currentType, path[index], out field))
                 {
                     return false;
                 }
+
+                if (!currentValue.Fields.TryGetValue(field.Name, out var current))
+                {
+                    if (field.MinOccurs == 0 && index == path.Length - 1)
+                    {
+                        result = null;
+                        return true;
+                    }
+
+                    return false;
+                }
+
+                var validationError = OpcCpxTypeSemantics.ValidateScalar(
+                    current,
+                    field,
+                    currentType,
+                    dictionary,
+                    currentValue.Fields);
+                if (validationError != OpcResultId.Ok.Code)
+                {
+                    return false;
+                }
+
+                if (index == path.Length - 1)
+                {
+                    result = current;
+                    return true;
+                }
+
+                if (field.Kind != TypeKind.StructReference
+                    || current is not ComplexValue nestedValue
+                    || dictionary?.TryGetByTypeId(field.TypeId!) is not { } nestedType)
+                {
+                    return false;
+                }
+
+                currentValue = nestedValue;
+                currentType = nestedType;
             }
 
-            result = current;
-            return true;
+            return false;
         }
     }
 

@@ -12,9 +12,11 @@ The demo also:
 - converts nested and counted-array fields with `OpcCpxReferenceTypeConverter`;
 - reports the committed nesting, array, expression, and comparison limits;
 - rejects `LIKE` vendor filter syntax with `OPCCPX_E_FILTER_INVALID`;
-- rejects bit-string-to-integer conversion with `OPCCPX_E_TYPE_CHANGED`;
+- rejects bit-string-to-integer conversion with `OPC_E_BADTYPE`;
 - reports a vendor type system without guessing its codec;
-- catches the deterministic truncated OPCBinary and omitted-optional XML payloads.
+- catches the deterministic truncated OPCBinary payload;
+- accepts and round-trips the omitted optional XML element;
+- parses each serialized property-604 type-description fragment before decoding.
 
 The client references only repository projects. Discovery and decode use static, AOT-safe APIs with no runtime reflection or external packages.
 

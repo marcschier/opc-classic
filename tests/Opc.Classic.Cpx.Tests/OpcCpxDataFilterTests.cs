@@ -134,6 +134,8 @@ public sealed class OpcCpxDataFilterTests
                 ["A]B"] = "escaped",
             });
         var value = CreateValue(details: details);
+        var type = CreateType();
+        var dictionary = TypeDictionary.FromTypes(type, CreateDetailsType());
 
         string[] expressions =
         [
@@ -145,7 +147,7 @@ public sealed class OpcCpxDataFilterTests
 
         foreach (var expression in expressions)
         {
-            var result = OpcCpxDataFilter.Apply(value, CreateType(), expression);
+            var result = OpcCpxDataFilter.Apply(value, type, dictionary, expression);
             await Assert.That(result.Error).IsEqualTo(OpcResultId.Ok.Code);
         }
     }
@@ -337,19 +339,15 @@ public sealed class OpcCpxDataFilterTests
     public async Task Apply_PathSegmentLimit_AcceptsBoundaryAndRejectsOnePast()
     {
         var value = CreateNestedPathValue(OpcCpxReferenceDataFilter.MaxPathSegments, 7);
-        var type = new TypeDescription(
-            "Root",
-            "Root",
-            TypeKind.StructReference,
-            true,
-            [new TypeField("P0", TypeKind.StructReference)]);
+        var dictionary = CreateNestedPathDictionary(OpcCpxReferenceDataFilter.MaxPathSegments);
+        var type = dictionary.TryGetByTypeId("Level0")!;
         var boundaryPath = string.Join(
             ".",
             Enumerable.Range(0, OpcCpxReferenceDataFilter.MaxPathSegments).Select(static i => $"P{i}"));
         var overLimitPath = boundaryPath + ".P32";
 
-        var boundary = OpcCpxDataFilter.Apply(value, type, $"{boundaryPath} = 7");
-        var overLimit = OpcCpxDataFilter.Apply(value, type, $"{overLimitPath} = 7");
+        var boundary = OpcCpxDataFilter.Apply(value, type, dictionary, $"{boundaryPath} = 7");
+        var overLimit = OpcCpxDataFilter.Apply(value, type, dictionary, $"{overLimitPath} = 7");
 
         await Assert.That(boundary.Error).IsEqualTo(OpcResultId.Ok.Code);
         await Assert.That(overLimit.Error).IsEqualTo(OpcComplexDataResult.OPCCPX_E_FILTER_INVALID);
@@ -371,6 +369,44 @@ public sealed class OpcCpxDataFilterTests
             await Assert.That(upper.Error).IsEqualTo(OpcResultId.Ok.Code);
             await Assert.That(different.Error).IsEqualTo(OpcComplexDataResult.OPCCPX_S_FILTER_NO_DATA);
         }
+    }
+
+    [Test]
+    public async Task Apply_UsesDeclaredTypesAndRejectsMalformedRuntimeValuesAndOutOfRangeLiterals()
+    {
+        var type = CreateType();
+        var valid = CreateValue();
+        var wrongClr = CreateComplexValue(
+            "StatusType",
+            new Dictionary<string, object?>(valid.Fields, StringComparer.Ordinal)
+            {
+                ["Count"] = (short)3,
+            });
+
+        var malformed = OpcCpxDataFilter.Apply(wrongClr, type, "Count = 3");
+        var outOfRange = OpcCpxDataFilter.Apply(CreateValue(), type, "Count = 2147483648");
+
+        await Assert.That(malformed.Error).IsEqualTo(OpcComplexDataResult.OPCCPX_E_FILTER_ERROR);
+        await Assert.That(outOfRange.Error).IsEqualTo(OpcComplexDataResult.OPCCPX_E_FILTER_ERROR);
+    }
+
+    [Test]
+    public async Task Apply_FileTimeComparesUtcDateTimeOffsetInstants()
+    {
+        var valid = CreateValue();
+        var value = CreateComplexValue(
+            "StatusType",
+            new Dictionary<string, object?>(valid.Fields, StringComparer.Ordinal)
+            {
+                ["Timestamp"] = new DateTimeOffset(2026, 7, 15, 16, 0, 0, TimeSpan.FromHours(2)),
+            });
+
+        var result = OpcCpxDataFilter.Apply(
+            value,
+            CreateType(),
+            "Timestamp = '2026-07-15T14:00:00Z'");
+
+        await Assert.That(result.Error).IsEqualTo(OpcResultId.Ok.Code);
     }
 
     [Test]
@@ -442,12 +478,42 @@ public sealed class OpcCpxDataFilterTests
             new TypeField("Status", TypeKind.String),
             new TypeField("Count", TypeKind.Int32),
             new TypeField("Enabled", TypeKind.Boolean),
-            new TypeField("Optional", TypeKind.String),
+            new TypeField("Optional", TypeKind.String, MinOccurs: 0),
             new TypeField("Timestamp", TypeKind.FileTime),
             new TypeField("Id", TypeKind.Guid),
             new TypeField("Details", TypeKind.StructReference, "DetailsType"),
             new TypeField("Payload", TypeKind.Blob),
         ]);
+
+    private static TypeDescription CreateDetailsType() => new(
+        "DetailsType",
+        "DetailsType",
+        TypeKind.StructReference,
+        true,
+        [
+            new TypeField("State", TypeKind.String),
+            new TypeField("Status Code", TypeKind.Int32),
+            new TypeField("A]B", TypeKind.String),
+        ]);
+
+    private static TypeDictionary CreateNestedPathDictionary(int segmentCount)
+    {
+        var types = new TypeDescription[segmentCount];
+        for (var index = segmentCount - 1; index >= 0; index--)
+        {
+            var field = index == segmentCount - 1
+                ? new TypeField($"P{index}", TypeKind.Int32)
+                : new TypeField($"P{index}", TypeKind.StructReference, $"Level{index + 1}");
+            types[index] = new TypeDescription(
+                $"Level{index}",
+                $"Level{index}",
+                TypeKind.StructReference,
+                true,
+                [field]);
+        }
+
+        return new TypeDictionary("Nested", types);
+    }
 
     private static ComplexValue CreateValue(
         string status = "Good",

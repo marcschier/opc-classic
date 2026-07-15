@@ -186,6 +186,30 @@ public sealed class XmlComplexValueSerializerAdditionalTests
     }
 
     [Test]
+    public async Task Serializer_PreservesOptionalAndMinMaxOccurrenceConstraints()
+    {
+        var type = CreateType(
+            "Envelope",
+            "envelope",
+            new TypeField("Required", TypeKind.String, MinOccurs: 1),
+            new TypeField("Optional", TypeKind.String, MinOccurs: 0),
+            new TypeField("Values", TypeKind.UInt8, ElementCount: 2, MinOccurs: 1));
+        var value = CreateValue(type, new Dictionary<string, object?>
+        {
+            ["Required"] = "present",
+            ["Values"] = new byte[] { 7 },
+        });
+
+        var xml = XmlComplexValueSerializer.Serialize(value, type);
+        var decoded = XmlComplexValueSerializer.Deserialize(xml, type);
+
+        await Assert.That(xml).DoesNotContain("<Optional>");
+        await Assert.That(xml).Contains("<Values>7</Values>");
+        await Assert.That(decoded.Fields.ContainsKey("Optional")).IsFalse();
+        await Assert.That(((object?[])decoded.Fields["Values"]!).Length).IsEqualTo(1);
+    }
+
+    [Test]
     public async Task Serializer_ExtraElementsAndFields_AreIgnored()
     {
         var type = CreateType("Payload", "payload", new TypeField("Value", TypeKind.UInt8));

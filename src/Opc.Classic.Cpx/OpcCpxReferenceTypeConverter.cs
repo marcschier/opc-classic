@@ -1,7 +1,7 @@
 ﻿// Copyright (c) 2026 Opc.Classic Contributors. Licensed under the MIT License.
 
-using System.Collections;
 using System.Globalization;
+using System.Numerics;
 
 namespace Opc.Classic.Cpx;
 
@@ -17,6 +17,11 @@ public sealed class OpcCpxReferenceTypeConverter : IOpcCpxTypeConverter
     /// <inheritdoc />
     public OpcCpxConversionResult Convert(object? value, TypeKind sourceKind, TypeKind requestedKind)
     {
+        if (OpcCpxTypeSemantics.ValidateRuntimeType(value, sourceKind) != OpcResultId.Ok.Code)
+        {
+            return OpcCpxConversionResult.BadType();
+        }
+
         if (sourceKind == requestedKind)
         {
             return OpcCpxConversionResult.Success(value);
@@ -32,13 +37,12 @@ public sealed class OpcCpxReferenceTypeConverter : IOpcCpxTypeConverter
             (TypeKind.Boolean, TypeKind.Int32, bool typed) => OpcCpxConversionResult.Success(typed ? 1 : 0),
             (TypeKind.Single, TypeKind.Double, float typed) => OpcCpxConversionResult.Success((double)typed),
             (TypeKind.Int32, TypeKind.Double, int typed) => OpcCpxConversionResult.Success((double)typed),
-            (TypeKind.String, TypeKind.Int32, string typed)
-                when int.TryParse(typed, NumberStyles.Integer, CultureInfo.InvariantCulture, out var parsed) =>
-                OpcCpxConversionResult.Success(parsed),
+            (TypeKind.String, TypeKind.Int32, string typed) => ConvertStringToInt32(typed),
             (TypeKind.Double, TypeKind.Single, double typed)
                 when !double.IsFinite(typed) || (typed >= -float.MaxValue && typed <= float.MaxValue) =>
                 OpcCpxConversionResult.Success((float)typed),
-            _ => OpcCpxConversionResult.TypeChanged(),
+            (TypeKind.Double, TypeKind.Single, double) => OpcCpxConversionResult.Range(),
+            _ => OpcCpxConversionResult.BadType(),
         };
     }
 
@@ -137,7 +141,7 @@ public sealed class OpcCpxReferenceTypeConverter : IOpcCpxTypeConverter
                 out var sourceNestedType,
                 out var requestedNestedType))
         {
-            return OpcCpxConversionResult.TypeChanged();
+            return OpcCpxConversionResult.BadType();
         }
 
         var convertedElements = new ComplexValue[elements.Length];
@@ -145,7 +149,7 @@ public sealed class OpcCpxReferenceTypeConverter : IOpcCpxTypeConverter
         {
             if (elements[i] is not ComplexValue nestedValue)
             {
-                return OpcCpxConversionResult.TypeChanged();
+                return OpcCpxConversionResult.BadType();
             }
 
             var converted = ConvertComplex(
@@ -158,7 +162,7 @@ public sealed class OpcCpxReferenceTypeConverter : IOpcCpxTypeConverter
             if (converted.Error != OpcResultId.Ok.Code || converted.Value is not ComplexValue convertedValue)
             {
                 return converted.Error == OpcResultId.Ok.Code
-                    ? OpcCpxConversionResult.TypeChanged()
+                    ? OpcCpxConversionResult.BadType()
                     : converted;
             }
 
@@ -172,14 +176,49 @@ public sealed class OpcCpxReferenceTypeConverter : IOpcCpxTypeConverter
         object? sourceValue,
         TypeField sourceField,
         TypeField requestedField,
+        TypeDescription sourceContainingType,
+        TypeDescription requestedContainingType,
+        IReadOnlyDictionary<string, object?> sourceValues,
+        IReadOnlyDictionary<string, object?>? requestedValues,
         TypeDictionary? sourceDictionary,
         TypeDictionary? requestedDictionary,
         int depth)
     {
+        if (!HaveValidShapes(sourceField, requestedField))
+        {
+            return OpcCpxConversionResult.BadType();
+        }
+
+        var sourceValueError = ValidateFieldValue(
+            sourceValue,
+            sourceField,
+            sourceContainingType,
+            sourceValues,
+            sourceDictionary);
+        if (sourceValueError != OpcResultId.Ok.Code)
+        {
+            return OpcCpxConversionResult.FromError(sourceValueError);
+        }
+
+        if (sourceValue is null)
+        {
+            return ConvertNull(
+                requestedField,
+                requestedContainingType,
+                requestedValues,
+                requestedDictionary);
+        }
+
         if (sourceField.Kind != TypeKind.StructReference
             && requestedField.Kind != TypeKind.StructReference)
         {
-            return Convert(sourceValue, sourceField.Kind, requestedField.Kind);
+            return ConvertPrimitiveField(
+                sourceValue,
+                sourceField,
+                requestedField,
+                requestedContainingType,
+                requestedValues,
+                requestedDictionary);
         }
 
         if (sourceValue is not ComplexValue nestedValue
@@ -191,7 +230,7 @@ public sealed class OpcCpxReferenceTypeConverter : IOpcCpxTypeConverter
                 out var sourceNestedType,
                 out var requestedNestedType))
         {
-            return OpcCpxConversionResult.TypeChanged();
+            return OpcCpxConversionResult.BadType();
         }
 
         return ConvertComplex(
@@ -202,6 +241,65 @@ public sealed class OpcCpxReferenceTypeConverter : IOpcCpxTypeConverter
             requestedDictionary,
             depth + 1);
     }
+
+    private OpcCpxConversionResult ConvertPrimitiveField(
+        object sourceValue,
+        TypeField sourceField,
+        TypeField requestedField,
+        TypeDescription requestedContainingType,
+        IReadOnlyDictionary<string, object?>? requestedValues,
+        TypeDictionary? requestedDictionary)
+    {
+        var converted = Convert(sourceValue, sourceField.Kind, requestedField.Kind);
+        if (converted.Error != OpcResultId.Ok.Code)
+        {
+            return converted;
+        }
+
+        var requestedValueError = ValidateFieldValue(
+            converted.Value,
+            requestedField,
+            requestedContainingType,
+            requestedValues,
+            requestedDictionary);
+        return requestedValueError == OpcResultId.Ok.Code
+            ? converted
+            : OpcCpxConversionResult.FromError(requestedValueError);
+    }
+
+    private static OpcCpxConversionResult ConvertNull(
+        TypeField requestedField,
+        TypeDescription requestedContainingType,
+        IReadOnlyDictionary<string, object?>? requestedValues,
+        TypeDictionary? requestedDictionary)
+    {
+        var error = ValidateFieldValue(
+            null,
+            requestedField,
+            requestedContainingType,
+            requestedValues,
+            requestedDictionary);
+        return error == OpcResultId.Ok.Code
+            ? OpcCpxConversionResult.Success(null)
+            : OpcCpxConversionResult.FromError(error);
+    }
+
+    private static int ValidateFieldValue(
+        object? value,
+        TypeField field,
+        TypeDescription containingType,
+        IReadOnlyDictionary<string, object?>? containingValues,
+        TypeDictionary? dictionary) =>
+        OpcCpxTypeSemantics.ValidateScalar(
+            value,
+            field,
+            containingType,
+            dictionary,
+            containingValues);
+
+    private static bool HaveValidShapes(TypeField sourceField, TypeField requestedField) =>
+        OpcCpxTypeSemantics.ValidateFieldShape(sourceField) == OpcResultId.Ok.Code
+        && OpcCpxTypeSemantics.ValidateFieldShape(requestedField) == OpcResultId.Ok.Code;
 
     private static bool TryResolveTypes(
         TypeField sourceField,
@@ -229,99 +327,7 @@ public sealed class OpcCpxReferenceTypeConverter : IOpcCpxTypeConverter
     }
 
     private static bool IsArrayField(TypeField field) =>
-        field.Kind is not TypeKind.String and not TypeKind.Blob and not TypeKind.BitString
-        && (field.ElementCount is not null || field.ElementCountFieldName is not null);
-
-    private static bool TryGetCount(
-        TypeField field,
-        TypeDescription containingType,
-        IReadOnlyDictionary<string, object?>? values,
-        Func<string, OpcCpxConversionResult>? convertCountField,
-        out int count)
-    {
-        count = 0;
-        if (field.ElementCount is { } fixedCount)
-        {
-            count = fixedCount;
-            return fixedCount <= MaxArrayElements;
-        }
-
-        if (field.ElementCountFieldName is not { } countName
-            || !TryGetField(containingType, countName, out _)
-            || !TryGetCountValue(countName, values, convertCountField, out var countValue))
-        {
-            return false;
-        }
-
-        try
-        {
-            count = OpcBinaryCodecUtilities.ToNonNegativeInt32(countValue, countName);
-            return count <= MaxArrayElements;
-        }
-        catch (Exception exception) when (exception is FormatException
-            or InvalidCastException
-            or InvalidOperationException
-            or OverflowException)
-        {
-            return false;
-        }
-    }
-
-    private static bool TryGetCountValue(
-        string countName,
-        IReadOnlyDictionary<string, object?>? values,
-        Func<string, OpcCpxConversionResult>? convertCountField,
-        out object? countValue)
-    {
-        if (values is not null)
-        {
-            return values.TryGetValue(countName, out countValue);
-        }
-
-        if (convertCountField is not null)
-        {
-            var converted = convertCountField(countName);
-            countValue = converted.Value;
-            return converted.Error == OpcResultId.Ok.Code;
-        }
-
-        countValue = null;
-        return false;
-    }
-
-    private static bool TryMaterialize(object? value, int expectedCount, out object?[] elements)
-    {
-        elements = Array.Empty<object?>();
-        if (value is string || value is not IEnumerable enumerable)
-        {
-            return false;
-        }
-
-        if (value is ICollection collection
-            && (collection.Count != expectedCount || collection.Count > MaxArrayElements))
-        {
-            return false;
-        }
-
-        var materialized = new List<object?>(Math.Min(expectedCount, MaxArrayElements));
-        foreach (var element in enumerable)
-        {
-            if (materialized.Count == MaxArrayElements)
-            {
-                return false;
-            }
-
-            materialized.Add(element);
-        }
-
-        if (materialized.Count != expectedCount)
-        {
-            return false;
-        }
-
-        elements = materialized.ToArray();
-        return true;
-    }
+        OpcCpxTypeSemantics.IsRepeated(field);
 
     private static OpcCpxConversionResult ConvertIntegral(
         object? value,
@@ -330,15 +336,27 @@ public sealed class OpcCpxReferenceTypeConverter : IOpcCpxTypeConverter
     {
         if (!TryGetIntegral(value, sourceKind, out var isUnsigned, out var signed, out var unsigned))
         {
-            return OpcCpxConversionResult.TypeChanged();
+            return OpcCpxConversionResult.BadType();
         }
 
         object? converted = isUnsigned
             ? ConvertUnsigned(unsigned, requestedKind)
             : ConvertSigned(signed, requestedKind);
         return converted is null
-            ? OpcCpxConversionResult.TypeChanged()
+            ? OpcCpxConversionResult.Range()
             : OpcCpxConversionResult.Success(converted);
+    }
+
+    private static OpcCpxConversionResult ConvertStringToInt32(string value)
+    {
+        if (!BigInteger.TryParse(value, NumberStyles.Integer, CultureInfo.InvariantCulture, out var parsed))
+        {
+            return OpcCpxConversionResult.BadType();
+        }
+
+        return parsed >= int.MinValue && parsed <= int.MaxValue
+            ? OpcCpxConversionResult.Success((int)parsed)
+            : OpcCpxConversionResult.Range();
     }
 
     private static object? ConvertSigned(long value, TypeKind requestedKind) =>
@@ -506,7 +524,9 @@ public sealed class OpcCpxReferenceTypeConverter : IOpcCpxTypeConverter
         {
             if (_depth > MaxNestingDepth || _value.Fields is null)
             {
-                return OpcCpxConversionResult.TypeChanged();
+                return _depth > MaxNestingDepth
+                    ? OpcCpxConversionResult.Range()
+                    : OpcCpxConversionResult.BadType();
             }
 
             for (var i = 0; i < _requestedType.Fields.Count; i++)
@@ -540,16 +560,31 @@ public sealed class OpcCpxReferenceTypeConverter : IOpcCpxTypeConverter
 
             if (_states[index] == FieldState.Converting)
             {
-                return OpcCpxConversionResult.TypeChanged();
+                return OpcCpxConversionResult.BadType();
             }
 
             _states[index] = FieldState.Converting;
             var requestedField = _requestedType.Fields[index];
-            if (!TryGetField(_sourceType, requestedField.Name, out var sourceField)
-                || !_value.Fields.TryGetValue(sourceField.Name, out var sourceValue)
-                || IsArrayField(sourceField) != IsArrayField(requestedField))
+            if (!TryGetField(_sourceType, requestedField.Name, out var sourceField))
             {
                 return OpcCpxConversionResult.TypeChanged();
+            }
+
+            if (!_value.Fields.TryGetValue(sourceField.Name, out var sourceValue))
+            {
+                if (sourceField.MinOccurs == 0 && requestedField.MinOccurs == 0)
+                {
+                    _convertedValues[index] = null;
+                    _states[index] = FieldState.Converted;
+                    return OpcCpxConversionResult.Success(null);
+                }
+
+                return OpcCpxConversionResult.BadType();
+            }
+
+            if (IsArrayField(sourceField) != IsArrayField(requestedField))
+            {
+                return OpcCpxConversionResult.BadType();
             }
 
             var converted = IsArrayField(sourceField)
@@ -558,6 +593,10 @@ public sealed class OpcCpxReferenceTypeConverter : IOpcCpxTypeConverter
                     sourceValue,
                     sourceField,
                     requestedField,
+                    _sourceType,
+                    _requestedType,
+                    _value.Fields,
+                    GetRequestedContainingValues(requestedField),
                     _sourceDictionary,
                     _requestedDictionary,
                     _depth);
@@ -576,12 +615,51 @@ public sealed class OpcCpxReferenceTypeConverter : IOpcCpxTypeConverter
             TypeField sourceField,
             TypeField requestedField)
         {
-            if (!TryGetCount(sourceField, _sourceType, _value.Fields, null, out var sourceCount)
-                || !TryGetCount(requestedField, _requestedType, null, ConvertCountField, out var requestedCount)
-                || sourceCount != requestedCount
-                || !TryMaterialize(sourceValue, sourceCount, out var elements))
+            if (OpcCpxTypeSemantics.ValidateFieldShape(sourceField) != OpcResultId.Ok.Code
+                || OpcCpxTypeSemantics.ValidateFieldShape(requestedField) != OpcResultId.Ok.Code)
             {
-                return OpcCpxConversionResult.TypeChanged();
+                return OpcCpxConversionResult.BadType();
+            }
+
+            var materializeError = OpcCpxTypeSemantics.Materialize(sourceValue, out var elements);
+            if (materializeError != OpcResultId.Ok.Code)
+            {
+                return OpcCpxConversionResult.FromError(materializeError);
+            }
+
+            var sourceCountError = OpcCpxTypeSemantics.ValidateOccurrenceCount(
+                sourceField,
+                _sourceType,
+                _value.Fields,
+                elements.Length);
+            if (sourceCountError != OpcResultId.Ok.Code)
+            {
+                return OpcCpxConversionResult.FromError(sourceCountError);
+            }
+
+            IReadOnlyDictionary<string, object?>? requestedValues = null;
+            if (requestedField.ElementCountFieldName is { } countName)
+            {
+                var countResult = ConvertCountField(countName);
+                if (countResult.Error != OpcResultId.Ok.Code)
+                {
+                    return countResult;
+                }
+
+                requestedValues = new Dictionary<string, object?>(StringComparer.Ordinal)
+                {
+                    [countName] = countResult.Value,
+                };
+            }
+
+            var requestedCountError = OpcCpxTypeSemantics.ValidateOccurrenceCount(
+                requestedField,
+                _requestedType,
+                requestedValues,
+                elements.Length);
+            if (requestedCountError != OpcResultId.Ok.Code)
+            {
+                return OpcCpxConversionResult.FromError(requestedCountError);
             }
 
             return _converter.ConvertArray(
@@ -596,7 +674,20 @@ public sealed class OpcCpxReferenceTypeConverter : IOpcCpxTypeConverter
         private OpcCpxConversionResult ConvertCountField(string name) =>
             TryGetFieldIndex(_requestedType, name, out var index)
                 ? ConvertFieldAt(index)
-                : OpcCpxConversionResult.TypeChanged();
+                : OpcCpxConversionResult.BadType();
+
+        private IReadOnlyDictionary<string, object?>? GetRequestedContainingValues(TypeField field)
+        {
+            if (field.ElementCountFieldName is not { } countName)
+            {
+                return null;
+            }
+
+            var converted = ConvertCountField(countName);
+            return converted.Error == OpcResultId.Ok.Code
+                ? new Dictionary<string, object?>(StringComparer.Ordinal) { [countName] = converted.Value }
+                : null;
+        }
     }
 
     private enum FieldState

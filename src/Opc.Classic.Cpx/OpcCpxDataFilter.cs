@@ -21,4 +21,12 @@ public static class OpcCpxDataFilter
     /// </summary>
     public static OpcCpxFilterResult Apply(ComplexValue value, TypeDescription type, string expression) =>
         s_referenceFilter.Apply(value, type, expression);
+
+    /// <summary>Applies a bounded filter using declared nested dictionary types.</summary>
+    public static OpcCpxFilterResult Apply(
+        ComplexValue value,
+        TypeDescription type,
+        TypeDictionary dictionary,
+        string expression) =>
+        s_referenceFilter.Apply(value, type, dictionary, expression);
 }

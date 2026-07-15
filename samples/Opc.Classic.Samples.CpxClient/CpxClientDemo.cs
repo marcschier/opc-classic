@@ -3,6 +3,7 @@
 using Opc.Classic.Cpx;
 using Opc.Classic.Da.Hosting;
 using Opc.Classic.Samples.CpxServer;
+using System.Text.Json;
 
 namespace Opc.Classic.Samples.CpxClient;
 
@@ -43,6 +44,7 @@ public static class CpxClientDemo
                 await output.WriteLineAsync(
                     $"{itemId}: system={typeSystem}, dictionary={dictionaryId}, type={typeId}, description={typeDescription}")
                     .ConfigureAwait(false);
+                ValidateTypeDescription(typeSystem, typeId, typeDescription);
 
                 if (typeSystem.Equals(TypeDictionary.OpcBinaryTypeSystemId, StringComparison.Ordinal))
                 {
@@ -103,8 +105,13 @@ public static class CpxClientDemo
         OpcCpxFilterResult filterResult = filter.Apply(
             telemetry,
             telemetryType,
+            telemetryDictionary,
             "Detail.Status = Running AND Count = 3");
-        OpcCpxFilterResult unsupportedFilter = filter.Apply(telemetry, telemetryType, "Detail.Status LIKE 'Running'");
+        OpcCpxFilterResult unsupportedFilter = filter.Apply(
+            telemetry,
+            telemetryType,
+            telemetryDictionary,
+            "Detail.Status LIKE 'Running'");
 
         TypeDictionary requestedDictionary = CreateRequestedDictionary();
         TypeDescription requestedType = requestedDictionary.TryGetByTypeId("TelemetryPacket32")!;
@@ -164,6 +171,37 @@ public static class CpxClientDemo
     private static string ReadString(OpcVariant value) =>
         value.AsString() ?? throw new InvalidOperationException("Expected a string payload.");
 
+    private static void ValidateTypeDescription(string typeSystem, string typeId, string typeDescription)
+    {
+        if (typeSystem.Equals(TypeDictionary.OpcBinaryTypeSystemId, StringComparison.Ordinal))
+        {
+            var parsed = OpcBinaryDictionaryParser.ParseTypeDescription(typeDescription);
+            if (!parsed.TypeId.Equals(typeId, StringComparison.Ordinal))
+            {
+                throw new FormatException($"OPCBinary type description '{parsed.TypeId}' did not match '{typeId}'.");
+            }
+
+            return;
+        }
+
+        if (typeSystem.Equals(TypeDictionary.XmlSchemaTypeSystemId, StringComparison.Ordinal))
+        {
+            var parsed = XmlSchemaParser.Parse(typeDescription);
+            if (parsed.TryGetByTypeId(typeId) is null)
+            {
+                throw new FormatException($"XML Schema type description '{typeId}' was not parseable.");
+            }
+
+            return;
+        }
+
+        using var document = JsonDocument.Parse(typeDescription);
+        if (document.RootElement.ValueKind != JsonValueKind.Object)
+        {
+            throw new FormatException("Vendor type description must be a JSON object.");
+        }
+    }
+
     private static TypeDictionary CreateRequestedDictionary()
     {
         var detail = new TypeDescription(
@@ -172,9 +210,9 @@ public static class CpxClientDemo
             TypeKind.StructReference,
             isComplex: true,
             [
-                new TypeField("Label", TypeKind.String, Length: 8),
+                new TypeField("Label", TypeKind.String, Length: 8, StringEncoding: "ASCII", CharWidth: 1),
                 new TypeField("Temperature", TypeKind.Double),
-                new TypeField("Status", TypeKind.String, Length: 8),
+                new TypeField("Status", TypeKind.String, Length: 8, StringEncoding: "ASCII", CharWidth: 1),
             ]);
         var packet = new TypeDescription(
             "TelemetryPacket32",

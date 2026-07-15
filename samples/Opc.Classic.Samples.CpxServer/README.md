@@ -14,9 +14,10 @@ The catalog includes:
 - A vendor type system that is advertised but intentionally not decoded.
 
 The sample is read-only. DA group creation and vendor-defined decoding are
-explicitly unsupported. The missing optional XML element is an invalid-payload
-example because the bounded reference XML serializer requires every parsed
-field. The server advertises unknown vendor type systems without selecting a
-codec or interpreting their payloads.
+explicitly unsupported. The missing optional XML element is valid because the
+parsed `minOccurs="0"` constraint is preserved. Property 604 contains a
+parseable serialized type-description fragment rather than display text. The
+server advertises unknown vendor type systems without selecting a codec or
+interpreting their payloads.
 
 The project inherits the repository's trimming and NativeAOT analyzers and uses no reflection, dynamic code, native COM runtime, or third-party dependencies.

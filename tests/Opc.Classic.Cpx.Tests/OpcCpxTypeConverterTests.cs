@@ -34,20 +34,40 @@ public sealed class OpcCpxTypeConverterTests
     }
 
     [Test]
-    public async Task Convert_IdentityForEveryKind_PreservesNullAndObjectReference()
+    public async Task Convert_IdentityForEveryKind_ValidatesRuntimeType()
     {
-        var reference = new object();
+        (TypeKind Kind, object Value)[] cases =
+        [
+            (TypeKind.Boolean, true),
+            (TypeKind.Int8, (sbyte)-1),
+            (TypeKind.UInt8, (byte)1),
+            (TypeKind.Int16, (short)-2),
+            (TypeKind.UInt16, (ushort)2),
+            (TypeKind.Int32, -3),
+            (TypeKind.UInt32, 3U),
+            (TypeKind.Int64, -4L),
+            (TypeKind.UInt64, 4UL),
+            (TypeKind.Single, 1.5F),
+            (TypeKind.Double, 2.5D),
+            (TypeKind.String, "value"),
+            (TypeKind.FileTime, new DateTimeOffset(2026, 1, 1, 0, 0, 0, TimeSpan.Zero)),
+            (TypeKind.Guid, Guid.Empty),
+            (TypeKind.Blob, new byte[] { 1 }),
+            (TypeKind.BitString, new byte[] { 0x80 }),
+            (TypeKind.StructReference, new ComplexValue { Type = new StructType { Name = "Value" } }),
+        ];
 
-        foreach (var kind in Enum.GetValues<TypeKind>())
+        foreach (var (kind, value) in cases)
         {
-            var nullResult = OpcCpxTypeConverter.Convert(null, kind, kind);
-            var referenceResult = OpcCpxTypeConverter.Convert(reference, kind, kind);
+            var result = OpcCpxTypeConverter.Convert(value, kind, kind);
 
-            await Assert.That(nullResult.Error).IsEqualTo(OpcResultId.Ok.Code);
-            await Assert.That(nullResult.Value).IsNull();
-            await Assert.That(referenceResult.Error).IsEqualTo(OpcResultId.Ok.Code);
-            await Assert.That(ReferenceEquals(referenceResult.Value, reference)).IsTrue();
+            await Assert.That(result.Error).IsEqualTo(OpcResultId.Ok.Code);
+            await Assert.That(ReferenceEquals(result.Value, value)).IsTrue();
         }
+
+        await AssertBadType(OpcCpxTypeConverter.Convert(null, TypeKind.Int32, TypeKind.Int32));
+        await AssertBadType(OpcCpxTypeConverter.Convert((short)1, TypeKind.Int32, TypeKind.Int32));
+        await AssertBadType(OpcCpxTypeConverter.Convert(1, TypeKind.Unknown, TypeKind.Unknown));
     }
 
     [Test]
@@ -77,14 +97,20 @@ public sealed class OpcCpxTypeConverterTests
     [Arguments("1.0")]
     [Arguments("1,000")]
     [Arguments("0x10")]
-    [Arguments("2147483648")]
-    [Arguments("-2147483649")]
     [Arguments("NaN")]
-    public async Task Convert_MalformedStringToInt32_ReturnsTypeChanged(string value)
+    public async Task Convert_MalformedStringToInt32_ReturnsBadType(string value)
     {
         var result = OpcCpxTypeConverter.Convert(value, TypeKind.String, TypeKind.Int32);
 
-        await AssertTypeChanged(result);
+        await AssertBadType(result);
+    }
+
+    [Test]
+    [Arguments("2147483648")]
+    [Arguments("-2147483649")]
+    public async Task Convert_StringToInt32OutsideRange_ReturnsRange(string value)
+    {
+        await AssertRange(OpcCpxTypeConverter.Convert(value, TypeKind.String, TypeKind.Int32));
     }
 
     [Test]
@@ -106,7 +132,7 @@ public sealed class OpcCpxTypeConverterTests
                 TypeKind.Int32);
 
             await AssertSuccess(invariantResult, 1234, typeof(int));
-            await AssertTypeChanged(cultureFormattedResult);
+            await AssertBadType(cultureFormattedResult);
         }
         finally
         {
@@ -184,7 +210,7 @@ public sealed class OpcCpxTypeConverterTests
                         CreateIntegral(sourceKind, below),
                         sourceKind,
                         requestedKind);
-                    await AssertTypeChanged(result);
+                    await AssertRange(result);
                 }
 
                 if (sourceMaximum > targetMaximum)
@@ -194,7 +220,7 @@ public sealed class OpcCpxTypeConverterTests
                         CreateIntegral(sourceKind, above),
                         sourceKind,
                         requestedKind);
-                    await AssertTypeChanged(result);
+                    await AssertRange(result);
                 }
             }
         }
@@ -208,7 +234,7 @@ public sealed class OpcCpxTypeConverterTests
     [Arguments(TypeKind.Int64, TypeKind.UInt64, "-1")]
     [Arguments(TypeKind.UInt64, TypeKind.Int64, "18446744073709551615")]
     [Arguments(TypeKind.UInt64, TypeKind.UInt32, "4294967296")]
-    public async Task Convert_IntegralExtremeOutsideRange_ReturnsTypeChanged(
+    public async Task Convert_IntegralExtremeOutsideRange_ReturnsRange(
         TypeKind sourceKind,
         TypeKind requestedKind,
         string value)
@@ -218,7 +244,7 @@ public sealed class OpcCpxTypeConverterTests
             sourceKind,
             requestedKind);
 
-        await AssertTypeChanged(result);
+        await AssertRange(result);
     }
 
     [Test]
@@ -304,7 +330,7 @@ public sealed class OpcCpxTypeConverterTests
     }
 
     [Test]
-    public async Task Convert_DoubleOutsideSingleFiniteRange_ReturnsTypeChanged()
+    public async Task Convert_DoubleOutsideSingleFiniteRange_ReturnsRange()
     {
         double[] values =
         [
@@ -316,7 +342,7 @@ public sealed class OpcCpxTypeConverterTests
 
         foreach (var value in values)
         {
-            await AssertTypeChanged(OpcCpxTypeConverter.Convert(value, TypeKind.Double, TypeKind.Single));
+            await AssertRange(OpcCpxTypeConverter.Convert(value, TypeKind.Double, TypeKind.Single));
         }
     }
 
@@ -336,13 +362,13 @@ public sealed class OpcCpxTypeConverterTests
     {
         foreach (var requestedKind in s_integralKinds)
         {
-            await AssertTypeChanged(OpcCpxTypeConverter.Convert(1.0f, TypeKind.Single, requestedKind));
-            await AssertTypeChanged(OpcCpxTypeConverter.Convert(1.0d, TypeKind.Double, requestedKind));
+            await AssertBadType(OpcCpxTypeConverter.Convert(1.0f, TypeKind.Single, requestedKind));
+            await AssertBadType(OpcCpxTypeConverter.Convert(1.0d, TypeKind.Double, requestedKind));
         }
     }
 
     [Test]
-    public async Task Convert_WrongClrRuntimeTypes_ReturnTypeChangedWithoutThrowing()
+    public async Task Convert_WrongClrRuntimeTypes_ReturnBadTypeWithoutThrowing()
     {
         (object? Value, TypeKind Source, TypeKind Requested)[] cases =
         [
@@ -355,7 +381,7 @@ public sealed class OpcCpxTypeConverterTests
 
         foreach (var testCase in cases)
         {
-            await AssertTypeChanged(OpcCpxTypeConverter.Convert(
+            await AssertBadType(OpcCpxTypeConverter.Convert(
                 testCase.Value,
                 testCase.Source,
                 testCase.Requested));
@@ -363,7 +389,7 @@ public sealed class OpcCpxTypeConverterTests
     }
 
     [Test]
-    public async Task Convert_UnsupportedAndVendorStylePairs_ReturnTypeChanged()
+    public async Task Convert_UnsupportedAndVendorStylePairs_ReturnBadType()
     {
         var complex = new ComplexValue { Type = new StructType { Name = "Vendor" } };
         (object Value, TypeKind Source, TypeKind Requested)[] cases =
@@ -379,7 +405,7 @@ public sealed class OpcCpxTypeConverterTests
 
         foreach (var testCase in cases)
         {
-            await AssertTypeChanged(OpcCpxTypeConverter.Convert(
+            await AssertBadType(OpcCpxTypeConverter.Convert(
                 testCase.Value,
                 testCase.Source,
                 testCase.Requested));
@@ -421,7 +447,7 @@ public sealed class OpcCpxTypeConverterTests
     }
 
     [Test]
-    public async Task Convert_ComplexValue_MissingOrMalformedFields_ReturnsTypeChanged()
+    public async Task Convert_ComplexValue_MissingMetadataOrMalformedRuntime_ReturnsSpecificErrors()
     {
         var sourceType = new TypeDescription(
             "Source",
@@ -447,7 +473,7 @@ public sealed class OpcCpxTypeConverterTests
         };
 
         await AssertTypeChanged(OpcCpxTypeConverter.Convert(missing, sourceType, requestedType));
-        await AssertTypeChanged(OpcCpxTypeConverter.Convert(malformed, sourceType, requestedType));
+        await AssertBadType(OpcCpxTypeConverter.Convert(malformed, sourceType, requestedType));
     }
 
     [Test]
@@ -525,7 +551,7 @@ public sealed class OpcCpxTypeConverterTests
         await Assert.That(middle.Fields["Count"]).IsEqualTo(2);
         await Assert.That(items[0].Fields["Code"]).IsEqualTo(7);
         await Assert.That(items[1].Fields["Code"]).IsEqualTo(9);
-        await AssertTypeChanged(OpcCpxTypeConverter.Convert(source, sourceRoot, requestedRoot));
+        await AssertBadType(OpcCpxTypeConverter.Convert(source, sourceRoot, requestedRoot));
     }
 
     [Test]
@@ -550,7 +576,7 @@ public sealed class OpcCpxTypeConverterTests
     }
 
     [Test]
-    public async Task Convert_MalformedNestedFieldsCountsAndShapes_ReturnTypeChanged()
+    public async Task Convert_MalformedNestedFieldsCountsAndShapes_ReturnSpecificErrors()
     {
         var sourceLeaf = CreateType("SourceLeaf", "source:leaf", new TypeField("Value", TypeKind.UInt16));
         var requestedLeaf = CreateType("RequestedLeaf", "requested:leaf", new TypeField("Value", TypeKind.UInt8));
@@ -559,7 +585,7 @@ public sealed class OpcCpxTypeConverterTests
         var dictionaries = (
             Source: TypeDictionary.FromTypes(sourceRoot, sourceLeaf),
             Requested: TypeDictionary.FromTypes(requestedRoot, requestedLeaf));
-        await AssertTypeChanged(OpcCpxTypeConverter.Convert(
+        await AssertRange(OpcCpxTypeConverter.Convert(
             CreateValue(sourceRoot, ("Child", CreateValue(sourceLeaf, ("Value", (ushort)256)))),
             sourceRoot,
             requestedRoot,
@@ -573,7 +599,7 @@ public sealed class OpcCpxTypeConverterTests
             missingField));
 
         var missingReference = CreateType("MissingRef", "missing:ref", new TypeField("Child", TypeKind.StructReference, "unknown"));
-        await AssertTypeChanged(OpcCpxTypeConverter.Convert(
+        await AssertBadType(OpcCpxTypeConverter.Convert(
             CreateValue(sourceRoot, ("Child", CreateValue(sourceLeaf, ("Value", (ushort)1)))),
             sourceRoot,
             missingReference,
@@ -582,7 +608,7 @@ public sealed class OpcCpxTypeConverterTests
 
         var fixedSource = CreateType("Fixed", "fixed", new TypeField("Values", TypeKind.UInt8, ElementCount: 2));
         var fixedRequested = CreateType("FixedRequested", "fixed:requested", new TypeField("Values", TypeKind.Int32, ElementCount: 2));
-        await AssertTypeChanged(OpcCpxTypeConverter.Convert(
+        await AssertRange(OpcCpxTypeConverter.Convert(
             CreateValue(fixedSource, ("Values", new byte[] { 1 })),
             fixedSource,
             fixedRequested));
@@ -597,13 +623,13 @@ public sealed class OpcCpxTypeConverterTests
             "counted:requested",
             new TypeField("Count", TypeKind.Int32),
             new TypeField("Values", TypeKind.Int32, ElementCountFieldName: "Count"));
-        await AssertTypeChanged(OpcCpxTypeConverter.Convert(
+        await AssertRange(OpcCpxTypeConverter.Convert(
             CreateValue(countedSource, ("Count", (byte)3), ("Values", new byte[] { 1, 2 })),
             countedSource,
             countedRequested));
 
         var scalarRequested = CreateType("Scalar", "scalar", new TypeField("Values", TypeKind.Int32));
-        await AssertTypeChanged(OpcCpxTypeConverter.Convert(
+        await AssertBadType(OpcCpxTypeConverter.Convert(
             CreateValue(fixedSource, ("Values", new byte[] { 1, 2 })),
             fixedSource,
             scalarRequested));
@@ -628,7 +654,7 @@ public sealed class OpcCpxTypeConverterTests
         }
         else
         {
-            await AssertTypeChanged(result);
+            await AssertRange(result);
         }
     }
 
@@ -651,7 +677,7 @@ public sealed class OpcCpxTypeConverterTests
         }
         else
         {
-            await AssertTypeChanged(result);
+            await AssertRange(result);
         }
     }
 
@@ -665,8 +691,40 @@ public sealed class OpcCpxTypeConverterTests
 
         await Assert.That(result.Error).IsEqualTo(OpcResultId.Ok.Code);
         await Assert.That(ReferenceEquals(bits, ((ComplexValue)result.Value!).Fields["Bits"])).IsTrue();
-        await AssertTypeChanged(OpcCpxTypeConverter.Convert(bits, TypeKind.BitString, TypeKind.UInt16));
-        await AssertTypeChanged(OpcCpxTypeConverter.Convert((ushort)1, TypeKind.UInt16, TypeKind.BitString));
+        await AssertBadType(OpcCpxTypeConverter.Convert(bits, TypeKind.BitString, TypeKind.UInt16));
+        await AssertBadType(OpcCpxTypeConverter.Convert((ushort)1, TypeKind.UInt16, TypeKind.BitString));
+    }
+
+    [Test]
+    public async Task Convert_SameKindFields_ValidateClrTypeLengthAndBitShape()
+    {
+        var source = CreateType(
+            "Source",
+            "source",
+            new TypeField("Code", TypeKind.String, Length: 4, StringEncoding: "ASCII", CharWidth: 1),
+            new TypeField("Bits", TypeKind.BitString, Length: 9));
+        var requested = CreateType(
+            "Requested",
+            "requested",
+            new TypeField("Code", TypeKind.String, Length: 3, StringEncoding: "ASCII", CharWidth: 1),
+            new TypeField("Bits", TypeKind.BitString, Length: 8));
+
+        var stringRange = OpcCpxTypeConverter.Convert(
+            CreateValue(source, ("Code", "ABCD"), ("Bits", new byte[] { 0x80, 0x00 })),
+            source,
+            requested);
+        var malformedBits = OpcCpxTypeConverter.Convert(
+            CreateValue(source, ("Code", "ABC"), ("Bits", new byte[] { 0x80, 0x01 })),
+            source,
+            source);
+        var wrongClr = OpcCpxTypeConverter.Convert(
+            CreateValue(source, ("Code", 7), ("Bits", new byte[] { 0x80, 0x00 })),
+            source,
+            source);
+
+        await AssertRange(stringRange);
+        await AssertBadType(malformedBits);
+        await AssertBadType(wrongClr);
     }
 
     private static async Task AssertSuccess(OpcCpxConversionResult result, object expected, Type expectedType)
@@ -679,6 +737,18 @@ public sealed class OpcCpxTypeConverterTests
     private static async Task AssertTypeChanged(OpcCpxConversionResult result)
     {
         await Assert.That(result.Error).IsEqualTo(OpcComplexDataResult.OPCCPX_E_TYPE_CHANGED);
+        await Assert.That(result.Value).IsNull();
+    }
+
+    private static async Task AssertBadType(OpcCpxConversionResult result)
+    {
+        await Assert.That(result.Error).IsEqualTo(OpcResultId.BadType.Code);
+        await Assert.That(result.Value).IsNull();
+    }
+
+    private static async Task AssertRange(OpcCpxConversionResult result)
+    {
+        await Assert.That(result.Error).IsEqualTo(OpcResultId.Range.Code);
         await Assert.That(result.Value).IsNull();
     }
 

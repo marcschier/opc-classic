@@ -4,6 +4,7 @@ using Opc.Classic.Cpx;
 using Opc.Classic.Cpx.Hosting;
 using Opc.Classic.Da.Hosting;
 using Opc.Classic.Dcom;
+using System.Xml.Linq;
 
 namespace Opc.Classic.Samples.CpxServer;
 
@@ -185,21 +186,24 @@ public sealed class CpxSampleServer :
                 CpxSampleCatalog.OpcBinaryDictionaryId,
                 binaryDictionary,
                 CpxSampleCatalog.OpcBinaryDictionary,
-                CreateTypeDescriptions(binaryDictionary),
+                CreateOpcBinaryTypeDescriptions(CpxSampleCatalog.OpcBinaryDictionary),
                 "SampleBinary")
             .AddDictionary(
                 TypeDictionary.XmlSchemaTypeSystemId,
                 CpxSampleCatalog.XmlDictionaryId,
                 xmlDictionary,
                 CpxSampleCatalog.XmlSchemaDictionary,
-                CreateTypeDescriptions(xmlDictionary),
+                CreateXmlTypeDescriptions(CpxSampleCatalog.XmlSchemaDictionary),
                 "SampleXml")
             .AddDictionary(
                 "Vendor-CBOR-1",
                 CpxSampleCatalog.VendorDictionaryId,
                 vendorDictionary,
                 CpxSampleCatalog.VendorDictionary,
-                CreateTypeDescriptions(vendorDictionary),
+                new Dictionary<string, string>(StringComparer.Ordinal)
+                {
+                    ["VendorEnvelope"] = CpxSampleCatalog.VendorDictionary,
+                },
                 "VendorCbor");
 
         options
@@ -297,15 +301,87 @@ public sealed class CpxSampleServer :
         };
     }
 
-    private static IReadOnlyDictionary<string, string> CreateTypeDescriptions(TypeDictionary dictionary)
+    private static IReadOnlyDictionary<string, string> CreateOpcBinaryTypeDescriptions(string dictionaryXml)
     {
+        var document = XDocument.Parse(dictionaryXml, LoadOptions.None);
         var values = new Dictionary<string, string>(StringComparer.Ordinal);
-        foreach (var type in dictionary.Types)
+        foreach (var element in document.Root!.Elements())
         {
-            values.Add(type.TypeId, $"TypeID={type.TypeId}; Fields={type.Fields.Count}");
+            if (element.Name.LocalName.Equals("TypeDescription", StringComparison.Ordinal)
+                && element.Attribute("TypeID")?.Value is { } typeId)
+            {
+                values.Add(typeId, element.ToString(SaveOptions.DisableFormatting));
+            }
         }
 
         return values;
+    }
+
+    private static IReadOnlyDictionary<string, string> CreateXmlTypeDescriptions(string schemaXml)
+    {
+        var document = XDocument.Parse(schemaXml, LoadOptions.None);
+        var schema = document.Root!;
+        var values = new Dictionary<string, string>(StringComparer.Ordinal);
+        foreach (var element in schema.Elements())
+        {
+            if (element.Name.LocalName.Equals("element", StringComparison.Ordinal)
+                && element.Attribute("name")?.Value is { } typeId)
+            {
+                AddXmlTypeDescriptions(schema, element, typeId, values);
+            }
+        }
+
+        return values;
+    }
+
+    private static void AddXmlTypeDescriptions(
+        XElement schema,
+        XElement element,
+        string typeId,
+        IDictionary<string, string> values)
+    {
+        var typeElement = new XElement(element);
+        typeElement.SetAttributeValue("name", typeId);
+        var fragment = new XElement(schema.Name, schema.Attributes(), typeElement);
+        values.Add(typeId, fragment.ToString(SaveOptions.DisableFormatting));
+
+        var complexType = element.Elements().FirstOrDefault(static candidate =>
+            candidate.Name.LocalName.Equals("complexType", StringComparison.Ordinal));
+        if (complexType is null)
+        {
+            return;
+        }
+
+        foreach (var child in EnumerateXmlChildElements(complexType))
+        {
+            if (child.Attribute("name")?.Value is { } childName
+                && child.Elements().Any(static candidate =>
+                    candidate.Name.LocalName.Equals("complexType", StringComparison.Ordinal)))
+            {
+                AddXmlTypeDescriptions(schema, child, $"{typeId}/{childName}", values);
+            }
+        }
+    }
+
+    private static IEnumerable<XElement> EnumerateXmlChildElements(XElement complexType)
+    {
+        foreach (var child in complexType.Elements())
+        {
+            if (child.Name.LocalName is "sequence" or "all" or "choice")
+            {
+                foreach (var element in child.Elements())
+                {
+                    if (element.Name.LocalName.Equals("element", StringComparison.Ordinal))
+                    {
+                        yield return element;
+                    }
+                }
+            }
+            else if (child.Name.LocalName.Equals("element", StringComparison.Ordinal))
+            {
+                yield return child;
+            }
+        }
     }
 
     private static ComplexValue CreateValue(
