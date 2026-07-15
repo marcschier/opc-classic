@@ -51,10 +51,16 @@ CAPTURE_TOOLS = {
     "opcclassic.capture.list": "PASS",
     "opcclassic.capture.get": "PASS",
     "opcclassic.capture.tail": "PASS",
+    "opcclassic.capture.close_cursor": "PASS",
+    "opcclassic.capture.set_filter": "PASS",
+    "opcclassic.capture.subscribe_notifications": "PASS",
+    "opcclassic.capture.unsubscribe_notifications": "PASS",
     "opcclassic.capture.summarize": "PASS",
     "opcclassic.capture.remove": "PASS",
     "opcclassic.capture.decode_pdu": "PASS",
+    "opcclassic.capture.decode_file": "PASS",
     "opcclassic.capture.replay": "PASS",
+    "opcclassic.capture.replay_file": "PASS",
 }
 
 

@@ -18,7 +18,9 @@ import os
 import queue
 import shutil
 import subprocess
+import struct
 import sys
+import tempfile
 import threading
 import time
 from dataclasses import dataclass
@@ -216,6 +218,8 @@ class ProbeRunner:
         self.xmlda_subscription_handle = ""
         self.capture_interface_name = ""
         self.capture_session_id = ""
+        self.capture_notification_subscription_id = ""
+        self.capture_file_path = ""
 
     def run(self, tools: list[dict[str, Any]]) -> list[dict[str, Any]]:
         exposed = [tool.get("name") for tool in tools if isinstance(tool.get("name"), str)]
@@ -589,12 +593,32 @@ def probe_specs() -> list[ProbeSpec]:
         ProbeSpec("opcclassic.capture.list_interfaces", lambda r: {}, after_capture_interfaces),
         ProbeSpec("opcclassic.capture.start", capture_start_args, after_capture_start),
         ProbeSpec("opcclassic.capture.list", lambda r: {}),
+        ProbeSpec("opcclassic.capture.set_filter", lambda r: {**capture_session_args(r), "bpfFilter": "tcp"}),
+        ProbeSpec("opcclassic.capture.tail", lambda r: {
+            **capture_session_args(r),
+            "max": 50,
+            "sinceIndex": 0,
+            "subscriberId": "mcp-probe-cursor",
+            "subscriberCapacity": 64,
+        }),
+        ProbeSpec("opcclassic.capture.close_cursor", lambda r: {
+            **capture_session_args(r),
+            "subscriberId": "mcp-probe-cursor",
+        }),
+        ProbeSpec(
+            "opcclassic.capture.subscribe_notifications",
+            capture_notification_args,
+            after_capture_notification_subscription),
+        ProbeSpec(
+            "opcclassic.capture.unsubscribe_notifications",
+            capture_notification_unsubscribe_args),
         ProbeSpec("opcclassic.capture.stop", capture_session_args),
-        ProbeSpec("opcclassic.capture.tail", lambda r: {**capture_session_args(r), "max": 50, "sinceIndex": 0}),
         ProbeSpec("opcclassic.capture.get", lambda r: {**capture_session_args(r), "format": "json", "maxPdus": 50}),
         ProbeSpec("opcclassic.capture.summarize", lambda r: {**capture_session_args(r), "top": 5}),
         ProbeSpec("opcclassic.capture.replay", capture_session_args),
         ProbeSpec("opcclassic.capture.decode_pdu", lambda r: {"hex": _SAMPLE_PDU_HEX}),
+        ProbeSpec("opcclassic.capture.decode_file", capture_file_args),
+        ProbeSpec("opcclassic.capture.replay_file", capture_file_args),
         ProbeSpec("opcclassic.capture.remove", capture_session_args),
 
         ProbeSpec("opcclassic.da.connect", lambda r: r.dcom_args("da", include_sso=True)),
@@ -790,13 +814,13 @@ def after_capture_interfaces(runner: ProbeRunner, value: Any) -> None:
 
 
 def capture_start_args(runner: ProbeRunner) -> dict[str, Any]:
-    # Use a TINY trace -- 1 packet OR 1 second, whichever comes first.
-    # The probe is validating tool plumbing, not capturing real traffic.
+    # Use a tiny trace while leaving enough time to exercise live cursor,
+    # filter, and notification operations before the explicit stop call.
     return {
         "interfaceName": runner.capture_interface_name or "any",
         "promiscuous": False,
         "maxPackets": 1,
-        "maxDurationSeconds": 1,
+        "maxDurationSeconds": 10,
     }
 
 
@@ -807,6 +831,59 @@ def after_capture_start(runner: ProbeRunner, value: Any) -> None:
 
 def capture_session_args(runner: ProbeRunner) -> dict[str, Any]:
     return {"sessionId": runner.capture_session_id or "__missing__"}
+
+
+def capture_notification_args(runner: ProbeRunner) -> dict[str, Any]:
+    return {
+        **capture_session_args(runner),
+        "sinceIndex": 0,
+        "subscriberId": "mcp-probe-notifications",
+        "subscriberCapacity": 64,
+        "notificationQueueCapacity": 16,
+        "pollIntervalMilliseconds": 100,
+    }
+
+
+def after_capture_notification_subscription(
+    runner: ProbeRunner,
+    value: Any,
+) -> None:
+    if isinstance(value, dict):
+        runner.capture_notification_subscription_id = str(
+            value.get("subscriptionId") or "")
+
+
+def capture_notification_unsubscribe_args(
+    runner: ProbeRunner,
+) -> dict[str, Any]:
+    return {
+        "subscriptionId":
+            runner.capture_notification_subscription_id or "__missing__",
+    }
+
+
+def capture_file_args(runner: ProbeRunner) -> dict[str, Any]:
+    if not runner.capture_file_path:
+        handle, path = tempfile.mkstemp(
+            prefix="opcclassic-mcp-probe-",
+            suffix=".pcap")
+        with os.fdopen(handle, "wb") as stream:
+            stream.write(struct.pack(
+                "<IHHIIII",
+                0xA1B2C3D4,
+                2,
+                4,
+                0,
+                0,
+                65535,
+                1))
+        runner.capture_file_path = path
+    return {
+        "path": runner.capture_file_path,
+        "maxFileBytes": 1024,
+        "maxPackets": 1,
+        "maxPdus": 1,
+    }
 
 
 # A real captured DA `WriteVQT` response PDU (truncated DCE/RPC header +
@@ -1157,6 +1234,7 @@ def main() -> int:
     args = parse_args()
     repo_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     proc: Optional[subprocess.Popen[bytes]] = None
+    runner: Optional[ProbeRunner] = None
     results: list[dict[str, Any]] = []
     exit_code = 0
     try:
@@ -1177,6 +1255,11 @@ def main() -> int:
                 proc.wait(timeout=5)
             except Exception:
                 proc.kill()
+        if runner is not None and runner.capture_file_path:
+            try:
+                os.remove(runner.capture_file_path)
+            except FileNotFoundError:
+                pass
         # Annotate result rows with the per-profile expected-outcome verdict.
         # This must run AFTER the probe sweep so failures during teardown
         # still get classified, and BEFORE the json.dump so the output
