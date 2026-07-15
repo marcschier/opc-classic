@@ -231,40 +231,37 @@ public static class CaptureFileProcessor
             }
         }
 
-        if (!pduLimitReached)
+        foreach (DecodedDcomFrame completed in decoder.CompleteDetailed())
         {
-            foreach (DecodedDcomFrame completed in decoder.CompleteDetailed())
+            if (completed.Failure?.Code is "truncated_header" or "truncated_fragment")
             {
-                if (completed.Failure?.Code is "truncated_header" or "truncated_fragment")
+                incompleteDceRpcStreams++;
+            }
+            if (frames.Count < effectivePduLimit)
+            {
+                frames.Add(completed);
+                if (completed.Failure is DcomDecodeFailure failure)
                 {
-                    incompleteDceRpcStreams++;
+                    AddPacketFailure(
+                        packetFailures,
+                        ref packetFailureCount,
+                        packetIndex: -1,
+                        failure.Code,
+                        failure.Message);
                 }
-                if (frames.Count < effectivePduLimit)
+                if (completed.Pdu is DecodedOpcPdu pdu)
                 {
-                    frames.Add(completed);
-                    if (completed.Failure is DcomDecodeFailure failure)
+                    string connection = CanonicalConnection(pdu.SourceEndpoint, pdu.DestinationEndpoint);
+                    if (firstPduByConnection.Add(connection)
+                        && pdu.PduType is not ("bind" or "alter_context"))
                     {
-                        AddPacketFailure(
-                            packetFailures,
-                            ref packetFailureCount,
-                            packetIndex: -1,
-                            failure.Code,
-                            failure.Message);
-                    }
-                    if (completed.Pdu is DecodedOpcPdu pdu)
-                    {
-                        string connection = CanonicalConnection(pdu.SourceEndpoint, pdu.DestinationEndpoint);
-                        if (firstPduByConnection.Add(connection)
-                            && pdu.PduType is not ("bind" or "alter_context"))
-                        {
-                            midSessionLikely = true;
-                        }
+                        midSessionLikely = true;
                     }
                 }
-                else
-                {
-                    pduLimitReached = true;
-                }
+            }
+            else
+            {
+                pduLimitReached = true;
             }
         }
 

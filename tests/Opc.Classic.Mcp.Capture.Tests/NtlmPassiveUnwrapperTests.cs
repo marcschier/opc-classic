@@ -211,6 +211,46 @@ public sealed class NtlmPassiveUnwrapperTests
     }
 
     [Test]
+    public async Task TryUnwrap_SignatureFailureIsTransactional_AndSubsequentFramesStillDecrypt()
+    {
+#pragma warning disable CS0618
+        var producer = new Ntlm1(Flags, (byte[])s_testSessionKey.Clone(), isServer: false);
+#pragma warning restore CS0618
+        byte[] plain1 = BuildPlaintext(37);
+        byte[] plain2 = BuildPlaintext(53);
+        (byte[] cipher1, byte[] trailer1) = SealWithProducer(producer, plain1);
+        (byte[] cipher2, byte[] trailer2) = SealWithProducer(producer, plain2);
+        byte[] originalCipher1 = cipher1.ToArray();
+        byte[] tamperedTrailer1 = trailer1.ToArray();
+        tamperedTrailer1[7] ^= 0x80;
+
+        using var unwrapper = new NtlmPassiveUnwrapper(s_testSessionKey, Flags);
+        NtlmUnwrapResult rejected = unwrapper.TryUnwrap(
+            NtlmDirection.ClientToServer,
+            cipher1,
+            tamperedTrailer1);
+
+        await Assert.That(rejected.Status).IsEqualTo(NtlmUnwrapStatus.SignatureMismatch);
+        await Assert.That(cipher1).IsEquivalentTo(originalCipher1);
+        await Assert.That(unwrapper.ClientSequence).IsEqualTo(0);
+
+        NtlmUnwrapResult first = unwrapper.TryUnwrap(
+            NtlmDirection.ClientToServer,
+            cipher1,
+            trailer1);
+        NtlmUnwrapResult second = unwrapper.TryUnwrap(
+            NtlmDirection.ClientToServer,
+            cipher2,
+            trailer2);
+
+        await Assert.That(first.Status).IsEqualTo(NtlmUnwrapStatus.Decrypted);
+        await Assert.That(second.Status).IsEqualTo(NtlmUnwrapStatus.Decrypted);
+        await Assert.That(cipher1).IsEquivalentTo(plain1);
+        await Assert.That(cipher2).IsEquivalentTo(plain2);
+        await Assert.That(unwrapper.ClientSequence).IsEqualTo(2);
+    }
+
+    [Test]
     public async Task TryUnwrap_SkippedPdu_NextUnwrapFailsWithSignatureMismatch_DocumentsCounterDriftLimitation()
     {
         // Producer emits 3 PDUs with counters 0, 1, 2.

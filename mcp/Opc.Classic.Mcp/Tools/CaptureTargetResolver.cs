@@ -21,7 +21,8 @@ internal interface ICaptureTargetResolver
         string? progId,
         string? clsid,
         string? connectionString,
-        CancellationToken cancellationToken);
+        CancellationToken cancellationToken,
+        bool ambientSso = false);
 }
 
 internal sealed class CaptureTargetResolver : ICaptureTargetResolver
@@ -43,7 +44,8 @@ internal sealed class CaptureTargetResolver : ICaptureTargetResolver
         string? progId,
         string? clsid,
         string? connectionString,
-        CancellationToken cancellationToken)
+        CancellationToken cancellationToken,
+        bool ambientSso = false)
     {
         string scheme = GetOpcScheme(connectionString);
         OpcMcpDcomConnectionRequest normalized = OpcMcpDcomConnectionHelper.NormalizeRequest(
@@ -97,6 +99,21 @@ internal sealed class CaptureTargetResolver : ICaptureTargetResolver
                 Status = "host_only",
                 Bindings = [$"ncacn_ip_tcp:{normalized.Host}[135]"],
                 Ports = [135],
+            };
+        }
+
+        if (!ambientSso)
+        {
+            return new CaptureTargetMetadata
+            {
+                Host = normalized.Host,
+                ProgId = normalized.ProgId,
+                Clsid = Guid.TryParse(normalized.Clsid, out Guid skippedClsid) ? skippedClsid : null,
+                ConnectionString = normalized.ConnectionString,
+                Status = "ambient_sso_required",
+                Ports = [135],
+                Error = "OPCEnum discovery and DCOM activation were skipped because ambientSso=false. "
+                    + "Set ambientSso=true only when sending the current Windows logon identity to this target is authorized.",
             };
         }
 

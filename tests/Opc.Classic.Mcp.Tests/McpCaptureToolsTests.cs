@@ -1,8 +1,10 @@
 ﻿// Copyright (c) 2026 Opc.Classic Contributors. Licensed under the MIT License.
 
+using System.Buffers.Binary;
 using System.Runtime.CompilerServices;
 using System.Text.Json;
 using ModelContextProtocol;
+using ModelContextProtocol.Server;
 using Opc.Classic.Dcom.Rpc;
 using Opc.Classic.Dcom.Rpc.pdu;
 using Opc.Classic.Dcom.Transport;
@@ -186,6 +188,23 @@ public sealed class McpCaptureToolsTests
     }
 
     [Test]
+    public async Task CaptureTools_StartCapture_IsOpenWorldAndAmbientSsoDefaultsToFalse()
+    {
+        System.Reflection.MethodInfo method = typeof(CaptureTools).GetMethod(nameof(CaptureTools.StartCapture))
+            ?? throw new InvalidOperationException("StartCapture method was not found.");
+        System.Reflection.CustomAttributeData attribute = method.CustomAttributes.Single(
+            candidate => candidate.AttributeType == typeof(McpServerToolAttribute));
+        System.Reflection.CustomAttributeNamedArgument openWorld = attribute.NamedArguments.Single(
+            argument => argument.MemberName == nameof(McpServerToolAttribute.OpenWorld));
+        System.Reflection.ParameterInfo ambientSso = method.GetParameters().Single(
+            parameter => parameter.Name == "ambientSso");
+
+        await Assert.That(openWorld.TypedValue.Value).IsEqualTo(true);
+        await Assert.That(ambientSso.HasDefaultValue).IsTrue();
+        await Assert.That(ambientSso.DefaultValue).IsEqualTo(false);
+    }
+
+    [Test]
     public async Task CaptureTools_StartCapture_StartsBroadBeforeTargetResolutionThenNarrowsFilter()
     {
         await using CaptureSessionManager manager = CreateManager();
@@ -208,6 +227,7 @@ public sealed class McpCaptureToolsTests
             progId: "Vendor.Server.1");
 
         await Assert.That(resolver.CaptureWasRunning).IsTrue();
+        await Assert.That(resolver.AmbientSso).IsFalse();
         await Assert.That(source.StartRequest!.BpfFilter).IsNull();
         await Assert.That(source.StartRequest.ServerPorts).IsNull();
         await Assert.That(source.EffectiveFilter).IsEqualTo("tcp and (port 135 or port 51234)");
@@ -264,6 +284,24 @@ public sealed class McpCaptureToolsTests
     }
 
     [Test]
+    public async Task CaptureTargetResolver_DefaultDoesNotConnectWithAmbientCredentials()
+    {
+        var factory = new FakeActivationSessionFactory(CreateActivationResponse());
+        var resolver = new CaptureTargetResolver(factory);
+
+        CaptureTargetMetadata result = await resolver.ResolveAsync(
+            "opc-host",
+            null,
+            "10138C2C-0000-0000-0000-00000000C000",
+            null,
+            CancellationToken.None);
+
+        await Assert.That(result.Status).IsEqualTo("ambient_sso_required");
+        await Assert.That(result.Error!).Contains("ambientSso=true");
+        await Assert.That(factory.CreatedCount).IsEqualTo(0);
+    }
+
+    [Test]
     public async Task CaptureTargetResolver_RepeatedActivation_ReleasesAndDisposesEverySession()
     {
         var factory = new FakeActivationSessionFactory(CreateActivationResponse());
@@ -271,9 +309,9 @@ public sealed class McpCaptureToolsTests
         const string clsid = "10138C2C-0000-0000-0000-00000000C001";
 
         CaptureTargetMetadata first = await resolver.ResolveAsync(
-            "opc-host", null, clsid, null, CancellationToken.None);
+            "opc-host", null, clsid, null, CancellationToken.None, ambientSso: true);
         CaptureTargetMetadata second = await resolver.ResolveAsync(
-            "opc-host", null, clsid, null, CancellationToken.None);
+            "opc-host", null, clsid, null, CancellationToken.None, ambientSso: true);
 
         await Assert.That(first.Status).IsEqualTo("activated");
         await Assert.That(second.Status).IsEqualTo("activated");
@@ -295,7 +333,8 @@ public sealed class McpCaptureToolsTests
             null,
             "10138C2C-0000-0000-0000-00000000C002",
             null,
-            CancellationToken.None);
+            CancellationToken.None,
+            ambientSso: true);
 
         await Assert.That(result.Status).IsEqualTo("failed");
         await Assert.That(result.Error!).Contains("activation failed");
@@ -316,7 +355,8 @@ public sealed class McpCaptureToolsTests
             null,
             "10138C2C-0000-0000-0000-00000000C003",
             null,
-            CancellationToken.None);
+            CancellationToken.None,
+            ambientSso: true);
 
         await Assert.That(result.Status).IsEqualTo("activated_release_failed");
         await Assert.That(result.Error!).Contains("release failed");
@@ -349,6 +389,47 @@ public sealed class McpCaptureToolsTests
         await Assert.That(summary.DurationSeconds).IsEqualTo(0d);
         await Assert.That(removed).IsTrue();
         await Assert.That(manager.Count).IsEqualTo(0);
+    }
+
+    [Test]
+    public async Task CaptureTools_GetAndSummarize_FinalizePendingGapRecovery()
+    {
+        await using CaptureSessionManager manager = CreateManager();
+        byte[] firstFrame = EncodeRequest(callId: 301);
+        byte[] interruptedFrame = EncodeRequest(callId: 302);
+        byte[] recoveredFrame = EncodeRequest(callId: 303);
+        uint firstSequence = 20_000;
+        uint interruptedSequence = firstSequence + (uint)firstFrame.Length;
+        uint recoveredSequence = interruptedSequence + (uint)interruptedFrame.Length;
+        var source = new SyntheticCaptureSource(rawPcapPath: null)
+        {
+            PacketCount = 4,
+        };
+        source.Packets.Add(NewTcpPacket(firstFrame, firstSequence));
+        source.Packets.Add(NewTcpPacket(interruptedFrame[..8], interruptedSequence));
+        source.Packets.Add(NewTcpPacket(recoveredFrame[..6], recoveredSequence));
+        source.Packets.Add(NewTcpPacket(recoveredFrame[6..], recoveredSequence + 6));
+        var tools = new CaptureTools(manager);
+        CaptureSession session = await manager.CreateAndStartAsync(
+            "synthetic",
+            _ => source,
+            new CaptureStartRequest(InterfaceName: "lo"),
+            CancellationToken.None);
+        await session.StopAsync(CancellationToken.None);
+
+        string json = await tools.GetCapture(
+            session.Id,
+            "json",
+            maxPdus: 10,
+            cancellationToken: CancellationToken.None);
+        CaptureSummary summary = await tools.SummarizeCapture(
+            session.Id,
+            cancellationToken: CancellationToken.None);
+
+        await Assert.That(json).Contains("\"CallId\": 301");
+        await Assert.That(json).Contains("\"CallId\": 303");
+        await Assert.That(json).DoesNotContain("\"CallId\": 302");
+        await Assert.That(summary.PduCount).IsEqualTo(2);
     }
 
     [Test]
@@ -532,7 +613,7 @@ public sealed class McpCaptureToolsTests
             });
     }
 
-    private static byte[] EncodeRequest()
+    private static byte[] EncodeRequest(int callId = 21)
     {
         byte[] stub = OrpcEnvelope.BuildRequestStub(new byte[] { 0x10, 0x20 }, Guid.Empty);
         return PduCodec.EncodePdu(
@@ -542,7 +623,7 @@ public sealed class McpCaptureToolsTests
                 ContextId = 0,
                 Opnum = 7,
                 Stub = stub,
-                CallId = 21,
+                CallId = callId,
             },
             ConnectionOrientedPdu.MUST_RECEIVE_FRAGMENT_SIZE);
     }
@@ -572,6 +653,38 @@ public sealed class McpCaptureToolsTests
                 CallId = 21,
             },
             ConnectionOrientedPdu.MUST_RECEIVE_FRAGMENT_SIZE);
+
+    private static CapturedPacket NewTcpPacket(byte[] payload, uint sequenceNumber)
+    {
+        byte[] frame = new byte[14 + 20 + 20 + payload.Length];
+        frame[12] = 0x08;
+        frame[13] = 0x00;
+        int ipOffset = 14;
+        frame[ipOffset] = 0x45;
+        BinaryPrimitives.WriteUInt16BigEndian(
+            frame.AsSpan(ipOffset + 2, 2),
+            (ushort)(20 + 20 + payload.Length));
+        frame[ipOffset + 8] = 64;
+        frame[ipOffset + 9] = 6;
+        frame[ipOffset + 12] = 10;
+        frame[ipOffset + 15] = 1;
+        frame[ipOffset + 16] = 10;
+        frame[ipOffset + 19] = 2;
+        int tcpOffset = ipOffset + 20;
+        BinaryPrimitives.WriteUInt16BigEndian(frame.AsSpan(tcpOffset, 2), 50_000);
+        BinaryPrimitives.WriteUInt16BigEndian(frame.AsSpan(tcpOffset + 2, 2), 135);
+        BinaryPrimitives.WriteUInt32BigEndian(frame.AsSpan(tcpOffset + 4, 4), sequenceNumber);
+        frame[tcpOffset + 12] = 0x50;
+        frame[tcpOffset + 13] = 0x18;
+        BinaryPrimitives.WriteUInt16BigEndian(frame.AsSpan(tcpOffset + 14, 2), 8192);
+        payload.CopyTo(frame.AsSpan(tcpOffset + 20));
+        return new CapturedPacket(
+            DateTimeOffset.UtcNow,
+            frame.Length,
+            frame,
+            LinkType: 1,
+            Annotations: new Dictionary<string, string?>());
+    }
 
     private static Opc.Classic.Dcom.Activation.RemoteActivationResponse CreateActivationResponse() =>
         new(
@@ -653,16 +766,19 @@ public sealed class McpCaptureToolsTests
         }
 
         public bool CaptureWasRunning { get; private set; }
+        public bool AmbientSso { get; private set; }
 
         public Task<CaptureTargetMetadata> ResolveAsync(
             string? targetHost,
             string? progId,
             string? clsid,
             string? connectionString,
-            CancellationToken cancellationToken)
+            CancellationToken cancellationToken,
+            bool ambientSso = false)
         {
             cancellationToken.ThrowIfCancellationRequested();
             CaptureWasRunning = _isCaptureRunning();
+            AmbientSso = ambientSso;
             return Task.FromResult(_result);
         }
     }

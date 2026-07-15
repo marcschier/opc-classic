@@ -67,6 +67,11 @@ namespace Opc.Classic.Mcp.Capture;
 /// <param name="ProgId">Optional OPC ProgID resolved after broad capture has started.</param>
 /// <param name="Clsid">Optional OPC CLSID activated after broad capture has started.</param>
 /// <param name="ConnectionString">Optional DCOM/OPC/TCP connection string describing the target.</param>
+/// <param name="AmbientSso">
+/// Explicit opt-in to send the process/current-logon Windows identity while
+/// resolving or activating a target. False skips authenticated OPCEnum/DCOM
+/// connections; direct TCP and host-only metadata resolution remain available.
+/// </param>
 public sealed record class CaptureStartRequest(
     string? InterfaceName = null,
     string? BpfFilter = null,
@@ -80,7 +85,8 @@ public sealed record class CaptureStartRequest(
     string? TargetHost = null,
     string? ProgId = null,
     string? Clsid = null,
-    string? ConnectionString = null)
+    string? ConnectionString = null,
+    bool AmbientSso = false)
 {
     /// <summary>
     /// Custom <see cref="ToString"/> that REDACTS the
@@ -107,6 +113,7 @@ public sealed record class CaptureStartRequest(
             + $"{nameof(ProgId)} = {ProgId ?? "null"}, "
             + $"{nameof(Clsid)} = {Clsid ?? "null"}, "
             + $"{nameof(ConnectionString)} = {ConnectionString ?? "null"}, "
+            + $"{nameof(AmbientSso)} = {AmbientSso}, "
             + $"{nameof(NtlmSessionKey)} = {keyDescriptor} }}";
     }
 }

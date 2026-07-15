@@ -128,8 +128,8 @@ public sealed class CaptureTools
     /// <summary>
     /// Starts a new capture session.
     /// </summary>
-    [McpServerTool(Name = "opcclassic.capture.start", ReadOnly = false, Idempotent = false, Destructive = false, OpenWorld = false)]
-    [Description("Begin a network packet capture session. Optional target fields start broad DCOM capture before OPCEnum/activation, then narrow to discovered ports and return binding metadata.")]
+    [McpServerTool(Name = "opcclassic.capture.start", ReadOnly = false, Idempotent = false, Destructive = false, OpenWorld = true)]
+    [Description("Begin a network packet capture session. Optional target fields start broad DCOM capture before target resolution. Authenticated OPCEnum/activation requires ambientSso=true.")]
     public async Task<CaptureSessionDto> StartCapture(
         [Description("Network interface name from opcclassic.capture.list_interfaces (required for pcap source).")]
         string interfaceName,
@@ -155,7 +155,9 @@ public sealed class CaptureTools
         [Description("Optional OPC CLSID to activate after capture starts.")]
         string? clsid = null,
         [Description("Optional dcom://, opcda://, opcae://, opchda://, tcp://, or inmemory:// target connection string.")]
-        string? connectionString = null)
+        string? connectionString = null,
+        [Description("Explicit opt-in to use the process/current-logon Windows identity for OPCEnum discovery and DCOM activation against the target. Default false: no ambient credential connection is attempted.")]
+        bool ambientSso = false)
     {
         byte[]? sessionKey = null;
         CaptureSession? session = null;
@@ -178,7 +180,8 @@ public sealed class CaptureTools
                 TargetHost: targetHost,
                 ProgId: progId,
                 Clsid: clsid,
-                ConnectionString: connectionString);
+                ConnectionString: connectionString,
+                AmbientSso: ambientSso);
             CaptureStartRequest startup = resolveTarget
                 ? requested with { BpfFilter = null, ServerPorts = null }
                 : requested;
@@ -196,7 +199,8 @@ public sealed class CaptureTools
                     progId,
                     clsid,
                     connectionString,
-                    cancellationToken).ConfigureAwait(false);
+                    cancellationToken,
+                    ambientSso).ConfigureAwait(false);
                 session.SetTarget(target);
 
                 IReadOnlyList<int> discoveredPorts = target.Status is "resolved" or "activated"
@@ -421,20 +425,23 @@ public sealed class CaptureTools
         {
             var decoder = new OpcDcomDecoder(unwrapper);
             var pdus = new List<DecodedOpcPdu>();
-            int decoded = 0;
             await foreach (CapturedPacket pkt in session.ReadAllAsync(maxPackets: null, cancellationToken).ConfigureAwait(false))
             {
                 foreach (DecodedOpcPdu pdu in decoder.Decode(pkt))
                 {
-                    pdus.Add(pdu);
-                    decoded++;
-                    if (decoded >= maxPdus)
+                    if (pdus.Count < maxPdus)
                     {
-                        goto done;
+                        pdus.Add(pdu);
                     }
                 }
             }
-        done:
+            foreach (DecodedDcomFrame completed in decoder.CompleteDetailed())
+            {
+                if (completed.Pdu is not null && pdus.Count < maxPdus)
+                {
+                    pdus.Add(completed.Pdu);
+                }
+            }
 
             if (string.Equals(format, "json", StringComparison.OrdinalIgnoreCase))
             {
@@ -622,6 +629,13 @@ public sealed class CaptureTools
                 foreach (DecodedOpcPdu pdu in decoder.Decode(pkt))
                 {
                     pdus.Add(pdu);
+                }
+            }
+            foreach (DecodedDcomFrame completed in decoder.CompleteDetailed())
+            {
+                if (completed.Pdu is not null)
+                {
+                    pdus.Add(completed.Pdu);
                 }
             }
             return CaptureSummarizer.Summarize(sessionId, pdus, top);

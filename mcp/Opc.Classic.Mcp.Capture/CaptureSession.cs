@@ -582,7 +582,7 @@ public sealed class CaptureSession : IAsyncDisposable
 
         sinceIndex = Math.Max(0, sinceIndex);
         max = Math.Max(1, max);
-        bool sessionDone = IsTailCompleteState(State);
+        bool sessionDone = IsTailCompleteState(State) && cursor.IsCompleted;
         LastTouchedAt = DateTimeOffset.UtcNow;
         return subscriberId is null
             ? cursor.DrainLegacy(sinceIndex, max, sessionDone, State)
@@ -634,11 +634,12 @@ public sealed class CaptureSession : IAsyncDisposable
         DecodeCursor cursor = GetExistingCursor();
         using AsyncOperationGate.Lease operation =
             await cursor.Operations.EnterAsync(cancellationToken).ConfigureAwait(false);
+        await RefreshCursorCoreAsync(cursor, cancellationToken).ConfigureAwait(false);
         LastTouchedAt = DateTimeOffset.UtcNow;
         return cursor.ReadSubscriberSnapshot(
             subscriberId,
             sinceIndex,
-            IsTailCompleteState(State),
+            IsTailCompleteState(State) && cursor.IsCompleted,
             State);
     }
 
@@ -699,8 +700,13 @@ public sealed class CaptureSession : IAsyncDisposable
         DecodeCursor cursor,
         CancellationToken cancellationToken)
     {
-        if (State is CaptureSessionState.Failed or CaptureSessionState.Disposed)
+        if (State is CaptureSessionState.Disposed)
         {
+            return;
+        }
+        if (State is CaptureSessionState.Failed)
+        {
+            cursor.Complete();
             return;
         }
 
@@ -741,6 +747,10 @@ public sealed class CaptureSession : IAsyncDisposable
             }
 
             cursor.SetPacketsConsumed(source, consumed + read);
+        }
+        if (IsTailCompleteState(State))
+        {
+            cursor.Complete();
         }
     }
 
@@ -909,6 +919,7 @@ public sealed class CaptureSession : IAsyncDisposable
         private readonly object _producerLock = new();
         private readonly CancellationTokenSource _producerStopping = new();
         private Task? _producerTask;
+        private bool _completed;
 
         public DecodeCursor(ILogger logger, NtlmPassiveUnwrapper? unwrapper)
         {
@@ -920,6 +931,7 @@ public sealed class CaptureSession : IAsyncDisposable
         public OpcDcomDecoder Decoder { get; private set; }
         public NtlmPassiveUnwrapper? Unwrapper { get; private set; }
         public long TotalEmitted { get; private set; }
+        public bool IsCompleted => _completed;
         public AsyncOperationGate Operations { get; } = new(nameof(DecodeCursor));
 
         public long GetPacketsConsumed(ICaptureSource source) =>
@@ -930,14 +942,30 @@ public sealed class CaptureSession : IAsyncDisposable
 
         public void Decode(CapturedPacket packet)
         {
+            if (_completed)
+            {
+                return;
+            }
             foreach (DecodedOpcPdu pdu in Decoder.Decode(packet))
             {
-                _recovery.Add(new IndexedPdu(TotalEmitted++, pdu));
-                if (_recovery.Count > RecoveryCapacity)
+                Add(pdu);
+            }
+        }
+
+        public void Complete()
+        {
+            if (_completed)
+            {
+                return;
+            }
+            foreach (DecodedDcomFrame frame in Decoder.CompleteDetailed())
+            {
+                if (frame.Pdu is not null)
                 {
-                    _recovery.RemoveAt(0);
+                    Add(frame.Pdu);
                 }
             }
+            _completed = true;
         }
 
         public void StartProducer(CaptureSession session)
@@ -1032,9 +1060,11 @@ public sealed class CaptureSession : IAsyncDisposable
 
         public void ResetWithoutUnwrapper()
         {
+            Complete();
             Unwrapper?.Dispose();
             Unwrapper = null;
             Decoder = new OpcDcomDecoder(_logger);
+            _completed = true;
         }
 
         public async ValueTask DisposeAsync()
@@ -1065,6 +1095,15 @@ public sealed class CaptureSession : IAsyncDisposable
         }
 
         private long RecoveryFrom => _recovery.Count == 0 ? TotalEmitted : _recovery[0].Index;
+
+        private void Add(DecodedOpcPdu pdu)
+        {
+            _recovery.Add(new IndexedPdu(TotalEmitted++, pdu));
+            if (_recovery.Count > RecoveryCapacity)
+            {
+                _recovery.RemoveAt(0);
+            }
+        }
 
         private DrainTailResult ReadWindow(
             long sinceIndex,

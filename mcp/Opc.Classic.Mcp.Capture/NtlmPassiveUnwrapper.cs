@@ -166,8 +166,14 @@ public sealed class NtlmPassiveUnwrapper : IDisposable
     private readonly bool _encryptMessageSignature;
     private byte[] _clientSigningKey;
     private byte[] _serverSigningKey;
-    private readonly RC4Engine _clientCipher;
-    private readonly RC4Engine _serverCipher;
+    private byte[] _clientSealingKey;
+    private byte[] _serverSealingKey;
+    private RC4Engine _clientCipher;
+    private RC4Engine _serverCipher;
+    private RC4Engine _clientCheckpointCipher;
+    private RC4Engine _serverCheckpointCipher;
+    private long _clientCipherBytes;
+    private long _serverCipherBytes;
     private int _clientSequence;
     private int _serverSequence;
     private bool _disposed;
@@ -232,8 +238,12 @@ public sealed class NtlmPassiveUnwrapper : IDisposable
             _serverSigningKey = DeriveExtendedSessionKey(sk, s_serverSigningMagic);
             clientSealingKey = DeriveExtendedSessionKey(sk, s_clientSealingMagic);
             serverSealingKey = DeriveExtendedSessionKey(sk, s_serverSealingMagic);
-            _clientCipher = CreateRc4(clientSealingKey);
-            _serverCipher = CreateRc4(serverSealingKey);
+            _clientSealingKey = clientSealingKey.ToArray();
+            _serverSealingKey = serverSealingKey.ToArray();
+            _clientCipher = CreateRc4(_clientSealingKey);
+            _serverCipher = CreateRc4(_serverSealingKey);
+            _clientCheckpointCipher = CreateRc4(_clientSealingKey);
+            _serverCheckpointCipher = CreateRc4(_serverSealingKey);
         }
         finally
         {
@@ -257,8 +267,12 @@ public sealed class NtlmPassiveUnwrapper : IDisposable
         _protection = ProtectionLevel.PROTECTION_LEVEL_NONE;
         _clientSigningKey = Array.Empty<byte>();
         _serverSigningKey = Array.Empty<byte>();
+        _clientSealingKey = Array.Empty<byte>();
+        _serverSealingKey = Array.Empty<byte>();
         _clientCipher = CreateRc4(new byte[16]);
         _serverCipher = CreateRc4(new byte[16]);
+        _clientCheckpointCipher = CreateRc4(new byte[16]);
+        _serverCheckpointCipher = CreateRc4(new byte[16]);
         IsDisabled = true;
     }
 
@@ -360,53 +374,92 @@ public sealed class NtlmPassiveUnwrapper : IDisposable
         bool isClient2Server = dir == NtlmDirection.ClientToServer;
         byte[] signingKey = isClient2Server ? _clientSigningKey : _serverSigningKey;
         RC4Engine cipher = isClient2Server ? _clientCipher : _serverCipher;
+        RC4Engine checkpointCipher = isClient2Server
+            ? _clientCheckpointCipher
+            : _serverCheckpointCipher;
         int sequenceNumber = isClient2Server ? _clientSequence : _serverSequence;
-
-        // PRIVACY: decrypt only the production confidential sub-range first,
-        // then HMAC the full plaintext signed region. INTEGRITY leaves every
-        // byte unchanged and HMACs the full signed region as captured.
-        if (protection == ProtectionLevel.PROTECTION_LEVEL_PRIVACY && confidentialLength > 0)
+        long committedCipherBytes = isClient2Server
+            ? _clientCipherBytes
+            : _serverCipherBytes;
+        int consumedCipherBytes = checked(
+            (protection == ProtectionLevel.PROTECTION_LEVEL_PRIVACY ? confidentialLength : 0)
+            + (_encryptMessageSignature ? 8 : 0));
+        long nextCipherBytes = checked(committedCipherBytes + consumedCipherBytes);
+        byte[] working = signedRegion.ToArray();
+        byte[]? expected = null;
+        try
         {
-            Span<byte> confidential = signedRegion.Slice(confidentialOffset, confidentialLength);
-            byte[] cipherBuf = confidential.ToArray();
-            byte[] plaintext = new byte[cipherBuf.Length];
-            cipher.ProcessBytes(cipherBuf, 0, cipherBuf.Length, plaintext, 0);
-            plaintext.AsSpan().CopyTo(confidential);
-            CryptographicOperations.ZeroMemory(cipherBuf);
-            CryptographicOperations.ZeroMemory(plaintext);
-        }
+            // Work against a private copy and a speculative RC4 stream. The
+            // caller's buffer and the checkpoint stream remain untouched until
+            // the verifier succeeds.
+            if (protection == ProtectionLevel.PROTECTION_LEVEL_PRIVACY && confidentialLength > 0)
+            {
+                Span<byte> confidential = working.AsSpan(confidentialOffset, confidentialLength);
+                byte[] cipherBuf = confidential.ToArray();
+                byte[] plaintext = new byte[cipherBuf.Length];
+                try
+                {
+                    cipher.ProcessBytes(cipherBuf, 0, cipherBuf.Length, plaintext, 0);
+                    plaintext.AsSpan().CopyTo(confidential);
+                }
+                finally
+                {
+                    CryptographicOperations.ZeroMemory(cipherBuf);
+                    CryptographicOperations.ZeroMemory(plaintext);
+                }
+            }
 
-        // HMAC over the complete plaintext signed region + sequence number.
-        // (with the 8 middle bytes XOR-encrypted via SigningPt2 when
-        // ExtendedSessionSecurity + KeyExch is negotiated).
-        byte[] expected = ComputeVerifier(sequenceNumber, signingKey, signedRegion, cipher);
+            // HMAC over the complete plaintext signed region + sequence number.
+            // (with the 8 middle bytes XOR-encrypted via SigningPt2 when
+            // ExtendedSessionSecurity + KeyExch is negotiated).
+            expected = ComputeVerifier(sequenceNumber, signingKey, working, cipher);
 
-        if (!authTrailer.SequenceEqual(expected))
-        {
-            // Signature mismatch — DON'T advance the counter. The caller
-            // can decide to retry, give up, or surface to the operator
-            // ("likely wrong session key; or capture started after Type3").
+            if (!authTrailer.SequenceEqual(expected))
+            {
+                RestorePrimaryCipher(isClient2Server);
+                return new NtlmUnwrapResult(
+                    NtlmUnwrapStatus.SignatureMismatch,
+                    $"Signature mismatch on {dir} at counter={sequenceNumber}. " +
+                    "Verify the supplied session key matches the captured Type3 handshake AND that the capture starts BEFORE the bind/handshake.");
+            }
+
+            // Bring the untouched checkpoint stream forward only after the
+            // signature succeeds. RC4 state advancement depends only on byte
+            // count, not on the input values.
+            AdvanceCipher(checkpointCipher, consumedCipherBytes);
+
+            if (protection == ProtectionLevel.PROTECTION_LEVEL_PRIVACY)
+            {
+                working.AsSpan().CopyTo(signedRegion);
+            }
+
+            if (isClient2Server)
+            {
+                _clientCipherBytes = nextCipherBytes;
+                _clientSequence++;
+            }
+            else
+            {
+                _serverCipherBytes = nextCipherBytes;
+                _serverSequence++;
+            }
+
             return new NtlmUnwrapResult(
-                NtlmUnwrapStatus.SignatureMismatch,
-                $"Signature mismatch on {dir} at counter={sequenceNumber}. " +
-                "Verify the supplied session key matches the captured Type3 handshake AND that the capture starts BEFORE the bind/handshake.");
+                protection == ProtectionLevel.PROTECTION_LEVEL_PRIVACY
+                    ? NtlmUnwrapStatus.Decrypted
+                    : NtlmUnwrapStatus.IntegrityVerified,
+                null);
         }
-
-        // Successful unwrap — advance the counter for the next PDU on this direction.
-        if (isClient2Server)
+        catch
         {
-            _clientSequence++;
+            RestoreDirectionCiphers(isClient2Server);
+            throw;
         }
-        else
+        finally
         {
-            _serverSequence++;
+            CryptographicOperations.ZeroMemory(working);
+            CryptographicOperations.ZeroMemory(expected);
         }
-
-        return new NtlmUnwrapResult(
-            protection == ProtectionLevel.PROTECTION_LEVEL_PRIVACY
-                ? NtlmUnwrapStatus.Decrypted
-                : NtlmUnwrapStatus.IntegrityVerified,
-            null);
     }
 
     /// <summary>
@@ -424,10 +477,16 @@ public sealed class NtlmPassiveUnwrapper : IDisposable
 
         CryptographicOperations.ZeroMemory(_clientSigningKey);
         CryptographicOperations.ZeroMemory(_serverSigningKey);
+        CryptographicOperations.ZeroMemory(_clientSealingKey);
+        CryptographicOperations.ZeroMemory(_serverSealingKey);
         _clientSigningKey = Array.Empty<byte>();
         _serverSigningKey = Array.Empty<byte>();
-        try { _clientCipher.Reset(); } catch (NotSupportedException) { /* tolerate cipher impls that don't support Reset */ }
-        try { _serverCipher.Reset(); } catch (NotSupportedException) { /* tolerate */ }
+        _clientSealingKey = Array.Empty<byte>();
+        _serverSealingKey = Array.Empty<byte>();
+        ResetCipher(_clientCipher);
+        ResetCipher(_serverCipher);
+        ResetCipher(_clientCheckpointCipher);
+        ResetCipher(_serverCheckpointCipher);
     }
 
     /// <summary>
@@ -459,6 +518,102 @@ public sealed class NtlmPassiveUnwrapper : IDisposable
         var engine = new RC4Engine();
         engine.Init(forEncryption: true, new KeyParameter(key));
         return engine;
+    }
+
+    private void RestorePrimaryCipher(bool clientToServer)
+    {
+        byte[] key = clientToServer ? _clientSealingKey : _serverSealingKey;
+        long position = clientToServer ? _clientCipherBytes : _serverCipherBytes;
+        RC4Engine replacement = CreateRc4(key);
+        try
+        {
+            AdvanceCipher(replacement, position);
+        }
+        catch
+        {
+            ResetCipher(replacement);
+            throw;
+        }
+
+        if (clientToServer)
+        {
+            ResetCipher(_clientCipher);
+            _clientCipher = replacement;
+        }
+        else
+        {
+            ResetCipher(_serverCipher);
+            _serverCipher = replacement;
+        }
+    }
+
+    private void RestoreDirectionCiphers(bool clientToServer)
+    {
+        byte[] key = clientToServer ? _clientSealingKey : _serverSealingKey;
+        long position = clientToServer ? _clientCipherBytes : _serverCipherBytes;
+        RC4Engine primary = CreateRc4(key);
+        RC4Engine checkpoint = CreateRc4(key);
+        try
+        {
+            AdvanceCipher(primary, position);
+            AdvanceCipher(checkpoint, position);
+        }
+        catch
+        {
+            ResetCipher(primary);
+            ResetCipher(checkpoint);
+            throw;
+        }
+
+        if (clientToServer)
+        {
+            ResetCipher(_clientCipher);
+            ResetCipher(_clientCheckpointCipher);
+            _clientCipher = primary;
+            _clientCheckpointCipher = checkpoint;
+        }
+        else
+        {
+            ResetCipher(_serverCipher);
+            ResetCipher(_serverCheckpointCipher);
+            _serverCipher = primary;
+            _serverCheckpointCipher = checkpoint;
+        }
+    }
+
+    private static void AdvanceCipher(RC4Engine cipher, long count)
+    {
+        if (count <= 0)
+        {
+            return;
+        }
+
+        byte[] input = new byte[4096];
+        byte[] output = new byte[input.Length];
+        try
+        {
+            while (count > 0)
+            {
+                int chunk = (int)Math.Min(count, input.Length);
+                cipher.ProcessBytes(input, 0, chunk, output, 0);
+                count -= chunk;
+            }
+        }
+        finally
+        {
+            CryptographicOperations.ZeroMemory(output);
+        }
+    }
+
+    private static void ResetCipher(RC4Engine cipher)
+    {
+        try
+        {
+            cipher.Reset();
+        }
+        catch (NotSupportedException)
+        {
+        }
     }
 
     /// <summary>

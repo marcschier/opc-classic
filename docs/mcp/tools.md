@@ -1472,10 +1472,11 @@ Begins a network packet capture session. Defaults the BPF filter to TCP DCOM tra
 | `progId` | `string?` | `null` | Optional ProgID resolved through the shared OPCEnum connection normalization path. |
 | `clsid` | `string?` | `null` | Optional CLSID activated after capture startup. |
 | `connectionString` | `string?` | `null` | Optional `dcom://`, OPC scheme, `tcp://`, or `inmemory://` target. |
+| `ambientSso` | `bool` | `false` | Explicit opt-in to use the process/current-logon Windows identity for OPCEnum discovery and DCOM activation. When false, no ambient credential connection is attempted; direct `tcp://`, `inmemory://`, and host-only metadata resolution remain available. |
 
 **Returns:** `Task<CaptureSessionDto>`
 
-For a target-aware start, the initial filter remains broad (`135` plus the dynamic range) while ProgID resolution and activation run. The live source is narrowed only afterward. `CaptureSessionDto.target` returns the normalized host/ProgID/CLSID, activation status, OXID metadata, discovered bindings, ports, and any resolution error. Temporary activation authentication contexts are disposed and activated interface references are released through `IRemUnknown::RemRelease`; cleanup failure is surfaced as `activated_release_failed`. `effectiveFilter` reports the actual live filter and `filterTransition` reports whether narrowing was unchanged, updated live, restarted, or failed.
+For a target-aware start, the initial filter remains broad (`135` plus the dynamic range) while target metadata is resolved. Authenticated OPCEnum discovery or DCOM activation is performed only when `ambientSso=true`; otherwise the target reports `ambient_sso_required` and the capture remains broad without sending ambient credentials to the arbitrary host. When opted in, the live source is narrowed after discovery/activation. `CaptureSessionDto.target` returns the normalized host/ProgID/CLSID, activation status, OXID metadata, discovered bindings, ports, and any resolution error. Temporary activation authentication contexts are disposed and activated interface references are released through `IRemUnknown::RemRelease`; cleanup failure is surfaced as `activated_release_failed`. `effectiveFilter` reports the actual live filter and `filterTransition` reports whether narrowing was unchanged, updated live, restarted, or failed.
 
 ### `opcclassic.capture.set_filter`
 
