@@ -1588,7 +1588,6 @@ Stops and disposes a notification subscription without stopping or removing the 
 | --- | --- | --- | --- |
 | `subscriptionId` | `string` | `required` | Subscription id returned by `opcclassic.capture.subscribe_notifications`. |
 **Returns:** `Task<bool>`
-**Returns:** `Task<bool>`
 
 ### `opcclassic.capture.summarize`
 

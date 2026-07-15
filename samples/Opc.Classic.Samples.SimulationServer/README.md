@@ -75,6 +75,11 @@ The same configuration and engine are exposed through:
 - direct sample APIs for status snapshots, diagnostics, deterministic endpoint failures,
   reconnect/backoff, cancellation, and rate tests.
 
+The reference engine is intentionally bounded. Default limits are 256 source
+servers, 1,024 connections, 1,024 queued values per connection, and 1,024
+retained diagnostics. Update rates are positive and no greater than one hour;
+retry delay uses bounded exponential backoff from one second to one minute.
+
 Set `OPC_CLASSIC_SIM_DX_CONFIG` to a JSON file path to enable atomic, versioned persistence:
 
 ```powershell
@@ -85,6 +90,16 @@ dotnet run --project samples\Opc.Classic.Samples.SimulationServer
 On first start the file is seeded. Later starts recover the committed revision and resume
 enabled transfers. Configuration add/modify/update/delete/reset operations all mutate the
 same engine state; no MCP- or DCOM-specific transfer implementation is duplicated.
+
+### Reference-grade boundary
+
+The scenario demonstrates deterministic polling-based DA source reads, VQT
+propagation, target writes, enabled/disabled state, health checks,
+reconnect/backoff, cancellation, versioned configuration, and restart recovery.
+It is not a complete generic OPC DX server: the standardized DA-visible DX
+Database subtree, DirtyFlag/`E_PERSISTING` timing policy, XML-DA sources,
+subscription-driven queue rules, conversion policy, and the full section 6
+target-write truth table remain outside the sample.
 
 ## Exposing real transports (`--listen`)
 

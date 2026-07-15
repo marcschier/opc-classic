@@ -11,7 +11,7 @@ For the historical aggregate write-up see
 [`docs/CONFORMANCE.md`](../CONFORMANCE.md).
 
 For known open follow-up gaps see
-[`docs/ROADMAP.md` § Open conformance follow-ups](../ROADMAP.md#open-conformance-follow-ups).
+[`docs/ROADMAP.md` § Remaining runtime and conformance gaps](../ROADMAP.md#remaining-runtime-and-conformance-gaps).
 
 ## Status snapshot
 
@@ -95,5 +95,5 @@ this review — see [`docs/CONFORMANCE.md`](../CONFORMANCE.md) for context.
   constants, `OpcFacility` class; MS-CSSP: 2 spec-citation comment
   fixes). 13 remaining hard gaps (OPC AE / DA / HDA / DX
   CCW-completion + interface-shape work) are documented as soft-gap
-  follow-ups in [`ROADMAP.md` § Open conformance follow-ups](../ROADMAP.md#open-conformance-follow-ups)
+  follow-ups in [`ROADMAP.md` § Remaining runtime and conformance gaps](../ROADMAP.md#remaining-runtime-and-conformance-gaps)
   pending dedicated implementation PRs.

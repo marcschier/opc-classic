@@ -10,7 +10,7 @@
 
 | Surface | Spec § | Implementation | Tests | Outcome |
 |---|---|---|---|---|
-| `IOPCServer` (6 methods) | §4.4.4 | ✅ source-generated proxy + dispatcher; ⚠️ Windows CCW lacks `CreateGroupEnumerator` | ✅ | hard gap (unverified — Phase 2 deep-validation will close) |
+| `IOPCServer` (6 methods) | §4.4.4 | ✅ source-generated proxy + dispatcher; managed DCOM and Windows CCW all-scope group enumerators | ✅ | conformant |
 | `IOPCCommon` (5 methods) | §4.4.3 / Common §7 | ✅ source-generated proxy + dispatcher; ⚠️ Windows CCW implements only `SetClientName` | ✅ | hard gap (unverified — Phase 2 deep-validation will close) |
 | `IOPCServerPublicGroups` (optional, 2 methods) | §4.4.7 | ❌ not projected | n/a | soft gap — optional public groups |
 | `IOPCBrowseServerAddressSpace` (5 methods) | §4.4.8 | ✅ source-generated proxy + dispatcher; ✅ Windows CCW tearoff | ✅ | conformant |
@@ -41,9 +41,16 @@
 | `GetGroupByName` | 5 | same | same | same |
 | `GetStatus` | 6 | same | same | `tests/Opc.Classic.Da.Tests/NdrOpcServerStatusCodecTests.cs`, `tests/Opc.Classic.Hosting.Windows.Tests/Da/OpcDaServerCcwTests.cs` |
 | `RemoveGroup` | 7 | same | same | `tests/Opc.Classic.Hosting.Windows.Tests/Da/OpcDaServerCcwTests.cs` |
-| `CreateGroupEnumerator` | 8 | same | ❌ returns `E_NOTIMPL` | `tests/Opc.Classic.Da.Tests/OpcMethodOpnumTests.cs`, `tests/Opc.Classic.Hosting.Windows.Tests/Da/OpcDaServerCcwTests.cs` |
+| `CreateGroupEnumerator` | 8 | same | ✅ `IEnumString` name scopes and `IEnumUnknown` connection scopes | `tests/Opc.Classic.Da.Tests/Hosting/OpcDaGroupEnumeratorLoopbackTests.cs`, `tests/Opc.Classic.Hosting.Windows.Tests/Da/OpcDaServerGroupEnumeratorCcwTests.cs` |
 
-The source-generated path declares all required DA 2.05a opnums in `IOPCInterfaces.cs`; the managed host contract (`src/Opc.Classic.Da/Hosting/IOpcDaServer.cs`) supplies default group lookup/enumerator hooks. Native Windows CCW coverage is complete except `CreateGroupEnumerator`, which is a hard native-interop gap because `IOPCServer` is mandatory.
+The source-generated path declares all required DA 2.05a opnums in
+`IOPCInterfaces.cs`. `IOpcDaServer` creates immutable private/public snapshots
+for all six `OPCENUMSCOPE` values. Private groups precede public groups in
+combined scopes. Name scopes return `IEnumString`; connection scopes return
+`IEnumUnknown`. Managed DCOM and Windows CCW enumerators implement `Next`,
+`Skip`, `Reset`, and cursor-preserving `Clone`; partial fetch/skip returns the
+COM `S_FALSE` result and connection enumerators retain interface references for
+the snapshot lifetime.
 
 ### 1.2 `IOPCCommon` (spec §4.4.3 / OPC Common §7)
 
@@ -189,15 +196,11 @@ The old `IOPCAsyncIO`, `IDataObject`, and `IAdviseSink` paths are superseded by 
 
 ### 3.2 Hard gaps
 
-#### 3.2.1 Windows DA server CCW does not implement `IOPCServer::CreateGroupEnumerator`
-
-`src/Opc.Classic.Hosting.Windows/Da/OpcDaServerCcw.cs` exposes the `IOPCServer` vtable but returns `E_NOTIMPL` for `CreateGroupEnumerator`. This is a native-interop hard gap because §4.4.4 requires all `IOPCServer` functions. Status: **OPEN** (unverified — Phase 2 deep-validation will close).
-
-#### 3.2.2 Windows DA server CCW `IOPCCommon` locale methods are stubs
+#### 3.2.1 Windows DA server CCW `IOPCCommon` locale methods are stubs
 
 `IOPCCommon::SetLocaleID`, `GetLocaleID`, `QueryAvailableLocaleIDs`, and `GetErrorString` return `E_NOTIMPL` on the Windows CCW `IOPCCommon` tearoff, while the cross-platform generated dispatcher implements the methods. Status: **OPEN** (unverified — Phase 2 deep-validation will close).
 
-#### 3.2.3 Windows DA server CCW does not expose server-level shutdown connection point
+#### 3.2.2 Windows DA server CCW does not expose server-level shutdown connection point
 
 The DA server object should expose `IConnectionPointContainer` for `IOPCShutdown` carry-over behavior. The group CCW supports connection points for `IOPCDataCallback`, but `src/Opc.Classic.Hosting.Windows/Da/OpcDaServerCcw.cs` does not advertise `IConnectionPointContainer` on the root DA server. Status: **OPEN** (unverified — Phase 2 deep-validation will close).
 

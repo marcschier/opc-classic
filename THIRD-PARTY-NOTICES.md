@@ -111,6 +111,19 @@ Opc.Classic .NET is licensed under MIT. See [LICENSE](LICENSE).
 
 ## Reference / Conformance Assets (NOT redistributed in built packages)
 
+### External vendor probe descriptors
+
+- Scope: `interop/tools/vendor-descriptors/`
+- Status: Repository-authored JSON metadata, schemas, validation code, and
+  synthetic fixtures only.
+- External products: Not bundled, downloaded, installed, registered, or
+  licensed by this repository. Product names identify optional interoperability
+  targets and do not imply endorsement, certification, affiliation, or a grant
+  of vendor rights.
+- Operator responsibility: Acquire and operate external software under its own
+  license and security policy; do not commit credentials, license files,
+  customer paths, proprietary binaries, or proprietary captures.
+
 ### interop/samples/ (native C++ OPC Foundation sample servers)
 - Source: OPC Foundation
 - License: OPC Foundation sample license (older Sample Server SDK) — preserved verbatim in the original files

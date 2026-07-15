@@ -29,6 +29,7 @@ Current baseline: **the sample apps** and **all test projects green** with 0 bui
 ## Tools / Integrations
 
 - [Opc.Classic.Mcp](mcp/README.md) — stdio MCP server for Claude Desktop, Cursor, VS Code Copilot Chat, GitHub Copilot CLI, and other AI agents
+- [Capture tools](mcp/tools.md#capture) — target-aware live capture, atomic filter transitions, bounded cursors, advisory notifications, pcap/pcapng decode, TCP reassembly, replay, and opt-in NTLM unwrap
 
 ## Interop with native OPC servers
 
@@ -44,7 +45,7 @@ Current baseline: **the sample apps** and **all test projects green** with 0 bui
 - [Threat model](security/THREAT_MODEL.md)
 - [Channel binding (CBT) on TLS](security/CHANNEL_BINDING.md)
 - [NTLMSSP audit prep guide](security/NTLMSSP_AUDIT_GUIDE.md)
-- Managed DCOM listener security now includes configured server-side NTLMv2 authenticated bind with packet integrity/privacy; server-side Kerberos/SPNEGO acceptor wiring remains tracked in the roadmap.
+- Managed DCOM listener security uses a mechanism-neutral provider registry for NTLMv2, direct Kerberos, and Kerberos-first SPNEGO acceptors, with explicit fallback, MIC, channel-binding, minimum-protection, credential, and principal-mapping policy.
 - [Kerberos in Active Directory](cookbook/03-kerberos-in-active-directory.md)
 - [DCOM hardening explainer](cookbook/05-dcom-hardening-pkt-integrity-explainer.md)
 - [Implementing OPC Security](cookbook/08-implementing-opc-security.md)
@@ -56,6 +57,7 @@ Current baseline: **the sample apps** and **all test projects green** with 0 bui
 - Managed server conformance includes EPM `ept_map`, OXID/activation, `IRemUnknown`, OpcEnum discovery, and reverse-callback listener coverage.
 - [Architecture diagrams](architecture/diagrams.md) — Mermaid diagrams
 - [Generator diagnostics](generators/diagnostics.md) — OPCGEN*+ OCM* reference
+- [Production generator shape inventory](generators/production-shape-inventory.md) — 253 audited production shapes and the zero-fallback manifest
 - [XML-DA status](CONFORMANCE.md#opc-xml-da-101)
 - [Roadmap](ROADMAP.md) — release gates and beyond
 

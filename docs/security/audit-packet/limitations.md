@@ -9,7 +9,10 @@ Server-side NTLMv2 bind challenge handling is implemented in the managed listene
 
 `F4Auth` now exercises NTLMv2 authenticated managed-loopback calls, wrong-password rejection, required-auth anonymous/plain-request rejection, and privacy-mode sealing. Its remaining skipped listener-auth tests are Kerberos and SPNEGO acceptor paths.
 
-Result: clients can drive authenticated binds against external servers, and managed servers can require NTLMv2 authenticated binds when a credential source is configured. The remaining listener-auth gap is server-side Kerberos/SPNEGO acceptor wiring.
+Result: clients can drive authenticated binds against external servers, and
+managed servers can require mechanism-neutral NTLMv2, direct Kerberos, or
+Kerberos-first SPNEGO authentication. Live AD, cross-realm, and external
+vendor validation remain outside this audit packet.
 
 ## Hand-rolled MD4 and RC4
 

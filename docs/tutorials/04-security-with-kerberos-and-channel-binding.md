@@ -2,7 +2,12 @@
 
 OPC Classic security is mostly DCOM security. Modern deployments must account for Microsoft DCOM hardening, NTLM relay risk, Kerberos service-principal identity, SPNEGO negotiation, channel binding, and operational realities such as keytab rotation. This tutorial shows how to move a production Opc.Classic client or managed server from the safe NTLMv2 baseline to Kerberos/SPNEGO with channel binding.
 
-Opc.Classic provides self-contained NTLMv2, Kerberos, SPNEGO, and channel-binding token support through `OpcConnectData.WithKerberos`, `KerberosAuthInfo`, `KerberosAuthContext`, `ChannelBindings`, `ChannelBindingsFactory`, and `ChannelBindingsHash`. Managed listeners can require configured NTLMv2 authenticated binds; server-side Kerberos/SPNEGO acceptor wiring remains the listener-auth gap. Validate the exact package version, realm configuration, and protection level before enabling Kerberos for production traffic. The deployment and troubleshooting guidance applies because SPN, KDC, and channel-binding errors are independent of application code. For a compact recipe see [../cookbook/03-kerberos-in-active-directory.md](../cookbook/03-kerberos-in-active-directory.md); for NTLMv2 audit context see [../security/NTLMSSP_AUDIT_GUIDE.md](../security/NTLMSSP_AUDIT_GUIDE.md).
+Opc.Classic provides self-contained NTLMv2, Kerberos, SPNEGO, and
+channel-binding support for clients and managed listeners. Listener
+authentication uses a mechanism-neutral provider/acceptor registry. Direct
+Kerberos and Kerberos-first SPNEGO acceptors enforce service-principal,
+encryption-type, clock-skew, minimum-protection, principal-mapping, fallback,
+MIC, and channel-binding policy.
 
 ## Prerequisites
 
@@ -141,6 +146,60 @@ var authContext = new KerberosAuthContext(
 
 The `KerberosAuthContext` builds SPNEGO tokens around the Kerberos AP-REQ/AP-REP exchange. That behavior is grounded in [MS-KILE] for Kerberos and RFC 4178 for SPNEGO. When packet signing/sealing is enabled in your library version, it must match [MS-RPCE] authentication verifier rules.
 
+## Configure a managed-listener Kerberos acceptor
+
+Listener policy is explicit and AOT-safe; no provider discovery or runtime
+reflection occurs.
+
+```csharp
+using Kerberos.NET.Crypto;
+using Opc.Classic;
+using Opc.Classic.Dcom.Kerberos;
+using Opc.Classic.Dcom.Rpc.Auth;
+
+var credentials = new FileKerberosKeytabCredentialProvider(
+    "RPCSS/opc01.plant.example.com",
+    "PLANT.EXAMPLE.COM",
+    "/run/secrets/opc-server.keytab");
+
+var principals = new KerberosPrincipalMappingPolicy(
+    KerberosPrincipalNormalization.LowercaseNameAndCanonicalRealm,
+    [
+        new KerberosPrincipalMapping(
+            "alice@PLANT.EXAMPLE.COM",
+            "operators/alice",
+            ["operator"]),
+    ]);
+
+var kerberosOptions = new KerberosServerOptions(
+    ["RPCSS/opc01.plant.example.com"],
+    "PLANT.EXAMPLE.COM",
+    credentials,
+    [
+        EncryptionType.AES256_CTS_HMAC_SHA1_96,
+        EncryptionType.AES128_CTS_HMAC_SHA1_96,
+    ],
+    TimeSpan.FromMinutes(5),
+    KerberosChannelBindingPolicy.WhenPresent,
+    OpcProtectionLevel.Integrity,
+    principals);
+
+var providers = new RpcServerAuthenticationProviderRegistry();
+KerberosServerAuthenticationProvider kerberos =
+    providers.RegisterKerberos(kerberosOptions);
+providers.RegisterSpnego(new SpnegoServerOptions(
+    kerberos,
+    ntlmProvider: null,
+    SpnegoNtlmFallbackPolicy.Disabled));
+
+var listenerAuthentication = new RpcServerAuthenticationOptions(providers);
+```
+
+`SpnegoNtlmFallbackPolicy.Disabled` is the Kerberos-only production posture.
+`WhenKerberosUnavailable` requires an explicitly configured NTLM provider and
+does not permit fallback after Kerberos was selected and failed. SPNEGO
+preserves the offered mechanism list and validates `mechListMIC` when required.
+
 ## Channel binding and Extended Protection
 
 Channel binding ties authentication to the outer secure channel. For TLS-protected endpoints, MS-CSSP defines `tls-server-end-point:` followed by the hash of the DER-encoded server certificate. Opc.Classic exposes helpers for this structure:
@@ -210,10 +269,13 @@ Verify the exact certificate bytes used by client and server. If TLS terminates 
 ## Operational guardrails
 
 - Store keytabs as secrets and mount read-only.
+- Publish rotated keytabs by atomic file replacement; in-place writes are rejected as unstable.
+- Keep keytabs below the 16 MiB bound and ensure they contain the configured service principal.
 - Rotate service-account keys and redeploy keytabs together.
 - Prefer AES keys; avoid RC4-era account settings.
 - Use `OpcProtectionLevel.Integrity` at minimum; prefer `Privacy` where encryption is required.
 - Log SPN and realm, never passwords or keytab bytes.
+- Dispose credential providers during host shutdown so owned password/keytab buffers are cleared.
 - Monitor AD event logs and application logs together.
 
 ## Server-side identity and delegation choices
@@ -285,6 +347,5 @@ Also schedule periodic drills. Run the tutorial scenario in a staging environmen
 - [MS-DCOM] and [MS-RPCE] for DCOM authentication levels and packet protection.
 - Repository audit prep: [../security/NTLMSSP_AUDIT_GUIDE.md](../security/NTLMSSP_AUDIT_GUIDE.md).
 - RFC 4178 for SPNEGO and RFC 5056/RFC 2744 for channel bindings.
-
 
 

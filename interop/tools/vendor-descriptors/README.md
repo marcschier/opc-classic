@@ -2,6 +2,10 @@
 
 This catalog drives OPC Classic interoperability probes from non-sensitive JSON descriptors. It never downloads, installs, registers, or commits vendor software.
 
+Descriptors are test metadata, not product redistributions or endorsements.
+Every external server, client, SDK, installer, license, registration, and
+credential remains operator-supplied and subject to its vendor's terms.
+
 ## Catalogs
 
 - `descriptors/matrikon-opc-simulation-server.json` and `descriptors/opc-foundation-testserver.json` describe externally installed DA products.
@@ -22,3 +26,33 @@ HRESULT, and a missing item is a regression. Descriptor parsing and JSON-RPC
 dispatch reject `NaN`, positive infinity, and negative infinity.
 
 To add a product, clone the generic descriptor, replace the placeholder target and item arguments, remove unsupported capabilities, and point prerequisites at `${OPERATOR_ROOT}` plus a relative artifact path. Do not add credentials, absolute customer paths, setup commands, or product files.
+
+## Security rules
+
+- Descriptor identity, schema version, target kind, capability names, probe
+  references, expected results, and prerequisite paths are validated
+  fail-closed.
+- Artifact prerequisites use an allow-listed root token plus a relative path.
+  Absolute paths, parent traversal, environment expansion inside paths, setup
+  commands, and executable arguments from descriptors are rejected.
+- JSON parsing rejects duplicate ambiguity and non-finite numbers (`NaN`,
+  positive infinity, negative infinity).
+- Each selected probe runs independently. A missing external installation or
+  root mapping is `BLOCKED`; it is not converted into a product regression.
+- Reports contain descriptor identity and normalized results, not credentials
+  or proprietary payloads. Review reports before sharing because item names,
+  hostnames, and server metadata can still be operationally sensitive.
+
+## Licensing boundary
+
+The schema, loader, synthetic fixtures, and repository-owned descriptors are
+covered by this repository's MIT license. Product names and marks identify
+external interoperability targets only. Vendor binaries, SDKs, captures,
+licenses, and documentation are not included and are not granted any rights by
+this repository. Operators are responsible for acquisition, license
+compliance, installation, registration, access control, and removal.
+
+The Matrikon and OPC Foundation descriptors contain only non-sensitive target
+metadata and expected probe shapes. Synthetic fixture bytes are
+repository-authored and redistributable; proprietary captures must not be
+committed.

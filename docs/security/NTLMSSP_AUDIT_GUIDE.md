@@ -442,8 +442,9 @@ Residual risk:
 - NTLM SSO / Windows SSPI is intentionally unsupported.
   `NtlmAuthentication` throws `PlatformNotSupportedException` for
   `rpc.ntlm.sso=true` and points callers to Kerberos/SPNEGO.
-- Server-side Kerberos/SPNEGO acceptor wiring remains deferred for managed
-  listeners. NTLMv2 authenticated binds are implemented via
+- Managed listeners also expose direct Kerberos and Kerberos-first SPNEGO
+  acceptors. This guide remains scoped to the NTLMSSP implementation,
+  NTLM fallback boundary, and shared channel-binding/session-protection code. NTLMv2 authenticated binds are implemented via
   `RpcServerConnectionProcessor` + `ConfiguredAuthenticationSource`, but
   `F4Auth` still skips Kerberos and SPNEGO acceptor scenarios.
 - NTLM challenge and key randomness need hardening.

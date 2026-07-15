@@ -1,6 +1,6 @@
 # Production generator shape inventory
 
-The executable audit in `ProductionShapeInventoryTests` covers every production method on an interface marked `[GenerateOpcProxy]` or `[OpcGenerateServerDispatch]`. It builds each production project from source with its real compiled project-reference graph, retains the generator `outputCompilation`, and fails on any error located in generated source, including duplicate members and missing or inaccessible types.
+The executable audit in `ProductionShapeInventoryTests` covers all **253 production method shapes** on interfaces marked `[GenerateOpcProxy]` or `[OpcGenerateServerDispatch]`. It builds each production project from source with its real compiled project-reference graph, retains the generator `outputCompilation`, and fails on any error located in generated source, including duplicate members and missing or inaccessible types.
 
 ## Semantic shape rules
 
@@ -27,6 +27,31 @@ None.
 ## Hand-written generator sides
 
 None.
+
+Production client and server wire paths are generator-owned. Small compatibility
+partials may preserve public constructor or method names, but they do not encode
+or decode DCOM payloads.
+
+## Production annotation contract
+
+| Attribute | Wire meaning |
+| --- | --- |
+| `[OpcInterface(iid)]` | Declares the interface IID and emits static interface metadata. |
+| `[OpcMethod(opnum)]` | Declares the DCE/RPC opnum used by client and server generation. |
+| `[GenerateOpcProxy]` | Requests the typed client proxy. |
+| `[OpcGenerateServerDispatch]` | Requests the typed server dispatcher. |
+| `[OpcGenerateMultiOutRecord]` | Requests a result record for multiple response values. |
+| `[OpcArrayCount(name)]` | Correlates an array with the named count parameter. |
+| `[OpcIidIs(name)]` | Correlates an interface pointer with the named IID parameter. |
+| `[OpcUniquePointer]` | Selects NDR unique-pointer encoding for a parameter or return value. |
+| `[OpcEmitArrayCount]` | Emits the standalone IDL count field before the first correlated input array. |
+| `[OpcDeferredElements]` | Uses deferred unique-pointer element layout for string arrays. |
+| `[OpcFileTimeElements]` | Encodes `long[]` elements as Windows `FILETIME` pairs. |
+| `[OpcVariantElements]` | Encodes `OpcVariant[]` elements in MS-OAUT wire-VARIANT form. |
+| `[OpcRefString]` | Encodes a top-level operation string as an NDR reference pointer. |
+
+The inventory derives semantic categories from resolved symbols and these
+attributes. It does not infer count or IID correlations from parameter names.
 
 ## Shrinking rule
 

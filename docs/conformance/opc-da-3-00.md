@@ -10,7 +10,7 @@
 
 | Surface | Spec § | Implementation | Tests | Outcome |
 |---|---|---|---|---|
-| `IOPCServer` (6 methods) | §4.3.4 | ✅ source-generated proxy + dispatcher; managed server contract; Windows CCW bodies | ✅ | partial hardening gap — see §3.2.3 |
+| `IOPCServer` (6 methods) | §4.3.4 | ✅ source-generated proxy + dispatcher; managed server contract; Windows CCW bodies and all-scope group enumerators | ✅ | conformant |
 | `IOPCCommon` (5 methods) | §4.3.3 | ✅ source-generated proxy + dispatcher | ✅ | conformant |
 | `IOPCBrowse` (2 methods) | §4.3.6 | ✅ projection + default browse implementation | ✅ | conformant for managed DCOM; CCW minimal stub |
 | `IOPCItemIO` (2 methods) | §4.3.7 | ⚠️ projected and tested; default host registration incomplete | ✅ proxy/dispatcher tests | hard gap — see §3.2.1 |
@@ -41,7 +41,7 @@
 | `GetGroupByName` | 5 | generated | generated | `tests/Opc.Classic.Da.Tests/Hosting/OpcDaGroupRegistrationTests.cs`, `tests/Opc.Classic.Hosting.Windows.Tests/Da/OpcDaServerCcwTests.cs` |
 | `GetStatus` | 6 | generated | generated | `tests/Opc.Classic.Da.Tests/NdrOpcServerStatusCodecTests.cs`, `tests/Opc.Classic.Hosting.Windows.Tests/Da/OpcDaServerCcwTests.cs` |
 | `RemoveGroup` | 7 | generated | generated | `tests/Opc.Classic.Da.Tests/Hosting/OpcDaGroupRegistrationTests.cs`, `tests/Opc.Classic.Hosting.Windows.Tests/Da/OpcDaServerCcwTests.cs` |
-| `CreateGroupEnumerator` | 8 | generated | generated | `tests/Opc.Classic.Da.Tests/OpcMethodOpnumTests.cs`; Windows CCW hard gap in §3.2.3 |
+| `CreateGroupEnumerator` | 8 | generated | generated | `tests/Opc.Classic.Da.Tests/Hosting/OpcDaGroupEnumeratorLoopbackTests.cs`, `tests/Opc.Classic.Hosting.Windows.Tests/Da/OpcDaServerGroupEnumeratorCcwTests.cs` |
 
 Managed server hosting flows through `src/Opc.Classic.Da/Hosting/IOpcDaServer.cs`, `src/Opc.Classic.Da/Hosting/OpcDaServerDispatcher.cs`, and the sample/conformance server `samples/Opc.Classic.Samples.CttServer/CttDaServer.cs`.
 
@@ -99,10 +99,16 @@ Implementation evidence: `src/Opc.Classic.Da/Hosting/OpcDaGroup.cs`, `src/Opc.Cl
 |---|---|---|---|---|
 | `IOPCAsyncIO2` (`Read`, `Write`, `Refresh2`, `Cancel2`, `SetEnable`, `GetEnable`) | 3-8 | `Opc.Classic.Da.Dcom.IOPCAsyncIO2.OpcProxy.g.cs` | `Opc.Classic.Da.Dcom.IOPCAsyncIO2.OpcServerDispatch.g.cs` | `tests/Opc.Classic.Da.Tests/Hosting/OpcDaGroupAsyncIoTests.cs`, `tests/Opc.Classic.Da.Tests/Dcom/IOPCAdditionalDaProxyTests.cs` |
 | `IOPCAsyncIO3` (`ReadMaxAge`, `WriteVQT`, `RefreshMaxAge` plus inherited async controls) | 5-11 | `Opc.Classic.Da.Dcom.IOPCAsyncIO3.OpcProxy.g.cs` | `Opc.Classic.Da.Dcom.IOPCAsyncIO3.OpcServerDispatch.g.cs` | same, plus `tests/Opc.Classic.Hosting.Windows.Tests/Da/OpcDaGroupCcwTests.cs` |
-| `IConnectionPointContainer` / `IConnectionPoint` on OPCGroup | 3-6 | generated where supported; hand-written client proxy for `IConnectionPoint` | `Opc.Classic.Da.Dcom.IConnectionPoint*.OpcServerDispatch.g.cs`; Windows CCW methods in `OpcDaGroupCcwConnectionPointMethods.cs` | `tests/Opc.Classic.Hosting.Windows.Tests/Da/OpcDaGroupCcwTests.cs`, `tests/Opc.Classic.Da.Tests/Dcom/IOPCAdditionalDaProxyTests.cs` |
+| `IConnectionPointContainer` / `IConnectionPoint` on OPCGroup | 3-6 | generated client proxies | `Opc.Classic.Da.Dcom.IConnectionPoint*.OpcServerDispatch.g.cs`; Windows CCW methods in `OpcDaGroupCcwConnectionPointMethods.cs` | `tests/Opc.Classic.Hosting.Windows.Tests/Da/OpcDaGroupCcwTests.cs`, `tests/Opc.Classic.Da.Tests/Dcom/IOPCAdditionalDaProxyTests.cs` |
 | `IOPCDataCallback` (`OnDataChange`, `OnReadComplete`, `OnWriteComplete`, `OnCancelComplete`) | 3-6 | `Opc.Classic.Da.Dcom.IOPCDataCallback.OpcProxy.g.cs` | `Opc.Classic.Da.Dcom.IOPCDataCallback.OpcServerDispatch.g.cs` | `tests/Opc.Classic.Hosting.Windows.Tests/Da/OpcDataCallbackProxyTests.cs`, `tests/Opc.Classic.Da.Tests/Hosting/OpcDaDataChangePublisherTests.cs` |
 
 `OpcDaGroup` maintains callback enable state, sink registration, data-change fan-out, and cancel-complete fan-out. The Windows CCW path exposes `Advise`/`Unadvise`, `EnumConnections`, and `EnumConnectionPoints` over native COM.
+
+`CreateGroupEnumerator` applies all six `OPCENUMSCOPE` values to an immutable
+private/public group snapshot. Private groups precede public groups in combined
+scopes. Name scopes return `IEnumString`; connection scopes return
+`IEnumUnknown`. Both transports preserve cursor state across `Clone`, reset to
+the snapshot start, and return COM-compatible partial-fetch/skip results.
 
 ### 1.7 `IOPCItemDeadbandMgt` and `IOPCItemSamplingMgt` (spec §4.4.9 - §4.4.10)
 
@@ -176,10 +182,6 @@ Spec §4.3.1 and §4.3.7 put `IOPCItemIO` on the OPCServer object. The interface
 #### 3.2.2 OPCServer `IConnectionPointContainer` for `IOPCShutdown` is not verified as wired
 
 Spec §4.3.5 requires DA 2.0+ compliant servers to support `IConnectionPointContainer` on the OPCServer object, and `FindConnectionPoint` must support `IID_IOPCShutdown`. The `IOPCShutdown` sink is projected in `src/Opc.Classic.Da/Dcom/IOPCInterfaces.cs`, but this pass only verified group-level data-callback connection points in `src/Opc.Classic.Da/Hosting/OpcDaGroup.cs` and `src/Opc.Classic.Hosting.Windows/Da/OpcDaGroupCcwConnectionPointMethods.cs`. Status: **HARD GAP** until the OPCServer-level shutdown connection point is explicitly wired and tested.
-
-#### 3.2.3 Windows CCW `IOPCServer::CreateGroupEnumerator` returns `E_NOTIMPL`
-
-Spec §4.3.4.6 requires `CreateGroupEnumerator`. The source-generated managed DCOM interface exists and the sample CTT server returns an interface reference, but the Windows COM-callable wrapper implementation in `src/Opc.Classic.Hosting.Windows/Da/OpcDaServerCcw.cs` currently returns `E_NOTIMPL`. Status: **HARD GAP** for native Windows COM interop.
 
 ---
 

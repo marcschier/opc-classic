@@ -17,3 +17,9 @@ The demo also:
 - catches the deterministic truncated OPCBinary and omitted-optional XML payloads.
 
 The client references only repository projects. Discovery and decode use static, AOT-safe APIs with no runtime reflection or external packages.
+
+The reference converter limits complex nesting to 32 and repeated fields to
+65,536 elements. The filter limits expressions to 4,096 characters, 32 nested
+parentheses, 128 comparisons, 32 path segments, and 1,024-character literals.
+Unsupported syntax fails with CPX HRESULTs rather than invoking a dynamic
+expression engine.

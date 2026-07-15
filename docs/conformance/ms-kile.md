@@ -2,9 +2,9 @@
 
 **Spec:** `opc-classic-docs/MS-KILE.md` (Kerberos Protocol Extensions).
 
-**Scope:** RFC 4120 Kerberos with Microsoft extensions, used by Opc.Classic as one of the SPNEGO-selectable mechs (alongside NTLM) for DCOM authentication. Covers `KRB_AS_REQ` / `KRB_AS_REP`, `KRB_TGS_REQ` / `KRB_TGS_REP`, `KRB_AP_REQ` / `KRB_AP_REP`, `KRB_ERROR`, the GSS-API tokens (`AP-REQ` wrapped in OID + flags per RFC 4121), authenticator construction, subkey selection, per-spec channel-binding-via-checksum (RFC 4121 §4.1.1), MIC + Wrap tokens (RFC 4121 §4.2), and key derivation per RFC 3961 / RFC 3962 / RFC 4757 / RFC 8009.
+**Scope:** RFC 4120 Kerberos with Microsoft extensions for DCOM initiators and managed-listener acceptors, directly or through SPNEGO. Covers ticket acquisition, `KRB_AP_REQ` / `KRB_AP_REP`, `KRB_ERROR`, GSS-API tokens, authenticator construction and validation, subkeys, channel binding, MIC/Wrap, service credentials, principal mapping, and key derivation.
 
-**Implementing assemblies:** `Opc.Classic.Dcom.Kerberos` (Kerberos auth-context, session, key derivation, RFC 4121 tokens), `Opc.Classic.Dcom/Spnego/` (SPNEGO wrapping), `Kerberos.NET` package (KDC interaction).
+**Implementing assemblies:** `Opc.Classic.Dcom.Kerberos` (client context, server options/credentials, session, key derivation, RFC 4121 tokens), `Opc.Classic.Dcom/rpc/Auth/` (Kerberos/SPNEGO acceptors and provider registry), `Opc.Classic.Dcom/Spnego/` (SPNEGO wrapping), `Kerberos.NET` package (KDC interaction and ticket parsing).
 
 **Status overview:**
 
@@ -14,6 +14,8 @@
 | `KRB_TGS_REQ` / `KRB_TGS_REP` (service-ticket acquisition) | RFC 4120 §3.3 | ✅ via `Kerberos.NET` | ✅ same | conformant |
 | `KRB_AP_REQ` (mutual authentication) | RFC 4120 §3.2 + MS-KILE §3.2.5.3 | ✅ `KerberosAuthContext`, `KerberosSession` | ✅ `KerberosAuthContextTests`, `KerberosConnectionContextTests` | conformant |
 | `KRB_AP_REP` (server response) | RFC 4120 §3.2.4 | ✅ same | ✅ same | conformant |
+| Managed-listener AP-REQ acceptor | RFC 4120 §3.2 + MS-KILE §3.2.5.3 | ✅ `KerberosServerAuthenticationProvider` | ✅ provider integration tests | conformant for configured policy |
+| Service credentials and principal mapping | MS-KILE identity/service policy | ✅ bounded keytab/password providers + explicit mapper | ✅ `KerberosServerOptionsTests` | conformant for implemented policy |
 | `KRB_ERROR` decoding | RFC 4120 §5.9.1 + MS-KILE §3.2.5.6 | ✅ via `Kerberos.NET` | ✅ | conformant |
 | Authenticator construction (`Authenticator` per RFC 4120 §5.5.1) | RFC 4120 §5.5.1 | ✅ `KerberosAuthContext` | ✅ | conformant |
 | Subkey selection (per-session subkey for per-PDU integrity) | RFC 4120 §5.5.1 + MS-KILE §3.2.5.3 | ✅ `KerberosSessionKey`, `KerberosSession` | ✅ `KerberosAuthContextTests` | conformant |
@@ -37,7 +39,11 @@
 
 ### 1.1 Kerberos handshake (RFC 4120 + MS-KILE §3.x)
 
-Opc.Classic delegates the KDC interaction (`AS_REQ`/`AS_REP`, `TGS_REQ`/`TGS_REP`) to the third-party `Kerberos.NET` package, which is the recognised pure-managed Kerberos client for .NET. Opc.Classic owns the `AP_REQ` / `AP_REP` construction, channel binding, MIC + Wrap tokens, and SPNEGO wrapping.
+Opc.Classic delegates KDC interaction (`AS_REQ`/`AS_REP`,
+`TGS_REQ`/`TGS_REP`) and ticket parsing to `Kerberos.NET`. Opc.Classic owns
+the client connection context, listener acceptor policy, service-credential
+lifetime, principal mapping, channel binding, MIC/Wrap integration, and SPNEGO
+policy.
 
 | Surface | Source | Tests |
 |---|---|---|
@@ -46,6 +52,9 @@ Opc.Classic delegates the KDC interaction (`AS_REQ`/`AS_REP`, `TGS_REQ`/`TGS_REP
 | `AP_REQ` construction (with Authenticator including channel-binding cksum + subkey + flags) | `src/Opc.Classic.Dcom.Kerberos/KerberosAuthContext.cs` | `tests/Opc.Classic.Dcom.Kerberos.Tests/KerberosAuthContextTests.cs` |
 | `AP_REP` parsing (server validates Authenticator's timestamp + microseconds + subkey echo) | same | same |
 | `KRB_ERROR` parsing | via `Kerberos.NET` | covered by integration tests |
+| AP-REQ ticket validation and AP-REP response | `KerberosServerAuthenticationProvider` | `KerberosServerAuthenticationProviderIntegrationTests.cs` |
+| Keytab/password service credentials | `FileKerberosKeytabCredentialProvider`, `PasswordKerberosServerCredentialProvider` | `KerberosServerOptionsTests.cs`, provider integration tests |
+| Authenticated-principal mapping | `KerberosPrincipalMappingPolicy` | `KerberosServerOptionsTests.cs` |
 
 ### 1.2 GSS-API token wrapper (RFC 4121 §4)
 
@@ -117,7 +126,7 @@ MS-KILE contains **143 MUST/SHALL clauses** per Phase 0 inventory.
 | §2.2 | Common data structures (PA-DATA types, etc.) | 38 | ✅ conformant via Kerberos.NET | §1.1 |
 | §3.1 | Common message processing | 24 | ✅ conformant | §1.1 - §1.4 |
 | §3.2 | Client details | 22 | ✅ conformant | §1.1 - §1.6 |
-| §3.3 | KDC details | 33 | n/a — Opc.Classic is a client; KDC role is Kerberos.NET or Windows KDC | n/a |
+| §3.3 | KDC details | 33 | n/a — Opc.Classic is an initiator/acceptor endpoint, not a KDC | n/a |
 | §3.4 | Realm details | 8 | n/a | n/a |
 | §5 | Security considerations | 9 | ✅ documented | n/a |
 
@@ -150,7 +159,7 @@ applicable to OPC. Status: **WAIVED** (deferred-by-design).
 
 #### 3.1.4 KDC role not implemented
 
-Opc.Classic is a Kerberos client. KDC role would require AS server,
+Opc.Classic is a Kerberos initiator and service acceptor. KDC role would require AS server,
 TGS server, principal database, etc. Status: **WAIVED** —
 deferred-by-design (test fixtures use Kerberos.NET's embedded KDC).
 
@@ -163,9 +172,10 @@ sufficient for OPC sessions.
 
 ### 3.2 Hard gaps
 
-None at present. The client-side handshake (`AP_REQ` / `AP_REP`),
-GSS-API token wrapping, per-PDU MIC + Wrap tokens, channel-binding
-checksum, replay protection, and all five required etypes
+None at present for the implemented endpoint roles. The initiator and acceptor
+handshakes (`AP_REQ` / `AP_REP`), GSS-API token wrapping, per-PDU MIC + Wrap
+tokens, channel-binding policy, service credential validation, principal
+mapping, replay protection, and all five supported etypes
 (aes128-sha1, aes256-sha1, rc4-hmac, aes128-sha2, aes256-sha2) are
 implemented and tested. KDC integration is verified via an embedded
 Kerberos.NET KDC test fixture.

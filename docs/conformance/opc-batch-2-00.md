@@ -50,7 +50,7 @@
 | `Next` | 3 | `src/Opc.Classic.Batch/Dcom/IOPCBatchInterfaces.cs` line 57 | `tests/Opc.Classic.Batch.Tests/Dcom/IOPCBatchProxyTests.cs` |
 | `Skip` | 4 | line 63 | same |
 | `Reset` | 5 | line 69 | same |
-| `Clone` | 6 | line 75 (hand-written interface-ref path in `IOPCBatchClientProxies.cs`) | same |
+| `Clone` | 6 | line 75 (generated interface-ref return) | same |
 | `Count` | 7 | line 81 | same |
 
 ### 1.4 `IOPCEnumerationSets` (spec §3.5)
@@ -63,7 +63,9 @@
 | `QueryEnumeration` | 4 | line 103 | same |
 | `QueryEnumerationDescription` | 5 | line 109 | same |
 
-**Note:** `QueryEnumerationSets` returns multi-out arrays of dynamically-sized records. The generator currently projects the wire shape; populating runtime values requires per-server logic and is server-policy (see ROADMAP — multi-out record generation).
+**Note:** `QueryEnumerationSets` uses generated multi-output record and array
+correlation metadata. Populating runtime enumeration-set values remains
+per-server policy rather than a wire-generation gap.
 
 ### 1.5 NDR codecs (spec App. B IDL)
 

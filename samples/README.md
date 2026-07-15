@@ -19,7 +19,7 @@ Most sample folders ship their own `README.md` with run instructions. DA/AE/HDA/
 | [Opc.Classic.Samples.CpxClient/](Opc.Classic.Samples.CpxClient/README.md) | CPX browse/property discovery, OPCBinary/XML decode, bounded conversion/filter behavior. |
 | [Opc.Classic.Samples.LoopbackDemo/](Opc.Classic.Samples.LoopbackDemo/README.md) | In-process DA client/server loopback through the managed channel stack. |
 | [Opc.Classic.Samples.CttServer/](Opc.Classic.Samples.CttServer/README.md) | Additional managed DA sample registered as `Opc.Classic.DaSample.1` (different CLSID from `samples-da`). |
-| [Opc.Classic.Samples.SimulationServer/](Opc.Classic.Samples.SimulationServer/README.md) | Full-feature simulation server: one deterministic plant model projected through every OPC Classic spec, including an engine-backed, persistable DX DA-to-DA bridge, with default in-memory MCP hosting and optional DA/AE/HDA TCP listeners. |
+| [Opc.Classic.Samples.SimulationServer/](Opc.Classic.Samples.SimulationServer/README.md) | Full-feature simulation server: one deterministic plant model projected through every OPC Classic spec, including a bounded, persistable DX DA-to-DA reference engine with documented section 6 boundaries, default in-memory MCP hosting, and optional DA/AE/HDA TCP listeners. |
 | [Opc.Classic.Samples.AotCanary/](Opc.Classic.Samples.AotCanary/) | NativeAOT publish verification used in CI. |
 
 ## Sample container deployment

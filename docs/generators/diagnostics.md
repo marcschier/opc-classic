@@ -1,6 +1,10 @@
 # OPC Classic generator diagnostics
 
-The `Opc.Classic.Generators` package reports these shipped diagnostics while validating `[OpcInterface]`, `[OpcMethod]`, and `[GenerateOpcProxy]` declarations. The diagnostic category is `Opc.Classic.Generators`, and each descriptor links back to this file.
+The `Opc.Classic.Generators` package reports these diagnostics while validating
+the interface, client-proxy, server-dispatch, and wire-correlation attributes.
+The production inventory contains 253 method shapes and
+`ProductionShapeMigrationManifest.json` contains zero diagnostic suppressions,
+unsupported diagnostics, or hand-written wire fallbacks.
 
 Release tracking note: `OPCGEN001`-`OPCGEN010` are listed in `AnalyzerReleases.Shipped`. `OPCGEN011` and server-dispatch diagnostics remain tracked in `AnalyzerReleases.Unshipped` until a release ships them.
 
@@ -39,6 +43,28 @@ Release tracking note: `OPCGEN001`-`OPCGEN010` are listed in `AnalyzerReleases.S
 The production audit is documented in
 [Production generator shape inventory](production-shape-inventory.md). It compiles generated source per production project using real project references and derives correlation categories only from resolved `[OpcArrayCount]` and `[OpcIidIs]` attributes.
 
+## Attribute reference
+
+| Attribute | Target | Purpose |
+| --- | --- | --- |
+| `[OpcInterface("guid")]` | partial interface | Defines the IID and enables interface metadata generation. |
+| `[OpcMethod(opnum)]` | method | Defines the wire opnum. |
+| `[GenerateOpcProxy]` | partial interface | Emits the client proxy. |
+| `[OpcGenerateServerDispatch]` | partial interface | Emits the server dispatcher. |
+| `[OpcGenerateMultiOutRecord]` | method | Emits a named or inferred result record for multiple outputs. |
+| `[OpcArrayCount("parameter")]` | parameter/return | Declares a count correlation; invalid names or unsafe directionality produce `OPCGEN011`/`OPCGEN107`. |
+| `[OpcIidIs("parameter")]` | parameter/return | Declares an `iid_is` interface-pointer correlation. |
+| `[OpcUniquePointer]` | parameter/return | Selects NDR unique-pointer encoding. |
+| `[OpcEmitArrayCount]` | parameter | Emits a separate IDL count field before the first correlated input array. |
+| `[OpcDeferredElements]` | parameter | Selects deferred element-pointer layout for supported arrays. |
+| `[OpcFileTimeElements]` | parameter | Selects `FILETIME` element encoding. |
+| `[OpcVariantElements]` | parameter | Selects MS-OAUT wire-VARIANT element encoding. |
+| `[OpcRefString]` | parameter | Selects top-level NDR reference-string encoding. |
+| `[OpcProxyIgnore]` | method | Excludes a method from client proxy generation when a deliberate non-wire compatibility member is required. |
+
 ## Severity policy
 
-Errors stop the affected generator output. Warnings keep compilation visible while omitting or limiting generated code for the affected method. Info diagnostics describe a generated fallback that should be reviewed before relying on the method in production.
+Errors stop the affected generator output. Warnings keep the unsupported or
+unsafe shape visible to the build. `OPCGEN008` identifies the legacy
+empty-payload placeholder path; production inventory treats any occurrence as a
+manifest failure rather than accepted coverage.

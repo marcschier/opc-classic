@@ -12,9 +12,9 @@ reference host: `Opc.Classic.Samples.SimulationServer`.
 | Surface | Spec § | Implementation | Tests | Outcome |
 |---|---|---|---|---|
 | DX component category + `IOPCConfiguration` IID | App. B.1.4 | ✅ `OpcGuids.CATID_OPCDXServer10`, `OpcGuids.IID_IOPCConfiguration`, `[OpcInterface]` | ✅ | conformant |
-| `IOPCConfiguration` source-server services | §5.2.1, App. B.1.4 | ✅ hand-written client proxy | ✅ partial | conformant for client calls |
-| `IOPCConfiguration` DXConnection query/add/update/modify/copy/reset services | §5.2.2 - §5.2.3, App. B.1.4 | ✅ hand-written client proxy | ✅ partial | conformant for implemented calls |
-| `IOPCConfiguration::DeleteDXConnections` | §5.2.2.5, App. B.1.4 | ✅ accepts DXConnection masks and returns mask errors plus `DXGeneralResponse` | ✅ proxy + fixture tests | conformant — closed in commit `<future>` |
+| `IOPCConfiguration` source-server services | §5.2.1, App. B.1.4 | ✅ generated client proxy | ✅ | conformant for client calls |
+| `IOPCConfiguration` DXConnection query/add/update/modify/copy/reset services | §5.2.2 - §5.2.3, App. B.1.4 | ✅ generated client proxy | ✅ | conformant for implemented calls |
+| `IOPCConfiguration::DeleteDXConnections` | §5.2.2.5, App. B.1.4 | ✅ accepts DXConnection masks and returns mask errors plus `DXGeneralResponse` | ✅ proxy + fixture tests | conformant |
 | DX parameter structures (`ItemIdentifier`, `DXConnection`, `SourceServer`, `DXGeneralResponse`, `IdentifiedResult`) | §5.1 | ✅ records + NDR codecs | ✅ | conformant |
 | DX status structures (`ServerStatus`, `DXConnectionStatus`, `DXSourceServerStatus`, `DXQuality`) | §4.2 - §4.4 | ✅ records + NDR codecs | ✅ | conformant as data model/codecs |
 | DX enums and masks | §4.2.2, §4.3.2.19, §4.4.1.6, App. B.1.3 | ✅ `DxEnums`, `ConnectionState`, `OverrideState` | ✅ | conformant |
@@ -42,7 +42,7 @@ The Phase 0 interface inventory also flags `IOPCBrowseServerAddressSpace::GetIte
 
 | Service | Opnum | Spec request/response | Source proxy | Tests |
 |---|---:|---|---|---|
-| `GetServers` / `QuerySourceServersAsync` | 3 | no request parameters; returns `SourceServer[0:N]` | `src/Opc.Classic.Dx/Dcom/IOPCDxInterfaces.cs`, `src/Opc.Classic.Dx/Dcom/IOPCConfigurationClientProxy.cs` | `tests/Opc.Classic.Dx.Tests/Dcom/IOPCDxProxyTests.cs` |
+| `GetServers` / `QuerySourceServersAsync` | 3 | no request parameters; returns `SourceServer[0:N]` | generated from `src/Opc.Classic.Dx/Dcom/IOPCDxInterfaces.cs` | `tests/Opc.Classic.Dx.Tests/Dcom/IOPCDxProxyTests.cs` |
 | `AddServers` / `AddSourceServersAsync` | 4 | `SourceServer[1:N]` -> `DXGeneralResponse` | same | proxy coverage by shared source-server array/general-response codecs |
 | `ModifyServers` / `ModifySourceServersAsync` | 5 | `ServerDefinitions[1:N]` -> `DXGeneralResponse` | same | codec coverage |
 | `DeleteServers` / `DeleteSourceServersAsync` | 6 | `ItemIdentifier[0:N]` -> `DXGeneralResponse` | same | codec coverage |
@@ -54,7 +54,7 @@ The Phase 0 interface inventory also flags `IOPCBrowseServerAddressSpace::GetIte
 
 | Service | Opnum | Spec request/response | Source proxy | Tests | Status |
 |---|---:|---|---|---|---|
-| `QueryDXConnections` | 8 | `BrowsePath`, `DXConnectionMasks[1:N]`, `Recursive` -> either mask errors or `DXConnection[0:N]` | `IOPCDxInterfaces.cs`, `IOPCConfigurationClientProxy.cs` | `IOPCDxProxyTests.cs` | ✅ |
+| `QueryDXConnections` | 8 | `BrowsePath`, `DXConnectionMasks[1:N]`, `Recursive` -> either mask errors or `DXConnection[0:N]` | generated from `IOPCDxInterfaces.cs` | `IOPCDxProxyTests.cs` | ✅ |
 | `AddDXConnections` | 9 | `DXConnection[1:N]` -> `DXGeneralResponse` | same | `IOPCDxProxyTests.cs` | ✅ |
 | `UpdateDXConnections` | 10 | `BrowsePath`, masks, `Recursive`, definition -> mask errors or `DXGeneralResponse` | same | `IOPCDxProxyTests.cs` | ✅ |
 | `ModifyDXConnections` | 11 | `DXConnectionDefinition[1:N]` -> `DXGeneralResponse` | same | codec coverage | ✅ |
@@ -96,10 +96,15 @@ The Phase 0 interface inventory also flags `IOPCBrowseServerAddressSpace::GetIte
 
 The spec requires a DX server to expose a reserved DA subtree rooted at `DX`, persist source
 servers and connections, and run a live bridge from source OPC DA/XML-DA servers into local
-target items. `DxReferenceEngine` now covers the bounded reference-runtime core: atomic
+target items. `DxReferenceEngine` covers the bounded reference-runtime core: atomic
 configuration revisions, JSON restart recovery, enabled/disabled transfers, source
 value-quality-timestamp reads, target writes, revised update rates, health checks,
 reconnect/backoff, structured diagnostics, and cooperative cancellation.
+
+Default bounds are 256 source servers, 1,024 connections, 1,024 queued values
+per connection, 1,024 retained diagnostics, update rates up to one hour, and
+retry delay from one second to one minute. Configuration validation rejects
+non-positive or over-limit values before transfer loops start.
 
 The SimulationServer composes that engine over two deterministic managed DA adapters and
 routes both its `IOPCConfiguration` NDR channel and existing MCP DX tools to the same
@@ -122,7 +127,7 @@ Implementation-affecting DX requirements are therefore tracked by surface and be
 | Requirement area | Spec § | Status | Evidence |
 |---|---|---|---|
 | DCOM IDL masks identify optional fields in DX structures | App. B.1.4 | ✅ implemented | `DxConnection.Mask`, `DxSourceServer.Mask`, `NdrOpcDxCodecs.cs`, `DxNdrCodecTests.cs` |
-| Configuration services update/return the parameter shapes defined by §5.1/§5.2 | §5.1 - §5.2 | ✅ except delete hard gap | `IOPCDxInterfaces.cs`, `IOPCConfigurationClientProxy.cs`, `IOPCDxProxyTests.cs` |
+| Configuration services update/return the parameter shapes defined by §5.1/§5.2 | §5.1 - §5.2 | ✅ implemented for the projected DCOM surface | `IOPCDxInterfaces.cs`, generated `IOPCConfigurationClientProxy`, `IOPCDxProxyTests.cs` |
 | DX server request semantics update ConfigurationVersion/DirtyFlag and runtime status | §5.2 - §5.3 | ⚠️ partial | versioned stores and runtime snapshots are implemented; standardized DirtyFlag persistence policy remains |
 | DX runtime source connections, subscriptions, queues, conversion, and target writes | §6 | ⚠️ partial | reference DA adapter read/write, bounded queue state, rate, retry, and cancellation are implemented; full subscription/conversion policy remains |
 
@@ -158,11 +163,13 @@ Status: **PARTIAL**.
 
 Appendix A maps DX services to Web Services/XML-DA. The package has DCOM configuration-client coverage but no DX XML-DA service endpoint. Status: **WAIVED** as a lower-priority transport mapping until a generic DX server runtime exists.
 
-### 3.2 Closed hard gaps
+### 3.2 Projected delete semantics
 
-#### 3.2.1 Closed: `IOPCConfiguration::DeleteDXConnections` DCOM projection
-
-Spec §5.2.2.5 and App. B.1.4 define `DeleteDXConnections` as `BrowsePath`, `DXConnectionMasks[0:M]`, `Recursive`, returning per-mask errors and a `DXGeneralResponse`. Status: **CLOSED** in commit `<future>`. The projection now exposes `DeleteDXConnectionsAsync(string browsePath, DxConnection[] connectionMasks, bool recursive)`, encodes `NdrOpcDxConnectionArrayCodec`, returns `DxDeleteConnectionsResult`, and has direct proxy/fixture coverage for opnum 12 payload and response decoding.
+`IOPCConfiguration::DeleteDXConnections` accepts `BrowsePath`,
+`DXConnectionMasks[0:M]`, and `Recursive`, and returns per-mask errors plus a
+`DXGeneralResponse`. The generated projection exposes
+`DeleteDXConnectionsAsync`, uses `NdrOpcDxConnectionArrayCodec`, and returns
+`DxDeleteConnectionsResult`.
 
 ---
 

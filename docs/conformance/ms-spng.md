@@ -4,7 +4,7 @@
 
 **Scope:** RFC 4178 SPNEGO with Microsoft extensions. SPNEGO is the GSS-API negotiation layer that lets a client + server agree on Kerberos vs NTLM vs other mechs at connection time. Covers `NegTokenInit` (initial token from initiator), `NegTokenResp` (response tokens during back-and-forth negotiation), mech-list MIC (RFC 4178 §4.2.2 — proves which mech was selected), and the standard mech OIDs (`1.2.840.113554.1.2.2` Kerberos v5, `1.2.840.113554.1.2.2.3` Kerberos U2U, `1.3.6.1.4.1.311.2.2.10` NTLM, `1.3.6.1.5.5.2` SPNEGO itself).
 
-**Implementing assemblies:** `Opc.Classic.Dcom.Kerberos/Spnego/` (encoder, decoder, token types, OID constants), `Opc.Classic.Dcom.Kerberos` (KerberosSpnegoMicProvider).
+**Implementing assemblies:** `Opc.Classic.Dcom.Kerberos/Spnego/` (encoder, decoder, token types, OID constants), `Opc.Classic.Dcom.Kerberos` (Kerberos MIC provider), and `Opc.Classic.Dcom/rpc/Auth/` (server negotiation provider and policy).
 
 **Status overview:**
 
@@ -14,13 +14,14 @@
 | `NegTokenResp` (acceptor → initiator) | §2.2.2 (RFC 4178 §4.2.2) | ✅ `SpnegoNegTokenResp` + same encoder / decoder | ✅ `SpnegoNegTokenRespTests` | conformant |
 | `negState` (`accept-completed`, `accept-incomplete`, `reject`, `request-mic`) | §2.2.2 (RFC 4178 §4.2.2) | ✅ `SpnegoNegState` | ✅ | conformant |
 | Mech OIDs (Kerberos v5, NTLM, SPNEGO) | §1.4 (RFC 4178 §3.1) | ✅ `SpnegoOids` | ✅ | conformant |
-| Mech selection (preference order Kerberos > NTLM) | §3.1.5.1 | ✅ `SpnegoTokenBuilder` | ✅ `SpnegoTests` | conformant |
+| Mech selection and fallback policy | §3.1.5.1 | ✅ Kerberos-first; NTLM only when explicitly enabled and Kerberos is unavailable | ✅ `SpnegoServerAuthenticationProviderTests` | conformant |
 | Mech-list MIC (RFC 4178 §4.2.2 + MS-SPNG §3.1.5.x) | §3.1.5.4 | ✅ `KerberosSpnegoMicProvider` + Kerberos MIC token | ✅ `KerberosSpnegoMicProviderTests` | conformant |
 | Mech-list MIC mismatch handling (RFC 4178 §3) | §3.1.5.4 | ✅ rejected with `negState = reject` | ✅ same | conformant |
 | `SupportedMech` field in NegTokenResp | §2.2.2 | ✅ `SpnegoNegTokenResp.SupportedMech` | ✅ | conformant |
 | `MechToken` (opaque inner blob — Kerberos AP_REQ or NTLM message) | §2.2.1 / §2.2.2 | ✅ passthrough via `SpnegoMech` | ✅ | conformant |
 | ASN.1 DER encoding (per RFC 4178) | §2.2 | ✅ `SpnegoEncoder` / `SpnegoDecoder` | ✅ `SpnegoFuzzTests` | conformant |
 | MS-NEGOEX (Negotiate Extension) | MS-NEGOEX | ❌ not implemented | n/a | deferred-by-design |
+| Managed-listener SPNEGO acceptor | §3.1.5.x | ✅ `SpnegoServerAuthenticationProvider` | ✅ unit + integration tests | conformant |
 
 ---
 
@@ -62,8 +63,8 @@ field of `NegTokenResp`. Mismatch ⇒ `negState = reject`.
 
 ### 1.4 Mech preference order (spec §3.1.5.1)
 
-Opc.Classic always advertises Kerberos as the preferred mech with NTLM
-as the fallback:
+Opc.Classic advertises Kerberos first. NTLM appears only when an NTLM provider
+and `SpnegoNtlmFallbackPolicy.WhenKerberosUnavailable` are configured:
 
 ```
 mechTypes = SEQUENCE {
@@ -73,13 +74,15 @@ mechTypes = SEQUENCE {
 ```
 
 Mech selection happens when the acceptor returns a `NegTokenResp` with
-`supportedMech` set. If the acceptor lacks Kerberos credentials,
-SPNEGO falls back to NTLM via the `accept-incomplete` flow.
+`supportedMech` set. `Disabled` is Kerberos-only. Under
+`WhenKerberosUnavailable`, NTLM can be selected only when Kerberos is not
+available to both peers; a selected Kerberos failure is rejected rather than
+silently retried as NTLM.
 
 | Surface | Source | Tests |
 |---|---|---|
 | Mech list construction | `src/Opc.Classic.Dcom.Kerberos/Spnego/SpnegoTokenBuilder.cs` | `SpnegoTests.cs` |
-| Fallback handling (Kerberos-fail → NTLM) | `SpnegoMech.cs` + per-mech context | covered by SPNEGO tests + cross-impl matrix |
+| Fallback handling | `SpnegoServerOptions`, `SpnegoNtlmFallbackPolicy`, `SpnegoServerAuthenticationProvider` | `SpnegoServerAuthenticationProviderTests.cs` |
 
 ### 1.5 Mech-token passthrough (spec §2.2.1 / §2.2.2)
 

@@ -29,6 +29,11 @@ auth trailer using `auth_length`, accounts for `auth_pad_length`, calls
 `DecodedOpcPdu.AuthUnwrapStatus`. It remains usable directly from offline
 pcap-analysis scripts (see "Direct use" below).
 
+The same decoder path is used by bounded `opcclassic.capture.decode_file` and
+`opcclassic.capture.replay_file` processing. Sequence-aware TCP reassembly
+orders segments, deduplicates retransmissions, merges overlaps, and advances
+NTLM counters only for complete ordered frames.
+
 ## When (not) to use it
 
 ✅ **Use it for:**
@@ -61,7 +66,7 @@ The class follows a "no leakage by default" posture:
 | Session key on the heap | Caller owns the input buffer; class copies it once during constructor, derives 4 sub-keys, then zeroes the input copy. Caller is responsible for zeroing their own copy after construction. |
 | Derived sub-keys on the heap | Held as `byte[]` for the lifetime of the unwrapper. Zeroed via `CryptographicOperations.ZeroMemory` on `Dispose()`. |
 | Logging | The class itself never logs the key. `CaptureStartRequest.ToString()` is overridden to print `NtlmSessionKey = REDACTED[16 bytes]` instead of the raw bytes (the auto-generated record `ToString` would have leaked it via any structured log of the request). |
-| Persistence | The class never writes the key to disk. The `opcclassic.capture.start` MCP tool accepts the key only on the call boundary; the MCP host MUST be configured to redact the `ntlmSessionKeyHex` parameter value in any tool-call audit log. |
+| Persistence | The class never writes the key to disk. Live sessions and one-shot file tools accept it only on the call boundary; the MCP host MUST redact `ntlmSessionKeyHex` from tool-call audit logs. |
 | Sequence counters | Both directions start at 0 after Type3. If the capture missed the handshake, counters drift and EVERY unwrap fails clean with `SignatureMismatch` — there is no graceful "guess the counter" fallback by design. |
 
 ## Mid-session capture: NOT supported
