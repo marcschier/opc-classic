@@ -1732,6 +1732,104 @@
     "SpecReference": "OPC DA IDL: IEnumOPCItemAttributes::Clone"
   },
   {
+    "Interface": "Opc.Classic.Da.Dcom.IEnumString",
+    "Method": "NextStringsAsync",
+    "GeneratorSides": [
+      "client"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "array",
+      "count-correlated arrays",
+      "multi-out records",
+      "pointer arrays"
+    ],
+    "SpecReference": "OPC DA IDL: IEnumString::Next"
+  },
+  {
+    "Interface": "Opc.Classic.Da.Dcom.IEnumString",
+    "Method": "SkipAsync",
+    "GeneratorSides": [
+      "client"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "OPC DA IDL: IEnumString::Skip"
+  },
+  {
+    "Interface": "Opc.Classic.Da.Dcom.IEnumString",
+    "Method": "ResetAsync",
+    "GeneratorSides": [
+      "client"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "OPC DA IDL: IEnumString::Reset"
+  },
+  {
+    "Interface": "Opc.Classic.Da.Dcom.IEnumString",
+    "Method": "CloneAsync",
+    "GeneratorSides": [
+      "client"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "clone"
+    ],
+    "SpecReference": "OPC DA IDL: IEnumString::Clone"
+  },
+  {
+    "Interface": "Opc.Classic.Da.Dcom.IEnumUnknown",
+    "Method": "NextUnknownsAsync",
+    "GeneratorSides": [
+      "client"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "array",
+      "count-correlated arrays",
+      "multi-out records",
+      "pointer arrays"
+    ],
+    "SpecReference": "OPC DA IDL: IEnumUnknown::Next"
+  },
+  {
+    "Interface": "Opc.Classic.Da.Dcom.IEnumUnknown",
+    "Method": "SkipAsync",
+    "GeneratorSides": [
+      "client"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "OPC DA IDL: IEnumUnknown::Skip"
+  },
+  {
+    "Interface": "Opc.Classic.Da.Dcom.IEnumUnknown",
+    "Method": "ResetAsync",
+    "GeneratorSides": [
+      "client"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "OPC DA IDL: IEnumUnknown::Reset"
+  },
+  {
+    "Interface": "Opc.Classic.Da.Dcom.IEnumUnknown",
+    "Method": "CloneAsync",
+    "GeneratorSides": [
+      "client"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "clone"
+    ],
+    "SpecReference": "OPC DA IDL: IEnumUnknown::Clone"
+  },
+  {
     "Interface": "Opc.Classic.Da.Dcom.IConnectionPointContainer",
     "Method": "EnumConnectionPointsAsync",
     "GeneratorSides": [

@@ -209,23 +209,6 @@ public sealed class CttDaServer : IOpcDaServer, IDisposable
         throw new OpcException(OpcResultId.UnknownPath);
     }
 
-    Task<IOpcInterfaceRef> IOPCServer.CreateGroupEnumeratorAsync(int scope, Guid requestedInterfaceId, CancellationToken cancellationToken)
-    {
-        _ = OpcDaGroupEnumerationScopeExtensions.FromWireValue(scope);
-        cancellationToken.ThrowIfCancellationRequested();
-        // Register a fresh IEnumUnknown-like enumerator IPID for the snapshot of groups.
-        Guid ipid = _objectRegistry.Register(new Dictionary<Guid, IOpcServerDispatcher>());
-        return Task.FromResult<IOpcInterfaceRef>(new OpcInterfaceRef(
-            iid: requestedInterfaceId,
-            flags: 0,
-            publicRefs: 1,
-            oxid: 1,
-            oid: 0,
-            ipid: ipid,
-            securityOffset: 0,
-            resolverBindings: Array.Empty<ushort>()));
-    }
-
     /// <inheritdoc />
     public Task<OpcDaGroup?> ResolveGroupAsync(int serverHandle, CancellationToken cancellationToken = default)
     {

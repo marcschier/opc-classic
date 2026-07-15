@@ -35,6 +35,7 @@ public sealed class OpcObjectRegistry
 {
     private readonly ConcurrentDictionary<Guid, IReadOnlyDictionary<Guid, IOpcServerDispatcher>> _objects = new();
     private readonly Dictionary<Guid, uint> _publicRefs = new();
+    private readonly Dictionary<Guid, Action> _finalReleaseCallbacks = new();
     private readonly Lock _lifetimeGate = new();
 
     /// <summary>
@@ -51,38 +52,50 @@ public sealed class OpcObjectRegistry
     /// each mapped to the source-generated dispatcher wrapping the
     /// managed implementation.
     /// </param>
-    public Guid Register(IReadOnlyDictionary<Guid, IOpcServerDispatcher> interfaceDispatchers, uint publicRefs = 0)
+    public Guid Register(
+        IReadOnlyDictionary<Guid, IOpcServerDispatcher> interfaceDispatchers,
+        uint publicRefs = 0,
+        Action? finalRelease = null)
     {
         ArgumentNullException.ThrowIfNull(interfaceDispatchers);
-        Guid ipid = Guid.NewGuid();
-        if (!_objects.TryAdd(ipid, interfaceDispatchers))
+        lock (_lifetimeGate)
         {
-            // Collision is astronomically unlikely for a freshly-allocated
-            // v4 GUID; retry once and then surface the failure.
-            ipid = Guid.NewGuid();
+            Guid ipid = Guid.NewGuid();
             if (!_objects.TryAdd(ipid, interfaceDispatchers))
             {
-                throw new InvalidOperationException("OpcObjectRegistry could not allocate a fresh IPID.");
+                // Collision is astronomically unlikely for a freshly-allocated
+                // v4 GUID; retry once and then surface the failure.
+                ipid = Guid.NewGuid();
+                if (!_objects.TryAdd(ipid, interfaceDispatchers))
+                {
+                    throw new InvalidOperationException("OpcObjectRegistry could not allocate a fresh IPID.");
+                }
             }
+            SeedLifetimeUnderLock(ipid, publicRefs, finalRelease);
+            return ipid;
         }
-        SeedPublicRefs(ipid, publicRefs);
-        return ipid;
     }
 
     /// <summary>
     /// Registers an object under a caller-supplied stable IPID.
     /// Returns <see langword="false"/> if the IPID is already in use.
     /// </summary>
-    public bool RegisterWithIpid(Guid ipid, IReadOnlyDictionary<Guid, IOpcServerDispatcher> interfaceDispatchers, uint publicRefs = 0)
+    public bool RegisterWithIpid(
+        Guid ipid,
+        IReadOnlyDictionary<Guid, IOpcServerDispatcher> interfaceDispatchers,
+        uint publicRefs = 0,
+        Action? finalRelease = null)
     {
         ArgumentNullException.ThrowIfNull(interfaceDispatchers);
-        if (!_objects.TryAdd(ipid, interfaceDispatchers))
+        lock (_lifetimeGate)
         {
-            return false;
+            if (!_objects.TryAdd(ipid, interfaceDispatchers))
+            {
+                return false;
+            }
+            SeedLifetimeUnderLock(ipid, publicRefs, finalRelease);
+            return true;
         }
-
-        SeedPublicRefs(ipid, publicRefs);
-        return true;
     }
 
     /// <summary>
@@ -92,11 +105,16 @@ public sealed class OpcObjectRegistry
     /// <returns><see langword="true"/> if the IPID was present.</returns>
     public bool Unregister(Guid ipid)
     {
+        Action? callback = null;
+        bool removed;
         lock (_lifetimeGate)
         {
             _publicRefs.Remove(ipid);
-            return _objects.TryRemove(ipid, out _);
+            _finalReleaseCallbacks.Remove(ipid, out callback);
+            removed = _objects.TryRemove(ipid, out _);
         }
+        callback?.Invoke();
+        return removed;
     }
 
     public bool AddPublicRefs(Guid ipid, uint publicRefs)
@@ -126,6 +144,8 @@ public sealed class OpcObjectRegistry
             return false;
         }
 
+        Action? callback = null;
+        bool removed = false;
         lock (_lifetimeGate)
         {
             if (!_objects.ContainsKey(ipid) || !_publicRefs.TryGetValue(ipid, out uint current) || publicRefs > current)
@@ -142,20 +162,22 @@ public sealed class OpcObjectRegistry
 
             _publicRefs.Remove(ipid);
             _objects.TryRemove(ipid, out _);
-            return true;
+            _finalReleaseCallbacks.Remove(ipid, out callback);
+            removed = true;
         }
+        callback?.Invoke();
+        return removed;
     }
 
-    private void SeedPublicRefs(Guid ipid, uint publicRefs)
+    private void SeedLifetimeUnderLock(Guid ipid, uint publicRefs, Action? finalRelease)
     {
-        if (publicRefs == 0)
-        {
-            return;
-        }
-
-        lock (_lifetimeGate)
+        if (publicRefs != 0)
         {
             _publicRefs[ipid] = publicRefs;
+        }
+        if (finalRelease is not null)
+        {
+            _finalReleaseCallbacks[ipid] = finalRelease;
         }
     }
 

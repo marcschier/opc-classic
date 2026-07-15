@@ -102,7 +102,7 @@ public sealed class RemUnknownServerDispatcher : IRpcRequestContextDispatcher
         for (int i = 0; i < requestedIids.Length; i++)
         {
             Guid iid = requestedIids[i];
-            if (dispatchers.ContainsKey(iid))
+            if (iid == OpcGuids.IID_IUnknown || dispatchers.ContainsKey(iid))
             {
                 if (cRefs != 0)
                 {

@@ -203,8 +203,10 @@ public interface IOpcDaServer : IOPCServer
     Task<IOpcInterfaceRef> IOPCServer.CreateGroupEnumeratorAsync(int scope, Guid requestedInterfaceId, CancellationToken cancellationToken)
     {
         _ = OpcDaGroupEnumerationScopeExtensions.FromWireValue(scope);
+        _ = requestedInterfaceId;
         cancellationToken.ThrowIfCancellationRequested();
-        return Task.FromResult(CreateSyntheticInterfaceRef(requestedInterfaceId, 0));
+        return Task.FromException<IOpcInterfaceRef>(
+            new NotSupportedException("Managed DCOM group enumerators require an OpcDaServerDispatcher with an object registry."));
     }
 
     private static IOpcInterfaceRef CreateSyntheticInterfaceRef(Guid iid, int seed) =>

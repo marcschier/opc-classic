@@ -95,7 +95,7 @@ public partial interface IOPCServer
     /// <c>IOPCServer::CreateGroupEnumerator</c> (opnum 8). Returns an <c>IEnumUnknown</c> group enumerator.
     /// </summary>
     [OpcMethod(8)]
-    [return: OpcIidIs(nameof(requestedInterfaceId))]
+    [return: OpcIidIs(nameof(requestedInterfaceId)), OpcUniquePointer]
     Task<IOpcInterfaceRef> CreateGroupEnumeratorAsync(int scope, Guid requestedInterfaceId, CancellationToken cancellationToken = default);
 }
 
@@ -783,6 +783,66 @@ public partial interface IEnumOPCItemAttributes
     /// <c>IEnumOPCItemAttributes::Clone</c> (opnum 6). Returns a new enumerator initialized to the current cursor position.
     /// </summary>
     [OpcMethod(6)]
+    Task<IOpcInterfaceRef> CloneAsync(CancellationToken cancellationToken = default);
+}
+
+/// <summary>
+/// <c>IEnumString</c> — standard COM string enumerator used by DA group-name scopes.
+/// </summary>
+[OpcInterface("00000101-0000-0000-C000-000000000046")]
+[GenerateOpcProxy]
+public partial interface IEnumString
+{
+    /// <summary><c>IEnumString::Next</c> (opnum 3).</summary>
+    [OpcMethod(3)]
+    [OpcGenerateMultiOutRecord]
+    Task NextStringsAsync(
+        int count,
+        [OpcArrayCount(nameof(fetchedCount)), OpcDeferredElements] out string[] values,
+        out int fetchedCount,
+        CancellationToken cancellationToken = default);
+
+    /// <summary><c>IEnumString::Skip</c> (opnum 4).</summary>
+    [OpcMethod(4)]
+    Task SkipAsync(int count, CancellationToken cancellationToken = default);
+
+    /// <summary><c>IEnumString::Reset</c> (opnum 5).</summary>
+    [OpcMethod(5)]
+    Task ResetAsync(CancellationToken cancellationToken = default);
+
+    /// <summary><c>IEnumString::Clone</c> (opnum 6).</summary>
+    [OpcMethod(6)]
+    [return: OpcUniquePointer]
+    Task<IOpcInterfaceRef> CloneAsync(CancellationToken cancellationToken = default);
+}
+
+/// <summary>
+/// <c>IEnumUnknown</c> — standard COM interface-pointer enumerator used by DA connection scopes.
+/// </summary>
+[OpcInterface("00000100-0000-0000-C000-000000000046")]
+[GenerateOpcProxy]
+public partial interface IEnumUnknown
+{
+    /// <summary><c>IEnumUnknown::Next</c> (opnum 3).</summary>
+    [OpcMethod(3)]
+    [OpcGenerateMultiOutRecord]
+    Task NextUnknownsAsync(
+        int count,
+        [OpcArrayCount(nameof(fetchedCount)), OpcDeferredElements] out IOpcInterfaceRef[] values,
+        out int fetchedCount,
+        CancellationToken cancellationToken = default);
+
+    /// <summary><c>IEnumUnknown::Skip</c> (opnum 4).</summary>
+    [OpcMethod(4)]
+    Task SkipAsync(int count, CancellationToken cancellationToken = default);
+
+    /// <summary><c>IEnumUnknown::Reset</c> (opnum 5).</summary>
+    [OpcMethod(5)]
+    Task ResetAsync(CancellationToken cancellationToken = default);
+
+    /// <summary><c>IEnumUnknown::Clone</c> (opnum 6).</summary>
+    [OpcMethod(6)]
+    [return: OpcUniquePointer]
     Task<IOpcInterfaceRef> CloneAsync(CancellationToken cancellationToken = default);
 }
 

@@ -1371,9 +1371,30 @@ namespace Opc.Classic.Generators
             EmitVariantElementsArrayRead(sb, statementIndent, readerLocal, method.ParameterNames, targetLocal, parameter.IsUniquePointer);
             return;
         }
+        if (parameter.DeferredElements &&
+            string.Equals(parameter.MarshallingType, "global::System.String[]", System.StringComparison.Ordinal))
+        {
+            EmitVaryingDeferredStringArrayRead(
+                sb,
+                statementIndent,
+                readerLocal,
+                method.ParameterNames,
+                targetLocal);
+            return;
+        }
         if (parameter.IsOpcInterfaceArray)
         {
-            EmitInterfacePointerArrayRead(sb, statementIndent, readerLocal, method, parameter.DeclaredType, parameter.OpcInterfaceArrayElementType!, targetLocal, parameter.IsUniquePointer, parameter.IidIsParameterName);
+            EmitInterfacePointerArrayRead(
+                sb,
+                statementIndent,
+                readerLocal,
+                method,
+                parameter.DeclaredType,
+                parameter.OpcInterfaceArrayElementType!,
+                targetLocal,
+                parameter.IsUniquePointer,
+                parameter.IidIsParameterName,
+                parameter.DeferredElements);
             return;
         }
         EmitCodecReadLocal(sb, statementIndent, readerLocal, method,
@@ -1466,12 +1487,24 @@ namespace Opc.Classic.Generators
     }
 
 #pragma warning disable MA0051 // Two-pass interface pointer array emission is intentionally contiguous.
-    private static void EmitInterfacePointerArrayRead(StringBuilder sb, string statementIndent, string readerLocal, MethodModel method, string declaredType, string elementType, string targetLocal, bool isUniquePointer, string? iidIsParameterName)
+    private static void EmitInterfacePointerArrayRead(
+        StringBuilder sb,
+        string statementIndent,
+        string readerLocal,
+        MethodModel method,
+        string declaredType,
+        string elementType,
+        string targetLocal,
+        bool isUniquePointer,
+        string? iidIsParameterName,
+        bool isVarying = false)
     {
         string countLocal = UniqueLocalName(method.ParameterNames, targetLocal + "Count", readerLocal, targetLocal);
         string indexLocal = UniqueLocalName(method.ParameterNames, targetLocal + "Index", readerLocal, targetLocal, countLocal);
         string arrayLocal = UniqueLocalName(method.ParameterNames, targetLocal + "Array", readerLocal, targetLocal, countLocal, indexLocal);
         string referentsLocal = UniqueLocalName(method.ParameterNames, targetLocal + "Referents", readerLocal, targetLocal, countLocal, indexLocal, arrayLocal);
+        string maximumLocal = UniqueLocalName(method.ParameterNames, targetLocal + "Maximum", readerLocal, targetLocal, countLocal, indexLocal, arrayLocal, referentsLocal);
+        string offsetLocal = UniqueLocalName(method.ParameterNames, targetLocal + "Offset", readerLocal, targetLocal, countLocal, indexLocal, arrayLocal, referentsLocal, maximumLocal);
         string nonNullableElementType = elementType.EndsWith("?", System.StringComparison.Ordinal) ? elementType.Substring(0, elementType.Length - 1) : elementType;
         string interfaceIdExpression = iidIsParameterName is null ? nonNullableElementType + ".InterfaceId" : EscapeIdentifier(iidIsParameterName);
         bool rawInterfaceRefs = IsOpcInterfaceRefType(elementType);
@@ -1486,7 +1519,20 @@ namespace Opc.Classic.Generators
             sb.Append(statementIndent).AppendLine("{");
             statementIndent += "    ";
         }
-        sb.Append(statementIndent).Append("int ").Append(countLocal).Append(" = checked((int)").Append(readerLocal).AppendLine(".ReadUInt32());");
+        if (isVarying)
+        {
+            sb.Append(statementIndent).Append("int ").Append(maximumLocal).Append(" = checked((int)").Append(readerLocal).AppendLine(".ReadUInt32());");
+            sb.Append(statementIndent).Append("int ").Append(offsetLocal).Append(" = checked((int)").Append(readerLocal).AppendLine(".ReadUInt32());");
+            sb.Append(statementIndent).Append("int ").Append(countLocal).Append(" = checked((int)").Append(readerLocal).AppendLine(".ReadUInt32());");
+            sb.Append(statementIndent).Append("if (").Append(offsetLocal).Append(" != 0 || ").Append(countLocal).Append(" > ").Append(maximumLocal).AppendLine(")");
+            sb.Append(statementIndent).AppendLine("{");
+            sb.Append(statementIndent).AppendLine("    throw new global::System.IO.InvalidDataException(\"Invalid varying interface-pointer array bounds.\");");
+            sb.Append(statementIndent).AppendLine("}");
+        }
+        else
+        {
+            sb.Append(statementIndent).Append("int ").Append(countLocal).Append(" = checked((int)").Append(readerLocal).AppendLine(".ReadUInt32());");
+        }
         sb.Append(statementIndent).Append("var ").Append(arrayLocal).Append(" = new ").Append(elementType).Append('[').Append(countLocal).AppendLine("];");
         sb.Append(statementIndent).Append("var ").Append(referentsLocal).Append(" = new bool[").Append(countLocal).AppendLine("];");
         sb.Append(statementIndent).Append("for (int ").Append(indexLocal).Append(" = 0; ").Append(indexLocal).Append(" < ").Append(countLocal).Append("; ").Append(indexLocal).AppendLine("++)");
@@ -1521,6 +1567,38 @@ namespace Opc.Classic.Generators
         }
     }
 #pragma warning restore MA0051
+
+    private static void EmitVaryingDeferredStringArrayRead(
+        StringBuilder sb,
+        string statementIndent,
+        string readerLocal,
+        ImmutableArray<string> parameterNames,
+        string targetLocal)
+    {
+        string maximumLocal = UniqueLocalName(parameterNames, targetLocal + "Maximum", readerLocal, targetLocal);
+        string offsetLocal = UniqueLocalName(parameterNames, targetLocal + "Offset", readerLocal, targetLocal, maximumLocal);
+        string countLocal = UniqueLocalName(parameterNames, targetLocal + "Count", readerLocal, targetLocal, maximumLocal, offsetLocal);
+        string indexLocal = UniqueLocalName(parameterNames, targetLocal + "Index", readerLocal, targetLocal, maximumLocal, offsetLocal, countLocal);
+        string referentsLocal = UniqueLocalName(parameterNames, targetLocal + "Referents", readerLocal, targetLocal, maximumLocal, offsetLocal, countLocal, indexLocal);
+        sb.Append(statementIndent).Append("int ").Append(maximumLocal).Append(" = checked((int)").Append(readerLocal).AppendLine(".ReadUInt32());");
+        sb.Append(statementIndent).Append("int ").Append(offsetLocal).Append(" = checked((int)").Append(readerLocal).AppendLine(".ReadUInt32());");
+        sb.Append(statementIndent).Append("int ").Append(countLocal).Append(" = checked((int)").Append(readerLocal).AppendLine(".ReadUInt32());");
+        sb.Append(statementIndent).Append("if (").Append(offsetLocal).Append(" != 0 || ").Append(countLocal).Append(" > ").Append(maximumLocal).AppendLine(")");
+        sb.Append(statementIndent).AppendLine("{");
+        sb.Append(statementIndent).AppendLine("    throw new global::System.IO.InvalidDataException(\"Invalid varying string array bounds.\");");
+        sb.Append(statementIndent).AppendLine("}");
+        sb.Append(statementIndent).Append("var ").Append(referentsLocal).Append(" = new bool[").Append(countLocal).AppendLine("];");
+        sb.Append(statementIndent).Append("for (int ").Append(indexLocal).Append(" = 0; ").Append(indexLocal).Append(" < ").Append(countLocal).Append("; ").Append(indexLocal).AppendLine("++)");
+        sb.Append(statementIndent).AppendLine("{");
+        sb.Append(statementIndent).Append("    ").Append(referentsLocal).Append('[').Append(indexLocal).Append("] = ").Append(readerLocal).AppendLine(".TryReadReferentId(out _);");
+        sb.Append(statementIndent).AppendLine("}");
+        sb.Append(statementIndent).Append("var ").Append(targetLocal).Append(" = new global::System.String[").Append(countLocal).AppendLine("];");
+        sb.Append(statementIndent).Append("for (int ").Append(indexLocal).Append(" = 0; ").Append(indexLocal).Append(" < ").Append(countLocal).Append("; ").Append(indexLocal).AppendLine("++)");
+        sb.Append(statementIndent).AppendLine("{");
+        sb.Append(statementIndent).Append("    ").Append(targetLocal).Append('[').Append(indexLocal).Append("] = ").Append(referentsLocal).Append('[').Append(indexLocal)
+            .Append("] ? ").Append(readerLocal).AppendLine(".ReadUnicodeString() : global::System.String.Empty;");
+        sb.Append(statementIndent).AppendLine("}");
+    }
 
     private static void EmitCodecReadLocal(
         StringBuilder sb,
