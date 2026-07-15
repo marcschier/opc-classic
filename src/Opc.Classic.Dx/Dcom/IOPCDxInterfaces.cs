@@ -13,6 +13,8 @@ namespace Opc.Classic.Dx.Dcom;
 /// <c>IOPCConfiguration</c> — DX server-to-server configuration (IID_IOPCConfiguration).
 /// </summary>
 [OpcInterface("C130D281-F4AA-4779-8846-C2C4CB444F2A")]
+[GenerateOpcProxy]
+[OpcGenerateServerDispatch]
 public partial interface IOPCConfiguration
 {
     /// <summary>
@@ -54,6 +56,7 @@ public partial interface IOPCConfiguration
     /// <summary>
     /// Convenience projection that returns connection names from <c>QueryDXConnections</c>.
     /// </summary>
+    [OpcProxyIgnore]
     Task<string[]> QueryDXConnectionNamesAsync(string browsePath, string[] connectionMasks, bool recursive, CancellationToken cancellationToken = default);
 
     /// <summary>

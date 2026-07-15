@@ -89,7 +89,12 @@ namespace Opc.Classic.Generators
     /// payload contains multiple out values.
     /// </summary>
     [global::System.AttributeUsage(global::System.AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-    internal sealed class OpcGenerateMultiOutRecordAttribute : global::System.Attribute { }
+    internal sealed class OpcGenerateMultiOutRecordAttribute : global::System.Attribute
+    {
+        public OpcGenerateMultiOutRecordAttribute() { }
+        public OpcGenerateMultiOutRecordAttribute(string recordName) { RecordName = recordName; }
+        public string? RecordName { get; }
+    }
 
     [global::System.AttributeUsage(global::System.AttributeTargets.Parameter | global::System.AttributeTargets.ReturnValue, AllowMultiple = false, Inherited = false)]
     internal sealed class OpcIidIsAttribute : global::System.Attribute

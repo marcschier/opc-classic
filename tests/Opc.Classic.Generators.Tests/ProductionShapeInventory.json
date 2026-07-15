@@ -1433,6 +1433,7 @@
     "Interface": "Opc.Classic.Da.Dcom.IOPCSyncIO",
     "Method": "ReadAsync",
     "GeneratorSides": [
+      "client",
       "server"
     ],
     "ShapeCategories": [
@@ -1448,6 +1449,7 @@
     "Interface": "Opc.Classic.Da.Dcom.IOPCSyncIO",
     "Method": "WriteAsync",
     "GeneratorSides": [
+      "client",
       "server"
     ],
     "ShapeCategories": [
@@ -1855,6 +1857,7 @@
     "Interface": "Opc.Classic.Da.Dcom.IConnectionPoint",
     "Method": "GetConnectionInterfaceAsync",
     "GeneratorSides": [
+      "client",
       "server"
     ],
     "ShapeCategories": [
@@ -1866,6 +1869,7 @@
     "Interface": "Opc.Classic.Da.Dcom.IConnectionPoint",
     "Method": "AdviseAsync",
     "GeneratorSides": [
+      "client",
       "server"
     ],
     "ShapeCategories": [
@@ -1877,6 +1881,7 @@
     "Interface": "Opc.Classic.Da.Dcom.IConnectionPoint",
     "Method": "UnadviseAsync",
     "GeneratorSides": [
+      "client",
       "server"
     ],
     "ShapeCategories": [
@@ -3001,5 +3006,273 @@
       "scalar"
     ],
     "SpecReference": "OPC Security 1.00 IDL: IOPCSecurityPrivate::Logoff"
+  },
+  {
+    "Interface": "Opc.Classic.Batch.Dcom.IEnumOPCBatchSummary",
+    "Method": "CloneAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "clone"
+    ],
+    "SpecReference": "OPC Batch IDL: IEnumOPCBatchSummary::Clone"
+  },
+  {
+    "Interface": "Opc.Classic.Batch.Dcom.IEnumOPCBatchSummary",
+    "Method": "CountAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "OPC Batch IDL: IEnumOPCBatchSummary::Count"
+  },
+  {
+    "Interface": "Opc.Classic.Batch.Dcom.IEnumOPCBatchSummary",
+    "Method": "NextAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "array",
+      "count-correlated arrays",
+      "nested/compound records"
+    ],
+    "SpecReference": "OPC Batch IDL: IEnumOPCBatchSummary::Next"
+  },
+  {
+    "Interface": "Opc.Classic.Batch.Dcom.IEnumOPCBatchSummary",
+    "Method": "ResetAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "OPC Batch IDL: IEnumOPCBatchSummary::Reset"
+  },
+  {
+    "Interface": "Opc.Classic.Batch.Dcom.IEnumOPCBatchSummary",
+    "Method": "SkipAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "OPC Batch IDL: IEnumOPCBatchSummary::Skip"
+  },
+  {
+    "Interface": "Opc.Classic.Batch.Dcom.IOPCBatchServer",
+    "Method": "CreateEnumeratorAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "interface pointer/iid_is"
+    ],
+    "SpecReference": "OPC Batch IDL: IOPCBatchServer::CreateEnumerator"
+  },
+  {
+    "Interface": "Opc.Classic.Batch.Dcom.IOPCBatchServer",
+    "Method": "GetDelimiterAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "OPC Batch IDL: IOPCBatchServer::GetDelimiter"
+  },
+  {
+    "Interface": "Opc.Classic.Batch.Dcom.IOPCBatchServer2",
+    "Method": "CreateFilteredEnumeratorAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "interface pointer/iid_is",
+      "nested/compound records"
+    ],
+    "SpecReference": "OPC Batch IDL: IOPCBatchServer2::CreateFilteredEnumerator"
+  },
+  {
+    "Interface": "Opc.Classic.Dx.Dcom.IOPCConfiguration",
+    "Method": "AddDXConnectionsAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "array",
+      "nested/compound records"
+    ],
+    "SpecReference": "OPC DX 1.00 IDL: IOPCConfiguration::AddDXConnections"
+  },
+  {
+    "Interface": "Opc.Classic.Dx.Dcom.IOPCConfiguration",
+    "Method": "AddSourceServersAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "array",
+      "nested/compound records"
+    ],
+    "SpecReference": "OPC DX 1.00 IDL: IOPCConfiguration::AddServers"
+  },
+  {
+    "Interface": "Opc.Classic.Dx.Dcom.IOPCConfiguration",
+    "Method": "CopyDefaultDXConnectionAttributesAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "array",
+      "nested/compound records"
+    ],
+    "SpecReference": "OPC DX 1.00 IDL: IOPCConfiguration::CopyDXConnectionDefaultAttributes"
+  },
+  {
+    "Interface": "Opc.Classic.Dx.Dcom.IOPCConfiguration",
+    "Method": "CopyDefaultServerAttributesAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "array",
+      "nested/compound records"
+    ],
+    "SpecReference": "OPC DX 1.00 IDL: IOPCConfiguration::CopyDefaultServerAttributes"
+  },
+  {
+    "Interface": "Opc.Classic.Dx.Dcom.IOPCConfiguration",
+    "Method": "DeleteDXConnectionsAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "array",
+      "nested/compound records"
+    ],
+    "SpecReference": "OPC DX 1.00 IDL: IOPCConfiguration::DeleteDXConnections"
+  },
+  {
+    "Interface": "Opc.Classic.Dx.Dcom.IOPCConfiguration",
+    "Method": "DeleteSourceServersAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "array",
+      "nested/compound records"
+    ],
+    "SpecReference": "OPC DX 1.00 IDL: IOPCConfiguration::DeleteServers"
+  },
+  {
+    "Interface": "Opc.Classic.Dx.Dcom.IOPCConfiguration",
+    "Method": "ModifyDXConnectionsAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "array",
+      "nested/compound records"
+    ],
+    "SpecReference": "OPC DX 1.00 IDL: IOPCConfiguration::ModifyDXConnections"
+  },
+  {
+    "Interface": "Opc.Classic.Dx.Dcom.IOPCConfiguration",
+    "Method": "ModifySourceServersAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "array",
+      "nested/compound records"
+    ],
+    "SpecReference": "OPC DX 1.00 IDL: IOPCConfiguration::ModifyServers"
+  },
+  {
+    "Interface": "Opc.Classic.Dx.Dcom.IOPCConfiguration",
+    "Method": "QueryDXConnectionsAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "array",
+      "nested/compound records"
+    ],
+    "SpecReference": "OPC DX 1.00 IDL: IOPCConfiguration::QueryDXConnections"
+  },
+  {
+    "Interface": "Opc.Classic.Dx.Dcom.IOPCConfiguration",
+    "Method": "QuerySourceServersAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "array",
+      "nested/compound records"
+    ],
+    "SpecReference": "OPC DX 1.00 IDL: IOPCConfiguration::GetServers"
+  },
+  {
+    "Interface": "Opc.Classic.Dx.Dcom.IOPCConfiguration",
+    "Method": "ResetConfigurationAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "OPC DX 1.00 IDL: IOPCConfiguration::ResetConfiguration"
+  },
+  {
+    "Interface": "Opc.Classic.Dx.Dcom.IOPCConfiguration",
+    "Method": "UpdateDXConnectionsAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "array",
+      "nested/compound records"
+    ],
+    "SpecReference": "OPC DX 1.00 IDL: IOPCConfiguration::UpdateDXConnections"
   }
 ]

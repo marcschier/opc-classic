@@ -252,13 +252,13 @@ public sealed class GeneratedServerDispatcherTests
             NextGuids = [Guid.Parse("11111111-1111-1111-1111-111111111111")],
         };
         var dispatcher = new IOPCEnumGUIDServerDispatcher(impl);
-        byte[] payload = WritePayload((ref NdrWriter writer) => writer.WriteInt32(5));
+        byte[] payload = WritePayload((ref NdrWriter writer) => writer.WriteInt32(1));
 
         DispatchResult result = await dispatcher.DispatchAsync(
             IOPCEnumGUID.Opnums.NextAsync, payload, CancellationToken.None);
 
         await Assert.That(result.IsSuccess).IsTrue();
-        await Assert.That(impl.LastNextCount).IsEqualTo(5);
+        await Assert.That(impl.LastNextCount).IsEqualTo(1);
     }
 
     [Test]

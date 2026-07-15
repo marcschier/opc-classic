@@ -714,6 +714,66 @@ public static class NdrOpcDxConnectionArrayCodec
     }
 }
 
+/// <summary>
+/// NDR codec for the compound <see cref="DxConnectionQueryResult" /> response.
+/// </summary>
+public static class NdrOpcDxConnectionQueryResultCodec
+{
+    /// <summary>Writes mask errors followed by matching DX connections.</summary>
+    public static void Write(ref NdrWriter writer, DxConnectionQueryResult value)
+    {
+        ArgumentNullException.ThrowIfNull(value);
+        NdrOpcDxInt32ArrayCodec.Write(ref writer, value.Errors);
+        NdrOpcDxConnectionArrayCodec.Write(ref writer, value.Connections);
+    }
+
+    /// <summary>Reads mask errors followed by matching DX connections.</summary>
+    public static DxConnectionQueryResult Read(ref NdrReader reader) =>
+        new(
+            NdrOpcDxInt32ArrayCodec.Read(ref reader),
+            NdrOpcDxConnectionArrayCodec.Read(ref reader));
+}
+
+/// <summary>
+/// NDR codec for the compound <see cref="DxUpdateConnectionsResult" /> response.
+/// </summary>
+public static class NdrOpcDxUpdateConnectionsResultCodec
+{
+    /// <summary>Writes mask errors followed by the general response.</summary>
+    public static void Write(ref NdrWriter writer, DxUpdateConnectionsResult value)
+    {
+        ArgumentNullException.ThrowIfNull(value);
+        NdrOpcDxInt32ArrayCodec.Write(ref writer, value.Errors);
+        NdrOpcDxGeneralResponseCodec.Write(ref writer, value.Response);
+    }
+
+    /// <summary>Reads mask errors followed by the general response.</summary>
+    public static DxUpdateConnectionsResult Read(ref NdrReader reader) =>
+        new(
+            NdrOpcDxInt32ArrayCodec.Read(ref reader),
+            NdrOpcDxGeneralResponseCodec.Read(ref reader));
+}
+
+/// <summary>
+/// NDR codec for the compound <see cref="DxDeleteConnectionsResult" /> response.
+/// </summary>
+public static class NdrOpcDxDeleteConnectionsResultCodec
+{
+    /// <summary>Writes mask errors followed by the general response.</summary>
+    public static void Write(ref NdrWriter writer, DxDeleteConnectionsResult value)
+    {
+        ArgumentNullException.ThrowIfNull(value);
+        NdrOpcDxInt32ArrayCodec.Write(ref writer, value.MaskErrors);
+        NdrOpcDxGeneralResponseCodec.Write(ref writer, value.Response);
+    }
+
+    /// <summary>Reads mask errors followed by the general response.</summary>
+    public static DxDeleteConnectionsResult Read(ref NdrReader reader) =>
+        new(
+            NdrOpcDxInt32ArrayCodec.Read(ref reader),
+            NdrOpcDxGeneralResponseCodec.Read(ref reader));
+}
+
 internal static class NdrOpcDxCodecHelpers
 {
     internal const int Win32BoolTrue = unchecked((int)0xFFFFFFFFu);

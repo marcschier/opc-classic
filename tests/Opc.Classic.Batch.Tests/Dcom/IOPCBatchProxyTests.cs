@@ -3,6 +3,7 @@
 using Opc.Classic.Batch.Dcom;
 using Opc.Classic.Batch.Ndr;
 using Opc.Classic.Dcom;
+using Opc.Classic.Hosting;
 using Opc.Classic.Ndr;
 using Opc.Classic.Testing;
 
@@ -32,6 +33,33 @@ public sealed class IOPCBatchProxyTests
         await Assert.That(observedIid).IsEqualTo(IOPCBatchServer.InterfaceId);
         await Assert.That(observedOpnum).IsEqualTo(expectedOpnum);
         await Assert.That(delimiter).IsEqualTo("/");
+    }
+
+    [Test]
+    public async Task Generated_BatchServer_proxy_and_dispatcher_match_delimiter_known_answer()
+    {
+        var dispatcher = new IOPCBatchServerServerDispatcher(new BatchServerStub());
+        var channel = new InMemoryCallChannel(async (_, opnum, payload, cancellationToken) =>
+        {
+            DispatchResult dispatched = await dispatcher.DispatchAsync(opnum, payload, cancellationToken);
+            return dispatched.ToNdrCallResult();
+        });
+
+        string delimiter = await new IOPCBatchServerClientProxy(channel).GetDelimiterAsync(CancellationToken.None);
+        DispatchResult response = await dispatcher.DispatchAsync(
+            IOPCBatchServer.Opnums.GetDelimiterAsync,
+            ReadOnlyMemory<byte>.Empty,
+            CancellationToken.None);
+
+        await Assert.That(delimiter).IsEqualTo("/");
+        await Assert.That(response.Payload.ToArray()).IsEquivalentTo(new byte[]
+        {
+            0x00, 0x00, 0x02, 0x00,
+            0x02, 0x00, 0x00, 0x00,
+            0x00, 0x00, 0x00, 0x00,
+            0x02, 0x00, 0x00, 0x00,
+            0x2F, 0x00, 0x00, 0x00,
+        });
     }
 
     [Test]
@@ -230,18 +258,17 @@ public sealed class IOPCBatchProxyTests
     }
 
     private static ReadOnlyMemory<byte> EncodeObjRef(Guid iid) => WritePayload((ref NdrWriter writer) =>
-    {
-        writer.WriteUInt32(0x574F454Du);
-        writer.WriteUInt32(0x00000001u);
-        writer.WriteGuid(iid);
-        writer.WriteUInt32(0);
-        writer.WriteUInt32(5);
-        writer.WriteUInt64(1);
-        writer.WriteUInt64(2);
-        writer.WriteGuid(Guid.NewGuid());
-        writer.WriteUInt16(0);
-        writer.WriteUInt16(0);
-    });
+        OpcMInterfacePointerCodec.Write(
+            ref writer,
+            new OpcInterfaceRef(
+                iid,
+                flags: 0,
+                publicRefs: 5,
+                oxid: 1,
+                oid: 2,
+                ipid: Guid.Parse("A8080DA2-E23E-11D2-AFA7-00C04F539422"),
+                securityOffset: 0,
+                resolverBindings: [])));
 
     private static ReadOnlyMemory<byte> WritePayload(NdrWriteAction write, int capacity = 2048)
     {
@@ -275,5 +302,16 @@ public sealed class IOPCBatchProxyTests
         {
             throw new InvalidOperationException("Unexpected round-trip payload.");
         }
+    }
+
+    private sealed class BatchServerStub : IOPCBatchServer
+    {
+        public Task<string> GetDelimiterAsync(CancellationToken cancellationToken = default) =>
+            Task.FromResult("/");
+
+        public Task<IOpcInterfaceRef> CreateEnumeratorAsync(
+            Guid riid,
+            CancellationToken cancellationToken = default) =>
+            throw new NotImplementedException();
     }
 }

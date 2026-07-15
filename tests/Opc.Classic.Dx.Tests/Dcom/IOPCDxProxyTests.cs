@@ -2,6 +2,7 @@
 
 using Opc.Classic.Dx.Dcom;
 using Opc.Classic.Dx.Ndr;
+using Opc.Classic.Hosting;
 using Opc.Classic.Ndr;
 using Opc.Classic.Testing;
 
@@ -56,6 +57,33 @@ public sealed class IOPCDxProxyTests
         await Assert.That(observedOpnum).IsEqualTo(expectedOpnum);
         await Assert.That(observedPayloadLength).IsGreaterThan(0);
         await Assert.That(newVersion).IsEqualTo("v2");
+    }
+
+    [Test]
+    public async Task Generated_Configuration_proxy_and_dispatcher_match_ResetConfiguration_known_answers()
+    {
+        var impl = new ConfigurationStub();
+        var dispatcher = new IOPCConfigurationServerDispatcher(impl);
+        byte[] request =
+        [
+            0x00, 0x00, 0x02, 0x00,
+            0x03, 0x00, 0x00, 0x00,
+            0x00, 0x00, 0x00, 0x00,
+            0x03, 0x00, 0x00, 0x00,
+            0x76, 0x00, 0x31, 0x00, 0x00, 0x00,
+        ];
+        var channel = new InMemoryCallChannel(async (_, opnum, payload, cancellationToken) =>
+        {
+            await Assert.That(payload.ToArray()).IsEquivalentTo(request);
+            DispatchResult dispatched = await dispatcher.DispatchAsync(opnum, payload, cancellationToken);
+            return dispatched.ToNdrCallResult();
+        });
+
+        string version = await new IOPCConfigurationClientProxy(channel)
+            .ResetConfigurationAsync("v1", CancellationToken.None);
+
+        await Assert.That(impl.ConfigurationVersion).IsEqualTo("v1");
+        await Assert.That(version).IsEqualTo("v2");
     }
 
     [Test]
@@ -203,5 +231,52 @@ public sealed class IOPCDxProxyTests
         var writer = new NdrWriter(buffer);
         write(ref writer);
         return buffer.AsMemory(0, writer.Position);
+    }
+
+    private sealed class ConfigurationStub : IOPCConfiguration
+    {
+        public string? ConfigurationVersion { get; private set; }
+
+        public Task<DxSourceServer[]> QuerySourceServersAsync(CancellationToken cancellationToken = default) =>
+            Task.FromResult<DxSourceServer[]>([]);
+
+        public Task<DxGeneralResponse> AddSourceServersAsync(DxSourceServer[] sourceServers, CancellationToken cancellationToken = default) =>
+            Task.FromResult(new DxGeneralResponse("v2"));
+
+        public Task<DxGeneralResponse> ModifySourceServersAsync(DxSourceServer[] sourceServers, CancellationToken cancellationToken = default) =>
+            Task.FromResult(new DxGeneralResponse("v2"));
+
+        public Task<DxGeneralResponse> DeleteSourceServersAsync(DxItemIdentifier[] sourceServers, CancellationToken cancellationToken = default) =>
+            Task.FromResult(new DxGeneralResponse("v2"));
+
+        public Task<DxGeneralResponse> CopyDefaultServerAttributesAsync(bool configToStatus, DxItemIdentifier[] sourceServers, CancellationToken cancellationToken = default) =>
+            Task.FromResult(new DxGeneralResponse("v2"));
+
+        public Task<DxConnectionQueryResult> QueryDXConnectionsAsync(string browsePath, DxConnection[] connectionMasks, bool recursive, CancellationToken cancellationToken = default) =>
+            Task.FromResult(new DxConnectionQueryResult([], []));
+
+        public Task<string[]> QueryDXConnectionNamesAsync(string browsePath, string[] connectionMasks, bool recursive, CancellationToken cancellationToken = default) =>
+            Task.FromResult<string[]>([]);
+
+        public Task<DxGeneralResponse> AddDXConnectionsAsync(DxConnection[] connections, CancellationToken cancellationToken = default) =>
+            Task.FromResult(new DxGeneralResponse("v2"));
+
+        public Task<DxUpdateConnectionsResult> UpdateDXConnectionsAsync(string browsePath, DxConnection[] connectionMasks, bool recursive, DxConnection connectionDefinition, CancellationToken cancellationToken = default) =>
+            Task.FromResult(new DxUpdateConnectionsResult([], new DxGeneralResponse("v2")));
+
+        public Task<DxGeneralResponse> ModifyDXConnectionsAsync(DxConnection[] connections, CancellationToken cancellationToken = default) =>
+            Task.FromResult(new DxGeneralResponse("v2"));
+
+        public Task<DxDeleteConnectionsResult> DeleteDXConnectionsAsync(string browsePath, DxConnection[] connectionMasks, bool recursive, CancellationToken cancellationToken = default) =>
+            Task.FromResult(new DxDeleteConnectionsResult([], new DxGeneralResponse("v2")));
+
+        public Task<DxUpdateConnectionsResult> CopyDefaultDXConnectionAttributesAsync(bool configToStatus, string browsePath, DxConnection[] connectionMasks, bool recursive, CancellationToken cancellationToken = default) =>
+            Task.FromResult(new DxUpdateConnectionsResult([], new DxGeneralResponse("v2")));
+
+        public Task<string> ResetConfigurationAsync(string configurationVersion, CancellationToken cancellationToken = default)
+        {
+            ConfigurationVersion = configurationVersion;
+            return Task.FromResult("v2");
+        }
     }
 }

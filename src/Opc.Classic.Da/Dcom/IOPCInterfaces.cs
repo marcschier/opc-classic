@@ -200,6 +200,7 @@ public partial interface IOPCBrowseServerAddressSpace
     /// <c>IOPCBrowseServerAddressSpace::BrowseOPCItemIDs</c> (opnum 5). Returns an <c>IEnumString</c> item-ID enumerator.
     /// </summary>
     [OpcMethod(5)]
+    [return: OpcUniquePointer]
     Task<IOpcInterfaceRef> BrowseOpcItemIdsAsync(
         int browseFilterType,
         string filterCriteria,
@@ -217,6 +218,7 @@ public partial interface IOPCBrowseServerAddressSpace
     /// <c>IOPCBrowseServerAddressSpace::BrowseAccessPaths</c> (opnum 7). Returns an <c>IEnumString</c> access-path enumerator.
     /// </summary>
     [OpcMethod(7)]
+    [return: OpcUniquePointer]
     Task<IOpcInterfaceRef> BrowseAccessPathsAsync(string itemId, CancellationToken cancellationToken = default);
 }
 
@@ -548,6 +550,7 @@ public partial interface IOPCGroupStateMgt2
 /// <c>IOPCSyncIO</c> — DA 2.x synchronous read/write (IID_IOPCSyncIO).
 /// </summary>
 [OpcInterface("39C13A52-011E-11D0-9675-0020AFD8ADB3")]
+[GenerateOpcProxy]
 [OpcGenerateServerDispatch]
 public partial interface IOPCSyncIO
 {
@@ -555,7 +558,7 @@ public partial interface IOPCSyncIO
     /// <c>IOPCSyncIO::Read</c> (opnum 3). Reads item states and per-item HRESULTs.
     /// </summary>
     [OpcMethod(3)]
-    [OpcGenerateMultiOutRecord]
+    [OpcGenerateMultiOutRecord("IOPCSyncIOReadAsyncResult")]
     [return: OpcUniquePointer]
     Task<OpcItemState[]> ReadAsync(
         int dataSource,
@@ -783,6 +786,7 @@ public partial interface IEnumOPCItemAttributes
     /// <c>IEnumOPCItemAttributes::Clone</c> (opnum 6). Returns a new enumerator initialized to the current cursor position.
     /// </summary>
     [OpcMethod(6)]
+    [return: OpcUniquePointer]
     Task<IOpcInterfaceRef> CloneAsync(CancellationToken cancellationToken = default);
 }
 
@@ -859,6 +863,7 @@ public partial interface IConnectionPointContainer
     /// points this container exposes.
     /// </summary>
     [OpcMethod(3)]
+    [return: OpcUniquePointer]
     Task<IOpcInterfaceRef> EnumConnectionPointsAsync(CancellationToken cancellationToken = default);
 
     /// <summary>
@@ -867,6 +872,7 @@ public partial interface IConnectionPointContainer
     /// (e.g. <see cref="IOPCDataCallback.InterfaceId"/>).
     /// </summary>
     [OpcMethod(4)]
+    [return: OpcUniquePointer]
     Task<IOpcInterfaceRef> FindConnectionPointAsync(Guid iid, CancellationToken cancellationToken = default);
 }
 
@@ -874,6 +880,7 @@ public partial interface IConnectionPointContainer
 /// <c>IConnectionPoint</c> — the subscription sink-binding interface (IID_IConnectionPoint).
 /// </summary>
 [OpcInterface("B196B286-BAB4-101A-B69C-00AA00341D07")]
+[GenerateOpcProxy]
 [OpcGenerateServerDispatch]
 public partial interface IConnectionPoint
 {
@@ -1024,6 +1031,7 @@ public partial interface IOPCServerList
     /// <c>max_count</c> for the second.
     /// </remarks>
     [OpcMethod(3)]
+    [return: OpcUniquePointer]
     Task<IOpcInterfaceRef> EnumClassesOfCategoriesAsync(
         [OpcEmitArrayCount] Guid[] implementedCategories,
         [OpcEmitArrayCount] Guid[] requiredCategories,
@@ -1068,6 +1076,7 @@ public partial interface IOPCServerList2
     /// <paramref name="requiredCategories"/>.
     /// </summary>
     [OpcMethod(3)]
+    [return: OpcUniquePointer]
     Task<IOpcInterfaceRef> EnumClassesOfCategoriesAsync(
         [OpcEmitArrayCount] Guid[] implementedCategories,
         [OpcEmitArrayCount] Guid[] requiredCategories,

@@ -8,8 +8,6 @@
 
 #pragma warning disable CA1707 // OPC IDL naming preserved (IOPCEventServer not IOpcEventServer)
 #pragma warning disable MA0048 // Multiple interface declarations grouped for readability
-#pragma warning disable OPCGEN104, OPCGEN105 // IFACE pointer responses are decoded by generated client proxies.
-
 using Opc.Classic.Dcom;
 using Opc.Classic.Generators;
 
