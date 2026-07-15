@@ -992,7 +992,7 @@ public partial interface IOPCEnumGUID
     /// <c>IOPCEnumGUID::Next</c> (opnum 3). Returns up to the requested number of GUIDs.
     /// </summary>
     [OpcMethod(3)]
-    [return: OpcArrayCount(nameof(count))]
+    [return: OpcEnumeratorArray(nameof(count), conformantVarying: true)]
     Task<Guid[]> NextAsync(int count, CancellationToken cancellationToken = default);
 
     /// <summary>
@@ -1007,7 +1007,12 @@ public partial interface IOPCEnumGUID
     [OpcMethod(5)]
     Task ResetAsync(CancellationToken cancellationToken = default);
 
-    // Clone returns another enumerator interface pointer.
+    /// <summary>
+    /// <c>IOPCEnumGUID::Clone</c> (opnum 6). Clones the enumerator at its current position.
+    /// </summary>
+    [OpcMethod(6)]
+    Task<IOpcInterfaceRef> CloneAsync(CancellationToken cancellationToken = default) =>
+        Task.FromException<IOpcInterfaceRef>(new OpcException(OpcResultId.NotImplemented));
 }
 
 /// <summary>

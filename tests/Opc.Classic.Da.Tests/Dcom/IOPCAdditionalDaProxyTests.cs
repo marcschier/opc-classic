@@ -489,6 +489,35 @@ public sealed class IOPCAdditionalDaProxyTests
     }
 
     [Test]
+    public async Task EnumGuid_Clone_invokes_opnum_6_and_decodes_interface_pointer()
+    {
+        int observedOpnum = -1;
+        IOpcInterfaceRef expected = new OpcInterfaceRef(
+            IOPCEnumGUID.InterfaceId,
+            0,
+            1,
+            1,
+            2,
+            Guid.Parse("39C13A4D-011E-11D0-9675-0020AFD8ADB4"),
+            0,
+            []);
+        ReadOnlyMemory<byte> response = WritePayload((ref NdrWriter writer) =>
+            OpcMInterfacePointerCodec.Write(ref writer, expected));
+        var proxy = new IOPCEnumGUIDClientProxy(
+            new InMemoryCallChannel((_, opnum, _, _) =>
+            {
+                observedOpnum = opnum;
+                return Task.FromResult(new NdrCallResult(0, response));
+            }));
+
+        IOpcInterfaceRef clone = await proxy.CloneAsync(CancellationToken.None);
+
+        await Assert.That(observedOpnum).IsEqualTo(6);
+        await Assert.That(clone.Iid).IsEqualTo(IOPCEnumGUID.InterfaceId);
+        await Assert.That(clone.Ipid).IsEqualTo(expected.Ipid);
+    }
+
+    [Test]
     public async Task ServerList_ClsidFromProgId_invokes_channel_with_correct_metadata()
     {
         Guid expected = Guid.Parse("39C13A4D-011E-11D0-9675-0020AFD8ADB3");
@@ -612,10 +641,13 @@ public sealed class IOPCAdditionalDaProxyTests
     private static ReadOnlyMemory<byte> EncodeGuidArray(params Guid[] values) => WritePayload((ref NdrWriter writer) =>
     {
         writer.WriteUInt32((uint)values.Length);
+        writer.WriteUInt32(0u);
+        writer.WriteUInt32((uint)values.Length);
         foreach (Guid value in values)
         {
             writer.WriteGuid(value);
         }
+        writer.WriteUInt32((uint)values.Length);
     });
 
     private static ReadOnlyMemory<byte> EncodeInt32(int value) => WritePayload((ref NdrWriter writer) =>

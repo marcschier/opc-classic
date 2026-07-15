@@ -12,8 +12,8 @@ reference host: `Opc.Classic.Samples.SimulationServer`.
 | Surface | Spec § | Implementation | Tests | Outcome |
 |---|---|---|---|---|
 | DX component category + `IOPCConfiguration` IID | App. B.1.4 | ✅ `OpcGuids.CATID_OPCDXServer10`, `OpcGuids.IID_IOPCConfiguration`, `[OpcInterface]` | ✅ | conformant |
-| `IOPCConfiguration` source-server services | §5.2.1, App. B.1.4 | ✅ generated client proxy | ✅ | conformant for client calls |
-| `IOPCConfiguration` DXConnection query/add/update/modify/copy/reset services | §5.2.2 - §5.2.3, App. B.1.4 | ✅ generated client proxy | ✅ | conformant for implemented calls |
+| `IOPCConfiguration` source-server services | §5.2.1, App. B.1.4 | ✅ generated proxy + dispatcher with native count/pointer envelopes | ✅ native fixtures | conformant |
+| `IOPCConfiguration` DXConnection query/add/update/modify/copy/reset services | §5.2.2 - §5.2.3, App. B.1.4 | ✅ generated proxy + dispatcher with correlated records | ✅ native fixtures | conformant |
 | `IOPCConfiguration::DeleteDXConnections` | §5.2.2.5, App. B.1.4 | ✅ accepts DXConnection masks and returns mask errors plus `DXGeneralResponse` | ✅ proxy + fixture tests | conformant |
 | DX parameter structures (`ItemIdentifier`, `DXConnection`, `SourceServer`, `DXGeneralResponse`, `IdentifiedResult`) | §5.1 | ✅ records + NDR codecs | ✅ | conformant |
 | DX status structures (`ServerStatus`, `DXConnectionStatus`, `DXSourceServerStatus`, `DXQuality`) | §4.2 - §4.4 | ✅ records + NDR codecs | ✅ | conformant as data model/codecs |
@@ -63,6 +63,14 @@ The Phase 0 interface inventory also flags `IOPCBrowseServerAddressSpace::GetIte
 | `ResetConfiguration` | 14 | old configuration version -> new configuration version | same | `IOPCDxProxyTests.cs` | ✅ |
 
 `DxConnection` covers the configurable attributes in §5.1.2, including browse paths, connection name, description, keyword, default runtime controls, override/substitute values, target/source item identifiers, queue size, update rate, deadband, vendor data, and the native mask. Tests round-trip masks, variants, arrays, and representative status fields.
+
+All twelve methods preserve the standalone IDL count and the conformant-array
+max count separately. Top-level `LPWSTR` inputs use simple-reference string
+framing, `T**` outputs retain their unique-pointer envelopes, output error
+arrays correlate to the input mask count, and DX records defer embedded string
+and array pointer bodies in MIDL order. `OpcDxConnection` also preserves the
+FC_USER_MARSHAL `User` markers inline and emits both by-value wireVARIANT
+bodies in the deferred phase before later LPWSTR bodies.
 
 The SimulationServer reference implementation applies every selected `DxConnection.Mask`
 field when evaluating query/update masks, merges only update-definition fields selected by

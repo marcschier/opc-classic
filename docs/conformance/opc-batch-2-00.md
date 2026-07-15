@@ -12,7 +12,7 @@
 |---|---|---|---|---|
 | `IOPCBatchServer` (2 methods) | §3.2 | ✅ source-generated proxy + dispatcher | ✅ | conformant |
 | `IOPCBatchServer2` (1 method) | §3.3 | ✅ source-generated proxy + dispatcher | ✅ | conformant |
-| `IEnumOPCBatchSummary` (5 methods) | §3.4 | ✅ source-generated proxy + dispatcher (hand-written `Clone` interface-ref path) | ✅ | conformant |
+| `IEnumOPCBatchSummary` (5 methods) | §3.4 | ✅ source-generated proxy + dispatcher | ✅ native fixtures | conformant |
 | `IOPCEnumerationSets` (3 methods) | §3.5 | ⚠️ projected; multi-out record generation is server-policy | ⚠️ | soft gap — see §3.1 |
 | `OPCBATCHSUMMARY` codec | App. B IDL | ✅ `NdrOpcBatchSummaryCodec` | ✅ | conformant |
 | `OPCBATCHSUMMARYFILTER` codec | App. B IDL | ✅ `NdrOpcBatchSummaryFilterCodec` | ✅ | conformant |
@@ -52,6 +52,11 @@
 | `Reset` | 5 | line 69 | same |
 | `Clone` | 6 | line 75 (generated interface-ref return) | same |
 | `Count` | 7 | line 81 | same |
+
+`Next` matches the MIDL envelope: the response carries the outer
+`OPCBATCHSUMMARY**` referent, a fetched-count conformant array, deferred
+embedded LPWSTR bodies, and trailing `pceltFetched`. Short final pages return
+`S_FALSE`. `Clone` is generated at opnum 6 and returns an `MInterfacePointer`.
 
 ### 1.4 `IOPCEnumerationSets` (spec §3.5)
 

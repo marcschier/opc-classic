@@ -64,6 +64,8 @@ public partial interface IEnumOPCBatchSummary
     /// <paramref name="count"/> at the end of the enumeration.
     /// </remarks>
     [OpcMethod(3)]
+    [return: OpcUniquePointer]
+    [return: OpcEnumeratorArray(nameof(count), conformantVarying: false)]
     Task<OpcBatchSummary[]> NextAsync(int count, CancellationToken cancellationToken = default);
 
     /// <summary>

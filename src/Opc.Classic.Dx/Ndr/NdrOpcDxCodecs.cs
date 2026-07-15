@@ -1,5 +1,6 @@
 ﻿// Copyright (c) 2026 Opc.Classic Contributors. Licensed under the MIT License.
 
+using System.Runtime.InteropServices;
 using Opc.Classic.Ndr;
 
 #pragma warning disable MA0048 // The DX codec table is intentionally grouped for spec readability.
@@ -47,10 +48,8 @@ public static class NdrOpcDxItemIdentifierCodec
     {
         ArgumentNullException.ThrowIfNull(value);
 
-        writer.WriteUnicodeStringPtr(value.ItemPath);
-        writer.WriteUnicodeStringPtr(value.ItemName);
-        writer.WriteUnicodeStringPtr(value.Version);
-        writer.WriteUInt32(unchecked((uint)value.Reserved));
+        WriteInline(ref writer, value);
+        WriteDeferred(ref writer, value);
     }
 
     /// <summary>
@@ -58,12 +57,56 @@ public static class NdrOpcDxItemIdentifierCodec
     /// </summary>
     public static DxItemIdentifier Read(ref NdrReader reader)
     {
-        string? itemPath = reader.ReadUnicodeStringPtr();
-        string? itemName = reader.ReadUnicodeStringPtr();
-        string? version = reader.ReadUnicodeStringPtr();
-        int reserved = unchecked((int)reader.ReadUInt32());
-        return new DxItemIdentifier(itemPath, itemName, version, reserved);
+        ItemIdentifierInline inline = ReadInline(ref reader);
+        return ApplyDeferred(ref reader, inline);
     }
+
+    internal static void WriteConformantArrayBody(ref NdrWriter writer, DxItemIdentifier[] values)
+    {
+        foreach (DxItemIdentifier value in values) { WriteInline(ref writer, value); }
+        foreach (DxItemIdentifier value in values) { WriteDeferred(ref writer, value); }
+    }
+
+    internal static DxItemIdentifier[] ReadConformantArrayBody(ref NdrReader reader, int count)
+    {
+        var inline = new ItemIdentifierInline[count];
+        for (int i = 0; i < count; i++) { inline[i] = ReadInline(ref reader); }
+        var values = new DxItemIdentifier[count];
+        for (int i = 0; i < count; i++) { values[i] = ApplyDeferred(ref reader, inline[i]); }
+        return values;
+    }
+
+    private static void WriteInline(ref NdrWriter writer, DxItemIdentifier value)
+    {
+        writer.WriteUniquePointerReferent(value.ItemPath is not null);
+        writer.WriteUniquePointerReferent(value.ItemName is not null);
+        writer.WriteUniquePointerReferent(value.Version is not null);
+        writer.WriteUInt32(unchecked((uint)value.Reserved));
+    }
+
+    private static void WriteDeferred(ref NdrWriter writer, DxItemIdentifier value)
+    {
+        NdrOpcDxCodecHelpers.WriteDeferredString(ref writer, value.ItemPath);
+        NdrOpcDxCodecHelpers.WriteDeferredString(ref writer, value.ItemName);
+        NdrOpcDxCodecHelpers.WriteDeferredString(ref writer, value.Version);
+    }
+
+    private static ItemIdentifierInline ReadInline(ref NdrReader reader) =>
+        new(reader.ReadUInt32(), reader.ReadUInt32(), reader.ReadUInt32(), reader.ReadUInt32());
+
+    private static DxItemIdentifier ApplyDeferred(ref NdrReader reader, ItemIdentifierInline inline) =>
+        new(
+            NdrOpcDxCodecHelpers.ReadDeferredString(ref reader, inline.ItemPathRef),
+            NdrOpcDxCodecHelpers.ReadDeferredString(ref reader, inline.ItemNameRef),
+            NdrOpcDxCodecHelpers.ReadDeferredString(ref reader, inline.VersionRef),
+            unchecked((int)inline.Reserved));
+
+    [StructLayout(LayoutKind.Auto)]
+    private readonly record struct ItemIdentifierInline(
+        uint ItemPathRef,
+        uint ItemNameRef,
+        uint VersionRef,
+        uint Reserved);
 }
 
 /// <summary>
@@ -78,10 +121,8 @@ public static class NdrOpcDxIdentifiedResultCodec
     {
         ArgumentNullException.ThrowIfNull(value);
 
-        writer.WriteUnicodeStringPtr(value.ItemPath);
-        writer.WriteUnicodeStringPtr(value.ItemName);
-        writer.WriteUnicodeStringPtr(value.Version);
-        writer.WriteInt32(value.ResultId.Code);
+        WriteInline(ref writer, value);
+        WriteDeferred(ref writer, value);
     }
 
     /// <summary>
@@ -89,12 +130,56 @@ public static class NdrOpcDxIdentifiedResultCodec
     /// </summary>
     public static DxIdentifiedResult Read(ref NdrReader reader)
     {
-        string? itemPath = reader.ReadUnicodeStringPtr();
-        string? itemName = reader.ReadUnicodeStringPtr();
-        string? version = reader.ReadUnicodeStringPtr();
-        int resultCode = reader.ReadInt32();
-        return new DxIdentifiedResult(itemPath, itemName, version, new OpcResultId(resultCode, null));
+        IdentifiedResultInline inline = ReadInline(ref reader);
+        return ApplyDeferred(ref reader, inline);
     }
+
+    internal static void WriteConformantArrayBody(ref NdrWriter writer, DxIdentifiedResult[] values)
+    {
+        foreach (DxIdentifiedResult value in values) { WriteInline(ref writer, value); }
+        foreach (DxIdentifiedResult value in values) { WriteDeferred(ref writer, value); }
+    }
+
+    internal static DxIdentifiedResult[] ReadConformantArrayBody(ref NdrReader reader, int count)
+    {
+        var inline = new IdentifiedResultInline[count];
+        for (int i = 0; i < count; i++) { inline[i] = ReadInline(ref reader); }
+        var values = new DxIdentifiedResult[count];
+        for (int i = 0; i < count; i++) { values[i] = ApplyDeferred(ref reader, inline[i]); }
+        return values;
+    }
+
+    private static void WriteInline(ref NdrWriter writer, DxIdentifiedResult value)
+    {
+        writer.WriteUniquePointerReferent(value.ItemPath is not null);
+        writer.WriteUniquePointerReferent(value.ItemName is not null);
+        writer.WriteUniquePointerReferent(value.Version is not null);
+        writer.WriteInt32(value.ResultId.Code);
+    }
+
+    private static void WriteDeferred(ref NdrWriter writer, DxIdentifiedResult value)
+    {
+        NdrOpcDxCodecHelpers.WriteDeferredString(ref writer, value.ItemPath);
+        NdrOpcDxCodecHelpers.WriteDeferredString(ref writer, value.ItemName);
+        NdrOpcDxCodecHelpers.WriteDeferredString(ref writer, value.Version);
+    }
+
+    private static IdentifiedResultInline ReadInline(ref NdrReader reader) =>
+        new(reader.ReadUInt32(), reader.ReadUInt32(), reader.ReadUInt32(), reader.ReadInt32());
+
+    private static DxIdentifiedResult ApplyDeferred(ref NdrReader reader, IdentifiedResultInline inline) =>
+        new(
+            NdrOpcDxCodecHelpers.ReadDeferredString(ref reader, inline.ItemPathRef),
+            NdrOpcDxCodecHelpers.ReadDeferredString(ref reader, inline.ItemNameRef),
+            NdrOpcDxCodecHelpers.ReadDeferredString(ref reader, inline.VersionRef),
+            new OpcResultId(inline.ResultCode, null));
+
+    [StructLayout(LayoutKind.Auto)]
+    private readonly record struct IdentifiedResultInline(
+        uint ItemPathRef,
+        uint ItemNameRef,
+        uint VersionRef,
+        int ResultCode);
 }
 
 /// <summary>
@@ -109,9 +194,16 @@ public static class NdrOpcDxGeneralResponseCodec
     {
         ArgumentNullException.ThrowIfNull(value);
 
-        writer.WriteUnicodeStringPtr(value.ConfigurationVersion);
-        NdrOpcDxIdentifiedResultArrayCodec.Write(ref writer, value.IdentifiedResults);
+        DxIdentifiedResult[] results = value.IdentifiedResults;
+        writer.WriteUniquePointerReferent(value.ConfigurationVersion is not null);
+        writer.WriteUInt32(checked((uint)results.Length));
+        writer.WriteUniquePointerReferent(results.Length > 0);
         writer.WriteUInt32(unchecked((uint)value.Reserved));
+        NdrOpcDxCodecHelpers.WriteDeferredString(ref writer, value.ConfigurationVersion);
+        if (results.Length > 0)
+        {
+            NdrOpcDxIdentifiedResultArrayCodec.Write(ref writer, results);
+        }
     }
 
     /// <summary>
@@ -119,9 +211,18 @@ public static class NdrOpcDxGeneralResponseCodec
     /// </summary>
     public static DxGeneralResponse Read(ref NdrReader reader)
     {
-        string? configurationVersion = reader.ReadUnicodeStringPtr();
-        DxIdentifiedResult[] results = NdrOpcDxIdentifiedResultArrayCodec.Read(ref reader);
+        uint configurationVersionRef = reader.ReadUInt32();
+        int count = NdrOpcDxCodecHelpers.ReadCount(ref reader, "general response identified-result count");
+        uint resultsRef = reader.ReadUInt32();
         int reserved = unchecked((int)reader.ReadUInt32());
+        string? configurationVersion = NdrOpcDxCodecHelpers.ReadDeferredString(ref reader, configurationVersionRef);
+        DxIdentifiedResult[] results = resultsRef == 0u
+            ? Array.Empty<DxIdentifiedResult>()
+            : NdrOpcDxIdentifiedResultArrayCodec.Read(ref reader, count);
+        if (resultsRef == 0u && count != 0)
+        {
+            throw new InvalidDataException("OPC DX general response has a null result pointer with a non-zero count.");
+        }
         return new DxGeneralResponse(configurationVersion, results, reserved);
     }
 }
@@ -138,16 +239,8 @@ public static class NdrOpcDxSourceServerCodec
     {
         ArgumentNullException.ThrowIfNull(value);
 
-        writer.WriteUInt32(unchecked((uint)value.Mask));
-        writer.WriteUnicodeStringPtr(value.ItemPath);
-        writer.WriteUnicodeStringPtr(value.ItemName);
-        writer.WriteUnicodeStringPtr(value.Version);
-        writer.WriteUnicodeStringPtr(value.Name);
-        writer.WriteUnicodeStringPtr(value.Description);
-        writer.WriteUnicodeStringPtr(value.ServerType);
-        writer.WriteUnicodeStringPtr(value.ServerUrl);
-        writer.WriteInt32(value.DefaultConnected == true ? NdrOpcDxCodecHelpers.Win32BoolTrue : 0);
-        writer.WriteUInt32(unchecked((uint)value.Reserved));
+        WriteInline(ref writer, value);
+        WriteDeferred(ref writer, value);
     }
 
     /// <summary>
@@ -155,31 +248,99 @@ public static class NdrOpcDxSourceServerCodec
     /// </summary>
     public static DxSourceServer Read(ref NdrReader reader)
     {
-        var mask = (DxMask)reader.ReadUInt32();
-        string? itemPath = reader.ReadUnicodeStringPtr();
-        string? itemName = reader.ReadUnicodeStringPtr();
-        string? version = reader.ReadUnicodeStringPtr();
-        string? name = reader.ReadUnicodeStringPtr();
-        string? description = reader.ReadUnicodeStringPtr();
-        string? serverType = reader.ReadUnicodeStringPtr();
-        string? serverUrl = reader.ReadUnicodeStringPtr();
-        bool defaultConnectedRaw = reader.ReadInt32() != 0;
-        int reserved = unchecked((int)reader.ReadUInt32());
-
-        return new DxSourceServer(
-            name: Has(mask, DxMask.Name) ? name : null,
-            serverUrl: Has(mask, DxMask.ServerUrl) ? serverUrl : null,
-            description: Has(mask, DxMask.Description) ? description : null,
-            serverType: Has(mask, DxMask.ServerType) ? serverType : null,
-            itemPath: Has(mask, DxMask.ItemPath) ? itemPath : null,
-            itemName: Has(mask, DxMask.ItemName) ? itemName : null,
-            version: Has(mask, DxMask.Version) ? version : null,
-            defaultConnected: Has(mask, DxMask.DefaultSourceServerConnected) ? defaultConnectedRaw : null,
-            mask: (int)mask,
-            reserved: reserved);
+        SourceServerInline inline = ReadInline(ref reader);
+        return ApplyDeferred(ref reader, inline);
     }
 
     private static bool Has(DxMask mask, DxMask bit) => (mask & bit) != DxMask.None;
+
+    internal static void WriteConformantArrayBody(ref NdrWriter writer, DxSourceServer[] values)
+    {
+        foreach (DxSourceServer value in values) { WriteInline(ref writer, value); }
+        foreach (DxSourceServer value in values) { WriteDeferred(ref writer, value); }
+    }
+
+    internal static DxSourceServer[] ReadConformantArrayBody(ref NdrReader reader, int count)
+    {
+        var inline = new SourceServerInline[count];
+        for (int i = 0; i < count; i++) { inline[i] = ReadInline(ref reader); }
+        var values = new DxSourceServer[count];
+        for (int i = 0; i < count; i++) { values[i] = ApplyDeferred(ref reader, inline[i]); }
+        return values;
+    }
+
+    private static void WriteInline(ref NdrWriter writer, DxSourceServer value)
+    {
+        writer.WriteUInt32(unchecked((uint)value.Mask));
+        writer.WriteUniquePointerReferent(value.ItemPath is not null);
+        writer.WriteUniquePointerReferent(value.ItemName is not null);
+        writer.WriteUniquePointerReferent(value.Version is not null);
+        writer.WriteUniquePointerReferent(value.Name is not null);
+        writer.WriteUniquePointerReferent(value.Description is not null);
+        writer.WriteUniquePointerReferent(value.ServerType is not null);
+        writer.WriteUniquePointerReferent(value.ServerUrl is not null);
+        writer.WriteInt32(value.DefaultConnected == true ? NdrOpcDxCodecHelpers.Win32BoolTrue : 0);
+        writer.WriteUInt32(unchecked((uint)value.Reserved));
+    }
+
+    private static void WriteDeferred(ref NdrWriter writer, DxSourceServer value)
+    {
+        NdrOpcDxCodecHelpers.WriteDeferredString(ref writer, value.ItemPath);
+        NdrOpcDxCodecHelpers.WriteDeferredString(ref writer, value.ItemName);
+        NdrOpcDxCodecHelpers.WriteDeferredString(ref writer, value.Version);
+        NdrOpcDxCodecHelpers.WriteDeferredString(ref writer, value.Name);
+        NdrOpcDxCodecHelpers.WriteDeferredString(ref writer, value.Description);
+        NdrOpcDxCodecHelpers.WriteDeferredString(ref writer, value.ServerType);
+        NdrOpcDxCodecHelpers.WriteDeferredString(ref writer, value.ServerUrl);
+    }
+
+    private static SourceServerInline ReadInline(ref NdrReader reader) =>
+        new(
+            (DxMask)reader.ReadUInt32(),
+            reader.ReadUInt32(),
+            reader.ReadUInt32(),
+            reader.ReadUInt32(),
+            reader.ReadUInt32(),
+            reader.ReadUInt32(),
+            reader.ReadUInt32(),
+            reader.ReadUInt32(),
+            reader.ReadInt32(),
+            reader.ReadUInt32());
+
+    private static DxSourceServer ApplyDeferred(ref NdrReader reader, SourceServerInline inline)
+    {
+        string? itemPath = NdrOpcDxCodecHelpers.ReadDeferredString(ref reader, inline.ItemPathRef);
+        string? itemName = NdrOpcDxCodecHelpers.ReadDeferredString(ref reader, inline.ItemNameRef);
+        string? version = NdrOpcDxCodecHelpers.ReadDeferredString(ref reader, inline.VersionRef);
+        string? name = NdrOpcDxCodecHelpers.ReadDeferredString(ref reader, inline.NameRef);
+        string? description = NdrOpcDxCodecHelpers.ReadDeferredString(ref reader, inline.DescriptionRef);
+        string? serverType = NdrOpcDxCodecHelpers.ReadDeferredString(ref reader, inline.ServerTypeRef);
+        string? serverUrl = NdrOpcDxCodecHelpers.ReadDeferredString(ref reader, inline.ServerUrlRef);
+        return new DxSourceServer(
+            name: Has(inline.Mask, DxMask.Name) ? name : null,
+            serverUrl: Has(inline.Mask, DxMask.ServerUrl) ? serverUrl : null,
+            description: Has(inline.Mask, DxMask.Description) ? description : null,
+            serverType: Has(inline.Mask, DxMask.ServerType) ? serverType : null,
+            itemPath: Has(inline.Mask, DxMask.ItemPath) ? itemPath : null,
+            itemName: Has(inline.Mask, DxMask.ItemName) ? itemName : null,
+            version: Has(inline.Mask, DxMask.Version) ? version : null,
+            defaultConnected: Has(inline.Mask, DxMask.DefaultSourceServerConnected) ? inline.DefaultConnected != 0 : null,
+            mask: (int)inline.Mask,
+            reserved: unchecked((int)inline.Reserved));
+    }
+
+    [StructLayout(LayoutKind.Auto)]
+    private readonly record struct SourceServerInline(
+        DxMask Mask,
+        uint ItemPathRef,
+        uint ItemNameRef,
+        uint VersionRef,
+        uint NameRef,
+        uint DescriptionRef,
+        uint ServerTypeRef,
+        uint ServerUrlRef,
+        int DefaultConnected,
+        uint Reserved);
 }
 
 /// <summary>
@@ -187,6 +348,11 @@ public static class NdrOpcDxSourceServerCodec
 /// </summary>
 public static class NdrOpcDxConnectionCodec
 {
+    // MIDL FC_USER_MARSHAL members inside the FC_BOGUS_STRUCT use this
+    // 4-byte inline marker; each wireVARIANT body is emitted in the deferred
+    // phase at the member's position relative to surrounding pointer fields.
+    private const uint UserMarshalReferent = 0x72657355;
+
     /// <summary>
     /// Writes a DX connection.
     /// </summary>
@@ -194,29 +360,8 @@ public static class NdrOpcDxConnectionCodec
     {
         ArgumentNullException.ThrowIfNull(value);
 
-        writer.WriteUInt32(unchecked((uint)value.Mask));
-        writer.WriteUnicodeStringPtr(value.ItemPath);
-        writer.WriteUnicodeStringPtr(value.ItemName);
-        writer.WriteUnicodeStringPtr(value.Version);
-        NdrOpcDxStringArrayCodec.Write(ref writer, value.BrowsePaths);
-        writer.WriteUnicodeStringPtr(value.Name);
-        writer.WriteUnicodeStringPtr(value.Description);
-        writer.WriteUnicodeStringPtr(value.Keyword);
-        writer.WriteInt32(value.DefaultSourceItemConnected == true ? NdrOpcDxCodecHelpers.Win32BoolTrue : 0);
-        writer.WriteInt32(value.DefaultTargetItemConnected == true ? NdrOpcDxCodecHelpers.Win32BoolTrue : 0);
-        writer.WriteInt32(value.DefaultOverridden == true ? NdrOpcDxCodecHelpers.Win32BoolTrue : 0);
-        writer.WriteVariant(value.DefaultOverrideValue ?? OpcVariant.Empty);
-        writer.WriteVariant(value.SubstituteValue ?? OpcVariant.Empty);
-        writer.WriteInt32(value.EnableSubstituteValue == true ? NdrOpcDxCodecHelpers.Win32BoolTrue : 0);
-        writer.WriteUnicodeStringPtr(value.TargetItemPath);
-        writer.WriteUnicodeStringPtr(value.TargetItemName);
-        writer.WriteUnicodeStringPtr(value.SourceServerName);
-        writer.WriteUnicodeStringPtr(value.SourceItemPath);
-        writer.WriteUnicodeStringPtr(value.SourceItemName);
-        writer.WriteUInt32(unchecked((uint)(value.SourceItemQueueSize ?? 0)));
-        writer.WriteUInt32(unchecked((uint)(value.UpdateRateMilliseconds ?? 0)));
-        writer.WriteSingle(value.DeadbandPercent ?? 0);
-        writer.WriteUnicodeStringPtr(value.VendorData);
+        WriteInline(ref writer, value);
+        WriteDeferred(ref writer, value);
     }
 
     /// <summary>
@@ -224,57 +369,191 @@ public static class NdrOpcDxConnectionCodec
     /// </summary>
     public static DxConnection Read(ref NdrReader reader)
     {
-        var mask = (DxMask)reader.ReadUInt32();
-        string? itemPath = reader.ReadUnicodeStringPtr();
-        string? itemName = reader.ReadUnicodeStringPtr();
-        string? version = reader.ReadUnicodeStringPtr();
-        string[] browsePaths = NdrOpcDxStringArrayCodec.Read(ref reader);
-        string? name = reader.ReadUnicodeStringPtr();
-        string? description = reader.ReadUnicodeStringPtr();
-        string? keyword = reader.ReadUnicodeStringPtr();
-        bool defaultSourceItemConnectedRaw = reader.ReadInt32() != 0;
-        bool defaultTargetItemConnectedRaw = reader.ReadInt32() != 0;
-        bool defaultOverriddenRaw = reader.ReadInt32() != 0;
-        OpcVariant defaultOverrideValue = reader.ReadVariant();
-        OpcVariant substituteValue = reader.ReadVariant();
-        bool enableSubstituteValueRaw = reader.ReadInt32() != 0;
-        string? targetItemPath = reader.ReadUnicodeStringPtr();
-        string? targetItemName = reader.ReadUnicodeStringPtr();
-        string? sourceServerName = reader.ReadUnicodeStringPtr();
-        string? sourceItemPath = reader.ReadUnicodeStringPtr();
-        string? sourceItemName = reader.ReadUnicodeStringPtr();
-        int sourceItemQueueSize = unchecked((int)reader.ReadUInt32());
-        int updateRateMilliseconds = unchecked((int)reader.ReadUInt32());
-        float deadbandPercent = reader.ReadSingle();
-        string? vendorData = reader.ReadUnicodeStringPtr();
-
-        return new DxConnection(
-            name: Has(mask, DxMask.Name) ? name : null,
-            description: Has(mask, DxMask.Description) ? description : null,
-            itemPath: Has(mask, DxMask.ItemPath) ? itemPath : null,
-            itemName: Has(mask, DxMask.ItemName) ? itemName : null,
-            version: Has(mask, DxMask.Version) ? version : null,
-            browsePaths: Has(mask, DxMask.BrowsePaths) ? browsePaths : Array.Empty<string>(),
-            keyword: Has(mask, DxMask.Keyword) ? keyword : null,
-            defaultSourceItemConnected: Has(mask, DxMask.DefaultSourceItemConnected) ? defaultSourceItemConnectedRaw : null,
-            defaultTargetItemConnected: Has(mask, DxMask.DefaultTargetItemConnected) ? defaultTargetItemConnectedRaw : null,
-            defaultOverridden: Has(mask, DxMask.DefaultOverridden) ? defaultOverriddenRaw : null,
-            defaultOverrideValue: Has(mask, DxMask.DefaultOverrideValue) ? defaultOverrideValue : null,
-            substituteValue: Has(mask, DxMask.SubstituteValue) ? substituteValue : null,
-            enableSubstituteValue: Has(mask, DxMask.EnableSubstituteValue) ? enableSubstituteValueRaw : null,
-            targetItemPath: Has(mask, DxMask.TargetItemPath) ? targetItemPath : null,
-            targetItemName: Has(mask, DxMask.TargetItemName) ? targetItemName : null,
-            sourceServerName: Has(mask, DxMask.SourceServerName) ? sourceServerName : null,
-            sourceItemPath: Has(mask, DxMask.SourceItemPath) ? sourceItemPath : null,
-            sourceItemName: Has(mask, DxMask.SourceItemName) ? sourceItemName : null,
-            sourceItemQueueSize: Has(mask, DxMask.SourceItemQueueSize) ? sourceItemQueueSize : null,
-            updateRateMilliseconds: Has(mask, DxMask.UpdateRate) ? updateRateMilliseconds : null,
-            deadbandPercent: Has(mask, DxMask.DeadBand) ? deadbandPercent : null,
-            vendorData: Has(mask, DxMask.VendorData) ? vendorData : null,
-            mask: (int)mask);
+        ConnectionInline inline = ReadInline(ref reader);
+        return ApplyDeferred(ref reader, inline);
     }
 
     private static bool Has(DxMask mask, DxMask bit) => (mask & bit) != DxMask.None;
+
+    internal static void WriteConformantArrayBody(ref NdrWriter writer, DxConnection[] values)
+    {
+        foreach (DxConnection value in values) { WriteInline(ref writer, value); }
+        foreach (DxConnection value in values) { WriteDeferred(ref writer, value); }
+    }
+
+    internal static DxConnection[] ReadConformantArrayBody(ref NdrReader reader, int count)
+    {
+        var inline = new ConnectionInline[count];
+        for (int i = 0; i < count; i++) { inline[i] = ReadInline(ref reader); }
+        var values = new DxConnection[count];
+        for (int i = 0; i < count; i++) { values[i] = ApplyDeferred(ref reader, inline[i]); }
+        return values;
+    }
+
+    private static void WriteInline(ref NdrWriter writer, DxConnection value)
+    {
+        string[] browsePaths = value.BrowsePaths;
+        writer.WriteUInt32(unchecked((uint)value.Mask));
+        writer.WriteUniquePointerReferent(value.ItemPath is not null);
+        writer.WriteUniquePointerReferent(value.ItemName is not null);
+        writer.WriteUniquePointerReferent(value.Version is not null);
+        writer.WriteUInt32(checked((uint)browsePaths.Length));
+        writer.WriteUniquePointerReferent(browsePaths.Length > 0);
+        writer.WriteUniquePointerReferent(value.Name is not null);
+        writer.WriteUniquePointerReferent(value.Description is not null);
+        writer.WriteUniquePointerReferent(value.Keyword is not null);
+        writer.WriteInt32(value.DefaultSourceItemConnected == true ? NdrOpcDxCodecHelpers.Win32BoolTrue : 0);
+        writer.WriteInt32(value.DefaultTargetItemConnected == true ? NdrOpcDxCodecHelpers.Win32BoolTrue : 0);
+        writer.WriteInt32(value.DefaultOverridden == true ? NdrOpcDxCodecHelpers.Win32BoolTrue : 0);
+        writer.WriteUInt32(UserMarshalReferent);
+        writer.WriteUInt32(UserMarshalReferent);
+        writer.WriteInt32(value.EnableSubstituteValue == true ? NdrOpcDxCodecHelpers.Win32BoolTrue : 0);
+        writer.WriteUniquePointerReferent(value.TargetItemPath is not null);
+        writer.WriteUniquePointerReferent(value.TargetItemName is not null);
+        writer.WriteUniquePointerReferent(value.SourceServerName is not null);
+        writer.WriteUniquePointerReferent(value.SourceItemPath is not null);
+        writer.WriteUniquePointerReferent(value.SourceItemName is not null);
+        writer.WriteUInt32(unchecked((uint)(value.SourceItemQueueSize ?? 0)));
+        writer.WriteUInt32(unchecked((uint)(value.UpdateRateMilliseconds ?? 0)));
+        writer.WriteSingle(value.DeadbandPercent ?? 0);
+        writer.WriteUniquePointerReferent(value.VendorData is not null);
+    }
+
+    private static void WriteDeferred(ref NdrWriter writer, DxConnection value)
+    {
+        NdrOpcDxCodecHelpers.WriteDeferredString(ref writer, value.ItemPath);
+        NdrOpcDxCodecHelpers.WriteDeferredString(ref writer, value.ItemName);
+        NdrOpcDxCodecHelpers.WriteDeferredString(ref writer, value.Version);
+        if (value.BrowsePaths.Length > 0)
+        {
+            NdrOpcDxStringArrayCodec.Write(ref writer, value.BrowsePaths);
+        }
+        NdrOpcDxCodecHelpers.WriteDeferredString(ref writer, value.Name);
+        NdrOpcDxCodecHelpers.WriteDeferredString(ref writer, value.Description);
+        NdrOpcDxCodecHelpers.WriteDeferredString(ref writer, value.Keyword);
+        writer.WriteVariant(value.DefaultOverrideValue ?? OpcVariant.Empty);
+        writer.WriteVariant(value.SubstituteValue ?? OpcVariant.Empty);
+        NdrOpcDxCodecHelpers.WriteDeferredString(ref writer, value.TargetItemPath);
+        NdrOpcDxCodecHelpers.WriteDeferredString(ref writer, value.TargetItemName);
+        NdrOpcDxCodecHelpers.WriteDeferredString(ref writer, value.SourceServerName);
+        NdrOpcDxCodecHelpers.WriteDeferredString(ref writer, value.SourceItemPath);
+        NdrOpcDxCodecHelpers.WriteDeferredString(ref writer, value.SourceItemName);
+        NdrOpcDxCodecHelpers.WriteDeferredString(ref writer, value.VendorData);
+    }
+
+    private static ConnectionInline ReadInline(ref NdrReader reader) =>
+        new(
+            (DxMask)reader.ReadUInt32(),
+            reader.ReadUInt32(),
+            reader.ReadUInt32(),
+            reader.ReadUInt32(),
+            NdrOpcDxCodecHelpers.ReadCount(ref reader, "browse path count"),
+            reader.ReadUInt32(),
+            reader.ReadUInt32(),
+            reader.ReadUInt32(),
+            reader.ReadUInt32(),
+            reader.ReadInt32(),
+            reader.ReadInt32(),
+            reader.ReadInt32(),
+            reader.ReadUInt32(),
+            reader.ReadUInt32(),
+            reader.ReadInt32(),
+            reader.ReadUInt32(),
+            reader.ReadUInt32(),
+            reader.ReadUInt32(),
+            reader.ReadUInt32(),
+            reader.ReadUInt32(),
+            reader.ReadUInt32(),
+            reader.ReadUInt32(),
+            reader.ReadSingle(),
+            reader.ReadUInt32());
+
+    private static DxConnection ApplyDeferred(ref NdrReader reader, ConnectionInline inline)
+    {
+        string? itemPath = NdrOpcDxCodecHelpers.ReadDeferredString(ref reader, inline.ItemPathRef);
+        string? itemName = NdrOpcDxCodecHelpers.ReadDeferredString(ref reader, inline.ItemNameRef);
+        string? version = NdrOpcDxCodecHelpers.ReadDeferredString(ref reader, inline.VersionRef);
+        string[] browsePaths = inline.BrowsePathsRef == 0u
+            ? Array.Empty<string>()
+            : NdrOpcDxStringArrayCodec.Read(ref reader, inline.BrowsePathCount);
+        if (inline.BrowsePathsRef == 0u && inline.BrowsePathCount != 0)
+        {
+            throw new InvalidDataException("OPC DX connection has a null browse-path pointer with a non-zero count.");
+        }
+        string? name = NdrOpcDxCodecHelpers.ReadDeferredString(ref reader, inline.NameRef);
+        string? description = NdrOpcDxCodecHelpers.ReadDeferredString(ref reader, inline.DescriptionRef);
+        string? keyword = NdrOpcDxCodecHelpers.ReadDeferredString(ref reader, inline.KeywordRef);
+        OpcVariant defaultOverrideValue = ReadDeferredVariant(ref reader, inline.DefaultOverrideValueRef);
+        OpcVariant substituteValue = ReadDeferredVariant(ref reader, inline.SubstituteValueRef);
+        string? targetItemPath = NdrOpcDxCodecHelpers.ReadDeferredString(ref reader, inline.TargetItemPathRef);
+        string? targetItemName = NdrOpcDxCodecHelpers.ReadDeferredString(ref reader, inline.TargetItemNameRef);
+        string? sourceServerName = NdrOpcDxCodecHelpers.ReadDeferredString(ref reader, inline.SourceServerNameRef);
+        string? sourceItemPath = NdrOpcDxCodecHelpers.ReadDeferredString(ref reader, inline.SourceItemPathRef);
+        string? sourceItemName = NdrOpcDxCodecHelpers.ReadDeferredString(ref reader, inline.SourceItemNameRef);
+        string? vendorData = NdrOpcDxCodecHelpers.ReadDeferredString(ref reader, inline.VendorDataRef);
+
+        return new DxConnection(
+            name: Has(inline.Mask, DxMask.Name) ? name : null,
+            description: Has(inline.Mask, DxMask.Description) ? description : null,
+            itemPath: Has(inline.Mask, DxMask.ItemPath) ? itemPath : null,
+            itemName: Has(inline.Mask, DxMask.ItemName) ? itemName : null,
+            version: Has(inline.Mask, DxMask.Version) ? version : null,
+            browsePaths: Has(inline.Mask, DxMask.BrowsePaths) ? browsePaths : Array.Empty<string>(),
+            keyword: Has(inline.Mask, DxMask.Keyword) ? keyword : null,
+            defaultSourceItemConnected: Has(inline.Mask, DxMask.DefaultSourceItemConnected) ? inline.DefaultSourceItemConnected != 0 : null,
+            defaultTargetItemConnected: Has(inline.Mask, DxMask.DefaultTargetItemConnected) ? inline.DefaultTargetItemConnected != 0 : null,
+            defaultOverridden: Has(inline.Mask, DxMask.DefaultOverridden) ? inline.DefaultOverridden != 0 : null,
+            defaultOverrideValue: Has(inline.Mask, DxMask.DefaultOverrideValue) ? defaultOverrideValue : null,
+            substituteValue: Has(inline.Mask, DxMask.SubstituteValue) ? substituteValue : null,
+            enableSubstituteValue: Has(inline.Mask, DxMask.EnableSubstituteValue) ? inline.EnableSubstituteValue != 0 : null,
+            targetItemPath: Has(inline.Mask, DxMask.TargetItemPath) ? targetItemPath : null,
+            targetItemName: Has(inline.Mask, DxMask.TargetItemName) ? targetItemName : null,
+            sourceServerName: Has(inline.Mask, DxMask.SourceServerName) ? sourceServerName : null,
+            sourceItemPath: Has(inline.Mask, DxMask.SourceItemPath) ? sourceItemPath : null,
+            sourceItemName: Has(inline.Mask, DxMask.SourceItemName) ? sourceItemName : null,
+            sourceItemQueueSize: Has(inline.Mask, DxMask.SourceItemQueueSize) ? unchecked((int)inline.SourceItemQueueSize) : null,
+            updateRateMilliseconds: Has(inline.Mask, DxMask.UpdateRate) ? unchecked((int)inline.UpdateRate) : null,
+            deadbandPercent: Has(inline.Mask, DxMask.DeadBand) ? inline.DeadBand : null,
+            vendorData: Has(inline.Mask, DxMask.VendorData) ? vendorData : null,
+            mask: (int)inline.Mask);
+    }
+
+    private static OpcVariant ReadDeferredVariant(ref NdrReader reader, uint referent)
+    {
+        if (referent != UserMarshalReferent)
+        {
+            throw new InvalidDataException(
+                $"OPC DX connection VARIANT user-marshal referent 0x{referent:X8} is invalid.");
+        }
+        return reader.ReadVariant();
+    }
+
+    [StructLayout(LayoutKind.Auto)]
+    private readonly record struct ConnectionInline(
+        DxMask Mask,
+        uint ItemPathRef,
+        uint ItemNameRef,
+        uint VersionRef,
+        int BrowsePathCount,
+        uint BrowsePathsRef,
+        uint NameRef,
+        uint DescriptionRef,
+        uint KeywordRef,
+        int DefaultSourceItemConnected,
+        int DefaultTargetItemConnected,
+        int DefaultOverridden,
+        uint DefaultOverrideValueRef,
+        uint SubstituteValueRef,
+        int EnableSubstituteValue,
+        uint TargetItemPathRef,
+        uint TargetItemNameRef,
+        uint SourceServerNameRef,
+        uint SourceItemPathRef,
+        uint SourceItemNameRef,
+        uint SourceItemQueueSize,
+        uint UpdateRate,
+        float DeadBand,
+        uint VendorDataRef);
 }
 
 /// <summary>
@@ -524,20 +803,36 @@ public static class NdrOpcDxStringArrayCodec
         writer.WriteUInt32(unchecked((uint)values.Length));
         foreach (var value in values)
         {
-            writer.WriteUnicodeStringPtr(value);
+            writer.WriteUniquePointerReferent(value is not null);
+        }
+        foreach (var value in values)
+        {
+            NdrOpcDxCodecHelpers.WriteDeferredString(ref writer, value);
         }
     }
 
     /// <summary>
     /// Reads a counted string array.
     /// </summary>
-    public static string[] Read(ref NdrReader reader)
+    public static string[] Read(ref NdrReader reader) =>
+        Read(ref reader, expectedCount: null);
+
+    internal static string[] Read(ref NdrReader reader, int expectedCount) =>
+        Read(ref reader, (int?)expectedCount);
+
+    private static string[] Read(ref NdrReader reader, int? expectedCount)
     {
         int count = NdrOpcDxCodecHelpers.ReadCount(ref reader, "string array");
+        NdrOpcDxCodecHelpers.ValidateExpectedCount(count, expectedCount, "string array");
+        var referents = new uint[count];
+        for (int i = 0; i < count; i++)
+        {
+            referents[i] = reader.ReadUInt32();
+        }
         var values = new string[count];
         for (var i = 0; i < count; i++)
         {
-            values[i] = reader.ReadUnicodeStringPtr() ?? string.Empty;
+            values[i] = NdrOpcDxCodecHelpers.ReadDeferredString(ref reader, referents[i]) ?? string.Empty;
         }
 
         return values;
@@ -576,6 +871,28 @@ public static class NdrOpcDxInt32ArrayCodec
 
         return values;
     }
+
+    internal static void WriteUnique(ref NdrWriter writer, int[]? values)
+    {
+        values ??= Array.Empty<int>();
+        writer.WriteUniquePointerReferent(values.Length > 0);
+        if (values.Length > 0)
+        {
+            Write(ref writer, values);
+        }
+    }
+
+    internal static int[] ReadUnique(ref NdrReader reader, int? expectedCount = null)
+    {
+        if (!reader.TryReadReferentId(out _))
+        {
+            NdrOpcDxCodecHelpers.ValidateExpectedCount(0, expectedCount, "HRESULT array");
+            return [];
+        }
+        int[] values = Read(ref reader);
+        NdrOpcDxCodecHelpers.ValidateExpectedCount(values.Length, expectedCount, "HRESULT array");
+        return values;
+    }
 }
 
 /// <summary>
@@ -590,10 +907,7 @@ public static class NdrOpcDxItemIdentifierArrayCodec
     {
         values ??= Array.Empty<DxItemIdentifier>();
         writer.WriteUInt32(unchecked((uint)values.Length));
-        foreach (var value in values)
-        {
-            NdrOpcDxItemIdentifierCodec.Write(ref writer, value);
-        }
+        NdrOpcDxItemIdentifierCodec.WriteConformantArrayBody(ref writer, values);
     }
 
     /// <summary>
@@ -602,13 +916,7 @@ public static class NdrOpcDxItemIdentifierArrayCodec
     public static DxItemIdentifier[] Read(ref NdrReader reader)
     {
         int count = NdrOpcDxCodecHelpers.ReadCount(ref reader, "item identifier array");
-        var values = new DxItemIdentifier[count];
-        for (var i = 0; i < count; i++)
-        {
-            values[i] = NdrOpcDxItemIdentifierCodec.Read(ref reader);
-        }
-
-        return values;
+        return NdrOpcDxItemIdentifierCodec.ReadConformantArrayBody(ref reader, count);
     }
 }
 
@@ -624,25 +932,23 @@ public static class NdrOpcDxIdentifiedResultArrayCodec
     {
         values ??= Array.Empty<DxIdentifiedResult>();
         writer.WriteUInt32(unchecked((uint)values.Length));
-        foreach (var value in values)
-        {
-            NdrOpcDxIdentifiedResultCodec.Write(ref writer, value);
-        }
+        NdrOpcDxIdentifiedResultCodec.WriteConformantArrayBody(ref writer, values);
     }
 
     /// <summary>
     /// Reads identified results.
     /// </summary>
-    public static DxIdentifiedResult[] Read(ref NdrReader reader)
+    public static DxIdentifiedResult[] Read(ref NdrReader reader) =>
+        Read(ref reader, expectedCount: null);
+
+    internal static DxIdentifiedResult[] Read(ref NdrReader reader, int expectedCount) =>
+        Read(ref reader, (int?)expectedCount);
+
+    private static DxIdentifiedResult[] Read(ref NdrReader reader, int? expectedCount)
     {
         int count = NdrOpcDxCodecHelpers.ReadCount(ref reader, "identified result array");
-        var values = new DxIdentifiedResult[count];
-        for (var i = 0; i < count; i++)
-        {
-            values[i] = NdrOpcDxIdentifiedResultCodec.Read(ref reader);
-        }
-
-        return values;
+        NdrOpcDxCodecHelpers.ValidateExpectedCount(count, expectedCount, "identified result array");
+        return NdrOpcDxIdentifiedResultCodec.ReadConformantArrayBody(ref reader, count);
     }
 }
 
@@ -658,10 +964,7 @@ public static class NdrOpcDxSourceServerArrayCodec
     {
         values ??= Array.Empty<DxSourceServer>();
         writer.WriteUInt32(unchecked((uint)values.Length));
-        foreach (var value in values)
-        {
-            NdrOpcDxSourceServerCodec.Write(ref writer, value);
-        }
+        NdrOpcDxSourceServerCodec.WriteConformantArrayBody(ref writer, values);
     }
 
     /// <summary>
@@ -670,13 +973,26 @@ public static class NdrOpcDxSourceServerArrayCodec
     public static DxSourceServer[] Read(ref NdrReader reader)
     {
         int count = NdrOpcDxCodecHelpers.ReadCount(ref reader, "source server array");
-        var values = new DxSourceServer[count];
-        for (var i = 0; i < count; i++)
-        {
-            values[i] = NdrOpcDxSourceServerCodec.Read(ref reader);
-        }
+        return NdrOpcDxSourceServerCodec.ReadConformantArrayBody(ref reader, count);
+    }
 
-        return values;
+    public static void WriteUnique(ref NdrWriter writer, DxSourceServer[]? values)
+    {
+        values ??= Array.Empty<DxSourceServer>();
+        writer.WriteUniquePointerReferent(values.Length > 0);
+        if (values.Length > 0)
+        {
+            Write(ref writer, values);
+        }
+    }
+
+    public static DxSourceServer[] ReadUnique(ref NdrReader reader)
+    {
+        if (!reader.TryReadReferentId(out _))
+        {
+            return [];
+        }
+        return Read(ref reader);
     }
 }
 
@@ -692,10 +1008,7 @@ public static class NdrOpcDxConnectionArrayCodec
     {
         values ??= Array.Empty<DxConnection>();
         writer.WriteUInt32(unchecked((uint)values.Length));
-        foreach (var value in values)
-        {
-            NdrOpcDxConnectionCodec.Write(ref writer, value);
-        }
+        NdrOpcDxConnectionCodec.WriteConformantArrayBody(ref writer, values);
     }
 
     /// <summary>
@@ -704,13 +1017,26 @@ public static class NdrOpcDxConnectionArrayCodec
     public static DxConnection[] Read(ref NdrReader reader)
     {
         int count = NdrOpcDxCodecHelpers.ReadCount(ref reader, "DX connection array");
-        var values = new DxConnection[count];
-        for (var i = 0; i < count; i++)
-        {
-            values[i] = NdrOpcDxConnectionCodec.Read(ref reader);
-        }
+        return NdrOpcDxConnectionCodec.ReadConformantArrayBody(ref reader, count);
+    }
 
-        return values;
+    public static void WriteUnique(ref NdrWriter writer, DxConnection[]? values)
+    {
+        values ??= Array.Empty<DxConnection>();
+        writer.WriteUniquePointerReferent(values.Length > 0);
+        if (values.Length > 0)
+        {
+            Write(ref writer, values);
+        }
+    }
+
+    public static DxConnection[] ReadUnique(ref NdrReader reader)
+    {
+        if (!reader.TryReadReferentId(out _))
+        {
+            return [];
+        }
+        return Read(ref reader);
     }
 }
 
@@ -723,15 +1049,24 @@ public static class NdrOpcDxConnectionQueryResultCodec
     public static void Write(ref NdrWriter writer, DxConnectionQueryResult value)
     {
         ArgumentNullException.ThrowIfNull(value);
-        NdrOpcDxInt32ArrayCodec.Write(ref writer, value.Errors);
-        NdrOpcDxConnectionArrayCodec.Write(ref writer, value.Connections);
+        NdrOpcDxInt32ArrayCodec.WriteUnique(ref writer, value.Errors);
+        writer.WriteUInt32(checked((uint)value.Connections.Length));
+        NdrOpcDxConnectionArrayCodec.WriteUnique(ref writer, value.Connections);
     }
 
     /// <summary>Reads mask errors followed by matching DX connections.</summary>
     public static DxConnectionQueryResult Read(ref NdrReader reader) =>
         new(
-            NdrOpcDxInt32ArrayCodec.Read(ref reader),
-            NdrOpcDxConnectionArrayCodec.Read(ref reader));
+            NdrOpcDxInt32ArrayCodec.ReadUnique(ref reader),
+            ReadConnections(ref reader));
+
+    private static DxConnection[] ReadConnections(ref NdrReader reader)
+    {
+        int count = NdrOpcDxCodecHelpers.ReadCount(ref reader, "QueryDXConnections output count");
+        DxConnection[] connections = NdrOpcDxConnectionArrayCodec.ReadUnique(ref reader);
+        NdrOpcDxCodecHelpers.ValidateExpectedCount(connections.Length, count, "QueryDXConnections output array");
+        return connections;
+    }
 }
 
 /// <summary>
@@ -743,14 +1078,14 @@ public static class NdrOpcDxUpdateConnectionsResultCodec
     public static void Write(ref NdrWriter writer, DxUpdateConnectionsResult value)
     {
         ArgumentNullException.ThrowIfNull(value);
-        NdrOpcDxInt32ArrayCodec.Write(ref writer, value.Errors);
+        NdrOpcDxInt32ArrayCodec.WriteUnique(ref writer, value.Errors);
         NdrOpcDxGeneralResponseCodec.Write(ref writer, value.Response);
     }
 
     /// <summary>Reads mask errors followed by the general response.</summary>
     public static DxUpdateConnectionsResult Read(ref NdrReader reader) =>
         new(
-            NdrOpcDxInt32ArrayCodec.Read(ref reader),
+            NdrOpcDxInt32ArrayCodec.ReadUnique(ref reader),
             NdrOpcDxGeneralResponseCodec.Read(ref reader));
 }
 
@@ -763,14 +1098,14 @@ public static class NdrOpcDxDeleteConnectionsResultCodec
     public static void Write(ref NdrWriter writer, DxDeleteConnectionsResult value)
     {
         ArgumentNullException.ThrowIfNull(value);
-        NdrOpcDxInt32ArrayCodec.Write(ref writer, value.MaskErrors);
+        NdrOpcDxInt32ArrayCodec.WriteUnique(ref writer, value.MaskErrors);
         NdrOpcDxGeneralResponseCodec.Write(ref writer, value.Response);
     }
 
     /// <summary>Reads mask errors followed by the general response.</summary>
     public static DxDeleteConnectionsResult Read(ref NdrReader reader) =>
         new(
-            NdrOpcDxInt32ArrayCodec.Read(ref reader),
+            NdrOpcDxInt32ArrayCodec.ReadUnique(ref reader),
             NdrOpcDxGeneralResponseCodec.Read(ref reader));
 }
 
@@ -789,6 +1124,26 @@ internal static class NdrOpcDxCodecHelpers
 
         return (int)count;
     }
+
+    internal static void ValidateExpectedCount(int actual, int? expected, string description)
+    {
+        if (expected.HasValue && actual != expected.Value)
+        {
+            throw new InvalidDataException(
+                $"OPC DX {description} count {actual} does not match the correlated count {expected.Value}.");
+        }
+    }
+
+    internal static void WriteDeferredString(ref NdrWriter writer, string? value)
+    {
+        if (value is not null)
+        {
+            writer.WriteUnicodeString(value);
+        }
+    }
+
+    internal static string? ReadDeferredString(ref NdrReader reader, uint referent) =>
+        referent == 0u ? null : reader.ReadUnicodeString();
 
     internal static void WriteFileTime(ref NdrWriter writer, DateTimeOffset value) =>
         writer.WriteFileTime(value.UtcTicks - FileTimeEpochOffsetTicks);

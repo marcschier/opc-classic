@@ -1993,6 +1993,19 @@
     "SpecReference": "OPC DA IDL: IOPCEnumGUID::Reset"
   },
   {
+    "Interface": "Opc.Classic.Da.Dcom.IOPCEnumGUID",
+    "Method": "CloneAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "clone"
+    ],
+    "SpecReference": "OPC DA IDL: IOPCEnumGUID::Clone"
+  },
+  {
     "Interface": "Opc.Classic.Da.Dcom.IOPCServerList",
     "Method": "EnumClassesOfCategoriesAsync",
     "GeneratorSides": [
@@ -3044,6 +3057,8 @@
     "ShapeCategories": [
       "scalar",
       "array",
+      "count-correlated arrays",
+      "pointer arrays",
       "nested/compound records"
     ],
     "SpecReference": "OPC Batch IDL: IEnumOPCBatchSummary::Next"
@@ -3149,6 +3164,7 @@
     "ShapeCategories": [
       "scalar",
       "array",
+      "count-correlated arrays",
       "nested/compound records"
     ],
     "SpecReference": "OPC DX 1.00 IDL: IOPCConfiguration::CopyDXConnectionDefaultAttributes"
@@ -3177,6 +3193,7 @@
     "ShapeCategories": [
       "scalar",
       "array",
+      "count-correlated arrays",
       "nested/compound records"
     ],
     "SpecReference": "OPC DX 1.00 IDL: IOPCConfiguration::DeleteDXConnections"
@@ -3233,6 +3250,7 @@
     "ShapeCategories": [
       "scalar",
       "array",
+      "count-correlated arrays",
       "nested/compound records"
     ],
     "SpecReference": "OPC DX 1.00 IDL: IOPCConfiguration::QueryDXConnections"
@@ -3246,6 +3264,7 @@
     ],
     "ShapeCategories": [
       "array",
+      "pointer arrays",
       "nested/compound records"
     ],
     "SpecReference": "OPC DX 1.00 IDL: IOPCConfiguration::GetServers"
@@ -3272,6 +3291,7 @@
     "ShapeCategories": [
       "scalar",
       "array",
+      "count-correlated arrays",
       "nested/compound records"
     ],
     "SpecReference": "OPC DX 1.00 IDL: IOPCConfiguration::UpdateDXConnections"

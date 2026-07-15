@@ -39,6 +39,7 @@ public sealed partial class ProductionShapeInventoryTests
         ValidateSuppressions(audit, migration);
         ValidateDiagnostics(audit, migration);
         ValidateFallbacks(audit, migration, repositoryRoot);
+        ValidateManualWirePaths(audit, migration, repositoryRoot);
 
         await Assert.That(audit.Methods.Length).IsGreaterThan(0);
     }
@@ -149,6 +150,7 @@ public sealed partial class ProductionShapeInventoryTests
         ParsedSource[] allSources = Directory.GetFiles(sourceRoot, "*.cs", SearchOption.AllDirectories)
             .Where(static path => !path.Contains($"{Path.DirectorySeparatorChar}bin{Path.DirectorySeparatorChar}", StringComparison.OrdinalIgnoreCase))
             .Where(static path => !path.Contains($"{Path.DirectorySeparatorChar}obj{Path.DirectorySeparatorChar}", StringComparison.OrdinalIgnoreCase))
+            .Where(static path => !path.Contains($"{Path.DirectorySeparatorChar}.artifacts-testgen{Path.DirectorySeparatorChar}", StringComparison.OrdinalIgnoreCase))
             .Where(static path => !path.Contains($"{Path.DirectorySeparatorChar}Opc.Classic.Generators{Path.DirectorySeparatorChar}", StringComparison.OrdinalIgnoreCase))
             .Order(StringComparer.Ordinal)
             .Select(static path =>
@@ -209,6 +211,7 @@ public sealed partial class ProductionShapeInventoryTests
             methods.ToImmutable(),
             interfaces,
             CollectImplementations(allSources),
+            CollectManualWirePaths(allSources, sourceRoot),
             diagnostics.Distinct().OrderBy(static item => item.Key, StringComparer.Ordinal).ToImmutableArray(),
             CollectSuppressions(allSources, sourceRoot, unsupportedDiagnosticIds));
     }
@@ -412,7 +415,8 @@ public sealed partial class ProductionShapeInventoryTests
         bool hasArray = types.Any(static type => type is IArrayTypeSymbol);
         bool hasScalar = types.Length == 0 || types.Any(static type => type is not IArrayTypeSymbol);
         bool correlatedArray = parameters.Any(static parameter => HasAttribute(parameter.GetAttributes(), "OpcArrayCountAttribute")) ||
-            HasAttribute(method.GetReturnTypeAttributes(), "OpcArrayCountAttribute");
+            HasAttribute(method.GetReturnTypeAttributes(), "OpcArrayCountAttribute") ||
+            HasAttribute(method.GetReturnTypeAttributes(), "OpcEnumeratorArrayAttribute");
         bool iidIs = parameters.Any(static parameter => HasAttribute(parameter.GetAttributes(), "OpcIidIsAttribute")) ||
             HasAttribute(method.GetReturnTypeAttributes(), "OpcIidIsAttribute");
         bool pointerArray = resultType is IArrayTypeSymbol &&
@@ -506,6 +510,62 @@ public sealed partial class ProductionShapeInventoryTests
         }
 
         return result;
+    }
+
+    private static ImmutableArray<ManualWirePath> CollectManualWirePaths(
+        IEnumerable<ParsedSource> sources,
+        string sourceRoot)
+    {
+        var result = ImmutableArray.CreateBuilder<ManualWirePath>();
+        string repositoryRoot = Path.GetDirectoryName(sourceRoot)!;
+        foreach (ParsedSource source in sources)
+        {
+            string ns = NamespaceName((CompilationUnitSyntax)source.Tree.GetRoot());
+            foreach (ClassDeclarationSyntax type in source.Tree.GetRoot().DescendantNodes().OfType<ClassDeclarationSyntax>())
+            {
+                bool isDispatcher = type.BaseList?.Types.Any(static baseType =>
+                    baseType.Type.ToString().EndsWith("IOpcServerDispatcher", StringComparison.Ordinal)) == true;
+                bool isManualClientProxy =
+                    type.Identifier.ValueText.EndsWith("ClientProxy", StringComparison.Ordinal) &&
+                    !type.Modifiers.Any(SyntaxKind.PartialKeyword) &&
+                    type.Members.OfType<MethodDeclarationSyntax>().Any(static method =>
+                        method.Modifiers.Any(SyntaxKind.PublicKeyword));
+                bool isWireCodec =
+                    type.Modifiers.Any(SyntaxKind.StaticKeyword) &&
+                    (type.Identifier.ValueText.EndsWith("Wire", StringComparison.Ordinal) ||
+                     type.Identifier.ValueText.EndsWith("ProxyCodec", StringComparison.Ordinal));
+                if (!isDispatcher && !isManualClientProxy && !isWireCodec)
+                {
+                    continue;
+                }
+
+                string kind = isDispatcher ? "dispatcher" : isManualClientProxy ? "client-proxy" : "codec";
+                string typeName = QualifiedTypeName(ns, type);
+                ImmutableHashSet<string> methods = type.Members
+                    .OfType<MethodDeclarationSyntax>()
+                    .Where(method => kind != "client-proxy" || method.Modifiers.Any(SyntaxKind.PublicKeyword))
+                    .Select(static method => method.Identifier.ValueText)
+                    .ToImmutableHashSet(StringComparer.Ordinal);
+                result.Add(new ManualWirePath(
+                    Path.GetRelativePath(repositoryRoot, source.Path).Replace('\\', '/'),
+                    typeName,
+                    kind,
+                    methods));
+            }
+        }
+
+        return result.OrderBy(static item => item.Key, StringComparer.Ordinal).ToImmutableArray();
+    }
+
+    private static string QualifiedTypeName(string ns, ClassDeclarationSyntax type)
+    {
+        string[] containingTypes = type.Ancestors()
+            .OfType<TypeDeclarationSyntax>()
+            .Reverse()
+            .Select(static containing => containing.Identifier.ValueText)
+            .ToArray();
+        string prefix = string.IsNullOrEmpty(ns) ? string.Empty : ns + ".";
+        return prefix + string.Join(".", containingTypes.Append(type.Identifier.ValueText));
     }
 
     private static ImmutableArray<ObservedSuppression> CollectSuppressions(
@@ -606,6 +666,28 @@ public sealed partial class ProductionShapeInventoryTests
         EqualSet("hand-written fallbacks", migration.HandWrittenFallbacks.Select(static item => item.Key), actualFallbacks);
     }
 
+    private static void ValidateManualWirePaths(
+        Audit audit,
+        MigrationManifest migration,
+        string repositoryRoot)
+    {
+        foreach (ManualWirePathEntry item in migration.ManualWirePaths)
+        {
+            ManualWirePath actual = audit.ManualWirePaths.First(path => path.Key == item.Key);
+            if (Path.GetFullPath(Path.Combine(repositoryRoot, actual.ImplementationPath.Replace('/', Path.DirectorySeparatorChar))) !=
+                Path.GetFullPath(Path.Combine(repositoryRoot, item.ImplementationPath.Replace('/', Path.DirectorySeparatorChar))))
+            {
+                throw new InvalidOperationException($"Invalid manual wire path {item.Key}.");
+            }
+            EqualSet($"manual wire methods for {item.Key}", item.Methods, actual.Methods);
+        }
+
+        EqualSet(
+            "manual dispatcher/codec paths",
+            migration.ManualWirePaths.Select(static item => item.Key),
+            audit.ManualWirePaths.Select(static item => item.Key));
+    }
+
     private static void ValidateManifestShape(
         Audit audit,
         string interfaceName,
@@ -697,6 +779,7 @@ public sealed partial class ProductionShapeInventoryTests
         ImmutableArray<MethodShape> Methods,
         IReadOnlyDictionary<string, InterfaceShape> Interfaces,
         IReadOnlyDictionary<string, Implementation> Implementations,
+        ImmutableArray<ManualWirePath> ManualWirePaths,
         ImmutableArray<ObservedDiagnostic> Diagnostics,
         ImmutableArray<ObservedSuppression> Suppressions);
     private sealed record InterfaceShape(
@@ -724,6 +807,14 @@ public sealed partial class ProductionShapeInventoryTests
         string TypeName,
         string SourcePath,
         ImmutableHashSet<string> Methods);
+    private sealed record ManualWirePath(
+        string ImplementationPath,
+        string ImplementationType,
+        string Kind,
+        ImmutableHashSet<string> Methods)
+    {
+        public string Key => ImplementationType + "|" + Kind;
+    }
     private sealed record ObservedDiagnostic(string Id, string Interface, string Method)
     {
         public string Key => Id + "|" + Interface + "|" + Method;
@@ -744,7 +835,8 @@ public sealed partial class ProductionShapeInventoryTests
     private sealed record MigrationManifest(
         IReadOnlyList<SuppressionEntry> DiagnosticSuppressions,
         IReadOnlyList<UnsupportedDiagnosticEntry> UnsupportedDiagnostics,
-        IReadOnlyList<FallbackEntry> HandWrittenFallbacks);
+        IReadOnlyList<FallbackEntry> HandWrittenFallbacks,
+        IReadOnlyList<ManualWirePathEntry> ManualWirePaths);
     private sealed record SuppressionEntry(string SourcePath, IReadOnlyList<string> DiagnosticIds)
     {
         public string Key => SourcePath + "|" + string.Join(",", DiagnosticIds.Order(StringComparer.Ordinal));
@@ -768,5 +860,13 @@ public sealed partial class ProductionShapeInventoryTests
         string ImplementationType)
     {
         public string Key => Interface + "." + Method + "|" + Side;
+    }
+    private sealed record ManualWirePathEntry(
+        string ImplementationPath,
+        string ImplementationType,
+        string Kind,
+        IReadOnlyList<string> Methods)
+    {
+        public string Key => ImplementationType + "|" + Kind;
     }
 }

@@ -820,7 +820,7 @@ channel and existing `opcclassic.dx.*` MCP tools.
 
 | Category | Specified | Implemented | Coverage | Notes |
 | --- | --- :| --- :| --- :| --- |
-| `IOPCConfiguration` methods | 12 | 12 | 100% | Hand-written client proxy covers source-server and connection operations |
+| `IOPCConfiguration` methods | 12 | 12 | 100% | Generated proxy + dispatcher preserve native counts, pointers, and correlations |
 | DX structure codecs | 16 registry entries | 16 | 100% | `NdrOpcDxCodecRegistry` lists registered codecs |
 | Status records | 4 | 4 | 100% | Server, connection, source-server, and quality records |
 | Enumerations | spec-aligned enums | present | high | Server type/state, connection state, connect status, quality/limit, masks |
@@ -848,7 +848,10 @@ channel and existing `opcclassic.dx.*` MCP tools.
 | `CopyDefaultDXConnectionAttributes` | 13 | ✅ | `IOPCDxInterfaces` |
 | `ResetConfiguration` | 14 | ✅ | `IOPCDxInterfaces` |
 
-The hand-written `IOPCConfigurationClientProxy` implements payload encode/decode for these methods.
+The source-generated `IOPCConfigurationClientProxy` and
+`IOPCConfigurationServerDispatcher` implement payload encode/decode for these
+methods. Native fixtures cover standalone/conformant counts, simple-ref
+strings, unique output pointers, and correlated response records.
 `DeleteDXConnections` follows OPC DX 1.00 §5.2.2.5/App. B.1.4: the proxy accepts `DxConnection[]` masks and returns mask errors plus a `DxGeneralResponse` (`DxDeleteConnectionsResult`).
 
 ---

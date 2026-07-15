@@ -2,6 +2,7 @@
 
 #pragma warning disable TUnitAssertions0005 // Dispatcher tests assert protocol constants and captured call values.
 
+using Microsoft.Extensions.Logging;
 using Opc.Classic.Da.Dcom;
 using Opc.Classic.Da.Hosting;
 using Opc.Classic.Da.Ndr;
@@ -12,6 +13,15 @@ namespace Opc.Classic.Da.Tests.Hosting;
 public sealed class OpcDaServerDispatcherTests
 {
     private delegate void NdrWriteAction(ref NdrWriter writer);
+
+    [Test]
+    public async Task Released_two_parameter_constructor_is_preserved()
+    {
+        var constructor = typeof(OpcDaServerDispatcher).GetConstructor(
+            [typeof(IOpcDaServer), typeof(ILogger)]);
+
+        await Assert.That(constructor).IsNotNull();
+    }
 
     [Test]
     public async Task DispatchGetStatus_calls_server_and_returns_status()

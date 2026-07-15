@@ -35,6 +35,14 @@ public sealed class OpcDaServerDispatcher : IOpcDaServerDispatcher, IOPCServer, 
     /// <summary>
     /// Initializes a new instance of the <see cref="OpcDaServerDispatcher" /> class.
     /// </summary>
+    public OpcDaServerDispatcher(IOpcDaServer server, ILogger? logger)
+        : this(server, logger, null)
+    {
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="OpcDaServerDispatcher" /> class.
+    /// </summary>
     public OpcDaServerDispatcher(
         IOpcDaServer server,
         ILogger? logger = null,

@@ -113,6 +113,12 @@ public sealed class GeneratorReviewFixTests
         await Assert.That(server).Contains("WriteMInterfacePointerBody(ref");
         await Assert.That(server).Contains("uint valuesExplicitCount = __opcReader.ReadUInt32();");
         await Assert.That(server).Contains("checked((uint)values.Length) != valuesExplicitCount");
+        await Assert.That(server).Contains("public IServiceServerDispatcher(global::Snapshot.IService impl)");
+        await Assert.That(server).Contains(": this(impl, null)");
+        await Assert.That(server).Contains("interfaceReferenceResolver)");
+        await Assert.That(server.Contains("interfaceReferenceResolver = null", StringComparison.Ordinal)).IsFalse();
+        await Assert.That(proxy).Contains("Enumerator pceltFetched does not match the array actual count.");
+        await Assert.That(server).Contains("OpcResultId.False.Code");
     }
 
     private const string SnapshotSource = """
@@ -144,6 +150,10 @@ public sealed class GeneratorReviewFixTests
 
             [OpcMethod(6)]
             Task CountedAsync([OpcEmitArrayCount] int[] values);
+
+            [OpcMethod(7)]
+            [return: OpcEnumeratorArray(nameof(count), true)]
+            Task<Guid[]> NextAsync(int count);
         }
         """;
 

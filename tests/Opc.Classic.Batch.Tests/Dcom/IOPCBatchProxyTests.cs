@@ -228,6 +228,82 @@ public sealed class IOPCBatchProxyTests
     }
 
     [Test]
+    public async Task Generated_BatchSummary_Next_matches_native_outer_pointer_and_deferred_fixture()
+    {
+        var summary = new OpcBatchSummary(
+            "B",
+            null,
+            null,
+            null,
+            1.5f,
+            null,
+            null,
+            null,
+            FileTimeHelper.Epoch,
+            FileTimeHelper.Epoch);
+        var dispatcher = new IEnumOPCBatchSummaryServerDispatcher(new BatchSummaryStub(summary));
+        byte[] request = [0x03, 0x00, 0x00, 0x00];
+        byte[] expected =
+        [
+            0x00, 0x00, 0x02, 0x00, // ppSummaryArray outer referent
+            0x01, 0x00, 0x00, 0x00, // conformant max_count = pceltFetched
+            0x04, 0x00, 0x02, 0x00, // szID referent
+            0x00, 0x00, 0x00, 0x00,
+            0x00, 0x00, 0x00, 0x00,
+            0x00, 0x00, 0x00, 0x00,
+            0x00, 0x00, 0xC0, 0x3F,
+            0x00, 0x00, 0x00, 0x00,
+            0x00, 0x00, 0x00, 0x00,
+            0x00, 0x00, 0x00, 0x00,
+            0x00, 0x00, 0x00, 0x00,
+            0x00, 0x00, 0x00, 0x00,
+            0x00, 0x00, 0x00, 0x00,
+            0x00, 0x00, 0x00, 0x00,
+            0x02, 0x00, 0x00, 0x00, // deferred szID max_count
+            0x00, 0x00, 0x00, 0x00,
+            0x02, 0x00, 0x00, 0x00,
+            0x42, 0x00, 0x00, 0x00,
+            0x01, 0x00, 0x00, 0x00, // pceltFetched
+        ];
+
+        DispatchResult response = await dispatcher.DispatchAsync(
+            IEnumOPCBatchSummary.Opnums.NextAsync,
+            request,
+            CancellationToken.None);
+
+        await Assert.That(response.Hresult).IsEqualTo(OpcResultId.False.Code);
+        await Assert.That(response.Payload.ToArray()).IsEquivalentTo(expected);
+    }
+
+    [Test]
+    public async Task Generated_BatchSummary_Clone_dispatches_opnum_6_interface_pointer()
+    {
+        var dispatcher = new IEnumOPCBatchSummaryServerDispatcher(
+            new BatchSummaryStub(
+                new OpcBatchSummary(
+                    "B",
+                    null,
+                    null,
+                    null,
+                    0,
+                    null,
+                    null,
+                    null,
+                    FileTimeHelper.Epoch,
+                    FileTimeHelper.Epoch)));
+
+        DispatchResult response = await dispatcher.DispatchAsync(
+            IEnumOPCBatchSummary.Opnums.CloneAsync,
+            ReadOnlyMemory<byte>.Empty,
+            CancellationToken.None);
+        var reader = new NdrReader(response.Payload.Span);
+        IOpcInterfaceRef? clone = OpcMInterfacePointerCodec.Read(ref reader);
+
+        await Assert.That(response.Hresult).IsEqualTo(OpcResultId.Ok.Code);
+        await Assert.That(clone?.Iid).IsEqualTo(IEnumOPCBatchSummary.InterfaceId);
+    }
+
+    [Test]
     public async Task EnumerationSets_QueryEnumerationSets_round_trips_parallel_arrays()
     {
         Guid observedIid = Guid.Empty;
@@ -305,17 +381,18 @@ public sealed class IOPCBatchProxyTests
     }
 
     private static ReadOnlyMemory<byte> EncodeObjRef(Guid iid) => WritePayload((ref NdrWriter writer) =>
-        OpcMInterfacePointerCodec.Write(
-            ref writer,
-            new OpcInterfaceRef(
-                iid,
-                flags: 0,
-                publicRefs: 5,
-                oxid: 1,
-                oid: 2,
-                ipid: Guid.Parse("A8080DA2-E23E-11D2-AFA7-00C04F539422"),
-                securityOffset: 0,
-                resolverBindings: [])));
+        OpcMInterfacePointerCodec.Write(ref writer, CreateObjRef(iid)));
+
+    private static IOpcInterfaceRef CreateObjRef(Guid iid) =>
+        new OpcInterfaceRef(
+            iid,
+            flags: 0,
+            publicRefs: 5,
+            oxid: 1,
+            oid: 2,
+            ipid: Guid.Parse("A8080DA2-E23E-11D2-AFA7-00C04F539422"),
+            securityOffset: 0,
+            resolverBindings: []);
 
     private static ReadOnlyMemory<byte> WritePayload(NdrWriteAction write, int capacity = 2048)
     {
@@ -385,7 +462,7 @@ public sealed class IOPCBatchProxyTests
         public Task ResetAsync(CancellationToken cancellationToken = default) => Task.CompletedTask;
 
         public Task<IOpcInterfaceRef> CloneAsync(CancellationToken cancellationToken = default) =>
-            throw new NotImplementedException();
+            Task.FromResult(CreateObjRef(IEnumOPCBatchSummary.InterfaceId));
 
         public Task<int> CountAsync(CancellationToken cancellationToken = default) => Task.FromResult(1);
     }

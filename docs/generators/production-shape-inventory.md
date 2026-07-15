@@ -1,6 +1,6 @@
 # Production generator shape inventory
 
-The executable audit in `ProductionShapeInventoryTests` covers all **253 production method shapes** on interfaces marked `[GenerateOpcProxy]` or `[OpcGenerateServerDispatch]`. It builds each production project from source with its real compiled project-reference graph, retains the generator `outputCompilation`, and fails on any error located in generated source, including duplicate members and missing or inaccessible types.
+The executable audit in `ProductionShapeInventoryTests` covers all **254 production method shapes** on interfaces marked `[GenerateOpcProxy]` or `[OpcGenerateServerDispatch]`. It builds each production project from source with its real compiled project-reference graph, retains the generator `outputCompilation`, and fails on any error located in generated source, including duplicate members and missing or inaccessible types.
 
 ## Semantic shape rules
 
@@ -24,13 +24,13 @@ None. The migration manifest is at zero and remains strict: any future unsupport
 
 None.
 
-## Hand-written generator sides
+## Hand-written wire paths
 
-None.
-
-Production client and server wire paths are generator-owned. Small compatibility
-partials may preserve public constructor or method names, but they do not encode
-or decode DCOM payloads.
+Generated interface fallbacks remain at zero. The separate `manualWirePaths`
+manifest records handwritten adapters that intentionally sit outside an
+`[OpcInterface]` contract, including OPC Common/Discovery dispatchers and the
+DA `OpcDaGroupEnumerators` dispatcher/codec path. The audit discovers those
+types from source and fails when the manifest omits or misstates one.
 
 ## Production annotation contract
 
@@ -41,10 +41,11 @@ or decode DCOM payloads.
 | `[GenerateOpcProxy]` | Requests the typed client proxy. |
 | `[OpcGenerateServerDispatch]` | Requests the typed server dispatcher. |
 | `[OpcGenerateMultiOutRecord]` | Requests a result record for multiple response values. |
-| `[OpcArrayCount(name)]` | Correlates an array with the named count parameter. |
+| `[OpcArrayCount(name)]` | Correlates an array with the named count parameter. The two-argument form identifies an array member inside a result record. |
+| `[OpcEnumeratorArray(name, varying)]` | Emits an enumerator array plus `pceltFetched`; `varying=true` selects max/offset/actual framing. |
 | `[OpcIidIs(name)]` | Correlates an interface pointer with the named IID parameter. |
 | `[OpcUniquePointer]` | Selects NDR unique-pointer encoding for a parameter or return value. |
-| `[OpcEmitArrayCount]` | Emits the standalone IDL count field before the first correlated input array. |
+| `[OpcEmitArrayCount]` | Emits the standalone IDL count field before a correlated input array or output array return. |
 | `[OpcDeferredElements]` | Uses deferred unique-pointer element layout for string arrays. |
 | `[OpcFileTimeElements]` | Encodes `long[]` elements as Windows `FILETIME` pairs. |
 | `[OpcVariantElements]` | Encodes `OpcVariant[]` elements in MS-OAUT wire-VARIANT form. |
@@ -55,4 +56,6 @@ attributes. It does not infer count or IID correlations from parameter names.
 
 ## Shrinking rule
 
-`ProductionShapeMigrationManifest.json` is retained as a zero-fallback guard. Any diagnostic suppression, unsupported diagnostic, or hand-written wire side must be explicitly reintroduced and justified.
+`ProductionShapeMigrationManifest.json` is retained as a zero-fallback and
+explicit-manual-path guard. Any diagnostic suppression, unsupported diagnostic,
+generated fallback, or handwritten dispatcher/codec path must be listed.
