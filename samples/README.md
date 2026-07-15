@@ -17,7 +17,7 @@ Most sample folders ship their own `README.md` with run instructions. DA/AE/HDA/
 | [Opc.Classic.Samples.HdaClient/](Opc.Classic.Samples.HdaClient/README.md) | HDA client reads, aggregates, annotations, updates. |
 | [Opc.Classic.Samples.LoopbackDemo/](Opc.Classic.Samples.LoopbackDemo/README.md) | In-process DA client/server loopback through the managed channel stack. |
 | [Opc.Classic.Samples.CttServer/](Opc.Classic.Samples.CttServer/README.md) | Additional managed DA sample registered as `Opc.Classic.DaSample.1` (different CLSID from `samples-da`). |
-| [Opc.Classic.Samples.SimulationServer/](Opc.Classic.Samples.SimulationServer/README.md) | Full-feature simulation server: one deterministic plant model projected through every OPC Classic spec, with default in-memory MCP hosting and optional DA/AE/HDA TCP listeners. |
+| [Opc.Classic.Samples.SimulationServer/](Opc.Classic.Samples.SimulationServer/README.md) | Full-feature simulation server: one deterministic plant model projected through every OPC Classic spec, including an engine-backed, persistable DX DA-to-DA bridge, with default in-memory MCP hosting and optional DA/AE/HDA TCP listeners. |
 | [Opc.Classic.Samples.AotCanary/](Opc.Classic.Samples.AotCanary/) | NativeAOT publish verification used in CI. |
 
 ## Sample container deployment
@@ -32,5 +32,6 @@ The DA/AE/HDA sample server/client pairs are designed to interop over DCOM-over-
 | `OPC_CLASSIC_LISTEN_ADDRESS` | (unset) | Optional explicit `host:port` bind for sample servers (overrides the sample-port default). |
 | `OPC_CLASSIC_SERVER_HOST` | (unset) | Sample clients — when set with `OPC_CLASSIC_SERVER_PORT`, dial TCP. |
 | `OPC_CLASSIC_SERVER_PORT` | (unset) | Sample clients — TCP port of the remote sample server. |
+| `OPC_CLASSIC_SIM_DX_CONFIG` | (unset) | Optional SimulationServer DX JSON configuration path; enables atomic restart recovery. |
 
 When the client env vars are unset, sample clients fall back to an in-process `InMemoryCallChannel` + `Loopback*Server` for local `dotnet run`. Each client logs which path is active at startup.

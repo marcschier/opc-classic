@@ -57,6 +57,9 @@ internal sealed class SimulationMcpHost : IAsyncDisposable
     /// <summary>Maps each feature-area key (e.g. <c>da</c>) to its <c>inmemory://</c> connection string.</summary>
     public IReadOnlyDictionary<string, string> ConnectionStrings => _simulation.ConnectionStrings;
 
+    /// <summary>Exposes the live simulation handle for tests that need direct engine/module access.</summary>
+    public SimulationServerHandle Simulation => _simulation;
+
     /// <summary>The connection string for a feature area; throws if the area is not registered.</summary>
     public string ConnectionString(string spec) => _simulation.ConnectionStrings[spec];
 

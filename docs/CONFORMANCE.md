@@ -36,7 +36,7 @@ The former per-spec review set compared each OPC specification's protocol surfac
 | [OPC Complex Data 1.00](#opc-complex-data-100) | Complex Data | Interface projections, CPX property IDs/HRESULTs, OPCBinary/XMLSchema parsers, XML serialization, OPCBinary encode/decode including BitString, `OpcCpxAddressSpace`, and `OpcCpxItemProperties` are implemented. | Type-conversion and data-filter execution remain server-specific runtime work. |
 | [OPC DA 2.05a](#opc-da-205a) | DA (V20 back-compat + modern DCOM) | V20 remains a minimal compatibility shim; the modern DCOM surface covers DA 2.05a including `IOPCServer`, `IOPCCommon`, group/item management, sync/async I/O, browsing, properties, callbacks, connection points, and full lifecycle loopback coverage. | Remaining caveats are mostly V20-scope and native interop hardening, not missing modern DCOM methods. |
 | [OPC DA 3.00](#opc-da-300) | DA (flagship) | DA 3.0 DCOM projections and default hosting helpers cover browse, item I/O, group keep-alive, sync/async VQT and max-age I/O, deadband, sampling, callbacks, item enumeration, continuation points, and `vEUInfo` loopback paths. | Remaining DA work is native interop edge hardening and optional custom deadband/sampling policy samples. |
-| [OPC DX 1.00](#opc-dx-100) | Data eXchange | `IOPCConfiguration` has a complete hand-written client proxy backed by DX structure codecs, status records, enums, namespace helpers, and error constants. | DX server runtime/DA bridge, persistence, and live data-transfer state machine are not implemented. |
+| [OPC DX 1.00](#opc-dx-100) | Data eXchange | `IOPCConfiguration` has a complete hand-written client proxy; `DxReferenceEngine` adds bounded DA read/write transfer, versioned memory/JSON persistence, deterministic scheduling, diagnostics, reconnect/backoff, and cancellation. The SimulationServer exposes the same engine through DCOM NDR and MCP configuration surfaces. | The standardized DX DA database subtree, full DirtyFlag/`E_PERSISTING` policy, XML-DA mapping, and the complete §6 conversion/subscription truth table remain open. |
 | [OPC HDA 1.20](#opc-hda-120) | Historical Data Access | 56/56 methods and 5/5 codecs are declared; CCW covers browser, sync/async read, sync/async update, playback, annotation insert, and raw/processed advise paths. | Remaining items are server-policy concerns such as aggregate semantics, relative time parsing, persistence, and connection-point enumeration stubs. |
 | [OPC Security 1.00](#opc-security-100) | Security | 6/6 methods across `IOPCSecurityNT` and `IOPCSecurityPrivate` are projected and tested. | Reference sample server ships in this release. |
 | [OPC XML-DA 1.01](#opc-xml-da-101) | XML-DA (SOAP transport) | Client supports all 8 operations, SOAP 1.1, scalar/extended scalar values, array values, base64Binary, quality, errors, and polled subscriptions. | Client-only by design; SOAP 1.2 is not implemented. |
@@ -803,9 +803,16 @@ The flagship DA surface has full DCOM declarations and broad Windows CCW support
 
 ### Executive Summary
 
-`Opc.Classic.Dx` provides a complete configuration-client projection for `IOPCConfiguration` backed by DX structure codecs, status records, spec-aligned enums, namespace helpers, and DX error constants.
+`Opc.Classic.Dx` provides a complete configuration-client projection for `IOPCConfiguration`
+plus a bounded reference runtime. `DxReferenceEngine` loads versioned configuration, reads a
+source DA adapter, preserves value/quality/timestamp, writes a target DA adapter, applies
+enabled state and revised rates, and reports failures, reconnect/backoff, cancellation, and
+diagnostics. `InMemoryDxConfigurationStore` and `JsonFileDxConfigurationStore` provide
+atomic revision handling and restart recovery.
 
-The implementation is still intentionally **configuration-focused**. It does not implement the DX server runtime/DA bridge that performs live data transfer between source and target servers.
+`Opc.Classic.Samples.SimulationServer` supplies the deterministic reference composition and
+exposes its single engine-backed configuration through both the `IOPCConfiguration` NDR
+channel and existing `opcclassic.dx.*` MCP tools.
 
 #### Coverage Summary
 
@@ -816,7 +823,7 @@ The implementation is still intentionally **configuration-focused**. It does not
 | Status records | 4 | 4 | 100% | Server, connection, source-server, and quality records |
 | Enumerations | spec-aligned enums | present | high | Server type/state, connection state, connect status, quality/limit, masks |
 | Error codes | DX HRESULT constants | present | high | `OpcDxError` constants |
-| Runtime model | full DX server behavior | not implemented | 0% | DA bridge, persistence, and transfer state machine remain future work |
+| Reference runtime | bounded DA bridge, persistence, scheduling, health/retry, cancellation | implemented | high for reference scope | Full §4 DX database and §6 subscription/conversion policy remain open |
 
 ---
 

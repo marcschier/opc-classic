@@ -4,7 +4,8 @@
 
 **Scope:** DX Database address-space model, `IOPCConfiguration` DCOM configuration services, DX source-server / connection / response structures, DX status structures, DX-specific HRESULTs, component category identifiers, DCOM IDL mapping, Web Services mapping, persistence, and the runtime source-to-target data-transfer model.
 
-**Implementing assemblies:** `Opc.Classic.Dx`, `Opc.Classic.Core`.
+**Implementing assemblies:** `Opc.Classic.Dx`, `Opc.Classic.Core`;
+reference host: `Opc.Classic.Samples.SimulationServer`.
 
 **Status overview:**
 
@@ -19,9 +20,9 @@
 | DX enums and masks | §4.2.2, §4.3.2.19, §4.4.1.6, App. B.1.3 | ✅ `DxEnums`, `ConnectionState`, `OverrideState` | ✅ | conformant |
 | DX HRESULT table | §5.1.7 | ✅ `OpcDxError` constants | ✅ | conformant |
 | DX namespace / reserved branch helpers | §4, App. B.1.4 names | ✅ `DxNamespace` | ✅ | conformant as helpers |
-| DX Database DA branch exposure | §4 | ❌ no generic DX server address-space runtime | n/a | waived deferred server runtime (unverified — Phase 2 deep-validation will close) |
-| Persistence / DirtyFlag save loop | §5.3 | ❌ no generic DX persistence runtime | n/a | waived deferred server runtime (unverified — Phase 2 deep-validation will close) |
-| Runtime source-server bridge, subscriptions, queues, conversion, target-write truth table | §6 | ❌ no generic DX data-transfer state machine | n/a | waived deferred server runtime (unverified — Phase 2 deep-validation will close) |
+| DX Database DA branch exposure | §4 | ⚠️ namespace helpers exist; no generic standardized DA subtree host | n/a | partial |
+| Persistence / DirtyFlag save loop | §5.3 | ⚠️ atomic versioned memory/JSON stores and startup recovery; no full DirtyFlag/`E_PERSISTING` policy | ✅ store + restart tests | partial |
+| Runtime source-server bridge, subscriptions, queues, conversion, target-write truth table | §6 | ⚠️ bounded DA adapter read/write engine with rate, health, retry, diagnostics, and cancellation; full subscription/conversion policy is not complete | ✅ engine + SimulationServer integration tests | partial reference runtime |
 | Web Services / XML-DA mapping | Appendix A | ❌ no DX XML-DA service endpoint | n/a | waived lower-priority transport mapping (unverified — Phase 2 deep-validation will close) |
 
 ---
@@ -93,9 +94,18 @@ The Phase 0 interface inventory also flags `IOPCBrowseServerAddressSpace::GetIte
 
 ### 1.6 DX Database and runtime model (spec §4, §5.3, §6)
 
-The spec requires a DX server to expose a reserved DA subtree rooted at `DX`, including `ServerStatus`, `DXConnectionsRoot`, and `SourceServers`; to persist source servers and connections; and to run a live bridge from source OPC DA/XML-DA servers into local target items. `Opc.Classic.Dx` deliberately stops at configuration-client and codec support today. The model objects and namespace helpers are present, but no generic server runtime populates the DA address space, runs the source-server connection lifecycle, owns source queues, executes conversion, or applies the target-update truth table.
+The spec requires a DX server to expose a reserved DA subtree rooted at `DX`, persist source
+servers and connections, and run a live bridge from source OPC DA/XML-DA servers into local
+target items. `DxReferenceEngine` now covers the bounded reference-runtime core: atomic
+configuration revisions, JSON restart recovery, enabled/disabled transfers, source
+value-quality-timestamp reads, target writes, revised update rates, health checks,
+reconnect/backoff, structured diagnostics, and cooperative cancellation.
 
-This is classified as a documented waiver rather than a hard conformance gap for the current package scope because the existing aggregate conformance review defines DX server runtime/DA bridge, persistence, and live data transfer as deferred-by-design product work.
+The SimulationServer composes that engine over two deterministic managed DA adapters and
+routes both its `IOPCConfiguration` NDR channel and existing MCP DX tools to the same
+configuration state. Remaining partial areas are the standardized DA database subtree,
+DirtyFlag/`E_PERSISTING` timing policy, XML-DA source mapping, and the full §6
+subscription/conversion/queue truth table.
 
 ---
 
@@ -113,8 +123,8 @@ Implementation-affecting DX requirements are therefore tracked by surface and be
 |---|---|---|---|
 | DCOM IDL masks identify optional fields in DX structures | App. B.1.4 | ✅ implemented | `DxConnection.Mask`, `DxSourceServer.Mask`, `NdrOpcDxCodecs.cs`, `DxNdrCodecTests.cs` |
 | Configuration services update/return the parameter shapes defined by §5.1/§5.2 | §5.1 - §5.2 | ✅ except delete hard gap | `IOPCDxInterfaces.cs`, `IOPCConfigurationClientProxy.cs`, `IOPCDxProxyTests.cs` |
-| DX server request semantics update ConfigurationVersion/DirtyFlag and runtime status | §5.2 - §5.3 | ⚠️ waived | requires generic DX server database/persistence runtime |
-| DX runtime source connections, subscriptions, queues, conversion, and target writes | §6 | ⚠️ waived | deferred server-runtime state machine |
+| DX server request semantics update ConfigurationVersion/DirtyFlag and runtime status | §5.2 - §5.3 | ⚠️ partial | versioned stores and runtime snapshots are implemented; standardized DirtyFlag persistence policy remains |
+| DX runtime source connections, subscriptions, queues, conversion, and target writes | §6 | ⚠️ partial | reference DA adapter read/write, bounded queue state, rate, retry, and cancellation are implemented; full subscription/conversion policy remains |
 
 ---
 
@@ -126,13 +136,23 @@ Implementation-affecting DX requirements are therefore tracked by surface and be
 
 Spec §4 requires every DX server to expose the reserved DA subtree rooted at `DX`, with standardized `ServerStatus`, `DXConnectionsRoot`, and `SourceServers` branches. `DxNamespace` provides canonical names and path helpers, and the status/configuration records/codecs exist, but `Opc.Classic.Dx` does not ship a generic DX server that populates those branches through DA browsing and item access. Status: **WAIVED** as deferred DX server-runtime work.
 
-#### 3.1.2 Persistence and DirtyFlag save loop are not implemented generically
+#### 3.1.2 Persistence is implemented; full DirtyFlag save policy remains
 
-Spec §5.3 requires a saved DX Database, DirtyFlag handling, save within one minute, `E_PERSISTING` behavior while saving, startup restore, and shutdown save. `OpcDxError` contains the persistence HRESULTs and status records contain `DirtyFlag`, but no persistence engine is included. Status: **WAIVED** as deferred DX server-runtime work.
+Spec §5.3 requires a saved DX Database, DirtyFlag handling, save within one minute,
+`E_PERSISTING` behavior while saving, startup restore, and shutdown save.
+`JsonFileDxConfigurationStore` provides atomic replacement, optimistic revisions, typed
+corruption/version failures, and startup recovery. The standardized DirtyFlag timing and
+`E_PERSISTING` server policy are still not implemented. Status: **PARTIAL**.
 
-#### 3.1.3 Live source-to-target transfer state machine is not implemented generically
+#### 3.1.3 Reference source-to-target transfer is implemented; full §6 policy remains
 
-Spec §6 defines startup restore, source-server connection/recovery, DA/XML-DA subscriptions, queue flushing/high-water accounting, conversion, runtime controls, and target-write truth-table behavior. The current implementation provides data shapes and constants only. Status: **WAIVED** because the aggregate conformance review explicitly classifies the DA bridge and live transfer loop as future runtime product work, not a client-proxy/codec blocker.
+Spec §6 defines startup restore, source-server connection/recovery, DA/XML-DA subscriptions,
+queue flushing/high-water accounting, conversion, runtime controls, and target-write
+truth-table behavior. `DxReferenceEngine` implements a bounded polling reference path with
+DA adapters, enabled state, revised rates, value-quality-timestamp propagation, target
+writes, health/reconnect/backoff, diagnostics, and cancellation. Subscription-specific
+queue semantics, XML-DA sources, conversion rules, and the complete truth table remain.
+Status: **PARTIAL**.
 
 #### 3.1.4 Appendix A Web Services / XML-DA mapping is not implemented
 

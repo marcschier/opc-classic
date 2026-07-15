@@ -44,11 +44,11 @@ public sealed class DxIntegrationTests
             ItemPath: "Plant.Reactor1",
             ItemName: "TemperatureIntegrationMirror",
             Version: "cfg-integration",
-            SourceServerName: "ReactorPLC",
+            SourceServerName: "SimulationDA",
             SourceItemPath: "Plant.Reactor1",
             SourceItemName: "Temperature",
-            TargetItemPath: "Dx.Targets.Integration",
-            TargetItemName: "Temperature",
+            TargetItemPath: "Bucket Brigade",
+            TargetItemName: "Real8",
             UpdateRateMilliseconds: 750,
             DeadbandPercent: 0.25f);
         OpcResultDto added = await host.CallToolAsync<OpcResultDto>(
@@ -108,21 +108,18 @@ public sealed class DxIntegrationTests
         await Assert.That(connected.DaConnected).IsTrue();
         await Assert.That(status.Spec).IsEqualTo("Dx");
         await Assert.That(status.State).IsEqualTo("Running");
-        await Assert.That(status.VendorInfo).IsEqualTo("Opc.Classic Simulation DX Client");
+        await Assert.That(status.VendorInfo).IsEqualTo("Opc.Classic Simulation DX Reference Engine");
         await Assert.That(status.GroupCount).IsEqualTo(2);
-        await Assert.That(sources.Length).IsEqualTo(2);
-        await Assert.That(sources[0].Name).IsEqualTo("PackagingPLC");
-        await Assert.That(sources[0].ServerUrl).IsEqualTo("opcda://packaging-plc/Opc.Classic.Samples.Packaging");
-        await Assert.That(sources[0].Description).IsEqualTo("Packaging line PLC");
-        await Assert.That(sources[1].Name).IsEqualTo("ReactorPLC");
-        await Assert.That(sources[1].ServerUrl).IsEqualTo("opcda://reactor-plc/Opc.Classic.Samples.Reactor");
-        await Assert.That(sources[1].Description).IsEqualTo("Primary reactor unit PLC");
+        await Assert.That(sources.Length).IsEqualTo(1);
+        await Assert.That(sources[0].Name).IsEqualTo("SimulationDA");
+        await Assert.That(sources[0].ServerUrl).IsEqualTo("opcda://simulation/Opc.Classic.Simulation.DA.1");
+        await Assert.That(sources[0].Description).IsEqualTo("Deterministic managed DA source endpoint");
         await Assert.That(seededConnections.SequenceEqual(new[]
         {
-            "PackagingRateToLineDashboard",
-            "ReactorTemperatureToHistorian",
+            "ReactorPressureDisabled",
+            "ReactorTemperatureToBucket",
         })).IsTrue();
-        await Assert.That(reactorConnections.SequenceEqual(new[] { "ReactorTemperatureToHistorian" })).IsTrue();
+        await Assert.That(reactorConnections.SequenceEqual(new[] { "ReactorTemperatureToBucket" })).IsTrue();
         await Assert.That(added.Succeeded).IsTrue();
         await Assert.That(addedConnections.SequenceEqual(new[] { "IntegrationTemperatureMirror" })).IsTrue();
         await Assert.That(modified.Succeeded).IsTrue();

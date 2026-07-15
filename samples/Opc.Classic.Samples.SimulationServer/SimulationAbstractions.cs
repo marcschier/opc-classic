@@ -113,6 +113,11 @@ public sealed class SimulationServerHandle : IDisposable
     /// <summary>Maps each registered feature-area key to its <c>inmemory://</c> connection string.</summary>
     public IReadOnlyDictionary<string, string> ConnectionStrings { get; }
 
+    /// <summary>Gets a registered simulation module by its concrete type.</summary>
+    public TModule GetModule<TModule>()
+        where TModule : class, ISimulationModule =>
+        _modules.OfType<TModule>().Single();
+
     /// <summary>
     /// Applies every module's DI contributions to an MCP host's service collection
     /// (used for Discovery and Security wiring).
