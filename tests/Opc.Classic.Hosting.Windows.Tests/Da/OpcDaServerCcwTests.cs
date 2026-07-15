@@ -2,9 +2,13 @@
 
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
+using Microsoft.Extensions.Logging.Abstractions;
 using Opc.Classic.Da.Dcom;
 using Opc.Classic.Da.Hosting;
 using Opc.Classic.Da.Hosting.Windows;
+using Opc.Classic.Dcom;
+using Opc.Classic.Dcom.Transport;
+using Opc.Classic.Samples.CttServer;
 
 namespace Opc.Classic.Da.Tests.Hosting.Windows;
 
@@ -253,6 +257,88 @@ public sealed class OpcDaServerCcwTests
     }
 
     [Test]
+    public async Task Ctt_managed_AddGroup_tracks_registered_group_until_removal()
+    {
+        var registry = new OpcObjectRegistry();
+        using var server = new CttDaServer(registry, NullLogger<CttDaServer>.Instance);
+
+        await ((IOPCServer)server).AddGroupAsync(
+            "managed",
+            active: true,
+            requestedUpdateRate: 1000,
+            clientGroupHandle: 7,
+            timeBias: 0,
+            percentDeadband: 0,
+            localeId: 1033,
+            requestedInterfaceId: IOPCGroupStateMgt.InterfaceId,
+            out int serverHandle,
+            out int revisedRate,
+            out IOpcInterfaceRef groupRef,
+            TestContext.Current!.CancellationToken);
+
+        await Assert.That(revisedRate).IsEqualTo(1000);
+        await Assert.That(server.GroupCount).IsEqualTo(1);
+        await Assert.That(await server.ResolveGroupAsync(serverHandle)).IsNotNull();
+        await Assert.That((await server.GetStatusAsync()).GroupCount).IsEqualTo(1);
+        await Assert.That(registry.TryGetObjectMetadata(groupRef.Ipid, out OpcObjectMetadata metadata)).IsTrue();
+        await Assert.That(groupRef.Oxid).IsEqualTo(metadata.Oxid);
+        await Assert.That(groupRef.Oid).IsEqualTo(metadata.Oid);
+        IOpcInterfaceRef byName = await ((IOPCServer)server).GetGroupByNameAsync(
+            "managed",
+            IOPCGroupStateMgt.InterfaceId,
+            TestContext.Current!.CancellationToken);
+        await Assert.That(byName.Ipid).IsEqualTo(groupRef.Ipid);
+        await Assert.That(byName.Oxid).IsEqualTo(groupRef.Oxid);
+        await Assert.That(byName.Oid).IsEqualTo(groupRef.Oid);
+
+        await server.RemoveGroupAsync(serverHandle, force: false);
+
+        await Assert.That(server.GroupCount).IsEqualTo(0);
+        await Assert.That(await server.ResolveGroupAsync(serverHandle)).IsNull();
+        await Assert.That(registry.Contains(groupRef.Ipid)).IsFalse();
+
+        int disposalHandle = await server.AddGroupAsync("dispose", true, 500, 8, 1033);
+        Guid disposalIpid = server.GetIpidForGroup(disposalHandle)
+            ?? throw new InvalidOperationException("The disposal group was not registered.");
+        server.Dispose();
+        await Assert.That(server.GroupCount).IsEqualTo(0);
+        await Assert.That(registry.Contains(disposalIpid)).IsFalse();
+    }
+
+    [Test]
+    public async Task Ctt_windows_AddGroup_tracks_group_for_lookup_enumeration_status_and_removal()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
+            return;
+        }
+
+        var registry = new OpcObjectRegistry();
+        using var server = new CttDaServer(registry, NullLogger<CttDaServer>.Instance);
+        IntPtr ccw = OpcDaServerCcw.Create(server, IOPCServer.InterfaceId);
+
+        (int hr, IntPtr groupPointer, int serverHandle, int revisedRate) =
+            InvokeAddGroup(ccw, "windows", 1000, 9, 1033);
+        Guid ipid = server.GetIpidForGroup(serverHandle)
+            ?? throw new InvalidOperationException("The CTT server did not track the Windows-created group.");
+
+        await Assert.That(hr).IsEqualTo(S_OK);
+        await Assert.That(groupPointer).IsNotEqualTo(IntPtr.Zero);
+        await Assert.That(revisedRate).IsEqualTo(1000);
+        await Assert.That(server.GroupCount).IsEqualTo(1);
+        await Assert.That(await server.ResolveGroupAsync(serverHandle)).IsNotNull();
+        await Assert.That(await server.ResolveGroupByNameAsync("windows")).IsNotNull();
+        await Assert.That((await server.SnapshotPrivateGroupsAsync()).Count).IsEqualTo(1);
+        await Assert.That((await server.GetStatusAsync()).GroupCount).IsEqualTo(1);
+        await Assert.That(registry.Contains(ipid)).IsTrue();
+
+        _ = InvokeRelease(groupPointer);
+        await Assert.That(InvokeRemoveGroup(ccw, unchecked((uint)serverHandle), 0)).IsEqualTo(S_OK);
+        await Assert.That(server.GroupCount).IsEqualTo(0);
+        await Assert.That(registry.Contains(ipid)).IsFalse();
+    }
+
+    [Test]
     public async Task GetGroupByName_with_unknown_name_returns_OPC_E_UNKNOWNPATH()
     {
         if (!OperatingSystem.IsWindows())
@@ -472,6 +558,56 @@ public sealed class OpcDaServerCcwTests
         uint r1 = release(ccw);
         uint r2 = release(ccw);
         return new AddRefReleaseResult(a1, a2, r1, r2);
+    }
+
+    private static unsafe uint InvokeRelease(IntPtr ccw)
+    {
+        IntPtr* vtable = *(IntPtr**)ccw;
+        var release = (delegate* unmanaged<IntPtr, uint>)vtable[2];
+        return release(ccw);
+    }
+
+    private static unsafe (int Hr, IntPtr GroupPointer, int ServerHandle, int RevisedRate) InvokeAddGroup(
+        IntPtr ccw,
+        string name,
+        int requestedRate,
+        int clientHandle,
+        int localeId)
+    {
+        IntPtr* vtable = *(IntPtr**)ccw;
+        var addGroup = (delegate* unmanaged<IntPtr, IntPtr, int, uint, uint, IntPtr, IntPtr, uint, IntPtr, IntPtr, Guid*, IntPtr*, int>)vtable[3];
+        IntPtr namePtr = Marshal.StringToCoTaskMemUni(name);
+        IntPtr serverHandlePtr = Marshal.AllocCoTaskMem(sizeof(int));
+        IntPtr revisedRatePtr = Marshal.AllocCoTaskMem(sizeof(int));
+        try
+        {
+            Guid iid = IOPCGroupStateMgt.InterfaceId;
+            IntPtr groupPointer;
+            int hr = addGroup(
+                ccw,
+                namePtr,
+                1,
+                unchecked((uint)requestedRate),
+                unchecked((uint)clientHandle),
+                IntPtr.Zero,
+                IntPtr.Zero,
+                unchecked((uint)localeId),
+                serverHandlePtr,
+                revisedRatePtr,
+                &iid,
+                &groupPointer);
+            return (
+                hr,
+                groupPointer,
+                Marshal.ReadInt32(serverHandlePtr),
+                Marshal.ReadInt32(revisedRatePtr));
+        }
+        finally
+        {
+            Marshal.FreeCoTaskMem(namePtr);
+            Marshal.FreeCoTaskMem(serverHandlePtr);
+            Marshal.FreeCoTaskMem(revisedRatePtr);
+        }
     }
 
     private static unsafe (int Hr, IntPtr StatusPtr) InvokeGetStatus(IntPtr ccw)

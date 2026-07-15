@@ -422,11 +422,29 @@ public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItem
             {
                 [IEnumOPCItemAttributes.InterfaceId] = new IEnumOPCItemAttributesServerDispatcher(enumerator),
             };
-            ipid = _objectRegistry.Register(dispatchers);
+            ipid = _objectRegistry.Register(dispatchers, publicRefs: 1);
         }
         else
         {
             ipid = Guid.CreateVersion7();
+        }
+
+        if (_objectRegistry is not null)
+        {
+            if (!_objectRegistry.TryGetObjectMetadata(ipid, out OpcObjectMetadata metadata))
+            {
+                throw new InvalidOperationException("The registered item enumerator has no identity metadata.");
+            }
+
+            return Task.FromResult<IOpcInterfaceRef>(new OpcInterfaceRef(
+                iid: requestedInterfaceId,
+                flags: 0,
+                publicRefs: 1,
+                oxid: metadata.Oxid,
+                oid: metadata.Oid,
+                ipid: ipid,
+                securityOffset: 0,
+                resolverBindings: Array.Empty<ushort>()));
         }
 
         return Task.FromResult<IOpcInterfaceRef>(new OpcInterfaceRef(

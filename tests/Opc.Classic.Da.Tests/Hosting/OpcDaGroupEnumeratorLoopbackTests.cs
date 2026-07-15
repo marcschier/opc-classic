@@ -143,6 +143,38 @@ public sealed class OpcDaGroupEnumeratorLoopbackTests
     }
 
     [Test]
+    public async Task Separate_enumerators_keep_stable_unique_identity_through_query_and_release()
+    {
+        var registry = new OpcObjectRegistry();
+        var root = new OpcDaServerDispatcher(
+            new SnapshotServer([Group("P1", 1)]),
+            objectRegistry: registry);
+        (_, IOpcInterfaceRef first) =
+            await CreateEnumeratorAsync(root.ServerDispatcher, 4, IEnumString.InterfaceId);
+        (_, IOpcInterfaceRef second) =
+            await CreateEnumeratorAsync(root.ServerDispatcher, 4, IEnumString.InterfaceId);
+
+        OpcRemQIResult firstQi = await QueryInterfaceAsync(registry, first);
+        OpcRemQIResult secondQi = await QueryInterfaceAsync(registry, second);
+
+        await Assert.That(firstQi.Ipid).IsEqualTo(first.Ipid);
+        await Assert.That(firstQi.Oxid).IsEqualTo(first.Oxid);
+        await Assert.That(firstQi.Oid).IsEqualTo(first.Oid);
+        await Assert.That(secondQi.Ipid).IsEqualTo(second.Ipid);
+        await Assert.That(secondQi.Oxid).IsEqualTo(second.Oxid);
+        await Assert.That(secondQi.Oid).IsEqualTo(second.Oid);
+        await Assert.That(first.Oxid).IsEqualTo(second.Oxid);
+        await Assert.That(first.Oid).IsNotEqualTo(second.Oid);
+
+        await ReleaseAsync(registry, first);
+        await Assert.That(registry.TryGetObjectMetadata(first.Ipid, out _)).IsFalse();
+        await Assert.That(registry.TryGetObjectMetadata(second.Ipid, out _)).IsTrue();
+
+        await ReleaseAsync(registry, second);
+        await Assert.That(registry.TryGetObjectMetadata(second.Ipid, out _)).IsFalse();
+    }
+
+    [Test]
     public async Task Generated_proxies_decode_varying_string_and_interface_pointer_arrays()
     {
         var registry = new OpcObjectRegistry();
@@ -324,6 +356,34 @@ public sealed class OpcDaGroupEnumeratorLoopbackTests
         var reader = new NdrReader(result.Payload.Span);
         return OpcMInterfacePointerCodec.Read(ref reader)
             ?? throw new InvalidOperationException("Clone returned a null interface.");
+    }
+
+    private static async Task<OpcRemQIResult> QueryInterfaceAsync(
+        OpcObjectRegistry registry,
+        IOpcInterfaceRef interfaceRef)
+    {
+        var dispatcher = new RemUnknownServerDispatcher(registry);
+        DispatchResult result = await dispatcher.DispatchAsync(
+            3,
+            WritePayload((ref NdrWriter writer) =>
+            {
+                writer.WriteGuid(interfaceRef.Ipid);
+                writer.WriteUInt32(0);
+                writer.WriteUInt16(1);
+                writer.WriteConformanceHeader(1);
+                writer.WriteGuid(interfaceRef.Iid);
+            }));
+        if (result.Hresult != OpcResultId.Ok.Code)
+        {
+            throw new InvalidOperationException("IRemUnknown::RemQueryInterface failed.");
+        }
+
+        var reader = new NdrReader(result.Payload.Span);
+        if (!reader.TryReadReferentId(out _) || reader.ReadConformanceHeader() != 1)
+        {
+            throw new InvalidOperationException("IRemUnknown::RemQueryInterface returned an invalid result array.");
+        }
+        return NdrRemQIResultCodec.Read(ref reader);
     }
 
     private static IOpcServerDispatcher GetDispatcher(

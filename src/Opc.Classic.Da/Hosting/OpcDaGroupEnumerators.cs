@@ -43,7 +43,7 @@ internal static class OpcDaGroupEnumeratorFactory
                 },
                 publicRefs: 1,
                 finalRelease: enumerator.Dispose);
-            return CreateRef(IEnumString.InterfaceId, ipid);
+            return CreateRef(IEnumString.InterfaceId, ipid, registry);
         }
         catch
         {
@@ -65,7 +65,7 @@ internal static class OpcDaGroupEnumeratorFactory
                 },
                 publicRefs: 1,
                 finalRelease: enumerator.Dispose);
-            return CreateRef(IEnumUnknown.InterfaceId, ipid);
+            return CreateRef(IEnumUnknown.InterfaceId, ipid, registry);
         }
         catch
         {
@@ -74,16 +74,23 @@ internal static class OpcDaGroupEnumeratorFactory
         }
     }
 
-    internal static IOpcInterfaceRef CreateRef(Guid iid, Guid ipid, ulong oid = 0) =>
-        new OpcInterfaceRef(
+    internal static IOpcInterfaceRef CreateRef(Guid iid, Guid ipid, OpcObjectRegistry registry)
+    {
+        if (!registry.TryGetObjectMetadata(ipid, out OpcObjectMetadata metadata))
+        {
+            throw new InvalidOperationException("The registered DA object has no identity metadata.");
+        }
+
+        return new OpcInterfaceRef(
             iid,
             flags: 0,
             publicRefs: 1,
-            oxid: 1,
-            oid,
+            oxid: metadata.Oxid,
+            oid: metadata.Oid,
             ipid,
             securityOffset: 0,
             resolverBindings: Array.Empty<ushort>());
+    }
 }
 
 internal sealed class OpcDaStringEnumerator : IEnumString, IDisposable
@@ -297,7 +304,7 @@ internal sealed class OpcDaUnknownSnapshot
                 _groups[registered] = OpcDaGroupEnumeratorFactory.CreateRef(
                     new Guid("00000000-0000-0000-C000-000000000046"),
                     ipid,
-                    unchecked((ulong)group.ServerHandle));
+                    registry);
             }
         }
         catch

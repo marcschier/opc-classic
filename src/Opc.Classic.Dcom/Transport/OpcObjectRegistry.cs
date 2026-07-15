@@ -33,10 +33,12 @@ namespace Opc.Classic.Dcom.Transport;
 /// </remarks>
 public sealed class OpcObjectRegistry
 {
-    private readonly ConcurrentDictionary<Guid, IReadOnlyDictionary<Guid, IOpcServerDispatcher>> _objects = new();
+    private readonly ConcurrentDictionary<Guid, ObjectEntry> _objects = new();
     private readonly Dictionary<Guid, uint> _publicRefs = new();
     private readonly Dictionary<Guid, Action> _finalReleaseCallbacks = new();
     private readonly Lock _lifetimeGate = new();
+    private readonly ulong _oxid = CreateNonZeroId();
+    private ulong _nextOid;
 
     /// <summary>
     /// Gets the number of currently registered objects.
@@ -54,19 +56,29 @@ public sealed class OpcObjectRegistry
     /// </param>
     public Guid Register(
         IReadOnlyDictionary<Guid, IOpcServerDispatcher> interfaceDispatchers,
-        uint publicRefs = 0,
-        Action? finalRelease = null)
+        uint publicRefs = 0) =>
+        Register(interfaceDispatchers, publicRefs, finalRelease: null);
+
+    /// <summary>
+    /// Registers a new object and invokes <paramref name="finalRelease"/> when
+    /// its last public reference is released or it is explicitly unregistered.
+    /// </summary>
+    public Guid Register(
+        IReadOnlyDictionary<Guid, IOpcServerDispatcher> interfaceDispatchers,
+        uint publicRefs,
+        Action? finalRelease)
     {
         ArgumentNullException.ThrowIfNull(interfaceDispatchers);
         lock (_lifetimeGate)
         {
             Guid ipid = Guid.NewGuid();
-            if (!_objects.TryAdd(ipid, interfaceDispatchers))
+            var entry = new ObjectEntry(interfaceDispatchers, AllocateMetadataUnderLock());
+            if (!_objects.TryAdd(ipid, entry))
             {
                 // Collision is astronomically unlikely for a freshly-allocated
                 // v4 GUID; retry once and then surface the failure.
                 ipid = Guid.NewGuid();
-                if (!_objects.TryAdd(ipid, interfaceDispatchers))
+                if (!_objects.TryAdd(ipid, entry))
                 {
                     throw new InvalidOperationException("OpcObjectRegistry could not allocate a fresh IPID.");
                 }
@@ -83,13 +95,29 @@ public sealed class OpcObjectRegistry
     public bool RegisterWithIpid(
         Guid ipid,
         IReadOnlyDictionary<Guid, IOpcServerDispatcher> interfaceDispatchers,
-        uint publicRefs = 0,
-        Action? finalRelease = null)
+        uint publicRefs = 0) =>
+        RegisterWithIpid(ipid, interfaceDispatchers, publicRefs, finalRelease: null);
+
+    /// <summary>
+    /// Registers an object under a caller-supplied IPID and invokes
+    /// <paramref name="finalRelease"/> when its lifetime ends.
+    /// </summary>
+    public bool RegisterWithIpid(
+        Guid ipid,
+        IReadOnlyDictionary<Guid, IOpcServerDispatcher> interfaceDispatchers,
+        uint publicRefs,
+        Action? finalRelease)
     {
         ArgumentNullException.ThrowIfNull(interfaceDispatchers);
         lock (_lifetimeGate)
         {
-            if (!_objects.TryAdd(ipid, interfaceDispatchers))
+            if (_objects.ContainsKey(ipid))
+            {
+                return false;
+            }
+
+            var entry = new ObjectEntry(interfaceDispatchers, AllocateMetadataUnderLock());
+            if (!_objects.TryAdd(ipid, entry))
             {
                 return false;
             }
@@ -184,8 +212,52 @@ public sealed class OpcObjectRegistry
     /// <summary>
     /// Attempts to resolve the full interface-dispatcher map for an IPID.
     /// </summary>
-    public bool TryGetInterfaceDispatchers(Guid ipid, out IReadOnlyDictionary<Guid, IOpcServerDispatcher> interfaceDispatchers) =>
-        _objects.TryGetValue(ipid, out interfaceDispatchers!);
+    public bool TryGetInterfaceDispatchers(Guid ipid, out IReadOnlyDictionary<Guid, IOpcServerDispatcher> interfaceDispatchers)
+    {
+        if (TryGetObject(ipid, out interfaceDispatchers, out _))
+        {
+            return true;
+        }
+
+        interfaceDispatchers = null!;
+        return false;
+    }
+
+    /// <summary>
+    /// Attempts to resolve the stable exporter and object identifiers assigned
+    /// when the IPID was registered.
+    /// </summary>
+    public bool TryGetObjectMetadata(Guid ipid, out OpcObjectMetadata metadata)
+    {
+        if (TryGetObject(ipid, out _, out metadata))
+        {
+            return true;
+        }
+
+        metadata = default;
+        return false;
+    }
+
+    /// <summary>
+    /// Attempts to resolve the dispatcher set and stable identity metadata from
+    /// the same registered object entry.
+    /// </summary>
+    public bool TryGetObject(
+        Guid ipid,
+        out IReadOnlyDictionary<Guid, IOpcServerDispatcher> interfaceDispatchers,
+        out OpcObjectMetadata metadata)
+    {
+        if (_objects.TryGetValue(ipid, out ObjectEntry? entry))
+        {
+            interfaceDispatchers = entry.InterfaceDispatchers;
+            metadata = entry.Metadata;
+            return true;
+        }
+
+        interfaceDispatchers = null!;
+        metadata = default;
+        return false;
+    }
 
     /// <summary>
     /// Attempts to resolve a dispatcher for a specific (IPID, interface)
@@ -193,8 +265,8 @@ public sealed class OpcObjectRegistry
     /// </summary>
     public bool TryGetDispatcher(Guid ipid, Guid interfaceId, out IOpcServerDispatcher dispatcher)
     {
-        if (_objects.TryGetValue(ipid, out IReadOnlyDictionary<Guid, IOpcServerDispatcher>? interfaceMap)
-            && interfaceMap.TryGetValue(interfaceId, out IOpcServerDispatcher? found))
+        if (_objects.TryGetValue(ipid, out ObjectEntry? entry)
+            && entry.InterfaceDispatchers.TryGetValue(interfaceId, out IOpcServerDispatcher? found))
         {
             dispatcher = found;
             return true;
@@ -210,9 +282,9 @@ public sealed class OpcObjectRegistry
     /// </summary>
     public bool ContainsInterface(Guid interfaceId)
     {
-        foreach (IReadOnlyDictionary<Guid, IOpcServerDispatcher> interfaceMap in _objects.Values)
+        foreach (ObjectEntry entry in _objects.Values)
         {
-            if (interfaceMap.ContainsKey(interfaceId))
+            if (entry.InterfaceDispatchers.ContainsKey(interfaceId))
             {
                 return true;
             }
@@ -226,4 +298,32 @@ public sealed class OpcObjectRegistry
     /// registered (regardless of which interface).
     /// </summary>
     public bool Contains(Guid ipid) => _objects.ContainsKey(ipid);
+
+    private OpcObjectMetadata AllocateMetadataUnderLock()
+    {
+        if (_nextOid == ulong.MaxValue)
+        {
+            throw new InvalidOperationException("OpcObjectRegistry exhausted its OID space.");
+        }
+
+        return new OpcObjectMetadata(_oxid, ++_nextOid);
+    }
+
+    private static ulong CreateNonZeroId()
+    {
+        Span<byte> bytes = stackalloc byte[16];
+        ulong value;
+        do
+        {
+            Guid.NewGuid().TryWriteBytes(bytes);
+            value = BitConverter.ToUInt64(bytes);
+        }
+        while (value == 0);
+
+        return value;
+    }
+
+    private sealed record ObjectEntry(
+        IReadOnlyDictionary<Guid, IOpcServerDispatcher> InterfaceDispatchers,
+        OpcObjectMetadata Metadata);
 }
