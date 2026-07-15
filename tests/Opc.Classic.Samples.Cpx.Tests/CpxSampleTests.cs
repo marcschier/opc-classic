@@ -23,6 +23,16 @@ public sealed class CpxSampleTests
         (OpcVariant typeId, int typeError) = server.TryGetPropertyValue(
             "Binary.NestedArrayBits",
             OpcComplexDataProperty.TypeId);
+        (OpcVariant typeDescription, int descriptionError) = server.TryGetPropertyValue(
+            "Binary.NestedArrayBits",
+            OpcComplexDataProperty.TypeDescription);
+        string nestedXmlTypeItem = CpxNamespaceBuilder.BuildTypePath(
+            TypeDictionary.XmlSchemaTypeSystemId,
+            "SampleXml",
+            "DeviceEnvelope/Status");
+        (OpcVariant nestedXmlDescription, int nestedXmlDescriptionError) = server.TryGetPropertyValue(
+            nestedXmlTypeItem,
+            OpcComplexDataProperty.TypeDescription);
 
         await Assert.That(root.Branches).Contains("CPX");
         await Assert.That(root.Branches).Contains("Binary");
@@ -34,6 +44,15 @@ public sealed class CpxSampleTests
         await Assert.That(dictionaryId.AsString()).IsEqualTo(CpxSampleCatalog.OpcBinaryDictionaryId);
         await Assert.That(typeError).IsEqualTo(OpcResultId.Ok.Code);
         await Assert.That(typeId.AsString()).IsEqualTo("TelemetryPacket");
+        await Assert.That(descriptionError).IsEqualTo(OpcResultId.Ok.Code);
+        await Assert.That(
+            OpcBinaryDictionaryParser.ParseTypeDescription(typeDescription.AsString()!).TypeId)
+            .IsEqualTo("TelemetryPacket");
+        await Assert.That(nestedXmlDescriptionError).IsEqualTo(OpcResultId.Ok.Code);
+        await Assert.That(
+            XmlSchemaParser.Parse(nestedXmlDescription.AsString()!)
+                .TryGetByTypeId("DeviceEnvelope/Status"))
+            .IsNotNull();
     }
 
     [Test]
@@ -68,13 +87,14 @@ public sealed class CpxSampleTests
         await Assert.That(report.DecodedItems).Contains("Binary.Primitives");
         await Assert.That(report.DecodedItems).Contains("Binary.NestedArrayBits");
         await Assert.That(report.DecodedItems).Contains("Xml.OptionalPresent");
+        await Assert.That(report.DecodedItems).Contains("Xml.OptionalMissing");
         await Assert.That(report.InvalidPayloads).Contains("Binary.InvalidPayload");
-        await Assert.That(report.InvalidPayloads).Contains("Xml.OptionalMissing");
+        await Assert.That(report.InvalidPayloads).DoesNotContain("Xml.OptionalMissing");
         await Assert.That(report.UnsupportedTypeSystems).Contains("Vendor-CBOR-1");
         await Assert.That(report.FilterResult).IsEqualTo(OpcResultId.Ok.Code);
         await Assert.That(report.ConversionResult).IsEqualTo(OpcResultId.Ok.Code);
         await Assert.That(report.UnsupportedFilterResult).IsEqualTo(OpcComplexDataResult.OPCCPX_E_FILTER_INVALID);
-        await Assert.That(report.UnsupportedConversionResult).IsEqualTo(OpcComplexDataResult.OPCCPX_E_TYPE_CHANGED);
+        await Assert.That(report.UnsupportedConversionResult).IsEqualTo(OpcResultId.BadType.Code);
         await Assert.That(text).Contains("Reference bounds:");
         await Assert.That(text).Contains("unsupported vendor type system");
     }
