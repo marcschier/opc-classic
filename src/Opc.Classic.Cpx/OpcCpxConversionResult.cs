@@ -13,7 +13,8 @@ public readonly record struct OpcCpxConversionResult(object? Value, int Error)
     public static OpcCpxConversionResult Success(object? value) => new(value, OpcResultId.Ok.Code);
 
     /// <summary>
-    /// Creates an unsupported/stale type conversion result per CPX §9.
+    /// Creates the CPX §9 result used for unsupported conversions, malformed
+    /// runtime values, configured bound violations, and checked range failures.
     /// </summary>
     public static OpcCpxConversionResult TypeChanged() => new(null, OpcComplexDataResult.OPCCPX_E_TYPE_CHANGED);
 }
