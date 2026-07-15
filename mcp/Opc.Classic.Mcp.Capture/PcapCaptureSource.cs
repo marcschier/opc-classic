@@ -30,7 +30,7 @@ namespace Opc.Classic.Mcp.Capture;
 /// an actionable message via <see cref="CaptureException"/>.
 /// </para>
 /// </remarks>
-public sealed class PcapCaptureSource : ICaptureSource
+public sealed class PcapCaptureSource : ICaptureSource, IIncrementalCaptureSource
 {
     /// <summary>
     /// Stable source name surfaced via the MCP info DTO.
@@ -39,6 +39,7 @@ public sealed class PcapCaptureSource : ICaptureSource
     private const int kDefaultMaxBytes = 50 * 1024 * 1024;
     private const int kDefaultMaxDurationSeconds = 30 * 60;
     private const string kPcapFileName = "capture.pcap";
+    private const int kIncrementalPacketCapacity = 8192;
 
     /// <summary>
     /// Default BPF filter for the OPC Classic DCOM-over-IP universe.
@@ -101,6 +102,7 @@ public sealed class PcapCaptureSource : ICaptureSource
     private readonly ILogger _logger;
     private readonly string _filePath;
     private readonly Lock _lock = new();
+    private readonly Queue<IndexedPacket> _incrementalPackets = new();
     private LibPcapLiveDevice? _device;
     private CaptureFileWriterDevice? _writer;
     private long _packetCount;
@@ -255,9 +257,20 @@ public sealed class PcapCaptureSource : ICaptureSource
         long packets = Interlocked.Increment(ref _packetCount);
         long bytes = Interlocked.Add(ref _byteCount, len);
 
+        var captured = new CapturedPacket(
+            new DateTimeOffset(pkt.Timeval.Date, TimeSpan.Zero),
+            pkt.PacketLength,
+            pkt.Data.ToArray(),
+            (int)pkt.LinkLayerType,
+            kEmpty);
         lock (_lock)
         {
             _writer?.Write(pkt);
+            _incrementalPackets.Enqueue(new IndexedPacket(packets - 1, captured));
+            while (_incrementalPackets.Count > kIncrementalPacketCapacity)
+            {
+                _incrementalPackets.Dequeue();
+            }
         }
 
         if (bytes >= _maxBytes
@@ -348,6 +361,40 @@ public sealed class PcapCaptureSource : ICaptureSource
         }
     }
 
+    async IAsyncEnumerable<CapturedPacket> IIncrementalCaptureSource.ReadFromAsync(
+        long packetIndex,
+        [EnumeratorCancellation] CancellationToken cancellationToken)
+    {
+        IndexedPacket[] retained;
+        bool replay;
+        lock (_lock)
+        {
+            replay = _incrementalPackets.Count == 0
+                ? packetIndex < PacketCount
+                : packetIndex < _incrementalPackets.Peek().Index;
+            retained = replay
+                ? []
+                : _incrementalPackets.Where(packet => packet.Index >= packetIndex).ToArray();
+        }
+        if (replay)
+        {
+            long index = 0;
+            await foreach (CapturedPacket packet in ReadAllAsync(null, cancellationToken).ConfigureAwait(false))
+            {
+                if (index++ >= packetIndex)
+                {
+                    yield return packet;
+                }
+            }
+            yield break;
+        }
+        foreach (IndexedPacket packet in retained)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            yield return packet.Packet;
+        }
+    }
+
     /// <inheritdoc/>
     [SuppressMessage("Design", "CA1031:Do not catch general exception types",
         Justification = "Dispose path must release native pcap handle + writer regardless of error type.")]
@@ -365,4 +412,5 @@ public sealed class PcapCaptureSource : ICaptureSource
 
     private static readonly IReadOnlyDictionary<string, string?> kEmpty =
         new Dictionary<string, string?>(0);
+    private sealed record IndexedPacket(long Index, CapturedPacket Packet);
 }

@@ -378,7 +378,11 @@ public sealed class CaptureTools
         int max = 200,
         [Description("Cursor returned by the previous tail call as nextIndex. Pass 0 for the first call.")]
         long sinceIndex = 0,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default,
+        [Description("Optional stable subscriber id for a bounded replay cursor.")]
+        string? subscriberId = null,
+        [Description("Retained-PDU capacity for the named cursor (1..5000).")]
+        int? subscriberCapacity = null)
     {
         if (!_manager.TryGet(sessionId, out CaptureSession session))
         {
@@ -392,7 +396,12 @@ public sealed class CaptureTools
 
         try
         {
-            DrainTailResult result = await session.DrainTailAsync(sinceIndex, effectiveMax, cancellationToken).ConfigureAwait(false);
+            DrainTailResult result = await session.DrainSubscriberTailAsync(
+                sinceIndex,
+                effectiveMax,
+                subscriberId,
+                subscriberCapacity,
+                cancellationToken).ConfigureAwait(false);
             return new CaptureTailResultDto
             {
                 SessionId = sessionId,
@@ -401,6 +410,10 @@ public sealed class CaptureTools
                 TotalEmitted = result.TotalEmitted,
                 Done = result.Done,
                 SessionState = result.SessionState,
+                SubscriberId = result.SubscriberId,
+                SubscriberCapacity = result.SubscriberCapacity,
+                Overflowed = result.Overflowed,
+                DroppedRanges = result.DroppedRanges ?? [],
             };
         }
         catch (CaptureException ex)
@@ -408,6 +421,57 @@ public sealed class CaptureTools
             throw new McpException(ex.Message);
         }
     }
+
+    [McpServerTool(Name = "opcclassic.capture.close_cursor", ReadOnly = false, Idempotent = true, Destructive = false, OpenWorld = false)]
+    [Description("Dispose a named capture.tail cursor without stopping the capture.")]
+    public async Task<bool> CloseCaptureCursor(
+        string sessionId,
+        string subscriberId,
+        CancellationToken cancellationToken = default)
+    {
+        if (!_manager.TryGet(sessionId, out CaptureSession session))
+        {
+            throw new McpException($"Capture session '{sessionId}' not found.");
+        }
+        return await session.CloseTailSubscriberAsync(subscriberId, cancellationToken).ConfigureAwait(false);
+    }
+
+    [McpServerTool(Name = "opcclassic.capture.subscribe_notifications", ReadOnly = false, Idempotent = false, Destructive = false, OpenWorld = false)]
+    [Description("Subscribe the current MCP client to advisory capture index/state/drop notifications.")]
+    public async Task<CaptureNotificationSubscriptionDto> SubscribeCaptureNotifications(
+        McpServer server,
+        string sessionId,
+        long sinceIndex = 0,
+        string? subscriberId = null,
+        int subscriberCapacity = CaptureNotificationSubscription.DefaultSubscriberCapacity,
+        int notificationQueueCapacity = CaptureNotificationSubscription.DefaultNotificationQueueCapacity,
+        int pollIntervalMilliseconds = CaptureNotificationSubscription.DefaultPollIntervalMilliseconds,
+        CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            CaptureNotificationSubscriptionInfo info =
+                await _manager.SubscribeNotificationsAsync(
+                    sessionId,
+                    sinceIndex,
+                    subscriberId,
+                    subscriberCapacity,
+                    notificationQueueCapacity,
+                    pollIntervalMilliseconds,
+                    new McpCaptureNotificationPublisher(server),
+                    cancellationToken).ConfigureAwait(false);
+            return CaptureNotificationSubscriptionDto.From(info);
+        }
+        catch (CaptureException ex)
+        {
+            throw new McpException(ex.Message);
+        }
+    }
+
+    [McpServerTool(Name = "opcclassic.capture.unsubscribe_notifications", ReadOnly = false, Idempotent = true, Destructive = false, OpenWorld = false)]
+    [Description("Stop and dispose a capture notification subscription.")]
+    public Task<bool> UnsubscribeCaptureNotifications(string subscriptionId) =>
+        _manager.UnsubscribeNotificationsAsync(subscriptionId);
 
     /// <summary>
     /// Returns a top-N roll-up of a completed capture.
@@ -726,6 +790,33 @@ public sealed record class CaptureTailResultDto
     /// Underlying session lifecycle state at the time of the drain.
     /// </summary>
     public required CaptureSessionState SessionState { get; init; }
+    public string? SubscriberId { get; init; }
+    public int? SubscriberCapacity { get; init; }
+    public bool Overflowed { get; init; }
+    public IReadOnlyList<CaptureDropRange> DroppedRanges { get; init; } = [];
+}
+
+public sealed record class CaptureNotificationSubscriptionDto
+{
+    public required string SubscriptionId { get; init; }
+    public required string SessionId { get; init; }
+    public required string SubscriberId { get; init; }
+    public long SinceIndex { get; init; }
+    public int SubscriberCapacity { get; init; }
+    public int NotificationQueueCapacity { get; init; }
+    public int PollIntervalMilliseconds { get; init; }
+
+    internal static CaptureNotificationSubscriptionDto From(CaptureNotificationSubscriptionInfo info) =>
+        new()
+        {
+            SubscriptionId = info.SubscriptionId,
+            SessionId = info.SessionId,
+            SubscriberId = info.SubscriberId,
+            SinceIndex = info.SinceIndex,
+            SubscriberCapacity = info.SubscriberCapacity,
+            NotificationQueueCapacity = info.NotificationQueueCapacity,
+            PollIntervalMilliseconds = info.PollIntervalMilliseconds,
+        };
 }
 
 /// <summary>

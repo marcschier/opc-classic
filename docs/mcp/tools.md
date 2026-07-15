@@ -1522,8 +1522,31 @@ Returns the next decoded-PDU window for a live or completed capture using a poll
 | `sessionId` | `string` | `required` | Capture session id from `opcclassic.capture.start`. |
 | `max` | `int` | `200` | Maximum PDUs to return in this call. |
 | `sinceIndex` | `long` | `0` | Cursor returned by the previous tail call as `nextIndex`; pass 0 for the first call. |
+| `subscriberId` | `string?` | `null` | Optional stable bounded replay cursor id. |
+| `subscriberCapacity` | `int?` | `null` | Retained decoded-PDU capacity, 1–5000. |
 
 **Returns:** `Task<CaptureTailResultDto>`
+
+Each capture session owns one incremental decoder and bounded shared cache. Multiple
+tail and notification subscribers read indexes from that cache; they do not each
+rescan the pcap file or retain frame copies. Repeating the same `sinceIndex`
+replays the same retained window. `overflowed` and `droppedRanges` identify records
+displaced before acknowledgement.
+
+### `opcclassic.capture.close_cursor`
+
+Closes a named tail cursor without stopping the capture.
+
+### `opcclassic.capture.subscribe_notifications`
+
+Reserves a named cursor synchronously, starts the session's single incremental
+producer if necessary, and sends lightweight `notifications/opcclassic/capture`
+index/state/drop metadata. The call fails without returning a subscription id when
+cursor capacity or producer initialization fails. Tail remains authoritative.
+
+### `opcclassic.capture.unsubscribe_notifications`
+
+Stops a notification subscription and releases its reserved cursor.
 
 ### `opcclassic.capture.summarize`
 
