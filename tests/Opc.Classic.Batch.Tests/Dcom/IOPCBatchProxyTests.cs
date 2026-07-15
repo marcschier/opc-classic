@@ -90,6 +90,26 @@ public sealed class IOPCBatchProxyTests
     }
 
     [Test]
+    public async Task Generated_BatchServer_CreateEnumerator_uses_MInterfacePointer_known_answer()
+    {
+        var dispatcher = new IOPCBatchServerServerDispatcher(new BatchServerStub());
+        ReadOnlyMemory<byte> responsePayload = ReadOnlyMemory<byte>.Empty;
+        var channel = new InMemoryCallChannel(async (_, opnum, payload, cancellationToken) =>
+        {
+            DispatchResult result = await dispatcher.DispatchAsync(opnum, payload, cancellationToken);
+            responsePayload = result.Payload;
+            return result.ToNdrCallResult();
+        });
+
+        IOpcInterfaceRef result = await new IOPCBatchServerClientProxy(channel)
+            .CreateEnumeratorAsync(IEnumOPCBatchSummary.InterfaceId, CancellationToken.None);
+
+        await Assert.That(result.Iid).IsEqualTo(IEnumOPCBatchSummary.InterfaceId);
+        await Assert.That(Convert.ToHexString(responsePayload.Span[..16]))
+            .IsEqualTo("0000020044000000440000004D454F57");
+    }
+
+    [Test]
     public async Task BatchServer2_CreateFilteredEnumerator_round_trips_filter_model_and_interface_ref()
     {
         Guid requestedRiid = IEnumOPCBatchSummary.InterfaceId;
@@ -178,6 +198,33 @@ public sealed class IOPCBatchProxyTests
         await Assert.That(observedIid).IsEqualTo(IEnumOPCBatchSummary.InterfaceId);
         await Assert.That(observedOpnum).IsEqualTo(expectedOpnum);
         await Assert.That(count).IsEqualTo(3);
+    }
+
+    [Test]
+    public async Task Generated_BatchSummary_Next_allows_short_final_page()
+    {
+        var expected = new OpcBatchSummary(
+            "B-1",
+            "Final page",
+            "Batch.B-1",
+            "MR-1",
+            1.0f,
+            "kg",
+            "COMPLETE",
+            "AUTOMATIC",
+            DateTimeOffset.UnixEpoch,
+            DateTimeOffset.UnixEpoch);
+        var dispatcher = new IEnumOPCBatchSummaryServerDispatcher(new BatchSummaryStub(expected));
+        var channel = new InMemoryCallChannel(async (_, opnum, payload, cancellationToken) =>
+        {
+            DispatchResult result = await dispatcher.DispatchAsync(opnum, payload, cancellationToken);
+            return result.ToNdrCallResult();
+        });
+
+        OpcBatchSummary[] page = await new IEnumOPCBatchSummaryClientProxy(channel)
+            .NextAsync(10, CancellationToken.None);
+
+        await Assert.That(page).IsEquivalentTo(new[] { expected });
     }
 
     [Test]
@@ -312,6 +359,34 @@ public sealed class IOPCBatchProxyTests
         public Task<IOpcInterfaceRef> CreateEnumeratorAsync(
             Guid riid,
             CancellationToken cancellationToken = default) =>
+            Task.FromResult<IOpcInterfaceRef>(
+                new OpcInterfaceRef(
+                    riid,
+                    flags: 0,
+                    publicRefs: 1,
+                    oxid: 2,
+                    oid: 3,
+                    ipid: Guid.Parse("A8080DA2-E23E-11D2-AFA7-00C04F539422"),
+                    securityOffset: 0,
+                    resolverBindings: []));
+    }
+
+    private sealed class BatchSummaryStub : IEnumOPCBatchSummary
+    {
+        private readonly OpcBatchSummary _summary;
+
+        public BatchSummaryStub(OpcBatchSummary summary) => _summary = summary;
+
+        public Task<OpcBatchSummary[]> NextAsync(int count, CancellationToken cancellationToken = default) =>
+            Task.FromResult(count > 0 ? new[] { _summary } : Array.Empty<OpcBatchSummary>());
+
+        public Task SkipAsync(int count, CancellationToken cancellationToken = default) => Task.CompletedTask;
+
+        public Task ResetAsync(CancellationToken cancellationToken = default) => Task.CompletedTask;
+
+        public Task<IOpcInterfaceRef> CloneAsync(CancellationToken cancellationToken = default) =>
             throw new NotImplementedException();
+
+        public Task<int> CountAsync(CancellationToken cancellationToken = default) => Task.FromResult(1);
     }
 }

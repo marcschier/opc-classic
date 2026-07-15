@@ -8,7 +8,6 @@ using Opc.Classic.Da.Hosting;
 using Opc.Classic.Dcom;
 using Opc.Classic.Dcom.Transport;
 using Opc.Classic.Hosting;
-using Opc.Classic.Ndr;
 
 namespace Opc.Classic.Integration.Tests.Da;
 
@@ -214,21 +213,8 @@ public sealed class DaFullLifecycleTests
 
     private static async Task<IOpcInterfaceRef> FindConnectionPointAsync(ICallChannel channel, CancellationToken cancellationToken)
     {
-        var buffer = new byte[16];
-        var writer = new NdrWriter(buffer);
-        writer.WriteGuid(IOPCDataCallback.InterfaceId);
-        NdrCallResult result = await channel.InvokeAsync(
-            IConnectionPointContainer.InterfaceId,
-            IConnectionPointContainer.Opnums.FindConnectionPointAsync,
-            buffer.AsMemory(0, writer.Position).ToArray(),
-            cancellationToken);
-        if (result.IsFailure)
-        {
-            throw new OpcException(new OpcResultId(result.Hresult, null));
-        }
-
-        var reader = new NdrReader(result.ResponsePayload.Span);
-        return OpcInterfaceRefCodec.Read(ref reader);
+        var proxy = new IConnectionPointContainerClientProxy(channel);
+        return await proxy.FindConnectionPointAsync(IOPCDataCallback.InterfaceId, cancellationToken);
     }
 
     private static OpcServerListener StartCallbackListener(IOPCDataCallback callback, CancellationToken cancellationToken)

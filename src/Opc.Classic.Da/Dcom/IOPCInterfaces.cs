@@ -854,6 +854,7 @@ public partial interface IEnumUnknown
 /// <c>IConnectionPointContainer</c> — enumerates connection points (IID_IConnectionPointContainer).
 /// </summary>
 [OpcInterface("B196B284-BAB4-101A-B69C-00AA00341D07")]
+[GenerateOpcProxy]
 [OpcGenerateServerDispatch]
 public partial interface IConnectionPointContainer
 {

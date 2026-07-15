@@ -59,8 +59,11 @@ public partial interface IEnumOPCBatchSummary
     /// <summary>
     /// <c>IEnumOPCBatchSummary::Next</c> (opnum 3).
     /// </summary>
+    /// <remarks>
+    /// The response array length is the fetched count and can be less than
+    /// <paramref name="count"/> at the end of the enumeration.
+    /// </remarks>
     [OpcMethod(3)]
-    [return: OpcArrayCount(nameof(count))]
     Task<OpcBatchSummary[]> NextAsync(int count, CancellationToken cancellationToken = default);
 
     /// <summary>

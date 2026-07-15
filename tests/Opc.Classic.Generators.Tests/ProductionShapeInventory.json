@@ -1835,6 +1835,7 @@
     "Interface": "Opc.Classic.Da.Dcom.IConnectionPointContainer",
     "Method": "EnumConnectionPointsAsync",
     "GeneratorSides": [
+      "client",
       "server"
     ],
     "ShapeCategories": [
@@ -1846,6 +1847,7 @@
     "Interface": "Opc.Classic.Da.Dcom.IConnectionPointContainer",
     "Method": "FindConnectionPointAsync",
     "GeneratorSides": [
+      "client",
       "server"
     ],
     "ShapeCategories": [
@@ -3042,7 +3044,6 @@
     "ShapeCategories": [
       "scalar",
       "array",
-      "count-correlated arrays",
       "nested/compound records"
     ],
     "SpecReference": "OPC Batch IDL: IEnumOPCBatchSummary::Next"

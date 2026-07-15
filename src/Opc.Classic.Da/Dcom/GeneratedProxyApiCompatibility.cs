@@ -4,6 +4,10 @@
 
 namespace Opc.Classic.Da.Dcom;
 
+public sealed partial class IConnectionPointContainerClientProxy
+{
+}
+
 public sealed partial class IConnectionPointClientProxy
 {
 }

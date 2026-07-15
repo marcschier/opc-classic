@@ -3,6 +3,7 @@
 using Opc.Classic.Batch;
 using Opc.Classic.Batch.Dcom;
 using Opc.Classic.Batch.Ndr;
+using Opc.Classic.Dcom;
 using Opc.Classic.Mcp.Dtos;
 using Opc.Classic.Mcp.Tools;
 using Opc.Classic.Ndr;
@@ -196,18 +197,17 @@ public sealed class BatchToolsTests
     private delegate void NdrWriteAction(ref NdrWriter writer);
 
     private static ReadOnlyMemory<byte> EncodeObjRef(Guid iid) => WritePayload((ref NdrWriter writer) =>
-    {
-        writer.WriteUInt32(0x574F454Du);
-        writer.WriteUInt32(0x00000001u);
-        writer.WriteGuid(iid);
-        writer.WriteUInt32(0);
-        writer.WriteUInt32(5);
-        writer.WriteUInt64(1);
-        writer.WriteUInt64(2);
-        writer.WriteGuid(Guid.NewGuid());
-        writer.WriteUInt16(0);
-        writer.WriteUInt16(0);
-    });
+        OpcMInterfacePointerCodec.Write(
+            ref writer,
+            new OpcInterfaceRef(
+                iid,
+                flags: 0,
+                publicRefs: 5,
+                oxid: 1,
+                oid: 2,
+                ipid: Guid.NewGuid(),
+                securityOffset: 0,
+                resolverBindings: [])));
 
     private static ReadOnlyMemory<byte> WritePayload(NdrWriteAction write, int capacity = 4096)
     {
