@@ -971,19 +971,52 @@ namespace Opc.Classic.Generators
     private static void EmitEncodeAndInvokeReturn(StringBuilder sb, string indent, MethodModel method, string cancellationTokenLocal, string bufferLocal, string payloadLocal, string writerLocal, string cancellationTokenValue, string decodedLocal)
     {
         string coreStartedLocal = UniqueLocalName(method.ParameterNames, "__opcCoreStarted", cancellationTokenLocal, bufferLocal, payloadLocal, writerLocal, decodedLocal);
+        string nextSizeLocal = UniqueLocalName(method.ParameterNames, "__opcNextSize", cancellationTokenLocal, bufferLocal, payloadLocal, writerLocal, decodedLocal, coreStartedLocal);
+        string nextBufferLocal = UniqueLocalName(method.ParameterNames, "__opcNextBuffer", cancellationTokenLocal, bufferLocal, payloadLocal, writerLocal, decodedLocal, coreStartedLocal, nextSizeLocal);
         sb.Append(indent).Append("        var ").Append(cancellationTokenLocal).Append(" = ").Append(cancellationTokenValue).AppendLine(";");
         EmitRequestCorrelationChecks(sb, indent + "        ", method);
         sb.Append(indent).Append("        var ").Append(bufferLocal).AppendLine(" = global::System.Buffers.ArrayPool<byte>.Shared.Rent(1024);");
         if (method.HasRefOrOutParameter) { sb.Append(indent).Append("        var ").Append(coreStartedLocal).AppendLine(" = false;"); }
-        sb.Append(indent).AppendLine("        try"); sb.Append(indent).AppendLine("        {"); sb.Append(indent).Append("            global::System.ReadOnlyMemory<byte> ").Append(payloadLocal).AppendLine(";"); sb.Append(indent).AppendLine("            {");
-        sb.Append(indent).Append("                var ").Append(writerLocal).Append(" = new global::Opc.Classic.Ndr.NdrWriter(new global::System.Span<byte>(").Append(bufferLocal).AppendLine(", 0, 1024));");
-        foreach (var parameter in method.Parameters) { if (parameter.IsRequestValue) { EmitCodecWrite(sb, indent, writerLocal, parameter, method); } }
-        sb.Append(indent).Append("                ").Append(payloadLocal).Append(" = new global::System.ReadOnlyMemory<byte>(").Append(bufferLocal).Append(", 0, ").Append(writerLocal).AppendLine(".Position);"); sb.Append(indent).AppendLine("            }");
+        sb.Append(indent).AppendLine("        try"); sb.Append(indent).AppendLine("        {"); sb.Append(indent).Append("            global::System.ReadOnlyMemory<byte> ").Append(payloadLocal).AppendLine(";");
+        EmitRequestEncodingLoop(sb, indent, method, bufferLocal, payloadLocal, writerLocal, nextSizeLocal, nextBufferLocal);
         if (method.HasRefOrOutParameter) { sb.Append(indent).Append("            ").Append(coreStartedLocal).AppendLine(" = true;"); sb.Append(indent).Append("            var ").Append(decodedLocal).Append(" = ").Append(InvokeCoreName(method)).Append("(_channel, ").Append(payloadLocal).Append(", ").Append(bufferLocal).Append(", ").Append(cancellationTokenLocal).AppendLine(").GetAwaiter().GetResult();"); EmitResponseParameterAssignments(sb, indent, method, decodedLocal); EmitPublicTaskReturn(sb, indent, method, decodedLocal); }
         else { sb.Append(indent).Append("            return ").Append(InvokeCoreName(method)).Append("(_channel, ").Append(payloadLocal).Append(", ").Append(bufferLocal).Append(", ").Append(cancellationTokenLocal).AppendLine(");"); }
         sb.Append(indent).AppendLine("        }"); sb.Append(indent).AppendLine("        catch"); sb.Append(indent).AppendLine("        {");
         if (method.HasRefOrOutParameter) { sb.Append(indent).Append("            if (!").Append(coreStartedLocal).AppendLine(")"); sb.Append(indent).AppendLine("            {"); sb.Append(indent).Append("                global::System.Buffers.ArrayPool<byte>.Shared.Return(").Append(bufferLocal).AppendLine(");"); sb.Append(indent).AppendLine("            }"); } else { sb.Append(indent).Append("            global::System.Buffers.ArrayPool<byte>.Shared.Return(").Append(bufferLocal).AppendLine(");"); }
         sb.Append(indent).AppendLine("            throw;"); sb.Append(indent).AppendLine("        }");
+    }
+
+    private static void EmitRequestEncodingLoop(
+        StringBuilder sb,
+        string indent,
+        MethodModel method,
+        string bufferLocal,
+        string payloadLocal,
+        string writerLocal,
+        string nextSizeLocal,
+        string nextBufferLocal)
+    {
+        sb.Append(indent).AppendLine("            while (true)");
+        sb.Append(indent).AppendLine("            {");
+        sb.Append(indent).AppendLine("                try");
+        sb.Append(indent).AppendLine("                {");
+        sb.Append(indent).Append("                    var ").Append(writerLocal).Append(" = new global::Opc.Classic.Ndr.NdrWriter(new global::System.Span<byte>(").Append(bufferLocal).AppendLine(", 0, global::System.Math.Min(" + bufferLocal + ".Length, global::Opc.Classic.Ndr.NdrReader.DefaultMaxPayloadSize)));");
+        foreach (var parameter in method.Parameters) { if (parameter.IsRequestValue) { EmitCodecWrite(sb, indent + "    ", writerLocal, parameter, method); } }
+        sb.Append(indent).Append("                    ").Append(payloadLocal).Append(" = new global::System.ReadOnlyMemory<byte>(").Append(bufferLocal).Append(", 0, ").Append(writerLocal).AppendLine(".Position);");
+        sb.Append(indent).AppendLine("                    break;");
+        sb.Append(indent).AppendLine("                }");
+        sb.Append(indent).AppendLine("                catch (global::Opc.Classic.Ndr.NdrBufferOverflowException)");
+        sb.Append(indent).AppendLine("                {");
+        sb.Append(indent).Append("                    if (").Append(bufferLocal).AppendLine(".Length >= global::Opc.Classic.Ndr.NdrReader.DefaultMaxPayloadSize)");
+        sb.Append(indent).AppendLine("                    {");
+        sb.Append(indent).AppendLine("                        throw;");
+        sb.Append(indent).AppendLine("                    }");
+        sb.Append(indent).Append("                    int ").Append(nextSizeLocal).Append(" = global::System.Math.Min(").Append(bufferLocal).AppendLine(".Length * 2, global::Opc.Classic.Ndr.NdrReader.DefaultMaxPayloadSize);");
+        sb.Append(indent).Append("                    var ").Append(nextBufferLocal).Append(" = global::System.Buffers.ArrayPool<byte>.Shared.Rent(").Append(nextSizeLocal).AppendLine(");");
+        sb.Append(indent).Append("                    global::System.Buffers.ArrayPool<byte>.Shared.Return(").Append(bufferLocal).AppendLine(");");
+        sb.Append(indent).Append("                    ").Append(bufferLocal).Append(" = ").Append(nextBufferLocal).AppendLine(";");
+        sb.Append(indent).AppendLine("                }");
+        sb.Append(indent).AppendLine("            }");
     }
 
     private static void EmitInvokeCoreLocalFunction(

@@ -88,6 +88,8 @@ public sealed class OpcProxyGeneratorMarshallingTests
         string method = GeneratedMethodSection("ReadCountAsync");
 
         await Assert.That(method).Contains("global::System.Buffers.ArrayPool<byte>.Shared.Rent");
+        await Assert.That(method).Contains("NdrBufferOverflowException");
+        await Assert.That(method).Contains("NdrReader.DefaultMaxPayloadSize");
         await Assert.That(method).Contains("WriteInt32(id)");
         await Assert.That(method).Contains("ReadInt32()");
     }
@@ -108,7 +110,7 @@ public sealed class OpcProxyGeneratorMarshallingTests
 
         await Assert.That(method).Contains("WriteInt32(handle)");
         await Assert.That(method).Contains("WriteDouble(value)");
-        await Assert.That(method.Contains("NdrReader", StringComparison.Ordinal)).IsFalse();
+        await Assert.That(method.Contains("new global::Opc.Classic.Ndr.NdrReader", StringComparison.Ordinal)).IsFalse();
     }
 
     [Test]
