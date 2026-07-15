@@ -63,6 +63,11 @@ if _HERE not in sys.path:
     sys.path.insert(0, _HERE)
 
 import probe_matrix
+import vendor_probe_catalog
+
+
+def reject_non_finite_json_constant(value: str) -> object:
+    raise ValueError(f"Non-finite JSON number '{value}' is forbidden.")
 
 
 LEFTOVER_PROCESS_NAMES = (
@@ -116,7 +121,7 @@ DEFAULT_PROFILE_EXCLUSIONS: frozenset[str] = frozenset()
 # `kind` is the probe-args bucket (--<kind>-clsid / --<kind>-progid). For
 # DA-class profiles this is "da"; for HDA "hda"; for AE "ae".
 
-PROFILE_TARGETS: dict[str, dict[str, str]] = {
+PROFILE_TARGETS: dict[str, dict[str, object]] = {
     "testserver": {
         "kind": "da",
         "clsid": "F8582CF9-88FB-11DA-A5ED-0060B0692061",
@@ -169,6 +174,16 @@ PROFILE_TARGETS: dict[str, dict[str, str]] = {
         "progid": "Opc.Classic.Samples.OpcSecurityServer.1",
     },
 }
+
+for _vendor_profile in vendor_probe_catalog.PROFILE_IDS:
+    _, _vendor_descriptor = vendor_probe_catalog.load_descriptor(_vendor_profile)
+    _vendor_target = _vendor_descriptor["target"]
+    PROFILE_TARGETS[_vendor_profile] = {
+        "kind": _vendor_target["kind"],
+        "clsid": _vendor_target["clsid"],
+        "progid": _vendor_target["progid"],
+        "descriptor": _vendor_descriptor,
+    }
 
 
 def parse_args() -> argparse.Namespace:
@@ -531,8 +546,8 @@ def _resolve_server_path(raw: str | None) -> str | None:
     return text if space < 0 else text[:space]
 
 
-def _skipped_entry(profile: str, clsid: str, target: dict[str, str], kind: str, reason: str) -> dict[str, object]:
-    return {
+def _skipped_entry(profile: str, clsid: str, target: dict[str, object], kind: str, reason: str) -> dict[str, object]:
+    entry: dict[str, object] = {
         "profile": profile,
         "clsid": clsid,
         "progid": target["progid"],
@@ -542,13 +557,37 @@ def _skipped_entry(profile: str, clsid: str, target: dict[str, str], kind: str, 
         "skipped": True,
         "skip_reason": reason,
     }
+    descriptor = target.get("descriptor")
+    if isinstance(descriptor, dict):
+        entry.update(vendor_probe_catalog.report_metadata(descriptor))
+        entry["raw_results"] = vendor_probe_catalog.external_prerequisite_results(
+            descriptor, dict(os.environ))
+    return entry
 
 
 def run_profile(args: argparse.Namespace, profile: str, overrides: dict[str, str]) -> dict[str, object]:
     target = PROFILE_TARGETS[profile]
-    kind = target["kind"]
-    clsid = overrides.get(profile, target["clsid"])
+    kind = str(target["kind"])
+    clsid = overrides.get(profile, str(target["clsid"]))
     connection_string = target.get("connection_string")
+    descriptor = target.get("descriptor")
+
+    if isinstance(descriptor, dict):
+        preflight = vendor_probe_catalog.external_prerequisite_results(
+            descriptor, dict(os.environ))
+        if any(row["verdict"] == "BLOCKED" for row in preflight):
+            codes = ", ".join(
+                str(row["actual"]["code"])
+                for row in preflight
+                if row["verdict"] == "BLOCKED"
+            )
+            return _skipped_entry(
+                profile,
+                clsid,
+                target,
+                kind,
+                f"Descriptor external artifact prerequisite is BLOCKED: {codes}.",
+            )
 
     # Pre-flight: profiles that activate via DCOM need their CLSID
     # registered in HKLM (or HKCU when our managed activation stack is
@@ -603,7 +642,14 @@ def run_profile(args: argparse.Namespace, profile: str, overrides: dict[str, str
     elif args.use_clsid:
         cmd += [f"--{kind}-clsid", clsid]
     else:
-        cmd += [f"--{kind}-progid", target["progid"]]
+        cmd += [f"--{kind}-progid", str(target["progid"])]
+    if isinstance(descriptor, dict):
+        for scenario in vendor_probe_catalog.selected_probe_scenarios(descriptor):
+            cmd += [
+                "--probe-scenario",
+                f"{scenario['probeId']}={scenario['tool']}",
+            ]
+        cmd += vendor_probe_catalog.final_probe_arguments(descriptor)
     if args.username:
         cmd += ["--username", args.username]
     if args.password is not None:
@@ -640,8 +686,11 @@ def run_profile(args: argparse.Namespace, profile: str, overrides: dict[str, str
         stop_tcp_listener_sample(sample_listener, profile)
 
     try:
-        payload = json.loads(result.stdout)
-    except json.JSONDecodeError as ex:
+        payload = json.loads(
+            result.stdout,
+            parse_constant=reject_non_finite_json_constant,
+        )
+    except (json.JSONDecodeError, ValueError) as ex:
         # stderr was streamed live; we don't have it to include in the
         # fatal record, but the operator saw it on their terminal.
         return {
@@ -651,6 +700,27 @@ def run_profile(args: argparse.Namespace, profile: str, overrides: dict[str, str
             "regressions": [],
             "fatal": f"non-JSON probe output: {ex}. See the live stderr above for details.",
         }
+
+    if isinstance(descriptor, dict):
+        metadata = vendor_probe_catalog.report_metadata(descriptor)
+        for row in payload:
+            if not isinstance(row, dict):
+                continue
+            row.update(metadata)
+            probe_id = row.get("probeId")
+            probe = next(
+                (
+                    value for value in descriptor["probes"]
+                    if value["id"] == probe_id
+                ),
+                None,
+            )
+            if probe is not None:
+                verdict, actual = vendor_probe_catalog.evaluate_probe_result(
+                    probe, row)
+                row["expected"] = probe["expected"]
+                row["actual"] = actual
+                row["verdict"] = verdict
 
     totals = probe_matrix.summarize_verdicts(payload)
     regressions = [
@@ -662,7 +732,7 @@ def run_profile(args: argparse.Namespace, profile: str, overrides: dict[str, str
         for row in payload
         if isinstance(row, dict) and row.get("verdict") == "REGRESSION"
     ]
-    return {
+    entry: dict[str, object] = {
         "profile": profile,
         "clsid": clsid,
         "progid": target["progid"],
@@ -672,6 +742,9 @@ def run_profile(args: argparse.Namespace, profile: str, overrides: dict[str, str
         "probe_exit_code": result.returncode,
         "raw_results": payload,
     }
+    if isinstance(descriptor, dict):
+        entry.update(vendor_probe_catalog.report_metadata(descriptor))
+    return entry
 
 
 def main() -> int:

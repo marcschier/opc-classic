@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import math
 import os
 import queue
 import shutil
@@ -67,13 +68,19 @@ class McpClient:
         assert self._stdout is not None
         for line in iter(self._stdout.readline, b""):
             try:
-                self._responses.put(json.loads(line.decode("utf-8")))
+                self._responses.put(json.loads(
+                    line.decode("utf-8"),
+                    parse_constant=reject_non_finite_json_constant,
+                ))
             except Exception as ex:
                 self._responses.put(ex)
         self._responses.put(EOFError("MCP server closed stdout."))
 
     def _send(self, payload: dict[str, Any]) -> None:
-        encoded = (json.dumps(payload, separators=(",", ":")) + "\n").encode("utf-8")
+        require_finite_numbers(payload, "$")
+        encoded = (
+            json.dumps(payload, separators=(",", ":"), allow_nan=False) + "\n"
+        ).encode("utf-8")
         with self._lock:
             assert self._stdin is not None
             self._stdin.write(encoded)
@@ -145,7 +152,10 @@ def unwrap_tool_result(envelope: Any) -> Any:
         if isinstance(first, dict) and first.get("type") == "text":
             text = first.get("text") or ""
             try:
-                return json.loads(text)
+                return json.loads(
+                    text,
+                    parse_constant=reject_non_finite_json_constant,
+                )
             except json.JSONDecodeError:
                 return text
     return envelope
@@ -203,19 +213,54 @@ class ProbeRunner:
         # implicitly because every other tool requires a session + a connected
         # client, so they must run first regardless of filter.
         probe_filter: set[str] | None = None
+        scenarios_by_tool: dict[str, list[str]] = {}
+        for probe_id, tool_name in getattr(self.args, "probe_scenarios", ()):
+            scenarios_by_tool.setdefault(tool_name, []).append(probe_id)
         if getattr(self.args, "probe", None):
             requested = set(self.args.probe)
             probe_filter = set(requested)
             probe_filter.add("opcclassic.session.create")
             for kind in ("da", "hda", "ae", "batch", "commands", "dx"):
                 probe_filter.add(f"opcclassic.{kind}.connect")
+        elif scenarios_by_tool:
+            requested = set(scenarios_by_tool)
+            probe_filter = set(requested)
+            probe_filter.add("opcclassic.session.create")
+            for kind in ("da", "hda", "ae", "batch", "commands", "dx"):
+                if any(name.startswith(f"opcclassic.{kind}.") for name in requested):
+                    probe_filter.add(f"opcclassic.{kind}.connect")
+            if any(name in requested for name in (
+                "opcclassic.da.read_sync",
+                "opcclassic.da.write_sync",
+                "opcclassic.da.subscribe",
+                "opcclassic.da.poll_subscription",
+            )):
+                probe_filter.update({
+                    "opcclassic.da.add_group",
+                    "opcclassic.da.add_items",
+                })
+            if "opcclassic.da.poll_subscription" in requested:
+                probe_filter.add("opcclassic.da.subscribe")
 
-        for spec in probe_specs():
+        specs = probe_specs()
+        last_scenario_spec = {
+            spec.name: index
+            for index, spec in enumerate(specs)
+            if spec.name in scenarios_by_tool
+        }
+        for index, spec in enumerate(specs):
             if probe_filter is not None and spec.name not in probe_filter:
                 continue
             if spec.name in exposed_set:
                 covered.append(spec.name)
-                self.probe(spec)
+                scenario_ids = scenarios_by_tool.get(spec.name)
+                if scenario_ids:
+                    if last_scenario_spec[spec.name] != index:
+                        continue
+                    for probe_id in scenario_ids:
+                        self.probe(spec, probe_id)
+                else:
+                    self.probe(spec)
 
         # The schema-driven auto-probe loop is the safety net for tools that
         # don't have a curated spec. Skip it when --probe was supplied so the
@@ -229,21 +274,28 @@ class ProbeRunner:
 
         return self.results
 
-    def probe(self, spec: ProbeSpec) -> None:
+    def probe(self, spec: ProbeSpec, probe_id: str | None = None) -> None:
         try:
             arguments = spec.args(self)
         except Exception as ex:
             arguments = {}
-            self.results.append(make_result(spec.name, arguments, False, first_line(str(ex)), ""))
+            self.results.append(make_result(
+                spec.name, arguments, False, first_line(str(ex)), "",
+                probe_id=probe_id))
             return
 
         try:
+            require_finite_numbers(arguments, f"{spec.name}.arguments")
             value = self.client.call_tool(spec.name, arguments)
-            self.results.append(make_result(spec.name, arguments, True, None, summarize(value)))
+            self.results.append(make_result(
+                spec.name, arguments, True, None, summarize(value),
+                result=value, probe_id=probe_id))
             if spec.after is not None:
                 spec.after(self, value)
         except Exception as ex:
-            self.results.append(make_result(spec.name, arguments, False, first_line(str(ex)), ""))
+            self.results.append(make_result(
+                spec.name, arguments, False, first_line(str(ex)), "",
+                probe_id=probe_id))
 
     def dcom_args(self, kind: str, include_sso: bool = False) -> dict[str, Any]:
         result: dict[str, Any] = {"sessionId": self.session_id, "host": self.args.host}
@@ -379,15 +431,15 @@ def probe_specs() -> list[ProbeSpec]:
         ProbeSpec("opcclassic.da.connect", lambda r: r.dcom_args("da", include_sso=True)),
         ProbeSpec("opcclassic.da.get_status", sid),
         ProbeSpec("opcclassic.da.browse", lambda r: {**sid(r), "itemId": "", "browseFilter": "all"}),
-        ProbeSpec("opcclassic.da.browse", lambda r: {**sid(r), "itemId": r.args.da_browse_branch, "browseFilter": "leaf"}),
+        ProbeSpec("opcclassic.da.browse", lambda r: {**sid(r), "itemId": r.args.da_browse_branch, "browseFilter": r.args.da_browse_filter}),
         ProbeSpec("opcclassic.da.get_properties", lambda r: {**sid(r), "itemIds": [r.args.da_read_item], "returnValues": True}),
         ProbeSpec("opcclassic.da.read_items_by_id", lambda r: {**sid(r), "itemIds": [r.args.da_read_item], "maxAges": [0]}),
-        ProbeSpec("opcclassic.da.add_group", lambda r: {**sid(r), "name": r.args.da_group_name, "active": True, "updateRateMs": 500}, after_da_add_group),
-        ProbeSpec("opcclassic.da.add_items", lambda r: {**sid(r), "groupHandle": r.da_group_handle, "itemIds": [r.args.da_bucket_int_item, r.args.da_bucket_string_item], "clientHandles": [1, 2], "active": True}, after_da_add_items),
-        ProbeSpec("opcclassic.da.read_sync", lambda r: {**sid(r), "groupHandle": r.da_group_handle, "serverHandles": r.da_item_handles, "fromCache": False}),
-        ProbeSpec("opcclassic.da.write_sync", lambda r: {**sid(r), "groupHandle": r.da_group_handle, "serverHandles": r.da_item_handles, "values": [r.args.da_write_int, r.args.da_write_string][:len(r.da_item_handles)]}),
-        ProbeSpec("opcclassic.da.subscribe", lambda r: {**sid(r), "groupHandle": r.da_group_handle, "fromCache": True}, after_subscription("da_subscription_id")),
-        ProbeSpec("opcclassic.da.poll_subscription", lambda r: {**sid(r), "subscriptionId": r.da_subscription_id, "maxNotifications": 0}),
+        ProbeSpec("opcclassic.da.add_group", lambda r: {**sid(r), "name": r.args.da_group_name, "active": r.args.da_group_active, "updateRateMs": r.args.da_update_rate_ms}, after_da_add_group),
+        ProbeSpec("opcclassic.da.add_items", lambda r: {**sid(r), "groupHandle": r.da_group_handle, "itemIds": r.args.da_item_ids, "clientHandles": r.args.da_client_handles, "active": True}, after_da_add_items),
+        ProbeSpec("opcclassic.da.read_sync", lambda r: {**sid(r), "groupHandle": r.da_group_handle, "serverHandles": r.da_item_handles, "fromCache": r.args.da_read_from_cache}),
+        ProbeSpec("opcclassic.da.write_sync", lambda r: {**sid(r), "groupHandle": r.da_group_handle, "serverHandles": r.da_item_handles, "values": r.args.da_write_values[:len(r.da_item_handles)]}),
+        ProbeSpec("opcclassic.da.subscribe", lambda r: {**sid(r), "groupHandle": r.da_group_handle, "fromCache": r.args.da_subscription_from_cache}, after_subscription("da_subscription_id")),
+        ProbeSpec("opcclassic.da.poll_subscription", lambda r: {**sid(r), "subscriptionId": r.da_subscription_id, "maxNotifications": r.args.da_max_notifications}),
         ProbeSpec("opcclassic.da.get_error_string", lambda r: {**sid(r), "hresult": 0, "localeId": 0}),
 
         ProbeSpec("opcclassic.security.is_available_nt", sid),
@@ -611,14 +663,27 @@ def handles_from_results(value: Any) -> list[int]:
     return handles
 
 
-def make_result(tool: str, arguments: dict[str, Any], success: bool, error: Optional[str], summary: str) -> dict[str, Any]:
-    return {
+def make_result(
+    tool: str,
+    arguments: dict[str, Any],
+    success: bool,
+    error: Optional[str],
+    summary: str,
+    result: Any = None,
+    probe_id: str | None = None,
+) -> dict[str, Any]:
+    row = {
         "tool": tool,
         "args": redact(arguments),
         "success": success,
         "error": error,
         "summary": one_line(summary),
     }
+    if success:
+        row["result"] = redact(result)
+    if probe_id is not None:
+        row["probeId"] = probe_id
+    return row
 
 
 def npcap_available_from_results(results: list[dict[str, Any]]) -> bool:
@@ -732,6 +797,43 @@ def default_for_schema(schema: dict[str, Any]) -> Any:
     return ""
 
 
+def reject_non_finite_json_constant(value: str) -> Any:
+    raise ValueError(f"Non-finite JSON number '{value}' is forbidden.")
+
+
+def require_finite_numbers(value: Any, path: str) -> None:
+    if isinstance(value, float) and not math.isfinite(value):
+        raise ValueError(f"{path}: non-finite numeric values are forbidden.")
+    if isinstance(value, dict):
+        for key, child in value.items():
+            require_finite_numbers(child, f"{path}.{key}")
+    elif isinstance(value, list):
+        for index, child in enumerate(value):
+            require_finite_numbers(child, f"{path}[{index}]")
+
+
+def parse_probe_scenario(value: str) -> tuple[str, str]:
+    if "=" not in value:
+        raise argparse.ArgumentTypeError("expected PROBE_ID=TOOL_NAME")
+    probe_id, tool_name = value.split("=", 1)
+    if (
+        not probe_id
+        or not all(character.isalnum() or character == "-" for character in probe_id)
+        or not tool_name.startswith("opcclassic.")
+    ):
+        raise argparse.ArgumentTypeError(
+            "expected kebab-case PROBE_ID and opcclassic.* TOOL_NAME")
+    return probe_id, tool_name
+
+
+def parse_bool(value: str) -> bool:
+    if value.casefold() == "true":
+        return True
+    if value.casefold() == "false":
+        return False
+    raise argparse.ArgumentTypeError("expected true or false")
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Probe Opc.Classic MCP tools and emit JSON results to stdout.")
     parser.add_argument("--host", default="localhost")
@@ -778,10 +880,29 @@ def parse_args() -> argparse.Namespace:
              "is executed. Example: --probe opcclassic.da.get_status "
              "--probe opcclassic.da.get_properties.",
     )
+    parser.add_argument(
+        "--probe-scenario",
+        action="append",
+        type=parse_probe_scenario,
+        dest="probe_scenarios",
+        default=None,
+        metavar="PROBE_ID=TOOL_NAME",
+        help="Execute a descriptor probe with a stable report identity. May "
+             "be repeated, including multiple probe IDs for the same tool.",
+    )
 
     parser.add_argument("--da-browse-branch", default="Random")
+    parser.add_argument("--da-browse-filter", choices=["all", "branch", "leaf"], default="leaf")
     parser.add_argument("--da-read-item", default="Random.Int4")
     parser.add_argument("--da-group-name", default="BB")
+    parser.add_argument("--da-group-active", type=parse_bool, default=True)
+    parser.add_argument("--da-update-rate-ms", type=int, default=500)
+    parser.add_argument("--da-item-id", action="append", default=None)
+    parser.add_argument("--da-client-handle", action="append", type=int, default=None)
+    parser.add_argument("--da-read-from-cache", type=parse_bool, default=False)
+    parser.add_argument("--da-subscription-from-cache", type=parse_bool, default=True)
+    parser.add_argument("--da-max-notifications", type=int, default=0)
+    parser.add_argument("--da-write-value-json", action="append", default=None)
     parser.add_argument("--da-bucket-int-item", default="Bucket Brigade.Int4")
     parser.add_argument("--da-bucket-string-item", default="Bucket Brigade.String")
     parser.add_argument("--da-write-int", type=int, default=12345)
@@ -807,6 +928,34 @@ def parse_args() -> argparse.Namespace:
     has_target = any(getattr(args, f"{kind}_clsid") or getattr(args, f"{kind}_progid") or getattr(args, f"{kind}_connection_string") for kind in ("da", "hda", "ae"))
     if not (args.clsid or args.progid or args.connection_string or has_target):
         parser.error("supply --clsid, --progid, --connection-string, or DA/HDA/AE-specific target options")
+    args.da_item_ids = args.da_item_id or [
+        args.da_bucket_int_item,
+        args.da_bucket_string_item,
+    ]
+    args.da_client_handles = args.da_client_handle or list(
+        range(1, len(args.da_item_ids) + 1))
+    if len(args.da_client_handles) != len(args.da_item_ids):
+        parser.error("--da-client-handle count must match --da-item-id count")
+    if args.da_write_value_json:
+        try:
+            args.da_write_values = [
+                json.loads(
+                    value,
+                    parse_constant=reject_non_finite_json_constant,
+                )
+                for value in args.da_write_value_json
+            ]
+        except (json.JSONDecodeError, ValueError) as exception:
+            parser.error(f"invalid --da-write-value-json: {exception}")
+    else:
+        args.da_write_values = [args.da_write_int, args.da_write_string]
+    if len(args.da_write_values) < len(args.da_item_ids):
+        parser.error(
+            "--da-write-value-json must provide at least one value per DA item")
+    try:
+        require_finite_numbers(vars(args), "$.arguments")
+    except ValueError as exception:
+        parser.error(str(exception))
     args.use_sso = not args.no_sso and not (args.username or args.password)
     return args
 

@@ -1,0 +1,637 @@
+{
+  "schemaVersion": "1.0",
+  "id": "generic-opc-classic-template",
+  "vendor": "Operator supplied vendor",
+  "product": "Operator supplied OPC Classic server",
+  "target": {
+    "kind": "da",
+    "progid": "Template.OPC.Classic.1",
+    "clsid": "00000000-0000-0000-0000-000000000001"
+  },
+  "capabilities": [
+    "activation",
+    "optional-interface-query",
+    "group-lifecycle",
+    "callbacks",
+    "deadband",
+    "sampling",
+    "browse-variants",
+    "property-variants",
+    "sync-read",
+    "sync-write",
+    "async-read",
+    "async-write",
+    "reconnect",
+    "failover",
+    "ae-subscription",
+    "ae-filter",
+    "ae-returned-attributes",
+    "ae-refresh",
+    "ae-cancel-refresh",
+    "ae-condition-state",
+    "hda-browser",
+    "hda-read-raw",
+    "hda-read-processed",
+    "hda-read-modified",
+    "hda-annotations",
+    "hda-advise",
+    "hda-playback",
+    "hda-aggregates",
+    "hda-relative-time",
+    "wire-fixtures"
+  ],
+  "prerequisites": [
+    {
+      "id": "external-product",
+      "description": "Operator supplies, licenses, installs, and registers this external product.",
+      "required": true,
+      "artifact": {
+        "rootToken": "OPC_VENDOR_INSTALL_ROOT",
+        "relativePath": "server.exe"
+      }
+    }
+  ],
+  "arguments": {
+    "da": {
+      "browseBranch": "",
+      "browseFilter": "all",
+      "groupName": "OpcClassicVendorProbe",
+      "active": true,
+      "updateRateMs": 500,
+      "itemIds": [
+        "Vendor.Writable"
+      ],
+      "clientHandles": [
+        1
+      ],
+      "fromCache": false,
+      "writeValues": [
+        1
+      ],
+      "maxNotifications": 10
+    },
+    "ae": {
+      "source": "Vendor.Source",
+      "condition": "Vendor.Condition",
+      "returnedAttributeIds": [
+        1,
+        2
+      ],
+      "refreshWaitMs": 1000
+    },
+    "hda": {
+      "itemId": "Vendor.History",
+      "startTime": "NOW-1H",
+      "endTime": "NOW",
+      "atTime": "NOW-5M",
+      "aggregateId": 1,
+      "resampleIntervalSeconds": 60
+    }
+  },
+  "fixtures": [
+    {
+      "id": "da-malformed",
+      "specification": "da",
+      "variant": "malformed",
+      "path": "fixtures/da-malformed.hex",
+      "encoding": "hex",
+      "redistributable": true,
+      "expectedDecode": "failure"
+    },
+    {
+      "id": "da-truncated",
+      "specification": "da",
+      "variant": "truncated",
+      "path": "fixtures/da-truncated.hex",
+      "encoding": "hex",
+      "redistributable": true,
+      "expectedDecode": "failure"
+    },
+    {
+      "id": "da-vendor-extension",
+      "specification": "da",
+      "variant": "vendor-extension",
+      "path": "fixtures/da-vendor-extension.hex",
+      "encoding": "hex",
+      "redistributable": true,
+      "expectedDecode": "success"
+    },
+    {
+      "id": "ae-condition-state-standard",
+      "specification": "ae",
+      "variant": "standard",
+      "path": "fixtures/ae-condition-state-standard.hex",
+      "encoding": "hex",
+      "redistributable": true,
+      "expectedDecode": "success"
+    },
+    {
+      "id": "ae-condition-state-empty",
+      "specification": "ae",
+      "variant": "empty",
+      "path": "fixtures/ae-condition-state-empty.hex",
+      "encoding": "hex",
+      "redistributable": true,
+      "expectedDecode": "success"
+    },
+    {
+      "id": "ae-condition-state-truncated",
+      "specification": "ae",
+      "variant": "truncated",
+      "path": "fixtures/ae-condition-state-truncated.hex",
+      "encoding": "hex",
+      "redistributable": true,
+      "expectedDecode": "failure"
+    },
+    {
+      "id": "ae-condition-state-vendor-extension",
+      "specification": "ae",
+      "variant": "vendor-extension",
+      "path": "fixtures/ae-condition-state-vendor-extension.hex",
+      "encoding": "hex",
+      "redistributable": true,
+      "expectedDecode": "success"
+    },
+    {
+      "id": "hda-relative-time-standard",
+      "specification": "hda",
+      "variant": "standard",
+      "path": "fixtures/hda-relative-time-standard.hex",
+      "encoding": "hex",
+      "redistributable": true,
+      "expectedDecode": "success"
+    },
+    {
+      "id": "hda-relative-time-vendor-extension",
+      "specification": "hda",
+      "variant": "vendor-extension",
+      "path": "fixtures/hda-relative-time-vendor-extension.hex",
+      "encoding": "hex",
+      "redistributable": true,
+      "expectedDecode": "success"
+    }
+  ],
+  "probes": [
+    {
+      "id": "da-optional-interface-query",
+      "type": "da-query-interface",
+      "requires": [
+        "optional-interface-query"
+      ],
+      "expected": {
+        "outcome": "success"
+      },
+      "expectedFailures": []
+    },
+    {
+      "id": "da-group-lifecycle",
+      "type": "da-group-lifecycle",
+      "requires": [
+        "group-lifecycle"
+      ],
+      "expected": {
+        "outcome": "success"
+      },
+      "expectedFailures": [],
+      "tool": "opcclassic.da.add_group"
+    },
+    {
+      "id": "da-callbacks",
+      "type": "da-callback",
+      "requires": [
+        "callbacks"
+      ],
+      "expected": {
+        "outcome": "success"
+      },
+      "expectedFailures": [],
+      "tool": "opcclassic.da.poll_subscription"
+    },
+    {
+      "id": "da-deadband",
+      "type": "da-deadband",
+      "requires": [
+        "deadband"
+      ],
+      "expected": {
+        "outcome": "success"
+      },
+      "expectedFailures": []
+    },
+    {
+      "id": "da-sampling",
+      "type": "da-sampling",
+      "requires": [
+        "sampling"
+      ],
+      "expected": {
+        "outcome": "success"
+      },
+      "expectedFailures": []
+    },
+    {
+      "id": "da-browse-variants",
+      "type": "da-browse",
+      "requires": [
+        "browse-variants"
+      ],
+      "expected": {
+        "outcome": "success"
+      },
+      "expectedFailures": [],
+      "tool": "opcclassic.da.browse"
+    },
+    {
+      "id": "da-property-variants",
+      "type": "da-properties",
+      "requires": [
+        "property-variants"
+      ],
+      "expected": {
+        "outcome": "success"
+      },
+      "expectedFailures": [],
+      "tool": "opcclassic.da.get_properties"
+    },
+    {
+      "id": "da-sync-read",
+      "type": "da-sync-read",
+      "requires": [
+        "sync-read"
+      ],
+      "expected": {
+        "outcome": "success"
+      },
+      "expectedFailures": [],
+      "tool": "opcclassic.da.read_sync"
+    },
+    {
+      "id": "da-sync-write",
+      "type": "da-sync-write",
+      "requires": [
+        "sync-write"
+      ],
+      "expected": {
+        "outcome": "success",
+        "itemId": "Vendor.Writable",
+        "hResult": "0x00000000"
+      },
+      "expectedFailures": [],
+      "tool": "opcclassic.da.write_sync"
+    },
+    {
+      "id": "da-async-read",
+      "type": "da-async-read",
+      "requires": [
+        "async-read"
+      ],
+      "expected": {
+        "outcome": "success"
+      },
+      "expectedFailures": []
+    },
+    {
+      "id": "da-async-write",
+      "type": "da-async-write",
+      "requires": [
+        "async-write"
+      ],
+      "expected": {
+        "outcome": "success"
+      },
+      "expectedFailures": []
+    },
+    {
+      "id": "da-reconnect",
+      "type": "da-reconnect",
+      "requires": [
+        "reconnect"
+      ],
+      "expected": {
+        "outcome": "success"
+      },
+      "expectedFailures": [],
+      "tool": "opcclassic.da.connect"
+    },
+    {
+      "id": "da-failover",
+      "type": "da-failover",
+      "requires": [
+        "failover"
+      ],
+      "expected": {
+        "outcome": "success"
+      },
+      "expectedFailures": []
+    },
+    {
+      "id": "ae-subscription",
+      "type": "ae-subscription",
+      "requires": [
+        "ae-subscription"
+      ],
+      "expected": {
+        "outcome": "success"
+      },
+      "expectedFailures": [],
+      "tool": "opcclassic.ae.create_subscription"
+    },
+    {
+      "id": "ae-filter",
+      "type": "ae-filter",
+      "requires": [
+        "ae-filter"
+      ],
+      "expected": {
+        "outcome": "success"
+      },
+      "expectedFailures": [],
+      "tool": "opcclassic.ae.set_filter"
+    },
+    {
+      "id": "ae-returned-attributes",
+      "type": "ae-returned-attributes",
+      "requires": [
+        "ae-returned-attributes"
+      ],
+      "expected": {
+        "outcome": "success"
+      },
+      "expectedFailures": [],
+      "tool": "opcclassic.ae.query_event_attributes"
+    },
+    {
+      "id": "ae-refresh",
+      "type": "ae-refresh",
+      "requires": [
+        "ae-refresh"
+      ],
+      "expected": {
+        "outcome": "success"
+      },
+      "expectedFailures": [],
+      "tool": "opcclassic.ae.refresh_subscription"
+    },
+    {
+      "id": "ae-cancel-refresh",
+      "type": "ae-cancel-refresh",
+      "requires": [
+        "ae-cancel-refresh"
+      ],
+      "expected": {
+        "outcome": "success"
+      },
+      "expectedFailures": [],
+      "tool": "opcclassic.ae.cancel_subscription"
+    },
+    {
+      "id": "ae-condition-state",
+      "type": "ae-condition-state",
+      "requires": [
+        "ae-condition-state"
+      ],
+      "expected": {
+        "outcome": "success"
+      },
+      "expectedFailures": [],
+      "tool": "opcclassic.ae.get_condition_state"
+    },
+    {
+      "id": "hda-browser",
+      "type": "hda-browser",
+      "requires": [
+        "hda-browser"
+      ],
+      "expected": {
+        "outcome": "success"
+      },
+      "expectedFailures": [],
+      "tool": "opcclassic.hda.browse"
+    },
+    {
+      "id": "hda-raw-read",
+      "type": "hda-read-raw",
+      "requires": [
+        "hda-read-raw"
+      ],
+      "expected": {
+        "outcome": "success"
+      },
+      "expectedFailures": [],
+      "tool": "opcclassic.hda.read_raw"
+    },
+    {
+      "id": "hda-processed-read",
+      "type": "hda-read-processed",
+      "requires": [
+        "hda-read-processed"
+      ],
+      "expected": {
+        "outcome": "success"
+      },
+      "expectedFailures": [],
+      "tool": "opcclassic.hda.read_processed"
+    },
+    {
+      "id": "hda-modified-read",
+      "type": "hda-read-modified",
+      "requires": [
+        "hda-read-modified"
+      ],
+      "expected": {
+        "outcome": "success"
+      },
+      "expectedFailures": [],
+      "tool": "opcclassic.hda.read_modified"
+    },
+    {
+      "id": "hda-annotations",
+      "type": "hda-annotations",
+      "requires": [
+        "hda-annotations"
+      ],
+      "expected": {
+        "outcome": "success"
+      },
+      "expectedFailures": [],
+      "tool": "opcclassic.hda.read_annotations"
+    },
+    {
+      "id": "hda-advise",
+      "type": "hda-advise",
+      "requires": [
+        "hda-advise"
+      ],
+      "expected": {
+        "outcome": "success"
+      },
+      "expectedFailures": []
+    },
+    {
+      "id": "hda-playback",
+      "type": "hda-playback",
+      "requires": [
+        "hda-playback"
+      ],
+      "expected": {
+        "outcome": "success"
+      },
+      "expectedFailures": []
+    },
+    {
+      "id": "hda-aggregates",
+      "type": "hda-aggregates",
+      "requires": [
+        "hda-aggregates"
+      ],
+      "expected": {
+        "outcome": "success"
+      },
+      "expectedFailures": [],
+      "tool": "opcclassic.hda.get_aggregates"
+    },
+    {
+      "id": "hda-aggregate-vendor-defined",
+      "type": "hda-aggregates",
+      "requires": [
+        "hda-aggregates"
+      ],
+      "tool": "opcclassic.hda.get_aggregates",
+      "expected": {
+        "outcome": "success",
+        "minimumCount": 1
+      },
+      "expectedFailures": []
+    },
+    {
+      "id": "hda-relative-time",
+      "type": "hda-relative-time",
+      "requires": [
+        "hda-relative-time"
+      ],
+      "expected": {
+        "outcome": "success"
+      },
+      "expectedFailures": [],
+      "tool": "opcclassic.hda.read_at_time"
+    },
+    {
+      "id": "da-malformed-decode",
+      "type": "fixture-decode",
+      "requires": [
+        "wire-fixtures"
+      ],
+      "expected": {
+        "outcome": "success"
+      },
+      "expectedFailures": [],
+      "fixtureId": "da-malformed"
+    },
+    {
+      "id": "da-truncated-decode",
+      "type": "fixture-decode",
+      "requires": [
+        "wire-fixtures"
+      ],
+      "expected": {
+        "outcome": "success"
+      },
+      "expectedFailures": [],
+      "fixtureId": "da-truncated"
+    },
+    {
+      "id": "da-vendor-extension-decode",
+      "type": "fixture-decode",
+      "requires": [
+        "wire-fixtures"
+      ],
+      "expected": {
+        "outcome": "success"
+      },
+      "expectedFailures": [],
+      "fixtureId": "da-vendor-extension"
+    },
+    {
+      "id": "ae-condition-state-standard-decode",
+      "type": "fixture-decode",
+      "requires": [
+        "wire-fixtures",
+        "ae-condition-state"
+      ],
+      "expected": {
+        "outcome": "success"
+      },
+      "expectedFailures": [],
+      "fixtureId": "ae-condition-state-standard"
+    },
+    {
+      "id": "ae-condition-state-empty-decode",
+      "type": "fixture-decode",
+      "requires": [
+        "wire-fixtures",
+        "ae-condition-state"
+      ],
+      "expected": {
+        "outcome": "success"
+      },
+      "expectedFailures": [],
+      "fixtureId": "ae-condition-state-empty"
+    },
+    {
+      "id": "ae-condition-state-truncated-decode",
+      "type": "fixture-decode",
+      "requires": [
+        "wire-fixtures",
+        "ae-condition-state"
+      ],
+      "expected": {
+        "outcome": "success"
+      },
+      "expectedFailures": [],
+      "fixtureId": "ae-condition-state-truncated"
+    },
+    {
+      "id": "ae-condition-state-vendor-extension-decode",
+      "type": "fixture-decode",
+      "requires": [
+        "wire-fixtures",
+        "ae-condition-state"
+      ],
+      "expected": {
+        "outcome": "success"
+      },
+      "expectedFailures": [],
+      "fixtureId": "ae-condition-state-vendor-extension"
+    },
+    {
+      "id": "hda-relative-time-standard-decode",
+      "type": "fixture-decode",
+      "requires": [
+        "wire-fixtures",
+        "hda-relative-time"
+      ],
+      "expected": {
+        "outcome": "success"
+      },
+      "expectedFailures": [],
+      "fixtureId": "hda-relative-time-standard"
+    },
+    {
+      "id": "hda-relative-time-vendor-extension-decode",
+      "type": "fixture-decode",
+      "requires": [
+        "wire-fixtures",
+        "hda-relative-time"
+      ],
+      "expected": {
+        "outcome": "success"
+      },
+      "expectedFailures": [],
+      "fixtureId": "hda-relative-time-vendor-extension"
+    }
+  ],
+  "legal": {
+    "redistributionAllowed": true,
+    "sourceUrl": "https://github.com/marcschier/opc-classic"
+  }
+}

@@ -1,0 +1,295 @@
+{
+  "schemaVersion": "1.0",
+  "id": "opc-foundation-testserver",
+  "vendor": "OPC Foundation",
+  "product": "OPC Classic TestServer x64",
+  "target": {
+    "kind": "da",
+    "progid": "OpcTestServer_x64.1",
+    "clsid": "F8582CF9-88FB-11DA-A5ED-0060B0692061"
+  },
+  "capabilities": [
+    "activation",
+    "optional-interface-query",
+    "group-lifecycle",
+    "callbacks",
+    "deadband",
+    "sampling",
+    "browse-variants",
+    "property-variants",
+    "sync-read",
+    "sync-write",
+    "async-read",
+    "async-write",
+    "reconnect",
+    "failover",
+    "wire-fixtures"
+  ],
+  "prerequisites": [
+    {
+      "id": "external-product",
+      "description": "Operator supplies, licenses, installs, and registers this external product.",
+      "required": true,
+      "artifact": {
+        "rootToken": "OPC_TESTSERVER_INSTALL_ROOT",
+        "relativePath": "OpcTestServer_x64.exe"
+      }
+    }
+  ],
+  "arguments": {
+    "da": {
+      "browseBranch": "",
+      "browseFilter": "all",
+      "groupName": "OpcClassicVendorProbe",
+      "active": true,
+      "updateRateMs": 500,
+      "itemIds": [
+        "Test.Int32"
+      ],
+      "clientHandles": [
+        1
+      ],
+      "fromCache": false,
+      "writeValues": [
+        42
+      ],
+      "maxNotifications": 10
+    }
+  },
+  "fixtures": [
+    {
+      "id": "da-malformed",
+      "specification": "da",
+      "variant": "malformed",
+      "path": "fixtures/da-malformed.hex",
+      "encoding": "hex",
+      "redistributable": true,
+      "expectedDecode": "failure"
+    },
+    {
+      "id": "da-truncated",
+      "specification": "da",
+      "variant": "truncated",
+      "path": "fixtures/da-truncated.hex",
+      "encoding": "hex",
+      "redistributable": true,
+      "expectedDecode": "failure"
+    },
+    {
+      "id": "da-vendor-extension",
+      "specification": "da",
+      "variant": "vendor-extension",
+      "path": "fixtures/da-vendor-extension.hex",
+      "encoding": "hex",
+      "redistributable": true,
+      "expectedDecode": "success"
+    }
+  ],
+  "probes": [
+    {
+      "id": "da-optional-interface-query",
+      "type": "da-query-interface",
+      "requires": [
+        "optional-interface-query"
+      ],
+      "expected": {
+        "outcome": "success"
+      },
+      "expectedFailures": []
+    },
+    {
+      "id": "da-group-lifecycle",
+      "type": "da-group-lifecycle",
+      "requires": [
+        "group-lifecycle"
+      ],
+      "expected": {
+        "outcome": "success"
+      },
+      "expectedFailures": [],
+      "tool": "opcclassic.da.add_group"
+    },
+    {
+      "id": "da-callbacks",
+      "type": "da-callback",
+      "requires": [
+        "callbacks"
+      ],
+      "expected": {
+        "outcome": "success"
+      },
+      "expectedFailures": [],
+      "tool": "opcclassic.da.poll_subscription"
+    },
+    {
+      "id": "da-deadband",
+      "type": "da-deadband",
+      "requires": [
+        "deadband"
+      ],
+      "expected": {
+        "outcome": "success"
+      },
+      "expectedFailures": []
+    },
+    {
+      "id": "da-sampling",
+      "type": "da-sampling",
+      "requires": [
+        "sampling"
+      ],
+      "expected": {
+        "outcome": "success"
+      },
+      "expectedFailures": []
+    },
+    {
+      "id": "da-browse-variants",
+      "type": "da-browse",
+      "requires": [
+        "browse-variants"
+      ],
+      "expected": {
+        "outcome": "success"
+      },
+      "expectedFailures": [],
+      "tool": "opcclassic.da.browse"
+    },
+    {
+      "id": "da-property-variants",
+      "type": "da-properties",
+      "requires": [
+        "property-variants"
+      ],
+      "expected": {
+        "outcome": "success"
+      },
+      "expectedFailures": [],
+      "tool": "opcclassic.da.get_properties"
+    },
+    {
+      "id": "da-sync-read",
+      "type": "da-sync-read",
+      "requires": [
+        "sync-read"
+      ],
+      "expected": {
+        "outcome": "success"
+      },
+      "expectedFailures": [],
+      "tool": "opcclassic.da.read_sync"
+    },
+    {
+      "id": "da-sync-write",
+      "type": "da-sync-write",
+      "requires": [
+        "sync-write"
+      ],
+      "expected": {
+        "outcome": "success",
+        "itemId": "Test.Int32",
+        "hResult": "0x00000000"
+      },
+      "expectedFailures": [],
+      "tool": "opcclassic.da.write_sync"
+    },
+    {
+      "id": "da-async-read",
+      "type": "da-async-read",
+      "requires": [
+        "async-read"
+      ],
+      "expected": {
+        "outcome": "success"
+      },
+      "expectedFailures": []
+    },
+    {
+      "id": "da-async-write",
+      "type": "da-async-write",
+      "requires": [
+        "async-write"
+      ],
+      "expected": {
+        "outcome": "success"
+      },
+      "expectedFailures": []
+    },
+    {
+      "id": "da-reconnect",
+      "type": "da-reconnect",
+      "requires": [
+        "reconnect"
+      ],
+      "expected": {
+        "outcome": "success"
+      },
+      "expectedFailures": [
+        {
+          "code": "E_ACCESSDENIED",
+          "description": "DCOM policy blocks activation."
+        },
+        {
+          "code": "REGDB_E_CLASSNOTREG",
+          "description": "External product is not registered."
+        },
+        {
+          "code": "0x80080005",
+          "description": "External server cannot start."
+        }
+      ],
+      "tool": "opcclassic.da.connect"
+    },
+    {
+      "id": "da-failover",
+      "type": "da-failover",
+      "requires": [
+        "failover"
+      ],
+      "expected": {
+        "outcome": "success"
+      },
+      "expectedFailures": []
+    },
+    {
+      "id": "da-malformed-decode",
+      "type": "fixture-decode",
+      "requires": [
+        "wire-fixtures"
+      ],
+      "expected": {
+        "outcome": "success"
+      },
+      "expectedFailures": [],
+      "fixtureId": "da-malformed"
+    },
+    {
+      "id": "da-truncated-decode",
+      "type": "fixture-decode",
+      "requires": [
+        "wire-fixtures"
+      ],
+      "expected": {
+        "outcome": "success"
+      },
+      "expectedFailures": [],
+      "fixtureId": "da-truncated"
+    },
+    {
+      "id": "da-vendor-extension-decode",
+      "type": "fixture-decode",
+      "requires": [
+        "wire-fixtures"
+      ],
+      "expected": {
+        "outcome": "success"
+      },
+      "expectedFailures": [],
+      "fixtureId": "da-vendor-extension"
+    }
+  ],
+  "legal": {
+    "redistributionAllowed": true,
+    "sourceUrl": "https://github.com/OPCF-Members/OPC-Classic-CoreComponents"
+  }
+}
