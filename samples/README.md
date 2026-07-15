@@ -1,6 +1,6 @@
 # Opc.Classic samples
 
-This folder contains runnable .NET 10 sample projects demonstrating the `Opc.Classic.*` stack: managed DA/AE/HDA servers and clients, OPC Security, CTT-oriented DA coverage, an in-process loopback, a full-feature simulation server, and the NativeAOT canary.
+This folder contains runnable .NET 10 sample projects demonstrating the `Opc.Classic.*` stack: managed DA/AE/HDA servers and clients, OPC Complex Data, OPC Security, CTT-oriented DA coverage, an in-process loopback, a full-feature simulation server, and the NativeAOT canary.
 
 Most sample folders ship their own `README.md` with run instructions. DA/AE/HDA/CttServer/Security sample servers bind `OPC_CLASSIC_SAMPLE_PORT` on `0.0.0.0` by default, and the DA/AE/HDA sample clients dial TCP when `OPC_CLASSIC_SERVER_HOST` + `OPC_CLASSIC_SERVER_PORT` are set (otherwise they fall back to the in-process channel for local dev).
 
@@ -15,6 +15,8 @@ Most sample folders ship their own `README.md` with run instructions. DA/AE/HDA/
 | [Opc.Classic.Samples.DaClient/](Opc.Classic.Samples.DaClient/README.md) | DA client bootstrap: browse, read, write, subscribe. |
 | [Opc.Classic.Samples.AeClient/](Opc.Classic.Samples.AeClient/README.md) | AE client subscription + event acknowledgement. |
 | [Opc.Classic.Samples.HdaClient/](Opc.Classic.Samples.HdaClient/README.md) | HDA client reads, aggregates, annotations, updates. |
+| [Opc.Classic.Samples.CpxServer/](Opc.Classic.Samples.CpxServer/README.md) | Managed DA-backed CPX address space with deterministic OPCBinary, XMLSchema, invalid, and vendor items. |
+| [Opc.Classic.Samples.CpxClient/](Opc.Classic.Samples.CpxClient/README.md) | CPX browse/property discovery, OPCBinary/XML decode, bounded conversion/filter behavior. |
 | [Opc.Classic.Samples.LoopbackDemo/](Opc.Classic.Samples.LoopbackDemo/README.md) | In-process DA client/server loopback through the managed channel stack. |
 | [Opc.Classic.Samples.CttServer/](Opc.Classic.Samples.CttServer/README.md) | Additional managed DA sample registered as `Opc.Classic.DaSample.1` (different CLSID from `samples-da`). |
 | [Opc.Classic.Samples.SimulationServer/](Opc.Classic.Samples.SimulationServer/README.md) | Full-feature simulation server: one deterministic plant model projected through every OPC Classic spec, including an engine-backed, persistable DX DA-to-DA bridge, with default in-memory MCP hosting and optional DA/AE/HDA TCP listeners. |

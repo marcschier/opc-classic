@@ -1,0 +1,19 @@
+# OPC Complex Data client sample
+
+`Opc.Classic.Samples.CpxClient` browses the managed CPX server sample, reads DA properties 600–604 to discover each type system/dictionary/type, and then decodes OPCBinary and XMLSchema payloads.
+
+```powershell
+dotnet run --project samples\Opc.Classic.Samples.CpxClient
+```
+
+The demo also:
+
+- applies the bounded `OpcCpxReferenceDataFilter`;
+- converts nested and counted-array fields with `OpcCpxReferenceTypeConverter`;
+- reports the committed nesting, array, expression, and comparison limits;
+- rejects `LIKE` vendor filter syntax with `OPCCPX_E_FILTER_INVALID`;
+- rejects bit-string-to-integer conversion with `OPCCPX_E_TYPE_CHANGED`;
+- reports a vendor type system without guessing its codec;
+- catches the deterministic truncated OPCBinary and omitted-optional XML payloads.
+
+The client references only repository projects. Discovery and decode use static, AOT-safe APIs with no runtime reflection or external packages.

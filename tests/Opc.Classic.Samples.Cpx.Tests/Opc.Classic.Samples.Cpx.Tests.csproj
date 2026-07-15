@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <Description>TUnit tests for the managed CPX server and client samples.</Description>
+    <RootNamespace>Opc.Classic.Samples.Cpx.Tests</RootNamespace>
+    <AssemblyName>Opc.Classic.Samples.Cpx.Tests</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\samples\Opc.Classic.Samples.CpxClient\Opc.Classic.Samples.CpxClient.csproj" />
+    <ProjectReference Include="..\..\samples\Opc.Classic.Samples.CpxServer\Opc.Classic.Samples.CpxServer.csproj" />
+  </ItemGroup>
+</Project>

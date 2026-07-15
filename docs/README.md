@@ -14,6 +14,7 @@ Current baseline: **the sample apps** and **all test projects green** with 0 bui
 - [Implementing OPC Security](cookbook/08-implementing-opc-security.md) — OPC-layer security sample and production guidance
 - [Tutorials](tutorials/README.md) — long-form walkthroughs
 - [Samples](../samples/README.md) — runnable sample apps, including the full-feature SimulationServer
+- [OPC Complex Data samples](cpx-samples.md) — managed DA-backed CPX discovery, decode, conversion, filtering, and explicit unsupported behavior
 - [Migrating from OPC Foundation .NET API](tutorials/07-migrating-from-opc-foundation-net-api.md)
 - [Migration analyzer diagnostics](migration/README.md) — OCM* code-fix providers
 
