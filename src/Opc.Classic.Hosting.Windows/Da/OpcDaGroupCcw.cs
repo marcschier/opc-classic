@@ -62,7 +62,7 @@ public static unsafe class OpcDaGroupCcw
     private static readonly Lock s_registryLock = new();
 
     /// <summary>
-    /// Builds a CCW around <paramref name="group"/> and returns the IUnknown identity pointer with refcount = 1.
+    /// Returns a caller-owned reference to the canonical IUnknown identity for <paramref name="group"/>.
     /// </summary>
     public static IntPtr Create(OpcDaGroup group)
     {

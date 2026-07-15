@@ -1110,7 +1110,7 @@ public static unsafe class OpcDaServerCcw
 #pragma warning restore VSTHRD002
             *ppUnk = snapshot.EnumeratesConnections
                 ? CreateGroupConnectionEnumerator(entry, snapshot.Groups)
-                : global::Opc.Classic.Ae.Hosting.Windows.OpcEnumStringCcw.Create(snapshot.Names);
+                : OpcEnumStringCcw.Create(snapshot.Names);
             return snapshot.Groups.Count == 0 ? S_FALSE : S_OK;
         }
 #pragma warning disable CA1031 // Cross-unmanaged-boundary catch.

@@ -239,10 +239,7 @@ public sealed class OpcDaServerCcwTests
             return;
         }
 
-        // ocom-6d wires AddGroup to allocate a managed group through the
-        // stub server and return an OpcDaGroupCcw pointer. cap-a5 wires
-        // GetGroupByName -> ResolveGroupByNameAsync; CreateGroupEnumerator
-        // still returns E_NOTIMPL pending IEnumUnknown CCW infrastructure.
+        // AddGroup returns a group CCW. The zero scope below is invalid.
         var stub = new StubDaServer();
         IntPtr ccw = OpcDaServerCcw.Create(stub, IOPCServer.InterfaceId);
         (int hrAddGroup, IntPtr ppUnkAdd, int hrGetGroupByName, int hrCreateGroupEnumerator) = InvokeRemainingStubs(ccw);
@@ -252,7 +249,7 @@ public sealed class OpcDaServerCcwTests
         await Assert.That(stub.AddGroupCallCount).IsEqualTo(1);
         // GetGroupByName receives IntPtr.Zero for szName -> E_INVALIDARG.
         await Assert.That(hrGetGroupByName).IsEqualTo(E_INVALIDARG);
-        await Assert.That(hrCreateGroupEnumerator).IsEqualTo(E_NOTIMPL);
+        await Assert.That(hrCreateGroupEnumerator).IsEqualTo(E_INVALIDARG);
     }
 
     [Test]
