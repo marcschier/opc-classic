@@ -117,6 +117,53 @@ public sealed class NtlmPassiveUnwrapperTests
     }
 
     [Test]
+    public async Task TryUnwrap_FullSignedRegion_PrivacyDecryptsBodyWithNonzeroPadding()
+    {
+        byte[] plaintextRegion = BuildSignedRegion(bodyLength: 13, paddingLength: 3, ProtectionLevel.PROTECTION_LEVEL_PRIVACY);
+        (byte[] protectedRegion, byte[] trailer) = ProtectSignedRegion(
+            plaintextRegion,
+            confidentialOffset: 16,
+            confidentialLength: 16,
+            ProtectionLevel.PROTECTION_LEVEL_PRIVACY);
+        using var unwrapper = new NtlmPassiveUnwrapper(s_testSessionKey);
+
+        NtlmUnwrapResult result = unwrapper.TryUnwrap(
+            NtlmDirection.ClientToServer,
+            protectedRegion,
+            confidentialOffset: 16,
+            confidentialLength: 16,
+            trailer,
+            ProtectionLevel.PROTECTION_LEVEL_PRIVACY);
+
+        await Assert.That(result.Status).IsEqualTo(NtlmUnwrapStatus.Decrypted);
+        await Assert.That(protectedRegion).IsEquivalentTo(plaintextRegion);
+    }
+
+    [Test]
+    public async Task TryUnwrap_FullSignedRegion_IntegrityVerifiesWithoutMutatingBodyOrPadding()
+    {
+        byte[] plaintextRegion = BuildSignedRegion(bodyLength: 11, paddingLength: 1, ProtectionLevel.PROTECTION_LEVEL_INTEGRITY);
+        (byte[] signedRegion, byte[] trailer) = ProtectSignedRegion(
+            plaintextRegion,
+            confidentialOffset: 16,
+            confidentialLength: 12,
+            ProtectionLevel.PROTECTION_LEVEL_INTEGRITY);
+        byte[] before = signedRegion.ToArray();
+        using var unwrapper = new NtlmPassiveUnwrapper(s_testSessionKey);
+
+        NtlmUnwrapResult result = unwrapper.TryUnwrap(
+            NtlmDirection.ClientToServer,
+            signedRegion,
+            confidentialOffset: 16,
+            confidentialLength: 12,
+            trailer,
+            ProtectionLevel.PROTECTION_LEVEL_INTEGRITY);
+
+        await Assert.That(result.Status).IsEqualTo(NtlmUnwrapStatus.IntegrityVerified);
+        await Assert.That(signedRegion).IsEquivalentTo(before);
+    }
+
+    [Test]
     public async Task RoundTrip_TwoPdusInSequence_BothDecryptAndCounterAdvancesPerDirection()
     {
         byte[] plain1 = BuildPlaintext(40);
@@ -226,6 +273,49 @@ public sealed class NtlmPassiveUnwrapperTests
             data[i] = (byte)(i * 7 + 3);
         }
         return data;
+    }
+
+    private static byte[] BuildSignedRegion(
+        int bodyLength,
+        int paddingLength,
+        ProtectionLevel protection)
+    {
+        byte[] region = BuildPlaintext(16 + bodyLength + paddingLength + 8);
+        int secTrailer = region.Length - 8;
+        region[secTrailer] = 0x0A;
+        region[secTrailer + 1] = (byte)protection;
+        region[secTrailer + 2] = (byte)paddingLength;
+        region[secTrailer + 3] = 0;
+        Array.Clear(region, secTrailer + 4, 4);
+        return region;
+    }
+
+    private static (byte[] SignedRegion, byte[] Trailer) ProtectSignedRegion(
+        byte[] plaintextRegion,
+        int confidentialOffset,
+        int confidentialLength,
+        ProtectionLevel protection)
+    {
+        NtlmFlags flags = protection == ProtectionLevel.PROTECTION_LEVEL_PRIVACY
+            ? Flags
+            : Flags & ~NtlmFlags.NtlmsspNegotiateSeal;
+#pragma warning disable CS0618
+        var producer = new Ntlm1(flags, (byte[])s_testSessionKey.Clone(), isServer: false);
+#pragma warning restore CS0618
+        byte[] buffer = new byte[plaintextRegion.Length + NtlmPassiveUnwrapper.VerifierLength];
+        plaintextRegion.CopyTo(buffer, 0);
+        var ndrBuffer = new NdrBuffer(buffer, 0);
+        ndrBuffer.SetLength(buffer.Length);
+        var ndr = new NdrCodec { Buffer = ndrBuffer, Format = NdrFormat.DEFAULT_FORMAT };
+        producer.ProcessOutgoing(
+            ndr,
+            confidentialOffset,
+            confidentialLength,
+            plaintextRegion.Length,
+            isFragmented: false);
+        return (
+            buffer.AsSpan(0, plaintextRegion.Length).ToArray(),
+            buffer.AsSpan(plaintextRegion.Length, NtlmPassiveUnwrapper.VerifierLength).ToArray());
     }
 
     /// <summary>

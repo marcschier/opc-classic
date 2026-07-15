@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2026 Opc.Classic Contributors. Licensed under the MIT License.
+// Copyright (c) 2026 Opc.Classic Contributors. Licensed under the MIT License.
 
 using System.ComponentModel;
 using System.Globalization;
@@ -41,13 +41,28 @@ public sealed class CaptureTools
     };
 
     private readonly CaptureSessionManager _manager;
+    private readonly ICaptureTargetResolver _targetResolver;
+    private readonly Func<string, ICaptureSource> _captureSourceFactory;
 
     /// <summary>
     /// Creates the capture tool set, injected by the host.
     /// </summary>
     public CaptureTools(CaptureSessionManager manager)
+        : this(
+            manager,
+            new CaptureTargetResolver(),
+            folder => new PcapCaptureSource(folder))
+    {
+    }
+
+    internal CaptureTools(
+        CaptureSessionManager manager,
+        ICaptureTargetResolver targetResolver,
+        Func<string, ICaptureSource> captureSourceFactory)
     {
         _manager = manager ?? throw new ArgumentNullException(nameof(manager));
+        _targetResolver = targetResolver ?? throw new ArgumentNullException(nameof(targetResolver));
+        _captureSourceFactory = captureSourceFactory ?? throw new ArgumentNullException(nameof(captureSourceFactory));
     }
 
     /// <summary>
@@ -114,7 +129,7 @@ public sealed class CaptureTools
     /// Starts a new capture session.
     /// </summary>
     [McpServerTool(Name = "opcclassic.capture.start", ReadOnly = false, Idempotent = false, Destructive = false, OpenWorld = false)]
-    [Description("Begin a network packet capture session. Defaults the BPF filter to TCP DCOM (port 135 + dynamic range). Returns the capture session id; use opcclassic.capture.stop + opcclassic.capture.get to retrieve the trace.")]
+    [Description("Begin a network packet capture session. Optional target fields start broad DCOM capture before OPCEnum/activation, then narrow to discovered ports and return binding metadata.")]
     public async Task<CaptureSessionDto> StartCapture(
         [Description("Network interface name from opcclassic.capture.list_interfaces (required for pcap source).")]
         string interfaceName,
@@ -130,31 +145,95 @@ public sealed class CaptureTools
         int? maxDurationSeconds = null,
         [Description("Optional explicit list of OPC server data ports. When set AND bpfFilter is null, narrows the default port-range filter to 'tcp and (port 135 or port P1 or port P2 …)'. Reduces captured noise dramatically when the target server ports are known (look them up via opcclassic.discovery.enumerate_servers + opcclassic.da.connect, or read them from your operator run-book).")]
         int[]? serverPorts = null,
-        [Description("DEVELOPER-ONLY. Optional 32-character hex-encoded 16-byte NTLMv2 session key for opt-in auth-trailer unwrap of sign/seal-protected DCOM traffic in capture.tail/get/summarize. Never log or persist the key. Capture MUST start BEFORE the NTLM Type3 handshake or per-direction sequence counters will drift and unwrap will fail. Ad-hoc decode/replay key input and external-peer compatibility variants remain follow-ups.")]
+        [Description("DEVELOPER-ONLY. Optional 32-character hex-encoded 16-byte NTLMv2 session key for opt-in auth-trailer unwrap of sign/seal-protected DCOM traffic in capture.tail/get/summarize. Never log or persist the key. Capture MUST start BEFORE the NTLM Type3 handshake or per-direction sequence counters will drift and unwrap will fail.")]
         string? ntlmSessionKeyHex = null,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default,
+        [Description("Optional OPC target host. When any target field is supplied, capture starts with the broad DCOM filter before discovery/activation runs.")]
+        string? targetHost = null,
+        [Description("Optional OPC ProgID to resolve through the existing OPCEnum connection normalization path after capture starts.")]
+        string? progId = null,
+        [Description("Optional OPC CLSID to activate after capture starts.")]
+        string? clsid = null,
+        [Description("Optional dcom://, opcda://, opcae://, opchda://, tcp://, or inmemory:// target connection string.")]
+        string? connectionString = null)
     {
         byte[]? sessionKey = null;
+        CaptureSession? session = null;
         if (!string.IsNullOrWhiteSpace(ntlmSessionKeyHex))
         {
             sessionKey = ParseNtlmSessionKey(ntlmSessionKeyHex);
         }
         try
         {
-            CaptureSession session = await _manager.CreateAndStartAsync(
+            bool resolveTarget = HasTarget(targetHost, progId, clsid, connectionString);
+            var requested = new CaptureStartRequest(
+                InterfaceName: interfaceName,
+                BpfFilter: bpfFilter,
+                Promiscuous: promiscuous,
+                MaxBytes: maxBytes,
+                MaxPackets: maxPackets,
+                MaxDurationSeconds: maxDurationSeconds,
+                ServerPorts: serverPorts,
+                NtlmSessionKey: sessionKey,
+                TargetHost: targetHost,
+                ProgId: progId,
+                Clsid: clsid,
+                ConnectionString: connectionString);
+            CaptureStartRequest startup = resolveTarget
+                ? requested with { BpfFilter = null, ServerPorts = null }
+                : requested;
+
+            session = await _manager.CreateAndStartAsync(
                 PcapCaptureSource.SourceName,
-                folder => new PcapCaptureSource(folder),
-                new CaptureStartRequest(
-                    InterfaceName: interfaceName,
-                    BpfFilter: bpfFilter,
-                    Promiscuous: promiscuous,
-                    MaxBytes: maxBytes,
-                    MaxPackets: maxPackets,
-                    MaxDurationSeconds: maxDurationSeconds,
-                    ServerPorts: serverPorts,
-                    NtlmSessionKey: sessionKey),
+                _captureSourceFactory,
+                startup,
                 cancellationToken).ConfigureAwait(false);
+
+            if (resolveTarget)
+            {
+                CaptureTargetMetadata target = await _targetResolver.ResolveAsync(
+                    targetHost,
+                    progId,
+                    clsid,
+                    connectionString,
+                    cancellationToken).ConfigureAwait(false);
+                session.SetTarget(target);
+
+                IReadOnlyList<int> discoveredPorts = target.Status is "resolved" or "activated"
+                    ? target.Ports
+                    : [];
+                int[] effectivePorts = (serverPorts ?? [])
+                    .Concat(discoveredPorts)
+                    .Where(port => port is > 0 and <= 65535)
+                    .Distinct()
+                    .Order()
+                    .ToArray();
+                string desiredFilter = string.IsNullOrWhiteSpace(bpfFilter)
+                    ? PcapCaptureSource.BuildServerPortBpfFilter(effectivePorts)
+                    : bpfFilter;
+                CaptureFilterTransitionResult transition =
+                    await session.ReplaceFilterAsync(
+                        desiredFilter,
+                        requested with { ServerPorts = effectivePorts },
+                        cancellationToken).ConfigureAwait(false);
+                if (!transition.Succeeded)
+                {
+                    session.SetTarget(target with
+                    {
+                        Status = target.Status + "_filter_failed",
+                        Error = transition.Error,
+                    });
+                }
+            }
             return CaptureSessionDto.From(session);
+        }
+        catch (OperationCanceledException)
+        {
+            if (session is not null)
+            {
+                await _manager.RemoveAsync(session.Id, CancellationToken.None).ConfigureAwait(false);
+            }
+            throw;
         }
         catch (CaptureException ex)
         {
@@ -167,6 +246,39 @@ public sealed class CaptureTools
                 CryptographicOperations.ZeroMemory(sessionKey);
             }
         }
+    }
+
+    private static bool HasTarget(
+        string? targetHost,
+        string? progId,
+        string? clsid,
+        string? connectionString) =>
+        !string.IsNullOrWhiteSpace(targetHost)
+        || !string.IsNullOrWhiteSpace(progId)
+        || !string.IsNullOrWhiteSpace(clsid)
+        || !string.IsNullOrWhiteSpace(connectionString);
+
+    /// <summary>
+    /// Atomically replaces the filter on a running capture session.
+    /// </summary>
+    [McpServerTool(Name = "opcclassic.capture.set_filter", ReadOnly = false, Idempotent = true, Destructive = false, OpenWorld = false)]
+    [Description("Replace a running capture session's BPF filter. Uses a live source update when supported, otherwise starts a replacement source before retiring the prior source. Returns an explicit transition report; failed updates leave the prior capture visible.")]
+    public async Task<CaptureFilterTransitionResult> SetCaptureFilter(
+        [Description("Capture session id returned by opcclassic.capture.start.")]
+        string sessionId,
+        [Description("Replacement BPF filter.")]
+        string bpfFilter,
+        CancellationToken cancellationToken = default)
+    {
+        if (!_manager.TryGet(sessionId, out CaptureSession session))
+        {
+            throw new McpException($"Capture session '{sessionId}' not found.");
+        }
+
+        return await session.ReplaceFilterAsync(
+            bpfFilter,
+            session.Request with { BpfFilter = bpfFilter, ServerPorts = null },
+            cancellationToken).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -271,11 +383,11 @@ public sealed class CaptureTools
     /// Returns the trace bytes in the requested format.
     /// </summary>
     [McpServerTool(Name = "opcclassic.capture.get", ReadOnly = true, Idempotent = true, Destructive = false, OpenWorld = false)]
-    [Description("Return the captured trace as text. Formats: 'pcap-path' (returns full path to the libpcap file, suitable for opening in Wireshark), 'dcom' (decoded DCE/RPC PDU summary, default), 'json' (raw PDU records). Binary pcap bytes are NOT inlined to keep MCP payload bounded; open the file path with Wireshark.")]
+    [Description("Return the captured trace as text. Formats: 'pcap-path' (one retained pcap), 'pcap-paths' (JSON array for restarted captures), 'dcom' (decoded DCE/RPC PDU summary, default), 'json' (raw PDU records). Binary pcap bytes are not inlined.")]
     public async Task<string> GetCapture(
         [Description("Capture session id from opcclassic.capture.start.")]
         string sessionId,
-        [Description("Output format: 'dcom' (default, structured PDU view), 'json' (raw decoded PDUs), 'pcap-path' (file path to the libpcap file).")]
+        [Description("Output format: 'dcom' (default), 'json', 'pcap-path' (single segment), or 'pcap-paths' (all retained segment paths).")]
         string format = "dcom",
         [Description("Maximum PDUs to decode/return (default 200).")]
         int maxPdus = 200,
@@ -286,12 +398,22 @@ public sealed class CaptureTools
             throw new McpException($"Capture session '{sessionId}' not found.");
         }
 
-        if (string.Equals(format, "pcap-path", StringComparison.OrdinalIgnoreCase))
+        if (string.Equals(format, "pcap-path", StringComparison.OrdinalIgnoreCase)
+            || string.Equals(format, "pcap-paths", StringComparison.OrdinalIgnoreCase))
         {
-            string? path = session.Source.GetRawPcapFilePath();
-            return path is null
-                ? throw new McpException("This capture source does not produce a libpcap file.")
-                : path;
+            IReadOnlyList<string> paths = session.RawPcapFilePaths;
+            if (paths.Count == 0)
+            {
+                throw new McpException("This capture source does not produce a libpcap file.");
+            }
+            if (string.Equals(format, "pcap-path", StringComparison.OrdinalIgnoreCase))
+            {
+                return paths.Count == 1
+                    ? paths[0]
+                    : throw new McpException(
+                        "This capture contains multiple retained pcap segments. Request format='pcap-paths' to retrieve every path.");
+            }
+            return JsonSerializer.Serialize(paths, s_jsonOptions);
         }
 
         NtlmPassiveUnwrapper? unwrapper = session.CreateUnwrapper();
@@ -300,7 +422,7 @@ public sealed class CaptureTools
             var decoder = new OpcDcomDecoder(unwrapper);
             var pdus = new List<DecodedOpcPdu>();
             int decoded = 0;
-            await foreach (CapturedPacket pkt in session.Source.ReadAllAsync(maxPackets: null, cancellationToken).ConfigureAwait(false))
+            await foreach (CapturedPacket pkt in session.ReadAllAsync(maxPackets: null, cancellationToken).ConfigureAwait(false))
             {
                 foreach (DecodedOpcPdu pdu in decoder.Decode(pkt))
                 {
@@ -370,7 +492,7 @@ public sealed class CaptureTools
     /// the previous response's <c>nextIndex</c> as <c>sinceIndex</c>.
     /// </summary>
     [McpServerTool(Name = "opcclassic.capture.tail", ReadOnly = true, Idempotent = true, Destructive = false, OpenWorld = false)]
-    [Description("Polling-cursor tail of a LIVE (or completed) capture. Returns the next decoded-PDU window since the caller's cursor. Idempotent given the same sinceIndex. To follow a live stream, poll repeatedly at your preferred cadence (e.g. 100-500 ms) passing the previous response's nextIndex as sinceIndex; stop when done=true (session ended AND cursor caught up).")]
+    [Description("Polling-cursor tail of a LIVE (or completed) capture. Named cursors retain a bounded indexed replay window, so retrying the same sinceIndex returns the same available window; advancing sinceIndex explicitly acknowledges prior records. Poll repeatedly with the previous nextIndex and stop when done=true.")]
     public async Task<CaptureTailResultDto> TailCapture(
         [Description("Capture session id from opcclassic.capture.start.")]
         string sessionId,
@@ -379,9 +501,9 @@ public sealed class CaptureTools
         [Description("Cursor returned by the previous tail call as nextIndex. Pass 0 for the first call.")]
         long sinceIndex = 0,
         CancellationToken cancellationToken = default,
-        [Description("Optional stable subscriber id for a bounded replay cursor.")]
+        [Description("Optional stable subscriber id for a bounded authoritative server-owned replay cursor. Retry with the same sinceIndex after a lost response; advance to nextIndex to acknowledge. Omit for caller-owned cursor behavior.")]
         string? subscriberId = null,
-        [Description("Retained-PDU capacity for the named cursor (1..5000).")]
+        [Description("Per-subscriber retained-PDU capacity (1..5000, default 1024). Older unacknowledged PDUs are dropped and returned as inclusive drop ranges.")]
         int? subscriberCapacity = null)
     {
         if (!_manager.TryGet(sessionId, out CaptureSession session))
@@ -495,7 +617,7 @@ public sealed class CaptureTools
         {
             var decoder = new OpcDcomDecoder(unwrapper);
             var pdus = new List<DecodedOpcPdu>();
-            await foreach (CapturedPacket pkt in session.Source.ReadAllAsync(maxPackets: null, cancellationToken).ConfigureAwait(false))
+            await foreach (CapturedPacket pkt in session.ReadAllAsync(maxPackets: null, cancellationToken).ConfigureAwait(false))
             {
                 foreach (DecodedOpcPdu pdu in decoder.Decode(pkt))
                 {
@@ -538,34 +660,162 @@ public sealed class CaptureTools
     [Description("Decode a single DCE/RPC PDU frame from hex bytes. Useful for ad-hoc inspection of a captured byte string without standing up a full capture session.")]
     public string DecodePdu(
         [Description("Hex string of the raw frame bytes (with or without whitespace / 0x prefix).")]
-        string hex)
+        string hex,
+        [Description("DEVELOPER-ONLY. Optional 32-character hex NTLMv2 session key. The owned key copy and derived keys are zeroed/disposed before return.")]
+        string? ntlmSessionKeyHex = null)
     {
         if (hex is null)
         {
             throw CreateDecodeException("hex", "null_input", "Hex input is required.", byteCount: 0, context: null);
         }
-        byte[] bytes = ParseHex(hex);
-        var decoder = new OpcDcomDecoder();
-        DecodedDcomFrame decoded = decoder.DecodeRawDcomFrameStrict(
-            bytes,
-            IPAddress.Loopback,
-            srcPort: 49152,
-            IPAddress.Loopback,
-            dstPort: 135,
-            DateTimeOffset.UtcNow);
-        if (decoded.Failure is not null || decoded.Pdu is null)
+        byte[]? sessionKey = null;
+        NtlmPassiveUnwrapper? unwrapper = null;
+        try
         {
-            DcomDecodeFailure failure = decoded.Failure
-                ?? new DcomDecodeFailure("projection", "unsupported_pdu", "The frame decoded but did not project to a supported PDU.");
-            throw CreateDecodeException(
-                failure.Stage,
-                failure.Code,
-                failure.Message,
-                bytes.Length,
-                bytes);
-        }
+            byte[] bytes = ParseHex(hex);
+            if (!string.IsNullOrWhiteSpace(ntlmSessionKeyHex))
+            {
+                sessionKey = ParseNtlmSessionKey(ntlmSessionKeyHex);
+                unwrapper = new NtlmPassiveUnwrapper(sessionKey);
+            }
+            var decoder = new OpcDcomDecoder(unwrapper);
+            NtlmDirection? assumedDirection = bytes.Length > 2
+                ? bytes[2] switch
+                {
+                    Opc.Classic.Dcom.Rpc.pdu.RequestCoPdu.REQUEST_TYPE => NtlmDirection.ClientToServer,
+                    Opc.Classic.Dcom.Rpc.pdu.ResponseCoPdu.RESPONSE_TYPE
+                        or Opc.Classic.Dcom.Rpc.pdu.FaultCoPdu.FAULT_TYPE => NtlmDirection.ServerToClient,
+                    _ => null,
+                }
+                : null;
+            DecodedDcomFrame decoded = decoder.DecodeRawDcomFrameStrict(
+                bytes,
+                IPAddress.Loopback,
+                srcPort: 49152,
+                IPAddress.Loopback,
+                dstPort: 135,
+                DateTimeOffset.UtcNow,
+                assumedDirection);
+            if (decoded.Failure is not null || decoded.Pdu is null)
+            {
+                DcomDecodeFailure failure = decoded.Failure
+                    ?? new DcomDecodeFailure("projection", "unsupported_pdu", "The frame decoded but did not project to a supported PDU.");
+                throw CreateDecodeException(
+                    failure.Stage,
+                    failure.Code,
+                    failure.Message,
+                    bytes.Length,
+                    bytes);
+            }
 
-        return JsonSerializer.Serialize(new[] { decoded.Pdu }, s_jsonOptions);
+            return JsonSerializer.Serialize(new[] { decoded.Pdu }, s_jsonOptions);
+        }
+        finally
+        {
+            unwrapper?.Dispose();
+            if (sessionKey is not null)
+            {
+                CryptographicOperations.ZeroMemory(sessionKey);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Decodes an external pcap/pcapng file without creating a live session.
+    /// </summary>
+    [McpServerTool(Name = "opcclassic.capture.decode_file", ReadOnly = true, Idempotent = true, Destructive = false, OpenWorld = true)]
+    [Description("Decode a bounded external pcap/pcapng file containing Ethernet IPv4/IPv6 TCP traffic. Reports IP fragmentation, truncation, incomplete DCE/RPC streams, and likely mid-session starts.")]
+    public async Task<CaptureFileDecodeResult> DecodeFile(
+        [Description("Path to an external .pcap or .pcapng file.")]
+        string path,
+        [Description("Maximum file size in bytes (default 50 MB, hard cap 200 MB).")]
+        long maxFileBytes = CaptureFileProcessor.DefaultMaxFileBytes,
+        [Description("Maximum packets to inspect (default 100000, hard cap 1000000).")]
+        int maxPackets = CaptureFileProcessor.DefaultMaxPackets,
+        [Description("Maximum decoded records to retain (default 5000, hard cap 50000).")]
+        int maxPdus = CaptureFileProcessor.DefaultMaxPdus,
+        [Description("DEVELOPER-ONLY. Optional 32-character hex NTLMv2 session key; never logged or persisted.")]
+        string? ntlmSessionKeyHex = null,
+        CancellationToken cancellationToken = default)
+    {
+        byte[]? sessionKey = null;
+        NtlmPassiveUnwrapper? unwrapper = null;
+        try
+        {
+            if (!string.IsNullOrWhiteSpace(ntlmSessionKeyHex))
+            {
+                sessionKey = ParseNtlmSessionKey(ntlmSessionKeyHex);
+                unwrapper = new NtlmPassiveUnwrapper(sessionKey);
+            }
+            return await CaptureFileProcessor.DecodeAsync(
+                path,
+                maxFileBytes,
+                maxPackets,
+                maxPdus,
+                unwrapper,
+                cancellationToken).ConfigureAwait(false);
+        }
+        catch (CaptureException ex)
+        {
+            throw new McpException(ex.Message);
+        }
+        finally
+        {
+            unwrapper?.Dispose();
+            if (sessionKey is not null)
+            {
+                CryptographicOperations.ZeroMemory(sessionKey);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Replays an external pcap/pcapng file through ORPC validation.
+    /// </summary>
+    [McpServerTool(Name = "opcclassic.capture.replay_file", ReadOnly = true, Idempotent = true, Destructive = false, OpenWorld = true)]
+    [Description("Replay a bounded external pcap/pcapng file through PduCodec and ORPC validation, with the same fragmentation and mid-session status as decode_file.")]
+    public async Task<CaptureFileReplayResult> ReplayFile(
+        [Description("Path to an external .pcap or .pcapng file.")]
+        string path,
+        [Description("Maximum file size in bytes (default 50 MB, hard cap 200 MB).")]
+        long maxFileBytes = CaptureFileProcessor.DefaultMaxFileBytes,
+        [Description("Maximum packets to inspect (default 100000, hard cap 1000000).")]
+        int maxPackets = CaptureFileProcessor.DefaultMaxPackets,
+        [Description("Maximum decoded/replay records to retain (default 5000, hard cap 50000).")]
+        int maxPdus = CaptureFileProcessor.DefaultMaxPdus,
+        [Description("DEVELOPER-ONLY. Optional 32-character hex NTLMv2 session key; never logged or persisted.")]
+        string? ntlmSessionKeyHex = null,
+        CancellationToken cancellationToken = default)
+    {
+        byte[]? sessionKey = null;
+        NtlmPassiveUnwrapper? unwrapper = null;
+        try
+        {
+            if (!string.IsNullOrWhiteSpace(ntlmSessionKeyHex))
+            {
+                sessionKey = ParseNtlmSessionKey(ntlmSessionKeyHex);
+                unwrapper = new NtlmPassiveUnwrapper(sessionKey);
+            }
+            return await CaptureFileProcessor.ReplayAsync(
+                path,
+                maxFileBytes,
+                maxPackets,
+                maxPdus,
+                unwrapper,
+                cancellationToken).ConfigureAwait(false);
+        }
+        catch (CaptureException ex)
+        {
+            throw new McpException(ex.Message);
+        }
+        finally
+        {
+            unwrapper?.Dispose();
+            if (sessionKey is not null)
+            {
+                CryptographicOperations.ZeroMemory(sessionKey);
+            }
+        }
     }
 
     /// <summary>
@@ -589,7 +839,7 @@ public sealed class CaptureTools
         {
             var decoder = new OpcDcomDecoder(unwrapper);
             var frames = new List<DecodedDcomFrame>();
-            await foreach (CapturedPacket pkt in session.Source.ReadAllAsync(maxPackets: null, cancellationToken).ConfigureAwait(false))
+            await foreach (CapturedPacket pkt in session.ReadAllAsync(maxPackets: null, cancellationToken).ConfigureAwait(false))
             {
                 frames.AddRange(decoder.DecodeDetailed(pkt));
             }
@@ -796,14 +1046,23 @@ public sealed record class CaptureTailResultDto
     public IReadOnlyList<CaptureDropRange> DroppedRanges { get; init; } = [];
 }
 
+/// <summary>
+/// Advisory MCP capture notification subscription metadata.
+/// </summary>
 public sealed record class CaptureNotificationSubscriptionDto
 {
     public required string SubscriptionId { get; init; }
+
     public required string SessionId { get; init; }
+
     public required string SubscriberId { get; init; }
+
     public long SinceIndex { get; init; }
+
     public int SubscriberCapacity { get; init; }
+
     public int NotificationQueueCapacity { get; init; }
+
     public int PollIntervalMilliseconds { get; init; }
 
     internal static CaptureNotificationSubscriptionDto From(CaptureNotificationSubscriptionInfo info) =>
@@ -835,23 +1094,34 @@ public sealed record class CaptureSessionDto
     public string? Filter { get; init; }
     public string? Error { get; init; }
     public string? RawPcapFilePath { get; init; }
+    public IReadOnlyList<string> RawPcapFilePaths { get; init; } = [];
+    public string? EffectiveFilter { get; init; }
+    public CaptureTargetMetadata? Target { get; init; }
+    public CaptureFilterTransitionResult? FilterTransition { get; init; }
 
     public static CaptureSessionDto From(CaptureSession session)
     {
         ArgumentNullException.ThrowIfNull(session);
+        CaptureSessionSnapshot snapshot = session.GetSnapshot();
         return new CaptureSessionDto
         {
-            SessionId = session.Id,
-            Source = session.SourceName,
-            State = session.State,
-            StartedAt = session.StartedAt,
-            StoppedAt = session.StoppedAt,
-            PacketCount = session.Source.PacketCount,
-            ByteCount = session.Source.ByteCount,
-            InterfaceName = session.Request.InterfaceName,
-            Filter = session.Request.BpfFilter,
-            Error = session.Error,
-            RawPcapFilePath = session.Source.GetRawPcapFilePath(),
+            SessionId = snapshot.Id,
+            Source = snapshot.SourceName,
+            State = snapshot.State,
+            StartedAt = snapshot.StartedAt,
+            StoppedAt = snapshot.StoppedAt,
+            PacketCount = snapshot.PacketCount,
+            ByteCount = snapshot.ByteCount,
+            InterfaceName = snapshot.Request.InterfaceName,
+            Filter = snapshot.Request.BpfFilter,
+            EffectiveFilter = snapshot.EffectiveFilter,
+            Error = snapshot.Error,
+            RawPcapFilePath = snapshot.RawPcapFilePaths.Count == 1
+                ? snapshot.RawPcapFilePaths[0]
+                : null,
+            RawPcapFilePaths = snapshot.RawPcapFilePaths,
+            Target = snapshot.Target,
+            FilterTransition = snapshot.FilterTransition,
         };
     }
 }

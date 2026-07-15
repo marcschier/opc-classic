@@ -127,7 +127,14 @@ public sealed class CaptureSessionManager : IAsyncDisposable
         Directory.CreateDirectory(folder);
 
         ICaptureSource source = sourceFactory(folder);
-        var session = new CaptureSession(id, sourceName, source, folder, request, _logger);
+        var session = new CaptureSession(
+            id,
+            sourceName,
+            source,
+            folder,
+            request,
+            _logger,
+            sourceFactory);
         if (!_sessions.TryAdd(id, session))
         {
             // Astronomically unlikely; surface clearly rather than overwrite.

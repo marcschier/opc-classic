@@ -1,6 +1,7 @@
 ﻿// Copyright (c) 2026 Opc.Classic Contributors. Licensed under the MIT License.
 
 using System.Buffers.Binary;
+using Opc.Classic.Dcom.Internal.Ntlm;
 using Opc.Classic.Dcom.Rpc;
 using Opc.Classic.Dcom.Rpc.Core;
 using Opc.Classic.Dcom.Rpc.pdu;
@@ -159,6 +160,92 @@ public sealed class OpcDcomDecoderTests
     }
 
     [Test]
+    public async Task Decode_TcpSequenceReassembly_ReordersOutOfOrderSegments()
+    {
+        var decoder = new OpcDcomDecoder();
+        DateTimeOffset timestamp = DateTimeOffset.UnixEpoch;
+        byte[] bind = Encode(NewBindPdu(callId: 70));
+        uint bindSequence = 10_000;
+        _ = decoder.Decode(NewTcpPacket(bind, timestamp, sequenceNumber: bindSequence)).ToArray();
+        byte[] request = Encode(NewRequestPdu(callId: 71));
+        uint requestSequence = bindSequence + (uint)bind.Length;
+
+        DecodedOpcPdu[] laterHalf = decoder.Decode(NewTcpPacket(
+            request[8..],
+            timestamp.AddMilliseconds(1),
+            sequenceNumber: requestSequence + 8)).ToArray();
+        DecodedOpcPdu[] completed = decoder.Decode(NewTcpPacket(
+            request[..8],
+            timestamp.AddMilliseconds(2),
+            sequenceNumber: requestSequence)).ToArray();
+
+        await Assert.That(laterHalf.Length).IsEqualTo(0);
+        await Assert.That(completed.Length).IsEqualTo(1);
+        await Assert.That(completed[0].CallId).IsEqualTo(71);
+    }
+
+    [Test]
+    public async Task Decode_TcpSequenceReassembly_DeduplicatesRetransmissionAndMergesOverlap()
+    {
+        var decoder = new OpcDcomDecoder();
+        DateTimeOffset timestamp = DateTimeOffset.UnixEpoch;
+        byte[] bind = Encode(NewBindPdu(callId: 72));
+        uint bindSequence = 20_000;
+        _ = decoder.Decode(NewTcpPacket(bind, timestamp, sequenceNumber: bindSequence)).ToArray();
+        byte[] request = Encode(NewRequestPdu(callId: 73));
+        uint requestSequence = bindSequence + (uint)bind.Length;
+
+        _ = decoder.Decode(NewTcpPacket(
+            request[..20],
+            timestamp.AddMilliseconds(1),
+            sequenceNumber: requestSequence)).ToArray();
+        _ = decoder.Decode(NewTcpPacket(
+            request[..20],
+            timestamp.AddMilliseconds(2),
+            sequenceNumber: requestSequence)).ToArray();
+        DecodedOpcPdu[] completed = decoder.Decode(NewTcpPacket(
+            request[10..],
+            timestamp.AddMilliseconds(3),
+            sequenceNumber: requestSequence + 10)).ToArray();
+
+        await Assert.That(completed.Length).IsEqualTo(1);
+        await Assert.That(completed[0].CallId).IsEqualTo(73);
+        await Assert.That(decoder.CompleteDetailed().Count()).IsEqualTo(0);
+    }
+
+    [Test]
+    public async Task CompleteDetailed_TcpGapReportsFailureResynchronizesAndDoesNotAdvanceNtlmCounter()
+    {
+        using var unwrapper = new NtlmPassiveUnwrapper(s_testSessionKey);
+        var decoder = new OpcDcomDecoder(unwrapper);
+        DateTimeOffset timestamp = DateTimeOffset.UnixEpoch;
+        byte[] bind = Encode(NewBindPdu(callId: 74));
+        uint bindSequence = 30_000;
+        _ = decoder.Decode(NewTcpPacket(bind, timestamp, sequenceNumber: bindSequence)).ToArray();
+        byte[] missingProtected = BuildSealedFramePerCodebase(
+            0x00, 75, 3, 7, OrpcEnvelope.BuildRequestStub(new byte[] { 1 }, Guid.Empty), isServerSide: false);
+        byte[] nextProtected = BuildSealedFramePerCodebase(
+            0x00, 76, 3, 7, OrpcEnvelope.BuildRequestStub(new byte[] { 2 }, Guid.Empty), isServerSide: false);
+        uint protectedSequence = bindSequence + (uint)bind.Length;
+
+        _ = decoder.Decode(NewTcpPacket(
+            missingProtected[..8],
+            timestamp.AddMilliseconds(1),
+            sequenceNumber: protectedSequence)).ToArray();
+        _ = decoder.Decode(NewTcpPacket(
+            nextProtected,
+            timestamp.AddMilliseconds(2),
+            sequenceNumber: protectedSequence + (uint)missingProtected.Length)).ToArray();
+        DecodedDcomFrame[] completed = decoder.CompleteDetailed().ToArray();
+
+        await Assert.That(completed.Any(frame => frame.Failure?.Code == "tcp_sequence_gap")).IsTrue();
+        await Assert.That(completed.Any(frame =>
+            frame.Pdu?.CallId == 76
+            && frame.Pdu.AuthUnwrapReason?.Contains("counters were intentionally left unchanged", StringComparison.Ordinal) == true)).IsTrue();
+        await Assert.That(unwrapper.ClientSequence).IsEqualTo(0);
+    }
+
+    [Test]
     public async Task Decode_SimpleShutdownAuthCancelAndOrphanedPdus_ProjectEndpointAndType()
     {
         var decoder = new OpcDcomDecoder();
@@ -307,6 +394,7 @@ public sealed class OpcDcomDecoderTests
     private const int NtlmAuthValueLength = 16;
     private const int AuthVerifierHeaderLength = 8;
     private const byte AuthTypeNtlm = 0x0A;
+    private const byte AuthLevelIntegrity = 0x05;
     private const byte AuthLevelPrivacy = 0x06;
     private static readonly System.Net.IPAddress s_clientIp = System.Net.IPAddress.Parse("10.0.0.1");
     private static readonly System.Net.IPAddress s_serverIp = System.Net.IPAddress.Parse("10.0.0.2");
@@ -367,6 +455,34 @@ public sealed class OpcDcomDecoderTests
         await Assert.That(request.Opnum).IsEqualTo(7);
         await Assert.That(request.AuthUnwrapStatus).IsEqualTo("Decrypted");
         await Assert.That(request.AuthUnwrapReason).IsNull();
+    }
+
+    [Test]
+    public async Task Decode_RequestPduWithIntegrityOnlyFullSignedRegion_VerifiesWithoutDecrypting()
+    {
+        using var unwrapper = new NtlmPassiveUnwrapper(s_testSessionKey);
+        var decoder = new OpcDcomDecoder(unwrapper);
+        var ts = new DateTimeOffset(2026, 6, 9, 14, 0, 0, TimeSpan.Zero);
+        _ = decoder.DecodeRawDcomFrame(
+            Encode(NewBindPdu(callId: 205)),
+            s_clientIp, ClientPort, s_serverIp, ServerPort, ts).ToList();
+        byte[] stub = OrpcEnvelope.BuildRequestStub(new byte[] { 0x31, 0x32 }, Guid.Empty);
+        byte[] signedRequest = BuildSealedFramePerCodebase(
+            ptype: 0x00,
+            callId: 206,
+            contextId: 3,
+            opnum: 7,
+            plaintextStub: stub,
+            isServerSide: false,
+            protection: ProtectionLevel.PROTECTION_LEVEL_INTEGRITY);
+
+        DecodedOpcPdu request = decoder.DecodeRawDcomFrame(
+            signedRequest,
+            s_clientIp, ClientPort, s_serverIp, ServerPort,
+            ts.AddMilliseconds(1)).Single();
+
+        await Assert.That(request.AuthUnwrapStatus).IsEqualTo("IntegrityVerified");
+        await Assert.That(request.RequestStubLength).IsEqualTo(stub.Length);
     }
 
     [Test]
@@ -532,7 +648,13 @@ public sealed class OpcDcomDecoderTests
     /// <c>Ntlm1.ProcessOutgoing</c>.
     /// </summary>
     private static byte[] BuildSealedFramePerCodebase(
-        byte ptype, int callId, int contextId, int opnum, byte[] plaintextStub, bool isServerSide)
+        byte ptype,
+        int callId,
+        int contextId,
+        int opnum,
+        byte[] plaintextStub,
+        bool isServerSide,
+        ProtectionLevel protection = ProtectionLevel.PROTECTION_LEVEL_PRIVACY)
     {
         ConnectionOrientedPdu basePdu = ptype switch
         {
@@ -571,35 +693,30 @@ public sealed class OpcDcomDecoderTests
         Array.Copy(pduBytes, 0, protectedPdu, 0, pduBytes.Length);
 
         protectedPdu[verifierStart] = AuthTypeNtlm;
-        protectedPdu[verifierStart + 1] = AuthLevelPrivacy;
+        protectedPdu[verifierStart + 1] = protection == ProtectionLevel.PROTECTION_LEVEL_PRIVACY
+            ? AuthLevelPrivacy
+            : AuthLevelIntegrity;
         protectedPdu[verifierStart + 2] = (byte)padding;
         protectedPdu[verifierStart + 3] = 0;
 
         BinaryPrimitives.WriteUInt16LittleEndian(protectedPdu.AsSpan(ConnectionOrientedPdu.FRAG_LENGTH_OFFSET, 2), (ushort)fragmentLength);
         BinaryPrimitives.WriteUInt16LittleEndian(protectedPdu.AsSpan(ConnectionOrientedPdu.AUTH_LENGTH_OFFSET, 2), (ushort)NtlmAuthValueLength);
 
-        // Encrypt ONLY the body portion (offsets 16..verifierStart) — the
-        // common header MUST stay plaintext on the wire so the receiver can
-        // parse fragLength + authLength + ptype. Matches the production
-        // receiver's VerifyPacketProtection which verifies pduBody starting
-        // at offset 16. The verifier (16 bytes) lands in the trailing slot.
+        // Production signs the complete region through the sec_trailer and
+        // encrypts only the body/padding range after the common header.
         int bodyStart = ConnectionOrientedPdu.HEADER_LENGTH;
         int bodyLength = verifierStart - bodyStart;
-        byte[] bodyAndVerifierSlot = new byte[bodyLength + NtlmAuthValueLength];
-        Array.Copy(protectedPdu, bodyStart, bodyAndVerifierSlot, 0, bodyLength);
-        // bodyAndVerifierSlot[bodyLength..bodyLength+16] starts zeroed (verifier slot)
+        int signedLength = verifierStart + AuthVerifierHeaderLength;
+        NtlmFlags flags = protection == ProtectionLevel.PROTECTION_LEVEL_PRIVACY
+            ? NtlmPassiveUnwrapper.DefaultFlags
+            : NtlmPassiveUnwrapper.DefaultFlags & ~NtlmFlags.NtlmsspNegotiateSeal;
 #pragma warning disable CS0618 // Ntlm1 [Obsolete] is intentional in this passive-unwrap test
-        var producer = new Opc.Classic.Dcom.Rpc.Auth.ntlm.Ntlm1(NtlmPassiveUnwrapper.DefaultFlags, (byte[])s_testSessionKey.Clone(), isServerSide);
+        var producer = new Opc.Classic.Dcom.Rpc.Auth.ntlm.Ntlm1(flags, (byte[])s_testSessionKey.Clone(), isServerSide);
 #pragma warning restore CS0618
-        var ndrBuffer = new Opc.Classic.Dcom.Internal.LegacyNdr.NdrBuffer(bodyAndVerifierSlot, 0);
-        ndrBuffer.SetLength(bodyAndVerifierSlot.Length);
+        var ndrBuffer = new Opc.Classic.Dcom.Internal.LegacyNdr.NdrBuffer(protectedPdu, 0);
+        ndrBuffer.SetLength(protectedPdu.Length);
         var ndr = new Opc.Classic.Dcom.Internal.LegacyNdr.NdrCodec { Buffer = ndrBuffer, Format = Opc.Classic.Dcom.Internal.LegacyNdr.NdrFormat.DEFAULT_FORMAT };
-        producer.ProcessOutgoing(ndr, index: 0, length: bodyLength, verifierIndex: bodyLength, isFragmented: false);
-
-        // Copy encrypted body back into the frame body slot, and the
-        // verifier into the trailing 16-byte auth-value slot.
-        Array.Copy(bodyAndVerifierSlot, 0, protectedPdu, bodyStart, bodyLength);
-        Array.Copy(bodyAndVerifierSlot, bodyLength, protectedPdu, verifierStart + AuthVerifierHeaderLength, NtlmAuthValueLength);
+        producer.ProcessOutgoing(ndr, bodyStart, bodyLength, signedLength, isFragmented: false);
 
         return protectedPdu;
     }
@@ -633,7 +750,8 @@ public sealed class OpcDcomDecoderTests
     private static CapturedPacket NewTcpPacket(
         byte[] tcpPayload,
         DateTimeOffset timestamp,
-        bool reverse = false)
+        bool reverse = false,
+        uint sequenceNumber = 0)
     {
         byte[] frame = new byte[14 + 20 + 20 + tcpPayload.Length];
 
@@ -667,6 +785,7 @@ public sealed class OpcDcomDecoderTests
         int tcpOffset = ipOffset + 20;
         BinaryPrimitives.WriteUInt16BigEndian(frame.AsSpan(tcpOffset, 2), reverse ? (ushort)135 : (ushort)50000);
         BinaryPrimitives.WriteUInt16BigEndian(frame.AsSpan(tcpOffset + 2, 2), reverse ? (ushort)50000 : (ushort)135);
+        BinaryPrimitives.WriteUInt32BigEndian(frame.AsSpan(tcpOffset + 4, 4), sequenceNumber);
         frame[tcpOffset + 12] = 0x50;
         frame[tcpOffset + 13] = 0x18;
         BinaryPrimitives.WriteUInt16BigEndian(frame.AsSpan(tcpOffset + 14, 2), 8192);

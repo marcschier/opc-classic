@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2026 Opc.Classic Contributors. Licensed under the MIT License.
+// Copyright (c) 2026 Opc.Classic Contributors. Licensed under the MIT License.
 
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
@@ -30,7 +30,7 @@ namespace Opc.Classic.Mcp.Capture;
 /// an actionable message via <see cref="CaptureException"/>.
 /// </para>
 /// </remarks>
-public sealed class PcapCaptureSource : ICaptureSource, IIncrementalCaptureSource
+public sealed class PcapCaptureSource : ICaptureSource, ICaptureFilterController, IIncrementalCaptureSource
 {
     /// <summary>
     /// Stable source name surfaced via the MCP info DTO.
@@ -113,6 +113,7 @@ public sealed class PcapCaptureSource : ICaptureSource, IIncrementalCaptureSourc
     private TimeSpan _maxDuration;
     private volatile bool _stopRequested;
     private int _linkType;
+    private string? _effectiveFilter;
 
     public PcapCaptureSource(string sessionFolder, ILogger? logger = null)
     {
@@ -129,6 +130,9 @@ public sealed class PcapCaptureSource : ICaptureSource, IIncrementalCaptureSourc
 
     /// <inheritdoc/>
     public int LinkType => _linkType;
+
+    /// <inheritdoc/>
+    public string? EffectiveFilter => _effectiveFilter;
 
     /// <inheritdoc/>
     public string? GetRawPcapFilePath()
@@ -182,6 +186,7 @@ public sealed class PcapCaptureSource : ICaptureSource, IIncrementalCaptureSourc
         try
         {
             selected.Filter = filter;
+            _effectiveFilter = filter;
         }
         catch (Exception ex) when (ex is not OutOfMemoryException and not ThreadAbortException)
         {
@@ -209,6 +214,37 @@ public sealed class PcapCaptureSource : ICaptureSource, IIncrementalCaptureSourc
         selected.StartCapture();
 #pragma warning restore CA1849
         return Task.CompletedTask;
+    }
+
+    /// <inheritdoc/>
+    public CaptureSourceFilterUpdateResult TryUpdateFilter(
+        string filter,
+        CancellationToken cancellationToken)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(filter);
+        cancellationToken.ThrowIfCancellationRequested();
+        lock (_lock)
+        {
+            if (_device is null)
+            {
+                throw new CaptureException("The capture source is not running.");
+            }
+
+            try
+            {
+                _device.Filter = filter;
+                _effectiveFilter = filter;
+                return CaptureSourceFilterUpdateResult.Updated;
+            }
+            catch (Exception ex) when (ex is NotSupportedException or PlatformNotSupportedException)
+            {
+                return CaptureSourceFilterUpdateResult.RestartRequired(ex.Message);
+            }
+            catch (Exception ex) when (ex is not OutOfMemoryException and not ThreadAbortException)
+            {
+                throw new CaptureException($"Invalid BPF filter '{filter}': {ex.Message}", ex);
+            }
+        }
     }
 
     private static LibPcapLiveDevice ResolveDevice(string nameOrDescription)

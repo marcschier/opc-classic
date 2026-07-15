@@ -307,6 +307,26 @@ public sealed class NtlmPassiveUnwrapper : IDisposable
         NtlmDirection dir,
         Span<byte> stubBuffer,
         ReadOnlySpan<byte> authTrailer)
+        => TryUnwrap(
+            dir,
+            stubBuffer,
+            confidentialOffset: 0,
+            confidentialLength: stubBuffer.Length,
+            authTrailer,
+            _protection);
+
+    /// <summary>
+    /// Mirrors production <c>IAuthContext.VerifyAndUnseal</c>: verifies the
+    /// complete signed region through the sec_trailer while decrypting only
+    /// the confidential body range at packet privacy.
+    /// </summary>
+    public NtlmUnwrapResult TryUnwrap(
+        NtlmDirection dir,
+        Span<byte> signedRegion,
+        int confidentialOffset,
+        int confidentialLength,
+        ReadOnlySpan<byte> authTrailer,
+        ProtectionLevel protection)
     {
         ObjectDisposedException.ThrowIf(_disposed, this);
 
@@ -321,26 +341,45 @@ public sealed class NtlmPassiveUnwrapper : IDisposable
                 NtlmUnwrapStatus.InvalidTrailerLength,
                 $"Auth trailer length {authTrailer.Length} != expected {VerifierLength}.");
         }
+        if (protection < ProtectionLevel.PROTECTION_LEVEL_INTEGRITY
+            || protection > ProtectionLevel.PROTECTION_LEVEL_PRIVACY)
+        {
+            return new NtlmUnwrapResult(
+                NtlmUnwrapStatus.InvalidTrailerLength,
+                $"Unsupported RPC auth level {protection}; expected INTEGRITY or PRIVACY.");
+        }
+        if (confidentialOffset < 0
+            || confidentialLength < 0
+            || confidentialOffset > signedRegion.Length - confidentialLength)
+        {
+            return new NtlmUnwrapResult(
+                NtlmUnwrapStatus.InvalidTrailerLength,
+                $"Confidential range [{confidentialOffset}, {confidentialLength}] exceeds signed region length {signedRegion.Length}.");
+        }
 
         bool isClient2Server = dir == NtlmDirection.ClientToServer;
         byte[] signingKey = isClient2Server ? _clientSigningKey : _serverSigningKey;
         RC4Engine cipher = isClient2Server ? _clientCipher : _serverCipher;
         int sequenceNumber = isClient2Server ? _clientSequence : _serverSequence;
 
-        // PRIVACY: decrypt body FIRST (so HMAC is computed over plaintext).
-        // INTEGRITY: leave body alone.
-        if (_protection == ProtectionLevel.PROTECTION_LEVEL_PRIVACY && stubBuffer.Length > 0)
+        // PRIVACY: decrypt only the production confidential sub-range first,
+        // then HMAC the full plaintext signed region. INTEGRITY leaves every
+        // byte unchanged and HMACs the full signed region as captured.
+        if (protection == ProtectionLevel.PROTECTION_LEVEL_PRIVACY && confidentialLength > 0)
         {
-            byte[] cipherBuf = stubBuffer.ToArray();
+            Span<byte> confidential = signedRegion.Slice(confidentialOffset, confidentialLength);
+            byte[] cipherBuf = confidential.ToArray();
             byte[] plaintext = new byte[cipherBuf.Length];
             cipher.ProcessBytes(cipherBuf, 0, cipherBuf.Length, plaintext, 0);
-            plaintext.AsSpan().CopyTo(stubBuffer);
+            plaintext.AsSpan().CopyTo(confidential);
+            CryptographicOperations.ZeroMemory(cipherBuf);
+            CryptographicOperations.ZeroMemory(plaintext);
         }
 
-        // HMAC over plaintext + sequence number → 16-byte verifier
+        // HMAC over the complete plaintext signed region + sequence number.
         // (with the 8 middle bytes XOR-encrypted via SigningPt2 when
         // ExtendedSessionSecurity + KeyExch is negotiated).
-        byte[] expected = ComputeVerifier(sequenceNumber, signingKey, stubBuffer, cipher);
+        byte[] expected = ComputeVerifier(sequenceNumber, signingKey, signedRegion, cipher);
 
         if (!authTrailer.SequenceEqual(expected))
         {
@@ -364,7 +403,7 @@ public sealed class NtlmPassiveUnwrapper : IDisposable
         }
 
         return new NtlmUnwrapResult(
-            _protection == ProtectionLevel.PROTECTION_LEVEL_PRIVACY
+            protection == ProtectionLevel.PROTECTION_LEVEL_PRIVACY
                 ? NtlmUnwrapStatus.Decrypted
                 : NtlmUnwrapStatus.IntegrityVerified,
             null);

@@ -122,7 +122,20 @@ public sealed class OpcDcomDecoder
             yield break;
         }
 
-        ValidateCapturedFrame(packet);
+        DecodedDcomFrame? validationFailure = null;
+        try
+        {
+            ValidateCapturedFrame(packet);
+        }
+        catch (InvalidDataException ex)
+        {
+            validationFailure = PacketFailure(packet, "invalid_or_truncated_packet", ex.Message);
+        }
+        if (validationFailure is not null)
+        {
+            yield return validationFailure;
+            yield break;
+        }
 
         Packet parsed;
         try
@@ -177,11 +190,30 @@ public sealed class OpcDcomDecoder
         FlowKey reverseKey = new(dstIp, tcp.DestinationPort, srcIp, tcp.SourcePort);
         (FlowState flow, FlowState reverseFlow) = GetOrCreateFlowPair(key, reverseKey);
 
-        flow.Append(payload);
+        flow.AppendTcpSegment(tcp.SequenceNumber, payload, packet.Timestamp);
+
+        foreach (DcomDecodeFailure failure in flow.TakeFailures())
+        {
+            yield return new DecodedDcomFrame(
+                Pdu: null,
+                PduType: "unknown",
+                RawFrame: null,
+                StubBytes: null,
+                Failure: failure);
+        }
 
         while (flow.TryDequeueFrame(out byte[]? frame))
         {
             yield return TryDecodeFrame(frame, packet.Timestamp, flow, reverseFlow, key);
+        }
+        foreach (DcomDecodeFailure failure in flow.TakeFailures())
+        {
+            yield return new DecodedDcomFrame(
+                Pdu: null,
+                PduType: "unknown",
+                RawFrame: null,
+                StubBytes: null,
+                Failure: failure);
         }
     }
 
@@ -301,11 +333,6 @@ public sealed class OpcDcomDecoder
     /// scheme isn't NTLM); returns a non-null status otherwise so the
     /// caller can decorate the projected <see cref="DecodedOpcPdu"/>.
     /// </summary>
-    /// <remarks>
-    /// Wire-format compatibility: matches this codebase's body-only
-    /// signing/sealing region. Additional external-peer packet-protection
-    /// layouts remain a compatibility follow-up.
-    /// </remarks>
     private (NtlmUnwrapStatus? Status, string? Reason) TryUnwrapInPlace(byte[] frame, FlowState flow)
     {
         if (_unwrapper is null)
@@ -350,6 +377,13 @@ public sealed class OpcDcomDecoder
             // this unwrapper. Skip silently so the projection is unannotated.
             return (null, null);
         }
+        ProtectionLevel protection = (ProtectionLevel)frame[verifierStart + 1];
+        if (protection is not (ProtectionLevel.PROTECTION_LEVEL_INTEGRITY
+            or ProtectionLevel.PROTECTION_LEVEL_PRIVACY))
+        {
+            return (NtlmUnwrapStatus.InvalidTrailerLength,
+                $"Unsupported NTLM auth level {(byte)protection}; expected packet integrity (5) or privacy (6).");
+        }
 
         int authPaddingLength = frame[verifierStart + 2];
         int strippedLength = verifierStart - authPaddingLength;
@@ -366,23 +400,28 @@ public sealed class OpcDcomDecoder
             return (NtlmUnwrapStatus.SignatureMismatch,
                 "Direction unknown for this flow (capture started after the Bind handshake; per-direction NTLM sequence counters cannot be recovered passively).");
         }
+        if (!flow.ProtectionSequenceReliable)
+        {
+            return (NtlmUnwrapStatus.SignatureMismatch,
+                "TCP reassembly encountered a gap or resynchronization; NTLM counters were intentionally left unchanged because protected PDUs may be missing.");
+        }
 
-        // Cipher region per production receiver's
-        // `DcomCallChannel.VerifyPacketProtection`: pduBody starts AFTER the
-        // 16-byte common header and runs up to (but excluding) the auth
-        // verifier header. The common header MUST stay plaintext on the
-        // wire so the receiver (and our own flow buffer) can parse
-        // fragLength + authLength + ptype. NTLM HMAC + RC4 cover this
-        // body-only region.
-        int bodyStart = ConnectionOrientedPdu.HEADER_LENGTH;
-        int bodyLength = verifierStart - bodyStart;
-        byte[] cipherStub = new byte[bodyLength];
-        Array.Copy(frame, bodyStart, cipherStub, 0, bodyLength);
+        // Mirror DcomCallChannel.VerifyPacketProtection exactly: the signature
+        // covers the common header, body, auth padding, and sec_trailer. Only
+        // the body/padding range after the common header is confidential.
+        int signedLength = verifierStart + authVerifierHeaderLength;
+        int confidentialOffset = ConnectionOrientedPdu.HEADER_LENGTH;
+        int confidentialLength = verifierStart - confidentialOffset;
+        Span<byte> signedRegion = frame.AsSpan(0, signedLength);
+        ReadOnlySpan<byte> authTrailer = frame.AsSpan(fragLength - authLength, authLength);
 
-        byte[] authTrailer = new byte[authLength];
-        Array.Copy(frame, fragLength - authLength, authTrailer, 0, authLength);
-
-        NtlmUnwrapResult result = _unwrapper.TryUnwrap(direction, cipherStub, authTrailer);
+        NtlmUnwrapResult result = _unwrapper.TryUnwrap(
+            direction,
+            signedRegion,
+            confidentialOffset,
+            confidentialLength,
+            authTrailer,
+            protection);
         if (result.Succeeded)
         {
             // Copy plaintext back AND strip the auth verifier header + auth
@@ -390,7 +429,6 @@ public sealed class OpcDcomDecoder
             // update frag_length to the pre-verifier length and zero auth_length
             // so PduCodec sees a clean PDU body (it expects no auth trailer
             // once the wire layer has handled the protection).
-            Array.Copy(cipherStub, 0, frame, bodyStart, bodyLength);
             BinaryPrimitives.WriteUInt16LittleEndian(frame.AsSpan(ConnectionOrientedPdu.FRAG_LENGTH_OFFSET, 2), (ushort)strippedLength);
             BinaryPrimitives.WriteUInt16LittleEndian(frame.AsSpan(ConnectionOrientedPdu.AUTH_LENGTH_OFFSET, 2), 0);
             // Zero out auth padding + verifier header + auth value so none of
@@ -419,7 +457,8 @@ public sealed class OpcDcomDecoder
         int srcPort,
         IPAddress dstIp,
         int dstPort,
-        DateTimeOffset timestamp)
+        DateTimeOffset timestamp,
+        NtlmDirection? assumedDirection = null)
     {
         ArgumentNullException.ThrowIfNull(frame);
         ArgumentNullException.ThrowIfNull(srcIp);
@@ -428,6 +467,13 @@ public sealed class OpcDcomDecoder
         var key = new FlowKey(srcIp, srcPort, dstIp, dstPort);
         var reverseKey = new FlowKey(dstIp, dstPort, srcIp, srcPort);
         (FlowState flow, FlowState reverseFlow) = GetOrCreateFlowPair(key, reverseKey);
+        if (assumedDirection is NtlmDirection direction)
+        {
+            flow.KnownDirection ??= direction;
+            reverseFlow.KnownDirection ??= direction == NtlmDirection.ClientToServer
+                ? NtlmDirection.ServerToClient
+                : NtlmDirection.ClientToServer;
+        }
 
         flow.Append(frame);
 
@@ -451,7 +497,8 @@ public sealed class OpcDcomDecoder
         int srcPort,
         IPAddress dstIp,
         int dstPort,
-        DateTimeOffset timestamp)
+        DateTimeOffset timestamp,
+        NtlmDirection? assumedDirection = null)
     {
         ArgumentNullException.ThrowIfNull(frame);
         ArgumentNullException.ThrowIfNull(srcIp);
@@ -489,6 +536,13 @@ public sealed class OpcDcomDecoder
         var key = new FlowKey(srcIp, srcPort, dstIp, dstPort);
         var reverseKey = new FlowKey(dstIp, dstPort, srcIp, srcPort);
         (FlowState flow, FlowState reverseFlow) = GetOrCreateFlowPair(key, reverseKey);
+        if (assumedDirection is NtlmDirection direction)
+        {
+            flow.KnownDirection ??= direction;
+            reverseFlow.KnownDirection ??= direction == NtlmDirection.ClientToServer
+                ? NtlmDirection.ServerToClient
+                : NtlmDirection.ClientToServer;
+        }
 
         return TryDecodeFrame(frame.ToArray(), timestamp, flow, reverseFlow, key);
     }
@@ -528,6 +582,40 @@ public sealed class OpcDcomDecoder
     {
         foreach (FlowState flow in _flows.Values)
         {
+            flow.CompleteTcpReassembly();
+            foreach (DcomDecodeFailure failure in flow.TakeFailures())
+            {
+                yield return new DecodedDcomFrame(
+                    Pdu: null,
+                    PduType: "unknown",
+                    RawFrame: null,
+                    StubBytes: null,
+                    Failure: failure);
+            }
+
+            var reverseKey = new FlowKey(flow.Key.DstIp, flow.Key.DstPort, flow.Key.SrcIp, flow.Key.SrcPort);
+            FlowState reverseFlow = _flows.TryGetValue(reverseKey, out FlowState? reverse)
+                ? reverse
+                : flow;
+            while (flow.TryDequeueFrame(out byte[]? completedFrame))
+            {
+                yield return TryDecodeFrame(
+                    completedFrame,
+                    flow.LastTimestamp,
+                    flow,
+                    reverseFlow,
+                    flow.Key);
+            }
+            foreach (DcomDecodeFailure failure in flow.TakeFailures())
+            {
+                yield return new DecodedDcomFrame(
+                    Pdu: null,
+                    PduType: "unknown",
+                    RawFrame: null,
+                    StubBytes: null,
+                    Failure: failure);
+            }
+
             byte[] remaining = flow.TakeRemainingBytes();
             if (remaining.Length == 0)
             {
@@ -552,6 +640,18 @@ public sealed class OpcDcomDecoder
             RawFrame: frame,
             StubBytes: null,
             Failure: new DcomDecodeFailure("framing", code, message));
+
+    private static DecodedDcomFrame PacketFailure(CapturedPacket packet, string code, string message)
+    {
+        const int maxContextBytes = 64;
+        byte[] context = packet.Data.Span[..Math.Min(packet.Data.Length, maxContextBytes)].ToArray();
+        return new DecodedDcomFrame(
+            Pdu: null,
+            PduType: "unknown",
+            RawFrame: context,
+            StubBytes: null,
+            Failure: new DcomDecodeFailure("packet", code, message));
+    }
 
     private static string GetPduType(ReadOnlySpan<byte> frame)
     {
@@ -990,6 +1090,9 @@ public sealed class OpcDcomDecoder
 
     private sealed class FlowState
     {
+        private const int MaxPendingTcpSegments = 4096;
+        private const int MaxResyncScanBytes = 4096;
+
         public FlowKey Key { get; }
         public ConnectionState Connection { get; }
         public Dictionary<int, Guid> PendingContexts => Connection.PendingContexts;
@@ -1009,8 +1112,14 @@ public sealed class OpcDcomDecoder
         /// correct sub-key + sequence counter.
         /// </summary>
         public NtlmDirection? KnownDirection { get; set; }
+        public bool ProtectionSequenceReliable { get; private set; } = true;
+        public DateTimeOffset LastTimestamp { get; private set; } = DateTimeOffset.UnixEpoch;
 
         private readonly List<byte> _buffer = new();
+        private readonly SortedDictionary<uint, byte[]> _pendingSegments = new();
+        private readonly Queue<DcomDecodeFailure> _failures = new();
+        private uint? _nextSequence;
+        private bool _sequenceMode;
 
         public FlowState(FlowKey key, ConnectionState connection)
         {
@@ -1020,24 +1129,133 @@ public sealed class OpcDcomDecoder
 
         public void Append(ReadOnlySpan<byte> bytes) => _buffer.AddRange(bytes);
 
+        public void AppendTcpSegment(
+            uint sequenceNumber,
+            ReadOnlySpan<byte> bytes,
+            DateTimeOffset timestamp)
+        {
+            LastTimestamp = timestamp;
+            if (sequenceNumber == 0 && !_sequenceMode)
+            {
+                Append(bytes);
+                return;
+            }
+
+            _sequenceMode = true;
+            byte[] incoming = bytes.ToArray();
+            if (_nextSequence is uint expected
+                && (ulong)sequenceNumber + (uint)incoming.Length <= expected)
+            {
+                return;
+            }
+            if (_pendingSegments.TryGetValue(sequenceNumber, out byte[]? existing))
+            {
+                if (existing.Length >= incoming.Length)
+                {
+                    return;
+                }
+            }
+            _pendingSegments[sequenceNumber] = incoming;
+            if (_pendingSegments.Count > MaxPendingTcpSegments)
+            {
+                KeyValuePair<uint, byte[]> oldest = _pendingSegments.First();
+                _pendingSegments.Remove(oldest.Key);
+                ProtectionSequenceReliable = false;
+                _failures.Enqueue(new DcomDecodeFailure(
+                    "tcp_reassembly",
+                    "pending_segment_overflow",
+                    $"TCP flow {Key} exceeded {MaxPendingTcpSegments} pending segments; dropped sequence {oldest.Key}."));
+            }
+
+            if (_nextSequence is null)
+            {
+                TryStartOrderedStream();
+            }
+            else
+            {
+                DrainContiguousSegments();
+            }
+        }
+
+        public void CompleteTcpReassembly()
+        {
+            if (!_sequenceMode)
+            {
+                return;
+            }
+
+            while (_pendingSegments.Count > 0)
+            {
+                if (_nextSequence is null)
+                {
+                    ResyncAtNextPlausibleHeader("capture ended before the initial TCP sequence could be established");
+                    continue;
+                }
+
+                int before = _pendingSegments.Count;
+                DrainContiguousSegments();
+                if (_pendingSegments.Count < before)
+                {
+                    continue;
+                }
+
+                uint nextAvailable = _pendingSegments.First().Key;
+                uint expected = _nextSequence.Value;
+                if (nextAvailable > expected)
+                {
+                    RecordGapAndReset(expected, nextAvailable);
+                }
+                ResyncAtNextPlausibleHeader("resynchronized after a TCP sequence gap");
+            }
+        }
+
+        public IReadOnlyList<DcomDecodeFailure> TakeFailures()
+        {
+            if (_failures.Count == 0)
+            {
+                return [];
+            }
+            var failures = new List<DcomDecodeFailure>(_failures.Count);
+            while (_failures.TryDequeue(out DcomDecodeFailure? failure))
+            {
+                failures.Add(failure);
+            }
+            return failures;
+        }
+
         public bool TryDequeueFrame([System.Diagnostics.CodeAnalysis.NotNullWhen(true)] out byte[]? frame)
         {
-            frame = null;
-            if (_buffer.Count < ConnectionOrientedPdu.HEADER_LENGTH)
+            while (true)
             {
-                return false;
-            }
+                frame = null;
+                if (_buffer.Count < ConnectionOrientedPdu.HEADER_LENGTH)
+                {
+                    return false;
+                }
 
-            // Common header offset 8 is a little-endian USHORT frag_length.
-            int fragLength = _buffer[8] | (_buffer[9] << 8);
-            if (fragLength < ConnectionOrientedPdu.HEADER_LENGTH || _buffer.Count < fragLength)
-            {
-                return false;
-            }
+                int fragLength = _buffer[8] | (_buffer[9] << 8);
+                if (fragLength < ConnectionOrientedPdu.HEADER_LENGTH)
+                {
+                    int resyncOffset = FindPlausibleHeader(_buffer, startOffset: 1);
+                    int dropped = resyncOffset >= 0 ? resyncOffset : Math.Min(_buffer.Count, MaxResyncScanBytes);
+                    byte[] context = _buffer.Take(Math.Min(dropped, 64)).ToArray();
+                    _buffer.RemoveRange(0, dropped);
+                    ProtectionSequenceReliable = false;
+                    _failures.Enqueue(new DcomDecodeFailure(
+                        "tcp_reassembly",
+                        "invalid_dce_header_resync",
+                        $"Discarded {dropped} byte(s) while searching for the next plausible DCE/RPC header. Context={Convert.ToHexString(context)}"));
+                    continue;
+                }
+                if (_buffer.Count < fragLength)
+                {
+                    return false;
+                }
 
-            frame = _buffer.GetRange(0, fragLength).ToArray();
-            _buffer.RemoveRange(0, fragLength);
-            return true;
+                frame = _buffer.GetRange(0, fragLength).ToArray();
+                _buffer.RemoveRange(0, fragLength);
+                return true;
+            }
         }
 
         public byte[] TakeRemainingBytes()
@@ -1050,6 +1268,171 @@ public sealed class OpcDcomDecoder
             byte[] remaining = _buffer.ToArray();
             _buffer.Clear();
             return remaining;
+        }
+
+        private void TryStartOrderedStream()
+        {
+            if (_pendingSegments.Count == 0)
+            {
+                return;
+            }
+            uint firstSequence = _pendingSegments.First().Key;
+            byte[] contiguous = BuildContiguousPreview(firstSequence, ConnectionOrientedPdu.HEADER_LENGTH);
+            if (contiguous.Length < ConnectionOrientedPdu.HEADER_LENGTH
+                || !IsPlausibleDceHeader(contiguous))
+            {
+                return;
+            }
+
+            _nextSequence = firstSequence;
+            DrainContiguousSegments();
+        }
+
+        private void DrainContiguousSegments()
+        {
+            if (_nextSequence is not uint expected)
+            {
+                return;
+            }
+
+            while (TryFindCoveringSegment(expected, out uint start, out byte[]? segment))
+            {
+                int offset = checked((int)(expected - start));
+                ReadOnlySpan<byte> newBytes = segment.AsSpan(offset);
+                _buffer.AddRange(newBytes);
+                expected = checked(expected + (uint)newBytes.Length);
+                RemoveConsumedSegments(expected);
+            }
+            _nextSequence = expected;
+        }
+
+        private bool TryFindCoveringSegment(uint expected, out uint start, out byte[]? segment)
+        {
+            start = 0;
+            segment = null;
+            foreach (KeyValuePair<uint, byte[]> candidate in _pendingSegments)
+            {
+                if (candidate.Key > expected)
+                {
+                    break;
+                }
+                ulong end = (ulong)candidate.Key + (uint)candidate.Value.Length;
+                if (end > expected
+                    && (segment is null || end > (ulong)start + (uint)segment.Length))
+                {
+                    start = candidate.Key;
+                    segment = candidate.Value;
+                }
+            }
+            return segment is not null;
+        }
+
+        private void RemoveConsumedSegments(uint expected)
+        {
+            uint[] consumed = _pendingSegments
+                .Where(pair => (ulong)pair.Key + (uint)pair.Value.Length <= expected)
+                .Select(pair => pair.Key)
+                .ToArray();
+            foreach (uint key in consumed)
+            {
+                _pendingSegments.Remove(key);
+            }
+        }
+
+        private byte[] BuildContiguousPreview(uint firstSequence, int minimumBytes)
+        {
+            var preview = new List<byte>(minimumBytes);
+            uint expected = firstSequence;
+            while (TryFindCoveringSegment(expected, out uint start, out byte[]? segment))
+            {
+                int offset = checked((int)(expected - start));
+                ReadOnlySpan<byte> bytes = segment.AsSpan(offset);
+                preview.AddRange(bytes);
+                expected = checked(expected + (uint)bytes.Length);
+                if (preview.Count >= minimumBytes)
+                {
+                    break;
+                }
+            }
+            return preview.ToArray();
+        }
+
+        private void RecordGapAndReset(uint expected, uint nextAvailable)
+        {
+            ProtectionSequenceReliable = false;
+            _failures.Enqueue(new DcomDecodeFailure(
+                "tcp_reassembly",
+                "tcp_sequence_gap",
+                $"TCP flow {Key} is missing sequence range [{expected}, {nextAvailable - 1}]. NTLM unwrap is disabled for the resynchronized flow."));
+            if (_buffer.Count > 0)
+            {
+                _failures.Enqueue(new DcomDecodeFailure(
+                    "tcp_reassembly",
+                    "partial_dce_frame_dropped",
+                    $"Dropped {_buffer.Count} buffered DCE/RPC byte(s) because a TCP gap interrupted the frame."));
+                _buffer.Clear();
+            }
+            _nextSequence = null;
+        }
+
+        private void ResyncAtNextPlausibleHeader(string reason)
+        {
+            if (_pendingSegments.Count == 0)
+            {
+                return;
+            }
+            KeyValuePair<uint, byte[]> first = _pendingSegments.First();
+            int offset = FindPlausibleHeader(first.Value, startOffset: 0);
+            if (offset < 0)
+            {
+                _pendingSegments.Remove(first.Key);
+                ProtectionSequenceReliable = false;
+                _failures.Enqueue(new DcomDecodeFailure(
+                    "tcp_reassembly",
+                    "tcp_resync_drop",
+                    $"Dropped {first.Value.Length} byte(s) at TCP sequence {first.Key}; no DCE/RPC header was found ({reason})."));
+                return;
+            }
+            if (offset > 0)
+            {
+                ProtectionSequenceReliable = false;
+                _failures.Enqueue(new DcomDecodeFailure(
+                    "tcp_reassembly",
+                    "tcp_resynchronized",
+                    $"Dropped {offset} byte(s) at TCP sequence {first.Key} and resumed at a plausible DCE/RPC header ({reason})."));
+            }
+            _nextSequence = checked(first.Key + (uint)offset);
+            DrainContiguousSegments();
+        }
+
+        private static int FindPlausibleHeader(IReadOnlyList<byte> bytes, int startOffset)
+        {
+            int last = Math.Min(bytes.Count - ConnectionOrientedPdu.HEADER_LENGTH, MaxResyncScanBytes);
+            for (int offset = startOffset; offset <= last; offset++)
+            {
+                byte[] header = new byte[ConnectionOrientedPdu.HEADER_LENGTH];
+                for (int i = 0; i < header.Length; i++)
+                {
+                    header[i] = bytes[offset + i];
+                }
+                if (IsPlausibleDceHeader(header))
+                {
+                    return offset;
+                }
+            }
+            return -1;
+        }
+
+        private static bool IsPlausibleDceHeader(ReadOnlySpan<byte> bytes)
+        {
+            if (bytes.Length < ConnectionOrientedPdu.HEADER_LENGTH
+                || bytes[0] != 5
+                || bytes[2] > 19)
+            {
+                return false;
+            }
+            int fragLength = bytes[8] | (bytes[9] << 8);
+            return fragLength >= ConnectionOrientedPdu.HEADER_LENGTH;
         }
     }
 }

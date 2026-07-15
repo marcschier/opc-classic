@@ -12,11 +12,15 @@ public sealed class CaptureSession : IAsyncDisposable
     private readonly AsyncOperationGate _operations = new(nameof(CaptureSession));
     private readonly object _keyLock = new();
     private readonly object _cursorInitLock = new();
+    private readonly object _snapshotLock = new();
     private readonly ILogger _logger;
+    private readonly Func<string, ICaptureSource>? _sourceFactory;
+    private SourceState _sourceState;
     private byte[]? _ntlmSessionKey;
     private DecodeCursor? _cursor;
     private bool _secretStateCleared;
     private bool _cursorOperationsClosed;
+    private int _nextSourceSegment = 1;
     private int _disposed;
 
     internal Action? SecretCleanupObserved { get; set; }
@@ -27,7 +31,8 @@ public sealed class CaptureSession : IAsyncDisposable
         ICaptureSource source,
         string sessionFolder,
         CaptureStartRequest request,
-        ILogger? logger = null)
+        ILogger? logger = null,
+        Func<string, ICaptureSource>? sourceFactory = null)
     {
         ArgumentException.ThrowIfNullOrEmpty(id);
         ArgumentException.ThrowIfNullOrEmpty(sourceName);
@@ -37,7 +42,8 @@ public sealed class CaptureSession : IAsyncDisposable
 
         Id = id;
         SourceName = sourceName;
-        Source = source;
+        _sourceState = new SourceState(source, [source]);
+        _sourceFactory = sourceFactory;
         SessionFolder = sessionFolder;
         _ntlmSessionKey = request.NtlmSessionKey?.ToArray();
         Request = request with { NtlmSessionKey = null };
@@ -46,9 +52,26 @@ public sealed class CaptureSession : IAsyncDisposable
 
     public string Id { get; }
     public string SourceName { get; }
-    public ICaptureSource Source { get; }
+    public ICaptureSource Source => Volatile.Read(ref _sourceState).Active;
+    public long PacketCount => SumSources(static source => source.PacketCount);
+    public long ByteCount => SumSources(static source => source.ByteCount);
+    public int LinkType => Source.LinkType;
+    public string? EffectiveFilter =>
+        (Source as ICaptureFilterController)?.EffectiveFilter ?? Request.BpfFilter;
+    public IReadOnlyList<string> RawPcapFilePaths
+    {
+        get
+        {
+            lock (_snapshotLock)
+            {
+                return GetRawPcapFilePaths(_sourceState);
+            }
+        }
+    }
     public string SessionFolder { get; }
-    public CaptureStartRequest Request { get; }
+    public CaptureStartRequest Request { get; private set; }
+    public CaptureTargetMetadata? Target { get; private set; }
+    public CaptureFilterTransitionResult? LastFilterTransition { get; private set; }
     public CaptureSessionState State { get; private set; } = CaptureSessionState.Starting;
     public DateTimeOffset? StartedAt { get; private set; }
     public DateTimeOffset? StoppedAt { get; private set; }
@@ -94,7 +117,7 @@ public sealed class CaptureSession : IAsyncDisposable
         State = CaptureSessionState.Stopping;
         try
         {
-            await Source.StopAsync(cancellationToken).ConfigureAwait(false);
+            await StopAllSourcesAsync(cancellationToken).ConfigureAwait(false);
             StoppedAt = DateTimeOffset.UtcNow;
             State = CaptureSessionState.Completed;
             LastTouchedAt = DateTimeOffset.UtcNow;
@@ -102,7 +125,7 @@ public sealed class CaptureSession : IAsyncDisposable
             {
                 _logger.LogInformation(
                     "Capture session {SessionId} completed ({Packets} packets, {Bytes} bytes).",
-                    Id, Source.PacketCount, Source.ByteCount);
+                    Id, PacketCount, ByteCount);
             }
         }
         catch (Exception ex)
@@ -116,6 +139,423 @@ public sealed class CaptureSession : IAsyncDisposable
     }
 
     public void Touch() => LastTouchedAt = DateTimeOffset.UtcNow;
+
+    internal void SetTarget(CaptureTargetMetadata target)
+    {
+        ArgumentNullException.ThrowIfNull(target);
+        lock (_snapshotLock)
+        {
+            Target = target;
+            LastTouchedAt = DateTimeOffset.UtcNow;
+        }
+    }
+
+    internal void UpdateRequest(CaptureStartRequest request)
+    {
+        ArgumentNullException.ThrowIfNull(request);
+        lock (_snapshotLock)
+        {
+            Request = request with { NtlmSessionKey = null };
+        }
+    }
+
+    internal CaptureSessionSnapshot GetSnapshot()
+    {
+        lock (_snapshotLock)
+        {
+            SourceState sources = _sourceState;
+            IReadOnlyList<string> rawPaths = GetRawPcapFilePaths(sources);
+            return new CaptureSessionSnapshot(
+                Id,
+                SourceName,
+                State,
+                StartedAt,
+                StoppedAt,
+                SumSources(sources, static source => source.PacketCount),
+                SumSources(sources, static source => source.ByteCount),
+                Request,
+                Target,
+                (sources.Active as ICaptureFilterController)?.EffectiveFilter ?? Request.BpfFilter,
+                rawPaths,
+                Error,
+                LastFilterTransition);
+        }
+    }
+
+    /// <summary>
+    /// Replaces the filter on a running session. A source-provided live update is
+    /// preferred; sources without that capability are restarted into a retained
+    /// segment and atomically swapped into the session.
+    /// </summary>
+    public async Task<CaptureFilterTransitionResult> ReplaceFilterAsync(
+        string filter,
+        CaptureStartRequest request,
+        CancellationToken cancellationToken)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(filter);
+        ArgumentNullException.ThrowIfNull(request);
+
+        DateTimeOffset startedAt = DateTimeOffset.UtcNow;
+        using AsyncOperationGate.Lease operation =
+            await _operations.EnterAsync(cancellationToken).ConfigureAwait(false);
+        string? previousFilter = EffectiveFilter;
+        if (State != CaptureSessionState.Running || _disposed != 0)
+        {
+            return SetFilterTransition(CreateFilterTransition(
+                filter,
+                previousFilter,
+                CaptureFilterTransitionStatus.Failed,
+                startedAt,
+                previousFilter,
+                $"Capture session '{Id}' is not running."));
+        }
+
+            CaptureStartRequest sanitizedRequest = request with
+            {
+                BpfFilter = filter,
+                NtlmSessionKey = null,
+            };
+            if (string.Equals(previousFilter, filter, StringComparison.Ordinal))
+            {
+                lock (_snapshotLock)
+                {
+                    Request = sanitizedRequest;
+                    LastTouchedAt = DateTimeOffset.UtcNow;
+                    LastFilterTransition = CreateFilterTransition(
+                        filter,
+                        previousFilter,
+                        CaptureFilterTransitionStatus.Unchanged,
+                        startedAt,
+                        previousFilter,
+                        error: null);
+                    return LastFilterTransition;
+                }
+            }
+
+            ICaptureSource current = Source;
+            if (current is ICaptureFilterController controller)
+            {
+                lock (_snapshotLock)
+                {
+                    try
+                    {
+                        CaptureSourceFilterUpdateResult update =
+                            controller.TryUpdateFilter(filter, cancellationToken);
+                        if (update.Status == CaptureSourceFilterUpdateStatus.Updated)
+                        {
+                            Request = sanitizedRequest;
+                            LastTouchedAt = DateTimeOffset.UtcNow;
+                            LastFilterTransition = CreateFilterTransition(
+                                filter,
+                                previousFilter,
+                                CaptureFilterTransitionStatus.LiveUpdated,
+                                startedAt,
+                                controller.EffectiveFilter ?? filter,
+                                error: null);
+                            return LastFilterTransition;
+                        }
+                    }
+                    catch (OperationCanceledException)
+                    {
+                        LastTouchedAt = DateTimeOffset.UtcNow;
+                        LastFilterTransition = CreateFilterTransition(
+                            filter,
+                            previousFilter,
+                            CaptureFilterTransitionStatus.Canceled,
+                            startedAt,
+                            previousFilter,
+                            "The filter transition was canceled before it became visible.");
+                        throw;
+                    }
+                    catch (Exception ex) when (ex is not OutOfMemoryException and not ThreadAbortException)
+                    {
+                        string error = ex.Message;
+                        if (!string.IsNullOrWhiteSpace(previousFilter)
+                            && !string.Equals(
+                                controller.EffectiveFilter,
+                                previousFilter,
+                                StringComparison.Ordinal))
+                        {
+                            try
+                            {
+                                CaptureSourceFilterUpdateResult rollback =
+                                    controller.TryUpdateFilter(previousFilter, CancellationToken.None);
+                                if (rollback.Status != CaptureSourceFilterUpdateStatus.Updated)
+                                {
+                                    error += " Rollback requires a source restart; the prior filter could not be confirmed.";
+                                }
+                            }
+                            catch (Exception rollbackException)
+                                when (rollbackException is not OutOfMemoryException and not ThreadAbortException)
+                            {
+                                error += $" Rollback failed: {rollbackException.Message}";
+                            }
+                        }
+
+                        LastTouchedAt = DateTimeOffset.UtcNow;
+                        LastFilterTransition = CreateFilterTransition(
+                            filter,
+                            previousFilter,
+                            CaptureFilterTransitionStatus.Failed,
+                            startedAt,
+                            controller.EffectiveFilter ?? previousFilter,
+                            error);
+                        return LastFilterTransition;
+                    }
+                }
+            }
+
+            if (_sourceFactory is null)
+            {
+                return SetFilterTransition(CreateFilterTransition(
+                    filter,
+                    previousFilter,
+                    CaptureFilterTransitionStatus.Failed,
+                    startedAt,
+                    previousFilter,
+                    "The capture source does not support live filter updates and no restart factory is available."));
+            }
+
+        return await RestartSourceForFilterAsync(
+            current,
+            filter,
+            previousFilter,
+            sanitizedRequest,
+            startedAt,
+            cancellationToken).ConfigureAwait(false);
+    }
+
+    /// <summary>
+    /// Replays all retained source segments in transition order.
+    /// </summary>
+    public async IAsyncEnumerable<CapturedPacket> ReadAllAsync(
+        long? maxPackets,
+        [System.Runtime.CompilerServices.EnumeratorCancellation] CancellationToken cancellationToken)
+    {
+        long remaining = maxPackets ?? long.MaxValue;
+        if (remaining <= 0)
+        {
+            yield break;
+        }
+
+        SourceState state = Volatile.Read(ref _sourceState);
+        foreach (ICaptureSource source in state.Segments)
+        {
+            await foreach (CapturedPacket packet in source.ReadAllAsync(remaining, cancellationToken)
+                .ConfigureAwait(false))
+            {
+                yield return packet;
+                remaining--;
+                if (remaining == 0)
+                {
+                    yield break;
+                }
+            }
+        }
+    }
+
+    private async Task<CaptureFilterTransitionResult> RestartSourceForFilterAsync(
+        ICaptureSource current,
+        string filter,
+        string? previousFilter,
+        CaptureStartRequest request,
+        DateTimeOffset startedAt,
+        CancellationToken cancellationToken)
+    {
+        string segmentFolder = Path.Combine(
+            SessionFolder,
+            "segments",
+            $"segment-{_nextSourceSegment++:D4}");
+        Directory.CreateDirectory(segmentFolder);
+
+        ICaptureSource? replacement = null;
+        try
+        {
+            replacement = _sourceFactory!(segmentFolder);
+            await replacement.StartAsync(request, cancellationToken).ConfigureAwait(false);
+        }
+        catch (OperationCanceledException)
+        {
+            await DisposeReplacementAsync(replacement, segmentFolder).ConfigureAwait(false);
+            SetFilterTransition(CreateFilterTransition(
+                filter,
+                previousFilter,
+                CaptureFilterTransitionStatus.Canceled,
+                startedAt,
+                previousFilter,
+                "The replacement source was canceled before the transition became visible."));
+            throw;
+        }
+        catch (Exception ex) when (ex is not OutOfMemoryException and not ThreadAbortException)
+        {
+            await DisposeReplacementAsync(replacement, segmentFolder).ConfigureAwait(false);
+            return SetFilterTransition(CreateFilterTransition(
+                filter,
+                previousFilter,
+                CaptureFilterTransitionStatus.Failed,
+                startedAt,
+                previousFilter,
+                ex.Message));
+        }
+
+        string? cleanupWarning = null;
+        try
+        {
+            await current.StopAsync(CancellationToken.None).ConfigureAwait(false);
+        }
+        catch (Exception ex) when (ex is not OutOfMemoryException and not ThreadAbortException)
+        {
+            cleanupWarning = $"Replacement source is active, but the prior source did not stop cleanly: {ex.Message}";
+        }
+
+        lock (_snapshotLock)
+        {
+            SourceState prior = _sourceState;
+            var segments = new ICaptureSource[prior.Segments.Length + 1];
+            prior.Segments.CopyTo(segments, 0);
+            segments[^1] = replacement;
+            Volatile.Write(ref _sourceState, new SourceState(replacement, segments));
+            Request = request;
+            LastTouchedAt = DateTimeOffset.UtcNow;
+            LastFilterTransition = CreateFilterTransition(
+                filter,
+                previousFilter,
+                cleanupWarning is null
+                    ? CaptureFilterTransitionStatus.Restarted
+                    : CaptureFilterTransitionStatus.RestartedWithCleanupWarning,
+                startedAt,
+                (replacement as ICaptureFilterController)?.EffectiveFilter ?? filter,
+                cleanupWarning);
+            return LastFilterTransition;
+        }
+    }
+
+    private CaptureFilterTransitionResult SetFilterTransition(CaptureFilterTransitionResult result)
+    {
+        lock (_snapshotLock)
+        {
+            LastFilterTransition = result;
+            LastTouchedAt = DateTimeOffset.UtcNow;
+            return result;
+        }
+    }
+
+    private CaptureFilterTransitionResult CreateFilterTransition(
+        string filter,
+        string? previousFilter,
+        CaptureFilterTransitionStatus status,
+        DateTimeOffset startedAt,
+        string? effectiveFilter,
+        string? error)
+    {
+        SourceState state = Volatile.Read(ref _sourceState);
+        return new CaptureFilterTransitionResult
+        {
+            SessionId = Id,
+            RequestedFilter = filter,
+            PreviousFilter = previousFilter,
+            EffectiveFilter = effectiveFilter,
+            Status = status,
+            StartedAt = startedAt,
+            CompletedAt = DateTimeOffset.UtcNow,
+            PreservedPacketCount = PacketCount,
+            PreservedByteCount = ByteCount,
+            SourceSegmentCount = state.Segments.Length,
+            Error = error,
+        };
+    }
+
+    private static async Task DisposeReplacementAsync(
+        ICaptureSource? replacement,
+        string segmentFolder)
+    {
+        if (replacement is not null)
+        {
+            try
+            {
+                await replacement.StopAsync(CancellationToken.None).ConfigureAwait(false);
+            }
+            catch (Exception ex) when (ex is not OutOfMemoryException and not ThreadAbortException)
+            {
+            }
+
+            try
+            {
+                await replacement.DisposeAsync().ConfigureAwait(false);
+            }
+            catch (Exception ex) when (ex is not OutOfMemoryException and not ThreadAbortException)
+            {
+            }
+        }
+
+        try
+        {
+            if (Directory.Exists(segmentFolder))
+            {
+                Directory.Delete(segmentFolder, recursive: true);
+            }
+        }
+        catch (IOException)
+        {
+        }
+        catch (UnauthorizedAccessException)
+        {
+        }
+    }
+
+    private long SumSources(Func<ICaptureSource, long> selector)
+    {
+        SourceState state = Volatile.Read(ref _sourceState);
+        return SumSources(state, selector);
+    }
+
+    private static long SumSources(
+        SourceState state,
+        Func<ICaptureSource, long> selector)
+    {
+        long total = 0;
+        foreach (ICaptureSource source in state.Segments)
+        {
+            total += selector(source);
+        }
+        return total;
+    }
+
+    private static IReadOnlyList<string> GetRawPcapFilePaths(SourceState state)
+    {
+        var paths = new List<string>(state.Segments.Length);
+        foreach (ICaptureSource source in state.Segments)
+        {
+            string? path = source.GetRawPcapFilePath();
+            if (!string.IsNullOrWhiteSpace(path))
+            {
+                paths.Add(path);
+            }
+        }
+        return paths;
+    }
+
+    private async Task StopAllSourcesAsync(CancellationToken cancellationToken)
+    {
+        Exception? firstFailure = null;
+        SourceState state = Volatile.Read(ref _sourceState);
+        for (int i = state.Segments.Length - 1; i >= 0; i--)
+        {
+            try
+            {
+                await state.Segments[i].StopAsync(cancellationToken).ConfigureAwait(false);
+            }
+            catch (Exception ex) when (ex is not OutOfMemoryException and not ThreadAbortException)
+            {
+                firstFailure ??= ex;
+            }
+        }
+
+        if (firstFailure is not null)
+        {
+            System.Runtime.ExceptionServices.ExceptionDispatchInfo.Capture(firstFailure).Throw();
+        }
+    }
 
     internal Task<DrainTailResult> DrainTailAsync(
         long sinceIndex,
@@ -263,39 +703,45 @@ public sealed class CaptureSession : IAsyncDisposable
         {
             return;
         }
-        long consumed = cursor.PacketsConsumed;
-        if (Source.PacketCount <= consumed)
-        {
-            return;
-        }
 
-        long read = 0;
-        if (Source is IIncrementalCaptureSource incremental)
+        SourceState sourceState = Volatile.Read(ref _sourceState);
+        foreach (ICaptureSource source in sourceState.Segments)
         {
-            await foreach (CapturedPacket packet in incremental.ReadFromAsync(
-                consumed,
-                cancellationToken).ConfigureAwait(false))
+            long consumed = cursor.GetPacketsConsumed(source);
+            if (source.PacketCount <= consumed)
             {
-                cursor.Decode(packet);
-                read++;
+                continue;
             }
-        }
-        else
-        {
-            long packetIndex = 0;
-            await foreach (CapturedPacket packet in Source.ReadAllAsync(
-                maxPackets: null,
-                cancellationToken).ConfigureAwait(false))
+
+            long read = 0;
+            if (source is IIncrementalCaptureSource incremental)
             {
-                if (packetIndex++ < consumed)
+                await foreach (CapturedPacket packet in incremental.ReadFromAsync(
+                    consumed,
+                    cancellationToken).ConfigureAwait(false))
                 {
-                    continue;
+                    cursor.Decode(packet);
+                    read++;
                 }
-                cursor.Decode(packet);
-                read++;
             }
+            else
+            {
+                long packetIndex = 0;
+                await foreach (CapturedPacket packet in source.ReadAllAsync(
+                    maxPackets: null,
+                    cancellationToken).ConfigureAwait(false))
+                {
+                    if (packetIndex++ < consumed)
+                    {
+                        continue;
+                    }
+                    cursor.Decode(packet);
+                    read++;
+                }
+            }
+
+            cursor.SetPacketsConsumed(source, consumed + read);
         }
-        cursor.PacketsConsumed = consumed + read;
     }
 
     private async Task RunCursorProducerAsync(
@@ -420,13 +866,17 @@ public sealed class CaptureSession : IAsyncDisposable
         }
         await _operations.DisposeAsync().ConfigureAwait(false);
 
-        try
+        SourceState sourceState = Volatile.Read(ref _sourceState);
+        foreach (ICaptureSource source in sourceState.Segments)
         {
-            await Source.DisposeAsync().ConfigureAwait(false);
-        }
-        catch (Exception ex)
-        {
-            _logger.LogWarning(ex, "Capture session {SessionId} source dispose error.", Id);
+            try
+            {
+                await source.DisposeAsync().ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning(ex, "Capture session {SessionId} source dispose error.", Id);
+            }
         }
         try
         {
@@ -454,6 +904,8 @@ public sealed class CaptureSession : IAsyncDisposable
         private readonly ILogger _logger;
         private readonly List<IndexedPdu> _recovery = new(RecoveryCapacity);
         private readonly Dictionary<string, SubscriberCursor> _subscribers = new(StringComparer.Ordinal);
+        private readonly Dictionary<ICaptureSource, long> _packetsConsumed =
+            new(ReferenceEqualityComparer.Instance);
         private readonly object _producerLock = new();
         private readonly CancellationTokenSource _producerStopping = new();
         private Task? _producerTask;
@@ -467,9 +919,14 @@ public sealed class CaptureSession : IAsyncDisposable
 
         public OpcDcomDecoder Decoder { get; private set; }
         public NtlmPassiveUnwrapper? Unwrapper { get; private set; }
-        public long PacketsConsumed { get; set; }
         public long TotalEmitted { get; private set; }
         public AsyncOperationGate Operations { get; } = new(nameof(DecodeCursor));
+
+        public long GetPacketsConsumed(ICaptureSource source) =>
+            _packetsConsumed.TryGetValue(source, out long consumed) ? consumed : 0;
+
+        public void SetPacketsConsumed(ICaptureSource source, long consumed) =>
+            _packetsConsumed[source] = consumed;
 
         public void Decode(CapturedPacket packet)
         {
@@ -603,6 +1060,7 @@ public sealed class CaptureSession : IAsyncDisposable
             Unwrapper?.Dispose();
             _subscribers.Clear();
             _recovery.Clear();
+            _packetsConsumed.Clear();
             _producerStopping.Dispose();
         }
 
@@ -661,7 +1119,26 @@ public sealed class CaptureSession : IAsyncDisposable
         private sealed record IndexedPdu(long Index, DecodedOpcPdu Pdu);
         private sealed record SubscriberCursor(string Id, int Capacity);
     }
+
+    private sealed record SourceState(
+        ICaptureSource Active,
+        ICaptureSource[] Segments);
 }
+
+internal sealed record CaptureSessionSnapshot(
+    string Id,
+    string SourceName,
+    CaptureSessionState State,
+    DateTimeOffset? StartedAt,
+    DateTimeOffset? StoppedAt,
+    long PacketCount,
+    long ByteCount,
+    CaptureStartRequest Request,
+    CaptureTargetMetadata? Target,
+    string? EffectiveFilter,
+    IReadOnlyList<string> RawPcapFilePaths,
+    string? Error,
+    CaptureFilterTransitionResult? FilterTransition);
 
 internal sealed record DrainTailResult(
     IReadOnlyList<DecodedOpcPdu> Pdus,

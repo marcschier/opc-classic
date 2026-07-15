@@ -1152,7 +1152,7 @@ internal static class OpcMcpDcomConnectionHelper
         return null;
     }
 
-    private static async Task<Guid> ResolveClsidAsync(
+    internal static async Task<Guid> ResolveClsidAsync(
         OpcMcpDcomConnectionRequest request,
         Guid[] categoryIds,
         string opcScheme,
@@ -1190,7 +1190,10 @@ internal static class OpcMcpDcomConnectionHelper
         return match?.ClassId ?? throw new McpException($"OPC ProgID '{request.ProgId}' was not found on host '{request.Host}'.");
     }
 
-    private static IAuthContext CreateAuthContext(OpcMcpDcomConnectionRequest request, Guid clsid, string opcScheme)
+    internal static IAuthContext CreateAuthContext(
+        OpcMcpDcomConnectionRequest request,
+        Guid clsid,
+        string opcScheme)
     {
         NetworkCredential? credentials = CreateCredential(request.Username, request.Password);
         OpcUrl url = OpcUrl.Parse($"{opcScheme}://{request.Host}/{(request.ProgId ?? clsid.ToString("D"))}");
