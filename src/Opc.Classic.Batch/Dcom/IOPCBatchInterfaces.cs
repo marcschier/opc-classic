@@ -26,6 +26,7 @@ public partial interface IOPCBatchServer
     /// <c>IOPCBatchServer::CreateEnumerator</c> (opnum 4).
     /// </summary>
     [OpcMethod(4)]
+    [return: OpcIidIs(nameof(riid))]
     Task<IOpcInterfaceRef> CreateEnumeratorAsync(Guid riid, CancellationToken cancellationToken = default);
 }
 
@@ -39,6 +40,7 @@ public partial interface IOPCBatchServer2
     /// <c>IOPCBatchServer2::CreateFilteredEnumerator</c> (opnum 3).
     /// </summary>
     [OpcMethod(3)]
+    [return: OpcIidIs(nameof(riid))]
     Task<IOpcInterfaceRef> CreateFilteredEnumeratorAsync(Guid riid, OpcBatchSummaryFilter filter, string model, CancellationToken cancellationToken = default);
 }
 
@@ -52,6 +54,7 @@ public partial interface IEnumOPCBatchSummary
     /// <c>IEnumOPCBatchSummary::Next</c> (opnum 3).
     /// </summary>
     [OpcMethod(3)]
+    [return: OpcArrayCount(nameof(count))]
     Task<OpcBatchSummary[]> NextAsync(int count, CancellationToken cancellationToken = default);
 
     /// <summary>

@@ -2,7 +2,7 @@
 
 The `Opc.Classic.Generators` package reports these shipped diagnostics while validating `[OpcInterface]`, `[OpcMethod]`, and `[GenerateOpcProxy]` declarations. The diagnostic category is `Opc.Classic.Generators`, and each descriptor links back to this file.
 
-Release tracking note: `OPCGEN001`-`OPCGEN010` are listed in `AnalyzerReleases.Shipped`. Server-dispatch diagnostics remain tracked in `AnalyzerReleases.Unshipped` and are intentionally excluded from the shipped diagnostic table until a release ships them.
+Release tracking note: `OPCGEN001`-`OPCGEN010` are listed in `AnalyzerReleases.Shipped`. `OPCGEN011` and server-dispatch diagnostics remain tracked in `AnalyzerReleases.Unshipped` until a release ships them.
 
 ## Interface contract diagnostics
 
@@ -23,6 +23,21 @@ Release tracking note: `OPCGEN001`-`OPCGEN010` are listed in `AnalyzerReleases.S
 | OPCGEN008 | Info | A method uses an unsupported parameter or return type, so generation falls back to an empty-payload body. |
 | OPCGEN009 | Warning | A method return type has no registered codec in the generator codec registry. |
 | OPCGEN010 | Warning | A method parameter type is unsupported by the generator codec registry. |
+| OPCGEN011 | Warning | Client array-count or IID correlation metadata is invalid or unsafe. |
+
+## Server dispatch diagnostics
+
+| ID | Severity | Meaning |
+| --- | --- | --- |
+| OPCGEN101 | Error | `[OpcGenerateServerDispatch]` is applied to an interface that is not partial. |
+| OPCGEN102 | Warning | `[OpcGenerateServerDispatch]` is missing the companion `[OpcInterface]` attribute. |
+| OPCGEN103 | Warning | An `[OpcMethod]` signature cannot be represented by the server dispatcher. |
+| OPCGEN104 | Warning | A server request parameter type cannot be decoded by the generator. |
+| OPCGEN105 | Warning | A server response type cannot be encoded by the generator. |
+| OPCGEN107 | Warning | Server array-count or IID correlation metadata is invalid or unsafe. |
+
+The production audit is documented in
+[Production generator shape inventory](production-shape-inventory.md). It compiles generated source per production project using real project references and derives correlation categories only from resolved `[OpcArrayCount]` and `[OpcIidIs]` attributes.
 
 ## Severity policy
 

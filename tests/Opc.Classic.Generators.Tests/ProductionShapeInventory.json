@@ -1,0 +1,2907 @@
+[
+  {
+    "Interface": "Opc.Classic.Ae.Dcom.IOPCEventServer",
+    "Method": "GetStatusAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "nested/compound records"
+    ],
+    "SpecReference": "OPC AE 1.10 IDL: IOPCEventServer::GetStatus"
+  },
+  {
+    "Interface": "Opc.Classic.Ae.Dcom.IOPCEventServer",
+    "Method": "CreateEventSubscriptionAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "multi-out records",
+      "interface pointer/iid_is"
+    ],
+    "SpecReference": "OPC AE 1.10 IDL: IOPCEventServer::CreateEventSubscription"
+  },
+  {
+    "Interface": "Opc.Classic.Ae.Dcom.IOPCEventServer",
+    "Method": "QueryAvailableFiltersAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "OPC AE 1.10 IDL: IOPCEventServer::QueryAvailableFilters"
+  },
+  {
+    "Interface": "Opc.Classic.Ae.Dcom.IOPCEventServer",
+    "Method": "QueryEventCategoriesAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "array",
+      "multi-out records",
+      "pointer arrays"
+    ],
+    "SpecReference": "OPC AE 1.10 IDL: IOPCEventServer::QueryEventCategories"
+  },
+  {
+    "Interface": "Opc.Classic.Ae.Dcom.IOPCEventServer",
+    "Method": "QueryConditionNamesAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "array"
+    ],
+    "SpecReference": "OPC AE 1.10 IDL: IOPCEventServer::QueryConditionNames"
+  },
+  {
+    "Interface": "Opc.Classic.Ae.Dcom.IOPCEventServer",
+    "Method": "QuerySubConditionNamesAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "array"
+    ],
+    "SpecReference": "OPC AE 1.10 IDL: IOPCEventServer::QuerySubConditionNames"
+  },
+  {
+    "Interface": "Opc.Classic.Ae.Dcom.IOPCEventServer",
+    "Method": "QuerySourceConditionsAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "array"
+    ],
+    "SpecReference": "OPC AE 1.10 IDL: IOPCEventServer::QuerySourceConditions"
+  },
+  {
+    "Interface": "Opc.Classic.Ae.Dcom.IOPCEventServer",
+    "Method": "QueryEventAttributesAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "array",
+      "multi-out records",
+      "pointer arrays"
+    ],
+    "SpecReference": "OPC AE 1.10 IDL: IOPCEventServer::QueryEventAttributes"
+  },
+  {
+    "Interface": "Opc.Classic.Ae.Dcom.IOPCEventServer",
+    "Method": "TranslateToItemIDsAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "array",
+      "multi-out records",
+      "pointer arrays"
+    ],
+    "SpecReference": "OPC AE 1.10 IDL: IOPCEventServer::TranslateToItemIDs"
+  },
+  {
+    "Interface": "Opc.Classic.Ae.Dcom.IOPCEventServer",
+    "Method": "GetConditionStateAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "array",
+      "nested/compound records"
+    ],
+    "SpecReference": "OPC AE 1.10 IDL: IOPCEventServer::GetConditionState"
+  },
+  {
+    "Interface": "Opc.Classic.Ae.Dcom.IOPCEventServer",
+    "Method": "EnableConditionByAreaAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "array"
+    ],
+    "SpecReference": "OPC AE 1.10 IDL: IOPCEventServer::EnableConditionByArea"
+  },
+  {
+    "Interface": "Opc.Classic.Ae.Dcom.IOPCEventServer",
+    "Method": "EnableConditionBySourceAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "array"
+    ],
+    "SpecReference": "OPC AE 1.10 IDL: IOPCEventServer::EnableConditionBySource"
+  },
+  {
+    "Interface": "Opc.Classic.Ae.Dcom.IOPCEventServer",
+    "Method": "DisableConditionByAreaAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "array"
+    ],
+    "SpecReference": "OPC AE 1.10 IDL: IOPCEventServer::DisableConditionByArea"
+  },
+  {
+    "Interface": "Opc.Classic.Ae.Dcom.IOPCEventServer",
+    "Method": "DisableConditionBySourceAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "array"
+    ],
+    "SpecReference": "OPC AE 1.10 IDL: IOPCEventServer::DisableConditionBySource"
+  },
+  {
+    "Interface": "Opc.Classic.Ae.Dcom.IOPCEventServer",
+    "Method": "AckConditionAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "array",
+      "count-correlated arrays",
+      "pointer arrays"
+    ],
+    "SpecReference": "OPC AE 1.10 IDL: IOPCEventServer::AckCondition"
+  },
+  {
+    "Interface": "Opc.Classic.Ae.Dcom.IOPCEventServer",
+    "Method": "CreateAreaBrowserAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "interface pointer/iid_is"
+    ],
+    "SpecReference": "OPC AE 1.10 IDL: IOPCEventServer::CreateAreaBrowser"
+  },
+  {
+    "Interface": "Opc.Classic.Ae.Dcom.IOPCEventServer2",
+    "Method": "EnableConditionByArea2Async",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "array",
+      "pointer arrays"
+    ],
+    "SpecReference": "OPC AE 1.10 IDL: IOPCEventServer2::EnableConditionByArea2"
+  },
+  {
+    "Interface": "Opc.Classic.Ae.Dcom.IOPCEventServer2",
+    "Method": "EnableConditionBySource2Async",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "array",
+      "pointer arrays"
+    ],
+    "SpecReference": "OPC AE 1.10 IDL: IOPCEventServer2::EnableConditionBySource2"
+  },
+  {
+    "Interface": "Opc.Classic.Ae.Dcom.IOPCEventServer2",
+    "Method": "DisableConditionByArea2Async",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "array",
+      "pointer arrays"
+    ],
+    "SpecReference": "OPC AE 1.10 IDL: IOPCEventServer2::DisableConditionByArea2"
+  },
+  {
+    "Interface": "Opc.Classic.Ae.Dcom.IOPCEventServer2",
+    "Method": "DisableConditionBySource2Async",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "array",
+      "pointer arrays"
+    ],
+    "SpecReference": "OPC AE 1.10 IDL: IOPCEventServer2::DisableConditionBySource2"
+  },
+  {
+    "Interface": "Opc.Classic.Ae.Dcom.IOPCEventServer2",
+    "Method": "GetEnableStateByAreaAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "array",
+      "multi-out records",
+      "pointer arrays"
+    ],
+    "SpecReference": "OPC AE 1.10 IDL: IOPCEventServer2::GetEnableStateByArea"
+  },
+  {
+    "Interface": "Opc.Classic.Ae.Dcom.IOPCEventServer2",
+    "Method": "GetEnableStateBySourceAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "array",
+      "multi-out records",
+      "pointer arrays"
+    ],
+    "SpecReference": "OPC AE 1.10 IDL: IOPCEventServer2::GetEnableStateBySource"
+  },
+  {
+    "Interface": "Opc.Classic.Ae.Dcom.IOPCEventSubscriptionMgt",
+    "Method": "SetFilterAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "array"
+    ],
+    "SpecReference": "OPC AE 1.10 IDL: IOPCEventSubscriptionMgt::SetFilter"
+  },
+  {
+    "Interface": "Opc.Classic.Ae.Dcom.IOPCEventSubscriptionMgt",
+    "Method": "GetFilterAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "array",
+      "multi-out records",
+      "pointer arrays"
+    ],
+    "SpecReference": "OPC AE 1.10 IDL: IOPCEventSubscriptionMgt::GetFilter"
+  },
+  {
+    "Interface": "Opc.Classic.Ae.Dcom.IOPCEventSubscriptionMgt",
+    "Method": "SetReturnedAttributesAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "array"
+    ],
+    "SpecReference": "OPC AE 1.10 IDL: IOPCEventSubscriptionMgt::SelectReturnedAttributes"
+  },
+  {
+    "Interface": "Opc.Classic.Ae.Dcom.IOPCEventSubscriptionMgt",
+    "Method": "GetReturnedAttributesAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "array"
+    ],
+    "SpecReference": "OPC AE 1.10 IDL: IOPCEventSubscriptionMgt::GetReturnedAttributes"
+  },
+  {
+    "Interface": "Opc.Classic.Ae.Dcom.IOPCEventSubscriptionMgt",
+    "Method": "RefreshAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "OPC AE 1.10 IDL: IOPCEventSubscriptionMgt::Refresh"
+  },
+  {
+    "Interface": "Opc.Classic.Ae.Dcom.IOPCEventSubscriptionMgt",
+    "Method": "CancelRefreshAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "OPC AE 1.10 IDL: IOPCEventSubscriptionMgt::CancelRefresh"
+  },
+  {
+    "Interface": "Opc.Classic.Ae.Dcom.IOPCEventSubscriptionMgt",
+    "Method": "GetStateAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "multi-out records"
+    ],
+    "SpecReference": "OPC AE 1.10 IDL: IOPCEventSubscriptionMgt::GetState"
+  },
+  {
+    "Interface": "Opc.Classic.Ae.Dcom.IOPCEventSubscriptionMgt",
+    "Method": "SetStateAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "multi-out records"
+    ],
+    "SpecReference": "OPC AE 1.10 IDL: IOPCEventSubscriptionMgt::SetState"
+  },
+  {
+    "Interface": "Opc.Classic.Ae.Dcom.IOPCEventSubscriptionMgt2",
+    "Method": "SetKeepAliveAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "OPC AE 1.10 IDL: IOPCEventSubscriptionMgt2::SetKeepAlive"
+  },
+  {
+    "Interface": "Opc.Classic.Ae.Dcom.IOPCEventSubscriptionMgt2",
+    "Method": "GetKeepAliveAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "OPC AE 1.10 IDL: IOPCEventSubscriptionMgt2::GetKeepAlive"
+  },
+  {
+    "Interface": "Opc.Classic.Ae.Dcom.IOPCEventAreaBrowser",
+    "Method": "ChangeBrowsePositionAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "OPC AE 1.10 IDL: IOPCEventAreaBrowser::ChangeBrowsePosition"
+  },
+  {
+    "Interface": "Opc.Classic.Ae.Dcom.IOPCEventAreaBrowser",
+    "Method": "BrowseOPCAreasAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "OPC AE 1.10 IDL: IOPCEventAreaBrowser::BrowseOPCAreas"
+  },
+  {
+    "Interface": "Opc.Classic.Ae.Dcom.IOPCEventAreaBrowser",
+    "Method": "GetQualifiedAreaNameAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "OPC AE 1.10 IDL: IOPCEventAreaBrowser::GetQualifiedAreaName"
+  },
+  {
+    "Interface": "Opc.Classic.Ae.Dcom.IOPCEventAreaBrowser",
+    "Method": "GetQualifiedSourceNameAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "OPC AE 1.10 IDL: IOPCEventAreaBrowser::GetQualifiedSourceName"
+  },
+  {
+    "Interface": "Opc.Classic.Ae.Dcom.IOPCEventSink",
+    "Method": "OnEventAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "array",
+      "nested/compound records"
+    ],
+    "SpecReference": "OPC AE 1.10 IDL: IOPCEventSink::OnEvent"
+  },
+  {
+    "Interface": "Opc.Classic.Ae.Dcom.IConnectionPointContainer",
+    "Method": "EnumConnectionPointsAsync",
+    "GeneratorSides": [
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "OPC AE 1.10 IDL: IConnectionPointContainer::EnumConnectionPoints"
+  },
+  {
+    "Interface": "Opc.Classic.Ae.Dcom.IConnectionPointContainer",
+    "Method": "FindConnectionPointAsync",
+    "GeneratorSides": [
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "OPC AE 1.10 IDL: IConnectionPointContainer::FindConnectionPoint"
+  },
+  {
+    "Interface": "Opc.Classic.Ae.Dcom.IConnectionPoint",
+    "Method": "GetConnectionInterfaceAsync",
+    "GeneratorSides": [
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "OPC AE 1.10 IDL: IConnectionPoint::GetConnectionInterface"
+  },
+  {
+    "Interface": "Opc.Classic.Ae.Dcom.IConnectionPoint",
+    "Method": "AdviseAsync",
+    "GeneratorSides": [
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "OPC AE 1.10 IDL: IConnectionPoint::Advise"
+  },
+  {
+    "Interface": "Opc.Classic.Ae.Dcom.IConnectionPoint",
+    "Method": "UnadviseAsync",
+    "GeneratorSides": [
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "OPC AE 1.10 IDL: IConnectionPoint::Unadvise"
+  },
+  {
+    "Interface": "Opc.Classic.Ae.Dcom.IOPCShutdown",
+    "Method": "ShutdownRequestAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "OPC AE 1.10 IDL: IOPCShutdown::ShutdownRequest"
+  },
+  {
+    "Interface": "Opc.Classic.Batch.Dcom.IOPCEnumerationSets",
+    "Method": "QueryEnumerationSetsAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "array",
+      "multi-out records",
+      "pointer arrays"
+    ],
+    "SpecReference": "OPC Batch IDL: IOPCEnumerationSets::QueryEnumerationSets"
+  },
+  {
+    "Interface": "Opc.Classic.Batch.Dcom.IOPCEnumerationSets",
+    "Method": "QueryEnumerationAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "OPC Batch IDL: IOPCEnumerationSets::QueryEnumeration"
+  },
+  {
+    "Interface": "Opc.Classic.Batch.Dcom.IOPCEnumerationSets",
+    "Method": "QueryEnumerationListAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "array",
+      "multi-out records",
+      "pointer arrays"
+    ],
+    "SpecReference": "OPC Batch IDL: IOPCEnumerationSets::QueryEnumerationList"
+  },
+  {
+    "Interface": "Opc.Classic.Commands.Dcom.IOPCCommandInformation",
+    "Method": "QueryMaxStorageTimeAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "OPC Commands 1.00 IDL: IOPCCommandInformation::QueryCapabilities"
+  },
+  {
+    "Interface": "Opc.Classic.Commands.Dcom.IOPCCommandInformation",
+    "Method": "ListCommandsAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "array"
+    ],
+    "SpecReference": "OPC Commands 1.00 IDL: IOPCCommandInformation::QueryComands"
+  },
+  {
+    "Interface": "Opc.Classic.Commands.Dcom.IOPCCommandInformation",
+    "Method": "BrowseCommandTargetsAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "array"
+    ],
+    "SpecReference": "OPC Commands 1.00 IDL: IOPCCommandInformation::BrowseCommandTargets"
+  },
+  {
+    "Interface": "Opc.Classic.Commands.Dcom.IOPCCommandInformation",
+    "Method": "GetCommandDescriptionAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "OPC Commands 1.00 IDL: IOPCCommandInformation::GetCommandDescription"
+  },
+  {
+    "Interface": "Opc.Classic.Commands.Dcom.IOPCCommandExecution",
+    "Method": "SyncInvokeAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "array"
+    ],
+    "SpecReference": "OPC Commands 1.00 IDL: IOPCCommandExecution::SyncInvoke"
+  },
+  {
+    "Interface": "Opc.Classic.Commands.Dcom.IOPCCommandExecution",
+    "Method": "AsyncInvokeAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "array"
+    ],
+    "SpecReference": "OPC Commands 1.00 IDL: IOPCCommandExecution::AsyncInvoke"
+  },
+  {
+    "Interface": "Opc.Classic.Commands.Dcom.IOPCCommandExecution",
+    "Method": "ConnectAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "OPC Commands 1.00 IDL: IOPCCommandExecution::Connect"
+  },
+  {
+    "Interface": "Opc.Classic.Commands.Dcom.IOPCCommandExecution",
+    "Method": "DisconnectAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "OPC Commands 1.00 IDL: IOPCCommandExecution::Disconnect"
+  },
+  {
+    "Interface": "Opc.Classic.Commands.Dcom.IOPCCommandExecution",
+    "Method": "QueryStateAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "array"
+    ],
+    "SpecReference": "OPC Commands 1.00 IDL: IOPCCommandExecution::QueryState"
+  },
+  {
+    "Interface": "Opc.Classic.Commands.Dcom.IOPCCommandExecution",
+    "Method": "ControlAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "OPC Commands 1.00 IDL: IOPCCommandExecution::Control"
+  },
+  {
+    "Interface": "Opc.Classic.Commands.Dcom.IOPCCommandCallback",
+    "Method": "OnStateChangeAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "array"
+    ],
+    "SpecReference": "OPC Commands 1.00 IDL: IOPCCommandCallback::OnStateChange"
+  },
+  {
+    "Interface": "Opc.Classic.Cpx.Dcom.IOPCComplexDataItem",
+    "Method": "GetTypeItemIDAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "OPC Complex Data 1.00 IDL: IOPCComplexDataItem::GetTypeItemID"
+  },
+  {
+    "Interface": "Opc.Classic.Cpx.Dcom.IOPCComplexDataItem",
+    "Method": "GetUnconvertedItemIDAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "OPC Complex Data 1.00 IDL: IOPCComplexDataItem::GetUnconvertedItemID"
+  },
+  {
+    "Interface": "Opc.Classic.Cpx.Dcom.IOPCComplexDataItem",
+    "Method": "GetDataFilterAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "OPC Complex Data 1.00 IDL: IOPCComplexDataItem::GetDataFilter"
+  },
+  {
+    "Interface": "Opc.Classic.Cpx.Dcom.IOPCComplexDataItem",
+    "Method": "SetDataFilterAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "OPC Complex Data 1.00 IDL: IOPCComplexDataItem::SetDataFilter"
+  },
+  {
+    "Interface": "Opc.Classic.Cpx.Dcom.IOPCComplexDataItem2",
+    "Method": "GetTypeIDAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "OPC Complex Data 1.00 IDL: IOPCComplexDataItem2::GetTypeID"
+  },
+  {
+    "Interface": "Opc.Classic.Cpx.Dcom.IOPCComplexDataItem2",
+    "Method": "GetDictionaryIDAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "OPC Complex Data 1.00 IDL: IOPCComplexDataItem2::GetDictionaryID"
+  },
+  {
+    "Interface": "Opc.Classic.Cpx.Dcom.IOPCComplexDataItem2",
+    "Method": "GetAvailableFiltersAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "array"
+    ],
+    "SpecReference": "OPC Complex Data 1.00 IDL: IOPCComplexDataItem2::GetAvailableFilters"
+  },
+  {
+    "Interface": "Opc.Classic.Cpx.Dcom.IOPCTypeLibrary",
+    "Method": "GetDictionaryAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "OPC Complex Data 1.00 IDL: IOPCTypeLibrary::GetDictionary"
+  },
+  {
+    "Interface": "Opc.Classic.Cpx.Dcom.IOPCTypeLibrary",
+    "Method": "GetTypeIDAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "OPC Complex Data 1.00 IDL: IOPCTypeLibrary::GetTypeID"
+  },
+  {
+    "Interface": "Opc.Classic.Cpx.Dcom.IOPCTypeLibrary",
+    "Method": "GetTypeItemIDAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "OPC Complex Data 1.00 IDL: IOPCTypeLibrary::GetTypeItemID"
+  },
+  {
+    "Interface": "Opc.Classic.Da.Dcom.IOPCServer",
+    "Method": "AddGroupAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "multi-out records",
+      "interface pointer/iid_is"
+    ],
+    "SpecReference": "OPC DA IDL: IOPCServer::AddGroup"
+  },
+  {
+    "Interface": "Opc.Classic.Da.Dcom.IOPCServer",
+    "Method": "GetErrorStringAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "OPC DA IDL: IOPCServer::GetErrorString"
+  },
+  {
+    "Interface": "Opc.Classic.Da.Dcom.IOPCServer",
+    "Method": "GetGroupByNameAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "interface pointer/iid_is"
+    ],
+    "SpecReference": "OPC DA IDL: IOPCServer::GetGroupByName"
+  },
+  {
+    "Interface": "Opc.Classic.Da.Dcom.IOPCServer",
+    "Method": "GetStatusAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "nested/compound records"
+    ],
+    "SpecReference": "OPC DA IDL: IOPCServer::GetStatus"
+  },
+  {
+    "Interface": "Opc.Classic.Da.Dcom.IOPCServer",
+    "Method": "RemoveGroupAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "OPC DA IDL: IOPCServer::RemoveGroup"
+  },
+  {
+    "Interface": "Opc.Classic.Da.Dcom.IOPCServer",
+    "Method": "CreateGroupEnumeratorAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "interface pointer/iid_is"
+    ],
+    "SpecReference": "OPC DA IDL: IOPCServer::CreateGroupEnumerator"
+  },
+  {
+    "Interface": "Opc.Classic.Da.Dcom.IOPCCommon",
+    "Method": "SetLocaleIdAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "OPC DA IDL: IOPCCommon::SetLocaleID"
+  },
+  {
+    "Interface": "Opc.Classic.Da.Dcom.IOPCCommon",
+    "Method": "GetLocaleIdAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "OPC DA IDL: IOPCCommon::GetLocaleID"
+  },
+  {
+    "Interface": "Opc.Classic.Da.Dcom.IOPCCommon",
+    "Method": "QueryAvailableLocaleIdsAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "array"
+    ],
+    "SpecReference": "OPC DA IDL: IOPCCommon::QueryAvailableLocaleIDs"
+  },
+  {
+    "Interface": "Opc.Classic.Da.Dcom.IOPCCommon",
+    "Method": "GetErrorStringAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "OPC DA IDL: IOPCCommon::GetErrorString"
+  },
+  {
+    "Interface": "Opc.Classic.Da.Dcom.IOPCCommon",
+    "Method": "SetClientNameAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "OPC DA IDL: IOPCCommon::SetClientName"
+  },
+  {
+    "Interface": "Opc.Classic.Da.Dcom.IOPCBrowse",
+    "Method": "GetPropertiesAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "array",
+      "nested/compound records"
+    ],
+    "SpecReference": "OPC DA IDL: IOPCBrowse::GetProperties"
+  },
+  {
+    "Interface": "Opc.Classic.Da.Dcom.IOPCBrowse",
+    "Method": "BrowseAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "array",
+      "multi-out records",
+      "pointer arrays",
+      "nested/compound records"
+    ],
+    "SpecReference": "OPC DA IDL: IOPCBrowse::Browse"
+  },
+  {
+    "Interface": "Opc.Classic.Da.Dcom.IOPCBrowseServerAddressSpace",
+    "Method": "QueryOrganizationAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "OPC DA IDL: IOPCBrowseServerAddressSpace::QueryOrganization"
+  },
+  {
+    "Interface": "Opc.Classic.Da.Dcom.IOPCBrowseServerAddressSpace",
+    "Method": "ChangeBrowsePositionAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "OPC DA IDL: IOPCBrowseServerAddressSpace::ChangeBrowsePosition"
+  },
+  {
+    "Interface": "Opc.Classic.Da.Dcom.IOPCBrowseServerAddressSpace",
+    "Method": "BrowseOpcItemIdsAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "OPC DA IDL: IOPCBrowseServerAddressSpace::BrowseOPCItemIDs"
+  },
+  {
+    "Interface": "Opc.Classic.Da.Dcom.IOPCBrowseServerAddressSpace",
+    "Method": "GetItemIdAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "OPC DA IDL: IOPCBrowseServerAddressSpace::GetItemID"
+  },
+  {
+    "Interface": "Opc.Classic.Da.Dcom.IOPCBrowseServerAddressSpace",
+    "Method": "BrowseAccessPathsAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "OPC DA IDL: IOPCBrowseServerAddressSpace::BrowseAccessPaths"
+  },
+  {
+    "Interface": "Opc.Classic.Da.Dcom.IOPCItemProperties",
+    "Method": "QueryAvailablePropertiesAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "array",
+      "multi-out records",
+      "pointer arrays"
+    ],
+    "SpecReference": "OPC DA IDL: IOPCItemProperties::QueryAvailableProperties"
+  },
+  {
+    "Interface": "Opc.Classic.Da.Dcom.IOPCItemProperties",
+    "Method": "GetItemPropertiesAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "array",
+      "multi-out records",
+      "pointer arrays"
+    ],
+    "SpecReference": "OPC DA IDL: IOPCItemProperties::GetItemProperties"
+  },
+  {
+    "Interface": "Opc.Classic.Da.Dcom.IOPCItemProperties",
+    "Method": "LookupItemIdsAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "array",
+      "multi-out records",
+      "pointer arrays"
+    ],
+    "SpecReference": "OPC DA IDL: IOPCItemProperties::LookupItemIDs"
+  },
+  {
+    "Interface": "Opc.Classic.Da.Dcom.IOPCItemDeadbandMgt",
+    "Method": "SetItemDeadbandAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "array",
+      "pointer arrays"
+    ],
+    "SpecReference": "OPC DA IDL: IOPCItemDeadbandMgt::SetItemDeadband"
+  },
+  {
+    "Interface": "Opc.Classic.Da.Dcom.IOPCItemDeadbandMgt",
+    "Method": "GetItemDeadbandAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "array",
+      "multi-out records",
+      "pointer arrays"
+    ],
+    "SpecReference": "OPC DA IDL: IOPCItemDeadbandMgt::GetItemDeadband"
+  },
+  {
+    "Interface": "Opc.Classic.Da.Dcom.IOPCItemDeadbandMgt",
+    "Method": "ClearItemDeadbandAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "array",
+      "pointer arrays"
+    ],
+    "SpecReference": "OPC DA IDL: IOPCItemDeadbandMgt::ClearItemDeadband"
+  },
+  {
+    "Interface": "Opc.Classic.Da.Dcom.IOPCItemSamplingMgt",
+    "Method": "SetItemSamplingRateAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "array",
+      "multi-out records",
+      "pointer arrays"
+    ],
+    "SpecReference": "OPC DA IDL: IOPCItemSamplingMgt::SetItemSamplingRate"
+  },
+  {
+    "Interface": "Opc.Classic.Da.Dcom.IOPCItemSamplingMgt",
+    "Method": "GetItemSamplingRateAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "array",
+      "multi-out records",
+      "pointer arrays"
+    ],
+    "SpecReference": "OPC DA IDL: IOPCItemSamplingMgt::GetItemSamplingRate"
+  },
+  {
+    "Interface": "Opc.Classic.Da.Dcom.IOPCItemSamplingMgt",
+    "Method": "ClearItemSamplingRateAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "array",
+      "pointer arrays"
+    ],
+    "SpecReference": "OPC DA IDL: IOPCItemSamplingMgt::ClearItemSamplingRate"
+  },
+  {
+    "Interface": "Opc.Classic.Da.Dcom.IOPCItemSamplingMgt",
+    "Method": "SetItemBufferEnableAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "array",
+      "pointer arrays"
+    ],
+    "SpecReference": "OPC DA IDL: IOPCItemSamplingMgt::SetItemBufferEnable"
+  },
+  {
+    "Interface": "Opc.Classic.Da.Dcom.IOPCItemSamplingMgt",
+    "Method": "GetItemBufferEnableAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "array",
+      "multi-out records",
+      "pointer arrays"
+    ],
+    "SpecReference": "OPC DA IDL: IOPCItemSamplingMgt::GetItemBufferEnable"
+  },
+  {
+    "Interface": "Opc.Classic.Da.Dcom.IOPCItemIO",
+    "Method": "ReadAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "array",
+      "multi-out records",
+      "pointer arrays"
+    ],
+    "SpecReference": "OPC DA IDL: IOPCItemIO::Read"
+  },
+  {
+    "Interface": "Opc.Classic.Da.Dcom.IOPCItemIO",
+    "Method": "WriteVqtAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "array",
+      "pointer arrays",
+      "nested/compound records"
+    ],
+    "SpecReference": "OPC DA IDL: IOPCItemIO::WriteVQT"
+  },
+  {
+    "Interface": "Opc.Classic.Da.Dcom.IOPCItemMgt",
+    "Method": "AddItemsAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "array",
+      "multi-out records",
+      "pointer arrays",
+      "nested/compound records"
+    ],
+    "SpecReference": "OPC DA IDL: IOPCItemMgt::AddItems"
+  },
+  {
+    "Interface": "Opc.Classic.Da.Dcom.IOPCItemMgt",
+    "Method": "ValidateItemsAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "array",
+      "multi-out records",
+      "pointer arrays",
+      "nested/compound records"
+    ],
+    "SpecReference": "OPC DA IDL: IOPCItemMgt::ValidateItems"
+  },
+  {
+    "Interface": "Opc.Classic.Da.Dcom.IOPCItemMgt",
+    "Method": "RemoveItemsAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "array",
+      "pointer arrays"
+    ],
+    "SpecReference": "OPC DA IDL: IOPCItemMgt::RemoveItems"
+  },
+  {
+    "Interface": "Opc.Classic.Da.Dcom.IOPCItemMgt",
+    "Method": "SetActiveStateAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "array",
+      "pointer arrays"
+    ],
+    "SpecReference": "OPC DA IDL: IOPCItemMgt::SetActiveState"
+  },
+  {
+    "Interface": "Opc.Classic.Da.Dcom.IOPCItemMgt",
+    "Method": "SetClientHandlesAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "array",
+      "pointer arrays"
+    ],
+    "SpecReference": "OPC DA IDL: IOPCItemMgt::SetClientHandles"
+  },
+  {
+    "Interface": "Opc.Classic.Da.Dcom.IOPCItemMgt",
+    "Method": "SetDatatypesAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "array",
+      "pointer arrays"
+    ],
+    "SpecReference": "OPC DA IDL: IOPCItemMgt::SetDatatypes"
+  },
+  {
+    "Interface": "Opc.Classic.Da.Dcom.IOPCItemMgt",
+    "Method": "CreateEnumeratorAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "interface pointer/iid_is"
+    ],
+    "SpecReference": "OPC DA IDL: IOPCItemMgt::CreateEnumerator"
+  },
+  {
+    "Interface": "Opc.Classic.Da.Dcom.IOPCGroupStateMgt",
+    "Method": "GetStateAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "nested/compound records"
+    ],
+    "SpecReference": "OPC DA IDL: IOPCGroupStateMgt::GetState"
+  },
+  {
+    "Interface": "Opc.Classic.Da.Dcom.IOPCGroupStateMgt",
+    "Method": "SetStateAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "multi-out records"
+    ],
+    "SpecReference": "OPC DA IDL: IOPCGroupStateMgt::SetState"
+  },
+  {
+    "Interface": "Opc.Classic.Da.Dcom.IOPCGroupStateMgt",
+    "Method": "SetNameAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "OPC DA IDL: IOPCGroupStateMgt::SetName"
+  },
+  {
+    "Interface": "Opc.Classic.Da.Dcom.IOPCGroupStateMgt",
+    "Method": "CloneGroupAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "interface pointer/iid_is",
+      "clone"
+    ],
+    "SpecReference": "OPC DA IDL: IOPCGroupStateMgt::CloneGroup"
+  },
+  {
+    "Interface": "Opc.Classic.Da.Dcom.IOPCGroupStateMgt2",
+    "Method": "SetKeepAliveAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "OPC DA IDL: IOPCGroupStateMgt2::SetKeepAlive"
+  },
+  {
+    "Interface": "Opc.Classic.Da.Dcom.IOPCGroupStateMgt2",
+    "Method": "GetKeepAliveAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "OPC DA IDL: IOPCGroupStateMgt2::GetKeepAlive"
+  },
+  {
+    "Interface": "Opc.Classic.Da.Dcom.IOPCSyncIO",
+    "Method": "ReadAsync",
+    "GeneratorSides": [
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "array",
+      "multi-out records",
+      "pointer arrays",
+      "nested/compound records"
+    ],
+    "SpecReference": "OPC DA IDL: IOPCSyncIO::Read"
+  },
+  {
+    "Interface": "Opc.Classic.Da.Dcom.IOPCSyncIO",
+    "Method": "WriteAsync",
+    "GeneratorSides": [
+      "server"
+    ],
+    "ShapeCategories": [
+      "array",
+      "pointer arrays"
+    ],
+    "SpecReference": "OPC DA IDL: IOPCSyncIO::Write"
+  },
+  {
+    "Interface": "Opc.Classic.Da.Dcom.IOPCSyncIO2",
+    "Method": "ReadAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "array",
+      "pointer arrays",
+      "nested/compound records"
+    ],
+    "SpecReference": "OPC DA IDL: IOPCSyncIO2::Read"
+  },
+  {
+    "Interface": "Opc.Classic.Da.Dcom.IOPCSyncIO2",
+    "Method": "WriteAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "array",
+      "pointer arrays"
+    ],
+    "SpecReference": "OPC DA IDL: IOPCSyncIO2::Write"
+  },
+  {
+    "Interface": "Opc.Classic.Da.Dcom.IOPCSyncIO2",
+    "Method": "ReadMaxAgeAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "array",
+      "multi-out records",
+      "pointer arrays"
+    ],
+    "SpecReference": "OPC DA IDL: IOPCSyncIO2::ReadMaxAge"
+  },
+  {
+    "Interface": "Opc.Classic.Da.Dcom.IOPCSyncIO2",
+    "Method": "WriteVqtAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "array",
+      "pointer arrays",
+      "nested/compound records"
+    ],
+    "SpecReference": "OPC DA IDL: IOPCSyncIO2::WriteVQT"
+  },
+  {
+    "Interface": "Opc.Classic.Da.Dcom.IOPCAsyncIO2",
+    "Method": "ReadAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "array",
+      "pointer arrays"
+    ],
+    "SpecReference": "OPC DA IDL: IOPCAsyncIO2::Read"
+  },
+  {
+    "Interface": "Opc.Classic.Da.Dcom.IOPCAsyncIO2",
+    "Method": "WriteAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "array",
+      "pointer arrays"
+    ],
+    "SpecReference": "OPC DA IDL: IOPCAsyncIO2::Write"
+  },
+  {
+    "Interface": "Opc.Classic.Da.Dcom.IOPCAsyncIO2",
+    "Method": "Refresh2Async",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "OPC DA IDL: IOPCAsyncIO2::Refresh2"
+  },
+  {
+    "Interface": "Opc.Classic.Da.Dcom.IOPCAsyncIO2",
+    "Method": "Cancel2Async",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "OPC DA IDL: IOPCAsyncIO2::Cancel2"
+  },
+  {
+    "Interface": "Opc.Classic.Da.Dcom.IOPCAsyncIO2",
+    "Method": "SetEnableAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "OPC DA IDL: IOPCAsyncIO2::SetEnable"
+  },
+  {
+    "Interface": "Opc.Classic.Da.Dcom.IOPCAsyncIO2",
+    "Method": "GetEnableAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "OPC DA IDL: IOPCAsyncIO2::GetEnable"
+  },
+  {
+    "Interface": "Opc.Classic.Da.Dcom.IOPCAsyncIO3",
+    "Method": "Refresh2Async",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "OPC DA IDL: IOPCAsyncIO3::Refresh2"
+  },
+  {
+    "Interface": "Opc.Classic.Da.Dcom.IOPCAsyncIO3",
+    "Method": "Cancel2Async",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "OPC DA IDL: IOPCAsyncIO3::Cancel2"
+  },
+  {
+    "Interface": "Opc.Classic.Da.Dcom.IOPCAsyncIO3",
+    "Method": "SetEnableAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "OPC DA IDL: IOPCAsyncIO3::SetEnable"
+  },
+  {
+    "Interface": "Opc.Classic.Da.Dcom.IOPCAsyncIO3",
+    "Method": "GetEnableAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "OPC DA IDL: IOPCAsyncIO3::GetEnable"
+  },
+  {
+    "Interface": "Opc.Classic.Da.Dcom.IOPCAsyncIO3",
+    "Method": "ReadMaxAgeAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "array",
+      "pointer arrays"
+    ],
+    "SpecReference": "OPC DA IDL: IOPCAsyncIO3::ReadMaxAge"
+  },
+  {
+    "Interface": "Opc.Classic.Da.Dcom.IOPCAsyncIO3",
+    "Method": "WriteVqtAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "array",
+      "pointer arrays",
+      "nested/compound records"
+    ],
+    "SpecReference": "OPC DA IDL: IOPCAsyncIO3::WriteVQT"
+  },
+  {
+    "Interface": "Opc.Classic.Da.Dcom.IOPCAsyncIO3",
+    "Method": "RefreshMaxAgeAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "OPC DA IDL: IOPCAsyncIO3::RefreshMaxAge"
+  },
+  {
+    "Interface": "Opc.Classic.Da.Dcom.IEnumOPCItemAttributes",
+    "Method": "NextAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "array",
+      "count-correlated arrays",
+      "multi-out records",
+      "pointer arrays",
+      "nested/compound records"
+    ],
+    "SpecReference": "OPC DA IDL: IEnumOPCItemAttributes::Next"
+  },
+  {
+    "Interface": "Opc.Classic.Da.Dcom.IEnumOPCItemAttributes",
+    "Method": "SkipAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "OPC DA IDL: IEnumOPCItemAttributes::Skip"
+  },
+  {
+    "Interface": "Opc.Classic.Da.Dcom.IEnumOPCItemAttributes",
+    "Method": "ResetAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "OPC DA IDL: IEnumOPCItemAttributes::Reset"
+  },
+  {
+    "Interface": "Opc.Classic.Da.Dcom.IEnumOPCItemAttributes",
+    "Method": "CloneAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "clone"
+    ],
+    "SpecReference": "OPC DA IDL: IEnumOPCItemAttributes::Clone"
+  },
+  {
+    "Interface": "Opc.Classic.Da.Dcom.IConnectionPointContainer",
+    "Method": "EnumConnectionPointsAsync",
+    "GeneratorSides": [
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "OPC DA IDL: IConnectionPointContainer::EnumConnectionPoints"
+  },
+  {
+    "Interface": "Opc.Classic.Da.Dcom.IConnectionPointContainer",
+    "Method": "FindConnectionPointAsync",
+    "GeneratorSides": [
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "OPC DA IDL: IConnectionPointContainer::FindConnectionPoint"
+  },
+  {
+    "Interface": "Opc.Classic.Da.Dcom.IConnectionPoint",
+    "Method": "GetConnectionInterfaceAsync",
+    "GeneratorSides": [
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "OPC DA IDL: IConnectionPoint::GetConnectionInterface"
+  },
+  {
+    "Interface": "Opc.Classic.Da.Dcom.IConnectionPoint",
+    "Method": "AdviseAsync",
+    "GeneratorSides": [
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "OPC DA IDL: IConnectionPoint::Advise"
+  },
+  {
+    "Interface": "Opc.Classic.Da.Dcom.IConnectionPoint",
+    "Method": "UnadviseAsync",
+    "GeneratorSides": [
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "OPC DA IDL: IConnectionPoint::Unadvise"
+  },
+  {
+    "Interface": "Opc.Classic.Da.Dcom.IOPCShutdown",
+    "Method": "ShutdownRequestAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "OPC DA IDL: IOPCShutdown::ShutdownRequest"
+  },
+  {
+    "Interface": "Opc.Classic.Da.Dcom.IOPCDataCallback",
+    "Method": "OnDataChangeAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "array"
+    ],
+    "SpecReference": "OPC DA IDL: IOPCDataCallback::OnDataChange"
+  },
+  {
+    "Interface": "Opc.Classic.Da.Dcom.IOPCDataCallback",
+    "Method": "OnReadCompleteAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "array"
+    ],
+    "SpecReference": "OPC DA IDL: IOPCDataCallback::OnReadComplete"
+  },
+  {
+    "Interface": "Opc.Classic.Da.Dcom.IOPCDataCallback",
+    "Method": "OnWriteCompleteAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "array"
+    ],
+    "SpecReference": "OPC DA IDL: IOPCDataCallback::OnWriteComplete"
+  },
+  {
+    "Interface": "Opc.Classic.Da.Dcom.IOPCDataCallback",
+    "Method": "OnCancelCompleteAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "OPC DA IDL: IOPCDataCallback::OnCancelComplete"
+  },
+  {
+    "Interface": "Opc.Classic.Da.Dcom.IOPCEnumGUID",
+    "Method": "NextAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "array",
+      "count-correlated arrays"
+    ],
+    "SpecReference": "OPC DA IDL: IOPCEnumGUID::Next"
+  },
+  {
+    "Interface": "Opc.Classic.Da.Dcom.IOPCEnumGUID",
+    "Method": "SkipAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "OPC DA IDL: IOPCEnumGUID::Skip"
+  },
+  {
+    "Interface": "Opc.Classic.Da.Dcom.IOPCEnumGUID",
+    "Method": "ResetAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "OPC DA IDL: IOPCEnumGUID::Reset"
+  },
+  {
+    "Interface": "Opc.Classic.Da.Dcom.IOPCServerList",
+    "Method": "EnumClassesOfCategoriesAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "array"
+    ],
+    "SpecReference": "OPC DA IDL: IOPCServerList::EnumClassesOfCategories"
+  },
+  {
+    "Interface": "Opc.Classic.Da.Dcom.IOPCServerList",
+    "Method": "GetClassDetailsAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "multi-out records"
+    ],
+    "SpecReference": "OPC DA IDL: IOPCServerList::GetClassDetails"
+  },
+  {
+    "Interface": "Opc.Classic.Da.Dcom.IOPCServerList",
+    "Method": "ClsidFromProgIdAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "OPC DA IDL: IOPCServerList::CLSIDFromProgID"
+  },
+  {
+    "Interface": "Opc.Classic.Da.Dcom.IOPCServerList2",
+    "Method": "EnumClassesOfCategoriesAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "array"
+    ],
+    "SpecReference": "OPC DA IDL: IOPCServerList2::EnumClassesOfCategories"
+  },
+  {
+    "Interface": "Opc.Classic.Da.Dcom.IOPCServerList2",
+    "Method": "GetClassDetailsV2Async",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "multi-out records"
+    ],
+    "SpecReference": "OPC DA IDL: IOPCServerList2::GetClassDetails"
+  },
+  {
+    "Interface": "Opc.Classic.Da.Dcom.IOPCServerList2",
+    "Method": "ClsidFromProgIdAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "OPC DA IDL: IOPCServerList2::CLSIDFromProgID"
+  },
+  {
+    "Interface": "Opc.Classic.Da.V20.Dcom.IOPCSyncIO",
+    "Method": "ReadAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "array",
+      "multi-out records",
+      "pointer arrays",
+      "nested/compound records"
+    ],
+    "SpecReference": "OPC DA IDL: IOPCSyncIO::Read"
+  },
+  {
+    "Interface": "Opc.Classic.Da.V20.Dcom.IOPCSyncIO",
+    "Method": "WriteAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "array"
+    ],
+    "SpecReference": "OPC DA IDL: IOPCSyncIO::Write"
+  },
+  {
+    "Interface": "Opc.Classic.Da.V20.Dcom.IOPCAsyncIO",
+    "Method": "RefreshAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "OPC DA IDL: IOPCAsyncIO::Refresh"
+  },
+  {
+    "Interface": "Opc.Classic.Da.V20.Dcom.IOPCAsyncIO",
+    "Method": "CancelAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "OPC DA IDL: IOPCAsyncIO::Cancel"
+  },
+  {
+    "Interface": "Opc.Classic.Dcom.Activation.IActivation",
+    "Method": "RemoteActivationAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "MS-DCOM IDL: IActivation::RemoteActivation"
+  },
+  {
+    "Interface": "Opc.Classic.Dcom.Core.IRemoteSCMActivator",
+    "Method": "RemoteGetClassObjectAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "MS-DCOM IDL: IRemoteSCMActivator::RemoteGetClassObject"
+  },
+  {
+    "Interface": "Opc.Classic.Dcom.Core.IRemoteSCMActivator",
+    "Method": "RemoteCreateInstanceAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "MS-DCOM IDL: IRemoteSCMActivator::RemoteCreateInstance"
+  },
+  {
+    "Interface": "Opc.Classic.Dcom.Remoting.IRemUnknown",
+    "Method": "RemQueryInterfaceAsync",
+    "GeneratorSides": [
+      "client"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "array",
+      "pointer arrays",
+      "nested/compound records"
+    ],
+    "SpecReference": "MS-DCOM IDL: IRemUnknown::RemQueryInterface"
+  },
+  {
+    "Interface": "Opc.Classic.Dx.Dcom.IOPCDXServer",
+    "Method": "GetServerNameAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "OPC DX 1.00 IDL: IOPCDXServer::GetServerName"
+  },
+  {
+    "Interface": "Opc.Classic.Dx.Dcom.IOPCDXServer",
+    "Method": "GetVersionAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "OPC DX 1.00 IDL: IOPCDXServer::GetVersion"
+  },
+  {
+    "Interface": "Opc.Classic.Dx.Dcom.IOPCDXServer",
+    "Method": "GetConfigurationVersionAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "OPC DX 1.00 IDL: IOPCDXServer::GetConfigurationVersion"
+  },
+  {
+    "Interface": "Opc.Classic.Hda.Dcom.IOPCHDA_Server",
+    "Method": "GetItemAttributesAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "array",
+      "multi-out records",
+      "pointer arrays"
+    ],
+    "SpecReference": "OPC HDA 1.20 IDL: IOPCHDA_Server::GetItemAttributes"
+  },
+  {
+    "Interface": "Opc.Classic.Hda.Dcom.IOPCHDA_Server",
+    "Method": "GetAggregatesAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "array",
+      "multi-out records",
+      "pointer arrays"
+    ],
+    "SpecReference": "OPC HDA 1.20 IDL: IOPCHDA_Server::GetAggregates"
+  },
+  {
+    "Interface": "Opc.Classic.Hda.Dcom.IOPCHDA_Server",
+    "Method": "GetStatusAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "nested/compound records"
+    ],
+    "SpecReference": "OPC HDA 1.20 IDL: IOPCHDA_Server::GetHistorianStatus"
+  },
+  {
+    "Interface": "Opc.Classic.Hda.Dcom.IOPCHDA_Server",
+    "Method": "GetItemHandlesAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "array",
+      "pointer arrays"
+    ],
+    "SpecReference": "OPC HDA 1.20 IDL: IOPCHDA_Server::GetItemHandles"
+  },
+  {
+    "Interface": "Opc.Classic.Hda.Dcom.IOPCHDA_Server",
+    "Method": "ReleaseItemHandlesAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "array",
+      "pointer arrays"
+    ],
+    "SpecReference": "OPC HDA 1.20 IDL: IOPCHDA_Server::ReleaseItemHandles"
+  },
+  {
+    "Interface": "Opc.Classic.Hda.Dcom.IOPCHDA_Server",
+    "Method": "ValidateItemIDsAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "array",
+      "pointer arrays"
+    ],
+    "SpecReference": "OPC HDA 1.20 IDL: IOPCHDA_Server::ValidateItemIDs"
+  },
+  {
+    "Interface": "Opc.Classic.Hda.Dcom.IOPCHDA_Browser",
+    "Method": "GetEnumAsync",
+    "GeneratorSides": [
+      "client"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "OPC HDA 1.20 IDL: IOPCHDA_Browser::GetEnum"
+  },
+  {
+    "Interface": "Opc.Classic.Hda.Dcom.IOPCHDA_Browser",
+    "Method": "ChangeBrowsePositionAsync",
+    "GeneratorSides": [
+      "client"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "OPC HDA 1.20 IDL: IOPCHDA_Browser::ChangeBrowsePosition"
+  },
+  {
+    "Interface": "Opc.Classic.Hda.Dcom.IOPCHDA_Browser",
+    "Method": "GetItemIDAsync",
+    "GeneratorSides": [
+      "client"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "OPC HDA 1.20 IDL: IOPCHDA_Browser::GetItemID"
+  },
+  {
+    "Interface": "Opc.Classic.Hda.Dcom.IOPCHDA_Browser",
+    "Method": "GetBranchPositionAsync",
+    "GeneratorSides": [
+      "client"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "OPC HDA 1.20 IDL: IOPCHDA_Browser::GetBranchPosition"
+  },
+  {
+    "Interface": "Opc.Classic.Hda.Dcom.IOPCHDA_SyncRead",
+    "Method": "ReadRawAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "array",
+      "pointer arrays",
+      "nested/compound records"
+    ],
+    "SpecReference": "OPC HDA 1.20 IDL: IOPCHDA_SyncRead::ReadRaw"
+  },
+  {
+    "Interface": "Opc.Classic.Hda.Dcom.IOPCHDA_SyncRead",
+    "Method": "ReadProcessedAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "array",
+      "pointer arrays",
+      "nested/compound records"
+    ],
+    "SpecReference": "OPC HDA 1.20 IDL: IOPCHDA_SyncRead::ReadProcessed"
+  },
+  {
+    "Interface": "Opc.Classic.Hda.Dcom.IOPCHDA_SyncRead",
+    "Method": "ReadAtTimeAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "array",
+      "pointer arrays",
+      "nested/compound records"
+    ],
+    "SpecReference": "OPC HDA 1.20 IDL: IOPCHDA_SyncRead::ReadAtTime"
+  },
+  {
+    "Interface": "Opc.Classic.Hda.Dcom.IOPCHDA_SyncRead",
+    "Method": "ReadModifiedAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "array",
+      "pointer arrays",
+      "nested/compound records"
+    ],
+    "SpecReference": "OPC HDA 1.20 IDL: IOPCHDA_SyncRead::ReadModified"
+  },
+  {
+    "Interface": "Opc.Classic.Hda.Dcom.IOPCHDA_SyncRead",
+    "Method": "ReadAttributeAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "array",
+      "pointer arrays",
+      "nested/compound records"
+    ],
+    "SpecReference": "OPC HDA 1.20 IDL: IOPCHDA_SyncRead::ReadAttribute"
+  },
+  {
+    "Interface": "Opc.Classic.Hda.Dcom.IOPCHDA_SyncUpdate",
+    "Method": "QueryCapabilitiesAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "OPC HDA 1.20 IDL: IOPCHDA_SyncUpdate::QueryCapabilities"
+  },
+  {
+    "Interface": "Opc.Classic.Hda.Dcom.IOPCHDA_SyncUpdate",
+    "Method": "InsertAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "array",
+      "pointer arrays"
+    ],
+    "SpecReference": "OPC HDA 1.20 IDL: IOPCHDA_SyncUpdate::Insert"
+  },
+  {
+    "Interface": "Opc.Classic.Hda.Dcom.IOPCHDA_SyncUpdate",
+    "Method": "ReplaceAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "array",
+      "pointer arrays"
+    ],
+    "SpecReference": "OPC HDA 1.20 IDL: IOPCHDA_SyncUpdate::Replace"
+  },
+  {
+    "Interface": "Opc.Classic.Hda.Dcom.IOPCHDA_SyncUpdate",
+    "Method": "InsertReplaceAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "array",
+      "pointer arrays"
+    ],
+    "SpecReference": "OPC HDA 1.20 IDL: IOPCHDA_SyncUpdate::InsertReplace"
+  },
+  {
+    "Interface": "Opc.Classic.Hda.Dcom.IOPCHDA_SyncUpdate",
+    "Method": "DeleteRawAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "array",
+      "pointer arrays",
+      "nested/compound records"
+    ],
+    "SpecReference": "OPC HDA 1.20 IDL: IOPCHDA_SyncUpdate::DeleteRaw"
+  },
+  {
+    "Interface": "Opc.Classic.Hda.Dcom.IOPCHDA_SyncUpdate",
+    "Method": "DeleteAtTimeAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "array",
+      "pointer arrays"
+    ],
+    "SpecReference": "OPC HDA 1.20 IDL: IOPCHDA_SyncUpdate::DeleteAtTime"
+  },
+  {
+    "Interface": "Opc.Classic.Hda.Dcom.IOPCHDA_SyncAnnotations",
+    "Method": "QueryCapabilitiesAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "OPC HDA 1.20 IDL: IOPCHDA_SyncAnnotations::QueryCapabilities"
+  },
+  {
+    "Interface": "Opc.Classic.Hda.Dcom.IOPCHDA_SyncAnnotations",
+    "Method": "ReadAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "array",
+      "pointer arrays",
+      "nested/compound records"
+    ],
+    "SpecReference": "OPC HDA 1.20 IDL: IOPCHDA_SyncAnnotations::Read"
+  },
+  {
+    "Interface": "Opc.Classic.Hda.Dcom.IOPCHDA_SyncAnnotations",
+    "Method": "InsertAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "array",
+      "pointer arrays",
+      "nested/compound records"
+    ],
+    "SpecReference": "OPC HDA 1.20 IDL: IOPCHDA_SyncAnnotations::Insert"
+  },
+  {
+    "Interface": "Opc.Classic.Hda.Dcom.IOPCHDA_AsyncRead",
+    "Method": "ReadRawAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "array",
+      "nested/compound records"
+    ],
+    "SpecReference": "OPC HDA 1.20 IDL: IOPCHDA_AsyncRead::ReadRaw"
+  },
+  {
+    "Interface": "Opc.Classic.Hda.Dcom.IOPCHDA_AsyncRead",
+    "Method": "AdviseRawAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "array",
+      "nested/compound records"
+    ],
+    "SpecReference": "OPC HDA 1.20 IDL: IOPCHDA_AsyncRead::AdviseRaw"
+  },
+  {
+    "Interface": "Opc.Classic.Hda.Dcom.IOPCHDA_AsyncRead",
+    "Method": "ReadProcessedAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "array",
+      "nested/compound records"
+    ],
+    "SpecReference": "OPC HDA 1.20 IDL: IOPCHDA_AsyncRead::ReadProcessed"
+  },
+  {
+    "Interface": "Opc.Classic.Hda.Dcom.IOPCHDA_AsyncRead",
+    "Method": "AdviseProcessedAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "array",
+      "nested/compound records"
+    ],
+    "SpecReference": "OPC HDA 1.20 IDL: IOPCHDA_AsyncRead::AdviseProcessed"
+  },
+  {
+    "Interface": "Opc.Classic.Hda.Dcom.IOPCHDA_AsyncRead",
+    "Method": "ReadAtTimeAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "array"
+    ],
+    "SpecReference": "OPC HDA 1.20 IDL: IOPCHDA_AsyncRead::ReadAtTime"
+  },
+  {
+    "Interface": "Opc.Classic.Hda.Dcom.IOPCHDA_AsyncRead",
+    "Method": "ReadModifiedAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "array",
+      "nested/compound records"
+    ],
+    "SpecReference": "OPC HDA 1.20 IDL: IOPCHDA_AsyncRead::ReadModified"
+  },
+  {
+    "Interface": "Opc.Classic.Hda.Dcom.IOPCHDA_AsyncRead",
+    "Method": "ReadAttributeAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "array",
+      "nested/compound records"
+    ],
+    "SpecReference": "OPC HDA 1.20 IDL: IOPCHDA_AsyncRead::ReadAttribute"
+  },
+  {
+    "Interface": "Opc.Classic.Hda.Dcom.IOPCHDA_AsyncRead",
+    "Method": "CancelAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "OPC HDA 1.20 IDL: IOPCHDA_AsyncRead::Cancel"
+  },
+  {
+    "Interface": "Opc.Classic.Hda.Dcom.IOPCHDA_AsyncUpdate",
+    "Method": "QueryCapabilitiesAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "OPC HDA 1.20 IDL: IOPCHDA_AsyncUpdate::QueryCapabilities"
+  },
+  {
+    "Interface": "Opc.Classic.Hda.Dcom.IOPCHDA_AsyncUpdate",
+    "Method": "InsertAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "array"
+    ],
+    "SpecReference": "OPC HDA 1.20 IDL: IOPCHDA_AsyncUpdate::Insert"
+  },
+  {
+    "Interface": "Opc.Classic.Hda.Dcom.IOPCHDA_AsyncUpdate",
+    "Method": "ReplaceAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "array"
+    ],
+    "SpecReference": "OPC HDA 1.20 IDL: IOPCHDA_AsyncUpdate::Replace"
+  },
+  {
+    "Interface": "Opc.Classic.Hda.Dcom.IOPCHDA_AsyncUpdate",
+    "Method": "InsertReplaceAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "array"
+    ],
+    "SpecReference": "OPC HDA 1.20 IDL: IOPCHDA_AsyncUpdate::InsertReplace"
+  },
+  {
+    "Interface": "Opc.Classic.Hda.Dcom.IOPCHDA_AsyncUpdate",
+    "Method": "DeleteRawAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "array",
+      "nested/compound records"
+    ],
+    "SpecReference": "OPC HDA 1.20 IDL: IOPCHDA_AsyncUpdate::DeleteRaw"
+  },
+  {
+    "Interface": "Opc.Classic.Hda.Dcom.IOPCHDA_AsyncUpdate",
+    "Method": "DeleteAtTimeAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "array"
+    ],
+    "SpecReference": "OPC HDA 1.20 IDL: IOPCHDA_AsyncUpdate::DeleteAtTime"
+  },
+  {
+    "Interface": "Opc.Classic.Hda.Dcom.IOPCHDA_AsyncUpdate",
+    "Method": "CancelAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "OPC HDA 1.20 IDL: IOPCHDA_AsyncUpdate::Cancel"
+  },
+  {
+    "Interface": "Opc.Classic.Hda.Dcom.IOPCHDA_AsyncAnnotations",
+    "Method": "QueryCapabilitiesAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "OPC HDA 1.20 IDL: IOPCHDA_AsyncAnnotations::QueryCapabilities"
+  },
+  {
+    "Interface": "Opc.Classic.Hda.Dcom.IOPCHDA_AsyncAnnotations",
+    "Method": "ReadAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "array",
+      "nested/compound records"
+    ],
+    "SpecReference": "OPC HDA 1.20 IDL: IOPCHDA_AsyncAnnotations::Read"
+  },
+  {
+    "Interface": "Opc.Classic.Hda.Dcom.IOPCHDA_AsyncAnnotations",
+    "Method": "InsertAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "array",
+      "nested/compound records"
+    ],
+    "SpecReference": "OPC HDA 1.20 IDL: IOPCHDA_AsyncAnnotations::Insert"
+  },
+  {
+    "Interface": "Opc.Classic.Hda.Dcom.IOPCHDA_AsyncAnnotations",
+    "Method": "CancelAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "OPC HDA 1.20 IDL: IOPCHDA_AsyncAnnotations::Cancel"
+  },
+  {
+    "Interface": "Opc.Classic.Hda.Dcom.IOPCHDA_Playback",
+    "Method": "ReadRawWithUpdateAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "array",
+      "nested/compound records"
+    ],
+    "SpecReference": "OPC HDA 1.20 IDL: IOPCHDA_Playback::ReadRawWithUpdate"
+  },
+  {
+    "Interface": "Opc.Classic.Hda.Dcom.IOPCHDA_Playback",
+    "Method": "ReadProcessedWithUpdateAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "array",
+      "nested/compound records"
+    ],
+    "SpecReference": "OPC HDA 1.20 IDL: IOPCHDA_Playback::ReadProcessedWithUpdate"
+  },
+  {
+    "Interface": "Opc.Classic.Hda.Dcom.IOPCHDA_Playback",
+    "Method": "CancelAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "OPC HDA 1.20 IDL: IOPCHDA_Playback::Cancel"
+  },
+  {
+    "Interface": "Opc.Classic.Hda.Dcom.IOPCHDA_DataCallback",
+    "Method": "OnDataChangeAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "array",
+      "nested/compound records"
+    ],
+    "SpecReference": "OPC HDA 1.20 IDL: IOPCHDA_DataCallback::OnDataChange"
+  },
+  {
+    "Interface": "Opc.Classic.Hda.Dcom.IOPCHDA_DataCallback",
+    "Method": "OnReadCompleteAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "array",
+      "nested/compound records"
+    ],
+    "SpecReference": "OPC HDA 1.20 IDL: IOPCHDA_DataCallback::OnReadComplete"
+  },
+  {
+    "Interface": "Opc.Classic.Hda.Dcom.IOPCHDA_DataCallback",
+    "Method": "OnReadModifiedCompleteAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "array",
+      "nested/compound records"
+    ],
+    "SpecReference": "OPC HDA 1.20 IDL: IOPCHDA_DataCallback::OnReadModifiedComplete"
+  },
+  {
+    "Interface": "Opc.Classic.Hda.Dcom.IOPCHDA_DataCallback",
+    "Method": "OnReadAttributeCompleteAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "array",
+      "nested/compound records"
+    ],
+    "SpecReference": "OPC HDA 1.20 IDL: IOPCHDA_DataCallback::OnReadAttributeComplete"
+  },
+  {
+    "Interface": "Opc.Classic.Hda.Dcom.IOPCHDA_DataCallback",
+    "Method": "OnReadAnnotationsAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "array",
+      "nested/compound records"
+    ],
+    "SpecReference": "OPC HDA 1.20 IDL: IOPCHDA_DataCallback::OnReadAnnotations"
+  },
+  {
+    "Interface": "Opc.Classic.Hda.Dcom.IOPCHDA_DataCallback",
+    "Method": "OnInsertAnnotationsAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "array"
+    ],
+    "SpecReference": "OPC HDA 1.20 IDL: IOPCHDA_DataCallback::OnInsertAnnotations"
+  },
+  {
+    "Interface": "Opc.Classic.Hda.Dcom.IOPCHDA_DataCallback",
+    "Method": "OnPlaybackAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "array",
+      "nested/compound records"
+    ],
+    "SpecReference": "OPC HDA 1.20 IDL: IOPCHDA_DataCallback::OnPlayback"
+  },
+  {
+    "Interface": "Opc.Classic.Hda.Dcom.IOPCHDA_DataCallback",
+    "Method": "OnUpdateCompleteAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar",
+      "array"
+    ],
+    "SpecReference": "OPC HDA 1.20 IDL: IOPCHDA_DataCallback::OnUpdateComplete"
+  },
+  {
+    "Interface": "Opc.Classic.Hda.Dcom.IOPCHDA_DataCallback",
+    "Method": "OnCancelCompleteAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "OPC HDA 1.20 IDL: IOPCHDA_DataCallback::OnCancelComplete"
+  },
+  {
+    "Interface": "Opc.Classic.Security.Dcom.IOPCSecurityNT",
+    "Method": "IsAvailableNTAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "OPC Security 1.00 IDL: IOPCSecurityNT::IsAvailableNT"
+  },
+  {
+    "Interface": "Opc.Classic.Security.Dcom.IOPCSecurityNT",
+    "Method": "QueryMinImpersonationLevelAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "OPC Security 1.00 IDL: IOPCSecurityNT::QueryMinImpersonationLevel"
+  },
+  {
+    "Interface": "Opc.Classic.Security.Dcom.IOPCSecurityNT",
+    "Method": "ChangeUserAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "OPC Security 1.00 IDL: IOPCSecurityNT::ChangeUser"
+  },
+  {
+    "Interface": "Opc.Classic.Security.Dcom.IOPCSecurityPrivate",
+    "Method": "IsAvailablePrivAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "OPC Security 1.00 IDL: IOPCSecurityPrivate::IsAvailablePriv"
+  },
+  {
+    "Interface": "Opc.Classic.Security.Dcom.IOPCSecurityPrivate",
+    "Method": "LogonAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "OPC Security 1.00 IDL: IOPCSecurityPrivate::Logon"
+  },
+  {
+    "Interface": "Opc.Classic.Security.Dcom.IOPCSecurityPrivate",
+    "Method": "LogoffAsync",
+    "GeneratorSides": [
+      "client",
+      "server"
+    ],
+    "ShapeCategories": [
+      "scalar"
+    ],
+    "SpecReference": "OPC Security 1.00 IDL: IOPCSecurityPrivate::Logoff"
+  }
+]

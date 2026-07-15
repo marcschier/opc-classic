@@ -51,7 +51,7 @@ public partial interface IOPCServer
         Guid requestedInterfaceId,
         out int serverGroupHandle,
         out int revisedUpdateRate,
-        [OpcUniquePointer] out IOpcInterfaceRef group,
+        [OpcIidIs(nameof(requestedInterfaceId)), OpcUniquePointer] out IOpcInterfaceRef group,
         CancellationToken cancellationToken = default);
 
     /// <summary>
@@ -68,7 +68,7 @@ public partial interface IOPCServer
     /// on the wire (see <see cref="AddGroupAsync"/> for the same shape).
     /// </remarks>
     [OpcMethod(5)]
-    [return: OpcUniquePointer]
+    [return: OpcIidIs(nameof(requestedInterfaceId)), OpcUniquePointer]
     Task<IOpcInterfaceRef> GetGroupByNameAsync(string name, Guid requestedInterfaceId, CancellationToken cancellationToken = default);
 
     /// <summary>
@@ -95,6 +95,7 @@ public partial interface IOPCServer
     /// <c>IOPCServer::CreateGroupEnumerator</c> (opnum 8). Returns an <c>IEnumUnknown</c> group enumerator.
     /// </summary>
     [OpcMethod(8)]
+    [return: OpcIidIs(nameof(requestedInterfaceId))]
     Task<IOpcInterfaceRef> CreateGroupEnumeratorAsync(int scope, Guid requestedInterfaceId, CancellationToken cancellationToken = default);
 }
 
@@ -475,6 +476,7 @@ public partial interface IOPCItemMgt
     /// <c>IOPCItemMgt::CreateEnumerator</c> (opnum 9). Returns an <c>IEnumOPCItemAttributes</c> enumerator.
     /// </summary>
     [OpcMethod(9)]
+    [return: OpcIidIs(nameof(requestedInterfaceId))]
     Task<IOpcInterfaceRef> CreateEnumeratorAsync(Guid requestedInterfaceId, CancellationToken cancellationToken = default);
 }
 
@@ -517,6 +519,7 @@ public partial interface IOPCGroupStateMgt
     /// <c>IOPCGroupStateMgt::CloneGroup</c> (opnum 6). Clones the group and returns the requested interface.
     /// </summary>
     [OpcMethod(6)]
+    [return: OpcIidIs(nameof(requestedInterfaceId))]
     Task<IOpcInterfaceRef> CloneGroupAsync(string name, Guid requestedInterfaceId, CancellationToken cancellationToken = default);
 }
 
@@ -760,7 +763,7 @@ public partial interface IEnumOPCItemAttributes
     [OpcGenerateMultiOutRecord]
     Task NextAsync(
         int count,
-        [OpcUniquePointer] out OpcItemAttributes[] attributes,
+        [OpcArrayCount(nameof(fetchedCount)), OpcUniquePointer] out OpcItemAttributes[] attributes,
         out int fetchedCount,
         CancellationToken cancellationToken = default);
 
@@ -921,6 +924,7 @@ public partial interface IOPCEnumGUID
     /// <c>IOPCEnumGUID::Next</c> (opnum 3). Returns up to the requested number of GUIDs.
     /// </summary>
     [OpcMethod(3)]
+    [return: OpcArrayCount(nameof(count))]
     Task<Guid[]> NextAsync(int count, CancellationToken cancellationToken = default);
 
     /// <summary>
