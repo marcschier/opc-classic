@@ -12,6 +12,7 @@ using System.Security.Principal;
 using Opc.Classic.Dcom.Internal;
 using Opc.Classic.Dcom.Internal.LegacyNdr;
 using Opc.Classic.Dcom.Internal.Ntlm;
+using Opc.Classic.Dcom.Kerberos.Spnego;
 using Opc.Classic.Dcom.Rpc.Auth;
 
 namespace Opc.Classic.Dcom.Rpc.Auth.ntlm;
@@ -138,7 +139,11 @@ public abstract class AuthenticationSource : IRpcServerAuthenticationProvider
             string domain = type3.Domain ?? string.Empty;
             string name = string.IsNullOrEmpty(domain) ? user : $"{domain}\\{user}";
             var principal = new GenericPrincipal(new GenericIdentity(name, "NTLM"), []);
-            var protectionContext = new NtlmServerProtectionContext(context.Security, protectionLevel);
+            var protectionContext = new NtlmServerProtectionContext(
+                context.Security,
+                protectionLevel,
+                type3.Flags,
+                context.EstablishedSessionKey);
             var session = new RpcServerAuthenticationSession(
                 NtlmAuthentication.AUTHENTICATIONSERVICENTLM,
                 principal,
@@ -158,15 +163,42 @@ public abstract class AuthenticationSource : IRpcServerAuthenticationProvider
         }
     }
 
-    private sealed class NtlmServerProtectionContext : IRpcServerProtectionContext
+    private sealed class NtlmServerProtectionContext :
+        IRpcServerProtectionContext,
+        IGssMicProvider
     {
         private readonly ISecurity _security;
+        private readonly NtlmMicProvider _incomingMicProvider;
+        private readonly NtlmMicProvider _outgoingMicProvider;
 
-        public NtlmServerProtectionContext(ISecurity security, OpcProtectionLevel protectionLevel)
+        public NtlmServerProtectionContext(
+            ISecurity security,
+            OpcProtectionLevel protectionLevel,
+            NtlmFlags flags,
+            ReadOnlyMemory<byte>? exportedSessionKey)
         {
             ArgumentNullException.ThrowIfNull(security);
+            if (!exportedSessionKey.HasValue || exportedSessionKey.Value.IsEmpty)
+            {
+                throw new InvalidOperationException(
+                    "NTLM session security did not expose an exported session key.");
+            }
+
             _security = security;
             ProtectionLevel = protectionLevel;
+            byte[] key = exportedSessionKey.Value.ToArray();
+            try
+            {
+                var keyFactory = new NTLMKeyFactory();
+                _incomingMicProvider = new NtlmMicProvider(
+                    keyFactory.GenerateClientSigningKey(flags, key));
+                _outgoingMicProvider = new NtlmMicProvider(
+                    keyFactory.GenerateServerSigningKey(flags, key));
+            }
+            finally
+            {
+                System.Security.Cryptography.CryptographicOperations.ZeroMemory(key);
+            }
         }
 
         public int AuthenticationService => NtlmAuthentication.AUTHENTICATIONSERVICENTLM;
@@ -226,6 +258,12 @@ public abstract class AuthenticationSource : IRpcServerAuthenticationProvider
             buffer.AsSpan(0, signedRegion.Length).CopyTo(signedRegion);
             return true;
         }
+
+        public byte[] GetMic(ReadOnlySpan<byte> data) =>
+            _outgoingMicProvider.GetMic(data);
+
+        public bool VerifyMic(ReadOnlySpan<byte> data, ReadOnlySpan<byte> mic) =>
+            _incomingMicProvider.VerifyMic(data, mic);
 
         private static NdrCodec CreateNdrCodec(byte[] buffer)
         {

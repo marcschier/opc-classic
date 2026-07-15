@@ -24,6 +24,19 @@ public static class KerberosServerAuthenticationRegistration
     }
 
     /// <summary>
+    /// Registers SPNEGO policy directly in an RPC server authentication registry.
+    /// </summary>
+    public static SpnegoServerAuthenticationProvider RegisterSpnego(
+        this RpcServerAuthenticationProviderRegistry registry,
+        SpnegoServerOptions options)
+    {
+        ArgumentNullException.ThrowIfNull(registry);
+        var provider = new SpnegoServerAuthenticationProvider(options);
+        registry.Register(provider);
+        return provider;
+    }
+
+    /// <summary>
     /// Registers Kerberos policy, its provider, and a registry selector with dependency injection.
     /// </summary>
     public static IServiceCollection AddKerberosRpcServerAuthentication(

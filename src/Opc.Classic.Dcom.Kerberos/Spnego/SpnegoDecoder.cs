@@ -24,29 +24,32 @@ public static class SpnegoDecoder
         ReadOnlyMemory<byte> mechToken = ReadOnlyMemory<byte>.Empty;
         ReadOnlyMemory<byte>? mechListMic = null;
         ReadOnlyMemory<byte> mechListBytes = ReadOnlyMemory<byte>.Empty;
+        int lastTagValue = -1;
 
         while (bodyReader.HasData)
         {
             var tag = bodyReader.PeekTag();
-            if (tag.TagClass != TagClass.ContextSpecific)
+            if (tag.TagClass != TagClass.ContextSpecific
+                || tag.TagValue <= lastTagValue
+                || tag.TagValue > 3)
             {
-                _ = bodyReader.ReadEncodedValue();
-                continue;
+                throw new AsnContentException();
             }
+            lastTagValue = tag.TagValue;
 
             switch (tag.TagValue)
             {
                 case 0:
                     mechTypes = ReadMechTypes(bodyReader, tag, out mechListBytes);
                     break;
+                case 1:
+                    ReadContextFlags(bodyReader, tag);
+                    break;
                 case 2:
                     mechToken = ReadOctetStringField(bodyReader, tag);
                     break;
                 case 3:
                     mechListMic = ReadOctetStringField(bodyReader, tag);
-                    break;
-                default:
-                    _ = bodyReader.ReadEncodedValue();
                     break;
             }
         }
@@ -69,15 +72,18 @@ public static class SpnegoDecoder
         string? supportedMech = null;
         ReadOnlyMemory<byte>? responseToken = null;
         ReadOnlyMemory<byte>? mechListMic = null;
+        int lastTagValue = -1;
 
         while (bodyReader.HasData)
         {
             var tag = bodyReader.PeekTag();
-            if (tag.TagClass != TagClass.ContextSpecific)
+            if (tag.TagClass != TagClass.ContextSpecific
+                || tag.TagValue <= lastTagValue
+                || tag.TagValue > 3)
             {
-                _ = bodyReader.ReadEncodedValue();
-                continue;
+                throw new AsnContentException();
             }
+            lastTagValue = tag.TagValue;
 
             switch (tag.TagValue)
             {
@@ -92,9 +98,6 @@ public static class SpnegoDecoder
                     break;
                 case 3:
                     mechListMic = ReadOctetStringField(bodyReader, tag);
-                    break;
-                default:
-                    _ = bodyReader.ReadEncodedValue();
                     break;
             }
         }
@@ -178,6 +181,13 @@ public static class SpnegoDecoder
         var negState = innerReader.ReadEnumeratedValue<SpnegoNegState>();
         innerReader.ThrowIfNotEmpty();
         return negState;
+    }
+
+    private static void ReadContextFlags(AsnReader bodyReader, Asn1Tag tag)
+    {
+        var innerReader = bodyReader.ReadSequence(tag);
+        _ = innerReader.ReadBitString(out _);
+        innerReader.ThrowIfNotEmpty();
     }
 
     private static List<string> ReadMechTypes(

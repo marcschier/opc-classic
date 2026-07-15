@@ -10,6 +10,7 @@ using Kerberos.NET.Entities;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Opc.Classic.Dcom.Kerberos;
+using Opc.Classic.Dcom.Kerberos.Spnego;
 
 namespace Opc.Classic.Dcom.Rpc.Auth;
 
@@ -471,7 +472,9 @@ public sealed class KerberosServerAuthenticationProvider : IRpcServerAuthenticat
                 innerException);
         }
 
-        private sealed class KerberosServerProtectionContext : IRpcServerProtectionContext
+        private sealed class KerberosServerProtectionContext :
+            IRpcServerProtectionContext,
+            IGssMicProvider
         {
             private readonly KerberosSession _session;
             private readonly bool _usesAcceptorSubkey;
@@ -561,6 +564,12 @@ public sealed class KerberosServerAuthenticationProvider : IRpcServerAuthenticat
                     return false;
                 }
             }
+
+            public byte[] GetMic(ReadOnlySpan<byte> data) =>
+                _session.GetMic(data);
+
+            public bool VerifyMic(ReadOnlySpan<byte> data, ReadOnlySpan<byte> mic) =>
+                _session.VerifyMic(data, mic);
 
             private bool HasExpectedPeerFlags(
                 ReadOnlySpan<byte> verifier,

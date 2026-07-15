@@ -679,7 +679,7 @@ public sealed class F4Auth
 
         private IReadOnlyDictionary<Guid, IOpcServerDispatcher> BuildDispatchers()
         {
-            var daDispatcher = new OpcDaServerDispatcher(_server);
+            var daDispatcher = new OpcDaServerDispatcher(_server, objectRegistry: _objectRegistry);
             IOpcAddressSpace addressSpace = _server.BuildAddressSpace();
             return new Dictionary<Guid, IOpcServerDispatcher>
             {

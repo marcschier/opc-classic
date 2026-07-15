@@ -4,6 +4,7 @@ using System.Security;
 using Kerberos.NET;
 using Kerberos.NET.Crypto;
 using Opc.Classic;
+using Opc.Classic.Dcom.Kerberos.Spnego;
 using Opc.Classic.Dcom.Rpc.Auth;
 
 namespace Opc.Classic.Dcom.Kerberos.Tests;
@@ -94,6 +95,58 @@ public sealed class KerberosServerAuthenticationProviderIntegrationTests
     }
 
     [Test]
+    public async Task Spnego_acceptor_completes_ap_req_ap_rep_mic_and_protected_calls()
+    {
+        SkipWhenKdcUnavailable();
+        using var krb5Config = _kdc.UseKrb5Config();
+        byte[] channelBinding = Enumerable.Repeat((byte)0x5A, 16).ToArray();
+        using var credentials = CreateKeytabProvider(
+            KdcFixture.ServerSpn,
+            "server.keytab");
+        var kerberos = new KerberosServerAuthenticationProvider(
+            CreateOptions(
+                credentials,
+                CreateAllowMapper(),
+                channelBindingPolicy: KerberosChannelBindingPolicy.Required,
+                channelBindingsHash: channelBinding));
+        var provider = new SpnegoServerAuthenticationProvider(kerberos);
+        var client = new KerberosConnectionContext(_kdc.CreatePasswordAuthInfo());
+        byte[] apReq = await client.AcquireApRequestAsync(
+            channelBinding).ConfigureAwait(false);
+        byte[] init = SpnegoTokenBuilder.BuildInitToken(
+            apReq,
+            out byte[] mechListBytes);
+
+        RpcServerAuthenticationTokenResult result = provider.CreateAcceptor()
+            .AcceptToken(init, OpcProtectionLevel.Integrity);
+        SpnegoNegTokenResp response =
+            SpnegoDecoder.DecodeNegTokenResp(result.ResponseToken);
+        _ = await client.ProcessApResponseAsync(
+            response.ResponseToken.GetValueOrDefault()).ConfigureAwait(false);
+        KerberosSession clientSession = CreateClientSession(client);
+        bool micVerified = response.VerifyMechListMic(
+            mechListBytes,
+            new KerberosMicProvider(clientSession));
+
+        await Assert.That(response.NegState)
+            .IsEqualTo(SpnegoNegState.AcceptCompleted);
+        await Assert.That(response.SupportedMech)
+            .IsEqualTo(SpnegoOids.KerberosV5);
+        await Assert.That(micVerified).IsTrue();
+        await Assert.That(result.Session).IsNotNull();
+        await Assert.That(result.Session!.AuthenticationService)
+            .IsEqualTo(SpnegoServerAuthenticationProvider.SpnegoAuthenticationService);
+        await AssertClientToServerProtectionAsync(
+            result.Session.ProtectionContext!,
+            clientSession,
+            OpcProtectionLevel.Integrity);
+        await AssertServerToClientProtectionAsync(
+            result.Session.ProtectionContext!,
+            clientSession,
+            OpcProtectionLevel.Integrity);
+    }
+
+    [Test]
     public async Task Acceptor_rejects_ap_req_for_the_wrong_service_principal()
     {
         SkipWhenKdcUnavailable();
@@ -157,6 +210,57 @@ public sealed class KerberosServerAuthenticationProviderIntegrationTests
                 OpcProtectionLevel.Integrity));
 
         await Assert.That(ContainsException<SecurityException>(thrown)).IsTrue();
+    }
+
+    [Test]
+    public async Task Acceptor_rejects_authenticator_outside_future_clock_skew()
+    {
+        SkipWhenKdcUnavailable();
+        using var krb5Config = _kdc.UseKrb5Config();
+        using var credentials = CreateKeytabProvider(
+            KdcFixture.ServerSpn,
+            "server.keytab");
+        var clock = new ManualTimeProvider(DateTimeOffset.UtcNow.AddHours(-1));
+        var provider = new KerberosServerAuthenticationProvider(
+            CreateOptions(
+                credentials,
+                CreateAllowMapper(),
+                timeProvider: clock));
+        var client = new KerberosConnectionContext(_kdc.CreatePasswordAuthInfo());
+        byte[] apReq = await client.AcquireApRequestAsync().ConfigureAwait(false);
+
+        Exception? thrown = CaptureException(() =>
+            provider.CreateAcceptor().AcceptToken(
+                apReq,
+                OpcProtectionLevel.Integrity));
+
+        await Assert.That(ContainsException<SecurityException>(thrown)).IsTrue();
+    }
+
+    [Test]
+    public async Task Acceptor_accepts_matching_required_channel_binding()
+    {
+        SkipWhenKdcUnavailable();
+        using var krb5Config = _kdc.UseKrb5Config();
+        byte[] channelBinding = Enumerable.Repeat((byte)0x3C, 16).ToArray();
+        using var credentials = CreateKeytabProvider(
+            KdcFixture.ServerSpn,
+            "server.keytab");
+        var provider = new KerberosServerAuthenticationProvider(
+            CreateOptions(
+                credentials,
+                CreateAllowMapper(),
+                channelBindingPolicy: KerberosChannelBindingPolicy.Required,
+                channelBindingsHash: channelBinding));
+        var client = new KerberosConnectionContext(_kdc.CreatePasswordAuthInfo());
+        byte[] apReq = await client.AcquireApRequestAsync(
+            channelBinding).ConfigureAwait(false);
+
+        RpcServerAuthenticationTokenResult result = provider.CreateAcceptor()
+            .AcceptToken(apReq, OpcProtectionLevel.Integrity);
+
+        await Assert.That(result.Session).IsNotNull();
+        await Assert.That(result.ResponseToken.IsEmpty).IsFalse();
     }
 
     [Test]
@@ -363,6 +467,14 @@ public sealed class KerberosServerAuthenticationProviderIntegrationTests
         byte[] originalFirst = [0x10, 0x21, 0x32, 0x43, 0x54, 0x65];
         byte[] wireFirst = originalFirst.ToArray();
         byte[] verifierFirst = ProtectClientPacket(clientSession, wireFirst, confidentialOffset: 2, confidentialLength: 3, protectionLevel);
+        byte[] tamperedVerifier = verifierFirst.ToArray();
+        tamperedVerifier[^1] ^= 0x01;
+        byte[] tamperedFirst = wireFirst.ToArray();
+        bool tamperedAccepted = serverProtectionContext.Unprotect(
+            tamperedFirst,
+            2,
+            3,
+            tamperedVerifier);
         byte[] receivedFirst = wireFirst.ToArray();
         bool acceptedFirst = serverProtectionContext.Unprotect(receivedFirst, 2, 3, verifierFirst);
         byte[] replayedFirst = wireFirst.ToArray();
@@ -374,6 +486,7 @@ public sealed class KerberosServerAuthenticationProviderIntegrationTests
         byte[] receivedSecond = wireSecond.ToArray();
         bool acceptedSecond = serverProtectionContext.Unprotect(receivedSecond, 1, 4, verifierSecond);
 
+        await Assert.That(tamperedAccepted).IsFalse();
         await Assert.That(acceptedFirst).IsTrue();
         await Assert.That(receivedFirst.SequenceEqual(originalFirst)).IsTrue();
         await Assert.That(replayAccepted).IsFalse();
