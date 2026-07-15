@@ -135,7 +135,10 @@ public sealed class KerberosConnectionContext : IKerberosConnectionContext
     {
         if (_info.Password is not null)
         {
-            return new KerberosPasswordCredential(_info.Username, _info.Password, _info.Realm);
+            return new global::Kerberos.NET.Credentials.KerberosPasswordCredential(
+                _info.Username,
+                _info.Password,
+                _info.Realm);
         }
 
         if (_info.KeytabPath is not null)

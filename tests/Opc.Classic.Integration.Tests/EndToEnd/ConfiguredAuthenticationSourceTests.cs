@@ -3,6 +3,7 @@
 using System.Security;
 using Opc.Classic.Dcom.Internal;
 using Opc.Classic.Dcom.Internal.Ntlm;
+using Opc.Classic.Dcom.Rpc.Auth;
 using Opc.Classic.Dcom.Rpc.Auth.ntlm;
 using TUnit.Assertions.AssertConditions.Throws;
 
@@ -64,6 +65,36 @@ public sealed class ConfiguredAuthenticationSourceTests
 
         await Assert.That(() => source.Authenticate(new PropertyBag(), type2: null!, new Type3Message()))
             .Throws<InvalidOperationException>();
+    }
+
+    [Test, Category("EndToEnd")]
+    public async Task Provider_acceptor_establishes_principal_and_protection_context()
+    {
+        NtlmAuthentication client = CreateClient(Password);
+        IRpcServerAuthenticationProvider provider =
+            new ConfiguredAuthenticationSource(User, Password, Domain);
+        IRpcServerAuthenticationAcceptor acceptor = provider.CreateAcceptor();
+        IRpcServerAuthenticationAcceptor secondAcceptor = provider.CreateAcceptor();
+
+        Type1Message type1 = client.CreateType1();
+        RpcServerAuthenticationTokenResult challenge = acceptor.AcceptToken(
+            type1.ToByteArray(),
+            OpcProtectionLevel.Privacy);
+        var type2 = new Type2Message(challenge.ResponseToken.ToArray());
+        Type3Message type3 = client.CreateType3(type2);
+        RpcServerAuthenticationTokenResult completed = acceptor.AcceptToken(
+            type3.ToByteArray(),
+            OpcProtectionLevel.Privacy);
+
+        await Assert.That(provider.AuthenticationService)
+            .IsEqualTo(NtlmAuthentication.AUTHENTICATIONSERVICENTLM);
+        await Assert.That(ReferenceEquals(acceptor, secondAcceptor)).IsFalse();
+        await Assert.That(challenge.Session).IsNull();
+        await Assert.That(completed.Session).IsNotNull();
+        await Assert.That(completed.Session!.Principal.Identity?.Name)
+            .IsEqualTo($"{Domain}\\{User}");
+        await Assert.That(completed.Session.ProtectionContext).IsNotNull();
+        await Assert.That(completed.Session.ProtectionLevel).IsEqualTo(OpcProtectionLevel.Privacy);
     }
 
     private static NtlmAuthentication CreateClient(string password)

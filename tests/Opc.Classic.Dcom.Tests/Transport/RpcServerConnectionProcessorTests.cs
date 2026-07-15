@@ -1,11 +1,13 @@
 ﻿// Copyright (c) 2026 Opc.Classic Contributors. Licensed under the MIT License.
 
 using Opc.Classic.Dcom.Rpc;
+using Opc.Classic.Dcom.Rpc.Auth;
 using Opc.Classic.Dcom.Rpc.Core;
 using Opc.Classic.Dcom.Rpc.pdu;
 using Opc.Classic.Dcom.Transport;
 using Opc.Classic.Hosting;
 using Opc.Classic.Testing;
+using System.Security.Principal;
 using TUnit.Assertions.AssertConditions.Throws;
 
 namespace Opc.Classic.Dcom.Tests.Transport;
@@ -214,6 +216,265 @@ public sealed class RpcServerConnectionProcessorTests
     }
 
     [Test]
+    public async Task Continuation_provider_is_selected_by_service_and_maps_principal()
+    {
+        const byte authenticationService = 42;
+        var provider = new StubAuthenticationProvider(authenticationService);
+        var mapper = new PrefixAuthorizationMapper();
+        var options = new RpcServerAuthenticationOptions(
+            new RpcServerAuthenticationProviderRegistry([provider]),
+            mapper);
+        var dispatcher = new RecordingContextDispatcher();
+        var processor = new RpcServerConnectionProcessor(
+            options,
+            new Dictionary<Guid, IOpcServerDispatcher> { [InterfaceId] = dispatcher });
+        await using var transport = new InMemoryAsyncTransport();
+
+        await WriteFrameWithAuthVerifier(
+            transport,
+            NewBindForInterface(InterfaceId, contextId: 0, callId: 1),
+            authenticationService,
+            authValue: [1],
+            authLevel: (byte)ProtectionLevel.PROTECTION_LEVEL_CONNECT);
+        await WriteFrameWithAuthVerifier(
+            transport,
+            new Auth3Pdu { CallId = 2 },
+            authenticationService,
+            authValue: [3],
+            authLevel: (byte)ProtectionLevel.PROTECTION_LEVEL_CONNECT);
+        await WriteFrameWithAuthVerifier(
+            transport,
+            NewRequest(contextId: 0, opnum: 5, callId: 3, payload: []),
+            authenticationService,
+            authValue: [9],
+            authLevel: (byte)ProtectionLevel.PROTECTION_LEVEL_CONNECT);
+
+        await RunProcessorAndShutdown(processor, transport);
+
+        byte[] bindAck = await ReadOutboundFrame(transport);
+        RpcPduAuthenticationData bindAuthentication = ReadAuthenticationData(bindAck);
+        await Assert.That(bindAuthentication.AuthenticationService).IsEqualTo(authenticationService);
+        await Assert.That(bindAuthentication.AuthValue).IsEquivalentTo(new byte[] { 2 });
+        await ReadOutboundPduAs<ResponseCoPdu>(transport);
+        await Assert.That(provider.CreateAcceptorCount).IsEqualTo(1);
+        await Assert.That(provider.LastAcceptor!.AcceptedTokens.Count).IsEqualTo(2);
+        await Assert.That(dispatcher.LastContext.HasValue).IsTrue();
+        await Assert.That(dispatcher.LastContext!.Value.AuthenticationService).IsEqualTo(authenticationService);
+        await Assert.That(dispatcher.LastContext.Value.Principal?.Identity?.Name)
+            .IsEqualTo("mapped:mechanism-user");
+    }
+
+    [Test]
+    [Arguments(false)]
+    [Arguments(true)]
+    public async Task Single_step_provider_completion_on_bind_or_alter_establishes_session(
+        bool useAlterContext)
+    {
+        const byte authenticationService = 42;
+        var provider = new StubAuthenticationProvider(
+            authenticationService,
+            completeOnFirstToken: true);
+        var options = new RpcServerAuthenticationOptions(
+            new RpcServerAuthenticationProviderRegistry([provider]));
+        var dispatcher = new RecordingContextDispatcher();
+        var processor = new RpcServerConnectionProcessor(
+            options,
+            new Dictionary<Guid, IOpcServerDispatcher> { [InterfaceId] = dispatcher });
+        await using var transport = new InMemoryAsyncTransport();
+        int requestContextId = useAlterContext ? 1 : 0;
+
+        if (useAlterContext)
+        {
+            await WritePduToInbound(
+                transport,
+                NewBindForInterface(InterfaceId, contextId: 0, callId: 1));
+            await WriteFrameWithAuthVerifier(
+                transport,
+                NewAlterContextForInterface(InterfaceId, contextId: 1, callId: 2),
+                authenticationService,
+                authValue: [1],
+                authLevel: (byte)ProtectionLevel.PROTECTION_LEVEL_CONNECT);
+        }
+        else
+        {
+            await WriteFrameWithAuthVerifier(
+                transport,
+                NewBindForInterface(InterfaceId, contextId: 0, callId: 1),
+                authenticationService,
+                authValue: [1],
+                authLevel: (byte)ProtectionLevel.PROTECTION_LEVEL_CONNECT);
+        }
+
+        await WriteFrameWithAuthVerifier(
+            transport,
+            NewRequest(requestContextId, opnum: 5, callId: 3, payload: []),
+            authenticationService,
+            authValue: [9],
+            authLevel: (byte)ProtectionLevel.PROTECTION_LEVEL_CONNECT);
+        await RunProcessorAndShutdown(processor, transport);
+
+        if (useAlterContext)
+        {
+            await ReadOutboundPduAs<BindAcknowledgePdu>(transport);
+        }
+        byte[] authenticationResponse = await ReadOutboundFrame(transport);
+        byte expectedResponseType = (byte)(useAlterContext
+            ? AlterContextResponsePdu.ALTER_CONTEXT_RESPONSE_TYPE
+            : BindAcknowledgePdu.BIND_ACKNOWLEDGE_TYPE);
+        await Assert.That(authenticationResponse[ConnectionOrientedPdu.TYPE_OFFSET])
+            .IsEqualTo(expectedResponseType);
+        await Assert.That(ReadAuthenticationLength(authenticationResponse)).IsEqualTo(0);
+        await ReadOutboundPduAs<ResponseCoPdu>(transport);
+        await Assert.That(provider.LastAcceptor!.AcceptedTokens.Count).IsEqualTo(1);
+        await Assert.That(dispatcher.LastContext!.Value.IsAuthenticated).IsTrue();
+        await Assert.That(dispatcher.LastContext.Value.IsEstablished).IsTrue();
+        await Assert.That(dispatcher.LastContext.Value.Principal?.Identity?.Name)
+            .IsEqualTo("mechanism-user");
+    }
+
+    [Test]
+    public async Task Optional_auth_unknown_verifier_bind_is_acknowledged_without_session()
+    {
+        const byte registeredService = 42;
+        const byte unknownService = 43;
+        var provider = new StubAuthenticationProvider(registeredService);
+        var options = new RpcServerAuthenticationOptions(
+            new RpcServerAuthenticationProviderRegistry([provider]),
+            requireAuthentication: false);
+        var dispatcher = new AuthenticatedOnlyContextDispatcher();
+        var processor = new RpcServerConnectionProcessor(
+            options,
+            new Dictionary<Guid, IOpcServerDispatcher> { [InterfaceId] = dispatcher });
+        await using var transport = new InMemoryAsyncTransport();
+
+        await WriteFrameWithAuthVerifier(
+            transport,
+            NewBindForInterface(InterfaceId, contextId: 0, callId: 1),
+            unknownService,
+            authValue: [1],
+            authLevel: (byte)ProtectionLevel.PROTECTION_LEVEL_INTEGRITY);
+        await WriteFrameWithAuthVerifier(
+            transport,
+            NewRequest(contextId: 0, opnum: 5, callId: 2, payload: []),
+            unknownService,
+            authValue: [9],
+            authLevel: (byte)ProtectionLevel.PROTECTION_LEVEL_INTEGRITY);
+        await RunProcessorAndShutdown(processor, transport);
+
+        BindAcknowledgePdu ack = await ReadOutboundPduAs<BindAcknowledgePdu>(transport);
+        FaultCoPdu fault = await ReadOutboundPduAs<FaultCoPdu>(transport);
+        await Assert.That(ack.ResultList[0].Result).IsEqualTo(PresentationResultCode.ACCEPTANCE);
+        await Assert.That(unchecked((int)fault.Status))
+            .IsEqualTo(global::Opc.Classic.OpcResultId.AccessDenied.Code);
+        await Assert.That(provider.CreateAcceptorCount).IsEqualTo(0);
+        await Assert.That(dispatcher.LastContext!.Value.IsAuthenticated).IsFalse();
+        await Assert.That(dispatcher.LastContext.Value.IsEstablished).IsFalse();
+    }
+
+    [Test]
+    public async Task Required_auth_unknown_verifier_bind_is_rejected()
+    {
+        const byte registeredService = 42;
+        const byte unknownService = 43;
+        var provider = new StubAuthenticationProvider(registeredService);
+        var options = new RpcServerAuthenticationOptions(
+            new RpcServerAuthenticationProviderRegistry([provider]));
+        var processor = new RpcServerConnectionProcessor(
+            options,
+            new Dictionary<Guid, IOpcServerDispatcher>
+            {
+                [InterfaceId] = new RecordingContextDispatcher(),
+            });
+        await using var transport = new InMemoryAsyncTransport();
+
+        await WriteFrameWithAuthVerifier(
+            transport,
+            NewBindForInterface(InterfaceId, contextId: 0, callId: 1),
+            unknownService,
+            authValue: [1],
+            authLevel: (byte)ProtectionLevel.PROTECTION_LEVEL_INTEGRITY);
+
+        await processor.ProcessConnectionAsync(
+                transport,
+                TestContext.Current!.CancellationToken)
+            .AsTask()
+            .WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current!.CancellationToken);
+
+        BindNoAcknowledgePdu nak = await ReadOutboundPduAs<BindNoAcknowledgePdu>(transport);
+        await Assert.That(nak.CallId).IsEqualTo(1);
+        await Assert.That(provider.CreateAcceptorCount).IsEqualTo(0);
+    }
+
+    [Test]
+    public async Task Continuation_provider_without_response_token_is_rejected()
+    {
+        const byte authenticationService = 42;
+        var provider = new StubAuthenticationProvider(
+            authenticationService,
+            returnEmptyContinuation: true);
+        var options = new RpcServerAuthenticationOptions(
+            new RpcServerAuthenticationProviderRegistry([provider]));
+        var processor = new RpcServerConnectionProcessor(
+            options,
+            new Dictionary<Guid, IOpcServerDispatcher>
+            {
+                [InterfaceId] = new RecordingContextDispatcher(),
+            });
+        await using var transport = new InMemoryAsyncTransport();
+
+        await WriteFrameWithAuthVerifier(
+            transport,
+            NewBindForInterface(InterfaceId, contextId: 0, callId: 1),
+            authenticationService,
+            authValue: [1],
+            authLevel: (byte)ProtectionLevel.PROTECTION_LEVEL_CONNECT);
+
+        await processor.ProcessConnectionAsync(
+                transport,
+                TestContext.Current!.CancellationToken)
+            .AsTask()
+            .WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current!.CancellationToken);
+
+        BindNoAcknowledgePdu nak = await ReadOutboundPduAs<BindNoAcknowledgePdu>(transport);
+        await Assert.That(nak.CallId).IsEqualTo(1);
+        await Assert.That(provider.LastAcceptor!.AcceptedTokens.Count).IsEqualTo(1);
+    }
+
+    [Test]
+    public async Task Integrity_session_without_protection_context_is_rejected()
+    {
+        const byte authenticationService = 42;
+        var provider = new StubAuthenticationProvider(
+            authenticationService,
+            completeOnFirstToken: true);
+        var options = new RpcServerAuthenticationOptions(
+            new RpcServerAuthenticationProviderRegistry([provider]));
+        var processor = new RpcServerConnectionProcessor(
+            options,
+            new Dictionary<Guid, IOpcServerDispatcher>
+            {
+                [InterfaceId] = new RecordingContextDispatcher(),
+            });
+        await using var transport = new InMemoryAsyncTransport();
+
+        await WriteFrameWithAuthVerifier(
+            transport,
+            NewBindForInterface(InterfaceId, contextId: 0, callId: 1),
+            authenticationService,
+            authValue: [1],
+            authLevel: (byte)ProtectionLevel.PROTECTION_LEVEL_INTEGRITY);
+
+        await processor.ProcessConnectionAsync(
+                transport,
+                TestContext.Current!.CancellationToken)
+            .AsTask()
+            .WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current!.CancellationToken);
+
+        BindNoAcknowledgePdu nak = await ReadOutboundPduAs<BindNoAcknowledgePdu>(transport);
+        await Assert.That(nak.CallId).IsEqualTo(1);
+    }
+
+    [Test]
     public async Task Constructor_throws_on_null_dispatcher_map()
     {
         await TUnit.Assertions.Assert.That(() => { _ = new RpcServerConnectionProcessor(null!); })
@@ -317,10 +578,23 @@ public sealed class RpcServerConnectionProcessorTests
     private static async Task WriteFrameWithAuthVerifier(
         InMemoryAsyncTransport transport, ConnectionOrientedPdu pdu, int authBodyLength, byte authLevel = 0)
     {
+        await WriteFrameWithAuthVerifier(
+            transport,
+            pdu,
+            authenticationService: 0,
+            authValue: new byte[authBodyLength],
+            authLevel);
+    }
+
+    private static async Task WriteFrameWithAuthVerifier(
+        InMemoryAsyncTransport transport,
+        ConnectionOrientedPdu pdu,
+        byte authenticationService,
+        byte[] authValue,
+        byte authLevel = 0)
+    {
         byte[] frame = PduCodec.EncodePdu(pdu, ConnectionOrientedPdu.MUST_RECEIVE_FRAGMENT_SIZE);
-        // Stamp the auth length so the processor's auth check triggers.
-        // The actual auth verifier bytes do not need to be valid for the
-        // rejection path — the processor decides before decoding.
+        int authBodyLength = authValue.Length;
         int totalLength = frame.Length + 8 + authBodyLength;
         byte[] forged = new byte[totalLength];
         frame.AsSpan().CopyTo(forged);
@@ -330,9 +604,32 @@ public sealed class RpcServerConnectionProcessorTests
         forged[ConnectionOrientedPdu.AUTH_LENGTH_OFFSET + 1] = (byte)((authBodyLength >> 8) & 0xFF);
         // The sec_trailer header begins immediately after the original frame:
         // [auth_type, auth_level, pad_length, reserved, context_id(4)].
+        forged[frame.Length] = authenticationService;
         forged[frame.Length + 1] = authLevel;
+        authValue.CopyTo(forged.AsSpan(frame.Length + 8));
         await transport.WriteInboundAsync(forged);
     }
+
+    private static async Task<byte[]> ReadOutboundFrame(InMemoryAsyncTransport transport) =>
+        await PduCodec.ReadPduFrameAsync(
+            transport.ReadOutbound,
+            TestContext.Current!.CancellationToken);
+
+    private static RpcPduAuthenticationData ReadAuthenticationData(byte[] frame)
+    {
+        int authLength = frame[ConnectionOrientedPdu.AUTH_LENGTH_OFFSET]
+            | (frame[ConnectionOrientedPdu.AUTH_LENGTH_OFFSET + 1] << 8);
+        int fragmentLength = frame[ConnectionOrientedPdu.FRAG_LENGTH_OFFSET]
+            | (frame[ConnectionOrientedPdu.FRAG_LENGTH_OFFSET + 1] << 8);
+        int verifierStart = fragmentLength - authLength - 8;
+        return new RpcPduAuthenticationData(
+            frame[verifierStart],
+            frame.AsSpan(verifierStart + 8, authLength).ToArray());
+    }
+
+    private static int ReadAuthenticationLength(byte[] frame) =>
+        frame[ConnectionOrientedPdu.AUTH_LENGTH_OFFSET]
+        | (frame[ConnectionOrientedPdu.AUTH_LENGTH_OFFSET + 1] << 8);
 
     private static async Task<T> ReadOutboundPduAs<T>(InMemoryAsyncTransport transport)
         where T : ConnectionOrientedPdu
@@ -415,5 +712,135 @@ public sealed class RpcServerConnectionProcessorTests
             LastContext = requestContext;
             return ValueTask.FromResult(DispatchResult.Success(Array.Empty<byte>()));
         }
+    }
+
+    private sealed class AuthenticatedOnlyContextDispatcher : IRpcRequestContextDispatcher
+    {
+        public RpcRequestContext? LastContext { get; private set; }
+
+        public ValueTask<DispatchResult> DispatchAsync(
+            int opnum,
+            ReadOnlyMemory<byte> requestPayload,
+            CancellationToken cancellationToken) =>
+            ValueTask.FromResult(DispatchResult.Fault(
+                global::Opc.Classic.OpcResultId.AccessDenied.Code));
+
+        public ValueTask<DispatchResult> DispatchAsync(
+            int opnum,
+            ReadOnlyMemory<byte> requestPayload,
+            RpcRequestContext requestContext,
+            CancellationToken cancellationToken = default)
+        {
+            LastContext = requestContext;
+            return ValueTask.FromResult(
+                requestContext.IsAuthenticated && requestContext.IsEstablished
+                    ? DispatchResult.Success([])
+                    : DispatchResult.Fault(global::Opc.Classic.OpcResultId.AccessDenied.Code));
+        }
+    }
+
+    private readonly record struct RpcPduAuthenticationData(
+        byte AuthenticationService,
+        byte[] AuthValue);
+
+    private sealed class StubAuthenticationProvider : IRpcServerAuthenticationProvider
+    {
+        private readonly bool _completeOnFirstToken;
+        private readonly bool _returnEmptyContinuation;
+
+        public StubAuthenticationProvider(
+            int authenticationService,
+            bool completeOnFirstToken = false,
+            bool returnEmptyContinuation = false)
+        {
+            AuthenticationService = authenticationService;
+            _completeOnFirstToken = completeOnFirstToken;
+            _returnEmptyContinuation = returnEmptyContinuation;
+        }
+
+        public int AuthenticationService { get; }
+
+        public StubAuthenticationAcceptor? LastAcceptor { get; private set; }
+
+        public int CreateAcceptorCount { get; private set; }
+
+        public IRpcServerAuthenticationAcceptor CreateAcceptor()
+        {
+            CreateAcceptorCount++;
+            LastAcceptor = new StubAuthenticationAcceptor(
+                AuthenticationService,
+                _completeOnFirstToken,
+                _returnEmptyContinuation);
+            return LastAcceptor;
+        }
+    }
+
+    private sealed class StubAuthenticationAcceptor : IRpcServerAuthenticationAcceptor
+    {
+        private readonly int _authenticationService;
+        private readonly bool _completeOnFirstToken;
+        private readonly bool _returnEmptyContinuation;
+
+        public StubAuthenticationAcceptor(
+            int authenticationService,
+            bool completeOnFirstToken,
+            bool returnEmptyContinuation)
+        {
+            _authenticationService = authenticationService;
+            _completeOnFirstToken = completeOnFirstToken;
+            _returnEmptyContinuation = returnEmptyContinuation;
+        }
+
+        public List<byte[]> AcceptedTokens { get; } = [];
+
+        public RpcServerAuthenticationTokenResult AcceptToken(
+            ReadOnlyMemory<byte> token,
+            OpcProtectionLevel protectionLevel)
+        {
+            byte[] tokenBytes = token.ToArray();
+            AcceptedTokens.Add(tokenBytes);
+            if (tokenBytes.SequenceEqual(new byte[] { 1 }))
+            {
+                if (_completeOnFirstToken)
+                {
+                    return Complete(protectionLevel);
+                }
+                if (_returnEmptyContinuation)
+                {
+                    return default;
+                }
+
+                return RpcServerAuthenticationTokenResult.Continue(new byte[] { 2 });
+            }
+            if (!tokenBytes.SequenceEqual(new byte[] { 3 }))
+            {
+                throw new InvalidOperationException("Unexpected test token.");
+            }
+
+            return Complete(protectionLevel);
+        }
+
+        private RpcServerAuthenticationTokenResult Complete(
+            OpcProtectionLevel protectionLevel)
+        {
+            var principal = new GenericPrincipal(
+                new GenericIdentity("mechanism-user", "TEST"),
+                []);
+            return RpcServerAuthenticationTokenResult.Complete(
+                new RpcServerAuthenticationSession(
+                    _authenticationService,
+                    principal,
+                    protectionLevel));
+        }
+    }
+
+    private sealed class PrefixAuthorizationMapper : IRpcServerAuthorizationMapper
+    {
+        public IPrincipal MapPrincipal(IPrincipal authenticatedPrincipal) =>
+            new GenericPrincipal(
+                new GenericIdentity(
+                    $"mapped:{authenticatedPrincipal.Identity?.Name}",
+                    authenticatedPrincipal.Identity?.AuthenticationType),
+                []);
     }
 }

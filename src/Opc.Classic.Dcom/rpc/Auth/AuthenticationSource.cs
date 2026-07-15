@@ -7,8 +7,12 @@
 // AuthenticationSource via SetDefaultInstance(...) once during host startup.
 //
 
+using System.Buffers.Binary;
+using System.Security.Principal;
 using Opc.Classic.Dcom.Internal;
+using Opc.Classic.Dcom.Internal.LegacyNdr;
 using Opc.Classic.Dcom.Internal.Ntlm;
+using Opc.Classic.Dcom.Rpc.Auth;
 
 namespace Opc.Classic.Dcom.Rpc.Auth.ntlm;
 
@@ -32,7 +36,7 @@ namespace Opc.Classic.Dcom.Rpc.Auth.ntlm;
 /// <see cref="InvalidOperationException"/> on any auth attempt.
 /// </para>
 /// </remarks>
-public abstract class AuthenticationSource
+public abstract class AuthenticationSource : IRpcServerAuthenticationProvider
 {
     private static AuthenticationSource? s_default;
 
@@ -58,6 +62,13 @@ public abstract class AuthenticationSource
         Interlocked.Exchange(ref s_default, source);
     }
 
+    /// <inheritdoc />
+    public int AuthenticationService => NtlmAuthentication.AUTHENTICATIONSERVICENTLM;
+
+    /// <inheritdoc />
+    public virtual IRpcServerAuthenticationAcceptor CreateAcceptor() =>
+        new NtlmAuthenticationSourceAcceptor(this);
+
     /// <summary>
     /// Produce an 8-byte NTLM challenge for the given Type-1 message and
     /// session properties.
@@ -74,4 +85,153 @@ public abstract class AuthenticationSource
     /// <exception cref="IOException">Underlying credential store I/O failure.</exception>
     public abstract sbyte[] Authenticate(PropertyBag properties,
         Type2Message type2, Type3Message type3);
+
+    internal virtual NtlmAuthentication? GetEstablishedNtlmContext(PropertyBag properties) => null;
+
+    private sealed class NtlmAuthenticationSourceAcceptor : IRpcServerAuthenticationAcceptor
+    {
+        private readonly AuthenticationSource _source;
+        private readonly PropertyBag _properties = new();
+        private Type2Message? _type2;
+        private bool _established;
+
+        public NtlmAuthenticationSourceAcceptor(AuthenticationSource source) =>
+            _source = source;
+
+        public RpcServerAuthenticationTokenResult AcceptToken(
+            ReadOnlyMemory<byte> token,
+            OpcProtectionLevel protectionLevel)
+        {
+            if (token.IsEmpty)
+            {
+                throw new ArgumentException("NTLM authentication tokens cannot be empty.", nameof(token));
+            }
+
+            byte[] tokenBytes = token.ToArray();
+            int messageType = ReadMessageType(tokenBytes);
+            if (messageType == 1)
+            {
+                var type1 = new Type1Message(tokenBytes);
+                byte[] challenge = _source.CreateChallenge(_properties, type1);
+                _type2 = new Type2Message(challenge);
+                _established = false;
+                return RpcServerAuthenticationTokenResult.Continue(challenge);
+            }
+
+            if (messageType != 3)
+            {
+                throw new InvalidOperationException($"Unexpected NTLM message type {messageType}.");
+            }
+            if (_type2 is null || _established)
+            {
+                throw new InvalidOperationException("NTLM Type3 received before a Type2 challenge was created.");
+            }
+
+            var type3 = new Type3Message(tokenBytes);
+            _source.Authenticate(_properties, _type2, type3);
+            NtlmAuthentication context = _source.GetEstablishedNtlmContext(_properties)
+                ?? throw new InvalidOperationException(
+                    "Authentication source did not establish an NTLM security context.");
+            _established = true;
+
+            string user = type3.User ?? string.Empty;
+            string domain = type3.Domain ?? string.Empty;
+            string name = string.IsNullOrEmpty(domain) ? user : $"{domain}\\{user}";
+            var principal = new GenericPrincipal(new GenericIdentity(name, "NTLM"), []);
+            var protectionContext = new NtlmServerProtectionContext(context.Security, protectionLevel);
+            var session = new RpcServerAuthenticationSession(
+                NtlmAuthentication.AUTHENTICATIONSERVICENTLM,
+                principal,
+                protectionLevel,
+                protectionContext);
+            return RpcServerAuthenticationTokenResult.Complete(session);
+        }
+
+        private static int ReadMessageType(ReadOnlySpan<byte> token)
+        {
+            if (token.Length < 12)
+            {
+                throw new ArgumentException("NTLM token is too short.", nameof(token));
+            }
+
+            return BinaryPrimitives.ReadInt32LittleEndian(token[8..12]);
+        }
+    }
+
+    private sealed class NtlmServerProtectionContext : IRpcServerProtectionContext
+    {
+        private readonly ISecurity _security;
+
+        public NtlmServerProtectionContext(ISecurity security, OpcProtectionLevel protectionLevel)
+        {
+            ArgumentNullException.ThrowIfNull(security);
+            _security = security;
+            ProtectionLevel = protectionLevel;
+        }
+
+        public int AuthenticationService => NtlmAuthentication.AUTHENTICATIONSERVICENTLM;
+
+        public OpcProtectionLevel ProtectionLevel { get; }
+
+        public int VerifierLength => _security.VerifierLength;
+
+        public void Protect(
+            Span<byte> signedRegion,
+            int confidentialOffset,
+            int confidentialLength,
+            out byte[] verifier)
+        {
+            var buffer = new byte[signedRegion.Length + _security.VerifierLength];
+            signedRegion.CopyTo(buffer);
+            NdrCodec ndr = CreateNdrCodec(buffer);
+            _security.ProcessOutgoing(
+                ndr,
+                confidentialOffset,
+                confidentialLength,
+                signedRegion.Length,
+                isFragmented: false);
+            buffer.AsSpan(0, signedRegion.Length).CopyTo(signedRegion);
+            verifier = buffer.AsSpan(signedRegion.Length, _security.VerifierLength).ToArray();
+        }
+
+        public bool Unprotect(
+            Span<byte> signedRegion,
+            int confidentialOffset,
+            int confidentialLength,
+            ReadOnlyMemory<byte> verifier)
+        {
+            if (verifier.Length != _security.VerifierLength)
+            {
+                return false;
+            }
+
+            var buffer = new byte[signedRegion.Length + _security.VerifierLength];
+            signedRegion.CopyTo(buffer);
+            verifier.Span.CopyTo(buffer.AsSpan(signedRegion.Length));
+            NdrCodec ndr = CreateNdrCodec(buffer);
+            try
+            {
+                _security.ProcessIncoming(
+                    ndr,
+                    confidentialOffset,
+                    confidentialLength,
+                    signedRegion.Length,
+                    isFragmented: false);
+            }
+            catch (IntegrityException)
+            {
+                return false;
+            }
+
+            buffer.AsSpan(0, signedRegion.Length).CopyTo(signedRegion);
+            return true;
+        }
+
+        private static NdrCodec CreateNdrCodec(byte[] buffer)
+        {
+            var ndrBuffer = new NdrBuffer(buffer, 0);
+            ndrBuffer.SetLength(buffer.Length);
+            return new NdrCodec { Buffer = ndrBuffer, Format = NdrFormat.DEFAULT_FORMAT };
+        }
+    }
 }

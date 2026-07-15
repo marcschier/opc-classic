@@ -127,6 +127,9 @@ public sealed class ConfiguredAuthenticationSource : AuthenticationSource
             : null;
     }
 
+    internal override NtlmAuthentication? GetEstablishedNtlmContext(PropertyBag properties) =>
+        GetEstablishedContext(properties);
+
     private PropertyBag BuildServerProperties()
     {
         var properties = new PropertyBag();

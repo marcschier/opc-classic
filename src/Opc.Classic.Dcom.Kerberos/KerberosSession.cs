@@ -79,6 +79,31 @@ public sealed class KerberosSession : IKerberosSession
     /// <inheritdoc />
     public int SequenceNumber => _sendSequenceNumber > int.MaxValue ? int.MaxValue : (int)_sendSequenceNumber;
 
+    /// <summary>
+    /// Gets the encoded RFC 4121 Wrap-token length for the supplied plaintext length.
+    /// </summary>
+    public int GetWrapTokenLength(int plaintextLength, bool confidential)
+    {
+        ArgumentOutOfRangeException.ThrowIfNegative(plaintextLength);
+        if (!confidential)
+        {
+            return checked(HeaderLength + plaintextLength + GetChecksumSize());
+        }
+
+        if (IsRc4Hmac())
+        {
+            return checked(HeaderLength + Rc4ChecksumSize + 8 + plaintextLength + HeaderLength);
+        }
+
+        KerberosCryptoTransformer transformer = GetTransformer();
+        return checked(
+            HeaderLength
+            + transformer.BlockSize
+            + plaintextLength
+            + HeaderLength
+            + transformer.ChecksumSize);
+    }
+
     /// <inheritdoc />
     public byte[] WrapMessage(ReadOnlySpan<byte> plaintext, bool confidential)
     {
