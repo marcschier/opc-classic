@@ -49,7 +49,10 @@ public sealed class DxReferenceEngineTests
             scheduler);
 
         await engine.StartAsync();
-        await WaitUntilAsync(() => target.WriteCount == 1);
+        await WaitUntilAsync(() =>
+            target.WriteCount == 1
+            && engine.GetStatusSnapshot().Connections.Single().State
+                == DxTransferState.Running);
 
         var request = target.Writes.Single();
         var status = engine.GetStatusSnapshot().Connections.Single();
@@ -151,7 +154,9 @@ public sealed class DxReferenceEngineTests
             scheduler);
 
         await engine.StartAsync();
-        await Task.Yield();
+        await WaitUntilAsync(() =>
+            engine.GetStatusSnapshot().Connections.Single().State
+                == DxTransferState.Disabled);
 
         await Assert.That(source.ReadCount).IsEqualTo(0);
         await Assert.That(engine.GetStatusSnapshot().Connections.Single().State)
