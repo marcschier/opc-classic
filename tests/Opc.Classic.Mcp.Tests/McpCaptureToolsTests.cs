@@ -122,6 +122,35 @@ public sealed class McpCaptureToolsTests
     }
 
     [Test]
+    public async Task CaptureTools_TailCapture_AfterNaturalSourceCompletion_ReportsDoneTrue()
+    {
+        await using CaptureSessionManager manager = CreateManager();
+        var source = new SyntheticCaptureSource(rawPcapPath: null);
+        var tools = new CaptureTools(manager);
+        CaptureSession session = await manager.CreateAndStartAsync(
+            "synthetic",
+            _ => source,
+            new CaptureStartRequest(InterfaceName: "lo"),
+            CancellationToken.None);
+
+        source.CompleteNaturally();
+        using var timeout = new CancellationTokenSource(TimeSpan.FromSeconds(5));
+        while (session.State != CaptureSessionState.Completed)
+        {
+            await Task.Delay(10, timeout.Token);
+        }
+        CaptureTailResultDto result = await tools.TailCapture(
+            session.Id,
+            max: 200,
+            sinceIndex: 0,
+            cancellationToken: CancellationToken.None);
+
+        await Assert.That(result.SessionState).IsEqualTo(CaptureSessionState.Completed);
+        await Assert.That(result.Done).IsTrue();
+        await Assert.That(tools.ListCaptures("active")).IsEmpty();
+    }
+
+    [Test]
     public async Task CaptureTools_TailCapture_NamedCursorLostResponseRetryReturnsSameWindow()
     {
         await using CaptureSessionManager manager = CreateManager();
@@ -721,9 +750,14 @@ public sealed class McpCaptureToolsTests
             ServerVersion: (5, 7),
             InterfaceResults: []);
 
-    private sealed class SyntheticCaptureSource : ICaptureSource, ICaptureFilterController
+    private sealed class SyntheticCaptureSource :
+        ICaptureSource,
+        ICaptureFilterController,
+        ICaptureSourceCompletion
     {
         private readonly string? _rawPcapPath;
+        private readonly TaskCompletionSource _completion =
+            new(TaskCreationOptions.RunContinuationsAsynchronously);
 
         public SyntheticCaptureSource(string? rawPcapPath) => _rawPcapPath = rawPcapPath;
 
@@ -734,6 +768,7 @@ public sealed class McpCaptureToolsTests
         public CaptureStartRequest? StartRequest { get; private set; }
         public string? EffectiveFilter { get; private set; }
         public int PacketsRead { get; private set; }
+        public Task Completion => _completion.Task;
 
         public Task StartAsync(CaptureStartRequest request, CancellationToken cancellationToken)
         {
@@ -779,6 +814,7 @@ public sealed class McpCaptureToolsTests
         }
 
         public string? GetRawPcapFilePath() => _rawPcapPath;
+        public void CompleteNaturally() => _completion.TrySetResult();
         public ValueTask DisposeAsync() => ValueTask.CompletedTask;
     }
 

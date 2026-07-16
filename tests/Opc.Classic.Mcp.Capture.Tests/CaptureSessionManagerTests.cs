@@ -100,6 +100,45 @@ public sealed class CaptureSessionManagerTests
     }
 
     [Test]
+    public async Task NaturalCompletion_ReleasesActiveCapacity()
+    {
+        string root = TestDirectories.CreateUniqueTempDirectory();
+        try
+        {
+            await using var manager = new CaptureSessionManager(
+                root,
+                maxActiveSessions: 1,
+                maxRetainedSessions: 2);
+            var firstSource = new FakeCaptureSource();
+            CaptureSession first = await manager.CreateAndStartAsync(
+                "fake",
+                _ => firstSource,
+                new CaptureStartRequest(),
+                CancellationToken.None);
+
+            firstSource.CompleteNaturally();
+            using var timeout = new CancellationTokenSource(TimeSpan.FromSeconds(5));
+            while (first.State != CaptureSessionState.Completed)
+            {
+                await Task.Delay(10, timeout.Token);
+            }
+
+            CaptureSession second = await manager.CreateAndStartAsync(
+                "fake",
+                _ => new FakeCaptureSource(),
+                new CaptureStartRequest(),
+                CancellationToken.None);
+
+            await Assert.That(manager.ActiveCount).IsEqualTo(1);
+            await Assert.That(second.State).IsEqualTo(CaptureSessionState.Running);
+        }
+        finally
+        {
+            TestDirectories.DeleteIfExists(root);
+        }
+    }
+
+    [Test]
     public async Task RemoveAsync_ExistingSession_StopsDisposesAndRemovesIt()
     {
         string root = TestDirectories.CreateUniqueTempDirectory();

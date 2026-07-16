@@ -255,7 +255,10 @@ public sealed class OpcDcomDecoder
                 yield return frame;
             }
         }
-        else if (tcp.Finished && reverseFlow.FinObserved)
+        else if (flow.FinObserved
+            && reverseFlow.FinObserved
+            && flow.IsCompleteThroughFin
+            && reverseFlow.IsCompleteThroughFin)
         {
             IReadOnlyList<DecodedDcomFrame> completed =
                 CompleteConnection(flow.Connection);
@@ -456,11 +459,16 @@ public sealed class OpcDcomDecoder
                 "TCP reassembly encountered a gap or resynchronization; NTLM counters were intentionally left unchanged because protected PDUs may be missing.");
         }
 
-        // Mirror DcomCallChannel.VerifyPacketProtection exactly: the signature
-        // covers the common header, body, auth padding, and sec_trailer. Only
-        // the body/padding range after the common header is confidential.
+        // MS-RPCE signs the complete PDU through the sec_trailer, but packet
+        // privacy leaves the common and PDU-specific fixed headers clear.
+        // Confidentiality begins at the stub and includes auth padding.
         int signedLength = verifierStart + authVerifierHeaderLength;
-        int confidentialOffset = ConnectionOrientedPdu.HEADER_LENGTH;
+        int confidentialOffset = GetConfidentialOffset(frame);
+        if (confidentialOffset > verifierStart)
+        {
+            return (NtlmUnwrapStatus.InvalidTrailerLength,
+                $"PDU fixed header ends at {confidentialOffset}, after verifier_start={verifierStart}.");
+        }
         int confidentialLength = verifierStart - confidentialOffset;
         Span<byte> signedRegion = frame.AsSpan(0, signedLength);
         ReadOnlySpan<byte> authTrailer = frame.AsSpan(fragLength - authLength, authLength);
@@ -488,6 +496,19 @@ public sealed class OpcDcomDecoder
 
         return (result.Status, result.Reason);
     }
+
+    private static int GetConfidentialOffset(ReadOnlySpan<byte> frame) =>
+        frame[ConnectionOrientedPdu.TYPE_OFFSET] switch
+        {
+            PtypeRequest => ConnectionOrientedPdu.HEADER_LENGTH
+                + 8
+                + ((frame[ConnectionOrientedPdu.FLAGS_OFFSET]
+                    & ConnectionOrientedPdu.PFC_OBJECT_UUID) != 0 ? 16 : 0),
+            PtypeResponse => ConnectionOrientedPdu.HEADER_LENGTH + 8,
+            PtypeFault => ConnectionOrientedPdu.HEADER_LENGTH + 16,
+            _ => throw new InvalidOperationException(
+                "Packet protection is only valid for request, response, and fault PDUs."),
+        };
 
     /// <summary>
     /// Test-only seam that feeds a raw DCE/RPC frame (no ethernet / IP
@@ -1302,6 +1323,12 @@ public sealed class OpcDcomDecoder
         public bool ProtectionSequenceReliable { get; private set; } = true;
         public DateTimeOffset LastTimestamp { get; private set; } = DateTimeOffset.UnixEpoch;
         public bool FinObserved { get; private set; }
+        public bool IsCompleteThroughFin =>
+            FinObserved
+            && _finalDataSequence is long finalDataSequence
+            && (_nextSequence is long nextSequence
+                ? nextSequence >= finalDataSequence
+                : !_applicationDataObserved && _pendingSegments.Count == 0);
         public uint? SynSequence => _synSequence;
 
         private readonly List<byte> _buffer = new();
@@ -1313,6 +1340,7 @@ public sealed class OpcDcomDecoder
         private uint? _synSequence;
         private bool _sequenceMode;
         private bool _finalized;
+        private bool _applicationDataObserved;
 
         public FlowState(FlowKey key, ConnectionState connection)
         {
@@ -1364,6 +1392,7 @@ public sealed class OpcDcomDecoder
                 if (!bytes.IsEmpty)
                 {
                     Connection.ApplicationDataObserved = true;
+                    _applicationDataObserved = true;
                     Append(bytes);
                 }
                 return;
@@ -1387,6 +1416,7 @@ public sealed class OpcDcomDecoder
             if (!bytes.IsEmpty)
             {
                 Connection.ApplicationDataObserved = true;
+                _applicationDataObserved = true;
                 AddPendingSegment(sequence, bytes);
             }
 

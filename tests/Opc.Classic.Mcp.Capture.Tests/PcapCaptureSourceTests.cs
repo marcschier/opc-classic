@@ -3,6 +3,7 @@
 using PacketDotNet;
 using SharpPcap;
 using SharpPcap.LibPcap;
+using System.Reflection;
 
 namespace Opc.Classic.Mcp.Capture.Tests;
 
@@ -88,6 +89,119 @@ public sealed class PcapCaptureSourceTests
             await Assert.That(source.GetRawPcapFilePath()).IsNull();
             await source.StopAsync(TestContext.Current!.CancellationToken);
             await source.DisposeAsync();
+        }
+        finally
+        {
+            TestDirectories.DeleteIfExists(directory);
+        }
+    }
+
+    [Test]
+    public async Task LimitStop_CompletesSourceCompletionContract()
+    {
+        string directory = TestDirectories.CreateUniqueTempDirectory();
+        try
+        {
+            var source = new PcapCaptureSource(directory);
+            Task completion = ((ICaptureSourceCompletion)source).Completion;
+
+            typeof(PcapCaptureSource)
+                .GetMethod("StopCaptureAfterLimit", BindingFlags.Instance | BindingFlags.NonPublic)!
+                .Invoke(source, null);
+            await completion.WaitAsync(TestContext.Current!.CancellationToken);
+
+            await Assert.That(completion.IsCompletedSuccessfully).IsTrue();
+            await source.DisposeAsync();
+        }
+        finally
+        {
+            TestDirectories.DeleteIfExists(directory);
+        }
+    }
+
+    [Test]
+    public async Task DurationLimit_QuietSourceCompletesSessionAndClearsSecrets()
+    {
+        string directory = TestDirectories.CreateUniqueTempDirectory();
+        try
+        {
+            var source = new PcapCaptureSource(
+                directory,
+                logger: null,
+                timerOnly: true,
+                durationOverride: TimeSpan.FromMilliseconds(50));
+            byte[] key = Enumerable.Range(1, 16).Select(value => (byte)value).ToArray();
+            var session = new CaptureSession(
+                "quiet-duration",
+                "pcap",
+                source,
+                directory,
+                new CaptureStartRequest(
+                    InterfaceName: "timer-only",
+                    NtlmSessionKey: key));
+            var cleanupObserved = new TaskCompletionSource(
+                TaskCreationOptions.RunContinuationsAsynchronously);
+            session.SecretCleanupObserved = () => cleanupObserved.TrySetResult();
+
+            await session.StartAsync(TestContext.Current!.CancellationToken);
+            await ((ICaptureSourceCompletion)source).Completion.WaitAsync(
+                TestContext.Current.CancellationToken);
+            await cleanupObserved.Task.WaitAsync(TestContext.Current.CancellationToken);
+            await WaitForStateAsync(session, CaptureSessionState.Completed);
+
+            await Assert.That(source.PacketCount).IsEqualTo(0);
+            await Assert.That(session.State).IsEqualTo(CaptureSessionState.Completed);
+            await Assert.That(session.CreateUnwrapper()).IsNull();
+            await Assert.That(key.Any(value => value != 0)).IsTrue();
+            await session.DisposeAsync();
+        }
+        finally
+        {
+            TestDirectories.DeleteIfExists(directory);
+        }
+    }
+
+    [Test]
+    public async Task FilterReplacement_CancelsRetiredDurationTimer()
+    {
+        string directory = TestDirectories.CreateUniqueTempDirectory();
+        try
+        {
+            var original = new PcapCaptureSource(
+                directory,
+                logger: null,
+                timerOnly: true,
+                durationOverride: TimeSpan.FromMilliseconds(500));
+            string replacementDirectory = Path.Combine(directory, "replacement");
+            Directory.CreateDirectory(replacementDirectory);
+            var replacement = new PcapCaptureSource(
+                replacementDirectory,
+                logger: null,
+                timerOnly: true,
+                durationOverride: TimeSpan.FromSeconds(5));
+            var session = new CaptureSession(
+                "timer-replacement",
+                "pcap",
+                original,
+                directory,
+                new CaptureStartRequest(InterfaceName: "timer-only", BpfFilter: "tcp"),
+                sourceFactory: _ => replacement);
+            await session.StartAsync(TestContext.Current!.CancellationToken);
+
+            CaptureFilterTransitionResult transition = await session.ReplaceFilterAsync(
+                "tcp and port 135",
+                new CaptureStartRequest(
+                    InterfaceName: "timer-only",
+                    BpfFilter: "tcp and port 135"),
+                TestContext.Current.CancellationToken);
+            await Task.Delay(700, TestContext.Current.CancellationToken);
+
+            await Assert.That(transition.Status).IsEqualTo(CaptureFilterTransitionStatus.Restarted);
+            await Assert.That(original.Completion.IsCompleted).IsFalse();
+            await Assert.That(session.Source).IsEqualTo(replacement);
+            await Assert.That(session.State).IsEqualTo(CaptureSessionState.Running);
+            await session.StopAsync(TestContext.Current.CancellationToken);
+            await session.DisposeAsync();
         }
         finally
         {
@@ -190,6 +304,17 @@ public sealed class PcapCaptureSourceTests
 
     private static string GetPcapSourceName() => PcapCaptureSource.SourceName;
     private static string GetDefaultOpcBpfFilter() => PcapCaptureSource.DefaultOpcBpfFilter;
+
+    private static async Task WaitForStateAsync(
+        CaptureSession session,
+        CaptureSessionState expected)
+    {
+        using var timeout = new CancellationTokenSource(TimeSpan.FromSeconds(5));
+        while (session.State != expected)
+        {
+            await Task.Delay(10, timeout.Token);
+        }
+    }
 
     // Probes the native libpcap entry point (pcap_open_dead, via CaptureFileWriterDevice.Open)
     // that the real capture path uses, so tests can skip (rather than fail) on hosts without

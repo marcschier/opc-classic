@@ -30,7 +30,11 @@ namespace Opc.Classic.Mcp.Capture;
 /// an actionable message via <see cref="CaptureException"/>.
 /// </para>
 /// </remarks>
-public sealed class PcapCaptureSource : ICaptureSource, ICaptureFilterController, IIncrementalCaptureSource
+public sealed class PcapCaptureSource :
+    ICaptureSource,
+    ICaptureFilterController,
+    IIncrementalCaptureSource,
+    ICaptureSourceCompletion
 {
     /// <summary>
     /// Stable source name surfaced via the MCP info DTO.
@@ -102,24 +106,42 @@ public sealed class PcapCaptureSource : ICaptureSource, ICaptureFilterController
     private readonly ILogger _logger;
     private readonly string _filePath;
     private readonly Lock _lock = new();
+    private readonly Lock _captureStopLock = new();
     private readonly Queue<IndexedPacket> _incrementalPackets = new();
+    private readonly TaskCompletionSource _completion =
+        new(TaskCreationOptions.RunContinuationsAsynchronously);
+    private readonly bool _timerOnly;
+    private readonly TimeSpan? _durationOverride;
     private LibPcapLiveDevice? _device;
     private CaptureFileWriterDevice? _writer;
+    private CancellationTokenSource? _durationCancellation;
+    private Task? _durationTask;
     private long _packetCount;
     private long _byteCount;
     private long _maxBytes;
     private long _maxPackets;
     private DateTimeOffset _startedAt;
     private TimeSpan _maxDuration;
-    private volatile bool _stopRequested;
+    private int _stopRequested;
     private int _linkType;
     private string? _effectiveFilter;
 
     public PcapCaptureSource(string sessionFolder, ILogger? logger = null)
+        : this(sessionFolder, logger, timerOnly: false, durationOverride: null)
+    {
+    }
+
+    internal PcapCaptureSource(
+        string sessionFolder,
+        ILogger? logger,
+        bool timerOnly,
+        TimeSpan? durationOverride)
     {
         ArgumentException.ThrowIfNullOrEmpty(sessionFolder);
         _filePath = Path.Combine(sessionFolder, kPcapFileName);
         _logger = logger ?? NullLogger.Instance;
+        _timerOnly = timerOnly;
+        _durationOverride = durationOverride;
     }
 
     /// <inheritdoc/>
@@ -133,6 +155,9 @@ public sealed class PcapCaptureSource : ICaptureSource, ICaptureFilterController
 
     /// <inheritdoc/>
     public string? EffectiveFilter => _effectiveFilter;
+
+    /// <inheritdoc/>
+    public Task Completion => _completion.Task;
 
     /// <inheritdoc/>
     public string? GetRawPcapFilePath()
@@ -153,7 +178,19 @@ public sealed class PcapCaptureSource : ICaptureSource, ICaptureFilterController
         _maxBytes = request.MaxBytes ?? kDefaultMaxBytes;
         _maxPackets = request.MaxPackets ?? long.MaxValue;
         int durationSeconds = request.MaxDurationSeconds ?? kDefaultMaxDurationSeconds;
-        _maxDuration = TimeSpan.FromSeconds(durationSeconds);
+        _maxDuration = _durationOverride ?? TimeSpan.FromSeconds(durationSeconds);
+        Volatile.Write(ref _stopRequested, 0);
+
+        string filter = string.IsNullOrWhiteSpace(request.BpfFilter)
+            ? BuildServerPortBpfFilter(request.ServerPorts)
+            : request.BpfFilter!;
+        if (_timerOnly)
+        {
+            _effectiveFilter = filter;
+            _startedAt = DateTimeOffset.UtcNow;
+            ArmDurationTimer();
+            return Task.CompletedTask;
+        }
 
         LibPcapLiveDevice? selected = ResolveDevice(request.InterfaceName!);
 
@@ -180,9 +217,6 @@ public sealed class PcapCaptureSource : ICaptureSource, ICaptureFilterController
                 ex);
         }
 
-        string filter = string.IsNullOrWhiteSpace(request.BpfFilter)
-            ? BuildServerPortBpfFilter(request.ServerPorts)
-            : request.BpfFilter!;
         try
         {
             selected.Filter = filter;
@@ -213,6 +247,10 @@ public sealed class PcapCaptureSource : ICaptureSource, ICaptureFilterController
 #pragma warning disable CA1849 // SharpPcap exposes only the blocking StartCapture API.
         selected.StartCapture();
 #pragma warning restore CA1849
+        if (Volatile.Read(ref _stopRequested) == 0)
+        {
+            ArmDurationTimer();
+        }
         return Task.CompletedTask;
     }
 
@@ -223,6 +261,11 @@ public sealed class PcapCaptureSource : ICaptureSource, ICaptureFilterController
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(filter);
         cancellationToken.ThrowIfCancellationRequested();
+        if (_timerOnly)
+        {
+            return CaptureSourceFilterUpdateResult.RestartRequired(
+                "Timer-only test source requires restart.");
+        }
         lock (_lock)
         {
             if (_device is null)
@@ -283,7 +326,7 @@ public sealed class PcapCaptureSource : ICaptureSource, ICaptureFilterController
 
     private void OnPacketArrival(object sender, PacketCapture e)
     {
-        if (_stopRequested)
+        if (Volatile.Read(ref _stopRequested) != 0)
         {
             return;
         }
@@ -313,36 +356,117 @@ public sealed class PcapCaptureSource : ICaptureSource, ICaptureFilterController
             || packets >= _maxPackets
             || DateTimeOffset.UtcNow - _startedAt >= _maxDuration)
         {
-            _stopRequested = true;
-            // StopCapture is synchronous + blocking on the capture thread;
-            // hand it off so we don't deadlock our own packet handler.
-            _ = Task.Run(StopCaptureBackgroundAsync);
+            RequestNaturalStop(fromCaptureThread: true);
         }
     }
 
-    private void StopCaptureBackgroundAsync()
+    private void ArmDurationTimer()
     {
-        try { _device?.StopCapture(); }
-        catch (PcapException) { /* StopAsync handles final shutdown */ }
-        catch (InvalidOperationException) { /* device already stopped */ }
+        var cancellation = new CancellationTokenSource();
+        TimeSpan delay = _maxDuration - (DateTimeOffset.UtcNow - _startedAt);
+        if (delay < TimeSpan.Zero)
+        {
+            delay = TimeSpan.Zero;
+        }
+        lock (_lock)
+        {
+            _durationCancellation = cancellation;
+            _durationTask = RunDurationTimerAsync(delay, cancellation.Token);
+        }
+    }
+
+    private async Task RunDurationTimerAsync(
+        TimeSpan delay,
+        CancellationToken cancellationToken)
+    {
+        try
+        {
+            await Task.Delay(delay, cancellationToken).ConfigureAwait(false);
+        }
+        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+        {
+            return;
+        }
+
+        RequestNaturalStop(fromCaptureThread: false);
+    }
+
+    private void RequestNaturalStop(bool fromCaptureThread)
+    {
+        if (Interlocked.Exchange(ref _stopRequested, 1) != 0)
+        {
+            return;
+        }
+
+        if (fromCaptureThread)
+        {
+            // StopCapture is synchronous + blocking on the capture thread;
+            // hand it off so we don't deadlock our own packet handler.
+            _ = Task.Run(StopCaptureAfterLimit);
+        }
+        else
+        {
+            StopCaptureAfterLimit();
+        }
+    }
+
+    private void StopCaptureAfterLimit()
+    {
+        Exception? failure = null;
+        try
+        {
+            LibPcapLiveDevice? device = _device;
+            if (device is not null)
+            {
+                lock (_captureStopLock)
+                {
+                    StopDeviceCapture(device);
+                }
+            }
+        }
+        catch (Exception ex) when (ex is not OutOfMemoryException and not ThreadAbortException)
+        {
+            failure = ex;
+        }
+
+        if (failure is null)
+        {
+            _completion.TrySetResult();
+        }
+        else
+        {
+            _completion.TrySetException(failure);
+        }
     }
 
     /// <inheritdoc/>
-    public Task StopAsync(CancellationToken cancellationToken)
+    public async Task StopAsync(CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
+        Volatile.Write(ref _stopRequested, 1);
+        await CancelDurationTimerAsync().ConfigureAwait(false);
+        LibPcapLiveDevice? device;
         lock (_lock)
         {
-            if (_device != null)
+            device = _device;
+            _device = null;
+            if (device is not null)
             {
-                try { _device.StopCapture(); }
-                catch (PcapException) { /* tolerate already-stopped */ }
-                catch (InvalidOperationException) { /* tolerate already-stopped */ }
-                _device.OnPacketArrival -= OnPacketArrival;
-                _device.Dispose();
-                _device = null;
+                device.OnPacketArrival -= OnPacketArrival;
             }
+        }
 
+        if (device is not null)
+        {
+            lock (_captureStopLock)
+            {
+                StopDeviceCapture(device);
+                device.Dispose();
+            }
+        }
+
+        lock (_lock)
+        {
             if (_writer != null)
             {
                 try { _writer.Close(); }
@@ -352,8 +476,38 @@ public sealed class PcapCaptureSource : ICaptureSource, ICaptureFilterController
                 _writer = null;
             }
         }
+    }
 
-        return Task.CompletedTask;
+    private async Task CancelDurationTimerAsync()
+    {
+        CancellationTokenSource? cancellation;
+        Task? durationTask;
+        lock (_lock)
+        {
+            cancellation = _durationCancellation;
+            durationTask = _durationTask;
+            _durationCancellation = null;
+            _durationTask = null;
+        }
+
+        if (cancellation is null)
+        {
+            return;
+        }
+
+        cancellation.Cancel();
+        if (durationTask is not null)
+        {
+            await durationTask.ConfigureAwait(false);
+        }
+        cancellation.Dispose();
+    }
+
+    private static void StopDeviceCapture(LibPcapLiveDevice device)
+    {
+        try { device.StopCapture(); }
+        catch (PcapException) { /* tolerate already-stopped */ }
+        catch (InvalidOperationException) { /* tolerate already-stopped */ }
     }
 
     /// <inheritdoc/>

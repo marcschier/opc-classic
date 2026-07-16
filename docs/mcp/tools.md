@@ -1476,6 +1476,8 @@ Begins a network packet capture session. Defaults the BPF filter to TCP DCOM tra
 
 **Returns:** `Task<CaptureSessionDto>`
 
+Packet, byte, and duration limits finalize the session automatically, including a duration-only capture that receives no packets. Automatic completion closes the active source, clears session-owned authentication material, and makes `capture.tail` report `done`; callers may still use `capture.stop` for an earlier explicit stop.
+
 For a target-aware start, the initial filter remains broad (`135` plus the dynamic range) while target metadata is resolved. Authenticated OPCEnum discovery or DCOM activation is performed only when `ambientSso=true`; otherwise the target reports `ambient_sso_required` and the capture remains broad without sending ambient credentials to the arbitrary host. When opted in, the live source is narrowed after discovery/activation. `CaptureSessionDto.target` returns the normalized host/ProgID/CLSID, activation status, OXID metadata, discovered bindings, ports, and any resolution error. Temporary activation authentication contexts are disposed and activated interface references are released through `IRemUnknown::RemRelease`; cleanup failure is surfaced as `activated_release_failed`. `effectiveFilter` reports the actual live filter and `filterTransition` reports whether narrowing was unchanged, updated live, restarted, or failed.
 
 ### `opcclassic.capture.set_filter`

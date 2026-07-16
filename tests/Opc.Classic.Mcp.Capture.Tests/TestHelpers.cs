@@ -4,8 +4,11 @@ using System.Runtime.CompilerServices;
 
 namespace Opc.Classic.Mcp.Capture.Tests;
 
-internal sealed class FakeCaptureSource : ICaptureSource
+internal sealed class FakeCaptureSource : ICaptureSource, ICaptureSourceCompletion
 {
+    private readonly TaskCompletionSource _completion =
+        new(TaskCreationOptions.RunContinuationsAsynchronously);
+
     public List<CapturedPacket> Packets { get; } = [];
     public CaptureException? StartException { get; set; }
     public CaptureException? StopException { get; set; }
@@ -16,6 +19,7 @@ internal sealed class FakeCaptureSource : ICaptureSource
     public int LinkType { get; set; }
     public string? RawPcapFilePath { get; set; }
     public long PacketCount => Packets.Count;
+    public Task Completion => _completion.Task;
 
     public long ByteCount
     {
@@ -77,6 +81,10 @@ internal sealed class FakeCaptureSource : ICaptureSource
     }
 
     public string? GetRawPcapFilePath() => RawPcapFilePath;
+
+    public void CompleteNaturally() => _completion.TrySetResult();
+
+    public void FailNaturally(Exception exception) => _completion.TrySetException(exception);
 
     public ValueTask DisposeAsync()
     {

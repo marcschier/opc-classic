@@ -22,6 +22,9 @@ public sealed class CaptureSession : IAsyncDisposable
     private bool _cursorOperationsClosed;
     private int _nextSourceSegment = 1;
     private int _disposed;
+    private int _state = (int)CaptureSessionState.Starting;
+    private CancellationTokenSource? _sourceCompletionCancellation;
+    private Task? _sourceCompletionObserver;
 
     internal Action? SecretCleanupObserved { get; set; }
 
@@ -72,7 +75,11 @@ public sealed class CaptureSession : IAsyncDisposable
     public CaptureStartRequest Request { get; private set; }
     public CaptureTargetMetadata? Target { get; private set; }
     public CaptureFilterTransitionResult? LastFilterTransition { get; private set; }
-    public CaptureSessionState State { get; private set; } = CaptureSessionState.Starting;
+    public CaptureSessionState State
+    {
+        get => (CaptureSessionState)Volatile.Read(ref _state);
+        private set => Volatile.Write(ref _state, (int)value);
+    }
     public DateTimeOffset? StartedAt { get; private set; }
     public DateTimeOffset? StoppedAt { get; private set; }
     public DateTimeOffset LastTouchedAt { get; private set; } = DateTimeOffset.UtcNow;
@@ -88,6 +95,7 @@ public sealed class CaptureSession : IAsyncDisposable
             StartedAt = DateTimeOffset.UtcNow;
             State = CaptureSessionState.Running;
             LastTouchedAt = DateTimeOffset.UtcNow;
+            ArmSourceCompletionObserver(Source);
             if (_logger.IsEnabled(LogLevel.Information))
             {
                 _logger.LogInformation("Capture session {SessionId} started ({Source}).", Id, SourceName);
@@ -107,35 +115,58 @@ public sealed class CaptureSession : IAsyncDisposable
     {
         using AsyncOperationGate.Lease operation =
             await _operations.EnterAsync(cancellationToken).ConfigureAwait(false);
+        Exception? failure = await StopCoreAsync(
+            sourceFailure: null,
+            cancellationToken).ConfigureAwait(false);
+        if (failure is not null)
+        {
+            System.Runtime.ExceptionServices.ExceptionDispatchInfo.Capture(failure).Throw();
+        }
+    }
+
+    private async Task<Exception?> StopCoreAsync(
+        Exception? sourceFailure,
+        CancellationToken cancellationToken)
+    {
         if (State is CaptureSessionState.Completed
                 or CaptureSessionState.Failed
                 or CaptureSessionState.Disposed)
         {
-            return;
+            return null;
         }
 
+        CancelSourceCompletionObserver();
         State = CaptureSessionState.Stopping;
+        Exception? failure = sourceFailure;
         try
         {
             await StopAllSourcesAsync(cancellationToken).ConfigureAwait(false);
-            StoppedAt = DateTimeOffset.UtcNow;
+        }
+        catch (Exception ex) when (ex is not OutOfMemoryException and not ThreadAbortException)
+        {
+            failure ??= ex;
+        }
+
+        StoppedAt = DateTimeOffset.UtcNow;
+        LastTouchedAt = DateTimeOffset.UtcNow;
+        if (failure is null)
+        {
             State = CaptureSessionState.Completed;
-            LastTouchedAt = DateTimeOffset.UtcNow;
+            await ClearSecretStateAsync().ConfigureAwait(false);
             if (_logger.IsEnabled(LogLevel.Information))
             {
                 _logger.LogInformation(
                     "Capture session {SessionId} completed ({Packets} packets, {Bytes} bytes).",
                     Id, PacketCount, ByteCount);
             }
+            return null;
         }
-        catch (Exception ex)
-        {
-            Error = ex.Message;
-            State = CaptureSessionState.Failed;
-            await ClearSecretStateAsync().ConfigureAwait(false);
-            _logger.LogError(ex, "Capture session {SessionId} failed to stop.", Id);
-            throw;
-        }
+
+        Error = failure.Message;
+        State = CaptureSessionState.Failed;
+        await ClearSecretStateAsync().ConfigureAwait(false);
+        _logger.LogError(failure, "Capture session {SessionId} failed to stop.", Id);
+        return failure;
     }
 
     public void Touch() => LastTouchedAt = DateTimeOffset.UtcNow;
@@ -417,6 +448,7 @@ public sealed class CaptureSession : IAsyncDisposable
             Volatile.Write(ref _sourceState, new SourceState(replacement, segments));
             Request = request;
             LastTouchedAt = DateTimeOffset.UtcNow;
+            ArmSourceCompletionObserver(replacement);
             LastFilterTransition = CreateFilterTransition(
                 filter,
                 previousFilter,
@@ -554,6 +586,71 @@ public sealed class CaptureSession : IAsyncDisposable
         if (firstFailure is not null)
         {
             System.Runtime.ExceptionServices.ExceptionDispatchInfo.Capture(firstFailure).Throw();
+        }
+    }
+
+    private void ArmSourceCompletionObserver(ICaptureSource source)
+    {
+        CancelSourceCompletionObserver();
+        if (source is not ICaptureSourceCompletion completion)
+        {
+            return;
+        }
+
+        var cancellation = new CancellationTokenSource();
+        _sourceCompletionCancellation = cancellation;
+        _sourceCompletionObserver = ObserveSourceCompletionAsync(
+            source,
+            completion.Completion,
+            cancellation);
+    }
+
+    private void CancelSourceCompletionObserver()
+    {
+        CancellationTokenSource? cancellation =
+            Interlocked.Exchange(ref _sourceCompletionCancellation, null);
+        cancellation?.Cancel();
+    }
+
+    private async Task ObserveSourceCompletionAsync(
+        ICaptureSource source,
+        Task completion,
+        CancellationTokenSource cancellation)
+    {
+        Exception? sourceFailure = null;
+        try
+        {
+            await completion.WaitAsync(cancellation.Token).ConfigureAwait(false);
+        }
+        catch (OperationCanceledException) when (cancellation.IsCancellationRequested)
+        {
+            cancellation.Dispose();
+            return;
+        }
+        catch (Exception ex) when (ex is not OutOfMemoryException and not ThreadAbortException)
+        {
+            sourceFailure = ex;
+        }
+
+        try
+        {
+            using AsyncOperationGate.Lease operation =
+                await _operations.EnterAsync(CancellationToken.None).ConfigureAwait(false);
+            if (_disposed != 0
+                || State != CaptureSessionState.Running
+                || !ReferenceEquals(Source, source))
+            {
+                return;
+            }
+
+            _ = await StopCoreAsync(sourceFailure, CancellationToken.None).ConfigureAwait(false);
+        }
+        catch (ObjectDisposedException)
+        {
+        }
+        finally
+        {
+            cancellation.Dispose();
         }
     }
 
@@ -863,6 +960,7 @@ public sealed class CaptureSession : IAsyncDisposable
             return;
         }
 
+        CancelSourceCompletionObserver();
         DecodeCursor? cursor;
         lock (_cursorInitLock)
         {
@@ -875,6 +973,10 @@ public sealed class CaptureSession : IAsyncDisposable
             await cursor.DisposeAsync().ConfigureAwait(false);
         }
         await _operations.DisposeAsync().ConfigureAwait(false);
+        if (_sourceCompletionObserver is Task completionObserver)
+        {
+            await completionObserver.ConfigureAwait(false);
+        }
 
         SourceState sourceState = Volatile.Read(ref _sourceState);
         foreach (ICaptureSource source in sourceState.Segments)

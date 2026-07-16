@@ -80,6 +80,114 @@ public sealed class CaptureSessionTests
     }
 
     [Test]
+    public async Task SourceCompletion_NaturallyStopsSessionClearsSecretsAndCompletesTail()
+    {
+        string directory = TestDirectories.CreateUniqueTempDirectory();
+        try
+        {
+            byte[] callerKey = Enumerable.Range(1, 16).Select(i => (byte)i).ToArray();
+            var source = new FakeCaptureSource();
+            var session = new CaptureSession(
+                "natural-completion",
+                "fake",
+                source,
+                directory,
+                new CaptureStartRequest(NtlmSessionKey: callerKey));
+            byte[] ownedKey = GetOwnedSessionKey(session)!;
+            await session.StartAsync(TestContext.Current!.CancellationToken);
+
+            source.CompleteNaturally();
+            await WaitForStateAsync(session, CaptureSessionState.Completed);
+            DrainTailResult tail = await session.DrainTailAsync(
+                0,
+                10,
+                TestContext.Current.CancellationToken);
+
+            await Assert.That(source.StopCallCount).IsEqualTo(1);
+            await Assert.That(session.StoppedAt.HasValue).IsTrue();
+            await Assert.That(ownedKey.All(value => value == 0)).IsTrue();
+            await Assert.That(tail.Done).IsTrue();
+            await Assert.That(tail.SessionState).IsEqualTo(CaptureSessionState.Completed);
+
+            await session.StopAsync(CancellationToken.None);
+            await Assert.That(source.StopCallCount).IsEqualTo(1);
+            await session.DisposeAsync();
+        }
+        finally
+        {
+            TestDirectories.DeleteIfExists(directory);
+        }
+    }
+
+    [Test]
+    public async Task SourceCompletion_FaultTransitionsSessionToFailed()
+    {
+        string directory = TestDirectories.CreateUniqueTempDirectory();
+        try
+        {
+            var source = new FakeCaptureSource();
+            var session = new CaptureSession(
+                "natural-failure",
+                "fake",
+                source,
+                directory,
+                new CaptureStartRequest());
+            await session.StartAsync(TestContext.Current!.CancellationToken);
+
+            source.FailNaturally(new CaptureException("capture loop failed"));
+            await WaitForStateAsync(session, CaptureSessionState.Failed);
+
+            await Assert.That(source.StopCallCount).IsEqualTo(1);
+            await Assert.That(session.Error).IsEqualTo("capture loop failed");
+            await session.DisposeAsync();
+        }
+        finally
+        {
+            TestDirectories.DeleteIfExists(directory);
+        }
+    }
+
+    [Test]
+    public async Task ReplaceFilter_RetiredSourceCompletionDoesNotStopReplacement()
+    {
+        string directory = TestDirectories.CreateUniqueTempDirectory();
+        try
+        {
+            var original = new FakeCaptureSource();
+            var replacement = new FakeCaptureSource();
+            var session = new CaptureSession(
+                "replacement-completion",
+                "fake",
+                original,
+                directory,
+                new CaptureStartRequest(BpfFilter: "tcp"),
+                sourceFactory: _ => replacement);
+            await session.StartAsync(TestContext.Current!.CancellationToken);
+
+            CaptureFilterTransitionResult transition = await session.ReplaceFilterAsync(
+                "tcp and port 135",
+                new CaptureStartRequest(BpfFilter: "tcp and port 135"),
+                TestContext.Current.CancellationToken);
+            original.CompleteNaturally();
+            await Task.Delay(25, TestContext.Current.CancellationToken);
+
+            await Assert.That(transition.Status).IsEqualTo(CaptureFilterTransitionStatus.Restarted);
+            await Assert.That(session.Source).IsEqualTo(replacement);
+            await Assert.That(session.State).IsEqualTo(CaptureSessionState.Running);
+
+            replacement.CompleteNaturally();
+            await WaitForStateAsync(session, CaptureSessionState.Completed);
+            await Assert.That(original.StopCallCount).IsEqualTo(2);
+            await Assert.That(replacement.StopCallCount).IsEqualTo(1);
+            await session.DisposeAsync();
+        }
+        finally
+        {
+            TestDirectories.DeleteIfExists(directory);
+        }
+    }
+
+    [Test]
     public async Task StartAsync_SourceThrows_TransitionsToFailedAndStoresError()
     {
         string directory = TestDirectories.CreateUniqueTempDirectory();
@@ -359,6 +467,17 @@ public sealed class CaptureSessionTests
         => (byte[]?)typeof(CaptureSession)
             .GetField("_ntlmSessionKey", BindingFlags.Instance | BindingFlags.NonPublic)!
             .GetValue(session);
+
+    private static async Task WaitForStateAsync(
+        CaptureSession session,
+        CaptureSessionState expected)
+    {
+        using var timeout = new CancellationTokenSource(TimeSpan.FromSeconds(5));
+        while (session.State != expected)
+        {
+            await Task.Delay(10, timeout.Token);
+        }
+    }
 
     private static NtlmPassiveUnwrapper? GetCursorUnwrapper(CaptureSession session)
     {
