@@ -1030,7 +1030,8 @@ public sealed class RpcServerConnectionProcessor
         }
 
         Span<byte> signedRegion = stripped.VerificationPduBytes;
-        int confidentialOffset = ConnectionOrientedPdu.HEADER_LENGTH;
+        int confidentialOffset =
+            RpcPacketProtectionLayout.GetConfidentialOffset(signedRegion);
         int confidentialLength = signedRegion.Length - AuthenticationVerifierHeaderLength - confidentialOffset;
         if (!authState.VerifyAndUnseal(signedRegion, confidentialOffset, confidentialLength, stripped.Authentication.AuthValue))
         {
@@ -1039,8 +1040,8 @@ public sealed class RpcServerConnectionProcessor
         }
 
         signedRegion
-            .Slice(ConnectionOrientedPdu.HEADER_LENGTH, stripped.PduBytes.Length - ConnectionOrientedPdu.HEADER_LENGTH)
-            .CopyTo(stripped.PduBytes.AsSpan(ConnectionOrientedPdu.HEADER_LENGTH));
+            .Slice(confidentialOffset, stripped.PduBytes.Length - confidentialOffset)
+            .CopyTo(stripped.PduBytes.AsSpan(confidentialOffset));
         packetProtectionVerified = true;
         return true;
     }
@@ -1079,7 +1080,9 @@ public sealed class RpcServerConnectionProcessor
         int padding = GetAuthenticationPadding(pduBytes.Length);
         int verifierStart = pduBytes.Length + padding;
         int signedLengthWithoutAuthValue = verifierStart + AuthenticationVerifierHeaderLength;
-        int confidentialLength = verifierStart - ConnectionOrientedPdu.HEADER_LENGTH;
+        int confidentialOffset =
+            RpcPacketProtectionLayout.GetConfidentialOffset(pduBytes);
+        int confidentialLength = verifierStart - confidentialOffset;
         int authValueLength = authState.GetVerifierLength(
             signedLengthWithoutAuthValue,
             confidentialLength);
@@ -1105,7 +1108,6 @@ public sealed class RpcServerConnectionProcessor
         // header), excluding the trailing auth_value (MS-RPCE §3.3.1.5.2.2). At Privacy the
         // stub sub-range is sealed in place.
         int signedLength = signedLengthWithoutAuthValue;
-        int confidentialOffset = ConnectionOrientedPdu.HEADER_LENGTH;
         authState.SignAndSeal(protectedPdu.AsSpan(0, signedLength), confidentialOffset, confidentialLength, out byte[] signature);
         if (signature.Length != authValueLength)
         {

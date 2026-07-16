@@ -177,6 +177,21 @@ public sealed class OpcServerListenerTests
         await Assert.That(clientAuth.Inbound.Count).IsEqualTo(2);
         await Assert.That(serverProtection.Inbound.Count).IsEqualTo(2);
         await Assert.That(serverProtection.Outbound.Count).IsEqualTo(3);
+        foreach (AlignmentRecord record in clientAuth.Outbound
+            .Concat(serverProtection.Inbound))
+        {
+            await Assert.That(record.PacketType)
+                .IsEqualTo(RequestCoPdu.REQUEST_TYPE);
+            await Assert.That(record.ConfidentialOffset)
+                .IsEqualTo(ConnectionOrientedPdu.HEADER_LENGTH + 8);
+        }
+        foreach (AlignmentRecord record in clientAuth.Inbound
+            .Concat(serverProtection.Outbound)
+            .Where(record => record.PacketType == ResponseCoPdu.RESPONSE_TYPE))
+        {
+            await Assert.That(record.ConfidentialOffset)
+                .IsEqualTo(ConnectionOrientedPdu.HEADER_LENGTH + 8);
+        }
 
         foreach (AlignmentRecord record in clientAuth.Outbound
             .Concat(clientAuth.Inbound)
@@ -456,7 +471,9 @@ public sealed class OpcServerListenerTests
         {
             _ = confidentialOffset;
             _ = confidentialLength;
-            Outbound.Add(ReadAlignment(signedRegion));
+            Outbound.Add(ReadAlignment(
+                signedRegion,
+                confidentialOffset));
             signature = ComputeVerifier(_key, signedRegion);
         }
 
@@ -468,7 +485,9 @@ public sealed class OpcServerListenerTests
         {
             _ = confidentialOffset;
             _ = confidentialLength;
-            Inbound.Add(ReadAlignment(signedRegion));
+            Inbound.Add(ReadAlignment(
+                signedRegion,
+                confidentialOffset));
             return CryptographicOperations.FixedTimeEquals(
                 signature.Span,
                 ComputeVerifier(_key, signedRegion));
@@ -507,7 +526,9 @@ public sealed class OpcServerListenerTests
         {
             _ = confidentialOffset;
             _ = confidentialLength;
-            Outbound.Add(ReadAlignment(signedRegion));
+            Outbound.Add(ReadAlignment(
+                signedRegion,
+                confidentialOffset));
             verifier = ComputeVerifier(_key, signedRegion);
         }
 
@@ -519,7 +540,9 @@ public sealed class OpcServerListenerTests
         {
             _ = confidentialOffset;
             _ = confidentialLength;
-            Inbound.Add(ReadAlignment(signedRegion));
+            Inbound.Add(ReadAlignment(
+                signedRegion,
+                confidentialOffset));
             return CryptographicOperations.FixedTimeEquals(
                 verifier.Span,
                 ComputeVerifier(_key, signedRegion));
@@ -527,7 +550,8 @@ public sealed class OpcServerListenerTests
     }
 
     private static AlignmentRecord ReadAlignment(
-        ReadOnlySpan<byte> signedRegion)
+        ReadOnlySpan<byte> signedRegion,
+        int confidentialOffset)
     {
         int verifierStart = signedRegion.Length - 8;
         int padding = signedRegion[verifierStart + 2];
@@ -536,6 +560,8 @@ public sealed class OpcServerListenerTests
             unpaddedPduLength - ConnectionOrientedPdu.HEADER_LENGTH;
         int expectedPadding = (16 - (bodyLength % 16)) % 16;
         return new AlignmentRecord(
+            signedRegion[ConnectionOrientedPdu.TYPE_OFFSET],
+            confidentialOffset,
             verifierStart,
             padding,
             expectedPadding);
@@ -547,6 +573,8 @@ public sealed class OpcServerListenerTests
         HMACSHA256.HashData(key, signedRegion)[..16];
 
     private readonly record struct AlignmentRecord(
+        int PacketType,
+        int ConfidentialOffset,
         int VerifierStart,
         int Padding,
         int ExpectedPadding);

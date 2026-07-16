@@ -503,7 +503,8 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable
         // carried verbatim off the wire in VerificationPduBytes. Verify over the whole span;
         // at Privacy the stub sub-range is unsealed in place.
         Span<byte> signedRegion = stripped.VerificationPduBytes;
-        int confidentialOffset = ConnectionOrientedPdu.HEADER_LENGTH;
+        int confidentialOffset =
+            RpcPacketProtectionLayout.GetConfidentialOffset(signedRegion);
         int confidentialLength = signedRegion.Length - AuthenticationVerifierHeaderLength - confidentialOffset;
         if (!_authContext.VerifyAndUnseal(signedRegion, confidentialOffset, confidentialLength, stripped.AuthenticationBody))
         {
@@ -511,8 +512,8 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable
         }
 
         signedRegion
-            .Slice(ConnectionOrientedPdu.HEADER_LENGTH, stripped.PduBytes.Length - ConnectionOrientedPdu.HEADER_LENGTH)
-            .CopyTo(stripped.PduBytes.AsSpan(ConnectionOrientedPdu.HEADER_LENGTH));
+            .Slice(confidentialOffset, stripped.PduBytes.Length - confidentialOffset)
+            .CopyTo(stripped.PduBytes.AsSpan(confidentialOffset));
     }
 
     private byte[] ApplyPacketProtection(byte[] pduBytes)
@@ -534,7 +535,8 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable
         int padding = GetAuthenticationPadding(pduBytes.Length);
         int verifierStart = pduBytes.Length + padding;
         int signedLength = verifierStart + AuthenticationVerifierHeaderLength;
-        int confidentialOffset = ConnectionOrientedPdu.HEADER_LENGTH;
+        int confidentialOffset =
+            RpcPacketProtectionLayout.GetConfidentialOffset(pduBytes);
         int confidentialLength = verifierStart - confidentialOffset;
         int authValueLength = _authContext.GetVerifierLength(
             signedLength,

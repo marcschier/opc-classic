@@ -102,6 +102,8 @@ connection can drive multiple interfaces.
 | `auth_context_id` (4 bytes) | same | same |
 | `auth_value` (security-context-specific blob) | `AuthenticationSource.cs` (NTLM / Kerberos / SPNEGO source), `NullAuthenticationSource.cs` | `NtlmDefaultsTests.cs`, plus the security-provider-specific tests |
 
+For packet integrity and privacy, the signature covers the complete on-wire PDU through the `sec_trailer` header and excludes only `auth_value`. Packet privacy encrypts the stub plus authentication padding; the common header and the request, response, or fault fixed fields remain clear so RPC routing and framing metadata are not sealed.
+
 ### 1.5 Protection levels (spec §2.2.1.1.8)
 
 | Level | Numeric | Source | Tests |

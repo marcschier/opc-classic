@@ -225,8 +225,10 @@ public sealed class DcomCallChannelTests
         // carries the REQUEST ptype.
         await Assert.That(region[0]).IsEqualTo((byte)5);
         await Assert.That(region[ConnectionOrientedPdu.TYPE_OFFSET]).IsEqualTo((byte)RequestCoPdu.REQUEST_TYPE);
-        // The confidential (sealed) sub-range starts after the common header.
-        await Assert.That(authContext.CapturedConfidentialOffset).IsEqualTo(ConnectionOrientedPdu.HEADER_LENGTH);
+        // The confidential (sealed) sub-range starts after the request's fixed
+        // allocation-hint/context/opnum fields.
+        await Assert.That(authContext.CapturedConfidentialOffset)
+            .IsEqualTo(ConnectionOrientedPdu.HEADER_LENGTH + 8);
         // The signed region ends with the 8-byte sec_trailer header (auth_type 0x0A = NTLM).
         await Assert.That(region[^8]).IsEqualTo((byte)0x0A);
         // region == header + confidential body + 8-byte sec_trailer header (auth_value excluded).
@@ -243,6 +245,27 @@ public sealed class DcomCallChannelTests
             .IsEqualTo(0);
         await Assert.That(authPadding).IsEqualTo(expectedPadding);
         await Assert.That(authPadding).IsGreaterThan(0);
+    }
+
+    [Test]
+    public async Task InvokeAsync_with_object_uuid_keeps_fixed_request_header_clear()
+    {
+        await using var transport = new InMemoryAsyncTransport();
+        await transport.WriteInboundAsync(CreateBindAckBytes());
+        await transport.WriteInboundAsync(CreateResponseBytes([0x55]));
+        var authContext = new RecordingIntegrityAuthContext();
+        var channel = new DcomCallChannel(
+            transport,
+            authContext,
+            Guid.NewGuid());
+
+        _ = await channel.InvokeAsync(
+            Guid.NewGuid(),
+            3,
+            new byte[] { 0x10, 0x11, 0x12 });
+
+        await Assert.That(authContext.CapturedConfidentialOffset)
+            .IsEqualTo(ConnectionOrientedPdu.HEADER_LENGTH + 8 + 16);
     }
 
     // The channel must surface the DCE/RPC bind_nak reject_reason (MS-RPCE §2.2.2.10) as a
