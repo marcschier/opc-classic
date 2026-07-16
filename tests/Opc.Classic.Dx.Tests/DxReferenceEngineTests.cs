@@ -8,6 +8,28 @@ namespace Opc.Classic.Dx.Tests;
 public sealed class DxReferenceEngineTests
 {
     [Test]
+    public async Task StartAsync_returns_when_synchronous_transfers_exceed_update_rate()
+    {
+        var scheduler = new ImmediateDxScheduler();
+        var source = new FakeEndpoint("source");
+        var target = new FakeEndpoint("target");
+        await using var engine = CreateEngine(
+            new InMemoryDxConfigurationStore(CreateConfiguration(
+                connection: CreateConnection(updateRateMilliseconds: 1))),
+            source,
+            target,
+            scheduler);
+
+        Task start = Task.Run(() => engine.StartAsync());
+        await start.WaitAsync(
+            TimeSpan.FromSeconds(2),
+            TestContext.Current!.CancellationToken);
+        await WaitUntilAsync(() => target.WriteCount > 1);
+
+        await Assert.That(start.IsCompletedSuccessfully).IsTrue();
+    }
+
+    [Test]
     public async Task Transfer_PreservesValueTimestampAndBadQuality()
     {
         var scheduler = new ManualDxScheduler();
@@ -612,7 +634,7 @@ public sealed class DxReferenceEngineTests
         IDxConfigurationStore store,
         FakeEndpoint source,
         FakeEndpoint target,
-        ManualDxScheduler scheduler,
+        IDxScheduler scheduler,
         TimeSpan? retryDelay = null) =>
         new(
             store,
@@ -627,7 +649,7 @@ public sealed class DxReferenceEngineTests
     private static DxReferenceEngine CreateEngine(
         IDxConfigurationStore store,
         IDxEndpointResolver resolver,
-        ManualDxScheduler scheduler) =>
+        IDxScheduler scheduler) =>
         new(
             store,
             resolver,
@@ -898,6 +920,35 @@ public sealed class DxReferenceEngineTests
                     return;
                 }
             }
+        }
+    }
+
+    private sealed class ImmediateDxScheduler : IDxScheduler, IDxClock
+    {
+        private long _timestamp;
+
+        public IDxClock Clock => this;
+
+        public DateTimeOffset UtcNow => DateTimeOffset.UnixEpoch;
+
+        public long GetTimestamp() => Interlocked.Increment(ref _timestamp);
+
+        public TimeSpan GetElapsedTime(
+            long startingTimestamp,
+            long endingTimestamp)
+        {
+            _ = startingTimestamp;
+            _ = endingTimestamp;
+            return TimeSpan.FromMilliseconds(2);
+        }
+
+        public ValueTask DelayAsync(
+            TimeSpan delay,
+            CancellationToken cancellationToken = default)
+        {
+            _ = delay;
+            cancellationToken.ThrowIfCancellationRequested();
+            return ValueTask.CompletedTask;
         }
     }
 

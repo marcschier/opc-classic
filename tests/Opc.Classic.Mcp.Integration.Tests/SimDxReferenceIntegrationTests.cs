@@ -434,11 +434,11 @@ public sealed class SimDxReferenceIntegrationTests
             scheduler: cancelScheduler).ConfigureAwait(false);
         try
         {
-            using IDisposable readBlock = cancelClient.SourceEndpoint.BlockReads();
             await WaitForConnectionSnapshotAsync(
                 cancelClient,
                 "ReactorTemperatureToBucket",
                 snapshot => snapshot.ReadCount >= 1).ConfigureAwait(false);
+            using IDisposable readBlock = cancelClient.SourceEndpoint.BlockReads();
             cancelScheduler.AdvanceBy(TimeSpan.FromMilliseconds(1000));
             await WaitForConnectionSnapshotAsync(
                 cancelClient,

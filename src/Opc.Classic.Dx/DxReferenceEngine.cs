@@ -781,6 +781,7 @@ public sealed class DxReferenceEngine : IAsyncDisposable
 
         private async Task RunAsync(CancellationToken cancellationToken)
         {
+            await Task.Yield();
             Emit(
                 DxDiagnosticSeverity.Information,
                 DxTransferOperation.Lifecycle,
@@ -1138,6 +1139,7 @@ public sealed class DxReferenceEngine : IAsyncDisposable
         {
             if (delay == TimeSpan.Zero)
             {
+                await Task.Yield();
                 return true;
             }
 
