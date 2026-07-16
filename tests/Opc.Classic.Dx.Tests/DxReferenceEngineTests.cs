@@ -83,7 +83,10 @@ public sealed class DxReferenceEngineTests
             retryDelay: TimeSpan.FromMilliseconds(50));
 
         await engine.StartAsync();
-        await WaitUntilAsync(() => source.ReconnectCount == 1);
+        await WaitUntilAsync(() =>
+            source.ReconnectCount == 1
+            && engine.GetStatusSnapshot().Connections.Single().State
+                == DxTransferState.RetryDelay);
 
         var failed = engine.GetStatusSnapshot().Connections.Single();
         await Assert.That(failed.State).IsEqualTo(DxTransferState.RetryDelay);
@@ -117,7 +120,10 @@ public sealed class DxReferenceEngineTests
             scheduler);
 
         await engine.StartAsync();
-        await WaitUntilAsync(() => target.ReconnectCount == 1);
+        await WaitUntilAsync(() =>
+            target.ReconnectCount == 1
+            && engine.GetStatusSnapshot().Connections.Single().State
+                == DxTransferState.RetryDelay);
 
         var status = engine.GetStatusSnapshot().Connections.Single();
         await Assert.That(status.State).IsEqualTo(DxTransferState.RetryDelay);
@@ -388,7 +394,10 @@ public sealed class DxReferenceEngineTests
 
         await engine.StartAsync();
         await WaitUntilAsync(() =>
-            target.WriteCount == 1 && source.ReconnectCount == 1);
+            target.WriteCount == 1
+            && source.ReconnectCount == 1
+            && engine.GetStatusSnapshot().Connections.Single().State
+                == DxTransferState.RetryDelay);
 
         var write = target.Writes.Single();
         await Assert.That(write.Value).IsEqualTo(OpcVariant.FromString("fallback"));
