@@ -28,6 +28,11 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
     <PackageReference Include="SharpPcap" />
     <PackageReference Include="PacketDotNet" />
+    <!-- Keep this GitHub-feed package in lockstep with the runtime and MCP tool. -->
+    <PackageReference Include="Nerdbank.GitVersioning">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
   <ItemGroup>

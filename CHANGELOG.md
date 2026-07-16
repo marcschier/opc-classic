@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.0-alpha] - 2026-07-16
+
 ### Added
 
 - All-scope DA group enumeration for managed DCOM and Windows CCWs, using immutable snapshots plus `IEnumString`/`IEnumUnknown` `Next`, `Skip`, `Reset`, and `Clone` semantics.
@@ -19,6 +21,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Production source generation covers 253 audited method shapes with a zero-entry fallback manifest and no hand-written production wire sides.
+
+### Fixed
+
+- RPC packet privacy keeps request, response, fault, and object-routing fixed headers clear while signing the complete PDU through the security trailer.
+- Capture sessions wait for contiguous TCP streams through mutual FIN, preserve bounded generation-aware tombstones, finalize automatically at packet/byte/duration limits, and clear session-owned authentication material.
+- Managed DA connection enumerators reuse stable group IPID/OXID/OID identities and public-reference lifetimes.
+- DX transfer startup yields cooperatively without blocking synchronous endpoints, while CPX `TypeField` retains its released constructor and deconstruction ABI.
+- Gated vendor profiles contain only executable probes, semantic tool failures fail workflows, and default reports omit item IDs and free-form failure details.
+- `Opc.Classic.Mcp.Capture` now follows the repository release version instead of packing as an unrelated stable `1.0.0`.
 
 ## [0.3.0-alpha] - 2026-07-14
 
