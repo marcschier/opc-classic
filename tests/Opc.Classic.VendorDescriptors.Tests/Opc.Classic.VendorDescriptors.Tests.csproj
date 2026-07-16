@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>Tests for strict external vendor probe catalogs.</Description>
+    <RootNamespace>Opc.Classic.VendorDescriptors.Tests</RootNamespace>
+    <AssemblyName>Opc.Classic.VendorDescriptors.Tests</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\interop\tools\vendor-descriptors\Opc.Classic.VendorDescriptors.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\interop\tools\vendor-descriptors\descriptors\*.json"
+          Link="Fixtures\%(Filename)%(Extension)"
+          CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\..\interop\tools\vendor-descriptors\schemas\*.json"
+          Link="Fixtures\%(Filename)%(Extension)"
+          CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+</Project>

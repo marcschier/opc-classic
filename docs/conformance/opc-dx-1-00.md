@@ -4,24 +4,25 @@
 
 **Scope:** DX Database address-space model, `IOPCConfiguration` DCOM configuration services, DX source-server / connection / response structures, DX status structures, DX-specific HRESULTs, component category identifiers, DCOM IDL mapping, Web Services mapping, persistence, and the runtime source-to-target data-transfer model.
 
-**Implementing assemblies:** `Opc.Classic.Dx`, `Opc.Classic.Core`.
+**Implementing assemblies:** `Opc.Classic.Dx`, `Opc.Classic.Core`;
+reference host: `Opc.Classic.Samples.SimulationServer`.
 
 **Status overview:**
 
 | Surface | Spec § | Implementation | Tests | Outcome |
 |---|---|---|---|---|
 | DX component category + `IOPCConfiguration` IID | App. B.1.4 | ✅ `OpcGuids.CATID_OPCDXServer10`, `OpcGuids.IID_IOPCConfiguration`, `[OpcInterface]` | ✅ | conformant |
-| `IOPCConfiguration` source-server services | §5.2.1, App. B.1.4 | ✅ hand-written client proxy | ✅ partial | conformant for client calls |
-| `IOPCConfiguration` DXConnection query/add/update/modify/copy/reset services | §5.2.2 - §5.2.3, App. B.1.4 | ✅ hand-written client proxy | ✅ partial | conformant for implemented calls |
-| `IOPCConfiguration::DeleteDXConnections` | §5.2.2.5, App. B.1.4 | ✅ accepts DXConnection masks and returns mask errors plus `DXGeneralResponse` | ✅ proxy + fixture tests | conformant — closed in commit `<future>` |
+| `IOPCConfiguration` source-server services | §5.2.1, App. B.1.4 | ✅ generated proxy + dispatcher with native count/pointer envelopes | ✅ native fixtures | conformant |
+| `IOPCConfiguration` DXConnection query/add/update/modify/copy/reset services | §5.2.2 - §5.2.3, App. B.1.4 | ✅ generated proxy + dispatcher with correlated records | ✅ native fixtures | conformant |
+| `IOPCConfiguration::DeleteDXConnections` | §5.2.2.5, App. B.1.4 | ✅ accepts DXConnection masks and returns mask errors plus `DXGeneralResponse` | ✅ proxy + fixture tests | conformant |
 | DX parameter structures (`ItemIdentifier`, `DXConnection`, `SourceServer`, `DXGeneralResponse`, `IdentifiedResult`) | §5.1 | ✅ records + NDR codecs | ✅ | conformant |
 | DX status structures (`ServerStatus`, `DXConnectionStatus`, `DXSourceServerStatus`, `DXQuality`) | §4.2 - §4.4 | ✅ records + NDR codecs | ✅ | conformant as data model/codecs |
 | DX enums and masks | §4.2.2, §4.3.2.19, §4.4.1.6, App. B.1.3 | ✅ `DxEnums`, `ConnectionState`, `OverrideState` | ✅ | conformant |
 | DX HRESULT table | §5.1.7 | ✅ `OpcDxError` constants | ✅ | conformant |
 | DX namespace / reserved branch helpers | §4, App. B.1.4 names | ✅ `DxNamespace` | ✅ | conformant as helpers |
-| DX Database DA branch exposure | §4 | ❌ no generic DX server address-space runtime | n/a | waived deferred server runtime (unverified — Phase 2 deep-validation will close) |
-| Persistence / DirtyFlag save loop | §5.3 | ❌ no generic DX persistence runtime | n/a | waived deferred server runtime (unverified — Phase 2 deep-validation will close) |
-| Runtime source-server bridge, subscriptions, queues, conversion, target-write truth table | §6 | ❌ no generic DX data-transfer state machine | n/a | waived deferred server runtime (unverified — Phase 2 deep-validation will close) |
+| DX Database DA branch exposure | §4 | ⚠️ namespace helpers exist; no generic standardized DA subtree host | n/a | partial |
+| Persistence / DirtyFlag save loop | §5.3 | ⚠️ atomic versioned memory/JSON stores and startup recovery; no full DirtyFlag/`E_PERSISTING` policy | ✅ store + restart tests | partial |
+| Runtime source-server bridge, subscriptions, queues, conversion, target-write truth table | §6 | ⚠️ bounded DA adapter read/write engine with rate, health, retry, diagnostics, and cancellation; full subscription/conversion policy is not complete | ✅ engine + SimulationServer integration tests | partial reference runtime |
 | Web Services / XML-DA mapping | Appendix A | ❌ no DX XML-DA service endpoint | n/a | waived lower-priority transport mapping (unverified — Phase 2 deep-validation will close) |
 
 ---
@@ -41,7 +42,7 @@ The Phase 0 interface inventory also flags `IOPCBrowseServerAddressSpace::GetIte
 
 | Service | Opnum | Spec request/response | Source proxy | Tests |
 |---|---:|---|---|---|
-| `GetServers` / `QuerySourceServersAsync` | 3 | no request parameters; returns `SourceServer[0:N]` | `src/Opc.Classic.Dx/Dcom/IOPCDxInterfaces.cs`, `src/Opc.Classic.Dx/Dcom/IOPCConfigurationClientProxy.cs` | `tests/Opc.Classic.Dx.Tests/Dcom/IOPCDxProxyTests.cs` |
+| `GetServers` / `QuerySourceServersAsync` | 3 | no request parameters; returns `SourceServer[0:N]` | generated from `src/Opc.Classic.Dx/Dcom/IOPCDxInterfaces.cs` | `tests/Opc.Classic.Dx.Tests/Dcom/IOPCDxProxyTests.cs` |
 | `AddServers` / `AddSourceServersAsync` | 4 | `SourceServer[1:N]` -> `DXGeneralResponse` | same | proxy coverage by shared source-server array/general-response codecs |
 | `ModifyServers` / `ModifySourceServersAsync` | 5 | `ServerDefinitions[1:N]` -> `DXGeneralResponse` | same | codec coverage |
 | `DeleteServers` / `DeleteSourceServersAsync` | 6 | `ItemIdentifier[0:N]` -> `DXGeneralResponse` | same | codec coverage |
@@ -53,7 +54,7 @@ The Phase 0 interface inventory also flags `IOPCBrowseServerAddressSpace::GetIte
 
 | Service | Opnum | Spec request/response | Source proxy | Tests | Status |
 |---|---:|---|---|---|---|
-| `QueryDXConnections` | 8 | `BrowsePath`, `DXConnectionMasks[1:N]`, `Recursive` -> either mask errors or `DXConnection[0:N]` | `IOPCDxInterfaces.cs`, `IOPCConfigurationClientProxy.cs` | `IOPCDxProxyTests.cs` | ✅ |
+| `QueryDXConnections` | 8 | `BrowsePath`, `DXConnectionMasks[1:N]`, `Recursive` -> either mask errors or `DXConnection[0:N]` | generated from `IOPCDxInterfaces.cs` | `IOPCDxProxyTests.cs` | ✅ |
 | `AddDXConnections` | 9 | `DXConnection[1:N]` -> `DXGeneralResponse` | same | `IOPCDxProxyTests.cs` | ✅ |
 | `UpdateDXConnections` | 10 | `BrowsePath`, masks, `Recursive`, definition -> mask errors or `DXGeneralResponse` | same | `IOPCDxProxyTests.cs` | ✅ |
 | `ModifyDXConnections` | 11 | `DXConnectionDefinition[1:N]` -> `DXGeneralResponse` | same | codec coverage | ✅ |
@@ -62,6 +63,21 @@ The Phase 0 interface inventory also flags `IOPCBrowseServerAddressSpace::GetIte
 | `ResetConfiguration` | 14 | old configuration version -> new configuration version | same | `IOPCDxProxyTests.cs` | ✅ |
 
 `DxConnection` covers the configurable attributes in §5.1.2, including browse paths, connection name, description, keyword, default runtime controls, override/substitute values, target/source item identifiers, queue size, update rate, deadband, vendor data, and the native mask. Tests round-trip masks, variants, arrays, and representative status fields.
+
+All twelve methods preserve the standalone IDL count and the conformant-array
+max count separately. Top-level `LPWSTR` inputs use simple-reference string
+framing, `T**` outputs retain their unique-pointer envelopes, output error
+arrays correlate to the input mask count, and DX records defer embedded string
+and array pointer bodies in MIDL order. `OpcDxConnection` also preserves the
+FC_USER_MARSHAL `User` markers inline and emits both by-value wireVARIANT
+bodies in the deferred phase before later LPWSTR bodies.
+
+The SimulationServer reference implementation applies every selected `DxConnection.Mask`
+field when evaluating query/update masks, merges only update-definition fields selected by
+that definition's mask, and preserves all unrelated stored fields and mask bits.
+`ResetConfiguration` compares the supplied optimistic version while holding the mutation
+gate; stale versions return `OPCDX_E_VERSION_MISMATCH` without mutation, and successful
+calls return the actual saved revision.
 
 ### 1.4 DX parameter and status codecs (spec §4, §5.1, App. B.1.4)
 
@@ -93,9 +109,23 @@ The Phase 0 interface inventory also flags `IOPCBrowseServerAddressSpace::GetIte
 
 ### 1.6 DX Database and runtime model (spec §4, §5.3, §6)
 
-The spec requires a DX server to expose a reserved DA subtree rooted at `DX`, including `ServerStatus`, `DXConnectionsRoot`, and `SourceServers`; to persist source servers and connections; and to run a live bridge from source OPC DA/XML-DA servers into local target items. `Opc.Classic.Dx` deliberately stops at configuration-client and codec support today. The model objects and namespace helpers are present, but no generic server runtime populates the DA address space, runs the source-server connection lifecycle, owns source queues, executes conversion, or applies the target-update truth table.
+The spec requires a DX server to expose a reserved DA subtree rooted at `DX`, persist source
+servers and connections, and run a live bridge from source OPC DA/XML-DA servers into local
+target items. `DxReferenceEngine` covers the bounded reference-runtime core: atomic
+configuration revisions, JSON restart recovery, enabled/disabled transfers, source
+value-quality-timestamp reads, target writes, revised update rates, health checks,
+reconnect/backoff, structured diagnostics, and cooperative cancellation.
 
-This is classified as a documented waiver rather than a hard conformance gap for the current package scope because the existing aggregate conformance review defines DX server runtime/DA bridge, persistence, and live data transfer as deferred-by-design product work.
+Default bounds are 256 source servers, 1,024 connections, 1,024 queued values
+per connection, 1,024 retained diagnostics, update rates up to one hour, and
+retry delay from one second to one minute. Configuration validation rejects
+non-positive or over-limit values before transfer loops start.
+
+The SimulationServer composes that engine over two deterministic managed DA adapters and
+routes both its `IOPCConfiguration` NDR channel and existing MCP DX tools to the same
+configuration state. Remaining partial areas are the standardized DA database subtree,
+DirtyFlag/`E_PERSISTING` timing policy, XML-DA source mapping, and the full §6
+subscription/conversion/queue truth table.
 
 ---
 
@@ -112,9 +142,9 @@ Implementation-affecting DX requirements are therefore tracked by surface and be
 | Requirement area | Spec § | Status | Evidence |
 |---|---|---|---|
 | DCOM IDL masks identify optional fields in DX structures | App. B.1.4 | ✅ implemented | `DxConnection.Mask`, `DxSourceServer.Mask`, `NdrOpcDxCodecs.cs`, `DxNdrCodecTests.cs` |
-| Configuration services update/return the parameter shapes defined by §5.1/§5.2 | §5.1 - §5.2 | ✅ except delete hard gap | `IOPCDxInterfaces.cs`, `IOPCConfigurationClientProxy.cs`, `IOPCDxProxyTests.cs` |
-| DX server request semantics update ConfigurationVersion/DirtyFlag and runtime status | §5.2 - §5.3 | ⚠️ waived | requires generic DX server database/persistence runtime |
-| DX runtime source connections, subscriptions, queues, conversion, and target writes | §6 | ⚠️ waived | deferred server-runtime state machine |
+| Configuration services update/return the parameter shapes defined by §5.1/§5.2 | §5.1 - §5.2 | ✅ implemented for the projected DCOM surface | `IOPCDxInterfaces.cs`, generated `IOPCConfigurationClientProxy`, `IOPCDxProxyTests.cs` |
+| DX server request semantics update ConfigurationVersion/DirtyFlag and runtime status | §5.2 - §5.3 | ⚠️ partial | versioned stores and runtime snapshots are implemented; standardized DirtyFlag persistence policy remains |
+| DX runtime source connections, subscriptions, queues, conversion, and target writes | §6 | ⚠️ partial | reference DA adapter read/write, bounded queue state, rate, retry, and cancellation are implemented; full subscription/conversion policy remains |
 
 ---
 
@@ -126,23 +156,35 @@ Implementation-affecting DX requirements are therefore tracked by surface and be
 
 Spec §4 requires every DX server to expose the reserved DA subtree rooted at `DX`, with standardized `ServerStatus`, `DXConnectionsRoot`, and `SourceServers` branches. `DxNamespace` provides canonical names and path helpers, and the status/configuration records/codecs exist, but `Opc.Classic.Dx` does not ship a generic DX server that populates those branches through DA browsing and item access. Status: **WAIVED** as deferred DX server-runtime work.
 
-#### 3.1.2 Persistence and DirtyFlag save loop are not implemented generically
+#### 3.1.2 Persistence is implemented; full DirtyFlag save policy remains
 
-Spec §5.3 requires a saved DX Database, DirtyFlag handling, save within one minute, `E_PERSISTING` behavior while saving, startup restore, and shutdown save. `OpcDxError` contains the persistence HRESULTs and status records contain `DirtyFlag`, but no persistence engine is included. Status: **WAIVED** as deferred DX server-runtime work.
+Spec §5.3 requires a saved DX Database, DirtyFlag handling, save within one minute,
+`E_PERSISTING` behavior while saving, startup restore, and shutdown save.
+`JsonFileDxConfigurationStore` provides atomic replacement, optimistic revisions, typed
+corruption/version failures, and startup recovery. The standardized DirtyFlag timing and
+`E_PERSISTING` server policy are still not implemented. Status: **PARTIAL**.
 
-#### 3.1.3 Live source-to-target transfer state machine is not implemented generically
+#### 3.1.3 Reference source-to-target transfer is implemented; full §6 policy remains
 
-Spec §6 defines startup restore, source-server connection/recovery, DA/XML-DA subscriptions, queue flushing/high-water accounting, conversion, runtime controls, and target-write truth-table behavior. The current implementation provides data shapes and constants only. Status: **WAIVED** because the aggregate conformance review explicitly classifies the DA bridge and live transfer loop as future runtime product work, not a client-proxy/codec blocker.
+Spec §6 defines startup restore, source-server connection/recovery, DA/XML-DA subscriptions,
+queue flushing/high-water accounting, conversion, runtime controls, and target-write
+truth-table behavior. `DxReferenceEngine` implements a bounded polling reference path with
+DA adapters, enabled state, revised rates, value-quality-timestamp propagation, target
+writes, health/reconnect/backoff, diagnostics, and cancellation. Subscription-specific
+queue semantics, XML-DA sources, conversion rules, and the complete truth table remain.
+Status: **PARTIAL**.
 
 #### 3.1.4 Appendix A Web Services / XML-DA mapping is not implemented
 
 Appendix A maps DX services to Web Services/XML-DA. The package has DCOM configuration-client coverage but no DX XML-DA service endpoint. Status: **WAIVED** as a lower-priority transport mapping until a generic DX server runtime exists.
 
-### 3.2 Closed hard gaps
+### 3.2 Projected delete semantics
 
-#### 3.2.1 Closed: `IOPCConfiguration::DeleteDXConnections` DCOM projection
-
-Spec §5.2.2.5 and App. B.1.4 define `DeleteDXConnections` as `BrowsePath`, `DXConnectionMasks[0:M]`, `Recursive`, returning per-mask errors and a `DXGeneralResponse`. Status: **CLOSED** in commit `<future>`. The projection now exposes `DeleteDXConnectionsAsync(string browsePath, DxConnection[] connectionMasks, bool recursive)`, encodes `NdrOpcDxConnectionArrayCodec`, returns `DxDeleteConnectionsResult`, and has direct proxy/fixture coverage for opnum 12 payload and response decoding.
+`IOPCConfiguration::DeleteDXConnections` accepts `BrowsePath`,
+`DXConnectionMasks[0:M]`, and `Recursive`, and returns per-mask errors plus a
+`DXGeneralResponse`. The generated projection exposes
+`DeleteDXConnectionsAsync`, uses `NdrOpcDxConnectionArrayCodec`, and returns
+`DxDeleteConnectionsResult`.
 
 ---
 

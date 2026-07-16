@@ -16,11 +16,12 @@ DCOM Request and Response PDUs. Given:
   handshake), and
 - The encrypted PDU body + the 16-byte auth value from the wire,
 
-…it (a) decrypts the body in place via RC4 + (b) verifies the body's
-HMAC-MD5 signature against the auth value. On signature match it
-advances the per-direction sequence counter and returns the plaintext;
-on mismatch it surfaces a clean `SignatureMismatch` and leaves the
-counter untouched.
+…it (a) decrypts the body transactionally via RC4 + (b) verifies the
+body's HMAC-MD5 signature against the auth value. On signature match it
+commits the plaintext and advances the per-direction sequence/cipher
+state; on mismatch it surfaces a clean `SignatureMismatch`, leaves the
+caller's ciphertext untouched, and restores the RC4 stream so a valid
+subsequent frame can still be decoded.
 
 The unwrapper is a **self-contained primitive** and is also integrated
 into `OpcDcomDecoder`'s byte-level frame parsing: the decoder extracts the
@@ -28,6 +29,13 @@ auth trailer using `auth_length`, accounts for `auth_pad_length`, calls
 `TryUnwrap`, and surfaces the result on
 `DecodedOpcPdu.AuthUnwrapStatus`. It remains usable directly from offline
 pcap-analysis scripts (see "Direct use" below).
+
+The same decoder path is used by bounded `opcclassic.capture.decode_file` and
+`opcclassic.capture.replay_file` processing. Sequence-aware TCP reassembly
+tracks SYN/FIN/RST connection generations, unwraps 32-bit sequence numbers
+into a 64-bit space, deduplicates retransmissions, merges overlaps, and uses
+bounded multi-segment DCE/RPC resynchronization after gaps. NTLM counters
+advance only for complete ordered frames.
 
 ## When (not) to use it
 
@@ -61,8 +69,9 @@ The class follows a "no leakage by default" posture:
 | Session key on the heap | Caller owns the input buffer; class copies it once during constructor, derives 4 sub-keys, then zeroes the input copy. Caller is responsible for zeroing their own copy after construction. |
 | Derived sub-keys on the heap | Held as `byte[]` for the lifetime of the unwrapper. Zeroed via `CryptographicOperations.ZeroMemory` on `Dispose()`. |
 | Logging | The class itself never logs the key. `CaptureStartRequest.ToString()` is overridden to print `NtlmSessionKey = REDACTED[16 bytes]` instead of the raw bytes (the auto-generated record `ToString` would have leaked it via any structured log of the request). |
-| Persistence | The class never writes the key to disk. The `opcclassic.capture.start` MCP tool accepts the key only on the call boundary; the MCP host MUST be configured to redact the `ntlmSessionKeyHex` parameter value in any tool-call audit log. |
+| Persistence | The class never writes the key to disk. Live sessions and one-shot file tools accept it only on the call boundary; the MCP host MUST redact `ntlmSessionKeyHex` from tool-call audit logs. |
 | Sequence counters | Both directions start at 0 after Type3. If the capture missed the handshake, counters drift and EVERY unwrap fails clean with `SignatureMismatch` — there is no graceful "guess the counter" fallback by design. |
+| Failed verification | Plaintext is staged in a private buffer and RC4 has a checkpoint stream. A signature mismatch exposes no staged plaintext and restores the speculative stream to the last committed position. |
 
 ## Mid-session capture: NOT supported
 
@@ -196,6 +205,7 @@ the verifier.
 Per-direction RC4 stream state is preserved across PDUs (the stream
 advances by `body.Length + 8` bytes on each `TryUnwrap` call when
 the protection level is privacy; by 8 bytes for integrity-only).
+Advancement is committed only after signature verification succeeds.
 
 ## Related
 

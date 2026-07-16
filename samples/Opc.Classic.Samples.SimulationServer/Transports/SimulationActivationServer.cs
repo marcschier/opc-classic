@@ -338,7 +338,7 @@ public sealed class SimulationActivationServer : IActivationServer, IRemoteSCMAc
             };
         }
 
-        var daDispatcher = new OpcDaServerDispatcher(_daServer, _logger);
+        var daDispatcher = new OpcDaServerDispatcher(_daServer, _logger, _objectRegistry);
         IOpcAddressSpace addressSpace = _daServer.BuildAddressSpace();
         return new Dictionary<Guid, IOpcServerDispatcher>
         {

@@ -196,6 +196,16 @@ public sealed record DxConnection
     /// </summary>
     public string? VendorData { get; init; }
 
+    internal DxConnection WithConnectivity(bool connected)
+    {
+        var updated = this with
+        {
+            DefaultSourceItemConnected = connected,
+            DefaultTargetItemConnected = connected,
+        };
+        return updated with { Mask = ComputeMask(updated) };
+    }
+
     private static string[] NormalizeBrowsePaths(string[]? browsePaths)
     {
         if (browsePaths is null || browsePaths.Length == 0)

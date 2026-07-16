@@ -228,6 +228,90 @@ public sealed class OpcBinaryCodecAdditionalTests
             .Throws<KeyNotFoundException>();
     }
 
+    [Test]
+    public async Task EncoderDecoder_RecursiveConversionOutput_RoundTripsWithRequestedDictionary()
+    {
+        var sourceItem = CreateType("SourceItem", "source:item", new TypeField("Code", TypeKind.UInt8));
+        var requestedItem = CreateType("RequestedItem", "requested:item", new TypeField("Code", TypeKind.UInt16));
+        var sourceBatch = CreateType(
+            "SourceBatch",
+            "source:batch",
+            new TypeField("Count", TypeKind.UInt8),
+            new TypeField("Items", TypeKind.StructReference, sourceItem.TypeId, ElementCountFieldName: "Count"));
+        var requestedBatch = CreateType(
+            "RequestedBatch",
+            "requested:batch",
+            new TypeField("Count", TypeKind.UInt16),
+            new TypeField("Items", TypeKind.StructReference, requestedItem.TypeId, ElementCountFieldName: "Count"));
+        var requestedDictionary = new TypeDictionary("Requested", [requestedBatch, requestedItem], defaultBigEndian: false);
+        var source = CreateValue(sourceBatch, new Dictionary<string, object?>
+        {
+            ["Count"] = (byte)2,
+            ["Items"] = new[]
+            {
+                CreateValue(sourceItem, new Dictionary<string, object?> { ["Code"] = (byte)7 }),
+                CreateValue(sourceItem, new Dictionary<string, object?> { ["Code"] = (byte)9 }),
+            },
+        });
+        var converted = OpcCpxTypeConverter.Convert(
+            source,
+            sourceBatch,
+            requestedBatch,
+            TypeDictionary.FromTypes(sourceBatch, sourceItem),
+            requestedDictionary);
+
+        var encoded = OpcBinaryEncoder.Encode((ComplexValue)converted.Value!, requestedDictionary, requestedBatch.TypeId);
+        var decoded = OpcBinaryDecoder.Decode(encoded, requestedDictionary, requestedBatch.TypeId);
+
+        await Assert.That(converted.Error).IsEqualTo(OpcResultId.Ok.Code);
+        await Assert.That(encoded).IsEquivalentTo(new byte[] { 0x02, 0x00, 0x07, 0x00, 0x09, 0x00 });
+        await Assert.That(decoded.TryGet<ComplexValue[]>("Items", out var items)).IsTrue();
+        await Assert.That(items![0].Fields["Code"]).IsEqualTo((ushort)7);
+        await Assert.That(items[1].Fields["Code"]).IsEqualTo((ushort)9);
+    }
+
+    [Test]
+    public async Task Encoder_NestedRequiredFieldMissing_ThrowsKeyNotFoundException()
+    {
+        var child = CreateType("Child", "child", new TypeField("Required", TypeKind.UInt8));
+        var root = CreateType("Root", "root", new TypeField("Child", TypeKind.StructReference, child.TypeId));
+        var value = CreateValue(root, new Dictionary<string, object?>
+        {
+            ["Child"] = CreateValue(child, new Dictionary<string, object?>()),
+        });
+        await Assert.That(() => OpcBinaryEncoder.Encode(value, TypeDictionary.FromTypes(root, child), root.TypeId))
+            .Throws<KeyNotFoundException>();
+    }
+
+    [Test]
+    public async Task Encoder_ExtraUndeclaredFields_DoNotAlterOutput()
+    {
+        var type = CreateType("Payload", "payload", new TypeField("Value", TypeKind.UInt8));
+        var expected = CreateValue(type, new Dictionary<string, object?> { ["Value"] = (byte)7 });
+        var extra = CreateValue(type, new Dictionary<string, object?> { ["Value"] = (byte)7, ["Ignored"] = 99 });
+        await Assert.That(OpcBinaryEncoder.Encode(extra, type))
+            .IsEquivalentTo(OpcBinaryEncoder.Encode(expected, type));
+    }
+
+    [Test]
+    public async Task Encoder_ConvertedRepeatedFieldCountDisagreesWithCountField_ThrowsInvalidOperationException()
+    {
+        var type = CreateType(
+            "Batch",
+            "batch",
+            new TypeField("Count", TypeKind.UInt8),
+            new TypeField("Values", TypeKind.UInt16, ElementCountFieldName: "Count"));
+        var value = CreateValue(type, new Dictionary<string, object?>
+        {
+            ["Count"] = (byte)2,
+            ["Values"] = new object?[] { (ushort)7 },
+        });
+        await Assert.That(() => OpcBinaryEncoder.Encode(value, type)).Throws<InvalidOperationException>();
+    }
+
+    private static TypeDescription CreateType(string name, string typeId, params TypeField[] fields) =>
+        new(name, typeId, TypeKind.StructReference, true, fields, defaultBigEndian: false);
+
     private static ComplexValue CreateValue(TypeDescription type, IReadOnlyDictionary<string, object?> fields) =>
         new()
         {

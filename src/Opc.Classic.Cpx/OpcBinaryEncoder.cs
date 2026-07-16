@@ -489,9 +489,9 @@ public static class OpcBinaryEncoder
             }
 
             var requiredBytes = (bitCount + 7) / 8;
-            if (bytes.Length > requiredBytes)
+            if (bytes.Length != requiredBytes)
             {
-                throw new InvalidOperationException($"Encoded value for field '{fieldName}' exceeds its fixed bit length.");
+                throw new InvalidOperationException($"Encoded value for field '{fieldName}' must contain exactly {requiredBytes.ToString(CultureInfo.InvariantCulture)} bytes for its fixed bit length.");
             }
 
             for (var bitIndex = 0; bitIndex < bitCount; bitIndex++)

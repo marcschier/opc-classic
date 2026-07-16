@@ -108,7 +108,7 @@ public sealed class OpcDaServerHost : IOpcServerHost, IDisposable, IAsyncDisposa
         // for namespace browsing even when the user's IOpcDaServer doesn't
         // explicitly override them. Implementations that want richer behaviour
         // can subclass the default classes.
-        var daDispatcher = new OpcDaServerDispatcher(_serverImpl, _logger);
+        var daDispatcher = new OpcDaServerDispatcher(_serverImpl, _logger, _objectRegistry);
         var dispatchers = new Dictionary<Guid, IOpcServerDispatcher>
         {
             [IOPCServer.InterfaceId] = daDispatcher.ServerDispatcher,

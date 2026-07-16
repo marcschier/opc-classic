@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- All-scope DA group enumeration for managed DCOM and Windows CCWs, using immutable snapshots plus `IEnumString`/`IEnumUnknown` `Next`, `Skip`, `Reset`, and `Clone` semantics.
+- Mechanism-neutral managed-listener authentication with direct Kerberos and Kerberos-first SPNEGO acceptors, explicit NTLM fallback policy, `mechListMIC`, channel-binding enforcement, principal mapping, and rotatable password/keytab credentials.
+- Target-aware capture discovery and activation, atomic filter transitions, bounded replay cursors, advisory MCP notifications, pcap/pcapng file decode/replay, sequence-aware TCP reassembly, and opt-in NTLM auth-trailer unwrap.
+- Bounded CPX conversion/filter semantics with standalone DA-backed CPX server and client samples.
+- Bounded DX reference runtime with atomic JSON persistence and deterministic SimulationServer DA-to-DA scenarios.
+- Security-validated external-vendor descriptor catalogs and normalized probe reporting without bundled vendor software or proprietary captures.
+
+### Changed
+
+- Production source generation covers 253 audited method shapes with a zero-entry fallback manifest and no hand-written production wire sides.
+
 ## [0.3.0-alpha] - 2026-07-14
 
 ### Added

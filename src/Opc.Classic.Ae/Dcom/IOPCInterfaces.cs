@@ -8,8 +8,6 @@
 
 #pragma warning disable CA1707 // OPC IDL naming preserved (IOPCEventServer not IOpcEventServer)
 #pragma warning disable MA0048 // Multiple interface declarations grouped for readability
-#pragma warning disable OPCGEN104, OPCGEN105 // IFACE pointer responses are decoded by generated client proxies.
-
 using Opc.Classic.Dcom;
 using Opc.Classic.Generators;
 
@@ -46,7 +44,7 @@ public partial interface IOPCEventServer
         int maxSize,
         int clientSubscription,
         Guid requestedInterfaceId,
-        out IOPCEventSubscriptionMgt subscription,
+        [OpcIidIs(nameof(requestedInterfaceId))] out IOPCEventSubscriptionMgt subscription,
         out int revisedBufferTime,
         out int revisedMaxSize,
         CancellationToken cancellationToken = default);
@@ -183,15 +181,15 @@ public partial interface IOPCEventServer
     /// see <c>docs/conformance/ae-wire-format.md</c> "Non-Diff" sections.
     /// </remarks>
     [OpcMethod(17)]
-    [return: OpcUniquePointer]
+    [return: OpcArrayCount(nameof(dwCount)), OpcUniquePointer]
     Task<int[]> AckConditionAsync(
         int dwCount,
         [OpcRefString] string acknowledgerId,
         [OpcRefString] string comment,
-        [OpcDeferredElements] string[] sources,
-        [OpcDeferredElements] string[] conditionNames,
-        [OpcFileTimeElements] long[] activeTimes,
-        int[] cookies,
+        [OpcArrayCount(nameof(dwCount)), OpcDeferredElements] string[] sources,
+        [OpcArrayCount(nameof(dwCount)), OpcDeferredElements] string[] conditionNames,
+        [OpcArrayCount(nameof(dwCount)), OpcFileTimeElements] long[] activeTimes,
+        [OpcArrayCount(nameof(dwCount))] int[] cookies,
         CancellationToken cancellationToken = default);
 
     /// <summary>
@@ -200,7 +198,7 @@ public partial interface IOPCEventServer
     [OpcMethod(18)]
     Task CreateAreaBrowserAsync(
         Guid requestedInterfaceId,
-        out IOPCEventAreaBrowser areaBrowser,
+        [OpcIidIs(nameof(requestedInterfaceId))] out IOPCEventAreaBrowser areaBrowser,
         CancellationToken cancellationToken = default);
 }
 

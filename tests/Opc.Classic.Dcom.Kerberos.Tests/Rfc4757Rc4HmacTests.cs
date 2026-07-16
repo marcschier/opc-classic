@@ -1,6 +1,5 @@
 ﻿// Copyright (c) 2026 Opc.Classic Contributors. Licensed under the MIT License.
 
-using System.Buffers.Binary;
 using Kerberos.NET.Crypto;
 
 namespace Opc.Classic.Dcom.Kerberos.Tests;
@@ -16,8 +15,11 @@ public sealed class Rfc4757Rc4HmacTests
 
         byte[] token = session.WrapMessage([0x01, 0x02, 0x03], confidential: false);
 
-        await Assert.That(BinaryPrimitives.ReadUInt16BigEndian(token)).IsEqualTo((ushort)0x0504);
-        await Assert.That(BinaryPrimitives.ReadUInt16BigEndian(token.AsSpan(4))).IsEqualTo((ushort)16);
+        await Assert.That(token.Length).IsEqualTo(49);
+        await Assert.That(token[0]).IsEqualTo((byte)0x60);
+        await Assert.That(token[1]).IsEqualTo((byte)47);
+        await Assert.That(token[13]).IsEqualTo((byte)0x02);
+        await Assert.That(token[17]).IsEqualTo((byte)0xFF);
     }
 
     [Test]
@@ -26,21 +28,56 @@ public sealed class Rfc4757Rc4HmacTests
         var session = new KerberosSession(Rfc4757FooStringToKey, EncryptionType.RC4_HMAC_NT);
 
         byte[] mic = session.GetMic([0x01, 0x02, 0x03]);
-        byte[] checksum = mic.AsSpan(16).ToArray();
+        byte[] checksum = mic.AsSpan(mic.Length - 8).ToArray();
 
-        await Assert.That(checksum.SequenceEqual(KerberosTestHex.FromHex("26B37360A873E2CB358614EE513E82E1"))).IsTrue();
+        await Assert.That(mic.Length).IsEqualTo(37);
+        await Assert.That(mic[0]).IsEqualTo((byte)0x60);
+        await Assert.That(mic[13]).IsEqualTo((byte)0x01);
+        await Assert.That(checksum.SequenceEqual(
+            KerberosTestHex.FromHex("992800C311E4F8F1"))).IsTrue();
     }
 
     [Test]
     public async Task Rc4Hmac_wrap_privacy_round_trips()
     {
-        var session = new KerberosSession(Rfc4757FooStringToKey, EncryptionType.RC4_HMAC_NT);
+        var sender = new KerberosSession(Rfc4757FooStringToKey, EncryptionType.RC4_HMAC_NT);
+        var receiver = new KerberosSession(
+            Rfc4757FooStringToKey,
+            EncryptionType.RC4_HMAC_NT,
+            isAcceptor: true);
         byte[] plaintext = [0x41, 0x42, 0x43, 0x44];
 
-        byte[] token = session.WrapMessage(plaintext, confidential: true);
-        byte[] unwrapped = session.UnwrapMessage(token, out bool wasConfidential);
+        byte[] token = sender.WrapMessage(plaintext, confidential: true);
+        byte[] unwrapped = receiver.UnwrapMessage(token, out bool wasConfidential);
 
         await Assert.That(wasConfidential).IsTrue();
         await Assert.That(unwrapped.SequenceEqual(plaintext)).IsTrue();
+    }
+
+    [Test]
+    public async Task MsKile_section_4_5_Rc4_GssWrapEx_known_answer_unwraps()
+    {
+        byte[] sessionKey = KerberosTestHex.FromHex(
+            "81A2CB90AF7FC2D19554A150D8185359");
+        byte[] ciphertext = KerberosTestHex.FromHex(
+            "8ED63F0AC83815335B72E293BAE1F660");
+        byte[] signature = KerberosTestHex.FromHex(
+            "603B06092A864886F712010202020111001000FFFF" +
+            "E29E8BBC6348E740EBAA619244A156A13B5CF65E3C21B9AA");
+        byte[] token = signature.Concat(ciphertext).ToArray();
+        var receiver = new KerberosSession(
+            sessionKey,
+            EncryptionType.RC4_HMAC_NT,
+            initialSequenceNumber: 0x60CBACD3,
+            isAcceptor: true);
+
+        byte[] plaintext = receiver.UnwrapMessage(
+            token,
+            out bool wasConfidential);
+
+        await Assert.That(wasConfidential).IsTrue();
+        await Assert.That(plaintext).IsEquivalentTo(
+            KerberosTestHex.FromHex(
+                "112233445566778899AABBCCDDEEFF"));
     }
 }

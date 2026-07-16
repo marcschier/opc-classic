@@ -12,6 +12,7 @@ public sealed class OpcProxyGeneratorArrayTests
     private const string SampleSource = """
         using Opc.Classic;
         using Opc.Classic.Da;
+        using Opc.Classic.Dcom;
         using Opc.Classic.Generators;
         using System.Threading.Tasks;
 
@@ -28,6 +29,16 @@ public sealed class OpcProxyGeneratorArrayTests
             [OpcMethod(3)] Task<OpcItemState[]> ReadAllAsync(int[] serverHandles);
             [OpcMethod(4)] Task<string[]> GetItemIDsAsync();
             [OpcMethod(5)] Task<UnknownPayload[]> MethodReturningArrayOfUnregisteredTypeAsync();
+            [OpcMethod(6), OpcGenerateMultiOutRecord]
+            Task NextStringsAsync(
+                int count,
+                [OpcArrayCount(nameof(fetched)), OpcDeferredElements] out string[] values,
+                out int fetched);
+            [OpcMethod(7), OpcGenerateMultiOutRecord]
+            Task NextUnknownsAsync(
+                int count,
+                [OpcArrayCount(nameof(fetched)), OpcDeferredElements] out IOpcInterfaceRef[] values,
+                out int fetched);
         }
         """;
 
@@ -85,6 +96,27 @@ public sealed class OpcProxyGeneratorArrayTests
         await Assert.That(method).Contains("global::System.ReadOnlyMemory<byte>.Empty");
         await Assert.That(method).Contains("return default!;");
         await Assert.That(method.Contains("ReadUInt32()", StringComparison.Ordinal)).IsFalse();
+    }
+
+    [Test]
+    public async Task Deferred_string_output_decodes_varying_header_and_deferred_bodies()
+    {
+        string method = GeneratedMethodSection("NextStringsAsync");
+
+        await Assert.That(method).Contains("checked((int)__opcReader.ReadUInt32())");
+        await Assert.That(method).Contains("Invalid varying string array bounds.");
+        await Assert.That(method).Contains(".TryReadReferentId(out _);");
+        await Assert.That(method).Contains(".ReadUnicodeString()");
+    }
+
+    [Test]
+    public async Task Deferred_interface_output_decodes_varying_header_and_MInterfacePointer_bodies()
+    {
+        string method = GeneratedMethodSection("NextUnknownsAsync");
+
+        await Assert.That(method).Contains("Invalid varying interface-pointer array bounds.");
+        await Assert.That(method).Contains(".TryReadReferentId(out _);");
+        await Assert.That(method).Contains("ReadMInterfacePointerBody(ref __opcReader)");
     }
 
     private static string GeneratedMethodSection(string methodName)

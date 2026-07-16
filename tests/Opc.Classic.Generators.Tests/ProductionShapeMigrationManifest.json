@@ -1,0 +1,180 @@
+{
+  "diagnosticSuppressions": [],
+  "unsupportedDiagnostics": [],
+  "handWrittenFallbacks": [],
+  "manualWirePaths": [
+    {
+      "implementationPath": "src/Opc.Classic.Ae/Hosting/AeEventServerDispatcherInterceptor.cs",
+      "implementationType": "Opc.Classic.Ae.Hosting.AeEventServerDispatcherInterceptor",
+      "kind": "dispatcher",
+      "methods": [
+        "CreateAndRegisterSubscriptionAsync",
+        "DispatchAsync",
+        "DispatchCreateEventSubscriptionAsync",
+        "EncodeCreateEventSubscriptionResponse",
+        "TryDecodeCreateEventSubscriptionRequest"
+      ]
+    },
+    {
+      "implementationPath": "src/Opc.Classic.Core/Dcom/OpcCommonClientProxy.cs",
+      "implementationType": "Opc.Classic.Dcom.OpcCommonClientProxy",
+      "kind": "client-proxy",
+      "methods": [
+        "GetErrorStringAsync",
+        "GetLocaleIdAsync",
+        "QueryAvailableLocaleIdsAsync",
+        "SetClientNameAsync",
+        "SetLocaleIdAsync"
+      ]
+    },
+    {
+      "implementationPath": "src/Opc.Classic.Core/Dcom/OpcCommonServerDispatcher.cs",
+      "implementationType": "Opc.Classic.Dcom.OpcCommonServerDispatcher",
+      "kind": "dispatcher",
+      "methods": [
+        "DispatchAsync",
+        "DispatchGetErrorStringAsync",
+        "DispatchGetLocaleIdAsync",
+        "DispatchQueryAvailableLocaleIdsAsync",
+        "DispatchSetClientNameAsync",
+        "DispatchSetLocaleIdAsync",
+        "WritePayload"
+      ]
+    },
+    {
+      "implementationPath": "src/Opc.Classic.Da/Hosting/OpcDaGroupEnumerators.cs",
+      "implementationType": "Opc.Classic.Da.Hosting.OpcDaEnumStringServerDispatcher",
+      "kind": "dispatcher",
+      "methods": [
+        "DispatchAsync"
+      ]
+    },
+    {
+      "implementationPath": "src/Opc.Classic.Da/Hosting/OpcDaGroupEnumerators.cs",
+      "implementationType": "Opc.Classic.Da.Hosting.OpcDaEnumUnknownServerDispatcher",
+      "kind": "dispatcher",
+      "methods": [
+        "DispatchAsync"
+      ]
+    },
+    {
+      "implementationPath": "src/Opc.Classic.Da/Hosting/OpcDaGroupEnumerators.cs",
+      "implementationType": "Opc.Classic.Da.Hosting.OpcDaEnumeratorWire",
+      "kind": "codec",
+      "methods": [
+        "CloneStringAsync",
+        "CloneUnknownAsync",
+        "DispatchStringAsync",
+        "DispatchUnknownAsync",
+        "NextStringAsync",
+        "NextUnknownAsync",
+        "ReadCount",
+        "ResetStringAsync",
+        "ResetUnknownAsync",
+        "SkipStringAsync",
+        "SkipUnknownAsync",
+        "WriteMInterfacePointerBody",
+        "WritePayload",
+        "WriteVaryingHeader"
+      ]
+    },
+    {
+      "implementationPath": "src/Opc.Classic.Da/Hosting/OpcDaServerDispatcher.cs",
+      "implementationType": "Opc.Classic.Da.Hosting.OpcDaServerDispatcher.GroupEnumeratorDispatcher",
+      "kind": "dispatcher",
+      "methods": [
+        "DispatchAsync"
+      ]
+    },
+    {
+      "implementationPath": "src/Opc.Classic.Dcom/Transport/IObjectExporterDispatcher.cs",
+      "implementationType": "Opc.Classic.Dcom.Transport.IObjectExporterDispatcher",
+      "kind": "dispatcher",
+      "methods": [
+        "BuildResolverBindings",
+        "ComplexPing",
+        "DispatchAsync",
+        "EncodeDualStringArrayForListener",
+        "ResolveOxid2",
+        "ServerAlive",
+        "ServerAlive2",
+        "SimplePing",
+        "WriteDualStringArrayPointerPointer"
+      ]
+    },
+    {
+      "implementationPath": "src/Opc.Classic.Discovery/OpcEnumDcomInterfaces.cs",
+      "implementationType": "Opc.Classic.Discovery.Dcom.IOPCEnumGUIDClientProxy",
+      "kind": "client-proxy",
+      "methods": [
+        "CloneAsync",
+        "NextAsync",
+        "ResetAsync",
+        "SkipAsync"
+      ]
+    },
+    {
+      "implementationPath": "src/Opc.Classic.Discovery/OpcEnumDcomInterfaces.cs",
+      "implementationType": "Opc.Classic.Discovery.Dcom.IOPCEnumGUIDServerDispatcher",
+      "kind": "dispatcher",
+      "methods": [
+        "DispatchAsync",
+        "DispatchCloneAsync",
+        "DispatchNextAsync",
+        "DispatchResetAsync",
+        "DispatchSkipAsync"
+      ]
+    },
+    {
+      "implementationPath": "src/Opc.Classic.Discovery/OpcEnumDcomInterfaces.cs",
+      "implementationType": "Opc.Classic.Discovery.Dcom.OpcEnumProxyCodec",
+      "kind": "codec",
+      "methods": [
+        "DecodeInterfaceRefResponse",
+        "EncodeCategoryRequest",
+        "InvokeAsync",
+        "InvokeInterfaceRefAsync",
+        "WritePayload"
+      ]
+    },
+    {
+      "implementationPath": "src/Opc.Classic.Discovery/OpcEnumDcomInterfaces.cs",
+      "implementationType": "Opc.Classic.Discovery.Dcom.IOPCServerList2ClientProxy",
+      "kind": "client-proxy",
+      "methods": [
+        "EnumClassesOfCategoriesAsync",
+        "GetClassDetailsAsync"
+      ]
+    },
+    {
+      "implementationPath": "src/Opc.Classic.Discovery/OpcEnumDcomInterfaces.cs",
+      "implementationType": "Opc.Classic.Discovery.Dcom.IOPCServerListClientProxy",
+      "kind": "client-proxy",
+      "methods": [
+        "EnumClassesOfCategoriesAsync",
+        "GetClassDetailsAsync"
+      ]
+    },
+    {
+      "implementationPath": "src/Opc.Classic.Discovery/IOPCServerList2ServerDispatcher.cs",
+      "implementationType": "Opc.Classic.Discovery.Dcom.IOPCServerList2ServerDispatcher",
+      "kind": "dispatcher",
+      "methods": [
+        "DispatchAsync",
+        "DispatchGetClassDetailsAsync"
+      ]
+    },
+    {
+      "implementationPath": "src/Opc.Classic.Discovery/IOPCServerListServerDispatcher.cs",
+      "implementationType": "Opc.Classic.Discovery.Dcom.IOPCServerListServerDispatcher",
+      "kind": "dispatcher",
+      "methods": [
+        "DecodeCategoryRequest",
+        "DispatchAsync",
+        "DispatchClsidFromProgId",
+        "DispatchEnumClassesOfCategories",
+        "DispatchGetClassDetails"
+      ]
+    }
+  ]
+}

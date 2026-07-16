@@ -122,12 +122,20 @@ public static class XmlSchemaParser
     {
         var name = ReadRequiredString(element, "name");
         var elementCount = ReadElementCount(element);
+        var minOccurs = ReadMinOccurs(element);
 
         if (FindInlineComplexType(element) is { } inlineComplexType)
         {
             var nestedTypeId = string.Create(CultureInfo.InvariantCulture, $"{parentTypeId}/{name}");
             AddComplexType(types, namedComplexTypes, nestedTypeId, inlineComplexType);
-            return new TypeField(name, TypeKind.StructReference, nestedTypeId, ElementCount: elementCount);
+            return new TypeField(
+                name,
+                TypeKind.StructReference,
+                nestedTypeId,
+                ElementCount: elementCount)
+            {
+                MinOccurs = minOccurs,
+            };
         }
 
         if (ReadString(element, "type") is { } typeName)
@@ -136,13 +144,29 @@ public static class XmlSchemaParser
             if (namedComplexTypes.TryGetValue(localTypeName, out var referencedComplexType))
             {
                 AddComplexType(types, namedComplexTypes, localTypeName, referencedComplexType);
-                return new TypeField(name, TypeKind.StructReference, localTypeName, ElementCount: elementCount);
+                return new TypeField(
+                    name,
+                    TypeKind.StructReference,
+                    localTypeName,
+                    ElementCount: elementCount)
+                {
+                    MinOccurs = minOccurs,
+                };
             }
 
-            return new TypeField(name, MapXmlSchemaType(typeName), ElementCount: elementCount);
+            return new TypeField(
+                name,
+                MapXmlSchemaType(typeName),
+                ElementCount: elementCount)
+            {
+                MinOccurs = minOccurs,
+            };
         }
 
-        return new TypeField(name, TypeKind.String, ElementCount: elementCount);
+        return new TypeField(name, TypeKind.String, ElementCount: elementCount)
+        {
+            MinOccurs = minOccurs,
+        };
     }
 
     private static IEnumerable<XElement> EnumerateChildElements(XElement complexType)
@@ -227,6 +251,11 @@ public static class XmlSchemaParser
 
         return int.Parse(maxOccurs, NumberStyles.Integer, CultureInfo.InvariantCulture);
     }
+
+    private static int ReadMinOccurs(XElement element) =>
+        ReadString(element, "minOccurs") is { } minOccurs
+            ? int.Parse(minOccurs, NumberStyles.Integer, CultureInfo.InvariantCulture)
+            : 1;
 
     private static XmlReaderSettings CreateReaderSettings() =>
         new()

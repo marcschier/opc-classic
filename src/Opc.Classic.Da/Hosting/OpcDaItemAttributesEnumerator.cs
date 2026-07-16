@@ -123,21 +123,42 @@ public sealed class OpcDaItemAttributesEnumerator : IEnumOPCItemAttributes
             {
                 [IEnumOPCItemAttributes.InterfaceId] = new IEnumOPCItemAttributesServerDispatcher(clone),
             };
-            ipid = _registry.Register(dispatchers);
+            ipid = _registry.Register(dispatchers, publicRefs: 1);
         }
         else
         {
             ipid = Guid.CreateVersion7();
         }
 
-        return Task.FromResult<IOpcInterfaceRef>(new OpcInterfaceRef(
+        return Task.FromResult(
+            _registry is null
+                ? new OpcInterfaceRef(
+                    iid: IEnumOPCItemAttributes.InterfaceId,
+                    flags: 0,
+                    publicRefs: 1,
+                    oxid: 1,
+                    oid: 0,
+                    ipid: ipid,
+                    securityOffset: 0,
+                    resolverBindings: Array.Empty<ushort>())
+                : CreateRegisteredRef(_registry, ipid));
+    }
+
+    private static IOpcInterfaceRef CreateRegisteredRef(OpcObjectRegistry registry, Guid ipid)
+    {
+        if (!registry.TryGetObjectMetadata(ipid, out OpcObjectMetadata metadata))
+        {
+            throw new InvalidOperationException("The registered item enumerator has no identity metadata.");
+        }
+
+        return new OpcInterfaceRef(
             iid: IEnumOPCItemAttributes.InterfaceId,
             flags: 0,
             publicRefs: 1,
-            oxid: 1,
-            oid: 0,
+            oxid: metadata.Oxid,
+            oid: metadata.Oid,
             ipid: ipid,
             securityOffset: 0,
-            resolverBindings: Array.Empty<ushort>()));
+            resolverBindings: Array.Empty<ushort>());
     }
 }

@@ -54,6 +54,35 @@ public sealed class DxNdrCodecTests
     }
 
     [Test]
+    public async Task ConnectionArray_emits_all_constructed_inline_parts_before_deferred_variants()
+    {
+        var first = new DxConnection(
+            defaultOverrideValue: OpcVariant.FromString("A"),
+            substituteValue: OpcVariant.Empty,
+            sourceServerName: "S1");
+        var second = new DxConnection(
+            defaultOverrideValue: OpcVariant.FromString("B"),
+            substituteValue: OpcVariant.FromInt32(2),
+            vendorData: "V2");
+        ReadOnlyMemory<byte> payload = WritePayload((ref NdrWriter writer) =>
+            NdrOpcDxConnectionArrayCodec.Write(ref writer, [first, second]));
+        byte[] wire = payload.ToArray();
+
+        await Assert.That(BitConverter.ToUInt32(wire, 0)).IsEqualTo(2u);
+        await Assert.That(BitConverter.ToUInt32(wire, 52)).IsEqualTo(0x72657355u);
+        await Assert.That(BitConverter.ToUInt32(wire, 100)).IsEqualTo(unchecked((uint)second.Mask));
+        await Assert.That(BitConverter.ToUInt32(wire, 148)).IsEqualTo(0x72657355u);
+        await Assert.That(BitConverter.ToUInt32(wire, 200)).IsEqualTo(5u);
+
+        var reader = new NdrReader(payload.Span);
+        DxConnection[] decoded = NdrOpcDxConnectionArrayCodec.Read(ref reader);
+        await Assert.That(decoded[0].DefaultOverrideValue?.AsString()).IsEqualTo("A");
+        await Assert.That(decoded[0].SourceServerName).IsEqualTo("S1");
+        await Assert.That(decoded[1].DefaultOverrideValue?.AsString()).IsEqualTo("B");
+        await Assert.That(decoded[1].VendorData).IsEqualTo("V2");
+    }
+
+    [Test]
     public async Task SourceServerCodec_RoundTripsMaskFields()
     {
         var source = new DxSourceServer(

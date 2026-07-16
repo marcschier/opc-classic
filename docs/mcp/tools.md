@@ -1468,10 +1468,30 @@ Begins a network packet capture session. Defaults the BPF filter to TCP DCOM tra
 | `maxDurationSeconds` | `int?` | `null` | Optional cap on wall-clock duration; the capture source applies its default when omitted. |
 | `serverPorts` | `int[]?` | `null` | Optional explicit OPC server data ports used to narrow the default DCOM capture filter. |
 | `ntlmSessionKeyHex` | `string?` | `null` | Developer-only 32-character hex NTLMv2 session key for inline auth-trailer unwrap in `capture.tail`, `capture.get`, and `capture.summarize`. Capture must begin before the NTLM Type3 handshake so direction counters remain synchronized. The key is cloned into session-owned storage, redacted from session metadata, and zeroed on failure/disposal. |
+| `targetHost` | `string?` | `null` | Optional OPC target host. Any target input causes broad DCOM capture to start before discovery/activation. |
+| `progId` | `string?` | `null` | Optional ProgID resolved through the shared OPCEnum connection normalization path. |
+| `clsid` | `string?` | `null` | Optional CLSID activated after capture startup. |
+| `connectionString` | `string?` | `null` | Optional `dcom://`, OPC scheme, `tcp://`, or `inmemory://` target. |
+| `ambientSso` | `bool` | `false` | Explicit opt-in to use the process/current-logon Windows identity for OPCEnum discovery and DCOM activation. When false, no ambient credential connection is attempted; direct `tcp://`, `inmemory://`, and host-only metadata resolution remain available. |
 
 **Returns:** `Task<CaptureSessionDto>`
 
-NTLM unwrap is implemented for live-session tail/get/summarize decoding. Remaining gaps are ad-hoc decode/replay key input and compatibility variants for externally produced protected traffic.
+Packet, byte, and duration limits finalize the session automatically, including a duration-only capture that receives no packets. Automatic completion closes the active source, clears session-owned authentication material, and makes `capture.tail` report `done`; callers may still use `capture.stop` for an earlier explicit stop.
+
+For a target-aware start, the initial filter remains broad (`135` plus the dynamic range) while target metadata is resolved. Authenticated OPCEnum discovery or DCOM activation is performed only when `ambientSso=true`; otherwise the target reports `ambient_sso_required` and the capture remains broad without sending ambient credentials to the arbitrary host. When opted in, the live source is narrowed after discovery/activation. `CaptureSessionDto.target` returns the normalized host/ProgID/CLSID, activation status, OXID metadata, discovered bindings, ports, and any resolution error. Temporary activation authentication contexts are disposed and activated interface references are released through `IRemUnknown::RemRelease`; cleanup failure is surfaced as `activated_release_failed`. `effectiveFilter` reports the actual live filter and `filterTransition` reports whether narrowing was unchanged, updated live, restarted, or failed.
+
+### `opcclassic.capture.set_filter`
+
+Atomically replaces the BPF filter on a running capture. Sources that support live updates are changed in place. Other sources use a controlled restart: the replacement starts before the prior source is retired, and the session publishes the new source only after that handoff completes.
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `sessionId` | `string` | `required` | Running capture session id. |
+| `bpfFilter` | `string` | `required` | Replacement BPF filter. |
+
+**Returns:** `Task<CaptureFilterTransitionResult>`
+
+The result status is `Unchanged`, `LiveUpdated`, `Restarted`, `RestartedWithCleanupWarning`, `Failed`, or `Canceled`. It also reports the previous/requested/effective filters, preserved packet and byte counts, retained source-segment count, timestamps, and an explicit error when applicable. Update or replacement-start failure leaves the prior source and packets visible. A restart preserves the session id, target metadata, NTLM decoder state, tail indexes, named subscriber cursors, and all prior source files.
 
 ### `opcclassic.capture.stop`
 
@@ -1506,10 +1526,12 @@ Returns captured trace data as a decoded summary, JSON records, or a pcap file p
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
 | `sessionId` | `string` | `required` | Capture session id from `opcclassic.capture.start`. |
-| `format` | `string` | `"dcom"` | Output format: dcom, json, or pcap-path. |
+| `format` | `string` | `"dcom"` | Output format: dcom, json, pcap-path, or pcap-paths. |
 | `maxPdus` | `int` | `200` | Maximum decoded PDUs to return. |
 
 **Returns:** `Task<string>`
+
+`pcap-path` returns a single retained pcap path. After a restart, use `pcap-paths` to receive a JSON array containing every retained segment; requesting `pcap-path` then returns an explicit error rather than silently omitting packets.
 
 ### `opcclassic.capture.tail`
 
@@ -1522,8 +1544,53 @@ Returns the next decoded-PDU window for a live or completed capture using a poll
 | `sessionId` | `string` | `required` | Capture session id from `opcclassic.capture.start`. |
 | `max` | `int` | `200` | Maximum PDUs to return in this call. |
 | `sinceIndex` | `long` | `0` | Cursor returned by the previous tail call as `nextIndex`; pass 0 for the first call. |
+| `subscriberId` | `string?` | `null` | Stable id enabling a bounded authoritative server-owned replay cursor. Omit for caller-owned cursor behavior. |
+| `subscriberCapacity` | `int?` | `null` | Retained-PDU capacity for the named cursor, 1–5000 (default 1024). |
 
 **Returns:** `Task<CaptureTailResultDto>`
+
+Named subscribers are independent and non-destructive. A lost-response retry with the same `sinceIndex` returns the same available window and `nextIndex`; passing that `nextIndex` on a later call explicitly acknowledges the prior window. Records remain replayable until displaced by the bounded capacity. When an unacknowledged range is displaced, `overflowed` is true and `droppedRanges` contains inclusive global PDU index ranges. The same `tail` call returns surviving records and authoritative recovery indexes.
+
+Tail and its returned cursors are always authoritative. Optional MCP notifications only advertise that indexes or lifecycle state changed; they never contain packet bodies, decoded PDU bodies, raw frame bytes, credentials, or NTLM session keys.
+
+### `opcclassic.capture.close_cursor`
+
+Disposes a named authoritative tail cursor without stopping the capture.
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `sessionId` | `string` | `required` | Capture session id. |
+| `subscriberId` | `string` | `required` | Named cursor to dispose. |
+
+**Returns:** `bool`
+
+### `opcclassic.capture.subscribe_notifications`
+
+Subscribes the current MCP client to custom `notifications/opcclassic/capture` messages. Each message contains only the capture/session subscription ids, session state, global index window, total emitted count, completion state, cursor drop ranges, and notification-queue recovery indexes.
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `sessionId` | `string` | `required` | Capture session id. |
+| `sinceIndex` | `long` | `0` | Initial global decoded-PDU index. |
+| `subscriberId` | `string?` | `null` | Optional client label; defaults to the generated subscription id. |
+| `subscriberCapacity` | `int` | `1024` | Bounded decoded-PDU cursor capacity, 1–5000. |
+| `notificationQueueCapacity` | `int` | `16` | Bounded pending notification capacity, 1–256. |
+| `pollIntervalMilliseconds` | `int` | `100` | Tail polling interval, 10–5000 milliseconds. |
+
+**Returns:** `CaptureNotificationSubscriptionDto`
+
+Notification delivery is advisory and isolated from capture. A slow or failing MCP client cannot block packet capture: its bounded notification queue drops old notices and the next delivered notice reports `notificationDropCount`, `recoveryFromIndex`, and `recoveryToIndex`. Cursor overflow is separately reported in `cursorDroppedRanges`. Recover bodies by calling `opcclassic.capture.tail` from the reported index; omit the notification subscriber id or use a separate named tail cursor.
+
+Subscriptions end automatically when the capture completes/fails, is removed, or the MCP server shuts down.
+
+### `opcclassic.capture.unsubscribe_notifications`
+
+Stops and disposes a notification subscription without stopping or removing the capture.
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `subscriptionId` | `string` | `required` | Subscription id returned by `opcclassic.capture.subscribe_notifications`. |
+**Returns:** `Task<bool>`
 
 ### `opcclassic.capture.summarize`
 
@@ -1559,8 +1626,35 @@ Decodes exactly one raw DCE/RPC PDU frame from hex bytes through the same `PduCo
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
 | `hex` | `string` | `required` | Hex string of the raw frame bytes, with or without whitespace or a 0x prefix. |
+| `ntlmSessionKeyHex` | `string?` | `null` | Optional developer-only 16-byte NTLMv2 key. Request frames assume client-to-server direction; response/fault frames assume server-to-client direction and sequence zero. Owned key material is zeroed/disposed before return. |
 
 **Returns:** `string`
+
+### `opcclassic.capture.decode_file`
+
+Decodes an external pcap or pcapng file with bounded file, packet, and output limits. The file is opened once, its handle length is validated, and at most `maxFileBytes + 1` bytes are streamed; growth, shrinkage, and oversize input are rejected without reopening the path. Ethernet IPv4/IPv6 TCP records are decoded; IP fragments are reported and skipped.
+
+TCP reassembly uses sequence numbers: out-of-order segments are reordered, retransmissions are deduplicated, and overlaps are merged. Gaps produce explicit bounded failures and final-file resynchronization at the next plausible DCE/RPC header. NTLM counters advance only for ordered complete protected frames.
+
+Snap-length-truncated packets no longer abort the file. They are skipped, counted, and included in the bounded `packetFailures` list while later packets continue decoding. Status also includes unsupported link types, incomplete DCE/RPC streams, and likely mid-session starts.
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `path` | `string` | `required` | External pcap/pcapng path. |
+| `maxFileBytes` | `long` | `52428800` | File-size limit; hard cap 200 MB. |
+| `maxPackets` | `int` | `100000` | Packet limit; hard cap 1,000,000. |
+| `maxPdus` | `int` | `5000` | Retained decoded-record limit; hard cap 50,000. |
+| `ntlmSessionKeyHex` | `string?` | `null` | Optional developer-only NTLM key, redacted and zeroed as for `decode_pdu`. |
+
+**Returns:** `Task<CaptureFileDecodeResult>`
+
+### `opcclassic.capture.replay_file`
+
+Reads the same bounded external formats and replays retained frames through `PduCodec` and ORPC validation. Returns both `CaptureFileStatus` and `ReplayReport`.
+
+Parameters match `opcclassic.capture.decode_file`.
+
+**Returns:** `Task<CaptureFileReplayResult>`
 
 ### `opcclassic.capture.replay`
 

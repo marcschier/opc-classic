@@ -150,8 +150,12 @@ public sealed class IOPCEnumGUIDClientProxy
             cancellationToken).ConfigureAwait(false);
 
         var reader = new NdrReader(result.ResponsePayload.Span);
-        Guid[] classIds = reader.ReadVaryingConformantGuidArray();
+        Guid[] classIds = reader.ReadVaryingConformantGuidArray(count);
         int fetched = reader.ReadInt32();
+        if (fetched != classIds.Length)
+        {
+            throw new InvalidDataException("IOPCEnumGUID::Next pceltFetched does not match the varying array actual count.");
+        }
         return new OpcEnumGuidNextResult(classIds, fetched);
     }
 
@@ -228,6 +232,7 @@ public interface IOPCEnumGUIDServer
 /// </summary>
 public sealed class IOPCEnumGUIDServerDispatcher : IOpcServerDispatcher
 {
+    private const int EInvalidArg = unchecked((int)0x80070057);
     private readonly IOPCEnumGUIDServer _server;
 
     /// <summary>
@@ -257,6 +262,10 @@ public sealed class IOPCEnumGUIDServerDispatcher : IOpcServerDispatcher
         {
             return DispatchResult.Fault(exception.ResultId.Code);
         }
+        catch (Exception exception) when (exception is InvalidDataException or ArgumentOutOfRangeException)
+        {
+            return DispatchResult.Fault(EInvalidArg);
+        }
     }
 
     private async ValueTask<DispatchResult> DispatchNextAsync(
@@ -265,7 +274,14 @@ public sealed class IOPCEnumGUIDServerDispatcher : IOpcServerDispatcher
     {
         var reader = new NdrReader(requestPayload.Span);
         int count = reader.ReadInt32();
+        ArgumentOutOfRangeException.ThrowIfNegative(count);
         OpcEnumGuidNextResult next = await _server.NextAsync(count, cancellationToken).ConfigureAwait(false);
+        ArgumentNullException.ThrowIfNull(next);
+        ArgumentNullException.ThrowIfNull(next.ClassIds);
+        if (next.Fetched != next.ClassIds.Length || next.Fetched > count)
+        {
+            throw new InvalidDataException("IOPCEnumGUID::Next result count is inconsistent.");
+        }
         byte[] payload = OpcEnumProxyCodec.WritePayload((ref NdrWriter writer) =>
         {
             writer.WriteUInt32((uint)count);
@@ -303,7 +319,7 @@ public sealed class IOPCEnumGUIDServerDispatcher : IOpcServerDispatcher
     {
         IOpcInterfaceRef clone = await _server.CloneAsync(cancellationToken).ConfigureAwait(false);
         byte[] payload = OpcEnumProxyCodec.WritePayload((ref NdrWriter writer) =>
-            OpcInterfaceRefCodec.Write(ref writer, clone));
+            OpcMInterfacePointerCodec.Write(ref writer, clone));
         return DispatchResult.Success(payload);
     }
 }

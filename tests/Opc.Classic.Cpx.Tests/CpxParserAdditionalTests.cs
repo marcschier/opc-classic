@@ -7,6 +7,40 @@ namespace Opc.Classic.Cpx.Tests;
 public sealed class CpxParserAdditionalTests
 {
     [Test]
+    public async Task TypeField_preserves_released_constructor_and_deconstruct_abi()
+    {
+        Type[] releasedParameterTypes =
+        [
+            typeof(string),
+            typeof(TypeKind),
+            typeof(string),
+            typeof(int?),
+            typeof(int?),
+            typeof(string),
+            typeof(string),
+            typeof(ByteOrder?),
+            typeof(string),
+            typeof(int?),
+            typeof(string),
+        ];
+        System.Reflection.ConstructorInfo? constructor =
+            typeof(TypeField).GetConstructor(releasedParameterTypes);
+        System.Reflection.MethodInfo? deconstruct = typeof(TypeField)
+            .GetMethods()
+            .SingleOrDefault(method =>
+                method.Name == "Deconstruct"
+                && method.GetParameters().Length == releasedParameterTypes.Length);
+        var optional = new TypeField("Optional", TypeKind.String)
+        {
+            MinOccurs = 0,
+        };
+
+        await Assert.That(constructor).IsNotNull();
+        await Assert.That(deconstruct).IsNotNull();
+        await Assert.That(optional.MinOccurs).IsEqualTo(0);
+    }
+
+    [Test]
     public async Task OpcBinaryDictionaryParser_ParsesSingleTypeDescriptionRootAndFieldOptions()
     {
         const string xml = """
@@ -88,7 +122,7 @@ public sealed class CpxParserAdditionalTests
               <xs:complexType name="PlantType">
                 <xs:sequence>
                   <xs:element name="Motor" type="tns:MotorType" maxOccurs="2" />
-                  <xs:element name="Mode" type="xs:normalizedString" />
+                  <xs:element name="Mode" type="xs:normalizedString" minOccurs="0" />
                 </xs:sequence>
               </xs:complexType>
               <xs:complexType name="MotorType">
@@ -117,6 +151,7 @@ public sealed class CpxParserAdditionalTests
         await Assert.That(plant.Fields[0].TypeId).IsEqualTo("MotorType");
         await Assert.That(plant.Fields[0].ElementCount).IsEqualTo(2);
         await Assert.That(plant.Fields[1].Kind).IsEqualTo(TypeKind.String);
+        await Assert.That(plant.Fields[1].MinOccurs).IsEqualTo(0);
         await Assert.That(motor.Fields[0].Kind).IsEqualTo(TypeKind.Boolean);
         await Assert.That(motor.Fields[1].Kind).IsEqualTo(TypeKind.Single);
         await Assert.That(looseText.Type).IsEqualTo(TypeKind.String);

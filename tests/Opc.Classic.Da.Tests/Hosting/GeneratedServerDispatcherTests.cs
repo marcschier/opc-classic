@@ -3,6 +3,7 @@
 #pragma warning disable TUnitAssertions0005 // Dispatcher tests assert protocol constants.
 
 using Opc.Classic.Da.Dcom;
+using Opc.Classic.Dcom;
 using Opc.Classic.Hosting;
 using Opc.Classic.Ndr;
 
@@ -252,13 +253,57 @@ public sealed class GeneratedServerDispatcherTests
             NextGuids = [Guid.Parse("11111111-1111-1111-1111-111111111111")],
         };
         var dispatcher = new IOPCEnumGUIDServerDispatcher(impl);
-        byte[] payload = WritePayload((ref NdrWriter writer) => writer.WriteInt32(5));
+        byte[] payload = WritePayload((ref NdrWriter writer) => writer.WriteInt32(1));
 
         DispatchResult result = await dispatcher.DispatchAsync(
             IOPCEnumGUID.Opnums.NextAsync, payload, CancellationToken.None);
 
         await Assert.That(result.IsSuccess).IsTrue();
-        await Assert.That(impl.LastNextCount).IsEqualTo(5);
+        await Assert.That(impl.LastNextCount).IsEqualTo(1);
+    }
+
+    [Test]
+    public async Task IOPCEnumGUID_Next_short_page_matches_native_varying_wire()
+    {
+        var impl = new StubEnumGuid
+        {
+            NextGuids = [Guid.Parse("11111111-1111-1111-1111-111111111111")],
+        };
+        var dispatcher = new IOPCEnumGUIDServerDispatcher(impl);
+
+        DispatchResult result = await dispatcher.DispatchAsync(
+            IOPCEnumGUID.Opnums.NextAsync,
+            WritePayload((ref NdrWriter writer) => writer.WriteInt32(2)),
+            CancellationToken.None);
+        byte[] expected =
+        [
+            0x02, 0x00, 0x00, 0x00,
+            0x00, 0x00, 0x00, 0x00,
+            0x01, 0x00, 0x00, 0x00,
+            0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11,
+            0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11,
+            0x01, 0x00, 0x00, 0x00,
+        ];
+
+        await Assert.That(result.Hresult).IsEqualTo(OpcResultId.False.Code);
+        await Assert.That(result.Payload.ToArray()).IsEquivalentTo(expected);
+    }
+
+    [Test]
+    public async Task IOPCEnumGUID_Clone_uses_opnum_6_interface_pointer()
+    {
+        var impl = new StubEnumGuid();
+        var dispatcher = new IOPCEnumGUIDServerDispatcher(impl);
+
+        DispatchResult result = await dispatcher.DispatchAsync(
+            IOPCEnumGUID.Opnums.CloneAsync,
+            ReadOnlyMemory<byte>.Empty,
+            CancellationToken.None);
+        var reader = new NdrReader(result.Payload.Span);
+        IOpcInterfaceRef? clone = OpcMInterfacePointerCodec.Read(ref reader);
+
+        await Assert.That(result.Hresult).IsEqualTo(OpcResultId.Ok.Code);
+        await Assert.That(clone?.Iid).IsEqualTo(IOPCEnumGUID.InterfaceId);
     }
 
     [Test]
@@ -480,6 +525,18 @@ public sealed class GeneratedServerDispatcherTests
             ResetCallCount++;
             return Task.CompletedTask;
         }
+
+        public Task<IOpcInterfaceRef> CloneAsync(CancellationToken cancellationToken = default) =>
+            Task.FromResult<IOpcInterfaceRef>(
+                new OpcInterfaceRef(
+                    IOPCEnumGUID.InterfaceId,
+                    0,
+                    1,
+                    1,
+                    2,
+                    Guid.Parse("11111111-1111-1111-1111-111111111112"),
+                    0,
+                    []));
     }
 
     private sealed class StubServerList : IOPCServerList

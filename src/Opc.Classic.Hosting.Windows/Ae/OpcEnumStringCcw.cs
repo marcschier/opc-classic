@@ -25,6 +25,11 @@ internal static unsafe class OpcEnumStringCcw
         return instance;
     }
 
+    internal static long GetReferenceCount(IntPtr instance) =>
+        s_entries.TryGetValue(instance, out CcwEntry? entry)
+            ? Interlocked.Read(ref entry.RefCount)
+            : -1L;
+
     private static IntPtr Create(StringEnumeratorState state)
     {
         var handle = GCHandle.Alloc(state, GCHandleType.Normal);

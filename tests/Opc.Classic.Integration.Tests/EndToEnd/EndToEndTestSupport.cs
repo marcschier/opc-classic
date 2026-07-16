@@ -1765,7 +1765,7 @@ internal sealed class AeEndToEndPipeline
         public Task BrowseOPCAreasAsync(
             int browseFilterType,
             string filterCriteria,
-            out IEnumString enumString,
+            out Opc.Classic.Ae.Dcom.IEnumString enumString,
             CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();

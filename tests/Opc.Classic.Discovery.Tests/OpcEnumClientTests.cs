@@ -552,7 +552,7 @@ internal sealed class SyntheticOpcEnumServer : IOpcEnumCallChannelFactory
         }
 
         int hresult = fetched < requested ? 1 : 0;
-        return new NdrCallResult(hresult, EncodeNext(batch, fetched));
+        return new NdrCallResult(hresult, EncodeNext(batch, fetched, requested));
     }
 
     private static Guid DecodeFirstImplementedCategory(ReadOnlyMemory<byte> requestPayload)
@@ -619,12 +619,12 @@ internal sealed class SyntheticOpcEnumServer : IOpcEnumCallChannelFactory
         writer.WriteUnicodeStringPtr(details.VerIndProgId);
     });
 
-    private static byte[] EncodeNext(Guid[] classIds, int fetched) => WritePayload((ref NdrWriter writer) =>
+    private static byte[] EncodeNext(Guid[] classIds, int fetched, int requested) => WritePayload((ref NdrWriter writer) =>
     {
         // IEnumGUID::Next response shape: [out, size_is(celt), length_is(*pceltFetched)] GUID* rgelt
         // marshaled as a varying-conformant array (max_count + offset + actual_count + elements),
         // followed by [out] ULONG* pceltFetched.
-        writer.WriteUInt32((uint)classIds.Length);
+        writer.WriteUInt32((uint)requested);
         writer.WriteUInt32(0);
         writer.WriteUInt32((uint)classIds.Length);
         for (int i = 0; i < classIds.Length; i++)

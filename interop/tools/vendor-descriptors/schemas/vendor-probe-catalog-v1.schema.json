@@ -1,0 +1,256 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/marcschier/opc-classic/main/interop/tools/vendor-descriptors/schemas/vendor-probe-catalog-v1.schema.json",
+  "title": "OPC Classic vendor probe catalog",
+  "description": "Version 1 strict descriptor; semantic validation is implemented by tools/vendor_probe_catalog.py.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "id",
+    "vendor",
+    "product",
+    "target",
+    "capabilities",
+    "prerequisites",
+    "arguments",
+    "fixtures",
+    "probes",
+    "legal"
+  ],
+  "properties": {
+    "schemaVersion": { "const": "1.0" },
+    "id": { "$ref": "#/$defs/id" },
+    "vendor": { "$ref": "#/$defs/text" },
+    "product": { "$ref": "#/$defs/text" },
+    "target": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "progid", "clsid"],
+      "properties": {
+        "kind": { "enum": ["da", "ae", "hda"] },
+        "progid": { "type": "string", "maxLength": 256 },
+        "clsid": {
+          "type": "string",
+          "pattern": "^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}$"
+        }
+      }
+    },
+    "capabilities": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/id" }
+    },
+    "prerequisites": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "description", "required", "artifact"],
+        "properties": {
+          "id": { "$ref": "#/$defs/id" },
+          "description": { "$ref": "#/$defs/text" },
+          "required": { "type": "boolean" },
+          "artifact": {
+            "type": ["object", "null"],
+            "additionalProperties": false,
+            "required": ["rootToken", "relativePath"],
+            "properties": {
+              "rootToken": {
+                "type": "string",
+                "pattern": "^[A-Z][A-Z0-9_]*$"
+              },
+              "relativePath": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9_. ()-]+(?:/[A-Za-z0-9_. ()-]+)*$"
+              }
+            }
+          }
+        }
+      }
+    },
+    "arguments": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "da": { "$ref": "#/$defs/daArguments" },
+        "ae": { "$ref": "#/$defs/aeArguments" },
+        "hda": { "$ref": "#/$defs/hdaArguments" }
+      }
+    },
+    "fixtures": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/fixture" }
+    },
+    "probes": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/probe" }
+    },
+    "legal": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["redistributionAllowed", "sourceUrl"],
+      "properties": {
+        "redistributionAllowed": { "type": "boolean" },
+        "sourceUrl": {
+          "type": "string",
+          "pattern": "^https://(?![^/?#]*@)[^\\s]+$"
+        }
+      }
+    }
+  },
+  "$defs": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+    },
+    "text": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 1024
+    },
+    "scalar": {
+      "type": ["string", "number", "boolean"]
+    },
+    "daArguments": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "browseBranch", "browseFilter", "groupName", "active",
+        "updateRateMs", "itemIds", "clientHandles", "fromCache",
+        "writeValues", "maxNotifications"
+      ],
+      "properties": {
+        "browseBranch": { "type": "string", "maxLength": 1024 },
+        "browseFilter": { "enum": ["all", "branch", "leaf"] },
+        "groupName": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "active": { "type": "boolean" },
+        "updateRateMs": { "type": "integer", "minimum": 1, "maximum": 600000 },
+        "itemIds": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 256,
+          "items": { "$ref": "#/$defs/text" }
+        },
+        "clientHandles": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 256,
+          "items": { "type": "integer", "minimum": 0 }
+        },
+        "fromCache": { "type": "boolean" },
+        "writeValues": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 256,
+          "items": { "$ref": "#/$defs/scalar" }
+        },
+        "maxNotifications": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10000
+        }
+      }
+    },
+    "aeArguments": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source", "condition", "returnedAttributeIds", "refreshWaitMs"
+      ],
+      "properties": {
+        "source": { "$ref": "#/$defs/text" },
+        "condition": { "$ref": "#/$defs/text" },
+        "returnedAttributeIds": {
+          "type": "array",
+          "items": { "type": "integer", "minimum": 0 }
+        },
+        "refreshWaitMs": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "hdaArguments": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "itemId", "startTime", "endTime", "atTime",
+        "aggregateId", "resampleIntervalSeconds"
+      ],
+      "properties": {
+        "itemId": { "$ref": "#/$defs/text" },
+        "startTime": { "$ref": "#/$defs/text" },
+        "endTime": { "$ref": "#/$defs/text" },
+        "atTime": { "$ref": "#/$defs/text" },
+        "aggregateId": { "type": "integer", "minimum": 0 },
+        "resampleIntervalSeconds": { "type": "number", "minimum": 0 }
+      }
+    },
+    "fixture": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id", "specification", "variant", "path", "encoding",
+        "redistributable", "expectedDecode"
+      ],
+      "properties": {
+        "id": { "$ref": "#/$defs/id" },
+        "specification": { "enum": ["da", "ae", "hda"] },
+        "variant": {
+          "enum": [
+            "standard", "empty", "malformed", "truncated",
+            "vendor-extension"
+          ]
+        },
+        "path": {
+          "type": "string",
+          "pattern": "^fixtures/[A-Za-z0-9_.-]+$"
+        },
+        "encoding": { "const": "hex" },
+        "redistributable": { "const": true },
+        "expectedDecode": { "enum": ["success", "failure"] }
+      }
+    },
+    "probe": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "type", "requires", "expected", "expectedFailures"],
+      "properties": {
+        "id": { "$ref": "#/$defs/id" },
+        "type": { "$ref": "#/$defs/id" },
+        "requires": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/id" }
+        },
+        "tool": {
+          "type": "string",
+          "pattern": "^opcclassic\\.[A-Za-z0-9_.]+$"
+        },
+        "fixtureId": { "$ref": "#/$defs/id" },
+        "expected": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["outcome"],
+          "properties": {
+            "outcome": { "enum": ["success", "failure", "skip"] },
+            "minimumCount": { "type": "integer", "minimum": 0 },
+            "itemId": { "$ref": "#/$defs/text" },
+            "hResult": { "type": ["integer", "string"] }
+          }
+        },
+        "expectedFailures": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["code", "description"],
+            "properties": {
+              "code": { "$ref": "#/$defs/text" },
+              "description": { "$ref": "#/$defs/text" }
+            }
+          }
+        }
+      }
+    }
+  }
+}

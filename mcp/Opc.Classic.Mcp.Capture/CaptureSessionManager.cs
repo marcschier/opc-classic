@@ -31,7 +31,9 @@ public sealed class CaptureSessionManager : IAsyncDisposable
     private const int kDefaultMaxRetainedSessions = 32;
 
     private readonly ConcurrentDictionary<string, CaptureSession> _sessions = new(StringComparer.Ordinal);
+    private readonly ConcurrentDictionary<string, CaptureNotificationSubscription> _notificationSubscriptions = new(StringComparer.Ordinal);
     private readonly SemaphoreSlim _evictionLock = new(1, 1);
+    private readonly AsyncOperationGate _notificationLifecycle = new(nameof(CaptureSessionManager));
     private readonly ILogger _logger;
     private readonly string _scratchRoot;
     private int _disposed;
@@ -74,6 +76,7 @@ public sealed class CaptureSessionManager : IAsyncDisposable
     /// Current registered session count (all states).
     /// </summary>
     public int Count => _sessions.Count;
+    internal int NotificationSubscriptionCount => _notificationSubscriptions.Count;
 
     /// <summary>
     /// Currently Running or Starting sessions.
@@ -124,7 +127,14 @@ public sealed class CaptureSessionManager : IAsyncDisposable
         Directory.CreateDirectory(folder);
 
         ICaptureSource source = sourceFactory(folder);
-        var session = new CaptureSession(id, sourceName, source, folder, request, _logger);
+        var session = new CaptureSession(
+            id,
+            sourceName,
+            source,
+            folder,
+            request,
+            _logger,
+            sourceFactory);
         if (!_sessions.TryAdd(id, session))
         {
             // Astronomically unlikely; surface clearly rather than overwrite.
@@ -193,6 +203,9 @@ public sealed class CaptureSessionManager : IAsyncDisposable
     public async Task<bool> RemoveAsync(string id, CancellationToken cancellationToken)
     {
         ArgumentException.ThrowIfNullOrEmpty(id);
+        using AsyncOperationGate.Lease lifecycle =
+            await _notificationLifecycle.EnterAsync(cancellationToken).ConfigureAwait(false);
+        await StopNotificationSubscriptionsAsync(id).ConfigureAwait(false);
         if (!_sessions.TryRemove(id, out CaptureSession? session))
         {
             return false;
@@ -209,6 +222,94 @@ public sealed class CaptureSessionManager : IAsyncDisposable
 
         await session.DisposeAsync().ConfigureAwait(false);
         return true;
+    }
+
+    internal async Task<CaptureNotificationSubscriptionInfo> SubscribeNotificationsAsync(
+        string sessionId,
+        long sinceIndex,
+        string? subscriberId,
+        int subscriberCapacity,
+        int notificationQueueCapacity,
+        int pollIntervalMilliseconds,
+        ICaptureNotificationPublisher? publisher,
+        CancellationToken cancellationToken)
+    {
+        ObjectDisposedException.ThrowIf(_disposed != 0, this);
+        using AsyncOperationGate.Lease lifecycle =
+            await _notificationLifecycle.EnterAsync(cancellationToken).ConfigureAwait(false);
+        if (!TryGet(sessionId, out CaptureSession session))
+        {
+            throw new CaptureException($"Capture session '{sessionId}' not found.");
+        }
+
+        string subscriptionId = Guid.NewGuid().ToString("N");
+        CaptureNotificationSubscriptionInfo info = CaptureNotificationSubscription.NormalizeInfo(
+            new CaptureNotificationSubscriptionInfo(
+                subscriptionId,
+                sessionId,
+                string.IsNullOrWhiteSpace(subscriberId) ? subscriptionId : subscriberId.Trim(),
+                sinceIndex,
+                subscriberCapacity,
+                notificationQueueCapacity,
+                pollIntervalMilliseconds));
+        string cursorId = "notification:" + subscriptionId;
+        ICaptureNotificationPublisher effectivePublisher =
+            publisher ?? NullCaptureNotificationPublisher.Instance;
+        try
+        {
+            int reservedCapacity = await session.ReserveTailSubscriberAsync(
+                cursorId,
+                info.SubscriberCapacity,
+                startProducer: true,
+                cancellationToken).ConfigureAwait(false);
+            info = info with { SubscriberCapacity = reservedCapacity };
+        }
+        catch
+        {
+            await effectivePublisher.DisposeAsync().ConfigureAwait(false);
+            throw;
+        }
+
+        var subscription = new CaptureNotificationSubscription(
+            info,
+            cursorId,
+            session,
+            effectivePublisher,
+            _logger,
+            completedId => _notificationSubscriptions.TryRemove(completedId, out _));
+        if (!_notificationSubscriptions.TryAdd(subscriptionId, subscription))
+        {
+            await session.CloseTailSubscriberAsync(cursorId).ConfigureAwait(false);
+            await effectivePublisher.DisposeAsync().ConfigureAwait(false);
+            throw new CaptureException("Could not reserve a capture notification subscription.");
+        }
+        subscription.Start();
+        return subscription.Info;
+    }
+
+    internal async Task<bool> UnsubscribeNotificationsAsync(string subscriptionId)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(subscriptionId);
+        if (!_notificationSubscriptions.TryRemove(subscriptionId, out CaptureNotificationSubscription? subscription))
+        {
+            return false;
+        }
+        await subscription.DisposeAsync().ConfigureAwait(false);
+        return true;
+    }
+
+    private async Task StopNotificationSubscriptionsAsync(string sessionId)
+    {
+        CaptureNotificationSubscription[] subscriptions = _notificationSubscriptions.Values
+            .Where(subscription => subscription.Info.SessionId == sessionId)
+            .ToArray();
+        foreach (CaptureNotificationSubscription subscription in subscriptions)
+        {
+            if (_notificationSubscriptions.TryRemove(subscription.Info.SubscriptionId, out _))
+            {
+                await subscription.DisposeAsync().ConfigureAwait(false);
+            }
+        }
     }
 
     private async Task EnsureRetentionCapAsync(CancellationToken cancellationToken)
@@ -254,8 +355,13 @@ public sealed class CaptureSessionManager : IAsyncDisposable
                         oldest.Id, oldest.LastTouchedAt);
                 }
 
-                _sessions.TryRemove(oldest.Id, out _);
-                await oldest.DisposeAsync().ConfigureAwait(false);
+                using (AsyncOperationGate.Lease lifecycle =
+                    await _notificationLifecycle.EnterAsync(cancellationToken).ConfigureAwait(false))
+                {
+                    _sessions.TryRemove(oldest.Id, out _);
+                    await StopNotificationSubscriptionsAsync(oldest.Id).ConfigureAwait(false);
+                    await oldest.DisposeAsync().ConfigureAwait(false);
+                }
             }
         }
         finally
@@ -272,6 +378,14 @@ public sealed class CaptureSessionManager : IAsyncDisposable
         if (Interlocked.Exchange(ref _disposed, 1) != 0)
         {
             return;
+        }
+
+        await _notificationLifecycle.DisposeAsync().ConfigureAwait(false);
+        CaptureNotificationSubscription[] subscriptions = _notificationSubscriptions.Values.ToArray();
+        _notificationSubscriptions.Clear();
+        foreach (CaptureNotificationSubscription subscription in subscriptions)
+        {
+            await subscription.DisposeAsync().ConfigureAwait(false);
         }
 
         foreach (CaptureSession session in _sessions.Values)

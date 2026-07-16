@@ -10,8 +10,6 @@ namespace Opc.Classic.Dcom.Kerberos;
 /// </summary>
 public sealed class KerberosAuthContext : IAuthContext, IAuthSessionKeyProvider
 {
-    private const int Rfc4121WrapHeaderLength = 16;
-
     private readonly IKerberosConnectionContext _kerberosCtx;
     private readonly ChannelBindings? _channelBindings;
     private readonly IGssMicProvider? _micProvider;
@@ -99,6 +97,17 @@ public sealed class KerberosAuthContext : IAuthContext, IAuthSessionKeyProvider
         return [];
     }
 
+    /// <inheritdoc />
+    public int GetVerifierLength(
+        int signedRegionLength,
+        int confidentialLength)
+    {
+        _ = signedRegionLength;
+        _ = confidentialLength;
+        return EstablishedSession.GetRpcVerifierLength(
+            ProtectionLevel >= OpcProtectionLevel.Privacy);
+    }
+
     private void VerifyMechListMic(SpnegoNegTokenResp response)
     {
         if (_mechListBytes is null || _mechListBytes.Length == 0)
@@ -132,6 +141,9 @@ public sealed class KerberosAuthContext : IAuthContext, IAuthSessionKeyProvider
         _session = new KerberosSession(
             sessionKey.Key.Span,
             sessionKey.EncryptionType,
+            sessionKey.SendSequenceNumber,
+            sessionKey.ReceiveSequenceNumber,
+            isAcceptor: false,
             usesAcceptorSubkey: sessionKey.UsesAcceptorSubkey);
     }
 
@@ -150,19 +162,11 @@ public sealed class KerberosAuthContext : IAuthContext, IAuthSessionKeyProvider
             return;
         }
 
-        if (ProtectionLevel >= OpcProtectionLevel.Privacy)
-        {
-            // Seal only the confidential stub sub-range; RFC4121 Wrap returns a 16-byte
-            // header followed by the ciphertext, which we copy back in place.
-            Span<byte> confidential = signedRegion.Slice(confidentialOffset, confidentialLength);
-            signature = EstablishedSession.WrapMessage(confidential, confidential: true);
-            signature.AsSpan(Rfc4121WrapHeaderLength, confidential.Length).CopyTo(confidential);
-            return;
-        }
-
-        // Integrity: MIC over the entire signed region (the PDU minus its auth_value,
-        // per MS-RPCE §3.3.1.5.2.2).
-        signature = EstablishedSession.WrapMessage(signedRegion, confidential: false);
+        signature = EstablishedSession.ProtectRpcMessage(
+            signedRegion,
+            confidentialOffset,
+            confidentialLength,
+            ProtectionLevel >= OpcProtectionLevel.Privacy);
     }
 
     /// <inheritdoc />
@@ -173,22 +177,14 @@ public sealed class KerberosAuthContext : IAuthContext, IAuthSessionKeyProvider
             return signature.IsEmpty;
         }
 
-        bool privacy = ProtectionLevel >= OpcProtectionLevel.Privacy;
-        Span<byte> target = privacy ? signedRegion.Slice(confidentialOffset, confidentialLength) : signedRegion;
         try
         {
-            byte[] plaintext = EstablishedSession.UnwrapMessage(signature.Span, out bool wasConfidential);
-            if (wasConfidential != privacy || plaintext.Length != target.Length)
-            {
-                return false;
-            }
-
-            if (!wasConfidential && !plaintext.AsSpan().SequenceEqual(target))
-            {
-                return false;
-            }
-
-            plaintext.CopyTo(target);
+            EstablishedSession.UnprotectRpcMessage(
+                signedRegion,
+                confidentialOffset,
+                confidentialLength,
+                signature.Span,
+                ProtectionLevel >= OpcProtectionLevel.Privacy);
             return true;
         }
         catch (ArgumentException)

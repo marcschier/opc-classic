@@ -1,7 +1,11 @@
 ﻿// Copyright (c) 2026 Opc.Classic Contributors. Licensed under the MIT License.
 
+using System.Buffers.Binary;
 using System.Reflection;
 using System.Runtime.ExceptionServices;
+using Opc.Classic.Dcom.Rpc;
+using Opc.Classic.Dcom.Rpc.pdu;
+using Opc.Classic.Dcom.Transport;
 
 namespace Opc.Classic.Mcp.Capture.Tests;
 
@@ -160,6 +164,38 @@ public sealed class CaptureSessionTailTests
         await Assert.That(second.TotalEmitted).IsEqualTo(4);
     }
 
+    [Test]
+    public async Task DrainTailAsync_AfterStopFinalizesPendingGapRecoveryExactlyOnceBeforeDone()
+    {
+        byte[] firstFrame = EncodeRequest(callId: 201);
+        byte[] interruptedFrame = EncodeRequest(callId: 202);
+        byte[] recoveredFrame = EncodeRequest(callId: 203);
+        uint firstSequence = 10_000;
+        uint interruptedSequence = firstSequence + (uint)firstFrame.Length;
+        uint recoveredSequence = interruptedSequence + (uint)interruptedFrame.Length;
+        await using TailHarness harness = await TailHarness.StartAsync(
+        [
+            NewTcpPacket(firstFrame, firstSequence),
+            NewTcpPacket(interruptedFrame[..8], interruptedSequence),
+            NewTcpPacket(recoveredFrame[..6], recoveredSequence),
+            NewTcpPacket(recoveredFrame[6..], recoveredSequence + 6),
+        ]);
+
+        DrainTailResult running = await harness.DrainAsync(sinceIndex: 0, max: 100);
+        await Assert.That(running.Pdus.Select(pdu => pdu.CallId)).IsEquivalentTo([201]);
+        await Assert.That(running.Done).IsFalse();
+
+        await harness.Session.StopAsync(TestContext.Current!.CancellationToken);
+        DrainTailResult completed = await harness.DrainAsync(running.NextIndex, max: 100);
+        DrainTailResult repeated = await harness.DrainAsync(completed.NextIndex, max: 100);
+
+        await Assert.That(completed.Pdus.Select(pdu => pdu.CallId)).IsEquivalentTo([203]);
+        await Assert.That(completed.Done).IsTrue();
+        await Assert.That(repeated.Pdus.Count).IsEqualTo(0);
+        await Assert.That(repeated.TotalEmitted).IsEqualTo(completed.TotalEmitted);
+        await Assert.That(repeated.Done).IsTrue();
+    }
+
     private static CapturedPacket HexRequest(string tag) => MakeHexPacket(tag, direction: "request");
     private static CapturedPacket HexResponse(string tag) => MakeHexPacket(tag, direction: "response");
 
@@ -178,6 +214,53 @@ public sealed class CaptureSessionTailTests
                 ["direction"] = direction,
                 ["tag"] = tag,
             });
+    }
+
+    private static byte[] EncodeRequest(int callId)
+    {
+        byte[] stub = OrpcEnvelope.BuildRequestStub(new byte[] { 0x10, 0x20 }, Guid.Empty);
+        return PduCodec.EncodePdu(
+            new RequestCoPdu
+            {
+                AllocationHint = stub.Length,
+                ContextId = 0,
+                Opnum = 7,
+                Stub = stub,
+                CallId = callId,
+            },
+            ConnectionOrientedPdu.MUST_RECEIVE_FRAGMENT_SIZE);
+    }
+
+    private static CapturedPacket NewTcpPacket(byte[] payload, uint sequenceNumber)
+    {
+        byte[] frame = new byte[14 + 20 + 20 + payload.Length];
+        frame[12] = 0x08;
+        frame[13] = 0x00;
+        int ipOffset = 14;
+        frame[ipOffset] = 0x45;
+        BinaryPrimitives.WriteUInt16BigEndian(
+            frame.AsSpan(ipOffset + 2, 2),
+            (ushort)(20 + 20 + payload.Length));
+        frame[ipOffset + 8] = 64;
+        frame[ipOffset + 9] = 6;
+        frame[ipOffset + 12] = 10;
+        frame[ipOffset + 15] = 1;
+        frame[ipOffset + 16] = 10;
+        frame[ipOffset + 19] = 2;
+        int tcpOffset = ipOffset + 20;
+        BinaryPrimitives.WriteUInt16BigEndian(frame.AsSpan(tcpOffset, 2), 50_000);
+        BinaryPrimitives.WriteUInt16BigEndian(frame.AsSpan(tcpOffset + 2, 2), 135);
+        BinaryPrimitives.WriteUInt32BigEndian(frame.AsSpan(tcpOffset + 4, 4), sequenceNumber);
+        frame[tcpOffset + 12] = 0x50;
+        frame[tcpOffset + 13] = 0x18;
+        BinaryPrimitives.WriteUInt16BigEndian(frame.AsSpan(tcpOffset + 14, 2), 8192);
+        payload.CopyTo(frame.AsSpan(tcpOffset + 20));
+        return new CapturedPacket(
+            DateTimeOffset.UtcNow,
+            frame.Length,
+            frame,
+            LinkType: 1,
+            Annotations: new Dictionary<string, string?>());
     }
 
     private sealed class TailHarness : IAsyncDisposable

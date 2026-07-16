@@ -542,8 +542,10 @@ public ref struct NdrWriter
     {
         if (_position + additionalBytes > _buffer.Length)
         {
-            throw new InvalidOperationException(
-                $"NdrWriter buffer overflow: need {additionalBytes} bytes at position {_position} but only {_buffer.Length - _position} remain.");
+            throw new NdrBufferOverflowException(
+                _position,
+                additionalBytes,
+                _buffer.Length - _position);
         }
     }
 }

@@ -49,8 +49,15 @@
     <Project Path="tests/Opc.Classic.Hosting.Windows.Tests/Opc.Classic.Hosting.Windows.Tests.csproj" />
     <Project Path="tests/Opc.Classic.PropertyTests/Opc.Classic.PropertyTests.csproj" />
     <Project Path="tests/Opc.Classic.Security.Tests/Opc.Classic.Security.Tests.csproj" />
+    <Project Path="tests/Opc.Classic.Samples.Cpx.Tests/Opc.Classic.Samples.Cpx.Tests.csproj" />
     <Project Path="tests/Opc.Classic.SnapshotTests/Opc.Classic.SnapshotTests.csproj" />
+    <Project Path="tests/Opc.Classic.VendorDescriptors.Tests/Opc.Classic.VendorDescriptors.Tests.csproj" />
     <Project Path="tests/Opc.Classic.Xml.Tests/Opc.Classic.Xml.Tests.csproj" />
+  </Folder>
+  <Folder Name="/interop/" />
+  <Folder Name="/interop/tools/" />
+  <Folder Name="/interop/tools/vendor-descriptors/">
+    <Project Path="interop/tools/vendor-descriptors/Opc.Classic.VendorDescriptors.csproj" />
   </Folder>
   <Folder Name="/samples/">
     <Project Path="benchmarks/Opc.Classic.Benchmarks/Opc.Classic.Benchmarks.csproj" />
@@ -58,6 +65,8 @@
     <Project Path="samples/Opc.Classic.Samples.AeServer/Opc.Classic.Samples.AeServer.csproj" />
     <Project Path="samples/Opc.Classic.Samples.AotCanary/Opc.Classic.Samples.AotCanary.csproj" />
     <Project Path="samples/Opc.Classic.Samples.CttServer/Opc.Classic.Samples.CttServer.csproj" />
+    <Project Path="samples/Opc.Classic.Samples.CpxClient/Opc.Classic.Samples.CpxClient.csproj" />
+    <Project Path="samples/Opc.Classic.Samples.CpxServer/Opc.Classic.Samples.CpxServer.csproj" />
     <Project Path="samples/Opc.Classic.Samples.DaClient/Opc.Classic.Samples.DaClient.csproj" />
     <Project Path="samples/Opc.Classic.Samples.DaServer/Opc.Classic.Samples.DaServer.csproj" />
     <Project Path="samples/Opc.Classic.Samples.OpcSecurityServer/Opc.Classic.Samples.OpcSecurityServer.csproj" />

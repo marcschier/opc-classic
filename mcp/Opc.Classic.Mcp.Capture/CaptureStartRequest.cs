@@ -61,8 +61,16 @@ namespace Opc.Classic.Mcp.Capture;
 /// persist the key. Capture must start BEFORE the NTLM Type3
 /// handshake or per-direction counters will drift. Live-session
 /// tail/get/summarize decoding performs the unwrap inline. Ad-hoc
-/// decode/replay key input and external-peer compatibility variants
-/// remain out of scope.
+/// decode/replay tools accept their own separately owned key input.
+/// </param>
+/// <param name="TargetHost">Optional target host used for capture-time endpoint discovery.</param>
+/// <param name="ProgId">Optional OPC ProgID resolved after broad capture has started.</param>
+/// <param name="Clsid">Optional OPC CLSID activated after broad capture has started.</param>
+/// <param name="ConnectionString">Optional DCOM/OPC/TCP connection string describing the target.</param>
+/// <param name="AmbientSso">
+/// Explicit opt-in to send the process/current-logon Windows identity while
+/// resolving or activating a target. False skips authenticated OPCEnum/DCOM
+/// connections; direct TCP and host-only metadata resolution remain available.
 /// </param>
 public sealed record class CaptureStartRequest(
     string? InterfaceName = null,
@@ -73,7 +81,12 @@ public sealed record class CaptureStartRequest(
     int? MaxDurationSeconds = null,
     string? ReplaySourceDirectory = null,
     IReadOnlyList<int>? ServerPorts = null,
-    byte[]? NtlmSessionKey = null)
+    byte[]? NtlmSessionKey = null,
+    string? TargetHost = null,
+    string? ProgId = null,
+    string? Clsid = null,
+    string? ConnectionString = null,
+    bool AmbientSso = false)
 {
     /// <summary>
     /// Custom <see cref="ToString"/> that REDACTS the
@@ -96,6 +109,11 @@ public sealed record class CaptureStartRequest(
             + $"{nameof(MaxDurationSeconds)} = {MaxDurationSeconds?.ToString() ?? "null"}, "
             + $"{nameof(ReplaySourceDirectory)} = {ReplaySourceDirectory ?? "null"}, "
             + $"{nameof(ServerPorts)} = {(ServerPorts is null ? "null" : "[" + string.Join(",", ServerPorts) + "]")}, "
+            + $"{nameof(TargetHost)} = {TargetHost ?? "null"}, "
+            + $"{nameof(ProgId)} = {ProgId ?? "null"}, "
+            + $"{nameof(Clsid)} = {Clsid ?? "null"}, "
+            + $"{nameof(ConnectionString)} = {ConnectionString ?? "null"}, "
+            + $"{nameof(AmbientSso)} = {AmbientSso}, "
             + $"{nameof(NtlmSessionKey)} = {keyDescriptor} }}";
     }
 }

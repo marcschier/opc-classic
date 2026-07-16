@@ -81,8 +81,15 @@ public sealed class CttDaServer : IOpcDaServer, IDisposable
         ArgumentNullException.ThrowIfNull(name);
         AddGroupMessage(_logger, name, active, requestedUpdateRate, null);
 
-        OpcDaGroup group = CreateGroup(name, clientHandle, active, requestedUpdateRate, timeBias: 0, percentDeadband: 0f, localeId);
-        return Task.FromResult(group.ServerHandle);
+        GroupEntry entry = CreateAndRegisterGroup(
+            name,
+            clientHandle,
+            active,
+            requestedUpdateRate,
+            timeBias: 0,
+            percentDeadband: 0f,
+            localeId);
+        return Task.FromResult(entry.Group.ServerHandle);
     }
 
     /// <inheritdoc />
@@ -104,52 +111,11 @@ public sealed class CttDaServer : IOpcDaServer, IDisposable
         cancellationToken.ThrowIfCancellationRequested();
         AddGroupMessage(_logger, name, active, requestedUpdateRate, null);
 
-        OpcDaGroup managedGroup = CreateGroup(
+        GroupEntry entry = CreateAndRegisterGroup(
             name, clientGroupHandle, active, requestedUpdateRate, timeBias, percentDeadband, localeId);
-        serverGroupHandle = managedGroup.ServerHandle;
-        revisedUpdateRate = managedGroup.UpdateRate;
-        // Register the managed group in the IPID registry so subsequent calls
-        // (IOPCGroupStateMgt etc.) carrying the assigned IPID route to this
-        // group instance. The dispatcher set is built from the source-generated
-        // *ServerDispatcher wrappers around the OpcDaGroup type; additional
-        // interfaces (IOPCItemMgt, IOPCSyncIO, ...) plug in here in follow-up
-        // commits.
-        var dispatchers = new Dictionary<Guid, IOpcServerDispatcher>
-        {
-            [IOPCGroupStateMgt.InterfaceId] = new IOPCGroupStateMgtServerDispatcher(managedGroup),
-            [IOPCGroupStateMgt2.InterfaceId] = new IOPCGroupStateMgt2ServerDispatcher(managedGroup),
-            [IOPCItemMgt.InterfaceId] = new IOPCItemMgtServerDispatcher(managedGroup),
-            [IOPCSyncIO.InterfaceId] = new IOPCSyncIOServerDispatcher(managedGroup),
-            [IOPCSyncIO2.InterfaceId] = new IOPCSyncIO2ServerDispatcher(managedGroup),
-            [IOPCAsyncIO2.InterfaceId] = new IOPCAsyncIO2ServerDispatcher(managedGroup),
-            [IOPCAsyncIO3.InterfaceId] = new IOPCAsyncIO3ServerDispatcher(managedGroup),
-            [IConnectionPoint.InterfaceId] = new IConnectionPointServerDispatcher(managedGroup),
-            [IConnectionPointContainer.InterfaceId] = new IConnectionPointContainerServerDispatcher(managedGroup),
-            [IOPCItemDeadbandMgt.InterfaceId] = new IOPCItemDeadbandMgtServerDispatcher(managedGroup),
-            [IOPCItemSamplingMgt.InterfaceId] = new IOPCItemSamplingMgtServerDispatcher(managedGroup),
-        };
-        Guid ipid = _objectRegistry.Register(dispatchers);
-
-        if (_groups.TryGetValue(managedGroup.ServerHandle, out GroupEntry? existing))
-        {
-            // Won't happen with a monotonic counter, but defend against rollover.
-            existing.Ipid = ipid;
-            existing.Group = managedGroup;
-        }
-        else
-        {
-            _groups[managedGroup.ServerHandle] = new GroupEntry(managedGroup, ipid);
-        }
-
-        group = new OpcInterfaceRef(
-            iid: requestedInterfaceId,
-            flags: 0,
-            publicRefs: 1,
-            oxid: 1,
-            oid: unchecked((ulong)managedGroup.ServerHandle),
-            ipid: ipid,
-            securityOffset: 0,
-            resolverBindings: Array.Empty<ushort>());
+        serverGroupHandle = entry.Group.ServerHandle;
+        revisedUpdateRate = entry.Group.UpdateRate;
+        group = CreateGroupReference(entry, requestedInterfaceId, addPublicRef: false);
         return Task.CompletedTask;
     }
 
@@ -170,12 +136,14 @@ public sealed class CttDaServer : IOpcDaServer, IDisposable
     /// <inheritdoc />
     public void Dispose()
     {
-        foreach (GroupEntry entry in _groups.Values)
+        foreach (KeyValuePair<int, GroupEntry> pair in _groups.ToArray())
         {
-            entry.Group.Dispose();
+            if (_groups.TryRemove(pair.Key, out GroupEntry? entry))
+            {
+                _objectRegistry.Unregister(entry.Ipid);
+                entry.Group.Dispose();
+            }
         }
-
-        _groups.Clear();
         GC.SuppressFinalize(this);
     }
 
@@ -195,35 +163,10 @@ public sealed class CttDaServer : IOpcDaServer, IDisposable
         {
             if (string.Equals(entry.Group.Name, name, StringComparison.Ordinal))
             {
-                return Task.FromResult<IOpcInterfaceRef>(new OpcInterfaceRef(
-                    iid: requestedInterfaceId,
-                    flags: 0,
-                    publicRefs: 1,
-                    oxid: 1,
-                    oid: unchecked((ulong)entry.Group.ServerHandle),
-                    ipid: entry.Ipid,
-                    securityOffset: 0,
-                    resolverBindings: Array.Empty<ushort>()));
+                return Task.FromResult(CreateGroupReference(entry, requestedInterfaceId, addPublicRef: true));
             }
         }
         throw new OpcException(OpcResultId.UnknownPath);
-    }
-
-    Task<IOpcInterfaceRef> IOPCServer.CreateGroupEnumeratorAsync(int scope, Guid requestedInterfaceId, CancellationToken cancellationToken)
-    {
-        _ = scope; // OPC_ENUM_PUBLIC / OPC_ENUM_PRIVATE / OPC_ENUM_ALL — single namespace today
-        cancellationToken.ThrowIfCancellationRequested();
-        // Register a fresh IEnumUnknown-like enumerator IPID for the snapshot of groups.
-        Guid ipid = _objectRegistry.Register(new Dictionary<Guid, IOpcServerDispatcher>());
-        return Task.FromResult<IOpcInterfaceRef>(new OpcInterfaceRef(
-            iid: requestedInterfaceId,
-            flags: 0,
-            publicRefs: 1,
-            oxid: 1,
-            oid: 0,
-            ipid: ipid,
-            securityOffset: 0,
-            resolverBindings: Array.Empty<ushort>()));
     }
 
     /// <inheritdoc />
@@ -261,14 +204,28 @@ public sealed class CttDaServer : IOpcDaServer, IDisposable
         _groups.TryGetValue(serverGroupHandle, out GroupEntry? entry) ? entry.Ipid : null;
 
     /// <inheritdoc />
-    public Task<IReadOnlyList<OpcDaGroup>> SnapshotGroupsAsync(CancellationToken cancellationToken = default)
+    public Task<IReadOnlyList<OpcDaGroup>> SnapshotPrivateGroupsAsync(CancellationToken cancellationToken = default)
     {
         cancellationToken.ThrowIfCancellationRequested();
-        OpcDaGroup[] snapshot = _groups
+        return Task.FromResult<IReadOnlyList<OpcDaGroup>>(CreatePrivateGroupSnapshot());
+    }
+
+    /// <inheritdoc />
+    public Task<OpcDaGroupSetSnapshot> SnapshotAllGroupsAsync(CancellationToken cancellationToken = default)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+        return Task.FromResult(new OpcDaGroupSetSnapshot(
+            CreatePrivateGroupSnapshot(),
+            Array.Empty<OpcDaGroup>()));
+    }
+
+    private OpcDaGroup[] CreatePrivateGroupSnapshot()
+    {
+        KeyValuePair<int, GroupEntry>[] entries = _groups.ToArray();
+        return entries
             .OrderBy(static pair => pair.Key)
             .Select(static pair => pair.Value.Group)
             .ToArray();
-        return Task.FromResult<IReadOnlyList<OpcDaGroup>>(snapshot);
     }
 
     private OpcDaGroup CreateGroup(
@@ -294,6 +251,88 @@ public sealed class CttDaServer : IOpcDaServer, IDisposable
             callbackSinkFactory: _callbackSinkFactory);
     }
 
+    private GroupEntry CreateAndRegisterGroup(
+        string name,
+        int clientHandle,
+        bool active,
+        int requestedUpdateRate,
+        int timeBias,
+        float percentDeadband,
+        int localeId)
+    {
+        OpcDaGroup group = CreateGroup(
+            name,
+            clientHandle,
+            active,
+            requestedUpdateRate,
+            timeBias,
+            percentDeadband,
+            localeId);
+        Guid ipid = Guid.Empty;
+        try
+        {
+            ipid = _objectRegistry.Register(CreateGroupDispatchers(group), publicRefs: 1);
+            var entry = new GroupEntry(group, ipid);
+            if (!_groups.TryAdd(group.ServerHandle, entry))
+            {
+                throw new InvalidOperationException($"A group with server handle {group.ServerHandle} is already registered.");
+            }
+
+            return entry;
+        }
+        catch
+        {
+            if (ipid != Guid.Empty)
+            {
+                _objectRegistry.Unregister(ipid);
+            }
+            group.Dispose();
+            throw;
+        }
+    }
+
+    private IOpcInterfaceRef CreateGroupReference(GroupEntry entry, Guid requestedInterfaceId, bool addPublicRef)
+    {
+        if (addPublicRef && !_objectRegistry.AddPublicRefs(entry.Ipid, 1))
+        {
+            throw new OpcException(new OpcResultId(unchecked((int)0x80010108), "RPC_E_DISCONNECTED"));
+        }
+        if (!_objectRegistry.TryGetObjectMetadata(entry.Ipid, out OpcObjectMetadata metadata))
+        {
+            if (addPublicRef)
+            {
+                _objectRegistry.ReleasePublicRefs(entry.Ipid, 1);
+            }
+            throw new OpcException(new OpcResultId(unchecked((int)0x80010108), "RPC_E_DISCONNECTED"));
+        }
+
+        return new OpcInterfaceRef(
+            iid: requestedInterfaceId,
+            flags: 0,
+            publicRefs: 1,
+            oxid: metadata.Oxid,
+            oid: metadata.Oid,
+            ipid: entry.Ipid,
+            securityOffset: 0,
+            resolverBindings: Array.Empty<ushort>());
+    }
+
+    private static IReadOnlyDictionary<Guid, IOpcServerDispatcher> CreateGroupDispatchers(OpcDaGroup group) =>
+        new Dictionary<Guid, IOpcServerDispatcher>
+        {
+            [IOPCGroupStateMgt.InterfaceId] = new IOPCGroupStateMgtServerDispatcher(group),
+            [IOPCGroupStateMgt2.InterfaceId] = new IOPCGroupStateMgt2ServerDispatcher(group),
+            [IOPCItemMgt.InterfaceId] = new IOPCItemMgtServerDispatcher(group),
+            [IOPCSyncIO.InterfaceId] = new IOPCSyncIOServerDispatcher(group),
+            [IOPCSyncIO2.InterfaceId] = new IOPCSyncIO2ServerDispatcher(group),
+            [IOPCAsyncIO2.InterfaceId] = new IOPCAsyncIO2ServerDispatcher(group),
+            [IOPCAsyncIO3.InterfaceId] = new IOPCAsyncIO3ServerDispatcher(group),
+            [IConnectionPoint.InterfaceId] = new IConnectionPointServerDispatcher(group),
+            [IConnectionPointContainer.InterfaceId] = new IConnectionPointContainerServerDispatcher(group),
+            [IOPCItemDeadbandMgt.InterfaceId] = new IOPCItemDeadbandMgtServerDispatcher(group),
+            [IOPCItemSamplingMgt.InterfaceId] = new IOPCItemSamplingMgtServerDispatcher(group),
+        };
+
     private sealed class GroupEntry
     {
         public GroupEntry(OpcDaGroup group, Guid ipid)
@@ -302,7 +341,7 @@ public sealed class CttDaServer : IOpcDaServer, IDisposable
             Ipid = ipid;
         }
 
-        public OpcDaGroup Group { get; set; }
-        public Guid Ipid { get; set; }
+        public OpcDaGroup Group { get; }
+        public Guid Ipid { get; }
     }
 }

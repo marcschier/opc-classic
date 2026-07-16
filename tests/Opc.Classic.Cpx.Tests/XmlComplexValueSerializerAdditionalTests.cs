@@ -130,6 +130,103 @@ public sealed class XmlComplexValueSerializerAdditionalTests
             .Throws<NotSupportedException>();
     }
 
+    [Test]
+    public async Task Serializer_ConvertedNestedStructureArray_RoundTripsRequestedShape()
+    {
+        var sourceItem = CreateType("SourceItem", "source:item", new TypeField("Code", TypeKind.UInt8));
+        var requestedItem = CreateType("RequestedItem", "requested:item", new TypeField("Code", TypeKind.UInt16));
+        var sourceBatch = CreateType(
+            "SourceBatch",
+            "source:batch",
+            new TypeField("Items", TypeKind.StructReference, sourceItem.TypeId, ElementCount: 2));
+        var requestedBatch = CreateType(
+            "RequestedBatch",
+            "requested:batch",
+            new TypeField("Items", TypeKind.StructReference, requestedItem.TypeId, ElementCount: 2));
+        var requestedDictionary = new TypeDictionary("http://example.com/requested", [requestedBatch, requestedItem]);
+        var source = CreateValue(sourceBatch, new Dictionary<string, object?>
+        {
+            ["Items"] = new[]
+            {
+                CreateValue(sourceItem, new Dictionary<string, object?> { ["Code"] = (byte)7 }),
+                CreateValue(sourceItem, new Dictionary<string, object?> { ["Code"] = (byte)9 }),
+            },
+        });
+        var converted = OpcCpxTypeConverter.Convert(
+            source,
+            sourceBatch,
+            requestedBatch,
+            TypeDictionary.FromTypes(sourceBatch, sourceItem),
+            requestedDictionary);
+
+        var xml = XmlComplexValueSerializer.Serialize((ComplexValue)converted.Value!, requestedBatch, requestedDictionary);
+        var decoded = XmlComplexValueSerializer.Deserialize(xml, requestedBatch, requestedDictionary);
+
+        await Assert.That(converted.Error).IsEqualTo(OpcResultId.Ok.Code);
+        await Assert.That(decoded.TryGet<object?[]>("Items", out var items)).IsTrue();
+        await Assert.That(((ComplexValue)items![0]!).Fields["Code"]).IsEqualTo((ushort)7);
+        await Assert.That(((ComplexValue)items[1]!).Fields["Code"]).IsEqualTo((ushort)9);
+    }
+
+    [Test]
+    public async Task Serializer_NestedRequiredFieldMissing_NoOptionalFieldInference_ThrowsExpectedExceptions()
+    {
+        var child = CreateType("Child", "child", new TypeField("Required", TypeKind.UInt8));
+        var root = CreateType("Root", "root", new TypeField("Child", TypeKind.StructReference, child.TypeId));
+        var dictionary = TypeDictionary.FromTypes(root, child);
+        var missing = CreateValue(root, new Dictionary<string, object?>
+        {
+            ["Child"] = CreateValue(child, new Dictionary<string, object?>()),
+        });
+
+        await Assert.That(() => XmlComplexValueSerializer.Serialize(missing, root, dictionary))
+            .Throws<KeyNotFoundException>();
+        await Assert.That(() => XmlComplexValueSerializer.Deserialize("<Root><Child /></Root>", root, dictionary))
+            .Throws<FormatException>();
+    }
+
+    [Test]
+    public async Task Serializer_PreservesOptionalAndMinMaxOccurrenceConstraints()
+    {
+        var type = CreateType(
+            "Envelope",
+            "envelope",
+            new TypeField("Required", TypeKind.String) { MinOccurs = 1 },
+            new TypeField("Optional", TypeKind.String) { MinOccurs = 0 },
+            new TypeField("Values", TypeKind.UInt8, ElementCount: 2) { MinOccurs = 1 });
+        var value = CreateValue(type, new Dictionary<string, object?>
+        {
+            ["Required"] = "present",
+            ["Values"] = new byte[] { 7 },
+        });
+
+        var xml = XmlComplexValueSerializer.Serialize(value, type);
+        var decoded = XmlComplexValueSerializer.Deserialize(xml, type);
+
+        await Assert.That(xml).DoesNotContain("<Optional>");
+        await Assert.That(xml).Contains("<Values>7</Values>");
+        await Assert.That(decoded.Fields.ContainsKey("Optional")).IsFalse();
+        await Assert.That(((object?[])decoded.Fields["Values"]!).Length).IsEqualTo(1);
+    }
+
+    [Test]
+    public async Task Serializer_ExtraElementsAndFields_AreIgnored()
+    {
+        var type = CreateType("Payload", "payload", new TypeField("Value", TypeKind.UInt8));
+        var value = CreateValue(type, new Dictionary<string, object?> { ["Value"] = (byte)7, ["Ignored"] = 99 });
+        var xml = XmlComplexValueSerializer.Serialize(value, type);
+        var decoded = XmlComplexValueSerializer.Deserialize(
+            "<Payload><Ignored>99</Ignored><Value>7</Value><Extra>100</Extra></Payload>",
+            type);
+
+        await Assert.That(xml).IsEqualTo("<Payload xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:type=\"payload\"><Value>7</Value></Payload>");
+        await Assert.That(decoded.Fields.Count).IsEqualTo(1);
+        await Assert.That(decoded.Fields["Value"]).IsEqualTo((byte)7);
+    }
+
+    private static TypeDescription CreateType(string name, string typeId, params TypeField[] fields) =>
+        new(name, typeId, TypeKind.StructReference, true, fields);
+
     private static ComplexValue CreateValue(TypeDescription type, IReadOnlyDictionary<string, object?> fields) =>
         new()
         {

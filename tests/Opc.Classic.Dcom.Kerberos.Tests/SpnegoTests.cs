@@ -69,6 +69,23 @@ public sealed class SpnegoTests
         await Assert.That(ReadNtlmsspOid()).IsEqualTo("1.3.6.1.4.1.311.2.2.10");
     }
 
+    [Test]
+    public async Task DecodeNegTokenResp_rejects_duplicate_fields()
+    {
+        byte[] duplicateNegState =
+        [
+            0xA1, 0x0C,
+            0x30, 0x0A,
+            0xA0, 0x03, 0x0A, 0x01, 0x00,
+            0xA0, 0x03, 0x0A, 0x01, 0x01,
+        ];
+
+        Exception? thrown = CaptureException(() =>
+            SpnegoDecoder.DecodeNegTokenResp(duplicateNegState));
+
+        await Assert.That(thrown).IsTypeOf<AsnContentException>();
+    }
+
     // TUnitAssertions0005 workaround: Assert.That(const) is rejected by the analyzer.
     // Pass the constants through a non-const indirection so the analyzer sees a method call.
     private static string ReadSpnegoOid() => SpnegoOids.Spnego;
@@ -117,5 +134,18 @@ public sealed class SpnegoTests
     private static bool ContainsSubsequence(ReadOnlySpan<byte> haystack, ReadOnlySpan<byte> needle)
     {
         return haystack.IndexOf(needle) >= 0;
+    }
+
+    private static Exception? CaptureException(Action action)
+    {
+        try
+        {
+            action();
+            return null;
+        }
+        catch (Exception exception)
+        {
+            return exception;
+        }
     }
 }

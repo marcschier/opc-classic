@@ -443,14 +443,27 @@ jobs:
               throw 'TestServer LocalServer32 registration is missing.'
             }
             try {
-              $testServerExe = [Environment]::ExpandEnvironmentVariables(
-                [string] $testServerKey.GetValue($null)).Trim('"')
+              $testServerCommand = [Environment]::ExpandEnvironmentVariables(
+                [string] $testServerKey.GetValue($null)).Trim()
             } finally {
               $testServerKey.Dispose()
+            }
+            if ($testServerCommand.StartsWith('"')) {
+              $closingQuote = $testServerCommand.IndexOf('"', 1)
+              if ($closingQuote -le 1) {
+                throw "TestServer LocalServer32 command is invalid: '$testServerCommand'"
+              }
+              $testServerExe = $testServerCommand.Substring(1, $closingQuote - 1)
+            } else {
+              $testServerExe = ($testServerCommand -split '\s+', 2)[0]
             }
             if (-not (Test-Path -LiteralPath $testServerExe)) {
               throw "TestServer LocalServer32 target is missing: '$testServerExe'"
             }
+            $testServerExe = (Resolve-Path -LiteralPath $testServerExe).Path
+            $testServerInstallRoot = Split-Path -Parent $testServerExe
+            "OPC_TESTSERVER_INSTALL_ROOT=$testServerInstallRoot" |
+              Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
           } finally {
             $registry.Dispose()
           }

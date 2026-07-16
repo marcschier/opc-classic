@@ -521,15 +521,27 @@ public ref struct NdrReader
     /// (for example <c>IEnumGUID::Next</c>) where the server returns fewer
     /// elements than the caller-requested maximum.
     /// </summary>
-    public Guid[] ReadVaryingConformantGuidArray()
+    public Guid[] ReadVaryingConformantGuidArray() =>
+        ReadVaryingConformantGuidArrayCore(expectedMaximumCount: null);
+
+    /// <summary>
+    /// Reads a varying-conformant Guid array and validates its maximum count
+    /// against the caller-requested enumerator count.
+    /// </summary>
+    public Guid[] ReadVaryingConformantGuidArray(int expectedMaximumCount) =>
+        ReadVaryingConformantGuidArrayCore(expectedMaximumCount);
+
+    private Guid[] ReadVaryingConformantGuidArrayCore(int? expectedMaximumCount)
     {
-        _ = ReadBoundedConformanceCount(16, "NDR varying-conformant Guid array");
+        int maximumCount = ReadBoundedConformanceCount(16, "NDR varying-conformant Guid array");
         AlignTo(4);
-        _ = ReadUInt32();
+        uint offset = ReadUInt32();
         int actualCount = (int)ReadUInt32();
-        if (actualCount < 0)
+        if (actualCount < 0 || offset != 0u ||
+            (uint)actualCount > (uint)maximumCount ||
+            (expectedMaximumCount.HasValue && maximumCount != expectedMaximumCount.Value))
         {
-            throw new InvalidOperationException("NDR varying-conformant Guid array length is negative.");
+            throw new InvalidDataException("NDR varying-conformant Guid array bounds are invalid.");
         }
 
         EnsureBoundedPayloadBytes((uint)actualCount, 16, "NDR varying-conformant Guid array length");

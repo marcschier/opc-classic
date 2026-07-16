@@ -26,15 +26,16 @@ public sealed class RemUnknownServerDispatcherTests
 
         DispatchResult result = await dispatcher.DispatchAsync(
             3,
-            WriteRemQueryInterfaceRequest(ipid, 3, new[] { Iid1, Iid2, UnsupportedIid }),
+            WriteRemQueryInterfaceRequest(ipid, 3, new[] { Iid1, Iid2, OpcGuids.IID_IUnknown, UnsupportedIid }),
             CancellationToken.None);
 
         await Assert.That(result.Hresult).IsEqualTo(0);
         OpcRemQIResult[] qiResults = ReadRemQueryInterfaceResponse(result.Payload.Span);
-        await Assert.That(qiResults.Length).IsEqualTo(3);
+        await Assert.That(qiResults.Length).IsEqualTo(4);
         await Assert.That(qiResults[0].Hresult).IsEqualTo(0);
         await Assert.That(qiResults[1].Hresult).IsEqualTo(0);
-        await Assert.That(qiResults[2].Hresult).IsEqualTo(unchecked((int)0x80004002u));
+        await Assert.That(qiResults[2].Hresult).IsEqualTo(0);
+        await Assert.That(qiResults[3].Hresult).IsEqualTo(unchecked((int)0x80004002u));
         await Assert.That(qiResults[0].Ipid).IsEqualTo(ipid);
         await Assert.That(qiResults[1].Ipid).IsEqualTo(ipid);
         await Assert.That(registry.Contains(qiResults[0].Ipid)).IsTrue();

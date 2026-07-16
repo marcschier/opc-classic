@@ -605,7 +605,7 @@ public sealed class IOPCMissingDaMethodRoundTripTests
         WritePayload((ref NdrWriter writer) => writer.WriteInt32(value));
 
     private static ReadOnlyMemory<byte> EncodeInterfaceRef(Guid iid, int seed) =>
-        WritePayload((ref NdrWriter writer) => OpcInterfaceRefCodec.Write(ref writer, InterfaceRef(iid, seed)));
+        WritePayload((ref NdrWriter writer) => OpcMInterfacePointerCodec.Write(ref writer, InterfaceRef(iid, seed)));
 
     private static OpcInterfaceRef InterfaceRef(Guid iid, int seed) =>
         new(iid, 0, 1, 1, unchecked((ulong)(uint)seed), Guid.CreateVersion7(), 0, Array.Empty<ushort>());
@@ -622,9 +622,9 @@ public sealed class IOPCMissingDaMethodRoundTripTests
     private static ReadOnlyMemory<byte> EncodeItemStates(OpcItemState state, int error) =>
         WritePayload((ref NdrWriter writer) =>
         {
-            // [out, size_is(,N)] OPCITEMSTATE** ppItemValues — unique-pointer referent + max_count + inline.
-            writer.WriteUniquePointerReferent(true);
-            WriteArray(ref writer, new[] { state }, NdrOpcItemStateCodec.Write);
+            // [out, size_is(,N)] OPCITEMSTATE** ppItemValues — unique pointer,
+            // conformant inline parts, then deferred VARIANT bodies.
+            NdrOpcItemStateCodec.WriteConformantArray(ref writer, [state]);
             WriteInt32Array(ref writer, error);
         });
 

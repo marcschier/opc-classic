@@ -94,17 +94,29 @@ dotnet build samples\Opc.Classic.Samples.OpcSecurityServer\Opc.Classic.Samples.O
 
 # Wire capture per profile (writes .pcap under matrix-out/wire-captures/)
 .\tools\run-cross-impl-matrix.ps1 -WireCapture
+
+# Sensitive diagnostic mode: persist raw arguments, OPC values, and full errors
+.\tools\run-cross-impl-matrix.ps1 -IncludeSensitiveResults
 ```
 
 Each profile run produces:
 
-- `matrix-out/<profile>.json` — full per-tool result list (status, error
-  text, expected outcome, verdict).
+- `matrix-out/<profile>.json` — allow-listed per-tool comparison results
+  (probe/tool identity, status, normalized error code, expected/actual
+  comparison, verdict, and descriptor metadata).
 - `matrix-out/matrix.json` — aggregate summary with per-profile MATCH /
   REGRESSION / UNEXPECTED_PASS / MISSING_CLASSIFICATION counts.
 - `matrix-out/wire-captures/<profile>/...` — when `-WireCapture`, the
   per-tool `.hex` wire-capture dumps (same shape as
   wire-captures).
+
+Reports omit raw probe arguments, OPC values, payload-derived values, full
+errors, local paths, and free-form aggregate regression details by default.
+Aggregate regression rows are recursively allow-listed rather than copied
+verbatim. `-IncludeSensitiveResults` /
+`--include-sensitive-results` opts into those fields and must only be used when
+the output artifacts will be stored and shared as sensitive data. Wire capture
+is an independent sensitive opt-in.
 
 The exit code is **0** iff every profile completed with zero REGRESSION
 rows. Exit **2** when any profile has a regression; **3** when the

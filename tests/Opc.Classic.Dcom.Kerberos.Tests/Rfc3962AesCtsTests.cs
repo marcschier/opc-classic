@@ -29,11 +29,15 @@ public sealed class Rfc3962AesCtsTests
     public async Task AES128_CTS_HMAC_SHA1_96_wrap_privacy_round_trips()
     {
         byte[] key = KerberosTestHex.FromHex("00112233445566778899AABBCCDDEEFF");
-        var session = new KerberosSession(key, EncryptionType.AES128_CTS_HMAC_SHA1_96);
+        var sender = new KerberosSession(key, EncryptionType.AES128_CTS_HMAC_SHA1_96);
+        var receiver = new KerberosSession(
+            key,
+            EncryptionType.AES128_CTS_HMAC_SHA1_96,
+            isAcceptor: true);
         byte[] plaintext = Enumerable.Range(0, 37).Select(i => (byte)i).ToArray();
 
-        byte[] token = session.WrapMessage(plaintext, confidential: true);
-        byte[] unwrapped = session.UnwrapMessage(token, out bool wasConfidential);
+        byte[] token = sender.WrapMessage(plaintext, confidential: true);
+        byte[] unwrapped = receiver.UnwrapMessage(token, out bool wasConfidential);
 
         await Assert.That(wasConfidential).IsTrue();
         await Assert.That(unwrapped.SequenceEqual(plaintext)).IsTrue();
@@ -45,11 +49,15 @@ public sealed class Rfc3962AesCtsTests
         byte[] key = KerberosTestHex.FromHex(
             "00112233445566778899AABBCCDDEEFF" +
             "102132435465768798A9BACBDCEDFE0F");
-        var session = new KerberosSession(key, EncryptionType.AES256_CTS_HMAC_SHA1_96);
+        var sender = new KerberosSession(key, EncryptionType.AES256_CTS_HMAC_SHA1_96);
+        var receiver = new KerberosSession(
+            key,
+            EncryptionType.AES256_CTS_HMAC_SHA1_96,
+            isAcceptor: true);
         byte[] plaintext = Enumerable.Range(0, 53).Select(i => (byte)(255 - i)).ToArray();
 
-        byte[] token = session.WrapMessage(plaintext, confidential: true);
-        byte[] unwrapped = session.UnwrapMessage(token, out bool wasConfidential);
+        byte[] token = sender.WrapMessage(plaintext, confidential: true);
+        byte[] unwrapped = receiver.UnwrapMessage(token, out bool wasConfidential);
 
         await Assert.That(wasConfidential).IsTrue();
         await Assert.That(unwrapped.SequenceEqual(plaintext)).IsTrue();

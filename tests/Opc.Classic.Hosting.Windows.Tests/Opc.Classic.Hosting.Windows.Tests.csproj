@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Opc.Classic.Hosting.Windows\Opc.Classic.Hosting.Windows.csproj" />
+    <ProjectReference Include="..\..\samples\Opc.Classic.Samples.CttServer\Opc.Classic.Samples.CttServer.csproj" />
   </ItemGroup>
 
 </Project>

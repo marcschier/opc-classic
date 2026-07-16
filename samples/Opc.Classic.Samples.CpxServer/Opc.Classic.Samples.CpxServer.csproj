@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>Opc.Classic.Samples.CpxServer</RootNamespace>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Opc.Classic.Cpx\Opc.Classic.Cpx.csproj" />
+    <ProjectReference Include="..\..\src\Opc.Classic.Da\Opc.Classic.Da.csproj" />
+    <ProjectReference Include="..\..\src\Opc.Classic.Dcom\Opc.Classic.Dcom.csproj" />
+  </ItemGroup>
+</Project>

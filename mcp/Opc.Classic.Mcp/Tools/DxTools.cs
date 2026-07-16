@@ -40,21 +40,40 @@ public sealed record DxConnectionRequest(
 /// </summary>
 public static class InMemoryDxConnectionRegistry
 {
-    private static readonly System.Collections.Concurrent.ConcurrentDictionary<string, IOpcDxClient> Clients = new(StringComparer.OrdinalIgnoreCase);
+    private static readonly System.Collections.Concurrent.ConcurrentDictionary<string, Func<IOpcDxClient>> Clients = new(StringComparer.OrdinalIgnoreCase);
 
     /// <summary>
     /// Registers an in-memory DX client by name.
     /// </summary>
     public static IDisposable Register(string name, IOpcDxClient client)
     {
-        ArgumentException.ThrowIfNullOrWhiteSpace(name);
         ArgumentNullException.ThrowIfNull(client);
+        return Register(name, () => client);
+    }
 
-        Clients[name] = client;
+    /// <summary>
+    /// Registers a factory that creates an in-memory DX client lease per connection.
+    /// </summary>
+    public static IDisposable Register(string name, Func<IOpcDxClient> clientFactory)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(name);
+        ArgumentNullException.ThrowIfNull(clientFactory);
+
+        Clients[name] = clientFactory;
         return new Registration(name);
     }
 
-    internal static bool TryGet(string name, out IOpcDxClient client) => Clients.TryGetValue(name, out client!);
+    internal static bool TryGet(string name, out IOpcDxClient client)
+    {
+        if (Clients.TryGetValue(name, out Func<IOpcDxClient>? factory))
+        {
+            client = factory();
+            return true;
+        }
+
+        client = null!;
+        return false;
+    }
 
     private sealed class Registration : IDisposable
     {

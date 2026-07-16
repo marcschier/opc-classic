@@ -79,6 +79,20 @@ public static class NdrOpcItemStateCodec
         return results;
     }
 
+    /// <summary>
+    /// Reads an outer unique pointer followed by a conformant OPCITEMSTATE array.
+    /// </summary>
+    public static OpcItemState[] ReadUniqueConformantArray(ref NdrReader reader)
+    {
+        if (!reader.TryReadReferentId(out _))
+        {
+            return [];
+        }
+
+        int count = checked((int)reader.ReadUInt32());
+        return ReadConformantArray(ref reader, count);
+    }
+
     private static void WriteInlinePart(ref NdrWriter writer, OpcItemState state)
     {
         writer.WriteUInt32(unchecked((uint)state.ClientHandle));

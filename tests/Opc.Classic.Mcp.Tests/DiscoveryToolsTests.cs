@@ -136,7 +136,9 @@ internal sealed class SyntheticOpcEnumServer : IOpcEnumCallChannelFactory
             _currentEnumIndex = 0;
         }
 
-        return new NdrCallResult(fetched < requested ? 1 : 0, EncodeNext(batch, fetched));
+        return new NdrCallResult(
+            fetched < requested ? OpcResultId.False.Code : OpcResultId.Ok.Code,
+            EncodeNext(batch, fetched, requested));
     }
 
     private static Guid DecodeFirstImplementedCategory(ReadOnlyMemory<byte> requestPayload)
@@ -178,11 +180,11 @@ internal sealed class SyntheticOpcEnumServer : IOpcEnumCallChannelFactory
         writer.WriteUnicodeStringPtr(details.VerIndProgId);
     });
 
-    private static byte[] EncodeNext(Guid[] classIds, int fetched) => WritePayload((ref NdrWriter writer) =>
+    private static byte[] EncodeNext(Guid[] classIds, int fetched, int requested) => WritePayload((ref NdrWriter writer) =>
     {
         // IEnumGUID::Next response: varying-conformant GUID array (max + offset + length + elements)
         // followed by pceltFetched ULONG.
-        writer.WriteUInt32((uint)classIds.Length);
+        writer.WriteUInt32((uint)requested);
         writer.WriteUInt32(0);
         writer.WriteUInt32((uint)classIds.Length);
         for (int i = 0; i < classIds.Length; i++)

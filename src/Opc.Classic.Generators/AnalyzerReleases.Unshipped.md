@@ -10,3 +10,5 @@ OPCGEN102| Opc.Classic.Generators     | Warning  | Opc server dispatcher target 
 OPCGEN103| Opc.Classic.Generators     | Warning  | Opc server method has an unsupported signature.
 OPCGEN104| Opc.Classic.Generators     | Warning  | Opc server method has an unsupported parameter type.
 OPCGEN105| Opc.Classic.Generators     | Warning  | Opc server method has an unsupported response type.
+OPCGEN011| Opc.Classic.Generators     | Warning  | OpcMethod has an invalid or unsafe wire correlation.
+OPCGEN107| Opc.Classic.Generators     | Warning  | Opc server method has an invalid or unsafe wire correlation.

@@ -30,7 +30,11 @@ namespace Opc.Classic.Mcp.Capture;
 /// an actionable message via <see cref="CaptureException"/>.
 /// </para>
 /// </remarks>
-public sealed class PcapCaptureSource : ICaptureSource
+public sealed class PcapCaptureSource :
+    ICaptureSource,
+    ICaptureFilterController,
+    IIncrementalCaptureSource,
+    ICaptureSourceCompletion
 {
     /// <summary>
     /// Stable source name surfaced via the MCP info DTO.
@@ -39,6 +43,7 @@ public sealed class PcapCaptureSource : ICaptureSource
     private const int kDefaultMaxBytes = 50 * 1024 * 1024;
     private const int kDefaultMaxDurationSeconds = 30 * 60;
     private const string kPcapFileName = "capture.pcap";
+    private const int kIncrementalPacketCapacity = 8192;
 
     /// <summary>
     /// Default BPF filter for the OPC Classic DCOM-over-IP universe.
@@ -101,22 +106,42 @@ public sealed class PcapCaptureSource : ICaptureSource
     private readonly ILogger _logger;
     private readonly string _filePath;
     private readonly Lock _lock = new();
+    private readonly Lock _captureStopLock = new();
+    private readonly Queue<IndexedPacket> _incrementalPackets = new();
+    private readonly TaskCompletionSource _completion =
+        new(TaskCreationOptions.RunContinuationsAsynchronously);
+    private readonly bool _timerOnly;
+    private readonly TimeSpan? _durationOverride;
     private LibPcapLiveDevice? _device;
     private CaptureFileWriterDevice? _writer;
+    private CancellationTokenSource? _durationCancellation;
+    private Task? _durationTask;
     private long _packetCount;
     private long _byteCount;
     private long _maxBytes;
     private long _maxPackets;
     private DateTimeOffset _startedAt;
     private TimeSpan _maxDuration;
-    private volatile bool _stopRequested;
+    private int _stopRequested;
     private int _linkType;
+    private string? _effectiveFilter;
 
     public PcapCaptureSource(string sessionFolder, ILogger? logger = null)
+        : this(sessionFolder, logger, timerOnly: false, durationOverride: null)
+    {
+    }
+
+    internal PcapCaptureSource(
+        string sessionFolder,
+        ILogger? logger,
+        bool timerOnly,
+        TimeSpan? durationOverride)
     {
         ArgumentException.ThrowIfNullOrEmpty(sessionFolder);
         _filePath = Path.Combine(sessionFolder, kPcapFileName);
         _logger = logger ?? NullLogger.Instance;
+        _timerOnly = timerOnly;
+        _durationOverride = durationOverride;
     }
 
     /// <inheritdoc/>
@@ -127,6 +152,12 @@ public sealed class PcapCaptureSource : ICaptureSource
 
     /// <inheritdoc/>
     public int LinkType => _linkType;
+
+    /// <inheritdoc/>
+    public string? EffectiveFilter => _effectiveFilter;
+
+    /// <inheritdoc/>
+    public Task Completion => _completion.Task;
 
     /// <inheritdoc/>
     public string? GetRawPcapFilePath()
@@ -147,7 +178,19 @@ public sealed class PcapCaptureSource : ICaptureSource
         _maxBytes = request.MaxBytes ?? kDefaultMaxBytes;
         _maxPackets = request.MaxPackets ?? long.MaxValue;
         int durationSeconds = request.MaxDurationSeconds ?? kDefaultMaxDurationSeconds;
-        _maxDuration = TimeSpan.FromSeconds(durationSeconds);
+        _maxDuration = _durationOverride ?? TimeSpan.FromSeconds(durationSeconds);
+        Volatile.Write(ref _stopRequested, 0);
+
+        string filter = string.IsNullOrWhiteSpace(request.BpfFilter)
+            ? BuildServerPortBpfFilter(request.ServerPorts)
+            : request.BpfFilter!;
+        if (_timerOnly)
+        {
+            _effectiveFilter = filter;
+            _startedAt = DateTimeOffset.UtcNow;
+            ArmDurationTimer();
+            return Task.CompletedTask;
+        }
 
         LibPcapLiveDevice? selected = ResolveDevice(request.InterfaceName!);
 
@@ -174,12 +217,10 @@ public sealed class PcapCaptureSource : ICaptureSource
                 ex);
         }
 
-        string filter = string.IsNullOrWhiteSpace(request.BpfFilter)
-            ? BuildServerPortBpfFilter(request.ServerPorts)
-            : request.BpfFilter!;
         try
         {
             selected.Filter = filter;
+            _effectiveFilter = filter;
         }
         catch (Exception ex) when (ex is not OutOfMemoryException and not ThreadAbortException)
         {
@@ -206,7 +247,47 @@ public sealed class PcapCaptureSource : ICaptureSource
 #pragma warning disable CA1849 // SharpPcap exposes only the blocking StartCapture API.
         selected.StartCapture();
 #pragma warning restore CA1849
+        if (Volatile.Read(ref _stopRequested) == 0)
+        {
+            ArmDurationTimer();
+        }
         return Task.CompletedTask;
+    }
+
+    /// <inheritdoc/>
+    public CaptureSourceFilterUpdateResult TryUpdateFilter(
+        string filter,
+        CancellationToken cancellationToken)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(filter);
+        cancellationToken.ThrowIfCancellationRequested();
+        if (_timerOnly)
+        {
+            return CaptureSourceFilterUpdateResult.RestartRequired(
+                "Timer-only test source requires restart.");
+        }
+        lock (_lock)
+        {
+            if (_device is null)
+            {
+                throw new CaptureException("The capture source is not running.");
+            }
+
+            try
+            {
+                _device.Filter = filter;
+                _effectiveFilter = filter;
+                return CaptureSourceFilterUpdateResult.Updated;
+            }
+            catch (Exception ex) when (ex is NotSupportedException or PlatformNotSupportedException)
+            {
+                return CaptureSourceFilterUpdateResult.RestartRequired(ex.Message);
+            }
+            catch (Exception ex) when (ex is not OutOfMemoryException and not ThreadAbortException)
+            {
+                throw new CaptureException($"Invalid BPF filter '{filter}': {ex.Message}", ex);
+            }
+        }
     }
 
     private static LibPcapLiveDevice ResolveDevice(string nameOrDescription)
@@ -245,7 +326,7 @@ public sealed class PcapCaptureSource : ICaptureSource
 
     private void OnPacketArrival(object sender, PacketCapture e)
     {
-        if (_stopRequested)
+        if (Volatile.Read(ref _stopRequested) != 0)
         {
             return;
         }
@@ -255,45 +336,137 @@ public sealed class PcapCaptureSource : ICaptureSource
         long packets = Interlocked.Increment(ref _packetCount);
         long bytes = Interlocked.Add(ref _byteCount, len);
 
+        var captured = new CapturedPacket(
+            new DateTimeOffset(pkt.Timeval.Date, TimeSpan.Zero),
+            pkt.PacketLength,
+            pkt.Data.ToArray(),
+            (int)pkt.LinkLayerType,
+            kEmpty);
         lock (_lock)
         {
             _writer?.Write(pkt);
+            _incrementalPackets.Enqueue(new IndexedPacket(packets - 1, captured));
+            while (_incrementalPackets.Count > kIncrementalPacketCapacity)
+            {
+                _incrementalPackets.Dequeue();
+            }
         }
 
         if (bytes >= _maxBytes
             || packets >= _maxPackets
             || DateTimeOffset.UtcNow - _startedAt >= _maxDuration)
         {
-            _stopRequested = true;
-            // StopCapture is synchronous + blocking on the capture thread;
-            // hand it off so we don't deadlock our own packet handler.
-            _ = Task.Run(StopCaptureBackgroundAsync);
+            RequestNaturalStop(fromCaptureThread: true);
         }
     }
 
-    private void StopCaptureBackgroundAsync()
+    private void ArmDurationTimer()
     {
-        try { _device?.StopCapture(); }
-        catch (PcapException) { /* StopAsync handles final shutdown */ }
-        catch (InvalidOperationException) { /* device already stopped */ }
+        var cancellation = new CancellationTokenSource();
+        TimeSpan delay = _maxDuration - (DateTimeOffset.UtcNow - _startedAt);
+        if (delay < TimeSpan.Zero)
+        {
+            delay = TimeSpan.Zero;
+        }
+        lock (_lock)
+        {
+            _durationCancellation = cancellation;
+            _durationTask = RunDurationTimerAsync(delay, cancellation.Token);
+        }
+    }
+
+    private async Task RunDurationTimerAsync(
+        TimeSpan delay,
+        CancellationToken cancellationToken)
+    {
+        try
+        {
+            await Task.Delay(delay, cancellationToken).ConfigureAwait(false);
+        }
+        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+        {
+            return;
+        }
+
+        RequestNaturalStop(fromCaptureThread: false);
+    }
+
+    private void RequestNaturalStop(bool fromCaptureThread)
+    {
+        if (Interlocked.Exchange(ref _stopRequested, 1) != 0)
+        {
+            return;
+        }
+
+        if (fromCaptureThread)
+        {
+            // StopCapture is synchronous + blocking on the capture thread;
+            // hand it off so we don't deadlock our own packet handler.
+            _ = Task.Run(StopCaptureAfterLimit);
+        }
+        else
+        {
+            StopCaptureAfterLimit();
+        }
+    }
+
+    private void StopCaptureAfterLimit()
+    {
+        Exception? failure = null;
+        try
+        {
+            LibPcapLiveDevice? device = _device;
+            if (device is not null)
+            {
+                lock (_captureStopLock)
+                {
+                    StopDeviceCapture(device);
+                }
+            }
+        }
+        catch (Exception ex) when (ex is not OutOfMemoryException and not ThreadAbortException)
+        {
+            failure = ex;
+        }
+
+        if (failure is null)
+        {
+            _completion.TrySetResult();
+        }
+        else
+        {
+            _completion.TrySetException(failure);
+        }
     }
 
     /// <inheritdoc/>
-    public Task StopAsync(CancellationToken cancellationToken)
+    public async Task StopAsync(CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
+        Volatile.Write(ref _stopRequested, 1);
+        await CancelDurationTimerAsync().ConfigureAwait(false);
+        LibPcapLiveDevice? device;
         lock (_lock)
         {
-            if (_device != null)
+            device = _device;
+            _device = null;
+            if (device is not null)
             {
-                try { _device.StopCapture(); }
-                catch (PcapException) { /* tolerate already-stopped */ }
-                catch (InvalidOperationException) { /* tolerate already-stopped */ }
-                _device.OnPacketArrival -= OnPacketArrival;
-                _device.Dispose();
-                _device = null;
+                device.OnPacketArrival -= OnPacketArrival;
             }
+        }
 
+        if (device is not null)
+        {
+            lock (_captureStopLock)
+            {
+                StopDeviceCapture(device);
+                device.Dispose();
+            }
+        }
+
+        lock (_lock)
+        {
             if (_writer != null)
             {
                 try { _writer.Close(); }
@@ -303,8 +476,38 @@ public sealed class PcapCaptureSource : ICaptureSource
                 _writer = null;
             }
         }
+    }
 
-        return Task.CompletedTask;
+    private async Task CancelDurationTimerAsync()
+    {
+        CancellationTokenSource? cancellation;
+        Task? durationTask;
+        lock (_lock)
+        {
+            cancellation = _durationCancellation;
+            durationTask = _durationTask;
+            _durationCancellation = null;
+            _durationTask = null;
+        }
+
+        if (cancellation is null)
+        {
+            return;
+        }
+
+        cancellation.Cancel();
+        if (durationTask is not null)
+        {
+            await durationTask.ConfigureAwait(false);
+        }
+        cancellation.Dispose();
+    }
+
+    private static void StopDeviceCapture(LibPcapLiveDevice device)
+    {
+        try { device.StopCapture(); }
+        catch (PcapException) { /* tolerate already-stopped */ }
+        catch (InvalidOperationException) { /* tolerate already-stopped */ }
     }
 
     /// <inheritdoc/>
@@ -348,6 +551,40 @@ public sealed class PcapCaptureSource : ICaptureSource
         }
     }
 
+    async IAsyncEnumerable<CapturedPacket> IIncrementalCaptureSource.ReadFromAsync(
+        long packetIndex,
+        [EnumeratorCancellation] CancellationToken cancellationToken)
+    {
+        IndexedPacket[] retained;
+        bool replay;
+        lock (_lock)
+        {
+            replay = _incrementalPackets.Count == 0
+                ? packetIndex < PacketCount
+                : packetIndex < _incrementalPackets.Peek().Index;
+            retained = replay
+                ? []
+                : _incrementalPackets.Where(packet => packet.Index >= packetIndex).ToArray();
+        }
+        if (replay)
+        {
+            long index = 0;
+            await foreach (CapturedPacket packet in ReadAllAsync(null, cancellationToken).ConfigureAwait(false))
+            {
+                if (index++ >= packetIndex)
+                {
+                    yield return packet;
+                }
+            }
+            yield break;
+        }
+        foreach (IndexedPacket packet in retained)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            yield return packet.Packet;
+        }
+    }
+
     /// <inheritdoc/>
     [SuppressMessage("Design", "CA1031:Do not catch general exception types",
         Justification = "Dispose path must release native pcap handle + writer regardless of error type.")]
@@ -365,4 +602,5 @@ public sealed class PcapCaptureSource : ICaptureSource
 
     private static readonly IReadOnlyDictionary<string, string?> kEmpty =
         new Dictionary<string, string?>(0);
+    private sealed record IndexedPacket(long Index, CapturedPacket Packet);
 }

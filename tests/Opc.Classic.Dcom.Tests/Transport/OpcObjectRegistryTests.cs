@@ -25,6 +25,40 @@ public sealed class OpcObjectRegistryTests
     }
 
     [Test]
+    public async Task Registration_assigns_stable_exporter_and_unique_object_ids()
+    {
+        var registry = new OpcObjectRegistry();
+        var dispatchers = new Dictionary<Guid, IOpcServerDispatcher> { [Iface1] = new StubDispatcher() };
+        Guid first = registry.Register(dispatchers);
+        Guid second = registry.Register(dispatchers);
+
+        await Assert.That(registry.TryGetObjectMetadata(first, out OpcObjectMetadata firstMetadata)).IsTrue();
+        await Assert.That(registry.TryGetObjectMetadata(first, out OpcObjectMetadata firstAgain)).IsTrue();
+        await Assert.That(registry.TryGetObjectMetadata(second, out OpcObjectMetadata secondMetadata)).IsTrue();
+        await Assert.That(firstMetadata).IsEqualTo(firstAgain);
+        await Assert.That(firstMetadata.Oxid).IsEqualTo(secondMetadata.Oxid);
+        await Assert.That(firstMetadata.Oid).IsNotEqualTo(secondMetadata.Oid);
+
+        registry.Unregister(first);
+        await Assert.That(registry.TryGetObjectMetadata(first, out _)).IsFalse();
+        await Assert.That(registry.TryGetObjectMetadata(second, out _)).IsTrue();
+    }
+
+    [Test]
+    public async Task Previous_registration_signatures_remain_available()
+    {
+        Type dispatcherMap = typeof(IReadOnlyDictionary<Guid, IOpcServerDispatcher>);
+        Type registryType = typeof(OpcObjectRegistry);
+
+        await Assert.That(registryType.GetMethod(
+            nameof(OpcObjectRegistry.Register),
+            [dispatcherMap, typeof(uint)])).IsNotNull();
+        await Assert.That(registryType.GetMethod(
+            nameof(OpcObjectRegistry.RegisterWithIpid),
+            [typeof(Guid), dispatcherMap, typeof(uint)])).IsNotNull();
+    }
+
+    [Test]
     public async Task TryGetDispatcher_returns_registered_dispatcher_for_known_pair()
     {
         var registry = new OpcObjectRegistry();

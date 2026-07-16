@@ -165,7 +165,7 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable
             await BindTraceAsync(diag, $"InvokeAsync: received reply PDU type={reply.Type}").ConfigureAwait(false);
             NdrCallResult result = reply switch
             {
-                ResponseCoPdu response => new NdrCallResult(0, OrpcEnvelope.ExtractResponseBody(response.Stub)),
+                ResponseCoPdu response => DecodeComResponse(response.Stub),
                 FaultCoPdu fault => new NdrCallResult(unchecked((int)fault.Status), ReadOnlyMemory<byte>.Empty, IsFault: true),
                 _ => throw new InvalidOperationException($"Unexpected DCE/RPC PDU type {reply.Type}.")
             };
@@ -441,7 +441,7 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable
     {
         // Emit an 8-byte auth verifier header with our current auth_type/auth_level
         // and a zero-length auth_value, per MS-RPCE §3.3.1.5.3.1 for alter_context.
-        int padding = PaddingTo(pduBytes.Length, 4);
+        int padding = GetAuthenticationPadding(pduBytes.Length);
         int verifierStart = pduBytes.Length + padding;
         int fragmentLength = verifierStart + AuthenticationVerifierHeaderLength;
         if (fragmentLength > ushort.MaxValue)
@@ -503,7 +503,8 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable
         // carried verbatim off the wire in VerificationPduBytes. Verify over the whole span;
         // at Privacy the stub sub-range is unsealed in place.
         Span<byte> signedRegion = stripped.VerificationPduBytes;
-        int confidentialOffset = ConnectionOrientedPdu.HEADER_LENGTH;
+        int confidentialOffset =
+            RpcPacketProtectionLayout.GetConfidentialOffset(signedRegion);
         int confidentialLength = signedRegion.Length - AuthenticationVerifierHeaderLength - confidentialOffset;
         if (!_authContext.VerifyAndUnseal(signedRegion, confidentialOffset, confidentialLength, stripped.AuthenticationBody))
         {
@@ -511,8 +512,8 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable
         }
 
         signedRegion
-            .Slice(ConnectionOrientedPdu.HEADER_LENGTH, stripped.PduBytes.Length - ConnectionOrientedPdu.HEADER_LENGTH)
-            .CopyTo(stripped.PduBytes.AsSpan(ConnectionOrientedPdu.HEADER_LENGTH));
+            .Slice(confidentialOffset, stripped.PduBytes.Length - confidentialOffset)
+            .CopyTo(stripped.PduBytes.AsSpan(confidentialOffset));
     }
 
     private byte[] ApplyPacketProtection(byte[] pduBytes)
@@ -531,9 +532,20 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable
         // placeholder and final frag_length/auth_length headers; hand the
         // signed-region span to the auth context; then copy the returned
         // signature into the placeholder.
-        const int authValueLength = 16;
-        int padding = PaddingTo(pduBytes.Length, 4);
+        int padding = GetAuthenticationPadding(pduBytes.Length);
         int verifierStart = pduBytes.Length + padding;
+        int signedLength = verifierStart + AuthenticationVerifierHeaderLength;
+        int confidentialOffset =
+            RpcPacketProtectionLayout.GetConfidentialOffset(pduBytes);
+        int confidentialLength = verifierStart - confidentialOffset;
+        int authValueLength = _authContext.GetVerifierLength(
+            signedLength,
+            confidentialLength);
+        if (authValueLength <= 0 || authValueLength > ushort.MaxValue)
+        {
+            throw new InvalidOperationException(
+                "DCE/RPC packet protection requires a verifier that fits the auth-length field.");
+        }
         int fragmentLength = verifierStart + AuthenticationVerifierHeaderLength + authValueLength;
         if (fragmentLength > ushort.MaxValue)
         {
@@ -557,9 +569,6 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable
         // frag_length/auth_length), body, auth padding, and the 8-byte sec_trailer header,
         // excluding the trailing auth_value (MS-RPCE §3.3.1.5.2.2). At Privacy the stub
         // sub-range [confidentialOffset, confidentialLength) is sealed in place.
-        int signedLength = verifierStart + AuthenticationVerifierHeaderLength;
-        int confidentialOffset = ConnectionOrientedPdu.HEADER_LENGTH;
-        int confidentialLength = verifierStart - confidentialOffset;
         Span<byte> signedRegion = protectedPdu.AsSpan(0, signedLength);
         _authContext.SignAndSeal(signedRegion, confidentialOffset, confidentialLength, out byte[] signature);
         if (signature is null || signature.Length == 0)
@@ -582,7 +591,7 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable
             return pduBytes;
         }
 
-        int padding = PaddingTo(pduBytes.Length, 4);
+        int padding = GetAuthenticationPadding(pduBytes.Length);
         int verifierStart = pduBytes.Length + padding;
         int fragmentLength = verifierStart + AuthenticationVerifierHeaderLength + body.Length;
         if (fragmentLength > ushort.MaxValue)
@@ -625,12 +634,22 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable
         {
             throw new InvalidOperationException("DCE/RPC authentication verifier is malformed.");
         }
+        if ((verifierStart - ConnectionOrientedPdu.HEADER_LENGTH) % 16 != 0)
+        {
+            throw new InvalidOperationException(
+                "DCE/RPC authentication verifier is not 16-byte aligned relative to the PDU body.");
+        }
 
         int padding = frame[verifierStart + 2];
         int strippedLength = verifierStart - padding;
         if (strippedLength < ConnectionOrientedPdu.HEADER_LENGTH || strippedLength > frame.Length)
         {
             throw new InvalidOperationException("DCE/RPC authentication verifier padding is malformed.");
+        }
+        if (padding != GetAuthenticationPadding(strippedLength))
+        {
+            throw new InvalidOperationException(
+                "DCE/RPC authentication verifier padding does not match the PDU body alignment.");
         }
 
         byte[] authenticationBody = frame.AsSpan(verifierStart + AuthenticationVerifierHeaderLength, authLength).ToArray();
@@ -767,10 +786,33 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable
     private static bool IsPacketProtectedPdu(byte pduType) =>
         pduType is RequestCoPdu.REQUEST_TYPE or ResponseCoPdu.RESPONSE_TYPE or FaultCoPdu.FAULT_TYPE;
 
-    private static int PaddingTo(int length, int alignment)
+    private static NdrCallResult DecodeComResponse(ReadOnlyMemory<byte> responseStub)
     {
-        int remainder = length % alignment;
-        return remainder == 0 ? 0 : alignment - remainder;
+        ReadOnlyMemory<byte> body =
+            OrpcEnvelope.ExtractResponseBody(responseStub.ToArray());
+        if (body.Length < sizeof(int))
+        {
+            throw new InvalidOperationException(
+                "DCOM response stub is missing the trailing method HRESULT.");
+        }
+
+        int payloadLength = body.Length - sizeof(int);
+        int hresult = BinaryPrimitives.ReadInt32LittleEndian(body.Span[payloadLength..]);
+        return new NdrCallResult(hresult, body[..payloadLength]);
+    }
+
+    private static int GetAuthenticationPadding(int pduLength)
+    {
+        int bodyLength = pduLength - ConnectionOrientedPdu.HEADER_LENGTH;
+        if (bodyLength < 0)
+        {
+            throw new ArgumentOutOfRangeException(
+                nameof(pduLength),
+                "DCE/RPC PDU length is shorter than the common header.");
+        }
+
+        int remainder = bodyLength % 16;
+        return remainder == 0 ? 0 : 16 - remainder;
     }
 
     private static ProtectionLevel ToRpcProtectionLevel(OpcProtectionLevel protectionLevel) => protectionLevel switch

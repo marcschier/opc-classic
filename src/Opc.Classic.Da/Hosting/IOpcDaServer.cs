@@ -76,16 +76,73 @@ public interface IOpcDaServer : IOPCServer
         Task.FromResult<OpcDaGroup?>(null);
 
     /// <summary>
-    /// Returns a point-in-time snapshot of the server's currently registered
-    /// private groups. Used by the Windows CCW to implement
-    /// <c>IOPCServer::CreateGroupEnumerator</c>.
+    /// Returns a point-in-time snapshot of private groups.
     /// </summary>
     /// <remarks>
     /// The default implementation returns an empty snapshot; implementations
     /// that maintain in-process groups should override this member.
     /// </remarks>
+    Task<IReadOnlyList<OpcDaGroup>> SnapshotPrivateGroupsAsync(CancellationToken cancellationToken = default) =>
+        SnapshotGroupsAsync(cancellationToken);
+
+    /// <summary>Returns a point-in-time snapshot of public groups.</summary>
+    /// <remarks>Public groups are optional; the default is empty.</remarks>
+    Task<IReadOnlyList<OpcDaGroup>> SnapshotPublicGroupsAsync(CancellationToken cancellationToken = default) =>
+        Task.FromResult<IReadOnlyList<OpcDaGroup>>(Array.Empty<OpcDaGroup>());
+
+    /// <summary>
+    /// Returns private and public groups captured atomically under one
+    /// implementation synchronization boundary.
+    /// </summary>
+    /// <remarks>
+    /// The default supports private-only servers with public groups empty.
+    /// Implementations exposing public groups must override this member and
+    /// must not compose it from sequential private/public snapshot calls.
+    /// </remarks>
+    async Task<OpcDaGroupSetSnapshot> SnapshotAllGroupsAsync(CancellationToken cancellationToken = default)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+        IReadOnlyList<OpcDaGroup> privateGroups =
+            await SnapshotPrivateGroupsAsync(cancellationToken).ConfigureAwait(false);
+        cancellationToken.ThrowIfCancellationRequested();
+        return new OpcDaGroupSetSnapshot(privateGroups, Array.Empty<OpcDaGroup>());
+    }
+
+    /// <summary>Returns the legacy private-group snapshot.</summary>
     Task<IReadOnlyList<OpcDaGroup>> SnapshotGroupsAsync(CancellationToken cancellationToken = default) =>
         Task.FromResult<IReadOnlyList<OpcDaGroup>>(Array.Empty<OpcDaGroup>());
+
+    /// <summary>Creates an immutable snapshot for an OPC DA enumeration scope.</summary>
+    async Task<OpcDaGroupEnumerationSnapshot> CreateGroupEnumerationSnapshotAsync(
+        OpcDaGroupEnumerationScope scope,
+        CancellationToken cancellationToken = default)
+    {
+        scope.Validate();
+        cancellationToken.ThrowIfCancellationRequested();
+
+        IReadOnlyList<OpcDaGroup> privateGroups;
+        IReadOnlyList<OpcDaGroup> publicGroups;
+        if (scope.IncludesPrivateGroups() && scope.IncludesPublicGroups())
+        {
+            OpcDaGroupSetSnapshot allGroups =
+                await SnapshotAllGroupsAsync(cancellationToken).ConfigureAwait(false);
+            privateGroups = allGroups.PrivateGroups;
+            publicGroups = allGroups.PublicGroups;
+        }
+        else if (scope.IncludesPrivateGroups())
+        {
+            privateGroups = await SnapshotPrivateGroupsAsync(cancellationToken).ConfigureAwait(false);
+            publicGroups = Array.Empty<OpcDaGroup>();
+        }
+        else
+        {
+            privateGroups = Array.Empty<OpcDaGroup>();
+            publicGroups = await SnapshotPublicGroupsAsync(cancellationToken).ConfigureAwait(false);
+        }
+
+        cancellationToken.ThrowIfCancellationRequested();
+        return new OpcDaGroupEnumerationSnapshot(scope, privateGroups, publicGroups);
+    }
 
     /// <summary>
     /// Reads DA 3.0 top-level item values for <c>IOPCItemIO::Read</c>.
@@ -145,9 +202,11 @@ public interface IOpcDaServer : IOPCServer
 
     Task<IOpcInterfaceRef> IOPCServer.CreateGroupEnumeratorAsync(int scope, Guid requestedInterfaceId, CancellationToken cancellationToken)
     {
-        _ = scope;
+        _ = OpcDaGroupEnumerationScopeExtensions.FromWireValue(scope);
+        _ = requestedInterfaceId;
         cancellationToken.ThrowIfCancellationRequested();
-        return Task.FromResult(CreateSyntheticInterfaceRef(requestedInterfaceId, 0));
+        return Task.FromException<IOpcInterfaceRef>(
+            new NotSupportedException("Managed DCOM group enumerators require an OpcDaServerDispatcher with an object registry."));
     }
 
     private static IOpcInterfaceRef CreateSyntheticInterfaceRef(Guid iid, int seed) =>

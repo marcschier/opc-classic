@@ -53,7 +53,17 @@ public static class XmlComplexValueSerializer
         {
             if (!value.Fields.TryGetValue(field.Name, out var rawValue))
             {
+                if (field.MinOccurs == 0)
+                {
+                    continue;
+                }
+
                 throw new KeyNotFoundException($"Complex value is missing XML field '{field.Name}'.");
+            }
+
+            if (rawValue is null && field.MinOccurs == 0)
+            {
+                continue;
             }
 
             AppendField(element, field, rawValue, dictionary);
@@ -73,9 +83,11 @@ public static class XmlComplexValueSerializer
                 written++;
             }
 
-            if (written != count)
+            if (!IsValidOccurrenceCount(field, written))
             {
-                throw new InvalidOperationException($"XML field '{field.Name}' contains {written.ToString(CultureInfo.InvariantCulture)} elements; expected {count.ToString(CultureInfo.InvariantCulture)}.");
+                throw new InvalidOperationException(
+                    $"XML field '{field.Name}' contains {written.ToString(CultureInfo.InvariantCulture)} elements; "
+                    + $"expected {FormatOccurrenceConstraint(field)}.");
             }
 
             return;
@@ -105,13 +117,15 @@ public static class XmlComplexValueSerializer
             var children = FindChildren(element, field.Name);
             if (field.ElementCount is { } count && field.Kind != TypeKind.String)
             {
-                if (children.Count != count)
+                if (!IsValidOccurrenceCount(field, children.Count))
                 {
-                    throw new FormatException($"XML field '{field.Name}' has {children.Count.ToString(CultureInfo.InvariantCulture)} elements; expected {count.ToString(CultureInfo.InvariantCulture)}.");
+                    throw new FormatException(
+                        $"XML field '{field.Name}' has {children.Count.ToString(CultureInfo.InvariantCulture)} elements; "
+                        + $"expected {FormatOccurrenceConstraint(field)}.");
                 }
 
-                var values = new object?[count];
-                for (var i = 0; i < count; i++)
+                var values = new object?[children.Count];
+                for (var i = 0; i < children.Count; i++)
                 {
                     values[i] = ParseField(children[i], field, dictionary);
                 }
@@ -122,7 +136,17 @@ public static class XmlComplexValueSerializer
 
             if (children.Count == 0)
             {
+                if (field.MinOccurs == 0)
+                {
+                    continue;
+                }
+
                 throw new FormatException($"XML complex value is missing field '{field.Name}'.");
+            }
+
+            if (children.Count > 1)
+            {
+                throw new FormatException($"XML field '{field.Name}' occurs more than once.");
             }
 
             fields[field.Name] = ParseField(children[0], field, dictionary);
@@ -211,6 +235,20 @@ public static class XmlComplexValueSerializer
 
         return children;
     }
+
+    private static bool IsValidOccurrenceCount(TypeField field, int count) =>
+        field.MinOccurs is { } minimum
+            ? count >= minimum && count <= field.ElementCount
+            : count == field.ElementCount;
+
+    private static string FormatOccurrenceConstraint(TypeField field) =>
+        field.MinOccurs is { } minimum
+            ? string.Create(
+                CultureInfo.InvariantCulture,
+                $"{minimum} to {field.ElementCount.GetValueOrDefault()} occurrences")
+            : string.Create(
+                CultureInfo.InvariantCulture,
+                $"exactly {field.ElementCount.GetValueOrDefault()} occurrences");
 
     private static DateTime ToDateTime(object? value) =>
         value switch

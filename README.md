@@ -13,9 +13,11 @@ A cross-platform, NativeAOT-compatible **.NET 10** implementation of OPC Classic
 
 - **Cross-platform OPC Classic** — DA (1.0 / 2.05a / 3.0), AE 1.10, HDA 1.20, Batch 2.00, Commands, Complex Data, DX, Security, and an XML-DA client over HTTP. Runs on Windows, Linux, and macOS (.NET 10). No call to native OS code other than what .net provides.
 - **Managed DCOM/MSRPC stack** — full MS-DCOM PDU framing, NDR marshaling, OBJREF/ORPC, packet integrity + privacy, channel binding (RFC 5056/5929). No `[ComImport]`, no Windows COM runtime dependency.
-- **Self-contained authentication** — NTLMv2, Kerberos (RC4-HMAC + AES128/256), SPNEGO with `mechListMIC`, channel binding tokens. Cryptography (MD4, RC4) ships in-tree with RFC test vectors; MD5 / HMAC / DES / AES come from the BCL.
-- **Source-generated proxies and dispatchers** — Roslyn `IIncrementalGenerator` emits a client proxy and a server dispatcher for every OPC interface marked `[OpcInterface]`. No reflection at runtime; AOT-clean and trim-safe.
+- **Mechanism-neutral authentication** — NTLMv2, direct Kerberos, and Kerberos-first SPNEGO clients and managed-listener acceptors, with explicit NTLM fallback policy, `mechListMIC`, packet integrity/privacy, channel binding, keytab/password credential providers, and principal mapping.
+- **Source-generated proxies and dispatchers** — Roslyn `IIncrementalGenerator` emits client proxies and server dispatchers for the 253 audited production method shapes. The strict migration manifest contains zero unsupported diagnostics, suppressions, or hand-written wire fallbacks.
 - **Windows COM-callable wrappers** — when running on Windows, SCM-activated servers are exposed through raw-vtable CCWs (also `[ComImport]`-free). Full release-scope vtables cover DA server/group/item/sync/async I/O/connection-point paths, AE server/subscription array-heavy methods, and HDA server/read/update/advise/playback paths.
+- **DA group enumeration** — all six `OPCENUMSCOPE` values use immutable private/public snapshots; name scopes return `IEnumString`, connection scopes return `IEnumUnknown`, and both managed DCOM and Windows CCW paths implement `Next`, `Skip`, `Reset`, and cursor-preserving `Clone`.
+- **Capture and replay tooling** — target-aware discovery/activation narrows live BPF filters, while bounded cursors, advisory notifications, pcap/pcapng file decode/replay, TCP reassembly, and opt-in NTLM auth-trailer unwrap support diagnostics without making capture delivery unbounded.
 - **NativeAOT + trimming compatible** across every runtime project, enforced by `IsAotCompatible`, `EnableTrimAnalyzer`, `EnableAotAnalyzer`, and an explicit `BannedSymbols.txt`.
 - **Validation baseline** — 0 build warnings, 0 build errors, and all test projects green, including DA, AE, HDA, DCOM, crypto, Kerberos, SMB, integration, MCP, discovery, generators, property-based, snapshot, XML-DA, and more.
 
@@ -52,7 +54,7 @@ Walk through the [first DA client tutorial](docs/tutorials/01-build-your-first-d
 | --- | --- |
 | `src` | Runtime assemblies, source generators, shared build props, central package versions, and the AOT/trim ban list. |
 | `tests` | TUnit projects on Microsoft.Testing.Platform: primitives, transports, auth, generators, codecs, hosting, discovery, integration matrices, MCP integration (`Opc.Classic.Mcp.Integration.Tests`), property-based, snapshot, and crypto. |
-| [samples/](samples/README.md) | Runnable apps — DA/AE/HDA servers and clients, a loopback demo, an additional managed DA sample (CttServer), the OPC Security sample server, a full-feature simulation server (all specs + MCP, DA/AE/HDA TCP hosting, and `SimulationActivationServer`/`SimulationActivationHost` cold activation returning `OBJREF_STANDARD`), and a NativeAOT canary. |
+| [samples/](samples/README.md) | Runnable apps — DA/AE/HDA servers and clients, paired managed CPX server/client samples, a loopback demo, an additional managed DA sample (CttServer), the OPC Security sample server, a full-feature simulation server (all specs + MCP, DA/AE/HDA TCP hosting, and `SimulationActivationServer`/`SimulationActivationHost` cold activation returning `OBJREF_STANDARD`), and a NativeAOT canary. |
 | [docs/](docs/README.md) | Documentation hub: architecture, adoption, tutorials, cookbook, migration analyzer, security, conformance, roadmap, and architecture diagrams. |
 | [Docker test fleet](interop/docker/README.md) | Windows Docker test fleet — managed-server image, C-built native server/client images, OPC Foundation TestServer/TestClient images, and the docker-compose. |
 | [interop/](interop/README.md) | OPC Foundation conformance assets: vendored IDL headers, CMake-built native sample servers/test apps, and helper scripts. |
@@ -60,7 +62,7 @@ Walk through the [first DA client tutorial](docs/tutorials/01-build-your-first-d
 
 ## Samples
 
-The runnable apps under [samples/](samples/README.md) include DA/AE/HDA managed servers and clients, an in-process loopback, an additional managed DA sample (CttServer), the OPC Security sample server, a full-feature simulation server (every OPC Classic spec behind one MCP server, with DA/AE/HDA over TCP and `SimulationActivationServer`/`SimulationActivationHost` cold activation returning `OBJREF_STANDARD`), and a NativeAOT canary. See the [samples README](samples/README.md) for the map, run instructions, env-var conventions, and sample-container deployment.
+The runnable apps under [samples/](samples/README.md) include DA/AE/HDA managed servers and clients, paired managed CPX server/client samples, an in-process loopback, an additional managed DA sample (CttServer), the OPC Security sample server, a full-feature simulation server (every OPC Classic spec behind one MCP server, with DA/AE/HDA over TCP and `SimulationActivationServer`/`SimulationActivationHost` cold activation returning `OBJREF_STANDARD`), and a NativeAOT canary. See the [samples README](samples/README.md) for the map, run instructions, env-var conventions, and sample-container deployment.
 
 ## Documentation
 
@@ -74,6 +76,7 @@ Start with the [documentation hub](docs/README.md). Common entry points:
 - [Security](docs/security/THREAT_MODEL.md) — STRIDE threat model, channel binding, NTLMSSP audit guide.
 - [Migration analyzer](docs/migration/README.md) — diagnostics for porting from the legacy .NET Framework OPC API.
 - [MCP integration](docs/mcp/README.md) — using Opc.Classic from VS Code Copilot, Cursor, Claude Desktop, Copilot CLI.
+- [Capture tool reference](docs/mcp/tools.md#capture) — live target discovery, filter transitions, cursors, notifications, file decoding, replay, and auth unwrap.
 - [Docker test fleet](interop/docker/README.md) — the multi-container Windows interop test setup.
 - [Roadmap](docs/ROADMAP.md) — forward-looking gates and gaps.
 - [Changelog](CHANGELOG.md) — release-by-release detail.

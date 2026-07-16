@@ -23,13 +23,11 @@ public sealed class RemUnknownServerDispatcher : IRpcRequestContextDispatcher
     private const int RpcSProcnumOutOfRange = unchecked((int)0x800706D1u);
     private const int MaxInterfaceRefs = 0x8000;
     private readonly OpcObjectRegistry _objectRegistry;
-    private readonly ulong _oxid;
 
     /// <summary>Initializes a new instance of the <see cref="RemUnknownServerDispatcher" /> class.</summary>
     public RemUnknownServerDispatcher(OpcObjectRegistry objectRegistry)
     {
         _objectRegistry = objectRegistry ?? throw new ArgumentNullException(nameof(objectRegistry));
-        _oxid = UInt64FromGuid(Guid.NewGuid());
     }
 
     /// <inheritdoc />
@@ -93,7 +91,10 @@ public sealed class RemUnknownServerDispatcher : IRpcRequestContextDispatcher
             requestedIids[i] = reader.ReadGuid();
         }
 
-        if (!_objectRegistry.TryGetInterfaceDispatchers(ripid, out IReadOnlyDictionary<Guid, IOpcServerDispatcher>? dispatchers))
+        if (!_objectRegistry.TryGetObject(
+            ripid,
+            out IReadOnlyDictionary<Guid, IOpcServerDispatcher>? dispatchers,
+            out OpcObjectMetadata metadata))
         {
             return DispatchResult.Fault(CoEObjectNotRegistered);
         }
@@ -102,14 +103,20 @@ public sealed class RemUnknownServerDispatcher : IRpcRequestContextDispatcher
         for (int i = 0; i < requestedIids.Length; i++)
         {
             Guid iid = requestedIids[i];
-            if (dispatchers.ContainsKey(iid))
+            if (iid == OpcGuids.IID_IUnknown || dispatchers.ContainsKey(iid))
             {
                 if (cRefs != 0)
                 {
                     _objectRegistry.AddPublicRefs(ripid, cRefs);
                 }
 
-                results[i] = new OpcRemQIResult(0, flags: 0, publicRefs: cRefs, oxid: _oxid, oid: UInt64FromGuid(ripid), ipid: ripid);
+                results[i] = new OpcRemQIResult(
+                    0,
+                    flags: 0,
+                    publicRefs: cRefs,
+                    oxid: metadata.Oxid,
+                    oid: metadata.Oid,
+                    ipid: ripid);
             }
             else
             {
@@ -226,18 +233,6 @@ public sealed class RemUnknownServerDispatcher : IRpcRequestContextDispatcher
         }
 
         throw new InvalidOperationException("Unable to encode the IRemUnknown DCOM payload.");
-    }
-
-    private static ulong UInt64FromGuid(Guid value)
-    {
-        Span<byte> bytes = stackalloc byte[16];
-        bool ok = value.TryWriteBytes(bytes);
-        if (!ok)
-        {
-            throw new InvalidOperationException("Guid.TryWriteBytes failed unexpectedly.");
-        }
-
-        return BitConverter.ToUInt64(bytes);
     }
 
     [StructLayout(LayoutKind.Auto)]

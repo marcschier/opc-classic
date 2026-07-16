@@ -5,25 +5,30 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Opc.Classic.Da.Dcom;
 using Opc.Classic.Dcom;
+using Opc.Classic.Dcom.Transport;
 using Opc.Classic.Hosting;
+using Opc.Classic.Ndr;
 
 namespace Opc.Classic.Da.Hosting;
 
 /// <summary>
 /// DA dispatcher adapter that delegates to source-generated OPC DA dispatchers.
 /// </summary>
-public sealed class OpcDaServerDispatcher : IOpcDaServerDispatcher, IOPCCommon, IConnectionPointContainer, IConnectionPoint
+public sealed class OpcDaServerDispatcher : IOpcDaServerDispatcher, IOPCServer, IOPCCommon, IConnectionPointContainer, IConnectionPoint
 {
+    private static readonly Guid IidIUnknown =
+        new("00000000-0000-0000-C000-000000000046");
     private static readonly Action<ILogger, string, Exception?> ClientNameSet = LoggerMessage.Define<string>(
         LogLevel.Debug,
         new EventId(1, nameof(ClientNameSet)),
         "OPC DA client name set: {ClientName}");
 
     private readonly IOpcDaServer _server;
-    private readonly IOPCServerServerDispatcher _serverDispatcher;
+    private readonly IOpcServerDispatcher _serverDispatcher;
     private readonly IOPCCommonServerDispatcher _commonDispatcher;
     private readonly IConnectionPointContainerServerDispatcher _connectionPointContainerDispatcher;
     private readonly IConnectionPointServerDispatcher _connectionPointDispatcher;
+    private readonly OpcObjectRegistry _objectRegistry;
     private readonly ConcurrentDictionary<int, IOPCShutdown> _shutdownSinks = new();
     private int _nextShutdownCookie;
     private readonly ConnectionDiagnostics _connectionContext = new();
@@ -32,11 +37,25 @@ public sealed class OpcDaServerDispatcher : IOpcDaServerDispatcher, IOPCCommon, 
     /// <summary>
     /// Initializes a new instance of the <see cref="OpcDaServerDispatcher" /> class.
     /// </summary>
-    public OpcDaServerDispatcher(IOpcDaServer server, ILogger? logger = null)
+    public OpcDaServerDispatcher(IOpcDaServer server, ILogger? logger)
+        : this(server, logger, null)
+    {
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="OpcDaServerDispatcher" /> class.
+    /// </summary>
+    public OpcDaServerDispatcher(
+        IOpcDaServer server,
+        ILogger? logger = null,
+        OpcObjectRegistry? objectRegistry = null)
     {
         _server = server ?? throw new ArgumentNullException(nameof(server));
         _logger = logger ?? NullLogger.Instance;
-        _serverDispatcher = new IOPCServerServerDispatcher(_server);
+        _objectRegistry = objectRegistry ?? new OpcObjectRegistry();
+        _serverDispatcher = new GroupEnumeratorDispatcher(
+            this,
+            new IOPCServerServerDispatcher(this));
         _commonDispatcher = new IOPCCommonServerDispatcher(this);
         _connectionPointContainerDispatcher = new IConnectionPointContainerServerDispatcher(this);
         _connectionPointDispatcher = new IConnectionPointServerDispatcher(this);
@@ -54,6 +73,160 @@ public sealed class OpcDaServerDispatcher : IOpcDaServerDispatcher, IOPCCommon, 
     public IOpcServerDispatcher CommonDispatcher => _commonDispatcher;
     public IOpcServerDispatcher ConnectionPointContainerDispatcher => _connectionPointContainerDispatcher;
     public IOpcServerDispatcher ConnectionPointDispatcher => _connectionPointDispatcher;
+
+    Task IOPCServer.AddGroupAsync(
+        string name,
+        bool active,
+        int requestedUpdateRate,
+        int clientGroupHandle,
+        int timeBias,
+        float percentDeadband,
+        int localeId,
+        Guid requestedInterfaceId,
+        out int serverGroupHandle,
+        out int revisedUpdateRate,
+        out IOpcInterfaceRef group,
+        CancellationToken cancellationToken) =>
+        ((IOPCServer)_server).AddGroupAsync(
+            name,
+            active,
+            requestedUpdateRate,
+            clientGroupHandle,
+            timeBias,
+            percentDeadband,
+            localeId,
+            requestedInterfaceId,
+            out serverGroupHandle,
+            out revisedUpdateRate,
+            out group,
+            cancellationToken);
+
+    Task<IOpcInterfaceRef> IOPCServer.GetGroupByNameAsync(
+        string name,
+        Guid requestedInterfaceId,
+        CancellationToken cancellationToken) =>
+        ((IOPCServer)_server).GetGroupByNameAsync(name, requestedInterfaceId, cancellationToken);
+
+    Task<OpcServerStatus> IOPCServer.GetStatusAsync(CancellationToken cancellationToken) =>
+        _server.GetStatusAsync(cancellationToken);
+
+    Task<string> IOPCServer.GetErrorStringAsync(
+        int errorCode,
+        int localeId,
+        CancellationToken cancellationToken) =>
+        _server.GetErrorStringAsync(errorCode, localeId, cancellationToken);
+
+    Task IOPCServer.RemoveGroupAsync(
+        int serverGroupHandle,
+        bool force,
+        CancellationToken cancellationToken) =>
+        _server.RemoveGroupAsync(serverGroupHandle, force, cancellationToken);
+
+    async Task<IOpcInterfaceRef> IOPCServer.CreateGroupEnumeratorAsync(
+        int scope,
+        Guid requestedInterfaceId,
+        CancellationToken cancellationToken) =>
+        (await CreateGroupEnumeratorCoreAsync(
+            scope,
+            requestedInterfaceId,
+            cancellationToken).ConfigureAwait(false)).InterfaceRef;
+
+    private async Task<GroupEnumeratorResult> CreateGroupEnumeratorCoreAsync(
+        int scope,
+        Guid requestedInterfaceId,
+        CancellationToken cancellationToken)
+    {
+        OpcDaGroupEnumerationScope enumerationScope =
+            OpcDaGroupEnumerationScopeExtensions.FromWireValue(scope);
+        Guid expectedIid = enumerationScope.IsConnectionScope()
+            ? IEnumUnknown.InterfaceId
+            : IEnumString.InterfaceId;
+        if (requestedInterfaceId != expectedIid)
+        {
+            throw new OpcException(new OpcResultId(unchecked((int)0x80004002), "E_NOINTERFACE"));
+        }
+
+        OpcDaGroupEnumerationSnapshot snapshot = await _server
+            .CreateGroupEnumerationSnapshotAsync(enumerationScope, cancellationToken)
+            .ConfigureAwait(false);
+        IOpcInterfaceRef interfaceRef;
+        if (snapshot.EnumeratesConnections)
+        {
+            IOpcInterfaceRef[]? stableReferences =
+                await TryAcquireStableGroupReferencesAsync(
+                    snapshot.Groups,
+                    cancellationToken).ConfigureAwait(false);
+            interfaceRef = stableReferences is null
+                ? OpcDaGroupEnumeratorFactory.CreateUnknown(
+                    snapshot.Groups,
+                    _objectRegistry)
+                : OpcDaGroupEnumeratorFactory.CreateUnknown(
+                    stableReferences,
+                    _objectRegistry);
+        }
+        else
+        {
+            interfaceRef = OpcDaGroupEnumeratorFactory.CreateString(
+                snapshot.Names,
+                _objectRegistry);
+        }
+        return new GroupEnumeratorResult(interfaceRef, snapshot.Groups.Count == 0);
+    }
+
+    private async Task<IOpcInterfaceRef[]?> TryAcquireStableGroupReferencesAsync(
+        IReadOnlyList<OpcDaGroup> groups,
+        CancellationToken cancellationToken)
+    {
+        var references = new IOpcInterfaceRef[groups.Count];
+        int acquired = 0;
+        try
+        {
+            for (; acquired < groups.Count; acquired++)
+            {
+                OpcDaGroup group = groups[acquired]
+                    ?? throw new ArgumentException(
+                        "Group snapshots must not contain null entries.",
+                        nameof(groups));
+                IOpcInterfaceRef reference = await ((IOPCServer)_server)
+                    .GetGroupByNameAsync(
+                        group.Name,
+                        IidIUnknown,
+                        cancellationToken).ConfigureAwait(false);
+                if (reference.Ipid == Guid.Empty
+                    || !_objectRegistry.TryGetObjectMetadata(
+                        reference.Ipid,
+                        out _))
+                {
+                    ReleaseStableGroupReferences(references, acquired);
+                    return null;
+                }
+
+                references[acquired] = reference;
+            }
+
+            return references;
+        }
+        catch (OpcException)
+        {
+            ReleaseStableGroupReferences(references, acquired);
+            return null;
+        }
+        catch
+        {
+            ReleaseStableGroupReferences(references, acquired);
+            throw;
+        }
+    }
+
+    private void ReleaseStableGroupReferences(
+        IReadOnlyList<IOpcInterfaceRef> references,
+        int count)
+    {
+        for (int i = 0; i < count; i++)
+        {
+            _objectRegistry.ReleasePublicRefs(references[i].Ipid, 1);
+        }
+    }
 
     /// <inheritdoc />
     public async Task<NdrCallResult> DispatchAsync(
@@ -200,5 +373,65 @@ public sealed class OpcDaServerDispatcher : IOpcDaServerDispatcher, IOPCCommon, 
     private sealed class ConnectionDiagnostics
     {
         public string ClientName { get; set; } = string.Empty;
+    }
+
+    private readonly record struct GroupEnumeratorResult(
+        IOpcInterfaceRef InterfaceRef,
+        bool IsEmpty);
+
+    private sealed class GroupEnumeratorDispatcher : IOpcServerDispatcher
+    {
+        private const int EInvalidArg = unchecked((int)0x80070057);
+        private readonly OpcDaServerDispatcher _owner;
+        private readonly IOpcServerDispatcher _inner;
+
+        public GroupEnumeratorDispatcher(
+            OpcDaServerDispatcher owner,
+            IOpcServerDispatcher inner)
+        {
+            _owner = owner;
+            _inner = inner;
+        }
+
+        public async ValueTask<DispatchResult> DispatchAsync(
+            int opnum,
+            ReadOnlyMemory<byte> requestPayload,
+            CancellationToken cancellationToken = default)
+        {
+            if (opnum != IOPCServer.Opnums.CreateGroupEnumeratorAsync)
+            {
+                return await _inner
+                    .DispatchAsync(opnum, requestPayload, cancellationToken)
+                    .ConfigureAwait(false);
+            }
+
+            try
+            {
+                var reader = new NdrReader(requestPayload.Span);
+                int scope = reader.ReadInt32();
+                Guid requestedInterfaceId = reader.ReadGuid();
+                GroupEnumeratorResult result = await _owner
+                    .CreateGroupEnumeratorCoreAsync(scope, requestedInterfaceId, cancellationToken)
+                    .ConfigureAwait(false);
+                var buffer = new byte[1024];
+                var writer = new NdrWriter(buffer);
+                OpcMInterfacePointerCodec.Write(ref writer, result.InterfaceRef);
+                return DispatchResult.Success(
+                    buffer.AsSpan(0, writer.Position).ToArray(),
+                    result.IsEmpty ? OpcResultId.False.Code : OpcResultId.Ok.Code);
+            }
+            catch (OpcException exception)
+            {
+                return DispatchResult.Fault(exception.ResultId.Code);
+            }
+            catch (ArgumentException)
+            {
+                return DispatchResult.Fault(EInvalidArg);
+            }
+            catch (InvalidOperationException)
+            {
+                return DispatchResult.Fault(EInvalidArg);
+            }
+        }
     }
 }

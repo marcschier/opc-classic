@@ -34,9 +34,24 @@ var connectData = OpcConnectData.WithKerberos(
 
 ## SPNEGO
 
-SPNEGO wraps the Kerberos AP-REQ/AP-REP exchange for peers that negotiate through [MS-SPNG] / RFC 4178. Generated DA, AE, and HDA shims still use `ICallChannel`; only the authentication context changes.
+SPNEGO wraps the Kerberos AP-REQ/AP-REP exchange for peers that negotiate through [MS-SPNG] / RFC 4178. Generated DA, AE, and HDA shims still use `ICallChannel`; only the authentication context changes. Managed listeners select direct Kerberos or SPNEGO through `RpcServerAuthenticationProviderRegistry`.
 
 Keep NTLMv2 fallback explicit. Some environments disable NTLM entirely, and a silent fallback can violate policy.
+
+For a managed listener, construct `KerberosServerOptions` with the accepted
+service principals, realm, AES encryption types, clock skew, minimum protection
+level, channel-binding policy, credential provider, and
+`KerberosPrincipalMappingPolicy`. Register
+`KerberosServerAuthenticationProvider` directly and optionally wrap it with
+`SpnegoServerAuthenticationProvider`. Use
+`SpnegoNtlmFallbackPolicy.Disabled` for Kerberos-only policy; fallback requires
+an explicit NTLM provider and `WhenKerberosUnavailable`.
+
+`FileKerberosKeytabCredentialProvider` accepts complete MIT keytabs published
+by atomic replacement. It rejects empty, larger-than-16-MiB, malformed,
+wrong-principal, or unstable files and clears owned key bytes on rotation and
+disposal. `PasswordKerberosServerCredentialProvider` supports explicit
+in-memory rotation and clears the previous character buffer.
 
 ## Channel binding / EPA
 

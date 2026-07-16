@@ -52,6 +52,158 @@ public sealed class DcomCallChannelTests
         await Assert.That(result.ResponsePayload.Length).IsEqualTo(0);
     }
 
+    [Test]
+    public async Task InvokeAsync_normal_response_decodes_S_FALSE_and_removes_hresult()
+    {
+        await using var transport = new InMemoryAsyncTransport();
+        byte[] responsePayload = [0x31, 0x32];
+        await transport.WriteInboundAsync(CreateBindAckBytes());
+        await transport.WriteInboundAsync(
+            CreateResponseBytes(responsePayload, OpcResultId.False.Code));
+        var channel = new DcomCallChannel(
+            transport,
+            NoOpAuthContext.Instance);
+
+        NdrCallResult result = await channel.InvokeAsync(
+            Guid.NewGuid(),
+            3,
+            ReadOnlyMemory<byte>.Empty);
+
+        await Assert.That(result.Hresult).IsEqualTo(OpcResultId.False.Code);
+        await Assert.That(result.IsSuccess).IsTrue();
+        await Assert.That(result.IsFault).IsFalse();
+        await Assert.That(result.ResponsePayload.ToArray())
+            .IsEquivalentTo(responsePayload);
+    }
+
+    [Test]
+    public async Task Bind_authentication_token_uses_body_relative_16_byte_alignment()
+    {
+        await using var transport = new InMemoryAsyncTransport();
+        await transport.WriteInboundAsync(CreateBindAckBytes());
+        await transport.WriteInboundAsync(CreateResponseBytes([]));
+        var channel = new DcomCallChannel(
+            transport,
+            new TokenAuthContext());
+
+        _ = await channel.InvokeAsync(
+            Guid.NewGuid(),
+            3,
+            ReadOnlyMemory<byte>.Empty);
+
+        IReadOnlyList<byte[]> frames =
+            await ReadOutboundFramesAsync(transport);
+        byte[] bind = frames[0];
+        AssertAuthenticationAlignment(
+            bind,
+            expectedAuthLength: 1,
+            requirePadding: true);
+    }
+
+    [Test]
+    public async Task Alter_context_empty_verifier_uses_body_relative_16_byte_alignment()
+    {
+        await using var transport = new InMemoryAsyncTransport();
+        await transport.WriteInboundAsync(CreateBindAckBytes());
+        await transport.WriteInboundAsync(CreateResponseBytes([]));
+        await transport.WriteInboundAsync(CreateAlterAckBytes());
+        await transport.WriteInboundAsync(CreateResponseBytes([]));
+        var channel = new DcomCallChannel(
+            transport,
+            new RecordingIntegrityAuthContext());
+
+        _ = await channel.InvokeAsync(
+            Guid.NewGuid(),
+            3,
+            ReadOnlyMemory<byte>.Empty);
+        _ = await channel.InvokeAsync(
+            Guid.NewGuid(),
+            4,
+            ReadOnlyMemory<byte>.Empty);
+
+        IReadOnlyList<byte[]> frames =
+            await ReadOutboundFramesAsync(transport);
+        byte[] alter = frames.Single(
+            static frame =>
+                frame[ConnectionOrientedPdu.TYPE_OFFSET]
+                    == AlterContextPdu.ALTER_CONTEXT_TYPE);
+        AssertAuthenticationAlignment(
+            alter,
+            expectedAuthLength: 0,
+            requirePadding: true);
+    }
+
+    [Test]
+    public async Task InvokeAsync_normal_response_preserves_negative_application_hresult()
+    {
+        await using var transport = new InMemoryAsyncTransport();
+        await transport.WriteInboundAsync(CreateBindAckBytes());
+        await transport.WriteInboundAsync(
+            CreateResponseBytes([], ReadEFail()));
+        var channel = new DcomCallChannel(
+            transport,
+            NoOpAuthContext.Instance);
+
+        NdrCallResult result = await channel.InvokeAsync(
+            Guid.NewGuid(),
+            3,
+            ReadOnlyMemory<byte>.Empty);
+
+        await Assert.That(result.Hresult).IsEqualTo(ReadEFail());
+        await Assert.That(result.IsFailure).IsTrue();
+        await Assert.That(result.IsFault).IsFalse();
+    }
+
+    [Test]
+    public async Task InvokeAsync_rejects_normal_response_without_trailing_hresult()
+    {
+        await using var transport = new InMemoryAsyncTransport();
+        await transport.WriteInboundAsync(CreateBindAckBytes());
+        await transport.WriteInboundAsync(CreateResponseFragmentBytes(
+            new byte[8],
+            ConnectionOrientedPdu.PFC_FIRST_FRAG
+                | ConnectionOrientedPdu.PFC_LAST_FRAG));
+        var channel = new DcomCallChannel(
+            transport,
+            NoOpAuthContext.Instance);
+
+        Exception? thrown = null;
+        try
+        {
+            _ = await channel.InvokeAsync(
+                Guid.NewGuid(),
+                3,
+                ReadOnlyMemory<byte>.Empty);
+        }
+        catch (Exception exception)
+        {
+            thrown = exception;
+        }
+
+        await Assert.That(thrown).IsTypeOf<InvalidOperationException>();
+    }
+
+    [Test]
+    public async Task InvokeRawAsync_preserves_plain_NDR_response_without_hresult_decoding()
+    {
+        await using var transport = new InMemoryAsyncTransport();
+        byte[] rawPayload = [0x41, 0x42, 0x43];
+        await transport.WriteInboundAsync(CreateBindAckBytes());
+        await transport.WriteInboundAsync(CreateRawResponseBytes(rawPayload));
+        var channel = new DcomCallChannel(
+            transport,
+            NoOpAuthContext.Instance);
+
+        NdrCallResult result = await channel.InvokeRawAsync(
+            Guid.NewGuid(),
+            3,
+            ReadOnlyMemory<byte>.Empty);
+
+        await Assert.That(result.Hresult).IsEqualTo(0);
+        await Assert.That(result.ResponsePayload.ToArray())
+            .IsEquivalentTo(rawPayload);
+    }
+
     // Regression guard for the NTLM RPC signing fix: at Integrity the channel must sign the
     // ENTIRE PDU except the trailing auth_value (common header + body + auth pad + sec_trailer
     // header), per MS-RPCE §3.3.1.5.2.2 — NOT just the post-header body. Real Windows RPCSS
@@ -73,13 +225,47 @@ public sealed class DcomCallChannelTests
         // carries the REQUEST ptype.
         await Assert.That(region[0]).IsEqualTo((byte)5);
         await Assert.That(region[ConnectionOrientedPdu.TYPE_OFFSET]).IsEqualTo((byte)RequestCoPdu.REQUEST_TYPE);
-        // The confidential (sealed) sub-range starts after the common header.
-        await Assert.That(authContext.CapturedConfidentialOffset).IsEqualTo(ConnectionOrientedPdu.HEADER_LENGTH);
+        // The confidential (sealed) sub-range starts after the request's fixed
+        // allocation-hint/context/opnum fields.
+        await Assert.That(authContext.CapturedConfidentialOffset)
+            .IsEqualTo(ConnectionOrientedPdu.HEADER_LENGTH + 8);
         // The signed region ends with the 8-byte sec_trailer header (auth_type 0x0A = NTLM).
         await Assert.That(region[^8]).IsEqualTo((byte)0x0A);
         // region == header + confidential body + 8-byte sec_trailer header (auth_value excluded).
         await Assert.That(region.Length)
             .IsEqualTo(authContext.CapturedConfidentialOffset + authContext.CapturedConfidentialLength + 8);
+        int verifierStart = region.Length - 8;
+        int authPadding = region[verifierStart + 2];
+        int unpaddedPduLength = verifierStart - authPadding;
+        int unpaddedBodyLength =
+            unpaddedPduLength - ConnectionOrientedPdu.HEADER_LENGTH;
+        int expectedPadding = (16 - (unpaddedBodyLength % 16)) % 16;
+        await Assert.That(
+            (verifierStart - ConnectionOrientedPdu.HEADER_LENGTH) % 16)
+            .IsEqualTo(0);
+        await Assert.That(authPadding).IsEqualTo(expectedPadding);
+        await Assert.That(authPadding).IsGreaterThan(0);
+    }
+
+    [Test]
+    public async Task InvokeAsync_with_object_uuid_keeps_fixed_request_header_clear()
+    {
+        await using var transport = new InMemoryAsyncTransport();
+        await transport.WriteInboundAsync(CreateBindAckBytes());
+        await transport.WriteInboundAsync(CreateResponseBytes([0x55]));
+        var authContext = new RecordingIntegrityAuthContext();
+        var channel = new DcomCallChannel(
+            transport,
+            authContext,
+            Guid.NewGuid());
+
+        _ = await channel.InvokeAsync(
+            Guid.NewGuid(),
+            3,
+            new byte[] { 0x10, 0x11, 0x12 });
+
+        await Assert.That(authContext.CapturedConfidentialOffset)
+            .IsEqualTo(ConnectionOrientedPdu.HEADER_LENGTH + 8 + 16);
     }
 
     // The channel must surface the DCE/RPC bind_nak reject_reason (MS-RPCE §2.2.2.10) as a
@@ -252,6 +438,22 @@ public sealed class DcomCallChannelTests
 
     private static byte[] CreateBindAckBytes() => CreateBindAckBytes(resultCount: 1);
 
+    private static byte[] CreateAlterAckBytes()
+    {
+        var alterAck = new AlterContextResponsePdu
+        {
+            AssociationGroupId = 1,
+            CallId = 3,
+            MaxReceiveFragment =
+                ConnectionOrientedPdu.MUST_RECEIVE_FRAGMENT_SIZE,
+            MaxTransmitFragment =
+                ConnectionOrientedPdu.MUST_RECEIVE_FRAGMENT_SIZE,
+            ResultList = [new PresentationResult()],
+            SecondaryAddress = new Port(),
+        };
+        return EncodePdu(alterAck);
+    }
+
     private static byte[] CreateBindAckBytes(int resultCount, int rejectedIndex = -1)
     {
         var bindAck = new BindAcknowledgePdu
@@ -283,10 +485,18 @@ public sealed class DcomCallChannelTests
         return results;
     }
 
-    private static byte[] CreateResponseBytes(byte[] responsePayload) =>
+    private static byte[] CreateResponseBytes(
+        byte[] responsePayload,
+        int hresult = 0) =>
         CreateResponseFragmentBytes(
-            CreateResponseStub(responsePayload),
+            CreateResponseStub(responsePayload, hresult),
             ConnectionOrientedPdu.PFC_FIRST_FRAG | ConnectionOrientedPdu.PFC_LAST_FRAG);
+
+    private static byte[] CreateRawResponseBytes(byte[] responsePayload) =>
+        CreateResponseFragmentBytes(
+            responsePayload,
+            ConnectionOrientedPdu.PFC_FIRST_FRAG
+                | ConnectionOrientedPdu.PFC_LAST_FRAG);
 
     private static byte[] CreateResponseFragmentBytes(byte[] responseStub, int flags)
     {
@@ -326,31 +536,70 @@ public sealed class DcomCallChannelTests
         return EncodePdu(nak);
     }
 
-    private static byte[] CreateResponseStub(byte[] responsePayload)
+    private static byte[] CreateResponseStub(
+        byte[] responsePayload,
+        int hresult = 0)
     {
-        byte[] stub = new byte[8 + responsePayload.Length];
+        byte[] stub = new byte[8 + responsePayload.Length + sizeof(int)];
         responsePayload.CopyTo(stub.AsSpan(8));
+        BinaryPrimitives.WriteInt32LittleEndian(
+            stub.AsSpan(8 + responsePayload.Length),
+            hresult);
         return stub;
     }
 
     private static async Task<IReadOnlyList<ConnectionOrientedPdu>> ReadOutboundPdusAsync(InMemoryAsyncTransport transport)
     {
+        IReadOnlyList<byte[]> frames =
+            await ReadOutboundFramesAsync(transport);
+        return frames.Select(PduCodec.DecodePdu).ToArray();
+    }
+
+    private static async Task<IReadOnlyList<byte[]>> ReadOutboundFramesAsync(
+        InMemoryAsyncTransport transport)
+    {
         ReadResult result = await transport.ReadOutbound.ReadAsync();
         byte[] outbound = result.Buffer.ToArray();
         transport.ReadOutbound.AdvanceTo(result.Buffer.End);
 
-        var pdus = new List<ConnectionOrientedPdu>();
+        var frames = new List<byte[]>();
         int offset = 0;
         while (offset < outbound.Length)
         {
             int fragmentLength = BinaryPrimitives.ReadUInt16LittleEndian(
                 outbound.AsSpan(offset + ConnectionOrientedPdu.FRAG_LENGTH_OFFSET, sizeof(ushort)));
             byte[] frame = outbound.AsSpan(offset, fragmentLength).ToArray();
-            pdus.Add(PduCodec.DecodePdu(frame));
+            frames.Add(frame);
             offset += fragmentLength;
         }
 
-        return pdus;
+        return frames;
+    }
+
+    private static void AssertAuthenticationAlignment(
+        byte[] frame,
+        int expectedAuthLength,
+        bool requirePadding)
+    {
+        int fragmentLength = BinaryPrimitives.ReadUInt16LittleEndian(
+            frame.AsSpan(ConnectionOrientedPdu.FRAG_LENGTH_OFFSET));
+        int authLength = BinaryPrimitives.ReadUInt16LittleEndian(
+            frame.AsSpan(ConnectionOrientedPdu.AUTH_LENGTH_OFFSET));
+        int verifierStart = fragmentLength - authLength - 8;
+        int padding = frame[verifierStart + 2];
+        int unpaddedPduLength = verifierStart - padding;
+        int bodyLength =
+            unpaddedPduLength - ConnectionOrientedPdu.HEADER_LENGTH;
+        int expectedPadding = (16 - (bodyLength % 16)) % 16;
+
+        if (authLength != expectedAuthLength
+            || (verifierStart - ConnectionOrientedPdu.HEADER_LENGTH) % 16 != 0
+            || padding != expectedPadding
+            || requirePadding && padding == 0)
+        {
+            throw new InvalidOperationException(
+                "Authentication verifier alignment did not match MS-RPCE.");
+        }
     }
 
     private static bool ContainsPdu<T>(IReadOnlyList<ConnectionOrientedPdu> pdus)
@@ -449,5 +698,35 @@ public sealed class DcomCallChannelTests
         }
 
         public bool VerifyAndUnseal(Span<byte> signedRegion, int confidentialOffset, int confidentialLength, ReadOnlyMemory<byte> signature) => true;
+    }
+
+    private sealed class TokenAuthContext : IAuthContext
+    {
+        public OpcProtectionLevel ProtectionLevel =>
+            OpcProtectionLevel.Connect;
+
+        public byte AuthenticationServiceCode => 42;
+
+        public byte[] BuildInitialToken() => [0x01];
+
+        public byte[] ProcessChallengeToken(
+            ReadOnlyMemory<byte> serverToken)
+        {
+            _ = serverToken;
+            return [];
+        }
+
+        public void SignAndSeal(
+            Span<byte> signedRegion,
+            int confidentialOffset,
+            int confidentialLength,
+            out byte[] signature) =>
+            signature = [];
+
+        public bool VerifyAndUnseal(
+            Span<byte> signedRegion,
+            int confidentialOffset,
+            int confidentialLength,
+            ReadOnlyMemory<byte> signature) => signature.IsEmpty;
     }
 }

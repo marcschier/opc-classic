@@ -114,7 +114,10 @@ NativeAOT is RID-specific. Build `linux-x64` and `linux-arm64` separately or thr
 
 ### Source-generated proxies
 
-The DCOM projection model uses attributes and source generators at build time. Generated proxies call `ICallChannel` and static codecs. No runtime reflection is needed to discover opnums or marshal parameters.
+The DCOM projection model uses attributes and source generators at build time.
+Generated proxies and server dispatchers cover the 253 audited production
+method shapes and call static codecs. The migration manifest contains zero
+unsupported diagnostics, suppressions, or hand-written wire fallbacks.
 
 ### Explicit codecs
 
@@ -134,6 +137,21 @@ builder.Services.AddHostedService(static sp => sp.GetRequiredService<MyWorker>()
 ```
 
 Per-spec hosting methods use `[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)]` on generic server types to preserve constructors.
+
+### Explicit authentication-provider registration
+
+Managed-listener authentication is AOT-safe when providers are registered
+directly or through `AddKerberosRpcServerAuthentication`.
+`RpcServerAuthenticationProviderRegistry` selects NTLMv2, Kerberos, or SPNEGO
+by numeric RPC authentication service; it does not scan assemblies or activate
+types by name. `KerberosServerOptions`, keytab/password credential providers,
+principal mapping, channel-binding policy, and SPNEGO fallback policy are all
+statically typed.
+
+The SharpPcap-based `Opc.Classic.Mcp.Capture` project is a tooling boundary, not
+a runtime dependency. It lives outside `src`, is published as a self-contained
+MCP tool rather than NativeAOT, and does not change the AOT contract of
+`Opc.Classic.*` runtime packages.
 
 ## What is not safe
 
@@ -249,6 +267,7 @@ Look for hidden reflection, dynamic serialization, culture/globalization differe
 - Health check performs an authenticated OPC status call.
 - Logs include version, target URL, auth mode, and protection level.
 - Keytabs and certificates are mounted as secrets, not embedded.
+- Keytab rotation uses atomic file replacement; credential providers are disposed during shutdown.
 - The deployment process builds one artifact per RID.
 
 ## Configuration binding in trimmed apps
@@ -334,4 +353,3 @@ Add a command-line switch such as `--smoke-test` that starts configuration, vali
 - Repository canary: `Opc.Classic.Samples.AotCanary`.
 - Repository rules: `Directory.Build` and `BannedSymbols`.
 - [../ARCHITECTURE.md](../ARCHITECTURE.md) for source-generated proxy and explicit codec design.
-

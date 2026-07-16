@@ -49,7 +49,7 @@ Runtime source is organized by protocol boundary rather than by sample scenario.
 | --- | --- |
 | `Opc.Classic.Core` | Common contracts, URLs, connection data, NDR, OAUT, `OpcVariant`, `OpcSafeArray`, HRESULT/result identifiers, testing transports, `IAuthContext`. |
 | `Opc.Classic.Dcom` | Managed MSRPC/DCOM channel, activation (`IRemoteSCMActivator` + legacy `IActivation` client/server), OBJREF/OXID handling, NTLMv2, packet protection, ping, server object export, `ncacn_np` transport that wraps `Opc.Classic.Dcom.Smb`. |
-| `Opc.Classic.Dcom.Kerberos` | Kerberos/SPNEGO token flow and packet protection integration. |
+| `Opc.Classic.Dcom.Kerberos` | Kerberos client and acceptor flow, SPNEGO policy, credential providers, principal mapping, channel binding, and packet protection. |
 | `Opc.Classic.Dcom.Smb` | Minimal AOT-clean SMB2 client scoped to the named-pipe operations required by `ncacn_np`: NEGOTIATE/SESSION_SETUP/TREE_CONNECT/CREATE/READ/WRITE/IOCTL/CLOSE; SMB2 signing (HMAC-SHA256, AES-CMAC) and SMB 3.x encryption (AES-128-CCM/GCM with `TRANSFORM_HEADER`). |
 | `Opc.Classic.Da` | Data Access managed APIs, DCOM projections, generated proxies/dispatchers, hosting, subscriptions, item/value models, Windows CCWs (`OpcDaServerCcw`, `OpcDaGroupCcw`, `OpcEnumConnectionsCcw`, `OpcEnumConnectionPointsCcw`, `OpcEnumOpcItemAttributesCcw`, `OpcDataCallbackProxy`). |
 | `Opc.Classic.Ae` | Alarms & Events managed APIs, event categories, subscriptions, condition/event models, DCOM projections, array-heavy CCW marshaling helpers, Windows CCWs (`OpcAeServerCcw`, `OpcAeSubscriptionCcw`, `OpcAeAreaBrowserCcw`, `OpcAeEventSinkProxy`, `OpcEnumStringCcw`). |
@@ -283,14 +283,15 @@ AE and HDA hosting use the same pattern with their per-spec server contracts and
 
 ## 8. Authentication and packet protection
 
-Authentication is behind the `IAuthContext` abstraction so transports and generated code do not depend on a concrete security mechanism. Transports that need the negotiated session key (e.g., SMB2 signing/encryption) consume `IAuthSessionKeyProvider` as an optional capability.
+Client authentication is behind `IAuthContext`; inbound listener authentication is behind `IRpcServerAuthenticationProvider`, `IRpcServerAuthenticationAcceptor`, and `IRpcServerProtectionContext`. `RpcServerAuthenticationProviderRegistry` selects providers by RPC authentication-service identifier, so transport framing and generated dispatch remain mechanism-neutral. Transports that need the negotiated session key (for example SMB2 signing/encryption) consume `IAuthSessionKeyProvider` as an optional capability.
 
 | Mechanism | Current state |
 | --- | --- |
 | NTLMv2 | Self-contained implementation with MIC handling, extended session security, signing, and sealing. Direct `SIGNATURE_BLOCK` formation and mismatch tests against MS-NLMP §3.4.4 / §3.4.5 vectors. |
-| Kerberos | Kerberos AP-REQ/AP-REP and packet protection for supported encryption types. |
-| SPNEGO | RFC 4178 / [MS-SPNG] negotiation wrapper for Kerberos and NTLM tokens. |
+| Kerberos | Client and managed-listener acceptor paths for AP-REQ/AP-REP, AES/RC4-HMAC tickets, clock-skew checks, service-principal validation, explicit principal mapping, and packet protection. |
+| SPNEGO | RFC 4178 / [MS-SPNG] Kerberos-first negotiation with `mechListMIC` validation and `SpnegoNtlmFallbackPolicy.Disabled` or `WhenKerberosUnavailable`. |
 | Channel binding | RFC 5056 and RFC 5929 helpers, including `tls-server-end-point` binding material. |
+| Server credentials | Rotatable password credentials and bounded MIT keytab loading. Keytabs must be atomically replaced; unstable, empty, oversized, malformed, or wrong-principal files are rejected, and owned buffers are cleared on rotation/disposal. |
 | SMB2 signing | HMAC-SHA256 (SMB 2.0.2/2.1) or AES-128-CMAC (SMB 3.x); session keys derived via SMB3KDF per MS-SMB2 §3.1.4.1 + §3.1.5.1. |
 | SMB 3.x encryption | AES-128-CCM or AES-128-GCM per MS-SMB2 §3.1.4.3 + §2.2.41 `TRANSFORM_HEADER`. |
 | DCOM hardening | Defaults align with KB5004442: NTLMv2 or Kerberos plus packet integrity. |
@@ -321,18 +322,18 @@ The repository implements broad coverage across its targeted OPC Classic areas, 
 
 | Area | Current support |
 | --- | --- |
-| DA | Managed client/server contracts, generated DCOM projections, hosting, subscriptions, `IOpcAddressSpace`-backed browse/properties, read/write, data-change callbacks, Windows CCWs, DA client/server samples. |
+| DA | Managed client/server contracts, generated DCOM projections, hosting, subscriptions, `IOpcAddressSpace`-backed browse/properties, read/write, data-change callbacks, all-scope group enumeration, Windows CCWs, DA client/server samples. |
 | AE | Managed event server/client contracts, generated projections, subscriptions, event categories, condition/event models, AE client/server samples. |
 | HDA | Managed historical APIs, generated projections, sync/async read/update/annotation/playback surfaces, HDA client/server samples. |
 | Batch | Batch summaries, filters, state/type models, enumerations, generated projections. |
 | Commands | Command metadata, state, invocation, callback projections, generated surfaces. |
-| Cpx | Complex Data dictionaries, field/type descriptions, value models, generated projections. |
-| DX | Source server, connection, configuration, and generated DX projections. |
+| Cpx | Complex Data dictionaries, field/type descriptions, bounded reference conversion/filter semantics, DA-backed address-space helpers, generated projections, and standalone server/client samples. |
+| DX | Source server, connection, configuration, generated DX projections, atomic JSON persistence, and a bounded DA-to-DA reference engine used by SimulationServer. |
 | Security | OPC Security interfaces plus DCOM authentication and channel-binding integration. |
 | Discovery | Local registry/configuration, remote registry, and OPCEnum discovery paths. |
 | XML-DA | Client-only HTTP/SOAP DTOs, serializers, and transport for XML-DA endpoints. |
 
-One known DA hosting gap is `IOPCServer::CreateGroupEnumerator` on the Windows CCW path, which still returns `E_NOTIMPL`. A conformant implementation needs an `IEnumString` for the `*_NAMES` scopes and an `IEnumUnknown` for the `*_CONNECTIONS` scopes, backed by the managed group snapshot. This remains on the [ROADMAP](ROADMAP.md#open-conformance-follow-ups).
+`IOPCServer::CreateGroupEnumerator` is implemented on the managed DCOM and Windows CCW paths. `Private`, `Public`, and `All` return `IEnumString`; the corresponding connection scopes return `IEnumUnknown`. Enumerators own immutable snapshots, preserve private-before-public ordering, and implement COM-compatible partial-fetch, skip, reset, clone, and lifetime semantics.
 
 XML-DA client support is available through the HTTP/SOAP assembly for deployments that expose Classic data through XML-DA endpoints rather than DCOM.
 
@@ -348,6 +349,8 @@ The sample suite includes:
 | `Opc.Classic.Samples.AeClient` | AE subscription and event consumption pattern. |
 | `Opc.Classic.Samples.HdaServer` | Managed HDA historical data server. |
 | `Opc.Classic.Samples.HdaClient` | HDA query and playback client pattern. |
+| `Opc.Classic.Samples.CpxServer` | Standalone DA-backed CPX dictionary/type/value reference server. |
+| `Opc.Classic.Samples.CpxClient` | CPX discovery, decode, bounded conversion, and bounded filtering client. |
 | `Opc.Classic.Samples.LoopbackDemo` | In-memory generated proxy/dispatcher loopback for DA. |
 | `Opc.Classic.Samples.CttServer` | Conformance-test DA sample server. |
 | `Opc.Classic.Samples.OpcSecurityServer` | OPC Security reference server and ACL semantics. |

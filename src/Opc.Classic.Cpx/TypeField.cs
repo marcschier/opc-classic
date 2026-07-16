@@ -29,6 +29,8 @@ public sealed record TypeField(
     int? CharWidth = null,
     string? Format = null)
 {
+    private int? _minOccurs;
+
     /// <summary>
     /// Field name. Empty when the OPCBinary field is anonymous.
     /// </summary>
@@ -83,6 +85,16 @@ public sealed record TypeField(
     /// Optional field format metadata.
     /// </summary>
     public string? Format { get; init; } = Normalize(Format);
+
+    /// <summary>
+    /// XML Schema minimum occurrence count. <see langword="null"/> identifies
+    /// OPCBinary occurrence semantics.
+    /// </summary>
+    public int? MinOccurs
+    {
+        get => _minOccurs;
+        init => _minOccurs = ValidateNonNegative(value, nameof(MinOccurs));
+    }
 
     private static TypeKind ValidateKind(TypeKind kind)
     {

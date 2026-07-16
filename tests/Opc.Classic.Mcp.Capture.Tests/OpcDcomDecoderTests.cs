@@ -1,6 +1,7 @@
 ﻿// Copyright (c) 2026 Opc.Classic Contributors. Licensed under the MIT License.
 
 using System.Buffers.Binary;
+using Opc.Classic.Dcom.Internal.Ntlm;
 using Opc.Classic.Dcom.Rpc;
 using Opc.Classic.Dcom.Rpc.Core;
 using Opc.Classic.Dcom.Rpc.pdu;
@@ -159,6 +160,334 @@ public sealed class OpcDcomDecoderTests
     }
 
     [Test]
+    public async Task Decode_TcpSequenceReassembly_ReordersOutOfOrderSegments()
+    {
+        var decoder = new OpcDcomDecoder();
+        DateTimeOffset timestamp = DateTimeOffset.UnixEpoch;
+        byte[] bind = Encode(NewBindPdu(callId: 70));
+        uint bindSequence = 10_000;
+        _ = decoder.Decode(NewTcpPacket(bind, timestamp, sequenceNumber: bindSequence)).ToArray();
+        byte[] request = Encode(NewRequestPdu(callId: 71));
+        uint requestSequence = bindSequence + (uint)bind.Length;
+
+        DecodedOpcPdu[] laterHalf = decoder.Decode(NewTcpPacket(
+            request[8..],
+            timestamp.AddMilliseconds(1),
+            sequenceNumber: requestSequence + 8)).ToArray();
+        DecodedOpcPdu[] completed = decoder.Decode(NewTcpPacket(
+            request[..8],
+            timestamp.AddMilliseconds(2),
+            sequenceNumber: requestSequence)).ToArray();
+
+        await Assert.That(laterHalf.Length).IsEqualTo(0);
+        await Assert.That(completed.Length).IsEqualTo(1);
+        await Assert.That(completed[0].CallId).IsEqualTo(71);
+    }
+
+    [Test]
+    public async Task Decode_TcpSequenceReassembly_DeduplicatesRetransmissionAndMergesOverlap()
+    {
+        var decoder = new OpcDcomDecoder();
+        DateTimeOffset timestamp = DateTimeOffset.UnixEpoch;
+        byte[] bind = Encode(NewBindPdu(callId: 72));
+        uint bindSequence = 20_000;
+        _ = decoder.Decode(NewTcpPacket(bind, timestamp, sequenceNumber: bindSequence)).ToArray();
+        byte[] request = Encode(NewRequestPdu(callId: 73));
+        uint requestSequence = bindSequence + (uint)bind.Length;
+
+        _ = decoder.Decode(NewTcpPacket(
+            request[..20],
+            timestamp.AddMilliseconds(1),
+            sequenceNumber: requestSequence)).ToArray();
+        _ = decoder.Decode(NewTcpPacket(
+            request[..20],
+            timestamp.AddMilliseconds(2),
+            sequenceNumber: requestSequence)).ToArray();
+        DecodedOpcPdu[] completed = decoder.Decode(NewTcpPacket(
+            request[10..],
+            timestamp.AddMilliseconds(3),
+            sequenceNumber: requestSequence + 10)).ToArray();
+
+        await Assert.That(completed.Length).IsEqualTo(1);
+        await Assert.That(completed[0].CallId).IsEqualTo(73);
+        await Assert.That(decoder.CompleteDetailed().Count()).IsEqualTo(0);
+        await Assert.That(decoder.TrackedFlowCount).IsEqualTo(0);
+        await Assert.That(decoder.CompletedFlowTombstoneCount).IsEqualTo(0);
+    }
+
+    [Test]
+    public async Task Decode_TcpSequenceReassembly_UnwrapsSequenceNumbersAcross32BitBoundary()
+    {
+        var decoder = new OpcDcomDecoder();
+        DateTimeOffset timestamp = DateTimeOffset.UnixEpoch;
+        byte[] request = Encode(NewRequestPdu(callId: 731));
+        uint synSequence = uint.MaxValue - 4;
+        uint dataSequence = unchecked(synSequence + 1);
+
+        _ = decoder.Decode(NewTcpPacket(
+            [],
+            timestamp,
+            sequenceNumber: synSequence,
+            tcpFlags: 0x02)).ToArray();
+        DecodedOpcPdu[] later = decoder.Decode(NewTcpPacket(
+            request[8..],
+            timestamp.AddMilliseconds(1),
+            sequenceNumber: unchecked(dataSequence + 8))).ToArray();
+        DecodedOpcPdu[] completed = decoder.Decode(NewTcpPacket(
+            request[..8],
+            timestamp.AddMilliseconds(2),
+            sequenceNumber: dataSequence)).ToArray();
+
+        await Assert.That(later.Length).IsEqualTo(0);
+        await Assert.That(completed.Length).IsEqualTo(1);
+        await Assert.That(completed[0].CallId).IsEqualTo(731);
+    }
+
+    [Test]
+    public async Task Decode_TcpLifecycle_UnilateralFinWaitsForEarlierOutOfOrderSegment()
+    {
+        var decoder = new OpcDcomDecoder();
+        DateTimeOffset timestamp = DateTimeOffset.UnixEpoch;
+        byte[] request = Encode(NewRequestPdu(callId: 735));
+        const uint synSequence = 40_000;
+        const uint dataSequence = synSequence + 1;
+
+        _ = decoder.Decode(NewTcpPacket(
+            [],
+            timestamp,
+            sequenceNumber: synSequence,
+            tcpFlags: 0x02)).ToArray();
+        DecodedOpcPdu[] finFirst = decoder.Decode(NewTcpPacket(
+            request[8..],
+            timestamp.AddMilliseconds(1),
+            sequenceNumber: dataSequence + 8,
+            tcpFlags: 0x11)).ToArray();
+        DecodedOpcPdu[] completed = decoder.Decode(NewTcpPacket(
+            request[..8],
+            timestamp.AddMilliseconds(2),
+            sequenceNumber: dataSequence,
+            tcpFlags: 0x10)).ToArray();
+
+        await Assert.That(finFirst.Length).IsEqualTo(0);
+        await Assert.That(completed.Length).IsEqualTo(1);
+        await Assert.That(completed[0].CallId).IsEqualTo(735);
+    }
+
+    [Test]
+    public async Task Decode_TcpLifecycle_NewSynAfterResetStartsFreshConnectionGeneration()
+    {
+        var decoder = new OpcDcomDecoder();
+        DateTimeOffset timestamp = DateTimeOffset.UnixEpoch;
+        byte[] abandoned = Encode(NewRequestPdu(callId: 740));
+
+        _ = decoder.Decode(NewTcpPacket(
+            [],
+            timestamp,
+            sequenceNumber: 1_000,
+            tcpFlags: 0x02)).ToArray();
+        _ = decoder.Decode(NewTcpPacket(
+            abandoned[..8],
+            timestamp.AddMilliseconds(1),
+            sequenceNumber: 1_001)).ToArray();
+        _ = decoder.Decode(NewTcpPacket(
+            [],
+            timestamp.AddMilliseconds(2),
+            sequenceNumber: 1_009,
+            tcpFlags: 0x04)).ToArray();
+        DecodedOpcPdu[] retransmittedSyn = decoder.Decode(NewTcpPacket(
+            [],
+            timestamp.AddMilliseconds(2.25),
+            sequenceNumber: 1_000,
+            tcpFlags: 0x02)).ToArray();
+        DecodedOpcPdu[] latePacket = decoder.Decode(NewTcpPacket(
+            abandoned[8..],
+            timestamp.AddMilliseconds(2.5),
+            sequenceNumber: 1_009)).ToArray();
+
+        await Assert.That(decoder.TrackedFlowCount).IsEqualTo(0);
+        await Assert.That(decoder.CompletedFlowTombstoneCount).IsEqualTo(2);
+        await Assert.That(retransmittedSyn).IsEmpty();
+        await Assert.That(latePacket).IsEmpty();
+        await Assert.That(decoder.TrackedFlowCount).IsEqualTo(0);
+
+        byte[] replacement = Encode(NewRequestPdu(callId: 741));
+        _ = decoder.Decode(NewTcpPacket(
+            [],
+            timestamp.AddMilliseconds(3),
+            sequenceNumber: 50_000,
+            tcpFlags: 0x02)).ToArray();
+        DecodedOpcPdu[] decoded = decoder.Decode(NewTcpPacket(
+            replacement,
+            timestamp.AddMilliseconds(4),
+            sequenceNumber: 50_001)).ToArray();
+
+        await Assert.That(decoded.Length).IsEqualTo(1);
+        await Assert.That(decoded[0].CallId).IsEqualTo(741);
+        await Assert.That(decoder.CompletedFlowTombstoneCount).IsEqualTo(0);
+        await Assert.That(decoder.CompleteDetailed().Any(frame => frame.Pdu?.CallId == 740)).IsFalse();
+    }
+
+    [Test]
+    public async Task Decode_TcpLifecycle_MutualFinEvictsFlowAndDropsLatePackets()
+    {
+        var decoder = new OpcDcomDecoder();
+        DateTimeOffset timestamp = DateTimeOffset.UnixEpoch;
+        byte[] request = Encode(NewRequestPdu(callId: 745));
+        const uint clientSyn = 70_000;
+        uint clientData = clientSyn + 1;
+
+        _ = decoder.Decode(NewTcpPacket(
+            [],
+            timestamp,
+            sequenceNumber: clientSyn,
+            tcpFlags: 0x02)).ToArray();
+        DecodedOpcPdu[] decoded = decoder.Decode(NewTcpPacket(
+            request,
+            timestamp.AddMilliseconds(1),
+            sequenceNumber: clientData)).ToArray();
+        _ = decoder.Decode(NewTcpPacket(
+            [],
+            timestamp.AddMilliseconds(2),
+            sequenceNumber: clientData + (uint)request.Length,
+            tcpFlags: 0x11)).ToArray();
+        _ = decoder.Decode(NewTcpPacket(
+            [],
+            timestamp.AddMilliseconds(3),
+            reverse: true,
+            sequenceNumber: 90_000,
+            tcpFlags: 0x11)).ToArray();
+
+        DecodedOpcPdu[] latePacket = decoder.Decode(NewTcpPacket(
+            request,
+            timestamp.AddMilliseconds(4),
+            sequenceNumber: clientData)).ToArray();
+
+        await Assert.That(decoded.Select(pdu => pdu.CallId))
+            .IsEquivalentTo([745]);
+        await Assert.That(decoder.TrackedFlowCount).IsEqualTo(0);
+        await Assert.That(decoder.CompletedFlowTombstoneCount).IsEqualTo(2);
+        await Assert.That(latePacket).IsEmpty();
+        await Assert.That(decoder.TrackedFlowCount).IsEqualTo(0);
+    }
+
+    [Test]
+    public async Task Decode_TcpLifecycle_MutualFinWaitsForMissingPreFinSegment()
+    {
+        var decoder = new OpcDcomDecoder();
+        DateTimeOffset timestamp = DateTimeOffset.UnixEpoch;
+        byte[] request = Encode(NewRequestPdu(callId: 746));
+        const uint clientSyn = 80_000;
+        const uint clientData = clientSyn + 1;
+
+        _ = decoder.Decode(NewTcpPacket(
+            [],
+            timestamp,
+            sequenceNumber: clientSyn,
+            tcpFlags: 0x02)).ToArray();
+        _ = decoder.Decode(NewTcpPacket(
+            request[..8],
+            timestamp.AddMilliseconds(1),
+            sequenceNumber: clientData)).ToArray();
+        _ = decoder.Decode(NewTcpPacket(
+            request[16..],
+            timestamp.AddMilliseconds(2),
+            sequenceNumber: clientData + 16,
+            tcpFlags: 0x11)).ToArray();
+        DecodedOpcPdu[] mutualFin = decoder.Decode(NewTcpPacket(
+            [],
+            timestamp.AddMilliseconds(3),
+            reverse: true,
+            sequenceNumber: 95_000,
+            tcpFlags: 0x11)).ToArray();
+
+        await Assert.That(mutualFin).IsEmpty();
+        await Assert.That(decoder.TrackedFlowCount).IsEqualTo(2);
+        await Assert.That(decoder.CompletedFlowTombstoneCount).IsEqualTo(0);
+
+        DecodedOpcPdu[] completed = decoder.Decode(NewTcpPacket(
+            request[8..16],
+            timestamp.AddMilliseconds(4),
+            sequenceNumber: clientData + 8)).ToArray();
+
+        await Assert.That(completed.Select(pdu => pdu.CallId)).IsEquivalentTo([746]);
+        await Assert.That(decoder.TrackedFlowCount).IsEqualTo(0);
+        await Assert.That(decoder.CompletedFlowTombstoneCount).IsEqualTo(2);
+    }
+
+    [Test]
+    public async Task Decode_TcpLifecycle_FinThenNewSynStartsFreshConnectionGeneration()
+    {
+        var decoder = new OpcDcomDecoder();
+        DateTimeOffset timestamp = DateTimeOffset.UnixEpoch;
+        byte[] first = Encode(NewRequestPdu(callId: 750));
+        _ = decoder.Decode(NewTcpPacket(
+            [],
+            timestamp,
+            sequenceNumber: 2_000,
+            tcpFlags: 0x02)).ToArray();
+        DecodedOpcPdu[] firstDecoded = decoder.Decode(NewTcpPacket(
+            first,
+            timestamp.AddMilliseconds(1),
+            sequenceNumber: 2_001)).ToArray();
+        _ = decoder.Decode(NewTcpPacket(
+            [],
+            timestamp.AddMilliseconds(2),
+            sequenceNumber: 2_001 + (uint)first.Length,
+            tcpFlags: 0x11)).ToArray();
+
+        byte[] second = Encode(NewRequestPdu(callId: 751));
+        _ = decoder.Decode(NewTcpPacket(
+            [],
+            timestamp.AddMilliseconds(3),
+            sequenceNumber: 60_000,
+            tcpFlags: 0x02)).ToArray();
+        DecodedOpcPdu[] secondDecoded = decoder.Decode(NewTcpPacket(
+            second,
+            timestamp.AddMilliseconds(4),
+            sequenceNumber: 60_001)).ToArray();
+
+        await Assert.That(firstDecoded.Select(pdu => pdu.CallId)).IsEquivalentTo([750]);
+        await Assert.That(secondDecoded.Select(pdu => pdu.CallId)).IsEquivalentTo([751]);
+    }
+
+    [Test]
+    public async Task CompleteDetailed_TcpGapReportsFailureResynchronizesAndDoesNotAdvanceNtlmCounter()
+    {
+        using var unwrapper = new NtlmPassiveUnwrapper(s_testSessionKey);
+        var decoder = new OpcDcomDecoder(unwrapper);
+        DateTimeOffset timestamp = DateTimeOffset.UnixEpoch;
+        byte[] bind = Encode(NewBindPdu(callId: 74));
+        uint bindSequence = 30_000;
+        _ = decoder.Decode(NewTcpPacket(bind, timestamp, sequenceNumber: bindSequence)).ToArray();
+        byte[] missingProtected = BuildSealedFramePerCodebase(
+            0x00, 75, 3, 7, OrpcEnvelope.BuildRequestStub(new byte[] { 1 }, Guid.Empty), isServerSide: false);
+        byte[] nextProtected = BuildSealedFramePerCodebase(
+            0x00, 76, 3, 7, OrpcEnvelope.BuildRequestStub(new byte[] { 2 }, Guid.Empty), isServerSide: false);
+        uint protectedSequence = bindSequence + (uint)bind.Length;
+
+        _ = decoder.Decode(NewTcpPacket(
+            missingProtected[..8],
+            timestamp.AddMilliseconds(1),
+            sequenceNumber: protectedSequence)).ToArray();
+        _ = decoder.Decode(NewTcpPacket(
+            nextProtected[..6],
+            timestamp.AddMilliseconds(2),
+            sequenceNumber: protectedSequence + (uint)missingProtected.Length)).ToArray();
+        _ = decoder.Decode(NewTcpPacket(
+            nextProtected[6..],
+            timestamp.AddMilliseconds(3),
+            sequenceNumber: protectedSequence + (uint)missingProtected.Length + 6)).ToArray();
+        DecodedDcomFrame[] completed = decoder.CompleteDetailed().ToArray();
+
+        await Assert.That(completed.Any(frame => frame.Failure?.Code == "tcp_sequence_gap")).IsTrue();
+        await Assert.That(completed.Any(frame =>
+            frame.Pdu?.CallId == 76
+            && frame.Pdu.AuthUnwrapReason?.Contains("counters were intentionally left unchanged", StringComparison.Ordinal) == true)).IsTrue();
+        await Assert.That(unwrapper.ClientSequence).IsEqualTo(0);
+        await Assert.That(decoder.CompleteDetailed().Count()).IsEqualTo(0);
+    }
+
+    [Test]
     public async Task Decode_SimpleShutdownAuthCancelAndOrphanedPdus_ProjectEndpointAndType()
     {
         var decoder = new OpcDcomDecoder();
@@ -307,6 +636,7 @@ public sealed class OpcDcomDecoderTests
     private const int NtlmAuthValueLength = 16;
     private const int AuthVerifierHeaderLength = 8;
     private const byte AuthTypeNtlm = 0x0A;
+    private const byte AuthLevelIntegrity = 0x05;
     private const byte AuthLevelPrivacy = 0x06;
     private static readonly System.Net.IPAddress s_clientIp = System.Net.IPAddress.Parse("10.0.0.1");
     private static readonly System.Net.IPAddress s_serverIp = System.Net.IPAddress.Parse("10.0.0.2");
@@ -357,6 +687,19 @@ public sealed class OpcDcomDecoderTests
             ptype: 0x00, callId: 201, contextId: 3, opnum: 7,
             plaintextStub: new byte[] { 0x11, 0x22, 0x33, 0x44 },
             isServerSide: false);
+        byte[] plainRequest = Encode(new RequestCoPdu
+        {
+            CallId = 201,
+            ContextId = 3,
+            Opnum = 7,
+            AllocationHint = 4,
+            Stub = [0x11, 0x22, 0x33, 0x44],
+        });
+
+        await Assert.That(sealedRequest.AsSpan(16, 8).SequenceEqual(
+            plainRequest.AsSpan(16, 8))).IsTrue();
+        await Assert.That(sealedRequest.AsSpan(24, 4).SequenceEqual(
+            plainRequest.AsSpan(24, 4))).IsFalse();
 
         DecodedOpcPdu request = decoder.DecodeRawDcomFrame(
             sealedRequest, s_clientIp, ClientPort, s_serverIp, ServerPort, ts.AddMilliseconds(1)).Single();
@@ -367,6 +710,81 @@ public sealed class OpcDcomDecoderTests
         await Assert.That(request.Opnum).IsEqualTo(7);
         await Assert.That(request.AuthUnwrapStatus).IsEqualTo("Decrypted");
         await Assert.That(request.AuthUnwrapReason).IsNull();
+    }
+
+    [Test]
+    public async Task Decode_SealedRequestWithObjectUuid_LeavesFixedFieldsClearAndDecryptsStub()
+    {
+        using var unwrapper = new NtlmPassiveUnwrapper(s_testSessionKey);
+        var decoder = new OpcDcomDecoder(unwrapper);
+        var ts = new DateTimeOffset(2026, 6, 9, 14, 0, 0, TimeSpan.Zero);
+        _ = decoder.DecodeRawDcomFrame(
+            Encode(NewBindPdu(callId: 202)),
+            s_clientIp, ClientPort, s_serverIp, ServerPort, ts).ToList();
+        Guid objectUuid = Guid.Parse("12345678-9abc-def0-1234-56789abcdef0");
+        byte[] stub = [0x21, 0x22, 0x23, 0x24];
+        byte[] plainRequest = Encode(new RequestCoPdu
+        {
+            CallId = 203,
+            ContextId = 5,
+            Opnum = 9,
+            AllocationHint = stub.Length,
+            Object = new UUID(objectUuid.ToString("D")),
+            Stub = stub,
+        });
+        byte[] sealedRequest = BuildSealedFramePerCodebase(
+            ptype: 0x00,
+            callId: 203,
+            contextId: 5,
+            opnum: 9,
+            plaintextStub: stub,
+            isServerSide: false,
+            objectUuid: objectUuid);
+
+        await Assert.That(sealedRequest.AsSpan(16, 24).SequenceEqual(
+            plainRequest.AsSpan(16, 24))).IsTrue();
+        await Assert.That(sealedRequest.AsSpan(40, stub.Length).SequenceEqual(
+            plainRequest.AsSpan(40, stub.Length))).IsFalse();
+
+        DecodedDcomFrame decoded = decoder.DecodeRawDcomFrameStrict(
+            sealedRequest,
+            s_clientIp, ClientPort, s_serverIp, ServerPort,
+            ts.AddMilliseconds(1));
+
+        await Assert.That(decoded.Pdu).IsNotNull();
+        await Assert.That(decoded.Pdu!.ContextId).IsEqualTo(5);
+        await Assert.That(decoded.Pdu.Opnum).IsEqualTo(9);
+        await Assert.That(decoded.Pdu.ObjectIpid).IsEqualTo(objectUuid);
+        await Assert.That(decoded.StubBytes!).IsEquivalentTo(stub);
+        await Assert.That(decoded.Pdu.AuthUnwrapStatus).IsEqualTo("Decrypted");
+    }
+
+    [Test]
+    public async Task Decode_RequestPduWithIntegrityOnlyFullSignedRegion_VerifiesWithoutDecrypting()
+    {
+        using var unwrapper = new NtlmPassiveUnwrapper(s_testSessionKey);
+        var decoder = new OpcDcomDecoder(unwrapper);
+        var ts = new DateTimeOffset(2026, 6, 9, 14, 0, 0, TimeSpan.Zero);
+        _ = decoder.DecodeRawDcomFrame(
+            Encode(NewBindPdu(callId: 205)),
+            s_clientIp, ClientPort, s_serverIp, ServerPort, ts).ToList();
+        byte[] stub = OrpcEnvelope.BuildRequestStub(new byte[] { 0x31, 0x32 }, Guid.Empty);
+        byte[] signedRequest = BuildSealedFramePerCodebase(
+            ptype: 0x00,
+            callId: 206,
+            contextId: 3,
+            opnum: 7,
+            plaintextStub: stub,
+            isServerSide: false,
+            protection: ProtectionLevel.PROTECTION_LEVEL_INTEGRITY);
+
+        DecodedOpcPdu request = decoder.DecodeRawDcomFrame(
+            signedRequest,
+            s_clientIp, ClientPort, s_serverIp, ServerPort,
+            ts.AddMilliseconds(1)).Single();
+
+        await Assert.That(request.AuthUnwrapStatus).IsEqualTo("IntegrityVerified");
+        await Assert.That(request.RequestStubLength).IsEqualTo(stub.Length);
     }
 
     [Test]
@@ -387,6 +805,10 @@ public sealed class OpcDcomDecoderTests
             plaintextStub: stub,
             isServerSide: false);
         int padding = GetAuthPadding(sealedRequest);
+        int paddingStart = sealedRequest.Length
+            - NtlmAuthValueLength
+            - AuthVerifierHeaderLength
+            - padding;
 
         DecodedDcomFrame decoded = decoder.DecodeRawDcomFrameStrict(
             sealedRequest,
@@ -395,6 +817,8 @@ public sealed class OpcDcomDecoderTests
         ReplayReport replay = new OrpcReplayTool().ReplayDetailed([decoded]);
 
         await Assert.That(padding).IsGreaterThan(0);
+        await Assert.That(sealedRequest.AsSpan(paddingStart, padding).ToArray()
+            .Any(value => value != 0)).IsTrue();
         await Assert.That(decoded.Pdu).IsNotNull();
         await Assert.That(decoded.Pdu!.AuthUnwrapStatus).IsEqualTo("Decrypted");
         await Assert.That(decoded.Pdu.RequestStubLength).IsEqualTo(stub.Length);
@@ -421,7 +845,23 @@ public sealed class OpcDcomDecoderTests
             opnum: 0,
             plaintextStub: stub,
             isServerSide: true);
+        byte[] plainResponse = Encode(new ResponseCoPdu
+        {
+            CallId = 221,
+            ContextId = 3,
+            AllocationHint = stub.Length,
+            Stub = stub,
+        });
         int padding = GetAuthPadding(sealedResponse);
+        int paddingStart = sealedResponse.Length
+            - NtlmAuthValueLength
+            - AuthVerifierHeaderLength
+            - padding;
+
+        await Assert.That(sealedResponse.AsSpan(16, 8).SequenceEqual(
+            plainResponse.AsSpan(16, 8))).IsTrue();
+        await Assert.That(sealedResponse.AsSpan(24, stub.Length).SequenceEqual(
+            plainResponse.AsSpan(24, stub.Length))).IsFalse();
 
         DecodedDcomFrame decoded = decoder.DecodeRawDcomFrameStrict(
             sealedResponse,
@@ -430,6 +870,8 @@ public sealed class OpcDcomDecoderTests
         ReplayReport replay = new OrpcReplayTool().ReplayDetailed([decoded]);
 
         await Assert.That(padding).IsGreaterThan(0);
+        await Assert.That(sealedResponse.AsSpan(paddingStart, padding).ToArray()
+            .Any(value => value != 0)).IsTrue();
         await Assert.That(decoded.Pdu).IsNotNull();
         await Assert.That(decoded.Pdu!.AuthUnwrapStatus).IsEqualTo("Decrypted");
         await Assert.That(decoded.Pdu.ResponseStubLength).IsEqualTo(stub.Length);
@@ -437,6 +879,50 @@ public sealed class OpcDcomDecoderTests
             sealedResponse.Length - padding - AuthVerifierHeaderLength - NtlmAuthValueLength);
         await Assert.That(replay.TotalSucceeded).IsEqualTo(1);
         await Assert.That(replay.TotalFailed).IsEqualTo(0);
+    }
+
+    [Test]
+    public async Task Decode_SealedFault_LeavesFixedFieldsClearAndDecryptsStub()
+    {
+        using var unwrapper = new NtlmPassiveUnwrapper(s_testSessionKey);
+        var decoder = new OpcDcomDecoder(unwrapper);
+        var ts = new DateTimeOffset(2026, 6, 9, 14, 0, 0, TimeSpan.Zero);
+        _ = decoder.DecodeRawDcomFrame(
+            Encode(NewBindPdu(callId: 230)),
+            s_clientIp, ClientPort, s_serverIp, ServerPort, ts).ToList();
+        byte[] stub = [0x31, 0x32, 0x33, 0x34];
+        byte[] plainFault = Encode(new FaultCoPdu
+        {
+            CallId = 231,
+            ContextId = 4,
+            AllocationHint = stub.Length,
+            Status = FaultCode.OPERATION_RANGE_ERROR,
+            Stub = stub,
+        });
+        byte[] sealedFault = BuildSealedFramePerCodebase(
+            ptype: 0x03,
+            callId: 231,
+            contextId: 4,
+            opnum: 0,
+            plaintextStub: stub,
+            isServerSide: true);
+
+        await Assert.That(sealedFault.AsSpan(16, 16).SequenceEqual(
+            plainFault.AsSpan(16, 16))).IsTrue();
+        await Assert.That(sealedFault.AsSpan(32, stub.Length).SequenceEqual(
+            plainFault.AsSpan(32, stub.Length))).IsFalse();
+
+        DecodedDcomFrame decoded = decoder.DecodeRawDcomFrameStrict(
+            sealedFault,
+            s_serverIp, ServerPort, s_clientIp, ClientPort,
+            ts.AddMilliseconds(1));
+
+        await Assert.That(decoded.Pdu).IsNotNull();
+        await Assert.That(decoded.Pdu!.ContextId).IsEqualTo(4);
+        await Assert.That(decoded.Pdu.FaultStatus)
+            .IsEqualTo((int)FaultCode.OPERATION_RANGE_ERROR);
+        await Assert.That(decoded.StubBytes!).IsEquivalentTo(stub);
+        await Assert.That(decoded.Pdu.AuthUnwrapStatus).IsEqualTo("Decrypted");
     }
 
     [Test]
@@ -532,18 +1018,31 @@ public sealed class OpcDcomDecoderTests
     /// <c>Ntlm1.ProcessOutgoing</c>.
     /// </summary>
     private static byte[] BuildSealedFramePerCodebase(
-        byte ptype, int callId, int contextId, int opnum, byte[] plaintextStub, bool isServerSide)
+        byte ptype,
+        int callId,
+        int contextId,
+        int opnum,
+        byte[] plaintextStub,
+        bool isServerSide,
+        ProtectionLevel protection = ProtectionLevel.PROTECTION_LEVEL_PRIVACY,
+        Guid? objectUuid = null)
     {
+        var requestPdu = new RequestCoPdu
+        {
+            CallId = callId,
+            ContextId = contextId,
+            Opnum = opnum,
+            AllocationHint = plaintextStub.Length,
+            Stub = plaintextStub,
+        };
+        if (objectUuid is Guid objectId)
+        {
+            requestPdu.Object = new UUID(objectId.ToString("D"));
+        }
+
         ConnectionOrientedPdu basePdu = ptype switch
         {
-            0x00 => (ConnectionOrientedPdu)new RequestCoPdu
-            {
-                CallId = callId,
-                ContextId = contextId,
-                Opnum = opnum,
-                AllocationHint = plaintextStub.Length,
-                Stub = plaintextStub,
-            },
+            0x00 => requestPdu,
             0x02 => new ResponseCoPdu
             {
                 CallId = callId,
@@ -555,7 +1054,7 @@ public sealed class OpcDcomDecoderTests
             {
                 CallId = callId,
                 ContextId = contextId,
-                AllocationHint = 0,
+                AllocationHint = plaintextStub.Length,
                 Status = FaultCode.OPERATION_RANGE_ERROR,
                 Stub = plaintextStub,
             },
@@ -571,35 +1070,38 @@ public sealed class OpcDcomDecoderTests
         Array.Copy(pduBytes, 0, protectedPdu, 0, pduBytes.Length);
 
         protectedPdu[verifierStart] = AuthTypeNtlm;
-        protectedPdu[verifierStart + 1] = AuthLevelPrivacy;
+        protectedPdu[verifierStart + 1] = protection == ProtectionLevel.PROTECTION_LEVEL_PRIVACY
+            ? AuthLevelPrivacy
+            : AuthLevelIntegrity;
         protectedPdu[verifierStart + 2] = (byte)padding;
         protectedPdu[verifierStart + 3] = 0;
 
         BinaryPrimitives.WriteUInt16LittleEndian(protectedPdu.AsSpan(ConnectionOrientedPdu.FRAG_LENGTH_OFFSET, 2), (ushort)fragmentLength);
         BinaryPrimitives.WriteUInt16LittleEndian(protectedPdu.AsSpan(ConnectionOrientedPdu.AUTH_LENGTH_OFFSET, 2), (ushort)NtlmAuthValueLength);
 
-        // Encrypt ONLY the body portion (offsets 16..verifierStart) — the
-        // common header MUST stay plaintext on the wire so the receiver can
-        // parse fragLength + authLength + ptype. Matches the production
-        // receiver's VerifyPacketProtection which verifies pduBody starting
-        // at offset 16. The verifier (16 bytes) lands in the trailing slot.
-        int bodyStart = ConnectionOrientedPdu.HEADER_LENGTH;
+        // MS-RPCE signs the complete region through the sec_trailer and
+        // encrypts only the stub/padding after the PDU-specific fixed header.
+        int bodyStart = ptype switch
+        {
+            0x00 => ConnectionOrientedPdu.HEADER_LENGTH
+                + 8
+                + (objectUuid.HasValue ? 16 : 0),
+            0x02 => ConnectionOrientedPdu.HEADER_LENGTH + 8,
+            0x03 => ConnectionOrientedPdu.HEADER_LENGTH + 16,
+            _ => throw new ArgumentOutOfRangeException(nameof(ptype)),
+        };
         int bodyLength = verifierStart - bodyStart;
-        byte[] bodyAndVerifierSlot = new byte[bodyLength + NtlmAuthValueLength];
-        Array.Copy(protectedPdu, bodyStart, bodyAndVerifierSlot, 0, bodyLength);
-        // bodyAndVerifierSlot[bodyLength..bodyLength+16] starts zeroed (verifier slot)
+        int signedLength = verifierStart + AuthVerifierHeaderLength;
+        NtlmFlags flags = protection == ProtectionLevel.PROTECTION_LEVEL_PRIVACY
+            ? NtlmPassiveUnwrapper.DefaultFlags
+            : NtlmPassiveUnwrapper.DefaultFlags & ~NtlmFlags.NtlmsspNegotiateSeal;
 #pragma warning disable CS0618 // Ntlm1 [Obsolete] is intentional in this passive-unwrap test
-        var producer = new Opc.Classic.Dcom.Rpc.Auth.ntlm.Ntlm1(NtlmPassiveUnwrapper.DefaultFlags, (byte[])s_testSessionKey.Clone(), isServerSide);
+        var producer = new Opc.Classic.Dcom.Rpc.Auth.ntlm.Ntlm1(flags, (byte[])s_testSessionKey.Clone(), isServerSide);
 #pragma warning restore CS0618
-        var ndrBuffer = new Opc.Classic.Dcom.Internal.LegacyNdr.NdrBuffer(bodyAndVerifierSlot, 0);
-        ndrBuffer.SetLength(bodyAndVerifierSlot.Length);
+        var ndrBuffer = new Opc.Classic.Dcom.Internal.LegacyNdr.NdrBuffer(protectedPdu, 0);
+        ndrBuffer.SetLength(protectedPdu.Length);
         var ndr = new Opc.Classic.Dcom.Internal.LegacyNdr.NdrCodec { Buffer = ndrBuffer, Format = Opc.Classic.Dcom.Internal.LegacyNdr.NdrFormat.DEFAULT_FORMAT };
-        producer.ProcessOutgoing(ndr, index: 0, length: bodyLength, verifierIndex: bodyLength, isFragmented: false);
-
-        // Copy encrypted body back into the frame body slot, and the
-        // verifier into the trailing 16-byte auth-value slot.
-        Array.Copy(bodyAndVerifierSlot, 0, protectedPdu, bodyStart, bodyLength);
-        Array.Copy(bodyAndVerifierSlot, bodyLength, protectedPdu, verifierStart + AuthVerifierHeaderLength, NtlmAuthValueLength);
+        producer.ProcessOutgoing(ndr, bodyStart, bodyLength, signedLength, isFragmented: false);
 
         return protectedPdu;
     }
@@ -633,7 +1135,9 @@ public sealed class OpcDcomDecoderTests
     private static CapturedPacket NewTcpPacket(
         byte[] tcpPayload,
         DateTimeOffset timestamp,
-        bool reverse = false)
+        bool reverse = false,
+        uint sequenceNumber = 0,
+        byte tcpFlags = 0x18)
     {
         byte[] frame = new byte[14 + 20 + 20 + tcpPayload.Length];
 
@@ -667,8 +1171,9 @@ public sealed class OpcDcomDecoderTests
         int tcpOffset = ipOffset + 20;
         BinaryPrimitives.WriteUInt16BigEndian(frame.AsSpan(tcpOffset, 2), reverse ? (ushort)135 : (ushort)50000);
         BinaryPrimitives.WriteUInt16BigEndian(frame.AsSpan(tcpOffset + 2, 2), reverse ? (ushort)50000 : (ushort)135);
+        BinaryPrimitives.WriteUInt32BigEndian(frame.AsSpan(tcpOffset + 4, 4), sequenceNumber);
         frame[tcpOffset + 12] = 0x50;
-        frame[tcpOffset + 13] = 0x18;
+        frame[tcpOffset + 13] = tcpFlags;
         BinaryPrimitives.WriteUInt16BigEndian(frame.AsSpan(tcpOffset + 14, 2), 8192);
         tcpPayload.CopyTo(frame.AsSpan(tcpOffset + 20));
 

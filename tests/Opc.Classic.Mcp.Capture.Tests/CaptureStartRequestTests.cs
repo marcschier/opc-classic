@@ -17,6 +17,7 @@ public sealed class CaptureStartRequestTests
         await Assert.That(request.MaxDurationSeconds).IsNull();
         await Assert.That(request.ReplaySourceDirectory).IsNull();
         await Assert.That(request.ServerPorts).IsNull();
+        await Assert.That(request.AmbientSso).IsFalse();
     }
 
     [Test]
@@ -58,6 +59,18 @@ public sealed class CaptureStartRequestTests
 
         await Assert.That(str).Contains("NtlmSessionKey = null");
         await Assert.That(str).DoesNotContain("REDACTED");
+    }
+
+    [Test]
+    public async Task Constructor_AmbientSsoOptIn_IsPersistedAndIncludedInMetadataString()
+    {
+        var request = new CaptureStartRequest(
+            TargetHost: "opc-host",
+            Clsid: "10138C2C-0000-0000-0000-00000000C001",
+            AmbientSso: true);
+
+        await Assert.That(request.AmbientSso).IsTrue();
+        await Assert.That(request.ToString()).Contains("AmbientSso = True");
     }
 
     [Test]

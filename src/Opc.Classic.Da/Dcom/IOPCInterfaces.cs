@@ -51,7 +51,7 @@ public partial interface IOPCServer
         Guid requestedInterfaceId,
         out int serverGroupHandle,
         out int revisedUpdateRate,
-        [OpcUniquePointer] out IOpcInterfaceRef group,
+        [OpcIidIs(nameof(requestedInterfaceId)), OpcUniquePointer] out IOpcInterfaceRef group,
         CancellationToken cancellationToken = default);
 
     /// <summary>
@@ -68,7 +68,7 @@ public partial interface IOPCServer
     /// on the wire (see <see cref="AddGroupAsync"/> for the same shape).
     /// </remarks>
     [OpcMethod(5)]
-    [return: OpcUniquePointer]
+    [return: OpcIidIs(nameof(requestedInterfaceId)), OpcUniquePointer]
     Task<IOpcInterfaceRef> GetGroupByNameAsync(string name, Guid requestedInterfaceId, CancellationToken cancellationToken = default);
 
     /// <summary>
@@ -95,6 +95,7 @@ public partial interface IOPCServer
     /// <c>IOPCServer::CreateGroupEnumerator</c> (opnum 8). Returns an <c>IEnumUnknown</c> group enumerator.
     /// </summary>
     [OpcMethod(8)]
+    [return: OpcIidIs(nameof(requestedInterfaceId)), OpcUniquePointer]
     Task<IOpcInterfaceRef> CreateGroupEnumeratorAsync(int scope, Guid requestedInterfaceId, CancellationToken cancellationToken = default);
 }
 
@@ -199,6 +200,7 @@ public partial interface IOPCBrowseServerAddressSpace
     /// <c>IOPCBrowseServerAddressSpace::BrowseOPCItemIDs</c> (opnum 5). Returns an <c>IEnumString</c> item-ID enumerator.
     /// </summary>
     [OpcMethod(5)]
+    [return: OpcUniquePointer]
     Task<IOpcInterfaceRef> BrowseOpcItemIdsAsync(
         int browseFilterType,
         string filterCriteria,
@@ -216,6 +218,7 @@ public partial interface IOPCBrowseServerAddressSpace
     /// <c>IOPCBrowseServerAddressSpace::BrowseAccessPaths</c> (opnum 7). Returns an <c>IEnumString</c> access-path enumerator.
     /// </summary>
     [OpcMethod(7)]
+    [return: OpcUniquePointer]
     Task<IOpcInterfaceRef> BrowseAccessPathsAsync(string itemId, CancellationToken cancellationToken = default);
 }
 
@@ -475,6 +478,7 @@ public partial interface IOPCItemMgt
     /// <c>IOPCItemMgt::CreateEnumerator</c> (opnum 9). Returns an <c>IEnumOPCItemAttributes</c> enumerator.
     /// </summary>
     [OpcMethod(9)]
+    [return: OpcIidIs(nameof(requestedInterfaceId))]
     Task<IOpcInterfaceRef> CreateEnumeratorAsync(Guid requestedInterfaceId, CancellationToken cancellationToken = default);
 }
 
@@ -517,6 +521,7 @@ public partial interface IOPCGroupStateMgt
     /// <c>IOPCGroupStateMgt::CloneGroup</c> (opnum 6). Clones the group and returns the requested interface.
     /// </summary>
     [OpcMethod(6)]
+    [return: OpcIidIs(nameof(requestedInterfaceId))]
     Task<IOpcInterfaceRef> CloneGroupAsync(string name, Guid requestedInterfaceId, CancellationToken cancellationToken = default);
 }
 
@@ -545,6 +550,7 @@ public partial interface IOPCGroupStateMgt2
 /// <c>IOPCSyncIO</c> — DA 2.x synchronous read/write (IID_IOPCSyncIO).
 /// </summary>
 [OpcInterface("39C13A52-011E-11D0-9675-0020AFD8ADB3")]
+[GenerateOpcProxy]
 [OpcGenerateServerDispatch]
 public partial interface IOPCSyncIO
 {
@@ -552,7 +558,7 @@ public partial interface IOPCSyncIO
     /// <c>IOPCSyncIO::Read</c> (opnum 3). Reads item states and per-item HRESULTs.
     /// </summary>
     [OpcMethod(3)]
-    [OpcGenerateMultiOutRecord]
+    [OpcGenerateMultiOutRecord("IOPCSyncIOReadAsyncResult")]
     [return: OpcUniquePointer]
     Task<OpcItemState[]> ReadAsync(
         int dataSource,
@@ -760,7 +766,7 @@ public partial interface IEnumOPCItemAttributes
     [OpcGenerateMultiOutRecord]
     Task NextAsync(
         int count,
-        [OpcUniquePointer] out OpcItemAttributes[] attributes,
+        [OpcArrayCount(nameof(fetchedCount)), OpcUniquePointer] out OpcItemAttributes[] attributes,
         out int fetchedCount,
         CancellationToken cancellationToken = default);
 
@@ -780,6 +786,67 @@ public partial interface IEnumOPCItemAttributes
     /// <c>IEnumOPCItemAttributes::Clone</c> (opnum 6). Returns a new enumerator initialized to the current cursor position.
     /// </summary>
     [OpcMethod(6)]
+    [return: OpcUniquePointer]
+    Task<IOpcInterfaceRef> CloneAsync(CancellationToken cancellationToken = default);
+}
+
+/// <summary>
+/// <c>IEnumString</c> — standard COM string enumerator used by DA group-name scopes.
+/// </summary>
+[OpcInterface("00000101-0000-0000-C000-000000000046")]
+[GenerateOpcProxy]
+public partial interface IEnumString
+{
+    /// <summary><c>IEnumString::Next</c> (opnum 3).</summary>
+    [OpcMethod(3)]
+    [OpcGenerateMultiOutRecord]
+    Task NextStringsAsync(
+        int count,
+        [OpcArrayCount(nameof(fetchedCount)), OpcDeferredElements] out string[] values,
+        out int fetchedCount,
+        CancellationToken cancellationToken = default);
+
+    /// <summary><c>IEnumString::Skip</c> (opnum 4).</summary>
+    [OpcMethod(4)]
+    Task SkipAsync(int count, CancellationToken cancellationToken = default);
+
+    /// <summary><c>IEnumString::Reset</c> (opnum 5).</summary>
+    [OpcMethod(5)]
+    Task ResetAsync(CancellationToken cancellationToken = default);
+
+    /// <summary><c>IEnumString::Clone</c> (opnum 6).</summary>
+    [OpcMethod(6)]
+    [return: OpcUniquePointer]
+    Task<IOpcInterfaceRef> CloneAsync(CancellationToken cancellationToken = default);
+}
+
+/// <summary>
+/// <c>IEnumUnknown</c> — standard COM interface-pointer enumerator used by DA connection scopes.
+/// </summary>
+[OpcInterface("00000100-0000-0000-C000-000000000046")]
+[GenerateOpcProxy]
+public partial interface IEnumUnknown
+{
+    /// <summary><c>IEnumUnknown::Next</c> (opnum 3).</summary>
+    [OpcMethod(3)]
+    [OpcGenerateMultiOutRecord]
+    Task NextUnknownsAsync(
+        int count,
+        [OpcArrayCount(nameof(fetchedCount)), OpcDeferredElements] out IOpcInterfaceRef[] values,
+        out int fetchedCount,
+        CancellationToken cancellationToken = default);
+
+    /// <summary><c>IEnumUnknown::Skip</c> (opnum 4).</summary>
+    [OpcMethod(4)]
+    Task SkipAsync(int count, CancellationToken cancellationToken = default);
+
+    /// <summary><c>IEnumUnknown::Reset</c> (opnum 5).</summary>
+    [OpcMethod(5)]
+    Task ResetAsync(CancellationToken cancellationToken = default);
+
+    /// <summary><c>IEnumUnknown::Clone</c> (opnum 6).</summary>
+    [OpcMethod(6)]
+    [return: OpcUniquePointer]
     Task<IOpcInterfaceRef> CloneAsync(CancellationToken cancellationToken = default);
 }
 
@@ -787,6 +854,7 @@ public partial interface IEnumOPCItemAttributes
 /// <c>IConnectionPointContainer</c> — enumerates connection points (IID_IConnectionPointContainer).
 /// </summary>
 [OpcInterface("B196B284-BAB4-101A-B69C-00AA00341D07")]
+[GenerateOpcProxy]
 [OpcGenerateServerDispatch]
 public partial interface IConnectionPointContainer
 {
@@ -796,6 +864,7 @@ public partial interface IConnectionPointContainer
     /// points this container exposes.
     /// </summary>
     [OpcMethod(3)]
+    [return: OpcUniquePointer]
     Task<IOpcInterfaceRef> EnumConnectionPointsAsync(CancellationToken cancellationToken = default);
 
     /// <summary>
@@ -804,6 +873,7 @@ public partial interface IConnectionPointContainer
     /// (e.g. <see cref="IOPCDataCallback.InterfaceId"/>).
     /// </summary>
     [OpcMethod(4)]
+    [return: OpcUniquePointer]
     Task<IOpcInterfaceRef> FindConnectionPointAsync(Guid iid, CancellationToken cancellationToken = default);
 }
 
@@ -811,6 +881,7 @@ public partial interface IConnectionPointContainer
 /// <c>IConnectionPoint</c> — the subscription sink-binding interface (IID_IConnectionPoint).
 /// </summary>
 [OpcInterface("B196B286-BAB4-101A-B69C-00AA00341D07")]
+[GenerateOpcProxy]
 [OpcGenerateServerDispatch]
 public partial interface IConnectionPoint
 {
@@ -921,6 +992,7 @@ public partial interface IOPCEnumGUID
     /// <c>IOPCEnumGUID::Next</c> (opnum 3). Returns up to the requested number of GUIDs.
     /// </summary>
     [OpcMethod(3)]
+    [return: OpcEnumeratorArray(nameof(count), conformantVarying: true)]
     Task<Guid[]> NextAsync(int count, CancellationToken cancellationToken = default);
 
     /// <summary>
@@ -935,7 +1007,12 @@ public partial interface IOPCEnumGUID
     [OpcMethod(5)]
     Task ResetAsync(CancellationToken cancellationToken = default);
 
-    // Clone returns another enumerator interface pointer.
+    /// <summary>
+    /// <c>IOPCEnumGUID::Clone</c> (opnum 6). Clones the enumerator at its current position.
+    /// </summary>
+    [OpcMethod(6)]
+    Task<IOpcInterfaceRef> CloneAsync(CancellationToken cancellationToken = default) =>
+        Task.FromException<IOpcInterfaceRef>(new OpcException(OpcResultId.NotImplemented));
 }
 
 /// <summary>
@@ -960,6 +1037,7 @@ public partial interface IOPCServerList
     /// <c>max_count</c> for the second.
     /// </remarks>
     [OpcMethod(3)]
+    [return: OpcUniquePointer]
     Task<IOpcInterfaceRef> EnumClassesOfCategoriesAsync(
         [OpcEmitArrayCount] Guid[] implementedCategories,
         [OpcEmitArrayCount] Guid[] requiredCategories,
@@ -1004,6 +1082,7 @@ public partial interface IOPCServerList2
     /// <paramref name="requiredCategories"/>.
     /// </summary>
     [OpcMethod(3)]
+    [return: OpcUniquePointer]
     Task<IOpcInterfaceRef> EnumClassesOfCategoriesAsync(
         [OpcEmitArrayCount] Guid[] implementedCategories,
         [OpcEmitArrayCount] Guid[] requiredCategories,

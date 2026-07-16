@@ -162,6 +162,23 @@ class MatrixSmokeTests(unittest.TestCase):
                 missing,
                 f"profile '{profile}' is missing classifications for: {missing}")
 
+    def test_capture_probe_specs_cover_every_live_capture_tool(self) -> None:
+        tools_dir = os.path.abspath(os.path.join(
+            os.path.dirname(__file__), "..", "mcp", "Opc.Classic.Mcp", "Tools"))
+        live_capture_tools = {
+            name
+            for name in _read_live_tool_names(tools_dir)
+            if name.startswith("opcclassic.capture.")
+        }
+        probe_capture_tools = {
+            spec.name
+            for spec in probe_servers.probe_specs()
+            if spec.name.startswith("opcclassic.capture.")
+        }
+
+        self.assertEqual(set(probe_matrix.CAPTURE_TOOLS), live_capture_tools)
+        self.assertEqual(probe_capture_tools, live_capture_tools)
+
     def test_unknown_profile_yields_missing_classification(self) -> None:
         expected, verdict = probe_matrix.classify(
             "no-such-profile", "opcclassic.da.get_status", success=True)

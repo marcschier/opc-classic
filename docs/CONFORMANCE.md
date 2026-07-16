@@ -33,10 +33,10 @@ The former per-spec review set compared each OPC specification's protocol surfac
 | [OPC AE 1.10](#opc-ae-110) | Alarms & Events | DCOM declarations, proxies, and dispatchers cover the AE interfaces; CCW covers subscription, area browser, event sink delivery, and the 14 array-heavy query/translate/condition/returned-attribute methods. | Remaining items are server-policy/conformance concerns, including native-client stress coverage and connection-point enumeration stubs. |
 | [OPC Batch 2.00](#opc-batch-200) | Batch | 4/4 interfaces and 11/11 methods projected; batch summary/filter codecs, Batch error constants, and `OpcBatchPropertyId` metadata for IDs 400-478 are present. | Server namespace/property population semantics remain implementation work for Batch servers. |
 | [OPC Common 1.10](#opc-common-110) | Common (locale, shutdown, server-list) | `IOPCCommon`, `IOPCShutdown`, `IOPCServerList(2)`, `IOPCEnumGUID`, `OpcStringFilter`, and `IDaServer.SetClientNameAsync` are covered. | All convenience helpers shipped; no open gaps. |
-| [OPC Complex Data 1.00](#opc-complex-data-100) | Complex Data | Interface projections, CPX property IDs/HRESULTs, OPCBinary/XMLSchema parsers, XML serialization, OPCBinary encode/decode including BitString, `OpcCpxAddressSpace`, and `OpcCpxItemProperties` are implemented. | Type-conversion and data-filter execution remain server-specific runtime work. |
+| [OPC Complex Data 1.00](#opc-complex-data-100) | Complex Data | Interface projections, CPX property IDs/HRESULTs, OPCBinary/XMLSchema codecs, DA-backed address-space helpers, bounded reference conversion/filter semantics, and standalone server/client samples are implemented. | Unknown vendor type systems require explicitly selected codecs; the reference evaluator intentionally excludes vendor expression syntax. |
 | [OPC DA 2.05a](#opc-da-205a) | DA (V20 back-compat + modern DCOM) | V20 remains a minimal compatibility shim; the modern DCOM surface covers DA 2.05a including `IOPCServer`, `IOPCCommon`, group/item management, sync/async I/O, browsing, properties, callbacks, connection points, and full lifecycle loopback coverage. | Remaining caveats are mostly V20-scope and native interop hardening, not missing modern DCOM methods. |
 | [OPC DA 3.00](#opc-da-300) | DA (flagship) | DA 3.0 DCOM projections and default hosting helpers cover browse, item I/O, group keep-alive, sync/async VQT and max-age I/O, deadband, sampling, callbacks, item enumeration, continuation points, and `vEUInfo` loopback paths. | Remaining DA work is native interop edge hardening and optional custom deadband/sampling policy samples. |
-| [OPC DX 1.00](#opc-dx-100) | Data eXchange | `IOPCConfiguration` has a complete hand-written client proxy backed by DX structure codecs, status records, enums, namespace helpers, and error constants. | DX server runtime/DA bridge, persistence, and live data-transfer state machine are not implemented. |
+| [OPC DX 1.00](#opc-dx-100) | Data eXchange | Generated `IOPCConfiguration` wire paths plus `DxReferenceEngine` provide bounded DA read/write transfer, versioned memory/JSON persistence, deterministic scheduling, diagnostics, reconnect/backoff, and cancellation. SimulationServer exposes the same engine through DCOM NDR and MCP configuration surfaces. | The standardized DX DA database subtree, full DirtyFlag/`E_PERSISTING` policy, XML-DA mapping, and the complete §6 conversion/subscription truth table remain open. |
 | [OPC HDA 1.20](#opc-hda-120) | Historical Data Access | 56/56 methods and 5/5 codecs are declared; CCW covers browser, sync/async read, sync/async update, playback, annotation insert, and raw/processed advise paths. | Remaining items are server-policy concerns such as aggregate semantics, relative time parsing, persistence, and connection-point enumeration stubs. |
 | [OPC Security 1.00](#opc-security-100) | Security | 6/6 methods across `IOPCSecurityNT` and `IOPCSecurityPrivate` are projected and tested. | Reference sample server ships in this release. |
 | [OPC XML-DA 1.01](#opc-xml-da-101) | XML-DA (SOAP transport) | Client supports all 8 operations, SOAP 1.1, scalar/extended scalar values, array values, base64Binary, quality, errors, and polled subscriptions. | Client-only by design; SOAP 1.2 is not implemented. |
@@ -248,11 +248,9 @@ The AE DCOM projection has complete declarations and opnums, generated proxies/d
 | `IEnumOPCBatchSummary` | 5/5 | ✅ `Next`, `Skip`, `Reset`, `Clone`, `Count` | `IOPCBatchInterfaces` |
 | `IOPCEnumerationSets` | 3/3 | ✅ generated proxy + dispatcher | `IOPCBatchInterfaces` |
 
-Interface-pointer methods use hand-written proxy/dispatcher paths where needed:
-
-- `IOPCBatchServerClientProxy` and dispatcher: `IOPCBatchClientProxies`
-- `IOPCBatchServer2ClientProxy` and dispatcher: `IOPCBatchClientProxies`
-- `IEnumOPCBatchSummaryClientProxy` and dispatcher: `IOPCBatchClientProxies`
+Interface-pointer returns and multi-output records use the production generator
+attributes and registered codecs. The Batch interfaces have no hand-written
+wire side or migration-manifest entry.
 
 ---
 
@@ -620,7 +618,7 @@ The V20 namespace remains deliberately narrow. Missing V20 declarations are not 
 
 | Spec interface | Cross-platform status | Windows CCW status | Source |
 | --- | --- | --- | --- |
-| `IOPCServer` | ✅ 6/6 methods declared; `AddGroup`, `GetGroupByName`, `CreateGroupEnumerator` return interface refs | ✅ full vtable, real `AddGroup`, `GetErrorString`, `GetStatus`, `GetGroupByName`, `RemoveGroup`, etc. | `IOPCInterfaces`; `OpcDaServerCcw` |
+| `IOPCServer` | ✅ 6/6 methods declared; all six group-enumeration scopes return generated interface refs | ✅ full vtable including `IEnumString` name scopes and `IEnumUnknown` connection scopes | `IOPCInterfaces`; `OpcDaGroupEnumerators`; `OpcDaServerCcw`; `OpcEnumStringCcw`; `OpcEnumUnknownCcw` |
 | `IOPCCommon` | ✅ 5/5 generated proxy + dispatcher | routed through hosting where implemented | `IOPCInterfaces` |
 | `IOPCGroupStateMgt` | ✅ 4/4 | ✅ full group CCW; `CloneGroup` copies items | `IOPCInterfaces`; `OpcDaGroupCcw` |
 | `IOPCItemMgt` | ✅ 7/7 including `AddItems`, `ValidateItems`, `CreateEnumerator` | ✅ full vtable; `OPCITEMDEF[]`/`OPCITEMRESULT[]` marshaling and item enumerator CCW | `IOPCInterfaces`; `OpcDaGroupCcw` |
@@ -632,7 +630,11 @@ The V20 namespace remains deliberately narrow. Missing V20 declarations are not 
 | `IOPCDataCallback` | ✅ 4/4 outbound callback projection | ✅ `OpcDataCallbackProxy` marshals `OnDataChange`, `OnReadComplete`, `OnWriteComplete`, `OnCancelComplete` | `IOPCInterfaces`; `OpcDataCallbackProxy` |
 | `IEnumOPCItemAttributes` | ✅ dispatcher + stateful enumerator | ✅ `Next`, `Skip`, `Reset`, `Clone`, including `vEUInfo` VARIANT marshaling | `IOPCInterfaces`; `OpcEnumOpcItemAttributesCcw` |
 
-`IOpcDaServer` also includes `ResolveGroupAsync` and `ResolveGroupByNameAsync` helper defaults for server/group lookup.
+`IOpcDaServer` also includes `ResolveGroupAsync` and `ResolveGroupByNameAsync`
+helper defaults for server/group lookup. Group enumeration captures immutable
+private/public snapshots, orders private groups before public groups for
+combined scopes, and preserves COM `Next`/`Skip`/`Reset`/`Clone` semantics on
+managed DCOM and Windows CCW transports.
 
 ---
 
@@ -803,20 +805,27 @@ The flagship DA surface has full DCOM declarations and broad Windows CCW support
 
 ### Executive Summary
 
-`Opc.Classic.Dx` provides a complete configuration-client projection for `IOPCConfiguration` backed by DX structure codecs, status records, spec-aligned enums, namespace helpers, and DX error constants.
+`Opc.Classic.Dx` provides a complete configuration-client projection for `IOPCConfiguration`
+plus a bounded reference runtime. `DxReferenceEngine` loads versioned configuration, reads a
+source DA adapter, preserves value/quality/timestamp, writes a target DA adapter, applies
+enabled state and revised rates, and reports failures, reconnect/backoff, cancellation, and
+diagnostics. `InMemoryDxConfigurationStore` and `JsonFileDxConfigurationStore` provide
+atomic revision handling and restart recovery.
 
-The implementation is still intentionally **configuration-focused**. It does not implement the DX server runtime/DA bridge that performs live data transfer between source and target servers.
+`Opc.Classic.Samples.SimulationServer` supplies the deterministic reference composition and
+exposes its single engine-backed configuration through both the `IOPCConfiguration` NDR
+channel and existing `opcclassic.dx.*` MCP tools.
 
 #### Coverage Summary
 
 | Category | Specified | Implemented | Coverage | Notes |
 | --- | --- :| --- :| --- :| --- |
-| `IOPCConfiguration` methods | 12 | 12 | 100% | Hand-written client proxy covers source-server and connection operations |
+| `IOPCConfiguration` methods | 12 | 12 | 100% | Generated proxy + dispatcher preserve native counts, pointers, and correlations |
 | DX structure codecs | 16 registry entries | 16 | 100% | `NdrOpcDxCodecRegistry` lists registered codecs |
 | Status records | 4 | 4 | 100% | Server, connection, source-server, and quality records |
 | Enumerations | spec-aligned enums | present | high | Server type/state, connection state, connect status, quality/limit, masks |
 | Error codes | DX HRESULT constants | present | high | `OpcDxError` constants |
-| Runtime model | full DX server behavior | not implemented | 0% | DA bridge, persistence, and transfer state machine remain future work |
+| Reference runtime | bounded DA bridge, persistence, scheduling, health/retry, cancellation | implemented | high for reference scope | Full §4 DX database and §6 subscription/conversion policy remain open |
 
 ---
 
@@ -839,7 +848,10 @@ The implementation is still intentionally **configuration-focused**. It does not
 | `CopyDefaultDXConnectionAttributes` | 13 | ✅ | `IOPCDxInterfaces` |
 | `ResetConfiguration` | 14 | ✅ | `IOPCDxInterfaces` |
 
-The hand-written `IOPCConfigurationClientProxy` implements payload encode/decode for these methods.
+The source-generated `IOPCConfigurationClientProxy` and
+`IOPCConfigurationServerDispatcher` implement payload encode/decode for these
+methods. Native fixtures cover standalone/conformant counts, simple-ref
+strings, unique output pointers, and correlated response records.
 `DeleteDXConnections` follows OPC DX 1.00 §5.2.2.5/App. B.1.4: the proxy accepts `DxConnection[]` masks and returns mask errors plus a `DxGeneralResponse` (`DxDeleteConnectionsResult`).
 
 ---

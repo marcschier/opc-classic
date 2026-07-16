@@ -27,15 +27,17 @@ public sealed class BatchFileTimeFuzzTests
     {
         byte[] wire = WriteOne((ref NdrWriter w) =>
         {
-            // Match NdrOpcBatchSummaryCodec.Read layout (strings + scalars then 2 FILETIMEs)
-            w.WriteUnicodeStringPtr("id");
-            w.WriteUnicodeStringPtr("desc");
-            w.WriteUnicodeStringPtr("item");
-            w.WriteUnicodeStringPtr("recipe");
+            // Native PSTRUCT inline part: seven string referents, scalar fields,
+            // then the two FILETIMEs. Deferred string bodies follow the inline
+            // part, but all referents are null in this fixture.
+            w.WriteNullReferent();
+            w.WriteNullReferent();
+            w.WriteNullReferent();
+            w.WriteNullReferent();
             w.WriteSingle(0f);                   // batchSize
-            w.WriteUnicodeStringPtr(null);       // engineeringUnits
-            w.WriteUnicodeStringPtr(null);       // execState
-            w.WriteUnicodeStringPtr(null);       // execMode
+            w.WriteNullReferent();               // engineeringUnits
+            w.WriteNullReferent();               // execState
+            w.WriteNullReferent();               // execMode
             w.WriteFileTime(bogus);              // ftActualStartTime FIRST → named
             w.WriteFileTime(0L);                 // ftActualEndTime
         });

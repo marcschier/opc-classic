@@ -76,13 +76,30 @@ public sealed class Rfc8009AesShaaTests
     public async Task AES_SHA2_session_supports_wrap_round_trip_for_both_etypes()
     {
         byte[] plaintext = [0xCA, 0xFE, 0xBA, 0xBE, 0x00, 0x01];
-        var aes128 = new KerberosSession(KerberosTestHex.FromHex("3705D96080C17728A0E800EAB6E0D23C"), EncryptionType.AES128_CTS_HMAC_SHA256_128);
-        var aes256 = new KerberosSession(
-            KerberosTestHex.FromHex("6D404D37FAF79F9DF0D33568D320669800EB4836472EA8A026D16B7182460C52"),
+        byte[] aes128Key = KerberosTestHex.FromHex("3705D96080C17728A0E800EAB6E0D23C");
+        byte[] aes256Key = KerberosTestHex.FromHex(
+            "6D404D37FAF79F9DF0D33568D320669800EB4836472EA8A026D16B7182460C52");
+        var aes128Sender = new KerberosSession(
+            aes128Key,
+            EncryptionType.AES128_CTS_HMAC_SHA256_128);
+        var aes128Receiver = new KerberosSession(
+            aes128Key,
+            EncryptionType.AES128_CTS_HMAC_SHA256_128,
+            isAcceptor: true);
+        var aes256Sender = new KerberosSession(
+            aes256Key,
             EncryptionType.AES256_CTS_HMAC_SHA384_192);
+        var aes256Receiver = new KerberosSession(
+            aes256Key,
+            EncryptionType.AES256_CTS_HMAC_SHA384_192,
+            isAcceptor: true);
 
-        byte[] aes128RoundTrip = aes128.UnwrapMessage(aes128.WrapMessage(plaintext, confidential: true), out bool aes128Confidential);
-        byte[] aes256RoundTrip = aes256.UnwrapMessage(aes256.WrapMessage(plaintext, confidential: true), out bool aes256Confidential);
+        byte[] aes128RoundTrip = aes128Receiver.UnwrapMessage(
+            aes128Sender.WrapMessage(plaintext, confidential: true),
+            out bool aes128Confidential);
+        byte[] aes256RoundTrip = aes256Receiver.UnwrapMessage(
+            aes256Sender.WrapMessage(plaintext, confidential: true),
+            out bool aes256Confidential);
 
         await Assert.That(aes128Confidential).IsTrue();
         await Assert.That(aes256Confidential).IsTrue();

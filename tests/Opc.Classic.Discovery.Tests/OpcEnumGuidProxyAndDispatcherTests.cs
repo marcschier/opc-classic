@@ -5,6 +5,7 @@ using Opc.Classic.Discovery.Dcom;
 using Opc.Classic.Hosting;
 using Opc.Classic.Ndr;
 using Opc.Classic.Testing;
+using TUnit.Assertions.AssertConditions.Throws;
 
 namespace Opc.Classic.Discovery.Tests;
 
@@ -73,6 +74,25 @@ public sealed class OpcEnumGuidProxyAndDispatcherTests
     }
 
     [Test]
+    public async Task ClientProxy_Next_rejects_mismatched_native_max_count()
+    {
+        byte[] response = WritePayload((ref NdrWriter writer) =>
+        {
+            writer.WriteUInt32(2);
+            writer.WriteUInt32(0);
+            writer.WriteUInt32(1);
+            writer.WriteGuid(FirstGuid);
+            writer.WriteUInt32(1);
+        });
+        var proxy = new IOPCEnumGUIDClientProxy(
+            new InMemoryCallChannel((_, _, _, _) =>
+                Task.FromResult(new NdrCallResult(OpcResultId.Ok.Code, response))));
+
+        await Assert.That(async () => { _ = await proxy.NextAsync(3); })
+            .Throws<InvalidDataException>();
+    }
+
+    [Test]
     public async Task Dispatcher_Next_EncodesFetchedGuidsAndPartialHresult()
     {
         var server = new StubEnumGuidServer([FirstGuid, SecondGuid]);
@@ -89,6 +109,32 @@ public sealed class OpcEnumGuidProxyAndDispatcherTests
         await Assert.That(result.Hresult).IsEqualTo(OpcResultId.False.Code);
         await Assert.That(fetched).IsEqualTo(2);
         await Assert.That(classIds).IsEquivalentTo(new[] { FirstGuid, SecondGuid });
+    }
+
+    [Test]
+    public async Task Dispatcher_Next_matches_native_conformant_varying_fixture()
+    {
+        var dispatcher = new IOPCEnumGUIDServerDispatcher(
+            new StubEnumGuidServer([FirstGuid, SecondGuid]));
+        byte[] expected =
+        [
+            0x03, 0x00, 0x00, 0x00,
+            0x00, 0x00, 0x00, 0x00,
+            0x02, 0x00, 0x00, 0x00,
+            0x2C, 0x8C, 0x13, 0x10, 0x00, 0x00, 0x00, 0x00,
+            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x01,
+            0x2C, 0x8C, 0x13, 0x10, 0x00, 0x00, 0x00, 0x00,
+            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x02,
+            0x02, 0x00, 0x00, 0x00,
+        ];
+
+        DispatchResult result = await dispatcher.DispatchAsync(
+            IOPCEnumGUIDClientProxy.Opnums.Next,
+            EncodeInt32(3),
+            CancellationToken.None);
+
+        await Assert.That(result.Hresult).IsEqualTo(OpcResultId.False.Code);
+        await Assert.That(result.Payload.ToArray()).IsEquivalentTo(expected);
     }
 
     [Test]
@@ -131,12 +177,13 @@ public sealed class OpcEnumGuidProxyAndDispatcherTests
     private static byte[] EncodeInt32(int value) => WritePayload((ref NdrWriter writer) => writer.WriteInt32(value));
 
     private static ReadOnlyMemory<byte> EncodeInterfaceRef(IOpcInterfaceRef interfaceRef) =>
-        WritePayload((ref NdrWriter writer) => OpcInterfaceRefCodec.Write(ref writer, interfaceRef));
+        WritePayload((ref NdrWriter writer) => OpcMInterfacePointerCodec.Write(ref writer, interfaceRef));
 
     private static IOpcInterfaceRef DecodeInterfaceRef(ReadOnlyMemory<byte> payload)
     {
         var reader = new NdrReader(payload.Span);
-        return OpcInterfaceRefCodec.Read(ref reader);
+        return OpcMInterfacePointerCodec.Read(ref reader)
+            ?? throw new InvalidDataException("Expected a non-null IOPCEnumGUID clone.");
     }
 
     private static byte[] WritePayload(NdrWriteAction write)

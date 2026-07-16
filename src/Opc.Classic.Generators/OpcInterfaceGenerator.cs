@@ -89,7 +89,50 @@ namespace Opc.Classic.Generators
     /// payload contains multiple out values.
     /// </summary>
     [global::System.AttributeUsage(global::System.AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-    internal sealed class OpcGenerateMultiOutRecordAttribute : global::System.Attribute { }
+    internal sealed class OpcGenerateMultiOutRecordAttribute : global::System.Attribute
+    {
+        public OpcGenerateMultiOutRecordAttribute() { }
+        public OpcGenerateMultiOutRecordAttribute(string recordName) { RecordName = recordName; }
+        public string? RecordName { get; }
+    }
+
+    [global::System.AttributeUsage(global::System.AttributeTargets.Parameter | global::System.AttributeTargets.ReturnValue, AllowMultiple = false, Inherited = false)]
+    internal sealed class OpcIidIsAttribute : global::System.Attribute
+    {
+        public OpcIidIsAttribute(string parameterName) { ParameterName = parameterName; }
+        public string ParameterName { get; }
+    }
+
+    [global::System.AttributeUsage(global::System.AttributeTargets.Parameter | global::System.AttributeTargets.ReturnValue, AllowMultiple = false, Inherited = false)]
+    internal sealed class OpcArrayCountAttribute : global::System.Attribute
+    {
+        public OpcArrayCountAttribute(string parameterName) { ParameterName = parameterName; }
+        public OpcArrayCountAttribute(string parameterName, string memberName)
+        {
+            ParameterName = parameterName;
+            MemberName = memberName;
+        }
+        public string ParameterName { get; }
+        public string? MemberName { get; }
+    }
+
+    /// <summary>
+    /// Marks an enumerator <c>Next</c> array return whose wire response also
+    /// carries <c>pceltFetched</c>. When the conformant-varying flag
+    /// is true, the array uses max-count/offset/actual-count framing; otherwise
+    /// it uses a conformant max-count equal to the fetched count.
+    /// </summary>
+    [global::System.AttributeUsage(global::System.AttributeTargets.ReturnValue, AllowMultiple = false, Inherited = false)]
+    internal sealed class OpcEnumeratorArrayAttribute : global::System.Attribute
+    {
+        public OpcEnumeratorArrayAttribute(string requestedCountParameterName, bool conformantVarying)
+        {
+            RequestedCountParameterName = requestedCountParameterName;
+            ConformantVarying = conformantVarying;
+        }
+        public string RequestedCountParameterName { get; }
+        public bool ConformantVarying { get; }
+    }
 }
 ";
 

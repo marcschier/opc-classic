@@ -47,7 +47,7 @@ public interface ICallChannel
 /// returned HRESULT plus the NDR-encoded response body.
 /// </summary>
 /// <param name="Hresult">The HRESULT (e.g. <c>S_OK = 0</c>, <c>OPC_E_UNKNOWNITEMID = 0xC0040007</c>).</param>
-/// <param name="ResponsePayload">The NDR-encoded response body — empty on failed calls.</param>
+/// <param name="ResponsePayload">The NDR-encoded response body with the trailing COM method HRESULT removed.</param>
 /// <param name="IsFault">True when the reply was a DCE/RPC fault PDU; <paramref name="Hresult"/> then carries the fault status.</param>
 [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Auto)]
 public readonly record struct NdrCallResult(int Hresult, ReadOnlyMemory<byte> ResponsePayload, bool IsFault = false)

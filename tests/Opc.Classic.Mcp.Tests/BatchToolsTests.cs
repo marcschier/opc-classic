@@ -3,6 +3,7 @@
 using Opc.Classic.Batch;
 using Opc.Classic.Batch.Dcom;
 using Opc.Classic.Batch.Ndr;
+using Opc.Classic.Dcom;
 using Opc.Classic.Mcp.Dtos;
 using Opc.Classic.Mcp.Tools;
 using Opc.Classic.Ndr;
@@ -140,14 +141,17 @@ public sealed class BatchToolsTests
                 int count = reader.ReadInt32();
                 OpcBatchSummary[] page = _summaries.Skip(_position).Take(count).ToArray();
                 _position += page.Length;
-                return Result((ref NdrWriter writer) =>
+                ReadOnlyMemory<byte> payload = WritePayload((ref NdrWriter writer) =>
                 {
+                    writer.WriteUniquePointerReferent(true);
                     writer.WriteUInt32((uint)page.Length);
-                    foreach (OpcBatchSummary summary in page)
-                    {
-                        NdrOpcBatchSummaryCodec.Write(ref writer, summary);
-                    }
+                    NdrOpcBatchSummaryCodec.WriteConformantArrayBody(ref writer, page);
+                    writer.WriteUInt32((uint)page.Length);
                 });
+                int hresult = page.Length < count
+                    ? OpcResultId.False.Code
+                    : OpcResultId.Ok.Code;
+                return Task.FromResult(new NdrCallResult(hresult, payload));
             }
 
             if (interfaceId == IOPCEnumerationSets.InterfaceId)
@@ -196,18 +200,17 @@ public sealed class BatchToolsTests
     private delegate void NdrWriteAction(ref NdrWriter writer);
 
     private static ReadOnlyMemory<byte> EncodeObjRef(Guid iid) => WritePayload((ref NdrWriter writer) =>
-    {
-        writer.WriteUInt32(0x574F454Du);
-        writer.WriteUInt32(0x00000001u);
-        writer.WriteGuid(iid);
-        writer.WriteUInt32(0);
-        writer.WriteUInt32(5);
-        writer.WriteUInt64(1);
-        writer.WriteUInt64(2);
-        writer.WriteGuid(Guid.NewGuid());
-        writer.WriteUInt16(0);
-        writer.WriteUInt16(0);
-    });
+        OpcMInterfacePointerCodec.Write(
+            ref writer,
+            new OpcInterfaceRef(
+                iid,
+                flags: 0,
+                publicRefs: 5,
+                oxid: 1,
+                oid: 2,
+                ipid: Guid.NewGuid(),
+                securityOffset: 0,
+                resolverBindings: [])));
 
     private static ReadOnlyMemory<byte> WritePayload(NdrWriteAction write, int capacity = 4096)
     {

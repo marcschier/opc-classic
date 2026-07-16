@@ -11,7 +11,7 @@ feature area over one deterministic plant model:
 | **Batch** | Batch summaries, filtering, enumeration sets |
 | **Commands** | Command browse, sync/async invoke, state transitions, control/cancel |
 | **Complex Data (Cpx)** | Complex type system + type dictionaries over the DA channel |
-| **DX** | Source servers and DX connections (query/add/modify/update/delete/reset) |
+| **DX** | Engine-backed DA-to-DA transfer runtime plus persistent configuration CRUD |
 | **Security** | NT and private authentication availability, logon/logoff |
 | **Discovery** | OpcEnum enumeration of the simulated servers across DA/AE/HDA categories |
 | **XML-DA** | Status/browse/read/write/subscribe/polled-refresh/get-properties over the same address space |
@@ -56,6 +56,54 @@ Connect an MCP session with the matching connect tool, e.g.
 `opcclassic.da.connect` with `connectionString = inmemory://sim-da`. Security and Discovery
 are resolved from the host's DI (Discovery answers for host `sim-host`); no connection
 string is needed for those two.
+
+## DX reference runtime
+
+The `dx` endpoint is backed by `DxReferenceEngine`; it is not a disconnected configuration
+stub. Its deterministic seed configuration bridges two managed, model-backed DA endpoints:
+
+| Connection | Source item | Target item | Initial state | Rate |
+| --- | --- | --- | --- | --- |
+| `ReactorTemperatureToBucket` | `Plant.Reactor1.Temperature` | `Bucket Brigade.Real8` | enabled | 1000 ms |
+| `ReactorPressureDisabled` | `Plant.Reactor1.Pressure` | `Bucket Brigade.Int4` | disabled | 500 ms |
+
+The same configuration and engine are exposed through:
+
+- MCP `opcclassic.dx.*` tools over `inmemory://...-dx`;
+- the OPC DX `IOPCConfiguration` NDR surface (`SimDxClient.Channel`), usable with
+  `IOPCConfigurationClientProxy`;
+- direct sample APIs for status snapshots, diagnostics, deterministic endpoint failures,
+  reconnect/backoff, cancellation, and rate tests.
+
+The reference engine is intentionally bounded. Default limits are 256 source
+servers, 1,024 connections, 1,024 queued values per connection, and 1,024
+retained diagnostics. Update rates are positive and no greater than one hour;
+retry delay uses bounded exponential backoff from one second to one minute.
+
+Set `OPC_CLASSIC_SIM_DX_CONFIG` to a JSON file path to enable atomic, versioned persistence:
+
+```powershell
+$env:OPC_CLASSIC_SIM_DX_CONFIG = "$PWD\dx-simulation.json"
+dotnet run --project samples\Opc.Classic.Samples.SimulationServer
+```
+
+On first start the file is seeded. Later starts recover the committed revision and resume
+enabled transfers. Configuration add/modify/update/delete/reset operations all mutate the
+same engine state; no MCP- or DCOM-specific transfer implementation is duplicated.
+DX connection queries evaluate exactly the fields selected by each connection mask, and
+updates merge only the fields selected by the update-definition mask. Reset uses the current
+numeric configuration revision as an optimistic version: stale revisions fail without
+clearing configuration, while success returns the revision actually saved by the store.
+
+### Reference-grade boundary
+
+The scenario demonstrates deterministic polling-based DA source reads, VQT
+propagation, target writes, enabled/disabled state, health checks,
+reconnect/backoff, cancellation, versioned configuration, and restart recovery.
+It is not a complete generic OPC DX server: the standardized DA-visible DX
+Database subtree, DirtyFlag/`E_PERSISTING` timing policy, XML-DA sources,
+subscription-driven queue rules, conversion policy, and the full section 6
+target-write truth table remain outside the sample.
 
 ## Exposing real transports (`--listen`)
 
@@ -157,4 +205,6 @@ end-to-end over the **in-memory** channels. `TransportSmokeTests` additionally c
 managed OPC DA client to the `SimulationTransportHost` over a real TCP listener. See that
 project for usage of `SimulationServerRegistration.RegisterAll`, the
 `SimulationServerHandle.ConnectionStrings` map, and `SimulationTransportHost`.
-
+`SimDxReferenceIntegrationTests` covers DX JSON restart recovery, live DA read/write
+transfer, enabled/disabled state, revised rates, quality/error propagation, endpoint
+failure and reconnect/backoff, cancellation/reset, and DCOM/MCP configuration round trips.

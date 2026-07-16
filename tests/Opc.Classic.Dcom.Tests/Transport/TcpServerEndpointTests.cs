@@ -84,6 +84,7 @@ public sealed class TcpServerEndpointTests
     }
 
     [Test]
+    [NotInParallel]
     public async Task DisposeAsync_stops_listener()
     {
         var endpoint = new TcpServerEndpoint(new IPEndPoint(IPAddress.Loopback, 0));
