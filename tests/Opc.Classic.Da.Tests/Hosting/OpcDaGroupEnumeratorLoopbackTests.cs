@@ -143,6 +143,41 @@ public sealed class OpcDaGroupEnumeratorLoopbackTests
     }
 
     [Test]
+    public async Task Unknown_enumerator_reuses_existing_group_identity_and_reference_lifetime()
+    {
+        var registry = new OpcObjectRegistry();
+        var server = new StableIdentityServer(Group("P1", 1), registry);
+        var root = new OpcDaServerDispatcher(
+            server,
+            objectRegistry: registry);
+        IOpcInterfaceRef direct = await ((IOPCServer)server)
+            .GetGroupByNameAsync(
+                "P1",
+                IidIUnknown,
+                TestContext.Current!.CancellationToken);
+        (_, IOpcInterfaceRef enumerator) =
+            await CreateEnumeratorAsync(
+                root.ServerDispatcher,
+                1,
+                IEnumUnknown.InterfaceId);
+        IOpcServerDispatcher dispatcher = GetDispatcher(registry, enumerator);
+        (_, IOpcInterfaceRef[] groups) = await NextUnknownAsync(dispatcher, 1);
+        IOpcInterfaceRef enumerated = groups.Single();
+
+        await Assert.That(enumerated.Ipid).IsEqualTo(direct.Ipid);
+        await Assert.That(enumerated.Oxid).IsEqualTo(direct.Oxid);
+        await Assert.That(enumerated.Oid).IsEqualTo(direct.Oid);
+
+        await ReleaseAsync(registry, direct);
+        await ReleaseAsync(registry, enumerated);
+        await ReleaseAsync(registry, enumerator);
+        await Assert.That(registry.Contains(server.InitialReference.Ipid)).IsTrue();
+
+        await ReleaseAsync(registry, server.InitialReference);
+        await Assert.That(registry.Contains(server.InitialReference.Ipid)).IsFalse();
+    }
+
+    [Test]
     public async Task Separate_enumerators_keep_stable_unique_identity_through_query_and_release()
     {
         var registry = new OpcObjectRegistry();
@@ -460,6 +495,79 @@ public sealed class OpcDaGroupEnumeratorLoopbackTests
                 return Task.FromResult<IReadOnlyList<OpcDaGroup>>(
                     [.. _privateGroups]);
             }
+        }
+    }
+
+    private sealed class StableIdentityServer : ServerBase, IOPCServer
+    {
+        private readonly OpcDaGroup _group;
+        private readonly OpcObjectRegistry _registry;
+
+        public StableIdentityServer(
+            OpcDaGroup group,
+            OpcObjectRegistry registry)
+        {
+            _group = group;
+            _registry = registry;
+            Guid ipid = registry.Register(
+                new Dictionary<Guid, IOpcServerDispatcher>
+                {
+                    [IOPCGroupStateMgt.InterfaceId] =
+                        new IOPCGroupStateMgtServerDispatcher(group),
+                },
+                publicRefs: 1);
+            InitialReference = CreateReference(IidIUnknown, ipid);
+        }
+
+        public IOpcInterfaceRef InitialReference { get; }
+
+        Task<IOpcInterfaceRef> IOPCServer.GetGroupByNameAsync(
+            string name,
+            Guid requestedInterfaceId,
+            CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            if (!string.Equals(name, _group.Name, StringComparison.Ordinal))
+            {
+                throw new OpcException(OpcResultId.UnknownPath);
+            }
+            if (!_registry.AddPublicRefs(InitialReference.Ipid, 1))
+            {
+                throw new OpcException(new OpcResultId(
+                    unchecked((int)0x80010108),
+                    "RPC_E_DISCONNECTED"));
+            }
+
+            return Task.FromResult<IOpcInterfaceRef>(
+                CreateReference(requestedInterfaceId, InitialReference.Ipid));
+        }
+
+        public override Task<IReadOnlyList<OpcDaGroup>> SnapshotPrivateGroupsAsync(
+            CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            return Task.FromResult<IReadOnlyList<OpcDaGroup>>([_group]);
+        }
+
+        private IOpcInterfaceRef CreateReference(Guid iid, Guid ipid)
+        {
+            if (!_registry.TryGetObjectMetadata(
+                    ipid,
+                    out OpcObjectMetadata metadata))
+            {
+                throw new InvalidOperationException(
+                    "The stable test group is not registered.");
+            }
+
+            return new OpcInterfaceRef(
+                iid,
+                flags: 0,
+                publicRefs: 1,
+                metadata.Oxid,
+                metadata.Oid,
+                ipid,
+                securityOffset: 0,
+                resolverBindings: []);
         }
     }
 

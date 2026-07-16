@@ -43,14 +43,7 @@
 | `RemoveGroup` | 7 | same | same | `tests/Opc.Classic.Hosting.Windows.Tests/Da/OpcDaServerCcwTests.cs` |
 | `CreateGroupEnumerator` | 8 | same | ✅ `IEnumString` name scopes and `IEnumUnknown` connection scopes | `tests/Opc.Classic.Da.Tests/Hosting/OpcDaGroupEnumeratorLoopbackTests.cs`, `tests/Opc.Classic.Hosting.Windows.Tests/Da/OpcDaServerGroupEnumeratorCcwTests.cs` |
 
-The source-generated path declares all required DA 2.05a opnums in
-`IOPCInterfaces.cs`. `IOpcDaServer` creates immutable private/public snapshots
-for all six `OPCENUMSCOPE` values. Private groups precede public groups in
-combined scopes. Name scopes return `IEnumString`; connection scopes return
-`IEnumUnknown`. Managed DCOM and Windows CCW enumerators implement `Next`,
-`Skip`, `Reset`, and cursor-preserving `Clone`; partial fetch/skip returns the
-COM `S_FALSE` result and connection enumerators retain interface references for
-the snapshot lifetime.
+The source-generated path declares all required DA 2.05a opnums in `IOPCInterfaces.cs`. `IOpcDaServer` creates immutable private/public snapshots for all six `OPCENUMSCOPE` values. Private groups precede public groups in combined scopes. Name scopes return `IEnumString`; connection scopes return `IEnumUnknown`. Managed DCOM and Windows CCW enumerators implement `Next`, `Skip`, `Reset`, and cursor-preserving `Clone`; partial fetch/skip returns the COM `S_FALSE` result and connection enumerators retain interface references for the snapshot lifetime. Managed connection enumerators reuse each group's registered IPID/OXID/OID identity rather than registering duplicate dispatcher objects for the same group.
 
 ### 1.2 `IOPCCommon` (spec §4.4.3 / OPC Common §7)
 

@@ -30,6 +30,15 @@ internal static class OpcDaGroupEnumeratorFactory
         return RegisterUnknown(enumerator, registry);
     }
 
+    public static IOpcInterfaceRef CreateUnknown(
+        IReadOnlyList<IOpcInterfaceRef> groups,
+        OpcObjectRegistry registry)
+    {
+        var snapshot = new OpcDaUnknownSnapshot(groups, registry);
+        var enumerator = new OpcDaUnknownEnumerator(snapshot, registry);
+        return RegisterUnknown(enumerator, registry);
+    }
+
     internal static IOpcInterfaceRef RegisterString(
         OpcDaStringEnumerator enumerator,
         OpcObjectRegistry registry)
@@ -312,6 +321,40 @@ internal sealed class OpcDaUnknownSnapshot
             for (int i = 0; i < registered; i++)
             {
                 registry.ReleasePublicRefs(_groups[i].Ipid, 1);
+            }
+            throw;
+        }
+    }
+
+    public OpcDaUnknownSnapshot(
+        IReadOnlyList<IOpcInterfaceRef> groups,
+        OpcObjectRegistry registry)
+    {
+        ArgumentNullException.ThrowIfNull(groups);
+        _registry = registry ?? throw new ArgumentNullException(nameof(registry));
+        _groups = groups.ToArray();
+        try
+        {
+            foreach (IOpcInterfaceRef group in _groups)
+            {
+                if (group is null
+                    || group.Ipid == Guid.Empty
+                    || !registry.TryGetObjectMetadata(group.Ipid, out _))
+                {
+                    throw new ArgumentException(
+                        "Stable group references must identify registered objects.",
+                        nameof(groups));
+                }
+            }
+        }
+        catch
+        {
+            foreach (IOpcInterfaceRef? group in _groups)
+            {
+                if (group is not null && group.Ipid != Guid.Empty)
+                {
+                    registry.ReleasePublicRefs(group.Ipid, 1);
+                }
             }
             throw;
         }

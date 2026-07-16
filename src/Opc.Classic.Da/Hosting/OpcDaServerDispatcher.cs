@@ -16,6 +16,8 @@ namespace Opc.Classic.Da.Hosting;
 /// </summary>
 public sealed class OpcDaServerDispatcher : IOpcDaServerDispatcher, IOPCServer, IOPCCommon, IConnectionPointContainer, IConnectionPoint
 {
+    private static readonly Guid IidIUnknown =
+        new("00000000-0000-0000-C000-000000000046");
     private static readonly Action<ILogger, string, Exception?> ClientNameSet = LoggerMessage.Define<string>(
         LogLevel.Debug,
         new EventId(1, nameof(ClientNameSet)),
@@ -147,10 +149,83 @@ public sealed class OpcDaServerDispatcher : IOpcDaServerDispatcher, IOPCServer, 
         OpcDaGroupEnumerationSnapshot snapshot = await _server
             .CreateGroupEnumerationSnapshotAsync(enumerationScope, cancellationToken)
             .ConfigureAwait(false);
-        IOpcInterfaceRef interfaceRef = snapshot.EnumeratesConnections
-            ? OpcDaGroupEnumeratorFactory.CreateUnknown(snapshot.Groups, _objectRegistry)
-            : OpcDaGroupEnumeratorFactory.CreateString(snapshot.Names, _objectRegistry);
+        IOpcInterfaceRef interfaceRef;
+        if (snapshot.EnumeratesConnections)
+        {
+            IOpcInterfaceRef[]? stableReferences =
+                await TryAcquireStableGroupReferencesAsync(
+                    snapshot.Groups,
+                    cancellationToken).ConfigureAwait(false);
+            interfaceRef = stableReferences is null
+                ? OpcDaGroupEnumeratorFactory.CreateUnknown(
+                    snapshot.Groups,
+                    _objectRegistry)
+                : OpcDaGroupEnumeratorFactory.CreateUnknown(
+                    stableReferences,
+                    _objectRegistry);
+        }
+        else
+        {
+            interfaceRef = OpcDaGroupEnumeratorFactory.CreateString(
+                snapshot.Names,
+                _objectRegistry);
+        }
         return new GroupEnumeratorResult(interfaceRef, snapshot.Groups.Count == 0);
+    }
+
+    private async Task<IOpcInterfaceRef[]?> TryAcquireStableGroupReferencesAsync(
+        IReadOnlyList<OpcDaGroup> groups,
+        CancellationToken cancellationToken)
+    {
+        var references = new IOpcInterfaceRef[groups.Count];
+        int acquired = 0;
+        try
+        {
+            for (; acquired < groups.Count; acquired++)
+            {
+                OpcDaGroup group = groups[acquired]
+                    ?? throw new ArgumentException(
+                        "Group snapshots must not contain null entries.",
+                        nameof(groups));
+                IOpcInterfaceRef reference = await ((IOPCServer)_server)
+                    .GetGroupByNameAsync(
+                        group.Name,
+                        IidIUnknown,
+                        cancellationToken).ConfigureAwait(false);
+                if (reference.Ipid == Guid.Empty
+                    || !_objectRegistry.TryGetObjectMetadata(
+                        reference.Ipid,
+                        out _))
+                {
+                    ReleaseStableGroupReferences(references, acquired);
+                    return null;
+                }
+
+                references[acquired] = reference;
+            }
+
+            return references;
+        }
+        catch (OpcException)
+        {
+            ReleaseStableGroupReferences(references, acquired);
+            return null;
+        }
+        catch
+        {
+            ReleaseStableGroupReferences(references, acquired);
+            throw;
+        }
+    }
+
+    private void ReleaseStableGroupReferences(
+        IReadOnlyList<IOpcInterfaceRef> references,
+        int count)
+    {
+        for (int i = 0; i < count; i++)
+        {
+            _objectRegistry.ReleasePublicRefs(references[i].Ipid, 1);
+        }
     }
 
     /// <inheritdoc />

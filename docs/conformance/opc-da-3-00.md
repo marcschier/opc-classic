@@ -104,11 +104,7 @@ Implementation evidence: `src/Opc.Classic.Da/Hosting/OpcDaGroup.cs`, `src/Opc.Cl
 
 `OpcDaGroup` maintains callback enable state, sink registration, data-change fan-out, and cancel-complete fan-out. The Windows CCW path exposes `Advise`/`Unadvise`, `EnumConnections`, and `EnumConnectionPoints` over native COM.
 
-`CreateGroupEnumerator` applies all six `OPCENUMSCOPE` values to an immutable
-private/public group snapshot. Private groups precede public groups in combined
-scopes. Name scopes return `IEnumString`; connection scopes return
-`IEnumUnknown`. Both transports preserve cursor state across `Clone`, reset to
-the snapshot start, and return COM-compatible partial-fetch/skip results.
+`CreateGroupEnumerator` applies all six `OPCENUMSCOPE` values to an immutable private/public group snapshot. Private groups precede public groups in combined scopes. Name scopes return `IEnumString`; connection scopes return `IEnumUnknown`. Both transports preserve cursor state across `Clone`, reset to the snapshot start, and return COM-compatible partial-fetch/skip results. Managed connection enumerators retain the same registered IPID/OXID/OID identity returned by `AddGroup` and `GetGroupByName`.
 
 ### 1.7 `IOPCItemDeadbandMgt` and `IOPCItemSamplingMgt` (spec §4.4.9 - §4.4.10)
 

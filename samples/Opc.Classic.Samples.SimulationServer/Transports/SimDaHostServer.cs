@@ -190,18 +190,14 @@ public sealed class SimDaHostServer : IOpcDaServer, IDisposable
             [IOPCItemDeadbandMgt.InterfaceId] = new IOPCItemDeadbandMgtServerDispatcher(managedGroup),
             [IOPCItemSamplingMgt.InterfaceId] = new IOPCItemSamplingMgtServerDispatcher(managedGroup),
         };
-        Guid ipid = _objectRegistry.Register(dispatchers);
-        _groups[managedGroup.ServerHandle] = new GroupEntry(managedGroup, ipid);
+        Guid ipid = _objectRegistry.Register(dispatchers, publicRefs: 1);
+        var entry = new GroupEntry(managedGroup, ipid);
+        _groups[managedGroup.ServerHandle] = entry;
 
-        group = new OpcInterfaceRef(
-            iid: requestedInterfaceId,
-            flags: 0,
-            publicRefs: 1,
-            oxid: 1,
-            oid: unchecked((ulong)managedGroup.ServerHandle),
-            ipid: ipid,
-            securityOffset: 0,
-            resolverBindings: Array.Empty<ushort>());
+        group = CreateGroupReference(
+            entry,
+            requestedInterfaceId,
+            addPublicRef: false);
         return Task.CompletedTask;
     }
 
@@ -247,15 +243,11 @@ public sealed class SimDaHostServer : IOpcDaServer, IDisposable
         {
             if (string.Equals(entry.Group.Name, name, StringComparison.Ordinal))
             {
-                return Task.FromResult<IOpcInterfaceRef>(new OpcInterfaceRef(
-                    iid: requestedInterfaceId,
-                    flags: 0,
-                    publicRefs: 1,
-                    oxid: 1,
-                    oid: unchecked((ulong)entry.Group.ServerHandle),
-                    ipid: entry.Ipid,
-                    securityOffset: 0,
-                    resolverBindings: Array.Empty<ushort>()));
+                return Task.FromResult(
+                    CreateGroupReference(
+                        entry,
+                        requestedInterfaceId,
+                        addPublicRef: true));
             }
         }
 
@@ -305,6 +297,42 @@ public sealed class SimDaHostServer : IOpcDaServer, IDisposable
     {
         KeyValuePair<int, GroupEntry>[] entries = _groups.ToArray();
         return [.. entries.OrderBy(static pair => pair.Key).Select(static pair => pair.Value.Group)];
+    }
+
+    private IOpcInterfaceRef CreateGroupReference(
+        GroupEntry entry,
+        Guid requestedInterfaceId,
+        bool addPublicRef)
+    {
+        if (addPublicRef
+            && !_objectRegistry.AddPublicRefs(entry.Ipid, 1))
+        {
+            throw new OpcException(new OpcResultId(
+                unchecked((int)0x80010108),
+                "RPC_E_DISCONNECTED"));
+        }
+        if (!_objectRegistry.TryGetObjectMetadata(
+                entry.Ipid,
+                out OpcObjectMetadata metadata))
+        {
+            if (addPublicRef)
+            {
+                _objectRegistry.ReleasePublicRefs(entry.Ipid, 1);
+            }
+            throw new OpcException(new OpcResultId(
+                unchecked((int)0x80010108),
+                "RPC_E_DISCONNECTED"));
+        }
+
+        return new OpcInterfaceRef(
+            iid: requestedInterfaceId,
+            flags: 0,
+            publicRefs: 1,
+            oxid: metadata.Oxid,
+            oid: metadata.Oid,
+            ipid: entry.Ipid,
+            securityOffset: 0,
+            resolverBindings: Array.Empty<ushort>());
     }
 
     /// <inheritdoc />
