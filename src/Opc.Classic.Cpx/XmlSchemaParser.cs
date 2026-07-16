@@ -132,8 +132,10 @@ public static class XmlSchemaParser
                 name,
                 TypeKind.StructReference,
                 nestedTypeId,
-                ElementCount: elementCount,
-                MinOccurs: minOccurs);
+                ElementCount: elementCount)
+            {
+                MinOccurs = minOccurs,
+            };
         }
 
         if (ReadString(element, "type") is { } typeName)
@@ -146,18 +148,25 @@ public static class XmlSchemaParser
                     name,
                     TypeKind.StructReference,
                     localTypeName,
-                    ElementCount: elementCount,
-                    MinOccurs: minOccurs);
+                    ElementCount: elementCount)
+                {
+                    MinOccurs = minOccurs,
+                };
             }
 
             return new TypeField(
                 name,
                 MapXmlSchemaType(typeName),
-                ElementCount: elementCount,
-                MinOccurs: minOccurs);
+                ElementCount: elementCount)
+            {
+                MinOccurs = minOccurs,
+            };
         }
 
-        return new TypeField(name, TypeKind.String, ElementCount: elementCount, MinOccurs: minOccurs);
+        return new TypeField(name, TypeKind.String, ElementCount: elementCount)
+        {
+            MinOccurs = minOccurs,
+        };
     }
 
     private static IEnumerable<XElement> EnumerateChildElements(XElement complexType)

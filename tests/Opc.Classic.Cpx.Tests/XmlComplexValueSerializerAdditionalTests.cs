@@ -191,9 +191,9 @@ public sealed class XmlComplexValueSerializerAdditionalTests
         var type = CreateType(
             "Envelope",
             "envelope",
-            new TypeField("Required", TypeKind.String, MinOccurs: 1),
-            new TypeField("Optional", TypeKind.String, MinOccurs: 0),
-            new TypeField("Values", TypeKind.UInt8, ElementCount: 2, MinOccurs: 1));
+            new TypeField("Required", TypeKind.String) { MinOccurs = 1 },
+            new TypeField("Optional", TypeKind.String) { MinOccurs = 0 },
+            new TypeField("Values", TypeKind.UInt8, ElementCount: 2) { MinOccurs = 1 });
         var value = CreateValue(type, new Dictionary<string, object?>
         {
             ["Required"] = "present",

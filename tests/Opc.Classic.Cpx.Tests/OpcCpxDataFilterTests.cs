@@ -478,7 +478,7 @@ public sealed class OpcCpxDataFilterTests
             new TypeField("Status", TypeKind.String),
             new TypeField("Count", TypeKind.Int32),
             new TypeField("Enabled", TypeKind.Boolean),
-            new TypeField("Optional", TypeKind.String, MinOccurs: 0),
+            new TypeField("Optional", TypeKind.String) { MinOccurs = 0 },
             new TypeField("Timestamp", TypeKind.FileTime),
             new TypeField("Id", TypeKind.Guid),
             new TypeField("Details", TypeKind.StructReference, "DetailsType"),
