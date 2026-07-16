@@ -548,6 +548,7 @@ def evaluate_probe_result(
 
     expected = probe["expected"]
     failures: list[str] = []
+    failure_codes: list[str] = []
     item_id = expected.get("itemId")
     if item_id is not None:
         values = row.get("result")
@@ -564,11 +565,13 @@ def evaluate_probe_result(
         actual["itemMatched"] = match is not None
         if match is None:
             failures.append(f"Expected item '{item_id}' was not returned.")
+            failure_codes.append("EXPECTED_ITEM_MISSING")
         elif "hResult" in expected:
             actual["itemResult"] = match
             actual["hResult"] = _hresult(match.get("hResult"))
             if actual["hResult"] != _hresult(expected["hResult"]):
                 failures.append("hResult mismatch.")
+                failure_codes.append("HRESULT_MISMATCH")
         elif match is not None:
             actual["itemResult"] = match
 
@@ -579,9 +582,11 @@ def evaluate_probe_result(
         actual["count"] = count
         if count < minimum:
             failures.append(f"Expected at least {minimum} results, actual {count}.")
+            failure_codes.append("MINIMUM_COUNT_NOT_MET")
 
     if failures:
         actual["expectationFailures"] = failures
+        actual["expectationCodes"] = failure_codes
         return "REGRESSION", actual
     return verdict, actual
 

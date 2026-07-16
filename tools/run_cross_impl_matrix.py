@@ -790,9 +790,12 @@ def _allowlisted_actual(value: object) -> dict[str, object] | None:
         if key in allowed_scalars
         and isinstance(child, (str, int, float, bool, type(None)))
     }
-    failures = value.get("expectationFailures")
-    if isinstance(failures, list) and all(isinstance(item, str) for item in failures):
-        result["expectationFailures"] = list(failures)
+    expectation_codes = value.get("expectationCodes")
+    if (
+        isinstance(expectation_codes, list)
+        and all(isinstance(item, str) for item in expectation_codes)
+    ):
+        result["expectationCodes"] = list(expectation_codes)
     decoded = value.get("decoded")
     if isinstance(decoded, dict):
         decoded_allowlist = {
@@ -848,7 +851,6 @@ def allowlisted_report_row(row: object) -> dict[str, object]:
             if key in {
                 "outcome",
                 "minimumCount",
-                "itemId",
                 "hResult",
                 "specification",
                 "variant",
@@ -932,6 +934,12 @@ def _allowlisted_aggregate_regression(value: object) -> dict[str, object]:
             nested = _allowlisted_aggregate_regression(child)
             if nested:
                 result[key] = nested
+        elif (
+            key == "expectationCodes"
+            and isinstance(child, list)
+            and all(isinstance(item, str) for item in child)
+        ):
+            result[key] = list(child)
     return result
 
 
@@ -1218,8 +1226,8 @@ def run_profile(args: argparse.Namespace, profile: str, overrides: dict[str, str
                 else vendor_probe_catalog.normalize_error_code(row.get("error"))
             ),
             "expectedOutcome": row.get("expectedOutcome"),
-            "expectationFailures": (
-                row.get("actual", {}).get("expectationFailures")
+            "expectationCodes": (
+                row.get("actual", {}).get("expectationCodes")
                 if isinstance(row.get("actual"), dict)
                 else None
             ),

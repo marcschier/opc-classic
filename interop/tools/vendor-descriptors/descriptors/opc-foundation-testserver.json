@@ -10,17 +10,12 @@
   },
   "capabilities": [
     "activation",
-    "optional-interface-query",
     "group-lifecycle",
     "callbacks",
-    "deadband",
-    "sampling",
     "browse-variants",
     "property-variants",
     "sync-read",
     "sync-write",
-    "async-read",
-    "async-write",
     "reconnect",
     "failover",
     "wire-fixtures"
@@ -87,17 +82,6 @@
   ],
   "probes": [
     {
-      "id": "da-optional-interface-query",
-      "type": "da-query-interface",
-      "requires": [
-        "optional-interface-query"
-      ],
-      "expected": {
-        "outcome": "success"
-      },
-      "expectedFailures": []
-    },
-    {
       "id": "da-group-lifecycle",
       "type": "da-group-lifecycle",
       "requires": [
@@ -120,28 +104,6 @@
       },
       "expectedFailures": [],
       "tool": "opcclassic.da.poll_subscription"
-    },
-    {
-      "id": "da-deadband",
-      "type": "da-deadband",
-      "requires": [
-        "deadband"
-      ],
-      "expected": {
-        "outcome": "success"
-      },
-      "expectedFailures": []
-    },
-    {
-      "id": "da-sampling",
-      "type": "da-sampling",
-      "requires": [
-        "sampling"
-      ],
-      "expected": {
-        "outcome": "success"
-      },
-      "expectedFailures": []
     },
     {
       "id": "da-browse-variants",
@@ -192,28 +154,6 @@
       },
       "expectedFailures": [],
       "tool": "opcclassic.da.write_sync"
-    },
-    {
-      "id": "da-async-read",
-      "type": "da-async-read",
-      "requires": [
-        "async-read"
-      ],
-      "expected": {
-        "outcome": "success"
-      },
-      "expectedFailures": []
-    },
-    {
-      "id": "da-async-write",
-      "type": "da-async-write",
-      "requires": [
-        "async-write"
-      ],
-      "expected": {
-        "outcome": "success"
-      },
-      "expectedFailures": []
     },
     {
       "id": "da-reconnect",

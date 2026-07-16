@@ -262,6 +262,17 @@ class VendorProbeCatalogTests(unittest.TestCase):
             "PROBE_MAPPING_MISSING",
         )
 
+    def test_gated_vendor_profiles_have_no_unmapped_selected_probes(self) -> None:
+        for profile in ("matrikon", "testserver"):
+            with self.subTest(profile=profile):
+                _, descriptor = vendor.load_descriptor(profile)
+                missing = [
+                    item["probeId"]
+                    for item in vendor.descriptor_execution_plan(descriptor)
+                    if item["execution"] == "missing"
+                ]
+                self.assertEqual(missing, [])
+
     def test_duplicate_descriptor_rows_collapse_to_one_regression(self) -> None:
         _, descriptor = vendor.load_descriptor("testserver")
         duplicate = {
@@ -384,6 +395,46 @@ class VendorProbeCatalogTests(unittest.TestCase):
             4,
         )
 
+    def test_descriptor_workflow_stops_on_semantic_tool_failure(self) -> None:
+        client = FakeClient()
+        original_call_tool = client.call_tool
+
+        def call_tool(name: str, arguments: dict[str, object]) -> object:
+            if name == "opcclassic.da.connect":
+                client.calls.append((name, arguments))
+                return {"succeeded": False}
+            return original_call_tool(name, arguments)
+
+        client.call_tool = call_tool  # type: ignore[method-assign]
+        runner = probe_servers.ProbeRunner(
+            probe_args(probe_workflows=[("reconnect", "da-reconnect")]),
+            client,
+        )
+        tools = [
+            {"name": name, "inputSchema": {}}
+            for name in (
+                "opcclassic.session.create",
+                "opcclassic.da.connect",
+                "opcclassic.da.disconnect",
+                "opcclassic.da.get_status",
+            )
+        ]
+
+        rows = runner.run(tools)
+        reconnect = next(
+            row for row in rows if row.get("probeId") == "reconnect")
+
+        self.assertFalse(reconnect["success"])
+        self.assertEqual(
+            reconnect["workflowSteps"][-1]["errorCode"],
+            "RESULT_UNSUCCESSFUL",
+        )
+        self.assertEqual(
+            len([call for call in client.calls
+                 if call[0] == "opcclassic.da.connect"]),
+            1,
+        )
+
     def test_expected_item_is_matched_not_first_result(self) -> None:
         probe = {
             "expected": {
@@ -462,6 +513,45 @@ class VendorProbeCatalogTests(unittest.TestCase):
         )
         self.assertNotIn("skip_reason", aggregate)
         self.assertEqual(aggregate["skip_code"], "SERVER_NOT_REGISTERED")
+
+    def test_safe_reports_omit_item_ids_and_free_form_expectation_failures(self) -> None:
+        row = {
+            "probeId": "missing-item",
+            "tool": "opcclassic.da.read_sync",
+            "success": True,
+            "verdict": "REGRESSION",
+            "expected": {
+                "outcome": "success",
+                "itemId": "Plant.Secret.Item",
+            },
+            "actual": {
+                "outcome": "success",
+                "itemMatched": False,
+                "expectationFailures": [
+                    "Expected item 'Plant.Secret.Item' was not returned.",
+                ],
+                "expectationCodes": ["EXPECTED_ITEM_MISSING"],
+            },
+        }
+
+        safe = run_cross_impl_matrix.persisted_results([row], False)[0]
+        safe_json = json.dumps(safe)
+
+        self.assertNotIn("itemId", safe["expected"])
+        self.assertNotIn("expectationFailures", safe["actual"])
+        self.assertEqual(
+            safe["actual"]["expectationCodes"],
+            ["EXPECTED_ITEM_MISSING"],
+        )
+        self.assertNotIn("Plant.Secret.Item", safe_json)
+
+    def test_probe_semantic_result_failure_is_not_reported_as_success(self) -> None:
+        self.assertIsNotNone(probe_servers.semantic_result_error(
+            {"succeeded": False, "status": "Failed"}))
+        self.assertIsNotNone(probe_servers.semantic_result_error(
+            {"success": False}))
+        self.assertIsNone(probe_servers.semantic_result_error(
+            {"succeeded": True, "status": "LiveUpdated"}))
 
     def test_aggregate_regressions_are_recursively_allowlisted(self) -> None:
         regression = {

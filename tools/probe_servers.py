@@ -381,7 +381,19 @@ class ProbeRunner:
 
         def call_step(name: str, tool_name: str, arguments: dict[str, Any]) -> Any:
             value = self.client.call_tool(tool_name, arguments)
-            steps.append({"name": name, "tool": tool_name, "success": True})
+            semantic_error = semantic_result_error(value)
+            steps.append({
+                "name": name,
+                "tool": tool_name,
+                "success": semantic_error is None,
+                "errorCode": (
+                    semantic_error.partition(":")[0]
+                    if semantic_error is not None
+                    else None
+                ),
+            })
+            if semantic_error is not None:
+                raise RuntimeError(f"{tool_name}: {semantic_error}")
             return value
 
         try:
@@ -431,11 +443,12 @@ class ProbeRunner:
                 probe_id=probe_id,
             ))
         except Exception as exception:
-            steps.append({
-                "name": "failed",
-                "success": False,
-                "error": first_line(str(exception)),
-            })
+            if not steps or steps[-1].get("success") is not False:
+                steps.append({
+                    "name": "failed",
+                    "success": False,
+                    "errorCode": "PROBE_FAILED",
+                })
             row = make_result(
                 workflow_tool,
                 {},
@@ -460,9 +473,17 @@ class ProbeRunner:
         try:
             require_finite_numbers(arguments, f"{spec.name}.arguments")
             value = self.client.call_tool(spec.name, arguments)
+            semantic_error = semantic_result_error(value)
             self.results.append(make_result(
-                spec.name, arguments, True, None, summarize(value),
-                result=value, probe_id=probe_id))
+                spec.name,
+                arguments,
+                semantic_error is None,
+                semantic_error,
+                summarize(value) if semantic_error is None else "",
+                result=value,
+                probe_id=probe_id))
+            if semantic_error is not None:
+                return
             if spec.after is not None:
                 spec.after(self, value)
         except Exception as ex:
@@ -593,7 +614,10 @@ def probe_specs() -> list[ProbeSpec]:
         ProbeSpec("opcclassic.capture.list_interfaces", lambda r: {}, after_capture_interfaces),
         ProbeSpec("opcclassic.capture.start", capture_start_args, after_capture_start),
         ProbeSpec("opcclassic.capture.list", lambda r: {}),
-        ProbeSpec("opcclassic.capture.set_filter", lambda r: {**capture_session_args(r), "bpfFilter": "tcp"}),
+        ProbeSpec("opcclassic.capture.set_filter", lambda r: {
+            **capture_session_args(r),
+            "bpfFilter": "tcp port 135 or tcp port 4840",
+        }),
         ProbeSpec("opcclassic.capture.tail", lambda r: {
             **capture_session_args(r),
             "max": 50,
@@ -814,13 +838,15 @@ def after_capture_interfaces(runner: ProbeRunner, value: Any) -> None:
 
 
 def capture_start_args(runner: ProbeRunner) -> dict[str, Any]:
-    # Use a tiny trace while leaving enough time to exercise live cursor,
-    # filter, and notification operations before the explicit stop call.
+    # Keep the probe bounded while leaving enough headroom to exercise live
+    # cursor, filter, and notification operations before the explicit stop.
     return {
         "interfaceName": runner.capture_interface_name or "any",
         "promiscuous": False,
-        "maxPackets": 1,
-        "maxDurationSeconds": 10,
+        "bpfFilter": "tcp port 135",
+        "maxBytes": 1024 * 1024,
+        "maxPackets": 1000,
+        "maxDurationSeconds": 30,
     }
 
 
@@ -1010,6 +1036,30 @@ def summarize(value: Any) -> str:
             return f"{prefix} firstKeys={','.join(list(first.keys())[:6])}"
         return f"{prefix} first={first!r}"
     return str(value)
+
+
+def semantic_result_error(value: Any) -> str | None:
+    if not isinstance(value, dict):
+        return None
+
+    normalized = {
+        str(key).casefold(): child
+        for key, child in value.items()
+    }
+    for key in ("succeeded", "success"):
+        if normalized.get(key) is False:
+            return "RESULT_UNSUCCESSFUL: tool returned an unsuccessful result."
+
+    status = normalized.get("status")
+    if isinstance(status, str) and status.casefold() in {
+        "failed",
+        "failure",
+        "error",
+        "canceled",
+        "cancelled",
+    }:
+        return f"RESULT_STATUS_{status.upper()}: tool returned status '{status}'."
+    return None
 
 
 def format_hresult(value: Any) -> str:

@@ -22,19 +22,9 @@ decoders after hex parsing; valid hex with an invalid protocol shape fails.
 Missing install-root mappings or external executables produce `BLOCKED`, never
 an external-product `REGRESSION`.
 
-Normalized reports include descriptor/catalog versions, descriptor identity,
-product/vendor, target kind, capability IDs, probe ID, allow-listed
-expected/actual comparison metadata, and verdict.
+Normalized reports include descriptor/catalog versions, descriptor identity, product/vendor, target kind, capability IDs, probe ID, allow-listed expected/actual comparison metadata, normalized expectation codes, and verdict.
 
-Every selected probe produces exactly one result row, even when several probe
-IDs map to the same MCP tool. An unavailable MCP tool produces an explicit
-failure row, and an unmapped selected probe produces
-`PROBE_MAPPING_MISSING`/`REGRESSION`; neither is silently omitted. `probeId`
-remains the stable report identity. Reconnect and failover probes are real
-multi-step workflows: they reset the connection, connect, disconnect,
-reconnect, and perform a status or browse follow-up. DA write expectations
-select the returned item by `expected.itemId` before comparing its HRESULT, and
-a missing item is a regression.
+Every selected probe produces exactly one result row, even when several probe IDs map to the same MCP tool. An unavailable MCP tool produces an explicit failure row, and an unmapped selected probe produces `PROBE_MAPPING_MISSING`/`REGRESSION`; neither is silently omitted. `probeId` remains the stable report identity. Reconnect and failover probes are real multi-step workflows: they reset the connection, connect, disconnect, reconnect, and perform a status or browse follow-up. DA write expectations select the returned item by `expected.itemId` before comparing its HRESULT, and a missing item is a regression. Tool result objects with `success`/`succeeded` set to false or a failed/error/canceled status also fail the probe even when the MCP call itself returned without throwing. Gated Matrikon and TestServer plans contain only probes with executable mappings.
 
 To add a product, clone the generic descriptor, replace the placeholder target and item arguments, remove unsupported capabilities, and point prerequisites at `${OPERATOR_ROOT}` plus a relative artifact path. Do not add credentials, absolute customer paths, setup commands, or product files.
 
@@ -53,9 +43,7 @@ To add a product, clone the generic descriptor, replace the placeholder target a
   including after symlink resolution.
 - Each selected probe runs independently. A missing external installation or
   root mapping is `BLOCKED`; it is not converted into a product regression.
-- Matrix reports persist only allow-listed comparison fields and descriptor
-  metadata by default. Raw arguments, OPC values, payload-derived fields, full
-  errors, local paths, and free-form aggregate regression details are omitted;
+- Matrix reports persist only allow-listed comparison fields and descriptor metadata by default. Raw arguments, OPC values, payload-derived fields, full errors, local paths, expected item IDs, free-form expectation failures, and free-form aggregate regression details are omitted;
   aggregate regression rows are recursively reduced to fixed identity,
   normalized-code, outcome, and numeric count fields. Use
   `run-cross-impl-matrix.ps1 -IncludeSensitiveResults` (or Python
