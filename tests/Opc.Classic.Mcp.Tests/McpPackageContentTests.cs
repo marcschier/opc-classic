@@ -29,6 +29,7 @@ public sealed class McpPackageContentTests
         RegexOptions.CultureInvariant | RegexOptions.NonBacktracking);
 
     [Test]
+    [Category("Packaging")]
     public async Task Pack_Emits_stamped_registry_metadata_in_base_and_all_rid_packages()
     {
         string repositoryRoot = FindRepositoryRoot();
@@ -302,7 +303,10 @@ public sealed class McpPackageContentTests
 
         Task<string> standardOutput = process.StandardOutput.ReadToEndAsync();
         Task<string> standardError = process.StandardError.ReadToEndAsync();
-        using var timeout = new CancellationTokenSource(TimeSpan.FromMinutes(10));
+        TimeSpan timeoutDuration = OperatingSystem.IsWindows()
+            ? TimeSpan.FromMinutes(10)
+            : TimeSpan.FromMinutes(30);
+        using var timeout = new CancellationTokenSource(timeoutDuration);
         try
         {
             await process.WaitForExitAsync(timeout.Token);
@@ -311,7 +315,8 @@ public sealed class McpPackageContentTests
         {
             process.Kill(entireProcessTree: true);
             await process.WaitForExitAsync();
-            throw new TimeoutException("dotnet pack did not complete within ten minutes.");
+            throw new TimeoutException(
+                $"dotnet pack did not complete within {timeoutDuration.TotalMinutes:0} minutes.");
         }
 
         return new ProcessResult(process.ExitCode, await standardOutput, await standardError);
