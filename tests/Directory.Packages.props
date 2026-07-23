@@ -38,7 +38,7 @@
 
   <ItemGroup Label="Microsoft.Extensions test helpers">
     <!-- DependencyInjection / Logging / Logging.Abstractions inherited from src/Directory.Packages.props. -->
-    <PackageVersion Include="Microsoft.Extensions.Diagnostics.Testing" Version="10.7.0" />
+    <PackageVersion Include="Microsoft.Extensions.Diagnostics.Testing" Version="10.8.0" />
   </ItemGroup>
 
   <ItemGroup Label="TRANSITIONAL — Serilog package removed once ILogger migration complete.">
