@@ -33,13 +33,12 @@ public sealed class KerberosKdcFixture : IAsyncDisposable
         string realm = "EXAMPLE.COM",
         CancellationToken cancellationToken = default)
     {
-        var container = new ContainerBuilder()
-            .WithImage(Image)
+        var container = new ContainerBuilder(Image)
             .WithPortBinding(KdcPort, true)
             .WithEnvironment("KRB5_REALM", realm)
             .WithEnvironment("KRB5_KDC", "localhost")
             .WithEnvironment("KRB5_PASS", MasterPassword)
-            .WithWaitStrategy(Wait.ForUnixContainer().UntilPortIsAvailable(KdcPort))
+            .WithWaitStrategy(Wait.ForUnixContainer().UntilInternalTcpPortIsAvailable(KdcPort))
             .Build();
 
         await container.StartAsync(cancellationToken).ConfigureAwait(false);

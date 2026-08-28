@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup Label="Cross-process integration tests">
-    <PackageVersion Include="Testcontainers" Version="4.0.0" />
+    <PackageVersion Include="Testcontainers" Version="4.14.0" />
   </ItemGroup>
 
   <ItemGroup Label="Coverage">
@@ -53,4 +53,3 @@
   -->
 
 </Project>
-

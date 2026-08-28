@@ -61,13 +61,12 @@ public sealed class KdcFixture : IAsyncInitializer, IAsyncDisposable
         _imageName = $"opc-classic-krb5-kdc:{Guid.NewGuid():N}";
         await BuildImageAsync(_imageName, FindKdcDockerfileDirectory(), CancellationToken.None).ConfigureAwait(false);
 
-        _container = new ContainerBuilder()
-            .WithImage(_imageName)
+        _container = new ContainerBuilder(_imageName)
             .WithPortBinding(KdcContainerPort, true)
             .WithEnvironment("KRB5_REALM", RealmName)
             .WithEnvironment("KRB5_MASTER_PASSWORD", MasterPassword)
             .WithEnvironment("KRB5_TESTUSER_PASSWORD", TestUserPassword)
-            .WithWaitStrategy(Wait.ForUnixContainer().UntilPortIsAvailable(KdcContainerPort))
+            .WithWaitStrategy(Wait.ForUnixContainer().UntilInternalTcpPortIsAvailable(KdcContainerPort))
             .Build();
 
         await _container.StartAsync().ConfigureAwait(false);
