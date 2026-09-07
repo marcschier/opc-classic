@@ -50,7 +50,7 @@
   </ItemGroup>
 
   <ItemGroup Label="Authentication">
-    <PackageVersion Include="Kerberos.NET" Version="4.6.146" />
+    <PackageVersion Include="Kerberos.NET" Version="4.6.168" />
   </ItemGroup>
 
   <ItemGroup Label="Model Context Protocol (mcp/ tool consumes this)">
