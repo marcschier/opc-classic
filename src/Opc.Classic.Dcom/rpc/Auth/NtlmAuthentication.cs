@@ -49,9 +49,9 @@ public class NtlmAuthentication
                 {
                     _keyLength = int.Parse(keyLength, CultureInfo.InvariantCulture);
                 }
-                catch (FormatException)
+                catch (FormatException ex)
                 {
-                    throw new ArgumentException("Invalid key length: " + keyLength, nameof(properties));
+                    throw new ArgumentException("Invalid key length: " + keyLength, nameof(properties), ex);
                 }
             }
 

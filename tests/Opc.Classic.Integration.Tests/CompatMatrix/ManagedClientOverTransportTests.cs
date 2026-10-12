@@ -52,13 +52,13 @@ public sealed class ManagedClientOverTransportTests
             knownItems: ["Random.Int4"]);
         OpcDaServerHost host = ResolveHost(provider);
 
-        await host.StartAsync(TestContext.Current!.CancellationToken);
+        await host.StartAsync(TestContext.Current!.Execution.CancellationToken);
         try
         {
             await using var channel = await ConnectClientAsync(host);
             var proxy = new IOPCServerClientProxy(channel);
 
-            OpcServerStatus status = await proxy.GetStatusAsync(TestContext.Current!.CancellationToken);
+            OpcServerStatus status = await proxy.GetStatusAsync(TestContext.Current!.Execution.CancellationToken);
 
             await Assert.That(status.State).IsEqualTo(OpcServerState.Running);
             await Assert.That(status.VendorInfo).IsEqualTo("Managed transport status server");
@@ -66,7 +66,7 @@ public sealed class ManagedClientOverTransportTests
         }
         finally
         {
-            await host.StopAsync(TestContext.Current!.CancellationToken);
+            await host.StopAsync(TestContext.Current!.Execution.CancellationToken);
         }
     }
 
@@ -79,7 +79,7 @@ public sealed class ManagedClientOverTransportTests
             knownItems: []);
         OpcDaServerHost host = ResolveHost(provider);
 
-        await host.StartAsync(TestContext.Current!.CancellationToken);
+        await host.StartAsync(TestContext.Current!.Execution.CancellationToken);
         try
         {
             await using var channel = await ConnectClientAsync(host);
@@ -88,14 +88,14 @@ public sealed class ManagedClientOverTransportTests
             string text = await proxy.GetErrorStringAsync(
                 errorCode: unchecked((int)0x80004005),
                 localeId: 1033,
-                cancellationToken: TestContext.Current!.CancellationToken);
+                cancellationToken: TestContext.Current!.Execution.CancellationToken);
 
             await Assert.That(text).Contains("0x80004005");
             await Assert.That(text).Contains("0x0409");
         }
         finally
         {
-            await host.StopAsync(TestContext.Current!.CancellationToken);
+            await host.StopAsync(TestContext.Current!.Execution.CancellationToken);
         }
     }
 
@@ -107,13 +107,13 @@ public sealed class ManagedClientOverTransportTests
         await using ServiceProvider provider = BuildServiceProvider(stub);
         OpcDaServerHost host = ResolveHost(provider);
 
-        await host.StartAsync(TestContext.Current!.CancellationToken);
+        await host.StartAsync(TestContext.Current!.Execution.CancellationToken);
         try
         {
             await using var channel = await ConnectClientAsync(host);
             var proxy = new IOPCServerClientProxy(channel);
 
-            await proxy.RemoveGroupAsync(1234, force: true, TestContext.Current!.CancellationToken);
+            await proxy.RemoveGroupAsync(1234, force: true, TestContext.Current!.Execution.CancellationToken);
 
             await Assert.That(stub.RemovedGroups.Count).IsEqualTo(1);
             await Assert.That(stub.RemovedGroups[0].ServerGroupHandle).IsEqualTo(1234);
@@ -121,7 +121,7 @@ public sealed class ManagedClientOverTransportTests
         }
         finally
         {
-            await host.StopAsync(TestContext.Current!.CancellationToken);
+            await host.StopAsync(TestContext.Current!.Execution.CancellationToken);
         }
     }
 
@@ -134,21 +134,21 @@ public sealed class ManagedClientOverTransportTests
             knownItems: []);
         OpcDaServerHost host = ResolveHost(provider);
 
-        await host.StartAsync(TestContext.Current!.CancellationToken);
+        await host.StartAsync(TestContext.Current!.Execution.CancellationToken);
         try
         {
             await using var channel = await ConnectClientAsync(host);
             var proxy = new IOPCServerClientProxy(channel);
 
-            OpcServerStatus first = await proxy.GetStatusAsync(TestContext.Current!.CancellationToken);
-            OpcServerStatus second = await proxy.GetStatusAsync(TestContext.Current!.CancellationToken);
+            OpcServerStatus first = await proxy.GetStatusAsync(TestContext.Current!.Execution.CancellationToken);
+            OpcServerStatus second = await proxy.GetStatusAsync(TestContext.Current!.Execution.CancellationToken);
 
             await Assert.That(first.VendorInfo).IsEqualTo("Managed transport multi-call server");
             await Assert.That(second.VendorInfo).IsEqualTo("Managed transport multi-call server");
         }
         finally
         {
-            await host.StopAsync(TestContext.Current!.CancellationToken);
+            await host.StopAsync(TestContext.Current!.Execution.CancellationToken);
         }
     }
 
@@ -206,7 +206,7 @@ public sealed class ManagedClientOverTransportTests
             await Opc.Classic.Dcom.Transport.TcpClientTransport.ConnectAsync(
                 bound.Address.ToString(),
                 bound.Port,
-                TestContext.Current!.CancellationToken);
+                TestContext.Current!.Execution.CancellationToken);
         return new Opc.Classic.Dcom.Transport.DcomCallChannel(
             transport,
             new Opc.Classic.NoOpAuthContext());

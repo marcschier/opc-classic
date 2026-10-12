@@ -4,7 +4,6 @@ using System.Globalization;
 using System.Runtime.Versioning;
 using Microsoft.Win32;
 using Opc.Classic.Hosting.Windows;
-using TUnit.Assertions.AssertConditions.Throws;
 
 namespace Opc.Classic.Hosting.Tests.Windows;
 

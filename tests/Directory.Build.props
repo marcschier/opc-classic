@@ -46,7 +46,6 @@
   <PropertyGroup Condition="'$(IsTestProject)' == 'true'">
     <!-- Microsoft.Testing.Platform (MTP) — not VSTest. TUnit is MTP-native. -->
     <UseMicrosoftTestingPlatformRunner>true</UseMicrosoftTestingPlatformRunner>
-    <TestingPlatformDotnetTestSupport>true</TestingPlatformDotnetTestSupport>
     <OutputType>Exe</OutputType>
   </PropertyGroup>
 
@@ -54,31 +53,15 @@
     <!-- TUnit (source-generated test discovery, AOT-friendly) + its built-in assertions library -->
     <PackageReference Include="TUnit" />
 
-    <!-- Coverage collection for `dotnet test` with the XPlat Code Coverage collector -->
-    <PackageReference Include="coverlet.collector">
+    <!-- Native Microsoft.Testing.Platform coverage collection. -->
+    <PackageReference Include="coverlet.MTP">
       <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <IncludeAssets>runtime; compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-
-    <!-- MSBuild-integrated coverage collection for Microsoft.Testing.Platform/TUnit projects. -->
-    <PackageReference Include="coverlet.msbuild">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
+    <None Include="$(MSBuildThisFileDirectory)testconfig.json"
+          Link="testconfig.json"
+          CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
-
-  <PropertyGroup Condition="'$(IsTestProject)' == 'true' and '$(VSTestCollect)' == 'XPlat Code Coverage'">
-    <!-- Bridge VSTest-style coverage collection to coverlet.msbuild for Microsoft.Testing.Platform/TUnit projects. -->
-    <CollectCoverage>true</CollectCoverage>
-    <CoverletOutputFormat>cobertura</CoverletOutputFormat>
-    <CoverletOutput Condition="'$(CoverletOutput)' == '' and '$(VSTestResultsDirectory)' != ''">$(VSTestResultsDirectory)\</CoverletOutput>
-    <Exclude>[*]Opc.Classic.Dcom.*,[Opc.Classic.Generators]*,[*Tests]*,[*]*.Generated.*</Exclude>
-    <ExcludeByAttribute>Obsolete,GeneratedCodeAttribute,CompilerGeneratedAttribute</ExcludeByAttribute>
-    <ExcludeByFile>**/obj/**,**/bin/**,**/*.g.cs</ExcludeByFile>
-    <IncludeTestAssembly>false</IncludeTestAssembly>
-    <DeterministicReport>true</DeterministicReport>
-    <UseSourceLink>true</UseSourceLink>
-  </PropertyGroup>
 
   <!--
     Test-only analyzer relaxations: test methods often take parameters from
@@ -103,4 +86,3 @@
   </ItemGroup>
 
 </Project>
-

@@ -2,7 +2,6 @@
 
 using Opc.Classic.Dcom.Activation;
 using Opc.Classic.Ndr;
-using TUnit.Assertions.AssertConditions.Throws;
 
 namespace Opc.Classic.Dcom.Tests.Activation;
 

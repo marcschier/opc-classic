@@ -2,7 +2,6 @@
 
 using System.Reflection;
 using Opc.Classic.Dcom.Common;
-using TUnit.Assertions.AssertConditions.Throws;
 
 namespace Opc.Classic.Dcom.Tests;
 

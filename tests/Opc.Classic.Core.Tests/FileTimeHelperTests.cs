@@ -1,7 +1,5 @@
 ﻿// Copyright (c) 2026 Opc.Classic Contributors. Licensed under the MIT License.
 
-using TUnit.Assertions.AssertConditions.Throws;
-
 namespace Opc.Classic.Tests;
 
 public sealed class FileTimeHelperTests

@@ -99,7 +99,7 @@ public sealed class DxNdrCodecTests
 
         await Assert.That(decoded.Name).IsEqualTo("PLC1");
         await Assert.That(decoded.ServerUrl).IsEqualTo("opcda://plc1/Vendor.OPC.1");
-        await Assert.That(decoded.DefaultConnected).IsEqualTo(true);
+        await Assert.That(decoded.DefaultConnected).IsTrue();
         await Assert.That((decoded.Mask & (int)DxMask.ServerUrl) != 0).IsTrue();
     }
 

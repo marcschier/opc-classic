@@ -158,9 +158,9 @@ public class ResponseCoPdu : ConnectionOrientedPdu, IFragmentable
             pdu.SetFlag(PFC_LAST_FRAG, true);
             return pdu;
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            throw new IOException("Unable to assemble PDU fragments.");
+            throw new IOException("Unable to assemble PDU fragments.", ex);
         }
     }
 

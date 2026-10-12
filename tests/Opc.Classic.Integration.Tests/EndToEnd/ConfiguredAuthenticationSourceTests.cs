@@ -5,7 +5,6 @@ using Opc.Classic.Dcom.Internal;
 using Opc.Classic.Dcom.Internal.Ntlm;
 using Opc.Classic.Dcom.Rpc.Auth;
 using Opc.Classic.Dcom.Rpc.Auth.ntlm;
-using TUnit.Assertions.AssertConditions.Throws;
 
 namespace Opc.Classic.Integration.Tests.EndToEnd;
 

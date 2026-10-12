@@ -51,7 +51,7 @@ public sealed class OpcCpxAddressSpaceTests
         await Assert.That(moreElements).IsTrue();
         await Assert.That(continuationPoint).IsEqualTo("opc-da-browse:2");
         await Assert.That(firstPage.Select(static element => element.Name).ToArray())
-            .IsEquivalentTo(new[] { "MotorStatus", "MotorCommand" });
+            .IsEquivalentTo(new string?[] { "MotorStatus", "MotorCommand" });
 
         await browse.BrowseAsync(
             "/CPX/OPCBinary/PlantTypes.v1",
@@ -69,7 +69,7 @@ public sealed class OpcCpxAddressSpaceTests
         await Assert.That(moreElements).IsFalse();
         await Assert.That(string.IsNullOrEmpty(continuationPoint)).IsTrue();
         await Assert.That(secondPage.Select(static element => element.Name).ToArray())
-            .IsEquivalentTo(new[] { "MotorDiagnostics" });
+            .IsEquivalentTo(new string?[] { "MotorDiagnostics" });
     }
 
     private static OpcCpxOptions CreateOptions()

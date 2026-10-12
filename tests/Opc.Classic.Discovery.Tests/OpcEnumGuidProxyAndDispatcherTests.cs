@@ -5,7 +5,6 @@ using Opc.Classic.Discovery.Dcom;
 using Opc.Classic.Hosting;
 using Opc.Classic.Ndr;
 using Opc.Classic.Testing;
-using TUnit.Assertions.AssertConditions.Throws;
 
 namespace Opc.Classic.Discovery.Tests;
 

@@ -127,7 +127,7 @@ public sealed class AeIntegrationTests
         await Assert.That(reactor1.Single(static element => element.QualifiedName == ReactorSource).IsSource).IsTrue();
         await Assert.That(categories.Select(static category => category.EventCategory)).Contains(ConditionCategory);
         await Assert.That(attributes.Select(static attribute => attribute.Description)).IsEquivalentTo(new[] { "Area", "Limit", "Units", "Current Value" });
-        await Assert.That(condition.SubConditionNames).IsEquivalentTo(new[] { "High", "HighHigh" });
+        await Assert.That(condition.SubConditionNames).IsEquivalentTo(new string?[] { "High", "HighHigh" });
         await Assert.That(condition.EventAttributes.Count).IsEqualTo(4);
         await Assert.That(filtered.SubscriptionId).IsEqualTo(subscription.SubscriptionId);
         await Assert.That(initialEvents.Select(static notification => notification.ConditionName!)).Contains(ReactorCondition);

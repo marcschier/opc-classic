@@ -16,7 +16,7 @@ public sealed class OpcDaGroupAsyncIoTests
         var group = CreateGroup();
         int handle = await AddSingleItem(group, "Tag.A");
         await group.WriteAsync([handle], [new OpcVariant(VarType.VT_I4, 99)],
-            TestContext.Current!.CancellationToken);
+            TestContext.Current!.Execution.CancellationToken);
 
         IOPCSyncIO2 syncIo2 = group;
         await syncIo2.ReadMaxAgeAsync(
@@ -26,7 +26,7 @@ public sealed class OpcDaGroupAsyncIoTests
             out ushort[] qualities,
             out long[] timestamps,
             out int[] errors,
-            TestContext.Current!.CancellationToken);
+            TestContext.Current!.Execution.CancellationToken);
 
         await Assert.That(errors[0]).IsEqualTo(0);
         await Assert.That(values[0].AsInt32()).IsEqualTo(99);
@@ -47,7 +47,7 @@ public sealed class OpcDaGroupAsyncIoTests
 
         IOPCSyncIO2 syncIo2 = group;
         int[] errors = await syncIo2.WriteVqtAsync([handle], [vqt],
-            TestContext.Current!.CancellationToken);
+            TestContext.Current!.Execution.CancellationToken);
 
         await Assert.That(errors[0]).IsEqualTo(0);
         OpcItemState snapshot = group.GetItem(handle)!.GetSnapshot();
@@ -66,7 +66,7 @@ public sealed class OpcDaGroupAsyncIoTests
             [knownHandle, 99999],
             transactionId: 1,
             out int[] errors,
-            cancellationToken: TestContext.Current!.CancellationToken);
+            cancellationToken: TestContext.Current!.Execution.CancellationToken);
 
         await Assert.That(cancelId).IsGreaterThan(0);
         await Assert.That(errors[0]).IsEqualTo(0);
@@ -85,7 +85,7 @@ public sealed class OpcDaGroupAsyncIoTests
             [new OpcVariant(VarType.VT_I4, 123)],
             transactionId: 2,
             out int[] errors,
-            cancellationToken: TestContext.Current!.CancellationToken);
+            cancellationToken: TestContext.Current!.Execution.CancellationToken);
 
         await Assert.That(cancelId).IsGreaterThan(0);
         await Assert.That(errors[0]).IsEqualTo(0);
@@ -98,10 +98,10 @@ public sealed class OpcDaGroupAsyncIoTests
         var group = CreateGroup();
         IOPCAsyncIO2 async2 = group;
 
-        await async2.SetEnableAsync(enabled: false, TestContext.Current!.CancellationToken);
-        bool enabled1 = await async2.GetEnableAsync(TestContext.Current!.CancellationToken);
-        await async2.SetEnableAsync(enabled: true, TestContext.Current!.CancellationToken);
-        bool enabled2 = await async2.GetEnableAsync(TestContext.Current!.CancellationToken);
+        await async2.SetEnableAsync(enabled: false, TestContext.Current!.Execution.CancellationToken);
+        bool enabled1 = await async2.GetEnableAsync(TestContext.Current!.Execution.CancellationToken);
+        await async2.SetEnableAsync(enabled: true, TestContext.Current!.Execution.CancellationToken);
+        bool enabled2 = await async2.GetEnableAsync(TestContext.Current!.Execution.CancellationToken);
 
         await Assert.That(enabled1).IsFalse();
         await Assert.That(enabled2).IsTrue();
@@ -114,8 +114,8 @@ public sealed class OpcDaGroupAsyncIoTests
         IOPCAsyncIO2 async2 = group;
 
         int cancelId = await async2.Refresh2Async(dataSource: 1, transactionId: 7,
-            TestContext.Current!.CancellationToken);
-        await async2.Cancel2Async(cancelId, TestContext.Current!.CancellationToken);
+            TestContext.Current!.Execution.CancellationToken);
+        await async2.Cancel2Async(cancelId, TestContext.Current!.Execution.CancellationToken);
 
         await Assert.That(cancelId).IsGreaterThan(0);
     }
@@ -131,7 +131,7 @@ public sealed class OpcDaGroupAsyncIoTests
             [1000],
             transactionId: 3,
             out int[] errors,
-            cancellationToken: TestContext.Current!.CancellationToken);
+            cancellationToken: TestContext.Current!.Execution.CancellationToken);
 
         await Assert.That(cancelId).IsGreaterThan(0);
         await Assert.That(errors[0]).IsEqualTo(0);
@@ -149,7 +149,7 @@ public sealed class OpcDaGroupAsyncIoTests
             [vqt],
             transactionId: 4,
             out int[] errors,
-            cancellationToken: TestContext.Current!.CancellationToken);
+            cancellationToken: TestContext.Current!.Execution.CancellationToken);
 
         await Assert.That(cancelId).IsGreaterThan(0);
         await Assert.That(errors[0]).IsEqualTo(0);
@@ -164,7 +164,7 @@ public sealed class OpcDaGroupAsyncIoTests
         int cancelId = await ((IOPCAsyncIO3)group).RefreshMaxAgeAsync(
             maxAge: 1000,
             transactionId: 5,
-            cancellationToken: TestContext.Current!.CancellationToken);
+            cancellationToken: TestContext.Current!.Execution.CancellationToken);
 
         await Assert.That(cancelId).IsGreaterThan(0);
     }
@@ -173,7 +173,7 @@ public sealed class OpcDaGroupAsyncIoTests
     {
         var defs = new[] { new OpcItemDef("", itemId, true, 1, null, VarType.VT_I4) };
         await group.AddItemsAsync(defs, out OpcItemResult[] results, out int[] _,
-            TestContext.Current!.CancellationToken);
+            TestContext.Current!.Execution.CancellationToken);
         return results[0].ServerHandle;
     }
 

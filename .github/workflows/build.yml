@@ -63,14 +63,16 @@ jobs:
           New-Item -ItemType Directory -Path $coverageRoot -Force | Out-Null
 
           $failed = $false
-          $projects = Get-ChildItem -Path "tests" -Filter "*.csproj" -Recurse | Sort-Object FullName
+          $projects = Get-ChildItem -Path "tests" -Filter "*.csproj" -Recurse |
+            Where-Object { $_.BaseName -ne 'Opc.Classic.Tests.Fuzz' } |
+            Sort-Object FullName
           foreach ($project in $projects) {
             $name = [IO.Path]::GetFileNameWithoutExtension($project.Name)
             $projectResults = Join-Path $coverageRoot $name
             New-Item -ItemType Directory -Path $projectResults -Force | Out-Null
 
             Write-Host "Testing $name"
-            dotnet test $project.FullName --configuration ${{ matrix.configuration }} --no-build --collect:"XPlat Code Coverage" --settings coverlet.runsettings --results-directory $projectResults --logger "trx;LogFileName=$name.trx"
+            dotnet test --project $project.FullName --configuration ${{ matrix.configuration }} --no-build --coverlet --results-directory $projectResults --report-trx --report-trx-filename "$name.trx"
             if ($LASTEXITCODE -ne 0) {
               $failed = $true
             }
@@ -84,9 +86,9 @@ jobs:
         if: hashFiles('Opc.Classic.slnx') != ''
         shell: pwsh
         run: |
-          dotnet tool install -g dotnet-reportgenerator-globaltool
+          dotnet tool install -g dotnet-reportgenerator-globaltool --version 5.5.11
           if ($LASTEXITCODE -ne 0) {
-            dotnet tool update -g dotnet-reportgenerator-globaltool
+            dotnet tool update -g dotnet-reportgenerator-globaltool --version 5.5.11
           }
           if ($LASTEXITCODE -ne 0) {
             exit $LASTEXITCODE
@@ -99,7 +101,7 @@ jobs:
         shell: pwsh
         run: |
           reportgenerator `
-            -reports:./coverage-results/**/coverage.cobertura.xml `
+            -reports:./coverage-results/**/coverage.cobertura*.xml `
             -targetdir:./coverage-report `
             -reporttypes:"Cobertura;TextSummary;MarkdownSummaryGithub" `
             -assemblyfilters:"+*;-Opc.Classic.Dcom*;-Opc.Classic.Generators*;-*Tests*" `
@@ -123,6 +125,11 @@ jobs:
           [xml]$cov = Get-Content ./coverage-report/Cobertura.xml
           $line = [double]$cov.coverage.'line-rate' * 100
           $branch = [double]$cov.coverage.'branch-rate' * 100
+          if ([long]$cov.coverage.'lines-valid' -le 0 -or [long]$cov.coverage.'branches-valid' -le 0 -or
+              -not [double]::IsFinite($line) -or -not [double]::IsFinite($branch)) {
+            Write-Error "Coverage report must contain measured lines and branches with finite coverage rates."
+            exit 1
+          }
           Write-Host "Line coverage: $($line.ToString('F2'))%"
           Write-Host "Branch coverage: $($branch.ToString('F2'))%"
           # 2026-06-09: Floors temporarily lowered from line 73%/branch 55% to
@@ -147,12 +154,12 @@ jobs:
           Write-Host "Coverage gate PASSED"
 
       - name: Upload coverage
-        if: always() && hashFiles('coverage-results/**/coverage.cobertura.xml') != ''
+        if: always() && hashFiles('coverage-results/**/coverage.cobertura*.xml') != ''
         uses: actions/upload-artifact@v7
         with:
           name: coverage-${{ matrix.os }}-${{ matrix.configuration }}
           path: |
-            coverage-results/**/coverage.cobertura.xml
+            coverage-results/**/coverage.cobertura*.xml
             coverage-report/**
 
   format:
@@ -298,17 +305,19 @@ jobs:
           # Linux build-test job) serialize those writes. Exit code 8 = "zero tests
           # ran", expected for projects whose tests are all NativeConformance.
           $failed = $false
-          $projects = Get-ChildItem -Path "tests" -Filter "*.csproj" -Recurse | Sort-Object FullName
+          $projects = Get-ChildItem -Path "tests" -Filter "*.csproj" -Recurse |
+            Where-Object { $_.BaseName -ne 'Opc.Classic.Tests.Fuzz' } |
+            Sort-Object FullName
           foreach ($project in $projects) {
             $name = [IO.Path]::GetFileNameWithoutExtension($project.Name)
             Write-Host "== Testing $name =="
-            dotnet test $project.FullName --no-build -c Release --filter "Category!=NativeConformance" --logger "trx;LogFileName=$name.trx"
+            dotnet test --project $project.FullName --no-build -c Release --treenode-filter "/*/*/*/*[Category!=NativeConformance]" --report-trx --report-trx-filename "$name.trx"
             if ($LASTEXITCODE -ne 0 -and $LASTEXITCODE -ne 8) { $failed = $true }
           }
           if ($failed) { exit 1 }
 
       - name: Run native COM conformance tests
         shell: pwsh
-        run: dotnet test Opc.Classic.slnx --no-build -c Release --filter "Category=NativeConformance"
+        run: dotnet test --solution Opc.Classic.slnx --no-build -c Release --treenode-filter "/*/*/*/*[Category=NativeConformance]"
         if: success()
         continue-on-error: true  # native conformance is opt-in until runner assets are available

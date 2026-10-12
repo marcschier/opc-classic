@@ -32,8 +32,8 @@ public sealed class NcacnNpTransportTests
         request.AsSpan().CopyTo(output.Span);
         transport.Output.Advance(request.Length);
 
-        await transport.FlushAsync(TestContext.Current!.CancellationToken);
-        ReadResult read = await transport.Input.ReadAsync(TestContext.Current.CancellationToken);
+        await transport.FlushAsync(TestContext.Current!.Execution.CancellationToken);
+        ReadResult read = await transport.Input.ReadAsync(TestContext.Current.Execution.CancellationToken);
         byte[] actual = read.Buffer.ToArray();
         transport.Input.AdvanceTo(read.Buffer.End);
 
@@ -92,7 +92,7 @@ public sealed class NcacnNpTransportTests
 
         await using IAsyncTransport transport = await factory.ConnectAsync(
             new NcacnNpEndPoint("server", "\\PIPE\\winreg"),
-            TestContext.Current!.CancellationToken);
+            TestContext.Current!.Execution.CancellationToken);
 
         await Assert.That(capturedQuota).IsEqualTo(4096);
     }
@@ -130,7 +130,7 @@ public sealed class NcacnNpTransportTests
             transportConnector: (_, _, _, _) => Task.FromResult<ISmb2Transport>(mock));
         return await factory.ConnectAsync(
             new NcacnNpEndPoint("server", pipeEndpoint),
-            TestContext.Current!.CancellationToken);
+            TestContext.Current!.Execution.CancellationToken);
     }
 
     private static MockSmb2Transport CreateOpenPipeServer()

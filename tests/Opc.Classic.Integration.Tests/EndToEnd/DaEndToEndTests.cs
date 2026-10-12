@@ -84,7 +84,7 @@ public sealed class DaEndToEndTests
         await Assert.That(readResults[0].Error).IsEqualTo(OpcResultId.Ok.Code);
         await Assert.That(readResults[0].Timestamp).IsNotEqualTo(default(DateTimeOffset));
         await Assert.That(readResults[1].Value.AsString()).IsEqualTo(string.Empty);
-        await Assert.That(readResults[2].Value.AsBoolean()).IsEqualTo(false);
+        await Assert.That(readResults[2].Value.AsBoolean()).IsFalse();
     }
 
     [Test, Category("EndToEnd")]
@@ -112,7 +112,7 @@ public sealed class DaEndToEndTests
         await Assert.That(pipeline.LastWrites[2].Value).IsEqualTo(values[2]);
         await Assert.That(readResults[0].Value.AsInt32()).IsEqualTo(42_424);
         await Assert.That(readResults[1].Value.AsString()).IsEqualTo("batch-β-17");
-        await Assert.That(readResults[2].Value.AsBoolean()).IsEqualTo(true);
+        await Assert.That(readResults[2].Value.AsBoolean()).IsTrue();
         await Assert.That(readResults.All(static result => result.Quality == OpcQuality.Good)).IsTrue();
         await Assert.That(readResults.All(static result => result.Error == OpcResultId.Ok.Code)).IsTrue();
     }

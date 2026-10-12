@@ -19,7 +19,7 @@ public sealed class KerberosChannelBindingChecksumTests
         DelegationInfo decoded = checksum.DecodeDelegation();
 
         await Assert.That((int)checksum.Type).IsEqualTo(KerberosChannelBindingChecksum.KrbApChecksumTypeGss);
-        await Assert.That(decoded.ChannelBinding.ToArray().SequenceEqual(channelBindingsHash)).IsTrue();
+        await Assert.That(decoded.ChannelBindingHash.ToArray().SequenceEqual(channelBindingsHash)).IsTrue();
         await Assert.That(decoded.Flags).IsEqualTo(GssContextEstablishmentFlag.GSS_C_MUTUAL_FLAG);
     }
 
@@ -35,7 +35,7 @@ public sealed class KerberosChannelBindingChecksumTests
 
         await Assert.That(request.ServicePrincipalName).IsEqualTo("RPCSS/server.example.com");
         await Assert.That((int)checksum.Type).IsEqualTo(KerberosChannelBindingChecksum.KrbApChecksumTypeGss);
-        await Assert.That(decoded.ChannelBinding.ToArray().SequenceEqual(channelBindingsHash)).IsTrue();
+        await Assert.That(decoded.ChannelBindingHash.ToArray().SequenceEqual(channelBindingsHash)).IsTrue();
     }
 
     [Test]

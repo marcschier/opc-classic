@@ -24,7 +24,7 @@
 *.yaml text eol=lf
 *.yml text eol=lf
 *.md text eol=lf
-*.verified.* text eol=crlf
+*.verified.* text eol=lf
 
 # Denote all files that should not have line endings normalized, should not be
 # merged, and should not show in a textual diff.

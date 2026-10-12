@@ -7,7 +7,6 @@ using System.Runtime.Versioning;
 using Opc.Classic.Da.Dcom;
 using Opc.Classic.Da.Hosting;
 using Opc.Classic.Da.Hosting.Windows;
-using TUnit.Assertions.AssertConditions.Throws;
 
 namespace Opc.Classic.Da.Tests.Hosting.Windows;
 

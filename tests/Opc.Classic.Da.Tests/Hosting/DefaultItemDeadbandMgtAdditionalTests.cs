@@ -1,7 +1,6 @@
 ﻿// Copyright (c) 2026 Opc.Classic Contributors. Licensed under the MIT License.
 
 using Opc.Classic.Da.Hosting;
-using TUnit.Assertions.AssertConditions.Throws;
 
 namespace Opc.Classic.Da.Tests.Hosting;
 
@@ -12,7 +11,7 @@ public sealed class DefaultItemDeadbandMgtAdditionalTests
     {
         var manager = new DefaultItemDeadbandMgt();
 
-        int[] errors = await manager.SetItemDeadbandAsync([10, 20, 30], null!, TestContext.Current!.CancellationToken);
+        int[] errors = await manager.SetItemDeadbandAsync([10, 20, 30], null!, TestContext.Current!.Execution.CancellationToken);
 
         await Assert.That(errors).IsEquivalentTo(new[]
         {
@@ -31,7 +30,7 @@ public sealed class DefaultItemDeadbandMgtAdditionalTests
             [10, 20],
             out float[] percentDeadbands,
             out int[] errors,
-            TestContext.Current!.CancellationToken);
+            TestContext.Current!.Execution.CancellationToken);
 
         await Assert.That(percentDeadbands).IsEquivalentTo(new[] { 0f, 0f });
         await Assert.That(errors).IsEquivalentTo(new[]
@@ -46,7 +45,7 @@ public sealed class DefaultItemDeadbandMgtAdditionalTests
     {
         var manager = new DefaultItemDeadbandMgt();
 
-        int[] errors = await manager.ClearItemDeadbandAsync([5, 6], TestContext.Current!.CancellationToken);
+        int[] errors = await manager.ClearItemDeadbandAsync([5, 6], TestContext.Current!.Execution.CancellationToken);
 
         await Assert.That(errors).IsEquivalentTo(new[]
         {
@@ -60,13 +59,13 @@ public sealed class DefaultItemDeadbandMgtAdditionalTests
     {
         var manager = new DefaultItemDeadbandMgt();
 
-        int[] setErrors = await manager.SetItemDeadbandAsync([], [], TestContext.Current!.CancellationToken);
+        int[] setErrors = await manager.SetItemDeadbandAsync([], [], TestContext.Current!.Execution.CancellationToken);
         await manager.GetItemDeadbandAsync(
             [],
             out float[] deadbands,
             out int[] getErrors,
-            TestContext.Current!.CancellationToken);
-        int[] clearErrors = await manager.ClearItemDeadbandAsync([], TestContext.Current!.CancellationToken);
+            TestContext.Current!.Execution.CancellationToken);
+        int[] clearErrors = await manager.ClearItemDeadbandAsync([], TestContext.Current!.Execution.CancellationToken);
 
         await Assert.That(setErrors.Length).IsEqualTo(0);
         await Assert.That(deadbands.Length).IsEqualTo(0);
@@ -79,11 +78,11 @@ public sealed class DefaultItemDeadbandMgtAdditionalTests
     {
         var manager = new DefaultItemDeadbandMgt();
 
-        await Assert.That(() => manager.SetItemDeadbandAsync(null!, [], TestContext.Current!.CancellationToken))
+        await Assert.That(() => (Task)manager.SetItemDeadbandAsync(null!, [], TestContext.Current!.Execution.CancellationToken))
             .Throws<ArgumentNullException>();
-        await Assert.That(() => manager.GetItemDeadbandAsync(null!, out _, out _, TestContext.Current!.CancellationToken))
+        await Assert.That(() => manager.GetItemDeadbandAsync(null!, out _, out _, TestContext.Current!.Execution.CancellationToken))
             .Throws<ArgumentNullException>();
-        await Assert.That(() => manager.ClearItemDeadbandAsync(null!, TestContext.Current!.CancellationToken))
+        await Assert.That(() => (Task)manager.ClearItemDeadbandAsync(null!, TestContext.Current!.Execution.CancellationToken))
             .Throws<ArgumentNullException>();
     }
 
@@ -94,11 +93,11 @@ public sealed class DefaultItemDeadbandMgtAdditionalTests
         using var cts = new CancellationTokenSource();
         cts.Cancel();
 
-        await Assert.That(() => manager.SetItemDeadbandAsync([1], [1f], cts.Token))
+        await Assert.That(() => (Task)manager.SetItemDeadbandAsync([1], [1f], cts.Token))
             .Throws<OperationCanceledException>();
         await Assert.That(() => manager.GetItemDeadbandAsync([1], out _, out _, cts.Token))
             .Throws<OperationCanceledException>();
-        await Assert.That(() => manager.ClearItemDeadbandAsync([1], cts.Token))
+        await Assert.That(() => (Task)manager.ClearItemDeadbandAsync([1], cts.Token))
             .Throws<OperationCanceledException>();
     }
 }

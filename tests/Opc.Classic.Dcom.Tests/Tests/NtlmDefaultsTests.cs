@@ -4,7 +4,6 @@ using System.Reflection;
 using Opc.Classic.Dcom.Internal;
 using Opc.Classic.Dcom.Rpc;
 using Opc.Classic.Dcom.Rpc.Auth.ntlm;
-using TUnit.Assertions.AssertConditions.Throws;
 
 namespace Opc.Classic.Dcom.Tests;
 

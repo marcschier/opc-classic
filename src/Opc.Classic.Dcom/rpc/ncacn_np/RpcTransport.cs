@@ -256,7 +256,7 @@ public sealed class RpcTransport : ITransport, IDisposable
         }
         catch (FormatException ex)
         {
-            throw new ProviderException(ex.Message);
+            throw new ProviderException(ex.Message, ex);
         }
     }
 

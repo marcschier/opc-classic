@@ -20,7 +20,7 @@ public sealed class EndpointMapperDispatcherTests
         Guid interfaceId = Guid.Parse(interfaceIdText);
         var dispatcher = new EndpointMapperDispatcher(() => ListenerEndpoint);
 
-        DispatchResult result = await dispatcher.DispatchAsync(3, EncodeMapRequest(interfaceId), TestContext.Current!.CancellationToken);
+        DispatchResult result = await dispatcher.DispatchAsync(3, EncodeMapRequest(interfaceId), TestContext.Current!.Execution.CancellationToken);
 
         await Assert.That(result.IsFailure).IsFalse();
         EndpointMapperMapResponse response = DecodeMapResponse(result.Payload.Span);
@@ -37,7 +37,7 @@ public sealed class EndpointMapperDispatcherTests
     {
         var dispatcher = new EndpointMapperDispatcher(() => ListenerEndpoint);
 
-        DispatchResult result = await dispatcher.DispatchAsync(3, EncodeMapRequest(Guid.Parse("aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee")), TestContext.Current!.CancellationToken);
+        DispatchResult result = await dispatcher.DispatchAsync(3, EncodeMapRequest(Guid.Parse("aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee")), TestContext.Current!.Execution.CancellationToken);
 
         await Assert.That(result.IsFailure).IsFalse();
         EndpointMapperMapResponse response = DecodeMapResponse(result.Payload.Span);

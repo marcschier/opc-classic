@@ -17,7 +17,7 @@ public sealed class FuzzHarnessSelfTests
             buckets[BucketIndex(bytes.Length)] = true;
         }, iter: 50, threads: 1);
 
-        await Assert.That(buckets.All(static hit => hit)).IsEqualTo(true);
+        await Assert.That(buckets.All(static hit => hit)).IsTrue();
     }
 
     [Test]
@@ -32,7 +32,7 @@ public sealed class FuzzHarnessSelfTests
 
         completed = true;
 
-        await Assert.That(completed).IsEqualTo(true);
+        await Assert.That(completed).IsTrue();
     }
 
     [Test]
@@ -93,7 +93,7 @@ public sealed class FuzzHarnessSelfTests
             object[][] rows = FuzzHarness.LoadCorpus(surface).ToArray();
 
             await Assert.That(rows.Length).IsEqualTo(2);
-            await Assert.That(rows.All(static row => row.Length == 1 && row[0] is byte[])).IsEqualTo(true);
+            await Assert.That(rows.All(static row => row.Length == 1 && row[0] is byte[])).IsTrue();
         }
         finally
         {

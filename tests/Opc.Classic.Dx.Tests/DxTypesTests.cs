@@ -1,7 +1,5 @@
 ﻿// Copyright (c) 2026 Opc.Classic Contributors. Licensed under the MIT License.
 
-using TUnit.Assertions.AssertConditions.Throws;
-
 namespace Opc.Classic.Dx.Tests;
 
 public sealed class DxConnectionTests
@@ -60,7 +58,7 @@ public sealed class DxSourceServerTests
         var roundTripped = source with { };
 
         await Assert.That(roundTripped).IsEqualTo(source);
-        await Assert.That(roundTripped.DefaultConnected).IsEqualTo(true);
+        await Assert.That(roundTripped.DefaultConnected).IsTrue();
     }
 }
 

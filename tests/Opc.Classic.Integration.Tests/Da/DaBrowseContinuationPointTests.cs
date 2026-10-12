@@ -38,7 +38,7 @@ public sealed class DaBrowseContinuationPointTests
             propertyIds: Array.Empty<int>(),
             out bool moreElements,
             out OpcBrowseElementResult[] browseElements,
-            TestContext.Current!.CancellationToken);
+            TestContext.Current!.Execution.CancellationToken);
 
         await Assert.That(moreElements).IsFalse();
         await Assert.That(continuationPoint).IsEqualTo(string.Empty);
@@ -99,7 +99,7 @@ public sealed class DaBrowseContinuationPointTests
             propertyIds: Array.Empty<int>(),
             out bool moreElements,
             out OpcBrowseElementResult[] firstPage,
-            TestContext.Current!.CancellationToken);
+            TestContext.Current!.Execution.CancellationToken);
 
         string issuedToken = continuationPoint ?? string.Empty;
         await Assert.That(moreElements).IsTrue();
@@ -119,7 +119,7 @@ public sealed class DaBrowseContinuationPointTests
             propertyIds: Array.Empty<int>(),
             out moreElements,
             out OpcBrowseElementResult[] secondPage,
-            TestContext.Current.CancellationToken);
+            TestContext.Current.Execution.CancellationToken);
 
         await Assert.That(moreElements).IsTrue();
         await Assert.That(secondPage.Select(static item => item.ItemId).SequenceEqual(loopback.ExpectedItemIds.Skip(10).Take(10))).IsTrue();
@@ -147,7 +147,7 @@ public sealed class DaBrowseContinuationPointTests
             propertyIds: Array.Empty<int>(),
             out _,
             out _,
-            TestContext.Current!.CancellationToken));
+            TestContext.Current!.Execution.CancellationToken));
 
         await Assert.That(exception.ResultId.Code).IsEqualTo(OpcResultId.InvalidContinuationPoint.Code);
     }
@@ -173,7 +173,7 @@ public sealed class DaBrowseContinuationPointTests
                 propertyIds: Array.Empty<int>(),
                 out bool moreElements,
                 out OpcBrowseElementResult[] browseElements,
-                TestContext.Current!.CancellationToken);
+                TestContext.Current!.Execution.CancellationToken);
 
             itemIds.AddRange(browseElements.Select(static item => item.ItemId ?? string.Empty));
             if (!moreElements)
@@ -259,7 +259,7 @@ public sealed class DaBrowseContinuationPointTests
             IOpcAddressSpace addressSpace = CreateAddressSpace(hierarchical);
             ServiceProvider provider = BuildServiceProvider(addressSpace);
             OpcDaServerHost host = provider.GetRequiredService<OpcDaServerHost>();
-            await host.StartAsync(TestContext.Current!.CancellationToken);
+            await host.StartAsync(TestContext.Current!.Execution.CancellationToken);
             DcomCallChannel channel = await ConnectBrowseClientAsync(host);
             return new BrowseLoopback(
                 provider,
@@ -306,7 +306,7 @@ public sealed class DaBrowseContinuationPointTests
                 bound.Address.ToString(),
                 bound.Port,
                 NoOpAuthContext.Instance,
-                TestContext.Current!.CancellationToken);
+                TestContext.Current!.Execution.CancellationToken);
         }
     }
 

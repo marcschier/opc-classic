@@ -47,7 +47,7 @@ public sealed class OpcDaGroupEnumerationSnapshotTests
 
         OpcDaGroupEnumerationSnapshot snapshot = await server.CreateGroupEnumerationSnapshotAsync(
             scope,
-            TestContext.Current!.CancellationToken);
+            TestContext.Current!.Execution.CancellationToken);
 
         await Assert.That(snapshot.PrivateGroups.Count).IsEqualTo(expectedPrivateCount);
         await Assert.That(snapshot.PublicGroups.Count).IsEqualTo(expectedPublicCount);
@@ -64,9 +64,9 @@ public sealed class OpcDaGroupEnumerationSnapshotTests
 
         OpcDaGroupEnumerationSnapshot snapshot = await server.CreateGroupEnumerationSnapshotAsync(
             OpcDaGroupEnumerationScope.All,
-            TestContext.Current!.CancellationToken);
+            TestContext.Current!.Execution.CancellationToken);
         serverImpl.ReplacePrivate(CreateGroup("third", 3));
-        await second.SetNameAsync("renamed", TestContext.Current!.CancellationToken);
+        await second.SetNameAsync("renamed", TestContext.Current!.Execution.CancellationToken);
 
         await Assert.That(snapshot.Groups[0]).IsSameReferenceAs(first);
         await Assert.That(snapshot.Groups[1]).IsSameReferenceAs(second);
@@ -85,7 +85,7 @@ public sealed class OpcDaGroupEnumerationSnapshotTests
 
         OpcDaGroupEnumerationSnapshot snapshot = await server.CreateGroupEnumerationSnapshotAsync(
             scope,
-            TestContext.Current!.CancellationToken);
+            TestContext.Current!.Execution.CancellationToken);
 
         await Assert.That(serverImpl.SeparateSnapshotCalls).IsEqualTo(0);
         await Assert.That(serverImpl.CombinedSnapshotCalls).IsEqualTo(1);
@@ -97,7 +97,7 @@ public sealed class OpcDaGroupEnumerationSnapshotTests
     {
         var serverImpl = new AtomicPairSnapshotServer();
         IOpcDaServer server = serverImpl;
-        using var cts = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current!.CancellationToken);
+        using var cts = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current!.Execution.CancellationToken);
         using var start = new Barrier(2);
         cts.CancelAfter(TimeSpan.FromSeconds(10));
 

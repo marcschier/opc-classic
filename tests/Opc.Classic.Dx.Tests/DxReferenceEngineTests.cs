@@ -1,7 +1,6 @@
 ﻿// Copyright (c) 2026 Opc.Classic Contributors. Licensed under the MIT License.
 
 using System.Collections.Concurrent;
-using TUnit.Assertions.AssertConditions.Throws;
 
 namespace Opc.Classic.Dx.Tests;
 
@@ -23,7 +22,7 @@ public sealed class DxReferenceEngineTests
         Task start = Task.Run(() => engine.StartAsync());
         await start.WaitAsync(
             TimeSpan.FromSeconds(2),
-            TestContext.Current!.CancellationToken);
+            TestContext.Current!.Execution.CancellationToken);
         await WaitUntilAsync(() => target.WriteCount > 1);
 
         await Assert.That(start.IsCompletedSuccessfully).IsTrue();

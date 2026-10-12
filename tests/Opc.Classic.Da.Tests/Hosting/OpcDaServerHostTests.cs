@@ -81,7 +81,7 @@ public sealed class OpcDaServerHostTests
     {
         var host = CreateHost(CreateOptions());
 
-        await host.StartAsync(TestContext.Current!.CancellationToken);
+        await host.StartAsync(TestContext.Current!.Execution.CancellationToken);
 
         try
         {
@@ -92,7 +92,7 @@ public sealed class OpcDaServerHostTests
         }
         finally
         {
-            await host.StopAsync(TestContext.Current!.CancellationToken);
+            await host.StopAsync(TestContext.Current!.Execution.CancellationToken);
         }
 
         await Assert.That(host.LocalEndpoint).IsNull();
@@ -102,18 +102,18 @@ public sealed class OpcDaServerHostTests
     public async Task Real_TCP_client_can_connect_after_StartAsync()
     {
         var host = CreateHost(CreateOptions());
-        await host.StartAsync(TestContext.Current!.CancellationToken);
+        await host.StartAsync(TestContext.Current!.Execution.CancellationToken);
 
         try
         {
             var bound = (System.Net.IPEndPoint)host.LocalEndpoint!;
             using var client = new System.Net.Sockets.TcpClient();
-            await client.ConnectAsync(bound.Address, bound.Port, TestContext.Current!.CancellationToken);
+            await client.ConnectAsync(bound.Address, bound.Port, TestContext.Current!.Execution.CancellationToken);
             await Assert.That(client.Connected).IsTrue();
         }
         finally
         {
-            await host.StopAsync(TestContext.Current!.CancellationToken);
+            await host.StopAsync(TestContext.Current!.Execution.CancellationToken);
         }
     }
 

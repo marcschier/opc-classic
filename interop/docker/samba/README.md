@@ -17,7 +17,7 @@ OPC_CLASSIC_SAMBA_HOST=127.0.0.1 \
 OPC_CLASSIC_SAMBA_USER=opcuser \
 OPC_CLASSIC_SAMBA_PASSWORD=opcpass \
 OPC_CLASSIC_SAMBA_DOMAIN=TESTDOMAIN \
-  dotnet test tests/Opc.Classic.Integration.Tests -- --treenode-filter "/*/*/WinRegSambaSmokeTests/*"
+  dotnet test --project tests/Opc.Classic.Integration.Tests/Opc.Classic.Integration.Tests.csproj --treenode-filter "/*/*/WinRegSambaSmokeTests/*"
 docker compose -f interop/docker/samba/docker-compose.yml down -v
 ```
 

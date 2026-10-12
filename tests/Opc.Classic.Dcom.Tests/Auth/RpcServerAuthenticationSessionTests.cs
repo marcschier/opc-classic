@@ -2,7 +2,6 @@
 
 using System.Security.Principal;
 using Opc.Classic.Dcom.Rpc.Auth;
-using TUnit.Assertions.AssertConditions.Throws;
 
 namespace Opc.Classic.Dcom.Tests.Auth;
 

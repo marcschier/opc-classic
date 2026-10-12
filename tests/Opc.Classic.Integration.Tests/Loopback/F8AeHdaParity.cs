@@ -32,20 +32,20 @@ public sealed class F8AeHdaParity
             requestedInterfaceId: IOPCEventSubscriptionMgt.InterfaceId,
             out _,
             out _,
-            TestContext.Current!.CancellationToken);
+            TestContext.Current!.Execution.CancellationToken);
 
         var connectionPoint = (Opc.Classic.Ae.Dcom.IConnectionPoint)subscription;
         int cookie = await connectionPoint.AdviseAsync(
             new OpcInterfaceRef(IOPCEventSink.InterfaceId, 0, 1, 1, 1, Guid.CreateVersion7(), 0, []),
-            TestContext.Current.CancellationToken);
+            TestContext.Current.Execution.CancellationToken);
 
-        await subscription.SetFilterAsync((int)EventType.Condition, [], 1, 1000, [], [], TestContext.Current.CancellationToken);
-        OpcEventNotification[] first = await sink.WaitForAsync(TestContext.Current.CancellationToken);
+        await subscription.SetFilterAsync((int)EventType.Condition, [], 1, 1000, [], [], TestContext.Current.Execution.CancellationToken);
+        OpcEventNotification[] first = await sink.WaitForAsync(TestContext.Current.Execution.CancellationToken);
         await Assert.That(first.Length).IsGreaterThan(0);
         await Assert.That(first[0].Source).StartsWith("Plant.Reactor");
 
-        await connectionPoint.UnadviseAsync(cookie, TestContext.Current.CancellationToken);
-        await subscription.RefreshAsync(cookie, TestContext.Current.CancellationToken);
+        await connectionPoint.UnadviseAsync(cookie, TestContext.Current.Execution.CancellationToken);
+        await subscription.RefreshAsync(cookie, TestContext.Current.Execution.CancellationToken);
         await Assert.That(sink.CallCount).IsEqualTo(1);
     }
 
@@ -69,21 +69,21 @@ public sealed class F8AeHdaParity
             requestedInterfaceId: IOPCEventSubscriptionMgt.InterfaceId,
             out _,
             out _,
-            TestContext.Current!.CancellationToken);
+            TestContext.Current!.Execution.CancellationToken);
 
         var connectionPoint = (Opc.Classic.Ae.Dcom.IConnectionPoint)subscription;
         await connectionPoint.AdviseAsync(
             new OpcInterfaceRef(IOPCEventSink.InterfaceId, 0, 1, 1, 1, Guid.CreateVersion7(), 0, []),
-            TestContext.Current.CancellationToken);
+            TestContext.Current.Execution.CancellationToken);
         await connectionPoint.AdviseAsync(
             new OpcInterfaceRef(IOPCEventSink.InterfaceId, 0, 1, 1, 2, Guid.CreateVersion7(), 0, []),
-            TestContext.Current.CancellationToken);
+            TestContext.Current.Execution.CancellationToken);
 
-        await subscription.SetFilterAsync((int)EventType.Condition, [], 1, 1000, [], [], TestContext.Current.CancellationToken);
-        await healthySink.WaitForCountAsync(1, TestContext.Current.CancellationToken);
+        await subscription.SetFilterAsync((int)EventType.Condition, [], 1, 1000, [], [], TestContext.Current.Execution.CancellationToken);
+        await healthySink.WaitForCountAsync(1, TestContext.Current.Execution.CancellationToken);
 
-        await subscription.SetFilterAsync((int)EventType.Condition, [], 1, 1000, [], [], TestContext.Current.CancellationToken);
-        await healthySink.WaitForCountAsync(2, TestContext.Current.CancellationToken);
+        await subscription.SetFilterAsync((int)EventType.Condition, [], 1, 1000, [], [], TestContext.Current.Execution.CancellationToken);
+        await healthySink.WaitForCountAsync(2, TestContext.Current.Execution.CancellationToken);
 
         await Assert.That(faultingSink.CallCount).IsEqualTo(1);
         await Assert.That(healthySink.CallCount).IsEqualTo(2);
@@ -97,7 +97,7 @@ public sealed class F8AeHdaParity
         int[] handles = await server.GetItemHandlesAsync(
             ["Plant.Reactor1.Temperature"],
             [0x9001],
-            TestContext.Current!.CancellationToken);
+            TestContext.Current!.Execution.CancellationToken);
 
         OpcHdaItem[] items = await server.ReadRawAsync(
             OpcHdaTime.FromTimestamp(model.StartTimeUtc),
@@ -105,7 +105,7 @@ public sealed class F8AeHdaParity
             maxValues: 3,
             bounds: true,
             handles,
-            TestContext.Current.CancellationToken);
+            TestContext.Current.Execution.CancellationToken);
 
         await Assert.That(handles[0]).IsGreaterThan(0);
         await Assert.That(items.Length).IsEqualTo(1);

@@ -24,7 +24,7 @@ public sealed class DaEnumOpcItemAttributesVeuInfoTests
         await using ServiceProvider provider = BuildServiceProvider();
         OpcDaServerHost host = ResolveHost(provider);
 
-        await host.StartAsync(TestContext.Current!.CancellationToken);
+        await host.StartAsync(TestContext.Current!.Execution.CancellationToken);
         try
         {
             await using DcomCallChannel serverChannel = await ConnectRootClientAsync(host);
@@ -42,17 +42,17 @@ public sealed class DaEnumOpcItemAttributesVeuInfoTests
                 out _,
                 out _,
                 out IOpcInterfaceRef groupRef,
-                TestContext.Current.CancellationToken);
+                TestContext.Current.Execution.CancellationToken);
 
             await using DcomCallChannel itemMgtChannel = await ConnectObjectClientAsync(host, groupRef.Ipid);
             var itemMgt = new IOPCItemMgtClientProxy(itemMgtChannel);
             IOpcInterfaceRef enumRef = await itemMgt.CreateEnumeratorAsync(
                 IEnumOPCItemAttributes.InterfaceId,
-                TestContext.Current.CancellationToken);
+                TestContext.Current.Execution.CancellationToken);
 
             await using DcomCallChannel enumChannel = await ConnectObjectClientAsync(host, enumRef.Ipid);
             var enumerator = new IEnumOPCItemAttributesClientProxy(enumChannel);
-            IReadOnlyList<OpcItemAttributes> attributes = await ReadAllAsync(enumerator, TestContext.Current.CancellationToken);
+            IReadOnlyList<OpcItemAttributes> attributes = await ReadAllAsync(enumerator, TestContext.Current.Execution.CancellationToken);
 
             await Assert.That(attributes.Count).IsEqualTo(3);
             OpcItemAttributes discrete = attributes.Single(static item => item.ItemId == "Discrete.Signal");
@@ -71,7 +71,7 @@ public sealed class DaEnumOpcItemAttributesVeuInfoTests
         }
         finally
         {
-            await host.StopAsync(TestContext.Current!.CancellationToken);
+            await host.StopAsync(TestContext.Current!.Execution.CancellationToken);
         }
     }
 
@@ -159,7 +159,7 @@ public sealed class DaEnumOpcItemAttributesVeuInfoTests
         return await TcpClientTransport.ConnectAsync(
             bound.Address.ToString(),
             bound.Port,
-            TestContext.Current!.CancellationToken);
+            TestContext.Current!.Execution.CancellationToken);
     }
 
     private sealed class VeuInfoDaServer : IOpcDaServer

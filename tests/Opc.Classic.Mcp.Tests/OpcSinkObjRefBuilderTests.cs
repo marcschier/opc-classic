@@ -5,7 +5,6 @@ using Opc.Classic.Da.Dcom;
 using Opc.Classic.Dcom;
 using Opc.Classic.Mcp.Tools;
 using Opc.Classic.Ndr;
-using TUnit.Assertions.AssertConditions.Throws;
 
 namespace Opc.Classic.Mcp.Tests;
 

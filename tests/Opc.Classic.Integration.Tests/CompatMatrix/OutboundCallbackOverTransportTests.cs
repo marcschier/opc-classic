@@ -65,7 +65,7 @@ public sealed class OutboundCallbackOverTransportTests
         await proxy.OnCancelCompleteAsync(
             transactionId: 12345,
             groupHandle: 7,
-            cancellationToken: TestContext.Current!.CancellationToken);
+            cancellationToken: TestContext.Current!.Execution.CancellationToken);
 
         await Assert.That(sink.OnCancelCompleteCallCount).IsEqualTo(1);
         await Assert.That(sink.LastTransactionId).IsEqualTo(12345);
@@ -92,7 +92,7 @@ public sealed class OutboundCallbackOverTransportTests
             masterError: 0,
             clientHandles: clientHandles,
             errors: errors,
-            cancellationToken: TestContext.Current!.CancellationToken);
+            cancellationToken: TestContext.Current!.Execution.CancellationToken);
 
         await Assert.That(sink.LastClientHandles).IsEquivalentTo(clientHandles);
         await Assert.That(sink.LastWriteErrors).IsEquivalentTo(errors);
@@ -109,9 +109,9 @@ public sealed class OutboundCallbackOverTransportTests
         await using var channel = await ConnectAsync(sinkEndpoint);
         var proxy = new IOPCDataCallbackClientProxy(channel);
 
-        await proxy.OnCancelCompleteAsync(1, 1, TestContext.Current!.CancellationToken);
-        await proxy.OnCancelCompleteAsync(2, 1, TestContext.Current!.CancellationToken);
-        await proxy.OnCancelCompleteAsync(3, 1, TestContext.Current!.CancellationToken);
+        await proxy.OnCancelCompleteAsync(1, 1, TestContext.Current!.Execution.CancellationToken);
+        await proxy.OnCancelCompleteAsync(2, 1, TestContext.Current!.Execution.CancellationToken);
+        await proxy.OnCancelCompleteAsync(3, 1, TestContext.Current!.Execution.CancellationToken);
 
         await Assert.That(sink.OnCancelCompleteCallCount).IsEqualTo(3);
         await Assert.That(sink.LastTransactionId).IsEqualTo(3);
@@ -126,14 +126,14 @@ public sealed class OutboundCallbackOverTransportTests
         var processor = new RpcServerConnectionProcessor(
             new Dictionary<Guid, IOpcServerDispatcher> { [IOPCDataCallback.InterfaceId] = dispatcher });
         var listener = new OpcServerListener(endpoint, processor);
-        listener.StartAsync(TestContext.Current!.CancellationToken).GetAwaiter().GetResult();
+        listener.StartAsync(TestContext.Current!.Execution.CancellationToken).GetAwaiter().GetResult();
         return listener;
     }
 
     private static async Task<Opc.Classic.Dcom.Transport.DcomCallChannel> ConnectAsync(IPEndPoint endpoint)
     {
         var client = new TcpClient();
-        await client.ConnectAsync(endpoint.Address, endpoint.Port, TestContext.Current!.CancellationToken);
+        await client.ConnectAsync(endpoint.Address, endpoint.Port, TestContext.Current!.Execution.CancellationToken);
         return new Opc.Classic.Dcom.Transport.DcomCallChannel(
             new TcpClientTransport(client),
             new Opc.Classic.NoOpAuthContext());

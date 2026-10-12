@@ -100,9 +100,9 @@ public class ProgId
                     session.UserName, session.Password), server, true);
             }
         }
-        catch (System.Net.Sockets.SocketException)
+        catch (System.Net.Sockets.SocketException ex)
         {
-            throw new InteropException(ErrorCode.INTEROP_WINREG_EXCEPTION3);
+            throw new InteropException(ErrorCode.INTEROP_WINREG_EXCEPTION3, ex);
         }
         var handle = winreg.OpenHKLM();
         var handle2 = winreg.OpenKey(handle, "SOFTWARE\\Classes\\" +

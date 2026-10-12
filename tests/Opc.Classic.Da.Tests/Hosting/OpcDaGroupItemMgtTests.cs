@@ -1,7 +1,6 @@
 ﻿// Copyright (c) 2026 Opc.Classic Contributors. Licensed under the MIT License.
 
 using Opc.Classic.Da.Hosting;
-using TUnit.Assertions.AssertConditions.Throws;
 
 namespace Opc.Classic.Da.Tests.Hosting;
 
@@ -21,7 +20,7 @@ public sealed class OpcDaGroupItemMgtTests
         };
 
         await group.AddItemsAsync(defs, out OpcItemResult[] results, out int[] errors,
-            TestContext.Current!.CancellationToken);
+            TestContext.Current!.Execution.CancellationToken);
 
         await Assert.That(results.Length).IsEqualTo(2);
         await Assert.That(errors.All(static e => e == 0)).IsTrue();
@@ -38,7 +37,7 @@ public sealed class OpcDaGroupItemMgtTests
         var defs = new[] { new OpcItemDef("", "", true, 1, null, VarType.VT_I4) };
 
         await group.AddItemsAsync(defs, out OpcItemResult[] results, out int[] errors,
-            TestContext.Current!.CancellationToken);
+            TestContext.Current!.Execution.CancellationToken);
 
         await Assert.That(errors[0]).IsNotEqualTo(0);
         await Assert.That(results[0].ServerHandle).IsEqualTo(0);
@@ -53,7 +52,7 @@ public sealed class OpcDaGroupItemMgtTests
 
         await group.ValidateItemsAsync(defs, blobUpdate: false,
             out OpcItemResult[] _, out int[] errors,
-            TestContext.Current!.CancellationToken);
+            TestContext.Current!.Execution.CancellationToken);
 
         await Assert.That(errors[0]).IsEqualTo(0);
         await Assert.That(group.ItemCount).IsEqualTo(0);
@@ -66,7 +65,7 @@ public sealed class OpcDaGroupItemMgtTests
         int handle = await AddSingleItem(group, "Tag.A");
 
         int[] errors = await group.RemoveItemsAsync([handle, 99999],
-            TestContext.Current!.CancellationToken);
+            TestContext.Current!.Execution.CancellationToken);
 
         await Assert.That(errors[0]).IsEqualTo(0);
         await Assert.That(errors[1]).IsNotEqualTo(0);
@@ -80,7 +79,7 @@ public sealed class OpcDaGroupItemMgtTests
         int handle = await AddSingleItem(group, "Tag.A", active: false);
 
         int[] errors = await group.SetActiveStateAsync([handle], active: true,
-            TestContext.Current!.CancellationToken);
+            TestContext.Current!.Execution.CancellationToken);
 
         await Assert.That(errors[0]).IsEqualTo(0);
         await Assert.That(group.GetItem(handle)!.Active).IsTrue();
@@ -94,7 +93,7 @@ public sealed class OpcDaGroupItemMgtTests
 
         int[] errors = await group.SetClientHandlesAsync(
             [handle], [42],
-            TestContext.Current!.CancellationToken);
+            TestContext.Current!.Execution.CancellationToken);
 
         await Assert.That(errors[0]).IsEqualTo(0);
         await Assert.That(group.GetItem(handle)!.ClientHandle).IsEqualTo(42);
@@ -108,7 +107,7 @@ public sealed class OpcDaGroupItemMgtTests
 
         int[] errors = await group.SetDatatypesAsync(
             [handle], [(ushort)VarType.VT_BSTR],
-            TestContext.Current!.CancellationToken);
+            TestContext.Current!.Execution.CancellationToken);
 
         await Assert.That(errors[0]).IsEqualTo(0);
         await Assert.That(group.GetItem(handle)!.RequestedDatatype).IsEqualTo((ushort)VarType.VT_BSTR);
@@ -122,14 +121,14 @@ public sealed class OpcDaGroupItemMgtTests
         OpcVariant value = new(VarType.VT_I4, 42);
 
         int[] writeErrors = await group.WriteAsync([handle], [value],
-            TestContext.Current!.CancellationToken);
+            TestContext.Current!.Execution.CancellationToken);
         await Assert.That(writeErrors[0]).IsEqualTo(0);
 
         OpcItemState[] states = await group.ReadAsync(
             dataSource: 0,
             serverHandles: [handle],
             out int[] readErrors,
-            cancellationToken: TestContext.Current!.CancellationToken);
+            cancellationToken: TestContext.Current!.Execution.CancellationToken);
 
         await Assert.That(readErrors[0]).IsEqualTo(0);
         await Assert.That(states[0].Value.AsInt32()).IsEqualTo(42);
@@ -144,7 +143,7 @@ public sealed class OpcDaGroupItemMgtTests
             dataSource: 0,
             serverHandles: [999],
             out int[] errors,
-            cancellationToken: TestContext.Current!.CancellationToken);
+            cancellationToken: TestContext.Current!.Execution.CancellationToken);
 
         await Assert.That(errors[0]).IsNotEqualTo(0);
         await Assert.That(states[0].Value.IsEmpty).IsTrue();
@@ -160,7 +159,7 @@ public sealed class OpcDaGroupItemMgtTests
             _ = await group.WriteAsync(
                 [1, 2],
                 [OpcVariant.Empty],
-                TestContext.Current!.CancellationToken);
+                TestContext.Current!.Execution.CancellationToken);
         }).Throws<ArgumentException>();
     }
 
@@ -168,7 +167,7 @@ public sealed class OpcDaGroupItemMgtTests
     {
         var defs = new[] { new OpcItemDef("", itemId, active, 1, null, VarType.VT_I4) };
         await group.AddItemsAsync(defs, out OpcItemResult[] results, out int[] _,
-            TestContext.Current!.CancellationToken);
+            TestContext.Current!.Execution.CancellationToken);
         return results[0].ServerHandle;
     }
 

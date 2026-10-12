@@ -2,7 +2,6 @@
 
 using Opc.Classic.Dcom.Transport;
 using Opc.Classic.Hosting;
-using TUnit.Assertions.AssertConditions.Throws;
 
 namespace Opc.Classic.Dcom.Tests.Transport;
 

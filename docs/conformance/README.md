@@ -73,7 +73,7 @@ this review — see [`docs/CONFORMANCE.md`](../CONFORMANCE.md) for context.
 ## Validation evidence
 
 - **Build:** `dotnet build Opc.Classic.slnx -c Release` — warning-free.
-- **Tests:** `dotnet test Opc.Classic.slnx -c Release --no-build` — all .NET test projects green.
+- **Tests:** `dotnet test --solution Opc.Classic.slnx -c Release --no-build` — all .NET test projects green.
 - **Matrix:** `tools/run-cross-impl-matrix.ps1` — all configured profiles green.
 - **Phase 0 inventory tooling:** [`tools/conformance_extract.py`](../../tools/conformance_extract.py) + [`tools/conformance_xref.py`](../../tools/conformance_xref.py).
 - **Phase 0 inventory artifacts:** CSV files at `files/conformance/inventory/<spec>.csv` (per-spec headings + clauses + interfaces) and `files/conformance/citations.csv` (363 code citations across 1317 scanned files).

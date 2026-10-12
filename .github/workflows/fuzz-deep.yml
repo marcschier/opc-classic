@@ -59,11 +59,10 @@ jobs:
 
           for project in "${projects[@]}"; do
             name="$(basename "$project")"
-            dotnet test "$project" \
+            dotnet test --project "$project/${name}.csproj" \
               --configuration Release \
               --no-build \
-              --logger "trx;LogFileName=fuzz-${name}.trx" \
-              -- \
+              --report-trx --report-trx-filename "fuzz-${name}.trx" \
               --treenode-filter "/*/*/*/*[Category=Fuzz]"
           done
 

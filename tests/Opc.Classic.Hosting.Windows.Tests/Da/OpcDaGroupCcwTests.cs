@@ -405,7 +405,7 @@ public sealed class OpcDaGroupCcwTests
         await AddManagedItems(group, "Tag.A", "Tag.B");
         OpcDaItem[] items = OrderedItems(group);
         int[] handles = items.Select(item => item.ServerHandle).ToArray();
-        await group.WriteAsync(handles, [OpcVariant.FromInt32(11), OpcVariant.FromInt32(22)], TestContext.Current!.CancellationToken);
+        await group.WriteAsync(handles, [OpcVariant.FromInt32(11), OpcVariant.FromInt32(22)], TestContext.Current!.Execution.CancellationToken);
         IntPtr ccw = OpcDaGroupCcw.Create(group);
         IntPtr syncPtr = Helpers.InvokeQI(ccw, IOPCSyncIO.InterfaceId);
 
@@ -524,7 +524,7 @@ public sealed class OpcDaGroupCcwTests
         await AddManagedItems(group, "Tag.A", "Tag.B");
         OpcDaItem[] items = OrderedItems(group);
         int[] handles = items.Select(item => item.ServerHandle).ToArray();
-        await group.WriteAsync(handles, [OpcVariant.FromInt32(11), OpcVariant.FromInt32(22)], TestContext.Current!.CancellationToken);
+        await group.WriteAsync(handles, [OpcVariant.FromInt32(11), OpcVariant.FromInt32(22)], TestContext.Current!.Execution.CancellationToken);
         OpcItemState firstSnapshot = items[0].GetSnapshot();
         IntPtr ccw = OpcDaGroupCcw.Create(group);
         IntPtr sync2Ptr = Helpers.InvokeQI(ccw, IOPCSyncIO2.InterfaceId);
@@ -1248,7 +1248,7 @@ public sealed class OpcDaGroupCcwTests
     private static async Task AddManagedItems(OpcDaGroup group, params string[] itemIds)
     {
         OpcItemDef[] defs = itemIds.Select((itemId, index) => NewItemDef(itemId, index + 1)).ToArray();
-        await group.AddItemsAsync(defs, out OpcItemResult[] _, out int[] _, TestContext.Current!.CancellationToken);
+        await group.AddItemsAsync(defs, out OpcItemResult[] _, out int[] _, TestContext.Current!.Execution.CancellationToken);
     }
 
     private static OpcDaItem[] OrderedItems(OpcDaGroup group) =>

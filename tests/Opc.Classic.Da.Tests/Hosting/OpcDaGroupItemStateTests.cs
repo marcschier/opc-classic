@@ -21,8 +21,8 @@ public sealed class OpcDaGroupItemStateTests
         int handle = await AddItem(group, "Tag.A");
         IOPCItemDeadbandMgt mgr = group;
 
-        int[] setErrors = await mgr.SetItemDeadbandAsync(new[] { handle }, new[] { 12.5f }, TestContext.Current!.CancellationToken);
-        await mgr.GetItemDeadbandAsync(new[] { handle }, out float[] read, out int[] readErrors, TestContext.Current.CancellationToken);
+        int[] setErrors = await mgr.SetItemDeadbandAsync(new[] { handle }, new[] { 12.5f }, TestContext.Current!.Execution.CancellationToken);
+        await mgr.GetItemDeadbandAsync(new[] { handle }, out float[] read, out int[] readErrors, TestContext.Current.Execution.CancellationToken);
 
         await Assert.That(setErrors[0]).IsEqualTo(OpcResultId.Ok.Code);
         await Assert.That(readErrors[0]).IsEqualTo(OpcResultId.Ok.Code);
@@ -37,7 +37,7 @@ public sealed class OpcDaGroupItemStateTests
         int handle = await AddItem(group, "Tag.A");
         IOPCItemDeadbandMgt mgr = group;
 
-        int[] errors = await mgr.SetItemDeadbandAsync(new[] { handle }, new[] { 150f }, TestContext.Current!.CancellationToken);
+        int[] errors = await mgr.SetItemDeadbandAsync(new[] { handle }, new[] { 150f }, TestContext.Current!.Execution.CancellationToken);
 
         await Assert.That(errors[0]).IsEqualTo(OpcResultId.Range.Code);
         await Assert.That(group.GetItem(handle)!.PercentDeadband).IsNull();
@@ -50,7 +50,7 @@ public sealed class OpcDaGroupItemStateTests
         int handle = await AddItem(group, "Tag.A");
         IOPCItemDeadbandMgt mgr = group;
 
-        await mgr.GetItemDeadbandAsync(new[] { handle }, out _, out int[] errors, TestContext.Current!.CancellationToken);
+        await mgr.GetItemDeadbandAsync(new[] { handle }, out _, out int[] errors, TestContext.Current!.Execution.CancellationToken);
 
         await Assert.That(errors[0]).IsEqualTo(OpcResultId.DeadbandNotSet.Code);
     }
@@ -61,9 +61,9 @@ public sealed class OpcDaGroupItemStateTests
         OpcDaGroup group = CreateGroup();
         int handle = await AddItem(group, "Tag.A");
         IOPCItemDeadbandMgt mgr = group;
-        await mgr.SetItemDeadbandAsync(new[] { handle }, new[] { 5f }, TestContext.Current!.CancellationToken);
+        await mgr.SetItemDeadbandAsync(new[] { handle }, new[] { 5f }, TestContext.Current!.Execution.CancellationToken);
 
-        int[] errors = await mgr.ClearItemDeadbandAsync(new[] { handle }, TestContext.Current!.CancellationToken);
+        int[] errors = await mgr.ClearItemDeadbandAsync(new[] { handle }, TestContext.Current!.Execution.CancellationToken);
 
         await Assert.That(errors[0]).IsEqualTo(OpcResultId.Ok.Code);
         await Assert.That(group.GetItem(handle)!.PercentDeadband).IsNull();
@@ -75,7 +75,7 @@ public sealed class OpcDaGroupItemStateTests
         OpcDaGroup group = CreateGroup();
         IOPCItemDeadbandMgt mgr = group;
 
-        int[] errors = await mgr.SetItemDeadbandAsync(new[] { 99999 }, new[] { 1f }, TestContext.Current!.CancellationToken);
+        int[] errors = await mgr.SetItemDeadbandAsync(new[] { 99999 }, new[] { 1f }, TestContext.Current!.Execution.CancellationToken);
 
         await Assert.That(errors[0]).IsEqualTo(OpcResultId.InvalidHandle.Code);
     }
@@ -87,8 +87,8 @@ public sealed class OpcDaGroupItemStateTests
         int handle = await AddItem(group, "Tag.A");
         IOPCItemSamplingMgt mgr = group;
 
-        await mgr.SetItemSamplingRateAsync(new[] { handle }, new[] { 250 }, out int[] revised, out int[] setErrors, TestContext.Current!.CancellationToken);
-        await mgr.GetItemSamplingRateAsync(new[] { handle }, out int[] read, out int[] readErrors, TestContext.Current.CancellationToken);
+        await mgr.SetItemSamplingRateAsync(new[] { handle }, new[] { 250 }, out int[] revised, out int[] setErrors, TestContext.Current!.Execution.CancellationToken);
+        await mgr.GetItemSamplingRateAsync(new[] { handle }, out int[] read, out int[] readErrors, TestContext.Current.Execution.CancellationToken);
 
         await Assert.That(setErrors[0]).IsEqualTo(OpcResultId.Ok.Code);
         await Assert.That(revised[0]).IsEqualTo(250);
@@ -103,7 +103,7 @@ public sealed class OpcDaGroupItemStateTests
         int handle = await AddItem(group, "Tag.A");
         IOPCItemSamplingMgt mgr = group;
 
-        await mgr.GetItemSamplingRateAsync(new[] { handle }, out _, out int[] errors, TestContext.Current!.CancellationToken);
+        await mgr.GetItemSamplingRateAsync(new[] { handle }, out _, out int[] errors, TestContext.Current!.Execution.CancellationToken);
 
         await Assert.That(errors[0]).IsEqualTo(OpcResultId.RateNotSet.Code);
     }
@@ -114,9 +114,9 @@ public sealed class OpcDaGroupItemStateTests
         OpcDaGroup group = CreateGroup();
         int handle = await AddItem(group, "Tag.A");
         IOPCItemSamplingMgt mgr = group;
-        await mgr.SetItemSamplingRateAsync(new[] { handle }, new[] { 100 }, out _, out _, TestContext.Current!.CancellationToken);
+        await mgr.SetItemSamplingRateAsync(new[] { handle }, new[] { 100 }, out _, out _, TestContext.Current!.Execution.CancellationToken);
 
-        int[] errors = await mgr.ClearItemSamplingRateAsync(new[] { handle }, TestContext.Current!.CancellationToken);
+        int[] errors = await mgr.ClearItemSamplingRateAsync(new[] { handle }, TestContext.Current!.Execution.CancellationToken);
 
         await Assert.That(errors[0]).IsEqualTo(OpcResultId.Ok.Code);
         await Assert.That(group.GetItem(handle)!.SamplingRate).IsNull();
@@ -129,8 +129,8 @@ public sealed class OpcDaGroupItemStateTests
         int handle = await AddItem(group, "Tag.A");
         IOPCItemSamplingMgt mgr = group;
 
-        int[] setErrors = await mgr.SetItemBufferEnableAsync(new[] { handle }, new[] { true }, TestContext.Current!.CancellationToken);
-        await mgr.GetItemBufferEnableAsync(new[] { handle }, out bool[] read, out int[] readErrors, TestContext.Current.CancellationToken);
+        int[] setErrors = await mgr.SetItemBufferEnableAsync(new[] { handle }, new[] { true }, TestContext.Current!.Execution.CancellationToken);
+        await mgr.GetItemBufferEnableAsync(new[] { handle }, out bool[] read, out int[] readErrors, TestContext.Current.Execution.CancellationToken);
 
         await Assert.That(setErrors[0]).IsEqualTo(OpcResultId.Ok.Code);
         await Assert.That(read[0]).IsTrue();
@@ -140,7 +140,7 @@ public sealed class OpcDaGroupItemStateTests
     private static async Task<int> AddItem(OpcDaGroup group, string itemId)
     {
         var defs = new[] { new OpcItemDef("", itemId, true, 1, null, VarType.VT_I4) };
-        await group.AddItemsAsync(defs, out OpcItemResult[] results, out _, TestContext.Current!.CancellationToken);
+        await group.AddItemsAsync(defs, out OpcItemResult[] results, out _, TestContext.Current!.Execution.CancellationToken);
         return results[0].ServerHandle;
     }
 

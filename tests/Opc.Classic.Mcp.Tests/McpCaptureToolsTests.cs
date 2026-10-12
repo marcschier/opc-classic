@@ -10,7 +10,6 @@ using Opc.Classic.Dcom.Rpc.pdu;
 using Opc.Classic.Dcom.Transport;
 using Opc.Classic.Mcp.Capture;
 using Opc.Classic.Mcp.Tools;
-using TUnit.Assertions.AssertConditions.Throws;
 
 namespace Opc.Classic.Mcp.Tests;
 
@@ -228,9 +227,9 @@ public sealed class McpCaptureToolsTests
         System.Reflection.ParameterInfo ambientSso = method.GetParameters().Single(
             parameter => parameter.Name == "ambientSso");
 
-        await Assert.That(openWorld.TypedValue.Value).IsEqualTo(true);
+        await Assert.That(openWorld.TypedValue.Value).IsTypeOf<bool>().And.IsTrue();
         await Assert.That(ambientSso.HasDefaultValue).IsTrue();
-        await Assert.That(ambientSso.DefaultValue).IsEqualTo(false);
+        await Assert.That(ambientSso.DefaultValue).IsTypeOf<bool>().And.IsFalse();
     }
 
     [Test]

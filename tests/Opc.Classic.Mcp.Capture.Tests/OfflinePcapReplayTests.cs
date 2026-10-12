@@ -29,7 +29,7 @@ public sealed class OfflinePcapReplayTests
             List<CapturedPacket> packets;
             try
             {
-                packets = await source.ReadAllAsync(null, TestContext.Current!.CancellationToken).ToListAsync();
+                packets = await source.ReadAllAsync(null, TestContext.Current!.Execution.CancellationToken).ToListAsync();
             }
             catch (Exception ex) when (IsNativePcapUnavailable(ex))
             {

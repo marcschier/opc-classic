@@ -9,7 +9,6 @@ using Opc.Classic.Dcom.Transport;
 using Opc.Classic.Hosting;
 using Opc.Classic.Testing;
 using System.Security.Principal;
-using TUnit.Assertions.AssertConditions.Throws;
 
 namespace Opc.Classic.Dcom.Tests.Transport;
 
@@ -214,8 +213,8 @@ public sealed class RpcServerConnectionProcessorTests
         await WritePduToInbound(transport, new ShutdownPdu { CallId = 2 });
 
         // Don't complete inbound here — Shutdown should be enough to exit the loop
-        Task processing = processor.ProcessConnectionAsync(transport, TestContext.Current!.CancellationToken).AsTask();
-        await processing.WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current!.CancellationToken);
+        Task processing = processor.ProcessConnectionAsync(transport, TestContext.Current!.Execution.CancellationToken).AsTask();
+        await processing.WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current!.Execution.CancellationToken);
         await Assert.That(processing.IsCompletedSuccessfully).IsTrue();
     }
 
@@ -254,9 +253,9 @@ public sealed class RpcServerConnectionProcessorTests
         await WriteFrameWithAuthVerifier(transport, bind, authBodyLength: 16);
 
         // Processor exits after the rejection; no need for explicit shutdown
-        await processor.ProcessConnectionAsync(transport, TestContext.Current!.CancellationToken)
+        await processor.ProcessConnectionAsync(transport, TestContext.Current!.Execution.CancellationToken)
             .AsTask()
-            .WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current!.CancellationToken);
+            .WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current!.Execution.CancellationToken);
 
         BindNoAcknowledgePdu nak = await ReadOutboundPduAs<BindNoAcknowledgePdu>(transport);
         await Assert.That(nak.CallId).IsEqualTo(1);
@@ -390,11 +389,11 @@ public sealed class RpcServerConnectionProcessorTests
 
         await processor.ProcessConnectionAsync(
                 transport,
-                TestContext.Current!.CancellationToken)
+                TestContext.Current!.Execution.CancellationToken)
             .AsTask()
             .WaitAsync(
                 TimeSpan.FromSeconds(5),
-                TestContext.Current!.CancellationToken);
+                TestContext.Current!.Execution.CancellationToken);
 
         _ = await ReadOutboundFrame(transport);
         await Assert.That(provider.CreateAcceptorCount).IsEqualTo(1);
@@ -535,9 +534,9 @@ public sealed class RpcServerConnectionProcessorTests
 
         await processor.ProcessConnectionAsync(
                 transport,
-                TestContext.Current!.CancellationToken)
+                TestContext.Current!.Execution.CancellationToken)
             .AsTask()
-            .WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current!.CancellationToken);
+            .WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current!.Execution.CancellationToken);
 
         BindNoAcknowledgePdu nak = await ReadOutboundPduAs<BindNoAcknowledgePdu>(transport);
         await Assert.That(nak.CallId).IsEqualTo(1);
@@ -570,9 +569,9 @@ public sealed class RpcServerConnectionProcessorTests
 
         await processor.ProcessConnectionAsync(
                 transport,
-                TestContext.Current!.CancellationToken)
+                TestContext.Current!.Execution.CancellationToken)
             .AsTask()
-            .WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current!.CancellationToken);
+            .WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current!.Execution.CancellationToken);
 
         BindNoAcknowledgePdu nak = await ReadOutboundPduAs<BindNoAcknowledgePdu>(transport);
         await Assert.That(nak.CallId).IsEqualTo(1);
@@ -605,9 +604,9 @@ public sealed class RpcServerConnectionProcessorTests
 
         await processor.ProcessConnectionAsync(
                 transport,
-                TestContext.Current!.CancellationToken)
+                TestContext.Current!.Execution.CancellationToken)
             .AsTask()
-            .WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current!.CancellationToken);
+            .WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current!.Execution.CancellationToken);
 
         BindNoAcknowledgePdu nak = await ReadOutboundPduAs<BindNoAcknowledgePdu>(transport);
         await Assert.That(nak.CallId).IsEqualTo(1);
@@ -706,9 +705,9 @@ public sealed class RpcServerConnectionProcessorTests
         RpcServerConnectionProcessor processor, InMemoryAsyncTransport transport)
     {
         await WritePduToInbound(transport, new ShutdownPdu { CallId = int.MaxValue });
-        await processor.ProcessConnectionAsync(transport, TestContext.Current!.CancellationToken)
+        await processor.ProcessConnectionAsync(transport, TestContext.Current!.Execution.CancellationToken)
             .AsTask()
-            .WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current!.CancellationToken);
+            .WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current!.Execution.CancellationToken);
     }
 
     private static async Task WritePduToInbound(InMemoryAsyncTransport transport, ConnectionOrientedPdu pdu)
@@ -770,7 +769,7 @@ public sealed class RpcServerConnectionProcessorTests
     private static async Task<byte[]> ReadOutboundFrame(InMemoryAsyncTransport transport) =>
         await PduCodec.ReadPduFrameAsync(
             transport.ReadOutbound,
-            TestContext.Current!.CancellationToken);
+            TestContext.Current!.Execution.CancellationToken);
 
     private static RpcPduAuthenticationData ReadAuthenticationData(byte[] frame)
     {
@@ -816,7 +815,7 @@ public sealed class RpcServerConnectionProcessorTests
     private static async Task<T> ReadOutboundPduAs<T>(InMemoryAsyncTransport transport)
         where T : ConnectionOrientedPdu
     {
-        byte[] frame = await PduCodec.ReadPduFrameAsync(transport.ReadOutbound, TestContext.Current!.CancellationToken);
+        byte[] frame = await PduCodec.ReadPduFrameAsync(transport.ReadOutbound, TestContext.Current!.Execution.CancellationToken);
         ConnectionOrientedPdu pdu = PduCodec.DecodePdu(frame);
         if (pdu is T typed)
         {

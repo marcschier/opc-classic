@@ -36,7 +36,7 @@ matrikon-conformance test filter.
 
 Locally on Windows, install Matrikon, then:
 ```bash
-dotnet test --filter "Category=MatrikonConformance"
+dotnet test --project tests/Opc.Classic.Integration.Tests/Opc.Classic.Integration.Tests.csproj --treenode-filter "/*/*/*/*[Category=MatrikonConformance]"
 ```
 
 Tests soft-skip when Matrikon isn't installed. When Matrikon is present but

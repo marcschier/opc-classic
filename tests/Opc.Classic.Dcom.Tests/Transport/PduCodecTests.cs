@@ -5,7 +5,6 @@ using System.IO.Pipelines;
 using Opc.Classic.Dcom.Rpc;
 using Opc.Classic.Dcom.Rpc.pdu;
 using Opc.Classic.Dcom.Transport;
-using TUnit.Assertions.AssertConditions.Throws;
 
 namespace Opc.Classic.Dcom.Tests.Transport;
 
@@ -102,10 +101,10 @@ public sealed class PduCodecTests
         var pdu = new ShutdownPdu { CallId = 5 };
         byte[] frame = PduCodec.EncodePdu(pdu, ConnectionOrientedPdu.MUST_RECEIVE_FRAGMENT_SIZE);
         var pipe = new Pipe();
-        await pipe.Writer.WriteAsync(frame, TestContext.Current!.CancellationToken);
+        await pipe.Writer.WriteAsync(frame, TestContext.Current!.Execution.CancellationToken);
         await pipe.Writer.CompleteAsync();
 
-        byte[] read = await PduCodec.ReadPduFrameAsync(pipe.Reader, TestContext.Current!.CancellationToken);
+        byte[] read = await PduCodec.ReadPduFrameAsync(pipe.Reader, TestContext.Current!.Execution.CancellationToken);
 
         await Assert.That(read.Length).IsEqualTo(frame.Length);
         ConnectionOrientedPdu decoded = PduCodec.DecodePdu(read);
@@ -117,10 +116,10 @@ public sealed class PduCodecTests
     public async Task ReadPduFrameAsync_throws_on_truncated_stream()
     {
         var pipe = new Pipe();
-        await pipe.Writer.WriteAsync(new byte[4], TestContext.Current!.CancellationToken);
+        await pipe.Writer.WriteAsync(new byte[4], TestContext.Current!.Execution.CancellationToken);
         await pipe.Writer.CompleteAsync();
 
-        await Assert.That(async () => { _ = await PduCodec.ReadPduFrameAsync(pipe.Reader, TestContext.Current!.CancellationToken); })
+        await Assert.That(async () => { _ = await PduCodec.ReadPduFrameAsync(pipe.Reader, TestContext.Current!.Execution.CancellationToken); })
             .Throws<System.IO.EndOfStreamException>();
     }
 }

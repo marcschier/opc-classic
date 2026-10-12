@@ -7,7 +7,6 @@ using System.Runtime.ExceptionServices;
 using Opc.Classic.Dcom;
 using Opc.Classic.Dcom.Transport;
 using Opc.Classic.Transport;
-using TUnit.Assertions.AssertConditions.Throws;
 
 namespace Opc.Classic.Discovery.Tests;
 

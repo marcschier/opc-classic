@@ -40,7 +40,7 @@ public sealed class ManagedDcomFullStackE2ETests
     [Category("Phase9.ManagedDcomFullStack")]
     public async Task Authenticated_native_style_sequence_reaches_da_callbacks_ae_events_and_hda_history()
     {
-        using var timeout = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current!.CancellationToken);
+        using var timeout = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current!.Execution.CancellationToken);
         timeout.CancelAfter(TimeSpan.FromSeconds(30));
         CancellationToken cancellationToken = timeout.Token;
 

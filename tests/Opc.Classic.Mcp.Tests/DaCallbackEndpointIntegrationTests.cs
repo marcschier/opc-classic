@@ -25,7 +25,6 @@ using Opc.Classic.Dcom;
 using Opc.Classic.Dcom.Transport;
 using Opc.Classic.Mcp.Tools;
 using Opc.Classic.Transport;
-using TUnit.Assertions.AssertConditions.Throws;
 
 namespace Opc.Classic.Mcp.Tests;
 
@@ -35,7 +34,7 @@ public sealed class DaCallbackEndpointIntegrationTests
     public async Task StartAsync_BindsToLoopback_ByDefault()
     {
         await using var endpoint = new DaCallbackEndpoint();
-        await endpoint.StartAsync(TestContext.Current!.CancellationToken).ConfigureAwait(false);
+        await endpoint.StartAsync(TestContext.Current!.Execution.CancellationToken).ConfigureAwait(false);
 
         IPEndPoint? local = endpoint.LocalEndpoint;
         await Assert.That(local).IsNotNull();
@@ -48,7 +47,7 @@ public sealed class DaCallbackEndpointIntegrationTests
     public async Task RegisterSink_AssignsFreshIpidPerSink_AndCountIncrements()
     {
         await using var endpoint = new DaCallbackEndpoint();
-        await endpoint.StartAsync(TestContext.Current!.CancellationToken).ConfigureAwait(false);
+        await endpoint.StartAsync(TestContext.Current!.Execution.CancellationToken).ConfigureAwait(false);
 
         var sinkA = new DaDataCallbackSink();
         var sinkB = new DaDataCallbackSink();
@@ -87,7 +86,7 @@ public sealed class DaCallbackEndpointIntegrationTests
     public async Task BuildSinkObjRef_UnknownIpid_Throws()
     {
         await using var endpoint = new DaCallbackEndpoint();
-        await endpoint.StartAsync(TestContext.Current!.CancellationToken).ConfigureAwait(false);
+        await endpoint.StartAsync(TestContext.Current!.Execution.CancellationToken).ConfigureAwait(false);
         await Assert.That(() => { _ = endpoint.BuildSinkObjRef(Guid.NewGuid()); })
             .Throws<ArgumentException>();
     }
@@ -96,7 +95,7 @@ public sealed class DaCallbackEndpointIntegrationTests
     public async Task BuildSinkObjRef_EncodesIidAndIpidAndTcpBinding()
     {
         await using var endpoint = new DaCallbackEndpoint();
-        await endpoint.StartAsync(TestContext.Current!.CancellationToken).ConfigureAwait(false);
+        await endpoint.StartAsync(TestContext.Current!.Execution.CancellationToken).ConfigureAwait(false);
 
         var sink = new DaDataCallbackSink();
         Guid ipid = endpoint.RegisterSink(sink);
@@ -122,7 +121,7 @@ public sealed class DaCallbackEndpointIntegrationTests
     {
         // 1. Stand up the loopback callback endpoint.
         await using var endpoint = new DaCallbackEndpoint();
-        await endpoint.StartAsync(TestContext.Current!.CancellationToken).ConfigureAwait(false);
+        await endpoint.StartAsync(TestContext.Current!.Execution.CancellationToken).ConfigureAwait(false);
 
         var targetSink = new DaDataCallbackSink();
         var unrelatedSink = new DaDataCallbackSink();
@@ -143,7 +142,7 @@ public sealed class DaCallbackEndpointIntegrationTests
         await proxy.OnCancelCompleteAsync(
             transactionId: 0xABCD,
             groupHandle: 0xDEF,
-            cancellationToken: TestContext.Current!.CancellationToken).ConfigureAwait(false);
+            cancellationToken: TestContext.Current!.Execution.CancellationToken).ConfigureAwait(false);
 
         // 4. Verify the targetSink saw the call, the unrelated sink did not.
         await Assert.That(targetSink.OnCancelCompleteCount).IsEqualTo(1L);
@@ -163,7 +162,7 @@ public sealed class DaCallbackEndpointIntegrationTests
         // errors. Verifies the sink enqueues a DataChangeNotification that
         // DrainItems can then read back with all fields preserved.
         await using var endpoint = new DaCallbackEndpoint();
-        await endpoint.StartAsync(TestContext.Current!.CancellationToken).ConfigureAwait(false);
+        await endpoint.StartAsync(TestContext.Current!.Execution.CancellationToken).ConfigureAwait(false);
         var sink = new DaDataCallbackSink();
         Guid sinkIpid = endpoint.RegisterSink(sink);
 
@@ -188,7 +187,7 @@ public sealed class DaCallbackEndpointIntegrationTests
             qualities: [GoodQuality, BadQuality],
             timestamps: [ts, ts],
             errors: [Success, Failure],
-            cancellationToken: TestContext.Current!.CancellationToken).ConfigureAwait(false);
+            cancellationToken: TestContext.Current!.Execution.CancellationToken).ConfigureAwait(false);
 
         IReadOnlyList<DataChangeItem> drained = sink.DrainItems(maxItems: 0);
         await Assert.That(drained.Count).IsEqualTo(2);
@@ -214,7 +213,7 @@ public sealed class DaCallbackEndpointIntegrationTests
     public async Task StopAsync_IsIdempotent()
     {
         var endpoint = new DaCallbackEndpoint();
-        await endpoint.StartAsync(TestContext.Current!.CancellationToken).ConfigureAwait(false);
+        await endpoint.StartAsync(TestContext.Current!.Execution.CancellationToken).ConfigureAwait(false);
         await endpoint.StopAsync(CancellationToken.None).ConfigureAwait(false);
         await endpoint.StopAsync(CancellationToken.None).ConfigureAwait(false);
         await Assert.That(endpoint.IsRunning).IsFalse();
@@ -225,9 +224,9 @@ public sealed class DaCallbackEndpointIntegrationTests
     public async Task StartAsync_IsIdempotent()
     {
         await using var endpoint = new DaCallbackEndpoint();
-        await endpoint.StartAsync(TestContext.Current!.CancellationToken).ConfigureAwait(false);
+        await endpoint.StartAsync(TestContext.Current!.Execution.CancellationToken).ConfigureAwait(false);
         IPEndPoint first = endpoint.LocalEndpoint!;
-        await endpoint.StartAsync(TestContext.Current!.CancellationToken).ConfigureAwait(false);
+        await endpoint.StartAsync(TestContext.Current!.Execution.CancellationToken).ConfigureAwait(false);
         IPEndPoint second = endpoint.LocalEndpoint!;
         await Assert.That(second.Port).IsEqualTo(first.Port);
     }
@@ -235,7 +234,7 @@ public sealed class DaCallbackEndpointIntegrationTests
     private static async Task<DcomCallChannel> ConnectChannelAsync(IPEndPoint endpoint)
     {
         var client = new TcpClient();
-        await client.ConnectAsync(endpoint.Address, endpoint.Port, TestContext.Current!.CancellationToken).ConfigureAwait(false);
+        await client.ConnectAsync(endpoint.Address, endpoint.Port, TestContext.Current!.Execution.CancellationToken).ConfigureAwait(false);
         return new DcomCallChannel(new TcpClientTransport(client), new NoOpAuthContext());
     }
 

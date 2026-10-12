@@ -59,8 +59,8 @@ public sealed class NdrOpcBrowseElementCodecTests
         await Assert.That(name).IsEqualTo("Tag1");
         await Assert.That(itemId).IsEqualTo("Group1.Tag1");
         await Assert.That(flagValue).IsEqualTo(2);
-        await Assert.That(isItem).IsEqualTo(true);
-        await Assert.That(isBranch).IsEqualTo(false);
+        await Assert.That(isItem).IsTrue();
+        await Assert.That(isBranch).IsFalse();
         await Assert.That(errorId).IsEqualTo(0);
         await Assert.That(propertyCount).IsEqualTo(0);
         await Assert.That(wireFlagValue).IsEqualTo(2u);
@@ -90,8 +90,8 @@ public sealed class NdrOpcBrowseElementCodecTests
         await Assert.That(name).IsEqualTo("Group1");
         await Assert.That(itemId).IsEqualTo("Group1");
         await Assert.That(flagValue).IsEqualTo(1);
-        await Assert.That(isBranch).IsEqualTo(true);
-        await Assert.That(isItem).IsEqualTo(false);
+        await Assert.That(isBranch).IsTrue();
+        await Assert.That(isItem).IsFalse();
         await Assert.That(errorId).IsEqualTo(0);
         await Assert.That(propertyCount).IsEqualTo(0);
         await Assert.That(wireFlagValue).IsEqualTo(1u);
@@ -139,7 +139,7 @@ public sealed class NdrOpcBrowseElementCodecTests
         int? secondValue = second.Value.AsInt32();
         string? secondItemId = second.ItemId;
 
-        await Assert.That(isItem).IsEqualTo(true);
+        await Assert.That(isItem).IsTrue();
         await Assert.That(errorId).IsEqualTo(0);
         await Assert.That(propertyCount).IsEqualTo(2);
         await Assert.That(firstPropertyId).IsEqualTo(100);
@@ -169,9 +169,9 @@ public sealed class NdrOpcBrowseElementCodecTests
         uint wireNameReferent = BitConverter.ToUInt32(bytes, 0);
         int propertyCount = back.Properties.Properties.Length;
 
-        await Assert.That(name).IsEqualTo(null);
+        await Assert.That(name).IsNull();
         await Assert.That(itemId).IsEqualTo(string.Empty);
-        await Assert.That(isItem).IsEqualTo(true);
+        await Assert.That(isItem).IsTrue();
         await Assert.That(propertyCount).IsEqualTo(0);
         await Assert.That(wireNameReferent).IsEqualTo(0u);
         await Assert.That(wireFlagValue).IsEqualTo(2u);

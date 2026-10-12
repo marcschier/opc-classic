@@ -87,7 +87,7 @@ public sealed class PcapCaptureSourceTests
             await Assert.That(source.ByteCount).IsEqualTo(0);
             await Assert.That(source.LinkType).IsEqualTo(0);
             await Assert.That(source.GetRawPcapFilePath()).IsNull();
-            await source.StopAsync(TestContext.Current!.CancellationToken);
+            await source.StopAsync(TestContext.Current!.Execution.CancellationToken);
             await source.DisposeAsync();
         }
         finally
@@ -108,7 +108,7 @@ public sealed class PcapCaptureSourceTests
             typeof(PcapCaptureSource)
                 .GetMethod("StopCaptureAfterLimit", BindingFlags.Instance | BindingFlags.NonPublic)!
                 .Invoke(source, null);
-            await completion.WaitAsync(TestContext.Current!.CancellationToken);
+            await completion.WaitAsync(TestContext.Current!.Execution.CancellationToken);
 
             await Assert.That(completion.IsCompletedSuccessfully).IsTrue();
             await source.DisposeAsync();
@@ -143,10 +143,10 @@ public sealed class PcapCaptureSourceTests
                 TaskCreationOptions.RunContinuationsAsynchronously);
             session.SecretCleanupObserved = () => cleanupObserved.TrySetResult();
 
-            await session.StartAsync(TestContext.Current!.CancellationToken);
+            await session.StartAsync(TestContext.Current!.Execution.CancellationToken);
             await ((ICaptureSourceCompletion)source).Completion.WaitAsync(
-                TestContext.Current.CancellationToken);
-            await cleanupObserved.Task.WaitAsync(TestContext.Current.CancellationToken);
+                TestContext.Current.Execution.CancellationToken);
+            await cleanupObserved.Task.WaitAsync(TestContext.Current.Execution.CancellationToken);
             await WaitForStateAsync(session, CaptureSessionState.Completed);
 
             await Assert.That(source.PacketCount).IsEqualTo(0);
@@ -186,21 +186,21 @@ public sealed class PcapCaptureSourceTests
                 directory,
                 new CaptureStartRequest(InterfaceName: "timer-only", BpfFilter: "tcp"),
                 sourceFactory: _ => replacement);
-            await session.StartAsync(TestContext.Current!.CancellationToken);
+            await session.StartAsync(TestContext.Current!.Execution.CancellationToken);
 
             CaptureFilterTransitionResult transition = await session.ReplaceFilterAsync(
                 "tcp and port 135",
                 new CaptureStartRequest(
                     InterfaceName: "timer-only",
                     BpfFilter: "tcp and port 135"),
-                TestContext.Current.CancellationToken);
-            await Task.Delay(700, TestContext.Current.CancellationToken);
+                TestContext.Current.Execution.CancellationToken);
+            await Task.Delay(700, TestContext.Current.Execution.CancellationToken);
 
             await Assert.That(transition.Status).IsEqualTo(CaptureFilterTransitionStatus.Restarted);
             await Assert.That(original.Completion.IsCompleted).IsFalse();
             await Assert.That(session.Source).IsEqualTo(replacement);
             await Assert.That(session.State).IsEqualTo(CaptureSessionState.Running);
-            await session.StopAsync(TestContext.Current.CancellationToken);
+            await session.StopAsync(TestContext.Current.Execution.CancellationToken);
             await session.DisposeAsync();
         }
         finally
@@ -216,7 +216,7 @@ public sealed class PcapCaptureSourceTests
         try
         {
             var source = new PcapCaptureSource(directory);
-            CancellationToken cancellationToken = TestContext.Current!.CancellationToken;
+            CancellationToken cancellationToken = TestContext.Current!.Execution.CancellationToken;
 
             await Assert.That(async () => await source.StartAsync(null!, cancellationToken))
                 .Throws<ArgumentNullException>();
@@ -242,7 +242,7 @@ public sealed class PcapCaptureSourceTests
 
             await Assert.That(async () => await source.StartAsync(new CaptureStartRequest(InterfaceName: "never-open"), cts.Token))
                 .Throws<OperationCanceledException>();
-            var packets = await source.ReadAllAsync(null, TestContext.Current!.CancellationToken).ToListAsync();
+            var packets = await source.ReadAllAsync(null, TestContext.Current!.Execution.CancellationToken).ToListAsync();
 
             await Assert.That(packets.Count).IsEqualTo(0);
             await Assert.That(File.Exists(Path.Combine(directory, "capture.pcap"))).IsFalse();
@@ -285,7 +285,7 @@ public sealed class PcapCaptureSourceTests
 
             var source = new PcapCaptureSource(directory);
 
-            var packets = await source.ReadAllAsync(null, TestContext.Current!.CancellationToken).ToListAsync();
+            var packets = await source.ReadAllAsync(null, TestContext.Current!.Execution.CancellationToken).ToListAsync();
 
             await Assert.That(source.GetRawPcapFilePath()).IsEqualTo(pcapPath);
             await Assert.That(packets.Count).IsEqualTo(1);

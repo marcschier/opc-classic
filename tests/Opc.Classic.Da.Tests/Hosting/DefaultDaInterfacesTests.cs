@@ -1,7 +1,6 @@
 ﻿// Copyright (c) 2026 Opc.Classic Contributors. Licensed under the MIT License.
 
 using Opc.Classic.Da.Hosting;
-using TUnit.Assertions.AssertConditions.Throws;
 
 namespace Opc.Classic.Da.Tests.Hosting;
 
@@ -18,7 +17,7 @@ public sealed class DefaultDaInterfacesTests
     {
         var browse = new DefaultBrowseServerAddressSpace();
 
-        int organization = await browse.QueryOrganizationAsync(TestContext.Current!.CancellationToken);
+        int organization = await browse.QueryOrganizationAsync(TestContext.Current!.Execution.CancellationToken);
 
         await Assert.That(organization).IsEqualTo(1); // OPCNS_FLAT
     }
@@ -28,7 +27,7 @@ public sealed class DefaultDaInterfacesTests
     {
         var browse = new DefaultBrowseServerAddressSpace();
 
-        string itemId = await browse.GetItemIdAsync("Tag.A", TestContext.Current!.CancellationToken);
+        string itemId = await browse.GetItemIdAsync("Tag.A", TestContext.Current!.Execution.CancellationToken);
 
         await Assert.That(itemId).IsEqualTo("Tag.A");
     }
@@ -39,7 +38,7 @@ public sealed class DefaultDaInterfacesTests
         var browse = new DefaultBrowseServerAddressSpace();
 
         OpcException? ex = await Assert.That(async () =>
-            await browse.ChangeBrowsePositionAsync(0, "x", TestContext.Current!.CancellationToken))
+            await browse.ChangeBrowsePositionAsync(0, "x", TestContext.Current!.Execution.CancellationToken))
             .Throws<OpcException>();
 
         await Assert.That(ex).IsNotNull();
@@ -56,7 +55,7 @@ public sealed class DefaultDaInterfacesTests
             out int[] ids,
             out string[] descriptions,
             out ushort[] types,
-            TestContext.Current!.CancellationToken);
+            TestContext.Current!.Execution.CancellationToken);
 
         // cap-b2 now publishes the OPC-standard property set (IDs 1-8).
         await Assert.That(ids.Length).IsEqualTo(8);
@@ -75,7 +74,7 @@ public sealed class DefaultDaInterfacesTests
             requestedIds,
             out OpcVariant[] data,
             out int[] errors,
-            TestContext.Current!.CancellationToken);
+            TestContext.Current!.Execution.CancellationToken);
 
         await Assert.That(data.Length).IsEqualTo(3);
         await Assert.That(errors.Length).IsEqualTo(3);
@@ -92,7 +91,7 @@ public sealed class DefaultDaInterfacesTests
             itemIds,
             returnPropertyValues: false,
             propertyIds: Array.Empty<int>(),
-            TestContext.Current!.CancellationToken);
+            TestContext.Current!.Execution.CancellationToken);
 
         await Assert.That(result.Length).IsEqualTo(2);
         await Assert.That(result[0].Properties.Length).IsEqualTo(0);
@@ -116,7 +115,7 @@ public sealed class DefaultDaInterfacesTests
             propertyIds: Array.Empty<int>(),
             out bool moreElements,
             out OpcBrowseElementResult[] elements,
-            TestContext.Current!.CancellationToken);
+            TestContext.Current!.Execution.CancellationToken);
 
         await Assert.That(moreElements).IsFalse();
         await Assert.That(elements.Length).IsEqualTo(0);
@@ -129,7 +128,7 @@ public sealed class DefaultDaInterfacesTests
         int[] handles = new[] { 1, 2, 3 };
         float[] deadbands = new[] { 0.5f, 1.0f, 2.0f };
 
-        int[] errors = await d.SetItemDeadbandAsync(handles, deadbands, TestContext.Current!.CancellationToken);
+        int[] errors = await d.SetItemDeadbandAsync(handles, deadbands, TestContext.Current!.Execution.CancellationToken);
 
         await Assert.That(errors.Length).IsEqualTo(3);
         await Assert.That(errors[0]).IsEqualTo(OpcResultId.DeadbandNotSupported.Code);
@@ -147,7 +146,7 @@ public sealed class DefaultDaInterfacesTests
             rates,
             out int[] revised,
             out int[] errors,
-            TestContext.Current!.CancellationToken);
+            TestContext.Current!.Execution.CancellationToken);
 
         await Assert.That(revised.Length).IsEqualTo(2);
         await Assert.That(errors[0]).IsEqualTo(OpcResultId.RateNotSet.Code);
@@ -160,7 +159,7 @@ public sealed class DefaultDaInterfacesTests
         int[] handles = new[] { 1 };
         bool[] enabled = new[] { true };
 
-        int[] errors = await s.SetItemBufferEnableAsync(handles, enabled, TestContext.Current!.CancellationToken);
+        int[] errors = await s.SetItemBufferEnableAsync(handles, enabled, TestContext.Current!.Execution.CancellationToken);
 
         await Assert.That(errors.Length).IsEqualTo(1);
         await Assert.That(errors[0]).IsEqualTo(OpcResultId.NoBuffering.Code);

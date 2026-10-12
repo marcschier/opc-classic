@@ -222,9 +222,9 @@ public sealed class ActivationServerTests
         InMemoryAsyncTransport transport)
     {
         await WritePduToInbound(transport, new ShutdownPdu { CallId = int.MaxValue });
-        await processor.ProcessConnectionAsync(transport, TestContext.Current!.CancellationToken)
+        await processor.ProcessConnectionAsync(transport, TestContext.Current!.Execution.CancellationToken)
             .AsTask()
-            .WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current!.CancellationToken);
+            .WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current!.Execution.CancellationToken);
     }
 
     private static async Task WritePduToInbound(InMemoryAsyncTransport transport, ConnectionOrientedPdu pdu)
@@ -257,7 +257,7 @@ public sealed class ActivationServerTests
     private static async Task<T> ReadOutboundPduAs<T>(InMemoryAsyncTransport transport)
         where T : ConnectionOrientedPdu
     {
-        byte[] frame = await PduCodec.ReadPduFrameAsync(transport.ReadOutbound, TestContext.Current!.CancellationToken);
+        byte[] frame = await PduCodec.ReadPduFrameAsync(transport.ReadOutbound, TestContext.Current!.Execution.CancellationToken);
         ConnectionOrientedPdu pdu = PduCodec.DecodePdu(frame);
         if (pdu is T typed)
         {

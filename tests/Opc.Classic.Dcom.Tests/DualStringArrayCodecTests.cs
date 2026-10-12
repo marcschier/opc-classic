@@ -5,7 +5,6 @@ using CsCheck;
 using Opc.Classic.Dcom.Core;
 using Opc.Classic.Dcom.Internal.LegacyNdr;
 using Opc.Classic.Tests.Fuzz;
-using TUnit.Assertions.AssertConditions.Throws;
 
 namespace Opc.Classic.Dcom.Tests;
 

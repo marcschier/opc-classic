@@ -67,7 +67,7 @@ Run the release checks from a clean working tree:
 ```powershell
 dotnet restore Opc.Classic.slnx
 dotnet build Opc.Classic.slnx --configuration Release
-dotnet test Opc.Classic.slnx --configuration Release --filter "Category!=NativeConformance&Category!=MatrikonConformance&Category!=CompatMatrix"
+dotnet test --solution Opc.Classic.slnx --configuration Release --treenode-filter "/*/*/*/*[(Category!=NativeConformance)&(Category!=MatrikonConformance)&(Category!=CompatMatrix)]"
 dotnet publish samples\Opc.Classic.Samples.AotCanary --configuration Release -p:PublishAot=true -p:TreatWarningsAsErrors=true
 ```
 
@@ -86,7 +86,7 @@ Before tagging, verify:
 ## Prepare the release change
 
 1. Move the relevant `CHANGELOG.md` entries from `Unreleased` into a section named for the release version.
-2. The package version is derived by the release workflow from the Git tag: it stamps the tag version into `version.json` and builds with `-p:PublicRelease=true`, so Nerdbank.GitVersioning emits exactly the tag version. There is no per-release `Directory.Build.props` or `version.json` edit to commit; confirm only that the intended tag string is correct.
+2. Update the root `version.json` to the intended release version, retaining the prerelease label when applicable. The release workflow also stamps the exact Git tag version into its workspace copy and builds with `-p:PublicRelease=true`, so Nerdbank.GitVersioning emits exactly the tag version. Keep the committed version, tag, and changelog section aligned.
 3. Confirm the tag string matches the `[v]<MAJOR>.<MINOR>.<PATCH>[-<prerelease>.<N>]` format the workflow validates. (`dotnet nbgv get-version` shows the nbgv *dev* default for the current commit — the release stamps the tag over it.)
 4. Create the release-prep Git change on the release branch.
 
@@ -152,7 +152,7 @@ self-hosted, Windows, X64, opc-classic-dcom
 ```
 
 Provision the runner with Visual Studio 2022 C++/ATL/CMake components, .NET 10,
-Python 3.12, Npcap in WinPcap-compatibility mode, and Docker configured for
+Python 3.15, Npcap in WinPcap-compatibility mode, and Docker configured for
 Windows containers. The runner must be able to register services, write HKLM
 COM/DCOM keys, run `regsvr32`, and build `windowsservercore:ltsc2022` images.
 

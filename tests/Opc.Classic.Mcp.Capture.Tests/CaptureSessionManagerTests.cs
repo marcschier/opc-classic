@@ -28,7 +28,7 @@ public sealed class CaptureSessionManagerTests
                 "fake",
                 _ => source,
                 request,
-                TestContext.Current!.CancellationToken);
+                TestContext.Current!.Execution.CancellationToken);
             DateTimeOffset beforeTouch = session.LastTouchedAt;
             bool found = manager.TryGet(session.Id, out CaptureSession foundSession);
 

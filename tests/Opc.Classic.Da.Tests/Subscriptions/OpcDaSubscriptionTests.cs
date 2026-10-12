@@ -1,7 +1,5 @@
 ﻿// Copyright (c) 2026 Opc.Classic Contributors. Licensed under the MIT License.
 
-using TUnit.Assertions.AssertConditions.Throws;
-
 namespace Opc.Classic.Da.Tests.Subscriptions;
 
 public sealed class OpcDaSubscriptionTests
@@ -19,7 +17,7 @@ public sealed class OpcDaSubscriptionTests
     {
         var subscription = new OpcDaSubscription();
 
-        await Assert.That(() => subscription.DataChanges(TestContext.Current!.CancellationToken))
+        await Assert.That(() => subscription.DataChanges(TestContext.Current!.Execution.CancellationToken))
             .Throws<NotImplementedException>();
     }
 

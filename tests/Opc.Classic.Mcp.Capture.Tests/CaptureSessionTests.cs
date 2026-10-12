@@ -38,7 +38,7 @@ public sealed class CaptureSessionTests
             var session = new CaptureSession("session-id", "fake", source, directory, request);
             DateTimeOffset before = session.LastTouchedAt;
 
-            await session.StartAsync(TestContext.Current!.CancellationToken);
+            await session.StartAsync(TestContext.Current!.Execution.CancellationToken);
 
             await Assert.That(session.State).IsEqualTo(CaptureSessionState.Running);
             await Assert.That(session.StartedAt.HasValue).IsTrue();
@@ -63,10 +63,10 @@ public sealed class CaptureSessionTests
         {
             var source = new FakeCaptureSource();
             var session = new CaptureSession("session-id", "fake", source, directory, new CaptureStartRequest());
-            await session.StartAsync(TestContext.Current!.CancellationToken);
+            await session.StartAsync(TestContext.Current!.Execution.CancellationToken);
 
-            await session.StopAsync(TestContext.Current.CancellationToken);
-            await session.StopAsync(TestContext.Current.CancellationToken);
+            await session.StopAsync(TestContext.Current.Execution.CancellationToken);
+            await session.StopAsync(TestContext.Current.Execution.CancellationToken);
 
             await Assert.That(session.State).IsEqualTo(CaptureSessionState.Completed);
             await Assert.That(session.StoppedAt.HasValue).IsTrue();
@@ -94,14 +94,14 @@ public sealed class CaptureSessionTests
                 directory,
                 new CaptureStartRequest(NtlmSessionKey: callerKey));
             byte[] ownedKey = GetOwnedSessionKey(session)!;
-            await session.StartAsync(TestContext.Current!.CancellationToken);
+            await session.StartAsync(TestContext.Current!.Execution.CancellationToken);
 
             source.CompleteNaturally();
             await WaitForStateAsync(session, CaptureSessionState.Completed);
             DrainTailResult tail = await session.DrainTailAsync(
                 0,
                 10,
-                TestContext.Current.CancellationToken);
+                TestContext.Current.Execution.CancellationToken);
 
             await Assert.That(source.StopCallCount).IsEqualTo(1);
             await Assert.That(session.StoppedAt.HasValue).IsTrue();
@@ -132,7 +132,7 @@ public sealed class CaptureSessionTests
                 source,
                 directory,
                 new CaptureStartRequest());
-            await session.StartAsync(TestContext.Current!.CancellationToken);
+            await session.StartAsync(TestContext.Current!.Execution.CancellationToken);
 
             source.FailNaturally(new CaptureException("capture loop failed"));
             await WaitForStateAsync(session, CaptureSessionState.Failed);
@@ -162,14 +162,14 @@ public sealed class CaptureSessionTests
                 directory,
                 new CaptureStartRequest(BpfFilter: "tcp"),
                 sourceFactory: _ => replacement);
-            await session.StartAsync(TestContext.Current!.CancellationToken);
+            await session.StartAsync(TestContext.Current!.Execution.CancellationToken);
 
             CaptureFilterTransitionResult transition = await session.ReplaceFilterAsync(
                 "tcp and port 135",
                 new CaptureStartRequest(BpfFilter: "tcp and port 135"),
-                TestContext.Current.CancellationToken);
+                TestContext.Current.Execution.CancellationToken);
             original.CompleteNaturally();
-            await Task.Delay(25, TestContext.Current.CancellationToken);
+            await Task.Delay(25, TestContext.Current.Execution.CancellationToken);
 
             await Assert.That(transition.Status).IsEqualTo(CaptureFilterTransitionStatus.Restarted);
             await Assert.That(session.Source).IsEqualTo(replacement);
@@ -199,7 +199,7 @@ public sealed class CaptureSessionTests
             };
             var session = new CaptureSession("session-id", "fake", source, directory, new CaptureStartRequest());
 
-            await Assert.That(async () => await session.StartAsync(TestContext.Current!.CancellationToken))
+            await Assert.That(async () => await session.StartAsync(TestContext.Current!.Execution.CancellationToken))
                 .Throws<CaptureException>();
 
             await Assert.That(session.State).IsEqualTo(CaptureSessionState.Failed);
@@ -221,10 +221,10 @@ public sealed class CaptureSessionTests
         {
             var source = new FakeCaptureSource();
             var session = new CaptureSession("session-id", "fake", source, directory, new CaptureStartRequest());
-            await session.StartAsync(TestContext.Current!.CancellationToken);
+            await session.StartAsync(TestContext.Current!.Execution.CancellationToken);
             source.StopException = new CaptureException("stop failed");
 
-            await Assert.That(async () => await session.StopAsync(TestContext.Current.CancellationToken))
+            await Assert.That(async () => await session.StopAsync(TestContext.Current.Execution.CancellationToken))
                 .Throws<CaptureException>();
 
             await Assert.That(session.State).IsEqualTo(CaptureSessionState.Failed);
@@ -243,7 +243,7 @@ public sealed class CaptureSessionTests
     {
         string directory = TestDirectories.CreateUniqueTempDirectory();
         string marker = Path.Combine(directory, "marker.txt");
-        await File.WriteAllTextAsync(marker, "delete me", TestContext.Current!.CancellationToken);
+        await File.WriteAllTextAsync(marker, "delete me", TestContext.Current!.Execution.CancellationToken);
         var source = new FakeCaptureSource();
         var session = new CaptureSession("session-id", "fake", source, directory, new CaptureStartRequest());
 
@@ -263,7 +263,7 @@ public sealed class CaptureSessionTests
         {
             var source = new FakeCaptureSource();
             var session = new CaptureSession("session-id", "fake", source, directory, new CaptureStartRequest());
-            await session.StartAsync(TestContext.Current!.CancellationToken);
+            await session.StartAsync(TestContext.Current!.Execution.CancellationToken);
             await session.StopAsync(CancellationToken.None);
 
             await session.StopAsync(CancellationToken.None);
@@ -303,7 +303,7 @@ public sealed class CaptureSessionTests
         byte[] ownedKey = GetOwnedSessionKey(session)!;
 
         callerKey[0] = 0xEE;
-        await session.StartAsync(TestContext.Current!.CancellationToken);
+        await session.StartAsync(TestContext.Current!.Execution.CancellationToken);
 
         await Assert.That(ReferenceEquals(callerKey, ownedKey)).IsFalse();
         await Assert.That(ownedKey[0]).IsEqualTo(original[0]);
@@ -335,7 +335,7 @@ public sealed class CaptureSessionTests
             new CaptureStartRequest(NtlmSessionKey: callerKey));
         byte[] ownedKey = GetOwnedSessionKey(session)!;
 
-        await Assert.That(async () => await session.StartAsync(TestContext.Current!.CancellationToken))
+        await Assert.That(async () => await session.StartAsync(TestContext.Current!.Execution.CancellationToken))
             .Throws<CaptureException>();
 
         await Assert.That(ownedKey.All(b => b == 0)).IsTrue();
@@ -358,12 +358,12 @@ public sealed class CaptureSessionTests
             new CaptureStartRequest(NtlmSessionKey: callerKey));
         byte[] ownedKey = GetOwnedSessionKey(session)!;
 
-        await session.StartAsync(TestContext.Current!.CancellationToken);
-        DrainTailResult initial = await session.DrainTailAsync(0, 10, TestContext.Current.CancellationToken);
+        await session.StartAsync(TestContext.Current!.Execution.CancellationToken);
+        DrainTailResult initial = await session.DrainTailAsync(0, 10, TestContext.Current.Execution.CancellationToken);
         NtlmPassiveUnwrapper unwrapper = GetCursorUnwrapper(session)!;
         source.StopException = new CaptureException("stop failed");
 
-        await Assert.That(async () => await session.StopAsync(TestContext.Current.CancellationToken))
+        await Assert.That(async () => await session.StopAsync(TestContext.Current.Execution.CancellationToken))
             .Throws<CaptureException>();
 
         await Assert.That(session.State).IsEqualTo(CaptureSessionState.Failed);
@@ -384,7 +384,7 @@ public sealed class CaptureSessionTests
         DrainTailResult afterFailure = await session.DrainTailAsync(
             initial.NextIndex,
             10,
-            TestContext.Current.CancellationToken);
+            TestContext.Current.Execution.CancellationToken);
 
         await Assert.That(afterFailure.Pdus.Count).IsEqualTo(0);
         await Assert.That(afterFailure.SessionState).IsEqualTo(CaptureSessionState.Failed);
@@ -410,7 +410,7 @@ public sealed class CaptureSessionTests
             directory,
             new CaptureStartRequest(NtlmSessionKey: callerKey));
         byte[] ownedKey = GetOwnedSessionKey(session)!;
-        await session.StartAsync(TestContext.Current!.CancellationToken);
+        await session.StartAsync(TestContext.Current!.Execution.CancellationToken);
 
         var cleanupObserved = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
         using var releaseCleanup = new ManualResetEventSlim(false);
@@ -421,18 +421,18 @@ public sealed class CaptureSessionTests
         };
 
         Task stopTask = Task.Run(
-            async () => await session.StopAsync(TestContext.Current.CancellationToken),
-            TestContext.Current.CancellationToken);
-        await cleanupObserved.Task.WaitAsync(TestContext.Current.CancellationToken);
+            async () => await session.StopAsync(TestContext.Current.Execution.CancellationToken),
+            TestContext.Current.Execution.CancellationToken);
+        await cleanupObserved.Task.WaitAsync(TestContext.Current.Execution.CancellationToken);
 
         var tailStarted = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
         Task<DrainTailResult> tailTask = Task.Run(async () =>
         {
             tailStarted.TrySetResult();
-            return await session.DrainTailAsync(0, 10, TestContext.Current.CancellationToken);
-        }, TestContext.Current.CancellationToken);
-        await tailStarted.Task.WaitAsync(TestContext.Current.CancellationToken);
-        await Task.Delay(20, TestContext.Current.CancellationToken);
+            return await session.DrainTailAsync(0, 10, TestContext.Current.Execution.CancellationToken);
+        }, TestContext.Current.Execution.CancellationToken);
+        await tailStarted.Task.WaitAsync(TestContext.Current.Execution.CancellationToken);
+        await Task.Delay(20, TestContext.Current.Execution.CancellationToken);
         await Assert.That(tailTask.IsCompleted).IsFalse();
 
         releaseCleanup.Set();
