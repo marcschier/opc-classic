@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Preserved Kerberos channel-binding checksum generation and validation with Kerberos.NET 4.6.168's `ChannelBindingHash` API.
 - Preserved caught exceptions as inner exceptions in DCOM conversion, activation, and RPC error paths without changing their outer exception types, messages, or HRESULTs.
 - Kept verified snapshot checkouts in their original LF Git format for compatibility with Verify 33; snapshot contents are unchanged.
+- Listener shutdown removes each drained connection from tracking before returning, avoiding a race with independently scheduled cleanup continuations.
 
 ## [0.4.1-alpha] - 2026-08-28
 

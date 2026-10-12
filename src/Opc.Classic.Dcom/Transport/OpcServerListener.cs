@@ -178,6 +178,11 @@ public sealed class OpcServerListener : IAsyncDisposable
             try
             {
                 await Task.WhenAll(outstanding).WaitAsync(cancellationToken).ConfigureAwait(false);
+                // Completion continuations can run after WhenAll resumes.
+                foreach (Task connectionTask in outstanding)
+                {
+                    _inFlight.TryRemove(connectionTask, out _);
+                }
             }
             catch (OperationCanceledException)
             {
