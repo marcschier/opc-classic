@@ -29,7 +29,7 @@ public static class KerberosChannelBindingChecksum
 
         return KrbChecksum.EncodeDelegationChecksum(new DelegationInfo
         {
-            ChannelBinding = channelBindingsHash,
+            ChannelBindingHash = channelBindingsHash,
             Flags = flags,
         });
     }

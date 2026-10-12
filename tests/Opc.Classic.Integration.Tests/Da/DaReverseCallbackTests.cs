@@ -23,7 +23,7 @@ public sealed class DaReverseCallbackTests
     [Category("Da.ReverseCallbacks")]
     public async Task Authenticated_server_as_client_delivers_OnDataChange_and_Unadvise_stops_it()
     {
-        using var timeout = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current!.CancellationToken);
+        using var timeout = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current!.Execution.CancellationToken);
         timeout.CancelAfter(TimeSpan.FromSeconds(15));
         CancellationToken cancellationToken = timeout.Token;
 
@@ -99,19 +99,19 @@ public sealed class DaReverseCallbackTests
         using var faultingSink = new FaultingDataCallbackSink();
         using var healthySink = new RecordingDataCallbackSink();
 
-        await group.AdviseAsync(faultingSink, TestContext.Current!.CancellationToken);
-        await group.AdviseAsync(healthySink, TestContext.Current.CancellationToken);
+        await group.AdviseAsync(faultingSink, TestContext.Current!.Execution.CancellationToken);
+        await group.AdviseAsync(healthySink, TestContext.Current.Execution.CancellationToken);
 
         await group.TriggerDataChangeAsync(
             transactionId: 0x7201,
             serverHandles: [],
             static (_, _, _) => Task.CompletedTask,
-            TestContext.Current.CancellationToken);
+            TestContext.Current.Execution.CancellationToken);
         await group.TriggerDataChangeAsync(
             transactionId: 0x7202,
             serverHandles: [],
             static (_, _, _) => Task.CompletedTask,
-            TestContext.Current.CancellationToken);
+            TestContext.Current.Execution.CancellationToken);
 
         await Assert.That(faultingSink.DataChangeCount).IsEqualTo(1);
         await Assert.That(healthySink.DataChangeCount).IsEqualTo(2);

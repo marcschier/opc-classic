@@ -8,7 +8,7 @@ public sealed class OpcWireCaptureSourceTests
     public async Task StartAsync_NullOrMissingReplayDirectory_Throws()
     {
         var source = new OpcWireCaptureSource();
-        CancellationToken cancellationToken = TestContext.Current!.CancellationToken;
+        CancellationToken cancellationToken = TestContext.Current!.Execution.CancellationToken;
 
         await Assert.That(async () => await source.StartAsync(null!, cancellationToken))
             .Throws<ArgumentNullException>();
@@ -25,7 +25,7 @@ public sealed class OpcWireCaptureSourceTests
     {
         var source = new OpcWireCaptureSource();
 
-        var packets = await source.ReadAllAsync(null, TestContext.Current!.CancellationToken).ToListAsync();
+        var packets = await source.ReadAllAsync(null, TestContext.Current!.Execution.CancellationToken).ToListAsync();
 
         await Assert.That(packets.Count).IsEqualTo(0);
         await Assert.That(source.PacketCount).IsEqualTo(0);
@@ -52,7 +52,7 @@ public sealed class OpcWireCaptureSourceTests
                     "0x80004005",
                     "0000: aa bb \n",
                     "0000: 01 02 03 \n"),
-                TestContext.Current!.CancellationToken);
+                TestContext.Current!.Execution.CancellationToken);
             await File.WriteAllTextAsync(
                 secondPath,
                 BuildHexFile(
@@ -62,12 +62,12 @@ public sealed class OpcWireCaptureSourceTests
                     "0x00000000",
                     "0000: cc \n",
                     string.Empty),
-                TestContext.Current.CancellationToken);
+                TestContext.Current.Execution.CancellationToken);
             var source = new OpcWireCaptureSource();
 
-            await source.StartAsync(new CaptureStartRequest(ReplaySourceDirectory: directory), TestContext.Current.CancellationToken);
-            await source.StopAsync(TestContext.Current.CancellationToken);
-            var packets = await source.ReadAllAsync(null, TestContext.Current.CancellationToken).ToListAsync();
+            await source.StartAsync(new CaptureStartRequest(ReplaySourceDirectory: directory), TestContext.Current.Execution.CancellationToken);
+            await source.StopAsync(TestContext.Current.Execution.CancellationToken);
+            var packets = await source.ReadAllAsync(null, TestContext.Current.Execution.CancellationToken).ToListAsync();
 
             await Assert.That(source.PacketCount).IsEqualTo(3);
             await Assert.That(source.ByteCount).IsEqualTo(6);
@@ -103,15 +103,15 @@ public sealed class OpcWireCaptureSourceTests
             await File.WriteAllTextAsync(
                 Path.Combine(directory, "b.hex"),
                 BuildHexFile(iid, 2, "2026-06-07T10:11:14Z", null, "0000: 02 \n", string.Empty),
-                TestContext.Current!.CancellationToken);
+                TestContext.Current!.Execution.CancellationToken);
             await File.WriteAllTextAsync(
                 Path.Combine(directory, "a.hex"),
                 BuildHexFile(iid, 1, "2026-06-07T10:11:13Z", null, "0000: 01 \n", "0000: ff \n"),
-                TestContext.Current.CancellationToken);
+                TestContext.Current.Execution.CancellationToken);
             var source = new OpcWireCaptureSource();
-            await source.StartAsync(new CaptureStartRequest(ReplaySourceDirectory: directory), TestContext.Current.CancellationToken);
+            await source.StartAsync(new CaptureStartRequest(ReplaySourceDirectory: directory), TestContext.Current.Execution.CancellationToken);
 
-            var packets = await source.ReadAllAsync(2, TestContext.Current.CancellationToken).ToListAsync();
+            var packets = await source.ReadAllAsync(2, TestContext.Current.Execution.CancellationToken).ToListAsync();
 
             await Assert.That(packets.Count).IsEqualTo(2);
             await Assert.That(packets[0].Annotations["source_file"]).IsEqualTo("a.hex");

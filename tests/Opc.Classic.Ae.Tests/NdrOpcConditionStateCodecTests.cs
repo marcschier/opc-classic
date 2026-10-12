@@ -110,7 +110,7 @@ public sealed class NdrOpcConditionStateCodecTests
         await Assert.That(back.EventAttributes.Length).IsEqualTo(3);
         await Assert.That(back.EventAttributes[0].AsInt32()).IsEqualTo(42);
         await Assert.That(back.EventAttributes[1].AsString()).IsEqualTo("pump-7");
-        await Assert.That(back.EventAttributes[2].AsBoolean()).IsEqualTo(true);
+        await Assert.That(back.EventAttributes[2].AsBoolean()).IsTrue();
         await Assert.That(back.Errors[1]).IsEqualTo(unchecked((int)0x80004005u));
     }
 

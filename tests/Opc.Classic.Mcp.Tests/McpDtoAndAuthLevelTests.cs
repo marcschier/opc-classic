@@ -5,7 +5,6 @@ using System.Reflection;
 using System.Runtime.ExceptionServices;
 using Opc.Classic.Mcp.Dtos;
 using Opc.Classic.Mcp.Tools;
-using TUnit.Assertions.AssertConditions.Throws;
 
 namespace Opc.Classic.Mcp.Tests;
 

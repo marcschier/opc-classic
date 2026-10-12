@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.2-alpha] - 2026-10-12
+
+### Changed
+
+- Updated .NET 10 runtime packages and SDK, build analyzers, versioning, and test dependencies to their current stable releases while retaining the .NET 10 target frameworks and `alpha` release channel.
+- Mechanically migrated existing tests to TUnit 1.74 APIs and the Kerberos.NET channel-binding property rename without changing test data, assertions, snapshots, or discovery.
+- Migrated .NET 10 test commands and coverage collection to native Microsoft.Testing.Platform with `coverlet.MTP`, retaining category selection, coverage exclusions, and gate thresholds.
+- Updated workflow actions, actionlint, ReportGenerator, cosign, Python tooling, and the dated Windows .NET Framework SDK container images.
+
+### Fixed
+
+- Preserved Kerberos channel-binding checksum generation and validation with Kerberos.NET 4.6.168's `ChannelBindingHash` API.
+- Preserved caught exceptions as inner exceptions in DCOM conversion, activation, and RPC error paths without changing their outer exception types, messages, or HRESULTs.
+- Kept verified snapshot checkouts in their original LF Git format for compatibility with Verify 33; snapshot contents are unchanged.
+- Listener shutdown removes each drained connection from tracking before returning, avoiding a race with independently scheduled cleanup continuations.
+
 ## [0.4.1-alpha] - 2026-08-28
 
 ### Changed

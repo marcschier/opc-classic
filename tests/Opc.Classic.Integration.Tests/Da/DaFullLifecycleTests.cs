@@ -22,7 +22,7 @@ public sealed class DaFullLifecycleTests
     [Category("Da.FullLifecycle")]
     public async Task DaFullLifecycle_managed_client_exercises_group_lifecycle_over_loopback_tcp()
     {
-        using var timeout = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current!.CancellationToken);
+        using var timeout = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current!.Execution.CancellationToken);
         timeout.CancelAfter(TimeSpan.FromSeconds(10));
         CancellationToken cancellationToken = timeout.Token;
 

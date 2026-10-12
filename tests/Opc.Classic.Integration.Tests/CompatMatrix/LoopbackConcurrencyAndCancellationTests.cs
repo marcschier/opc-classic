@@ -18,7 +18,7 @@ public sealed class LoopbackConcurrencyAndCancellationTests
     [Category("CompatMatrix.Loopback")]
     public async Task Da_loopback_concurrent_clients_round_trip_status_without_exceptions()
     {
-        using var timeout = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current!.CancellationToken);
+        using var timeout = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current!.Execution.CancellationToken);
         timeout.CancelAfter(TimeSpan.FromSeconds(10));
         CancellationToken cancellationToken = timeout.Token;
 
@@ -47,7 +47,7 @@ public sealed class LoopbackConcurrencyAndCancellationTests
     [Category("CompatMatrix.Loopback")]
     public async Task Da_loopback_client_side_cancellation_of_in_flight_call_does_not_hang_host_stop()
     {
-        using var timeout = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current!.CancellationToken);
+        using var timeout = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current!.Execution.CancellationToken);
         timeout.CancelAfter(TimeSpan.FromSeconds(10));
         CancellationToken cancellationToken = timeout.Token;
 
@@ -77,7 +77,7 @@ public sealed class LoopbackConcurrencyAndCancellationTests
             server.Release();
             if (hostStarted)
             {
-                using var stopTimeout = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current!.CancellationToken);
+                using var stopTimeout = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current!.Execution.CancellationToken);
                 stopTimeout.CancelAfter(TimeSpan.FromSeconds(10));
                 Task stopTask = host.StopAsync(stopTimeout.Token);
                 await stopTask.WaitAsync(stopTimeout.Token);

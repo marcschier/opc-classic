@@ -33,12 +33,12 @@ public sealed class CaptureCursorFoundationTests
             CaptureNotificationSubscriptionInfo secondInfo =
                 await manager.SubscribeNotificationsAsync(
                     session.Id, 0, "second", 16, 8, 10, second, CancellationToken.None);
-            await first.WaitForIndexAsync(1, TestContext.Current!.CancellationToken);
-            await second.WaitForIndexAsync(1, TestContext.Current.CancellationToken);
+            await first.WaitForIndexAsync(1, TestContext.Current!.Execution.CancellationToken);
+            await second.WaitForIndexAsync(1, TestContext.Current.Execution.CancellationToken);
 
             source.AddRange([Packet("next-1"), Packet("next-2")]);
-            await first.WaitForIndexAsync(3, TestContext.Current.CancellationToken);
-            await second.WaitForIndexAsync(3, TestContext.Current.CancellationToken);
+            await first.WaitForIndexAsync(3, TestContext.Current.Execution.CancellationToken);
+            await second.WaitForIndexAsync(3, TestContext.Current.Execution.CancellationToken);
 
             await Assert.That(source.IncrementalReadCount).IsEqualTo(2);
             await Assert.That(source.ReplayReadCount).IsEqualTo(0);
@@ -179,11 +179,11 @@ public sealed class CaptureCursorFoundationTests
                 CancellationToken.None);
 
             Task<DrainTailResult> tail = session.DrainSubscriberTailAsync(
-                0, 10, "concurrent", 10, TestContext.Current!.CancellationToken);
-            await source.ReadEntered.Task.WaitAsync(TestContext.Current.CancellationToken);
+                0, 10, "concurrent", 10, TestContext.Current!.Execution.CancellationToken);
+            await source.ReadEntered.Task.WaitAsync(TestContext.Current.Execution.CancellationToken);
             Task<bool> close = session.CloseTailSubscriberAsync("concurrent");
             Task<bool> remove = manager.RemoveAsync(session.Id, CancellationToken.None);
-            await Task.Delay(20, TestContext.Current.CancellationToken);
+            await Task.Delay(20, TestContext.Current.Execution.CancellationToken);
 
             await Assert.That(tail.IsCompleted).IsFalse();
             await Assert.That(remove.IsCompleted).IsFalse();
@@ -223,17 +223,17 @@ public sealed class CaptureCursorFoundationTests
             CaptureNotificationSubscriptionInfo info =
                 await manager.SubscribeNotificationsAsync(
                     session.Id, 0, "failure", 2, 1, 10, publisher, CancellationToken.None);
-            await publisher.Failed.Task.WaitAsync(TestContext.Current!.CancellationToken);
+            await publisher.Failed.Task.WaitAsync(TestContext.Current!.Execution.CancellationToken);
 
             source.Add(Packet("second"));
             source.Add(Packet("third"));
             source.Add(Packet("fourth"));
             CaptureNotification recovered = await publisher.Recovered.Task.WaitAsync(
-                TestContext.Current.CancellationToken);
+                TestContext.Current.Execution.CancellationToken);
             DrainTailResult tail = await session.DrainTailAsync(
                 recovered.RecoveryFromIndex ?? 0,
                 10,
-                TestContext.Current.CancellationToken);
+                TestContext.Current.Execution.CancellationToken);
 
             await Assert.That(recovered.NotificationDropCount).IsGreaterThanOrEqualTo(1);
             await Assert.That(recovered.RecoveryFromIndex.HasValue).IsTrue();

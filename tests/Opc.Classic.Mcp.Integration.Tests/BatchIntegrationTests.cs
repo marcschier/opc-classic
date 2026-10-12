@@ -54,7 +54,7 @@ public sealed class BatchIntegrationTests
             .IsEqualTo("MANUAL");
         await Assert.That(runningSummaries.Length).IsEqualTo(2);
         await Assert.That(runningSummaries.Select(static summary => summary.Id))
-            .IsEquivalentTo(new[] { "B-2026-001", "B-2026-003" });
+            .IsEquivalentTo(new string?[] { "B-2026-001", "B-2026-003" });
         await Assert.That(runningSummaries.All(static summary => summary.ExecutionState == "RUNNING")).IsTrue();
         await Assert.That(disconnected.Succeeded).IsTrue();
     }

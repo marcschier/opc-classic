@@ -15,6 +15,11 @@
     appropriate per-tree Directory.Build.props.
   -->
 
+  <PropertyGroup>
+    <Verify_SponsorshipExemption>OpenSource</Verify_SponsorshipExemption>
+    <Verify_SponsorshipExemptionUntil>2027-09</Verify_SponsorshipExemptionUntil>
+  </PropertyGroup>
+
   <ItemGroup>
     <!--
       Roslynator.Analyzers (RCS1xxx + ROS rule families). Centralized version

@@ -9,7 +9,6 @@
 
 using Opc.Classic.Da.Ndr;
 using Opc.Classic.Ndr;
-using TUnit.Assertions.AssertConditions.Throws;
 
 namespace Opc.Classic.Da.Tests;
 
@@ -136,6 +135,6 @@ public sealed class DaFileTimeFuzzTests
 
         var reader = new NdrReader(wire);
         OpcItemVqt vqt = NdrOpcItemVqtCodec.Read(ref reader);
-        await Assert.That(vqt.Timestamp).IsEqualTo((DateTimeOffset?)null);
+        await Assert.That(vqt.Timestamp).IsNull();
     }
 }

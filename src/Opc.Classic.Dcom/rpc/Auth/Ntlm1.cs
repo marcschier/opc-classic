@@ -134,7 +134,7 @@ public class Ntlm1 : ISecurity
         catch (Exception ex)
         {
             Log.Logger.Error(ex, "");
-            throw new IntegrityException("General error: " + ex.Message);
+            throw new IntegrityException("General error: " + ex.Message, ex);
         }
     }
 
@@ -188,7 +188,7 @@ public class Ntlm1 : ISecurity
         }
         catch (Exception ex)
         {
-            throw new IntegrityException("General error: " + ex.Message);
+            throw new IntegrityException("General error: " + ex.Message, ex);
         }
     }
 

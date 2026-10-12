@@ -4,7 +4,6 @@ using System.Net;
 using System.Net.Sockets;
 using Opc.Classic.Dcom.Transport;
 using Opc.Classic.Transport;
-using TUnit.Assertions.AssertConditions.Throws;
 
 namespace Opc.Classic.Dcom.Tests.Transport;
 
@@ -27,7 +26,7 @@ public sealed class TcpServerEndpointTests
     {
         await using var endpoint = new TcpServerEndpoint(new IPEndPoint(IPAddress.Loopback, 0));
         var boundEndpoint = (IPEndPoint)endpoint.LocalEndpoint;
-        using var cts = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current!.CancellationToken);
+        using var cts = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current!.Execution.CancellationToken);
         cts.CancelAfter(TimeSpan.FromSeconds(5));
 
         // Producer: connect three TCP clients
@@ -67,7 +66,7 @@ public sealed class TcpServerEndpointTests
     public async Task AcceptConnectionsAsync_completes_on_cancellation()
     {
         await using var endpoint = new TcpServerEndpoint(new IPEndPoint(IPAddress.Loopback, 0));
-        using var cts = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current!.CancellationToken);
+        using var cts = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current!.Execution.CancellationToken);
 
         Task drain = Task.Run(async () =>
         {
@@ -78,7 +77,7 @@ public sealed class TcpServerEndpointTests
         });
 
         cts.Cancel();
-        await drain.WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current!.CancellationToken);
+        await drain.WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current!.Execution.CancellationToken);
 
         await Assert.That(drain.IsCompletedSuccessfully).IsTrue();
     }
@@ -95,7 +94,7 @@ public sealed class TcpServerEndpointTests
         await Assert.That(async () =>
         {
             using var client = new TcpClient();
-            await client.ConnectAsync(boundEndpoint.Address, boundEndpoint.Port, TestContext.Current!.CancellationToken);
+            await client.ConnectAsync(boundEndpoint.Address, boundEndpoint.Port, TestContext.Current!.Execution.CancellationToken);
         }).Throws<SocketException>();
     }
 

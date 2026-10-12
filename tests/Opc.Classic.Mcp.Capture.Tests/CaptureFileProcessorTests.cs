@@ -23,7 +23,7 @@ public sealed class CaptureFileProcessorTests
 
             CaptureFileDecodeResult result = await CaptureFileProcessor.DecodeAsync(
                 path,
-                cancellationToken: TestContext.Current!.CancellationToken);
+                cancellationToken: TestContext.Current!.Execution.CancellationToken);
 
             await Assert.That(result.Status.Format).IsEqualTo("pcap");
             await Assert.That(result.Status.Ipv4TcpPackets).IsEqualTo(1);
@@ -48,7 +48,7 @@ public sealed class CaptureFileProcessorTests
 
             CaptureFileDecodeResult result = await CaptureFileProcessor.DecodeAsync(
                 path,
-                cancellationToken: TestContext.Current!.CancellationToken);
+                cancellationToken: TestContext.Current!.Execution.CancellationToken);
 
             await Assert.That(result.Status.Format).IsEqualTo("pcapng");
             await Assert.That(result.Status.Ipv6TcpPackets).IsEqualTo(1);
@@ -73,13 +73,13 @@ public sealed class CaptureFileProcessorTests
             WritePcap(fragmentedPath, fragment);
             CaptureFileDecodeResult fragmented = await CaptureFileProcessor.DecodeAsync(
                 fragmentedPath,
-                cancellationToken: TestContext.Current!.CancellationToken);
+                cancellationToken: TestContext.Current!.Execution.CancellationToken);
 
             string midSessionPath = Path.Combine(folder, "mid-session.pcap");
             WritePcap(midSessionPath, NewIpv4TcpFrame(NewRequest(44)));
             CaptureFileDecodeResult midSession = await CaptureFileProcessor.DecodeAsync(
                 midSessionPath,
-                cancellationToken: TestContext.Current.CancellationToken);
+                cancellationToken: TestContext.Current.Execution.CancellationToken);
 
             await Assert.That(fragmented.Status.FragmentedIpPackets).IsEqualTo(1);
             await Assert.That(fragmented.Pdus.Count).IsEqualTo(0);
@@ -104,7 +104,7 @@ public sealed class CaptureFileProcessorTests
             await Assert.That(async () => await CaptureFileProcessor.DecodeAsync(
                 path,
                 maxFileBytes: 8,
-                cancellationToken: TestContext.Current!.CancellationToken))
+                cancellationToken: TestContext.Current!.Execution.CancellationToken))
                 .Throws<CaptureException>();
         }
         finally
@@ -129,7 +129,7 @@ public sealed class CaptureFileProcessorTests
 
             CaptureFileDecodeResult result = await CaptureFileProcessor.DecodeAsync(
                 path,
-                cancellationToken: TestContext.Current!.CancellationToken);
+                cancellationToken: TestContext.Current!.Execution.CancellationToken);
 
             await Assert.That(result.Status.TruncatedPackets).IsEqualTo(1);
             await Assert.That(result.Status.PacketFailureCount).IsGreaterThanOrEqualTo(1);
@@ -157,7 +157,7 @@ public sealed class CaptureFileProcessorTests
             stream,
             openedLength: 4,
             maxFileBytes: 8,
-            TestContext.Current!.CancellationToken)).Throws<CaptureException>();
+            TestContext.Current!.Execution.CancellationToken)).Throws<CaptureException>();
 
         await Assert.That(exception!.Message).Contains("changed while being read");
     }
@@ -171,20 +171,20 @@ public sealed class CaptureFileProcessorTests
             string path = Path.Combine(folder, "replace.pcap");
             byte[] original = new byte[] { 1, 2, 3, 4 };
             byte[] replacement = new byte[] { 9, 8, 7, 6 };
-            await File.WriteAllBytesAsync(path, original, TestContext.Current!.CancellationToken);
+            await File.WriteAllBytesAsync(path, original, TestContext.Current!.Execution.CancellationToken);
             await using var opened = new FileStream(
                 path,
                 FileMode.Open,
                 FileAccess.Read,
                 FileShare.ReadWrite | FileShare.Delete);
             File.Move(path, path + ".old");
-            await File.WriteAllBytesAsync(path, replacement, TestContext.Current.CancellationToken);
+            await File.WriteAllBytesAsync(path, replacement, TestContext.Current.Execution.CancellationToken);
 
             byte[] read = await CaptureFileProcessor.ReadBoundedAsync(
                 opened,
                 openedLength: original.Length,
                 maxFileBytes: 8,
-                TestContext.Current.CancellationToken);
+                TestContext.Current.Execution.CancellationToken);
 
             await Assert.That(read).IsEquivalentTo(original);
         }

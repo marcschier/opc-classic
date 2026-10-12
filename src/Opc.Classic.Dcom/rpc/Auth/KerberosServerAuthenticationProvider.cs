@@ -382,7 +382,7 @@ public sealed class KerberosServerAuthenticationProvider : IRpcServerAuthenticat
                 return;
             }
 
-            ReadOnlySpan<byte> supplied = checksum.ChannelBinding.Span;
+            ReadOnlySpan<byte> supplied = checksum.ChannelBindingHash.Span;
             bool suppliedBinding = supplied.Length != 0 && !IsAllZero(supplied);
             if (supplied.Length != 0 && supplied.Length != 16)
             {

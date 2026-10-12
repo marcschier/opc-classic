@@ -8,7 +8,6 @@ using Opc.Classic.Discovery;
 using Opc.Classic.Mcp.Dtos;
 using Opc.Classic.Mcp.Sessions;
 using Opc.Classic.Mcp.Tools;
-using TUnit.Assertions.AssertConditions.Throws;
 
 namespace Opc.Classic.Mcp.Tests;
 
@@ -27,7 +26,7 @@ public sealed class McpToolValidationTests
             argument => argument.MemberName == nameof(McpServerToolAttribute.Destructive));
 
         await Assert.That(name.TypedValue.Value).IsEqualTo("opcclassic.hda.insert_replace_data");
-        await Assert.That(destructive.TypedValue.Value).IsEqualTo(true);
+        await Assert.That(destructive.TypedValue.Value).IsTypeOf<bool>().And.IsTrue();
     }
 
     [Test]

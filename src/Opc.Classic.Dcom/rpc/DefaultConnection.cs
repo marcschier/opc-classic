@@ -552,7 +552,7 @@ public class DefaultConnection : IConnection
         }
         catch (Exception ex)
         {
-            throw new IOException("Error attaching authentication to PDU: " + ex.Message);
+            throw new IOException("Error attaching authentication to PDU: " + ex.Message, ex);
         }
     }
 
@@ -582,7 +582,7 @@ public class DefaultConnection : IConnection
         }
         catch (Exception ex)
         {
-            throw new IOException("Error stripping authentication from PDU: " + ex);
+            throw new IOException("Error stripping authentication from PDU: " + ex, ex);
         }
     }
 
@@ -619,7 +619,7 @@ public class DefaultConnection : IConnection
         }
         catch (Exception ex)
         {
-            throw new IOException("Error stripping authentication from PDU: " + ex);
+            throw new IOException("Error stripping authentication from PDU: " + ex, ex);
         }
     }
 

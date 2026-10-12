@@ -1,0 +1,13 @@
+{
+  "platformOptions": {
+    "Coverlet": {
+      "format": "cobertura",
+      "exclude": "[*]Opc.Classic.Dcom.*,[Opc.Classic.Generators]*,[*Tests]*,[*]*.Generated.*",
+      "excludeByAttribute": "Obsolete,GeneratedCodeAttribute,CompilerGeneratedAttribute",
+      "excludeByFile": "**/obj/**,**/bin/**,**/*.g.cs",
+      "includeTestAssembly": false,
+      "deterministicReport": true,
+      "useSourceLink": true
+    }
+  }
+}

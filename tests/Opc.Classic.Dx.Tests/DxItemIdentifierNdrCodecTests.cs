@@ -2,7 +2,6 @@
 
 using Opc.Classic.Dx.Ndr;
 using Opc.Classic.Ndr;
-using TUnit.Assertions.AssertConditions.Throws;
 
 namespace Opc.Classic.Dx.Tests;
 

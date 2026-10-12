@@ -88,17 +88,17 @@ Requires the .NET 10 SDK pinned by [global.json](global.json):
 ```powershell
 dotnet restore Opc.Classic.slnx
 dotnet build Opc.Classic.slnx
-dotnet test Opc.Classic.slnx
+dotnet test --solution Opc.Classic.slnx
 ```
 
 Targeted test subsets:
 
 ```powershell
 # DA only
-dotnet test tests\Opc.Classic.Da.Tests --no-build
+dotnet test --project tests\Opc.Classic.Da.Tests\Opc.Classic.Da.Tests.csproj --no-build
 
 # Solution-wide minus Windows-only and platform-blocked categories
-dotnet test Opc.Classic.slnx --filter "Category!=NativeConformance&Category!=MatrikonConformance"
+dotnet test --solution Opc.Classic.slnx --treenode-filter "/*/*/*/*[(Category!=NativeConformance)&(Category!=MatrikonConformance)]"
 ```
 
 NativeAOT publish (used by CI to verify trim + AOT cleanliness):

@@ -3,7 +3,6 @@
 using Opc.Classic.Dcom.Activation;
 using Opc.Classic.Dcom.Rpc;
 using Opc.Classic.Testing;
-using TUnit.Assertions.AssertConditions.Throws;
 
 namespace Opc.Classic.Dcom.Tests.Activation;
 

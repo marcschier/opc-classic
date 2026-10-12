@@ -154,7 +154,7 @@ public sealed class OpcDaGroupEnumeratorLoopbackTests
             .GetGroupByNameAsync(
                 "P1",
                 IidIUnknown,
-                TestContext.Current!.CancellationToken);
+                TestContext.Current!.Execution.CancellationToken);
         (_, IOpcInterfaceRef enumerator) =
             await CreateEnumeratorAsync(
                 root.ServerDispatcher,
@@ -230,12 +230,12 @@ public sealed class OpcDaGroupEnumeratorLoopbackTests
             3,
             out string[] names,
             out int namesFetched,
-            TestContext.Current!.CancellationToken);
+            TestContext.Current!.Execution.CancellationToken);
         await unknowns.NextUnknownsAsync(
             3,
             out IOpcInterfaceRef[] groups,
             out int groupsFetched,
-            TestContext.Current!.CancellationToken);
+            TestContext.Current!.Execution.CancellationToken);
 
         await Assert.That(names).IsEquivalentTo(["P1", "P2"]);
         await Assert.That(namesFetched).IsEqualTo(2);
@@ -257,7 +257,7 @@ public sealed class OpcDaGroupEnumeratorLoopbackTests
         var server = new AtomicPairServer();
         var root = new OpcDaServerDispatcher(server, objectRegistry: registry);
         using var cts = CancellationTokenSource.CreateLinkedTokenSource(
-            TestContext.Current!.CancellationToken);
+            TestContext.Current!.Execution.CancellationToken);
         cts.CancelAfter(TimeSpan.FromSeconds(10));
         using var start = new Barrier(2);
 

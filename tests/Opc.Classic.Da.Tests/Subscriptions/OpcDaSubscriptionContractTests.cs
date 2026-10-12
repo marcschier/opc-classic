@@ -1,7 +1,6 @@
 ﻿// Copyright (c) 2026 Opc.Classic Contributors. Licensed under the MIT License.
 
 using Opc.Classic.Da.Dcom;
-using TUnit.Assertions.AssertConditions.Throws;
 
 namespace Opc.Classic.Da.Tests.Subscriptions;
 

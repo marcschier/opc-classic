@@ -28,7 +28,7 @@ in-process before a real native DCOM endpoint is available.
 
 3. Run only the conformance subset:
    ```bash
-   dotnet test --filter "Category=NativeConformance"
+   dotnet test --project tests/Opc.Classic.Integration.Tests/Opc.Classic.Integration.Tests.csproj --treenode-filter "/*/*/*/*[Category=NativeConformance]"
    ```
 
 4. Tests soft-skip when the native servers aren't registered (with a

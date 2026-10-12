@@ -288,7 +288,7 @@ public sealed class IOPCAdditionalDaProxyTests
 
         await Assert.That(observedIid).IsEqualTo(IOPCAsyncIO2.InterfaceId);
         await Assert.That(observedOpnum).IsEqualTo(IOPCAsyncIO2.Opnums.GetEnableAsync);
-        await Assert.That(enabled).IsEqualTo(true);
+        await Assert.That(enabled).IsTrue();
     }
 
     [Test]

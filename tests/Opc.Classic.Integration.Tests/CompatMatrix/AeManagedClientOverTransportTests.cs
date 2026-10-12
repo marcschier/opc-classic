@@ -16,7 +16,7 @@ public sealed class AeManagedClientOverTransportTests
     [Category("CompatMatrix.Loopback")]
     public async Task Ae_managed_client_round_trips_GetStatus_over_real_listener()
     {
-        using var timeout = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current!.CancellationToken);
+        using var timeout = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current!.Execution.CancellationToken);
         timeout.CancelAfter(TimeSpan.FromSeconds(10));
         CancellationToken cancellationToken = timeout.Token;
 
@@ -48,7 +48,7 @@ public sealed class AeManagedClientOverTransportTests
     [Category("CompatMatrix.Loopback")]
     public async Task Ae_managed_client_round_trips_QueryAvailableFilters_and_categories_over_real_listener()
     {
-        using var timeout = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current!.CancellationToken);
+        using var timeout = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current!.Execution.CancellationToken);
         timeout.CancelAfter(TimeSpan.FromSeconds(10));
         CancellationToken cancellationToken = timeout.Token;
 
@@ -86,7 +86,7 @@ public sealed class AeManagedClientOverTransportTests
     [Category("CompatMatrix.Loopback")]
     public async Task Ae_managed_client_two_back_to_back_calls_share_connection()
     {
-        using var timeout = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current!.CancellationToken);
+        using var timeout = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current!.Execution.CancellationToken);
         timeout.CancelAfter(TimeSpan.FromSeconds(10));
         CancellationToken cancellationToken = timeout.Token;
 

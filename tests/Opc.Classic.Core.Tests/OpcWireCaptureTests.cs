@@ -6,7 +6,6 @@
 
 using Opc.Classic.Diagnostics;
 using Opc.Classic.Testing;
-using TUnit.Assertions.AssertConditions.Throws;
 
 namespace Opc.Classic.Tests;
 

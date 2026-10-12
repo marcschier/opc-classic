@@ -2,7 +2,6 @@
 
 using Opc.Classic.Hosting;
 using Opc.Classic.Dcom.Core;
-using TUnit.Assertions.AssertConditions.Throws;
 
 namespace Opc.Classic.Dcom.Tests;
 

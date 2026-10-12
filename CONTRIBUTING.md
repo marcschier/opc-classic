@@ -6,14 +6,14 @@ Keep contributions small, focused, and aligned with the current `Opc.Classic.*` 
 
 ## Quick start
 
-Install the .NET 10 SDK. The repository root `global.json` pins SDK `10.0.100` with `rollForward` set to `latestFeature`, so any compatible later .NET 10 feature SDK may be used.
+Install the .NET 10 SDK. The repository root `global.json` pins SDK `10.0.401` with `rollForward` set to `latestFeature`, so any compatible later .NET 10 feature SDK may be used.
 
 ```powershell
 git clone https://github.com/marcschier/opc-classic.git
 cd opc-classic
 dotnet restore Opc.Classic.slnx
 dotnet build Opc.Classic.slnx
-dotnet test Opc.Classic.slnx
+dotnet test --solution Opc.Classic.slnx
 ```
 
 `Opc.Classic.slnx` is the .NET 10 XML solution format, not a legacy `.sln` file.
@@ -110,6 +110,16 @@ await Assert.That(itemId).IsEqualTo(expectedItemId);
 
 Verify.TUnit golden files live alongside tests under Snapshots tests. Review `.received.*` files before accepting them as `.verified.*` snapshots.
 
+Verify 33 requires a valid publisher sponsorship or license declaration through
+SponsorCheck before snapshot-dependent projects can build. On 2026-10-12, the
+maintainer confirmed that OPC Classic is open source and generates no revenue,
+qualifying for the publisher's documented `OpenSource` exemption. The declaration
+in the root `Directory.Build.props` expires after September 2027. Recheck eligibility
+and renew it before October 2027, or configure valid sponsorship if eligibility
+changes; it does not renew automatically. See the
+[publisher's maintenance-fee instructions](https://github.com/VerifyTests/Verify/blob/main/docs/maintenance-fee.md).
+Keep license credentials outside source control.
+
 ## Coverage
 
 CI gates code coverage at **70% line / 50% branch** (workspace-wide aggregate
@@ -123,14 +133,14 @@ must be narrow and documented.
 Run coverage locally for a targeted project:
 
 ```powershell
-dotnet test tests\Opc.Classic.Core.Tests\Opc.Classic.Core.Tests.csproj --collect:"XPlat Code Coverage" --settings coverlet.runsettings --results-directory .\coverage-results\Opc.Classic.Core.Tests
+dotnet test --project tests\Opc.Classic.Core.Tests\Opc.Classic.Core.Tests.csproj --coverlet --results-directory .\coverage-results\Opc.Classic.Core.Tests
 ```
 
 Generate a human-readable report:
 
 ```powershell
-dotnet tool install -g dotnet-reportgenerator-globaltool
-reportgenerator -reports:.\coverage-results\**\coverage.cobertura.xml -targetdir:.\coverage-report -reporttypes:Html
+dotnet tool install -g dotnet-reportgenerator-globaltool --version 5.5.11
+reportgenerator -reports:.\coverage-results\**\coverage.cobertura*.xml -targetdir:.\coverage-report -reporttypes:Html
 ```
 
 ## Sample apps
@@ -176,7 +186,7 @@ Before opening a pull request:
 1. Keep the change small and focused.
 2. Avoid unrelated cleanup, formatting churn, or drive-by refactors.
 3. Run `dotnet build Opc.Classic.slnx` from the repository root.
-4. Run targeted tests for the area you changed, and run `dotnet test Opc.Classic.slnx` when practical.
+4. Run targeted tests for the area you changed, and run `dotnet test --solution Opc.Classic.slnx` when practical.
 5. Explain behavior changes, compatibility concerns, and any skipped tests in the PR description.
 
 Use clear commit messages. Do not use PowerShell here-strings for commit messages in this repository; write commit messages to a temporary file in the repository root and commit with `git commit -F`, then remove the file.

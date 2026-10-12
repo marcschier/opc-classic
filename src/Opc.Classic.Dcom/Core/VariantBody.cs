@@ -238,7 +238,7 @@ internal sealed class VariantBody
             }
             catch (InvalidCastException e)
             {
-                throw new InvalidOperationException(e.Message);
+                throw new InvalidOperationException(e.Message, e);
             }
         }
     }
@@ -256,7 +256,7 @@ internal sealed class VariantBody
             }
             catch (InvalidCastException e)
             {
-                throw new InvalidOperationException(e.Message);
+                throw new InvalidOperationException(e.Message, e);
             }
         }
     }
@@ -274,7 +274,7 @@ internal sealed class VariantBody
             }
             catch (InvalidCastException e)
             {
-                throw new InvalidOperationException(e.Message);
+                throw new InvalidOperationException(e.Message, e);
             }
         }
     }
@@ -292,7 +292,7 @@ internal sealed class VariantBody
             }
             catch (InvalidCastException e)
             {
-                throw new InvalidOperationException(e.Message);
+                throw new InvalidOperationException(e.Message, e);
             }
         }
     }
@@ -310,7 +310,7 @@ internal sealed class VariantBody
             }
             catch (InvalidCastException e)
             {
-                throw new InvalidOperationException(e.Message);
+                throw new InvalidOperationException(e.Message, e);
             }
         }
     }
@@ -328,7 +328,7 @@ internal sealed class VariantBody
             }
             catch (InvalidCastException e)
             {
-                throw new InvalidOperationException(e.Message);
+                throw new InvalidOperationException(e.Message, e);
             }
         }
     }
@@ -346,7 +346,7 @@ internal sealed class VariantBody
             }
             catch (InvalidCastException e)
             {
-                throw new InvalidOperationException(e.Message);
+                throw new InvalidOperationException(e.Message, e);
             }
         }
     }
@@ -364,7 +364,7 @@ internal sealed class VariantBody
             }
             catch (InvalidCastException e)
             {
-                throw new InvalidOperationException(e.Message);
+                throw new InvalidOperationException(e.Message, e);
             }
         }
     }
@@ -382,7 +382,7 @@ internal sealed class VariantBody
             }
             catch (InvalidCastException e)
             {
-                throw new InvalidOperationException(e.Message);
+                throw new InvalidOperationException(e.Message, e);
             }
         }
     }
@@ -400,7 +400,7 @@ internal sealed class VariantBody
             }
             catch (InvalidCastException e)
             {
-                throw new InvalidOperationException(e.Message);
+                throw new InvalidOperationException(e.Message, e);
             }
         }
     }
@@ -418,7 +418,7 @@ internal sealed class VariantBody
             }
             catch (InvalidCastException e)
             {
-                throw new InvalidOperationException(e.Message);
+                throw new InvalidOperationException(e.Message, e);
             }
         }
     }
@@ -436,7 +436,7 @@ internal sealed class VariantBody
             }
             catch (InvalidCastException e)
             {
-                throw new InvalidOperationException(e.Message);
+                throw new InvalidOperationException(e.Message, e);
             }
         }
     }
@@ -454,7 +454,7 @@ internal sealed class VariantBody
             }
             catch (InvalidCastException e)
             {
-                throw new InvalidOperationException(e.Message);
+                throw new InvalidOperationException(e.Message, e);
             }
         }
     }
@@ -472,7 +472,7 @@ internal sealed class VariantBody
             }
             catch (InvalidCastException e)
             {
-                throw new InvalidOperationException(e.Message);
+                throw new InvalidOperationException(e.Message, e);
             }
         }
     }
@@ -490,7 +490,7 @@ internal sealed class VariantBody
             }
             catch (InvalidCastException e)
             {
-                throw new InvalidOperationException(e.Message);
+                throw new InvalidOperationException(e.Message, e);
             }
         }
     }
@@ -508,7 +508,7 @@ internal sealed class VariantBody
             }
             catch (InvalidCastException e)
             {
-                throw new InvalidOperationException(e.Message);
+                throw new InvalidOperationException(e.Message, e);
             }
         }
     }

@@ -3,7 +3,6 @@
 using System.Buffers.Binary;
 using Opc.Classic.Dcom.Internal.Ntlm;
 using Opc.Classic.Ndr;
-using TUnit.Assertions.AssertConditions.Throws;
 
 namespace Opc.Classic.Dcom.Tests.Fuzz;
 

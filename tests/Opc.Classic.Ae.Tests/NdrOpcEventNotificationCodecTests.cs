@@ -77,7 +77,7 @@ public sealed class NdrOpcEventNotificationCodecTests
         await Assert.That(back.EventAttributes.Length).IsEqualTo(3);
         await Assert.That(back.EventAttributes[0].AsInt32()).IsEqualTo(42);
         await Assert.That(back.EventAttributes[1].AsString()).IsEqualTo("high-high");
-        await Assert.That(back.EventAttributes[2].AsBoolean()).IsEqualTo(true);
+        await Assert.That(back.EventAttributes[2].AsBoolean()).IsTrue();
     }
 
     [Test]

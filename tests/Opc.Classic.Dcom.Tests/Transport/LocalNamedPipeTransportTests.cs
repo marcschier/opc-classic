@@ -36,42 +36,42 @@ public sealed class LocalNamedPipeTransportTests
         {
             try
             {
-                await server.WaitForConnectionAsync(TestContext.Current!.CancellationToken).ConfigureAwait(false);
+                await server.WaitForConnectionAsync(TestContext.Current!.Execution.CancellationToken).ConfigureAwait(false);
                 byte[] buffer = new byte[clientRequest.Length];
                 int read = 0;
                 while (read < buffer.Length)
                 {
-                    int n = await server.ReadAsync(buffer.AsMemory(read), TestContext.Current!.CancellationToken).ConfigureAwait(false);
+                    int n = await server.ReadAsync(buffer.AsMemory(read), TestContext.Current!.Execution.CancellationToken).ConfigureAwait(false);
                     if (n == 0)
                     {
                         break;
                     }
                     read += n;
                 }
-                await server.WriteAsync(serverResponse, TestContext.Current!.CancellationToken).ConfigureAwait(false);
-                await server.FlushAsync(TestContext.Current!.CancellationToken).ConfigureAwait(false);
+                await server.WriteAsync(serverResponse, TestContext.Current!.Execution.CancellationToken).ConfigureAwait(false);
+                await server.FlushAsync(TestContext.Current!.Execution.CancellationToken).ConfigureAwait(false);
             }
             finally
             {
                 serverDone.Release();
             }
-        }, TestContext.Current!.CancellationToken);
+        }, TestContext.Current!.Execution.CancellationToken);
 
         await using LocalNamedPipeTransport transport = await LocalNamedPipeTransport.ConnectAsync(
             pipeName,
-            cancellationToken: TestContext.Current!.CancellationToken);
+            cancellationToken: TestContext.Current!.Execution.CancellationToken);
 
         Memory<byte> outBuffer = transport.Output.GetMemory(clientRequest.Length);
         clientRequest.AsSpan().CopyTo(outBuffer.Span);
         transport.Output.Advance(clientRequest.Length);
-        await transport.FlushAsync(TestContext.Current!.CancellationToken);
+        await transport.FlushAsync(TestContext.Current!.Execution.CancellationToken);
 
-        ReadResult read1 = await transport.Input.ReadAsync(TestContext.Current!.CancellationToken);
+        ReadResult read1 = await transport.Input.ReadAsync(TestContext.Current!.Execution.CancellationToken);
         byte[] readBytes = System.Buffers.BuffersExtensions.ToArray(read1.Buffer);
         transport.Input.AdvanceTo(read1.Buffer.End);
 
         await Assert.That(readBytes).IsEquivalentTo(serverResponse);
-        await serverDone.WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current!.CancellationToken);
+        await serverDone.WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current!.Execution.CancellationToken);
         await serverTask;
     }
 
@@ -84,7 +84,7 @@ public sealed class LocalNamedPipeTransportTests
         }
 
         string pipeName = $"opcclassic-missing-{Guid.NewGuid():N}";
-        using var connectCts = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current!.CancellationToken);
+        using var connectCts = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current!.Execution.CancellationToken);
         connectCts.CancelAfter(TimeSpan.FromSeconds(2));
 
         bool threw = false;
@@ -130,11 +130,11 @@ public sealed class LocalNamedPipeTransportTests
             maxNumberOfServerInstances: 1,
             PipeTransmissionMode.Byte,
             System.IO.Pipes.PipeOptions.Asynchronous);
-        Task acceptTask = server.WaitForConnectionAsync(TestContext.Current!.CancellationToken);
+        Task acceptTask = server.WaitForConnectionAsync(TestContext.Current!.Execution.CancellationToken);
 
         LocalNamedPipeTransport transport = await LocalNamedPipeTransport.ConnectAsync(
             pipeName,
-            cancellationToken: TestContext.Current!.CancellationToken);
+            cancellationToken: TestContext.Current!.Execution.CancellationToken);
         await acceptTask;
 
         await transport.DisposeAsync();

@@ -12,7 +12,6 @@ using Opc.Classic.Dcom.Internal.Ntlm;
 using Opc.Classic.Dcom.Kerberos;
 using Opc.Classic.Dcom.Rpc.Auth.ntlm;
 using Opc.Classic.Security;
-using TUnit.Assertions.AssertConditions.Throws;
 
 namespace Opc.Classic.Integration.Tests.EndToEnd;
 

@@ -274,7 +274,7 @@ public sealed class OpcDaServerCcwTests
             out int serverHandle,
             out int revisedRate,
             out IOpcInterfaceRef groupRef,
-            TestContext.Current!.CancellationToken);
+            TestContext.Current!.Execution.CancellationToken);
 
         await Assert.That(revisedRate).IsEqualTo(1000);
         await Assert.That(server.GroupCount).IsEqualTo(1);
@@ -286,7 +286,7 @@ public sealed class OpcDaServerCcwTests
         IOpcInterfaceRef byName = await ((IOPCServer)server).GetGroupByNameAsync(
             "managed",
             IOPCGroupStateMgt.InterfaceId,
-            TestContext.Current!.CancellationToken);
+            TestContext.Current!.Execution.CancellationToken);
         await Assert.That(byName.Ipid).IsEqualTo(groupRef.Ipid);
         await Assert.That(byName.Oxid).IsEqualTo(groupRef.Oxid);
         await Assert.That(byName.Oid).IsEqualTo(groupRef.Oid);

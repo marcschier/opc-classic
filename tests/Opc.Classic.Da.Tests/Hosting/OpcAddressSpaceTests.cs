@@ -16,7 +16,7 @@ public sealed class OpcAddressSpaceTests
     public async Task FlatHierarchicalNamespace_IsHierarchical_is_false()
     {
         var space = new FlatHierarchicalNamespace();
-        OpcBrowseResult result = await space.BrowseAsync(null, OpcBrowseElementKind.All, TestContext.Current!.CancellationToken);
+        OpcBrowseResult result = await space.BrowseAsync(null, OpcBrowseElementKind.All, TestContext.Current!.Execution.CancellationToken);
 
         await Assert.That(space.IsHierarchical).IsFalse();
         await Assert.That(result.Branches.Count).IsEqualTo(0);
@@ -27,7 +27,7 @@ public sealed class OpcAddressSpaceTests
     public async Task FlatHierarchicalNamespace_GetItemId_echoes_input()
     {
         var space = new FlatHierarchicalNamespace();
-        string id = await space.GetItemIdAsync("any", "Tag.A", TestContext.Current!.CancellationToken);
+        string id = await space.GetItemIdAsync("any", "Tag.A", TestContext.Current!.Execution.CancellationToken);
         await Assert.That(id).IsEqualTo("Tag.A");
     }
 
@@ -35,7 +35,7 @@ public sealed class OpcAddressSpaceTests
     public async Task InMemoryAddressSpace_returns_root_branches()
     {
         var space = new InMemoryAddressSpace("Plant", "Diagnostics");
-        OpcBrowseResult result = await space.BrowseAsync(null, OpcBrowseElementKind.All, TestContext.Current!.CancellationToken);
+        OpcBrowseResult result = await space.BrowseAsync(null, OpcBrowseElementKind.All, TestContext.Current!.Execution.CancellationToken);
 
         await Assert.That(space.IsHierarchical).IsTrue();
         await Assert.That(result.Branches).Contains("Plant");
@@ -48,7 +48,7 @@ public sealed class OpcAddressSpaceTests
         var space = new InMemoryAddressSpace();
         space.AddItem(string.Empty, "Tag.A");
 
-        OpcBrowseResult result = await space.BrowseAsync(null, OpcBrowseElementKind.Items, TestContext.Current!.CancellationToken);
+        OpcBrowseResult result = await space.BrowseAsync(null, OpcBrowseElementKind.Items, TestContext.Current!.Execution.CancellationToken);
 
         await Assert.That(result.Items).Contains("Tag.A");
     }
@@ -60,8 +60,8 @@ public sealed class OpcAddressSpaceTests
         space.AddBranch("Plant.Cooling.Pumps");
         space.AddItem("Plant.Cooling.Pumps", "Pump1.Status");
 
-        OpcBrowseResult rootBranches = await space.BrowseAsync(null, OpcBrowseElementKind.Branches, TestContext.Current!.CancellationToken);
-        OpcBrowseResult pumpsItems = await space.BrowseAsync("Plant.Cooling.Pumps", OpcBrowseElementKind.Items, TestContext.Current.CancellationToken);
+        OpcBrowseResult rootBranches = await space.BrowseAsync(null, OpcBrowseElementKind.Branches, TestContext.Current!.Execution.CancellationToken);
+        OpcBrowseResult pumpsItems = await space.BrowseAsync("Plant.Cooling.Pumps", OpcBrowseElementKind.Items, TestContext.Current.Execution.CancellationToken);
 
         await Assert.That(rootBranches.Branches).Contains("Plant");
         await Assert.That(pumpsItems.Items).Contains("Pump1.Status");
@@ -72,7 +72,7 @@ public sealed class OpcAddressSpaceTests
     {
         var space = new InMemoryAddressSpace();
 
-        string id = await space.GetItemIdAsync("Plant.Cooling", "Pump1", TestContext.Current!.CancellationToken);
+        string id = await space.GetItemIdAsync("Plant.Cooling", "Pump1", TestContext.Current!.Execution.CancellationToken);
 
         await Assert.That(id).IsEqualTo("Plant.Cooling.Pump1");
     }
@@ -83,7 +83,7 @@ public sealed class OpcAddressSpaceTests
         var space = new InMemoryAddressSpace("Plant");
         var browse = new DefaultBrowseServerAddressSpace(space);
 
-        int org = await browse.QueryOrganizationAsync(TestContext.Current!.CancellationToken);
+        int org = await browse.QueryOrganizationAsync(TestContext.Current!.Execution.CancellationToken);
 
         await Assert.That(org).IsEqualTo(2);
     }
@@ -95,10 +95,10 @@ public sealed class OpcAddressSpaceTests
         space.AddItem("Plant", "Tag.A");
         var browse = new DefaultBrowseServerAddressSpace(space);
 
-        await browse.ChangeBrowsePositionAsync(browseDirection: 1, "Plant", TestContext.Current!.CancellationToken);
+        await browse.ChangeBrowsePositionAsync(browseDirection: 1, "Plant", TestContext.Current!.Execution.CancellationToken);
 
         await Assert.That(browse.CurrentBrowsePosition).IsEqualTo("Plant");
-        OpcBrowseResult snapshot = await browse.SnapshotCurrentBranchAsync(OpcBrowseElementKind.Items, TestContext.Current.CancellationToken);
+        OpcBrowseResult snapshot = await browse.SnapshotCurrentBranchAsync(OpcBrowseElementKind.Items, TestContext.Current.Execution.CancellationToken);
         await Assert.That(snapshot.Items).Contains("Tag.A");
     }
 
@@ -107,10 +107,10 @@ public sealed class OpcAddressSpaceTests
     {
         var space = new InMemoryAddressSpace("Plant.Cooling");
         var browse = new DefaultBrowseServerAddressSpace(space);
-        await browse.ChangeBrowsePositionAsync(browseDirection: 1, "Plant", TestContext.Current!.CancellationToken);
-        await browse.ChangeBrowsePositionAsync(browseDirection: 1, "Cooling", TestContext.Current.CancellationToken);
+        await browse.ChangeBrowsePositionAsync(browseDirection: 1, "Plant", TestContext.Current!.Execution.CancellationToken);
+        await browse.ChangeBrowsePositionAsync(browseDirection: 1, "Cooling", TestContext.Current.Execution.CancellationToken);
 
-        await browse.ChangeBrowsePositionAsync(browseDirection: 0, string.Empty, TestContext.Current.CancellationToken);
+        await browse.ChangeBrowsePositionAsync(browseDirection: 0, string.Empty, TestContext.Current.Execution.CancellationToken);
 
         await Assert.That(browse.CurrentBrowsePosition).IsEqualTo("Plant");
     }
@@ -121,7 +121,7 @@ public sealed class OpcAddressSpaceTests
         var space = new InMemoryAddressSpace("Plant.Cooling");
         var browse = new DefaultBrowseServerAddressSpace(space);
 
-        await browse.ChangeBrowsePositionAsync(browseDirection: 2, "Plant.Cooling", TestContext.Current!.CancellationToken);
+        await browse.ChangeBrowsePositionAsync(browseDirection: 2, "Plant.Cooling", TestContext.Current!.Execution.CancellationToken);
 
         await Assert.That(browse.CurrentBrowsePosition).IsEqualTo("Plant.Cooling");
     }
@@ -131,9 +131,9 @@ public sealed class OpcAddressSpaceTests
     {
         var space = new InMemoryAddressSpace("Plant");
         var browse = new DefaultBrowseServerAddressSpace(space);
-        await browse.ChangeBrowsePositionAsync(browseDirection: 2, "Plant", TestContext.Current!.CancellationToken);
+        await browse.ChangeBrowsePositionAsync(browseDirection: 2, "Plant", TestContext.Current!.Execution.CancellationToken);
 
-        string id = await browse.GetItemIdAsync("Tag.A", TestContext.Current.CancellationToken);
+        string id = await browse.GetItemIdAsync("Tag.A", TestContext.Current.Execution.CancellationToken);
 
         await Assert.That(id).IsEqualTo("Plant.Tag.A");
     }
@@ -159,7 +159,7 @@ public sealed class OpcAddressSpaceTests
             propertyIds: System.Array.Empty<int>(),
             out bool more,
             out OpcBrowseElementResult[] elements,
-            TestContext.Current!.CancellationToken);
+            TestContext.Current!.Execution.CancellationToken);
 
         await Assert.That(elements.Length).IsEqualTo(2);
         await Assert.That(more).IsFalse();
@@ -191,7 +191,7 @@ public sealed class OpcAddressSpaceTests
             propertyIds: System.Array.Empty<int>(),
             out bool more,
             out OpcBrowseElementResult[] elements,
-            TestContext.Current!.CancellationToken);
+            TestContext.Current!.Execution.CancellationToken);
 
         await Assert.That(elements.Length).IsEqualTo(5);
         await Assert.That(more).IsTrue();
@@ -207,7 +207,7 @@ public sealed class OpcAddressSpaceTests
             out int[] ids,
             out string[] descriptions,
             out ushort[] types,
-            TestContext.Current!.CancellationToken);
+            TestContext.Current!.Execution.CancellationToken);
 
         await Assert.That(ids).Contains(OpcStandardProperties.CanonicalDataType);
         await Assert.That(ids).Contains(OpcStandardProperties.Value);
@@ -230,7 +230,7 @@ public sealed class OpcAddressSpaceTests
             new[] { OpcStandardProperties.CanonicalDataType, 999 },
             out OpcVariant[] data,
             out int[] errors,
-            TestContext.Current!.CancellationToken);
+            TestContext.Current!.Execution.CancellationToken);
 
         await Assert.That(errors[0]).IsEqualTo(OpcResultId.Ok.Code);
         await Assert.That(data[0].AsInt16()).IsEqualTo((short)VarType.VT_R8);

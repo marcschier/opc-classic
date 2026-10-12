@@ -63,7 +63,7 @@ public sealed class Dr3233WireCaptureTests
             source: "Random.Int4",
             conditionName: "LimitAlarm",
             attributeIds: new[] { 1, 2, 3 },
-            cancellationToken: TestContext.Current!.CancellationToken);
+            cancellationToken: TestContext.Current!.Execution.CancellationToken);
 
         await Assert.That(state).IsNotNull();
         await Assert.That(state.ActiveSubCondition).IsEqualTo("HiHi");
@@ -96,7 +96,7 @@ public sealed class Dr3233WireCaptureTests
             conditionNames: new[] { "LimitAlarm", "DeviationAlarm" },
             activeTimes: new[] { FixedFileTime, FixedFileTime + 10000 },
             cookies: new[] { 42, 43 },
-            cancellationToken: TestContext.Current!.CancellationToken);
+            cancellationToken: TestContext.Current!.Execution.CancellationToken);
 
         await Assert.That(errors).IsNotNull();
         await Assert.That(errors.Length).IsEqualTo(2);
@@ -132,7 +132,7 @@ public sealed class Dr3233WireCaptureTests
             source: "Random.Int4",
             conditionName: "LimitAlarm",
             attributeIds: Array.Empty<int>(),
-            cancellationToken: TestContext.Current!.CancellationToken);
+            cancellationToken: TestContext.Current!.Execution.CancellationToken);
 
         await Assert.That(state).IsNotNull();
         await Assert.That(state.AcknowledgerId).IsNull();

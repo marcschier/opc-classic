@@ -431,6 +431,9 @@ dotnet_diagnostic.MA0015.severity = suggestion
 indent_size = 2
 end_of_line = lf
 
+[*.verified.*]
+end_of_line = lf
+
 # MSBuild / .csproj / .props / .targets — 2-space
 [*.{xml,csproj,props,targets,ruleset}]
 indent_size = 2

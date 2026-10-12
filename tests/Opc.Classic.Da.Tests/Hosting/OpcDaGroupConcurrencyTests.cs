@@ -17,7 +17,7 @@ public sealed class OpcDaGroupConcurrencyTests
     public async Task CreateEnumerator_during_concurrent_AddItems_produces_stable_snapshot()
     {
         var group = CreateGroup();
-        using var cts = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current!.CancellationToken);
+        using var cts = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current!.Execution.CancellationToken);
         cts.CancelAfter(TimeSpan.FromSeconds(5));
 
         Task[] adders = Enumerable.Range(0, 4).Select(i => Task.Run(async () =>
@@ -72,10 +72,10 @@ public sealed class OpcDaGroupConcurrencyTests
         var defs = Enumerable.Range(0, 100)
             .Select(i => new OpcItemDef("", $"Tag.{i}", true, i, null, VarType.VT_I4))
             .ToArray();
-        await group.AddItemsAsync(defs, out OpcItemResult[] results, out _, TestContext.Current!.CancellationToken);
+        await group.AddItemsAsync(defs, out OpcItemResult[] results, out _, TestContext.Current!.Execution.CancellationToken);
         int[] handles = results.Select(r => r.ServerHandle).ToArray();
 
-        using var cts = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current!.CancellationToken);
+        using var cts = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current!.Execution.CancellationToken);
         cts.CancelAfter(TimeSpan.FromSeconds(5));
 
         Task remover = Task.Run(async () =>

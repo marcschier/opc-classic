@@ -3,7 +3,6 @@
 using System.Net;
 using System.Net.Sockets;
 using Opc.Classic.Dcom.Transport;
-using TUnit.Assertions.AssertConditions.Throws;
 
 namespace Opc.Classic.Dcom.Tests.Tests;
 
@@ -31,7 +30,7 @@ public sealed class TcpClientTransportTests
     public async Task ConnectAsync_throws_for_empty_host()
     {
         await Assert.That(async () =>
-                await TcpClientTransport.ConnectAsync(string.Empty, 51300, TestContext.Current!.CancellationToken))
+                await TcpClientTransport.ConnectAsync(string.Empty, 51300, TestContext.Current!.Execution.CancellationToken))
             .Throws<ArgumentException>();
     }
 
@@ -39,10 +38,10 @@ public sealed class TcpClientTransportTests
     public async Task ConnectAsync_throws_for_invalid_port()
     {
         await Assert.That(async () =>
-                await TcpClientTransport.ConnectAsync("127.0.0.1", 0, TestContext.Current!.CancellationToken))
+                await TcpClientTransport.ConnectAsync("127.0.0.1", 0, TestContext.Current!.Execution.CancellationToken))
             .Throws<ArgumentOutOfRangeException>();
         await Assert.That(async () =>
-                await TcpClientTransport.ConnectAsync("127.0.0.1", 99999, TestContext.Current!.CancellationToken))
+                await TcpClientTransport.ConnectAsync("127.0.0.1", 99999, TestContext.Current!.Execution.CancellationToken))
             .Throws<ArgumentOutOfRangeException>();
     }
 
@@ -53,10 +52,10 @@ public sealed class TcpClientTransportTests
         listener.Start();
         int port = ((IPEndPoint)listener.LocalEndpoint).Port;
 
-        Task<TcpClient> acceptTask = listener.AcceptTcpClientAsync(TestContext.Current!.CancellationToken).AsTask();
+        Task<TcpClient> acceptTask = listener.AcceptTcpClientAsync(TestContext.Current!.Execution.CancellationToken).AsTask();
 
         await using TcpClientTransport transport = await TcpClientTransport.ConnectAsync(
-            "127.0.0.1", port, TestContext.Current.CancellationToken);
+            "127.0.0.1", port, TestContext.Current.Execution.CancellationToken);
 
         using TcpClient acceptedServer = await acceptTask;
 
@@ -76,12 +75,12 @@ public sealed class TcpClientTransportTests
         listener.Start();
         int port = ((IPEndPoint)listener.LocalEndpoint).Port;
 
-        Task<TcpClient> acceptTask = listener.AcceptTcpClientAsync(TestContext.Current!.CancellationToken).AsTask();
+        Task<TcpClient> acceptTask = listener.AcceptTcpClientAsync(TestContext.Current!.Execution.CancellationToken).AsTask();
 
         await using DcomCallChannel channel = await DcomCallChannelFactory.ConnectTcpAsync(
             "127.0.0.1", port,
             new NoOpAuthContext(),
-            TestContext.Current.CancellationToken);
+            TestContext.Current.Execution.CancellationToken);
 
         using TcpClient acceptedServer = await acceptTask;
 
@@ -93,7 +92,7 @@ public sealed class TcpClientTransportTests
     public async Task ConnectTcpAsync_throws_for_null_authContext()
     {
         await Assert.That(async () =>
-                await DcomCallChannelFactory.ConnectTcpAsync("127.0.0.1", 51300, null!, TestContext.Current!.CancellationToken))
+                await DcomCallChannelFactory.ConnectTcpAsync("127.0.0.1", 51300, null!, TestContext.Current!.Execution.CancellationToken))
             .Throws<ArgumentNullException>();
     }
 
@@ -103,10 +102,10 @@ public sealed class TcpClientTransportTests
         using var listener = new TcpListener(IPAddress.Loopback, 0);
         listener.Start();
         int port = ((IPEndPoint)listener.LocalEndpoint).Port;
-        Task<TcpClient> acceptTask = listener.AcceptTcpClientAsync(TestContext.Current!.CancellationToken).AsTask();
+        Task<TcpClient> acceptTask = listener.AcceptTcpClientAsync(TestContext.Current!.Execution.CancellationToken).AsTask();
 
         TcpClientTransport transport = await TcpClientTransport.ConnectAsync(
-            "127.0.0.1", port, TestContext.Current.CancellationToken);
+            "127.0.0.1", port, TestContext.Current.Execution.CancellationToken);
 
         using TcpClient acceptedServer = await acceptTask;
 

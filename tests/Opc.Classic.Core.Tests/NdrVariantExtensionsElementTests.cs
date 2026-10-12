@@ -10,7 +10,6 @@
 //
 
 using Opc.Classic.Ndr;
-using TUnit.Assertions.AssertConditions.Throws;
 
 namespace Opc.Classic.Tests;
 
@@ -159,7 +158,7 @@ public sealed class NdrVariantExtensionsElementTests
         var input = new OpcVariant(VarType.VT_BSTR, null);
         OpcVariant decoded = ReadElementOne(WriteOne((ref NdrWriter w) => w.WriteVariantElement(input)));
         await Assert.That(decoded.Type).IsEqualTo(VarType.VT_BSTR);
-        await Assert.That(decoded.Boxed).IsEqualTo((object?)null);
+        await Assert.That(decoded.Boxed).IsNull();
     }
 
     [Test]

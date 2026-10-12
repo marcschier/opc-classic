@@ -134,7 +134,8 @@ public sealed class NdrOpcServerStatusCodecTests
     {
         byte[] wire = WireWithRawFileTimes(rawStartFileTime: bogusFileTime, rawCurrentFileTime: 0L, rawLastUpdateFileTime: 0L);
 
-        var thrown = await Assert.ThrowsAsync<System.IO.InvalidDataException>(() => Task.FromResult(ReadOne(wire)));
+        var thrown = await Assert.ThrowsAsync<System.IO.InvalidDataException>(() => Task.FromResult(ReadOne(wire)))
+            ?? throw new InvalidOperationException("The exception assertion did not return an exception.");
         await Assert.That(thrown.Message).Contains("OPCSERVERSTATUS.ftStartTime");
         await Assert.That(thrown.Message).Contains("FILETIME value");
         await Assert.That(thrown.Message).Contains("Wire context");
@@ -146,7 +147,8 @@ public sealed class NdrOpcServerStatusCodecTests
         // Cause the LAST field (ftLastUpdateTime) to overflow; verify the exception names that field, not the earlier two.
         byte[] wire = WireWithRawFileTimes(rawStartFileTime: 0L, rawCurrentFileTime: 0L, rawLastUpdateFileTime: long.MaxValue);
 
-        var thrown = await Assert.ThrowsAsync<System.IO.InvalidDataException>(() => Task.FromResult(ReadOne(wire)));
+        var thrown = await Assert.ThrowsAsync<System.IO.InvalidDataException>(() => Task.FromResult(ReadOne(wire)))
+            ?? throw new InvalidOperationException("The exception assertion did not return an exception.");
         await Assert.That(thrown.Message).Contains("OPCSERVERSTATUS.ftLastUpdateTime");
         await Assert.That(thrown.Message).DoesNotContain("ftStartTime");
         await Assert.That(thrown.Message).DoesNotContain("ftCurrentTime");
@@ -159,7 +161,8 @@ public sealed class NdrOpcServerStatusCodecTests
         // exception must name it (not the unread later fields).
         byte[] wire = WireWithRawFileTimes(rawStartFileTime: long.MaxValue, rawCurrentFileTime: 0L, rawLastUpdateFileTime: 0L);
 
-        var thrown = await Assert.ThrowsAsync<System.IO.InvalidDataException>(() => Task.FromResult(ReadOne(wire)));
+        var thrown = await Assert.ThrowsAsync<System.IO.InvalidDataException>(() => Task.FromResult(ReadOne(wire)))
+            ?? throw new InvalidOperationException("The exception assertion did not return an exception.");
         await Assert.That(thrown.Message).Contains("OPCSERVERSTATUS.ftStartTime");
         await Assert.That(thrown.Message).DoesNotContain("ftCurrentTime");
         await Assert.That(thrown.Message).DoesNotContain("ftLastUpdateTime");
@@ -171,7 +174,8 @@ public sealed class NdrOpcServerStatusCodecTests
         // Symmetric coverage for the MIDDLE field: ftStartTime valid, ftCurrentTime corrupt.
         byte[] wire = WireWithRawFileTimes(rawStartFileTime: 0L, rawCurrentFileTime: -1L, rawLastUpdateFileTime: 0L);
 
-        var thrown = await Assert.ThrowsAsync<System.IO.InvalidDataException>(() => Task.FromResult(ReadOne(wire)));
+        var thrown = await Assert.ThrowsAsync<System.IO.InvalidDataException>(() => Task.FromResult(ReadOne(wire)))
+            ?? throw new InvalidOperationException("The exception assertion did not return an exception.");
         await Assert.That(thrown.Message).Contains("OPCSERVERSTATUS.ftCurrentTime");
         await Assert.That(thrown.Message).DoesNotContain("ftStartTime");
         await Assert.That(thrown.Message).DoesNotContain("ftLastUpdateTime");

@@ -16,7 +16,7 @@ public sealed class HdaManagedClientOverTransportTests
     [Category("CompatMatrix.Loopback")]
     public async Task Hda_managed_client_round_trips_GetStatus_over_real_listener()
     {
-        using var timeout = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current!.CancellationToken);
+        using var timeout = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current!.Execution.CancellationToken);
         timeout.CancelAfter(TimeSpan.FromSeconds(10));
         CancellationToken cancellationToken = timeout.Token;
 
@@ -48,7 +48,7 @@ public sealed class HdaManagedClientOverTransportTests
     [Category("CompatMatrix.Loopback")]
     public async Task Hda_managed_client_round_trips_metadata_and_validate_item_ids_over_real_listener()
     {
-        using var timeout = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current!.CancellationToken);
+        using var timeout = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current!.Execution.CancellationToken);
         timeout.CancelAfter(TimeSpan.FromSeconds(10));
         CancellationToken cancellationToken = timeout.Token;
 
@@ -91,7 +91,7 @@ public sealed class HdaManagedClientOverTransportTests
     [Category("CompatMatrix.Loopback")]
     public async Task Hda_managed_client_two_back_to_back_calls_share_connection()
     {
-        using var timeout = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current!.CancellationToken);
+        using var timeout = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current!.Execution.CancellationToken);
         timeout.CancelAfter(TimeSpan.FromSeconds(10));
         CancellationToken cancellationToken = timeout.Token;
 

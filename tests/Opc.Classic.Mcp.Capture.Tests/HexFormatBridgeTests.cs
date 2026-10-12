@@ -69,7 +69,7 @@ public sealed class HexFormatBridgeTests
             await Assert.That(path).IsNotNull();
             string expectedName = $"20260102T030405.678_000001_live-session_iid-{iid:N}_op-12.hex";
             await Assert.That(Path.GetFileName(path!)).IsEqualTo(expectedName);
-            string content = await File.ReadAllTextAsync(path!, TestContext.Current!.CancellationToken);
+            string content = await File.ReadAllTextAsync(path!, TestContext.Current!.Execution.CancellationToken);
             await Assert.That(content).Contains("# Opc.Classic wire capture (from network packet capture)");
             await Assert.That(content).Contains("# context: live-session");
             await Assert.That(content).Contains($"# iid: {iid:D}");
@@ -110,7 +110,7 @@ public sealed class HexFormatBridgeTests
             await Assert.That(path).IsNotNull();
             await Assert.That(Path.GetFileName(path!)).IsEqualTo(
                 $"20260102T030405.000_000001_bad-tag-with-spaces_iid-{iid:N}_op-1.hex");
-            string content = await File.ReadAllTextAsync(path!, TestContext.Current!.CancellationToken);
+            string content = await File.ReadAllTextAsync(path!, TestContext.Current!.Execution.CancellationToken);
             await Assert.That(content).Contains("# context: bad-tag-with-spaces");
         }
         finally

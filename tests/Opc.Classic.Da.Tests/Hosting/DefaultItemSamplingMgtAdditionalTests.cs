@@ -1,7 +1,6 @@
 ﻿// Copyright (c) 2026 Opc.Classic Contributors. Licensed under the MIT License.
 
 using Opc.Classic.Da.Hosting;
-using TUnit.Assertions.AssertConditions.Throws;
 
 namespace Opc.Classic.Da.Tests.Hosting;
 
@@ -17,7 +16,7 @@ public sealed class DefaultItemSamplingMgtAdditionalTests
             [100, 200, 300],
             out int[] revisedSamplingRates,
             out int[] errors,
-            TestContext.Current!.CancellationToken);
+            TestContext.Current!.Execution.CancellationToken);
 
         await Assert.That(revisedSamplingRates).IsEquivalentTo(new[] { 0, 0, 0 });
         await Assert.That(errors).IsEquivalentTo(new[]
@@ -37,7 +36,7 @@ public sealed class DefaultItemSamplingMgtAdditionalTests
             [11, 12],
             out int[] samplingRates,
             out int[] errors,
-            TestContext.Current!.CancellationToken);
+            TestContext.Current!.Execution.CancellationToken);
 
         await Assert.That(samplingRates).IsEquivalentTo(new[] { 0, 0 });
         await Assert.That(errors).IsEquivalentTo(new[]
@@ -52,7 +51,7 @@ public sealed class DefaultItemSamplingMgtAdditionalTests
     {
         var manager = new DefaultItemSamplingMgt();
 
-        int[] errors = await manager.ClearItemSamplingRateAsync([21, 22], TestContext.Current!.CancellationToken);
+        int[] errors = await manager.ClearItemSamplingRateAsync([21, 22], TestContext.Current!.Execution.CancellationToken);
 
         await Assert.That(errors).IsEquivalentTo(new[]
         {
@@ -66,7 +65,7 @@ public sealed class DefaultItemSamplingMgtAdditionalTests
     {
         var manager = new DefaultItemSamplingMgt();
 
-        int[] errors = await manager.SetItemBufferEnableAsync([31, 32], null!, TestContext.Current!.CancellationToken);
+        int[] errors = await manager.SetItemBufferEnableAsync([31, 32], null!, TestContext.Current!.Execution.CancellationToken);
 
         await Assert.That(errors).IsEquivalentTo(new[]
         {
@@ -84,7 +83,7 @@ public sealed class DefaultItemSamplingMgtAdditionalTests
             [41, 42, 43],
             out bool[] enabled,
             out int[] errors,
-            TestContext.Current!.CancellationToken);
+            TestContext.Current!.Execution.CancellationToken);
 
         await Assert.That(enabled).IsEquivalentTo(new[] { false, false, false });
         await Assert.That(errors).IsEquivalentTo(new[]
@@ -100,11 +99,11 @@ public sealed class DefaultItemSamplingMgtAdditionalTests
     {
         var manager = new DefaultItemSamplingMgt();
 
-        await manager.SetItemSamplingRateAsync([], [], out int[] revised, out int[] setErrors, TestContext.Current!.CancellationToken);
-        await manager.GetItemSamplingRateAsync([], out int[] rates, out int[] getErrors, TestContext.Current!.CancellationToken);
-        int[] clearErrors = await manager.ClearItemSamplingRateAsync([], TestContext.Current!.CancellationToken);
-        int[] bufferSetErrors = await manager.SetItemBufferEnableAsync([], [], TestContext.Current!.CancellationToken);
-        await manager.GetItemBufferEnableAsync([], out bool[] enabled, out int[] bufferGetErrors, TestContext.Current!.CancellationToken);
+        await manager.SetItemSamplingRateAsync([], [], out int[] revised, out int[] setErrors, TestContext.Current!.Execution.CancellationToken);
+        await manager.GetItemSamplingRateAsync([], out int[] rates, out int[] getErrors, TestContext.Current!.Execution.CancellationToken);
+        int[] clearErrors = await manager.ClearItemSamplingRateAsync([], TestContext.Current!.Execution.CancellationToken);
+        int[] bufferSetErrors = await manager.SetItemBufferEnableAsync([], [], TestContext.Current!.Execution.CancellationToken);
+        await manager.GetItemBufferEnableAsync([], out bool[] enabled, out int[] bufferGetErrors, TestContext.Current!.Execution.CancellationToken);
 
         await Assert.That(revised.Length).IsEqualTo(0);
         await Assert.That(setErrors.Length).IsEqualTo(0);
@@ -121,17 +120,17 @@ public sealed class DefaultItemSamplingMgtAdditionalTests
     {
         var manager = new DefaultItemSamplingMgt();
 
-        await Assert.That(() => manager.SetItemSamplingRateAsync(null!, [], out _, out _, TestContext.Current!.CancellationToken))
+        await Assert.That(() => manager.SetItemSamplingRateAsync(null!, [], out _, out _, TestContext.Current!.Execution.CancellationToken))
             .Throws<ArgumentNullException>();
-        await Assert.That(() => manager.SetItemSamplingRateAsync([1], null!, out _, out _, TestContext.Current!.CancellationToken))
+        await Assert.That(() => manager.SetItemSamplingRateAsync([1], null!, out _, out _, TestContext.Current!.Execution.CancellationToken))
             .Throws<ArgumentNullException>();
-        await Assert.That(() => manager.GetItemSamplingRateAsync(null!, out _, out _, TestContext.Current!.CancellationToken))
+        await Assert.That(() => manager.GetItemSamplingRateAsync(null!, out _, out _, TestContext.Current!.Execution.CancellationToken))
             .Throws<ArgumentNullException>();
-        await Assert.That(() => manager.ClearItemSamplingRateAsync(null!, TestContext.Current!.CancellationToken))
+        await Assert.That(() => (Task)manager.ClearItemSamplingRateAsync(null!, TestContext.Current!.Execution.CancellationToken))
             .Throws<ArgumentNullException>();
-        await Assert.That(() => manager.SetItemBufferEnableAsync(null!, [], TestContext.Current!.CancellationToken))
+        await Assert.That(() => (Task)manager.SetItemBufferEnableAsync(null!, [], TestContext.Current!.Execution.CancellationToken))
             .Throws<ArgumentNullException>();
-        await Assert.That(() => manager.GetItemBufferEnableAsync(null!, out _, out _, TestContext.Current!.CancellationToken))
+        await Assert.That(() => manager.GetItemBufferEnableAsync(null!, out _, out _, TestContext.Current!.Execution.CancellationToken))
             .Throws<ArgumentNullException>();
     }
 
@@ -146,9 +145,9 @@ public sealed class DefaultItemSamplingMgtAdditionalTests
             .Throws<OperationCanceledException>();
         await Assert.That(() => manager.GetItemSamplingRateAsync([1], out _, out _, cts.Token))
             .Throws<OperationCanceledException>();
-        await Assert.That(() => manager.ClearItemSamplingRateAsync([1], cts.Token))
+        await Assert.That(() => (Task)manager.ClearItemSamplingRateAsync([1], cts.Token))
             .Throws<OperationCanceledException>();
-        await Assert.That(() => manager.SetItemBufferEnableAsync([1], [true], cts.Token))
+        await Assert.That(() => (Task)manager.SetItemBufferEnableAsync([1], [true], cts.Token))
             .Throws<OperationCanceledException>();
         await Assert.That(() => manager.GetItemBufferEnableAsync([1], out _, out _, cts.Token))
             .Throws<OperationCanceledException>();

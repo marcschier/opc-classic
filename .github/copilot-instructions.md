@@ -20,7 +20,7 @@ opc-classic/
 │   └── docker/                   Windows-container managed/native interop test fleet
 ├── .github/workflows/            build, release, and Docker test fleet workflows
 ├── Opc.Classic.slnx              .NET 10 XML solution format
-├── global.json                   pins .NET 10 SDK >= 10.0.100
+├── global.json                   pins .NET 10 SDK >= 10.0.401
 ├── LICENSE                       MIT license
 └── README.md
 ```
@@ -29,12 +29,12 @@ opc-classic/
 
 ## Build / test / run
 
-Requires **.NET 10 SDK** (10.0.100 or later). `global.json` rolls forward to compatible .NET 10 feature SDKs.
+Requires the **.NET 10 SDK** pinned by `global.json`, which selects native Microsoft.Testing.Platform test commands.
 
 ```powershell
 dotnet restore Opc.Classic.slnx
 dotnet build Opc.Classic.slnx
-dotnet test Opc.Classic.slnx
+dotnet test --solution Opc.Classic.slnx
 ```
 
 Run a targeted TUnit project:

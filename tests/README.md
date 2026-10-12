@@ -1,15 +1,21 @@
 # Test projects and categories
 
-The repository uses TUnit on Microsoft.Testing.Platform. Run the full solution with:
+The repository uses TUnit on Microsoft.Testing.Platform in native .NET 10 SDK
+mode, selected by `global.json`. Pass `--project` or `--solution`; runner options
+do not need a `--` separator. Coverage uses `coverlet.MTP` and the shared
+`tests/testconfig.json`, preserving the previous coverage exclusions.
+The deterministic Cobertura format matches the former MSBuild coverage bridge;
+OpenCover does not support deterministic reports.
+Run the full solution with:
 
 ```powershell
-dotnet test Opc.Classic.slnx
+dotnet test --solution Opc.Classic.slnx
 ```
 
 The default local filter for fast, environment-independent coverage is:
 
 ```powershell
-dotnet test Opc.Classic.slnx --filter "Category!=NativeConformance&Category!=MatrikonConformance&Category!=CompatMatrix&Category!=Kerberos"
+dotnet test --solution Opc.Classic.slnx --treenode-filter "/*/*/*/*[(Category!=NativeConformance)&(Category!=MatrikonConformance)&(Category!=CompatMatrix)&(Category!=Kerberos)]"
 ```
 
 ## Top-level test directories

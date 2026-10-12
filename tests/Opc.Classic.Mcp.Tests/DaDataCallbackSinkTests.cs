@@ -1,7 +1,6 @@
 ﻿// Copyright (c) 2026 Opc.Classic Contributors. Licensed under the MIT License.
 
 using Opc.Classic.Mcp.Tools;
-using TUnit.Assertions.AssertConditions.Throws;
 
 namespace Opc.Classic.Mcp.Tests;
 
@@ -22,7 +21,7 @@ public sealed class DaDataCallbackSinkTests
             qualities: [0b1100_0000, 0b1100_0000],
             timestamps: [DateTimeOffset.UtcNow.ToFileTime(), DateTimeOffset.UtcNow.ToFileTime()],
             errors: [0, 0],
-            cancellationToken: TestContext.Current!.CancellationToken).ConfigureAwait(false);
+            cancellationToken: TestContext.Current!.Execution.CancellationToken).ConfigureAwait(false);
 
         await Assert.That(sink.OnDataChangeCount).IsEqualTo(1L);
         await Assert.That(sink.HasReceivedAnyData).IsTrue();
@@ -50,7 +49,7 @@ public sealed class DaDataCallbackSinkTests
             qualities: [0b1100_0000],
             timestamps: [DateTimeOffset.UtcNow.ToFileTime()],
             errors: [0],
-            cancellationToken: TestContext.Current!.CancellationToken).ConfigureAwait(false);
+            cancellationToken: TestContext.Current!.Execution.CancellationToken).ConfigureAwait(false);
 
         await Assert.That(sink.OnReadCompleteCount).IsEqualTo(1L);
         await Assert.That(sink.OnDataChangeCount).IsEqualTo(0L);
@@ -68,11 +67,11 @@ public sealed class DaDataCallbackSinkTests
             masterError: 0,
             clientHandles: [10],
             errors: [0],
-            cancellationToken: TestContext.Current!.CancellationToken).ConfigureAwait(false);
+            cancellationToken: TestContext.Current!.Execution.CancellationToken).ConfigureAwait(false);
         await sink.OnCancelCompleteAsync(
             transactionId: 2,
             groupHandle: 7,
-            cancellationToken: TestContext.Current!.CancellationToken).ConfigureAwait(false);
+            cancellationToken: TestContext.Current!.Execution.CancellationToken).ConfigureAwait(false);
 
         await Assert.That(sink.OnWriteCompleteCount).IsEqualTo(1L);
         await Assert.That(sink.OnCancelCompleteCount).IsEqualTo(1L);
@@ -95,7 +94,7 @@ public sealed class DaDataCallbackSinkTests
             qualities: [0b1100_0000, 0b1100_0000],
             timestamps: [0L, 0L],
             errors: [0, 0],
-            cancellationToken: TestContext.Current!.CancellationToken).ConfigureAwait(false)).ConfigureAwait(false);
+            cancellationToken: TestContext.Current!.Execution.CancellationToken).ConfigureAwait(false)).AssertAsync().ConfigureAwait(false);
 
         // Counter must remain 0 — a failed (validation-throwing) call must NOT be
         // counted as a successful OnDataChange invocation. Otherwise monitoring
@@ -118,7 +117,7 @@ public sealed class DaDataCallbackSinkTests
             qualities: [0b1100_0000, 0b1100_0000, 0b1100_0000, 0b1100_0000, 0b1100_0000],
             timestamps: [ts, ts, ts, ts, ts],
             errors: [0, 0, 0, 0, 0],
-            cancellationToken: TestContext.Current!.CancellationToken).ConfigureAwait(false);
+            cancellationToken: TestContext.Current!.Execution.CancellationToken).ConfigureAwait(false);
 
         IReadOnlyList<DataChangeItem> firstDrain = sink.DrainItems(maxItems: 3);
         await Assert.That(firstDrain.Count).IsEqualTo(3);
@@ -146,7 +145,7 @@ public sealed class DaDataCallbackSinkTests
                 qualities: [0b1100_0000, 0b1100_0000],
                 timestamps: [ts, ts],
                 errors: [0, 0],
-                cancellationToken: TestContext.Current!.CancellationToken).ConfigureAwait(false);
+                cancellationToken: TestContext.Current!.Execution.CancellationToken).ConfigureAwait(false);
         }
 
         IReadOnlyList<DataChangeItem> drained = sink.DrainItems(maxItems: 4);
@@ -172,7 +171,7 @@ public sealed class DaDataCallbackSinkTests
             qualities: [0b1100_0000],
             timestamps: [ts],
             errors: [0],
-            cancellationToken: TestContext.Current!.CancellationToken).ConfigureAwait(false);
+            cancellationToken: TestContext.Current!.Execution.CancellationToken).ConfigureAwait(false);
 
         await PushAsync(1, 100).ConfigureAwait(false);
         await PushAsync(2, 200).ConfigureAwait(false);
@@ -210,7 +209,7 @@ public sealed class DaDataCallbackSinkTests
             qualities: [0b1100_0000],
             timestamps: [DateTimeOffset.UtcNow.ToFileTime()],
             errors: [0],
-            cancellationToken: TestContext.Current!.CancellationToken).ConfigureAwait(false);
+            cancellationToken: TestContext.Current!.Execution.CancellationToken).ConfigureAwait(false);
 
         // Counter still increments (we observed the call), but the queue is closed.
         await Assert.That(sink.OnDataChangeCount).IsEqualTo(1L);
@@ -230,7 +229,7 @@ public sealed class DaDataCallbackSinkTests
             qualities: [0b1100_0000],
             timestamps: [fileTime],
             errors: [0],
-            cancellationToken: TestContext.Current!.CancellationToken).ConfigureAwait(false);
+            cancellationToken: TestContext.Current!.Execution.CancellationToken).ConfigureAwait(false);
 
         DataChangeItem item = sink.DrainItems(0)[0];
         await Assert.That(item.Timestamp).IsEqualTo(expected);

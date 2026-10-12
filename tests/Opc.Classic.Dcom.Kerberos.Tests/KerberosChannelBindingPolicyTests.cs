@@ -30,7 +30,7 @@ public sealed class KerberosChannelBindingPolicyTests
             new KerberosServerAuthenticationProvider(options).CreateAcceptor();
         var checksum = new DelegationInfo
         {
-            ChannelBinding = new byte[] { 0x01, 0x02, 0x03 },
+            ChannelBindingHash = new byte[] { 0x01, 0x02, 0x03 },
         };
 
         Exception? thrown = InvokeValidation(acceptor, checksum);
@@ -58,18 +58,18 @@ public sealed class KerberosChannelBindingPolicyTests
 
         Exception? matching = InvokeValidation(
             whenPresent,
-            new DelegationInfo { ChannelBinding = ExpectedHash });
+            new DelegationInfo { ChannelBindingHash = ExpectedHash });
         Exception? absentOptional = InvokeValidation(
             whenPresent,
-            new DelegationInfo { ChannelBinding = ReadOnlyMemory<byte>.Empty });
+            new DelegationInfo { ChannelBindingHash = ReadOnlyMemory<byte>.Empty });
         byte[] mismatchedHash = new byte[16];
         mismatchedHash[0] = 0xFF;
         Exception? mismatch = InvokeValidation(
             whenPresent,
-            new DelegationInfo { ChannelBinding = mismatchedHash });
+            new DelegationInfo { ChannelBindingHash = mismatchedHash });
         Exception? absentRequired = InvokeValidation(
             required,
-            new DelegationInfo { ChannelBinding = ReadOnlyMemory<byte>.Empty });
+            new DelegationInfo { ChannelBindingHash = ReadOnlyMemory<byte>.Empty });
 
         await Assert.That(matching).IsNull();
         await Assert.That(absentOptional).IsNull();

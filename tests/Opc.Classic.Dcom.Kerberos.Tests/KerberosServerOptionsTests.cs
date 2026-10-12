@@ -6,7 +6,6 @@ using Kerberos.NET.Crypto;
 using Kerberos.NET.Entities;
 using Microsoft.Extensions.DependencyInjection;
 using Opc.Classic.Dcom.Rpc.Auth;
-using TUnit.Assertions.AssertConditions.Throws;
 
 namespace Opc.Classic.Dcom.Kerberos.Tests;
 

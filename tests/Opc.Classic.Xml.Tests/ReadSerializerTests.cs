@@ -137,7 +137,7 @@ public sealed class ReadSerializerTests
             </soap:Envelope>
             """;
         var resp = Deserialize(xml);
-        await Assert.That(resp.Items[0].Value!.AsBoolean()).IsEqualTo(true);
+        await Assert.That(resp.Items[0].Value!.AsBoolean()).IsTrue();
     }
 
     [Test]

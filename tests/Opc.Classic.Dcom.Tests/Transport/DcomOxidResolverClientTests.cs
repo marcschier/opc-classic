@@ -12,7 +12,6 @@ using Opc.Classic.Dcom.Transport;
 using Opc.Classic.Ndr;
 using Opc.Classic.Testing;
 using Opc.Classic.Transport;
-using TUnit.Assertions.AssertConditions.Throws;
 
 namespace Opc.Classic.Dcom.Tests.Transport;
 

@@ -2,7 +2,6 @@
 
 using System.Globalization;
 using System.Numerics;
-using TUnit.Assertions.AssertConditions.Throws;
 
 namespace Opc.Classic.Cpx.Tests;
 

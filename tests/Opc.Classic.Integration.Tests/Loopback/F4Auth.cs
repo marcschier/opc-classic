@@ -21,7 +21,6 @@ using Opc.Classic.Ndr;
 using Opc.Classic.Samples.SimulationServer;
 using Opc.Classic.Samples.SimulationServer.Transports;
 using Opc.Classic.Transport;
-using TUnit.Assertions.AssertConditions.Throws;
 
 namespace Opc.Classic.Integration.Tests.Loopback;
 
@@ -45,7 +44,7 @@ public sealed class F4Auth
         await using DcomCallChannel channel = await ConnectAsync(listener, Password, OpcProtectionLevel.Integrity);
         var proxy = new IOPCServerClientProxy(channel);
 
-        OpcServerStatus status = await proxy.GetStatusAsync(TestContext.Current!.CancellationToken);
+        OpcServerStatus status = await proxy.GetStatusAsync(TestContext.Current!.Execution.CancellationToken);
 
         await Assert.That(status.State).IsEqualTo(OpcServerState.Running);
         await Assert.That(status.VendorInfo).IsEqualTo(server.VendorInfo);
@@ -58,7 +57,7 @@ public sealed class F4Auth
         await using DcomCallChannel channel = await ConnectAsync(listener, "wrong-password", OpcProtectionLevel.Integrity);
         var proxy = new IOPCServerClientProxy(channel);
 
-        await Assert.That(async () => await proxy.GetStatusAsync(TestContext.Current!.CancellationToken))
+        await Assert.That(async () => await proxy.GetStatusAsync(TestContext.Current!.Execution.CancellationToken))
             .Throws<Exception>();
     }
 
@@ -70,11 +69,11 @@ public sealed class F4Auth
         TcpClientTransport transport = await TcpClientTransport.ConnectAsync(
             endpoint.Address.ToString(),
             endpoint.Port,
-            TestContext.Current!.CancellationToken);
+            TestContext.Current!.Execution.CancellationToken);
         await using var channel = new DcomCallChannel(transport, NoOpAuthContext.Instance);
         var proxy = new IOPCServerClientProxy(channel);
 
-        await Assert.That(async () => await proxy.GetStatusAsync(TestContext.Current!.CancellationToken))
+        await Assert.That(async () => await proxy.GetStatusAsync(TestContext.Current!.Execution.CancellationToken))
             .Throws<Exception>();
     }
 
@@ -86,7 +85,7 @@ public sealed class F4Auth
         await using DcomCallChannel channel = await ConnectAsync(listener, Password, OpcProtectionLevel.Privacy);
         var proxy = new IOPCServerClientProxy(channel);
 
-        OpcServerStatus status = await proxy.GetStatusAsync(TestContext.Current!.CancellationToken);
+        OpcServerStatus status = await proxy.GetStatusAsync(TestContext.Current!.Execution.CancellationToken);
 
         await Assert.That(status.VendorInfo).IsEqualTo(server.VendorInfo);
     }
@@ -105,7 +104,7 @@ public sealed class F4Auth
             interfaceId,
             opnum: 7,
             requestPayload: new byte[] { 0x5A },
-            TestContext.Current!.CancellationToken);
+            TestContext.Current!.Execution.CancellationToken);
 
         await Assert.That(result.Hresult).IsEqualTo(0);
         await Assert.That(dispatcher.LastPayload.ToArray()).IsEquivalentTo(new byte[] { 0x5A });
@@ -121,7 +120,7 @@ public sealed class F4Auth
         await using TcpClientTransport transport = await TcpClientTransport.ConnectAsync(
             endpoint.Address.ToString(),
             endpoint.Port,
-            TestContext.Current!.CancellationToken);
+            TestContext.Current!.Execution.CancellationToken);
 
         IAuthContext privacy = CreateAuthContext(endpoint, Password, OpcProtectionLevel.Privacy);
         byte[] type1 = privacy.BuildInitialToken();
@@ -129,7 +128,7 @@ public sealed class F4Auth
             PduCodec.EncodePdu(NewBindForInterface(interfaceId, contextId: 0, callId: 1), ConnectionOrientedPdu.MUST_RECEIVE_FRAGMENT_SIZE),
             OpcProtectionLevel.Privacy,
             type1));
-        byte[] bindAck = await PduCodec.ReadPduFrameAsync(transport.Input, TestContext.Current!.CancellationToken);
+        byte[] bindAck = await PduCodec.ReadPduFrameAsync(transport.Input, TestContext.Current!.Execution.CancellationToken);
         byte[] type2 = ExtractAuthenticationValue(bindAck);
         byte[] type3 = privacy.ProcessChallengeToken(type2);
         await WriteFrameAsync(transport, AttachAuthenticationVerifier(
@@ -144,7 +143,7 @@ public sealed class F4Auth
             OpcProtectionLevel.Connect,
             weakerType1));
 
-        byte[] rejection = await PduCodec.ReadPduFrameAsync(transport.Input, TestContext.Current!.CancellationToken);
+        byte[] rejection = await PduCodec.ReadPduFrameAsync(transport.Input, TestContext.Current!.Execution.CancellationToken);
         ConnectionOrientedPdu pdu = PduCodec.DecodePdu(rejection);
         await Assert.That(pdu).IsTypeOf<BindNoAcknowledgePdu>();
     }
@@ -152,7 +151,7 @@ public sealed class F4Auth
     [Test]
     public async Task Ntlmv2_authenticates_full_da_graph_and_runs_lifecycle_over_activation()
     {
-        using var timeout = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current!.CancellationToken);
+        using var timeout = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current!.Execution.CancellationToken);
         timeout.CancelAfter(TimeSpan.FromSeconds(20));
         CancellationToken cancellationToken = timeout.Token;
 
@@ -313,7 +312,7 @@ public sealed class F4Auth
             },
             new ConfiguredAuthenticationSource(User, Password, Domain));
         var listener = new OpcServerListener(endpoint, processor);
-        await listener.StartAsync(TestContext.Current!.CancellationToken);
+        await listener.StartAsync(TestContext.Current!.Execution.CancellationToken);
         return listener;
     }
 
@@ -327,7 +326,7 @@ public sealed class F4Auth
             },
             new ConfiguredAuthenticationSource(User, Password, Domain));
         var listener = new OpcServerListener(endpoint, processor);
-        await listener.StartAsync(TestContext.Current!.CancellationToken);
+        await listener.StartAsync(TestContext.Current!.Execution.CancellationToken);
         return listener;
     }
 
@@ -378,7 +377,7 @@ public sealed class F4Auth
         TcpClientTransport transport = await TcpClientTransport.ConnectAsync(
             endpoint.Address.ToString(),
             endpoint.Port,
-            TestContext.Current!.CancellationToken);
+            TestContext.Current!.Execution.CancellationToken);
         return new DcomCallChannel(transport, authContext);
     }
 
@@ -447,7 +446,7 @@ public sealed class F4Auth
         Memory<byte> output = transport.Output.GetMemory(frame.Length);
         frame.AsSpan().CopyTo(output.Span);
         transport.Output.Advance(frame.Length);
-        await transport.FlushAsync(TestContext.Current!.CancellationToken);
+        await transport.FlushAsync(TestContext.Current!.Execution.CancellationToken);
     }
 
     private static byte[] AttachAuthenticationVerifier(byte[] pduBytes, OpcProtectionLevel protectionLevel, ReadOnlySpan<byte> authValue)

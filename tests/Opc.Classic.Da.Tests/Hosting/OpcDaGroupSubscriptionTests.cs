@@ -3,7 +3,6 @@
 using Opc.Classic.Da.Dcom;
 using Opc.Classic.Da.Hosting;
 using Opc.Classic.Dcom;
-using TUnit.Assertions.AssertConditions.Throws;
 
 namespace Opc.Classic.Da.Tests.Hosting;
 
@@ -29,7 +28,7 @@ public sealed class OpcDaGroupSubscriptionTests
         var group = CreateGroup();
         IConnectionPoint cp = group;
 
-        Guid iid = await cp.GetConnectionInterfaceAsync(TestContext.Current!.CancellationToken);
+        Guid iid = await cp.GetConnectionInterfaceAsync(TestContext.Current!.Execution.CancellationToken);
 
         await Assert.That(iid).IsEqualTo(IOPCDataCallback.InterfaceId);
     }
@@ -40,8 +39,8 @@ public sealed class OpcDaGroupSubscriptionTests
         var group = CreateGroup();
         IConnectionPoint cp = group;
 
-        int cookie1 = await cp.AdviseAsync(SampleSink, TestContext.Current!.CancellationToken);
-        int cookie2 = await cp.AdviseAsync(SampleSink, TestContext.Current!.CancellationToken);
+        int cookie1 = await cp.AdviseAsync(SampleSink, TestContext.Current!.Execution.CancellationToken);
+        int cookie2 = await cp.AdviseAsync(SampleSink, TestContext.Current!.Execution.CancellationToken);
 
         await Assert.That(cookie1).IsNotEqualTo(cookie2);
         await Assert.That(group.SubscriptionCount).IsEqualTo(2);
@@ -52,9 +51,9 @@ public sealed class OpcDaGroupSubscriptionTests
     {
         var group = CreateGroup();
         IConnectionPoint cp = group;
-        int cookie = await cp.AdviseAsync(SampleSink, TestContext.Current!.CancellationToken);
+        int cookie = await cp.AdviseAsync(SampleSink, TestContext.Current!.Execution.CancellationToken);
 
-        await cp.UnadviseAsync(cookie, TestContext.Current!.CancellationToken);
+        await cp.UnadviseAsync(cookie, TestContext.Current!.Execution.CancellationToken);
 
         await Assert.That(group.SubscriptionCount).IsEqualTo(0);
     }
@@ -65,11 +64,11 @@ public sealed class OpcDaGroupSubscriptionTests
         var group = CreateGroup();
         int handle = await AddSingleItem(group, "Tag.A");
         await group.WriteAsync([handle], [new OpcVariant(VarType.VT_I4, 99)],
-            TestContext.Current!.CancellationToken);
+            TestContext.Current!.Execution.CancellationToken);
 
         IConnectionPoint cp = group;
-        await cp.AdviseAsync(SampleSink, TestContext.Current!.CancellationToken);
-        await cp.AdviseAsync(SampleSink, TestContext.Current!.CancellationToken);
+        await cp.AdviseAsync(SampleSink, TestContext.Current!.Execution.CancellationToken);
+        await cp.AdviseAsync(SampleSink, TestContext.Current!.Execution.CancellationToken);
 
         var deliveries = new List<OpcDaGroup.DataChangePayload>();
         await group.TriggerDataChangeAsync(
@@ -80,7 +79,7 @@ public sealed class OpcDaGroupSubscriptionTests
                 deliveries.Add(payload);
                 return Task.CompletedTask;
             },
-            cancellationToken: TestContext.Current!.CancellationToken);
+            cancellationToken: TestContext.Current!.Execution.CancellationToken);
 
         await Assert.That(deliveries.Count).IsEqualTo(2);
         await Assert.That(deliveries[0].TransactionId).IsEqualTo(42);
@@ -94,10 +93,10 @@ public sealed class OpcDaGroupSubscriptionTests
     {
         var group = CreateGroup();
         IConnectionPoint cp = group;
-        await cp.AdviseAsync(SampleSink, TestContext.Current!.CancellationToken);
+        await cp.AdviseAsync(SampleSink, TestContext.Current!.Execution.CancellationToken);
 
         IOPCAsyncIO2 async2 = group;
-        await async2.SetEnableAsync(false, TestContext.Current!.CancellationToken);
+        await async2.SetEnableAsync(false, TestContext.Current!.Execution.CancellationToken);
 
         int callbackCount = 0;
         await group.TriggerDataChangeAsync(
@@ -108,7 +107,7 @@ public sealed class OpcDaGroupSubscriptionTests
                 Interlocked.Increment(ref callbackCount);
                 return Task.CompletedTask;
             },
-            cancellationToken: TestContext.Current!.CancellationToken);
+            cancellationToken: TestContext.Current!.Execution.CancellationToken);
 
         await Assert.That(callbackCount).IsEqualTo(0);
     }
@@ -118,14 +117,14 @@ public sealed class OpcDaGroupSubscriptionTests
     {
         var group = CreateGroup();
         IConnectionPoint cp = group;
-        await cp.AdviseAsync(SampleSink, TestContext.Current!.CancellationToken);
+        await cp.AdviseAsync(SampleSink, TestContext.Current!.Execution.CancellationToken);
 
         OpcDaGroup.DataChangePayload? captured = null;
         await group.TriggerDataChangeAsync(
             transactionId: 7,
             serverHandles: [99999],
             sender: (_, p, _) => { captured = p; return Task.CompletedTask; },
-            cancellationToken: TestContext.Current!.CancellationToken);
+            cancellationToken: TestContext.Current!.Execution.CancellationToken);
 
         await Assert.That(captured).IsNotNull();
         await Assert.That(captured!.ClientHandles.Length).IsEqualTo(0);
@@ -140,7 +139,7 @@ public sealed class OpcDaGroupSubscriptionTests
 
         var iref = await container.FindConnectionPointAsync(
             IOPCDataCallback.InterfaceId,
-            TestContext.Current!.CancellationToken);
+            TestContext.Current!.Execution.CancellationToken);
 
         await Assert.That(iref.Iid).IsEqualTo(IConnectionPoint.InterfaceId);
         await Assert.That(iref.Ipid).IsNotEqualTo(Guid.Empty);
@@ -156,7 +155,7 @@ public sealed class OpcDaGroupSubscriptionTests
         {
             _ = await container.FindConnectionPointAsync(
                 Guid.NewGuid(),
-                TestContext.Current!.CancellationToken);
+                TestContext.Current!.Execution.CancellationToken);
         }).Throws<Opc.Classic.OpcException>();
     }
 
@@ -166,7 +165,7 @@ public sealed class OpcDaGroupSubscriptionTests
         var group = CreateGroup();
         IConnectionPointContainer container = group;
 
-        var iref = await container.EnumConnectionPointsAsync(TestContext.Current!.CancellationToken);
+        var iref = await container.EnumConnectionPointsAsync(TestContext.Current!.Execution.CancellationToken);
 
         await Assert.That(iref.Ipid).IsNotEqualTo(Guid.Empty);
     }
@@ -179,7 +178,7 @@ public sealed class OpcDaGroupSubscriptionTests
 
         OpcException? ex = await Assert.That(async () =>
         {
-            await cp.UnadviseAsync(cookie: 99999, TestContext.Current!.CancellationToken);
+            await cp.UnadviseAsync(cookie: 99999, TestContext.Current!.Execution.CancellationToken);
         }).Throws<OpcException>();
         await Assert.That(ex).IsNotNull();
         await Assert.That(ex!.ResultId.Code).IsEqualTo(unchecked((int)0x80040200));
@@ -191,7 +190,7 @@ public sealed class OpcDaGroupSubscriptionTests
         var group = CreateGroup();
         IOPCAsyncIO2 async2 = group;
 
-        await async2.Cancel2Async(cancelId: 4242, TestContext.Current!.CancellationToken);
+        await async2.Cancel2Async(cancelId: 4242, TestContext.Current!.Execution.CancellationToken);
 
         await Assert.That(group.LastCancel2Id).IsEqualTo(4242);
     }
@@ -201,14 +200,14 @@ public sealed class OpcDaGroupSubscriptionTests
     {
         var group = CreateGroup();
         IConnectionPoint cp = group;
-        await cp.AdviseAsync(SampleSink, TestContext.Current!.CancellationToken);
-        await cp.AdviseAsync(SampleSink, TestContext.Current!.CancellationToken);
+        await cp.AdviseAsync(SampleSink, TestContext.Current!.Execution.CancellationToken);
+        await cp.AdviseAsync(SampleSink, TestContext.Current!.Execution.CancellationToken);
 
         var payloads = new List<OpcDaGroup.CancelCompletePayload>();
         await group.TriggerCancelCompleteAsync(
             transactionId: 99,
             sender: (_, p, _) => { payloads.Add(p); return Task.CompletedTask; },
-            cancellationToken: TestContext.Current!.CancellationToken);
+            cancellationToken: TestContext.Current!.Execution.CancellationToken);
 
         await Assert.That(payloads.Count).IsEqualTo(2);
         await Assert.That(payloads[0].TransactionId).IsEqualTo(99);
@@ -220,16 +219,16 @@ public sealed class OpcDaGroupSubscriptionTests
     {
         var group = CreateGroup();
         IConnectionPoint cp = group;
-        await cp.AdviseAsync(SampleSink, TestContext.Current!.CancellationToken);
+        await cp.AdviseAsync(SampleSink, TestContext.Current!.Execution.CancellationToken);
 
         IOPCAsyncIO2 async2 = group;
-        await async2.SetEnableAsync(false, TestContext.Current!.CancellationToken);
+        await async2.SetEnableAsync(false, TestContext.Current!.Execution.CancellationToken);
 
         int callbacks = 0;
         await group.TriggerCancelCompleteAsync(
             transactionId: 1,
             sender: (_, _, _) => { Interlocked.Increment(ref callbacks); return Task.CompletedTask; },
-            cancellationToken: TestContext.Current!.CancellationToken);
+            cancellationToken: TestContext.Current!.Execution.CancellationToken);
 
         await Assert.That(callbacks).IsEqualTo(0);
     }
@@ -242,16 +241,16 @@ public sealed class OpcDaGroupSubscriptionTests
         // CCW's OpcDataCallbackProxy participates in the same fan-out.
         var group = CreateGroup();
         int handle = await AddSingleItem(group, "Tag.A");
-        await group.WriteAsync([handle], [new OpcVariant(VarType.VT_I4, 42)], TestContext.Current!.CancellationToken);
+        await group.WriteAsync([handle], [new OpcVariant(VarType.VT_I4, 42)], TestContext.Current!.Execution.CancellationToken);
 
         var directSink = new RecordingDataCallbackSink();
-        int directCookie = await group.AdviseAsync(directSink, TestContext.Current.CancellationToken);
+        int directCookie = await group.AdviseAsync(directSink, TestContext.Current.Execution.CancellationToken);
 
         await group.TriggerDataChangeAsync(
             transactionId: 5,
             serverHandles: [handle],
             sender: (_, _, _) => Task.CompletedTask,
-            cancellationToken: TestContext.Current.CancellationToken);
+            cancellationToken: TestContext.Current.Execution.CancellationToken);
 
         await Assert.That(directCookie).IsGreaterThan(0);
         await Assert.That(directSink.DataChangeCount).IsEqualTo(1);
@@ -263,12 +262,12 @@ public sealed class OpcDaGroupSubscriptionTests
     {
         var group = CreateGroup();
         var directSink = new RecordingDataCallbackSink();
-        await group.AdviseAsync(directSink, TestContext.Current!.CancellationToken);
+        await group.AdviseAsync(directSink, TestContext.Current!.Execution.CancellationToken);
 
         await group.TriggerCancelCompleteAsync(
             transactionId: 99,
             sender: (_, _, _) => Task.CompletedTask,
-            cancellationToken: TestContext.Current.CancellationToken);
+            cancellationToken: TestContext.Current.Execution.CancellationToken);
 
         await Assert.That(directSink.CancelCompleteCount).IsEqualTo(1);
         await Assert.That(directSink.LastCancelComplete!.TransactionId).IsEqualTo(99);
@@ -279,16 +278,16 @@ public sealed class OpcDaGroupSubscriptionTests
     {
         var group = CreateGroup();
         var directSink = new RecordingDataCallbackSink();
-        int cookie = await group.AdviseAsync(directSink, TestContext.Current!.CancellationToken);
+        int cookie = await group.AdviseAsync(directSink, TestContext.Current!.Execution.CancellationToken);
 
         IConnectionPoint cp = group;
-        await cp.UnadviseAsync(cookie, TestContext.Current.CancellationToken);
+        await cp.UnadviseAsync(cookie, TestContext.Current.Execution.CancellationToken);
 
         await group.TriggerDataChangeAsync(
             transactionId: 1,
             serverHandles: [],
             sender: (_, _, _) => Task.CompletedTask,
-            cancellationToken: TestContext.Current.CancellationToken);
+            cancellationToken: TestContext.Current.Execution.CancellationToken);
 
         await Assert.That(directSink.DataChangeCount).IsEqualTo(0);
     }
@@ -299,7 +298,7 @@ public sealed class OpcDaGroupSubscriptionTests
         var group = CreateGroup();
         await Assert.That(async () => await group.AdviseAsync(
             (IOpcDataCallbackSink)null!,
-            TestContext.Current!.CancellationToken))
+            TestContext.Current!.Execution.CancellationToken))
             .Throws<ArgumentNullException>();
     }
 
@@ -339,7 +338,7 @@ public sealed class OpcDaGroupSubscriptionTests
     {
         var defs = new[] { new OpcItemDef("", itemId, true, 1, null, VarType.VT_I4) };
         await group.AddItemsAsync(defs, out OpcItemResult[] results, out int[] _,
-            TestContext.Current!.CancellationToken);
+            TestContext.Current!.Execution.CancellationToken);
         return results[0].ServerHandle;
     }
 

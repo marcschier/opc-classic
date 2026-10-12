@@ -35,7 +35,7 @@ public sealed class OpcDaGroupRegistrationTests
             out int serverHandle,
             out int revisedRate,
             out IOpcInterfaceRef groupRef,
-            cancellationToken: TestContext.Current!.CancellationToken);
+            cancellationToken: TestContext.Current!.Execution.CancellationToken);
 
         await Assert.That(serverHandle).IsGreaterThan(0);
         await Assert.That(revisedRate).IsEqualTo(1000);
@@ -57,9 +57,9 @@ public sealed class OpcDaGroupRegistrationTests
             timeBias: 0, percentDeadband: 0f, localeId: 1033,
             requestedInterfaceId: IOPCGroupStateMgt.InterfaceId,
             out int serverHandle, out _, out IOpcInterfaceRef groupRef,
-            cancellationToken: TestContext.Current!.CancellationToken);
+            cancellationToken: TestContext.Current!.Execution.CancellationToken);
 
-        await server.RemoveGroupAsync(serverHandle, force: false, TestContext.Current!.CancellationToken);
+        await server.RemoveGroupAsync(serverHandle, force: false, TestContext.Current!.Execution.CancellationToken);
 
         await Assert.That(registry.Contains(groupRef.Ipid)).IsFalse();
     }
@@ -70,7 +70,7 @@ public sealed class OpcDaGroupRegistrationTests
         var registry = new OpcObjectRegistry();
         var server = new GroupTrackingServer(registry);
 
-        OpcServerStatus statusEmpty = await server.GetStatusAsync(TestContext.Current!.CancellationToken);
+        OpcServerStatus statusEmpty = await server.GetStatusAsync(TestContext.Current!.Execution.CancellationToken);
         await Assert.That(statusEmpty.GroupCount).IsEqualTo(0);
 
         await ((IOPCServer)server).AddGroupAsync(
@@ -78,20 +78,20 @@ public sealed class OpcDaGroupRegistrationTests
             timeBias: 0, percentDeadband: 0f, localeId: 1033,
             requestedInterfaceId: IOPCGroupStateMgt.InterfaceId,
             out int h1, out _, out _,
-            cancellationToken: TestContext.Current!.CancellationToken);
+            cancellationToken: TestContext.Current!.Execution.CancellationToken);
         await ((IOPCServer)server).AddGroupAsync(
             name: "G2", active: true, requestedUpdateRate: 1000, clientGroupHandle: 2,
             timeBias: 0, percentDeadband: 0f, localeId: 1033,
             requestedInterfaceId: IOPCGroupStateMgt.InterfaceId,
             out _, out _, out _,
-            cancellationToken: TestContext.Current!.CancellationToken);
+            cancellationToken: TestContext.Current!.Execution.CancellationToken);
 
-        OpcServerStatus statusAfterAdd = await server.GetStatusAsync(TestContext.Current!.CancellationToken);
+        OpcServerStatus statusAfterAdd = await server.GetStatusAsync(TestContext.Current!.Execution.CancellationToken);
         await Assert.That(statusAfterAdd.GroupCount).IsEqualTo(2);
 
-        await server.RemoveGroupAsync(h1, force: false, TestContext.Current!.CancellationToken);
+        await server.RemoveGroupAsync(h1, force: false, TestContext.Current!.Execution.CancellationToken);
 
-        OpcServerStatus statusAfterRemove = await server.GetStatusAsync(TestContext.Current!.CancellationToken);
+        OpcServerStatus statusAfterRemove = await server.GetStatusAsync(TestContext.Current!.Execution.CancellationToken);
         await Assert.That(statusAfterRemove.GroupCount).IsEqualTo(1);
     }
 

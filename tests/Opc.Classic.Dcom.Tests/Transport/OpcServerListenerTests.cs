@@ -12,7 +12,6 @@ using Opc.Classic.Dcom.Rpc.Core;
 using Opc.Classic.Dcom.Rpc.pdu;
 using Opc.Classic.Dcom.Transport;
 using Opc.Classic.Hosting;
-using TUnit.Assertions.AssertConditions.Throws;
 
 namespace Opc.Classic.Dcom.Tests.Transport;
 
@@ -46,11 +45,11 @@ public sealed class OpcServerListenerTests
             new Dictionary<Guid, IOpcServerDispatcher> { [InterfaceId] = dispatcher });
         await using var listener = new OpcServerListener(endpoint, processor);
 
-        await listener.StartAsync(TestContext.Current!.CancellationToken);
+        await listener.StartAsync(TestContext.Current!.Execution.CancellationToken);
         var bound = (IPEndPoint)listener.LocalEndpoint;
 
         using var client = new TcpClient();
-        await client.ConnectAsync(bound.Address, bound.Port, TestContext.Current!.CancellationToken);
+        await client.ConnectAsync(bound.Address, bound.Port, TestContext.Current!.Execution.CancellationToken);
         var stream = client.GetStream();
         PipeReader reader = PipeReader.Create(stream);
         PipeWriter writer = PipeWriter.Create(stream);
@@ -58,14 +57,14 @@ public sealed class OpcServerListenerTests
         BindPdu bind = NewBind(InterfaceId, contextId: 0, callId: 1);
         await WriteAndFlush(writer, PduCodec.EncodePdu(bind, ConnectionOrientedPdu.MUST_RECEIVE_FRAGMENT_SIZE));
 
-        byte[] ackFrame = await PduCodec.ReadPduFrameAsync(reader, TestContext.Current!.CancellationToken);
+        byte[] ackFrame = await PduCodec.ReadPduFrameAsync(reader, TestContext.Current!.Execution.CancellationToken);
         var ack = (BindAcknowledgePdu)PduCodec.DecodePdu(ackFrame);
         await Assert.That(ack.ResultList[0].Result).IsEqualTo(PresentationResultCode.ACCEPTANCE);
 
         RequestCoPdu request = NewRequest(contextId: 0, opnum: 7, callId: 2);
         await WriteAndFlush(writer, PduCodec.EncodePdu(request, ConnectionOrientedPdu.MUST_RECEIVE_FRAGMENT_SIZE));
 
-        byte[] responseFrame = await PduCodec.ReadPduFrameAsync(reader, TestContext.Current!.CancellationToken);
+        byte[] responseFrame = await PduCodec.ReadPduFrameAsync(reader, TestContext.Current!.Execution.CancellationToken);
         var response = (ResponseCoPdu)PduCodec.DecodePdu(responseFrame);
         await Assert.That(response.CallId).IsEqualTo(2);
         ReadOnlyMemory<byte> body = OrpcEnvelope.ExtractResponseBody(response.Stub);
@@ -92,14 +91,14 @@ public sealed class OpcServerListenerTests
                 [InterfaceId] = dispatcher,
             });
         await using var listener = new OpcServerListener(endpoint, processor);
-        await listener.StartAsync(TestContext.Current!.CancellationToken);
+        await listener.StartAsync(TestContext.Current!.Execution.CancellationToken);
 
         var client = new TcpClient();
         IPEndPoint bound = (IPEndPoint)listener.LocalEndpoint;
         await client.ConnectAsync(
             bound.Address,
             bound.Port,
-            TestContext.Current!.CancellationToken);
+            TestContext.Current!.Execution.CancellationToken);
         await using var channel = new DcomCallChannel(
             new TcpClientTransport(client),
             NoOpAuthContext.Instance);
@@ -108,7 +107,7 @@ public sealed class OpcServerListenerTests
             InterfaceId,
             opnum: 3,
             ReadOnlyMemory<byte>.Empty,
-            TestContext.Current!.CancellationToken);
+            TestContext.Current!.Execution.CancellationToken);
 
         await Assert.That(result.Hresult).IsEqualTo(OpcResultId.False.Code);
         await Assert.That(result.IsSuccess).IsTrue();
@@ -143,14 +142,14 @@ public sealed class OpcServerListenerTests
                 [secondInterfaceId] = dispatcher,
             });
         await using var listener = new OpcServerListener(endpoint, processor);
-        await listener.StartAsync(TestContext.Current!.CancellationToken);
+        await listener.StartAsync(TestContext.Current!.Execution.CancellationToken);
 
         var client = new TcpClient();
         IPEndPoint bound = (IPEndPoint)listener.LocalEndpoint;
         await client.ConnectAsync(
             bound.Address,
             bound.Port,
-            TestContext.Current!.CancellationToken);
+            TestContext.Current!.Execution.CancellationToken);
         var clientAuth = new HmacClientAuthContext(
             authenticationService,
             key);
@@ -162,12 +161,12 @@ public sealed class OpcServerListenerTests
             InterfaceId,
             7,
             new byte[] { 0x10, 0x20, 0x30 },
-            TestContext.Current!.CancellationToken);
+            TestContext.Current!.Execution.CancellationToken);
         NdrCallResult alteredResult = await channel.InvokeAsync(
             secondInterfaceId,
             8,
             new byte[] { 0x40, 0x50 },
-            TestContext.Current!.CancellationToken);
+            TestContext.Current!.Execution.CancellationToken);
 
         await Assert.That(result.Hresult).IsEqualTo(0);
         await Assert.That(alteredResult.Hresult).IsEqualTo(0);
@@ -216,22 +215,22 @@ public sealed class OpcServerListenerTests
         var processor = new RpcServerConnectionProcessor(
             new Dictionary<Guid, IOpcServerDispatcher> { [InterfaceId] = dispatcher });
         var listener = new OpcServerListener(endpoint, processor);
-        await listener.StartAsync(TestContext.Current!.CancellationToken);
+        await listener.StartAsync(TestContext.Current!.Execution.CancellationToken);
         var bound = (IPEndPoint)listener.LocalEndpoint;
 
         // Open a client to create an in-flight connection
         using var client = new TcpClient();
-        await client.ConnectAsync(bound.Address, bound.Port, TestContext.Current!.CancellationToken);
+        await client.ConnectAsync(bound.Address, bound.Port, TestContext.Current!.Execution.CancellationToken);
         // Give the accept loop a moment to register the connection
         for (int i = 0; i < 50 && listener.InFlightConnectionCount == 0; i++)
         {
-            await Task.Delay(20, TestContext.Current!.CancellationToken);
+            await Task.Delay(20, TestContext.Current!.Execution.CancellationToken);
         }
         await Assert.That(listener.InFlightConnectionCount).IsGreaterThanOrEqualTo(1);
 
         // Close client side to let the connection processor's read loop exit cleanly
         client.Close();
-        await listener.StopAsync(TestContext.Current!.CancellationToken);
+        await listener.StopAsync(TestContext.Current!.Execution.CancellationToken);
 
         await Assert.That(listener.InFlightConnectionCount).IsEqualTo(0);
     }
@@ -242,9 +241,9 @@ public sealed class OpcServerListenerTests
         var endpoint = new TcpServerEndpoint(new IPEndPoint(IPAddress.Loopback, 0));
         var processor = new RpcServerConnectionProcessor(EmptyDispatchers());
         await using var listener = new OpcServerListener(endpoint, processor);
-        await listener.StartAsync(TestContext.Current!.CancellationToken);
+        await listener.StartAsync(TestContext.Current!.Execution.CancellationToken);
 
-        await TUnit.Assertions.Assert.That(async () => await listener.StartAsync(TestContext.Current!.CancellationToken))
+        await TUnit.Assertions.Assert.That(async () => await listener.StartAsync(TestContext.Current!.Execution.CancellationToken))
             .Throws<InvalidOperationException>();
     }
 
@@ -266,7 +265,7 @@ public sealed class OpcServerListenerTests
             starts[i] = Task.Run(async () =>
             {
                 await startGate.WaitAsync().ConfigureAwait(false);
-                await listener.StartAsync(TestContext.Current!.CancellationToken).ConfigureAwait(false);
+                await listener.StartAsync(TestContext.Current!.Execution.CancellationToken).ConfigureAwait(false);
             });
         }
 
@@ -303,19 +302,19 @@ public sealed class OpcServerListenerTests
             const int cycles = 6;
             for (int i = 0; i < cycles; i++)
             {
-                await listener.StartAsync(TestContext.Current!.CancellationToken).ConfigureAwait(false);
-                Task stop = listener.StopAsync(TestContext.Current!.CancellationToken);
+                await listener.StartAsync(TestContext.Current!.Execution.CancellationToken).ConfigureAwait(false);
+                Task stop = listener.StopAsync(TestContext.Current!.Execution.CancellationToken);
 
                 // Issue a parallel "second stop" while the first one drains —
                 // exercises the disposed-or-already-null branch.
-                Task secondStop = listener.StopAsync(TestContext.Current!.CancellationToken);
+                Task secondStop = listener.StopAsync(TestContext.Current!.Execution.CancellationToken);
                 await Task.WhenAll(stop, secondStop).ConfigureAwait(false);
             }
 
             await Assert.That(listener.InFlightConnectionCount).IsEqualTo(0);
 
             // After the loop the listener must be startable again without leaking.
-            await listener.StartAsync(TestContext.Current!.CancellationToken).ConfigureAwait(false);
+            await listener.StartAsync(TestContext.Current!.Execution.CancellationToken).ConfigureAwait(false);
             await Assert.That((listener.LocalEndpoint as IPEndPoint)!.Port).IsGreaterThan(0);
         }
         finally
@@ -332,7 +331,7 @@ public sealed class OpcServerListenerTests
         Memory<byte> dest = writer.GetMemory(bytes.Length);
         bytes.AsSpan().CopyTo(dest.Span);
         writer.Advance(bytes.Length);
-        await writer.FlushAsync(TestContext.Current!.CancellationToken);
+        await writer.FlushAsync(TestContext.Current!.Execution.CancellationToken);
     }
 
     private static BindPdu NewBind(Guid interfaceId, int contextId, int callId) =>

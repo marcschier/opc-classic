@@ -175,7 +175,7 @@ public sealed class KerberosKdcIntegrationTests
     {
         var checksum = decrypted.Authenticator.Checksum ?? throw new KerberosValidationException("AP-REQ authenticator does not contain channel bindings.");
         var delegationInfo = checksum.DecodeDelegation() ?? throw new KerberosValidationException("AP-REQ authenticator checksum is not a GSS checksum.");
-        return delegationInfo.ChannelBinding;
+        return delegationInfo.ChannelBindingHash;
     }
 
     private static void ValidateChannelBinding(DecryptedKrbApReq decrypted, ChannelBindings expectedBindings)

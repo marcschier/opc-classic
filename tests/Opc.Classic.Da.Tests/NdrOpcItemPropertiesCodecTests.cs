@@ -167,7 +167,7 @@ public sealed class NdrOpcItemPropertiesCodecTests
         await Assert.That(propertyCount).IsEqualTo(3);
         await Assert.That(firstValue).IsEqualTo("degC");
         await Assert.That(secondErrorId).IsEqualTo(invalidPropertyId);
-        await Assert.That(secondIsEmpty).IsEqualTo(true);
+        await Assert.That(secondIsEmpty).IsTrue();
         await Assert.That(thirdValue).IsEqualTo(7);
     }
 

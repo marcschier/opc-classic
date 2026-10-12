@@ -58,7 +58,7 @@ jobs:
           OPC_CLASSIC_SAMBA_USER: opcuser
           OPC_CLASSIC_SAMBA_PASSWORD: opcpass
           OPC_CLASSIC_SAMBA_DOMAIN: TESTDOMAIN
-        run: dotnet test tests/Opc.Classic.Integration.Tests --configuration Release --no-build --logger "console;verbosity=normal" -- --treenode-filter "/*/*/WinRegSambaSmokeTests/*"
+        run: dotnet test --project tests/Opc.Classic.Integration.Tests/Opc.Classic.Integration.Tests.csproj --configuration Release --no-build --output Normal --treenode-filter "/*/*/WinRegSambaSmokeTests/*"
 
       - name: Stop Samba fixture
         if: always()

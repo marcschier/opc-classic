@@ -35,7 +35,7 @@ public sealed class OpcDaGroupTests
     {
         var group = CreateGroup();
 
-        OpcGroupState state = await group.GetStateAsync(TestContext.Current!.CancellationToken);
+        OpcGroupState state = await group.GetStateAsync(TestContext.Current!.Execution.CancellationToken);
 
         await Assert.That(state.ServerHandle).IsEqualTo(group.ServerHandle);
         await Assert.That(state.ClientHandle).IsEqualTo(group.ClientHandle);
@@ -59,7 +59,7 @@ public sealed class OpcDaGroupTests
             localeId: 2052,
             clientGroupHandle: 99,
             out int revisedUpdateRate,
-            cancellationToken: TestContext.Current!.CancellationToken);
+            cancellationToken: TestContext.Current!.Execution.CancellationToken);
 
         await Assert.That(group.UpdateRate).IsEqualTo(2000);
         await Assert.That(group.Active).IsFalse();
@@ -75,7 +75,7 @@ public sealed class OpcDaGroupTests
     {
         var group = CreateGroup();
 
-        await group.SetNameAsync("Renamed", TestContext.Current!.CancellationToken);
+        await group.SetNameAsync("Renamed", TestContext.Current!.Execution.CancellationToken);
 
         await Assert.That(group.Name).IsEqualTo("Renamed");
     }
@@ -85,8 +85,8 @@ public sealed class OpcDaGroupTests
     {
         var group = CreateGroup();
 
-        int previous = await group.SetKeepAliveAsync(5000, TestContext.Current!.CancellationToken);
-        int current = await group.GetKeepAliveAsync(TestContext.Current!.CancellationToken);
+        int previous = await group.SetKeepAliveAsync(5000, TestContext.Current!.Execution.CancellationToken);
+        int current = await group.GetKeepAliveAsync(TestContext.Current!.Execution.CancellationToken);
 
         await Assert.That(previous).IsEqualTo(0);
         await Assert.That(current).IsEqualTo(5000);
@@ -98,7 +98,7 @@ public sealed class OpcDaGroupTests
         var group = CreateGroup();
         Guid iid = Guid.NewGuid();
 
-        var clone = await group.CloneGroupAsync("clone", iid, TestContext.Current!.CancellationToken);
+        var clone = await group.CloneGroupAsync("clone", iid, TestContext.Current!.Execution.CancellationToken);
 
         await Assert.That(clone.Iid).IsEqualTo(iid);
         await Assert.That(clone.Ipid).IsNotEqualTo(Guid.Empty);

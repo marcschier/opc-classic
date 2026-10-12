@@ -604,12 +604,12 @@ public sealed class LocalCoClass
             catch (ArgumentException e)
             {
                 Log.Logger.Error(e, "LocalCoClass invokeMethod");
-                throw new InteropException(ErrorCode.E_INVALIDARG);
+                throw new InteropException(ErrorCode.E_INVALIDARG, e);
             }
             catch (MethodAccessException e)
             {
                 Log.Logger.Error(e, "LocalCoClass invokeMethod", e);
-                throw new InteropException(ErrorCode.ERROR_ACCESS_DENIED);
+                throw new InteropException(ErrorCode.ERROR_ACCESS_DENIED, e);
             }
             catch (TargetInvocationException e)
             {
@@ -624,7 +624,7 @@ public sealed class LocalCoClass
             catch (MissingMethodException e)
             {
                 Log.Logger.Error(e, "LocalCoClass invokeMethod");
-                throw new InteropException(ErrorCode.RPC_S_PROCNUM_OUT_OF_RANGE);
+                throw new InteropException(ErrorCode.RPC_S_PROCNUM_OUT_OF_RANGE, e);
             }
             catch (InvalidOperationException e)
             {

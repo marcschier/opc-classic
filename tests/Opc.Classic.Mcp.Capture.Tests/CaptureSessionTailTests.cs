@@ -102,7 +102,7 @@ public sealed class CaptureSessionTailTests
         await using TailHarness harness = await TailHarness.StartAsync(
             new[] { HexRequest("a"), HexResponse("b") });
 
-        await harness.Session.StopAsync(TestContext.Current!.CancellationToken);
+        await harness.Session.StopAsync(TestContext.Current!.Execution.CancellationToken);
 
         DrainTailResult first = await harness.DrainAsync(sinceIndex: 0, max: 100);
 
@@ -185,7 +185,7 @@ public sealed class CaptureSessionTailTests
         await Assert.That(running.Pdus.Select(pdu => pdu.CallId)).IsEquivalentTo([201]);
         await Assert.That(running.Done).IsFalse();
 
-        await harness.Session.StopAsync(TestContext.Current!.CancellationToken);
+        await harness.Session.StopAsync(TestContext.Current!.Execution.CancellationToken);
         DrainTailResult completed = await harness.DrainAsync(running.NextIndex, max: 100);
         DrainTailResult repeated = await harness.DrainAsync(completed.NextIndex, max: 100);
 
@@ -291,7 +291,7 @@ public sealed class CaptureSessionTailTests
                 source: source,
                 sessionFolder: folder,
                 request: new CaptureStartRequest(InterfaceName: "lo"));
-            await session.StartAsync(TestContext.Current!.CancellationToken);
+            await session.StartAsync(TestContext.Current!.Execution.CancellationToken);
             return new TailHarness(session, source, folder);
         }
 
@@ -306,7 +306,7 @@ public sealed class CaptureSessionTailTests
             try
             {
                 return (Task<DrainTailResult>)method.Invoke(Session,
-                    new object[] { sinceIndex, max, TestContext.Current!.CancellationToken })!;
+                    new object[] { sinceIndex, max, TestContext.Current!.Execution.CancellationToken })!;
             }
             catch (TargetInvocationException ex) when (ex.InnerException is not null)
             {
