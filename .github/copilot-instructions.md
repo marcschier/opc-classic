@@ -20,7 +20,7 @@ opc-classic/
 │   └── docker/                   Windows-container managed/native interop test fleet
 ├── .github/workflows/            build, release, and Docker test fleet workflows
 ├── Opc.Classic.slnx              .NET 10 XML solution format
-├── global.json                   pins .NET 10 SDK >= 10.0.401
+├── global.json                   pins .NET 10 SDK >= 10.0.403
 ├── LICENSE                       MIT license
 └── README.md
 ```

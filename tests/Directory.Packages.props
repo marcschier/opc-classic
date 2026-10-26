@@ -11,8 +11,8 @@
   </PropertyGroup>
 
   <ItemGroup Label="Test framework — TUnit on Microsoft.Testing.Platform">
-    <PackageVersion Include="TUnit" Version="1.74.0" />
-    <PackageVersion Include="TUnit.Assertions" Version="1.74.0" />
+    <PackageVersion Include="TUnit" Version="1.76.28" />
+    <PackageVersion Include="TUnit.Assertions" Version="1.76.28" />
   </ItemGroup>
 
   <ItemGroup Label="Cross-process integration tests">
