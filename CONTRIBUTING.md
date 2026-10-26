@@ -6,7 +6,7 @@ Keep contributions small, focused, and aligned with the current `Opc.Classic.*` 
 
 ## Quick start
 
-Install the .NET 10 SDK. The repository root `global.json` pins SDK `10.0.401` with `rollForward` set to `latestFeature`, so any compatible later .NET 10 feature SDK may be used.
+Install the .NET 10 SDK. The repository root `global.json` pins SDK `10.0.403` with `rollForward` set to `latestFeature`, so any compatible later .NET 10 feature SDK may be used.
 
 ```powershell
 git clone https://github.com/marcschier/opc-classic.git

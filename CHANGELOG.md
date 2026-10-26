@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.3-alpha] - 2026-10-26
+
+### Changed
+
+- Updated the .NET SDK, BCL packages, analyzers, and TUnit to current compatible releases while retaining the .NET 10 targets and `alpha` release channel.
+
+### Fixed
+
+- Pinned the patched `System.Security.Cryptography.Pkcs` 10.0.14 transitive dependency to resolve current NU1902/NU1903 restore failures without weakening vulnerability auditing.
+
 ## [0.4.2-alpha] - 2026-10-12
 
 ### Changed

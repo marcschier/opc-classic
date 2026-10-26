@@ -252,7 +252,9 @@ public sealed class ManualDxScheduler : IDxScheduler, IDxClock
 
         public long Sequence { get; }
 
+#pragma warning disable VSTHRD003 // This delay task is completed by the manual scheduler.
         public Task Task => _completion.Task;
+#pragma warning restore VSTHRD003
 
         public void SetRegistration(CancellationTokenRegistration registration)
         {

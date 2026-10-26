@@ -21,17 +21,17 @@
   </ItemGroup>
 
   <ItemGroup Label="BCL standalone packages used on net10">
-    <PackageVersion Include="System.IO.Pipelines" Version="10.0.12" />
-    <PackageVersion Include="System.IO.Hashing" Version="10.0.12" />
-    <PackageVersion Include="System.Text.Json" Version="10.0.12" />
-    <PackageVersion Include="System.Threading.Channels" Version="10.0.12" />
+    <PackageVersion Include="System.IO.Pipelines" Version="10.0.14" />
+    <PackageVersion Include="System.IO.Hashing" Version="10.0.14" />
+    <PackageVersion Include="System.Text.Json" Version="10.0.14" />
+    <PackageVersion Include="System.Threading.Channels" Version="10.0.14" />
   </ItemGroup>
 
   <ItemGroup Label="Build-time analyzers (PrivateAssets=all in Directory.Build.props)">
     <PackageVersion Include="Meziantou.Analyzer" Version="3.0.299" />
     <PackageVersion Include="Microsoft.CodeAnalysis.BannedApiAnalyzers" Version="5.6.0" />
-    <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="10.0.401" />
-    <PackageVersion Include="Microsoft.VisualStudio.Threading.Analyzers" Version="18.7.23" />
+    <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="10.0.403" />
+    <PackageVersion Include="Microsoft.VisualStudio.Threading.Analyzers" Version="18.12.1" />
     <PackageVersion Include="Roslynator.Analyzers" Version="5.0.1" />
     <PackageVersion Include="Roslynator.Formatting.Analyzers" Version="5.0.1" />
   </ItemGroup>
@@ -51,6 +51,10 @@
 
   <ItemGroup Label="Authentication">
     <PackageVersion Include="Kerberos.NET" Version="4.6.168" />
+  </ItemGroup>
+
+  <ItemGroup Label="Security servicing">
+    <PackageVersion Include="System.Security.Cryptography.Pkcs" Version="10.0.14" />
   </ItemGroup>
 
   <ItemGroup Label="Model Context Protocol (mcp/ tool consumes this)">
