@@ -24,11 +24,11 @@
   </ItemGroup>
 
   <ItemGroup Label="Property-based tests (CsCheck — framework-agnostic, no reflection generators)">
-    <PackageVersion Include="CsCheck" Version="4.9.1" />
+    <PackageVersion Include="CsCheck" Version="5.0.0" />
   </ItemGroup>
 
   <ItemGroup Label="Snapshot tests (Verify with the TUnit adapter)">
-    <PackageVersion Include="Verify.TUnit" Version="33.3.3" />
+    <PackageVersion Include="Verify.TUnit" Version="33.3.4" />
   </ItemGroup>
 
   <ItemGroup Label="Roslyn source-generator tests">
