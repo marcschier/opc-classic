@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.3-alpha.1] - 2026-11-16
+
+### Changed
+
+- Updated Microsoft.Extensions and standalone System.* packages, ModelContextProtocol, Polly, build analyzers, SourceLink, and test dependencies to current compatible releases while retaining the .NET 10 target frameworks.
+- Updated the cosign installer used by the release workflow.
+
 ## [0.4.3-alpha] - 2026-10-26
 
 ### Changed
