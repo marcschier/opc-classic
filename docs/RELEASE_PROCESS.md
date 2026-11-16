@@ -112,8 +112,8 @@ When the `release` workflow runs, it:
 - validates the tag format;
 - restores, builds, and tests the solution in Release configuration;
 - packs every `Opc.Classic.*` library plus the `Opc.Classic` SDK meta-package, the `Opc.Classic.Windows` add-on, the `Opc.Classic.Generators` / `Opc.Classic.MigrationAnalyzer` analyzer packages, and the `Opc.Classic.Mcp` tool into `.nupkg`/`.snupkg` artifacts;
-- pushes **only the curated set** — `Opc.Classic`, `Opc.Classic.Windows`, `Opc.Classic.Generators`, `Opc.Classic.MigrationAnalyzer`, and `Opc.Classic.Mcp` (including its per-RID variants) — to **nuget.org** when `NUGET_API_KEY` is configured;
-- pushes **all** packages to the **GitHub Packages NuGet feed** at `https://nuget.pkg.github.com/marcschier/index.json` (always — uses the auto-issued `GITHUB_TOKEN`);
+- validates the complete expected package inventory and version, pushes **all** packages to the **GitHub Packages NuGet feed** at `https://nuget.pkg.github.com/marcschier/index.json`, and downloads each one to verify its bytes against the release artifacts;
+- only after that verification succeeds, pushes **only the curated set** — `Opc.Classic`, `Opc.Classic.Windows`, `Opc.Classic.Generators`, `Opc.Classic.MigrationAnalyzer`, and `Opc.Classic.Mcp` (including its per-RID variants) — to **nuget.org** when `NUGET_API_KEY` is configured; duplicate versions fail rather than being silently skipped;
 - uploads package artifacts for review even when publishing is skipped;
 - creates a GitHub Release with the matching changelog section, the package files attached, consumer install instructions, the automatically published Linux image, and the optional status of the Windows image.
 
@@ -122,6 +122,10 @@ Then the hosted `docker-publish-linux` job:
 - logs in to `ghcr.io` with `GITHUB_TOKEN`;
 - builds and pushes the multi-arch `ghcr.io/marcschier/opc-classic-managed-linux:<version>` image (plus `:latest` only on stable releases);
 - captures the pushed digest and signs the immutable digest with cosign keyless.
+
+The manual `nuget` promotion workflow also verifies the complete GitHub Packages
+inventory against the tagged GitHub Release assets, and checks the curated
+downloads against those assets before publishing to nuget.org.
 
 The `docker-publish-windows` job is skipped for tag pushes. On a manual dispatch
 with `publish_windows_image: true`, it waits for a runner labeled
@@ -299,10 +303,10 @@ $curated = @(
   "Opc.Classic.Mcp.linux-x64", "Opc.Classic.Mcp.linux-arm64", "Opc.Classic.Mcp.linux-musl-x64")
 foreach ($id in $curated) {
   $f = ".\.nupkg\$id.$version.nupkg"
-  if (Test-Path $f) { dotnet nuget push $f --source $nugetOrg --api-key <key> --skip-duplicate }
+  if (Test-Path $f) { dotnet nuget push $f --source $nugetOrg --api-key <key> }
 }
 # GitHub Packages feed: every package.
-dotnet nuget push ".\.nupkg\*.nupkg" --source https://nuget.pkg.github.com/marcschier/index.json --api-key <GITHUB_TOKEN> --skip-duplicate
+dotnet nuget push ".\.nupkg\*.nupkg" --source https://nuget.pkg.github.com/marcschier/index.json --api-key <GITHUB_TOKEN>
 ```
 
 ## Post-publish verification

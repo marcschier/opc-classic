@@ -14,7 +14,7 @@ name: nuget
 #   3. Downloads every package at that version straight from the GitHub feed
 #      (no rebuild/repack — the exact bytes that were released are promoted).
 #   4. Exchanges the workflow's OIDC token for a short-lived nuget.org key via
-#      NuGet/login@v1 and pushes the packages to nuget.org (idempotent).
+#      NuGet/login@v1 and pushes the packages to nuget.org.
 #
 # One-time setup on nuget.org (https://www.nuget.org/account/trustedpublishing):
 #   Add policy -> Repository Owner: marcschier, Repository: opc-classic,
@@ -67,7 +67,7 @@ jobs:
 
           # 1. Candidate package IDs = the curated nuget.org set ONLY. Every other
           #    Opc.Classic.* per-spec package stays GitHub-feed-only and is deliberately
-          #    not promoted. Candidates missing from the feed return 404 and are skipped.
+          #    not promoted. Every candidate must be present at the target version.
           #    The MCP server (PackageType=McpServer) also ships per-RID runtime packages
           #    that the base tool package pulls in, so they must be promoted too. Keep the
           #    RID list in sync with <RuntimeIdentifiers> in mcp/Opc.Classic.Mcp.csproj.
@@ -92,10 +92,8 @@ jobs:
           # 2. Probe each candidate's flat-container index for its published versions.
           for id in "${CANDIDATES[@]}"; do
             idl="$(echo "$id" | tr '[:upper:]' '[:lower:]')"
-            body="$(curl -fsSL -H "Authorization: Bearer ${GH_TOKEN}" "${BASE}/${idl}/index.json" 2>/dev/null || true)"
-            [ -n "$body" ] || continue
-            vers="$(echo "$body" | jq -r '.versions[]?' 2>/dev/null || true)"
-            [ -n "$vers" ] || continue
+            body="$(curl -fsSL -H "Authorization: Bearer ${GH_TOKEN}" "${BASE}/${idl}/index.json")"
+            vers="$(echo "$body" | jq -er '.versions[]')"
             PUBLISHED+=("$id")
             printf '%s\n' "$vers" > "versions/${idl}.txt"
             printf '%s\n' "$vers" >> "$ALL_VERSIONS"
@@ -121,14 +119,18 @@ jobs:
             fi
             echo "Auto-selected latest published version: ${TARGET}"
           fi
+          if [[ ! "$TARGET" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-(alpha|beta|rc|preview)(\.[0-9]+)?)?$ ]]; then
+            echo "::error::Invalid release version: ${TARGET}"
+            exit 1
+          fi
 
-          # 4. Download every published package that carries the target version.
+          # 4. Download every curated package at the target version.
           downloaded=0
           for id in "${PUBLISHED[@]}"; do
             idl="$(echo "$id" | tr '[:upper:]' '[:lower:]')"
             if ! grep -qxF "$TARGET" "versions/${idl}.txt"; then
-              echo "::notice::Skipping ${id}: version ${TARGET} is not on the feed."
-              continue
+              echo "::error::${id} version ${TARGET} is not on the feed."
+              exit 1
             fi
             verl="$(echo "$TARGET" | tr '[:upper:]' '[:lower:]')"
             echo "Downloading ${id} ${TARGET}"
@@ -148,6 +150,39 @@ jobs:
             echo "count=${downloaded}"
           } >> "$GITHUB_OUTPUT"
 
+      - name: Verify the full GitHub Packages release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TARGET: ${{ steps.resolve.outputs.version }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          remote_refs="$(git ls-remote --refs origin "refs/tags/v${TARGET}" "refs/tags/${TARGET}")"
+          mapfile -t refs <<< "$remote_refs"
+          if [ -z "$remote_refs" ] || [ "${#refs[@]}" -ne 1 ]; then
+            echo "::error::Expected exactly one release tag for ${TARGET}; found ${#refs[@]}."
+            exit 1
+          fi
+          tag="${refs[0]#*$'\t'}"
+          tag="${tag#refs/tags/}"
+          gh release download "$tag" --repo "$GITHUB_REPOSITORY" \
+            --pattern '*.nupkg' --dir release-artifacts
+          python3 .github/scripts/verify-release-packages.py verify "$TARGET" release-artifacts
+          declare -A release_files
+          for file in release-artifacts/*.nupkg; do
+            name="$(basename "$file" | tr '[:upper:]' '[:lower:]')"
+            release_files["$name"]="$file"
+          done
+          for file in artifacts/*.nupkg; do
+            name="$(basename "$file")"
+            if [ -z "${release_files[$name]:-}" ]; then
+              echo "::error::Missing release artifact for ${name}."
+              exit 1
+            fi
+            cmp "${release_files[$name]}" "$file"
+          done
+
       # NuGet login happens right before the push so the short-lived token is fresh.
       - name: NuGet login (OIDC trusted publishing)
         id: login
@@ -159,8 +194,7 @@ jobs:
         run: |
           dotnet nuget push "artifacts/*.nupkg" \
             --api-key "${{ steps.login.outputs.NUGET_API_KEY }}" \
-            --source https://api.nuget.org/v3/index.json \
-            --skip-duplicate
+            --source https://api.nuget.org/v3/index.json
 
       - name: Summary
         if: always()

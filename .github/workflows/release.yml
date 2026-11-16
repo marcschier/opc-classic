@@ -129,6 +129,22 @@ jobs:
         # package version identical to the Build step above.
         run: dotnet pack Opc.Classic.slnx --no-restore -c Release -p:PublicRelease=true -o ./.nupkg
 
+      - name: Validate release package inventory
+        run: python3 .github/scripts/verify-release-packages.py inventory "$VERSION" ./.nupkg
+
+      - name: Push to GitHub Packages NuGet feed
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          dotnet nuget push "./.nupkg/*.nupkg" \
+            --api-key "$GITHUB_TOKEN" \
+            --source https://nuget.pkg.github.com/marcschier/index.json
+
+      - name: Verify GitHub Packages release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python3 .github/scripts/verify-release-packages.py verify "$VERSION" ./.nupkg
+
       - name: Push curated packages to nuget.org
         env:
           NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
@@ -142,8 +158,8 @@ jobs:
           # Opc.Classic.Windows add-on, the two analyzer packages (Generators +
           # MigrationAnalyzer), and the Opc.Classic.Mcp server (base + per-RID variants).
           # Every other package -- the granular per-spec libraries AND
-          # Opc.Classic.Mcp.Capture -- stays on the GitHub Packages feed (pushed in the
-          # next step). Match by exact <id>.<version>.nupkg so a substring like
+          # Opc.Classic.Mcp.Capture -- stays on the GitHub Packages feed. Match by
+          # exact <id>.<version>.nupkg so a substring like
           # "Mcp.Capture" can never leak in. Keep the RID list in sync with
           # <RuntimeIdentifiers> in mcp/Opc.Classic.Mcp.csproj.
           IDS=(
@@ -162,30 +178,16 @@ jobs:
           FILES=()
           for id in "${IDS[@]}"; do
             f="./.nupkg/${id}.${VERSION}.nupkg"
-            if [ -f "$f" ]; then FILES+=("$f"); else echo "::notice::Curated package not produced, skipping: ${f}"; fi
+            if [ ! -f "$f" ]; then
+              echo "::error::Curated package not produced: ${f}"
+              exit 1
+            fi
+            FILES+=("$f")
           done
-          if [ "${#FILES[@]}" -eq 0 ]; then
-            echo "::error::No curated packages found under ./.nupkg for version ${VERSION}."
-            exit 1
-          fi
           echo "Pushing to nuget.org:"; printf '  %s\n' "${FILES[@]}"
           for f in "${FILES[@]}"; do
-            dotnet nuget push "$f" --api-key "$NUGET_API_KEY" --source https://api.nuget.org/v3/index.json --skip-duplicate
+            dotnet nuget push "$f" --api-key "$NUGET_API_KEY" --source https://api.nuget.org/v3/index.json
           done
-
-      - name: Push to GitHub Packages NuGet feed
-        # Always runs on tag push. GITHUB_TOKEN is auto-issued and the workflow
-        # has `permissions: packages: write`, so no additional secret is needed.
-        # Consumers will need a PAT with `read:packages` scope to install from
-        # this feed (GitHub Packages NuGet requires authenticated reads even
-        # for public packages). See docs/RELEASE_PROCESS.md.
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          dotnet nuget push ./.nupkg/*.nupkg \
-            --api-key "$GITHUB_TOKEN" \
-            --source https://nuget.pkg.github.com/marcschier/index.json \
-            --skip-duplicate
 
       - name: Upload packages artifact
         uses: actions/upload-artifact@v7
@@ -227,7 +229,7 @@ jobs:
 
             Published at version `${{ env.VERSION }}`.
 
-            **nuget.org** (curated, self-contained set):
+            **nuget.org** (curated, self-contained set; when configured or promoted):
 
             - **`Opc.Classic`** — SDK meta-package bundling the cross-platform runtime (client + managed server). `dotnet add package Opc.Classic --version ${{ env.VERSION }}`.
             - **`Opc.Classic.Windows`** — Windows DCOM server-hosting add-on. `dotnet add package Opc.Classic.Windows --version ${{ env.VERSION }}`.
