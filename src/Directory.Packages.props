@@ -58,7 +58,7 @@
   </ItemGroup>
 
   <ItemGroup Label="Model Context Protocol (mcp/ tool consumes this)">
-    <PackageVersion Include="ModelContextProtocol" Version="2.2.0" />
+    <PackageVersion Include="ModelContextProtocol" Version="2.4.0" />
   </ItemGroup>
 
   <ItemGroup Label="Network capture (mcp/Opc.Classic.Mcp.Capture consumes these; not used by src/ AOT-strict assemblies)">
