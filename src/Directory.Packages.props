@@ -28,7 +28,7 @@
   </ItemGroup>
 
   <ItemGroup Label="Build-time analyzers (PrivateAssets=all in Directory.Build.props)">
-    <PackageVersion Include="Meziantou.Analyzer" Version="3.0.341" />
+    <PackageVersion Include="Meziantou.Analyzer" Version="3.0.342" />
     <PackageVersion Include="Microsoft.CodeAnalysis.BannedApiAnalyzers" Version="5.6.0" />
     <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="11.0.100" />
     <PackageVersion Include="Microsoft.VisualStudio.Threading.Analyzers" Version="18.12.1" />
