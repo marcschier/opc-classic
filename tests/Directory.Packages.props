@@ -11,12 +11,12 @@
   </PropertyGroup>
 
   <ItemGroup Label="Test framework — TUnit on Microsoft.Testing.Platform">
-    <PackageVersion Include="TUnit" Version="1.85.0" />
+    <PackageVersion Include="TUnit" Version="1.87.12" />
     <PackageVersion Include="TUnit.Assertions" Version="1.85.0" />
   </ItemGroup>
 
   <ItemGroup Label="Cross-process integration tests">
-    <PackageVersion Include="Testcontainers" Version="4.16.0" />
+    <PackageVersion Include="Testcontainers" Version="4.17.0" />
   </ItemGroup>
 
   <ItemGroup Label="Coverage">
@@ -28,7 +28,7 @@
   </ItemGroup>
 
   <ItemGroup Label="Snapshot tests (Verify with the TUnit adapter)">
-    <PackageVersion Include="Verify.TUnit" Version="33.5.0" />
+    <PackageVersion Include="Verify.TUnit" Version="33.7.2" />
   </ItemGroup>
 
   <ItemGroup Label="Roslyn source-generator tests">
